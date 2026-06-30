@@ -42,7 +42,8 @@
       "The commutative subcase requires NO assumption of finite-dimensionality: Gelfand-Mazur implies it",
       "Radon-Hurwitz numbers: ρ(1,2,2,4,4,4,4,8,9,...) — period-8 Bott periodicity pattern",
       "For NormedDivisionRing (associative), only ℝ, ℂ, ℍ possible (Frobenius); octonions need non-associative framework",
-      "The reduction NormedDivisionRing → NSquareIdentity requires choosing an orthonormal basis and transporting multiplication — the key missing infrastructure"
+      "The reduction NormedDivisionRing → NSquareIdentity requires choosing an orthonormal basis and transporting multiplication — the key missing infrastructure",
+      "Why the list stops at 8: the Cayley-Dickson doubling ℝ → ℂ → ℍ → 𝕆 sheds one algebraic property at each step (ℝ is ordered; ℂ loses the order; ℍ loses commutativity; 𝕆 loses associativity), and the very next doubling (the sedenions, dim 16) loses the division property — zero divisors appear. Norm-multiplicativity (a composition algebra) cannot survive once division fails, so {1,2,4,8} is exactly the run of doublings before the structure runs out. This is the conceptual content behind the period-8 Radon-Hurwitz/Bott pattern"
     ],
     "prerequisites": [
       "Gelfand-Mazur theorem: Mathlib.Analysis.Normed.Algebra.GelfandMazur",
@@ -71,6 +72,16 @@
       "targetId": "hurwitz-theorem",
       "relationship": "related",
       "description": "Base Hurwitz theorem entry with historical context and the full theorem statement."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "The Gelfand-Mazur theorem that drives the commutative case here is the functional-analytic cousin of the Fundamental Theorem of Algebra: both pin down ℂ as the canonical extension of ℝ — FTA says ℂ is algebraically closed, Gelfand-Mazur says a complex normed division algebra is ℂ itself"
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "The n=4 instance of the composition-identity framework (NSquareIdentity 4) that the non-commutative case reduces to is exactly Euler's four-square identity — quaternion norm multiplicativity — which is the key lemma powering Lagrange's four-squares theorem"
     }
   ],
   "sections": [

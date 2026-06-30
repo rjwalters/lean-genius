@@ -34,19 +34,20 @@ in `research/problems/erdos-10-oq-02/verify_decidable_membership.py`
 (`RepWithAtMost k n ⟺ bounded-distinct ⟺ popcount n ≤ k`; the bounded prime
 form reproduces the `905`/`906` caps and the Grechuk witness).
 
-**Build status.** Authored under a Docker/Aristotle blackout, so this file is
-**not yet registered in `Proofs.lean`**. The proofs use only elementary
-`Multiset` algebra plus the S3 lemmas; they are a verified-on-paper drop-in.
+**Build status.** Registered in `Proofs.lean` and machine-checked under the
+pinned Lean toolchain. The proofs use only elementary `Multiset` algebra plus
+the S3 lemmas.
 
-### Remaining mechanical step (next build-enabled session)
+### The explicit decidable instance (delivered in S5)
 
-The explicit `Decidable (RepWithAtMost k n)` instance: encode a `Nodup`
-exponent multiset bounded by `n` as a `Finset ⊆ Finset.range (n+1)`, so that
+The bounded characterization here makes `Decidable (RepWithAtMost k n)` an
+exercise, but the actual instance shipped in `Erdos10OQ02Popcount.lean` (S5)
+takes a sharper route: rather than the `2^(n+1)`-candidate powerset search
 `RepWithAtMost k n ↔ ∃ F ∈ (Finset.range (n+1)).powerset, F.card ≤ k ∧
-(∑ a ∈ F, 2^a) = n`, the right side being decidable by `Finset` search. The
-bridge needs `Multiset.toFinset` (sum/card preserved on `Nodup` multisets) and
-`Finset.sum`-as-`Multiset.sum`. With that instance in place, the witnesses
-`906 ∉ S_3`-style facts close by `decide`/`native_decide`.
+(∑ a ∈ F, 2^a) = n`, it identifies the minimal distinct-power count with the
+binary popcount (`(Nat.bitIndices n).length`), giving an `O(log n)` instance.
+With that instance the witnesses `906 ∉ S_3`-style facts close by
+`decide`/`native_decide`.
 
 ## References
 
@@ -152,5 +153,49 @@ theorem isPrimePlusKPowers_iff_bounded_distinct (k n : ℕ) :
 #check @exp_lt_of_powSum
 #check @repWithAtMost_iff_repBoundedDistinct
 #check @isPrimePlusKPowers_iff_bounded_distinct
+
+/-! ## Part VIII: Decidability recipe (the powerset route, superseded by S5)
+
+The explicit `Decidable (RepWithAtMost k n)` instance is the last mechanical
+step. This section records the direct powerset route; the instance actually
+shipped in `Erdos10OQ02Popcount.lean` (S5) uses the sharper `O(log n)` popcount
+characterization instead. The target equivalence, with the search pinned to a
+finite `Finset`:
+
+  `RepWithAtMost k n ↔
+     ∃ F ∈ (Finset.range (n + 1)).powerset, F.card ≤ k ∧ (∑ a ∈ F, 2 ^ a) = n`
+
+whose right-hand side is `Decidable` (bounded `Finset` existential + decidable
+`≤`/`=` on `ℕ`), so `decidable_of_iff _ (the_iff).symm` yields the instance.
+
+Proof of the equivalence (both directions go through
+`repWithAtMost_iff_repBoundedDistinct`):
+
+* **→** From `RepBoundedDistinct` take the `Nodup` multiset `s` (card `≤ k`,
+  every exponent `≤ n`, `powSum s = n`). Set `F := s.toFinset`.
+    - `F ∈ powerset (range (n+1))`: `Finset.mem_powerset` + `Finset.subset_iff`;
+      `a ∈ F ↔ a ∈ s` is `Multiset.mem_toFinset`, and `a ≤ n ⟹ a ∈ range (n+1)`
+      by `Finset.mem_range` (`omega`).
+    - `F.card ≤ k`: `Multiset.toFinset_card_of_nodup hnd`
+      (`Data/Finset/Card.lean:188`) rewrites `#F = Multiset.card s ≤ k`.
+    - `(∑ a ∈ F, 2^a) = n`: `Finset.sum_eq_multiset_sum` turns the sum into
+      `(F.val.map (2^·)).sum`; `F.val = s` because `s` is `Nodup`
+      (`Multiset.toFinset_eq hnd : Finset.mk s hnd = s.toFinset`, take `.val`,
+      with `Multiset.Nodup.dedup`/`Multiset.toFinset_val`), so it equals
+      `powSum s = n`.
+* **←** Given `F` with `F.card ≤ k` and `(∑ a ∈ F, 2^a) = n`, set `s := F.val`
+  (a `Nodup` multiset). Then `Multiset.card s = #F ≤ k` and
+  `powSum s = (F.val.map (2^·)).sum = ∑ a ∈ F, 2^a = n`
+  (again `Finset.sum_eq_multiset_sum`), giving `RepWithAtMost` directly
+  (`⟨s, hcard, hsum⟩`).
+
+With `Decidable (RepWithAtMost k n)` in hand, `Decidable (RepBoundedDistinct k n)`
+and (via `isPrimePlusKPowers_iff_bounded_distinct` + `Nat.decidablePrime` over
+`p ∈ Finset.range (n+1)`) `Decidable (IsPrimePlusKPowers k n)` follow, and the
+concrete facts `¬ RepWithAtMost 2 905`, `¬ RepWithAtMost 3 906`-style and the
+Grechuk witness `¬ IsPrimePlusKPowers 3 1117175146` close by
+`decide`/`native_decide`. All arithmetic certified in
+`research/problems/erdos-10-oq-02/verify_decidable_membership.py` (ALL CERTS PASS:
+905/906 consecutive caps + Grechuk ∉ S₃, ∈ S₄). -/
 
 end Erdos10OQ02

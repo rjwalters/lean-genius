@@ -1,0 +1,219 @@
+{
+  "id": "erdos-1023-oq-01-oq-01",
+  "title": "Erdős #1023 OQ-01-01: The LYM Inequality and the Antichain Extremal Value",
+  "slug": "erdos-1023-oq-01-oq-01",
+  "description": "Answers parent erdos-1023-oq-01's first open question — discharge the Erdős–Kleitman axiom problem_447_solution via the LYM inequality ∑_{A∈F} 1/C(n,|A|) ≤ 1. Using Mathlib's LYM inequality and Sperner's theorem, this file proves axiom-free the antichain analogue of Problem 447: the maximum antichain in 2^[n] has size exactly C(n,⌊n/2⌋), with the middle layer as witness. Since antichains are 2-union-free, this also discharges the lower-bound half of problem_447_solution without axioms. The upper bound for 2-union-free families — which need not be antichains — is the deeper Erdős–Kleitman content not implied by LYM, and is identified honestly as the remaining open core.",
+  "meta": {
+    "author": "Lubell, Yamamoto, Meshalkin (LYM, 1954–1966); Emanuel Sperner (1928); formalized in Lean 4",
+    "date": "1966",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1023OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "set-families",
+      "lym-inequality",
+      "sperner",
+      "antichain",
+      "extremal",
+      "erdos"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 200,
+    "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms` reports only the three ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. The LYM inequality and Sperner's theorem are supplied by Mathlib (lubell_yamamoto_meshalkin_inequality_sum_inv_choose, IsAntichain.sperner); all results here, including the bridge from the parent's order-theoretic isAntichain to Mathlib's IsAntichain, the antichain extremal theorem, and the 2-union-free lower bound, are fully machine-checked.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "lubell_yamamoto_meshalkin_inequality_sum_inv_choose",
+        "description": "The LYM inequality: for an antichain F, ∑_{A∈F} (C(n,|A|))⁻¹ ≤ 1",
+        "module": "Mathlib.Combinatorics.SetFamily.LYM"
+      },
+      {
+        "theorem": "IsAntichain.sperner",
+        "description": "Sperner's theorem: an antichain in Finset α has size ≤ C(card α, card α / 2)",
+        "module": "Mathlib.Combinatorics.SetFamily.LYM"
+      },
+      {
+        "theorem": "Finset.card_powersetCard",
+        "description": "(s.powersetCard k).card = s.card.choose k, giving the middle-layer size",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.eq_of_subset_of_card_le",
+        "description": "A ⊆ B and |B| ≤ |A| imply A = B, used to show equal-card sets are incomparable",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "dateAdded": "2026-06-21",
+    "theoremCount": 11,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Sperner's theorem (1928) states that the largest antichain in the Boolean lattice 2^[n] — a family of subsets none of which contains another — has size C(n, ⌊n/2⌋), the size of the middle layer. The Lubell–Yamamoto–Meshalkin (LYM) inequality (independently 1954–1966) is the sharp refinement: for any antichain F, ∑_{A∈F} 1/C(n,|A|) ≤ 1. Summing this against the largest binomial coefficient C(n,⌊n/2⌋) recovers Sperner's bound in one line; LYM is the 'book proof' of Sperner.\n\nErdős Problem 1023 concerns union-free families (no member is the union of others) and its 2-union-free variant (no member is the union of two distinct others). The extremal value is again C(n, ⌊n/2⌋), a result of Erdős and Kleitman. The crucial subtlety: every antichain is 2-union-free (a union of two distinct sets strictly contains each), but 2-union-free families are a strictly larger class — they may contain comparable pairs. So while LYM/Sperner pin down the antichain maximum exactly, the matching upper bound for the broader 2-union-free families requires the additional Erdős–Kleitman argument and is not a corollary of LYM.",
+    "problemStatement": "**Open Question (parent erdos-1023-oq-01, first open question)**: Prove `problem_447_solution` (the Erdős–Kleitman bound sup{2-union-free sizes} = C(n,⌊n/2⌋)) without axioms, using the LYM inequality ∑_{A∈F} 1/C(n,|A|) ≤ 1.\n\n**Result**: LYM proves the antichain analogue completely and axiom-free (antichain max = C(n,⌊n/2⌋)), and discharges the lower-bound half of the 2-union-free axiom. The upper-bound half for 2-union-free families is the deeper Erdős–Kleitman content, not implied by LYM, and remains the open core.",
+    "text": "A 200-line, fully verified (0 sorries, 0 axioms, no native_decide) file. Part I bridges the parent's order-theoretic isAntichain to Mathlib's IsAntichain (· ⊆ ·). Part II restates the LYM inequality and Sperner's theorem axiom-free in the parent's vocabulary. Part III exhibits the middle layer (all ⌊n/2⌋-subsets) as an antichain of size C(n,⌊n/2⌋). Part IV assembles antichainMax_eq: the maximum antichain size is exactly C(n,⌊n/2⌋). Part V proves antichains are 2-union-free and concludes twoUnionFree_max_ge_middle, the lower-bound half of problem_447_solution, axiom-free.",
+    "proofStrategy": "The keystone is `toMathlibAntichain`: the parent's `isAntichain F` (∀ A B ∈ F, A ⊆ B → A = B) is definitionally Mathlib's `IsAntichain (· ⊆ ·) ↑F` (distinct members are incomparable), proved by a one-line term. With that bridge, `lym_inequality` and `sperner_bound` are `simpa [Fintype.card_fin]` restatements of the Mathlib theorems (rewriting Fintype.card (Fin n) = n). The middle layer `univ.powersetCard (n/2)` has size C(n,⌊n/2⌋) by `card_powersetCard`, and is an antichain because equal-cardinality subsets are incomparable (`eq_of_subset_of_card_le`). The extremal value `antichainMax_eq` is `le_antisymm` of Sperner (upper) and the middle-layer witness via `le_csSup` (lower). Finally `antichain_twoUnionFree` shows a union B ∪ C = A with B ≠ A forces B ⊊ A ∈ F, contradicting the antichain property, and `twoUnionFree_max_ge_middle` plugs the middle layer into the 2-union-free supremum.",
+    "keyInsights": [
+      "The parent's order-theoretic isAntichain is literally Mathlib's IsAntichain (· ⊆ ·); a one-line term bridges them and unlocks the whole LYM/Sperner toolbox.",
+      "LYM ∑ 1/C(n,|A|) ≤ 1 is exactly the tool the open question names; summing against C(n,⌊n/2⌋) yields Sperner's bound, proved here axiom-free.",
+      "The middle layer is the sharp witness: an antichain of size C(n,⌊n/2⌋), making antichainMax_eq an exact equality.",
+      "Antichains ⊆ 2-union-free, so the antichain maximum is a lower bound for the 2-union-free maximum — this discharges, axiom-free, the ≥ half of the parent's problem_447_solution.",
+      "LYM does NOT close the question: 2-union-free families need not be antichains and can contain comparable pairs, so the ≤ half (no 2-union-free family exceeds C(n,⌊n/2⌋)) is the genuinely deeper Erdős–Kleitman theorem and stays the open core."
+    ],
+    "prerequisites": [
+      "The Boolean lattice 2^[n] and antichains",
+      "Sperner's theorem and the LYM inequality (used from Mathlib)",
+      "Binomial coefficients and the unimodality of the middle layer",
+      "Finset.powersetCard and Finset cardinality in Lean 4/Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bridge",
+      "title": "Part I: Bridge to Mathlib's IsAntichain",
+      "startLine": 67,
+      "endLine": 77,
+      "summary": "toMathlibAntichain: the parent's isAntichain F equals Mathlib's IsAntichain (· ⊆ ·) ↑F, a one-line term unlocking LYM/Sperner.",
+      "mathContext": "The parent's order-theoretic antichain predicate (no member contains another) is definitionally Mathlib's IsAntichain for the subset relation."
+    },
+    {
+      "id": "lym-sperner",
+      "title": "Part II: The LYM Inequality and Sperner's Theorem",
+      "startLine": 79,
+      "endLine": 103,
+      "summary": "lym_inequality: ∑_{A∈F} 1/C(n,|A|) ≤ 1 for an antichain F (the named tool). sperner_bound: antichain ⟹ |F| ≤ C(n,⌊n/2⌋).",
+      "mathContext": "LYM is the sharp form; summing it against the maximal binomial coefficient gives Sperner's antichain bound."
+    },
+    {
+      "id": "middle-layer",
+      "title": "Part III: The Middle Layer Attains the Bound",
+      "startLine": 105,
+      "endLine": 124,
+      "summary": "middle n = all ⌊n/2⌋-subsets. middle_card = C(n,⌊n/2⌋). middle_antichain: equal-cardinality sets are incomparable.",
+      "mathContext": "The middle layer is the extremal antichain, making Sperner's bound sharp."
+    },
+    {
+      "id": "antichain-extremal",
+      "title": "Part IV: The Antichain Extremal Value = C(n, ⌊n/2⌋)",
+      "startLine": 126,
+      "endLine": 160,
+      "summary": "antichainMax_eq: the maximum antichain size is exactly C(n,⌊n/2⌋), by le_antisymm of Sperner (upper) and the middle layer (lower).",
+      "mathContext": "The axiom-free antichain analogue of Erdős Problem 447."
+    },
+    {
+      "id": "problem-447-bridge",
+      "title": "Part V: Bridge to Problem 447 — the Lower Bound, Axiom-Free",
+      "startLine": 162,
+      "endLine": 200,
+      "summary": "antichain_twoUnionFree: antichains are 2-union-free. twoUnionFree_max_ge_middle: C(n,⌊n/2⌋) ≤ sup{2-union-free sizes}, discharging the ≥ half of problem_447_solution without axioms.",
+      "mathContext": "Antichains ⊆ 2-union-free gives the lower bound; the matching upper bound is the deeper Erdős–Kleitman content."
+    }
+  ],
+  "conclusion": {
+    "summary": "Using Mathlib's LYM inequality and Sperner's theorem, this file proves axiom-free the antichain analogue of Erdős Problem 447 — the maximum antichain in 2^[n] is exactly C(n,⌊n/2⌋) — and discharges, without axioms, the lower-bound half of the parent's problem_447_solution via the fact that antichains are 2-union-free. The matching upper bound for 2-union-free families is the deeper Erdős–Kleitman theorem, not implied by LYM, and remains the open core.",
+    "implications": "This pins down exactly how far the LYM inequality (the tool the open question names) carries: it resolves the antichain extremal problem completely and the 2-union-free lower bound, but the broader 2-union-free upper bound genuinely needs more. The result clarifies the structure of the parent's two axioms — the lower bound is elementary (middle layer), the upper bound is the hard Erdős–Kleitman content.",
+    "openQuestions": [
+      "Prove the Erdős–Kleitman upper bound: no 2-union-free family in 2^[n] exceeds C(n,⌊n/2⌋), closing the remaining half of problem_447_solution.",
+      "Does LYM extended to k-union-free families (k ≥ 3) still give the antichain analogue, and is the middle level optimal there?",
+      "Formalize the Bollobás set-pairs inequality as a unifying framework recovering both Sperner and the Erdős–Kleitman bound."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1023-oq-01",
+      "relationship": "extends",
+      "description": "Parent: k-union-free families with problem_447_solution as an axiom. This entry discharges the antichain analogue and the lower bound via LYM."
+    },
+    {
+      "targetId": "erdos-1023",
+      "relationship": "related",
+      "description": "Root Erdős Problem #1023 on union-free families."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1023OQ01OQ01",
+    "lineCount": 200,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 6,
+    "mainTheorems": [
+      {
+        "name": "lym_inequality",
+        "type": "core",
+        "description": "The LYM inequality: ∑_{A∈F} 1/C(n,|A|) ≤ 1 for an antichain F (the tool named in the OQ)",
+        "leanType": "(F : SetFamily n) → isAntichain F → ∑ A ∈ F, ((Nat.choose n A.card : ℚ))⁻¹ ≤ 1"
+      },
+      {
+        "name": "antichainMax_eq",
+        "type": "key",
+        "description": "The maximum antichain size in 2^[n] is exactly C(n,⌊n/2⌋), axiom-free",
+        "leanType": "(n : ℕ) → antichainMax n = Nat.choose n (n / 2)"
+      },
+      {
+        "name": "twoUnionFree_max_ge_middle",
+        "type": "key",
+        "description": "Lower bound of problem_447_solution, axiom-free: C(n,⌊n/2⌋) ≤ sup{2-union-free sizes}",
+        "leanType": "(n : ℕ) → Nat.choose n (n / 2) ≤ sSup { m | ∃ F : SetFamily n, isTwoUnionFree F ∧ F.card = m }"
+      }
+    ],
+    "path": "Proofs/Erdos1023OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "lym_inequality",
+      "type": "core",
+      "description": "LYM inequality ∑_{A∈F} 1/C(n,|A|) ≤ 1 for antichains (restatement of Mathlib's LYM)",
+      "leanType": "(F : SetFamily n) → isAntichain F → ∑ A ∈ F, ((Nat.choose n A.card : ℚ))⁻¹ ≤ 1"
+    },
+    {
+      "name": "sperner_bound",
+      "type": "key",
+      "description": "Sperner's theorem: antichain F ⟹ |F| ≤ C(n,⌊n/2⌋)",
+      "leanType": "(F : SetFamily n) → isAntichain F → F.card ≤ Nat.choose n (n / 2)"
+    },
+    {
+      "name": "antichainMax_eq",
+      "type": "key",
+      "description": "Antichain analogue of Problem 447, axiom-free: max antichain size = C(n,⌊n/2⌋)",
+      "leanType": "(n : ℕ) → antichainMax n = Nat.choose n (n / 2)"
+    },
+    {
+      "name": "twoUnionFree_max_ge_middle",
+      "type": "key",
+      "description": "Lower-bound half of problem_447_solution, axiom-free, via antichain ⊆ 2-union-free",
+      "leanType": "(n : ℕ) → Nat.choose n (n / 2) ≤ sSup { m | ∃ F : SetFamily n, isTwoUnionFree F ∧ F.card = m }"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Sperner, Emanuel",
+      "title": "Ein Satz über Untermengen einer endlichen Menge",
+      "year": "1928",
+      "venue": "Mathematische Zeitschrift 27, 544–548",
+      "note": "The original antichain bound C(n, ⌊n/2⌋) in the Boolean lattice"
+    },
+    {
+      "authors": "Lubell, David",
+      "title": "A short proof of Sperner's lemma",
+      "year": "1966",
+      "venue": "Journal of Combinatorial Theory 1, 299",
+      "note": "The LYM inequality ∑ 1/C(n,|A|) ≤ 1, the tool named in the open question"
+    },
+    {
+      "authors": "Kleitman, Daniel J.",
+      "title": "On a combinatorial problem of Erdős",
+      "year": "1966",
+      "venue": "Proc. Amer. Math. Soc. 17, 139–141",
+      "note": "The Erdős–Kleitman extremal value for union-free families, the deeper content beyond LYM"
+    }
+  ],
+  "sorries": 0
+}

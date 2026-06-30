@@ -121,3 +121,23 @@ analogue — reuse `ElementaryQuadraticReciprocityOQ03.jacobiSym_two`. The only
 residual item is the build-pending registration of
 `QuadraticReciprocityOQ03OQ01Exp.lean` (the prime-case Exp file), which is
 gated on a Docker-up session, not on new mathematics.
+
+## Session 2026-06-15 (S4, researcher-6) — REGISTER
+
+Registered both slug files in `proofs/Proofs.lean` (dependency `QuadraticReciprocityOQ03`
+already registered at :2714):
+- `QuadraticReciprocityOQ03OQ01` (χ₈ + residue forms; S1 + merged S2 #24353, 0 sorry)
+- `QuadraticReciprocityOQ03OQ01Exp` (textbook exponential form; S3, 0 sorry; imports OQ03OQ01)
+
+Neither was in the import manifest, so the deployer never compiled them; the "0 sorry"
+status was inspection-only. Sibling PR #24465 only edited the gallery JSON.
+
+**Build risk flagged (deployer-gated — blocks merge, not main):** both files carry
+`example : legendreSym n 2 = … := by decide` blocks (OQ03OQ01: p=3,5,23,31,41; Exp:
+p=3,7,13,17). Mathlib itself never uses `decide` on `legendreSym` — `quadraticCharFun`
+is computable (so they *should* reduce, small primes), but kernel reduction of the
+`ZMod p` field/Fintype instance stack for `IsSquare` is a known slow/fragile point. If
+the build fails it will be on those `decide` lines; the core theorems
+(`legendreSym_two_eq`, `_eq_pow`, the two `_iff`s) use no `decide` and are the real
+content. The exponential identity is independently certified for all odd primes
+p < 20000 in `verify_exp_form.py` (0 mismatches).

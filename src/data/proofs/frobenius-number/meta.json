@@ -128,6 +128,16 @@
             "proofId": "mathematical-induction",
             "relationship": "context",
             "description": "Mathematical induction underlies the closure-based bootstrap in `Representable` (§I of this file): the base cases $0, a, b$ are representable, and the closure properties `n representable $\\Rightarrow$ n+a, n+b representable` propagate representability through induction on $\\mathbb{N}$. The Lean tactics `Nat.rec` and `induction'` are the syntactic surface of this principle in the proofs of `large_representable` and `eventually_all_representable`."
+        },
+        {
+            "targetId": "frobenius-number-oq-01",
+            "relationship": "extended-by",
+            "description": "The Sylvester count: exactly (a-1)(b-1)/2 positive integers are non-representable by two coprime generators."
+        },
+        {
+            "targetId": "frobenius-number-oq-02",
+            "relationship": "extended-by",
+            "description": "The Sylvester symmetry duality Rep(n) <-> not Rep(g-n) for the Frobenius number g of two coprime generators."
         }
     ],
     "leanFile": {
@@ -138,5 +148,5 @@
         "definitionCount": 3,
         "sorries": 0
     },
-  "sorries": 0
+    "sorries": 0
 }

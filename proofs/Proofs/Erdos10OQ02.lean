@@ -30,11 +30,10 @@ distinct-exponent count is exactly the binary popcount, which is why the
 underlies the numerical evidence in
 `research/problems/erdos-10-oq-02/`.
 
-This file is **build-pending**: it was authored while the Docker Lean
-toolchain and the Aristotle backend were both unavailable, so it is **not yet
-registered in `Proofs.lean`**. The proofs use only elementary `Multiset`
-algebra (no binary-representation API), and are intended as a verified-on-paper
-drop-in for the next build-enabled session.
+This file is **registered in `Proofs.lean`** and machine-checked under the
+pinned Lean toolchain (the original draft predates the build; it has since been
+elaborated cleanly). The proofs use only elementary `Multiset` algebra (no
+binary-representation API).
 
 ## References
 
@@ -130,7 +129,7 @@ theorem exists_nodup_powSum :
       -- the merged multiset
       set v : Multiset ℕ := (a + 1) ::ₘ u with hv
       have hcard_s : s.card = u.card + 2 := by
-        rw [hsu]; simp only [Multiset.card_cons]; omega
+        rw [hsu]; simp only [Multiset.card_cons]
       have hcard_v : v.card = u.card + 1 := by
         rw [hv]; simp only [Multiset.card_cons]
       have hsum_v : powSum v = powSum s := by

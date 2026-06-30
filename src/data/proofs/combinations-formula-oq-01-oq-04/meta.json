@@ -7,8 +7,8 @@
     "author": "Lean Genius Research Team",
     "date": "2026-05-04",
     "dateAdded": "2026-05-04",
-    "status": "verified",
-    "badge": "original",
+    "status": "axiomatized",
+    "badge": "axiom",
     "tags": [
       "combinatorics",
       "lattice-paths",
@@ -19,7 +19,7 @@
       "binomial-coefficients"
     ],
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 189,
     "theoremCount": 12,
     "definitionCount": 2,
@@ -37,7 +37,9 @@
       "lgv_2x2_not_wellFormed_when_b_zero: well-formedness failure example",
       "lgv_det_is_natural: the determinant is always a natural number"
     ],
-    "assumptions": []
+    "assumptions": [
+      "Lean.ofReduceBool: the concrete 2×2 determinant evaluations lgv_2x2_det_ex1 (det = 6) and lgv_2x2_det_ex2 (det = 50) are discharged by native_decide, which trusts the compiler's kernel reduction; the derived non-intersecting-path counts lgv_2x2_ni_count_ex1 (= 6) and lgv_2x2_ni_count_ex2 (= 50) rewrite through these determinants and so inherit the dependency. The abstract r×r LGV framework (lgv_determinant_formula, lgv_det_nonneg, lgv_one_by_one, lgv_2x2_det_nonneg, lgv_det_is_natural) is native_decide-free."
+    ]
   },
   "overview": {
     "historicalContext": "The Lindström-Gessel-Viennot (LGV) Lemma was discovered independently by Bernt Lindström in 1973 (\"On the vector representations of induced matroids\", Bull. London Math. Soc.) and rediscovered by Ira Gessel and Gérard Viennot in 1985 (\"Binomial determinants, paths, and hook length formulae\", Adv. in Math. 58). Karlin and McGregor (1959) had earlier proved a continuous-time analog for non-intersecting Brownian motions, foreshadowing the lattice case. The LGV lemma unifies a remarkable range of classical results: MacMahon's 1916 formula for plane partitions in a box, Cauchy's 1841 determinant identity for Schur polynomials, Catalan numbers as ballot path counts, and the Karlin-McGregor formula. Its modern significance extends to the theory of cluster algebras (Fomin-Zelevinsky), totally positive matrices (the binomial path matrix is totally positive), and the geometric proof of the Cauchy-Binet formula. The sign-reversing involution that drives the proof is itself a paradigmatic example of bijective combinatorics — it turns an algebraic identity (determinant = sum over permutations) into a combinatorial bijection between path tuples.",

@@ -1,0 +1,171 @@
+{
+  "id": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01-oq-01",
+  "title": "Cayley, bundled: the left-regular representation as a homomorphism and the isomorphism G ≃* range",
+  "slug": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01-oq-01",
+  "description": "Answers the parent entry's (cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01) first listed open question: upgrade the explicit regular representation from a family of pointwise equivalences to a single bundled morphism. The parent records, for a free transitive H ≤ Sym(α), that transporting the geometric action of each σ ∈ H across the orbit bijection e : H ≃ α gives exactly Equiv.mulLeft σ on H (transportedAction_eq_mulLeft), and that this assignment is injective (mulLeft_injective) — but element-by-element, as a family of Equiv.Perm's. This entry bundles them. For an arbitrary group G it defines regularRepHom G : G →* Perm G, the left-regular representation σ ↦ Equiv.mulLeft σ packaged as a monoid homomorphism (multiplicativity is Equiv.mulLeft_mul), proves its faithfulness regularRepHom_injective (Cayley's theorem: distinct elements give distinct translations, seen by evaluating at 1), and assembles the canonical Cayley isomorphism regularRep G : G ≃* (regularRepHom G).range via MulEquiv.ofInjective — realising G as a concrete subgroup of Sym(G). The packaged classical statement cayley : ∃ K : Subgroup (Perm G), Nonempty (G ≃* K) records that every group is isomorphic to a subgroup of its own symmetric group. A closing section ties the bundle back to the parent's geometric setting: for a free transitive H ≤ Sym(α), transporting the geometric action across the orbit bijection is, hom-for-hom, regularRepHom H (transportedAction_eq_regularRepHom), and isBundledRegularRepresentation packages e, the isomorphism φ : H ≃* range, and the identity (φ σ : Perm H) = e.symm.permCongr (σ : Perm α). Mathlib supplies the unbundled ingredients (Equiv.mulLeft_one/mulLeft_mul, MulEquiv.ofInjective); the contribution is the assembled homomorphism and range isomorphism and their identification with the parent's geometric action. No finiteness is used: this is the sharp Cayley statement, valid for arbitrary (possibly infinite) G. Fully verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Arthur Cayley (1854); bundled regular representation formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cayley%27s_theorem",
+    "date": "1854",
+    "status": "verified",
+    "tags": [
+      "group-theory",
+      "cayley",
+      "regular-representation",
+      "permutation-group",
+      "group-homomorphism",
+      "group-isomorphism",
+      "mulequiv",
+      "symmetric-group",
+      "left-multiplication",
+      "faithful-representation",
+      "infinite-group",
+      "bundled-morphism",
+      "algebra",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.mulLeft_mul",
+        "description": "Equiv.mulLeft (a*b) = Equiv.mulLeft a * Equiv.mulLeft b — the multiplicativity that makes σ ↦ Equiv.mulLeft σ a monoid homomorphism, used for the map_mul' field of regularRepHom",
+        "module": "Mathlib.Algebra.Group.End"
+      },
+      {
+        "theorem": "Equiv.mulLeft_one",
+        "description": "Equiv.mulLeft 1 = 1 — the unit law for the map_one' field of regularRepHom",
+        "module": "Mathlib.Algebra.Group.End"
+      },
+      {
+        "theorem": "MulEquiv.ofInjective",
+        "description": "an injective monoid homomorphism f : G →* N restricts to a group isomorphism G ≃* f.range — applied to regularRepHom G to build the bundled Cayley isomorphism regularRep, with MulEquiv.ofInjective_apply giving its underlying permutation",
+        "module": "Mathlib.Algebra.Group.Subgroup.Ker"
+      },
+      {
+        "theorem": "Equiv.permCongr",
+        "description": "conjugation of a permutation by an equivalence e : H ≃ α — the parent's transport of the geometric action of σ : Perm α to a permutation of H, here identified with regularRepHom H σ",
+        "module": "Mathlib.Logic.Equiv.Defs"
+      }
+    ],
+    "originalContributions": [
+      "regularRepHom G : G →* Perm G — the left-regular representation σ ↦ Equiv.mulLeft σ of an arbitrary group, bundled as a monoid homomorphism (the single morphism underlying the parent's element-wise family of translations)",
+      "regularRepHom_injective: faithfulness of the regular representation = Cayley's theorem — distinct group elements give distinct left translations, recovered by evaluating two equal translations at the identity",
+      "regularRep G : G ≃* (regularRepHom G).range — THE bundled Cayley isomorphism, realising G as a concrete subgroup of Sym(G) via MulEquiv.ofInjective; regularRep_coe_apply records that its underlying permutation is Equiv.mulLeft σ",
+      "mem_regularRepHom_range: the image of the regular representation is exactly the set of left translations { Equiv.mulLeft g : g ∈ G }",
+      "cayley: the packaged classical statement that every group is isomorphic to a subgroup of its own symmetric group, ∃ K ≤ Sym(G), Nonempty (G ≃* K)",
+      "transportedAction_eq_regularRepHom: for a free transitive H ≤ Sym(α), the parent's transported geometric action equals the bundled regularRepHom H σ — the element-wise transport assembled into one homomorphism",
+      "isBundledRegularRepresentation: the parent's isExplicitRegularRepresentation upgraded from a pair of pointwise identities to a single group isomorphism φ : H ≃* (regularRepHom H).range with (φ σ : Perm H) = e.symm.permCongr (σ : Perm α)"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 156,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries; the headline theorems depend only on Mathlib's foundational propext/Classical.choice/Quot.sound (Classical.choice/arbitrary supplies a basepoint and underlies MulEquiv.ofInjective via codRestrict; Classical.arbitrary picks the basepoint in the geometric section). No decide/native_decide, so no Lean.ofReduceBool. regularRepHom, regularRepHom_injective, regularRep and cayley hold for an arbitrary group G with no finiteness; the geometric tie-in additionally assumes α nonempty (for the orbit basepoint) but no finiteness.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Cayley's theorem (1854) realises an abstract group G inside the symmetric group Sym(G) via the left-regular representation g ↦ (x ↦ g·x), whose image is a regular (simply transitive) permutation group. The grandparent and parent entries study the converse — a free transitive subgroup H ≤ Sym(α) is equinumerous to α (#H = #α) and, after relabelling by the orbit bijection, acts by left translation. The parent makes the regular representation explicit but only as a family of equivalences: each σ ∈ H is shown to act as Equiv.mulLeft σ. This entry supplies the bundled object the parent's first open question asks for: the left-regular representation as a genuine group homomorphism G →* Perm G and the Cayley isomorphism G ≃* (its range), a concrete subgroup of Sym(G). It also identifies the parent's geometric transport with this bundled homomorphism. Everything is finiteness-free, so it is Cayley's theorem in its sharp form for arbitrary groups.",
+    "problemStatement": "**Open Question (cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01, first follow-up)**: Upgrade isExplicitRegularRepresentation to a bundled MulEquiv / permutation-group isomorphism — an explicit term of type H ≃* (the image of the left-regular representation in Sym H) — packaging the equivariance as a morphism of group actions rather than a pair of pointwise identities.\n\n**Result**: For an arbitrary group G, the left-regular representation is bundled as regularRepHom G : G →* Perm G (σ ↦ Equiv.mulLeft σ); it is injective (regularRepHom_injective = Cayley faithfulness), giving the canonical isomorphism regularRep G : G ≃* (regularRepHom G).range via MulEquiv.ofInjective, hence cayley : every group embeds in its symmetric group. The bundle is identified with the parent's geometric action by transportedAction_eq_regularRepHom and packaged in isBundledRegularRepresentation.",
+    "text": "Let G be any group. Left translation by g, Equiv.mulLeft g : Perm G (x ↦ g·x), satisfies Equiv.mulLeft 1 = 1 and Equiv.mulLeft (g·h) = Equiv.mulLeft g * Equiv.mulLeft h, so g ↦ Equiv.mulLeft g is a monoid homomorphism regularRepHom G : G →* Perm G. It is injective: if Equiv.mulLeft a = Equiv.mulLeft b as permutations, evaluating at 1 gives a = b. An injective homomorphism restricts to an isomorphism onto its image (MulEquiv.ofInjective), so regularRep G : G ≃* (regularRepHom G).range exhibits G as a concrete subgroup of Sym(G) — Cayley's theorem, bundled. The image is exactly the set of left translations. Specialising G to a free transitive H ≤ Sym(α): the parent shows transporting the geometric action of σ across the orbit bijection e : H ≃ α yields Equiv.mulLeft σ, which is precisely regularRepHom H σ; so the geometric action, relabelled by e, is the bundled left-regular representation, packaged with its range isomorphism in isBundledRegularRepresentation. No step uses finiteness.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. regularRepHom: define the monoid hom with toFun := Equiv.mulLeft, map_one' := Equiv.mulLeft_one, map_mul' := Equiv.mulLeft_mul.\n2. regularRepHom_apply / regularRepHom_apply_apply: record the value (Equiv.mulLeft g) and its action (g·x), definitional.\n3. regularRepHom_injective: from h : regularRepHom G a = regularRepHom G b, apply (· 1) and simp (mulLeft g 1 = g) to get a = b.\n4. regularRep := MulEquiv.ofInjective regularRepHom_injective; regularRep_coe_apply := MulEquiv.ofInjective_apply gives the underlying permutation Equiv.mulLeft g.\n5. mem_regularRepHom_range: MonoidHom.mem_range rewritten through regularRepHom_apply.\n6. cayley: witness K := (regularRepHom G).range with the isomorphism regularRep G.\n7. transportedAction_eq_regularRepHom: rw regularRepHom_apply then apply the parent's transportedAction_eq_mulLeft.\n8. isBundledRegularRepresentation: witness e := regularEquiv (Classical.arbitrary α), φ := regularRep H, and per σ chain regularRep_coe_apply with transportedAction_eq_regularRepHom.",
+    "keyInsights": [
+      "**From a family of permutations to one morphism.** The parent proves σ ↦ Equiv.mulLeft σ one element at a time. Recognising the two equivalence-level identities Equiv.mulLeft_one and Equiv.mulLeft_mul as the unit and product laws is exactly what turns that family into a monoid homomorphism G →* Perm G — the difference between a list of facts and a single algebraic object.",
+      "**Faithfulness is Cayley's theorem.** Injectivity of the regular representation is a one-line evaluation at the identity, and it is the whole content of Cayley's embedding theorem: an abstract group sits inside its own symmetric group as the group of its left translations.",
+      "**Bundling buys the isomorphism for free.** Once the representation is an injective homomorphism, MulEquiv.ofInjective hands back the canonical isomorphism G ≃* range with no extra work — the explicit, term-level realisation of G as a permutation group that the parent's pointwise statements only gestured at.",
+      "**The geometric action IS the bundle.** Identifying the parent's transported geometric action with regularRepHom H (not merely with the unbundled Equiv.mulLeft σ) closes the loop: a free transitive permutation group, relabelled, is the bundled left-regular representation of itself — converse and forward Cayley meeting in one homomorphism."
+    ],
+    "prerequisites": [
+      "The parent's transportedAction_eq_mulLeft and orbit bijection regularEquiv : H ≃ α, with predicates ActsTransitively, ActsFreely (cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01 and ancestors)",
+      "Equiv.mulLeft as the left-regular representation, with its homomorphism laws Equiv.mulLeft_one and Equiv.mulLeft_mul",
+      "MulEquiv.ofInjective (range isomorphism of an injective monoid hom) and MonoidHom.mem_range",
+      "Equiv.permCongr (conjugation of a permutation by an equivalence) for the geometric tie-in"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring: the parent gives the regular representation element-by-element (σ ↦ Equiv.mulLeft σ); this entry bundles it into one homomorphism G →* Perm G and the Cayley isomorphism G ≃* range, then identifies the bundle with the parent's geometric action. Imports the parent (Proofs.CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01); reopens namespace CayleyConverse and opens Equiv.",
+      "mathContext": "Bundle the family $\\{L_\\sigma\\}$ into the homomorphism $G\\to\\operatorname{Perm}G$ and the isomorphism $G\\simeq^* \\operatorname{range}$."
+    },
+    {
+      "id": "bundled-hom",
+      "title": "The Bundled Left-Regular Representation",
+      "startLine": 57,
+      "endLine": 110,
+      "summary": "regularRepHom G : G →* Perm G (σ ↦ Equiv.mulLeft σ, via mulLeft_one/mulLeft_mul) with regularRepHom_apply and regularRepHom_apply_apply; regularRepHom_injective (faithfulness = Cayley, evaluate at 1); regularRep G : G ≃* range (MulEquiv.ofInjective) with regularRep_coe_apply; mem_regularRepHom_range (image = left translations); cayley (every group embeds in Sym(G)).",
+      "mathContext": "$g\\mapsto L_g$ is an injective hom $G\\to\\operatorname{Perm}G$, so $G\\simeq^*\\operatorname{range}\\le\\operatorname{Sym}(G)$."
+    },
+    {
+      "id": "geometric",
+      "title": "Identification with the Parent's Geometric Action",
+      "startLine": 111,
+      "endLine": 156,
+      "summary": "transportedAction_eq_regularRepHom: for a free transitive H ≤ Sym(α), e.symm.permCongr (σ : Perm α) = regularRepHom H σ (the parent's transport, read through the bundle). isBundledRegularRepresentation: packages the orbit bijection e, the isomorphism φ = regularRep H : H ≃* range, and the per-element identity (φ σ : Perm H) = e.symm.permCongr (σ : Perm α).",
+      "mathContext": "Relabelled by $e$, the geometric action of a free transitive $H$ IS the bundled left-regular representation $\\operatorname{regularRepHom} H$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: the explicit regular representation as a family of equivalences (transportedAction_eq_mulLeft, mulLeft_injective, isExplicitRegularRepresentation). This entry answers its first open question by bundling that family into the homomorphism regularRepHom and the isomorphism regularRep, and identifying the parent's geometric transport with the bundle."
+    },
+    {
+      "targetId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02",
+      "relationship": "builds-on",
+      "description": "Grandparent line: the infinite converse to Cayley and the orbit bijection regularEquiv : H ≃ α, reused for the geometric tie-in transportedAction_eq_regularRepHom and isBundledRegularRepresentation."
+    },
+    {
+      "targetId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Sibling entry on the two regular representations (left- and right-regular images coincide iff G is abelian). Both concern the structure of the bundled regular representation inside Sym(G)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) bundling of the left-regular representation: for an arbitrary group G, regularRepHom G : G →* Perm G is the monoid homomorphism σ ↦ Equiv.mulLeft σ, it is injective (regularRepHom_injective, Cayley faithfulness), and MulEquiv.ofInjective produces the canonical Cayley isomorphism regularRep G : G ≃* (regularRepHom G).range, packaged as cayley (every group embeds in its symmetric group). The bundle is identified with the parent's geometric action via transportedAction_eq_regularRepHom and isBundledRegularRepresentation.",
+    "implications": "Turns the parent's element-wise explicit regular representation into a single algebraic object — a homomorphism and a group isomorphism onto a concrete subgroup of Sym(G) — which is the standard, usable form of Cayley's theorem. Because no step uses finiteness, the isomorphism holds for arbitrary groups, and the geometric section shows a free transitive permutation group, relabelled, is literally this bundled representation of itself.",
+    "openQuestions": [
+      "Identify (regularRepHom G).range concretely as the centraliser of the right-regular representation in Sym(G) (the classical fact that the two regular representations are mutual centralisers), giving a structural description of the image subgroup rather than only its set of elements.",
+      "Promote the geometric tie-in to a single MulEquiv between the geometric subgroup H ≤ Sym(α) and (regularRepHom H).range that is natural in the orbit bijection, i.e. a conjugation isomorphism of subgroups of symmetric groups induced by e : H ≃ α."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01",
+      "Mathlib.Algebra.Group.Subgroup.Ker"
+    ],
+    "opens": [
+      "Equiv"
+    ],
+    "namespace": "CayleyConverse",
+    "lineCount": 143,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Cayley, Arthur",
+      "title": "On the theory of groups, as depending on the symbolic equation θⁿ = 1",
+      "year": "1854",
+      "venue": "Philosophical Magazine, Series 4, 7(42)",
+      "note": "Original statement of Cayley's theorem and the regular representation; this entry records its bundled homomorphism / isomorphism form"
+    },
+    {
+      "authors": "Dixon, John D.; Mortimer, Brian",
+      "title": "Permutation Groups",
+      "year": "1996",
+      "venue": "Springer GTM 163",
+      "note": "Regular representations and the embedding of a group into its symmetric group"
+    }
+  ],
+  "sorries": 0
+}

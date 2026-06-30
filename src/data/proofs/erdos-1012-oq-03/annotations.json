@@ -202,7 +202,7 @@
       "startLine": 946,
       "endLine": 1030
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Directed Cycle Infrastructure: IsDirectedCycleList and sc_tournament_has_cycle",
     "content": "`IsDirectedCycleList D l` defines a directed cycle as a `Nodup` list with $\\text{length} \\geq 2$ and modular arc condition: `arc(l[i], l[(i+1) % k])` for all $i < k$. The modular index handles the wrap-around arc $l[k-1] \\to l[0]$. `nodup_length_le_card` is a simple cardinality lemma used throughout. `sc_tournament_has_cycle` (marked `sorry` in the status checklist) extracts an initial directed cycle from a strongly connected tournament on $\\geq 3$ vertices: use the Hamiltonian path `hl`, take the SC walk from `hl[n-1]` back to `hl[0]`, find the first step `w₁ = walk[1]` in `hl` at position `j < n-1`, and return `hl.drop j` as a directed cycle of length $n-j \\geq 2$.",
     "mathContext": "The strategy for `sc_tournament_has_cycle` is: Hamiltonian path $p_0 \\to \\cdots \\to p_{n-1}$ + SC walk from $p_{n-1}$ back to $p_0$ gives a closed walk. The first internal step $p_{n-1} \\to w_1$ where $w_1 = p_j$ for $j < n-1$ (since $w_1 \\neq p_{n-1}$ by looplessness) gives the cycle $p_j \\to p_{j+1} \\to \\cdots \\to p_{n-1} \\to p_j$ — equivalently `hl.drop j`. This is a clean existence argument: the Hamiltonian path provides global structure, SC provides the closing arc.",

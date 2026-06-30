@@ -1,0 +1,62 @@
+[
+  {
+    "id": "eta-summand",
+    "proofId": "basel-problem-oq-14-oq-01",
+    "range": { "startLine": 45, "endLine": 45 },
+    "type": "definition",
+    "title": "The exponent-indexed eta summand etaSummand m n = (-1)^(n+1)/n^(2m)",
+    "content": "Unlike the parent entry, whose summand is fixed at exponent 4, etaSummand carries the exponent parameter m. Defining it as a top-level named function (rather than an inline lambda) is what later lets HasSum.even_add_odd infer f := etaSummand m from the pattern f (2*k); an anonymous lambda would block that higher-order unification. At n = 0 the value is ±1/0 = 0 in ℝ, so the series effectively starts at n = 1.",
+    "mathContext": "$\\displaystyle\\eta(2m) = \\sum_{n\\ge 1}\\frac{(-1)^{n+1}}{n^{2m}}.$",
+    "significance": "standard",
+    "relatedConcepts": ["Dirichlet eta function", "alternating series", "parameterization over exponent"],
+    "prerequisites": ["infinite series", "real powers"]
+  },
+  {
+    "id": "even-half",
+    "proofId": "basel-problem-oq-14-oq-01",
+    "range": { "startLine": 50, "endLine": 63 },
+    "type": "theorem",
+    "title": "hasSum_even_zeta — the even half is a scaled copy of ζ",
+    "content": "For any HasSum witness Z of ∑ 1/n^(2m), the even-indexed subseries satisfies ∑_k 1/(2k)^(2m) = (1/2)^(2m)·Z. The scaling 1/(2k)^(2m) = (1/2)^(2m)·(1/k^(2m)) is established at symbolic exponent 2m with mul_pow, div_pow, one_pow and div_mul_div_comm (the parent could use plain `ring` only because its exponent 4 was a literal). The result is HasSum.mul_left applied to Z. The rewrite is valid even at k = 0, where both sides are 0 in ℝ.",
+    "mathContext": "$\\displaystyle\\sum_{k\\ge 1}\\frac{1}{(2k)^{2m}} = \\left(\\tfrac12\\right)^{2m}\\zeta(2m) = 2^{-2m}\\zeta(2m).$",
+    "significance": "key",
+    "relatedConcepts": ["HasSum.mul_left", "even-indexed subseries", "symbolic exponent algebra"],
+    "prerequisites": ["infinite series", "scaling of sums", "power arithmetic"]
+  },
+  {
+    "id": "master-lemma",
+    "proofId": "basel-problem-oq-14-oq-01",
+    "range": { "startLine": 65, "endLine": 107 },
+    "type": "theorem",
+    "title": "hasSum_eta_of_zeta — the parity-split master lemma",
+    "content": "The core contribution. From any zeta witness Z at exponent 2m: the odd half ∑_k 1/(2k+1)^(2m) is summable (Summable.comp_injective along k ↦ 2k+1), and reassembling Z = even + odd via HasSum.even_add_odd then applying HasSum.unique pins the odd half to Z − (1/2)^(2m)·Z. For the alternating series, the even-indexed terms carry (-1)^(2k+1) = -1 (Odd.neg_one_pow) and sum to −(1/2)^(2m)·Z; the odd-indexed terms carry (-1)^(2k+2) = 1 (Even.neg_one_pow) and sum to the odd half. HasSum.even_add_odd combines them and `ring` gives the coefficient: −(1/2)^(2m)Z + (Z − (1/2)^(2m)Z) = (1 − 2·(1/2)^(2m))·Z. Crucially, no closed form for ζ is ever used — the identity is purely about parity of indices.",
+    "mathContext": "$\\displaystyle\\eta(2m) = \\bigl(1 - 2\\cdot 2^{-2m}\\bigr)\\zeta(2m) = \\bigl(1 - 2^{1-2m}\\bigr)\\zeta(2m).$",
+    "significance": "critical",
+    "relatedConcepts": ["HasSum.even_add_odd", "HasSum.unique", "Summable.comp_injective", "Odd.neg_one_pow / Even.neg_one_pow", "parity split"],
+    "prerequisites": ["infinite series", "even/odd decomposition", "uniqueness of sums", "parity of exponents"]
+  },
+  {
+    "id": "coefficient-identity",
+    "proofId": "basel-problem-oq-14-oq-01",
+    "range": { "startLine": 109, "endLine": 117 },
+    "type": "theorem",
+    "title": "eta_coeff_eq — 1 − 2·(1/2)^(2m) = 1 − 2^(1−2m)",
+    "content": "Certifies that the coefficient produced by the proof equals the textbook eta-zeta factor. The real integer power 2^(1−2m) is reduced via zpow_sub₀ (2 ≠ 0), zpow_one and zpow_natCast to 2/2^(2m), which div_eq_mul_inv matches against 2·(2^(2m))⁻¹ = 2·(1/2)^(2m). This makes the recognizable form 1 − 2^(1−2m) itself machine-checked rather than merely asserted in prose.",
+    "mathContext": "$\\displaystyle 1 - 2\\left(\\tfrac12\\right)^{2m} = 1 - 2^{\\,1-2m}.$",
+    "significance": "standard",
+    "relatedConcepts": ["zpow_sub₀", "zpow_natCast", "real integer powers"],
+    "prerequisites": ["real zpow", "power arithmetic"]
+  },
+  {
+    "id": "uniform-and-values",
+    "proofId": "basel-problem-oq-14-oq-01",
+    "range": { "startLine": 119, "endLine": 144 },
+    "type": "theorem",
+    "title": "hasSum_eta_nat and the concrete values η(2) = π²/12, η(4) = 7π⁴/720",
+    "content": "Because the master lemma only needs a HasSum witness, composing it with Mathlib's general hasSum_zeta_nat (k ≠ 0) yields hasSum_eta_nat: η(2m) = (1 − 2·(1/2)^(2m))·ζ(2m) for every m ≥ 1, the uniform family the open question requested. Specializing through hasSum_zeta_two and hasSum_zeta_four — with a one-line norm_num/ring coefficient computation (1 − 1/2 = 1/2 and 1 − 1/8 = 7/8) — recovers η(2) = π²/12 (cf. oq-11) and η(4) = 7π⁴/720 (the parent value). tsum_eta_two and tsum_eta_four restate these in ∑'-form.",
+    "mathContext": "$\\displaystyle\\eta(2) = \\frac{\\pi^2}{12},\\qquad \\eta(4) = \\frac{7\\pi^4}{720}.$",
+    "significance": "key",
+    "relatedConcepts": ["hasSum_zeta_nat", "hasSum_zeta_two", "hasSum_zeta_four", "uniform specialization", "tsum"],
+    "prerequisites": ["Euler's even zeta values", "infinite series", "specialization of parameterized lemmas"]
+  }
+]

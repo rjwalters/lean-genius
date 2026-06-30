@@ -1,0 +1,158 @@
+[
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-1002-oq-03",
+    "range": {
+      "startLine": 43,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Deviation and Inner Sum",
+    "content": "deviation(x) = 1/2 − {x} measures how far the fractional part of x sits below the midpoint 1/2; innerSum(α, n) = Σ_{k=0}^{n−1} deviation(α·(k+1)) accumulates these deviations along the orbit αk. These mirror the definitions in the parent Erdős #1002 entry, kept here so the file is self-contained.",
+    "mathContext": "$S(\\alpha, n) = \\sum_{k=1}^{n} \\left(\\tfrac12 - \\{\\alpha k\\}\\right)$",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "fractional part",
+      "equidistribution",
+      "discrepancy sums"
+    ],
+    "prerequisites": [
+      "Int.fract"
+    ]
+  },
+  {
+    "id": "ann-mulmod-injon",
+    "proofId": "erdos-1002-oq-03",
+    "range": {
+      "startLine": 58,
+      "endLine": 72
+    },
+    "type": "lemma",
+    "title": "Multiplication by a Unit Is Injective on Residues",
+    "content": "When gcd(p,q) = 1, the map k ↦ (p·(k+1)) mod q is injective on {0,…,q−1}. From equal residues one gets p(a+1) ≡ p(b+1) (mod q); cancelling the unit p (Nat.ModEq.cancel_left_of_coprime) and then the +1 gives a ≡ b (mod q), which forces a = b since both lie below q.",
+    "mathContext": "$\\gcd(p,q)=1 \\implies \\big(k \\mapsto p(k+1) \\bmod q\\big) \\text{ injective on } \\mathbb{Z}/q\\mathbb{Z}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular cancellation",
+      "units of ℤ/qℤ",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "Nat.ModEq",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "ann-sum-mulmod-shift",
+    "proofId": "erdos-1002-oq-03",
+    "range": {
+      "startLine": 83,
+      "endLine": 88
+    },
+    "type": "lemma",
+    "title": "Complete Residue System",
+    "content": "The arithmetic crux: for gcd(p,q) = 1, Σ_{k<q} (p·(k+1) mod q) = Σ_{m<q} m. Since the residue map is injective on a finite set into itself, its image is all of range q; the sum over the image therefore equals the sum over range q. This is the statement that p·(k+1) runs over a complete residue system as k runs over a full period.",
+    "mathContext": "$\\sum_{k=0}^{q-1} \\big(p(k+1) \\bmod q\\big) = \\sum_{m=0}^{q-1} m = \\tfrac{q(q-1)}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete residue system",
+      "permutation of ℤ/qℤ",
+      "Finset.sum_image"
+    ],
+    "prerequisites": [
+      "injectivity on a finite set",
+      "Finset.eq_of_subset_of_card_le"
+    ]
+  },
+  {
+    "id": "ann-fract-natdiv",
+    "proofId": "erdos-1002-oq-03",
+    "range": {
+      "startLine": 91,
+      "endLine": 101
+    },
+    "type": "lemma",
+    "title": "Fractional Part of a Natural Quotient",
+    "content": "Bridges real fractional parts to modular arithmetic: Int.fract(a/q) = (a mod q)/q for naturals a, q with q > 0. Write a = q·(a/q) + a mod q, split the quotient, drop the integer part with Int.fract_natCast_add, and note 0 ≤ (a mod q)/q < 1.",
+    "mathContext": "$\\left\\{\\dfrac{a}{q}\\right\\} = \\dfrac{a \\bmod q}{q}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fractional part",
+      "Euclidean division",
+      "Int.fract"
+    ],
+    "prerequisites": [
+      "Nat.div_add_mod",
+      "Int.fract_eq_self"
+    ]
+  },
+  {
+    "id": "ann-innersum-period-sum",
+    "proofId": "erdos-1002-oq-03",
+    "range": {
+      "startLine": 104,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "Per-Period Sum Equals 1/2 (Main Result)",
+    "content": "The headline theorem: for a reduced fraction p/q (gcd = 1, q ≥ 1), S(p/q, q) = 1/2. Each deviation term becomes 1/2 − (p(k+1) mod q)/q; summing, the constant part contributes q/2 and the residue part contributes (Σ residues)/q = (q−1)/2 by the complete-residue-system lemma and Gauss's formula. The difference is q/2 − (q−1)/2 = 1/2, independent of both numerator and denominator.",
+    "mathContext": "$S\\!\\left(\\tfrac{p}{q},\\, q\\right) = \\tfrac{q}{2} - \\tfrac{q-1}{2} = \\tfrac12$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős #1002",
+      "complete residue system",
+      "Gauss summation",
+      "continued fractions"
+    ],
+    "prerequisites": [
+      "sum_mulmod_shift",
+      "fract_natDiv",
+      "Finset.sum_range_id_mul_two"
+    ]
+  },
+  {
+    "id": "ann-deviation-periodic",
+    "proofId": "erdos-1002-oq-03",
+    "range": {
+      "startLine": 153,
+      "endLine": 175
+    },
+    "type": "lemma",
+    "title": "q-Periodicity of the Deviation Orbit",
+    "content": "The index function k ↦ deviation(p/q · (k+1)) has period q: shifting k by q adds an integer p to the argument, and deviation is invariant under integer shifts (deviation_add_nat). Summing a q-periodic function over any q consecutive indices is therefore constant (cyclic_sum_periodic).",
+    "mathContext": "$\\operatorname{dev}\\!\\left(\\tfrac{p}{q}(k+q+1)\\right) = \\operatorname{dev}\\!\\left(\\tfrac{p}{q}(k+1)\\right)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "periodicity",
+      "integer-shift invariance",
+      "cyclic sums"
+    ],
+    "prerequisites": [
+      "Int.fract_add_natCast",
+      "Finset.sum_range_succ"
+    ]
+  },
+  {
+    "id": "ann-innersum-linear",
+    "proofId": "erdos-1002-oq-03",
+    "range": {
+      "startLine": 184,
+      "endLine": 203
+    },
+    "type": "theorem",
+    "title": "Exact Linear Growth Over n Periods",
+    "content": "Lifts the per-period result to S(p/q, n·q) = n/2 by induction on n, using the additive period recurrence S(p/q, n+q) = S(p/q, n) + S(p/q, q). For rational α the inner sum thus grows exactly linearly, with per-step rate 1/(2q) governed solely by the denominator q — the sharp, fully elementary answer to the rational endpoint of the parent's continued-fraction question.",
+    "mathContext": "$S\\!\\left(\\tfrac{p}{q},\\, nq\\right) = \\tfrac{n}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear growth",
+      "Erdős #1002",
+      "continued fractions",
+      "discrepancy"
+    ],
+    "prerequisites": [
+      "innerSum_period_sum",
+      "innerSum_period_rec"
+    ]
+  }
+]

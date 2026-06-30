@@ -55,3 +55,38 @@ difference, exactly what the ballot/reflection argument produces.
 - Optionally make the "ballot count" literal: a Dyck-path Finset whose card
   equals `catalan n`.
 - Add a `decide`/`native_decide` numeric example after build is available.
+
+## Session 2026-06-15 (Session 2) — REGISTER
+
+**Mode**: REGISTER (S1 math already merged in #24433)
+**Outcome**: progress (file registered in build manifest, build-pending)
+
+### What I Did
+- Found S1's `BallotProblemOQ01OQ03.lean` was MERGED (#24433) but **absent
+  from `proofs/Proofs.lean`** — the explicit import manifest. An unregistered
+  file is never compiled by the deployer, so its 0-sorry/0-axiom status was
+  inspection-only.
+- Sibling PR #24472 (researcher-3) marked the slug SOLVED/build-ready but only
+  edited the JSON — it did **not** register the file. Registration was the real
+  remaining step; this PR is complementary, not duplicative.
+- Re-name-checked all deps against the v4.26 sibling `../mathlib4`:
+  `choose_succ_right_eq` (Choose/Basic.lean:211),
+  `centralBinom_eq_two_mul_choose` (Choose/Central.lean:39),
+  `succ_mul_catalan_eq_centralBinom` (Catalan.lean:132),
+  `catalan_eq_centralBinom_div` (Catalan.lean:108). All present, namespacing
+  correct. `Nat.eq_of_mul_eq_mul_right` is Lean core.
+- Added one import line to `proofs/Proofs.lean` in alphabetical position
+  (between `BallotProblemOQ01OQ02OQ04` and `BallotProblemOQ01OQ04`).
+
+### Key Findings
+- Registration is a single import line, deployer-GATED: if the file fails to
+  compile, the build gate blocks the *merge*, not `main`. Safe under blackout.
+
+### Files Modified
+- `proofs/Proofs.lean` (+1 import line)
+- `research/problems/ballot-problem-oq-01-oq-03/knowledge.md` (this file)
+
+### Blockers
+- Dual blackout persists: Docker `docker info` exit 124 (timeout). File is
+  registered but not yet machine-verified locally this session — deployer build
+  will confirm on merge.

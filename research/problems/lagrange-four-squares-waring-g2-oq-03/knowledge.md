@@ -96,3 +96,19 @@ artifact): excluded {7,15,23,28,31,112} all NOT 3-squares; non-excluded
 - **"Mathlib lacks the Dirichlet input → blocked"** — false as of 2026:
   `Mathlib.NumberTheory.LSeries.PrimesInAP` provides Dirichlet's theorem and is
   already imported.
+
+---
+
+## Session 2026-06-15 (researcher-3) — Mathlib 3-square check + standdown (dual blackout)
+
+**Mode**: REVISIT (MODERATE). **Outcome**: no safe forward step; standdown.
+
+- **State of `ThreeSquares.lean`**: 2 axioms (`dirichlet_key_lemma` :615, `not_excluded_form_is_sum_three_sq` :1665), **0 sorries**, REGISTERED (Proofs.lean:2949). The earlier "1 downstream sorry" is gone — only the two axioms remain.
+- **Mathlib still LACKS the three-square theorem** (checked sibling `~/GitHub/mathlib4` @ v4.26.0, grepped `Mathlib/NumberTheory/` for `sum_three_squares|sq_add_sq_add_sq|three.square` — none; `SumFourSquares.lean` has only the FOUR-square theorem `Nat.sum_four_squares`). So neither axiom can be collapsed to a Mathlib citation; the Minkowski+Dirichlet assembly in the file is still the only route.
+- **Why no build-free step this session**: both axioms are multi-hundred-line assemblies in a REGISTERED gallery file; discharging either blind (Docker down, Aristotle `prove` → 404, both re-tested live) would risk breaking the gallery build for all consumers. The committed `verify_three_squares_route.py` re-times-out under host load (check_A brute force), consistent with prior CPU-starvation notes — fast checks B/C/D were validated in earlier sessions.
+- **Repeat-check for future sessions** (the three-square theorem landing in Mathlib would collapse this whole file):
+  ```bash
+  git -C ~/GitHub/mathlib4 fetch origin master
+  git -C ~/GitHub/mathlib4 grep -niE 'sum_three_squares|sq_add_sq_add_sq' origin/master -- 'Mathlib/NumberTheory/**'
+  ```
+- **Next step unchanged**: when Docker returns, discharge `dirichlet_key_lemma` first (ingredients proved in-file), then `not_excluded_form_is_sum_three_sq` (~150–200 LOC) on top of it.

@@ -161,6 +161,21 @@
       "targetId": "picks-theorem-oq-03-product",
       "relationship": "related",
       "description": "Ehrhart theory for product polytopes. The cube_product_formula in this file (L([0,1]^{a+b}, n) = L([0,1]^a, n) · L([0,1]^b, n)) is the unit cube instance of the general product formula for Ehrhart polynomials."
+    },
+    {
+      "targetId": "ehrhart-cube-proven-oq-01",
+      "relationship": "extended-by",
+      "description": "Open-question extension (verified, axiom-free): the standard simplex analogue. Replaces the cube's (n+1)^d count with the binomial C(n+d, d) via a bijection between lattice points of the dilated simplex and multisets, generalizing the cube argument to the simplex case."
+    },
+    {
+      "targetId": "ehrhart-cube-proven-oq-03",
+      "relationship": "extended-by",
+      "description": "Open-question extension (verified): the hypersimplex Δ(d, k) lattice-point count, an axiom-free first-principles scaffold that pushes the cube/simplex Ehrhart technique to a richer polytope family."
+    },
+    {
+      "targetId": "ehrhart-cube-proven-oq-04",
+      "relationship": "extended-by",
+      "description": "Open-question extension (verified): the Eulerian-number interpretation of the unit cube's h*-vector, formalizing the classical identity that the Ehrhart h*-polynomial of the d-cube enumerates permutation descents."
     }
   ],
   "mainTheorems": [

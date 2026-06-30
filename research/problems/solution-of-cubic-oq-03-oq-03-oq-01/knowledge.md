@@ -115,3 +115,50 @@ transcription task, not a discovery task.
   root-set split).
 - Verdict: all 3 axioms buildable, ~150–200 LOC, Docker-gated. Phase OBSERVE→ORIENT.
 - **Next**: ACT — discharge A3, A2, A1 in that order.
+
+### 2026-06-16 (Session 2) — ACT (build-pending discharge written)
+
+**Mode**: DEPTH (knowledge WEAK→RICH) · **Outcome**: progress (all 3 axioms
+written as theorems in an UNREGISTERED orphan; dual blackout so build-pending)
+
+- Dual blackout confirmed this session: `docker info` times out (>30s); Aristotle
+  MCP `prove` returns `{"status":"error","message":"Resource not found."}` (404).
+  So no Lean build and no Aristotle — same blackout the other 06-16 sessions hit.
+- Wrote **`proofs/Proofs/GeneralQuarticAxiomsDischarge.lean`** — a staging file,
+  deliberately **NOT** imported by `Proofs.lean` (zero risk to the registered
+  `Proofs` build / gallery). Contains theorem versions of all three axioms,
+  statements mirroring the `axiom` lines verbatim so they can be inlined to
+  replace them and drop `axiomCount` 3→0:
+  - `cpow_half_sq` — the one non-`ring` fact `s² = p²−4r` for `s = (p²−4r)^{1/2}`,
+    via `Complex.cpow_nat_inv_pow` after rewriting `1/2 = ((2:ℕ):ℂ)⁻¹`.
+  - `biquadratic_backward'` (A3) — `rw [y⁴=(y²)², hz]` then
+    `linear_combination (1/4)*hs`. **HIGH confidence.**
+  - `biquadratic_forward'` (A2) — factor `(y²−z₁)(y²−z₂)=0` via
+    `linear_combination h − (1/4)*hs`, then `mul_eq_zero` + `sub_eq_zero.mp`.
+    **HIGH confidence.**
+  - `quartic_has_four_roots'` (A1) — `unfold quarticPoly; compute_degree!` for
+    `natDegree=4`; `IsAlgClosed.splits _ : p.Splits`;
+    `Splits.natDegree_eq_card_roots` for `card roots = 4`; destructure length-4
+    `roots.toList` into `[r₁,r₂,r₃,r₄]`; `Polynomial.mem_roots hp0` +
+    `IsRoot.def`. **MEDIUM confidence** — the length-4 `rcases`/`cases tl`
+    enumeration and `compute_degree!` are the only unverified-by-build steps.
+- **API NOTE (v4.26 drift from S1 notes):** `Splits` is now a **one-argument**
+  predicate `p.Splits` (splits over its own field). `IsAlgClosed.splits` is the
+  class field `∀ p, p.Splits` (use `IsAlgClosed.splits _ : p.Splits`).
+  `IsAlgClosed.splits_codomain` is **deprecated** (since 2025-12-09). Use
+  `Splits.natDegree_eq_card_roots : p.Splits → p.natDegree = card p.roots`
+  (not the old `splits_iff_card_roots`). `Polynomial.mem_roots (hp : p ≠ 0)`,
+  `Multiset.length_toList`, `Multiset.mem_toList`, `Polynomial.IsRoot.def` all
+  present.
+- Verified the **exact** `linear_combination` coefficients are ring identities
+  (sympy residual 0 for A2, A3-b1, A3-b2). Existing `verify_quartic_axioms.py`
+  still passes (all 8 checks). So A2/A3 are de-risked to "transcription is
+  correct"; only Lean-elaboration surprises remain.
+- Did **NOT** touch `meta.json` axiomCount (still 3) — the registered file still
+  has the 3 axioms; no overclaiming until they're replaced & build-verified.
+- **Next (Docker up):** (1) `docker-build.sh Proofs.GeneralQuarticAxiomsDischarge`
+  to verify; fix any A1 enumeration/elaboration nits. (2) Inline the three proofs
+  into `GeneralQuartic.lean` replacing the `axiom` lines, delete the orphan,
+  rebuild `Proofs.GeneralQuartic`. (3) Set `meta.json` leanFile.axiomCount 3→0
+  and bump status/badge to verified/original. (4) Aristotle is the fallback for
+  A1 if the manual enumeration fights the elaborator (404 this session).

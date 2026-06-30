@@ -2,10 +2,10 @@
   "id": "four-square-distribution",
   "title": "Distribution of Four-Square Representations Among Orderings",
   "slug": "four-square-distribution",
-  "description": "Formalizes how the r₄(n) representations of n as a²+b²+c²+d² distribute among representation types based on sorted absolute values. Each type contributes a specific multiplicity (sign changes × permutations). Concrete: type (0,0,0,1) contributes 8, type (a,b,c,d) all distinct contributes 384. 38 theorems, 0 sorries, 0 axioms.",
+  "description": "Formalizes how the r₄(n) representations of n as a²+b²+c²+d² distribute among representation types based on sorted absolute values. Each type contributes a specific multiplicity (sign changes × permutations). Concrete: type (0,0,0,1) contributes 8, type (a,b,c,d) all distinct contributes 384. 38 theorems, 0 sorries, 0 axiom declarations (the multiplicity computations use native_decide, which depends on Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius FourSquareDistribution",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/FourSquareDistribution.lean",
     "tags": [
       "number-theory",
@@ -18,12 +18,12 @@
       "hyperoctahedral-group",
       "native-decide"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 400,
     "theoremCount": 38,
-    "assumptions": "None. All 38 theorems proved.",
+    "assumptions": "One assumption: `Lean.ofReduceBool`. All 38 theorems are proved with no `sorry` and no `axiom` declarations, but the per-type multiplicity computations are discharged by `native_decide` (20 invocations), which the kernel accepts via `Lean.ofReduceBool` — the standard compiler-trust dependency. Under the gallery convention, native_decide on substantive results makes the entry `axiomatized` (axiomCount 1), not axiom-free.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.decideEq",

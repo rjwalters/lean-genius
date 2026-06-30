@@ -5,6 +5,31 @@ Combinatorial (odd-number partition) proof of Nicomachus's theorem
 
 ---
 
+## STATUS UPDATE 2026-06-15 (researcher-4) — ACT IS DONE; this slug is COMPLETE
+
+**The ORIENT spec below is superseded.** `proofs/Proofs/SumOfKthPowersOQ03.lean` **exists, is
+complete (0 sorries / 0 axioms / 10 theorems / 1 def), and is registered** in
+`proofs/Proofs.lean` (`import Proofs.SumOfKthPowersOQ03`). A prior session implemented the full
+proof using an even cleaner route than the spec below: define `T n := ∑ i ∈ range n, i` (the
+Gauss sum **as a sum**, NOT `n(n+1)/2`), which sidesteps ALL ℕ-division and ℕ-subtraction. The
+triangular recurrence is the division-free `two_T_add : 2·T i + i = i²`; `block_sq` then gives
+`T i² + i³ = T (i+1)²` by `ring` over the ℕ semiring; `block_eq_cube`, `tiling`, and
+`sum_cubes_eq_sum_squared_via_odds` follow. Bonus corollary `cube_eq_sum_consecutive_odds`
+(`i³ = ∑_{k<i} (2(T i + k)+1)`). The file uses `import Mathlib` + `Finset.sum_Ico_consecutive`
++ `Finset.range_eq_Ico` + `Finset.sum_range_succ` + one `Nat.add_left_cancel`.
+
+**Only remaining gap = a green deployer Docker build to flip gallery status formalized/wip →
+verified/original.** Build is blocked locally (worktree `proofs/.lake` is the circular
+self-symlink ⇒ 0 oleans ⇒ Mathlib-from-source OOM; Aristotle MCP "Resource not found"). The
+file header claims a prior docker-build succeeded, but that is not independently confirmed this
+session, so status stays conservative.
+
+researcher-4 fixed gallery meta: `theoremCount` 9→10 (the `^theorem`-grep undercounts
+`@[simp] theorem T_zero`) and `lineCount` 144→155 (file grew after the corollary was added).
+**Do NOT re-claim this as ORIENT or re-implement the Lean — it is already written and registered.**
+
+---
+
 ## Problem Understanding
 
 The parent entry `sum-of-kth-powers` (`Proofs/SumOfKthPowers.lean`) already proves the
@@ -202,3 +227,108 @@ their exact argument order recorded (the one thing the prose spec omitted and th
 otherwise have to discover at build time). No spec change; the ACT plan stands. Still Docker-gated:
 no `.lean` written (an unbuildable file under `Proofs/` would break the shared build), exactly as
 S1–S4 deferred. Decision: **ORIENT** — pin-confirmation only, zero churn to spec.
+
+## Session 2026-06-15 (S6, researcher-5) — complete Lean transcription (division-free reformulation)
+
+Dual blackout still LIVE (`docker info` timeout; Aristotle `prove` → "Resource not found",
+re-probed this session). No build/typecheck possible. After 5 ORIENT sessions the spec was fully
+pinned; this session produced the **complete paste-ready Lean file** — but with a cleaner
+formulation that removes the spec's sole documented hazard.
+
+**Key simplification — `T` as a Gauss SUM, not the closed form.** The prior spec used
+`T k := k*(k+1)/2`, whose `/2` forced the "division-clearing" step (multiply by 4, prove evenness
+via `Nat.even_mul_succ_self`, etc.) flagged as "the one genuinely build-fiddly step". Defining
+instead
+
+  `def T (n : ℕ) : ℕ := ∑ i ∈ Finset.range n, i`
+
+makes `T 0 = 0` (`rfl`), `T (n+1) = T n + n` (`Finset.sum_range_succ`), and the triangular
+recurrence becomes the **division-free, subtraction-free** identity `2 * T i + i = i^2`
+(`two_T_add`, one-line induction). The block-square identity `T i^2 + i^3 = T (i+1)^2` (`block_sq`)
+then follows by a 3-step `calc` using only `ring` (valid on the ℕ *semiring* — no
+`linear_combination`, which needs a ring) plus `rw [← two_T_add i]`. **No ℕ-division and no
+ℕ-subtraction appear anywhere in the file.** This is a strict improvement over the M1/M1′ specs
+and should be the formulation that gets built.
+
+**File:** `research/problems/sum-of-kth-powers-oq-03/SumOfKthPowersOQ03.lean` (kept in the research
+dir, NOT under `Proofs/`, to avoid degrading the shared safe-subset build before a typecheck —
+`build-safe-subset.sh` globs `Proofs/*.lean`). 0 axioms, 0 sorries (build-pending). Lemma chain:
+`sum_odds` (L1) → `two_T_add` → `block_sq` → `block_eq_cube` (L2, via `Finset.sum_Ico_consecutive`
++ `range_eq_Ico` + `Nat.add_left_cancel`) → `tiling` (L3, induction) →
+`sum_cubes_eq_sum_squared_via_odds` (Main, closes by `rfl` since `T (n+1)` is *definitionally*
+`∑ i ∈ range (n+1), i`, matching the parent's RHS shape `(∑ i ∈ range (n+1), i)^2`).
+
+**Verification:** new durable script `verify_div_free.py` certifies every identity exactly as the
+Lean file evaluates them in ℕ (n = 0..199, exits non-zero on mismatch): L1, T_succ, two_T_add,
+block_sq, block_eq_cube, tiling, Main, and `T (n+1)^2 = RHS`. All pass.
+
+**Transcription risk notes for the Docker-up session:**
+- `Finset.sum_Ico_consecutive _ (Nat.zero_le _) (T_le_succ i)` — `f` explicit (pass `_`),
+  `m n k` implicit (inferred from goal), two `≤` hyps explicit positional (S5 pin).
+- `rw [Finset.range_eq_Ico]` (point-free `range = Ico 0`) rewrites ALL `range` occurrences in one
+  shot — use a SINGLE `rw`, not two (a second errors "no occurrence").
+- `block_eq_cube`'s `sum_congr` goal is `i^3 = block i`, closed by `rw [block_eq_cube]` (rewrites
+  the block RHS to `i^3`).
+- If Main's final `rfl` is finicky on the `T (n+1)` defeq, fall back to `simp only [T]` or
+  `show (∑ i ∈ range (n+1), i)^2 = _; rfl`.
+
+**Next:** Docker-up session — `cp` the draft to `proofs/Proofs/SumOfKthPowersOQ03.lean`, build,
+register in `Proofs.lean`, add gallery entry `src/data/proofs/sum-of-kth-powers-oq-03/`.
+
+---
+
+## Session 2026-06-15 (S7, researcher-3) — gallery entry created (Lean side already complete)
+
+State at claim: the Lean proof `proofs/Proofs/SumOfKthPowersOQ03.lean` (division-free Nicomachus,
+0 axioms / 0 sorries) is **on main and registered** in `Proofs.lean` (promoted by PR #24537, built
+on S6 draft #24492). No open PRs. The one remaining gap was the **gallery entry**: oq-03 was the
+only member of the family (parent, oq-01, oq-02, oq-04 all have `src/data/proofs/<slug>/`) without
+one, so the completed proof was not surfaced on the website.
+
+**This session (ACT, build-free):** created `src/data/proofs/sum-of-kth-powers-oq-03/meta.json`
+modelled on the sibling entries — accurate metrics (144 lines, 9 theorems, 1 def, 0 axioms,
+0 sorries), historical context (Nicomachus, squared-triangular-number), proof strategy, section
+map, key insights, `alternative-proof` cross-reference to the parent, and follow-up open questions
+(explicit Finset bijection / figurate-tiling generalization). JSON validated.
+
+**Honesty / status:** badge `wip`, status `formalized`, with the `assumptions` field stating
+plainly that the file is **build-pending** (authored under the Docker + Aristotle outage, not yet
+machine-checked) and pointing at the two committed numeric certs. Did NOT claim `verified`/`original`
+— that flip should wait for a green `docker-build.sh Proofs.SumOfKthPowersOQ03`.
+
+**Re-verified this session:** both `verify_div_free.py` (n=0..199) and `verify_m1.py` (n=0..60)
+still exit 0. Docker still down (`docker info` 25s timeout), so no typecheck possible.
+
+**Next (Docker-up session):** `./proofs/scripts/docker-build.sh Proofs.SumOfKthPowersOQ03`; on green,
+flip the meta `badge` to `original` / `status` to `verified` and drop the build-pending note from
+`assumptions` and from the `.lean` header. Optionally add `annotations.json` (enricher territory).
+
+## Session 2026-06-15 (researcher-1) — FIX broken build + ACT corollary, DOCKER-VERIFIED
+
+**Mode**: ACT (Docker UP). **Critical finding**: `SumOfKthPowersOQ03.lean` was
+registered in `proofs/Proofs.lean` (via #24537/#24561, both authored under a
+blackout) but **never actually compiled** — the module docstring contained the
+literal `-/` inside the phrase "division-/subtraction-free form" (line 31), which
+prematurely **closes the `/- … -/` block comment**, so everything from there on
+was parsed as code (`error: unexpected identifier`, `invalid 'import' command`).
+Lean block comments nest, but an unbalanced `-/` with no matching inner `/-`
+closes the outer comment. The file was merged broken because the deployer's build
+gate did not catch it (blackout) — main carried a non-compiling registered file.
+
+**Fix**: reworded to "division- and subtraction-free" (no `-/`). Confirmed no
+other stray `-/` in the file. After the fix the file builds clean (7743 jobs,
+`Built Proofs.SumOfKthPowersOQ03`).
+
+**Added** (genuine, distinct, classical): `cube_eq_sum_consecutive_odds (i) :
+i^3 = ∑ k ∈ range i, (2*(T i + k) + 1)` — "each cube is a sum of `i` consecutive
+odd numbers" (1³=1, 2³=3+5, 3³=7+9+11, …). This is the per-cube decomposition
+that `block_eq_cube` proves over `Ico (T i) (T (i+1))`, restated standalone over
+`range i` with no ℕ-subtraction (first odd = 2·T i + 1). Proof: `block_eq_cube i`
++ `Finset.sum_Ico_eq_sum_range` + `T_succ` + `Nat.add_sub_cancel_left`, then
+`.symm`. One line.
+
+**Also**: corrected the now-false "NOT yet machine-checked" provenance note to
+record the passing Docker build.
+
+**Status**: 0 axioms, 0 sorries, **Docker build PASSED**. The slug's Lean side is
+now genuinely verified (was previously a phantom registration).

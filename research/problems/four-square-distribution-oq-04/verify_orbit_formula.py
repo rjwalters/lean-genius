@@ -11,7 +11,7 @@ sorted multiset of absolute values) and check that each fiber has size
 Also separately confirms the sign-count half (signFiber_card):
     for fixed abs-profile g, #{f : |f i| = g i} = 2^{#{i : g i != 0}}.
 """
-from itertools import product
+from itertools import product, permutations
 from collections import Counter
 from math import factorial, prod
 
@@ -46,6 +46,51 @@ def check_orbit():
     return mismatch == 0
 
 
+def multinomial(toFinset, count):
+    """Nat.multinomial: (sum count)! / prod count!  over the distinct values."""
+    total = sum(count[v] for v in toFinset)
+    return factorial(total) // prod(factorial(count[v]) for v in toFinset)
+
+
+def check_arrangement():
+    """Validate the isolated residue `arrangement_card` of
+    FourSquareDistributionOQ04Arrange.lean:
+
+        #{ g : Fin m -> Z | multiset(g) = s } == Nat.multinomial s.toFinset s.count
+                                              == m! / prod_v (count_v)!.
+
+    For every multiset s drawn (with repetition) from {0,1,2} of size m <= 6, count
+    the genuine arrangements (functions whose multiset image is s) by brute force and
+    compare to BOTH the multinomial coefficient and the m!/prod count! divisor form.
+    Also confirms prod count! | m! (the Nat.div in shapeContribution is exact).
+    """
+    mismatch = checked = 0
+    values = (0, 1, 2)
+    for m in range(0, 7):
+        seen = set()
+        for combo in product(values, repeat=m):
+            s = tuple(sorted(combo))            # the multiset, as a sorted tuple
+            if s in seen:
+                continue
+            seen.add(s)
+            cnt = Counter(s)
+            toFinset = set(cnt)                 # s.toFinset
+            # genuine arrangement count: distinct orderings of the multiset s
+            actual = len(set(permutations(s)))
+            mult = multinomial(toFinset, cnt)
+            div_form = factorial(m) // prod(factorial(k) for k in cnt.values())
+            checked += 1
+            # divisibility: Nat.div is exact
+            exact = factorial(m) % prod(factorial(k) for k in cnt.values()) == 0
+            if not (actual == mult == div_form and exact):
+                mismatch += 1
+                print(f"  ARRANGE MISMATCH m={m} s={s} actual={actual} "
+                      f"multinomial={mult} divform={div_form} exact={exact}")
+    print(f"(arrange) checked {checked} multisets (values in {{0,1,2}}, m<=6), "
+          f"mismatches={mismatch}")
+    return mismatch == 0
+
+
 def check_sign():
     mismatch = checked = 0
     for m in range(1, 6):
@@ -62,6 +107,6 @@ def check_sign():
 
 
 if __name__ == "__main__":
-    ok = check_orbit() and check_sign()
+    ok = check_orbit() and check_sign() and check_arrangement()
     print("RESULT:", "PASS" if ok else "FAIL")
     raise SystemExit(0 if ok else 1)

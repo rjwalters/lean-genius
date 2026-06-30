@@ -1,0 +1,86 @@
+[
+  {
+    "id": "nth-root-oq0101-ann-header",
+    "proofId": "nth-root-irrational-oq-01-oq-01",
+    "range": { "startLine": 30, "endLine": 39 },
+    "type": "concept",
+    "title": "Setup and high heartbeat budget",
+    "content": "The file imports all of Mathlib and works inside `noncomputable section` because cyclotomic polynomials, minimal polynomials, and roots of unity in ℂ are noncomputable objects. `maxHeartbeats 800000` is raised well above the default because `cyclotomic.irreducible_rat` and the degree computations it triggers are expensive elaborations. `open Polynomial` brings `cyclotomic`, `aeval`, `natDegree`, and `IsRoot` into scope without qualification.",
+    "mathContext": "Working over $\\mathbb{Q}[X]$ with the cyclotomic polynomials $\\Phi_n$ and over $\\mathbb{C}$ for the roots of unity.",
+    "significance": "supporting",
+    "relatedConcepts": ["cyclotomic polynomial", "noncomputable section", "Mathlib elaboration cost"],
+    "prerequisites": ["Lean 4 / Mathlib basics", "polynomial rings"]
+  },
+  {
+    "id": "nth-root-oq0101-ann-irreducible-core",
+    "proofId": "nth-root-irrational-oq-01-oq-01",
+    "range": { "startLine": 47, "endLine": 61 },
+    "type": "insight",
+    "title": "Self-contained core: irreducible of degree ≥ 2 ⟹ no rational root",
+    "content": "`irreducible_no_rational_root` is the structural engine of the whole family, re-proved locally so the file does not depend on cross-file build state. If `p` had a rational root `r`, then `X − r` divides `p` (`dvd_iff_isRoot`). Irreducibility forces one of the two factors to be a unit. The linear factor `X − r` is never a unit (`irreducible_X_sub_C`), and if the cofactor `q` is a unit it has degree 0, so `deg p = deg(X − r) + deg q = 1`, contradicting `deg p ≥ 2`. The final `omega` discharges the arithmetic.",
+    "mathContext": "If $p\\in\\mathbb{Q}[X]$ is irreducible with $\\deg p\\ge 2$ and $p(r)=0$ for some $r\\in\\mathbb{Q}$, then $(X-r)\\mid p$ contradicts irreducibility, since neither factor is a unit.",
+    "significance": "key",
+    "relatedConcepts": ["irreducibility", "factor theorem", "unit in a polynomial ring", "rational root theorem"],
+    "prerequisites": ["polynomial divisibility", "UFD / irreducible elements"]
+  },
+  {
+    "id": "nth-root-oq0101-ann-totient-ge-two",
+    "proofId": "nth-root-irrational-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 74 },
+    "type": "definition",
+    "title": "φ(n) ≥ 2 for n ≥ 3",
+    "content": "`totient_ge_two` supplies the degree hypothesis the core lemma needs. Euler's totient is positive for `n ≥ 1`, and `Nat.totient_eq_one_iff` says `φ(n) = 1` happens only for `n ∈ {1, 2}`. Excluding those by `omega` (using `n ≥ 3`) and ruling out `0` leaves `φ(n) ≥ 2`. This is precisely the threshold below which Φ_n is linear and the irrationality argument fails.",
+    "mathContext": "$\\varphi(n)=1$ only for $n\\in\\{1,2\\}$, so $n\\ge 3 \\Rightarrow \\varphi(n)\\ge 2$. Since $\\deg\\Phi_n=\\varphi(n)$, this is the cutoff where $\\Phi_n$ stops being linear.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler's totient", "degree of cyclotomic polynomial"],
+    "prerequisites": ["Euler's totient function", "basic number theory"]
+  },
+  {
+    "id": "nth-root-oq0101-ann-cyclotomic-no-root",
+    "proofId": "nth-root-irrational-oq-01-oq-01",
+    "range": { "startLine": 80, "endLine": 89 },
+    "type": "concept",
+    "title": "Cyclotomic irrationality core: Φ_n has no rational root (n ≥ 3)",
+    "content": "`cyclotomic_no_rational_root` instantiates the structural core with the two key Mathlib facts about Φ_n: it is irreducible over ℚ (`cyclotomic.irreducible_rat`, requiring only `n > 0`) and its degree is φ(n) (`natDegree_cyclotomic`). Combined with `totient_ge_two`, the degree is ≥ 2, so `irreducible_no_rational_root` applies verbatim. This is the file's central contribution: extending the parent's `X^n − p` (Eisenstein) result to the cyclotomic family by swapping only the irreducibility input.",
+    "mathContext": "$\\Phi_n$ is irreducible over $\\mathbb{Q}$ with $\\deg\\Phi_n=\\varphi(n)\\ge 2$ for $n\\ge 3$, hence has no root in $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["cyclotomic polynomial", "irreducibility over ℚ", "Eisenstein criterion", "Gauss's lemma"],
+    "prerequisites": ["cyclotomic polynomials", "irreducibility", "Euler's totient"]
+  },
+  {
+    "id": "nth-root-oq0101-ann-roots-of-unity",
+    "proofId": "nth-root-irrational-oq-01-oq-01",
+    "range": { "startLine": 95, "endLine": 103 },
+    "type": "insight",
+    "title": "The only rational roots of unity are ±1",
+    "content": "`rational_root_of_unity_le_two` turns the polynomial fact into a statement about roots of unity. A primitive n-th root of unity is by definition a root of Φ_n (`IsPrimitiveRoot.isRoot_cyclotomic`). If such a root lived in ℚ with `n ≥ 3`, it would be a rational root of Φ_n — impossible. Hence any rational primitive root of unity forces `n ≤ 2`, i.e. the value is `1` (n = 1) or `−1` (n = 2). This recovers the classical fact that ℚ contains no nontrivial roots of unity.",
+    "mathContext": "If $r\\in\\mathbb{Q}$ satisfies $\\mathrm{IsPrimitiveRoot}(r,n)$ then $n\\le 2$; equivalently the torsion of $\\mathbb{Q}^\\times$ is $\\{\\pm 1\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["roots of unity", "torsion subgroup of ℚˣ", "primitive root of unity"],
+    "prerequisites": ["roots of unity", "cyclotomic polynomials"]
+  },
+  {
+    "id": "nth-root-oq0101-ann-primitive-irrational",
+    "proofId": "nth-root-irrational-oq-01-oq-01",
+    "range": { "startLine": 109, "endLine": 118 },
+    "type": "concept",
+    "title": "Complex primitive n-th roots of unity are irrational (n ≥ 3)",
+    "content": "`primitiveRoot_not_rational` lifts the result to ℂ. If a complex primitive n-th root of unity ζ equaled `algebraMap ℚ ℂ r` for some rational `r`, then `r` itself would be a primitive n-th root of unity (the ring map ℚ → ℂ is injective, so `IsPrimitiveRoot.of_map_of_injective` transfers the property downward). That contradicts `rational_root_of_unity_le_two` when `n ≥ 3`. 'Not in the image of ℚ' is the precise field-theoretic meaning of 'irrational' for an algebraic number.",
+    "mathContext": "$\\mathrm{IsPrimitiveRoot}(\\zeta,n)$ with $n\\ge 3 \\Rightarrow \\zeta\\notin\\mathrm{range}(\\mathbb{Q}\\to\\mathbb{C})$, using injectivity of $\\mathbb{Q}\\hookrightarrow\\mathbb{C}$ to push primitivity down.",
+    "significance": "key",
+    "relatedConcepts": ["algebraic irrationality", "field embedding", "primitive root of unity", "algebraMap injectivity"],
+    "prerequisites": ["field extensions", "roots of unity", "ring homomorphisms"]
+  },
+  {
+    "id": "nth-root-oq0101-ann-cube-root-instance",
+    "proofId": "nth-root-irrational-oq-01-oq-01",
+    "range": { "startLine": 124, "endLine": 129 },
+    "type": "concept",
+    "title": "Concrete instance: e^{2πi/3} is irrational",
+    "content": "`primitiveCubeRoot_not_rational` specializes the general theorem to the primitive cube root of unity `ω = e^{2πi/3}`. Mathlib's `Complex.isPrimitiveRoot_exp 3` certifies that this exponential is a primitive 3rd root of unity, and `3 ≥ 3` is `norm_num`. The instance grounds the abstract statement in a familiar number: ω is a root of `Φ_3 = X² + X + 1`, the well-known irreducible quadratic with no rational root.",
+    "mathContext": "$\\omega=e^{2\\pi i/3}$ is a root of $\\Phi_3=X^2+X+1$, irreducible over $\\mathbb{Q}$, so $\\omega\\notin\\mathbb{Q}$ (indeed $\\omega\\notin\\mathbb{R}$).",
+    "significance": "supporting",
+    "relatedConcepts": ["cube roots of unity", "Φ_3 = X² + X + 1", "Eisenstein's integers"],
+    "prerequisites": ["complex exponential", "roots of unity"]
+  }
+]

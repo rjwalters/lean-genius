@@ -1,10 +1,40 @@
 # Research State: sum-of-kth-powers-oq-03
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-06-14T20:00:16-07:00
-**Iteration**: 5
+**Since**: 2026-06-16 (state-sync; was ACT/build-pending frozen at S6 2026-06-15)
+**Iteration**: 6
+
+> **STATE-SYNC (researcher-1, 2026-06-16) — this slug is COMPLETE; the S6 block
+> below is STALE.** The S6 "build-pending, next Docker-up session just cp's the
+> draft into proofs/Proofs/ and builds/registers/adds the gallery entry" plan is
+> already fully executed and merged on `main`:
+> - `proofs/Proofs/SumOfKthPowersOQ03.lean` is **in `Proofs/`, registered**
+>   (`import Proofs.SumOfKthPowersOQ03` in `Proofs.lean`), **0 sorries / 0 axioms
+>   / 10 theorems / 1 def**, no structure-encoded assumptions.
+> - The gallery entry exists and was **promoted to `verified` / `original` with a
+>   machine-checked build confirmed** via #24739 (verified that commit
+>   `git merge-base --is-ancestor` of `origin/main`). Later #24731 fixed
+>   theoremCount 9→10; #24713 added the per-cube corollary section.
+> - The division-free reformulation (`T n := ∑ i ∈ range n, i`, recurrence
+>   `two_T_add : 2*T i + i = i^2`, `block_sq` by `ring`) means there is no
+>   ℕ-division / ℕ-subtraction hazard left to discharge.
+>
+> **Nothing remains.** Do NOT re-claim to "transcribe / build / register" — that is
+> done and verified. The only theoretically-open direction (a *third* independent
+> proof, or a k≥4 generalization) is out of scope for this OQ and below the
+> follow-up bar. Marked COMPLETED.
+
+## S6 (researcher-5) — complete Lean draft, division-free reformulation
+Wrote the full paste-ready Lean file `SumOfKthPowersOQ03.lean` (in the research dir, not yet under
+`Proofs/`, to protect the shared build under the persistent dual blackout). Replaced the spec's
+`T k = k*(k+1)/2` (which forced the "division-clearing" hazard) with `T n := ∑ i ∈ range n, i` (the
+Gauss SUM): now `0` axioms / `0` sorries with NO ℕ-division and NO ℕ-subtraction anywhere — the
+triangular recurrence is `2*T i + i = i^2` (`two_T_add`) and `block_sq` closes by `ring` on the ℕ
+semiring. New `verify_div_free.py` certifies every identity (n=0..199). Next Docker-up session just
+`cp`s the draft into `proofs/Proofs/`, builds, registers, and adds the gallery entry. See
+knowledge.md "S6".
 
 ## Current Focus
 OQ resolved on paper (odd-number partition of cubes). Formalizable core pinned to existing
@@ -42,7 +72,14 @@ odd-position ranges and `sum_odds (m) = m²` closes it to T_n² = (∑ i)². See
 - Verification blackout: Docker down (`docker info` timeout) AND Aristotle "Resource not found".
   No Lean can be built/checked this session. M1 is spec-complete and Docker-gated only.
 
-## Next Action
+## S7 ACT (researcher-6, 2026-06-15) — PROMOTED + REGISTERED
+The complete 0-sorry/0-axiom draft merged by #24492 lived under `research/problems/.../SumOfKthPowersOQ03.lean`
+(staging), out of the build tree. Promoted a byte-identical copy to `proofs/Proofs/SumOfKthPowersOQ03.lean`
+and added `import Proofs.SumOfKthPowersOQ03` to `proofs/Proofs.lean` so the deployer build machine-checks it
+(the typecheck this entry was waiting on). Clean single-purpose branch; supersedes the file-placement portion of
+the stale, erdos-733-polluted open PR #24304. Docker still down — relying on the deployer-gated build.
+
+## Next Action (superseded — kept for reference)
 When Docker returns: create `proofs/Proofs/SumOfKthPowersOQ03.lean`, type M1 using the
 **ℕ-sub-free reindex** in knowledge.md ("ℕ-subtraction-free reindex"): L1 `sum_odds`, L2′
 `block_eq_cube` (`∑ Ico (T i) (T (i+1)) (2j+1) = (i+1)³` via `Finset.sum_Ico_consecutive _ hmn hnk`

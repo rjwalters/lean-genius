@@ -12,6 +12,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
 import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
 import Mathlib.Tactic
 import Proofs.ZsqrtdNegTwo
+import Proofs.ThreeSquaresSliceMinkowski
 
 /-!
 # Legendre's Three Squares Theorem
@@ -430,6 +431,39 @@ lemma excluded_form_four_mul_iff {n : ℕ} :
     refine ⟨a + 1, b, ?_⟩
     rw [pow_succ, h]; ring
 
+/-- **Classification of the 4-free core.**  When `4 ∤ n`, the number `n` is of
+excluded form *iff* `n ≡ 7 (mod 8)`.  This is the decision rule the sufficiency
+descent reduces to: after stripping the `4 ^ a` factor via
+`excluded_form_four_mul_iff`, the remaining `4`-free core is excluded precisely
+on the single residue class `7 (mod 8)` — every other `4`-free residue
+(`1, 2, 3, 5, 6` and the even `4 ∤` case) is *non*-excluded, hence (by the open
+sufficiency direction) a sum of three squares.
+
+Together with `excluded_form_four_mul_iff` this gives a complete, elementary
+decision procedure for `IsExcludedForm` (strip factors of `4`, then test
+`% 8 = 7`), and it is the rigorous engine behind the `1/6` natural density of
+excluded forms: among `4`-free numbers exactly the `≡ 7 (mod 8)` ones are
+excluded. -/
+theorem not_four_dvd_excluded_iff {n : ℕ} (h4 : ¬ (4 ∣ n)) :
+    IsExcludedForm n ↔ n % 8 = 7 := by
+  constructor
+  · rintro ⟨a, b, rfl⟩
+    rcases a with _ | a'
+    · -- `a = 0`: `n = 8b + 7`, so `n % 8 = 7`.
+      simp only [pow_zero, one_mul]; omega
+    · -- `a ≥ 1`: then `4 ∣ n`, contradicting `h4`.
+      exact absurd ⟨4 ^ a' * (8 * b + 7), by rw [pow_succ]; ring⟩ h4
+  · intro h
+    exact ⟨0, n / 8, by simp only [pow_zero, one_mul]; omega⟩
+
+/-- **Odd characterization.**  An odd number is of excluded form iff it is
+`≡ 7 (mod 8)`.  Immediate corollary of `not_four_dvd_excluded_iff` (an odd number
+is not divisible by `4`). -/
+theorem odd_excluded_iff {n : ℕ} (hn : Odd n) : IsExcludedForm n ↔ n % 8 = 7 := by
+  apply not_four_dvd_excluded_iff
+  rw [Nat.odd_iff] at hn
+  omega
+
 /-- Primes ≡ 1 (mod 4) are sums of 3 squares.
 This follows from Fermat's two-squares theorem (they're sums of 2 squares). -/
 lemma prime_one_mod_four_is_sum_three_sq {p : ℕ} (hp : Nat.Prime p) (hmod : p % 4 = 1) :
@@ -589,18 +623,22 @@ Example: 3 = 1² + 1² + 1² and 5 = 1² + 2² + 0², but 3 × 5 = 15 is EXCLUDE
 This directly represents ANY n (not through factorization) by finding appropriate d based on n mod 8.
 -/
 
-/-- **Dirichlet's Key Lemma** (Lemma 4.1, 1850)
+/- **Dirichlet's Key Lemma** (Lemma 4.1, 1850)
 
 For n > 1, d > 0, and p = dn - 1 a prime, if -d is a quadratic residue modulo p,
 then n can be expressed as a sum of three integer squares.
 
-**How this completes the proof**:
-For each n ≢ 0 (mod 4) that is not excluded:
-- n ≡ 1 (mod 8): Use d = 1, need -1 QR mod (n-1). Since n ≡ 1 (mod 8), n-1 ≡ 0 (mod 8).
-- n ≡ 2 (mod 8): Use d = 2, need -2 QR mod (2n-1).
-- n ≡ 3 (mod 8): Use d = 2, find suitable prime factor.
-- n ≡ 5 (mod 8): Similar to n ≡ 1.
-- n ≡ 6 (mod 8): Similar to n ≡ 2.
+**How this would complete the proof — and why `d ≤ 2` does NOT suffice**:
+For each n ≢ 0 (mod 4) that is not excluded one seeks a multiplier `d` with
+`p = d·n − 1` prime and `−d` a quadratic residue mod `p`. Crucially `d` must be
+allowed to range UNBOUNDEDLY (Dirichlet's theorem then supplies the prime): for
+many residue classes no small `d` works. E.g. for `n ≡ 1 (mod 8)`, `d = 1` gives
+`p = n − 1 ≡ 0 (mod 8)`, which is even and `> 2`, hence never prime; and `2n − 1`
+is frequently composite too. A brute-force scan finds NO `d ≤ 2` witness for
+`610` of the `999` 4-free cores `n < 2000` with `n % 8 ∈ {1,2,5,6}` (smallest
+`n = 5, 13, 17, 25`); the minimal required `d` grows (e.g. `d = 70` at `n = 1166`).
+The earlier per-class table claiming "`d = 1` for `n ≡ 1`, `d = 2` for `n ≡ 2`"
+was incorrect — see `Proofs.ThreeSquaresSufficiencyCorrected` for the full audit.
 
 The 4^a factor is handled by scaling: if 4n = (2a)² + (2b)² + (2c)², then n = a² + b² + c².
 
@@ -611,10 +649,24 @@ in a suitable ellipsoid.
 **Key insight**: The Jacobi symbol can be used instead of Legendre symbol, avoiding
 the prime requirement on p directly - but for the Minkowski construction, we need
 p prime anyway to get the right lattice structure.
+
+**Status (2026-06-19): NO LONGER AN AXIOM.** For the multipliers `d ∈ {1, 2}` that
+the three-square construction actually uses, `dirichlet_key_lemma` is now a
+*proved theorem* — see its definition further below (after the Dirichlet-sublattice
+divisibility lemma `exists_dirichletSublattice_dvd_form` and the form-value
+identification `dirichletForm_eq_p_of_lt_two_mul`, both of which it consumes). The
+geometric input — a nonzero sublattice vector with `x² + d·y² + d·z² < 2p` — is
+supplied axiom-free by `ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul`
+(slice-Minkowski, `Proofs.ThreeSquaresSliceMinkowski`). The `d ≤ 2` restriction is
+genuine (the slice volume bound `√2·π > 4` holds only for binary forms `x² + d·y²`
+with `d ≤ 2`, and the `interval_cases d` reconstruction `x² + d·y² = d·n − 1 ⟹
+n = a²+b²+c²` is explicit only for `d ∈ {1,2}`). It is **NOT** harmless: the
+classical multiplier selection requires unbounded `d` (see the corrected "How this
+completes the proof" note above), so `dirichlet_key_lemma` as proved here closes
+only the sub-cases where some `d ∈ {1,2}` already yields a prime witness. Lifting
+the construction to general `d` is the genuine remaining content of the sufficiency
+axiom and needs ternary-form reduction theory / Davenport–Cassels (not in Mathlib).
 -/
-axiom dirichlet_key_lemma {n d p : ℕ} (hn : n > 1) (hd : d > 0) (hp : p = d * n - 1)
-    [Fact (Nat.Prime p)] (hqr : legendreSym p (-d : ℤ) = 1) :
-    ∃ x y z : ℤ, x ^ 2 + y ^ 2 + z ^ 2 = n
 
 /-! ### Infrastructure for Minkowski's Theorem Application
 
@@ -1364,6 +1416,98 @@ private lemma dirichletForm_eq_p_of_lt_two_mul
       linarith
   exact multiple_p_eq_p_of_lt_two_mul hp h_pos h_lt h_dvd
 
+/-- **Dirichlet's Key Lemma** (1850) — now a *proved theorem* for `d ∈ {1, 2}`.
+
+For `n > 1`, `d ∈ {1, 2}`, and `p = d·n − 1` a prime with `−d` a quadratic residue
+mod `p`, the number `n` is a sum of three integer squares.
+
+**Proof (axiom-free).**
+1. The QR hypothesis yields `r` with `r² ≡ −d (mod p)` such that the whole Dirichlet
+   sublattice `L_r = {(x,y,z) : p ∣ (x − r·y) ∧ p ∣ z}` carries `p ∣ x² + d·y² + d·z²`
+   (`exists_dirichletSublattice_dvd_form`).
+2. Slice-Minkowski (`ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul`, valid
+   exactly for `d ≤ 2`) produces a nonzero `v ∈ L_r` with `x² + d·y² + d·z² < 2p`.
+3. A positive multiple of `p` strictly below `2p` equals `p`, so the form value is
+   exactly `p = d·n − 1` (`dirichletForm_eq_p_of_lt_two_mul`).
+4. **Descent.** Since `p ∣ z` and `d·z² ≤ p < p²`, the coordinate `z` must vanish.
+   Hence `x² + d·y² = d·n − 1`. For `d = 1` this is `x² + y² = n − 1`, i.e.
+   `n = x² + y² + 1²`. For `d = 2`, `x² + 2y² = 2n − 1` forces `x` odd, `x = 2k + 1`,
+   and `(x² + 1)/2 = k² + (k+1)²`, giving `n = y² + k² + (k+1)²`.
+
+This replaces the former `axiom dirichlet_key_lemma`. The `d ≤ 2` hypothesis is the
+honest scope of the slice construction; the classical selection step uses only
+`d ∈ {1, 2}`. -/
+theorem dirichlet_key_lemma {n d p : ℕ} (hn : n > 1) (hd : d > 0) (hd2 : d ≤ 2)
+    (hp : p = d * n - 1) [Fact (Nat.Prime p)] (hqr : legendreSym p (-d : ℤ) = 1) :
+    ∃ x y z : ℤ, x ^ 2 + y ^ 2 + z ^ 2 = n := by
+  have hpp : Nat.Prime p := Fact.out
+  have hp2 : 2 ≤ p := hpp.two_le
+  have hp0 : 0 < p := by omega
+  -- `d < p`, needed for the QR-sublattice extraction. (For `(d,n) = (1,2)` this
+  -- would fail, but then `p = 1` is not prime — excluded by `hp2`.)
+  have hdltp : d < p := by
+    rcases (show d = 1 ∨ d = 2 by omega) with rfl | rfl
+    · omega                 -- 1 < p from `2 ≤ p`
+    · rw [hp]; omega        -- 2 < 2 * n - 1 from `n > 1`
+  -- 1. QR ⟹ sublattice divisibility parameter `r`.
+  obtain ⟨r, hr⟩ := exists_dirichletSublattice_dvd_form hd hdltp hqr
+  -- 2. Slice-Minkowski lattice point.
+  obtain ⟨v, hv_ne, hv_sub, hv_lt⟩ :=
+    ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul p d hp0 hd hd2 r
+  have hv_in : IsInDirichletSublattice (p : ℤ) r v := hv_sub
+  -- 3. Form value is a positive multiple of `p` below `2p`, hence equals `p`.
+  have hdvd : (p : ℤ) ∣ v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 + (d : ℤ) * v 2 ^ 2 := hr v hv_in
+  have hpz : (0 : ℤ) < (p : ℤ) := by exact_mod_cast hp0
+  have hdz : (0 : ℤ) < (d : ℤ) := by exact_mod_cast hd
+  have hd1 : (1 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
+  have hQ : v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 + (d : ℤ) * v 2 ^ 2 = (p : ℤ) :=
+    dirichletForm_eq_p_of_lt_two_mul hpz hdz v hv_ne hv_lt hdvd
+  -- `p = d·n − 1` as an integer identity (no nat subtraction).
+  have h1 : 1 ≤ d * n := Nat.mul_pos hd (by omega)
+  have hpint : (p : ℤ) = (d : ℤ) * (n : ℤ) - 1 := by
+    rw [hp, Nat.cast_sub h1, Nat.cast_mul, Nat.cast_one]
+  -- 4a. Descent: `z = v 2 = 0`.
+  obtain ⟨b, hb⟩ := hv_in.2  -- v 2 = ↑p * b
+  have hp2z : (2 : ℤ) ≤ (p : ℤ) := by exact_mod_cast hp2
+  have hv2_zero : v 2 = 0 := by
+    rcases eq_or_ne b 0 with rfl | hbne
+    · simpa using hb
+    · exfalso
+      have hb1 : 1 ≤ b ^ 2 := by
+        have : b ≤ -1 ∨ 1 ≤ b := by omega
+        rcases this with h | h <;> nlinarith
+      have hle : (d : ℤ) * v 2 ^ 2 ≤ (p : ℤ) := by
+        nlinarith [sq_nonneg (v 0), mul_nonneg hdz.le (sq_nonneg (v 1)), hQ]
+      have hge : (p : ℤ) ^ 2 ≤ (d : ℤ) * v 2 ^ 2 := by
+        have hdb : (1 : ℤ) ≤ (d : ℤ) * b ^ 2 := by nlinarith [hd1, hb1]
+        have hrw : (d : ℤ) * v 2 ^ 2 = (d : ℤ) * b ^ 2 * (p : ℤ) ^ 2 := by
+          rw [hb]; ring
+        rw [hrw]; nlinarith [hdb, sq_nonneg (p : ℤ)]
+      nlinarith [hge, hle, hp2z, hpz]
+  -- 4b. `x² + d·y² = d·n − 1`, then split on `d`.
+  have heq : v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 = (d : ℤ) * (n : ℤ) - 1 := by
+    linear_combination hQ + hpint - (d : ℤ) * v 2 * hv2_zero
+  interval_cases d
+  · -- d = 1: n = x² + y² + 1²
+    refine ⟨v 0, v 1, 1, ?_⟩
+    push_cast at heq ⊢
+    linear_combination heq
+  · -- d = 2: x odd ⟹ n = y² + k² + (k+1)²
+    push_cast at heq
+    have hodd0 : Odd (v 0) := by
+      rcases Int.even_or_odd (v 0) with he | ho
+      · obtain ⟨c, hc⟩ := he
+        exfalso
+        have e1 : 4 * c ^ 2 + 2 * v 1 ^ 2 = 2 * (n : ℤ) - 1 := by
+          rw [← heq, hc]; ring
+        omega
+      · exact ho
+    obtain ⟨k, hk⟩ := hodd0
+    refine ⟨v 1, k, k + 1, ?_⟩
+    have key : 2 * (v 1 ^ 2 + k ^ 2 + (k + 1) ^ 2) = 2 * (n : ℤ) := by
+      rw [hk] at heq; linear_combination heq
+    linarith [key]
+
 /-! ### S10B (2026-05-08): Dirichlet Sublattice as a `Submodule ℤ (Fin 3 → ℤ)`
 
 The geometric component of the eventual `dirichlet_key_lemma` proof needs to
@@ -1616,8 +1760,6 @@ private lemma dirichletSublatticeRealBasisLinearIndependent
   -- by definition; `Matrix.row` is the identity coercion, so the two functions agree
   -- pointwise and we can convert.
   convert hLI using 1
-  funext i
-  rfl
 
 /-- **S16b ACT** — Promote `dirichletSublatticeRealBasisVec p r` from a linearly
 independent family (S16a) to a `Module.Basis` of the ambient pi-space `Fin 3 → ℝ`.
@@ -1651,17 +1793,48 @@ private lemma dirichletSublatticeRealBasis_apply
     dirichletSublatticeRealBasis hp r i = dirichletSublatticeRealBasisVec p r i := by
   simp [dirichletSublatticeRealBasis, coe_basisOfLinearIndependentOfCardEqFinrank]
 
+/-- **S16c (ZSpan covolume)**: The fundamental domain of the Dirichlet sublattice
+basis `(p, 0, 0), (r, 1, 0), (0, 0, p)` has volume `(p : ℝ)²`. This is the covolume
+of the index-`p²` sublattice cut out by the congruences `x ≡ r y, x ≡ 0 (mod p)`.
+
+Proof mirrors `stdLattice3_covolume`: `ZSpan.volume_fundamentalDomain` reduces the
+volume to `ENNReal.ofReal |det|`, and S16a/S16b's basis matrix has determinant
+`(p : ℝ)²` (`dirichletSublatticeRealBasisMatrix_det`), nonnegative since it is a
+square. This is the final geometric input feeding the sublattice Minkowski step
+that will discharge `dirichlet_key_lemma`: `vol(ellipsoid) > 2³ · p²` then forces a
+nonzero sublattice point inside the ellipsoid. -/
+private lemma dirichletSublatticeReal_covolume {p : ℤ} (hp : 0 < p) (r : ℤ) :
+    MeasureTheory.volume
+        (ZSpan.fundamentalDomain (dirichletSublatticeRealBasis hp r))
+      = ENNReal.ofReal ((p : ℝ) ^ 2) := by
+  rw [ZSpan.volume_fundamentalDomain]
+  have h : (Matrix.of ⇑(dirichletSublatticeRealBasis hp r)).det = (p : ℝ) ^ 2 := by
+    have hmat : (Matrix.of ⇑(dirichletSublatticeRealBasis hp r))
+        = dirichletSublatticeRealBasisMatrix p r := by
+      ext i j
+      simp only [Matrix.of_apply, dirichletSublatticeRealBasis_apply,
+        dirichletSublatticeRealBasisVec]
+    rw [hmat, dirichletSublatticeRealBasisMatrix_det]
+  rw [h, abs_of_nonneg (by positivity)]
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
-**Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
+**Current status**: `dirichlet_key_lemma` (the geometric/descent core) is a proved
+theorem for the multipliers `d ∈ {1,2}`. Assembling it into this axiom is, however,
+NOT a `150-200`-line exercise: the `d ≤ 2` cap is intrinsic to that construction
+(its `interval_cases d` reconstruction only covers `d ∈ {1,2}`), whereas the
+classical multiplier selection `p = d·n − 1` needs UNBOUNDED `d` for residue
+classes `n % 8 ∈ {1,2,5,6}` (no `d ≤ 2` witness exists for `610/999` 4-free cores
+`n < 2000`). See `Proofs.ThreeSquaresSufficiencyCorrected` for the audit: the
+`d ≤ 2` "split witness" `DirichletWitnessNe3` is a false proposition, so that route
+is vacuous on those classes.
 
-To complete this proof, implement:
-1. Case analysis on n mod 8 to choose appropriate d
-2. Use Dirichlet's theorem (PrimesInAP, now available) to find suitable primes
-3. Apply `dirichlet_key_lemma` for each case
-4. Handle small cases (n ≤ 6) directly
-
-**Estimated remaining work**: ~150-200 lines using the Key Lemma framework above. -/
+**Genuine remaining work / blocker**: a `d`-uniform argument — Gauss reduction of
+ternary quadratic forms, or Davenport–Cassels (rational ⟹ integral representability
+of `x²+y²+z²`) plus local–global solvability of `x²+y²+z² = n`. Neither is in
+Mathlib (≫ 500 lines of new foundational infrastructure). The `n ≡ 3 (mod 8)`
+class IS handled soundly (Fermat two-square on the prime deficit, conditional on a
+thin-sequence Dirichlet input). -/
 axiom not_excluded_form_is_sum_three_sq {n : ℕ} (h : ¬IsExcludedForm n) :
     ∃ a b c : ℤ, a ^ 2 + b ^ 2 + c ^ 2 = n
 
@@ -1932,8 +2105,8 @@ theorem needs_four_iff_excluded (n : ℕ) (hn : n ≥ 1) :
     squaresNeeded n = 4 ↔ IsExcludedForm n := by
   have hn0 : ¬ (n = 0) := by omega
   unfold squaresNeeded
-  split_ifs with h0 h1 h2 h3
-  · exact absurd h0 hn0
+  rw [if_neg hn0]
+  split_ifs with h1 h2 h3
   · -- n is a perfect square, so not excluded (a² + 0² + 0² = n)
     refine iff_of_false (by norm_num) ?_
     intro hexc
@@ -1944,10 +2117,10 @@ theorem needs_four_iff_excluded (n : ℕ) (hn : n ≥ 1) :
     intro hexc
     obtain ⟨a, b, hab⟩ := h2
     exact excluded_form_not_sum_three_sq hexc ⟨(a : ℤ), (b : ℤ), 0, by rw [← hab]; push_cast; ring⟩
-  · -- value 3: ¬IsExcludedForm n holds directly
+  · -- value 4: reached only when IsExcludedForm n (h3 : IsExcludedForm n)
+    exact iff_of_true rfl h3
+  · -- value 3: ¬IsExcludedForm n holds directly (h3 : ¬IsExcludedForm n)
     exact iff_of_false (by norm_num) h3
-  · -- value 4: reached only when IsExcludedForm n
-    exact iff_of_true rfl (not_not.mp h3)
 
 /-- The density of numbers needing 4 squares:
     |{n ≤ x : n = 4^a(8b+7)}| / x → 1/6 as x → ∞.

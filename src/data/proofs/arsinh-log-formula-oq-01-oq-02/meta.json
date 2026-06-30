@@ -1,0 +1,164 @@
+{
+  "id": "arsinh-log-formula-oq-01-oq-02",
+  "slug": "arsinh-log-formula-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "ArsinhLogFormulaOQ01OQ02",
+    "lineCount": 116,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/ArsinhLogFormulaOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "title": "The arcosh Logarithmic Form and its Addition Law",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArsinhLogFormulaOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "hyperbolic-functions",
+      "inverse-hyperbolic",
+      "arcosh",
+      "addition-formula",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 116,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "arcosh_add: the addition law arcosh x + arcosh y = arcosh (x·y + √(x²−1)·√(y²−1)) for x, y ≥ 1 — the cosh-angle-addition counterpart of the parent's arsinh addition law. Mathlib defines Real.arcosh and supplies the inverse facts cosh_arcosh / sinh_arcosh / arcosh_cosh, but contains no algebraic addition formula for arcosh.",
+      "arcosh_sub: the subtraction law arcosh x − arcosh y = arcosh (x·y − √(x²−1)·√(y²−1)) for 1 ≤ y ≤ x, dual to arcosh_add via cosh (a − b) = cosh a cosh b − sinh a sinh b; the hypothesis y ≤ x keeps the difference of inverse values in the domain [0, ∞).",
+      "two_mul_arcosh: the doubling law 2·arcosh x = arcosh (2x² − 1) for x ≥ 1, the x = y specialisation of the addition law using √(x²−1)·√(x²−1) = x² − 1.",
+      "arcosh_eq_log: the logarithmic closed form arcosh x = log(x + √(x² − 1)), recorded as a named lemma matching the parent's arsinh_eq_log (it is Mathlib's definition of Real.arcosh, hence holds by rfl).",
+      "arcosh_five_quarters / arcosh_five_thirds: the concrete evaluations arcosh (5/4) = log 2 and arcosh (5/3) = log 3, the cosh-side mirror of the parent's arsinh (3/4) = log 2 and arsinh (4/3) = log 3, again rationalising the surd via a (3,4,5)/(beyond) Pythagorean-style triple.",
+      "sqrt_sq_sub_one_mul_self: the supporting identity √(x²−1)·√(x²−1) = x²−1 for x ≥ 1, used to collapse the doubling law."
+    ],
+    "prerequisites": [
+      "Mathlib's definition Real.arcosh x = log(x + √(x² − 1)) and the inverse facts Real.cosh_arcosh, Real.sinh_arcosh, Real.arcosh_cosh, Real.arcosh_nonneg, Real.arcosh_le_arcosh",
+      "The hyperbolic angle-addition identities Real.cosh_add and Real.cosh_sub",
+      "Real.mul_self_sqrt and Real.sqrt_sq for rationalising surds on the nonnegative domain"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.cosh_arcosh / Real.sinh_arcosh",
+        "description": "cosh (arcosh x) = x and sinh (arcosh x) = √(x² − 1) for x ≥ 1 — the inverse facts that turn cosh (arcosh x + arcosh y), expanded by cosh_add, into x·y + √(x²−1)·√(y²−1).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Arcosh"
+      },
+      {
+        "theorem": "Real.arcosh_cosh",
+        "description": "arcosh (cosh t) = t for t ≥ 0 — applied to t = arcosh x + arcosh y (nonnegative since each arcosh is nonnegative) to recover the sum from its cosh.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Arcosh"
+      },
+      {
+        "theorem": "Real.cosh_add / Real.cosh_sub",
+        "description": "cosh (a ± b) = cosh a cosh b ± sinh a sinh b — the hyperbolic angle-addition identities that drive the arcosh addition and subtraction laws.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.arcosh_le_arcosh",
+        "description": "Monotonicity arcosh y ≤ arcosh x ↔ y ≤ x on (0, ∞), used in arcosh_sub to certify that the difference arcosh x − arcosh y is nonnegative when y ≤ x.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Arcosh"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The inverse hyperbolic cosine arcosh = cosh⁻¹ restricted to [1, ∞) has the closed form arcosh x = log(x + √(x² − 1)), the cosh-side companion of arsinh x = log(x + √(1 + x²)). The parent entry developed the algebraic theory of arsinh — its logarithmic form together with the addition / subtraction / doubling calculus arsinh x ± arsinh y = arsinh(x·√(1+y²) ± y·√(1+x²)). Mathlib formalises Real.arcosh (defining it via that very logarithm) and its inverse-pair lemmas, but stops at the inverse facts and never records the algebraic addition formula. This entry supplies the missing cosh-side calculus: the addition, subtraction, and doubling laws for arcosh, plus concrete logarithmic values, completing the symmetry with the parent's arsinh treatment.",
+    "problemStatement": "Prove the companion arcosh logarithmic form arcosh x = log(x + √(x² − 1)) for x ≥ 1 and its addition law. Concretely: state the logarithmic closed form as a named lemma; prove the addition law arcosh x + arcosh y = arcosh(x·y + √(x²−1)·√(y²−1)) for x, y ≥ 1, the subtraction law arcosh x − arcosh y = arcosh(x·y − √(x²−1)·√(y²−1)) for 1 ≤ y ≤ x, and the doubling law 2·arcosh x = arcosh(2x²−1); and tie back to the parent with the concrete values arcosh(5/4) = log 2 and arcosh(5/3) = log 3.",
+    "proofStrategy": "The logarithmic form is Mathlib's definition of Real.arcosh, recorded by rfl. For the addition law, set a = arcosh x, b = arcosh y (both ≥ 0 by arcosh_nonneg) and expand cosh (a + b) by Real.cosh_add: with cosh_arcosh (cosh a = x) and sinh_arcosh (sinh a = √(x²−1)) this evaluates to x·y + √(x²−1)·√(y²−1). Since a + b ≥ 0, arcosh_cosh inverts: arcosh(x·y + √(x²−1)·√(y²−1)) = a + b. The subtraction law is dual, using cosh_sub and the monotonicity arcosh_le_arcosh to certify a − b ≥ 0 from y ≤ x. The doubling law is the x = y case, collapsing √(x²−1)·√(x²−1) = x²−1. Concrete values unfold arcosh_eq_log and rationalise the surd via a Pythagorean-style triple: √((5/4)²−1) = 3/4 gives arcosh(5/4) = log(5/4 + 3/4) = log 2.",
+    "keyInsights": [
+      "Mathlib already defines Real.arcosh as the logarithm log(x + √(x² − 1)), so the parent's open question about the 'arcosh logarithmic form' is definitional — the real content is the addition calculus that Mathlib omits.",
+      "The entire addition law is one application of cosh (a + b) = cosh a cosh b + sinh a sinh b composed with the inverse pair: cosh (arcosh x) = x and sinh (arcosh x) = √(x² − 1). The only non-formal step is recognising that the sum arcosh x + arcosh y stays in the domain [0, ∞) where arcosh inverts cosh, which holds because each summand is nonnegative.",
+      "The subtraction law needs a domain check the addition law does not: arcosh x − arcosh y is nonnegative only when arcosh y ≤ arcosh x, i.e. y ≤ x, supplied by the monotonicity lemma arcosh_le_arcosh — without it the inverse identity arcosh_cosh would not apply.",
+      "The doubling law 2·arcosh x = arcosh(2x² − 1) is the cleanest consequence: setting y = x makes the cross term √(x²−1)·√(x²−1) collapse to x² − 1, so x·x + (x²−1) = 2x² − 1.",
+      "The (3,4,5) Pythagorean triple again rationalises the surd: √((5/4)² − 1) = √(9/16) = 3/4, turning arcosh(5/4) into log(5/4 + 3/4) = log 2 — the exact cosh-side mirror of the parent's arsinh(3/4) = log 2."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: the arcosh Companion",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "States the open question (arcosh logarithmic form + addition law as the cosh-side counterpart of the parent's arsinh entry) and enumerates the supplied theorems: the logarithmic form, the addition / subtraction / doubling laws, and the concrete logarithmic values.",
+      "mathContext": "$\\operatorname{arcosh} x = \\log(x + \\sqrt{x^2 - 1})$, the inverse of $\\cosh$ on $[1, \\infty)$."
+    },
+    {
+      "id": "log-form",
+      "title": "Logarithmic Form and Surd Helper",
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "arcosh_eq_log (the definitional logarithmic closed form, recorded as a named lemma) and sqrt_sq_sub_one_mul_self (the surd identity √(x²−1)·√(x²−1) = x²−1 for x ≥ 1 used by the doubling law).",
+      "mathContext": "$\\operatorname{arcosh} x = \\log(x + \\sqrt{x^2 - 1})$; $\\sqrt{x^2-1}\\cdot\\sqrt{x^2-1} = x^2-1$."
+    },
+    {
+      "id": "addition-laws",
+      "title": "Addition, Subtraction, and Doubling Laws",
+      "startLine": 63,
+      "endLine": 100,
+      "summary": "arcosh_add (arcosh x + arcosh y = arcosh(x·y + √(x²−1)·√(y²−1)) for x,y ≥ 1 via cosh_add and the inverse pair), arcosh_sub (the dual via cosh_sub, with the y ≤ x domain check from arcosh_le_arcosh), and two_mul_arcosh (the doubling law 2·arcosh x = arcosh(2x²−1)).",
+      "mathContext": "$\\operatorname{arcosh} x \\pm \\operatorname{arcosh} y = \\operatorname{arcosh}(xy \\pm \\sqrt{x^2-1}\\sqrt{y^2-1})$; $2\\operatorname{arcosh} x = \\operatorname{arcosh}(2x^2-1)$."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Logarithmic Evaluations",
+      "startLine": 102,
+      "endLine": 116,
+      "summary": "arcosh_five_quarters (arcosh(5/4) = log 2) and arcosh_five_thirds (arcosh(5/3) = log 3), unfolding the logarithmic form and rationalising the surd via a (3,4,5)-style triple — the cosh-side mirror of the parent's arsinh(3/4) = log 2 and arsinh(4/3) = log 3.",
+      "mathContext": "$\\operatorname{arcosh}(5/4) = \\log 2$, $\\operatorname{arcosh}(5/3) = \\log 3$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "arsinh-log-formula-oq-01-oq-02-oq-01",
+      "question": "Derive the arcosh antiderivative identity ∫ 1/√(t² − 1) dt = arcosh t + C for t > 1 from Mathlib's derivative of arcosh (or build the HasDerivAt fact if absent), the cosh-side counterpart of the sibling entry's ∫ 1/√(1 + t²) dt = arsinh t + C.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "arsinh-log-formula-oq-01",
+      "relationship": "parent",
+      "description": "The parent develops the algebraic theory of arsinh (logarithmic closed form, addition/subtraction/doubling laws, concrete values). This entry answers its second open question, supplying the cosh-side counterpart: the same algebraic theory for arcosh."
+    },
+    {
+      "targetId": "arsinh-log-formula-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "The sibling entry answers the parent's first open question (the arsinh antiderivative ∫ 1/√(1+t²) dt = arsinh t + C). This entry is the algebraic cosh-side companion, mirroring the parent's arsinh addition calculus for arcosh."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Arcosh",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.arcosh (defined as log(x + √(x² − 1))) and its inverse-pair lemmas cosh_arcosh, sinh_arcosh, arcosh_cosh, arcosh_nonneg, arcosh_le_arcosh."
+    },
+    {
+      "title": "Mathlib4: Analysis.Complex.Trigonometric",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the hyperbolic angle-addition identities Real.cosh_add and Real.cosh_sub used to derive the arcosh addition and subtraction laws."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Answers the parent's second open question: the cosh-side counterpart of the arsinh theory. The logarithmic form arcosh x = log(x + √(x² − 1)) is Mathlib's definition (recorded as arcosh_eq_log). From the hyperbolic angle-addition identity cosh(a ± b) = cosh a cosh b ± sinh a sinh b and the inverse pair cosh(arcosh x) = x, sinh(arcosh x) = √(x² − 1), we obtain the addition law arcosh x + arcosh y = arcosh(x·y + √(x²−1)·√(y²−1)) for x, y ≥ 1, the subtraction law arcosh x − arcosh y = arcosh(x·y − √(x²−1)·√(y²−1)) for 1 ≤ y ≤ x (with the domain check supplied by monotonicity), and the doubling law 2·arcosh x = arcosh(2x²−1). The (3,4,5) triple gives the concrete values arcosh(5/4) = log 2 and arcosh(5/3) = log 3. 116 lines, 7 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The logarithmic form is Mathlib's definition and the proofs lean on Mathlib's inverse-pair and angle-addition lemmas (hence the mathlib badge), but the arcosh addition / subtraction / doubling formulas and concrete values are new to the gallery — Mathlib records the inverse facts for arcosh but no algebraic addition law. The entry completes the symmetry begun by the parent, giving arcosh the same addition calculus the parent gave arsinh.",
+    "openQuestions": [
+      "Derive the arcosh antiderivative ∫ 1/√(t² − 1) dt = arcosh t + C for t > 1, the cosh-side counterpart of the sibling's arsinh antiderivative."
+    ]
+  }
+}

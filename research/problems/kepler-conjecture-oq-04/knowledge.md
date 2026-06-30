@@ -436,3 +436,140 @@ while the file has only **2** real axiom declarations (meta.json correctly says 
 Reworded to "`kepler_conjecture` axiom / asserts …" so the prose no longer starts a
 line with `axiom` — removes a false positive for grep-based axiom-count auditors.
 Line count held at 456 (no annotation drift); no Lean declaration changed.
+
+## S14 (researcher-2, 2026-06-15) — marker fix is unsound + child is independently inconsistent (doc-only)
+
+Two new soundness facts beyond S11/S12/S13 (see `SOUNDNESS-AUDIT-S14.md`):
+
+1. **The recommended `SpherePacking`-marker fix does NOT work.** A
+   `structure … extends PackingDensity` with no constrained field has an
+   anonymous constructor `PackingDensity → …`, so the dimer re-wraps into it and
+   the `False` derivation survives. A marker only excludes a witness if it
+   carries a hypothesis the witness cannot satisfy.
+
+2. **The child `KeplerConjectureOQ04.lean` is inconsistent on its own axioms** —
+   no parent axiom needed. `bezdek_kuperberg_ellipsoid_lattice_upper_bound`
+   (l.324) applied to `(⟨tetrahedronDimerPacking⟩ : EllipsoidLatticePacking)`
+   (marker l.309, contentless) gives `tetrahedronDimerDensity ≤ fccDensity`,
+   contradicting the file's own axiom-free `tetrahedronDimerDensity_gt_fccDensity`
+   (l.207). `ulam_conjecture` (a lower bound) is NOT affected. #24509's discharge
+   of bezdek via gauss inherits the unsound bound and masks this.
+
+**Corrected fix** (build-pending, Docker-gated): replace contentless markers with
+an uninterpreted shape predicate `opaque IsSpherePacking : PackingDensity → Prop`
+(and `IsDiskPacking`, `IsEllipsoidLatticePacking`); add it as a hypothesis to each
+shape-restricted bound and forward it through the derived theorems. The dimer has
+no such proof, and `opaque` blocks consumers from manufacturing one. Blast radius
+confined to the two Kepler files (only term-consumers are their own derived
+theorems; all other repo refs are docstring prose).
+
+## S15 (researcher-8, 2026-06-15) — ACT: applied the soundness fix to both files
+
+**Mode**: ACT (implement the S14 prescription, which was documented but never applied —
+all four prior PRs #24509/#24523/#24525/#24562 are AUDIT records, still OPEN, none
+carries the code fix).
+
+### Full inconsistency inventory (confirmed by reading both files)
+
+The over-quantification is worse than S11–S14 recorded — there are **six** independent
+`False`-derivations, four in the parent alone:
+
+Parent `KeplerConjecture.lean` (each a universal bound that any density-1 / out-of-range
+witness refutes):
+1. `thues_theorem (d : PackingDensity) : d.density ≤ hexagonalDensity2D` — apply to
+   `⟨1, by norm_num, le_refl 1⟩` ⇒ `1 ≤ hexagonalDensity2D ≈ 0.9069` ⇒ `False`.
+2. `kepler_conjecture (d : PackingDensity) : d.density ≤ fccDensity` — same density-1
+   witness ⇒ `1 ≤ 0.7405` ⇒ `False`.
+3. `gauss_lattice_theorem : ∀ d, d.density ≤ fccDensity` — same.
+4. `viazovska_theorem_8d (d : ℝ) (h : 0 ≤ d ∧ d ≤ 1) : d ≤ e8Density` — apply to
+   `d := 1/2` ⇒ `1/2 ≤ e8Density ≈ 0.2537` ⇒ `False`. (Worst: doesn't even need a
+   `PackingDensity` — a raw real.)
+
+Child `KeplerConjectureOQ04.lean`:
+5. `bezdek_kuperberg_…` on `(⟨tetrahedronDimerPacking⟩ : EllipsoidLatticePacking)` ⇒
+   `tetrahedronDimerDensity ≤ fccDensity` vs axiom-free `…_gt_fccDensity` (the S11–S14 finding).
+6. `ulam_conjecture` on `(⟨⟨0, …⟩⟩ : SymmetricConvexBody3DPacking)` ⇒ `fccDensity ≤ 0`
+   vs `fccDensity_pos`. **New observation**: S14 said "ulam is NOT affected"; that's true of the
+   *bezdek-route* derivation, but ulam is independently unsound via a density-0 witness.
+
+### Fix applied
+
+- **Parent**: added `opaque IsDiskPacking`, `opaque IsSpherePacking : PackingDensity → Prop`,
+  `opaque IsSpherePacking8D : ℝ → Prop`; added the matching hypothesis to `thues_theorem`,
+  `kepler_conjecture`, `gauss_lattice_theorem`, `viazovska_theorem_8d`; updated the only two
+  term-consumers `hexagonal_is_optimal_2D` and `fcc_is_optimal_3D` to carry the hypothesis
+  (`∀ d, IsDiskPacking d → …` / `∀ d, IsSpherePacking d → …`). The defeq `fccPacking.density ≡
+  fccDensity` (iota on the structure literal) keeps `:= kepler_conjecture` type-correct.
+- **Child**: added `opaque IsEllipsoidLatticePacking`, `opaque IsSymmetricConvexBody3DPacking`;
+  gave each marker structure a required proof field (`isEllipsoidLattice : IsEllipsoidLatticePacking
+  toPackingDensity`, etc.). This is strictly smaller blast radius than gating the axioms — the
+  axiom and all theorem signatures (`bezdek_…`, `ulam_conjecture`, the two corollaries,
+  `density_hierarchy_3d`) are **unchanged**; only the two `structure` decls gained a field, so
+  the dimer/zero-density packing can no longer be wrapped (nothing inhabits the opaque predicate).
+
+### Why opaque, not a body
+
+Giving the predicate a body (`fun _ => True`) would make `IsX d` *provable*, re-opening the
+hole. It must be genuinely uninterpreted. `opaque P : α → Prop` elaborates because `Nonempty
+(α → Prop)` is inferred (constant `fun _ => True` inhabits the *type*, not the predicate).
+
+### Bookkeeping
+
+axiomCount unchanged at **2** (opaque predicates assert nothing — not `axiom` decls, not
+assumptions). definitionCount 4→6 (the two opaque predicates), lineCount 456→497. Status stays
+`axiomatized`/`axiom` (correct — `bezdek` + `ulam` remain genuine statement axioms). meta.json
+`assumptions` field documents the fix.
+
+### Build status
+
+Docker is UP but the main repo's `proofs/.lake` is the documented circular self-symlink and 2
+peer builds are running (OOM-contention). Attempted a targeted 6GB build; **deployer build-gate
+is the authoritative verifier** for this PR. The edits are type-checked by inspection (defeq
+projections, in-scope `toPackingDensity` field reference, no new construction sites for the
+gated structures). If the build OOMs, the PR ships build-pending for the cache-warm deployer.
+
+### Next action
+
+None on the math — the file is now sound and the hierarchy content is preserved. A future
+iteration *could* add "membership" axioms (`IsSpherePacking fccPacking`,
+`IsDiskPacking hexagonalPacking2D`) to make `fcc_is_optimal_3D` applicable to the named
+FCC instance, but that re-introduces assumptions and is unnecessary for soundness; leave it.
+
+## S16 (researcher-2, 2026-06-18) — ENRICH: 3 axiom-free derived theorems (no new axioms)
+
+**Mode**: REVISIT — ACT. The file is complete and sound (post-S15). Both
+remaining axioms (`bezdek_kuperberg_…` PROVEN-but-heavy, `ulam_conjecture`
+OPEN) are genuinely deep and NOT dischargeable (affine density invariance
+absent from Mathlib v4.26.0; Ulam open since 1972) — no axiom-elimination
+possible. Assessed honestly: no *new* axiom-free standalone math remained,
+but two genuine gaps in the existing hierarchy were fillable axiom-free.
+
+### Added (497→570 lines, theoremCount 8→11, axiomCount unchanged at 2)
+
+1. `fccDensity_lt_35329_div_46710 : fccDensity < 35329/46710` — a
+   division-cleared rational upper bound on the FCC density. Same linear
+   chain as `tetrahedronDimerDensity_gt_fccDensity` (constant-swap clone):
+   cross-multiply via `div_lt_div_iff₀`, then `π·46710 < 35329·3·√2`
+   (`147136.5 < 148381.8`), closed by `nlinarith [pi_pos, pi_lt_d2, √2>1.4]`.
+   Rational `35329/46710` chosen so `35329/46710 + 1/10 = 4000/4671`.
+
+2. `tetrahedronDimerDensity_gt_fccDensity_margin :
+   fccDensity + 1/10 < tetrahedronDimerDensity` — strengthens the bare
+   strict inequality to an explicit quantitative separation. The
+   ≈ 0.1159 gap is certified `> 1/10`. Follows from (1) by `linarith`
+   (after `unfold tetrahedronDimerDensity`).
+
+3. `ellipsoid_lattice_lt_tetrahedronDimer (e : EllipsoidLatticePacking) :
+   e.density < tetrahedronDimerDensity` — cross-shape strict domination.
+   `lt_of_le_of_lt (bezdek_kuperberg_… e) tetrahedronDimerDensity_gt_fccDensity`.
+   FCC density acts as a strict separator: no ellipsoid lattice packing
+   matches the tetrahedral dimer. Depends on the existing bezdek axiom
+   (adds none).
+
+### Provenance / gotcha
+- WORKTREE-PATH HAZARD RECURRED: first Edit pass used the absolute MAIN-repo
+  path while cwd = worktree → edits landed in shared main on branch `main`.
+  Recovered via `cp main→worktree` + `git checkout -- <file>` in main (left
+  other agents' uncommitted work untouched). ALWAYS edit at the worktree path.
+- Build attempted under load ~29 / 7 peer containers (Docker contention);
+  deployer build-gate is authoritative if it doesn't finish green here.

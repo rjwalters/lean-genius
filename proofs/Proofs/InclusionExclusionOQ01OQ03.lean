@@ -31,14 +31,18 @@
   `sum_eq_iff_sum_mul_moebius_eq`; the value here is exposing the classical
   `Σ_{d|n} μ(d) f(n/d)` shape that downstream gallery work expects.
 
+  `totient_eq_sum_moebius_mul` then applies the bridge to the parent entry's
+  `Σ_{d|n} φ(d) = n` (`Nat.sum_totient`), yielding the Möbius form of Euler's
+  totient `φ(n) = Σ_{d|n} μ(d)·(n/d)` — the inclusion–exclusion read of `φ`.
+
   Numerically cross-checked (all n ≤ 400, random integer data, both directions,
   μ sanity, and the Euler-φ anchor) in
   `research/problems/inclusion-exclusion-oq-01-oq-03/verify_moebius_inversion.py`
   (ALL PASS).
 
-  Status: 0 axioms, 0 sorries intended.  Build-pending (authored under a Docker +
-  Aristotle blackout); UNREGISTERED in `Proofs/Proofs.lean` until it compiles in a
-  live session.
+  Status: 0 axioms, 0 sorries.  Registered in `Proofs/Proofs.lean` so the gallery
+  build machine-checks it.  Lemma names verified against the pinned Mathlib v4.26.0
+  (`ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq`, `Nat.sum_divisorsAntidiagonal`).
 -/
 
 import Mathlib.NumberTheory.ArithmeticFunction.Moebius
@@ -73,5 +77,37 @@ theorem moebius_inversion_divisors {f g : ℕ → R} :
       rw [Nat.sum_divisorsAntidiagonal (fun a b => (μ a : R) * f b)]
       exact (h m hm).symm
     exact ((sum_eq_iff_sum_mul_moebius_eq (R := R) (f := g) (g := f)).mpr hM n hn).symm
+
+/-- **Euler-φ corollary (Möbius form of the totient).**  Applying divisor-form
+    Möbius inversion to the classical identity `n = Σ_{d | n} φ(d)` (`Nat.sum_totient`)
+    gives the Möbius expression for the totient:
+        `φ(n) = Σ_{d | n} μ(d) · (n / d)`   (for `n > 0`, over `ℤ`).
+    This is the parent gallery entry's `Σ_{d|n} φ(d) = n` "inverted" — exactly the
+    inclusion–exclusion read of Euler's function. -/
+theorem totient_eq_sum_moebius_mul (n : ℕ) (hn : 0 < n) :
+    (Nat.totient n : ℤ) = ∑ d ∈ n.divisors, (μ d : ℤ) * ((n / d : ℕ) : ℤ) := by
+  refine (moebius_inversion_divisors (R := ℤ)
+      (f := fun m => (m : ℤ)) (g := fun d => (Nat.totient d : ℤ))).mp (fun m _ => ?_) n hn
+  -- forward input: `(m : ℤ) = Σ_{d | m} φ(d)`, the cast of `Nat.sum_totient`.
+  exact_mod_cast (Nat.sum_totient m).symm
+
+/-- **Möbius convolution identity** `Σ_{d | n} μ(d) = [n = 1]` (for `n > 0`).
+    This is the defining property of the Möbius function as the multiplicative
+    inverse of the constant-one function (`μ ∗ 1 = δ`), and the cleanest face of
+    inclusion–exclusion: the divisor-lattice IE signs cancel completely except at
+    `n = 1`.  Derived purely from `moebius_inversion_divisors` (no extra Mathlib
+    Möbius lemma): take `f ≡ 1`; the unique `g` with `f(n) = Σ_{d|n} g(d)` is the
+    indicator `g = [· = 1]`, and inversion reads off `g(n) = Σ_{d|n} μ(d)`. -/
+theorem moebius_sum_divisors_eq_ite (n : ℕ) (hn : 0 < n) :
+    (∑ d ∈ n.divisors, (μ d : R)) = if n = 1 then (1 : R) else 0 := by
+  have hfwd : ∀ m > 0, (1 : R) = ∑ d ∈ m.divisors, (if d = 1 then (1 : R) else 0) := by
+    intro m hm
+    rw [Finset.sum_eq_single (1 : ℕ)]
+    · simp
+    · intro b _ hb1; simp [hb1]
+    · intro h1; exact absurd (Nat.one_mem_divisors.mpr hm.ne') h1
+  have key := (moebius_inversion_divisors (R := R)
+      (f := fun _ => (1 : R)) (g := fun m => if m = 1 then (1 : R) else 0)).mp hfwd n hn
+  simpa using key.symm
 
 end InclusionExclusionOQ01OQ03

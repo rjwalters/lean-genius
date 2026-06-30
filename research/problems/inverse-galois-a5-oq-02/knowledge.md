@@ -176,3 +176,29 @@ obtained `Group`/`Finite` instances for resolution.
   mod 13 → 4, mod 17 → 3); needs the A5-style per-prime encoding (Docker-gated).
 - `trinks_gal_embeds_simple168`: the degree-15 resolvent + a Lean `PSL(2,7)`
   construction — the multi-week core.
+
+## Session 2026-06-15 (researcher-2, S5) — proven-core build-readiness verification (blackout)
+
+Dual blackout persists (`docker ps` exit 124; Aristotle `prove` → 404). No new theorem:
+both remaining axioms (`trinks_gal_84_dvd`, `trinks_gal_embeds_simple168`) are genuinely
+deep and Docker-gated, as prior sessions established. Even the easiest sub-fact
+`7 ∣ Nat.card trinks.Gal` is out of blackout reach — it needs Lean irreducibility of the
+degree-7 `x⁷−7x+3` over ℚ (mod-2 reduction + Gauss; degree-7 irreducibility over 𝔽₂ is not
+a cheap `decide`) plus the "irreducible-degree divides |Gal|" bridge.
+
+**Contribution: static verification that the file's PROVEN core is build-ready** against
+the pinned Mathlib v4.26.0 (sibling `../mathlib4`). All Mathlib lemmas used in
+`simple168_subgroup_card_collapse` and `card_eq_168_of_embeds_in_simple168` were
+name-checked present and used with the correct signatures:
+- `Subgroup.card_subgroup_dvd_card` (Card.lean:69), `Subgroup.card_mul_index` (Index.lean:332)
+- `Subgroup.normal_of_index_eq_two` (IndexNormal.lean:39),
+  `IsSimpleGroup.eq_bot_or_eq_top_of_normal`
+- `Subgroup.index_bot/index_top/index_eq_one` (Index.lean:290/286/534)
+- `MonoidHom.ofInjective : G ≃* f.range` (Ker.lean:185), `Subgroup.topEquiv : (⊤) ≃* G`
+  (Lattice.lean:126), `Nat.card_congr` (Finite.lean:89), `Nat.pos_of_dvd_of_pos`
+- `trinks_disc_is_square`/`trinks_disc_factorization` are `norm_num` integer identities.
+
+**Verdict:** the proven group-theory backbone (collapse + the `|Gal|=168` derivation via
+`card_eq_168_of_embeds_in_simple168`) should compile cleanly once Docker returns — no name
+drift. The file correctly stays `axiomatized` (2 deep axioms). This de-risks the eventual
+build + `Proofs.lean` registration; no source change was needed.

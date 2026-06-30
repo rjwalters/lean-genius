@@ -338,7 +338,7 @@
       "startLine": 337,
       "endLine": 347
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Restricted Sum and Difference",
     "content": "Given a bipartite graph $G \\subseteq A \\times B$, the restricted sum $A +_G B = \\{a + b : (a,b) \\in G\\}$ and restricted difference $A -_G B = \\{a - b : (a,b) \\in G\\}$. These are central to Bourgain's formulation linking sumset problems to Kakeya-type questions.",
     "mathContext": "For $G \\subseteq A \\times B$: $A +_G B = \\{a + b : (a,b) \\in G\\}$ and $A -_G B = \\{a - b : (a,b) \\in G\\}$. When $G = A \\times B$, these reduce to the usual sumset $A + B$ and difference set $A - B$.",
@@ -360,7 +360,7 @@
       "startLine": 348,
       "endLine": 356
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Bourgain Exponent",
     "content": "The Bourgain sums-differences exponent $c$: the assertion that $|A -_G B| \\le C \\cdot \\max(|A|, |B|, |A +_G B|)^c$ for all finite sets $A, B$ and graphs $G \\subseteq A \\times B$. This reformulates the 3-AP problem in the language of harmonic analysis.",
     "mathContext": "$\\text{BourgainExponent}(c) :\\Leftrightarrow \\exists\\, C > 0,\\; \\forall A, B, G \\subseteq A \\times B,\\; |A -_G B| \\le C \\cdot \\max(|A|, |B|, |A +_G B|)^c$. The critical exponent $c^*$ where this transitions from true to false equals the 3-AP exponent.",

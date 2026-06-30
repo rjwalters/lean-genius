@@ -1,0 +1,132 @@
+{
+  "id": "derangements-oq-02-oq-02-oq-01",
+  "title": "Higher Factorial Moments of Fixed Points of a Random Permutation (OQ-02-OQ-02-OQ-01)",
+  "slug": "derangements-oq-02-oq-02-oq-01",
+  "description": "Formal proof that every factorial moment of the fixed-point count of a uniform random permutation equals 1: for k ≤ n, ∑_{σ ∈ Perm(Fin n)} (|Fix(σ)|)_k = n!, where (X)_k is the k-th falling factorial. Generalizes the parent's first-moment result (E[#fixed] = 1) by applying the same Burnside's lemma to the action of the symmetric group on ordered k-tuples Fin k ↪ Fin n, where k-transitivity collapses the orbit count to 1. Axiom-free.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-18",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsOQ02OQ02OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "permutations",
+      "derangements",
+      "burnside",
+      "probability",
+      "factorial-moments",
+      "multiple-transitivity"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-18",
+    "axiomCount": 0,
+    "lineCount": 183,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "assumptions": "None beyond Lean/Mathlib's standard foundational axioms (propext, Classical.choice, Quot.sound). The main theorem and all consequences are proved without native_decide or any axiom declaration; #print axioms on sum_descFactorial_fixedPoints_eq_factorial reports only the three standard axioms. 0 sorries, leanFile.axiomCount = 0.",
+    "originalContributions": [
+      "Proof that ∑_{σ ∈ Perm(Fin n)} (|Fix(σ)|).descFactorial k = n! for k ≤ n, i.e. every factorial moment of the fixed-point count equals 1 (the exact finite-n Poisson(1) signature)",
+      "Reduction of the higher-moment identity to Burnside's lemma applied to the action of Perm(Fin n) on ordered k-tuples Fin k ↪ Fin n, mirroring the parent's k=1 argument on Fin n",
+      "fixedEmbEquiv: a bijection between the k-tuples fixed by σ and embeddings of Fin k into the fixed-point set of σ, giving |Fix_emb(σ)| = (|Fix(σ)|)_k via Fintype.card_embedding_eq",
+      "Identification of multiple transitivity of the symmetric group (Equiv.Perm.isMultiplyPretransitive) as the precise structural reason all factorial moments equal 1",
+      "Second-moment / variance corollary (∑_σ |Fix(σ)|·(|Fix(σ)|-1) = n! giving Var(X) = 1) and the sharp k > n vanishing boundary (sum = 0)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The number of fixed points X of a uniform random permutation of an n-element set converges in distribution to a Poisson random variable with mean 1 as n → ∞ (a classical result going back to Montmort's analysis of the matching problem, 'le problème des rencontres', in 1708). A defining feature of the Poisson(1) law is that all of its factorial moments equal 1: E[X(X-1)···(X-k+1)] = 1 for every k. Remarkably, for the permutation statistic this holds exactly — not just in the limit — for every k ≤ n. The parent entry established the k = 1 case (E[X] = 1) via Burnside's lemma; this entry shows the entire factorial-moment tower collapses to 1 for the same structural reason: the full symmetric group is k-transitive for all k.\n\nThe Burnside–Cauchy–Frobenius lemma relates the number of orbits of a finite group action to the average number of fixed points: |orbits| = (1/|G|) ∑_{g} |Fix(g)|. Applied to Sₙ acting on ordered k-tuples of distinct points, the single orbit (k-transitivity) forces the average number of fixed k-tuples to be 1, and the number of k-tuples fixed by σ is exactly the falling factorial (|Fix σ|)_k. This is the clean group-theoretic mechanism behind the factorial-moment phenomenon.",
+    "problemStatement": "Prove the higher factorial moments of the fixed-point count of a uniform random permutation: for k ≤ n, ∑_{σ ∈ Perm(Fin n)} (|Fix(σ)|)_k = n!, where (m)_k = m.descFactorial k is the k-th falling factorial. Equivalently, E[(X)_k] = 1 for all k ≤ n, the finite-n analogue of the Poisson(1) factorial moments.",
+    "proofStrategy": "Apply Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) to the action of Perm(Fin n) on the set of ordered k-tuples Fin k ↪ Fin n, where σ • f = σ ∘ f.\n\n1. Count fixed tuples: an embedding f is fixed by σ iff every value f i is a fixed point of σ. The bijection fixedEmbEquiv sends such f to an embedding Fin k ↪ {x // σ x = x}; by Fintype.card_embedding_eq the count is (|Fix σ|).descFactorial k. This is the lemma card_fixedBy_emb.\n2. Sum over σ via Burnside: ∑_σ |Fix_emb(σ)| = (#orbits) · |Perm(Fin n)|.\n3. Collapse the orbit count: Equiv.Perm.isMultiplyPretransitive gives IsPretransitive (Perm (Fin n)) (Fin k ↪ Fin n); for k ≤ n the embedding set is nonempty (Fin.castLEOrderEmb), so pretransitive_iff_unique_quotient_of_nonempty yields a Unique orbit quotient, #orbits = 1.\n4. Conclude 1 · |Perm(Fin n)| = n! via Fintype.card_perm and Fintype.card_fin.\n\nConsequences: the k = 1 specialization recovers the parent's ∑_σ |Fix(σ)| = n!; k = 2 with descFactorial_succ gives the second factorial moment and variance 1; for k > n every summand vanishes by descFactorial_eq_zero_iff_lt (card Fix ≤ n < k).",
+    "keyInsights": [
+      "The higher factorial moments arise from the SAME Burnside lemma as the first moment — only the acted-on set changes, from Fin n to the ordered k-tuples Fin k ↪ Fin n",
+      "The number of k-tuples fixed by σ is exactly the falling factorial (|Fix σ|)_k, because fixed tuples are precisely embeddings of Fin k into the fixed-point set; Mathlib's Fintype.card_embedding_eq supplies card (α ↪ β) = (card β).descFactorial (card α)",
+      "Multiple transitivity of the full symmetric group (Equiv.Perm.isMultiplyPretransitive, i.e. IsPretransitive (Perm α) (Fin k ↪ α)) is the precise structural reason every factorial moment equals 1: one orbit ⟹ average fixed-tuple count 1",
+      "For k ≤ n the embedding set is nonempty (Fin.castLEOrderEmb hk) so the orbit quotient is Unique; for k > n it is empty and the moment sum collapses to 0 — a sharp boundary distinguishing the two regimes",
+      "Avoiding native_decide entirely (no concrete native_decide verifications) keeps the entry fully axiom-free, unlike the parent which depends on Lean.ofReduceBool for its n=3,4 sanity checks"
+    ],
+    "prerequisites": [
+      "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
+      "Multiple transitivity of the symmetric group (Equiv.Perm.isMultiplyPretransitive)",
+      "MulAction.pretransitive_iff_unique_quotient_of_nonempty",
+      "Counting embeddings (Fintype.card_embedding_eq) and the falling factorial (Nat.descFactorial, Nat.factorial_mul_descFactorial)",
+      "The MulAction of a group on embeddings (Function.Embedding.smul_apply)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: from first to higher factorial moments",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring posing the open question inherited from derangements-oq-02-oq-02: the parent proved the first factorial moment E[X]=1 of the fixed-point count X(σ)=|Fix(σ)| of a uniform random permutation; this file proves every higher factorial moment E[(X)_k]=1 for k ≤ n, equivalently ∑_σ (X(σ))_k = n!. States the proof strategy: Burnside's lemma on the action of Perm(Fin n) on injective k-tuples Fin k ↪ Fin n, whose single-orbit collapse rests on k-transitivity of the symmetric group.",
+      "mathContext": "$\\sum_{\\sigma}(X(\\sigma))_k=n!\\iff E[(X)_k]=1$ for $k\\le n$, where $(X)_k=X(X-1)\\cdots(X-k+1)$ is the $k$-th falling factorial — the exact finite-$n$ signature of the $\\mathrm{Poisson}(1)$ limit."
+    },
+    {
+      "id": "fixed-emb-equiv",
+      "title": "Section I-a: The fixed-embedding bijection",
+      "startLine": 57,
+      "endLine": 81,
+      "summary": "fixedEmbEquiv establishes that the k-tuples Fin k ↪ Fin n fixed by σ under σ • f = σ ∘ f correspond bijectively to embeddings of Fin k into the fixed-point subtype {x // σ x = x}: f is fixed iff every value f i is a fixed point of σ.",
+      "mathContext": "$\\{f\\mid \\sigma\\cdot f=f\\}\\simeq(\\mathrm{Fin}\\,k\\hookrightarrow\\mathrm{Fix}(\\sigma))$ because $\\sigma\\cdot f=f\\iff \\mathrm{im}\\,f\\subseteq\\mathrm{Fix}(\\sigma)$."
+    },
+    {
+      "id": "fixed-tuple-count",
+      "title": "Section I-b: Counting k-tuples fixed by a permutation",
+      "startLine": 83,
+      "endLine": 92,
+      "summary": "card_fixedBy_emb evaluates the σ-fixed embeddings via Fintype.card_embedding_eq: their number is |Fix(σ)|.descFactorial k, the k-th falling factorial of the fixed-point count — exactly the summand (X(σ))_k of the factorial moment.",
+      "mathContext": "Number of injections $\\mathrm{Fin}\\,k\\hookrightarrow S$, $|S|=m$, is $m^{\\underline k}=m\\,\\mathrm{descFactorial}\\,k$; with $S=\\mathrm{Fix}(\\sigma)$ this is $(X(\\sigma))_k$."
+    },
+    {
+      "id": "burnside-higher-moments",
+      "title": "Section II: Higher factorial moments via Burnside's lemma",
+      "startLine": 93,
+      "endLine": 131,
+      "summary": "sum_descFactorial_fixedPoints_eq_factorial proves ∑_σ (X(σ))_k = n! for k ≤ n. Rewriting each summand as the count of σ-fixed embeddings turns the sum into Burnside's left side ∑_σ |Fixβ(σ)| = (#orbits)·|G|; k-transitivity of Perm(Fin n) (isMultiplyPretransitive) plus nonemptiness for k ≤ n forces a single orbit, so the sum is 1·n! = n!.",
+      "mathContext": "Burnside: $\\sum_\\sigma|\\mathrm{Fix}_\\beta(\\sigma)|=|\\Omega|\\,|G|$; $k$-transitivity gives $|\\Omega|=1$, hence $\\sum_\\sigma(X(\\sigma))_k=n!$ and $E[(X)_k]=1$ for $k\\le n$."
+    },
+    {
+      "id": "consequences",
+      "title": "Section III: Consequences and interpretation",
+      "startLine": 133,
+      "endLine": 183,
+      "summary": "Corollaries: k=1 recovers the parent's ∑_σ |Fix(σ)| = n! (E[X]=1); k=2 gives ∑_σ X(X−1) = n!, hence Var(X)=1; moment_sum_eq_card_perm restates the sum as |Perm(Fin n)|; and sum_descFactorial_fixedPoints_eq_zero shows the sum vanishes for k > n, the sharp finite-n cutoff distinguishing it from the Poisson(1) limit whose factorial moments are all 1.",
+      "mathContext": "$E[X]=1$, $E[X(X-1)]=1\\Rightarrow \\mathrm{Var}(X)=1$; and $\\sum_\\sigma(X(\\sigma))_k=0$ for $k>n$ — mean 1, variance 1, matching $\\mathrm{Poisson}(1)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file proves 6 theorems/lemmas and 1 definition with 0 sorries and 0 axioms (no native_decide), establishing that every factorial moment (k ≤ n) of the fixed-point count of a uniform random permutation equals 1 via Burnside's lemma on the action on ordered k-tuples. It strictly generalizes the parent's first-moment result and is fully axiom-free.",
+    "implications": "The factorial-moment tower E[(X)_k] = 1 for all k ≤ n is the exact finite-n fingerprint of the Poisson(1) limit, and this proof exhibits multiple transitivity of the symmetric group as its structural cause. The fixedEmbEquiv bijection and card_fixedBy_emb count are reusable for any fixed-tuple counting problem; the k > n vanishing gives the sharp boundary of the identity.",
+    "openQuestions": [
+      "Combine the factorial moments E[(X)_k] = 1 (k ≤ n) with the method of moments to formalize convergence in distribution of the fixed-point count to Poisson(1) as n → ∞",
+      "Derive closed forms for the ordinary power moments E[X^k] (Bell-number / Touchard polynomial expressions) from the factorial moments via Stirling numbers of the second kind"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "derangements-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry proving the first factorial moment ∑_σ |Fix(σ)| = n! (E[#fixed] = 1) via Burnside on Fin n; this entry generalizes it to all factorial moments via Burnside on Fin k ↪ Fin n"
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "Base derangement entry; the Poisson(1) limit whose factorial moments are all 1 is the distributional context for these exact finite-n moment identities"
+    },
+    {
+      "targetId": "burnside-counting",
+      "relationship": "uses",
+      "description": "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) applied to the action on ordered k-tuples is the engine of the higher-moment proof"
+    }
+  ],
+  "leanFile": {
+    "namespace": "DerangementsOQ02OQ02OQ01",
+    "lineCount": 183,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/DerangementsOQ02OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

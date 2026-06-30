@@ -19,6 +19,12 @@
       "Lebesgue integral",
       "essentially bounded functions"
     ],
+    "prerequisites": [
+      "real analysis: continuity and differentiability of functions ℝ → ℝ",
+      "Lebesgue measure and integration on the line",
+      "the classical isoperimetric inequality C² ≥ 4πA for smooth closed curves",
+      "arc-length and Green's theorem area formula for plane curves"
+    ],
     "pedagogicalNote": "Compare with the smooth case: `SmoothClosedCurve` uses ordinary integrals and the fundamental theorem of calculus; `LipschitzClosedCurve` uses the same formulas but justified measure-theoretically via Rademacher."
   },
   {
@@ -40,6 +46,12 @@
       "rfl proofs",
       "definitional equality"
     ],
+    "prerequisites": [
+      "the definition of Lipschitz continuity (|f(a)−f(b)| ≤ K|a−b|)",
+      "the mean value theorem linking bounded derivative to a Lipschitz bound",
+      "compactness of closed intervals and the extreme value theorem",
+      "C¹ (continuously differentiable) functions"
+    ],
     "pedagogicalNote": "The `rfl` proofs are a design pattern: when two definitions are literally the same expression (same integral formula), Lean recognizes them as definitionally equal without any proof effort. This is only possible because `toLipschitz` copies the x,y components unchanged."
   },
   {
@@ -60,6 +72,12 @@
       "piecewise-linear curves",
       "pi_lt_four",
       "scale invariance"
+    ],
+    "prerequisites": [
+      "circumference 2πr and area πr² of a circle",
+      "perimeter and area of polygons (the unit square)",
+      "the numerical bound π < 4 (Mathlib's pi_lt_four)",
+      "the isoperimetric ratio 4πA/C² as a shape invariant"
     ],
     "pedagogicalNote": "The square proofs use only `pi_lt_four` and `ring` / `nlinarith` — they require no deep analysis, just arithmetic. This separation (hard analysis for the main theorem, easy arithmetic for examples) is a virtue of the proof architecture."
   },
@@ -85,6 +103,12 @@
       "W^{1,∞}(S¹)",
       "H¹(S¹)"
     ],
+    "prerequisites": [
+      "Fourier series and Parseval's identity for periodic functions",
+      "Sobolev spaces W^{1,∞}(S¹) and H¹(S¹)",
+      "absolutely continuous functions and the arc-length function",
+      "the classical (smooth) Wirtinger inequality"
+    ],
     "pedagogicalNote": "The axiom design is intentional: rather than leaving large sorries inside the proof, the deep classical results are isolated as explicit axioms. This makes the logical structure transparent: the main theorem holds conditionally on these two classical results, which are independently verifiable."
   },
   {
@@ -105,6 +129,12 @@
       "Cauchy-Schwarz inequality",
       "integrability of Lipschitz derivatives",
       "a.e. equality"
+    ],
+    "prerequisites": [
+      "the Wirtinger inequality for zero-mean periodic functions",
+      "constant-speed (arc-length) parametrization of a curve",
+      "Rademacher's theorem (a.e. differentiability of Lipschitz functions)",
+      "the bounded-implies-integrable principle for Lebesgue integrals"
     ],
     "pedagogicalNote": "The two-step strategy (Wirtinger for x, Wirtinger for y, then add) is elegant: it reduces the 2D Wirtinger inequality to two 1D applications. The arithmetic fact that adding two L² bounds gives a 2D bound is the core geometric insight."
   },
@@ -129,6 +159,12 @@
       "reparametrization",
       "arithmetic inequalities"
     ],
+    "prerequisites": [
+      "the Wirtinger bound on ∫(x²+y²) (wirtinger_sum_sq_bound_lip)",
+      "the Cauchy–Schwarz inequality for integrals",
+      "Green's theorem area formula and arc-length reparametrization",
+      "Hurwitz's 1901 Fourier proof of the isoperimetric inequality"
+    ],
     "pedagogicalNote": "The proof architecture is fully modular: the arithmetic kernel `isoperimetric_from_wirtinger_bounds` is proved once in the parent file and reused here. This shows the value of isolating the arithmetic content from the analytical content."
   },
   {
@@ -148,6 +184,12 @@
       "minimum perimeter",
       "shape invariants",
       "corollaries from isoperimetric inequality"
+    ],
+    "prerequisites": [
+      "the main Lipschitz isoperimetric inequality 4πA ≤ C²",
+      "scale invariance of dimensionless geometric ratios",
+      "monotonicity of the square-root function (le_of_sq_le_sq)",
+      "the smooth-to-Lipschitz embedding toLipschitz"
     ],
     "pedagogicalNote": "Notice that `lip_isoperimetric_scale_invariant` and `square_a_strict_isoperimetric` together show that the square's isoperimetric ratio π/4 is a scale-invariant property of the square shape — independent of the side length."
   }

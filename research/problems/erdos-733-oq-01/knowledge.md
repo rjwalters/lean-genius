@@ -289,3 +289,69 @@ bounds — axiom set now consistent. Axiom count unchanged (2), sorries unchange
   elaboration (both verified present). Then the file is sound.
 - The deep work (λ constant, discharging the two sorries / the exp(√n) axioms) remains OPEN —
   see the two open ORIENT PRs (#24269 lower, #24295 upper) for the analytic frontier.
+
+## Session 2026-06-15 (Session 6, researcher-3) — ACT: correct the false `limit_bounds`
+
+**Mode**: build-free (Docker DOWN exit124; Aristotle MCP unavailable).
+**Outcome**: integrity fix — the registered `limit_bounds` theorem is **false as
+written** (and behind a `sorry`); shipped a corrected, fully-proved (0-sorry)
+version in an UNREGISTERED companion `proofs/Proofs/Erdos733LimitBounds.lean`,
+plus the recommended registered-file patch.
+
+### The defect
+`Erdos733Problem.limit_bounds` (line 244, `sorry`) reads
+`∀ λ, (∃ ε>0, ∀ n≥4, |g(n)−λ|<ε) → ∃ c C, c>0 ∧ C>0 ∧ c≤λ ∧ λ≤C`, where
+`g(n)=log f(n)/√n`. The hypothesis is **too weak**: `ε` is existential with no
+smallness, so it only asserts `g` is *bounded* near `λ`. At `λ=0` the hypothesis
+is satisfiable (g is bounded by the two axioms) but the conclusion `∃ c>0, c≤0`
+is impossible — so the statement is false and its `sorry` is unprovable, not a
+routine gap. (It is harmless to the main result: `erdos_733` uses
+`lower_bound`/`upper_bound`, never `limit_bounds`.)
+
+### The fix (companion, proved)
+`limit_in_bounds (lam) (h : Tendsto (fun n => log f(n)/√n) atTop (𝓝 lam)) :
+∃ c C, c>0 ∧ C>0 ∧ c≤lam ∧ lam≤C`. The right hypothesis is genuine
+**convergence**, not ε-boundedness. Proof = squeeze: for `n≥4` the lower axiom
+forces `f(n)>0` (`0<exp(c√n)≤f(n)`), so `c·√n ≤ log f(n) ≤ C·√n` by
+`Real.log_le_log`+`Real.log_exp`; dividing by `√n>0` gives `c ≤ g(n) ≤ C`
+eventually; `ge_of_tendsto`/`le_of_tendsto` transfer to the limit. Also
+`limitConstant_mem_bounds : limitConstant → ∃ lam c C, …` phrased against the
+existing `limitConstant` predicate.
+
+### Lemmas (name-checked vs pinned v4.26)
+`Real.log_le_log (0<x) (x≤y)`, `Real.log_exp`, `Real.exp_pos`, `Real.sqrt_pos`,
+`le_div_iff₀`/`div_le_iff₀`, `ge_of_tendsto`/`le_of_tendsto` ([NeBot atTop]),
+`Filter.eventually_ge_atTop`.
+
+### Honesty / scope
+Does NOT advance the open constant `λ` (existence + value remain OPEN; see PRs
+#24269 lower, #24295 upper). It removes a false/unprovable obligation and
+replaces it with the true conditional bound. The integrity bug is analogous to
+S5's placeholder-def fix (#24429) but at the *theorem-statement* level rather
+than the definition level. **Build-pending** (companion unregistered; flag the
+registered-file patch for a build host).
+
+### Files
+- `proofs/Proofs/Erdos733LimitBounds.lean` (new, build-pending/UNREGISTERED)
+- `research/problems/erdos-733-oq-01/knowledge.md` (this entry)
+- `src/data/research/problems/erdos-733-oq-01.json` (insights/builtItems)
+
+## REGISTER (2026-06-15, researcher-6)
+Registered `Erdos733LimitBounds.lean` in `proofs/Proofs.lean` (before
+`Erdos733Problem`, which it imports and which is already registered). The file is
+**0 real sorries** (the 3 grep "sorry" hits are docstring prose describing the
+parent's defect). It proves `limit_in_bounds` and `limitConstant_mem_bounds`: if
+the normalized log-count log f(n)/√n converges to λ, then λ ∈ [c,C] (the
+positive Szemerédi–Trotter bracket) — the *correct* statement the parent's
+`Erdos733Problem.limit_bounds` was meant to capture (the parent's hypothesis is
+too weak / its sorry is an unprovable obligation, satisfiable at λ=0 where the
+conclusion fails).
+
+All Mathlib deps confirmed vs v4.26 sibling: `Real.log_le_log` (Log/Basic.lean:148,
+exact sig), `ge_of_tendsto`/`le_of_tendsto` (Topology/Order/OrderClosed.lean),
+`le_div_iff₀`/`div_le_iff₀` (Order/GroupWithZero/Unbundled/Basic.lean),
+`Real.log_exp`, `Real.sqrt_pos`, `eventually_ge_atTop`. The 3 open PRs
+(#24269/#24507/#24295) touch only research artifacts (knowledge/JSON/Python), not
+the .lean, so this is non-conflicting. The open constant-value frontier (does the
+limit exist? what is λ?) is untouched. Deployer-gated: compile failure blocks
+merge, not main.

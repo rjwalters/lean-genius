@@ -1,0 +1,64 @@
+{
+  "slug": "minpoly-charpoly-oq-02-incomplete-01",
+  "title": "Closure properties of Matrix.IsDiagonalizable (similarity, scaling, transpose)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For M : Matrix n n K (K a field) with M.IsDiagonalizable: U⁻¹·M·U (U invertible), c•M, −M, and Mᵀ are all diagonalizable.",
+    "plain": "The elementary algebraic stability laws of diagonalizability — invariance under similarity (conjugation), scalar multiplication, negation, and transpose — that complement the parent's diagonalizability characterisation.",
+    "whyMatters": [
+      "Similarity invariance is the defining feature making diagonalizability a property of the operator, not the chosen matrix representative.",
+      "The parent MinpolyCharpolyOQ02 introduces Matrix.IsDiagonalizable and proves the forward direction of the squarefree-minpoly characterisation, but records only the trivial instances (zero, one, diagonal); these closure laws were missing."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-22T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "Formalized the four closure properties of Matrix.IsDiagonalizable.",
+    "blockers": [],
+    "nextAction": "None — complete. (Note: the parent's open reverse-direction obligation, squarefree minpoly ⇒ diagonalizable, is NOT addressed here and remains open.)",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE (verified, 0 sorries — despite the 'incomplete' slot name). Child of minpoly-charpoly-oq-02. The parent defines Matrix.IsDiagonalizable M := ∃ P, IsUnit P ∧ IsDiag (P⁻¹·M·P) and proves only trivial instances. This entry adds the four elementary closure laws: IsDiagonalizable.conj (similarity invariance — the conjugate U⁻¹MU is diagonalizable, diagonalizer U⁻¹P), .smul (c•M, same P), .neg (−M), .transpose (Mᵀ, diagonalizer (Pᵀ)⁻¹). MinpolyCharpolyOQ02Incomplete01.lean, 4 theorems, 0 axioms, 0 sorries. Reuses only the parent's DEFINITION, not its open reverse-direction sorry (#print axioms confirms propext/Classical.choice/Quot.sound only — no sorryAx inheritance).",
+    "builtItems": [
+      "MinpolyCharpolyOQ02Incomplete01.lean: 4 theorems, 0 axioms, 0 sorries. Imports Proofs.MinpolyCharpolyOQ02 for the Matrix.IsDiagonalizable definition.",
+      "IsDiagonalizable.conj (similarity invariance: U⁻¹MU diagonalizable; witness U⁻¹P, key (U⁻¹P)⁻¹ = P⁻¹U via mul_inv_rev + nonsing_inv_nonsing_inv, cancel U·U⁻¹=1).",
+      "IsDiagonalizable.smul (c•M; P⁻¹(c•M)P = c•(P⁻¹MP) via mul_smul/smul_mul + IsDiag.smul).",
+      "IsDiagonalizable.neg (−M; via mul_neg/neg_mul + IsDiag.neg).",
+      "IsDiagonalizable.transpose (Mᵀ; diagonalizer (Pᵀ)⁻¹, ((Pᵀ)⁻¹)⁻¹MᵀᵀP... = (P⁻¹MP)ᵀ via nonsing_inv_nonsing_inv + transpose_nonsing_inv + IsDiag.transpose)."
+    ],
+    "insights": [
+      "Matrix nonsing-inverse lemmas (mul_nonsing_inv, nonsing_inv_nonsing_inv, mul_inv_rev, transpose_nonsing_inv) take IsUnit A.det, but IsDiagonalizable carries IsUnit P — bridge with Matrix.isUnit_iff_isUnit_det.",
+      "IsUnit of the matrix inverse: Matrix.isUnit_nonsing_inv_iff : IsUnit A⁻¹ ↔ IsUnit A. For transpose: IsUnit Pᵀ via isUnit_iff_isUnit_det + det_transpose.",
+      "Cancellation trick for conj: regroup with simp only [mul_assoc] (both sides reassociate to the same right-nested product), then rw U·U⁻¹=1 and clear with mul_one/one_mul — more robust than mul_nonsing_inv_cancel_left, whose A argument is explicit (positional `_ hUdet` mis-binds).",
+      "Importing a sorry-bearing parent does NOT taint axiom-cleanliness as long as the new theorems use only sorry-free declarations (here just the definition); always #print axioms to confirm no sorryAx.",
+      "IsDiag has the needed closure API in Mathlib: IsDiag.smul (k) (h), IsDiag.neg (h), IsDiag.transpose (h)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "The parent's open reverse direction (squarefree minpoly ⇒ diagonalizable over alg-closed char-0) remains the real target: eigenspace internal direct sum ⇒ conjugating matrix.",
+      "Further closure: product of commuting diagonalizable matrices is diagonalizable (needs simultaneous diagonalization); powers Mᵏ of a diagonalizable matrix.",
+      "Inverse: an invertible diagonalizable matrix has diagonalizable inverse (P⁻¹M⁻¹P = (P⁻¹MP)⁻¹, diagonal)."
+    ]
+  },
+  "tags": [
+    "extension"
+  ],
+  "relatedProofs": [
+    "minpoly-charpoly",
+    "minpoly-charpoly-oq-02"
+  ]
+}

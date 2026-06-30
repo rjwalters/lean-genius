@@ -16,7 +16,11 @@
       "Factorial",
       "Modular arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorials",
+      "Prime Numbers",
+      "Modular Congruence"
+    ]
   },
   {
     "id": "ann-e1074-ehs-def",
@@ -35,7 +39,11 @@
       "Prime divisors",
       "Wilson's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorials",
+      "Prime Divisors",
+      "Modular Arithmetic"
+    ]
   },
   {
     "id": "ann-e1074-pillai-def",
@@ -53,7 +61,11 @@
       "Prime numbers",
       "Factorial divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Numbers",
+      "Factorial Divisibility",
+      "Modular Congruence"
+    ]
   },
   {
     "id": "ann-e1074-chowla-divisibility",
@@ -71,7 +83,11 @@
       "Factorial computation"
     ],
     "mathContext": "See annotation content for formal details of chowla's divisibility",
-    "prerequisites": []
+    "prerequisites": [
+      "Factorial Computation",
+      "Integer Divisibility",
+      "Large-Number Arithmetic"
+    ]
   },
   {
     "id": "ann-e1074-chowla-congruence",
@@ -89,7 +105,11 @@
       "Congruence"
     ],
     "mathContext": "See annotation content for formal details of chowla's congruence check",
-    "prerequisites": []
+    "prerequisites": [
+      "Modular Arithmetic",
+      "Euclidean Division",
+      "Residue Classes"
+    ]
   },
   {
     "id": "ann-e1074-pillai-23",
@@ -107,7 +127,11 @@
       "Existence proof",
       "Witness construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Existential Quantification",
+      "Witness Construction",
+      "Conjunction Of Conditions"
+    ]
   },
   {
     "id": "ann-e1074-ehs-8",
@@ -125,7 +149,11 @@
       "First element"
     ],
     "mathContext": "See annotation content for formal details of 8 is the first ehs number",
-    "prerequisites": []
+    "prerequisites": [
+      "Factorial Computation",
+      "Integer Factorization",
+      "Modular Arithmetic"
+    ]
   },
   {
     "id": "ann-e1074-ehs-9",
@@ -143,7 +171,11 @@
       "Factorial factorization"
     ],
     "mathContext": "See annotation content for formal details of 9 is an ehs number",
-    "prerequisites": []
+    "prerequisites": [
+      "Integer Factorization",
+      "Prime Divisors",
+      "Residue Classes"
+    ]
   },
   {
     "id": "ann-e1074-infinitude",
@@ -161,7 +193,11 @@
       "Infinite sets",
       "Deep number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite Sets",
+      "Dirichlet's Theorem On Arithmetic Progressions",
+      "Prime Factorization"
+    ]
   },
   {
     "id": "ann-e1074-open-density",
@@ -180,6 +216,10 @@
       "Open problems",
       "Prime counting function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Density",
+      "Prime Counting Function",
+      "Prime Number Theorem"
+    ]
   }
 ]

@@ -16,7 +16,11 @@
       "sparse rulers",
       "asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Difference Bases",
+      "Asymptotic Density",
+      "Integer Sets"
+    ]
   },
   {
     "id": "ann-e170-perfect-ruler",
@@ -34,7 +38,11 @@
       "difference sets",
       "measurement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Difference Sets",
+      "Set Cardinality",
+      "Existential Quantifiers"
+    ]
   },
   {
     "id": "ann-e170-restricted",
@@ -52,7 +60,11 @@
       "restricted bases",
       "containment"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Subset Containment",
+      "Finite Ranges",
+      "Difference Bases"
+    ]
   },
   {
     "id": "ann-e170-trivial",
@@ -70,7 +82,11 @@
       "upper bound",
       "trivial construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Bounds",
+      "Set Cardinality",
+      "Perfect Rulers"
+    ]
   },
   {
     "id": "ann-e170-F-def",
@@ -88,7 +104,11 @@
       "infimum",
       "minimum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infimum Of Set",
+      "Set Cardinality",
+      "Restricted Perfect Rulers"
+    ]
   },
   {
     "id": "ann-e170-upper",
@@ -105,7 +125,11 @@
     "relatedConcepts": [
       "upper bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Bounds",
+      "Cardinality Counting",
+      "Trivial Ruler"
+    ]
   },
   {
     "id": "ann-e170-erdos-gal",
@@ -123,7 +147,11 @@
       "limit existence",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit Existence",
+      "Asymptotic Growth",
+      "Square Root Scaling"
+    ]
   },
   {
     "id": "ann-e170-leech",
@@ -141,7 +169,11 @@
       "lower bound",
       "Fourier methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower Bounds",
+      "Fourier Analysis",
+      "Counting Arguments"
+    ]
   },
   {
     "id": "ann-e170-wichmann",
@@ -159,7 +191,11 @@
       "upper bound",
       "triangular numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Bounds",
+      "Triangular Numbers",
+      "Explicit Constructions"
+    ]
   },
   {
     "id": "ann-e170-interval",
@@ -177,7 +213,11 @@
       "interval bounds",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Interval Bounds",
+      "Limit Values",
+      "Open Conjectures"
+    ]
   },
   {
     "id": "ann-e170-examples",
@@ -195,6 +235,10 @@
       "examples",
       "optimal rulers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Perfect Rulers",
+      "Difference Computation",
+      "Optimal Constructions"
+    ]
   }
 ]

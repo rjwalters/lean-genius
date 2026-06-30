@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-qgss-oq04-context",
+    "proofId": "quadratic-gauss-sum-square-oq-04",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "From the square identity to a quadratic field",
+    "content": "The parent entry proves the algebraic square identity g² = p* := (−1)^((p−1)/2)·p for the quadratic Gauss sum g. This file reads that identity field-theoretically: since |p*| = p is prime, p* is not a rational square, so g is a quadratic irrational. The new results are its minimal polynomial over ℚ (X² − p*), the degree [ℚ(g):ℚ] = 2, and irrationality g ∉ ℚ. Equivalently the Gauss sum generates the unique quadratic subfield ℚ(√p*) of the cyclotomic field ℚ(ζ_p) — the field-theoretic foundation of the Gauss-sum proof of quadratic reciprocity.",
+    "mathContext": "$g^2 = p^* = (-1)^{(p-1)/2}p$, $|p^*| = p$ prime $\\Rightarrow$ $p^*$ not a square $\\Rightarrow$ $\\operatorname{minpoly}_\\mathbb{Q}(g) = X^2 - p^*$, $[\\mathbb{Q}(g):\\mathbb{Q}] = 2$, $g = \\sqrt{p^*}$ generating $\\mathbb{Q}(\\zeta_p)$'s quadratic subfield.",
+    "significance": "context",
+    "relatedConcepts": ["Gauss sum", "quadratic field", "cyclotomic field", "quadratic reciprocity", "minimal polynomial"],
+    "prerequisites": ["Gauss sums", "field extensions", "quadratic characters"]
+  },
+  {
+    "id": "ann-qgss-oq04-character",
+    "proofId": "quadratic-gauss-sum-square-oq-04",
+    "range": { "startLine": 40, "endLine": 63 },
+    "type": "definition",
+    "title": "The ℂ-valued quadratic character and χ(−1)",
+    "content": "chiC p is the ℂ-valued quadratic character, the integer-valued quadraticChar (ZMod p) composed with ℤ → ℂ. Its quadraticity and nontriviality transport from the integer character. chiC_neg_one evaluates χ(−1) = (−1)^((p−1)/2): via quadraticChar_neg_one and ZMod.χ₄_eq_neg_one_pow it equals (−1)^(p/2), and p/2 = (p−1)/2 for odd p. This sign is exactly what makes g² come out as p* with the correct ± in front.",
+    "mathContext": "$\\chi_\\mathbb{C} = \\iota\\circ\\operatorname{quadraticChar}(\\mathbb{Z}/p)$; $\\chi(-1) = (-1)^{(p-1)/2}$, the sign distinguishing $p\\equiv 1$ from $p\\equiv 3\\pmod 4$.",
+    "significance": "supporting",
+    "relatedConcepts": ["MulChar.ringHomComp", "quadraticChar_neg_one", "χ₄", "primitive character"],
+    "prerequisites": ["multiplicative characters", "quadratic character over ZMod p"]
+  },
+  {
+    "id": "ann-qgss-oq04-square",
+    "proofId": "quadratic-gauss-sum-square-oq-04",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "technique",
+    "title": "The square formula g² = p*, re-derived self-containedly",
+    "content": "pstar p := (−1)^((p−1)/2)·p packages the target value as an integer. gaussSum_sq_eq re-derives the parent's identity g² = (p* : ℂ) from Mathlib's generic gaussSum_sq, which gives g² = χ(−1)·#(ZMod p); substituting chiC_neg_one and ZMod.card and pushing casts yields exactly (pstar p : ℂ). Re-deriving it here (rather than importing the parent) keeps the file self-contained.",
+    "mathContext": "$g^2 = \\chi(-1)\\cdot|\\mathbb{Z}/p| = (-1)^{(p-1)/2}\\cdot p = p^*$.",
+    "significance": "key",
+    "relatedConcepts": ["gaussSum_sq", "ZMod.card", "p-star", "self-contained re-derivation"],
+    "prerequisites": ["Gauss sum square identity", "cardinality of ZMod p"]
+  },
+  {
+    "id": "ann-qgss-oq04-notsq",
+    "proofId": "quadratic-gauss-sum-square-oq-04",
+    "range": { "startLine": 80, "endLine": 103 },
+    "type": "insight",
+    "title": "p* is not a rational square",
+    "content": "pstar_not_sq is the single arithmetic fact that unlocks everything: no rational b has b² = p*. Since (−1)^((p−1)/2) is ±1, p* is p or −p. If p* = p, a rational b with b² = p makes √p = |b| rational, contradicting Nat.Prime.irrational_sqrt. If p* = −p < 0, then b² = −p contradicts sq_nonneg. Both p mod 4 classes are dispatched uniformly by the sign of p*. This is what separates X² − p* from a reducible quadratic and forces degree 2.",
+    "mathContext": "$\\forall b\\in\\mathbb{Q},\\ b^2 \\neq p^*$: for $p^*=p$, $\\sqrt p\\notin\\mathbb{Q}$ (prime); for $p^*=-p<0$, $b^2\\ge 0$ forbids it.",
+    "significance": "key",
+    "relatedConcepts": ["irrationality of √p", "Nat.Prime.irrational_sqrt", "sq_nonneg", "p mod 4"],
+    "prerequisites": ["irrationality of prime square roots", "sign of squares"]
+  },
+  {
+    "id": "ann-qgss-oq04-minpoly",
+    "proofId": "quadratic-gauss-sum-square-oq-04",
+    "range": { "startLine": 105, "endLine": 124 },
+    "type": "concept",
+    "title": "The minimal polynomial is X² − p*",
+    "content": "isIntegral_gaussSum exhibits g as a root of the monic X² − C(p*) (annihilation from g² = p*). minpoly_gaussSum then identifies this as the minimal polynomial: it is monic (monic_X_pow_sub_C), annihilates g, and is irreducible — X_pow_sub_C_irreducible_of_prime applied with the prime exponent 2 and the no-square-root hypothesis pstar_not_sq. Because the exponent 2 is itself prime, this Kummer-style irreducibility criterion applies directly, sidestepping the usual n = 2 awkwardness. minpoly.eq_of_irreducible_of_monic seals it.",
+    "mathContext": "$\\operatorname{minpoly}_\\mathbb{Q}(g) = X^2 - C(p^*)$: monic, $\\operatorname{aeval}_g = 0$, and irreducible since $X^2 - a$ is irreducible iff $a$ has no square root.",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial", "X_pow_sub_C_irreducible_of_prime", "monic_X_pow_sub_C", "Kummer irreducibility"],
+    "prerequisites": ["minimal polynomials", "irreducibility of Xⁿ − a", "integral elements"]
+  },
+  {
+    "id": "ann-qgss-oq04-degree",
+    "proofId": "quadratic-gauss-sum-square-oq-04",
+    "range": { "startLine": 126, "endLine": 142 },
+    "type": "concept",
+    "title": "Degree 2 and irrationality",
+    "content": "finrank_adjoin_gaussSum reads [ℚ(g):ℚ] = 2 off the minimal polynomial via IntermediateField.adjoin.finrank and natDegree_X_pow_sub_C — so g generates the unique quadratic subfield ℚ(√p*) of ℚ(ζ_p). gaussSum_not_rational derives irrationality directly: if g were rational q then q² = p*, contradicting pstar_not_sq. Together these are the field-theoretic refinement of the parent's purely numerical square identity.",
+    "mathContext": "$[\\mathbb{Q}(g):\\mathbb{Q}] = \\deg(X^2 - p^*) = 2$, and $g\\notin\\operatorname{range}(\\mathbb{Q}\\to\\mathbb{C})$.",
+    "significance": "key",
+    "relatedConcepts": ["IntermediateField.adjoin.finrank", "degree of an extension", "quadratic subfield of ℚ(ζ_p)", "irrationality"],
+    "prerequisites": ["degree = natDegree of minpoly", "adjoining an algebraic element"]
+  }
+]

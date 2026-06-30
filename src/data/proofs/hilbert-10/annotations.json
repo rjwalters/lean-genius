@@ -16,7 +16,11 @@
       "MRDP theorem",
       "computability theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial Diophantine equations",
+      "decidability and algorithms",
+      "Hilbert's 1900 list of 23 problems"
+    ]
   },
   {
     "id": "ann-diophantine-poly",
@@ -35,7 +39,11 @@
       "integer solutions",
       "Diophantus of Alexandria"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multivariate polynomials with integer coefficients",
+      "integer solutions of equations",
+      "the notion of a Diophantine equation"
+    ]
   },
   {
     "id": "ann-diophantine-solution",
@@ -54,7 +62,11 @@
       "search problems",
       "decision problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential quantification (∃)",
+      "decision vs search problems",
+      "integer-solution existence"
+    ]
   },
   {
     "id": "ann-diophantine-set",
@@ -73,7 +85,11 @@
       "recursively enumerable sets",
       "MRDP theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sets defined by existential polynomial formulas",
+      "recursively enumerable (r.e.) sets",
+      "the projection of a solution set"
+    ]
   },
   {
     "id": "ann-re-sets",
@@ -92,7 +108,11 @@
       "semi-decidable",
       "halting problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turing machines and computability",
+      "semi-decidable (recognizable) sets",
+      "the halting problem"
+    ]
   },
   {
     "id": "ann-mrdp",
@@ -111,7 +131,11 @@
       "Pell equations",
       "Fibonacci encoding"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Diophantine sets and r.e. sets",
+      "Pell equations and exponential growth encodings",
+      "the equivalence Diophantine = recursively enumerable"
+    ]
   },
   {
     "id": "ann-diagonal",
@@ -130,7 +154,11 @@
       "self-reference",
       "liar paradox"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cantor's diagonal argument",
+      "self-reference and Gödel-style encoding",
+      "deriving a contradiction from a hypothetical decider"
+    ]
   },
   {
     "id": "ann-halting-undecidable",
@@ -149,7 +177,11 @@
       "Church-Turing thesis",
       "Rice's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turing machines and the halting problem",
+      "the Church–Turing thesis",
+      "proof of undecidability by diagonalization"
+    ]
   },
   {
     "id": "ann-reduction",
@@ -168,7 +200,11 @@
       "Turing reduction",
       "encoding computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "many-one / Turing reductions",
+      "encoding a Turing machine's computation as equations",
+      "reducing one undecidable problem to another"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -187,7 +223,11 @@
       "reduction",
       "Hilbert's problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the MRDP theorem (Diophantine = r.e.)",
+      "undecidability of the halting problem",
+      "reduction of Halting to H10"
+    ]
   },
   {
     "id": "ann-exponential",
@@ -206,7 +246,11 @@
       "Pell equations",
       "exponential Diophantine"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pell equations and their solution sequences",
+      "Fibonacci numbers as a Diophantine relation",
+      "capturing exponentiation Diophantinely"
+    ]
   },
   {
     "id": "ann-linear-decidable",
@@ -225,6 +269,10 @@
       "Bezout's identity",
       "GCD"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "linear Diophantine equations",
+      "the Euclidean algorithm and gcd",
+      "Bézout's identity (solvability iff gcd divides the constant)"
+    ]
   }
 ]

@@ -1,6 +1,7 @@
 import Mathlib.NumberTheory.LegendreSymbol.Basic
 import Mathlib.GroupTheory.Perm.Cycle.Basic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Tactic
 
 /-
@@ -8,14 +9,47 @@ import Mathlib.Tactic
 
 ## Status
 
-**BUILD-PENDING / UNVERIFIED.** This file was authored during an extended Docker +
-Aristotle outage (2026-06-14 .. 2026-06-15): the build container could not be started
-and the Aristotle backend returned `Resource not found`. It transcribes the fully-pinned,
-numerically-certified Milestone-1 proof from
-`research/problems/quadratic-reciprocity-algorithm-oq-03/knowledge.md` (sessions S1–S9)
-into actual Lean so that the first session with a live backend can compile/repair it
-rather than re-transcribe prose. It is intentionally **not** registered in `Proofs.lean`
-until it builds. No claim of machine-verification is made here.
+**VERIFIED (machine-checked).** Built green via
+`./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`
+on 2026-06-15 (S14, researcher-6) — the first session since S1 with a live Docker
+backend (the prior 13 sessions S1–S13 were authored blind under a Docker + Aristotle
+outage). All three lemmas compile with 0 errors / 0 sorries / 0 axioms (linter
+style-nags only). Registered in `Proofs.lean`.
+
+This file formalizes **Milestone 1** of the permutation-sign (Zolotarev) route to
+quadratic reciprocity. The numerically-certified Milestone-1 proof from
+`research/problems/quadratic-reciprocity-algorithm-oq-03/knowledge.md` (sessions S1–S13)
+is now machine-checked Lean.
+
+**S14 (2026-06-15, Docker recovered).** Confirmed the blind transcription was sound:
+the inline `G →* Perm G` monoid-hom + `map_zpow` wiring (replacing the nonexistent
+`Equiv.mulLeft_zpow`, removed S12), the `support = univ` computation, and the
+even-power `(-1)^card = 1` collapse — all flagged "unverified" by S12/S13 — compile as
+written. Removed three linter-flagged unused `simp` arguments.
+
+**S16 (2026-06-15, researcher-2, Docker recovered; Aristotle still 404).** Added the
+machine-checked **crux** `primitiveRoot_pow_half_eq_neg_one`: a generator of `(ZMod p)ˣ`
+raised to `(p−1)/2` equals `−1` in the field. Built green via
+`docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03Crux` (a uniquely-named build copy),
+0 errors / 0 sorries / 0 axioms (linter style-nags only). This is the genuinely-new Euler-side
+ingredient the headline needs; it was authored blind under blackout (S15) and is now verified.
+
+**S17 (2026-06-16, researcher-2, Docker recovered; Aristotle still 404).** Proved the
+**units-form Zolotarev headline** `legendreSym_eq_sign_mulLeft`:
+`legendreSym p (u.val) = sign (Equiv.mulLeft u)` for `u : (ZMod p)ˣ`, `p` an odd prime. This
+is Zolotarev's lemma stated on the units group — it ties the Euler-criterion side
+(`legendreSym.eq_pow` + the S16 crux: `(g)^((p-1)/2) = -1`) to the sign side
+(`sign_mulLeft_eq_neg_one_zpow`), both reducing to `(-1)^k` where `u = g^k`, then lifts the
+`±1` equality from `ZMod p` back to `ℤ` (helpers `intCast_inj_pm`, `zmod_one_ne_neg_one`).
+Built green, 0 sorries / 0 axioms.
+
+**What this file does NOT yet contain** (the OQ is NOT fully resolved): the headline above is
+stated on the **units group** `(ZMod p)ˣ` via `Equiv.mulLeft`. The exact OQ-pinned statement
+uses `Equiv.mulLeft₀` on the **field** `ZMod p` (which fixes `0`); deriving it from the units
+form needs the field-`mulLeft₀`/units-`mulLeft` sign bridge (S2 numerically verified). Milestone
+2 (reciprocity from the grid-transpose permutation sign) is also not yet in Lean. This file
+verifies the genuinely-new *producer* lemma, the Zolotarev sign computation, the primitive-root
+half-power crux, and the units-form Zolotarev identity — the reusable core Mathlib lacks.
 
 ## What this targets
 
@@ -58,27 +92,30 @@ Proof (per knowledge.md S9): discharge the `IsCycle` constructor with witness `x
 theorem isCycle_mulLeft_of_generator {G : Type*} [Group G] [Fintype G] [DecidableEq G]
     {g : G} (hg : ∀ x : G, x ∈ Subgroup.zpowers g) (hG : 2 ≤ Fintype.card G) :
     (Equiv.mulLeft g).IsCycle := by
-  -- `g ≠ 1`: otherwise `zpowers g = ⊥` is the whole group, forcing `card G ≤ 1`.
+  -- `g ≠ 1`: otherwise `zpowers g = ⊥`, so generation forces every element to be `1`,
+  -- contradicting `2 ≤ card G`.
   have hg1 : g ≠ 1 := by
     rintro rfl
-    have hsub : (Subgroup.zpowers (1 : G)) = ⊤ := by
-      ext x; simpa using hg x
-    have hbot : (Subgroup.zpowers (1 : G)) = ⊥ := Subgroup.zpowers_one_eq_bot
-    rw [hbot] at hsub
-    have : (⊥ : Subgroup G) = ⊤ := hsub
-    have hcard : Fintype.card G = 1 := by
-      have := Subgroup.card_bot (G := G)
-      -- `⊥ = ⊤` ⇒ the group is a singleton
-      have htop : Nat.card (⊤ : Subgroup G) = Nat.card G := by simp
-      rw [this] at *
-      simpa [Nat.card_eq_fintype_card] using htop.symm
-    omega
+    have hg' := hg
+    simp only [Subgroup.zpowers_one_eq_bot, Subgroup.mem_bot] at hg'
+    have hnt : Nontrivial G := Fintype.one_lt_card_iff_nontrivial.1 (by omega)
+    obtain ⟨a, b, hab⟩ := exists_pair_ne G
+    exact hab ((hg' a).trans (hg' b).symm)
   -- key wiring: `(mulLeft g) ^ i` applied to `1` equals `g ^ i`.
+  -- `a ↦ Equiv.mulLeft a` is a monoid hom `G →* Perm G`, so it commutes with `zpow`
+  -- via `map_zpow`. Mathlib has no `mulLeft_zpow`/`mulLeft_pow` lemma (confirmed absent
+  -- @ rev 2df2f01), so bundle the hom inline rather than name a nonexistent lemma.
   have hpow : ∀ i : ℤ, (Equiv.mulLeft g ^ i) 1 = g ^ i := by
     intro i
-    have : (Equiv.mulLeft g ^ i) = Equiv.mulLeft (g ^ i) := by
-      simp [Equiv.mulLeft_zpow]
-    rw [this]; simp
+    have key : (Equiv.mulLeft g ^ i) = Equiv.mulLeft (g ^ i) := by
+      have hz := map_zpow
+        ({ toFun := Equiv.mulLeft
+           map_one' := by ext x; simp
+           map_mul' := fun a b => by
+             ext x; simp [Equiv.coe_mulLeft, Equiv.Perm.mul_apply] } :
+          G →* Equiv.Perm G) g i
+      simpa using hz.symm
+    rw [key]; simp [Equiv.coe_mulLeft]
   refine ⟨1, ?_, ?_⟩
   · -- `mulLeft g` moves the point `1`.
     simpa using hg1
@@ -108,20 +145,148 @@ theorem sign_mulLeft_generator {G : Type*} [Group G] [Fintype G] [DecidableEq G]
     -- contradiction with generation + card ≥ 2
     have hg1 : g ≠ 1 := by
       rintro rfl
-      have hsub : (Subgroup.zpowers (1 : G)) = ⊤ := by ext y; simpa using hg y
-      rw [Subgroup.zpowers_one_eq_bot] at hsub
-      have hcard : Fintype.card G = 1 := by
-        have htop : Nat.card (⊤ : Subgroup G) = Nat.card G := by simp
-        rw [hsub] at htop
-        simpa [Nat.card_eq_fintype_card, Subgroup.card_bot] using htop.symm
-      omega
+      have hg' := hg
+      simp only [Subgroup.zpowers_one_eq_bot, Subgroup.mem_bot] at hg'
+      have hnt : Nontrivial G := Fintype.one_lt_card_iff_nontrivial.1 (by omega)
+      obtain ⟨a, b, hab⟩ := exists_pair_ne G
+      exact hab ((hg' a).trans (hg' b).symm)
     exact hg1 this
   -- `IsCycle.sign : sign f = -(-1) ^ f.support.card`
   rw [hcyc.sign, hsupp, Finset.card_univ]
   rcases heven with ⟨k, hk⟩
   -- card even ⇒ `(-1)^card = 1` ⇒ `-(1) = -1`
   have : ((-1 : ℤˣ)) ^ (Fintype.card G) = 1 := by
-    rw [hk]; simp [pow_add, pow_mul]
+    rw [hk]; simp [pow_add]
   rw [this]
+
+/-! ## Zolotarev sign of an arbitrary element via its discrete logarithm -/
+
+/-- For `a = g ^ k` with `g` a generator of a finite group of even order, the sign of
+left-multiplication by `a` is `(-1) ^ k`. This is the full Zolotarev *sign computation*:
+combined with Euler's criterion `legendreSym p a = (-1) ^ k` (where `k` is the discrete log
+of `a` to the base of a primitive root) it yields Zolotarev's lemma
+`legendreSym p a = sign (mulLeft a)` on `(ZMod p)ˣ`.
+
+Proof: `mulLeft (g ^ k) = (mulLeft g) ^ k` (the inline `G →* Perm G` monoid hom + `map_zpow`,
+same wiring as `isCycle_mulLeft_of_generator`), then `sign` is a `MonoidHom` so it commutes
+with `zpow` (`map_zpow` again), and `sign (mulLeft g) = -1` by `sign_mulLeft_generator`.
+
+**UNVERIFIED (blackout S13).** The Euler-criterion tie and the field/units sign bridge that
+finish the headline statement remain prose in `knowledge.md`. -/
+theorem sign_mulLeft_eq_neg_one_zpow {G : Type*} [Group G] [Fintype G] [DecidableEq G]
+    {g : G} (hg : ∀ x : G, x ∈ Subgroup.zpowers g) (hG : 2 ≤ Fintype.card G)
+    (heven : Even (Fintype.card G)) {a : G} {k : ℤ} (ha : a = g ^ k) :
+    Equiv.Perm.sign (Equiv.mulLeft a) = (-1) ^ k := by
+  have hmono : (Equiv.mulLeft a : Equiv.Perm G) = (Equiv.mulLeft g) ^ k := by
+    have hz := map_zpow
+      ({ toFun := Equiv.mulLeft
+         map_one' := by ext x; simp
+         map_mul' := fun a b => by
+           ext x; simp [Equiv.coe_mulLeft, Equiv.Perm.mul_apply] } :
+        G →* Equiv.Perm G) g k
+    rw [ha]; simpa using hz
+  rw [hmono, map_zpow, sign_mulLeft_generator hg hG heven]
+
+/-! ## The crux: a primitive root raised to `(p-1)/2` equals `-1`
+
+This is the single remaining genuinely-new ingredient (S15) the headline Zolotarev identity
+needs beyond the verified sign computation `sign_mulLeft_eq_neg_one_zpow`. Stated in the field
+`ZMod p` (not the units group) so the order-2 dichotomy uses `mul_self_eq_one_iff` directly and
+`ZMod.pow_card_sub_one_eq_one` supplies `xᵖ⁻¹ = 1` — avoiding the units `Neg`-instance question
+flagged by S15.
+
+Let `x = (g : ZMod p)` for a generator `g` of `(ZMod p)ˣ`, and `m = (p-1)/2`. Then
+`(xᵐ)² = xᵖ⁻¹ = 1`, while `xᵐ ≠ 1` because `orderOf x = p − 1 > m`; the only square root of `1`
+in a field other than `1` is `−1`. -/
+theorem primitiveRoot_pow_half_eq_neg_one {p : ℕ} [Fact p.Prime] (hp : 2 < p)
+    {g : (ZMod p)ˣ} (hg : ∀ x : (ZMod p)ˣ, x ∈ Subgroup.zpowers g) :
+    (g : ZMod p) ^ ((p - 1) / 2) = -1 := by
+  set x : ZMod p := (g : ZMod p) with hx
+  have hxne : x ≠ 0 := g.ne_zero
+  -- `orderOf x = p − 1` (a generator of the units is a primitive root in the field)
+  have hord : orderOf x = p - 1 := by
+    rw [hx, orderOf_units, orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card,
+      ZMod.card_units p]
+  set m := (p - 1) / 2 with hm
+  have heven : 2 ∣ (p - 1) := by
+    have hodd : Odd p := (Fact.out : p.Prime).odd_of_ne_two (by omega)
+    obtain ⟨t, ht⟩ := hodd
+    exact ⟨t, by omega⟩
+  have hmpos : 0 < m := by rw [hm]; omega
+  have hmlt : m < p - 1 := by rw [hm]; omega
+  have h2m : 2 * m = p - 1 := by rw [hm]; omega
+  -- `(xᵐ)² = xᵖ⁻¹ = 1`
+  have hsq : x ^ m * x ^ m = 1 := by
+    rw [← pow_add, ← two_mul, h2m]
+    exact ZMod.pow_card_sub_one_eq_one hxne
+  -- `xᵐ ≠ 1` since `m < orderOf x`
+  have hne1 : x ^ m ≠ 1 := by
+    rw [← hord] at hmlt
+    exact pow_ne_one_of_lt_orderOf (by omega) hmlt
+  -- the only non-`1` square root of `1` in a field is `-1`
+  rcases mul_self_eq_one_iff.mp hsq with h | h
+  · exact absurd h hne1
+  · exact h
+
+
+/-! ## Units-form Zolotarev headline: `legendreSym p u = sign (mulLeft u)` -/
+
+/-- In `ZMod p` for an odd prime `p`, `1 ≠ -1`. -/
+private theorem zmod_one_ne_neg_one {p : ℕ} [Fact p.Prime] (hp : 2 < p) :
+    (1 : ZMod p) ≠ (-1 : ZMod p) := by
+  intro h
+  have e : (1 : ZMod p) + 1 = 0 := by nth_rewrite 1 [h]; ring
+  have h2 : ((2 : ℕ) : ZMod p) = 0 := by push_cast; rw [← one_add_one_eq_two]; exact e
+  rw [ZMod.natCast_eq_zero_iff] at h2
+  have := Nat.le_of_dvd (by norm_num) h2
+  omega
+
+/-- Lift an equality of `±1` integers from `ZMod p` (odd prime) back to `ℤ`. -/
+private theorem intCast_inj_pm {p : ℕ} [Fact p.Prime] (hp : 2 < p) {x y : ℤ}
+    (hx : x = 1 ∨ x = -1) (hy : y = 1 ∨ y = -1)
+    (h : (x : ZMod p) = (y : ZMod p)) : x = y := by
+  rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
+  · rfl
+  · exact absurd (by push_cast at h; exact h) (zmod_one_ne_neg_one hp)
+  · exact absurd (by push_cast at h; exact h.symm) (zmod_one_ne_neg_one hp)
+  · rfl
+
+theorem legendreSym_eq_sign_mulLeft {p : ℕ} [Fact p.Prime] (hp : 2 < p)
+    (u : (ZMod p)ˣ) :
+    legendreSym p ((u : ZMod p).val : ℤ) = (Equiv.Perm.sign (Equiv.mulLeft u) : ℤ) := by
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
+  have hcard : Fintype.card (ZMod p)ˣ = p - 1 := ZMod.card_units p
+  have hcard2 : 2 ≤ Fintype.card (ZMod p)ˣ := by rw [hcard]; omega
+  have hodd : Odd p := (Fact.out : p.Prime).odd_of_ne_two (by omega)
+  have heven : Even (Fintype.card (ZMod p)ˣ) := by
+    rw [hcard]; obtain ⟨t, ht⟩ := hodd; exact ⟨t, by omega⟩
+  have hp2 : p / 2 = (p - 1) / 2 := by obtain ⟨t, ht⟩ := hodd; omega
+  -- discrete log as a natural number
+  obtain ⟨k, hk⟩ := mem_powers_iff_mem_zpowers.2 (hg u)
+  have ha : u = g ^ (k : ℤ) := by rw [zpow_natCast]; exact hk.symm
+  -- sign side: sign (mulLeft u) = (-1)^k  (npow)
+  have hsign : Equiv.Perm.sign (Equiv.mulLeft u) = (-1 : ℤˣ) ^ k := by
+    have h0 := sign_mulLeft_eq_neg_one_zpow (fun x => hg x) hcard2 heven ha
+    rwa [zpow_natCast] at h0
+  -- the crux
+  have hcrux : (g : ZMod p) ^ ((p - 1) / 2) = -1 :=
+    primitiveRoot_pow_half_eq_neg_one hp (fun x => hg x)
+  -- legendre side in ZMod p equals (-1)^k
+  have hcast : (((u : ZMod p).val : ℤ) : ZMod p) = (u : ZMod p) := by
+    push_cast; exact ZMod.natCast_rightInverse (u : ZMod p)
+  have hL : (legendreSym p ((u : ZMod p).val : ℤ) : ZMod p) = (-1 : ZMod p) ^ k := by
+    rw [legendreSym.eq_pow, hcast, hp2, ← hk]
+    push_cast
+    rw [← pow_mul, mul_comm, pow_mul, hcrux]
+  -- both sides are ±1; lift the ZMod-p equality back to ℤ
+  have hLpm : legendreSym p ((u : ZMod p).val : ℤ) = 1 ∨
+      legendreSym p ((u : ZMod p).val : ℤ) = -1 := by
+    apply legendreSym.eq_one_or_neg_one
+    rw [hcast]; exact u.ne_zero
+  rw [hsign]
+  refine intCast_inj_pm hp hLpm ?_ ?_
+  · rcases Int.units_eq_one_or ((-1 : ℤˣ) ^ k) with h | h <;> simp [h]
+  · rw [hL]; push_cast; ring
+
 
 end QuadraticReciprocityAlgorithmOQ03

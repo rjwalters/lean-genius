@@ -1,17 +1,20 @@
 /-
-  Counterexample: `greens_theorem_l1curl` is FALSE as currently stated
+  Counterexample data for the (now corrected) `greens_theorem_l1curl`
   ====================================================================
 
   Open question: greens-theorem-oq-02-oq-02
   Main file:     proofs/Proofs/GreensTheoremOQ02.lean  (axiom at line ~361)
 
-  STATUS: build-pending, UNREGISTERED (Docker verification blackout 2026-06-15).
-  This file is NOT added to the gallery / lakefile registration; it is an
-  artifact documenting an integrity defect in the stated axiom, to be
-  compile-checked when Docker is restored.
+  STATUS (2026-06-15, S10): the axiom has been CORRECTED. The registered
+  `greens_theorem_l1curl` now carries the orientation hypothesis
+  `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`, so the
+  degenerate-curve counterexample below no longer refutes it — instead it FAILS
+  `hLineEq` (see `GreensTheoremOQ02Corrected.counterexample_violates_hLineEq`).
+  This file is still UNREGISTERED (not in Proofs.lean); it supplies the
+  counterexample data the soundness witness consumes.
 
   ----------------------------------------------------------------------
-  The finding
+  The original finding (motivation for the fix)
   ----------------------------------------------------------------------
   Five prior research sessions reduced the discharge of `greens_theorem_l1curl`
   to a SINGLE upstream keystone — the function-level FTC for absolutely
@@ -75,10 +78,9 @@ noncomputable def constCurve : LipschitzClosedCurve where
   hLip := LipschitzWith.const _
   isClosed := rfl
 
-/-- The counterexample vector field: `P = 0`, `Q(x,y) = x`, with curl `≡ 1`. -/
+/-- The counterexample vector field: `P = 0`, `Q(x,y) = x` (curl `≡ 1`). -/
 noncomputable def cexP : ℝ × ℝ → ℝ := fun _ => 0
 noncomputable def cexQ : ℝ × ℝ → ℝ := fun p => p.1
-noncomputable def cexCurl : ℝ × ℝ → ℝ := fun _ => 1
 
 /-- The line integral over the degenerate (zero-velocity) curve vanishes: the
     derivatives of both constant coordinate functions are 0, so the integrand
@@ -101,41 +103,19 @@ theorem constCurve_hTraversal :
   · rw [frontier_Icc (by norm_num : (0 : ℝ) ≤ 1)]
     exact Set.mem_insert _ _
 
-/-- `hCurlAE` is satisfied (in fact the curl identity holds everywhere, not
-    just a.e.): `∂Q/∂x = 1` and `∂P/∂y = 0`. -/
-theorem cex_hCurlAE :
-    ∀ᵐ p ∂(volume.restrict (Set.Ioo (0 : ℝ) 1 ×ˢ Set.Ioo (0 : ℝ) 1)),
-      cexCurl p = deriv (fun x => cexQ (x, p.2)) p.1 -
-                  deriv (fun y => cexP (p.1, y)) p.2 := by
-  refine ae_of_all _ (fun p => ?_)
-  simp only [cexCurl, cexQ, cexP, deriv_id'']
-  rw [deriv_const]
-  norm_num
-
-/-- `hL1` is satisfied: the curl is the constant `1` on the compact rectangle,
-    which has finite measure. -/
-theorem cex_hL1 :
-    IntegrableOn cexCurl (Set.Icc (0 : ℝ) 1 ×ˢ Set.Icc (0 : ℝ) 1) volume := by
-  apply integrableOn_const.mpr
-  exact Or.inr (isCompact_Icc.prod isCompact_Icc).measure_lt_top
-
-/-- The double integral of the (unit) curl over the open square is its area,
-    `1` — nonzero, unlike the line integral. -/
-theorem cexCurl_double_integral :
-    (∫ p in Set.Ioo (0 : ℝ) 1 ×ˢ Set.Ioo (0 : ℝ) 1, cexCurl p ∂volume) = 1 := by
-  have hvol : volume (Set.Ioo (0 : ℝ) 1 ×ˢ Set.Ioo (0 : ℝ) 1) = 1 := by
-    rw [volume_eq_prod ℝ ℝ, Measure.prod_prod, Real.volume_Ioo, Real.volume_Ioo]
-    norm_num
-  simp [cexCurl, setIntegral_const, hvol]
-
-/-- **Refutation.** The axiom `greens_theorem_l1curl`, applied to the degenerate
-    constant curve and the curl-1 field above (all of whose hypotheses are
-    discharged), forces `0 = 1`. Hence the axiom as currently stated in
-    `GreensTheoremOQ02.lean` is FALSE: `hTraversal` is too weak. -/
-theorem greens_theorem_l1curl_refuted : (0 : ℝ) = 1 := by
-  have hkey := greens_theorem_l1curl constCurve cexP cexQ cexCurl 0 1 0 1
-      (by norm_num) (by norm_num) cex_hCurlAE cex_hL1 constCurve_hTraversal
-  rw [constCurve_lineIntegral_zero, cexCurl_double_integral] at hkey
-  exact hkey
+/-
+  Historical note. Earlier revisions of this file also carried
+  `greens_theorem_l1curl_refuted : (0 : ℝ) = 1`, which fed this degenerate curve
+  and the curl-1 field into the THEN-unsound axiom to force `0 = 1` (the finding
+  that motivated the fix; see PR #24381). That theorem can no longer be stated:
+  the registered axiom now requires the orientation hypothesis
+  `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`, and this
+  curve cannot satisfy it. The replacement is the soundness witness
+  `GreensTheoremOQ02Corrected.counterexample_violates_hLineEq`, which proves
+  exactly that `hLineEq` fails here — so the corrected axiom is vacuously
+  inapplicable to the counterexample. The supporting facts above
+  (`constCurve_lineIntegral_zero`, `constCurve_hTraversal`) remain the data that
+  witness consumes.
+-/
 
 end GreensTheoremOQ02Counterexample

@@ -949,72 +949,19 @@ contributing Lagrange's theorem upstream. (No Lean written; Docker down. ORIENT 
 
 - `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this Session 19 entry appended.
 
-## Session 2026-06-15 (S21, researcher-2) — a13 sandwich lower bound (S15a Helper-ACT) + a12 frontier de-risk + a14 math-correction
+---
 
-**Mode:** Helper-ACT (Lean content, narrow) + verification. Dual blackout
-re-confirmed live this session: `docker info` times out; Aristotle MCP `prove`
-on `n + 0 = n` → `"Resource not found"`. The a12 frontier (`cbrt3_a12 = 8`) is
-double-claimed in two **draft** build-pending PRs (#23388 draft 06-14, #23983
-draft 06-15, both by rjwalters) — drafts, so the deployer will not auto-merge
-them; do not pile on a third a12 PR.
+## Session 2026-06-15 (Session 20, researcher-3) — Half (a) written: ∛3 not a quadratic irrational
 
-### Deliverable 1 — new helper lower bound for a₁₃ (unblocks the next main-ACT)
+**Mode**: REVISIT (RICH). **Outcome**: progress — wrote the long-identified-but-never-authored Half (a) as a build-pending file.
 
-Added `Cbrt3Helpers.six_one_nine_three_five_two_three_over_four_two_nine_four_three_four_nine_lt_cbrt3 :
-(6193523/4294349 : ℝ) < cbrt3` to `CubeRoot3IrrationalOQ04Helpers.lean`
-(694 → 753 LOC, +1 theorem). Two-line cubing-iff proof
-(`rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`); no heartbeat budget
-needed (per S17, the helper bounds evaluate an exact rational cube directly).
-This is the **lower** side of the a₁₃ sandwich; the **upper** side is the
-existing S14a helper `cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven`
-(= p₁₃ = 1865358/1293367), reused unchanged. With this pair the next main-ACT
-(`cbrt3_a13 = 3`) is fully unblocked once Docker returns.
+S18/S19 mapped the non-periodicity question into Half (a) "∛3 is not a quadratic irrational" (paste-ready) + Half (b) Lagrange's CF theorem (absent from Mathlib, the real blocker). This session **authored Half (a)**.
 
-### Deliverable 2 — a₁₄ MATH-CORRECTION (sixth precedent)
+- **New file `proofs/Proofs/CubeRoot3IrrationalOQ04Degree.lean`** (UNREGISTERED, build-pending): proves `minpoly ℚ cbrt3 = X³ − C 3`, hence `(minpoly ℚ cbrt3).natDegree = 3` and `≠ 2` (`cbrt3_not_quadratic`). Zero risk to the registered gallery files (both OQ04 files remain 0-axiom/0-sorry, untouched).
+- **Key simplification (new):** the "`∀ b:ℚ, b³ ≠ 3`" step needed by the Kummer irreducibility bearer does NOT need a fresh rational-root argument — it reduces to the parent's existing `irrational_cbrt3` via cube injectivity on ℝ (`Odd.strictMono_pow (Odd 3)` ⟹ `(b:ℝ)=cbrt3` ⟹ cbrt3 rational, contradiction). Much shorter than a from-scratch valuation argument.
+- **All bearers name-checked vs Mathlib v4.26.0** (`~/GitHub/mathlib4`): `X_pow_sub_C_irreducible_iff_of_prime` (KummerPolynomial:123), `minpoly.eq_of_irreducible_of_monic` (Minpoly/Field:139, returns `p = minpoly A x`), `monic_X_pow_sub_C` (Monic:440), `natDegree_X_pow_sub_C` (Degree/Operations:790), `Odd.strictMono_pow` (Order/Ring/Basic:193). NOT machine-checked (dual blackout: Docker down, Aristotle `prove` → 404, both re-tested live).
+- **Half (b) re-confirmed absent**: no `Periodic.lean` / quadratic-irrational characterization under `Mathlib/Algebra/ContinuedFractions/` at the pin; "Lagrange's theorem" in overview.yaml is the group-theory one. Unchanged from S19.
 
-The post-S14a sketch tail of OEIS A002945 implied `a₁₄ = 4`. A 120-digit
-Newton recomputation of the CF gives the true prefix
-`a₀..a₁₄ = [1,2,3,1,4,1,5,1,1,6,2,5,8,3,3]`, so **`a₁₄ = 3`, not `4`**. The
-wrong `a₁₄ = 4` would give the convergent `8058881/5587716`, whose cube
-`8058881³ = 523_388_563_470_651_811_841 > 523_388_563_470_618_833_088 =
-3·5587716³` lies **ABOVE** `∛3` — the wrong side for a lower bound; a
-`lt_cbrt3` proof of it would have failed. The correct even-index (below)
-convergent is `6_193_523/4_294_349` (recursion `3·1865358+597449`,
-`3·1293367+414248`). This is the **sixth** math-correction precedent on this
-slug (after the `a₈` typo family); the lesson stands: re-derive each `aᵢ` from
-a high-precision CF computation, never re-quote a prior sketch tail.
-
-### Deliverable 3 — a₁₂ frontier de-risk (both draft PRs assert correct math)
-
-Independently verified `cbrt3_a12 = 8` by exact `Fraction` interval
-propagation: with the helper sandwich `597449/414248 < cbrt3 < 1865358/1293367`
-(both bounds already in the file, cube directions re-checked), propagating
-`[lo,hi]` through `x ↦ 1/(x - aᵢ)` for `a₀..a₁₁` forces the final
-`1/x ∈ [8, 25/3) ⊂ [8,9)`, so `⌊1/x⌋ = 8`. So the math behind both
-build-pending a12 drafts is correct; the only thing gating them is the Docker
-elaboration check.
-
-### Verification artifacts (durable)
-
-- `verify_a13_sandwich.py` — CF sequence (120-digit) + a₁₄ correction +
-  exact interval propagation forcing `a₁₃ = 3`. CERTIFICATE PASSED.
-- `verify_a12_chain.py` — exact interval propagation forcing `a₁₂ = 8`.
-
-### Files Touched (Session 21)
-
-- `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean`: +59 LOC, +1 theorem.
-- `research/problems/cube-root-3-irrational-oq-04/verify_a13_sandwich.py`: new.
-- `research/problems/cube-root-3-irrational-oq-04/verify_a12_chain.py`: new.
-- `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this entry.
-- `research/problems/cube-root-3-irrational-oq-04/state.md`: S21 focus / next action.
-- `src/data/research/problems/cube-root-3-irrational-oq-04.json`: helper file
-  lineCount/theoremCount + iteration/focus/nextAction.
-
-### Next Action (S15b main-ACT, build-gated)
-
-Prove `cbrt3_a13 = 3` in `CubeRoot3IrrationalOQ04.lean` using the now-complete
-sandwich `6193523/4294349 < cbrt3 < 1865358/1293367`. Mirror the `cbrt3_a12`
-draft's 13-deep nested-fraction `lt_div_iff₀`/`div_lt_iff₀`/`linarith` chain;
-budget `set_option maxHeartbeats` ≈ 2× the a12 value (depth scaling). Requires
-Docker (build-gated). Floor antisymmetry closes from `1/x ∈ [3, 10/3)`:
-`⌊1/x⌋ ≤ 3` via `div_lt_iff₀` (`4·(1/3) > 1`), `3 ≤ ⌊1/x⌋` via `le_div_iff₀`.
+### Next steps
+1. When Docker returns: build `CubeRoot3IrrationalOQ04Degree.lean`, fix any glue (likely candidates: the `Set.range` membership term in `not_cube`, the `algebraMap ℚ ℝ 3` normalization in `aeval_cbrt3`), then it can be registered as a standalone gallery result.
+2. Half (b) (Lagrange CF theorem) remains the only blocker to the full non-periodicity theorem; it is an upstream-Mathlib-scale contribution, out of this slug's scope.

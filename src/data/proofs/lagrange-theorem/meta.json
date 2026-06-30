@@ -225,6 +225,21 @@
       "targetId": "inverse-galois-oq-01",
       "relationship": "extended-by",
       "description": "Uses Lagrange's theorem in the fixed field degree formulas: $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$ are multiplicative consequences of Lagrange applied to the Galois group. The solvability characterization `sn_solvable_iff` ($S_n$ solvable iff $n \\leq 4$) also relies on the subgroup structure constrained by Lagrange"
+    },
+    {
+      "targetId": "lagrange-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "A partial converse: the Sylow theorems, which guarantee subgroups of prime-power order dividing the group order."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "The orbit-stabilizer theorem, a group-action generalization of Lagrange index counting."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-05",
+      "relationship": "extended-by",
+      "description": "Burnside's counting lemma, derived from the orbit-stabilizer theorem."
     }
   ],
   "references": [

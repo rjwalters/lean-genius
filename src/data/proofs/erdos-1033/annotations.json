@@ -140,7 +140,7 @@
       "startLine": 119,
       "endLine": 130
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Erdős-Laskar Constant",
     "content": "**The constant $2(\\sqrt{3}-1) \\approx 1.464$** appears in the conjectured asymptotic value of $h(n)/n$. Erdős and Laskar (1985) showed this is an upper bound by constructing explicit graphs where all triangles have degree sum at most $2(\\sqrt{3}-1)n + o(n)$.",
     "mathContext": "The constant arises from optimizing the structure of near-bipartite graphs. The extremal construction involves a balanced bipartite graph plus a carefully chosen set of edges within one part, tuned so the constant $2(\\sqrt{3}-1)$ emerges from the optimization.",

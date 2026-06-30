@@ -64,7 +64,8 @@
       "For CCW order θ₁<θ₂<θ₃<θ₄<θ₁+2π, all four half-angle differences (θᵢ-θⱼ)/2 lie in (-π,0). Since sin is negative on (-π,0), all four sines are negative, making their products positive.",
       "The exponential phase factors combine as E₂₃·E₁₄ = exp(i(θ₁+θ₂+θ₃+θ₄)/2) = E₁₂·E₃₄, so they cancel algebraically from the ratio.",
       "The proof is self-contained modulo standard Mathlib trigonometry — no inscribed angle theorem needed.",
-      "Ptolemy equality for general concyclic points follows by normalizing to the unit circle (translation + scaling preserves Ptolemy distances)."
+      "Ptolemy equality for general concyclic points follows by normalizing to the unit circle (translation + scaling preserves Ptolemy distances).",
+      "The result sits inside a four-way equivalence (Part 7): Ptolemy equality ⇔ SameRay of the two chord-products ⇔ the cross-ratio R being a positive real ⇔ concyclicity in CCW order. This file proves the chain 4 → 3 → 2 → 1, while the converse 1 → 4 (equality forces convex concyclic order) remains open."
     ],
     "prerequisites": [
       "Complex exponential arithmetic (Complex.exp_add, Complex.exp_ne_zero)",
@@ -136,7 +137,8 @@
     "implications": "This closes the geometric open question: Ptolemy's equality holds for z₁, z₂, z₃, z₄ iff they are concyclic in the correct cyclic order. Together with PtolemysComplexProofOQ01.lean's SameRay characterization, we have the chain: concyclic CCW ↔ Ptolemy equality ↔ SameRay ℝ ((z₁-z₂)(z₃-z₄)) ((z₂-z₃)(z₁-z₄)).",
     "openQuestions": [
       "Prove the converse direction: if Ptolemy equality holds for four unit-circle points, they must be in CCW (or CW) order — connecting algebraic and geometric characterizations fully.",
-      "Extend to other metrics (spherical geometry, hyperbolic geometry) where analogues of Ptolemy's theorem exist."
+      "Extend to other metrics (spherical geometry, hyperbolic geometry) where analogues of Ptolemy's theorem exist.",
+      "Remove the non-degeneracy hypotheses (hdenom ≠ 0, hnumer ≠ 0) by handling the limiting cases where two of the four points coincide, giving a single statement valid for all four-point configurations."
     ]
   },
   "leanFile": {

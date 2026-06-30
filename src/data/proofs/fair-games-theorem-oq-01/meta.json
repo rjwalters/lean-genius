@@ -2,7 +2,7 @@
   "id": "fair-games-theorem-oq-01",
   "title": "Distribution of Ruin Times in Gambler's Ruin",
   "slug": "fair-games-theorem-oq-01",
-  "description": "Complete analysis of ruin probabilities, expected ruin times, and exponential decay of ruin time distribution via the Optional Stopping Theorem, with extension to biased random walks.",
+  "description": "Algebraic analysis of the gambler's-ruin closed forms: the ruin probabilities (k/N), expected ruin time (k(N-k)), variance, biased-walk odds-ratio formula, and the cos(π/N) decay rate are taken as definitions, and the file proves their algebraic properties (sum-to-one, bounds, symmetry, AM-GM bound, harmonic/discrete-Laplacian recurrence, biased extension). The Optional Stopping Theorem derivation that justifies these closed forms is described but not formalized here.",
   "meta": {
     "author": "Doob (1953), Feller (1968)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gambler%27s_ruin",
@@ -32,8 +32,8 @@
       }
     ],
     "originalContributions": [
-      "Axiom-free proof of ruin probabilities sum to 1 (previously axiomized)",
-      "Axiom-free proof of OST for linear martingale (previously axiomized)",
+      "Axiom-free proof that the defined ruin probabilities sum to 1: k/N + (N-k)/N = 1 (previously axiomized)",
+      "Consistency identity for the defined ruin probabilities: P(win)·N = k (an algebraic check, not a formalized proof of the Optional Stopping Theorem)",
       "Biased gambler's ruin structure with odds ratio formulation",
       "Proof that unfavorable games have strictly sub-unity win probability",
       "Exponential decay rate cos(π/N) ∈ (0,1) for ruin time distribution",
@@ -50,7 +50,7 @@
       "Characteristic functions and spectral analysis of Markov chains",
       "Discrete harmonic functions and potential theory"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "The closed-form ruin probability (k/N), expected ruin time (k(N-k)), and biased odds-ratio formula are taken as definitional inputs; the Optional Stopping Theorem derivation that justifies them is not formalized in this file. Given those definitions, the file is fully machine-checked with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 49,
     "definitionCount": 14
@@ -58,7 +58,7 @@
   "overview": {
     "historicalContext": "The Gambler's Ruin problem is one of the oldest problems in probability theory, dating to correspondence between Pascal and Fermat in 1654. The modern treatment uses martingale theory developed by Doob (1953). The Optional Stopping Theorem provides the key tool: by applying it to the identity martingale X_n and the quadratic martingale X_n² - n, one extracts both ruin probabilities and expected ruin times. The biased case was analyzed by Feller (1968) using the exponential martingale r^X_n where r = q/p.",
     "problemStatement": "**Open Question**: What can we prove about the distribution of ruin times in the Gambler's Ruin problem?\n\n**Answer**: For a symmetric random walk with absorbing barriers at 0 and N, starting at k:\n1. P(reach N) = k/N, P(reach 0) = (N-k)/N\n2. E[T] = k(N-k) (quadratic in N)\n3. P(T > t) ~ C·cos(π/N)^t (exponential decay)\n\nFor biased walks (p ≠ 1/2), the odds ratio r = q/p governs everything: P(win) = (1-r^k)/(1-r^N).",
-    "text": "Complete analysis of ruin probabilities, expected ruin times, and exponential decay of ruin time distribution via the Optional Stopping Theorem, with extension to biased random walks.",
+    "text": "Algebraic analysis of the gambler's-ruin closed forms. The ruin probabilities, expected ruin time, variance, biased-walk formula, and cos(π/N) decay rate are taken as definitions, and the file proves their algebraic properties. The Optional Stopping Theorem derivation justifying these closed forms is described but not formalized here.",
     "proofStrategy": "Apply the Optional Stopping Theorem to different martingales:\n- **Linear martingale** X_n: gives ruin probabilities P(win) = k/N\n- **Quadratic martingale** X_n² - n: gives E[T] = k(N-k)\n- **Exponential martingale** r^(X_n): gives biased ruin probabilities\n\nThe exponential decay rate comes from the spectral analysis of the transition matrix: the dominant eigenvalue is cos(π/N), proved to lie in (0,1) for N ≥ 3.",
     "keyInsights": [
       "All axioms from the previous version were eliminated by proving them directly from definitions: k/N + (N-k)/N = 1 and (k/N)·N = k are pure algebra",

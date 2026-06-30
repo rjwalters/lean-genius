@@ -1,0 +1,160 @@
+{
+  "id": "spectral-trace-det-eigenvalues-oq-02-oq-01",
+  "title": "The Frobenius Trace Form is a Genuine Inner Product",
+  "slug": "spectral-trace-det-eigenvalues-oq-02-oq-01",
+  "description": "Answers the first open question of the parent entry (cyclic invariance of the trace): the trace form ⟪A, B⟫ = tr(Aᵀ·B) = Σᵢⱼ Aᵢⱼ Bᵢⱼ on real matrices is a genuine inner product — the Frobenius / Hilbert–Schmidt inner product. This is real content rather than a re-export: Mathlib deliberately keeps the Frobenius norm out of instance resolution (the scoped Matrix.frobeniusNormedAddCommGroup etc.) to avoid a norm diamond against the sup-norm, so Matrix m n ℝ carries no inner-product (nor even a default norm) instance. We define frobInner A B := (Aᵀ * B).trace and prove the full slate of inner-product axioms from first principles: the entrywise formula, symmetry, additivity and homogeneity in each slot, the squared-Frobenius-norm identity ⟪A, A⟫ = Σ Aᵢⱼ², positive semidefiniteness, and positive definiteness ⟪A, A⟫ = 0 ↔ A = 0. These are packaged into the bundled Mathlib certificate frobCore : InnerProductSpace.Core ℝ (Matrix m n ℝ), whose mere existence is the formal statement that the form is a genuine real inner product (the Core is the right certificate precisely because the space carries no norm instance — one cannot even state InnerProductSpace ℝ (Matrix m n ℝ) without first committing to the very norm Mathlib avoids). The norm this inner product induces is exactly the Frobenius norm √(Σ Aᵢⱼ²). Singular-value content is out of scope, as flagged in the open question. Fully verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Classical (Frobenius / Hilbert–Schmidt inner product); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Frobenius_inner_product",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "linear-algebra",
+      "matrix-theory",
+      "inner-product-space",
+      "frobenius-norm",
+      "hilbert-schmidt",
+      "trace",
+      "positive-definite",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SpectralTraceDetEigenvaluesOQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.trace",
+        "description": "The trace tr(M) = Σᵢ Mᵢᵢ. The Frobenius inner product is defined as frobInner A B := (Aᵀ * B).trace; unfolding trace, diag, and mul_apply and commuting the double sum gives the entrywise formula Σᵢⱼ Aᵢⱼ Bᵢⱼ.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Trace"
+      },
+      {
+        "theorem": "InnerProductSpace.Core",
+        "description": "The bundled certificate of an inner product over an RCLike field: an inner map together with conjugate symmetry, nonnegativity, additivity and homogeneity in the first slot, and definiteness. frobCore instantiates this structure for ℝ, so its existence certifies that frobInner satisfies every inner-product axiom.",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Finset.sum_eq_zero_iff_of_nonneg",
+        "description": "A finite sum of nonnegative reals is zero iff every term is zero. Applied twice (over rows, then columns) to turn ⟪A, A⟫ = Σ Aᵢⱼ² = 0 into Aᵢⱼ² = 0 for every entry, then pow_eq_zero_iff gives A = 0 — the positive-definiteness direction.",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "frobInner: the Frobenius / Hilbert–Schmidt inner product ⟪A, B⟫ = tr(Aᵀ·B) on Matrix m n ℝ, defined where Mathlib provides no inner-product instance (the Frobenius norm is deliberately scoped out of instance resolution to avoid a norm diamond).",
+      "frobInner_eq_sum: the entrywise formula ⟪A, B⟫ = Σᵢⱼ Aᵢⱼ Bᵢⱼ, obtained by unfolding the trace of Aᵀ·B and commuting the double sum — the bridge between the coordinate-free trace definition and the bilinear-pairing picture.",
+      "frobInner_comm: symmetry ⟪A, B⟫ = ⟪B, A⟫ from the entrywise formula.",
+      "frobInner_add_left / frobInner_add_right / frobInner_smul_left / frobInner_smul_right: full bilinearity in both slots.",
+      "frobInner_self_eq_sum_sq: the induced quadratic form is the squared Frobenius norm ⟪A, A⟫ = Σᵢⱼ Aᵢⱼ².",
+      "frobInner_self_nonneg: positive semidefiniteness 0 ≤ ⟪A, A⟫ as a sum of squares.",
+      "frobInner_self_eq_zero_iff: positive definiteness ⟪A, A⟫ = 0 ↔ A = 0, via two nested applications of Finset.sum_eq_zero_iff_of_nonneg.",
+      "frobCore: the bundled certificate InnerProductSpace.Core ℝ (Matrix m n ℝ) assembled from the axioms above — its existence IS the formal statement that the Frobenius form is a genuine real inner product, and it is the right certificate because the matrix space carries no norm instance to state InnerProductSpace directly.",
+      "frob_sqrt_self_eq_frobenius_norm: the radicand identity √⟪A, A⟫ = √(Σᵢⱼ Aᵢⱼ²), recording that the induced norm is exactly the Frobenius norm.",
+      "Concrete witnesses: ⟪A, A⟫ = 25 for ![![3,4],![0,0]] (= 9 + 16, the 3-4-5 Pythagorean instance of the Frobenius norm) and symmetry on a rectangular 2×3 pair."
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 163,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No native_decide is used, so Lean.ofReduceBool is not introduced. All results hold for arbitrary finite index types m, n and real entries; the inner-product Core is over ℝ.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The Frobenius (or Hilbert–Schmidt) inner product ⟪A, B⟫ = tr(AᵀB) = Σ Aᵢⱼ Bᵢⱼ is the canonical inner product on the space of matrices: it is the Euclidean inner product under the obvious identification of an m×n matrix with a vector in ℝ^{mn}, and the norm it induces, the Frobenius norm √(Σ Aᵢⱼ²), is the most-used matrix norm after the operator norm. Its infinite-dimensional analogue, the Hilbert–Schmidt inner product on Hilbert–Schmidt operators, underlies trace-class theory and quantum information. The form is the natural companion to cyclic invariance of the trace from the parent entry: symmetry ⟪A, B⟫ = ⟪B, A⟫ is exactly tr(AᵀB) = tr(BᵀA), the trace-pairing read in two directions.",
+    "problemStatement": "**Open Question (spectral-trace-det-eigenvalues-oq-02, Q1)**: Prove the trace form tr(Aᵀ·B) = Σ Aᵢⱼ Bᵢⱼ is a *genuine* inner product — the Frobenius / Hilbert–Schmidt inner product — on the real matrices, and relate its induced norm to the singular values.\n\n**Result**: frobInner A B := tr(Aᵀ·B) is shown to satisfy every inner-product axiom from first principles (entrywise formula, symmetry, bilinearity, positive definiteness) and packaged as InnerProductSpace.Core ℝ (Matrix m n ℝ); the induced norm is identified as the Frobenius norm √(Σ Aᵢⱼ²). The singular-value relation (‖A‖_F² = Σ σᵢ²) is explicitly left out of scope, as flagged in the question.",
+    "text": "For real matrices A, B : Matrix m n ℝ over finite index types m, n, define ⟪A, B⟫ := tr(Aᵀ·B). Then ⟪A, B⟫ = Σᵢⱼ Aᵢⱼ Bᵢⱼ, the form is symmetric and bilinear, ⟪A, A⟫ = Σᵢⱼ Aᵢⱼ² ≥ 0, and ⟪A, A⟫ = 0 iff A = 0. These are the axioms of a real inner product; bundling them gives InnerProductSpace.Core ℝ (Matrix m n ℝ), and the induced norm is the Frobenius norm √(Σ Aᵢⱼ²).",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Unfold frobInner A B = (Aᵀ * B).trace through trace, diag_apply, mul_apply, transpose_apply, and commute the resulting double sum to land on the entrywise formula Σᵢⱼ Aᵢⱼ Bᵢⱼ. Every later property is proved from this formula.\n\n2. Symmetry and bilinearity reduce, term by term, to ring identities on the entries: Finset.sum_congr down to each (i, j) and ring. Additivity and homogeneity in the second slot are obtained from the first slot by frobInner_comm rather than re-deriving them.\n\n3. Specialise to ⟪A, A⟫ = Σ Aᵢⱼ²; nonnegativity is Finset.sum_nonneg of squares.\n\n4. Definiteness: from Σ Aᵢⱼ² = 0, apply Finset.sum_eq_zero_iff_of_nonneg over rows then columns to force every Aᵢⱼ² = 0, then pow_eq_zero_iff to get Aᵢⱼ = 0, hence A = 0 by ext; the converse is simp after subst.\n\n5. Assemble the four structural fields (conj_inner_symm, re_inner_nonneg, add_left, smul_left, definite) into frobCore : InnerProductSpace.Core ℝ (Matrix m n ℝ), using RCLike.conj_to_real / RCLike.re_to_real to discharge the real specialisations of the Hermitian fields.\n\n6. Record √⟪A, A⟫ = √(Σ Aᵢⱼ²) to name the induced norm as the Frobenius norm.",
+    "keyInsights": [
+      "**This is genuine content, not a re-export.** Mathlib equips Matrix m n ℝ with no inner product and no default norm: the Frobenius norm lives in scoped defs (frobeniusNormedAddCommGroup) kept out of instance resolution to avoid a norm diamond against the sup-norm. So the inner-product structure must be built from scratch.",
+      "**The Core is the right certificate.** Because the space has no norm instance, one cannot even *state* InnerProductSpace ℝ (Matrix m n ℝ) without first committing to a norm — the very diamond Mathlib avoids. InnerProductSpace.Core packages all the inner-product axioms without forcing that choice, so its mere existence is the cleanest formal statement of the result.",
+      "**Symmetry is cyclic invariance of the trace, read twice.** ⟪A, B⟫ = ⟪B, A⟫ is tr(AᵀB) = tr(BᵀA) = Σ Aᵢⱼ Bᵢⱼ — the same bilinear trace-pairing that the parent entry studies as tr(AB) = tr(BA), now in the inner-product guise.",
+      "**Positive definiteness is the only non-formal step.** Bilinearity and symmetry are entrywise ring identities; the content is that a sum of squares vanishes iff each entry does, which needs Finset.sum_eq_zero_iff_of_nonneg applied across the two-dimensional index."
+    ],
+    "prerequisites": [
+      "The trace tr(M) = Σ Mᵢᵢ and the product formula (Aᵀ·B)ᵢⱼ entries",
+      "Finite sums over Finset.univ and the sum-of-nonnegatives vanishing criterion",
+      "Mathlib's InnerProductSpace.Core certificate and the RCLike specialisation to ℝ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The Frobenius Inner Product and its Entrywise Formula",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Module docstring explaining why Mathlib provides no inner-product instance on Matrix m n ℝ (scoped Frobenius norm, norm diamond); definition frobInner A B := (Aᵀ * B).trace; and frobInner_eq_sum, the entrywise formula ⟪A, B⟫ = Σᵢⱼ Aᵢⱼ Bᵢⱼ obtained by unfolding the trace and commuting the double sum.",
+      "mathContext": "$\\langle A, B\\rangle = \\operatorname{tr}(A^{\\mathsf T} B) = \\sum_{i,j} A_{ij} B_{ij}$."
+    },
+    {
+      "id": "bilinearity",
+      "title": "Symmetry and Bilinearity",
+      "startLine": 62,
+      "endLine": 92,
+      "summary": "frobInner_comm (symmetry), frobInner_add_left / frobInner_add_right (additivity), and frobInner_smul_left / frobInner_smul_right (homogeneity). All reduce through the entrywise formula to per-entry ring identities; the second-slot laws are derived from the first slot via symmetry.",
+      "mathContext": "$\\langle A, B\\rangle = \\langle B, A\\rangle,\\quad \\langle rA, B\\rangle = r\\langle A, B\\rangle$."
+    },
+    {
+      "id": "positive-definiteness",
+      "title": "Positive Definiteness",
+      "startLine": 94,
+      "endLine": 123,
+      "summary": "frobInner_self_eq_sum_sq (⟪A, A⟫ = Σ Aᵢⱼ²), frobInner_self_nonneg (sum of squares ≥ 0), and frobInner_self_eq_zero_iff (⟪A, A⟫ = 0 ↔ A = 0) via two nested applications of Finset.sum_eq_zero_iff_of_nonneg and pow_eq_zero_iff.",
+      "mathContext": "$\\langle A, A\\rangle = \\sum_{i,j} A_{ij}^2 = 0 \\iff A = 0$."
+    },
+    {
+      "id": "core-and-norm",
+      "title": "The Bundled Inner-Product Certificate and the Frobenius Norm",
+      "startLine": 125,
+      "endLine": 163,
+      "summary": "frobCore : InnerProductSpace.Core ℝ (Matrix m n ℝ) assembled from the axioms; frob_sqrt_self_eq_frobenius_norm identifying the induced norm √⟪A, A⟫ as the Frobenius norm √(Σ Aᵢⱼ²); and concrete sanity checks (⟪·,·⟫ = 25 on a 2×2 witness, symmetry on a 2×3 pair).",
+      "mathContext": "$\\text{frobCore} : \\text{InnerProductSpace.Core}\\ \\mathbb{R}\\ (\\text{Matrix}\\ m\\ n\\ \\mathbb{R})$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "spectral-trace-det-eigenvalues-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry on cyclic invariance of the trace, whose first open question — prove tr(AᵀB) = Σ Aᵢⱼ Bᵢⱼ is a genuine inner product — this entry answers. The parent's bilinear trace-pairing tr(AB) = tr(BA) becomes the symmetry axiom ⟪A, B⟫ = ⟪B, A⟫ here."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) construction of the Frobenius / Hilbert–Schmidt inner product ⟪A, B⟫ = tr(Aᵀ·B) on real matrices: the entrywise formula, symmetry, full bilinearity, the squared-Frobenius-norm identity, positive semidefiniteness, and positive definiteness, packaged into the bundled certificate InnerProductSpace.Core ℝ (Matrix m n ℝ) and with the induced norm identified as the Frobenius norm.",
+    "implications": "Supplies the inner-product structure Mathlib deliberately withholds from Matrix m n ℝ (to avoid a norm diamond), giving a usable certificate that the trace form is a genuine inner product. Answers the parent entry's first open question and exhibits symmetry of the form as cyclic invariance of the trace in inner-product clothing.",
+    "openQuestions": [
+      "Relate the induced Frobenius norm to the singular values: ‖A‖_F² = Σ σᵢ²(A), the part of the parent question deliberately left out of scope here, which would require Mathlib's singular-value decomposition or the eigenvalues of AᵀA.",
+      "Promote frobCore to a full InnerProductSpace ℝ (Matrix m n ℝ) instance via InnerProductSpace.ofCore and verify it agrees with the scoped Matrix.frobeniusNormedAddCommGroup norm, making the Cauchy–Schwarz inequality |tr(AᵀB)| ≤ ‖A‖_F ‖B‖_F available directly."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Finset"
+    ],
+    "namespace": "SpectralTraceDetEigenvaluesOQ02OQ01",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "path": "Proofs/SpectralTraceDetEigenvaluesOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Roger A. Horn and Charles R. Johnson",
+      "title": "Matrix Analysis",
+      "year": "2012",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for the Frobenius inner product, the Frobenius norm, and its relation to the singular values."
+    },
+    {
+      "authors": "leanprover-community",
+      "title": "Mathlib.Analysis.InnerProductSpace.Basic and Mathlib.LinearAlgebra.Matrix.Trace",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Source of the InnerProductSpace.Core certificate and Matrix.trace used to build and package the Frobenius inner product."
+    }
+  ],
+  "sorries": 0
+}

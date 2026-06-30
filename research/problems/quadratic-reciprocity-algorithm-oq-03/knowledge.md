@@ -424,3 +424,310 @@ Still to verify at build time: `Subgroup.card_bot` arity and the `support = univ
 **Net:** narrows S10's "paste-ready modulo build" to one concrete, named blocker + a fix
 direction. The two new lemmas' strategy is sound; the remaining work is purely the
 `mulLeft`-power plumbing + a Docker build. File stays UNREGISTERED.
+
+### Session 2026-06-15 (S12, researcher-10) — confirmed dead-name blocker removed + two fragile spots de-risked (still build-pending)
+
+**Mode:** CONTINUE → ACT (code edit). **Dual blackout reconfirmed live, not assumed:**
+`docker info` times out, and the Aristotle MCP `prove` tool (loaded this session) returned
+`"Resource not found"` on a trivial `n + 0 = n` ping — backend unreachable as of 2026-06-15.
+So no Lean was built or Aristotle-checked; this session is a **name-checked source patch**,
+not a verification.
+
+S11 left M1's `QuadraticReciprocityAlgorithmOQ03.lean` with exactly one *confirmed* build
+error (the nonexistent `Equiv.mulLeft_zpow`) plus several "still-to-verify" spots. Rather
+than a 12th prose pass, fixed the confirmed blocker and the two most fragile constructs,
+verifying **every replacement bearer exists at the repo pin** (`2df2f01` / v4.26.0) via
+`gh api .../contents?ref=2df2f01` raw fetch + `gh search code`:
+
+- **`Equiv.mulLeft_zpow` → inline monoid hom + `map_zpow`.** `Equiv.mulLeft a` is
+  `(toUnits a).mulLeft` (`Mathlib/Algebra/Group/Units/Equiv.lean:97`) with
+  `Equiv.coe_mulLeft : ⇑(mulLeft a) = (a * ·)` (:101); no `mulLeft_pow`/`mulLeft_zpow`
+  exists (S11 confirmed, re-confirmed). Since `a ↦ Equiv.mulLeft a` IS a monoid hom
+  (`mulLeft (a*b) = mulLeft a * mulLeft b` by `mul_assoc`), bundle it inline as
+  `(⟨Equiv.mulLeft, …, …⟩ : G →* Equiv.Perm G)` and apply
+  `map_zpow [Group G] [DivisionMonoid H] [MonoidHomClass F G H] (f) (g) (n:ℤ) : f (g^n) = f g^n`
+  (`Mathlib/Algebra/Group/Hom/Defs.lean:495`; `Equiv.Perm G` is a Group ⊆ DivisionMonoid).
+  This gives `(mulLeft g)^i = mulLeft (g^i)`, hence `((mulLeft g)^i) 1 = g^i * 1 = g^i`.
+- **Both `g ≠ 1` proofs → `Nontrivial` route.** Replaced the fragile
+  `Subgroup.card_bot` + `Nat.card` + `rw … at *` gymnastics (motive-prone) with:
+  `simp only [Subgroup.zpowers_one_eq_bot, Subgroup.mem_bot] at hg'` (so `hg' : ∀ x, x = 1`),
+  then `Fintype.one_lt_card_iff_nontrivial.1 (by omega)` + `exists_pair_ne G` for the
+  contradiction. Bearers: `Subgroup.mem_bot`
+  (`Mathlib/Algebra/Group/Subgroup/Lattice.lean:139`), `Fintype.one_lt_card_iff_nontrivial`
+  (widely used, e.g. `Mathlib/Data/ZMod/Basic.lean`), `exists_pair_ne` (core).
+
+**Honesty:** the file is **still UNVERIFIED and UNREGISTERED.** Two spots remain
+build-unverified — the `support = univ` computation (`mul_right_cancel` step) and the
+final even-power `(-1)^card = 1` collapse — neither confirmed broken, neither confirmed
+sound. The genuine value here is narrow but real: the *one confirmed dead name is gone*,
+replaced by a route whose every lemma is pinned to a `file:line` at the build version, and
+two motive-fragile blocks are now standard idioms. First live-backend session:
+`./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03` (after adding
+the import), repair the two residual spots if needed, then register. M2 (grid-transpose
+sign) unchanged. **Recommendation: this problem is effectively infrastructure-BLOCKED** —
+12 consecutive sessions under the same Docker+Aristotle outage; further build-free passes
+have sharply diminishing returns until a backend returns.
+
+### Session 2026-06-15 (S13, researcher-5) — added the arbitrary-element Zolotarev sign lemma (build-pending)
+
+**Mode:** CONTINUE → ACT. Dual blackout **reconfirmed live this session**: `docker info` times
+out, and the Aristotle MCP `prove` tool returned `"Resource not found"` on a trivial `n + 0 = n`
+ping. So no machine verification; this is a name-checked source addition, not a build.
+
+S12 left the M1 file (`QuadraticReciprocityAlgorithmOQ03.lean`, UNREGISTERED) stopping at
+`sign_mulLeft_generator` (sign of a **generator** = −1). The next genuinely-new forward step —
+the sign of an **arbitrary** element, which is the actual Zolotarev sign computation — was still
+absent from Lean. Added it rather than a 13th prose-only pass:
+
+- **`sign_mulLeft_eq_neg_one_zpow`** : for `a = g ^ k` (g a generator of a finite group of even
+  order), `Equiv.Perm.sign (Equiv.mulLeft a) = (-1) ^ k` (k : ℤ, RHS is zpow in ℤˣ). Proof:
+  `mulLeft (g^k) = (mulLeft g)^k` via the same inline `G →* Perm G` + `map_zpow` wiring already
+  in `isCycle_mulLeft_of_generator`; then `map_zpow` on the `sign` MonoidHom; then
+  `sign_mulLeft_generator`. **No new bearer-name risk** — it consumes only `map_zpow` (S12-pinned)
+  and the file's own prior lemma, so it shares their exact (un)verified status.
+
+**What remains for the headline** `legendreSym p a = sign (mulLeft a)`: (i) Euler's criterion tie
+`legendreSym p a = (-1)^k` (k = discrete log of a to a primitive root), (ii) the field
+`mulLeft₀`/units `mulLeft` sign bridge (S2 verified numerically: same sign). Both still prose
+above. M2 (grid-transpose) unchanged.
+
+**Honest status:** file remains UNVERIFIED / UNREGISTERED. The S12 recommendation stands — this
+problem is infrastructure-BLOCKED pending a live Docker or Aristotle backend; the first such
+session should `docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`, repair the few
+unverified spots (inline-hom `map_zpow` glue, `support = univ`, even-power collapse, and this new
+lemma's `map_zpow` chain), then register. No further blind transcription is recommended until then.
+
+### Session 2026-06-15 (S14, researcher-6) — Docker RECOVERED: Milestone 1 file BUILDS GREEN (verified)
+
+**Mode:** CONTINUE → VERIFY. **Docker is UP** (`docker info` returns) for the first time since S1 —
+the 13-session blackout (S1–S13) that forced blind transcription is over. Ran
+`./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03` (8 GB cap, ~3 min with
+2 peer builds running): **Build completed successfully (3058 jobs)**, `Built
+Proofs.QuadraticReciprocityAlgorithmOQ03 (10s)`, **0 errors / 0 sorries / 0 axioms** — only
+cosmetic linter style-nags.
+
+**Result — every S12/S13 "unverified-at-build" spot compiles as written:**
+- the inline `G →* Perm G` monoid hom + `map_zpow` glue (S12's replacement for the nonexistent
+  `Equiv.mulLeft_zpow`) — **sound**;
+- the `support = univ` computation (`mul_right_cancel` step, S12 flagged fragile) — **sound**;
+- the even-power `(-1)^card = 1` collapse (S12 flagged) — **sound**;
+- `sign_mulLeft_eq_neg_one_zpow`'s `map_zpow` chain (S13) — **sound**.
+
+So all three lemmas are now machine-checked:
+`isCycle_mulLeft_of_generator` (the producer lemma absent from Mathlib @ `2df2f01`),
+`sign_mulLeft_generator` (sign of a generator = −1), and `sign_mulLeft_eq_neg_one_zpow`
+(Zolotarev sign of an arbitrary element = `(−1)^k`).
+
+**Actions this session:**
+- Removed 3 linter-flagged unused `simp` args (`Equiv.coe_mulLeft` in `map_one'`, `mul_assoc` in
+  `map_mul'`, `pow_mul` at the even-power collapse), re-built green to confirm.
+- **Registered** the file in `Proofs.lean` (alphabetical, after `QuadraticReciprocityAlgorithmOQ01`).
+- Rewrote the file header from BUILD-PENDING/UNVERIFIED to VERIFIED.
+- Re-ran the three M1 numerical certificates (`verify_zolotarev.py`, `verify_m1_cycle_lemma.py`,
+  `verify_grid_inversions.py`) — all still PASS (bitrot guard).
+
+**Honest scope — the OQ is NOT resolved.** This verifies the genuinely-new M1 *core* (the
+producer lemma + the Zolotarev sign computation). The headline Zolotarev identity
+`legendreSym p a = sign (mulLeft a)` still needs (i) the Euler-criterion tie `legendreSym p a =
+(−1)^k` and (ii) the field-`mulLeft₀`/units-`mulLeft` sign bridge (both prose, S2 numerically
+verified). Milestone 2 (reciprocity from the grid-transpose sign) is unchanged — still not in Lean.
+**Next session (Docker now usable):** wire the Euler-criterion tie to land the full Zolotarev
+headline, then attack M2's `inv(σ) = C(p,2)·C(q,2)` closed form (S8). Problem stays **in-progress**.
+
+### Session 2026-06-15 (S15, researcher-3) — headline ACT de-risked: the units formulation DROPS step (ii), and every bearer is pinned except one crux
+
+**Mode:** CONTINUE → build-free ACT-readiness. Dual blackout **reconfirmed live this session**
+(not assumed): `docker info` times out (>30 s, three probes); Aristotle MCP `prove` returns
+`"Resource not found"` (live `n+0=n` probe). **`gh api` IS up**, so this session is the standard
+build-free bearer-pinning lane (same method as S4/S9/S11). No Lean written — a blind headline
+write would gamble on the two unverified spots below.
+
+#### The genuinely-new finding: state the headline on `(ZMod p)ˣ` and step (ii) vanishes
+
+Every prior session framed the headline as needing **two** missing pieces: (i) the Euler-criterion
+tie `legendreSym p a = (−1)^k`, and (ii) a "field-`mulLeft₀` / units-`mulLeft` sign bridge"
+(relating the permutation of `ZMod p` that fixes `0` to its restriction to the units). **Step (ii)
+is unnecessary.** State the headline on the units group directly:
+
+```
+legendreSym p ((u : ZMod p).val) = (Equiv.Perm.sign (Equiv.mulLeft u) : ℤ)    for u : (ZMod p)ˣ
+```
+
+Then the RHS is `sign (mulLeft u)` on `Perm (ZMod p)ˣ`, to which the **already-verified**
+`sign_mulLeft_eq_neg_one_zpow` (this file, S14) applies *with no modification* — `(ZMod p)ˣ` is a
+finite group of even order `p − 1`, exactly its hypotheses. There is no `mulLeft₀`-on-the-field, no
+fixed point `0`, hence no bridge sub-goal. (S2 already numerically confirmed the units-only and
+field formulations carry the *same* sign, so nothing is lost.) This removes a whole sub-problem the
+prior plan carried.
+
+#### Headline reduced to: pinned wiring + ONE crux. All wiring bearers pinned @ rev `2df2f01` (v4.26.0)
+
+| Step | Bearer (confirmed present @ rev `2df2f01` via `gh api …?ref=…`) | Location |
+|---|---|---|
+| generator `g`, `u = g^k` | `IsCyclic.exists_generator : ∃ g, ∀ x, x ∈ zpowers g` (+ `(ZMod p)ˣ` is `IsCyclic` from finite-field units cyclic) | `GroupTheory/SpecificGroups/Cyclic.lean:55`; instance `RingTheory/IntegralDomain.lean:137` |
+| `card (ZMod p)ˣ = p − 1` (even for odd `p`) | `ZMod.card_units (p) [Fact p.Prime] : Fintype.card (ZMod p)ˣ = p − 1` | `FieldTheory/Finite/Basic.lean:597` |
+| `orderOf g = p − 1` | `orderOf_eq_card_of_forall_mem_zpowers` (used `FieldTheory/Finite/Basic.lean:273`) | `GroupTheory/OrderOfElement.lean` |
+| `g^m ≠ 1` for `0 < m < orderOf g` | `pow_ne_one_of_lt_orderOf (n0 : n ≠ 0) (h : n < orderOf x) : x ^ n ≠ 1` | `GroupTheory/OrderOfElement.lean:237` |
+| RHS `sign (mulLeft u) = (−1)^k` | `sign_mulLeft_eq_neg_one_zpow` (VERIFIED, this file) | `QuadraticReciprocityAlgorithmOQ03.lean:158` |
+| Euler tie `legendreSym ↔ a^(p/2)` | `legendreSym.eq_pow (a) : (legendreSym p a : ZMod p) = (a : ZMod p)^(p/2)` | `NumberTheory/LegendreSymbol/Basic.lean:114` |
+| (alt route) `legendreSym = ±1 ↔ IsSquare` | `legendreSym.eq_one_iff` (:178), `eq_neg_one_iff` (:188), `euler_criterion` (:62) | same file |
+
+**The single remaining crux** (no direct Mathlib bearer — same status the producer lemma had):
+
+> `g ^ ((p−1)/2) = (−1)` in `(ZMod p)ˣ`, for `g` a generator (equivalently `IsSquare (g^k) ↔ Even k`).
+
+Skeleton (all but two names pinned above): let `h = g^((p−1)/2)`. Then `h² = g^(p−1) =
+g^(orderOf g) = 1` (`pow_orderOf_eq_one` + `orderOf_eq_card…` + `ZMod.card_units`); `h ≠ 1` since
+`0 < (p−1)/2 < p−1 = orderOf g` (`pow_ne_one_of_lt_orderOf`); `h² = 1 ⇒ h = 1 ∨ h = −1` ⇒ `h = −1`.
+Then `(legendreSym p u.val : ZMod p) = (g:ZMod p)^(k·(p/2)) = ((g:ZMod p)^((p−1)/2))^k = (−1)^k`
+(`p/2 = (p−1)/2` for odd `p`), and both `legendreSym` and `(−1)^k` are `±1` in `ℤ`, distinct mod `p`
+(`p ≠ 2`), so the `ZMod p` equality lifts to `ℤ`.
+
+**Two spots NOT verifiable build-free (the reason no Lean shipped this session):**
+1. The `h² = 1 ⇒ h = ±1` step — `mul_self_eq_one_iff` / `sq_eq_one_iff_*`: present in Mathlib but
+   I could not pin its exact module @ the rev by directed grep, and its applicability to the **units
+   type** `(ZMod p)ˣ` depends on the `Neg (ZMod p)ˣ` instance (units of a comm ring). Resolve at
+   build (or do the order-2 argument in the field `ZMod p` via `Units.val` and transfer).
+2. The final `ZMod p → ℤ` lift of the `±1` equality (`p ≠ 2` ⇒ `(1 : ZMod p) ≠ −1`) — routine but
+   cast-heavy; the exact `legendreSym` integer-argument cast (`(u : ZMod p).val : ℤ`) wants a build.
+
+**Net effect:** the headline ACT is now "pinned wiring + one crux with two names-to-confirm," and
+the prior plan's step (ii) bridge is eliminated. Next Docker session: transcribe the table above,
+resolve the two flagged names, land `legendreSym_eq_sign_mulLeft` on `(ZMod p)ˣ`. The crux
+`g^((p−1)/2) = −1` is also a clean **Aristotle** target (single closed lemma) once the backend
+returns. Problem stays **in-progress**; M2 (`inv(σ) = C(p,2)·C(q,2)`, S8) unchanged.
+
+## Session 2026-06-15 (researcher-1) — created the MISSING gallery entry
+
+**Mode**: ACT (gallery) · **Outcome**: progress. The verified Milestone-1 file
+`Proofs/QuadraticReciprocityAlgorithmOQ03.lean` (Docker-green S14 #24738, 0 sorry/0 axiom,
+3 theorems, registered) had **no `src/data/proofs/quadratic-reciprocity-algorithm-oq-03/`
+gallery dir** — so the verified milestone was invisible on the website. Created `meta.json`
++ `annotations.json` (4 annotations: overview + the 3 theorems, all line ranges validated by
+`pnpm annotations:build` with 0 warnings). Slug now appears in generated listings.json/
+data-manifest.json with `status: verified`.
+
+**Honest scope**: `status=verified`, `badge=original`, axiomCount 0. The meta/annotations/
+conclusion.openQuestions state explicitly this is **Milestone 1 only** — the headline
+`legendreSym p a = sign(mulLeft a)` (Euler-criterion tie + units bridge) and Milestone 2
+are NOT yet in Lean, so the OQ is **not resolved**. Problem stays **in-progress** on the
+math; this session only surfaces the already-verified producer lemma in the gallery.
+No Lean changed. (Aristotle `prove` still 404, live-probed; the crux remains its target.)
+
+### Session 2026-06-16 (S18, researcher-1) — M2 bearer re-audit: no transpose-sign shortcut; inversion route confirmed
+
+**Mode:** CONTINUE (build-free). **Backends live-probed both down for the *safe* M2 path:**
+Aristotle MCP `prove` returns `"Resource not found"` on a trivial ping (404 persists). Docker had
+**4 `lean-build` containers** running (3 active + one 13h idle zombie) — over the ≤2-container
+safety threshold for a 7.65 GiB VM; launching a 5th concurrent Mathlib compile is the OOM-crash
+risk flagged repo-wide, so no build was attempted this session. Confirmed the merged Zolotarev
+spine is intact on `origin/main` (`QuadraticReciprocityAlgorithmOQ03.lean`: all 5 theorems,
+0 sorry / 0 axiom).
+
+**New result — ruled out a tempting M2 shortcut, narrowing the next live window to the S8 route.**
+Re-audited Mathlib at the pin (source at `/private/tmp/mathlib-grep`) for any lemma giving the
+grid-transpose / commutation-matrix permutation sign directly:
+
+- **No commutation/transpose permutation-sign bearer exists.** `LinearAlgebra/Matrix/Kronecker.lean`
+  and `Permutation.lean` carry the Kronecker product and permutation *matrices*, but **not** the
+  sign of the factor-swap (commutation) permutation. So there is no "just cite the lemma" path —
+  S8's `inv(σ) = C(p,2)·C(q,2)` remains the genuinely-new content to formalize.
+- **The `prodCongr`/`sumCongr` sign family does NOT apply.** `sign_prodCongrLeft`/`sign_prodCongrRight`
+  (`Sign.lean:535,545`) and `sign_sumCongr` (`:555`) compute signs of **block-diagonal** perms
+  (`∏ sign`), as used in `Matrix/Determinant/Basic.lean`. The grid-transpose is a **coordinate-swap**
+  (`prodComm`-type), not block-diagonal — these give it no leverage. Do not chase this detour.
+- **Clean transport lemma pinned:** `Equiv.Perm.sign_permCongr (e : α ≃ β) (p : Perm α) :
+  sign (e.permCongr p) = sign p` (`Sign.lean:551`) — a single named application that replaces S7's
+  `@[simp] sign_symm_trans_trans` glue for moving `σ` between `Perm (Fin (p*q))` and the product
+  type. (Also relevant: `sign_eq_sign_of_equiv` `:467`.)
+
+**Net for the next live window (Docker ≤2 containers or Aristotle non-404):** the M2 target is
+`inv(σ) = C(p,2)·C(q,2)` via Mathlib's `signAux = ∏ finPairsLT` definition (S8), transported with
+`sign_permCongr`; no shorter bearer route exists. Bijective characterization of the inversions
+(choose 2 rows × 2 columns → exactly one inversion) is the cleanest count to aim the Lean proof at.
+No Lean written this session.
+
+### Session 2026-06-16 (S20, researcher-8) — M2 materialized in Lean: parity reduction VERIFIED, sorry isolated to the lone inversion count
+
+**Mode:** CONTINUE → ACT (build-verified). Aristotle `prove` still **404** (live-probed on the M2
+crux snippet). Docker **recovered to a usable slot** this session: host drained from 7 → 2
+`lean-build` containers (background until-loop, `LEAN_MEMORY_LIMIT=6144`); built the new file by name
+**GREEN**: `⚠ [7743/7743] Built Proofs.QuadraticReciprocityAlgorithmOQ03M2 (453s)`, exit 0, the only
+warning being the single intended `sorry`.
+
+**New file** `proofs/Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean` (UNREGISTERED — carries one
+sorry). Supersedes the CONFLICTING scaffold PR #24990 (same filename, but that one had only the def +
+a monolithic sorry). Structure splits M2's `sign_gridTranspose` into:
+
+- `gridTranspose p q` — the permutation (verbatim from #24990's verified scaffold). **complete**
+- `choose_two_mod_two (hn : Odd n) : Nat.choose n 2 % 2 = ((n-1)/2) % 2` — **VERIFIED**. Proof: write
+  `n = 2m+1` (`obtain ⟨m, rfl⟩`), `Nat.choose_two_right`, `Nat.mul_div_cancel_left _ (two-pos)`,
+  `Nat.mul_mod`, `omega`. (This is S8's parity-reduction step III, now machine-checked.)
+- `neg_one_units_pow_mod_two (n) : (-1:ℤˣ)^n = (-1:ℤˣ)^(n%2)` — **VERIFIED**. **KEY GOTCHA:** Mathlib's
+  `neg_one_pow_eq_pow_mod_two` is in `section Ring` (`Algebra/Ring/Commute.lean:171`, needs `[Ring R]`)
+  — **ℤˣ is NOT a ring**, so it does not apply. Derived directly from `neg_one_sq : (-1:R)^2=1`
+  (`Commute.lean:154`, holds for `[Monoid R][HasDistribNeg R]`, and `ℤˣ` has `HasDistribNeg` via
+  `Algebra/Ring/Units.lean:46`): `nth_rewrite 1 [← Nat.mod_add_div n 2]; rw [pow_add, pow_mul,
+  neg_one_sq, one_pow, mul_one]`.
+- `neg_one_pow_choose_two (hp hq : Odd) : (-1:ℤˣ)^(C(p,2)*C(q,2)) = (-1:ℤˣ)^((p-1)/2*((q-1)/2))` —
+  **VERIFIED**. `Nat.mul_mod` + the two `choose_two_mod_two` rewrites give the exponents are ≡ mod 2,
+  then the units helper. **This is the entire elementary half of M2, now proven.**
+- `sign_gridTranspose_eq_choose (p q) : sign (gridTranspose p q) = (-1)^(C(p,2)*C(q,2))` — **the ONE
+  remaining sorry**. Primality-free; the genuinely-new combinatorial content (no upstream bearer, S18).
+- `sign_gridTranspose (hp hq : Odd) : sign (gridTranspose p q) = (-1)^((p-1)/2*((q-1)/2))` —
+  **VERIFIED assembly** of the two above.
+
+**Net:** M2's open obligation is now a *single isolated, build-verified-context* lemma —
+`sign_gridTranspose_eq_choose` — exactly the inversion count `inv(σ)=C(p,2)·C(q,2)` via
+`signAux=∏finPairsLT` (S8). Everything around it (parity reduction + assembly) compiles. This is the
+ideal self-contained Aristotle target the moment the backend stops 404'ing; until then it needs the
+explicit `card_bij` (inversions ↔ {row-pairs i<i′} × {col-pairs j>j′}) — finicky but the cleanest count.
+M1/headline unchanged (merged #24903). PR opened with `research` label.
+
+### Session 2026-06-16 (S21, researcher-5) — FieldBridge build-pending file audited: every bearer pinned, repair points classified low-risk
+
+**Mode:** CONTINUE → build-free bearer audit. **Dual blackout reconfirmed live this session**
+(not assumed): `docker info` times out (>20s); Aristotle MCP `prove` returned `"Resource not
+found"` on a trivial `n+0=n` ping. So no build, no Aristotle. Used the **full offline mathlib4
+checkout at the exact pin** (`/Users/rwalters/GitHub/mathlib4` @ `2df2f0150c` / v4.26.0) for the
+audit.
+
+**State of the OQ (re-confirmed):** M1 + the units-form headline `legendreSym_eq_sign_mulLeft`
+(merged #24903, on `(ZMod p)ˣ`) are done/verified/galleried. M2 file
+`QuadraticReciprocityAlgorithmOQ03M2.lean` (merged #25053, UNREGISTERED) still carries its lone
+sorry `sign_gridTranspose_eq_choose` (`sign σ = (-1)^(C(p,2)·C(q,2))`). The field-form completion
+`QuadraticReciprocityAlgorithmOQ03FieldBridge.lean` (merged #25101, UNREGISTERED, 0 sorry/0 axiom)
+was BUILD-PENDING/UNVERIFIED with three flagged-but-unconfirmed `rfl` repair points.
+
+**This session's deliverable — FieldBridge converted from "UNVERIFIED, repair points unknown" to
+"all bearers pinned & signature-checked, repair points classified low-risk" (same category as the
+S11/S12 M1 audits).** Confirmed at the pin via the offline checkout (file:line + exact signature +
+hypothesis direction):
+- `sign_subtypePerm (f) (h₁ : ∀ x, p (f x) ↔ p x) (h₂ : ∀ x, f x ≠ x → p x) : sign (subtypePerm f h₁) = sign f` — `Sign.lean:453`. FieldBridge's `h₁ : ∀ x, mulLeft₀ a ha x ≠ 0 ↔ x ≠ 0` is exactly `∀ x, p (f x) ↔ p x` with `p = (· ≠ 0)`. ✓
+- `sign_eq_sign_of_equiv (f) (g) (e) (h : ∀ x, e (f x) = g (e x)) : sign f = sign g` — `Sign.lean:467`. ✓
+- `subtypePerm (f) (h : ∀ x, p (f x) ↔ p x)` — `Algebra/Group/End.lean:373` (NOT `∀ x, p x ↔ p (f x)` — direction matches FieldBridge). ✓
+- `unitsEquivNeZero : G₀ˣ ≃ {a // a ≠ 0}`, `@[simps]`, `a ↦ ⟨↑a, a.ne_zero⟩` ⇒ `.val = ↑a` by rfl — `GroupWithZero/Units/Equiv.lean:27`. ✓
+- `Equiv.mulLeft₀ a ha := (Units.mk0 a ha).mulLeft`, `@[simps! -fullyApplied]` (so the apply lemma exists for the `happ` fallback) — same file `:33`. ✓
+- `Units.val_mk0 : (mk0 a h : G₀) = a` (rfl-level) — `GroupWithZero/Units/Basic.lean:173`. ✓
+- parent `legendreSym_eq_sign_mulLeft (hp : 2 < p) (u : (ZMod p)ˣ)` — call `legendreSym_eq_sign_mulLeft hp u` is exact. ✓
+
+**Risk classification of the 3 documented repair points:** all LOW. (1) `happ : mulLeft₀ a ha x = a * x := rfl` reduces through `(mk0 a ha).mulLeft x = ↑(mk0 a ha) * x` and `val_mk0` (rfl-level), fallback `simp [Equiv.mulLeft₀]`/`Equiv.mulLeft₀_apply` exists. (2)/(3) the `Subtype.ext`/`show` step in `hstep2` relies on `unitsEquivNeZero`'s `@[simps]` defeq and `subtypePerm`'s val reduction — both definitional, fallback `simp` documented in-file. **No dead names; no signature mismatches; no wrong-direction hypotheses.** Updated the FieldBridge header to record the audit (BUILD-PENDING → BUILD-PENDING, BEARERS AUDITED).
+
+**M2 sorry — confirmed NOT blackout-safe to write, and why (re-audited this session).** Searched
+the offline checkout for any public `sign = (-1)^(inversion count)` / `sign = (-1)^card` lemma for a
+general (non-cycle) permutation: **none exists** — `Sign.lean` exposes only `signAux`/`signBijAux`/
+`finPairsLT` machinery (private-ish) and the cycle-specific `IsCycle.sign`. The block-diagonal
+family (`sign_prodCongrRight/Left` = `∏ sign`, `sign_sumCongr`) does NOT apply (S18: transpose is a
+coordinate-swap, not block-diagonal). `finProdFinEquiv` packs `(i,j) ↦ j + q*i` (row-major; `i`
+slow) — confirmed at `Logic/Equiv/Fin/Basic.lean:329`. So the only route is the `card_bij`
+inversion count (inversions `↔ {i<i′} × {j>j′}`, card `C(p,2)·C(q,2)`) unfolded from `signAux` —
+genuinely ~100+ LOC and intricate. Blind-writing it under blackout risks a non-compiling file
+mislabeled as ACT (the standing prior-session prohibition). It remains the ideal single-lemma
+**Aristotle** target the moment the backend stops 404'ing; until then it stays a sorry.
+
+**Net:** FieldBridge is now build-ready with high confidence — the first Docker session can
+`docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03FieldBridge`, then register it (it lands
+the exact OQ-pinned field-form statement `legendreSym p a.val = sign (mulLeft₀ a ha)`, completing
+the Milestone-1 headline in the field form the OQ asks for). M2's lone sorry is unchanged and
+correctly deferred to Aristotle/Docker. Problem stays **in-progress** (M2 open). No Lean proof
+written this session (the only edit is the FieldBridge status header).

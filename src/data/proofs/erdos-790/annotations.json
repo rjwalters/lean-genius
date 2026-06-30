@@ -16,7 +16,11 @@
       "extremal-combinatorics",
       "additive-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive number theory",
+      "extremal combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e790-sumfree",
@@ -35,7 +39,11 @@
       "classical-sum-free",
       "additive-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "additive combinatorics",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e790-extremal",
@@ -54,7 +62,11 @@
       "minimax",
       "axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimax optimization",
+      "Lean 4 axiom declarations",
+      "logic and quantifiers"
+    ]
   },
   {
     "id": "ann-e790-lower-bounds",
@@ -73,7 +85,12 @@
       "choi-improvement",
       "cks-lower-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "probabilistic method",
+      "sieve methods",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e790-upper-bound",
@@ -92,7 +109,11 @@
       "construction",
       "arithmetic-progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "arithmetic progressions",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e790-questions",
@@ -111,7 +132,11 @@
       "qualitative-behavior",
       "cks-bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-e790-conjecture",
@@ -130,7 +155,11 @@
       "open-problem",
       "exponent-gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic notation",
+      "real analysis",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e790-cks-bounds",
@@ -149,6 +178,10 @@
       "vinogradov-notation",
       "state-of-art"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic notation",
+      "analytic number theory",
+      "Lean 4 theorem composition"
+    ]
   }
 ]

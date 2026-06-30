@@ -25,8 +25,8 @@
     "id": "ann-edgecount",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 34,
-      "endLine": 35
+      "startLine": 38,
+      "endLine": 40
     },
     "type": "definition",
     "title": "Edge Count",
@@ -47,8 +47,8 @@
     "id": "ann-noisolated",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 38,
-      "endLine": 39
+      "startLine": 42,
+      "endLine": 44
     },
     "type": "definition",
     "title": "No Isolated Vertices",
@@ -66,33 +66,11 @@
     ]
   },
   {
-    "id": "ann-subgraph",
-    "proofId": "erdos-546",
-    "range": {
-      "startLine": 48,
-      "endLine": 49
-    },
-    "type": "definition",
-    "title": "Subgraph Containment",
-    "content": "Formalizes $H \\subseteq G$: every edge of $H$ is also an edge of $G$. In the Ramsey context, we seek a monochromatic **copy** of $H$ inside a 2-colored complete graph — either in the 'red' graph or its complement (the 'blue' graph).",
-    "mathContext": "$H \\subseteq G$ iff $\\forall u, v \\in V : H.\\text{Adj}(u,v) \\implies G.\\text{Adj}(u,v)$. For Ramsey theory, we need **subgraph isomorphism** (injective homomorphism). The formalization handles this in the Ramsey number definition via an injective function $f : V(H) \\hookrightarrow V(K_N)$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "subgraph isomorphism",
-      "graph homomorphism",
-      "monochromatic copy"
-    ],
-    "prerequisites": [
-      "graph theory basics",
-      "injection"
-    ]
-  },
-  {
     "id": "ann-complement",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 52,
-      "endLine": 55
+      "startLine": 46,
+      "endLine": 50
     },
     "type": "definition",
     "title": "Complement Graph",
@@ -113,10 +91,10 @@
     "id": "ann-ramsey-def",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 59,
-      "endLine": 64
+      "startLine": 60,
+      "endLine": 65
     },
-    "type": "definition",
+    "type": "warning",
     "title": "Ramsey Number R(H)",
     "content": "The graph Ramsey number $R(H)$ is the minimum $N$ such that any 2-coloring of $K_N$ contains a monochromatic copy of $H$. Formalized as the infimum of the set of $N$ guaranteeing a monochromatic injective embedding of $H$ into either $G$ or $\\overline{G}$.",
     "mathContext": "$R(H) = \\min\\{N : \\forall G \\text{ on } N \\text{ vertices}, \\exists f : V(H) \\hookrightarrow V(K_N) \\text{ s.t. } f(H) \\subseteq G \\text{ or } f(H) \\subseteq \\overline{G}\\}$. The classical Ramsey theorem guarantees $R(H) < \\infty$ for all finite $H$. For complete graphs, $R(K_r, K_s) \\leq \\binom{r+s-2}{r-1}$ (Erdős-Szekeres).",
@@ -136,8 +114,8 @@
     "id": "ann-sudakov-bound",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 69,
-      "endLine": 73
+      "startLine": 74,
+      "endLine": 80
     },
     "type": "definition",
     "title": "Sudakov Bound Statement",
@@ -159,8 +137,8 @@
     "id": "ann-sudakov-thm",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 76,
-      "endLine": 77
+      "startLine": 82,
+      "endLine": 85
     },
     "type": "concept",
     "title": "Sudakov's Theorem (2011)",
@@ -182,8 +160,8 @@
     "id": "ann-tightness",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 80,
-      "endLine": 86
+      "startLine": 87,
+      "endLine": 93
     },
     "type": "concept",
     "title": "Tightness of Sudakov Bound",
@@ -204,8 +182,8 @@
     "id": "ann-bipartite",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 91,
-      "endLine": 93
+      "startLine": 52,
+      "endLine": 56
     },
     "type": "definition",
     "title": "Bipartite Graph",
@@ -226,8 +204,8 @@
     "id": "ann-aks",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 96,
-      "endLine": 101
+      "startLine": 97,
+      "endLine": 104
     },
     "type": "concept",
     "title": "AKS Bipartite Bound (2003)",
@@ -249,10 +227,10 @@
     "id": "ann-rcolors",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 107,
-      "endLine": 112
+      "startLine": 67,
+      "endLine": 70
     },
-    "type": "definition",
+    "type": "warning",
     "title": "r-Color Ramsey Number",
     "content": "The $r$-color Ramsey number $R_r(H)$: minimum $N$ such that any $r$-coloring of $K_N$ contains a monochromatic copy of $H$. Formalized via a coloring function $c : V \\times V \\to \\mathrm{Fin}\\, r$.",
     "mathContext": "$R_r(H) = \\min\\{N : \\forall c : E(K_N) \\to [r], \\exists i \\in [r], \\exists f : V(H) \\hookrightarrow [N]$ with $c(f(u), f(v)) = i$ for all $\\{u,v\\} \\in E(H)\\}$. For $r \\geq 3$, extending Sudakov's bound remains open.",
@@ -272,8 +250,8 @@
     "id": "ann-multicolor-conj",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 115,
-      "endLine": 120
+      "startLine": 108,
+      "endLine": 119
     },
     "type": "definition",
     "title": "Multi-Color Conjecture (Open)",
@@ -294,8 +272,8 @@
     "id": "ann-pathgraph",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 128,
-      "endLine": 131
+      "startLine": 123,
+      "endLine": 127
     },
     "type": "definition",
     "title": "Path Graph",
@@ -316,8 +294,8 @@
     "id": "ann-path-ramsey",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 161,
-      "endLine": 163
+      "startLine": 153,
+      "endLine": 155
     },
     "type": "concept",
     "title": "Path Ramsey Number Is Linear",
@@ -337,8 +315,8 @@
     "id": "ann-probabilistic",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 181,
-      "endLine": 186
+      "startLine": 162,
+      "endLine": 168
     },
     "type": "concept",
     "title": "Probabilistic Lower Bound",
@@ -361,8 +339,8 @@
     "id": "ann-problem545",
     "proofId": "erdos-546",
     "range": {
-      "startLine": 191,
-      "endLine": 195
+      "startLine": 172,
+      "endLine": 178
     },
     "type": "definition",
     "title": "Connection to Problem #545",

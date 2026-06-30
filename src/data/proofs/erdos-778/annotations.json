@@ -18,7 +18,11 @@
       "Cliques",
       "Zermelo's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "combinatorial game theory",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e778-edge-color",
@@ -37,7 +41,11 @@
       "DecidableEq",
       "Edge coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "inductive data types",
+      "type theory basics"
+    ]
   },
   {
     "id": "ann-e778-game-state",
@@ -56,7 +64,11 @@
       "Invariants by construction",
       "Symmetric relations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "dependent type theory",
+      "binary relations"
+    ]
   },
   {
     "id": "ann-e778-kn",
@@ -75,7 +87,11 @@
       "SimpleGraph",
       "Edge counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e778-subgraphs",
@@ -94,7 +110,11 @@
       "Subgraphs",
       "Symmetry proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Mathlib library structure",
+      "equivalence relations"
+    ]
   },
   {
     "id": "ann-e778-winning",
@@ -114,7 +134,11 @@
       "Game theory",
       "Winning conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial game theory",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e778-strategies",
@@ -133,7 +157,11 @@
       "Quantifier alternation",
       "Zermelo's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial game theory",
+      "first-order logic",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e778-conjecture",
@@ -152,7 +180,11 @@
       "Second player advantage",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial game theory",
+      "combinatorics",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e778-ms-results",
@@ -172,7 +204,11 @@
       "Recovery properties",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "real analysis",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e778-no-consecutive",
@@ -191,7 +227,11 @@
       "Strategy interactions",
       "Downstream theorems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 tactic mode",
+      "combinatorial game theory"
+    ]
   },
   {
     "id": "ann-e778-determined",
@@ -211,6 +251,10 @@
       "Backward induction",
       "Perfect information"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial game theory",
+      "mathematical induction",
+      "set theory"
+    ]
   }
 ]

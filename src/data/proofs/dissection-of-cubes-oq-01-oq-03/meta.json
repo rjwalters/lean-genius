@@ -7,7 +7,7 @@
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
     "date": "2026-05-03",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ01OQ03.lean",
     "tags": [
       "geometry",
@@ -17,7 +17,7 @@
       "open-problem",
       "wiedijk-100"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,10 +49,11 @@
       "volume_constraint_satisfiable: explicit witness (one unit cube)"
     ],
     "dateAdded": "2026-05-03",
-    "axiomCount": 0,
+    "axiomCount": 2,
     "lineCount": 256,
     "theoremCount": 14,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "assumptions": "2 axioms inherited transitively from DissectionOfCubes.lean (the Wiedijk #82 base), on which the bridge theorem volume_dissection_has_collision depends via DissectionOfCubesOQ01.every_dissection_has_collision -> dissection_of_cubes: all_different_implies_long_chains_axiom (all-different sizes implies arbitrarily long descending size-chains) and smaller_cube_above_axiom (the geometric descent step). 0 own axioms (leanFile.axiomCount = 0), 0 sorries, 0 native_decide. The 13 volume-algebra theorems (volume bounds, collision-pair quantitative bounds 2s^3 <= 1, satisfiability witness) are themselves axiom-free; only the unconditional collision-existence bridge inherits the geometric axioms. Matches the classification of the parent entry dissection-of-cubes-oq-01."
   },
   "overview": {
     "historicalContext": "Wiedijk #82 — 'A cube cannot be cut into a finite number of distinct smaller cubes' — appears on the canonical 'Formalizing 100 Theorems' list of mathematical landmarks. The 3D non-dissection result is the cube-analogue of the squared-square problem: while Duijvestijn's 1978 'simple perfect squared square of order 21' shows the 2D case admits such tilings, the 3D analogue is impossible. Littlewood's *A Mathematician's Miscellany* (1953) records the infinite-descent argument that bridges from any candidate dissection to a strictly smaller one, leading to contradiction. The base Wiedijk #82 formalization in this gallery records the structural skeleton (cubes contained in $[0,1]^3$ with disjoint interiors) but uses `covers_unit_cube : True` as a placeholder — it doesn't enforce that the cubes actually fill the unit cube. OQ-01 proved every nonempty such dissection has a collision pair (same-size distinct cubes); OQ-01-OQ-03 takes the next step by adding the necessary volumetric condition $\\sum c.\\text{side}^3 = 1$ to the structure, narrowing the gap between the formalized object and a genuine geometric tiling.",
@@ -66,7 +67,7 @@
       "Collision pairs both contribute `s³` to the sum (since they share side length `s`), so `2s³ ≤ ∑ side³ = 1`. This bound `s ≤ 2^{-1/3} ≈ 0.7937` is sharper than `s ≤ 1` and is the first quantitative consequence of combining OQ-01's existence theorem with the volumetric constraint",
       "The strict inequality `cube_volume_lt_one_of_card_ge_two` reveals a pigeonhole structure: if any cube were to fully saturate the volume budget (side = 1), all other cubes would need to vanish, contradicting the positivity axiom `c.side > 0`",
       "`volume_constraint_satisfiable` exhibits a non-vacuous witness (one unit cube), confirming the type `VolumeDissection` is inhabited — but this trivial witness does NOT meet the `card ≥ 2` hypothesis of the strict-bound theorems, illustrating that the deeper results apply only to genuine multi-cube tilings",
-      "All proofs are fully formal with 0 axioms and 0 sorries beyond the Mathlib core and the inherited `CubeDissection` field axioms — no new geometric assumptions are introduced by the enrichment",
+      "The 13 volume-algebra theorems are fully formal with 0 axioms and 0 sorries beyond Mathlib core. The single existence bridge `volume_dissection_has_collision` is NOT axiom-free: it delegates to OQ-01's `every_dissection_has_collision`, which rests on the two inherited geometric axioms of the Wiedijk #82 base (`smaller_cube_above_axiom`, `all_different_implies_long_chains_axiom`). The entry is therefore classified `axiomatized`, consistent with its parent dissection-of-cubes-oq-01.",
       "**2D vs 3D dichotomy**: Duijvestijn's 1978 simple perfect squared square of order 21 (side 112, sub-squares of distinct sizes 2, 4, 6, 7, 8, 9, 11, 15, 16, 17, 18, 19, 22, 23, 24, 25, 27, 29, 33, 35, 50) shows the 2D analog of this question has **positive answers**. The 3D case is **impossible** (Wiedijk #82); the same volume constraint $\\sum s_i^k = 1$ exists in both dimensions (with $k = 2$ in 2D, $k = 3$ in 3D), so volume alone *cannot* be the obstruction — the impossibility relies on a topological/combinatorial argument (smallest top-face cube + minimal-cube-on-top-of-it descent) that exploits 3D-specific structure. This entry's `VolumeDissection` thus captures the *necessary but insufficient* portion of the geometric data; the gallery's `dissection-of-cubes-oq-03` makes the 2D-vs-3D contrast explicit.",
       "**Dehn-invariant alternative**: Hilbert's Third Problem (Dehn 1900, on Hilbert's 1900 list) showed that a regular tetrahedron and a cube of equal volume are **not** scissors-congruent — *even though the volume constraint is satisfied*, the Dehn invariant $\\sum \\ell_i \\otimes \\alpha_i \\in \\mathbb{R} \\otimes_{\\mathbb{Q}} (\\mathbb{R}/\\pi\\mathbb{Q})$ provides a second necessary condition. The cube has $\\delta(\\text{cube}) = 0$ (all dihedral angles $\\pi/2$, rational), so any cube dissection must also have total Dehn invariant $0$ — automatically satisfied since the sub-cubes share the cube's zero invariant. The Dehn invariant is therefore *vacuous* for the cube-into-cubes problem, leaving volume + topology as the only available structural constraints. Gallery siblings `dissection-of-cubes-oq-02` and `dissection-of-cubes-oq-04` formalize the Dehn-invariant machinery for the orthogonal (mixed-shape) dissection question."
     ],
@@ -188,28 +189,36 @@
   ],
   "references": [
     {
-      "authors": ["John Edensor Littlewood"],
+      "authors": [
+        "John Edensor Littlewood"
+      ],
       "title": "A Mathematician's Miscellany",
       "year": "1953",
       "venue": "Methuen, London",
       "note": "**The canonical exposition of the cube-dissection impossibility argument (Wiedijk #82)**, included in Littlewood's collection of mathematical *jeux d'esprit* alongside the squared-square problem. Littlewood's argument is by **infinite descent**: in any candidate dissection of a unit cube into finitely many smaller cubes of distinct sizes, consider the top face $z = 1$. The cubes meeting this face dissect it into a 2D arrangement of squares, all of distinct sizes. The smallest such top-face square cannot lie on the boundary (it would be flanked by larger squares on at least two sides, forcing a contradiction), so it lies in the interior — and the cube sitting on top of this smallest square must itself be smaller than its neighbors, creating a new 'smallest cube' problem one layer down. Iterating produces an infinite descending sequence of strictly decreasing positive sides — contradicting well-foundedness on $\\mathbb{N}$ (or on the cardinality of the dissection). The argument is *purely combinatorial-topological*: the volume constraint $\\sum s^3 = 1$ formalized in this entry is a necessary condition that Littlewood's descent never directly invokes, demonstrating the gap this entry quantifies — `VolumeDissection` is one step closer to a faithful model, but the impossibility ultimately requires the geometric structure that the descent extracts. Modern reprint: J. E. Littlewood, *Littlewood's Miscellany*, ed. Béla Bollobás, CUP 1986 (combines *A Mathematician's Miscellany* with *Some Problems in Real and Complex Analysis*)."
     },
     {
-      "authors": ["Freek Wiedijk"],
+      "authors": [
+        "Freek Wiedijk"
+      ],
       "title": "Formalizing 100 Theorems",
       "year": "2008–present",
       "venue": "https://www.cs.ru.nl/~freek/100/",
       "note": "**The canonical formalization tracker**, originally proposed in 1999 as the formal-mathematics analogue of Hilbert's 1900 problems. Theorem #82 — 'A cube cannot be cut into a finite number of distinct smaller cubes' — sits in the geometric/combinatorial tier alongside #36 (Brouwer's fixed-point theorem); the closely related squared-square problem and Sperner's lemma are *not* themselves numbered entries on Wiedijk's list, despite their thematic kinship. As of 2026, the cube dissection theorem #82 remains *unverified* in any major proof assistant (Coq, Lean, HOL Light, Mizar, Isabelle) — making the OQ-tree under `dissection-of-cubes` (this entry, sibling `dissection-of-cubes-oq-01` and `dissection-of-cubes-oq-01-oq-01`, and Dehn-invariant branches `oq-02`, `oq-04`) the gallery's tracked formalization push. The completion criterion in Wiedijk's spec is *not* merely a statement of the impossibility but a fully axiomatic derivation including the geometric covering condition $\\bigcup_i C_i = [0,1]^3$ — which this entry's `volume_constraint : volumeSum = 1` provides only a *necessary* coordinate of, leaving the topological-covering coordinate (analogous to Lebesgue's measure-zero complement condition) for future enrichments."
     },
     {
-      "authors": ["A. J. W. Duijvestijn"],
+      "authors": [
+        "A. J. W. Duijvestijn"
+      ],
       "title": "Simple perfect squared square of lowest order",
       "year": "1978",
       "venue": "Journal of Combinatorial Theory, Series B 25(2): 240-243",
       "note": "**The 2D analog of the cube-dissection problem solved positively** — Duijvestijn (1978) constructed a *simple perfect squared square* of side 112, dissected into 21 sub-squares of pairwise distinct sizes: {2, 4, 6, 7, 8, 9, 11, 15, 16, 17, 18, 19, 22, 23, 24, 25, 27, 29, 33, 35, 50}. *Simple* means no sub-square is itself the union of a smaller squared sub-rectangle; *perfect* means all sub-square sides are distinct. The minimality (order 21) was proved by exhaustive computer search using the Bouwkamp code (1947) — an encoding of squared rectangles as Kirchhoff-style electrical networks via the Brooks-Smith-Stone-Tutte 1940 correspondence (squared rectangles ↔ planar 3-connected graphs with conductance-current assignment). The 2D positive result vs the 3D impossibility (Wiedijk #82) makes the *dimension* the decisive structural feature — the same volume constraint $\\sum s_i^d = 1$ holds in both dimensions, so volume alone *cannot* be the discriminator, as this entry's new keyInsight makes explicit. Bouwkamp code remains the gold-standard encoding for squared-rectangle enumeration; the analogous 'cube code' for $d \\geq 3$ is unresolved precisely because of the topological obstructions Littlewood's descent exploits."
     },
     {
-      "authors": ["M. Dehn"],
+      "authors": [
+        "M. Dehn"
+      ],
       "title": "Über den Rauminhalt",
       "year": "1901",
       "venue": "Mathematische Annalen 55(3): 465-478",

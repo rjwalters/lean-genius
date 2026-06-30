@@ -19,7 +19,7 @@
       "3D-geometry"
     ],
     "badge": "wip",
-    "sorries": 10,
+    "sorries": 9,
     "erdosNumber": 660,
     "erdosUrl": "https://erdosproblems.com/660",
     "erdosProblemStatus": "open",
@@ -54,13 +54,16 @@
       "Main conjecture: (1-o(1))·n/2 distances for 3D convex polyhedra",
       "Weaker linear conjecture: cn distances for some constant c",
       "Platonic solid examples: tetrahedron (1), octahedron (2), cube (3) distances",
-      "Guth-Katz theorem statement for general distinct distances"
+      "Guth-Katz theorem statement for general distinct distances",
+      "trivial_lower_bound: machine-checked proof that n>=2 vertices give >=1 distinct distance",
+      "Verified base cases: empty/singleton/two-point distinct-distance counts",
+      "distinctDistances_mono: monotonicity of the distinct-distance count under adding vertices"
     ],
     "axiomCount": 0,
-    "lineCount": 179,
-    "assumptions": "0 axiom(s) and 10 sorry(s). See the Lean source for details.",
+    "lineCount": 265,
+    "assumptions": "0 axiom(s) and 9 sorry(s). The main conjecture and named classical theorems (Altman, Guth-Katz) and Platonic-solid constructions remain sorry; the base-case lemmas and trivial lower bound are fully proved. See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10,
+    "theoremCount": 16,
     "definitionCount": 10,
     "additionalFiles": [
       "Proofs/Erdos660ProblemAristotle.lean",
@@ -114,23 +117,23 @@
       "id": "lower-bounds",
       "title": "Trivial and Conjectural Lower Bounds",
       "startLine": 114,
-      "endLine": 131,
-      "summary": "Proves trivial_lower_bound: ≥ 1 distinct distance (trivially, for n ≥ 2). States linear_lower_bound_conjecture: ≥ cn for some c > 0. The gap between Ω(n^{1/2}) and the conjectured Ω(n) is the main challenge.",
+      "endLine": 217,
+      "summary": "Proves trivial_lower_bound (>=1 distinct distance for n>=2), now fully machine-checked. Adds a Verified base cases subsection: empty and singleton sets have 0 distinct distances, a two-point set has exactly 1, and distinctDistances is monotone under adding vertices (distinctDistances_mono). States linear_lower_bound_conjecture (>= cn for some c>0), which remains open.",
       "mathContext": "Known: $|D(P)| = \\Omega(n^{1/2})$ for any $n$ points (not necessarily convex). Conjectured: $|D(P)| = \\Omega(n)$ for convex position. The Guth-Katz theorem (2015) proves $|D| = \\Omega(n/\\log n)$ for arbitrary point sets in $\\mathbb{R}^2$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Constructions",
-      "startLine": 132,
-      "endLine": 167,
+      "startLine": 218,
+      "endLine": 253,
       "summary": "Computes the distinct-distance counts for the Platonic solids: regular tetrahedron (1 distinct distance), cube (3), regular octahedron (2), regular dodecahedron (20 vertices), and regular icosahedron (12 vertices). These small symmetric examples illustrate how high symmetry minimizes the number of distinct distances.",
       "mathContext": "Regular tetrahedron: 4 vertices, 1 distinct distance. Cube: 8 vertices, 3 distinct distances. Regular octahedron: 6 vertices, 2 distinct distances. High symmetry collapses many pairwise distances to a common value, giving the extremal small cases."
     },
     {
       "id": "related-distances",
       "title": "Related: General Distinct Distances Problem",
-      "startLine": 168,
-      "endLine": 179,
+      "startLine": 254,
+      "endLine": 265,
       "summary": "States the Guth-Katz Theorem (2015): any n points in ℝ² determine Ω(n/log n) distinct distances, resolving the Erdős distinct distances problem in the plane up to the logarithmic factor. Provides context for the harder convex-position and 3D variants.",
       "mathContext": "Guth-Katz (2015): $n$ points in $\\mathbb{R}^2$ determine $\\Omega(n/\\log n)$ distinct distances. This nearly resolves the general (non-convex) planar distinct distances problem; the convex-position refinement (#660) seeks a sharper $(1/2-o(1))n$ bound in 3D."
     }
@@ -150,11 +153,11 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 179,
+    "lineCount": 265,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 16,
     "definitionCount": 10,
-    "sorries": 10,
+    "sorries": 9,
     "path": "Proofs/Erdos660Problem.lean",
     "additionalFiles": [
       "Proofs/Erdos660ProblemAristotle.lean",
@@ -178,5 +181,5 @@
       "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
     }
   ],
-  "sorries": 10
+  "sorries": 9
 }

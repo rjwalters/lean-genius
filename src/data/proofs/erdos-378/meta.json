@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 0,
     "erdosNumber": 378,
     "erdosUrl": "https://erdosproblems.com/378",
     "erdosProblemStatus": "solved",
@@ -31,39 +31,42 @@
         "module": "Mathlib.Data.Nat.Choose.Basic"
       },
       {
-        "theorem": "Nat.Prime",
-        "description": "Prime number predicate",
-        "module": "Mathlib.NumberTheory.Divisors"
+        "theorem": "Squarefree",
+        "description": "Squarefree predicate (decidable on ℕ) and its API",
+        "module": "Mathlib.Algebra.Squarefree.Basic"
       },
       {
-        "theorem": "Real",
-        "description": "Real number type for densities",
-        "module": "Mathlib.Data.Real.Basic"
+        "theorem": "Nat.choose_symm",
+        "description": "Symmetry C(n,k) = C(n,n-k)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.card_nbij'",
+        "description": "Cardinality of two finsets in bijection (used for the involution)",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Set.ncard_union_eq",
+        "description": "Cardinality of a disjoint union (used for the complementation density)",
+        "module": "Mathlib.Data.Set.Card"
       }
     ],
     "originalContributions": [
-      "Squarefree definition: no prime squared divides n",
-      "squarefree_one theorem: 1 is squarefree",
-      "not_squarefree_four theorem: 4 is not squarefree",
-      "not_squarefree_twelve theorem: 12 is not squarefree",
-      "BinomialSquarefree definition: C(n,k) is squarefree",
-      "squarefreeCount definition: count of squarefree binomials in row n",
-      "NaturalDensity definition: limit definition of density",
-      "HasDensity definition: existence of density",
-      "exactlySquarefree definition: n with exactly 2m+2 squarefree binomials",
-      "granville_ramare_density_exists axiom: main technical result",
-      "eta definition: density of exactlySquarefree m",
-      "atLeastSquarefree definition: set for the main question",
-      "erdos_378_density_exists theorem: density exists",
-      "erdos_378_density_positive theorem: density is positive",
-      "binomial_squarefree_symm theorem: symmetry of squarefree property",
-      "erdos_378 theorem: main combined result"
+      "BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree: definitions over Mathlib's Squarefree",
+      "binomialSquarefree_symm theorem (verified, 0-axiom): squarefreeness of C(n,k) is symmetric under k ↦ n−k",
+      "squarefreeCount_even_of_odd theorem (verified, 0-axiom): for odd n the count of squarefree interior binomials is even — the elementary structural reason Granville-Ramaré only ever count even numbers 2m+2 (involution k ↦ n−k has no fixed point for odd n)",
+      "NaturalDensity, HasDensity: decidability-free density definitions via Set.ncard",
+      "natDensity_compl theorem (verified, 0-axiom): the complement of a set of density d has density 1−d",
+      "granville_ramare_density_exists axiom: Granville-Ramaré (1996) Input 1 — density η_m of exactlySquarefree m exists",
+      "complement_density axiom: Granville-Ramaré (1996) Input 2 — {n : squarefreeCount n < r} has density Σ η_m < 1",
+      "erdos_378_density_exists / erdos_378_density_positive (no sorries): derived from the two axioms by complementation",
+      "erdos_378, erdos_378_answer (no sorries): combined resolution of both questions"
     ],
     "axiomCount": 2,
-    "lineCount": 325,
-    "assumptions": "2 axioms: granville_ramare_density_exists (Granville-Ramaré density exists), complement_density (complement density for residue classes r). 4 sorries.",
-    "theoremCount": 10,
-    "definitionCount": 10,
+    "lineCount": 311,
+    "assumptions": "2 axioms, both isolating the deep analytic content of Granville-Ramaré (1996): granville_ramare_density_exists (the density η_m of n with exactly 2m+2 squarefree binomials exists) and complement_density (the set of n with fewer than r squarefree binomials has density Σ_{0≤m≤(r-1)/2} η_m, which is < 1). 0 sorries. All other results, including the resolution of both questions and the parity theorem squarefreeCount_even_of_odd, are fully machine-checked (depend only on propext/Classical.choice/Quot.sound).",
+    "theoremCount": 11,
+    "definitionCount": 8,
     "additionalFiles": [
       "Proofs/Erdos378Aristotle.lean"
     ]
@@ -72,14 +75,13 @@
     "historicalContext": "**Erdos Problem #378**\n\nThis problem concerns the distribution of squarefree binomial coefficients in Pascal's triangle.\n\n**The Question:**\nFor a given r >= 0, does the density of integers n such that C(n,k) is squarefree for at least r values of 1 <= k < n exist? Is this density positive?\n\n**Resolution:**\nGranville and Ramare (1996) proved that the density eta_m of n having exactly 2m+2 squarefree binomial coefficients exists for each m. Aggarwal and Cambie observed that this resolves Erdos's question: the desired density is 1 - sum of eta_m for small m, which is positive.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $r \\geq 0$. Does the density of integers $n$ for which $\\binom{n}{k}$ is squarefree for at least $r$ values of $1 \\leq k < n$ exist? Is this density $> 0$?\n\n**Answer: YES to both**\n\nThe density is $1 - \\sum_{0 \\leq m \\leq (r-1)/2} \\eta_m$, where $\\eta_m$ is the density of $n$ with exactly $2m+2$ squarefree binomial coefficients.\n\nThis density is positive since $\\eta_{r+1} > 0$.",
     "text": "Does the density of n for which C(n,k) is squarefree for at least r values of k exist and is it positive? YES to both, resolved via Granville-Ramare.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Squarefree:** Define as no prime squared dividing n\n\n2. **Counting:** Define squarefreeCount(n) for binomials in row n\n\n3. **Natural Density:** Define via limit definition\n\n4. **Erdos-Graham Results:** Axiomatize preliminary results\n\n5. **Granville-Ramare:** Axiomatize key density result for exactlySquarefree(m)\n\n6. **Main Theorems:** Derive density existence and positivity from decomposition\n\n7. **Examples:** Verify specific binomial coefficients",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Squarefree:** Use Mathlib's decidable `Squarefree` on ℕ; define `BinomialSquarefree` and `squarefreeCount`\n\n2. **Symmetry & parity (machine-checked):** Prove `binomialSquarefree_symm` (C(n,k) = C(n,n-k)) and `squarefreeCount_even_of_odd` — for odd n the involution k ↦ n−k pairs the interior indices with no fixed point, so the count is even. This is the elementary reason Granville-Ramaré count even numbers 2m+2.\n\n3. **Natural Density:** Define density via `Set.ncard` (no decidability assumption); prove `natDensity_compl` (complement of density d has density 1−d) by partitioning [0,N)\n\n4. **Granville-Ramaré inputs (axioms):** Isolate the two deep analytic facts as `granville_ramare_density_exists` and `complement_density` (the latter bundling the Σ η_m < 1 positivity content)\n\n5. **Resolution (no sorries):** Derive `erdos_378_density_exists` by complementation and `erdos_378_density_positive` from the `d < 1` clause; combine into `erdos_378` / `erdos_378_answer`\n\n6. **Examples:** Verify C(2,1), C(4,2) squarefree and C(6,3) not squarefree",
     "keyInsights": [
-      "**Squarefree Binomials are Sparse:** For large k, density of squarefree C(n,k) is o(1)",
-      "**Symmetry:** C(n,k) = C(n,n-k) gives paired squarefree entries",
-      "**Density Formula:** 1 - sum of eta_m gives the answer",
-      "**Positive Densities:** Each eta_m > 0 is crucial for positivity",
-      "**Pascal's Triangle:** Squarefree patterns depend on prime factorization",
-      "**Granville-Ramare Key:** Technical bounds on exponential sums"
+      "**Symmetry forces even counts:** C(n,k) = C(n,n-k), so squarefree interior indices pair up under k ↦ n−k; for odd n this involution is fixed-point free, forcing `squarefreeCount n` to be even — exactly why Granville-Ramaré see 2m+2 (machine-checked here)",
+      "**Complementation:** existence of the density reduces to the density of the complementary set; positivity reduces to that complement density being < 1",
+      "**Density Formula:** the answer is 1 − Σ_{0≤m≤(r-1)/2} η_m, positive because the excluded tail carries positive mass",
+      "**Squarefree Binomials are Sparse:** For large k, the density of squarefree C(n,k) is o(1)",
+      "**Granville-Ramaré Key:** the two axiomatized inputs rest on technical bounds on exponential sums"
     ],
     "prerequisites": [
       "Squarefree integers and prime factorization",
@@ -91,76 +93,52 @@
   },
   "sections": [
     {
-      "id": "squarefree",
-      "title": "Squarefree Numbers",
-      "summary": "Squarefree definition, examples (1, 6), non-examples (4, 12)",
-      "startLine": 39,
-      "endLine": 82,
-      "mathContext": "Formal definition: Squarefree definition, examples (1, 6), non-examples (4, 12)"
-    },
-    {
       "id": "binomial-squarefree",
       "title": "Squarefree Binomial Coefficients",
-      "summary": "BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree definitions",
-      "startLine": 83,
-      "endLine": 107,
-      "mathContext": "Formal definition: BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree definitions"
-    },
-    {
-      "id": "density",
-      "title": "Natural Density",
-      "summary": "NaturalDensity limit definition, HasDensity existence predicate",
-      "startLine": 108,
-      "endLine": 126,
-      "mathContext": "Formal definition: NaturalDensity limit definition, HasDensity existence predicate"
-    },
-    {
-      "id": "erdos-graham",
-      "title": "Erdos-Graham Preliminary Results",
-      "summary": "Sparsity for large k, infinitely many bad n",
-      "startLine": 127,
-      "endLine": 148,
-      "mathContext": "Mathematical content: Sparsity for large k, infinitely many bad n"
-    },
-    {
-      "id": "granville-ramare",
-      "title": "Granville-Ramare Results (1996)",
-      "summary": "exactlySquarefree, density exists, eta definition, eta positive",
-      "startLine": 149,
-      "endLine": 188,
-      "mathContext": "Formal definition: exactlySquarefree, density exists, eta definition, eta positive"
-    },
-    {
-      "id": "main-results",
-      "title": "Main Result - Resolution",
-      "summary": "atLeastSquarefree, complement decomposition, density theorems",
-      "startLine": 189,
-      "endLine": 245,
-      "mathContext": "Verified: atLeastSquarefree, complement decomposition, density theorems"
+      "summary": "BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree definitions over Mathlib's Squarefree",
+      "startLine": 47,
+      "endLine": 65,
+      "mathContext": "Formal definition: BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
-      "summary": "C(2,1), C(4,2), C(6,3) squarefree status",
-      "startLine": 246,
-      "endLine": 274,
-      "mathContext": "Mathematical content: C(2,1), C(4,2), C(6,3) squarefree status"
+      "summary": "C(2,1)=2 and C(4,2)=6 squarefree; C(6,3)=20 not squarefree (fully verified)",
+      "startLine": 67,
+      "endLine": 92,
+      "mathContext": "Verified: C(2,1), C(4,2), C(6,3) squarefree status"
     },
     {
-      "id": "pascal",
-      "title": "Connection to Pascal's Triangle",
-      "summary": "PascalRow, symmetry theorem, even count pattern",
-      "startLine": 275,
-      "endLine": 303,
-      "mathContext": "Verified: PascalRow, symmetry theorem, even count pattern"
+      "id": "symmetry-parity",
+      "title": "Symmetry and Parity Structure",
+      "summary": "binomialSquarefree_symm and squarefreeCount_even_of_odd (verified, 0-axiom): the involution k ↦ n−k forces an even count for odd n",
+      "startLine": 94,
+      "endLine": 172,
+      "mathContext": "Verified: symmetry under k ↦ n−k and the resulting parity of squarefreeCount"
     },
     {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_378 and erdos_378_answer main theorems",
-      "startLine": 304,
-      "endLine": 325,
-      "mathContext": "Verified: erdos_378 and erdos_378_answer main theorems"
+      "id": "density",
+      "title": "Natural Density",
+      "summary": "NaturalDensity (via Set.ncard), HasDensity, and natDensity_compl (verified): complement of density d has density 1−d",
+      "startLine": 174,
+      "endLine": 224,
+      "mathContext": "Formal definition and verified complementation lemma"
+    },
+    {
+      "id": "granville-ramare",
+      "title": "Granville-Ramaré Inputs (Axioms)",
+      "summary": "exactlySquarefree, eta, and the two axioms granville_ramare_density_exists and complement_density",
+      "startLine": 226,
+      "endLine": 260,
+      "mathContext": "Axiomatized deep analytic content of Granville-Ramaré (1996)"
+    },
+    {
+      "id": "resolution",
+      "title": "Resolution of Erdős Problem #378",
+      "summary": "atLeastSquarefree_eq_compl, erdos_378_density_exists/positive, erdos_378, erdos_378_answer (no sorries)",
+      "startLine": 261,
+      "endLine": 309,
+      "mathContext": "Verified derivation of both questions from the two axioms"
     }
   ],
   "conclusion": {
@@ -176,20 +154,19 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Choose.Basic",
-      "Mathlib.NumberTheory.Divisors",
-      "Mathlib.Data.Real.Basic"
+      "Mathlib"
     ],
     "opens": [
-      "Nat"
+      "Nat",
+      "Finset"
     ],
     "namespace": "Erdos378",
-    "lineCount": 325,
+    "lineCount": 311,
     "axiomCount": 2,
-    "theoremCount": 10,
-    "definitionCount": 10,
+    "theoremCount": 11,
+    "definitionCount": 8,
     "path": "Proofs/Erdos378Problem.lean",
-    "sorries": 4,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos378Aristotle.lean"
     ]
@@ -211,5 +188,5 @@
       "description": "Related Erdős problem sharing themes: density, number-theory, solved"
     }
   ],
-  "sorries": 4
+  "sorries": 0
 }

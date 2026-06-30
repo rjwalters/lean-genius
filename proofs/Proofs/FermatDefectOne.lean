@@ -129,6 +129,144 @@ theorem fermat_defect_three_negative : FermatDefectNegative 3 := by
   · native_decide
   · native_decide
 
+/-! ## Modular obstructions (Level 3 refutation candidates)
+
+A prime `p` is a *Level-3 modular obstruction* at `(n, ε)` if the defect
+congruence
+
+  negative sign:  `a^n + b^n + 1 ≡ c^n (mod p)`
+  positive sign:  `a^n + b^n ≡ c^n + 1 (mod p)`
+
+has **no** primitive residue solution, i.e. no `(a, b, c) : (ZMod p)³` with
+`(a, b, c) ≠ (0, 0, 0)` satisfying it. Such an obstruction would rule out all
+integer defect-one solutions of that sign and exponent (any integer solution
+reduces mod `p`, and a primitive integer triple stays primitive mod every `p`).
+
+The search at `n ∈ {4, 5, 6}`, `ε ∈ {−1, +1}`, `p ∈ {3, 5, 7, 11, 13}` finds
+**no obstruction**. The reason is structural and rules out *every* prime, not
+just this range:
+
+* Negative sign: `(a, b, c) = (0, 0, 1)` gives `0 + 0 + 1 = 1 = 1^n` in any
+  `ZMod p` (for `n ≥ 1`, since `0^n = 0`). This is a primitive residue triple
+  (`c = 1 ≠ 0`), so it is always a solution.
+* Positive sign: `(a, b, c) = (1, 0, 0)` gives `1^n + 0^n = 1 = 0^n + 1` in any
+  `ZMod p` (for `n ≥ 1`). This is a primitive residue triple (`a = 1 ≠ 0`).
+
+Hence no single-prime congruence obstruction can exist for the defect-one
+problem in either sign. The negative search result is recorded as a claim file
+in `research/problems/fermat-defect-one/claims/`. The theorems below certify
+the structural unit witnesses, both as the explicit `decide`-checked instances
+at each `(n, ε, p)` in scope and as the general all-`n`, all-`p` statements. -/
+
+/-- Negative-sign defect congruence over `ZMod p` has a *primitive* residue
+solution `(a, b, c)` (not all zero): `a^n + b^n + 1 = c^n`. -/
+def ModSolvableNeg (n : Nat) (p : Nat) : Prop :=
+  ∃ a b c : ZMod p, ¬ (a = 0 ∧ b = 0 ∧ c = 0) ∧ a ^ n + b ^ n + 1 = c ^ n
+
+/-- Positive-sign defect congruence over `ZMod p` has a *primitive* residue
+solution `(a, b, c)` (not all zero): `a^n + b^n = c^n + 1`. -/
+def ModSolvablePos (n : Nat) (p : Nat) : Prop :=
+  ∃ a b c : ZMod p, ¬ (a = 0 ∧ b = 0 ∧ c = 0) ∧ a ^ n + b ^ n = c ^ n + 1
+
+/-- **General structural non-obstruction, negative sign.** For every `n ≥ 1`
+and every prime `p`, the negative defect congruence has the primitive residue
+solution `(0, 0, 1)`. Consequently *no* prime is a Level-3 modular obstruction
+for the negative sign at any exponent — in particular none at `n ∈ {4,5,6}`,
+`p ∈ {3,5,7,11,13}`. -/
+theorem fermat_defect_no_obstruction_neg (n p : Nat) (hn : 1 ≤ n)
+    [NeZero p] [Fact (1 < p)] : ModSolvableNeg n p := by
+  refine ⟨0, 0, 1, ?_, ?_⟩
+  · rintro ⟨-, -, h⟩
+    exact (one_ne_zero h)
+  · have h0 : (0 : ZMod p) ^ n = 0 := zero_pow (by omega)
+    simp [h0]
+
+/-- **General structural non-obstruction, positive sign.** For every `n ≥ 1`
+and every prime `p`, the positive defect congruence has the primitive residue
+solution `(1, 0, 0)`. Consequently *no* prime is a Level-3 modular obstruction
+for the positive sign at any exponent. -/
+theorem fermat_defect_no_obstruction_pos (n p : Nat) (hn : 1 ≤ n)
+    [NeZero p] [Fact (1 < p)] : ModSolvablePos n p := by
+  refine ⟨1, 0, 0, ?_, ?_⟩
+  · rintro ⟨h, -, -⟩
+    exact (one_ne_zero h)
+  · have h0 : (0 : ZMod p) ^ n = 0 := zero_pow (by omega)
+    simp [h0]
+
+/-! ### Explicit `decide`-checked instances at the searched `(n, ε, p)`
+
+Each instance exhibits a concrete primitive residue witness and is verified by
+`decide` over the finite type `ZMod p`. The naming follows the issue request,
+`fermat_defect_obstruction_n_<k>_<sign>_mod_<p>`; because the search found *no*
+obstruction, each theorem states `Mod{Neg,Pos}Solvable` — the congruence is
+solvable, hence there is no obstruction at that `(n, ε, p)`. -/
+
+theorem fermat_defect_obstruction_n_4_neg_mod_3 : ModSolvableNeg 4 3 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_4_neg_mod_5 : ModSolvableNeg 4 5 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_4_neg_mod_7 : ModSolvableNeg 4 7 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_4_neg_mod_11 : ModSolvableNeg 4 11 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_4_neg_mod_13 : ModSolvableNeg 4 13 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+
+theorem fermat_defect_obstruction_n_4_pos_mod_3 : ModSolvablePos 4 3 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_4_pos_mod_5 : ModSolvablePos 4 5 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_4_pos_mod_7 : ModSolvablePos 4 7 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_4_pos_mod_11 : ModSolvablePos 4 11 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_4_pos_mod_13 : ModSolvablePos 4 13 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+
+theorem fermat_defect_obstruction_n_5_neg_mod_3 : ModSolvableNeg 5 3 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_5_neg_mod_5 : ModSolvableNeg 5 5 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_5_neg_mod_7 : ModSolvableNeg 5 7 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_5_neg_mod_11 : ModSolvableNeg 5 11 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_5_neg_mod_13 : ModSolvableNeg 5 13 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+
+theorem fermat_defect_obstruction_n_5_pos_mod_3 : ModSolvablePos 5 3 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_5_pos_mod_5 : ModSolvablePos 5 5 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_5_pos_mod_7 : ModSolvablePos 5 7 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_5_pos_mod_11 : ModSolvablePos 5 11 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_5_pos_mod_13 : ModSolvablePos 5 13 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+
+theorem fermat_defect_obstruction_n_6_neg_mod_3 : ModSolvableNeg 6 3 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_6_neg_mod_5 : ModSolvableNeg 6 5 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_6_neg_mod_7 : ModSolvableNeg 6 7 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_6_neg_mod_11 : ModSolvableNeg 6 11 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_6_neg_mod_13 : ModSolvableNeg 6 13 :=
+  ⟨0, 0, 1, by decide, by decide⟩
+
+theorem fermat_defect_obstruction_n_6_pos_mod_3 : ModSolvablePos 6 3 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_6_pos_mod_5 : ModSolvablePos 6 5 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_6_pos_mod_7 : ModSolvablePos 6 7 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_6_pos_mod_11 : ModSolvablePos 6 11 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+theorem fermat_defect_obstruction_n_6_pos_mod_13 : ModSolvablePos 6 13 :=
+  ⟨1, 0, 0, by decide, by decide⟩
+
 /-! ## Open conjecture: defect-one existence for every $n \ge 3$ -/
 
 /-- **Fermat defect-one conjecture (Level 2).** For every exponent $n \ge 3$,

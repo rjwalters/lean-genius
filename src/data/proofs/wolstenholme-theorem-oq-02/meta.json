@@ -19,7 +19,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 3,
+    "axiomCount": 4,
     "theoremCount": 30,
     "defCount": 5,
     "lineCount": 262,
@@ -53,7 +53,7 @@
       "Proof that every Wolstenholme prime satisfies the ordinary Wolstenholme theorem (mod p³)"
     ],
     "dateAdded": "2026-03-23",
-    "assumptions": "3 axioms: wp_cb_16843 and wp_cb_2124679 (binomial coefficients too large for kernel computation), no_other_wp_below_billion (McIntosh-Roettger 2008 computational search). All verified computationally in the literature.",
+    "assumptions": "4 assumptions: 3 axiom declarations — wp_cb_16843 and wp_cb_2124679 (binomial coefficients too large for kernel computation), no_other_wp_below_billion (McIntosh-Roettger 2008 computational search) — plus Lean.ofReduceBool, introduced by native_decide. native_decide proves the substantive in-file results prime_16843 and prime_2124679 (feeding isWP_16843/isWP_2124679 and the headline exists_two_distinct_wp) as well as the central modular residue facts (mod 4/8/12); it trusts the compiler's kernel reduction rather than the Lean kernel proper, so these results are not kernel-verified. All computational claims are corroborated in the literature (McIntosh-Roettger 2007/2008). leanFile.axiomCount counts only the 3 literal axiom declarations.",
     "prerequisites": [
       "Binomial coefficients and Wolstenholme's theorem",
       "Modular arithmetic and prime residue classes",

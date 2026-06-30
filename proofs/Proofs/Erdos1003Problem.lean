@@ -147,7 +147,7 @@ Count of n ≤ N where φ(n) = φ(n+1).
 def countConsecutiveEqual (N : ℕ) : ℕ :=
   (Finset.filter (fun n => φ n = φ (n + 1)) (Finset.range (N + 1))).card
 
-/--
+/-
 The EPS upper bound: eventually, the count of n ≤ x with φ(n) = φ(n+1)
 is at most x/exp((log x)^(1/3)).
 
@@ -164,7 +164,7 @@ Note: 5186 and 5187 are consecutive members, meaning
 φ(5186) = φ(5187) = φ(5188).
 -/
 
-/--
+/-
 The sequence A001274 contains at least the first few known values.
 -/
 /-
@@ -236,10 +236,10 @@ A remarkable fact: there exist three consecutive integers with equal totient.
 - 5188 = 2² × 1297
 -/
 
-/--
+/-
 There exist three consecutive integers with equal totient value.
 -/
-/--
+/-
 5186 ∈ ConsecutiveKEqualTotients 2 means
 φ(5186) = φ(5187) = φ(5188).
 -/
@@ -254,7 +254,7 @@ However, the full question of whether the set is infinite remains
 formally open.
 -/
 
-/--
+/-
 Ford-Luca-Pomerance result: there are many solutions.
 For any ε > 0, eventually the count exceeds x^(1-ε).
 -/

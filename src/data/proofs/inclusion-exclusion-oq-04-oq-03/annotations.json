@@ -1,0 +1,116 @@
+[
+  {
+    "id": "ann-alt-partial",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": {
+      "startLine": 82,
+      "endLine": 122
+    },
+    "type": "theorem",
+    "title": "The Partial Alternating Binomial Sum and Pascal Telescoping",
+    "content": "`altPartial f m` = Σ_{j=0}^m (-1)^j C(f,j) is the truncation of the binomial expansion of (1−1)^f. `altPartial_zero` gives altPartial 0 m = 1 (only the j=0 term survives). `altPartial_succ` is the crux identity altPartial(f+1,m) = (-1)^m C(f,m), proved by induction on m using Pascal's rule C(f+1,m+1) = C(f,m) + C(f,m+1) (Nat.choose_succ_succ), telescoping the alternating partial sum to a SINGLE term — its sign (-1)^m and non-negative magnitude C(f,m) are the entire source of the Bonferroni one-sidedness. `altPartial_of_le` adds the exact endpoint altPartial f m = [f=0] for f ≤ m, which yields the m ≥ |ι| exactness.",
+    "mathContext": "$\\mathrm{altPartial}(f,m)=\\sum_{j=0}^m(-1)^j\\binom{f}{j}$; $\\mathrm{altPartial}(0,m)=1$, $\\mathrm{altPartial}(f{+}1,m)=(-1)^m\\binom{f}{m}$, and $\\mathrm{altPartial}(f,m)=[f{=}0]$ for $f\\le m$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "partial alternating sum",
+      "Pascal's rule",
+      "binomial coefficients",
+      "telescoping"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "induction"
+    ]
+  },
+  {
+    "id": "ann-deg-layers",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": {
+      "startLine": 134,
+      "endLine": 152
+    },
+    "type": "definition",
+    "title": "Degree, Intersection Count, Layers, and the Truncated Sieve",
+    "content": "The objects of the general sieve, for a family A : ι → Finset α. `deg A x` = #{i : x∈A i} is the number of sets containing x. `interCard A J` = |⋂_{i∈J} A i| is the number of elements common to all sets indexed by J (J = ∅ gives the whole universe). `sieveLayer A k` = S_k = Σ_{|J|=k} interCard A J is the k-th inclusion–exclusion layer, and `bonf A m` = Σ_{k=0}^m (-1)^k S_k is that sieve truncated after the size-m index sets. `noneCard A` = #{x : x in no A i} is the quantity the sieve computes exactly at full depth. Crucially, interCard is directly a filter cardinality — no external crux count is needed (unlike the derangement instance).",
+    "mathContext": "$\\deg_A x = \\#\\{i: x\\in A_i\\}$, $\\;S_k=\\sum_{|J|=k}\\big|\\bigcap_{i\\in J}A_i\\big|$, $\\;\\mathrm{bonf}(A,m)=\\sum_{k=0}^m(-1)^kS_k$, $\\;\\mathrm{noneCard}(A)=\\#\\{x:\\forall i,\\,x\\notin A_i\\}$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "inclusion-exclusion sieve",
+      "element degree",
+      "set intersection cardinality",
+      "truncated alternating sum"
+    ],
+    "prerequisites": [
+      "Finset",
+      "powersetCard"
+    ]
+  },
+  {
+    "id": "ann-reindex",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": {
+      "startLine": 154,
+      "endLine": 199
+    },
+    "type": "theorem",
+    "title": "Per-Element Reindexing: the Family Collapses to Degrees",
+    "content": "The structural heart of the proof. `filter_subset_eq_powersetCard` says that for a fixed element x, the size-k index sets J with x ∈ A i for all i∈J are exactly the size-k subsets of x's containing index set {i : x∈A i}. `sieveLayer_eq_sum_choose` then rewrites the layer S_k as Σ_x C(deg A x, k): expand interCard as an indicator sum over elements (Finset.card_filter), exchange the order of summation (Finset.sum_comm), and count the relevant subsets (Finset.card_powersetCard). `bonf_eq_sum_altPartial` assembles this across k into bonf A m = Σ_x altPartial(deg A x, m) — the family A has disappeared, leaving only element degrees, exactly the form the single-variable Bonferroni argument needs.",
+    "mathContext": "$S_k=\\sum_x\\binom{\\deg_A x}{k}$, hence $\\mathrm{bonf}(A,m)=\\sum_x\\mathrm{altPartial}(\\deg_A x,m)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Fubini / sum exchange",
+      "powersetCard counting",
+      "indicator sums",
+      "reindexing"
+    ],
+    "prerequisites": [
+      "Finset.sum_comm",
+      "Finset.card_powersetCard"
+    ]
+  },
+  {
+    "id": "ann-bonferroni",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": {
+      "startLine": 201,
+      "endLine": 273
+    },
+    "type": "theorem",
+    "title": "The Bonferroni Inequalities",
+    "content": "`noneCard_eq_indicator_sum` identifies the elements in no set as the deg=0 elements, so noneCard A = Σ_x [deg A x = 0]. `bonf_sub_noneCard` writes the truncation error bonf A m − noneCard A = Σ_x (altPartial(deg A x,m) − [deg=0]). `neg_one_pow_mul_term_nonneg` shows each term times (-1)^m is non-negative (0 for an element in no set via altPartial_zero; C(deg−1,m) ≥ 0 otherwise via altPartial_succ). The core `neg_one_pow_mul_bonf_sub_nonneg` gives (-1)^m(bonf A m − noneCard A) ≥ 0, which Even/Odd.neg_one_pow split into `bonferroni_even` (noneCard ≤ bonf for even m) and `bonferroni_odd` (bonf ≤ noneCard for odd m).",
+    "mathContext": "$(-1)^m\\big(\\mathrm{bonf}(A,m)-\\mathrm{noneCard}(A)\\big)=\\sum_{x:\\deg_A x\\ge1}\\binom{\\deg_A x-1}{m}\\ge 0$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Bonferroni inequalities",
+      "parity of truncation",
+      "one-sided bounds",
+      "sign analysis"
+    ],
+    "prerequisites": [
+      "Even/Odd powers of -1",
+      "non-negativity of binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-exact-endpoint",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": {
+      "startLine": 275,
+      "endLine": 292
+    },
+    "type": "theorem",
+    "title": "The Exact Inclusion–Exclusion Endpoint",
+    "content": "`deg_le_card` notes every element belongs to at most |ι| sets (the filter is over a |ι|-element index type). `bonf_eq_noneCard_of_card_le` then shows the Bonferroni ladder collapses to the exact inclusion–exclusion identity once m ≥ |ι|: for each element, altPartial_of_le turns altPartial(deg A x, m) into the exact indicator [deg=0] because the single Pascal error term C(deg−1,m) vanishes for m ≥ deg. So bonf A m = noneCard A — the exact sieve is the deep endpoint of the whole family of one-sided bounds.",
+    "mathContext": "$\\deg_A x \\le |\\iota|$, hence $\\mathrm{bonf}(A,m)=\\mathrm{noneCard}(A)$ for all $m\\ge|\\iota|$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "exact inclusion-exclusion",
+      "ladder endpoint",
+      "vanishing binomial tail"
+    ],
+    "prerequisites": [
+      "Nat.choose_eq_zero_of_lt",
+      "Fintype.card"
+    ]
+  }
+]

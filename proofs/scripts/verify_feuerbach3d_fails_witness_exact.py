@@ -123,6 +123,41 @@ for name, (a, b, c, d) in {
     AB2, CD2 = b - a, d - c
     check(f"control {name}: dot3(AB,CD)=0 (orthocentric, NOT a witness)", dot3(AB2, CD2) == 0)
 
+# ============================================================
+# S11 EXTENSION: exact intermediate forms for the Lean discharge
+# of `witnessT1_fails` (transcribed tactic targets).
+# ============================================================
+print()
+print("=== S11: Lean-shaped intermediate identities ===")
+a, b = sp.symbols('a b', positive=True)   # a = sqrt2, b = sqrt3
+Dl = 1 + b + 2*a                            # Delta
+
+# hd: dist3_sq(N24,I) with I=((1+a)/Δ,(1+a)/Δ,1/Δ), N24=(1/2,1/2,0)
+lhs_hd = ((1+a)/Dl - sp.Rational(1,2))**2 * 2 + (1/Dl - 0)**2
+print("[%s] hd: dist3_sq = ((1-b)^2+2)/(2*Delta^2)" %
+      ("PASS" if sp.simplify(lhs_hd - ((1-b)**2+2)/(2*Dl**2))==0 else "FAIL"))
+
+# he: (R24-r)^2 = (b*Δ-6)^2/(36 Δ^2),  R24=b/6, r=1/Δ
+lhs_he = (b/6 - 1/Dl)**2
+print("[%s] he: (R24-r)^2 = (b*Delta-6)^2/(36*Delta^2)" %
+      ("PASS" if sp.simplify(lhs_he - (b*Dl-6)**2/(36*Dl**2))==0 else "FAIL"))
+
+# hid linear_combination check:  L - R - (ca*(a^2-2)+cb*(b^2-3)) == 0  (ring identity)
+L = 18*((1-b)**2+2) - (b*Dl-6)**2
+R = 72 - 30*b - 12*a + 12*(a*b)
+ca = -4*b**2
+cb = -4*a*b - 4*a - b**2 - 2*b + 18
+print("[%s] hid linear_combination (-4*b^2)*ha2 + (-4*a*b-4*a-b^2-2*b+18)*hb2" %
+      ("PASS" if sp.expand(L - R - (ca*(a**2-2) + cb*(b**2-3)))==0 else "FAIL"))
+
+# final cleared inequality direction: (b*Δ-6)^2*(2Δ^2) < ((1-b)^2+2)*(36 Δ^2)  <=> (b*Δ-6)^2 < 18((1-b)^2+2)
+import math
+av, bv = math.sqrt(2), math.sqrt(3)
+print("[%s] numeric: (b*Δ-6)^2=%.4f < 18((1-b)^2+2)=%.4f" % (
+    "PASS" if (bv*(1+bv+2*av)-6)**2 < 18*((1-bv)**2+2) else "FAIL",
+    (bv*(1+bv+2*av)-6)**2, 18*((1-bv)**2+2)))
+print("S11 intermediate identities: done")
+
 print()
 ok = all(p for _, p in results)
 print("CERTIFICATE: " + ("ALL CHECKS PASS" if ok else "FAILURES PRESENT"))

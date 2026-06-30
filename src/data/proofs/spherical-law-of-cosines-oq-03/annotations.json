@@ -1,0 +1,74 @@
+[
+  {
+    "id": "spherical-oq03-ann-overview",
+    "proofId": "spherical-law-of-cosines-oq-03",
+    "range": { "startLine": 1, "endLine": 82 },
+    "type": "concept",
+    "title": "The Dual (Angles) Law of Cosines and the Radical-Free Strategy",
+    "content": "The parent entry proves the side law cos c = cos a·cos b + sin a·sin b·cos C; OQ-03 formalizes its polar dual, the angles law cos C = −cos A·cos B + sin A·sin B·cos c. The minus sign in front of cos A·cos B is the signature of spherical duality (the polar triangle has sides π−A and angles π−a). The strategy is radical-free and division-free: model the triangle by three unit vectors u,v,w in ℝ³ with side cosines ca=⟨v,w⟩, cb=⟨w,u⟩, cc=⟨u,v⟩; substitute the normal forms cos A = (ca−cb·cc)/(sin b·sin c), sin A = |[u v w]|/(sin b·sin c) and clear sin a·sin b·sin²c to reduce the dual law to a polynomial identity (dual_poly, closed by ring), avoiding all non-degeneracy side conditions.",
+    "mathContext": "$\\cos C = -\\cos A\\cos B + \\sin A\\sin B\\cos c$ — the polar dual of $\\cos c = \\cos a\\cos b + \\sin a\\sin b\\cos C$.",
+    "significance": "supporting",
+    "relatedConcepts": ["spherical trigonometry", "polar (dual) triangle", "law of cosines", "scalar triple product", "Gram determinant"],
+    "prerequisites": ["spherical geometry", "dot and cross products in ℝ³", "spherical law of cosines (side form)"]
+  },
+  {
+    "id": "spherical-oq03-ann-toolkit",
+    "proofId": "spherical-law-of-cosines-oq-03",
+    "range": { "startLine": 95, "endLine": 178 },
+    "type": "definition",
+    "title": "Part I — Vector Toolkit in ℝ³",
+    "content": "Defines the 3-field structure V with dot, cross, and scalar triple products, and proves the algebraic identities the whole development rests on: binet_cauchy (⟨a×b, c×d⟩ = ⟨a,c⟩⟨b,d⟩ − ⟨a,d⟩⟨b,c⟩), lagrange_identity (‖a×b‖² = ‖a‖²‖b‖² − ⟨a,b⟩²), triple_sq ([u v w]² = the Gram determinant), and the orthogonality facts ⟨a×b, a⟩ = ⟨a×b, b⟩ = 0 — all by ring. Nonnegativity facts (triple_sq, cross_norm_sq_nonneg, 1−⟨u,v⟩² ≥ 0) guarantee the side sines √(1−ca²) are well defined.",
+    "mathContext": "$\\langle a\\times b, c\\times d\\rangle = \\langle a,c\\rangle\\langle b,d\\rangle - \\langle a,d\\rangle\\langle b,c\\rangle$ (Binet–Cauchy); $\\|a\\times b\\|^2 = \\|a\\|^2\\|b\\|^2 - \\langle a,b\\rangle^2$ (Lagrange).",
+    "significance": "supporting",
+    "relatedConcepts": ["Binet–Cauchy identity", "Lagrange identity", "cross product", "Gram determinant", "ring tactic"],
+    "prerequisites": ["vector algebra in ℝ³", "polynomial identities"]
+  },
+  {
+    "id": "spherical-oq03-ann-poly",
+    "proofId": "spherical-law-of-cosines-oq-03",
+    "range": { "startLine": 180, "endLine": 238 },
+    "type": "insight",
+    "title": "Part II — The Cleared Polynomial Identity",
+    "content": "dual_poly is the algebraic heart: after substituting the normal forms and multiplying through by sin a·sin b·sin²c, the dual law becomes a polynomial identity in the side cosines, closed entirely by ring. The cleared geometric forms dual_law_cleared (for abstract normal-form data) and dual_spherical_law_cleared (for a genuine unit-vector triangle) then read: (cc−ca·cb)·(1−cc²) = −(ca−cb·cc)(cb−ca·cc) + [u v w]²·cc, where 1−cc² = sin²c and [u v w]² is the Gram determinant. Clearing radicals up front is what makes the whole proof free of non-degeneracy side conditions.",
+    "mathContext": "$(c_c - c_a c_b)(1-c_c^2) = -(c_a - c_b c_c)(c_b - c_a c_c) + [u\\,v\\,w]^2\\, c_c$.",
+    "significance": "key",
+    "relatedConcepts": ["clearing denominators", "polynomial identity", "ring tactic", "Gram determinant", "radical-free proof"],
+    "prerequisites": ["polynomial identities", "spherical normal forms"]
+  },
+  {
+    "id": "spherical-oq03-ann-trig",
+    "proofId": "spherical-law-of-cosines-oq-03",
+    "range": { "startLine": 239, "endLine": 333 },
+    "type": "concept",
+    "title": "Part III — Trigonometric Form",
+    "content": "dual_law_trig recovers the literal trig dual law cos C = −cos A·cos B + sin A·sin B·cos c from the cleared identity by dividing through by sin a·sin b·sin²c. The supporting lemmas ground the normal forms geometrically: cosA_num, cosB_num, cosC_num express the angle-cosine numerators as Binet–Cauchy inner products of edge normals, and sina_sq, sinb_sq, sinc_sq express the side-sine squares as Lagrange self-inner-products (‖v×w‖² = 1−ca², etc.).",
+    "mathContext": "$\\cos C = -\\cos A\\cos B + \\sin A\\sin B\\cos c$, recovered by dividing the cleared form by $\\sin a\\sin b\\sin^2 c$.",
+    "significance": "key",
+    "relatedConcepts": ["spherical angle normal form", "edge normals", "Binet–Cauchy", "Lagrange identity"],
+    "prerequisites": ["trigonometric identities", "the cleared polynomial form"]
+  },
+  {
+    "id": "spherical-oq03-ann-cross",
+    "proofId": "spherical-law-of-cosines-oq-03",
+    "range": { "startLine": 334, "endLine": 369 },
+    "type": "concept",
+    "title": "Part IV — Cross-Product Form",
+    "content": "dual_law_cross_product_form expresses the dual law purely through scalar triple products and cross-product norms, with no explicit reference to angle cosines/sines. This is the coordinate-free geometric face of the identity, packaging the content of Parts II–III in terms of [u v w] and ‖u×v‖, ‖v×w‖, ‖w×u‖.",
+    "mathContext": "The dual law restated via $[u\\,v\\,w]$ and $\\|u\\times v\\|, \\|v\\times w\\|, \\|w\\times u\\|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cross-product norm", "scalar triple product", "coordinate-free identity"],
+    "prerequisites": ["cross products", "scalar triple product"]
+  },
+  {
+    "id": "spherical-oq03-ann-polar",
+    "proofId": "spherical-law-of-cosines-oq-03",
+    "range": { "startLine": 370, "endLine": 424 },
+    "type": "insight",
+    "title": "Part V — Polar-Triangle Duality",
+    "content": "The structural payoff: realizing the dual law as the side law of the polar triangle. With polar vertices U=v×w, V=w×u, W=u×v, the lemmas polar_inner_uv/_vw/_wu compute their inner products via Binet–Cauchy (e.g. ⟨v×w, w×u⟩ = cos a·cos b − cos c — the π−· side/angle swap of polar duality), and polar_self_uu/_vv/_ww give the polar side-sine squares. dual_law_polar_form then exhibits the dual law as a side-law relation among the polar vertices, establishing dual(T) = primal(polar T) — the precise sense in which spherical duality is the polar-triangle correspondence.",
+    "mathContext": "$\\langle v\\times w, w\\times u\\rangle = \\cos a\\cos b - \\cos c$; dual$(T) = $ primal$(\\text{polar } T)$.",
+    "significance": "key",
+    "relatedConcepts": ["polar triangle", "spherical duality", "Binet–Cauchy", "side/angle swap π−·"],
+    "prerequisites": ["polar duality", "Binet–Cauchy identity", "spherical law of cosines"]
+  }
+]

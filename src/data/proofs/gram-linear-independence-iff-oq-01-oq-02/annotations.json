@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 42 },
+    "type": "concept",
+    "title": "The Gram determinant is a squared volume",
+    "content": "The classical geometric fact behind the whole Gram-matrix story: for a family of vectors `v`, the Gram determinant `det(gram v)` is the *square* of the volume of the parallelepiped they span. The parent entry `GramLinearIndependenceOQ01` proved the algebraic Gramian criterion (`det(gram v) > 0 ⟺ v independent`); the sibling `…OQ01OQ01` bounded it above (Hadamard's inequality). This entry supplies the missing geometric content — `√(det gram v) = vol(parallelepiped v)` — answering the parent's second open question. The identity is foundational across mathematics: the geometry of numbers measures lattice covolumes by `√det` of a basis Gram matrix (Minkowski), the volume element on a submanifold is `√det` of the first fundamental form, and the volume of a statistical confidence ellipsoid is governed by the same determinant. Mathlib has both ends of the bridge (the Gram matrix; the Haar measure of a parallelepiped as `|det B|`) but not the link — the matrix factorisation `gram v = BᵀB` in an orthonormal basis.",
+    "mathContext": "$\\operatorname{vol}(\\mathrm{parallelepiped}\\,v) = \\sqrt{\\det \\mathrm{Gram}(v)}$, the square root of the determinant of $[\\langle v_i, v_j\\rangle]_{ij}$.",
+    "significance": "key",
+    "relatedConcepts": ["Gram matrix", "parallelepiped volume", "geometry of numbers", "Hadamard's inequality", "first fundamental form"],
+    "prerequisites": ["inner product spaces", "determinants", "Haar/Lebesgue measure"]
+  },
+  {
+    "id": "ann-factorisation",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-02",
+    "range": { "startLine": 52, "endLine": 65 },
+    "type": "insight",
+    "title": "The key factorisation: gram v = BᵀB in an orthonormal basis",
+    "content": "`gram_eq_transpose_mul` is the structural heart of the file. Fix an orthonormal basis `b` of `F` and let `B = b.toMatrix v` be the coordinate matrix, `B k i = ⟪b k, v i⟫`. Then the Gram matrix factors as `gram ℝ v = Bᵀ·B`. This is precisely *completeness* of the orthonormal basis: the entry `⟪v i, v j⟫` equals `∑ k ⟪b k, v i⟫·⟪b k, v j⟫` (`OrthonormalBasis.sum_inner_mul_inner`), which is exactly `(BᵀB)ᵢⱼ`. The proof expands the matrix product, rewrites coordinate entries as inner products via `OrthonormalBasis.repr_apply_apply`, applies completeness, and fixes orientation with `real_inner_comm`. Everything downstream — the squared-volume identity, the independence criterion — is a determinant of this one factorisation.",
+    "mathContext": "$(B^{\\mathsf T}B)_{ij} = \\sum_k B_{ki}B_{kj} = \\sum_k \\langle b_k, v_i\\rangle\\langle b_k, v_j\\rangle = \\langle v_i, v_j\\rangle = \\mathrm{Gram}(v)_{ij}.$",
+    "significance": "key",
+    "relatedConcepts": ["completeness of an orthonormal basis", "coordinate matrix", "OrthonormalBasis.sum_inner_mul_inner", "BᵀB factorisation"],
+    "prerequisites": ["orthonormal bases", "matrix multiplication", "Parseval/completeness"]
+  },
+  {
+    "id": "ann-squared-volume",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-02",
+    "range": { "startLine": 67, "endLine": 79 },
+    "type": "insight",
+    "title": "Taking determinants: det(gram v) = (det B)² and √ = |det B|",
+    "content": "`det_gram_eq_basis_det_sq` takes the determinant of the factorisation: `det(gram v) = det(BᵀB) = det(Bᵀ)·det(B) = (det B)²` (using `Matrix.det_transpose`, `Matrix.det_mul`, and `Basis.det_apply` identifying `det B = b.det v`). So the Gram determinant is the *square* of the signed coordinate volume `b.det v`. `sqrt_det_gram_eq_abs_det` then takes the square root: `√(det gram v) = |b.det v|` via `Real.sqrt_sq_eq_abs`. The squaring-then-rooting handles orientation cleanly: `det B` may be negative, but `(det B)²` is manifestly nonnegative and `√` recovers the *unsigned* volume `|det B|` — no orientation hypothesis is ever needed.",
+    "mathContext": "$\\det\\mathrm{Gram}(v) = \\det(B^{\\mathsf T}B) = (\\det B)^2 \\ge 0,\\quad \\sqrt{\\det\\mathrm{Gram}(v)} = |\\det B| = |b.\\det v|.$",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.det_mul", "Matrix.det_transpose", "Basis.det_apply", "Real.sqrt_sq_eq_abs", "signed vs unsigned volume"],
+    "prerequisites": ["multiplicativity of the determinant", "basis determinant"]
+  },
+  {
+    "id": "ann-volume-identity",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-02",
+    "range": { "startLine": 81, "endLine": 100 },
+    "type": "insight",
+    "title": "The headline volume identity (and why orthonormality is essential)",
+    "content": "`volume_parallelepiped_eq_sqrt_det_gram` assembles the bridge: `volume (parallelepiped v) = ENNReal.ofReal (√(det gram v))`. Mathlib's `addHaar_parallelepiped` gives `b.toBasis.addHaar (parallelepiped v) = ofReal |b.det v|` (the Haar measure *relative to the basis b*), and `OrthonormalBasis.addHaar_eq_volume` identifies that basis-relative Haar measure with the canonical `volume`. This second step is exactly where orthonormality earns its keep: for a general basis the parallelepiped measure is `|det B|` only relative to that basis, but *only an orthonormal basis induces the canonical isometry-invariant volume*, so the statement becomes genuinely geometric rather than coordinate-dependent. Combined with `√(det gram v) = |b.det v|`, this yields the identity. `volume_parallelepiped_euclidean` specializes to `EuclideanSpace ℝ ι` where `EuclideanSpace.basisFun` is orthonormal and all measure instances are canonical. (Note: the theorem must NOT assume an unrelated `MeasureSpace` instance — Mathlib's `measureSpaceOfInnerProductSpace` supplies the canonical one that `addHaar_eq_volume` produces.)",
+    "mathContext": "$\\operatorname{vol}(\\mathrm{parallelepiped}\\,v) = b.\\mathrm{addHaar}(\\mathrm{parallelepiped}\\,v) = \\mathrm{ofReal}\\,|b.\\det v| = \\mathrm{ofReal}\\,\\sqrt{\\det\\mathrm{Gram}(v)}.$",
+    "significance": "key",
+    "relatedConcepts": ["addHaar_parallelepiped", "OrthonormalBasis.addHaar_eq_volume", "canonical volume measure", "isometry invariance", "EuclideanSpace.basisFun"],
+    "prerequisites": ["Haar measure", "Lebesgue measure on inner product spaces", "parallelepiped"]
+  },
+  {
+    "id": "ann-positive-volume",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-02",
+    "range": { "startLine": 102, "endLine": 119 },
+    "type": "insight",
+    "title": "The geometric independence criterion: positive volume iff independent",
+    "content": "`volume_parallelepiped_pos_iff_linearIndependent` reads the parent's Gramian criterion geometrically: `0 < vol(parallelepiped v) ⟺ v linearly independent`. Rewriting along the volume identity reduces `0 < ofReal(√(det gram v))` to `0 < det(gram v)` (via `ENNReal.ofReal_pos` and `Real.sqrt_pos`), and the bridge to independence uses `posDef_gram_iff_linearIndependent` together with `PosSemidef.posDef_iff_isUnit` and `det ≠ 0 ⟺ IsUnit det`. The geometry-of-numbers reading: a parallelepiped is degenerate (zero volume) precisely when its edges are linearly dependent — the Gram matrix is then positive semidefinite but *not* positive definite (not a unit). This closes the loop with the parent: the algebraic non-degeneracy of the Gramian and the geometric non-degeneracy of the box are the same statement.",
+    "mathContext": "$0 < \\operatorname{vol}(\\mathrm{parallelepiped}\\,v) \\iff 0 < \\det\\mathrm{Gram}(v) \\iff \\mathrm{Gram}(v)\\succ 0 \\iff v\\text{ independent}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["posDef_gram_iff_linearIndependent", "PosSemidef.posDef_iff_isUnit", "degenerate parallelepiped", "ENNReal.ofReal_pos", "Real.sqrt_pos"],
+    "prerequisites": ["positive definite matrices", "linear independence", "the parent Gramian criterion"]
+  }
+]

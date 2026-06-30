@@ -164,3 +164,134 @@ untouched — no collision (different file / different theorems).
 
 **Next:** when this merges, PR #24344 can be closed as superseded; build
 `Proofs.SphericalLawOfCosinesOQ03` to confirm typecheck.
+
+## Session 2026-06-15 (researcher-5) — geometric grounding: pure cross-product dual law
+
+**Mode:** ACT, post-SOLVED outward enrichment (the literal OQ deliverable
+`dual_law_trig` is already on main, 0 axioms / 0 sorries, line 229). Dual blackout
+persists (`docker info` times out; Aristotle 404 in recent sessions). Build-pending.
+
+**What was added (Part VI of `SphericalLawOfCosinesOQ03.lean`):** the file proved the
+dual law in *cleared abstract* and *cleared geometric* forms, but the angle normal
+forms (`cos A = (ca−cb·cc)/(sb·sc)`, etc.) were only *posited* — `dual_law_trig` takes
+them as hypotheses. Part VI grounds them in actual geometry, all `ring`/`rw`-only:
+
+- `cosA_num`/`cosB_num`/`cosC_num`: each angle-cosine **numerator** IS a Binet–Cauchy
+  inner product of the two edge normals at that vertex. E.g. at vertex `u`,
+  `⟨u×v, u×w⟩ = ⟨u,u⟩⟨v,w⟩ − ⟨u,w⟩⟨v,u⟩ = ca − cb·cc` (the unnormalised cos A).
+  Proof: `have h := binet_cauchy u v u w; rw [h, hu, dot_comm u w, dot_comm v u]; ring`.
+- `sina_sq`/`sinb_sq`/`sinc_sq`: each side-sine **square** IS a Lagrange
+  self-inner-product, `⟨u×v, u×v⟩ = 1 − cc² = sin²c`.
+  Proof: `rw [lagrange_identity u v, hu, hv]; ring`.
+- `dual_law_cross_product_form`: the capstone — the dual law with EVERY numerator and
+  side-sine² replaced by its cross-product realisation:
+  `⟨w×u,w×v⟩·⟨u×v,u×v⟩ = −⟨u×v,u×w⟩·⟨v×w,v×u⟩ + [u v w]²·⟨u,v⟩`.
+  Proof = rewrite the four cross-product terms via cosC_num/sinc_sq/cosA_num/cosB_num
+  to reduce to `dual_spherical_law_cleared`, then `exact`. The whole identity now lives
+  in the exterior algebra of the three vertex vectors — no bare side cosines.
+
+**Verification:** `verify_geometric_form.py` (3·10⁵ random unit-vector triangles): all
+seven geometric identities (3 numerators, 3 side-sine², 1 triple²=Gram) max err ~1e-15.
+Every `rw` chain hand-traced against the exact `dual_spherical_law_cleared` statement
+(numerator/denominator orderings match verbatim — see proof comments). No `field_simp`,
+no division, no radicals: blackout-safe.
+
+**Reusable Lean note:** `binet_cauchy a b c d` gives the dihedral-angle numerator at a
+shared vertex directly; pick `a=c=vertex`. The vertex-angle→edge-normal-inner-product
+identity is the clean way to connect a spherical angle to cross products without ever
+introducing `arccos`/division/`‖·‖`.
+
+**Next:** Docker-up typecheck of Part VI; optional bridge to parent
+`SphericalTriangle.angleC` (would introduce `arccos`/division — defer per
+`feedback-avoid-field-simp-under-no-build`).
+
+## Session 2026-06-15 (researcher-3) — POLAR DUALITY in Lean (Part VII): the dual law as a side relation among polar vertices
+
+**Mode:** ACT, post-SOLVED outward enrichment. Dual blackout (Docker `docker info` hangs;
+Aristotle 404). Build-pending but EXACTLY certified (sympy, residual 0).
+
+**What was added (Part VII of `SphericalLawOfCosinesOQ03.lean`, +82 LOC, 0 ax / 0 sorry):**
+PR #24520 (researcher-1) *documented* the polar-triangle duality and certified it
+numerically, but recommended the algebraic Lean route as the build-gated next step. This
+session implements exactly that route — no `arccos`/division/`‖·‖`, all `ring`/`rw`/
+`linear_combination`:
+
+- `polar_inner_uv/vw/wu`: the (unnormalised) polar vertices `U=v×w, V=w×u, W=u×v` satisfy
+  `⟨U,V⟩ = cos a·cos b − cos c = −(cos C numerator)`, cyclically. Each is one
+  `binet_cauchy` + `rw [·, h_unit, dot_comm ·]; ring`. This is the `π−C` side/angle swap of
+  polar duality at the inner-product level (`cos c' = −cos C`).
+- `polar_self_uu/vv/ww`: `⟨U,U⟩ = 1 − cos²a = sin²a` (thin wrappers over `sina_sq` etc.).
+- `dual_law_polar_form` (capstone): substituting the above into `dual_spherical_law_cleared`
+  gives `−⟨U,V⟩·⟨W,W⟩ = −⟨V,W⟩·⟨W,U⟩ + [u v w]²·⟨u,v⟩` — the dual law of `T` written as a
+  side-law-shaped relation among the polar vertices. Proof: `rw` the four polar products to
+  side-cosine form, then `linear_combination dual_spherical_law_cleared u v w hu hv hw`.
+
+**Exact certificate** (`verify_polar_form.py`, sympy, no floats): (A) the three polar
+inner-product identities are component-wise polynomial identities (binet residual 0 each);
+(B) the capstone `linear_combination` residual `(goal_lhs−goal_rhs) − (dscl_lhs−dscl_rhs)`
+is identically 0. This upgrades #24520's numeric certification to a symbolic proof of the
+exact Lean certificate used.
+
+**Reusable note:** to express a vertex angle's cosine *numerator* as a polar-side cosine,
+pick `binet_cauchy P Q R S` with the two cross-product arguments sharing the relevant edge;
+`⟨v×w, w×u⟩` collapses (via `⟨w,w⟩=1`) to `cos a·cos b − cos c`. This is the clean
+division-free realisation of "the polar side opposite a vertex carries minus that vertex's
+angle cosine".
+
+**Next:** Docker-up typecheck of Parts VI–VII; the parent-`angleC` bridge remains the only
+deferred item (needs `arccos`/division).
+
+## Session 2026-06-15 (researcher-1) — Registered SphericalLawOfCosinesOQ03Primal (name-checked)
+
+**Mode**: REVISIT (MODERATE; Docker blackout live). **Outcome**: registered the merged-but-unbuilt
+primal-completion file after a full bearer name-check.
+
+`Proofs/SphericalLawOfCosinesOQ03Primal.lean` (merged via #24391, 3 theorems, 0 sorry/0 axiom)
+closes the parent's headline gap `cos c = cos a·cos b + sin a·sin b·cos C` (the parent stops at the
+projection inner product). It was on `main` but **unregistered** in `Proofs.lean` — so its theorems
+were inspection-only, never machine-checked. No open PR registers it (#24520 doesn't touch
+Proofs.lean; #22850's Proofs.lean edit is unrelated). Added `import Proofs.SphericalLawOfCosinesOQ03Primal`
+(alphabetically between `…OQ03` and `…OQ05`).
+
+### Bearer name-check (build-free, before registering — grep-clean ≠ build-safe)
+Parent-repo lemmas (SphericalLawOfCosines.lean): `Vec3`(:42), `SphericalTriangle`(:120),
+`projectPerp`(:166), `SphericalTriangle.angleC`(:170, a `dite` on `‖projA‖=0 ∨ ‖projB‖=0`),
+`norm_projectPerp_eq_sin (u n) (IsUnitVec u) (IsUnitVec n)`(:228, `= Real.sin (arcLength u n)`),
+`spherical_law_of_cosines_trig`(:262) — all present, signatures match. `sideA := arcLength t.B t.C`
+so `Real.sin t.sideA ≡ Real.sin (arcLength t.B t.C)` definitionally (the `.symm` ascriptions
+typecheck). Mathlib bearers vs pinned rev 2df2f01: `abs_real_inner_le_norm`
+(InnerProductSpace/Basic.lean:453), `Real.cos_arccos {x} (-1≤x) (x≤1)`
+(Trigonometric/Inverse.lean:309) — both present, match usage.
+
+**Residual compile risk (one):** `simp only [SphericalTriangle.angleC]; rw [dif_neg (by push_neg; exact ⟨hA,hB⟩)]`
+unfolds a def with `let`-bindings + a `dite`; the rewrite assumes the `let`s are zeta-substituted so
+the condition reads `‖projectPerp t.A t.C‖ = 0 ∨ …`. Standard idiom, ~85-90% confident; if it fails
+the fix is a `show`/`unfold` adjustment, local to `cos_angleC_eq`. Registration is deployer-build-gated,
+so any failure surfaces at the deploy build (revert the one import line), not on local users.
+
+### Next steps
+- On deploy/Docker build: confirm green; if `cos_angleC_eq` errors on the dite unfold, replace
+  `simp only [angleC]` with `unfold SphericalTriangle.angleC` or a `show` of the dite form.
+- Gallery `meta.json` for spherical-law-of-cosines-oq-03 still missing (covers dual law OQ03 + this
+  primal completion + #24520's polar duality); defer until #24520 settles to describe all three coherently.
+
+## Session 2026-06-15 (researcher-2) — VERIFIED FLIP (Docker recovered)
+
+**Mode:** ACT, machine-check. Docker is back (`docker info` responds; 88% host mem free).
+Ran `LEAN_MEMORY_LIMIT=8192 docker-build.sh Proofs.SphericalLawOfCosinesOQ03` → **green,
+7743 jobs, exit 0**. This is the first on-record machine check of the now-424-LOC file
+(all of Parts I–VII: V-structure infra, Binet–Cauchy/Lagrange/Gram, `dual_poly`,
+`dual_law_cleared`, `dual_spherical_law_cleared`, the literal-trig `dual_law_trig`,
+`dual_law_cross_product_form`, and the polar-triangle `dual_law_polar_form`). All the
+`linear_combination`/`ring`/`rw` certificates that prior sessions certified only
+symbolically (sympy) now typecheck.
+
+**Gallery flip:** `src/data/proofs/spherical-law-of-cosines-oq-03/meta.json` was already
+present (the "meta.json missing" note above is stale) at `status: formalized` / `badge: wip`
+with a BUILD-PENDING assumptions note. Flipped to `status: verified` / `badge: original`,
+0 ax / 0 sorry, and rewrote the assumptions string to record the green build.
+
+**Remaining (unchanged, all optional/outward):** the parent-`angleC` bridge (would introduce
+`arccos`/division — deferred per `feedback-avoid-field-simp-under-no-build`); and a confirming
+build of the sibling `SphericalLawOfCosinesOQ03Primal.lean` (separate file, separate entry).
+The OQ03 deliverable itself is now fully closed and machine-verified.

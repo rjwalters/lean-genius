@@ -99,9 +99,10 @@ noncomputable def g (n : ℕ) : ℕ :=
 ## Part IV: Known Bounds
 -/
 
-/--
+/-
 **Erdős-Fishburn Lower Bound:**
 g(n) > (3/8)n for all sufficiently large n.
+(Documentary note: not formalized — only the sharper Csizmadia bound is axiomatized below.)
 -/
 /--
 **Csizmadia Lower Bound:**
@@ -138,17 +139,37 @@ def erdos653Conjecture : Prop :=
 ## Part VI: Basic Properties
 -/
 
-/-- **Trivial Lower Bound:**
-g(n) ≥ 1 for n ≥ 2 (at least one R-value exists). -/
+/- **Trivial Lower Bound:**
+g(n) ≥ 1 for n ≥ 2 (at least one R-value exists).
+(Documentary note: the formalized theorem `g_ge_one` lives in `Erdos653LowerBound.lean`.) -/
 /--
 **Trivial Upper Bound:**
 g(n) ≤ n (can't have more distinct values than points).
--/
-axiom g_le_n : ∀ n : ℕ, g n ≤ n
 
-/--
+Discharged from an axiom to a theorem (Axiom Integrity Policy): the R-value set
+`rValueSet S = S.image (distinctDistCount S)` is the image of `S` under a map, so
+`numDistinctRValues S = (rValueSet S).card ≤ S.card = n` by `Finset.card_image_le`,
+and `g n` is the supremum of these counts (`csSup_le'`). This reuses the exact
+proof vocabulary of the sharper `g_le_n_sub_one` below; unlike that lemma it needs
+no `n ≥ 2` hypothesis, so it remains the all-`n` bound cited by `erdos_653_summary`.
+-/
+theorem g_le_n : ∀ n : ℕ, g n ≤ n := by
+  intro n
+  unfold g
+  apply csSup_le'
+  intro k hk
+  simp only [Set.mem_setOf_eq] at hk
+  obtain ⟨S, hcard, rfl⟩ := hk
+  calc numDistinctRValues S
+      = (rValueSet S).card := rfl
+    _ = (S.image (distinctDistCount S)).card := rfl
+    _ ≤ S.card := Finset.card_image_le
+    _ = n := hcard
+
+/-
 **Monotonicity:**
 g is non-decreasing in n.
+(Documentary note: not formalized in this development.)
 -/
 
 /--
@@ -184,7 +205,7 @@ theorem g_le_n_sub_one : ∀ n : ℕ, 2 ≤ n → g n ≤ n - 1 := by
     refine ⟨?_, ?_⟩
     · -- 1 ≤ distinctDistCount S p
       have h1 : 1 < S.card := by rw [hcard]; omega
-      obtain ⟨q, hqS, hqp⟩ := Finset.exists_ne_of_one_lt_card h1 p
+      obtain ⟨q, hqS, hqp⟩ := Finset.exists_mem_ne h1 p
       have hne : (distanceSet S p).Nonempty := by
         refine ⟨euclidDist p q, ?_⟩
         unfold distanceSet
@@ -228,9 +249,10 @@ def IsRegularPolygon (S : Finset (Fin 2 → ℝ)) : Prop :=
   ∃ center : Fin 2 → ℝ, ∃ r : ℝ, r > 0 ∧
     ∀ p ∈ S, euclidDist p center = r
 
-/--
+/-
 **Regular Polygon R-Values:**
 In a regular n-gon, all points have the same R-value (for n ≥ 3).
+(Documentary note: not formalized in this development.)
 -/
 /-
 ## Part VIII: Extremal Configurations
@@ -243,20 +265,23 @@ A configuration achieving g(n) distinct R-values.
 def IsOptimalConfig (S : Finset (Fin 2 → ℝ)) : Prop :=
   numDistinctRValues S = g S.card
 
-/--
+/-
 **Existence of Optimal Configurations:**
 For each n, there exists a configuration achieving g(n).
+(Documentary note: not formalized in this development.)
 -/
 /-
 ## Part IX: Asymptotic Analysis
 -/
 
-/--
+/-
 **Asymptotic Gap:**
 The gap n - g(n) grows as Ω(n^(2/3)).
+(Documentary note: not formalized in this development.)
 -/
-/-- **Combined Bound:**
-cn^(2/3) ≤ n - g(n) ≤ (3/10)n for large n. -/
+/- **Combined Bound:**
+cn^(2/3) ≤ n - g(n) ≤ (3/10)n for large n.
+(Documentary note: not formalized in this development.) -/
 /-
 ## Part X: Connection to Unit Distance Problem
 -/
@@ -266,7 +291,7 @@ cn^(2/3) ≤ n - g(n) ≤ (3/10)n for large n. -/
 The problem is related to the unit distance problem.
 If many pairs are at unit distance, it affects R-value distribution.
 -/
-def unitDistPairs (S : Finset (Fin 2 → ℝ)) : ℕ :=
+noncomputable def unitDistPairs (S : Finset (Fin 2 → ℝ)) : ℕ :=
   (S.filter fun p => (S.filter fun q => euclidDist p q = 1).card > 0).card
 
 /--

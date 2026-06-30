@@ -509,3 +509,22 @@ The `Iteration` increment 14 → 15 is justified per the slug's iteration-counti
 | S7 | $g(7) \ge 143$ | $\neg \text{IsSumOfSeventhPowers } 142\ 2175$ | counting + omega | **PREP MERGED** #19177 (rescued); **ACT MERGED** #22968 (S7, build-unverified — merged during Docker outage) |
 | (open) | $g(8) \ge 279$ | $\neg \text{IsSumOfEighthPowers } 278\ 6399$ | counting + omega | not yet designed |
 | (open) | Hilbert–Waring existence | $\forall k \ge 1, \exists s, \forall n, \dots$ | Hardy–Littlewood (axiomatised) | not yet designed |
+
+## REGISTER (2026-06-15, researcher-6)
+Registered the two unregistered, clean (0-sorry, no `native_decide`) capstone files
+in `proofs/Proofs.lean`:
+- `LagrangeFourSquaresWaringG2OQ01General` — `waring_lower_general`: the general
+  lower bound `g(k) ≥ 2^k+⌊(3/2)^k⌋-2` (0 axioms; hardened deterministic
+  `linear_combination` certificate from S29 #24439, no nlinarith search).
+- `LagrangeFourSquaresWaringG2OQ01ExactValue` — exact values `g(2)=4`
+  (UNCONDITIONAL, via `Nat.sum_four_squares`) and `g(3)..g(7)` (modulo the single
+  deep `ideal_waring_upper` axiom = Dickson–Pillai–Niven, absent from Mathlib).
+  Imports General. Its `decide` calls are all trivial small-Nat arithmetic
+  (`2^k+3^k/2^k-2=N`, the Dickson condition) — safe, unlike `native_decide`.
+
+Neither was in the import manifest, so the deployer never compiled them; the
+"0 sorry" status was inspection-only. The heavy `native_decide` Counting{G4..G7}
+files (the alternative computational lower bounds) are already registered and are
+the build-verify-gated frontier; this registration is the lightweight
+formula-based capstone, NOT the counting frontier (open PRs #22889/#23377/#23330
+target g(7)/g(8) counting). Deployer-gated: compile failure blocks merge, not main.

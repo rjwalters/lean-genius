@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-grid-strategy",
+    "proofId": "greens-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 4, "endLine": 63 },
+    "type": "context",
+    "title": "Tiling a Rectangle by a Grid",
+    "content": "The module docstring frames the open question. The parent file proved both sides of the concrete Green identity are additive under a single cut and packaged the vertical direction as a gluing capstone. Two steps remained: the horizontal companion capstone, and a genuinely two-dimensional grid statement. This file supplies both, taking the 2×2 grid as the prototype from which an arbitrary m×n tiling follows by iteration.",
+    "mathContext": "Green's theorem on a region $R$ tiled by cells $R = \\bigcup_{i,j} R_{ij}$ equals the sum $\\sum_{i,j}$ of the cellwise identities; every interior edge is traversed once in each direction, so $\\oint_{\\partial R_{ij}}$ along it cancels with the neighbor's.",
+    "significance": "context",
+    "relatedConcepts": ["Green's theorem", "domain subdivision", "orientation of boundary curves", "telescoping cancellation"],
+    "prerequisites": ["multivariable calculus", "line integrals", "double integrals"]
+  },
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "greens-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 69 },
+    "type": "technique",
+    "title": "Composing on the Parent File",
+    "content": "The file imports Proofs.GreensTheoremOQ01OQ03 and opens both GreensTheoremOQ01 (for rectLineIntegral, rectDoubleIntegral, area_double_integral) and GreensTheoremOQ01OQ03 (for the single-cut split lemmas and the vertical capstone). No new analytic machinery is introduced; everything is built by composing already-verified lemmas, which is why the file stays axiom-free.",
+    "mathContext": "All content reduces to the parent's $\\texttt{rectLineIntegral}$, $\\texttt{rectDoubleIntegral}$, and the split lemmas $\\texttt{rectLineIntegral\\_hsplit}$, $\\texttt{rectDoubleIntegral\\_hsplit}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["proof reuse", "namespacing", "Mathlib integration"],
+    "prerequisites": ["Lean 4 module system"]
+  },
+  {
+    "id": "ann-horizontal-capstone",
+    "proofId": "greens-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 81, "endLine": 102 },
+    "type": "insight",
+    "title": "Horizontal Gluing Capstone",
+    "content": "greens_additive_horizontal is the mirror of the parent's greens_additive_vertical. Given Green's identity on a bottom cell [a,b]×[c,g] and a top cell [a,b]×[g,d], it follows on [a,b]×[c,d]. The proof is a single rewrite: undo the additivity of both sides across y=g via rectLineIntegral_hsplit and rectDoubleIntegral_hsplit, then substitute the two cell identities hB and hT. The shared horizontal edge y=g cancels by orientation with no extra hypothesis.",
+    "mathContext": "$\\oint_{\\partial([a,b]\\times[c,d])} = \\oint_{\\partial([a,b]\\times[c,g])} + \\oint_{\\partial([a,b]\\times[g,d])}$ because the interior segment $y=g$ is traversed right-to-left for the bottom cell and left-to-right for the top cell.",
+    "significance": "key",
+    "relatedConcepts": ["additivity over adjacent intervals", "boundary orientation", "interval integral splitting"],
+    "prerequisites": ["interval integrals", "Green's theorem on a rectangle"]
+  },
+  {
+    "id": "ann-integrability-line",
+    "proofId": "greens-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 89, "endLine": 96 },
+    "type": "technique",
+    "title": "Integrability Hypotheses for the Glue",
+    "content": "The four IntervalIntegrable hypotheses on Q(b,·) and Q(a,·) over [c,g] and [g,d], plus two on the inner-integral fiber ∫ₐᵇ F(x,·), are exactly what intervalIntegral.integral_add_adjacent_intervals consumes to merge ∫_c^g + ∫_g^d into ∫_c^d. Without integrability on each subinterval the additivity of the integral can fail, so these conditions are not bureaucratic — they are the precise analytic content that makes the glue valid.",
+    "mathContext": "$\\int_c^g h + \\int_g^d h = \\int_c^d h$ requires $h$ interval-integrable on $[c,g]$ and $[g,d]$; here $h(y)=Q(\\cdot,y)$ on the edges and $h(y)=\\int_a^b F(x,y)\\,dx$ for the double integral.",
+    "significance": "supporting",
+    "relatedConcepts": ["interval integrability", "Lebesgue integration", "additivity of the integral"],
+    "prerequisites": ["measure theory", "interval integrals"]
+  },
+  {
+    "id": "ann-grid-2x2",
+    "proofId": "greens-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 114, "endLine": 170 },
+    "type": "insight",
+    "title": "The 2×2 Grid Capstone",
+    "content": "greens_grid_2x2 is the first genuinely two-dimensional tiling in the gallery. Cutting [a,b]×[c,d] at x=e and y=g yields four cells BL, BR, TL, TR. The proof is pure composition: greens_additive_vertical glues BL+BR into the bottom strip [a,b]×[c,g] and TL+TR into the top strip [a,b]×[g,d] (handling the vertical edge x=e twice), then greens_additive_horizontal glues the two strips across y=g. Both interior edges cancel automatically; no cancellation input is needed beyond the integrability data.",
+    "mathContext": "$\\partial(\\text{BL})+\\partial(\\text{BR})+\\partial(\\text{TL})+\\partial(\\text{TR}) = \\partial([a,b]\\times[c,d])$: the vertical edge $x=e$ cancels within each row, the horizontal edge $y=g$ cancels between rows.",
+    "significance": "key",
+    "relatedConcepts": ["grid decomposition", "two-dimensional tiling", "iterated subdivision", "boundary cancellation"],
+    "prerequisites": ["Green's theorem additive under single cut", "vertical gluing capstone"]
+  },
+  {
+    "id": "ann-grid-order",
+    "proofId": "greens-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 156, "endLine": 170 },
+    "type": "technique",
+    "title": "Row-First, Then Across Rows",
+    "content": "The gluing order matters for keeping each cancellation local. By first assembling the two horizontal strips (vertical glue along x=e within each row) and only then gluing the strips across y=g, every interior segment is eliminated in exactly one gluing step. The shared hypotheses (e.g. P(·,g) over the two columns, and the outer F-integral over [a,b]) are reused across steps, which is why the long hypothesis list collapses to three applications of the parent capstones.",
+    "mathContext": "Order: $(\\text{BL}\\!\\cup\\!\\text{BR}) = [a,b]\\times[c,g]$, $(\\text{TL}\\!\\cup\\!\\text{TR}) = [a,b]\\times[g,d]$, then $([a,b]\\times[c,g])\\cup([a,b]\\times[g,d]) = [a,b]\\times[c,d]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["associativity of region union", "structured composition", "double induction base case"],
+    "prerequisites": ["proof structuring"]
+  },
+  {
+    "id": "ann-area-check",
+    "proofId": "greens-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 179, "endLine": 189 },
+    "type": "concept",
+    "title": "Concrete Area Sanity Check",
+    "content": "area_grid_2x2_unit_square verifies the abstract grid identity on a fully concrete case: the area of [0,1]² computed as the double integral of 1 equals the sum of its four quarter-cells. Each quarter-cell has area ¼; rewriting all five double integrals through area_double_integral reduces the goal to ¼+¼+¼+¼=1, closed by ring. This guards against vacuous or sign-confused statements of the grid lemma.",
+    "mathContext": "$\\tfrac14 + \\tfrac14 + \\tfrac14 + \\tfrac14 = 1 = \\text{area}([0,1]^2)$, with each quarter-cell $\\text{area}([0,\\tfrac12]\\times[0,\\tfrac12]) = \\tfrac12\\cdot\\tfrac12$.",
+    "significance": "technical",
+    "relatedConcepts": ["area as double integral", "sanity check", "constant integrand"],
+    "prerequisites": ["double integral of a constant"]
+  },
+  {
+    "id": "ann-axiom-audit",
+    "proofId": "greens-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 191, "endLine": 199 },
+    "type": "context",
+    "title": "Axiom Audit",
+    "content": "The closing #print axioms commands confirm greens_additive_horizontal and greens_grid_2x2 depend only on the standard foundational axioms propext, Classical.choice, and Quot.sound — no Lean.ofReduceBool (so no native_decide) and no sorryAx. This certifies the entry as genuinely verified rather than axiomatized: the result is fully machine-checked.",
+    "mathContext": "$\\#\\text{print axioms} \\Rightarrow \\{\\texttt{propext}, \\texttt{Classical.choice}, \\texttt{Quot.sound}\\}$ only — the ordinary foundations, none of which count as assumptions.",
+    "significance": "context",
+    "relatedConcepts": ["axiom integrity", "trusted kernel", "verification certification"],
+    "prerequisites": ["Lean axiom system"]
+  }
+]

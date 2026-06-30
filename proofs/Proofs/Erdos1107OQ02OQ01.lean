@@ -142,7 +142,7 @@ theorem isCubeful_one : IsCubeful 1 := by simp [IsCubeful]
     them) it holds for *all* `n` — no `native_decide`. -/
 theorem isCubeful_pow {n k : ℕ} (hk : 3 ≤ k) : IsCubeful (n ^ k) := by
   intro p hp
-  have hpp : Prime p := (prime_of_mem_primeFactors hp).prime
+  have hpp : _root_.Prime p := (prime_of_mem_primeFactors hp).prime
   have hpd : p ∣ n ^ k := dvd_of_mem_primeFactors hp
   have hpn : p ∣ n := hpp.dvd_of_dvd_pow hpd
   calc p ^ 3 ∣ p ^ k := pow_dvd_pow p hk
@@ -150,6 +150,21 @@ theorem isCubeful_pow {n k : ℕ} (hk : 3 ≤ k) : IsCubeful (n ^ k) := by
 
 /-- Every perfect cube is cubeful (the `k = 3` case of `isCubeful_pow`). -/
 theorem isCubeful_cube (n : ℕ) : IsCubeful (n ^ 3) := isCubeful_pow (le_refl 3)
+
+/-- Cubeful numbers are closed under multiplication: a product of two cubeful
+    numbers is cubeful.  Every prime dividing `a * b` divides one of the factors
+    and already carries exponent `≥ 3` there, so `p³ ∣ a*b`.  Together with
+    `isCubeful_pow` this generates cubeful numbers as products of prime cubes. -/
+theorem isCubeful_mul {a b : ℕ} (ha : IsCubeful a) (hb : IsCubeful b) :
+    IsCubeful (a * b) := by
+  intro p hp
+  obtain ⟨hpp, hpd, hab_ne⟩ := Nat.mem_primeFactors.mp hp
+  obtain ⟨ha_ne, hb_ne⟩ := mul_ne_zero_iff.mp hab_ne
+  rcases (Nat.Prime.dvd_mul hpp).mp hpd with hpa | hpb
+  · exact dvd_mul_of_dvd_left
+      (ha p (Nat.mem_primeFactors.mpr ⟨hpp, hpa, ha_ne⟩)) b
+  · exact dvd_mul_of_dvd_right
+      (hb p (Nat.mem_primeFactors.mpr ⟨hpp, hpb, hb_ne⟩)) a
 
 /-- Prime powers `p^k` with `k ≥ 3` are cubeful. -/
 theorem isCubeful_8 : IsCubeful 8 := by native_decide      -- 2³

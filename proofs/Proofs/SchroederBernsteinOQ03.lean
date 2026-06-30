@@ -109,17 +109,29 @@ def partialInverse (g : ℕ → ℕ) : ℕ →. ℕ :=
     [Detailed proof requires Computable₂ API — see Mathlib.Computability.Partrec] -/
 theorem partialInverse_partrec {g : ℕ → ℕ} (hg : Computable g) :
     Partrec (partialInverse g) := by
-  sorry
+  unfold partialInverse
+  apply Partrec.rfind
+  apply Computable₂.partrec₂
+  -- (m, n) ↦ decide (g n = m) is computable: equality of naturals is primitive
+  -- recursive, and g is computable.
+  have heq0 : Primrec₂ (fun a b : ℕ => decide (a = b)) := Primrec.eq.decide
+  have heq : Computable₂ (fun a b : ℕ => decide (a = b)) := heq0.to_comp
+  exact heq.comp (hg.comp Computable.snd) Computable.fst
 
-/-- The partial inverse recovers the input under a computable injection. -/
-theorem partialInverse_spec {g : ℕ → ℕ} (hg_inj : Injective g)
+/-- The partial inverse recovers the input under a computable injection.
+    (Injectivity is not needed: `rfind` returns a witness `n` with `g n = m`.) -/
+theorem partialInverse_spec {g : ℕ → ℕ} (_hg_inj : Injective g)
     {m n : ℕ} (h : n ∈ partialInverse g m) : g n = m := by
-  sorry
+  have hspec := Nat.rfind_spec h
+  simpa using hspec
 
-/-- Elements in range(g) have a partial inverse defined. -/
+/-- Elements in range(g) have a partial inverse defined.
+    A witness `g k = m` makes the bounded `rfind` search terminate. -/
 theorem partialInverse_dom {g : ℕ → ℕ} {m : ℕ} (hm : ∃ k, g k = m) :
     (partialInverse g m).Dom := by
-  sorry
+  obtain ⟨k, hk⟩ := hm
+  rw [partialInverse, Nat.rfind_dom']
+  exact ⟨k, by simp [hk], fun _ => trivial⟩
 
 /-!
 ## Section 4: Orbit Structure for the Back-and-Forth

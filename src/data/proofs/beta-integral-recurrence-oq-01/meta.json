@@ -1,0 +1,158 @@
+{
+  "id": "beta-integral-recurrence-oq-01",
+  "slug": "beta-integral-recurrence-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "BetaIntegralRecurrence",
+    "lineCount": 105,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/BetaIntegralRecurrence.lean",
+    "sorries": 0
+  },
+  "title": "The Beta Integral: Recurrence and the Integer Closed Form",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BetaIntegralRecurrence.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "beta-function",
+      "gamma-function",
+      "factorial",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 105,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "betaIntegral_nat_nat: the symmetric two-integer closed form B(m+1, n+1) = m!·n!/(m+n+1)! for all m, n : ℕ — NOT in Mathlib, which only records the one-sided evaluation betaIntegral_eval_nat_add_one_right (B(u, n+1) = n!/∏_{j≤n}(u+j) for a single integer argument). Derived by feeding both integer arguments through the Beta–Gamma relation betaIntegral_eq_Gamma_mul_div and collapsing each of the three Gamma values to a factorial via Complex.Gamma_nat_eq_factorial.",
+      "betaIntegral_nat_nat_symm: the integer-lattice symmetry B(m+1, n+1) = B(n+1, m+1) read off as the visible m ↔ n symmetry of the factorial closed form.",
+      "betaIntegral_one_one / betaIntegral_two_three / betaIntegral_three_three: concrete machine-checked evaluations B(1,1) = 1, B(2,3) = 1/12, B(3,3) = 1/30, instantiating the closed form at small integer arguments.",
+      "beta_recurrence: namespaced re-export of Mathlib's parameter recurrence u·B(u, v+1) = v·B(u+1, v), the entry's headline identity."
+    ],
+    "prerequisites": [
+      "Euler Beta integral Complex.betaIntegral u v = ∫₀¹ tᵘ⁻¹ (1−t)ᵛ⁻¹ dt",
+      "Beta–Gamma relation Complex.betaIntegral_eq_Gamma_mul_div: B(u,v) = Γu·Γv/Γ(u+v) for Re u, Re v > 0",
+      "Complex.Gamma_nat_eq_factorial: Γ(n+1) = n! for n : ℕ",
+      "Complex.betaIntegral_recurrence: the parameter recurrence u·B(u,v+1) = v·B(u+1,v)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.betaIntegral_recurrence",
+        "description": "Recurrence for the Beta integral: u·B(u, v+1) = v·B(u+1, v) for Re u > 0, Re v > 0. The headline identity re-exported as beta_recurrence.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Beta"
+      },
+      {
+        "theorem": "Complex.betaIntegral_eq_Gamma_mul_div",
+        "description": "Beta–Gamma division formula B(u,v) = Γu·Γv/Γ(u+v) for Re u, Re v > 0, the bridge used to turn the integer Beta values into factorial quotients.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Beta"
+      },
+      {
+        "theorem": "Complex.Gamma_nat_eq_factorial",
+        "description": "Γ(n+1) = n! for n : ℕ, used to collapse each of the three Gamma values in the Beta–Gamma relation to a factorial.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Beta integral B(u,v) = ∫₀¹ t^(u−1)(1−t)^(v−1) dt was studied by Euler and Legendre in the 18th–19th centuries as the 'Eulerian integral of the first kind' (the Gamma function being the second kind). Its defining relation to Gamma, B(u,v) = Γ(u)Γ(v)/Γ(u+v), makes it the continuous interpolation of the reciprocal binomial coefficients: B(m+1,n+1) = m!·n!/(m+n+1)! = 1/((m+n+1)·C(m+n,m)). The Beta function is ubiquitous — it is the normalizing constant of the Beta probability distribution (conjugate prior to the binomial in Bayesian statistics), it appears in the Veneziano amplitude that launched string theory, and its half-integer values encode the volumes of balls and the arcsine law. The parameter recurrence u·B(u,v+1) = v·B(u+1,v) is the analogue of the Gamma recurrence and, with the Beta–Gamma relation, determines the function on the integer lattice. Mathlib has the recurrence, the Beta–Gamma relation, and the one-sided integer evaluation, but not the symmetric two-integer factorial closed form; this entry supplies it.",
+    "problemStatement": "Starting from Mathlib's Beta parameter recurrence u·B(u,v+1) = v·B(u+1,v) and the Beta–Gamma relation B(u,v) = Γ(u)Γ(v)/Γ(u+v), establish the symmetric two-integer closed form B(m+1,n+1) = m!·n!/(m+n+1)! for all m, n : ℕ (which Mathlib records only in the asymmetric one-argument form B(u,n+1) = n!/∏(u+j)), read off the integer-lattice symmetry B(m+1,n+1) = B(n+1,m+1), and instantiate concrete values B(1,1) = 1, B(2,3) = 1/12, B(3,3) = 1/30.",
+    "proofStrategy": "beta_recurrence re-exports Complex.betaIntegral_recurrence. The centerpiece betaIntegral_nat_nat rewrites B(m+1,n+1) with the Beta–Gamma relation betaIntegral_eq_Gamma_mul_div (real parts positive, via positivity), rewrites the summed argument (m+1)+(n+1) as (m+n+1)+1 (push_cast; ring), and collapses each of the three Gamma values Γ(m+1), Γ(n+1), Γ(m+n+2) to factorials with Complex.Gamma_nat_eq_factorial. betaIntegral_nat_nat_symm reads the m ↔ n symmetry off the factorial quotient (Nat.add_comm). The numeric corollaries instantiate the closed form at small m, n and finish with norm_num [Nat.factorial] and linear_combination.",
+    "keyInsights": [
+      "The Beta function interpolates reciprocal binomial coefficients: B(m+1,n+1) = m!·n!/(m+n+1)! = 1/((m+n+1)·C(m+n,m)). The closed form is thus the continuous shadow of the discrete binomial world, the bridge the entry makes explicit.",
+      "The factorial value is bought entirely through Gamma: each integer Beta value becomes Γ(m+1)Γ(n+1)/Γ(m+n+2), and Γ(k+1) = k! turns the three Gamma factors into the factorial quotient. No integration is performed — the Beta–Gamma relation does all the work.",
+      "Symmetry B(u,v) = B(v,u) comes from the substitution t ↦ 1−t in the integral, but on the integer lattice it is simply the visible m ↔ n symmetry of m!·n!/(m+n+1)! — a clean illustration of an analytic symmetry becoming algebraic after evaluation.",
+      "Mathlib's gap is real and specific: it has the asymmetric one-argument evaluation B(u,n+1) = n!/∏(u+j) but not the symmetric two-integer form, so deriving the latter (and its numeric instances) is genuine added content over the library.",
+      "The 'mathlib' badge is honest: the recurrence and Beta–Gamma relation are imported deep theorems; the original content is the symmetric closed form and the Gamma-to-factorial collapse, packaging the textbook 'Beta of two integers' value in machine-checked form."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Recurrence and Integer Closed Form",
+      "startLine": 4,
+      "endLine": 43,
+      "summary": "States the Beta integral, its parameter recurrence u·B(u,v+1) = v·B(u+1,v) (Mathlib), and the Beta–Gamma relation, then announces the centerpiece B(m+1,n+1) = m!·n!/(m+n+1)!. Explains Mathlib has only the asymmetric one-argument evaluation, and outlines the derivation (Beta–Gamma + Gamma_nat_eq_factorial) and the numeric corollaries.",
+      "mathContext": "$B(u,v) = \\int_0^1 t^{u-1}(1-t)^{v-1}\\,dt$; goal $B(m+1,n+1) = m!\\,n!/(m+n+1)!$."
+    },
+    {
+      "id": "recurrence",
+      "title": "The Beta Recurrence",
+      "startLine": 49,
+      "endLine": 57,
+      "summary": "beta_recurrence re-exports Complex.betaIntegral_recurrence: u·B(u,v+1) = v·B(u+1,v) for Re u, Re v > 0 — the headline functional equation, analogue of the Gamma recurrence.",
+      "mathContext": "$u\\,B(u,v+1) = v\\,B(u+1,v)$."
+    },
+    {
+      "id": "closed-form",
+      "title": "The Integer Closed Form and Symmetry",
+      "startLine": 59,
+      "endLine": 85,
+      "summary": "betaIntegral_nat_nat: B(m+1,n+1) = m!·n!/(m+n+1)!, via betaIntegral_eq_Gamma_mul_div, the argument rewrite (m+1)+(n+1) = (m+n+1)+1, and Gamma_nat_eq_factorial on all three Gamma values. betaIntegral_nat_nat_symm: B(m+1,n+1) = B(n+1,m+1), the m ↔ n symmetry of the closed form.",
+      "mathContext": "$B(m+1,n+1) = \\dfrac{m!\\,n!}{(m+n+1)!} = B(n+1,m+1)$."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Evaluations",
+      "startLine": 87,
+      "endLine": 103,
+      "summary": "betaIntegral_one_one (B(1,1)=1), betaIntegral_two_three (B(2,3)=1/12), betaIntegral_three_three (B(3,3)=1/30): instances of the closed form at small m, n, finished by norm_num [Nat.factorial] and linear_combination.",
+      "mathContext": "$B(1,1)=1,\\ B(2,3)=1/12,\\ B(3,3)=1/30$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "beta-integral-recurrence-oq-01-oq-01",
+      "question": "Derive the central-binomial / Wallis-type identity B(n+1, n+1) = (n!)²/(2n+1)! = 1/((2n+1)·C(2n,n)) as a function of n, and connect it to the normalization of the symmetric Beta(n+1,n+1) density on [0,1].",
+      "significance": "medium"
+    },
+    {
+      "id": "beta-integral-recurrence-oq-01-oq-02",
+      "question": "Prove the half-integer evaluation B(1/2, 1/2) = π from Γ(1/2)² = π via the same Beta–Gamma relation, exhibiting the total mass of the arcsine density and linking to the gamma-reflection entry.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gamma-reflection-formula-oq-01",
+      "relationship": "related",
+      "description": "Both entries exploit Mathlib's Gamma/Beta theory in Analysis.SpecialFunctions.Gamma.Beta. There the reflection formula evaluates Gamma products at rational arguments; here the Beta–Gamma relation evaluates the Beta integral at integer arguments as factorial quotients."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gamma.Beta",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Complex.betaIntegral_recurrence, Complex.betaIntegral_eq_Gamma_mul_div, and the one-sided integer evaluation betaIntegral_eval_nat_add_one_right."
+    },
+    {
+      "title": "Special Functions (Beta and Gamma functions)",
+      "author": "Andrews, Askey, Roy",
+      "year": "1999",
+      "venue": "Cambridge University Press",
+      "description": "Standard reference for the Beta integral, its parameter recurrence, the Beta–Gamma relation, and the integer evaluation B(m+1,n+1) = m!·n!/(m+n+1)!."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Euler Beta integral B(u,v) satisfies the parameter recurrence u·B(u,v+1) = v·B(u+1,v) (Mathlib's Complex.betaIntegral_recurrence, re-exported as beta_recurrence). Combined with the Beta–Gamma relation B(u,v) = Γu·Γv/Γ(u+v), this pins the Beta function on the integer lattice: the centerpiece betaIntegral_nat_nat proves B(m+1,n+1) = m!·n!/(m+n+1)! for all m, n : ℕ — the classical symmetric two-integer value, which Mathlib does not state (it has only the one-sided evaluation B(u, n+1) = n!/∏(u+j)). The closed form yields the manifest symmetry B(m+1,n+1) = B(n+1,m+1) and the concrete values B(1,1) = 1, B(2,3) = 1/12, B(3,3) = 1/30. 105 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The recurrence and Beta–Gamma relation are delegated to Mathlib (hence the mathlib badge); the genuine new content is the symmetric integer closed form B(m+1,n+1) = m!·n!/(m+n+1)! and its numeric instances, which Mathlib records only in the asymmetric one-argument form. The entry packages the textbook 'Beta function of two integers' value in machine-checked form via the Gamma-to-factorial bridge.",
+    "openQuestions": [
+      "Derive B(n+1,n+1) = (n!)²/(2n+1)! and connect to the central binomial coefficient.",
+      "Prove B(1/2,1/2) = π from Γ(1/2)² = π via the Beta–Gamma relation."
+    ]
+  }
+}

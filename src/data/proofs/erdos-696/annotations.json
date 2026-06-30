@@ -16,7 +16,11 @@
       "Multiplicative groups",
       "Divisibility chains"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "prime factorization",
+      "modular arithmetic"
+    ]
   },
   {
     "id": "ann-e696-prime-chain",
@@ -35,7 +39,12 @@
       "Congruences",
       "Chains"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "modular arithmetic",
+      "Lean 4 syntax",
+      "lists and recursion"
+    ]
   },
   {
     "id": "ann-e696-h-def",
@@ -53,7 +62,11 @@
       "Prime chains"
     ],
     "mathContext": "See annotation content for formal details of the function h(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "order theory (suprema)",
+      "set-builder notation",
+      "Lean 4 noncomputable definitions"
+    ]
   },
   {
     "id": "ann-e696-divisor-chain",
@@ -71,7 +84,11 @@
       "Divisors",
       "Congruences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility",
+      "modular arithmetic",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e696-H-def",
@@ -89,7 +106,11 @@
       "Divisor chains"
     ],
     "mathContext": "See annotation content for formal details of the function h(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility",
+      "order theory (suprema)",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e696-h-le-H",
@@ -107,7 +128,11 @@
       "Upper bounds"
     ],
     "mathContext": "See annotation content for formal details of h(n) ≤ h(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "set inclusion",
+      "order theory (upper bounds)",
+      "elementary proof techniques"
+    ]
   },
   {
     "id": "ann-e696-logstar",
@@ -126,7 +151,12 @@
       "Slowly growing functions",
       "Normal order"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis (logarithms)",
+      "recursive functions",
+      "asymptotic growth",
+      "Lean 4 recursion"
+    ]
   },
   {
     "id": "ann-e696-h-infinity",
@@ -144,7 +174,11 @@
       "Asymptotic density",
       "Dirichlet's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic density",
+      "probabilistic number theory"
+    ]
   },
   {
     "id": "ann-e696-conjectures",
@@ -162,7 +196,11 @@
       "Asymptotic behavior"
     ],
     "mathContext": "See annotation content for formal details of erdős's conjectures",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "probabilistic number theory",
+      "open problems in number theory"
+    ]
   },
   {
     "id": "ann-e696-sophie-germain",
@@ -181,7 +219,11 @@
       "Cunningham chains",
       "Twin primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "modular arithmetic",
+      "additive number theory"
+    ]
   },
   {
     "id": "ann-e696-examples",
@@ -199,7 +241,11 @@
       "Prime factorization"
     ],
     "mathContext": "See annotation content for formal details of concrete examples",
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "modular arithmetic",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e696-bounds",
@@ -217,7 +263,11 @@
       "Upper bounds",
       "Omega function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "real analysis (logarithms)",
+      "arithmetic functions"
+    ]
   },
   {
     "id": "ann-e696-van-doorn",
@@ -236,7 +286,11 @@
       "Density",
       "Analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic density",
+      "primes in arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e696-summary",
@@ -255,6 +309,10 @@
       "Partial solutions"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic analysis",
+      "open problems in number theory"
+    ]
   }
 ]

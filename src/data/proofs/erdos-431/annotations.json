@@ -17,7 +17,11 @@
       "additive decomposition",
       "inverse problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Goldbach's conjecture",
+      "prime number distribution",
+      "set arithmetic (Minkowski sums)"
+    ]
   },
   {
     "id": "ann-431-definitions",
@@ -36,7 +40,11 @@
       "symmetric difference",
       "finite exceptions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-builder notation",
+      "finite vs. infinite sets",
+      "set difference operations"
+    ]
   },
   {
     "id": "ann-431-conjecture",
@@ -45,7 +53,7 @@
       "startLine": 54,
       "endLine": 69
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Inverse Goldbach Conjecture",
     "content": "**Formal Statement**\n\nInverseGoldbachPair A B holds when A and B are both infinite and Sumset A B agrees with Primes up to finitely many exceptions. The conjecture (InverseGoldbachConjecture) asserts that no such pair exists.\n\nThe requirement that A and B are infinite is essential — without it, trivial solutions exist (e.g., A = {2} and B = {p - 2 : p prime, p > 2} gives a finite-exception agreement). The axiom inverse_goldbach_conjectured records the widely-held belief that the conjecture is true.",
     "mathContext": "InverseGoldbachConjecture := ¬∃ A B, A.Infinite ∧ B.Infinite ∧ (A + B) =_{fin} Primes",
@@ -55,7 +63,11 @@
       "conjecture",
       "infinite sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential and negation quantifiers",
+      "predicates on sets",
+      "Lean axiom declarations"
+    ]
   },
   {
     "id": "ann-431-growth",
@@ -74,7 +86,11 @@
       "growth rate",
       "prime number theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic notation (≪, ~)",
+      "logarithm growth rates",
+      "limits and filters (Filter.Tendsto)"
+    ]
   },
   {
     "id": "ann-431-elsholtz",
@@ -93,7 +109,11 @@
       "restricted sumset",
       "Tao-Ziegler"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set inclusion vs. equality",
+      "pseudorandomness of primes",
+      "iterated sumsets"
+    ]
   },
   {
     "id": "ann-431-goldbach",
@@ -112,7 +132,11 @@
       "parity constraint",
       "structural necessity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "parity (even/odd numbers)",
+      "subset relations",
+      "definitional unfolding in Lean"
+    ]
   },
   {
     "id": "ann-431-summary",
@@ -131,6 +155,10 @@
       "summary",
       "known results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical equivalence (↔)",
+      "conjunction of statements",
+      "open vs. resolved problems"
+    ]
   }
 ]

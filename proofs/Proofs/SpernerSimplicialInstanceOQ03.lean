@@ -31,10 +31,22 @@ triangulation — relating a `SpernerSimplicialInstance.Triangulation` to a
 lower-dimensional `SpernerNDim.SpernerTriangulation` — remains the open concrete
 task; this file supplies the reusable parity skeleton it plugs into.
 
-STATUS: build-pending (Docker verification blackout this session), UNREGISTERED.
-Name-checked against SpernerNDim.lean (sperner_parity, sperner_ndim, IsFC,
-isDoorAt, IsSperner, Coloring, SpernerTriangulation, Fin.last) and Mathlib
-(Nat.odd_iff).
+STATUS: build-pending (Docker verification blackout), UNREGISTERED. Statically
+verified S8 (2026-06-15): the two proofs' rewrite chains were checked against the
+parent's *machine-checked* patterns. (The S7 `fc_odd_tower` in
+`SpernerSimplicialInstanceOQ03Tower.lean` builds directly on the step below, so
+this verification de-risks the whole recursion tower as well.)
+  * `fc_odd_of_facet_bijection`'s chain `rw [Nat.odd_iff, hpar, hbij, ← Nat.odd_iff]`
+    mirrors `sperner_ndim`'s own verified `rwa [Nat.odd_iff, hparity, ← Nat.odd_iff]`
+    (SpernerNDim.lean:663). The door filter in `hbij` matches `sperner_parity`
+    instantiated at dimension `d + 1` character-for-character (`Fin (d + 1 + 1)`,
+    `Fin.last (d + 1)`), so `rw [hpar]` then `rw [hbij]` fire as written.
+  * `exists_fc_of_lower_fc_odd` reduces via `apply sperner_ndim` to exactly the
+    `hbdry` door-oddness obligation, discharged by `rw [hbij]; exact hfc'`.
+Symbols (sperner_parity, sperner_ndim, IsFC, isDoorAt, IsSperner, Coloring,
+SpernerTriangulation, Fin.last) are in-repo (SpernerNDim.lean); `Nat.odd_iff` is
+Mathlib v4.26 (used by the parent itself). This file is ready to register the
+moment the Docker backend returns.
 -/
 
 import Proofs.SpernerNDim

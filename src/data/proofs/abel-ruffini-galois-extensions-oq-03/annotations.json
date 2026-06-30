@@ -1,0 +1,81 @@
+[
+  {
+    "id": "ann-oq03-overview",
+    "proofId": "abel-ruffini-galois-extensions-oq-03",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "concept",
+    "title": "What Is Reduced to What: Simplicity vs the 3-Cycle Criterion",
+    "content": "The simplicity of the alternating group Aₙ for n ≥ 5 is the group-theoretic engine of Abel–Ruffini. Mathlib formalizes it only for the concrete case `alternatingGroup (Fin 5)` (`isSimpleGroup_five`), discharging the hard combinatorial step by an explicit Fin 5 computation. For a general finite type α with 5 ≤ card α it instead supplies the converse machinery: all 3-cycles are conjugate (`isThreeCycle_isConj`), they generate Aₙ (`closure_three_cycles_eq_alternating`), and the normal closure of a single 3-cycle is everything (`IsThreeCycle.alternating_normalClosure`). This file assembles that machinery into the equivalence `IsSimpleGroup (Aₙ) ↔ (every nontrivial normal subgroup contains a 3-cycle)`, isolating the single ingredient — the 3-cycle-containment criterion — that a general-n simplicity proof still needs.",
+    "mathContext": "For $5 \\le |\\alpha|$: $A_\\alpha$ is simple $\\iff$ every normal $H \\ne \\bot$ contains a 3-cycle. The classical proof's only combinatorial step is the forward content of the right-hand side.",
+    "significance": "central",
+    "relatedConcepts": [
+      "alternating group simplicity",
+      "Abel–Ruffini theorem",
+      "normal closure",
+      "3-cycle conjugacy"
+    ],
+    "prerequisites": [
+      "Normal subgroups and normal closure",
+      "Cycle types of permutations",
+      "Mathlib's alternating-group API"
+    ]
+  },
+  {
+    "id": "ann-oq03-core-lemma",
+    "proofId": "abel-ruffini-galois-extensions-oq-03",
+    "range": { "startLine": 57, "endLine": 79 },
+    "type": "key-step",
+    "title": "Core Lemma: a Normal Subgroup with a 3-Cycle Is Everything",
+    "content": "`threeCycle_normal_eq_top` upgrades Mathlib's singleton computation to arbitrary normal subgroups. Given a normal H containing a 3-cycle g: by normality and `normalClosure_le_normal`, the normal closure of {g} is contained in H; by `IsThreeCycle.alternating_normalClosure` (valid for 5 ≤ card α) that normal closure equals ⊤; hence ⊤ ≤ H, i.e. H = ⊤. The one subtlety is that Mathlib's lemma is stated for the *packaged* subtype element ⟨g, hg.mem_alternatingGroup⟩, whereas g is already an element of the alternating group; `Subtype.ext rfl` identifies the two (proof-irrelevance on the membership component), letting the normal-closure equality rewrite cleanly.",
+    "mathContext": "$\\langle\\!\\langle g \\rangle\\!\\rangle \\le H$ (normality) and $\\langle\\!\\langle g \\rangle\\!\\rangle = \\top$ (Mathlib) $\\Rightarrow H = \\top$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Subgroup.normalClosure_le_normal",
+      "IsThreeCycle.alternating_normalClosure",
+      "Subtype.ext",
+      "top_le_iff"
+    ],
+    "prerequisites": [
+      "Normal closure is the smallest normal subgroup containing a set",
+      "Subtype extensionality / proof irrelevance"
+    ]
+  },
+  {
+    "id": "ann-oq03-reduction",
+    "proofId": "abel-ruffini-galois-extensions-oq-03",
+    "range": { "startLine": 81, "endLine": 109 },
+    "type": "technique",
+    "title": "Both Directions Between Simplicity and the Criterion",
+    "content": "`isSimpleGroup_of_forall_normal_contains_threeCycle` builds the `IsSimpleGroup` instance: the `Nontrivial` field comes from `nontrivial_of_three_le_card` (card α ≥ 5 ≥ 3, by omega), and for the `⊥`-or-`⊤` dichotomy each normal H is either ⊥ or — via the criterion plus the core lemma — ⊤. The converse `forall_normal_contains_threeCycle_of_isSimpleGroup` runs the other way: a simple group makes a nontrivial normal H equal to ⊤ (`Normal.eq_bot_or_eq_top`), and ⊤ contains a concrete 3-cycle, namely (a b)(a c) where a, b, c are three distinct points extracted from `Fintype.two_lt_card_iff` and turned into a 3-cycle by `isThreeCycle_swap_mul_swap_same`. Note the explicit `(α := α)` on `two_lt_card_iff` so `omega` knows which cardinality it is bounding.",
+    "mathContext": "Forward: criterion + core lemma + nontriviality ⟹ simple. Backward: simple ⟹ nontrivial normal $H = \\top \\ni (a\\,b)(a\\,c)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "IsSimpleGroup constructor",
+      "Subgroup.Normal.eq_bot_or_eq_top",
+      "Fintype.two_lt_card_iff",
+      "isThreeCycle_swap_mul_swap_same"
+    ],
+    "prerequisites": [
+      "IsSimpleGroup as Nontrivial + (every normal subgroup is ⊥ or ⊤)",
+      "Existence of three distinct elements from a cardinality bound"
+    ]
+  },
+  {
+    "id": "ann-oq03-characterization",
+    "proofId": "abel-ruffini-galois-extensions-oq-03",
+    "range": { "startLine": 111, "endLine": 126 },
+    "type": "concept",
+    "title": "The Headline Equivalence and Its Significance",
+    "content": "`isSimpleGroup_alternating_iff` packages the two implications into a single iff for every 5 ≤ card α. Its value is diagnostic: it shows the entire open content of 'Aₙ is simple for n ≥ 5' — a theorem Mathlib has only for Fin 5 — collapses to one combinatorial criterion (every nontrivial normal subgroup contains a 3-cycle). A future formalization of general-n simplicity need only prove that criterion and then invoke `isSimpleGroup_of_forall_normal_contains_threeCycle`; conversely the equivalence certifies that no weaker ingredient could suffice.",
+    "mathContext": "$\\mathrm{IsSimpleGroup}(A_\\alpha) \\iff \\forall H \\lhd A_\\alpha,\\ H \\ne \\bot \\Rightarrow \\exists\\ \\text{3-cycle} \\in H$, for $5 \\le |\\alpha|$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "logical equivalence as a reduction",
+      "alternating group simplicity for general n",
+      "open mathematical content isolation"
+    ],
+    "prerequisites": [
+      "The two component implications above"
+    ]
+  }
+]

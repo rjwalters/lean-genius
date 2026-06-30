@@ -1,0 +1,126 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "The Combinatorial Eulerian → Stirling Identity",
+    "content": "The docstring states open question oq-06: the per-coefficient identity i!·S(n,i) = ∑_{j<n} C(j, n−i)·⟨n,j⟩, where S(n,i) is the Stirling number of the second kind (counting partitions of an n-set into i blocks; i!·S(n,i) counts surjections n-set ↠ i-set) and ⟨n,j⟩ is the parent entry's combinatorial Eulerian number (permutations of {1,…,n} with j descents). It positions the identity as the dual of Worpitzky's identity — Worpitzky expands a power x^n over the Eulerian row using ascending weights C(x+j,n), this expands a surjection count over the same row using plain weights C(j,n−i). The imports pull in Mathlib, the parent's Eulerian triangle, and sibling oq-01's Worpitzky row sum.",
+    "mathContext": "$i!\\,S(n,i) = \\sum_{j<n} \\binom{j}{\\,n-i\\,}\\langle n,j\\rangle$ for $1 \\le n,\\ i \\le n$; dual to Worpitzky's $x^n = \\sum_j \\langle n,j\\rangle \\binom{x+j}{n}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Eulerian numbers",
+      "Stirling numbers of the second kind",
+      "Worpitzky's identity",
+      "surjection counting",
+      "binomial transform"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "binomial coefficients",
+      "permutation descent statistics"
+    ]
+  },
+  {
+    "id": "ann-term-binom",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "range": { "startLine": 40, "endLine": 62 },
+    "type": "technique",
+    "title": "The Per-Term Binomial Identity (Pascal + Absorption)",
+    "content": "term_binom is the single elementary identity that the entire multi-case induction collapses onto: (j+1)·C(j,d) + (n+1−j)·C(j+1,d) = (i'+1)·C(j,d−1) + (i'+1)·C(j,d) with d = n+1−i'. The proof rewrites the upper index as (n−i')+1 and applies Pascal's rule Nat.choose_succ_succ to split C(j+1,d). A case split on whether the lower index exceeds j keeps truncated ℕ subtraction honest — when j < n−i' both binomials vanish by Nat.choose_eq_zero_of_lt and ring closes it; otherwise the binomial absorption identity Nat.choose_succ_right_eq (C(j,d)·d = C(j,d−1)·(j−d+1)) is transferred to ℤ via zify and the goal is discharged by a single linear_combination. That the Eulerian and Stirling recurrences agree at this term level is the heart of the whole result.",
+    "mathContext": "Pascal: $\\binom{j+1}{d} = \\binom{j}{d-1} + \\binom{j}{d}$. Absorption: $\\binom{j}{d}\\,d = \\binom{j}{d-1}\\,(j - d + 1)$, closed over $\\mathbb{Z}$ by `linear_combination`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pascal's rule",
+      "binomial absorption identity",
+      "truncated subtraction",
+      "linear_combination over ℤ"
+    ],
+    "prerequisites": [
+      "binomial coefficient identities",
+      "natural number subtraction in Lean"
+    ]
+  },
+  {
+    "id": "ann-row-regroup",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "range": { "startLine": 64, "endLine": 113 },
+    "type": "technique",
+    "title": "Regrouping the Eulerian Recurrence in a Row Sum",
+    "content": "row_regroup is the structural lemma converting a binomial-weighted row sum of ⟨m+1,·⟩ into one of ⟨m,·⟩: for d ≥ 1, ∑_{j<m+1} C(j,d)·⟨m+1,j⟩ = ∑_{j<m} ⟨m,j⟩·((j+1)·C(j,d) + (m−j)·C(j+1,d)). It peels the j=0 term (which vanishes because C(0,d)=0 for d ≥ 1), substitutes the Eulerian triangle recurrence eulerian_succ_succ into each surviving term, splits into two sums, reindexes the first by j ↦ j+1, and discards its new top term via the diagonal vanishing eulerian_succ_self (m ≥ 1) or C(0,d)=0 (m=0). The two vanishing corners are exactly what make the index shift exact and uniform across both parities of m. The two sums are then recombined termwise by ring.",
+    "mathContext": "$\\sum_{j<m+1}\\binom{j}{d}\\langle m+1,j\\rangle = \\sum_{j<m}\\langle m,j\\rangle\\Big((j+1)\\binom{j}{d} + (m-j)\\binom{j+1}{d}\\Big)$, using $\\langle m+1,k+1\\rangle = (k+2)\\langle m,k+1\\rangle + (m-k)\\langle m,k\\rangle$ and $\\langle m,m\\rangle = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Eulerian triangle recurrence",
+      "Finset.sum_range_succ' index shift",
+      "telescoping corner terms",
+      "Eulerian diagonal vanishing"
+    ],
+    "prerequisites": [
+      "Finset big operators",
+      "Eulerian number recurrence"
+    ]
+  },
+  {
+    "id": "ann-eulerian-stirling-succ",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "range": { "startLine": 115, "endLine": 192 },
+    "type": "insight",
+    "title": "The Inductive Engine: Stirling Recurrence Meets row_regroup",
+    "content": "eulerian_stirling_succ proves the row-(n+1) form by induction on the row n. The base case n=0 is dispatched by interval_cases i then decide. In the inductive step, the Stirling recurrence stirlingSecond_succ_succ rewrites i!·S(n+2,i) as (i'+1)·G(n+1,i'+1) + (i'+1)·G(n+1,i'), where the two G sums are exactly the induction hypothesis specialized at i'+1 and i' (hG1, hG0). The right-hand side, a sum over row n+2, is regrouped by row_regroup with d = n+1−i', and the two sides are matched termwise under Finset.sum_congr — each term closing via term_binom followed by ring. Three boundary regimes are separated: i=0 (both sides vanish via stirlingSecond_succ_zero), the interior 1 ≤ i ≤ n+1, and the top corner i=n+2, which subst-reduces (S(n+2,n+2)=1, C(j,0)=1) to the Worpitzky row sum eulerian_row_sum (n+2) = (n+2)! imported from sibling oq-01.",
+    "mathContext": "Stirling recurrence $S(n+2,i'+1) = (i'+1)S(n+1,i'+1) + S(n+1,i')$ turns $i!\\,S(n+2,i)$ into $i\\,G(n+1,i) + i\\,G(n+1,i-1)$, matched against the regrouped row-$(n+2)$ sum term by term.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stirling recurrence",
+      "strong induction on rows",
+      "Finset.sum_congr termwise matching",
+      "Worpitzky row sum (top corner)"
+    ],
+    "prerequisites": [
+      "induction in Lean",
+      "Stirling number recurrence",
+      "Finset summation"
+    ]
+  },
+  {
+    "id": "ann-eulerian-stirling",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "range": { "startLine": 194, "endLine": 201 },
+    "type": "definition",
+    "title": "The Public Eulerian → Stirling Identity",
+    "content": "eulerian_stirling is the user-facing theorem: for 1 ≤ n and i ≤ n, i!·S(n,i) = ∑_{j<n} C(j, n−i)·⟨n,j⟩. Since n ≥ 1, it rewrites n = m+1 and delegates to the row-(m+1) form eulerian_stirling_succ. This packages the per-coefficient dual of Worpitzky's identity as a clean public statement pairing the factorial-weighted Stirling (surjection) numbers with the combinatorial Eulerian row.",
+    "mathContext": "$i!\\,S(n,i) = \\sum_{j<n}\\binom{j}{\\,n-i\\,}\\langle n,j\\rangle$, the per-entry companion to $x^n = \\sum_i i!\\,S(n,i)\\binom{x}{i} = \\sum_j \\langle n,j\\rangle\\binom{x+j}{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stirling–Eulerian duality",
+      "Worpitzky's identity",
+      "Vandermonde convolution",
+      "change of basis in combinatorics"
+    ],
+    "prerequisites": [
+      "Stirling numbers",
+      "Eulerian numbers",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-concrete-rows",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "range": { "startLine": 203, "endLine": 217 },
+    "type": "technique",
+    "title": "Kernel-Checked Corroboration on Small Rows",
+    "content": "Four concrete instances are verified against the formula by kernel decide: 2!·S(3,2) = 6 = C(0,1)·1 + C(1,1)·4 + C(2,1)·1, 1!·S(3,1) = 1 = C(2,2)·⟨3,2⟩, 3!·S(3,3) = 6 = ⟨3,0⟩+⟨3,1⟩+⟨3,2⟩ (the pure row sum at the top corner), and 2!·S(4,2) = 14 = C(2,2)·11 + C(3,2)·1. Crucially these use kernel decide rather than native_decide, so they evaluate inside the Lean kernel and add NO axiom dependency (no Lean.ofReduceBool) — keeping the entry honestly 0-axiom while still pinning the abstract identity to checkable numbers.",
+    "mathContext": "$2!\\,S(4,2) = 14 = \\binom{2}{2}\\langle 4,2\\rangle + \\binom{3}{2}\\langle 4,3\\rangle = 11 + 3$; all four checks via kernel `decide`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "kernel decide vs native_decide",
+      "axiom integrity",
+      "Lean.ofReduceBool",
+      "sanity-check examples"
+    ],
+    "prerequisites": [
+      "Lean decidability",
+      "kernel reduction"
+    ]
+  }
+]

@@ -1,8 +1,8 @@
 {
   "slug": "circumference-via-differentiation-oq-01-oq-02",
   "title": "Generalizing to $L^p$ unit balls: The unit ball in $L^p$ has volume $\\frac{2^n \\Gamma(1/p+1)^n}{\\Gam",
-  "phase": "ORIENT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -11,17 +11,23 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "FORMALIZED (CircumferenceViaDifferentiationOQ01OQ02.lean, 0 sorry / 0 axiom, registered + build-verified via deployer-gated PR #24486): the L^p ball-volume function V(r) = V_n(p)·r^n has derivative dV/dr = n·V_n(p)·r^(n-1), where V_n(p) = (2·Γ(1/p+1))^n/Γ(n/p+1) matches MeasureTheory.volume_sum_rpow_le verbatim. Power rule via hasDerivAt_pow + const_mul.",
+      "RESOLVED (documented + Python-checked, not formalized): the identity dV/dr = (Euclidean surface area) holds iff p = 2. On the L^p sphere |∇ρ|^2 = ∑|x_i|^{2p-2}, which is ≡1 only for p=2; for p≠2, dV/dr is a |∇ρ|^{-1}-weighted coarea integral. L^1 diamond witness (n=2): dV/dr=4 vs Euclidean perimeter 4√2; coarea weight (4√2)/√2 = 4."
+    ],
+    "open": [
+      "Volume bridge volume{‖x‖_p≤r}.toReal = lpBallVolumeFn (Docker-gated rewrite on volume_sum_rpow_le, not mathematically open).",
+      "Weighted-surface formalization awaits a coarea formula in Mathlib (absent in v4.26)."
+    ],
+    "goal": "Answer the parent's L^p open question and gallery the formalized derivative half. DONE: gallery entry added at src/data/proofs/circumference-via-differentiation-oq-01-oq-02."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-06-15T00:57:02-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETED",
+    "since": "2026-06-16T00:00:00Z",
+    "iteration": 2,
+    "focus": "Gallery entry added (meta.json + 5 annotations, resolver 5/0) for the build-verified, registered derivative file. The headline question is answered: dV/dr equals the Euclidean surface area iff p=2. Lean scope = derivative of the closed-form volume; surface side documented (coarea), Mathlib-blocked.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional future Docker session: discharge the volume bridge; formalize the weighted-surface identity once Mathlib gains a coarea formula.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -66,6 +72,7 @@
   "relatedProofs": [
     "circumference-via-differentiation",
     "circumference-via-differentiation-oq-01",
+    "circumference-via-differentiation-oq-01-oq-02",
     "circumference-via-differentiation-oq-03"
   ],
   "references": {
@@ -100,6 +107,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01.lean"
     },
     {
+      "path": "Proofs/CircumferenceViaDifferentiationOQ01OQ02.lean",
+      "filename": "CircumferenceViaDifferentiationOQ01OQ02.lean",
+      "lineCount": 149,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CircumferenceViaDifferentiationOQ02.lean",
+      "filename": "CircumferenceViaDifferentiationOQ02.lean",
+      "lineCount": 145,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ02.lean"
+    },
+    {
       "path": "Proofs/CircumferenceViaDifferentiationOQ03.lean",
       "filename": "CircumferenceViaDifferentiationOQ03.lean",
       "lineCount": 195,
@@ -109,19 +138,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean"
-    },
-    {
-      "path": "Proofs/CircumferenceViaDifferentiationOQ01OQ02.lean",
-      "filename": "CircumferenceViaDifferentiationOQ01OQ02.lean",
-      "lineCount": 148,
-      "theoremCount": 4,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01OQ02.lean",
-      "buildPending": true,
-      "registered": false
     }
   ]
 }

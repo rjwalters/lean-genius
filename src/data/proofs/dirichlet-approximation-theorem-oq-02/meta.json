@@ -1,0 +1,173 @@
+{
+  "id": "dirichlet-approximation-theorem-oq-02",
+  "title": "Dirichlet Approximation OQ-02: Simultaneous Approximation",
+  "slug": "dirichlet-approximation-theorem-oq-02",
+  "description": "The simultaneous (higher-dimensional) generalization of Dirichlet's approximation theorem: for real numbers θ₁,…,θ_d and any Q ≥ 1 there is a single common denominator q with 1 ≤ q ≤ Q^d and integers p₁,…,p_d such that |q·θᵢ − pᵢ| ≤ 1/Q for all coordinates i simultaneously. The proof recognizes the statement as Mathlib's abstract Dirichlet theorem NormedAddCommGroup.exists_norm_nsmul_le — pigeonhole for any compact connected normed additive group with a Haar measure — specialized to the d-torus 𝕋^d = (Fin d → AddCircle 1). The required measure inequality vol(𝕋^d) ≤ (Q^d+1)·vol(closedBall 0 (1/2Q)) reduces to the clean product computation 1 ≤ (Q^d+1)·(1/Q)^d, via volume_pi_closedBall, AddCircle.volume_closedBall and UnitAddCircle.measure_univ; reading off pᵢ = round(q·θᵢ) and AddCircle.norm_eq (‖x‖ = |x − round x|) with norm_le_pi_norm turns the sup-norm bound into the coordinatewise estimate. Answers the parent OQ-01's open question on extending to simultaneous approximation.",
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_approximation_theorem",
+    "date": "1842",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DirichletApproximationOQ02.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-approximation",
+      "simultaneous-approximation",
+      "geometry-of-numbers",
+      "pigeonhole-principle",
+      "torus",
+      "haar-measure"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "NormedAddCommGroup.exists_norm_nsmul_le",
+        "description": "A general version of Dirichlet's approximation theorem: for a compact, preconnected, normed additive group A with Haar measure μ, a point ξ, n > 0, and δ with μ(univ) ≤ (n+1)•μ(closedBall 0 (δ/2)), there is j ∈ [1,n] with ‖j • ξ‖ ≤ δ. The whole simultaneous theorem is this instantiated at A = the d-torus.",
+        "module": "Mathlib.NumberTheory.WellApproximable"
+      },
+      {
+        "theorem": "AddCircle.volume_closedBall",
+        "description": "volume (closedBall x ε) = ENNReal.ofReal (min T (2ε)) on AddCircle T. For T = 1, ε = δ/2 ≤ 1/2 this is ofReal δ, giving each torus-coordinate ball mass δ.",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic"
+      },
+      {
+        "theorem": "MeasureTheory.volume_pi_closedBall / UnitAddCircle.measure_univ",
+        "description": "The sup-norm closed ball in a product is the product of coordinate closed balls (volume_pi_closedBall), so its volume is (ofReal δ)^d; and the unit additive circle has total mass 1 (UnitAddCircle.measure_univ), so the d-torus has mass 1. Together these reduce the measure hypothesis to 1 ≤ (Q^d+1)(1/Q)^d.",
+        "module": "Mathlib.MeasureTheory.Constructions.Pi / Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic"
+      },
+      {
+        "theorem": "AddCircle.norm_eq",
+        "description": "‖(x : AddCircle p)‖ = |x − round(p⁻¹x)·p|; for p = 1 this is |x − round x|, the distance to the nearest integer. Applied coordinatewise it identifies the witness pᵢ = round(q·θᵢ) and the bound |q·θᵢ − pᵢ| = ‖(q • ξ)ᵢ‖.",
+        "module": "Mathlib.Analysis.Normed.Group.AddCircle"
+      },
+      {
+        "theorem": "norm_le_pi_norm / AddCircle.coe_nsmul",
+        "description": "norm_le_pi_norm gives ‖f i‖ ≤ ‖f‖ for the supremum norm on a finite product, dropping the abstract bound ‖q • ξ‖ ≤ δ to each coordinate; AddCircle.coe_nsmul (↑(n•x) = n•↑x) commutes the scalar through the quotient coercion to rewrite (q • ξ)ᵢ as ↑(q·θᵢ).",
+        "module": "Mathlib.Analysis.Normed.Group.Pi / Mathlib.Topology.Instances.AddCircle.Defs"
+      }
+    ],
+    "originalContributions": [
+      "simultaneous_dirichlet_approximation: the simultaneous Dirichlet approximation theorem in Lean — for θ : Fin d → ℝ and Q ≥ 1, a single denominator q ∈ [1, Q^d] and integer vector p : Fin d → ℤ with |q·θᵢ − pᵢ| ≤ 1/Q for every i at once. The parent and OQ-01 entries treat only the one-dimensional case; this is the d-dimensional version asked for in OQ-01's third open question.",
+      "The reduction of the simultaneous statement to Mathlib's abstract group-theoretic Dirichlet theorem NormedAddCommGroup.exists_norm_nsmul_le by instantiating the ambient group as the d-torus (Fin d → AddCircle 1): all instance requirements (compact, preconnected, Borel, Haar) are discharged by the product instances, exhibiting the simultaneous theorem as a pure pigeonhole-on-the-torus argument rather than a from-scratch combinatorial proof.",
+      "The product measure computation verifying the abstract theorem's hypothesis on the torus: vol(𝕋^d) = 1 (via Measure.pi_univ and UnitAddCircle.measure_univ) and vol(closedBall 0 (δ/2)) = (ofReal δ)^d (via volume_pi_closedBall and AddCircle.volume_closedBall with δ = 1/Q ≤ 1), so the box-counting inequality becomes the elementary 1 ≤ (Q^d + 1)(1/Q)^d = 1 + 1/Q^d.",
+      "The coordinatewise readout: pᵢ := round(q·θᵢ) with |q·θᵢ − pᵢ| = ‖(q • ξ)ᵢ‖ (AddCircle.norm_eq at period 1) ≤ ‖q • ξ‖ (norm_le_pi_norm) ≤ 1/Q, translating the single abstract sup-norm bound into the d simultaneous integer approximations."
+    ],
+    "dateAdded": "2026-06-19",
+    "relatedProblems": [
+      {
+        "id": "dirichlet-approximation-theorem",
+        "relationship": "Parent entry: the one-shot one-dimensional pigeonhole bound (for each Q a single p/q with 1≤q≤Q and |qα−p|<1/Q). This OQ-02 is the simultaneous d-dimensional generalization."
+      },
+      {
+        "id": "dirichlet-approximation-theorem-oq-01",
+        "relationship": "Sibling entry (infinitude upgrade) whose third open question explicitly asks whether the result extends to simultaneous approximation of several reals by one denominator — answered here."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 106,
+    "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound are used (no Lean.ofReduceBool). The single hypothesis is Q ≥ 1 (0 < Q). The core pigeonhole is Mathlib's NormedAddCommGroup.exists_norm_nsmul_le (the abstract Dirichlet theorem); the original in-file content is the specialization to the d-torus, the product measure computation discharging its hypothesis, and the coordinatewise translation back to integer approximations. Badge is 'mathlib' because the load-bearing pigeonhole theorem is from Mathlib.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's 1842 pigeonhole argument has a one-dimensional form (approximate a single real α by p/q with |qα−p| < 1/Q, 1 ≤ q ≤ Q) and a simultaneous form: approximate several reals θ₁,…,θ_d at once by a common denominator. The simultaneous theorem — 1 ≤ q ≤ Q^d, |q·θᵢ − pᵢ| ≤ 1/Q for all i — is the foundational input to the geometry of numbers, the theory of badly approximable systems and the Littlewood conjecture, and the qualitative shape of higher-dimensional continued-fraction algorithms. The standard proof partitions the d-torus (ℝ/ℤ)^d into Q^d boxes and pigeonholes the Q^d+1 points 0, ξ, 2ξ, …, Q^d ξ; two points in a common box differ by a multiple q·ξ that is within 1/Q of the integer lattice in every coordinate.",
+    "problemStatement": "Let $\\theta_1,\\dots,\\theta_d \\in \\mathbb{R}$ and $Q \\ge 1$. Then there exist an integer $q$ with $1 \\le q \\le Q^d$ and integers $p_1,\\dots,p_d$ such that\n\n$$\\left| q\\,\\theta_i - p_i \\right| \\le \\frac{1}{Q} \\qquad \\text{for every } i.$$\n\nThe single denominator $q$ serves all $d$ coordinates simultaneously.",
+    "text": "Mathlib already contains an abstract group-theoretic Dirichlet theorem (NormedAddCommGroup.exists_norm_nsmul_le) valid in any compact connected normed additive group with a Haar measure. The simultaneous approximation theorem is exactly this statement read on the d-torus, and this entry assembles that specialization: it discharges the abstract theorem's measure hypothesis by a clean product computation and translates the resulting supremum-norm bound back into d simultaneous integer approximations.",
+    "proofStrategy": "Work in the d-torus 𝕋^d = (Fin d → AddCircle 1) and set ξ i = θ i mod 1. Mathlib's NormedAddCommGroup.exists_norm_nsmul_le applied to ξ, with n = Q^d and δ = 1/Q, yields q ∈ [1, Q^d] with ‖q • ξ‖ ≤ 1/Q — provided vol(𝕋^d) ≤ (Q^d + 1)•vol(closedBall 0 (δ/2)). The measure hypothesis is verified by two product computations: the torus has total mass vol(𝕋^d) = ∏ vol(AddCircle 1) = 1 (Measure.pi_univ, UnitAddCircle.measure_univ); and the supremum-norm ball of radius δ/2 is a product of coordinate balls (volume_pi_closedBall) each of mass min(1, 2·δ/2) = δ (AddCircle.volume_closedBall, since δ = 1/Q ≤ 1), so vol(closedBall 0 (δ/2)) = (ofReal δ)^d. The inequality then collapses to the elementary 1 ≤ (Q^d + 1)(1/Q)^d = 1 + 1/Q^d. Finally, taking pᵢ := round(q·θᵢ), the period-1 norm formula AddCircle.norm_eq gives |q·θᵢ − pᵢ| = ‖(q • ξ)ᵢ‖, which is at most the supremum norm ‖q • ξ‖ (norm_le_pi_norm) ≤ 1/Q. The scalar passes through the quotient coercion via AddCircle.coe_nsmul.",
+    "keyInsights": [
+      "**Simultaneous Dirichlet IS pigeonhole on the torus**: the d-dimensional theorem is not a new combinatorial argument but the single abstract statement NormedAddCommGroup.exists_norm_nsmul_le read on 𝕋^d — once the ambient group is the torus, the geometry-of-numbers box-counting is Mathlib's existing proof",
+      "**The supremum norm makes simultaneity automatic**: on the product torus ‖q • ξ‖ = maxᵢ ‖(q • ξ)ᵢ‖, so a single bound ‖q • ξ‖ ≤ 1/Q is *by definition* a bound on every coordinate at once — norm_le_pi_norm is the only step needed to recover the d simultaneous estimates",
+      "**The denominator range Q^d is exactly the box count**: the abstract theorem's parameter n is the number of pigeonholes; choosing n = Q^d (one box per coordinate subdivision) is what makes the measure inequality 1 ≤ (Q^d+1)(1/Q)^d hold, and is precisely why the simultaneous denominator can be as large as Q^d",
+      "**round is the nearest-integer witness**: AddCircle.norm_eq at period 1 states ‖x‖ = |x − round x|, so the integer pᵢ realizing the approximation is literally round(q·θᵢ) — the formalization extracts the witnesses with no separate construction",
+      "**The measure hypothesis is a one-line volume product**: discharging the abstract theorem reduces, through volume_pi_closedBall and AddCircle.volume_closedBall, to the scalar inequality 1 ≤ (Q^d + 1)(1/Q)^d — no analytic content beyond a Haar-volume computation on a product of circles"
+    ],
+    "prerequisites": [
+      "Mathlib's abstract Dirichlet theorem NormedAddCommGroup.exists_norm_nsmul_le (pigeonhole in a compact normed group with Haar measure)",
+      "The additive circle AddCircle 1 = ℝ/ℤ: its norm ‖x‖ = |x − round x|, its total Haar mass 1, and its closed-ball volume",
+      "Product (pi) constructions: the supremum norm and Haar measure on Fin d → AddCircle 1, volume_pi_closedBall, and norm_le_pi_norm"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-overview-and-strategy",
+      "title": "Module Overview and the Torus-Pigeonhole Strategy",
+      "startLine": 1,
+      "endLine": 37,
+      "mathContext": "Goal: from $\\theta : \\mathrm{Fin}\\,d \\to \\mathbb{R}$ and $Q \\ge 1$ produce one $q \\in [1, Q^d]$ and $p : \\mathrm{Fin}\\,d \\to \\mathbb{Z}$ with $|q\\theta_i - p_i| \\le 1/Q$ for all $i$ at once.",
+      "summary": "The docstring frames the open question as the simultaneous (higher-dimensional) generalization of the parent one-shot bound: a single common denominator q ∈ [1, Q^d] serving all d coordinates, costing only the enlargement of the range from Q to Q^d. It then lays out the whole strategy — rather than pigeonholing arcs by hand as the parent file does, recognize the statement as Mathlib's abstract NormedAddCommGroup.exists_norm_nsmul_le (Dirichlet's theorem for any compact connected normed additive group with Haar measure) read on the d-torus 𝕋^d = (Fin d → AddCircle 1), and notes the proof is sorry-free and axiom-free (no Lean.ofReduceBool)."
+    },
+    {
+      "id": "torus-setup",
+      "title": "The Theorem Statement and Torus Setup",
+      "startLine": 38,
+      "endLine": 61,
+      "mathContext": "$\\xi_i = \\theta_i \\bmod 1 \\in \\mathrm{AddCircle}\\,1$, $\\delta = 1/Q$, with $0 < \\delta$, $\\delta \\le 1$, $0 < Q^d$.",
+      "summary": "After the import and namespace, the local instance Real.fact_zero_lt_one supplies the Fact (0 < 1) that the additive-circle measure theory needs. The theorem simultaneous_dirichlet_approximation states the existence of p : Fin d → ℤ and q : ℕ with 1 ≤ q ≤ Q^d and ∀ i, |q·θᵢ − pᵢ| ≤ 1/Q. The proof opens by introducing the torus point ξ i = θ i mod 1, the radius δ = 1/Q, and the basic positivity facts 0 < (Q:ℝ), 0 < δ, δ ≤ 1 (from div_le_one), and 0 < Q^d (pow_pos) — the ingredients the abstract theorem consumes."
+    },
+    {
+      "id": "measure-hypothesis",
+      "title": "Discharging the Measure Hypothesis on the d-Torus",
+      "startLine": 62,
+      "endLine": 86,
+      "mathContext": "$\\mathrm{vol}(\\mathbb{T}^d) = 1 \\le (Q^d+1)\\,\\mathrm{vol}\\bigl(\\overline{B}(0,\\delta/2)\\bigr) = (Q^d+1)\\,\\delta^d = (Q^d+1)/Q^d.$",
+      "summary": "The hmeas block verifies the abstract theorem's hypothesis. huniv computes the torus mass as 1 (Measure.pi_univ + UnitAddCircle.measure_univ); hc computes a single circle's closed-ball mass min(1, 2·δ/2) = δ (AddCircle.volume_closedBall, using δ ≤ 1); hball multiplies over coordinates (volume_pi_closedBall) to (ofReal δ)^d. The remaining ENNReal arithmetic reduces the inequality to the elementary 1 ≤ (Q^d + 1)(1/Q^d) via ofReal_pow, ofReal_mul, one_le_ofReal and le_div_iff₀, closed by linarith."
+    },
+    {
+      "id": "applying-abstract-theorem",
+      "title": "Applying the Abstract Dirichlet Theorem and Choosing the Numerators",
+      "startLine": 87,
+      "endLine": 91,
+      "mathContext": "$\\exists\\, q \\in [1, Q^d],\\ \\|q\\bullet\\xi\\| \\le \\delta$; set $p_i := \\mathrm{round}(q\\theta_i)$.",
+      "summary": "With the measure hypothesis in hand, NormedAddCommGroup.exists_norm_nsmul_le (μ := volume) applied to ξ, n = Q^d and δ delivers a denominator q together with membership q ∈ Icc 1 (Q^d) and the supremum-norm bound ‖q • ξ‖ ≤ δ. Set.mem_Icc unpacks the range bounds 1 ≤ q ≤ Q^d, and the goal is refined by choosing the integer numerators pᵢ := round(q·θᵢ), discharging the two range obligations immediately and leaving the per-coordinate approximation bound for each i."
+    },
+    {
+      "id": "coordinatewise-readout",
+      "title": "Reading Off the Coordinatewise Approximations",
+      "startLine": 92,
+      "endLine": 106,
+      "mathContext": "$|q\\theta_i - \\mathrm{round}(q\\theta_i)| = \\|(q\\bullet\\xi)_i\\| \\le \\|q\\bullet\\xi\\| \\le 1/Q.$",
+      "summary": "The final block translates the single abstract sup-norm bound into the d simultaneous estimates. h1 rewrites the i-th coordinate (q • ξ)ᵢ as ↑(q·θᵢ) in AddCircle 1 (AddCircle.coe_nsmul, nsmul_eq_mul); h2 evaluates its norm as |q·θᵢ − round(q·θᵢ)| (AddCircle.norm_eq at period 1). A short calc chains h2, the supremum-norm drop ‖(q • ξ)ᵢ‖ ≤ ‖q • ξ‖ (norm_le_pi_norm), and the abstract bound ‖q • ξ‖ ≤ δ to conclude |q·θᵢ − pᵢ| ≤ 1/Q for each i, completing the proof."
+    }
+  ],
+  "conclusion": {
+    "summary": "The one-dimensional Dirichlet bound is generalized to the simultaneous theorem: for θ₁,…,θ_d and Q ≥ 1 a single denominator q ∈ [1, Q^d] approximates every θᵢ to within 1/Q, with integer numerators pᵢ = round(q·θᵢ). The proof realizes the statement as Mathlib's abstract Dirichlet theorem (NormedAddCommGroup.exists_norm_nsmul_le) on the d-torus: the box-counting hypothesis is discharged by the product measure computation vol(𝕋^d) = 1 and vol(closedBall 0 (δ/2)) = (1/Q)^d, reducing to 1 ≤ (Q^d+1)/Q^d; and the supremum-norm output is dropped to each coordinate by norm_le_pi_norm. Zero sorries, zero axioms.",
+    "implications": "Simultaneous approximation is the entry point to the geometry of numbers: it underlies the theory of badly approximable systems, the transference principles relating approximation of θ and of its 'dual' linear form, the Littlewood conjecture, and higher-dimensional continued-fraction / lattice-reduction algorithms. Exhibiting the theorem as pigeonhole on the torus also isolates exactly what is needed for the dual and inhomogeneous variants — the same abstract group theorem on the same torus with a different point or a shifted ball.",
+    "openQuestions": [
+      "Can the bound be upgraded to the infinitude statement in the simultaneous setting — for every Q infinitely many denominators q with maxᵢ |q·θᵢ − pᵢ| < q^{-1/d} — when 1, θ₁,…,θ_d are linearly independent over ℚ (the simultaneous analogue of OQ-01)?",
+      "Can the strict inequality maxᵢ |q·θᵢ − pᵢ| < 1/Q (rather than ≤) be obtained, and the denominator bound stated in the sharper exponent form q ≤ N with error < N^{-1/d}?",
+      "Does the dual form — one linear form q·θ = q₁θ₁+…+q_dθ_d close to an integer with bounded integer coefficients qᵢ — follow from the same torus pigeonhole, giving Khintchine's transference inequalities in Lean?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dirichlet-approximation-theorem",
+      "relationship": "extends",
+      "description": "Parent entry proving the one-dimensional one-shot pigeonhole bound. This OQ-02 is the simultaneous d-dimensional generalization: one common denominator q ≤ Q^d approximating all of θ₁,…,θ_d to within 1/Q at once. The d = 1 case recovers (a ≤-version of) the parent statement."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Sibling entry (infinitude upgrade in dimension 1) whose third open question asks whether the coprime-pair reformulation extends to simultaneous approximation of several reals by one denominator. This entry answers the existence half of that question."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/DirichletApproximationOQ02.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Metric",
+      "Set"
+    ],
+    "namespace": "DirichletApproximationOQ02",
+    "lineCount": 106,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 1
+  },
+  "sorries": 0
+}

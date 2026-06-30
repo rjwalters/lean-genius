@@ -16,7 +16,11 @@
       "covering theory",
       "potential theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "polynomials over the complex numbers",
+      "metric geometry"
+    ]
   },
   {
     "id": "ann-e509-disc-cover",
@@ -36,7 +40,11 @@
       "tsum",
       "MetricSpace"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "metric space topology",
+      "infinite series and summability",
+      "Lean 4 structures and existential quantification"
+    ]
   },
   {
     "id": "ann-e509-sublevel",
@@ -55,7 +63,12 @@
       "Polynomial.eval",
       "IsCompact"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "polynomial evaluation",
+      "point-set topology (compactness)",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e509-conjecture",
@@ -74,7 +87,11 @@
       "sublevelSet",
       "Polynomial.Monic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "polynomial theory",
+      "Lean 4 proposition encoding and axioms"
+    ]
   },
   {
     "id": "ann-e509-known-results",
@@ -93,7 +110,11 @@
       "IsConnected",
       "potential theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "potential theory",
+      "real analysis (exponential function)"
+    ]
   },
   {
     "id": "ann-e509-structure",
@@ -112,7 +133,11 @@
       "Polynomial.X",
       "Polynomial.C"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "polynomial theory",
+      "metric space topology"
+    ]
   },
   {
     "id": "ann-e509-summary",
@@ -130,6 +155,10 @@
       "cartan_bound",
       "pommerenke_bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "Lean 4 tactic mode",
+      "propositional logic"
+    ]
   }
 ]

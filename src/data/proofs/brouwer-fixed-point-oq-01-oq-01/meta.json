@@ -1,0 +1,146 @@
+{
+  "id": "brouwer-fixed-point-oq-01-oq-01",
+  "title": "The 1D Sperner Lemma: Combinatorial IVT Behind Sperner → Brouwer",
+  "slug": "brouwer-fixed-point-oq-01-oq-01",
+  "description": "Formalizes the genuine combinatorial heart of the parent's first open question (\"Prove 2D Brouwer via Sperner's Lemma\"): the 1-dimensional Sperner lemma, the base case of the dimension-induction and the boundary-counting ingredient of the 2D version. Coloring a path's vertices 0,…,n by c : ℕ → Bool, the number of bichromatic edges {i,i+1} (c i ≠ c(i+1)) has the same parity as [c 0 ≠ c n]; in particular a path from color false to color true has an odd — hence nonzero — number of bichromatic edges. This is the discrete intermediate value theorem, the combinatorial shadow of the analytic IVT the parent used for 1D Brouwer. Mathlib has no Sperner's lemma of combinatorial topology, so this is built from scratch. 0 axioms, 0 sorries. Does NOT claim 2D Brouwer.",
+  "meta": {
+    "author": "Emanuel Sperner",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+    "date": "1928",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ01.lean",
+    "tags": [
+      "topology",
+      "combinatorics",
+      "sperner-lemma",
+      "brouwer-fixed-point",
+      "discrete-ivt",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter_insert",
+        "description": "filter p (insert a s) = if p a then insert a (filter p s) else filter p s; drives the edge-count recurrence",
+        "module": "Mathlib.Data.Finset.Filter"
+      },
+      {
+        "theorem": "Finset.card_insert_of_notMem",
+        "description": "a ∉ s ⟹ (insert a s).card = s.card + 1; gives the +1 when a new bichromatic edge appears",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.even_add_one",
+        "description": "Even (n+1) ↔ ¬ Even n; the parity flip when crossing the boundary",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Nat.not_even_iff_odd",
+        "description": "¬ Even n ↔ Odd n; converts the parity identity to oddness of the count",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Finset.card_pos",
+        "description": "0 < s.card ↔ s.Nonempty; extracts an explicit bichromatic edge from the positive count",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "spernerEdges / colorChanges: the finite set of bichromatic edges {i,i+1} (c i ≠ c(i+1), i < n) of a Bool-colored path, and its cardinality — the discrete object whose nonemptiness is the 1D Sperner lemma",
+      "colorChanges_succ: the recurrence colorChanges c (n+1) = colorChanges c n + [c n ≠ c(n+1)], proved via Finset.filter_insert and card_insert_of_notMem",
+      "even_colorChanges_iff: THE parity identity — Even (colorChanges c n) ↔ c 0 = c n. Every interior color cancels; the bichromatic-edge count's parity is fixed by the two endpoints alone. Proved by induction with a Boolean-tautology base for the flip case",
+      "oddColorChanges_of_ne / colorChanges_pos_of_ne: endpoints of different colors force an odd, hence positive, bichromatic-edge count",
+      "exists_sperner_edge: the 1D Sperner lemma — a path colored false at 0 and true at n has a bichromatic edge {i,i+1}. This is the discrete IVT: a walk from region 0 to region 1 must cross the boundary, the combinatorial shadow of the analytic IVT the parent used for 1D Brouwer"
+    ],
+    "axiomCount": 0,
+    "lineCount": 136,
+    "assumptions": "None — fully verified from Mathlib with 0 axioms (only propext / Classical.choice / Quot.sound) and 0 sorries; no native_decide. This is the 1D base case of Sperner's lemma; the full 2D Sperner lemma and 2D Brouwer (the parent's open question) are NOT claimed here and remain open — Mathlib has no combinatorial-topology Sperner lemma to build the dimension-induction on.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma (Emanuel Sperner, 1928) is the combinatorial counterpart of Brouwer's fixed point theorem: a 'Sperner coloring' of any triangulation of a simplex must contain a fully-colored small simplex, and letting the mesh tend to zero recovers Brouwer. The proof is by induction on dimension, and the base case — dimension 1 — is the elementary parity statement formalized here: a colored path from one endpoint color to another must switch colors an odd number of times. This 1D fact is also exactly the discrete intermediate value theorem.",
+    "problemStatement": "The parent's first open question asks for a fully elementary, combinatorial 2D Brouwer via Sperner's lemma. Mathlib has no Sperner's lemma of combinatorial topology. As the foundational first step, formalize the 1-dimensional Sperner lemma — the base case of the dimension-induction and the boundary-counting tool for the 2D argument.",
+    "text": "Colors a path's vertices by Bool; proves the bichromatic-edge count has the parity of [endpoints differ], so a false→true path has an odd, nonzero number of bichromatic edges (1D Sperner lemma = discrete IVT).",
+    "proofStrategy": "Define spernerEdges c n = {i < n : c i ≠ c(i+1)} and colorChanges = its card. Establish the one-step recurrence colorChanges c (n+1) = colorChanges c n + [c n ≠ c(n+1)] via Finset.filter_insert and card_insert_of_notMem. Induct to prove the parity identity Even (colorChanges c n) ↔ c 0 = c n: the monochromatic step preserves both sides, the bichromatic step flips the count parity (Nat.even_add_one) and flips the endpoint equality (a Boolean tautology with the new vertex opposite the previous one). Specializing to c 0 = false, c n = true gives an odd count, which is positive (Finset.card_pos), yielding an explicit bichromatic edge.",
+    "keyInsights": [
+      "The parity of the bichromatic-edge count depends ONLY on the two endpoint colors — all interior structure telescopes away, the discrete echo of 'a real function returns to its starting sign iff it crosses zero an even number of times'",
+      "1D Sperner = discrete IVT: a path from region 0 to region 1 must cross the boundary an odd (hence nonzero) number of times, mirroring the analytic IVT the parent used for the continuous 1D Brouwer theorem",
+      "Bool colors make the crucial 'flip' case a finite tautology: when the new vertex differs from its predecessor, both the count parity and the endpoint-equality predicate flip, so the induction invariant is preserved",
+      "Counting bichromatic edges on the boundary of a 2D triangulation and feeding the 1D parity here is precisely the inductive step of Sperner's lemma — so this base case is genuine, non-cosmetic progress toward the 2D Brouwer program",
+      "Mathlib's 'Sperner' (SetFamily/LYM) is the antichain theorem, unrelated; the combinatorial-topology Sperner lemma is absent and must be built from the ground up"
+    ],
+    "prerequisites": [
+      "Finset filter and cardinality",
+      "parity (Even/Odd) of natural numbers",
+      "the idea of Sperner colorings and the discrete IVT"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring: scope (1D Sperner lemma as the base case toward 2D Brouwer), honest framing, and the discrete-IVT interpretation."
+    },
+    {
+      "id": "edges",
+      "title": "Bichromatic Edges and the Count Recurrence",
+      "startLine": 50,
+      "endLine": 79,
+      "summary": "spernerEdges / colorChanges definitions and colorChanges_succ: extending the path adds a bichromatic edge iff the new vertex changes color.",
+      "mathContext": "Finset.filter_insert and card_insert_of_notMem give the one-step recurrence."
+    },
+    {
+      "id": "parity",
+      "title": "The Parity Identity",
+      "startLine": 81,
+      "endLine": 113,
+      "summary": "even_colorChanges_iff: the count is even iff the endpoints share a color; oddColorChanges_of_ne for differing endpoints.",
+      "mathContext": "Induction with Nat.even_add_one; the flip case is a Boolean tautology."
+    },
+    {
+      "id": "sperner",
+      "title": "The 1D Sperner Lemma",
+      "startLine": 115,
+      "endLine": 136,
+      "summary": "exists_sperner_edge: a false→true path has a bichromatic edge; colorChanges_pos_of_ne: positivity of the count.",
+      "mathContext": "Odd ⟹ positive ⟹ the edge set is nonempty (Finset.card_pos)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 axioms, 0 sorries, no native_decide) formalization of the 1-dimensional Sperner lemma: the bichromatic-edge count of a Bool-colored path has the parity of its endpoint disagreement, so a false→true path has an odd, nonzero number of bichromatic edges. This is the discrete intermediate value theorem and the base case of the dimension-induction proof of Sperner's lemma.",
+    "implications": "Supplies the genuine combinatorial engine — boundary parity counting — that the inductive Sperner→Brouwer program runs on, mirroring the analytic IVT the parent used for 1D Brouwer. It is honest, non-cosmetic groundwork for the parent's open question without overclaiming the 2D theorem.",
+    "openQuestions": [
+      "Build the 2D Sperner lemma: a Sperner coloring of any triangulation of a triangle has an odd number of fully-colored cells, by inducting the 1D boundary parity proved here over the triangulation's edges.",
+      "Formalize the simplicial/triangulation infrastructure (labelings, barycentric subdivision) that Mathlib currently lacks, the main blocker for combinatorial 2D Brouwer.",
+      "Derive 2D Brouwer from the 2D Sperner lemma by a mesh-refinement compactness argument."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-01",
+      "relationship": "parent",
+      "description": "Parent giving the elementary 1D Brouwer via the analytic IVT; this entry answers the first sub-question's base case — the 1D Sperner lemma (combinatorial IVT) underlying the Sperner → 2D Brouwer program"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "BrouwerFixedPointOQ01OQ01",
+    "lineCount": 136,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "path": "Proofs/BrouwerFixedPointOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

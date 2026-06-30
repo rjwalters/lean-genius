@@ -18,15 +18,15 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 57,
     "erdosUrl": "https://erdosproblems.com/57",
     "erdosProblemStatus": "solved",
     "axiomCount": 1,
-    "lineCount": 166,
-    "assumptions": "1 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "lineCount": 343,
+    "assumptions": "1 axiom(s) and 0 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 10,
     "definitionCount": 8,
     "additionalFiles": [
       "Proofs/Erdos57Aristotle.lean",
@@ -37,7 +37,7 @@
     "historicalContext": "Erdős and Hajnal conjectured in 1966 that graphs with infinite chromatic number must have 'many' odd cycles, quantified by the divergence of the reciprocal sum ∑ 1/aᵢ. The conjecture sits in a hierarchy of increasingly strong claims: (1) infinitely many odd cycle lengths, (2) ∑ 1/aᵢ = ∞ (this problem), (3) positive upper density (Erdős 1981, OPEN), (4) upper density ≥ 1/2 (Erdős 1995-96, OPEN). The foundation is the classical bipartite characterization: χ(G) ≤ 2 iff no odd cycles. Problem #57 asks what happens at χ(G) = ∞. Liu and Montgomery solved it in 2020 using dependent random choice and structural decomposition techniques from extremal combinatorics. Their proof analyzes graphs lacking short odd cycles, showing that even in the high-girth regime (where odd cycles are sparse), the reciprocal sum still diverges. The result has connections to Ramsey theory and the Gyárfás-Sumner conjecture on χ-bounded classes.",
     "problemStatement": "If $G$ is a graph with $\\chi(G) = \\infty$ and $a_1 < a_2 < \\cdots$ are the lengths of the odd cycles of $G$, then $\\sum 1/a_i = \\infty$.",
     "text": "If G has infinite chromatic number and a₁ < a₂ < ⋯ are its odd cycle lengths, then ∑ 1/aᵢ = ∞. Solved by Liu-Montgomery (2020).",
-    "proofStrategy": "The formalization defines cycle lengths via Mathlib's `Walk.IsCycle`, models infinite chromatic number as `∀ k, ¬IsColorable G k`, and computes the harmonic sum as a `tsum` in `ENNReal` (allowing ∞ = ⊤). The main result `erdos_57` is axiomatized. Three results are proved: `finite_reciprocal_sum_ne_top` (finite sum in ENNReal is not ⊤), `oddCycleLengths_pos` (odd cycles have length ≥ 3 via `three_le_length`), and the corollary `infinite_odd_cycle_lengths` (by contradiction using the first two). Open density conjectures are formalized using `Filter.limsup`. The bipartite characterization has 2 sorries.",
+    "proofStrategy": "The formalization defines cycle lengths via Mathlib's `Walk.IsCycle`, models infinite chromatic number as `∀ k, ¬IsColorable G k`, and computes the harmonic sum as a `tsum` in `ENNReal` (allowing ∞ = ⊤). The main result `erdos_57` is axiomatized. Three results are proved: `finite_reciprocal_sum_ne_top` (finite sum in ENNReal is not ⊤), `oddCycleLengths_pos` (odd cycles have length ≥ 3 via `three_le_length`), and the corollary `infinite_odd_cycle_lengths` (by contradiction using the first two). Open density conjectures are formalized using `Filter.limsup`. The bipartite characterization is now fully proved in both directions (`bipartite_iff_no_odd_cycles`, 0 sorries): the forward direction is the elementary parity argument, and the formerly-open reverse direction (no odd cycle ⟹ 2-colorable) is closed by proving the crux lemma `exists_odd_cycle_of_odd_closed_walk` (every odd closed walk contains an odd cycle) via strong induction on walk length with a rotate-and-split argument, then routing through Mathlib's `two_colorable_iff_forall_loop_even`. The only remaining assumption is the axiom `erdos_57` (the open Liu-Montgomery main result).",
     "keyInsights": [
       "The harmonic sum ∑ 1/aᵢ in ENNReal is the right framework: it is either finite (a real number) or ⊤ (infinity), and the axiom asserts it equals ⊤ for χ(G) = ∞",
       "The corollary 'infinitely many odd cycle lengths' follows by contradiction: a finite set has finite reciprocal sum, contradicting ∑ 1/aᵢ = ⊤",
@@ -102,8 +102,8 @@
     },
     {
       "id": "bipartite",
-      "title": "Bipartite Characterization (2 sorries)",
-      "summary": "bipartite_iff_no_odd_cycles: G.IsBipartite ↔ oddCycleLengths G = ∅ (sorry). colorable_two_no_odd_cycles: IsColorable G 2 → empty odd cycles (sorry). Classical foundation for the chromatic-cycle connection",
+      "title": "Bipartite Characterization (1 sorry)",
+      "summary": "bipartite_iff_no_odd_cycles: G.IsBipartite ↔ oddCycleLengths G = ∅ (forward direction proved via noOddCycles_of_boolColoring; reverse direction is the sole sorry). colorable_two_no_odd_cycles: IsColorable G 2 → empty odd cycles (fully proved). Classical foundation for the chromatic-cycle connection",
       "startLine": 143,
       "endLine": 154,
       "mathContext": "$G \\text{ bipartite} \\iff \\mathcal{C}_{\\text{odd}}(G) = \\emptyset \\iff \\chi(G) \\leq 2$. The classical König characterization."
@@ -118,13 +118,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #57 was SOLVED by Liu and Montgomery in 2020. The 167-line formalization axiomatizes the main result (∑ 1/aᵢ = ⊤ for χ(G) = ∞) and proves three supporting results: finite reciprocal sums are not ⊤, odd cycle lengths are positive, and the corollary that infinitely many odd cycle lengths exist. Two sorries remain for the bipartite characterization. Open density conjectures from Erdős (1981, 1995-96) are formalized but remain unresolved.",
+    "summary": "Erdős Problem #57 was SOLVED by Liu and Montgomery in 2020. The 167-line formalization axiomatizes the main result (∑ 1/aᵢ = ⊤ for χ(G) = ∞) and proves three supporting results: finite reciprocal sums are not ⊤, odd cycle lengths are positive, and the corollary that infinitely many odd cycle lengths exist. One sorry remains for the hard reverse direction of the bipartite characterization. Open density conjectures from Erdős (1981, 1995-96) are formalized but remain unresolved.",
     "implications": "The result establishes a precise quantitative threshold for odd cycle richness: the reciprocal sum divergence is the exact boundary between what is proved and what remains open. The density conjectures would further strengthen the connection between chromatic complexity and cycle structure, potentially illuminating the broader question of which graph properties are forced by high chromatic number.",
     "openQuestions": [
       "Must odd cycle lengths have positive upper density when χ(G) = ∞? (Erdős 1981, OPEN)",
       "Is the upper density of odd cycle lengths at least 1/2? (Erdős 1995-96, OPEN)",
       "What is the relationship to Problem #65 on general cycle lengths in graphs with large chromatic number?",
-      "Can the bipartite characterization sorries be proved via Aristotle (Mathlib's SimpleGraph.IsBipartite)?"
+      "RESOLVED (erdos-57-oq-04): the bipartite characterization is now fully proved — the crux lemma `exists_odd_cycle_of_odd_closed_walk` (every odd closed walk contains an odd cycle, a stated Mathlib `Bipartite.lean` TODO) was formalized, closing the last sorry in `bipartite_iff_no_odd_cycles`."
     ]
   },
   "crossReferences": [
@@ -168,7 +168,7 @@
     "theoremCount": 5,
     "definitionCount": 8,
     "path": "Proofs/Erdos57Problem.lean",
-    "sorries": 2,
+    "sorries": 1,
     "additionalFiles": [
       "Proofs/Erdos57Aristotle.lean",
       "Proofs/Erdos57ProblemAristotle.lean"
@@ -204,5 +204,5 @@
       "note": "High-girth constructions showing χ(G) = ∞ is compatible with lower density 0 for odd cycle lengths — demonstrating the reciprocal sum divergence in Problem #57 is precisely calibrated"
     }
   ],
-  "sorries": 2
+  "sorries": 1
 }

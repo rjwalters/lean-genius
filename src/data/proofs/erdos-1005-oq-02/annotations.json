@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-erdos1005oq02-header",
+    "proofId": "erdos-1005-oq-02",
+    "range": { "startLine": 3, "endLine": 39 },
+    "type": "context",
+    "title": "Mediant insertion — and the honest boundary with the open problem",
+    "content": "The header frames the file as the verified arithmetic of mediant insertion, the operation that refines F_n into F_{n+1} by inserting the mediant (a+c)/(b+d) between adjacent fractions a/b < c/d. It states explicitly that the open Erdős #1005 lower bound f(n) ≥ (1/12 − o(1))n on runs of similarly ordered fractions is NOT resolved here; the file supplies the gap-splitting calculus and the optimality of the mediant on which such constructions rest. The file is self-contained (it does not import the parent's axiom longestSimilarRun) and 0-axiom.",
+    "mathContext": "Farey sequence $F_n$: reduced $a/b \\in [0,1]$ with $b \\le n$. Mediant of $a/b, c/d$ is $(a+c)/(b+d)$; for a unimodular pair $bc-ad=1$ it first enters at order $b+d$.",
+    "significance": "context",
+    "relatedConcepts": ["Farey sequence", "mediant", "Stern–Brocot tree", "unimodular relation"],
+    "prerequisites": ["rational numbers", "number theory"]
+  },
+  {
+    "id": "ann-erdos1005oq02-unimodular",
+    "proofId": "erdos-1005-oq-02",
+    "range": { "startLine": 47, "endLine": 60 },
+    "type": "definition",
+    "title": "Unimodular pairs and their order",
+    "content": "Unimodular a b c d := b·c = a·d + 1 is the algebraic signature of Farey adjacency. unimodular_lt shows it forces the value order a/b < c/d: cross-multiplying via div_lt_div_iff₀ reduces to a·d < c·b, immediate from b·c = a·d + 1. Every theorem in the file takes this predicate as hypothesis.",
+    "mathContext": "$a/b < c/d$ unimodular $\\iff bc - ad = 1$; this single equation determines both adjacency and order.",
+    "significance": "supporting",
+    "relatedConcepts": ["unimodular relation", "cross-multiplication", "reduced fractions"],
+    "prerequisites": ["greatest common divisor", "ordered fields"]
+  },
+  {
+    "id": "ann-erdos1005oq02-gap",
+    "proofId": "erdos-1005-oq-02",
+    "range": { "startLine": 65, "endLine": 75 },
+    "type": "technique",
+    "title": "The gap formula c/d − a/b = 1/(bd)",
+    "content": "gap_eq: a unimodular gap has size exactly 1/(bd). The proof clears denominators with div_sub_div and div_eq_div_iff, turning the claim into the polynomial identity (cb − ad)·(bd) = bd, closed by linear_combination (b*d) * hu against the unimodular relation hu : bc = ad + 1. This is the quantity that mediant insertion subdivides.",
+    "mathContext": "$\\frac{c}{d} - \\frac{a}{b} = \\frac{cb-ad}{bd} = \\frac{1}{bd}$ since $cb - ad = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Farey gap", "linear_combination", "field arithmetic"],
+    "prerequisites": ["rational arithmetic"]
+  },
+  {
+    "id": "ann-erdos1005oq02-recursive",
+    "proofId": "erdos-1005-oq-02",
+    "range": { "startLine": 79, "endLine": 95 },
+    "type": "technique",
+    "title": "Each split half is again unimodular — the recursive engine",
+    "content": "unimodular_left and unimodular_right show the mediant forms a unimodular pair with each endpoint: b(a+c) − a(b+d) = bc − ad = 1 and (b+d)c − (a+c)d = bc − ad = 1. Both are one-line linear_combination identities over ℤ. Consequence: the two sub-gaps of a split are themselves Farey-adjacent and can be split again — this is precisely the recursion that generates the Stern–Brocot tree and enumerates every reduced rational exactly once.",
+    "mathContext": "$bc-ad=1 \\Rightarrow b(a+c)-a(b+d)=1$ and $(b+d)c-(a+c)d=1$: mediant insertion preserves unimodularity.",
+    "significance": "supporting",
+    "relatedConcepts": ["Stern–Brocot tree", "mediant", "recursion", "unimodular relation"],
+    "prerequisites": ["integer arithmetic"]
+  },
+  {
+    "id": "ann-erdos1005oq02-split",
+    "proofId": "erdos-1005-oq-02",
+    "range": { "startLine": 97, "endLine": 131 },
+    "type": "key-step",
+    "title": "Mediant insertion splits the gap exactly",
+    "content": "The gap-splitting calculus. mediant_gap_left: (a+c)/(b+d) − a/b = 1/(b(b+d)). mediant_gap_right: c/d − (a+c)/(b+d) = 1/(d(b+d)). subgaps_sum: the two sub-gaps recombine to the original, 1/(b(b+d)) + 1/(d(b+d)) = 1/(bd), so insertion loses no measure. Each gap proof clears denominators and closes with linear_combination against bc = ad + 1; the sum is a telescoping linarith over the three gap equations.",
+    "mathContext": "$\\frac{1}{b(b+d)} + \\frac{1}{d(b+d)} = \\frac{d+b}{bd(b+d)} = \\frac{1}{bd}$.",
+    "significance": "central",
+    "relatedConcepts": ["mediant", "Farey gap", "partition", "telescoping"],
+    "prerequisites": ["rational arithmetic", "linear_combination"]
+  },
+  {
+    "id": "ann-erdos1005oq02-ratio",
+    "proofId": "erdos-1005-oq-02",
+    "range": { "startLine": 133, "endLine": 150 },
+    "type": "insight",
+    "title": "Ratio d:b and strict refinement",
+    "content": "subgap_ratio: the left sub-gap scaled by b equals the right sub-gap scaled by d (both equal 1/(b+d)), so the two pieces stand in ratio d:b — the endpoint with the smaller denominator inherits the larger share. mediant_gap_left_lt: each sub-gap 1/(b(b+d)) is strictly smaller than the whole 1/(bd), since b(b+d) > bd; mediant insertion genuinely refines the partition rather than merely re-labelling it.",
+    "mathContext": "$\\frac{1/(b(b+d))}{1/(d(b+d))} = \\frac{d}{b}$, and $b(b+d) > bd \\Rightarrow \\frac{1}{b(b+d)} < \\frac{1}{bd}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["mediant", "ratio", "monotonicity"],
+    "prerequisites": ["rational arithmetic"]
+  },
+  {
+    "id": "ann-erdos1005oq02-identity",
+    "proofId": "erdos-1005-oq-02",
+    "range": { "startLine": 155, "endLine": 162 },
+    "type": "key-step",
+    "title": "The denominator identity — the algebraic kernel",
+    "content": "denom_identity: over ℤ, q = b·(cq − pd) + d·(pb − aq) whenever bc − ad = 1. Expanding the right side gives bcq − bpd + dpb − daq = q(bc − ad) = q. A single linear_combination (-q) * h verifies it. This unconditional identity is the entire engine of the minimal-denominator theorem: it expresses the denominator q of ANY fraction as a positive-integer combination of b and d.",
+    "mathContext": "$q\\,(bc-ad) = b(cq-pd) + d(pb-aq)$; with $bc-ad=1$ the left side is just $q$.",
+    "significance": "central",
+    "relatedConcepts": ["determinant identity", "linear_combination", "lattice"],
+    "prerequisites": ["integer arithmetic"]
+  },
+  {
+    "id": "ann-erdos1005oq02-mindenom",
+    "proofId": "erdos-1005-oq-02",
+    "range": { "startLine": 164, "endLine": 196 },
+    "type": "key-step",
+    "title": "The mediant has the smallest denominator in the gap",
+    "content": "denom_ge_of_between (headline): any fraction p/q strictly between two unimodular neighbours has q ≥ b + d. Cross-multiplying the strict orders a/b < p/q and p/q < c/d gives the integer inequalities pb − aq ≥ 1 and cq − pd ≥ 1 (extracted by omega after exact_mod_cast). Feeding these into the denominator identity with le_mul_of_one_le_right yields q = b·(cq−pd) + d·(pb−aq) ≥ b + d. The mediant (a+c)/(b+d) attains this bound, so it is the smallest-denominator fraction in the open gap.",
+    "mathContext": "$pb-aq\\ge 1,\\; cq-pd\\ge 1 \\Rightarrow q = b(cq-pd)+d(pb-aq) \\ge b+d$.",
+    "significance": "central",
+    "relatedConcepts": ["best approximation", "mediant", "Stern–Brocot", "minimal denominator"],
+    "prerequisites": ["integer inequalities", "cross-multiplication"]
+  },
+  {
+    "id": "ann-erdos1005oq02-unique",
+    "proofId": "erdos-1005-oq-02",
+    "range": { "startLine": 198, "endLine": 254 },
+    "type": "key-step",
+    "title": "Equality is attained only by the mediant",
+    "content": "eq_mediant_of_denom_eq: if a strictly-in-gap fraction p/q attains the minimum q = b + d, then p = a + c — it IS the mediant. Since q = b·(cq−pd) + d·(pb−aq) with both brackets ≥ 1, equality q = b + d forces each bracket to exactly 1 (a linarith squeeze, then mul_left_cancel₀). From pb − aq = 1, q = b + d and bc = ad + 1, a linear_combination gives p·b = (a+c)·b, and cancelling b yields p = a + c. mediant_is_min_denominator packages the in-gap claim with the bound: the mediant lies strictly inside and minimises the denominator.",
+    "mathContext": "$q=b+d$ with $q=b(cq-pd)+d(pb-aq)$ and both brackets $\\ge 1$ forces each $=1$; then $pb-aq=1$ pins $p=a+c$.",
+    "significance": "central",
+    "relatedConcepts": ["uniqueness", "mediant", "cancellation", "best approximation"],
+    "prerequisites": ["integer arithmetic", "linear_combination"]
+  }
+]

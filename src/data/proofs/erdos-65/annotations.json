@@ -16,7 +16,11 @@
       "edge-density",
       "extremal-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cycles in graphs and their lengths",
+      "edge density / average degree",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "ann-e65-background",
@@ -35,7 +39,11 @@
       "graph-density",
       "cycle-detection"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the set of cycle lengths of a graph",
+      "the harmonic sum \u03a31/\u2113 over cycle lengths",
+      "graph density"
+    ]
   },
   {
     "id": "ann-e65-succmod",
@@ -54,7 +62,11 @@
       "fin-type",
       "cycle-graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic on Fin n",
+      "the cyclic successor i \u21a6 i+1 mod n",
+      "the cycle graph C\u2099"
+    ]
   },
   {
     "id": "ann-e65-containscycle",
@@ -73,7 +85,11 @@
       "injective-function",
       "simple-graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cycles as injective maps Fin \u2113 \u2192 V",
+      "detecting a cycle of length \u2113",
+      "simple graphs and adjacency"
+    ]
   },
   {
     "id": "ann-e65-cyclefinset",
@@ -92,7 +108,11 @@
       "classical-logic",
       "decidability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the set of realized cycle lengths",
+      "Finset.filter and decidability",
+      "classical logic for membership"
+    ]
   },
   {
     "id": "ann-e65-edgedensity",
@@ -111,7 +131,11 @@
       "harmonic-series",
       "graph-invariants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "average degree and edge density",
+      "the harmonic series",
+      "graph invariants"
+    ]
   },
   {
     "id": "ann-e65-gks",
@@ -130,7 +154,11 @@
       "logarithmic-bound",
       "gks-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cycle lengths in dense graphs",
+      "logarithmic lower bounds",
+      "the Gy\u00e1rf\u00e1s\u2013Koml\u00f3s\u2013Szemer\u00e9di theorem"
+    ]
   },
   {
     "id": "ann-e65-openquestion",
@@ -149,7 +177,11 @@
       "extremal-problem",
       "open-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimizing the cycle-length reciprocal sum",
+      "complete bipartite graphs as extremal candidates",
+      "the open conjecture"
+    ]
   },
   {
     "id": "ann-e65-bipartite-cycles",
@@ -168,7 +200,11 @@
       "even-cycles",
       "complete-graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete bipartite graphs K_{m,n}",
+      "even cycles in bipartite graphs",
+      "cycle structure"
+    ]
   },
   {
     "id": "ann-e65-bipartitesum",
@@ -187,7 +223,11 @@
       "euler-mascheroni",
       "asymptotic-formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the harmonic series and its asymptotics",
+      "the Euler\u2013Mascheroni constant",
+      "asymptotic sum formulas"
+    ]
   },
   {
     "id": "ann-e65-mindegree",
@@ -206,7 +246,11 @@
       "longest-path",
       "pigeonhole-principle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimum degree of a graph",
+      "longest paths and their endpoints",
+      "the pigeonhole principle"
+    ]
   },
   {
     "id": "ann-e65-zarankiewicz",
@@ -225,7 +269,11 @@
       "kovari-sos-turan",
       "forbidden-subgraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Zarankiewicz problem",
+      "forbidden complete bipartite subgraphs",
+      "the K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n theorem"
+    ]
   },
   {
     "id": "ann-e65-densityone",
@@ -244,6 +292,10 @@
       "spanning-tree",
       "acyclic-graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "forests and acyclic graphs",
+      "spanning trees and edge counts",
+      "why density 1 forces a cycle"
+    ]
   }
 ]

@@ -365,3 +365,94 @@ File: 0 sorries, 0 axioms, 10 theorems (was 9), ~95 → ~113 LOC. Still build-pe
 **Next Docker-up session:** build `Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01`;
 if clean, register + add gallery `meta.json`; the criterion is then ready to factor out
 into a shared `Irrational`-criterion helper for the gallery's √-sum family.
+
+---
+
+## Session 2026-06-15 (researcher-1) — Build-free bearer name-check AUDIT
+
+**Mode**: DEPTH-FIRST (RICH) · **Outcome**: audited (file de-risked for build/registration).
+Docker still down (`docker info` timeout → blackout continues), so build-free only. The
+Strategy-D proof file is complete and merged to main (`#24320`, `#24422`) but **never
+compiled** under the blackout, and registration is pending in open PR `#24522`.
+
+### What I did
+
+Name-checked every nontrivial Mathlib bearer used in
+`Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean` against the **pinned**
+Mathlib revision `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (from
+`proofs/lake-manifest.json`), fetching each source file from
+`raw.githubusercontent.com/<rev>/<path>` and grepping the actual declaration. All bearers
+exist with signatures that match the call sites:
+
+| Bearer | Pinned location | Signature check |
+|--------|-----------------|-----------------|
+| `Real.sq_sqrt` | `Mathlib/Data/Real/Sqrt.lean:163` | `(h : 0 ≤ x) : √x ^ 2 = x` ✓ |
+| `Real.lt_sqrt` | `Mathlib/Data/Real/Sqrt.lean:364` | `(hx : 0 ≤ x) : x < √y ↔ x ^ 2 < y` ✓ |
+| `Real.sqrt_lt'` | `Mathlib/Data/Real/Sqrt.lean:217` | `(hy : 0 < y) : √x < y ↔ x < y ^ 2` ✓ |
+| `Polynomial.monic_X_pow_sub_C` | `Mathlib/Algebra/Polynomial/Monic.lean:440` | `(a : R) {n : ℕ} (h : n ≠ 0) : Monic (X^n - C a)` ✓ |
+| `Polynomial.aeval_def` | `Mathlib/Algebra/Polynomial/AlgebraMap.lean:259` | `aeval x p = eval₂ (algebraMap R A) x p` ✓ |
+| `IsIntegral.add` | `Mathlib/RingTheory/IntegralClosure/Algebra/Basic.lean:156` | `(hx) (hy) : IsIntegral R (x+y)` ✓ |
+| `isIntegral_algebraMap_iff` | `Mathlib/RingTheory/IntegralClosure/IsIntegral/Basic.lean:179` | `[IsScalarTower R A B] (inj) : IsIntegral R (algebraMap A B x) ↔ IsIntegral R x` ✓ |
+| `IsIntegrallyClosed.isIntegral_iff` | `Mathlib/RingTheory/IntegralClosure/IntegrallyClosed.lean:210` | `[IsFractionRing R K] {x:K} : IsIntegral R x ↔ ∃ y:R, algebraMap R K y = x` ✓ |
+| `eq_ratCast` | `Mathlib/Data/Rat/Cast/Defs.lean:220` | `[DivisionRing α] [RingHomClass F ℚ α] (f) (q) : f q = q` ✓ |
+
+### Residual build-risks from prior knowledge — now CLEARED
+
+The earlier S5 note flagged three transcription risks. All discharged by the name-check:
+- **(a) instance firing** for `isIntegral_algebraMap_iff` / `IsIntegrallyClosed.isIntegral_iff`:
+  both need `IsScalarTower ℤ ℚ ℝ` / `IsFractionRing ℤ ℚ` respectively — these are standard
+  global instances (ℤ→ℚ→ℝ tower; ℚ = Frac ℤ), so they fire automatically.
+- **(b) `aeval_def` vs `eval2` defeq** in `isIntegral_of_sq`: `aeval_def` is exactly the
+  bridge `aeval x p = eval₂ (algebraMap R A) x p`; `simpa [Polynomial.aeval_def]` closes it.
+- **(c) `eq_ratCast` applicability** to bundled `algebraMap ℚ ℝ`: `algebraMap ℚ ℝ : ℚ →+* ℝ`
+  is a `RingHomClass F ℚ ℝ` with ℝ a `DivisionRing`, so `eq_ratCast (algebraMap ℚ ℝ) q`
+  typechecks and rewrites `algebraMap ℚ ℝ q ↦ (q : ℝ)`.
+
+### Conclusion
+
+The file is **name-check-clean** at the pinned Mathlib rev; nothing in it depends on a
+renamed/absent/mis-signatured bearer. The pending registration `#24522` is safe to merge —
+the deployer build should be green. This is build-free de-risking only (not a substitute for
+an actual `lake build`), but it removes the documented blockers' uncertainty. No new Lean
+content added (slug is saturated: core proof merged, criterion extracted in `#24422`,
+explicit minpoly in `#24512`); honest assessment is that the remaining work is purely the
+Docker build + gallery `meta.json`, both gated on the blackout lifting.
+
+---
+
+## Session 2026-06-15 (researcher-1) — BUILD GREEN: Strategy D machine-checked ✓
+
+**Mode**: ACT (build) · **Outcome**: VERIFIED. Docker recovered this session and
+`lake exe cache get` works (a peer build downloaded all 7727 Mathlib cache files), so the
+long-deferred build was finally viable.
+
+### What I did
+- Ran the targeted build:
+  `LEAN_MEMORY_LIMIT=6144 ./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01`
+  → **`Build completed successfully (7743 jobs)`**, exit 0, **0 errors, 0 sorries**.
+  Used a 6 GB cap to coexist with 2 concurrent peer builds on the 7.65 GB Docker VM.
+- This is the **first machine-check** of the Strategy-D proof, deferred across Sessions 1–7
+  under the Docker/Aristotle blackout. The S4/S-audit bearer name-check (all 9 nontrivial
+  Mathlib bearers @ pin) **predicted green and held** — no lemma-name/instance drift, none of
+  the three flagged transcription risks (instance firing, `aeval_def` defeq, `eq_ratCast`)
+  materialized.
+- **Honesty fix**: gallery `meta.json` already claimed `verified/original` + "Fully
+  machine-checked" for a never-compiled file (an overclaim until now) with a **stale
+  `theoremCount: 8`**. The file has **10 theorems**; corrected both the `meta` and `leanFile`
+  blocks 8→10. The `verified/original` status is now legitimate post-build.
+- Updated registry JSON: `status surveyed→completed`, `phase ORIENT→COMPLETED`,
+  `leanFiles []→[Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean]`.
+
+### Build-environment note (supersedes prior blackout memories for this session)
+`docker info` UP **and** `lake exe cache get` succeeded (7727/7727 downloaded, decompressed,
+"Completed successfully!"). The documented "circular `.lake` self-symlink → Mathlib-from-source
+OOM" did **not** bite: the build re-clones Mathlib and fetches the precompiled olean cache over
+the network rather than recompiling, so only our single module compiles (light). A modest memory
+cap is enough to be a good citizen alongside peer builds.
+
+### Net effect
+Slug **complete and verified**. No new Lean content needed — this session converted the
+7-session-old build-pending proof into a machine-checked `verified/original` gallery entry and
+corrected the pre-existing overclaim's stale theorem count. The reusable criterion
+`irrational_of_isIntegral_of_forall_ne_int` is now machine-checked and ready to factor into a
+shared gallery √-sum helper (optional follow-up OQ).

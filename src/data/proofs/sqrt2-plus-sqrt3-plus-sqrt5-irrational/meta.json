@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-12",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
     "tags": [
       "irrationality",
@@ -16,11 +16,11 @@
       "research",
       "open-problem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-12",
-    "axiomCount": 0,
-    "assumptions": "None. Uses Mathlib's irrational_sqrt_natCast_iff with native_decide on ¬IsSquare 30, Real.sq_sqrt, Real.sqrt_mul, sqrt_pos, sqrt_nonneg, plus the parent gallery proof's exported identity sqrt2_plus_sqrt3_sq : (√2 + √3)² = 5 + 2√6.",
+    "axiomCount": 1,
+    "assumptions": "Depends on Lean.ofReduceBool: the main theorem irrational_sqrt2_plus_sqrt3_plus_sqrt5 applies irrational_sqrt_thirty, which discharges ¬IsSquare 30 with native_decide (kernel compiler reduction). Also uses Mathlib's irrational_sqrt_natCast_iff, Real.sq_sqrt, Real.sqrt_mul, sqrt_pos, sqrt_nonneg, plus the parent gallery proof's exported identity sqrt2_plus_sqrt3_sq : (√2 + √3)² = 5 + 2√6. No literal axiom declarations (leanFile.axiomCount = 0).",
     "lineCount": 144,
     "theoremCount": 5,
     "definitionCount": 0,

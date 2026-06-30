@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-sq-mod-four",
+    "proofId": "infinitude-primes-4k1-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 59
+    },
+    "type": "lemma",
+    "title": "sq_mod_four — Squares Are 0 or 1 mod 4",
+    "content": "Every perfect square is congruent to 0 or 1 modulo 4. The proof rewrites n² % 4 as (n % 4)² % 4 using `Nat.pow_mod`, then `interval_cases (n % 4)` splits into the four residues 0, 1, 2, 3, each of which `omega` closes (0²=0, 1²=1, 2²=4≡0, 3²=9≡1). This single lemma is the whole obstruction in the backward direction: since squares are only 0 or 1 mod 4, a sum of two squares is 0, 1, or 2 mod 4 and never 3, so a sum of two squares that happens to be odd is forced to be 1 mod 4.",
+    "mathContext": "$n^2 \\bmod 4 \\in \\{0, 1\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic residues mod 4",
+      "sums of two squares",
+      "Nat.pow_mod reduction"
+    ],
+    "prerequisites": [
+      "Nat.pow_mod: n^k % m = (n % m)^k % m",
+      "interval_cases over a bounded residue",
+      "omega for linear arithmetic over ℕ"
+    ]
+  },
+  {
+    "id": "ann-main-biconditional",
+    "proofId": "infinitude-primes-4k1-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "fermat_two_squares — Odd-Prime Two-Squares Biconditional",
+    "content": "The main result: an odd prime p is a sum of two natural-number squares if and only if p ≡ 1 (mod 4). This is the sharp form of Fermat's theorem on sums of two squares restricted to odd primes — it strengthens Mathlib's one-directional Nat.Prime.sq_add_sq (which only gives p % 4 ≠ 3 ⇒ representable) to a full biconditional by adding the elementary converse. The two hypotheses, p prime and p ≠ 2, are exactly 'p is an odd prime'.",
+    "mathContext": "$p\\ \\text{odd prime} \\Rightarrow \\big(p \\equiv 1 \\pmod 4 \\iff \\exists a\\,b,\\ p = a^2 + b^2\\big)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's theorem on sums of two squares",
+      "Gaussian integers and prime splitting",
+      "quadratic residue −1 mod p"
+    ],
+    "prerequisites": [
+      "Nat.Prime.sq_add_sq (Mathlib)",
+      "biconditional proof by refine ⟨·, ·⟩",
+      "the squares-mod-4 lemma"
+    ]
+  },
+  {
+    "id": "ann-forward-mathlib",
+    "proofId": "infinitude-primes-4k1-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 72
+    },
+    "type": "insight",
+    "title": "Forward direction via Mathlib's Nat.Prime.sq_add_sq",
+    "content": "The hard direction is delegated to Mathlib. After supplying the `Fact p.Prime` instance, p % 4 = 1 is rewritten to p % 4 ≠ 3 by `omega`, which is exactly the hypothesis of `Nat.Prime.sq_add_sq`. That theorem then produces a, b with a² + b² = p, and `.symm` flips it to p = a² + b². All the genuine number-theoretic depth — that −1 is a quadratic residue mod p ≡ 1 (mod 4) and the ensuing descent / Gaussian-integer factorization — lives inside the Mathlib lemma; this file consumes it as a black box.",
+    "mathContext": "$p \\bmod 4 = 1 \\Rightarrow p \\bmod 4 \\ne 3 \\xRightarrow{\\text{Mathlib}} \\exists a\\,b,\\ a^2 + b^2 = p$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "infinite descent",
+      "Fact typeclass instances",
+      "Mathlib SumTwoSquares"
+    ],
+    "prerequisites": [
+      "haveI : Fact p.Prime",
+      "omega to convert = 1 into ≠ 3",
+      "Nat.Prime.sq_add_sq"
+    ]
+  },
+  {
+    "id": "ann-backward-parity",
+    "proofId": "infinitude-primes-4k1-oq-01",
+    "range": {
+      "startLine": 73,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "Backward direction: oddness + squares-mod-4 force p ≡ 1 (mod 4)",
+    "content": "The elementary converse. From p = a² + b² the proof reduces p mod 4 and p mod 2 to the corresponding residues of a² + b². The lemma `sq_mod_four` pins a² % 4, b² % 4 ∈ {0,1}; the parity reductions a² % 2 = (a % 2)² % 2 and the same for b (via `Nat.pow_mod`) pin the mod-2 picture. Crucially, p is odd (`Nat.Prime.eq_two_or_odd` with p ≠ 2 gives p % 2 = 1), which rules out the sum being 0 or 2 mod 4. `omega` assembles these constraints and concludes p % 4 = 1 — no quadratic reciprocity required.",
+    "mathContext": "$p = a^2 + b^2,\\ p\\ \\text{odd} \\Rightarrow p \\bmod 4 = 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity of sums of squares",
+      "case analysis mod 4 and mod 2",
+      "Nat.Prime.eq_two_or_odd"
+    ],
+    "prerequisites": [
+      "sq_mod_four for a and b",
+      "Nat.pow_mod for the mod-2 parity step",
+      "omega closing the residue system"
+    ]
+  },
+  {
+    "id": "ann-mathlib-bearer-context",
+    "proofId": "infinitude-primes-4k1-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Why both halves are needed for the sharp statement",
+    "content": "Mathlib states Fermat's two-squares result asymmetrically: Nat.Prime.sq_add_sq gives only the existence direction (p % 4 ≠ 3 ⇒ p is a sum of two squares). On its own that does not characterize which primes are sums of two squares — it would also (vacuously) cover any non-3-residue. Pairing it with the elementary converse proved here (a sum of two squares can be 0, 1, or 2 mod 4, and oddness selects 1) upgrades the one-way implication to the biconditional p % 4 = 1 ↔ representable. This is the local representability fact that, summed over primes, drives the infinitude of primes ≡ 1 (mod 4).",
+    "mathContext": "Mathlib gives $\\Rightarrow$; this file adds $\\Leftarrow$ to obtain $\\iff$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "biconditional vs one-directional lemmas",
+      "infinitude of primes ≡ 1 (mod 4)",
+      "norm form of ℤ[i]"
+    ],
+    "prerequisites": [
+      "Mathlib's Nat.Prime.sq_add_sq is one-directional",
+      "the squares-mod-4 converse",
+      "primality giving oddness"
+    ]
+  }
+]

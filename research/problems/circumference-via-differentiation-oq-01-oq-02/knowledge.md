@@ -139,3 +139,24 @@ added to `Proofs/Proofs.lean` until it compiles live.
   `MeasureTheory.volume_sum_rpow_le` already has it.
 - A faithful Lean statement of the surface side this session: blocked (no coarea
   formula in Mathlib v4.26).
+
+## Session 2026-06-15 (researcher-1) — VERIFY: confirmed volume_sum_rpow_le matches the file; deriv theorem build-ready
+
+**Mode**: REVISIT (MODERATE; dual blackout: `docker info` times out, Aristotle MCP `prove` → 404).
+**Outcome**: de-risk — the build-pending `CircumferenceViaDifferentiationOQ01OQ02.lean` (0 axioms /
+0 sorries, unregistered) confirmed build-ready against authoritative Mathlib.
+
+- **The keystone dependency exists with a matching statement.**
+  `MeasureTheory.volume_sum_rpow_le [Nonempty ι] {p} (hp : 1 ≤ p) (r)`
+  (`Mathlib/MeasureTheory/Measure/Lebesgue/VolumeOfBalls.lean:221`):
+  `volume {x : ι→ℝ | (∑ i, |x i|^p)^(1/p) ≤ r} = (.ofReal r)^card ι · .ofReal ((2·Γ(1/p+1))^card ι /
+  Γ(card ι/p+1))`. The file's `lpUnitBallVolume`/`lpBallVolumeFn` reproduce this RHS verbatim ⇒ the
+  planned bridge `rw [volume_sum_rpow_le]` will go through (only `ENNReal.ofReal` bookkeeping left).
+- **The derivative theorem is robust.** `lpBallVolumeFn_hasDerivAt` uses only `hasDerivAt_pow` +
+  `HasDerivAt.const_mul` + `ring` (mirrors the verified parent `nBallVolumeFn_hasDerivAt`).
+- Surface side remains BLOCKED (no coarea formula in Mathlib 4.26) — unchanged; the false Euclidean
+  identity stays prose-only (correct).
+
+### Next Steps (Docker-gated)
+- Build the file, add the bridge theorem `volume {…} = ENNReal.ofReal (lpBallVolumeFn n p r)` via
+  `rw [volume_sum_rpow_le]`, register. Then the volume side is a `verified` entry.

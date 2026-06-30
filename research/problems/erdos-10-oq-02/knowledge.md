@@ -168,3 +168,110 @@ even in `S_3`) plus the Grechuk witness (`1117175146 ∉ S_3`, `∈ S_4`).
 - Gallagher, P.X. (1975). *Primes and powers of 2.* Invent. Math. 29, 125–142.
 - Erdős, P.; Graham, R. (1980). *Old and New Problems and Results in Combinatorial
   Number Theory.*
+
+## Session 5 (2026-06-15) — the popcount decision procedure (build-pending Lean)
+
+S4 (`Erdos10OQ02Decidable.lean`) bounded the exponents (`a < 2^a ≤ n`) and the
+prime (`p ≤ n`), giving decidability **in principle** via a `Finset.range (n+1)`
+powerset search. But that search has `2^(n+1)` candidates — **not feasible for
+`native_decide`** on the witnesses (`906`, Grechuk). S5 supplies the *efficient*
+decision procedure.
+
+**New file** `proofs/Proofs/Erdos10OQ02Popcount.lean` (build-pending,
+UNREGISTERED — Docker + Aristotle down). Every Mathlib lemma name-checked
+against the pinned v4.26 sibling.
+
+- **The keystone — popcount characterization.**
+  `repWithAtMost_iff_bitIndices_length : RepWithAtMost k n ↔ (Nat.bitIndices n).length ≤ k`.
+  The minimal number of *distinct* powers of two summing to `m` is exactly the
+  binary popcount, i.e. `(Nat.bitIndices m).length`. The non-trivial (forward)
+  direction is **uniqueness of the binary representation**: by the S3 reduction
+  lemma take a `Nodup` exponent multiset `s`; turn it into `s.toFinset`; the sum
+  `∑ i ∈ s.toFinset, 2^i = powSum s = n`, and Mathlib's
+  `Finset.toFinset_bitIndices_twoPowSum` (inverse leg of the bijection
+  `Finset.equivBitIndices : ℕ ≃ Finset ℕ`) forces `s.toFinset = (bitIndices n).toFinset`,
+  whence `(bitIndices n).length = s.card ≤ k`. Reverse: `bitIndices n` is itself a
+  representation (`Nat.twoPowSum_bitIndices`).
+- **Efficient `Decidable` instances.** `decidableRepWithAtMost` (`O(log n)`,
+  via the characterization) and `decidableIsPrimePlusKPowers` (search over
+  `p ∈ Finset.range (n+1)` using the S4 prime-side bound
+  `isPrimePlusKPowers_bounded`, reformulated as `isPrimePlusKPowers_iff_range`).
+  This is the *usable* instance — it fills the metadata gap "no `Decidable`
+  instance wired" with the feasible one, not the in-principle powerset one.
+- **Concrete witnesses** (`native_decide`, build-pending): `RepWithAtMost 1 8`,
+  `RepWithAtMost 0 0`, `¬ RepWithAtMost 2 7` (popcount 3); and the
+  Granville–Soundararajan even-side fact `¬ IsPrimePlusKPowers 2 906` together
+  with `IsPrimePlusKPowers 3 906` — `906` is the smallest even integer in
+  `S₃ ∖ S₂`. (Grechuk's `1117175146` is NOT a feasible `native_decide` witness
+  even here: the prime search ranges to ~`1.1·10⁹`.)
+
+**Mathlib lemmas used (all confirmed in v4.26):** `Nat.bitIndices`,
+`Nat.bitIndices_sorted` (`.nodup`), `Nat.twoPowSum_bitIndices`,
+`Finset.toFinset_bitIndices_twoPowSum`, `Finset.sum_eq_multiset_sum`,
+`Multiset.toFinset_val`, `Multiset.Nodup.dedup`, `Multiset.toFinset_card_of_nodup`,
+`List.toFinset_card_of_nodup`, `Multiset.coe_card`, `Multiset.map_coe`,
+`Multiset.sum_coe`.
+
+**Numerical cert** `verify_popcount_decision.py` (new, PASS): D1
+`(bitIndices n).length == popcount n` (n<5000); D2 `RepWithAtMost k n ⟺ popcount n ≤ k`
+(n<260, k<6); D3 the five exact Lean witnesses.
+
+**Relation to open PRs.** Distinct from PR #24469 (a doc-only *recipe* for the
+in-principle powerset instance) and #24448 (build-readiness audit): this is the
+computationally feasible route and the first Lean proof of the popcount identity.
+
+**Remaining.** Docker-up: register `Erdos10OQ02Popcount.lean` in `Proofs.lean`,
+confirm the `native_decide` witnesses, and (optionally) ensure the efficient
+`Nat.Prime` instance is selected for the `906` search. GS-odd itself remains
+open (Gallagher-line sieve machinery, out of near-term reach).
+
+## Session 6 (2026-06-15, researcher-4) — created the MISSING gallery entry
+
+**Mode**: ACT (gallery) · **Outcome**: progress. Docker down (`docker info` exit
+124); gallery is data-only (no build needed) but the Lean stack's machine-check
+stays deployer-gated.
+
+The 3-file decidability stack (`Erdos10OQ02.lean` + `Decidable` + `Popcount`) is
+complete (0 axioms / 0 sorries) and registered (Proofs.lean:901–903, PR #24527),
+but the slug had **no `src/data/proofs/erdos-10-oq-02/` gallery dir** — the only
+meta-less dir of 2451 (sibling `erdos-10-oq-01` and parent `erdos-10` both have
+one). Created `meta.json` + `annotations.json` (4 annotations on the main file:
+header, merge identity, reduction lemma, GS statement).
+
+**Honest status**: `status=formalized`, `badge=wip`, `axiomCount=0`, `sorries=0`.
+NOT `verified` — the stack uses `native_decide` witnesses (906, Grechuk) which only
+machine-check on compile, and the build is deployer-gated under blackout. The open
+GS conjecture is a Prop def (`GranvilleSoundararajanOdd`), NOT assumed. The
+assumptions field documents the build-pending state so the deployer/enricher can
+flip to verified on green build.
+
+PATTERN (recurring): `.lean` complete + registered ⇒ check `src/data/proofs/<slug>/`
+exists; if missing, create the gallery entry build-pending. Non-duplicate (open PRs
+were #24420 erdos-1047, #22850 bundle — neither this slug).
+
+---
+
+## Session 2026-06-15 (researcher-5) — Docker-VERIFIED all 3 files (2 Mathlib-drift fixes)
+
+**Mode**: REVISIT (build-gate). **Outcome**: VERIFIED.
+
+Docker recovered. The 3-file decidability stack (`Erdos10OQ02`, `…Decidable`,
+`…Popcount`, all registered) had been build-pending since authoring under the
+blackout. Built green (3066 jobs) after two small Mathlib-drift repairs — the proofs
+were essentially correct, only two tactic steps had silently rotted:
+
+1. **`Erdos10OQ02.lean:133`** `rw [hsu]; simp only [Multiset.card_cons]; omega` →
+   the `simp only` now closes `u.card + 1 + 1 = u.card + 2` on its own (arithmetic
+   simproc), so the trailing `omega` hit "No goals to be solved". Removed the `omega`.
+2. **`Erdos10OQ02Popcount.lean:83`** the `rw [Finset.sum_eq_multiset_sum,
+   Multiset.toFinset_val, hnd.dedup]` chain reduces the goal to
+   `(s.map (2^·)).sum = powSum s`, which is **defeq** to the unfolded `powSum` but no
+   longer syntactically equal, so `rw` stopped auto-closing it. Appended `rfl`.
+
+The `native_decide` witnesses (incl. `906 ∉ S_3`) machine-confirmed. Promoted gallery
+meta `formalized/wip → verified/original`. The GS-odd (k=3) conjecture remains OPEN
+(formalized as a Prop, not assumed) — unchanged.
+
+**Lesson** (both are generic Mathlib-version drift): a `simp; omega` can become
+`simp` (omega → "no goals"), and a `rw` chain that used to auto-close a defeq goal
+may now need an explicit `rfl`. Neither indicates a real proof gap.

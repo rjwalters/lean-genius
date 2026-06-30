@@ -1,8 +1,8 @@
 {
   "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01",
   "title": "Irrationality of √2 + √3 + √5 + √7",
-  "phase": "ORIENT",
-  "status": "surveyed",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -18,15 +18,12 @@
     "goal": "Irrational (Real.sqrt 2 + Real.sqrt 3 + Real.sqrt 5 + Real.sqrt 7)"
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-06-15T01:25:28.245Z",
-    "iteration": 3,
-    "focus": "Survey deepened (Session 2): NEW recommended Strategy D (algebraic-integer + bound, ~60-100 LOC) supersedes A; explicit degree-16 minimal polynomial and bound 8<α<9 computed and verified (sympy/mpmath). Still Docker-gated for final build.",
-    "blockers": [
-      "Docker build wrapper unavailable (docker info timeout).",
-      "Aristotle backend returns 'Resource not found'."
-    ],
-    "nextAction": "When Docker returns, implement Strategy D in Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean (~60-100 LOC); confirm the 4 lemma names in the knowledge.md skeleton and fill the single sorry. Fallbacks: Strategy A (3-squaring chain) or m(α)=0 + rational-root theorem.",
+    "phase": "COMPLETED",
+    "since": "2026-06-15T18:00:00.000Z",
+    "iteration": 5,
+    "focus": "VERIFIED (researcher-1 2026-06-15): Docker build GREEN — ./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01 completed successfully (7743 jobs, 0 errors, 0 sorries). First machine-check of the Strategy-D proof after 7 build-deferred sessions; the bearer name-check predicted green and held. File already registered in proofs/Proofs.lean on main. Gallery meta verified/original is now legitimate; fixed stale theoremCount 8→10.",
+    "blockers": [],
+    "nextAction": "DONE — slug verified and complete. Optional follow-up OQ: Strategy D scales to any finite sum of √(squarefree) with no degree blow-up (the reusable criterion irrational_of_isIntegral_of_forall_ne_int is now machine-checked and ready to factor into a shared gallery helper).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -34,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT (researcher-10 2026-06-15 S5): Strategy D proof fully written to Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean (0 sorries/0 axioms by construction, ~95 LOC). Build-pending (Docker down) + UNREGISTERED in Proofs.lean. Math re-verified. Remaining work: Docker build + gallery registration.",
+    "progressSummary": "VERIFIED (researcher-1 2026-06-15): Docker build GREEN for Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01 (7743 jobs, 0 errors, 0 sorries, 0 axioms). Strategy-D proof machine-checked for the first time; file registered in proofs/Proofs.lean on main. Slug complete: gallery meta verified/original now legitimate (theoremCount corrected 8→10).",
     "builtItems": [
       "Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean - full Strategy D transcription (build-pending, Docker down): isIntegral_of_sq (c^2 in Z => IsIntegral Z c via monic X^2 - C m), 4 per-radical instances, isIntegral_alpha (IsIntegral.add x3), alpha_lower (8<a via Real.lt_sqrt + 1.41/1.73/2.23/2.64), alpha_upper (a<9 via Real.sqrt_lt'), main thm irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7 (descent isIntegral_algebraMap_iff + IsIntegrallyClosed.isIntegral_iff + omega). 0 sorries, 0 axioms by construction; UNREGISTERED in Proofs.lean under build blackout."
     ],
@@ -47,7 +44,8 @@
       "NEW Strategy D (RECOMMENDED, Session 2): α = √2+√3+√5+√7 is a sum of four algebraic integers (each √k a root of monic X²-k), hence integral over ℤ (IsIntegral.add). A rational number integral over ℤ lies in ℤ (ℤ integrally closed in ℚ, IsIntegrallyClosed). But 8 < α < 9 (α≈8.0281, verified), so α ∉ ℤ ⇒ irrational. This sidesteps the ENTIRE degree-16 algebra: no squaring chain, no minimal-polynomial expansion, no surd isolation. ~60-100 LOC, no new Mathlib theory (just the integral-closure API). Lean skeleton drafted in knowledge.md with 4 lemma names to confirm at build.",
       "Explicit minimal polynomial (sympy-verified m(α)=0 exactly): m(x)=x^16-136x^14+6476x^12-141912x^10+1513334x^8-7453176x^6+13950764x^4-5596840x^2+46225 (monic, integer, even; constant 46225=215²); equivalently g(α²)=0 with g(y)=y^8-136y^7+6476y^6-141912y^5+1513334y^4-7453176y^3+13950764y^2-5596840y+46225. Confirms the degree-16 claim concretely; alternative Lean target (m(α)=0 then rational-root theorem), though the 16th-power expansion is heavy vs Strategy D.",
       "Strategy A's single-surd endgame is NOT clean (numerically confirmed Session 2): √210=Σcᵢαⁱ in the α power basis has only even powers but rational coefficients over common denominator 14499840 (e.g. c₀=42047681/2899968). No small-integer analog of the parent's α⁴-20α²-24=8α√30 — reinforces switching to Strategy D.",
-      "ACT (researcher-10, S5): Strategy D transcribed end-to-end. eq_ratCast (algebraMap Q R) q bridges (q:R)=algebraMap Q R q for descent; algebraMap Z Q n simplified to (n:Q) by simp; integer-in-(8,9) contradiction closed by exact_mod_cast on real bounds + omega. All 4 pinned bearers used as specced. Math re-verified by verify_strategy_d.py (ALL CHECKS PASSED)."
+      "ACT (researcher-10, S5): Strategy D transcribed end-to-end. eq_ratCast (algebraMap Q R) q bridges (q:R)=algebraMap Q R q for descent; algebraMap Z Q n simplified to (n:Q) by simp; integer-in-(8,9) contradiction closed by exact_mod_cast on real bounds + omega. All 4 pinned bearers used as specced. Math re-verified by verify_strategy_d.py (ALL CHECKS PASSED).",
+      "AUDIT (researcher-1, 2026-06-15): name-checked all 9 nontrivial Mathlib bearers of Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean vs pinned rev 2df2f01 (raw.githubusercontent + grep): Real.sq_sqrt@Data/Real/Sqrt:163, Real.lt_sqrt@:364, Real.sqrt_lt'@:217, monic_X_pow_sub_C@Algebra/Polynomial/Monic:440, aeval_def@Algebra/Polynomial/AlgebraMap:259, IsIntegral.add@RingTheory/IntegralClosure/Algebra/Basic:156, isIntegral_algebraMap_iff@RingTheory/IntegralClosure/IsIntegral/Basic:179, IsIntegrallyClosed.isIntegral_iff@RingTheory/IntegralClosure/IntegrallyClosed:210 (needs [IsFractionRing R K]), eq_ratCast@Data/Rat/Cast/Defs:220. All signatures match call sites; build-risks (a)/(b)/(c) cleared. File name-check-clean ⇒ registration #24522 safe to merge."
     ],
     "mathlibGaps": [
       "No usable Mathlib lemma for ℚ-linear independence of {√d : d squarefree} (Besicovitch); needed for Strategy B.",
@@ -71,7 +69,10 @@
     "research"
   ],
   "relatedProofs": [
-    "sqrt2-plus-sqrt3-plus-sqrt5-irrational"
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01",
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04"
   ],
   "references": {
     "papers": [
@@ -81,8 +82,53 @@
     "mathlib": []
   },
   "started": "2026-06-15T01:25:28.244Z",
-  "lastUpdate": "2026-06-14",
+  "lastUpdate": "2026-06-15",
   "significance": 4,
   "tractability": 8,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean",
+      "lineCount": 151,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03.lean",
+      "lineCount": 163,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean",
+      "lineCount": 193,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean"
+    }
+  ]
 }

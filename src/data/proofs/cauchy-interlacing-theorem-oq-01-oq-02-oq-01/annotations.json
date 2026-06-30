@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-arbitrary-index-set",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 63, "endLine": 76 },
+    "type": "insight",
+    "title": "Stating the Ky Fan Bounds over an Arbitrary Index Set",
+    "content": "`sum_mu_le_sum_top_lam` and `sum_bot_lam_le_sum_mu` are each a single `Finset.sum_le_sum` applied to one half of the parent's `poincare_separation`. The key design choice is to leave the index set `s : Finset (Fin n)` a free parameter rather than fixing it to `Finset.univ`. Because of this, the full-trace estimate (`s = univ`) and every top-`j` weak-majorization partial sum (`s` an initial segment) are immediate specialisations — no Fin-interval bookkeeping is ever needed.",
+    "mathContext": "From μ_k ≤ λ_⟨k⟩ for all k, ∑_{k∈s} μ_k ≤ ∑_{k∈s} λ_⟨k⟩ for any finite s, by monotonicity of finite sums. Likewise λ_⟨k+m⟩ ≤ μ_k sums to ∑_{k∈s} λ_⟨k+m⟩ ≤ ∑_{k∈s} μ_k.",
+    "significance": "key",
+    "relatedConcepts": ["Ky Fan inequality", "monotonicity of finite sums", "Poincaré separation", "eigenvalue interlacing"],
+    "prerequisites": ["Finset.sum_le_sum", "termwise Poincaré separation bounds"]
+  },
+  {
+    "id": "ann-weak-majorization",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 78, "endLine": 91 },
+    "type": "insight",
+    "title": "Weak Majorization: the Compression Spectrum is Dominated by the Largest Eigenvalues",
+    "content": "`partial_sum_mu_le_partial_sum_lam` specialises the upper Ky Fan bound to the initial segment `{k : Fin n | (k : ℕ) < j}`, yielding ∑_{k<j} μ_k ≤ ∑_{k<j} λ_k for every `j`. Since both μ and λ are listed in descending order, this is exactly the statement that the compression eigenvalues are *weakly majorized* by the largest eigenvalues of the full operator T — the eigenvalue-majorization backbone behind Schur–Horn and Ky Fan's maximum principle.",
+    "mathContext": "Two descending sequences satisfy μ ≺_w λ iff ∑_{k<j} μ_k ≤ ∑_{k<j} λ_k for all j; here it follows from the termwise μ_k ≤ λ_k by summing over each prefix.",
+    "significance": "high",
+    "relatedConcepts": ["weak majorization", "Ky Fan maximum principle", "Schur–Horn theorem", "descending eigenvalues"],
+    "prerequisites": ["majorization of descending sequences", "Finset.filter / initial segments"]
+  },
+  {
+    "id": "ann-trace-trapping",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 93, "endLine": 116 },
+    "type": "insight",
+    "title": "Trace Trapping: the Compression Trace Lies Between the Extreme Eigenvalue Sums",
+    "content": "Taking `s = Finset.univ`, `trace_compress_le` and `trace_compress_ge` give ∑_k μ_k ≤ ∑_{j=0}^{n-1} λ_j and ∑_{j=m}^{n+m-1} λ_j ≤ ∑_k μ_k; `trace_interlacing` bundles them. Since ∑_k μ_k is the trace of the compression and the index map k ↦ ⟨k⟩ / k ↦ ⟨k+m⟩ automatically selects the n largest / n smallest eigenvalues of T, the trace of any codimension-m orthogonal compression is trapped between the sum of the n smallest and the sum of the n largest eigenvalues of T.",
+    "mathContext": "trace(TH) = ∑ μ_k; summing m largest-side bounds gives the upper trap, m smallest-side bounds the lower trap. This is the trace form of Ky Fan's inequality for compressions.",
+    "significance": "high",
+    "relatedConcepts": ["trace inequality", "orthogonal compression", "extreme eigenvalue sums", "Ky Fan"],
+    "prerequisites": ["trace as the sum of eigenvalues", "Finset.univ summation"]
+  },
+  {
+    "id": "ann-include-directive",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "technique",
+    "title": "Threading the Poincaré Hypotheses with `include`",
+    "content": "The Poincaré data (`T, b, hT, hlam, hHdim, TH, bH, hTH, hmu, hRayleigh`) appears only inside the proof bodies — the *statements* of the Ky Fan theorems mention only `mu`, `lam`, and `s`. Lean's section-variable auto-binding therefore would not pull them in, so an explicit `include` directive forces their inclusion into every theorem below. Omitting it produces the misleading `unknown identifier T` error at each call site.",
+    "mathContext": "A purely Lean 4 elaboration point: section variables are auto-included only when referenced in the declared type, not when referenced solely in the proof term.",
+    "significance": "medium",
+    "relatedConcepts": ["Lean 4 section variables", "include directive", "auto-bound implicits"],
+    "prerequisites": ["Lean 4 variable/include semantics"]
+  }
+]

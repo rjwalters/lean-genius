@@ -1,0 +1,139 @@
+{
+  "id": "chinese-remainder-non-coprime-oq-03-oq-03",
+  "title": "Chinese Remainder Theorem for Modules",
+  "slug": "chinese-remainder-non-coprime-oq-03-oq-03",
+  "description": "Elevates the non-coprime Chinese Remainder Theorem from elements of a ring to modules: for comaximal ideals I, J in any commutative ring R and any R-module M, the canonical map induces an R-linear isomorphism M/(IM ⊓ JM) ≅ (M/IM) × (M/JM). Under comaximality the denominator collapses to (I⊓J)·M, yielding the textbook form M/(I⊓J)M ≅ M/IM × M/JM, and a coprime-elements corollary specialises it to principal ideals over a PID. Proved as the first isomorphism theorem applied to the product of the two quotient projections; the comaximality witness 1 = i + j is the entire mathematical input. 4 theorems, 4 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderNonCoprimeOQ03OQ03.lean",
+    "tags": [
+      "algebra",
+      "commutative-algebra",
+      "chinese-remainder-theorem",
+      "module-theory",
+      "ideals",
+      "quotient-modules"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified over Mathlib. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool).",
+    "lineCount": 160,
+    "theoremCount": 4,
+    "definitionCount": 4,
+    "additionalFiles": [],
+    "originalContributions": [
+      "crtMap: the canonical Chinese-Remainder linear map M → (M/IM) × (M/JM) as the pairing of the two quotient projections",
+      "ker_crtMap: the kernel of the CRT map equals I·M ⊓ J·M (hypothesis-free)",
+      "crtMap_surjective: surjectivity for comaximal ideals — the only step using 1 = i + j; the witness j·m₁ + i·m₂ reduces to m₁ mod IM and m₂ mod JM",
+      "crtEquiv: core module CRT isomorphism M/(IM ⊓ JM) ≅ (M/IM) × (M/JM) via the first isomorphism theorem",
+      "inf_smul_top: under comaximality (I⊓J)·M = I·M ⊓ J·M, using (I*J)·M = I·(J·M) and I*J ≤ I⊓J",
+      "crtEquiv': textbook form M/(I⊓J)·M ≅ (M/IM) × (M/JM)",
+      "crtEquivPID: PID/coprime-elements specialisation to principal ideals span{a}, span{b}"
+    ]
+  },
+  "leanFile": {
+    "namespace": "ChineseRemainderModuleCRT",
+    "lineCount": 160,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 4,
+    "path": "Proofs/ChineseRemainderNonCoprimeOQ03OQ03.lean",
+    "sorries": 0,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "The Chinese Remainder Theorem has three classical strata. The most elementary, for integers, gives ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ when gcd(m,n)=1. Mathlib formalises the ring-level generalisation as Ideal.quotientInfRingEquivPiQuotient: for pairwise-comaximal ideals, R/⋂Iᵢ ≅ ∏ R/Iᵢ. The parent chain of this gallery worked out the non-coprime element-level theory over Euclidean domains — when moduli share factors, solvability needs pairwise gcd compatibility. The present entry sits at the third stratum: the *module* CRT. Here the statement is no longer a solvability criterion but a structural decomposition of M/(I⊓J)M, and it holds over any commutative ring, the PID hypothesis being needed only to manufacture comaximality from coprime elements. The module CRT is the form used throughout commutative algebra (e.g. the structure theorem for finitely generated modules over a PID localises a module at each prime by exactly this splitting).",
+    "problemStatement": "Let R be a commutative ring, M an R-module, and I, J ⊆ R comaximal ideals (I ⊔ J = ⊤). Prove the canonical map M → (M/IM) × (M/JM) descends to an R-linear isomorphism M/(I⊓J)M ≅ (M/IM) × (M/JM), generalising the element-level CRT of the parent chain.",
+    "text": "Write IM for the submodule I • (⊤ : Submodule R M). The proof is the first isomorphism theorem applied to φ = (IM).mkQ.prod (JM).mkQ : M → (M/IM) × (M/JM). Two facts feed it. (1) ker φ = IM ⊓ JM — a formal consequence of LinearMap.ker_prod and Submodule.ker_mkQ, needing no hypothesis. (2) φ is surjective — the only place comaximality enters. Writing 1 = i + j with i ∈ I, j ∈ J, the element j·m₁ + i·m₂ satisfies (j·m₁ + i·m₂) − m₁ = i·(m₂ − m₁) ∈ IM and (j·m₁ + i·m₂) − m₂ = j·(m₁ − m₂) ∈ JM, so it maps to the prescribed pair (m̄₁, m̄₂). LinearMap.quotKerEquivOfSurjective then yields M/ker φ ≅ (M/IM) × (M/JM), and transporting along ker φ = IM ⊓ JM gives the core isomorphism. Finally inf_smul_top shows comaximality forces (I⊓J)·M = IM ⊓ JM (the inclusion ⊇ uses x = i·x + j·x together with I·(J·M) = (I*J)·M ≤ (I⊓J)·M), upgrading the result to the textbook denominator (I⊓J)M.",
+    "proofStrategy": "First isomorphism theorem on the product of quotient projections. Surjectivity from the comaximality witness 1 = i + j; kernel computed structurally; denominator simplified via the ideal-product/inf inequality. PID corollary obtained by turning coprime elements into comaximal principal ideals.",
+    "keyInsights": [
+      "At the module level the CRT becomes a structural isomorphism of quotients, not a solvability statement — the right object is the product of the two quotient maps",
+      "Comaximality is used exactly once, in surjectivity: 1 = i + j lets j·m₁ + i·m₂ hit any prescribed pair of residues",
+      "The kernel computation ker(f.prod g) = ker f ⊓ ker g is hypothesis-free, so the comaximal hypothesis is fully isolated to one lemma",
+      "The textbook denominator (I⊓J)M and the natural kernel IM ⊓ JM agree only under comaximality; in general only (I⊓J)M ⊆ IM ⊓ JM holds",
+      "The product-of-ideals bound (I*J)M = I(JM) ⊆ (I⊓J)M converts the abstract comaximality into the denominator identity",
+      "No PID is needed for the core theorem — the PID enters only to certify comaximality of span{a}, span{b} from IsCoprime a b"
+    ],
+    "prerequisites": [
+      "Quotient modules and the canonical projection Submodule.mkQ",
+      "First isomorphism theorem (LinearMap.quotKerEquivOfSurjective)",
+      "Ideal action on submodules: I • N, the identity (I*J)•N = I•(J•N), and I*J ≤ I⊓J",
+      "Comaximal ideals and the witness 1 = i + j"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Chinese Remainder Theorem is established at the module level: for comaximal ideals I, J in a commutative ring and any module M, M/(I⊓J)M ≅ (M/IM) × (M/JM) as R-modules, with a PID/coprime-elements specialisation. The proof is the first isomorphism theorem applied to the product of the two quotient projections, with comaximality entering only through surjectivity. 4 theorems, 4 definitions, 160 lines, 0 axioms — verified over Mathlib.",
+    "implications": "This is the structural form of the CRT that underlies the classification of modules over a PID: it splits M along coprime annihilator factors, the step that decomposes a finitely generated torsion module into its primary components. It strictly generalises Mathlib's ring-level Ideal.quotientInfRingEquivPiQuotient (recovered at M = R) and the element-level non-coprime CRT of the parent chain (recovered by reading the isomorphism on representatives). The two-ideal result extends to n comaximal ideals by induction, matching the ring-level statement."
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Docstring stating the module CRT, the proof architecture, and the namespace/variable setup (commutative ring R, R-module M, ideals I, J)."
+    },
+    {
+      "id": "crt-map",
+      "title": "The Chinese-Remainder Map and Its Kernel",
+      "startLine": 58,
+      "endLine": 71,
+      "summary": "crtMap pairs the two quotient projections M → M/IM and M → M/JM; ker_crtMap computes its kernel as IM ⊓ JM with no coprimality hypothesis."
+    },
+    {
+      "id": "surjectivity",
+      "title": "Surjectivity from Comaximality",
+      "startLine": 73,
+      "endLine": 100,
+      "summary": "crtMap_surjective: the witness 1 = i + j lets j·m₁ + i·m₂ reduce to m₁ mod IM and m₂ mod JM, hitting any target pair. The only step using the comaximal hypothesis."
+    },
+    {
+      "id": "core-equiv",
+      "title": "Core Module CRT Isomorphism",
+      "startLine": 102,
+      "endLine": 110,
+      "summary": "crtEquiv: first isomorphism theorem packages kernel + surjectivity into M/(IM ⊓ JM) ≅ (M/IM) × (M/JM)."
+    },
+    {
+      "id": "denominator",
+      "title": "Comaximality Collapses the Denominator",
+      "startLine": 112,
+      "endLine": 142,
+      "summary": "inf_smul_top: under comaximality (I⊓J)·M = IM ⊓ JM, via (I*J)·M = I·(J·M) ≤ (I⊓J)·M and x = i·x + j·x."
+    },
+    {
+      "id": "textbook-and-pid",
+      "title": "Textbook Form and PID Specialisation",
+      "startLine": 144,
+      "endLine": 160,
+      "summary": "crtEquiv' gives M/(I⊓J)M ≅ (M/IM) × (M/JM); crtEquivPID specialises to principal ideals span{a}, span{b} from IsCoprime a b."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "chinese-remainder-non-coprime-oq-03",
+      "relationship": "extends",
+      "description": "Parent: the element-level non-coprime CRT for three moduli over Euclidean domains. This entry lifts the whole circle of ideas from elements to modules, where solvability criteria become a structural quotient isomorphism. Reading crtEquiv on representatives recovers the parent's congruence statements."
+    },
+    {
+      "proofId": "chinese-remainder-non-coprime",
+      "relationship": "extends",
+      "description": "The ℤ-specific non-coprime CRT for two moduli. The module CRT here is the structural envelope of that result: ℤ/(m⊓n)ℤ ≅ ℤ/mℤ × ℤ/nℤ is the M = ℤ, R = ℤ instance of crtEquiv' once one notes (m)⊓(n) = (lcm m n)."
+    },
+    {
+      "proofId": "chinese-remainder-constructive",
+      "relationship": "complementary",
+      "description": "The classical pairwise-coprime CRT (always solvable, unique modulo the product). That entry handles the coprime extreme constructively; this one provides the comaximal-ideal module isomorphism behind it and the non-coprime denominator (I⊓J)M in full generality."
+    },
+    {
+      "proofId": "bezout-identity",
+      "relationship": "uses",
+      "description": "Comaximality I ⊔ J = ⊤ is precisely the existence of a Bézout-type witness 1 = i + j with i ∈ I, j ∈ J. For the PID corollary this witness comes from IsCoprime a b, i.e. ∃ u v, u·a + v·b = 1 — Bézout's identity in disguise."
+    }
+  ]
+}

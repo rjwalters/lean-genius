@@ -18,9 +18,9 @@
       "research"
     ],
     "sorries": 0,
-    "axiomCount": 5,
-    "lineCount": 250,
-    "theoremCount": 10,
+    "axiomCount": 4,
+    "lineCount": 315,
+    "theoremCount": 11,
     "definitionCount": 7,
     "dateAdded": "2026-05-06",
     "mathlibDependencies": [
@@ -33,15 +33,31 @@
         "theorem": "Nat.not_lt_zero",
         "description": "Zero is a lower bound for naturals",
         "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Ideal.mem_span_range_iff_exists_fun",
+        "description": "Membership in a finitely-generated ideal as an explicit linear combination",
+        "module": "Mathlib.RingTheory.Ideal.Operations"
+      },
+      {
+        "theorem": "Submodule.IsPrincipal.generator",
+        "description": "Generator of a principal ideal (ℤ is a PID)",
+        "module": "Mathlib.RingTheory.PrincipalIdealDomain"
+      },
+      {
+        "theorem": "Ideal.mem_span_singleton",
+        "description": "Membership in a principal ideal ↔ divisibility by the generator",
+        "module": "Mathlib.RingTheory.Ideal.Operations"
       }
     ],
     "originalContributions": [
       "zero_var_decidable: 0-variable H10 is decidable via constant check",
       "linear_one_var: ax = b ↔ a ∣ b — the divisibility criterion for 1-variable linear equations",
       "H10_undecidable_monotone: undecidability is monotone in variable count (embedding argument)",
-      "complexity_gap_summary: documents the boundary between degree-1 decidability and 9-variable undecidability"
+      "complexity_gap_summary: documents the boundary between degree-1 decidability and 9-variable undecidability",
+      "linear_bezout_n: multi-variable Bézout criterion proved (formerly axiomatized) — a linear equation Σ aᵢxᵢ = b is solvable over ℤ iff the gcd of the aᵢ divides b, via the principal coefficient ideal Ideal.span (Set.range a) and its generator; the gcd is characterized with 0 ≤ d (the original 0 < d wrongly excluded the all-zero case)"
     ],
-    "assumptions": "5 axioms: mrdp_finite_var (MRDP theorem, variable-bounded form), jones_matiyasevich_bound (9 variables suffice, Jones 1982), nine_var_h10_undecidable (9-variable H10 is undecidable), linear_bezout_n (multi-variable Bézout, Euclid), jones_universal_poly (existence of 9-variable degree-4 universal polynomial).",
+    "assumptions": "4 axioms: mrdp_finite_var (MRDP theorem, variable-bounded form), jones_matiyasevich_bound (9 variables suffice, Jones 1982), nine_var_h10_undecidable (9-variable H10 is undecidable), jones_universal_poly (existence of 9-variable degree-4 universal polynomial). The former axiom linear_bezout_n (multi-variable Bézout) is now a proved theorem, derived from the principal coefficient ideal over ℤ.",
     "additionalFiles": []
   },
   "overview": {
@@ -155,10 +171,10 @@
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/Hilbert10OQ04.lean",
-    "lineCount": 250,
-    "theoremCount": 10,
+    "lineCount": 315,
+    "theoremCount": 11,
     "definitionCount": 7,
-    "axiomCount": 5,
+    "axiomCount": 4,
     "sorries": 0
   }
 }

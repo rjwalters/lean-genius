@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-companion-overview",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 44 },
+    "type": "concept",
+    "title": "The Companion Integral and Its Two Open Questions",
+    "content": "The module docstring frames the task left open by the parent file (BuffonsNeedleOQ01OQ01OQ04OQ01Beta, which proved ∫_0^{π/2} cos θ · sinᵐ θ dθ = 1/(m+1)). Two questions are inherited: (1) does the companion ∫_0^{π/2} sin θ · cosᵐ θ dθ = 1/(m+1) yield to the same FTC template, and (2) is there an independent proof? Both are answered affirmatively here. The companion is the Beta integral with the cos-exponent fixed at the degenerate value: writing B(a,b) = 2∫_0^{π/2} sin^{2a-1}θ cos^{2b-1}θ dθ, the integrand sin θ · cosᵐ θ has 2a-1 = 1 (so a = 1) and 2b-1 = m (so b = (m+1)/2), giving (1/2)B(1, (m+1)/2) = 1/(m+1) via B(1,b) = 1/b. That a = 1 degeneracy — the sin factor being a first power — is precisely what makes the elementary antiderivative -cos^{m+1}θ/(m+1) available.",
+    "mathContext": "$\\int_0^{\\pi/2}\\sin\\theta\\,\\cos^{m}\\theta\\,d\\theta = \\tfrac12 B\\!\\left(1, \\tfrac{m+1}{2}\\right) = \\frac{1}{m+1}$, the $a=1$ slice of $B(a,b) = 2\\int_0^{\\pi/2}\\sin^{2a-1}\\theta\\cos^{2b-1}\\theta\\,d\\theta$ where $B(1,b) = 1/b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cauchy–Crofton formula", "Beta function", "integral geometry", "Buffon's needle", "reflection symmetry"],
+    "prerequisites": ["integral geometry", "spherical coordinates"]
+  },
+  {
+    "id": "ann-companion-statement",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 57 },
+    "type": "theorem",
+    "title": "General Companion Beta Integral",
+    "content": "The headline lemma integral_sin_mul_cos_pow states the companion integral for an arbitrary natural exponent m, mirroring the parent's integral_cos_mul_sin_pow. Proving the general m statement up front isolates the only dimension-dependent step into a single cast lemma downstream, keeping the analytic core (the antiderivative computation) independent of the geometric application. The roles of sin and cos are exactly swapped relative to the parent.",
+    "mathContext": "$\\int_0^{\\pi/2}\\sin\\theta\\cdot\\cos^{m}\\theta\\,d\\theta = \\frac{1}{m+1}$ for every $m\\in\\mathbb{N}$.",
+    "significance": "critical",
+    "relatedConcepts": ["fundamental theorem of calculus", "trigonometric integrals", "generalization strategy", "u-substitution"],
+    "prerequisites": ["real analysis", "integration"]
+  },
+  {
+    "id": "ann-mirror-antiderivative",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 58, "endLine": 71 },
+    "type": "tactic",
+    "title": "Differentiating the Mirror Antiderivative",
+    "content": "Instead of invoking a change-of-variables lemma, the proof exhibits the antiderivative F(θ) = -cos^{m+1}(θ)/(m+1) explicitly and differentiates it. (Real.hasDerivAt_cos θ).pow (m+1) gives the derivative of cos^{m+1}, which carries the inner factor -sin θ from the chain rule; Nat.add_sub_cancel simplifies the exponent m+1-1 to m; HasDerivAt.neg supplies the leading minus sign and HasDerivAt.div_const divides by (m+1). The two sign flips — the explicit minus on F and the -sin θ from differentiating cos — combine to a single positive sin θ, and the (m+1) factors cancel via push_cast/field_simp/ring, leaving exactly sin θ · cosᵐ θ. This is the precise mirror of the parent's sin^{m+1}θ/(m+1) computation.",
+    "mathContext": "$F(\\theta) = -\\frac{\\cos^{m+1}\\theta}{m+1}, \\quad F'(\\theta) = -\\frac{(m+1)\\cos^{m}\\theta\\,(-\\sin\\theta)}{m+1} = \\sin\\theta\\cdot\\cos^{m}\\theta.$",
+    "significance": "key",
+    "relatedConcepts": ["HasDerivAt", "chain rule", "power rule", "derivative of cosine", "sign cancellation"],
+    "prerequisites": ["differentiation", "Mathlib HasDerivAt API"]
+  },
+  {
+    "id": "ann-companion-ftc",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 72, "endLine": 77 },
+    "type": "tactic",
+    "title": "Applying FTC and Evaluating Endpoints",
+    "content": "Continuity of the integrand (sin times a power of cos) gives interval-integrability via Continuous.intervalIntegrable, so intervalIntegral.integral_eq_sub_of_hasDerivAt rewrites the integral as F(π/2) − F(0). Here the endpoint roles invert relative to the parent: cos(π/2) = 0 with zero_pow (using m+1 ≠ 0) kills the *upper* term, while cos(0) = 1 makes the *lower* term -(-1^{m+1}/(m+1)) = 1/(m+1). The single sign on F turns the parent's vanishing-lower-endpoint pattern into a vanishing-upper-endpoint pattern with the same net value.",
+    "mathContext": "$\\int_0^{\\pi/2} F'(\\theta)\\,d\\theta = F(\\pi/2) - F(0) = -\\frac{0^{m+1}}{m+1} - \\left(-\\frac{1^{m+1}}{m+1}\\right) = \\frac{1}{m+1}.$",
+    "significance": "key",
+    "relatedConcepts": ["fundamental theorem of calculus", "interval integrability", "continuity", "zero_pow"],
+    "prerequisites": ["Riemann integration", "FTC"]
+  },
+  {
+    "id": "ann-dimensional",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 79, "endLine": 89 },
+    "type": "theorem",
+    "title": "Dimensional Specialization (n ≥ 2)",
+    "content": "integral_sin_mul_cos_pow_dim restates the result in the form the n-dimensional Cauchy–Crofton construction consumes: exponent n − 2 and value 1/(n−1) for n ≥ 2, now with sin and cos exchanged relative to the parent's integral_cos_mul_sin_pow_dim. The proof specializes the general lemma at m := n − 2 and rewrites the cast ((n−2 : ℕ) : ℝ) + 1 = (n : ℝ) − 1 via Nat.cast_sub. The hypothesis 2 ≤ n is essential: without it, truncated ℕ-subtraction would make the cast — and the identity — false.",
+    "mathContext": "$\\int_0^{\\pi/2}\\sin\\theta\\cdot\\cos^{n-2}\\theta\\,d\\theta = \\frac{1}{n-1}, \\quad n\\geq 2.$",
+    "significance": "critical",
+    "relatedConcepts": ["Cauchy–Crofton formula", "angular averaging", "dimensional reduction", "Nat.cast_sub", "truncated subtraction"],
+    "prerequisites": ["real analysis", "integral geometry", "Lean coercions"]
+  },
+  {
+    "id": "ann-reflection",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 91, "endLine": 104 },
+    "type": "insight",
+    "title": "Independent Derivation via the Reflection θ ↦ π/2 − θ",
+    "content": "integral_sin_mul_cos_pow_eq_reflect answers the parent's second open question — whether an independent proof exists — without re-running the FTC. intervalIntegral.integral_comp_sub_left applied with d = π/2 substitutes θ ↦ π/2 − θ; the cofunction identities cos(π/2−θ) = sin θ and sin(π/2−θ) = cos θ turn the companion integrand into the parent integrand sin ↔ cos, and sub_zero/sub_self show the reflection fixes the interval [0, π/2] (it is an involution of that interval). So the companion integral equals the parent integral term-by-term, a structural (computation-free) reason they share the value 1/(m+1). This is a reusable bridge between the two trigonometric power-integral templates.",
+    "mathContext": "$\\theta\\mapsto\\tfrac{\\pi}{2}-\\theta$ is an involution of $[0,\\tfrac{\\pi}{2}]$ with $\\cos(\\tfrac{\\pi}{2}-\\theta)=\\sin\\theta$, $\\sin(\\tfrac{\\pi}{2}-\\theta)=\\cos\\theta$, so $\\int_0^{\\pi/2}\\sin\\theta\\cos^m\\theta = \\int_0^{\\pi/2}\\cos\\theta\\sin^m\\theta.$",
+    "significance": "key",
+    "relatedConcepts": ["reflection symmetry", "cofunction identities", "involution", "change of variables", "integral_comp_sub_left"],
+    "prerequisites": ["interval integration", "trigonometric identities"]
+  },
+  {
+    "id": "ann-crosscheck-example",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 106, "endLine": 112 },
+    "type": "context",
+    "title": "Cross-Check: Reflection Reproves the Parent Value",
+    "content": "A closing example feeds the reflection identity back the other way, rewriting the parent integral ∫_0^{π/2} cos θ · sinᵐ θ via integral_sin_mul_cos_pow_eq_reflect and then closing with the direct FTC lemma integral_sin_mul_cos_pow. This independently reproduces the parent's value 1/(m+1) through the companion's machinery, cross-validating that the reflection bridge and the two FTC computations are mutually consistent rather than circular.",
+    "mathContext": "$\\int_0^{\\pi/2}\\cos\\theta\\cdot\\sin^{m}\\theta\\,d\\theta \\xrightarrow{\\text{reflect}} \\int_0^{\\pi/2}\\sin\\theta\\cdot\\cos^{m}\\theta\\,d\\theta = \\frac{1}{m+1}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["consistency check", "reflection symmetry", "fundamental theorem of calculus"],
+    "prerequisites": ["real analysis", "FTC"]
+  }
+]

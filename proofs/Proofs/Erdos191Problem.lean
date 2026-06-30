@@ -251,7 +251,64 @@ For small n, the achievable sum is limited.
 -/
 theorem small_n_bound (n : ℕ) (hn : n ≤ 10) (X : Finset ℕ) (hX : X ⊆ IntegerSet n) :
     logInverseSum X ≤ 10 := by
-  sorry
+  -- Every element of X lies in {2, …, 10}, so the sum is dominated by the
+  -- sum over the fixed set {2, …, 10}, which is at most 10.
+  have hsub : X ⊆ IntegerSet 10 := by
+    refine hX.trans ?_
+    intro x hx
+    simp only [IntegerSet, Finset.mem_filter, Finset.mem_range] at hx ⊢
+    omega
+  -- Monotonicity: all terms are nonnegative, so widening the index set increases the sum.
+  have hmono : logInverseSum X ≤ logInverseSum (IntegerSet 10) := by
+    unfold logInverseSum
+    refine Finset.sum_le_sum_of_subset_of_nonneg hsub ?_
+    intro x hx _
+    have hx2 : x ≥ 2 := by
+      simp only [IntegerSet, Finset.mem_filter, Finset.mem_range] at hx
+      omega
+    exact div_nonneg (by norm_num) (le_of_lt (log_pos_of_ge_two x hx2))
+  refine hmono.trans ?_
+  -- Now bound the sum over the explicit set {2, …, 10}.
+  have hset : IntegerSet 10 = Finset.Icc 2 10 := by
+    ext x
+    simp only [IntegerSet, Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
+    omega
+  have h2notin : (2 : ℕ) ∉ Finset.Icc 3 10 := by decide
+  have hsplit : Finset.Icc 2 10 = insert 2 (Finset.Icc 3 10) := by
+    ext x
+    simp only [Finset.mem_Icc, Finset.mem_insert]
+    omega
+  -- The x = 2 term: 1/log 2 ≤ 2 since log 2 > 1/2.
+  have hterm2 : (1 : ℝ) / Real.log 2 ≤ 2 := by
+    have hlog2pos : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+    rw [div_le_iff₀ hlog2pos]
+    linarith [Real.log_two_gt_d9]
+  -- The eight remaining terms (x ≥ 3): each 1/log x ≤ 1 since log x ≥ 1.
+  have hrest : ∑ x ∈ Finset.Icc 3 10, (1 : ℝ) / Real.log (x : ℝ) ≤ 8 := by
+    calc ∑ x ∈ Finset.Icc 3 10, (1 : ℝ) / Real.log (x : ℝ)
+        ≤ ∑ _x ∈ Finset.Icc 3 10, (1 : ℝ) := by
+          refine Finset.sum_le_sum ?_
+          intro x hx
+          simp only [Finset.mem_Icc] at hx
+          have hx3 : 3 ≤ x := hx.1
+          have hlogx : (1 : ℝ) ≤ Real.log (x : ℝ) := by
+            have h3x : (3 : ℝ) ≤ (x : ℝ) := by exact_mod_cast hx3
+            have hlog3 : (1 : ℝ) ≤ Real.log 3 := by
+              rw [Real.le_log_iff_exp_le (by norm_num)]
+              linarith [Real.exp_one_lt_d9]
+            calc (1 : ℝ) ≤ Real.log 3 := hlog3
+              _ ≤ Real.log (x : ℝ) := Real.log_le_log (by norm_num) h3x
+          rw [div_le_one (by linarith : (0 : ℝ) < Real.log (x : ℝ))]
+          exact hlogx
+      _ = 8 := by
+          rw [Finset.sum_const]
+          have hcard : (Finset.Icc 3 10).card = 8 := by decide
+          rw [hcard, nsmul_eq_mul]
+          norm_num
+  unfold logInverseSum
+  rw [hset, hsplit, Finset.sum_insert h2notin]
+  push_cast
+  linarith [hterm2, hrest]
 
 /--
 **Example: Monochromatic pair always exists**

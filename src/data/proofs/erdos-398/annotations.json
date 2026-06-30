@@ -17,7 +17,11 @@
       "factorial",
       "Diophantine equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorial notation n!",
+      "perfect squares and the Diophantine equation n! + 1 = m²",
+      "Brocard-Ramanujan conjecture as an open problem"
+    ]
   },
   {
     "id": "ann-e398-imports",
@@ -36,7 +40,11 @@
       "finite sets"
     ],
     "mathContext": "See annotation content for formal details of imports and setup",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's Nat.factorial",
+      "Set.Finite for finiteness statements",
+      "Lean import structure"
+    ]
   },
   {
     "id": "ann-e398-brown-def",
@@ -55,7 +63,11 @@
       "perfect squares",
       "factorial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "defining a predicate IsBrownNumber n m",
+      "the relation n! + 1 = m²",
+      "factorial and perfect square evaluation"
+    ]
   },
   {
     "id": "ann-e398-verified-solutions",
@@ -74,7 +86,11 @@
       "verified computation",
       "constructive proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide tactic",
+      "decidable propositions and kernel computation",
+      "verifying n! + 1 = m² for specific values"
+    ]
   },
   {
     "id": "ann-e398-non-solutions",
@@ -93,7 +109,11 @@
       "non-existence",
       "consecutive squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "computing factorial plus one",
+      "bounding a value strictly between consecutive squares",
+      "ruling out perfect squares by computation"
+    ]
   },
   {
     "id": "ann-e398-brocard-set",
@@ -112,7 +132,11 @@
       "subset relation",
       "mathematical conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-builder notation for BrocardSet",
+      "subset relation {4, 5, 7} ⊆ BrocardSet",
+      "perfect square membership condition"
+    ]
   },
   {
     "id": "ann-e398-conjecture",
@@ -131,7 +155,11 @@
       "conjecture",
       "set equality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "stating a conjecture as a Prop",
+      "set equality BrocardSet = {4, 5, 7}",
+      "open problems with unknown truth value"
+    ]
   },
   {
     "id": "ann-e398-overholt",
@@ -150,7 +178,11 @@
       "conditional proof",
       "finiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ABC conjecture",
+      "conditional results axiomatized in Lean",
+      "finiteness of solution sets"
+    ]
   },
   {
     "id": "ann-e398-growth",
@@ -169,7 +201,11 @@
       "Stirling approximation",
       "heuristic argument"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "comparing n² against n!",
+      "Stirling's approximation for factorial growth",
+      "heuristic rarity argument"
+    ]
   },
   {
     "id": "ann-e398-summary",
@@ -188,6 +224,10 @@
       "verified computation",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combining verified results with anonymous constructor",
+      "the three known Brown numbers",
+      "subset inclusion {4, 5, 7} ⊆ BrocardSet"
+    ]
   }
 ]

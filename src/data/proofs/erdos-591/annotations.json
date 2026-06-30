@@ -16,7 +16,11 @@
       "ordinals",
       "partition calculus"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "infinite combinatorics",
+      "transfinite ordinals"
+    ]
   },
   {
     "id": "ann-e591-imports",
@@ -35,7 +39,10 @@
       "ordinals"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e591-background",
@@ -54,7 +61,11 @@
       "graph coloring",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite combinatorics",
+      "graph theory",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e591-ramsey-axiom",
@@ -73,7 +84,11 @@
       "graph coloring",
       "order types"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "order theory",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e591-specker-positive",
@@ -92,7 +107,11 @@
       "ω²",
       "positive result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite ordinals",
+      "ordinal arithmetic",
+      "infinite combinatorics"
+    ]
   },
   {
     "id": "ann-e591-specker-negative",
@@ -111,7 +130,11 @@
       "successor ordinals",
       "failure of Ramsey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite ordinals",
+      "ordinal arithmetic",
+      "infinite combinatorics"
+    ]
   },
   {
     "id": "ann-e591-chang",
@@ -130,7 +153,11 @@
       "pattern restoration"
     ],
     "mathContext": "See annotation content for formal details of chang's theorem (ω^ω works)",
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite ordinals",
+      "ordinal arithmetic",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e591-solved-context",
@@ -149,7 +176,11 @@
       "solved problems"
     ],
     "mathContext": "See annotation content for formal details of the solved problem context",
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite ordinals",
+      "ordinal arithmetic",
+      "infinite combinatorics"
+    ]
   },
   {
     "id": "ann-e591-main-theorem",
@@ -168,7 +199,11 @@
       "Darby",
       "solved problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite ordinals",
+      "ordinal arithmetic",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e591-omega-squared",
@@ -186,7 +221,11 @@
       "lexicographic order"
     ],
     "mathContext": "See annotation content for formal details of ω² = ω · ω",
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite ordinals",
+      "ordinal arithmetic",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e591-omega-cubed",
@@ -204,7 +243,10 @@
       "first failure"
     ],
     "mathContext": "See annotation content for formal details of ω³ = ω · ω · ω",
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite ordinals",
+      "ordinal arithmetic"
+    ]
   },
   {
     "id": "ann-e591-omega-omega-pos",
@@ -222,7 +264,11 @@
       "supremum"
     ],
     "mathContext": "See annotation content for formal details of ω^ω is positive",
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite ordinals",
+      "ordinal arithmetic",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e591-pattern-table",
@@ -241,6 +287,10 @@
       "solved problem"
     ],
     "mathContext": "See annotation content for formal details of the pattern summary",
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite ordinals",
+      "ordinal arithmetic",
+      "infinite combinatorics"
+    ]
   }
 ]

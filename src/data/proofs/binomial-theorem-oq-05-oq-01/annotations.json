@@ -1,0 +1,93 @@
+[
+  {
+    "id": "chu-vandermonde-context",
+    "proofId": "binomial-theorem-oq-05-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Chu–Vandermonde: the Multiplicative Face of the Binomial Theorem",
+    "content": "The binomial theorem reads off the coefficients of (1+x)ⁿ. Multiplying two such expansions, (1+x)ᵐ(1+x)ⁿ = (1+x)ᵐ⁺ⁿ, and comparing the coefficient of xᵏ on both sides gives the Chu–Vandermonde convolution C(m+n,k) = Σᵢ C(m,i)·C(n,k−i). Mathlib proves this only in antidiagonal form (a sum over pairs (i,j) with i+j=k); this file develops the range-indexed textbook form and two of its most-used corollaries.",
+    "mathContext": "Coefficient extraction: $[x^k]\\big((1+x)^m (1+x)^n\\big) = [x^k](1+x)^{m+n} = \\binom{m+n}{k}$, while the left side is the Cauchy product $\\sum_{i} \\binom{m}{i}\\binom{n}{k-i}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial theorem",
+      "Vandermonde's identity",
+      "convolution of sequences",
+      "generating functions"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "the binomial theorem"
+    ]
+  },
+  {
+    "id": "range-form",
+    "proofId": "binomial-theorem-oq-05-oq-01",
+    "range": { "startLine": 42, "endLine": 52 },
+    "type": "theorem",
+    "title": "Chu–Vandermonde Identity (Range Form)",
+    "content": "chu_vandermonde states C(m+n,k) = Σ_{i=0}^{k} C(m,i)·C(n,k−i). The proof takes Mathlib's antidiagonal Vandermonde (Nat.add_choose_eq) and applies Finset.Nat.sum_antidiagonal_eq_sum_range_succ, which rewrites the sum over the antidiagonal of k as a sum over range (k+1) by sending each pair (i,j) with i+j=k to (i, k−i).",
+    "mathContext": "Mathlib gives $\\binom{m+n}{k} = \\sum_{(i,j)\\in\\text{antidiagonal }k} \\binom{m}{i}\\binom{n}{j}$. The lemma `sum_antidiagonal_eq_sum_range_succ` identifies $j = k-i$, producing the range form $\\sum_{i=0}^{k}\\binom{m}{i}\\binom{n}{k-i}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.add_choose_eq",
+      "Finset.Nat.sum_antidiagonal_eq_sum_range_succ"
+    ],
+    "prerequisites": [
+      "antidiagonal of a natural number",
+      "reindexing finite sums"
+    ]
+  },
+  {
+    "id": "diagonal-convolution",
+    "proofId": "binomial-theorem-oq-05-oq-01",
+    "range": { "startLine": 54, "endLine": 81 },
+    "type": "theorem",
+    "title": "Diagonal Vandermonde Convolution",
+    "content": "sum_choose_mul_choose_add proves Σ_{k=0}^{n} C(n,k)·C(n,k+d) = C(2n,n+d). Instantiating the range form at (n,n,n+d) gives C(2n,n+d) = Σ_{i=0}^{n+d} C(n,i)·C(n,n+d−i). The tail i>n vanishes (C(n,i)=0), so Finset.sum_subset restricts to range (n+1); reflecting i ↦ n−i with Finset.sum_range_reflect and applying the symmetry C(n,n−i)=C(n,i) rewrites each term as C(n,i)·C(n,i+d).",
+    "mathContext": "Reflection sends $\\binom{n}{i}\\binom{n}{n+d-i}$ to $\\binom{n}{n-i}\\binom{n}{n+d-(n-i)} = \\binom{n}{i}\\binom{n}{i+d}$, using $\\binom{n}{n-i}=\\binom{n}{i}$ and $n+d-(n-i) = i+d$ for $i \\le n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_range_reflect",
+      "Nat.choose_symm",
+      "Finset.sum_subset",
+      "autocorrelation of Pascal's triangle"
+    ],
+    "prerequisites": [
+      "row symmetry of binomial coefficients",
+      "extending and reflecting finite sums"
+    ]
+  },
+  {
+    "id": "sum-of-squares",
+    "proofId": "binomial-theorem-oq-05-oq-01",
+    "range": { "startLine": 83, "endLine": 99 },
+    "type": "theorem",
+    "title": "Sum of Squares of Binomial Coefficients",
+    "content": "sum_sq_choose is the famous identity Σ_{k=0}^{n} C(n,k)² = C(2n,n), obtained as the d=0 case of the diagonal convolution: C(n,k)·C(n,k+0) = C(n,k)² and C(2n,n+0) = C(2n,n). sum_sq_choose_centralBinom restates the right side as Mathlib's centralBinom n.",
+    "mathContext": "Setting $d=0$: $\\sum_{k=0}^{n}\\binom{n}{k}^2 = \\binom{2n}{n}$. Combinatorially, choosing $n$ of $2n$ objects splits by how many of the first $n$ are taken; the symmetry $\\binom{n}{n-k}=\\binom{n}{k}$ squares the row.",
+    "significance": "key",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "Nat.centralBinom_eq_two_mul_choose"
+    ],
+    "prerequisites": [
+      "the diagonal convolution",
+      "central binomial coefficient C(2n,n)"
+    ]
+  },
+  {
+    "id": "numeric-witnesses",
+    "proofId": "binomial-theorem-oq-05-oq-01",
+    "range": { "startLine": 101, "endLine": 117 },
+    "type": "example",
+    "title": "Numeric Witnesses",
+    "content": "Concrete instances pin down the identities: C(4,2)=6 as the range convolution 1·1+2·2+1·1, the sum of squares Σ C(3,k)²=1+9+9+1=20=C(6,3), the d=1 diagonal Σ C(4,k)C(4,k+1)=C(8,5)=56, and the explicit value Σ C(4,k)²=70=C(8,4) checked by decide.",
+    "mathContext": "These evaluate the general theorems at small parameters, confirming both the convolution structure and the central-coefficient closed forms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide",
+      "Pascal's triangle rows"
+    ],
+    "prerequisites": []
+  }
+]

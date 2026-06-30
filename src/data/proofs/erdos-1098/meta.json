@@ -127,6 +127,11 @@
       "targetId": "erdos-134",
       "relationship": "uses-same-technique",
       "description": "Both connect graph-theoretic properties (cliques, diameter) to algebraic/combinatorial structure, demonstrating the power of structural characterizations in graph theory."
+    },
+    {
+      "targetId": "erdos-1098-oq-01",
+      "relationship": "extended-by",
+      "description": "The companion open-question formalization sharpens this entry: it characterizes groups by their clique number ω(Γ(G)) in the non-commuting graph — proving ω = 0 iff G is abelian, that central elements never join large cliques, that clique members lie in distinct cosets of Z(G), and that finite-index center forces finite clique number."
     }
   ],
   "sections": [

@@ -16,7 +16,11 @@
       "Incidence geometry",
       "Line arrangements"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sylvester-Gallai theorem on ordinary points",
+      "line arrangements in the real plane",
+      "Erdős problems in incidence geometry"
+    ]
   },
   {
     "id": "ann-e209-line2d",
@@ -34,7 +38,11 @@
       "Coordinate geometry"
     ],
     "mathContext": "See annotation content for formal details of line in ℝ²",
-    "prerequisites": []
+    "prerequisites": [
+      "implicit equation of a line ax + by + c = 0",
+      "coordinate geometry in ℝ²",
+      "representing slopes and vertical lines"
+    ]
   },
   {
     "id": "ann-e209-parallel",
@@ -53,7 +61,11 @@
       "Projective geometry"
     ],
     "mathContext": "See annotation content for formal details of parallel lines",
-    "prerequisites": []
+    "prerequisites": [
+      "direction vectors and proportionality",
+      "slope of a line in ℝ²",
+      "points at infinity in projective geometry"
+    ]
   },
   {
     "id": "ann-e209-arrangement",
@@ -71,7 +83,11 @@
       "Combinatorial geometry"
     ],
     "mathContext": "See annotation content for formal details of line arrangement",
-    "prerequisites": []
+    "prerequisites": [
+      "finite sets of lines in the plane",
+      "incidence between lines and points",
+      "combinatorial geometry basics"
+    ]
   },
   {
     "id": "ann-e209-no-four",
@@ -89,7 +105,11 @@
       "Concurrent lines"
     ],
     "mathContext": "See annotation content for formal details of no four concurrent",
-    "prerequisites": []
+    "prerequisites": [
+      "concurrent lines through a common point",
+      "general position constraints on arrangements",
+      "counting lines incident to a point"
+    ]
   },
   {
     "id": "ann-e209-ordinary",
@@ -107,7 +127,11 @@
       "Incidence number"
     ],
     "mathContext": "See annotation content for formal details of ordinary point",
-    "prerequisites": []
+    "prerequisites": [
+      "incidence number of a point",
+      "Sylvester-Gallai existence of ordinary points",
+      "lines passing through a single point"
+    ]
   },
   {
     "id": "ann-e209-3rich",
@@ -125,7 +149,11 @@
       "Rich points"
     ],
     "mathContext": "See annotation content for formal details of 3-rich point",
-    "prerequisites": []
+    "prerequisites": [
+      "rich points where three or more lines meet",
+      "ordinary versus 3-rich vertices",
+      "blocking triangles via high-incidence points"
+    ]
   },
   {
     "id": "ann-e209-gallai-triangle",
@@ -143,7 +171,11 @@
       "Ordinary triangle",
       "Triangle formation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "triangles formed by three non-parallel lines",
+      "pairwise intersection points of lines",
+      "ordinary points as triangle vertices"
+    ]
   },
   {
     "id": "ann-e209-sylvester",
@@ -161,7 +193,11 @@
       "Incidence theorems",
       "Gallai (Tibor Grünwald)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-collinear point sets in ℝ²",
+      "ordinary lines and their dual ordinary points",
+      "failure over finite fields like the Fano plane"
+    ]
   },
   {
     "id": "ann-e209-furedi",
@@ -179,7 +215,11 @@
       "Counterexamples",
       "Modular arithmetic conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "constructing arrangements without Gallai triangles",
+      "modular condition d not divisible by 9",
+      "Sylvester-Gallai counterexample constructions"
+    ]
   },
   {
     "id": "ann-e209-escudero",
@@ -197,7 +237,11 @@
       "Complete resolution",
       "Projective geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arrangements avoiding Gallai triangles for all d ≥ 4",
+      "the d ≡ 0 (mod 9) case left by Füredi-Palásti",
+      "configurations of lines in the projective plane"
+    ]
   },
   {
     "id": "ann-e209-main",
@@ -215,6 +259,10 @@
       "Disproof"
     ],
     "mathContext": "See annotation content for formal details of main theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "Escudero's 2016 line construction",
+      "no parallels and no four-concurrent constraints",
+      "absence of Gallai triangles in an arrangement"
+    ]
   }
 ]

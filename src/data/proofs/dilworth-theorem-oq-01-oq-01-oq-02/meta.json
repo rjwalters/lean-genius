@@ -1,0 +1,170 @@
+{
+  "id": "dilworth-theorem-oq-01-oq-01-oq-02",
+  "title": "Mirsky's maxChainLen equals Mathlib's Set.chainHeight on a finite poset",
+  "slug": "dilworth-theorem-oq-01-oq-01-oq-02",
+  "description": "A definitional bridge lemma: the gallery's combinatorial maximum-chain-length invariant maxChainLen (a Finset.sup of chain cardinalities, used in the Mirsky hard-direction file) coincides with Mathlib's order-theoretic Set.chainHeight of the whole finite poset with respect to ≤. The proof is two one-line inequalities via Mathlib's chain-height API (encard_le_chainHeight_of_isChain and exists_eq_chainHeight_of_finite), bridged by the identity of Finset chains (IsChainOn) with set chains (IsChain (· ≤ ·)). As a corollary, Mirsky's min–max theorem is restated in Mathlib's vocabulary: the chain height of a finite poset equals the minimum size of an antichain cover. Answers the parent's listed open question.",
+  "meta": {
+    "author": "Robb Walters (researcher-3); building on Mirsky (1971) and Mathlib's Set.chainHeight",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Mirsky%27s_theorem",
+    "date": "2026-06-24",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "order-theory",
+      "poset",
+      "mirsky",
+      "dilworth",
+      "chain-height",
+      "mathlib-bridge"
+    ],
+    "proofRepoPath": "Proofs/DilworthTheoremOQ01OQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.encard_le_chainHeight_of_isChain",
+        "description": "Every chain contained in a set has extended cardinality at most the set's chainHeight — the lower-bound half, applied to the chain attaining maxChainLen",
+        "module": "Mathlib.Order.Height"
+      },
+      {
+        "theorem": "Set.exists_eq_chainHeight_of_finite",
+        "description": "On a finite set the chainHeight supremum is attained by an actual chain set — supplies the chain pushed to a Finset for the upper-bound half",
+        "module": "Mathlib.Order.Height"
+      },
+      {
+        "theorem": "Set.encard_coe_eq_coe_finsetCard",
+        "description": "The extended cardinality of a Finset coerced to a set equals its (cast) card — converts between encard and Finset.card across the two encodings",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Set.Finite.encard_eq_coe_toFinset_card",
+        "description": "A finite set's encard equals the card of its toFinset — turns the attaining chain set into a Finset bounded by maxChainLen",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Finset.le_sup",
+        "description": "Each member's value lies below the Finset supremum — bounds the attaining chain's card by maxChainLen = allChains.sup card",
+        "module": "Mathlib.Data.Finset.Lattice.Fold"
+      }
+    ],
+    "originalContributions": [
+      "isChainOn_iff_isChain: the parent's Finset-level chain predicate IsChainOn C is exactly Mathlib's set-level IsChain (· ≤ ·) on ↑C, the dictionary that makes the bridge possible",
+      "maxChainLen_eq_univ_chainHeight: (maxChainLen : ℕ∞) = (Set.univ).chainHeight (· ≤ ·), proved by antisymmetry — lower bound from the attaining chain via encard_le_chainHeight_of_isChain, upper bound from exists_eq_chainHeight_of_finite pushed through a Finset and Finset.le_sup",
+      "univ_chainHeight_ne_top: the chain height of a finite poset is finite, read off from the bridge",
+      "mirsky_chainHeight: Mirsky's min–max theorem restated in Mathlib's vocabulary — there is an antichain cover whose cardinality equals Set.chainHeight, minimal among all antichain covers"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 121,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries over an arbitrary finite PartialOrder ([PartialOrder α] [Fintype α]). Classical decidability is registered as a local instance for Finset operations; all definitions are noncomputable. The parent invariants (IsChainOn, IsAntichainOn, maxChainLen, exists_chain_card_eq_maxChainLen, mirsky_min_antichain_cover) are imported from Proofs.DilworthMirskyHardOQ01.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "**Mirsky's theorem (1971)** gives a min–max identity for a finite poset: the minimum number of antichains needed to cover it equals the maximum length of a chain. The gallery's companion files formalize this via a hand-rolled invariant maxChainLen, defined combinatorially as a Finset.sup of chain cardinalities. Mathlib, independently, carries a general order-theoretic notion Set.chainHeight r s — the supremum (in ℕ∞) of the extended cardinalities of r-chains contained in s. This file proves the two are the same quantity on a finite poset, so the gallery's Mirsky development can be read directly in terms of Mathlib's standard invariant.",
+    "problemStatement": "**Bridge maxChainLen to Set.chainHeight (parent OQ-01 follow-up).** The parent file's open question asks to connect the combinatorial maxChainLen / height function to Mathlib's Set.chainHeight and prove their equivalence for finite posets. Concretely: show (maxChainLen : ℕ∞) = (Set.univ).chainHeight (· ≤ ·).",
+    "text": "A definitional bridge: the gallery's maxChainLen equals Mathlib's Set.chainHeight of the whole finite poset under ≤, established by identifying Finset chains with set chains and applying Mathlib's chain-height supremum API in both directions.",
+    "proofStrategy": "**Strategy (antisymmetry through the chain-height API).**\n\n1. **Dictionary.** Prove isChainOn_iff_isChain: a Finset C is a chain in the parent's sense (IsChainOn C, pairwise ≤-comparable) iff its coercion ↑C is a Mathlib chain IsChain (· ≤ ·). The forward direction drops the redundant x ≠ y hypothesis; the reverse handles x = y by reflexivity.\n2. **Lower bound (maxChainLen ≤ chainHeight).** Take the chain C attaining maxChainLen from the parent's exists_chain_card_eq_maxChainLen. As a set ↑C is a chain contained in univ, so encard_le_chainHeight_of_isChain gives (↑C).encard ≤ chainHeight; rewriting encard ↑C = C.card = maxChainLen finishes.\n3. **Upper bound (chainHeight ≤ maxChainLen).** exists_eq_chainHeight_of_finite (univ is finite) yields a chain set t with t.encard = chainHeight. Its toFinset is a chain Finset, hence a member of allChains, so Finset.le_sup bounds its card by maxChainLen; rewriting t.encard = card t.toFinset and casting finishes.\n4. **Corollaries.** univ_chainHeight_ne_top follows since the value equals a cast natural; mirsky_chainHeight rewrites the parent's mirsky_min_antichain_cover (cover of size maxChainLen, minimal) through the bridge to express the minimum antichain-cover size as Set.chainHeight.",
+    "keyInsights": [
+      "Mathlib's modern Set.chainHeight is set/encard-based (⨆ over chains t of t.encard), not list-based, so the bridge needs no sorting of chains into increasing lists — Finset ↔ set chain translation plus two supremum lemmas suffice.",
+      "The only genuine content is the predicate dictionary isChainOn_iff_isChain; once Finset chains are recognized as set chains, both inequalities are direct applications of off-the-shelf chain-height lemmas.",
+      "Finiteness is what makes the supremum attained on both sides: exists_chain_card_eq_maxChainLen on the Finset side and exists_eq_chainHeight_of_finite on the set side.",
+      "Carrying the equality in ℕ∞ (rather than ℕ) is essential because Set.chainHeight is valued in ℕ∞; the finiteness corollary recovers that the value is a genuine natural number.",
+      "The bridge upgrades the gallery's bespoke Mirsky statement into a statement about Mathlib's standard invariant, making mirsky_chainHeight reusable by any development phrased in Set.chainHeight."
+    ],
+    "prerequisites": [
+      "Partial orders: chains, antichains, comparability",
+      "Mathlib's Set.chainHeight and its supremum/attainment API",
+      "Extended natural numbers ℕ∞ and the encard cardinality of sets",
+      "The parent Mirsky hard-direction development (maxChainLen, mirsky_min_antichain_cover)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Docstring, imports, and classical setup",
+      "summary": "The module docstring states the bridge, contrasts the combinatorial maxChainLen with Mathlib's Set.chainHeight, and outlines the two-inequality proof. It imports Mathlib and the parent Proofs.DilworthMirskyHardOQ01, opens Classical and Set, and registers Classical.propDecidable. Context is a finite poset [PartialOrder α] [Fintype α].",
+      "startLine": 1,
+      "endLine": 64,
+      "mathContext": "Goal: $(\\mathrm{maxChainLen} : \\mathbb{N}_\\infty) = (\\mathrm{Set.univ}).\\mathrm{chainHeight}\\,(\\le)$."
+    },
+    {
+      "id": "dictionary",
+      "title": "Finset chains are set chains",
+      "summary": "isChainOn_iff_isChain: the parent's IsChainOn C holds iff IsChain (· ≤ ·) (↑C). Forward direction supplies comparability for distinct members; reverse covers equal members by reflexivity.",
+      "startLine": 66,
+      "endLine": 79,
+      "mathContext": "$\\mathrm{IsChainOn}\\,C \\iff \\mathrm{IsChain}\\,(\\le)\\,\\uparrow\\! C$."
+    },
+    {
+      "id": "bridge",
+      "title": "The bridge: maxChainLen = chainHeight",
+      "summary": "maxChainLen_eq_univ_chainHeight by le_antisymm. Lower bound: the attaining chain witnesses the chainHeight supremum via encard_le_chainHeight_of_isChain. Upper bound: a chainHeight-attaining set (exists_eq_chainHeight_of_finite) becomes a Finset in allChains, bounded by Finset.le_sup.",
+      "startLine": 81,
+      "endLine": 108,
+      "mathContext": "$\\mathrm{maxChainLen} \\le \\mathrm{chainHeight}$ from the attaining chain; $\\mathrm{chainHeight} \\le \\mathrm{maxChainLen}$ from the attaining chain set pushed to a Finset."
+    },
+    {
+      "id": "corollaries",
+      "title": "Finiteness and Mirsky in Mathlib's vocabulary",
+      "summary": "univ_chainHeight_ne_top (the chain height is a genuine natural number) and mirsky_chainHeight (the minimum antichain-cover size equals Set.chainHeight), obtained by rewriting the parent's mirsky_min_antichain_cover through the bridge.",
+      "startLine": 110,
+      "endLine": 121,
+      "mathContext": "$\\mathrm{chainHeight} \\ne \\top$; and $\\min(\\text{antichain cover}) = \\mathrm{chainHeight}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The gallery's combinatorial maxChainLen is identified with Mathlib's order-theoretic Set.chainHeight on any finite poset, answering the parent file's open question. The proof reduces to one predicate dictionary (Finset chains = set chains) plus two applications of Mathlib's chain-height supremum API. As a corollary, the gallery's Mirsky min–max theorem is restated in Mathlib's standard vocabulary. Verified with 0 sorries and 0 axioms.",
+    "implications": "The bridge lets any development that speaks Mathlib's Set.chainHeight invoke the gallery's Mirsky results directly, and vice versa. It also pins down the gallery invariant as a special case of a general library notion, reducing duplication. Natural next steps connect Set.chainHeight to Mathlib's Order.height of a single element and to poset dimension.",
+    "openQuestions": [
+      "Bridge the parent's per-element height function to Mathlib's Order.height (the supremum of lengths of chains below an element) and relate the level decomposition to Order.height fibers.",
+      "Establish the dual bridge for Dilworth: relate the minimum chain-cover number to a Mathlib width/antichain invariant once the hard direction is formalized."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "dilworth-theorem-oq-01-oq-01",
+      "relationship": "Parent / source of maxChainLen",
+      "description": "The parent file defines maxChainLen and proves Mirsky's hard direction (mirsky_min_antichain_cover). Its open question — connect maxChainLen to Set.chainHeight — is exactly what this file answers, and it supplies the imported invariants used here."
+    },
+    {
+      "proofId": "dilworth-theorem-oq-01",
+      "relationship": "Grandparent / easy direction",
+      "description": "Supplies IsChainOn and IsAntichainOn, the Finset chain/antichain predicates whose translation to Mathlib's set-level IsChain underlies the bridge."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.DilworthMirskyHardOQ01"
+    ],
+    "opens": [
+      "Classical",
+      "Set"
+    ],
+    "namespace": "DilworthTheoremOQ01",
+    "lineCount": 121,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/DilworthTheoremOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "L. Mirsky",
+      "title": "A Dual of Dilworth's Decomposition Theorem",
+      "year": "1971",
+      "venue": "American Mathematical Monthly 78 (8): 876–877",
+      "note": "Original min–max statement bridged here to Set.chainHeight"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "The Lean Mathematical Library — Mathlib.Order.Height",
+      "year": "2020",
+      "venue": "Mathlib4",
+      "note": "Definition of Set.chainHeight and the supremum/attainment API used in the bridge"
+    }
+  ],
+  "sorries": 0
+}

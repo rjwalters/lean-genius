@@ -46,12 +46,12 @@ lemma neg_family_coprime (t : ℕ) (ht : 1 ≤ t) :
     intro d hda hdc
     have hdt : d ∣ t := by
       have hdta : d ∣ t * (9 * t ^ 3 - 1) := hda.mul_left t
-      have h := Nat.dvd_sub' hdc hdta
+      have h := Nat.dvd_sub hdc hdta
       rwa [hca, Nat.add_sub_cancel_left] at h
     have hd3 : d ∣ 9 * t ^ 3 := by
       have he : 9 * t ^ 3 = 9 * t ^ 2 * t := by ring
       rw [he]; exact hdt.mul_left (9 * t ^ 2)
-    have h := Nat.dvd_sub' hd3 hda
+    have h := Nat.dvd_sub hd3 hda
     rwa [Nat.sub_sub_self hpos] at h
   have hg := key (Nat.gcd (9 * t ^ 3 - 1) (9 * t ^ 4))
     (Nat.gcd_dvd_left _ _) (Nat.gcd_dvd_right _ _)

@@ -163,7 +163,7 @@ private lemma mkℂ_ne_zero {v : ℝ × ℝ} (hv : v.1 ^ 2 + v.2 ^ 2 = 1) : mk�
 
 /-- Unit pair → ‖z‖ = 1. -/
 private lemma mkℂ_norm_one {v : ℝ × ℝ} (hv : v.1 ^ 2 + v.2 ^ 2 = 1) : ‖mkℂ v‖ = 1 := by
-  rw [Complex.norm_eq_abs, Complex.abs_apply]
+  rw [Complex.norm_def]
   have hns : Complex.normSq (mkℂ v) = 1 := by
     simp only [Complex.normSq_apply, mkℂ_re, mkℂ_im]
     nlinarith [sq_nonneg v.1, sq_nonneg v.2]
@@ -206,7 +206,11 @@ private lemma abs_sub_lt_of_floor_eq {a b c : ℝ} (hc : 0 < c) (ha : 0 ≤ a) (
   have h3 := Nat.lt_floor_add_one (b / c)
   have h4 := Nat.floor_le hbc
   rw [hfl] at h1 h2
-  rw [abs_lt]; constructor <;> nlinarith
+  -- a/c and b/c both lie in [⌊b/c⌋₊, ⌊b/c⌋₊+1), so |a/c - b/c| < 1; scale by c > 0.
+  have e : |a - b| / c = |a / c - b / c| := by
+    rw [← sub_div, abs_div, abs_of_pos hc]
+  rw [← div_lt_one hc, e, abs_lt]
+  constructor <;> linarith
 
 /-- |θ| < π/3 implies cos θ > 1/2, by strict anti-monotonicity of cos on [0, π]. -/
 private lemma cos_gt_half_of_abs_lt {θ : ℝ} (h : |θ| < Real.pi / 3) :
@@ -218,7 +222,7 @@ private lemma cos_gt_half_of_abs_lt {θ : ℝ} (h : |θ| < Real.pi / 3) :
   have key := Real.strictAntiOn_cos h1 h2 h
   rw [Real.cos_pi_div_three] at key
   have : Real.cos θ = Real.cos |θ| := by
-    rcases le_or_lt 0 θ with hnn | hn
+    rcases le_or_gt 0 θ with hnn | hn
     · rw [abs_of_nonneg hnn]
     · rw [abs_of_neg hn, Real.cos_neg]
   linarith
@@ -269,7 +273,7 @@ theorem kissing_number_2d (S : Finset (ℝ × ℝ))
   have floor_le : ∀ u, ⌊nAng u / (Real.pi / 3)⌋₊ ≤ 5 := by
     intro u
     have hnn : (0 : ℝ) ≤ nAng u / (Real.pi / 3) := div_nonneg (nAng_nn u) hpi3.le
-    have h6 : nAng u / (Real.pi / 3) < 6 := by rw [div_lt_iff hpi3]; linarith [nAng_ub u]
+    have h6 : nAng u / (Real.pi / 3) < 6 := by rw [div_lt_iff₀ hpi3]; linarith [nAng_ub u]
     have : ⌊nAng u / (Real.pi / 3)⌋₊ < 6 := by
       rw [Nat.floor_lt hnn]; exact_mod_cast h6
     omega
@@ -373,3 +377,33 @@ axiom erdos_662_lattice_optimal :
     ∃ N : ℕ, ∀ (pts : Finset Point2D), IsSeparated pts →
       pts.card ≥ N →
       pairsWithinDist pts t ≤ pts.card * triangularLatticeCount t / 2
+
+-- ## Unconditional Case: t = 1
+
+/-- **The t = 1 instance of the Erdős–Lovász–Vesztergombi conjecture, unconditionally.**
+
+    At t = 1 the conjectured right-hand side `pts.card * triangularLatticeCount 1 / 2`
+    collapses to `3 * pts.card`, because `triangularLatticeCount 1 = 6`
+    (`triLattice_nearest_neighbors`). The contact-number bound `contact_number_3n`
+    already establishes `pairsWithinDist pts 1 ≤ 3 * pts.card`, so the bound holds.
+
+    This is strictly stronger than what `erdos_662_lattice_optimal` asserts at t = 1:
+    no "sufficiently large n" hypothesis is needed -- the bound holds for *every*
+    1-separated finite set, however small. The open content of the conjecture lies
+    entirely in the thresholds t > 1. -/
+theorem erdos_662_unit_case (pts : Finset Point2D) (hsep : IsSeparated pts) :
+    pairsWithinDist pts 1 ≤ pts.card * triangularLatticeCount 1 / 2 := by
+  have hcount : triangularLatticeCount 1 = 6 := triLattice_nearest_neighbors
+  rw [hcount]
+  have h := contact_number_3n pts hsep
+  omega
+
+/-- The threshold form of the conjecture (as stated in `erdos_662_lattice_optimal`)
+    holds unconditionally at t = 1 with the witness `N = 0`: the bound is valid for
+    all `n`, so no threshold is required. This exhibits a concrete `t` for which the
+    conjecture is a theorem rather than an axiom. -/
+theorem erdos_662_unit_case_threshold :
+    ∃ N : ℕ, ∀ (pts : Finset Point2D), IsSeparated pts →
+      pts.card ≥ N →
+      pairsWithinDist pts 1 ≤ pts.card * triangularLatticeCount 1 / 2 :=
+  ⟨0, fun pts hsep _ => erdos_662_unit_case pts hsep⟩

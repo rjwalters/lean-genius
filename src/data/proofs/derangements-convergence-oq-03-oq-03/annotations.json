@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "derangements-convergence-oq-03-oq-03",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "From a one-sided rounding bound to a two-sided sandwich",
+    "content": "The parent entry proved D(n) = round(n!/e), which needs only the one-sided estimate |D(n) - n!/e| ≤ 1/(n+1) < 1/2 for n ≥ 2. This file shows that estimate is essentially tight by adding a matching lower bound, pinning the error inside an interval of width 1/((n+1)(n+2)). The docstring records the whole strategy: realise the error as n! times a nonnegative alternating tail A and bracket A between its first two partial sums.",
+    "mathContext": "$\\dfrac{1}{n+1} - \\dfrac{1}{(n+1)(n+2)} \\;\\le\\; \\bigl|D(n) - \\tfrac{n!}{e}\\bigr| \\;\\le\\; \\dfrac{1}{n+1}$",
+    "significance": "context",
+    "relatedConcepts": ["derangements", "alternating series", "rounding theorem", "asymptotic error bounds"],
+    "prerequisites": ["the parent file Proofs.DerangementsConvergence", "Taylor series of e^{-1}"]
+  },
+  {
+    "id": "ann-imports",
+    "proofId": "derangements-convergence-oq-03-oq-03",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "technique",
+    "title": "Reusing the parent's alternating-tail machinery",
+    "content": "The file imports Proofs.DerangementsConvergence and opens its namespace, so the tail decomposition lemmas (numDerangements_eq_factorial_mul_altSum, exp_neg_one_eq_tsum_alt, tsum_eq_partial_sum_add_tail, alt_partial_sum_nonneg, alt_partial_sum_le_first) are available unqualified. The sharpening is built entirely on top of that infrastructure — no new analytic foundations are introduced, only a finer grouping of the same alternating series.",
+    "mathContext": "$e^{-1} = \\sum_{k\\ge 0} \\dfrac{(-1)^k}{k!}$, split as $\\text{partialSum}(n) + \\text{tail}(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["namespacing", "library reuse", "alternating exponential series"],
+    "prerequisites": ["Lean 4 module imports", "open namespace"]
+  },
+  {
+    "id": "ann-summable",
+    "proofId": "derangements-convergence-oq-03-oq-03",
+    "range": { "startLine": 46, "endLine": 57 },
+    "type": "technique",
+    "title": "Summability of the shifted alternating series",
+    "content": "summable_shiftedAlt establishes that k ↦ (-1)^k/(m+k)! is summable, the prerequisite for taking its tsum. The dominating series 1/(m+k)! is a reindexed tail of ∑ 1/k! = e, obtained from Real.summable_pow_div_factorial at x = 1 and a comparison via Summable.of_norm_bounded_eventually. Summability is what later lets the partial-sum bounds pass to the limit.",
+    "mathContext": "$\\bigl|(-1)^k/(m+k)!\\bigr| = 1/(m+k)!$ and $\\sum_k 1/(m+k)! \\le \\sum_k 1/k! = e < \\infty$.",
+    "significance": "technical",
+    "relatedConcepts": ["absolute convergence", "comparison test", "reindexing a summable family"],
+    "prerequisites": ["Summable", "Real.summable_pow_div_factorial", "comp_injective"]
+  },
+  {
+    "id": "ann-lower-partial",
+    "proofId": "derangements-convergence-oq-03-oq-03",
+    "range": { "startLine": 59, "endLine": 85 },
+    "type": "insight",
+    "title": "The new ingredient: a refined alternating lower bound",
+    "content": "alt_partial_sum_ge_first_sub_second is the single new lemma carrying the whole sharpening. For N ≥ 2 it shows the alternating partial sum exceeds (first term − second term). The proof peels the two leading terms with Finset.sum_range_succ' applied twice, reindexes the residual ∑_{k<N} (-1)^k/((m+2)+k)!, and recognises it as a nonnegative alternating sum via the parent's alt_partial_sum_nonneg at the shifted index m+2. This is structurally the mirror image of the parent's upper bound — same lemma, different grouping.",
+    "mathContext": "$S_{N+2} = \\Bigl(\\tfrac{1}{m!} - \\tfrac{1}{(m+1)!}\\Bigr) + \\sum_{k<N} \\dfrac{(-1)^k}{((m+2)+k)!},\\quad \\text{residual} \\ge 0.$",
+    "significance": "key",
+    "relatedConcepts": ["Leibniz alternating-series bracketing", "telescoping leading terms", "index shifting"],
+    "prerequisites": ["Finset.sum_range_succ'", "alt_partial_sum_nonneg", "alternating series test"]
+  },
+  {
+    "id": "ann-tsum-nonneg",
+    "proofId": "derangements-convergence-oq-03-oq-03",
+    "range": { "startLine": 87, "endLine": 93 },
+    "type": "technique",
+    "title": "Nonnegativity of the tail A(m)",
+    "content": "shiftedAlt_tsum_nonneg shows 0 ≤ A(m) by passing the per-partial-sum nonnegativity (parent's alt_partial_sum_nonneg) through the limit with le_of_tendsto_of_tendsto. Nonnegativity of A is exactly what turns the signed identity D(n) − n!/e = ±n!·A into an absolute-value identity later.",
+    "mathContext": "$A(m) := \\sum_{k\\ge 0} \\dfrac{(-1)^k}{(m+k)!} \\ge 0$ since every partial sum is $\\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["limit of inequalities", "order-closedness of limits"],
+    "prerequisites": ["le_of_tendsto_of_tendsto", "HasSum.tendsto_sum_nat"]
+  },
+  {
+    "id": "ann-tail-bounds",
+    "proofId": "derangements-convergence-oq-03-oq-03",
+    "range": { "startLine": 95, "endLine": 109 },
+    "type": "concept",
+    "title": "Two-sided pin on the alternating tail",
+    "content": "shiftedAlt_tsum_le_first and shiftedAlt_tsum_ge_first_sub_second bracket the tail A(m) between 1/m! − 1/(m+1)! below and 1/m! above, by pushing the partial-sum bounds to the limit via le_of_tendsto / ge_of_tendsto. The lower bound filters on N ≥ 2 (eventually_ge_atTop 2) and rewrites N = M + 2 to invoke the refined partial-sum lemma. These two bounds are the analytic heart that the main theorem multiplies by n!.",
+    "mathContext": "$\\dfrac{1}{m!} - \\dfrac{1}{(m+1)!} \\;\\le\\; A(m) \\;\\le\\; \\dfrac{1}{m!}.$",
+    "significance": "key",
+    "relatedConcepts": ["alternating series bracketing", "tail estimates", "passing bounds to limits"],
+    "prerequisites": ["le_of_tendsto", "ge_of_tendsto", "eventually_ge_atTop"]
+  },
+  {
+    "id": "ann-error-identity",
+    "proofId": "derangements-convergence-oq-03-oq-03",
+    "range": { "startLine": 111, "endLine": 135 },
+    "type": "insight",
+    "title": "Exact error identity |D(n) - n!/e| = n!·A(n+1)",
+    "content": "abs_error_eq isolates the absolute error as exactly n! times one nonnegative alternating tail. It uses the parent's decomposition e^{-1} = partialSum(n) + tail, factors the tail as (-1)^(n+1)·A(n+1) (tsum_mul_left after pulling out the sign), substitutes D(n) = n!·partialSum(n), and simplifies to D(n) − n!·e^{-1} = −(-1)^(n+1)·n!·A. Taking absolute values and using A ≥ 0 collapses the sign. This identity reduces both bounds to statements about a single series.",
+    "mathContext": "$D(n) - n!\\,e^{-1} = -(-1)^{n+1}\\,n!\\,A(n+1) \\;\\Rightarrow\\; |D(n) - n!\\,e^{-1}| = n!\\,A(n+1).$",
+    "significance": "key",
+    "relatedConcepts": ["tsum_mul_left", "factoring an alternating sign", "absolute value of a signed product"],
+    "prerequisites": ["numDerangements_eq_factorial_mul_altSum", "tsum_eq_partial_sum_add_tail", "abs_mul / abs_pow"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "derangements-convergence-oq-03-oq-03",
+    "range": { "startLine": 137, "endLine": 173 },
+    "type": "concept",
+    "title": "Main theorem: the second-order sandwich",
+    "content": "derangements_second_order_sandwich assembles the result. It rewrites the error via abs_error_eq, then multiplies the two-sided tail bounds by n! using mul_le_mul_of_nonneg_left. The factorial-ratio identities n!/(n+1)! = 1/(n+1) and n!/(n+2)! = 1/((n+1)(n+2)), proved with Nat.factorial_succ + field_simp, convert the bounds into the stated closed form. Notably the statement holds for every n, not just n ≥ 2; the n ≥ 2 regime is simply where the lower bound forces the error a definite distance below 1/2.",
+    "mathContext": "Multiplying $\\tfrac{1}{(n+1)!} - \\tfrac{1}{(n+2)!} \\le A(n+1) \\le \\tfrac{1}{(n+1)!}$ by $n!$ yields the sandwich, using $\\tfrac{n!}{(n+2)!} = \\tfrac{1}{(n+1)(n+2)}$.",
+    "significance": "key",
+    "relatedConcepts": ["monotonicity of multiplication", "factorial ratios", "round(n!/e) rounding theorem"],
+    "prerequisites": ["mul_le_mul_of_nonneg_left", "Nat.factorial_succ", "field_simp"]
+  }
+]

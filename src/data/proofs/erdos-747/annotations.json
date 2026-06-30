@@ -17,7 +17,11 @@
       "Threshold functions",
       "Probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "random hypergraphs",
+      "perfect matchings",
+      "threshold functions"
+    ]
   },
   {
     "id": "ann-e747-hypergraph",
@@ -36,7 +40,10 @@
       "Combinatorics"
     ],
     "mathContext": "An $r$-uniform hypergraph on $[n]$ is a collection of $r$-element subsets of $\\{1, \\ldots, n\\}$",
-    "prerequisites": []
+    "prerequisites": [
+      "finite sets of vertices and edges",
+      "r-uniform edges (each of size r)"
+    ]
   },
   {
     "id": "ann-e747-matching",
@@ -55,7 +62,10 @@
       "Independent set"
     ],
     "mathContext": "A matching $M$ satisfies $\\forall e_1, e_2 \\in M: e_1 \\neq e_2 \\implies e_1 \\cap e_2 = \\emptyset$",
-    "prerequisites": []
+    "prerequisites": [
+      "edges of a hypergraph",
+      "pairwise vertex-disjoint sets"
+    ]
   },
   {
     "id": "ann-e747-perfect-matching",
@@ -74,7 +84,10 @@
       "ring theory",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "matchings",
+      "covering all 3n vertices exactly once"
+    ]
   },
   {
     "id": "ann-e747-almost-surely",
@@ -93,7 +106,10 @@
       "High probability"
     ],
     "mathContext": "$P(\\text{event}) \\to 1$ as $n \\to \\infty$, i.e., failure probability is $o(1)$",
-    "prerequisites": []
+    "prerequisites": [
+      "probability of an event",
+      "limits P → 1 as n → ∞"
+    ]
   },
   {
     "id": "ann-e747-threshold",
@@ -112,7 +128,10 @@
       "Critical probability",
       "Random graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "almost-sure events",
+      "sharp thresholds and the (1 ± ε) window"
+    ]
   },
   {
     "id": "ann-e747-shamir-question",
@@ -130,7 +149,10 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "random 3-uniform hypergraphs",
+      "the threshold for perfect matchings"
+    ]
   },
   {
     "id": "ann-e747-threshold-function",
@@ -148,7 +170,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the threshold quantity n log n",
+      "the ceiling function ⌈·⌉"
+    ]
   },
   {
     "id": "ann-e747-jkv",
@@ -166,7 +191,11 @@
       "Nibble method",
       "Second moment method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the threshold function",
+      "order-of-magnitude bounds c·n log n ≤ ℓ ≤ C·n log n",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e747-kahn",
@@ -184,7 +213,11 @@
       "graph theory",
       "asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the threshold n log n",
+      "asymptotic equivalence ℓ(n)/(n log n) → 1",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e747-general-r",
@@ -202,7 +235,10 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "r-uniform hypergraphs on rn vertices",
+      "the n log n threshold"
+    ]
   },
   {
     "id": "ann-e747-below",
@@ -220,7 +256,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the threshold n log n",
+      "almost-sure failure of a property",
+      "isolated vertices"
+    ]
   },
   {
     "id": "ann-e747-isolated",
@@ -238,7 +278,11 @@
       "probability theory",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "expected vertex degree (∝ m/n²)",
+      "isolated vertices as a matching obstruction",
+      "the coupon-collector / log n threshold"
+    ]
   },
   {
     "id": "ann-e747-above",
@@ -256,7 +300,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the threshold n log n",
+      "almost-sure existence of a perfect matching",
+      "the Rödl nibble / absorption method"
+    ]
   },
   {
     "id": "ann-e747-erdos-quote",
@@ -274,7 +322,9 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analogies between random graphs and random hypergraphs"
+    ]
   },
   {
     "id": "ann-e747-main",
@@ -292,7 +342,11 @@
       "graph theory",
       "asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the n log n threshold",
+      "the Johansson–Kahn–Vu and Kahn results",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e747-summary",
@@ -311,6 +365,10 @@
       "asymptotics",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence of a threshold",
+      "the order of magnitude n log n",
+      "Kahn's precise asymptotic"
+    ]
   }
 ]

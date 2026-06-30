@@ -17,7 +17,11 @@
       "Steiner triple systems",
       "Brown-Erdős-Sós"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal set theory",
+      "3-uniform hypergraphs",
+      "Steiner triple systems"
+    ]
   },
   {
     "id": "ann-1076-hypergraph3",
@@ -37,7 +41,11 @@
       "uniform hypergraph",
       "3-element subsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset",
+      "Fin n type",
+      "Set systems"
+    ]
   },
   {
     "id": "ann-1076-familyf",
@@ -56,7 +64,11 @@
       "extremal graph theory",
       "Turán-type problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hypergraph edges and vertices",
+      "Forbidden configurations",
+      "Turán-type extremal problems"
+    ]
   },
   {
     "id": "ann-1076-containment",
@@ -75,7 +87,11 @@
       "graph homomorphism",
       "forbidden subgraphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Injective functions",
+      "Subgraph embedding",
+      "Permutations of triples"
+    ]
   },
   {
     "id": "ann-1076-ex3",
@@ -94,7 +110,11 @@
       "Turán number",
       "axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal function",
+      "Axiomatization in Lean",
+      "F_k-freeness"
+    ]
   },
   {
     "id": "ann-1076-bes",
@@ -114,7 +134,11 @@
       "quadratic growth",
       "extremal bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic growth (Θ notation)",
+      "Quadratic edge density",
+      "Convergence to a limit"
+    ]
   },
   {
     "id": "ann-1076-erdos1974",
@@ -134,7 +158,11 @@
       "C(n,2)",
       "asymptotic equivalence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial coefficient C(n,2)",
+      "Edge density threshold",
+      "Asymptotic equivalence"
+    ]
   },
   {
     "id": "ann-1076-conjecture",
@@ -154,7 +182,11 @@
       "atTop",
       "asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto",
+      "atTop and nhds filters",
+      "Epsilon-delta convergence"
+    ]
   },
   {
     "id": "ann-1076-solution",
@@ -174,6 +206,10 @@
       "independent proofs",
       "approximate Steiner systems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic combinatorics",
+      "Approximate Steiner triple systems",
+      "Large girth constructions"
+    ]
   }
 ]

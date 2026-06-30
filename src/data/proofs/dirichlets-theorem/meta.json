@@ -252,10 +252,16 @@
   ],
   "mainTheorems": [
     {
-      "name": "dirichlet_arithmetic_progression",
+      "name": "dirichlet_modEq",
       "type": "core",
-      "description": "There are infinitely many primes in any arithmetic progression a, a+d, a+2d, ... with gcd(a,d)=1",
-      "leanType": "Nat.Coprime a d -> Set.Infinite {p | Nat.Prime p and p % d = a % d}"
+      "description": "Dirichlet's theorem (congruence formulation): for coprime a and q (q ≠ 0), there are infinitely many primes p with p ≡ a (mod q). Derived from Mathlib's Nat.infinite_setOf_prime_and_modEq.",
+      "leanType": "(hq : q ≠ 0) → (ha : Nat.Coprime a q) → Set.Infinite {p : ℕ | Nat.Prime p ∧ p ≡ a [MOD q]}"
+    },
+    {
+      "name": "dirichlet_zmod",
+      "type": "core",
+      "description": "Dirichlet's theorem (ZMod formulation): if a : ZMod q is a unit, there are infinitely many primes p with (p : ZMod q) = a. Derived from Mathlib's Nat.infinite_setOf_prime_and_eq_mod.",
+      "leanType": "[NeZero q] → (a : ZMod q) → (ha : IsUnit a) → Set.Infinite {p : ℕ | Nat.Prime p ∧ (p : ZMod q) = a}"
     }
   ],
   "sorries": 0,

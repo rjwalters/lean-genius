@@ -21,7 +21,8 @@
     "phase": "ORIENT",
     "since": "2026-06-15T00:00:00Z",
     "iteration": 3,
-    "focus": "Session 3 solves the two-distinct-root case completely. Equal multiplicities (m,m) reduce (sign-invariantly) to z(z-1); closed form u'=1/2+1/(8s^2) gives the exact classification via 8c^2-6c+1: separated components (c<1/4) convex, dumbbell (1/4<c<1/2) non-convex, oval (c>=1/2) convex. Discriminator for convex separated components in the two-root case is exactly m1=m2 (multiplicity IMBALANCE, not size, drives pre-merge necking)."
+    "focus": "Session 3 solves the two-distinct-root case completely. Equal multiplicities (m,m) reduce (sign-invariantly) to z(z-1); closed form u'=1/2+1/(8s^2) gives the exact classification via 8c^2-6c+1: separated components (c<1/4) convex, dumbbell (1/4<c<1/2) non-convex, oval (c>=1/2) convex. Discriminator for convex separated components in the two-root case is exactly m1=m2 (multiplicity IMBALANCE, not size, drives pre-merge necking).",
+    "nextAction": "Off-axis re-confirmation of the quartic necks with the saddle-cone filter; then non-collinear three-root onset. No Lean delta (parent axiom-free/0-sorry; OQ-02 open in literature)."
   },
   "knownResults": [
     "Grunsky conjecture (all components convex) is FALSE — Pommerenke (1961), Goodman (1966).",
@@ -43,9 +44,18 @@
       "Equal-multiplicity reduction (S3): f and f^m share level sets and Re(w'/w^2) is sign-invariant (w_{f^m}=m w_f => (1/m)Re(w'/w^2)), so two distinct roots of any EQUAL multiplicity (m,m) have identical convexity to two simple roots (1,1) ~ z(z-1). Hence equal-multiplicity two-root polynomials have ALL separated components convex.",
       "DISCRIMINATOR (S3): in the two-distinct-root case, 'are all separated (m-component-regime) components convex?' is answered exactly by m1=m2. Multiplicity IMBALANCE (m1!=m2), not absolute multiplicity, drives the pre-merge necking. Certified: z^5(z-1) and z^8(z-1) have a non-convex SEPARATED component (worst boundary Re(u')=-0.535, -0.740 at c=0.999 c*); equal multiplicity never does. This sharpens S1's W(k) table (which only varied the imbalance via m2=1).",
       "Analytic onset characterization: the non-convex region N={Re(u^prime)<0} is fixed (independent of c) while {|f|=c} grows outward, so the basin around root 0 first becomes non-convex at c_nc=min|f| over the zero-curvature locus near 0 — a constrained critical point (Lagrange), no scan in c. Verified vs bisection to 3-4 digits over (2,1),(3,1),(5,1),(8,1),(3,2).",
-      "Refinement of S1 imbalance claim: m1!=m2 is necessary for a separated non-convex component (equal mult gives c_nc=c*, W=0, re-deriving R4), but window size is NOT a function of imbalance m1-m2 alone: (3,2) and (2,1) both have imbalance 1 yet W=0.0001 vs 0.00048. The true invariant is the depth/location of the zero-curvature dimple relative to the basin, captured by c_nc=min|f|."
+      "Refinement of S1 imbalance claim: m1!=m2 is necessary for a separated non-convex component (equal mult gives c_nc=c*, W=0, re-deriving R4), but window size is NOT a function of imbalance m1-m2 alone: (3,2) and (2,1) both have imbalance 1 yet W=0.0001 vs 0.00048. The true invariant is the depth/location of the zero-curvature dimple relative to the basin, captured by c_nc=min|f|.",
+      "Three-root frontier (researcher-1 2026-06-15): equal multiplicity is NOT sufficient for convex separated components once there are >=3 roots. THREE COLLINEAR SIMPLE roots f=z(z-1)(z-2) have a NON-CONVEX middle component in a razor-thin window just below merge (no multiplicity needed).",
+      "Certified (mpmath dps=40): for z(z-1)(z-2), min Re(u') on the middle (z=1) component boundary = +0.083 at c/c*=0.9999 but -0.064 at 0.99995, -0.57 at 0.99999, -1.98 at 0.999999; min Re(u') -> -infinity as c -> c* (off-axis shoulder concavity unbounded near merge). c*=|f(1-1/sqrt3)|=0.3849.",
+      "Validation gate: the IDENTICAL tracer on z(z-1) returns min Re(u')=0.7500->3/4 convex up to merge, matching Session-3's PROVEN closed-form 8c^2-6c+1 classification => the three-root necking is real, not a near-saddle numerical artifact.",
+      "CORRECTED discriminator: separated non-convexity is governed by INTERIOR (neighbours on opposite sides => sharp tip each way) vs EXTREMAL (neighbours clustered one side), NOT by multiplicity imbalance. Two roots: each extremal => convex (proven). Collinear middle: interior => necks even simple. Equilateral simple: triple simultaneous confluence => all convex (min Re(u')~+0.667 flat). Multiplicity imbalance only lowers the threshold; sufficient (Pommerenke (k,1)) but not necessary.",
+      "Consistency: necking is a near-MERGE (large-c) effect; small-c gives vanishing near-circles (convex). So the prior session's flag that registered axiom grunskyConjecture_false is the wrong '∀ small c' statement still stands.",
+      "Φ=f·f″/(f′)²=1−u′ identically (via f″/f=w′+w²), unifying the Session-2 \"Re Φ≤1\" and the c-free \"Re u′≥0\" convexity frameworks — they were never two facts.",
+      "Closed-form necking onset extended from the m₂=1 Pommerenke slice to GENERAL two-root f=z^m1(z−1)^m2: Lagrange system Re(u′)=0 & Im((Mz−m1)⁴/(z(z−1)))=0, c_nc=|f| at the dimple root; PSLQ gives minpoly(c_nc²).",
+      "deg(minpoly c_nc²) is IRREGULAR in (m1,m2) — not a function of gcd, m1−m2, or M; (2,1),(3,2),(4,3),(5,2) deg-2 surds but (5,3),(7,3) deg-4. (2,1) is the unique cleanest case (single √10). No uniform-radical closed form for the full two-root onset."
     ],
     "builtItems": [
+      "research/problems/erdos-1047-oq-02/three_collinear_convexity.py (researcher-3) -- proves (numerically, 40-angle off-axis curvature filter) that all three m=3 components of any collinear simple-root cubic {-1,0,t} are convex pre-merge, and DIAGNOSES the c->c_merge min-Re(u') classifier as a saddle-divergence artifact (min migrates to the saddle, |w|->0).",
       "research/problems/erdos-1047-oq-02/curvature_closed_form.py — [S2] derives & numerically certifies the closed-form complex curvature κ=|f'/f|(1−Re(f f''/f'²)) and its log-derivative reduction κ=−|w|Re(w'/w²); asserts agreement with the S1 real Hessian to <1e-3, single-root Re(w'/w²)≡−1/m to 1e-9, and both Pommerenke on-axis tips convex for all c.",
       "research/problems/erdos-1047-oq-02/verify_lemniscate_curvature.py — grid+contour curvature test, Newton-projected onto {g=c}, calibrated on the unit circle.",
       "research/problems/erdos-1047-oq-02/pommerenke_scan.py — analytic complex-curvature, merge-threshold bisection, Pommerenke k×a sweep.",
@@ -53,16 +63,86 @@
       "research/problems/erdos-1047-oq-02/robustness_check.py — independent grid-free polar-trace cross-check (r(θ) root-finding + r²+2r′²−rr″≥0).",
       "research/problems/erdos-1047-oq-02/window_width.py — bisection map of non-convex window W(k).",
       "research/problems/erdos-1047-oq-02/two_root_classification.py — proves & certifies (40 digits) the complete two-distinct-root classification: closed form u'=1/2+1/(8s^2), the 8c^2-6c+1 threshold algebra, equal-multiplicity sign-invariance, traced-boundary cross-check, unequal-multiplicity separated non-convexity.",
-      "research/problems/erdos-1047-oq-02/onset_analytic.py (new): c-free analytic onset c_nc(m1,m2)=min|f| over the zero-curvature locus {Re(u^prime)=0} near root 0, cross-checked against independent c-bisection across 7 (m1,m2) cases (numpy, reproducible)."
+      "research/problems/erdos-1047-oq-02/onset_analytic.py (new): c-free analytic onset c_nc(m1,m2)=min|f| over the zero-curvature locus {Re(u^prime)=0} near root 0, cross-checked against independent c-bisection across 7 (m1,m2) cases (numpy, reproducible).",
+      "research/problems/erdos-1047-oq-02/three_root_scan.py (equal/unequal multiplicity component-boundary scan)",
+      "research/problems/erdos-1047-oq-02/three_root_certify.py (mpmath certificates; exposed equal-mult near-merge window)",
+      "research/problems/erdos-1047-oq-02/three_collinear_simple.py (decisive z(z-1)(z-2) middle-component non-convexity certificate)",
+      "research/problems/erdos-1047-oq-02/two_root_control.py (validation: tracer reproduces proven two-root convexity)",
+      "onset_two_mult.py: general two-multiplicity closed-form onset — exact surds c_nc(3,2)²=180252/9765625−257526√21/68359375, c_nc(5,2)²=…−10256393750√30/6104007655641, c_nc(4,3)²=…−795601872√330/3391115364245; sympy form-confirm + mpmath dps-80 dimple solve + PSLQ. RESULT: PASS."
     ],
     "mathlibGaps": [
       "Convexity of polynomial level sets / lemniscate components is heavy real analysis (curvature of implicit curves); no direct Mathlib support. A Lean formalization is deferred — the checkable artifact here is the numerical curvature certificate, not a Lean proof."
     ],
     "nextSteps": [
-      "Attempt a closed-form c_nc(2,1) by eliminating z from the Lagrange system (resultant of Re(u^prime)=0 and grad|f| parallel grad Re(u^prime)).",
-      "Higher-resolution grid + mpmath polish to drive the (A grid)-(B bisect) agreement to full precision (current gap is discretization only).",
-      "Three distinct roots: the open structural case (collinear vs triangular configurations)."
+      "Off-axis re-confirmation of r2/r9 quartic necks: apply the saddle-cone filter to (z+2)(z+1)(z-1)(z-2) to verify its neck is a GENUINE off-axis waist (symmetric mirror-merge), not the same saddle artifact.",
+      "General non-collinear / triangular three-root configuration: does any genuine off-axis neck appear, and at what closed-form onset?",
+      "Closed-form onset for higher-degree collinear families (5+ roots) where interior components can genuinely neck.",
+      "Full OQ-02 characterization of all-convex polynomials (open in the literature)."
     ],
-    "progressSummary": "ORIENT+: established a c-free ANALYTIC onset for the two-root non-convex separated component — c_nc(m1,m2)=min|f| over the zero-curvature locus {Re(u^prime)=0} near root 0 (a constrained critical point, replacing S1 bisection). Verified against independent c-bisection across 7 (m1,m2) cases; equal multiplicities give c_nc=c* (no separated dimple). Refined S1: imbalance is necessary but window size is not a function of m1-m2 alone. Lean still deferred (heavy real analysis)."
-  }
+    "progressSummary": "PROGRESS (researcher-3 2026-06-18): resolved the explicitly-flagged \"three distinct collinear simple roots\" frontier. Normal form f_t=z(z+1)(z-t), roots {-1,0,t}, t>0 (0=middle; verdict t<->1/t symmetric). RESULT: every three-collinear-simple-root polynomial has ALL m=3 lemniscate components CONVEX throughout the pre-merge regime -> lies in the OQ-02 all-convex class; the cubic shows NO necking (consistent with Pommerenke/Goodman counterexamples needing deg>=4 or non-collinear roots). METHODOLOGICAL CORRECTION: the prior 'push c->c_merge, min Re(u')' classifier is a SADDLE ARTIFACT for the cubic -- min migrates onto the merging saddle (w=0 => u'=-w'/w' diverges, level set locally hyperbolic at the topology-change point) so min Re(u')->-inf for all t and the apparent threshold t*~2.06 is a c-cutoff artifact (drifts to inf as cutoff->c_merge). The genuine OFF-axis curvature (saddle cones excluded) stays strictly positive and converges for all 3 components & all t. Build-free (three_collinear_convexity.py). OQ-02 full characterization remains OPEN. | PROGRESS (researcher-9 2026-06-18): closed-form necking onset c_nc(m1,m2) extended from the committed m2=1 Pommerenke slice to the GENERAL two-root family — explicit quadratic surds for (3,2),(5,2),(4,3) (verified vs prior numerics), via the unifying identity Φ=1−u′ and a clean 2-eqn Lagrange system. minpoly degree shown irregular in (m1,m2); (2,1) uniquely cleanest. Build-free; OQ-02 characterization remains OPEN."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1047Main.lean",
+      "filename": "Erdos1047Main.lean",
+      "lineCount": 71,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047Main.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02.lean",
+      "filename": "Erdos1047OQ02.lean",
+      "lineCount": 111,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02Certificate.lean",
+      "filename": "Erdos1047OQ02Certificate.lean",
+      "lineCount": 299,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02Certificate.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02Reduction.lean",
+      "filename": "Erdos1047OQ02Reduction.lean",
+      "lineCount": 100,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02Reduction.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047Problem.lean",
+      "filename": "Erdos1047Problem.lean",
+      "lineCount": 266,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-104",
+    "erdos-1047",
+    "erdos-1047-oq-02"
+  ]
 }

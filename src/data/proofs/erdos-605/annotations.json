@@ -16,7 +16,11 @@
       "incidence geometry",
       "spherical geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "real analysis",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e605-sphere-config",
@@ -35,7 +39,11 @@
       "metric space",
       "injection"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "set theory",
+      "Lean 4 structures"
+    ]
   },
   {
     "id": "ann-e605-distance-pairs",
@@ -54,7 +62,11 @@
       "distance function",
       "supremum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "order relations",
+      "metric spaces"
+    ]
   },
   {
     "id": "ann-e605-u-function",
@@ -73,7 +85,11 @@
       "supremum",
       "Turán problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "order theory",
+      "supremum and infimum"
+    ]
   },
   {
     "id": "ann-e605-superlinear",
@@ -92,7 +108,11 @@
       "growth rate",
       "omega notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits of sequences",
+      "quantifier logic"
+    ]
   },
   {
     "id": "ann-e605-iterlog",
@@ -111,7 +131,11 @@
       "recursive function",
       "tower function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "recursion theory",
+      "Lean 4 recursive definitions"
+    ]
   },
   {
     "id": "ann-e605-ehp",
@@ -130,7 +154,11 @@
       "recursive construction",
       "superlinear bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "discrete geometry",
+      "algebraic topology",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e605-swanepoel-valtr",
@@ -149,7 +177,11 @@
       "lower bound",
       "square root of logarithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "discrete geometry",
+      "algebraic geometry",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e605-upper",
@@ -168,7 +200,11 @@
       "incidence bound",
       "upper bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "incidence geometry",
+      "combinatorial geometry",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e605-sqrt2",
@@ -187,7 +223,11 @@
       "tight bound",
       "algebraic construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "incidence geometry",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e605-main-theorem",
@@ -206,7 +246,11 @@
       "Swanepoel-Valtr",
       "problem resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "discrete geometry",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e605-witness",
@@ -225,7 +269,11 @@
       "filter",
       "tendsto"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "filters and limits",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e605-planar",
@@ -244,7 +292,11 @@
       "planar geometry",
       "Erdős distance problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "Euclidean geometry",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e605-constructions",
@@ -263,6 +315,10 @@
       "regular polyhedra",
       "cube"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "polyhedral combinatorics",
+      "extremal combinatorics"
+    ]
   }
 ]

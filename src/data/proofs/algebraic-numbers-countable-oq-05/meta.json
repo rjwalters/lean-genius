@@ -20,8 +20,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 296,
-    "theoremCount": 12,
+    "lineCount": 305,
+    "theoremCount": 13,
     "definitionCount": 2,
     "dateAdded": "2026-04-26",
     "assumptions": "",
@@ -41,7 +41,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Georg Cantor's 1874 paper 'Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (On a Property of the Collection of All Real Algebraic Numbers) introduced the height function as a tool to count algebraic numbers. This was one of the first rigorous applications of cardinality reasoning and marks the birth of set theory.\n\nCantor's insight was simple yet profound: assign a natural number H(p) to each integer polynomial p — the 'height' — in such a way that only finitely many polynomials have any given height. Then, since each polynomial has finitely many roots, the algebraic numbers of bounded height form a finite set. The algebraic numbers as a whole are a countable union of these finite sets.\n\nThe height function Cantor chose was H(a₀ + a₁X + ··· + aₙXⁿ) = n + |a₀| + |a₁| + ··· + |aₙ|. This elegant choice ensures:\n- Bounded height → bounded degree AND bounded coefficients\n- Finitely many integer polynomials of each height\n- Combined with the finite-roots theorem: finitely many algebraic reals of each height\n\nThis 1874 paper appeared just one year before Cantor's diagonal argument (1875/1891), and represents the 'constructive' half of Cantor's revolution: algebraic numbers are countable (enumerable), while real numbers are not (uncountable via diagonalization).",
+    "historicalContext": "Georg Cantor's 1874 paper 'Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (On a Property of the Collection of All Real Algebraic Numbers) introduced the height function as a tool to count algebraic numbers. This was one of the first rigorous applications of cardinality reasoning and marks the birth of set theory.\n\nCantor's insight was simple yet profound: assign a natural number H(p) to each integer polynomial p — the 'height' — in such a way that only finitely many polynomials have any given height. Then, since each polynomial has finitely many roots, the algebraic numbers of bounded height form a finite set. The algebraic numbers as a whole are a countable union of these finite sets.\n\nThe height function Cantor chose was H(a₀ + a₁X + ··· + aₙXⁿ) = n + |a₀| + |a₁| + ··· + |aₙ|. This elegant choice ensures:\n- Bounded height → bounded degree AND bounded coefficients\n- Finitely many integer polynomials of each height\n- Combined with the finite-roots theorem: finitely many algebraic reals of each height\n\nThe same 1874 paper also contained Cantor's first proof that the real numbers are uncountable — established by a nested-interval argument, not the now-more-famous diagonal argument, which Cantor introduced only seventeen years later in 1891 ('Über eine elementare Frage der Mannigfaltigkeitslehre'). The two halves of the 1874 paper represent the constructive and non-constructive sides of Cantor's revolution: the algebraic numbers are countable (enumerable, as formalized here), while the reals are not — so transcendental numbers must exist, even though the argument exhibits none explicitly.",
     "problemStatement": "**The Cantor Height Function**: For an integer polynomial p = a₀ + a₁X + ··· + aₙXⁿ, define:\n\n  H(p) = n + |a₀| + |a₁| + ··· + |aₙ|\n\n**Open Question**: Can we formalize Cantor's original 1874 proof that uses the height function to stratify algebraic reals into **finite** strata (not just countable), giving a more constructive proof of countability?\n\n**Main Theorem**: The algebraic real numbers are countable, with the explicit decomposition:\n\n  {x : ℝ | IsAlgebraic ℚ x} = ⋃ₕ {roots of integer polys with height ≤ h}\n\nEach set on the right is **finite** (the key finiteness, stronger than countability).",
     "proofStrategy": "The proof proceeds in four steps:\n\n**Step 1: Height bounds degree and coefficients.** For any polynomial p with H(p) ≤ h:\n- natDegree(p) ≤ h (the degree is at most h)\n- |p.coeff i| ≤ h for each coefficient i (each coefficient fits in [-h, h])\n\n**Step 2: Finitely many polynomials of bounded height.** Polynomials with H(p) ≤ h are determined by:\n- Their degree (at most h+1 choices: 0, 1, ..., h)\n- Their coefficients (each in the finite set {-h, ..., h}, and there are at most h+1 coefficients)\n\nThis injects height-≤h polynomials into the finite Fintype `Fin(h+1) → Icc(-h, h)`, proving finiteness.\n\n**Step 3: Finite real roots per polynomial.** Each nonzero integer polynomial of degree n has at most n real roots (from `Polynomial.setOf_isRoot_finite`).\n\n**Step 4: Height stratification gives countability.** For each h, let `algebraicRealsOfHeight(h)` = roots of all height-≤h polynomials. By Steps 2 and 3, this is a finite union of finite sets = finite. The algebraic reals = ⋃ₕ algebraicRealsOfHeight(h) = countable union of finite sets = countable.\n\n**Comparison with the main gallery proof**: The proof in `AlgebraicNumbersCountable.lean` stratifies by polynomial **degree** (giving countably infinite strata — polynomials of each degree are countably many). Cantor's height approach gives **finite** strata (polynomials of each height are finitely many). The height approach is more constructive: for each h, one can in principle enumerate all height-h algebraic reals in finite time.",
     "keyInsights": [
@@ -202,8 +202,8 @@
   ],
   "leanFile": {
     "path": "Proofs/AlgebraicNumbersCountableOQ05.lean",
-    "lineCount": 296,
-    "theoremCount": 12,
+    "lineCount": 305,
+    "theoremCount": 13,
     "axiomCount": 0,
     "definitionCount": 2,
     "sorries": 0

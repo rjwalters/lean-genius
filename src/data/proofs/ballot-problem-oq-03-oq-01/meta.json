@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BallotProblemOQ03.lean",
     "tags": [
       "combinatorics",
@@ -17,11 +17,11 @@
       "reflection-principle",
       "bijections"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "axiomCount": 1,
+    "assumptions": "Relies on `Lean.ofReduceBool` (Lean compiler kernel-reduction trust): the advertised Catalan-number, ballot-sequence-count, and LGV-determinant example computations are discharged by `native_decide` (22 `example` blocks). The symbolic LGV/Lindström-Gessel-Viennot machinery (Crossing Lemma, Lindström involution, path_count, lgv_lemma_2x2, Vandermonde identity) is proved without `native_decide`. No `sorry`, no literal `axiom` declarations.",
     "lineCount": 2922,
     "theoremCount": 138,
     "definitionCount": 32,

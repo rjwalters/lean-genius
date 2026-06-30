@@ -23,7 +23,7 @@ The key connection: both limits equal πr². By limit uniqueness in ℝ (Hausdor
 there is a unique value toward which both the polygon approximations and the
 FTC integral converge.
 
-## What This File Proves (10 theorems, 0 sorries, 0 axioms)
+## What This File Proves (14 theorems, 0 sorries, 0 axioms)
 
 **Part I**: FTC proof: ∫₀ʳ 2πρ dρ = πr²
 **Part II**: Exhaustion proof: inscribedArea n r → πr²

@@ -7,7 +7,7 @@
     "author": "Vandermonde (1772), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
     "date": "1772",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02.lean",
     "tags": [
       "combinatorics",
@@ -15,7 +15,7 @@
       "induction",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -39,14 +39,14 @@
       "hockey_stick_2d: Σ_{i+j≤n} C(i+a,a)·C(j+b,b) = C(n+a+b+2, a+b+2) — composed from 1D hockey stick + parallel Vandermonde"
     ],
     "dateAdded": "2026-03-22",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "prerequisites": [
       "Binomial coefficients",
       "Pascal's identity",
       "Simplicial numbers"
     ],
     "lineCount": 154,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. Credited theorems include computational/numerical checks discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted.",
     "mathlib_version": "4.26.0",
     "theoremCount": 9,
     "definitionCount": 1

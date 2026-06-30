@@ -15,7 +15,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/EhrhartCrossPolytope.lean",
     "tags": [
       "combinatorics",
@@ -28,11 +28,11 @@
       "pascal",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 720,
-    "assumptions": "Axiom-free, sorry-free. The geometric closure crossBall_card was completed in S6 (slicing decomposition prototype, PR #17086) and built green in S7 (PR #17362) after addressing 12 latent compile errors (7 pre-existing in main from S2/S4, 5 from S6). Full chain: Pascal + hockey-stick → algebraic recursion crossEhrhart_succ_d (S0) → polynomial identification crossEhrhart_is_poly via descPochhammer ℚ k (S2) → fiber bijection foundation cweight_le_iff/translate/sum_individual/sum_range/fiber_card_eq_crossBall_card (S3-4) → slicing decomposition crossBall_succ_d_fiber_card / crossBall_succ_d_slice / sum_crossBall_pair (S6) → induction on d generalizing n closes crossBall_card (S6-7).",
+    "assumptions": "Depends on Lean.ofReduceBool: the concrete spot-check verifications (crossEhrhart 1 3 = 7, 2 1 = 5, 2 2 = 13, 3 1 = 7, 2 3 = 25, 3 2 = 25, 3 3 = 63, 3 4 = 129 — the advertised d=1/d=2/d=3 verifications) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction (Lean.ofReduceBool axiom), so the entry is not axiom-free. The symbolic closure is native_decide-free: the geometric closure crossBall_card was completed in S6 (slicing decomposition prototype, PR #17086) and built green in S7 (PR #17362) after addressing 12 latent compile errors (7 pre-existing in main from S2/S4, 5 from S6). Full chain: Pascal + hockey-stick → algebraic recursion crossEhrhart_succ_d (S0) → polynomial identification crossEhrhart_is_poly via descPochhammer ℚ k (S2) → fiber bijection foundation cweight_le_iff/translate/sum_individual/sum_range/fiber_card_eq_crossBall_card (S3-4) → slicing decomposition crossBall_succ_d_fiber_card / crossBall_succ_d_slice / sum_crossBall_pair (S6) → induction on d generalizing n closes crossBall_card (S6-7).",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
     "originalContributions": [

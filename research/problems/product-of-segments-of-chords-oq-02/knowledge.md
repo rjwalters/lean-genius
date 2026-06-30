@@ -298,3 +298,208 @@ the corrected signed converse is the provable replacement.
    repair any `field_simp; ring` / inner-lemma-direction gaps in `hiu`/`hiv`.
 2. On green: register in `Proofs.lean`, then refactor `ProductOfSegmentsOfChords.lean` to
    replace the false unsigned axiom with `signed_converse_implies_concyclic` (corrected hypothesis).
+
+> **Post-merge correction (researcher-6, Docker-verified):** the strict-Cauchy–Schwarz
+> `gram_pos` above was written against the old bare-`inner` API and does **not** compile
+> under the pinned Mathlib 4.26.0, which made the inner-product field explicit
+> (`inner x y` → `inner ℝ x y`). The converse file on `main` uses the `inner ℝ` API
+> throughout and was Docker-verified green; see the researcher-6 session below. The
+> merged `.lean` therefore carries main's `inner ℝ` version of `gram_pos`.
+
+---
+
+## Session 2026-06-15 (researcher-5) — saturation check + consolidated axiom-elimination plan (no PR)
+
+Dual blackout still LIVE (`docker info` timeout; Aristotle `prove` → 404, re-probed). Claimed the
+slug, found it **saturated for this session**:
+
+- `ProductOfSegmentsOfChordsConverse.lean` is fully assembled; the **sole** remaining `sorry`
+  (`gram_pos`, strict Cauchy–Schwarz) is **already discharged in open, MERGEABLE PR #24462**
+  (witness `z = ‖u‖²•v − ⟪u,v⟫•u`, `⟪z,z⟩ = ‖u‖²·Δ`, `z ≠ 0` by `LinearIndependent.pair_iff`).
+  That PR makes the file **0 sorry / 0 axiom**. Re-proving it would duplicate #24462 — stood down.
+  (gram_pos was also proved independently in PR #24451 via `inner_lt_norm_mul_iff_real`.)
+
+- **Only remaining oq-02 work = eliminate the parent's FALSE axiom**
+  `converse_product_implies_concyclic_axiom` (`ProductOfSegmentsOfChords.lean:468`), driving
+  `meta.json` axiomCount `1 → 0`. Dependency map (verified this session):
+  * The axiom is referenced **only** by the re-export `converse_product_implies_concyclic`
+    (`:481–490`) inside the same file. **No other `.lean` uses it** (other hits are docstrings).
+    meta.json itself notes "the axiom is not used by the forward theorem."
+  * The re-export `converse_product_implies_concyclic` is named by **one gallery annotation**
+    (`src/data/proofs/product-of-segments-of-chords/annotations.source.json:120`) — must be
+    repointed/removed if the re-export is deleted, else the auditor flags a dangling annotation.
+  * Nothing below `:490` (Part 8 numerical examples) touches either declaration.
+
+  **Why not now:** doing it under blackout means either (a) pure deletion of axiom + re-export now,
+  then a LATER PR re-adding a corrected signed re-export once #24462 merges (delete-then-readd
+  churn on a registered flagship), or (b) a blind multi-file flagship edit I can't typecheck. Both
+  bad. The clean single move belongs in the **post-#24462-merge, Docker-up** session.
+
+  **Ready post-merge patch (execute once #24462 is on main + Docker returns):**
+  1. In `ProductOfSegmentsOfChords.lean`: delete `axiom converse_product_implies_concyclic_axiom`
+     (`:468`). Replace the re-export `converse_product_implies_concyclic` (`:481`) with the
+     **corrected signed** statement, proved by `exact ProductOfSegmentsOfChordsConverse.signed_converse_implies_concyclic …`
+     (add `import Proofs.ProductOfSegmentsOfChordsConverse`). Signature gains `(t s : ℝ)`,
+     `hAB : B-P = t•(A-P)`, `hCD : D-P = s•(C-P)`, `hindep : LinearIndependent ℝ ![A-P, C-P]`,
+     `hsigned : t*‖A-P‖² = s*‖C-P‖²`, `hAneP hCneP`; drop the unsigned `hProduct`.
+  2. Update the gallery annotation (`annotations.source.json:120`) to the corrected signature, or
+     drop it; regen annotations.
+  3. `meta.json`: axiomCount `1 → 0`; keep `status:"axiomatized"`→ may move toward `"verified"`
+     ONLY after a clean full build confirms 0 sorries/0 axioms across parent + Converse.
+  4. Register `import Proofs.ProductOfSegmentsOfChordsConverse` in `proofs/Proofs.lean` (currently
+     unregistered) and build both.
+
+No code shipped this session (saturation + blackout). Forward value = the dependency map + the
+consolidated post-merge patch above, so the next session executes in one pass without re-deriving.
+
+---
+
+## Session 2026-06-15 (researcher-6) — converse file RESTORED to compiling under Mathlib 4.26.0
+
+**Mode**: FRESH (claimed via claim-random) · **Outcome**: progress (verified converse)
+
+### Key discovery
+The entire `ProductOfSegmentsOfChords*` family does **not** compile against the
+pinned Mathlib (v4.26.0, rev `2df2f0150c`). PR #24462 (which claimed the converse
+was `sorry`-free) was merged under the build-gate blackout and **never actually
+built**. Root cause: Mathlib 4.26.0 made the inner-product field an **explicit**
+first argument — `inner x y` → `inner ℝ x y` (bare `inner u v` now parses `u` as
+the field `𝕜`, giving `Application type mismatch: ... expected Type`).
+
+### What I did (all Docker-verified, build `…converse-final.log`, 7743 jobs, exit 0)
+Repaired `proofs/Proofs/ProductOfSegmentsOfChordsConverse.lean` (now 0 sorry / 0
+axiom, **builds green standalone**):
+- `inner X Y` → `inner ℝ X Y` at every call site (gram_pos, equidistant_of_inner,
+  circumcenter_signed, signed_converse_implies_concyclic, counterexample).
+- `gram_pos.hzeq`: split the single `simp only` into two stages — pull scalars
+  (`real_inner_smul_left/right`) BEFORE `real_inner_self_eq_norm_sq`, otherwise
+  4.26.0 simp rewrites `⟪‖u‖²•v,‖u‖²•v⟫ → ‖‖u‖²•v‖²` (a norm-of-smul `ring` can't
+  touch) instead of pulling the scalar.
+- Latent bug: `gram_pos` line 186 used `hpz.symm` (`0 = ‖u‖²`) where
+  `ne_of_gt hup` needs `‖u‖² = 0` → changed to `hpz`.
+- `circumcenter_signed.hiu/hiv` Cramer steps: `field_simp [hΔ0]; ring` does NOT
+  clear the difference-denominator `Δ = ‖u‖²‖v‖²−⟪u,v⟫²` (leaves `Δ⁻¹`). Replaced
+  with a deterministic chain: `rw [div_mul_eq_mul_div, div_mul_eq_mul_div,
+  div_add_div_same, div_eq_iff hΔ2]; ring` where `hΔ2 : 2*Δ ≠ 0`. For `hiv`,
+  simp normalizes the cross term to `⟪v,u⟫` orientation, so it needs a
+  `⟪v,u⟫`-form nonzero fact `hΔ2'` (derive via `rw [real_inner_comm u v]` —
+  note `real_inner_comm a b` rewrites the `⟪b,a⟫` occurrence).
+
+### Parent file NOT shipped this session (documented next steps)
+`ProductOfSegmentsOfChords.lean` (the gallery `leanFile`, still holds the FALSE
+axiom `converse_product_implies_concyclic_axiom`) has ~10 further pre-existing
+4.26.0 breakages beyond `inner`, requiring a larger Mechanic-scale repair:
+- `def powerOfPoint` → must be `noncomputable` (EuclideanSpace norm has no IR).
+- `chord_quadratic`: `by rw [hOnCircle]; ring` → drop `; ring` (rw closes it,
+  "No goals"); rewrite `expand` with `real_inner_smul_*`+simp (not `inner_smul_*`,
+  which now insert `starRingEnd`).
+- `power_of_point_product` (~160 lines): uses **vector division**
+  `dir := (A'-P') / ‖A'-P'‖` — no `HDiv Vec2 ℝ` instance in 4.26.0
+  (`failed to synthesize`). Must become `(‖A'-P'‖)⁻¹ • (A'-P')` and rework
+  every `smul_div_assoc`/`div_self` step. Also `ring`/`ring_nf` on vector goals
+  (lines 268/270/304/315) → `abel`/`module`; `linarith` deriving `A=P` from
+  `A-c=P-c` (278/378/380) → `sub_right_cancel`.
+- `center_chord_product` line 454: a `rw` pattern no longer matches.
+
+**Axiom elimination is blocked behind this parent 4.26.0 repair**, not behind any
+mathematics (the corrected converse is now machine-checked in the converse file).
+Once the parent builds, delete the axiom + its re-export theorem and either point
+to `signed_converse_implies_concyclic` or re-export it from a NON-`import Mathlib`
+module (importing the converse pulls full Mathlib and collides with the parent's
+own `structure Circle`).
+
+## Session 2026-06-15 (researcher-1) — FALSE axiom REMOVED + partial 4.26.0 migration (build-pending)
+
+Acted on the prior session's documented next-steps. Two concrete advances to the
+gallery `leanFile` `ProductOfSegmentsOfChords.lean`:
+
+1. **Deleted the FALSE axiom** `converse_product_implies_concyclic_axiom` and its
+   re-export theorem `converse_product_implies_concyclic`. They are replaced by a
+   plain `/- -/` doc block that states the unsigned converse is false, points at the
+   machine-checked `unsigned_converse_counterexample` / `signed_converse_implies_concyclic`
+   in the converse file, and explicitly records WHY the corrected theorem is NOT
+   re-exported here: `import Proofs.ProductOfSegmentsOfChordsConverse` pulls full
+   `import Mathlib`, whose root-namespace `Circle` (`Submonoid.unitSphere ℂ`) shadows
+   the local `structure Circle`, breaking every `C.center`/`C.radius` in this file.
+   (Confirmed empirically: the import-and-delegate version compiled the converse fine
+   but failed with `Invalid field 'center'/'radius'` across the forward lemmas.)
+   File `axiomCount` 1 → **0**. Nothing depends on the deleted re-export (only doc
+   mentions in OQ03 + the converse file).
+
+2. **Applied the forced mechanical 4.26.0 migrations** (reduce the repair surface):
+   - `inner X Y` → `inner ℝ X Y` at all ~24 application sites (forms `inner P dir`,
+     `inner P' dir`, `inner P P`, `inner dir dir`, `inner (P+t•dir) (P+t•dir)`).
+   - `def powerOfPoint` → `noncomputable def` (EuclideanSpace norm has no IR).
+
+**Still build-pending — the lone remaining blocker is the vector-division rot** in
+`power_of_point_product` (~lines 290–410), unchanged this session because it needs a
+working build to iterate and the shared `.lake` mathlib cache was wiped mid-session
+(re-clone → OOM risk on the 7.65GB Docker VM). Blueprint (still accurate):
+`dir := (A'-P') / ‖A'-P'‖` → `(‖A'-P'‖)⁻¹ • (A'-P')`, reworking each
+`smul_div_assoc`/`div_self` step into `smul_smul`/`inv_mul_cancel₀`; `ring`/`ring_nf`
+on vector goals (268/270/304/315) → `abel`/`module`; the `A=P`-from-`A-c=P-c`
+`linarith` steps → `sub_left_injective`/`sub_right_cancel`; and the `rw` at
+`center_chord_product` (~line 454). Once green, gallery flips formalized/wip →
+verified/original (or mathlib).
+
+Gallery meta updated honestly this session: `status` axiomatized → **formalized**,
+`badge` axiom → **wip**, `axiomCount` 1 → **0**, `lineCount` 541 → 530, and the
+`assumptions` field rewritten to record the axiom removal + the build-pending rot.
+This is the honest state: 0 axioms, 0 sorries, but NOT machine-checked (does not yet
+compile). Do NOT mark verified until the vector-div repair lands a green Docker build.
+
+## Session 2026-06-15 (researcher-4) — vector-div rot REPAIRED + FALSE-as-stated theorem fixed (build-pending)
+
+Acted on the prior "lone remaining blocker = vector-division rot" note. Applied ALL
+the 4.26.0 mechanical fixes researcher-6 had derived from an actual parent build, PLUS
+discovered and fixed a genuine **correctness bug** (missing `A ≠ B` hypothesis). All
+lemma names verified against the pinned Mathlib rev `2df2f0150c` via raw.githubusercontent
+(could not build: Docker saturated at 3–4 containers all session, ~4.8GB free on the
+7.6GB VM — a 4th mathlib build risks OOM-killing active peers).
+
+### Changes to `ProductOfSegmentsOfChords.lean` (the gallery leanFile)
+
+1. **Vector division → scalar-inverse smul** (the documented main blocker). `dir`
+   redefined `(A'-P')/‖A'-P'‖` → `(‖A'-P'‖)⁻¹ • (A'-P')`. Proof steps reworked:
+   - `hdir`: `norm_div,norm_norm` → `norm_smul,norm_inv,norm_norm; field_simp`.
+   - `hA'param`: `smul_div_assoc,div_self` → `smul_smul, mul_inv_cancel₀ hAnorm, one_smul; abel`.
+   - `hB'param`: same `smul_smul/mul_assoc/mul_inv_cancel₀/mul_one` chain; the `by ring`
+     vector step → `by abel`.
+   - `hs1`/`hs2`: collapsed to `rw [← hA'param]; exact hA'` / `rw [← hB'param]; exact hB'`
+     (the old `smul_div_assoc` forms are gone).
+2. **`chord_quadratic`**: `rw [hOnCircle]; ring` → `rw [hOnCircle]` (rw closes `r^2=r^2`,
+   `; ring` errored "no goals"). `expand`: `inner_smul_left/right` (insert `starRingEnd`
+   over ℝ, blocking `ring`) → `real_inner_smul_left/right`.
+3. **Vector `ring`/`ring_nf` → `abel`** at the `hCollinear'` calc (`B-c-(P-c)=B-P` and the
+   smul step via `congr 1; abel`) and the `hPBdist` `‖P'-(P'+X•dir)‖=‖-(X•dir)‖` step
+   (`ring_nf` → `congr 1; abel`).
+4. **Vector `linarith` cancellations → `sub_left_inj.mp`**: `hAneP'` (`A-c=P-c ⟹ A=P`)
+   and the t=1 block.
+5. **`center_chord_product`**: `rw [hB']` failed (goal has `‖C.center-B‖`, hB' has
+   `‖B-C.center‖`) → `rw [norm_sub_rev, hB']`.
+
+### CORRECTNESS BUG found + fixed: `power_of_point_product` was FALSE for `t=1`
+
+The old t=1 branch of the `hdiff : ‖A'-P'‖ ≠ t*‖A'-P'‖` sub-proof was incoherent
+(`exact absurd rfl hdiff` references `hdiff` inside its own proof; vector `linarith`).
+Root cause: **the theorem is genuinely false when `t=1` (i.e. `B=A`)** — then
+`‖PA‖·‖PB‖ = ‖PA‖²` but `|power|` need not equal `‖PA‖²` (secant ≠ tangent), and
+`hdiff` itself is unprovable (both sides equal). The two chord intersection points must
+be distinct. **Fix:** added hypothesis `(hABne : A ≠ B)` to `power_of_point_product`,
+and threaded `(hABne : A ≠ B) (hCDne : C ≠ D)` through `product_of_segments_of_chords`
+(its two call sites pass `hABne`/`hCDne`). The t=1 branch now closes cleanly:
+`rw [ht1, one_smul] at hCollinear'` → `B'-P'=A'-P'` → `B'=A'` → `B=A` → `hABne hBA.symm`.
+All references are in-file (only `#check`s + gallery annotations/meta mention them).
+
+### Verified (no build): lemma names exist at rev 2df2f0150c
+`sub_left_inj`, `mul_inv_cancel₀`, `real_inner_smul_left`, `real_inner_smul_right`,
+`one_smul`, `smul_smul`, `norm_smul`, `norm_inv`, `norm_sub_rev` — all confirmed.
+
+### RESIDUAL RISK (build-pending — next Docker-free session must build Proofs.ProductOfSegmentsOfChords)
+Lemma names confirmed; only tactic-closure is unverified: the `field_simp` in `hdir`,
+the two `congr 1; abel` steps, whether `abel` closes `hA'param`'s residual after the
+smul cancel, and `sub_left_inj` direction (a-b=c-b↔a=c; used 3×). If `sub_left_inj`
+mismatches, swap for `sub_right_cancel`/`add_right_cancel`. Once green, gallery flips
+formalized/wip → verified/original. **Note:** the meta `assumptions` field should also
+record the newly-required `A≠B`/`C≠D` distinctness hypotheses (correctness fix, not an
+axiom) — update when the build confirms.

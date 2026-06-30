@@ -2,11 +2,11 @@
   "id": "wilsons-theorem-oq-01",
   "title": "Wilson's Theorem: Complete Classification for Non-Prime Moduli",
   "slug": "wilsons-theorem-oq-01",
-  "description": "Extends Wilson's theorem to all moduli n≥2: for composite n>4, n∣(n-1)!; for n=4, (n-1)! ≡ 2 (mod 4); for primes, (p-1)! ≡ -1 (mod p). Formalizes Wilson primes (p∣(p-1)!+1 with p²), verifies 5, 13 are Wilson primes, and proves the Gauss-Wilson classification (product of units ≡ -1 iff n ∈ {1,2,4,p^k,2p^k}). 35 theorems, 0 axioms.",
+  "description": "Extends Wilson's theorem to all moduli n≥2: for composite n>4, n∣(n-1)!; for n=4, (n-1)! ≡ 2 (mod 4); for primes, (p-1)! ≡ -1 (mod p). Formalizes Wilson primes (p∣(p-1)!+1 with p²), verifies 5, 13 are Wilson primes, and proves the Gauss-Wilson classification (product of units ≡ -1 iff n ∈ {1,2,4,p^k,2p^k}). 35 theorems; named small-case verifications use native_decide (Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/WilsonsTheoremOQ01.lean",
     "tags": [
       "number-theory",
@@ -16,11 +16,11 @@
       "modular-arithmetic",
       "composite-moduli"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 1,
+    "assumptions": "Several named small-case results (factorial_mod_four, wilson_complete_classification's small instances, five_is_wilson_prime, thirteen_is_wilson_prime, and the gaussWilson_verified_le_N range checks) are discharged by `native_decide`, which relies on the `Lean.ofReduceBool` axiom (kernel-trusted compiler reduction). The proof is therefore not axiom-free. No `axiom` declarations appear literally in the source (leanFile.axiomCount = 0); the single assumption is Lean.ofReduceBool introduced by native_decide.",
     "lineCount": 688,
     "theoremCount": 35,
     "definitionCount": 9,
@@ -57,7 +57,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Wilson's theorem fully generalized: trichotomy (n-1)! ≡ {-1, 2, 0} mod n for primes, n=4, composite n>4 respectively. Wilson quotient, Wilson primes defined; 5 and 13 verified. Gauss-Wilson classification proved for all n≥3 via Mathlib's ZMod.isCyclic_units_iff and OQ02's abstract bridge. Computationally verified to n≤200. 35 theorems, 9 definitions, 688 lines, 0 axioms.",
+    "summary": "Wilson's theorem fully generalized: trichotomy (n-1)! ≡ {-1, 2, 0} mod n for primes, n=4, composite n>4 respectively. Wilson quotient, Wilson primes defined; 5 and 13 verified. Gauss-Wilson classification proved for all n≥3 via Mathlib's ZMod.isCyclic_units_iff and OQ02's abstract bridge. Computationally verified to n≤200. 35 theorems, 9 definitions, 688 lines. Named small-case checks use native_decide, depending on the Lean.ofReduceBool axiom (axiomCount = 1).",
     "implications": "The Gauss-Wilson classification is the number-theoretic foundation for primitive root theory and cyclic unit groups in algebraic number theory. It implies: primitive roots exist mod n iff n ∈ {1,2,4,p^k,2p^k}. Wilson primes connect to irregular primes, Bernoulli numbers, and Kummer's proof strategy for Fermat's Last Theorem. The only known Wilson primes are 5, 13, and 563; this remains a major open problem.",
     "openQuestions": [
       "Are there infinitely many Wilson primes? — equivalent to asking if p | B_{p-1} for infinitely many primes p",

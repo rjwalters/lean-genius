@@ -17,6 +17,11 @@
       "absolutely normal",
       "digit frequency",
       "e"
+    ],
+    "prerequisites": [
+      "measure theory (Lebesgue measure)",
+      "real analysis (limits and asymptotic density)",
+      "base-b digit expansions"
     ]
   },
   {
@@ -35,6 +40,11 @@
       "digit extraction",
       "floor function",
       "base-b expansion"
+    ],
+    "prerequisites": [
+      "floor function",
+      "modular arithmetic",
+      "positional (base-b) numeral systems"
     ]
   },
   {
@@ -54,6 +64,11 @@
       "Filter.atTop",
       "digit frequency",
       "Finset.filter"
+    ],
+    "prerequisites": [
+      "filters and limits (Filter.Tendsto)",
+      "Finset cardinality",
+      "Lean 4 dependent types (Fin)"
     ]
   },
   {
@@ -74,6 +89,11 @@
       "Int.floor_eq_iff",
       "linarith",
       "decide"
+    ],
+    "prerequisites": [
+      "floor function and interval arithmetic",
+      "rational bounds on e (exp_one_gt_d9 / exp_one_lt_d9)",
+      "Lean tactic proofs (linarith, decide)"
     ]
   },
   {
@@ -93,6 +113,11 @@
       "pigeonhole principle",
       "rational numbers",
       "period"
+    ],
+    "prerequisites": [
+      "modular arithmetic and the division algorithm",
+      "pigeonhole principle",
+      "multiplicative order and Euler's totient function"
     ]
   },
   {
@@ -112,6 +137,11 @@
       "irrationality",
       "periodic expansion",
       "orbit cardinality"
+    ],
+    "prerequisites": [
+      "eventually periodic sequences",
+      "asymptotic density and limits",
+      "proof by contradiction"
     ]
   },
   {
@@ -131,6 +161,11 @@
       "decimal digits",
       "Tendsto",
       "normality consequence"
+    ],
+    "prerequisites": [
+      "filters and limits (Filter.Tendsto)",
+      "definition of normality (digit frequency)",
+      "Lean simplification tactics (simp, norm_num)"
     ]
   }
 ]

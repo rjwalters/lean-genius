@@ -20,15 +20,15 @@
     "erdosNumber": 677,
     "erdosUrl": "https://erdosproblems.com/677",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: thue_siegel_finiteness (Thue-Siegel theorem: finitely many solutions for fixed k). Former axioms now proved: lcmInterval_example1/2 (native_decide), lcmInterval_dvd_product (Finset.induction + Nat.lcm_dvd), lcmInterval_pos (dvd + product positivity). Conjecture verified for k=1 and k=2.",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: thue_siegel_finiteness (Thue-Siegel theorem: finitely many solutions for fixed k) and `Lean.ofReduceBool`. The credited k=3 small-n resolutions (erdos677_k3_at_zero/_one/_two/_three) and the example collisions (lcmInterval_example1/2, lcmInterval_two_three_collision) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount. Former axioms now proved: lcmInterval_dvd_product (Finset.induction + Nat.lcm_dvd), lcmInterval_pos (dvd + product positivity). The general large-m bound (erdos677_large_m, erdos677_k3_large_m) is free of both axioms. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. Conjecture verified for k=1 and k=2.",
     "lineCount": 353,
     "mathlib_version": "4.26.0",
     "theoremCount": 31,
     "originalContributions": [
       "erdos677_large_m: general bound — for any k, if m+k > consecutiveProduct(n,k) then M(m,k)≠M(n,k)",
       "erdos677_k3_large_m: k=3 corollary of the large-m bound, axiom-free",
-      "erdos677_k3_at_two/three: axiom-free k=3 resolution for n ∈ {2, 3} via bounded interval_cases",
+      "erdos677_k3_at_two/three: k=3 resolution for n ∈ {2, 3} via bounded interval_cases + native_decide (free of mathematical axioms; depends on `Lean.ofReduceBool` via native_decide)",
       "lcmInterval_two_three_collision: near-miss observation that M(2,3) = M(3,3) = 60, excluded by m ≥ n+k constraint"
     ],
     "definitionCount": 5
@@ -149,10 +149,10 @@
     },
     {
       "id": "k3-small-n",
-      "title": "k = 3 Small-n Cases (Axiom-Free)",
+      "title": "k = 3 Small-n Cases (No Mathematical Axioms)",
       "startLine": 279,
       "endLine": 353,
-      "summary": "PROVES Erdős #677 for $k=3$ and each small $n$ axiom-free: `erdos677_k3_at_zero`/`_at_one`/`_at_two`/`_at_three` (using $m+3\\leq M(m,3)$ to bound $m$, then `interval_cases`+`native_decide`). Also `lcmInterval_two_three_collision` ($M(2,3)=M(3,3)=60$), a near-miss excluded precisely by the $m\\geq n+k$ constraint.",
+      "summary": "PROVES Erdős #677 for $k=3$ and each small $n$ without mathematical axioms: `erdos677_k3_at_zero`/`_at_one`/`_at_two`/`_at_three` (using $m+3\\leq M(m,3)$ to bound $m$, then `interval_cases`+`native_decide`). Because `native_decide` trusts the compiler's kernel reduction, these credited theorems depend on `Lean.ofReduceBool` (not a mathematical axiom). Also `lcmInterval_two_three_collision` ($M(2,3)=M(3,3)=60$), a near-miss excluded precisely by the $m\\geq n+k$ constraint.",
       "mathContext": "$k=3$, $n\\in\\{0,1,2,3\\}$ resolved by finite `native_decide` checks; near-miss $M(2,3)=M(3,3)=60$ excluded by $m\\geq n+k$."
     }
   ],

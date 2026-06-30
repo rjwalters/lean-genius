@@ -1,8 +1,272 @@
 # Current State
 
+## S39 (researcher-11, 2026-06-18) — StreamCanonical orphan BUILD-VERIFIED + registered (OQ #1 capstone)
+
+**Phase:** BUILD → DONE (Docker up). Executed the carried "post-blackout build"
+action for the S37 (researcher-2) orphan `CubeRoot3IrrationalOQ04StreamCanonical.lean`
+— OQ #1 in its strongest form: the certified CF prefix read off Mathlib's
+*top-level canonical* object `GenContFract.of cbrt3` (one structural layer above
+the already-registered `IntFractPair.stream` bridge in `Stream.lean`).
+
+- `docker-build.sh Proofs.CubeRoot3IrrationalOQ04StreamCanonical` (3 GB cap, good
+  neighbour under ~10 concurrent peer builds) → **Build succeeded**, zero errors,
+  0 axioms / 0 sorries (foundational propext/Choice/Quot only; no `ofReduceBool`,
+  no `native_decide`). The two translation lemmas resolved with **no edits**:
+  `GenContFract.of_h_eq_floor` and
+  `get?_of_eq_some_of_succ_get?_intFractPair_stream` (both confirmed at the
+  v4.26.0 pin, Translations.lean:167/:232 — pre-checked offline before the build).
+- **Registered** in `proofs/Proofs.lean` (after `…Stream`), so the canonical-CF
+  prefix is now in the gallery build closure rather than an orphan.
+- Surfaced in gallery `meta.json`: added to both `additionalFiles` lists and a
+  new `originalContributions` entry. Headline status stays verified/original/ax0.
+- Header BUILD-PENDING ORPHAN → BUILD-VERIFIED + REGISTERED.
+
+Theorems: `cbrt3_of_head` (`(of cbrt3).h = 1`, a₀) + `cbrt3_of_s_get_0…_10`
+(`(of cbrt3).s.get? k = some ⟨1, a_{k+1}⟩`, k=0…10, all partial numerators 1) +
+bundle `cbrt3_of_partquots_prefix`. Each is a mechanical clone of the
+build-verified `cbrt3_stream_b_*` lemmas; no new tactic/API surface.
+
+**Next action:** the other build-pending orphan `CubeRoot3IrrationalOQ04A12.lean`
+(a₁₂=8, a₁₃=3, deeper `linarith` chain + large heartbeat budget — riskier build)
+remains to be build-verified and folded into the main `…OQ04.lean`. Convergent
+ladder (≥29 rungs) and a12 main-chain are heavily contended — avoid piling on.
+
+---
+
+## S37 (researcher-9, 2026-06-18) — NotQuadratic orphan BUILD-VERIFIED + registered
+
+**Phase:** BUILD → DONE (Docker UP this session). Executed the long-carried
+"build-enabled session" action for the S20 (researcher-2) orphan
+`CubeRoot3IrrationalOQ04NotQuadratic.lean` (OQ #3 / Half (a): ∛3 is not a
+quadratic irrational, the structural obstacle behind CF non-periodicity).
+
+- `docker-build.sh Proofs.CubeRoot3IrrationalOQ04NotQuadratic` → **Build
+  succeeded (7744 jobs)**, zero errors. The two name-level risks flagged by the
+  author (`pow_eq_zero_iff`, `Irrational` membership unfolding) both resolved
+  with **no edits** — the file compiled exactly as written. 0 axioms, 0 sorries
+  (only foundational propext/Choice/Quot; no `Lean.ofReduceBool`, no
+  `native_decide`).
+- **Registered** in `proofs/Proofs.lean` (between `…Helpers` and `…Stream`), so
+  it is now in the gallery build closure rather than an orphan.
+- Surfaced in gallery `meta.json`: added to both `additionalFiles` lists and a
+  new `originalContributions` entry. Headline status stays verified/original/
+  ax0 (the new file is axiom-free, consistent with the entry).
+- Header BUILD STATUS updated build-pending → VERIFIED.
+
+The elementary elimination route (`cubic_lin_indep_of_irrational` →
+`cbrt3_not_quadratic` → `cbrt3_no_nontrivial_quadratic_relation`) is now
+machine-checked: 1, cbrt3, cbrt3² are ℚ-linearly independent from `cbrt3^3 = 3`
+and `Irrational cbrt3` alone — no minpoly / NumberField / irreducibility API.
+Cert `verify_cubic_lin_indep.py` (the three `linear_combination` identities)
+re-confirmed PASS this session.
+
+**Next action:** OQ #1 Stream-bridge `_b_three … _b_eleven` mechanical
+extension (cert covers n=0..11) remains the open follow-up; the prefix
+convergent ladder is the other live thread.
+
+---
+
+## S36b (researcher-3, 2026-06-16) — stream-bridge extension to full proven prefix n=0..11
+
+**Phase:** BUILD (extend the S35 orphan, build-PENDING — Docker still down,
+`docker run alpine echo` rc=124). Builds directly on the S36 offline audit below
+(which already landed the `sub_intCast` fix on main). Net-new this PR:
+
+- Extended `CubeRoot3IrrationalOQ04Stream.lean` from n=0,1,2 to the FULL proven
+  prefix n=0..11 via the reusable `cbrt3_stream_succ`: added
+  `cbrt3_stream_irr_1…_10`, `cbrt3_stream_three…_eleven`,
+  `cbrt3_stream_b_three…_b_eleven`, and bundle `cbrt3_stream_prefix_eleven`.
+  b-components = OEIS A002945 a₀..a₁₁ = [1,2,3,1,4,1,5,1,1,6,2,5].
+- Nested expressions GENERATED from the recursion `Eₙ=1/(Eₙ₋₁-aₙ₋₁)`
+  (E₁₁ byte-equal to merged `cbrt3_a11`) ⟹ no transcription risk; only
+  `simp`/`show` reductions unverified (pattern-identical to the base).
+
+Orphan still UNREGISTERED ⟹ zero gallery risk. Conflict-free with the swarmed
+convergent-ladder / a12 PRs.
+
+**Next action (S37, Docker-up):** `docker-build Proofs.CubeRoot3IrrationalOQ04Stream`
+by name; `push_cast` if a level leaves a residual cast; register in `Proofs.lean`.
+
+---
+
+## S36 (researcher-3, 2026-06-16) — offline API-name verification of S35 stream orphan
+
+**Phase:** BUILD (still build-PENDING — Docker + Aristotle both DOWN this session;
+`docker info` rc=124 with ~14 stacked build wrappers, Aristotle `prove` 404).
+
+Could not build/verify any Lean. Did NOT add a new convergent rung (a₁₂=8 is the
+merged frontier but is already in flight via open PRs #23388/#23983, and S35
+already judged a further rung to be routine churn). Instead executed S35's stated
+**next action** in its build-free portion: verified every Mathlib API name the
+orphan `CubeRoot3IrrationalOQ04Stream.lean` depends on against the pinned offline
+Mathlib4 checkout (`/Users/rwalters/GitHub/mathlib4` @ `2df2f0150c` = lakefile
+`rev = "v4.26.0"`).
+
+**Result — exactly one name drift found and fixed:**
+- `Irrational.sub_int` → **`Irrational.sub_intCast`** (orphan line ~116). No bare
+  `sub_int` exists at this pin; the Int-cast subtraction lemma is `sub_intCast`
+  (`Mathlib/NumberTheory/Real/Irrational.lean:272`).
+- All other names confirmed correct: `GenContFract.IntFractPair` (+ fields
+  `.b : ℤ`, `.fr`), `IntFractPair.of`, `stream_zero`, `stream_succ_of_some`,
+  `Irrational.ne_int`, `Irrational.inv`, and the local `irrational_cbrt3`
+  (base file `CubeRoot3Irrational.lean:73`), `cbrt3_floor_eq_one`, `cbrt3_a1`,
+  `cbrt3_a2`.
+- Note: `Irrational` API lives in `Mathlib.NumberTheory.Real.Irrational` at this
+  pin; `Mathlib.Data.Real.Irrational` is a 5-line re-export stub (still resolves).
+
+Confirmed the orphan is genuinely build-safe to edit: the gallery/CI target is
+`lake build Proofs`, whose root `proofs/Proofs.lean` imports only
+`CubeRoot3IrrationalOQ04` + `…Helpers` (lines 587–588), NOT `…Stream` — so the
+orphan is outside the default build closure and cannot break the gallery build
+until a future session adds its import line.
+
+**Next action (S37, Docker-up):** `docker-build.sh Proofs.CubeRoot3IrrationalOQ04Stream`.
+With the name drift fixed, remaining build risk is purely tactic-level
+(`simp`/`simpa` normalising `IntFractPair.of` / `Int.fract`, and the `⁻¹ ↔ 1/·`
+bridge in `_b_two`). If green: register in `Proofs.lean`, then extend
+`_b_three … _b_eleven` mechanically via `cbrt3_stream_succ` (cert covers n=0..11).
+
+PR (doc/orphan-only, zero gallery-build risk): see branch
+`research/cube-root-3-oq04-s36-stream-api-verify`.
+
+---
+
+## S35 (researcher-3, 2026-06-16) — IntFractPair.stream bridge (open question #1)
+
+**Phase:** BUILD (new orphan file, build-PENDING — Docker DOWN). First attempt
+at the slug's carried structural open question rather than the convergent
+treadmill.
+
+Chose OQ #1 (carried since S5, never attempted) over a 30th convergent rung
+because the helper/main files are swarmed (open convergent PRs #24516, #24538,
+#24612, #24635, #24767, #24802, #24809; a₁₂ chain #23388/#23983) and a further
+rung is routine churn.
+
+Added **unregistered orphan** `proofs/Proofs/CubeRoot3IrrationalOQ04Stream.lean`
+bridging the per-`aᵢ` floor lemmas to Mathlib's canonical CF API
+`IntFractPair.stream`:
+
+* `cbrt3_stream_succ` — reusable one-reciprocation step lemma
+  (`stream cbrt3 n = some (of x)`, `Irrational x`, `⌊x⌋ = a` ⟹
+  `stream cbrt3 (n+1) = some (of (x-a)⁻¹)`).
+* `cbrt3_stream_b_zero/_one/_two` : `(stream cbrt3 n).map (·.b) = some aₙ` for
+  a₀=1, a₁=2, a₂=3, discharged by existing `cbrt3_floor_eq_one/cbrt3_a1/cbrt3_a2`.
+* `cbrt3_stream_prefix` — bundled conjunction (the headline bridge).
+
+Math independently verified by `verify_intfractpair_stream.py` (PASS:
+`stream.b[n]` matches proven prefix a₀..a₁₁ AND fract-chain identity
+`fract xᵢ = xᵢ - aᵢ`, all residuals < 10⁻⁸⁰, 120-digit). NOT registered in
+`Proofs.lean` ⟹ cannot affect the gallery build; NOT Docker-verified ⟹ API names
+(`GenContFract.IntFractPair`, `stream_zero`, `stream_succ_of_some`,
+`Irrational.ne_int/.sub_int/.inv`) to be confirmed at v4.26.0 by the
+register-when-Docker-up session. Conflict-free with every open PR (new file).
+
+**Next action (S36, Docker-up):** build the orphan by name, fix any name drift,
+register it in `Proofs.lean`, then extend `_b_three … _b_eleven` mechanically via
+`cbrt3_stream_succ` (cert already covers n=0..11). See
+`sessions/2026-06-16-s35-intfractpair-stream-bridge.md`.
+
+---
+
+## S34 (researcher-11, 2026-06-15) — 29th CF convergent LOWER bound
+
+**Phase:** ACT (Helper ladder — convergent bounds run ahead of the contention-blocked main quotient chain).
+
+Added the **29th CF convergent LOWER bound** `64358293623227/44623548481633 < cbrt3`
+(a27=9, a28=1; even idx28 ⟹ lower) to `CubeRoot3IrrationalOQ04Helpers.lean`
+(28→29 theorems, 0 sorry / 0 axiom). Two-line cubing-iff proof
+(`rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`); cert
+`verify_cbrt3_oq04_s34_29th_convergent.py` PASSED (a27,a28 re-derived at 500
+digits; the 28th convergent `58053513978070/40252058432367` and the 29th both
+recomputed from the recurrence; exact `p³ < 3q³`, diff 30477949191328, rel gap
+≈ 3.8e-29).
+
+**Ladder state:** main reaches the 27th (idx26, #24782 merged). The 28th
+convergent (a27=9) is double-covered by open PRs #24802/#24809; this PR adds the
+**29th** — the next uncontested rung — built on freshly re-derived integers so it
+does not depend on the unmerged 28th.
+
+**Blocked frontier:** main a12=8 quotient chain (#23388 DRAFT / #23983 OPEN) —
+do not pile on a third a12 PR. Convergent helpers run ahead conflict-free.
+
+---
+
+## S32 (researcher-2, 2026-06-15) — 27th CF convergent LOWER bound
+
+**Phase:** ACT (Helper ladder — convergent bounds run ahead of the contention-blocked main quotient chain).
+
+Added the **27th CF convergent LOWER bound** `6304779645157/4371490049266 < cbrt3`
+(a26=4, even idx26 ⟹ lower) to `CubeRoot3IrrationalOQ04Helpers.lean`
+(976→1005 LOC, 27→28 theorems, 0 sorry / 0 axiom). Two-line cubing-iff proof
+(`rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`); cert
+`verify_cbrt3_oq04_s32_27th_convergent.py` PASSED (a26 re-derived at 400 digits;
+exact `p³ < 3q³`, diff 2701026174395, rel gap ≈ 3.6e-27). Build-pending (6
+concurrent lean-build containers on the 7.65GiB Docker VM ⟹ local build OOMs peers).
+
+**Ladder state:** main reaches 25th (idx24). Open PRs: 17th (#24516), 18th
+(#24538), 20th (#24612), 23rd (#24635), 26th (#24767). This PR adds the 27th —
+the next uncontested rung above #24767.
+
+**Correction logged:** the earlier S27/S28 state-note labeled
+`247706213128/171749895599` as the "23rd lower bound (a22=2)"; it is actually the
+24th convergent (idx23, a23=3, UPPER). The genuine 23rd is `71966106017/49898510978`
+(idx22, a22=2, lower, PR #24635). Always re-derive idx/sign from a fresh CF run.
+
+**Blocked frontier:** main a12=8 quotient chain (#23388 DRAFT / #23983 OPEN) —
+do not pile on a third a12 PR. Convergent helpers run ahead conflict-free.
+
+---
+
+# Current State
+
+## S27 (researcher-2, 2026-06-15) — 21st CF convergent LOWER bound
+
+**Phase:** ACT (Helper ladder — convergent bounds run ahead of the contention-blocked main quotient chain).
+
+Added the **21st CF convergent LOWER bound** `8350315863/5789785648 < cbrt3`
+(a20=1) AND the **22nd UPPER bound** `cbrt3 < 31807895077/22054362665` (a21=3)
+to `CubeRoot3IrrationalOQ04Helpers.lean` (860→913 LOC, 22→24 theorems, 0 sorry / 0 axiom). Two-line cubing-iff proof;
+cert `verify_cbrt3_oq04_s27_21st_convergent.py` PASSED. Build-pending (Docker down).
+
+**Ladder state:** main reaches 19th (idx18, #24556 merged). Open PRs: 17th
+(#24516), 18th (#24538), 20th (#24612). This PR adds the 21st + 22nd — next uncontested rungs.
+
+**Next action (S28):** 23rd CF convergent LOWER bound `247706213128/171749895599`
+(a22=2, idx22 even=lower) via `lt_cbrt3_iff_cube_lt`; re-derive a22 at ≥200-digit precision first.
+
+**Blocked frontier:** main a12=8 quotient chain (#23388 DRAFT / #23983 OPEN) —
+do not pile on a third a12 PR. Convergent helpers run ahead conflict-free.
+
+---
+
+# Current State
+
 **Phase**: ACT
-**Since**: 2026-06-12 (S14a Helper-ACT)
-**Iteration**: 21
+**Since**: 2026-06-15 (S22 / 16th-convergent Helper-ACT)
+**Iteration**: 22
+
+## S22 — sixteenth CF convergent UPPER bound (researcher-4, 2026-06-15, Docker-down, build-free)
+
+Docker down (`docker info` timeout). a12=8 main frontier double-claimed (PRs #23388 DRAFT,
+#23983 OPEN); Half-(a) "not quadratic irrational" claimed (#24323); 15th convergent lower
+bound just merged (S15a/S21, #24401). The next non-colliding forward step is the **16th CF
+convergent upper bound** for the future `a₁₄ = 3` main-ACT. (Branch was 40 commits behind
+origin/main; I first rediscovered the already-merged 15th lower bound, discarded it,
+fast-forwarded, and re-targeted the open 16th.)
+
+Added `Cbrt3Helpers.cbrt3_lt_two_six_six_three_nine_four_five_zero_over_one_eight_four_seven_zero_seven_six_three :
+cbrt3 < (26639450/18470763 : ℝ)` (the **sixteenth CF convergent**, odd-index 15 ⇒ upper side;
+`a₁₅ = 4` re-derived at 120-digit precision, true prefix
+`a₀..a₁₆ = [1,2,3,1,4,1,5,1,1,6,2,5,8,3,3,4,2]`) via the proven two-line cubing-iff template
+`rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num`. Recursion
+`p₁₅ = 4·6193523 + 1865358 = 26_639_450`, `q₁₅ = 4·4294349 + 1293367 = 18_470_763`;
+exact cube check `26639450³ = 18_904_959_980_335_633_625_000 >
+18_904_959_980_335_585_454_841 = 3·18470763³` (diff `+48_170_159`, relative gap `≈ 2.55·10⁻¹⁵`).
+This **prepares the sandwich** `6193523/4294349 < cbrt3 < 26639450/18470763` (gap `≈ 2.6·10⁻¹⁵`)
+for the FUTURE main-ACT of `cbrt3_a14 = 3` — gated on S14b `a12 = 8` and the subsequent
+`a13 = 3` landing in order. Helper file 753 → 808 LOC (+55 LOC, +1 theorem; theoremCount
+20 → 21). 0 sorries, 0 axioms. **Not Docker-verified** (docker down); template identical to
+S13/S14a/S15a compiled bounds, only the integers are larger (`norm_num` needs no heartbeat bump).
 
 ## S21 — a13 lower-bound helper shipped + a14 math-correction (researcher-2, 2026-06-15)
 
@@ -1223,3 +1487,19 @@ Ninth partial-quotient iteration on this slug. Phase ACT.
   S10 because the S9 next-action sketch already gave `a₉ = 6`
   from OEIS A002945 — but the discipline of pre-claim cube checking
   remains MANDATORY for S11+ given this slug's history.
+
+## Current Focus (S29, researcher-1, 2026-06-15)
+Added the 24th CF convergent UPPER bound `cbrt3 < 247706213128/171749895599` (a23=3) to the
+Helpers ladder — next uncontested rung above the 23rd (PR #24635). Exact cube check
+`p³-3q³ = +210376652755 > 0`; cert verify_cbrt3_oq04_s29_24th_convergent.py PASS. Build-pending
+(Docker down). NEXT uncontested = 25th convergent LOWER (a24=4): 1062790958529/736898093374.
+
+## Current Focus (S30, researcher-7, 2026-06-15)
+Added the 25th CF convergent LOWER bound `1062790958529/736898093374 < cbrt3` (a24=4)
+to the Helpers ladder — the next uncontested rung above the 24th (S29). Exact cube
+check `3q³-p³ = +3113550082983 > 0` ⟹ `(p/q)³ < 3` ⟹ `p/q < cbrt3` (correct
+lower-side direction for even index 24); cert
+`verify_cbrt3_oq04_s30_25th_convergent.py` PASS (relative gap ≈ 8.6·10⁻²⁵).
+Two-line proof via `lt_cbrt3_iff_cube_lt`. Build-pending (Docker daemon down,
+Aristotle MCP 404 — both re-tested live this session).
+NEXT uncontested = 26th convergent UPPER (a25=1): 1310497171657/908647988973.

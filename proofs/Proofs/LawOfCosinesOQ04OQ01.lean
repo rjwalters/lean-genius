@@ -33,6 +33,10 @@ The abstract cosine `t` of the parent file is replaced by the real inner product
 * `angle_bisector_length_inner` — the internal-bisector length formula
     (b + c)²‖A - D‖² = bc((b + c)² − a²)
   for the cevian foot dividing `BC` in the ratio `BD:DC = c:b`.
+* `angle_bisector_ratio_inner` — the genuine angle-bisector property: with the
+  same ratio hypothesis, ray `AD` bisects `∠BAC` (equal half-angle cosines),
+  `‖A-C‖·⟪B-A, D-A⟫ = ‖A-B‖·⟪C-A, D-A⟫`. Upgrades the previous lemma from a
+  stipulated-ratio cevian to the actual internal bisector.
 
 The geometric content (BD = s·a, DC = (1 - s)·a) is what makes `m + n = a`; here
 that is encoded directly so the algebraic identity holds with no sign hypotheses.
@@ -43,13 +47,15 @@ Tags: geometry, stewarts-theorem, cevian, inner-product-space, law-of-cosines
 
 namespace StewartsTheoremInner
 
+open scoped RealInnerProductSpace
+
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
 
 /-- Squared norm of a linear combination of two vectors, expanded bilinearly:
     ‖p • u + q • v‖² = p²‖u‖² + q²‖v‖² + 2pq⟪u, v⟫. -/
 theorem norm_smul_add_smul_sq (p q : ℝ) (u v : V) :
     ‖p • u + q • v‖ ^ 2 =
-      p ^ 2 * ‖u‖ ^ 2 + q ^ 2 * ‖v‖ ^ 2 + 2 * (p * q) * (inner u v : ℝ) := by
+      p ^ 2 * ‖u‖ ^ 2 + q ^ 2 * ‖v‖ ^ 2 + 2 * (p * q) * ⟪u, v⟫ := by
   rw [norm_add_sq_real, norm_smul, norm_smul, real_inner_smul_left, real_inner_smul_right]
   simp only [Real.norm_eq_abs, mul_pow, sq_abs]
   ring
@@ -69,8 +75,10 @@ theorem stewart_cevian_inner (A B C : V) (s : ℝ) :
   have hAD : A - ((1 - s) • B + s • C) = (1 - s) • (A - B) + s • (A - C) := by
     module
   have hBC : B - C = (A - C) - (A - B) := by module
-  rw [hAD, hBC, norm_smul_add_smul_sq, norm_sub_sq_real,
-    real_inner_comm (A - C) (A - B)]
+  rw [hAD, hBC]
+  generalize A - B = u
+  generalize A - C = v
+  rw [norm_smul_add_smul_sq, norm_sub_sq_real, real_inner_comm v u]
   ring
 
 /-- **Stewart's theorem, classical form** `b²m + c²n = a(d² + mn)`.
@@ -120,6 +128,39 @@ theorem angle_bisector_length_inner (A B C : V) (s : ℝ)
   linear_combination
     ((‖A - C‖ + ‖A - B‖) ^ 2 * (‖A - C‖ - ‖A - B‖) +
         ‖B - C‖ ^ 2 * (s * (‖A - C‖ + ‖A - B‖) - ‖A - C‖)) * hs
+
+/-- **Angle-bisector property** (equal half-angle cosines).
+
+    The companion `angle_bisector_length_inner` only used the segment ratio
+    `BD : DC = c : b`; it did *not* establish that this ratio is the one cut by
+    the genuine internal angle bisector at `A`.  This lemma supplies exactly
+    that geometric content: for the cevian foot `D = (1 - s) • B + s • C` with
+    the same ratio hypothesis `hs : s · (b + c) = c` (`b = ‖A-C‖`, `c = ‖A-B‖`),
+    ray `AD` bisects `∠BAC` — the two half-angles have equal cosine.  Stated in
+    the cleared, division-free cross-multiplied form
+
+      ‖A-C‖ · ⟪B-A, D-A⟫ = ‖A-B‖ · ⟪C-A, D-A⟫,
+
+    which is `cos∠BAD = cos∠DAC` with the common `‖D-A‖` and the norms
+    `‖B-A‖ = c`, `‖C-A‖ = b` cleared.  Valid in any real inner product space and
+    any dimension; certified numerically over dims 2–8 by
+    `verify_bisector_theorem.py`.
+
+    Proof: expand both inner products bilinearly to the scalar shape
+    `b·((1-s)c² + s·w) = c·((1-s)w + s·b²)` with `w = ⟪B-A, C-A⟫`, then close by
+    `linear_combination · hs` since the difference factors as
+    `(w − bc)·(s(b+c) − c)`. -/
+theorem angle_bisector_ratio_inner (A B C : V) (s : ℝ)
+    (hs : s * (‖A - C‖ + ‖A - B‖) = ‖A - B‖) :
+    ‖A - C‖ * ⟪B - A, ((1 - s) • B + s • C) - A⟫_ℝ
+      = ‖A - B‖ * ⟪C - A, ((1 - s) • B + s • C) - A⟫_ℝ := by
+  have hD : ((1 - s) • B + s • C) - A = (1 - s) • (B - A) + s • (C - A) := by
+    module
+  rw [hD, inner_add_right, inner_add_right, real_inner_smul_right, real_inner_smul_right,
+    real_inner_smul_right, real_inner_smul_right, real_inner_self_eq_norm_sq,
+    real_inner_self_eq_norm_sq, real_inner_comm (C - A) (B - A), norm_sub_rev B A,
+    norm_sub_rev C A]
+  linear_combination (⟪B - A, C - A⟫_ℝ - ‖A - C‖ * ‖A - B‖) * hs
 
 /-
 ## Summary

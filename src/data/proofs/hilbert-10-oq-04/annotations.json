@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 50
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Open Question and Known Bounds",
     "content": "The opening docstring frames the question this file partially answers: among all undecidable Diophantine problems, what is the minimal complexity in (i) variable count and (ii) polynomial degree? Davis-Putnam-Robinson-Matiyasevich (1970) settled Hilbert's tenth problem in the negative — there is no algorithm — but the proof yielded a polynomial in many variables of high degree. Subsequent decades chased the minimum: Matiyasevich's 1977 bound of 13 variables, Jones (1982) reduced to 9 variables and degree 4, and the lower bound was improved to ≥ 3 variables. This file proves the *boundary*: 0-variable and 1-variable linear cases are decidable, undecidability is monotone in variable count, and (axiomatized from the literature) 9 variables suffice to encode any r.e. set. The current open gap (3 ≤ minimum ≤ 9 variables, 2 ≤ minimum degree ≤ 4) is one of the most concrete open problems in computability theory. The three Mathlib imports — `Tactic`, `Data.Fin.Basic`, `Data.Int.Order` — are minimal: only `Fin.elim0`, `Fin.castSucc`, and integer divisibility / ordering lemmas are needed.",
     "mathContext": "MRDP theorem (1970): a set $S \\subseteq \\mathbb{N}$ is r.e. iff there is a polynomial $P(k, x_1, \\dots, x_n) \\in \\mathbb{Z}[k, x_1, \\dots, x_n]$ such that $k \\in S \\iff \\exists x_1, \\dots, x_n \\in \\mathbb{Z},\\ P(k, x_1, \\dots, x_n) = 0$. Jones (1982): can be done with $n = 9$ and $\\deg P \\le 4$. Open: minimum $(n, \\deg)$ for undecidability — known $(n, \\deg) \\in [3, 9] \\times [2, 4]$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Hilbert's 10th problem",
       "Matiyasevich-Robinson-Davis-Putnam theorem",
@@ -55,7 +55,7 @@
       "startLine": 88,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Decidable Cases: 0 Variables and 1-Variable Linear",
     "content": "`zero_var_decidable` proves $\\text{H10}_0$ is decidable: the entire input is the polynomial's value at the unique map `Fin.elim0` (out of the empty type), so the algorithm is `decide (P Fin.elim0 = 0)`. The `funext` step is the only subtlety — one direction needs to show that any solution $x : \\text{Fin}\\,0 \\to \\mathbb{Z}$ is equal to `Fin.elim0`, which is automatic because `Fin.elim0`'s domain is empty (there are no values $i.\\text{val} < 0$, so `absurd i.isLt (Nat.not_lt_zero _)` does the work). `linear_one_var` is the classical Bézout content for one variable: $ax = b$ has an integer solution iff $a \\mid b$. The proof is two destructuring rewrites — given a solution, write $b = a \\cdot x_0$ to witness divisibility; given $b = a \\cdot k$, take $x = k$. The corollaries `zero_coeff_linear`, `unit_coeff_linear`, `neg_unit_coeff_linear` illustrate the decision procedure on simple coefficient choices. The strict 'no degree ≥ 2 here' boundary is what makes this section *the* lower bound for undecidability.",
     "mathContext": "0-variable: $P() = c \\in \\mathbb{Z}$, decidable trivially. 1-variable linear: $ax = b$ has integer solution iff $a \\mid b$ (Bézout in one variable; the higher-variable form is `linear_bezout_n` axiom). Boundary: degree-1 equations are *uniformly* decidable in any variable count via Bézout / extended Euclidean.",
@@ -80,7 +80,7 @@
       "startLine": 123,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Monotonicity of Undecidability",
     "content": "`H10_undecidable_monotone` is the only non-trivial proof in the file: undecidability of $\\text{H10}_n$ implies undecidability of $\\text{H10}_{n+1}$. The argument is a textbook many-one reduction. Embed $P : \\text{DiophantineN}\\,n$ into $\\text{DiophantineN}\\,(n+1)$ as $\\bar{P}(x) := P(x \\circ \\text{castSucc})$ — i.e., ignore the last variable. Both directions of $\\bar{P}$ being solvable iff $P$ is need to be checked: forward, given a solution $y$ for $\\bar{P}$, restrict via `castSucc` to a solution for $P$; reverse, extend any solution $x$ for $P$ to $y$ for $\\bar{P}$ by setting the last coordinate to 0. Lean's `if hlt : j.val < n then x ⟨j.val, hlt⟩ else 0` handles the extension via dependent if, and the `convert ... using 2` step bridges the syntactic difference between `j.castSucc` and `⟨j.val, hlt⟩`. Mathematically, this is the standard 'undecidability spreads upward' phenomenon — once a single $\\text{H10}_k$ is undecidable, every $\\text{H10}_m$ with $m \\ge k$ is too. Combined with `nine_var_h10_undecidable` (axiom), this immediately gives $\\text{H10}_{10}, \\text{H10}_{11}, \\dots$ all undecidable, the proved corollaries in Part V.",
     "mathContext": "Many-one reduction $\\text{H10}_n \\le_m \\text{H10}_{n+1}$: $P \\mapsto P \\circ \\pi$ where $\\pi : \\mathbb{Z}^{n+1} \\to \\mathbb{Z}^n$ is the first-$n$ projection. Solvability is preserved exactly. Hence undecidable $\\text{H10}_n$ implies undecidable $\\text{H10}_{n+1}$. By induction, undecidability propagates to all higher variable counts.",
@@ -105,11 +105,11 @@
       "startLine": 148,
       "endLine": 201
     },
-    "type": "context",
+    "type": "concept",
     "title": "Five Axioms from the Literature",
     "content": "The five axioms encapsulate seventy years of computability and number-theory research. **`mrdp_finite_var`** is the celebrated MRDP theorem (Matiyasevich 1970, completing Davis-Putnam-Robinson 1961): every recursively enumerable set is a Diophantine set, in some finite number of variables. The 1961 Davis-Putnam-Robinson paper had reduced the problem to a single missing input — the existence of a Diophantine relation of exponential growth (the 'Julia Robinson hypothesis'). Matiyasevich, then a 22-year-old graduate student in Leningrad, supplied this relation by encoding the Fibonacci sequence as a Diophantine condition, completing the proof. **`jones_matiyasevich_bound`** is the quantitative refinement: 9 variables always suffice (Jones 1982 improved Matiyasevich's earlier 13-variable bound from 1977). **`nine_var_h10_undecidable`** is the immediate consequence: choose $S$ to be the halting set, get a 9-variable Diophantine encoding, conclude that an algorithm for $\\text{H10}_9$ would solve halting — and halting is famously not solvable (Turing 1936). **`linear_bezout_n`** generalizes Bézout to any number of variables: $\\sum a_i x_i = b$ has an integer solution iff $\\gcd(a_1, \\dots, a_n) \\mid b$, with the GCD characterized by its lattice-theoretic universal property (positive, divides each $a_i$ and $b$, divisible by every other common divisor). **`jones_universal_poly`** is the existence of a single 9-variable degree-4 polynomial that, parameterized by an integer offset, can encode every r.e. set — a quantitative form of MRDP, asserting not just that *some* 9-variable encoding exists for each r.e. set, but that one universal polynomial covers them all. Each axiom is a candidate for elimination at different difficulty: `linear_bezout_n` can plausibly be proved from Mathlib's `Int.gcd` and the extended Euclidean algorithm (~100 lines, see openQuestion oq-03); the MRDP-family axioms are deep theorems whose full Lean formalization is a major research project, partly underway in the parent `hilbert-10` entry.",
     "mathContext": "MRDP (1970): r.e. = Diophantine. Jones (1982): 9 variables, degree 4 suffice. Bézout ($n$-variable): $\\sum a_i x_i = b$ has integer solution $\\iff \\gcd(a_1, \\dots, a_n) \\mid b$. Halting ↔ 9-variable Diophantine solvability gives undecidability of $\\text{H10}_9$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "MRDP theorem",
       "Jones universal polynomial",

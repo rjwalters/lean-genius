@@ -54,7 +54,8 @@
       "Both SpernerSimplicialInstance.lean and SpernerNDim.lean are sorry-free; the gap is purely the cross-dimensional facet-restriction map connecting Triangulation to SpernerTriangulation. No concrete general-n standard-simplex SpernerTriangulation instance exists yet in the gallery (only intervalTriangulation 1 and a 2-simplex fixture).",
       "Verified mesh-free that the restriction of a Sperner Delta^3 coloring to the top facet (opposite v3) uses only colors {0,1,2} (color 3 forbidden there), so it is automatically a Sperner Delta^2 coloring, and #(top-facet doors of Delta^3) == #FC(panchromatic) of the induced Delta^2 coloring == odd (all Sperner colorings, facet grids m<=4).",
       "S5: Built a CONCRETE self-validated standard (Freudenthal) triangulation of Delta^d for general d (order-polytope coords: barycentric b<->monotone partial sums s; cells = (base, permutation) chains). Pseudomanifold confirmed (facet multiplicities in {1,2}), cell count == m^d (d=3: 1,8,27; d=4: 1,16,81). First general-d concrete instance anywhere; doubles as the reference algorithm for the Lean SpernerTriangulation.",
-      "S5: On GENUINE 3-D and 4-D meshes (S1-S4 reached only 2-D) verified all three pillars: (P) sperner_parity #FC == #(boundary doors on geometric face d) (mod 2); (A) the top facet (b_d=0) of the d-mesh IS the (d-1)-mesh as a cell set (restriction map s |-> s[:d-1]); (R) #(doors on face d of Delta^d) == #FC of the induced Delta^{d-1} coloring per coloring, restriction always Sperner. Together they close the full induction _hLastFace[d] -> _hLastFace[d-1] -> ... -> base d=1 on actual standard triangulations."
+      "S5: On GENUINE 3-D and 4-D meshes (S1-S4 reached only 2-D) verified all three pillars: (P) sperner_parity #FC == #(boundary doors on geometric face d) (mod 2); (A) the top facet (b_d=0) of the d-mesh IS the (d-1)-mesh as a cell set (restriction map s |-> s[:d-1]); (R) #(doors on face d of Delta^d) == #FC of the induced Delta^{d-1} coloring per coloring, restriction always Sperner. Together they close the full induction _hLastFace[d] -> _hLastFace[d-1] -> ... -> base d=1 on actual standard triangulations.",
+      "2026-06-15 (researcher-3): standdown. PR #24362 (abstract inductive step) confirmed MERGED; no concrete general-n SpernerTriangulation instance exists yet. Remaining ACT = construct the Freudenthal/order-polytope mesh instance (geometric adj_unique_facet/boundary_face fields), a large Docker-gated build. Numerics already verified d=2,3,4. No safe build-free step under dual blackout."
     ],
     "mathlibGaps": [
       "No off-the-shelf Mathlib lemma for boundary-face parity of standard-simplex triangulations; the door-counting engine is gallery-local (SpernerMathlib.lean).",
@@ -114,6 +115,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ01.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ03.lean",
+      "filename": "SpernerSimplicialInstanceOQ03.lean",
+      "lineCount": 109,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ03.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ03Tower.lean",
+      "filename": "SpernerSimplicialInstanceOQ03Tower.lean",
+      "lineCount": 88,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ03Tower.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ04.lean",
+      "filename": "SpernerSimplicialInstanceOQ04.lean",
+      "lineCount": 108,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ04.lean"
     },
     {
       "path": "Proofs/SpernerSimplicialInstanceOQ05.lean",

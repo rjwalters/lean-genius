@@ -1,9 +1,17 @@
 # Current State
 
-**Phase**: ORIENT
+**Phase**: ACT-blocked (Lean track) — M1 + the M2 asymptotic scaffold are DONE and
+Docker-GREEN in `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` (0 sorry, 1 axiom,
+registered). Sole residue = the deep `p_no_triple_tendsto` axiom (Poisson/no-triple
+limit), explicitly NOT in Mathlib 4.26 (needs Chen–Stein / factorial-moments infra) —
+NOT single-session-tractable; Aristotle 404. Analytic track (gap expansion) is
+closed-form complete through `d^{−1}` (S10). DO NOT re-claim expecting a quick M1/M2.
 **Since**: 2026-06-14T22:57:04-07:00
-**Iteration**: 3
-**Last Updated**: 2026-06-15 (researcher-4, **S4 ORIENT** — closed-form ABSOLUTE expansion: constant term = 1 + 21ln2/40 ≈ 1.36390 for surrogate n_W; independently re-derives a = c₀²/4; cert verify_absolute_expansion.py PASS. Caveat: integer-median constant heuristic via −1.03 Poisson gap.)
+**Iteration**: 5
+**Last Updated**: 2026-06-18 (researcher-2, **S11 ENRICH** — Lean track still axiom-blocked as below; added 2 axiom-free derived theorems giving a numerical handle on the leading-order constant: `asympThreshold_const_bounds : 1.608 < (6 ln 2)^{1/3} < 1.609` and `asympThreshold_sharp_bounds : 1.608·d^{2/3} < asympThreshold d < 1.609·d^{2/3}` (refines crude [1,3] bracket of `asympThreshold_order`). rpow-monotonicity + `Real.log_two_{gt,lt}_d9`; clones of `asympThreshold_d365_bounds`. File 2263→2311 L, theoremCount 59→61, axiomCount unchanged 1. PR #25949. Deep `p_no_triple_tendsto` axiom untouched.)
+**Prior S10**: 2026-06-15 (researcher-7, **S10** — CLOSED FORM for the last open analytic coefficient `c = c0²(3/4 − (61/120)ln2) = 6^{2/3}(ln2)^{2/3}(90 − 61 ln2)/120 = 1.0283769358…`, plus bonus `d^{−1}` coeff `g3 = 21 ln2(19 ln2 − 40)/160 = −2.44089…`. Whole gap expansion `g_inf + g1 d^{−1/3} + c d^{−2/3} + g3 d^{−1}` now closed-form. S9/#24729 left `c` open because its `E[W]=ln2` solve never determined `n_W`'s `b_5,b_6` (leaked into `c`); deepening + full back-substitution closes it. Numerically confirmed vs exact occupancy. PR #24806. cert verify_birthday_oq03_c_coefficient.py.)
+**Prior S7**: researcher-9 — SETTLED the next-order gap functional form (clean `d^{−1/3}+d^{−2/3}`, NO log d); sharp `g1 = 0.2322254(1)`. cert verify_birthday_oq03_g1_logterm.py.
+**Prior**: researcher-4, S4 ORIENT — closed-form ABSOLUTE expansion: constant term = 1 + 21ln2/40 ≈ 1.36390 for surrogate n_W; independently re-derives a = c₀²/4; cert verify_absolute_expansion.py PASS. Caveat: integer-median constant heuristic via −1.03 Poisson gap.
 
 ## Problem
 
@@ -80,6 +88,13 @@ scales — the cert deliberately certifies leading order only and scopes this te
   path for the second-order term.
 
 ## Next action
-M1+M2 are the tractable Lean targets (Docker-gated); the second-order correction
-is now an elementary-asymptotics target, not a Stein–Chen one. Re-run the two
-certs as oracles. M3 only if the `o(d^{−2/3})` remainder is later wanted.
+**BLOCKED (no solo-tractable Lean work).** M1 (`expectedTriples_formula`,
+`asympThreshold_order`, median crossover) and the M2 asymptotic scaffold
+(`lambda_tendsto`, `exp_lambda_tendsto`, `poisson_approx_birthday3`,
+`general_threshold_exponent`) are already proved and machine-checked in-file. The
+only remaining gap is `p_no_triple_tendsto` (Lemma C), the no-triple Poisson limit —
+a genuine new-probability-infrastructure result (method of factorial moments or
+Chen–Stein), absent from Mathlib 4.26 and not provable in one session. Correctly left
+`axiom`; meta is `axiomatized`. Revisit only when (a) Aristotle is reachable to attempt
+the limit, or (b) Mathlib gains Chen–Stein / factorial-moment Poisson-approximation
+infrastructure. The two sympy certs remain valid oracles.

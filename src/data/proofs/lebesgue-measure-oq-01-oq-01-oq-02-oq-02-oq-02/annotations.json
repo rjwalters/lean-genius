@@ -1,0 +1,163 @@
+[
+  {
+    "id": "dirichlet-def",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 43, "endLine": 58 },
+    "type": "definition",
+    "title": "The Dirichlet function 𝟙_ℚ",
+    "content": "`dirichlet := Set.indicator (range ((↑):ℚ→ℝ)) 1`: the indicator of the rationals, equal to 1 on ℚ and 0 on ℝ∖ℚ. The three value lemmas (dirichlet_rat = 1, dirichlet_irrational = 0, dirichlet_zero_or_one) record that D takes only the values 0 and 1 — the fact that ultimately caps the oscillation at diam{0,1} = 1. Encoding D as a Mathlib Set.indicator gives the membership rewrites indicator_of_mem / indicator_of_notMem for free. It is noncomputable because rational-membership of a real is not decidable.",
+    "mathContext": "$D = \\mathbf{1}_{\\mathbb{Q}},\\quad D(x)=\\begin{cases}1 & x\\in\\mathbb{Q}\\\\ 0 & x\\notin\\mathbb{Q}\\end{cases}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.indicator",
+      "characteristic function of ℚ",
+      "Thomae's function (parent)",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "indicator functions",
+      "range of the ℚ→ℝ cast"
+    ]
+  },
+  {
+    "id": "dirichlet-seq-approach",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 60, "endLine": 70 },
+    "type": "theorem",
+    "title": "Approaching every point through both rationals and irrationals",
+    "content": "`exists_rat_seq_tendsto` and `exists_irrational_seq_tendsto`: every real x is the limit of a sequence of rationals (where D = 1) AND of a sequence of irrationals (where D = 0). Both follow immediately from density (Rat.denseRange_cast, dense_irrational) via mem_closure_iff_seq_limit. This double-sided density is the single fact that drives nowhere-continuity, the empty continuity set, and the unit oscillation.",
+    "mathContext": "$\\forall x\\,\\exists (u_n)\\subseteq\\mathbb{Q},\\,(v_n)\\subseteq\\mathbb{R}\\setminus\\mathbb{Q}:\\ u_n\\to x,\\ v_n\\to x.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "density of ℚ and of ℝ∖ℚ",
+      "mem_closure_iff_seq_limit",
+      "dense_irrational",
+      "sequential limits"
+    ],
+    "prerequisites": [
+      "denseness and closure",
+      "Tendsto along atTop"
+    ]
+  },
+  {
+    "id": "dirichlet-nowhere-continuous",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 72, "endLine": 93 },
+    "type": "theorem",
+    "title": "Nowhere continuous (the headline)",
+    "content": "`dirichlet_not_continuousAt`: D is continuous at NO point of ℝ — the verbatim answer to the parent's open question. If D were continuous at x, composing with a rational sequence uₙ → x forces D(uₙ) = 1 → D(x), so D(x) = 1; composing with an irrational sequence vₙ → x forces D(x) = 0. Uniqueness of limits (tendsto_nhds_unique) then yields 1 = 0, a contradiction. No Baire machinery is needed for the negative result — it is a pure uniform-density argument.",
+    "mathContext": "$\\forall x:\\ \\neg\\,\\mathrm{ContinuousAt}\\,D\\,x;\\qquad D(x)=1\\ \\wedge\\ D(x)=0\\Rightarrow\\bot.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "tendsto_nhds_unique",
+      "sequential continuity",
+      "uniqueness of limits",
+      "ContinuousAt"
+    ],
+    "prerequisites": [
+      "the two density sequences",
+      "ContinuousAt.tendsto / comp"
+    ]
+  },
+  {
+    "id": "dirichlet-continuity-sets",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 95, "endLine": 107 },
+    "type": "theorem",
+    "title": "Continuity set = ∅, discontinuity set = ℝ",
+    "content": "`dirichlet_continuitySet_eq_empty` and `dirichlet_discontinuitySet_eq_univ`: pointwise corollaries of nowhere-continuity stated at the set level. The continuity set {x : ContinuousAt D x} is empty and its complement is all of ℝ. This is the set-theoretic form contrasted later with Thomae, whose continuity set is the (dense, comeagre) irrationals.",
+    "mathContext": "$\\{x: \\mathrm{ContinuousAt}\\,D\\,x\\}=\\varnothing,\\qquad \\{x:\\neg\\,\\mathrm{ContinuousAt}\\,D\\,x\\}=\\mathbb{R}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "continuity set",
+      "discontinuity set",
+      "Set.ext",
+      "Thomae contrast"
+    ],
+    "prerequisites": [
+      "dirichlet_not_continuousAt",
+      "set extensionality"
+    ]
+  },
+  {
+    "id": "dirichlet-nhds-witnesses",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 111, "endLine": 131 },
+    "type": "theorem",
+    "title": "Every neighbourhood realises both values",
+    "content": "`exists_rat_mem_of_nhds` and `exists_irrational_mem_of_nhds`: any neighbourhood N of x contains a point where D = 1 (a nearby rational, exists_rat_near) and a point where D = 0 (a nearby irrational, exists_irrational_btwn). The helper `edist_one_zero` records edist(1,0) = 1. Together these supply the two points of distance 1 inside every image set that force the oscillation lower bound.",
+    "mathContext": "$\\forall N\\in\\mathcal N(x):\\ \\exists y,z\\in N,\\ D(y)=1,\\ D(z)=0;\\quad \\mathrm{edist}(1,0)=1.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exists_rat_near",
+      "exists_irrational_btwn",
+      "Metric.mem_nhds_iff",
+      "edist"
+    ],
+    "prerequisites": [
+      "neighbourhood filters in a metric space",
+      "extended distance edist"
+    ]
+  },
+  {
+    "id": "dirichlet-oscillation",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 133, "endLine": 161 },
+    "type": "theorem",
+    "title": "Oscillation ≡ 1 (sharp quantitative form)",
+    "content": "`dirichlet_oscillation_eq_one`: ω_D(x) = 1 at every x, by antisymmetry. Upper bound: the image filter contains range D ⊆ {0,1}, whose EMetric.diam ≤ 1 (a clean diameter argument with no pointwise case split beyond |D s − D t| ≤ 1). Lower bound: every set S in the pushed-forward neighbourhood filter contains both a 1-value and a 0-value (the nbhd witnesses), so diam S ≥ edist(1,0) = 1. This is the sharp quantitative antipode of Thomae's oscillation 1/q at p/q (and 0 at irrationals): Dirichlet is pinned at the maximum possible jump everywhere.",
+    "mathContext": "$\\omega_D(x)=1\\ \\forall x;\\qquad \\text{cf. Thomae } \\omega_T(p/q)=1/q,\\ \\omega_T(\\text{irr})=0.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "oscillation",
+      "EMetric.diam",
+      "le_antisymm",
+      "Thomae oscillation 1/q"
+    ],
+    "prerequisites": [
+      "oscillation as an iInf of diameters",
+      "the neighbourhood witnesses",
+      "pushforward of 𝓝 x under D"
+    ]
+  },
+  {
+    "id": "dirichlet-not-dense",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 165, "endLine": 173 },
+    "type": "theorem",
+    "title": "Continuity set is not dense",
+    "content": "`dirichlet_continuitySet_not_dense`: since the continuity set is ∅, it is not dense in ℝ. This is the precise Baire-category contrast: Thomae's continuity set is a DENSE Gδ (the irrationals), the largest a continuity set can be while excluding a dense countable set; Dirichlet's is the empty set, the smallest. The two functions bracket the continuity-set theory at opposite extremes.",
+    "mathContext": "$\\neg\\,\\mathrm{Dense}\\,\\{x:\\mathrm{ContinuousAt}\\,D\\,x\\}=\\neg\\,\\mathrm{Dense}\\,\\varnothing.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "dense Gδ",
+      "Baire category",
+      "continuity-set theory",
+      "Thomae antipode"
+    ],
+    "prerequisites": [
+      "denseness",
+      "dirichlet_continuitySet_eq_empty"
+    ]
+  },
+  {
+    "id": "dirichlet-residual",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 175, "endLine": 180 },
+    "type": "theorem",
+    "title": "Discontinuity set is comeagre — the full antipode",
+    "content": "`dirichlet_discontinuitySet_residual`: the discontinuity set is residual (comeagre) — trivially, since it is all of ℝ. This completes the antipode picture: Thomae's discontinuity set ℚ is MEAGRE, while Dirichlet's is the whole comeagre space. The structural contrast (a genuine Gδ/meagre split for Thomae vs. a degenerate everything/nothing split for Dirichlet) is exactly why Dirichlet needs no category theorems, only uniform density.",
+    "mathContext": "$\\{x:\\neg\\,\\mathrm{ContinuousAt}\\,D\\,x\\}=\\mathbb{R}\\in\\mathrm{residual}\\,\\mathbb{R};\\quad \\text{cf. Thomae's }\\mathbb{Q}\\text{ meagre}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "residual / comeagre filter",
+      "meagre set",
+      "Baire category theorem",
+      "Thomae's discontinuity set"
+    ],
+    "prerequisites": [
+      "residual filter",
+      "dirichlet_discontinuitySet_eq_univ"
+    ]
+  }
+]

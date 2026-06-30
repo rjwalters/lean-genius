@@ -2,7 +2,7 @@
   {
     "id": "oq05-header-scope",
     "proofId": "sperner-simplicial-instance-oq-05",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 85
@@ -10,7 +10,7 @@
     "title": "Scope: Brute-Force Candidate C1, Not Scarf's Algorithm",
     "content": "The header sets the honest scope of this file. It is Candidate C1 of the `sperner-simplicial-instance-oq-05` dossier: a `Decidable`-driven brute-force witness extractor for a panchromatic cell. Two caveats are essential for a reader: (1) this is **not** Scarf's algorithm — it enumerates all cells in $O(|T.\\text{Cell}|)$ rather than walking door-paths in $O(\\text{path length})$; the Scarf pivot is the separate Candidate C2; (2) it does **not** yet replace the `axiom scarf_approx_fixed_point` in `BrouwerFixedPointOQ04OQ04.lean`. The mathematical content is deliberately shallow: every step is forced by pre-existing `Triangulation.cellFintype` and `CellComplex.decidableIsPanchromatic` instances. The value is naming a computable witness `def` plus a totality theorem grounded in `Triangulation.sperner`. Imports `Proofs.SpernerSimplicialInstance`; opens `CellComplex Triangulation Finset`.",
     "mathContext": "Sperner's lemma guarantees a panchromatic (fully-coloured) cell exists for any Sperner colouring; this file *extracts* one computably. Brute force $O(|T.\\text{Cell}|)$ vs. Scarf pivot $O(\\text{door-path length})$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Sperner's lemma",
       "Scarf's algorithm",
@@ -128,7 +128,7 @@
   {
     "id": "oq05-demo",
     "proofId": "sperner-simplicial-instance-oq-05",
-    "type": "example",
+    "type": "concept",
     "range": {
       "startLine": 181,
       "endLine": 185

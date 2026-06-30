@@ -6,8 +6,8 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-26",
-    "status": "verified",
-    "note": "all axioms eliminated: moebius_dirichlet_series_at_two proved 2026-05-03; coprime_pair_density_limit proved via tendsto_tsum_of_dominated_convergence (2026-05-03)",
+    "status": "axiomatized",
+    "note": "Literal axioms eliminated (moebius_dirichlet_series_at_two proved 2026-05-03; coprime_pair_density_limit proved via tendsto_tsum_of_dominated_convergence). The advertised small-case numerical verification (countCoprimePairs N for N=1,2,3,4,5,10) is discharged by native_decide, which depends on Lean.ofReduceBool — hence axiomatized.",
     "proofRepoPath": "Proofs/BaselProblemOQ04OQ03.lean",
     "tags": [
       "number-theory",
@@ -18,7 +18,7 @@
       "coprimality",
       "basel-problem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
@@ -51,9 +51,9 @@
       "Numerical verification for N=1,2,3,4,5,10 via native_decide",
       "Density bounds: 3/8 < 6/π² < 2/3 (from π > 3 and π < 4)"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 558,
-    "assumptions": "No remaining assumptions — fully verified.",
+    "assumptions": "Lean.ofReduceBool — the advertised small-case numerical verification (countCoprimePairs_one … countCoprimePairs_ten, N=1,2,3,4,5,10) is discharged by native_decide, which trusts the Lean compiler's kernel reduction. The headline results (the Möbius decomposition, the Dirichlet-series identity Σ μ(d)/d² = 6/π², and the density limit) are proved symbolically and remain free of native_decide.",
     "theoremCount": 24,
     "definitionCount": 1
   },
@@ -166,7 +166,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A fully verified formal proof that the natural density of coprime pairs equals 6/π². The Möbius decomposition identity is established combinatorially; the Dirichlet series sum and density convergence are both formally proved using Mathlib L-series machinery and Tannery's dominated convergence theorem. Small cases verified by computation.",
+    "summary": "A formal proof that the natural density of coprime pairs equals 6/π². The Möbius decomposition identity is established combinatorially; the Dirichlet series sum and density convergence are both formally proved using Mathlib L-series machinery and Tannery's dominated convergence theorem — all free of native_decide. The advertised small-case numerical verification (N=1,2,3,4,5,10) is discharged by native_decide, which relies on Lean.ofReduceBool (hence the entry is axiomatized).",
     "openQuestions": [
       "Generalize to k-tuples: does Pr[gcd(a₁,…,a_k)=1] → 1/ζ(k) for k ≥ 3, reusing the same Möbius-decomposition + Dirichlet-series argument?",
       "Does the coprime-pair density extend to rings of integers of number fields, with 1/ζ_K(2) as the limit?",

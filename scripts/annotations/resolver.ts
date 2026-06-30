@@ -298,7 +298,7 @@ export function validateLineAnnotations(
     const typeMatches =
       (ann.type === 'theorem' && (construct.kind === 'theorem' || construct.kind === 'example')) ||
       (ann.type === 'lemma' && construct.kind === 'lemma') ||
-      (ann.type === 'definition' && (construct.kind === 'def' || construct.kind === 'abbrev' || construct.kind === 'structure')) ||
+      (ann.type === 'definition' && (construct.kind === 'def' || construct.kind === 'abbrev' || construct.kind === 'structure' || construct.kind === 'inductive')) ||
       (ann.type === 'axiom' && construct.kind === 'axiom') ||
       (ann.type === 'inductive' && construct.kind === 'inductive') ||
       (ann.type === 'structure' && construct.kind === 'structure') ||

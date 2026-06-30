@@ -133,7 +133,7 @@ theorem cyclic_vecAnnIdeal_eq_minpoly (M : Matrix (Fin n) (Fin n) K) (v : Fin n 
       (Polynomial.modByMonic_add_div f hMonic).symm
     have hfv2 : aeval M.mulVecLin f v = aeval M.mulVecLin (f %ₘ minpoly K M) v := by
       conv_lhs => rw [hdiv]
-      simp only [map_add, map_mul, LinearMap.add_apply, LinearMap.mul_apply,
+      simp only [map_add, map_mul, LinearMap.add_apply, Module.End.mul_apply,
                  hmin, LinearMap.zero_apply, zero_mul, add_zero]
     rw [← hfv2]; exact hfv
   -- Step 4: Apply IsCyclicVector — r has degree < n and r(M)v = 0, so r = 0

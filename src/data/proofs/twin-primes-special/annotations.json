@@ -16,7 +16,11 @@
       "prime gaps",
       "open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers and prime gaps",
+      "the twin prime conjecture",
+      "famous open problems in number theory"
+    ]
   },
   {
     "id": "ann-definition",
@@ -35,7 +39,11 @@
       "definition",
       "gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "the gap between consecutive primes",
+      "twin primes (p, p+2 both prime)"
+    ]
   },
   {
     "id": "ann-examples",
@@ -54,7 +62,11 @@
       "verification",
       "decide tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "twin prime pairs (3,5),(5,7),(11,13)",
+      "decidable primality checks",
+      "kernel evaluation via the decide tactic"
+    ]
   },
   {
     "id": "ann-prime-mod-six",
@@ -72,7 +84,11 @@
       "modular arithmetic",
       "prime residues"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic modulo 6",
+      "residue classes coprime to 6 (namely 1 and 5)",
+      "why primes >3 are ≡ ±1 (mod 6)"
+    ]
   },
   {
     "id": "ann-key-insight",
@@ -91,7 +107,11 @@
       "divisibility",
       "key insight"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "residues of primes mod 6",
+      "divisibility by 2 and 3",
+      "ruling out residues that force a factor"
+    ]
   },
   {
     "id": "ann-structure-theorem",
@@ -110,7 +130,11 @@
       "classification",
       "main result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primes mod 6 (≡ ±1)",
+      "twin prime pairs",
+      "classifying twin pairs by residue"
+    ]
   },
   {
     "id": "ann-form-corollary",
@@ -129,7 +153,11 @@
       "characterization",
       "straddling"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the residues 6k−1 and 6k+1",
+      "a twin pair straddling a multiple of 6",
+      "characterizing twin primes >3"
+    ]
   },
   {
     "id": "ann-conjecture",
@@ -148,7 +176,11 @@
       "open problem",
       "Zhang"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the infinitude question for twin primes",
+      "stating an open problem as an axiom",
+      "Zhang's bounded-gaps breakthrough"
+    ]
   },
   {
     "id": "ann-non-examples",
@@ -166,6 +198,10 @@
       "edge cases",
       "base cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the small primes 2 and 3 as edge cases",
+      "why (3,5) is special and (2,4) fails",
+      "base/edge cases of the structure theorem"
+    ]
   }
 ]

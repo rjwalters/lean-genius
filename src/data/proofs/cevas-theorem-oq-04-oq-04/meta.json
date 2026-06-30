@@ -1,0 +1,138 @@
+{
+  "id": "cevas-theorem-oq-04-oq-04",
+  "title": "Angle Bisectors, Mass Points, and the Incenter",
+  "slug": "cevas-theorem-oq-04-oq-04",
+  "description": "Specializes the parent's triangle mass-point framework to the angle-bisector case: assigning masses equal to the opposite side lengths (mA = a, mB = b, mC = c) reproduces the angle-bisector theorem ratios BD/DC = c/b, CE/EA = a/c, AF/FB = b/a, so the three bisectors satisfy Ceva's concurrency criterion. The point of concurrency is shown constructively to be the incenter I = (a·A + b·B + c·C)/(a+b+c): in an arbitrary real vector space, I is exhibited as an affine combination of each vertex with the opposite cevian foot (and as AffineMap.lineMap), proving I lies on all three bisectors simultaneously. The barycentric coordinates of the incenter are (a : b : c).",
+  "meta": {
+    "author": "researcher-6 (Lean Genius)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Incenter",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CevasTheoremOQ04OQ04.lean",
+    "tags": [
+      "geometry",
+      "cevas-theorem",
+      "mass-point-geometry",
+      "incenter",
+      "angle-bisector",
+      "barycentric-coordinates",
+      "affine-geometry",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "AffineMap.lineMap",
+        "description": "the affine line through two points, lineMap p q t = t·(q - p) + p, used to place the incenter on each cevian",
+        "module": "Mathlib.LinearAlgebra.AffineSpace.AffineMap"
+      },
+      {
+        "theorem": "Module.smul / match_scalars",
+        "description": "real-scalar module structure and the match_scalars tactic reducing a vector identity to coefficient equalities",
+        "module": "Mathlib.Tactic.Module"
+      }
+    ],
+    "originalContributions": [
+      "bisectorMass: the angle-bisector mass assignment (masses = opposite side lengths a, b, c) as an instance of the parent's MassPoint structure",
+      "bisector_ratio_BD_DC / CE_EA / AF_FB: these masses realise exactly the angle-bisector theorem ratios c/b, a/c, b/a via the parent's lever-arm identity ratio_balance",
+      "bisectors_ceva_product / bisectors_side_ratio_product: the three bisectors satisfy Ceva's concurrency criterion (product of directed ratios = 1)",
+      "footD / footE / footF: the bisector feet as honest division points in a real vector space V; footD_eq_division ties footD to the parent's rD division point",
+      "incenter: the barycentric point (a·A + b·B + c·C)/(a+b+c)",
+      "incenter_on_bisector_A / B / C: I is the affine combination of each vertex and the opposite foot, so I lies on all three bisectors — a fully geometric concurrency witness",
+      "weights_A/B/C_sum_one: each concurrency identity is a genuine affine (not merely linear) combination, the weights summing to 1",
+      "incenter_lineMap_A: the A-bisector as a line, with I at parameter (b+c)/(a+b+c)"
+    ],
+    "references": [
+      {
+        "authors": "Hausner, Melvin",
+        "title": "The Center of Mass and Affine Geometry",
+        "year": "1962",
+        "venue": "American Mathematical Monthly",
+        "note": "Foundational treatment of mass-point (barycentric) geometry"
+      },
+      {
+        "authors": "Coxeter, H.S.M. and Greitzer, S.L.",
+        "title": "Geometry Revisited",
+        "year": "1967",
+        "venue": "MAA",
+        "note": "Mass-point geometry, the angle-bisector theorem, and the incenter as the barycenter with weights equal to the opposite sides"
+      }
+    ],
+    "prerequisites": [
+      "Mass-point (barycentric) geometry of triangles (parent entry cevas-theorem-oq-04)",
+      "The angle-bisector theorem (the internal bisector divides the opposite side in the ratio of the adjacent sides)",
+      "Affine combinations and lines in a real vector space (AffineMap.lineMap)",
+      "Basic real arithmetic with field_simp / positivity and the match_scalars tactic"
+    ],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 208,
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext / Classical.choice / Quot.sound). No triangle inequality is assumed; only positivity of the three side lengths.",
+    "theoremCount": 16,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Mass-point geometry assigns positive masses to the vertices of a triangle and reads off cevian concurrency from the balance of the center of mass. The parent entry cevas-theorem-oq-04 develops this as an algebraic certificate: any positive masses mA, mB, mC induce side-division ratios whose Ceva product is automatically 1, with the centroid arising from equal masses. The canonical next worked example is the angle bisector. By the angle-bisector theorem, the internal bisector from a vertex divides the opposite side in the ratio of the two adjacent sides; this is exactly the lever-arm balance produced by masses equal to the opposite side lengths. The common point of the three bisectors is the incenter, whose barycentric coordinates are (a : b : c).",
+    "problemStatement": "**Open Question (from parent proof cevas-theorem-oq-04)**: Establish the mass-point assignment for the three angle bisectors of a triangle — masses proportional to the opposite side lengths — and derive their concurrency (the incenter) from Ceva's theorem.\n\n**Resolution**: With masses (mA, mB, mC) = (a, b, c) the parent's lever-arm identity reproduces the angle-bisector ratios BD/DC = c/b, CE/EA = a/c, AF/FB = b/a, whose product is 1 (Ceva). The concurrency point is the incenter I = (a·A + b·B + c·C)/(a+b+c), proved by exhibiting I on each bisector as an affine combination of a vertex and the opposite foot.",
+    "text": "A 208-line, axiom-free development (5 definitions, 16 theorems/lemmas). bisectorMass packages the masses (a, b, c) as a parent MassPoint. The three ratio lemmas are one-line corollaries of the parent's ratio_balance family, certifying that these masses encode the angle-bisector theorem ratios. bisectors_ceva_product = ceva_ratio_product_one specialized; bisectors_side_ratio_product states (c/b)·(a/c)·(b/a) = 1 directly. The geometric core works in an arbitrary real vector space V: footD, footE, footF are the bisector feet, incenter is the barycentric point (a : b : c), and incenter_on_bisector_A/B/C prove (via match_scalars + field_simp) that I equals the affine combination of each vertex with the opposite foot. The companion weights_*_sum_one lemmas confirm these are affine combinations (weights sum to 1), so I genuinely lies on each line, and incenter_lineMap_A recasts the A-bisector as AffineMap.lineMap with I at parameter (b+c)/(a+b+c).",
+    "proofStrategy": "Ratio lemmas: ratio_balance / _E / _F give rD/(1-rD) = mC/mB etc., which for bisectorMass is c/b, a/c, b/a by definitional unfolding of the structure fields. Concurrency: reuse the parent's ceva_ratio_product_one; the explicit side-ratio product is field_simp. Incenter incidence: unfold incenter and the relevant foot, then match_scalars splits the vector equation into one scalar identity per vertex atom, each cleared by field_simp (using a+b+c ≠ 0 and the relevant pair sum ≠ 0 from positivity). The lineMap form additionally needs ring after field_simp. weights_*_sum_one are field_simp/ring on (x + y)/(a+b+c) = 1.",
+    "keyInsights": [
+      "Masses proportional to the opposite sides are forced by the angle-bisector theorem: BD/DC = c/b is the lever-arm balance mC/mB with mB = b, mC = c.",
+      "All three bisectors are realised by a single mass assignment (a, b, c), so their concurrency is the parent's universal Ceva identity, not a separate computation.",
+      "The concurrency point is pinned down explicitly: the incenter is the affine combination of any vertex with the opposite foot, with weights a/(a+b+c) and (b+c)/(a+b+c) summing to 1.",
+      "The barycentric coordinates of the incenter are (a : b : c) — the masses themselves, normalized.",
+      "Only positivity of the side lengths is used; the triangle inequality is unnecessary for the algebraic concurrency, which holds in any real vector space."
+    ],
+    "prerequisites": [
+      "Mass-point and barycentric geometry of triangles",
+      "The angle-bisector theorem",
+      "Affine combinations and lines in a vector space"
+    ]
+  },
+  "conclusion": {
+    "summary": "Assigning vertex masses equal to the opposite side lengths realises the three angle bisectors of a triangle within the parent's mass-point framework: the induced division ratios are exactly the angle-bisector theorem ratios c/b, a/c, b/a, whose Ceva product is 1. The bisectors are concurrent at the incenter I = (a·A + b·B + c·C)/(a+b+c), proved constructively by placing I on each bisector as an affine combination of a vertex and the opposite foot (and as AffineMap.lineMap). Fully verified, 0 axioms, 0 sorries.",
+    "implications": "This is the canonical angle-bisector / incenter worked example of mass-point geometry, made into a checked theorem. Beyond the parent's ratio identity it provides an explicit geometric concurrency witness (the incenter on all three cevians) valid in any real vector space, and identifies the incenter's barycentric coordinates as (a : b : c).",
+    "openQuestions": [
+      "Connect the side-length masses to actual Euclidean distances by proving the angle-bisector theorem BD/DC = |AB|/|AC| from the inner-product structure, closing the loop to genuine angle bisectors.",
+      "Give the analogous mass-point treatment of the excenters (signed masses) and the Gergonne/Nagel points, and locate each as a barycentric combination.",
+      "Verify the incenter is equidistant from the three sides, recovering the inradius from the barycentric weights."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-oq-04",
+      "relationship": "extends",
+      "description": "Specializes the parent's triangle mass-point framework to the angle-bisector / incenter case"
+    },
+    {
+      "targetId": "cevas-theorem-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Sibling generalization of the same mass-point framework to an n-dimensional simplex"
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "related",
+      "description": "The classical Ceva concurrency theorem whose criterion the bisector ratios satisfy"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.CevasTheoremOQ04",
+      "Mathlib.Tactic",
+      "Mathlib.LinearAlgebra.AffineSpace.AffineMap"
+    ],
+    "opens": [
+      "MassPointCeva"
+    ],
+    "namespace": "MassPointCeva.AngleBisector",
+    "lineCount": 208,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 5,
+    "sorries": 0,
+    "path": "Proofs/CevasTheoremOQ04OQ04.lean"
+  }
+}

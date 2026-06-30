@@ -1,0 +1,126 @@
+{
+  "id": "birthday-problem-oq-02-oq-01-oq-02",
+  "title": "Non-Uniform Birthday Problem: Uniform Minimizes Two-Draw Collisions",
+  "slug": "birthday-problem-oq-02-oq-01-oq-02",
+  "description": "Among all probability distributions on d outcomes, the uniform distribution minimizes the two-draw collision probability C(p) = ∑ pᵢ². Proves C(p) ≥ 1/d with equality iff p is uniform — the n=2 case of the Munford/Klamkin–Newman extremality. Real (non-uniform) birthday distributions only make collisions more likely.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-20",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ02OQ01OQ02.lean",
+    "tags": [
+      "probability",
+      "birthday-problem",
+      "extremal",
+      "variance-identity",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "axiomCount": 0,
+    "lineCount": 140,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "assumptions": "None. Fully machine-verified from Mathlib.",
+    "originalContributions": [
+      "sum_sq_sub_one_div_card: the variance identity ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)² for probability vectors — the engine of the whole result",
+      "one_div_card_le_sum_sq: 1/d ≤ ∑ pᵢ² (uniform minimizes the two-draw collision probability) — headline bound",
+      "sum_sq_eq_one_div_card_iff: equality ∑ pᵢ² = 1/d holds iff every pᵢ = 1/d — the explicit equality characterization, obtained directly rather than via a Cauchy–Schwarz black box",
+      "no_collision_le / no_collision_eq_iff: the no-collision probability 1 − ∑ pᵢ² is maximized (≤ 1 − 1/d) exactly at the uniform distribution"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The textbook birthday problem assumes birthdays are uniformly distributed across d = 365 days, but real birth distributions are seasonally biased. A natural question, raised by Munford (1977) and earlier by Klamkin & Newman (1967), is whether such bias makes a shared birthday more or less likely. The answer is that uniformity is the *least* collision-prone case: any deviation from uniform strictly increases the chance of a coincidence. This file formalizes the n = 2 (two-draw) instance, which is the cleanest slice and already captures the extremal phenomenon.\n\nFor two independent draws from a distribution p = (p₀,…,p_{d-1}), the collision probability is the ℓ²-norm-squared C(p) = ∑ᵢ pᵢ². Minimizing ∑ pᵢ² subject to ∑ pᵢ = 1 over the probability simplex is a classic constrained-optimization exercise whose minimizer is the centroid (uniform) — a fact often cited via Cauchy–Schwarz or Lagrange multipliers. The formalization here uses neither: a single variance identity gives the bound and the equality case simultaneously.",
+    "problemStatement": "Prove that for every probability vector p on d outcomes (∑ᵢ pᵢ = 1, d > 0), the two-draw collision probability satisfies ∑ᵢ pᵢ² ≥ 1/d, with equality if and only if p is the uniform distribution pᵢ = 1/d. Equivalently, the no-collision probability 1 − ∑ᵢ pᵢ² is maximized uniquely at uniform.",
+    "proofStrategy": "**Variance identity.** With ∑ᵢ pᵢ = 1, expand the sum of squared deviations from the mean 1/d:\n\n  ∑ᵢ (pᵢ − 1/d)² = ∑ᵢ pᵢ² − (2/d)∑ᵢ pᵢ + d·(1/d)² = ∑ᵢ pᵢ² − 1/d.\n\nSo ∑ᵢ pᵢ² − 1/d = ∑ᵢ (pᵢ − 1/d)².\n\n**Lower bound.** The right-hand side is a sum of squares, hence ≥ 0, giving ∑ᵢ pᵢ² ≥ 1/d immediately (linarith).\n\n**Equality case.** A finite sum of nonnegative terms is zero iff every term is zero (Finset.sum_eq_zero_iff_of_nonneg), so ∑ᵢ pᵢ² = 1/d ⟺ each (pᵢ − 1/d)² = 0 ⟺ each pᵢ = 1/d. The equality characterization thus falls out of the same identity — no separate argument needed.",
+    "keyInsights": [
+      "The entire extremal result is a one-line consequence of a **variance identity**: ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)², valid precisely because ∑ pᵢ = 1. This converts an optimization problem into a sum-of-squares nonnegativity statement.",
+      "Working with the *deviation form* ∑(pᵢ − 1/d)² rather than invoking Cauchy–Schwarz delivers the equality characterization for free: Finset.sum_eq_zero_iff_of_nonneg forces each pᵢ = 1/d. A Cauchy–Schwarz citation would give the bound but not, without extra work, the uniqueness of the minimizer.",
+      "C(p) = ∑ pᵢ² is exactly the probability that two independent draws coincide, so the bound 1/d ≤ C(p) says uniform birthdays are the *hardest* case for the birthday paradox: any seasonal bias only raises the collision probability.",
+      "The n = 2 case is self-contained Finset algebra over ℝ; the general n-draw statement (no-collision probability n!·eₙ(p) maximized at uniform) needs Maclaurin's inequality / Schur-concavity of the elementary symmetric polynomials on the simplex, which is not yet in Mathlib — documented as the genuine follow-up gate."
+    ],
+    "prerequisites": [
+      "Finset.sum_add_distrib / Finset.sum_sub_distrib: linearity of finite sums",
+      "Finset.mul_sum and Finset.sum_const over Fin d",
+      "sq_nonneg and Finset.sum_nonneg: a sum of squares is nonnegative",
+      "Finset.sum_eq_zero_iff_of_nonneg: a sum of nonnegative terms vanishes iff each term does",
+      "Birthday problem OQ-02-OQ-01 (the parent, whose open questions explicitly ask to extend to non-uniform distributions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Imports Mathlib. Module docstring explaining the non-uniform birthday extremality, the collision probability C(p) = ∑ pᵢ², and the variance-identity strategy. Opens Finset and the BirthdayNonUniform namespace."
+    },
+    {
+      "id": "variance-identity",
+      "title": "Variance Identity",
+      "startLine": 62,
+      "endLine": 79,
+      "summary": "sum_sq_sub_one_div_card: ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)² for ∑ pᵢ = 1. Expands each squared deviation and collapses the cross-term via the probability constraint."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound: Uniform Minimizes Collisions",
+      "startLine": 81,
+      "endLine": 92,
+      "summary": "one_div_card_le_sum_sq: 1/d ≤ ∑ pᵢ². The right side of the variance identity is a sum of squares (≥ 0), so the bound follows by linarith."
+    },
+    {
+      "id": "equality-case",
+      "title": "Equality Characterization",
+      "startLine": 94,
+      "endLine": 111,
+      "summary": "sum_sq_eq_one_div_card_iff: ∑ pᵢ² = 1/d ↔ every pᵢ = 1/d. Uses Finset.sum_eq_zero_iff_of_nonneg on the deviation squares, then pow_eq_zero_iff to extract pᵢ − 1/d = 0."
+    },
+    {
+      "id": "uniform-values",
+      "title": "Uniform Distribution Values",
+      "startLine": 113,
+      "endLine": 125,
+      "summary": "uniform_sum_sq: the uniform collision value ∑ (1/d)² = 1/d. uniform_sum: ∑ (1/d) = 1, confirming uniform is a genuine probability vector."
+    },
+    {
+      "id": "no-collision",
+      "title": "No-Collision Probability is Maximized at Uniform",
+      "startLine": 127,
+      "endLine": 140,
+      "summary": "no_collision_le: 1 − ∑ pᵢ² ≤ 1 − 1/d. no_collision_eq_iff: equality iff uniform. Restates the collision bound in complementary (no-collision) form."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proved that the uniform distribution minimizes the two-draw collision probability: ∑ᵢ pᵢ² ≥ 1/d for every probability vector p on d outcomes, with equality iff p is uniform. The complementary no-collision probability 1 − ∑ pᵢ² is correspondingly maximized at uniform. 140 lines, 7 theorems, 0 sorries, 0 axioms — the proof rests entirely on the variance identity ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)².",
+    "implications": "This is the n = 2 instance of the Munford/Klamkin–Newman non-uniform birthday extremality: among all birthday distributions on d days, uniform is the least likely to produce a shared birthday. Practically, any real-world seasonal bias *increases* the probability of a coincidence, so the textbook uniform calculation is a conservative (lower) bound on the true collision probability. The variance-identity proof also yields the exact minimizer characterization, not just the bound.",
+    "openQuestions": [
+      "General n-draw extremality: is the no-collision probability n!·eₙ(p) (eₙ the n-th elementary symmetric polynomial) maximized at the uniform distribution for all n? This needs Maclaurin's inequality / Schur-concavity of eₙ on the simplex, not yet in Mathlib.",
+      "Quantify how much a given bias raises the collision probability: bound ∑ pᵢ² − 1/d below in terms of the total-variation distance ‖p − uniform‖ from uniform.",
+      "Schur-convexity formulation: show C(p) = ∑ pᵢ² is Schur-convex on the simplex, recovering this result and its majorization refinements as a corollary."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent. Its open questions explicitly ask to extend the birthday bounds to non-uniform distributions — this answers the two-draw case."
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Base birthday problem formalization (uniform case)."
+    }
+  ],
+  "leanFile": {
+    "namespace": "BirthdayNonUniform",
+    "lineCount": 140,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/BirthdayProblemOQ02OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

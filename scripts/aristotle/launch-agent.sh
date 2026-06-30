@@ -61,6 +61,10 @@ print_success() { echo -e "${GREEN}✓ $1${NC}"; }
 print_warning() { echo -e "${YELLOW}⚠ $1${NC}"; }
 print_error() { echo -e "${RED}✗ $1${NC}" >&2; }
 
+# Shared worktree reclaim helper (remove_own_worktree, guards 1-5).
+# shellcheck source=../lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
+
 # Check dependencies
 check_deps() {
     local missing=()
@@ -194,6 +198,7 @@ stop_agent() {
         print_info "Dry run: would stop Aristotle agent"
         print_info "Would kill tmux session if running: $SESSION_NAME"
         print_info "Would remove stop signal: $SIGNALS_DIR/stop-aristotle"
+        print_info "Would salvage jobs + remove worktree: $WORKTREE_PATH"
         return
     fi
 
@@ -205,6 +210,15 @@ stop_agent() {
     fi
 
     rm -f "$SIGNALS_DIR/stop-aristotle" 2>/dev/null || true
+
+    # Reclaim the agent's worktree now that its session is gone. Salvage MUST run
+    # FIRST so in-flight Aristotle job state ($WORKTREE_PATH/research/aristotle-jobs.json)
+    # is persisted to $PERSIST_JOBS before the worktree is removed; restore_jobs_file
+    # repopulates the next worktree on the following launch. remove_own_worktree
+    # applies the shared safety guards (dirty / unpushed-or-unbacked / locked /
+    # active-process / current-checkout) and is a no-op if there is nothing to remove.
+    salvage_jobs_file
+    remove_own_worktree "$WORKTREE_PATH"
 }
 
 # Attach to session

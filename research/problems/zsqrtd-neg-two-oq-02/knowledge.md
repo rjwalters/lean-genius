@@ -76,67 +76,55 @@ true open work, not reachable through the `x²+2y²` norm form.
 
 ---
 
-## Session 2 (researcher-4, 2026-06-15) — CORRECTION: the recommended ACT is already done
+## Session 2026-06-15 (researcher-3) — forward obstruction is ALREADY PROVEN; do not duplicate
 
-**Mode**: REVISIT · **Outcome**: ORIENT correction (build-free; Docker `docker info`
-timeout >15s, so no build/edit of registered files). This session AUDITS the actual
-gallery state, which the S1 OBSERVE notes did not reflect.
+**Mode**: REVISIT (MODERATE). **Outcome**: progress (cross-reference / anti-duplication ORIENT).
 
-### Key finding: `ThreeSquares.lean` already exists and is REGISTERED
+The prior "Recommended next steps" propose an ACT to formalize the forward obstruction
+(`n = 4ᵃ(8b+7) ⟹ ¬ three squares`, via squares-mod-8 ⊆ {0,1,4} + 4-descent) as a standalone lemma.
+**That lemma already exists, fully proved, in the gallery** — re-formalizing it would duplicate
+proven infrastructure (the same dead-end the waring-g2 slug flags re: Davenport–Cassels).
 
-`proofs/Proofs/ThreeSquares.lean` (1979 LOC, registered at `proofs/Proofs.lean:2949`,
-imports `Proofs.ZsqrtdNegTwo`) already contains a far more developed treatment than the
-S1 notes assume. **The S1-recommended ACT — "formalize squares mod 8 ⊆ {0,1,4} + the
-4-descent forward obstruction" — IS ALREADY FULLY PROVED THERE.** Do not re-derive it:
+- **`proofs/Proofs/ThreeSquares.lean:185`** — `excluded_form_not_sum_three_sq {n : ℕ} (h : IsExcludedForm n) : ¬∃ a b c : ℤ, a^2+b^2+c^2 = n`, with `IsExcludedForm n := ∃ a b : ℕ, n = 4^a*(8*b+7)` (line 69). **0 axioms, 0 sorries, registered.** Its proof is exactly steps 1–2 from this knowledge file (squares mod 8 ∈ {0,1,4} omits 7; strong-induction 4-descent). The file even has the `decide`-style witnesses `excluded_form_not_sum_three_sq ⟨0,0,rfl⟩` for 7, 15, 28, 31 (lines 1717–1729).
+- Therefore the only genuinely OPEN piece on this slug is the **converse** (`¬4ᵃ(8b+7) ⟹ three squares`), which this slug already established (quantitatively, 36% subset) is **not** reachable via the ℤ[√−2] norm form. The converse is itself axiomatized-but-not-proved in `ThreeSquares.lean` (`not_excluded_form_is_sum_three_sq`, the Minkowski+Dirichlet route, Docker-gated) — see the `lagrange-four-squares-waring-g2-oq-03` slug, which owns that work.
 
-- `nat_sq_mod_eight`, `int_sq_mod_eight` — squares ≡ 0,1,4 (mod 8). ✓ proved
-- `sum_three_sq_mod_eight_ne_seven` — three squares never ≡ 7 (mod 8). ✓ proved
-- `four_dvd_sum_three_sq_implies_even` + `excluded_form_not_sum_three_sq` — the full
-  4-descent **necessity** direction (`IsExcludedForm n ⟹ ¬ three squares`). ✓ proved,
-  0 axioms, by `Nat.strong_induction_on`.
-- All prime cases p ≢ 7 (mod 8) proved: p≡1,5 mod 8 via Fermat two-squares
-  (`prime_one/five_mod_eight_is_sum_three_sq`); **p≡3 mod 8 via the ℤ[√−2] bridge**
-  `ZsqrtdNegTwo.prime_three_mod_eight_is_sum_three_sq'` (ZsqrtdNegTwo.lean:463, **0 axioms**).
+**Net**: this slug needs **no new Lean** — its formalizable deliverable is subsumed by `ThreeSquares.lean`, and its deep direction is owned by the waring-g2 slug. Recommend marking the ℤ[√−2] route closed (negative verdict) and not re-attempting the forward obstruction. (No code; dual blackout re-confirmed live: docker timeout, Aristotle 404.)
 
-### The REAL open work = eliminate 2 axioms in ThreeSquares.lean
+## Session 2026-06-22 (researcher-1) — bridge the obstruction to the parent norm form
 
-`grep "^axiom"` ⟹ exactly two:
-1. **`not_excluded_form_is_sum_three_sq`** (line 1665) — the entire **sufficiency**
-   direction `¬IsExcludedForm n ⟹ ∃ a b c, a²+b²+c² = n`. This is the iff's hard half;
-   `legendre_three_squares` (line 1672) pairs it with the proved necessity.
-2. **`dirichlet_key_lemma`** (line 615) — Dirichlet's 1850 representation lemma
-   (`n>1, d>0, p=dn−1 prime, −d a QR mod p ⟹ n = x²+y²+z²`), the Minkowski/lattice tool.
+**Mode**: REVISIT (RICH, verdict was "no new Lean"). **Outcome**: progress (small but real:
+the file's docstring is framed entirely around the ℤ[√−2] norm form `x²+2y²`, yet contained
+ZERO lemmas about it — added the missing bridge).
 
-**Axiom-reduction path (the genuine next ACT, Docker-gated):**
-- Axiom (1) should be **derived from** axiom (2) + the proved prime cases + the proved
-  reductions (`sum_three_sq_iff_four_mul`, `excluded_form_four_mul_iff`,
-  `excluded_form_of_sq_mul`). The file itself outlines this at line 1658 (~150–200 LOC:
-  case-split n mod 8, choose d, find a suitable prime, apply the key lemma). Completing
-  it turns 2 axioms into 1 — real progress.
-- Axiom (2) is the deep target: ~60% of its Minkowski infrastructure is already built
-  in-file (lines 619–1665: `dirichletEllipsoid` convex/symmetric, `dirichletScale`
-  det = R^{3/2}/d, `dirichletEllipsoid_eq_image`, `stdLattice3` covolume = 1, the
-  sublattice basis machinery). The missing piece is the Minkowski-bound count + the
-  QR ⟹ lattice-point ⟹ representation step.
+### What I Did
+- `normForm_isSumThreeSq (x y : ℤ) : ∃ a b c, a²+b²+c² = x²+2y²` — the trivial inclusion
+  `x²+2y² = x²+y²+y²` (`⟨x, y, y, by ring⟩`).
+- `normForm_ne_four_pow_mul (x y a b) : x²+2y² ≠ 4^a(8b+7)` — applying the existing
+  contrapositive `sumThreeSq_ne_four_pow_mul` to the inclusion. The ℤ[√−2] representable
+  numbers provably respect the Legendre obstruction (a proper subset of three-square numbers).
 
-### ℤ[√−2] verdict (confirms #24256/#24257, now with the file open)
-The slug's premise — "prove the full three-square theorem **on top of ℤ[√−2]**" — is
-structurally bounded: ℤ[√−2] (`x²+2y²`) contributes **only** the p≡3 (mod 8) prime case
-(`prime_three_mod_eight_is_sum_three_sq'`). The general sufficiency goes through Dirichlet
-+ Minkowski, not the norm form. S1's numeric "x²+2y² is a 36% subset" quantifies the same
-fact. So the open work is NOT a ℤ[√−2] task; it is axiom elimination in `ThreeSquares.lean`.
+This makes the file actually engage the norm form it is *about*, and partially addresses the
+file's open question "connect it to the parent ℤ[√−2] representation theorems".
 
-### Why build-free this session
-`ThreeSquares.lean` is a REGISTERED 1979-LOC flagship; under Docker blackout, blind-editing
-it risks the aggregate build, and both axiom eliminations (~150–400 LOC of delicate
-Dirichlet/QR/Minkowski work) cannot be developed safely without a compiler. The honest,
-useful deliverable is this correction: future sessions should target the two axioms in
-`ThreeSquares.lean` with a working build, NOT re-derive the already-complete forward
-obstruction or re-attempt the ℤ[√−2] route.
+### Verification — DOCKER WAS DOWN, used host single-file bypass
+- `docker-build.sh` crashed mid-build with `error waiting for container: unexpected EOF`
+  (exit 125), then Docker Desktop went fully down ("Docker is not installed"); restart
+  (`osascript quit` + `open -a Docker`) did NOT bring the daemon back within ~9 min (disk
+  was healthy at 17%, so NOT disk pressure this time — daemon just stuck).
+- **BYPASS (works, matches researcher-7 memory note)**: host has `lean v4.26.0`
+  (`/opt/homebrew/bin/lean`) + prebuilt Mathlib oleans in main-repo
+  `proofs/.lake/packages/*/.lake/build/lib/lean`. Set
+  `LEAN_PATH=$(printf '%s:' proofs/.lake/packages/*/.lake/build/lib/lean; echo proofs/.lake/build/lib/lean)`
+  and run `lean <worktree-file>` directly (~seconds, no Docker). EXIT=0, no errors.
+- `#print axioms` (append fully-qualified `#print axioms ZsqrtNegTwoOQ02.normForm_*` to a
+  temp copy, elaborate): both new theorems depend only on `[propext, Classical.choice,
+  Quot.sound]` (normForm_isSumThreeSq just `[propext]`) — NO `ofReduceBool`/`sorryAx`.
+  Stays 0-axiom verified.
 
-### Next steps
-1. **(Docker-gated, highest value)** In `ThreeSquares.lean`, derive
-   `not_excluded_form_is_sum_three_sq` from `dirichlet_key_lemma` + proved prime/reduction
-   lemmas (file's own line-1658 recipe). Eliminates 1 of 2 axioms.
-2. **(Deep)** Discharge `dirichlet_key_lemma` via the in-file Minkowski infrastructure.
-3. Do NOT re-formalize the forward obstruction (done) or pursue ℤ[√−2] for the full theorem.
+### Files Modified
+- `proofs/Proofs/ZsqrtdNegTwoOQ02.lean` (139→162 lines, +2 thm, Step 4 section)
+- `src/data/proofs/zsqrtd-neg-two-oq-02/meta.json` (counts, contributions, section, open Q)
+
+### Next Steps (unchanged deep work)
+- Sufficiency direction (Dirichlet + ternary forms) remains the genuine open work, owned by
+  the `lagrange-four-squares-waring-g2-oq-03` slug; NOT reachable via ℤ[√−2].

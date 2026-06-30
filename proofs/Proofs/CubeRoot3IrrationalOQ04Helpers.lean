@@ -750,4 +750,300 @@ theorem six_one_nine_three_five_two_three_over_four_two_nine_four_three_four_nin
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-! ## S15 prep: new upper bound for `a₁₄ = 3` (the fifteenth partial quotient)
+
+The sixteenth CF convergent of `∛3` is
+
+  `p₁₅/q₁₅ = (a₁₅·p₁₄ + p₁₃) / (a₁₅·q₁₄ + q₁₃)`
+  `       = (4 · 6193523 + 1865358) / (4 · 4294349 + 1293367)`
+  `       = 26_639_450 / 18_470_763`.
+
+This convergent is odd-index (15), so it lies on the UPPER side of
+`∛3` (alternating with the lower-side fifteenth convergent
+`6193523/4294349` from S15a, which is reused unchanged as the a₁₄
+sandwich's lower bound).
+
+`a₁₅ = 4` was re-derived independently from a 120-digit CF recomputation
+of `∛3` (true prefix `a₀..a₁₆ = [1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8,
+3, 3, 4, 2]`), per the S9-prep / S15a anti-typo discipline: never re-quote
+a prior sketch tail, always recompute `aᵢ`.
+
+Convergent recursion (with `a₁₅ = 4`):
+
+  `q₁₅ = 4 · q₁₄ + q₁₃ = 4 · 4294349 + 1293367 = 18_470_763`
+  `p₁₅ = 4 · p₁₄ + p₁₃ = 4 · 6193523 + 1865358 = 26_639_450`
+
+After cubing,
+
+  `26_639_450³     = 18_904_959_980_335_633_625_000`
+  `3 · 18_470_763³ = 18_904_959_980_335_585_454_841`
+
+so `26_639_450³ = 18_904_959_980_335_633_625_000 >
+18_904_959_980_335_585_454_841 = 3 · 18_470_763³` (strict, diff
+`+48_170_159`), hence `(26_639_450/18_470_763)³ > 3` and
+`cbrt3 < 26_639_450/18_470_763` as required for an upper bound. The new
+upper cube gap (relative-to-`3·q³`: `≈ 2.55·10⁻¹⁵`) is roughly an order
+of magnitude tighter than S15a's lower-side gap of `≈ 2.37·10⁻¹⁴` —
+consistent with `26_639_450/18_470_763` being the next true convergent
+one rung beyond `6_193_523/4_294_349`.
+
+Together with S15a's lower bound this prepares the sandwich
+`6193523/4294349 < cbrt3 < 26639450/18470763` (combined gap `≈ 2.6·10⁻¹⁵`)
+for the FUTURE main-ACT of the fifteenth partial quotient `cbrt3_a14 = 3`
+(gated on the still-open S14b `a12 = 8` and the subsequent `a13 = 3`
+landing first, since the nested-fraction chain grows one rung per
+quotient). Two-line proof via the cubing-iff helper. -/
+
+/-- `∛3 < 26639450/18470763`. Cube target: `(26639450/18470763)³ =
+18_904_959_980_335_633_625_000 / 18_470_763³ > 3` (strict:
+`26639450³ = 18_904_959_980_335_633_625_000 >
+18_904_959_980_335_585_454_841 = 3 · 18470763³`, gap `+48_170_159`).
+The sixteenth convergent of the simple CF of `∛3`
+(using `a₁₅ = 4` per a 120-digit CF recomputation). -/
+theorem cbrt3_lt_two_six_six_three_nine_four_five_zero_over_one_eight_four_seven_zero_seven_six_three :
+    cbrt3 < (26639450 / 18470763 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
+/-! ## S25 prep: new lower bound for `a₁₇ = 6` (the eighteenth partial quotient)
+
+The nineteenth CF convergent of `∛3` (using `a₁₈ = 4` per a 300-digit CF
+recomputation, true prefix `a₀..a₁₈ =
+[1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4]`, 0-indexed) is
+
+  `p₁₈/q₁₈ = (a₁₈·p₁₇ + p₁₆) / (a₁₈·q₁₇ + q₁₆)`
+  `       = (4 · 383473988 + 59472423) / (4 · 265886013 + 41235875)`
+  `       = 1_593_368_375 / 1_104_779_927`.
+
+This convergent is even-index (18), so it lies on the LOWER side of `∛3`
+(alternating with the upper-side eighteenth convergent `383473988/265886013`,
+the seventeenth partial quotient `a₁₇ = 6`).
+
+Here `p₁₇/q₁₇ = 383473988/265886013` (the eighteenth convergent, upper) and
+`p₁₆/q₁₆ = 59472423/41235875` (the seventeenth convergent, lower) are the two
+prior rungs; both lie in sibling helper PRs (S24, S23) but this lower-bound
+theorem is self-contained — it is discharged purely by cubing the literal
+fraction, independent of whether those rungs are present in the file.
+
+Convergent recursion (with `a₁₈ = 4`):
+
+  `q₁₈ = 4 · q₁₇ + q₁₆ = 4 · 265886013 + 41235875 = 1_104_779_927`
+  `p₁₈ = 4 · p₁₇ + p₁₆ = 4 · 383473988 + 59472423 = 1_593_368_375`
+
+After cubing,
+
+  `1_593_368_375³   = 4_045_279_924_912_085_586_177_734_375`
+  `3 · 1_104_779_927³ = 4_045_279_924_912_085_587_552_412_949`
+
+so `1_593_368_375³ = 4_045_279_924_912_085_586_177_734_375 <
+4_045_279_924_912_085_587_552_412_949 = 3 · 1_104_779_927³` (strict, diff
+`-1_374_678_574`), hence `(1_593_368_375/1_104_779_927)³ < 3` and
+`1_593_368_375/1_104_779_927 < cbrt3` as required for a lower bound.
+
+`a₁₈ = 4` was re-derived independently from a 300-digit CF recomputation of
+`∛3` (cert `research/scripts/verify_cbrt3_oq04_s25_19th_convergent.py`), per the
+S9-prep / S14a / S15-prep anti-typo discipline: never re-quote a prior sketch
+tail, always recompute `aᵢ` and verify the cube-side direction before claiming.
+Two-line proof via the cubing-iff helper. -/
+
+/-- `1593368375/1104779927 < ∛3`. Cube target:
+`(1593368375/1104779927)³ = 4_045_279_924_912_085_586_177_734_375 / 1104779927³
+< 3` (strict: `1593368375³ = 4_045_279_924_912_085_586_177_734_375 <
+4_045_279_924_912_085_587_552_412_949 = 3 · 1104779927³`, gap `1_374_678_574`).
+The nineteenth convergent of the simple CF of `∛3` (using `a₁₈ = 4` per a
+300-digit CF recomputation). -/
+theorem one_five_nine_three_three_six_eight_three_seven_five_over_one_one_zero_four_seven_seven_nine_nine_two_seven_lt_cbrt3 :
+    (1593368375 / 1104779927 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
+/-- `8350315863/5789785648 < ∛3`. The twenty-first convergent of the simple CF
+of `∛3` (using `a₂₀ = 1`).
+
+Convergent recursion (with `a₂₀ = 1`):
+
+  `q₂₀ = 1 · q₁₉ + q₁₈ = 1 · 4685005721 + 1104779927 = 5_789_785_648`
+  `p₂₀ = 1 · p₁₉ + p₁₈ = 1 · 6756947488 + 1593368375 = 8_350_315_863`
+
+After cubing,
+
+  `8_350_315_863³   = 582_248_945_773_308_354_436_424_440_647`
+  `3 · 5_789_785_648³ = 582_248_945_773_308_354_444_942_053_376`
+
+so `8_350_315_863³ < 3 · 5_789_785_648³` (strict, diff `8_517_612_729`), hence
+`(8350315863/5789785648)³ < 3` and `8350315863/5789785648 < cbrt3` as required
+for a lower bound (even convergent index `20`).
+
+`a₂₀ = 1` was re-derived independently from a 200-digit CF recomputation of
+`∛3` (cert `research/scripts/verify_cbrt3_oq04_s27_21st_convergent.py`), per the
+established anti-typo discipline: never re-quote a prior sketch tail, always
+recompute `aᵢ` and verify the cube-side direction before claiming. Two-line
+proof via the cubing-iff helper. -/
+theorem eight_three_five_zero_three_one_five_eight_six_three_over_five_seven_eight_nine_seven_eight_five_six_four_eight_lt_cbrt3 :
+    (8350315863 / 5789785648 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
+/-- `∛3 < 31807895077/22054362665`. The twenty-second convergent of the simple CF
+of `∛3` (using `a₂₁ = 3`), an UPPER bound (odd convergent index `21`).
+
+Convergent recursion (with `a₂₁ = 3`):
+
+  `q₂₁ = 3 · q₂₀ + q₁₉ = 3 · 5789785648 + 4685005721 = 22_054_362_665`
+  `p₂₁ = 3 · p₂₀ + p₁₉ = 3 · 8350315863 + 6756947488 = 31_807_895_077`
+
+After cubing,
+
+  `31_807_895_077³   = 32_181_389_399_984_333_588_608_803_821_533`
+  `3 · 22_054_362_665³ = 32_181_389_399_984_333_588_555_341_288_875`
+
+so `3 · 22_054_362_665³ < 31_807_895_077³` (strict, diff `53_462_532_658`), hence
+`3 < (31807895077/22054362665)³` and `cbrt3 < 31807895077/22054362665` as
+required for an upper bound.
+
+`a₂₁ = 3` was re-derived independently from a 200-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s27_21st_convergent.py`, which also
+records the 22nd-convergent recursion + cube direction), per the established
+anti-typo discipline. Two-line proof via the upper cubing-iff helper. -/
+theorem cbrt3_lt_three_one_eight_zero_seven_eight_nine_five_zero_seven_seven_over_two_two_zero_five_four_three_six_two_six_six_five :
+    cbrt3 < (31807895077 / 22054362665 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
+/-- **Twenty-fourth continued-fraction convergent of `∛3`** (upper bound).
+
+The CF of `∛3` is `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4,
+1, 3, 2, 3, …]`.  With `a₂₃ = 3`, the recursion `pₖ = aₖ pₖ₋₁ + pₖ₋₂`,
+`qₖ = aₖ qₖ₋₁ + qₖ₋₂` on the 22nd/23rd convergents
+`31807895077/22054362665` and `71966106017/49898510978` gives the 24th
+convergent
+
+  `p₂₃ = 3·71966106017 + 31807895077 = 247_706_213_128`
+  `q₂₃ = 3·49898510978 + 22054362665 = 171_749_895_599`.
+
+After cubing,
+
+  `247_706_213_128³  = 15_198_848_986_496_840_442_560_578_479_473_152`
+  `3 · 171_749_895_599³ = 15_198_848_986_496_840_442_560_368_102_820_397`
+
+so `3 · 171_749_895_599³ < 247_706_213_128³` (strict, diff `210_376_652_755`),
+hence `3 < (247706213128/171749895599)³` and
+`cbrt3 < 247706213128/171749895599` as required for an upper bound (relative gap
+`≈ 4.6·10⁻²⁴`).
+
+`a₂₃ = 3` was re-derived independently from a 160-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s29_24th_convergent.py`, which also
+records the recursion + exact cube direction), per the established anti-typo
+discipline.  This is the next uncontested rung above the 23rd convergent
+(PR #24635); it is a routine, durable helper bound, not a deep result.  Two-line
+proof via the upper cubing-iff helper. -/
+theorem cbrt3_lt_two_four_seven_seven_zero_six_two_one_three_one_two_eight_over_one_seven_one_seven_four_nine_eight_nine_five_five_nine_nine :
+    cbrt3 < (247706213128 / 171749895599 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
+/-- **Twenty-fifth continued-fraction convergent of `∛3`** (lower bound).
+
+With `a₂₄ = 4`, the recursion `pₖ = aₖ pₖ₋₁ + pₖ₋₂`, `qₖ = aₖ qₖ₋₁ + qₖ₋₂`
+on the 23rd/24th convergents `71966106017/49898510978` and
+`247706213128/171749895599` gives the 25th convergent
+
+  `p₂₄ = 4·247706213128 + 71966106017 = 1_062_790_958_529`
+  `q₂₄ = 4·171749895599 + 49898510978 = 736_898_093_374`.
+
+After cubing,
+
+  `1_062_790_958_529³   = 1_200_448_555_199_027_448_961_342_537_049_069_889`
+  `3 · 736_898_093_374³ = 1_200_448_555_199_027_448_961_345_650_599_152_872`
+
+so `1_062_790_958_529³ < 3 · 736_898_093_374³` (strict, diff `3_113_550_082_983`),
+hence `(1062790958529/736898093374)³ < 3` and
+`1062790958529/736898093374 < cbrt3` as required for a lower bound (even
+convergent index `24`; relative gap `≈ 8.6·10⁻²⁵`).
+
+`a₂₄ = 4` was re-derived independently from a 160-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s30_25th_convergent.py`, which also
+records the recursion + exact cube direction), per the established anti-typo
+discipline: never re-quote a prior sketch tail, always recompute `aᵢ` and verify
+the cube-side direction before claiming.  This is the next uncontested rung above
+the 24th convergent; a routine, durable helper bound, not a deep result.
+Two-line proof via the lower cubing-iff helper. -/
+theorem one_zero_six_two_seven_nine_zero_nine_five_eight_five_two_nine_over_seven_three_six_eight_nine_eight_zero_nine_three_three_seven_four_lt_cbrt3 :
+    (1062790958529 / 736898093374 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
+/-- **Twenty-seventh continued-fraction convergent of `∛3`** (lower bound).
+
+The CF of `∛3` is `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4,
+1, 3, 2, 3, 4, 1, 4, …]`.  With `a₂₆ = 4`, the recursion `pₖ = aₖ pₖ₋₁ + pₖ₋₂`,
+`qₖ = aₖ qₖ₋₁ + qₖ₋₂` on the 25th/26th convergents `1062790958529/736898093374`
+and `1310497171657/908647988973` gives the 27th convergent
+
+  `p₂₆ = 4·1310497171657 + 1062790958529 = 6_304_779_645_157`
+  `q₂₆ = 4·908647988973 + 736898093374 = 4_371_490_049_266`.
+
+After cubing,
+
+  `6_304_779_645_157³   = 250_616_544_228_682_948_175_334_960_223_187_684_893`
+  `3 · 4_371_490_049_266³ = 250_616_544_228_682_948_175_334_962_924_213_859_288`
+
+so `6_304_779_645_157³ < 3 · 4_371_490_049_266³` (strict, diff
+`2_701_026_174_395`), hence `(6304779645157/4371490049266)³ < 3` and
+`6304779645157/4371490049266 < cbrt3` as required for a lower bound (even
+convergent index `26`; relative gap `≈ 3.6·10⁻²⁷`).
+
+`a₂₆ = 4` was re-derived independently from a 400-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s32_27th_convergent.py`, which also
+records the recursion + exact cube direction), per the established anti-typo
+discipline: never re-quote a prior sketch tail, always recompute `aᵢ` and verify
+the cube-side direction before claiming.  This is the next uncontested rung above
+the 26th convergent (PR #24767); a routine, durable helper bound, not a deep
+result.  Two-line proof via the lower cubing-iff helper. -/
+theorem six_three_zero_four_seven_seven_nine_six_four_five_one_five_seven_over_four_three_seven_one_four_nine_zero_zero_four_nine_two_six_six_lt_cbrt3 :
+    (6304779645157 / 4371490049266 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
+/-- **Twenty-ninth continued-fraction convergent of `∛3`** (lower bound).
+
+The CF of `∛3` is `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4,
+1, 3, 2, 3, 4, 1, 4, 9, 1, …]`.  With `a₂₇ = 9` and `a₂₈ = 1`, the recursion
+`pₖ = aₖ pₖ₋₁ + pₖ₋₂`, `qₖ = aₖ qₖ₋₁ + qₖ₋₂` builds the 28th convergent from the
+27th `6304779645157/4371490049266` (PR #24782) and the 26th
+`1310497171657/908647988973`,
+
+  `p₂₇ = 9·6304779645157 + 1310497171657 = 58_053_513_978_070`
+  `q₂₇ = 9·4371490049266 +  908647988973 = 40_252_058_432_367`,
+
+then the 29th convergent from the 28th and 27th,
+
+  `p₂₈ = 1·58053513978070 + 6304779645157 = 64_358_293_623_227`
+  `q₂₈ = 1·40252058432367 + 4371490049266 = 44_623_548_481_633`.
+
+After cubing,
+
+  `64_358_293_623_227³     = 266_571_405_907_439_242_825_392_459_510_337_159_398_083`
+  `3 · 44_623_548_481_633³ = 266_571_405_907_439_242_825_392_459_540_815_108_589_411`
+
+so `64_358_293_623_227³ < 3 · 44_623_548_481_633³` (strict, diff
+`30_477_949_191_328`), hence `(64358293623227/44623548481633)³ < 3` and
+`64358293623227/44623548481633 < cbrt3` as required for a lower bound (even
+convergent index `28`; relative gap `≈ 3.8·10⁻²⁹`).
+
+`a₂₇ = 9` and `a₂₈ = 1` were re-derived independently from a 500-digit CF
+recomputation of `∛3` (cert `research/scripts/verify_cbrt3_oq04_s34_29th_convergent.py`,
+which recomputes BOTH the 28th and 29th convergents from the recursion and
+records the exact cube direction), per the established anti-typo discipline:
+never re-quote a prior sketch tail, always recompute `aᵢ` and verify the
+cube-side direction before claiming.  The intermediate 28th convergent
+(`a₂₇ = 9`) currently lives only in open PRs #24802/#24809, so this rung is
+built on freshly re-derived integers rather than an unmerged sketch.  A routine,
+durable helper bound, not a deep result.  Two-line proof via the lower
+cubing-iff helper. -/
+theorem six_four_three_five_eight_two_nine_three_six_two_three_two_two_seven_over_four_four_six_two_three_five_four_eight_four_eight_one_six_three_three_lt_cbrt3 :
+    (64358293623227 / 44623548481633 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers

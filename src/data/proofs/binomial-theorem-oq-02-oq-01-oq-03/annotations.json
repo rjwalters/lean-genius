@@ -82,8 +82,8 @@
       "endLine": 166
     },
     "type": "insight",
-    "title": "Cross-Moment Sorry: E[X\u1d62X\u2c7c] = n(n-1)p\u1d62p\u2c7c",
-    "content": "multinomial_cross_moment is stated with a detailed proof sketch in the docstring. The proof uses the joint MGF identity (from multinomial_mgf_real with g(l) = 1+a for l=i, 1+b for l=j, 1 otherwise): \u2211_k P(k)\u00b7(1+a)^{k(i)}\u00b7(1+b)^{k(j)} = (1+p\u1d62a+p\u2c7cb)^n. Differentiating w.r.t. a at 0 (HasDerivAt.sum) gives \u2211_k P(k)\u00b7k(i)\u00b7(1+b)^{k(j)} = n\u00b7p\u1d62\u00b7(1+p\u2c7cb)^{n-1}. Differentiating w.r.t. b at 0 gives E[X\u1d62X\u2c7c] = n(n-1)p\u1d62p\u2c7c. The quantity n(n-1) is a factorial moment: it counts ordered pairs of distinct trials, both from category i and j respectively.",
+    "title": "Cross-Moment: E[X\u1d62X\u2c7c] = n(n-1)p\u1d62p\u2c7c",
+    "content": "multinomial_cross_moment is fully proved (sorry-free), following the detailed proof sketch in its docstring. The proof uses the joint MGF identity (from multinomial_mgf_real with g(l) = 1+a for l=i, 1+b for l=j, 1 otherwise): \u2211_k P(k)\u00b7(1+a)^{k(i)}\u00b7(1+b)^{k(j)} = (1+p\u1d62a+p\u2c7cb)^n. Differentiating w.r.t. a at 0 (HasDerivAt.sum) gives \u2211_k P(k)\u00b7k(i)\u00b7(1+b)^{k(j)} = n\u00b7p\u1d62\u00b7(1+p\u2c7cb)^{n-1}. Differentiating w.r.t. b at 0 gives E[X\u1d62X\u2c7c] = n(n-1)p\u1d62p\u2c7c. The quantity n(n-1) is a factorial moment: it counts ordered pairs of distinct trials, both from category i and j respectively.",
     "mathContext": "Joint MGF: $\\sum_k P(k) (1+a)^{k(i)} (1+b)^{k(j)} = (1 + p_i a + p_j b)^n$. Cross-moment via mixed partial: $E[X_i X_j] = \\frac{\\partial^2}{\\partial a \\partial b}\\Big|_{a=b=0} (1+p_i a + p_j b)^n = n(n-1) p_i p_j$.",
     "significance": "key",
     "relatedConcepts": [
@@ -109,7 +109,7 @@
     },
     "type": "insight",
     "title": "Main Theorem: Multinomial Covariance",
-    "content": "multinomial_covariance reduces the covariance formula to the cross-moment and mean. The proof: (1) rewrites the raw multinomial coefficient form as multinomialProb, (2) expands (k(i)\u00b7k(j) - n\u00b7p(i)\u00b7n\u00b7p(j))\u00b7P via sub_mul and sum_sub_distrib, splitting into two sums, (3) the second sum (constant \u00d7 normalization) is evaluated by multinomialProb_sum_one, (4) the first sum is the cross-moment, (5) closes by ring arithmetic. The key computation is n(n-1)p\u1d62p\u2c7c - n\u00b2p\u1d62p\u2c7c = -np\u1d62p\u2c7c. This algebraic reduction is complete and sorry-free; only the cross-moment lemma carries a sorry.",
+    "content": "multinomial_covariance reduces the covariance formula to the cross-moment and mean. The proof: (1) rewrites the raw multinomial coefficient form as multinomialProb, (2) expands (k(i)\u00b7k(j) - n\u00b7p(i)\u00b7n\u00b7p(j))\u00b7P via sub_mul and sum_sub_distrib, splitting into two sums, (3) the second sum (constant \u00d7 normalization) is evaluated by multinomialProb_sum_one, (4) the first sum is the cross-moment, (5) closes by ring arithmetic. The key computation is n(n-1)p\u1d62p\u2c7c - n\u00b2p\u1d62p\u2c7c = -np\u1d62p\u2c7c. This algebraic reduction is complete and sorry-free, and the cross-moment lemma it relies on is likewise fully proved.",
     "mathContext": "$\\text{Cov}(X_i, X_j) = E[X_i X_j] - E[X_i] E[X_j] = n(n-1)p_ip_j - n^2 p_i p_j = -n p_i p_j$.",
     "significance": "key",
     "relatedConcepts": [

@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 92
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module docstring: three-flagship OQ-04 survey + S2 SCAFFOLD plan",
     "content": "The module docstring is the narrative spine of OQ-04. It cites three flagship sub-questions of non-spherical packing in ℝ³ — (i) tetrahedra (Chen–Engel–Glotzer 2010), (ii) ellipsoids (Donev–Stillinger–Chaikin–Torquato 2004 and Bezdek–Kuperberg 2007), (iii) Ulam's 1972 conjecture — and then commits to a single concrete S2 deliverable: instantiate the parent file's `PackingDensity` type with the Chen–Engel–Glotzer rational constant `4000/4671` and prove three axiom-free `norm_num`-discharged bounds. The docstring also pre-records the entire S3 reduction chain — `4000/4671 > π/(3√2)` ⇔ `12000·√2 > 4671·π` ⇔ (squaring) `288 000 000 > 21 818 241·π²` ⇔ `π² < 13.2002` — so future agents can pick up exactly where S2 stops. The literary structure (parent-axiomatization recap → three-flagship survey → S2 goal → S3 deferred algebra) is a template worth replicating for other OQ entries that scaffold open problems.",
     "mathContext": "Three density landmarks established: $\\delta_{\\text{FCC}} = \\frac{\\pi}{3\\sqrt{2}} \\approx 0.7405$ (parent, Hales–Flyspeck), $\\delta_{\\text{tet,CEG}} = \\frac{4000}{4671} \\approx 0.8564$ (this file's witness), and Ulam's conjectured ball-extremal lower bound $\\delta_K \\geq \\pi/(3\\sqrt{2})$ for centrally symmetric $K \\subset \\mathbb{R}^3$ (deferred). The S3 plan reduces a transcendental real-number comparison to a single rational $\\pi^2$ bound via squaring.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "packing density landscape",
       "shape-specific bounds",
@@ -33,11 +33,11 @@
       "startLine": 94,
       "endLine": 99
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports: Full Mathlib + Kepler parent",
     "content": "Two imports. `import Mathlib` pulls in the entire Mathlib for access to `Real.pi`, `Real.sqrt`, `Real.pi_lt_315`, and the `norm_num` tactic. `import Proofs.KeplerConjecture` brings in the parent file's `fccDensity = π/(3√2)` constant and the `PackingDensity` structure (density field in [0,1]). The `open Real KeplerConjecture` exposes `Real.pi` as `π` and `KeplerConjecture.fccDensity` as `fccDensity` for the S3 inequality. No new axioms are imported.",
     "mathContext": "Toolkit for the S3 follow-up: $\\mathrm{Real.pi\\_lt\\_315} : \\pi < 3.15$, $\\mathrm{Real.sq\\_sqrt} : (\\sqrt{x})^2 = x \\text{ for } x \\geq 0$. The current file uses only `norm_num` for rational bounds.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib import scope",
       "namespace opening",
@@ -79,11 +79,11 @@
       "startLine": 125,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Positivity via unfold + norm_num",
     "content": "The canonical Mathlib proof pattern for rational-constant positivity: `unfold` exposes `4000 / 4671` and `norm_num` discharges the strict positivity of a positive-numerator, positive-denominator quotient. No real-analytic reasoning is needed — `norm_num` handles rational comparisons internally by clearing denominators and comparing integers.",
     "mathContext": "$0 < \\frac{4000}{4671}$ because $0 < 4000$ and $0 < 4671$. `norm_num` cross-multiplies: $0 \\cdot 4671 < 4000 \\cdot 1 \\iff 0 < 4000$ ✓.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "norm_num tactic",
       "positivity proofs",
@@ -101,7 +101,7 @@
       "startLine": 137,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Sub-unit density bound",
     "content": "Same pattern as positivity: `unfold` + `norm_num` reduces the bound `4000/4671 < 1` to the trivial inequality `4000 < 4671`. This places `tetrahedronDimerDensity` in the meaningful open interval (0, 1) — necessary for it to embed into the parent `PackingDensity` structure (whose density field is constrained to [0, 1]). Any genuine packing density must lie below 1 (sphere/tetrahedron packings of density 1 would tile space without gaps, possible only for space-filling polytopes — and the regular tetrahedron is famously *not* space-filling, the gap-counting argument going back to Aristotle's error).",
     "mathContext": "$\\frac{4000}{4671} < 1 \\iff 4000 < 4671$ — trivial; margin $671$.",

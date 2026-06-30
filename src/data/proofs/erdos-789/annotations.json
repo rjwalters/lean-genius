@@ -16,7 +16,11 @@
       "Sidon sets",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive Combinatorics",
+      "Sum-Free Sets",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-789-sumrep",
@@ -57,7 +61,11 @@
       "Extremal functions",
       "Guaranteed subsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Set Theory",
+      "Integer Subsets",
+      "Maximization Over Sets"
+    ]
   },
   {
     "id": "ann-789-upper",
@@ -76,7 +84,11 @@
       "Best known bounds"
     ],
     "mathContext": "See annotation content for formal details of upper bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "Counting Arguments",
+      "Sum Representations",
+      "Big-O Notation"
+    ]
   },
   {
     "id": "ann-789-lower",
@@ -95,7 +107,11 @@
       "Diophantine approximation"
     ],
     "mathContext": "See annotation content for formal details of lower bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Fractional Parts",
+      "Diophantine Approximation"
+    ]
   },
   {
     "id": "ann-789-combined",
@@ -136,7 +152,11 @@
       "Erdős-Turán"
     ],
     "mathContext": "See annotation content for formal details of connection to sidon sets",
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon Sets",
+      "Pairwise Sums",
+      "Erdős-Turán Bound"
+    ]
   },
   {
     "id": "ann-789-examples",
@@ -154,7 +174,11 @@
       "Numerical verification"
     ],
     "mathContext": "See annotation content for formal details of computational examples",
-    "prerequisites": []
+    "prerequisites": [
+      "Integer Square Root",
+      "native_decide",
+      "Numerical Verification"
+    ]
   },
   {
     "id": "ann-789-main",
@@ -173,6 +197,10 @@
       "State of the art"
     ],
     "mathContext": "See annotation content for formal details of main theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "Upper And Lower Bounds",
+      "Open Problems",
+      "Asymptotic Estimates"
+    ]
   }
 ]

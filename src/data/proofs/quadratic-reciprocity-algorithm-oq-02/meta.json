@@ -1,0 +1,159 @@
+{
+  "id": "quadratic-reciprocity-algorithm-oq-02",
+  "title": "The Jacobi Symbol on Composite Moduli: What Extends and What Breaks",
+  "slug": "quadratic-reciprocity-algorithm-oq-02",
+  "description": "The parent entry implements a verified recursive algorithm jacobiAlgo for J(a | b). This follow-up makes precise how the Jacobi symbol over a COMPOSITE modulus genuinely extends the Legendre symbol and exactly what residuosity information it loses. It establishes multiplicativity in the modulus J(a | m·n) = J(a | m)·J(a | n) (the feature that defines composite-modulus behavior), that J agrees with the Legendre symbol on primes, the surviving direction J(a | n) = −1 ⟹ a is a nonsquare mod n (a nonresidue certificate valid for any n), and the lost direction with its canonical witness: J(2 | 15) = J(2 | 3)·J(2 | 5) = (−1)·(−1) = 1 even though 2 is not a square mod 15 — whereas over a prime J(a | p) = 1 always forces a square. All numeric symbol values are computed through the residuosity iff lemmas (legendreSym.eq_one_iff / eq_neg_one_iff), reducing to kernel-decidable IsSquare facts over small ZMod p, so there is no native_decide.",
+  "meta": {
+    "author": "Lean Genius researcher-8",
+    "status": "verified",
+    "proofRepoPath": "Proofs/QuadraticReciprocityAlgorithmOQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 194,
+    "theoremCount": 17,
+    "definitionCount": 0,
+    "assumptions": "None. Every result is fully machine-checked. Numeric Legendre/Jacobi values are discharged via the residuosity iff lemmas, which reduce to kernel `decide` over the finite fields ZMod p (the `+revert` modifier cleans up the local `Fact p.Prime` instance before deciding); there is no `native_decide`, hence no Lean.ofReduceBool. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; no axiom declaration, no structure-encoded hypothesis, no sorryAx.",
+    "tags": [
+      "number-theory",
+      "jacobi-symbol",
+      "legendre-symbol",
+      "quadratic-residues",
+      "quadratic-reciprocity",
+      "composite-moduli",
+      "multiplicativity",
+      "nonresidue-certificate"
+    ],
+    "dateAdded": "2026-06-22",
+    "originalContributions": [
+      "jacobi_mul_right / jacobi_mul_right₃: multiplicativity of the Jacobi symbol in the modulus, J(a | m·n) = J(a | m)·J(a | n), packaged as the defining composite-modulus property",
+      "jacobi_eq_legendre_of_prime: the Jacobi symbol agrees with the Legendre symbol on prime moduli (the sense in which it extends it)",
+      "nonsquare_of_jacobi_eq_neg_one: the surviving residuosity direction — J(a | n) = −1 certifies a is a nonsquare mod n for ANY modulus n, with no primality hypothesis",
+      "jacobi_one_not_isSquare: the asymmetry witnessed — ∃ a, n with J(a | n) = 1 yet a not a square mod n (a = 2, n = 15), the precise failure of the converse for composite moduli, contrasted with isSquare_of_jacobi_eq_one_prime for primes",
+      "jacobi_neg_one_factor: the mechanism — J(2 | 15) = 1 arises from J(2 | 3) = J(2 | 5) = −1 cancelling, so 2 is a nonsquare modulo each prime factor while the product symbol is +1",
+      "Native-decide-free numeric evaluation of J(2|3), J(2|5), J(2|7), J(7|3), J(7|5), J(2|15), J(7|15), J(2|21) through the IsSquare residuosity criterion"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "jacobiSym.legendreSym.to_jacobiSym",
+        "description": "legendreSym p a = J(a | p) for prime p. Bridges the two symbols, letting prime-modulus Jacobi values be computed through the Legendre residuosity criterion.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.mul_right",
+        "description": "J(a | m·n) = J(a | m)·J(a | n) for nonzero m, n. The multiplicativity of the Jacobi symbol in its modulus, the core of composite-modulus behavior.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "ZMod.nonsquare_of_jacobiSym_eq_neg_one",
+        "description": "J(a | b) = −1 ⟹ a is not a square in ZMod b, for any b. Supplies the surviving residuosity direction that makes the Jacobi symbol a valid nonresidue certificate over composite moduli.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "ZMod.isSquare_of_jacobiSym_eq_one",
+        "description": "For prime p, J(a | p) = 1 ⟹ a is a square mod p. The direction that holds for primes and fails for composite moduli, pinning down the asymmetry.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "legendreSym.eq_one_iff / legendreSym.eq_neg_one_iff",
+        "description": "legendreSym p a = 1 ↔ IsSquare (a : ZMod p) (for a ≠ 0) and = −1 ↔ ¬IsSquare. Reduce each prime-modulus symbol value to a kernel-decidable IsSquare statement over a small finite field, avoiding native_decide.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/QuadraticReciprocityAlgorithmOQ02.lean",
+    "namespace": "QuadraticReciprocityAlgorithmOQ02",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 194,
+    "theoremCount": 17,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Legendre symbol (a | p), defined for an odd prime p, records whether a is a quadratic residue: +1 for a nonzero square, −1 for a nonsquare, 0 for a multiple of p. Jacobi extended it to all odd moduli by setting J(a | n) = ∏ (a | pᵢ) over the prime factorization n = ∏ pᵢ. The extension is what makes the reciprocity-based GCD-like algorithm (the parent entry's jacobiAlgo) efficient: one never has to factor the modulus. But the extension is not free. For a prime, the Legendre symbol is a faithful test of quadratic residuosity in both directions. For a composite modulus the Jacobi symbol keeps only one direction — a −1 still certifies a nonresidue — while a +1 no longer guarantees a square, because an even number of −1 factors can cancel. This single asymmetry is the reason the Jacobi symbol cannot by itself decide quadratic residuosity mod n, and it is exactly the gap that the Solovay–Strassen probabilistic primality test exploits.",
+    "problemStatement": "Open Question OQ-02 (child of quadratic-reciprocity-algorithm-oq-01): extend the verified Legendre symbol computation to Jacobi symbols for composite moduli. Concretely: state and prove the multiplicativity of the Jacobi symbol in its modulus, the sense in which it extends the Legendre symbol, and — the mathematically substantive part — the precise residuosity information that survives versus is lost when the modulus is composite.",
+    "proofStrategy": "Multiplicativity in the modulus is Mathlib's jacobiSym.mul_right; iterating it gives the three-factor form. Agreement with Legendre on primes is jacobiSym.legendreSym.to_jacobiSym. The surviving direction J(a | n) = −1 ⟹ ¬IsSquare (a : ZMod n) is ZMod.nonsquare_of_jacobiSym_eq_neg_one, which carries no primality hypothesis; its contrapositive gives a residue ⟹ symbol ≠ −1. The lost direction is exhibited by the witness a = 2, n = 15: compute J(2 | 15) = J(2 | 3)·J(2 | 5) by multiplicativity, evaluate J(2 | 3) = J(2 | 5) = −1, so J(2 | 15) = 1, while ¬IsSquare (2 : ZMod 15) is checked by kernel decide; packaged as the existential jacobi_one_not_isSquare and contrasted with ZMod.isSquare_of_jacobiSym_eq_one for primes. Every prime-modulus symbol value is obtained by rewriting J(a | p) to legendreSym p a and then to a decidable IsSquare statement via legendreSym.eq_one_iff / eq_neg_one_iff with the prime and argument supplied explicitly; the residual decide is run with `+revert` so the local Fact p.Prime instance does not leave the goal with a free variable. This keeps the whole development free of native_decide.",
+    "keyInsights": [
+      "The Jacobi symbol is the prime-factorization product of Legendre symbols, so multiplicativity in the modulus is not a theorem to be earned but the very definition extended — and it is what lets the reciprocity algorithm avoid factoring.",
+      "Compositeness breaks the symbol's residuosity test in exactly one direction: J(a | n) = −1 still proves a is a nonsquare (an odd number of nonresidue factors cannot come from a global square), but J(a | n) = 1 proves nothing, since two −1 factors cancel.",
+      "The smallest witness, J(2 | 15) = 1 with 2 a nonsquare mod 15, is not a curiosity but the structural heart of the Solovay–Strassen primality test: composite moduli admit 'Euler liars' precisely because the Jacobi symbol can read +1 on a genuine nonresidue.",
+      "A clean residuosity computation need not use native_decide: routing each prime-modulus value through legendreSym.eq_*_iff turns it into an IsSquare question over a tiny finite field, which the kernel decides — keeping the entry axiom-honest (no Lean.ofReduceBool).",
+      "`decide +revert` is the right tool when a goal like ¬IsSquare (↑2 : ZMod 3) is blocked by a local `Fact p.Prime` instance: reverting it removes the free-variable obstruction before kernel evaluation."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Overview",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "States OQ-02: extending the parent's Legendre algorithm to composite moduli, and previews the surviving (J = −1 ⟹ nonsquare) versus lost (J = 1 ⤏ square) residuosity directions, with the J(2|15) witness."
+    },
+    {
+      "id": "extend-multiplicative",
+      "title": "Extending Legendre; Multiplicativity in the Modulus",
+      "startLine": 56,
+      "endLine": 75,
+      "summary": "jacobi_eq_legendre_of_prime (J(a|p) = legendreSym p a) and jacobi_mul_right / jacobi_mul_right₃ (J(a | m·n) = J(a|m)·J(a|n)), the defining composite-modulus property."
+    },
+    {
+      "id": "surviving-direction",
+      "title": "The Surviving Direction: a Nonresidue Certificate",
+      "startLine": 77,
+      "endLine": 90,
+      "summary": "nonsquare_of_jacobi_eq_neg_one: J(a | n) = −1 ⟹ a is a nonsquare mod n for any n, and its contrapositive jacobi_ne_neg_one_of_isSquare."
+    },
+    {
+      "id": "prime-values",
+      "title": "Prime-Modulus Values via Residuosity",
+      "startLine": 92,
+      "endLine": 124,
+      "summary": "J(2|3), J(2|5), J(2|7), J(7|3), J(7|5) computed by rewriting to legendreSym and then to a decidable IsSquare statement (legendreSym.eq_one_iff / eq_neg_one_iff), with `decide +revert`. No native_decide."
+    },
+    {
+      "id": "lost-direction",
+      "title": "The Lost Direction and Its Witness",
+      "startLine": 126,
+      "endLine": 151,
+      "summary": "jacobi_two_fifteen (J(2|15) = 1 by multiplicativity), two_not_isSquare_mod_fifteen, the existential jacobi_one_not_isSquare, and the prime contrast isSquare_of_jacobi_eq_one_prime."
+    },
+    {
+      "id": "mechanism",
+      "title": "Why the Witness Exists",
+      "startLine": 153,
+      "endLine": 164,
+      "summary": "jacobi_neg_one_factor: J(2|15) = 1 arises from J(2|3) = J(2|5) = −1, so 2 is a nonsquare modulo each prime factor while the product cancels to +1."
+    },
+    {
+      "id": "worked",
+      "title": "Worked Composite-Modulus Computations",
+      "startLine": 166,
+      "endLine": 194,
+      "summary": "jacobi_seven_fifteen (J(7|15) = −1, surviving direction gives 7 a nonsquare mod 15) and jacobi_two_twentyone (J(2|21) = −1), each with the nonsquare corollary."
+    }
+  ],
+  "conclusion": {
+    "summary": "17 theorems, 0 sorries, 0 axioms, no native_decide. The Jacobi symbol over a composite modulus is multiplicative in the modulus and agrees with the Legendre symbol on primes, but its residuosity test survives only in one direction: J(a | n) = −1 certifies a nonsquare for any n, while J(a | n) = 1 does not certify a square once n is composite, witnessed by J(2 | 15) = 1 with 2 a nonsquare mod 15.",
+    "implications": "Completes the parent's Legendre/Jacobi algorithm by pinning down exactly what the symbol does and does not decide over composite moduli — the foundation of the Solovay–Strassen primality test. The technique of evaluating Legendre/Jacobi values through the IsSquare residuosity criterion (rather than native_decide) is a reusable, axiom-honest way to compute these symbols on concrete inputs.",
+    "openQuestions": [
+      "Can the Euler-criterion failure be formalized directly as a Solovay–Strassen compositeness witness: if n is odd and J(a | n) ≢ a^((n−1)/2) (mod n) for some a coprime to n, then n is composite?",
+      "What fraction of a ∈ (ZMod n)ˣ are 'Euler liars' (J(a|n) = 1 with a a nonsquare) for a given composite n, and can the ≤ 1/2 bound underlying Solovay–Strassen be proved in Lean?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity-algorithm-oq-01",
+      "relationship": "parent — implements the verified recursive symbol algorithm jacobiAlgo; this entry characterizes what that symbol decides over composite moduli"
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm",
+      "relationship": "ancestor — the law of quadratic reciprocity underlying both the algorithm and the multiplicativity used here"
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm-oq-03",
+      "relationship": "sibling — a further development of the quadratic-reciprocity algorithm line"
+    }
+  ],
+  "sorries": 0
+}

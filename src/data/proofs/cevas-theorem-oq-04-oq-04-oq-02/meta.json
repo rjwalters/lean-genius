@@ -1,0 +1,149 @@
+{
+  "id": "cevas-theorem-oq-04-oq-04-oq-02",
+  "title": "Excenters, the Nagel and Gergonne Points via Mass Points",
+  "slug": "cevas-theorem-oq-04-oq-04-oq-02",
+  "description": "Answers the parent open question by giving the mass-point / barycentric treatment of the three EXCENTERS (using signed masses), the NAGEL point, and the GERGONNE point — extending the parent (cevas-theorem-oq-04-oq-04), which handled only the incenter. Triangles are encoded by tangent lengths x = s−a, y = s−b, z = s−c > 0 (Ravi coordinates), in which the classical centres are polynomial barycentrics: incenter (y+z : z+x : x+y), A-excenter (−(y+z) : z+x : x+y), Nagel (x : y : z), Gergonne (yz : zx : xy). Each centre is realized as an explicit point of an arbitrary real vector space and proved to lie on its cevian as an affine combination of a vertex with the opposite foot, with weights summing to 1. The excenter case is the substantive content: the negative mass −a at A still places the A-excenter on the INTERNAL A-bisector (same foot as the incenter). 10 theorems, 10 definitions, 0 axioms, 0 sorries over an arbitrary ℝ-module.",
+  "category": "geometry",
+  "status": "verified",
+  "badge": "original",
+  "difficulty": "intermediate",
+  "leanFile": {
+    "path": "Proofs/CevasTheoremOQ04OQ04OQ02.lean",
+    "namespace": "MassPointCeva.Excenters",
+    "imports": ["Mathlib"],
+    "opens": [],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 223,
+    "theoremCount": 10,
+    "definitionCount": 10
+  },
+  "openQuestion": {
+    "id": "cevas-theorem-oq-04-oq-04-oq-02",
+    "parentId": "cevas-theorem-oq-04-oq-04",
+    "question": "Give the analogous mass-point treatment of the excenters (signed masses) and the Gergonne/Nagel points, and locate each as a barycentric combination.",
+    "answer": "Encode the triangle by its tangent lengths x = s−a, y = s−b, z = s−c (> 0 iff the triangle is nondegenerate; sides a = y+z, b = z+x, c = x+y, semiperimeter s = x+y+z). Then the classical centres are polynomial barycentrics, and each is located as a barycentric combination of the vertices in an arbitrary real vector space: incenter (y+z : z+x : x+y), A-excenter (−(y+z) : z+x : x+y) with a SIGNED mass −a at A, Nagel point (x : y : z), Gergonne point (yz : zx : xy). For each we prove it lies on its A-cevian (Nagel ↦ extouch point, Gergonne ↦ incircle contact, excenter/incenter ↦ the internal-bisector foot) as an affine combination whose two weights sum to 1; the B- and C-excenters lie on their own internal bisectors by the same signed-mass mechanism. The negative apex mass of the excenter is the new ingredient relative to the incenter-only parent. 0 axioms, 0 sorries."
+  },
+  "highlights": [
+    "Mass-point / barycentric location of excenters (SIGNED masses), Nagel point, and Gergonne point",
+    "Ravi coordinates x=s−a, y=s−b, z=s−c make all centre barycentrics polynomial",
+    "A-excenter (−a : b : c): negative apex mass still places it on the INTERNAL A-bisector (same foot as the incenter)",
+    "Nagel point (x : y : z) on the A-extouch cevian; Gergonne point (yz : zx : xy) on the incircle-contact cevian",
+    "Every concurrency is a genuine affine combination (two weights summing to 1) in an arbitrary real vector space",
+    "Extends the incenter-only parent cevas-theorem-oq-04-oq-04 to the full incenter/excenter/Nagel/Gergonne family"
+  ],
+  "assumptions": [],
+  "implications": [
+    {
+      "statement": "excenterA = (−(y+z)/2x)·A + ((2x+y+z)/2x)·footBisectorA: the A-excenter lies on the internal A-bisector despite the negative apex mass",
+      "type": "theorem"
+    },
+    {
+      "statement": "nagel = (x/(x+y+z))·A + ((y+z)/(x+y+z))·extouchA: the Nagel point lies on the A-extouch cevian",
+      "type": "theorem"
+    },
+    {
+      "statement": "gergonne = (yz/D)·A + ((zx+xy)/D)·contactA: the Gergonne point lies on the incircle-contact cevian",
+      "type": "theorem"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The incenter, three excenters, Nagel point (X(8)) and Gergonne point (X(7)) are among the most classical triangle centres (Coxeter–Greitzer, Kimberling's Encyclopedia of Triangle Centers). Each is a point of cevian concurrency with clean barycentric coordinates, and each is the canonical mass-point worked example for a different family of cevians: angle bisectors (incenter), external bisectors (excenters), cevians to the extouch points (Nagel) and to the incircle contact points (Gergonne). The parent entry cevas-theorem-oq-04-oq-04 developed the mass-point certificate for the incenter only and asked for the analogous treatment of the excenters and the Nagel/Gergonne points — this entry supplies it.",
+    "problemStatement": "In an arbitrary real vector space V holding the triangle vertices A, B, C, locate the three excenters (with signed masses), the Nagel point, and the Gergonne point as explicit barycentric combinations, and prove each lies on the appropriate cevian.",
+    "proofStrategy": "Parametrize triangles by tangent lengths x=s−a, y=s−b, z=s−c > 0 (Ravi substitution), so a=y+z, b=z+x, c=x+y, s=x+y+z and every centre's barycentric coordinates become polynomials in x,y,z. Define each centre as a normalized weighted sum of A,B,C, and each cevian foot on BC by dropping the apex barycentric coordinate. For each centre prove `centre = wₐ·A + w_foot·foot` with wₐ + w_foot = 1, using the parent's `match_scalars <;> field_simp` idiom; denominators are cleared via `positivity` (all of x+y+z, 2x, yz+zx+xy, etc. are positive). Provide the Nagel `lineMap` form and the explicit weight-sum lemmas.",
+    "keyInsights": [
+      "The Ravi substitution x=s−a, y=s−b, z=s−c turns the triangle inequalities into the single condition x,y,z>0 and makes all centre barycentrics polynomial — every denominator (x+y+z, 2x, yz+zx+xy, 2x+y+z, …) is then manifestly positive, discharged by `positivity`.",
+      "The defining feature of an excenter is a SINGLE negative barycentric weight (−a at A for the A-excenter). The proof shows this signed mass still places the A-excenter on the INTERNAL A-bisector — the same foot footBisectorA = (0 : b : c) as the incenter — so internally the excenter and incenter share the A-cevian; the externality lives in the other two (negative-weight) cevians.",
+      "Nagel and Gergonne are 'dual' on each side: the Nagel A-foot (extouch) has barycentric (0 : y : z) while the Gergonne A-foot (incircle contact) has (0 : z : y) — reflections of each other in the midpoint of BC, matching extouch BD=s−c vs contact BD=s−b.",
+      "Concurrency is proved as honest affine geometry: each centre is `wₐ·vertex + w_foot·foot` with wₐ+w_foot=1 in an arbitrary ℝ-module, so it genuinely lies on the cevian line — not merely a ratio coincidence."
+    ],
+    "prerequisites": [
+      "Barycentric coordinates and Ceva's theorem (parent cevas-theorem-oq-04, cevas-theorem-oq-04-oq-04)",
+      "Tangent lengths / Ravi substitution x=s−a, y=s−b, z=s−c",
+      "Module / affine combinations over ℝ; AffineMap.lineMap",
+      "match_scalars and field_simp tactics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "centres",
+      "title": "Triangle centres in tangent-length barycentric coordinates",
+      "startLine": 62,
+      "endLine": 110,
+      "summary": "Defines incenter (y+z:z+x:x+y), the three excenters with one negative weight each, the Nagel point (x:y:z), the Gergonne point (yz:zx:xy), and the three A-cevian feet on BC (footBisectorA, extouchA, contactA) by dropping the apex barycentric coordinate.",
+      "mathContext": "With x=s−a, y=s−b, z=s−c the classical centres become polynomial barycentrics; the feet are the normalized two-coordinate restrictions to side BC."
+    },
+    {
+      "id": "nagel-gergonne",
+      "title": "Nagel and Gergonne points on their cevians",
+      "startLine": 112,
+      "endLine": 160,
+      "summary": "nagel_on_cevian_A / nagel_lineMap_A place the Nagel point on the A-extouch cevian; gergonne_on_cevian_A places the Gergonne point on the incircle-contact cevian. Each comes with a weight-sum-one lemma. Proofs: match_scalars + field_simp.",
+      "mathContext": "Nagel = (x/(x+y+z))A + ((y+z)/(x+y+z))·extouch; Gergonne = (yz/D)A + ((zx+xy)/D)·contact, with D = yz+zx+xy and zx+xy = x(y+z)."
+    },
+    {
+      "id": "excenters",
+      "title": "Excenters via signed masses",
+      "startLine": 162,
+      "endLine": 223,
+      "summary": "excenterA_on_bisector_A proves the A-excenter (signed mass −a at A) lies on the internal A-bisector through footBisectorA — the same foot as the incenter (incenter_on_bisector_A, for comparison). excenterB_on_bisector_B gives the B-excenter on its own internal bisector. Weight-sum-one lemmas accompany each.",
+      "mathContext": "A-excenter = (−(y+z)/2x)A + ((2x+y+z)/2x)·footBisectorA, weights summing to 1 even though the apex weight is negative."
+    }
+  ],
+  "conclusion": {
+    "summary": "The mass-point / barycentric treatment of the parent's incenter is extended to the three excenters (signed masses), the Nagel point, and the Gergonne point. In Ravi coordinates each centre is an explicit barycentric combination of the vertices, proved to lie on its cevian as an affine combination with weights summing to 1, in an arbitrary real vector space. The A-excenter's negative apex mass still places it on the internal A-bisector. 10 theorems, 10 definitions, 0 axioms, 0 sorries.",
+    "implications": "This completes the mass-point picture of the four classical incircle/excircle-related triangle centres in a model-independent (any ℝ-module) setting, on the same footing as the parent's incenter construction. It is the barycentric backbone for further results: the Nagel line (I, G, N collinear), the contact and extouch triangles, and the orthocentric system formed by the incenter and three excenters.",
+    "openQuestions": [
+      "Prove the incenter and three excenters form an orthocentric system (I is the orthocenter of the excentral triangle), in a Euclidean (inner-product) setting.",
+      "Establish the Nagel line: the incenter, centroid, and Nagel point are collinear with IG:GN = 1:2.",
+      "Connect the tangent-length coordinates to actual Euclidean distances, deriving x=s−a etc. from the incircle/excircle tangency lengths."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-oq-04-oq-04",
+      "relationship": "parent"
+    },
+    {
+      "targetId": "cevas-theorem-oq-04",
+      "relationship": "related"
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-25",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/CevasTheoremOQ04OQ04OQ02.lean",
+    "tags": [
+      "geometry",
+      "ceva",
+      "mass-points",
+      "barycentric-coordinates",
+      "excenter",
+      "nagel-point",
+      "gergonne-point",
+      "open-question"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 223,
+    "theoremCount": 10,
+    "definitionCount": 10,
+    "assumptions": "0 axioms and 0 sorries over an arbitrary real vector space (ℝ-module). Build-confirmed with `lake env lean` against the prebuilt Mathlib 4.26.0 olean cache (Docker engine was down fleet-wide, so docker-build.sh could not be used; the file imports only Mathlib and has no sibling-proof dependencies, so a standalone compile is a complete check). Exit 0, no errors; one default-disabled style lint (`linter.unnecessarySeqFocus`) remains. `#print axioms` on excenterA_on_bisector_A / nagel_on_cevian_A / gergonne_on_cevian_A / excenterB_on_bisector_B / incenter_on_bisector_A reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool. The triangle is encoded by tangent lengths x=s−a, y=s−b, z=s−c > 0 (Ravi substitution); this is exactly the set of nondegenerate triangles, so no generality is lost.",
+    "originalContributions": [
+      "Barycentric/mass-point definitions of the incenter, three excenters (signed masses), Nagel point, and Gergonne point in an arbitrary ℝ-module, in tangent-length (Ravi) coordinates",
+      "excenterA_on_bisector_A: the A-excenter's negative apex mass still places it on the internal A-bisector (same foot as the incenter)",
+      "excenterB_on_bisector_B: the B-excenter on its own internal bisector by the same signed-mass mechanism",
+      "nagel_on_cevian_A / nagel_lineMap_A: the Nagel point on the A-extouch cevian",
+      "gergonne_on_cevian_A: the Gergonne point on the incircle-contact cevian",
+      "weight-sum-one lemmas certifying each concurrency is a genuine affine combination"
+    ],
+    "proofStrategy": "Ravi substitution x=s−a,y=s−b,z=s−c>0 makes all centre barycentrics polynomial; define each centre and each cevian foot; prove `centre = wₐ·A + w_foot·foot` with wₐ+w_foot=1 via match_scalars <;> field_simp, clearing positive denominators with positivity.",
+    "openQuestions": [
+      "Incenter + three excenters form an orthocentric system in a Euclidean setting",
+      "The Nagel line: I, G, N collinear with IG:GN = 1:2",
+      "Derive the tangent-length coordinates from incircle/excircle tangency lengths"
+    ]
+  }
+}
