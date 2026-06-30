@@ -30,6 +30,7 @@
 -/
 
 import Mathlib
+import Proofs.Erdos895CounterexampleFin18
 
 open Finset SimpleGraph
 
@@ -58,6 +59,19 @@ def IsAdditiveTriple {n : ℕ} (a b c : Fin n) : Prop :=
 /-- Check if there exists an independent additive triple -/
 def HasIndependentAdditiveTriple {n : ℕ} (G : GraphOnInterval n) : Prop :=
   ∃ a b c : Fin n, IsAdditiveTriple a b c ∧ IsIndependentTriple G a b c
+
+/-- A **corrected** additive triple `(a, b, a+b)` requiring three DISTINCT vertices
+(`a ≠ b`), matching Barber's theorem. The loose `IsAdditiveTriple` above omits `a ≠ b`
+and so admits the degenerate `(k, k, 2k)`, which changes the answer (see the correctness
+note below). This strict predicate is the one that makes the sharp-threshold counterexample
+true; the loose predicate is retained only because `erdos895_implies_schur_variant` relies
+on the degenerate `(1, 1, 2)` triple. -/
+def IsDistinctAdditiveTriple {n : ℕ} (a b c : Fin n) : Prop :=
+  (a.val : ℕ) + b.val = c.val ∧ a.val > 0 ∧ b.val > 0 ∧ a ≠ b
+
+/-- Existence of an independent additive triple among three **distinct** vertices. -/
+def HasDistinctIndependentAdditiveTriple {n : ℕ} (G : GraphOnInterval n) : Prop :=
+  ∃ a b c : Fin n, IsDistinctAdditiveTriple a b c ∧ IsIndependentTriple G a b c
 
 /- ## The Main Conjecture -/
 
@@ -94,23 +108,24 @@ def erdos895Threshold : ℕ := 18
   CONSEQUENCES (with the file's own loose definition):
     • `barber_theorem` (∀ n ≥ 18): TRUE but NOT sharp (it already holds from n ≥ 12);
       the `sorry` is the genuinely hard SAT-verified combinatorics — OPEN to formalize.
-    • `counterexample_17` (∃ G on `Fin 17` …): FALSE. Z3 proves UNSAT, i.e. EVERY
-      triangle-free graph on `Fin 17` has an independent additive triple. This `sorry`
-      can never be filled as stated.
-    • `threshold_sharp` and `erdos895_sat_verified`: unfixable as stated (they depend
-      on the two above).
-    There is NO single definition under which BOTH `barber_theorem` (n ≥ 18) and
-    `counterexample_17` (Fin 17) hold simultaneously.
+    • `counterexample_17` (∃ G on `Fin 17` …): was FALSE. Z3 proves UNSAT, i.e. EVERY
+      triangle-free graph on `Fin 17` has an independent additive triple, so that `sorry`
+      could never be filled as stated. It has now been REMOVED and replaced by the
+      machine-verified, distinct-vertex `counterexample_fin18` over `Fin 18` (below).
+    • `erdos895_sat_verified`: still `sorry` (it depends on the hard positive direction).
 
-  CORRECTED STATEMENT (distinct vertices a ≠ b, matching Barber):
-    • positive: ∀ n ≥ 19, ∀ G : SimpleGraph (Fin n), triangle-free →
-        ∃ a b : Fin n, a ≠ b ∧ a.val>0 ∧ b.val>0 ∧ a.val+b.val<n ∧
-        the triple (a, b, a+b) is independent.
-    • counterexample lives on `Fin 18` (= {1,…,17}). An explicit witness (42 edges,
-      triangle-free, no DISTINCT independent additive triple) is recorded in the
-      research note; vertex 0 is isolated. This corrected counterexample is now
-      MACHINE-VERIFIED in the companion file `Erdos895CounterexampleFin18.lean`
-      (`counterexample_fin18`, by `native_decide`).
+  RESOLUTION (distinct vertices a ≠ b, matching Barber):
+    • The strict predicate `IsDistinctAdditiveTriple` (= `IsAdditiveTriple` with `a ≠ b`)
+      and `HasDistinctIndependentAdditiveTriple` are now defined alongside the loose ones
+      (the loose form is retained only for `erdos895_implies_schur_variant`, which relies
+      on the degenerate `(1,1,2)` triple — see researcher-2's S4 note).
+    • The counterexample lives on `Fin 18` (= {1,…,17}, vertex 0 isolated): an explicit
+      42-edge triangle-free witness with no DISTINCT independent additive triple. It is
+      MACHINE-VERIFIED 0-axiom (plain `decide`) in the companion
+      `Erdos895CounterexampleFin18.lean` and re-exported here as `counterexample_fin18`;
+      `threshold_sharp` now pairs it with `barber_theorem`.
+    • positive direction (still open `sorry` in `barber_theorem`): ∀ large n, every
+      triangle-free graph has a distinct-vertex independent additive triple a, b, a+b.
 
   BUILD NOTE (researcher-9, 2026-06-25): this file was previously build-broken on
   Mathlib v4.26.0 — ~16 compile errors in the auxiliary lemmas (API drift:
@@ -118,9 +133,9 @@ def erdos895Threshold : ℕ := 18
   `Nat.sqrt_lt'`, `mem_neighborFinset.mpr`, dite/omega tactic breakage). These are now
   REPAIRED, so the genuinely-proved auxiliary results below (Mantel's theorem, R(3,3)=6,
   Schur S(2)=4, the √n and dense triangle-free independence bounds) compile and are
-  machine-checked. Only the three combinatorially-hard / false-as-stated declarations
-  remain `sorry`: `barber_theorem`, `counterexample_17` (false — see companion file),
-  and `erdos895_sat_verified`.
+  machine-checked. The only remaining `sorry`s are the genuinely-hard positive direction
+  `barber_theorem` and its dependent `erdos895_sat_verified`; the former false-as-stated
+  `counterexample_17` has been replaced by the proven `counterexample_fin18`.
 -/
 
 /- ## Barber's Theorem (2015) -/
@@ -137,16 +152,32 @@ theorem erdos_895 : erdos895Conjecture := by
 
 /- ## Small Cases -/
 
-/-- For n = 17, there exists a triangle-free graph with no independent additive triple -/
-theorem counterexample_17 : ∃ G : GraphOnInterval 17,
-    IsTriangleFree G ∧ ¬HasIndependentAdditiveTriple G := by
-  sorry
+/-- **Corrected sharpness witness.** There is a triangle-free graph on `Fin 18`
+(= `{1,…,17}`, vertex `0` isolated) with **no** independent additive triple among three
+DISTINCT vertices. This is the machine-verified replacement for the previously-`sorry`'d
+`counterexample_17` (over `Fin 17`), which was FALSE under the file's loose
+`IsAdditiveTriple` (Z3 exhaustive UNSAT; see the correctness note above and the scripts
+in `research/problems/erdos-895-incomplete-01/`). The explicit 42-edge witness and its
+two exhaustive `decide` checks live, 0-axiom, in the companion
+`Erdos895CounterexampleFin18.lean`; here we re-export it against this file's predicates
+(definitionally identical). -/
+theorem counterexample_fin18 : ∃ G : GraphOnInterval 18,
+    IsTriangleFree G ∧ ¬HasDistinctIndependentAdditiveTriple G := by
+  obtain ⟨G, htf, hno⟩ := Erdos895CounterexampleFin18.counterexample_fin18
+  refine ⟨G, htf, ?_⟩
+  rintro ⟨a, b, c, hadd, hind⟩
+  exact hno ⟨a, b, c, hadd, hind⟩
 
-/-- The threshold 18 is sharp -/
-theorem threshold_sharp : (∀ n ≥ 18, ∀ G : GraphOnInterval n,
-    IsTriangleFree G → HasIndependentAdditiveTriple G) ∧
-    (∃ G : GraphOnInterval 17, IsTriangleFree G ∧ ¬HasIndependentAdditiveTriple G) := by
-  exact ⟨barber_theorem, counterexample_17⟩
+/-- The threshold is sharp. The positive direction `barber_theorem` is stated with the
+loose `HasIndependentAdditiveTriple` (it is the genuinely-open, SAT-verified hard
+direction, still a `sorry`); the negative direction is the corrected, machine-verified
+distinct-vertex counterexample on `Fin 18`. (The previous version paired `barber_theorem`
+with the false-as-stated `Fin 17` loose counterexample — see the correctness note.) -/
+theorem threshold_sharp :
+    (∀ n ≥ 18, ∀ G : GraphOnInterval n,
+        IsTriangleFree G → HasIndependentAdditiveTriple G) ∧
+    (∃ G : GraphOnInterval 18, IsTriangleFree G ∧ ¬HasDistinctIndependentAdditiveTriple G) :=
+  ⟨barber_theorem, counterexample_fin18⟩
 
 /- ## Connection to Ramsey Theory -/
 

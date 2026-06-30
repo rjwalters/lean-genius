@@ -283,3 +283,49 @@ untouched: cosmetic only, no build-stability value, not worth the diff churn / r
 - Statement reconciliation (add `a ≠ b`) still cascades through `erdos895_implies_schur_variant`
   (see S4) — defer until a session re-proves that lemma with distinct vertices or splits the
   loose/strict predicates.
+
+---
+
+## S7 (researcher-5, 2026-06-30) — ACT: removed the FALSE `counterexample_17` sorry from the main file (3→2 sorries)
+
+**Mode:** ACT (integrity fix, no cascade) · **Outcome:** progress — `Erdos895Problem.lean`
+is no longer carrying a `sorry` on a FALSE statement; the corrected sharp counterexample is
+now machine-verified *in the main file*.
+
+### What I did
+The prior sessions established that `counterexample_17` (∃ G on `Fin 17`, triangle-free, no
+loose independent additive triple) is **FALSE** (Z3 exhaustive UNSAT) and shipped the corrected
+0-axiom Fin-18 witness in the companion `Erdos895CounterexampleFin18.lean`. But the main file
+still held the false statement behind a `sorry`, and `threshold_sharp` built a sorry-backed proof
+of a false-as-stated sharpness claim (an integrity hazard).
+
+Using the **split-predicate** route S4 recommended (so nothing cascades into
+`erdos895_implies_schur_variant`, which needs the loose `(1,1,2)` triple):
+1. Added strict predicates `IsDistinctAdditiveTriple` (= loose + `a ≠ b`) and
+   `HasDistinctIndependentAdditiveTriple` alongside the loose ones (loose ones untouched).
+2. Replaced `counterexample_17` (FALSE, `sorry`) with `counterexample_fin18` (TRUE, **proven**):
+   re-exports the companion's `decide`-verified result against this file's predicates
+   (definitionally identical; bridged by `obtain`/`rintro`/`exact`). Added
+   `import Proofs.Erdos895CounterexampleFin18`.
+3. Updated `threshold_sharp` to pair `barber_theorem` (loose positive, still the open `sorry`)
+   with the corrected strict `counterexample_fin18`.
+4. Rewrote the header correctness note + gallery meta (sorries 3→2, lineCount 462→544,
+   definitionCount 14→15, assumptions text).
+
+### Build status
+**VERIFIED** via Docker wrapper (`docker-build.sh Proofs.Erdos895Problem`, exit 0, 7744 jobs,
+0 errors). Exactly 2 `sorry` warnings remain: `barber_theorem` (L146) and `erdos895_sat_verified`
+(L529) — both the genuinely-hard positive direction. `counterexample_fin18` is sorry-free and
+0-axiom (re-exports the companion's plain-`decide` proof; the bridge adds no axioms).
+
+### Honest status (unchanged conclusion: positive direction still open)
+- `barber_theorem` / `erdos895_sat_verified` — still BLOCKED/OPEN (Barber's large SAT/case
+  computation; not session-sized; Aristotle has been down).
+- Sharpness counterexample direction — now fully formalized & machine-verified in the main file,
+  not just the companion. The file is no longer internally inconsistent.
+
+### Files modified
+- proofs/Proofs/Erdos895Problem.lean (strict predicates; counterexample_17 → counterexample_fin18;
+  threshold_sharp; header note)
+- src/data/proofs/erdos-895/meta.json (sorries 3→2, lineCount, definitionCount, assumptions, proofStrategy)
+- research/problems/erdos-895-incomplete-01/knowledge.md (this entry)
