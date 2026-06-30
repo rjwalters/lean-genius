@@ -66,6 +66,7 @@ import Proofs.PuiseuxTheorem
 import Mathlib.Data.List.MinMax
 import Mathlib.Data.List.Chain
 import Mathlib.Data.List.Sort
+import Mathlib.RingTheory.HahnSeries.Valuation
 
 namespace PuiseuxTheoremOQ03
 
@@ -1139,5 +1140,68 @@ theorem ysqMinusX_valuationProduct :
   exists_lowerHull_valuationProduct (0, 1) (by simp [YsqMinusX])
     (by intro a ha b hb hab; fin_cases ha <;> fin_cases hb <;> simp_all)
     (by intro q hq hne; fin_cases hq <;> simp_all)
+
+/-! ## The analytic-bridge brick: a ℚ-valued Puiseux valuation realizing the slopes
+
+The combinatorial sections above compute Newton-polygon **edge slopes** as rational
+numbers (e.g. slope `½` for `Y² − x`).  The standing blocker recorded for this slug was
+that the *analytic* side — actual roots of `P ∈ K⸨x⸩[Y]` living in a ramified extension,
+with a **ℚ-valued** valuation matching those slopes — was thought unstatable in Mathlib
+4.26.0, whose Laurent-series valuation `Valued.v` is only `ℤᵐ⁰`-valued on the *unramified*
+base.
+
+That blocker is partly mis-stated: Mathlib's `HahnSeries.addVal Γ R : AddValuation R⟦Γ⟧
+(WithTop Γ)` is defined for **any** linearly ordered `Γ`, in particular `Γ = ℚ`.  Taking the
+Puiseux field to be `HahnSeries ℚ K` (Hahn series with rational exponents) therefore gives a
+genuinely **ℚ-valued** additive valuation `x^q ↦ q` directly from Mathlib.  We record the
+primitive and the worked `Y² − x` instance: the element `t = x^{1/2}` is an honest member of
+the Puiseux field, satisfies `t² = x`, and has valuation `½` — the ramified root valuation
+the polygon edge slope predicts.
+
+What is *not* yet built (the genuinely >1000-line part still open) is the ramified embedding
+`K⸨x⸩ ↪ HahnSeries ℚ K` and the general correspondence `edgeSlope = −v(root)` for an arbitrary
+polynomial; this brick supplies only the valued target field and the single ramified root. -/
+
+variable {K : Type*} [Field K]
+
+/-- The **Puiseux field** over `K`: Hahn series with rational exponents.  Its additive
+valuation `HahnSeries.addVal ℚ K` is `ℚ`-valued (codomain `WithTop ℚ`), unlike the
+`ℤᵐ⁰`-valued valuation on the unramified Laurent base `K⸨x⸩`. -/
+abbrev PuiseuxSeries (K : Type*) [Field K] := HahnSeries ℚ K
+
+/-- The ramified monomial `x^q` (`q ∈ ℚ`) as a Puiseux series. -/
+noncomputable def puiseuxMonomial (q : ℚ) : HahnSeries ℚ K := HahnSeries.single q 1
+
+/-- **The ℚ-valued valuation reads off the exponent:** `v(x^q) = q`. -/
+theorem puiseuxVal_monomial (q : ℚ) :
+    HahnSeries.addVal ℚ K (puiseuxMonomial (K := K) q) = (q : WithTop ℚ) := by
+  rw [puiseuxMonomial, HahnSeries.addVal_apply, HahnSeries.orderTop_single one_ne_zero]
+
+/-- The ramified root `x^{1/2}` squares to the base monomial `x = x^1`. -/
+theorem sqrt_x_sq :
+    (puiseuxMonomial (K := K) (1 / 2)) ^ 2 = puiseuxMonomial (K := K) 1 := by
+  simp only [puiseuxMonomial, HahnSeries.single_pow]
+  norm_num
+
+/-- **Analytic-bridge brick for `Y² − x`.**  In the Puiseux field `HahnSeries ℚ K` the
+element `t = x^{1/2}` is a genuine root of `Y² − x` (`t² = x`) and carries rational valuation
+`v(t) = ½` — exactly the Newton-polygon edge slope `ysqMinusX_valuationProduct` computes
+combinatorially.  This realizes, for this instance, the slope ↔ root-valuation correspondence
+the combinatorial side could previously only assert abstractly. -/
+theorem ysqMinusX_root_valuation :
+    (puiseuxMonomial (K := K) (1 / 2)) ^ 2 = puiseuxMonomial (K := K) 1 ∧
+      HahnSeries.addVal ℚ K (puiseuxMonomial (K := K) (1 / 2)) = ((1 / 2 : ℚ) : WithTop ℚ) :=
+  ⟨sqrt_x_sq, puiseuxVal_monomial (1 / 2)⟩
+
+/-- The Puiseux valuation genuinely takes the **non-integer** value `½`, so it cannot factor
+through the `ℤ`-valued Laurent valuation on the unramified base — the ramification is real. -/
+theorem puiseuxVal_not_integer :
+    HahnSeries.addVal ℚ K (puiseuxMonomial (K := K) (1 / 2)) = ((1 / 2 : ℚ) : WithTop ℚ) ∧
+      ¬ ∃ n : ℤ, ((1 / 2 : ℚ)) = (n : ℚ) := by
+  refine ⟨puiseuxVal_monomial (1 / 2), ?_⟩
+  rintro ⟨n, hn⟩
+  have hcast : ((2 * n : ℤ) : ℚ) = ((1 : ℤ) : ℚ) := by push_cast; linarith [hn]
+  have h2 : (2 * n : ℤ) = 1 := by exact_mod_cast hcast
+  omega
 
 end PuiseuxTheoremOQ03

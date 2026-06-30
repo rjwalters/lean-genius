@@ -410,3 +410,40 @@ primitive is a valued Puiseux field (`PuiseuxSeries K` / `HahnSeries ℚ K` + �
 ramified embedding of `K⸨x⸩`), foundational >1000-line infra not upstream. Next ACT step
 is to *construct that field*, not to add combinatorial lemmas (the polygon side is done).
 See `sessions/2026-06-28-s05-valuation-api-drift-blocker-refine.md`.
+
+---
+
+## Session (2026-06-30, researcher-2, S07): analytic-bridge BRICK — the S05 "ℚ-valuation absent" blocker was partly mis-stated
+
+S05 (2026-06-28) marked the analytic bridge BLOCKED, claiming Mathlib offers only a
+ℤᵐ⁰-valued valuation (`Valued.v` on Laurent series) so a **ℚ-valued** root valuation is
+not even *statable*. **That is not quite right.** Mathlib's
+`HahnSeries.addVal Γ R : AddValuation R⟦Γ⟧ (WithTop Γ)`
+(`Mathlib/RingTheory/HahnSeries/Valuation.lean`) is defined for **any** linearly ordered
+`Γ`, in particular `Γ = ℚ`. Taking the Puiseux field as `HahnSeries ℚ K` gives a genuinely
+**ℚ-valued** valuation `x^q ↦ q` straight from Mathlib — no new infrastructure.
+
+Added to `PuiseuxTheoremOQ03.lean` (1143→1207 lines, +1 import `HahnSeries.Valuation`,
+**0 sorry / 0 axiom / no native_decide**, docker `[3071/3071]` VERIFIED):
+
+- `PuiseuxSeries K := HahnSeries ℚ K`; `puiseuxMonomial q := single q 1`.
+- `puiseuxVal_monomial : addVal ℚ K (x^q) = (q : WithTop ℚ)` (`addVal_apply` + `orderTop_single`).
+- `sqrt_x_sq : (x^{1/2})² = x` (`single_pow`, `2•(1/2)=1`).
+- `ysqMinusX_root_valuation`: the worked `Y²−x` instance — `t = x^{1/2}` is an honest element
+  of the Puiseux field, `t²=x`, and `v(t)=½`, **matching the polygon edge slope** that the
+  combinatorial `ysqMinusX_valuationProduct` computes. First realization of the
+  slope ↔ root-valuation correspondence for a concrete instance.
+- `puiseuxVal_not_integer`: `v(t)=½` is genuinely non-integer ⇒ the valuation does not factor
+  through the base ℤ-valued Laurent valuation; the ramification is real.
+
+**STILL OPEN (the genuine >1000-line part):** the ramified embedding `K⸨x⸩ ↪ HahnSeries ℚ K`
+and the *general* correspondence `edgeSlope = −v(root)` for an arbitrary `P ∈ K⸨x⸩[Y]`. This
+brick supplies only the valued target field (now confirmed to EXIST in Mathlib) and the single
+worked ramified root. The combinatorial Newton-polygon side remains complete.
+
+REVISED DISPOSITION: not fully BLOCKED — the valued Puiseux *field* is available off-the-shelf
+(`HahnSeries ℚ K` + `addVal`); what remains is the embedding + general bridge, still
+foundational but now with a concrete target to build toward. Phase: ACT (advanced).
+
+WORKFLOW: fast host-`lake env lean` scratch (pure Mathlib import) to nail the API, then inlined
++ sanctioned docker build. Docker healthy (29.6.1).
