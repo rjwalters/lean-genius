@@ -1,7 +1,7 @@
 # Research State: desargues-theorem-oq-02-oq-02
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ORIENT (BLOCKED — verification blackout)
 **Path**: full
 **Since**: 2026-06-13
 **Iteration**: 1
@@ -31,6 +31,13 @@ Two-layer formalization (see knowledge.md "Recommended Lean Plan"):
   backend returns 404 — both confirmed live this session. No Lean committed; the
   ACT phase (writing `DesarguesTheoremOQ02OQ02.lean`) is build-gated until infra
   returns.
+- **Flagged BLOCKED (researcher-4, 2026-06-13):** the S1 SURVEY is complete (math
+  resolved, Mathlib API confirmed, 4-part Lean plan + dead-ends documented) and
+  all trackers are in sync. The sole remaining work is build-gated ACT — even the
+  cheapest milestone (Part A finite `10₃` self-duality by `decide`) requires a
+  compile to certify the incidence matrix / duality permutation. No build-free
+  ACT path exists, so the slug is parked out of the claimable pool to avoid
+  re-draw churn during the blackout. Re-open when Docker/Aristotle return.
 
 ## Next Action
 When build infra returns: create `proofs/Proofs/DesarguesTheoremOQ02OQ02.lean`

@@ -124,7 +124,7 @@
       "startLine": 158,
       "endLine": 177
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Lower Bounds and Θ(n) Characterization",
     "content": "**path_lower_bound** (axiom): $\\hat{R}(P_n) \\ge cn$ for some $c > 0$.\n\n**cycle_lower_bound** (axiom): $\\hat{R}(C_n) \\ge c'n$ for some $c' > 0$.\n\n**pathIsLinear**: $\\hat{R}(P_n) = \\Theta(n)$ (both bounds together).\n\n**cycleIsLinear**: $\\hat{R}(C_n) = \\Theta(n)$.\n\nCurrent best: $3.75n \\le \\hat{R}(P_n) \\le 900n$ — a factor of 240 gap.",
     "mathContext": "The lower bound $\\hat{R}(P_n) \\ge (3.75 - o(1))n$ comes from explicit colorings of sparse graphs. The huge gap between 3.75 and 900 is one of the most striking open problems in size Ramsey theory. Closing this gap would require either a dramatically different construction for the upper bound or a new lower bound technique beyond current methods.",

@@ -1,0 +1,169 @@
+{
+  "id": "feuerbachs-theorem-defs-oq-05",
+  "title": "Feuerbach's Theorem: Uniqueness of the Nine-Point Circle",
+  "slug": "feuerbachs-theorem-defs-oq-05",
+  "description": "Proves the nine-point circle is the UNIQUE circle through the nine special points of a non-degenerate triangle. The parent file establishes that the nine points lie on the nine-point circle; this file closes the converse: any circle through the three side midpoints must be the nine-point circle (centre N, radius R/2). The algebraic core is uniqueness of an equidistant centre, reduced to a 2x2 linear system whose determinant is the triangle's non-degeneracy determinant. 6 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefsOQ05.lean",
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ],
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "feuerbach",
+      "nine-point-circle",
+      "uniqueness",
+      "triangle",
+      "perpendicular-bisector"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext / Classical.choice / Quot.sound). Inherits the nine-point membership theorems from FeuerbachsTheoremDefs.lean, which is also 0-sorry, 0-axiom.",
+    "lineCount": 184,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "equidistant_center_unique: any two points equidistant (in squared distance) from three non-collinear points coincide — the linear-algebra heart of circle uniqueness, proved by reducing to a 2x2 linear system and applying Cramer's rule",
+      "midpoints_noncollinear: the three side midpoints of a non-degenerate triangle are non-collinear; their orientation determinant is exactly 1/4 of the triangle's own non-degeneracy determinant",
+      "ninePointCircle_unique: any circle through the three side midpoints has centre = ninePointCenter and radius = R/2",
+      "ninePointCircle_unique_of_nine: the same conclusion against a circle through all nine special points, witnessing that three of them already pin down the circle",
+      "dist2_sq_of_dist2_eq: equal root-distances to a centre give equal squared distances, bridging the parent's sqrt-based membership to the polynomial linear system"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Feuerbach's theorem (1822) concerns the nine-point circle of a triangle, which passes through nine special points: the three side midpoints, the three altitude feet, and the three midpoints of the vertex-to-orthocenter segments. The parent gallery proof FeuerbachsTheoremDefs.lean establishes that all nine points lie on a single circle of centre N = midpoint(O, H) and radius R/2. That makes the nine-point circle *a* circle through the points. The classical fact that a circle is determined by any three of its non-collinear points means it is the *only* one — but that uniqueness was not previously formalized in the gallery's coordinate framework.",
+    "problemStatement": "For a non-degenerate triangle, is the nine-point circle the unique circle through the nine special points? Equivalently: if a circle with centre Q and radius rho passes through the three side midpoints M_a, M_b, M_c, must Q equal the nine-point centre N and rho equal R/2? The reduction is: (1) the three side midpoints are non-collinear, and (2) three non-collinear points lie on at most one circle.",
+    "text": "A 184-line file working purely in the coordinate API of FeuerbachsTheoremDefs (Point = R x R, dist2 = sqrt distance, dist2_sq = squared distance). It proves uniqueness of an equidistant centre, the non-collinearity of the side midpoints, and assembles them into the uniqueness of the nine-point circle, with a 3-4-5 numerical sanity check.",
+    "proofStrategy": "Three steps:\n1. **Equidistant-centre uniqueness** (equidistant_center_unique): For non-collinear P1 P2 P3, subtracting the squared-distance equations dist2_sq Q P1 = dist2_sq Q P2 (etc.) for two candidate centres Q, Q' cancels the quadratic terms, leaving two linear equations in (Q - Q'). The 2x2 coefficient determinant is exactly the orientation determinant of P1 P2 P3; Cramer's rule (encoded via linear_combination) forces Q - Q' = 0.\n2. **Midpoint non-collinearity** (midpoints_noncollinear): The orientation determinant of M_a, M_b, M_c equals 1/4 of the triangle's non-degeneracy determinant (since M_b - M_a = (A-B)/2 and M_c - M_a = (A-C)/2), hence non-zero. Proved by linear_combination 4*h against T.nondegenerate.\n3. **Assembly** (ninePointCircle_unique): The nine-point centre N is equidistant from the three midpoints (parent membership theorems), and so is any circle's centre Q. Both are equidistant centres through three non-collinear points, so Q = N; the radius is then the common distance to M_a, which the parent computes as R/2.",
+    "keyInsights": [
+      "Uniqueness of a circle through three points is, after cancelling the common quadratic terms, a purely linear phenomenon: the perpendicular bisectors form a 2x2 linear system whose determinant is the orientation (twice-signed-area) determinant of the three points.",
+      "The non-degeneracy hypothesis already baked into the Triangle structure is exactly what is needed — the midpoints' orientation determinant is a constant (1/4) multiple of it, so no new geometric assumption is introduced.",
+      "Only the three side midpoints are used; the altitude feet and Euler midpoints are redundant for uniqueness. ninePointCircle_unique_of_nine makes this explicit by accepting all nine memberships but consuming only three.",
+      "The bridge dist2_sq_of_dist2_eq lets the proof move between the parent's sqrt-based membership statements (dist2 Q M = rho) and the polynomial form (dist2_sq) on which linear_combination and ring operate.",
+      "linear_combination with explicit Cramer coefficients ((P3.2 - P1.2)*e1 - (P2.2 - P1.2)*e2, etc.) discharges the linear-algebra step without invoking any matrix machinery, keeping the proof self-contained over the coordinate API."
+    ],
+    "prerequisites": [
+      "FeuerbachsTheoremDefs.lean — coordinate-based nine-point circle membership theorems (midpoint_a/b/c_on_ninePointCircle), Triangle structure with non-degeneracy, dist2 and dist2_sq",
+      "Real.sq_sqrt — squaring a square root of a non-negative real",
+      "mul_eq_zero — a product is zero iff a factor is zero",
+      "linear_combination tactic — verifying polynomial identities from hypotheses"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace Setup",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring explaining the uniqueness question and the reduction to three non-collinear midpoints; imports FeuerbachsTheoremDefs; opens the FeuerbachsTheorem namespace.",
+      "mathContext": "Works in the parent's coordinate API: Point = R x R, dist2 P Q = sqrt((Q.1-P.1)^2+(Q.2-P.2)^2), dist2_sq P Q = (Q.1-P.1)^2+(Q.2-P.2)^2."
+    },
+    {
+      "id": "bridge",
+      "title": "Part I: Distance Bridge",
+      "startLine": 62,
+      "endLine": 76,
+      "summary": "dist2_sq_eq_dist2_sq and dist2_sq_of_dist2_eq relate the sqrt distance to the squared distance, so equal radii give equal squared distances.",
+      "mathContext": "dist2_sq Q P = (dist2 Q P)^2 via Real.sq_sqrt; hence dist2 Q P = dist2 Q P' implies dist2_sq Q P = dist2_sq Q P'."
+    },
+    {
+      "id": "center-unique",
+      "title": "Part II: Uniqueness of an Equidistant Centre",
+      "startLine": 78,
+      "endLine": 111,
+      "summary": "equidistant_center_unique: two centres equidistant (squared) from three non-collinear points are equal.",
+      "mathContext": "Subtracting squared-distance equations cancels quadratics, yielding linear equations e1, e2 in (Q - Q'); Cramer's rule against the non-zero orientation determinant forces the difference to vanish; Prod.ext_iff assembles the coordinate equalities."
+    },
+    {
+      "id": "noncollinear",
+      "title": "Part III: Non-Collinearity of the Side Midpoints",
+      "startLine": 113,
+      "endLine": 125,
+      "summary": "midpoints_noncollinear: the orientation determinant of M_a, M_b, M_c is 1/4 of the triangle's non-degeneracy determinant, hence non-zero.",
+      "mathContext": "M_b - M_a = (A - B)/2 and M_c - M_a = (A - C)/2, so the midpoint determinant equals (1/4) of the vertex determinant; linear_combination 4*h reduces to T.nondegenerate."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Part IV: Uniqueness of the Nine-Point Circle",
+      "startLine": 127,
+      "endLine": 170,
+      "summary": "ninePointCircle_unique and ninePointCircle_unique_of_nine: any circle through the side midpoints (a fortiori through all nine points) is the nine-point circle.",
+      "mathContext": "N and any circle-centre Q are both equidistant from M_a, M_b, M_c (the former by the parent membership theorems), so equidistant_center_unique gives Q = N; the radius equals the common distance dist2 N M_a = R/2."
+    },
+    {
+      "id": "example",
+      "title": "Part V: 3-4-5 Sanity Check",
+      "startLine": 172,
+      "endLine": 184,
+      "summary": "The unique circle through the side midpoints of the 3-4-5 triangle is centred at (3/4, 1) with radius 5/4.",
+      "mathContext": "Specializes ninePointCircle_unique to triangle_345 and rewrites with the parent's computed ninePointCenter and ninePointRadius."
+    }
+  ],
+  "conclusion": {
+    "summary": "Establishes that the nine-point circle is the unique circle through the nine special points of a non-degenerate triangle. The 184-line file proves uniqueness of an equidistant centre (the linear-algebra core), non-collinearity of the three side midpoints (a 1/4-multiple of the triangle's non-degeneracy determinant), and assembles them with the parent's membership theorems into ninePointCircle_unique. 6 theorems, 0 axioms, 0 sorries.",
+    "implications": "**Completes the definitional picture**: with both membership (parent) and uniqueness (this file), 'the nine-point circle' is now a canonically determined object in the gallery's coordinate framework, not merely 'a circle through these points'.\n\n**Reusable circle-uniqueness lemma**: equidistant_center_unique is stated for arbitrary points and can be reused for circumcircle uniqueness or any 'three non-collinear points determine a circle' argument in the coordinate API.\n\n**Minimal hypotheses**: uniqueness consumes only the three side-midpoint memberships, making explicit that three of the nine points suffice.",
+    "openQuestions": [
+      "Transport ninePointCircle_unique across the toEuclidean bridge of feuerbachs-theorem-defs-oq-04 to obtain uniqueness for Mathlib's Metric.sphere formulation.",
+      "Prove that the nine-point centre N is the unique point equidistant from any three of the nine points (not just the side midpoints), e.g. from the three altitude feet.",
+      "Derive a general 'three non-collinear points determine a unique circle' theorem in the coordinate API from equidistant_center_unique and apply it to the circumcircle."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-defs",
+      "relationship": "extends",
+      "description": "proves the converse of the parent's nine-point membership theorems: the nine-point circle is the unique circle through the special points"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-04",
+      "relationship": "related",
+      "description": "the Mathlib sphere formulation; uniqueness could be transported across its toEuclidean bridge"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-03",
+      "relationship": "related",
+      "description": "uniqueness of the Feuerbach (tangency) point, a companion uniqueness result for the same configuration"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.FeuerbachsTheoremDefs"],
+    "opens": ["FeuerbachsTheorem"],
+    "namespace": "FeuerbachNinePointUniqueness",
+    "lineCount": 184,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/FeuerbachsTheoremDefsOQ05.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "ninePointCircle_unique",
+      "type": "core",
+      "description": "Any circle through the three side midpoints of a non-degenerate triangle is the nine-point circle (centre N, radius R/2)",
+      "leanType": "dist2 Q T.midpoint_a = rho -> dist2 Q T.midpoint_b = rho -> dist2 Q T.midpoint_c = rho -> Q = T.ninePointCenter and rho = T.ninePointRadius"
+    },
+    {
+      "name": "equidistant_center_unique",
+      "type": "lemma",
+      "description": "Two points equidistant (squared) from three non-collinear points coincide",
+      "leanType": "det != 0 -> (Q equidistant from P1 P2 P3) -> (Q' equidistant from P1 P2 P3) -> Q = Q'"
+    },
+    {
+      "name": "midpoints_noncollinear",
+      "type": "lemma",
+      "description": "The three side midpoints of a non-degenerate triangle are non-collinear",
+      "leanType": "(M_b.1-M_a.1)*(M_c.2-M_a.2) - (M_c.1-M_a.1)*(M_b.2-M_a.2) != 0"
+    }
+  ],
+  "sorries": 0
+}

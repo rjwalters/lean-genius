@@ -1,0 +1,206 @@
+{
+  "id": "kummer-theorem-oq-04",
+  "title": "Kummer's Theorem OQ-04: The 2-adic Valuation of the Central Binomial Coefficient",
+  "slug": "kummer-theorem-oq-04",
+  "description": "Closed form for the exact power of 2 dividing C(2n, n): v₂(C(2n,n)) = s₂(n), the binary digit sum (popcount) of n. Specialises Kummer's carry-count theorem to p=2 on the diagonal, with sharp parity, exact-power divisibility, and the power-of-two and all-ones special cases.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-20",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KummerTheoremOQ04.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "kummer-theorem",
+      "p-adic",
+      "binomial-coefficient",
+      "central-binomial-coefficient"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "axiomCount": 0,
+    "lineCount": 172,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "assumptions": "None. 0 axioms, 0 sorries. All results derived from Mathlib's digit-sum form of Kummer's theorem (sub_one_mul_padicValNat_choose_eq_sub_sum_digits) and the padicValNat divisibility API.",
+    "originalContributions": [
+      "sum_digits_two_mul: the binary digit sum is doubling-invariant, s₂(2n) = s₂(n) (prepending a 0 digit leaves the digit sum unchanged)",
+      "padicValNat_two_centralBinom: the headline closed form v₂(C(2n,n)) = s₂(n), specialising Kummer's carry count to p=2 on the diagonal C(2n,n)",
+      "even_centralBinom_iff: sharp parity — C(2n,n) is even iff n > 0 (the unique odd value is C(0,0)=1)",
+      "two_pow_sum_digits_dvd_centralBinom / not_two_pow_succ_sum_digits_dvd_centralBinom: 2^{s₂(n)} divides C(2n,n) exactly (both the divisibility and the sharpness halves)",
+      "padicValNat_two_centralBinom_pow_two: for n = 2^k, v₂(C(2^{k+1}, 2^k)) = 1 (single carry at the powers of two)",
+      "padicValNat_two_centralBinom_pred_pow_two: for n = 2^k - 1 (all-ones binary), v₂(C(2n,n)) = k (maximal valuation in that range)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.sub_one_mul_padicValNat_choose_eq_sub_sum_digits",
+        "description": "Legendre/Kummer digit-sum identity: (p-1)·v_p(C(n,k)) = s_p(k) + s_p(n-k) - s_p(n)",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Nat.centralBinom_eq_two_mul_choose",
+        "description": "centralBinom n = C(2n, n), connecting the named central coefficient to the diagonal of Pascal's triangle",
+        "module": "Mathlib.Combinatorics.Choose.Central"
+      },
+      {
+        "theorem": "Nat.digits_base_mul",
+        "description": "digits b (b*n) = 0 :: digits b n for n > 0 — the structural source of doubling-invariance of the digit sum",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "pow_padicValNat_dvd / pow_succ_padicValNat_not_dvd",
+        "description": "p^{v_p(m)} ∣ m and ¬ p^{v_p(m)+1} ∣ m — the exact-power divisibility API used for the sharp divisibility statements",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Kummer's theorem (1852) identifies the $p$-adic valuation $v_p(\\binom{n}{k})$ with the number of carries when adding $k$ and $n-k$ in base $p$; equivalently, Legendre's formula gives $(p-1)\\,v_p(\\binom{n}{k}) = s_p(k) + s_p(n-k) - s_p(n)$ where $s_p$ is the base-$p$ digit sum. The central binomial coefficient $\\binom{2n}{n}$ is one of the most studied sequences in combinatorics — it counts lattice paths, appears in Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$, and its growth $\\binom{2n}{n} \\sim 4^n/\\sqrt{\\pi n}$ underlies Erdős's elementary proof of Bertrand's postulate. The exact 2-adic valuation $v_2(\\binom{2n}{n}) = s_2(n)$ (the binary popcount) is a classical gem: it says $\\binom{2n}{n}$ is divisible by exactly as many factors of $2$ as $n$ has $1$-bits. A famous corollary, going back to observations on Pascal's triangle mod 2 (Sierpiński's gasket), is that $\\binom{2n}{n}$ is odd iff $n=0$, and the only $n$ with $\\binom{2n}{n}$ squarefree-at-2 patterns track the binary digits of $n$.",
+    "problemStatement": "Give the exact power of $2$ dividing the central binomial coefficient $\\binom{2n}{n}$ in closed form, and derive the sharp parity, exact-power divisibility, and the extremal power-of-two and all-ones cases.",
+    "text": "Specialises Kummer's carry-count theorem to $p=2$ on the diagonal to obtain $v_2(\\binom{2n}{n}) = s_2(n)$, the binary digit sum of $n$.",
+    "proofStrategy": "Start from Mathlib's digit-sum form of Kummer's theorem with $p=2$, $n \\mapsto 2n$, $k = n$: $(2-1)\\,v_2(\\binom{2n}{n}) = s_2(n) + s_2(2n-n) - s_2(2n) = 2 s_2(n) - s_2(2n)$. The only extra ingredient is doubling-invariance $s_2(2n) = s_2(n)$, proved from `Nat.digits_base_mul` (multiplying by the base prepends a 0 digit). Then $v_2(\\binom{2n}{n}) = 2 s_2(n) - s_2(n) = s_2(n)$ by `omega`. Parity, exact divisibility, and the two special cases all follow from this single closed form via the `padicValNat` divisibility API and short digit-sum computations.",
+    "keyInsights": [
+      "**Doubling-invariance is the whole trick**: Everything reduces to $s_2(2n) = s_2(n)$. Multiplying by the base $2$ shifts every binary digit one place left and inserts a trailing $0$, which does not change the digit sum. In Lean this is `Nat.digits_base_mul one_lt_two`, prepending a `0` to the digit list.",
+      "**The diagonal kills the subtraction**: On the diagonal $k = n$, $n-k = n$, so Legendre's $s_p(k)+s_p(n-k)-s_p(n)$ collapses to $2 s_2(n) - s_2(2n)$, and doubling-invariance turns this into exactly $s_2(n)$. No carries need to be counted explicitly.",
+      "**Sharp parity from the valuation**: $\\binom{2n}{n}$ even $\\iff v_2 \\geq 1 \\iff s_2(n) \\geq 1 \\iff n > 0$. The single odd value $\\binom{0}{0}=1$ is exactly the empty binary expansion.",
+      "**Extremal cases bracket the valuation**: Among $n$ in a fixed bit-width, $n = 2^k$ (a single 1-bit) gives the minimal valuation $1$, while $n = 2^k-1$ (all $k$ bits set) gives the maximal valuation $k$. These are the popcount extremes, formalized as `padicValNat_two_centralBinom_pow_two` and `padicValNat_two_centralBinom_pred_pow_two`.",
+      "**Exact power, not just divisibility**: `two_pow_sum_digits_dvd_centralBinom` together with `not_two_pow_succ_sum_digits_dvd_centralBinom` pin down $2^{s_2(n)} \\,\\|\\, \\binom{2n}{n}$ exactly (divides, and one more power does not), using `pow_padicValNat_dvd` and `pow_succ_padicValNat_not_dvd`."
+    ],
+    "prerequisites": [
+      "Kummer's theorem / Legendre's formula in digit-sum form (Mathlib's sub_one_mul_padicValNat_choose_eq_sub_sum_digits)",
+      "Base-2 digit representations and the digit sum s₂ (binary popcount)",
+      "The central binomial coefficient Nat.centralBinom and its identity with C(2n,n)",
+      "The padicValNat divisibility API: pow_padicValNat_dvd, padicValNat_dvd_iff_le"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Research Question and Answer",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "File header stating the open question (exact power of 2 dividing C(2n,n)), the answer v₂(C(2n,n)) = s₂(n), the Legendre/Kummer derivation, and what Mathlib already provides versus the original packaging in this file."
+    },
+    {
+      "id": "doubling-invariance",
+      "title": "Doubling-Invariance of the Binary Digit Sum",
+      "startLine": 57,
+      "endLine": 69,
+      "summary": "sum_digits_two_mul: s₂(2n) = s₂(n), via Nat.digits_base_mul (multiplying by the base prepends a 0 digit). sum_digits_two_pos: s₂(n) > 0 for n > 0, from the nonzero leading digit.",
+      "mathContext": "$s_2(2n) = s_2(n)$ because $2n$ in binary is $n$ shifted left with a trailing $0$. This is the only fact beyond Kummer needed for the headline."
+    },
+    {
+      "id": "headline-valuation",
+      "title": "The Headline: v₂(C(2n,n)) = s₂(n)",
+      "startLine": 71,
+      "endLine": 86,
+      "summary": "padicValNat_two_centralBinom: the closed form v₂(C(2n,n)) = s₂(n). Instantiates Kummer's digit-sum identity at p=2, n↦2n, k=n; rewrites 2n-n=n and s₂(2n)=s₂(n); closes with omega.",
+      "mathContext": "$(2-1)v_2(\\binom{2n}{n}) = s_2(n)+s_2(n)-s_2(n) = s_2(n)$ after using $s_2(2n)=s_2(n)$."
+    },
+    {
+      "id": "sharp-parity",
+      "title": "Sharp Parity of C(2n,n)",
+      "startLine": 88,
+      "endLine": 100,
+      "summary": "even_centralBinom_iff: C(2n,n) is even iff n > 0. Rewrites evenness as 2^1 ∣ C(2n,n), then padicValNat_dvd_iff_le and the headline reduce it to s₂(n) ≥ 1 ↔ n > 0.",
+      "mathContext": "The unique odd central binomial coefficient is $\\binom{0}{0}=1$; every $\\binom{2n}{n}$ with $n\\geq 1$ is even."
+    },
+    {
+      "id": "exact-power",
+      "title": "Exact Power of 2 Dividing C(2n,n)",
+      "startLine": 102,
+      "endLine": 115,
+      "summary": "two_pow_sum_digits_dvd_centralBinom: 2^{s₂(n)} ∣ C(2n,n) via pow_padicValNat_dvd. not_two_pow_succ_sum_digits_dvd_centralBinom: ¬ 2^{s₂(n)+1} ∣ C(2n,n) via pow_succ_padicValNat_not_dvd. Together: 2^{s₂(n)} ∥ C(2n,n).",
+      "mathContext": "Exactness: $2^{s_2(n)}$ divides $\\binom{2n}{n}$ but $2^{s_2(n)+1}$ does not, so the 2-part is precisely $2^{s_2(n)}$."
+    },
+    {
+      "id": "extremal-cases",
+      "title": "Extremal Cases: Powers of Two and All-Ones",
+      "startLine": 117,
+      "endLine": 145,
+      "summary": "padicValNat_two_centralBinom_pow_two: for n=2^k, v₂=1 (digit sum 1, via Nat.digits_base_pow_mul). padicValNat_two_centralBinom_pred_pow_two: for n=2^k-1, v₂=k, by induction showing s₂(2^k-1)=k (all-ones representation).",
+      "mathContext": "$n=2^k$ (one 1-bit) gives the minimal valuation $1$; $n=2^k-1$ (k 1-bits) gives the maximal valuation $k$ in that bit-width."
+    },
+    {
+      "id": "numeric-witnesses",
+      "title": "Worked Numeric Witnesses",
+      "startLine": 147,
+      "endLine": 172,
+      "summary": "Kernel-decidable evaluations of concrete central binomial coefficients (C(6,3)=20, C(8,4)=70, C(10,5)=252, C(14,7)=3432) with their 2-adic valuations read off from the closed-form theorems. Ends namespace KummerCentralBinom.",
+      "mathContext": "Sanity checks: $3=11_2$ has $s_2=2$ and $20=2^2\\cdot5$; $4=100_2$ has $s_2=1$ and $70=2\\cdot35$; $7=111_2$ has $s_2=3$ and $3432=2^3\\cdot429$."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete Lean 4 formalization giving the exact 2-adic valuation of the central binomial coefficient: v₂(C(2n,n)) = s₂(n), the binary digit sum of n. All 8 theorems follow from Mathlib's digit-sum Kummer theorem with 0 axioms and 0 sorries, anchored by the single lemma s₂(2n)=s₂(n).",
+    "implications": "Packages a classical closed form Mathlib does not state directly, with sharp parity (C(2n,n) odd iff n=0), exact-power divisibility 2^{s₂(n)} ∥ C(2n,n), and the popcount-extremal cases. These feed directly into the analysis of Catalan numbers C_n = C(2n,n)/(n+1), the 2-adic behaviour underlying Erdős's proof of Bertrand's postulate, and the Sierpiński/Pascal-mod-2 fractal picture.",
+    "openQuestions": [
+      "Generalise to v_p(C(2n,n)) for odd primes p in terms of base-p digit sums and carries?",
+      "Derive the exact 2-adic valuation of the Catalan number C_n from this central-binomial valuation?",
+      "Characterise the n for which C(2n,n) is divisible by a prescribed power of 2 (level sets of popcount)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "extends",
+      "description": "Parent proof of Kummer's theorem on p-adic valuations of binomial coefficients — this file specialises the digit-sum form to p=2 on the diagonal C(2n,n)."
+    },
+    {
+      "targetId": "kummer-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling OQ on divisibility patterns in Pascal's triangle mod p^k via carry counts; this file is the p=2 diagonal specialisation with an explicit closed form."
+    },
+    {
+      "targetId": "kummer-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling OQ on the Sierpiński triangle fractal structure of Pascal's triangle mod 2 — the geometric counterpart of the parity result C(2n,n) odd iff n=0."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Kummer, E.E."
+      ],
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik 44, pp. 93-146",
+      "note": "Original proof that v_p(C(n,k)) equals the number of carries in base-p addition; the digit-sum form specialised here"
+    },
+    {
+      "authors": [
+        "Legendre, A.-M."
+      ],
+      "title": "Théorie des nombres",
+      "year": "1830",
+      "venue": "3rd edition, Firmin Didot Frères, Paris",
+      "note": "Legendre's formula v_p(n!) = (n - s_p(n))/(p-1), from which the digit-sum identity for binomial coefficients follows"
+    },
+    {
+      "authors": [
+        "Erdős, P."
+      ],
+      "title": "Beweis eines Satzes von Tschebyschef",
+      "year": "1932",
+      "venue": "Acta Litt. Sci. Szeged 5, pp. 194-198",
+      "note": "Elementary proof of Bertrand's postulate driven by estimates on the central binomial coefficient C(2n,n)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "KummerCentralBinom",
+    "lineCount": 172,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/KummerTheoremOQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

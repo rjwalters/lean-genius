@@ -101,8 +101,19 @@
   },
   "crossReferences": [
     {
-      "relationship": "Open question derived from parent problem",
-      "targetId": "erdos-100"
+      "relationship": "extends",
+      "targetId": "erdos-100",
+      "description": "Open question derived from the parent Erdős #100: whether the minimum diameter of an n-point integer distance set grows linearly (Θ(n)) or only as Θ(n/log n)."
+    },
+    {
+      "proofId": "erdos-100-oq-01",
+      "relationship": "sibling",
+      "description": "Reciprocal sibling. OQ-01 frames the same distance-set diameter problem as the explicit Ω(n/log n) vs Ω(n) gap (Guth–Katz lower bound vs the linear conjecture) and develops the Anning–Erdős / Piepmeyer structure; OQ-02 frames it as the Θ(n) vs Θ(n/log n) growth-rate dichotomy. Two phrasings of the one open question."
+    },
+    {
+      "proofId": "erdos-100-oq-02-oq-02",
+      "relationship": "extended-by",
+      "description": "OQ-02-OQ-02 derives Kanold's bound (diam ≥ c·n^{3/4}) as a corollary of the Guth–Katz-derived bound (diam ≥ c·n/log n) established in this chain, eliminating the need for a separate proof of the weaker Kanold estimate. It is the concrete downstream consequence of the growth-rate analysis posed here."
     }
   ],
   "leanFile": {

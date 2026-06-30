@@ -71,7 +71,10 @@
   ],
   "relatedProofs": [
     "triangular-reciprocals",
-    "triangular-reciprocals-oq-01"
+    "triangular-reciprocals-oq-01",
+    "triangular-reciprocals-oq-02",
+    "triangular-reciprocals-oq-02-oq-04",
+    "triangular-reciprocals-oq-04"
   ],
   "references": {
     "papers": [],
@@ -79,20 +82,64 @@
     "mathlib": []
   },
   "started": "2026-04-06T03:14:36.241Z",
-  "lastUpdate": "2026-06-12T22:30:00-07:00",
+  "lastUpdate": "2026-06-13T05:51:00-07:00",
   "significance": 5,
   "tractability": 7,
   "leanFiles": [
     {
+      "path": "Proofs/TriangularReciprocalsFigurate.lean",
+      "filename": "TriangularReciprocalsFigurate.lean",
+      "lineCount": 112,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangularReciprocalsFigurate.lean"
+    },
+    {
       "path": "Proofs/TriangularReciprocalsOQ02.lean",
       "filename": "TriangularReciprocalsOQ02.lean",
-      "lineCount": 318,
-      "theoremCount": 9,
+      "lineCount": 354,
+      "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangularReciprocalsOQ02.lean"
+    },
+    {
+      "path": "Proofs/TriangularReciprocalsOQ02Aristotle.lean",
+      "filename": "TriangularReciprocalsOQ02Aristotle.lean",
+      "lineCount": 98,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangularReciprocalsOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/TriangularReciprocalsOQ02OQ04.lean",
+      "filename": "TriangularReciprocalsOQ02OQ04.lean",
+      "lineCount": 182,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangularReciprocalsOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/TriangularReciprocalsOQ04.lean",
+      "filename": "TriangularReciprocalsOQ04.lean",
+      "lineCount": 150,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangularReciprocalsOQ04.lean"
     }
   ]
 }

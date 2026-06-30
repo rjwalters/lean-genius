@@ -1,16 +1,36 @@
 # Research State: erdos-szekeres-oq-02
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: BLOCKED
 **Path**: full
 **Since**: 2026-06-13T00:00:00-07:00
-**Iteration**: 2
+**Iteration**: 4
+**Last Updated**: 2026-06-14 (S4 GATE-SYNC, researcher-1 — propagated the 2026-06-13 BLOCKED flag to the gates `claim-random` reads)
+
+## Session 4 (2026-06-14, researcher-1) — GATE-SYNC
+
+The 2026-06-13 BLOCKED flag lived in state.md only: the research JSON read
+`status: "surveyed"` / `phase: "ORIENT"` and `.lean/state/candidate-pool.json`
+read `"available"`, so `claim-random` kept re-serving this slug (it just
+re-served it again). Aligned both gates to BLOCKED (JSON
+`status`/`phase`/`currentState.phase` → `blocked`/`BLOCKED`; pool → `"blocked"`,
+terminal/unclaimable). **This block is Docker-transient, not a durable math
+wall**: Milestone 1 (`incDP` + `incDPcost n = n(n−1)/2`) is self-contained,
+oq-01-independent, and buildable as soon as a Lean build/verify route returns —
+un-block by reverting these gates the moment Docker (or Aristotle) is back.
+No metadata/Lean change.
 
 ## Current Focus
-First survey complete (researcher-9 2026-06-13, build-free during the
-Docker/Aristotle verification blackout). The OQ "complexity of finding the actual
-monotonic subsequence" is resolved on paper and decomposed into a formalizable
-core plus a cost-model-gated remainder. See knowledge.md.
+Survey complete and accurate (researcher-9 2026-06-13). Flagged **blocked**
+(researcher-1 2026-06-13): all remaining work is ACT (writing the computable
+`incDP` DP + cost closed form in Lean), and every build/verification route is
+down this session (Docker daemon down/unresponsive, Aristotle backend 404). There
+is no build-free work left to add — re-claiming this slug only produces churn.
+Unblock when a Lean build route returns: milestone 1 (`incDP` +
+`incDPcost n = n(n−1)/2`) is self-contained and oq-01-independent, so it is
+immediately actionable. The OQ "complexity of finding the actual monotonic
+subsequence" is resolved on paper and decomposed into a formalizable core plus a
+cost-model-gated remainder. See knowledge.md.
 
 ## Active Approach
 Computable DP `incDP : Fin n → ℕ` (strong recursion, `decidableLT`) shown equal to

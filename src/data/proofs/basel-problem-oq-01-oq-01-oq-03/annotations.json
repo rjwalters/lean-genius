@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-quantitative-floor",
+    "proofId": "basel-problem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 48,
+      "endLine": 64
+    },
+    "type": "insight",
+    "title": "The Quantitative Floor: Nonzero Integers Are ≥ 1",
+    "content": "`abs_linearForm_ge_of_rat` is the one inequality that powers the whole criterion. For a rational $\\alpha = a/b$ with $b \\neq 0$, the linear form rewrites as $q\\alpha - p = (qa - pb)/b$ via `field_simp`. The numerator $qa - pb$ is an integer; if it is nonzero then `Int.one_le_abs` gives $|qa - pb| \\geq 1$, and dividing by $|b|$ yields $|q\\alpha - p| \\geq 1/|b|$. The proof uses `div_le_div_iff_of_pos_right` to reduce the goal to the integer bound after `abs_div` separates the absolute values.",
+    "mathContext": "If $\\alpha = a/b \\in \\mathbb{Q}$ ($b \\neq 0$) and $q\\alpha - p \\neq 0$ with $p, q \\in \\mathbb{Z}$, then $|q\\alpha - p| = |qa - pb|/|b| \\geq 1/|b|$. This positive floor is impossible for an irrational target only because it must hold *uniformly* in $n$ for a rational $\\alpha$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.one_le_abs",
+      "integer linear forms",
+      "div_le_div_iff_of_pos_right",
+      "abs_div"
+    ],
+    "prerequisites": [
+      "field_simp",
+      "absolute value of integers cast to ℝ"
+    ]
+  },
+  {
+    "id": "ann-linear-form-criterion",
+    "proofId": "basel-problem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 66,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "The Linear-Form Irrationality Criterion (the Apéry/Rivoal Engine)",
+    "content": "`irrational_of_linearForm_tendsto_zero` is the abstract sufficiency theorem. Assuming $\\alpha$ rational ($\\alpha = r$) for contradiction, it writes $\\alpha = r.\\mathrm{num}/r.\\mathrm{den}$ via `Rat.cast_def` and sets $\\varepsilon = 1/|r.\\mathrm{den}|$. Convergence `htend` gives that eventually $|q_n\\alpha - p_n| < \\varepsilon$ (extracted from a metric ball neighborhood of $0$), while `abs_linearForm_ge_of_rat` gives $|q_n\\alpha - p_n| \\geq \\varepsilon$ for every nonzero form. Picking any index in the eventual set yields $\\varepsilon \\le |\\cdot| < \\varepsilon$, a contradiction. Notably this needs no convergence *rate*, unlike Mathlib's Hurwitz characterization.",
+    "mathContext": "If there are integer sequences $p_n, q_n$ with $q_n\\alpha - p_n \\neq 0$ for all $n$ and $q_n\\alpha - p_n \\to 0$, then $\\alpha \\notin \\mathbb{Q}$. This is the precise statement underlying Apéry (1978) for $\\zeta(3)$ and the Ball–Rivoal construction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Irrational",
+      "Tendsto",
+      "Rat.cast_def",
+      "Metric.ball_mem_nhds",
+      "Apéry's theorem"
+    ],
+    "prerequisites": [
+      "filters and Eventually",
+      "rational num/den decomposition",
+      "proof by contradiction"
+    ]
+  },
+  {
+    "id": "ann-decay-packaging",
+    "proofId": "basel-problem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 96,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Decay-Rate Packaging via a Two-Sided Squeeze",
+    "content": "`irrational_of_linearForm_le_tendsto_zero` adapts the criterion to the hypothesis actually produced in practice: an explicit upper bound $|q_n\\alpha - p_n| \\le C_n$ with $C_n \\to 0$. Since $|q_n\\alpha - p_n| \\le C_n$ unfolds (via `abs_le`) to $-C_n \\le q_n\\alpha - p_n \\le C_n$, and both $\\pm C_n \\to 0$, the sandwich lemma `tendsto_of_tendsto_of_tendsto_of_le_of_le` forces the forms to $0$, after which the main criterion applies. Apéry's geometric decay $|b_n\\zeta(3) - a_n| \\sim C(\\sqrt{2}-1)^{4n}$ is exactly such a $C_n$.",
+    "mathContext": "If $q_n\\alpha - p_n \\neq 0$ and $|q_n\\alpha - p_n| \\le C_n$ with $C_n \\to 0$, then $\\alpha$ is irrational. For $\\zeta(3)$, $C_n = C(\\sqrt2-1)^{4n} \\to 0$ geometrically while the $b_n$ grow like $((1+\\sqrt2)^4)^n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "squeeze theorem",
+      "abs_le",
+      "geometric decay",
+      "Apéry numbers"
+    ],
+    "prerequisites": [
+      "two-sided sandwich for limits",
+      "Tendsto.neg"
+    ]
+  },
+  {
+    "id": "ann-dimension-cap",
+    "proofId": "basel-problem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 116,
+      "endLine": 156
+    },
+    "type": "insight",
+    "title": "Dimension Cap from Finitely Many Irrationals",
+    "content": "`finrank_span_le_of_irrational_subset` is the linear-algebraic heart. Treating $\\mathbb{R}$ as a $\\mathbb{Q}$-vector space, it fixes $F = \\{1\\} \\cup x(T)$ and shows $\\mathrm{span}_{\\mathbb{Q}}(\\{1\\}\\cup x(s)) \\le \\mathrm{span}_{\\mathbb{Q}}(F)$ for any finite index set $s$: each generator is either $1 \\in F$, or $x_i$ with $i \\in T$ (so $x_i \\in F$), or a rational $x_i = c \\cdot 1$ (via `Rat.smul_one_eq_cast`, landing in the span by `Submodule.smul_mem`). Then `Submodule.finrank_mono` and `finrank_span_finset_le_card` cap the dimension by $|F| \\le |T| + 1$. Finiteness of the span comes from `Module.Finite.iff_fg` and `Submodule.fg_span`.",
+    "mathContext": "If $x_i$ is rational for every $i \\notin T$ (a finite set), then for all finite $s$, $\\dim_{\\mathbb{Q}} \\mathrm{span}_{\\mathbb{Q}}(\\{1\\} \\cup \\{x_i : i \\in s\\}) \\le |T| + 1$. The bound is uniform in $s$ — that uniformity is what contradicts unbounded dimension.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Submodule.span",
+      "Module.finrank",
+      "Submodule.finrank_mono",
+      "finrank_span_finset_le_card",
+      "ℝ as a ℚ-vector space"
+    ],
+    "prerequisites": [
+      "finite-dimensional vector spaces",
+      "spans and submodule containment",
+      "Rat.smul_one_eq_cast"
+    ]
+  },
+  {
+    "id": "ann-ballrivoal-reduction",
+    "proofId": "basel-problem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 158,
+      "endLine": 180
+    },
+    "type": "insight",
+    "title": "Ball–Rivoal Reduction: Unbounded Dimension ⟹ Infinitely Many Irrationals",
+    "content": "`infinite_irrational_of_unbounded_finrank` is the headline. By contradiction, if $\\{i : x_i \\text{ irrational}\\}$ were finite, take it as a `Finset` $T$ (via `Set.Finite.toFinset`); then every $x_i$ with $i \\notin T$ is rational, so the dimension cap from the previous theorem bounds every span's dimension by $|T| + 1$. But the unbounded-dimension hypothesis supplies a span of dimension $> |T| + 1$ — `omega` closes the contradiction. This is precisely how Rivoal's analytic dimension lower bound yields 'infinitely many odd zeta values irrational'.",
+    "mathContext": "If $\\sup_s \\dim_{\\mathbb{Q}} \\mathrm{span}_{\\mathbb{Q}}(\\{1\\} \\cup \\{x_i : i \\in s\\}) = \\infty$, then $\\{i : x_i \\notin \\mathbb{Q}\\}$ is infinite. With $x_k = \\zeta(2k+1)$ and Rivoal's bound $\\dim \\ge (1+o(1))\\log n/(1+\\log 2) \\to \\infty$, this gives the Ball–Rivoal conclusion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ball–Rivoal theorem",
+      "Set.Infinite",
+      "Set.Finite.toFinset",
+      "contrapositive",
+      "Rivoal dimension bound"
+    ],
+    "prerequisites": [
+      "finite vs infinite sets",
+      "the dimension cap lemma",
+      "omega"
+    ]
+  }
+]

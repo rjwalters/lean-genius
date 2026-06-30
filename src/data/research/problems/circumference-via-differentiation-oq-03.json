@@ -1,8 +1,8 @@
 {
   "slug": "circumference-via-differentiation-oq-03",
   "title": "Riemannian area-circumference duality via the co-area formula",
-  "phase": "ACT-VERIFIED",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -89,8 +89,6 @@
     ],
     "nextSteps": [
       "R1 vector-space ACT roadmap COMPLETE after S8 ACT merge. Next-claim options: (a) Docker re-verification if G9 clears; (b) STATE-SYNC if Mathlib bearer drift observed; (c) follow-up R2/R3 slug if seeded by seeker; (d) release-and-cycle silently. R2/R3 paths remain Mathlib-roadmap gated.",
-      "S2 ACT (~150 lines, status `formalized` with 3 sorries): create Proofs/CircumferenceViaDifferentiationOQ03.lean with inner-product-space context boilerplate, two definitions (riemannianVolumeBall, riemannianSurfaceArea), and three theorem stubs (Bridge 1, Bridge 2, main HasDerivAt result) with `:= by sorry`. Add Proofs.lean entry + minimal src/data/proofs/{meta.json, index.ts}. Verify imports + variable boilerplate compile. [SUPERSEDED: S2 ACT n=2,3 partial merged via #19454 on 2026-05-16; S6 wiring done 2026-05-31]",
-      "S3 ACT (~150 lines): Bridge 1 (`riemannianVolumeBall_eq_nBallVolumeFn`) — Lebesgue volume of closed ball equals parent OQ-01 polynomial. Chain: translation invariance (Measure.addHaar_closedBall translation) + radial scaling (Measure.addHaar_smul) + unitBallVolume_apply. Likely the cleanest discharge.",
       "S4 ACT (~200 lines): Bridge 2 (`riemannianSurfaceArea_eq_nSphereSurfaceFn`) — (n-1)-Hausdorff measure of sphere equals parent OQ-01 polynomial. Uses Mathlib's HaarToSphere decomposition + Hausdorff measure identification on the unit sphere. May need an extra ~100 lines if v4.26.0's HaarToSphere doesn't expose Hausdorff directly.",
       "S5 ACT (~100 lines): main theorem `riemannianVolumeBall_hasDerivAt_riemannianSurfaceArea` — compose Bridges 1 and 2 with parent OQ-01's `nBallVolumeFn_hasDerivAt` (which gives d/dr nBallVolumeFn = nSphereSurfaceFn). Status `verified` (0 sorries, 0 axioms) on success.",
       "S6+ STRETCH (~80 lines each, optional): explicit witnesses for E = ℝ² (recovers parent CircumferenceViaDifferentiation `deriv_area`) and E = ℝ³ (recovers parent OQ-01's n = 3 specialization `circumference_three_dim`). Cross-checks between R1 and parent verified results.",
@@ -117,6 +115,8 @@
     "area-of-circle-oq-02",
     "circumference-via-differentiation",
     "circumference-via-differentiation-oq-01",
+    "circumference-via-differentiation-oq-01-oq-02",
+    "circumference-via-differentiation-oq-03",
     "fundamental-theorem-calculus"
   ],
   "references": {
@@ -147,7 +147,7 @@
     ]
   },
   "started": "2026-05-12T22:55:00.000Z",
-  "lastUpdate": "2026-06-10T04:55:00Z",
+  "lastUpdate": "2026-06-14T01:06:09Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -174,10 +174,32 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01.lean"
     },
     {
+      "path": "Proofs/CircumferenceViaDifferentiationOQ01OQ02.lean",
+      "filename": "CircumferenceViaDifferentiationOQ01OQ02.lean",
+      "lineCount": 149,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CircumferenceViaDifferentiationOQ02.lean",
+      "filename": "CircumferenceViaDifferentiationOQ02.lean",
+      "lineCount": 145,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ02.lean"
+    },
+    {
       "path": "Proofs/CircumferenceViaDifferentiationOQ03.lean",
       "filename": "CircumferenceViaDifferentiationOQ03.lean",
-      "lineCount": 152,
-      "theoremCount": 5,
+      "lineCount": 195,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

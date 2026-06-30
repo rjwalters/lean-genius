@@ -98,39 +98,47 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 20,
+      "endLine": 21,
       "summary": "Problem statement, imports from Mathlib (Tactic, Nat.Basic, Nat.Prime.Basic).",
       "mathContext": "Determine $\\max|A|$ for $A \\subseteq \\{1,\\ldots,N\\}$ with $\\forall a,b \\in A,\\ \\exists p$ prime: $p^2 \\mid ab+1$. Known answer: $\\lfloor N/25 \\rfloor$ for large $N$."
     },
     {
       "id": "definitions",
       "title": "Definitions and Extremal Function",
-      "startLine": 21,
-      "endLine": 58,
+      "startLine": 22,
+      "endLine": 60,
       "summary": "IsSquarefree, HasNonSqfreeProductProp, maxNonSqfreeSet (noncomputable def via Finset.sup over powerset), and maxNonSqfreeSet_le proved via injection x↦x-1.",
       "mathContext": "$\\text{maxNonSqfreeSet}(N) := \\sup\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\ \\text{HasNonSqfreeProductProp}(A)\\}$. Upper bound $\\leq N$ proved by injecting $\\text{Icc}(1,N)$ into $\\text{range}(N)$ via $x \\mapsto x-1$."
     },
     {
       "id": "mod25-construction",
       "title": "Mod 25 Constructions and Connecting Lemmas",
-      "startLine": 59,
-      "endLine": 103,
+      "startLine": 61,
+      "endLine": 104,
       "summary": "mod25_achieves and mod25_achieves_18: proved 5² | ab+1 for both residue classes via ring arithmetic. five_prime, not_sqfree_of_five_sq_dvd, mod7/18_set_has_property: connect divisibility to HasNonSqfreeProductProp.",
       "mathContext": "For $a \\equiv b \\equiv 7 \\pmod{25}$: $ab+1 \\equiv 50 \\equiv 0 \\pmod{25}$. For $a \\equiv b \\equiv 18 \\pmod{25}$: $ab+1 \\equiv 325 \\equiv 0 \\pmod{25}$. Both give $5^2 \\mid ab+1$, hence $\\neg\\text{IsSquarefree}(ab+1)$."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound via Witness Construction",
-      "startLine": 104,
-      "endLine": 154,
+      "startLine": 105,
+      "endLine": 159,
       "summary": "Defines mod7Set, proves it has the property and has cardinality ≥ N/25 via injection k↦25k+7. Concludes lower_bound: N/25 ≤ maxNonSqfreeSet(N) for N ≥ 25.",
       "mathContext": "The injection $k \\mapsto 25k+7$ maps $\\{0,\\ldots,\\lfloor N/25\\rfloor - 1\\}$ into $\\{n \\in \\{1,\\ldots,N\\} : n \\equiv 7 \\pmod{25}\\}$. Combined with Finset.le_sup, this gives the lower bound on the extremal function."
+    },
+    {
+      "id": "vandoorn-argument",
+      "title": "Van Doorn's Argument: Key Intermediate Steps",
+      "startLine": 160,
+      "endLine": 234,
+      "summary": "diagonal_constraint: the product property forces every element a to admit a prime p with p^2 | a^2+1. not_four_dvd_sq_succ: 4 never divides a^2+1. prime_sq_dvd_sq_succ_ne_two and prime_sq_dvd_sq_succ_mod_four: such a prime must be != 2 and congruent to 1 mod 4. Culminates in vanDoorn_constraint.",
+      "mathContext": "If $p^2 \\mid a^2+1$ with $p$ prime then $a^2 \\equiv -1 \\pmod{p}$, so $-1$ is a quadratic residue mod $p$, forcing $p \\equiv 1 \\pmod 4$ (and $p \\neq 2$ since $a^2+1 \\not\\equiv 0 \\pmod 4$). Every element of a valid set thus carries such a prime."
     },
     {
       "id": "counting-solutions",
       "title": "Counting Solutions: At Most 2 Roots of x² = -1",
       "startLine": 235,
-      "endLine": 280,
+      "endLine": 281,
       "summary": "sq_neg_one_unique: in ZMod p, x²=-1 has at most 2 solutions (±a) via integral domain argument. sq_dvd_succ_mod_congruence: corollary for natural numbers via ZMod casting.",
       "mathContext": "In the field $\\mathbb{F}_p$, $x^2 + 1 = 0$ has at most 2 roots since $(a-b)(a+b) = a^2 - b^2 = 0$ and $\\mathbb{F}_p$ has no zero divisors. This is step 1 of Van Doorn's density argument. Steps 2-4 (Hensel lifting, density counting, infinite sum) remain in the axiom."
     },
@@ -138,7 +146,7 @@
       "id": "deep-results",
       "title": "Deep Results (Axiomatized)",
       "startLine": 282,
-      "endLine": 289,
+      "endLine": 308,
       "summary": "vanDoorn_upper_bound (0.108N), sawhney_solution (exact N/25), sawhney_structure (uniqueness of extremal sets). These require Hensel's lemma, density counting, and real analysis beyond current formalization.",
       "mathContext": "Van Doorn: $|A|/N \\leq 2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$. Sawhney: $\\forall N \\geq N_0,\\ \\max|A| = \\lfloor N/25\\rfloor$, achieved only by $\\{n \\equiv 7\\}$ or $\\{n \\equiv 18\\} \\pmod{25}$."
     }

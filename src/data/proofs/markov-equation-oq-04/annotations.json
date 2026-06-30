@@ -1,0 +1,50 @@
+[
+  {
+    "id": "markov-oq04-ann-header",
+    "proofId": "markov-equation-oq-04",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "concept",
+    "title": "Coprimality as a Markov-Tree Invariant",
+    "content": "The Markov equation x² + y² + z² = 3xyz has every positive solution reachable from the root (1,1,1) by Vieta jumps z ↦ 3xy − z and coordinate transpositions (proved in the parent Proofs.MarkovEquation). This file shows the three coordinates of any positive Markov triple are pairwise coprime — not by a fresh descent, but as a property that holds at the root and is preserved by every generating move. The `Coprime3` predicate bundles the three `IsCoprime` statements on the product type ℤ × ℤ × ℤ so the induction lines up with the Step/Reachable infrastructure without higher-order unification trouble.",
+    "mathContext": "$x^2 + y^2 + z^2 = 3xyz; \\qquad \\mathrm{Coprime3}(x,y,z) := \\gcd(x,y) = \\gcd(y,z) = \\gcd(x,z) = 1.$",
+    "significance": "key",
+    "relatedConcepts": ["Markov equation", "Vieta jumping", "Markov tree", "pairwise coprimality"],
+    "prerequisites": ["Diophantine equations", "gcd / IsCoprime over ℤ", "reachability relations"]
+  },
+  {
+    "id": "markov-oq04-ann-vieta",
+    "proofId": "markov-equation-oq-04",
+    "range": { "startLine": 52, "endLine": 67 },
+    "type": "theorem",
+    "title": "The Vieta Jump Preserves Coprimality",
+    "content": "`coprime_fst_vieta` and `coprime_snd_vieta` are the entire arithmetic content: a Vieta jump z ↦ 3xy − z leaves coprimality with x and with y unchanged, because 3xy − z = −z + x·(3y) = −z + y·(3x) differs from −z by a multiple of x (resp. y). Each is proved by rewriting the expression and applying `IsCoprime.add_mul_left_right_iff` (adding a multiple of x to the right argument preserves IsCoprime x) and `IsCoprime.neg_right_iff` (negation preserves coprimality). Thus IsCoprime x (3xy−z) ↔ IsCoprime x z.",
+    "mathContext": "$\\gcd(x,\\,3xy - z) = \\gcd(x, z), \\qquad \\gcd(y,\\,3xy - z) = \\gcd(y, z).$",
+    "significance": "critical",
+    "relatedConcepts": ["Vieta involution", "IsCoprime.add_mul_left_right_iff", "congruence mod x", "invariance"],
+    "prerequisites": ["IsCoprime API", "ring normalization"]
+  },
+  {
+    "id": "markov-oq04-ann-invariant",
+    "proofId": "markov-equation-oq-04",
+    "range": { "startLine": 69, "endLine": 106 },
+    "type": "theorem",
+    "title": "Transporting Coprimality from the Root",
+    "content": "Three steps assemble the invariant. `coprime3_one`: the root (1,1,1) is pairwise coprime (gcd 1 1 = 1). `coprime3_of_step`: any single move preserves Coprime3 — transpositions merely permute the three coprimality statements, and the Vieta jump uses the two preservation lemmas; because every move is its own inverse, the backward direction needed for head-induction is available. `coprime3_of_isMarkov`: `markov_classification` (parent) gives a reachability path from any positive triple to the root, and `Relation.ReflTransGen.head_induction_on` pushes coprimality back one move at a time from (1,1,1) to the given triple.",
+    "mathContext": "$\\mathrm{Reachable}\\,(x,y,z)\\,(1,1,1) \\implies \\mathrm{Coprime3}(x,y,z).$",
+    "significance": "critical",
+    "relatedConcepts": ["head induction", "ReflTransGen", "involutive moves", "invariant propagation"],
+    "prerequisites": ["the Vieta preservation lemmas", "markov_classification", "Relation.ReflTransGen"]
+  },
+  {
+    "id": "markov-oq04-ann-headline",
+    "proofId": "markov-equation-oq-04",
+    "range": { "startLine": 108, "endLine": 165 },
+    "type": "theorem",
+    "title": "Headline Coprimality and the Parity Corollary",
+    "content": "`markov_coprime` states the headline (all three pairs coprime) with single-pair projections, and `markov_gcd_eq_one` restates it via `Int.gcd · · = 1`. The parity consequence follows from `not_two_dvd_both`: a coprime pair cannot share the factor 2, since `IsCoprime.isUnit_of_dvd'` would make 2 a unit in ℤ (ruled out by `Int.isUnit_iff`). Hence `markov_at_most_one_even` / `markov_not_both_even`: no two coordinates of a Markov triple are simultaneously even — matching (1,1,1), (1,1,2), (1,2,5), (2,5,29), … where even entries are isolated. Sanity checks confirm the small triples.",
+    "mathContext": "$\\mathrm{IsCoprime}\\,a\\,b \\implies \\lnot(2 \\mid a \\land 2 \\mid b); \\qquad \\text{at most one of } x,y,z \\text{ is even}.$",
+    "significance": "key",
+    "relatedConcepts": ["gcd = 1", "parity", "units of ℤ", "Lagrange spectrum normalization"],
+    "prerequisites": ["the coprimality theorem", "IsCoprime.isUnit_of_dvd'", "Int.isUnit_iff"]
+  }
+]

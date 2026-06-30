@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 2 axioms (Beker [Be25d] published results), 14 proved theorems. Eliminated sorry-dependency in max_permCount_ge_sub_factorial via direct n-cycle counting argument. Beker characterization and maximizer theorems converted to axioms.",
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms, 14 proved theorems. Eliminated sorry-dependency in max_permCount_ge_sub_factorial via direct n-cycle counting argument. Beker's characterization and maximizer theorems are documented only as comments, not as active axiom declarations in the file.",
     "builtItems": [
       "Fixed orderOf_perm_dvd_factorial: added Fintype.card_fin simp lemma",
       "Fixed permCountByOrder_le_factorial: added Fintype.card_fin to rw chain",
@@ -54,7 +54,7 @@
       "Proved permCountByOrder_prime_self: for prime p, permCountByOrder p p = (p-1)!",
       "Removed false theorem permCountByOrder_n_eq_subfactorial_pred (n=6 counterexample: 240 ≠ 120)",
       "Rewrote max_permCount_ge_sub_factorial with direct n-cycle counting (axiom-independent)",
-      "Converted beker_characterization and beker_maximizer_achieves from sorry to axiom"
+      "Left beker_characterization and beker_maximizer as comment-level documentation only (no active axiom or theorem declaration in the file)"
     ],
     "insights": [
       "File required import Mathlib (full import) - imports all of Mathlib",
@@ -100,8 +100,8 @@
     {
       "path": "Proofs/Erdos1161Problem.lean",
       "filename": "Erdos1161Problem.lean",
-      "lineCount": 323,
-      "theoremCount": 15,
+      "lineCount": 324,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,

@@ -16,7 +16,11 @@
       "partition regularity",
       "arithmetic combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Partition Regularity",
+      "Arithmetic Combinatorics"
+    ]
   },
   {
     "id": "ann-e172-coloring",
@@ -35,7 +39,11 @@
       "Ramsey theory",
       "Fin type"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Colorings",
+      "Fin Type",
+      "Functions On Naturals"
+    ]
   },
   {
     "id": "ann-e172-monochromatic",
@@ -54,7 +62,11 @@
       "subset sums",
       "subset products"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset Sum",
+      "Finset Product",
+      "Monochromatic Sets"
+    ]
   },
   {
     "id": "ann-e172-conjecture",
@@ -73,7 +85,11 @@
       "Ramsey theory",
       "partition regularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Existential Quantifiers",
+      "Set Cardinality",
+      "Partition Regularity"
+    ]
   },
   {
     "id": "ann-e172-moreira",
@@ -92,7 +108,11 @@
       "partial progress",
       "Annals of Mathematics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ergodic Theory",
+      "Ultrafilters On Naturals",
+      "Finite Colorings"
+    ]
   },
   {
     "id": "ann-e172-alweiss",
@@ -111,7 +131,11 @@
       "algebraic structure",
       "generalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nonzero Rationals",
+      "Field Structure",
+      "Sum-Product Monochromatic Sets"
+    ]
   },
   {
     "id": "ann-e172-hindman",
@@ -130,7 +154,11 @@
       "infinite sets",
       "7 colors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite Monochromatic Sets",
+      "Coloring Counterexamples",
+      "Hindman's Theorem"
+    ]
   },
   {
     "id": "ann-e172-variants",
@@ -149,7 +177,11 @@
       "separate conditions",
       "implication"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Schur's Theorem",
+      "Monochromatic Sums",
+      "Logical Implication"
+    ]
   },
   {
     "id": "ann-e172-singleton",
@@ -168,7 +200,11 @@
       "singleton",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Singleton Sets",
+      "Finset.eq_singleton_iff",
+      "Base Case Reasoning"
+    ]
   },
   {
     "id": "ann-e172-empty",
@@ -187,6 +223,10 @@
       "empty set",
       "logical implication"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vacuous Truth",
+      "Empty Set",
+      "Subset Relation"
+    ]
   }
 ]

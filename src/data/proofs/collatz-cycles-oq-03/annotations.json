@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 20
     },
-    "type": "context",
+    "type": "concept",
     "title": "OQ Statement and Proof Outline",
     "content": "The file's docstring states the OQ-03 claim — every Collatz cycle visits at least one even number — and lists the five-theorem chain that delivers it: `three_n_plus_one_even` → `collatz_of_odd_is_even` → `no_all_odd_cycle` → `cycle_contains_even` → `isPeriodic_contains_even`. The proof is two `omega` steps from the parent's `collatz_odd` lemma. The 80-line file is far longer than the mathematical content (≈5 lines of new logic) because each intermediate fact is stated as a named theorem, both for pedagogical clarity and so downstream callers can import the most convenient form. The references in the docstring cite Lagarias's 1985 survey *The 3x+1 problem and its generalizations* — still the canonical reference for cycle-structure questions four decades on — and pin this companion file as the parity-corollary slot in the broader cycle-exclusion programme (Eliahou 1993 quantitative length lower bound, Simons-de Weger 2005 refinements, Tao 2019 logarithmic-density result).",
     "mathContext": "The Collatz function $C : \\mathbb{N} \\to \\mathbb{N}$ is defined as $C(n) = n/2$ if $n$ is even and $C(n) = 3n+1$ if $n$ is odd. A cycle of length $k$ is an $n$ with $C^k(n) = n$ and $k \\geq 1$. The OQ-03 claim: for every cycle, some iterate $C^i(n)$ ($0 \\leq i < k$) is even.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Collatz conjecture (1937)",
       "iterated function dynamics",
@@ -31,7 +31,7 @@
       "startLine": 28,
       "endLine": 29
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Parity flip: 3n+1 is even when n is odd",
     "content": "The microscopic content of Part I. For an odd natural `n`, `3*n + 1` is even. `omega` closes this directly: knowing `n % 2 = 1`, the goal `(3*n + 1) % 2 = 0` is a linear arithmetic statement decidable by Presburger. This is the entire mathematical kernel of the file — every subsequent theorem is a wrapper around this parity flip.",
     "mathContext": "$n \\equiv 1 \\pmod 2 \\implies 3n + 1 \\equiv 3 + 1 \\equiv 0 \\pmod 2$. This is the first half of the Collatz step's parity behavior: applying $3n+1$ to an odd input always produces an even output. The companion fact — applying $n/2$ to an even input — is more obvious and lives implicitly in `Nat.div_two_le`. Together they imply that the parity sequence under iterated $C$ cannot stay constant odd, hence cannot be entirely odd on a cycle.",
@@ -53,7 +53,7 @@
       "startLine": 32,
       "endLine": 35
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Single-step parity: collatz n is even when n is odd",
     "content": "Apply the parent's `collatz_odd : n % 2 = 1 → collatz n = 3*n + 1` (line 40 of `CollatzCycles.lean`) to rewrite the goal, then apply `three_n_plus_one_even`. This is the bridge from the function's definitional case-split to the parity flip. The parent file proves `collatz_odd` but never combines it with the parity flip to obtain this corollary, so stating `collatz_of_odd_is_even` explicitly makes the all-odd-cycle contradiction (next theorem) a one-step move rather than a multi-step rewrite chain.",
     "mathContext": "$n \\equiv 1 \\pmod 2 \\implies C(n) \\equiv 0 \\pmod 2$. The corollary chain: definitional `collatz_odd` (rewrite to $3n+1$) ∘ `three_n_plus_one_even` (parity flip) = `collatz_of_odd_is_even`. Stating the corollary explicitly is a *single-step lemma* design choice that pays dividends in `no_all_odd_cycle` (where it's used twice via `Function.iterate_one`).",
@@ -123,7 +123,7 @@
       "startLine": 76,
       "endLine": 78
     },
-    "type": "context",
+    "type": "concept",
     "title": "Repackaged with IsPeriodic",
     "content": "The parent's `IsPeriodic n k := k ≥ 1 ∧ collatzIter k n = n` is the standard packaging. This theorem unpacks the conjunction and applies `cycle_contains_even`. Provides API parity with the parent's `IsPeriodic`-using theorems (like `collatz_no_fixpoint` and `collatz_no_two_cycle`); downstream callers can quote whichever form is more convenient.",
     "mathContext": "$\\mathrm{IsPeriodic}(n, k) = (k \\geq 1) \\wedge (C^k(n) = n)$, the conjunctive packaging used throughout the parent file. The corollary `isPeriodic_contains_even` is the same fact stated in this convention, with the proof being a one-liner: `cycle_contains_even hper.1 hper.2`.",

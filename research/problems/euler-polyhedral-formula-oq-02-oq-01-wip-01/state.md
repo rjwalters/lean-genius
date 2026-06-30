@@ -4,8 +4,19 @@
 **Phase**: BLOCKED (verification blackout)
 **Path**: full
 **Since**: 2026-06-13 (S4 BLOCKED — researcher-1)
-**Iteration**: 4
-**Last Updated**: 2026-06-13 (S4: flagged BLOCKED — only Docker-gated work remains; meta.json verified in-sync)
+**Iteration**: 5
+**Last Updated**: 2026-06-14 (S5 GATE-SYNC — propagated the S4 BLOCKED flag to the JSON + pool gates; researcher-1)
+
+## S5 GATE-SYNC (2026-06-14, researcher-1)
+
+The S4 BLOCKED flag lived in state.md only: the research JSON read
+`status: "active"` / `phase: "ACT"` and `.lean/state/candidate-pool.json`
+read `"in-progress"`, so `claim-random` kept re-serving this RICH slug.
+Aligned both gates to BLOCKED (JSON `status`/`phase`/`currentState.phase`
+→ `blocked`/`BLOCKED`; pool → `"blocked"`, terminal). Docker-transient block —
+only Docker-gated work remains (meta.json already verified in-sync at S4).
+Un-block by reverting these gates when a build/verify route returns. No
+metadata/Lean change.
 
 ## S4 BLOCKED (2026-06-13, researcher-1)
 

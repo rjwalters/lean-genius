@@ -67,33 +67,41 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "File header for open question fermat-two-squares-oq-01: every natural number is a sum of four integer squares, extending Fermat's two-squares theorem to the universal four-squares case. Imports Mathlib's SumFourSquares and SumTwoSquares developments plus Tactic, and opens the FermatTwoSquaresOQ01 namespace.",
+      "mathContext": "Euler's four-square identity (multiplicativity of the quaternion norm) reduces the claim from all naturals to primes, where Lagrange's descent (in Mathlib) closes the prime case. References: Lagrange (1770), Euler (1748)."
+    },
+    {
       "id": "euler-identity",
       "title": "Euler's Four-Square Identity",
-      "startLine": 28,
-      "endLine": 42,
+      "startLine": 26,
+      "endLine": 44,
       "summary": "Proves the identity (a²+b²+c²+d²)(x²+y²+z²+w²) = A²+B²+C²+D² over an arbitrary CommRing, where A,B,C,D encode quaternion multiplication.",
       "mathContext": "Euler's four-square identity: $(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = A^2+B^2+C^2+D^2$ where $A,B,C,D$ are bilinear in $(a,b,c,d)$ and $(x,y,z,w)$. This is the norm-multiplicativity of quaternions: $|q_1 q_2| = |q_1||q_2|$."
     },
     {
       "id": "quaternions",
       "title": "Lipschitz Quaternion Integers",
-      "startLine": 47,
-      "endLine": 93,
+      "startLine": 45,
+      "endLine": 92,
       "summary": "Defines LipschitzQuat (integer quaternions), Hamilton product, squared norm, conjugation. Proves normSq_mul (norm multiplicativity = Euler identity) and mul_conj (conjugation relationship).",
       "mathContext": "Lipschitz integers $\\mathbb{Z}[i,j,k] = \\{a+bi+cj+dk : a,b,c,d \\in \\mathbb{Z}\\}$ with Hamilton product $ij = k$, $jk = i$, $ki = j$. Squared norm $N(q) = a^2+b^2+c^2+d^2$. The norm is multiplicative: $N(q_1 q_2) = N(q_1)N(q_2)$."
     },
     {
       "id": "main-theorem",
       "title": "Lagrange's Four Squares Theorem",
-      "startLine": 98,
-      "endLine": 118,
+      "startLine": 93,
+      "endLine": 120,
       "summary": "States and proves the main theorem for ℕ and ℤ using Mathlib, plus the quaternion norm interpretation.",
       "mathContext": "Lagrange's four-square theorem (1770): every positive integer is the sum of four squares, $n = a^2 + b^2 + c^2 + d^2$ with $a,b,c,d \\in \\mathbb{Z}$. The proof uses: (1) Euler identity reduces to primes, (2) Minkowski's theorem gives a quaternion of norm $p$ for each prime $p$."
     },
     {
       "id": "multiplicativity",
       "title": "Multiplicativity: Two and Four Squares",
-      "startLine": 123,
+      "startLine": 121,
       "endLine": 161,
       "summary": "Proves Brahmagupta-Fibonacci identity for two squares and closure under multiplication for four squares, both in algebraic and existential forms.",
       "mathContext": "The Brahmagupta-Fibonacci identity for two squares: $(a^2+b^2)(c^2+d^2) = (ac-bd)^2+(ad+bc)^2$. This is norm-multiplicativity of Gaussian integers $\\mathbb{Z}[i]$: $|z_1 z_2| = |z_1||z_2|$. Closure: sums of 2 (resp. 4) squares are closed under multiplication."
@@ -101,7 +109,7 @@
     {
       "id": "obstruction",
       "title": "Three Squares Obstruction",
-      "startLine": 165,
+      "startLine": 162,
       "endLine": 180,
       "summary": "Concrete examples showing numbers of the form 4^a(8b+7) require four squares (7, 15, 23, 28).",
       "mathContext": "The obstruction: integers of the form $4^a(8b+7)$ require all four squares. Examples: $7 = 1^2+1^2+1^2+2^2$ (needs 4 squares since $7 \\equiv 7 \\pmod{8}$). No integer $\\equiv 7 \\pmod{8}$ is a sum of three squares (Legendre, 1798)."
@@ -109,16 +117,16 @@
     {
       "id": "fermat-connection",
       "title": "Two Squares vs Four: The Fermat Connection",
-      "startLine": 184,
-      "endLine": 220,
+      "startLine": 181,
+      "endLine": 219,
       "summary": "Reproves Fermat's characterization (p is sum of two squares iff p % 4 ≠ 3), contrasts with universal four-squares, proves 3 is not a sum of two squares but is a sum of four.",
       "mathContext": "Connection to Fermat's two-square theorem: an odd prime $p$ is a sum of two squares $\\iff p \\equiv 1 \\pmod{4}$. The four-square theorem is the unconditional version: every integer is a sum of four squares, with no congruence condition needed."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
-      "startLine": 225,
-      "endLine": 236,
+      "startLine": 220,
+      "endLine": 254,
       "summary": "Concrete decompositions: 5 = 1² + 2², 13 = 2² + 3², 100 = 6² + 8², 42 = 1² + 1² + 2² + 6².",
       "mathContext": "Concrete decompositions: $5 = 1^2+2^2$, $13 = 2^2+3^2$, $100 = 6^2+8^2$, $42 = 1^2+1^2+2^2+6^2$, $7 = 1^2+1^2+1^2+2^2$. Verified computationally in Lean."
     }

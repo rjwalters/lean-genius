@@ -16,7 +16,11 @@
       "Distance problems",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorial Geometry",
+      "Asymptotic Notation",
+      "Extremal Functions"
+    ]
   },
   {
     "id": "ann-e1087-point",
@@ -35,7 +39,11 @@
       "Metric space",
       "Distance function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Plane",
+      "Metric Spaces",
+      "Inner Product Spaces"
+    ]
   },
   {
     "id": "ann-e1087-quadruple",
@@ -53,7 +61,11 @@
       "Distance geometry"
     ],
     "mathContext": "See annotation content for formal details of quadruples and their distances",
-    "prerequisites": []
+    "prerequisites": [
+      "Tuples And Cartesian Products",
+      "Binomial Coefficients",
+      "Pairwise Distances"
+    ]
   },
   {
     "id": "ann-e1087-degenerate",
@@ -71,7 +83,11 @@
       "Distance multisets",
       "Special configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Sets And Cardinality",
+      "Distance Multisets",
+      "Predicates In Lean"
+    ]
   },
   {
     "id": "ann-e1087-count",
@@ -89,7 +105,11 @@
       "Counting problems"
     ],
     "mathContext": "See annotation content for formal details of counting degenerate quadruples",
-    "prerequisites": []
+    "prerequisites": [
+      "Finset Powerset And Filter",
+      "Subset Counting",
+      "Maximization Over Configurations"
+    ]
   },
   {
     "id": "ann-e1087-lower-bound",
@@ -108,7 +128,11 @@
       "Sums of squares",
       "Repeated distances"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer Lattices",
+      "Sums Of Two Squares",
+      "Asymptotic Lower Bounds"
+    ]
   },
   {
     "id": "ann-e1087-upper-bound",
@@ -126,7 +150,11 @@
       "Incidence geometry",
       "Szemeredi-Trotter theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Incidence Geometry",
+      "Point-Circle Incidences",
+      "Asymptotic Upper Bounds"
+    ]
   },
   {
     "id": "ann-e1087-gap",
@@ -144,7 +172,11 @@
       "Exponent gaps"
     ],
     "mathContext": "See annotation content for formal details of the exponent gap",
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial Growth Rates",
+      "Asymptotic Comparison",
+      "Real Exponents"
+    ]
   },
   {
     "id": "ann-e1087-conjecture",
@@ -163,7 +195,11 @@
       "Asymptotic notation",
       "o(1) exponents"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Epsilon-Delta Limits",
+      "Little-o Notation",
+      "Open Problems In Combinatorics"
+    ]
   },
   {
     "id": "ann-e1087-unit-dist",
@@ -181,7 +217,11 @@
       "Unit distance problem",
       "Distance multiplicities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Distance Problem",
+      "Distance Multiplicities",
+      "Counting By Pair Selection"
+    ]
   },
   {
     "id": "ann-e1087-trivial",
@@ -199,7 +239,11 @@
       "Trivial bounds"
     ],
     "mathContext": "See annotation content for formal details of trivial bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Counting Subsets",
+      "Crude Bounding Arguments"
+    ]
   },
   {
     "id": "ann-e1087-guth-katz",
@@ -218,7 +262,11 @@
       "Polynomial method",
       "Guth-Katz"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Distinct Distances Problem",
+      "Polynomial Partitioning Method",
+      "Algebraic Combinatorial Geometry"
+    ]
   },
   {
     "id": "ann-e1087-main",
@@ -236,6 +284,10 @@
       "Known bounds"
     ],
     "mathContext": "See annotation content for formal details of main theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "Conjunction Of Propositions",
+      "Asymptotic Bounds",
+      "Existential Quantifiers"
+    ]
   }
 ]

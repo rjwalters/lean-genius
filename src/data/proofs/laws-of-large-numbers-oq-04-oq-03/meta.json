@@ -10,7 +10,8 @@
     "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ04OQ03.lean",
     "additionalFiles": [
       "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean",
-      "Proofs/LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean"
+      "Proofs/LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean",
+      "Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean"
     ],
     "tags": [
       "probability",
@@ -67,7 +68,7 @@
       "Integrable.mono' is the correct lemma for bounded measurable functions: it needs a dominating integrable function (here: the constant 1) and an AEMeasurable bound.",
       "integral_const for restricted measures: ∫ _ in s, c ∂μ = (μ.restrict s Set.univ).toReal • c, and Measure.restrict_apply MeasurableSet.univ gives (μ.restrict s) Set.univ = μ s.",
       "The preimage identification X₀ ⁻¹' Iic x = {ω | X₀ ω ≤ x} connects the integral computation to the trueCDF definition by definitional equality of sets.",
-      "The chain's sole remaining axiom (bracketingGrid_exists, in the bracketing companion) is purely real-analytic: existence of finitely many continuity points of a monotone F with controlled mass per interval. Its content reduces to the Mathlib-upstream-target Monotone.exists_increasing_continuity_seq.",
+      "The chain's sole remaining axiom (bracketingGrid_exists, in the bracketing companion) is NOT a true-but-unproved real-analytic lemma — it is FALSE. Its BracketingGrid structure bounds every consecutive grid-point CDF jump by ε with no atomless hypothesis, which is unsatisfiable for any CDF with an atom of mass > ε; LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean instantiates it at a Dirac CDF and derives `bracketingGrid_exists_false : False`. The corrected discharge target is a left-limit / quantile-based grid (track F(qⱼ⁻) at the nodes, per the LawsOfLargeNumbersOQ04OQ03QuantileBracketing companion), not the originally-proposed Monotone.exists_increasing_continuity_seq, which cannot recover the atomic-CDF case.",
       "Forward path — VC-class generalization framework: the classical (distribution-free) bracketing step and its VC-class generalization share most of their Mathlib needs, and inherit the same scaffolding. Three classical pieces are required: (a) density of CDF continuity points — derivable from Mathlib's lemma that monotone real functions have countably many discontinuities, since the complement of a countable set is dense in ℝ; (b) a constructive ε-cover lemma producing finitely many continuity points q₁ < ⋯ < q_k with each F-jump F(q_{j+1}) − F(q_j⁻) < ε — this is the genuinely missing piece, requiring a covering-by-ε-mass induction over [0,1] under monotone F; (c) finite intersection of pointwise convergence events — already available via `MeasureTheory.ae_all_iff`. The VC-class generalization (uniform LLN over a class 𝓕 of indicators with finite VC dimension d, giving rate O(√(d/n))) requires three additional Mathlib gaps: shatter-coefficient/VC-dimension definitions, the Vapnik–Chervonenkis symmetrization inequality (Sauer–Shelah lemma + ghost-sample argument), and the Talagrand-style maximal inequality for empirical processes. Specializing the indicator class to threshold functions {1_{x ≤ ·} : x ∈ ℝ} (VC dimension 1) recovers classical Glivenko–Cantelli, so a VC-class formalization in Mathlib subsumes the classical step — making (b) above redundant once (d)–(f) are available."
     ],
     "prerequisites": [
@@ -88,49 +89,49 @@
       "id": "sec-header",
       "title": "Header Docstring and Imports",
       "startLine": 1,
-      "endLine": 41,
+      "endLine": 46,
       "summary": "Module docstring states the file's purpose: discharge two of the three Glivenko–Cantelli axioms (`thresholdIndicator_integrable`, `integral_thresholdIndicator_eq_cdf`) by proving them from Mathlib's measure-theoretic API. Lists the four key Mathlib lemmas used (`Integrable.mono'`, `integral_indicator`, `integral_const`, `Measure.restrict_apply`) and records the resulting axiom-count reduction 3 → 1. Imports the parent `Proofs.LawsOfLargeNumbersOQ04` (for `thresholdIndicator`, `trueCDF`, `empiricalCDF`, and the structural independence/identity lifts), `Mathlib.MeasureTheory.Integral.Bochner.Set` (for `integral_indicator`), and `Mathlib.Tactic`. Opens `MeasureTheory`, `ProbabilityTheory`, `Set` and enters the `GlivenkoCantelli` namespace.",
       "mathContext": "Goal: replace `axiom thresholdIndicator_integrable` and `axiom integral_thresholdIndicator_eq_cdf` from the parent file with theorems whose proofs use only Mathlib. Result: $\\mathrm{axiomCount}_{\\mathrm{parent}} : 3 \\to 1$, with only the bracketing-uniformity axiom remaining open."
     },
     {
       "id": "sec-axiom-1",
       "title": "Proof of Axiom 1 — Threshold Indicators Are Integrable",
-      "startLine": 43,
-      "endLine": 63,
+      "startLine": 47,
+      "endLine": 68,
       "summary": "Theorem `thresholdIndicator_integrable_proved`: on a probability space, the threshold indicator $\\omega \\mapsto \\mathbf{1}_{X_0(\\omega) \\leq x}$ is integrable. Strategy: apply `Integrable.mono' (integrable_const (1 : ℝ))` — the constant function 1 is integrable on a finite measure space, and the indicator is dominated by it (values ∈ {0, 1}). The two side conditions are: (a) AEMeasurability via `(measurable_iic_indicator x).comp (hX 0)` (composition of a measurable random variable with the Borel indicator of $(-\\infty, x]$), and (b) the pointwise norm bound `‖indicator ω‖ ≤ 1`, discharged by `filter_upwards`/`split_ifs` into the two cases $X_0(\\omega) \\leq x$ and $X_0(\\omega) > x$.",
       "mathContext": "$\\|\\mathbf{1}_{X_0(\\omega) \\leq x}\\| \\leq 1 \\;\\text{a.e.}$; combined with $\\int_\\Omega 1 \\, d\\mu = 1 < \\infty$, `Integrable.mono'` produces $\\int_\\Omega |\\mathbf{1}_{X_0(\\omega) \\leq x}| \\, d\\mu \\leq 1 < \\infty$."
     },
     {
       "id": "sec-preimage-lemma",
       "title": "Preimage Indicator Factorization",
-      "startLine": 65,
-      "endLine": 75,
+      "startLine": 69,
+      "endLine": 80,
       "summary": "Private lemma `thresholdIndicator_eq_preimage_indicator_fun`: pointwise equality $\\mathbf{1}_{X_0(\\omega) \\leq x} = (X_0^{-1}((-\\infty, x])).\\mathrm{indicator}\\,(\\lambda \\_, 1)\\,\\omega$. Proved by `ext`/`simp only [thresholdIndicator, Set.indicator, Set.mem_preimage, Set.mem_Iic]`. This is the algebraic step that bridges from a real-valued function-of-a-random-variable indicator (range-side) to a set-of-the-domain indicator (domain-side), unlocking `integral_indicator`. The lemma is `private` because it is purely a rewrite consumed only inside the next theorem.",
       "mathContext": "$\\mathbf{1}_{X_0(\\omega) \\in (-\\infty, x]} = \\mathbf{1}_{\\omega \\in X_0^{-1}((-\\infty, x])}$ — definitional, but the orientation matters: `integral_indicator` requires the indicator of a *subset of the integration domain*, not of the codomain."
     },
     {
       "id": "sec-axiom-2",
       "title": "Proof of Axiom 2 — Integral of Indicator Equals CDF",
-      "startLine": 77,
-      "endLine": 103,
+      "startLine": 81,
+      "endLine": 107,
       "summary": "Theorem `integral_thresholdIndicator_eq_cdf_proved`: $\\mathbb{E}[\\mathbf{1}_{X_0 \\leq x}] = F(x)$ where $F$ is `trueCDF X μ`. Five-step proof: (1) establish `MeasurableSet (X 0 ⁻¹' Iic x)` from `(hX 0) measurableSet_Iic`; (2) `simp_rw thresholdIndicator_eq_preimage_indicator_fun` to convert to the preimage-indicator form; (3) `rw integral_indicator hms` to convert the integral over $\\Omega$ of an indicator to a set integral over the preimage with the constant integrand 1; (4) chain `integral_const` + `Measure.restrict_apply MeasurableSet.univ` + `Set.univ_inter` + `smul_eq_mul` + `mul_one` to evaluate $\\int_{\\Omega \\cap s} 1 \\, d\\mu = (\\mu \\, s).\\mathrm{toReal}$; (5) `simp only [trueCDF]; congr 1; ext ω; simp [...]` to identify the preimage set $X_0^{-1}((-\\infty, x])$ with the trueCDF set $\\{\\omega \\mid X_0(\\omega) \\leq x\\}$.",
       "mathContext": "$\\int_\\Omega \\mathbf{1}_{X_0 \\leq x}\\,d\\mu = \\int_{X_0^{-1}((-\\infty, x])} 1\\,d\\mu = \\mu\\bigl(X_0^{-1}((-\\infty, x])\\bigr).\\mathrm{toReal} = \\mu\\bigl(\\{\\omega \\mid X_0(\\omega) \\leq x\\}\\bigr).\\mathrm{toReal} = F(x)$."
     },
     {
       "id": "sec-pointwise-corollary",
       "title": "Application — Axiom-Free Pointwise Convergence",
-      "startLine": 105,
-      "endLine": 135,
+      "startLine": 108,
+      "endLine": 140,
       "summary": "Theorem `empiricalCDF_pointwise_convergence_no_axiom`: for each fixed $x$, $F_n(x) \\to F(x)$ a.s. Composes the two newly-proved lemmas with the parent file's structural lifts (`thresholdIndicator_pairwise_indep`, `thresholdIndicator_identDistrib`) plus Mathlib's `strong_law_ae_real`. Step-by-step: get integrability from `thresholdIndicator_integrable_proved`, get pairwise independence and identical distribution from the parent's structural lifts (these are not integration axioms — just rewrites of indep/i.d. through the indicator function), apply SLLN, substitute the integral identity from `integral_thresholdIndicator_eq_cdf_proved` to identify the limit with $F(x)$, then `convert hω using 1; ext n; simp [empiricalCDF_eq_mean]` to extract the empirical-mean form. Result: pointwise GC has zero remaining integration axioms — only the bracketing-uniformity step is still open.",
       "mathContext": "$\\forall x \\in \\mathbb{R} \\colon \\quad F_n(x) := \\frac{1}{n}\\sum_{i=1}^n \\mathbf{1}_{X_i \\leq x} \\xrightarrow[n \\to \\infty]{\\text{a.s.}} F(x).$ The SLLN is applied to the i.i.d. indicator sequence; the limit $\\mathbb{E}[\\mathbf{1}_{X_0 \\leq x}]$ is identified with $F(x)$ via Axiom 2 (now a theorem)."
     },
     {
       "id": "sec-axiom-status",
       "title": "Axiom Status Summary",
-      "startLine": 137,
-      "endLine": 158,
-      "summary": "Closing block: enumerates the parent file's three axioms with status flags — `thresholdIndicator_integrable` ✓ proved, `integral_thresholdIndicator_eq_cdf` ✓ proved, `glivenko_cantelli_uniform` ✗ remains. Notes that the remaining axiom is mathematically genuine: the uniformity step requires choosing finitely many CDF continuity points with controlled jump sizes plus a finite-intersection-of-pointwise-convergence-events argument — infrastructure for the first piece (a constructive ε-cover by continuity points of a monotone $F$) is not yet present in Mathlib 4.26. Records the headline corollary `empiricalCDF_pointwise_convergence_no_axiom` as the file's take-away.",
-      "mathContext": "Axiom-elimination ledger: $\\{\\mathrm{integrable}, \\mathrm{integral{=}CDF}, \\mathrm{uniform}\\} \\to \\{\\mathrm{uniform}\\}$. The remaining axiom is the only piece that depends on Mathlib infrastructure not yet in 4.26."
+      "startLine": 141,
+      "endLine": 180,
+      "summary": "Closing block (`/-` comment): updated axiom-elimination ledger reflecting the chain's evolution. `thresholdIndicator_integrable` ✓ proved here; `integral_thresholdIndicator_eq_cdf` ✓ proved here; `glivenko_cantelli_uniform` ✓ proved in the bracketing companion `LawsOfLargeNumbersOQ04OQ03Bracketing.lean` from the smaller real-analytic axiom `bracketingGrid_exists` (S4–S6), with the parent's axiom retired in S7. Records that `bracketingGrid_exists` was ✗ refuted in the S10 ACT (PR #20969, `bracketingGrid_exists_false : False`, build-verified) because the structure is provably empty for any CDF with an atom of mass `> ε`, and that `QuantileBracketingGrid` (S13 scaffold in the quantile companion) is the redesigned `Function.leftLim`-based structure that handles atomic CDFs. Emphasizes the headline corollary `empiricalCDF_pointwise_convergence_no_axiom` is independent of this design pivot and remains fully proved from Mathlib without integration axioms.",
+      "mathContext": "Axiom-elimination ledger: $\\{\\mathrm{integrable}, \\mathrm{integral{=}CDF}, \\mathrm{uniform}\\} \\to \\varnothing$ for this file's transitive closure (imports only `LawsOfLargeNumbersOQ04` + Mathlib). The chain's sole remaining axiom `bracketingGrid_exists` lives in the separately-imported bracketing companion and is the subject of the ongoing quantile redesign."
     }
   ],
   "mainTheorems": [
@@ -190,27 +191,27 @@
   "sorries": 0,
   "conclusion": {
     "summary": "Eliminates two of the three axioms in the parent Glivenko–Cantelli formalization (`LawsOfLargeNumbersOQ04`) by proving them from Mathlib's standard integration API. Four theorems, 0 sorries, 0 axioms. The proved facts — integrability of threshold indicators on probability spaces, and the integral-equals-CDF identity — are derived in one short Lean file each, using `Integrable.mono'` (bounded measurable on finite measure → integrable) and the standard `integral_indicator` + `integral_const` + `Measure.restrict_apply` chain. Together with the unchanged independence/identity-of-distribution lifts from the parent, these unlock a fully axiom-free pointwise convergence corollary `empiricalCDF_pointwise_convergence_no_axiom`.",
-    "implications": "The Glivenko–Cantelli theorem is the foundation of nonparametric statistics: it justifies the Kolmogorov–Smirnov test, distribution-free hypothesis testing, and resampling methods (bootstrap). Reducing the axiom count from 3 to 1 means that *only one* genuinely hard mathematical step (the bracketing uniformity) remains as an admitted hypothesis — every other piece is now a Mathlib-derived theorem. This sharpens the formalization's credibility and isolates the remaining work to a well-defined Mathlib-side gap (CDF continuity-point density), making future axiom elimination concretely tractable.\n\nThe pattern demonstrated here — wrapping bounded measurable functions with `Integrable.mono'` and chaining `integral_indicator` for set-membership integrals — applies broadly. Any time a probability formalization carries 'integrability of a 0/1-valued function' as an axiom, the same two-line proof technique applies. We expect this approach to retire several similar axioms across the gallery's probability-theoretic formalizations.\n\n**Forward research direction (VC-class Glivenko–Cantelli, Mathlib infrastructure)**: the candidate-pool reformulation of this entry (\"What is the minimal Mathlib infrastructure needed for VC-class Glivenko–Cantelli\") makes the path forward concrete. The remaining classical axiom decomposes into: (i) an ε-cover lemma producing finitely many CDF continuity points with controlled F-jump per interval — purely real-analytic, blocked only on a constructive density argument under a monotone real function; (ii) a finite-intersection of pointwise convergence events — already available in Mathlib via `MeasureTheory.ae_all_iff`; and (iii) a sup-bound tying back to monotonicity of Fₙ and F — already provable from the existing `empiricalCDF_mono`/`trueCDF_mono` lemmas in the parent file. The VC-class generalization adds three Mathlib gaps (VC-dimension/shatter-coefficient definitions, the Vapnik–Chervonenkis symmetrization inequality, and a Talagrand-style empirical-process maximal inequality) and would *subsume* the classical bracketing step by specializing to the threshold class {1_{· ≤ x} : x ∈ ℝ}. This makes a Mathlib-side investment in VC theory a higher-leverage target than ad-hoc resolution of (i): one general result retires the last Glivenko–Cantelli axiom *and* unlocks empirical-process theory for ML/statistics formalizations more broadly.",
+    "implications": "The Glivenko–Cantelli theorem is the foundation of nonparametric statistics: it justifies the Kolmogorov–Smirnov test, distribution-free hypothesis testing, and resampling methods (bootstrap). Reducing the axiom count from 3 to 1 means that *only one* admitted hypothesis (the bracketing uniformity) remains — every other piece is now a Mathlib-derived theorem. Note, however, that the surviving axiom `bracketingGrid_exists` is not merely unproved: S10 *refuted* it (`bracketingGrid_exists_false : False`), so the companion's uniform-convergence result built on it is vacuous. The remaining work is therefore not to *prove* that axiom but to *replace* it with the left-limit / quantile grid redesign (the `QuantileBracketing` companion); the headline pointwise-convergence corollary in this entry is independent of that axiom and remains fully sound.\n\nThe pattern demonstrated here — wrapping bounded measurable functions with `Integrable.mono'` and chaining `integral_indicator` for set-membership integrals — applies broadly. Any time a probability formalization carries 'integrability of a 0/1-valued function' as an axiom, the same two-line proof technique applies. We expect this approach to retire several similar axioms across the gallery's probability-theoretic formalizations.\n\n**Forward research direction (VC-class Glivenko–Cantelli, Mathlib infrastructure)**: the candidate-pool reformulation of this entry (\"What is the minimal Mathlib infrastructure needed for VC-class Glivenko–Cantelli\") makes the path forward concrete. The remaining classical step decomposes into: (i) a *corrected* ε-cover lemma producing finitely many quantile nodes with a left-limit per-cell bound F(q_{j+1}⁻) − F(q_j) ≤ ε (the value-based form was refuted in S10, since atoms of mass > ε make it unsatisfiable; the left-limit form places each atom in its own cell) — real-analytic, requiring an ε-mass induction over [0,1] under monotone F; (ii) a finite-intersection of pointwise convergence events — already available in Mathlib via `MeasureTheory.ae_all_iff`; and (iii) a sup-bound tying back to monotonicity of Fₙ and F — already provable from the existing `empiricalCDF_mono`/`trueCDF_mono` lemmas in the parent file. The VC-class generalization adds three Mathlib gaps (VC-dimension/shatter-coefficient definitions, the Vapnik–Chervonenkis symmetrization inequality, and a Talagrand-style empirical-process maximal inequality) and would *subsume* the classical bracketing step by specializing to the threshold class {1_{· ≤ x} : x ∈ ℝ}. This makes a Mathlib-side investment in VC theory a higher-leverage target than ad-hoc resolution of (i): one general result retires the last Glivenko–Cantelli axiom *and* unlocks empirical-process theory for ML/statistics formalizations more broadly.",
     "openQuestions": [
-      "Can the chain's sole remaining axiom `bracketingGrid_exists` (in the bracketing companion) be eliminated by formalizing the upstream-target lemma `Monotone.exists_increasing_continuity_seq` in Mathlib? Specifically: prove that for any monotone $F : \\mathbb{R} \\to \\mathbb{R}$ with bounded range and any $\\varepsilon > 0$, finitely many continuity points of $F$ partition $\\mathbb{R}$ with $F$-jump less than $\\varepsilon$ on each cell.",
+      "The chain's sole remaining axiom `bracketingGrid_exists` was *refuted* in S10 (`bracketingGrid_exists_false : False`, in the disproof companion): the value-based step bound $F(q_{j+1}) - F(q_j) \\le \\varepsilon$ with no atomless hypothesis is unsatisfiable for atomic CDFs. The corrected open question is therefore: can a *left-limit / quantile* grid-existence lemma be formalized — for any monotone $F : \\mathbb{R} \\to \\mathbb{R}$ with bounded range and any $\\varepsilon > 0$, finitely many nodes $q_0 < \\cdots < q_{k+1}$ with $F(q_0) \\le \\varepsilon$, $F(q_{k+1}) \\ge 1 - \\varepsilon$, and per-cell bound $F(q_{j+1}^-) - F(q_j) \\le \\varepsilon$ on left limits (the `QuantileBracketing` redesign)? Note `Monotone.exists_increasing_continuity_seq` is the wrong target: it concerns continuous monotone functions and cannot recover the atomic-CDF case.",
       "Can the integration-axiom elimination technique be applied to other probability formalizations in the gallery — e.g., birthday-problem variants, central-limit-theorem follow-ups — to systematically reduce their axiom counts?",
       "Does the indicator-integrability + indicator-CDF pair generalize to vector-valued indicators (e.g., $\\mathbf{1}_{X \\in A}$ for measurable $A \\subseteq \\mathbb{R}^d$)? The scalar case proved here is the $d = 1$ instance with $A = (-\\infty, x]$."
     ]
   },
   "crossReferences": [
     {
-      "id": "laws-of-large-numbers-oq-04",
-      "relation": "parent",
+      "targetId": "laws-of-large-numbers-oq-04",
+      "relationship": "parent",
       "description": "Glivenko-Cantelli theorem (parent formalization with 3 axioms)"
     },
     {
-      "id": "laws-of-large-numbers-oq-01-oq-01",
-      "relation": "sibling",
+      "targetId": "laws-of-large-numbers-oq-01-oq-01",
+      "relationship": "sibling",
       "description": "SLLN necessity — another integration-based result in the LLN family"
     },
     {
-      "id": "laws-of-large-numbers",
-      "relation": "ancestor",
+      "targetId": "laws-of-large-numbers",
+      "relationship": "ancestor",
       "description": "Laws of large numbers (root entry)"
     }
   ]

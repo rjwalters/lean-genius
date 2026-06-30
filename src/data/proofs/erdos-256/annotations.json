@@ -148,13 +148,13 @@
     "id": "ann-e256-distinct",
     "proofId": "erdos-256",
     "range": {
-      "startLine": 141,
-      "endLine": 158
+      "startLine": 194,
+      "endLine": 209
     },
     "type": "definition",
     "title": "The Distinct Exponents Variant",
     "content": "**A natural variant:**\n\nWhat if we require a₁ < a₂ < ... < aₙ (strictly increasing) instead of a₁ ≤ ... ≤ aₙ?\n\nDefine f*(n) for this distinct case. Bourgain and Chang (2018) proved:\n\nlog f*(n) ≪ (n log n)^{1/2} · log log n\n\nThis is worse than (log n)⁴ but still subpolynomial in n.",
-    "mathContext": "fDistinct(n) := sInf {maxOnUnitCircle a | a : Fin n → ℕ, Injective a}\n\nbourgain_chang_bound : log f*(n) ≤ C·(n·log n)^{1/2}·log log n",
+    "mathContext": "fDistinct(n) := sInf {maxOnUnitCircle a | a : Fin n → ℕ, Injective a}\n\nThe Bourgain-Chang (2018) bound log f*(n) ≤ C·(n·log n)^{1/2}·log log n is recorded as a docstring note, not a Lean declaration.",
     "significance": "key",
     "relatedConcepts": [
       "distinct-exponents",
@@ -171,13 +171,13 @@
     "id": "ann-e256-chowla",
     "proofId": "erdos-256",
     "range": {
-      "startLine": 160,
-      "endLine": 178
+      "startLine": 210,
+      "endLine": 226
     },
     "type": "concept",
     "title": "Connection to Chowla Cosine Problem (#510)",
     "content": "**Hidden connections:**\n\nThe Chowla cosine problem asks: for a set A of n integers, find θ minimizing Σ_{a∈A} cos(aθ).\n\nAtkinson observed: if such θ exists with sum < -M, then log f*(n) ≪ M·log n.\n\nThis connects two seemingly different problems about oscillatory behavior on the unit circle.",
-    "mathContext": "chowlaMinimum(A) := sInf {Σ_{a∈A} cos(aθ) | θ : ℝ}\n\natkinson_chowla_connection : (∀ A with |A|=n, chowlaMinimum(A) < -M) → log f*(n) ≤ C·M·log n",
+    "mathContext": "chowlaMinimum(A) := sInf {Σ_{a∈A} cos(aθ) | θ : ℝ}\n\nAtkinson's observation — (∀ A with |A|=n, chowlaMinimum(A) < -M) → log f*(n) ≤ C·M·log n — is recorded as a docstring note, not a Lean declaration.",
     "significance": "supporting",
     "relatedConcepts": [
       "cosine-sum",
@@ -195,13 +195,13 @@
     "id": "ann-e256-roots-unity",
     "proofId": "erdos-256",
     "range": {
-      "startLine": 180,
-      "endLine": 200
+      "startLine": 227,
+      "endLine": 250
     },
     "type": "concept",
     "title": "Behavior at Roots of Unity",
     "content": "**Key evaluation points:**\n\nWhen z is a k-th root of unity (z^k = 1), the product simplifies:\n- z^{aᵢ} = z^{aᵢ mod k}\n- The product depends only on residues mod k\n\nPrimitive roots provide lower bounds: there always exists a root where |product| ≥ 1.",
-    "mathContext": "product_at_root_of_unity : z^k = 1 → productPoly a z = ∏ᵢ(1-z^{aᵢ mod k})\n\nprimitive_root_lower_bound : ∃ k, ∃ ζ with ζ^k = 1, |productPoly a ζ| ≥ 1",
+    "mathContext": "product_at_root_of_unity (the one proved theorem here) evaluates the product at primitive k-th roots of unity.\n\nThe lower-bound idea — ∃ k, ∃ ζ with ζ^k = 1 and |productPoly a ζ| ≥ 1 — is documented in source comments only (no Lean declaration).",
     "significance": "key",
     "relatedConcepts": [
       "roots-of-unity",
@@ -218,13 +218,13 @@
     "id": "ann-e256-bounds-summary",
     "proofId": "erdos-256",
     "range": {
-      "startLine": 202,
-      "endLine": 225
+      "startLine": 251,
+      "endLine": 272
     },
     "type": "concept",
     "title": "Timeline and Gap Between Bounds",
     "content": "**What we know:**\n\n- **Lower**: log f(n) ≥ (1/2) log(2n) ≈ (1/2) log n\n- **Upper**: log f(n) ≤ C(log n)⁴\n\n**The gap**: The true growth is between log n and (log n)⁴. Pinning down the exact power remains open.\n\n**Timeline**:\n1959: √(2n) lower\n1961: n^{1/2}·log n upper\n1982: n^{1/3}·(log n)^{4/3} upper  \n1996: (log n)⁴ upper [final answer]",
-    "mathContext": "bounds_summary : (1/2)·log n ≤ log f(n) ≤ C·(log n)⁴\n\nThe gap between exponents 1 and 4 on log n is the remaining open question.",
+    "mathContext": "This part is a prose summary: (1/2)·log n ≤ log f(n) ≤ C·(log n)⁴, combining the erdos_szekeres_lower and belov_konyagin_bound axioms from earlier parts. The gap between exponents 1 and 4 on log n is the remaining open question. (No declaration in this part; erdos_256_summary in Part IX packages the two bounds.)",
     "significance": "key",
     "relatedConcepts": [
       "timeline",
@@ -242,8 +242,8 @@
     "id": "ann-e256-main-result",
     "proofId": "erdos-256",
     "range": {
-      "startLine": 227,
-      "endLine": 262
+      "startLine": 273,
+      "endLine": 308
     },
     "type": "insight",
     "title": "Main Result: Erdős #256 SOLVED",

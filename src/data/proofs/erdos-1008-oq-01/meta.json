@@ -53,58 +53,82 @@
     {
       "id": "header",
       "title": "Problem Background and References",
-      "summary": "Documentation of the open question, references to CFS14, KST54, and Erdős 1971",
       "startLine": 1,
-      "endLine": 38
+      "endLine": 42,
+      "summary": "States Erdős #1008 OQ-01: the optimal constant in the Kővári–Sós–Turán bound for $C_4$-free (equivalently $K_{2,2}$-free) graphs — the maximum edge density $\\text{ex}(n;C_4)\\sim c\\cdot n^{3/2}$. Folkman gives the upper bound, Conlon–Fox–Sudakov a lower bound; the exact constant is OPEN. References and background.",
+      "mathContext": "Optimal $c$ with $\\text{ex}(n;C_4)\\sim c\\,n^{3/2}$; $C_4$-free $=K_{2,2}$-free. Exact $c$ OPEN."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "summary": "HasC4, IsC4Free, HasKst, edgeCount — the predicates for 4-cycles, K_{s,t} subgraphs, and edge counting on finite simple graphs",
-      "startLine": 40,
-      "endLine": 66
+      "startLine": 43,
+      "endLine": 68,
+      "summary": "Defines `HasC4`, `IsC4Free` ($\\neg\\text{HasC4}$), `HasKst` ($K_{s,t}$ subgraph), and `edgeCount`.",
+      "mathContext": "`IsC4Free G`, `HasKst G s t` ($K_{s,t}\\subseteq G$), `edgeCount`."
     },
     {
-      "id": "k22-c4",
-      "title": "K_{2,2} = C₄ Equivalence",
-      "summary": "Full proof of both directions (k22_implies_c4 and c4_implies_k22) and the iff-equivalences k22_iff_c4, c4free_iff_k22free",
-      "startLine": 68,
-      "endLine": 139
+      "id": "k22-equiv",
+      "title": "Part I: K_{2,2} = C₄ Equivalence",
+      "startLine": 69,
+      "endLine": 141,
+      "summary": "PROVES the equivalence of $K_{2,2}$ and $C_4$ as subgraphs: `k22_implies_c4`, `c4_implies_k22`, `k22_iff_c4`, and `c4free_iff_k22free`.",
+      "mathContext": "$\\text{HasKst}\\,G\\,2\\,2\\Leftrightarrow\\text{HasC4}\\,G$; $C_4$-free $\\Leftrightarrow K_{2,2}$-free."
     },
     {
-      "id": "constant-framework",
-      "title": "Optimal Constant Framework",
-      "summary": "IsAdmissibleConstant definition (c > 0 with universal guarantee) and optimalConstant as sSup of admissible constants",
-      "startLine": 141,
-      "endLine": 162
+      "id": "optimal-framework",
+      "title": "Part II: The Optimal Constant Framework",
+      "startLine": 142,
+      "endLine": 164,
+      "summary": "Defines `IsAdmissibleConstant` (a valid $c$ in the density bound) and `optimalConstant` (the supremum/infimum framing of the exact constant).",
+      "mathContext": "`IsAdmissibleConstant c`; `optimalConstant` = the exact $C_4$-density constant."
     },
     {
-      "id": "hereditary",
-      "title": "Hereditary C₄-Freeness",
-      "summary": "empty_isC4Free (empty graph is C₄-free) and c4free_of_subgraph (C₄-freeness passes to subgraphs)",
-      "startLine": 164,
-      "endLine": 183
+      "id": "trivial-lower",
+      "title": "Part III: Trivial Lower Bound",
+      "startLine": 165,
+      "endLine": 185,
+      "summary": "PROVES `empty_isC4Free` (the empty graph is $C_4$-free) and `c4free_of_subgraph` (subgraphs of $C_4$-free graphs are $C_4$-free) — the hereditary property giving the trivial $m^{1/2}$ lower bound.",
+      "mathContext": "$C_4$-freeness is hereditary; trivial lower bound $\\sim m^{1/2}$."
     },
     {
-      "id": "folkman-bound",
-      "title": "Folkman's Upper Bound",
-      "summary": "Edge count of K_{n,n²}, divisibility lemma, rpow ratio calculation, and the axiomatized bound c* ≤ 1",
-      "startLine": 185,
-      "endLine": 218
+      "id": "folkman-upper",
+      "title": "Part IV: Folkman's Upper Bound on the Constant",
+      "startLine": 186,
+      "endLine": 239,
+      "summary": "PROVES `folkman_upper_bound` ($\\text{optimalConstant}\\leq1$), with supporting `complete_bipartite_edge_count`, `n_sq_dvd_n_cube`, and `folkman_ratio_rpow`.",
+      "mathContext": "Folkman: $\\text{optimalConstant}\\leq1$."
     },
     {
-      "id": "cfs-bound",
-      "title": "CFS Lower Bound and Open Question",
-      "summary": "Axiomatized CFS existence theorem, optimal_constant_pos (sorry), and the combined bounds 0 < c* ≤ 1",
-      "startLine": 220,
-      "endLine": 246
+      "id": "cfs-lower",
+      "title": "Part V: Conlon-Fox-Sudakov Lower Bound",
+      "startLine": 240,
+      "endLine": 272,
+      "summary": "States the AXIOM `cfs_admissible_exists` (Conlon–Fox–Sudakov: a positive admissible constant exists) and PROVES `optimal_constant_pos` ($\\text{optimalConstant}>0$).",
+      "mathContext": "CFS: $\\exists$ admissible $c>0$; hence $\\text{optimalConstant}>0$."
+    },
+    {
+      "id": "open-question",
+      "title": "Part VI: The Open Question",
+      "startLine": 273,
+      "endLine": 286,
+      "summary": "PROVES `optimal_constant_bounds`: $0<\\text{optimalConstant}\\leq1$ — the exact value remains OPEN (sandwiched by Folkman and CFS).",
+      "mathContext": "$0<\\text{optimalConstant}\\leq1$; exact value OPEN."
     },
     {
       "id": "structural",
-      "title": "Structural Results",
-      "summary": "c4free_mono (monotonicity via lattice order), c4free_of_few_edges (≤3 edges), and the key c4free_common_neighbor_unique theorem",
-      "startLine": 248,
-      "endLine": 296
+      "title": "Part VII: Structural Results",
+      "startLine": 287,
+      "endLine": 359,
+      "summary": "PROVES structural facts about $C_4$-free graphs: `c4free_mono` (monotone under subgraphs), `c4free_of_few_edges` (graphs with few edges are $C_4$-free), and `c4free_common_neighbor_unique` (in a $C_4$-free graph, two vertices share at most one common neighbor).",
+      "mathContext": "$C_4$-free $\\Leftrightarrow$ any two vertices have $\\leq1$ common neighbor; monotone; few-edge graphs are $C_4$-free."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 360,
+      "endLine": 374,
+      "summary": "Closing docstring recapping the $K_{2,2}=C_4$ equivalence, the constant framework, Folkman's upper bound, the CFS lower bound, and the open exact-constant question.",
+      "mathContext": "Recap: $0<c\\leq1$ for $\\text{ex}(n;C_4)\\sim c\\,n^{3/2}$; exact $c$ OPEN."
     }
   ],
   "conclusion": {

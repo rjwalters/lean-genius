@@ -1,0 +1,185 @@
+{
+  "id": "bernoulli-inequality-oq-01-oq-01-oq-02",
+  "title": "The Line-Escapes-a-Bounded-Power Lemma",
+  "slug": "bernoulli-inequality-oq-01-oq-01-oq-02",
+  "description": "The parent entry proved strict Bernoulli 1 + n·a < (1 + a)ⁿ on Mathlib's full weak domain −2 ≤ a, where over the hard subrange −2 ≤ a ≤ −1 the positive-factor induction collapses and the proof fell back to an ad hoc size argument: since |1 + a| ≤ 1 the power (1 + a)ⁿ is trapped ≥ −1, while the line 1 + n·a drops below −1. This entry extracts that mechanism as a reusable, Bernoulli-independent lemma and develops it into a small theory. The escape principle: every power of a magnitude-≤ 1 base is trapped in the band [−1, 1], so any line of nonzero slope eventually escapes the band — below it (negative slope) or above it (positive slope) — and hence eventually crosses every such power. The trap is packaged as abs_pow_le_one / neg_one_le_pow / pow_le_one; the engine as lt_pow_of_lt_neg_one (anything below the band is beaten by every power) and its mirror pow_lt_of_one_lt; and two genuinely new asymptotic statements eventually_line_lt_pow / eventually_pow_lt_line give explicit escape thresholds via the Archimedean property. Unlike the parent's positive-factor induction, the engine works verbatim for a negative (oscillating) base such as x = −1/2, demonstrated by example_oscillating_base. As an application, Bernoulli's hard negative range (−2 ≤ a ≤ −1, n ≥ 3) is recovered in one engine call (one_add_mul_lt_pow_neg), collapsing the parent's hand-rolled negative-range argument.",
+  "meta": {
+    "author": "Jacob Bernoulli (1689); reusable extraction of the bounded-power size argument",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bernoulli%27s_inequality",
+    "date": "1689",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BernoulliInequalityOQ01OQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "inequality",
+      "bernoulli-inequality",
+      "bounded-power",
+      "archimedean",
+      "reusable-lemma",
+      "binomial-bound",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "pow_le_one₀",
+        "description": "For 0 ≤ a ≤ 1, aⁿ ≤ 1. Applied to |x| to bound |x|ⁿ = |xⁿ|, giving the trap abs_pow_le_one.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "abs_pow",
+        "description": "|xⁿ| = |x|ⁿ. Reduces the magnitude of a power to a power of the magnitude in abs_pow_le_one.",
+        "module": "Mathlib.Algebra.Order.AbsoluteValue"
+      },
+      {
+        "theorem": "abs_le",
+        "description": "|y| ≤ c ↔ −c ≤ y ∧ y ≤ c. Splits the trap |xⁿ| ≤ 1 into the two walls −1 ≤ xⁿ and xⁿ ≤ 1.",
+        "module": "Mathlib.Algebra.Order.AbsoluteValue"
+      },
+      {
+        "theorem": "exists_nat_gt",
+        "description": "Archimedean property: every real is below some natural number. Produces the explicit escape threshold N in eventually_line_lt_pow and eventually_pow_lt_line.",
+        "module": "Mathlib.Algebra.Order.Archimedean.Basic"
+      },
+      {
+        "theorem": "div_lt_iff₀",
+        "description": "For 0 < c, a/c < b ↔ a < b·c. Converts the threshold N > (b+1)/(−s) into the linear escape condition b + 1 < n·(−s) used by the asymptotic statements.",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "mul_le_mul_of_nonpos_right",
+        "description": "Multiplication by a nonpositive constant reverses ≤. Gives n·a ≤ 3·a from 3 ≤ n with a ≤ 0 in the Bernoulli application one_add_mul_lt_pow_neg.",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "lt_pow_of_lt_neg_one: the escape engine — |x| ≤ 1 ∧ c < −1 ⟹ c < xⁿ for every n. This is exactly the parent entry's hand-rolled negative-range size argument, isolated as a standalone reusable lemma.",
+      "neg_one_le_pow / pow_le_one / abs_pow_le_one: the trap — every power of a magnitude-≤ 1 base is confined to the band [−1, 1].",
+      "pow_lt_of_one_lt: the mirror engine — |x| ≤ 1 ∧ 1 < c ⟹ xⁿ < c (escape from above).",
+      "eventually_line_lt_pow: a negative-slope line b + n·s eventually drops strictly below every power xⁿ, with explicit threshold N > (b+1)/(−s) built from the Archimedean property — an asymptotic statement absent from the parent.",
+      "eventually_pow_lt_line: the symmetric asymptotic — a positive-slope line eventually rises strictly above every power xⁿ.",
+      "example_oscillating_base: the engine handles a negative base x = −1/2 whose powers oscillate in sign yet stay trapped, so the line 10 − n still escapes below them — a regime the parent's positive-factor induction cannot reach.",
+      "one_add_mul_lt_pow_neg: strict Bernoulli on the hard range −2 ≤ a ≤ −1 (n ≥ 3) recovered as a single call to lt_pow_of_lt_neg_one, reproducing the parent's bespoke argument as a corollary of the general lemma."
+    ],
+    "dateAdded": "2026-06-24",
+    "axioms": 0,
+    "axiomCount": 0,
+    "lineCount": 154,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (every theorem depends only on propext, Classical.choice, Quot.sound).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Bernoulli's inequality $1 + na \\le (1+a)^n$ (Jacob Bernoulli, 1689) is classically stated for $a \\ge -1$, where a clean induction multiplies the inductive estimate by the positive factor $1+a$. Mathlib's `one_add_mul_le_pow` and the parent gallery entries push it onto the full weak domain $-2 \\le a$, but across the sign change of $1+a$ (the subrange $-2 \\le a \\le -1$) the induction breaks down and a different mechanism is needed. The parent supplied that mechanism by hand; the present entry recognizes it as an instance of a general fact about magnitude-$\\le 1$ bases that has nothing to do with Bernoulli.",
+    "problemStatement": "**Open Question (OQ-01-OQ-01-OQ-02):** Package the $-2 \\le a \\le -1$ size argument from the parent entry as a reusable lemma — a general \"a line escapes a bounded power\" principle usable for truncated binomial bounds and beyond.\n\n**Answer:** Every power of a base with $|x| \\le 1$ is trapped in the band $[-1, 1]$. Consequently any value below $-1$ is strictly beaten by every power (`lt_pow_of_lt_neg_one`), any value above $1$ strictly beats every power (`pow_lt_of_one_lt`), and any line of nonzero slope eventually escapes the band on the appropriate side (`eventually_line_lt_pow`, `eventually_pow_lt_line`) with an explicit Archimedean threshold. The parent's hard Bernoulli range is then one line.",
+    "text": "The crux of the parent's negative-range proof was not Bernoulli-specific: it only used $|1+a| \\le 1$ to confine $(1+a)^n$ above $-1$, then noted the line $1 + na$ sinks below $-1$. Abstracting the base to an arbitrary $x$ with $|x| \\le 1$ turns this into a self-contained \"trap and escape\" lemma. The trap ($-1 \\le x^n \\le 1$) is immediate from $|x^n| = |x|^n \\le 1$. The escape engine is then a one-step comparison, and the asymptotic forms package the Archimedean threshold beyond which a sloped line clears the band. Because the abstraction drops the sign hypothesis on the base, it covers oscillating bases (e.g. $x = -1/2$) that the parent's positive-factor induction cannot handle at all.",
+    "proofStrategy": "1. **Trap** (`abs_pow_le_one`, `neg_one_le_pow`, `pow_le_one`): from $|x| \\le 1$, `abs_pow` gives $|x^n| = |x|^n$ and `pow_le_one₀` bounds it by $1$; `abs_le` splits $|x^n| \\le 1$ into the two walls $-1 \\le x^n$ and $x^n \\le 1$.\n2. **Escape engine** (`lt_pow_of_lt_neg_one`, `pow_lt_of_one_lt`): chain $c < -1 \\le x^n$ (resp. $x^n \\le 1 < c$) by transitivity.\n3. **Asymptotic escape** (`eventually_line_lt_pow`): for slope $s < 0$, pick $N > (b+1)/(-s)$ via `exists_nat_gt`; for $n \\ge N$, `div_lt_iff₀` turns the bound into $b + 1 < n\\cdot(-s)$, i.e. $b + ns < -1$, and the engine finishes. `eventually_pow_lt_line` is the mirror with slope $s > 0$ and threshold $N > (1-b)/s$.\n4. **Oscillating base** (`example_oscillating_base`): instantiate the negative-slope statement at $x = -1/2$, $b = 10$, $s = -1$.\n5. **Bernoulli corollary** (`one_add_mul_lt_pow_neg`): for $-2 \\le a \\le -1$, $|1+a| \\le 1$; for $n \\ge 3$, $n\\cdot a \\le 3a \\le -3$ so $1 + na < -1$, and `lt_pow_of_lt_neg_one` gives $1 + na < (1+a)^n$.",
+    "keyInsights": [
+      "**The parent's hard case was never about Bernoulli.** It used only $|1+a| \\le 1$ to trap the power and the line's negativity to escape — facts that survive replacing $1+a$ by an arbitrary magnitude-$\\le 1$ base.",
+      "**Boundedness, not monotonicity, drives the escape.** A power of a magnitude-$\\le 1$ base need not be monotone (it can oscillate), but it is confined to $[-1,1]$; a sloped line, being unbounded, must eventually leave that band, and that suffices.",
+      "**The escape has an explicit Archimedean rate.** $(b+1)/(-s)$ is the exact crossover for a negative-slope line, made into a natural-number threshold by `exists_nat_gt` — turning the qualitative \"eventually\" into a usable bound.",
+      "**Dropping the base's sign is the real generalization.** The induction underlying the classical $a > -1$ proof needs $1 + a > 0$; the trap-and-escape engine needs nothing of the kind, so it reaches oscillating bases the induction cannot."
+    ],
+    "prerequisites": [
+      "The identity |xⁿ| = |x|ⁿ and the bound aⁿ ≤ 1 for 0 ≤ a ≤ 1",
+      "Splitting an absolute-value bound into two one-sided walls (abs_le)",
+      "The Archimedean property (exists_nat_gt) for the explicit escape threshold",
+      "Sign reversal of ≤ under multiplication by a nonpositive constant"
+    ]
+  },
+  "sections": [
+    {
+      "id": "trap",
+      "title": "The Trap: Powers Stay in [−1, 1]",
+      "startLine": 56,
+      "endLine": 68,
+      "summary": "From |x| ≤ 1, abs_pow_le_one gives |xⁿ| ≤ 1; abs_le splits this into the lower wall neg_one_le_pow (−1 ≤ xⁿ) and the upper wall pow_le_one (xⁿ ≤ 1).",
+      "mathContext": "|x| ≤ 1 ⟹ −1 ≤ xⁿ ≤ 1 for every n."
+    },
+    {
+      "id": "engine",
+      "title": "The Escape Engine",
+      "startLine": 70,
+      "endLine": 81,
+      "summary": "lt_pow_of_lt_neg_one: anything below −1 is strictly beaten by every power (the parent's size argument). pow_lt_of_one_lt: the mirror image, anything above 1 strictly beats every power.",
+      "mathContext": "|x| ≤ 1 ∧ c < −1 ⟹ c < xⁿ; |x| ≤ 1 ∧ 1 < c ⟹ xⁿ < c."
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Band Escape with Explicit Threshold",
+      "startLine": 83,
+      "endLine": 114,
+      "summary": "eventually_line_lt_pow: a negative-slope line b + n·s is < xⁿ for all n past N > (b+1)/(−s). eventually_pow_lt_line: a positive-slope line is > xⁿ past N > (1−b)/s. Thresholds built from exists_nat_gt and div_lt_iff₀.",
+      "mathContext": "s < 0 ⟹ ∃ N, ∀ n ≥ N, b + n·s < xⁿ;  s > 0 ⟹ ∃ N, ∀ n ≥ N, xⁿ < b + n·s."
+    },
+    {
+      "id": "oscillating",
+      "title": "Oscillating Base x = −1/2",
+      "startLine": 115,
+      "endLine": 126,
+      "summary": "The powers (−1/2)ⁿ oscillate in sign yet stay trapped in [−1,1], so the descending line 10 − n still escapes below them — a regime the parent's positive-factor induction cannot see.",
+      "mathContext": "∃ N, ∀ n ≥ N, 10 − n < (−1/2)ⁿ."
+    },
+    {
+      "id": "bernoulli-corollary",
+      "title": "Bernoulli's Negative Range from the Engine",
+      "startLine": 127,
+      "endLine": 152,
+      "summary": "For −2 ≤ a ≤ −1 and n ≥ 3, |1+a| ≤ 1 and 1 + n·a ≤ 1 − n < −1, so lt_pow_of_lt_neg_one gives 1 + n·a < (1+a)ⁿ in one call — the parent's hand-rolled negative-range argument as a corollary.",
+      "mathContext": "−2 ≤ a ≤ −1, n ≥ 3 ⟹ 1 + n·a < (1+a)ⁿ."
+    }
+  ],
+  "conclusion": {
+    "summary": "The parent's ad hoc size argument for strict Bernoulli on −2 ≤ a ≤ −1 is an instance of a general principle: every power of a magnitude-≤ 1 base is trapped in [−1, 1], so any value below −1 (resp. above 1) is strictly beaten by (resp. beats) every power, and any sloped line eventually escapes the band with an explicit Archimedean threshold. The principle is Bernoulli-independent and handles oscillating bases; Bernoulli's hard negative range falls out in one line. Verified: 0 sorries, 0 axioms.",
+    "implications": "lt_pow_of_lt_neg_one and pow_lt_of_one_lt are drop-in tools wherever a bounded-magnitude power must be separated from a line or constant — truncated binomial estimates, geometric tails, and any comparison against a magnitude-≤ 1 base. The asymptotic forms supply ready crossover thresholds for such comparisons. Relative to the parent, the contribution is the abstraction itself: removing the sign hypothesis on the base extends the reach from the single Bernoulli line to arbitrary sloped lines against arbitrary magnitude-≤ 1 (possibly oscillating) bases.",
+    "openQuestions": [
+      "Generalize the trap to magnitude-≤ B bases: |x| ≤ B ⟹ −Bⁿ ≤ xⁿ ≤ Bⁿ, and characterize exactly which lines escape the (now n-dependent) band Bⁿ — the escape survives only when the line outgrows Bⁿ, tying the threshold to whether B < 1, B = 1, or B > 1.",
+      "Apply the engine to a genuinely different truncated bound (e.g. a partial geometric sum ∑_{i<n} xⁱ = (1 − xⁿ)/(1 − x) for |x| ≤ 1) to confirm the lemma reduces a second, independent estimate the way it reduces Bernoulli."
+    ],
+    "crossReferences": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "bernoulli-inequality-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The parent proves strict Bernoulli on the full weak domain −2 ≤ a, using a hand-rolled size argument over −2 ≤ a ≤ −1; this entry extracts that argument as the reusable engine lt_pow_of_lt_neg_one and recovers the parent's negative range as a corollary."
+    },
+    {
+      "targetId": "bernoulli-inequality-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The sibling entry analyzes the sharp left endpoint of strict Bernoulli per exponent and uniformly; this entry instead abstracts the parent's bounded-power mechanism into a general escape lemma."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "BernoulliInequalityOQ01OQ01OQ02",
+    "lineCount": 154,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/BernoulliInequalityOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Jacob Bernoulli",
+      "title": "Positiones Arithmeticae de Seriebus Infinitis",
+      "year": "1689",
+      "venue": "Basel",
+      "note": "Early use of the inequality 1 + nx ≤ (1+x)ⁿ in the study of infinite series"
+    },
+    {
+      "authors": "D. S. Mitrinović",
+      "title": "Analytic Inequalities",
+      "year": "1970",
+      "venue": "Springer-Verlag",
+      "note": "Standard reference on Bernoulli's inequality, its strict forms, and admissible domains"
+    }
+  ],
+  "sorries": 0
+}

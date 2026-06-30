@@ -1,0 +1,185 @@
+{
+  "id": "gcd-algorithm-oq-04-oq-01",
+  "title": "GCDMonoid Normalization on k[X]: the Monic Representative",
+  "slug": "gcd-algorithm-oq-04-oq-01",
+  "description": "Pins down the abstract `NormalizationMonoid` structure on the polynomial ring k[X] over a field k as the familiar 'make it monic' operation. For nonzero p, proves normUnit p = C (leadingCoeff p)⁻¹ and the headline identity normalize p = C (leadingCoeff p)⁻¹ * p — the unique monic associate of p. Derives existence-and-uniqueness of the monic associate, and concludes that the canonical gcd in k[X] (the normalized associate of the Euclidean-algorithm gcd) is monic, divides both arguments, and satisfies the gcd universal property.",
+  "meta": {
+    "author": "Lean Genius (formalized in Lean 4)",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GcdAlgorithmOQ04OQ01.lean",
+    "tags": [
+      "algebra",
+      "gcd",
+      "gcd-monoid",
+      "euclidean-domain",
+      "polynomials",
+      "normalization",
+      "monic",
+      "typeclass-coherence",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All results fully machine-verified; every theorem depends only on the standard foundational triple [propext, Classical.choice, Quot.sound].",
+    "lineCount": 175,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-23",
+    "originalContributions": [
+      "normalize_eq_C_inv_leadingCoeff_mul: headline identity normalize p = C (leadingCoeff p)⁻¹ * p over a field — the abstract normalization is concretely 'divide by the leading coefficient'",
+      "eq_normalize_of_monic_associated: any monic polynomial associated to p equals normalize p (uniqueness of the monic associate)",
+      "exists_unique_monic_associate: existence-and-uniqueness of the monic associate of a nonzero polynomial, packaged as ∃!",
+      "monic_normalize_gcd / normalize_gcd_eq: the canonical gcd in k[X] is monic with explicit form C (leadingCoeff g)⁻¹ * g",
+      "normalize_gcd_dvd_left/right and dvd_normalize_gcd: the canonical monic gcd genuinely is a gcd (divides both arguments and absorbs common divisors)"
+    ],
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "NormalizationMonoid typeclass: normalize and normUnit",
+      "Polynomial.leadingCoeff, Polynomial.Monic, Polynomial.C",
+      "EuclideanDomain.gcd and the Euclidean algorithm on k[X]",
+      "Associated elements; normalize_eq_normalize_iff_associated"
+    ]
+  },
+  "overview": {
+    "historicalContext": "When a textbook computes gcd(f, g) of two polynomials over a field, it always returns a *monic* polynomial — the leading coefficient is divided out so the answer is canonical. This convention is older than abstract algebra: it is what makes the polynomial gcd unique rather than defined only up to a nonzero scalar. Mathlib encodes the canonical-representative idea abstractly through the `NormalizationMonoid` typeclass, where every element x has a distinguished associate `normalize x` together with a unit `normUnit x` realizing it. For the polynomial ring k[X] over a field, Mathlib installs a `NormalizationMonoid` instance whose `normUnit` is the constant polynomial C(leadingCoeff⁻¹). The parent entry (gcd-algorithm-oq-04) studied the coherence between the Euclidean-domain gcd and the GCDMonoid gcd in the abstract; one of its open questions asked whether the normalization on k[X] — choosing a monic representative — admits a canonical algebraic characterization. This entry answers that affirmatively and concretely: the abstract `normalize` on k[X] is exactly 'make it monic by dividing by the leading coefficient', and the canonical gcd is therefore the monic gcd every algorithm returns.",
+    "problemStatement": "For a field k and the polynomial ring k[X], characterize the normalization map: prove that for nonzero p, normUnit p = C (leadingCoeff p)⁻¹ and normalize p = C (leadingCoeff p)⁻¹ * p, that normalize p is the unique monic polynomial associated to p, and conclude that the canonical gcd in k[X] is monic and satisfies the gcd universal property.",
+    "keyInsights": [
+      "Over a field, normUnit of a nonzero polynomial is the *constant* unit C(leadingCoeff⁻¹) — normalization rescales by a scalar, never changing degree or roots",
+      "normalize p = C (leadingCoeff p)⁻¹ * p makes the abstract normalized associate completely explicit: it is the monic polynomial obtained by dividing through by the leading coefficient",
+      "normalize p is the *unique* monic associate of p; uniqueness follows from normalize_eq_normalize_iff_associated together with Monic.normalize_eq_self",
+      "The canonical gcd of polynomials is normalize(EuclideanDomain.gcd p q) — monic when nonzero, associated to the raw Euclidean gcd, hence a genuine gcd satisfying the universal property",
+      "The p = 0 edge case is handled by the normalize 0 = 0 convention (leadingCoeff 0 = 0 has no inverse), so the monic identification is stated for p ≠ 0"
+    ],
+    "proofStrategy": "Six parts. (I) normUnit p = C (leadingCoeff p)⁻¹ via Mathlib's coe_normUnit_of_ne_zero. (II) headline normalize p = C (leadingCoeff p)⁻¹ * p by normalize_apply + the normUnit form + commutativity. (III) monicity of normalize p via monic_normalize. (IV) characterization normalize p = p ↔ Monic p and uniqueness of the monic associate via normalize_eq_normalize_iff_associated. (V) the canonical gcd: monicity, explicit form, divisibility of both arguments, and the universal property, all transferred across the associate normalize(gcd) ~ gcd. (VI) worked examples over ℚ."
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Overview: Normalization is 'Make it Monic'",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring explaining that the abstract NormalizationMonoid structure on k[X] is concretely 'divide by the leading coefficient', listing the Mathlib lemmas used. Imports Mathlib, opens Polynomial, fixes a field k with DecidableEq.",
+      "mathContext": "In any NormalizationMonoid each element has a canonical associate normalize x = x * normUnit x. For k[X] over a field, normUnit is the constant inverse-leading-coefficient unit, so normalize selects the monic associate. The module makes this identification explicit and derives the monic-gcd corollary."
+    },
+    {
+      "id": "normunit",
+      "title": "Part I: The Normalization Unit",
+      "startLine": 54,
+      "endLine": 70,
+      "summary": "normUnit p = C (leadingCoeff p)⁻¹ for nonzero p over a field — the normalization unit is a constant polynomial.",
+      "mathContext": "Direct application of Mathlib's Polynomial.coe_normUnit_of_ne_zero. Establishes that normalization rescales by the scalar (leadingCoeff p)⁻¹, embedded as a constant polynomial via C."
+    },
+    {
+      "id": "normalize-formula",
+      "title": "Part II: normalize is 'Divide by the Leading Coefficient'",
+      "startLine": 71,
+      "endLine": 90,
+      "summary": "Headline identity normalize p = C (leadingCoeff p)⁻¹ * p for p ≠ 0, plus the normalize 0 = 0 convention.",
+      "mathContext": "normalize_apply gives normalize p = p * normUnit p; substituting the Part I form and commuting yields the monic associate C (leadingCoeff p)⁻¹ * p. The zero case records the leadingCoeff-0-has-no-inverse convention."
+    },
+    {
+      "id": "monic",
+      "title": "Part III: The Normalized Associate is Monic",
+      "startLine": 91,
+      "endLine": 110,
+      "summary": "normalize p is monic for p ≠ 0; equivalently leadingCoeff (normalize p) = 1; and normalize p is associated to p.",
+      "mathContext": "Uses Polynomial.monic_normalize and normalize_associated. Monicity is the defining property of the canonical representative, and association guarantees the same divisibility behaviour as p."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Part IV: normalize p is the Unique Monic Associate",
+      "startLine": 111,
+      "endLine": 139,
+      "summary": "Characterization normalize p = p ↔ Monic p, uniqueness eq_normalize_of_monic_associated, and the packaged ∃! statement exists_unique_monic_associate.",
+      "mathContext": "normalize_eq_normalize_iff_associated reduces associate-equality to normalize-equality; combined with Monic.normalize_eq_self this forces any monic associate of p to coincide with normalize p, giving existence-and-uniqueness of the monic representative."
+    },
+    {
+      "id": "monic-gcd",
+      "title": "Part V: The Canonical gcd is Monic",
+      "startLine": 140,
+      "endLine": 168,
+      "summary": "The canonical gcd normalize(EuclideanDomain.gcd p q) is monic when nonzero, has explicit monic form, divides both p and q, and absorbs every common divisor (universal property).",
+      "mathContext": "EuclideanDomain.gcd need not be monic; its normalized associate is. Monicity from monic_normalize; divisibility transferred along the associate normalize(gcd) ~ gcd using normalize_associated and EuclideanDomain.gcd_dvd_left/right and dvd_gcd. This is the textbook monic gcd."
+    },
+    {
+      "id": "examples",
+      "title": "Part VI: Worked Examples over ℚ",
+      "startLine": 169,
+      "endLine": 175,
+      "summary": "A monic polynomial is its own normalization; C 2 * X normalizes to the monic X.",
+      "mathContext": "Concrete sanity checks of the headline identity over ℚ, illustrating both the monic-fixed-point case and a genuine rescaling."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gcd-algorithm-oq-04",
+      "relationship": "extends",
+      "description": "Parent proof: coherence of EuclideanDomain gcd vs GCDMonoid gcd and their normalization. This entry answers its open question about characterizing the k[X] normalization concretely as the monic representative."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "Euclidean algorithm for natural numbers — the foundational gcd algorithm whose polynomial analogue produces the monic gcd characterized here."
+    },
+    {
+      "targetId": "gcd-algorithm-oq-02",
+      "relationship": "related",
+      "description": "Binary GCD (Stein's algorithm) — alternative gcd algorithm raising the same normalization question of which canonical representative to return."
+    }
+  ],
+  "conclusion": {
+    "summary": "The abstract NormalizationMonoid structure on k[X] over a field is concretely 'make it monic': normUnit p = C (leadingCoeff p)⁻¹ and normalize p = C (leadingCoeff p)⁻¹ * p, the unique monic associate of p. Consequently the canonical gcd of polynomials — the normalized associate of the Euclidean-algorithm gcd — is monic and satisfies the gcd universal property, matching the textbook convention.",
+    "implications": "This removes the gap between the abstract typeclass normalization of the parent entry and the familiar monic-gcd convention. It gives a computable, degree-preserving description of the canonical representative on k[X], and shows the gcd Mathlib's GCDMonoid machinery should return (when normalized) is exactly the monic gcd.",
+    "openQuestions": [
+      "Over a non-field base such as ℤ[X] (a UFD but not a Euclidean domain), the normalization combines a content/unit factor with the primitive part; can the normalize map be characterized as (sign of leading coeff) × (content normalization) and tied cleanly to Gauss's lemma?",
+      "Can the monic-gcd identification be upgraded to an algorithmic statement: that the monic output of the polynomial Euclidean algorithm equals normalize(EuclideanDomain.gcd p q) definitionally, not just up to associates?",
+      "For k[X1,...,Xn] over a field (a UFD, not Euclidean for n ≥ 2), is there a canonical normalized gcd analogous to the monic representative, e.g. via a fixed monomial order making the gcd's leading monomial coefficient 1?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Mathlib Community",
+      "title": "Mathlib4: Polynomial.FieldDivision",
+      "note": "coe_normUnit_of_ne_zero, monic_normalize, normalize_eq_self_iff_monic, Monic.normalize_eq_self for k[X]"
+    },
+    {
+      "authors": "Mathlib Community",
+      "title": "Mathlib4: GCDMonoid.Basic",
+      "note": "normalize, normUnit, normalize_apply, normalize_associated, normalize_eq_normalize_iff_associated"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial"],
+    "namespace": "GcdAlgorithmOQ04OQ01",
+    "lineCount": 175,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/GcdAlgorithmOQ04OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "normalize_eq_C_inv_leadingCoeff_mul",
+      "type": "core",
+      "description": "Over a field, the normalized associate of a nonzero polynomial is the monic polynomial C (leadingCoeff p)⁻¹ * p",
+      "leanType": "∀ {k : Type*} [Field k] [DecidableEq k] {p : k[X]}, p ≠ 0 → normalize p = C (leadingCoeff p)⁻¹ * p"
+    },
+    {
+      "name": "exists_unique_monic_associate",
+      "type": "core",
+      "description": "A nonzero polynomial over a field has a unique monic associate, namely normalize p",
+      "leanType": "∀ {k : Type*} [Field k] [DecidableEq k] {p : k[X]}, p ≠ 0 → ∃! m : k[X], m.Monic ∧ Associated m p"
+    },
+    {
+      "name": "monic_normalize_gcd",
+      "type": "core",
+      "description": "The canonical (normalized) gcd of two polynomials over a field is monic whenever it is nonzero",
+      "leanType": "∀ {k : Type*} [Field k] [DecidableEq k] {p q : k[X]}, EuclideanDomain.gcd p q ≠ 0 → (normalize (EuclideanDomain.gcd p q)).Monic"
+    }
+  ],
+  "sorries": 0
+}

@@ -145,6 +145,16 @@
       "targetId": "law-of-sines-oq-06",
       "relationship": "related",
       "description": "Ptolemy's theorem (equality case) applied to cyclic quadrilaterals inscribed in a circle of radius R directly yields the law of sines: the diagonal of a cyclic quadrilateral with one diagonal as a diameter equals 2R·sin(angle), recovering a/sin(A) = 2R; the two theorems are classically paired in the study of cyclic quadrilaterals"
+    },
+    {
+      "targetId": "ptolemys-complex-proof-oq-01",
+      "relationship": "extended-by",
+      "description": "Extended by a verified equality-case characterization: Ptolemy's equality holds for four complex numbers iff the two opposite-side products lie on the same ray in $\\mathbb{C}$ (zero or positively proportional), completing the biconditional."
+    },
+    {
+      "targetId": "ptolemys-complex-proof-oq-02",
+      "relationship": "extended-by",
+      "description": "Extended by a verified classical application deriving the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$ from Ptolemy's equality on the unit circle, reproducing Ptolemy's original argument."
     }
   ],
   "conclusion": {

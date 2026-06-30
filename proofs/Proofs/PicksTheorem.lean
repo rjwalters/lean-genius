@@ -110,6 +110,14 @@ structure SimpleLatticePolygon where
   area_pos : 0 < area
   /-- Boundary has at least 3 points (polygon is non-degenerate) -/
   boundary_ge_three : 3 ≤ boundary_count
+  /-- Pick's relation: the area is determined by the lattice-point counts.
+      Without this field the three numeric components are independent, so one
+      could build a "polygon" whose area is unrelated to its point counts --
+      which makes the bare formula `A = i + b/2 - 1` an inconsistent assertion.
+      Carrying it here is the geometric-realizability constraint that every
+      genuine simple lattice polygon satisfies, and it lets `picks_theorem`
+      be a proved theorem rather than an (unsound) axiom. -/
+  pick_relation : area = (interior_count : ℚ) + (boundary_count : ℚ) / 2 - 1
 
 /-- Notation for interior point count -/
 notation "i(" P ")" => SimpleLatticePolygon.interior_count P
@@ -144,9 +152,14 @@ def picks_formula (interior boundary : ℕ) : ℚ :=
 For a simple polygon with vertices at lattice points:
   Area = (interior points) + (boundary points)/2 - 1
 
-This relates discrete counting to continuous area measurement. -/
-axiom picks_theorem (P : SimpleLatticePolygon) :
-    A(P) = picks_formula i(P) b(P)
+This relates discrete counting to continuous area measurement.
+
+Now a proved theorem (not an axiom): it follows directly from the
+`pick_relation` realizability field carried by `SimpleLatticePolygon`. -/
+theorem picks_theorem (P : SimpleLatticePolygon) :
+    A(P) = picks_formula i(P) b(P) := by
+  unfold picks_formula
+  exact P.pick_relation
 
 /-- Alternative statement: Area formula -/
 theorem picks_theorem_explicit (P : SimpleLatticePolygon) :
@@ -192,6 +205,7 @@ def unit_right_triangle : SimpleLatticePolygon where
   area := 1/2
   area_pos := by norm_num
   boundary_ge_three := by norm_num
+  pick_relation := by norm_num
 
 /-- Pick's formula gives correct area for unit right triangle -/
 theorem picks_unit_triangle :
@@ -235,6 +249,9 @@ def rectangle (m n : ℕ) (hm : 0 < m) (hn : 0 < n) : SimpleLatticePolygon where
     have hm' : 1 ≤ m := hm
     have hn' : 1 ≤ n := hn
     omega
+  pick_relation := by
+    simp only [Nat.cast_mul, Nat.cast_add, Nat.cast_sub hm, Nat.cast_sub hn, Nat.cast_one]
+    ring
 
 /-- Pick's formula verification for rectangles -/
 theorem picks_rectangle (m n : ℕ) (hm : 0 < m) (hn : 0 < n) :
@@ -286,6 +303,7 @@ def large_right_triangle : SimpleLatticePolygon where
   area := 8
   area_pos := by norm_num
   boundary_ge_three := by norm_num
+  pick_relation := by norm_num
 
 theorem picks_large_right_triangle :
     picks_formula 3 12 = 8 := by

@@ -16,7 +16,11 @@
       "stolarsky",
       "shifted-sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Convergent Series",
+      "Rational And Irrational Numbers",
+      "Erdős Problems"
+    ]
   },
   {
     "id": "ann-e266-imports",
@@ -35,7 +39,11 @@
       "rationals"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib Library",
+      "Summable Sequences",
+      "Rational Coercions"
+    ]
   },
   {
     "id": "ann-e266-conjecture",
@@ -54,7 +62,11 @@
       "shifted-series",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Convergent Reciprocal Sums",
+      "Infinite Series Tsum",
+      "Existential Quantifiers"
+    ]
   },
   {
     "id": "ann-e266-disproof",
@@ -73,7 +85,11 @@
       "counterexample",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counterexample Construction",
+      "Negating Conjectures",
+      "Ahmes Series"
+    ]
   },
   {
     "id": "ann-e266-stronger",
@@ -92,7 +108,11 @@
       "rigidity",
       "stronger-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Strictly Monotone Sequences",
+      "Rational Shift Parameters",
+      "Series Pole Avoidance"
+    ]
   },
   {
     "id": "ann-e266-construction",
@@ -111,7 +131,11 @@
       "egyptian-fractions",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Telescoping Series",
+      "Egyptian Fractions",
+      "Series Convergence Control"
+    ]
   },
   {
     "id": "ann-e266-relation",
@@ -130,7 +154,11 @@
       "perturbations",
       "unified-approach"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Irrationality Sequences",
+      "Additive Perturbations",
+      "Erdős Problem 264"
+    ]
   },
   {
     "id": "ann-e266-harmonic",
@@ -149,7 +177,11 @@
       "divergence",
       "prerequisite"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Harmonic Series",
+      "Series Divergence",
+      "Reciprocal Sums"
+    ]
   },
   {
     "id": "ann-e266-basel",
@@ -168,7 +200,11 @@
       "convergence",
       "natural-sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Basel Problem",
+      "Reciprocal Squares Sum",
+      "P-Series Convergence"
+    ]
   },
   {
     "id": "ann-e266-geometric",
@@ -187,7 +223,11 @@
       "exponential",
       "convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometric Series",
+      "Series Convergence",
+      "Geometric Ratio"
+    ]
   },
   {
     "id": "ann-e266-shifted-geometric",
@@ -206,6 +246,10 @@
       "shifted-series",
       "summability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Comparison Test",
+      "Dominated Series",
+      "Geometric Series Bound"
+    ]
   }
 ]

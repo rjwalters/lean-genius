@@ -131,14 +131,14 @@ endpoint condition. -/
 
 /-! ## S7 ACT — Structural Reduction Lemmas
 
-Three reduction-by-definition lemmas that future S8+ discharge of
-`scarfWalk_isPanchromatic` will need. Plus a kernel-level `decide`
-verification on a concrete 3-cell instance.
+Three reduction-by-definition lemmas that the S8 discharge of
+`scarfWalk_isPanchromatic` (now complete) relied on. Plus a
+kernel-level `decide` verification on a concrete 3-cell instance.
 
-These do not close the existing sorry but each is a syntactic
-fact about `scarfWalk` / `scarfWalkAux` that the discharge will
-unfold over. Recording them as named lemmas avoids re-proving the
-same `rfl` / `split_ifs` micro-steps inside the larger discharge. -/
+Each is a syntactic fact about `scarfWalk` / `scarfWalkAux` that the
+discharge unfolds over. Recording them as named lemmas avoids
+re-proving the same `rfl` / `split_ifs` micro-steps inside the larger
+discharge. -/
 
 /-- Unfolding lemma: `scarfWalk` is `scarfWalkAux` at fuel `m`. -/
 theorem scarfWalk_eq_scarfWalkAux (hm : 0 < m) (start : Fin m) (k : Fin 2)

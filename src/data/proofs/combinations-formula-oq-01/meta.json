@@ -2,11 +2,11 @@
   "id": "combinations-formula-oq-01",
   "title": "Extended Binomial Coefficient Identities",
   "slug": "combinations-formula-oq-01",
-  "description": "Formalizes key binomial coefficient identities extending the basic combinations formula: Vandermonde's identity C(m+n,r) = Σ C(m,k)·C(n,r-k), the Hockey Stick identity Σᵢ C(i+r,r) = C(n+r+1,r+1), the double-counting product identity C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j), row sums, bounds C(n,k) ≤ 2ⁿ and C(2n,n) ≤ 4ⁿ, and Fibonacci diagonal sums. 8 theorems, 0 axioms.",
+  "description": "Formalizes key binomial coefficient identities extending the basic combinations formula: Vandermonde's identity C(m+n,r) = Σ C(m,k)·C(n,r-k), the Hockey Stick identity Σᵢ C(i+r,r) = C(n+r+1,r+1), the double-counting product identity C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j), row sums, bounds C(n,k) ≤ 2ⁿ and C(2n,n) ≤ 4ⁿ, and Fibonacci diagonal sums. 8 theorems; the Fibonacci diagonal sums are verified for small cases by native_decide (Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/CombinationsFormulaOQ01.lean",
     "tags": [
       "combinatorics",
@@ -15,11 +15,11 @@
       "vandermonde",
       "hockey-stick"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified using Mathlib's Nat.choose library.",
+    "axiomCount": 1,
+    "assumptions": "The six symbolic identities (Vandermonde, Hockey Stick, double-counting product, row/alternating sums, choose_le_pow2, central_binom_le, identities_summary) are fully machine-verified using Mathlib's Nat.choose library with no assumptions. However, the named 'Fibonacci diagonal sums Σ_j C(n-j,j) = F(n+1)' contribution has no symbolic proof — it is established only for small cases (n=5, n=6) by native_decide examples, which depend on the Lean.ofReduceBool axiom (kernel-trusted compiler reduction). A general inductive proof remains open (see openQuestions). leanFile.axiomCount stays 0 (no literal `axiom` declarations).",
     "lineCount": 185,
     "theoremCount": 8,
     "definitionCount": 0,
@@ -52,7 +52,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Six binomial coefficient identities fully verified: Vandermonde (2 lines), Hockey Stick (induction), double-counting product (30-line factorial algebra), row sum (1 line), binomial bound (via single_le_sum), and central binomial bound. Fibonacci diagonal sums verified by native_decide for small n. 8 theorems, 185 lines, 0 axioms.",
+    "summary": "Six binomial coefficient identities fully verified: Vandermonde (2 lines), Hockey Stick (induction), double-counting product (30-line factorial algebra), row sum (1 line), binomial bound (via single_le_sum), and central binomial bound. Fibonacci diagonal sums verified by native_decide for small n (depends on Lean.ofReduceBool; general proof open). 8 theorems, 185 lines.",
     "implications": "This provides a verified combinatorics toolkit for higher-level proofs. The Vandermonde identity enables combinatorial proofs of hypergeometric identities. The Hockey Stick enables counting arguments in lattice path combinatorics. The product identity enables multinomial coefficient arguments. Together they cover the standard binomial coefficient toolkit for probabilistic and algebraic combinatorics.",
     "openQuestions": [
       "Formal proof of Fibonacci diagonal sum Σ C(n-j,j) = F(n+1) by induction using F(n+2) = F(n+1) + F(n)",

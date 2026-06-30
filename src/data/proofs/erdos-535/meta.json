@@ -48,84 +48,92 @@
   },
   "sections": [
     {
-      "id": "imports-setup",
+      "id": "setup",
       "title": "Imports and Setup",
-      "summary": "Imports from Mathlib: $\\gcd$, $\\text{Finset}$, $\\text{sSup}$, logarithms, and natural number arithmetic",
+      "summary": "File header stating Erdős #535 (GCD-free r-subsets): estimate f_r(N), the largest A ⊆ {1,...,N} with no r elements sharing a common pairwise gcd. Records the known bounds, Erdős's conjecture, the sunflower connection, and the Mathlib imports.",
       "startLine": 1,
       "endLine": 42,
-      "mathContext": "Mathematical content: Imports from Mathlib: $\\gcd$, $\\text{Finset}$, $\\text{sSup}$, logarithms, and natural number arithmetic"
+      "mathContext": "Open problem: bound f_r(N) for r ≥ 3. Upper N^{1/2+o(1)} (Abbott-Hanson 1970), lower N^{c/log log N} (Erdős 1964)."
     },
     {
-      "id": "definitions",
-      "title": "Core Definitions",
-      "summary": "Defines `HasNoRGCDSubset` (no $r$ elements with equal pairwise $\\gcd$), `HasNoGCDClique`, and the extremal function $f_r(N) = \\sup\\{|A| : A \\subseteq [N],\\, \\text{gcd-clique-free}\\}$",
+      "id": "basic-definitions",
+      "title": "Part 1: Basic Definitions",
+      "summary": "Defines HasNoRGCDSubset and the alternative HasNoGCDClique predicates, IsSubsetOfInterval, and f r N as the supremum of |A| over subsets of {1,...,N} avoiding an r-element common-pairwise-gcd set.",
       "startLine": 43,
       "endLine": 65,
-      "mathContext": "Formal definition: Defines `HasNoRGCDSubset` (no $r$ elements with equal pairwise $\\gcd$), `HasNoGCDClique`, and the extremal function $f_r(N) = \\sup\\{|A| : A \\subseteq [N],\\, \\text{gcd-clique-free}\\}$"
+      "mathContext": "f(r,N) = sSup { |A| : A ⊆ {1,...,N}, no r elements of A share a common pairwise gcd d }."
     },
     {
       "id": "trivial-bounds",
-      "title": "Trivial Bounds",
-      "summary": "Establishes $f_r(N) \\leq N$ (universe bound) and the requirement $r \\geq 3$ for non-degeneracy",
+      "title": "Part 2: Trivial Bounds",
+      "summary": "Expository: the trivial bound f_r(N) ≤ N, and why r = 2 is degenerate so r ≥ 3 is the interesting regime.",
       "startLine": 66,
-      "endLine": 77,
-      "mathContext": "Bound: Establishes $f_r(N) \\leq N$ (universe bound) and the requirement $r \\geq 3$ for non-degeneracy"
+      "endLine": 75,
+      "mathContext": "Trivial range f_r(N) ≤ N; r = 2 is impossible, so the problem starts at r ≥ 3."
     },
     {
-      "id": "erdos-upper",
-      "title": "Erdős's Original Upper Bound (1964)",
-      "summary": "Historical discussion of Erdős's 1964 result $f_r(N) \\leq N^{3/4+o(1)}$; documented in docstring comments only, not axiomatized. The `abbott_hanson_upper_bound` axiom is declared at line 91 in the following section.",
-      "startLine": 78,
+      "id": "erdos-upper-1964",
+      "title": "Part 3: Erdős's Original Upper Bound (1964)",
+      "summary": "Expository note on Erdős's first non-trivial upper bound f_r(N) ≤ N^{3/4+o(1)}, later superseded by Abbott-Hanson.",
+      "startLine": 76,
       "endLine": 85,
-      "mathContext": "Discussed in docstrings only: $f_r(N) \\leq N^{3/4+o(1)}$ (Erdős 1964, not axiomatized)."
+      "mathContext": "Erdős (1964): f_r(N) ≤ N^{3/4+o(1)}, the first sub-linear upper bound."
     },
     {
-      "id": "abbott-hanson",
-      "title": "Abbott-Hanson Upper Bound (1970)",
-      "summary": "Axiom: $f_r(N) \\leq N^{1/2+o(1)}$ via auxiliary graph construction and Turán's theorem; `exponent_improvement` verifies $3/4 > 1/2$",
+      "id": "abbott-hanson-upper",
+      "title": "Part 4: Abbott-Hanson Upper Bound (1970)",
+      "summary": "States abbott_hanson_upper_bound as an axiom (f_r(N) ≤ C·N^{1/2+ε} for r ≥ 3) and proves exponent_improvement (3/4 > 1/2) by norm_num, recording that this is the best known upper bound.",
       "startLine": 86,
-      "endLine": 111,
-      "mathContext": "Verified: Axiom: $f_r(N) \\leq N^{1/2+o(1)}$ via auxiliary graph construction and Turán's theorem; `exponent_improvement` verifies $3/4 > 1/2$"
+      "endLine": 104,
+      "mathContext": "Abbott-Hanson (1970): for r ≥ 3, ∃ C>0 such that ∀ε>0, eventually f_r(N) ≤ C·N^{1/2+ε}."
     },
     {
-      "id": "lower-bound",
-      "title": "Erdős's Lower Bound",
-      "summary": "Axiom: $f_3(N) > N^{c/\\log \\log N}$ using smooth numbers with $\\leq k$ prime factors for $k \\sim \\log \\log N$",
+      "id": "erdos-lower-1964",
+      "title": "Part 5: Erdős's Lower Bound (1964)",
+      "summary": "States erdos_lower_bound as an axiom: f_3(N) > N^{c/log log N} for some c > 0, a quasi-polynomial lower bound growing slower than N^ε yet faster than any poly-log.",
       "startLine": 105,
-      "endLine": 127,
-      "mathContext": "Axiomatized: Axiom: $f_3(N) > N^{c/\\log \\log N}$ using smooth numbers with $\\leq k$ prime factors for $k \\sim \\log \\log N$"
+      "endLine": 120,
+      "mathContext": "Erdős (1964): ∃ c>0, eventually f_3(N) > N^{c/log log N}."
     },
     {
-      "id": "gap-conjecture",
-      "title": "The Gap and Erdős's Conjecture",
-      "summary": "Defines `ErdosConjecture`: $f_r(N) \\leq N^{c/\\log \\log N}$, asserting the lower bound is tight and the polynomial upper bound can be dramatically improved",
-      "startLine": 128,
-      "endLine": 146,
-      "mathContext": "Formal definition: Defines `ErdosConjecture`: $f_r(N) \\leq N^{c/\\log \\log N}$, asserting the lower bound is tight and the polynomial upper bound can be dramatically improved"
+      "id": "the-gap",
+      "title": "Part 6: The Gap Between Bounds",
+      "summary": "Describes the enormous gap between the polynomial upper bound N^{1/2+o(1)} and the quasi-polynomial lower bound, and defines ErdosConjecture asserting the lower bound is essentially tight.",
+      "startLine": 121,
+      "endLine": 139,
+      "mathContext": "ErdosConjecture: ∀ r≥3, eventually f_r(N) ≤ C·N^{c/log log N}, which would close the gap to quasi-polynomial."
     },
     {
-      "id": "sunflower",
-      "title": "Connection to Sunflower Problem",
-      "summary": "Maps $\\gcd$-cliques to sunflowers via prime factorizations; `StrongerSunflowerLemma` would imply `ErdosConjecture` by removing the factorial from the Erdős-Rado bound",
-      "startLine": 147,
-      "endLine": 163,
-      "mathContext": "Bound: Maps $\\gcd$-cliques to sunflowers via prime factorizations; `StrongerSunflowerLemma` would imply `ErdosConjecture` by removing the factorial from the Erdős-Rado bound"
+      "id": "sunflower-connection",
+      "title": "Part 7: Connection to Sunflower Problem",
+      "summary": "Expository: a strengthened sunflower conjecture (removing the k! factor from the Erdős-Rado bound) would imply Erdős's conjecture for this problem; cross-references Problems #20 and #536.",
+      "startLine": 140,
+      "endLine": 153,
+      "mathContext": "A sunflower conjecture without the k! Erdős-Rado factor would resolve the f_r(N) conjecture."
     },
     {
-      "id": "techniques",
-      "title": "Proof Techniques",
-      "summary": "Discussion of methods: double counting, Turán graph embedding, smooth number constructions, and the prime factor multiset encoding",
-      "startLine": 164,
-      "endLine": 192,
-      "mathContext": "Mathematical content: Discussion of methods: double counting, Turán graph embedding, smooth number constructions, and the prime factor multiset encoding"
+      "id": "small-cases",
+      "title": "Part 8: Small Cases and Examples",
+      "summary": "Expository: exact small values such as f_3(6)=4 ({1,2,3,5}) and f_3(10)=5, and why the primes-plus-one set {1} ∪ {p ≤ N} (size ≈ N/log N) is worse than the lower bound.",
+      "startLine": 154,
+      "endLine": 164,
+      "mathContext": "Worked small cases: f_3(6)=4, f_3(10)=5; the prime-based construction is suboptimal."
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Part 9: Proof Techniques",
+      "summary": "Expository survey of the three main methods: counting (Erdős), gcd-graph Turán bounds (Abbott-Hanson), and multiplicative constructions for lower bounds, plus the additive-multiplicative dichotomy that makes the problem hard.",
+      "startLine": 165,
+      "endLine": 182,
+      "mathContext": "Methods: pair-counting, Turán-type clique bounds on the gcd graph, and multiplicative/sieve constructions."
     },
     {
       "id": "summary",
-      "title": "Summary Theorem",
-      "summary": "Conjunction `erdos535_summary`: combines Abbott-Hanson upper bound $N^{1/2+o(1)}$ and Erdős lower bound $N^{c/\\log \\log N}$ into a single statement of current knowledge",
-      "startLine": 193,
+      "title": "Part 10: Summary",
+      "summary": "Proves erdos_535_summary, bundling the Abbott-Hanson upper bound and the Erdős lower bound into a single conjunction discharged from the two stated axioms; restates the OPEN status and conjecture.",
+      "startLine": 183,
       "endLine": 211,
-      "mathContext": "Bound: Conjunction `erdos535_summary`: combines Abbott-Hanson upper bound $N^{1/2+o(1)}$ and Erdős lower bound $N^{c/\\log \\log N}$ into a single statement of current knowledge"
+      "mathContext": "erdos_535_summary: conjunction of the Abbott-Hanson upper and Erdős lower bounds, proved from the two axioms."
     }
   ],
   "conclusion": {

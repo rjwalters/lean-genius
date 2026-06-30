@@ -251,10 +251,22 @@
   ],
   "mainTheorems": [
     {
-      "name": "three_place_identity",
+      "name": "universality",
       "type": "core",
-      "description": "A combinatorial identity involving three-place functions",
-      "leanType": "three_place_sum a b c = normalized_value a b c"
+      "description": "The Universality Theorem: for any ZF set model, the membership derived via the D2/D1 bridges coincides with the original membership, so identity theory interprets ZF.",
+      "leanType": "(M : SetModel U) (y x : U) : M.derivedMem y x <-> M.mem y x"
+    },
+    {
+      "name": "roundtrip",
+      "type": "core",
+      "description": "The Round-Trip Theorem: starting from a well-founded membership relation, forming Id via D2 and then deriving membership via D1 recovers the original membership (Foundation is essential).",
+      "leanType": "(M : WellFoundedMembership U) (y x : U) : MemFromId (RelativeIdentity.fromMembership M) y x <-> M.mem y x"
+    },
+    {
+      "name": "IdFromMem_iff_same_status",
+      "type": "supporting",
+      "description": "Bridge D2 equals Quine indistinguishability: x regards y, z as identical iff they have the same membership status in x.",
+      "leanType": "(mem : U -> U -> Prop) (x y z : U) : IdFromMem mem x y z <-> (mem y x <-> mem z x)"
     }
   ],
   "sorries": 0

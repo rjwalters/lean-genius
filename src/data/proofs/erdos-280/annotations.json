@@ -17,7 +17,11 @@
       "congruences",
       "Prime Number Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Covering Systems",
+      "Sieve Methods",
+      "Modular Arithmetic"
+    ]
   },
   {
     "id": "ann-e280-definitions",
@@ -37,7 +41,11 @@
       "SatisfiesGrowthBound",
       "Finset.filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Residue Classes",
+      "Finset Filtering",
+      "Counting Functions"
+    ]
   },
   {
     "id": "ann-e280-conjecture",
@@ -56,7 +64,11 @@
       "growth rate",
       "Ω notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Growth Rates",
+      "Big-Omega Notation",
+      "Monotone Sequences"
+    ]
   },
   {
     "id": "ann-e280-counterexample",
@@ -76,7 +88,11 @@
       "binary representation",
       "covering property"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Powers Of Two",
+      "Binary Representation",
+      "2-adic Valuation"
+    ]
   },
   {
     "id": "ann-e280-refutation",
@@ -95,7 +111,11 @@
       "counterexample",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof By Counterexample",
+      "Logical Negation",
+      "Covering Congruences"
+    ]
   },
   {
     "id": "ann-e280-bound",
@@ -114,7 +134,11 @@
       "Nat.nth",
       "optimal bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Number Theorem",
+      "Prime Counting Function",
+      "Asymptotic Equivalence"
+    ]
   },
   {
     "id": "ann-e280-summary",
@@ -133,6 +157,10 @@
       "exact",
       "axiom composition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical Conjunction",
+      "Strictly Increasing Sequences",
+      "Axiom Composition"
+    ]
   }
 ]

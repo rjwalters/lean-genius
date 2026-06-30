@@ -58,10 +58,9 @@ theorem chebyshevTheta_le (n : ℕ) : chebyshevTheta n ≤ n * Real.log 4 := by
   unfold chebyshevTheta
   by_cases hn : n = 0
   · subst hn
-    have : Finset.filter Nat.Prime (Finset.range 1) = ∅ := by
-      ext x; simp only [Finset.mem_filter, Finset.mem_range, Finset.not_mem_empty, iff_false, not_and]
-      intro hx; interval_cases x; exact Nat.not_prime_zero
-    simp [this]
+    have hempty : Finset.filter Nat.Prime (Finset.range (0 + 1)) = ∅ := by decide
+    rw [hempty, Finset.sum_empty]
+    simp
   have hprim_pos : 0 < primorial n := primorial_pos n
   have hprim_real : (primorial n : ℝ) ≤ ((4 : ℕ) ^ n : ℕ) := by
     exact_mod_cast primorial_le_4_pow n
@@ -72,7 +71,7 @@ theorem chebyshevTheta_le (n : ℕ) : chebyshevTheta n ≤ n * Real.log 4 := by
       ∏ p ∈ Finset.filter Nat.Prime (Finset.range (n + 1)), (p : ℝ) := by
     unfold primorial; simp only [Nat.cast_prod]
   rw [hprod_cast] at hlog
-  rw [Real.log_prod _ _ (fun p hp => by exact_mod_cast (Finset.mem_filter.mp hp).2.ne_zero)] at hlog
+  rw [Real.log_prod (fun p hp => by exact_mod_cast (Finset.mem_filter.mp hp).2.ne_zero)] at hlog
   linarith
 
 /-! ## Upper bound on π(N) from Chebyshev
@@ -133,7 +132,8 @@ theorem primeCounting_le_chebyshev (N : ℕ) (hN : 2 ≤ N) :
       have hp_sq_gt : N < p * p := by
         have hp_ge : sqrtN + 1 ≤ p := hpgt
         have h_succ_sq : N < (sqrtN + 1) * (sqrtN + 1) := by
-          rw [hsqrtN_def]; exact Nat.lt_succ_sqrt' N
+          rw [hsqrtN_def]
+          simpa [Nat.succ_eq_add_one, pow_two] using Nat.lt_succ_sqrt' N
         nlinarith [Nat.mul_le_mul hp_ge hp_ge]
       have hp_pos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hpS.2.pos
       have hp_sq_real : (N : ℝ) < (p : ℝ) * (p : ℝ) := by exact_mod_cast hp_sq_gt
@@ -188,7 +188,7 @@ theorem chebyshev_bound_tendsto_zero :
         exact this.congr' (by filter_upwards [eventually_ge_atTop 0] with N _; simp [Real.sqrt_eq_rpow])
       have := (tendsto_inv_atTop_zero.comp hsqrt).const_mul 2
       simp only [mul_zero] at this
-      exact this.congr' (by filter_upwards with N; ring)
+      exact this.congr' (by filter_upwards with N; simp only [Function.comp_apply]; ring)
     apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_upper
     · filter_upwards with N using div_nonneg (by positivity) (Nat.cast_nonneg _)
     · filter_upwards [eventually_ge_atTop 4] with N hN
@@ -200,8 +200,13 @@ theorem chebyshev_bound_tendsto_zero :
         exact Real.sqrt_le_sqrt (by exact_mod_cast Nat.sqrt_le' N)
       have hsq : Real.sqrt N ^ 2 = N := Real.sq_sqrt (le_of_lt hN_pos)
       -- Need: (Nat.sqrt N + 1) * √N ≤ 2 * N
-      -- (√N + 1) * √N = √N² + √N = N + √N ≤ 2N since √N ≤ N
-      nlinarith [sq_nonneg (Real.sqrt N - 1)]
+      -- (√N + 1) * √N = √N² + √N = N + √N ≤ 2N since 1 ≤ √N ≤ N
+      have hs_ge_1 : (1 : ℝ) ≤ Real.sqrt N := by
+        rw [show (1 : ℝ) = Real.sqrt 1 by simp]
+        exact Real.sqrt_le_sqrt (by exact_mod_cast (by omega : (1 : ℕ) ≤ N))
+      nlinarith [hsqrt_le, hsq, hN_sqrt_pos, hs_ge_1,
+        mul_le_mul_of_nonneg_right hsqrt_le hN_sqrt_pos.le,
+        mul_nonneg (by linarith [hs_ge_1] : (0 : ℝ) ≤ Real.sqrt N - 1) hN_sqrt_pos.le]
   have := h1.add h2
   simp only [zero_add] at this
   exact this

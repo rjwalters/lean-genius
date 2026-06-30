@@ -82,19 +82,19 @@
     },
     "type": "insight",
     "title": "Fifth Powers and Euler's Conjecture Connection",
-    "content": "The conjecture that {n⁵ : n ≥ 1} is itself a Sidon set is equivalent to: there are no solutions to n₁⁵ + n₂⁵ = n₃⁵ + n₄⁵ with {n₁,n₂} ≠ {n₃,n₄}. This is a special instance of Euler's sum of powers conjecture in the fifth-power case. While Euler's conjecture was dramatically disproved for 4th powers (Lander–Parkin, 1966: 27⁵ + 84⁵ + 110⁵ + 133⁵ = 144⁵, wait that's 5th power counterexample to another form) – actually for fifth powers specifically: the question of whether a⁵ + b⁵ = c⁵ + d⁵ has solutions remains open. The fact that no counterexample is known supports the {n⁵} Sidon conjecture.",
-    "mathContext": "If $\\{n^5 : n \\geq 1\\}$ is Sidon, then $n_1^5 + n_2^5 \\neq n_3^5 + n_4^5$ for distinct unordered pairs. This means the Diophantine equation $a^5 + b^5 = c^5 + d^5$ has no positive integer solutions with $\\{a,b\\} \\neq \\{c,d\\}$—open as of 2024.",
+    "content": "The conjecture that {n⁵ : n ≥ 1} is itself a Sidon set is equivalent to the Diophantine statement that a⁵ + b⁵ = c⁵ + d⁵ has no positive-integer solutions with {a,b} ≠ {c,d}. No nontrivial solution is known, and the statement is open. This should not be confused with Euler's sum of powers conjecture (1769), which asserts that summing fewer than k k-th powers can never yield a k-th power; that conjecture was disproved for k = 5 by Lander and Parkin (1966) with 27⁵ + 84⁵ + 110⁵ + 133⁵ = 144⁵ (four fifth powers), and for k = 4 by Elkies (1988). Those are equations of the form (sum of k-th powers) = (single k-th power), structurally different from the two-against-two balance a⁵ + b⁵ = c⁵ + d⁵ that the Sidon property concerns.",
+    "mathContext": "If $\\{n^5 : n \\geq 1\\}$ is Sidon, then $n_1^5 + n_2^5 \\neq n_3^5 + n_4^5$ for distinct unordered pairs. This means the Diophantine equation $a^5 + b^5 = c^5 + d^5$ has no positive integer solutions with $\\{a,b\\} \\neq \\{c,d\\}$ — open as of 2025. Contrast Euler's sum of powers conjecture $\\sum_{i=1}^{k-1} x_i^k = y^k$, disproved for $k=5$ (Lander–Parkin 1966) and $k=4$ (Elkies 1988).",
     "significance": "supporting",
     "relatedConcepts": [
-      "Euler's sum of powers conjecture",
       "fifth power Diophantine equation",
-      "Waring's problem",
+      "Euler's sum of powers conjecture",
+      "taxicab-type equal sums of powers",
       "additive basis"
     ],
     "prerequisites": [
-      "Euler's conjecture history",
-      "Lander–Parkin counterexample for k=5 (Euler conjecture was for fewer summands)",
-      "Diophantine equations in k-th powers"
+      "Diophantine equations in k-th powers",
+      "equal sums of like powers",
+      "distinction between Sidon balance and Euler-type sums"
     ]
   },
   {
@@ -125,24 +125,72 @@
     "id": "ann-1206-lean-stub",
     "proofId": "erdos-1206",
     "range": {
-      "startLine": 18,
-      "endLine": 23
+      "startLine": 79,
+      "endLine": 100
     },
-    "type": "concept",
-    "title": "Lean Stub: Formalization Roadmap for Sidon Cubes",
-    "content": "The current content is `theorem erdos_1206 : True := by sorry`. Formalizing this problem in Lean 4 with Mathlib would require: (1) using `Finset.IsSidon` or a local definition of Sidon property; (2) constructing a Finset of the form {n³ : N - cN^(1/2) ≤ n ≤ N} using `Finset.image`; (3) proving the Sidon property using the factoring n³ - m³ = (n-m)(n²+nm+m²) and properties of the quadratic factor. Mathlib has `Nat.Coprime`, `Finset.image`, and polynomial arithmetic; the main gap is the quantitative estimation of the quadratic factor over short intervals.",
-    "mathContext": "In Lean 4: `def IsSidon (s : Finset ℤ) : Prop := ∀ a b c d ∈ s, a + b = c + d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)`. The set: `(Finset.Ico (N - c * N.sqrt) N).image (fun n => n^3)`. Proving Sidon requires: `n₁^3 - n₂^3 ≠ n₃^3 - n₄^3` when `n₁ - n₂ ≠ n₃ - n₄`.",
+    "type": "insight",
+    "title": "Formalization Architecture: Axiomatized Reduction",
+    "content": "The formalization is complete with 0 sorries but is `axiomatized`: the two hard analytic facts are stated as axioms and the gallery result is derived from them. `sidon_in_cubes` (line 82) takes `gabdullin_konyagin_2024` as a hypothesis (a Sidon set `nearTopCubes N k` of size ≥ c√N exists for N ≥ 2) and packages it into the eventual-in-N form `∀ᶠ N in Filter.atTop, ∃ S ⊆ cubeSet N, IsSidon S ∧ S.card ≥ c√N`; the small-N branch is discharged with the empty set (vacuously Sidon). `erdos_1206` (line 97) is then definitionally `sidon_in_cubes`. The only genuine Lean reasoning here is the bookkeeping reduction — `nearTopCubes N k ⊆ cubeSet N` via `simp` and the cardinality bound via `Finset.card_image_le` — while the combinatorial substance (that the short-interval cube set is Sidon) is imported as the axiom. This honestly separates 'what is proved in Lean' from 'what is assumed from the literature'.",
+    "mathContext": "`sidon_in_cubes : ∃ c > 0, ∀ᶠ N in atTop, ∃ S ⊆ cubeSet N, IsSidon S ∧ (S.card : ℝ) ≥ c * Real.sqrt N`, proved from the axiom `gabdullin_konyagin_2024`. Reduction uses `Finset.card_image_le` and `nearTopCubes N k ⊆ cubeSet N`. The set lives in `Finset ℕ`, not `Finset ℤ`.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Mathlib Finset.image",
-      "IsSidon predicate",
-      "Lean 4 number theory",
-      "Nat.sqrt approximation"
+      "axiomatized formalization",
+      "Filter.atTop eventually",
+      "Finset.card_image_le",
+      "literature-to-Lean reduction"
     ],
     "prerequisites": [
       "Lean 4 Finset API",
-      "integer arithmetic in Lean",
-      "Mathlib polynomial lemmas"
+      "Filter.Eventually / atTop",
+      "axioms as stated hypotheses"
+    ]
+  },
+  {
+    "id": "ann-1206-definitions",
+    "proofId": "erdos-1206",
+    "range": {
+      "startLine": 34,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Core Definitions: IsSidon, cubeSet, nearTopCubes",
+    "content": "Three definitions set up the statement. `IsSidon S` (line 34) encodes the Sidon property over `Finset ℕ` in ordered, sum-based form: for all a,b,c,d ∈ S with a ≤ b and c ≤ d, the equality a + b = c + d forces a = c ∧ b = d. The ordering hypotheses a ≤ b, c ≤ d canonicalize each pair so that distinctness of sums is equivalent to distinctness of unordered pairs — this avoids the ∨ (a=c∧b=d) ∨ (a=d∧b=c) disjunction. `cubeSet N` (line 42) is `(Finset.Icc 1 N).image (· ^ 3)`, the cubes {1³,…,N³}. `nearTopCubes N k` (line 49) is the short-interval set `(Finset.Icc (N-k) N).image (· ^ 3)` whose Sidon property is the content of the Gabdullin–Konyagin theorem. Note Icc starts at 1 for cubeSet (excluding 0³=0), matching the problem's {1,…,N} index range.",
+    "mathContext": "`IsSidon S := ∀ a b c d ∈ S, a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d`. `cubeSet N := (Icc 1 N).image (n ↦ n^3)`; `nearTopCubes N k := (Icc (N-k) N).image (n ↦ n^3)`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sidon property as ordered sums",
+      "Finset.image",
+      "Finset.Icc",
+      "canonical pair ordering"
+    ],
+    "prerequisites": [
+      "Finset basics",
+      "definition of Sidon / B₂ set",
+      "image of a Finset under a function"
+    ]
+  },
+  {
+    "id": "ann-1206-axioms",
+    "proofId": "erdos-1206",
+    "range": {
+      "startLine": 56,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "The Two Axioms: Erdős–Turán Bound and Gabdullin–Konyagin",
+    "content": "The file's two assumptions (axiomCount = 2) are both deep results imported rather than reproved. `sidon_upper_bound` (line 61) states the Erdős–Turán upper bound in the convenient form |S| ≤ 2√M + 1 for a Sidon set S ⊆ {1,…,M}; this follows from counting the C(|S|,2) distinct pairwise differences, all lying in [1, M], but the clean Lean proof is nontrivial and is taken as an axiom here. `gabdullin_konyagin_2024` (line 74) is the genuine research input: ∃ c > 0 such that for every N ≥ 2 there is k ≥ c√N with `nearTopCubes N k` Sidon. Its proof rests on the short-interval estimate for n²+nm+m², far beyond what is reconstructed in this file. Stating these as `axiom` declarations (rather than `sorry`) is the honest convention for results whose proofs live in the literature: the badge is `axiom` and status `axiomatized`, not `verified`.",
+    "mathContext": "Axiom 1: $S \\subseteq [1,M]$ Sidon $\\Rightarrow |S| \\leq 2\\sqrt M + 1$ (Erdős–Turán shape). Axiom 2: $\\exists c>0,\\ \\forall N\\geq 2,\\ \\exists k \\geq c\\sqrt N,\\ \\mathrm{IsSidon}(\\mathrm{nearTopCubes}\\,N\\,k)$ (Gabdullin–Konyagin 2024).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Turán bound",
+      "Gabdullin–Konyagin 2024",
+      "axiom vs sorry convention",
+      "axiom integrity policy"
+    ],
+    "prerequisites": [
+      "Sidon set size bounds",
+      "short-interval estimates",
+      "meaning of axiomatized status"
     ]
   }
 ]

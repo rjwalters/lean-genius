@@ -1,0 +1,188 @@
+{
+  "id": "denumerability-rationals-oq-05-oq-01",
+  "title": "The ℵ₀/𝔠 Dichotomy Over Any Countable Ring: #(R[X]) = ℵ₀ but #(ℕ → R) = 𝔠",
+  "slug": "denumerability-rationals-oq-05-oq-01",
+  "description": "OQ-05 located, for ℚ, the boundary where ℵ₀-closure breaks. This child shows the phenomenon is structural, not about ℚ: for ANY countably infinite commutative ring R, the whole polynomial ring stays denumerable, #(R[X]) = ℵ₀ (indeed #(R[X]) = #R, with an explicit bijection R[X] ≃ R), while the sequence space escapes to the continuum, #(ℕ → R) = 𝔠. The dichotomy #(R[X]) < #(ℕ → R) is exactly ℵ₀ < 𝔠. Routes R[X] = ℕ →₀ R through Countable Finsupp + Polynomial.infinite + mk_eq_aleph0, and ℕ → R through mk_arrow + aleph0_power_aleph0. Concrete instances ℚ, ℤ.",
+  "meta": {
+    "author": "Cantor (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Aleph_number",
+    "date": "1874",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "denumerability",
+      "polynomial-ring",
+      "cardinal-arithmetic",
+      "aleph-null",
+      "continuum",
+      "countable-ring",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/DenumerabilityRationalsOQ05OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.mk_eq_aleph0",
+        "description": "[Countable α] [Infinite α] → #α = ℵ₀ — the engine: gives #R = ℵ₀ and #(R[X]) = ℵ₀",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.mk_arrow",
+        "description": "#(α → β) = (lift #β) ^ (lift #α) — rewrites the sequence space #(ℕ → R) to #R ^ #ℕ",
+        "module": "Mathlib.SetTheory.Cardinal.Defs"
+      },
+      {
+        "theorem": "Cardinal.aleph0_power_aleph0",
+        "description": "ℵ₀ ^ ℵ₀ = 𝔠 — the countable power escapes ℵ₀ to the continuum",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Cardinal.aleph0_lt_continuum",
+        "description": "ℵ₀ < 𝔠 — Cantor's gap, used for both ¬ Countable (ℕ → R) and #(R[X]) < #(ℕ → R)",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Polynomial.infinite",
+        "description": "[Nontrivial R] → Infinite R[X] — the monomials X^n are distinct; combined with [Infinite R] ⟹ [Nontrivial R]",
+        "module": "Mathlib.Algebra.Polynomial.Monomial"
+      },
+      {
+        "theorem": "Polynomial.toFinsupp_injective",
+        "description": "the constructor R[X] → (ℕ →₀ R) is injective — transports Countable (ℕ →₀ R) to Countable R[X]",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Finsupp.instCountable",
+        "description": "[Countable α] [Countable β] [Zero β] → Countable (α →₀ β) — makes ℕ →₀ R countable",
+        "module": "Mathlib.Data.Finsupp.Encodable"
+      }
+    ],
+    "originalContributions": [
+      "mk_eq_aleph0_of_countable_infinite: #R = ℵ₀ for any countably infinite R (the engine)",
+      "mk_seq: #(ℕ → R) = 𝔠 for any countably infinite R — generalizes OQ-05's #(ℕ → ℚ) = 𝔠 off ℚ",
+      "not_countable_seq: ¬ Countable (ℕ → R), the sequence space is uncountable",
+      "countable_polynomial: Countable R[X] for countable R, via the injective toFinsupp into ℕ →₀ R",
+      "mk_polynomial: #(R[X]) = ℵ₀ — the whole polynomial ring over a countably infinite ring stays denumerable",
+      "mk_polynomial_eq_mk: #(R[X]) = #R, passing to polynomials does not change the cardinality",
+      "nonempty_equiv_polynomial: Nonempty (R[X] ≃ R), an explicit bijection witnessing the equality",
+      "mk_polynomial_lt_mk_seq: #(R[X]) < #(ℕ → R), the dichotomy as one inequality (= ℵ₀ < 𝔠)",
+      "mk_polynomial_rat: #(ℚ[X]) = ℵ₀, concrete instance",
+      "mk_polynomial_int: #(ℤ[X]) = ℵ₀, concrete instance",
+      "mk_seq_int: #(ℕ → ℤ) = 𝔠, concrete instance"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 109,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Cantor's denumerability of ℚ and his diagonal proof of the uncountability of ℝ frame the gap ℵ₀ < 𝔠. The parent entry OQ-05 asked, for ℚ specifically, which set-forming operations preserve denumerability: finite products, finite subsets, and finite sequences all keep cardinality ℵ₀, but the countably infinite power ℕ → ℚ jumps to 𝔠. This child removes ℚ from the story. The same dichotomy holds verbatim over any countably infinite commutative ring R: the polynomial ring R[X] — a far richer algebraic object, the free commutative R-algebra on one generator — is still merely a countable colimit of finite-rank free modules and therefore stays denumerable, while the sequence space ℕ → R always reaches the continuum. The cardinality boundary is a fact about countable structure, not about the rationals.",
+    "problemStatement": "**Open Question (denumerability-rationals-oq-05, first sub-question)**: Generalize to any countable ring: show #(R[X]) = ℵ₀ and #(ℕ → R) = 𝔠 for countably infinite R.\n\n**Result**: mk_polynomial (#(R[X]) = ℵ₀, with mk_polynomial_eq_mk: #(R[X]) = #R and the bijection nonempty_equiv_polynomial), mk_seq (#(ℕ → R) = 𝔠) with not_countable_seq, and the combined dichotomy mk_polynomial_lt_mk_seq (#(R[X]) < #(ℕ → R)). Concrete instances over ℚ and ℤ.",
+    "text": "Over any countably infinite ring R, the polynomial ring R[X] stays denumerable (#(R[X]) = ℵ₀ = #R) while the sequence space ℕ → R has the cardinality of the continuum (#(ℕ → R) = 𝔠), so #(R[X]) < #(ℕ → R).",
+    "proofStrategy": "**Proof Strategy.**\n\n1. `mk_eq_aleph0_of_countable_infinite`: a countable infinite type has cardinality ℵ₀ (`Cardinal.mk_eq_aleph0`).\n2. `mk_seq`: `mk_arrow` rewrites #(ℕ → R) to #R ^ #ℕ; `lift_uzero` clears the universe lifts; #R = #ℕ = ℵ₀; `aleph0_power_aleph0` collapses ℵ₀ ^ ℵ₀ to 𝔠.\n3. `not_countable_seq`: `mk_le_aleph0_iff` turns countability into #(ℕ → R) ≤ ℵ₀, refuted by `mk_seq` and `aleph0_lt_continuum`.\n4. `countable_polynomial`: R[X] = AddMonoidAlgebra R ℕ = (ℕ →₀ R) is countable (Finsupp of countable types); `Polynomial.toFinsupp_injective.countable` transports this to R[X].\n5. `mk_polynomial`: R[X] is countable (step 4) and infinite (`Polynomial.infinite`, since Infinite R ⟹ Nontrivial R), so `mk_eq_aleph0` pins #(R[X]) = ℵ₀.\n6. `mk_polynomial_eq_mk` / `nonempty_equiv_polynomial`: both sides are ℵ₀, and `Cardinal.eq` extracts a bijection R[X] ≃ R.\n7. `mk_polynomial_lt_mk_seq`: rewrite both sides (ℵ₀ and 𝔠) and apply `aleph0_lt_continuum`.\n8. Instances `mk_polynomial_rat`, `mk_polynomial_int`, `mk_seq_int` specialize to ℚ and ℤ.",
+    "keyInsights": [
+      "**The dichotomy is structural, not about ℚ.** The only properties used are 'countable' and 'infinite' (plus a ring structure to form R[X]). ℚ was incidental; ℤ, ℚ, ℤ[i], 𝔽_p[t], or any countable infinite ring behaves identically.",
+      "**Polynomials don't escape ℵ₀; sequences do.** R[X] is a countable colimit ⋃_d {polynomials of degree ≤ d} of finite-rank free modules, so it stays denumerable — even though it is algebraically much larger than R. The countable *power* ℕ → R is the operation that breaks ℵ₀-closure, exactly as a power (not a product or colimit).",
+      "**Same cardinality, larger ring: #(R[X]) = #R.** The polynomial ring is an honestly bigger ring but the same-size set, with an explicit bijection R[X] ≃ R from `Cardinal.eq` — the ℵ₀ analogue of a Hilbert-hotel repackaging.",
+      "**One inequality captures the boundary: #(R[X]) < #(ℕ → R) is ℵ₀ < 𝔠.** Cantor's gap, instantiated at the level of an arbitrary countable ring."
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic in Mathlib (ℵ₀, 𝔠, exponentiation, mk_arrow)",
+      "ℵ₀ absorption / escape (mk_eq_aleph0, aleph0_power_aleph0, aleph0_lt_continuum)",
+      "Polynomial ring as AddMonoidAlgebra R ℕ = ℕ →₀ R (Countable Finsupp, Polynomial.infinite, toFinsupp_injective)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring framing the structural generalization of OQ-05's ℵ₀/𝔠 boundary to any countable ring, the Mathlib import, namespace, Cardinal/Polynomial opens, and the variable R.",
+      "mathContext": "$\\#(R[X]) = \\aleph_0$ but $\\#(\\mathbb{N} \\to R) = \\mathfrak{c}$ for countably infinite $R$."
+    },
+    {
+      "id": "sequence",
+      "title": "The Sequence Space Escapes to 𝔠",
+      "startLine": 44,
+      "endLine": 61,
+      "summary": "mk_eq_aleph0_of_countable_infinite (#R = ℵ₀), mk_seq (#(ℕ → R) = 𝔠 via mk_arrow + aleph0_power_aleph0), not_countable_seq (¬ Countable (ℕ → R)).",
+      "mathContext": "$\\aleph_0^{\\aleph_0} = \\mathfrak{c} > \\aleph_0$."
+    },
+    {
+      "id": "polynomial",
+      "title": "The Polynomial Ring Stays Denumerable",
+      "startLine": 62,
+      "endLine": 95,
+      "summary": "countable_polynomial (Countable R[X]), mk_polynomial (#(R[X]) = ℵ₀), mk_polynomial_eq_mk (#(R[X]) = #R), nonempty_equiv_polynomial (R[X] ≃ R), and mk_polynomial_lt_mk_seq (#(R[X]) < #(ℕ → R)).",
+      "mathContext": "$R[X] = \\mathbb{N} \\to_0 R$ is countable and infinite, so $\\#(R[X]) = \\aleph_0 = \\#R$."
+    },
+    {
+      "id": "instances",
+      "title": "Concrete Instances: ℚ and ℤ",
+      "startLine": 96,
+      "endLine": 109,
+      "summary": "mk_polynomial_rat (#(ℚ[X]) = ℵ₀), mk_polynomial_int (#(ℤ[X]) = ℵ₀), mk_seq_int (#(ℕ → ℤ) = 𝔠).",
+      "mathContext": "$\\#(\\mathbb{Q}[X]) = \\#(\\mathbb{Z}[X]) = \\aleph_0$, $\\#(\\mathbb{N} \\to \\mathbb{Z}) = \\mathfrak{c}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "denumerability-rationals-oq-05",
+      "relationship": "extends",
+      "description": "Generalizes the parent's ℵ₀/𝔠 boundary for ℚ to an arbitrary countably infinite ring R, answering its first open question (#(R[X]) = ℵ₀ and #(ℕ → R) = 𝔠)"
+    },
+    {
+      "targetId": "denumerability-rationals-oq-01",
+      "relationship": "related",
+      "description": "Instantiates the ℵ₀ < 𝔠 cardinality gap as #(R[X]) < #(ℕ → R): a denumerable polynomial ring versus an uncountable sequence space, over any countable ring"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) generalization of OQ-05's ℵ₀-closure boundary from ℚ to any countably infinite commutative ring R: the polynomial ring R[X] stays denumerable (#(R[X]) = ℵ₀ = #R, with an explicit bijection R[X] ≃ R), while the sequence space ℕ → R has cardinality 𝔠 and is uncountable, giving the dichotomy #(R[X]) < #(ℕ → R).",
+    "implications": "Shows the ℵ₀/𝔠 boundary is a fact about countable structure rather than the rationals: any countable ring's polynomial ring is denumerable while its countable power is the continuum. Concrete over ℚ, ℤ.",
+    "openQuestions": [
+      "Generalize the polynomial side to several variables and to monoid algebras: #(R[X₁,…,Xₙ]) = ℵ₀ and #(MonoidAlgebra R M) = ℵ₀ for countable R and countable M.",
+      "Characterize exactly which index types I give #(I → R) = ℵ₀ (finite I) versus = 𝔠 (countably infinite I) for a fixed countably infinite ring R."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Cardinal",
+      "Polynomial"
+    ],
+    "namespace": "DenumerabilityRationalsOQ05OQ01",
+    "lineCount": 109,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/DenumerabilityRationalsOQ05OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Cantor, Georg",
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 77, pp. 258–262",
+      "note": "Denumerability of ℚ and the algebraic numbers; uncountability of ℝ"
+    },
+    {
+      "authors": "Jech, Thomas",
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "Springer Monographs in Mathematics, 3rd ed.",
+      "note": "Cardinal arithmetic: ℵ₀^ℵ₀ = 2^ℵ₀ = 𝔠; countable unions/colimits stay ℵ₀"
+    }
+  ],
+  "sorries": 0
+}

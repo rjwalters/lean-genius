@@ -182,7 +182,7 @@
       "startLine": 154,
       "endLine": 178
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Cycle Plus Two Apex Vertices: $C_\\ell + 2K_1$",
     "content": "`containsCyclePlus2K1 G l` checks for a cycle $C_\\ell$ ($\\ell \\ge 3$) with two additional 'apex' vertices, each adjacent to every vertex of the cycle. This graph has $\\ell + 2$ vertices and $\\ell + 2\\ell = 3\\ell$ edges (cycle edges + apex-to-cycle edges). Since $3\\ell = 3(\\ell + 2) - 6$, it is saturated planar. It can be visualized as a 'wheel with two hubs'—two cones over a polygon sharing the same base.",
     "mathContext": "$C_\\ell + 2K_1$: $|V| = \\ell + 2$, $|E| = 3\\ell = 3(\\ell + 2) - 6$; two apex vertices each adjacent to all $\\ell$ cycle vertices",
@@ -294,7 +294,7 @@
       "startLine": 252,
       "endLine": 266
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Complete Bipartite Graph and Turán Connection",
     "content": "Defines `completeBipartite m n` as the graph on `Fin m ⊕ Fin n` with edges between parts. For $m, n \\ge 3$, $K_{m,n}$ is planar iff $m \\le 2$ or $n \\le 2$ (Kuratowski). So large complete bipartite graphs are not planar, hence not saturated planar—connecting the construction to the planarity constraints.",
     "mathContext": "$K_{m,n}$ is planar $\\iff m \\le 2$ or $n \\le 2$ (Kuratowski's theorem)",

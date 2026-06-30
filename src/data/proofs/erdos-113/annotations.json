@@ -16,7 +16,11 @@
       "Forbidden subgraphs",
       "Graph density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple graphs",
+      "Subgraph containment",
+      "Edge counting"
+    ]
   },
   {
     "id": "ann-e113-monotonicity",
@@ -34,7 +38,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal number ex(n;H)",
+      "Isolated vertices",
+      "Subgraph extension"
+    ]
   },
   {
     "id": "ann-e113-degenerate",
@@ -53,7 +61,11 @@
       "Graph coloring",
       "Sparse graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Induced subgraph",
+      "Vertex degree",
+      "Vertex orderings"
+    ]
   },
   {
     "id": "ann-e113-2degenerate",
@@ -71,7 +83,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph degeneracy",
+      "Minimum degree",
+      "Outerplanar graphs"
+    ]
   },
   {
     "id": "ann-e113-bipartite",
@@ -89,7 +105,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex bipartition",
+      "Odd cycles",
+      "Graph 2-coloring"
+    ]
   },
   {
     "id": "ann-e113-kst-encoding",
@@ -107,7 +127,10 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete bipartite graph K_{s,t}",
+      "Integer encoding of objects"
+    ]
   },
   {
     "id": "ann-e113-kst",
@@ -125,7 +148,11 @@
       "Zarankiewicz problem",
       "Turán-type problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal number ex(n;H)",
+      "Complete bipartite graph K_{s,t}",
+      "Counting incidences / double counting"
+    ]
   },
   {
     "id": "ann-e113-c4",
@@ -143,7 +170,12 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal number ex(n;H)",
+      "4-cycle C_4 = K_{2,2}",
+      "Kővári-Sós-Turán theorem",
+      "Asymptotic exponents"
+    ]
   },
   {
     "id": "ann-e113-asymp",
@@ -162,7 +194,11 @@
       "ring theory",
       "asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-O notation",
+      "Limits / eventual bounds",
+      "Operator precedence in Lean"
+    ]
   },
   {
     "id": "ann-e113-asymp-trans",
@@ -180,7 +216,11 @@
       "asymptotics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic ≪ / big-O notation",
+      "Power functions n^α",
+      "Transitivity"
+    ]
   },
   {
     "id": "ann-e113-conjecture",
@@ -198,7 +238,12 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal number ex(n;H)",
+      "Graph degeneracy (2-degenerate)",
+      "Bipartite graphs",
+      "Asymptotic exponent 3/2"
+    ]
   },
   {
     "id": "ann-e113-forward",
@@ -216,7 +261,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Simonovits conjecture",
+      "2-degenerate graphs",
+      "Kővári-Sós-Turán theorem"
+    ]
   },
   {
     "id": "ann-e113-backward",
@@ -234,7 +283,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Simonovits conjecture",
+      "2-degenerate graphs",
+      "Counterexample construction"
+    ]
   },
   {
     "id": "ann-e113-regular",
@@ -252,7 +305,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex degree",
+      "Regular graphs",
+      "Graph degeneracy"
+    ]
   },
   {
     "id": "ann-e113-3reg-not-2deg",
@@ -270,7 +327,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Regular graphs",
+      "2-degenerate characterization",
+      "Minimum degree of subgraphs"
+    ]
   },
   {
     "id": "ann-e113-janzer",
@@ -288,7 +349,11 @@
       "Subdivision constructions",
       "Turán density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal number ex(n;H)",
+      "Regular bipartite graphs",
+      "Asymptotic exponent n^{4/3+ε}"
+    ]
   },
   {
     "id": "ann-e113-beats-threshold",
@@ -306,7 +371,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Janzer's theorem",
+      "Asymptotic transitivity",
+      "2-degeneracy obstruction"
+    ]
   },
   {
     "id": "ann-e113-furedi",
@@ -324,7 +393,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal number ex(n;K_{s,t})",
+      "Kővári-Sós-Turán upper bound",
+      "Matching lower-bound constructions"
+    ]
   },
   {
     "id": "ann-e113-related",
@@ -342,7 +415,11 @@
       "Turán exponent"
     ],
     "mathContext": "Related: #146 (Zarankiewicz problem — exact values of $\\\\text{ex}(n; K_{s,t})$), #147 (Turán exponent — does $\\\\lim \\\\log \\\\text{ex}(n;G) / \\\\log n$ exist for bipartite $G$?).",
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal number ex(n;H)",
+      "Zarankiewicz problem",
+      "Turán exponents"
+    ]
   },
   {
     "id": "ann-e113-main",
@@ -360,7 +437,11 @@
       "proof technique",
       "proof by contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Simonovits conjecture",
+      "Backward direction (Janzer)",
+      "Proof by contradiction"
+    ]
   },
   {
     "id": "ann-e113-forward-thm",
@@ -378,6 +459,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Simonovits conjecture",
+      "Bipartite 2-degenerate graphs",
+      "Asymptotic exponent 3/2"
+    ]
   }
 ]

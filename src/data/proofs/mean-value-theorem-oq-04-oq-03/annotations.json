@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ann-hasDerivAt-kernel",
+    "proofId": "mean-value-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 44,
+      "endLine": 50
+    },
+    "type": "lemma",
+    "title": "hasDerivAt_kernel: K'(x) = (2x-a-b)/2",
+    "content": "The first derivative of the Peano kernel K(x) = (x-a)(x-b)/2. Built from elementary HasDerivAt arithmetic: each linear factor (x-a), (x-b) has derivative 1 via (hasDerivAt_id x).sub_const, their product has derivative 1·(x-b) + (x-a)·1 via HasDerivAt.mul, and dividing by the constant 2 with HasDerivAt.div_const gives the result. The convert ... ; ring step reconciles the product-rule expression with the closed form (2x-a-b)/2.",
+    "mathContext": "$K(x) = \\tfrac{(x-a)(x-b)}{2}, \\quad K'(x) = \\tfrac{2x-a-b}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HasDerivAt.mul",
+      "HasDerivAt.div_const",
+      "Peano kernel"
+    ],
+    "prerequisites": [
+      "hasDerivAt_id",
+      "HasDerivAt.sub_const",
+      "HasDerivAt.mul"
+    ]
+  },
+  {
+    "id": "ann-hasDerivAt-kernelDeriv",
+    "proofId": "mean-value-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 53,
+      "endLine": 60
+    },
+    "type": "lemma",
+    "title": "hasDerivAt_kernelDeriv: K''(x) = 1",
+    "content": "The centred linear factor (2x-a-b)/2 has constant derivative 1. This is the second-derivative input that closes the kernel's derivative chain K → K' → 1, and it is what makes the second integration by parts produce the bare integral ∫ 1·f = ∫ f.",
+    "mathContext": "$\\tfrac{d}{dx}\\,\\tfrac{2x-a-b}{2} = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HasDerivAt.const_mul",
+      "HasDerivAt.div_const"
+    ],
+    "prerequisites": [
+      "hasDerivAt_id",
+      "HasDerivAt.sub_const"
+    ]
+  },
+  {
+    "id": "ann-trapezoidal-peano-kernel",
+    "proofId": "mean-value-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 72,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "trapezoidal_peano_kernel: the exact error identity",
+    "content": "The headline result. For globally C² f, the trapezoidal error equals the integral of f'' against the Peano kernel: ∫ₐᵇ ((x-a)(x-b)/2)·f''(x) dx = ∫ₐᵇ f − (b-a)/2·(f a + f b). The proof is two applications of Mathlib's intervalIntegral.integral_mul_deriv_eq_deriv_mul_of_hasDerivAt. The first (step1, u = K, v' = f'') yields K(b)·f'(b) − K(a)·f'(a) − ∫ K'·f'; the boundary terms vanish because K(a) = K(b) = 0. The second (step2, u = K', v' = f') yields K'(b)·f(b) − K'(a)·f(a) − ∫ 1·f with K'(b) = (b-a)/2, K'(a) = −(b-a)/2. Substituting both and closing with simp [one_mul] and ring gives the identity. The C² hypothesis discharges all ContinuousOn / IntervalIntegrable side conditions immediately. The identity uses no ordering of a and b.",
+    "mathContext": "$\\int_a^b \\tfrac{(x-a)(x-b)}{2}\\,f''(x)\\,dx = \\int_a^b f - \\tfrac{b-a}{2}\\,(f(a)+f(b))$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "integration by parts",
+      "Peano kernel theorem",
+      "trapezoidal rule",
+      "quadrature remainder"
+    ],
+    "prerequisites": [
+      "intervalIntegral.integral_mul_deriv_eq_deriv_mul_of_hasDerivAt",
+      "Continuous.intervalIntegrable",
+      "HasDerivAt.continuousAt"
+    ]
+  },
+  {
+    "id": "ann-kernel-nonpos",
+    "proofId": "mean-value-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 108,
+      "endLine": 113
+    },
+    "type": "lemma",
+    "title": "kernel_nonpos: K ≤ 0 on [a,b]",
+    "content": "On the closed interval [a,b] the Peano kernel is nonpositive: for a ≤ x ≤ b the factor (x-a) ≥ 0 and (x-b) ≤ 0, so their product is ≤ 0 (mul_nonpos_of_nonneg_of_nonpos) and halving preserves the sign. This single sign fact is what converts the exact error identity into the convexity/concavity over- and under-estimate corollaries.",
+    "mathContext": "$x \\in [a,b] \\implies \\tfrac{(x-a)(x-b)}{2} \\le 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mul_nonpos_of_nonneg_of_nonpos",
+      "sign of the Peano kernel"
+    ],
+    "prerequisites": [
+      "Set.Icc",
+      "mul_nonpos_of_nonneg_of_nonpos"
+    ]
+  },
+  {
+    "id": "ann-trapezoid-overestimates",
+    "proofId": "mean-value-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 119,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "trapezoid_overestimates_of_convex",
+    "content": "For a ≤ b and a convex integrand (f'' ≥ 0 on [a,b]), the trapezoidal estimate exceeds the integral: ∫ₐᵇ f ≤ (b-a)/2·(f a + f b). Proof: since K ≤ 0 and f'' ≥ 0, the integrand K·f'' ≤ 0, so its interval integral is ≤ 0 (via intervalIntegral.integral_nonneg applied to its negation). The Peano-kernel identity then transports this to error ≤ 0. This is the precise, quantitative form of the elementary fact that a chord lies above the graph of a convex function.",
+    "mathContext": "$f'' \\ge 0 \\text{ on } [a,b] \\implies \\int_a^b f \\le \\tfrac{b-a}{2}(f(a)+f(b))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convexity",
+      "intervalIntegral.integral_nonneg",
+      "trapezoidal overestimate"
+    ],
+    "prerequisites": [
+      "trapezoidal_peano_kernel",
+      "kernel_nonpos",
+      "intervalIntegral.integral_nonneg"
+    ]
+  },
+  {
+    "id": "ann-trapezoid-underestimates",
+    "proofId": "mean-value-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 141,
+      "endLine": 157
+    },
+    "type": "theorem",
+    "title": "trapezoid_underestimates_of_concave",
+    "content": "The concave mirror image: for a ≤ b and f'' ≤ 0 on [a,b], the trapezoidal estimate is at most the integral, (b-a)/2·(f a + f b) ≤ ∫ₐᵇ f. Here K ≤ 0 and f'' ≤ 0 make K·f'' ≥ 0, so the kernel integral is nonnegative and the identity gives error ≥ 0.",
+    "mathContext": "$f'' \\le 0 \\text{ on } [a,b] \\implies \\tfrac{b-a}{2}(f(a)+f(b)) \\le \\int_a^b f$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concavity",
+      "intervalIntegral.integral_nonneg",
+      "trapezoidal underestimate"
+    ],
+    "prerequisites": [
+      "trapezoidal_peano_kernel",
+      "kernel_nonpos",
+      "intervalIntegral.integral_nonneg"
+    ]
+  }
+]

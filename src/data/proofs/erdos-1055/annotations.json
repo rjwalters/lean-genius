@@ -74,7 +74,7 @@
       "startLine": 63,
       "endLine": 77
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Prime Class Definition",
     "content": "The class of a prime p, defined recursively: class 1 means p+1 is 3-smooth; class r means all prime factors of p+1 have class ≤ r-1 with at least one at r-1. The `primeClass` function uses well-founded recursion on `q < p` (since prime factors of `p+1` are at most `p` for `p ≥ 2`). `IsInClass` is the combined predicate requiring both primality and matching class.",
     "significance": "key",

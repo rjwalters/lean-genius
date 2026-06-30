@@ -1,9 +1,56 @@
 # Current State
 
-**Phase**: RESEARCH-COMPLETE — S7 STATE-SYNC tick 2026-06-04 (3-day elapse since S6); absorbs mechanic meta-fix PR #21965 (parent `additionalFiles` companion registration for this slug's Lean file); all forward items remain Mechanic/Auditor/Doctor scope; no researcher-side action required
+**Phase**: RESEARCH-COMPLETE — **BLOCKED (verification gate)** as of S8 2026-06-13: researcher scope exhausted since S5; sole forward item (Docker-verify of the never-built 104-LOC file) is Docker-gated by the 2026-06-13 blackout AND shown non-routine by sibling #22893's live v4.26.0 drift repair (same Greens API). Status flipped active→blocked to stop no-op re-claim churn
 **Since**: 2026-05-16T15:40Z (S5 ship time)
-**Last Updated**: 2026-06-04 (S7 STATE-SYNC tick by researcher-1, claim `researcher-56176`; doc-only; INFRA still GREEN: Mathlib SHA `2df2f0150c…` v4.26.0 pin stable ~23d; parent slug's `meta.json` now lists this slug's Lean file as a registered companion via mechanic PR #21965 merged 2026-06-02T07:24Z; no new researcher work this cycle)
-**Iteration**: 10 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT, S4 STATE-SYNC, S5 knowledge.md sync, S6 STATE-SYNC tick, this S7 STATE-SYNC tick; sub-iters S2b/c/e/f doc-only; supplementary S3 BUILD-DIAGNOSE #19122 + prior state-sync #18993)
+**Last Updated**: 2026-06-13 (S8 STATE-SYNC + BLOCKED flag by researcher-4; doc-only; INFRA RED: Docker daemon DOWN — verification blackout; Mathlib family has LIVE v4.26.0 build drift per sibling PR #22893 merged 2026-06-13T12:52Z)
+**Iteration**: 11 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT, S4 STATE-SYNC, S5 knowledge.md sync, S6 STATE-SYNC tick, S7 STATE-SYNC tick, this S8 STATE-SYNC+BLOCKED; sub-iters S2b/c/e/f doc-only; supplementary S3 BUILD-DIAGNOSE #19122 + prior state-sync #18993)
+
+## S8 STATE-SYNC + BLOCKED flag 2026-06-13 (researcher-4)
+
+**Mode:** STATE-SYNC tick + status flag — doc-only.
+
+Slug re-drawn by `claim-random` (researcher-4); confirms the no-op re-claim
+churn (S4/S6/S7 were all doc-only ticks on a RESEARCH-COMPLETE slug, yet it
+stays in the claimable pool).
+
+**Material event since S7**: sibling slug
+`greens-theorem-oq-01-oq-01-oq-02-OQ01` received a **v4.26.0 build-drift
+repair** — **PR #22893** (merged 2026-06-13T12:52Z, Docker-verified;
+"S5 — repair v4.26 build drift + add iterated-integral API"; touched only
+`proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean`).
+
+**Why this changes the disposition**: S6/S7 assumed this slug's Docker-verify
+was "routine" (citing the parent's clean 3058/3058 build). But:
+
+- This slug's file `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean`
+  (104 LOC / 1 theorem / 0 axioms / 0 sorries) has **NEVER been
+  Docker-built** — `knowledge.progressSummary` still carries the
+  `(build pending)` flag, and the S3-ACT phantom-name fix was
+  "not yet propagated to the sibling files" (#18711 §1.1).
+- A SIBLING using the **same Greens iterated-integral API** needed a live
+  v4.26.0 drift repair **today** (#22893). That is direct evidence this
+  never-built file likely needs the same repair before it can compile.
+
+So the sole forward item is no longer a routine verify — it is a
+**Docker-gated Mechanic/Doctor build-drift ACT**: (1) `docker-build
+Proofs.GreensTheoremOQ01OQ01OQ02OQ02`, (2) apply any v4.26 repair mirroring
+#22893, (3) only then `status → completed`. All of that is blocked by the
+2026-06-13 Docker blackout.
+
+**Action**: flipped tracked `status` active→blocked (mirrors gitignored pool
+release). NOT flipped to `completed` — an unbuilt file with family-wide live
+v4.26 drift must not be claimed verified/complete during a blackout
+(overclaim risk). NOT a researcher-stuck blocker — researcher deliverable
+scope is genuinely exhausted; this is a verification-infra gate.
+
+**Negative confirmations** (re-checked at S8 entry):
+- This slug's Lean file unchanged on origin/main since S3 ACT (#18944):
+  104 LOC / 1 theorem / 0 axioms / 0 sorries — matches all trackers.
+- No PR has touched this slug's own `.lean` or trackers since the S7 tick.
+- Both `state.md` and the research-JSON `currentState` were in sync at
+  iter 10 / S7 before this entry — no pre-existing STATE-SYNC drift; the
+  only change this cycle is absorbing the sibling #22893 event + the
+  blocked flag.
 
 ## S7 STATE-SYNC tick 2026-06-04 (researcher-1)
 

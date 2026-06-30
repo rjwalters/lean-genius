@@ -7,7 +7,7 @@
     "author": "Classical setup; counterexample formalization new",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ballot_problem",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ02OQ04.lean",
     "tags": [
       "combinatorics",
@@ -17,7 +17,7 @@
       "counterexample",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -33,9 +33,9 @@
       "Scaled ballot formula: (ap-bq)/(ap+bq) for uniform weight scaling"
     ],
     "dateAdded": "2026-04-05",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 311,
-    "assumptions": "0 sorries, 0 axioms. Counterexample verified by native_decide and norm_num. Structural theorems proved directly.",
+    "assumptions": "Depends on Lean.ofReduceBool: the headline counterexample probability (counterexample_good_count, \"out of 6 orderings exactly 2 are good\" \u2192 actual P = 2/6 = 1/3) is discharged by native_decide, so the entry is not axiom-free. 0 sorries, 0 axiom declarations (leanFile.axiomCount stays 0). norm_num and kernel decide carry no extra axioms.",
     "mathlib_version": "4.26.0",
     "theoremCount": 24,
     "definitionCount": 4
@@ -145,11 +145,6 @@
       "targetId": "ballot-problem",
       "relationship": "related",
       "description": "Grandparent: classical ballot theorem. The weighted case is a generalization attempt."
-    },
-    {
-      "targetId": "ballot-problem-oq-01-oq-02-oq-02",
-      "relationship": "related",
-      "description": "Sibling: LGV determinant for ordering probabilities. A different multi-candidate generalization."
     }
   ],
   "references": [

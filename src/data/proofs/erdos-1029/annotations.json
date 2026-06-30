@@ -17,7 +17,11 @@
       "exponential-growth",
       "open-problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "diagonal Ramsey number R(k)",
+      "asymptotic notation (Landau symbols)",
+      "complete graph 2-colorings"
+    ]
   },
   {
     "id": "ann-1029-ramsey-def",
@@ -37,7 +41,11 @@
       "monochromatic-clique",
       "Ramsey-existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "least element via well-ordering",
+      "Sym2 (unordered pairs)",
+      "pigeonhole principle"
+    ]
   },
   {
     "id": "ann-1029-bounds",
@@ -57,7 +65,11 @@
       "probabilistic-method",
       "Lovasz-Local-Lemma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdos-Szekeres recurrence R(s,t) <= R(s-1,t)+R(s,t-1)",
+      "Stirling approximation of factorials",
+      "expected value of random monochromatic cliques"
+    ]
   },
   {
     "id": "ann-1029-conjecture",
@@ -77,7 +89,11 @@
       "divergence",
       "equivalent-formulations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "epsilon-delta divergence to infinity",
+      "eventually filter quantifiers",
+      "monotone reindexing of sequences"
+    ]
   },
   {
     "id": "ann-1029-negation",
@@ -97,7 +113,11 @@
       "filter-negation",
       "boundedness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "negation of filter convergence",
+      "bounded-above sequences",
+      "limit superior of a sequence"
+    ]
   },
   {
     "id": "ann-1029-small-values",
@@ -117,7 +137,11 @@
       "Paley-graph",
       "computational-Ramsey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Greenwood-Gleason construction R(4)=18",
+      "Paley graph self-complementarity",
+      "exhaustive computational clique search"
+    ]
   },
   {
     "id": "ann-1029-ratios",
@@ -137,6 +161,10 @@
       "Erdos-prizes",
       "numerical-evidence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exact substitution of known R(k) values",
+      "ring normalization over the reals",
+      "half-integer powers of 2"
+    ]
   }
 ]

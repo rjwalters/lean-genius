@@ -16,7 +16,9 @@
     "definitionCount": 3,
     "lineCount": 270,
     "sorries": 0,
-    "imports": ["Proofs.SpernerSimplicialBridge"],
+    "imports": [
+      "Proofs.SpernerSimplicialBridge"
+    ],
     "tags": [
       "combinatorics",
       "topology",
@@ -44,8 +46,12 @@
     "sorries": 0,
     "theoremCount": 13,
     "definitionCount": 3,
-    "imports": ["import Proofs.SpernerSimplicialBridge"],
-    "opens": ["Finset"],
+    "imports": [
+      "import Proofs.SpernerSimplicialBridge"
+    ],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "Sperner.SimplicialComplex"
   },
   "sections": [
@@ -86,10 +92,18 @@
     },
     {
       "id": "main-theorem",
-      "title": "Headline Theorem: `sperner_mixed_panchromatic_at_dim`",
+      "title": "Headline Theorem: `sperner_mixed_panchromatic_at_dim` (L209–237)",
       "startLine": 209,
-      "endLine": 231,
+      "endLine": 237,
       "summary": "The file's headline (lines 170-180) is a single term-mode application of the parent's `exists_panchromatic`. Hypothesis: `MixedPseudomanifold K` and `Odd (boundaryDoorCount (d := d) K c)`. Conclusion: a panchromatic top cell exists in `topCellsOfDim K d`. Proof body passes the parent five arguments — `topCellsOfDim K d` as `topCells`, `(fun _ hs => card_of_mem_topCellsOfDim hs)` as `hcard`, `hpseudo_of_mixed hmixed` as `hpseudo`, `c`, and `hbdry` — and lets the elaborator unfold `boundaryDoorCount` to match the parent's expected shape. The proof is mechanical bookkeeping; all the mathematical content sits in the predicate definitions and lift lemmas of the previous four sections. The `section MixedSperner … end MixedSperner` block (lines 123, 182) scopes the `[LinearOrder E]` instance to this part of the file."
+    },
+    {
+      "id": "sec-mixed-aggregators",
+      "title": "Mixed-Dimension Sperner Aggregators (L238–270)",
+      "startLine": 238,
+      "endLine": 270,
+      "summary": "Two ergonomic re-exports of the headline theorem: sperner_mixed_panchromatic (alias with d implicit) and sperner_mixed_panchromatic_global (global existential — if any dimension d and coloring c give an odd boundary-door count, a panchromatic top cell exists at that dimension). Both reduce directly to sperner_mixed_panchromatic_at_dim.",
+      "mathContext": "Caller-facing wrappers around the mixed-dimension Sperner theorem. The global form quantifies existentially over the dimension, packaging the per-dimension guarantee into a single 'some panchromatic cell exists somewhere in the complex' statement for the mixed pseudomanifold K."
     }
   ],
   "mainTheorems": [
@@ -103,34 +117,28 @@
   ],
   "crossReferences": [
     {
-      "type": "generalisation-of",
-      "slug": "sperner-simplicial-bridge",
-      "rationale": "OQ-01 strictly generalises the pure pseudomanifold case to mixed-dimension complexes. `MixedPseudomanifold.of_pure` proves the embedding of pure data into the mixed framework."
+      "targetId": "sperner-simplicial-bridge",
+      "description": "OQ-01 strictly generalises the pure pseudomanifold case to mixed-dimension complexes. `MixedPseudomanifold.of_pure` proves the embedding of pure data into the mixed framework."
     },
     {
-      "type": "uses",
-      "slug": "sperner-simplicial-bridge",
-      "rationale": "The per-stratum proof is a single application of the parent's `exists_panchromatic` on the chosen stratum after packaging per-stratum `hcard`, `hpseudo`, and `hbdry`."
+      "targetId": "sperner-simplicial-bridge",
+      "description": "The per-stratum proof is a single application of the parent's `exists_panchromatic` on the chosen stratum after packaging per-stratum `hcard`, `hpseudo`, and `hbdry`."
     },
     {
-      "type": "sibling-of",
-      "slug": "sperner-simplicial-instance",
-      "rationale": "Both slugs build on `sperner-simplicial-bridge`. `sperner-simplicial-instance` provides concrete Kuhn-style triangulation instances of the parent; this slug extends the parent's framework to non-pure (mixed-dimension) complexes."
+      "targetId": "sperner-simplicial-instance",
+      "description": "Both slugs build on `sperner-simplicial-bridge`. `sperner-simplicial-instance` provides concrete Kuhn-style triangulation instances of the parent; this slug extends the parent's framework to non-pure (mixed-dimension) complexes."
     },
     {
-      "type": "depends-on",
-      "slug": "sperner-mathlib",
-      "rationale": "The parent's `exists_panchromatic` (which this slug's headline theorem applies stratum-by-stratum) is built on the abstract door-counting parity machinery established in `sperner-mathlib`. Transitively, the mixed-dimension result inherits its combinatorial backbone from the `Sperner.IsDoor` / `Sperner.IsPanchromatic` predicates introduced there."
+      "targetId": "sperner-mathlib",
+      "description": "The parent's `exists_panchromatic` (which this slug's headline theorem applies stratum-by-stratum) is built on the abstract door-counting parity machinery established in `sperner-mathlib`. Transitively, the mixed-dimension result inherits its combinatorial backbone from the `Sperner.IsDoor` / `Sperner.IsPanchromatic` predicates introduced there."
     },
     {
-      "type": "related-to",
-      "slug": "sperner-ndim-mathlib",
-      "rationale": "`sperner-ndim-mathlib` proves Sperner's lemma on the standard `n`-simplex in Mathlib's `CellComplex` setting. The mixed-pseudomanifold framework here is the abstract-`Finset (Finset E)`-of-cells counterpart, with the dimensional stratification playing the role of `CellComplex.facesOfDim`. The two lines of work converge in OQ-02 (`Mathlib.Geometry.SimplicialComplex.facets` bridge)."
+      "targetId": "sperner-ndim-mathlib",
+      "description": "`sperner-ndim-mathlib` proves Sperner's lemma on the standard `n`-simplex in Mathlib's `CellComplex` setting. The mixed-pseudomanifold framework here is the abstract-`Finset (Finset E)`-of-cells counterpart, with the dimensional stratification playing the role of `CellComplex.facesOfDim`. The two lines of work converge in OQ-02 (`Mathlib.Geometry.SimplicialComplex.facets` bridge)."
     },
     {
-      "type": "related-to",
-      "slug": "sperner-ndim-mathlib-oq-01",
-      "rationale": "`sperner-ndim-mathlib-oq-01` lifts Sperner to the Freudenthal `CellComplex` framework — a parallel exercise in extending Sperner beyond its pure-simplicial origins. Both slugs address Open Question 1 of their respective parents; the mixed-dimension generalisation here is to abstract simplicial complexes what the Freudenthal lift is to cell complexes."
+      "targetId": "sperner-ndim-mathlib-oq-01",
+      "description": "`sperner-ndim-mathlib-oq-01` lifts Sperner to the Freudenthal `CellComplex` framework — a parallel exercise in extending Sperner beyond its pure-simplicial origins. Both slugs address Open Question 1 of their respective parents; the mixed-dimension generalisation here is to abstract simplicial complexes what the Freudenthal lift is to cell complexes."
     }
   ],
   "overview": {
@@ -160,21 +168,27 @@
   },
   "references": [
     {
-      "authors": ["De Longueville, Mark"],
+      "authors": [
+        "De Longueville, Mark"
+      ],
       "year": 2013,
       "title": "A Course in Topological Combinatorics",
       "venue": "Springer Universitext",
       "note": "Chapter 2 develops Sperner's lemma for non-pure simplicial complexes via dimension-graded stratification — the canonical reference for the mixed-pseudomanifold framework formalised here."
     },
     {
-      "authors": ["Sperner, Emanuel"],
+      "authors": [
+        "Sperner, Emanuel"
+      ],
       "year": 1928,
       "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
       "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg, vol. 6, pp. 265-272",
       "note": "The classical Sperner paper; works in the pure (uniform-dimension) setting that this entry generalises."
     },
     {
-      "authors": ["Henle, Michael"],
+      "authors": [
+        "Henle, Michael"
+      ],
       "year": 1979,
       "title": "A Combinatorial Introduction to Topology",
       "venue": "W. H. Freeman, San Francisco",

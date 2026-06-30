@@ -85,44 +85,60 @@
   },
   "sections": [
     {
-      "id": "achievability",
-      "title": "Achievability",
-      "summary": "Defines achievability and proves downward-monotonicity, with concrete results for 42 and 616000.",
-      "startLine": 28,
-      "endLine": 57,
-      "mathContext": "A minimum modulus value $m$ is achievable if some covering system has all moduli $\\geq m$. This is downward-monotone: if $m$ is achievable, so is $m' \\leq m$. Owens shows $42$ is achievable; Balister shows nothing above $616{,}000$ is."
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "States Erdős #2 OQ-01: characterising the achievable values of the minimum modulus of a covering system, and the known gap $[42,616000]$.",
+      "mathContext": "Minimum-modulus achievability for covering systems; gap $[42,616000]$."
     },
     {
-      "id": "exact-max-def",
-      "title": "The Exact Maximum Minimum Modulus",
-      "summary": "Defines IsExactMaxMinModulus and proves equivalence with the covering system bound characterization.",
-      "startLine": 59,
-      "endLine": 80,
-      "mathContext": "$M$ is the exact maximum minimum modulus iff $M$ is achievable and $M+1$ is not. Equivalently: some covering system achieves min modulus $M$, and every covering system has at least one modulus $\\leq M$."
+      "id": "part1",
+      "title": "§1. Achievability",
+      "startLine": 32,
+      "endLine": 62,
+      "summary": "Defines `Achievable` and proves `achievable_mono`, `achievable_42` (Owen's construction), `achievable_le_42`, and `not_achievable_gt_616000` (Hough's bound).",
+      "mathContext": "$m\\leq42$ achievable; $m>616000$ not achievable."
     },
     {
-      "id": "existence-uniqueness",
-      "title": "Existence and Uniqueness",
-      "summary": "Proves M exists (well-ordering + Nat.find) and is unique (monotonicity contradiction).",
-      "startLine": 82,
-      "endLine": 115,
-      "mathContext": "Existence uses the well-ordering principle on $\\mathbb{N}$: the set $\\{n \\mid \\lnot\\text{Achievable}(n)\\}$ is nonempty (contains $616{,}001$), so $\\texttt{Nat.find}$ extracts its minimum $n_0$. Then $M = n_0 - 1$. Uniqueness follows because if $M_1 < M_2$ were both exact maxima, then $M_1 + 1 \\leq M_2$ would make $M_1 + 1$ achievable, contradicting $M_1$ being exact."
+      "id": "part2",
+      "title": "§2. The Exact Maximum Minimum Modulus",
+      "startLine": 63,
+      "endLine": 90,
+      "summary": "Defines `IsExactMaxMinModulus` and proves `isExactMax_iff`, characterising the exact maximum.",
+      "mathContext": "Exact maximum minimum modulus $M$."
     },
     {
-      "id": "gap",
-      "title": "The Gap [42, 616000]",
-      "summary": "Proves 42 ≤ M ≤ 616000 from Owens and Balister bounds.",
-      "startLine": 117,
-      "endLine": 145,
-      "mathContext": "Lower bound: if $M < 42$ then $M+1 \\leq 42$ is achievable (Owens), contradicting $M$ being exact. Upper bound: if $M > 616{,}000$ then $M$ is not achievable (Balister), contradicting the definition."
+      "id": "part3",
+      "title": "§3. Existence and Uniqueness",
+      "startLine": 91,
+      "endLine": 138,
+      "summary": "Proves `exact_max_unique` and `exists_exact_max`: the exact maximum exists and is unique.",
+      "mathContext": "Existence and uniqueness of the exact maximum $M$."
     },
     {
-      "id": "characterization",
-      "title": "Complete Characterization of the Achievable Set",
-      "summary": "Proves Achievable m ↔ m ≤ M, characterizing achievability as an initial segment.",
-      "startLine": 147,
-      "endLine": 170,
-      "mathContext": "The achievable set is exactly $\\{0, 1, \\ldots, M\\}$. This follows from downward-monotonicity (achievable below $M$) and non-achievability above $M$ (from the exact max definition). The gap narrowing theorem provides a framework for improving bounds."
+      "id": "part4",
+      "title": "§4. The Gap [42, 616000]",
+      "startLine": 139,
+      "endLine": 171,
+      "summary": "Proves `exact_max_ge_42`, `exact_max_le_616000`, `gap_bounds`, and `exact_max_in_interval`: $42\\leq M\\leq616000$.",
+      "mathContext": "$42\\leq M\\leq616000$ (current gap)."
+    },
+    {
+      "id": "part5",
+      "title": "§5. Complete Characterization of the Achievable Set",
+      "startLine": 172,
+      "endLine": 197,
+      "summary": "Proves `achievable_le_max`, `not_achievable_gt_max`, `achievable_iff_le_max`: $m$ is achievable iff $m\\leq M$.",
+      "mathContext": "Achievable $\\iff m\\leq M$."
+    },
+    {
+      "id": "part6",
+      "title": "§6. Derived Results",
+      "startLine": 198,
+      "endLine": 232,
+      "summary": "Proves `balister_implies_hough`, `succ_is_smallest_non_achievable`, `gap_width`, and `gap_narrowing`.",
+      "mathContext": "Gap width $\\leq615958$; narrowing the achievable gap."
     }
   ],
   "crossReferences": [

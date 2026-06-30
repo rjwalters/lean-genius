@@ -61,44 +61,60 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring: generalizes the 2D Buffon-Barbier formula to curves in ℝⁿ crossing random hyperplane grids, E[crossings] = c_n·L/d with c_n = 2σ_{n-2}/((n-1)σ_{n-1}); lists the six main results and references (Cauchy, Crofton, Santaló). Imports Mathlib, opens Real/MeasureTheory, declares the CauchyCrofton namespace.",
+      "mathContext": "$E[\\text{crossings}] = c_n \\cdot L / d$ with $c_n = \\frac{2\\sigma_{n-2}}{(n-1)\\sigma_{n-1}}$."
+    },
+    {
       "id": "sphere-area",
       "title": "Part I: Sphere Surface Area",
-      "startLine": 36,
-      "endLine": 100,
-      "summary": "Defines sphereArea(n) = 2*pi^{(n+1)/2}/Gamma((n+1)/2). Proves sigma_0=2, sigma_1=2pi, sigma_2=4pi.",
-      "mathContext": "$\\sigma_n = 2\\pi^{(n+1)/2}/\\Gamma((n+1)/2)$."
+      "startLine": 33,
+      "endLine": 144,
+      "summary": "Defines sphereArea(n) = 2π^{(n+1)/2}/Γ((n+1)/2) and proves positivity plus the explicit values σ_0=2, σ_1=2π, σ_2=4π, σ_3=2π², σ_4=8π²/3, σ_5=π³. Also defines unitBallVolume and its positivity.",
+      "mathContext": "$\\sigma_n = 2\\pi^{(n+1)/2}/\\Gamma((n+1)/2)$; explicit values $\\sigma_0=2,\\sigma_1=2\\pi,\\sigma_2=4\\pi,\\sigma_3=2\\pi^2,\\sigma_4=8\\pi^2/3,\\sigma_5=\\pi^3$."
     },
     {
       "id": "cauchy-crofton-const",
-      "title": "Part II: The Cauchy-Crofton Constant",
-      "startLine": 102,
-      "endLine": 140,
-      "summary": "Defines cauchyCroftonConst(n) = 2*sigma_{n-2}/((n-1)*sigma_{n-1}). Computes c_2 = 2/pi, c_3 = 1/2.",
-      "mathContext": "$c_n = \\frac{2\\sigma_{n-2}}{(n-1)\\sigma_{n-1}}$, $c_2 = 2/\\pi$, $c_3 = 1/2$."
+      "title": "Part II: The Cauchy–Crofton Constant",
+      "startLine": 145,
+      "endLine": 226,
+      "summary": "Defines cauchyCroftonConst(n) = 2σ_{n-2}/((n-1)σ_{n-1}) and computes c_2=2/π, c_3=1/2, c_4=4/(3π), c_5=3/8, c_6=16/(15π), plus positivity for n ≥ 2.",
+      "mathContext": "$c_n = \\frac{2\\sigma_{n-2}}{(n-1)\\sigma_{n-1}}$; $c_2=2/\\pi,\\,c_3=1/2,\\,c_4=4/(3\\pi),\\,c_5=3/8,\\,c_6=16/(15\\pi)$."
     },
     {
       "id": "angular-average",
-      "title": "Part III: Angular Averaging Axiomatization",
-      "startLine": 142,
-      "endLine": 165,
-      "summary": "AngularAverageData structure with two axioms encoding the sphere integral for arbitrary vectors.",
-      "mathContext": "$\\int_{\\text{RP}^{n-1}} |\\langle v, \\omega \\rangle| d\\omega = \\frac{\\sigma_{n-2}}{n-1} \\|v\\|$."
+      "title": "Part III: Angular Averaging on the Projective Sphere (Axiomatized)",
+      "startLine": 227,
+      "endLine": 248,
+      "summary": "AngularAverageData structure packaging the sphere-integral identity Mathlib lacks: fields angularAvg (maps ‖v‖ to the average of |⟨v,ω⟩| over RP^{n-1}), angularAvg_eq (proportional to ‖v‖ with constant σ_{n-2}/(n-1)), and angularAvg_nonneg.",
+      "mathContext": "$\\int_{\\text{RP}^{n-1}} |\\langle v, \\omega \\rangle| d\\omega = \\frac{\\sigma_{n-2}}{n-1} \\|v\\|$, encoded as a structure carrying the identity as a hypothesis field."
     },
     {
       "id": "expected-crossings-formula",
-      "title": "Part IV: The n-Dimensional Formula, Linearity, and Scaling",
-      "startLine": 167,
-      "endLine": 265,
-      "summary": "Proves expectedCrossings(n, L, d) = c_n * L / d, and two invariance properties: linearity in arc length (L₁+L₂ gives sum of crossings) and inverse scaling in grid spacing (spacing λd gives crossings/λ). Also verifies n=2 gives 2L/(pi*d) and n=3 gives L/(2d).",
-      "mathContext": "$E[\\text{crossings}] = c_n \\cdot L / d$. Linearity: $E[L_1+L_2] = E[L_1]+E[L_2]$. Scaling: $E[L, \\lambda d] = E[L,d]/\\lambda$."
+      "title": "Part IV: The n-Dimensional Cauchy–Crofton Formula",
+      "startLine": 249,
+      "endLine": 320,
+      "summary": "Defines expectedCrossings(L,d) = c_n·L/d and proves expectedCrossings_eq_angularAvg, the explicit dim-2/3/4 values (2L/(πd), L/(2d), 4L/(3πd)), linearity in arc length (L₁+L₂), and inverse scaling in grid spacing (λd ↦ crossings/λ).",
+      "mathContext": "$E[\\text{crossings}] = c_n \\cdot L / d$. Linearity: $E[L_1+L_2]=E[L_1]+E[L_2]$. Scaling: $E[L,\\lambda d]=E[L,d]/\\lambda$."
     },
     {
       "id": "dimension-ladder",
-      "title": "Part V-VI: Sphere Recurrence and Consistency Checks",
-      "startLine": 267,
-      "endLine": 394,
-      "summary": "sphereArea_recurrence proves sigma_n = 2*pi/(n-1) * sigma_{n-2}. Higher-dimensional crossing constants computed: c_5 = 3/8 (via sphereArea_three, sphereArea_four), c_6 = 16/(15*pi) (via sphereArea_four, sphereArea_five). Consistency: angular_constant_dim2 verifies sigma_0/1 = 2. unit_circle_crossings verifies a unit circle crosses 4 times. cauchyCrofton_le_one_dim2 proves c_2 <= 1 (using pi > 3). cauchyCroftonConst_tendsto_zero proves c_n -> 0 as n -> infinity via even/odd subsequence bounds.",
-      "mathContext": "$\\sigma_n = \\frac{2\\pi}{n-1} \\sigma_{n-2}$ (proved via $\\Gamma((n+1)/2) = \\frac{n-1}{2}\\Gamma((n-1)/2)$). Corollaries: $c_4 = 4/(3\\pi)$, $c_5 = 3/8$, $c_6 = 16/(15\\pi)$, $c_2 \\leq 1$. Limit: $c_n \\to 0$ as $n \\to \\infty$ (proved via recurrence $c_{n+2} = c_n \\cdot n/(n+1)$ and subsequence squeeze)."
+      "title": "Part V: The Dimension Ladder",
+      "startLine": 321,
+      "endLine": 345,
+      "summary": "sphereArea_recurrence: σ_n = 2π/(n-1)·σ_{n-2}, proved via the Gamma recurrence Γ((n+1)/2) = (n-1)/2·Γ((n-1)/2), connecting consecutive sphere areas and hence the dimension ladder for c_n.",
+      "mathContext": "$\\sigma_n = \\frac{2\\pi}{n-1}\\sigma_{n-2}$ via $\\Gamma((n+1)/2) = \\frac{n-1}{2}\\Gamma((n-1)/2)$."
+    },
+    {
+      "id": "consistency-check",
+      "title": "Part VI: Consistency Check — Recovering 2D from General Formula",
+      "startLine": 346,
+      "endLine": 568,
+      "summary": "angular_constant_dim2 (σ_0/σ_1 recovers the 2D constant), unit_circle_crossings (a unit circle crosses 4 times), cauchyCrofton_le_one_dim2 (c_2 ≤ 1 via π > 3), cauchyCrofton_product/cauchyCrofton_ratio, and cauchyCroftonConst_tendsto_zero (c_n → 0 as n → ∞), proved via the private recurrence and even/odd squared-bound subsequence squeeze.",
+      "mathContext": "Recovers $c_2 = 2/\\pi$ as the $n=2$ case; $c_2 \\leq 1$; and $c_n \\to 0$ as $n \\to \\infty$ via the recurrence $c_{n+2} = c_n \\cdot n/(n+1)$ and an even/odd subsequence squeeze."
     }
   ],
   "conclusion": {

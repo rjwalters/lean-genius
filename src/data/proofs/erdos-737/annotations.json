@@ -16,7 +16,12 @@
       "Infinite graphs",
       "Cycles"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "infinite combinatorics",
+      "set theory",
+      "history of mathematics"
+    ]
   },
   {
     "id": "ann-737-chromatic",
@@ -35,7 +40,11 @@
       "Cardinal",
       "Aleph one"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "cardinal arithmetic"
+    ]
   },
   {
     "id": "ann-737-cycles",
@@ -53,7 +62,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "predicate logic"
+    ]
   },
   {
     "id": "ann-737-ehs",
@@ -71,7 +84,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite graph theory",
+      "set theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-737-thomassen",
@@ -90,7 +107,11 @@
       "Routing",
       "Combinatorica"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite graph theory",
+      "combinatorics",
+      "set theory"
+    ]
   },
   {
     "id": "ann-737-pancyclic",
@@ -108,7 +129,10 @@
       "proof technique",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "infinite combinatorics"
+    ]
   },
   {
     "id": "ann-737-universal",
@@ -126,7 +150,11 @@
       "Edge characterization"
     ],
     "mathContext": "See annotation content for formal details of universal cycle edges",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "predicate logic",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-737-summary",
@@ -144,6 +172,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 syntax"
+    ]
   }
 ]

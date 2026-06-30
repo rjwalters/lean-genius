@@ -2,9 +2,9 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
   "title": "Lp Riesz Representation for Sigma-Finite Measures",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
-  "description": "Can the Riesz representation theorem for Lp duality be generalized from finite to purely sigma-finite measures? Answer: yes — the three previously HARD (not OPEN) sorries (Lp truncation convergence, localization construction, and density extension) are now completed via delegation to the companion file `CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean` (namespace `RieszSigmaFiniteComplete`).",
+  "description": "Can the Riesz representation theorem for Lp duality be generalized from finite to purely sigma-finite measures? Answer: yes — the three previously HARD (not OPEN) sorries (Lp truncation convergence, localization construction, and density extension) are completed via delegation to the companion file `CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean` (namespace `RieszSigmaFiniteComplete`). NOTE (2026-06-24, #28788): this file transitively fails to compile against the pinned v4.26.0 toolchain because its imported foundation has 53 Mathlib-drift errors; status has been downgraded to formalized until the chain builds green.",
   "meta": {
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
     "tags": [
       "functional-analysis",
@@ -18,7 +18,8 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 208,
-    "assumptions": "0 axioms, 0 sorries. All 3 sorries eliminated by importing proofs from CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean (namespace RieszSigmaFiniteComplete). The theorems have identical signatures; delegation via exact calls.",
+    "buildStatus": "broken",
+    "assumptions": "BUILD BROKEN (2026-06-24, issue #28788): this file transitively fails to compile against leanprover/lean4:v4.26.0. It imports the chain foundation CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean, which produces 53 Mathlib-drift errors; the dependent companion CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean and this file therefore also fail to build. There are 0 literal `sorry` tactics and 0 `axiom` declarations — the formalization exists but is not currently machine-checked, so status was downgraded verified→formalized pending repair of the foundation file. Mathematical content (3 main theorems delegated to RieszSigmaFiniteComplete.* via exact calls) is unchanged.",
     "dateAdded": "2026-05-03",
     "theoremCount": 5,
     "definitionCount": 0

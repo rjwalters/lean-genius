@@ -16,7 +16,12 @@
       "Carmichael's conjecture",
       "preimage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "arithmetic functions",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e694-totient-preimage",
@@ -35,7 +40,12 @@
       "Set.Finite",
       "preimage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "elementary set theory",
+      "asymptotic growth estimates",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e694-fmax-fmin",
@@ -54,7 +64,12 @@
       "minimum",
       "finite set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "order theory",
+      "finite sets",
+      "Lean 4 axiomatization"
+    ]
   },
   {
     "id": "ann-e694-ratio",
@@ -73,7 +88,11 @@
       "maximum",
       "growth rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "real analysis",
+      "asymptotic growth rates"
+    ]
   },
   {
     "id": "ann-e694-carmichael",
@@ -92,7 +111,11 @@
       "conjecture",
       "Ford bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "logic and quantifiers",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e694-erdos-conditional",
@@ -111,7 +134,11 @@
       "infinite set",
       "multiplicative"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "multiplicative structure of integers",
+      "infinite sets"
+    ]
   },
   {
     "id": "ann-e694-ford",
@@ -130,7 +157,11 @@
       "computational",
       "1999"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "distribution of arithmetic functions",
+      "asymptotic bounds"
+    ]
   },
   {
     "id": "ann-e694-examples",
@@ -149,7 +180,12 @@
       "computation",
       "coprime"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "modular arithmetic",
+      "Lean 4 tactic mode",
+      "decidable computation"
+    ]
   },
   {
     "id": "ann-e694-non-carmichael",
@@ -168,6 +204,10 @@
       "multiple preimages",
       "norm_num"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "proof by contradiction",
+      "Lean 4 tactic mode"
+    ]
   }
 ]

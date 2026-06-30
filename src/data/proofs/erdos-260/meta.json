@@ -78,68 +78,68 @@
   },
   "sections": [
     {
-      "id": "header-imports",
+      "id": "header",
       "title": "Header and Imports",
-      "summary": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics.",
       "startLine": 1,
-      "endLine": 38,
-      "mathContext": "Mathematical content: Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics."
+      "endLine": 39,
+      "summary": "States Erdős Problem #260 on irrationality of $\\sum 1/a_n$ for fast-growing increasing integer sequences. Defines the `IncreasingSeq` structure and sets up imports. The conjecture: fast growth forces irrationality.",
+      "mathContext": "Erdős #260: does fast growth of $(a_n)$ force $\\sum 1/a_n$ irrational? `IncreasingSeq` structure."
     },
     {
-      "id": "seq-properties",
-      "title": "Sequence Properties",
-      "summary": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn\\sqrt{\\log n \\cdot \\log\\log n}$).",
-      "startLine": 39,
-      "endLine": 58,
-      "mathContext": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn\\sqrt{\\log n \\cdot \\log\\log n}$)."
+      "id": "part1",
+      "title": "Part I: Sequence Properties",
+      "startLine": 40,
+      "endLine": 59,
+      "summary": "Defines growth conditions: `FastGrowth`, `GapsToInfinity`, and `SuperlogarithmicGrowth`.",
+      "mathContext": "`FastGrowth`, `GapsToInfinity`, `SuperlogarithmicGrowth` growth predicates on $(a_n)$."
     },
     {
-      "id": "series-def",
-      "title": "Series Definition and Convergence",
-      "summary": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$), and the `seriesSum` limit extracted via `Classical.choose`.",
-      "startLine": 59,
-      "endLine": 79,
-      "mathContext": "The series term $a_n/$$2^{{a_n}$}$$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/$2^{n}$$), and the `seriesSum` limit extracted via `Classical.choose`."
+      "id": "part2",
+      "title": "Part II: The Series",
+      "startLine": 60,
+      "endLine": 80,
+      "summary": "Defines `seriesTerm`, `partialSum`, `seriesSum` ($\\sum 1/a_n$), and states `series_converges` (the series converges — proof `sorry`).",
+      "mathContext": "$\\text{seriesSum}=\\sum_n 1/a_n$; convergence stated (sorry)."
     },
     {
-      "id": "known-results",
-      "title": "Known Irrationality Results",
-      "summary": "Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture.",
-      "startLine": 80,
-      "endLine": 100,
-      "mathContext": "Mathematical content: Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture."
+      "id": "part3",
+      "title": "Part III: Known Irrationality Results",
+      "startLine": 81,
+      "endLine": 101,
+      "summary": "States `irrational_of_gaps_to_infinity` and `irrational_of_superlogarithmic` (irrationality under the respective growth conditions) — both proofs `sorry` (the deep irrationality results).",
+      "mathContext": "Gaps→∞ or superlogarithmic growth $\\Rightarrow$ $\\sum 1/a_n$ irrational (stated, sorry)."
     },
     {
-      "id": "implications",
-      "title": "Growth Condition Implications",
-      "summary": "The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`).",
-      "startLine": 101,
-      "endLine": 114,
-      "mathContext": "Verified: The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`)."
+      "id": "part4",
+      "title": "Part IV: Basic Properties",
+      "startLine": 102,
+      "endLine": 184,
+      "summary": "PROVES the growth-condition implications: `fastGrowth_of_gapsToInfinity` and `fastGrowth_of_superlogarithmic` (both stronger conditions imply `FastGrowth`).",
+      "mathContext": "GapsToInfinity $\\Rightarrow$ FastGrowth; Superlogarithmic $\\Rightarrow$ FastGrowth (proved)."
     },
     {
-      "id": "examples",
-      "title": "Example: Square Sequence",
-      "summary": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition).",
-      "startLine": 115,
-      "endLine": 153,
-      "mathContext": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition)."
+      "id": "part5",
+      "title": "Part V: Example Sequences",
+      "startLine": 185,
+      "endLine": 219,
+      "summary": "Defines `squareSeq` ($a_n=n^2$) and PROVES `squareSeq_fastGrowth`, `squareSeq_gaps`, and `squareSeq_irrational` ($\\sum 1/n^2$ irrational, via the gaps-to-infinity criterion).",
+      "mathContext": "$a_n=n^2$: fast growth, gaps→∞, $\\sum 1/n^2$ irrational."
     },
     {
-      "id": "conjecture",
-      "title": "Main Conjecture and Counterexample Specification",
-      "summary": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like.",
-      "startLine": 154,
-      "endLine": 180,
-      "mathContext": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like."
+      "id": "part6",
+      "title": "Part VI: The Main Conjecture",
+      "startLine": 220,
+      "endLine": 246,
+      "summary": "States the AXIOM `erdos_260_conjecture` (fast growth $\\Rightarrow$ $\\sum 1/a_n$ irrational) and defines `ErdosGrahamCounterexample` (the specification a putative counterexample would satisfy).",
+      "mathContext": "Axiom: FastGrowth $a\\Rightarrow$ Irrational $(\\sum 1/a_n)$; counterexample spec."
     },
     {
       "id": "summary",
-      "title": "Summary Comments",
-      "summary": "End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require.",
-      "startLine": 181,
-      "endLine": 203,
-      "mathContext": "Verified: End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require."
+      "title": "Summary",
+      "startLine": 247,
+      "endLine": 269,
+      "summary": "Closing comments recapping the conjecture, the proved square-sequence example, the growth-condition implications, and the remaining sorries (convergence and the two irrationality results).",
+      "mathContext": "Recap: conjecture (axiom), $n^2$ example proved; 3 sorries (convergence + 2 irrationality results)."
     }
   ],
   "conclusion": {

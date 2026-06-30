@@ -16,6 +16,11 @@
       "Ramsey theory",
       "arithmetic progressions",
       "combinatorics"
+    ],
+    "prerequisites": [
+      "van der Waerden's theorem",
+      "Ramsey theory",
+      "arithmetic progressions"
     ]
   },
   {
@@ -34,6 +39,11 @@
       "arithmetic progression",
       "Szemerédi's theorem",
       "Ramsey theory"
+    ],
+    "prerequisites": [
+      "arithmetic progressions",
+      "monochromatic structures under colorings",
+      "Szemerédi's theorem"
     ]
   },
   {
@@ -51,6 +61,11 @@
     "relatedConcepts": [
       "Finset.Icc",
       "Fin",
+      "hypergraph coloring"
+    ],
+    "prerequisites": [
+      "colorings of an interval (Finset.Icc) with Fin r",
+      "finite colorings",
       "hypergraph coloring"
     ]
   },
@@ -70,6 +85,11 @@
       "sInf",
       "upward-closed set",
       "threshold function"
+    ],
+    "prerequisites": [
+      "upward-closed (threshold) sets of integers",
+      "the infimum sInf of a set",
+      "when a guarantee set is nonempty"
     ]
   },
   {
@@ -87,6 +107,11 @@
     "relatedConcepts": [
       "Ramsey number",
       "sInf",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "van der Waerden's theorem (existence of W(k))",
+      "the infimum as least threshold",
       "extremal combinatorics"
     ]
   },
@@ -106,6 +131,11 @@
       "Ramsey theory",
       "double induction",
       "partition regularity"
+    ],
+    "prerequisites": [
+      "Ramsey theory and partition regularity",
+      "double induction",
+      "axiomatizing van der Waerden's theorem"
     ]
   },
   {
@@ -125,6 +155,11 @@
       "discrete logarithm",
       "GF(p)",
       "coloring construction"
+    ],
+    "prerequisites": [
+      "finite fields GF(p) and discrete logarithms",
+      "coloring constructions",
+      "Berlekamp's lower bound"
     ]
   },
   {
@@ -144,6 +179,11 @@
       "Szemerédi's theorem",
       "tower function",
       "Fields Medal"
+    ],
+    "prerequisites": [
+      "Szemerédi's theorem",
+      "Gowers uniformity norms",
+      "tower-type growth bounds"
     ]
   },
   {
@@ -162,6 +202,11 @@
       "Lovász Local Lemma",
       "probabilistic method",
       "hypergraph coloring"
+    ],
+    "prerequisites": [
+      "the Lovász Local Lemma",
+      "the probabilistic method",
+      "hypergraph coloring lower bounds"
     ]
   },
   {
@@ -179,6 +224,11 @@
     "relatedConcepts": [
       "SAT solver",
       "exhaustive search",
+      "computational complexity"
+    ],
+    "prerequisites": [
+      "exact values of W(k)",
+      "exhaustive / SAT-solver search",
       "computational complexity"
     ]
   },
@@ -199,6 +249,11 @@
       "growth rate",
       "super-exponential",
       "Ramsey number asymptotics"
+    ],
+    "prerequisites": [
+      "growth rates and limits (Filter.Tendsto)",
+      "super-exponential growth",
+      "Ramsey number asymptotics"
     ]
   },
   {
@@ -217,6 +272,11 @@
       "growth comparison",
       "consecutive differences",
       "divergence hierarchy"
+    ],
+    "prerequisites": [
+      "van der Waerden number growth",
+      "consecutive differences W(k+1)−W(k)",
+      "divergence hierarchies"
     ]
   },
   {
@@ -235,6 +295,11 @@
       "Filter.Tendsto",
       "growth rate comparison",
       "implication"
+    ],
+    "prerequisites": [
+      "the main growth conjecture",
+      "comparing growth rates (Filter.Tendsto)",
+      "logical implication between conjectures"
     ]
   }
 ]

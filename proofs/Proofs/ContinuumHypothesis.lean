@@ -22,17 +22,18 @@ This means: CH can neither be proven nor disproven from ZFC.
 
 ## Status
 - [ ] Complete proof
-- [ ] Uses Mathlib for main result
-- [ ] Proves extensions/corollaries
+- [x] Uses Mathlib for main result
+- [x] Proves extensions/corollaries
 - [x] Pedagogical example
-- [x] Incomplete (has sorries)
+- [ ] Incomplete (has sorries)
 
 ## Mathlib Dependencies
 - `Mathlib.SetTheory.Cardinal.Basic` : Cardinal arithmetic
 - `Mathlib.SetTheory.Cardinal.Ordinal` : Ordinals and aleph hierarchy
 
 **Formalization Notes:**
-- 2 sorries, 5 axioms capturing key metamathematical facts
+- 0 sorries, 4 axioms capturing key metamathematical facts
+  (L exists as a ZFC model and satisfies CH; a Cohen forcing extension exists and violates CH)
 - Full formalization of forcing would require thousands of lines
 - The abstract structures capture the essence of Gödel-Cohen independence
 - See each definition's docstring for implementation rationale

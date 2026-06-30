@@ -1,0 +1,119 @@
+[
+  {
+    "id": "euler-criterion-break-context",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Euler's Criterion Breaks on Composites — and That Break Is a Primality Test",
+    "content": "Over a prime p the Legendre symbol satisfies Euler's criterion: (a | p) ≡ a^((p−1)/2) (mod p). The parent entry showed the Jacobi symbol loses the residuosity converse on composite moduli; this entry shows it also loses Euler's criterion — and that the loss is usable. For prime p the Jacobi symbol equals the Legendre symbol, so the congruence (J(a | n) : ZMod n) = a^(n/2) holds for every a. Hence any a violating it certifies that n is composite. That contrapositive is exactly the Solovay–Strassen primality test, and a = 2, n = 15 — the parent's lost-direction witness — is a concrete Euler witness.",
+    "mathContext": "Prime $p$: $\\left(\\tfrac{a}{p}\\right) \\equiv a^{(p-1)/2} \\pmod p$ (Euler's criterion). Composite $n$: there is $a$ with $J(a\\mid n) \\not\\equiv a^{(n-1)/2}$, certifying $n$ composite. Witness $a=2,\\ n=15$: $J(2\\mid 15)=1$ but $2^{7}\\equiv 8 \\pmod{15}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "Jacobi symbol",
+      "Legendre symbol",
+      "Solovay–Strassen primality test",
+      "Euler witness",
+      "Euler liar"
+    ],
+    "prerequisites": [
+      "quadratic residues mod p",
+      "the Legendre and Jacobi symbols",
+      "Euler's criterion"
+    ]
+  },
+  {
+    "id": "euler-criterion-jacobi-prime",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02-oq-01",
+    "range": {
+      "startLine": 57,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "Euler's Criterion, Jacobi Form (Prime Modulus)",
+    "content": "jacobi_eq_pow_of_prime states that for a prime p, (J(a | p) : ZMod p) = a^(p/2). Over a prime the Jacobi symbol coincides with the Legendre symbol (the parent's jacobi_eq_legendre_of_prime), and the Legendre symbol obeys Euler's criterion (Mathlib's legendreSym.eq_pow). This is the prime-only identity whose failure on composites drives the whole entry: it is the precise sense in which 'J(a | n) ≡ a^(n/2)' is a primality condition.",
+    "mathContext": "$\\left(J(a\\mid p)\\bmod p\\right) = a^{\\lfloor p/2\\rfloor}$ for prime $p$. Since $p/2 = (p-1)/2$ in $\\mathbb{N}$ for odd $p$, this is Euler's criterion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "legendreSym.eq_pow",
+      "Euler's criterion",
+      "jacobi_eq_legendre_of_prime"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "Euler's criterion",
+      "ZMod p arithmetic"
+    ]
+  },
+  {
+    "id": "solovay-strassen-witness",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "The Solovay–Strassen Compositeness Test",
+    "content": "IsEulerWitness a n is defined as the failure of Euler's criterion, (J(a | n) : ZMod n) ≠ a^(n/2). not_prime_of_eulerWitness proves that any Euler witness certifies compositeness: if such an a exists then n is not prime. The proof is a one-line contrapositive of jacobi_eq_pow_of_prime — were n prime, the criterion would hold for that very a. no_eulerWitness_of_prime states the converse contrapositive: a prime admits no Euler witness. No factorization of n is used, which is what makes the test efficient.",
+    "mathContext": "If $(J(a\\mid n)\\bmod n) \\neq a^{\\lfloor n/2\\rfloor}$ for some $a$, then $n$ is composite. Equivalently, $n$ prime $\\Rightarrow$ every $a$ satisfies Euler's criterion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Solovay–Strassen primality test",
+      "Euler witness",
+      "contrapositive",
+      "Monte Carlo primality testing"
+    ],
+    "prerequisites": [
+      "Euler's criterion (prime case)",
+      "contrapositive reasoning"
+    ]
+  },
+  {
+    "id": "concrete-witness-fifteen",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 117
+    },
+    "type": "example",
+    "title": "A Concrete Witness: a = 2 Certifies 15 Composite",
+    "content": "two_pow_seven_fifteen computes 2^7 ≡ 8 (mod 15) by kernel decide (note 15/2 = 7). two_eulerWitness_fifteen then shows a = 2 is an Euler witness: J(2 | 15) = 1 (imported from the parent) but the right-hand side is 8, and 1 ≠ 8 in ZMod 15. fifteen_not_prime concludes ¬ Nat.Prime 15 from the single witness, without using the factorization 15 = 3·5. The same a = 2 that the parent showed the Jacobi symbol fails to certify as a nonsquare here succeeds at certifying 15 as composite.",
+    "mathContext": "$J(2\\mid 15)=1$, $2^{7}=128\\equiv 8\\pmod{15}$, $1\\neq 8$, so $2$ is an Euler witness and $15$ is composite.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Euler witness",
+      "kernel decide",
+      "jacobi_two_fifteen"
+    ],
+    "prerequisites": [
+      "modular exponentiation",
+      "ZMod 15 arithmetic"
+    ]
+  },
+  {
+    "id": "euler-liar-onesided",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02-oq-01",
+    "range": {
+      "startLine": 121,
+      "endLine": 156
+    },
+    "type": "insight",
+    "title": "The Test Is One-Sided: an Euler Liar for 15",
+    "content": "jacobi_negOne_fifteen computes J(−1 | 15) = J(−1 | 3)·J(−1 | 5) = (−1)·(1) = −1 (−1 is a nonsquare mod 3 but a square mod 5). negOne_pow_seven_fifteen gives (−1)^7 ≡ −1 (mod 15). negOne_eulerLiar_fifteen then shows a = −1 is an Euler liar: the criterion J(−1 | 15) ≡ (−1)^7 holds even though 15 is composite. fifteen_witness_and_liar bundles both faces. The existence of a liar means a single non-witness can never prove primality, so Solovay–Strassen is inherently one-sided (Monte Carlo): primality only follows after many random a fail to witness.",
+    "mathContext": "$J(-1\\mid 15)=-1$, $(-1)^{7}\\equiv -1\\pmod{15}$, so the criterion holds — $a=-1$ is an Euler liar. One liar $\\Rightarrow$ a single trial cannot certify primality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler liar",
+      "one-sided error",
+      "Monte Carlo algorithm",
+      "Solovay–Strassen primality test"
+    ],
+    "prerequisites": [
+      "Euler witness",
+      "multiplicativity of the Jacobi symbol"
+    ]
+  }
+]

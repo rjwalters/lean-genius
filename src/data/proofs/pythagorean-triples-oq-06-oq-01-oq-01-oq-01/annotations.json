@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-pythloc-overview",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 47 },
+    "type": "context",
+    "title": "Pinning Prime Factors — and an Honest Correction",
+    "content": "The parent entry proves 60 ∣ xyz for every Pythagorean triple; its first open question asks to pin the LOCATION of the factors for primitive triples — claiming 3 and 5 never divide the hypotenuse z and the even leg is divisible by 4. This docstring states up front that the question is only half true. The claim for 3 is correct (three_not_dvd_hyp), and 4 ∣ even leg is correct (four_dvd_even_leg), but the claim for 5 is FALSE: (3,4,5) is a primitive triple with 5 ∣ z. The structural reason is recorded: a prime is a Pythagorean hypotenuse exactly when it is a sum of two squares, i.e. p ≡ 1 (mod 4). Here 5 = 1²+2² ≡ 1 (mod 4) can be a hypotenuse, while 3 ≡ 3 (mod 4) cannot. Reporting only the true half would misstate the mathematics; the honest deliverable is the 3-vs-5 dichotomy.",
+    "mathContext": "Primitive triple $x^2+y^2=z^2$, $\\gcd(x,y)=1$: $3\\nmid z$, $4\\mid$ even leg, but $5\\mid z$ is possible since $5\\equiv 1\\pmod 4$.",
+    "significance": "key",
+    "relatedConcepts": ["primitive Pythagorean triples", "sum of two squares", "Fermat p ≡ 1 mod 4", "location of prime factors"],
+    "prerequisites": ["coprime integer solutions of x²+y²=z²", "quadratic residues mod 4"]
+  },
+  {
+    "id": "ann-pythloc-zmod-rel",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 54 },
+    "type": "technique",
+    "title": "Transporting the Relation to ZMod n",
+    "content": "`zmod_rel` casts the integer relation x²+y²=z² into ZMod n via the canonical ring homomorphism, which commutes with addition and squaring (exact_mod_cast applied to congrArg). This single bridge feeds every subsequent finite check: the ZMod 3 collapse for the 3-obstruction and the ZMod 8 certificate for the even leg.",
+    "mathContext": "$x^2+y^2=z^2 \\text{ in } \\mathbb{Z} \\Rightarrow \\bar x^2+\\bar y^2=\\bar z^2 \\text{ in } \\mathbb{Z}/n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ring homomorphism", "reduction mod n", "integer casts into ZMod"],
+    "prerequisites": ["ZMod ring structure"]
+  },
+  {
+    "id": "ann-pythloc-three",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 96 },
+    "type": "concept",
+    "title": "3 Is Pinned to a Leg (a Coprimality Obstruction)",
+    "content": "`three_not_dvd_hyp` is the heart of the true half. Suppose 3 ∣ z. Over ZMod 3 the relation becomes x²+y²=0, and a finite `decide` over the 9 pairs shows the only solution is x ≡ y ≡ 0 — because the nonzero squares mod 3 are just {1} and 1+1=2≠0, so a sum of two squares vanishes only when both vanish (this is exactly 3 ≡ 3 mod 4 not being a sum of two nonzero squares). Then 3 divides both legs, so IsCoprime.isUnit_of_dvd' makes 3 a unit in ℤ — refuted by Int.isUnit_iff (a unit is ±1). Note this genuinely uses primitivity, unlike the parent's product obstruction 3 ∣ xyz which holds for all triples. `three_dvd_leg` then combines 3 ∣ xyz (re-derived by the same ZMod 3 check as the parent), 3 ∤ z, and primality of 3 (Prime.dvd_mul) to place 3 on a leg.",
+    "mathContext": "$3\\mid z \\Rightarrow x^2+y^2\\equiv 0 \\Rightarrow 3\\mid x \\wedge 3\\mid y$, contradicting $\\gcd(x,y)=1$. Hence $3\\mid x$ or $3\\mid y$.",
+    "significance": "key",
+    "relatedConcepts": ["IsCoprime.isUnit_of_dvd'", "quadratic residues mod 3", "Prime.dvd_mul", "decide tactic"],
+    "prerequisites": ["coprimality and units in ℤ", "squares modulo 3"]
+  },
+  {
+    "id": "ann-pythloc-four",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-01",
+    "range": { "startLine": 98, "endLine": 138 },
+    "type": "technique",
+    "title": "The Even Leg Is Divisible by 4 (a ZMod 8 Certificate Carrying Parity)",
+    "content": "Like the parent's 4-obstruction, this needs modulus 8 — '4 ∣ even leg' is invisible mod 4. `four_dvd_even_leg_aux` is the certificate: for every a²+b²=c² over ZMod 8 with b and c odd (nonzero images under the ring map ZMod 8 → ZMod 2), the leg a maps to 0 under ZMod 8 → ZMod 4; `decide` verifies all 8³ cases. The wrapper `four_dvd_even_leg` supplies the parity hypotheses from primitivity: if leg x is even then the other leg y is odd (else 2 divides both legs, a unit), and the hypotenuse z is odd (2 ∣ z would force 2 ∣ y² hence 2 ∣ y). These two oddness facts are pushed into ZMod 8 through map_intCast (a ring hom commutes with intCast), so the certificate applies and yields 4 ∣ x. The mathematical content: odd squares are 1 mod 8, so x² = z² − y² ≡ 0 mod 8, and an even x with x² ≡ 0 mod 8 must be ≡ 0 mod 4.",
+    "mathContext": "Odd $\\Rightarrow$ square $\\equiv 1\\pmod 8$; $x^2=z^2-y^2\\equiv 0\\pmod 8$ with $x$ even $\\Rightarrow 4\\mid x$. Carried through $\\mathbb{Z}/8\\to\\mathbb{Z}/2$ and $\\mathbb{Z}/8\\to\\mathbb{Z}/4$.",
+    "significance": "key",
+    "relatedConcepts": ["2-adic valuation", "ZMod.castHom", "map_intCast", "odd squares mod 8", "decide tactic"],
+    "prerequisites": ["squares modulo 8", "ring homomorphisms between ZMod rings"]
+  },
+  {
+    "id": "ann-pythloc-five",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-01",
+    "range": { "startLine": 140, "endLine": 153 },
+    "type": "insight",
+    "title": "The 5-Asymmetry: Counterexample to the Open Question",
+    "content": "`five_can_divide_hyp` is the false-half correction: it exhibits the primitive triple (3,4,5) — with IsCoprime 3 4 proved via Int.isCoprime_iff_gcd_eq_one and decide — having 5 ∣ z. So unlike 3, the prime 5 is NOT pinned to a leg. `five_dvd_prod` keeps the inherited fact that 5 divides some side of every triple (a ZMod 5 obstruction identical to the parent's), but the counterexample shows that side may be the hypotenuse. The asymmetry is not accidental: 5 ≡ 1 (mod 4) is a sum of two squares (5 = 1²+2²) and thus a permissible Pythagorean hypotenuse, whereas 3 ≡ 3 (mod 4) is not — this is the Fermat two-squares phenomenon controlling factor location.",
+    "mathContext": "$(3,4,5)$ primitive with $5\\mid 5$; $5=1^2+2^2\\equiv 1\\pmod 4$ is a hypotenuse, $3\\equiv 3\\pmod 4$ is not.",
+    "significance": "key",
+    "relatedConcepts": ["sum of two squares theorem", "Fermat p ≡ 1 mod 4", "counterexample", "Int.isCoprime_iff_gcd_eq_one"],
+    "prerequisites": ["primitive triples", "primes as sums of two squares"]
+  },
+  {
+    "id": "ann-pythloc-instances",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-01",
+    "range": { "startLine": 155, "endLine": 181 },
+    "type": "concept",
+    "title": "Concrete Instances",
+    "content": "Three worked triples exercise both the rule and the asymmetry. (3,4,5): 3 ∤ 5, even leg 4 divisible by 4, and 5 ∣ 5 (5 on the hypotenuse). (5,12,13): here 5 sits on the leg, 3 ∤ 13, even leg 12 divisible by 4 — showing 5 can also land on a leg. (7,24,25): another case with 5 ∣ z (=25), reinforcing that the hypotenuse position for 5 is common, while 3 ∤ 25 and 4 ∣ 24. Each is discharged through the general theorems with explicitly supplied generators, so the instances are genuine applications rather than standalone computations.",
+    "mathContext": "$(3,4,5),(5,12,13),(7,24,25)$: $3\\nmid z$ and $4\\mid$ even leg always; $5\\mid z$ for the first and third, $5\\mid$ leg for the second.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked examples", "Euclid's parametrization"],
+    "prerequisites": ["the general theorems above"]
+  }
+]

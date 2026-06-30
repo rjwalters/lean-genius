@@ -6,7 +6,7 @@
 **Tier**: B (NEW-PROBLEM SCAFFOLD pattern)
 **Significance**: 7
 **Tractability**: 6
-**Phase**: ACT (Lean code shipped, refutation complete, S2-deferred sorry)
+**Phase**: COMPLETED (S7 ACT merged 2026-05-14; file is 0 axioms / 0 sorries, docker build clean 7745 jobs)
 
 **Question (from candidate-pool note)**: Can the axiom `analytic_taylor_remainder_uniform_bound` be proved by S2 via Mathlib's `HasFPowerSeriesOnBall` infrastructure? The key Mathlib lemma is a Cauchy coefficient bound `‖p k‖ ≤ M / R^k`; the rest is the geometric tail estimate.
 
@@ -202,8 +202,32 @@ The function `g(r') := M · (‖w‖ / r')^k` is in fact *monotonically decreasi
 - **Modified**: `research/problems/mean-value-theorem-oq-02-oq-04-oq-01/{knowledge.md, state.md}` — S5 entry.
 - **Modified**: `src/data/research/problems/mean-value-theorem-oq-02-oq-04-oq-01.json` — synced.
 
-### Next Steps (S6+)
+### Next Steps (S6+) — DONE at S7 (see sync below)
 
-- **Discharge `cauchy_diag_norm_bound_at_radius`** via Mathlib's `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le` + the formal-series / iterated-derivative bridge (`HasFPowerSeriesOnBall.factorial_smul` and `iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod`). The limit-extraction step is now closed; S6 only needs the *finite-radius* Cauchy bound. Estimated 60-100 lines.
+- ~~**Discharge `cauchy_diag_norm_bound_at_radius`**~~ — completed at S7 (2026-05-14) exactly via the proposed route (`Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le` + `HasFPowerSeriesOnBall.factorial_smul` + `iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod`).
 
 - **Reference template**: `Proofs/TaylorTheoremOQ02.lean::fps_coeff_eq_taylor_coeff` already implements the ℝ-analogue of the formal-series / iterated-derivative bridge via `HasFPowerSeriesAt.iteratedFDeriv_eq_sum_of_completeSpace`. The ℂ-version should be parallel (ℂ is also a CompleteSpace).
+
+## Session 2026-06-13 (Session 6, researcher-10) — STATE-SYNC: record S6–S7 completion
+
+**Mode**: REVISIT (doc STATE-SYNC, no Lean code change)
+**Outcome**: completed (tracker propagation only)
+
+### What I Did
+
+`knowledge.md` had frozen at S5, where `cauchy_diag_norm_bound_at_radius` was still a "deferred sorry, S6 target." The work was actually finished: `sessions/` holds the S6–S6f PREP files and `2026-05-14-s7-act-cauchy-diag-discharge.md`, and both `state.md` and `src/data/research/problems/…json` already record S7 completion. This session propagates that into `knowledge.md` and the Lean file's stale docstrings.
+
+### Key Findings (verified against origin/main source, not re-built)
+
+- `proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean` is **0 axioms, 0 sorries** at 758 LOC (comment-stripped token count = 0). The corrected complex theorem `analytic_taylor_remainder_uniform_bound_complex` and all supporting lemmas (`cauchy_diag_norm_bound`, `cauchy_diag_norm_bound_at_radius`) are fully proven.
+- `cauchy_diag_norm_bound_at_radius` discharges the finite-radius Cauchy estimate via Mathlib's `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`, bridged to the formal series by `HasFPowerSeriesOnBall.factorial_smul` + `iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod` — exactly the S5 next-steps plan.
+- Build provenance: `state.md` records a clean `docker-build` (7745 jobs) on 2026-05-14, i.e. **before** the current Docker blackout (2026-06-13). This sync makes no new build claim.
+
+### Files Modified
+
+- `research/problems/mean-value-theorem-oq-02-oq-04-oq-01/knowledge.md` — Phase → COMPLETED; this S6 sync entry; struck the obsolete S6+ next-step.
+- `proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean` — comment-only: added §0 S7 Status banner; corrected three stale "only remaining sorry" docstrings to past tense. No code change (still 0 sorries / 0 axioms).
+
+### Next Steps
+
+None for this slug — proof is complete and was build-verified pre-blackout. The corrected complex bound could seed a follow-up OQ (sharpness of the `R^n·(R−r)` denominator, or the ℝ-restriction with an explicit complexification hypothesis), but no strong distinct question is forced.

@@ -1,0 +1,187 @@
+{
+  "id": "connected-space-oq-01-oq-02",
+  "title": "The Topologist's Sine Curve Is Connected",
+  "slug": "connected-space-oq-01-oq-02",
+  "description": "Answers the second open question of the parent entry connected-space-oq-01 (closure-stability of connectedness, including the 'bark and tree' corollary connected_of_subset_closure: any set wedged between a connected set and its closure is connected) by applying it to the canonical concrete space built from a dense connected skeleton — the topologist's sine curve T = {(x, sin x⁻¹) : x > 0} ∪ ({0} × [−1,1]), the textbook witness of a connected but not path-connected space. isConnected_sineCurve shows the graph over the positive reals is connected as the continuous image of the connected set Ioi 0. limitSegment_subset_closure shows the limit segment {0} × [−1,1] lies in the graph's closure: for y ∈ [−1,1], the graph points (aₙ⁻¹, sin aₙ) with aₙ = arcsin y + n·2π have second coordinate exactly y (2π-periodicity of sin plus sin(arcsin y) = y) and first coordinate aₙ⁻¹ → 0, so (0,y) is a limit of graph points. Hence sineCurve ⊆ T ⊆ closure sineCurve, and the parent's corollary (IsConnected.subset_closure) gives isConnected_topologistSineCurve. Path-connectedness fails for T but is not formalized here (recorded as a follow-up). Fully verified: 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Classical (point-set topology folklore; the topologist's sine curve); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Topologist%27s_sine_curve",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "topology",
+      "connectedness",
+      "topologists-sine-curve",
+      "closure",
+      "counterexample",
+      "point-set-topology",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/ConnectedSpaceOQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "isConnected_Ioi",
+        "description": "IsConnected (Set.Ioi a) in a densely-ordered conditionally-complete linear order without max element — supplies connectedness of the parameter domain Ioi 0 ⊆ ℝ",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "IsConnected.image",
+        "description": "the continuous image of a connected set is connected — turns connectedness of Ioi 0 into connectedness of the graph",
+        "module": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "IsConnected.subset_closure",
+        "description": "if s is connected and s ⊆ t ⊆ closure s then t is connected ('bark and tree') — the parent's corollary, applied with s = graph, t = the full curve",
+        "module": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "Metric.mem_closure_iff",
+        "description": "a ∈ closure s ↔ ∀ ε > 0, ∃ b ∈ s, dist a b < ε — the ε-characterization used to place each segment point in the closure of the graph",
+        "module": "Mathlib.Topology.MetricSpace.Pseudo.Defs"
+      },
+      {
+        "theorem": "Real.sin_add_nat_mul_two_pi",
+        "description": "sin (x + n·(2π)) = sin x — 2π-periodicity that makes every aₙ = arcsin y + n·2π satisfy sin aₙ = sin(arcsin y)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_arcsin",
+        "description": "−1 ≤ y → y ≤ 1 → sin (arcsin y) = y — pins the second coordinate of the approximating points to the target y",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse"
+      },
+      {
+        "theorem": "Real.arcsin_mem_Icc",
+        "description": "arcsin y ∈ [−π/2, π/2] — the lower bound −π/2 ≤ arcsin y gives positivity of aₙ for the inverse to land in Ioi 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse"
+      },
+      {
+        "theorem": "ContinuousOn.inv₀",
+        "description": "f continuous and nonzero on s ⟹ x ↦ (f x)⁻¹ continuous on s — gives continuity of x⁻¹ on Ioi 0 (where x ≠ 0)",
+        "module": "Mathlib.Topology.Algebra.GroupWithZero"
+      },
+      {
+        "theorem": "inv_lt_comm₀ / Prod.dist_eq",
+        "description": "0 < a → 0 < b → (a⁻¹ < b ↔ b⁻¹ < a), and dist on a product is the max of coordinate distances — convert ε⁻¹ < aₙ into aₙ⁻¹ < ε and reduce the product distance to the first coordinate",
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Basic / Mathlib.Topology.MetricSpace.Pseudo.Constructions"
+      }
+    ],
+    "originalContributions": [
+      "sineCurve / limitSegment / topologistSineCurve: the topologist's sine curve formalized in ℝ × ℝ as the graph of x ↦ (x, sin x⁻¹) over Ioi 0 together with its limit segment {0} × [−1,1]",
+      "isConnected_sineCurve: the oscillating graph is connected (continuous image of the connected set Ioi 0)",
+      "limitSegment_subset_closure: the limit segment lies in the closure of the graph, via the explicit approximants (aₙ⁻¹, sin aₙ) with aₙ = arcsin y + n·2π (periodicity + sin(arcsin y) = y, and aₙ⁻¹ → 0 by an Archimedean choice)",
+      "isConnected_topologistSineCurve: the topologist's sine curve is connected, by the parent's bark-and-tree corollary applied to sineCurve ⊆ T ⊆ closure sineCurve",
+      "isPreconnected_topologistSineCurve: the preconnected corollary"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 104,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The parent entry connected-space-oq-01 formalizes that connectedness survives closure, and, sharper, the 'bark and tree' fact that any set between a connected set and its closure is connected. Its open question asks to deploy that corollary on a concrete space assembled from a dense connected skeleton. The textbook such space is the topologist's sine curve — the standard counterexample showing connected ⇏ path-connected.",
+    "problemStatement": "**Open Question (connected-space-oq-01, second question)**: Use the dense-connected / bark-and-tree corollary to prove connectedness of specific spaces built from dense connected skeletons.\n\n**Result**: The topologist's sine curve T = {(x, sin x⁻¹) : x > 0} ∪ ({0} × [−1,1]) is connected. Its oscillating graph is a connected skeleton whose closure contains the limit segment, so T is sandwiched between the graph and its closure and the parent's corollary applies.",
+    "text": "Work in ℝ × ℝ. The graph G = {(x, sin x⁻¹) : x > 0} is the continuous image of the connected ray (0, ∞), hence connected. Every segment point (0, y) with y ∈ [−1,1] is a limit of graph points: take aₙ = arcsin y + n·2π, then sin aₙ = y for all n while aₙ⁻¹ → 0, so (aₙ⁻¹, sin aₙ) = (aₙ⁻¹, y) → (0, y). Thus G ⊆ T ⊆ closure G, and 'bark and tree' (IsConnected.subset_closure) yields that T is connected.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Graph connected (`isConnected_sineCurve`).** `Ioi 0` is connected (`isConnected_Ioi`); the parametrization x ↦ (x, sin x⁻¹) is continuous on it (`continuousOn_id.prodMk` with `ContinuousOn.inv₀` for x⁻¹ and `Real.continuous_sin`); apply `IsConnected.image`.\n2. **Segment in closure (`limitSegment_subset_closure`).** Fix (0, y), y ∈ [−1,1]. By `Metric.mem_closure_iff`, given ε > 0 choose (Archimedean, `exists_nat_gt`) n with aₙ = arcsin y + n·2π > ε⁻¹ > 0 (using −π/2 ≤ arcsin y from `Real.arcsin_mem_Icc`). Then aₙ⁻¹ ∈ Ioi 0, sin (aₙ⁻¹)⁻¹ = sin aₙ = sin(arcsin y) = y (by `inv_inv`, `Real.sin_add_nat_mul_two_pi`, `Real.sin_arcsin`), and dist((0,y),(aₙ⁻¹,y)) = aₙ⁻¹ < ε (by `Prod.dist_eq` and `inv_lt_comm₀`).\n3. **Curve connected (`isConnected_topologistSineCurve`).** sineCurve ⊆ T = sineCurve ∪ limitSegment ⊆ closure sineCurve (from `subset_closure` and step 2), so `IsConnected.subset_closure` gives the result; `isPreconnected_topologistSineCurve` follows.",
+    "keyInsights": [
+      "**The graph is the connected skeleton; the curve is its 'bark'.** The whole curve is not obviously connected, but it is squeezed between the manifestly-connected graph and that graph's closure — exactly the hypothesis of the parent's bark-and-tree corollary, so no separate separation argument is needed.",
+      "**Density of the oscillation is exact, not approximate.** Because sin is 2π-periodic and surjective onto [−1,1], every target height y is hit *exactly* by sin aₙ with aₙ = arcsin y + n·2π; only the x-coordinate aₙ⁻¹ → 0 needs limiting. This makes the closure computation a one-coordinate estimate.",
+      "**Connectedness, not path-connectedness, is what closure delivers.** The topologist's sine curve is the standard example separating the two notions. Closure preserves connectedness (this entry) but destroys path-connectedness (the graph is path-connected, the curve is not) — the latter is recorded as a follow-up, not proved here.",
+      "**The product-metric estimate collapses to one axis.** With the second coordinate forced to equal y exactly, the product distance dist((0,y),(aₙ⁻¹,y)) reduces via Prod.dist_eq to |aₙ⁻¹|, turning the closure membership into a single Archimedean inequality aₙ⁻¹ < ε."
+    ],
+    "prerequisites": [
+      "Connectedness, preconnectedness, and the closure operator in topology",
+      "The parent's bark-and-tree corollary IsConnected.subset_closure",
+      "Continuity of x⁻¹ away from 0 and of sin; arcsin and 2π-periodicity of sin",
+      "The ε-characterization of closure in metric spaces and the product metric"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Definitions",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Docstring framing the topologist's sine curve as the parent's requested dense-connected-skeleton example and previewing the bark-and-tree strategy. Defines sineCurve (graph over Ioi 0), limitSegment ({0} × [−1,1]), and topologistSineCurve (their union).",
+      "mathContext": "$T = \\{(x, \\sin x^{-1}) : x > 0\\} \\cup (\\{0\\} \\times [-1,1])$."
+    },
+    {
+      "id": "graph-connected",
+      "title": "The Graph Is Connected",
+      "startLine": 50,
+      "endLine": 63,
+      "summary": "continuousOn_param: the parametrization x ↦ (x, sin x⁻¹) is continuous on Ioi 0 (ContinuousOn.inv₀ for x⁻¹, composed with sin, paired by ContinuousOn.prodMk). isConnected_sineCurve: the graph is connected as the continuous image of the connected ray Ioi 0.",
+      "mathContext": "$G = (x \\mapsto (x, \\sin x^{-1}))(\\,(0,\\infty)\\,)$ is connected."
+    },
+    {
+      "id": "segment-closure",
+      "title": "The Limit Segment Lies in the Closure",
+      "startLine": 65,
+      "endLine": 90,
+      "summary": "limitSegment_subset_closure: each (0,y), y ∈ [−1,1], is in closure G. Via Metric.mem_closure_iff and an Archimedean choice of n, the point (aₙ⁻¹, sin aₙ) with aₙ = arcsin y + n·2π has second coordinate y (periodicity + sin∘arcsin) and lies within ε of (0,y) (product metric collapses to aₙ⁻¹ < ε).",
+      "mathContext": "$(0,y) = \\lim_n (a_n^{-1}, \\sin a_n)$, $a_n = \\arcsin y + 2\\pi n$."
+    },
+    {
+      "id": "curve-connected",
+      "title": "The Topologist's Sine Curve Is Connected",
+      "startLine": 92,
+      "endLine": 104,
+      "summary": "isConnected_topologistSineCurve: sineCurve ⊆ T ⊆ closure sineCurve, so IsConnected.subset_closure (the parent's bark-and-tree corollary) gives connectedness. isPreconnected_topologistSineCurve records the preconnected consequence.",
+      "mathContext": "$G \\subseteq T \\subseteq \\overline{G} \\Rightarrow T$ connected."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "connected-space-oq-01",
+      "relationship": "answers",
+      "description": "Settles the parent's second open question by applying its bark-and-tree corollary (IsConnected.subset_closure) to a concrete dense-connected-skeleton space, the topologist's sine curve."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization that the topologist's sine curve T = {(x, sin x⁻¹) : x > 0} ∪ ({0} × [−1,1]) is connected. The oscillating graph is a connected skeleton whose closure contains the limit segment, so T is sandwiched between the graph and its closure and the parent's bark-and-tree corollary applies directly.",
+    "implications": "Provides the canonical concrete instance the parent's open question asked for, and adds the textbook connected-but-not-path-connected space to the formalized record. The closure computation is reduced to an exact periodicity argument plus a one-coordinate Archimedean estimate.",
+    "openQuestions": [
+      "Formalize that the topologist's sine curve is NOT path-connected (no continuous path joins the limit segment to the oscillating graph), completing the standard separation of connectedness from path-connectedness.",
+      "Show the closed topologist's sine curve (graph plus segment plus a connecting arc) is path-connected, and contrast local connectedness, which also fails at the segment.",
+      "Generalize the dense-skeleton construction to other graphs of functions with an essential oscillatory singularity (e.g. x·sin x⁻¹) and characterize when the closure adds a connected limit set."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "ConnectedSpaceOQ01OQ02",
+    "lineCount": 104,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 3,
+    "path": "Proofs/ConnectedSpaceOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Steen, Lynn Arthur; Seebach, J. Arthur",
+      "title": "Counterexamples in Topology",
+      "year": "1978",
+      "venue": "Springer",
+      "note": "Example 117–118: the topologist's sine curve as a connected, non-path-connected space"
+    },
+    {
+      "authors": "Munkres, James R.",
+      "title": "Topology",
+      "year": "2000",
+      "venue": "Prentice Hall",
+      "note": "§24: the topologist's sine curve; closure of a connected set is connected"
+    }
+  ],
+  "sorries": 0
+}

@@ -31,9 +31,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-09T18:30Z",
-    "iteration": 23,
-    "focus": "S21 STATE-SYNC (researcher-1, 2026-06-01T05:49Z, this PR): doc-only navigation hygiene — absorbs merged S20 INFRA-RECOVERY (PR #21166, 2026-05-30) into the research JSON, which was stranded at iteration 19 / phase PREP / since 2026-05-16T14:52:11Z (16-day drift + 1 iteration + 1 phase behind state.md). Ships JSON-only edits (iteration 19 → 21, phase PREP → INFRA-RECOVERY, since timestamp, focus, nextAction, progressSummary preamble, builtItems += this session note, insights += 2 S20-derived entries, nextSteps prepended with mechanic-gated S22+ entry) + this session note. No Lean / state.md / meta.json edits (state.md already accurate at S20 head; meta.json axiom/sorry inventory unchanged: 1 structure-encoded `ftCompatible`, 3 intentional sorries, 26 theorems, 10 definitions, 1144 LOC). Pre-flight verified: 0 open PRs on slug, Docker B1 GREEN, host disk 41 Gi (up from S19's 6.3 Gi), Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` stable 19 days. ACT-readiness gate post-S21 (8 dim): 6 GREEN (bearer pin, Mathlib pin, cross-slug additive, sibling races cleared, Docker B1 recovered, disk pressure cleared), 1 AMBER (paste-ready code blocked on cat-B/C upstream), 1 RED (OQ04 file build — 8 errors per S20 §3, mechanic-eligible). Predecessor S20 INFRA-RECOVERY (researcher-1, 2026-05-30T05:00Z, PR #21166): post-14d Docker-recovery picker session — shipped parent-file omega fix at AngleTrisectionOQ05.lean:425-428 (build GREEN, 3058 Docker jobs, ~150s) + catalogued 8 newly-discovered OQ04 errors reproducing on `origin/main` HEAD that were latent since shortly after S8 ACT (2026-05-12). Catalogue: cat-A 4 × `sq_pos_of_ne_zero` Mathlib API drift at L499/L502/L596/L597 (theorems `perpBisector_dirSq_pos` + `perpThroughPoint_normSq_pos`); cat-B 3 × `linear_combination`/`ring` drift at L642/L772/L1117 (HH-4 + HH-7 nonparallel + HH-3 parallel reflection laws); cat-C 1 × `field_simp; ring` unsolved at L782 (HH-7 P-on-ℓ₁ reflection law). 5 Docker iters were used (over the 2-4 budget per memory pattern); iter 3-4 derived a corrected coefficient `-((p₁.2 - p₂.2)^2)` for the HH-6 paste body (replaces S19 §4's `(p₁.2 - p₂.2)` baseline). Implication: \"build pending\" badges on S3–S8 ACT PRs (HH-1/HH-2/HH-3 parallel/HH-4/HH-7 nonparallel/HH-7 P-on-ℓ₁) are NOT verified-green at present Mathlib SHA — regressed silently during a Mathlib bump shortly after S8. Predecessor S19 PREP (researcher-8, 2026-05-16T14:52Z, PR #19653): closes S18 PREP §5.3 caveat #1 (reflectAcross spelling verified at parent file AngleTrisectionOQ05.lean:99-101 byte-for-byte) + sharpens caveat #2 (`linear_combination (p₁.2 - p₂.2) * h_sqrt_sq` derivation + 3 fallback candidates + nlinarith ultimate) + Docker B1 reaffirm RED at T+30min post-S18 + disk regression 6.8 → 6.3 Gi. Earlier predecessors absorbed verbatim: S18 PREP #19623 (post-S17-STATE-SYNC research-JSON catchup + Docker B1 RED + sharpened paste-body), S17 STATE-SYNC #19513 (post-S16 PREP merge absorption + bearer drift recheck + Path C target), S16 PREP #19364 (paste-ready WLOG-frame Lean + bearer pin), S15c STATE-SYNC COMPLEMENT #19019, S9b PREP #19281 (Real.sqrt-bridge audit). HH-axiom coverage matrix (post-S21, unchanged from S19 modulo build regression caveat): HH-1 ACT-merged (S3 #17915, build regressed cat-B), HH-2 ACT-merged (S4 #17926, build green), HH-3 parallel ACT-merged (S8 #18195, build regressed cat-B at L1117), HH-3 intersecting PREP-only (S9 #18334 + S9b #19281), HH-4 ACT-merged (S5 #17988, build regressed cat-A L499/L502 + cat-B L642), HH-5 unconditional REFUTED with explicit counterexample (S10 #18408), HH-5 conditional PREP-only (S10), HH-6 same-directrix WLOG PREP-only paste-ready Lean +1 sorry (S16 #19364 + S18 PREP + S19 PREP, blocked on cat-B/C clearing), HH-6 same-directrix general PREP-only isometry transport gap (S16 §6), HH-6 distinct-directrix PREP-only cubic real-root (S11 #18413), HH-7 non-parallel ACT-merged (S6 #18009, build regressed cat-B at L772), HH-7 P-on-ℓ₁ ACT-merged (S7 #18059, build regressed cat-C at L782), HH-7 unsatisfiable sliver PREP audit refined (S13 #18532). Lean file proofs/Proofs/AngleTrisectionOQ05OQ04.lean unchanged at 1144 lines since S8 merge 2026-05-12T23:20Z (0 axiom declarations + 1 structure-encoded `ftCompatible`, 3 intentional sorries, 26 theorems, 10 definitions). Parent file AngleTrisectionOQ05.lean 696 lines (S20 omega fix applied at L425-428). Mathlib pin stable 19 days. Stranded PRs #19468 + #18192 cleared from concern (≥18d stale, both orthogonal to current file set).",
+    "since": "2026-06-13T00:00:00.000Z",
+    "iteration": 24,
+    "focus": "S-SYNC AUDIT (researcher-2, 2026-06-13, doc-only): meta.json<->source CLEAN (1148 LOC, 1 axiom [structure-encoded], 3 real sorry tactics, 26 thm, 10 def). Naive grep -c sorry=15 is 12 comments + 3 real; do not 'fix' to 15. No meta/Lean edits. Docker down -> no build re-verify. Previous: S21 STATE-SYNC (researcher-1, 2026-06-01T05:49Z, this PR): doc-only navigation hygiene — absorbs merged S20 INFRA-RECOVERY (PR #21166, 2026-05-30) into the research JSON, which was stranded at iteration 19 / phase PREP / since 2026-05-16T14:52:11Z (16-day drift + 1 iteration + 1 phase behind state.md). Ships JSON-only edits (iteration 19 → 21, phase PREP → INFRA-RECOVERY, since timestamp, focus, nextAction, progressSummary preamble, builtItems += this session note, insights += 2 S20-derived entries, nextSteps prepended with mechanic-gated S22+ entry) + this session note. No Lean / state.md / meta.json edits (state.md already accurate at S20 head; meta.json axiom/sorry inventory unchanged: 1 structure-encoded `ftCompatible`, 3 intentional sorries, 26 theorems, 10 definitions, 1144 LOC). Pre-flight verified: 0 open PRs on slug, Docker B1 GREEN, host disk 41 Gi (up from S19's 6.3 Gi), Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` stable 19 days. ACT-readiness gate post-S21 (8 dim): 6 GREEN (bearer pin, Mathlib pin, cross-slug additive, sibling races cleared, Docker B1 recovered, disk pressure cleared), 1 AMBER (paste-ready code blocked on cat-B/C upstream), 1 RED (OQ04 file build — 8 errors per S20 §3, mechanic-eligible). Predecessor S20 INFRA-RECOVERY (researcher-1, 2026-05-30T05:00Z, PR #21166): post-14d Docker-recovery picker session — shipped parent-file omega fix at AngleTrisectionOQ05.lean:425-428 (build GREEN, 3058 Docker jobs, ~150s) + catalogued 8 newly-discovered OQ04 errors reproducing on `origin/main` HEAD that were latent since shortly after S8 ACT (2026-05-12). Catalogue: cat-A 4 × `sq_pos_of_ne_zero` Mathlib API drift at L499/L502/L596/L597 (theorems `perpBisector_dirSq_pos` + `perpThroughPoint_normSq_pos`); cat-B 3 × `linear_combination`/`ring` drift at L642/L772/L1117 (HH-4 + HH-7 nonparallel + HH-3 parallel reflection laws); cat-C 1 × `field_simp; ring` unsolved at L782 (HH-7 P-on-ℓ₁ reflection law). 5 Docker iters were used (over the 2-4 budget per memory pattern); iter 3-4 derived a corrected coefficient `-((p₁.2 - p₂.2)^2)` for the HH-6 paste body (replaces S19 §4's `(p₁.2 - p₂.2)` baseline). Implication: \"build pending\" badges on S3–S8 ACT PRs (HH-1/HH-2/HH-3 parallel/HH-4/HH-7 nonparallel/HH-7 P-on-ℓ₁) are NOT verified-green at present Mathlib SHA — regressed silently during a Mathlib bump shortly after S8. Predecessor S19 PREP (researcher-8, 2026-05-16T14:52Z, PR #19653): closes S18 PREP §5.3 caveat #1 (reflectAcross spelling verified at parent file AngleTrisectionOQ05.lean:99-101 byte-for-byte) + sharpens caveat #2 (`linear_combination (p₁.2 - p₂.2) * h_sqrt_sq` derivation + 3 fallback candidates + nlinarith ultimate) + Docker B1 reaffirm RED at T+30min post-S18 + disk regression 6.8 → 6.3 Gi. Earlier predecessors absorbed verbatim: S18 PREP #19623 (post-S17-STATE-SYNC research-JSON catchup + Docker B1 RED + sharpened paste-body), S17 STATE-SYNC #19513 (post-S16 PREP merge absorption + bearer drift recheck + Path C target), S16 PREP #19364 (paste-ready WLOG-frame Lean + bearer pin), S15c STATE-SYNC COMPLEMENT #19019, S9b PREP #19281 (Real.sqrt-bridge audit). HH-axiom coverage matrix (post-S21, unchanged from S19 modulo build regression caveat): HH-1 ACT-merged (S3 #17915, build regressed cat-B), HH-2 ACT-merged (S4 #17926, build green), HH-3 parallel ACT-merged (S8 #18195, build regressed cat-B at L1117), HH-3 intersecting PREP-only (S9 #18334 + S9b #19281), HH-4 ACT-merged (S5 #17988, build regressed cat-A L499/L502 + cat-B L642), HH-5 unconditional REFUTED with explicit counterexample (S10 #18408), HH-5 conditional PREP-only (S10), HH-6 same-directrix WLOG PREP-only paste-ready Lean +1 sorry (S16 #19364 + S18 PREP + S19 PREP, blocked on cat-B/C clearing), HH-6 same-directrix general PREP-only isometry transport gap (S16 §6), HH-6 distinct-directrix PREP-only cubic real-root (S11 #18413), HH-7 non-parallel ACT-merged (S6 #18009, build regressed cat-B at L772), HH-7 P-on-ℓ₁ ACT-merged (S7 #18059, build regressed cat-C at L782), HH-7 unsatisfiable sliver PREP audit refined (S13 #18532). Lean file proofs/Proofs/AngleTrisectionOQ05OQ04.lean unchanged at 1144 lines since S8 merge 2026-05-12T23:20Z (0 axiom declarations + 1 structure-encoded `ftCompatible`, 3 intentional sorries, 26 theorems, 10 definitions). Parent file AngleTrisectionOQ05.lean 696 lines (S20 omega fix applied at L425-428). Mathlib pin stable 19 days. Stranded PRs #19468 + #18192 cleared from concern (≥18d stale, both orthogonal to current file set).",
     "blockers": [],
     "nextAction": "S22+ ACT (recommended Path C, GATED on mechanic repair of S20 §3 8-error catalogue): once cat-A/B/C errors at OQ04 L499/L502/L596/L597/L642/L772/L782/L1117 clear and `Proofs.AngleTrisectionOQ05OQ04` returns to Docker GREEN, paste S16 PREP §5's ~80 LOC WLOG-frame Lean blueprint at line 1144 of proofs/Proofs/AngleTrisectionOQ05OQ04.lean (just before `end AngleTrisectionOQ05OQ04`), with S18 PREP §5.3's sharpened two-case `by_cases h_eq : p₁.2 = p₂.2` proof-body case-split substituted in place of the single `sorry` line on `reflectAcross_belochFold_sameDirectrix_xAxis_to_xAxis`. **Use S20-derived corrected `linear_combination` coefficient `-((p₁.2 - p₂.2)^2) * h_sqrt_sq`** (per S20 §2.2 iter 3-4) — replaces S19 §4's baseline `(p₁.2 - p₂.2) * h_sqrt_sq` which left a `(p₁.2 - p₂.2)·((p₁.2 - p₂.2)+1)` residue + `field_simp` did NOT auto-reduce `(-1)^2 = 1` in the denominator per S20 caveat (add manual `norm_num` or `show ... = ...` if needed). Pre-S22 picker MUST verify: (a) `timeout 10 docker version` exits 0; (b) `df -h /` reports ≥8 Gi avail; (c) `cd proofs && grep -nH \"sq_pos_of_ne_zero\\|linear_combination\\|field_simp; ring\" Proofs/AngleTrisectionOQ05OQ04.lean | head` returns the new (post-mechanic) tactic names; (d) mechanic PR labelled as build-fixing has merged. Expected 2-4 Docker iters at 30-40 min wall once mechanic clears. Outcome: HH-6 same-directrix WLOG row in HH-axiom Programme Status promoted from PREP-only to ACT-merged-partial. Alternatives: S22-β Path A isometry transport (defer until α lands; ~80 LOC additional Lean covering `lineIsometry` + `lineIsometry_sends_ℓ_to_xAxis` + `reflectAcross_commutes_with_lineIsometry`); S22-γ HH-3 intersecting in Lean (~200 LOC, Real.sqrt unit-normal bisector per S9 + S9b PREP — also gated on mechanic clearing); S22-δ HH-5 conditional parent-file edit (touches AngleTrisectionOQ05.HHAxioms.hh5, larger blast radius). Anti-target: HH-6 distinct-directrix (cubic, ~300 LOC, parabola-tangent API absent from Mathlib at v4.26.0).",
     "attemptCounts": {
@@ -72,7 +72,8 @@
       "S2 axiom integrity: ftCompatible counts as +1 toward meta axiomCount per the project's Axiom Integrity Policy. Status is `axiomatized` (badge `axiom`), not `verified`. 0 `axiom` declarations + 1 structure-encoded assumption = axiomCount 1.",
       "S3 proof outline (deferred): (1) apply normal_curvature_zero_of_straight to get kappa_n ≡ 0 on [0, L]; (2) zero-curvature plane curves are line segments (Mathlib `Mathlib.Geometry.Euclidean.Curvature.Plane` may have this, or ~40 lines from scratch); (3) HHAxioms.hh1 produces a line through the two distinct endpoints.",
       "S20 INFRA-RECOVERY discovery: the 14-day Docker B1 outage (S19 PREP 2026-05-16 → S20 INFRA-RECOVERY 2026-05-30) hid an 8-error file-wide Mathlib-drift regression in OQ04 that was latent since shortly after S8 ACT (2026-05-12, ≥18 days). The 'build pending' badges on S3–S8 ACT PRs (HH-1, HH-2, HH-3 parallel, HH-4, HH-7 nonparallel, HH-7 P-on-ℓ₁) are NOT verified-green at present Mathlib SHA — the file regressed during a v4.26.0-line Mathlib bump shortly after S8. Mechanic-eligible: cat-A 4 × `sq_pos_of_ne_zero` renames + cat-B/C 4 × `linear_combination`/`ring`/`field_simp` re-derivations.",
-      "S20 INFRA-RECOVERY meta-insight: doc-only PREP PRs (S9–S19, nine consecutive iterations over 4 days) do NOT trigger Lean builds and therefore cannot surface this class of regression. Re-verifying infra (Docker B1 + first lean build at current Mathlib SHA) is mandatory after any ≥7-day gap between Lean-touching ACTs. STATE-SYNC and PREP-only iterations are *necessary but not sufficient* to detect upstream Mathlib-API drift."
+      "S20 INFRA-RECOVERY meta-insight: doc-only PREP PRs (S9–S19, nine consecutive iterations over 4 days) do NOT trigger Lean builds and therefore cannot surface this class of regression. Re-verifying infra (Docker B1 + first lean build at current Mathlib SHA) is mandatory after any ≥7-day gap between Lean-touching ACTs. STATE-SYNC and PREP-only iterations are *necessary but not sufficient* to detect upstream Mathlib-API drift.",
+      "S-SYNC AUDIT (researcher-2, 2026-06-13): meta.json<->source audit CLEAN -- all counts in AngleTrisectionOQ05OQ04.lean match meta.json (lineCount 1148, axiomCount 1, sorries 3, theoremCount 26, definitionCount 10). CAVEAT for future auditors: a naive `grep -c sorry` returns 15, but 12 of those are comment/docstring mentions (L61,153,366,395,424,436,467,581,582,713,866,1006); only 3 are real sorry tactics (L211 S3, L350 S4, L403 S5 PERMANENT OPEN) -- DO NOT 'correct' meta.sorries to 15. Likewise axiomCount=1 is a structure-encoded assumption (CurvedCrease/HHAxioms), NOT an `axiom` declaration (there are 0; the `axiom` tokens at L60,181,192,425,etc. are docstring/HH-axiom prose). meta is honest. Docker down 2026-06-13."
     ],
     "mathlibGaps": [
       "Geodesic / planar curvature kappa_g(s) for a smooth parametric curve gamma : R -> R^2: Mathlib.Geometry.Euclidean.Curvature.Plane covers only graph curves y = f(x); extending to unit-speed parametric requires ~80 lines.",
@@ -109,26 +110,38 @@
     "angle-trisection-cos-20-gal-oq-01-oq-02",
     "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
     "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "angle-trisection-cos-20-gal-oq-02",
     "angle-trisection-cos-20-gal-oq-03",
     "angle-trisection-cos-20-gal-oq-03-oq-01",
     "angle-trisection-oq-01",
+    "angle-trisection-oq-01-oq-04",
+    "angle-trisection-oq-01-oq-04-oq-02",
     "angle-trisection-oq-02",
     "angle-trisection-oq-02-oq-01",
     "angle-trisection-oq-02-oq-01-oq-01",
     "angle-trisection-oq-02-oq-01-oq-01-oq-01",
     "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05",
+    "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-02",
     "angle-trisection-oq-02-oq-01-oq-02",
     "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+    "angle-trisection-oq-02-oq-01-oq-02-oq-02",
     "angle-trisection-oq-02-oq-02",
+    "angle-trisection-oq-02-oq-02-oq-02",
+    "angle-trisection-oq-02-oq-02-oq-03",
     "angle-trisection-oq-02-oq-03",
     "angle-trisection-oq-02-oq-03-ext",
+    "angle-trisection-oq-02-oq-03-ext-oq-01",
     "angle-trisection-oq-02-oq-03-oq-01",
     "angle-trisection-oq-02-oq-04",
     "angle-trisection-oq-02-oq-04-oq-01",
     "angle-trisection-oq-03",
     "angle-trisection-oq-03-oq-01",
     "angle-trisection-oq-03-oq-02",
+    "angle-trisection-oq-03-oq-03",
     "angle-trisection-oq-04",
+    "angle-trisection-oq-04-oq-01",
+    "angle-trisection-oq-04-oq-02",
     "angle-trisection-oq-04-oq-03",
     "angle-trisection-oq-04-oq-04",
     "angle-trisection-oq-05",
@@ -158,7 +171,7 @@
     ]
   },
   "started": "2026-05-12T04:25:00Z",
-  "lastUpdate": "2026-06-09T18:30:00Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -220,7 +233,7 @@
     {
       "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02.lean",
       "filename": "AngleTrisectionCos20GalOQ01OQ02.lean",
-      "lineCount": 440,
+      "lineCount": 443,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
@@ -231,11 +244,11 @@
     {
       "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
       "filename": "AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
-      "lineCount": 339,
-      "theoremCount": 11,
+      "lineCount": 388,
+      "theoremCount": 21,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 5,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean"
     },
@@ -249,6 +262,17 @@
       "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ02.lean",
+      "lineCount": 109,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ02.lean"
     },
     {
       "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",
@@ -295,6 +319,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ01.lean"
     },
     {
+      "path": "Proofs/AngleTrisectionOQ01OQ04.lean",
+      "filename": "AngleTrisectionOQ01OQ04.lean",
+      "lineCount": 173,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ01OQ04OQ02.lean",
+      "filename": "AngleTrisectionOQ01OQ04OQ02.lean",
+      "lineCount": 109,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ01OQ04OQ02.lean"
+    },
+    {
       "path": "Proofs/AngleTrisectionOQ02.lean",
       "filename": "AngleTrisectionOQ02.lean",
       "lineCount": 299,
@@ -330,9 +376,9 @@
     {
       "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01.lean",
       "filename": "AngleTrisectionOQ02OQ01OQ01OQ01.lean",
-      "lineCount": 166,
-      "theoremCount": 5,
-      "axiomCount": 1,
+      "lineCount": 238,
+      "theoremCount": 8,
+      "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
@@ -341,13 +387,35 @@
     {
       "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean",
       "filename": "AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean",
-      "lineCount": 286,
-      "theoremCount": 19,
+      "lineCount": 381,
+      "theoremCount": 21,
       "axiomCount": 1,
-      "defCount": 4,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05.lean",
+      "filename": "AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05.lean",
+      "lineCount": 106,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05OQ02.lean",
+      "filename": "AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05OQ02.lean",
+      "lineCount": 148,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05OQ02.lean"
     },
     {
       "path": "Proofs/AngleTrisectionOQ02OQ01OQ02.lean",
@@ -394,6 +462,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean"
     },
     {
+      "path": "Proofs/AngleTrisectionOQ02OQ01OQ02OQ02.lean",
+      "filename": "AngleTrisectionOQ02OQ01OQ02OQ02.lean",
+      "lineCount": 214,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ01OQ03.lean",
+      "filename": "AngleTrisectionOQ02OQ01OQ03.lean",
+      "lineCount": 82,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/AngleTrisectionOQ02OQ02.lean",
       "filename": "AngleTrisectionOQ02OQ02.lean",
       "lineCount": 286,
@@ -403,6 +493,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ02OQ02.lean",
+      "filename": "AngleTrisectionOQ02OQ02OQ02.lean",
+      "lineCount": 247,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ02OQ03.lean",
+      "filename": "AngleTrisectionOQ02OQ02OQ03.lean",
+      "lineCount": 275,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ02OQ03.lean"
     },
     {
       "path": "Proofs/AngleTrisectionOQ02OQ03.lean",
@@ -425,6 +537,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ03Ext.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ03ExtOQ01.lean",
+      "filename": "AngleTrisectionOQ02OQ03ExtOQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ03ExtOQ01.lean"
     },
     {
       "path": "Proofs/AngleTrisectionOQ02OQ03OQ01.lean",
@@ -504,6 +627,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ03OQ02.lean"
     },
     {
+      "path": "Proofs/AngleTrisectionOQ03OQ03.lean",
+      "filename": "AngleTrisectionOQ03OQ03.lean",
+      "lineCount": 195,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ03OQ03.lean"
+    },
+    {
       "path": "Proofs/AngleTrisectionOQ04.lean",
       "filename": "AngleTrisectionOQ04.lean",
       "lineCount": 600,
@@ -513,6 +647,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ04.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ04OQ01.lean",
+      "filename": "AngleTrisectionOQ04OQ01.lean",
+      "lineCount": 218,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ04OQ02.lean",
+      "filename": "AngleTrisectionOQ04OQ02.lean",
+      "lineCount": 295,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ04OQ02.lean"
     },
     {
       "path": "Proofs/AngleTrisectionOQ04OQ03.lean",
@@ -583,7 +739,7 @@
     {
       "path": "Proofs/AngleTrisectionOQ05OQ04.lean",
       "filename": "AngleTrisectionOQ05OQ04.lean",
-      "lineCount": 1145,
+      "lineCount": 1149,
       "theoremCount": 26,
       "axiomCount": 0,
       "defCount": 10,

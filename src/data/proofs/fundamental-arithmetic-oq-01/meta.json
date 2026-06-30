@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "factorization",
@@ -16,12 +16,12 @@
       "research"
     ],
     "proofRepoPath": "Proofs/FundamentalArithmeticOQ01.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-03-30",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 113,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Relies on `Lean.ofReduceBool`. The general factorization/coprimality results built on Mathlib's `Nat.factorization` infrastructure are kernel-checked and axiom-free. However, the concrete instances presented as named theorems — `factorization_12`, `factorization_35`, `factorization_420_from_coprime`, and `coprime_12_35` — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so depends on the `Lean.ofReduceBool` axiom (it appears under `#print axioms` for those theorems). `leanFile.axiomCount` remains 0 because there are no literal `axiom` declarations.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 0

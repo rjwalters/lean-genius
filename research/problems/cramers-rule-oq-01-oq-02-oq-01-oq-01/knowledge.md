@@ -2,9 +2,23 @@
 
 ## Prior Sessions
 
+> **STATE-SYNC note (researcher-2, 2026-06-13).** This file had been frozen at
+> the original S1 OBSERVE survey while `state.md`/`*.json` advanced to S18 and
+> the Lean file `Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean` was written and grown
+> to 377 LOC across many merged sessions. The "Next Steps" below previously
+> proposed *writing* a file that has existed since at least PR #22941 (S4). The
+> table and the **Status / Next Steps** sections are now reconciled with the
+> actual source. No Lean was changed this session (verification infra down —
+> Docker timeout, Aristotle 404).
+
 | Session | Phase | Outcome |
 |---------|-------|---------|
-| S1 (this) | OBSERVE | Survey + formalization plan; no Lean changes |
+| S1 | OBSERVE | Survey + Route A/B formalization plan; no Lean changes |
+| S2 | DEFINE | Wrote the file: `minorIJ`, `qdetF`, `qdetF_field_quotient`, `qdetF_ne_zero`, specializations `qdetF_eq_qdet3`/`qdetF_eq_qdet00`/`qdetF_eq_qdet11`, `qdetF_summary`. Commutative half of the OQ closed. |
+| S3 | NC-SCAFFOLD | Added `qdetN_step` (non-recursive division-ring Schur step) + `qdetN_step_zero_minv` base case. |
+| S4 (#22941) | ACT | Proved `qdetN_step_eq_qdetF` (Route B → Route A field bridge) **modulo** a newly-isolated division-free crux `qdetN_step_eq_qdetF_aux`, which now carries the file's sole `sorry`. File 312 → 377 LOC. |
+| S17 | ACT | Proved `qdetN_step_eq_qdetF_fin_one` (n=0 base case of the crux, without invoking the deferred sorry). |
+| S18 | STATE-SYNC | researcher-6 reconciled `state.md`/JSON/gallery meta with the merged S4 ACT (doc-only). |
 
 ## Prior Cumulative State (parent files)
 
@@ -35,6 +49,14 @@ quasideterminants (mutual recursion).
 
 ## Open Question (this slug)
 
+> **Progress map (as of S18).** Items 3 (specializations) and the commutative
+> direction of item 4 are **done** in the source. The current formulation in
+> the file factors the recurrence through a non-recursive step `qdetN_step`
+> parameterised by an explicit inverse `Minv`, deferring the full mutual
+> recursion `qdetN`/`qdetN_inv`. The single remaining `sorry` is the
+> division-free Schur–cofactor crux `qdetN_step_eq_qdetF_aux` (see **Next
+> Steps**).
+
 Define `qdetN : (n : ℕ) → Matrix (Fin n) (Fin n) D → Fin n → Fin n → D` for a
 division ring D, satisfying:
 
@@ -55,6 +77,11 @@ division ring D, satisfying:
    `qdetN n A i j = A.det / minor_det` when `minor_det ≠ 0`).
 
 ## Proof Strategy
+
+> **Status:** Route A is fully realized in the source (`qdetF`); Route B is
+> realized in its non-recursive `qdetN_step` form with the field bridge proved
+> modulo the crux. The text below is the original design rationale, retained for
+> context. The only live work is the crux lemma — see **Next Steps**.
 
 ### Definition (two viable routes)
 
@@ -158,21 +185,62 @@ Mathlib gaps:
 
 ## Next Steps (priority order)
 
-1. **S2 [DEFINE]** Write `Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean`. Open with
-   `qdetF n A i j := A.det / (A.submatrix (Fin.succAbove i) (Fin.succAbove j)).det`
-   over a field. Prove `qdetF_field_quotient`, specialize to n=2 and n=3.
-   Target ≤ 250 lines; ≤ 2 sorries.
-2. **S3 [NC-DEFINE]** Add `qdetN` over a division ring via mutual
-   strong recursion with `qdetN_inv`. Defer the recurrence theorem to S4.
-3. **S4 [NC-RECURRENCE]** Prove `qdetN_recurrence`.
-4. **S5 [CONSISTENCY]** Prove `qdetN n A i j = qdetF n A i j` over a field.
-5. **S6 [CRAMER]** State and prove `cramer_rule_nxn_qdet`.
+**Done in source** (no longer "next"): S2 `qdetF` + multiplicative identity +
+specializations; S3 `qdetN_step` + degenerate base; S4 `qdetN_step_eq_qdetF`
+(field bridge, modulo the crux); S17 `qdetN_step_eq_qdetF_fin_one` (n=0 crux
+base case).
+
+1. **[CRUX — the sole `sorry`] Prove `qdetN_step_eq_qdetF_aux`.** Division-free
+   Schur–cofactor identity, over the commutative field `F` (here `F` is used as
+   a commutative ring — no division), with `M := minorIJ A i j`:
+   ```
+   det M · A i j
+     − ∑_{p,q : Fin n} A i (succAbove j q) · adj(M) q p · A (succAbove i p) j
+     = (-1)^(i+j) · det A.
+   ```
+   Write `b q := A i (succAbove j q)` (deleted row `i`, cols ≠ `j`) and
+   `c p := A (succAbove i p) j` (deleted col `j`, rows ≠ `i`); the double sum is
+   `bᵀ · adj(M) · c`. Two viable Lean routes:
+
+   - **Route 1 — block Schur (preferred if a division-free lemma exists).**
+     Reindex `Fin (n+1) ≃ Unit ⊕ Fin n` carrying `(i,j)` to the corner so that
+     `A` becomes `fromBlocks ![![A i j]] (row b) (col c) M`. The Schur identity
+     `det (fromBlocks D B C M) = det M · D − B · adj(M) · C` (the *adjugate*,
+     division-free form of `Matrix.det_fromBlocks₂₂`, which itself needs
+     `[Invertible M]`) gives the result with the corner-move sign `(-1)^(i+j)`.
+     **Risk:** confirm Mathlib actually has the division-free `adjugate` form;
+     `det_fromBlocks₂₂` is stated for `Invertible M` only — may need to prove
+     the polynomial version by `Matrix.det_fromBlocks_zero₂₁`-style expansion or
+     a fresh lemma. Sign bookkeeping from the reindex is the main hazard.
+
+   - **Route 2 — reduce to (0,0) then double Laplace.** Move `(i,j)` to `(0,0)`
+     by `Equiv.Perm` row/column swaps, picking up `(-1)^i · (-1)^j = (-1)^(i+j)`
+     on `det A` (via `Matrix.det_permute` / `Matrix.det_submatrix_equiv_self`)
+     while `M` is preserved up to a matching reindex. At `(0,0)` the identity is
+     `det M · A 0 0 − ∑_{p,q} A 0 (q+1) · adj(M) q p · A (p+1) 0 = det A`, which
+     is the first-row Laplace expansion `Matrix.det_succ_row_zero` of `A`
+     combined with `Matrix.adjugate_def` / `mul_adjugate` on `M`. Cleaner sign
+     handling but the perm-reduction lemma `aux (i,j) = aux (0,0)` is itself
+     non-trivial.
+
+   Both are Docker-gated to verify (build infra currently down). The n=0 base
+   `qdetN_step_eq_qdetF_fin_one` is already proved and is a good sanity anchor
+   for either route.
+
+2. **[FOLLOW-ON] Full mutual recursion `qdetN`/`qdetN_inv`.** Replace the
+   explicit-`Minv` parameter of `qdetN_step` with `Minv := (qdetN_inv (minorIJ
+   A i j))` and discharge termination on `n` (`decreasing_by`). Only worth doing
+   after the crux lands.
+
+3. **[FOLLOW-ON] `cramer_rule_nxn_qdet`** over a division ring from the
+   recurrence.
 
 ## Done When
 
-- `qdetF` defined uniformly in n; `qdetF_field_quotient` proved.
-- `qdetN` defined inductively; `qdetN_recurrence` proved.
-- Consistency `qdetN_eq_qdetF` over fields proved.
-- `cramer_rule_nxn_qdet` proved over division rings.
-- All four `axiomCount = 0`; ≤ a small number of clearly-flagged technical
-  `sorry`s (e.g. only termination annotations if structural recursion balks).
+- ✅ `qdetF` defined uniformly in n; `qdetF_field_quotient` proved. **(S2)**
+- ✅ Field bridge `qdetN_step_eq_qdetF` proved modulo the crux. **(S4)**
+- ☐ `qdetN_step_eq_qdetF_aux` discharged → file becomes `sorry`-free and the
+  commutative-consistency direction is unconditional.
+- ☐ (follow-on) `qdetN` defined inductively; mutual-recursion recurrence proved.
+- ☐ (follow-on) `cramer_rule_nxn_qdet` proved over division rings.
+- `axiomCount = 0` maintained (currently 0 across all four files).

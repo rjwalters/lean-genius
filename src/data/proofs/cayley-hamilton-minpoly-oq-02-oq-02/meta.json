@@ -124,6 +124,14 @@
       "endLine": 350,
       "summary": "Proves A and B are not similar via the intertwining matrix argument: AP = PB forces det(P) = 0. Uses pigeonhole on the Leibniz formula.",
       "mathContext": "If $B = P^{-1}AP$ then $AP = PB$. Entry analysis shows $P_{1j} = P_{3j} = 0$ for $j \\neq 1$. In $\\det(P) = \\sum_\\sigma \\text{sgn}(\\sigma) \\prod_i P_{\\sigma(i),i}$, each term needs $\\sigma(\\{0,2,3\\}) \\subseteq \\{0,2\\}$, impossible by pigeonhole."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: The Converse of Similarity Invariance",
+      "startLine": 352,
+      "endLine": 390,
+      "summary": "Closing summary (PART 5): records that cayley-hamilton-minpoly-oq-02 proved similar matrices share a minimal polynomial, while this file proves the converse fails. Tabulates the two Jordan types A = J2(0)+J2(0) and B = J2(0)+J1(0)+J1(0) with equal characteristic polynomial X^4 and minimal polynomial X^2 but distinct invariant factors, explains why (the minimal polynomial sees only the largest block per eigenvalue), names invariant factors / Jordan type as the correct similarity invariant, and lists open follow-ups (rational canonical form, Jordan normal form, full classification).",
+      "mathContext": "The minimal polynomial records the largest Jordan block size per eigenvalue and the characteristic polynomial records the total ($\\sum$ of block sizes); neither captures the full block-size distribution. Over an algebraically closed field, $A \\sim B$ iff they share invariant factors (equivalently elementary divisors / Jordan type). Here $A$ has invariant factors $(X^2, X^2)$ and $B$ has $(X^2, X, X)$: same largest factor (minpoly) and same product (charpoly), but different factors, so $A \\nsim B$."
     }
   ],
   "conclusion": {

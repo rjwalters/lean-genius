@@ -422,6 +422,55 @@ private lemma stirling_step_lower (k : ℕ) (hk : 1 ≤ k) :
     _ ≤ ((k : ℝ) + 1 / 2) * Real.log (1 + 1 / k) - 1 := by
           linarith [mul_le_mul_of_nonneg_left hlog_ge hk_half_pos.le]
 
+/-- Refined upper bound: d_k ≤ 1/(12k²) - 1/(12k³) + 3/(40k⁴) + 1/(10k⁵) for k ≥ 1.
+
+    The earlier `stirling_step_upper` uses the *cubic* log bound and lands at
+    `1/(12k²) + 1/(6k³)`, whose `1/k³` coefficient `+1/6` has the wrong sign. Here we
+    use the sharper *quintic* bound `log_one_plus_le_quintic`:
+      log(1+1/k) ≤ 1/k - 1/(2k²) + 1/(3k³) - 1/(4k⁴) + 1/(5k⁵),
+    and the exact expansion
+      (k+1/2)(1/k - 1/(2k²) + 1/(3k³) - 1/(4k⁴) + 1/(5k⁵)) - 1
+        = 1/(12k²) - 1/(12k³) + 3/(40k⁴) + 1/(10k⁵).
+    The cubic coefficient is now `-1/12`, matching `stirling_step_lower`. Pinning the
+    step's `1/k³` coefficient to `-1/12` on both sides is the analytic key to the
+    second Stirling correction term `1/(288n²)`: it is exactly the discrepancy this
+    refinement removes between the upper and lower step bounds. -/
+private lemma stirling_step_upper_refined (k : ℕ) (hk : 1 ≤ k) :
+    Real.log (stirlingSeq k) - Real.log (stirlingSeq (k + 1)) ≤
+    1 / (12 * (k : ℝ) ^ 2) - 1 / (12 * (k : ℝ) ^ 3)
+      + 3 / (40 * (k : ℝ) ^ 4) + 1 / (10 * (k : ℝ) ^ 5) := by
+  rw [stirling_step_formula k hk]
+  have hk_pos : (0 : ℝ) < k := Nat.cast_pos.mpr (by omega)
+  have h1k_pos : (0 : ℝ) < 1 / (k : ℝ) := by positivity
+  have hlog_le := log_one_plus_le_quintic (1 / k) h1k_pos
+  have hk_half_pos : (0 : ℝ) < (k : ℝ) + 1 / 2 := by positivity
+  calc ((k : ℝ) + 1 / 2) * Real.log (1 + 1 / k) - 1
+      ≤ ((k : ℝ) + 1 / 2) * (1 / k - (1 / k) ^ 2 / 2 + (1 / k) ^ 3 / 3
+          - (1 / k) ^ 4 / 4 + (1 / k) ^ 5 / 5) - 1 := by
+          linarith [mul_le_mul_of_nonneg_left hlog_le hk_half_pos.le]
+    _ = 1 / (12 * (k : ℝ) ^ 2) - 1 / (12 * (k : ℝ) ^ 3)
+          + 3 / (40 * (k : ℝ) ^ 4) + 1 / (10 * (k : ℝ) ^ 5) := by field_simp <;> ring
+
+/-- The refined upper bound is sharper than `stirling_step_upper` for all `k ≥ 2`:
+    the two upper bounds differ by `1/(4k³) - 3/(40k⁴) - 1/(10k⁵)`, which is positive
+    once `k ≥ 1` (dominated by the `1/(4k³)` term). This certifies that the quintic
+    refinement strictly improves the cubic step bound rather than merely restating it. -/
+private lemma stirling_step_refined_sharper (k : ℕ) (hk : 1 ≤ k) :
+    (1 / (12 * (k : ℝ) ^ 2) - 1 / (12 * (k : ℝ) ^ 3)
+      + 3 / (40 * (k : ℝ) ^ 4) + 1 / (10 * (k : ℝ) ^ 5)) ≤
+    1 / (12 * (k : ℝ) ^ 2) + 1 / (6 * (k : ℝ) ^ 3) := by
+  have hk_pos : (0 : ℝ) < k := Nat.cast_pos.mpr (by omega)
+  have hk1 : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+  rw [← sub_nonneg]
+  have heq : 1 / (12 * (k : ℝ) ^ 2) + 1 / (6 * (k : ℝ) ^ 3)
+      - (1 / (12 * (k : ℝ) ^ 2) - 1 / (12 * (k : ℝ) ^ 3)
+        + 3 / (40 * (k : ℝ) ^ 4) + 1 / (10 * (k : ℝ) ^ 5))
+      = (10 * (k : ℝ) ^ 2 - 3 * (k : ℝ) - 4) / (40 * (k : ℝ) ^ 5) := by
+    field_simp; ring
+  rw [heq]
+  apply div_nonneg _ (by positivity)
+  nlinarith [hk1, mul_nonneg (sub_nonneg.2 hk1) hk_pos.le]
+
 -- ═══════════════════════════════════════════════════
 -- Part IIIb: Telescoping Arithmetic Lemmas
 --
@@ -922,6 +971,23 @@ order polynomials. Doesn't change proven mathematical content (still 0 axioms,
 0 sorries) — it widens the toolkit so a future iteration can derive a refined
 step bound `d_k = 1/(12k²) + 1/(120k⁴) + lower-order` and ultimately a two-
 term expansion `|stirlingSeq(n)/√π − (1 + 1/(12n) + 1/(288n²))| ≤ C/n³`.
+
+## Iteration 6 (researcher-9, 2026-06-19)
+
+**Added:** `stirling_step_upper_refined` — the first *use* of the quintic bound
+from Iteration 5. It sharpens the step upper bound to
+`d_k ≤ 1/(12k²) - 1/(12k³) + 3/(40k⁴) + 1/(10k⁵)`, derived from the exact identity
+`(k+1/2)(1/k - 1/(2k²) + 1/(3k³) - 1/(4k⁴) + 1/(5k⁵)) - 1
+   = 1/(12k²) - 1/(12k³) + 3/(40k⁴) + 1/(10k⁵)`.
+
+**Significance:** the cubic step bound `stirling_step_upper` lands at `1/(12k²) + 1/(6k³)`,
+whose `1/k³` coefficient `+1/6` has the *wrong sign*. The quintic refinement pins it to
+`-1/12`, now *matching* `stirling_step_lower`'s `-1/12`. With upper and lower step bounds
+agreeing through the `1/k³` term, the discrepancy that obstructs the second correction
+term `1/(288n²)` is removed — this is the analytic prerequisite for telescoping a
+two-term expansion. Also added `stirling_step_refined_sharper`, certifying the new bound
+is `≤` the old cubic bound for every `k ≥ 1` (difference `(10k²-3k-4)/(40k⁵) ≥ 0`), so the
+refinement strictly improves rather than restates. Still 0 axioms, 0 sorries.
 -/
 
 end StirlingExpansion

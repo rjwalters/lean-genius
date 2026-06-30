@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1118-oq-02",
   "title": "Higher-Dimensional Analogues of Erdős Problem #1118",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -28,29 +28,35 @@
     "goal": "Determine a truthful formulation of the several-complex-variables analogue before attempting formalization."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-29T23:03:00-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "ORIENT",
+    "since": "2026-06-14",
+    "iteration": 2,
+    "focus": "Truthful several-complex-variables formulation drafted: dimension-free order/measure scaffold separated from the genuinely open analytic content (Q1 growth kernel, Q2 threshold pathology).",
+    "blockers": [
+      "Docker build environment down this session; no Lean development attempted, consistent with the formulate-before-formalizing goal.",
+      "No local Mathlib-ready statement of the SCV growth criterion; the Q1 denominator stays conjectural and Q2 pathology persistence stays open."
+    ],
+    "nextAction": "ORIENT: survey SCV value-distribution/Nevanlinna theory for the correct growth denominator and non-degeneracy hypothesis; when Docker returns, add the dimension-free order/measure lemmas (mirroring the parent) and build before shipping any Lean.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Backfilled from local evidence: the OQ-02 research files contain only the OBSERVE scaffold plus the question asking for higher-dimensional analogues of the parent entire-function result. The parent proof metadata and Lean source show a conservative proof boundary: Camera-Gol'dberg/Gol'dberg analytic results are axioms; the set-nesting, finite-measure monotonicity, and threshold upper-set facts are Lean-proved.",
+    "progressSummary": "ORIENT iteration: drafted a truthful several-complex-variables formulation (problem.md, knowledge.md). The deliverable is a split between the dimension-free reusable scaffold and the genuinely open analytic content. Dimension-free/true: superlevel nesting, finite-measure upward monotonicity, and the threshold upper-set property lift to C^n verbatim (same measure_mono proofs); the finiteness question is norm-independent (norm equivalence on C^n); M(r) is monotone because log||f|| is plurisubharmonic. Open/conjectural: the correct non-degeneracy hypothesis on f (non-constant is too weak — fiber cylinders give trivial infinite measure), the Q1 growth kernel (volume factor r^(2n-1) dr is solid, the log log M(r) denominator is conjectural), and whether Gol'dberg's threshold pathologies persist for n >= 2. Corrected a misleading docstring in Erdos1118OQ02.lean that asserted an unfounded closed-form growth rate exp(r^(2n/(2n-1))).",
     "builtItems": [
       "research/problems/erdos-1118-oq-02/problem.md records the open question and links it to parent proof erdos-1118.",
       "proofs/Proofs/Erdos1118Problem.lean contains the parent one-variable definitions and theorems.",
       "src/data/proofs/erdos-1118/meta.json records the parent proof as status axiomatized with 3 axioms, 7 theorems, 13 definitions, and 0 sorries."
     ],
     "insights": [
-      "The higher-dimensional question should not inherit the parent solved status automatically; the local OQ file records a challenging generalization question.",
-      "The parent formalization separates reusable order/measure reasoning from deep analytic content: superlevel nesting, finite-measure monotonicity, and upward closure are proved, while Hayman's growth criterion and Gol'dberg threshold classification are axioms.",
-      "A future formulation needs choices absent from the local notes: scalar versus vector-valued norm, Lebesgue measure on C^n, and the correct maximum-modulus or plurisubharmonic growth invariant."
+      "Dimension-free core: the three parent-proved lemmas (superlevel_nested, finite_measure_monotone, threshold_is_upper_set) use only set inclusion plus monotonicity of measure, so they lift to E(c) = {z in C^n : ||f(z)|| > c} under lambda_2n with the identical proof skeleton (measure_mono + lt_of_le_of_lt).",
+      "Norm-independence: all norms on C^n are equivalent, so whether lambda_2n(E(c)) is finite does not depend on the norm (a norm change only rescales c by a bounded factor). Thus the qualitative SCV theory is norm-free; only quantitative growth constants can depend on the norm.",
+      "Monotone growth via plurisubharmonicity: log||f|| is plurisubharmonic for holomorphic f, so M(r) = max_{||z||=r} ||f(z)|| is non-decreasing with a three-spheres convexity bound — the SCV stand-in for the one-variable maximum modulus.",
+      "Q1 kernel volume scaling: the one-variable kernel r dr is the polar area element; in 2n real dimensions the radial volume element is r^(2n-1) dr, so the natural candidate growth integral is integral of r^(2n-1)/(log log M(r)) dr. The r^(2n-1) factor is solid; the log log M(r) denominator is conjectural.",
+      "Non-degeneracy required: non-constant is too weak in SCV — maps with positive-dimensional fibers, e.g. (z1,z2) -> (z1,0), make E(c) an infinite-measure cylinder trivially. A dominance / generically-finite hypothesis (det Df not identically 0) is the natural fix.",
+      "The higher-dimensional question should not inherit the parent solved status; the parent's deep analytic results are axioms even in one variable, and there is no SCV analogue of Camera/Gol'dberg in the local material."
     ],
     "mathlibGaps": [
       "No local evidence shows a Mathlib-ready statement of the Camera-Gol'dberg theorem in one variable.",
@@ -58,11 +64,11 @@
       "The parent proof currently axiomatizes camera_goldberg_theorem, goldberg_counterexample, and goldberg_threshold_classification."
     ],
     "nextSteps": [
-      "Define the candidate higher-dimensional superlevel set for f : C^n -> C^n and choose a norm on the target.",
-      "Check whether the one-variable monotonicity lemmas generalize to the selected measurable space and measure.",
-      "Survey literature before asserting any Camera-Gol'dberg-style growth criterion in several complex variables."
+      "ORIENT: survey SCV value-distribution / Nevanlinna theory to pin the correct growth denominator replacing log log M(r) and the minimal non-degeneracy hypothesis on f.",
+      "When Docker returns, extend Erdos1118OQ02.lean with the dimension-free order/measure lemmas (superlevel_nested / finite_measure_monotone / threshold_is_upper_set generalized to ||.|| on C^n) and build before shipping any Lean.",
+      "Investigate whether Gol'dberg-style threshold pathologies (gaps in T(f); the four order-types) persist for n >= 2 or whether higher dimension forces extra rigidity."
     ],
-    "markdown": "# Knowledge Base: erdos-1118-oq-02\n\n## Problem Understanding\n\nThis open question asks for higher-dimensional analogues of Erdős Problem #1118 for holomorphic maps `f : C^n -> C^n`. The parent problem concerns one-variable entire functions whose superlevel sets `E(c) = {z : |f z| > c}` have finite planar measure.\n\n## Evidence From Parent Formalization\n\n`proofs/Proofs/Erdos1118Problem.lean` defines the one-variable objects: entire functions, superlevel sets, finite-measure predicates, maximum modulus, threshold sets, and Hayman's growth-integral conjecture.\n\nThe analytic results are not fully proved in Lean. The file axiomatizes `camera_goldberg_theorem`, `goldberg_counterexample`, and `goldberg_threshold_classification`.\n\nThe constructive Lean-proved core consists of `superlevel_nested`, `finite_measure_monotone`, and `threshold_is_upper_set`. The negative answer to the parent threshold question is then derived from the Gol'dberg counterexample axiom with explicit witnesses `m + 1` and `m / 2`.\n\n## Current Research Boundary\n\nNo local evidence provides a specific several-variable theorem statement, growth integral, or Lean development for OQ-02. The next real work is formulation: choose the target norm, the ambient measure on `C^n`, and the correct higher-dimensional growth invariant before attempting proof work.\n"
+    "markdown": "# Knowledge Base: erdos-1118-oq-02\n\n## Problem Understanding\n\nThis open question asks for higher-dimensional analogues of Erdős Problem #1118 for holomorphic maps `f : C^n -> C^n`, with the finite-measure superlevel condition `lambda_2n {z in C^n : ||f(z)|| > c} < infinity`. The parent (erdos-1118) is the one-variable theory; its deep analytic results (Camera-Gol'dberg) are axioms even there, so the SCV question stays genuinely open. The goal is a truthful formulation before formalization.\n\n## Formulation Split (the deliverable)\n\n**Dimension-free / reusable scaffold:**\n- Superlevel nesting `c1 < c2 => E(c2) subset E(c1)`, finite-measure upward monotonicity, and `T(f)` being an upper set all lift to C^n verbatim (only set inclusion + `measure_mono`).\n- Finiteness of `lambda_2n(E(c))` is norm-independent (all norms on C^n are equivalent; a norm change only rescales c by a bounded factor).\n- `M(r) = max_{||z||=r} ||f(z)||` is non-decreasing because `log||f||` is plurisubharmonic (three-spheres convexity).\n\n**Genuinely open / conjectural:**\n- The minimal non-degeneracy hypothesis on f. `Non-constant` is too weak: maps with positive-dimensional fibers (e.g. `(z1,z2) -> (z1,0)`) give infinite-measure cylinders. Candidate: dominance / generically finite (`det Df` not identically 0).\n- The Q1 growth kernel. The volume factor `r^(2n-1) dr` (replacing the planar `r dr`) is solid; the `log log M(r)` denominator is conjectural and there is NO established closed-form threshold.\n- Whether Gol'dberg's threshold pathologies (gaps in `T(f)`; the four order-types) persist for `n >= 2`.\n\n## Lean Status\n\n`proofs/Proofs/Erdos1118OQ02.lean` holds an exploratory scaffold (scalar `f : C^n -> C` framing, 3 theorems, 1 def, 0 axioms, 0 sorries). This iteration corrected a misleading docstring there that asserted an unfounded closed-form growth rate `exp(r^(2n/(2n-1)))`. Adding the dimension-free order/measure lemmas is deferred until the Docker build environment is available, to avoid shipping unverified Lean.\n"
   },
   "tags": [
     "erdos",
@@ -73,7 +79,11 @@
     "open-question"
   ],
   "relatedProofs": [
-    "erdos-1118"
+    "erdos-1",
+    "erdos-11",
+    "erdos-111",
+    "erdos-1118",
+    "erdos-1118-oq-02"
   ],
   "references": {
     "papers": [
@@ -92,12 +102,12 @@
     ]
   },
   "started": "2026-03-30T06:03:08.389Z",
-  "lastUpdate": "2026-03-30T06:03:08.397Z",
+  "lastUpdate": "2026-06-14T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos1118OQ02.lean",
       "filename": "Erdos1118OQ02.lean",
-      "lineCount": 104,
+      "lineCount": 113,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 1,
@@ -108,7 +118,7 @@
     {
       "path": "Proofs/Erdos1118Problem.lean",
       "filename": "Erdos1118Problem.lean",
-      "lineCount": 234,
+      "lineCount": 235,
       "theoremCount": 7,
       "axiomCount": 3,
       "defCount": 13,

@@ -8,11 +8,9 @@
     "phase": "COMPLETED",
     "since": "2026-03-28T20:35:00Z",
     "iteration": 1,
-    "focus": "Fixed false theorem statement (missing nonzero hypothesis).",
-    "blockers": [
-      "Product reindexing (Icc → range) for full proof"
-    ],
-    "nextAction": "Prove product equivalence to eliminate last sorry",
+    "focus": "Axiomatized-complete: source has 0 sorries and 3 axioms (pomerance_observation, ulas_theorem, erdos_selfridge). Earlier product-reindexing sorry no longer present in source.",
+    "blockers": [],
+    "nextAction": "Reduce axiom count if Mathlib gains support for the Ulas / Erdős–Selfridge bounds (no sorries remain).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -20,7 +18,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed single_block_not_square theorem statement — added required nonzero hypothesis (original was FALSE for intervals containing 0, e.g. [0,1] has product 0 = 0²). Sorry remains for product reindexing (connecting Icc-indexed and range-indexed products).",
+    "progressSummary": "COMPLETE (axiomatized): source has 0 sorries and 3 axioms (pomerance_observation, ulas_theorem, erdos_selfridge). The product-reindexing sorry is no longer present; an earlier 5-axiom listing was superseded by a source refactor.",
     "builtItems": [
       "Fixed single_block_not_square: added hne : I.product ≠ 0 hypothesis"
     ],
@@ -28,11 +26,11 @@
       "Original theorem was FALSE: [0,1] has product 0 = 0², so isPerfectSquare holds",
       "Erdős-Selfridge axiom has nonzero hypothesis — theorem needs it too",
       "Product reindexing (∏ m ∈ Icc(a, a+n-1) = ∏ i ∈ range(n), (a+i)) is the main gap",
-      "File has 5 axioms (erdos_selfridge, sawhney, ulas, bauer_bennett, bennett_van_luijk)"
+      "Source now carries 3 axioms (pomerance_observation, ulas_theorem, erdos_selfridge); the earlier 5-axiom listing (erdos_selfridge/sawhney/ulas/bauer_bennett/bennett_van_luijk) was superseded by a refactor"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove product reindexing via Finset.prod_bij or similar"
+      "Reduce axiom count (Ulas / Erdős–Selfridge bounds) — product reindexing already discharged (0 sorries)"
     ]
   },
   "tags": [

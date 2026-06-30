@@ -55,7 +55,7 @@
       }
     ],
     "axiomCount": 3,
-    "lineCount": 214,
+    "lineCount": 215,
     "assumptions": "3 axioms: chen_1998 (Chen 1998 — asymptotic formula), chen_dai_2007 (Chen-Dai 2007 — refined upper bound), chen_dai_2006 (Chen-Dai 2006 — construction is not optimal infinitely often). 2 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,
@@ -83,84 +83,84 @@
   },
   "sections": [
     {
-      "id": "erd-s-problem-441-lcm-bounded",
+      "id": "overview",
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 42,
-      "summary": "Header docstring introducing Erdős Problem #441: LCM-bounded subsets of {1,...,N}. Defines the central question (is Erdős' construction optimal?), states the answer (NO, Chen-Dai 2006), and outlines the formalization structure covering definitions, bounds, and the disproof.",
-      "mathContext": "Header docstring introducing Erdős Problem #441: LCM-bounded subsets of {1,...,N}. Defines the central question (is Erdős' construction optimal?), states the answer (NO, Chen-Dai 2006), and outlines the formalization structure covering definitions, bounds, and the disproof."
+      "summary": "File header for Erdős #441 (LCM-bounded subsets): find g(N), the largest A ⊆ {1,...,N} with lcm[a,b] ≤ N for all a,b ∈ A, and whether Erdős' construction is optimal (it is not). Records the Chen-Dai resolution and imports.",
+      "mathContext": "g(N) ~ (9N/8)^{1/2} (Chen 1998); Erdős' construction is not always optimal (Chen-Dai 2006)."
     },
     {
       "id": "basic-definitions",
-      "title": "Basic Definitions: IsLCMBounded and g(N)",
+      "title": "Part 1: Basic Definitions",
       "startLine": 43,
-      "endLine": 62,
-      "summary": "Defines IsLCMBounded (set A ⊆ {1,...,N} with lcm(a,b) ≤ N for all pairs) and g(N) = sSup{|A| : A is LCM-bounded}. The LCM condition is equivalent to ab ≤ N·gcd(a,b), connecting the problem to divisibility structure.",
-      "mathContext": "Defines IsLCMBounded (set A ⊆ {1,...,N} with lcm(a,b) ≤ N for all pairs) and g(N) = sSup{|A| : A is LCM-bounded}. The LCM condition is equivalent to ab ≤ N·gcd(a,b), connecting the problem to divisibility structure."
+      "endLine": 63,
+      "summary": "Defines IsSubsetOfInterval, HasBoundedLCM, IsLCMBounded, and g N as the maximum size of an LCM-bounded subset of {1,...,N}.",
+      "mathContext": "g(N) = max{ |A| : A ⊆ {1,...,N}, lcm[a,b] ≤ N for all a,b ∈ A }."
     },
     {
       "id": "erdos-construction",
-      "title": "Erdős' Proposed Construction",
-      "startLine": 63,
-      "endLine": 87,
-      "summary": "Defines the two-part construction: IsqrtHalf (all integers ≤ ⌊√(N/2)⌋) ∪ EvenRange (even integers 2k with √(N/2) ≤ 2k ≤ √(2N)). Proves construction_valid: the construction is LCM-bounded by verifying three cases (small-small, even-even, cross) via the GCD-LCM identity.",
-      "mathContext": "Defines the two-part construction: IsqrtHalf (all integers ≤ ⌊√(N/2)⌋) ∪ EvenRange (even integers 2k with √(N/2) ≤ 2k ≤ √(2N)). Proves construction_valid: the construction is LCM-bounded by verifying three cases (small-small, even-even, cross) via the GCD-LCM identity."
+      "title": "Part 2: Erdős' Proposed Construction",
+      "startLine": 64,
+      "endLine": 79,
+      "summary": "Defines ErdosFirstPart, ErdosSecondPart, and ErdosConstruction — integers up to (N/2)^{1/2} together with even integers in [(N/2)^{1/2}, (2N)^{1/2}].",
+      "mathContext": "Erdős' construction: {1,...,⌊(N/2)^{1/2}⌋} ∪ {even k : (N/2)^{1/2} ≤ k ≤ (2N)^{1/2}}."
     },
     {
       "id": "main-question",
-      "title": "The Main Question",
-      "startLine": 88,
-      "endLine": 101,
-      "summary": "Formalizes ErdosQuestion as ∀ N ≥ 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N — a strong claim that turns out to be false.",
-      "mathContext": "Formalizes ErdosQuestion as ∀ N $\\geq$ 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N — a strong claim that turns out to be false."
+      "title": "Part 3: The Main Question",
+      "startLine": 80,
+      "endLine": 93,
+      "summary": "Defines ErdosQuestion (is the construction optimal?) and proves erdos_question_answer: ¬ErdosQuestion, i.e. the construction is not always optimal.",
+      "mathContext": "ErdosQuestion asks whether ErdosConstruction attains g(N); the answer is NO."
     },
     {
       "id": "lower-bounds",
-      "title": "Lower Bounds",
-      "startLine": 102,
-      "endLine": 119,
-      "summary": "Axiomatizes the lower bound g(N) ≥ |ErdosConstruction(N)| (the construction is a valid LCM-bounded set) and Chen's asymptotic lower bound g(N) ≥ √(9N/8) - O(1). The lower bound follows directly from the construction's existence.",
-      "mathContext": "Axiomatizes the lower bound g(N) ≥ |ErdosConstruction(N)| (the construction is a valid LCM-bounded set) and Chen's asymptotic lower bound g(N) ≥ √(9N/8) - O(1). The lower bound follows directly from the construction's existence."
+      "title": "Part 4: Lower Bounds",
+      "startLine": 94,
+      "endLine": 108,
+      "summary": "Defines LowerBound and proves construction_gives_lower_bound: Erdős' construction yields g(N) ≥ (9N/8)^{1/2} - O(1).",
+      "mathContext": "Lower bound g(N) ≥ (9N/8)^{1/2} + O(1) via the explicit construction."
     },
     {
       "id": "upper-bounds",
-      "title": "Upper Bounds (Chen-Dai 2007)",
-      "startLine": 120,
-      "endLine": 140,
-      "summary": "Axiomatizes Chen-Dai's upper bound: g(N) ≤ √(9N/8) + C√(N/log N)·log log N. The error term O(√(N/log N)·log log N) = o(√N) but is ω(1), establishing g(N) ~ √(9N/8) while leaving room for the construction to be suboptimal.",
-      "mathContext": "Axiomatizes Chen-Dai's upper bound: g(N) ≤ √(9N/8) + C√(N/log N)·log log N. The error term O(√(N/log N)·log log N) = o(√N) but is ω(1), establishing g(N) ~ √(9N/8) while leaving room for the construction to be suboptimal."
+      "title": "Part 5: Upper Bounds",
+      "startLine": 109,
+      "endLine": 129,
+      "summary": "Defines ChenAsymptotic (g(N) ~ (9N/8)^{1/2}) with axiom chen_1998, and ChenDaiUpperBound with axiom chen_dai_2007 giving the refined upper bound.",
+      "mathContext": "Chen (1998): g(N) ~ (9N/8)^{1/2}; Chen-Dai (2007): g(N) ≤ (9N/8)^{1/2} + O((N/log N)^{1/2} log log N)."
     },
     {
       "id": "not-optimal",
-      "title": "The Construction is Not Optimal (Chen-Dai 2006)",
-      "startLine": 141,
-      "endLine": 161,
-      "summary": "States ConstructionNotOptimal: ∀M, ∃N > M with g(N) > |ErdosConstruction(N)|. Derives erdos_question_disproved: ¬ErdosQuestion by extracting a witness N from the existential and deriving a contradiction with omega (x > y ∧ x = y → ⊥). This is fully proved in Lean.",
-      "mathContext": "States ConstructionNotOptimal: ∀M, ∃N > M with g(N) > |ErdosConstruction(N)|. Derives erdos_question_disproved: ¬ErdosQuestion by extracting a witness N from the existential and deriving a contradiction with omega (x > y ∧ x = y → ⊥). This is fully proved in Lean."
+      "title": "Part 6: The Construction is Not Optimal",
+      "startLine": 130,
+      "endLine": 150,
+      "summary": "Defines ConstructionNotOptimal with axiom chen_dai_2006, and proves erdos_question_disproved: from non-optimality, ¬ErdosQuestion follows.",
+      "mathContext": "Chen-Dai (2006): for infinitely many N, g(N) exceeds |ErdosConstruction(N)|, disproving optimality."
     },
     {
-      "id": "why-construction-fails",
-      "title": "Why the Construction Fails",
-      "startLine": 162,
-      "endLine": 177,
-      "summary": "Explains the structural reason: for certain N, integers with many small prime factors (highly composite numbers) create additional LCM-bounded elements beyond what the rigid two-part partition allows. The construction treats all integers uniformly within each part, missing divisor-rich opportunities.",
-      "mathContext": "Structural obstruction: for certain $N$, highly composite numbers (many small prime factors) create additional LCM-bounded elements beyond what the rigid two-part partition allows, since the construction treats all integers uniformly and misses divisor-rich opportunities."
+      "id": "failure-analysis",
+      "title": "Parts 7–9: Failure Analysis (Why It Fails, Special Cases, Related Results)",
+      "startLine": 151,
+      "endLine": 162,
+      "summary": "Section banners for the qualitative discussion of why Erdős' construction fails, special cases, and related results; these parts contain expository markers without declarations.",
+      "mathContext": "Expository structure marking the discussion of the construction's non-optimality and adjacent results."
     },
     {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 178,
-      "endLine": 193,
-      "summary": "Examines small N values where the construction can be verified by exhaustive search. For N ≤ 100, the construction appears optimal; counterexamples arise only for larger N where the error term becomes significant.",
-      "mathContext": "Examines small N values where the construction can be verified by exhaustive search. For N ≤ 100, the construction appears optimal; counterexamples arise only for larger N where the error term becomes significant."
+      "id": "constant-9-8",
+      "title": "Part 10: The Constant 9/8",
+      "startLine": 163,
+      "endLine": 175,
+      "summary": "Proves constant_value: √(9/8) = 3/(2√2) ≈ 1.061, the leading constant in the asymptotic g(N) ~ (9N/8)^{1/2}.",
+      "mathContext": "constant_value: Real.sqrt (9/8) = 3/(2·Real.sqrt 2), the asymptotic constant (9/8)^{1/2}."
     },
     {
-      "id": "related-results",
-      "title": "Related Results",
-      "startLine": 194,
+      "id": "summary",
+      "title": "Part 11: Summary",
+      "startLine": 176,
       "endLine": 214,
-      "summary": "Contextualizes within the LCM problem family: connections to Erdős #440 (consecutive LCM), #442 (dense set LCM), and the broader multiplicative combinatorics literature including Szemerédi-type results for multiplicative structures.",
-      "mathContext": "Contextualizes within the LCM problem family: connections to Erdős #440 (consecutive LCM), #442 (dense set LCM), and the broader multiplicative combinatorics literature including Szemerédi-type results for multiplicative structures."
+      "summary": "Proves erdos_441_solved (ChenAsymptotic ∧ ChenDaiUpperBound ∧ ConstructionNotOptimal) and erdos_441_summary (the answer to Erdős' question is NO), and records erdos_441_status as SOLVED.",
+      "mathContext": "erdos_441_solved bundles the three axiomatized results; erdos_441_summary derives ¬ErdosQuestion."
     }
   ],
   "conclusion": {
@@ -189,7 +189,7 @@
       "Finset"
     ],
     "namespace": "Erdos441",
-    "lineCount": 214,
+    "lineCount": 215,
     "axiomCount": 3,
     "theoremCount": 6,
     "definitionCount": 13,

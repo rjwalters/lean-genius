@@ -8,10 +8,9 @@
     "phase": "COMPLETED",
     "since": "2026-03-28T20:25:00Z",
     "iteration": 1,
-    "focus": "Assessed — sorry and axioms are all deep results.",
+    "focus": "Axiomatized-complete: source has 0 sorries and 3 axioms (sawhney_upper_bound, sawhney_lower_bound, case_k_2). Earlier croot_existence sorry no longer present in source.",
     "blockers": [
-      "croot_existence: probabilistic method (Croot)",
-      "case_k_2 axiom could be proved computationally but needs reformulation"
+      "case_k_2 axiom could be discharged computationally but needs finite-domain reformulation"
     ],
     "nextAction": "Convert case_k_2 axiom to theorem via finite check",
     "attemptCounts": {
@@ -21,7 +20,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 1 sorry (croot_existence — deep), 3 axioms. The case_k_2 axiom (HasKEgyptianProperty 120 2) is the most tractable: it's a finite combinatorial check over 2^15 colorings of properDivisors(120). But the ∀ c : ℕ → Fin 2 quantifier has infinite domain, requiring reformulation before decide/native_decide.",
+    "progressSummary": "COMPLETE (axiomatized): source has 0 sorries and 3 axioms (sawhney_upper_bound, sawhney_lower_bound, case_k_2). The croot_existence sorry is no longer present; case_k_2 remains a candidate for computational discharge.",
     "builtItems": [],
     "insights": [
       "properDivisors(120) = {1,2,3,4,5,6,8,10,12,15,20,24,30,40,60} — 15 elements",
@@ -31,8 +30,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Reformulate case_k_2 to use finite domain (Fin 15 → Fin 2) and prove via native_decide",
-      "The main sorry (croot_existence) is beyond current formalization capacity"
+      "Reformulate case_k_2 to use finite domain (Fin 15 → Fin 2) and prove via native_decide"
     ]
   },
   "tags": [

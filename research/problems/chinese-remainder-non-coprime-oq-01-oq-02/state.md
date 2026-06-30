@@ -5,7 +5,7 @@
 **Path**: full
 **Since**: 2026-06-13
 **Iteration**: 2
-**Status**: surveyed
+**Status**: blocked (survey complete; only ACT remains, build-gated by the 2026-06-13 verification blackout)
 
 ## Current Focus
 Paper resolution of the full k-modulus Garner algorithm complete. The algorithm,

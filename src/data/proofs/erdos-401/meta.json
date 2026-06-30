@@ -56,13 +56,13 @@
       "Definition of FactorialDivides predicate",
       "Axiom erdos_graham_baseline (a₁ + a₂ ≤ n + O(log n) bound)",
       "Theorem legendre_formula (proved from Mathlib via pow_multiplicity_dvd + sub_one_mul_multiplicity_factorial)",
-      "Definition of TendsToInfty for functions",
-      "Definition of Erdos401Conjecture using Filter.Frequently",
+      "Definition of Erdos401Conjecture using Filter.Tendsto (for f(r) → ∞) and Filter.Frequently",
+      "Theorems unbounded_excess and erdos_401_complete (proved consequences of the axioms)",
       "Axiom barreto_leeham_401 (main proof)",
       "Definition and axiom for Erdos401Strong (the false version)",
       "Axiom sothanaphan_counterexample",
-      "Definition of g₂ and g₂_modified functions",
-      "Connection to Problem #729"
+      "Theorem padic_valuation_factorial_bound (p-adic valuation of n! via Legendre's formula)",
+      "Definition of g₂ and g₂_modified functions"
     ],
     "axiomCount": 3,
     "lineCount": 319,
@@ -74,7 +74,7 @@
     "historicalContext": "This problem comes from Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. It is closely related to Problems #400 and #729.\n\n**The g_k Function**: Problem #400 introduced g_k(n), the maximum of (a₁ + ... + a_k) - n subject to a₁!...a_k! | n!. Erdős-Graham showed g_k(n) ≪ log(n).\n\n**The Extra Factors**: Problem #401 asks what happens when we multiply n! by prime powers 2ⁿ3ⁿ...p_rⁿ. These extra factors provide additional 'room' for the factorial divisibility.\n\n**Resolution**: In 2026, Barreto and Leeham proved the answer is YES using AI-assisted methods. Interestingly, Sothanaphan showed that the stronger version (for ALL large n) is FALSE, using the counterexample n = p_{r+1}^k - 1.",
     "problemStatement": "**Erdős Problem #401**: Is there some function $f(r)$ such that $f(r) \\to \\infty$ as $r \\to \\infty$, such that for infinitely many $n$, there exist $a_1, a_2$ with\n$$a_1 + a_2 > n + f(r) \\log n$$\nsuch that $a_1! a_2! \\mid n! \\cdot 2^n \\cdot 3^n \\cdots p_r^n$?\n\n**Answer**: YES (Barreto-Leeham 2026)\n\n**Key Subtlety**: The quantifier 'for infinitely many n' is essential. The version with 'for all large n' is FALSE.\n\n**Counterexample to Strong Version**: Sothanaphan showed that taking $n = p_{r+1}^k - 1$ forces $a_1 + a_2 \\leq n + 2p_{r+1}$, which is bounded.",
     "text": "Does there exist f(r) → ∞ such that for infinitely many n, there exist a₁, a₂ with a₁ + a₂ > n + f(r)·log(n) where a₁!·a₂! | n!·2ⁿ·3ⁿ·...·pᵣⁿ? YES (Barreto-Leeham 2026). The 'for all large n' version is FALSE (Sothanaphan).",
-    "proofStrategy": "The formalization captures both the positive result and the counterexample:\n\n1. **Infrastructure**:\n   - `nthPrime`: The r-th prime via Nat.nth\n   - `primorialPow`: Product 2ⁿ·3ⁿ·...·p_rⁿ\n   - `FactorialDivides`: The central divisibility condition\n\n2. **Baseline**:\n   - `erdos_graham_baseline`: Without extra factors, a₁ + a₂ ≤ n + O(log n)\n\n3. **The Conjecture**:\n   - `TendsToInfty`: f(r) → ∞ as r → ∞\n   - `Erdos401Conjecture`: Existence of such f with infinitely many n\n\n4. **Resolution**:\n   - `barreto_leeham_401`: The main YES result (axiom)\n   - `erdos_401_proved`: The theorem statement\n\n5. **Counterexample**:\n   - `Erdos401Strong`: The false 'for all large n' version\n   - `sothanaphan_counterexample`: Proof it's false",
+    "proofStrategy": "The formalization captures both the positive result and the counterexample:\n\n1. **Infrastructure**:\n   - `nthPrime`: The r-th prime via Nat.nth\n   - `primorialPow`: Product 2ⁿ·3ⁿ·...·p_rⁿ\n   - `FactorialDivides`: The central divisibility condition\n\n2. **Baseline**:\n   - `erdos_graham_baseline`: Without extra factors, a₁ + a₂ ≤ n + O(log n)\n\n3. **The Conjecture**:\n   - `Erdos401Conjecture`: existence of f with `Filter.Tendsto f atTop atTop` (f(r) → ∞) and infinitely many n\n\n4. **Resolution**:\n   - `barreto_leeham_401`: The main YES result (axiom)\n   - `erdos_401_proved`: The theorem statement\n   - `unbounded_excess`, `erdos_401_complete`: proved consequences\n\n5. **Counterexample**:\n   - `Erdos401Strong`: The false 'for all large n' version\n   - `sothanaphan_counterexample`: Proof it's false",
     "keyInsights": [
       "**Quantifier sensitivity**: The problem has different answers depending on 'infinitely many n' vs 'all large n'. This subtlety was clarified through the counterexample.",
       "**Prime power factors matter**: The primorial factors 2ⁿ3ⁿ...p_rⁿ fundamentally change the divisibility landscape, allowing larger a₁ + a₂ values.",
@@ -90,83 +90,99 @@
   "sections": [
     {
       "id": "header",
-      "title": "Problem Overview",
+      "title": "File Header and Problem Statement",
       "startLine": 1,
-      "endLine": 37,
-      "summary": "Problem statement, background, and solution summary.",
-      "mathContext": "Mathematical content: Problem statement, background, and solution summary."
+      "endLine": 56,
+      "summary": "Docstring statement of Erdős Problem #401 (does some f(r)→∞ allow a₁+a₂ > n + f(r)·log n with a₁!·a₂! | n!·2ⁿ3ⁿ⋯pᵣⁿ for infinitely many n?), background tying it to Problem #400's g_k, the YES answer (Barreto–Leeham 2026), the Sothanaphan counterexample to the 'all large n' variant, and references; followed by Mathlib imports, opened namespaces, and the `noncomputable section`/`namespace Erdos401` setup.",
+      "mathContext": "Problem statement, historical background, and the Lean preamble (imports, `open Nat Real BigOperators Finset Filter`, namespace)."
     },
     {
       "id": "primes",
-      "title": "Prime Infrastructure",
-      "startLine": 45,
-      "endLine": 53,
-      "summary": "nthPrime and primorialPow definitions.",
-      "mathContext": "Formal definition: nthPrime and primorialPow definitions."
+      "title": "Part I — Prime Infrastructure",
+      "startLine": 57,
+      "endLine": 71,
+      "summary": "Core definitions: `nthPrime r` (the r-th prime via `Nat.nth Nat.Prime`, 0-indexed), `primorial r` (product of the first r primes), and `primorialPow r n` (product of the first r primes each raised to the n-th power, i.e. 2ⁿ3ⁿ⋯pᵣⁿ).",
+      "mathContext": "Definitions of `nthPrime`, `primorial`, and `primorialPow` over `Finset.range`."
+    },
+    {
+      "id": "prime-properties",
+      "title": "Part II — Prime Properties",
+      "startLine": 72,
+      "endLine": 91,
+      "summary": "Basic facts about `nthPrime`, all proved: each value is prime (`nthPrime_prime`), is ≥ 2 (`nthPrime_ge_two`), is positive (`nthPrime_pos`), and the sequence is strictly monotone (`nthPrime_strictMono`).",
+      "mathContext": "Theorems establishing primality, positivity, and strict monotonicity of the prime sequence, derived from `Nat.nth` lemmas on the infinite set of primes."
+    },
+    {
+      "id": "primorial-properties",
+      "title": "Part III — Primorial Properties",
+      "startLine": 92,
+      "endLine": 133,
+      "summary": "Proved properties of the primorial and its powered form: `primorial_zero` (empty product = 1), `primorial_succ` (recursion), `primorial_pos`, `primorial_mono` (monotone), `primorialPow_zero`, and `primorialPow_pos`.",
+      "mathContext": "Positivity, monotonicity, and recursion lemmas for `primorial` and `primorialPow`, proved via `Finset.prod_range_succ` and `Finset.prod_pos`."
     },
     {
       "id": "divides",
-      "title": "Divisibility Predicate",
-      "startLine": 54,
-      "endLine": 59,
-      "summary": "FactorialDivides definition.",
-      "mathContext": "Formal definition: FactorialDivides definition."
+      "title": "Part IV — Divisibility Predicate and Properties",
+      "startLine": 134,
+      "endLine": 178,
+      "summary": "The factorial-divisibility predicate `FactorialDivides a₁ a₂ n r` ((a₁!·a₂!) | (n!·primorialPow r n)) and its proved properties: classical divisibility implies it (`classical_implies_factorialDivides`), symmetry in a₁,a₂, the trivial (a,0) case, reduction to classical divisibility at r=0 (`factorialDivides_zero_r`), and monotonicity in r (`factorialDivides_mono_r`).",
+      "mathContext": "Definition of `FactorialDivides` and structural lemmas (symmetry, r=0 reduction, monotonicity in r) via divisibility transitivity and `Finset.prod_dvd_prod_of_subset`."
     },
     {
       "id": "baseline",
-      "title": "Erdős-Graham Baseline",
-      "startLine": 60,
-      "endLine": 68,
-      "summary": "The O(log n) bound without extra factors.",
-      "mathContext": "The $O($\\log n$)$ bound without extra factors."
+      "title": "Part V — The Erdős–Graham Baseline",
+      "startLine": 179,
+      "endLine": 189,
+      "summary": "The `erdos_graham_baseline` axiom: without the extra prime-power factors, a₁!·a₂! | n! forces a₁+a₂ ≤ n + C·log n for some constant C>0. This O(log n) bound is the baseline that Problem #401 asks whether one can exceed.",
+      "mathContext": "Axiom recording the Erdős–Graham O(log n) excess bound for classical factorial divisibility."
     },
     {
       "id": "conjecture",
-      "title": "The Conjecture",
-      "startLine": 69,
-      "endLine": 82,
-      "summary": "TendsToInfty and Erdos401Conjecture definitions.",
-      "mathContext": "Formal definition: TendsToInfty and Erdos401Conjecture definitions."
-    },
-    {
-      "id": "proof",
-      "title": "Main Proof",
-      "startLine": 83,
-      "endLine": 100,
-      "summary": "Barreto-Leeham axiom and erdos_401_proved theorem.",
-      "mathContext": "Verified: Barreto-Leeham axiom and erdos_401_proved theorem."
+      "title": "Part VI — The Conjecture and Main Results",
+      "startLine": 190,
+      "endLine": 208,
+      "summary": "The formal conjecture `Erdos401Conjecture` (∃ f→∞ such that for every r, infinitely often there exist a₁,a₂ with FactorialDivides and a₁+a₂ > n + f(r)·log n), the `barreto_leeham_401` axiom asserting its truth, and `erdos_401_proved` discharging the conjecture from that axiom.",
+      "mathContext": "Definition of `Erdos401Conjecture` using `Filter.Tendsto … atTop` and `∃ᶠ … in atTop`; the Barreto–Leeham result recorded as an axiom and re-exported as a theorem."
     },
     {
       "id": "counterexample",
-      "title": "Sothanaphan Counterexample",
-      "startLine": 101,
-      "endLine": 116,
-      "summary": "Erdos401Strong definition and sothanaphan_counterexample.",
-      "mathContext": "Formal definition: Erdos401Strong definition and sothanaphan_counterexample."
+      "title": "Part VII — The Sothanaphan Counterexample",
+      "startLine": 209,
+      "endLine": 223,
+      "summary": "The strengthened 'for all large n' variant `Erdos401Strong` and the `sothanaphan_counterexample` axiom showing it is FALSE — the witness n = p_{r+1}^k − 1 (one less than a prime power) forces bounded excess.",
+      "mathContext": "Definition of `Erdos401Strong` and the axiom `¬Erdos401Strong` recording Sothanaphan's refutation of the uniform variant."
+    },
+    {
+      "id": "consequences",
+      "title": "Part VIII — Consequences",
+      "startLine": 224,
+      "endLine": 249,
+      "summary": "Theorems proved from the axioms above: `unbounded_excess` (for every bound C some r makes a₁+a₂ > n + C·log n infinitely often, via tendsto of f) and `erdos_401_complete` (the full resolution: the conjecture holds while its uniform strengthening fails).",
+      "mathContext": "Proved corollaries combining `erdos_401_proved` and `sothanaphan_counterexample`; uses `Filter.tendsto_atTop` and `Real.log_natCast_nonneg`."
+    },
+    {
+      "id": "legendre",
+      "title": "Part IX — Legendre's Formula Connection",
+      "startLine": 250,
+      "endLine": 276,
+      "summary": "Legendre's formula as the tool underlying the baseline: `legendre_formula` ((p−1)·ν_p(n!) = n − s_p(n), the base-p digit sum) proved from Mathlib's `Nat.Prime.sub_one_mul_multiplicity_factorial`, and `padic_valuation_factorial_bound` giving v ≤ n/(p−1) with p^v | n!.",
+      "mathContext": "Theorems expressing the p-adic valuation of n! via the digit-sum form of Legendre's formula, using `multiplicity` and `pow_multiplicity_dvd`."
     },
     {
       "id": "g-functions",
-      "title": "The g₂ Functions",
-      "startLine": 117,
-      "endLine": 141,
-      "summary": "g₂, g₂_modified, and reformulation.",
-      "mathContext": "Mathematical content: g₂, g₂_modified, and reformulation."
-    },
-    {
-      "id": "connections",
-      "title": "Connection to #729",
-      "startLine": 142,
-      "endLine": 152,
-      "summary": "erdos_729_connection axiom.",
-      "mathContext": "Axiomatized: erdos_729_connection axiom."
+      "title": "Part X — Connection to Problem #400 (g₂ function)",
+      "startLine": 277,
+      "endLine": 293,
+      "summary": "Definitions linking to Problem #400: `g₂ n` (the supremum of a₁+a₂−n over classical divisibility) and `g₂_modified n r` (the same with the enhanced `FactorialDivides` constraint), formalizing the excess functions whose growth the problem concerns.",
+      "mathContext": "Definitions of the excess functions `g₂` and `g₂_modified` as suprema (`sSup`) over factorial-divisibility witness sets."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 153,
+      "title": "Part XI — Summary",
+      "startLine": 294,
       "endLine": 319,
-      "summary": "Problem status and key results.",
-      "mathContext": "Mathematical content: Problem status and key results."
+      "summary": "Closing prose recap: the answer is YES (Barreto–Leeham 2026), the primorial factors supply the extra room, the same construction handles Problem #729, and the uniform variant is false (Sothanaphan); notes the 3-axiom budget and the `#check` verification commands.",
+      "mathContext": "Narrative summary of the result, axiom budget, and key points; final `#check` statements verifying the exported declarations."
     }
   ],
   "conclusion": {

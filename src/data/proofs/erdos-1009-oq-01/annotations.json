@@ -49,7 +49,7 @@
     "id": "optimal-bound-sinf",
     "proofId": "erdos-1009-oq-01",
     "range": { "startLine": 84, "endLine": 121 },
-    "type": "definition",
+    "type": "theorem",
     "title": "optimalBound as sInf: The Infimum of Valid Constants",
     "content": "optimalBound is defined as sInf {C : ℝ | ValidBound C} — the real infimum (greatest lower bound) of the set of all valid bound constants. This is noncomputable since sInf on ℝ uses classical logic.\n\nFour properties are proved:\n1. validBounds_bddBelow: the set is bounded below by 0 (from ValidBound.nonneg)\n2. optimalBound_le: for any valid C, optimalBound ≤ C (by csInf_le)\n3. optimalBound_nonneg: optimalBound ≥ 0 (by le_csInf with the valid set nonempty + each member ≥ 0)\n4. lt_optimalBound_not_valid: C < optimalBound → ¬ValidBound C (contrapositive of optimalBound_le)\n\nThe proof of optimalBound_nonneg uses `le_csInf` from Mathlib, which requires: (a) the set is nonempty (from validBound_exists), and (b) every member is ≥ 0 (from ValidBound.nonneg).",
     "mathContext": "In analysis: $C^* = \\inf\\{C : \\forall c > 0, f(c) \\leq Cc^2\\} = \\sup_{c>0} \\frac{f(c)}{c^2}$. The second equality holds by duality of inf/sup for linear constraints. In Lean: `sInf` on ℝ requires `BddBelow` (≥ 0 suffices) and `Nonempty` (from Györi's theorem). `csInf_le` gives the upper bound property; `le_csInf` gives the lower bound property.",

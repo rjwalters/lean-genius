@@ -30,6 +30,7 @@
     "content": "A real number $x$ is **irrational** if for all integers $p, q$ with $q \\neq 0$, we have $x \\neq p/q$. This is the negation of rationality: there is no way to express $x$ as a ratio of integers.",
     "mathContext": "In Lean, this is a universal statement: `\u2200 p q : \u2124, q \u2260 0 \u2192 x \u2260 p / q`. The proof will show this holds for $x = \\sqrt{2}$ by contradiction.",
     "significance": "key",
+    "prerequisites": [],
     "relatedConcepts": [
       "rational numbers",
       "negation",
@@ -48,6 +49,7 @@
     "content": "Two integers $p$ and $q$ are **coprime** (or relatively prime) if their greatest common divisor is 1: $\\gcd(p, q) = 1$. Equivalently, they share no prime factors.",
     "mathContext": "Every rational number can be written in lowest terms $p/q$ where $p$ and $q$ are coprime. This is crucial for the contradiction\u2014if both are even, they're not coprime.",
     "significance": "key",
+    "prerequisites": [],
     "relatedConcepts": [
       "GCD",
       "lowest terms",
@@ -66,6 +68,7 @@
     "content": "**The key lemma**: If $n^2$ is even, then $n$ is even. The proof uses the contrapositive: assume $n$ is odd, show $n^2$ is odd, contradicting that $n^2$ is even.",
     "mathContext": "Why does odd$^2$ = odd? Write $n = 2k+1$. Then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which is odd. The tactic `Odd.pow` handles this in Lean.",
     "significance": "key",
+    "prerequisites": [],
     "relatedConcepts": [
       "contrapositive",
       "parity",
@@ -170,6 +173,9 @@
     "content": "From $\\sqrt{2} = p/q$, we square both sides to get $2 = p^2/q^2$, hence $p^2 = 2q^2$. This eliminates the square root and gives us an equation in integers.",
     "mathContext": "This is the key algebraic step. In Lean, `congrArg (\u00b7^2)` applies squaring to both sides of an equation.",
     "significance": "key",
+    "prerequisites": [
+      "ann-sqrt2-irrational-def"
+    ],
     "relatedConcepts": [
       "algebraic manipulation",
       "congruence"

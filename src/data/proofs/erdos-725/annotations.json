@@ -197,7 +197,7 @@
       "startLine": 144,
       "endLine": 150
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "GeneralAsymptotic and ExtendedConjecture",
     "content": "`GeneralAsymptotic` asks for any function $f(k,n)$ with $L(k,n)/f(k,n) \\to 1$ for all $k \\leq n$. `ExtendedConjecture` specifically conjectures that the Erdős-Kaplansky formula $e^{-\\binom{k}{2}} (n!)^k$ remains valid when $k/n \\to c$ for $0 < c < 1$. Both remain **OPEN** beyond the Yamamoto regime $k \\leq n^{1/3-o(1)}$.",
     "mathContext": "For $k = \\Theta(n)$, the Erdős-Kaplansky heuristic breaks down because the column collision events are no longer approximately independent. The regime $k > n^{1/3}$ requires handling strong correlations between column constraints. McKay and Wanless (2005) made progress for $k = o(n^{6/7})$, but the general case with $k$ proportional to $n$ remains open.",

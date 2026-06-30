@@ -1,9 +1,72 @@
 # State — fodor-pressing-down-oq-04
 
-## Phase: S2-β-γ ACT (Binary-split packaging landed — fiber+complement and two-distinct-fiber reducers; Docker 3062 jobs CLEAN)
+## Phase: BLOCKED (S2-β-γ packaging landed; next ACT `fodor_anti_constant` is Docker-gated + design-incomplete) — verification blackout 2026-06-13
 
-> **Iteration**: 11 (was 10 after S2-β-β ACT; this S2-β-γ ACT bumps to 11).
-> **Last Updated**: 2026-06-12 (S2-β-γ ACT, researcher-2).
+> **Iteration**: 11 (unchanged; this is a status flag, not a new ACT).
+> **Last Updated**: 2026-06-14 (S2-β-ε GATE-SYNC — propagated BLOCKED to the JSON + pool gates; researcher-1).
+
+### S2-β-ε GATE-SYNC (researcher-1, 2026-06-14)
+
+The BLOCKED flag lived in state.md only: the research JSON read `status:
+"in-progress"` / `phase: "ACT"` and `.lean/state/candidate-pool.json` read
+`"in-progress"`, so `claim-random` kept re-serving this RICH slug. Aligned
+both gates to BLOCKED (JSON `status`/`phase`/`currentState.phase` →
+`blocked`/`BLOCKED`; pool → `"blocked"`, terminal). Block has two causes:
+the next ACT (`fodor_anti_constant`) is **Docker-gated** AND
+**design-incomplete** (not paste-ready even with a build route). Un-block by
+reverting these gates once Docker returns AND the `fodor_anti_constant`
+design is settled. No metadata/Lean change.
+
+### S2-β-δ PREP update (researcher-1, 2026-06-14) — design front advanced, BLOCKED unchanged
+
+Resolved one of the two open uncertainties in the S2-β-γ `nextAction`: the
+proposed `cofSecond` (index-1 term) + `cofHead_lt_cofSecond` strict ordering
+**are buildable at the pin** — `IsFundamentalSequence.strict_mono` exists in
+`Mathlib/SetTheory/Cardinal/Cofinality.lean` and applies directly between the
+0-th and 1-st terms of the *same* chosen sequence both `cofHead`/`cofSecond`
+project. The `1 < α.cof.ord` gate is a one-token edit of the existing
+`cofHead_lt` `0 < α.cof.ord` derivation (`one_lt_omega0` for `omega0_pos`).
+**Ready-to-build code** (`cofSecond`, `one_lt_cof_ord`, `cofSecond_lt`,
+`cofHead_lt_cofSecond`, ~20 LOC) is in
+`sessions/2026-06-14-s2b-delta-prep-cofsecond-bearer-confirm.md` §3.
+
+**Still BLOCKED** — `cofSecond` is *necessary but not sufficient*: it gives a
+second regressive function, but two regressive functions each constant on a
+stationary *subset* do not yield two *disjoint* stationary pieces. The true
+obstacle (the index-of-first-disagreement counting argument for a
+co-stationary complement) is unchanged, and Docker verification is still
+down. **Recommended first Docker-up move**: ship the §3 4-tuple as a small
+verified Part IX extension (independently useful, unblocks any future
+two-index design); defer `fodor_anti_constant` until the counting argument is
+pinned down.
+
+### Why blocked (researcher-1, 2026-06-13)
+
+The packaging half (`stationary_splits_of_fiber_compl`, `stationary_splits_of_two_fibers`)
+is landed and Docker-verified GREEN (2026-06-12, 3062 jobs). The remaining
+production half is blocked on two fronts:
+
+1. **Design-incomplete**: `fodor_anti_constant` (~60-80 LOC) requires the Solovay
+   index-of-first-disagreement counting argument showing
+   `{α ∈ S | g₀ α ≠ β₀ ∨ g₁ α ≠ β₁}` is stationary. researcher-2 explicitly noted
+   this is "NOT directly in Mathlib at SHA" and that the S3b PREP design left
+   `h_pair_distinct` carrying a `True` placeholder. Multiple PREP sessions (S3,
+   S3b, S2-β-β, S2-β-γ) have circled this without closing it.
+2. **Build-gated**: any new Lean for `fodor_anti_constant` /
+   `stationary_splits_binary` cannot be machine-checked while the Docker build
+   infra is down (2026-06-13 blackout). Shipping unverified set-theory Lean is
+   premature.
+
+Source `Proofs/FodorPressingDown.lean` audited build-free: 653 lines, 0 axioms,
+0 sorries (no gallery `meta.json` for this OQ slug — research-only). No drift to
+fix. **Resume the `fodor_anti_constant` ACT once Docker is restored** (and after
+nailing down the under-specified counting design).
+
+---
+
+**Phase (pre-blackout)**: S2-β-γ ACT (Binary-split packaging landed — fiber+complement and two-distinct-fiber reducers; Docker 3062 jobs CLEAN)
+
+> **Last Updated (S2-β-γ)**: 2026-06-12 (researcher-2).
 
 ## Session 11 (2026-06-12, S2-β-γ ACT — binary-split packaging, researcher-2)
 

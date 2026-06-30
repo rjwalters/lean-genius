@@ -16,7 +16,11 @@
       "Additive combinatorics",
       "Probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "number theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e772-sidon-def",
@@ -35,7 +39,11 @@
       "Sum-free sets",
       "Additive bases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "number theory",
+      "Lean 4 Finset basics"
+    ]
   },
   {
     "id": "ann-e772-quadruple",
@@ -53,7 +61,11 @@
       "Additive equations"
     ],
     "mathContext": "See annotation content for formal details of additive quadruples",
-    "prerequisites": []
+    "prerequisites": [
+      "additive number theory",
+      "logic and quantifiers",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e772-representation",
@@ -72,7 +84,11 @@
       "Sumsets",
       "Sidon sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "functional analysis basics",
+      "counting arguments"
+    ]
   },
   {
     "id": "ann-e772-h-k",
@@ -91,7 +107,11 @@
       "Extremal combinatorics"
     ],
     "mathContext": "See annotation content for formal details of the function h_k(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "real analysis (suprema)",
+      "Lean 4 noncomputable definitions"
+    ]
   },
   {
     "id": "ann-e772-upper",
@@ -109,7 +129,11 @@
       "Asymptotic bounds",
       "Erdős problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "double counting"
+    ]
   },
   {
     "id": "ann-e772-basic-lower",
@@ -127,7 +151,11 @@
       "Ramsey theory"
     ],
     "mathContext": "See annotation content for formal details of basic lower bound",
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "greedy/Ramsey-type arguments",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e772-alon-erdos",
@@ -145,7 +173,11 @@
       "Probabilistic method",
       "Alon-Erdős paper"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "additive combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e772-corollaries",
@@ -163,7 +195,11 @@
       "Erdős problems"
     ],
     "mathContext": "See annotation content for formal details of corollaries: answering erdős's questions",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis (limits)",
+      "inequalities"
+    ]
   },
   {
     "id": "ann-e772-probabilistic",
@@ -182,7 +218,11 @@
       "Random sampling",
       "Expected value"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "expected value and linearity",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e772-optimal",
@@ -200,6 +240,10 @@
       "Asymptotic bounds"
     ],
     "mathContext": "See annotation content for formal details of optimal bounds theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "Lean 4 tactic mode"
+    ]
   }
 ]

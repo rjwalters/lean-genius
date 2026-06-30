@@ -1,0 +1,118 @@
+[
+  {
+    "id": "ann-mvt02oq01oq01-header",
+    "proofId": "mean-value-theorem-oq-02-oq-01-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 4,
+      "endLine": 46
+    },
+    "title": "Extending exp Taylor convergence to the whole real line",
+    "content": "The module docstring states the lead open question of mean-value-theorem-oq-02-oq-01: the parent proved ∑_{k≤n} xᵏ/k! → exp x only for x > 0, because its convergence engine taylorPolynomial_tendsto is built on an interval (a,b) with a < b. This file supplies the missing x ≤ 0. The strategy is REFLECTION rather than a new leftward Taylor remainder: for x < 0 apply the parent's one-sided lemma to t ↦ exp(-t) on the positive interval (0,-x). The honesty note records that the negative case still flows from the MVT/Taylor remainder machinery — the reflection is exactly the device that lets the one-sided lemma reach the left half-line — and that Mathlib already knows the exp series converges everywhere; the contribution is this MVT-rooted, reflection-based derivation.",
+    "mathContext": "Target: $\\forall x\\in\\mathbb{R},\\ \\sum_{k\\le n}\\frac{x^k}{k!}\\to e^x$, completing the parent's $x>0$ result.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Taylor series convergence",
+      "reflection / change of variable",
+      "exponential function",
+      "one-sided Taylor remainder"
+    ],
+    "prerequisites": [
+      "parent remainder-convergence lemma taylorPolynomial_tendsto",
+      "iterated derivatives",
+      "limits of sequences"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq01oq01-deriv-exp-neg",
+    "proofId": "mean-value-theorem-oq-02-oq-01-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 58,
+      "endLine": 66
+    },
+    "title": "deriv_exp_neg: first derivative of the reflected exponential",
+    "content": "deriv (fun t => Real.exp (-t)) x = -Real.exp (-x). Proved by exhibiting a HasDerivAt: the inner map t ↦ -t has derivative -1 (hasDerivAt_id.neg), exp has derivative exp(-x) at -x (Real.hasDerivAt_exp), and HasDerivAt.comp multiplies them to exp(-x)·(-1) = -exp(-x); simpa normalizes the composite to the lambda form, and .deriv extracts the derivative value. This is the base step for the iterated-derivative computation.",
+    "mathContext": "$\\frac{d}{dt}e^{-t} = -e^{-t}$ by the chain rule.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "chain rule",
+      "HasDerivAt.comp",
+      "derivative of negation"
+    ],
+    "prerequisites": [
+      "HasDerivAt and HasDerivAt.comp",
+      "Real.hasDerivAt_exp"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq01oq01-iterated-deriv-exp-neg",
+    "proofId": "mean-value-theorem-oq-02-oq-01-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    },
+    "title": "iteratedDeriv_exp_neg: every iterated derivative of exp(-t)",
+    "content": "iteratedDeriv n (fun t => Real.exp (-t)) = fun t => (-1)ⁿ · Real.exp (-t). Induction on n: the base case is simp; the step rewrites iteratedDeriv (k+1) = deriv (iteratedDeriv k), substitutes the induction hypothesis (-1)ᵏ·exp(-t), pulls the constant out with deriv_const_mul (differentiability supplied by fun_prop), applies deriv_exp_neg, and closes the sign bookkeeping (-1)ᵏ·(-exp(-t)) = (-1)ᵏ⁺¹·exp(-t) with ring. This single lemma supplies BOTH ingredients for the reflection: the Taylor coefficients at the center 0 (where it evaluates to (-1)ⁿ) and the uniform derivative bound on (0,-x) (where |(-1)ⁿ exp(-t)| = exp(-t) ≤ 1).",
+    "mathContext": "$\\frac{d^n}{dt^n}e^{-t} = (-1)^n e^{-t}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "iterated derivatives",
+      "induction",
+      "deriv_const_mul",
+      "fun_prop"
+    ],
+    "prerequisites": [
+      "iteratedDeriv_succ",
+      "deriv_exp_neg"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq01oq01-tendsto-neg",
+    "proofId": "mean-value-theorem-oq-02-oq-01-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 91,
+      "endLine": 122
+    },
+    "title": "exp_taylor_tendsto_neg: the new negative-argument direction",
+    "content": "For x < 0, ∑_{k≤n} xᵏ/k! → exp x. Set y = -x > 0. The reflected function f(t) = exp(-t) is C^∞ (fun_prop), and on (0,y) its iterated derivatives satisfy |iteratedDeriv n f t| = exp(-t) ≤ exp 0 = 1, so the uniform bound holds with M = 1. The parent's taylorPolynomial_tendsto then gives Tₙ^f(0)(y) → f(y) = exp(-y) = exp x. The final step identifies each Taylor polynomial with the target partial sum via Tendsto.congr: the k-th coefficient iteratedDeriv k f 0 / k! is (-1)ᵏ/k! (iteratedDeriv_exp_neg at 0), (y−0)ᵏ = yᵏ, and xᵏ = (-y)ᵏ = (-1)ᵏ yᵏ. A subtle rw pitfall is sidestepped by isolating the last identity in a standalone `have x^k = (-1)^k * y^k`: applying neg_pow directly to the full goal would misfire on the leftmost (-1)ᵏ pattern instead of (-y)ᵏ. This is the only genuinely new mathematical content; it demonstrates that the parent's one-sided remainder lemma already covers the left half-line through reflection.",
+    "mathContext": "Reflection identity: $\\sum_{k\\le n}\\frac{(-1)^k}{k!}y^k = \\sum_{k\\le n}\\frac{x^k}{k!}$ with $y=-x$, and $e^{-y}=e^{x}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "reflection / change of variable",
+      "uniform derivative bound",
+      "Tendsto.congr",
+      "neg_pow"
+    ],
+    "prerequisites": [
+      "taylorPolynomial_tendsto (parent)",
+      "iteratedDeriv_exp_neg",
+      "Finset.sum_congr"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq01oq01-tendsto-all",
+    "proofId": "mean-value-theorem-oq-02-oq-01-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 131,
+      "endLine": 148
+    },
+    "title": "exp_taylor_tendsto_all: the headline (all real x)",
+    "content": "For every real x, ∑_{k≤n} xᵏ/k! → exp x. Trichotomy on x: the x < 0 branch delegates to exp_taylor_tendsto_neg; the x = 0 branch collapses each partial sum to its single surviving k=0 term (Finset.sum_eq_single, since 0ᵏ = 0 for k ≠ 0), giving the constant sequence 1 = exp 0; the x > 0 branch delegates to the parent's exp_taylor_tendsto. This is the entry's answer to the parent's leading open question: convergence of the exponential Taylor series on the entire real line, from the Mean-Value/Taylor remainder machinery.",
+    "mathContext": "$\\forall x\\in\\mathbb{R},\\ \\sum_{k\\le n}\\frac{x^k}{k!}\\to e^x$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "trichotomy",
+      "Finset.sum_eq_single",
+      "constant sequence limit"
+    ],
+    "prerequisites": [
+      "exp_taylor_tendsto_neg",
+      "exp_taylor_tendsto (parent)",
+      "lt_trichotomy"
+    ]
+  }
+]

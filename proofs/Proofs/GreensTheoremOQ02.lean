@@ -320,9 +320,20 @@ The proof uses:
 3. Pass to the limit using L¹ convergence of the curl and rectifiability
    of the Lipschitz boundary
 
-In Lean, we axiomatize this theorem because the full proof requires
-geometric measure theory machinery (sets of finite perimeter, BV functions,
-Federer's trace theorem, Gauss-Green formula) not yet assembled in Mathlib.
+In Lean, we axiomatize this theorem. NOTE on the actual blocker: while the
+GENERAL Whitney theorem (arbitrary Lipschitz domain) does require geometric
+measure theory machinery (sets of finite perimeter, BV functions, Federer's
+trace theorem, Gauss-Green formula), THIS axiom is stated only over a
+RECTANGLE domain -- the `hTraversal` hypothesis forces the curve C onto
+`frontier (Set.Icc a b ×ˢ Set.Icc c d)`. For a rectangle the GMT machinery is
+NOT needed: by Fubini (`MeasureTheory.integral_prod`) the double integral
+splits into iterated 1D integrals, reducing the axiom to two instances of the
+Fundamental Theorem of Calculus for absolutely continuous functions
+(`f b - f a = ∫ x in a..b, deriv f x` with `deriv f` only L¹/a.e.-defined).
+Mathlib's `MeasureTheory.Integral.FundThmCalculus` provides only versions
+requiring continuity / `HasDerivAt` everywhere, so the single genuine gap is
+this FTC-for-AC bridge (a bounded ~200-400 line build via `BoundedVariation`
++ Radon-Nikodym), not the full GMT project the references below describe.
 -/
 
 /-  **Whitney's theorem** (minimal regularity for Green's theorem).
@@ -358,8 +369,16 @@ axiom greens_theorem_l1curl
                   deriv (fun y => P (p.1, y)) p.2)
     -- L¹ integrability of the curl over the domain
     (hL1 : IntegrableOn curlF (Set.Icc a b ×ˢ Set.Icc c d) volume)
-    -- The curve traverses the rectangle boundary counterclockwise
-    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d)) :
+    -- The curve traverses the rectangle boundary
+    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d))
+    -- ORIENTATION: the curve's circulation equals the concretely (counterclockwise)
+    -- oriented four-edge rectangle integral. Without this, `hTraversal` (mere
+    -- image-containment in the frontier) constrains neither orientation, winding,
+    -- nor non-degeneracy, and the statement is FALSE: the constant curve γ ≡ (0,0)
+    -- with P = 0, Q(x,y) = x (curl ≡ 1) satisfies every other hypothesis yet has
+    -- circulation 0 ≠ 1 = ∬ curl. See `GreensTheoremOQ02Counterexample`.
+    (hLineEq : lipschitzLineIntegral P Q C =
+        GreensTheoremOQ01.rectLineIntegral P Q a b c d) :
     lipschitzLineIntegral P Q C =
     ∫ p in Set.Ioo a b ×ˢ Set.Ioo c d, curlF p ∂volume
 
@@ -382,10 +401,12 @@ theorem lineIntegral_zero_curl
     (hCurlZeroAE : ∀ᵐ p ∂(volume.restrict (Set.Ioo a b ×ˢ Set.Ioo c d)),
         deriv (fun x => Q (x, p.2)) p.1 = deriv (fun y => P (p.1, y)) p.2)
     (hL1 : IntegrableOn (fun _ => (0 : ℝ)) (Set.Icc a b ×ˢ Set.Icc c d) volume)
-    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d)) :
+    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d))
+    (hLineEq : lipschitzLineIntegral P Q C =
+        GreensTheoremOQ01.rectLineIntegral P Q a b c d) :
     lipschitzLineIntegral P Q C = 0 := by
   have h := greens_theorem_l1curl C P Q (fun _ => 0) a b c d hab hcd
-    (by filter_upwards [hCurlZeroAE] with p hp; simp [hp]) hL1 hTraversal
+    (by filter_upwards [hCurlZeroAE] with p hp; simp [hp]) hL1 hTraversal hLineEq
   simp at h
   exact h
 
@@ -403,11 +424,13 @@ theorem lineIntegral_l1curl_smul
                   deriv (fun y => P (p.1, y)) p.2)
     (hL1 : IntegrableOn curlF (Set.Icc a b ×ˢ Set.Icc c d) volume)
     (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d))
+    (hLineEq : lipschitzLineIntegral P Q C =
+        GreensTheoremOQ01.rectLineIntegral P Q a b c d)
     (k : ℝ) :
     lipschitzLineIntegral (fun p => k * P p) (fun p => k * Q p) C =
     k * ∫ p in Set.Ioo a b ×ˢ Set.Ioo c d, curlF p ∂volume := by
   rw [lineIntegral_smul]
-  rw [greens_theorem_l1curl C P Q curlF a b c d hab hcd hCurlAE hL1 hTraversal]
+  rw [greens_theorem_l1curl C P Q curlF a b c d hab hcd hCurlAE hL1 hTraversal hLineEq]
 
 /-  **Reduction to OQ-01**: Whitney's theorem implies the rectangular FTC case.
 
@@ -429,7 +452,9 @@ theorem greens_oq1_from_l1curl
         dQdx p - dPdy p = deriv (fun x => Q (x, p.2)) p.1 -
                            deriv (fun y => P (p.1, y)) p.2)
     (hL1 : IntegrableOn (fun p => dQdx p - dPdy p) (Set.Icc a b ×ˢ Set.Icc c d) volume)
-    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d)) :
+    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d))
+    (hLineEq : lipschitzLineIntegral P Q C =
+        GreensTheoremOQ01.rectLineIntegral P Q a b c d) :
     lipschitzLineIntegral P Q C =
     ∫ p in Set.Ioo a b ×ˢ Set.Ioo c d, (dQdx p - dPdy p) ∂volume := by
   apply greens_theorem_l1curl C P Q (fun p => dQdx p - dPdy p) a b c d hab hcd
@@ -437,6 +462,7 @@ theorem greens_oq1_from_l1curl
     exact hp
   · exact hL1
   · exact hTraversal
+  · exact hLineEq
 
 /- 
 ## Part V: Example — The Unit Circle Boundary

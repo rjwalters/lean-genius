@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "repunit-oq-02",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Goal: repunits are a strong divisibility sequence",
+    "content": "A base-b repunit `R_b(n) = ∑_{i<n} b^i` is the number written as n ones in base b (R₁₀(3) = 111). The sibling entry repunit-oq-01 proves the divisibility criterion `R_b(m) ∣ R_b(n) ⟺ m ∣ n`. This file proves the strictly stronger strong-divisibility identity `gcd(R_b(m), R_b(n)) = R_b(gcd(m,n))` for every base b ≥ 2 — making repunits a *strong divisibility sequence* (SDS), alongside `b^n − 1` and the Fibonacci numbers. The divisibility criterion is recovered as the nested-pair special case `gcd(m,n) ∈ {m, n}`. The engine is the analogous identity for `b^k − 1`, transferred by cancelling the universal factor `b − 1`.",
+    "mathContext": "$\\gcd(R_b(m), R_b(n)) = R_b(\\gcd(m,n))$; SDS strengthens $R_m\\mid R_n \\iff m\\mid n$ (the nested case).",
+    "significance": "key",
+    "relatedConcepts": ["repunits", "strong divisibility sequence", "gcd", "Euclidean algorithm", "Mersenne numbers"],
+    "prerequisites": ["divisibility in ℕ", "gcd", "geometric series"]
+  },
+  {
+    "id": "ann-import",
+    "proofId": "repunit-oq-02",
+    "range": { "startLine": 1, "endLine": 1 },
+    "type": "context",
+    "title": "Reusing the sibling repunit infrastructure",
+    "content": "The single import `Proofs.RepunitDivisibilityOQ01` (opened as a namespace) supplies the repunit definition `repunit b n`, the multiplicative bridge `pred_mul_repunit : (b−1)·R_b(n) = b^n − 1`, and `repunit_succ`. Reusing this keeps the file focused on the new gcd content rather than re-deriving the basic repunit API, and ties the two entries into a coherent two-part development.",
+    "mathContext": "Bridge from the sibling: $(b-1)\\,R_b(n) = b^n - 1$.",
+    "significance": "context",
+    "relatedConcepts": ["dependency reuse", "repunit definition", "pred_mul_repunit", "namespace open"],
+    "prerequisites": ["Lean imports"]
+  },
+  {
+    "id": "ann-power-engine",
+    "proofId": "repunit-oq-02",
+    "range": { "startLine": 41, "endLine": 65 },
+    "type": "insight",
+    "title": "The power-difference engine via Euclidean descent",
+    "content": "`gcd_pow_sub_one` proves `gcd(b^m − 1, b^n − 1) = b^{gcd(m,n)} − 1` (b ≥ 1) by `Nat.gcd.induction`, which structures the proof exactly along the Euclidean recursion `gcd m n = gcd (n%m) m`. In the inductive step, writing `n = m·(n/m) + n%m`, the geometric factorization `(b^m − 1) ∣ ((b^m)^{n/m} − 1)` (`Nat.sub_dvd_pow_sub_pow`) gives the exact decomposition `b^n − 1 = (b^m − 1)·(c·b^{n%m}) + (b^{n%m} − 1)` (assembled by `omega`/`ring` from `hexp`, `hA`). Then `Nat.gcd_mul_left_add_right` peels off the multiple of `b^m − 1`, reducing `gcd(b^m−1, b^n−1)` to `gcd(b^m−1, b^{n%m}−1)` — the exponent recursion mirrored on the values, so `Nat.gcd_rec` closes the induction. No modular arithmetic is needed, only the exact factorization. At b = 2 this is the Mersenne identity `gcd(2^m−1, 2^n−1) = 2^{gcd(m,n)}−1`.",
+    "mathContext": "$\\gcd(b^m-1, b^n-1) = \\gcd(b^{n\\bmod m}-1, b^m-1)$ mirrors $\\gcd(m,n) = \\gcd(n\\bmod m, m)$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.gcd.induction", "Euclidean descent", "Nat.sub_dvd_pow_sub_pow", "Nat.gcd_mul_left_add_right", "Mersenne numbers"],
+    "prerequisites": ["Euclidean algorithm", "gcd recursion", "geometric factorization"]
+  },
+  {
+    "id": "ann-repunit-gcd",
+    "proofId": "repunit-oq-02",
+    "range": { "startLine": 67, "endLine": 85 },
+    "type": "insight",
+    "title": "Transfer to repunits: cancel the universal factor b − 1",
+    "content": "`repunit_gcd` is the headline theorem, derived from the power-difference identity in essentially one move. Since gcd commutes with multiplication by a constant (`Nat.gcd_mul_left`), `(b−1)·gcd(R_m, R_n) = gcd((b−1)R_m, (b−1)R_n) = gcd(b^m−1, b^n−1) = b^{gcd(m,n)}−1 = (b−1)·R_b(gcd(m,n))` (using the bridge `pred_mul_repunit` at each step). Cancelling the positive factor `b−1` (`Nat.eq_of_mul_eq_mul_left`, valid for b ≥ 2) yields the repunit identity. This is the same `b−1` trick that powered the divisibility criterion in the sibling entry. `repunit_ten_gcd` instantiates it at base 10 for the ordinary repunits 1, 11, 111, ….",
+    "mathContext": "$(b-1)\\gcd(R_m,R_n) = \\gcd(b^m-1,b^n-1) = (b-1)R_b(\\gcd(m,n))$, then cancel $b-1>0$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.gcd_mul_left", "Nat.eq_of_mul_eq_mul_left", "pred_mul_repunit", "cancellation", "base-ten repunits"],
+    "prerequisites": ["gcd arithmetic", "cancellation in ℕ"]
+  },
+  {
+    "id": "ann-coprime",
+    "proofId": "repunit-oq-02",
+    "range": { "startLine": 87, "endLine": 112 },
+    "type": "technique",
+    "title": "Coprimality criterion",
+    "content": "`repunit_eq_one_iff` proves `R_b(d) = 1 ⟺ d = 1` for b ≥ 2 by a three-way match: `R_b(0) = 0`, `R_b(1) = 1`, and `R_b(d) ≥ 2` for `d ≥ 2` (the leading term `b^{k+1} ≥ 2` via `repunit_succ` and `omega`). Combined with the strong-divisibility identity, `repunit_coprime_iff` then drops out as `simp only [Nat.Coprime, repunit_gcd, repunit_eq_one_iff]`: `gcd(R_m, R_n) = 1 ⟺ R_b(gcd(m,n)) = 1 ⟺ gcd(m,n) = 1`. So repunits of coprime lengths — in particular consecutive lengths — are coprime.",
+    "mathContext": "$\\gcd(R_m,R_n)=1 \\iff R_b(\\gcd(m,n))=1 \\iff \\gcd(m,n)=1$, since $R_b(d)=1 \\iff d=1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.Coprime", "repunit_eq_one_iff", "match on ℕ", "corollary of SDS"],
+    "prerequisites": ["coprimality", "gcd = 1 characterization"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "repunit-oq-02",
+    "range": { "startLine": 37, "endLine": 113 },
+    "type": "context",
+    "title": "Verification and axiom status",
+    "content": "The entry is honestly badged `original` / `verified` with `axiomCount: 0`: 5 theorems (3 substantive + base-ten and coprimality corollaries), 0 sorries, no `native_decide` — the whole SDS-via-Euclidean-descent argument lives inside the kernel, depending only on `propext` / `Classical.choice` / `Quot.sound`. The repunit is defined directly as `∑_{i<n} b^i` (reused from the sibling), so there are no structure-encoded assumptions either.",
+    "mathContext": "Axioms: $\\{\\text{propext},\\ \\text{Classical.choice},\\ \\text{Quot.sound}\\}$ only; no $\\text{ofReduceBool}$.",
+    "significance": "context",
+    "relatedConcepts": ["axiom integrity", "kernel-level proof", "machine verification", "no native_decide"],
+    "prerequisites": ["Lean type theory"]
+  }
+]

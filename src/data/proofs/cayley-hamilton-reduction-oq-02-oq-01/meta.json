@@ -40,7 +40,7 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 396,
+    "lineCount": 387,
     "assumptions": "Main file (CayleyHamiltonReductionOQ02OQ01.lean): 0 axioms, 0 sorries; all three key theorems fully proved (aeval_companionMatrix via orbit argument, charpoly_companionMatrix, minpoly_companionMatrix) using Mathlib supporting lemmas. Aristotle companion (CayleyHamiltonReductionOQ02OQ01Aristotle.lean) carries 12 routine helper-lemma stubs (minpoly_dvd_of_aeval_zero, dvd_antisymm_monic, orbit_basis_independent, etc.) staged for automated proof search; these are not imported by the main file.",
     "mathlib_version": "4.26.0",
     "theoremCount": 18,
@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "overview-imports",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Mathlib imports (charpoly, minpoly, polynomial division), the file docstring stating the companion-matrix / rational-canonical-form goal, and the namespace, opens, and `variable {F : Type*} [Field F]` setup.",
+      "mathContext": "Works over an arbitrary field $F$. The supporting Mathlib machinery is `Matrix.aeval_self_charpoly` (Cayley-Hamilton), the minimal-polynomial API, and polynomial coefficient access. The docstring frames the four targets: companion-matrix definition, orbit basis property, $p(C(p)) = 0$, and $\\mathrm{charpoly}(C(p)) = \\mathrm{minpoly}(C(p)) = p$."
+    },
+    {
       "id": "companion-definition",
       "title": "Part 1: Companion Matrix Definition",
       "startLine": 59,
@@ -74,7 +82,7 @@
       "id": "entry-lemmas",
       "title": "Part 2: Basic Entry Properties",
       "startLine": 82,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "Three lemmas characterizing the three entry types: `companionMatrix_subdiag` (subdiagonal = 1), `companionMatrix_last_col` (last column = −coeff), `companionMatrix_zero` (elsewhere = 0).",
       "mathContext": "Each entry is a direct `if-then-else` on the indices. The proofs use `Matrix.ext` + `simp` with the definition. The `companion_col_action` lemma derives the column action: $C(p) \\cdot e_i = e_{i+1}$ for $i < d-1$ and $C(p) \\cdot e_{d-1} = -\\sum_{k<d} a_k e_k$. This is the key fact for the orbit argument."
     },
@@ -82,7 +90,7 @@
       "id": "orbit",
       "title": "Part 3: Orbit of Standard Basis Vectors",
       "startLine": 110,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "Proves C(p)ᵏ·e₀ = eₖ for k < d by induction using the column action lemmas. The orbit {e₀, ..., e_{d-1}} equals the standard basis.",
       "mathContext": "The induction: base case $C^0 e_0 = e_0$; step $C^{k+1} e_0 = C \\cdot (C^k e_0) = C \\cdot e_k = e_{k+1}$ (using the subdiagonal action for $k < d-1$). This confirms the isomorphism $F^d \\cong F[X]/(p)$ as $F[X]$-modules, with $e_k \\leftrightarrow X^k \\bmod p$."
     },
@@ -90,23 +98,23 @@
       "id": "key-theorems",
       "title": "Part 3b: Annihilation, Charpoly, Minpoly",
       "startLine": 170,
-      "endLine": 211,
+      "endLine": 340,
       "summary": "Three core theorems: p(C(p)) = 0 (orbit annihilation), charpoly(C(p)) = p (from minpoly = p), minpoly(C(p)) = p (orbit independence). All proved with 0 sorries.",
       "mathContext": "Annihilation ($p(C) = 0$): using the orbit, $p(C) \\cdot e_0 = (C^d + a_{d-1}C^{d-1} + \\cdots + a_0) \\cdot e_0 = e_d + \\sum a_k e_k$. The last-column action gives $e_d = C^{d-1} \\cdot e_{d-1} = -\\sum a_k e_k$ (the last column entry), so $p(C) \\cdot e_0 = 0$. Since $e_0$ generates all of $F^d$ under $C$, $p(C) = 0$."
     },
     {
       "id": "linear-case",
       "title": "Part 4: Linear Polynomial Base Case",
-      "startLine": 213,
-      "endLine": 225,
+      "startLine": 341,
+      "endLine": 354,
       "summary": "Proves C(x−c) = [c] for the 1×1 companion matrix, connecting companion blocks to eigenvalues.",
       "mathContext": "For $p = X - c$ (degree 1), $C(p)$ is the $1 \\times 1$ matrix $[c]$. The companion matrix of a linear factor is thus exactly the eigenvalue, confirming that the Jordan block with eigenvalue $c$ is $C(X-c) = [c]$ in the degree-1 case."
     },
     {
       "id": "rcf-roadmap",
       "title": "Part 5: Full RCF Roadmap",
-      "startLine": 226,
-      "endLine": 259,
+      "startLine": 355,
+      "endLine": 396,
       "summary": "Documents the ~1800-line gap to a complete Lean formalization of the rational canonical form: SNF (~800), companion (~200), block assembly (~300), uniqueness (~200).",
       "mathContext": "The complete RCF theorem requires: (1) Smith Normal Form for $F[X]$-matrices (Euclidean domain algorithm, ~800 lines); (2) companion block diagonalization from SNF invariant factors (~200 lines); (3) similarity proof assembling the block structure (~300 lines); (4) uniqueness of invariant factors (~200 lines). Completed formalizations exist in Coq (Cano-Dénès 2012) and Isabelle (Divasón-Thiemann 2016)."
     }
@@ -182,7 +190,7 @@
       "BigOperators"
     ],
     "namespace": "CayleyHamiltonReductionOQ02OQ01",
-    "lineCount": 396,
+    "lineCount": 387,
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 1,

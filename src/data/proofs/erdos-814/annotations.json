@@ -16,7 +16,11 @@
       "minimum-degree",
       "induced-subgraphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Induced Subgraphs",
+      "Minimum Degree"
+    ]
   },
   {
     "id": "ann-e814-imports",
@@ -35,7 +39,11 @@
       "finset",
       "binomial-coefficients"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple Graphs",
+      "Finite Sets",
+      "Binomial Coefficients"
+    ]
   },
   {
     "id": "ann-e814-edge-threshold",
@@ -54,7 +62,11 @@
       "extremal-functions",
       "binomial-coefficients"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Edge Density",
+      "Extremal Functions"
+    ]
   },
   {
     "id": "ann-e814-sauermann-constant",
@@ -73,7 +85,11 @@
       "constant-bounds",
       "probabilistic-method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Notation",
+      "Probabilistic Method",
+      "Order Of Growth"
+    ]
   },
   {
     "id": "ann-e814-efrs-bound",
@@ -92,7 +108,11 @@
       "extremal-bounds",
       "sqrt-savings"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Asymptotic Bounds",
+      "Vertex Count Savings"
+    ]
   },
   {
     "id": "ann-e814-mns-bound",
@@ -111,7 +131,11 @@
       "probabilistic-method",
       "degree-distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Logarithmic Bounds",
+      "Degree Distribution"
+    ]
   },
   {
     "id": "ann-e814-main-theorem",
@@ -130,7 +154,11 @@
       "induced-subgraphs",
       "minimum-degree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Induced Subgraphs",
+      "Minimum Degree",
+      "Existential Quantifiers"
+    ]
   },
   {
     "id": "ann-e814-threshold-k3",
@@ -149,7 +177,11 @@
       "binomial-simplification",
       "erdos-hajnal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Omega Tactic",
+      "Arithmetic Simplification"
+    ]
   },
   {
     "id": "ann-e814-extremal",
@@ -168,7 +200,11 @@
       "tightness",
       "counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Constructions",
+      "Complete Bipartite Graphs",
+      "Tightness Of Bounds"
+    ]
   },
   {
     "id": "ann-e814-erdos-hajnal",
@@ -187,7 +223,11 @@
       "historical-origin",
       "degree-three"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Minimum Degree",
+      "Theorem Instantiation",
+      "Special Cases"
+    ]
   },
   {
     "id": "ann-e814-handshaking",
@@ -206,7 +246,11 @@
       "double-counting",
       "graph-basics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Double Counting",
+      "Edge Set"
+    ]
   },
   {
     "id": "ann-e814-high-degree",
@@ -225,7 +269,11 @@
       "degree-averaging",
       "extremal-arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Handshaking Lemma",
+      "Pigeonhole Principle",
+      "Proof By Contradiction"
+    ]
   },
   {
     "id": "ann-e814-summary",
@@ -244,6 +292,10 @@
       "complete-resolution",
       "conjecture-proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Minimum Degree Subgraphs",
+      "Asymptotic Bounds",
+      "Conjecture Resolution"
+    ]
   }
 ]

@@ -1,0 +1,135 @@
+{
+  "id": "chinese-remainder-non-coprime-oq-03-oq-01",
+  "title": "Chinese Remainder Theorem for n Non-Coprime Moduli",
+  "slug": "chinese-remainder-non-coprime-oq-03-oq-01",
+  "description": "Generalizes the non-coprime CRT from a fixed number of moduli (2, 3) to an arbitrary finite family, organized as a list of (modulus, residue) pairs over any Euclidean domain. The system {x ≡ aᵢ [mod mᵢ]} is solvable iff gcd(mᵢ,mⱼ)∣(aᵢ−aⱼ) for every pair, and any two solutions agree modulo the lcm of all moduli. Sufficiency is proved by induction on the list, combining the head modulus with the lcm of the tail via a generalized GCD–LCM distributive law. 11 theorems, 3 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderNonCoprimeOQ03OQ01.lean",
+    "tags": [
+      "number-theory",
+      "chinese-remainder-theorem",
+      "euclidean-domain",
+      "non-coprime",
+      "gcd-lcm",
+      "induction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None beyond Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). Fully machine-verified, 0 sorries, no native_decide. The binary GCD–LCM distributive law gcd_lcm_dvd_lcm_gcd and binary sufficiency ed_crt_sufficient are reproduced verbatim from the parent ChineseRemainderNonCoprimeOQ03 (verified there, 0 axioms) to keep this file self-contained.",
+    "lineCount": 380,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "originalContributions": [
+      "lcmList: lcm over a list of moduli (empty list ↦ 1), with the basic divisibility lemmas dvd_lcmList and lcmList_dvd",
+      "gcd_lcmList_dvd: NEW generalized GCD–LCM distributive law over a list — gcd(lcmList l, c) ∣ lcmList (l.map (gcd · c)) — obtained by a one-step induction from the binary distributive law",
+      "Solves / Compat: list-indexed formulation of an n-moduli congruence system and its pairwise GCD compatibility predicate",
+      "crt_list_necessary: necessity for n moduli — a solvable system is pairwise compatible",
+      "crt_list_sufficient: sufficiency for n moduli — induction on the modulus list, combining the head with the lcm of the tail via gcd_lcmList_dvd",
+      "crt_list_iff: full iff characterization for n-moduli non-coprime CRT",
+      "crt_list_unique: uniqueness — any two solutions agree modulo the lcm of all moduli"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical Chinese Remainder Theorem for coprime moduli is ancient; its non-coprime refinement — a system of congruences x ≡ aᵢ (mod mᵢ) is solvable precisely when the residues are pairwise compatible, gcd(mᵢ,mⱼ)∣(aᵢ−aⱼ), with uniqueness modulo lcm(m₁,…,mₙ) — is the standard generalization stated in elementary number theory texts but rarely formalized in full generality. The parent gallery line verified the 2- and 3-moduli cases over arbitrary Euclidean domains, isolating the GCD–LCM distributive law gcd(lcm(a,b),c)=lcm(gcd(a,c),gcd(b,c)) (a defining identity of distributive lattices, Birkhoff 1935) as the essential algebraic engine. This entry closes the parent's first open question by lifting that machinery to an arbitrary finite family of moduli.",
+    "problemStatement": "In a Euclidean domain R, given a finite family of (modulus, residue) pairs (mᵢ, aᵢ), when does the system mᵢ∣(x−aᵢ) have a common solution x, and to what extent is it unique? Prove that solvability is equivalent to pairwise GCD compatibility for all pairs, and that solutions are unique modulo the lcm of all moduli.",
+    "text": "The family is modeled as a list l : List (R × R) of (modulus, residue) pairs. Solvability `∃ x, Solves x l` is characterized by `Compat l`, the all-pairs condition gcd(p.1,q.1)∣(p.2−q.2). Necessity is immediate: a common solution x makes gcd(mᵢ,mⱼ) divide both (x−aᵢ) and (x−aⱼ), hence their difference (aᵢ−aⱼ). Sufficiency is proved by induction on the list. Writing l = (m₀,a₀) :: rest, the inductive hypothesis gives a solution x₀ of the tail. To merge it with the head we must show gcd(M, m₀)∣(a₀−x₀), where M = lcmList of the tail moduli. Each tail modulus mᵢ yields gcd(m₀,mᵢ)∣(a₀−x₀) (combining head-vs-tail compatibility with mᵢ∣(x₀−aᵢ)), so the lcm of those pairwise gcds divides (a₀−x₀). The generalized distributive law gcd_lcmList_dvd upgrades gcd(M,m₀) to a divisor of that lcm, closing the gap. A final application of the binary 2-moduli solver merges (M, x₀) with (m₀, a₀); back-substitution recovers every original congruence. Uniqueness follows because every modulus divides x−y, hence so does their lcm.",
+    "proofStrategy": "List-indexed induction. Build lcmList (foldr lcm 1) with divisibility lemmas. Prove the generalized GCD–LCM distributive law gcd_lcmList_dvd by induction from the binary case. Reduce n-moduli sufficiency to the binary solver at each step. Necessity and uniqueness are direct divisibility arguments.",
+    "keyInsights": [
+      "Indexing the system by a list (rather than Fin n) makes the induction structural and avoids reindexing bookkeeping",
+      "The crux of the inductive step is gcd(lcm of tail moduli, head modulus) ∣ (head residue − tail solution), which needs the n-fold GCD–LCM distributive law",
+      "The n-fold distributive law gcd(lcmList l, c) ∣ lcmList (l.map (gcd · c)) is a clean one-step induction reusing the binary distributive law from the parent",
+      "Pairwise compatibility transfers to compatibility with the tail solution: gcd(m₀,mᵢ)∣(a₀−aᵢ) and mᵢ∣(x₀−aᵢ) give gcd(m₀,mᵢ)∣(a₀−x₀)",
+      "Uniqueness collapses from the product (coprime case) to the lcm (non-coprime case): the modulus of the solution set is exactly lcm(m₁,…,mₙ)",
+      "gcd is only commutative up to associatedness in a general Euclidean domain, so the proof bridges gcd q.1 p.1 ∣ gcd p.1 q.1 via dvd_gcd rather than rewriting"
+    ],
+    "prerequisites": [
+      "Euclidean domains: GCD, LCM, Bézout's identity",
+      "Non-coprime CRT for 2 and 3 moduli (ChineseRemainderNonCoprimeOQ03.lean)",
+      "GCD–LCM distributive law in the divisibility lattice",
+      "Structural induction over lists in Lean"
+    ]
+  },
+  "conclusion": {
+    "summary": "The non-coprime CRT is fully verified for an arbitrary finite family of moduli over any Euclidean domain: the list-indexed system is solvable iff all pairwise GCD conditions hold (crt_list_iff), and any two solutions agree modulo the lcm of all moduli (crt_list_unique). The engine is a generalized GCD–LCM distributive law over a list (gcd_lcmList_dvd), obtained by induction from the binary case. 11 theorems, 3 definitions, 380 lines, 0 axioms, 0 sorries.",
+    "implications": "This completes the non-coprime CRT hierarchy: the 2-, 3-, and now general n-moduli cases are all verified for arbitrary Euclidean domains. The list formulation applies uniformly to ℤ and to polynomial rings k[X] over a field, giving a non-coprime simultaneous-congruence solver for both. The generalized distributive law gcd_lcmList_dvd is independently reusable wherever an iterated GCD–LCM identity is needed.",
+    "openQuestions": [
+      "Recast the list-indexed result as a Fintype/Finset-indexed statement (family m : ι → R, a : ι → R over a Fintype ι), proving the solution set is invariant under permutation and duplication of moduli — i.e. it depends only on the underlying ideal-theoretic data",
+      "Sharpness of uniqueness: exhibit, for a concrete non-coprime family, two distinct solutions differing by exactly lcm(m₁,…,mₙ), confirming the lcm modulus cannot be improved (and contrast with the coprime case where it equals the product)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "ChineseRemainderNonCoprimeOQ03OQ01",
+    "lineCount": 380,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "path": "Proofs/ChineseRemainderNonCoprimeOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "proofId": "chinese-remainder-non-coprime-oq-03",
+      "relationship": "extends",
+      "description": "The 3-moduli non-coprime CRT over Euclidean domains. This file answers that entry's first open question by generalizing to an arbitrary finite family of moduli, and reuses its binary GCD–LCM distributive law gcd_lcm_dvd_lcm_gcd (reproduced verbatim) as the base case of the n-fold distributive law gcd_lcmList_dvd."
+    },
+    {
+      "proofId": "chinese-remainder-non-coprime-oq-02",
+      "relationship": "uses",
+      "description": "The 2-moduli non-coprime CRT. Its sufficiency construction (reproduced here as ed_crt_sufficient) is the merge step invoked once per inductive layer: at stage k it combines the running solution modulo lcm(m₁,…,m_{k-1}) with the new congruence modulo m_k."
+    },
+    {
+      "proofId": "chinese-remainder-constructive",
+      "relationship": "complementary",
+      "description": "The classical pairwise-coprime CRT: for coprime moduli the system is always solvable and unique modulo the product. This file is the opposite extreme generalized to n moduli — arbitrary (non-coprime) families, where solvability requires pairwise GCD compatibility and uniqueness drops from product to lcm."
+    },
+    {
+      "proofId": "bezout-identity",
+      "relationship": "uses",
+      "description": "Wiedijk #60. Bézout's identity underlies both the binary 2-moduli solver (which constructs x = a − m·(gcdA·q)) and the binary GCD–LCM distributive law that anchors the induction here."
+    },
+    {
+      "proofId": "fundamental-theorem-algebra",
+      "relationship": "context",
+      "description": "Polynomial rings k[X] over a field are Euclidean domains, so the n-moduli non-coprime CRT applies to simultaneous polynomial congruences pᵢ(X)∣(f(X)−rᵢ(X)) for arbitrary, not necessarily coprime, pᵢ."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring describing the n-moduli generalization, imports (Mathlib), and namespace setup. States the main results and clarifies that the binary infrastructure is reproduced from the parent for self-containedness."
+    },
+    {
+      "title": "Part 0: Binary CRT core and binary GCD–LCM distributive law",
+      "startLine": 46,
+      "endLine": 219,
+      "summary": "ed_crt_sufficient: binary CRT sufficiency via Bézout (from parent). gcd_lcm_dvd_lcm_gcd: the hard binary GCD–LCM distributive law gcd(lcm(a,b),c)∣lcm(gcd(a,c),gcd(b,c)), reproduced verbatim from ChineseRemainderNonCoprimeOQ03 — a Bézout decomposition with nested coprime factoring through gcd(a,b) and gcd(gcd(a,b),c)."
+    },
+    {
+      "title": "Part I: lcm over a list of moduli",
+      "startLine": 220,
+      "endLine": 247,
+      "summary": "lcmList (foldr EuclideanDomain.lcm 1) with simp lemmas lcmList_nil/lcmList_cons; dvd_lcmList (each element divides the list lcm) and lcmList_dvd (the list lcm divides any common multiple)."
+    },
+    {
+      "title": "Part II: Generalized GCD–LCM distributive law",
+      "startLine": 248,
+      "endLine": 268,
+      "summary": "gcd_lcmList_dvd: gcd(lcmList l, c) ∣ lcmList (l.map (gcd · c)), proved by induction on l. The cons step applies the binary distributive law gcd_lcm_dvd_lcm_gcd to the head and the lcm of the tail, then monotonicity of lcm with the inductive hypothesis."
+    },
+    {
+      "title": "Part III: n-Moduli list-indexed CRT",
+      "startLine": 269,
+      "endLine": 380,
+      "summary": "Solves and Compat predicates over List (R × R). crt_list_necessary (solvable ⟹ pairwise compatible). crt_list_sufficient (induction on the list; merge head with lcm of tail via gcd_lcmList_dvd and the binary solver). crt_list_iff (full characterization). crt_list_unique (lcm of all moduli divides the difference of any two solutions). Summary of the nine results."
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,227 @@
+{
+  "id": "erdos-1012-oq-04",
+  "title": "The Woodall Threshold as a Deficiency from the Complete Graph",
+  "slug": "erdos-1012-oq-04",
+  "description": "Locates the Erdős/Woodall edge threshold of Erdős #1012 inside the complete graph K_n. The parent (oq-01) defines edgeThreshold n k = C(n-k-1,2) + C(k+2,2) + 1 and evaluates it at the extremal sizes; the sibling oq-01-oq-02 records its monotonicity in n. Neither relates it to the C(n,2) edges of K_n. This entry proves the clean closed decomposition C(n,2) = C(n-k-1,2) + C(k+2,2) + (k+1)(n-k-2) for n ≥ k+2, so the maximal long-cycle-free edge count edgeThreshold n k − 1 equals the complete graph minus a deficiency of exactly (k+1)(n-k-2) edges — the edge count of the complete bipartite graph K_{k+1,n-k-2}, which is precisely the structure of the Woodall extremal construction. Includes the parameter-clean successor form, the n-indexed form, the threshold/complete reformulation, the maximal-edge corollary, the k=0 Hamiltonian (Ore) specialisation, and the deficiency at the extremal point n=2k+2. Self-contained (re-declares the parent's one-line edgeThreshold) and fully machine-checked.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://erdosproblems.com/1012",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1012OQ04.lean",
+    "tags": [
+      "graph-theory",
+      "extremal-graph-theory",
+      "long-cycles",
+      "binomial-coefficients",
+      "complete-graph",
+      "woodall",
+      "erdos-problem",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 171,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-24",
+    "originalContributions": [
+      "choose_two_split: the successor-form identity C(m+k+2,2) = C(m+1,2) + C(k+2,2) + (k+1)·m — the parameter-clean heart, avoiding truncated ℕ subtraction",
+      "choose_two_split_n: the n-indexed complete-graph decomposition C(n,2) = C(n-k-1,2) + C(k+2,2) + (k+1)(n-k-2) for n ≥ k+2",
+      "two_mul_choose_two_succ: the doubling lemma 2·C(x+1,2) = (x+1)·x that linearises the binomial arithmetic so a single ring step closes the split",
+      "edgeThreshold_add_deficiency_n: edgeThreshold n k + (k+1)(n-k-2) = C(n,2) + 1 — the threshold is the complete graph minus the deficiency, plus one",
+      "maxEdges_add_deficiency_n: (edgeThreshold n k − 1) + (k+1)(n-k-2) = C(n,2) — the maximal long-cycle-free edge count is exactly K_n minus the deficiency",
+      "deficiency_eq_bipartite_edges: the deficiency (k+1)(n-k-2) is the edge count of the complete bipartite graph K_{k+1,n-k-2}",
+      "maxEdges_hamiltonian: the k=0 (Hamiltonian/Ore) specialisation, deficiency n − 2",
+      "deficiency_at_extremal: at the lower Woodall extremal size n=2k+2 the deficiency is (k+1)·k = 2·C(k+1,2)"
+    ],
+    "prerequisites": [
+      "Erdos1012OQ01 (parent): defines the Woodall edge threshold edgeThreshold n k and evaluates it at the extremal points",
+      "Erdos1012OQ01OQ02 (sibling): the threshold's recurrence and monotonicity in n"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_two_right",
+        "description": "n.choose 2 = n * (n - 1) / 2 — the closed form for the second binomial column, the starting point for the doubling lemma",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.eq_of_mul_eq_mul_left",
+        "description": "cancels the common factor 2 after proving the doubled identity, recovering the original split",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Nat.add_sub_cancel",
+        "description": "(x + 1) - 1 = x — clears the truncated subtraction in the choose-two closed form for the successor argument",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "theoremCount": 9,
+    "relatedProblems": [
+      {
+        "id": "erdos-1012-oq-01",
+        "relationship": "Parent: defines the Woodall edge threshold f(k) and edgeThreshold n k and evaluates it at the extremal sizes n = 2k+2, 2k+3. This entry places that threshold inside the complete graph."
+      },
+      {
+        "id": "erdos-1012-oq-01-oq-02",
+        "relationship": "Sibling: records the threshold's recurrence and monotonicity in n. This entry gives the complementary structural fact — its position relative to C(n,2)."
+      },
+      {
+        "id": "erdos-1012",
+        "relationship": "Root: Erdős Problem #1012 (Long Cycles in Dense Graphs)."
+      }
+    ],
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1012 asks for the function f(k) such that every graph on n ≥ f(k) vertices with at least C(n-k-1,2) + C(k+2,2) + 1 edges contains a cycle on n − k vertices; Woodall (1972) proved f(k) ≤ 2k+3 with the extremal graphs being pancyclic from 3 to n − k. The threshold's form is dictated by an extremal construction — a clique on n-k-1 vertices together with a (k+2)-clique sharing structure — and the natural way to read such a construction is as the complete graph K_n with a controlled set of edges deleted. This entry makes that reading exact.",
+    "problemStatement": "Relate the Woodall edge threshold edgeThreshold n k = C(n-k-1,2) + C(k+2,2) + 1 to the complete graph K_n, which has C(n,2) edges. Prove the closed decomposition of C(n,2) into the threshold blocks plus a single deficiency term, identify that deficiency as a complete-bipartite edge count, and derive the maximal long-cycle-free edge count as 'complete minus deficiency'.",
+    "proofStrategy": "The whole development reduces to one binomial identity. Substituting n = m + k + 2 (m = n-k-2 ≥ 0) removes all truncated ℕ subtraction, turning the goal into C(m+k+2,2) = C(m+1,2) + C(k+2,2) + (k+1)·m. Each C(x+1,2) is doubled via the lemma 2·C(x+1,2) = (x+1)·x (from Nat.choose_two_right, using that (x+1)·x is even), after which the doubled identity (m+k+2)(m+k+1) = (m+1)m + (k+2)(k+1) + 2(k+1)m is a pure polynomial identity closed by ring; cancelling the factor 2 gives the split. The n-indexed form, the threshold/complete reformulation, and the maximal-edge corollary all follow by rewriting with this split and omega bookkeeping.",
+    "keyInsights": [
+      "The Woodall threshold is the complete graph minus a deficiency: C(n,2) = C(n-k-1,2) + C(k+2,2) + (k+1)(n-k-2), so the maximal long-cycle-free edge count edgeThreshold n k − 1 = C(n,2) − (k+1)(n-k-2).",
+      "The deficiency (k+1)(n-k-2) is exactly |E(K_{k+1,n-k-2})|, the complete bipartite edge count — the bipartite gap between the (k+1)-part controlling the cycle defect and the remaining n-k-2 vertices, matching the Woodall extremal construction.",
+      "Reparametrising n = m+k+2 eliminates every truncated ℕ subtraction up front, so the combinatorial identity becomes a clean polynomial identity provable by ring after a uniform doubling step.",
+      "Doubling each C(x+1,2) to (x+1)·x via Nat.choose_two_right (and evenness of (x+1)·x) is what linearises the binomial coefficients into a single ring-closable equation, sidestepping ℕ division entirely.",
+      "Specialising to k = 0 recovers the Hamiltonian (Ore) regime with deficiency n − 2, and the lower extremal size n = 2k+2 gives deficiency (k+1)·k = 2·C(k+1,2)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "§0: Definitions",
+      "startLine": 47,
+      "endLine": 55,
+      "summary": "Re-declares the parent's one-line edgeThreshold n k = C(n-k-1,2) + C(k+2,2) + 1 verbatim, and introduces deficiency n k = (k+1)(n-k-2), keeping the file self-contained and end-to-end checkable.",
+      "mathContext": "edgeThreshold is the Erdős/Woodall edge bound for the (n-k)-cycle; deficiency is the gap separating it from the complete graph."
+    },
+    {
+      "id": "doubling",
+      "title": "§1: Doubling C(·,2)",
+      "startLine": 57,
+      "endLine": 83,
+      "summary": "two_mul_choose_two_succ: 2·C(x+1,2) = (x+1)·x, the lemma that linearises binomial arithmetic. Proved from Nat.choose_two_right and evenness of (x+1)·x.",
+      "mathContext": "The successor argument x+1 makes (x+1)-1 = x reduce, avoiding truncated subtraction; doubling clears the division by 2 in the choose-two closed form."
+    },
+    {
+      "id": "split",
+      "title": "§2: The complete-graph decomposition",
+      "startLine": 84,
+      "endLine": 117,
+      "summary": "choose_two_split (successor form) and choose_two_split_n (n-indexed, n ≥ k+2): C(n,2) = C(n-k-1,2) + C(k+2,2) + (k+1)(n-k-2). The core identity proved by doubling all binomials and closing with ring, then cancelling 2.",
+      "mathContext": "Decomposes the complete graph's edge count into the two Woodall extremal blocks plus the bipartite deficiency."
+    },
+    {
+      "id": "threshold",
+      "title": "§3: Threshold ↔ complete graph",
+      "startLine": 118,
+      "endLine": 149,
+      "summary": "edgeThreshold_add_deficiency(_n): edgeThreshold n k + deficiency n k = C(n,2) + 1; and maxEdges_add_deficiency_n: (edgeThreshold n k − 1) + deficiency n k = C(n,2), the maximal long-cycle-free edge count as complete minus deficiency.",
+      "mathContext": "Rewrites the split in terms of the threshold; the maximal-edge form is the threshold minus one, valid since the threshold is always ≥ 1."
+    },
+    {
+      "id": "interpretation",
+      "title": "§4: Deficiency as bipartite edges, and specialisations",
+      "startLine": 150,
+      "endLine": 170,
+      "summary": "deficiency_eq_bipartite_edges identifies the deficiency with |E(K_{k+1,n-k-2})|; maxEdges_hamiltonian is the k=0 Ore case (deficiency n−2); deficiency_at_extremal gives (k+1)·k at n=2k+2.",
+      "mathContext": "Connects the arithmetic deficiency to the complete-bipartite structure of the extremal construction and checks the boundary regimes."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Woodall edge threshold of Erdős #1012 is the complete graph minus a deficiency: C(n,2) = C(n-k-1,2) + C(k+2,2) + (k+1)(n-k-2), so the maximal long-cycle-free edge count is K_n minus exactly (k+1)(n-k-2) = |E(K_{k+1,n-k-2})| edges. This places the threshold inside the complete graph, complementing the parent's extremal-point evaluation and the sibling's monotonicity in n. Everything is elementary Nat.choose arithmetic, sorry-free and 0-axiom.",
+    "futureWork": "Formalise the Woodall extremal graph itself (a clique join realising exactly edgeThreshold n k − 1 edges with no (n-k)-cycle) and verify its edge count against this decomposition, turning the arithmetic deficiency into a witnessed extremal construction."
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1012-oq-01",
+      "relationship": "parent",
+      "description": "Defines the Woodall edge threshold and evaluates it at the extremal sizes; this entry places it inside the complete graph K_n."
+    },
+    {
+      "targetId": "erdos-1012-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Records the threshold's recurrence/monotonicity in n; this entry gives the complementary structural fact relative to C(n,2)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "choose_two_split_n",
+      "type": "core",
+      "description": "Complete-graph decomposition: C(n,2) splits into the two Woodall extremal blocks plus the deficiency, for n ≥ k+2.",
+      "leanType": "k + 2 ≤ n → n.choose 2 = (n-k-1).choose 2 + (k+2).choose 2 + (k+1)*(n-k-2)"
+    },
+    {
+      "name": "choose_two_split",
+      "type": "core",
+      "description": "Successor (subtraction-free) form of the decomposition with n = m+k+2.",
+      "leanType": "(m+k+2).choose 2 = (m+1).choose 2 + (k+2).choose 2 + (k+1)*m"
+    },
+    {
+      "name": "edgeThreshold_add_deficiency_n",
+      "type": "core",
+      "description": "The threshold is the complete graph minus the deficiency, plus one.",
+      "leanType": "k + 2 ≤ n → edgeThreshold n k + deficiency n k = n.choose 2 + 1"
+    },
+    {
+      "name": "maxEdges_add_deficiency_n",
+      "type": "core",
+      "description": "Maximal long-cycle-free edge count equals the complete graph minus the deficiency.",
+      "leanType": "k + 2 ≤ n → (edgeThreshold n k - 1) + deficiency n k = n.choose 2"
+    },
+    {
+      "name": "two_mul_choose_two_succ",
+      "type": "supporting",
+      "description": "Doubling lemma linearising the binomial arithmetic.",
+      "leanType": "2 * (x+1).choose 2 = (x+1) * x"
+    },
+    {
+      "name": "deficiency_eq_bipartite_edges",
+      "type": "supporting",
+      "description": "The deficiency is the edge count of the complete bipartite graph K_{k+1,n-k-2}.",
+      "leanType": "deficiency n k = (k+1) * (n-k-2)"
+    },
+    {
+      "name": "maxEdges_hamiltonian",
+      "type": "supporting",
+      "description": "k=0 Hamiltonian (Ore) specialisation, deficiency n − 2.",
+      "leanType": "2 ≤ n → (edgeThreshold n 0 - 1) + (n - 2) = n.choose 2"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "D. R. Woodall"
+      ],
+      "title": "Sufficient conditions for circuits in graphs",
+      "year": "1972",
+      "venue": "Proceedings of the London Mathematical Society, vol. s3-24, no. 4, pp. 739–755",
+      "note": "Proves f(k) ≤ 2k+3 and the pancyclicity of dense graphs above the edge threshold whose structure this entry decomposes."
+    },
+    {
+      "authors": [
+        "Oystein Ore"
+      ],
+      "title": "Note on Hamilton circuits",
+      "year": "1961",
+      "venue": "American Mathematical Monthly, vol. 67, p. 55",
+      "note": "The k=0 Hamiltonian regime recovered by the maxEdges_hamiltonian specialisation."
+    }
+  ],
+  "sorries": [],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos1012OQ04",
+    "lineCount": 171,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "sorries": 0,
+    "path": "Proofs/Erdos1012OQ04.lean"
+  }
+}

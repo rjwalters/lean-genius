@@ -53,100 +53,100 @@
   },
   "sections": [
     {
-      "id": "imports",
+      "id": "imports-overview",
       "title": "Imports and Problem Overview",
-      "summary": "Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure",
+      "summary": "File header for Erdős #1020, the Erdős Matching Conjecture (OPEN): $f(n;r,k)$ is the max number of edges in an $r$-uniform hypergraph with no $k$ pairwise-disjoint edges; conjecturally $f(n;r,k)=\\max(\\binom{rk-1}{r},\\binom{n}{r}-\\binom{n-k+1}{r})$ for $r\\ge3$. Summarizes the two extremal constructions, known cases ($r=2$ Erdős–Gallai, $r=3$ Łuczak–Mieczkowska, large-$n$ Huang–Loh–Sudakov), and references. Imports Mathlib, opens `Finset`/`Nat`.",
       "startLine": 1,
-      "endLine": 40,
-      "mathContext": "Erdos Matching Conjecture: determine $f(n;r,k)$ = max edges in an $r$-uniform hypergraph on $n$ vertices with no $k$ pairwise disjoint edges (no matching of size $k$)."
+      "endLine": 41,
+      "mathContext": "$f(n;r,k)$ = max edges of an $r$-uniform hypergraph with matching number $<k$; conjectured $=\\max(\\binom{rk-1}{r},\\binom{n}{r}-\\binom{n-k+1}{r})$."
     },
     {
-      "id": "basics",
+      "id": "hypergraph-basics",
       "title": "Hypergraph Basics",
-      "summary": "Definitions of r-uniform hypergraphs (RUniformHypergraph) and matchings (IsMatching) as collections of pairwise disjoint edges",
-      "startLine": 41,
-      "endLine": 68,
-      "mathContext": "$r$-uniform hypergraph: every edge has exactly $r$ vertices. Matching of size $k$: $k$ pairwise disjoint edges. `matchingNumber` = max matching size."
+      "summary": "Foundational definitions: the `Hypergraph` structure ($r$-uniform), `EdgesDisjoint`, `IsMatching`, `matchingNumber`, and `HasNoKMatching` (no $k$ pairwise-disjoint edges).",
+      "startLine": 42,
+      "endLine": 69,
+      "mathContext": "A matching is a set of pairwise-disjoint edges; `HasNoKMatching H k` means matching number $<k$."
     },
     {
-      "id": "function",
+      "id": "function-f",
       "title": "The Function f(n; r, k)",
-      "summary": "Definition of erdosMatchingFunction as the supremum of edge counts over r-uniform hypergraphs on n vertices avoiding k-matchings",
-      "startLine": 69,
-      "endLine": 80,
-      "mathContext": "$f(n;r,k) = \\\\max\\\\{|\\\\mathcal{E}| : \\\\mathcal{H} \\\\text{ is } r\\\\text{-uniform on } n \\\\text{ vertices, matching number} < k\\\\}$."
+      "summary": "Defines `f n r k`, the extremal function — the maximum edge count over $r$-uniform hypergraphs on $n$ vertices avoiding a $k$-matching.",
+      "startLine": 70,
+      "endLine": 81,
+      "mathContext": "$f(n;r,k)=\\max\\{|E(H)| : H\\ r\\text{-uniform on }n\\text{ vertices},\\ \\nu(H)<k\\}$."
     },
     {
-      "id": "formula",
+      "id": "conjectured-formula",
       "title": "The Conjectured Formula",
-      "summary": "Two extremal constructions: complete r-graph on rk-1 vertices and (k-1)-sunflower construction, with conjecture that f equals their maximum",
-      "startLine": 81,
-      "endLine": 100,
-      "mathContext": "Two extremal families: (1) complete $r$-graph on $rk-1$ vertices: $\\\\binom{rk-1}{r}$ edges; (2) $(k-1)$-sunflower: $\\\\binom{n}{r} - \\\\binom{n-k+1}{r}$ edges. Conjecture: $f = \\\\max$ of these two."
+      "summary": "The two extremal constructions `construction1` ($\\binom{rk-1}{r}$, all edges on $rk-1$ vertices) and `construction2` ($\\binom{n}{r}-\\binom{n-k+1}{r}$, all edges meeting a fixed $(k-1)$-set), their max `conjecturedValue`, and `erdosMatchingConjecture` (that $f$ equals this value).",
+      "startLine": 82,
+      "endLine": 101,
+      "mathContext": "Conjecture: $f=\\max(\\binom{rk-1}{r},\\,\\binom{n}{r}-\\binom{n-k+1}{r})$, the larger of the two natural constructions."
     },
     {
-      "id": "r2",
+      "id": "case-r2",
       "title": "The Case r = 2 (Graphs)",
-      "summary": "Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))",
-      "startLine": 101,
-      "endLine": 116,
-      "mathContext": "Erdos-Gallai (graph case): $f(n;2,k) = \\\\max(\\\\binom{2k-1}{2}, \\\\binom{n}{2} - \\\\binom{n-k+1}{2})$. Completely solved for $r=2$."
+      "summary": "The graph case, solved by Erdős–Gallai (1959): axiom `erdos_gallai_graphs` and the explicit `f_2_explicit` giving $f(n;2,k)$ for $n\\ge 2k$.",
+      "startLine": 102,
+      "endLine": 126,
+      "mathContext": "Erdős–Gallai (1959): the $r=2$ case of the conjecture holds."
     },
     {
-      "id": "r3",
-      "title": "The Case r = 3",
-      "summary": "Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods",
-      "startLine": 117,
-      "endLine": 127,
-      "mathContext": "Luczak-Mieczkowska (2014): confirmed for $r=3$ using the container method from hypergraph regularity."
+      "id": "case-r3",
+      "title": "The Case r = 3 (3-uniform Hypergraphs)",
+      "summary": "The $r=3$ case, resolved by Łuczak–Mieczkowska (2014), recorded as axiom `luczak_mieczkowska`.",
+      "startLine": 127,
+      "endLine": 137,
+      "mathContext": "Łuczak–Mieczkowska (2014): the conjecture holds for $r=3$."
     },
     {
-      "id": "partial",
+      "id": "partial-results",
       "title": "Partial Results",
-      "summary": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n ≥ 3kr²)",
-      "startLine": 128,
-      "endLine": 149,
-      "mathContext": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov (2012) for large $n$. Each narrowed the gap for specific $(r,k)$ ranges."
+      "summary": "Large-$n$ progress: axiom `huang_loh_sudakov` (the conjecture holds for $n\\ge 3kr^2$).",
+      "startLine": 138,
+      "endLine": 150,
+      "mathContext": "Huang–Loh–Sudakov (2012): conjecture holds for $n\\ge 3kr^2$."
     },
     {
-      "id": "upper",
+      "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound",
-      "startLine": 150,
-      "endLine": 165,
-      "mathContext": "Frankl: $f(n;r,k) \\\\leq (k-1)\\\\binom{n-1}{r-1}$. Proved via the shifting technique. Best known general upper bound."
+      "summary": "Frankl's (1987) upper bound axiom `frankl_upper_bound` ($f(n;r,k)\\le(k-1)\\binom{n-1}{r-1}$) and `upper_bound_tight_construction2` showing construction 2 is a valid lower witness.",
+      "startLine": 151,
+      "endLine": 214,
+      "mathContext": "Frankl (1987): $f(n;r,k)\\le(k-1)\\binom{n-1}{r-1}$."
     },
     {
-      "id": "lower",
+      "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Construction-based lower bounds establishing the conjectured value as achievable",
-      "startLine": 166,
-      "endLine": 189,
-      "mathContext": "Constructions achieving $\\\\max(\\\\binom{rk-1}{r}, \\\\binom{n}{r}-\\\\binom{n-k+1}{r})$ edges with matching number $< k$. These establish the conjectured value as a lower bound."
-    },
-    {
-      "id": "mono",
-      "title": "Monotonicity",
-      "summary": "f(n;r,k) is non-decreasing in n and k: adding vertices or relaxing the matching condition cannot decrease the extremal number",
-      "startLine": 190,
-      "endLine": 201,
-      "mathContext": "$f(n;r,k)$ is non-decreasing in $n$ (adding vertices helps) and in $k$ (relaxing matching constraint helps)."
-    },
-    {
-      "id": "asymptotic",
-      "title": "Asymptotic Behavior",
-      "summary": "Large n regime where the sunflower construction dominates and asymptotic analysis of the extremal function",
-      "startLine": 202,
-      "endLine": 218,
-      "mathContext": "For $n \\\\gg rk$: the sunflower construction dominates. Asymptotically $f(n;r,k) \\\\sim (k-1)\\\\binom{n-1}{r-1}/(r)$."
-    },
-    {
-      "id": "open",
-      "title": "The Open Problem",
-      "summary": "Statement that the conjecture remains open for r ≥ 4, with summary of known partial results and current state",
-      "startLine": 219,
+      "summary": "The construction lower bounds: axioms `construction1_lower` and `construction2_lower`, combined in `combined_lower_bound` to give $f\\ge\\max(\\text{construction1},\\text{construction2})$.",
+      "startLine": 215,
       "endLine": 238,
-      "mathContext": "OPEN for $r \\\\geq 4$ in general. Known cases: $r=2$ (Erdos-Gallai), $r=3$ (Luczak-Mieczkowska), $n$ sufficiently large (Frankl 2013+)."
+      "mathContext": "$f(n;r,k)\\ge\\max(\\binom{rk-1}{r},\\binom{n}{r}-\\binom{n-k+1}{r})$ — the conjectured value is always a lower bound."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "summary": "Commentary on the monotonicity of $f$ in its parameters.",
+      "startLine": 239,
+      "endLine": 244,
+      "mathContext": "$f(n;r,k)$ is monotone in $n$ and $k$."
+    },
+    {
+      "id": "asymptotic-behavior",
+      "title": "Asymptotic Behavior",
+      "summary": "`large_n_construction2_dominates`: for large $n$, construction 2 ($\\binom{n}{r}-\\binom{n-k+1}{r}$) overtakes construction 1, so the conjectured maximum is achieved by construction 2 in that regime.",
+      "startLine": 245,
+      "endLine": 307,
+      "mathContext": "For large $n$, $\\binom{n}{r}-\\binom{n-k+1}{r}$ dominates $\\binom{rk-1}{r}$."
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "summary": "Restates the open status: `erdos1020OpenProblem` ($=$ the matching conjecture) and `r4Conjecture` (the still-open $r=4$ case), the smallest unresolved instance.",
+      "startLine": 308,
+      "endLine": 326,
+      "mathContext": "OPEN for all $r\\ge4$; the $r=4$ case is the smallest unresolved instance."
     }
   ],
   "conclusion": {

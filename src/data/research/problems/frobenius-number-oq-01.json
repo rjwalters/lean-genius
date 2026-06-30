@@ -2,7 +2,7 @@
   "slug": "frobenius-number-oq-01",
   "title": "Frobenius Number: Count of Non-Representable Integers = (a-1)(b-1)/2",
   "phase": "COMPLETED",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -80,7 +80,14 @@
   ],
   "relatedProofs": [
     "frobenius-number",
-    "frobenius-two-coprime"
+    "frobenius-number-oq-01",
+    "frobenius-number-oq-01-oq-03",
+    "frobenius-number-oq-01-oq-03-oq-01",
+    "frobenius-number-oq-01-oq-04",
+    "frobenius-number-oq-02",
+    "frobenius-number-oq-02-oq-01",
+    "frobenius-number-oq-03",
+    "frobenius-number-oq-04"
   ],
   "references": {
     "papers": [
@@ -98,15 +105,15 @@
     ]
   },
   "started": "2026-05-06T16:07:08+03:00",
-  "lastUpdate": "2026-05-08T03:30:00Z",
+  "lastUpdate": "2026-06-14T01:06:09Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/FrobeniusNumber.lean",
       "filename": "FrobeniusNumber.lean",
-      "lineCount": 324,
-      "theoremCount": 15,
+      "lineCount": 325,
+      "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -116,8 +123,8 @@
     {
       "path": "Proofs/FrobeniusNumberOQ01.lean",
       "filename": "FrobeniusNumberOQ01.lean",
-      "lineCount": 159,
-      "theoremCount": 3,
+      "lineCount": 160,
+      "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -125,15 +132,81 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01.lean"
     },
     {
+      "path": "Proofs/FrobeniusNumberOQ01OQ03.lean",
+      "filename": "FrobeniusNumberOQ01OQ03.lean",
+      "lineCount": 137,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ01OQ03OQ01.lean",
+      "filename": "FrobeniusNumberOQ01OQ03OQ01.lean",
+      "lineCount": 286,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ01OQ04.lean",
+      "filename": "FrobeniusNumberOQ01OQ04.lean",
+      "lineCount": 187,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01OQ04.lean"
+    },
+    {
       "path": "Proofs/FrobeniusNumberOQ02.lean",
       "filename": "FrobeniusNumberOQ02.lean",
-      "lineCount": 101,
-      "theoremCount": 5,
+      "lineCount": 124,
+      "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ02.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ02OQ01.lean",
+      "filename": "FrobeniusNumberOQ02OQ01.lean",
+      "lineCount": 180,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ03.lean",
+      "filename": "FrobeniusNumberOQ03.lean",
+      "lineCount": 441,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ03.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ04.lean",
+      "filename": "FrobeniusNumberOQ04.lean",
+      "lineCount": 123,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ04.lean"
     }
   ]
 }

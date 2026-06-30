@@ -2,7 +2,7 @@
 
 **Slug**: lhopital-oq-02-wip-01
 **Created**: 2026-04-05
-**Status**: Active
+**Status**: Completed (already resolved by PR #10140)
 **Source**: gallery-gap
 
 ## Problem Statement

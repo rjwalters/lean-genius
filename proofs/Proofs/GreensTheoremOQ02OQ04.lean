@@ -129,14 +129,17 @@ theorem greens_stokes_l1curl
     (hL1 : IntegrableOn (extDeriv1_2D ω) (Icc a b ×ˢ Icc c d) volume)
     -- C traverses the rectangle boundary
     (hTraversal : ∀ t ∈ Icc 0 C.T,
-        C.γ t ∈ frontier (Icc a b ×ˢ Icc c d)) :
+        C.γ t ∈ frontier (Icc a b ×ˢ Icc c d))
+    -- Orientation: circulation equals the counterclockwise four-edge rectangle integral
+    (hLineEq : lipschitzLineIntegral ω.P ω.Q C =
+        GreensTheoremOQ01.rectLineIntegral ω.P ω.Q a b c d) :
     -- **Stokes: ∫_C ω = ∫_D dω**
     lipschitzLineIntegral ω.P ω.Q C =
     ∫ p in Ioo a b ×ˢ Ioo c d, extDeriv1_2D ω p ∂volume := by
   simp only [extDeriv1_2D]
   exact greens_theorem_l1curl C ω.P ω.Q
     (fun p => deriv (fun x => ω.Q (x, p.2)) p.1 - deriv (fun y => ω.P (p.1, y)) p.2)
-    a b c d hab hcd (by filter_upwards [] with p; rfl) hL1 hTraversal
+    a b c d hab hcd (by filter_upwards [] with p; rfl) hL1 hTraversal hLineEq
 
 -- ============================================================================
 -- Part IV: L¹-Closed Forms Have Zero Line Integral (Cauchy-Goursat)
@@ -159,14 +162,16 @@ theorem closed_l1form_zero_integral
     (hClosedAE : ∀ᵐ p ∂(volume.restrict (Ioo a b ×ˢ Ioo c d)),
         extDeriv1_2D ω p = 0)
     (hTraversal : ∀ t ∈ Icc 0 C.T,
-        C.γ t ∈ frontier (Icc a b ×ˢ Icc c d)) :
+        C.γ t ∈ frontier (Icc a b ×ˢ Icc c d))
+    (hLineEq : lipschitzLineIntegral ω.P ω.Q C =
+        GreensTheoremOQ01.rectLineIntegral ω.P ω.Q a b c d) :
     lipschitzLineIntegral ω.P ω.Q C = 0 := by
   have hCurlZeroAE : ∀ᵐ p ∂(volume.restrict (Ioo a b ×ˢ Ioo c d)),
       deriv (fun x => ω.Q (x, p.2)) p.1 = deriv (fun y => ω.P (p.1, y)) p.2 := by
     filter_upwards [hClosedAE] with p hp
     simp only [extDeriv1_2D] at hp; linarith
   exact lineIntegral_zero_curl C ω.P ω.Q a b c d hab hcd hCurlZeroAE
-    integrableOn_const hTraversal
+    integrableOn_zero hTraversal hLineEq
 
 -- ============================================================================
 -- Part V: C¹ Forms Automatically Satisfy Whitney's L¹ Conditions
@@ -185,9 +190,8 @@ theorem c1_form_l1_integrable
     (hQ_cont : Continuous (fun p : ℝ × ℝ => deriv (fun x => ω.Q (x, p.2)) p.1))
     (hP_cont : Continuous (fun p : ℝ × ℝ => deriv (fun y => ω.P (p.1, y)) p.2)) :
     IntegrableOn (extDeriv1_2D ω) (Icc a b ×ˢ Icc c d) volume := by
-  have hcurl_cont : Continuous (extDeriv1_2D ω) := by
-    simp only [extDeriv1_2D]; exact hQ_cont.sub hP_cont
-  exact hcurl_cont.continuousOn.integrableOn_compact isCompact_Icc
+  have hcurl_cont : Continuous (extDeriv1_2D ω) := hQ_cont.sub hP_cont
+  exact hcurl_cont.continuousOn.integrableOn_compact (isCompact_Icc.prod isCompact_Icc)
 
 /-- **C¹ forms satisfy all of Whitney's hypotheses** for `greens_stokes_l1curl`.
 
@@ -214,11 +218,13 @@ theorem c1_stokes_from_whitney
     (ω : OneForm2D) (a b c d : ℝ) (hab : a < b) (hcd : c < d)
     (hQ_cont : Continuous (fun p : ℝ × ℝ => deriv (fun x => ω.Q (x, p.2)) p.1))
     (hP_cont : Continuous (fun p : ℝ × ℝ => deriv (fun y => ω.P (p.1, y)) p.2))
-    (hTraversal : ∀ t ∈ Icc 0 C.T, C.γ t ∈ frontier (Icc a b ×ˢ Icc c d)) :
+    (hTraversal : ∀ t ∈ Icc 0 C.T, C.γ t ∈ frontier (Icc a b ×ˢ Icc c d))
+    (hLineEq : lipschitzLineIntegral ω.P ω.Q C =
+        GreensTheoremOQ01.rectLineIntegral ω.P ω.Q a b c d) :
     lipschitzLineIntegral ω.P ω.Q C =
     ∫ p in Ioo a b ×ˢ Ioo c d, extDeriv1_2D ω p ∂volume :=
   greens_stokes_l1curl C ω a b c d hab hcd
-    (c1_form_l1_integrable ω a b c d hQ_cont hP_cont) hTraversal
+    (c1_form_l1_integrable ω a b c d hQ_cont hP_cont) hTraversal hLineEq
 
 -- ============================================================================
 -- Part VI: Scaling and Linearity
@@ -233,13 +239,15 @@ theorem stokes_scaling
     (ω : OneForm2D) (k : ℝ)
     (a b c d : ℝ) (hab : a < b) (hcd : c < d)
     (hL1 : IntegrableOn (extDeriv1_2D ω) (Icc a b ×ˢ Icc c d) volume)
-    (hTraversal : ∀ t ∈ Icc 0 C.T, C.γ t ∈ frontier (Icc a b ×ˢ Icc c d)) :
+    (hTraversal : ∀ t ∈ Icc 0 C.T, C.γ t ∈ frontier (Icc a b ×ˢ Icc c d))
+    (hLineEq : lipschitzLineIntegral ω.P ω.Q C =
+        GreensTheoremOQ01.rectLineIntegral ω.P ω.Q a b c d) :
     lipschitzLineIntegral (fun p => k * ω.P p) (fun p => k * ω.Q p) C =
     k * ∫ p in Ioo a b ×ˢ Ioo c d, extDeriv1_2D ω p ∂volume := by
   -- The line integral scales by k (by linearity of integration)
   rw [lineIntegral_smul]
   -- Apply Whitney to the unscaled form
-  rw [greens_stokes_l1curl C ω a b c d hab hcd hL1 hTraversal]
+  rw [greens_stokes_l1curl C ω a b c d hab hcd hL1 hTraversal hLineEq]
 
 /-
 ## Summary: Exterior Form Stokes Hierarchy (2026-05-06)

@@ -1,8 +1,8 @@
 {
   "slug": "godel-second-incompleteness-oq02-oq-02",
   "title": "Solovay's arithmetical completeness theorem: the propositional modal logic GL axiomatizes exactly the provability facts of PA",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -31,18 +31,19 @@
     "goal": "Reach a build-verified Lean 4 proof of at least the soundness direction (GL ⊢ φ ⇒ PA ⊢ φ* for all realizations). The completeness direction requires architectural restructuring of the parent file's opaque Provable axiom and is deferred to a separate multi-session effort."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-11",
-    "iteration": 16,
+    "phase": "BLOCKED",
+    "since": "2026-06-13",
+    "iteration": 17,
     "focus": "S16 ACT shipped GodelSecondIncompletenessOQ02Soundness.lean (Docker-verified 3063 jobs, 0 sorries, 0 NEW axioms): arithmetical soundness of GL in rule-verified conditional form. The mp/nec inference-rule cases are discharged unconditionally by impl_mp + d1_representability (genuine theorems, exported as arith_sound_mp/arith_sound_nec); the taut/k/lob axiom-schema cases are isolated as explicit hypotheses (Htaut/Hk/Hlob) since they assert PA-provability of object formulas that cannot be derived under the opaque Provable predicate.",
     "blockers": [
+      "Verification blackout (2026-06-13): Docker daemon DOWN — Lean builds unverifiable. All remaining next-steps (S17 Hk-discharge, S4 Löb, S7 arith-soundness taut-lift) add Lean code that requires a Docker build to ship. No build-free ACT remains; trackers (state.md, JSON, knowledge.md) all in sync at iteration 16 (9-axiom floor, 0 real sorries). Re-open when Docker recovers.",
       "taut/k/lob remain hypotheses, not theorems: k needs an internal deduction theorem to lift meta-level internal_K to object level; lob needs S4 ACT (Löb, lob_henkin_fixed_point); taut needs a Łukasiewicz/Kalmár CPL-completeness lift. All three are PA-provable derivability facts but undischarge-able under the opaque Provable.",
       "Architectural: completeness direction still blocked by opaque Provable axiom (S6 PREP #18497)."
     ],
-    "nextAction": "S17: discharge one of Htaut/Hk/Hlob into a theorem. Most tractable: Hk via an object-level deduction theorem composing internal_K with a curry axiom; or wire arithmetical_soundness_of into second_incompleteness as a sanity instance.",
+    "nextAction": "BLOCKED on verification blackout. Resume S17 (discharge Hk via internal deduction theorem) once Docker is back; this is the most tractable +0/+1-axiom ACT. See state.md S17 block.",
     "attemptCounts": {
-      "total": 16,
-      "currentApproach": 16,
+      "total": 17,
+      "currentApproach": 17,
       "approachesTried": 1
     }
   },
@@ -73,7 +74,7 @@
         "axioms": 0,
         "sorries": 0,
         "dockerJobs": 3062,
-        "buildSeconds": 9.0,
+        "buildSeconds": 9,
         "description": "Realization function bridging GL syntax to PA syntax. 4 recursive cases + 5 simp-equation theorems all rfl-discharged."
       },
       "proofs/Proofs/GodelSecondIncompletenessOQ02Soundness.lean (arith_sound_nec, arith_sound_mp, arithmetical_soundness_of; 0 sorries, 0 new axioms)"
@@ -119,9 +120,9 @@
     "solovay"
   ],
   "relatedProofs": [
-    "godel-second-incompleteness-oq02",
+    "godel-first-incompleteness-oq01",
     "godel-incompleteness",
-    "godel-first-incompleteness-oq01"
+    "godel-second-incompleteness-oq02"
   ],
   "references": {
     "papers": [
@@ -142,7 +143,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.287Z",
-  "lastUpdate": "2026-06-11",
+  "lastUpdate": "2026-06-13",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

@@ -60,14 +60,14 @@
     "mathlibGaps": [],
     "nextSteps": [
       "Docker build verification (nlinarith calls may need tuning)",
-      "Update gallery meta.json to reflect 0 sorries",
       "Generate follow-up: can we prove regularity_lemma_strong (with lower bound on parts.card)?"
     ],
     "markdown": "# Knowledge Base: szemeredi-core-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
   "relatedProofs": [
-    "szemeredi-core"
+    "szemeredi-core",
+    "szemeredi-core-oq-01"
   ],
   "references": {
     "papers": [],
@@ -120,6 +120,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ03.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ04.lean",
+      "filename": "SzemerediCoreOQ04.lean",
+      "lineCount": 1124,
+      "theoremCount": 62,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 24,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ04.lean"
     }
   ]
 }

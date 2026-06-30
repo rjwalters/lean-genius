@@ -22,7 +22,7 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified using Mathlib's Finset combinatorics.",
-    "lineCount": 337,
+    "lineCount": 347,
     "theoremCount": 12,
     "definitionCount": 4,
     "originalContributions": [
@@ -57,60 +57,60 @@
   },
   "sections": [
     {
-      "id": "part1-zeta",
+      "id": "part-1-subset-functions-zeta",
       "title": "Part 1: Subset Functions and the Zeta Transform",
-      "startLine": 56,
-      "endLine": 99,
-      "summary": "Defines SubsetFn (functions on Finset α valued in ℤ), the zeta transform ζf(S)=∑_{T⊆S}f(T), and the Möbius transform μg(S)=∑_{T⊆S}(-1)^{|S\\T|}g(T). Proves basic evaluation theorems: zetaTransform_empty (ζf(∅)=f(∅)), mobiusTransform_empty (μg(∅)=g(∅)), zetaTransform_singleton (ζf({a})=f(∅)+f({a})).",
-      "mathContext": "$(\\zeta f)(S) = \\sum_{T \\subseteq S} f(T)$, $(\\mu g)(S) = \\sum_{T \\subseteq S} (-1)^{|S \\setminus T|} g(T)$. At $\\emptyset$: $(\\zeta f)(\\emptyset) = f(\\emptyset)$ since $\\emptyset$ has only one subset. At $\\{a\\}$: $(\\zeta f)(\\{a\\}) = f(\\emptyset) + f(\\{a\\})$."
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "Module overview and core definitions: abbrev SubsetFn α (functions on the subset lattice), the zetaTransform (ζf(S) = Σ_{T⊆S} f(T)) and its inverse mobiusTransform built from the signed Möbius weights.",
+      "mathContext": "$(\\zeta f)(S) = \\sum_{T \\subseteq S} f(T)$"
     },
     {
-      "id": "part2-signed-cancellation",
-      "title": "Part 2: Signed Sum Cancellation — the Core Identity",
-      "startLine": 100,
-      "endLine": 127,
-      "summary": "Proves signed_sum_subsets: ∑_{T⊆S}(-1)^{|S\\T|} = [S=∅]. The proof splits into two cases: S=∅ (trivial: one term, exponent 0) and S≠∅ (uses prod_add to express the sum as ∏_{i∈S}(1+(-1))=0). This is the algebraic engine powering all of Möbius inversion.",
-      "mathContext": "$\\sum_{T \\subseteq S} (-1)^{|S \\setminus T|} = \\begin{cases} 1 & S = \\emptyset \\\\ 0 & S \\neq \\emptyset \\end{cases}$. Proof via $\\prod_{i \\in S}(1 + (-1)) = \\sum_{T \\subseteq S} \\left(\\prod_{i \\in T} 1\\right)\\left(\\prod_{i \\in S \\setminus T} (-1)\\right) = \\sum_{T \\subseteq S} (-1)^{|S \\setminus T|}$, and $1 + (-1) = 0$."
+      "id": "part-2-basic-properties",
+      "title": "Part 2: Basic Properties",
+      "startLine": 75,
+      "endLine": 96,
+      "summary": "Boundary evaluations of the transforms: zetaTransform_empty, mobiusTransform_empty (value at ∅), and zetaTransform_singleton.",
+      "mathContext": "$(\\zeta f)(\\varnothing) = f(\\varnothing)$; singleton evaluation"
     },
     {
-      "id": "part3-mobius-inversion",
-      "title": "Part 3: Möbius Inversion — μ ∘ ζ = id",
-      "startLine": 100,
-      "endLine": 189,
-      "summary": "Proves inner_sum_eq (∑_{T:U⊆T⊆S}(-1)^{|S\\T|}=[U=S]) via bijection T↦T\\U reducing to signed_sum_subsets. Then proves mobius_inverts_zeta (μ∘ζ=id) by: (1) expanding the double sum, (2) applying sum_comm' to swap summation order (Fubini), (3) using inner_sum_eq to show each term is [U=S]·f(U), (4) summing isolates the U=S term.",
-      "mathContext": "$\\mu(\\zeta f)(S) = \\sum_{T \\subseteq S} (-1)^{|S\\setminus T|} \\sum_{U \\subseteq T} f(U) = \\sum_{U \\subseteq S} f(U) \\sum_{\\substack{T \\subseteq S \\\\ U \\subseteq T}} (-1)^{|S\\setminus T|} = \\sum_{U \\subseteq S} f(U) \\cdot [U = S] = f(S)$."
+      "id": "part-3-mobius-inversion",
+      "title": "Part 3: Möbius Inversion on the Subset Lattice",
+      "startLine": 97,
+      "endLine": 190,
+      "summary": "The core identity: signed_sum_subsets (alternating subset sums cancel), the private helper inner_sum_eq, and mobius_inverts_zeta proving μ ∘ ζ = id on subset functions.",
+      "mathContext": "$\\mu \\circ \\zeta = \\mathrm{id}$ via $\\sum_{T\\subseteq S}(-1)^{|S\\setminus T|} = [S=\\varnothing]$"
     },
     {
-      "id": "part4-ie-connection",
+      "id": "part-4-connection-inclusion-exclusion",
       "title": "Part 4: Connection to Inclusion-Exclusion",
-      "startLine": 192,
-      "endLine": 213,
-      "summary": "Reformulates mobius_inverts_zeta as the classical inclusion-exclusion principle: ie_as_mobius_inversion shows that applying μ to ζf pointwise recovers f. This connects the abstract algebraic identity to the combinatorial IE formula for computing |⋃ Aᵢ|.",
-      "mathContext": "The IE principle $|\\bigcup_i A_i| = \\sum_{\\emptyset \\neq S} (-1)^{|S|+1} |\\bigcap_{i \\in S} A_i|$ is the Möbius function applied to the overcounting function $f(S) = |\\bigcap_{i \\in S} A_i|$."
+      "startLine": 191,
+      "endLine": 210,
+      "summary": "ie_as_mobius_inversion: recasts the classical inclusion-exclusion principle as the Möbius-inversion identity on the subset lattice.",
+      "mathContext": "Inclusion–exclusion = Möbius inversion on $2^{[n]}$"
     },
     {
-      "id": "part5-sos-dp",
-      "title": "Part 5: Fast Subset Sum (SOS) DP Algorithm",
-      "startLine": 214,
-      "endLine": 255,
-      "summary": "Defines zetaStep(a,f)(S) = f(S)+f(S\\{a}) if a∈S else f(S), formalizing one element's contribution to the SOS DP. Proves zetaStep_not_mem and zetaStep_mem, the computational invariants. After folding over all elements of α, the accumulated function equals zetaTransform.",
-      "mathContext": "SOS DP invariant: after processing elements $\\{a_1,\\ldots,a_k\\}$, for each $S$: $f_k(S) = \\sum_{T \\subseteq S \\cap \\{a_1,\\ldots,a_k\\}} f_0(S \\setminus (S \\cap \\{a_1,\\ldots,a_k\\}) \\cup T)$. Processing all $n$ elements gives $f_n(S) = \\zeta f_0(S)$. Time: $O(n \\cdot 2^n)$."
+      "id": "part-5-fast-subset-sum",
+      "title": "Part 5: Fast Subset Sum (Algorithmic Insight)",
+      "startLine": 211,
+      "endLine": 238,
+      "summary": "The SOS/zeta-transform DP: def zetaStep (one-coordinate update) with zetaStep_not_mem and zetaStep_mem characterizing its action, the algorithmic content behind the O(n·2ⁿ) subset-sum transform.",
+      "mathContext": "Sum-over-subsets DP: $O(n\\,2^n)$ via per-coordinate zeta steps"
     },
     {
-      "id": "part6-verification",
-      "title": "Part 6: Computational Verification and Odd-Even Balance",
+      "id": "part-6-computational-verification",
+      "title": "Part 6: Computational Verification",
       "startLine": 239,
       "endLine": 319,
-      "summary": "Proves mobius_subset_lattice (μ(∅,S)=(-1)^{|S|} — the Möbius function value on Boolean lattice) and odd_even_subset_balance (|{T⊆S:|T|odd}|=|{T⊆S:|T|even}| for nonempty S via parity-flipping involution T↦T△{a}).",
-      "mathContext": "$\\mu(\\emptyset, S) = (-1)^{|S|}$ on the Boolean lattice. Odd-even balance: $\\sum_{T \\subseteq S} (-1)^{|T|} = 0$ for $S \\neq \\emptyset$ (a consequence of $signed\\_sum\\_subsets$ with $T$ and $S\\setminus T$ swapped)."
+      "summary": "Verification lemmas: mobius_subset_lattice and odd_even_subset_balance (a nonempty set has equally many odd- and even-sized subsets), confirming the cancellation that drives the inversion.",
+      "mathContext": "Equal counts of odd- and even-cardinality subsets of a nonempty set"
     },
     {
-      "id": "part7-summary",
-      "title": "Part 7: Summary",
+      "id": "part-7-summary-theorem",
+      "title": "Part 7: Summary Theorem",
       "startLine": 320,
       "endLine": 337,
-      "summary": "ie_mobius_summary restates mobius_inverts_zeta: IE, Möbius inversion, and fast SOS are three facets of the same algebraic structure — the Möbius algebra of the Boolean lattice 2^[n].",
-      "mathContext": "The Möbius algebra $M(P) = \\mathbb{Z}^P$ with Dirichlet convolution under the poset order unifies all three perspectives: IE is the inversion formula, Möbius inversion is the abstract form, and SOS is the O(n·2^n) algorithm."
+      "summary": "ie_mobius_summary: the capstone theorem packaging the Möbius-inversion / inclusion-exclusion equivalence as the file's headline result.",
+      "mathContext": "Summary: $\\zeta$ and $\\mu$ are mutually inverse on $\\mathrm{SubsetFn}$"
     }
   ],
   "conclusion": {
@@ -159,7 +159,7 @@
   "leanFile": {
     "path": "Proofs/InclusionExclusionOQ03.lean",
     "filename": "InclusionExclusionOQ03.lean",
-    "lineCount": 337,
+    "lineCount": 347,
     "theoremCount": 12,
     "axiomCount": 0,
     "defCount": 4,

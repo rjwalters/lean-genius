@@ -57,49 +57,81 @@
     "lineCount": 635,
     "assumptions": "2 axiom(s): motivicClassPartialFlagMaps (motivic class of maps to partial flags), partial_flag_extension (conjectured extension to parabolic subgroups). 0 sorries — all algebraic identities (duality, lines, Gaussian binomial) are proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 33,
+    "theoremCount": 38,
     "definitionCount": 17
   },
   "sections": [
     {
+      "id": "grothendieck-ring",
+      "title": "Part I: Grothendieck Ring Setup",
+      "description": "The Grothendieck ring of varieties K₀(Var_k) with affine class [A^n]=L^n, projective class [P^n], triangular numbers, [GL_n], and complete-flag class [Fl_n], imported from the parent MotivicFlagMaps formalization.",
+      "startLine": 34,
+      "endLine": 68,
+      "summary": "Grothendieck ring K₀(Var_k) and base motivic classes"
+    },
+    {
       "id": "q-analogs",
-      "title": "q-Analog Infrastructure",
+      "title": "Part II: q-Analog Infrastructure",
       "description": "q-numbers [n]_L = 1 + L + ... + L^{n-1} and q-factorials [n]_L! = ∏ [i]_L, connecting motivic algebra to combinatorics. Key result: [n]_L! = [Fl_n].",
-      "startLine": 63,
-      "endLine": 140,
-      "summary": "q-Analog Infrastructure"
+      "startLine": 69,
+      "endLine": 134,
+      "summary": "q-numbers and q-factorials; [n]_L! = [Fl_n]"
     },
     {
-      "id": "grassmannians",
-      "title": "Grassmannian Motivic Classes",
-      "description": "Recursive definition of [Gr(d,n)] via the q-Pascal identity. Verified for Gr(1,2), Gr(1,3), Gr(2,3), Gr(2,4). The coefficient 2 on L² in [Gr(2,4)] reflects two Schubert cells.",
-      "startLine": 142,
-      "endLine": 231,
-      "summary": "Grassmannian Motivic Classes"
+      "id": "grassmannian-classes",
+      "title": "Part III: Grassmannian Motivic Classes",
+      "description": "Grassmannian Gr(d,n) motivic classes via Schubert cell decomposition, verified small cases, q-number splitting [d]_L + L^d·[n-d]_L = [n]_L, and the q-factorial recurrence.",
+      "startLine": 135,
+      "endLine": 277,
+      "summary": "Grassmannian classes, small cases, q-Pascal recursion"
     },
     {
-      "id": "partial-flags",
-      "title": "Partial Flag Varieties",
-      "description": "Definition of partial flags Fl(d₁,...,dₖ; n) as nested subspaces. Motivic class factorization via iterated Grassmannian fibrations.",
-      "startLine": 233,
-      "endLine": 274,
-      "summary": "Partial Flag Varieties"
+      "id": "gaussian-binomial",
+      "title": "Part IV: The Gaussian Binomial Identity",
+      "description": "The Gaussian binomial identity [Gr(d,n)] · [d]_L! · [n-d]_L! = [n]_L!, identifying the Grassmannian class with the Gaussian binomial coefficient.",
+      "startLine": 278,
+      "endLine": 363,
+      "summary": "[Gr(d,n)]·[d]!·[n-d]! = [n]!"
+    },
+    {
+      "id": "grassmannian-duality",
+      "title": "Part IV-b: Grassmannian Duality",
+      "description": "Duality [Gr(d,n)] = [Gr(n-d,n)] for d ≤ n, proved by evaluating into Polynomial ℤ where each q-number and q-factorial is nonzero.",
+      "startLine": 364,
+      "endLine": 468,
+      "summary": "Grassmannian duality via Polynomial ℤ evaluation"
+    },
+    {
+      "id": "partial-flag-varieties",
+      "title": "Part V: Partial Flag Varieties",
+      "description": "Partial flags of type (d₁,...,dₖ) in kⁿ and their motivic class Fl(d₁,...,dₖ;n), with the single-step case Fl(d;n)=Gr(d,n) and the iterated-Grassmannian factorization of the complete flag.",
+      "startLine": 469,
+      "endLine": 512,
+      "summary": "Partial flag varieties and class factorization"
     },
     {
       "id": "extension-conjecture",
-      "title": "Extension Conjecture",
-      "description": "States the conjectured extension of Bryan et al. to partial flags: [Ω²_β(Fl(d₁,...,dₖ; n+1))] = [Levi × U × A^{a'}]. The complete flag case recovers the original theorem.",
-      "startLine": 276,
-      "endLine": 310,
-      "summary": "Extension Conjecture"
+      "title": "Part VI: Maps to Partial Flags — Extension Conjecture",
+      "description": "Homology class for based maps to a partial flag, its positivity, the axiomatized motivic class of based maps, Levi subgroup and unipotent radical data, and the conjectured extension of Bryan et al. to partial flags.",
+      "startLine": 513,
+      "endLine": 567,
+      "summary": "Extension conjecture for maps to partial flags"
     },
     {
-      "id": "gln-structure",
-      "title": "GL_n Structure via q-Analogs",
-      "description": "Proved: [GL_n] = (L-1)^n · [n]_L! · L^{T(n)}, explaining why flag varieties appear in the GL_n formula. Uses mul_geom_sum from Mathlib.",
-      "startLine": 312,
-      "endLine": 345,
-      "summary": "GL_n Structure via q-Analogs"
+      "id": "verified-small-cases",
+      "title": "Part VII: Verified Small Cases",
+      "description": "Consistency checks: [Fl_2] and [Fl_3] via q-factorial match direct computation, the first interesting Grassmannian [Gr(2,4)], and the q-Pascal identity for the recursive definition.",
+      "startLine": 568,
+      "endLine": 597,
+      "summary": "Verified small cases (Fl_2, Fl_3, Gr(2,4))"
+    },
+    {
+      "id": "gl-n-q-numbers",
+      "title": "Part VIII: Relating GL_n to q-Numbers",
+      "description": "L^n - 1 = (L-1)·[n]_L leading to the factorization [GL_n] = (L-1)^n · [n]_L! · L^{T(n)}, with the corollary [GL_n]/(L-1)^n = [Fl_n] · L^{T(n)}.",
+      "startLine": 598,
+      "endLine": 635,
+      "summary": "[GL_n] = (L-1)^n · [n]_L! · L^{T(n)}"
     }
   ],
   "overview": {
@@ -139,7 +171,7 @@
     "path": "Proofs/MotivicFlagMapsPartialFlags.lean",
     "sorries": 0,
     "definitionCount": 17,
-    "theoremCount": 33
+    "theoremCount": 38
   },
   "sorries": 0
 }

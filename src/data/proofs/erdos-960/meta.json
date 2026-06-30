@@ -67,79 +67,79 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 21,
+      "endLine": 25,
       "summary": "Module docstring stating Erdos Problem #960: for n points in the plane with no k collinear, determine the threshold f_{r,k}(n) of ordinary lines that guarantees an r-point all-ordinary subset. References Er84.",
       "mathContext": "Given $r, k \\ge 2$ and $n$ points in $\\mathbb{R}^2$ with no $k$ collinear, an ordinary line contains exactly 2 points. The problem asks for the threshold $f_{r,k}(n)$ such that $\\ge f_{r,k}(n)$ ordinary lines forces $r$ points with all $\\binom{r}{2}$ connecting lines ordinary. Tur\\'{a}n's theorem gives $f_{r,k}(n) \\le \\bigl(1 - \\tfrac{1}{r-1}\\bigr)\\tfrac{n^2}{2} + 1$. The conjecture asks whether $f_{r,k}(n) = o(n^2)$ or even $f_{r,k}(n) \\ll n$."
     },
     {
       "id": "point-config",
       "title": "Part I: Point Configurations and Collinearity",
-      "startLine": 22,
-      "endLine": 39,
+      "startLine": 26,
+      "endLine": 44,
       "summary": "Defines the PointConfig structure (a finite set of integer-coordinate points with a cardinality proof) and the NoKCollinear predicate, which asserts that no k-element subset lies on a common line defined by the equation ax + by + c = 0.",
       "mathContext": "A point configuration $P$ is a finite set of points $P.\\mathrm{points} \\subseteq \\mathbb{N} \\times \\mathbb{N}$ with $|P.\\mathrm{points}| = n$. The predicate $\\mathrm{NoKCollinear}(P, k)$ states that for every $S \\subseteq P.\\mathrm{points}$ with $|S| = k$, there is no non-trivial linear form $(a, b, c) \\in \\mathbb{Z}^3 \\setminus \\{0\\}$ satisfying $ax + by + c = 0$ for all $(x, y) \\in S$. This captures general position up to $k$-collinearity."
     },
     {
       "id": "ordinary-lines",
       "title": "Part II: Ordinary Lines",
-      "startLine": 41,
-      "endLine": 53,
+      "startLine": 45,
+      "endLine": 58,
       "summary": "Defines IsOrdinaryLine (the line through p and q contains exactly those two points of P) using a parametric test over rationals, and ordinaryLineCount which counts unordered pairs determining ordinary lines by filtering the product set and dividing by 2.",
       "mathContext": "A line through $p, q \\in P.\\mathrm{points}$ is ordinary if no third point $r \\in P.\\mathrm{points}$ lies on it: $\\nexists\\, t \\in \\mathbb{Q}$ such that $r = (1-t)p + tq$. The ordinary line count is $\\mathrm{ordinaryLineCount}(P) = \\tfrac{1}{2}|\\{(p,q) \\in P^2 : p \\ne q \\wedge \\mathrm{IsOrdinaryLine}(P, p, q)\\}|$, dividing by 2 to count unordered pairs."
     },
     {
       "id": "all-ordinary",
       "title": "Part III: All-Ordinary Subsets",
-      "startLine": 55,
-      "endLine": 69,
+      "startLine": 59,
+      "endLine": 74,
       "summary": "Defines AllOrdinary (a subset S of P where every pair determines an ordinary line) and proves isOrdinaryLine_symm: if the line through p,q is ordinary then so is the line through q,p, by reparametrizing t to 1-t.",
       "mathContext": "A subset $S \\subseteq P.\\mathrm{points}$ is all-ordinary if $S \\subseteq P.\\mathrm{points}$ and for every distinct $p, q \\in S$, the line $\\overline{pq}$ is ordinary in $P$. The symmetry lemma shows $\\mathrm{IsOrdinaryLine}(P, p, q) \\Rightarrow \\mathrm{IsOrdinaryLine}(P, q, p)$ by the substitution $t \\mapsto 1 - t$ in the parametric equation, giving $(1-(1-t))p + (1-t)q = tp + (1-t)q$."
     },
     {
       "id": "threshold",
       "title": "Part IV: The Threshold Function",
-      "startLine": 71,
-      "endLine": 79,
+      "startLine": 75,
+      "endLine": 84,
       "summary": "Defines the threshold function f_{r,k}(n) as the supremum over all m such that some n-point configuration with no k collinear has at least m ordinary lines but no r-element all-ordinary subset.",
       "mathContext": "The threshold is defined as $f_{r,k}(n) = \\sup\\{m \\in \\mathbb{N} \\mid \\exists\\, P \\text{ with } |P| = n,\\, \\mathrm{NoKCollinear}(P, k),\\, \\mathrm{ordinaryLineCount}(P) \\ge m,\\, \\nexists\\, S \\subseteq P,\\, |S| = r,\\, \\mathrm{AllOrdinary}(P, S)\\}$. This captures the maximum number of ordinary lines that can coexist with the absence of an all-ordinary $r$-subset."
     },
     {
       "id": "conjecture",
       "title": "Part V: The Main Conjecture",
-      "startLine": 81,
-      "endLine": 96,
+      "startLine": 85,
+      "endLine": 108,
       "summary": "States the two forms of the conjecture: ErdosConjecture960_littleo (f_{r,k}(n) = o(n^2)) and ErdosConjecture960_linear (f_{r,k}(n) <= C*n). Both are DISPROVED for r>=3, k>=4 by Alexeev-Putterman-Sawhney-Sellke-Valiant (2026, arXiv:2604.06609), who proved F_{r,k}(n) >= n^2/12 - 10n/3 for n >= 72. The disproof is axiomatized as erdos_960_disproof (quadratic lower bound) and erdos_960_littleo_false (negation of little-o conjecture).",
       "mathContext": "The little-$o$ conjecture: $\\forall\\, \\varepsilon > 0,\\, \\exists\\, N_0$ such that $\\forall\\, n \\ge N_0$, $f_{r,k}(n) < \\varepsilon n^2$. Formulated over $\\mathbb{Q}$ to avoid coercion issues. The conjecture is DISPROVED: `axiom erdos_960_disproof` asserts $F_{r,k}(n) \\ge n^2/12 - 10n/3$ for $r \\ge 3$, $k \\ge 4$, $n \\ge 72$ (APSSV 2026). `axiom erdos_960_littleo_false` formalizes the negation $\\lnot\\, \\mathrm{ErdosConjecture960\\_littleo}\\, r\\, k$ for $r \\ge 3$, $k \\ge 4$."
     },
     {
       "id": "turan-bound",
       "title": "Part VI: Turan Upper Bound",
-      "startLine": 98,
-      "endLine": 128,
+      "startLine": 109,
+      "endLine": 137,
       "summary": "Discusses the Turán upper bound (not axiomatized — bridging from SimpleGraph to PointConfig is non-trivial and the bound is not used by any theorem). Proves trivial_bound: the ordinary line count of any configuration is at most n*(n-1)/2 (i.e., C(n,2)), by showing the filtered set of ordinary pairs is a subset of the off-diagonal and computing its cardinality.",
       "mathContext": "Tur\\'{a}n's theorem (1941) implies $f_{r,k}(n) \\le \\bigl(1 - \\tfrac{1}{r-1}\\bigr)\\tfrac{n^2}{2} + 1$. Bridging from Mathlib's SimpleGraph Turán to PointConfig requires substantial infrastructure and is not axiomatized here. The trivial bound $\\mathrm{ordinaryLineCount}(P) \\le \\binom{n}{2} = \\tfrac{n(n-1)}{2}$ is proved by showing the filtered product is a subset of $P.\\mathrm{points}.\\mathrm{offDiag}$ and using $|\\mathrm{offDiag}| = n(n-1)$."
     },
     {
       "id": "known-cases",
       "title": "Part VII: Known Cases and Connections",
-      "startLine": 130,
-      "endLine": 208,
-      "summary": "Proves three results: (1) ordinary_line_exists (private): if ordinaryLineCount >= 1 then some ordinary line exists. (2) threshold_r2: for r=2 the threshold is 0, since any ordinary line yields a 2-element all-ordinary subset. (3) ordinary_pairs_count: an all-ordinary r-subset has r*(r-1) ordered ordinary pairs. The Green-Tao theorem (≥ n/2 ordinary lines for general position) is mentioned in comments but not axiomatized.",
+      "startLine": 138,
+      "endLine": 240,
+      "summary": "Proves three results: (1) ordinary_line_exists (private): if ordinaryLineCount >= 1 then some ordinary line exists. (2) threshold_r2: for r=2 the threshold is 0, since any ordinary line yields a 2-element all-ordinary subset. (3) ordinary_pairs_count: an all-ordinary r-subset has r*(r-1) ordered ordinary pairs. The Green-Tao theorem (≥ n/2 ordinary lines for general position) is mentioned in comments but not axiomatized. Also proves linear_implies_littleo: if f_{r,k}(n) <= C*n for some constant C, then f_{r,k}(n) = o(n^2), by choosing N_0 = ceil(C/epsilon) + 1 so that C*n < epsilon*n^2 for all n >= N_0.",
       "mathContext": "The lemma `ordinary_line_exists` extracts witnesses from a nonempty filtered Finset. The key theorem `threshold_r2` proves $f_{2,k}(n) = 0$: if $m \\ge 1$ then some ordinary line $\\{p,q\\}$ gives a 2-element all-ordinary subset, contradicting the $\\sup$ condition; the proof uses `csSup_le` and case analysis. The counting lemma shows $|S \\times S| - |S| = r(r-1)$ by `card_product` and `zify`. Green-Tao (Acta Math. 208, 2013) is noted but not used by any theorem."
     },
     {
-      "id": "linear-implies-littleo",
-      "title": "Linear Implies Little-o",
-      "startLine": 210,
-      "endLine": 235,
-      "summary": "Proves linear_implies_littleo: if f_{r,k}(n) <= C*n for some constant C, then f_{r,k}(n) = o(n^2). The proof sets N_0 = ceil(C/epsilon) + 1, so for n >= N_0 we have C*n < epsilon*n^2. Uses ceiling arithmetic and nlinarith for the final inequality.",
-      "mathContext": "The theorem establishes $f_{r,k}(n) \\le Cn \\Rightarrow f_{r,k}(n) = o(n^2)$. Given $\\varepsilon > 0$, choose $N_0 = \\lceil C/\\varepsilon \\rceil + 1$. For $n \\ge N_0$: $n > C/\\varepsilon$, so $C < \\varepsilon n$, hence $Cn < \\varepsilon n^2$. The proof converts between $\\mathbb{N}$ and $\\mathbb{Q}$ using `push_cast`, applies `Int.le_ceil` for the ceiling bound, and closes with `nlinarith`."
+      "title": "Part VIII: Structural Properties",
+      "id": "structural-properties",
+      "startLine": 241,
+      "endLine": 285,
+      "summary": "Proves projection and closure lemmas for ordinary lines and all-ordinary subsets: isOrdinaryLine_mem_left/right (an ordinary line’s endpoints lie in P.points), isOrdinaryLine_ne (the endpoints are distinct), allOrdinary_mono (all-ordinary is preserved under taking subsets), and allOrdinary_pair_iff (a two-point set {p, q} with p ≠ q is all-ordinary iff its line is ordinary). Concludes with erdos_960_linear_false: the linear conjecture also fails for r >= 3, k >= 4, as the contrapositive of linear_implies_littleo applied to the disproved little-o conjecture.",
+      "mathContext": "The projection lemmas unpack $\\mathrm{IsOrdinaryLine}(P,p,q)$ into its components $p,q \\in P.\\mathrm{points}$ and $p \\ne q$. Monotonicity gives $S \\subseteq T \\wedge \\mathrm{AllOrdinary}(P,T) \\Rightarrow \\mathrm{AllOrdinary}(P,S)$. The pair characterization shows $\\mathrm{AllOrdinary}(P,\\{p,q\\}) \\Leftrightarrow \\mathrm{IsOrdinaryLine}(P,p,q)$ for $p \\ne q$. Finally $\\lnot\\,\\mathrm{ErdosConjecture960\\_linear}\\,r\\,k$ holds for $r \\ge 3,\\,k \\ge 4$ by contraposition: a linear bound would imply the little-$o$ bound, which is disproved by APSSV 2026."
     },
     {
       "id": "summary",
-      "title": "Summary Theorem",
-      "startLine": 237,
-      "endLine": 240,
+      "title": "Summary",
+      "startLine": 286,
+      "endLine": 296,
       "summary": "Combines the main results into erdos_960_summary: (1) for all r>=3, k>=4, the little-o conjecture is FALSE (from the axiomatized disproof erdos_960_littleo_false, APSSV 2026), and (2) for all k, n >= 2, f_{2,k}(n) = 0 (the proved r=2 base case threshold_r2). Closes the Erdos960 namespace.",
       "mathContext": "The summary theorem has type $(\\forall\\, r\\, k,\\, r \\ge 3 \\to k \\ge 4 \\to \\lnot\\, \\mathrm{ErdosConjecture960\\_littleo}\\, r\\, k) \\wedge (\\forall\\, k\\, n,\\, k \\ge 2 \\to n \\ge 2 \\to \\mathrm{threshold}\\, 2\\, k\\, n = 0)$. The first conjunct uses the axiomatized APSSV 2026 disproof via `erdos_960_littleo_false`; the second is the fully proved base case `threshold_r2`. This packages the formalization of the resolved (disproved) conjecture into a single statement."
     }

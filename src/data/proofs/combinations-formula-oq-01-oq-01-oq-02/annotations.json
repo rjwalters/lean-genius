@@ -1,0 +1,86 @@
+[
+  {
+    "id": "combinations-oq010102-ann-header",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 50 },
+    "type": "context",
+    "title": "From Fibonacci diagonals to the p-bonacci family",
+    "content": "The shallow (rising) diagonals of Pascal's triangle sum to the Fibonacci numbers — Lucas's classical observation, ∑_j C(n−j, j) = F(n+1), proved in the parent entry. Steepening the diagonal slope by a step parameter q (so p = q+1) produces the generalized Fibonacci or p-bonacci sequences obeying a(m) = a(m−1) + a(m−p). This entry answers the parent's second open question by proving the recurrence for the whole family at once: q=0 recovers the powers of two (∑_j C(n,j) = 2ⁿ), q=1 the Fibonacci diagonal, q=2 Narayana's cows (OEIS A000930), and general q the p-bonacci recurrence. A single definition and one Pascal-rule argument cover every case.",
+    "mathContext": "$S_q(n) = \\sum_j \\binom{n-qj}{j}$ satisfies $a(m) = a(m-1) + a(m-p)$ with $p = q+1$; $q=0,1,2$ give $2^n$, $F_{n+1}$, Narayana's cows.",
+    "significance": "context",
+    "relatedConcepts": ["Pascal's triangle", "shallow diagonals", "p-bonacci sequences", "generalized Fibonacci", "Narayana's cows"],
+    "prerequisites": ["binomial coefficients", "the Fibonacci shallow-diagonal identity"]
+  },
+  {
+    "id": "combinations-oq010102-ann-def",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "definition",
+    "title": "The p-step shallow-diagonal sum",
+    "content": "pbonacci q n := ∑_{j ∈ range (n+1)} C(n − q·j, j), the sum of binomial coefficients along the p-step shallow diagonal of Pascal's triangle, indexed by a single step parameter q. The whole p-bonacci family lives in this one definition: q fixes the diagonal slope, and p = q+1 is the order of the resulting linear recurrence. For q=1 it reduces to the parent's Fibonacci diagonal ∑_j C(n−j, j). Because the diagonal sum carries its own recurrence (proved below), no separate Lean definition of the p-bonacci numbers is needed.",
+    "mathContext": "$S_q(n) = \\sum_{j=0}^{n} \\binom{n - qj}{j}$, a single-parameter family with $p = q+1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.range sum", "Nat.choose", "diagonal sum", "single-parameter family"],
+    "prerequisites": ["finite Finset range sums", "natural-number subtraction in binomial indices"]
+  },
+  {
+    "id": "combinations-oq010102-ann-extend",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 62, "endLine": 73 },
+    "type": "technique",
+    "title": "Range extension: vanishing tail terms",
+    "content": "pbonacci_extend shows the summation range may be enlarged above n without changing the value: once j ≥ n+1, the upper index n − q·j is ≤ n < j, so Nat.choose_eq_zero_of_lt kills the term. Proved with Finset.sum_subset (the reverse direction), discharging membership with omega and the vanishing with the sub-le bound. This lemma is the bookkeeping workhorse — it lets the recurrence proof freely realign the three summation ranges (for S q (n+q+1), S q (n+q), S q n) so the term-by-term matching becomes a linear, omega-dischargeable identity.",
+    "mathContext": "$j \\ge n+1 \\Rightarrow n - qj \\le n < j \\Rightarrow \\binom{n-qj}{j} = 0$, so $\\sum_{j<N+1} = \\sum_{j<n+1}$ for $N \\ge n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_subset", "Nat.choose_eq_zero_of_lt", "vanishing terms", "range normalization"],
+    "prerequisites": ["the binomial vanishes when lower index exceeds upper", "Finset subset sums"]
+  },
+  {
+    "id": "combinations-oq010102-ann-pascal",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 77, "endLine": 106 },
+    "type": "technique",
+    "title": "Pascal's rule on a diagonal term — the engine",
+    "content": "diag_pascal (a private helper) is the heart of the proof: C(n+q+1 − q(j+1), j+1) = C(n − q·j, j+1) + C(n − q·j, j) for j ≥ 1. It is Pascal's rule C(m+1, k+1) = C(m, k+1) + C(m, k) applied to the leading diagonal index, splitting each term of S q (n+q+1) into one contribution that feeds S q (n+q) (the slope-preserving piece, lower index unchanged) and one that feeds S q n (one full step down). The only subtlety is natural-number subtraction at the support boundary, where both upper indices can collapse to 0; the lemma splits on that truncation case explicitly. This single split is exactly the recurrence a(m) = a(m−1) + a(m−p).",
+    "mathContext": "$\\binom{n+q+1-q(j+1)}{j+1} = \\binom{n-qj}{j+1} + \\binom{n-qj}{j}$ — Pascal's rule on the diagonal, the (m−1) and (m−p) split.",
+    "significance": "key",
+    "relatedConcepts": ["Pascal's rule", "Nat.choose_succ_succ", "natural-number subtraction", "term splitting"],
+    "prerequisites": ["Pascal's identity for binomial coefficients", "truncation of ℕ-subtraction at the boundary"]
+  },
+  {
+    "id": "combinations-oq010102-ann-rec",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 108, "endLine": 155 },
+    "type": "insight",
+    "title": "The p-bonacci recurrence",
+    "content": "pbonacci_rec proves S q (n+q+1) = S q (n+q) + S q n for every q ≥ 0 — the p-bonacci linear recurrence a(m) = a(m−1) + a(m−p) with p = q+1, uniform across the whole family. The proof peels the j=0 leading term with Finset.sum_range_succ', applies diag_pascal termwise to split the remaining sum, recognizes the two resulting sums as S q (n+q) and S q n (realigning ranges with pbonacci_extend so the index bookkeeping stays linear), and closes with omega. That one Pascal split delivers the entire recurrence is the structural payoff of the single-parameter formulation.",
+    "mathContext": "$S_q(n+q+1) = S_q(n+q) + S_q(n)$; peel $j=0$, split each remaining term by Pascal, reindex $j \\mapsto j-1$ for the step-down sum.",
+    "significance": "key",
+    "relatedConcepts": ["linear recurrence", "Finset.sum_range_succ'", "reindexing", "omega"],
+    "prerequisites": ["the termwise Pascal split", "range extension", "peeling the leading term of a range sum"]
+  },
+  {
+    "id": "combinations-oq010102-ann-base",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 157, "endLine": 174 },
+    "type": "insight",
+    "title": "The constant base segment",
+    "content": "pbonacci_base proves S q n = 1 for n ≤ q. Every term beyond the leading j=0 vanishes: for n ≤ q and j ≥ 1, the upper index n − q·(j) truncates and the binomial C(n − q·j, j) = 0, leaving only C(n, 0) = 1. Together with the recurrence, this constant initial segment of length p = q+1 fully characterizes the p-bonacci sequence — the recurrence plus these p starting values determine every later value, so the diagonal sum is its own complete description with no auxiliary definition.",
+    "mathContext": "$n \\le q \\Rightarrow S_q(n) = 1$; the $p = q+1$ initial values that, with the recurrence, pin the sequence.",
+    "significance": "supporting",
+    "relatedConcepts": ["initial conditions", "characterization of a recurrence", "vanishing binomials", "base case"],
+    "prerequisites": ["the recurrence", "vanishing of truncated binomial terms"]
+  },
+  {
+    "id": "combinations-oq010102-ann-fib",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 176, "endLine": 195 },
+    "type": "insight",
+    "title": "Recovering the parent Fibonacci identity",
+    "content": "pbonacci_one_eq_fib proves S 1 n = F(n+1), recovering the parent's Fibonacci shallow-diagonal identity as a corollary of the general recurrence. The proof is a two-step induction (Nat.twoStepInduction): the base cases S 1 0 and S 1 1 are checked by plain decide, and the inductive step matches pbonacci_rec at q=1 (S 1 (n+2) = S 1 (n+1) + S 1 n) against Nat.fib_add_two (F(n+3) = F(n+2) + F(n+1)), so the two sequences satisfy the same recurrence with the same two seeds and therefore coincide. This is the structural way to derive the parent result — not a fresh computation but a specialization of the family law.",
+    "mathContext": "$S_1(n) = F_{n+1}$ by two-step induction: same recurrence ($a_{m}=a_{m-1}+a_{m-2}$) and same seeds as $\\mathrm{Nat.fib}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.twoStepInduction", "Nat.fib_add_two", "specialization", "uniqueness from recurrence + seeds"],
+    "prerequisites": ["two-step induction", "the Fibonacci recurrence", "the q=1 case of pbonacci_rec"]
+  }
+]

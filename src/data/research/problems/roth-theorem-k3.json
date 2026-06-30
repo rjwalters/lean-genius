@@ -1,8 +1,8 @@
 {
   "slug": "roth-theorem-k3",
   "title": "Roth's Theorem (Szemeredi k=3)",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-21",
     "iteration": 17,
     "focus": "Session 17: Removed 178 lines of dead code containing the only sorry (density_increment_dirichlet Case 2, density_chain, roth_threshold). File now 0 sorries, 0 axioms — fully verified.",
@@ -139,10 +139,14 @@
     "marquee-phase-3"
   ],
   "relatedProofs": [
+    "roth-theorem",
     "roth-theorem-k3",
     "roth-theorem-k3-oq-01",
     "roth-theorem-k3-oq-02",
-    "roth-theorem-k3-oq-03"
+    "roth-theorem-k3-oq-03",
+    "roth-theorem-k3-oq-03-oq-01-oq-01",
+    "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+    "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01"
   ],
   "references": {
     "papers": [],
@@ -150,7 +154,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-23T22:00:00Z",
+  "lastUpdate": "2026-06-13T00:00:00Z",
   "significance": 9,
   "tractability": 6
 }

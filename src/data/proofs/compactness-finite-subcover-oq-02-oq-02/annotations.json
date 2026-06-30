@@ -1,0 +1,74 @@
+[
+  {
+    "id": "distance-to-complement-bump",
+    "proofId": "compactness-finite-subcover-oq-02-oq-02",
+    "range": {
+      "startLine": 61,
+      "endLine": 90
+    },
+    "type": "insight",
+    "title": "Distance-to-Complement Is the Right Bump",
+    "content": "bump U i x = infDist x (U i)ᶜ is the conceptual heart. The distance-to-a-set function is continuous for free (continuous_infDist_pt) and nonnegative (infDist_nonneg). The decisive fact is that for an OPEN U i, its complement is CLOSED, so closure (U i)ᶜ = (U i)ᶜ and infDist_pos_iff_notMem_closure says infDist x (U i)ᶜ > 0 exactly when x ∉ (U i)ᶜ, i.e. when x ∈ U i. One elementary metric object thus delivers continuity AND support control in a single stroke. The lone guard handles U i = univ, whose complement is empty: there infDist would be 0, so we substitute the constant 1.",
+    "mathContext": "$\\mathrm{bump}_i(x) = d(x,(U_i)^c),\\qquad \\mathrm{bump}_i(x) > 0 \\iff x \\in U_i \\quad (U_i\\text{ open}).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "distance to a set",
+      "infDist",
+      "open vs closed sets",
+      "support of a bump function"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "infimum distance infDist",
+      "closure and closed complements of open sets"
+    ]
+  },
+  {
+    "id": "positive-total-weight",
+    "proofId": "compactness-finite-subcover-oq-02-oq-02",
+    "range": {
+      "startLine": 105,
+      "endLine": 139
+    },
+    "type": "insight",
+    "title": "Finiteness, Not Compactness, Makes Normalization Work",
+    "content": "sum_bump_pos shows the total weight ∑ j, bump U j x is strictly positive at every point: x lies in some cover member U i (the cover hypothesis), where bump U i x > 0, and a finite sum of nonnegatives with one strictly positive term is positive (Finset.sum_pos'). Because the denominator never vanishes, ψ i x = bump U i x / ∑ j, bump U j x is globally continuous (Continuous.div), nonnegative, subordinate (numerator vanishes off U i), and ∑ i, ψ i x = 1 (Finset.sum_div then div_self). Nothing here uses compactness — only that the cover is finite.",
+    "mathContext": "$\\psi_i(x) = \\frac{\\mathrm{bump}_i(x)}{\\sum_j \\mathrm{bump}_j(x)},\\qquad \\sum_j \\mathrm{bump}_j(x) > 0,\\qquad \\sum_i \\psi_i(x) = 1.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition of unity",
+      "normalization",
+      "finite sums",
+      "continuity of quotients"
+    ],
+    "prerequisites": [
+      "finite sums over a Fintype",
+      "strict positivity of a finite sum",
+      "continuity of division with nonzero denominator"
+    ]
+  },
+  {
+    "id": "compactness-only-finitizes",
+    "proofId": "compactness-finite-subcover-oq-02-oq-02",
+    "range": {
+      "startLine": 158,
+      "endLine": 203
+    },
+    "type": "insight",
+    "title": "Compactness Contributes Exactly One Step",
+    "content": "exists_partition_of_unity_compact takes an ARBITRARY open cover of a compact space and does only one thing with compactness: IsCompact.elim_finite_subcover extracts a finite subcover indexed by a Finset s. Reindexing the cover by the subtype {i // i ∈ s} turns it into a finite cover, the metric construction (exists_partition_of_unity) builds the partition there, and the family is pushed back to all of ι by zero off s. This makes the parent entry's intuition literal: compactness finitizes the cover, and finiteness — not compactness — produces the partition of unity. No Lebesgue number or ε-net is needed for the construction itself.",
+    "mathContext": "$\\text{compact} \\xRightarrow{\\text{elim\\_finite\\_subcover}} \\text{finite cover} \\xRightarrow{\\text{metric bumps}} \\text{partition of unity}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite subcover",
+      "compactness",
+      "subtype reindexing",
+      "extension by zero"
+    ],
+    "prerequisites": [
+      "compact spaces and finite subcovers",
+      "reindexing sums over a Finset via its attach/coe-sort",
+      "dependent if-then-else (dite)"
+    ]
+  }
+]

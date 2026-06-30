@@ -16,7 +16,11 @@
       "additive-combinatorics",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős Problems",
+      "Additive Combinatorics",
+      "Arithmetic Progressions"
+    ]
   },
   {
     "id": "ann-e253-imports",
@@ -35,7 +39,11 @@
       "topology"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib Library",
+      "Filter-Based Limits",
+      "Finite Sets"
+    ]
   },
   {
     "id": "ann-e253-subset-sums",
@@ -54,7 +62,11 @@
       "additive-combinatorics",
       "representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset Sums",
+      "Set-Builder Notation",
+      "Sumsets"
+    ]
   },
   {
     "id": "ann-e253-infinite-ap",
@@ -73,7 +85,11 @@
       "number-theory",
       "residue-classes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Common Difference",
+      "Set Comprehension"
+    ]
   },
   {
     "id": "ann-e253-ap-property",
@@ -92,7 +108,11 @@
       "density",
       "equidistribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Subset Sums",
+      "Infinite Sets"
+    ]
   },
   {
     "id": "ann-e253-ratio-condition",
@@ -111,7 +131,11 @@
       "growth-rates",
       "filters"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sequence Limits",
+      "Filter Tendsto",
+      "Growth Rates"
+    ]
   },
   {
     "id": "ann-e253-main-axiom",
@@ -130,7 +154,11 @@
       "cofinite",
       "representation-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cofinite Sets",
+      "Counterexamples",
+      "Logical Negation"
+    ]
   },
   {
     "id": "ann-e253-zero-sum",
@@ -148,7 +176,11 @@
       "empty-sum",
       "base-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Empty Sum",
+      "Subset Sums",
+      "Existential Witness"
+    ]
   },
   {
     "id": "ann-e253-singleton-sum",
@@ -166,7 +198,11 @@
       "singleton",
       "subset-inclusion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Singleton Sets",
+      "Subset Sums",
+      "Subset Inclusion"
+    ]
   },
   {
     "id": "ann-e253-nat-ap",
@@ -184,7 +220,11 @@
       "natural-numbers",
       "trivial-progression"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Natural Numbers",
+      "Ring Tactic"
+    ]
   },
   {
     "id": "ann-e253-evens-ap",
@@ -203,6 +243,10 @@
       "residue-classes",
       "parity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Even Numbers",
+      "Arithmetic Progressions",
+      "Omega Tactic"
+    ]
   }
 ]

@@ -54,58 +54,74 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring for the arc-length reparametrization theorem for smooth closed curves, the analytic infrastructure under the isoperimetric inequality (parent AreaOfCircleOQ01OQ03.lean). Identifies the two parent sorries this file discharges (periodic integral shift; arc-length reparametrization) and lists key results. Note: the header's '## Axioms: 4' line is historical — the file is now fully proved with 0 axioms (status verified).",
+      "mathContext": "Goal: every smooth closed regular curve $\\gamma$ admits a constant-speed reparametrization $\\gamma'(t) = \\gamma(\\tau(t))$ with $|\\gamma'| \\equiv L/(2\\pi)$ that preserves circumference and signed area — the reduction enabling the Wirtinger/Fourier proof of $L^2 \\ge 4\\pi A$."
+    },
+    {
       "id": "periodic",
-      "title": "Periodic Integral Shift",
-      "startLine": 50,
-      "endLine": 96,
+      "title": "Section I: Periodic Functions and Integral Shift",
+      "startLine": 52,
+      "endLine": 87,
       "summary": "periodic_integral_shift: ∫_t^{t+2π} f = ∫_0^{2π} f for 2π-periodic continuous f. Proved via integral splitting + integral_comp_add_left substitution + periodicity.",
       "mathContext": "For a T-periodic integrable function f: $\\int_t^{t+T} f = \\int_0^T f$. The proof splits at T, uses the substitution $u = x + T$ for the piece $\\int_T^{t+T}$, then combines via periodicity."
     },
     {
       "id": "arclength",
-      "title": "Arc-Length Function Properties",
-      "startLine": 99,
-      "endLine": 200,
+      "title": "Section II: Arc-Length Function Properties",
+      "startLine": 88,
+      "endLine": 208,
       "summary": "curveSpeed, arcLength definitions. arcLength_hasDerivAt, _continuous, _zero, _period. arcLength_quasi_periodic (PROVED): s(t+2π) = s(t)+L. arcLength_nat_multiple: s(2nπ) = nL. arcLength_neg_nat_multiple: s(-2nπ) = -nL.",
       "mathContext": "Arc-length $s(t) = \\int_0^t |\\gamma'(u)| du$ satisfies: $s'(t) = |\\gamma'(t)|$, $s(0) = 0$, $s(2\\pi) = L$, $s(t+2\\pi) = s(t) + L$, $s(2n\\pi) = nL$."
     },
     {
       "id": "surjectivity",
-      "title": "Surjectivity via IVT",
-      "startLine": 202,
-      "endLine": 253,
-      "summary": "arcLength_strictMono (regular curves), arcLength_injective, arcLength_bijective, arcLength_surjective (PROVED via IVT): for any y, find n with s(-2nπ) ≤ y ≤ s(2nπ), then IVT gives t with s(t) = y.",
-      "mathContext": "Strictly monotone (speed > 0) + surjective (IVT from $s(2n\\pi) = nL \\to \\infty$) = bijective homeomorphism $\\mathbb{R} \\to \\mathbb{R}$."
+      "title": "Section III: Surjectivity of Arc-Length via IVT",
+      "startLine": 209,
+      "endLine": 247,
+      "summary": "arcLength_surjective (PROVED via IVT): for any y, find n with s(-2nπ) ≤ y ≤ s(2nπ), then IVT gives t with s(t) = y. Sets up the bijectivity used to define the inverse.",
+      "mathContext": "Surjective (IVT from $s(2n\\pi) = nL \\to \\infty$ and $s(-2n\\pi) = -nL \\to -\\infty$) — combined with strict monotonicity (next section) this gives a bijective homeomorphism $\\mathbb{R} \\to \\mathbb{R}$."
     },
     {
       "id": "inverse",
-      "title": "C¹ Inverse (IFT Proved)",
-      "startLine": 255,
-      "endLine": 312,
-      "summary": "arcLengthInv (bijective inverse). arcLengthInv_left, _right (left/right inverses). arcLengthInv_quasi_periodic: σ(y+L) = σ(y)+2π (PROVED). arcLengthInv_contDiff (PROVED: IFT via contDiff_one_iff_deriv). arcLengthInv_hasDerivAt (PROVED: σ'(y) = 1/speed(σ(y)) via HasStrictDerivAt.to_local_left_inverse).",
-      "mathContext": "The inverse function theorem: since $s' = \\text{speed} > 0$, the global inverse $\\sigma = s^{-1}$ is $C^1$ with $\\sigma'(y) = 1/s'(\\sigma(y)) = 1/\\text{speed}(\\sigma(y))$."
+      "title": "Section IV: C¹ Inverse — Monotonicity, Bijectivity, and Quasi-Periodicity",
+      "startLine": 248,
+      "endLine": 318,
+      "summary": "arcLength_strictMono (regular curves, via MVT + speed > 0), arcLength_injective, arcLength_bijective. arcLengthInv: the inverse defined via Equiv.ofBijective. arcLengthInv_left/_right (left/right inverses). arcLengthInv_quasi_periodic (PROVED): σ(y+L) = σ(y)+2π. (The banner reads 'Axiomatized' for historical reasons; all results here are proved.)",
+      "mathContext": "Strictly monotone (speed > 0) + surjective (IVT) ⟹ bijective, so the global inverse $\\sigma = s^{-1}$ exists; quasi-periodicity $s(t+2\\pi) = s(t)+L$ transfers to $\\sigma(y+L) = \\sigma(y)+2\\pi$ by injectivity."
+    },
+    {
+      "id": "inverse-ift",
+      "title": "Section IV (continued): C¹ Inverse — Differentiability via IFT (Proved)",
+      "startLine": 319,
+      "endLine": 394,
+      "summary": "arcLengthInv_hasDerivAt (PROVED via IFT): σ'(y) = 1/speed(σ(y)), from HasStrictDerivAt of arcLength at σ(y) with speed > 0 and σ a global left inverse. arcLengthInv_contDiff (PROVED): σ is C¹ via contDiff_one_iff_deriv.",
+      "mathContext": "The inverse function theorem: since $s' = \\text{speed} > 0$, the global inverse $\\sigma$ is $C^1$ with $\\sigma'(y) = 1/s'(\\sigma(y)) = 1/\\text{speed}(\\sigma(y))$."
     },
     {
       "id": "changevar",
-      "title": "Change of Variables (Proved)",
-      "startLine": 314,
-      "endLine": 358,
-      "summary": "circumference_reparam_preserved (PROVED): ∫|γ'∘τ| = L. area_reparam_preserved (PROVED): area form preserved. Both require the change-of-variables formula for interval integrals under the reparametrization τ = σ∘(c·).",
+      "title": "Section V: Change of Variables for Integrals (Proved)",
+      "startLine": 395,
+      "endLine": 572,
+      "summary": "circumference_reparam_preserved (PROVED): ∫|γ'∘τ| = L. area_reparam_preserved (PROVED): the signed area form is preserved. Both apply the change-of-variables formula for interval integrals under the reparametrization τ = σ∘(c·).",
       "mathContext": "The reparametrization $\\tau = \\sigma \\circ (c \\cdot)$ is an orientation-preserving diffeomorphism $[0,2\\pi] \\to [0,2\\pi]$, so it preserves both arc length and the signed area form $x dy - y dx$."
     },
     {
       "id": "main",
-      "title": "Main Theorem: Constant-Speed Reparametrization",
-      "startLine": 378,
-      "endLine": 477,
-      "summary": "exists_arclength_reparam' (PROVED from 4 axioms): constructs γ'(t) = γ(τ(t)) with τ = σ∘(c·), proving same circumference, same area, and constant speed c = L/(2π). Uses ContDiff.comp for smoothness, arcLengthInv_quasi_periodic for periodicity, and IFT derivative for speed computation.",
+      "title": "Section VI: Main Theorem — Constant-Speed Reparametrization",
+      "startLine": 573,
+      "endLine": 672,
+      "summary": "exists_arclength_reparam' (PROVED): constructs γ'(t) = γ(τ(t)) with τ = σ∘(c·), proving same circumference, same area, and constant speed c = L/(2π). Uses ContDiff.comp for smoothness, arcLengthInv_quasi_periodic for periodicity, and the IFT derivative for the speed computation.",
       "mathContext": "The reparametrized curve $\\gamma'(t) = \\gamma(\\tau(t))$ has speed $c$ because the chain rule + IFT derivative give $|\\gamma'(\\tau(t))| \\cdot |\\tau'(t)| = \\text{speed}(\\tau(t)) \\cdot c/\\text{speed}(\\tau(t)) = c$."
     },
     {
       "id": "corollaries",
-      "title": "Corollaries: Interface for the Isoperimetric Proof",
-      "startLine": 478,
-      "endLine": 517,
+      "title": "Section VII: Corollaries — Interface for the Isoperimetric Proof",
+      "startLine": 673,
+      "endLine": 712,
       "summary": "reparam_circumference_eq (circumference preserved), reparam_speed_is_L_over_2pi (|γ'(t)| = L/(2π) as sqrt form), arcLength_grows_by_L (s(t+2π)-s(t) = L), arcLength_bijection (bijectivity + continuity packaged together).",
       "mathContext": "With constant speed $c = L/(2\\pi)$, the Fourier series of $\\gamma'$ satisfies Parseval's equality in a form equivalent to the Wirtinger inequality $\\|f'\\|^2 \\ge \\|f\\|^2$, yielding the isoperimetric inequality $L^2 \\ge 4\\pi A$."
     }

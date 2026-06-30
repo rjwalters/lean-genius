@@ -1,0 +1,171 @@
+{
+  "id": "cauchy-interlacing-theorem",
+  "title": "Cauchy Interlacing via the Courant–Fischer Max–Min Keystone",
+  "slug": "cauchy-interlacing-theorem",
+  "description": "Cauchy eigenvalue interlacing for a symmetric operator and its orthogonal compression to a codimension-one subspace, λ(k+1) ≤ μ(k) ≤ λ(k) (descending convention). The proof is assembled from a fully machine-checked, bound-form Courant–Fischer max–min characterisation of the descending k-th eigenvalue — the single Mathlib gap blocking interlacing, proved from scratch over an orthonormal eigenbasis. Compression form: the only link between the two operators is a Rayleigh-quotient agreement hypothesis, exactly the property of the principal-submatrix (orthogonal compression) operator.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-20",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyInterlacingAssembly.lean",
+    "tags": [
+      "linear-algebra",
+      "spectral-theory",
+      "eigenvalues",
+      "cauchy-interlacing",
+      "courant-fischer",
+      "min-max",
+      "rayleigh-quotient",
+      "inner-product-space"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "axiomCount": 0,
+    "lineCount": 139,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "assumptions": "None beyond the stated theorem hypotheses. 0 axioms, 0 sorries in both the assembly file and the imported keystone (CauchyInterlacingKeystone.lean, #25063, 0-sorry/0-axiom). The interlacing theorem is proved in compression form: it takes as a hypothesis that the smaller operator TH on the codimension-one subspace H has the same Rayleigh quotient as T on every nonzero vector of H. This is precisely the defining property of the orthogonal compression of T to H (the principal-submatrix operator), so the result specialises to the matrix Cauchy interlacing theorem; the matrix-to-compression instantiation (spectral theorem on H + compression construction) is the remaining bridge and is documented, not assumed away.",
+    "originalContributions": [
+      "cauchy_interlacing (assembly): from the two Courant–Fischer halves, derives both interlacing inequalities λ(k.succ) ≤ μ(k) and μ(k) ≤ λ(k.castSucc) for a symmetric operator T on an (n+1)-dimensional space and a symmetric operator TH on a codimension-one subspace H whose Rayleigh quotient agrees with T's. Pure order-theoretic / dimension-counting argument once the keystone is in hand.",
+      "eigenvalue_maxmin_lower / eigenvalue_maxmin_upper (keystone, #25063): the bound-form Courant–Fischer max–min characterisation of the descending k-th eigenvalue — an optimal (k+1)-dimensional eigenspan with all Rayleigh quotients ≥ μ(k) exists (lower), and every (k+1)-dimensional subspace contains a nonzero vector with Rayleigh quotient ≤ μ(k) (upper). This is the documented Mathlib gap; only extreme top/bottom Rayleigh cases existed before.",
+      "exists_rayleigh_le_in_subspace (keystone): index-set-parametrised upper half — any subspace S with finrank E < finrank S + J.card meets the eigenspan over J nontrivially (dimension count), and there the Rayleigh quotient is ≤ max over J; the reusable engine behind both the keystone upper half and the assembly lower bound.",
+      "rayleigh_bounds_on_eigenspan (keystone): the Rayleigh quotient of any nonzero vector in the eigenspan over an index set I is a convex combination of {μ i : i ∈ I}, hence lies in [inf' I μ, sup' I μ] — proved via the orthonormal repr expansion, ⟪Tx,x⟫ = Σ |⟨b_i,x⟩|² μ_i and ‖x‖² = Σ |⟨b_i,x⟩|².",
+      "finrank_span_image_eq_card (keystone): the eigenspan over a finite index set I has dimension exactly I.card (orthonormal ⇒ linearly independent ⇒ finrank_span_eq_card), supplying the dimension bookkeeping for the codimension-one intersection count."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Submodule.finrank_sup_add_finrank_inf_eq",
+        "description": "finrank(V ⊔ W) + finrank(V ⊓ W) = finrank V + finrank W — the dimension identity giving the nontrivial intersection of a (k+1)-dim subspace with a codimension-one eigenspan",
+        "module": "Mathlib.LinearAlgebra.FiniteDimensional"
+      },
+      {
+        "theorem": "finrank_span_eq_card",
+        "description": "the span of a linearly independent family has dimension equal to the cardinality of its index type — converts orthonormality of an eigen-subfamily into the eigenspan dimension I.card",
+        "module": "Mathlib.LinearAlgebra.Finrank"
+      },
+      {
+        "theorem": "OrthonormalBasis.repr / orthonormal_iff_ite",
+        "description": "the orthonormal coordinate expansion x = Σ ⟨b_i,x⟩ b_i with ⟨b_i,b_j⟩ = δ_ij — used to write the Rayleigh quotient as a convex combination of eigenvalues",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Submodule.finrank_map_subtype_eq",
+        "description": "finrank of a submodule of H pushed into the ambient space via H.subtype is unchanged — used to transport the optimal subspace between H and V in both interlacing directions",
+        "module": "Mathlib.LinearAlgebra.FiniteDimensional"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Cauchy's interlacing theorem (1829) states that deleting a row and its matching column from a Hermitian matrix produces a principal submatrix whose eigenvalues interlace those of the original: λ_k ≤ μ_k ≤ λ_{k+1} in ascending order. It is a cornerstone of spectral graph theory (vertex-deleted eigenvalue bounds), numerical linear algebra (divide-and-conquer eigensolvers), and the theory of orthogonal polynomials, and underlies the Marcus–Spielman–Srivastava resolution of Kadison–Singer. The textbook proof runs through the Courant–Fischer max–min characterisation of eigenvalues — which Mathlib did not provide beyond the two extreme (largest/smallest) Rayleigh cases. This entry builds the missing k-th max–min keystone and assembles interlacing from it.",
+    "problemStatement": "For a symmetric operator T on a finite-dimensional inner product space V of dimension n+1 with descending eigenvalues λ, and a symmetric operator TH on a codimension-one subspace H (dim n) whose Rayleigh quotient agrees with T's on H, show the eigenvalues μ of TH interlace those of T: λ(k+1) ≤ μ(k) ≤ λ(k) for every k (descending convention).",
+    "text": "The result is the operator/compression form of Cauchy interlacing. The Rayleigh-agreement hypothesis is exactly what the orthogonal compression of T to H (i.e. the principal-submatrix operator) satisfies, so the theorem specialises to the classical matrix statement once H is taken to be a coordinate hyperplane.",
+    "proofStrategy": "Prove the bound-form Courant–Fischer max–min characterisation of the descending k-th eigenvalue (the keystone), then assemble interlacing by dimension counting. Keystone lower half: the eigenspan span{b_0,…,b_k} is (k+1)-dimensional and every nonzero Rayleigh quotient on it is ≥ μ_k (the Rayleigh quotient is a convex combination of the eigenvalues indexed by the span). Keystone upper half: any (k+1)-dimensional subspace meets span{b_k,…,b_{n-1}} (dimensions sum to n+1 > n), where the Rayleigh quotient is ≤ μ_k. Assembly upper bound μ_k ≤ λ_{k.castSucc}: push the optimal (k+1)-dim eigenspan for TH into V and apply the keystone upper half for T. Assembly lower bound λ_{k.succ} ≤ μ_k: take the optimal (k+2)-dim eigenspan for T; its intersection with H has dimension ≥ k+1 (codimension-one count), pull it back to H and apply the index-set upper half for TH. Rayleigh-agreement transports the bounds across the compression.",
+    "keyInsights": [
+      "**The k-th max–min is the whole content.** Cauchy interlacing reduces entirely to the Courant–Fischer characterisation of the descending k-th eigenvalue. Mathlib had only the extreme Rayleigh cases (largest/smallest eigenvalue); the k-th case is built here from scratch over an orthonormal eigenbasis.",
+      "**Bound form dodges lattice junk.** Rather than an iSup/iInf identity (which carries conditionally-complete-lattice junk values needing explicit BddAbove/BddBelow discharge), the keystone is phrased as an existence/universal bound pair carrying the same information — `max_{dim S=k+1} min_{0≠x∈S} R(x) = μ_k` — but staying junk-free.",
+      "**Rayleigh quotient = convex combination of eigenvalues.** On the eigenspan over an index set I, ⟪Tx,x⟫/‖x‖² = Σ_{i∈I} w_i μ_i with weights w_i = |⟨b_i,x⟩|²/‖x‖² summing to 1, so the quotient lies between the smallest and largest eigenvalue in I. This single lemma drives both keystone halves.",
+      "**Interlacing is then pure dimension counting.** With the keystone in hand the two inequalities follow by intersecting optimal subspaces with the codimension-one H: a (k+1)-dim space inside H meets the high eigenspan, and a (k+2)-dim space in V drops to ≥(k+1) dimensions inside H. No further spectral input.",
+      "**Compression form isolates the matrix bridge.** Stating the link between T and TH as a Rayleigh-agreement hypothesis keeps the assembly purely order-theoretic and reusable; the matrix Cauchy interlacing theorem is the instantiation H = coordinate hyperplane, TH = orthogonal compression."
+    ],
+    "prerequisites": [
+      "The spectral theorem for symmetric operators: orthonormal eigenbasis b with T(b_i) = μ_i • b_i (Mathlib's InnerProductSpace spectral API)",
+      "Rayleigh quotient ⟪Tx,x⟫/‖x‖² and its convex-combination expansion in an orthonormal eigenbasis",
+      "Dimension counting: finrank(V⊔W) + finrank(V⊓W) = finrank V + finrank W, and finrank of a span of an orthonormal subfamily",
+      "The Courant–Fischer max–min principle for eigenvalues (built here for the k-th eigenvalue)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Compression Interface and Statement",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "File header: the interlacing inequalities to be proved, the compression interface (Rayleigh-agreement hypothesis as the only link between T and TH, satisfied by the orthogonal compression / principal submatrix), and the two-direction proof outline.",
+      "mathContext": "Frames interlacing in the abstract operator/compression form so the assembly is purely order-theoretic; the spectral theorem on H and the compression construction supply the hypotheses when specialising to matrices."
+    },
+    {
+      "id": "statement",
+      "title": "cauchy_interlacing: the theorem",
+      "startLine": 63,
+      "endLine": 96,
+      "summary": "Statement of cauchy_interlacing: symmetric T on (n+1)-dim V with antitone eigenvalues λ and eigenbasis b; symmetric TH on codim-one H with antitone eigenvalues μ and eigenbasis bH; Rayleigh-agreement on H; conclusion λ(k.succ) ≤ μ(k) ∧ μ(k) ≤ λ(k.castSucc).",
+      "mathContext": "In ascending textbook notation this reads λ_k ≤ μ_k ≤ λ_{k+1}; the descending convention used here matches Mathlib's sorted eigenvalues."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound λ(k.succ) ≤ μ(k)",
+      "startLine": 97,
+      "endLine": 122,
+      "summary": "Take the optimal (k+2)-dim eigenspan S for T (keystone lower half at k.succ); S ⊓ H has dimension ≥ k+1 by the codimension-one count; pull it back into H and apply the index-set upper half exists_rayleigh_le_in_subspace for TH to find a vector with Rayleigh ≤ μ(k); that vector lies in S, so λ(k.succ) ≤ R_T = R_TH ≤ μ(k).",
+      "mathContext": "The dimension drop from k+2 to k+1 under intersection with a hyperplane is the heart of the lower interlacing inequality."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound μ(k) ≤ λ(k.castSucc)",
+      "startLine": 123,
+      "endLine": 139,
+      "summary": "Take the optimal (k+1)-dim eigenspan SH for TH (keystone lower half on H); push it into V; the keystone upper half for T finds a nonzero vector in it with Rayleigh ≤ λ(k.castSucc); Rayleigh-agreement turns the ≥ μ(k) lower bound on SH into the same bound for that vector, giving μ(k) ≤ λ(k.castSucc).",
+      "mathContext": "Here the optimal subspace already lives inside H, so no dimension drop is needed — the bound transports directly through Rayleigh-agreement."
+    }
+  ],
+  "conclusion": {
+    "summary": "A machine-checked Lean 4 proof of Cauchy eigenvalue interlacing in operator/compression form, assembled from a from-scratch bound-form Courant–Fischer max–min characterisation of the descending k-th eigenvalue (the keystone, #25063, the one documented Mathlib gap). Both files are 0-axiom, 0-sorry. The assembly is a pure dimension-counting argument; all spectral content lives in the keystone's convex-combination Rayleigh bound.",
+    "implications": "Supplies the reusable k-th Courant–Fischer max–min keystone absent from Mathlib (independently useful for Weyl's inequality, Lidskii's theorem, and spectral graph eigenvalue bounds), and the interlacing inequality for compressions. Specialising H to a coordinate hyperplane and TH to the orthogonal compression yields the classical matrix Cauchy interlacing theorem.",
+    "openQuestions": [
+      "Instantiate the compression form to the literal matrix statement: build TH as the orthogonal compression of a Hermitian matrix to a coordinate hyperplane and discharge the Rayleigh-agreement hypothesis from the spectral theorem on H.",
+      "The general 'delete m rows/columns' interlacing λ_k ≤ μ_k ≤ λ_{k+m}, by iterating the codimension-one case or a direct (k+...)-dimensional count.",
+      "Package the keystone's bound form as an iSup/iInf equality with the BddAbove/BddBelow obligations discharged, for downstream Weyl/Lidskii applications."
+    ]
+  },
+  "crossReferences": [],
+  "references": [
+    {
+      "authors": [
+        "Cauchy, A.-L."
+      ],
+      "title": "Sur l'équation à l'aide de laquelle on détermine les inégalités séculaires des mouvements des planètes",
+      "year": "1829",
+      "venue": "Exercices de mathématiques 4",
+      "note": "Original interlacing / secular-equation theorem for symmetric matrices"
+    },
+    {
+      "authors": [
+        "Courant, R.",
+        "Hilbert, D."
+      ],
+      "title": "Methods of Mathematical Physics, Vol. I",
+      "year": "1953",
+      "venue": "Interscience Publishers",
+      "note": "Min-max (Courant–Fischer) variational characterisation of eigenvalues, the route used here"
+    },
+    {
+      "authors": [
+        "Horn, R.A.",
+        "Johnson, C.R."
+      ],
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd ed.",
+      "note": "Theorem 4.3.17 (Cauchy interlacing) and the Courant–Fischer theorem (4.2.6)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CauchyInterlacingKeystone"
+    ],
+    "opens": [
+      "InnerProductSpace"
+    ],
+    "namespace": "CauchyInterlacing.Assembly",
+    "lineCount": 139,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyInterlacingAssembly.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

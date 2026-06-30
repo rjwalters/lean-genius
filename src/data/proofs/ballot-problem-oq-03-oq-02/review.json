@@ -6,7 +6,7 @@
 
   "overallAssessment": {
     "grade": "B+",
-    "oneLiner": "An exceptionally ambitious 2091-line formalization of the r x r LGV lemma with deeply original infrastructure, nearly complete (2 sorries in involution self-inverse), undermined by meta.json inaccuracies about which components are sorry-free.",
+    "oneLiner": "An exceptionally ambitious 2091-line formalization of the r x r LGV lemma with deeply original infrastructure, now complete and 0-sorry, 0-axiom (the 2 self-inverse sorries flagged at review time have since been closed).",
     "tier": "B",
     "tierJustification": "The file builds ~2000 lines of custom combinatorial infrastructure not found in Mathlib (lattice paths, column-based intersection, LGV configuration, GV involution). The main theorem lgv_lemma_rxr is declared as a theorem and compiles, but has transitive sorry dependency through gvCanon_self_inverse. This is Tier B: substantial original infrastructure with Mathlib foundation (Matrix.det, Finset.sum_involution), not quite Tier A due to the 2 remaining sorries.",
     "stratification": {
@@ -154,8 +154,8 @@
       "id": "ai-7",
       "priority": "low",
       "target": "researcher",
-      "description": "Close the 2 remaining sorries: canonCrossN_preserved (canonical crossing code preserved under involution) and gvCanon_self_inverse (double tail-swap = identity). The proof sketch is in the TODO comments at lines 1982 and 1989.",
-      "status": "open"
+      "description": "Close the 2 remaining sorries: canonCrossN_preserved (canonical crossing code preserved under involution) and gvCanon_self_inverse (double tail-swap = identity). The proof sketch is in the TODO comments at lines 1982 and 1989. RESOLVED: both theorems are now fully proved; the Lean file is 0-sorry, 0-axiom (verified 2026-06-16).",
+      "status": "resolved"
     }
   ],
 

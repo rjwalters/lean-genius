@@ -16,7 +16,11 @@
       "Szemerédi-Trotter theorem",
       "k-rich lines"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "asymptotic notation (big-O)",
+      "real analysis basics"
+    ]
   },
   {
     "id": "ann-e1069-geometry",
@@ -35,7 +39,12 @@
       "line equation",
       "incidence relation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic geometry in the plane",
+      "linear equations of lines",
+      "set theory and cardinality",
+      "Lean 4 / Mathlib definitions"
+    ]
   },
   {
     "id": "ann-e1069-krich",
@@ -54,7 +63,12 @@
       "incidence count",
       "double counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite set cardinality",
+      "summation over finite sets",
+      "double counting arguments",
+      "asymptotic notation (big-O)"
+    ]
   },
   {
     "id": "ann-e1069-sztr",
@@ -73,7 +87,12 @@
       "incidence bound",
       "counting argument"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "real exponent inequalities",
+      "asymptotic notation (big-O)",
+      "algebraic manipulation of bounds"
+    ]
   },
   {
     "id": "ann-e1069-dyadic",
@@ -92,7 +111,12 @@
       "proof technique",
       "incidence geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "dyadic / logarithmic scale partitioning",
+      "geometric series summation",
+      "asymptotic notation (big-O)",
+      "incidence counting"
+    ]
   },
   {
     "id": "ann-e1069-lower",
@@ -111,6 +135,10 @@
       "lower bound",
       "tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integer lattice geometry",
+      "combinatorial counting",
+      "asymptotic lower bounds (big-Omega)"
+    ]
   }
 ]

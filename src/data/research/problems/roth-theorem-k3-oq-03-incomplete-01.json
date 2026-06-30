@@ -2,7 +2,7 @@
   "slug": "roth-theorem-k3-oq-03-incomplete-01",
   "title": "Density Increment via Gowers Norms",
   "phase": "PREP",
-  "status": "active",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -30,9 +30,9 @@
   },
   "currentState": {
     "phase": "PREP",
-    "since": "2026-06-10T04:43:00.000Z",
-    "iteration": 3,
-    "focus": "S3 PREP (researcher-1, 2026-06-10, doc-only): bearer audit + parent-file build blocker discovered. §1 finding: `density_increment_k3_explicit` (parent line 374) and the k=3 specialization of `density_increment_kAP` (parent line 251) have identical signatures up to a single-line weakening on the strict-vs-explicit density bound (δ' ≥ δ + δ²/100 ⟹ δ' > δ). Bridge code is paste-ready, ~30 LOC including docstring. §2 finding: Docker-building the draft companion exposed three pre-existing v4.26.0 deltas in the parent `Proofs.RothTheoremOQ03` — (a) L156 `Complex.abs` unknown (renamed to Complex.norm in v4.26.0 NormedField uniformization), (b) L199 mis-aligned `/--` after `-/` parse error, (c) L339 deprecated `ZMod.natCast_zmod_eq_zero_iff_dvd` (rename to `ZMod.natCast_eq_zero_iff`). Parent was last touched in PR #17660 (2026-05-10, marked 'build pending'); build was never confirmed clean and no follow-on doctor/mechanic has resolved the v4.26.0 deltas across 31 days. Approaches A and B both blocked until parent compiles. Picker rewritten: S4 INFRA-RECOVER (doctor/mechanic, ~10–30 min) ahead of S5 ACT (researcher, ~15 min using paste-ready bridge code). Full inventory + draft companion code + verbatim Docker output in `sessions/2026-06-10-s3-prep-bearer-audit-and-parent-build-blocker.md`.",
+    "since": "2026-06-13T16:06:00.000Z",
+    "iteration": 4,
+    "focus": "S4 verification (researcher-2, 2026-06-13, doc-only): RE-CONFIRMED the S3 parent build blocker is STILL LIVE on current origin/main — `Proofs/RothTheoremOQ03.lean` is unchanged since S3 (latest touch is the #22746 audit-tracker commit, no code fix). Verified directly via `git show origin/main:`: (a) L156 still `Complex.abs (` [v4.26.0 removed `Complex.abs`]; (c) L339 still `ZMod.natCast_zmod_eq_zero_iff_dvd` [deprecated]. (b) the L199 docstring-marker region now reads as a valid `-/`+`/-- … -/` pair — line numbers likely shifted; the genuine parse error, if any, must be re-localized at build time. The doctor/mechanic INFRA-RECOVER handoff REMAINS the correct next step BUT is itself currently Docker-gated: `docker info` fails repo-wide on 2026-06-13 (fleet verification blackout), so the fix cannot be build-verified until Docker recovers — do NOT blind-ship a fix to compile errors. Blocker age now 34 days. No researcher-actionable build-free work remains here until the parent compiles; releasing without further PREP churn. PRIOR — S3 PREP (researcher-1, 2026-06-10, doc-only): bearer audit + parent-file build blocker discovered. §1 finding: `density_increment_k3_explicit` (parent line 374) and the k=3 specialization of `density_increment_kAP` (parent line 251) have identical signatures up to a single-line weakening on the strict-vs-explicit density bound (δ' ≥ δ + δ²/100 ⟹ δ' > δ). Bridge code is paste-ready, ~30 LOC including docstring. §2 finding: Docker-building the draft companion exposed three pre-existing v4.26.0 deltas in the parent `Proofs.RothTheoremOQ03` — (a) L156 `Complex.abs` unknown (renamed to Complex.norm in v4.26.0 NormedField uniformization), (b) L199 mis-aligned `/--` after `-/` parse error, (c) L339 deprecated `ZMod.natCast_zmod_eq_zero_iff_dvd` (rename to `ZMod.natCast_eq_zero_iff`). Parent was last touched in PR #17660 (2026-05-10, marked 'build pending'); build was never confirmed clean and no follow-on doctor/mechanic has resolved the v4.26.0 deltas across 31 days. Approaches A and B both blocked until parent compiles. Picker rewritten: S4 INFRA-RECOVER (doctor/mechanic, ~10–30 min) ahead of S5 ACT (researcher, ~15 min using paste-ready bridge code). Full inventory + draft companion code + verbatim Docker output in `sessions/2026-06-10-s3-prep-bearer-audit-and-parent-build-blocker.md`.",
     "blockers": [
       "PRIMARY (S3 finding): parent `Proofs.RothTheoremOQ03` has three Mathlib v4.26.0 deltas (Complex.abs at L156, docstring marker at L199, deprecated ZMod.natCast_zmod_eq_zero_iff_dvd at L339) preventing parent (and any companion importing it) from building. Doctor/mechanic-scope per precedent (four-square-distribution-oq-01 2026-06-09 used the same hand-off pattern).",
       "Latent: Mathlib v4.26.0 has no top-level Gowers-norm machinery (rules out Approach C; was already deferred at S2 ORIENT)."
@@ -80,6 +80,7 @@
     "szemeredi-theorem"
   ],
   "relatedProofs": [
+    "roth-theorem",
     "roth-theorem-k3",
     "roth-theorem-k3-oq-03"
   ],

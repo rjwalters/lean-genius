@@ -17,7 +17,11 @@
       "bipartite graphs",
       "edge deletion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "graph coloring",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e744-simplegraph",
@@ -36,7 +40,12 @@
       "proper coloring",
       "adjacency"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "graph theory",
+      "naive set theory"
+    ]
   },
   {
     "id": "ann-e744-critical",
@@ -55,7 +64,11 @@
       "edge deletion",
       "minimal coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "graph coloring",
+      "propositional logic"
+    ]
   },
   {
     "id": "ann-e744-bipartite",
@@ -74,7 +87,11 @@
       "odd cycles",
       "König's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "set partitions"
+    ]
   },
   {
     "id": "ann-e744-bipartition-number",
@@ -93,7 +110,11 @@
       "bipartite subgraph"
     ],
     "mathContext": "See annotation content for formal details of bipartition number and f_k(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial optimization",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e744-f3",
@@ -112,7 +133,10 @@
       "bipartite graphs"
     ],
     "mathContext": "See annotation content for formal details of f_3(n) = 1: the trivial case",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e744-historical-bounds",
@@ -131,7 +155,11 @@
       "critical graph structure",
       "polynomial bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "asymptotic analysis",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e744-conjecture",
@@ -150,7 +178,11 @@
       "graph coloring conjectures"
     ],
     "mathContext": "See annotation content for formal details of erdős's original conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "first-order logic",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e744-rodl-tuza",
@@ -169,7 +201,11 @@
       "probabilistic method",
       "graph decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "probabilistic method",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e744-structural-insight",
@@ -188,7 +224,11 @@
       "binomial coefficients",
       "graph structure theorems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e744-disproof",
@@ -207,7 +247,11 @@
       "bounded functions"
     ],
     "mathContext": "See annotation content for formal details of formal disproof of the conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "first-order logic",
+      "asymptotic analysis",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e744-formula",
@@ -226,7 +270,11 @@
       "asymptotic behavior"
     ],
     "mathContext": "See annotation content for formal details of the complete formula",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "elementary number theory",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e744-main-statement",
@@ -245,6 +293,10 @@
       "graph coloring",
       "disproved conjectures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "first-order logic",
+      "Lean 4 tactic mode"
+    ]
   }
 ]

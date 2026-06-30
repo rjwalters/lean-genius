@@ -176,14 +176,14 @@
       "id": "hensel-p11",
       "title": "Section 11: Hensel-Lifted ℚ_[11] Solubility (Proved, Axiom-Free)",
       "startLine": 411,
-      "endLine": 523,
+      "endLine": 521,
       "summary": "Theorem selmer_padic_solubility_p11_hensel discharges the p = 11 instance of selmer_padic_solubility via Mathlib's univariate Hensel lemma (Mathlib.NumberTheory.Padics.Hensel.hensels_lemma), without invoking the universal axiom. The proof: define Hensel11.Gint : Polynomial ℤ as C 4 + C 5 * X^3 (the univariate restriction of selmerPoly at x = 0, y = 1); compute aeval (2 : ℤ_[11]) Gint = ((44 : ℤ) : ℤ_[11]) and the derivative-at-2 = ((60 : ℤ) : ℤ_[11]); then ‖44‖₁₁ < 1 (via (11 : ℤ) ∣ 44 and PadicInt.norm_intCast_lt_one_iff) and ‖60‖₁₁ = 1 (via IsCoprime (60 : ℤ) 11 and PadicInt.norm_intCast_eq_one_iff). Hensel's lemma yields z̃ ∈ ℤ_[11] with 4 + 5 z̃^3 = 0; casting z̃ → ℚ_[11] and packaging as (0, 1, z̃) finishes via push_cast and linear_combination.",
       "mathContext": "**Reduction to univariate Hensel.** Fixing $(x, y) = (0, 1)$ in the Selmer cubic produces the univariate $g(z) = 5z^3 + 4 \\in \\mathbb{Z}[z]$. **Hensel hypothesis.** $|g(2)|_{11} = |44|_{11} = 1/11$ and $|g'(2)|_{11} = |60|_{11} = 1$, so $|g(2)|_{11} = 1/11 < 1 = |g'(2)|_{11}^2$. Mathlib's `hensels_lemma` lifts the witness $a = 2 \\in \\mathbb{Z}_{11}$ to a unique root $\\tilde z \\in \\mathbb{Z}_{11}$ of $g$. **Conclusion.** $(0, 1, \\tilde z) \\in \\mathbb{Q}_{11}^3$ is a nontrivial zero of the Selmer cubic — an axiom-free instance of `selmer_padic_solubility` at $p = 11$. The same recipe applies to every Section 9 witness with non-singular reduction; the only exception is $p = 3$, which requires strong-form Hensel on the mod-27 witness."
     },
     {
       "id": "post-section11-summary",
       "title": "Section 12: Status Summary (post Section 11)",
-      "startLine": 521,
+      "startLine": 522,
       "endLine": 540,
       "summary": "Updated counts after Section 11: 18 theorems (6 substantive + 12 witness lemmas), 4 definitions (selmerPoly, selmerHassePrinciple, colliot_thelene_conjecture, Hensel11.Gint), 2 axioms unchanged, 0 sorries. New milestone: an axiom-free p-adic solubility instance demonstrates the Section 8 roadmap is mechanically realizable.",
       "mathContext": "The universal axiom `selmer_padic_solubility` quantifies over all primes; eliminating it requires analogous Hensel lifts at every prime in Section 9. Section 11 supplies the first such lift (for $p = 11$), so the assumption count is unchanged but the *concrete* obligation at $p = 11$ is now discharged."
@@ -200,13 +200,125 @@
       "id": "post-section13-summary",
       "title": "Section 14: Status Summary (post Section 13)",
       "startLine": 680,
-      "endLine": 708,
+      "endLine": 696,
       "summary": "Updated counts after Section 13: 22 theorems (7 substantive + 12 Section-9 witness lemmas + 3 per-prime Hensel corollaries from Section 13 + the parametric Case-A theorem), 5 definitions (selmerPoly, selmerHassePrinciple, colliot_thelene_conjecture, Hensel11.Gint, HenselCaseA.Gint), 2 axioms unchanged, 0 sorries. The four Case-A primes from Section 9 (p ∈ {11, 17, 23, 29}) now all admit axiom-free ℚ_[p]-solubility proofs.",
       "mathContext": "The universal axiom `selmer_padic_solubility` is logically unchanged, but the gap between the universal axiom and what is concretely provable is shrinking: every Case-A prime in Section 9 is now discharged. Remaining obligations: Case B primes (`p ∈ {7, 13, 19, 31, 37}`), special primes (`p ∈ {2, 5}`), and the singular-reduction prime `p = 3` (strong-form Hensel on the mod-27 witness)."
+    },
+    {
+      "id": "section15-lift-z-general",
+      "title": "Section 15: General Lift-z Hensel Theorem (Case-B subset)",
+      "startLine": 697,
+      "endLine": 885,
+      "summary": "Generalizes the (0,1,z) projection lift of Section 13 to a parametric lift-z theorem (selmer_padic_solubility_lift_z) covering many Case-B primes (p ≡ 1 mod 3, p ≥ 7) that admit a fixed (x₀,y₀) ∈ ℤ² witness with z Hensel-lifted. Within the HenselLiftZ namespace it defines the univariate polynomial G(c) = c + 5z³ ∈ ℤ[X] parametric in the constant term, with supporting evaluation lemmas (G_derivative_eq, G_aeval, G_derivative_aeval), and discharges p ∈ {13, 19, 31, 37} as Case-B corollaries via explicit (x₀,y₀) witnesses fed to Mathlib's hensels_lemma.",
+      "mathContext": "**Lift-z mechanism.** Fixing (x,y) = (x₀,y₀) reduces the Selmer cubic to the univariate g(z) = 5z³ + (4y₀³ + 3x₀³) ∈ ℤ[z]; Hensel-lifting a mod-p root z₀ to ℤ_[p] yields a ℚ_[p] point. The Hensel hypothesis ‖g(z₀)‖_p < ‖g'(z₀)‖_p² reduces, as in Section 13, to p ∣ g(z₀) together with gcd(15z₀², p) = 1. **Parametricity.** The same polynomial shape works for every Case-B prime; only the witness (x₀,y₀,z₀) and per-prime divisibility data change."
+    },
+    {
+      "id": "section16-lift-x-general",
+      "title": "Section 16: Iteration 8 — Lift-x Parametric Hensel for p = 7",
+      "startLine": 886,
+      "endLine": 1034,
+      "summary": "Mirrors Section 15 with the roles of x and z swapped: fixing (y₀,z₀) and Hensel-lifting x. Within the HenselLiftX namespace it defines H(c) = c + 3x³ ∈ ℤ[X] parametric in c = 4y₀³ + 5z₀³, with derivative H'(x) = 9x² and evaluation lemmas (H_derivative_eq, H_aeval, H_derivative_aeval). The general theorem selmer_padic_solubility_lift_x is proved and applied to discharge the remaining Case-B prime p = 7 (selmer_padic_solubility_p7_hensel) via the (1,1,0) Case-B witness.",
+      "mathContext": "**Lift-x vs lift-z.** Both are univariate Hensel reductions of the trivariate Selmer cubic; the lift-x route is needed for primes whose Section-9 witness has the (x₀, y₀, 0)-type shape rather than (0, 1, z₀). The lift-x derivative is H'(x) = 9x², so coprimality of 9x₀² with p is the controlling Hensel condition; for x₀ = 1 this is gcd(9, p) = 1, automatic for p ≠ 3."
+    },
+    {
+      "id": "section17-special-primes-2-5",
+      "title": "Section 17: Iteration 9 — Special primes p ∈ {2, 5} via lift-x",
+      "startLine": 1035,
+      "endLine": 1082,
+      "summary": "Dispatches the two non-singular special primes p ∈ {2, 5} from the Section-8 roadmap as one-line corollaries of selmer_padic_solubility_lift_x (Section 16). Both Section-9 witnesses for p = 2 and p = 5 keep x₀ = 1, so the lift-x derivative 9·x₀² = 9 is automatically coprime to either prime (gcd(9, 2) = gcd(9, 5) = 1); the only per-prime arithmetic is the global divisibility p ∣ H(x₀).",
+      "mathContext": "**Why special.** p ∈ {2, 5} are excluded from the Case-A parametric theorem (which requires p ∉ {2, 5}); the lift-x route handles them uniformly because the shared x₀ = 1 choice makes the Hensel non-degeneracy condition gcd(9, p) = 1 hold for all p ≠ 3."
+    },
+    {
+      "id": "section18-summary-post17",
+      "title": "Section 18: Status Summary (post Section 17)",
+      "startLine": 1083,
+      "endLine": 1108,
+      "summary": "Status summary after Section 17: eleven of the twelve Section-8 roadmap primes now admit axiom-free ℚ_[p]-solubility proofs, leaving only the singular-reduction prime p = 3. The universal axiom selmer_padic_solubility remains load-bearing pending a uniform argument.",
+      "mathContext": "Tracks the shrinking gap between the universal p-adic-solubility axiom and what is concretely proved per-prime. After Section 17 only p = 3 (singular mod-3 reduction) remains among the roadmap primes."
+    },
+    {
+      "id": "section19-special-prime-3",
+      "title": "Section 19: Iteration 10 — Special prime p = 3 via strong-form Hensel",
+      "startLine": 1109,
+      "endLine": 1253,
+      "summary": "Dispatches the last Section-8 prime, the singular case p = 3, by feeding the mod-27 witness selmer_witness_p3_mod27 = (0,1,4) to Mathlib's hensels_lemma. Within the Hensel3 namespace it sets up the univariate Gint = C 4 + C 5·X³ at (x,y) = (0,1) with norm computations (cast_324_factored, cast_240_factored, norm_4_eq_one, norm_80_eq_one, norm_324_eq, norm_240_eq) establishing the strong-form Hensel hypothesis ‖g(4)‖ < ‖g'(4)‖² even though the mod-3 reduction is singular.",
+      "mathContext": "**Strong-form Hensel.** The mod-3 reduction of selmerPoly is singular (Jacobian coefficients 9, 12, 15 all divisible by 3), so the naive Hensel hypothesis fails. Mathlib's hensels_lemma is in fact the strong form ‖f(a)‖ < ‖f'(a)‖², which still applies: with a = 4, ‖g(4)‖₃ = ‖324‖₃ = 3⁻⁴ and ‖g'(4)‖₃² = ‖240‖₃² = 3⁻², giving 3⁻⁴ < 3⁻² and a lift to ℤ_[3]."
+    },
+    {
+      "id": "section20-summary-post19",
+      "title": "Section 20: Status Summary (post Section 19)",
+      "startLine": 1254,
+      "endLine": 1281,
+      "summary": "Status summary after Section 19: all twelve primes in the Section-8 roadmap {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37} now admit axiom-free ℚ_[p]-solubility proofs, completing the per-prime sweep.",
+      "mathContext": "Marks completion of the axiom-free per-prime program for the roadmap prime set; the universal axiom selmer_padic_solubility is now provable at every individual roadmap prime, setting up the bundled discharge of Section 21."
+    },
+    {
+      "id": "section21-bundled-discharge",
+      "title": "Section 21: Iteration 11 — Bundled discharge over the Section-8 prime set",
+      "startLine": 1282,
+      "endLine": 1344,
+      "summary": "Records in a single named theorem that the twelve axiom-free per-prime results (Sections 11–19) collectively show selmer_padic_solubility p is provable for every prime p in the Section-8 roadmap {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}, giving downstream consumers a bundled statement.",
+      "mathContext": "Aggregates the per-prime theorems into one membership-indexed statement over the finite roadmap prime set, demonstrating that the universal axiom is redundant on this set without yet eliminating it for all primes."
+    },
+    {
+      "id": "section22-caseA-41-47",
+      "title": "Section 22: Additional Case-A Primes (p ∈ {41, 47})",
+      "startLine": 1345,
+      "endLine": 1396,
+      "summary": "Extends the discharged sub-collection beyond the Section-8 roadmap by applying the Section-13 parametric Case-A theorem selmer_padic_solubility_caseA to two further Case-A primes p ∈ {41, 47}, each as a one-line corollary with an explicit witness z₀ satisfying 5z₀³ ≡ -4 (mod p).",
+      "mathContext": "**Why beyond the roadmap.** The Case-A parametric theorem applies to every prime p ≡ 2 (mod 3), p ∉ {2, 5} with a successful witness search, not only the four Case-A primes in the Section-9 table. Sections 22+ demonstrate this open-ended applicability."
+    },
+    {
+      "id": "section23-caseA-53-59",
+      "title": "Section 23: Further Case-A Primes (p ∈ {53, 59})",
+      "startLine": 1397,
+      "endLine": 1454,
+      "summary": "Continues the Section-22 pattern, adding two more Case-A primes p ∈ {53, 59} as one-line corollaries of selmer_padic_solubility_caseA. Together with Section 22 this extends the discharged sub-collection from 14 to 16 primes total.",
+      "mathContext": "Each prime is discharged by exhibiting an integer witness z₀ with p ∣ (4 + 5z₀³) and gcd(15z₀², p) = 1, then invoking the parametric Case-A theorem; the arithmetic is closed by `by decide`."
+    },
+    {
+      "id": "section24-caseA-beyond-60",
+      "title": "Section 24: Case-A Primes Beyond 60 (p ∈ {71, 83, 89, 101})",
+      "startLine": 1455,
+      "endLine": 1560,
+      "summary": "Adds four further Case-A primes p ∈ {71, 83, 89, 101} as one-line corollaries of selmer_padic_solubility_caseA, extending the discharged sub-collection from 16 to 20 primes total (12 Section-8 primes + Sections 22/23's 4 primes + Section 24's 4 primes).",
+      "mathContext": "Same parametric-witness recipe as Sections 22/23, demonstrating that the per-prime Case-A discharge scales freely to arbitrarily large Case-A primes given a witness."
+    },
+    {
+      "id": "section25-caseA-107-113",
+      "title": "Section 25: Case-A Primes 107 and 113",
+      "startLine": 1561,
+      "endLine": 1639,
+      "summary": "Adds two further Case-A primes p ∈ {107, 113} as one-line corollaries of selmer_padic_solubility_caseA, extending the discharged sub-collection from 20 to 22 primes total.",
+      "mathContext": "Continues the Sections 22/23/24 enumeration of explicit Case-A primes; motivates the universal Case-A closure of Section 27 by showing the per-prime enumeration is unbounded."
+    },
+    {
+      "id": "section26-caseB-43-67-79",
+      "title": "Section 26: Case-B Primes 43, 67, 79 via Lift-z",
+      "startLine": 1640,
+      "endLine": 1725,
+      "summary": "Extends the parallel Case-B collection along selmer_padic_solubility_lift_z (Section 15), discharging primes p ∈ {43, 67, 79} via explicit fixed-(x₀,y₀) witnesses with z Hensel-lifted. Complements the Case-A extensions of Sections 22–25.",
+      "mathContext": "Case-B primes (p ≡ 1 mod 3, p ≥ 7) use the lift-z parametric theorem rather than the Case-A theorem; this section shows the lift-z route also scales beyond the original roadmap primes."
+    },
+    {
+      "id": "section27-universal-caseA",
+      "title": "Section 27: Universal Case-A Theorem (cube-root parametric closure)",
+      "startLine": 1726,
+      "endLine": 1929,
+      "summary": "Codifies the parametric existence-of-z₀ step to eliminate per-prime enumeration, proving in the UniversalCaseA namespace a universal Case-A theorem (selmer_padic_solubility_caseA_universal) giving ℚ_[p]-solubility for every prime p ≡ 2 (mod 3), p ∉ {2, 5}, axiom-free, with subsumption examples (e.g. selmer_padic_solubility_p11_universal, selmer_padic_solubility_p41_universal) recovering the hand-enumerated primes of Sections 11–25.",
+      "mathContext": "**Cube-root closure.** For p ≡ 2 (mod 3) the cubing map x ↦ x³ is a bijection on (ℤ/p)ˣ, so 5z³ ≡ -4 (mod p) always has a solution z₀; this existence is what the per-prime enumeration was establishing by hand. Formalizing it yields a single theorem covering the entire Case-A residue class, replacing the open-ended Sections 22–25 list."
+    },
+    {
+      "id": "section28-conditional-universal",
+      "title": "Section 28: Conditional Universal ℚ_[p]-Solubility — Case-B is the Only Remaining Obstruction",
+      "startLine": 1930,
+      "endLine": 2092,
+      "summary": "Combines the Case-A universal theorem (Section 27) with the special-prime results (p ∈ {2, 3, 5}) to localize the remaining gap: ℚ_[p]-solubility is axiom-free for every prime except the Case-B class (p ≡ 1 mod 3), where a uniform smooth-zero argument (Hasse–Weil) is still encoded via the surrogate. Closes with #check lines for the assembled theorems (selmer_padic_solubility_extended_caseB_primes, the UniversalCaseA recoveries, selmer_padic_solubility_from_caseB, selmer_padic_solubility_recovered).",
+      "mathContext": "**Localized obstruction.** After Section 28 the only structural assumption needed for universal ℚ_[p]-solubility is the Case-B class p ≡ 1 (mod 3), where solubility follows from the Hasse–Weil bound (a smooth cubic over 𝔽_p has a point for p large) plus Hensel lifting. This isolates exactly which deep ingredient remains, sharpening the axiom accounting beyond the blanket selmer_padic_solubility."
     }
   ],
   "conclusion": {
-    "summary": "The Selmer cubic 3x³ + 4y³ + 5z³ = 0 — the canonical 1951 counterexample to the Hasse principle for higher-degree forms — is formalized as a 328-line Lean 4 file with 32 theorems, 3 definitions, 2 axioms, 0 sorries. Real solubility is proved constructively via IVT; the easy directions of the Hasse principle (rational ⇒ local) are proved by formal ring-embedding arguments; Selmer's no-rational-solutions theorem and full p-adic solubility are axiomatized; and the Hasse-principle FAILURE for the Selmer cubic is then proved in 4 lines from the two axioms. The result is a clean encoding of the canonical counterexample with all the elementary content proved and all the deep arithmetic content explicitly axiomatized.",
+    "summary": "The Selmer cubic 3x³ + 4y³ + 5z³ = 0 — the canonical 1951 counterexample to the Hasse principle for higher-degree forms — is formalized as a 2092-line Lean 4 file with 90 theorems, 9 definitions, 2 axioms, 0 sorries. Real solubility is proved constructively via IVT; the easy directions of the Hasse principle (rational ⇒ local) are proved by formal ring-embedding arguments; Selmer's no-rational-solutions theorem and full p-adic solubility are axiomatized; and the Hasse-principle FAILURE for the Selmer cubic is then proved in 4 lines from the two axioms. The result is a clean encoding of the canonical counterexample with all the elementary content proved and all the deep arithmetic content explicitly axiomatized.",
     "implications": "**Theoretical significance**: Selmer's cubic was the first explicit demonstration that the Hasse principle does not extend from quadratic to cubic forms. It launched the entire modern field of obstruction theory in arithmetic geometry — Manin's Brauer-Manin obstruction (1971), Skorobogatov's étale-Brauer-Manin (1999), Poonen's intermediate failures (2010). Whether the étale-Brauer-Manin obstruction is the only obstruction for rationally connected varieties is a central open question linking number theory to algebraic geometry.\n\n**Formalization significance**: This is one of the first Mathlib-aligned formalizations of a Hasse-principle failure. The two axioms cleanly localize the deep arithmetic content (3-descent, Hensel) without bleeding into the surrounding gallery framework. The genericity of `selmerPoly` over CommRing (rather than ℚ-specific) makes the easy-direction theorems reusable across the three local rings.\n\n**Path to fewer axioms**: `selmer_padic_solubility` is the more accessible axiom — it follows from Mathlib's existing Hensel infrastructure plus a smooth-reduction argument for primes p ∉ {2, 3, 5} and direct construction at p ∈ {2, 3, 5}. Eliminating this axiom would leave only Selmer 1951 itself as an assumption, an honest reflection of the mathematical depth.\n\n**Connection to other gallery entries**: hilbert-11 (parent, Hasse-Minkowski for quadratics — the result that Selmer demonstrates does NOT generalize); hilbert-11-oq-01 (sibling, refined Hasse-Minkowski); e-transcendental-oq-02 (similar pattern: deep open problem with axiomatized headline + proved framework).",
     "openQuestions": [
       "Eliminate the `selmer_padic_solubility` axiom by formalizing Hensel's lemma application to smooth cubic reductions. For p ∉ {2, 3, 5} this is direct; the small primes need explicit low-precision lifts.",
@@ -223,11 +335,6 @@
       "targetId": "hilbert-11",
       "relationship": "extends",
       "description": "Parent gallery entry. hilbert-11 formalizes the Hasse-Minkowski theorem for quadratic forms (the local-global principle holds in degree 2). This entry shows that the Hasse principle FAILS in degree 3 — specifically for the Selmer cubic. Together they sandwich the local-global principle: it works for quadratics but is no longer automatic in higher degree."
-    },
-    {
-      "targetId": "hilbert-11-oq-01",
-      "relationship": "related",
-      "description": "Sibling open-question entry on the refined Hasse-Minkowski theorem. Both files axiomatize a deep arithmetic input on top of the Hasse-principle framework; this entry localizes the OQ to the Selmer cubic counterexample, while OQ-01 sharpens the Hasse-Minkowski statement."
     },
     {
       "targetId": "e-transcendental-oq-02",

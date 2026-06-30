@@ -76,18 +76,18 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports",
+      "id": "header",
+      "title": "Imports and Overview",
       "startLine": 1,
-      "endLine": 8,
-      "summary": "Imports SimpleGraph modules (Basic, Finite, DegreeSum, Coloring, Connected), Fintype.Basic, Int.Basic, and Tactic.",
-      "mathContext": "Mathematical content: Imports SimpleGraph modules (Basic, Finite, DegreeSum, Coloring, Connected), Fintype.Basic, Int.Basic, and Tactic."
+      "endLine": 53,
+      "summary": "Imports SimpleGraph modules (Basic, Finite, DegreeSum, Coloring, Connected), Fintype.Basic, Int.Basic, and Tactic, followed by the module overview docstring describing the four extensions to Euler's formula formalized here (spanning-tree Euler formula, 5-degeneracy, Six Color Theorem, K₅ non-planarity) and the EulerOQ01 namespace.",
+      "mathContext": "Imports SimpleGraph modules (Basic, Finite, DegreeSum, Coloring, Connected), Fintype.Basic, Int.Basic, and Tactic, followed by the module overview docstring describing the four extensions to Euler's formula formalized here (spanning-tree Euler formula, 5-degeneracy, Six Color Theorem, K₅ non-planarity) and the EulerOQ01 namespace."
     },
     {
       "id": "part1-spanning-tree",
       "title": "Part 1: Spanning Tree Euler Formula",
       "startLine": 54,
-      "endLine": 178,
+      "endLine": 215,
       "summary": "SpanningBuild inductive type with single/addTreeEdge/addCycleEdge constructors. Proves euler_spanning: V-E+F=2 by structural induction. buildPlanarGraph constructs graphs with v vertices and k cycle edges. Verified for tetrahedron (4V,6E,4F), cube (8V,12E,6F), octahedron (6V,12E,8F).",
       "mathContext": "SpanningBuild inductive type with single/addTreeEdge/addCycleEdge constructors. Proves euler_spanning: V-E+F=2 by structural induction. buildPlanarGraph constructs graphs with v vertices and k cycle edges. Verified for tetrahedron (4V,6E,4F), cube (8V,12E,6F), octahedron (6V,12E,8F)."
     },
@@ -95,14 +95,14 @@
       "id": "part2-degeneracy",
       "title": "Part 2: Graph Degeneracy",
       "startLine": 216,
-      "endLine": 260,
+      "endLine": 259,
       "summary": "KDegenerate structure: every subgraph has a vertex of degree ≤ k. planar_five_degenerate: E ≤ 3V-6 implies 5-degeneracy. degeneracy_from_edge_bound: general k-degeneracy from 2E < (k+1)V.",
       "mathContext": "KDegenerate structure: every subgraph has a vertex of degree $\\leq$ k. planar_five_degenerate: E $\\leq$ 3V-6 implies 5-degeneracy. degeneracy_from_edge_bound: general k-degeneracy from 2E < (k+1)V."
     },
     {
       "id": "part3-coloring",
       "title": "Part 3: Degeneracy and Coloring",
-      "startLine": 261,
+      "startLine": 260,
       "endLine": 294,
       "summary": "degenerate_colorable_aux: k-degenerate graph on n vertices is (k+1)-colorable (by induction). six_colorable_from_degeneracy: since planar is 5-degenerate, planar graphs are 6-colorable.",
       "mathContext": "Mathematical content: degenerate_colorable_aux: k-degenerate graph on n vertices is (k+1)-colorable (by induction). six_colorable_from_degeneracy: since planar is 5-degenerate, planar graphs are 6-colorable."
@@ -111,17 +111,33 @@
       "id": "part4-edge-face",
       "title": "Part 4: Edge-Face Counting Identities",
       "startLine": 295,
-      "endLine": 334,
+      "endLine": 333,
       "summary": "Algebraic consequences of V-E+F=2: face_from_euler, edge_from_euler, vertex_from_euler, tree_edges_from_euler. Also maximal_planar_edges (E=3V-6) and maximal_planar_faces (F=2V-4) for triangulations.",
       "mathContext": "Mathematical content: Algebraic consequences of V-E+F=2: face_from_euler, edge_from_euler, vertex_from_euler, tree_edges_from_euler. Also maximal_planar_edges (E=3V-6) and maximal_planar_faces (F=2V-4) for triangulations."
     },
     {
       "id": "part5-handshaking",
       "title": "Part 5: Handshaking Lemma Consequences",
-      "startLine": 335,
+      "startLine": 334,
       "endLine": 384,
       "summary": "avg_degree_lt_six: sum of degrees < 6V implies average degree < 6. exists_low_degree_vertex: every planar graph has a vertex of degree ≤ 5 (two proof variants).",
       "mathContext": "avg_degree_lt_six: sum of degrees < 6V implies average degree < 6. exists_low_degree_vertex: every planar graph has a vertex of degree $\\leq$ 5 (two proof variants)."
+    },
+    {
+      "id": "part6-double-counting",
+      "title": "Part 6: Double Counting for Planar Graphs",
+      "startLine": 385,
+      "endLine": 432,
+      "summary": "face_edge_double_count: in a connected planar graph where every face has ≥ d boundary edges, d·F ≤ 2E (each edge borders 2 faces); combined with Euler's formula this yields (d-2)·E ≤ d·(V-2). Specializations: edge_bound_simple (d=3, E ≤ 3V-6), edge_bound_bipartite (d=4, E ≤ 2V-4), edge_bound_girth6 (d=6, 2E ≤ 3V-6).",
+      "mathContext": "face_edge_double_count: in a connected planar graph where every face has ≥ d boundary edges, d·F ≤ 2E (each edge borders 2 faces); combined with Euler's formula this yields (d-2)·E ≤ d·(V-2). Specializations: edge_bound_simple (d=3, E ≤ 3V-6), edge_bound_bipartite (d=4, E ≤ 2V-4), edge_bound_girth6 (d=6, 2E ≤ 3V-6)."
+    },
+    {
+      "id": "part7-non-planarity",
+      "title": "Part 7: Non-Planarity Certificates",
+      "startLine": 433,
+      "endLine": 462,
+      "summary": "Non-planarity certificates from the edge bounds: k5_not_planar (K₅ has V=5, E=10 > 3V-6=9), k33_not_planar (K₃,₃ is bipartite with V=6, E=9 > 2V-4=8), and petersen_not_planar (Petersen graph V=10, E=15, girth 5 forces 5F=35 > 30=2E from Euler F=7).",
+      "mathContext": "Non-planarity certificates from the edge bounds: k5_not_planar (K₅ has V=5, E=10 > 3V-6=9), k33_not_planar (K₃,₃ is bipartite with V=6, E=9 > 2V-4=8), and petersen_not_planar (Petersen graph V=10, E=15, girth 5 forces 5F=35 > 30=2E from Euler F=7)."
     },
     {
       "id": "part8-genus",
@@ -138,6 +154,14 @@
       "endLine": 535,
       "summary": "Heawood formula H(g) = ⌊(5+√(1+48g))/2⌋ as a chromatic bound for genus-g surfaces. Verified for torus (H(1)=7), double torus (H(2)=8). toroidal coloring bounds.",
       "mathContext": "Bound: Heawood formula H(g) = ⌊(5+√(1+48g))/2⌋ as a chromatic bound for genus-g surfaces. Verified for torus (H(1)=7), double torus (H(2)=8). toroidal coloring bounds."
+    },
+    {
+      "id": "part10-connectivity",
+      "title": "Part 10: Euler Formula and Connectivity",
+      "startLine": 536,
+      "endLine": 615,
+      "summary": "Euler's formula and connectivity: euler_disconnected (V-E+F = 1+c for c components, with c=1 recovering V-E+F=2), euler_bridge_edge (a bridge edge between components decreases the component count by 1), and euler_cycle_edge (a cycle edge within a component increases F by 1). Closes with a summary block cataloging all 22 results and the 0-sorry status.",
+      "mathContext": "Euler's formula and connectivity: euler_disconnected (V-E+F = 1+c for c components, with c=1 recovering V-E+F=2), euler_bridge_edge (a bridge edge between components decreases the component count by 1), and euler_cycle_edge (a cycle edge within a component increases F by 1). Closes with a summary block cataloging all 22 results and the 0-sorry status."
     },
     {
       "id": "part11-six-color",

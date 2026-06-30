@@ -16,7 +16,11 @@
       "Smooth numbers",
       "Divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of integers",
+      "divisibility relation between integers",
+      "prime factors of a number"
+    ]
   },
   {
     "id": "ann-e459-smooth",
@@ -35,7 +39,11 @@
       "Number field sieve",
       "Quadratic sieve"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set of prime factors of an integer",
+      "subset relation on finite sets",
+      "smooth numbers in computational number theory"
+    ]
   },
   {
     "id": "ann-e459-f-def",
@@ -53,7 +61,11 @@
       "Nat.find",
       "Smooth number gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean's Nat.find for least-witness extraction",
+      "well-ordering of the natural numbers",
+      "smoothness of an integer relative to another"
+    ]
   },
   {
     "id": "ann-e459-lower-bound",
@@ -71,7 +83,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive integers being coprime",
+      "Euclid-style argument for prime factors",
+      "prime divisors of an integer"
+    ]
   },
   {
     "id": "ann-e459-upper-bound",
@@ -89,7 +105,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factors of a square equal those of the base",
+      "smoothness with respect to a number",
+      "the trivial bound f(u) ≤ u²"
+    ]
   },
   {
     "id": "ann-e459-trivial",
@@ -107,7 +127,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lower and upper bounds on f(u)",
+      "smooth-number gap function",
+      "natural number inequalities"
+    ]
   },
   {
     "id": "ann-e459-prime",
@@ -125,7 +149,11 @@
       "Prime powers",
       "Prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers and their single prime factor",
+      "powers of a prime as the only smooth numbers",
+      "smoothness with respect to a prime"
+    ]
   },
   {
     "id": "ann-e459-even",
@@ -143,7 +171,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of two as divisors of even numbers",
+      "smoothness of powers of 2 relative to even u",
+      "smallest power of 2 exceeding a number"
+    ]
   },
   {
     "id": "ann-e459-minimal",
@@ -161,7 +193,11 @@
       "Powers of 2",
       "Minimal gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of two and the value 2^k − 2",
+      "the minimal gap f(u) = u + 2",
+      "smoothness of 2^k relative to even numbers"
+    ]
   },
   {
     "id": "ann-e459-almost-all",
@@ -180,7 +216,11 @@
       "Almost all integers",
       "o(1) notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic density of integer sequences",
+      "density-1 sets of integers",
+      "little-o asymptotic notation"
+    ]
   },
   {
     "id": "ann-e459-irregular",
@@ -199,7 +239,11 @@
       "Irregular growth",
       "Number-theoretic functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinitely-often behavior of a sequence",
+      "extremal cases f(u)=u+2 and f(u)=u²",
+      "irregular growth of number-theoretic functions"
+    ]
   },
   {
     "id": "ann-e459-f2",
@@ -217,7 +261,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of 2 as the smooth numbers for u=2",
+      "evaluating the function f at small inputs"
+    ]
   },
   {
     "id": "ann-e459-f6",
@@ -235,7 +282,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorization 6 = 2·3",
+      "products of 2s and 3s as smooth numbers",
+      "evaluating f at a composite number"
+    ]
   },
   {
     "id": "ann-e459-solved",
@@ -254,6 +305,10 @@
       "prime numbers",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős problem #459 on smooth-number gaps",
+      "combining trivial bounds and extremal cases",
+      "Cambie's resolution of the f(u) estimate"
+    ]
   }
 ]

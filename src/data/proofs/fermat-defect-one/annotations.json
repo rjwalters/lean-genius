@@ -58,7 +58,7 @@
     "title": "Four Predicates Encoding the Conjecture",
     "content": "`FermatDefectWitness n a b c` is the combined predicate: $2 \\le a \\le b < c$, $\\gcd(\\gcd(a,b),c) = 1$, and the disjunction $a^n + b^n + 1 = c^n \\lor a^n + b^n = c^n + 1$. `FermatDefectExists n := ∃ a b c, FermatDefectWitness n a b c`. The split predicates `FermatDefectPositive n` (only $a^n + b^n = c^n + 1$) and `FermatDefectNegative n` (only $a^n + b^n + 1 = c^n$) isolate each sign for finer-grained Level-3 analysis. All four predicates are `Prop`-valued and decidable on concrete inputs — `decide` and `native_decide` discharge concrete witnesses without algebraic manipulation.",
     "mathContext": "Disjunction trick: $|a^n+b^n-c^n| = 1$ on $\\mathbb{Z}$ becomes $a^n + b^n + 1 = c^n \\lor a^n + b^n = c^n + 1$ on $\\mathbb{N}$, decidable for each concrete triple.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Nat.gcd",
       "decidability of Diophantine predicates on Nat",
@@ -81,7 +81,7 @@
     "title": "Verified n=3 Negative-Defect Benchmark",
     "content": "`fermat_defect_three_neg : FermatDefectWitness 3 6 8 9`. Arithmetic: $6^3 = 216$, $8^3 = 512$, $9^3 = 729$, so $216 + 512 + 1 = 729$. Bounds: $2 \\le 6 \\le 8 < 9$. Primitivity: $\\gcd(\\gcd(6, 8), 9) = \\gcd(2, 9) = 1$. The disjunction is satisfied by the LEFT disjunct ($a^n + b^n + 1 = c^n$, the negative-defect side). Discharged by `native_decide` after refining the conjunction.",
     "mathContext": "$6^3 + 8^3 + 1 = 9^3$, i.e., $6^3 + 8^3 - 9^3 = -1$. The negative-defect sibling of the taxicab number 1729 on the other side of $9^3 = 729$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "native_decide tactic",
       "taxicab number 1729",
@@ -104,7 +104,7 @@
     "title": "Verified n=3 Positive-Defect Benchmark (Taxicab Shift)",
     "content": "`fermat_defect_three_pos : FermatDefectWitness 3 9 10 12`. Arithmetic: $9^3 + 10^3 = 729 + 1000 = 1729 = 1728 + 1 = 12^3 + 1$. Bounds: $2 \\le 9 \\le 10 < 12$. Primitivity: $\\gcd(\\gcd(9, 10), 12) = \\gcd(1, 12) = 1$. The disjunction is satisfied by the RIGHT disjunct ($a^n + b^n = c^n + 1$, the positive-defect side). Discharged by `native_decide`. This is the Ramanujan-Hardy taxicab number 1729 = 1^3 + 12^3 = 9^3 + 10^3 shifted by one unit — a charming coincidence that makes the n=3 case memorable.",
     "mathContext": "$9^3 + 10^3 - 12^3 = 1$. Equivalently $1729 - 12^3 = 1$ — a unit-distance fact about the taxicab number.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "taxicab number 1729",
       "Ramanujan-Hardy anecdote",
@@ -149,7 +149,7 @@
     "title": "Headline Open Conjecture (sorry'd)",
     "content": "`fermat_defect_one_exists : ∀ n : Nat, 3 ≤ n → FermatDefectExists n`. This is the Level-2 headline statement. It is left as a `sorry` — a genuine open mathematical conjecture, not a placeholder for tractable work. The $n = 3$ case is verified above; $n = 4$ and beyond are open. No general construction is known, and the conjecture is expected to require deep machinery (Pillai-type techniques, possibly abc-style effective forms, or Fermat-Catalan-style modular methods). This is the gallery entry's anchor: an honest research target, marked as such.",
     "mathContext": "$\\forall n \\ge 3,\\; \\exists a, b, c \\in \\mathbb{N},\\; 2 \\le a \\le b < c \\land \\gcd(a, b, c) = 1 \\land |a^n + b^n - c^n| = 1$. Status: open for $n \\ge 4$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "FLT (zero defect ruled out)",
       "Pillai's conjecture",
@@ -169,11 +169,11 @@
       "startLine": 87,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Tactic Pattern: refine + native_decide on Conjunctions",
     "content": "Each benchmark's proof obligation is a 5-fold conjunction `2 ≤ a ∧ a ≤ b ∧ b < c ∧ gcd_condition ∧ disjunct`. The proof uses `refine ⟨?_, ?_, ?_, ?_, ?_⟩` to introduce five named goals (one per conjunct), then discharges each with `native_decide`. The disjunct goal is handled with `left; native_decide` (negative defect, $a^n + b^n + 1 = c^n$) or `right; native_decide` (positive defect, $a^n + b^n = c^n + 1$) to pick the correct branch before reducing. This pattern is the canonical Lean 4 idiom for closing concrete-witness goals over decidable predicates: structurally decompose the conjunction, computationally close each leaf. `native_decide` reduces to native-code evaluation (faster than the kernel-level `decide`) and is appropriate here because the arithmetic involves $9^3 = 729$ and $12^3 = 1728$ — large enough that kernel reduction would be slow.",
     "mathContext": "Decomposition: $P_1 \\land P_2 \\land P_3 \\land P_4 \\land (Q_- \\lor Q_+) \\;\\Leftarrow\\; (P_1, P_2, P_3, P_4, Q_\\pm)$ with $\\pm$ picked by `left`/`right`. All five components are decidable on `Nat`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "refine tactic and anonymous constructor",
       "native_decide vs decide",
@@ -194,11 +194,11 @@
       "startLine": 42,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Namespace",
     "content": "`import Mathlib` pulls in the full Mathlib library — needed for `Nat.gcd`, the `decide`/`native_decide` infrastructure, and standard arithmetic lemmas. The whole file lives in `namespace FermatDefectOne`, so the four predicates and six theorems are exposed as `FermatDefectOne.FermatDefectWitness`, `FermatDefectOne.fermat_defect_three_neg`, etc. Gallery convention: a single `import Mathlib` is preferred over piecemeal imports for self-contained gallery entries; this is distinct from Mathlib-bound files (`mathlib-contribution` skill), which are required to use targeted imports.",
     "mathContext": "Namespace prefix: `FermatDefectOne.*` for all exported names. Mathlib provides `Nat.gcd` and decidability instances.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib import conventions",
       "namespace conventions in Lean 4",
@@ -217,11 +217,11 @@
       "startLine": 60,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "insight",
     "title": "GCD-Tower Idiom for Triple Coprimality",
     "content": "The primitivity condition `Nat.gcd (Nat.gcd a b) c = 1` encodes coprimality of three naturals via a tower of the binary `Nat.gcd`. Since `Nat.gcd` is binary, the three-argument 'common divisor of $a, b, c$' must be built by composition. Associativity $\\gcd(\\gcd(a,b),c) = \\gcd(a,\\gcd(b,c))$ makes the bracketing mathematically irrelevant, but Lean fixes the left-associated form because it matches how the kernel peels the computation: first reduce $\\gcd(a,b)$, then reduce against $c$. Concretely: $\\gcd(\\gcd(6,8),9) = \\gcd(2,9) = 1$ and $\\gcd(\\gcd(9,10),12) = \\gcd(1,12) = 1$ — both benchmarks are coprime at the strongest level (the triple shares no common prime factor, not merely no pairwise common factor). Note the distinction: pairwise coprimality is strictly stronger than triple coprimality (e.g., $(6, 10, 15)$ has $\\gcd = 1$ overall but $\\gcd(6,10) = 2$), so this form admits 'almost-primitive' triples a pairwise condition would reject.",
     "mathContext": "$\\gcd(\\gcd(a, b), c) = 1 \\iff \\gcd(a, b, c) = 1 \\iff a, b, c$ share no common prime factor. Strictly weaker than pairwise coprimality $\\gcd(a,b) = \\gcd(b,c) = \\gcd(a,c) = 1$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.gcd associativity",
       "triple vs pairwise coprimality",
@@ -267,7 +267,7 @@
       "startLine": 35,
       "endLine": 39
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mihailescu / Catalan as the Proved Single-Term Defect-One",
     "content": "The defect-one equation $a^n + b^n = c^n \\pm 1$ has a proved one-term analogue: Catalan's conjecture (1844), now Mihailescu's theorem (2002), states that $x^p - y^q = 1$ with $p, q \\ge 2$ has *only* the solution $3^2 - 2^3 = 1$ (i.e., $9 - 8 = 1$). Mihailescu's proof uses cyclotomic-field machinery — primary cyclotomic units, Wieferich-style obstructions on $(p, q)$, Bugeaud-Hanrot annihilator techniques. This is the closest *proved* relative of the present open conjecture, and the toolkit is the modern playbook for perfect-power gap problems. The structural difference is decisive: Catalan-Mihailescu has *one* solution (finitely many), defect-one is conjectured to have at least one solution at *every* $n \\ge 3$. A natural research question: do Mihailescu-style cyclotomic obstructions transfer to the two-term diagonal equation $a^n + b^n = c^n \\pm 1$?",
     "mathContext": "Catalan-Mihailescu: $x^p - y^q = 1$, $p, q \\ge 2 \\Rightarrow (x, y, p, q) = (3, 2, 2, 3)$. Defect-one: $|a^n + b^n - c^n| = 1$ conjecturally has at least one primitive solution at each $n \\ge 3$ — the same '$\\pm 1$' on the right-hand side, with two like powers on the left instead of one.",

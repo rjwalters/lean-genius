@@ -16,7 +16,11 @@
       "power residue symbol",
       "algebraic number fields"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "algebraic number fields and their integers",
+      "power residue symbols",
+      "quadratic reciprocity as the prototype"
+    ]
   },
   {
     "id": "ann-quadratic-foundation",
@@ -35,7 +39,11 @@
       "quadratic residue",
       "modular arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic and quadratic residues",
+      "the Legendre symbol (a/p)",
+      "primes and congruences"
+    ]
   },
   {
     "id": "ann-first-supplementary",
@@ -54,7 +62,11 @@
       "Euler's criterion",
       "quadratic residues"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Legendre symbol",
+      "Euler's criterion",
+      "when −1 is a quadratic residue mod p"
+    ]
   },
   {
     "id": "ann-second-supplementary",
@@ -73,7 +85,11 @@
       "quadratic residues",
       "modular arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Legendre symbol and quadratic residues",
+      "arithmetic mod 8",
+      "when 2 is a quadratic residue mod p"
+    ]
   },
   {
     "id": "ann-higher-reciprocity",
@@ -92,7 +108,11 @@
       "Eisenstein integers",
       "Gaussian integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "rings of algebraic integers (ℤ[i], ℤ[ω])",
+      "nth power residue symbols",
+      "cubic and biquadratic reciprocity"
+    ]
   },
   {
     "id": "ann-artin-symbol",
@@ -111,7 +131,11 @@
       "Galois groups",
       "prime splitting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Galois extensions of number fields",
+      "the Frobenius automorphism at a prime",
+      "splitting of primes in extensions"
+    ]
   },
   {
     "id": "ann-artin-reciprocity",
@@ -130,7 +154,11 @@
       "ray class groups",
       "ideles"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "abelian extensions and class field theory",
+      "ray class / idele class groups",
+      "the Artin map"
+    ]
   },
   {
     "id": "ann-specialization",
@@ -149,7 +177,11 @@
       "Galois correspondence",
       "Legendre symbol"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "quadratic field extensions ℚ(√d)",
+      "the Galois correspondence",
+      "recovering the Legendre symbol from the Artin symbol"
+    ]
   },
   {
     "id": "ann-langlands",
@@ -168,7 +200,11 @@
       "automorphic forms",
       "L-functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Artin reciprocity for abelian extensions",
+      "automorphic forms and representations",
+      "L-functions and the Langlands correspondence"
+    ]
   },
   {
     "id": "ann-examples",
@@ -187,7 +223,11 @@
       "quadratic residues",
       "native_decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Legendre symbol and Euler's criterion",
+      "computing quadratic residues mod p",
+      "kernel decision procedures (native_decide)"
+    ]
   },
   {
     "id": "ann-takagi",
@@ -206,6 +246,10 @@
       "idele class group",
       "existence theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "abelian extensions of number fields",
+      "the idele class group",
+      "Takagi's existence theorem in class field theory"
+    ]
   }
 ]

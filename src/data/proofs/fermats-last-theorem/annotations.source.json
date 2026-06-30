@@ -74,9 +74,8 @@
     "id": "ann-flt-semistable",
     "proofId": "fermats-last-theorem",
     "anchor": {
-      "type": "declaration",
-      "name": "FreyCurve_is_semistable",
-      "kind": "axiom"
+      "type": "block-comment",
+      "contains": "FreyCurve_is_semistable"
     },
     "type": "technique",
     "title": "Semi-stability of Frey Curves",
@@ -115,8 +114,8 @@
     "id": "ann-flt-ribet",
     "proofId": "fermats-last-theorem",
     "anchor": {
-      "type": "doc-comment",
-      "contains": "Ribet's Theorem: Frey curves cannot be modular (ax"
+      "type": "block-comment",
+      "contains": "RibetTheorem: Ribet's theorem"
     },
     "type": "insight",
     "title": "Ribet's Theorem (The Epsilon Conjecture)",

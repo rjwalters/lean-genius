@@ -16,7 +16,12 @@
       "set-theoretic independence",
       "partition calculus"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "axiomatic set theory (ZFC)",
+      "infinite cardinals"
+    ]
   },
   {
     "id": "ann-e1174-clique",
@@ -35,7 +40,11 @@
       "Ramsey theory",
       "induced subgraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "first-order logic quantifiers"
+    ]
   },
   {
     "id": "ann-e1174-k4free",
@@ -54,7 +63,11 @@
       "graph density",
       "forbidden subgraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal graph theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1174-cardinal-clique",
@@ -73,7 +86,11 @@
       "cardinal arithmetic",
       "set theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinal arithmetic",
+      "axiomatic set theory",
+      "Mathlib Cardinal type"
+    ]
   },
   {
     "id": "ann-e1174-symmetric-coloring",
@@ -91,7 +108,11 @@
       "graph homomorphism"
     ],
     "mathContext": "See annotation content for formal details of symmetric coloring structure",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 structures",
+      "equivalence relations"
+    ]
   },
   {
     "id": "ann-e1174-mono-triangle",
@@ -110,7 +131,11 @@
       "monochromatic subgraph",
       "countable coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1174-eh-finite",
@@ -129,7 +154,11 @@
       "Ramsey forcing"
     ],
     "mathContext": "See annotation content for formal details of erdős-hajnal finite property",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "ann-e1174-part-a",
@@ -148,7 +177,11 @@
       "Type*"
     ],
     "mathContext": "See annotation content for formal details of problem 1174 part (a)",
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 existential statements",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e1174-mono-aleph0",
@@ -167,7 +200,11 @@
       "aleph-0",
       "infinite Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinal arithmetic",
+      "infinite combinatorics",
+      "Mathlib Cardinal type"
+    ]
   },
   {
     "id": "ann-e1174-eh-infinite",
@@ -186,7 +223,11 @@
       "uncountable cardinals"
     ],
     "mathContext": "See annotation content for formal details of erdős-hajnal infinite property and part (b)",
-    "prerequisites": []
+    "prerequisites": [
+      "infinite combinatorics",
+      "cardinal arithmetic",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e1174-ramsey",
@@ -205,7 +246,11 @@
       "König's lemma",
       "infinite combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "infinite combinatorics",
+      "König's lemma"
+    ]
   },
   {
     "id": "ann-e1174-complete-not-k4free",
@@ -224,7 +269,11 @@
       "proof by contradiction",
       "constructive mathematics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 tactic mode",
+      "proof by contradiction"
+    ]
   },
   {
     "id": "ann-e1174-partition",
@@ -243,7 +292,11 @@
       "Erdős-Rado theorem",
       "arrow notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "partition calculus",
+      "Ramsey theory",
+      "infinite combinatorics"
+    ]
   },
   {
     "id": "ann-e1174-nesetril-rodl",
@@ -262,7 +315,11 @@
       "Hales-Jewett theorem",
       "amalgamation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "structural Ramsey theory",
+      "graph theory",
+      "model-theoretic amalgamation"
+    ]
   },
   {
     "id": "ann-e1174-shelah",
@@ -281,7 +338,11 @@
       "consistency",
       "set-theoretic independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatic set theory (ZFC)",
+      "forcing",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-e1174-summary",
@@ -300,6 +361,10 @@
       "Ramsey theory"
     ],
     "mathContext": "See annotation content for formal details of open status summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "axiomatic set theory (ZFC)",
+      "infinite combinatorics"
+    ]
   }
 ]

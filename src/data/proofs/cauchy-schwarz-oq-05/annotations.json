@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-cauchyschwarzoq05-overview",
+    "proofId": "cauchy-schwarz-oq-05",
+    "range": { "startLine": 6, "endLine": 46 },
+    "type": "concept",
+    "title": "Lagrange's identity: the exact Cauchy-Schwarz defect",
+    "content": "Cauchy-Schwarz says (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²). Lagrange's identity says exactly by how much: the gap equals a sum of squared 2×2 minors, (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² = ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)². This file proves that identity over an arbitrary Finset on a linearly ordered index type, and reads off two corollaries: the inequality itself (the right side is a sum of squares, hence ≥ 0) and the exact equality case (the gap is 0 iff every minor vanishes, i.e. a and b are proportional). It is the discrete shadow of ‖u‖²‖v‖² − ⟨u,v⟩² = ‖u ∧ v‖²: the minors aᵢbⱼ − aⱼbᵢ are the components of the wedge u ∧ v. The whole development is axiom-free, resting only on the nonnegativity of squares and the reindexing of finite sums.",
+    "mathContext": "$(\\sum_i a_i^2)(\\sum_i b_i^2) - (\\sum_i a_ib_i)^2 = \\sum_{i<j}(a_ib_j - a_jb_i)^2$.",
+    "significance": "context",
+    "relatedConcepts": ["Lagrange identity", "Cauchy-Schwarz inequality", "2×2 minors", "wedge product", "Binet–Cauchy identity"],
+    "prerequisites": ["finite sums over a Finset", "nonnegativity of squares", "linear orders"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq05-triangle",
+    "proofId": "cauchy-schwarz-oq-05",
+    "range": { "startLine": 48, "endLine": 69 },
+    "type": "key-step",
+    "title": "Triangle-doubling for symmetric kernels",
+    "content": "sum_offDiag_eq_two_mul_sum_filter_lt is the combinatorial engine. For ANY symmetric kernel F (F i j = F j i), summing over all distinct ordered pairs (the off-diagonal of s ×ˢ s) counts each unordered pair twice, so it equals 2·∑_{i<j} F. The proof splits the off-diagonal on the predicate p.1 < p.2 via Finset.sum_filter_add_sum_filter_not, then matches the not-< half against the < half through the swap involution (i,j) ↦ (j,i) using Finset.sum_nbij'. The membership side-conditions — that the swap carries strictly-decreasing pairs to strictly-increasing ones — are exactly where the LinearOrder is used: from ¬(i<j) and i≠j, trichotomy (lt_of_le_of_ne ∘ not_lt) gives j<i. The value condition F p.1 p.2 = F (swap p).1 (swap p).2 is precisely the symmetry hypothesis. This lemma is independent of Cauchy-Schwarz and applies to any symmetric double sum.",
+    "mathContext": "$\\sum_{(i,j)\\in\\mathrm{offDiag}} F\\,i\\,j = 2\\sum_{i<j} F\\,i\\,j$ when $F\\,i\\,j = F\\,j\\,i$.",
+    "significance": "key",
+    "relatedConcepts": ["swap involution", "Finset.sum_nbij'", "Finset.sum_filter_add_sum_filter_not", "LinearOrder trichotomy", "off-diagonal sum"],
+    "prerequisites": ["reindexing sums along bijections", "filtering finite sums by a predicate", "trichotomy of a linear order"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq05-identity",
+    "proofId": "cauchy-schwarz-oq-05",
+    "range": { "startLine": 71, "endLine": 108 },
+    "type": "key-step",
+    "title": "The identity: doubled form, diagonal split, cancel the 2",
+    "content": "lagrange_identity assembles the result from two views of the same symmetric double sum ∑ᵢ∑ⱼ(aᵢbⱼ − aⱼbᵢ)². First view (hdouble): expand (aᵢbⱼ − aⱼbᵢ)² and collect via sum_mul / mul_sum into 2·[(∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)²] — the parent's 'doubled' Lagrange identity. Second view (hsplit): rewrite the double sum as a sum over s ×ˢ s, decompose s ×ˢ s = diag ⊎ offDiag (diag_union_offDiag + disjoint_diag_offDiag), note the kernel vanishes on the diagonal (aᵢbᵢ − aᵢbᵢ = 0 by ring), and apply the triangle-doubling lemma to the off-diagonal — giving 2·∑_{i<j}. Equating the two views yields 2·defect = 2·∑_{i<j}; mul_left_cancel₀ two_ne_zero removes the factor of 2, leaving the canonical strict-upper-triangle identity with no factor of 2.",
+    "mathContext": "$\\sum_i\\sum_j(a_ib_j - a_jb_i)^2 = 2\\,\\mathrm{defect} = 2\\sum_{i<j}(a_ib_j - a_jb_i)^2$.",
+    "significance": "key",
+    "relatedConcepts": ["doubled Lagrange identity", "diag_union_offDiag", "Finset.sum_product'", "mul_left_cancel₀", "sum_mul / mul_sum"],
+    "prerequisites": ["diagonal/off-diagonal split of a finite product", "the triangle-doubling lemma", "cancellation by a nonzero scalar"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq05-corollaries",
+    "proofId": "cauchy-schwarz-oq-05",
+    "range": { "startLine": 110, "endLine": 128 },
+    "type": "technique",
+    "title": "Cauchy-Schwarz and the equality case as corollaries",
+    "content": "Both corollaries fall straight out of the sum-of-squares form. cauchy_schwarz: the defect equals ∑_{i<j}(minor)² ≥ 0 by Finset.sum_nonneg and sq_nonneg, so (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²) is one linarith step. cauchy_schwarz_eq_iff: rewrite the equality (∑aᵢbᵢ)² = (∑aᵢ²)(∑bᵢ²) as defect = 0 (eq_comm + sub_eq_zero), substitute the identity to get ∑_{i<j}(minor)² = 0, then Finset.sum_eq_zero_iff_of_nonneg turns this into 'every (minor)² = 0', and pow_eq_zero_iff into 'every minor = 0'. The vanishing of all 2×2 minors is exactly proportionality (linear dependence) of a and b — the classical equality condition, obtained here with no separate residual-norm argument.",
+    "mathContext": "$(\\sum a_ib_i)^2 = (\\sum a_i^2)(\\sum b_i^2) \\iff \\forall\\, i<j,\\ a_ib_j - a_jb_i = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_nonneg", "Finset.sum_eq_zero_iff_of_nonneg", "pow_eq_zero_iff", "proportionality / linear dependence", "equality characterization"],
+    "prerequisites": ["Lagrange's identity", "sum of nonnegatives is zero iff each term is zero", "x² = 0 ↔ x = 0"]
+  }
+]

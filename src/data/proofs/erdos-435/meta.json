@@ -199,7 +199,18 @@
     "theoremCount": 2,
     "definitionCount": 7,
     "path": "Proofs/Erdos435Problem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/Erdos435PrimePowerObstruction.lean",
+        "lineCount": 83,
+        "theorems": 3,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Formalizes the prime-power obstruction that justifies restricting Erdős #435 to integers n that are NOT prime powers (recorded only as prose in the main file, Parts V–VI). For n = p^k, Kummer's identity (Nat.factorization_choose_prime_pow) gives v_p(C(p^k, j)) = k - v_p(j) > 0 for 1 ≤ j < p^k, so p divides every middle binomial coefficient (prime_pow_dvd_choose, prime_dvd_all_generators); hence the gcd of the generators {C(n,1), …, C(n,n-1)} is divisible by p and thus ≠ 1 (generators_gcd_ne_one). A numerical semigroup whose generators share a common factor > 1 has infinite complement, so no Frobenius number exists — exactly why the Hwang–Song formula is stated only for non-prime-powers. 3 theorems, 0 definitions, 0 axioms, 0 sorries; Mathlib-only, fully kernel-checked (no decide/native_decide). Namespace Erdos435.PrimePowerObstruction."
+      }
+    ]
   },
   "sorries": 0
 }

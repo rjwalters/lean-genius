@@ -118,27 +118,51 @@
     },
     {
       "id": "ramsey",
-      "title": "Ramsey Connection",
-      "summary": "R(3,3) = 6 and independence bounds",
+      "title": "Connection to Ramsey Theory",
+      "summary": "Ramsey-theoretic infrastructure: triangle-free graphs, R(3,3) = 6 (ramsey_3_3), and the independence bound that triangle-free graphs have independence number ≥ √n (triangleFree_independence_bound). Provides the combinatorial backbone for the additive-triple analysis.",
       "startLine": 98,
-      "endLine": 110,
-      "mathContext": "Bound: R(3,3) = 6 and independence bounds"
+      "endLine": 257,
+      "mathContext": "$R(3,3) = 6$; triangle-free graphs on $n$ vertices have independence number $\\geq \\sqrt{n}$."
     },
     {
       "id": "schur",
-      "title": "Schur Numbers",
-      "summary": "Connection to sum-free sets and Schur's theorem",
-      "startLine": 111,
-      "endLine": 134,
-      "mathContext": "Verified: Connection to sum-free sets and Schur's theorem"
+      "title": "Connection to Schur Numbers",
+      "summary": "Sum-free sets, the Schur number S(k), S(2) = 4 (schur_2), and erdos895_implies_schur_variant linking the Erdős #895 graph result to a Schur-like statement about colorings. Relates additive triples a + b = c to monochromatic Schur triples.",
+      "startLine": 258,
+      "endLine": 337,
+      "mathContext": "$S(2) = 4$: $\\{1,2,3,4\\}$ is 2-colorable with no monochromatic Schur triple, but $\\{1,\\dots,5\\}$ is not."
     },
     {
       "id": "hajnal",
-      "title": "Hajnal's Generalization",
-      "summary": "The open question about Hindman sets",
-      "startLine": 135,
-      "endLine": 187,
-      "mathContext": "Mathematical content: The open question about Hindman sets"
+      "title": "Hajnal's Generalization (OPEN)",
+      "summary": "Hajnal's conjecture (hajnalConjecture): triangle-free graphs have independent Hindman sets. Stated as an open problem; hajnal_conjecture_open records that it remains unresolved.",
+      "startLine": 338,
+      "endLine": 354,
+      "mathContext": "Hajnal's conjecture (open): every triangle-free graph admits an independent Hindman set."
+    },
+    {
+      "id": "density",
+      "title": "Density Considerations",
+      "summary": "Mantel's theorem (mantel_theorem): a triangle-free graph on n vertices has at most n²/4 edges, and dense_triangleFree_independence deriving independence-number consequences for dense triangle-free graphs.",
+      "startLine": 355,
+      "endLine": 440,
+      "mathContext": "Mantel: a triangle-free graph on $n$ vertices has $\\leq n^2/4$ edges."
+    },
+    {
+      "id": "computational-verification",
+      "title": "Computational Verification",
+      "summary": "erdos895_sat_verified records the SAT/computational verification of the n ≥ 18 threshold (the Barber result), stated with a sorry standing in for the external solver certificate.",
+      "startLine": 441,
+      "endLine": 448,
+      "mathContext": "The threshold-18 result was verified by exhaustive SAT search over graphs on $\\{1,\\dots,n\\}$."
+    },
+    {
+      "id": "main-results-summary",
+      "title": "Main Results Summary",
+      "summary": "erdos_895_summary bundles the main results — Barber's threshold theorem, the n=17 sharpness counterexample, and the Ramsey/Schur connections — into a single summary statement, followed by #check commands.",
+      "startLine": 449,
+      "endLine": 462,
+      "mathContext": "Summary: Erdős #895 holds for $n \\geq 18$ (Barber), sharp at $n = 17$."
     }
   ],
   "conclusion": {

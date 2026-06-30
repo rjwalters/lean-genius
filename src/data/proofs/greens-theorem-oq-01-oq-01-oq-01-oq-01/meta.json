@@ -166,17 +166,17 @@
   },
   "crossReferences": [
     {
-      "id": "greens-theorem-oq-01-oq-01-oq-01",
+      "targetId": "greens-theorem-oq-01-oq-01-oq-01",
       "relationship": "parent",
       "description": "Parent file that originally axiomatized iteratedIntervalIntegral_order_independent. This entry derives that statement, leaving the parent's axiom mathematically redundant."
     },
     {
-      "id": "greens-theorem",
+      "targetId": "greens-theorem",
       "relationship": "ancestor",
       "description": "Root Green's theorem entry. The order-independence eliminated here is one of several Fubini-chain axioms feeding into the n-dimensional Green's theorem statement."
     },
     {
-      "id": "fundamental-theorem-calculus",
+      "targetId": "fundamental-theorem-calculus",
       "relationship": "related",
       "description": "Underlies the interval-integral interpretation used here: each ∫_a^b reduces to FTC + Riemann/Lebesgue agreement, and Fubini composes those one-variable statements."
     }

@@ -17,7 +17,11 @@
       "Turán problem",
       "Flag algebras"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "asymptotic analysis",
+      "set systems"
+    ]
   },
   {
     "id": "ann-e712-hypergraph",
@@ -36,7 +40,11 @@
       "Cliques",
       "Forbidden substructures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Lean 4 structures",
+      "Mathlib Finset API"
+    ]
   },
   {
     "id": "ann-e712-turan-number",
@@ -55,7 +63,11 @@
       "Binomial coefficients"
     ],
     "mathContext": "See annotation content for formal details of hypergraph turán number",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "order theory (suprema)",
+      "binomial coefficient identities"
+    ]
   },
   {
     "id": "ann-e712-density",
@@ -74,7 +86,11 @@
       "Super-additivity",
       "Limit existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits and sequences",
+      "subadditivity arguments"
+    ]
   },
   {
     "id": "ann-e712-turan-theorem",
@@ -93,7 +109,11 @@
       "Complete multipartite graphs",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial optimization",
+      "double counting"
+    ]
   },
   {
     "id": "ann-e712-k43",
@@ -113,7 +133,11 @@
       "Extremal constructions"
     ],
     "mathContext": "See annotation content for formal details of the k_4^3 case: turán's conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "hypergraph theory",
+      "extremal combinatorics",
+      "semidefinite programming"
+    ]
   },
   {
     "id": "ann-e712-bounds",
@@ -133,7 +157,11 @@
       "Flag algebras",
       "SDP bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "convex optimization",
+      "asymptotic combinatorics"
+    ]
   },
   {
     "id": "ann-e712-main",
@@ -152,7 +180,11 @@
       "Open status"
     ],
     "mathContext": "See annotation content for formal details of erdős problem #712: main theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "Lean 4 tactic mode",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e712-conjectures",
@@ -170,6 +202,9 @@
       "Mubayi's conjecture"
     ],
     "mathContext": "See annotation content for formal details of related conjectures",
-    "prerequisites": []
+    "prerequisites": [
+      "hypergraph theory",
+      "extremal combinatorics"
+    ]
   }
 ]

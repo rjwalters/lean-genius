@@ -111,42 +111,74 @@
     {
       "id": "sec-companion",
       "title": "Companion Matrix and Krylov Matrix Definitions",
-      "startLine": 29,
-      "endLine": 39,
+      "startLine": 1,
+      "endLine": 54,
       "summary": "companionMx: Fin n × Fin n companion matrix of a polynomial — last column holds the negative coefficients, subdiagonal is 1, everything else 0. cyclicMatrix M v: the Krylov matrix [v | Mv | M²v | … | M^{n-1}v].",
       "mathContext": "The companion matrix C(p) of a monic polynomial p = X^n + c_{n-1}X^{n-1} + … + c_0 is the matrix whose characteristic and minimal polynomial both equal p. The Krylov matrix P = [v | Mv | … | M^{n-1}v] is the change-of-basis from the basis {v, Mv, …, M^{n-1}v} (when v is cyclic) to the standard basis."
     },
     {
       "id": "sec-cyclicmatrix-invertibility",
       "title": "Krylov Matrix is Invertible from Cyclicity",
-      "startLine": 41,
-      "endLine": 84,
+      "startLine": 55,
+      "endLine": 99,
       "summary": "cyclicMatrix_ker (private): if cyclicMatrix · c = 0 then c = 0. Form q = ∑ C(c_j)·X^j, observe q(M).mulVec v = cyclicMatrix · c = 0, deg q < n; cyclicity forces q = 0; coefficient extraction gives c = 0. cyclicMatrix_injective: mulVec is injective. cyclicMatrix_isUnit: the matrix is invertible.",
       "mathContext": "The Krylov matrix is invertible exactly when v is cyclic. The proof is the algebraic statement: if c is in the kernel of mulVec, then ∑_j c_j (M^j v) = 0, i.e., the polynomial q(X) = ∑_j c_j X^j satisfies q(M)v = 0 with deg q < n. Cyclicity says the only such polynomial is zero, forcing all c_j = 0. The conversion from injective mulVec to IsUnit goes through Mathlib's mulVec_injective_iff_isUnit."
     },
     {
       "id": "sec-cayley-hamilton-expansion",
       "title": "Cayley-Hamilton Expansion (Now Machine-Verified)",
-      "startLine": 86,
-      "endLine": 144,
+      "startLine": 100,
+      "endLine": 159,
       "summary": "Three private declarations replacing the previous `hMn_axiom`: (1) `sum_mulVec_local`: linearity of mulVec over a finset sum, by Finset induction. (2) `aeval_eq_sum_pow_local`: expands `aeval M p` (for p with natDegree = n) into `∑ k ∈ range (n+1), p.coeff k • M^k`, via `Polynomial.eval₂_eq_sum` + `Algebra.smul_def`. (3) `hMn_axiom` (private theorem): the Cayley-Hamilton-style relation `(M^n).mulVec v = -∑ k<n, (minpoly K M).coeff k • (M^k).mulVec v` when `(minpoly K M).natDegree = n`. Proof: expand `aeval M (minpoly K M)` via (2), use `minpoly.monic (Matrix.isIntegral M)` to identify the leading coefficient as 1, isolate `1 • M^n`, use `minpoly.aeval = 0` to solve for `M^n`, and apply `mulVec v` via (1).",
       "mathContext": "This is the matrix-vector form of the Cayley-Hamilton statement μ_M(M) = 0, with the M^n term isolated using monicity. Concretely, μ_M(M) = M^n + ∑_{k<n} c_k M^k = 0 (since the coefficient of X^n is 1), so M^n = -∑_{k<n} c_k M^k; applying both sides to v gives the displayed identity. The Mathlib API used: `minpoly.aeval K M : aeval M (minpoly K M) = 0`, `minpoly.monic : (minpoly K M).Monic` (which requires `IsIntegral K M`, supplied by `Matrix.isIntegral M`), and `Polynomial.eval₂_eq_sum` to convert the abstract `aeval` into a concrete `Finset.sum`. The conversion from `algebraMap (coeff k) * M^k` to `coeff k • M^k` uses `Algebra.smul_def` (which holds in any K-algebra)."
     },
     {
       "id": "sec-conjugation-identity",
       "title": "Conjugation Identity M · P = P · C(minpoly)",
-      "startLine": 146,
-      "endLine": 187,
+      "startLine": 160,
+      "endLine": 202,
       "summary": "M_mul_cyclicMatrix: M · cyclicMatrix M v = cyclicMatrix M v · companionMx (minpoly K M). Proved column-by-column: non-last columns give the trivial M·(M^j v) = M^{j+1}v identity; the last column reduces to (M^n).mulVec v = -∑ c_k (M^k).mulVec v, which is the now-machine-verified hMn_axiom.",
       "mathContext": "The conjugation identity is the matrix expression of 'M acts as the companion matrix of μ_M in the basis {v, Mv, …, M^{n-1}v}'. Column j of M·P is M·(M^j v) = M^{j+1}v. Column j of P·C(μ_M) is P times column j of C(μ_M). For j < n-1, column j of C(μ_M) is the standard basis vector e_{j+1}, so P·e_{j+1} = column j+1 of P = M^{j+1}v. For j = n-1, column n-1 of C(μ_M) is the column of negative coefficients, so P·(column n-1) = ∑ -c_k (column k of P) = -∑ c_k M^k v, which equals M^n v by Cayley-Hamilton."
     },
     {
       "id": "sec-main-theorem",
       "title": "Main Theorem: Nonderogatory ⇒ Similar to Companion",
-      "startLine": 189,
-      "endLine": 210,
+      "startLine": 203,
+      "endLine": 225,
       "summary": "nonderogatory_similar_to_companion: every nonderogatory M (with n > 0) is similar to companionMx (minpoly K M). The witness P is cyclicMatrix M v, where v is a cyclic vector from parent OQ-01. Now fully axiom-free.",
       "mathContext": "The main theorem of this entry — the nonderogatory case of the rational canonical form. Combines: (a) parent OQ-01's nonderogatory_has_cyclic_vector to obtain v, (b) cyclicMatrix_isUnit to invert P = cyclicMatrix M v, (c) M_mul_cyclicMatrix (the conjugation identity) to compute P⁻¹ · M · P. The final calculation chain rearranges P⁻¹ · M · P = P⁻¹ · (P · C(μ_M)) = (P⁻¹ · P) · C(μ_M) = 1 · C(μ_M) = C(μ_M) using nonsing_inv_mul."
+    },
+    {
+      "id": "sec-session3-biconditional",
+      "title": "Session 3: Converse — Companion-Similarity Biconditional",
+      "startLine": 226,
+      "endLine": 403,
+      "summary": "Proves the converse direction and packages the biconditional. aeval_eq_sum_range_natDegree: aeval expansion to a finite sum for any polynomial (no degree hypothesis). companionMx_pow_e0: Cᵏ·e₀ = e_k for k < n. companionMx_isCyclic_e0: e₀ is a cyclic vector for the companion matrix. cyclicVector_similar_transport: similarity transports cyclic vectors. similar_to_companion_implies_nonderogatory: if M is similar to companionMx(minpoly K M) then M is nonderogatory. nonderogatory_iff_similar_to_companion: the full biconditional.",
+      "mathContext": "The converse direction: similarity to the companion matrix implies nonderogatory. Since e₀ is cyclic for C(p) and similarity transports cyclic vectors, P·e₀ is cyclic for M, hence M is nonderogatory by the cyclic-vector biconditional (sibling OQ-01-OQ-01). Combined with the forward direction this yields M nonderogatory ⇔ M ~ companionMx(minpoly K M)."
+    },
+    {
+      "id": "sec-session4-aeval-e0",
+      "title": "Session 4: companionMx Satisfies Its Polynomial (Vector Form at e₀)",
+      "startLine": 404,
+      "endLine": 506,
+      "summary": "Vector-level annihilation at e₀, en route to aeval(companionMx p) p = 0. companionMx_mulVec_eNm1: C·e_{n-1} returns the last column = (-(p.coeff i))_{i<n}. companionMx_pow_n_eq_lastCol_e0: Cⁿ·e₀ = -∑ p.coeff i • e_i. aeval_companionMx_p_mulVec_e0_zero: for monic p of degree n, (aeval C p)·e₀ = 0, monicity cancelling the 1·Cⁿe₀ term against ∑_{k<n} p.coeff k • Cᵏe₀.",
+      "mathContext": "A stepping stone toward minpoly K (companionMx p) = p: monicity (p.coeff n = 1) makes the Cⁿe₀ term cancel against ∑_{k<n} p.coeff k • Cᵏe₀ = ∑_{k<n} p.coeff k • e_k, giving (aeval (companionMx p) p)·e₀ = 0 for monic p of degree n."
+    },
+    {
+      "id": "sec-session5-aeval-matrix",
+      "title": "Session 5: Matrix-Level aeval (companionMx p) p = 0",
+      "startLine": 507,
+      "endLine": 587,
+      "summary": "Lifts S4's e₀ annihilation to the full matrix identity. matrix_eq_zero_of_mulVec_basis: a matrix is zero iff every Pi.single basis column is annihilated by mulVec. aeval_companionMx_p_mulVec_ek_zero: (aeval C p)·e_k = 0 for k < n, using e_k = Cᵏ·e₀ (S3) and commuting aeval C p past Cᵏ. aeval_companionMx_p_eq_zero: aeval (companionMx p) p = 0 for monic p of degree n.",
+      "mathContext": "Pointwise on columns: e_k = Cᵏ·e₀ (S3) and any polynomial in C commutes with Cᵏ, reducing each column to S4's e₀ result. A matrix that annihilates every standard basis column is zero, so aeval (companionMx p) p = 0."
+    },
+    {
+      "id": "sec-session6-minpoly",
+      "title": "Session 6: Companion-Matrix Minimal Polynomial minpoly K (companionMx p) = p",
+      "startLine": 588,
+      "endLine": 688,
+      "summary": "Closes the chain: for monic p of degree n (n ≥ 1), minpoly_companionMx_eq proves minpoly K (companionMx p) = p — the identity Matrix.minpoly_companionMatrix missing from Mathlib v4.26.0. Divisibility (minpoly ∣ p) from S5's annihilation, degree equality (natDegree = n) from cyclicity of e₀ via minpoly_natDegree_of_cyclic, then monic + equal natDegree + dvd ⇒ equal.",
+      "mathContext": "minpoly K (companionMx p) = p for monic p of degree n. The minpoly divides p (S5: p annihilates C); both are monic, and the minpoly has degree n because e₀ is cyclic for C; a monic divisor of equal degree equals the dividend."
     }
   ],
   "crossReferences": [

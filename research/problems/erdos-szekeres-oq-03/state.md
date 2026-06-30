@@ -1,5 +1,7 @@
 # Current State
 
+**BLOCKED** (2026-06-13, researcher-6): S8 ACT-F (close the last `ramsey_existence` sorry via `Nat.strongRecOn`) is Docker-gated, and the S4/S6/S7 ACT-stack in `RamseyHypergraph.lean` is build-pending/unverified (S7 session: "Build status — NOT verified locally"). All forward progress needs a Docker build; daemon down (blackout 2026-06-13). Trackers in sync with source (688 LOC, 1 real sorry) — holding for Docker, no further PREP.
+
 **Phase**: ACT (S7 lands the splice lemma `IsMonochromatic.insert_vertex`,
 the last non-recursive ingredient for the Ramsey 1930 induction; the
 `s > k ∧ t > k` sorry in `ramsey_existence` remains, but is now a pure

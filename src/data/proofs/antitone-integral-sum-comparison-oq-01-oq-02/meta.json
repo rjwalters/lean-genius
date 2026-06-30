@@ -1,0 +1,80 @@
+{
+  "id": "antitone-integral-sum-comparison-oq-01-oq-02",
+  "slug": "antitone-integral-sum-comparison-oq-01-oq-02",
+  "title": "From the Integral Test to the Euler–Mascheroni Constant: Convergence of the Harmonic Defect",
+  "status": "verified",
+  "badge": "mathlib",
+  "leanFile": {
+    "namespace": "AntitoneIntegralSumComparisonOQ01OQ02",
+    "lineCount": 124,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/AntitoneIntegralSumComparisonOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_constant",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AntitoneIntegralSumComparisonOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "integral-test",
+      "harmonic-numbers",
+      "euler-mascheroni",
+      "convergence",
+      "asymptotics",
+      "monotone-convergence"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified (only the foundational propext / Classical.choice / Quot.sound). The substantive results are Mathlib's Euler–Mascheroni development; this entry bridges the parent's defect sequence to them.",
+    "lineCount": 124,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "originalContributions": [
+      "tendsto_harmonic_sub_log_add_one: the parent's exact defect sequence Hₙ − log(n+1) — which the parent file only bounded in [0,1] — converges to the Euler–Mascheroni constant γ (bridges Real.tendsto_harmonic_sub_log_add_one)",
+      "tendsto_harmonic_sub_log: the textbook companion form Hₙ − log n → γ, i.e. the asymptotic Hₙ ∼ log n + γ (bridges Real.tendsto_harmonic_sub_log)",
+      "harmonic_sub_log_add_one_lt_gamma / gamma_lt_harmonic_sub_log: the two parent-style sequences bracket γ — Hₙ − log(n+1) < γ < Hₙ − log n for n ≥ 1 — packaged from Mathlib's eulerMascheroniSeq / eulerMascheroniSeq' bounds",
+      "gamma_mem_Ioo: the nested enclosure γ ∈ (Hₙ − log(n+1), Hₙ − log n)",
+      "bracket_width / tendsto_bracket_width: the enclosure width is exactly log(n+1) − log n and tends to 0, so the nested intervals pin γ to arbitrary precision (derived by squeezing the two convergent bracket sequences)",
+      "gamma_pos / gamma_lt_one / gamma_mem_Ioo_half_twoThirds: 0 < γ < 1, sharpened to 1/2 < γ < 2/3 (Mathlib's numeric bounds)",
+      "harmonic_six / gamma_enclosure_six: the concrete rational bracket 49/20 − log 7 < γ < 49/20 − log 6 from the n = 6 enclosure"
+    ]
+  },
+  "description": "Answers the parent integral-test entry's open question. The parent applied the antitone integral comparison to f(x) = 1/x and bounded the harmonic defect aₙ = Hₙ − log(n+1) in [0,1] (harmonic_sub_log_nonneg, harmonic_succ_sub_log_le_one), establishing boundedness but stopping short of convergence. Since the defect is also monotone increasing, a bounded-monotone argument forces it to converge; its limit is the Euler–Mascheroni constant γ ≈ 0.5772. This entry bridges the parent's setup to Mathlib's Real.eulerMascheroniConstant: it states the convergence in both the parent's form Hₙ − log(n+1) → γ and the textbook form Hₙ − log n → γ (so Hₙ ∼ log n + γ), exhibits the two-sided bracketing Hₙ − log(n+1) < γ < Hₙ − log n with bracket width log(n+1) − log n → 0, and records 0 < γ < 1 sharpened to 1/2 < γ < 2/3, plus a concrete rational enclosure 49/20 − log 7 < γ < 49/20 − log 6 at n = 6. 12 theorems, 0 definitions, 0 sorries, 0 axioms.",
+  "overview": {
+    "historicalContext": "The harmonic numbers Hₙ = 1 + 1/2 + ⋯ + 1/n grow like log n, and the gap Hₙ − log n approaches a constant first studied by Euler in 1734 and denoted γ by Mascheroni. Whether γ is rational or irrational remains open — one of the oldest unsolved problems in analysis. The integral test is precisely the tool that proves γ exists: comparing the staircase ∑ 1/k with the area ∫ 1/x bounds the defect, and monotonicity upgrades the bound to convergence.",
+    "problemStatement": "The parent integral-test entry proved the harmonic defect Hₙ − log(n+1) is bounded in [0,1]. Does it converge, and to what limit?",
+    "text": "The defect aₙ = Hₙ − log(n+1) is increasing (Mathlib: strictMono_eulerMascheroniSeq) and bounded above (the parent's [0,1] bound), so it converges; its limit is the Euler–Mascheroni constant γ := lim (Hₙ − log(n+1)). The companion sequence bₙ = Hₙ − log n is decreasing to the same limit, because bₙ − aₙ = log(n+1) − log n → 0. Together they bracket γ: aₙ < γ < bₙ for all n ≥ 1, a nested family of shrinking intervals that determines γ uniquely. Mathlib's development supplies all of these facts via eulerMascheroniSeq, eulerMascheroniSeq', their monotonicity, the limit lemmas tendsto_harmonic_sub_log(_add_one), the strict bracket bounds, and the numeric estimate 1/2 < γ < 2/3; this entry packages them as the direct continuation of the parent's bounded-defect result.",
+    "proofStrategy": "Each theorem is a short bridge to Mathlib's Euler–Mascheroni API. tendsto_harmonic_sub_log_add_one and tendsto_harmonic_sub_log are the two limit lemmas verbatim. harmonic_sub_log_add_one_lt_gamma unfolds eulerMascheroniSeq in eulerMascheroniSeq_lt_eulerMascheroniConstant; gamma_lt_harmonic_sub_log unfolds eulerMascheroniSeq' (using its n ≠ 0 branch) in eulerMascheroniConstant_lt_eulerMascheroniSeq'. gamma_mem_Ioo pairs the two. bracket_width is a ring identity; tendsto_bracket_width subtracts the two convergent bracket sequences (both → γ) so the difference → 0, then rewrites the limit point with sub_self and matches the function pointwise by ring. gamma_pos / gamma_lt_one chain Mathlib's 1/2 < γ and γ < 2/3 through norm_num; harmonic_six computes H₆ = 49/20 by norm_num on the harmonic sum; gamma_enclosure_six substitutes it into the n = 6 brackets.",
+    "keyInsights": [
+      "Boundedness alone (the parent's result) does not give a limit; monotonicity of the same defect sequence is the extra ingredient that upgrades the integral-test bound to convergence",
+      "The shift from log(n+1) to log n changes the individual terms but not the limit, since the bracket width log(n+1) − log n = log(1 + 1/n) → 0 — and this is exactly why Hₙ − log n and Hₙ − log(n+1) define the same constant γ",
+      "γ is squeezed between an increasing sequence (Hₙ − log(n+1)) and a decreasing sequence (Hₙ − log n); the two parent-style sequences are a nested-interval scheme that determines γ to any precision",
+      "The integral test thus does more than decide convergence of ∑ 1/n — it manufactures the precise growth correction Hₙ = log n + γ + o(1)"
+    ],
+    "prerequisites": [
+      "Harmonic numbers and the integral-test defect from the parent entry",
+      "Monotone bounded sequences converge; squeezing limits with sub_self",
+      "Mathlib's Real.eulerMascheroniConstant, eulerMascheroniSeq, eulerMascheroniSeq' and their limit / bound lemmas",
+      "Filter.Tendsto and basic order limit lemmas"
+    ]
+  },
+  "sections": null,
+  "conclusion": {
+    "summary": "The parent's bounded harmonic defect Hₙ − log(n+1) is shown to converge to the Euler–Mascheroni constant γ, in both the parent's form and the textbook form Hₙ − log n → γ (so Hₙ ∼ log n + γ). The two parent-style sequences bracket γ from below and above with width log(n+1) − log n → 0, giving a nested enclosure; γ satisfies 0 < γ < 1, sharpened to 1/2 < γ < 2/3, with the concrete bracket 49/20 − log 7 < γ < 49/20 − log 6 at n = 6. 12 theorems, 0 definitions, 124 lines, 0 sorries, 0 axioms.",
+    "implications": "Completes the integral-test story for the harmonic series: the parent proved the defect bounded, this entry proves it convergent and names the limit, turning the integral comparison into the asymptotic Hₙ = log n + γ + o(1). The bracketing scheme is a constructive enclosure of γ to arbitrary precision.",
+    "openQuestions": [
+      "Quantify the convergence rate: show Hₙ − log n − γ = 1/(2n) + O(1/n²) via the next Euler–Maclaurin term",
+      "Package the analogous defect for a general antitone f with ∫₁^∞ f = ∞ (the generalized Euler constant of f), proving ∑_{k≤n} f(k) − ∫₁^n f converges"
+    ]
+  },
+  "references": null,
+  "crossReferences": null,
+  "sorries": null
+}

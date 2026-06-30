@@ -1,0 +1,146 @@
+{
+  "id": "menelaus-theorem-oq-01",
+  "title": "Menelaus's Theorem: Collinearity via Signed Side Ratios",
+  "slug": "menelaus-theorem-oq-01",
+  "description": "Formalizes Menelaus's theorem in the affine plane ℝ²: for a triangle ABC and transversal division points X on BC, Y on CA, Z on AB, the points are collinear iff the product of signed side ratios (t/(1-t))·(u/(1-u))·(v/(1-v)) equals -1. The proof rests on a determinant factorisation collinearDet X Y Z = (tuv + (1-t)(1-u)(1-v))·collinearDet A B C. 5 theorems, 0 sorries, 0 axioms. The transversal companion of Ceva's concurrency theorem.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Menelaus%27s_theorem",
+    "date": "2026-06-16",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MenelausTheorem.lean",
+    "tags": [
+      "geometry",
+      "menelaus",
+      "affine-coordinates",
+      "collinearity",
+      "triangles",
+      "signed-ratios"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 139,
+    "theoremCount": 5,
+    "definitionCount": 6,
+    "originalContributions": [
+      "collinearDet: signed-area 2×2 determinant predicate for three points in ℝ²",
+      "Collinear3: collinearity as vanishing of the signed-area determinant",
+      "MenelausConfig: triangle with transversal division parameters t, u, v and non-degeneracy hypothesis",
+      "collinearDet_factor: the geometric heart — collinearDet X Y Z = (tuv + (1-t)(1-u)(1-v))·collinearDet A B C, a pure polynomial identity",
+      "menelaus: the main biconditional — collinearity of the transversal points iff the signed-ratio product equals -1",
+      "product_of_collinear / collinear_of_product: the two directional corollaries",
+      "menelaus_example: a concrete instance (t=u=2, v=-1/3) exhibiting product -1 and collinearity"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Menelaus of Alexandria (c. 70–140 CE) stated this transversal theorem in his *Sphaerica*, originally for great-circle arcs on the sphere; the planar version is the limiting case. It is the projective dual companion of Ceva's theorem (1678): where Ceva characterises the *concurrency* of three cevians by a signed-ratio product of +1, Menelaus characterises the *collinearity* of three points cut on the sides (extended) of a triangle by a transversal line, with the product equal to -1. The sign difference reflects that a straight transversal must cross an odd number of side-segments externally. Both results are cornerstones of triangle geometry and projective geometry, underpinning cross-ratio computations and results such as the theorems of Desargues and Pappus.",
+    "problemStatement": "For a triangle ABC and points X on line BC, Y on line CA, Z on line AB parametrised by X=(1-t)B+tC, Y=(1-u)C+uA, Z=(1-v)A+vB, are X, Y, Z collinear? Prove they are collinear iff the product of signed side ratios (t/(1-t))·(u/(1-u))·(v/(1-v)) equals -1.",
+    "text": "Working in ℝ², collinearity of three points is encoded by the vanishing of the signed-area determinant collinearDet P Q R = (Q.1-P.1)(R.2-P.2) - (Q.2-P.2)(R.1-P.1). Expanding collinearDet for the three division points yields, after `ring`, the exact factorisation collinearDet X Y Z = (t·u·v + (1-t)(1-u)(1-v)) · collinearDet A B C. For a non-degenerate triangle the base determinant is non-zero, so collinearity is equivalent to the scalar factor vanishing, i.e. t·u·v = -(1-t)(1-u)(1-v). A `field_simp`/`div_eq_iff` calculation shows this is exactly the signed-ratio product equalling -1.",
+    "proofStrategy": "Part I sets up the affine plane (Pt := ℝ×ℝ), the signed-area determinant collinearDet, and the collinearity predicate Collinear3. Part II bundles a triangle with transversal parameters in MenelausConfig (requiring each parameter ≠ 1 and a non-degenerate triangle) and defines the division points ptX, ptY, ptZ and the signed-ratio product menelausProduct. Part III proves the determinant factorisation collinearDet_factor by `ring`. Part IV derives the main biconditional `menelaus` by factoring, discharging the non-degenerate base determinant via mul_eq_zero, and matching the remaining polynomial condition to the product form via div_eq_iff + linear_combination. Part V records the directional corollaries and a concrete numeric instance.",
+    "keyInsights": [
+      "Collinearity of the three division points is captured by a single 2×2 signed-area determinant",
+      "The determinant factors exactly as (Menelaus scalar)·(triangle area): collinearDet X Y Z = (tuv + (1-t)(1-u)(1-v))·collinearDet A B C",
+      "Non-degeneracy of the triangle is precisely what lets us cancel the area factor and isolate the scalar condition",
+      "The scalar condition tuv + (1-t)(1-u)(1-v) = 0 is identical to the signed-ratio product equalling -1 (the tuv terms cancel in the expansion)",
+      "Menelaus (-1) and Ceva (+1) differ only in the sign of the product, mirroring transversal-collinearity vs cevian-concurrency"
+    ],
+    "prerequisites": [
+      "Affine geometry: points in ℝ², affine combinations (1-t)P+tQ",
+      "2×2 determinants and the signed-area / cross-product collinearity test",
+      "Real field arithmetic: field_simp, div_eq_iff, ring, linear_combination"
+    ]
+  },
+  "conclusion": {
+    "summary": "Menelaus's theorem is fully proved in ℝ² via affine coordinates: the transversal division points X, Y, Z are collinear iff the product of signed side ratios equals -1. The proof reduces to a single determinant factorisation (collinearDet X Y Z = (tuv + (1-t)(1-u)(1-v))·collinearDet A B C) discharged by `ring`, with non-degeneracy cancelling the area factor. Both directional corollaries and a concrete numeric witness are included. 5 theorems, 6 definitions, 139 lines, 0 axioms.",
+    "implications": "Provides the collinearity counterpart to the gallery's Ceva concurrency formalizations, completing the classical Ceva/Menelaus duality. The determinant-factorisation technique is reusable for other ratio/collinearity results (e.g. Routh's theorem and the theorems of Desargues and Pappus).",
+    "openQuestions": [
+      "Signed/unsigned reconciliation: derive the unsigned |product| = 1 form and the precise external-segment parity statement",
+      "Use the same determinant factorisation to formalize Desargues's or Pappus's theorem",
+      "Spherical Menelaus: recover Menelaus of Alexandria's original great-circle version on S²"
+    ]
+  },
+  "leanFile": {
+    "namespace": "MenelausTheorem",
+    "lineCount": 139,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 6,
+    "path": "Proofs/MenelausTheorem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-oq-01",
+      "relationship": "related",
+      "description": "Ceva's geometric theorem (concurrency, product = +1); Menelaus is its transversal-collinearity dual (product = -1)"
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "related",
+      "description": "Algebraic Ceva via signed ratios; Menelaus uses the same affine-parameter signed-ratio framework"
+    }
+  ],
+  "references": [
+    {
+      "text": "Menelaus of Alexandria, Sphaerica (c. 100 CE). Planar transversal form.",
+      "url": "https://en.wikipedia.org/wiki/Menelaus%27s_theorem"
+    },
+    {
+      "text": "Coxeter, H. S. M. & Greitzer, S. L. (1967). Geometry Revisited. MAA. §3.4 on Menelaus's theorem.",
+      "url": "https://en.wikipedia.org/wiki/Geometry_Revisited"
+    }
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 49,
+      "description": "Module docstring framing Menelaus as the transversal companion of Ceva: instead of concurrency (product +1), collinearity of three transversal points is characterised by the signed-ratio product equalling -1, proved through a signed-area determinant factorisation.",
+      "mathContext": "Menelaus: for triangle $ABC$ with transversal points $X,Y,Z$ on lines $BC,CA,AB$, collinearity holds iff $\\frac{t}{1-t}\\cdot\\frac{u}{1-u}\\cdot\\frac{v}{1-v} = -1$."
+    },
+    {
+      "id": "determinant-and-collinearity",
+      "title": "Signed-Area Determinant and Collinearity",
+      "startLine": 50,
+      "endLine": 58,
+      "description": "Primitives: `Pt := ℝ×ℝ`, `collinearDet P Q R = (Q.1-P.1)(R.2-P.2) - (Q.2-P.2)(R.1-P.1)` (twice the signed area of triangle PQR), and `Collinear3 P Q R := collinearDet P Q R = 0`.",
+      "mathContext": "Three points are collinear iff $\\det\\begin{pmatrix} Q-P & R-P\\end{pmatrix}=0$, i.e. the signed area of $\\triangle PQR$ vanishes."
+    },
+    {
+      "id": "configuration",
+      "title": "Menelaus Configuration and Division Points",
+      "startLine": 59,
+      "endLine": 93,
+      "description": "`MenelausConfig` bundles a triangle A,B,C with transversal parameters t,u,v (each ≠ 1 so signed ratios are defined) and a non-degeneracy hypothesis `collinearDet A B C ≠ 0`. Division points `ptX=(1-t)B+tC`, `ptY=(1-u)C+uA`, `ptZ=(1-v)A+vB`, and `menelausProduct = (t/(1-t))·(u/(1-u))·(v/(1-v))`.",
+      "mathContext": "$X=(1-t)B+tC$, $Y=(1-u)C+uA$, $Z=(1-v)A+vB$; signed ratios $\\tfrac{BX}{XC}=\\tfrac{t}{1-t}$ etc."
+    },
+    {
+      "id": "determinant-factorisation",
+      "title": "Determinant Factorisation (Geometric Content)",
+      "startLine": 95,
+      "endLine": 102,
+      "description": "`collinearDet_factor`: the collinearity determinant of the three division points factors as the Menelaus scalar times the triangle's signed area — `collinearDet X Y Z = (t·u·v + (1-t)(1-u)(1-v)) · collinearDet A B C` — a pure polynomial identity discharged by `ring`.",
+      "mathContext": "$\\det(XYZ) = \\big(tuv + (1-t)(1-u)(1-v)\\big)\\,\\det(ABC)$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Menelaus's Theorem (Main Biconditional)",
+      "startLine": 104,
+      "endLine": 128,
+      "description": "`menelaus`: for a non-degenerate triangle, `Collinear3 X Y Z ↔ menelausProduct = -1`. Proof factors the determinant, cancels the non-zero base area via `mul_eq_zero`/`or_iff_left`, then matches `tuv + (1-t)(1-u)(1-v) = 0` to the product form via `div_eq_iff` and `linear_combination`. Corollaries `product_of_collinear` and `collinear_of_product` give the two directions.",
+      "mathContext": "$X,Y,Z$ collinear $\\iff tuv = -(1-t)(1-u)(1-v) \\iff \\tfrac{t}{1-t}\\tfrac{u}{1-u}\\tfrac{v}{1-v} = -1$."
+    },
+    {
+      "id": "example",
+      "title": "Concrete Numerical Instance",
+      "startLine": 130,
+      "endLine": 139,
+      "description": "`menelaus_example`: the triangle (0,0),(1,0),(0,1) with t=u=2, v=-1/3 yields menelausProduct = -1 and hence, by the main theorem, collinear division points — a concrete witness that the characterisation is non-vacuous.",
+      "mathContext": "$t=u=2,\\ v=-\\tfrac13:\\ (-2)(-2)(-\\tfrac14) = -1$, so $X,Y,Z$ are collinear."
+    }
+  ]
+}

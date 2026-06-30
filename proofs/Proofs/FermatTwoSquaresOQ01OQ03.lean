@@ -173,7 +173,7 @@ lemma hurwitz_normSq4_toQuat (q : HurwitzQuat) :
 theorem hurwitz_normSq_mul (q r : HurwitzQuat) :
     Quaternion.normSq (q.toQuat * r.toQuat) =
     Quaternion.normSq q.toQuat * Quaternion.normSq r.toQuat :=
-  Quaternion.normSq_mul q.toQuat r.toQuat
+  map_mul Quaternion.normSq q.toQuat r.toQuat
 
 /-- The scaled norm identity: normSq4(q) · normSq4(r) = 16 · normSq(q.toQuat · r.toQuat). -/
 theorem hurwitz_normSq4_mul_identity (q r : HurwitzQuat) :

@@ -16,7 +16,11 @@
       "Density",
       "Number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases of order r",
+      "asymptotic density of integer sets",
+      "Erdős and Graham additive number theory problems"
+    ]
   },
   {
     "id": "ann-e339-basis-def",
@@ -34,7 +38,11 @@
       "Waring's problem",
       "Lagrange's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sums of r elements with repetition",
+      "Lagrange four-square theorem",
+      "Waring's problem and additive bases"
+    ]
   },
   {
     "id": "ann-e339-rsums",
@@ -52,7 +60,11 @@
       "Additive structure"
     ],
     "mathContext": "See annotation content for formal details of r-element sums (rsums)",
-    "prerequisites": []
+    "prerequisites": [
+      "sumsets of a set of natural numbers",
+      "representing integers as sums of r summands",
+      "set-builder notation over functions Fin r → ℕ"
+    ]
   },
   {
     "id": "ann-e339-distinct-sums",
@@ -70,7 +82,11 @@
       "Restricted sums",
       "Injective functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "injective functions as distinct summands",
+      "restricted sumsets in additive combinatorics",
+      "subsets of the full r-element sum set"
+    ]
   },
   {
     "id": "ann-e339-density",
@@ -88,7 +104,11 @@
       "Asymptotic density",
       "Liminf/limsup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "liminf and limsup of counting ratios",
+      "lower and upper asymptotic density",
+      "natural density of integer sets"
+    ]
   },
   {
     "id": "ann-e339-conjecture1",
@@ -106,7 +126,11 @@
       "Positive density",
       "Basis theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive lower density of distinct r-sums",
+      "bases of order r at least 2",
+      "Hegyvári-Hennecart-Plagne 2003 result"
+    ]
   },
   {
     "id": "ann-e339-conjecture2",
@@ -124,7 +148,11 @@
       "Density preservation",
       "Upper density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive upper density of r-sums",
+      "density preservation under distinctness restriction",
+      "Erdős-Graham second conjecture"
+    ]
   },
   {
     "id": "ann-e339-subset",
@@ -142,7 +170,11 @@
       "Proof by forgetting constraints"
     ],
     "mathContext": "See annotation content for formal details of distinct sums are a subset",
-    "prerequisites": []
+    "prerequisites": [
+      "subset relation between distinct and unrestricted sums",
+      "dropping the injectivity constraint in a proof",
+      "set inclusion rDistinctSums ⊆ rSums"
+    ]
   },
   {
     "id": "ann-e339-perturbation",
@@ -160,7 +192,11 @@
       "Perturbation methods",
       "Approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "perturbing repeated summands into distinct ones",
+      "bounding displacement by r squared",
+      "converting representations with repetition to nearby distinct ones"
+    ]
   },
   {
     "id": "ann-e339-case-r2",
@@ -178,7 +214,11 @@
       "Restricted addition"
     ],
     "mathContext": "See annotation content for formal details of special case r = 2",
-    "prerequisites": []
+    "prerequisites": [
+      "ordinary sumset A + A",
+      "restricted sumset with a ≠ b",
+      "explicit characterization for r = 2"
+    ]
   },
   {
     "id": "ann-e339-squares",
@@ -196,7 +236,11 @@
       "Lagrange's theorem",
       "Sum of squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squares as a basis of order 4",
+      "Lagrange four-square theorem",
+      "sums of four distinct squares having positive density"
+    ]
   },
   {
     "id": "ann-e339-sidon",
@@ -214,6 +258,10 @@
       "Unique representations"
     ],
     "mathContext": "See annotation content for formal details of related: sidon sets and bₕ sets",
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets with distinct pairwise sums",
+      "Bₕ sets and unique representations",
+      "sparsity bound of roughly √n elements up to n"
+    ]
   }
 ]

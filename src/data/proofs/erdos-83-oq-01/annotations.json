@@ -1,0 +1,115 @@
+[
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-83-oq-01",
+    "range": {
+      "startLine": 39,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Admissibility Predicates: t-Intersecting, k-Uniform, Valid Family",
+    "content": "The setup. IsTIntersecting F t says every pair of members of F meets in ≥ t points; IsKUniform F k says every member has exactly k elements. IsValidErdos83Family n F packages the Erdős #83 admissibility condition: F is a family of 2n-subsets of [4n] (4·n via Fin (4*n)) that is 2-intersecting. The goal is to exhibit such an F attaining the Ahlswede–Khachatrian bound exactly.",
+    "mathContext": "Valid family: $F \\subseteq \\binom{[4n]}{2n}$ with $|A \\cap B| \\ge 2$ for all $A, B \\in F$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "intersecting families",
+      "uniform families",
+      "extremal set theory"
+    ],
+    "prerequisites": [
+      "Finset.powersetCard",
+      "Fin (4*n) ground set"
+    ]
+  },
+  {
+    "id": "ann-bound-def",
+    "proofId": "erdos-83-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "The Ahlswede–Khachatrian Bound and Its Two Terms",
+    "content": "erdos83Bound n is ½(C(4n,2n) − C(2n,n)²). Each term has a combinatorial reading that the proof exploits: C(4n,2n) counts all 2n-subsets of [4n]; C(2n,n)² counts the 'balanced' subsets meeting a fixed 2n-core in exactly n points (split count C(2n,n)·C(2n,n)); and the factor ½ comes from the complement symmetry that pairs 'majority' subsets (> n in core) with 'minority' subsets (< n in core). The whole sharpness proof is reverse-engineered from this decomposition.",
+    "mathContext": "$\\mathrm{erdos83Bound}(n) = \\tfrac{1}{2}\\!\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$; the three groups are majority, balanced ($\\binom{2n}{n}^2$), minority.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial coefficients",
+      "Vandermonde identity",
+      "complement symmetry"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "card_powersetCard"
+    ]
+  },
+  {
+    "id": "ann-core-pigeonhole",
+    "proofId": "erdos-83-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 78
+    },
+    "type": "insight",
+    "title": "Core Pigeonhole: Why the Majority Family Is 2-Intersecting",
+    "content": "two_mul_le_card_inter_add_core: if A and B each meet a set C in ≥ s points, then 2s ≤ |A ∩ B| + |C|. Pure inclusion–exclusion inside C: A∩C and B∩C are both subsets of C, so |A∩C| + |B∩C| = |union| + |intersection| ≤ |C| + |A∩B∩C| ≤ |C| + |A∩B|. Specializing s = n+1 and |C| = 2n gives |A∩B| ≥ 2(n+1) − 2n = 2 — exactly the 2-intersecting property of the majority family, with no structure beyond counting in the core.",
+    "mathContext": "$2s \\le |A\\cap B| + |C|$; at $s = n+1$, $|C| = 2n$: $|A\\cap B| \\ge 2(n{+}1) - 2n = 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "inclusion-exclusion",
+      "2-intersecting family"
+    ],
+    "prerequisites": [
+      "card_union_add_card_inter",
+      "Finset.card_le_card"
+    ]
+  },
+  {
+    "id": "ann-split-count",
+    "proofId": "erdos-83-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 158
+    },
+    "type": "technique",
+    "title": "Split-Count Lemma via the Bijection S ↦ (S∩C, S∖C)",
+    "content": "card_filter_inter_card_eq: among the k-subsets of a ground set G, exactly C(|C|,j)·C(|G∖C|,k−j) meet a fixed C ⊆ G in j points. Proved with Finset.card_nbij' using the bijection S ↦ (S∩C, S∖C) with inverse (A,B) ↦ A∪B, checking it lands in the product of powersetCard's and that the maps are mutually inverse. This is the finite-combinatorics workhorse: applied with j = n it gives |balanced| = C(2n,n)·C(2n,n) = C(2n,n)², the middle term of the bound.",
+    "mathContext": "$\\#\\{S \\in \\binom{G}{k} : |S \\cap C| = j\\} = \\binom{|C|}{j}\\binom{|G\\setminus C|}{k-j}$ via $S \\mapsto (S\\cap C,\\ S\\setminus C)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bijective counting",
+      "Vandermonde decomposition",
+      "product cardinality"
+    ],
+    "prerequisites": [
+      "Finset.card_nbij'",
+      "card_product",
+      "mem_powersetCard"
+    ]
+  },
+  {
+    "id": "ann-main-sharpness",
+    "proofId": "erdos-83-oq-01",
+    "range": {
+      "startLine": 164,
+      "endLine": 261
+    },
+    "type": "insight",
+    "title": "Sharpness: The Bound Is Attained by the Majority Family",
+    "content": "erdos83_lower_bound fixes a 2n-core C (via exists_subset_card_eq) and takes the majority family F = {S ∈ powersetCard 2n : |S∩C| ≥ n+1}. Validity: F is 2n-uniform by construction and 2-intersecting by the core pigeonhole. Count: partition powersetCard 2n into F (majority), M (balanced, |M| = C(2n,n)² by the split count) and L (minority, |S∩C| < n). The complement involution S ↦ Sᶜ maps powersetCard 2n to itself (|Sᶜ| = 4n−2n = 2n) and sends |S∩C| to |C| − |S∩C| = 2n − |S∩C|, giving a bijection F ≃ L, so |F| = |L|. Hence C(4n,2n) = |F| + |M| + |L| = 2|F| + C(2n,n)², yielding |F| = (C(4n,2n) − C(2n,n)²)/2 = erdos83Bound n. The involution replaces the usual Vandermonde sum manipulation with a one-line symmetry.",
+    "mathContext": "$|F| = |L|$ via $S \\mapsto S^c$, $|M| = \\binom{2n}{n}^2$, so $\\binom{4n}{2n} = 2|F| + \\binom{2n}{n}^2 \\Rightarrow |F| = \\mathrm{erdos83Bound}(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complement involution",
+      "achievability / sharpness",
+      "Ahlswede–Khachatrian theorem"
+    ],
+    "prerequisites": [
+      "two_mul_le_card_inter_add_core",
+      "card_filter_inter_card_eq",
+      "filter_card_add_filter_neg_card_eq_card",
+      "card_compl"
+    ]
+  }
+]
