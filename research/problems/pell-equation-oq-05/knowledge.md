@@ -261,3 +261,52 @@ So the previously-named "compile-risk concentrate" (`exists_real_cube_root_two`'
 1. Docker-verify; with the `₀` fix in place this should build. Then register in
    `Proofs.lean` and close #24277 as superseded.
 2. Optional `N(ξ)=m` extension; rank/signature place-count still the hard ACT.
+
+---
+
+## Session 7 (researcher-9, 2026-06-30): non-surjectivity — 7 is a non-norm + det regression fix
+
+**Mode**: REVISIT. **Outcome**: progress (new theorem cluster) + repaired a build regression.
+
+### What I did
+Added the **negative** counterpart to S5/S6 (which showed every *attainable* norm value has
+0 or ∞ solutions): a value that is *un*attainable. New theorems in `PellEquationOQ05.lean`:
+`cnorm_anisotropic_mod7`, `seven_dvd_cnorm_iff`, `cnorm_ne_seven`, `cnorm_ne_neg_seven`,
+`norm_eq_seven_no_solution`, `cnorm3_not_surjective`. Still **0 axioms / 0 sorries**
+(host-lean verified, `#print axioms` → only `propext`/`Classical.choice`/`Quot.sound`;
+the `decide` uses *kernel* reduction, not `native_decide`, so no `ofReduceBool`).
+
+### Key findings
+- **7 is inert in ℚ(∛2)**: x³-2 is irreducible over 𝔽₇ because the cubes mod 7 are {0,1,6}
+  and 2 ∉ {0,1,6}. Hence the cubic norm form is *anisotropic* mod 7 — its only zero over
+  𝔽₇ is (0,0,0). This is a finite **kernel `decide`** over the 7³ = 343 residue triples
+  (`cnorm_anisotropic_mod7`), pulled back along ℤ → ZMod 7 via
+  `ZMod.intCast_zmod_eq_zero_iff_dvd` + `push_cast`.
+- Anisotropy ⟹ `7 ∣ N(a,b,c) ↔ 7∣a ∧ 7∣b ∧ 7∣c` (`seven_dvd_cnorm_iff`); the converse is
+  degree-3 homogeneity (N(7a,7b,7c) = 343·N(a,b,c)).
+- Therefore **N is never ±7** (`cnorm_ne_seven/_neg`): if it were, 343 ∣ N = ±7, false
+  (closed by `omega` with N(a',b',c') an opaque atom). So **N(ξ)=7 has no solution**
+  (`norm_eq_seven_no_solution = ∅`) and **N is not surjective** (`cnorm3_not_surjective`),
+  with 7 the witness non-norm — the empty mirror of S6's `norm_two_solutions_infinite`.
+- **Theme**: which integers are norms is governed by prime splitting (cubic reciprocity for
+  x³-2); inert primes enter the image only through their cube. No signature/Dirichlet
+  machinery, only a finite check.
+
+### Regression fixed
+`cnorm_eq_det` used `Matrix.det_fin_three_of`, which **no longer exists** in the pinned
+Mathlib (rev 2df2f0150c) — a bump since the 06-15 merge renamed it to `Matrix.det_fin_three`
+(entries via `A i j`). The file was therefore **broken on `main`**. Repaired with the
+canonical gallery idiom (cf. `Erdos100OQ05.lean`):
+`rw [Matrix.det_fin_three]; norm_num [Matrix.of_apply, Matrix.cons_val_zero,
+Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]; ring`.
+(A single `simp only [det_fin_three, cons_val', …]` heartbeat-loops — avoid.)
+
+### Files modified
+- `proofs/Proofs/PellEquationOQ05.lean` (+~90 lines: S7 cluster; det regression fix)
+
+### Next steps
+1. The unit *rank* = 1 via signature (1,1) remains the lone hard ACT (Mathlib-bearer-less
+   place-count for `AdjoinRoot (X³-2)`).
+2. Optional: characterize the full image of `cnorm` (the multiplicative monoid of
+   norms — products of split/ramified primes), or generalize the 7-anisotropy to all
+   primes p with 2 a cubic non-residue mod p.
