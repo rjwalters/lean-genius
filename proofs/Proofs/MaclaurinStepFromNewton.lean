@@ -176,7 +176,6 @@ theorem rpow_cross {a b : ℝ} {s t : ℕ} (ha : 0 < a) (hb : 0 < b)
     rw [← Real.rpow_natCast a t, ← Real.rpow_mul ha.le]
     congr 1
     field_simp
-    ring
   rwa [lhs, rhs] at key
 
 /-! ## Main result: the Maclaurin step, derived from Newton -/
@@ -189,10 +188,7 @@ theorem maclaurin_step_pos {n : ℕ} (k : ℕ) (hk : 0 < k) (hkn : k + 1 ≤ n)
   have hcore := maclaurin_core x hx k hkn
   have hp : 0 < normElemSymm k x := normElemSymm_pos k (by omega) x hx
   have hq : 0 < normElemSymm (k + 1) x := normElemSymm_pos (k + 1) (by omega) x hx
-  have hmk : maclaurinMean k x = normElemSymm k x ^ ((1 : ℝ) / k) := rfl
-  have hmk1 : maclaurinMean (k + 1) x
-      = normElemSymm (k + 1) x ^ ((1 : ℝ) / (k + 1)) := rfl
-  rw [hmk, hmk1]
-  exact rpow_cross hp hq hk (by omega) hcore
+  have hstep := rpow_cross hp hq hk (Nat.succ_pos k) hcore
+  simpa only [maclaurinMean, normElemSymm] using hstep
 
 end MaclaurinStepFromNewton
