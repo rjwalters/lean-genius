@@ -2327,4 +2327,76 @@ theorem continuant_replicate_one_append_ne_zero (j : ℕ) (ks : List ℤ)
   clear_value r
   interval_cases r <;> simp <;> omega
 
+/-! ## §24: Quotient-weighted growth — large quotients force short runs (toward `O(n/d)`)
+
+§17's `continuant_ge_length` shows an all-`≥ 2` quotient list of length `m` carries a
+continuant `≥ m + 1`: linear growth with **slope `1`**.  That suffices for a *crude*
+run-length cap `m ≤ n - 1` once one knows the continuant is `≤ n` (the order-`n` Farey
+ceiling), but it ignores the *size* of the quotients.  The open density constant
+(van Doorn 2025, `c ∈ [1/12, 1/4]`) is governed by how the run length trades off against
+the quotient floor `d`: a run whose every quotient is `≥ d` should be *shorter*, length
+`O(n/d)`, because each large step inflates the denominator faster.
+
+This section supplies the metric half of that trade-off: on the regime with every entry
+`≥ d` (`d ≥ 2`) the continuant grows with **slope `d - 1`**,
+
+  `Continuant ks ≥ (d - 1)·|ks| + 1`,
+
+strictly sharpening §17 (which is the `d = 2` instance).  The induction is the §17 one
+re-run with the quotient floor carried through: `K(k :: rest) = k·K(rest) − secondCont rest`
+with `k ≥ d` and the §17 invariant `secondCont rest + 1 ≤ K(rest)` (integrality of the
+strict domination `secondCont < K`) gives `K(k :: rest) ≥ (d-1)·K(rest) + 1`, and feeding
+the inductive bound `K(rest) ≥ (d-1)·|rest| + 1` closes the slope-`(d-1)` step.
+
+The corollary `continuant_run_length_le` reads off the run-length cap: **any** continuant
+upper bound `N` on such a run forces `(d - 1)·|ks| + 1 ≤ N`, i.e. `|ks| ≤ (N - 1)/(d - 1)`.
+Pairing this with a concrete order-`n` continuant ceiling `Continuant ks ≤ n` (the
+remaining ingredient, the order-cap side) yields the targeted `|ks| ≤ (n - 1)/(d - 1)
+= O(n/d)` run-length bound — the first genuinely `d`-sensitive cap, sharper than the
+slope-`1` `m ≤ n - 1`.  **Honest boundary:** this is the multiplicative-gap (metric) half;
+turning it into a density statement still needs the order-cap continuant ceiling and the
+count of admissible lists, the open `1/12`–`1/4` step. -/
+
+/-- **Quotient-weighted linear growth.**  On the large-quotient regime with every entry
+`≥ d` (`d ≥ 2`), the continuant grows with slope `d - 1`: `(d-1)·|ks| + 1 ≤ Continuant ks`.
+The `d = 2` case is §17's `continuant_ge_length`. -/
+theorem continuant_ge_length_weighted (d : ℤ) (hd : 2 ≤ d) (ks : List ℤ)
+    (h : ∀ k ∈ ks, d ≤ k) :
+    (d - 1) * (ks.length : ℤ) + 1 ≤ Continuant ks := by
+  induction ks with
+  | nil => simp [Continuant]
+  | cons k rest ih =>
+      have hrest : ∀ j ∈ rest, d ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+      have hk : d ≤ k := h k (by simp)
+      have hrest2 : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => le_trans hd (hrest j hj)
+      obtain ⟨hs0, hsK⟩ := secondCont_lt_continuant rest hrest2
+      have hsK' : secondCont rest + 1 ≤ Continuant rest := Int.lt_iff_add_one_le.mp hsK
+      have hIH := ih hrest
+      have hLnn : (0 : ℤ) ≤ (rest.length : ℤ) := Int.natCast_nonneg _
+      have hKnn : (0 : ℤ) ≤ Continuant rest := by nlinarith [hIH, hLnn, hd]
+      rw [continuant_cons]
+      simp only [List.length_cons, Nat.cast_add, Nat.cast_one]
+      nlinarith [hsK', hIH, hk, hd, hs0, hLnn, hKnn,
+        mul_nonneg (show (0 : ℤ) ≤ k - d by linarith) hKnn,
+        mul_nonneg (show (0 : ℤ) ≤ d - 1 by linarith)
+          (show (0 : ℤ) ≤ Continuant rest - ((d - 1) * (rest.length : ℤ) + 1) by linarith),
+        mul_nonneg (mul_nonneg (show (0 : ℤ) ≤ d - 2 by linarith)
+          (show (0 : ℤ) ≤ d - 1 by linarith)) hLnn]
+
+/-- **First run-length upper bound.**  Any continuant upper bound `N` on a large-quotient
+run with every entry `≥ d` caps its length: `(d-1)·|ks| + 1 ≤ N`, hence `|ks| ≤ (N-1)/(d-1)`.
+With the order-`n` Farey ceiling `Continuant ks ≤ n` this is the targeted `O(n/d)` cap — the
+first `d`-sensitive run-length bound, sharper than the slope-`1` `m ≤ n - 1`. -/
+theorem continuant_run_length_le {d N : ℤ} (hd : 2 ≤ d) (ks : List ℤ)
+    (h : ∀ k ∈ ks, d ≤ k) (hcap : Continuant ks ≤ N) :
+    (d - 1) * (ks.length : ℤ) + 1 ≤ N :=
+  le_trans (continuant_ge_length_weighted d hd ks h) hcap
+
+/-- §17's `continuant_ge_length` is exactly the `d = 2` instance of the weighted bound,
+confirming §24 strictly generalises it. -/
+theorem continuant_ge_length_eq_weighted_two (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    (ks.length : ℤ) + 1 ≤ Continuant ks := by
+  have := continuant_ge_length_weighted 2 (le_refl 2) ks h
+  simpa using this
+
 end Erdos1005OQ02
