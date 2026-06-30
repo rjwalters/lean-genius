@@ -1,6 +1,8 @@
 import Mathlib.Algebra.Polynomial.HasseDeriv
 import Mathlib.Algebra.Polynomial.Derivative
 import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.Polynomial.Div
 import Mathlib.Algebra.CharP.Basic
 import Mathlib.Data.Nat.Prime.Factorial
 import Mathlib.Tactic
@@ -55,6 +57,24 @@ derivative loses information is therefore governed entirely by whether `(k! : F)
   family.  The Hasse test returns the true multiplicity `p^e`, while *every* positive-order
   ordinary derivative of `X^{p^e}` vanishes — so the ordinary test certifies multiplicity `≥ k`
   at `0` for every `k`, wildly overcounting the true value `p^e`.
+
+## The reliability profile (Part IV)
+
+Parts II–III locate where the ordinary test goes *blind*; Part IV proves the positive
+complement — the exact range in which it is a *correct* multiplicity criterion.
+
+* `sub_pow_dvd_iff_hasseDeriv_eval_eq_zero` : the **Hasse-derivative multiplicity criterion**
+  `(X − a)ᵏ ∣ f ↔ ∀ j < k, (hasseDeriv j f)(a) = 0`, valid over *any* commutative ring.
+  Mathlib has the pieces (`taylor`, `taylor_coeff`, `X_pow_dvd_iff`) but not this assembled
+  criterion; it is obtained by transporting `Xᵏ ∣ taylor a f` back along the Taylor shift
+  `X ↦ X + a` (an `AlgEquiv`).  This is the characteristic-free engine.
+* `ordinary_derivative_test_valid_range` : **the ordinary test is correct for multiplicities
+  up to `p`** — over a characteristic-`p` field, for `m ≤ p`,
+  `(X − a)ᵐ ∣ f ↔ ∀ j < m, (derivative^{(j)} f)(a) = 0`.  Below the threshold each `(j! : F)`
+  is a unit, so the ordinary and Hasse tests agree termwise.
+* `ordinary_derivative_test_sharp` : **the bound `m ≤ p` is sharp** — at `m = p + 1` the test
+  already lies, certifying multiplicity `≥ p + 1` for `X^p` at `0` (all its derivatives vanish)
+  even though `X^{p+1} ∤ X^p`.  So `m ≤ p` is *exactly* the reliable range.
 
 All results are `0`-axiom, `0`-sorry, and hold over any characteristic-`p` field (every `𝔽_q`).
 -/
@@ -146,5 +166,115 @@ theorem failure_profile_X_pow [Field F] [CharP F p] (hp : p.Prime) {e : ℕ} (he
     rootMultiplicity (0 : F) (X ^ (p ^ e)) = p ^ e ∧
       ∀ j, 1 ≤ j → (derivative^[j]) (X ^ (p ^ e) : F[X]) = 0 :=
   ⟨rootMultiplicity_X_pow _, fun _ hj => iterate_derivative_X_pow_char_eq_zero hp he hj⟩
+
+/- ============================================================
+   Part IV — The reliability profile: the ordinary test is a *correct*
+   multiplicity criterion exactly in the range `m ≤ p`
+   ============================================================
+
+   Parts II–III pinned down where the ordinary-derivative test goes *blind*
+   (orders `≥ p`).  Here we establish the positive companion: in the range
+   `m ≤ p` the ordinary test is a genuine, correct multiplicity criterion, and
+   this range is sharp.  The engine is a characteristic-free bridge — the
+   *Hasse-derivative multiplicity criterion*, which Mathlib does not record in
+   this form — obtained from `Polynomial.taylor` (the shift `X ↦ X + a`, an
+   `AlgEquiv`) and `Polynomial.taylor_coeff` (`(taylor a f).coeff k =
+   (hasseDeriv k f).eval a`). -/
+
+/-- `taylor a` sends the linear factor `X - C a` to `X` (it is the shift
+`X ↦ X + a`). -/
+private theorem taylor_X_sub_C_eq [CommRing F] (a : F) :
+    taylor a (X - C a : F[X]) = X := by
+  rw [map_sub, taylor_X, taylor_C, add_sub_cancel_right]
+
+/-- `taylor (-a)` sends `X` back to the linear factor `X - C a` (the inverse
+shift). -/
+private theorem taylor_neg_X_eq [CommRing F] (a : F) :
+    taylor (-a) (X : F[X]) = X - C a := by
+  rw [taylor_X, map_neg, ← sub_eq_add_neg]
+
+/-- **Linear-factor divisibility transports to `X`-divisibility under the Taylor
+shift.** Since `taylor a` is the algebra automorphism `X ↦ X + a` carrying
+`X - C a` to `X`, a polynomial `f` is divisible by `(X - C a)^n` iff its Taylor
+expansion at `a` is divisible by `X^n`. -/
+theorem sub_pow_dvd_iff_X_pow_dvd_taylor [CommRing F] (a : F) (n : ℕ) (f : F[X]) :
+    (X - C a) ^ n ∣ f ↔ X ^ n ∣ taylor a f := by
+  constructor
+  · intro h
+    have h2 := map_dvd (taylorAlgHom a) h
+    simpa only [taylorAlgHom_apply, taylor_pow, taylor_X_sub_C_eq] using h2
+  · intro h
+    have h2 := map_dvd (taylorAlgHom (-a)) h
+    simpa only [taylorAlgHom_apply, taylor_pow, taylor_neg_X_eq, taylor_taylor,
+      neg_add_cancel, taylor_zero] using h2
+
+/-- **Hasse-derivative multiplicity criterion (characteristic-free).** A
+polynomial `f` over any commutative ring is divisible by `(X - C a)^n` **iff**
+all Hasse derivatives of order `< n` vanish at `a`:
+
+  `(X - C a)^n ∣ f  ↔  ∀ j < n, (hasseDeriv j f).eval a = 0`.
+
+This is the divided-power (Hasse) form of the factor-multiplicity theorem and
+the correct replacement for the ordinary-derivative test in every
+characteristic.  It is the engine of the reliability range below. -/
+theorem sub_pow_dvd_iff_hasseDeriv_eval_eq_zero [CommRing F] (a : F) (n : ℕ) (f : F[X]) :
+    (X - C a) ^ n ∣ f ↔ ∀ j < n, (hasseDeriv j f).eval a = 0 := by
+  rw [sub_pow_dvd_iff_X_pow_dvd_taylor, X_pow_dvd_iff]
+  simp_rw [taylor_coeff]
+
+/-- **Evaluation form of the scaling identity.** Evaluating the ordinary
+derivative at a point scales the Hasse-derivative value by `(k! : F)`:
+`(derivative^[k] f).eval a = (k! : F) * (hasseDeriv k f).eval a`. -/
+theorem iterate_derivative_eval_eq [CommRing F] (k : ℕ) (f : F[X]) (a : F) :
+    (derivative^[k] f).eval a = (k ! : F) * (hasseDeriv k f).eval a := by
+  rw [iterate_derivative_eq_smul_hasseDeriv, smul_eq_C_mul, eval_mul, eval_C]
+
+/-- **The reliability range: `m ≤ p`.** Over a field of characteristic `p`, for
+every order bound `m ≤ p` the *ordinary*-derivative test is a correct
+multiplicity criterion:
+
+  `(X - C a)^m ∣ f  ↔  ∀ j < m, (derivative^[j] f).eval a = 0`.
+
+This is the positive complement to Part II's blindness result: below the
+factorial threshold each `(j! : F)` (`j < m ≤ p`) is a unit, so the ordinary
+derivative vanishes at `a` exactly when the Hasse derivative does, and the
+Hasse criterion (`sub_pow_dvd_iff_hasseDeriv_eval_eq_zero`) closes the loop.
+The ordinary-derivative multiplicity test is therefore *reliable for all
+multiplicities up to `p`*. -/
+theorem ordinary_derivative_test_valid_range [Field F] [CharP F p] (hp : p.Prime)
+    {m : ℕ} (hm : m ≤ p) (a : F) (f : F[X]) :
+    (X - C a) ^ m ∣ f ↔ ∀ j < m, (derivative^[j] f).eval a = 0 := by
+  rw [sub_pow_dvd_iff_hasseDeriv_eval_eq_zero]
+  refine forall_congr' fun j => imp_congr_right fun hjm => ?_
+  have hjp : j < p := hjm.trans_le hm
+  have hu : (j ! : F) ≠ 0 := by
+    rw [Ne, factorial_cast_eq_zero_iff hp]; omega
+  rw [iterate_derivative_eval_eq]
+  constructor
+  · intro h; rw [h, mul_zero]
+  · intro h
+    rcases mul_eq_zero.mp h with h' | h'
+    · exact absurd h' hu
+    · exact h'
+
+/-- **Sharpness of the reliability range.** The bound `m ≤ p` in
+`ordinary_derivative_test_valid_range` is best possible: at order `m = p + 1`
+the ordinary test already fails.  Witness: `f = X^p` over a characteristic-`p`
+field.  Every ordinary derivative of order `≤ p` vanishes at `0` (the first
+already does, as `p · X^{p-1} = 0`), so the ordinary test *certifies*
+multiplicity `≥ p + 1` at `0`; yet `(X - C 0)^{p+1} = X^{p+1}` does **not**
+divide `X^p`.  Thus the criterion breaks at exactly one step past the
+threshold. -/
+theorem ordinary_derivative_test_sharp [Field F] [CharP F p] (hp : p.Prime) :
+    (∀ j < p + 1, (derivative^[j] (X ^ p : F[X])).eval 0 = 0) ∧
+      ¬ (X - C (0 : F)) ^ (p + 1) ∣ (X ^ p : F[X]) := by
+  refine ⟨fun j hj => ?_, ?_⟩
+  · rcases Nat.eq_zero_or_pos j with rfl | hj0
+    · simp [zero_pow hp.pos.ne']
+    · have hpe : (X ^ p : F[X]) = X ^ (p ^ 1) := by rw [pow_one]
+      rw [hpe, iterate_derivative_X_pow_char_eq_zero hp le_rfl hj0, eval_zero]
+  · rw [C_0, sub_zero, X_pow_dvd_iff]
+    push_neg
+    exact ⟨p, by omega, by simp [coeff_X_pow]⟩
 
 end FactorRemainderHasseDerivativeFq
