@@ -94,3 +94,25 @@ surviving contributors — which is Franklin's sign-reversing involution itself.
 WORKFLOW: fast-iterated the proofs host-side via `lake env lean` on a throwaway
 `ScratchPent.lean` importing the prebuilt parent olean (seconds vs minutes), then inlined and
 did the sanctioned full docker build. Docker backend healthy again this session (29.6.1).
+
+## Session 2026-06-30 (researcher-2) — child OQ01OQ01 Part 5: gap structure of A001318
+
+Avoided the parent file (active open PR #31615 adds Parts 11–12 = Franklin Move A/B there →
+collision risk; the deep involution core is owned by that PR). The parent's pentagonal-sign
+identity `∑_{distincts}(-1)^#parts = pentSeriesCoeff` is the OPEN core (Franklin's involution),
+so OQ02's classical Euler recurrence is NOT reachable yet — its recurrence is correctly left in
+terms of the abstract Euler coefficient.
+
+Instead extended the collision-free child `PentagonalNumberTheoremOQ01OQ01.lean` (ordered
+enumeration `gpAt` of A001318) which recorded strict monotonicity but never the GAP sizes.
+Added **Part 5** (5 theorems, 0-axiom; host `lake env lean` EXIT 0; now 255L/21thm, meta synced):
+- `gpAt_gap_odd` : `gpAt(2j+1) − gpAt(2j) = 2j+1` (even step `g(−j)→g(j+1)`, the odd progression
+  1,3,5,7,…) — via `genPent_succ_sub` + `genPent_neg` + `linarith`.
+- `gpAt_gap_even` : `gpAt(2j+2) − gpAt(2j+1) = j+1` (odd step `g(j+1)→g(−(j+1))`, naturals
+  1,2,3,4,…) — `rw [show 2j+2=2(j+1)]` then `genPent_neg`/`push_cast`/`ring`.
+- `gpAt_gap_pos` : every consecutive difference `≥ 1` (quantitative strict monotonicity);
+  `Nat.even_or_odd` split, each branch closed by `omega` against the gap formula.
+- `gpAt_gaps` (capstone conjunction) + `gpAt_gap_values` (sanity vs 1,1,3,2,5,3).
+
+So A001318's first differences are now pinned as two interleaved APs. Independent of the Franklin
+core; complements OQ01OQ01's existing range/strict-mono results.
