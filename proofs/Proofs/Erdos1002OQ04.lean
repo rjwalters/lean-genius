@@ -236,4 +236,125 @@ theorem innerSum_unbounded (M : ℝ) :
   obtain ⟨α, hirr, hpos, n, hn⟩ := innerSum_unbounded_near_rational 0 1 (le_refl 1) (by decide) M
   exact ⟨α, hirr, by simpa using hpos, n, hn⟩
 
+/-! ## A single fixed Liouville number with unbounded inner sum (capstone)
+
+The statements above are of the form "for every height `M` there is *some*
+irrational `α` with `S(α, n) > M`".  That leaves open whether the unboundedness
+can be realised by one *fixed* number, or only by a family that drifts with `M`.
+The capstone closes this gap: the concrete Liouville constant
+`L = Σ_{i} 1/2^{i!}` (Mathlib's `liouvilleNumber 2`) has `S(L, ·)` unbounded.
+
+The mechanism is exactly the perturbation lemma run along `L`'s own convergents.
+The `k`-th partial sum is a dyadic rational `P_k / 2^{k!}` (`partialSum_eq_rat`)
+lying strictly *below* `L` (`partialSum_add_remainder` + `remainder_pos`, the
+one-sidedness `L > P_k/2^{k!}`), and the tail is super-small:
+`L − P_k/2^{k!} = remainder 2 k < 1/(2^{k!})^k` (`remainder_lt`).  Writing the
+convergent in lowest terms `p'/q'` (so `q' ≤ 2^{k!}`) and taking `N = 2^{k!}`,
+the perturbation budget is met for every `k ≥ 5`:
+
+    (L − p'/q')·(N q')² < (1/(2^{k!})^k)·(2^{k!})⁴ = (2^{k!})^{4−k} ≤ 1,
+
+so `innerSum_perturb` pins `S(L, N q') > N/2 − 1 = 2^{k!}/2 − 1`, which tends to
+`∞` with `k`.  Because the same fixed `L` works for every `k`, its inner sum is
+unbounded — the family in `innerSum_unbounded` can be collapsed to one number. -/
+
+open LiouvilleNumber in
+/-- **Per-`k` spike along the convergents of `L = liouvilleNumber 2`.**  For every
+`k ≥ 5` there is an `n` with `S(L, n) > 2^{k!}/2 − 1`.  Feeding the reduced
+convergent `p'/q'` of `L` (denominator `≤ 2^{k!}`) and height parameter
+`N = 2^{k!}` into `innerSum_perturb`. -/
+private theorem liouville_spike (k : ℕ) (hk : 5 ≤ k) :
+    ∃ n : ℕ, (2 : ℝ) ^ k.factorial / 2 - 1 < innerSum (liouvilleNumber ((2 : ℕ) : ℝ)) n := by
+  set c : ℝ := ((2 : ℕ) : ℝ) with hc
+  set α : ℝ := liouvilleNumber c with hα
+  have hm1 : (1 : ℝ) < c := by rw [hc]; norm_num
+  have hm2 : (2 : ℝ) ≤ c := by rw [hc]; norm_num
+  -- the convergent `partialSum c k = P / 2^{k!}`.
+  obtain ⟨P, hP⟩ := partialSum_eq_rat (show (0 : ℕ) < 2 by norm_num) k
+  set Q : ℕ := 2 ^ k.factorial with hQdef
+  have hQpos : 0 < Q := by rw [hQdef]; positivity
+  -- reduce `P/Q` to lowest terms `p'/q'`.
+  set g : ℕ := Nat.gcd P Q with hgdef
+  have hg : 0 < g := Nat.gcd_pos_of_pos_right P hQpos
+  have hg0 : (g : ℝ) ≠ 0 := by exact_mod_cast hg.ne'
+  have hQ0 : (Q : ℝ) ≠ 0 := by exact_mod_cast hQpos.ne'
+  set p' : ℕ := P / g with hp'def
+  set q' : ℕ := Q / g with hq'def
+  have hgP : g ∣ P := Nat.gcd_dvd_left P Q
+  have hgQ : g ∣ Q := Nat.gcd_dvd_right P Q
+  have hcop : Nat.gcd p' q' = 1 := Nat.coprime_div_gcd_div_gcd hg
+  have hqle : q' ≤ Q := Nat.div_le_self Q g
+  have hq'pos : 0 < q' := by
+    rw [hq'def]; exact Nat.div_pos (Nat.le_of_dvd hQpos hgQ) hg
+  -- `p'/q' = P/Q` as reals.
+  have hpq : (p' : ℝ) / (q' : ℝ) = (P : ℝ) / (Q : ℝ) := by
+    rw [hp'def, hq'def, Nat.cast_div hgP hg0, Nat.cast_div hgQ hg0]
+    field_simp
+  -- so the convergent equals `p'/q'`.
+  have hps : partialSum c k = (p' : ℝ) / (q' : ℝ) := by rw [hP, ← hpq]
+  -- one-sidedness and the exact gap `= remainder`.
+  have hsum := partialSum_add_remainder hm1 k
+  have hrempos := remainder_pos hm1 k
+  have hlo : (p' : ℝ) / (q' : ℝ) < α := by rw [← hps, hα]; linarith
+  have hαeq : α - (p' : ℝ) / (q' : ℝ) = remainder c k := by
+    rw [← hps, hα, ← hsum]; ring
+  -- `(c^{k!}) = Q` as reals.
+  have hQc : c ^ k.factorial = (Q : ℝ) := by rw [hc, hQdef]; push_cast; ring
+  -- the perturbation budget `hhi`.
+  have hhi : (α - (p' : ℝ) / (q' : ℝ)) * (((Q * q' : ℕ) : ℝ)) ^ 2 < 1 := by
+    rw [hαeq]
+    have hRlt : remainder c k < 1 / (Q : ℝ) ^ k := by
+      have h := remainder_lt k hm2
+      rwa [hQc] at h
+    have hRpos : (0 : ℝ) ≤ remainder c k := hrempos.le
+    have hX0 : (0 : ℝ) ≤ ((Q * q' : ℕ) : ℝ) := by positivity
+    have hXle : ((Q * q' : ℕ) : ℝ) ≤ (Q : ℝ) ^ 2 := by
+      have hnat : Q * q' ≤ Q * Q := Nat.mul_le_mul_left Q hqle
+      calc ((Q * q' : ℕ) : ℝ) ≤ ((Q * Q : ℕ) : ℝ) := by exact_mod_cast hnat
+        _ = (Q : ℝ) ^ 2 := by push_cast; ring
+    have hX2 : ((Q * q' : ℕ) : ℝ) ^ 2 ≤ (Q : ℝ) ^ 4 := by
+      calc ((Q * q' : ℕ) : ℝ) ^ 2 ≤ ((Q : ℝ) ^ 2) ^ 2 := by gcongr
+        _ = (Q : ℝ) ^ 4 := by ring
+    have hQ1 : (1 : ℝ) ≤ (Q : ℝ) := by exact_mod_cast hQpos
+    have hQkpos : (0 : ℝ) < (Q : ℝ) ^ k := by positivity
+    have hQk : (Q : ℝ) ^ 4 ≤ (Q : ℝ) ^ k := pow_le_pow_right₀ hQ1 (by omega)
+    calc remainder c k * ((Q * q' : ℕ) : ℝ) ^ 2
+        ≤ remainder c k * (Q : ℝ) ^ 4 := by
+          exact mul_le_mul_of_nonneg_left hX2 hRpos
+      _ < (1 / (Q : ℝ) ^ k) * (Q : ℝ) ^ 4 :=
+          mul_lt_mul_of_pos_right hRlt (by positivity)
+      _ = (Q : ℝ) ^ 4 / (Q : ℝ) ^ k := by ring
+      _ ≤ 1 := by rw [div_le_one hQkpos]; exact hQk
+  -- apply the perturbation lemma at `N = Q`.
+  obtain ⟨hlow, _⟩ := innerSum_perturb p' q' Q hq'pos hcop hQpos α hlo hhi
+  refine ⟨Q * q', ?_⟩
+  have : (Q : ℝ) = (2 : ℝ) ^ k.factorial := by rw [hQdef]; push_cast; ring
+  rw [this] at hlow
+  exact hlow
+
+/-- **Capstone: a single fixed Liouville number has unbounded inner sum.**  The
+Liouville constant `L = Σ_i 1/2^{i!}` is irrational and satisfies: for every
+height `M` there is an `n` with `S(L, n) > M`.  This strengthens
+`innerSum_unbounded` from "for every `M` there is *some* irrational" to "there is
+*one* irrational that works for every `M`" — the inner sum is unbounded as a
+function of `n` for this fixed `L`.  This is the natural capstone of the Liouville
+side of Erdős #1002: super-approximation by a single number forces the spikes. -/
+theorem innerSum_unbounded_single :
+    ∃ α : ℝ, Irrational α ∧ ∀ M : ℝ, ∃ n : ℕ, M < innerSum α n := by
+  refine ⟨liouvilleNumber ((2 : ℕ) : ℝ), (liouville_liouvilleNumber (le_refl (2 : ℕ))).irrational,
+    fun M => ?_⟩
+  -- pick `k ≥ 5` with `M < 2^{k!}/2 − 1`.
+  obtain ⟨t, ht⟩ := exists_nat_gt (2 * (M + 1))
+  set k : ℕ := max 5 t with hkdef
+  have hk5 : 5 ≤ k := le_max_left _ _
+  have htk : t ≤ k := le_max_right _ _
+  have hheight : M < (2 : ℝ) ^ k.factorial / 2 - 1 := by
+    have h1 : (t : ℝ) ≤ (k.factorial : ℝ) := by
+      exact_mod_cast htk.trans (Nat.self_le_factorial k)
+    have h2 : (k.factorial : ℝ) < (2 : ℝ) ^ k.factorial := by
+      exact_mod_cast Nat.lt_two_pow_self
+    nlinarith [ht, h1, h2]
+  obtain ⟨n, hn⟩ := liouville_spike k hk5
+  exact ⟨n, lt_trans hheight hn⟩
+
 end Erdos1002OQ04
