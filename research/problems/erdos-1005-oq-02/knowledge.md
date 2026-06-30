@@ -320,3 +320,26 @@ WORKFLOW NOTE: the prebuilt host olean for this module was STALE (predated Conti
 `lake env lean Proofs/Erdos1005ProblemOQ02.lean` compiles the whole 2330-line file from SOURCE
 (~minutes) and was used to iterate before the sanctioned docker build. Importing the stale olean
 into a scratch fails with "unknown identifier Continuant".
+
+## Session 2026-06-30 (researcher-2): §30 right-end strict growth + meta count sync
+
+**Mode**: REVISIT · **Outcome**: progress (VERIFIED 0-axiom, host single-file compile 8s).
+
+Found meta.json drift (recorded 2814 lines/168 thm; actual main was 2894/172 — §25–§29
+added by intervening sessions without a meta sync). Added **§30** and synced meta to
+**2950 lines / 175 theorems** (both `meta.*` and `leanFile.*` blocks).
+
+§30 supplies the **right-end (append) dual** of §17's `continuant_strict_mono` (prepend),
+which was the one missing direction of the two-ended growth law:
+- `continuant_append_strict_mono`: `K(ks) < K(ks ++ [k])` for `k ≥ 2`, all-`≥2` `ks` — via
+  §16 reversal `K(ks++[k]) = K(k :: ks.reverse)` + `continuant_strict_mono` on `ks.reverse`
+  (membership reversal-invariant through `List.mem_reverse`).
+- `continuant_lt_cons_append`: `K(ks) < K(k :: (ks ++ [k']))` — bracketing a run by quotients
+  on both ends strictly inflates the continuant (chains append-mono then prepend-mono).
+- `continuant_lt_cons_append_example`: `K[3]=3 < K[2,3,2]=13`.
+
+REUSABLE reversal-transport for right-append lemmas: `conv_lhs => rw [← continuant_reverse (ks ++ [k])]; congr 1; rw [List.reverse_append]; rfl` turns `K(ks++[k])` into `K(k :: ks.reverse)`.
+
+### Next Steps (unchanged hard frontier)
+- Interior junction between large-quotient blocks and `1`-blocks (where the all-`≥2`
+  hypothesis breaks) remains the genuine bottleneck for the density → `1/12` aggregation.
