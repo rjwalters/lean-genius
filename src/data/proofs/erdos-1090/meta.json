@@ -62,12 +62,14 @@
       "erdos_1090_affirmative, erdos_1090, erdos_1090_summary: main results, now axiom-free",
       "hasRamseyProperty_card_ge, ramsey_lower_bound: size lower bounds",
       "SylvesterGallai, HellyProperty, Erdos1090Generalized, Erdos1090HigherDim: related/generalized statements",
-      "hasRamseyProperty_mono / hasRamseyProperty_antitone (0-axiom): the Ramsey property is upward-closed under superset (A ⊆ B) and downward-closed in k (k' ≤ k), the structural monotonicities that make ramseyNumber k a well-defined threshold"
+      "hasRamseyProperty_mono / hasRamseyProperty_antitone (0-axiom): the Ramsey property is upward-closed under superset (A ⊆ B) and downward-closed in k (k' ≤ k), the structural monotonicities that make ramseyNumber k a well-defined threshold",
+      "ramsey_construction_general: the Hales–Jewett generic-projection construction over an ARBITRARY finite color type C (not just Bool) — for k≥3, a finite A⊂ℝ² with k monochromatic collinear points under any c:Point→C",
+      "erdos1090_generalized_affirmative: proves the previously-unproved r-coloring version Erdos1090Generalized k r, by specializing ramsey_construction_general to C=Fin r (multicolor Hales–Jewett needs no extra hypothesis on r)"
     ],
     "axiomCount": 0,
-    "lineCount": 513,
+    "lineCount": 614,
     "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
-    "theoremCount": 11,
+    "theoremCount": 13,
     "definitionCount": 17
   },
   "overview": {

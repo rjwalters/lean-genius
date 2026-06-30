@@ -250,6 +250,100 @@ theorem erdos1090_construction (k : ℕ) (hk : k ≥ 3) :
     obtain ⟨a', ha'⟩ := hq
     rw [← ha, ← ha', hcol' a, hcol' a']
 
+/-- **Erdős #1090 — general finite alphabet.**  The same generic-projection argument
+works verbatim for *any* finite color type `C`, not just `Bool`: for every `k ≥ 3` there
+is a finite `A ⊂ ℝ²` such that every coloring `c : Point → C` admits `k` monochromatic
+collinear points.  The only ingredient that referenced the number of colors was the
+Hales–Jewett input `exists_mono_in_high_dimension (Fin k) C`, which holds for any
+`[Finite C]`.  Specialising `C := Bool` recovers `erdos1090_construction`; `C := Fin r`
+gives the `r`-coloring generalisation `erdos1090_generalized_affirmative`. -/
+theorem ramsey_construction_general (C : Type*) [Finite C] (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, ∀ c : Point → C,
+      ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k ∧
+        ∀ p q : Point, p ∈ S → q ∈ S → c p = c q := by
+  classical
+  haveI : NeZero k := ⟨by omega⟩
+  -- Hales–Jewett: a finite index type `ι` controlling every `C`-coloring of `[k]^ι`.
+  obtain ⟨ι, ιfin, hHJ⟩ :=
+    Combinatorics.Line.exists_mono_in_high_dimension (Fin k) C
+  haveI : Fintype ι := ιfin
+  set emb : Fin k → ℝ := fun a => (a.val : ℝ) with hemb
+  set w : ι → ℝ := fun j => ((Fintype.equivFin ι j).val : ℝ) with hw
+  set v : ι → Point := fun j => !₂[1, w j] with hv
+  set φ : (ι → Fin k) → Point := fun p => ∑ j, emb (p j) • v j with hφ
+  refine ⟨Finset.image φ Finset.univ, ?_⟩
+  intro c
+  obtain ⟨l, col, hcol⟩ := hHJ (fun p => c (φ p))
+  have hcol' : ∀ a : Fin k, c (φ (l a)) = col := fun a => hcol a
+  set dir : Point := ∑ j, (if l.idxFun j = none then (1 : ℝ) else 0) • v j with hdir
+  have key : ∀ (a : Fin k) (j : ι),
+      emb (l a j) = emb (l 0 j) + emb a * (if l.idxFun j = none then (1 : ℝ) else 0) := by
+    intro a j
+    by_cases h : l.idxFun j = none
+    · rw [l.apply_none a j h, l.apply_none 0 j h, if_pos h]
+      simp [hemb]
+    · obtain ⟨b, hb⟩ := Option.ne_none_iff_exists'.mp h
+      simp only [l.apply_some hb, if_neg h]
+      simp [hemb]
+  have hline : ∀ a : Fin k, φ (l a) = φ (l 0) + emb a • dir := by
+    intro a
+    simp only [hφ, hdir, Finset.smul_sum]
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [key a j, add_smul, mul_smul]
+  have hofLp : (WithLp.ofLp dir) (0 : Fin 2)
+      = ∑ j, (if l.idxFun j = none then (1 : ℝ) else 0) := by
+    simp only [hdir, hv, WithLp.ofLp_sum, WithLp.ofLp_smul,
+      Finset.sum_apply, Pi.smul_apply, Matrix.cons_val_zero, smul_eq_mul, mul_one]
+  have hdir_ne : dir ≠ 0 := by
+    intro h0
+    have hpos : (0 : ℝ) < (WithLp.ofLp dir) (0 : Fin 2) := by
+      rw [hofLp]
+      obtain ⟨j0, hj0⟩ := l.proper
+      calc (0 : ℝ) < 1 := one_pos
+        _ = (if l.idxFun j0 = none then (1 : ℝ) else 0) := (if_pos hj0).symm
+        _ ≤ ∑ j, (if l.idxFun j = none then (1 : ℝ) else 0) :=
+            Finset.single_le_sum
+              (f := fun j => if l.idxFun j = none then (1 : ℝ) else 0)
+              (fun j _ => by
+                show (0 : ℝ) ≤ if l.idxFun j = none then (1 : ℝ) else 0
+                split_ifs <;> norm_num)
+              (Finset.mem_univ j0)
+    rw [h0] at hpos
+    simp at hpos
+  refine ⟨Finset.image (fun a : Fin k => φ (l a)) Finset.univ, ?_, ?_, ?_⟩
+  · intro x hx
+    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hx ⊢
+    obtain ⟨a, ha⟩ := hx
+    exact ⟨l a, ha⟩
+  · refine ⟨?_, ?_⟩
+    · have hinj : Function.Injective (fun a : Fin k => φ (l a)) := by
+        intro a a' haa'
+        simp only at haa'
+        rw [hline a, hline a'] at haa'
+        have hsm : emb a • dir = emb a' • dir := add_left_cancel haa'
+        have hee : emb a = emb a' := by
+          by_contra hne
+          have h2 : (emb a - emb a') • dir = 0 := by rw [sub_smul, hsm, sub_self]
+          rcases smul_eq_zero.mp h2 with h | h
+          · exact hne (sub_eq_zero.mp h)
+          · exact hdir_ne h
+        have : a.val = a'.val := by
+          have := hee; simp only [hemb] at this; exact Nat.cast_injective this
+        exact Fin.ext this
+      rw [Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]
+    · refine ⟨⟨φ (l 0), dir, hdir_ne⟩, ?_⟩
+      intro p hp
+      simp only [Finset.mem_image, Finset.mem_univ, true_and] at hp
+      obtain ⟨a, ha⟩ := hp
+      exact ⟨emb a, by rw [← ha, hline a]⟩
+  · intro p q hp hq
+    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hp hq
+    obtain ⟨a, ha⟩ := hp
+    obtain ⟨a', ha'⟩ := hq
+    rw [← ha, ← ha', hcol' a, hcol' a']
+
 /-
 ## Part IV: Graham-Selfridge for k = 3
 -/
@@ -464,10 +558,17 @@ def Erdos1090Generalized (k r : ℕ) : Prop :=
     ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k ∧
       ∀ p ∈ S, ∀ q ∈ S, c p = c q
 
-/-
-**Generalized Version Holds:**
-By Hales-Jewett for r colors, the generalized version also holds.
--/
+/-- **Erdős #1090 — `r`-coloring generalisation, affirmative.**  The `r`-color version
+`Erdos1090Generalized k r` holds for every `k` and `r`: for `k ≥ 3` there is a finite
+`A ⊂ ℝ²` such that *every* `r`-coloring of `A` contains `k` monochromatic collinear points.
+Immediate from `ramsey_construction_general (Fin r)` — the multicolor Hales–Jewett input
+needs no extra hypothesis on `r`, so the `r ≥ 2` premise is not even required. -/
+theorem erdos1090_generalized_affirmative (k r : ℕ) : Erdos1090Generalized k r := by
+  intro hk _
+  obtain ⟨A, hA⟩ := ramsey_construction_general (Fin r) k hk
+  refine ⟨A, fun c => ?_⟩
+  obtain ⟨S, hSA, hScol, hmono⟩ := hA c
+  exact ⟨S, hSA, hScol, fun p hp q hq => hmono p q hp hq⟩
 
 /--
 **Higher Dimensions:**
