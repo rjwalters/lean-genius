@@ -11,7 +11,8 @@
       "Mathlib's 2025 Partition.GenFun (Weiyi Wang) already provides the formal power-series infinite product: genFun f = ∏'_i (1 + ∑'_j f(i+1)(j+1)·X^{(i+1)(j+1)}) (genFun_eq_tprod) with coeff_genFun giving the n-th coefficient as ∑_{p:n.Partition} ∏_i f(i,#i). distincts/odds live in Partition.Basic. Only Franklin's involution is still missing.",
       "Euler's partition recurrence is a FINITE sum because the pentagonal value grows quadratically in its index: k² ≤ g(k) (since 2g(k)-2k² = k(k-1) ≥ 0), hence |k| ≤ g(k) and only finitely many g(k) ≤ n (the contributing indices lie in [-n,n]). This finiteness is the prerequisite that lets the recurrence p(n)=∑(-1)^{k-1}p(n-g_k) be evaluated/inducted on.",
       "Instantiating the genFun character f i c = (if c=1 then (-1:ℤ) else 0) yields inner term 1 - X^{i+1}, so genFun f = ∏_{m≥1}(1-Xᵐ) (product side, free) while coeff_genFun evaluates the same series to ∑_{p∈distincts n}(-1)^{p.parts.card} = p_even(n)-p_odd(n) (coefficient side, free). Both ends of Euler's identity are thus in Mathlib; the whole open core collapses to the single Franklin identity ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ).",
-      "Session 2026-06-28 (researcher-2): formalized the FIXED POINTS of Franklin's involution (Part 7, 0-axiom). The staircases {k,…,2k-1} and {k+1,…,2k} sum to g(k) and g(-k) (staircase_sum_eq_genPent[_neg]) and are partitions into exactly k distinct positive parts with sign (-1)^k = pentSign (franklin_fixed_point[_neg]). Only the involution on the NON-fixed partitions remains open."
+      "Session 2026-06-28 (researcher-2): formalized the FIXED POINTS of Franklin's involution (Part 7, 0-axiom). The staircases {k,…,2k-1} and {k+1,…,2k} sum to g(k) and g(-k) (staircase_sum_eq_genPent[_neg]) and are partitions into exactly k distinct positive parts with sign (-1)^k = pentSign (franklin_fixed_point[_neg]). Only the involution on the NON-fixed partitions remains open.",
+      "Session 2026-06-30 (researcher-2), Part 8: the Part-7 staircases are now promoted to genuine `Nat.Partition` objects (`staircasePartition`/`staircasePartitionNeg`) and PROVED to lie in `Nat.Partition.distincts (g(±k))` with exactly k parts and signed weight `pentSign(±k)` (`franklin_fixed_point_isPartition[_neg]`, 0-axiom, docker-verified). This closes the bookkeeping gap between Part 7's fixed-point arithmetic and Part 6's `coeff_genFun_pent` sum over `distincts n`: the pentagonal staircases are now literally elements of that Finset. Constructing them needs no `k≥1` hypothesis — `0∉Ico k (2k)` gives positivity for all k, and `Nodup` is free from the Finset. Only the involution evaluating the whole signed sum remains open."
     ],
     "builtItems": [
       "genPent, IsGenPent (def): generalized pentagonal number value and the doubling-relation membership predicate [PentagonalNumberTheoremOQ01.lean]",
@@ -40,10 +41,10 @@
     {
       "path": "Proofs/PentagonalNumberTheoremOQ01.lean",
       "filename": "PentagonalNumberTheoremOQ01.lean",
-      "lineCount": 595,
-      "theoremCount": 42,
+      "lineCount": 809,
+      "theoremCount": 61,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PentagonalNumberTheoremOQ01.lean"

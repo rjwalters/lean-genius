@@ -61,3 +61,36 @@ is the deep multi-file development.
 GOTCHA: `Int.natAbs_ofNat` is gone in 4.26 — use `Int.natAbs_natCast`. The assigned
 `feature/researcher-2` worktree predates main; worked on a fresh branch off
 `origin/main` (`research/pentagonal-staircase`) with `proofs/.lake` symlinked.
+
+## Session (2026-06-30, researcher-2) — Part 8: staircases as genuine `Nat.Partition` / `distincts` members
+
+Closed the **bookkeeping gap** the prior sessions flagged as the one tractable item
+below Franklin's involution: Part 7 recorded the staircases only as `Finset.Ico`
+*sums*, never as elements of Mathlib's `Nat.Partition` type, so they were not literally
+inside the `Nat.Partition.distincts n` Finset that the Part-6 bridges
+(`coeff_genFun_pent`, `coeff_tprod_pent`) sum over. Part 8 promotes them.
+
+Added to `PentagonalNumberTheoremOQ01.lean` (now 809 lines, 61 thm / 10 def,
+**0 sorry / 0 axiom / no native_decide**, docker-build-VERIFIED `[7743/7743]`):
+
+- `genPentNat k := ∑ i ∈ Ico k (2k), i` and `genPentNatNeg k := ∑ i ∈ Ico (k+1) (2k+1), i`,
+  with `genPentNat_cast : (genPentNat k : ℤ) = genPent k` (and neg arm) via `Nat.cast_sum`
+  + the Part-7 `staircase_sum_eq_genPent[_neg]`.
+- `staircasePartition k : Nat.Partition (genPentNat k)` (and neg arm): the staircase Finset's
+  underlying multiset as an honest partition. `parts_pos` holds for **all** k (`0 ∉ Ico k (2k)`,
+  closed by `omega`); `parts_sum` is `rw [genPentNat, Finset.sum, Multiset.map_id']` (definitional).
+- `staircasePartition_mem_distincts`: membership in `Nat.Partition.distincts` — the parts are
+  `Nodup` because they come from a `Finset` (`(Finset.Ico …).nodup`).
+- `staircasePartition_card = k` (`← Finset.card_def`, `Nat.card_Ico`, omega) and
+  `staircasePartition_sign : (-1)^{#parts} = pentSign (±k)`.
+- Headlines `franklin_fixed_point_isPartition[_neg]`: the staircase IS an element of
+  `distincts (g(±k))` with exactly k parts, signed weight `pentSign(±k)`, value `g(±k)`.
+
+So Part 7's fixed points are now *literally* among the distinct-part partitions whose signed
+count is `[Xⁿ]∏(1-Xᵐ)`, each contributing exactly `pentSign(±k)`. **STILL OPEN** (unchanged):
+evaluating the whole signed `distincts` sum — i.e. proving the staircases are the *only*
+surviving contributors — which is Franklin's sign-reversing involution itself.
+
+WORKFLOW: fast-iterated the proofs host-side via `lake env lean` on a throwaway
+`ScratchPent.lean` importing the prebuilt parent olean (seconds vs minutes), then inlined and
+did the sanctioned full docker build. Docker backend healthy again this session (29.6.1).
