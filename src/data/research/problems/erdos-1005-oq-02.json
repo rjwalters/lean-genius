@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: §23 added (verified, 0-axiom). UNIFIES §21+§22: prepending j leading 1s to ANY tail ks is the order-6 rotation on (K,secondCont), so K(1ʲ++ks) is period-6 in j with explicit orbit [K,K−s,−s,−K,s−K,s] (ks=[] recovers §21 1,1,0,−1,−1,0; j=1,2 recover §22). Sign law on nonempty all-≥2 tails: K>0 iff j≡0,1,5 mod 6, never 0. The §22 boundary promoted to the full periodic leading-1/large-quotient classification. Density aggregation toward open 1/12 constant still untouched.",
+    "progressSummary": "PROGRESS: §23 period-6 leading-1 law (PR #31514) + §24 suffix transfer via reversal; 1-run boundaries of a general quotient word now period-6 classified at both ends. Open 1/12 constant: interior junction aggregation still the hard step.",
     "builtItems": [
       "unimodular_iterate_left/right (Erdos1005ProblemOQ02.lean §6): k-fold one-sided mediant insertion stays unimodular, a/b<(k·a+c)/(k·b+d); proved by scale-invariance of bc=ad+1 (no induction)",
       "denom_ge_iterate_left/right (Erdos1005ProblemOQ02.lean §6): depth-k interior denominator bound q ≥ (k+1)·b+d, LINEAR in depth",
@@ -60,7 +60,8 @@
       "§23 continuant_secondCont_replicate_one_append (HEADLINE) — joint period-6 aⱼ₊₆=aⱼ ∧ sⱼ₊₆=sⱼ for every tail ks, 6-step omega; generalises §21 continuant_secondCont_replicate_one (ks=[] case). [verified, 0-axiom]",
       "§23 continuant_replicate_one_append_period/_six_mul/_mod — period-6 corollaries, K(1ʲ++ks) depends only on j%6 for every tail",
       "§23 continuant_replicate_one_append_orbit — full if-then-else closed form by j%6 selecting [K,K−s,−s,−K,s−K,s]; generalises continuant_replicate_one_mod",
-      "§23 continuant_replicate_one_append_pos_iff / _ne_zero — sign classification on nonempty all-≥2 tail: >0 iff j%6∈{0,1,5}, never 0. [verified, 0-axiom]"
+      "§23 continuant_replicate_one_append_pos_iff / _ne_zero — sign classification on nonempty all-≥2 tail: >0 iff j%6∈{0,1,5}, never 0. [verified, 0-axiom]",
+      "§24 continuant_append_replicate_one_orbit/_pos_iff/_ne_zero (Erdos1005ProblemOQ02.lean:2345-2387): trailing-1 period-6 law via §16 reversal bridge — K(ks++1ʲ)=K(1ʲ++ks.reverse), same j≡0,1,5(mod6) positivity residues as §23, reversal-invariant membership"
     ],
     "insights": [
       "CORRECTION: the roadmap heuristic that the order-n cap forces O(log n) refinement depth is FALSE for arbitrary mediant chains. The one-sided chain 0/1,1/2,1/3,…,1/n fits Θ(n) levels under q≤n with only LINEAR denominator growth (k+1)·b+d.",
@@ -79,12 +80,14 @@
       "§22 mechanism: secondCont(1::ks)=Continuant ks defeq, so K(1::1::ks)=K(1::ks)−K(ks)=−secondCont ks — the leading continuant cancels exactly. The §17 invariant 0≤secondCont<Continuant then reads off both signs.",
       "§23: prepending j leading 1s to an ARBITRARY tail ks is the order-6 rotation [[1,−1],[1,0]] acting on the pair (aⱼ,sⱼ)=(K(1ʲ++ks),secondCont(1ʲ++ks)): aⱼ₊₁=aⱼ−sⱼ, sⱼ₊₁=aⱼ — the all-1 §21 coupled system but seeded at (K(ks),secondCont ks) instead of (1,0). Hence K(1ʲ++ks) is PERIOD-6 in j for every tail, not just ks=[].",
       "§23 orbit closed form: K(1ʲ++ks) cycles through [K, K−s, −s, −K, s−K, s] (s=secondCont ks) by j%6. Substituting ks=[] (K=1,s=0) recovers §21 orbit 1,1,0,−1,−1,0 EXACTLY; j%6=1,2 recover the §22 closed forms — §21 and §22 are the two specialisations of one periodic law.",
-      "§23 sign law (nonempty all-≥2 tail): the §17 invariant 0<secondCont ks<K(ks) fixes every orbit sign — K(1ʲ++ks)>0 iff j≡0,1,5 (mod 6), <0 iff j≡2,3,4, NEVER 0. §22 (at most one leading 1 stays positive) is the j≤2 window of this period-6 alternation; the empty-tail zeros of §21 are an artefact of ks=[]."
+      "§23 sign law (nonempty all-≥2 tail): the §17 invariant 0<secondCont ks<K(ks) fixes every orbit sign — K(1ʲ++ks)>0 iff j≡0,1,5 (mod 6), <0 iff j≡2,3,4, NEVER 0. §22 (at most one leading 1 stays positive) is the j≤2 window of this period-6 alternation; the empty-tail zeros of §21 are an artefact of ks=[].",
+      "The period-6 leading-1 rotation (§23) brackets a large-quotient block on BOTH ends identically: trailing 1s reduce to leading 1s on the reversed tail via continuant_reverse, transferring the entire orbit and the IDENTICAL sign classification at zero arithmetic cost"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Density aggregation: combine continuant_ge_length (large-quotient K≥len+1) with order-n cap stepSeq b d ks ≤ n to bound large-quotient run length by O(n/d) — first run-length upper bound vs n/4+5 (van Doorn c∈[1/12,1/4])",
-      "Mixed-block aggregation: with §23 the sign/magnitude of any leading-1 block is now periodic and explicit — combine alternating large-quotient blocks (§17 linear growth) and leading-1 blocks (§23 bounded period-6) to model a general quotient word and its similar-ordering window count toward the 1/12 constant"
+      "Mixed-block aggregation: with §23 the sign/magnitude of any leading-1 block is now periodic and explicit — combine alternating large-quotient blocks (§17 linear growth) and leading-1 blocks (§23 bounded period-6) to model a general quotient word and its similar-ordering window count toward the 1/12 constant",
+      "Compose §23 prefix + §24 suffix 1-run boundaries with §17 continuant_append to model a general word 1ᵃ++ms++1ᵇ; the open gap is the interior junction terms between large-quotient and 1-blocks, counted against the order-n cap toward 1/12"
     ]
   },
   "tags": [

@@ -2327,4 +2327,64 @@ theorem continuant_replicate_one_append_ne_zero (j : ℕ) (ks : List ℤ)
   clear_value r
   interval_cases r <;> simp <;> omega
 
+/-! ## §24: Trailing `1`s — the period-6 law transfers to suffixes via reversal
+
+§23 governs a leading-`1` run `1ʲ ++ ks`.  The §16 reversal bridge
+`continuant_reverse : K(ks.reverse) = K(ks)` upgrades this to a **trailing**-`1` run
+`ks ++ 1ʲ` for free: since `(ks ++ 1ʲ).reverse = 1ʲ ++ ks.reverse` (reversing fixes the
+all-`1` block), appending `j` trailing `1`s to a tail is *exactly* prepending `j` leading
+`1`s to the reversed tail.  The continuant is reversal-invariant, so the whole §23 orbit
+carries over with `ks` replaced by `ks.reverse`.  The sign classification is even cleaner:
+membership is reversal-invariant (`ks.reverse` is again all-`≥ 2` and nonempty), so the
+period-6 positivity law `j ≡ 0, 1, 5 (mod 6)` holds for trailing `1`s with the **identical**
+residues and no reference to `secondCont` at all — the period-6 rotation brackets a
+large-quotient block on *both* ends in the same way. -/
+
+/-- **Reversal bridge for a trailing-`1` run.**  Appending `j` trailing `1`s to `ks`
+equals prepending `j` leading `1`s to `ks.reverse`. -/
+theorem continuant_append_replicate_one_eq (j : ℕ) (ks : List ℤ) :
+    Continuant (ks ++ List.replicate j 1)
+      = Continuant (List.replicate j 1 ++ ks.reverse) := by
+  rw [← continuant_reverse (ks ++ List.replicate j 1), List.reverse_append,
+    List.reverse_replicate]
+
+/-- **Period-6 orbit for a trailing-`1` run (headline).**  The §23 orbit transferred
+through the reversal bridge: `K(ks ++ 1ʲ)` cycles with period 6 in `j`, with the same
+shape `[K, K − s, − s, − K, s − K, s]` but now `s = secondCont ks.reverse` and
+`K = K(ks)` (using `K(ks.reverse) = K(ks)`). -/
+theorem continuant_append_replicate_one_orbit (j : ℕ) (ks : List ℤ) :
+    Continuant (ks ++ List.replicate j 1)
+      = (if j % 6 = 0 then Continuant ks
+         else if j % 6 = 1 then Continuant ks - secondCont ks.reverse
+         else if j % 6 = 2 then - secondCont ks.reverse
+         else if j % 6 = 3 then - Continuant ks
+         else if j % 6 = 4 then secondCont ks.reverse - Continuant ks
+         else secondCont ks.reverse) := by
+  rw [continuant_append_replicate_one_eq, continuant_replicate_one_append_orbit,
+    continuant_reverse]
+
+/-- **Sign classification for a trailing-`1` run (large-quotient tail).**  On a nonempty
+all-`≥ 2` tail, `K(ks ++ 1ʲ) > 0` **iff** `j ≡ 0, 1, 5 (mod 6)` — the *same* residues as
+the leading-`1` law §23, since `ks.reverse` is again nonempty and all-`≥ 2`. -/
+theorem continuant_append_replicate_one_pos_iff (j : ℕ) (ks : List ℤ)
+    (hne : ks ≠ []) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    0 < Continuant (ks ++ List.replicate j 1)
+      ↔ (j % 6 = 0 ∨ j % 6 = 1 ∨ j % 6 = 5) := by
+  rw [continuant_append_replicate_one_eq]
+  refine continuant_replicate_one_append_pos_iff j ks.reverse ?_ ?_
+  · simpa using hne
+  · intro k hk
+    exact h k (List.mem_reverse.mp hk)
+
+/-- **The trailing-`1` orbit never vanishes on a large-quotient tail.**  Mirrors §23's
+`continuant_replicate_one_append_ne_zero` for suffixes. -/
+theorem continuant_append_replicate_one_ne_zero (j : ℕ) (ks : List ℤ)
+    (hne : ks ≠ []) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant (ks ++ List.replicate j 1) ≠ 0 := by
+  rw [continuant_append_replicate_one_eq]
+  refine continuant_replicate_one_append_ne_zero j ks.reverse ?_ ?_
+  · simpa using hne
+  · intro k hk
+    exact h k (List.mem_reverse.mp hk)
+
 end Erdos1005OQ02

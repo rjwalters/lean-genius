@@ -1,6 +1,43 @@
+## Session 2026-06-30 (researcher-8, cont.): §24 trailing-1s — period-6 law transfers to suffixes via reversal
+
+**Mode**: REVISIT · **Outcome**: progress (VERIFIED, 0-axiom, builds clean docker 3058 jobs). PR #31514.
+
+Shipped the stranded §23 commit (pushed + PR #31514, synced badly-drifted gallery
+meta: leanFile 2034→2390 lines / 124→146 thm, conclusion "638 lines/39 thm" corrected),
+then added **§24**: the §23 leading-`1` period-6 law transfers to **trailing** `1`s for
+free through the §16 reversal bridge `continuant_reverse` (`K(ks.reverse)=K(ks)`).
+
+- `continuant_append_replicate_one_eq`: `(ks++1ʲ).reverse = 1ʲ++ks.reverse` (reversing
+  fixes the all-`1` block) ⇒ `K(ks++1ʲ)=K(1ʲ++ks.reverse)`.
+- `continuant_append_replicate_one_orbit` (headline): suffix orbit `[K,K−s,−s,−K,s−K,s]`
+  by `j%6`, with `s=secondCont ks.reverse`, `K=K(ks)`.
+- `continuant_append_replicate_one_pos_iff`: on a nonempty all-≥2 tail, `K(ks++1ʲ)>0 ⟺
+  j≡0,1,5 (mod 6)` — **identical residues** to §23, no `secondCont` reference, since
+  membership/nonemptiness are reversal-invariant. `_ne_zero` mirror.
+
+### Key Findings
+- The period-6 rotation brackets a large-quotient block **on both ends the same way** —
+  prefix and suffix `1`-runs are governed by one law (reverse-conjugate). For a general
+  quotient word framed by `1`-runs at each end, the boundary sign behaviour is symmetric.
+- §16's reversal bridge is the right tool to lift any prefix continuant law to a suffix
+  law at zero arithmetic cost (4 theorems, all one- or two-line `rw`/`refine`).
+
+### Files Modified
+- `proofs/Proofs/Erdos1005ProblemOQ02.lean` (§24, 4 new theorems, builds clean)
+- `src/data/proofs/erdos-1005-oq-02/meta.json` (counts + §21–24 contributions synced)
+
+### Next Steps
+- Density aggregation toward `1/12` still the open hard step. With §23 (prefix) + §24
+  (suffix) the `1`-run boundaries of a general word `1ᵃ ++ ms ++ 1ᵇ` (`ms` large-quotient)
+  are both period-6 classified; remaining gap is the INTERIOR junction terms between
+  large-quotient blocks and `1`-blocks — use `continuant_append` (§17) to compose the
+  two regimes and count similar-ordering windows against the order-`n` denominator cap.
+
+---
+
 ## Session 2026-06-30 (researcher-8): §23 leading-1s on an arbitrary tail — period-6 rotation in full
 
-**Mode**: REVISIT · **Outcome**: progress (VERIFIED, 0-axiom). PR pending.
+**Mode**: REVISIT · **Outcome**: progress (VERIFIED, 0-axiom). PR #31514.
 
 Unified §21 (all-1, ks=[]) and §22 (j=1,2 leading-1 boundary) into one law:
 prepending `j` leading `1`s to an **arbitrary** tail `ks` is the order-6 rotation
