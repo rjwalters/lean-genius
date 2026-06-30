@@ -1007,6 +1007,44 @@ theorem colMin_pos {n : ℕ} (hn : 0 < n) : 0 < colMin n := by
     rw [hempty] at hmem
     exact hmem
 
+/-- The orbit minimum is **attained**: some iterate of `n` equals `colMin n`.
+This is what "`Col_min`" means — the infimum over the orbit is achieved, since the
+orbit is a non-empty set of naturals (`Nat.sInf_mem`). -/
+theorem colMin_mem_orbit (n : ℕ) : ∃ k, collatz^[k] n = colMin n := by
+  have hne : ({m | ∃ k, collatz^[k] n = m} : Set ℕ).Nonempty :=
+    ⟨n, 0, Function.iterate_zero_apply collatz n⟩
+  exact Nat.sInf_mem hne
+
+/-- The orbit minimum can only **grow** along one Collatz step: the orbit of
+`collatz n` is the tail `{collatz^[k+1] n}` of the orbit of `n`, a subset, so its
+infimum is at least `colMin n`. -/
+theorem colMin_le_collatz (n : ℕ) : colMin n ≤ colMin (collatz n) := by
+  obtain ⟨k, hk⟩ := colMin_mem_orbit (collatz n)
+  exact Nat.sInf_le ⟨k + 1, by rw [Function.iterate_succ_apply]; exact hk⟩
+
+/-- **The orbit-minimum recursion** (the Bellman/dynamic-programming identity for
+`Col_min`): `colMin n = min n (colMin (collatz n))`.  The minimum over the orbit of
+`n` is either attained at `n` itself (step `0`) or somewhere in the orbit of its
+successor.  `≤` is `colMin_le_self` together with `colMin_le_collatz`; `≥` uses that
+`colMin n` is attained at some step `k` (`colMin_mem_orbit`) — if `k = 0` it equals
+`n`, and if `k ≥ 1` it lies in the orbit of `collatz n`, so it is `≥ colMin (collatz n)`. -/
+theorem colMin_eq_min_collatz (n : ℕ) : colMin n = min n (colMin (collatz n)) := by
+  refine Nat.le_antisymm (le_min (colMin_le_self n) (colMin_le_collatz n)) ?_
+  obtain ⟨k, hk⟩ := colMin_mem_orbit n
+  rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+  · rw [hk0, Function.iterate_zero_apply] at hk
+    rw [← hk]; exact min_le_left _ _
+  · have hk1 : k - 1 + 1 = k := by omega
+    have hcn : colMin (collatz n) ≤ colMin n := by
+      rw [← hk]
+      apply Nat.sInf_le
+      refine ⟨k - 1, ?_⟩
+      have hstep : collatz^[k - 1 + 1] n = collatz^[k - 1] (collatz n) :=
+        Function.iterate_succ_apply collatz (k - 1) n
+      rw [hk1] at hstep
+      exact hstep.symm
+    exact le_trans (min_le_right _ _) hcn
+
 /-- Sharpening `colMin_pow_two_le_one`: the orbit minimum of `2^k` is **exactly**
 `1` (the orbit hits `1` and, being positive, never goes lower). -/
 theorem colMin_pow_two_eq_one (k : ℕ) : colMin (2 ^ k) = 1 := by

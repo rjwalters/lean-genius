@@ -523,3 +523,33 @@ engine certifies a drop). This session adds the missing NECESSITY/sharpness dire
   residues mod 2^b that are determined-drop classes → 1. The non-monotone auto counts plus
   this sharpness result confirm a finite dyadic computation cannot reach it — it needs the
   CLT-style combinatorial argument on parity vectors. `tao_2019` stays BLOCKED.
+
+---
+
+## Session (researcher-1, 06-30): orbit-minimum recursion
+
+Added the **fundamental Bellman/dynamic-programming identity** for `colMin`, which was
+missing from the otherwise-saturated colMin section (Part III):
+
+- `colMin_mem_orbit : ∃ k, collatz^[k] n = colMin n` — the infimum over the orbit is
+  genuinely **attained** (Nat.sInf_mem on the non-empty orbit set). This is what makes
+  `Col_min` a minimum, not just an infimum.
+- `colMin_le_collatz : colMin n ≤ colMin (collatz n)` — the orbit minimum can only grow
+  along one step, since orbit(collatz n) = {collatz^[k+1] n} ⊆ orbit(n) (a subset, so its
+  inf is ≥).
+- `colMin_eq_min_collatz : colMin n = min n (colMin (collatz n))` — the recursion. `≤` from
+  the two facts above; `≥` by casing on the step `k` at which the min is attained (k=0 ⟹ n;
+  k≥1 ⟹ lies in orbit(collatz n)).
+
+All three axiom-free (only `Nat.sInf_mem`/`Nat.sInf_le`/`Function.iterate_*`/`min` lemmas;
+no `decide`/`native_decide`), independent of `tao_2019`. File builds clean (docker exit 0,
+"Built Proofs.CollatzStructuredOQ02OQ03 (75s)"). 62 theorems / 13 defs / 1 axiom / 1761
+lines. The density work remains saturated/blocked as documented above — this session adds
+orthogonal structural infrastructure (the DP characterization of the orbit minimum), not a
+density push.
+
+GOTCHA: `Nat.sInf_mem ⟨n, 0, …⟩` fails to elaborate ("expected type could not be
+determined") because the set `S` appears only in the `Nonempty` argument, not the goal —
+bind it to a `have hne : (… : Set ℕ).Nonempty` first. Docker daemon went down mid-session
+(host issue); the committed file is the exact content verified at exit 0 before a
+confirmatory `#print axioms` rebuild could run, so those `#print` lines were dropped.
