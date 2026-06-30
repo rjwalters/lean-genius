@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED (0-axiom). §8 window sandwich: construction2 n r k between (k−1) copies of its endpoint binomial summands — (k−1)·C(n−k+1,r−1) ≤ construction2 ≤ (k−1)·C(n−1,r−1) — plus construction2_ge_top_summand (k≥2 ⟹ C(n−1,r−1) ≤ construction2, the degree-(r−1) growth driving the large-n regime). Builds on §7 closed form. Still OPEN: the Erdős Matching Conjecture middle band (r≥4).",
+    "progressSummary": "PROGRESS: §9 proves general unconditional crossover threshold exists for all r≥2,k≥2 (was only r=4,k=2). 0-axiom, PR #31622.",
     "builtItems": [
       "Proofs/Erdos1020OQ02.lean (165 lines, 0 axioms, 0 sorries, verified): construction2_mono_step, construction2_mono, construction2_dominant_up, conjecturedValue_mono, conjecturedValue_large, conjecturedValue_small + 5 kernel-decide crossover examples.",
       "Gallery entry src/data/proofs/erdos-1020-oq-02/ (meta.json + annotations.json).",
       "Proofs/Erdos1020OQ02.lean extended to 232 lines / 9 theorems (was 165/6): construction2_step_eq, construction2_strict_mono_step, crossover_r4k2 (exact threshold iff for r=4,k=2).",
       "construction2_window_lb (Erdos1020OQ02.lean §8): (k−1)·C(n−k+1,r−1) ≤ construction2 n r k — Finset.card_nsmul_le_sum on the §7 sum, smallest endpoint summand",
       "construction2_window_ub (§8): construction2 n r k ≤ (k−1)·C(n−1,r−1) — Finset.sum_le_card_nsmul, largest endpoint summand",
-      "construction2_ge_top_summand (§8): k≥2 ⟹ C(n−1,r−1) ≤ construction2 n r k — top window point n−1 via Finset.single_le_sum; degree-(r−1) growth lower bound"
+      "construction2_ge_top_summand (§8): k≥2 ⟹ C(n−1,r−1) ≤ construction2 n r k — top window point n−1 via Finset.single_le_sum; degree-(r−1) growth lower bound",
+      "choose_diag_ge, construction2_linear_lb (≥ n−r+1), construction2_unbounded, construction2_eventually_dominant, exists_threshold (Nat.find capstone: dominant region = up-set [n₀,∞) for n≥k), construction2_r1 (r=1 boundary = k−1 constant) in Erdos1020OQ02.lean §9. PR #31622, 0-axiom."
     ],
     "insights": [
       "construction1 r k = C(rk-1,r) is constant in n; construction2 n r k = C(n,r)-C(n-k+1,r) is monotone nondecreasing in n. The gap is the band around their crossover.",
@@ -45,14 +46,19 @@
       "conjecturedValue = max(const, monotone) is monotone in n; collapses to construction1 below threshold, construction2 at/above (max_eq_left/right).",
       "OQ-02 framed: regime boundary is a well-defined single threshold; the open difficulty is whether f attains the conjectured value across the gap band kr+... < n < 3kr² for r≥4.",
       "The crossover threshold IS characterizable exactly in a worked instance: monotonicity converts two boundary evaluations into a complete iff (construction1 4 2 ≤ construction2 n 4 2 ⇔ 8 ≤ n), giving n₀(4,2)=8 — partial progress on the 'characterize exact threshold' next step.",
-      "§8: the §7 closed form construction2 = Σ_{j∈[n−k+1,n)} C(j,r−1) has k−1 monotone summands, so it is sandwiched between (k−1)·C(n−k+1,r−1) and (k−1)·C(n−1,r−1). For k≥2 the top summand C(n−1,r−1) alone lower-bounds it — a single binomial of full degree r−1 already sits below the conjectured extremal value, exposing the polynomial growth behind the large-n regime."
+      "§8: the §7 closed form construction2 = Σ_{j∈[n−k+1,n)} C(j,r−1) has k−1 monotone summands, so it is sandwiched between (k−1)·C(n−k+1,r−1) and (k−1)·C(n−1,r−1). For k≥2 the top summand C(n−1,r−1) alone lower-bounds it — a single binomial of full degree r−1 already sits below the conjectured extremal value, exposing the polynomial growth behind the large-n regime.",
+      "§9: the large-n regime exists for ALL r≥2,k≥2 — not just the worked r=4,k=2 instance of §6. A constant (construction1) is eventually overtaken by a polynomial-growth difference of binomials (construction2).",
+      "Key engine: C(d+t,d) ≥ t+1 (choose_diag_ge) — binomials grow ≥ linearly along the diagonal via one Pascal step adding a positive term. Mathlib has no clean ℕ lower bound on choose (only real-valued pow_le_choose), so this 6-line induction fills the gap."
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Mathlib lacks an elementary ℕ-valued lower bound on Nat.choose growing in the first argument (Bounds.lean only has real-valued pow_le_choose with fishy ℕ-subtraction). choose_diag_ge could be upstreamed."
+    ],
     "nextSteps": [
       "Open: prove the Erdős Matching Conjecture across the middle band (r≥4) — the actual gap closure.",
       "Decide whether extremal hypergraphs interpolate between the two constructions inside the gap.",
       "Generalize crossover_r4k2 to a closed-form threshold n₀(r,k) for all r,k (instance r=4,k=2 done).",
-      "Prove construction2 → ∞ (k≥2) to establish threshold EXISTENCE for general r,k, not just the worked instance."
+      "Prove construction2 → ∞ (k≥2) to establish threshold EXISTENCE for general r,k, not just the worked instance.",
+      "§10 candidate: extract the EXPLICIT threshold n₀(r,k) bound (exists_threshold gives existence via Nat.find but no closed value); e.g. show n₀ ≤ construction1 r k + r. Or: compare growth rates construction1 vs construction2 to bound n₀ above by a polynomial in r,k."
     ]
   },
   "tags": [
