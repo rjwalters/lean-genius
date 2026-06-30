@@ -177,6 +177,42 @@ theorem ex69_step : (6 : ℤ) * (-1 + 1 * 3) + 9 * (1 - 1 * 2) = 3 := by norm_nu
 /-- The whole one-parameter family for `6x + 9y = 3`: every `k` gives a solution. -/
 theorem ex69_family (k : ℤ) : (6 : ℤ) * (-1 + k * 3) + 9 * (1 - k * 2) = 3 := by ring
 
+-- ============================================================
+-- SECTION VII: The canonical (reduced) Bézout representative
+-- ============================================================
+
+/-- **Canonical Bézout coefficient.**  For coprime `a, b` with `b > 0`, the solution set
+of `a·x + b·y = c` — a coset of the lattice `ℤ·(b, −a)` — contains a *unique* member whose
+`x`-coordinate is reduced modulo `b`, i.e. `0 ≤ x < b`.  This is the canonical
+representative of the Bézout pair (the `x` is the modular inverse data `c·a⁻¹ mod b` when
+`c = 1`).  Existence: reduce any `x₀` to `x₀ % b`.  Uniqueness: two reduced `x`-coordinates
+differ by a multiple of `b` (by `coprime_bezout_unique`) yet both lie in `[0, b)`, forcing
+equality.  This answers the second open question of the entry: the lattice coset has a
+distinguished minimal representative. -/
+theorem coprime_bezout_canonical {a b c : ℤ} (hab : IsCoprime a b) (hb : 0 < b)
+    (x₀ y₀ : ℤ) (h₀ : a * x₀ + b * y₀ = c) :
+    ∃! x : ℤ, (0 ≤ x ∧ x < b) ∧ ∃ y : ℤ, a * x + b * y = c := by
+  have hb0 : b ≠ 0 := ne_of_gt hb
+  refine ⟨x₀ % b, ⟨⟨Int.emod_nonneg x₀ hb0, Int.emod_lt_of_pos x₀ hb⟩,
+      ⟨y₀ + a * (x₀ / b), ?_⟩⟩, ?_⟩
+  · -- existence: `x₀ % b` keeps the equation solvable
+    rw [Int.emod_def]
+    linear_combination h₀
+  · -- uniqueness: any reduced solution coincides with `x₀ % b`
+    rintro x ⟨⟨hx0, hxb⟩, y, hxy⟩
+    obtain ⟨k, hk, -⟩ := coprime_bezout_unique hab hb0
+      (show a * x + b * y = a * x₀ + b * y₀ by rw [hxy, h₀])
+    have hmod : x % b = x₀ % b := by
+      conv_rhs => rw [show x₀ = x + b * k by linear_combination hk]
+      rw [Int.add_mul_emod_self_left]
+    rwa [Int.emod_eq_of_lt hx0 hxb] at hmod
+
+/-- `x = 2` is the canonical Bézout `x`-coordinate for `(3, 5)` with `c = 1`:
+    `0 ≤ 2 < 5` and `3·2 + 5·(−1) = 1`. -/
+theorem ex35_canonical :
+    (0 : ℤ) ≤ 2 ∧ (2 : ℤ) < 5 ∧ (3 : ℤ) * 2 + 5 * (-1) = 1 := by
+  refine ⟨by norm_num, by norm_num, by norm_num⟩
+
 #check @coprime_homogeneous
 #check @coprime_bezout_unique
 #check @coprime_bezout_param
@@ -185,5 +221,6 @@ theorem ex69_family (k : ℤ) : (6 : ℤ) * (-1 + k * 3) + 9 * (1 - k * 2) = 3 :
 #check @general_bezout_unique
 #check @general_bezout_param
 #check @general_solvable
+#check @coprime_bezout_canonical
 
 end BezoutExtGcdUnique
