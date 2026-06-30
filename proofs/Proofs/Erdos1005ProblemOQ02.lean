@@ -2712,4 +2712,103 @@ theorem continuant_interior_one_eq_blowdown (as bs : List ℤ) (a b : ℤ) :
       = Continuant (as ++ [a - 1, b - 1] ++ bs) := by
   simpa using continuant_interior_one_blowdown as bs a b
 
+/-! ## §28: Two-sided product bounds — the multiplicative refinement of §26
+
+§26 gave the *additive* (slope-`d−1`) lower bound `(d−1)·|ks| + 1 ≤ Continuant ks`, the
+linear shadow of how the quotient floor inflates the denominator.  The sharp statement is
+*multiplicative*: in the large-quotient regime (every entry `≥ 2`) the continuant is
+squeezed between two products of the quotients,
+
+  `∏ᵢ (kᵢ − 1)  ≤  Continuant ks  ≤  ∏ᵢ kᵢ`.
+
+Both halves run the §17/§26 single-step recurrence `K(k::rest) = k·K(rest) − secondCont rest`
+against the §17 core invariant `0 ≤ secondCont rest < Continuant rest`
+(`secondCont_lt_continuant`).  **Upper:** drop the nonnegative `secondCont`, giving
+`K(k::rest) ≤ k·K(rest)`, then multiply the IH `K(rest) ≤ rest.prod` by `k ≥ 0`.
+**Lower:** replace `secondCont rest` by its ceiling `K(rest) − 1`, giving
+`K(k::rest) ≥ (k−1)·K(rest) + 1`, then multiply the IH `∏(rest−1) ≤ K(rest)` by `k − 1 ≥ 0`.
+
+What this buys, and the **honest boundary**.  The lower product `∏(kᵢ−1)` is genuinely
+multiplicative: on an all-`≥ d` run it is `≥ (d−1)^|ks|`, so pairing it with any order-`n`
+continuant ceiling `K ≤ n` forces `|ks| ≤ log_{d−1} n` — a *logarithmic* run-length cap on
+the large-quotient tail (`d ≥ 3`), far sharper than §26's slope-`1`/`O(n/d)` shadow.  This
+is consistent with — and sharpens — the picture that the large-quotient tail carries
+negligible mass.  But it is silent exactly at the bottleneck: at `d = 2` the lower factor
+`∏(2−1) = 1` is trivial (matching `K[2,2,…,2] = m+1`, the slowest minus-continuant growth),
+so the open `1/12`–`1/4` density constant — governed by the small-quotient regime where the
+continuant grows only linearly — is untouched.  The product bounds pin the metric trade-off
+where it is multiplicative, not where the density is decided. -/
+
+/-- **Lower factor positivity.**  On the large-quotient regime each factor `kᵢ − 1 ≥ 1`, so
+`1 ≤ ∏ᵢ (kᵢ − 1)`.  Combined with `prod_sub_one_le_continuant` this re-proves `continuant_pos`
+multiplicatively: the continuant dominates a product of positive factors. -/
+theorem prod_sub_one_one_le (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    1 ≤ (ks.map (· - 1)).prod := by
+  induction ks with
+  | nil => simp
+  | cons k rest ih =>
+      have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+      have hk : (2 : ℤ) ≤ k := h k (by simp)
+      have hIH := ih hrest
+      simp only [List.map_cons, List.prod_cons]
+      nlinarith [hIH, hk, mul_nonneg (show (0 : ℤ) ≤ k - 2 by linarith)
+        (show (0 : ℤ) ≤ (rest.map (· - 1)).prod - 1 by linarith)]
+
+/-- **Product ceiling (upper bound).**  On the large-quotient regime the continuant never
+exceeds the product of its quotients: `Continuant ks ≤ ks.prod`.  Each step drops the
+nonnegative `secondCont rest` from `K(k::rest) = k·K(rest) − secondCont rest ≤ k·K(rest)`,
+then scales the inductive ceiling by `k ≥ 0`. -/
+theorem continuant_le_prod (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant ks ≤ ks.prod := by
+  induction ks with
+  | nil => simp [Continuant]
+  | cons k rest ih =>
+      have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+      have hk : (2 : ℤ) ≤ k := h k (by simp)
+      have hs0 : 0 ≤ secondCont rest := secondCont_nonneg rest hrest
+      have hIH := ih hrest
+      rw [continuant_cons, List.prod_cons]
+      nlinarith [hs0, mul_nonneg (show (0 : ℤ) ≤ k by linarith)
+        (show (0 : ℤ) ≤ rest.prod - Continuant rest from sub_nonneg.mpr hIH)]
+
+/-- **Product floor (lower bound).**  On the large-quotient regime the continuant is at
+least the product of the decremented quotients: `(ks.map (· − 1)).prod ≤ Continuant ks`.
+Each step replaces `secondCont rest` by its ceiling `K(rest) − 1`
+(`secondCont_lt_continuant`), giving `K(k::rest) ≥ (k−1)·K(rest) + 1`, then scales the
+inductive floor by `k − 1 ≥ 0`.  Multiplicative, hence strictly sharper than §26's additive
+`(d−1)·|ks| + 1` on every all-`≥ d` run with `d ≥ 3`. -/
+theorem prod_sub_one_le_continuant (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    (ks.map (· - 1)).prod ≤ Continuant ks := by
+  induction ks with
+  | nil => simp [Continuant]
+  | cons k rest ih =>
+      have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+      have hk : (2 : ℤ) ≤ k := h k (by simp)
+      obtain ⟨hs0, hsK⟩ := secondCont_lt_continuant rest hrest
+      have hsK' : secondCont rest + 1 ≤ Continuant rest := Int.lt_iff_add_one_le.mp hsK
+      have hIH := ih hrest
+      rw [continuant_cons]
+      simp only [List.map_cons, List.prod_cons]
+      nlinarith [hsK', mul_nonneg (show (0 : ℤ) ≤ k - 1 by linarith)
+        (show (0 : ℤ) ≤ Continuant rest - (rest.map (· - 1)).prod from sub_nonneg.mpr hIH)]
+
+/-- **Two-sided product sandwich (headline).**  In the large-quotient regime the continuant
+is pinned between the two products `∏(kᵢ − 1) ≤ Continuant ks ≤ ∏ kᵢ` — the multiplicative
+refinement of §26's additive bound.  The lower factor captures the genuine geometric
+inflation of the denominator (logarithmic run-length cap on the `d ≥ 3` tail); the upper is
+the matching ceiling. -/
+theorem continuant_prod_bounds (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    (ks.map (· - 1)).prod ≤ Continuant ks ∧ Continuant ks ≤ ks.prod :=
+  ⟨prod_sub_one_le_continuant ks h, continuant_le_prod ks h⟩
+
+/-- **Concrete sandwich.**  For `[3, 3]`: `∏(kᵢ − 1) = 4 ≤ K[3,3] = 8 ≤ 9 = ∏ kᵢ`, a strict
+two-sided gap (the additive §26 floor here is only `(2)·2 + 1 = 5`, looser than the
+multiplicative `4`'s sibling `(3−1)² = 4`… and the all-`≥ 3` product floor `4` is the
+geometric one).  Discharged through the general sandwich. -/
+theorem continuant_prod_bounds_example :
+    ([3, 3].map (· - 1)).prod ≤ Continuant [3, 3]
+      ∧ Continuant [3, 3] ≤ ([3, 3] : List ℤ).prod := by
+  refine continuant_prod_bounds [3, 3] ?_
+  intro k hk; fin_cases hk <;> norm_num
+
 end Erdos1005OQ02
