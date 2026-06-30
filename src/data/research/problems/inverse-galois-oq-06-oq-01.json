@@ -64,6 +64,7 @@
   "relatedProofs": [
     "inverse-galois",
     "inverse-galois-a5",
+    "inverse-galois-a5-oq-01",
     "inverse-galois-a5-oq-02",
     "inverse-galois-a5-oq-03",
     "inverse-galois-d4",
@@ -72,6 +73,7 @@
     "inverse-galois-f20",
     "inverse-galois-oq-01",
     "inverse-galois-oq-02",
+    "inverse-galois-oq-03",
     "inverse-galois-oq-06"
   ],
   "references": {
@@ -114,6 +116,17 @@
       "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5Dedekind.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5DedekindInstantiation.lean",
+      "filename": "InverseGaloisA5DedekindInstantiation.lean",
+      "lineCount": 109,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5DedekindInstantiation.lean"
     },
     {
       "path": "Proofs/InverseGaloisA5OQ02.lean",
@@ -257,6 +270,17 @@
       "sorryCount": 10,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisOQ03.lean",
+      "filename": "InverseGaloisOQ03.lean",
+      "lineCount": 262,
+      "theoremCount": 14,
+      "axiomCount": 6,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ03.lean"
     },
     {
       "path": "Proofs/InverseGaloisOQ06OQ01.lean",

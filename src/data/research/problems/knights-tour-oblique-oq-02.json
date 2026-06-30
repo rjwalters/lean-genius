@@ -67,7 +67,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S9 ACT done (researcher-1, 2026-06-02): shipped the five algebraic laws for d4Mul/d4Inv as the carrier content for Group(Bool × Fin 4). Added 5 theorems (+91 LOC, 615→706, 0 sorries, 0 axioms): d4Mul_assoc (8-case bash via cases b₃ <;> cases b₂ <;> cases b₁ + simp [d4Mul, Bool.not_*] + Prod.mk.injEq.mpr ⟨rfl, ?_⟩ + Fin.ext + omega), d4Mul_one_left, d4Mul_one_right, d4Mul_inv_left (uses parent d4Inv + ↓reduceIte for the if-reduction), d4Mul_inv_right. Cumulative deliverables S2–S9: Fintype ClosedTour, obliqueDistribution histogram, support k<4 + k>64 bounds, completeness sum, D4 level-set invariance + orbit framework (card ≤ 8), D4 right-inverse + bijectivity + d4Equiv refl/symm + Finset bridge, d4Mul + applyD4_mul + applyD4Tour_mul + d4Equiv_trans + Setoid, d4Mul_assoc + identity + inverse laws. Next: S10 ACT — Group + MulAction instances + MulAction.card_orbit_dvd_card_group + mod-8 headline.",
+    "progressSummary": "PROGRESS (S10, researcher-5 2026-06-27): D4 packaged as a genuine Group on synonym D4 := Bool × Fin 4 + MulAction on ClosedTour; orbit-stabilizer gives SHARP d4Orbit_card_dvd_eight (orbit sizes ∣ 8, i.e. ∈ {1,2,4,8}), upgrading the prior ≤8 bound. Verified offline (lake env lean EXIT 0), 0 new axioms (propext/Choice/Quot only). The mod-8 distribution residue now reduces to counting self-symmetric tours.",
     "builtItems": [
       "research/problems/knights-tour-oblique-oq-02/problem.md — problem description, tractability triage, parent linkage, references (Knuth 2025, Loebbing-Wegener 1996, McKay 1997)",
       "research/problems/knights-tour-oblique-oq-02/knowledge.md — parent infrastructure survey (`obliqueCount`, `tourMoves`, `turnAngle`, `tour_winding_zero`, `no_turn_angle_4_all`), feasibility table, sorries/axioms anticipated",
@@ -116,7 +116,11 @@
       "S9 ACT: theorem d4Mul_one_left : d4Mul (false, 0) g = g — single pattern match + Fin.ext + omega (KnightsTourObliqueOQ02.lean:~652)",
       "S9 ACT: theorem d4Mul_one_right : d4Mul g (false, 0) = g — case split on b + Fin.ext + omega (KnightsTourObliqueOQ02.lean:~664)",
       "S9 ACT: theorem d4Mul_inv_left : d4Mul (d4Inv g) g = (false, 0) — case split on b, ↓reduceIte unfolds parent d4Inv, omega closes (k.val + (4-k.val)%4) % 4 = 0 (KnightsTourObliqueOQ02.lean:~680)",
-      "S9 ACT: theorem d4Mul_inv_right : d4Mul g (d4Inv g) = (false, 0) — symmetric to inv_left (KnightsTourObliqueOQ02.lean:~696)"
+      "S9 ACT: theorem d4Mul_inv_right : d4Mul g (d4Inv g) = (false, 0) — symmetric to inv_left (KnightsTourObliqueOQ02.lean:~696)",
+      "D4 group instance + MulAction D4 ClosedTour (KnightsTourObliqueOQ02.lean ~735-790): Group D4 from d4Mul_assoc/one_left/one_right/inv_left; MulAction from applyD4Tour_id/applyD4Tour_mul",
+      "d4Orbit_eq_orbit_toFinset: bridges the Finset orbit d4Orbit to Mathlib MulAction.orbit (KnightsTourObliqueOQ02.lean ~778)",
+      "d4Orbit_card_dvd_eight: (d4Orbit t).card ∣ 8 via orbit-stabilizer, verified 0-new-axiom (KnightsTourObliqueOQ02.lean ~792)",
+      "d4Orbit_card_eq_one_two_four_or_eight: orbit block sizes ∈ {1,2,4,8} (KnightsTourObliqueOQ02.lean ~805)"
     ],
     "insights": [
       "The full histogram is unreachable in Lean (1.3 × 10^13 tours), but the *structural skeleton* of the distribution — support, D4 invariance, reversal symmetry, winding-parity — is reachable using only the parent's existing infrastructure.",
@@ -136,7 +140,9 @@
       "The `applyD4_false` and `applyD4_true` private rfl helpers expose applyD4's reduction on Bool literals (via defeq of `if (false : Bool) then`), letting `simp only [applyD4_false, applyD4_true]` cleanly unfold each case of applyD4_mul without needing if_pos/if_neg/Bool.cond simp lemmas. (S8 ACT)",
       "The 4-case proof of `applyD4_mul` factors rotation composition (`rotateSquareN_add`) and reflection-rotation conjugation (`reflect_rotateN_conjugate`) as named helpers. The `congr 1 + Fin.ext + omega` tail closes residual Fin 4 equalities like `(k₂ + (4 - k₁)) % 4 = (k₂ + ((4 - k₁) % 4)) % 4`, which omega handles directly as Presburger arithmetic with constant modulus. (S8 ACT)",
       "With d4Equiv now a full Equivalence + Setoid, the orbits of applyD4Tour correspond to Setoid.classes of d4Setoid. Standard Mathlib API (`Quotient.mk`, `Setoid.IsPartition`, `Finset.sum_partition`) becomes available for the planned mod-8 divisibility argument, alongside the Group/MulAction route. (S8 ACT)",
-      "The Mathlib v4.26.0 `omega` tactic handles modular Fin 4 identities with nested `(a % 4 + b) % 4`-style expressions automatically (constant modulus, Presburger fragment). The 8 cases of d4Mul_assoc all reduce to such identities; no manual `Fin.val_*` or modular-arithmetic lemma chains needed. Combined with `Prod.mk.injEq.mpr ⟨rfl, ?_⟩` for splitting product equalities (bit equality is rfl after Bool.not_* normalization), each Group-axiom proof becomes a clean 5-line tactic block."
+      "The Mathlib v4.26.0 `omega` tactic handles modular Fin 4 identities with nested `(a % 4 + b) % 4`-style expressions automatically (constant modulus, Presburger fragment). The 8 cases of d4Mul_assoc all reduce to such identities; no manual `Fin.val_*` or modular-arithmetic lemma chains needed. Combined with `Prod.mk.injEq.mpr ⟨rfl, ?_⟩` for splitting product equalities (bit equality is rfl after Bool.not_* normalization), each Group-axiom proof becomes a clean 5-line tactic block.",
+      "S10 (2026-06-27, researcher-5): The five d4Mul laws ARE a group — but Bool × Fin 4 cannot carry it directly because Mathlib pre-equips it with the componentwise boolean-ring Mul/One (Bool.and / true), unit (true,1) ≠ dihedral (false,0). A semireducible type synonym D4 := Bool × Fin 4 isolates the Group cleanly (typeclass resolution does not unfold it) while staying defeq, so all prior lemmas transport for free.",
+      "S10: orbit-stabilizer (MulAction.card_orbit_mul_card_stabilizer_eq_card_group) upgrades the weak d4Orbit_card_le_eight (≤8) to the SHARP divisibility (d4Orbit t).card ∣ 8, hence orbit sizes ∈ {1,2,4,8}. This is the real Lagrange content, not enumeration."
     ],
     "mathlibGaps": [
       "No `Fintype` instance for `ClosedTour` in the parent file. The parent uses `Classical.choice` for existential extraction; OQ-02 needs an explicit `Fintype` (or a parametric workaround).",
@@ -144,13 +150,9 @@
       "Mathlib's `IsCycle` / `Cycle` infrastructure may apply to `ClosedTour`'s cyclic permutation viewpoint; check before re-implementing reversal symmetry."
     ],
     "nextSteps": [
-      "Doctor/mechanic handoff (gating): repair parent Proofs/KnightsTourOblique.lean (103 errors, 11 bands, lines 455-2140). Priority order: (1) resolve duplicate tour_consecutive_adj at 888 (unmasks 888-1106 band), (2) apply Mathlib v4.26.0 renames List.getLast_eq_get → List.getLast_eq_getElem (×6), List.map_eq_nil → List.map_eq_nil_iff (×1), List.getElem_cons_succ_eq_getElem_tail → expansion (×1), (3) sweep simp-made-no-progress (×27, many collateral), (4) rewrite motive-not-type-correct (×10 in 1199-1398), (5) compareOfLessAndEq cluster (2087-2140). Estimated 100-200 LOC, 1-2 doctor sessions with fix-and-rebuild loops. Out of researcher scope per feedback_researcher_build_pending_slug_series_silent_parent_regression.md.",
-      "S4-prep PR (after parent unblock): d4Mul + applyD4_mul + applyD4Tour_mul. Define d4Mul (b1,k1) (b2,k2) := (b1 xor b2, if b1 then (4 + k1 - k2) % 4 else (k1 + k2) % 4). Prove applyD4_mul by 4-case split on (b1,b2) using parent's rotate_reflect_conjugate, rotate90_four_times, reflect_twice. Lift to applyD4Tour_mul via parent's map_applyD4_comp + closedTour_eq_iff. Target ~70-100 LOC, 0 sorries, instance-free.",
-      "S4-act PR (after S4-prep): Group(Bool × Fin 4) instance with mul = d4Mul, one = (false, 0), inv = d4Inv. Use applyD4Tour_id (existing, OQ02:326) for the identity-acts-as-identity law and applyD4Tour_mul (S4-prep) for associativity. MulAction (Bool × Fin 4) ClosedTour instance via applyD4Tour. Apply Mathlib MulAction.card_orbit_mul_card_stabilizer_eq_card_group + MulAction.card_orbit_dvd_card_group. State the mod-8 decomposition obliqueDistribution k = 8 * (free orbit count) + sum (8/|Stab t|) over self-symmetric tours at level k. Specialize to no-self-symmetric case for clean 8 ∣ obliqueDistribution k. Target ~80-120 LOC.",
-      "S4 fallback (Path B, hand-rolled orbit partition): if Group(Bool×Fin 4) instance is awkward (e.g., associativity case-split in Mathlib v4.26.0 metavariable resolution), hand-construct orbit partition of levelSet k via Finset.image + applyD4Tour-orbits directly. ~120-150 LOC instance-free. Recommended only if Path A step 4 (Group instance) bogs down.",
-      "S5 ORIENT: reversal symmetry. Define reverse : ClosedTour → ClosedTour via List.reverse on the squares list (plus the obvious nodup/path/closes manipulations). Prove obliqueCount (reverse t) = obliqueCount t — the analogue of oblique_count_invariant for the Z/2 reversal action rather than D4. Conclude obliqueDistribution k ≡ 0 mod 2 modulo palindromic-tour count. Target ~80-100 LOC.",
-      "S6 ACT: combine D4 + reversal → mod-16 divisibility modulo (self-symmetric + palindromic) tour count. Most of the bookkeeping is repackaging the S4/S5 orbit decompositions; the genuinely new content is showing the D4 and reversal actions commute. Target ~60-100 LOC.",
-      "S7 (optional): better support upper bound from the joint winding-mod-8 constraint on (#turnAngle = 3, #turnAngle = 5). Uses parent's tour_winding_zero and no_turn_angle_4_all. Target ~50-80 LOC, may need 1-2 sorries on decide-shaped arithmetic facts."
+      "Count tours with non-trivial D4 stabilizer at each level to compute obliqueDistribution(k) mod 8 exactly (the orbit-size-8 blocks contribute 0 mod 8; only stabilizer>1 orbits matter)",
+      "Complete the reversal count-invariance capstone obliqueCount (reverseTour t) = obliqueCount t",
+      "Characterize which tours are D4-self-symmetric (stabilizer ≠ {1}) — likely none for closed knight tours, which would give clean 8 ∣ obliqueDistribution(k)"
     ],
     "proven": []
   },
@@ -210,6 +212,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ01.lean"
     },
     {
+      "path": "Proofs/KnightsTourObliqueOQ01OQ02.lean",
+      "filename": "KnightsTourObliqueOQ01OQ02.lean",
+      "lineCount": 568,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/KnightsTourObliqueOQ02.lean",
       "filename": "KnightsTourObliqueOQ02.lean",
       "lineCount": 696,
@@ -241,12 +254,25 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ03.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ04.lean",
+      "filename": "KnightsTourObliqueOQ04.lean",
+      "lineCount": 149,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ04.lean"
     }
   ],
   "relatedProofs": [
     "knights-tour-oblique",
     "knights-tour-oblique-oq-01",
+    "knights-tour-oblique-oq-01-oq-02",
     "knights-tour-oblique-oq-02",
-    "knights-tour-oblique-oq-03"
+    "knights-tour-oblique-oq-03",
+    "knights-tour-oblique-oq-04"
   ]
 }

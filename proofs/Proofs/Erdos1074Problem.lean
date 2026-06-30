@@ -155,6 +155,59 @@ theorem mem_pillai_iff {p : ℕ} :
   · rintro ⟨hp, m, ⟨hm1, -⟩, hmc, hmd⟩
     exact ⟨hp, m, hm1, hmc, hmd⟩
 
+/- ## Effective Witness Bounds
+
+The non-congruence condition `¬ p ≡ 1 [MOD m]` combined with the factorial
+divisibility `p ∣ m! + 1` forces any witness `m` into a bounded window
+`1 ≤ m ≤ p - 2`. This is what makes membership in `PillaiPrimes` decidable by
+a *finite* search per prime: only finitely many candidate witnesses `m < p`
+need be checked. It also yields the lower bound `p ≥ 3` for every Pillai prime.
+-/
+
+/-- **Witness upper bound (divisibility).** If `p` is prime and `p ∣ m! + 1`,
+then `m < p`. Indeed if `p ≤ m` then `p ∣ m!` (a prime divides `n!` iff it is
+`≤ n`), so `p` would divide `(m! + 1) - m! = 1`, contradicting primality. -/
+theorem witness_lt_of_dvd_factorial_add_one {p m : ℕ} (hp : p.Prime)
+    (hmd : p ∣ m ! + 1) : m < p := by
+  by_contra h
+  push_neg at h  -- h : p ≤ m
+  have hfac : p ∣ m ! := Nat.dvd_factorial hp.pos h
+  have hone : p ∣ 1 := (Nat.dvd_add_right hfac).mp hmd
+  exact hp.one_lt.ne' (Nat.dvd_one.mp hone)
+
+/-- **Witness avoids the Wilson case.** The non-congruence hypothesis
+`¬ p ≡ 1 [MOD m]` rules out `m = p - 1`, since the Wilson witness `m = p - 1`
+always satisfies `p ≡ 1 [MOD (p - 1)]`. -/
+theorem witness_ne_pred {p m : ℕ} (hp : 1 ≤ p) (hmc : ¬ p ≡ 1 [MOD m]) :
+    m ≠ p - 1 := by
+  rintro rfl
+  exact hmc (prime_cong_one_mod_pred hp)
+
+/-- **Effective witness window.** Every witness `m` of a Pillai prime `p`
+satisfies `1 ≤ m` and `m + 2 ≤ p`, i.e. `1 ≤ m ≤ p - 2`. Combining the
+divisibility bound `m < p` with the exclusion `m ≠ p - 1`. -/
+theorem witness_add_two_le {p m : ℕ} (hp : p.Prime) (hm1 : 1 ≤ m)
+    (hmc : ¬ p ≡ 1 [MOD m]) (hmd : p ∣ m ! + 1) : m + 2 ≤ p := by
+  have hlt : m < p := witness_lt_of_dvd_factorial_add_one hp hmd
+  have hne : m ≠ p - 1 := witness_ne_pred hp.one_lt.le hmc
+  -- `m < p` and `m ≠ p - 1` give `m ≤ p - 2`, hence `m + 2 ≤ p`.
+  omega
+
+/-- **Existence of a bounded witness.** Membership in `PillaiPrimes` is
+witnessed by some `m` confined to the finite window `1 ≤ m` and `m + 2 ≤ p`. -/
+theorem pillai_bounded_witness {p : ℕ} (hp : p ∈ PillaiPrimes) :
+    ∃ m, 1 ≤ m ∧ m + 2 ≤ p ∧ ¬ p ≡ 1 [MOD m] ∧ p ∣ m ! + 1 := by
+  obtain ⟨hprime, m, hm1, hmc, hmd⟩ := hp
+  exact ⟨m, hm1, witness_add_two_le hprime hm1 hmc hmd, hmc, hmd⟩
+
+/-- **Every Pillai prime is at least 3.** Immediate from the witness window
+`1 ≤ m` and `m + 2 ≤ p`: the smallest possible witness `m = 1` already forces
+`p ≥ 3`. (The true minimum is `23`, but `p ≥ 3` is the structural bound
+provable from the definitions alone.) -/
+theorem three_le_of_mem_pillai {p : ℕ} (hp : p ∈ PillaiPrimes) : 3 ≤ p := by
+  obtain ⟨m, hm1, hm2, -, -⟩ := pillai_bounded_witness hp
+  omega
+
 /- ## Infinitude Results
 
 Erdős, Hardy, and Subbarao proved that both sets are infinite.

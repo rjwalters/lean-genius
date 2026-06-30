@@ -23,5 +23,45 @@
     ],
     "nextSteps": [],
     "progressSummary": "COMPLETE: card {f : Fin k → ℕ // ∑ i, f i = n} = C(n+k-1, n) formalized verified, 0 sorries / 0 axioms (only propext/Classical.choice/Quot.sound). PR opened."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/StarsAndBarsWeakCompositions.lean",
+      "filename": "StarsAndBarsWeakCompositions.lean",
+      "lineCount": 105,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StarsAndBarsWeakCompositions.lean"
+    },
+    {
+      "path": "Proofs/StarsAndBarsWeakCompositionsOQ02.lean",
+      "filename": "StarsAndBarsWeakCompositionsOQ02.lean",
+      "lineCount": 209,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StarsAndBarsWeakCompositionsOQ02.lean"
+    },
+    {
+      "path": "Proofs/StarsAndBarsWeakCompositionsOQ03.lean",
+      "filename": "StarsAndBarsWeakCompositionsOQ03.lean",
+      "lineCount": 125,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StarsAndBarsWeakCompositionsOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "stars-and-bars-weak-compositions",
+    "stars-and-bars-weak-compositions-oq-02",
+    "stars-and-bars-weak-compositions-oq-03"
+  ]
 }

@@ -124,6 +124,16 @@
       "slug": "elementary-quadratic-reciprocity-oq-01-oq-03",
       "relation": "ancestor",
       "note": "Defines ZolotarevCRT.ringMulPerm and the per-residue multiplication-permutation machinery used here through the parent Frobenius identity for the per-line signs."
+    },
+    {
+      "slug": "quadratic-reciprocity",
+      "relation": "related",
+      "note": "The same law (q/p)·(p/q) = (-1)^((p-1)/2·(q-1)/2) stated and proved as the gallery's canonical Law of Quadratic Reciprocity. This entry is a complementary, self-contained derivation via permutation signs (Zolotarev) that deliberately avoids Mathlib's legendreSym.quadratic_reciprocity."
+    },
+    {
+      "slug": "quadratic-gauss-sum-square",
+      "relation": "related",
+      "note": "An alternative analytic route to quadratic reciprocity through the quadratic Gauss sum g = Σ (a/p) ζ^a, whose square g² = (-1)^((p-1)/2) p underlies the Gauss-sum proof — contrast with the purely combinatorial sign/inversion-count argument used here."
     }
   ]
 }

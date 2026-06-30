@@ -61,7 +61,8 @@
   ],
   "relatedProofs": [
     "sylow-theorem",
-    "sylow-theorems"
+    "sylow-theorems",
+    "sylow-theorems-oq-05"
   ],
   "references": {
     "papers": [],
@@ -71,5 +72,18 @@
   "started": "2026-04-06T06:37:41.264Z",
   "lastUpdate": "2026-04-12T21:07:23.998Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/SylowTheoremsOQ05.lean",
+      "filename": "SylowTheoremsOQ05.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremsOQ05.lean"
+    }
+  ]
 }

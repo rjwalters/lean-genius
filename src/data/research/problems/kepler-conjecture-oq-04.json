@@ -94,6 +94,7 @@
   ],
   "relatedProofs": [
     "kepler-conjecture",
+    "kepler-conjecture-oq-01",
     "kepler-conjecture-oq-04"
   ],
   "references": {
@@ -127,6 +128,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KeplerConjecture.lean"
+    },
+    {
+      "path": "Proofs/KeplerConjectureOQ01.lean",
+      "filename": "KeplerConjectureOQ01.lean",
+      "lineCount": 306,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KeplerConjectureOQ01.lean"
     },
     {
       "path": "Proofs/KeplerConjectureOQ04.lean",

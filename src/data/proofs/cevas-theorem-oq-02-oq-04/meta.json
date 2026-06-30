@@ -142,7 +142,15 @@
       "mathContext": "Specialization to ι = Fin 4 makes the higher-dimensional content concrete: the tetrahedron's faces and full vertex cycle all carry edge-ratio product 1."
     }
   ],
-  "conclusion": "The planar Ceva equation BD/DC·CE/EA·AF/FB = 1 is the n = 2 instance of a 1-cocycle condition on a simplex's edge ratios. In every dimension, cevians of an n-simplex concur precisely when the edge ratios form a cocycle, equivalently when the classical Ceva product equals 1 on every triangular 2-face; the concurrency point is reconstructed explicitly from any base vertex as w_i = r(b,i). This answers open question 4 of cevas-theorem-oq-02 at the algebraic level shared by all the gallery's Ceva/Menelaus entries, fully machine-checked with 0 axioms and 0 sorries.",
+  "conclusion": {
+    "summary": "The planar Ceva equation BD/DC·CE/EA·AF/FB = 1 is identified as the n = 2 instance of a 1-cocycle condition on a simplex's edge ratios. In every dimension, cevians of an n-simplex concur precisely when the edge ratios form a cocycle, equivalently when the classical Ceva product equals 1 on every triangular 2-face; the concurrency point is reconstructed explicitly from any base vertex as w_i = r(b,i). The full three-way equivalence is machine-checked with 0 axioms and 0 sorries.",
+    "implications": "This answers open question 4 of cevas-theorem-oq-02 — when do hypersurfaces bisect a simplex concurrently? — at the algebraic level shared by all the gallery's Ceva/Menelaus entries. By recasting concurrency as the solvability of a coboundary equation r(i,j) = w_j/w_i, the result both unifies the planar Ceva product with its higher-dimensional and closed-walk generalizations and makes the criterion constructive: the concurrency point's barycentric coordinates are produced explicitly rather than merely shown to exist.",
+    "openQuestions": [
+      "Can the purely algebraic cocycle criterion be linked back to a genuine geometric concurrency statement — actual hypersurfaces or cevian flats meeting at a common point — in Euclidean or projective n-space, completing the bridge from edge ratios to incidence geometry?",
+      "Does the cocycle / coboundary formulation extend to the non-Euclidean (spherical and hyperbolic) measure-function framework of the parent entry, recovering Ceva and Menelaus in constant-curvature simplices?",
+      "Is there a Menelaus counterpart in which the product equals −1 (or, in the cohomological language, a nontrivial cocycle class) characterizes collinearity rather than concurrency across all dimensions?"
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "cevas-theorem",

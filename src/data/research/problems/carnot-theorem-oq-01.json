@@ -42,7 +42,14 @@
     "coordinate-geometry"
   ],
   "relatedProofs": [
-    "carnot-theorem-oq-01"
+    "carnot-theorem-oq-01",
+    "carnot-theorem-oq-01-oq-01",
+    "carnot-theorem-oq-01-oq-01-oq-01",
+    "carnot-theorem-oq-01-oq-01-oq-02",
+    "carnot-theorem-oq-01-oq-02",
+    "carnot-theorem-oq-01-oq-03",
+    "carnot-theorem-oq-01-oq-03-oq-01",
+    "carnot-theorem-oq-01-oq-03-oq-02"
   ],
   "references": {
     "papers": [],
@@ -63,6 +70,83 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CarnotTheorem.lean"
+    },
+    {
+      "path": "Proofs/CarnotTheoremOQ01OQ01.lean",
+      "filename": "CarnotTheoremOQ01OQ01.lean",
+      "lineCount": 167,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CarnotTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CarnotTheoremOQ01OQ01OQ01.lean",
+      "filename": "CarnotTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 222,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CarnotTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CarnotTheoremOQ01OQ01OQ02.lean",
+      "filename": "CarnotTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 167,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CarnotTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CarnotTheoremOQ01OQ02.lean",
+      "filename": "CarnotTheoremOQ01OQ02.lean",
+      "lineCount": 164,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CarnotTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CarnotTheoremOQ01OQ03.lean",
+      "filename": "CarnotTheoremOQ01OQ03.lean",
+      "lineCount": 139,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CarnotTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CarnotTheoremOQ01OQ03OQ01.lean",
+      "filename": "CarnotTheoremOQ01OQ03OQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CarnotTheoremOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CarnotTheoremOQ01OQ03OQ02.lean",
+      "filename": "CarnotTheoremOQ01OQ03OQ02.lean",
+      "lineCount": 170,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CarnotTheoremOQ01OQ03OQ02.lean"
     }
   ]
 }

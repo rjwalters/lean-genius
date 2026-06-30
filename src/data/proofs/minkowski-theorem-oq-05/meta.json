@@ -91,12 +91,76 @@
       "**Optimality is the structural payoff.** The bare inequality is a routine transport of a Mathlib ℝ≥0 lemma; the genuine content is that 2^(p−1) is the *best* constant — attained at a = b and forced from below by the test point a = b = 1. Mathlib records neither the real-valued form nor the optimality.",
       "**The diagonal equality holds for every exponent.** rpow_add_self_eq needs no hypothesis on p: both (a+a)^p and 2^(p−1)(a^p+a^p) equal 2^p·a^p identically, so equality on the diagonal is pure rpow arithmetic, not a p ≥ 1 phenomenon.",
       "**A one-point test pins the constant.** Optimality of 2^(p−1) follows from a single evaluation at a = b = 1: the universal bound gives 2^p ≤ 2C, hence C ≥ 2^(p−1). No variational argument is needed.",
-      "**ℝ≥0 → ℝ transport is the right tool for nonnegative real inequalities.** Lifting nonnegative reals to ℝ≥0 and pushing a Mathlib NNReal inequality back through the order-embedding coercion (exact_mod_cast) is a clean, reusable pattern for real-valued nonnegative statements absent from Mathlib."
+      "**ℝ≥0 → ℝ transport is the right tool for nonnegative real inequalities.** Lifting nonnegative reals to ℝ≥0 and pushing a Mathlib NNReal inequality back through the order-embedding coercion (exact_mod_cast) is a clean, reusable pattern for real-valued nonnegative statements absent from Mathlib.",
+      "**IsLeast packages sharpness without a separate uniqueness proof.** Phrasing the result as 2^(p−1) = IsLeast{C | …} bundles admissibility (membership) and the lower bound into one object, so the optimal-constant claim is a single theorem rather than a pair of loosely related inequalities."
     ],
     "prerequisites": [
       "Real power function x ↦ x^p (rpow) and its basic algebra",
       "Convexity / power-mean inequalities (two-term case)",
       "The nonnegative-reals coercion ℝ≥0 → ℝ and norm_cast"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement, Mathlib relation, and techniques",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Docstring stating the power-sum bound (a+b)^p ≤ 2^(p−1)(a^p+b^p) and the optimality claim 2^(p−1) = IsLeast{admissible C}, noting Mathlib has only the ℝ≥0 / ℝ≥0∞ forms and no optimality, and outlining the four-step plan and the NNReal→ℝ transport / rpow-arithmetic / test-point techniques.",
+      "mathContext": "$(a+b)^p \\le 2^{p-1}(a^p+b^p)$, $C = 2^{p-1}$ optimal."
+    },
+    {
+      "id": "inequality",
+      "title": "The real-valued power-sum bound",
+      "startLine": 55,
+      "endLine": 68,
+      "summary": "rpow_add_le_two_rpow_sub_one_mul: lifts a, b to ℝ≥0, applies NNReal.rpow_add_le_mul_rpow_add_rpow, and transports back to ℝ with exact_mod_cast — the real-valued nonnegative form absent from Mathlib.",
+      "mathContext": "$(a+b)^p \\le 2^{p-1}(a^p+b^p)$ for $a,b \\ge 0,\\ p \\ge 1$."
+    },
+    {
+      "id": "diagonal-equality",
+      "title": "Sharpness on the diagonal",
+      "startLine": 70,
+      "endLine": 84,
+      "summary": "rpow_add_self_eq: (a+a)^p = 2^(p−1)(a^p+a^p) for every real p, since both sides equal 2^p·a^p (via Real.mul_rpow and Real.rpow_add). The equality witness showing the constant is attained.",
+      "mathContext": "$(a+a)^p = 2^{p-1}(a^p+a^p) = 2^p a^p.$"
+    },
+    {
+      "id": "optimality-lower-bound",
+      "title": "Optimality via a one-point test",
+      "startLine": 86,
+      "endLine": 102,
+      "summary": "two_rpow_sub_one_le_of_forall: any admissible constant C satisfies 2^(p−1) ≤ C, by evaluating the universal hypothesis at a = b = 1 (giving 2^p ≤ 2C) and using 2^(p−1) = 2^p/2 (Real.rpow_sub).",
+      "mathContext": "test $a=b=1$: $2^p \\le 2C \\Rightarrow 2^{p-1} \\le C.$"
+    },
+    {
+      "id": "isleast",
+      "title": "The optimal-constant characterization",
+      "startLine": 104,
+      "endLine": 121,
+      "summary": "isLeast_two_rpow_sub_one: combines admissibility and the lower bound into IsLeast{C | ∀ a b ≥ 0, (a+b)^p ≤ C(a^p+b^p)} = 2^(p−1) — the headline result.",
+      "mathContext": "$2^{p-1} = \\mathrm{IsLeast}\\,\\{C \\mid \\forall a,b\\ge 0,\\ (a+b)^p \\le C(a^p+b^p)\\}.$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "minkowski-theorem",
+      "relationship": "extends",
+      "description": "The parent Minkowski-inequality entry; this OQ-05 entry isolates the two-term power-sum convexity scaling bound and pins its optimal constant 2^(p−1)."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "Both are convexity/power-mean inequalities; the power-sum bound is the two-term case of Jensen's inequality for x ↦ x^p, a sibling of the arithmetic–geometric mean inequality."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry establishes, over the reals and machine-checked with 0 axioms and 0 sorries, the power-sum convexity bound (a+b)^p ≤ 2^(p−1)(a^p+b^p) for nonnegative a, b and p ≥ 1, and — its main contribution — that 2^(p−1) is the optimal constant: attained on the diagonal a = b and forced from below by the test point a = b = 1. The result is packaged as 2^(p−1) = IsLeast of the admissible-constant set.",
+    "implications": "Mathlib carries the bound only for ℝ≥0 and ℝ≥0∞ and records no optimality; this supplies the real-valued nonnegative form and the sharpness, the version used directly when comparing ℓ^p and ℓ^1 quasi-norm constants on a two-point space. The NNReal→ℝ transport pattern and the IsLeast-packaging of an optimal constant are reusable for other nonnegative real inequalities lifted from Mathlib's NNReal API.",
+    "openQuestions": [
+      "Does the n-term generalization (Σ aᵢ)^p ≤ n^(p−1) Σ aᵢ^p admit the same IsLeast optimal-constant characterization with constant n^(p−1)?",
+      "For 0 < p < 1 the inequality reverses; what is the optimal constant in that regime, and can it be packaged dually as an IsGreatest statement?",
+      "Can the diagonal equality and test-point optimality be abstracted to a general statement about the sharp constant in Jensen's inequality for a strictly convex power function?"
     ]
   },
   "sorries": 0

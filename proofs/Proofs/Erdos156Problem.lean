@@ -392,7 +392,7 @@ theorem sidon_sumset_size (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
     (hfin.prod hfin).subset (fun p hp => ⟨hp.1, hp.2.1⟩)
   rw [Set.ncard_image_of_injOn (sidon_sum_injOn A hA) hpairs_fin]
   -- Convert Set.ncard to Finset.card
-  rw [hpairs_fin.ncard_eq_toFinset_card', hfin.ncard_eq_toFinset_card']
+  rw [Set.ncard_eq_toFinset_card _ hpairs_fin, Set.ncard_eq_toFinset_card _ hfin]
   -- Show the pair set's toFinset equals the filtered product
   have h_eq : hpairs_fin.toFinset =
       (hfin.toFinset ×ˢ hfin.toFinset).filter (fun p : ℕ × ℕ => p.1 ≤ p.2) := by
@@ -413,7 +413,7 @@ theorem sidon_of_sumset_size (A : Set ℕ) (hfin : A.Finite)
   have hS_fin : S.Finite := (hfin.prod hfin).subset fun p hp => ⟨hp.1, hp.2.1⟩
   -- |S| = n(n+1)/2
   have h_S : S.ncard = A.ncard * (A.ncard + 1) / 2 := by
-    rw [hS_fin.ncard_eq_toFinset_card', hfin.ncard_eq_toFinset_card']
+    rw [Set.ncard_eq_toFinset_card _ hS_fin, Set.ncard_eq_toFinset_card _ hfin]
     convert card_upper_tri hfin.toFinset using 1
     congr 1; ext ⟨a, b⟩
     simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq,
@@ -619,19 +619,62 @@ lemma greedySidon_complement_in_shadow (N k : ℕ) (hkN : k ∈ Interval N)
       greedySidon_mono k' N (by omega) hcA,
       heq⟩
 
-/-- The diffShadow of A has size at most |A| * |sumset A| -/
+/-- The sumset of any finite set has size at most |A|*(|A|+1)/2.
+    (For Sidon sets this is an equality; here we only need the upper bound,
+    which holds for every finite set since the sumset is the image of the
+    upper-triangular pairs.) -/
+lemma sumset_ncard_le (A : Set ℕ) (hfin : A.Finite) :
+    (sumset A).ncard ≤ A.ncard * (A.ncard + 1) / 2 := by
+  classical
+  have hscard : (hfin.toFinset).card = A.ncard := (Set.ncard_eq_toFinset_card A hfin).symm
+  -- The coercion of the upper-triangular filtered product equals the index set
+  have hFP : (↑((hfin.toFinset ×ˢ hfin.toFinset).filter (fun p : ℕ × ℕ => p.1 ≤ p.2))
+      : Set (ℕ × ℕ)) = {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2} := by
+    ext p
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product,
+               Set.Finite.mem_toFinset, Set.mem_setOf_eq]
+    tauto
+  rw [sumset_eq_image]
+  calc ((fun p : ℕ × ℕ => p.1 + p.2) '' {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2}).ncard
+      ≤ ({p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2}).ncard := by
+        apply Set.ncard_image_le
+        rw [← hFP]; exact Finset.finite_toSet _
+    _ = ((hfin.toFinset ×ˢ hfin.toFinset).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).card := by
+        rw [← hFP, Set.ncard_coe_finset]
+    _ = (hfin.toFinset).card * ((hfin.toFinset).card + 1) / 2 := card_upper_tri _
+    _ = A.ncard * (A.ncard + 1) / 2 := by rw [hscard]
+
+/-- The diffShadow of A has size at most |A| * |sumset A| ≤ |A| * (|A|*(|A|+1)/2).
+    Every element of diffShadow A is `σ - a` for some `a ∈ A` and `σ ∈ sumset A`,
+    so diffShadow A is contained in the image of `A ×ˢ sumset A`. -/
 lemma diffShadow_ncard_le (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
     (diffShadow A).ncard ≤ A.ncard * (A.ncard * (A.ncard + 1) / 2) := by
-  -- diffShadow A ⊆ ⋃ a ∈ A, {σ - a | σ ∈ sumset A, σ > a}
-  -- Each fiber has size ≤ |sumset A| = |A|*(|A|+1)/2 (by sidon_sumset_size)
-  sorry
+  have hsfin : (sumset A).Finite := sumset_finite A hfin
+  have hprodfin : (A ×ˢ sumset A).Finite := hfin.prod hsfin
+  have hsub : diffShadow A ⊆ (fun p : ℕ × ℕ => p.2 - p.1) '' (A ×ˢ sumset A) := by
+    rintro x ⟨a, b, c, haA, hbA, hcA, heq⟩
+    exact ⟨(a, b + c), ⟨haA, b, c, hbA, hcA, rfl⟩, by show b + c - a = x; omega⟩
+  calc (diffShadow A).ncard
+      ≤ ((fun p : ℕ × ℕ => p.2 - p.1) '' (A ×ˢ sumset A)).ncard :=
+        Set.ncard_le_ncard hsub (hprodfin.image _)
+    _ ≤ (A ×ˢ sumset A).ncard := Set.ncard_image_le hprodfin
+    _ = A.ncard * (sumset A).ncard := Set.ncard_prod
+    _ ≤ A.ncard * (A.ncard * (A.ncard + 1) / 2) := by
+        gcongr; exact sumset_ncard_le A hfin
 
-/-- The midShadow of A has size at most |A|*(|A|+1)/2 -/
+/-- The midShadow of A has size at most |A|*(|A|+1)/2.
+    Every midpoint `x` satisfies `2x = σ ∈ sumset A`, so `x = σ / 2`; thus
+    midShadow A is contained in the image of sumset A under `σ ↦ σ / 2`. -/
 lemma midShadow_ncard_le (A : Set ℕ) (hfin : A.Finite) :
     (midShadow A).ncard ≤ A.ncard * (A.ncard + 1) / 2 := by
-  -- midShadow A ⊆ image of sumset A under λ σ, σ/2 (for even σ)
-  -- size ≤ |sumset A|, and |sumset A| ≤ |A|*(|A|+1)/2
-  sorry
+  have hsfin : (sumset A).Finite := sumset_finite A hfin
+  have hsub : midShadow A ⊆ (fun σ : ℕ => σ / 2) '' sumset A := by
+    rintro x ⟨b, c, hbA, hcA, heq⟩
+    exact ⟨b + c, ⟨b, c, hbA, hcA, rfl⟩, by show (b + c) / 2 = x; omega⟩
+  calc (midShadow A).ncard
+      ≤ ((fun σ : ℕ => σ / 2) '' sumset A).ncard := Set.ncard_le_ncard hsub (hsfin.image _)
+    _ ≤ (sumset A).ncard := Set.ncard_image_le hsfin
+    _ ≤ A.ncard * (A.ncard + 1) / 2 := sumset_ncard_le A hfin
 
 /--
 Greedy Sidon N^{1/3} lower bound (framework):
@@ -647,6 +690,52 @@ theorem greedySidon_cube_lower_bound (N n : ℕ)
     N ≤ n + n * (n * (n + 1) / 2) + n * (n + 1) / 2 := by
   -- Counting: Interval N ⊆ greedySidon N ∪ diffShadow(greedySidon N) ∪ midShadow(greedySidon N)
   -- |Interval N| = N, |greedySidon N| = n, |diffShadow| ≤ n*(n*(n+1)/2), |midShadow| ≤ n*(n+1)/2
-  sorry
+  set A := greedySidon N with hA_def
+  have hAfin : A.Finite := greedySidon_finite N
+  have hsidon : IsSidonSet A := greedySidon_is_sidon N
+  have hsfin : (sumset A).Finite := sumset_finite A hAfin
+  -- n = |A|
+  have hn' : n = A.ncard := by
+    have hsz : size A = A.ncard := by
+      unfold size; rw [dif_pos hAfin, ← Set.ncard_eq_toFinset_card A hAfin]
+    rw [hn, hsz]
+  -- diffShadow and midShadow are finite
+  have hdfin : (diffShadow A).Finite := by
+    apply Set.Finite.subset ((hAfin.prod hsfin).image (fun p : ℕ × ℕ => p.2 - p.1))
+    rintro x ⟨a, b, c, haA, hbA, hcA, heq⟩
+    exact ⟨(a, b + c), ⟨haA, b, c, hbA, hcA, rfl⟩, by show b + c - a = x; omega⟩
+  have hmfin : (midShadow A).Finite := by
+    apply Set.Finite.subset (hsfin.image (fun σ : ℕ => σ / 2))
+    rintro x ⟨b, c, hbA, hcA, heq⟩
+    exact ⟨b + c, ⟨b, c, hbA, hcA, rfl⟩, by show (b + c) / 2 = x; omega⟩
+  -- The interval is covered by A and its two shadows
+  have hcover : Interval N ⊆ A ∪ diffShadow A ∪ midShadow A := by
+    intro k hk
+    by_cases hkA : k ∈ A
+    · exact Or.inl (Or.inl hkA)
+    · rcases greedySidon_complement_in_shadow N k hk hkA with h1 | h2
+      · exact Or.inl (Or.inr h1)
+      · exact Or.inr h2
+  -- |Interval N| = N
+  have hIcard : (Interval N).ncard = N := by
+    have heq : Interval N = ↑(Finset.Icc 1 N) := by
+      ext x
+      simp only [Interval, Set.mem_setOf_eq, Finset.coe_Icc, Set.mem_Icc]
+    rw [heq, Set.ncard_coe_finset, Nat.card_Icc]; omega
+  -- Shadow bounds, rewritten in terms of n
+  have hd : (diffShadow A).ncard ≤ n * (n * (n + 1) / 2) := by
+    rw [hn']; exact diffShadow_ncard_le A hsidon hAfin
+  have hm : (midShadow A).ncard ≤ n * (n + 1) / 2 := by
+    rw [hn']; exact midShadow_ncard_le A hAfin
+  -- Count
+  calc N = (Interval N).ncard := hIcard.symm
+    _ ≤ (A ∪ diffShadow A ∪ midShadow A).ncard :=
+        Set.ncard_le_ncard hcover ((hAfin.union hdfin).union hmfin)
+    _ ≤ (A ∪ diffShadow A).ncard + (midShadow A).ncard := Set.ncard_union_le _ _
+    _ ≤ A.ncard + (diffShadow A).ncard + (midShadow A).ncard :=
+        Nat.add_le_add_right (Set.ncard_union_le A (diffShadow A)) _
+    _ ≤ n + n * (n * (n + 1) / 2) + n * (n + 1) / 2 := by
+        rw [← hn']
+        exact Nat.add_le_add (Nat.add_le_add (le_refl n) hd) hm
 
 end Erdos156
