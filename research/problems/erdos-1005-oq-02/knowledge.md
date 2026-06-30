@@ -1,3 +1,45 @@
+## Session 2026-06-30 (researcher-8): §23 leading-1s on an arbitrary tail — period-6 rotation in full
+
+**Mode**: REVISIT · **Outcome**: progress (VERIFIED, 0-axiom). PR pending.
+
+Unified §21 (all-1, ks=[]) and §22 (j=1,2 leading-1 boundary) into one law:
+prepending `j` leading `1`s to an **arbitrary** tail `ks` is the order-6 rotation
+`[[1,−1],[1,0]]` acting on the pair `(aⱼ,sⱼ)=(K(1ʲ++ks), secondCont(1ʲ++ks))`.
+
+### What I Did
+- Proved the two coupled single-step append recurrences `sⱼ₊₁=aⱼ`,
+  `aⱼ₊₁=aⱼ−sⱼ` on a general tail (`secondCont_replicate_one_append`,
+  `continuant_replicate_one_succ_append`) — the §21 all-1 system seeded at
+  `(K(ks),secondCont ks)` instead of `(1,0)`.
+- Headline `continuant_secondCont_replicate_one_append`: joint period-6
+  `aⱼ₊₆=aⱼ ∧ sⱼ₊₆=sⱼ` for every `ks`, by 6-step `omega` (mirrors §21 with
+  explicit `j+k` type ascriptions so omega unifies the indices).
+- Period corollaries `_period/_six_mul/_mod`: `K(1ʲ++ks)` depends only on `j%6`.
+- Three new orbit base values `continuant_three/four/five_ones_cons`:
+  `K(1³::ks)=−K(ks)`, `K(1⁴::ks)=s−K`, `K(1⁵::ks)=s` (`s=secondCont ks`).
+- Full closed form `continuant_replicate_one_append_orbit`: `K(1ʲ++ks)` cycles
+  `[K, K−s, −s, −K, s−K, s]` by `j%6`. **ks=[] (K=1,s=0) recovers §21's orbit
+  `1,1,0,−1,−1,0` exactly**; `j%6=1,2` recover the §22 closed forms.
+- Sign law `continuant_replicate_one_append_pos_iff` / `_ne_zero` (nonempty
+  all-≥2 tail): `K(1ʲ++ks)>0 ⟺ j≡0,1,5 (mod 6)`, `<0` for `2,3,4`, **never 0**.
+
+### Key Findings
+- §21 and §22 are the two specialisations of a single period-6 leading-`1` law;
+  §22's "at most one leading `1` keeps positivity" is just the `j≤2` window of a
+  period-6 sign alternation, and §21's zeros are an artefact of `ks=[]`.
+- The §17 invariant `0<secondCont ks<K(ks)` is exactly what reads off all six
+  orbit signs — no new arithmetic input beyond §17.
+
+### Files Modified
+- `proofs/Proofs/Erdos1005ProblemOQ02.lean` (§23, 12 new theorems, builds clean)
+- `src/data/research/problems/erdos-1005-oq-02.json` (knowledge)
+
+### Next Steps
+- Density aggregation toward the open `1/12` constant (van Doorn `c∈[1/12,1/4]`)
+  still untouched — combine §17 large-quotient linear growth with §23 bounded
+  period-6 leading-`1` blocks to model a general quotient word and count its
+  similar-ordering windows against the order-`n` denominator cap.
+
 ## Session 2026-06-27 (researcher-2): §16 continuant matrix — Cassini + reversal
 
 PR #31083 (VERIFIED, 0-axiom). Realised both named nextSteps targets via an

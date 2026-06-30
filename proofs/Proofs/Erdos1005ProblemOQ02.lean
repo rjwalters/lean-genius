@@ -2108,4 +2108,223 @@ theorem continuant_one_one_cons_neg (ks : List ℤ) (hne : ks ≠ [])
   have := continuant_pos rest hrest
   linarith
 
+/-! ## §23: Leading `1`s on an arbitrary tail — the period-6 rotation, in full
+
+§22 read off the *boundary* of §17's positive cone from the two closed forms
+`K(1 :: ks) = K(ks) − secondCont ks` and `K(1 :: 1 :: ks) = − secondCont ks`,
+proving that **exactly one** leading `1` keeps a large-quotient tail positive.  §21
+established that the *pure* all-`1` list (`ks = []`) is period-6 with orbit
+`1, 1, 0, −1, −1, 0`.  This section unifies the two: prepending `j` leading `1`s to an
+**arbitrary** tail `ks` is the order-6 rotation `[[1,−1],[1,0]]` acting on the pair
+`(aⱼ, sⱼ) = (K(1ʲ ++ ks), secondCont(1ʲ ++ ks))`.
+
+Writing the §14 single-step recurrences with every leading quotient `= 1` gives the
+coupled system `aⱼ₊₁ = aⱼ − sⱼ`, `sⱼ₊₁ = aⱼ` — identical to §21's all-`1` system but now
+seeded at the arbitrary pair `(K(ks), secondCont ks)` rather than `(1, 0)`.  Its
+companion is the order-6 rotation, so the pair is **6-periodic in the prefix length**
+`j`, and the continuant runs through the explicit orbit
+
+  `K(ks), K(ks) − secondCont ks, − secondCont ks, − K(ks), secondCont ks − K(ks), secondCont ks`.
+
+Substituting `ks = []` (`K = 1`, `secondCont = 0`) recovers §21's `1, 1, 0, −1, −1, 0`
+exactly; `j = 1, 2` recover the §22 closed forms.  On a large-quotient tail the sign of
+each orbit value is then fixed by the §17 invariant `0 < secondCont ks < K(ks)`
+(`secondCont_lt_continuant` + `continuant_pos`): the continuant is `> 0` precisely for
+`j ≡ 0, 1, 5 (mod 6)` and `< 0` for `j ≡ 2, 3, 4`, never zero.  This is the full
+mixed leading-`1` / large-quotient sign classification — the §22 boundary promoted to a
+periodic law, the structural reason a leading run of small quotients can neither grow
+the continuant nor keep it one-signed.
+
+Depends only on the §14 recurrence `continuant_cons`, the §22 closed forms, and the §17
+invariant `secondCont_lt_continuant` / `continuant_pos`. -/
+
+/-- The trailing continuant of a cons is the continuant of the tail (definitional,
+named so it rewrites only explicit cons-form occurrences and leaves a bare
+`secondCont xs` on a variable list untouched). -/
+theorem secondCont_cons (k : ℤ) (ks : List ℤ) : secondCont (k :: ks) = Continuant ks :=
+  rfl
+
+/-- **Three leading `1`s (closed form).**  `K(1 :: 1 :: 1 :: ks) = − K(ks)`: the third
+consecutive `1` negates the tail continuant, the half-turn of the order-6 rotation. -/
+theorem continuant_three_ones_cons (ks : List ℤ) :
+    Continuant (1 :: 1 :: 1 :: ks) = - Continuant ks := by
+  rw [continuant_one_one_cons (1 :: ks), secondCont_cons]
+
+/-- **Four leading `1`s (closed form).**  `K(1⁴ :: ks) = secondCont ks − K(ks)`. -/
+theorem continuant_four_ones_cons (ks : List ℤ) :
+    Continuant (1 :: 1 :: 1 :: 1 :: ks) = secondCont ks - Continuant ks := by
+  rw [continuant_one_cons (1 :: 1 :: 1 :: ks), continuant_three_ones_cons,
+      secondCont_cons, continuant_one_one_cons]
+  ring
+
+/-- **Five leading `1`s (closed form).**  `K(1⁵ :: ks) = secondCont ks`; the sixth
+leading `1` returns to `K(ks)` (the period closes — see
+`continuant_secondCont_replicate_one_append`). -/
+theorem continuant_five_ones_cons (ks : List ℤ) :
+    Continuant (1 :: 1 :: 1 :: 1 :: 1 :: ks) = secondCont ks := by
+  rw [continuant_one_cons (1 :: 1 :: 1 :: 1 :: ks), continuant_four_ones_cons,
+      secondCont_cons, continuant_three_ones_cons]
+  ring
+
+/-- Trailing-continuant single step under a leading `1` on an arbitrary tail:
+`secondCont(1ʲ⁺¹ ++ ks) = K(1ʲ ++ ks)`.  Immediate from `secondCont (_ :: xs) = K(xs)`. -/
+theorem secondCont_replicate_one_append (j : ℕ) (ks : List ℤ) :
+    secondCont (List.replicate (j + 1) 1 ++ ks)
+      = Continuant (List.replicate j 1 ++ ks) := by
+  rw [List.replicate_succ, List.cons_append]; rfl
+
+/-- Continuant single step under a leading `1` on an arbitrary tail:
+`aⱼ₊₁ = aⱼ − sⱼ`, the §14 recurrence `continuant_cons` with the leading factor `= 1`. -/
+theorem continuant_replicate_one_succ_append (j : ℕ) (ks : List ℤ) :
+    Continuant (List.replicate (j + 1) 1 ++ ks)
+      = Continuant (List.replicate j 1 ++ ks)
+        - secondCont (List.replicate j 1 ++ ks) := by
+  rw [List.replicate_succ, List.cons_append, continuant_cons]; ring
+
+/-- **The leading-`1` pair is period-6 (joint headline).**  For *every* tail `ks` and
+prefix length `j`, both `aⱼ = K(1ʲ ++ ks)` and its companion `sⱼ = secondCont(1ʲ ++ ks)`
+satisfy `aⱼ₊₆ = aⱼ` and `sⱼ₊₆ = sⱼ`.  The coupled recurrence `aⱼ₊₁ = aⱼ − sⱼ`,
+`sⱼ₊₁ = aⱼ` is the order-6 rotation `[[1,−1],[1,0]]`, whose sixth power is the identity;
+unfolding six steps reduces the claim to linear integer arithmetic that `omega`
+discharges.  Specialising `ks = []` gives §21's `continuant_secondCont_replicate_one`. -/
+theorem continuant_secondCont_replicate_one_append (j : ℕ) (ks : List ℤ) :
+    Continuant (List.replicate (j + 6) 1 ++ ks)
+        = Continuant (List.replicate j 1 ++ ks)
+      ∧ secondCont (List.replicate (j + 6) 1 ++ ks)
+        = secondCont (List.replicate j 1 ++ ks) := by
+  have c1 : Continuant (List.replicate (j + 1) 1 ++ ks)
+      = Continuant (List.replicate j 1 ++ ks) - secondCont (List.replicate j 1 ++ ks) :=
+    continuant_replicate_one_succ_append j ks
+  have s1 : secondCont (List.replicate (j + 1) 1 ++ ks)
+      = Continuant (List.replicate j 1 ++ ks) :=
+    secondCont_replicate_one_append j ks
+  have c2 : Continuant (List.replicate (j + 2) 1 ++ ks)
+      = Continuant (List.replicate (j + 1) 1 ++ ks)
+        - secondCont (List.replicate (j + 1) 1 ++ ks) :=
+    continuant_replicate_one_succ_append (j + 1) ks
+  have s2 : secondCont (List.replicate (j + 2) 1 ++ ks)
+      = Continuant (List.replicate (j + 1) 1 ++ ks) :=
+    secondCont_replicate_one_append (j + 1) ks
+  have c3 : Continuant (List.replicate (j + 3) 1 ++ ks)
+      = Continuant (List.replicate (j + 2) 1 ++ ks)
+        - secondCont (List.replicate (j + 2) 1 ++ ks) :=
+    continuant_replicate_one_succ_append (j + 2) ks
+  have s3 : secondCont (List.replicate (j + 3) 1 ++ ks)
+      = Continuant (List.replicate (j + 2) 1 ++ ks) :=
+    secondCont_replicate_one_append (j + 2) ks
+  have c4 : Continuant (List.replicate (j + 4) 1 ++ ks)
+      = Continuant (List.replicate (j + 3) 1 ++ ks)
+        - secondCont (List.replicate (j + 3) 1 ++ ks) :=
+    continuant_replicate_one_succ_append (j + 3) ks
+  have s4 : secondCont (List.replicate (j + 4) 1 ++ ks)
+      = Continuant (List.replicate (j + 3) 1 ++ ks) :=
+    secondCont_replicate_one_append (j + 3) ks
+  have c5 : Continuant (List.replicate (j + 5) 1 ++ ks)
+      = Continuant (List.replicate (j + 4) 1 ++ ks)
+        - secondCont (List.replicate (j + 4) 1 ++ ks) :=
+    continuant_replicate_one_succ_append (j + 4) ks
+  have s5 : secondCont (List.replicate (j + 5) 1 ++ ks)
+      = Continuant (List.replicate (j + 4) 1 ++ ks) :=
+    secondCont_replicate_one_append (j + 4) ks
+  have c6 : Continuant (List.replicate (j + 6) 1 ++ ks)
+      = Continuant (List.replicate (j + 5) 1 ++ ks)
+        - secondCont (List.replicate (j + 5) 1 ++ ks) :=
+    continuant_replicate_one_succ_append (j + 5) ks
+  have s6 : secondCont (List.replicate (j + 6) 1 ++ ks)
+      = Continuant (List.replicate (j + 5) 1 ++ ks) :=
+    secondCont_replicate_one_append (j + 5) ks
+  constructor <;> omega
+
+/-- The leading-`1` continuant alone is period-6: `K(1ʲ⁺⁶ ++ ks) = K(1ʲ ++ ks)`. -/
+theorem continuant_replicate_one_append_period (j : ℕ) (ks : List ℤ) :
+    Continuant (List.replicate (j + 6) 1 ++ ks)
+      = Continuant (List.replicate j 1 ++ ks) :=
+  (continuant_secondCont_replicate_one_append j ks).1
+
+/-- Period-6 across any multiple of `6`: `K(1^(6q+r) ++ ks) = K(1ʳ ++ ks)`, by induction
+on the number of full turns `q` of the rotation orbit. -/
+theorem continuant_replicate_one_append_six_mul (q r : ℕ) (ks : List ℤ) :
+    Continuant (List.replicate (6 * q + r) 1 ++ ks)
+      = Continuant (List.replicate r 1 ++ ks) := by
+  induction q with
+  | zero => simp
+  | succ q ih =>
+    have hidx : 6 * (q + 1) + r = (6 * q + r) + 6 := by ring
+    rw [hidx, continuant_replicate_one_append_period, ih]
+
+/-- **Closed form via residue mod 6.**  `K(1ʲ ++ ks)` depends only on `j % 6` — the
+prefix length matters solely through its position on the order-6 orbit. -/
+theorem continuant_replicate_one_append_mod (j : ℕ) (ks : List ℤ) :
+    Continuant (List.replicate j 1 ++ ks)
+      = Continuant (List.replicate (j % 6) 1 ++ ks) := by
+  conv_lhs => rw [← Nat.div_add_mod j 6]
+  exact continuant_replicate_one_append_six_mul (j / 6) (j % 6) ks
+
+/-- **The full leading-`1` orbit (closed form).**  For every tail `ks`, the continuant
+`K(1ʲ ++ ks)` runs through the six explicit values of the order-6 rotation orbit seeded
+at `(K(ks), secondCont ks)`, selected by `j % 6`:
+`K, K − s, −s, −K, s − K, s` (with `s = secondCont ks`).  Substituting `ks = []`
+(`K = 1`, `s = 0`) yields §21's orbit `1, 1, 0, −1, −1, 0`; `j % 6 = 1, 2` are the §22
+closed forms `continuant_one_cons` / `continuant_one_one_cons`. -/
+theorem continuant_replicate_one_append_orbit (j : ℕ) (ks : List ℤ) :
+    Continuant (List.replicate j 1 ++ ks)
+      = (if j % 6 = 0 then Continuant ks
+         else if j % 6 = 1 then Continuant ks - secondCont ks
+         else if j % 6 = 2 then - secondCont ks
+         else if j % 6 = 3 then - Continuant ks
+         else if j % 6 = 4 then secondCont ks - Continuant ks
+         else secondCont ks) := by
+  rw [continuant_replicate_one_append_mod j ks]
+  have h6 : j % 6 < 6 := Nat.mod_lt _ (by norm_num)
+  set r := j % 6 with hr
+  clear_value r
+  interval_cases r
+  · simp
+  · simpa using continuant_one_cons ks
+  · simpa using continuant_one_one_cons ks
+  · simpa using continuant_three_ones_cons ks
+  · simpa using continuant_four_ones_cons ks
+  · simpa using continuant_five_ones_cons ks
+
+/-- **Sign classification (large-quotient tail).**  On a nonempty all-`≥ 2` tail the §17
+invariant `0 < secondCont ks < K(ks)` fixes the sign of every orbit value: the continuant
+`K(1ʲ ++ ks)` is strictly positive **iff** `j ≡ 0, 1, 5 (mod 6)`.  The complementary
+residues `j ≡ 2, 3, 4` give a strictly negative value (`continuant_replicate_one_append_ne_zero`),
+so the leading-`1` run alternates sign in a fixed period-6 pattern and is never zero —
+§22's "exactly one leading `1` preserves positivity" promoted to the full periodic law. -/
+theorem continuant_replicate_one_append_pos_iff (j : ℕ) (ks : List ℤ)
+    (hne : ks ≠ []) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    0 < Continuant (List.replicate j 1 ++ ks)
+      ↔ (j % 6 = 0 ∨ j % 6 = 1 ∨ j % 6 = 5) := by
+  rw [continuant_replicate_one_append_orbit]
+  have hpos : 0 < Continuant ks := continuant_pos ks h
+  have hsc : 0 < secondCont ks := by
+    obtain ⟨k, rest, rfl⟩ := List.exists_cons_of_ne_nil hne
+    simp only [secondCont]
+    exact continuant_pos rest (fun m hm => h m (List.mem_cons_of_mem k hm))
+  have hlt : secondCont ks < Continuant ks := (secondCont_lt_continuant ks h).2
+  have h6 : j % 6 < 6 := Nat.mod_lt _ (by norm_num)
+  set r := j % 6 with hr
+  clear_value r
+  interval_cases r <;> simp <;> omega
+
+/-- **The leading-`1` orbit never vanishes on a large-quotient tail.**  For a nonempty
+all-`≥ 2` tail, `K(1ʲ ++ ks) ≠ 0` for *every* prefix length `j`: the empty-tail zeros of
+§21's orbit (`K[1,1] = 0`, etc.) are an artefact of `ks = []`; any large-quotient tail
+pushes every orbit value strictly off zero. -/
+theorem continuant_replicate_one_append_ne_zero (j : ℕ) (ks : List ℤ)
+    (hne : ks ≠ []) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant (List.replicate j 1 ++ ks) ≠ 0 := by
+  rw [continuant_replicate_one_append_orbit]
+  have hpos : 0 < Continuant ks := continuant_pos ks h
+  have hsc : 0 < secondCont ks := by
+    obtain ⟨k, rest, rfl⟩ := List.exists_cons_of_ne_nil hne
+    simp only [secondCont]
+    exact continuant_pos rest (fun m hm => h m (List.mem_cons_of_mem k hm))
+  have hlt : secondCont ks < Continuant ks := (secondCont_lt_continuant ks h).2
+  have h6 : j % 6 < 6 := Nat.mod_lt _ (by norm_num)
+  set r := j % 6 with hr
+  clear_value r
+  interval_cases r <;> simp <;> omega
+
 end Erdos1005OQ02
