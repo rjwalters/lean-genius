@@ -3580,10 +3580,10 @@
       "result": "clean"
     },
     "erdos-1066-oq-04": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-04T04:08:24Z",
-      "result": "clean"
+      "lastAudited": "2026-06-28T19:20:24Z",
+      "result": "issues-fixed"
     },
     "erdos-1067": {
       "auditCount": 4,
@@ -25798,6 +25798,30 @@
       "auditCount": 1,
       "lastAudited": "2026-06-28T18:46:29Z",
       "result": "issues-found",
+      "issues": []
+    },
+    "factor-remainder-hasse-derivative-fq": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:21:35Z",
+      "result": "clean",
+      "issues": []
+    },
+    "godel-second-incompleteness-oq02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:23:24Z",
+      "result": "clean",
+      "issues": []
+    },
+    "lucas-sequence-degree2-identities": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:24:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "pythagorean-theorem-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:24:43Z",
+      "result": "clean",
       "issues": []
     }
   },

@@ -133,4 +133,80 @@ theorem collisionProb_le_one {k d : ℕ} (hd : 0 < d) (hk : k ≤ d + 1) :
   have := birthdayProduct_nonneg hd hk
   linarith
 
+/-! ## Strict monotonicity and the pigeonhole certainty
+
+The monotonicity above is non-strict.  In the genuinely interesting range
+`1 ≤ k ≤ d` the all-distinct probability is in fact **strictly** positive and
+**strictly** decreasing: each added person multiplies by a factor `1 − k/d` that
+is strictly below `1`, so the collision probability strictly increases.  Past the
+pigeonhole threshold (`k > d`) a collision is *certain*: the factor `1 − d/d = 0`
+kills the product, giving `collisionProb = 1`. -/
+
+/-- Each factor `1 − i/d` is **strictly** positive when `i < d`. -/
+theorem factor_pos {d : ℕ} (hd : 0 < d) {i : ℕ} (hi : i < d) :
+    0 < 1 - (i : ℝ) / d := by
+  have hd' : (0 : ℝ) < d := by exact_mod_cast hd
+  have : (i : ℝ) / d < 1 := by rw [div_lt_one hd']; exact_mod_cast hi
+  linarith
+
+/-- `P(all distinct)` is **strictly positive** while there are no more people than
+days (`k ≤ d`): every factor `1 − i/d` with `i < k ≤ d` is strictly positive. -/
+theorem birthdayProduct_pos {k d : ℕ} (hd : 0 < d) (hk : k ≤ d) :
+    0 < birthdayProduct k d := by
+  apply Finset.prod_pos
+  intro i hi
+  rw [Finset.mem_range] at hi
+  exact factor_pos hd (by omega)
+
+/-- **One-step strict monotonicity.** For `0 < k ≤ d`, adding one more person
+*strictly* lowers `P(all distinct)`: `P(k+1) < P(k)` (the factor `1 − k/d < 1`
+multiplies a strictly positive quantity). -/
+theorem birthdayProduct_step_lt {k d : ℕ} (hd : 0 < d) (hk0 : 0 < k) (hk : k ≤ d) :
+    birthdayProduct (k + 1) d < birthdayProduct k d := by
+  rw [birthdayProduct_succ]
+  have hpos : 0 < birthdayProduct k d := birthdayProduct_pos hd hk
+  have hkr : (0 : ℝ) < k := by exact_mod_cast hk0
+  have hdr : (0 : ℝ) < d := by exact_mod_cast hd
+  have hfac : 1 - (k : ℝ) / d < 1 := by
+    have : 0 < (k : ℝ) / d := div_pos hkr hdr
+    linarith
+  calc birthdayProduct k d * (1 - (k : ℝ) / d)
+      < birthdayProduct k d * 1 := mul_lt_mul_of_pos_left hfac hpos
+    _ = birthdayProduct k d := mul_one _
+
+/-- **`P(all distinct)` is strictly decreasing** on `1 ≤ · ≤ d`: if `0 < j < k ≤ d`
+then `P(k) < P(j)`. -/
+theorem birthdayProduct_strict_lt {d : ℕ} (hd : 0 < d) {j k : ℕ}
+    (hj : 0 < j) (hjk : j < k) (hk : k ≤ d) :
+    birthdayProduct k d < birthdayProduct j d :=
+  lt_of_le_of_lt
+    (birthdayProduct_antitone hd hjk hk)
+    (birthdayProduct_step_lt hd hj (by omega))
+
+/-- **The strict monotone birthday paradox.** For `0 < j < k ≤ d` the collision
+probability *strictly* increases with the number of people:
+`collisionProb j d < collisionProb k d`. -/
+theorem collisionProb_strict_lt {d : ℕ} (hd : 0 < d) {j k : ℕ}
+    (hj : 0 < j) (hjk : j < k) (hk : k ≤ d) :
+    collisionProb j d < collisionProb k d := by
+  unfold collisionProb
+  have := birthdayProduct_strict_lt hd hj hjk hk
+  linarith
+
+/-- **Pigeonhole.** With more people than days (`d < k`), `P(all distinct) = 0`:
+the factor `1 − d/d = 0` occurs in the product. -/
+theorem birthdayProduct_eq_zero_of_gt {k d : ℕ} (hd : 0 < d) (hk : d < k) :
+    birthdayProduct k d = 0 := by
+  unfold birthdayProduct
+  have hdr : (d : ℝ) ≠ 0 := by exact_mod_cast hd.ne'
+  refine Finset.prod_eq_zero (i := d) (Finset.mem_range.mpr hk) ?_
+  rw [div_self hdr]; ring
+
+/-- **Pigeonhole certainty.** With more people than days (`d < k`) a collision is
+*certain*: `collisionProb k d = 1`. -/
+theorem collisionProb_eq_one_of_gt {k d : ℕ} (hd : 0 < d) (hk : d < k) :
+    collisionProb k d = 1 := by
+  unfold collisionProb
+  rw [birthdayProduct_eq_zero_of_gt hd hk]; ring
+
 end BirthdayProblemOQ02OQ01OQ03
