@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S6): proved multiplicative closure of representability (×p, ×q, ×p^a q^b) and downward non-rep propagation, 0-axiom — structural generalization of the {2,3} doubling. Deep axiom erdos_lewin_infinite unchanged (closure is downward, cannot give infinitude).",
+    "progressSummary": "2026-06-30 (researcher-3): gave the unused minSummandBound scaffolding concrete content — proved minSummandBound_one (minSummandBound 1 = 1, 0-axiom): the only power-form antichain summing to 1 is {1}, so the witness set is Iio 1 with supremum 1 (csSup_Iio). File 0-sorry, 1-axiom (erdos_lewin_infinite unchanged). PR pending. PROGRESS (S6): proved multiplicative closure of representability (×p, ×q, ×p^a q^b) and downward non-rep propagation, 0-axiom — structural generalization of the {2,3} doubling. Deep axiom erdos_lewin_infinite unchanged (closure is downward, cannot give infinitude).",
     "builtItems": [
       "add_one_nonRepresentable_iff (iter 5, researcher-8, 0-axiom): sharp criterion for the canonical candidate q+1. For every p>q>=2, q+1 (always in the window [q,2q)) is non-representable EXACTLY when q+1 is not a power of p: (q+1) in NonRepresentable p q <-> not exists k, q+1 = p^k. Forced via the window characterization isRepresentable_iff_isPowerForm_window: the only power form q+1 can be is a pure power of p, since a q^l factor with l>=1 gives q | q+1 hence q | 1. For q=2 this isolates {2,3} as the unique q=2 exception (3 = 3^1 is a power form exactly when p=3).",
       "add_one_nonRepresentable_of_lt (iter 5, researcher-8, 0-axiom): if q>=2 and q+1 < p (i.e. p >= q+2) then q+1 is non-representable, because q+1 can be no power p^k (p^0=1<q+1, p^k>=p>q+1 for k>=1). Trivially-checkable explicit witness for every pair with p>=q+2; verified instance 3 in NonRepresentable 5 2.",
@@ -54,7 +54,8 @@
       "isRepresentable_mul_base_left/right: representability closed under ×p and ×q (Erdos1110Problem.lean) — scale antichain by a base, 0-axiom",
       "isRepresentable_mul_powerForm: representable set closed under ×(p^a q^b), the full power-form monoid action generalizing the {2,3} doubling step, 0-axiom",
       "nonRepresentable_of_mul_powerForm: non-representability propagates DOWNWARD to power-form divisors (contrapositive of closure), 0-axiom",
-      "Helpers noOneDividesAnother_image_mul_const / mul_const_injOn / sum_image_mul_const: c>0 generalizations of the c=2 doubling helpers"
+      "Helpers noOneDividesAnother_image_mul_const / mul_const_injOn / sum_image_mul_const: c>0 generalizations of the c=2 doubling helpers",
+      "minSummandBound_one: minSummandBound 1 = 1 (0-axiom) via witness-set = Iio 1 + csSup_Iio (Erdos1110Problem.lean)"
     ],
     "insights": [
       "The deep infinitude axiom has an elementary EXISTENCE shadow: every non-{2,3} coprime pair has a SMALL universal non-representable witness — 2 when q>=3, 3 when q=2. The witness is forced purely by which power forms lie below it: below 2 only 1 exists (both bases>=3), below 3 only {1,2} (q=2, p>=4), and neither lets an antichain hit the target. The (3,2) pair is exactly the exception because there 3=3^1 IS a power form.",
@@ -75,7 +76,7 @@
     ],
     "nextSteps": [
       "Deep direction erdos_lewin_infinite (Erdos-Lewin 1996) remains the sole axiom; confirmed across 6 sessions as not session-sized and genuinely upward (closure cannot help).",
-      "minSummandBound is still unused scaffolding — give it content (e.g. minSummandBound 1 = 1 via sSup of Iio 1) or remove it.",
+      "minSummandBound now has base content: minSummandBound_one (minSummandBound 1 = 1, 0-axiom) proves the witness set at n=1 is Iio 1 (only {1} sums to 1) with sSup 1 via csSup_Iio. Next: a general lower bound minSummandBound n ≥ 1 for n ≥ 1, or the Yu-Chen asymptotic f(n) ≍ n/log n (deep).",
       "Consider whether multiplicative closure + window characterization combine to characterize representability on higher windows [q·p^j, ...)."
     ]
   },
@@ -97,14 +98,14 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.134Z",
-  "lastUpdate": "2026-06-28T11:10:00.000Z",
+  "lastUpdate": "2026-06-30T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1110Problem.lean",
       "filename": "Erdos1110Problem.lean",
-      "lineCount": 1097,
+      "lineCount": 1139,
       "theoremCount": 34,
       "axiomCount": 1,
       "defCount": 7,

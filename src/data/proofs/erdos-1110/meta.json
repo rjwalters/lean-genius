@@ -61,12 +61,13 @@
       "Yu-Chen coprime infinite theorem",
       "Minimum summand bounds (Yu-Chen, Yang-Zhao)",
       "example_1_representable theorem with constructive proof",
-      "Connections to Problems #123, #845, #246"
+      "Connections to Problems #123, #845, #246",
+      "minSummandBound_one: minSummandBound 1 = 1 (0-axiom) — gives the previously-unused minSummandBound scaffolding concrete content; the only power-form antichain summing to 1 is {1}, so the witness set is Iio 1 with supremum 1 (csSup_Iio)"
     ],
     "axiomCount": 1,
-    "lineCount": 951,
+    "lineCount": 1139,
     "assumptions": "1 axiom: erdos_lewin_infinite (Erdős-Lewin 1996, deep forward direction: {p,q}≠{2,3} ⟹ infinitely many non-representable numbers). The backward direction ({2,3} ⟹ finite, in fact NonRepresentable = {0}) is proved unconditionally (finite_nonRepresentable_of_two_three), and the EXISTENCE of a positive non-representable for every other coprime pair is also proved unconditionally (exists_positive_nonRepresentable_of_ne_two_three) — only the infinitude itself remains axiomatized.",
-    "theoremCount": 39,
+    "theoremCount": 40,
     "definitionCount": 7
   },
   "overview": {
@@ -262,9 +263,9 @@
       "Finset"
     ],
     "namespace": "Erdos1110",
-    "lineCount": 1090,
+    "lineCount": 1139,
     "axiomCount": 1,
-    "theoremCount": 51,
+    "theoremCount": 52,
     "definitionCount": 7,
     "path": "Proofs/Erdos1110Problem.lean",
     "sorries": 0
