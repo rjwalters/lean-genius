@@ -87,7 +87,80 @@
       "Prime k-tuples / sieve heuristics"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview: Admissible Sequences and Problem #1204",
+      "startLine": 1,
+      "endLine": 28,
+      "mathContext": "Admissible $\\iff$ for every prime $p$ some class mod $p$ is missed; $A(k) = \\min a_k$, conjecturally $A(k)\\sim k\\log k$.",
+      "summary": "Module docstring framing Erdős #1204. Defines admissibility as the local (mod-p) obstruction central to the Hardy–Littlewood prime k-tuples conjecture and bounded-gaps work (Zhang, Maynard, Tao), states the two OPEN asymptotic questions — A(k) ∼ k log k? and the order of B(k)? — and lists what is formalized: the definition, the small-prime reduction, worked examples, and the extremal quantity A(k) with its first exact values."
+    },
+    {
+      "id": "definition",
+      "title": "Definition: Admissible",
+      "startLine": 36,
+      "endLine": 42,
+      "mathContext": "$\\mathrm{Admissible}(a) := \\forall p\\ \\text{prime},\\ \\exists r \\in \\mathbb{Z}/p\\mathbb{Z},\\ \\forall x \\in a,\\ (x \\bmod p) \\ne r$.",
+      "summary": "The central definition: a Finset ℕ is admissible if for every prime p there is a residue class r : ZMod p avoided by all of its elements — equivalently, the image of a in ZMod p is never all of ZMod p."
+    },
+    {
+      "id": "reduction",
+      "title": "The Reduction to Small Primes",
+      "startLine": 44,
+      "endLine": 78,
+      "mathContext": "$|a| < p \\Rightarrow a$ misses a class mod $p$; hence admissibility only constrains primes $p \\le |a|$.",
+      "summary": "missing_class_of_card_lt: a set of fewer than p elements cannot surject onto the p classes of ZMod p, so it always misses one (a pigeonhole/counting argument via card_image_le and ZMod.card). admissible_iff_card packages this into the key reduction — admissibility is equivalent to missing a class modulo every prime p ≤ |a|, making it a finite check."
+    },
+    {
+      "id": "examples",
+      "title": "Worked Examples",
+      "startLine": 80,
+      "endLine": 121,
+      "mathContext": "$\\emptyset, \\{0\\}, \\{0,2\\}$ admissible; $\\{0,1\\}$ not — it covers both classes mod $2$.",
+      "summary": "Concrete computations: ∅, every singleton, and {0,2} are admissible, while {0,1} is not because it occupies both residue classes mod 2. The {0,2} vs {0,1} contrast shows why admissible patterns must dodge a small prime's classes — the local condition that twin-prime-like constellations satisfy."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties and Existence of A(k)",
+      "startLine": 123,
+      "endLine": 185,
+      "mathContext": "Closed under subsets and translation; an admissible $k$-set exists for every $k$ (multiples of the primorial $\\prod_{p\\le k}p$).",
+      "summary": "Admissibility is downward closed (Admissible.subset) and translation invariant (admissible_image_add, card_image_add) — it depends only on the pattern, not the position. exists_admissible_card constructs an admissible k-set for every k from the multiples 0, N, …, (k−1)N of the primorial N = ∏_{p≤k} p (each element ≡ 0 mod each small prime, so class 1 is missed), guaranteeing A(k) is well-defined and giving the weak upper bound A(k) ≤ (k−1)·primorial."
+    },
+    {
+      "id": "parity-diameter",
+      "title": "The Parity Constraint and a Sharper Diameter Bound",
+      "startLine": 187,
+      "endLine": 240,
+      "mathContext": "All elements share parity, so $\\max - \\min \\ge 2(|a|-1)$ — double the trivial packing span $|a|-1$.",
+      "summary": "Because ZMod 2 has only two classes and an admissible set misses one, every element shares a single parity (admissible_same_parity). admissible_diam_ge then injects a via x ↦ (x−min)/2 into {0,…,(max−min)/2}, forcing diameter ≥ 2(card−1) — exactly double the trivial packing bound, the leading prime-2 term of the k log k heuristic."
+    },
+    {
+      "id": "extremal-A",
+      "title": "The Extremal Quantity A(k) and Its Bounds",
+      "startLine": 242,
+      "endLine": 349,
+      "mathContext": "$A(k) = \\inf\\{\\,a.\\sup\\ \\mathrm{id} : |a|=k,\\ \\mathrm{Admissible}(a)\\}$, with $2(k-1) \\le A(k)$ and $A(0)=A(1)=0$, $A(2)=2$.",
+      "summary": "A(k) is defined as the infimum of the largest element a.sup id over admissible k-sets; nonempty by exists_admissible_card so the infimum is attained (A_mem, A_le). Two lower bounds: the trivial sub_one_le_A (A(k) ≥ k−1) and the parity-sharpened two_mul_sub_one_le_A (A(k) ≥ 2(k−1)). Exact small values A(0)=A(1)=0 and A(2)=2 — the latter is where admissibility first bites, since the densest 2-set {0,1} is inadmissible and pushes the minimum above the packing value 1."
+    },
+    {
+      "id": "a-three",
+      "title": "The Exact Value A(3) = 6",
+      "startLine": 351,
+      "endLine": 464,
+      "mathContext": "$A(3)=6 = H(3)$, the Hardy–Littlewood minimal diameter; witness $\\{0,2,6\\}$, with $\\{0,2,4\\},\\{1,3,5\\}$ ruled out mod $3$.",
+      "summary": "A(3)=6 matches the Hardy–Littlewood minimal diameter H(3). Upper bound: {0,2,6} is admissible (all even mod 2, residues {0,2,0} mod 3 miss class 1). Lower bound (admissible_three_sup_ge): any admissible 3-set with max ≤ 5 must be single-parity, pinning it to {0,2,4} or {1,3,5} — both of which cover every class mod 3 and so fail admissibility, so no admissible 3-set fits below 6."
+    },
+    {
+      "id": "open-problems",
+      "title": "Open Problems",
+      "startLine": 466,
+      "endLine": 478,
+      "mathContext": "Open: $A(k)\\sim k\\log k$? and the order of $B(k)=\\min(a_1+\\cdots+a_k)/k$.",
+      "summary": "The asymptotic questions of #1204 remain open and are documented but not asserted: whether A(k) ∼ k log k and the correct order of the minimal average B(k). Both need sieve-theoretic analytic number theory beyond the elementary framework formalized here."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #1204 asks for the asymptotics of the minimal diameter A(k) and minimal average B(k) of admissible k-tuples, conjecturally A(k) ∼ k log k. This entry formalizes the admissibility framework: the definition, the reduction showing only primes p ≤ k impose constraints, the extremal quantity A(k) itself (as an attained infimum), exact values A(0)=A(1)=0 and A(2)=2, and a verified parity-sharpened lower bound A(k) ≥ 2(k−1) — the prime 2 forces all elements to share parity, doubling the trivial packing bound k−1 (sharp at k=2). The full asymptotic questions remain open and are not asserted.",
     "openQuestions": [

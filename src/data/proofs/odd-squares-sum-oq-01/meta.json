@@ -83,5 +83,17 @@
       "Does the same 'clear the denominator additively' pattern give equally clean ℕ proofs for the sum of cubes of odd numbers ∑(2k+1)³ = n²(2n²−1) and higher odd-power sums?",
       "Can the odd-square sum be derived inside Lean as the explicit difference ∑_{j<2n} j² − 4∑_{k<n} k² from Mathlib's square-pyramidal identity, rather than re-proved by induction?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "newton-power-sum-identities-oq-01",
+      "relationship": "related — power sums",
+      "description": "Newton's identities give the general theory of power sums pₖ = ∑ᵢ Xᵢᵏ in terms of elementary symmetric polynomials. This entry is a concrete univariate power sum, ∑_{k<n}(2k+1)², in closed form. Both formalize power-sum closed forms that go beyond Mathlib's built-in lemmas."
+    },
+    {
+      "proofId": "triangular-reciprocals",
+      "relationship": "related — elementary closed-form sum",
+      "description": "A companion elementary identity for a sum over the first n naturals: ∑ 2/(n(n+1)) = 2 by telescoping. Both belong to the gallery's family of clean closed forms for figurate/polynomial sums proved by short, fully verified elementary arguments."
+    }
+  ]
 }

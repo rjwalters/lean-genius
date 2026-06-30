@@ -1,5 +1,50 @@
 # Current State
 
+**Phase**: RESOLVED in degree form (S4, 2026-06-27, researcher-6: the packaging theorem `nonderogatory_deg_and_no_cyclic_vector` is now WRITTEN and VERIFIED, settling the forward direction over `ZMod 4`. See §"S4 resolution" below.)
+**Since**: 2026-06-27 (S4 packaging + offline verification, researcher-6)
+**Iteration**: 11
+
+## S4 resolution (2026-06-27, researcher-6)
+
+The scope correction below (2026-06-14) identified the two genuine remaining
+tasks: (A) discharge `minpoly_natDegree_eq_two`, (B) add the degree-form
+packaging theorem. Status this session:
+
+- **(A) was ALREADY done.** The file (last edited 2026-06-26) carries a
+  sorry-free `minpoly_natDegree_eq_two` (upper bound via `minpoly.min` on the
+  monic annihilator `X^2`; lower bound via `minpoly.two_le_natDegree_iff` +
+  `M` non-scalar). The 2026-06-14 BLOCKED flag / knowledge note was **stale**.
+- **(B) is now DONE** (this session). Added to
+  `CayleyHamiltonCyclicVectorZMod4Counterexample.lean`:
+  - `IsNonderogatoryDeg M := (minpoly R M).natDegree = M.charpoly.natDegree`
+    (generic `[CommRing R]`).
+  - `isNonderogatory_imp_deg : IsNonderogatory M → IsNonderogatoryDeg M`
+    (`congrArg natDegree`) — the poly-equality form is strictly stronger, so
+    the backward direction `cyclic_implies_nonderogatory_commring` downgrades
+    cleanly to the degree form.
+  - `nonderogatory_deg_and_no_cyclic_vector :
+    IsNonderogatoryDeg M ∧ ¬∃ v, IsCyclicVector M v` — the STATED negative
+    answer to the forward direction (`refine ⟨?_, no_cyclic_vector⟩` then
+    `rw [minpoly_natDegree_eq_two, charpoly_eq_X_sq, natDegree_X_pow]`).
+
+**The studied biconditional is now coherently settled in degree form:**
+backward holds over any nontrivial `CommRing`, forward FAILS over `ZMod 4`.
+
+**Verification:** Docker still down, but verified OFFLINE — built the
+companion olean (`CayleyHamiltonCyclicVectorCommRingOQ01`) then
+`LAKE_UNSAFE=1 ./bin/lake env lean …ZMod4Counterexample.lean` → EXIT 0, no
+errors. `#print axioms` of both new theorems lists only
+`[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `ofReduceBool`):
+sorry-free and axiom-free.
+
+**Optional follow-ups (not blocking):** upstream `IsNonderogatoryDeg` + the
+over-`Field` equivalence `IsNonderogatory ↔ IsNonderogatoryDeg` into
+`GeneralCyclicVectorRing`; add a gallery entry.
+
+---
+
+## Prior state (superseded 2026-06-27)
+
 **Phase**: BLOCKED (S3 FLAG, 2026-06-13, researcher-1: the sole remaining `sorry` — `minpoly_natDegree_eq_two` — is paste-ready but its tactic discharge requires a Docker build to verify, and the build route is down. See §"Why blocked" below. STATE-SYNC + scope correction added 2026-06-14, researcher-6 — see §"Scope correction" below.)
 **Since**: 2026-06-13 (S3 BLOCKED flag); 2026-06-13T~05:50Z (S3 ACT-2, no_cyclic_vector discharge, PR #22925); 2026-06-14 (STATE-SYNC + scope correction, researcher-6)
 **Iteration**: 10 (STATE-SYNC: registry JSON brought in line with this BLOCKED flag — it trailed at iter 8 / phase ACT / status active — plus a scope correction on what "completing the OQ" actually requires. Docker + Aristotle both still down 2026-06-14.)

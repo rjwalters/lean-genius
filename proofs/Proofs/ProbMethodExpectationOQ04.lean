@@ -80,4 +80,50 @@ theorem first_moment_le (hs : s.Nonempty) (havg : (s.sum f) / s.card ≤ t) :
   obtain ⟨a, ha, hfa⟩ := exists_le_average hs
   exact ⟨a, ha, le_trans hfa havg⟩
 
+/-! ## Application: strengthening `expected_mono_cliques` toward Erdős 1947
+
+The parent gallery lemma `expected_mono_cliques` only records that the expected
+number of monochromatic `k`-cliques in a uniformly random 2-colouring of the edges
+of `Kₙ`, namely `E(n,k) = C(n,k)·2^{1−C(k,2)}`, is `≥ 0`.  The open question OQ-04
+asks to strengthen this to `E(n,k) < 1` — which, by the (strict) first moment
+principle, exhibits a 2-colouring with **no** monochromatic `k`-clique, i.e. the
+Erdős 1947 lower bound `R(k,k) > n`.
+
+This section makes two verified reductions toward that goal: it removes the integer
+`zpow` by reducing `E < 1` to a clean `ℕ`-power inequality, and it records the
+first-moment upper bound `E ≤ (nᵏ/k!)·2^{1−C(k,2)}` (via `Nat.choose_le_pow_div`),
+the quantity Erdős's counting argument actually bounds below `1`. -/
+
+/-- The expected number of monochromatic `k`-cliques in a uniformly random
+2-colouring of `Kₙ`'s edges: `C(n,k) · 2^{1 − C(k,2)}` (matching the parent
+`expected_mono_cliques`). -/
+noncomputable def expectedMonoCliques (n k : ℕ) : ℚ :=
+  (n.choose k : ℚ) * (2 : ℚ) ^ (1 - (k.choose 2 : ℤ))
+
+/-- **Reduction of the Erdős strict bound to a pure power inequality.**  The
+expected count is `< 1` *exactly* when `C(n,k)·2 < 2^{C(k,2)}` — a statement
+entirely in `ℕ`-powers, with the integer `zpow` eliminated.  This is the clean
+target a later session (or `Aristotle`) must discharge to answer OQ-04. -/
+theorem expectedMonoCliques_lt_one_iff (n k : ℕ) :
+    expectedMonoCliques n k < 1 ↔ (n.choose k : ℚ) * 2 < 2 ^ (k.choose 2) := by
+  unfold expectedMonoCliques
+  have hpow_pos : (0 : ℚ) < (2 : ℚ) ^ (k.choose 2) := by positivity
+  rw [sub_eq_add_neg, zpow_add₀ (by norm_num : (2 : ℚ) ≠ 0), zpow_one, zpow_neg,
+    zpow_natCast,
+    show (n.choose k : ℚ) * (2 * ((2 : ℚ) ^ (k.choose 2))⁻¹)
+        = ((n.choose k : ℚ) * 2) / (2 : ℚ) ^ (k.choose 2) from by rw [div_eq_mul_inv]; ring,
+    div_lt_one hpow_pos]
+
+/-- **First-moment upper bound on the expected count.**  Since `C(n,k) ≤ nᵏ/k!`
+(`Nat.choose_le_pow_div`), the expected number of monochromatic `k`-cliques is at
+most `(nᵏ/k!) · 2^{1 − C(k,2)}`.  Isolating this quantity reduces OQ-04 to the
+elementary estimate `nᵏ · 2 < k! · 2^{C(k,2)}`. -/
+theorem expectedMonoCliques_le (n k : ℕ) :
+    expectedMonoCliques n k
+      ≤ ((n : ℚ) ^ k / (k.factorial : ℚ)) * (2 : ℚ) ^ (1 - (k.choose 2 : ℤ)) := by
+  unfold expectedMonoCliques
+  apply mul_le_mul_of_nonneg_right _ (zpow_nonneg (by norm_num : (0 : ℚ) ≤ 2) _)
+  have h := Nat.choose_le_pow_div k n (α := ℚ)
+  simpa using h
+
 end ProbMethod.ExpectationOQ04

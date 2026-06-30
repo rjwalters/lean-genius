@@ -54,6 +54,16 @@
       "Does the Catalan asymptotic catalan n ∼ 4ⁿ/(√π·n^{3/2}) combine with the parent's strictly decreasing normalized sequence catalan n/4ⁿ to give a monotone (not merely asymptotic) envelope c/n^{3/2} ≤ catalan n/4ⁿ at the recurrence level?"
     ]
   },
+  "sections": [
+    {"id": "header", "title": "Module Documentation", "startLine": 1, "endLine": 42, "summary": "Frames OQ-02: the telescoping-product sibling supplies the elementary half (C(2n,n) < 4ⁿ, no Stirling), and this entry supplies the sharp asymptotic constant 1/√(πn) that genuinely needs Stirling.", "mathContext": "Scope: the analytic half of the central-binomial growth law C(2n,n) ∼ 4ⁿ/√(πn)."},
+    {"id": "stirling-fn", "title": "The Stirling Function", "startLine": 44, "endLine": 52, "summary": "Defines stirlingFn n = √(2nπ)·(n/e)ⁿ, the closed form for which Mathlib's Stirling.factorial_isEquivalent_stirling gives n! ~[atTop] stirlingFn n.", "mathContext": "$\\mathrm{stirlingFn}\\,n = \\sqrt{2n\\pi}\\,(n/e)^n$"},
+    {"id": "factorial-quotient", "title": "Central Binomial as a Factorial Quotient", "startLine": 54, "endLine": 65, "summary": "centralBinom_eq_factorial_div: (C(2n,n):ℝ) = (2n)!/(n!·n!), the form on which Stirling acts independently in numerator and denominator.", "mathContext": "$C(2n,n) = (2n)!/(n!)^2$"},
+    {"id": "stirling-quotient", "title": "Closed-Form Stirling Quotient", "startLine": 67, "endLine": 96, "summary": "stirlingFn_quotient: the only hand computation — stirlingFn(2n)/(stirlingFn n)² = 4ⁿ/√(πn) for n ≥ 1, via √(4nπ)/(2nπ) = 1/√(πn) and the (n/e) powers contributing 4ⁿ.", "mathContext": "$\\mathrm{stirlingFn}(2n)/(\\mathrm{stirlingFn}\\,n)^2 = 4^n/\\sqrt{\\pi n}$"},
+    {"id": "sharp-asymptotic", "title": "The Sharp Central-Binomial Growth Law", "startLine": 98, "endLine": 138, "summary": "centralBinom_isEquivalent (C(2n,n) ~ 4ⁿ/√(πn)) and its limit form, by composing/multiplying/dividing Stirling equivalences then collapsing the quotient.", "mathContext": "$C(2n,n) \\sim_{atTop} 4^n/\\sqrt{\\pi n}$"},
+    {"id": "catalan-growth", "title": "Bridge and the Catalan Growth Law", "startLine": 140, "endLine": 201, "summary": "succ_mul_catalan_eq_centralBinom (C(2n,n) = (n+1)·catalan n), (n+1)~n, and catalan_isEquivalent giving catalan n ∼ 4ⁿ/(√π·n^{3/2}) with its limit form.", "mathContext": "$\\mathrm{catalan}\\,n \\sim_{atTop} 4^n/(\\sqrt{\\pi}\\,n^{3/2})$"},
+    {"id": "effective-bound", "title": "Effective Lower Bound", "startLine": 203, "endLine": 214, "summary": "four_pow_div_two_mul_le_centralBinom: 4ⁿ/(2n) ≤ C(2n,n) for every n ≥ 1 (not merely asymptotically), bracketing the rate against the sibling's C(2n,n) < 4ⁿ.", "mathContext": "$4^n/(2n) \\le C(2n,n)$"},
+    {"id": "sanity-checks", "title": "Sanity Checks", "startLine": 216, "endLine": 228, "summary": "Concrete checks at n = 3: C(6,3) = 20, the Catalan bridge C(6,3) = 4·catalan 3, and the factorial-quotient identity.", "mathContext": "$C(6,3) = 20 = 4\\cdot\\mathrm{catalan}\\,3 = 6!/(3!)^2$"}
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

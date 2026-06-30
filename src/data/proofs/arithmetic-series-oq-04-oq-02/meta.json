@@ -119,5 +119,73 @@
       "description": "Generating-function derivation of Faulhaber's formula from x/(eˣ−1)."
     }
   ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "The open question and its answer",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Docstring stating the parent OQ-04 second open question (formalize the Bernoulli EGF ∑ Bₙxⁿ/n! = x/(eˣ−1)), answering YES via Mathlib's bernoulliPowerSeries_mul_exp_sub_one, and laying out the genuinely new content: the power-sum EGF and the Faulhaber bridge. Fixes the Finset.range convention S_p(n) = ∑_{k<n} kᵖ (so 0⁰=1, S₀(n)=n).",
+      "mathContext": "$\\sum_{n} B_n \\tfrac{x^n}{n!} = \\tfrac{x}{e^x-1}.$"
+    },
+    {
+      "id": "bernoulli-egf",
+      "title": "1. The Bernoulli generating function (the direct answer)",
+      "startLine": 64,
+      "endLine": 77,
+      "summary": "bernoulli_egf: bernoulliPowerSeries ℚ · (exp ℚ − 1) = X, a restatement of Mathlib's bernoulliPowerSeries_mul_exp_sub_one recording the literal answer to the open question.",
+      "mathContext": "$(\\sum_n B_n X^n/n!)\\,(e^x-1) = X.$"
+    },
+    {
+      "id": "power-sum-egf",
+      "title": "2. The exponential generating function of the power sums",
+      "startLine": 79,
+      "endLine": 113,
+      "summary": "powerSumSeries_eq_geom (power-sum series = ∑_{k<n} expᵏ via exp_pow_sum), powerSum_egf (product form: ·(exp−1) = expⁿ−1 via geom_sum_mul), and powerSum_egf' (closed form: = (∑ₚ nᵖXᵖ/p!) − 1 via exp_pow_eq_rescale_exp / coeff_rescale).",
+      "mathContext": "$\\sum_p S_p(n)\\tfrac{x^p}{p!} = \\tfrac{e^{nx}-1}{e^x-1}.$"
+    },
+    {
+      "id": "faulhaber-bridge",
+      "title": "3. The Faulhaber bridge: power sums = Bernoulli sums",
+      "startLine": 115,
+      "endLine": 135,
+      "summary": "faulhaber_bernoulli_egf: (∑ₚ Sₚ(n)Xᵖ/p!)·X = ((∑ₚ nᵖXᵖ/p!) − 1)·bernoulliPowerSeries ℚ, derived purely formally from bernoulli_egf and powerSum_egf' — the shared factor exp−1 cancels at the product level, so no series inversion is needed.",
+      "mathContext": "$\\big(\\sum_p S_p(n)\\tfrac{x^p}{p!}\\big)x = (e^{nx}-1)\\tfrac{x}{e^x-1}.$"
+    },
+    {
+      "id": "concrete-coefficients",
+      "title": "4. Concrete coefficients (grounding the abstraction)",
+      "startLine": 137,
+      "endLine": 163,
+      "summary": "coeff_one_powerSum_four (S₁(4)/1! = 6), coeff_two_powerSum_four (S₂(4)/2! = 14/2 = 7), and coeff_zero_powerSum (S₀(n) = n) — computable rational checks anchoring the abstract power-series identities.",
+      "mathContext": "$S_1(4)=6,\\ S_2(4)/2!=7,\\ S_0(n)=n.$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-04",
+      "relationship": "extends",
+      "description": "The parent OQ-04 develops Faulhaber's formula; this entry (its second open question) supplies the generating-function engine — the Bernoulli EGF and the explicit Faulhaber↔Bernoulli bridge."
+    },
+    {
+      "targetId": "arithmetic-series-oq-04-oq-01",
+      "relationship": "related",
+      "description": "A sibling open question in the same Faulhaber/Bernoulli circle (higher power sums); both rest on the Bernoulli-number generating function x/(eˣ−1)."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "The base arithmetic-series entry (∑ k = n(n+1)/2) is the p = 1 case of the power sums Sₚ(n) whose generating function this entry constructs."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry formalizes, with 0 axioms and 0 sorries over the formal power series ℚ⟦X⟧, the exponential generating function of the Bernoulli numbers (bernoulli_egf, the literal answer to the open question), the exponential generating function of the power sums Sₚ(n) = ∑_{k<n} kᵖ in both product and closed form (powerSum_egf / powerSum_egf'), and the Faulhaber bridge faulhaber_bernoulli_egf expressing power sums as Bernoulli sums — plus concrete coefficient checks.",
+    "implications": "The power-sum generating function and the explicit Faulhaber↔Bernoulli bridge are not in Mathlib; obtaining the bridge by cancelling the shared factor exp−1 at the product level (rather than inverting a power series) is a clean, reusable technique. Working in ℚ⟦X⟧ sidesteps all analytic convergence concerns, making this a solid algebraic foundation for the surrounding Faulhaber/Bernoulli problems (higher power sums, ζ at negative integers).",
+    "openQuestions": [
+      "Can the generating-function bridge be turned into the explicit polynomial Faulhaber formula ∑_{k=1}^n kᵖ = (1/(p+1)) ∑_j C(p+1,j) Bⱼ n^{p+1−j} by extracting coefficients?",
+      "Does the same product-cancellation technique yield generating functions for weighted or alternating power sums?",
+      "Can the ζ(−n) = −B_{n+1}/(n+1) evaluation be derived in-gallery from bernoulli_egf, linking this entry to the zeta-at-negative-integers strand?"
+    ]
+  },
   "sorries": []
 }
