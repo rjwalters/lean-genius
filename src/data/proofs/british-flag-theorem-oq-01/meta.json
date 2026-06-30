@@ -5,11 +5,11 @@
   "description": "For any point P in the plane of a rectangle ABCD, the sums of squared distances to opposite corners are equal: PA² + PC² = PB² + PD².",
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib.Tactic"
     ],
     "opens": [],
     "namespace": "BritishFlagTheorem",
-    "lineCount": 60,
+    "lineCount": 48,
     "axiomCount": 0,
     "theoremCount": 1,
     "definitionCount": 1,
@@ -39,7 +39,7 @@
     ],
     "dateAdded": "2026-06-16",
     "axiomCount": 0,
-    "lineCount": 60,
+    "lineCount": 48,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The rectangle is encoded by the parallelogram closure C = B + D − A and the orthogonality of edges B − A and D − A.",
     "mathlib_version": "4.26.0",
     "theoremCount": 1,
@@ -74,16 +74,16 @@
     {
       "id": "setup",
       "title": "Coordinate Setup and Squared Distance",
-      "startLine": 32,
-      "endLine": 36,
+      "startLine": 28,
+      "endLine": 32,
       "summary": "Model planar points as ℝ × ℝ and define sqDist P Q = (P.1 − Q.1)² + (P.2 − Q.2)².",
       "mathContext": "The squared Euclidean distance between $(p_1,p_2)$ and $(q_1,q_2)$ is $(p_1-q_1)^2 + (p_2-q_2)^2$. Using squared distance avoids square roots entirely, since the theorem is an identity among squared lengths."
     },
     {
       "id": "main",
       "title": "The British Flag Identity",
-      "startLine": 38,
-      "endLine": 58,
+      "startLine": 34,
+      "endLine": 48,
       "summary": "Substitute the parallelogram closure and reduce the goal to twice the orthogonality form, discharged by linear_combination.",
       "mathContext": "With $u = B - A$, $v = D - A$, expansion gives $(PA^2 + PC^2) - (PB^2 + PD^2) = 2(u_1 v_1 + u_2 v_2)$, which is zero by the right-angle hypothesis $u \\cdot v = 0$."
     }
