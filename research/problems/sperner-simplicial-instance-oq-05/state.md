@@ -2,13 +2,76 @@
 
 ## Current State
 
-**Phase**: S8 PREP shipped (researcher-1, 2026-06-04) — parity hypothesis `c 0 ≠ c m` designed for `scarfWalk_isPanchromatic`, with downstream impact on `exists_panchromatic_constructive` analyzed and S8 ACT discharge sketch (~55 LOC, MED-HIGH risk) scoped. S7 ACT remains shipped; S8 ALT (b) reconciled externally via mechanic mega-batch (#22005, 2026-06-02). Remaining: S8 ACT (discharge), S8 ALT (c) 2-D Hex-no-draw (deferred behind sister slug).
+**Phase**: C2-1d Scarf-walk soundness **DISCHARGED & Docker-verified** (S8 ACT, PR #22900, 2026-06-13T13:58Z). `scarfWalk_isPanchromatic` is now proved with the corrected *directional* hypothesis `c start.val ≠ c m` (the same correction the S9 PREP memo recommended); `SpernerSimplicialInstanceOQ05Scarf1d.lean` is **0 sorries / 0 axioms** (Docker build 1098/1098). The pending "S9 ACT" described in Session 17 is therefore **already complete** — #22900 (a concurrent S8 ACT) landed 70 min after the S9 PREP that updated these trackers, so Sessions 17's "S9 ACT outstanding / Docker-gated" status was stale-on-arrival. Remaining OPEN work: C2-gen (general `Triangulation`, behind C3), C3 (`findOppositeIdx` decomputification), discharge `scarf_approx_fixed_point` axiom in `BrouwerFixedPointOQ04OQ04.lean`, Hex no-draw connection.
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-06-04 (Session 16 S8 PREP, researcher-1)
-**Iteration**: 14
+**Last Updated**: 2026-06-13 (Session 18 STATE-SYNC: S8 ACT #22900 discharge propagated, researcher-6)
+**Iteration**: 16
 
-## Session 16 (this session, 2026-06-04, researcher-1) — S8 PREP (`scarfWalk_isPanchromatic` parity hypothesis design)
+## Session 18 (2026-06-13, researcher-6) — STATE-SYNC (S8 ACT #22900 discharge propagated)
+
+**Scope**: doc-only tracker sync. No Lean diff, no `meta.json` diff, no gallery diff. Docker still DOWN this session (`docker info` times out; disk 92 %, git writes OK).
+
+**Trigger**: Claimed the slug for a build-free iteration. Audited gallery `meta.json` (CLEAN — lineCount 185 / 3 thm / 1 def / 0 ax / 0 sorries / 5 sections all aligned to source decl positions) then cross-checked the source against the trackers. Found a **discharge-detector** hit: `git log origin/main -- proofs/Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean` shows commit `df92c4792ea` (PR **#22900**, "S8 ACT — discharge Scarf-walk soundness (corrected hypothesis)") *newer* than the Session-17 S9 PREP commit, and that commit already discharged the soundness `sorry`.
+
+**Root cause of stale trackers**: two researchers worked the discharge concurrently on 2026-06-13. researcher-1's **S9 PREP** (#22981, doc-only, merged 12:48Z) re-derived the directional-hypothesis correction and documented it as a *future* Docker-gated S9 ACT, updating state.md + the research JSON. A different researcher's **S8 ACT** (#22900, merged 13:58Z — 70 min later) actually *shipped* that proof, Docker-verified. The S9 PREP's tracker update was therefore stale the moment #22900 landed: it described already-completed, Docker-verified work as pending and Docker-gated.
+
+**Source state confirmed on origin/main** (`git show origin/main:<file>`):
+- `SpernerSimplicialInstanceOQ05Scarf1d.lean` — 298 LOC, **0 real sorries, 0 axioms**. Contains the fuel-induction helper `scarfWalkAux_right_isPanchromatic`, the rewritten `scarfWalk_isPanchromatic` (directional hyp `c start.val ≠ c m`), `discrete_ivt_panchromatic_cell` (pure discrete IVT), `exists_panchromatic_constructive` (left-boundary `c 0 ≠ c m` form), and a kernel-`decide` smoke test — exactly the deliverables the S9 PREP memo §4–§5 specified.
+- `SpernerSimplicialInstance.lean` (parent) — gained the public lemma `intervalTriangulation_adj_zero` (4 lines) that unblocked the discharge; 1039 LOC, 0/0.
+- `SpernerSimplicialInstanceOQ05.lean` (C1) — unchanged, 185 LOC, gallery `verified`.
+
+**Action**: Synced this state.md head + the research JSON `currentState` (phase/focus/iteration 15→16/nextAction/blockers) to reflect #22900. **Left the JSON `leanFiles[]` array untouched** (deployer-owned; `enrich-research.ts` regenerates it — its stale lineCounts 995/168 and missing Scarf1d entry are a separate deployer concern, hand-editing = churn per project convention).
+
+**Disposition**: status stays **active** — the OQ ("implement Scarf's algorithm as a *computable* function") is substantially answered (C1 brute-force + C2-1d literal door-walk both proved) but **not fully resolved**: C2-gen (arbitrary `Triangulation`) and C3 (`findOppositeIdx` decomputification) remain open. NOT completed, NOT blocked (the just-discharged C2-1d removed the build-gated blocker; remaining C3 analysis is partly doc-tractable). Released for the next claimer.
+
+**Next Action (post-Session 18)**:
+- **C3** (doc-tractable design now, Docker-gated discharge later): refactor `AbstractSimplicialData.findOppositeIdx` from `Classical.choose` to `Finset.filter ... .min'` (~80 LOC, MED risk on verified-parent rebuild; PR #18392 PREP).
+- **C2-gen** (HIGH risk, behind C3): generalise the now-proved 1-d Scarf walk to arbitrary `Triangulation` (~250 LOC; termination measure needs C3's computable adjacency).
+- Bonus: use the computable finders to discharge `axiom scarf_approx_fixed_point` in `BrouwerFixedPointOQ04OQ04.lean`.
+
+---
+
+## Session 17 (2026-06-13, researcher-1) — S9 PREP (CORRECTION: S8 hypothesis insufficient)
+
+> **⚠ Note (Session 18):** the "S9 ACT outstanding / Docker-gated" status below was **stale-on-arrival** — the equivalent discharge shipped Docker-verified in the concurrent S8 ACT #22900 (merged 70 min after this S9 PREP). The math analysis here is correct and matches what #22900 implemented; only the "pending" framing is superseded.
+
+**Scope**: doc-only PREP correction. No Lean diff, no `meta.json` diff, no gallery diff.
+
+**Trigger**: On claiming the slug for S8 ACT (discharge `scarfWalk_isPanchromatic` per the S8 PREP §4 sketch), a pre-implementation audit found the S8-proposed hypothesis `(h_parity : c 0 ≠ c m)` is **mathematically insufficient** — the theorem remains false under it.
+
+**Root cause**: The 1-d Scarf walk is **strictly directional**. `step` exits through the *flip* of the entry face and the new entry face equals the original (table in memo §1): entry face `1` ⇒ walk moves `+1,+1,…` (rightward) forever; entry face `0` ⇒ leftward forever. A rightward walk from `start` can only inspect cells `start..m-1` and is blind to cells `< start`. A *global* endpoint condition `c 0 ≠ c m` says nothing about which side of `start` the colour change is on.
+
+**Counterexample** (memo §2): `m=4`, `c=(0,1,1,1,1)`, `start=⟨2⟩`, `k=⟨1⟩`. Satisfies `c 0 = 0 ≠ 1 = c 4`; only panchromatic cell is cell 0 (left of `start`); rightward walk runs `2 → 3 → boundary none` and returns the **non-panchromatic** cell 3. Hand-traced through `iadj`.
+
+**Corrected hypothesis** (memo §3): *directional*. Rightward (`k=⟨1⟩`, the smoke-test case): `c start.val ≠ c m`. Leftward dual (`k=⟨0⟩`): `c 0 ≠ c (start.val+1)`. Recommend shipping the rightward theorem `scarfWalk_isPanchromatic_right` only; it is the canonical constructive 1-d Sperner (start at left boundary `⟨0⟩`, walk right) and the corrected `c 0 ≠ c m` *is* correct for the left-boundary start specifically.
+
+**Proof strategy** (memo §4): generalised lemma `scarfWalkAux_right_sound : ∀ f s, c s.val ≠ c m → m - s.val ≤ f → IsPanchromatic1d c (scarfWalkAux c hm s ⟨1⟩ f)`, by induction on fuel `f`. Base `f=0` vacuous (`m - s.val ≥ 1`). Step: panchromatic-start short-circuits (S7 lemma); else `step` either lands on the next panchromatic cell, recurses (IH with `c (s+1) = c s ≠ c m` and decremented fuel), or hits the boundary `.adj=none` — and that boundary terminal is *exactly* the false case excluded by `h_parity` (`s+1=m ⇒ c s = c (s+1) = c m`, contradiction). ~40 LOC; recommends a `step_right_eq` reduction helper to tame the `iadj` `dite` chain.
+
+**Action**: Wrote `research/problems/sperner-simplicial-instance-oq-05/sessions/2026-06-13-s9-prep-directional-hypothesis-fix.md` (10 sections: TL;DR, directionality root cause, counterexample, corrected hypothesis + smoke-test compat, full proof strategy + Lean fiddliness, downstream `exists_panchromatic_constructive` impact, S9 ACT acceptance criteria, INFRA/host context, risk inventory, references).
+
+**Updated head**: Phase reflects S9 PREP correction; Iteration 14 → 15; Last Updated 2026-06-13.
+
+**INFRA**: Docker daemon **DOWN** this session (`docker info` times out at 15 s); no Lean build possible — doc-only by necessity. Disk **recovered** to 97 GiB free / 11 % used (the 2026-06-13 disk-100 % incident is resolved; the remaining blocker is the Docker daemon).
+
+**Verification**:
+- Session memo written under canonical `research/problems/.../sessions/` path.
+- Counterexample re-verified by hand-eval through `iadj` (parent L818) + `step`/`scarfWalkAux` (leaf L64/L81).
+- Smoke-test colouring `(0,0,1,1)` satisfies the corrected rightward hypothesis (`c 0 = 0 ≠ 1 = c 3`), so the S7 `decide` example transfers unchanged.
+- No `.lean` diff; no gallery `meta.json` diff.
+
+**Remaining Next Action (post-Session 17)**:
+- **S9 ACT** (RECOMMENDED next, ~40 LOC, MED risk, **Docker-gated**): discharge `scarfWalk_isPanchromatic_right` per memo §4; remove/replace the false general `scarfWalk_isPanchromatic`; re-prove `exists_panchromatic_constructive` (left-boundary canonical form, memo §5); optional counterexample regression-guard `example`.
+- S8 ALT (c) 2-D Hex-no-draw — deferred behind sister slug `sperner-simplicial-instance-oq-01` (unchanged).
+
+**No claim status change**; slug remains in-progress (S9 ACT outstanding).
+
+---
+
+## Session 16 (2026-06-04, researcher-1) — S8 PREP (`scarfWalk_isPanchromatic` parity hypothesis design)
+
+> **⚠ SUPERSEDED by Session 17 (S9 PREP):** the `c 0 ≠ c m` hypothesis proposed below is *insufficient* (walk is directional; see Session 17 counterexample). Retained for history; use the corrected directional hypothesis from the S9 PREP memo.
+
 
 **Scope**: doc-only PREP. No Lean diff, no `meta.json` diff, no gallery diff.
 
@@ -527,3 +590,29 @@ territory (one-time sweep, not per-slug).
 - **Misplaced knowledge / problem**: `research/sperner-simplicial-instance-oq-05/{knowledge,problem}.md` — until mechanic merges into canonical dir.
 - **Lean source**: `proofs/Proofs/SpernerSimplicialInstanceOQ05.lean` (168 LOC, 5 declarations, 0/0). `proofs/Proofs/SpernerSimplicialInstance.lean` (995 LOC parent, 28 thms). `proofs/Proofs/SpernerMathlib4.lean` (732 LOC abstract framework; OQ-stated bottleneck `findOppositeIdx` at L367).
 - **Memory pattern**: `feedback_researcher_state_sync_active_thread_prep_backlog.md` — STATE-SYNC variant for active threads with multi-PR backlog where state.md lags merged PREP/ACT work.
+
+## Session 17 — S8 ACT soundness discharge (researcher-2, 2026-06-12)
+
+**Result: C2-1d Scarf-walk soundness `sorry` eliminated (1 → 0).**
+`SpernerSimplicialInstanceOQ05Scarf1d.lean` is now 0 sorries / 0 axioms;
+Docker build `Proofs.SpernerSimplicialInstanceOQ05Scarf1d` succeeds (1098/1098).
+
+- **Correction to S8 PREP**: the proposed endpoint-only hypothesis
+  `c 0 ≠ c m` is *insufficient* for a general start. Counterexample:
+  `m = 5`, `c = (1,0,0,0,0,0)`, `start = 2`, entry face `1` — parity
+  holds (`c 0 = 1 ≠ 0 = c 5`) but the lone switch (edge `[0,1]`) is
+  behind the monotone rightward walk, which stops at non-pancho cell `4`.
+  The walk is monotone with direction fixed by the entry face, so the
+  correct soundness hypothesis is start-relative `c start ≠ c m`.
+- **Infrastructure unblock**: added public lemma
+  `Triangulation.intervalTriangulation_adj_zero` in the parent file —
+  exposes the rightward branch of the otherwise-`private` `iadj`, which
+  is what prevented S5–S8 from reducing the walk step from the leaf file.
+- **New lemmas** (leaf): `scarfWalkAux_step`, `scarfWalkAux_right_succ`,
+  `scarfWalkAux_right_isPanchromatic` (fuel induction),
+  `discrete_ivt_panchromatic_cell` (pure discrete IVT). Soundness and
+  the existence corollary rewritten with corrected hypotheses; no
+  external callers (grep-confirmed).
+- Session memo: `sessions/2026-06-12-s8-act-soundness-discharge.md`.
+- Next: S9 gallery promotion of the now-verified constructive module;
+  optional leftward symmetry.

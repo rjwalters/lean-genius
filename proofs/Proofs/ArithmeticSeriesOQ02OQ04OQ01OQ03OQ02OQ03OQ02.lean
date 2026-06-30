@@ -64,10 +64,13 @@ CommRing multiplicative q-Pascal closes the gap to the parent's q-binomial.
 
 ## What this file still does NOT contain
 
-* No **positive** `at_one_one` limit theorem (i.e., recovering the classical
-  `Nat.multichoose`). The S4 ACT here records the **negative** statement
-  (= 0) under `Field R`; the positive form requires `RatFunc.eval` per
-  S5 PREP — out of scope for this iteration.
+* No **positive** `at_one_one` limit theorem for `k ≥ 1` (i.e., recovering the
+  classical `Nat.multichoose`). The S4 ACT records the **negative** value (= 0)
+  under `Field R`; Section XI (S8 ACT) upgrades this to a *sharp inequality*
+  proving the naive substitution genuinely differs from the classical value for
+  every `k ≥ 1` (`n ≥ 1`, char 0), so the positive form for `k ≥ 1` provably
+  requires `RatFunc.eval` (Path C, S5 PREP) — out of scope for this iteration.
+  (The `k = 0` column *is* recovered positively, in `qtMultichoose_at_one_one_zero`.)
 * No Pascal-style recurrence (S6 PREP falsified it; the product formula
   factorises along `k`, not Pascal's two-direction).
 * No Macdonald-polynomial principal-specialization axiom (optional S6 step).
@@ -113,12 +116,13 @@ object (`qBinom` or `qMultichoose`), closing the bridge chain in full.
 
 * Axioms: 0
 * Sorries: 0
-* Theorems: 18 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
+* Theorems: 20 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
   reduction, 1 unconditional k-direction recurrence, 2 S3 ACT
   specialization theorems, 3 S4 ACT polynomial-sub-lattice / 0-trap
   theorems, 1 S6 ACT ratio-form corollary, 3 S5 ACT polynomial-form
   bridges to `qNumber`, 4 S5b ACT direct bridges to `qBinom`/`qMultichoose`,
-  1 S5c ACT (2, 2) interior bridge to `qMultichoose`)
+  1 S5c ACT (2, 2) interior bridge to `qMultichoose`, 2 S8 ACT trap-sharpness
+  theorems — positive `k = 0` recovery + `k ≥ 1` necessity-of-Path-C inequality)
 * Lemmas (private): 1 (`qBinom_mult_recur`, CommRing multiplicative q-Pascal)
 
 ## Build status
@@ -514,5 +518,46 @@ theorem qtMultichoose_two_two_eq_qMultichoose (q t : R)
     (htq : (1 : R) - q ^ 2 * t ≠ 0) (hq : (1 - q : R) ≠ 0) :
     qtMultichoose q t 2 2 = qMultichoose q 2 2 := by
   rw [qtMultichoose_two_two_eq_qNumber q t htq hq, ← qMultichoose_two_left q 2]
+
+-- ============================================================
+-- SECTION XI: Sharpness of the Field 0/0 trap — Path C is necessary
+-- ============================================================
+
+/-- **Positive `at_one_one` recovery at the `k = 0` boundary.** The naive
+    Field-`R` substitution `q = t = 1` returns the *correct* classical value
+    `Nat.multichoose n 0 = 1` here, because the `k = 0` column is the empty
+    product (`= 1`), with no `0/0` factor to collapse.
+
+    This is the **only** column where the direct substitution agrees with the
+    classical multichoose; `qtMultichoose_at_one_one_ne_classical` below shows
+    every `k ≥ 1` column disagrees (in characteristic zero). Together they pin
+    the exact boundary `{k = 0}` of Field-`R` recoverability, motivating the
+    Path C (`RatFunc.eval`) migration for the `k ≥ 1` columns. -/
+theorem qtMultichoose_at_one_one_zero (n : ℕ) :
+    qtMultichoose (1 : R) (1 : R) n 0 = (Nat.multichoose n 0 : R) := by
+  rw [qtMultichoose_zero_right, Nat.multichoose_zero_right, Nat.cast_one]
+
+/-- **Sharpness of the Field 0/0 trap (necessity of Path C).** In any
+    characteristic-zero field, for `n ≥ 1` and *every* column `k + 1 ≥ 1`, the
+    naive substitution `q = t = 1` returns `0` (the `Field R` `0/0` collapse,
+    `qtBinom_at_one_one_eq_zero`), which is **strictly different** from the
+    classical value `Nat.multichoose n (k + 1)` — the latter is nonzero because
+    `Nat.multichoose n (k+1) = (n + k).choose (k + 1) > 0` for `n ≥ 1`.
+
+    Hence the positive `at_one_one` recovery `qtMultichoose 1 1 n k =
+    Nat.multichoose n k` is **provably unattainable** by direct Field-`R`
+    substitution for any `k ≥ 1`: the lowest-terms reduction of `RatFunc.eval`
+    (Path C) is genuinely required, not merely a convenience. This upgrades the
+    one-directional `qtMultichoose_at_one_one_eq_zero` (which records the value
+    `0`) to a sharp *inequality* against the intended classical target. -/
+theorem qtMultichoose_at_one_one_ne_classical [CharZero R] (n k : ℕ)
+    (hn : 1 ≤ n) :
+    qtMultichoose (1 : R) (1 : R) n (k + 1) ≠ (Nat.multichoose n (k + 1) : R) := by
+  have hpos : 0 < Nat.multichoose n (k + 1) := by
+    rw [Nat.multichoose_eq]
+    exact Nat.choose_pos (by omega)
+  have hne : (Nat.multichoose n (k + 1) : R) ≠ 0 := by exact_mod_cast hpos.ne'
+  rw [qtMultichoose_at_one_one_eq_zero]
+  exact hne.symm
 
 end QtMultichooseCoefficients

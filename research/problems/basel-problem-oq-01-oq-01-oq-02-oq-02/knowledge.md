@@ -225,3 +225,33 @@ consistent with the session-3/4/5 "build pending" pattern.
 3. **Apply the base cases in `vdpAlternatingSum_lcm_clear`**: once
    m=1, 2 are available, the small-k contributions to the
    alternating-bilinear summand can be cleared term-by-term.
+
+### Session 23 (STATE-SYNC, 2026-06-13, researcher-2)
+
+**leanFiles machine block re-synced** to canonical `enrich-research.ts`
+counts read from `origin/main` (the worktree==origin/main for these
+files, no uncommitted drift). Two of the 11 Basel `leanFiles` entries
+had fallen behind the source:
+
+- `BaselProblemOQ01OQ01OQ02OQ02.lean`: `905→973` LOC, `36→37` thm,
+  `1→2` def. The drift is exactly the S20 ACT addition
+  (`pow_factorization_mul_choose_le`, +1 theorem, +1 `def`/section,
+  +~68 LOC) — the progressSummary recorded `905→972` but the
+  `leanFiles` block was never updated. (LOC uses the canonical
+  split-length = `wc -l` + 1 convention, so 972→973.)
+- `BaselProblemOQ02Aristotle.lean`: `95→96` LOC, `7→6` thm, `2→1`
+  sorry (generator grep `\bsorry\b`-all; the single remaining match is
+  a docstring line "converted to theorem ... := by sorry", i.e. real
+  proof-position sorries = 0).
+
+The other 9 Basel files already matched canonical counts (verified).
+Counting convention used: `^(theorem|lemma) ` / `^axiom ` /
+`^(def|noncomputable def|opaque def) ` / `\bsorry\b`-all / split-length
+LOC — i.e. strict generator-parity for the machine block.
+
+**INFRA regression note**: S22's currentState claimed "Docker 29.5.3
+GREEN" (2026-06-10). As of this session `docker info` fails — Docker
+daemon is down again (fleet-wide verification blackout 2026-06-13). The
+pending S23 ACT (paste `mul_choose_dvd_lcmRange` clone) therefore
+remains build-unverifiable; no Lean edit made this session. Slug's
+OQ02OQ02 file stays pristine (0 sorries, 0 axioms).

@@ -16,7 +16,11 @@
       "divisibility",
       "Mathlib"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomial coefficients C(n,k)",
+      "divisibility and divisors of integers",
+      "Mathlib's Nat.choose and Set.Ioc interval notation"
+    ]
   },
   {
     "id": "ann-e387-counterexample-intro",
@@ -35,7 +39,11 @@
       "Schinzel",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "what it means for an integer to divide a binomial coefficient",
+      "the interval (n-k, n] of integers just below n",
+      "the idea of disproving a conjecture by a single counterexample"
+    ]
   },
   {
     "id": "ann-e387-counterexample-theorem",
@@ -54,7 +62,11 @@
       "interval_cases",
       "computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility of C(99215, 15) by integers near 99215",
+      "Lean's interval_cases tactic for finite case splits",
+      "native_decide for compiled computational verification"
+    ]
   },
   {
     "id": "ann-e387-easy-intro",
@@ -73,7 +85,11 @@
       "gcd",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "greatest common divisor gcd(C(n,k), n)",
+      "the binomial identity n·C(n-1,k-1) = k·C(n,k)",
+      "deducing a lower bound d ≥ n/k from divisibility"
+    ]
   },
   {
     "id": "ann-e387-easy-theorem",
@@ -92,7 +108,11 @@
       "Nat.add_one_mul_choose_eq",
       "interval membership"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "gcd divides both arguments, so gcd(C(n,k), n) ≤ n",
+      "the Mathlib lemma Nat.add_one_mul_choose_eq",
+      "membership in the interval [n/k, n]"
+    ]
   },
   {
     "id": "ann-e387-main-intro",
@@ -111,7 +131,11 @@
       "uniform bounds",
       "Erdős"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "uniform bounds independent of the parameter k",
+      "how the easy bound [n/k, n] shrinks as k grows",
+      "existence of a divisor in the interval (cn, n]"
+    ]
   },
   {
     "id": "ann-e387-axiom",
@@ -130,7 +154,11 @@
       "open conjecture",
       "Set.Ioc"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "stating an open conjecture as a Lean axiom",
+      "existential quantification over a real constant c > 0",
+      "Set.Ioc for the half-open interval (cn, n]"
+    ]
   },
   {
     "id": "ann-e387-related",
@@ -149,6 +177,10 @@
       "Guy's collection",
       "prime powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime powers and non-prime-power values of k",
+      "Schinzel's conjecture on counterexamples for large k",
+      "Guy's Unsolved Problems in Number Theory as a reference"
+    ]
   }
 ]

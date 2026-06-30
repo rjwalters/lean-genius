@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-erdos395oq02-header",
+    "proofId": "erdos-395-oq-02",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "context",
+    "title": "The higher-dimensional question — and the honest boundary",
+    "content": "Erdős #395 (HJNS 2024) proves that for unit complex vectors z₁,…,zₙ — exactly the 2-dimensional case, ℂ ≅ ℝ² — the probability that |Σεᵢzᵢ| ≤ √2 is ≥ c/n. Open question oq-02 asks whether a similar c/n lower bound holds for unit vectors in higher dimensions ℝ^d. The header states plainly that this file does NOT resolve the fixed-dimension question; instead it proves an obstruction showing the naive dimension-free version is false, and isolates the correct hypotheses.",
+    "mathContext": "Parent (HJNS 2024): unit $z_i \\in \\mathbb{C}$, $\\mathbb{P}(|\\sum \\varepsilon_i z_i| \\le \\sqrt 2) \\ge c/n$. Here we vary the ambient real inner product space $\\mathbb{R}^d$.",
+    "significance": "context",
+    "relatedConcepts": ["reverse Littlewood–Offord", "anti-concentration", "random signs", "Rademacher sums"],
+    "prerequisites": ["probability", "inner product spaces"]
+  },
+  {
+    "id": "ann-erdos395oq02-definitions",
+    "proofId": "erdos-395-oq-02",
+    "range": { "startLine": 55, "endLine": 72 },
+    "type": "definition",
+    "title": "Sign vectors and signed sums in a general inner product space",
+    "content": "IsSign ε requires each component εᵢ ∈ {+1,−1}. signedSum z ε := Σᵢ εᵢ•zᵢ is defined over an arbitrary real inner product space E, so a single statement covers ℝ^d for every dimension d (and the complex case ℂ ≅ ℝ² of the parent). sign_mul_self records εᵢ·εᵢ = 1, the only arithmetic fact about signs the argument needs.",
+    "mathContext": "$S = \\sum_i \\varepsilon_i z_i \\in E$, $\\varepsilon_i = \\pm 1$, $\\varepsilon_i^2 = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sign vector", "signed sum", "real inner product space"],
+    "prerequisites": ["finite sums", "scalar multiplication"]
+  },
+  {
+    "id": "ann-erdos395oq02-orthogonality",
+    "proofId": "erdos-395-oq-02",
+    "range": { "startLine": 75, "endLine": 101 },
+    "type": "key-step",
+    "title": "The orthogonality identity ‖Σεᵢzᵢ‖² = n",
+    "content": "signedSum_norm_sq_of_orthonormal is the engine. Writing ‖S‖² = ⟪S,S⟫ and expanding with sum_inner/inner_sum and the bilinearity real_inner_smul_left/right gives ΣᵢΣⱼ εᵢεⱼ⟪zᵢ,zⱼ⟫. For an orthonormal family orthonormal_iff_ite rewrites ⟪zᵢ,zⱼ⟫ = [i=j], collapsing the double sum (Finset.sum_ite_eq) to Σᵢ εᵢ² = Σᵢ 1 = n. So every sign sum sits on the sphere of radius √n (signedSum_norm_of_orthonormal): the randomness is irrelevant.",
+    "mathContext": "$\\|\\sum_i \\varepsilon_i z_i\\|^2 = \\sum_{i,j}\\varepsilon_i\\varepsilon_j\\langle z_i,z_j\\rangle = \\sum_i \\varepsilon_i^2 = n$ when $\\langle z_i,z_j\\rangle = \\delta_{ij}$.",
+    "significance": "central",
+    "relatedConcepts": ["orthonormal basis", "Parseval", "second moment", "bilinearity"],
+    "prerequisites": ["inner product expansion", "Kronecker delta"]
+  },
+  {
+    "id": "ann-erdos395oq02-obstruction",
+    "proofId": "erdos-395-oq-02",
+    "range": { "startLine": 103, "endLine": 121 },
+    "type": "key-step",
+    "title": "The small-sum set is empty when C² < n",
+    "content": "orthonormal_smallSum_eq_empty turns the deterministic identity into the obstruction without any square roots. If some sign vector gave ‖S‖ ≤ C, then 0 ≤ ‖S‖ ≤ C forces ‖S‖² ≤ C² (nlinarith); but ‖S‖² = n by the orthogonality identity, so n ≤ C², contradicting the hypothesis C² < n. Hence no sign choice lands within C of the origin — the favourable set is ∅.",
+    "mathContext": "$\\|S\\| \\le C \\Rightarrow \\|S\\|^2 \\le C^2$, yet $\\|S\\|^2 = n > C^2$: contradiction. The event $\\{\\|S\\| \\le C\\}$ is empty.",
+    "significance": "central",
+    "relatedConcepts": ["anti-concentration failure", "squared-norm comparison", "empty event"],
+    "prerequisites": ["monotonicity of squaring on nonnegatives"]
+  },
+  {
+    "id": "ann-erdos395oq02-headline",
+    "proofId": "erdos-395-oq-02",
+    "range": { "startLine": 123, "endLine": 203 },
+    "type": "key-step",
+    "title": "The dimension-free analogue is false",
+    "content": "The probability layer: sign vectors are encoded by Fin n → Bool (toSign/signOf), giving a uniform 2ⁿ-point sample space; smallSumProb z C := smallSumCount z C / 2ⁿ. orthonormal_smallSumProb_eq_zero says the probability is exactly 0 when C² < n. The headline dimensionFree_reverseLO_false then refutes any dimension-free, fixed-threshold bound: given a hypothetical (C, c) with c>0, pick n > C² (exists_nat_gt), take the standard orthonormal basis of EuclideanSpace ℝ (Fin n) (basisFun_orthonormal) — the probability is 0, but c/n > 0, contradiction.",
+    "mathContext": "For any $(C,c)$ with $c>0$, choose $n > C^2$ and the standard basis of $\\mathbb{R}^n$: $\\mathbb{P} = 0 < c/n$. So no dimension-free $c/n$ bound exists.",
+    "significance": "central",
+    "relatedConcepts": ["counterexample", "standard basis", "uniform sign space", "Archimedean property"],
+    "prerequisites": ["finite probability", "EuclideanSpace"]
+  },
+  {
+    "id": "ann-erdos395oq02-open-question",
+    "proofId": "erdos-395-oq-02",
+    "range": { "startLine": 205, "endLine": 222 },
+    "type": "context",
+    "title": "The genuine open question, recorded but unproven",
+    "content": "ReverseLO_fixedDim d states the fixed-dimension reverse Littlewood–Offord question: for each fixed d, is there a threshold C_d and constant c_d>0 with P(‖Σεᵢzᵢ‖ ≤ C_d) ≥ c_d/n for all n and all unit vectors in ℝ^d? It is recorded as a Prop and deliberately NOT proved. The obstruction above shows why the dimension must be fixed (or bounded) — but for fixed d ≥ 3 the question remains open.",
+    "mathContext": "Open: $\\exists C_d, c_d>0$ s.t. $\\forall n$, unit $z_i \\in \\mathbb{R}^d$, $\\mathbb{P}(\\|\\sum \\varepsilon_i z_i\\| \\le C_d) \\ge c_d/n$.",
+    "significance": "context",
+    "relatedConcepts": ["open problem", "fixed dimension", "honest scope"],
+    "prerequisites": ["quantifier structure"]
+  }
+]

@@ -6,6 +6,73 @@ to operator-stable distributions in ℝ^d.
 
 ---
 
+## Session 2026-06-12 (Session 17) — ACT: `operator_stable_linear_image` genuine discharge
+
+**Mode**: ACT — axiom→theorem discharge (the first *non-vacuous* one for this slug's closure axioms).
+**Outcome**: axiomCount 2 → 1, theoremCount 14 → 15, lineCount 493 → 529.
+Docker 7744 jobs verified (13s incremental build).
+**Researcher**: researcher-2.
+**Session memo**: `sessions/2026-06-12-s17-act-operator-stable-linear-image.md`.
+
+### What I Did
+
+- Discharged `operator_stable_linear_image` from axiom to theorem (the S17 PREP
+  picker flagged in S15/S16). Closure of operator-stable laws under **invertible**
+  linear images, Meerschaert-Scheffler (2001) Thm 7.2.1.
+- Added an `[Invertible B]` hypothesis and supplied explicit witnesses:
+  normalizations `A'ₙ = B⁻¹ Aₙ B`, drift `b'ₙ = Bᵀ bₙ`.
+
+### Key Findings
+
+- **Genuine (non-vacuous) discharge**: unlike S14 (`scalar_exponent_ge_half`)
+  and S16 (`finite_cov_in_gaussian_doa`), which exploited broken/weak hypothesis
+  bundles, S17 required real matrix algebra. The crux is the conjugation identity
+  `B · (B⁻¹ Aₙ B) = Aₙ B`, which holds *only* because `B · ⅟B = 1`
+  (`mul_invOf_self`) — i.e. invertibility is load-bearing, not decorative.
+- **Soundness correction**: the former axiom quantified over *all* `B`, including
+  singular ones. For singular `B` the conjugation witness `B⁻¹` does not exist and
+  the image distribution can collapse onto a lower-dimensional subspace, so the
+  all-`B` statement over arbitrary `φ` is not generally true. Restricting to the
+  invertible case is both the correct mathematics (MS 2001 Thm 7.2.1) and an
+  honest narrowing of the prior over-broad assumption.
+- **Proof mechanics** (paste-ready, all standard Mathlib):
+  - matrix-vector composition `M *ᵥ (N *ᵥ v) = (M * N) *ᵥ v` proved hand-rolled
+    (`funext` + `simp only [Matrix.mulVec, Matrix.dotProduct, Matrix.mul_apply,
+    Finset.mul_sum, Finset.sum_mul]` + `Finset.sum_comm` + `ring`) to avoid
+    churn over the exact `Matrix.mulVec_mulVec` direction/name.
+  - conjugation: `rw [← mul_assoc, ← mul_assoc, mul_invOf_self, one_mul]`.
+  - drift transport `⟨bₙ, Bξ⟩ = ⟨Bᵀbₙ, ξ⟩` via the same `simp only` set +
+    `Matrix.transpose_apply` + `Finset.sum_comm`.
+  - `show` collapses the `fun i => ∑ j, M i j * ξ j` argument forms to `M *ᵥ ξ`
+    by defeq before rewriting; `hAb` applied at the point `B *ᵥ ξ`.
+
+### Remaining Axiom
+
+- `meerschaert_scheffler` (MS 2001 Ch. 8): domain of attraction ↔ matrix regular
+  variation. Genuinely research-level (operator-valued regular-variation
+  machinery, beyond a single Lean file). Recommend leaving axiomatized.
+
+### Next Steps
+
+- Re-encode the S14/S16 vacuous bug-report theorems (`scalar_exponent_ge_half`,
+  `finite_cov_in_gaussian_doa`) with genuine non-degeneracy / finite-second-moment
+  hypotheses and re-prove with real Hudson-Mason / matrix-Lindeberg content.
+- `meerschaert_scheffler` stays axiomatized (headline research statement).
+
+### Files Modified
+
+- `proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean` — axiom → theorem (+36 LOC).
+- `src/data/proofs/central-limit-theorem-oq-01-oq-01-oq-04/meta.json` —
+  `axiomCount` 2→1, `theoremCount` 14→15, `lineCount` 493→529; updated
+  `assumptions`, `originalContributions`, `structural` section summary, `leanFile`.
+- `src/data/research/problems/central-limit-theorem-oq-01-oq-01-oq-04.json` —
+  `iteration` 16→17, `since`, `focus`, `nextAction`, `progressSummary`,
+  `builtItems`, `leanFiles[OQ04]`, `lastUpdate`.
+- `research/problems/central-limit-theorem-oq-01-oq-01-oq-04/sessions/2026-06-12-s17-act-operator-stable-linear-image.md` (new).
+- `research/problems/central-limit-theorem-oq-01-oq-01-oq-04/knowledge.md` (this update).
+
+---
+
 ## Session 2026-05-04 (Session 1) - Formalize Multivariate Operator-Stable Distributions
 
 **Mode**: FRESH

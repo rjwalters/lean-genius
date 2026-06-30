@@ -232,4 +232,32 @@ theorem probAllDistinct_eq_descFactorial_div (k d : ℕ) (hkd : k ≤ d) (hd : 0
   rw [Finset.prod_congr rfl key, Finset.prod_div_distrib, Finset.prod_const,
       Finset.card_range, ← Nat.cast_prod, ← Nat.descFactorial_eq_prod_range]
 
+-- ============================================================
+-- Part V: Packaged two-sided bracket and descFactorial form
+-- ============================================================
+
+/-- **Two-sided collision-probability bracket.** Packages the
+    Paley–Zygmund-equivalent lower bound (`probCollision_ge_paley_zygmund`)
+    and the Markov upper bound (`probCollision_le_choose_two_div`) into a
+    single statement: for `k ≤ d`,
+
+      `k(k-1)/(2d + k(k-1)) ≤ probCollision k d ≤ k(k-1)/(2d)`. -/
+theorem probCollision_bracket (k d : ℕ) (hkd : k ≤ d) (hd : 0 < d) :
+    ((k : ℝ) * ((k : ℝ) - 1)) / (2 * (d : ℝ) + (k : ℝ) * ((k : ℝ) - 1))
+        ≤ probCollision k d ∧
+      probCollision k d ≤ (k : ℝ) * ((k : ℝ) - 1) / (2 * (d : ℝ)) :=
+  ⟨probCollision_ge_paley_zygmund k d hkd hd,
+   probCollision_le_choose_two_div k d hkd hd⟩
+
+/-- **Closed counting form of the collision probability.** Combining the
+    definitional `probCollision = 1 - probAllDistinct` with the
+    descFactorial bridge gives, for `k ≤ d` and `0 < d`,
+
+      `probCollision k d = 1 - descFactorial d k / d ^ k`. -/
+theorem probCollision_eq_one_sub_descFactorial_div
+    (k d : ℕ) (hkd : k ≤ d) (hd : 0 < d) :
+    probCollision k d = 1 - (Nat.descFactorial d k : ℝ) / (d : ℝ) ^ k := by
+  show 1 - probAllDistinct k d = 1 - (Nat.descFactorial d k : ℝ) / (d : ℝ) ^ k
+  rw [probAllDistinct_eq_descFactorial_div k d hkd hd]
+
 end BirthdayProblemOQ01OQ02

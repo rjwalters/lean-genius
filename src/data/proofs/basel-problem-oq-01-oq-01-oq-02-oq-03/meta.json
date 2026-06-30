@@ -2,6 +2,30 @@
   "id": "basel-problem-oq-01-oq-01-oq-02-oq-03",
   "title": "Hanson's Bound lcm(1,...,n) ≤ 3^n — Bootstrap and Axiomatization",
   "slug": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Algebra.GCDMonoid.Finset",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.Choose.Factorization",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "BaselProblemOQ01OQ01OQ02OQ03",
+    "lineCount": 1802,
+    "axiomCount": 1,
+    "theoremCount": 77,
+    "definitionCount": 1,
+    "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean",
+    "sorries": 0
+  },
   "description": "Bootstraps Hanson's 1972 bound lcm(1,...,n) ≤ 3^n as a Lean 4 research target. Defines lcmRange n, proves elementary bounds (lcmRange n | n!, lcmRange n ≤ n!, lcmRange n ≤ n^n) without axioms, verifies Hanson's bound numerically for n ∈ {1..10, 12, 15, 20}, and axiomatizes the general statement whose proof requires modular-form / Chebyshev infrastructure (Beta-integral identity) not yet in Mathlib.",
   "meta": {
     "author": "Lean Genius BaselProblemOQ01OQ01OQ02OQ03",
@@ -19,7 +43,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "lineCount": 1802,
-    "theoremCount": 73,
+    "theoremCount": 77,
     "definitionCount": 1,
     "assumptions": "Axiomatized: hanson_bound — for all n, lcm(1,...,n) ≤ 3^n. Numerically verified for n ∈ {1..10, 12, 15, 20} via decide/native_decide. Hanson's original 1972 proof uses Beta-integral identities and Chebyshev-style prime-power bounds; neither is in Mathlib. Provable easier bounds (lcm | n!, lcm ≤ n!, lcm ≤ n^n) are included with no axioms.",
     "originalContributions": [
@@ -61,7 +85,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The function ψ(n) = log lcm(1,...,n) is the Chebyshev psi function, central to analytic number theory: Mertens' theorem and the prime number theorem are both naturally phrased in terms of ψ. Bertrand's postulate (1845, proved by Chebyshev) is equivalent to a weak version of the bound lcm(1,...,n) · k ≥ n for k ≤ n. The classical asymptotic ψ(n) ~ n is the prime number theorem itself. Hanson (Canad. Math. Bull. 1972) proved an explicit non-asymptotic bound: lcm(1,...,n) ≤ 3^n, strictly improving on the easier lcm(1,...,n) ≤ 4^n that follows from the primorial bound (Erdős's classic 1939 elementary proof of Bertrand). The 3^n bound is the strongest known explicit constant; the precise asymptotic ψ(n)/n → 1 is the PNT. Apéry (1979) used this kind of LCM bound in his celebrated proof of the irrationality of ζ(3): the integer-squeeze argument needs lcm³·aₙ ∈ ℤ combined with a sufficiently small linear-form decay, and the threshold c < (1/(17-12√2))^{1/3} ≈ 3.24 makes Hanson's 3^n bound sufficient — but not the easier 4^n bound. So Apéry's irrationality proof depends critically on Hanson's exact constant.",
+    "historicalContext": "The function ψ(n) = log lcm(1,...,n) is the Chebyshev psi function, central to analytic number theory: Mertens' theorem and the prime number theorem are both naturally phrased in terms of ψ. Bertrand's postulate (1845, proved by Chebyshev) is equivalent to a weak version of the bound lcm(1,...,n) · k ≥ n for k ≤ n. The classical asymptotic ψ(n) ~ n is the prime number theorem itself. Hanson (Canad. Math. Bull. 1972) proved an explicit non-asymptotic bound: lcm(1,...,n) ≤ 3^n, strictly improving on the easier lcm(1,...,n) ≤ 4^n that follows from the primorial bound (Erdős's classic 1932 elementary proof of Bertrand). The 3^n bound is the strongest known explicit constant; the precise asymptotic ψ(n)/n → 1 is the PNT. Apéry (1979) used this kind of LCM bound in his celebrated proof of the irrationality of ζ(3): the integer-squeeze argument needs lcm³·aₙ ∈ ℤ combined with a sufficiently small linear-form decay, and the threshold c < (1/(17-12√2))^{1/3} ≈ 3.24 makes Hanson's 3^n bound sufficient — but not the easier 4^n bound. So Apéry's irrationality proof depends critically on Hanson's exact constant.",
     "problemStatement": "Define lcmRange n = lcm(1,...,n) and prove the chain of bounds lcmRange n ≤ n! ≤ n^n (elementary). State Hanson's bound lcmRange n ≤ 3^n as the open target axiom, with proof requiring the Beta-integral identity 1/((n+1)·C(n,k)) = ∫₀¹ x^k(1-x)^(n-k) dx and Chebyshev-style prime-power bounds.",
     "proofStrategy": "Five parts. Part 1 reproduces lcmRange = (Finset.range n).lcm (·+1). Part 2 establishes basic properties: lcmRange_pos, dvd_lcmRange (k ∈ {1,...,n} divides lcmRange n). Part 3 proves the chain of provable bounds by combining Mathlib's Nat.dvd_factorial (each k divides n!) with Finset.lcm_dvd (lcm divides any common multiple): lcmRange_dvd_factorial, lcmRange_le_factorial (via Nat.le_of_dvd), lcmRange_le_self_pow (via Nat.factorial_le_pow). Part 4 verifies Hanson's bound numerically for n ∈ {1..10, 12, 15, 20} via decide/native_decide and the OEIS values lcm(1..5)=60, lcm(1..10)=2520, lcm(1..15)=360360, lcm(1..20)=232792560. Part 5 states Hanson's bound as `axiom hanson_bound` and proves `hanson_strictly_stronger_than_factorial` (3^n < n^n for n ≥ 4) showing why Hanson's constant 3 is not trivially derivable.",
     "keyInsights": [
@@ -97,7 +121,7 @@
     },
     {
       "id": "basic-properties-and-chebyshev",
-      "title": "Part 2a: Basic Properties + Chebyshev's Decomposition",
+      "title": "Part 2: Basic Properties + Chebyshev's Decomposition",
       "startLine": 86,
       "endLine": 282,
       "summary": "Foundational lemmas (lcmRange_zero, lcmRange_one, lcmRange_pos), divisibility (dvd_lcmRange: 1 ≤ k ≤ n ⇒ k ∣ lcmRange n), generic power divisibility (pow_dvd_lcmRange: 0 < b ∧ bᵏ ≤ n ⇒ bᵏ ∣ lcmRange n), and the prime-power specialization prime_pow_dvd_lcmRange (the maximal prime-power p^⌊log_p n⌋ divides lcmRange n). Then both directions of Chebyshev's decomposition: prod_prime_powers_dvd_lcmRange (forward, by Finset induction over the prime support) using coprime_prime_pow_pow_of_ne (distinct prime powers are coprime) and the helper prod_dvd_of_pairwise_coprime; and lcmRange_dvd_prod_prime_powers (reverse, Iter 8) routed through `Nat.factorization`.",
@@ -105,33 +129,73 @@
     },
     {
       "id": "prime-counting-chain",
-      "title": "Part 2b: Prime-Counting Chains (Iter 11/13/14) and Recursive Structure",
-      "startLine": 287,
-      "endLine": 580,
-      "summary": "Builds the bound `lcmRange n ≤ n^π(n) ≤ n^(n-1)` via three successive sharpenings. Iter 11: lcmRange_eq_prod_prime_powers (Chebyshev equality), lcmRange_le_pow_card_primes_le, lcmRange_le_pow_primeCounting (= n^π(n)). Iter 13: primeCounting_le_self (π(n) ≤ n), pow_primeCounting_le_pow_self, lcmRange_le_pow_self_via_primeCounting (re-derives the trivial Part 3 bound n^n through the Chebyshev route). Iter 14: primeCounting_le_pred (sharper π(n) ≤ n-1, via filter ⊆ ((range (n+1)).erase 0).erase 1), pow_primeCounting_le_pow_pred, lcmRange_le_pow_pred (= n^(n-1)) — strict improvement over Iter 13. Closes with structural lemmas: lcmRange_succ (recursion), lcmRange_dvd_lcmRange_of_le, lcmRange_monotone.",
-      "mathContext": "The chain $\\operatorname{lcmRange}(n) \\le n^{\\pi(n)} \\le n^{n-1}$ uses Chebyshev's decomposition (each $p^{\\lfloor \\log_p n \\rfloor} \\le n$) followed by a counting bound on $\\pi(n)$. The Iter 14 sharpening to $\\pi(n) \\le n - 1$ exploits that *neither* $0$ nor $1$ is prime, so $\\{p \\le n : p\\ \\text{prime}\\} \\subseteq \\{2, \\ldots, n\\}$ has cardinality at most $n - 1$. The recursion `lcmRange_succ` $\\operatorname{lcmRange}(n+1) = \\operatorname{lcm}(\\operatorname{lcmRange}(n), n+1)$ is the inductive-step lemma for any future inductive Hanson proof."
+      "title": "Iter 11–17: Prime-Counting Chains and Small-Prime Focus",
+      "startLine": 283,
+      "endLine": 674,
+      "summary": "Builds the bound `lcmRange n ≤ n^π(n) ≤ n^(n-1)` via successive sharpenings, then pivots to the correction-factor program. Iter 11: lcmRange_eq_prod_prime_powers (Chebyshev equality), lcmRange_le_pow_card_primes_le, lcmRange_le_pow_primeCounting (= n^π(n)). Iter 13: primeCounting_le_self (π(n) ≤ n), pow_primeCounting_le_pow_self, lcmRange_le_pow_self_via_primeCounting (re-derives the trivial n^n bound through the Chebyshev route). Iter 14: primeCounting_le_pred (sharper π(n) ≤ n-1, via filter ⊆ ((range (n+1)).erase 0).erase 1), lcmRange_le_pow_pred (= n^(n-1)). Iter 15: primorial divides lcmRange. Iter 16: Chebyshev decomposition factored through the primorial (lcmRange = primorial · correction factor ∏ p^(eₚ-1)). Iter 17: small-prime focus (only primes with p² ≤ n contribute to the correction factor) and prime_pow_pred_eq_one_of_sq_lt (the exponent eₚ-1 vanishes once p² > n).",
+      "mathContext": "The chain $\\operatorname{lcmRange}(n) \\le n^{\\pi(n)} \\le n^{n-1}$ uses Chebyshev's decomposition (each $p^{\\lfloor \\log_p n \\rfloor} \\le n$) followed by a counting bound on $\\pi(n)$; the Iter 14 sharpening to $\\pi(n) \\le n - 1$ exploits that neither $0$ nor $1$ is prime. Iter 16 refactors $\\operatorname{lcm}(1,\\ldots,n) = \\operatorname{primorial}(n) \\cdot \\prod_{p \\le n} p^{\\lfloor\\log_p n\\rfloor - 1}$, isolating the 'correction factor' beyond the primorial. Iter 17 observes that $\\lfloor\\log_p n\\rfloor - 1 = 0$ whenever $p^2 > n$, so only the $O(\\sqrt n)$ small primes ($p \\le \\sqrt n$) contribute — the structural insight driving the Iter 18–25 envelope toward Hanson's constant."
+    },
+    {
+      "id": "iter18-per-prime-bounds",
+      "title": "Iter 18: Per-Prime Numerical Bounds on Correction-Factor Terms",
+      "startLine": 675,
+      "endLine": 757,
+      "summary": "Pointwise bounds on a single correction-factor term p^(eₚ-1) where eₚ = ⌊log_p n⌋. prime_pow_pred_mul_eq_pow (exponent recurrence: p · p^(eₚ-1) = p^eₚ), prime_pow_pred_le_self (coarse bound p^(eₚ-1) ≤ p^eₚ ≤ n), and prime_pow_pred_le_div (sharp bound p^(eₚ-1) ≤ n/p). These per-prime inequalities are the atoms multiplied together in Iter 19's product-level bound.",
+      "mathContext": "For prime $p \\le n$ with $e_p = \\lfloor \\log_p n \\rfloor$, the correction-factor term satisfies $p^{e_p - 1} \\le n/p$: since $p^{e_p} \\le n$, dividing by $p$ gives $p^{e_p-1} \\le n/p$ (floor division on $\\mathbb{N}$). This $n/p$ envelope is sharper than the trivial $p^{e_p-1} \\le n$ and is what makes the product $\\prod_{p\\le\\sqrt n} (n/p)$ subexponential."
+    },
+    {
+      "id": "iter19-22-product-envelope",
+      "title": "Iter 19–22: Product-Level Correction-Factor Bound and √n Envelope",
+      "startLine": 758,
+      "endLine": 1022,
+      "summary": "Lifts the per-prime bounds to the full product. Iter 19: prod_prime_pow_pred_le_prod_div_prime (∏ p^(eₚ-1) ≤ ∏ (n/p)) and lcmRange_le_primorial_mul_prod_div_prime (the assembled quantitative bound). Iter 20: small_prime_card_le_sqrt (#{p prime : p² ≤ n} ≤ √n) with a concrete witness at n = 100. Iter 21: div_prime_le_div_two (n/p ≤ n/2 for any prime) and prod_div_small_prime_le_pow_card (∏ over small primes ≤ (n/2)^card). Iter 22: prod_div_small_prime_le_pow_sqrt — the (n/2)^√n correction-factor envelope, with a numerical witness at n = 10.",
+      "mathContext": "Chaining Iter 18's $p^{e_p-1} \\le n/p$ over the small-prime support gives $\\prod_{p \\le \\sqrt n} p^{e_p-1} \\le \\prod_{p \\le \\sqrt n} (n/p) \\le (n/2)^{\\pi(\\sqrt n)} \\le (n/2)^{\\sqrt n}$, using $\\pi(\\sqrt n) \\le \\sqrt n$ and $n/p \\le n/2$. Combined with $\\operatorname{primorial}(n) \\le 4^n$ (Mathlib's `primorial_le_4_pow`), the envelope $\\operatorname{lcmRange}(n) \\le 4^n \\cdot (n/2)^{\\sqrt n}$ is subexponential in the correction part — the quantitative backbone of the Route-B program."
+    },
+    {
+      "id": "iter23-power-product-envelope",
+      "title": "Iter 23: Filtered Iter-19 and Small-Prime Power-Product Envelope",
+      "startLine": 1023,
+      "endLine": 1129,
+      "summary": "Restricts Iter 19's product-level bound to the small-prime filter, where the correction factor actually lives. prod_prime_pow_pred_le_prod_div_prime_small (filtered Iter 19) and prod_prime_pow_pred_small_le_pow_sqrt (the small-filter power-product chained into the (n/2)^√n envelope), with a numerical witness at n = 10. This isolates the support so Iter 24 can prove the support-reduction equality.",
+      "mathContext": "The full prime-filtered product $\\prod_{p \\le n} p^{e_p - 1}$ equals its small-prime restriction $\\prod_{p \\le \\sqrt n} p^{e_p - 1}$ because terms with $p^2 > n$ contribute a factor of $p^0 = 1$ (Iter 17). Iter 23 proves the $\\le$ direction (full filter $\\le$ small filter $\\le (n/2)^{\\sqrt n}$); Iter 24 upgrades it to equality."
+    },
+    {
+      "id": "iter24-26-full-envelope",
+      "title": "Iter 24–26: Full Correction-Factor Envelope, Chebyshev Assembly, and Recursive Structure",
+      "startLine": 1130,
+      "endLine": 1373,
+      "summary": "Iter 24: prod_prime_pow_pred_eq_small (support-reduction equality — the full and small-prime correction-factor products coincide) and prod_prime_pow_pred_le_pow_sqrt (the full correction factor ≤ (n/2)^√n). Iter 25: lcmRange_le_4_pow_mul_pow_sqrt (Chebyshev envelope assembly: lcmRange n ≤ 4^n · (n/2)^√n). Iter 26: four_pow_mul_pow_sqrt_gt_three_pow (the assembled envelope is strictly looser than Hanson's 3^n — honest accounting that Route B has not yet reached the target constant). Closes with the recursive-structure lemmas relocated here: lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone, plus the factorial-route helpers lcmRange_dvd_factorial / lcmRange_le_factorial / lcmRange_le_self_pow.",
+      "mathContext": "The assembled bound $\\operatorname{lcmRange}(n) \\le 4^n \\cdot (n/2)^{\\sqrt n}$ is the current quantitative ceiling of the elementary Route-B program. Iter 26 records that $4^n (n/2)^{\\sqrt n} > 3^n$ for $n \\ge 2$, i.e. this envelope does not yet imply Hanson — the $4^n$ primorial factor must be sharpened (toward the true $\\approx e^n$) before the correction factor can close the gap to $3^n$. The recursion `lcmRange_succ` $\\operatorname{lcmRange}(n+1) = \\operatorname{lcm}(\\operatorname{lcmRange}(n), n+1)$ is the inductive-step lemma for any future inductive Hanson proof."
     },
     {
       "id": "provable-elementary-bounds",
       "title": "Part 3: Provable Elementary Bounds (No Axioms)",
-      "startLine": 583,
-      "endLine": 601,
-      "summary": "The three trivial bounds with no axioms: lcmRange_dvd_factorial (every k ∈ {1,...,n} divides both lcmRange and n!), lcmRange_le_factorial (lcm ≤ n! by `Nat.le_of_dvd`), lcmRange_le_self_pow (n^n via `Nat.factorial_le_pow`). The chain lcm ∣ n! ≤ n^n is the trivial baseline that Hanson's 3^n strictly improves; Part 2b's prime-counting route already subordinates this with the strict improvement n^(n-1).",
+      "startLine": 1374,
+      "endLine": 1394,
+      "summary": "The three trivial bounds with no axioms: lcmRange_dvd_factorial (every k ∈ {1,...,n} divides both lcmRange and n!), lcmRange_le_factorial (lcm ≤ n! by `Nat.le_of_dvd`), lcmRange_le_self_pow (n^n via `Nat.factorial_le_pow`). The chain lcm ∣ n! ≤ n^n is the trivial baseline that Hanson's 3^n strictly improves; the prime-counting route (Iter 11–14) already subordinates this with the strict improvement n^(n-1).",
       "mathContext": "$\\operatorname{lcm}(1, \\ldots, n) \\mid n!$ via `Nat.dvd_factorial`, then $\\operatorname{lcm}(1, \\ldots, n) \\le n! \\le n^n$ via `Nat.factorial_le_pow`. Numerically: $20! \\approx 2.4 \\times 10^{18}$, $20^{20} \\approx 10^{26}$, $3^{20} \\approx 3.5 \\times 10^9$, $\\operatorname{lcmRange}(20) \\approx 2.3 \\times 10^8$ — Hanson's $3^n$ is roughly 10 orders of magnitude tighter than $n^n$ at $n = 20$."
     },
     {
       "id": "numerical-verification",
-      "title": "Part 4: Numerical Verification of Hanson for n ≤ 20",
-      "startLine": 604,
-      "endLine": 625,
-      "summary": "Verifies lcmRange n ≤ 3^n for n ∈ {1..10, 12, 15, 20} via decide / native_decide — kernel-checked witnesses, not inductive arguments. Concrete lcmRange equalities (lcmRange 5 = 60, lcmRange 10 = 2520, lcmRange 15 = 360360, lcmRange 20 = 232792560) match OEIS A003418 and serve as sanity checks for the definition. The split between `decide` (small n) and `native_decide` (n = 15, 20) reflects native compilation's faster handling of large multiplication chains.",
-      "mathContext": "Concrete: $\\operatorname{lcm}(1, \\ldots, 20) = 232\\,792\\,560$ vs $3^{20} = 3\\,486\\,784\\,401$, ratio $\\approx 15$. Numerical theorems are proof-irrelevant kernel reductions: each `hanson_nN` is a closed term whose normal form is `True`, so they survive any future axiom revision unchanged."
+      "title": "Part 4: Numerical Verification of Hanson for n ≤ 100",
+      "startLine": 1395,
+      "endLine": 1447,
+      "summary": "Verifies lcmRange n ≤ 3^n for n ∈ {1..10, 12, 15, 20} (Part 4) and the Iter 27 extension n ∈ {25, 30, 50, 100} via decide / native_decide — kernel-checked witnesses, not inductive arguments. Concrete lcmRange equalities (lcmRange 5 = 60, lcmRange 10 = 2520, lcmRange 15 = 360360, lcmRange 20 = 232792560, up through lcmRange 100) match OEIS A003418 and serve as sanity checks for the definition. The split between `decide` (small n) and `native_decide` (n ≥ 15) reflects native compilation's faster handling of large multiplication chains.",
+      "mathContext": "Concrete: $\\operatorname{lcm}(1, \\ldots, 20) = 232\\,792\\,560$ vs $3^{20} = 3\\,486\\,784\\,401$, ratio $\\approx 15$. Numerical theorems are proof-irrelevant kernel reductions: each `hanson_nN` is a closed term whose normal form is `True`, so they survive any future axiom revision unchanged. The Iter 27 witnesses up to $n = 100$ stress-test the definition far beyond the original $n \\le 20$ range."
+    },
+    {
+      "id": "iter33-38-bridge",
+      "title": "Part 4.5: Iter 33–38 — Hanson/Route B Bridge Bounds (28b-1, 28b-2, 28c)",
+      "startLine": 1448,
+      "endLine": 1771,
+      "summary": "The Route-B bridge toward Hanson via the integer-valued binomial identity. Iter 33/34: factorization_succ_mul_choose_le_log_succ (Theorem 28b-1 — a per-prime bound v_p((n+1)·C(n,k)) ≤ ⌊log_p(n+1)⌋, with a residue-arithmetic prep lemma). Iter 36/38: helper lemmas plus exists_witness_choose_saturates_log_succ (28b-2 witness saturation — the bound is tight). Theorem 28c choose_mul_succ_dvd_lcmRange (the divisibility bridge: (n+1)·C(n,k) ∣ lcmRange(n+1)), combining 28b-1 and 28b-2 — the formal core of Hanson's integral-identity strategy.",
+      "mathContext": "Hanson's classical route rests on $\\operatorname{lcm}(1,\\ldots,n+1) \\cdot \\int_0^1 x^k(1-x)^{n-k}\\,\\mathrm dx = \\frac{1}{(n+1)\\binom{n}{k}}\\cdot(\\text{integer})$, equivalently $(n+1)\\binom{n}{k} \\mid \\operatorname{lcm}(1,\\ldots,n+1)$. Theorem 28c formalizes exactly this divisibility, proven prime-by-prime: for each prime $p$, $v_p\\big((n+1)\\binom{n}{k}\\big) \\le \\lfloor\\log_p(n+1)\\rfloor = v_p(\\operatorname{lcm}(1,\\ldots,n+1))$ (28b-1), and the bound is saturated by an explicit witness $k$ (28b-2). This divisibility is the analytic ingredient that, combined with a counting bound, yields Hanson's $3^n$."
     },
     {
       "id": "hanson-axiom",
       "title": "Part 5: Hanson's Bound (Axiom + Sharpness Check)",
-      "startLine": 627,
-      "endLine": 657,
+      "startLine": 1772,
+      "endLine": 1802,
       "summary": "`axiom hanson_bound : ∀ n, lcmRange n ≤ 3^n` is the precise open Lean target — Hanson's classical 1972 theorem. The docstring documents the two known strategies: Hanson's original integral identity (Beta integrals + Chebyshev-style prime-power bounds) and Erdős's / Nair's combinatorial identities. `hanson_strictly_stronger_than_factorial` (3^n < n^n for n ≥ 4) is the sharpness check: the axiomatized constant 3 is genuinely tighter than the trivial Part 3 bound n^n, justifying why the axiom is non-redundant.",
       "mathContext": "Hanson 1972: $\\operatorname{lcm}(1, \\ldots, n) \\le 3^n$. Original proof (Hanson, *Canad. Math. Bull.* 15) uses the integer-valued integral identity $\\operatorname{lcm}(1, \\ldots, n) \\cdot \\int_0^1 x^k (1-x)^{n-k}\\,\\mathrm{d}x = \\frac{\\operatorname{lcm}(1, \\ldots, n)}{(n+1)\\binom{n}{k}} \\in \\mathbb{Z}$ combined with Chebyshev-style upper bounds on prime-power contributions. The constant $3$ sits between the asymptotic $e \\approx 2.718$ (PNT-implied) and Apéry's irrationality threshold $\\approx 3.245$ — hence 'smallest constant with an elementary proof'."
     }

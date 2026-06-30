@@ -1,8 +1,98 @@
 # Current State
 
-**Phase**: S8 ACT readiness — **B1 FULLY MITIGATED** (S12 STATE-SYNC at T+8 days since S11: Docker still healthy; disk recovered to 77 Gi from S11's borderline 25 Gi, now ~47 Gi above S10's ~30 Gi build-headroom threshold; pin identity unchanged at `2df2f015…`)
-**Since**: 2026-06-10 (S12 STATE-SYNC re-measures Docker + disk after 8-day idle window; was S11 STATE-SYNC 2026-06-02T06:45Z)
-**Iteration**: 15 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + S8 STATE-SYNC + S9 PREP + S10 STATE-SYNC + S11 STATE-SYNC + this S12 STATE-SYNC)
+**Phase**: BLOCKED (infra) — **REVERSE DIRECTION ONLY** (forward shipped via #22909)
+**Since**: 2026-06-13 (S14 flagged blocked on verification blackout)
+**Iteration**: 17
+
+> **S13 CONTENT CORRECTION (researcher-1, 2026-06-13).** The S11/S12 records
+> below are stale, NOT dormant. They claim "no PRs touched MinpolyCharpolyOQ02.lean
+> in the interim; file remains at 169 LOC, 1 sorry at line 122." That is wrong:
+> **PR #22923** (helpers) and **PR #22909** (forward direction) merged after S12.
+> The file is now **279 LOC** and the **forward direction** (diagonalizable ⇒
+> squarefree minpoly) is **fully proved, unconditional over any field**
+> (`Matrix.IsDiagonalizable.squarefree_minpoly`); `matConj` similarity-transport
+> automorphism added. The **sole remaining `sorry`** is the **reverse** direction
+> at **line 221** in `diagonalizable_iff_squarefree_minpoly` ([IsAlgClosed K]
+> [CharZero K]): squarefree minpoly ⇒ diagonalizable, via Bridge C
+> (`Module.End.isSemisimple_iff_squarefree_minpoly`) + Bridge B
+> (`iSup_eigenspace_eq_top_of_isSemisimple`) transported through `Matrix.toLin'`.
+> The next ACT should target the reverse direction **only** — do not re-prove the
+> forward direction. This corrects a missed-merge content error, distinct from the
+> prior S6/S8/S10/S11/S12 infra re-measurement churn. Docker down 2026-06-13
+> (verification blackout) so no build attempted this session.
+
+---
+
+## S14 BLOCKED (researcher-1, 2026-06-13) — verification blackout, all routes down
+
+Flagging this slug **`blocked`** (infra, not math). The state is fully
+synced (S13, today) and the **only** remaining work is the reverse-direction
+`sorry` at `MinpolyCharpolyOQ02.lean:221`, which is **build-dependent and
+unverifiable today**:
+
+| Route | Status (2026-06-13) | Check |
+|-------|---------------------|-------|
+| Docker local build | **HUNG** | `docker info` times out (rc=124) |
+| Aristotle proof search | **404** | `mcp-smoke-test.sh` → `404 Not Found` on `…/api/v1/project` |
+
+Both verification routes are down (cf. fleet-wide blackout). CI does **not**
+build Lean, so a blind reverse-direction edit could silently break the
+currently-green file (forward direction + 5 sanity lemmas all build). Per the
+"flag BLOCKED over PREP churn" rule (16 iters, 1 ACT, 5 prior STATE-SYNCs),
+this session does **not** add a doc-only PREP memo #6 — it flags blocked and
+records the fully-specified unblock recipe below.
+
+### Unblock path (when Docker recovers — paste at line 221)
+
+The three bridges B-fwd / C / D are **already in-tree**. The sole missing
+piece is **Bridge A reverse** (eigenspace decomposition → conjugating matrix),
+which no prior PREP wrote out concretely. Recipe:
+
+```lean
+-- hsq : Squarefree (minpoly K M),  goal : M.IsDiagonalizable
+set f := Matrix.toLin' M with hf
+-- Bridge D: minpoly K f = minpoly K M  (verify exact name at pin)
+have hmp : minpoly K f = minpoly K M := by simp [hf, Matrix.minpoly_toLin']
+-- Bridge C (in-tree): f is semisimple
+have hss : f.IsSemisimple :=
+  (Module.End.isSemisimple_iff_squarefree_minpoly).mpr (hmp ▸ hsq)
+-- Bridge B fwd (in-tree): eigenspaces span ⊤
+have htop : ⨆ μ : K, f.eigenspace μ = ⊤ :=
+  Module.End.iSup_eigenspace_eq_top_of_isSemisimple hss
+-- Bridge A reverse (NEW — the only real gap):
+--   1. eigenspaces are independent: Module.End.eigenspaces_independent f
+--      (or iSupIndep_…; verify name at v4.26.0).
+--   2. independent + htop ⇒ DirectSum.IsInternal (fun μ => f.eigenspace μ)
+--      via DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top.mpr.
+--   3. collected eigenbasis: hInternal.collectedBasis (fun μ => (f.eigenspace μ).basis …),
+--      indexed by Σ μ, Fin (finrank K (f.eigenspace μ)); reindex to n via
+--      Fintype.card equality (Σ-card = finrank = card n over alg-closed).
+--   4. P := (b.reindex e).toMatrix (Pi.basisFun K n)  (columns = eigenvectors);
+--      IsUnit P from basis.toMatrix invertibility.
+--   5. IsDiag (P⁻¹ * M * P): in the eigenbasis toLin' M acts diagonally
+--      (M • bᵢ = μᵢ • bᵢ), so LinearMap.toMatrix b b f is diagonal and the
+--      conjugation P⁻¹ M P equals that diagonal matrix.
+```
+
+Bearers to re-pin-verify when unblocked: `Matrix.minpoly_toLin'`,
+`Module.End.eigenspaces_independent`,
+`DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top`,
+`DirectSum.IsInternal.collectedBasis`, `Basis.toMatrix`,
+`LinearMap.toMatrix_toLin'`. Estimated ~50 LOC. Expected final state:
+**~330 LOC, 0 sorries, 0 axioms** → promote to `verified`.
+
+### Files touched this S14 (2)
+
+- `research/problems/minpoly-charpoly-oq-02/state.md` — this block + header.
+- `src/data/research/problems/minpoly-charpoly-oq-02.json` — `status` →
+  `blocked`, `currentState.{phase, since, iteration, blockers, nextAction}`,
+  `lastUpdate`.
+
+No Lean file touched (sorry count unchanged at 1; axiom count unchanged at 0).
+
+---
+
+## S12 STATE-SYNC (researcher-1, 2026-06-10) — B1 fully mitigated (SUPERSEDED — see S13 above)
 
 ## S12 STATE-SYNC (researcher-1, 2026-06-10) — B1 fully mitigated
 

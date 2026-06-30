@@ -16,7 +16,11 @@
       "approximation",
       "golden-ratio"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sequences in the unit interval [0,1]",
+      "Diophantine approximation and discrepancy theory",
+      "the golden ratio and Fibonacci numbers via Binet's formula"
+    ]
   },
   {
     "id": "ann-e480-unit-interval",
@@ -35,7 +39,11 @@
       "bounded-sequence",
       "constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's Set.Icc closed-interval notation",
+      "membership condition x n ∈ Icc 0 1 for all n",
+      "bounded real-valued sequences"
+    ]
   },
   {
     "id": "ann-e480-good-pairs",
@@ -54,7 +62,11 @@
       "sequence-difference",
       "gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the inequality |x(m+n) - x(m)| ≤ 1/(C·n)",
+      "sets of index pairs (m, n) with m, n nonzero",
+      "normalizing a sequence difference by the gap size n"
+    ]
   },
   {
     "id": "ann-e480-chung-graham-constant",
@@ -73,7 +85,11 @@
       "infinite-series",
       "convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fibonacci numbers and even-indexed terms F_{2k}",
+      "convergence of an infinite series via exponential growth F_n ≈ φⁿ/√5",
+      "Mathlib's tsum over ℕ+"
+    ]
   },
   {
     "id": "ann-e480-newman",
@@ -92,7 +108,11 @@
       "sqrt-5",
       "infinite-set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the √5 approximation bound |x(m+n) - x(m)| ≤ 1/(√5·n)",
+      "Set.Infinite for asserting infinitely many good pairs",
+      "axiomatized statements requiring probabilistic and analytic methods"
+    ]
   },
   {
     "id": "ann-e480-chung-graham-theorem",
@@ -111,7 +131,11 @@
       "chung-graham",
       "1984"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Chung-Graham constant c = 1 + Σ 1/F_{2k} as optimal",
+      "comparing c ≈ 2.535 against √5 ≈ 2.236",
+      "Sturmian words in the optimality construction"
+    ]
   },
   {
     "id": "ann-e480-optimality",
@@ -130,7 +154,11 @@
       "extremal-sequence",
       "greatest-element"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's IsGreatest predicate for a maximum element",
+      "extremal sequences from irrational rotations on the circle",
+      "finitely many good pairs when C exceeds c"
+    ]
   },
   {
     "id": "ann-e480-golden-ratio",
@@ -149,7 +177,11 @@
       "phi",
       "continued-fraction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the golden ratio φ = (1 + √5)/2 as a root of x² - x - 1 = 0",
+      "the continued fraction expansion [1; 1, 1, ...]",
+      "the Fibonacci ratio limit F_{n+1}/F_n → φ"
+    ]
   },
   {
     "id": "ann-e480-golden-sq",
@@ -168,7 +200,11 @@
       "defining-equation",
       "ring-normalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the golden ratio identity φ² = φ + 1",
+      "the ring_nf and sq_sqrt tactics for simplifying ((1 + √5)/2)²",
+      "the recursive relation φ = 1 + 1/φ"
+    ]
   },
   {
     "id": "ann-e480-conjugate",
@@ -187,7 +223,11 @@
       "vieta",
       "binet-formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the conjugate root ψ = (1 - √5)/2",
+      "Vieta's formulas giving φ + ψ = 1 and φ · ψ = -1",
+      "Binet's formula F_n = (φⁿ - ψⁿ)/√5"
+    ]
   },
   {
     "id": "ann-e480-sqrt5-comparison",
@@ -206,7 +246,11 @@
       "calc-chain",
       "sqrt-inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the strict inequality √5 < c and its reciprocal 1/c < 1/√5",
+      "Real.sqrt_lt_sqrt and Real.sqrt_sq for square-root comparisons",
+      "calc chains for transitive inequalities"
+    ]
   },
   {
     "id": "ann-e480-examples",
@@ -225,7 +269,11 @@
       "harmonic-sequence",
       "examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "constant sequences yielding zero differences",
+      "the harmonic sequence n/(n+1) = 1 - 1/(n+1) approaching 1",
+      "the div_le_one lemma and positivity tactic"
+    ]
   },
   {
     "id": "ann-e480-summary",
@@ -244,6 +292,10 @@
       "conjunction",
       "packaging"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "conjunction of the Newman and Chung-Graham results",
+      "And.intro and the anonymous constructor ⟨_, _⟩",
+      "both the √5 and Chung-Graham bounds holding simultaneously"
+    ]
   }
 ]

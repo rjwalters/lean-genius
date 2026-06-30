@@ -1,0 +1,140 @@
+{
+  "id": "cevas-theorem-oq-04-oq-01",
+  "title": "N-Dimensional Mass-Point Ceva: Complement Fractions Sum to n",
+  "slug": "cevas-theorem-oq-04-oq-01",
+  "description": "Generalizes the parent's triangle mass-point structure to an n-simplex with n+1 positive vertex masses. Defines each vertex's complement-mass fraction ratio i = (sum of the other masses)/total = 1 - mass i/total, proves it lies in (0,1), and establishes the n-dimensional Ceva identity: the complement fractions sum to exactly n. For n = 2 this recovers the triangle case sum = 2.",
+  "meta": {
+    "author": "researcher-9 (Lean Genius)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Mass_point_geometry",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CevasTheoremOQ04OQ01.lean",
+    "tags": [
+      "geometry",
+      "cevas-theorem",
+      "mass-point-geometry",
+      "simplex",
+      "affine-geometry",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_erase_eq_sub",
+        "description": "summing over univ.erase i equals the full sum minus the i-th term",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum_pos",
+        "description": "a sum of strictly positive terms over a nonempty set is positive",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "Finset.sum_sub_distrib",
+        "description": "the sum of a difference splits as the difference of sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Fintype.card_fin",
+        "description": "the cardinality of Fin (n+1) is n+1, used for counting vertices",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "MassPoint n: a structure of n+1 strictly positive vertex masses on an n-simplex (indexed by Fin (n+1))",
+      "MassPoint.total / total_pos / total_ne_zero: the total mass and its positivity",
+      "MassPoint.ratio: the complement-mass fraction (Σ_{j≠i} mass j)/total at vertex i",
+      "MassPoint.ratio_eq_one_sub: ratio i = 1 - mass i/total",
+      "MassPoint.ratio_lt_one (unconditional) and ratio_pos (for n ≥ 1): the fractions lie in (0,1)",
+      "MassPoint.sum_ratio_eq: the n-dimensional Ceva identity Σ ratio i = n",
+      "uniform / uniform_total / uniform_ratio: the centroid (all masses 1) gives ratio i = n/(n+1)",
+      "n = 2 specialization: ratio 0 + ratio 1 + ratio 2 = 2, recovering the triangle case"
+    ],
+    "references": [
+      {
+        "authors": "Hausner, Melvin",
+        "title": "The Center of Mass and Affine Geometry",
+        "year": "1962",
+        "venue": "American Mathematical Monthly",
+        "note": "Foundational treatment of mass-point (barycentric) geometry"
+      },
+      {
+        "authors": "Myers, Joseph",
+        "title": "Mathlib.LinearAlgebra.AffineSpace.Ceva",
+        "year": "2025",
+        "venue": "Mathlib",
+        "note": "Affine-space formulation of Ceva's theorem; the geometric concurrency target for future work"
+      }
+    ],
+    "prerequisites": [
+      "Mass-point (barycentric) geometry of triangles (parent entry cevas-theorem-oq-04)",
+      "Simplices and barycentric coordinates (Fin (n+1)-indexed masses)",
+      "Finite sums over Finset.univ and the erase/complement identity",
+      "Basic real arithmetic with field_simp / linarith"
+    ],
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "lineCount": 215,
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext / Classical.choice / Quot.sound).",
+    "theoremCount": 10,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Mass-point geometry assigns positive masses to the vertices of a figure and reasons about cevians and concurrency through the center of mass. For a triangle with masses at the three vertices, the balance points on the sides yield ratios that automatically satisfy Ceva's concurrency relation — the subject of the parent entry cevas-theorem-oq-04. The natural question (this entry's open question) is whether the mass-point bookkeeping extends from the triangle to an arbitrary n-dimensional simplex with n+1 vertices.\n\nThis file lifts the parent's MassPoint structure to a Fin (n+1)-indexed family of positive masses and studies the per-vertex complement fraction: the share of the total mass carried by all vertices other than i. Each such fraction equals 1 - (normalized mass at i), so it sits strictly between 0 and 1, and the n+1 fractions sum to (n+1) - 1 = n. This clean identity — the complement fractions of an n-simplex sum to n — is the n-dimensional analogue of the triangle relation in which the three complement fractions sum to 2.",
+    "problemStatement": "**Open Question (from parent proof cevas-theorem-oq-04)**: Can the mass-point structure for a triangle (3 vertices) be generalized to an n-dimensional simplex (n+1 vertices)?\n\n**Resolution**: Yes. We define MassPoint n (n+1 positive vertex masses), the complement fraction ratio i = (Σ_{j≠i} mass j)/total, prove ratio i ∈ (0,1), and establish the n-dimensional Ceva identity Σ ratio i = n. The n = 2 case recovers the triangle sum of 2.",
+    "text": "A 215-line, axiom-free development (1 structure, 4 definitions, ~10 theorems). MassPoint n bundles n+1 strictly positive masses on the vertices of an n-simplex. total is their sum (positive, nonzero). The complement fraction ratio i = (Σ_{j∈univ.erase i} mass j)/total is shown to equal 1 - mass i/total (sum_erase_eq_total_sub + field_simp), from which ratio_lt_one is immediate and ratio_pos holds for n ≥ 1. The headline sum_ratio_eq proves Σ ratio i = n: rewrite each ratio as 1 - mass i/total, split the sum (sum_sub_distrib), use that the normalized masses sum to 1 (sum_mass_div_total), and simplify (n+1) - 1 = n. The uniform mass point (all masses 1) is the centroid, with uniform_ratio = n/(n+1); an n = 2 example confirms ratio 0 + ratio 1 + ratio 2 = 2.",
+    "proofStrategy": "ratio_eq_one_sub: rewrite the erased sum as total - mass i (Finset.sum_erase_eq_sub), then sub_div + field_simp. ratio_lt_one: from ratio = 1 - mass i/total with mass i/total > 0 (div_pos). ratio_pos: the erased sum is positive because univ.erase i is nonempty when n ≥ 1 (card_erase_of_mem + card_fin + omega). sum_mass_div_total: factor out the common denominator (sum_div) and div_self. sum_ratio_eq: Finset.sum_congr to replace each ratio by 1 - mass i/total, Finset.sum_sub_distrib to split, sum_mass_div_total for the second sum, and ring for (n+1) - 1 = n. uniform_ratio: ratio_eq_one_sub with uniform_total = n+1, then field_simp.",
+    "keyInsights": [
+      "The right n-dimensional generalization of the triangle ratios is the complement fraction: the share of total mass not at vertex i.",
+      "Each complement fraction is exactly 1 minus a normalized vertex mass, so it is automatically in (0,1).",
+      "The complement fractions of an n-simplex sum to n, because the normalized masses sum to 1 and there are n+1 of them: (n+1) - 1 = n.",
+      "Positivity of a complement fraction needs at least two vertices (n ≥ 1); the upper bound holds unconditionally.",
+      "The uniform mass point is the centroid, with every complement fraction equal to n/(n+1) — recovering the familiar 1/2, 2/3, 3/4, ... for the medians of segment, triangle, tetrahedron."
+    ],
+    "prerequisites": [
+      "Affine and barycentric geometry (simplices, centers of mass)",
+      "Finite sums over an index set",
+      "Elementary real arithmetic"
+    ]
+  },
+  "conclusion": {
+    "summary": "The triangle mass-point structure of the parent entry generalizes to an n-simplex: with n+1 positive vertex masses, each complement fraction ratio i = (Σ_{j≠i} mass j)/total lies in (0,1) and the fractions sum to exactly n. The uniform mass point gives ratio i = n/(n+1) (the centroid), and the n = 2 case recovers the triangle sum of 2. Fully verified, 0 axioms, 0 sorries.",
+    "implications": "This establishes the algebraic skeleton of n-dimensional mass-point geometry, the affine setting for cevian concurrency in a simplex. It resolves the parent's generalization question at the level of the mass/ratio identities; connecting these to geometric concurrency via Mathlib.LinearAlgebra.AffineSpace.Ceva, and bridging to the parent's edge-split parametrization, are the natural next steps.",
+    "openQuestions": [
+      "Bridge the parent's triangle edge-split parameters (rD = mC/(mB+mC), ...) to these complement fractions as different normalizations of the same mass data.",
+      "Constructive converse: given a ratio profile with Σ r i = n and r i ∈ (0,1), construct explicit vertex masses.",
+      "Connect to Mathlib.LinearAlgebra.AffineSpace.Ceva for the geometric n-dim cevian concurrency theorem."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-oq-04",
+      "relationship": "extends",
+      "description": "Generalizes the parent's triangle mass-point structure to an arbitrary n-simplex"
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "related",
+      "description": "The classical Ceva concurrency theorem these mass-point identities certify"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "NDimMassPoint",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "sorries": 0,
+    "path": "Proofs/CevasTheoremOQ04OQ01.lean"
+  }
+}

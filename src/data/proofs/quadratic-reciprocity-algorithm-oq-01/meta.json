@@ -6,7 +6,7 @@
   "meta": {
     "author": "Gauss (algorithm, 1801)",
     "date": "1801",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/QuadraticReciprocityAlgorithmOQ01.lean",
     "tags": [
       "number-theory",
@@ -16,9 +16,9 @@
       "jacobi-symbol",
       "verified-computation"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "dateAdded": "2026-03-30",
     "lineCount": 220,
     "originalContributions": [
@@ -28,7 +28,7 @@
       "jacobiAlgo_mod_left: algorithm respects residue classes",
       "7 verified example computations via native_decide"
     ],
-    "assumptions": "No axioms, no sorries. Jacobi symbol algorithm fully verified including termination proof via well-founded recursion on a.",
+    "assumptions": "No sorries. The symbolic results (jacobiAlgo definition with well-founded-recursion termination proof, jacobiAlgo_eq_jacobiSym correctness, legendreCompute_eq, jacobiAlgo_mod_left) are native_decide-free. The advertised contribution '7 verified example computations' (lines 179-197) is discharged solely by native_decide, which trusts the Lean compiler's kernel reduction and therefore depends on the Lean.ofReduceBool axiom. axiomCount: 1 (Lean.ofReduceBool). leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "mathlibDependencies": [
       {
         "theorem": "jacobiSym.div_four_left",

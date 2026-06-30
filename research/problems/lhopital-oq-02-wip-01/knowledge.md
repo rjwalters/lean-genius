@@ -2,7 +2,37 @@
 
 ## Summary
 
-No research sessions yet. Problem initialized by Seeker on 2026-04-05.
+**COMPLETE** — all three target ∞/∞ L'Hôpital variants are fully proven in
+`proofs/Proofs/LHopitalOQ02.lean` (0 sorries, 0 axioms). This WIP task was
+resolved before it was created: PR #10140 ("prove all 4 ∞/∞ L'Hôpital variants,
+0 sorries") landed the complete file, and the Seeker subsequently generated this
+redundant completion task on 2026-04-05. Status synced to `completed` on
+2026-06-13.
+
+## Session 2026-06-13 (Session 1) — Completion sync
+
+**Mode**: REVISIT
+**Outcome**: completed (tracker sync, no new Lean)
+
+### What I Did
+- Verified on `origin/main` that `LHopitalOQ02.lean` contains all three target
+  theorems fully proven with no `sorry`, `admit`, or `axiom`:
+  - `lhopital_infty_left` (line 290) — reduces to `lhopital_infty_right` via the
+    negation substitution `u = -x`.
+  - `lhopital_infty_atTop` (line 318) — reduces to `lhopital_infty_right` via the
+    inversion substitution `u = 1/x`.
+  - `lhopital_infty_atBot` (line 353) — reduces to `lhopital_infty_atTop` via the
+    negation substitution `u = -x`.
+- Traced history: the proofs landed in PR #10140, predating this task. The
+  knowledge note's "3 sorries at lines 291, 302, 313" was a planning snapshot
+  that never matched the merged file.
+- Flipped research JSON `OBSERVE/active` → `COMPLETED/completed` and updated
+  `problem.md` status.
+
+### Note
+File is not Docker-rebuilt this session (verification blackout). The proofs have
+been on `main` since #10140; standard post-blackout re-verification still applies
+to the whole gallery.
 
 ## Key Facts
 

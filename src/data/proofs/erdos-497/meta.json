@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/497",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos497Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "Sperner theory",
       "Dedekind numbers"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 497,
     "erdosUrl": "https://erdosproblems.com/497",
@@ -42,24 +42,19 @@
     "originalContributions": [
       "Defined IsAntichain for families in P(Fin n)",
       "Defined antichainCount as the total number of antichains",
-      "Stated Sperner's theorem: maximum antichain size is C(n, ⌊n/2⌋)",
-      "Proved middle layer achieves Sperner bound",
-      "Stated Dedekind numbers D(0)=2 through D(4)=168 as axioms",
-      "Stated trivial upper bound 2^{C(n, ⌊n/2⌋)}",
-      "Formalized Kleitman's theorem as both lower and upper asymptotic bounds",
-      "Defined ErdosProblem497 combining both bounds"
+      "Defined ErdosProblem497 as a Prop stating Kleitman's asymptotic (both bounds)"
     ],
     "axiomCount": 0,
     "lineCount": 51,
     "theoremCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Core definitions proved: IsAntichain, antichainCount, ErdosProblem497 (as Prop). Kleitman's theorem is stated as a def/Prop — not an axiom and not proved as a theorem.",
+    "assumptions": "This file formalizes definitions only: IsAntichain, antichainCount, and ErdosProblem497 (a Prop stating Kleitman's asymptotic). It contains 0 axioms, 0 theorems, and 0 sorries. Sperner's theorem, the small Dedekind values, the trivial bound, and Kleitman's theorem are NOT formalized — they appear only as empty section headers / prose. The truth of ErdosProblem497 is stated but not proved.",
     "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Counting antichains in the power set of [n] is one of the oldest problems in combinatorics, going back to Dedekind (1897) who first studied monotone Boolean functions — equivalent to counting antichains. The sequence D(0) = 2, D(1) = 3, D(2) = 6, D(3) = 20, D(4) = 168, D(5) = 7581, ... (OEIS A000372) grows extremely rapidly, and computing even a single new term is a major computational feat. Pashkov and Shmulevich computed D(9) = 7,828,354 in 2023, a landmark calculation.\n\nSperner's theorem (1928) provides the key structural insight: the largest antichain in P([n]) has size C(n, ⌊n/2⌋), achieved by the middle layer. This immediately gives the trivial upper bound D(n) ≤ 2^{C(n, ⌊n/2⌋)}, since every antichain is a subset of all possible antichains and the middle layer dominates.\n\nKleitman (1969) proved the remarkable result that this trivial bound is essentially tight: log₂ D(n) = (1 + o(1)) · C(n, ⌊n/2⌋). His proof uses a correlation inequality showing that 'most' antichains concentrate near the middle layers. This resolved Erdős's question about the logarithmic order of D(n), though the exact second-order term remains unknown.",
     "problemStatement": "How many antichains (Sperner families) exist in the power set of [n]?",
     "text": "How many antichains exist in P([n])? Kleitman (1969) proved the answer is 2^{(1+o(1))·C(n, ⌊n/2⌋)}, determining the logarithmic order of the Dedekind numbers.",
-    "proofStrategy": "The formalization defines antichains in P([n]) using Finset (Fin n) and counts them. Sperner's theorem and the maximum antichain are axiomatised. Known small Dedekind numbers D(0) through D(4) are stated. The trivial upper bound and Kleitman's asymptotic formula are stated, with the main result combining both directions into ErdosProblem497.",
+    "proofStrategy": "The file defines antichains in P([n]) using Finset (Fin n) and antichainCount that counts them, then states the resolution as the Prop ErdosProblem497 combining Kleitman's lower and upper asymptotic bounds. Sperner's theorem, the small Dedekind numbers, and the trivial upper bound are mentioned in documentation only — none is formalized as a theorem or an axiom.",
     "keyInsights": [
       "**Antichain Structure**: An antichain in P([n]) is a family where no member contains another — the natural generalization of Sperner families to all sizes",
       "**Sperner's Theorem**: The maximum antichain size is C(n, ⌊n/2⌋), achieved by the middle layer. This is both the structural foundation and the source of the trivial upper bound",
@@ -100,7 +95,7 @@
       "title": "Sperner's Theorem",
       "startLine": 38,
       "endLine": 49,
-      "summary": "Sperner's theorem: every antichain has size ≤ C(n, ⌊n/2⌋). The middle layer achieves this bound.",
+      "summary": "Empty section header in the source: Sperner's theorem is referenced in documentation but not formalized.",
       "mathContext": "Sperner (1928): $|F| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$ for any antichain $F \\subseteq \\mathcal{P}([n])$. Proved via the LYM inequality $\\sum_{A \\in F} \\binom{n}{|A|}^{-1} \\leq 1$."
     },
     {
@@ -108,12 +103,12 @@
       "title": "Known Small Values",
       "startLine": 50,
       "endLine": 51,
-      "summary": "Dedekind numbers D(0)=2, D(1)=3, D(2)=6, D(3)=20, D(4)=168 stated as axioms.",
+      "summary": "Source lines containing the ErdosProblem497 Prop definition; the Dedekind values appear only in prose, not as axioms or definitions.",
       "mathContext": "OEIS A000372: $D(0)=2, D(1)=3, D(2)=6, D(3)=20, D(4)=168, D(5)=7581, D(6)=7828354, \\ldots$ Grows doubly exponentially: $\\log_2 D(n) \\sim \\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n \\sqrt{2/(\\pi n)}$."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 497, solved by Kleitman (1969): the number of antichains in P([n]) is 2^{(1+o(1))·C(n, ⌊n/2⌋)}. This determines the logarithmic order of the Dedekind numbers, one of the oldest sequences in combinatorics.",
+    "summary": "This file provides a definitional scaffold for Erdős Problem 497, solved by Kleitman (1969): the number of antichains in P([n]) is 2^{(1+o(1))·C(n, ⌊n/2⌋)}, determining the logarithmic order of the Dedekind numbers. The resolution is stated as the Prop ErdosProblem497 but is not proved in Lean.",
     "implications": "**Theoretical Significance**: Kleitman's result reveals that the Boolean lattice $2^{[n]}$ has a rigid antichain structure: almost all antichains concentrate near the middle layer $\\binom{[n]}{\\lfloor n/2 \\rfloor}$. This is a manifestation of the 'sharp threshold' phenomenon in combinatorics — the transition from few antichains to many occurs abruptly at the middle layer.\n\n**Connections to Boolean Function Theory**: The Dedekind numbers D(n) also count the number of monotone Boolean functions on $\\{0,1\\}^n$ (equivalently, up-sets in the Boolean lattice). Kleitman's logarithmic-order determination is the foundation for studying the complexity of monotone circuit computation and the structure of monotone properties.\n\n**Lattice-Theoretic Generalization**: The problem generalizes to arbitrary finite posets: how many antichains exist in a given poset? Dilworth's theorem and the Bollobás set-pairs inequality provide partial answers, but the sharp asymptotic question remains open for most non-Boolean lattices (e.g., the divisibility lattice on $\\{1,\\ldots,N\\}$).\n\n**Second-Order Term**: While the logarithmic order is settled, the exact second-order term in $\\log_2 D(n) = \\binom{n}{\\lfloor n/2 \\rfloor} + O(\\cdot)$ is an important open problem. Korshunov (1981) obtained more precise estimates, but a complete asymptotic expansion remains elusive.",
     "openQuestions": [
       "What is the exact second-order term in log₂(D(n))?",

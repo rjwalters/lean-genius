@@ -248,4 +248,30 @@ will fail by inspection — a lightweight regression detector. -/
 #print axioms row4_binary
 #print axioms row5_let
 
+/-! ## Part 7: Schematic Transparency Lemmas
+
+The six row witnesses above each pin the single input `1 + 1`. Two of the
+reductions are in fact *definitional for every input*, not just at `1 + 1`,
+which strengthens the corresponding `Rules(E)` claim from a point to a schema:
+
+* `addLet_eq_add` shows the `ζ`-elimination of §5 is transparent for all
+  `n m : Peano.ℕ` — `addLet` and `Peano.add` are the *same function*, so the
+  `let`-binders never change the computed value, only the reduction budget
+  (the two extra `ζ`-steps of row 5 versus row 1). The `1 + 1` witness
+  `row5_let` is the instance `addLet_eq_add Peano.one Peano.one ▸ row1_peano_pattern`.
+* `bin_add_one` shows the `m, .one` clause of row 4's `Bin.add` is the binary
+  successor for *every* `m : Bin`, independent of the input — the schematic
+  form of the first `δ + ι` step in `row4_binary`. -/
+
+/-- The `let`-bound encoding (row 5) is definitionally the parent `Peano.add`
+    for *all* inputs: `ζ` erases the two `let`-binders with no residue. -/
+theorem addLet_eq_add (n m : Peano.ℕ) : addLet n m = Peano.add n m := rfl
+
+/-- Binary `_ + one` is exactly binary successor, for every `m : Bin`
+    (row 4's `m, .one` clause, stated schematically). -/
+theorem bin_add_one (m : Bin) : Bin.add m Bin.one = m.succ := rfl
+
+#print axioms addLet_eq_add
+#print axioms bin_add_one
+
 end OnePlusOneOQ04

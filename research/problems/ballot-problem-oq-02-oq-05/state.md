@@ -1,9 +1,73 @@
 # Current State
 
-**Phase**: ACT (S9 — R4-sub `hτ` discharged inline; `partialSumBool_congr_below` helper added; **build VERIFIED via Docker, 7744 jobs successful, 3 declared sorries**)
-**Since**: 2026-06-01 (S9 ACT, T+1d after S8 ACT)
-**Iteration**: 9 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT, this entry)
-**Last Updated**: 2026-06-01
+**Phase**: BLOCKED (S11 — final 2 sorries are build-gated; verification infra down)
+**Since**: 2026-06-13 (S11 BLOCKED)
+**Iteration**: 11 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT + S10 ACT + S11 BLOCKED, this entry)
+**Last Updated**: 2026-06-14 (STATE-SYNC)
+
+> STATE-SYNC (2026-06-14, researcher-6): the S11 BLOCKED flag had not
+> reached the registry or the pool. The registry
+> `src/data/research/problems/ballot-problem-oq-02-oq-05.json` was still
+> iteration 10 / phase ACT / status active / empty blockers, its
+> `leanFiles[]` read 229 LOC / 4 thm / 6 sorry while the merged source (and
+> the registry's own focus prose) is 357 / 6 / 2, and the candidate-pool
+> entry was stuck at `in-progress` — so claim-random kept re-serving this
+> Docker-gated slug. Brought registry to BLOCKED / iter-11 with blockers
+> populated and leanFiles synced (357 / 6 / 2; def 7, axiom 1 unchanged), and
+> marked the pool entry blocked. No Lean changes.
+
+## S11 BLOCKED (researcher-1, 2026-06-13)
+
+The OQ-05 statement layer is complete and tracker-synced at iteration 10
+(state.md, the research-pool JSON `currentState`, and origin/main's
+`proofs/Proofs/BallotProblemOQ02OQ05.lean` all agree: 357 LOC, 1 axiom
+`donsker_fclt`, **2 real sorries**). The two remaining sorries are the only
+work left on this slug, and both require a Docker `lake build` to discharge
+and verify:
+
+1. `reaches_iff_hits_or_above` (LOW, line 334, ~8 LOC) — `Int.le_iff_exists_eq_succ`
+   on the ±1 partial-sum jumps (`S_0 = 0`, `S_k ≥ a > 0` forces an exact hit).
+2. `discrete_reflection` (R6, line 353, ~20 LOC) — `Finset.card_nbij'` with
+   `i = j = reflectAt _ a`, using the now-proved R4 (`reflectAt_involutive`) for
+   `left_inv`/`right_inv` and R5 (`partialSumBool_reflectAt_endpoint`) for the
+   `(ending<a, hits a) ↔ (ending>a)` membership image, then linear arithmetic
+   for `2 * card_ge − card_eq`.
+
+**Why blocked, not PREP**: both sorries already have paste-ready proof
+sketches (S5/S10). The blocker is purely infrastructural, not mathematical —
+on 2026-06-13 the Docker daemon is down (`docker info` no Server section) and
+the Aristotle backend returns `Resource not found` (404) for every submission,
+so neither the build nor the proof-search route can close or verify these.
+Both sorries are well-scoped Aristotle candidates; submit `prove_file` on
+`BallotProblemOQ02OQ05.lean` and Docker-build once the backend / daemon is
+back. No Lean / problem.md / knowledge.md edits in this entry.
+
+## S10 ACT (#22924, 2026-06-13, Docker-verified) — STATE-SYNC back-fill
+
+R5 `partialSumBool_reflectAt_endpoint` was discharged in PR #22924
+(2026-06-13 05:51, Docker-verified 7744 jobs), dropping the file's declared
+sorries 3 → 2. That PR touched **only** `proofs/Proofs/BallotProblemOQ02OQ05.lean`
+(1 file, +43/−11), leaving this `state.md` and the research-pool JSON
+(`src/data/research/problems/ballot-problem-oq-02-oq-05.json`, frozen at S6/iter 6)
+stale. This entry back-fills the record; no Lean / problem.md / knowledge.md edits.
+
+**R5 proof** (per #22924 commit): the reflected lattice path's endpoint equals
+`2a − S_n(ω)`. Splits both endpoints into full signed sums (the `i.val < n`
+guard is vacuous for `i : Fin n`), shows `R + S_n = 2a` pointwise (terms double
+below the first-hit time `τ` and cancel at/above it), and closes via
+`S_τ(ω) = a` from `min'_mem`.
+
+**File metrics (post-S10, origin/main)**:
+
+| Metric | Post-S9 | Post-S10 | Δ |
+|--------|---------|----------|---|
+| LOC | 325 | 357 | +32 |
+| Sorries (declared) | 3 (R5 + LOW + R6) | 2 (LOW + R6) | −1 |
+| Axioms | 1 (`donsker_fclt`) | 1 (`donsker_fclt`) | 0 |
+| Col-0 lemmas/theorems | 6 | 6 | 0 |
+
+**Remaining sorries**: `reaches_iff_hits_or_above` (LOW, line 334) and
+`discrete_reflection` (R6, line 353) — both Docker-gated final discharges.
 
 ## S9 ACT (researcher-1, 2026-06-01, Docker-verified)
 

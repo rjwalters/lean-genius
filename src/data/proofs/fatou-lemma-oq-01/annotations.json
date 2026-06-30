@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fatou-restatements",
+    "proofId": "fatou-lemma-oq-01",
+    "range": { "startLine": 64, "endLine": 80 },
+    "type": "concept",
+    "title": "Fatou's Lemma (Mathlib Restatements)",
+    "content": "fatou_lintegral_liminf_le and its AEMeasurable variant fatou_lintegral_liminf_le' restate Mathlib's lintegral_liminf_le / lintegral_liminf_le' for the gallery: for nonnegative measurable fₙ, ∫⁻ liminfₙ fₙ ≤ liminfₙ ∫⁻ fₙ. The inequality direction is fixed by the fact that integration cannot detect mass that the pointwise liminf discards — the entire point the rest of the file makes concrete. The 'mathlib' badge is honest: the inequality is imported; the original content is the strictness witness.",
+    "mathContext": "$\\int^- \\liminf_n f_n \\le \\liminf_n \\int^- f_n$ for nonnegative measurable $f_n : \\alpha \\to [0,\\infty]$.",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue integral", "liminf", "monotone convergence theorem", "dominated convergence theorem"],
+    "prerequisites": ["measure theory", "lower Lebesgue integral"]
+  },
+  {
+    "id": "escaping-def",
+    "proofId": "fatou-lemma-oq-01",
+    "range": { "startLine": 82, "endLine": 90 },
+    "type": "definition",
+    "title": "The Escaping-Mass Sequence 𝟙_[n,n+1)",
+    "content": "escaping n is the indicator of the half-open block [n, n+1) (valued in ℝ≥0∞), a unit bump marching off to +∞. escaping_measurable certifies measurability (indicator of a measurable interval). This is the canonical mechanism of mass loss in the limit: the mass is always present somewhere, but the location runs off to infinity, so no point retains it. The same sequence underlies the Egorov finiteness counterexample — measured there by uniform convergence, here by the integral.",
+    "mathContext": "$\\mathrm{escaping}\\,n = \\mathbf{1}_{[n,n+1)} : \\mathbb{R} \\to [0,\\infty]$, a unit bump escaping to $+\\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["indicator function", "escaping mass", "concentration at infinity", "counterexample construction"],
+    "prerequisites": ["indicator functions", "measurable sets"]
+  },
+  {
+    "id": "unit-mass",
+    "proofId": "fatou-lemma-oq-01",
+    "range": { "startLine": 92, "endLine": 98 },
+    "type": "technique",
+    "title": "Each Bump Carries Unit Mass",
+    "content": "escaping_lintegral computes ∫⁻ escaping n = 1 for every n, via lintegral_indicator_one (the integral of an indicator is the measure of the set) and Real.volume_Ico ([n,n+1) has length 1, so ENNReal.ofReal 1 = 1). This is the conserved quantity: every integral in the sequence equals 1, so liminfₙ ∫⁻ escaping n = 1. Mass is never created or destroyed — it merely escapes.",
+    "mathContext": "$\\int^- \\mathrm{escaping}\\,n = \\mathrm{vol}[n,n+1) = 1$ for all $n$; the integrals form the constant sequence $1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["lintegral_indicator_one", "Lebesgue measure of intervals", "conserved mass"],
+    "prerequisites": ["Lebesgue integral", "measure of intervals"]
+  },
+  {
+    "id": "liminf-zero",
+    "proofId": "fatou-lemma-oq-01",
+    "range": { "startLine": 100, "endLine": 119 },
+    "type": "insight",
+    "title": "The Pointwise Liminf Is Zero Everywhere",
+    "content": "escaping_liminf_zero shows liminfₙ escaping n x = 0 at every x. The sequence n ↦ escaping n x is eventually 0: once n ≥ ⌊x⌋₊ + 1 the block [n, n+1) lies strictly right of x (Nat.lt_floor_add_one), so escaping n x = 0; tendsto_const_nhds.congr' makes it converge to 0 and Tendsto.liminf_eq reads off liminf = 0. Thus the integrand of the left-hand side of Fatou is identically 0 — the mass present in every integral is absent from the pointwise limit.",
+    "mathContext": "For fixed $x$, $\\mathrm{escaping}\\,n\\,x = 0$ for all $n > \\lfloor x \\rfloor$, so $\\liminf_n \\mathrm{escaping}\\,n\\,x = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["liminf of a convergent sequence", "eventual constancy", "Tendsto.liminf_eq", "pointwise convergence"],
+    "prerequisites": ["limits and liminf", "floor function"]
+  },
+  {
+    "id": "strict-gap",
+    "proofId": "fatou-lemma-oq-01",
+    "range": { "startLine": 121, "endLine": 140 },
+    "type": "concept",
+    "title": "Fatou's Inequality Is Genuinely Strict",
+    "content": "fatou_strict_on_escaping assembles the witness: the left side ∫⁻ liminfₙ escaping n = ∫⁻ 0 = 0 (escaping_liminf_zero + lintegral_zero), the right side liminfₙ ∫⁻ escaping n = liminf of the constant 1 = 1 (escaping_lintegral + liminf_const), so 0 < 1 strictly. This proves Fatou cannot be upgraded to an equality without extra hypotheses — it pinpoints why the monotone convergence theorem (needs monotonicity) and dominated convergence theorem (needs an integrable majorant) carry their conditions: the escaping-mass example violates exactly those, having no integrable dominating function.",
+    "mathContext": "$\\int^- \\liminf_n \\mathrm{escaping}\\,n = 0 < 1 = \\liminf_n \\int^- \\mathrm{escaping}\\,n$.",
+    "significance": "key",
+    "relatedConcepts": ["strict inequality", "monotone convergence theorem", "dominated convergence theorem", "loss of mass"],
+    "prerequisites": ["Fatou's lemma", "Lebesgue integral"]
+  }
+]

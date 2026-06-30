@@ -75,39 +75,44 @@
   },
   "sections": [
     {
-      "id": "header-setup",
+      "id": "header",
       "title": "Module Header and Problem Context",
       "startLine": 1,
-      "endLine": 21,
-      "summary": "Documents Erdős Problem #424: starting from {2,3}, iteratively adjoin a_i·a_j − 1 for distinct elements. The resulting set's density is unknown. OEIS A005244. Notes the mod 3 obstruction giving density ≤ 2/3. Imports Mathlib for Finset and arithmetic."
+      "endLine": 23,
+      "summary": "States Erdős Problem #424 and its context, with the key observation that the generated sequence avoids residue $1\\pmod 3$. Documents the problem setup.",
+      "mathContext": "Generated set from a closure rule; key observation: elements avoid $\\equiv1\\pmod3$."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 22,
+      "startLine": 24,
       "endLine": 42,
-      "summary": "Defines `nextGeneration A = \\{xy - 1 : x, y \\in A, x \\neq y, xy \\geq 2\\}$, `sequenceSet n` (the $n$-th generation starting from $\\{2, 3\\}$), `generatedSet = \\bigcup_n S_n$, and `generatedCount N = |S \\cap [1, N]|$ via `Finset.Icc.filter`."
+      "summary": "Defines `nextGeneration` (the closure step), `sequenceSet n` (the $n$-th generation, by recursion), `generatedSet` ($\\bigcup_n$ generation $n$), and `generatedCount N` (count below $N$).",
+      "mathContext": "`generatedSet` $=\\bigcup_n\\text{sequenceSet}\\,n$; `generatedCount N`."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 43,
-      "endLine": 50,
-      "summary": "documents in source comments `erdos_424_conjecture` (no Lean declaration exists): $\\exists c > 0, \\forall N > 0, |S \\cap [1, N]| \\geq cN$, i.e., the generated set has positive lower density."
+      "endLine": 46,
+      "summary": "States the open question (documentation) about the density/structure of the generated set.",
+      "mathContext": "Open question on the generated set's density/structure."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 51,
-      "endLine": 70,
-      "summary": "Axiomatizes `mod_3_obstruction` (no element $\\equiv 1 \\pmod{3}$), `density_upper_bound` (density $\\leq 2/3 + \\varepsilon$ for large $N$), and `initial_elements` (the first six elements $2, 3, 5, 9, 14, 17$ are in the set)."
+      "startLine": 47,
+      "endLine": 120,
+      "summary": "PROVES the mod-3 structure: private `sequenceSet_mod3` (no element is $\\equiv1\\pmod3$) drives `mod_3_obstruction`. Private helpers `mem_generated`, `mem_nextGen` and `initial_elements` (the first generated elements).",
+      "mathContext": "Generated elements avoid residue $1\\pmod3$ (mod-3 obstruction); initial elements computed."
     },
     {
-      "id": "observations",
-      "title": "Structural Observations",
-      "startLine": 71,
-      "endLine": 84,
-      "summary": "Axiomatizes `sequence_monotone` ($S_n \\subseteq S_{n+1}$, the sequence of generations is increasing) and `generated_closed` (the full set is closed under $(x, y) \\mapsto xy - 1$ for distinct elements). Notes connection to Guy E31."
+      "id": "proved-properties",
+      "title": "Proved Properties",
+      "startLine": 121,
+      "endLine": 151,
+      "summary": "PROVES monotonicity/closure: `sequence_monotone`, `sequenceSet_mono` ($m\\leq n\\Rightarrow\\text{sequenceSet}\\,m\\subseteq\\text{sequenceSet}\\,n$), and `generated_closed` (the generated set is closed under the generation rule).",
+      "mathContext": "Generations are nested ($m\\leq n\\Rightarrow S_m\\subseteq S_n$); generated set is closure-closed."
     }
   ],
   "conclusion": {

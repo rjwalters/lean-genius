@@ -22,7 +22,11 @@
       "additive-combinatorics",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ulam sequence U(1,2) defined by smallest integer with a unique sum representation",
+      "twin pairs (a, a+2) of consecutive Ulam numbers",
+      "OEIS A002858 and the open status of Erdős Problem #342"
+    ]
   },
   {
     "id": "erdos-342-definition",
@@ -47,7 +51,11 @@
       "sequence-definition",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "noncomputable definition of a sequence ℕ → ℕ with axiomatized initial values",
+      "counting representations m = aᵢ + aⱼ with i < j",
+      "StrictMono and the greedy construction of each term"
+    ]
   },
   {
     "id": "erdos-342-values",
@@ -70,7 +78,11 @@
       "computation",
       "unique-representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "first terms 1, 2, 3, 4, 6, 8, 11, 13, 16, 18, 26, 28 of the Ulam sequence",
+      "exclusion of 5 due to the two representations 1+4 and 2+3",
+      "unique representation 6 = 2+4"
+    ]
   },
   {
     "id": "erdos-342-twins",
@@ -93,7 +105,11 @@
       "consecutive-gaps",
       "twin-primes-analogy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "predicate IsUlamTwin(n) meaning a(n+1) = a(n) + 2",
+      "the set twinIndices of indices where twins occur",
+      "analogy between Ulam twins and twin primes"
+    ]
   },
   {
     "id": "erdos-342-conjecture",
@@ -117,7 +133,11 @@
       "twin-pairs",
       "erdos-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Infinite applied to twinIndices",
+      "the open conjecture on infinitely many twin pairs (a, a+2)",
+      "limits of computational evidence for settling infinitude"
+    ]
   },
   {
     "id": "erdos-342-density",
@@ -141,7 +161,11 @@
       "asymptotic-growth",
       "filter-tendsto"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density of Ulam numbers via ulamCount(x)",
+      "Filter.Tendsto formulation of density and asymptotic growth",
+      "linear growth a(n)/n → C with constant C ≈ 13.5"
+    ]
   },
   {
     "id": "erdos-342-summary",
@@ -166,6 +190,10 @@
       "open-problem",
       "simp-tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "equivalence ErdosConjecture342 ↔ Set.Infinite of twin indices",
+      "simp unfolding of the definitions to prove the equivalence",
+      "open status of the problem"
+    ]
   }
 ]

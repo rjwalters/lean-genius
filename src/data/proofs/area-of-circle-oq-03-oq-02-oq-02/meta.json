@@ -84,41 +84,49 @@
       "id": "polynomial",
       "title": "Polynomial Identity",
       "summary": "The key algebraic identity x⁴(1-x)⁴ = (1+x²)(x⁶-4x⁵+5x⁴-4x²+4) - 4 and the resulting integrand decomposition.",
-      "startLine": 27,
-      "endLine": 46,
+      "startLine": 30,
+      "endLine": 47,
       "mathContext": "$x^4(1-x)^4 = (1+x^2)(x^6 - 4x^5 + 5x^4 - 4x^2 + 4) - 4$"
     },
     {
       "id": "positivity",
       "title": "Integrand Positivity",
       "summary": "Non-negativity on [0,1] and strict positivity on (0,1) of the Dalzell-Niven integrand.",
-      "startLine": 48,
-      "endLine": 63,
+      "startLine": 49,
+      "endLine": 69,
       "mathContext": "$\\frac{x^4(1-x)^4}{1+x^2} > 0$ for $x \\in (0,1)$"
     },
     {
       "id": "ftc",
       "title": "Antiderivative and FTC Evaluation",
       "summary": "Definition of antiderivative F(x), proof that F' equals the decomposed integrand, and FTC-based evaluation giving 22/7 - π.",
-      "startLine": 65,
-      "endLine": 123,
+      "startLine": 71,
+      "endLine": 138,
       "mathContext": "$F(x) = \\frac{x^7}{7} - \\frac{2x^6}{3} + x^5 - \\frac{4x^3}{3} + 4x - 4\\arctan(x)$, so $\\int_0^1 g(x)\\,dx = F(1) - F(0) = \\frac{22}{7} - \\pi$"
     },
     {
       "id": "integral-identity",
       "title": "Dalzell-Niven Integral Identity",
       "summary": "The main identity ∫₀¹ x⁴(1-x)⁴/(1+x²) dx = 22/7 - π, connecting the original integrand to the decomposed form.",
-      "startLine": 125,
-      "endLine": 147,
+      "startLine": 140,
+      "endLine": 165,
       "mathContext": "$\\int_0^1 \\frac{x^4(1-x)^4}{1+x^2}\\,dx = \\frac{22}{7} - \\pi$"
     },
     {
       "id": "conclusion",
       "title": "π < 22/7 and Quantitative Bounds",
-      "summary": "The main result π < 22/7 deduced from integral positivity, plus an upper bound on the integrand.",
-      "startLine": 149,
-      "endLine": 165,
+      "summary": "The main result π < 22/7 deduced from integral positivity, plus the quantitative bound 0 < 22/7 - π.",
+      "startLine": 167,
+      "endLine": 187,
       "mathContext": "$0 < \\frac{22}{7} - \\pi$, hence $\\pi < \\frac{22}{7}$"
+    },
+    {
+      "id": "error-bound",
+      "title": "Bound on the Error",
+      "summary": "An upper bound on the integrand: x⁴(1-x)⁴/(1+x²) ≤ x⁴(1-x)⁴ on [0,1], bounding the error 22/7 - π.",
+      "startLine": 189,
+      "endLine": 203,
+      "mathContext": "$\\frac{x^4(1-x)^4}{1+x^2} \\le x^4(1-x)^4$ on $[0,1]$"
     }
   ],
   "conclusion": {

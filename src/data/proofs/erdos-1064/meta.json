@@ -80,32 +80,40 @@
     {
       "id": "definitions",
       "title": "Definitions: Comparison Sets",
-      "startLine": 52,
-      "endLine": 64,
+      "startLine": 49,
+      "endLine": 62,
       "summary": "Defines $A_> = \\{n : \\phi(n) > \\phi(n - \\phi(n))\\}$, $A_< = \\{n : \\phi(n) < \\phi(n - \\phi(n))\\}$, and $A_= = \\{n : \\phi(n) = \\phi(n - \\phi(n))\\}$.",
       "mathContext": "The map $n \\mapsto n - \\phi(n)$ sends $n$ to the count of integers in $[1, n]$ sharing a common factor with $n$. For primes, $n - \\phi(n) = 1$. For $n = p \\cdot q$ (distinct primes), $n - \\phi(n) = p + q - 1$. The comparison $\\phi(n)$ vs $\\phi(n - \\phi(n))$ measures how 'totient-rich' $n$ is relative to its 'non-coprime count.'"
     },
     {
+      "id": "concrete-examples",
+      "title": "Concrete Examples",
+      "startLine": 63,
+      "endLine": 79,
+      "summary": "Decidable totient checks anchoring the comparison: $\\phi(1)=\\phi(2)=1$, $\\phi(6)=2$, $\\phi(15)=8$, $\\phi(30)=8$, verified by `native_decide`.",
+      "mathContext": "These small evaluations of Euler's totient $\\phi$ fix the base values used throughout: e.g. $\\phi(15)=8$ and $\\phi(30)=8$ feed the $15\\cdot 2^k$ analysis, and $\\phi(6)=2$ illustrates the $n-\\phi(n)$ map ($6-\\phi(6)=4$). All are machine-checked with `native_decide` rather than asserted."
+    },
+    {
       "id": "examples-greater",
       "title": "Examples: φ(n) > φ(n - φ(n))",
-      "startLine": 83,
-      "endLine": 90,
+      "startLine": 80,
+      "endLine": 87,
       "summary": "Verified examples: $n = 10$: $\\phi(10) = 4 > 2 = \\phi(6)$; $n = 15$: $\\phi(15) = 8 > 4 = \\phi(7)$.",
       "mathContext": "For $n = 10 = 2 \\cdot 5$: $\\phi(10) = 4$, $n - \\phi(n) = 6$, $\\phi(6) = 2$. The inequality $4 > 2$ holds. This is the 'typical' case — most $n$ satisfy the inequality because $n - \\phi(n)$ tends to be smooth (many small prime factors) while $\\phi$ of smooth numbers is relatively small."
     },
     {
       "id": "examples-less",
       "title": "Examples: φ(n) < φ(n - φ(n)) and the 15·2^k Pattern",
-      "startLine": 91,
-      "endLine": 109,
+      "startLine": 88,
+      "endLine": 98,
       "summary": "Verified counterexamples: $n = 30, 60, 66$. The infinite family $n = 15 \\cdot 2^k$ gives $\\phi(n) = 4 \\cdot 2^k < 5 \\cdot 2^k = \\phi(n - \\phi(n))$.",
       "mathContext": "For $n = 15 \\cdot 2^k$: $\\phi(n) = \\phi(15) \\cdot \\phi(2^k) = 8 \\cdot 2^{k-1} = 4 \\cdot 2^k$. Then $n - \\phi(n) = 15 \\cdot 2^k - 4 \\cdot 2^k = 11 \\cdot 2^k$. So $\\phi(n - \\phi(n)) = \\phi(11) \\cdot \\phi(2^k) = 10 \\cdot 2^{k-1} = 5 \\cdot 2^k$. Since $5 \\cdot 2^k > 4 \\cdot 2^k$, we get $\\phi(n) < \\phi(n - \\phi(n))$. The key: $\\phi(11)/11 = 10/11 > 8/15 = \\phi(15)/15$."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems: Density 1 and Infinitude",
-      "startLine": 116,
-      "endLine": 132,
+      "startLine": 99,
+      "endLine": 124,
       "summary": "Two axioms encoding the solution: `density_of_greater` ($A_>$ has natural density 1, Luca-Pomerance 2002) and `less_is_infinite` ($A_<$ is infinite, Grytczuk-Luca-Wójtowicz 2001).",
       "mathContext": "Natural density: $d(A) = \\lim_{N \\to \\infty} |A \\cap [1, N]| / N$. The density-1 result means: for any $\\epsilon > 0$, all but $o(N)$ integers $n \\leq N$ satisfy $\\phi(n) > \\phi(n - \\phi(n))$. The infinitude of $A_<$ follows from the explicit family $15 \\cdot 2^k$ (but there are other counterexamples too, like $n = 30, 66$)."
     },

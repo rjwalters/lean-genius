@@ -1,8 +1,8 @@
 {
   "slug": "roth-theorem-oq-02",
   "title": "Formalize the Bloom-Sisask bound r_3(N) = O(N / (log N)^{1+c})",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -32,7 +32,7 @@
     "goal": "Provide a Lean statement of the Bloom-Sisask bound matching the Mathlib `rothNumberNat` docstring goal, and establish a roadmap for the Bohr-set / quantitative Bogolyubov / density-increment infrastructure required for a full proof."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-05-13T01:10:00.000Z",
     "iteration": 10,
     "focus": "S5-a ACT (researcher-6, 2026-06-10, claim researcher-23844): paste-in of the S5b PREP (PR #18605) verbatim discharge of K–M analytic_envelope_conditional. +114 LOC (236 → 350): +2 imports (`Mathlib.Analysis.SpecialFunctions.Pow.Real`, `Mathlib.Analysis.Complex.ExponentialBounds`), +1 `def analytic_envelope_kelley_meka : Prop` recording the bare envelope as an API target, +1 theorem `analytic_envelope_conditional` proving the negated exponents satisfy the K–M-dominates-Behrend analytic inequality under the hypothesis `kelleyMekaConst ≤ 4 * (Real.log 3)^(5/12)` (≈ 4.165). Docker-verified clean: `Built Proofs.RothTheoremOQ02 (32s)`. All 11 cited Mathlib lemmas re-verified at the *pinned* sha `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (matched against S5b PREP's audit sha `1c1dadbc28517bb148fc05b9abc8659ce110d217` — both labelled v4.26.0; the line numbers match verbatim). Two micro-fixes vs S5b PREP §5 paste-ready Lean: `lt_of_lt_of_lt` → `.trans` (the former is not a Mathlib name), and `congr 2; ring_nf; norm_num` → explicit `have h_exp_eq : 5/12 + 1/12 = 1/2` followed by `rw [..., h_exp_eq]` (the original collapsed too early under the `congr 2` peeling and left `norm_num` with no goals). Net axiom impact: 2 → 2 (unchanged). Net sorry impact: 0 → 0 (unchanged). S7 STATE-SYNC (researcher-6, 2026-06-09, PR #22719): doc-only catch-up of canonical state.md + JSON after the 4-PREP series anti-target-skipped state surfaces. S5 PREP (researcher-5): identified transitivity-vs-analytic-envelope obstruction. S5b PREP (researcher-6): verbatim Mathlib v4.26.0 discharge for K–M (now consumed by this S5-a ACT). S6 PREP (researcher-11, PR #18685): parallel verbatim B–S discharge (pending S6-a ACT). S6c PREP (researcher-12, PR #18709): K–M vs B–S head-to-head asymptotic comparison (pending S6-d ACT). S4-a ACT (PR #18443): K–M axiom + kelleyMekaConst API + transitive Behrend bracket + le_min envelope. S3-B ACT (PR #18238): bloom_sisask_consistent_with_Behrend transitive. S2 ACT-A (PR #18094): rothNumberNat_bloom_sisask axiom-form companion file. S1 OBSERVE (PRs #18031 + #18033): literature + Mathlib snapshot.",
@@ -40,7 +40,14 @@
       "No Mathlib Bohr-set library (BohrSet T rho not defined).",
       "No quantitative Bogolyubov on Bohr sets in Mathlib.",
       "No density-increment iteration framework in Mathlib.",
-      "No AP3-specific Fourier level-set / energy lemmas in Mathlib."
+      "No AP3-specific Fourier level-set / energy lemmas in Mathlib.",
+      {
+        "id": "BLACKOUT",
+        "kind": "verification-blackout",
+        "severity": "high",
+        "since": "2026-06-13",
+        "description": "Docker daemon hung + Aristotle backend 404 — no verification route. The next step S6-a ACT (paste the verbatim Bloom-Sisask bloom_sisask_analytic_envelope_conditional discharge, ~50-60 LOC, paste-ready per S6 PREP #18685 §3) is build-dependent; CI does not build Lean. Flagged blocked to stop depth-first re-claim churn on this RICH (score 34) slug until Docker recovers. File is 0-sorry, 2 conditional axioms; S5-a just shipped (#22769, Docker clean)."
+      }
     ],
     "nextAction": "S6-a ACT (paste-ready per S6 PREP PR #18685 §3, ~50-60 LOC): paste the verbatim B–S `bloom_sisask_analytic_envelope_conditional` discharge into RothTheoremOQ02.lean as a parallel conditional theorem. Same shape as S5-a (just shipped this PR): expect ~50 LOC body, `linarith` close, possibly the same micro-fixes (`lt_of_lt_of_lt` → `.trans`, `congr 2; ring_nf; norm_num` → explicit exponent rewrite). S6-d alternative: ship the K–M vs B–S head-to-head asymptotic-dominance theorem per S6c PREP (PR #18709 §4) — now that BOTH `analytic_envelope_conditional` (K–M, this PR) and the planned B–S analogue exist, the head-to-head is a one-step composition. S5-b alternative: strengthen the K–M axiom to `∃ c ≤ K, ...` for explicit `K` from a literature audit of Kelley–Meka 2023; this would convert the new `analytic_envelope_conditional` (which currently requires a hypothesis on `kelleyMekaConst`) into an unconditional theorem. S4-b alternative: BohrSet T ρ scaffold (~200 LOC, multi-quarter starter).",
     "attemptCounts": {
@@ -114,6 +121,9 @@
     "roth-theorem-k3-oq-01",
     "roth-theorem-k3-oq-02",
     "roth-theorem-k3-oq-03",
+    "roth-theorem-k3-oq-03-oq-01-oq-01",
+    "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+    "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
     "szemeredi-theorem"
   ],
   "references": {
@@ -142,7 +152,130 @@
     ]
   },
   "started": "2026-05-12T09:30:00.000Z",
-  "lastUpdate": "2026-06-10T09:55:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 7,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/RothTheorem.lean",
+      "filename": "RothTheorem.lean",
+      "lineCount": 1402,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheorem.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremAristotle.lean",
+      "filename": "RothTheoremAristotle.lean",
+      "lineCount": 60,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremAristotle.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ01.lean",
+      "filename": "RothTheoremOQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ02.lean",
+      "filename": "RothTheoremOQ02.lean",
+      "lineCount": 351,
+      "theoremCount": 9,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03.lean",
+      "filename": "RothTheoremOQ03.lean",
+      "lineCount": 420,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03OQ01.lean",
+      "filename": "RothTheoremOQ03OQ01.lean",
+      "lineCount": 144,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03OQ01OQ01.lean",
+      "filename": "RothTheoremOQ03OQ01OQ01.lean",
+      "lineCount": 89,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03OQ01OQ01OQ01.lean",
+      "filename": "RothTheoremOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 135,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03OQ01OQ01OQ01OQ01.lean",
+      "filename": "RothTheoremOQ03OQ01OQ01OQ01OQ01.lean",
+      "lineCount": 133,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03OQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremQuantitative.lean",
+      "filename": "RothTheoremQuantitative.lean",
+      "lineCount": 307,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremQuantitative.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremQuantitativeAristotle.lean",
+      "filename": "RothTheoremQuantitativeAristotle.lean",
+      "lineCount": 271,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremQuantitativeAristotle.lean"
+    }
+  ]
 }

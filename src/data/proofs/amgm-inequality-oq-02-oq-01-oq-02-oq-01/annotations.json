@@ -157,11 +157,11 @@
       "startLine": 1,
       "endLine": 22
     },
-    "type": "context",
+    "type": "concept",
     "title": "Generating-Function Origin of the Recurrence",
     "content": "The Newton-Girard recurrence proved in this file admits a clean derivation via the logarithmic derivative of the generating function for elementary symmetric polynomials. Setting $E(t) = \\prod_i (1 + x_i t) = \\sum_k e_k t^k$ and $P(t) = \\sum_{k \\ge 1} p_k t^{k-1}$, one computes\n$$\\frac{E'(t)}{E(t)} = \\sum_i \\frac{x_i}{1 + x_i t} = \\sum_i \\sum_{k \\ge 1} (-1)^{k-1} x_i^k t^{k-1} = P(-t).$$\nRearranging gives $E'(t) = E(t) \\cdot P(-t)$. Extracting coefficients of $t^{k-1}$ on both sides yields exactly the recurrence `MvPolynomial.psum_eq_mul_esymm_sub_sum` uses. This is the reason the identities hold over any commutative ring: the generating-function manipulation lives at the level of formal power series in `R[[t]]` and uses no analytic structure. Mathlib's combinatorial proof (Zeilberger 1984) is the bijective analog of this analytic argument.",
     "mathContext": "$E(t) = \\prod_i (1 + x_i t) = \\sum_k e_k t^k$ (generating function for $e_k$); $P(t) = \\sum_{k \\ge 1} p_k t^{k-1}$ (generating function for $p_k$, shifted by 1). The identity $E'(t) = E(t) \\cdot P(-t)$ in $R[[t]]$ produces Newton-Girard upon equating coefficients.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "generating functions",
       "logarithmic derivative",
@@ -181,11 +181,11 @@
       "startLine": 1,
       "endLine": 22
     },
-    "type": "context",
+    "type": "concept",
     "title": "Aristotle Companion: Pre-Mathlib Proof-Search Targets",
     "content": "The file `Proofs/AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean` (listed in `additionalFiles`) is a companion artifact for the Aristotle automated proof-search tool. It contains the same three theorem statements with `sorry`-stubs and detailed natural-language proof strategies in docstrings — including the specific tactic chains (`simp [Finset.antidiagonal, Set.Ioo] at h`, `ring_nf at h ⊢; exact h`) that would discharge each target. The companion file was retained as a historical record of the Aristotle pre-submission strategy; the main file in this entry is the human-completed formalization that supersedes it. This pattern (paired main + Aristotle-companion files) appears throughout the gallery and lets the proof-search tool work on a clean target without seeing the human-found solution.",
     "mathContext": "Companion-file pattern: Aristotle expects `theorem ... := by sorry` with provable supporting lemmas exposed, no `axiom` declarations, and no `/-!` docstring sections (parser incompatibility). Both files share the same three statement bodies; the main file's `:= by ...` proofs are the canonical version.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Aristotle proof search",
       "companion-file pattern",

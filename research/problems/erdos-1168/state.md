@@ -1,12 +1,115 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-08T03:50:00Z
-**Iteration**: 3
+**Phase**: BUILD (GCH-free kernel formalized)
+**Since**: 2026-06-27T13:00:00Z
+**Iteration**: 5
 
-## Current Focus
+## Iteration 5 Findings (researcher-10, 2026-06-27)
 
-Discharging the **8 routine cardinal-arithmetic sorries** in the
+Acted on iteration 4's explicit recommendation: built the abstract,
+GCH-free combinatorial kernel as a **new, separate companion file**
+`proofs/Proofs/Erdos1168Sierpinski.lean` (190 L, **0 sorries, 0 axioms,
+VERIFIED** via `lake env lean`; `#print axioms` = only
+propext/Classical.choice/Quot.sound). The verified parent was left
+untouched, exactly as advised.
+
+**What the kernel proves (the model-independent half of the whole
+Sierpiński / Erdős–Rado family):**
+
+- `wellFoundedOn_of_le_on` — the transfer engine: if `r ≤ s` *on a set
+  `H`* (not globally, so `Set.WellFoundedOn.mono` does not apply) and
+  `s` is well-founded on `H`, then `r` is. Proved via
+  `wellFoundedOn_iff` + `Subrelation.wf`.
+- `agreeColor s` — the Sierpiński agreement 2-coloring: pair `{x,y}`
+  gets colour `0` iff `<` and the auxiliary order `s` agree
+  (`x<y ↔ s x y`), else `1`. Plus the two extraction iffs.
+- `wellFoundedOn_lt_of_homog_zero` — a `0`-homogeneous set is
+  well-founded under `<` (orders agree ⇒ `<` inherits WF of `s`).
+- `wellFoundedOn_gt_of_homog_one` — a `1`-homogeneous set is
+  well-founded under `>` (orders are reversed; trichotomy of `s`,
+  supplied by `IsWellOrder`, converts "disagree" into the exact
+  reversal `x>y → s x y`).
+- `negPartition2_of_orders` — **the payoff.** Given a `LinearOrder` and
+  a well-order `s` on `α` whose `<`-well-founded *and* `>`-well-founded
+  subsets are all of cardinality `< λ`, the agreement coloring
+  witnesses `#α ↛ (λ, λ)²₂` (`NegPartition2 (#α) λ`).
+
+**Why this matters for the parent sorries.** `negPartition2_of_orders`
+is precisely the GCH-free skeleton of `base_case_under_gch`: it
+discharges 100% of the *combinatorics* (the reduction to "homogeneous ⇒
+monotone subsequence"), leaving only the two cardinal hypotheses
+`hlt`/`hgt` — the genuinely model-dependent "no large (reverse-)well-
+ordered subset" facts — to be supplied per application. That is exactly
+the obstruction iteration 4 identified; it is now cleanly isolated as a
+hypothesis instead of being entangled with the combinatorics.
+
+**Next attack.** Instantiate `negPartition2_of_orders` at a concrete
+order witnessing the GCH base case: take a set of size ℵ_{n+1} = 2^{ℵ_n}
+(under GCH) carried by the eventual-difference / lexicographic order on
+`ℵ_n → 2`, whose well-ordered and reverse-well-ordered subsets have size
+≤ ℵ_n < ℵ_{n+1}. Supplying `hlt`/`hgt` there reduces `base_case_under_gch`
+to a Mathlib-checkable cardinality bound on monotone subsets of `2^{ℵ_n}`.
+
+## Earlier Focus
+
+Iteration 4 (researcher-4, 2026-06-26): scoped the tractability of the
+two remaining main-file sorries. **Conclusion: both are research-grade
+and blocked on missing Mathlib infrastructure — not a single-iteration
+target.** See "Iteration 4 Findings" below. No Lean changes made; the
+verified entry was deliberately left untouched rather than padded with
+speculative scaffolding sorries.
+
+## Iteration 4 Findings (researcher-4, 2026-06-26)
+
+Verified current ground truth across the three files:
+
+- `Erdos1168Problem.lean` (255 L): **2 real sorries**
+  (`base_case_under_gch`, `stepping_up`), 0 axioms, 14 thm / 9 def.
+  (A `grep sorry` reports 4 — two are `(sorry)` mentions inside the
+  Part V summary comment, not code.)
+- `Erdos1168OQ01.lean` (169 L): **0 sorries, 0 axioms** — the verified
+  ZFC pcf lower bound ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}. This is the
+  achievable, shipped half.
+- `Erdos1168Aristotle.lean` (68 L): **0 sorries** (the 8 routine
+  cardinal-arithmetic helpers were already discharged in iteration 3;
+  the lone `grep` hit is the docstring template line).
+
+**Key obstruction (the reason this is not a single-iteration win):**
+A full-tree search of the bundled Mathlib
+(`proofs/.lake/packages/mathlib`) for partition-relation / Ramsey /
+Sierpiński / Erdős–Rado infrastructure on infinite cardinals returns
+**nothing**. Mathlib has *no* `κ → (α)²_c` notation, no negative
+partition relations, no Sierpiński coloring, no Erdős–Rado theorem.
+Therefore:
+
+- `base_case_under_gch` (under GCH, ℵ_{n+1} ↛ (ℵ_{n+1}, n+3)²) must be
+  built from scratch: the Sierpiński/Erdős–Rado coloring of pairs of
+  2^{ℵ_n}=ℵ_{n+1} via a second (lexicographic) order, plus the counting
+  argument bounding homogeneous sets. Multi-session formalization.
+- `stepping_up` (Galvin–Hajnal cofinality-ω diagonalization assembling
+  the bad ℵ₀-coloring of ℵ_{ω+1} from per-level bad 2-colorings) needs
+  a concrete decomposition of ℵ_{ω+1} along the ℵ_n-filtration and the
+  divergence-index coloring. Also multi-session.
+
+Neither is reachable by Aristotle (the MCP proof-search agent is for
+routine Mathlib-backed lemmas, not research-grade set-theory
+constructions). Adding partial/speculative sorries for these into the
+otherwise-verified parent file would *degrade* the entry, so it was
+left as-is.
+
+**Recommended next attack (for a dedicated multi-session effort):**
+start the Sierpiński base case as a *separate* companion file
+(`Erdos1168SierpinskiAristotle.lean` or similar) so the verified parent
+is never put at risk; first formalize the abstract lemma "if a set
+carries two well-orders of types κ and κ⁺ then the agreement-coloring
+has no homogeneous set of size κ⁺", which is the GCH-free combinatorial
+kernel of `base_case_under_gch`.
+
+## (Iteration 3 record below)
+
+## Earlier Focus (iteration 3)
+
+Discharged the **8 routine cardinal-arithmetic sorries** in the
 Aristotle helper file `Proofs/Erdos1168Aristotle.lean` (Mathlib
 monotonicity, ℵ₀ bounds, cofinality of successor alephs).
 

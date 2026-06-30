@@ -17,7 +17,11 @@
       "prime-generating polynomials",
       "coprimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Elementary number theory",
+      "Prime factorization",
+      "Quadratic residues"
+    ]
   },
   {
     "id": "ann-e1141-definition",
@@ -45,8 +49,8 @@
     "id": "ann-e1141-unbounded",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 35,
-      "endLine": 43
+      "startLine": 39,
+      "endLine": 47
     },
     "type": "concept",
     "title": "Equivalence with Unbounded Quantifier",
@@ -129,8 +133,8 @@
     "id": "ann-e1141-conjecture",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 121,
-      "endLine": 128
+      "startLine": 123,
+      "endLine": 129
     },
     "type": "concept",
     "title": "Finiteness Theorem (Alexeev et al. 2026)",
@@ -152,8 +156,8 @@
     "id": "ann-e1141-oeis",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 130,
-      "endLine": 139
+      "startLine": 132,
+      "endLine": 140
     },
     "type": "concept",
     "title": "OEIS A214583 Enumeration",
@@ -174,8 +178,8 @@
     "id": "ann-e1141-large-examples",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 141,
-      "endLine": 168
+      "startLine": 143,
+      "endLine": 169
     },
     "type": "concept",
     "title": "Larger Verified Examples (24–1722)",
@@ -196,8 +200,8 @@
     "id": "ann-e1141-unified",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 170,
-      "endLine": 173
+      "startLine": 172,
+      "endLine": 174
     },
     "type": "concept",
     "title": "Unified Verification of All 41 OEIS Values",
@@ -219,8 +223,8 @@
     "id": "ann-e1141-classification",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 175,
-      "endLine": 187
+      "startLine": 177,
+      "endLine": 188
     },
     "type": "concept",
     "title": "Complete Classification up to n = 100",
@@ -242,7 +246,7 @@
     "id": "ann-e1141-corollaries",
     "proofId": "erdos-1141",
     "range": {
-      "startLine": 189,
+      "startLine": 191,
       "endLine": 210
     },
     "type": "concept",

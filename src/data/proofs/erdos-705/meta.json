@@ -80,80 +80,88 @@
       "id": "unit-distance",
       "title": "Unit Distance Graphs",
       "summary": "unitDistAdj, unitDistGraph — definition of UDGs in ℝ²",
-      "startLine": 35,
-      "endLine": 68,
+      "startLine": 36,
+      "endLine": 69,
       "mathContext": "Formal definition: unitDistAdj, unitDistGraph — definition of UDGs in ℝ²"
     },
     {
       "id": "parameters",
       "title": "Chromatic Number and Girth",
       "summary": "isKColorable, hasGirthAtLeast using Mathlib chromaticNumber and girth",
-      "startLine": 69,
-      "endLine": 98,
+      "startLine": 70,
+      "endLine": 108,
       "mathContext": "Mathematical content: isKColorable, hasGirthAtLeast using Mathlib"
     },
     {
       "id": "constructions",
       "title": "Known 4-Chromatic Constructions",
       "summary": "Moser spindle, O'Donnell, Wormald, Chilakamarri axioms",
-      "startLine": 99,
-      "endLine": 147,
+      "startLine": 109,
+      "endLine": 152,
       "mathContext": "Axiomatized: Moser spindle, O'Donnell, Wormald, Chilakamarri axioms"
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "summary": "erdos_705_conjecture, erdos_705_negation",
-      "startLine": 148,
-      "endLine": 171,
+      "startLine": 153,
+      "endLine": 176,
       "mathContext": "Mathematical content: erdos_705_conjecture, erdos_705_negation"
     },
     {
       "id": "consequences",
       "title": "Deriving Consequences",
       "summary": "girth_3_chi_4, girth_4_chi_4, girth_5_chi_4 theorems",
-      "startLine": 172,
-      "endLine": 198,
+      "startLine": 177,
+      "endLine": 205,
       "mathContext": "Verified: girth_3_chi_4, girth_4_chi_4, girth_5_chi_4 theorems"
     },
     {
       "id": "hadwiger-nelson",
       "title": "The Hadwiger-Nelson Connection",
-      "summary": "de_grey_lower_bound — χ(plane) ≥ 5",
-      "startLine": 199,
-      "endLine": 219,
-      "mathContext": "de_grey_lower_bound — χ(plane) $\\geq$ 5"
+      "summary": "Prose context only (no declarations): the Hadwiger-Nelson problem, χ(ℝ²) with 5 ≤ χ ≤ 7 (de Grey 2018 lower bound, hexagonal-tiling upper bound).",
+      "startLine": 206,
+      "endLine": 222,
+      "mathContext": "Background prose, no Lean declarations: chromatic number of the plane and its known bounds."
     },
     {
       "id": "abstract-geometric",
       "title": "Abstract vs. Geometric Graphs",
-      "summary": "erdos_1959_girth_chromatic — why geometry matters",
-      "startLine": 220,
-      "endLine": 239,
-      "mathContext": "Mathematical content: erdos_1959_girth_chromatic — why geometry matters"
+      "summary": "Prose context only (no declarations): Erdős (1959) shows high-girth high-χ graphs exist abstractly (probabilistic method); UDG geometry may forbid this — the heart of #705.",
+      "startLine": 223,
+      "endLine": 238,
+      "mathContext": "Background prose, no Lean declarations: contrast between abstract graphs and unit-distance graphs."
+    },
+    {
+      "id": "threshold-lower",
+      "title": "Lower Bound on the Threshold",
+      "summary": "threshold_ge_6 (any valid girth threshold k ≥ 6, via Wormald's girth-5 χ=4 graph); conjecture_implies_not_negation, negation_implies_not_conjecture, erdos_705_conjecture_lower.",
+      "startLine": 239,
+      "endLine": 287,
+      "mathContext": "Verified: threshold_ge_6 and the conjecture/negation incompatibility lemmas (erdos_705_conjecture, erdos_705_negation)."
     },
     {
       "id": "vertex-growth",
       "title": "Vertex Count Growth",
       "summary": "vertexCountGrowth — exponential growth of constructions",
-      "startLine": 240,
-      "endLine": 258,
+      "startLine": 288,
+      "endLine": 306,
       "mathContext": "Mathematical content: vertexCountGrowth — exponential growth of constructions"
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Problems #508, #704, #706",
-      "startLine": 259,
-      "endLine": 274,
+      "startLine": 307,
+      "endLine": 322,
       "mathContext": "Mathematical content: Problems #508, #704, #706"
     },
     {
       "id": "status",
       "title": "Problem Status and Main Statement",
       "summary": "erdos_705_status, erdos_705_main — combined results",
-      "startLine": 275,
-      "endLine": 311,
+      "startLine": 323,
+      "endLine": 361,
       "mathContext": "Mathematical content: erdos_705_status, erdos_705_main — combined results"
     }
   ],

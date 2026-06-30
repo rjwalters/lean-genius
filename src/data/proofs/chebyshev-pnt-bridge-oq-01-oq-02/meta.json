@@ -60,7 +60,8 @@
       "Non-prime p have (centralBinom n).factorization p = 0, so p^0 = 1 — prod_filter_of_ne handles this",
       "The proof is 4 clean calc steps vs 6 steps with multiple helper lemmas in the original",
       "Both proofs ultimately use Legendre's formula via pow_factorization_choose_le",
-      "Legendre's formula v_p(n!) = Σ_{k≥1} ⌊n/p^k⌋ implies v_p(C(2n,n)) ≤ log_p(2n), so each prime power contribution p^{v_p} ≤ 2n. This one-line bound (encoded in pow_factorization_choose_le) is the deepest number-theoretic content of the proof — everything else is algebraic manipulation of Finset products"
+      "Legendre's formula v_p(n!) = Σ_{k≥1} ⌊n/p^k⌋ implies v_p(C(2n,n)) ≤ log_p(2n), so each prime power contribution p^{v_p} ≤ 2n. This one-line bound (encoded in pow_factorization_choose_le) is the deepest number-theoretic content of the proof — everything else is algebraic manipulation of Finset products",
+      "Quantitative payoff: paired with the elementary lower bound C(2n,n) ≥ 4ⁿ/(2n+1), this upper bound yields Chebyshev's lower estimate. Taking logs, π(2n)·log(2n) ≥ log C(2n,n) ≥ n·log 4 − log(2n+1), so π(2n) ≳ (log 4/2)·(2n)/log(2n) = log 2·(2n)/log(2n) — recovering the constant log 2 ≈ 0.693 in π(x) ≳ 0.693·x/log x. A single factorization inequality thus forces π(x) to grow linearly in x/log x."
     ],
     "prerequisites": [
       "Nat.centralBinom: C(2n,n) defined in Mathlib.Data.Nat.Choose.Central",
@@ -87,6 +88,21 @@
       "targetId": "chebyshev-pnt-bridge-oq-01",
       "relationship": "answers",
       "description": "Answers the open question: yes, the factorization approach is the right technique."
+    },
+    {
+      "targetId": "chebyshev-bounds",
+      "relationship": "related",
+      "description": "The bound C(2n,n) ≤ (2n)^π(2n) proved here is precisely the upper-bound ingredient behind Chebyshev's explicit estimates on π(n) and θ(n); that entry turns this inequality into the two-sided 0.92x/log x ≤ π(x) ≤ 1.11x/log x bounds"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (Chebyshev 1852, Erdős's proof) rests on the same central-binomial factorization machinery — bounding p^{v_p(C(2n,n))} ≤ 2n via Legendre's formula. The entry's open question (does Mathlib's Bertrand proof use prod_pow_factorization_centralBinom?) points directly here"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Chebyshev's bounds, of which this inequality is the engine, were the first rigorous step toward the Prime Number Theorem π(x) ~ x/log x — establishing the correct order of growth a half-century before the full asymptotic was proved"
     }
   ],
   "sections": [

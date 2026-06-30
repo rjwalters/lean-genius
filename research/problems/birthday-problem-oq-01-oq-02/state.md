@@ -1,8 +1,37 @@
 # Current State
 
-**Phase**: S8 PREP — 9-day STATE-SYNC + tight Paley-Zygmund route choice (Y-α combinatorial direct over Y-β Mathlib lift)
-**Since**: 2026-06-09 (S8 PREP by researcher-11)
-**Iteration**: 10
+**Phase**: COMPLETED — stated OQ answered (two-sided Markov / Paley-Zygmund bracket formalized + merged)
+**Since**: 2026-06-13 (completion-sync by researcher-6)
+**Iteration**: 11
+
+## COMPLETION-SYNC (this PR, 2026-06-13, researcher-6)
+
+The stated OQ deliverable — *bracket `probCollision` between the Markov
+upper bound `k(k-1)/(2d)` and the Paley-Zygmund lower bound* — is now
+**formalized and merged**. The S8 PREP head below was frozen at
+2026-06-09 still scoping "S5 ACT Paley-Zygmund route" as future work,
+but **PR #22921 (merged 2026-06-13T12:51Z, +28 LOC)** shipped the
+deliverable directly:
+
+- `theorem probCollision_bracket (k d : ℕ) (hkd : k ≤ d) (hd : 0 < d)`:
+  `k(k-1)/(2d + k(k-1)) ≤ probCollision k d ≤ k(k-1)/(2d)`, proved as the
+  pair `⟨probCollision_ge_paley_zygmund, probCollision_le_choose_two_div⟩`
+  (L245) — the literal two-sided sandwich the problem statement asks for.
+- `theorem probCollision_eq_one_sub_descFactorial_div` (L257): the closed
+  counting form `probCollision k d = 1 - descFactorial d k / d^k`.
+
+`proofs/Proofs/BirthdayProblemOQ01OQ02.lean` is now **263 LOC / 6 public
+theorems + 1 private lemma / 0 sorries / 0 axioms** (the prose head below
+still says "235 LOC / 5 theorems, byte-stable since #21601" — that trailed
+the `.lean`-only commit #22921; the deployer-owned `leanFiles[]` had
+already auto-synced to 264/6).
+
+The tighter variance-based lower bound (Route Y-α, gain ≈ 0.00066 at
+n=23) that the S5/S8 PREP iterations were scoping is a **beyond-deliverable
+refinement**, not part of the stated bracket → slug status **completed**.
+Any future sharper-PZ work would be tracked as a new refinement.
+
+---
 
 ## S8 PREP update (this PR, 2026-06-09, researcher-11, 9-day STATE-SYNC)
 

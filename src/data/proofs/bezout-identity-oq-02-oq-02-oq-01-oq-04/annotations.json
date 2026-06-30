@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-quotient-formula-comm",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-04",
+    "range": { "startLine": 68, "endLine": 80 },
+    "type": "insight",
+    "title": "The Quotient Formula Survives Non-Commutativity — Under Commute a u, a v",
+    "content": "The commutative quotient proof is almost entirely commutativity-free. Expanding c = (u*a+v*b)*c = u*(a*c) + v*(b*c) = u*(a*c) + v*(a*k) uses only ring axioms (hcollect is closed by noncomm_ring). The ONLY steps that need commutativity are a*(u*c)=u*(a*c) and a*(v*k)=v*(a*k), which are precisely Commute a u and Commute a v (hu.eq : a*u=u*a). Isolating them shows these two hypotheses are exactly what generalizes the formula to an arbitrary ring.",
+    "mathContext": "$$c = (u a + v b)c = u(ac) + v(bc) = u(ac) + v(ak);\\quad a(uc)=u(ac)\\iff \\mathrm{Commute}\\,a\\,u$$",
+    "significance": "key",
+    "relatedConcepts": ["Commute", "noncomm_ring", "Bézout identity", "Euclid's lemma"],
+    "prerequisites": ["Commute.eq", "noncomm_ring tactic", "ring axioms"]
+  },
+  {
+    "id": "ann-noncomm-ring",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-04",
+    "range": { "startLine": 77, "endLine": 79 },
+    "type": "insight",
+    "title": "noncomm_ring Separates Free Algebra from Commutation",
+    "content": "hcollect : u*(a*c) + v*(b*c) = (u*a+v*b)*c is a pure distribution/associativity identity — true in any ring with NO commutativity. noncomm_ring proves exactly such identities (it is the non-commutative analogue of ring). Using it here cleanly factors the proof into a commutativity-free part (this identity, plus the initial expansion) and the two genuine commutation steps, making transparent precisely where commutativity is required.",
+    "mathContext": "$$u(ac) + v(bc) = (ua + vb)c \\quad\\text{(distribution + associativity only)}$$",
+    "significance": "supporting",
+    "relatedConcepts": ["noncomm_ring", "distributivity", "associativity"],
+    "prerequisites": ["non-commutative ring axioms"]
+  },
+  {
+    "id": "ann-euclid-central",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-04",
+    "range": { "startLine": 113, "endLine": 122 },
+    "type": "insight",
+    "title": "Constructive Euclid's Lemma for Central Elements",
+    "content": "When a is central (∀ x, Commute a x), the explicit hypotheses of quotient_formula_comm are automatic, and a*(u*c+v*k)=c yields a ∣ c directly: the witness is ⟨u*c+v*k, (quotient_formula_central …).symm⟩, since a ∣ c unfolds to ∃ q, c = a*q. This is the constructive Euclid's lemma — coprime central a dividing b*c divides c, with an explicit quotient — the exact statement the parent generalized, now valid in any ring for central elements.",
+    "mathContext": "$$a\\ \\text{central},\\ ua+vb=1,\\ bc=ak \\implies a \\mid c,\\quad q = uc+vk$$",
+    "significance": "key",
+    "relatedConcepts": ["central element", "Dvd", "Euclid's lemma", "constructive quotient"],
+    "prerequisites": ["a ∣ c ↔ ∃ q, c = a*q", "Commute.all"]
+  },
+  {
+    "id": "ann-counterexample-data",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-04",
+    "range": { "startLine": 126, "endLine": 140 },
+    "type": "definition",
+    "title": "Explicit M₂(ℤ/2) Counterexample (Search-Found)",
+    "content": "A brute-force search over the 16 matrices of M₂(ℤ/2) for each of a,b,c,u,v,k found a non-degenerate configuration: a=[[0,0],[1,0]], b=[[0,0],[0,1]], c=[[0,1],[0,0]] (nonzero), u=[[0,1],[0,0]], v=[[0,0],[0,1]], k=0. It satisfies the Bézout relation u*a+v*b=1 and the divisibility witness b*c=0=a*k, yet the quotient formula's output a*(u*c+v*k) is the zero matrix, not c. M₂(ℤ/2) is the smallest non-commutative ring, making this a minimal witness.",
+    "mathContext": "$$a=\\begin{psmallmatrix}0&0\\\\1&0\\end{psmallmatrix},\\ b=\\begin{psmallmatrix}0&0\\\\0&1\\end{psmallmatrix},\\ c=\\begin{psmallmatrix}0&1\\\\0&0\\end{psmallmatrix},\\ u=\\begin{psmallmatrix}0&1\\\\0&0\\end{psmallmatrix},\\ v=\\begin{psmallmatrix}0&0\\\\0&1\\end{psmallmatrix},\\ k=0$$",
+    "significance": "key",
+    "relatedConcepts": ["M₂(ℤ/2)", "matrix ring", "brute-force search", "minimal counterexample"],
+    "prerequisites": ["matrix multiplication over ZMod 2", "Matrix.!! notation"]
+  },
+  {
+    "id": "ann-necessity",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-04",
+    "range": { "startLine": 152, "endLine": 170 },
+    "type": "insight",
+    "title": "Necessity by Kernel decide and a Top-Row Argument",
+    "content": "counterexample_formula_fails (a*(u*c+v*k)≠c) and the Bézout/divisibility facts are verified by kernel decide — 2×2 matrices over ℤ/2 have decidable equality and computable arithmetic, so NO native_decide (and no Lean.ofReduceBool) is needed. ¬Commute a u is decided after show a*u ≠ u*a (Commute is not reducible enough for instance search). a∤c is proved by a top-row entry argument: every product a*q has zero top row (a's top row is 0), so the (0,1) entry of a*q is 0 while c's is 1 — congrFun on the hypothesized equation plus simp [Matrix.mul_apply, Fin.sum_univ_two] derives the contradiction. Hence the commutativity hypothesis cannot be dropped.",
+    "mathContext": "$$(a q)_{0,*} = 0 \\neq c_{0,1}=1 \\implies a \\nmid c;\\quad a u \\neq u a$$",
+    "significance": "key",
+    "relatedConcepts": ["kernel decide", "Matrix.mul_apply", "Fin.sum_univ_two", "Commute", "non-divisibility"],
+    "prerequisites": ["decidability of ZMod 2 matrices", "congrFun on matrix equalities"]
+  },
+  {
+    "id": "ann-needs-commutativity",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-04",
+    "range": { "startLine": 172, "endLine": 178 },
+    "type": "insight",
+    "title": "Packaged Necessity: ∃ a Failing Instance",
+    "content": "quotient_formula_needs_commutativity bundles the witness as ∃ (R : Type) (_ : Ring R) (a b c k u v : R), u*a+v*b=1 ∧ b*c=a*k ∧ a*(u*c+v*k)≠c, instantiated at R = M₂(ℤ/2) with the explicit matrices. This is the precise sense in which the answer to open question 4 is 'no in general': there is a concrete non-commutative ring where the quotient formula fails, so quotient_formula_comm's commutativity hypothesis is essential rather than a convenience.",
+    "mathContext": "$$\\exists R,\\ a,\\dots,v:\\ ua+vb=1 \\wedge bc=ak \\wedge a(uc+vk)\\neq c$$",
+    "significance": "supporting",
+    "relatedConcepts": ["existential packaging", "necessity of hypothesis", "open question resolution"],
+    "prerequisites": ["anonymous constructor for ∃", "Ring instance on M₂"]
+  }
+]

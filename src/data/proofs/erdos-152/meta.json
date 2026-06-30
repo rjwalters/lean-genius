@@ -24,7 +24,7 @@
     "lineCount": 493,
     "assumptions": "Fully verified (0 axioms, 0 sorries) across two Lean files. The companion file `Erdos152ProblemAPN.lean` is a verbatim port of the DeepMind AlphaProof Nexus proof (517 source lines) establishing `16 * num_isolated A + 100*n + 16 ≥ n*n` for any Sidon set of size n, and concluding `Tendsto f atTop atTop` — the weak form of Erdős #152. The gallery file `Erdos152Problem.lean` retains the original verified definitions (`IsSidonFinset`, `sumsetFinset`, `IsIsolated`, `isolatedCount`) and supporting lemmas (`sidon_sumset_size`, `sidon_set_range_lower_bound`, `gap_existence_pigeonhole` for |A|≥5). The strong form `ErdosProblem152Strong` (universal constant c>0 with I(A) ≥ c|A|² for all Sidon A) and `ErdosProblem152Infinite` are stated but remain open as Lean propositions; the DeepMind bound implies asymptotic f(n) ≫ n² but does not directly furnish the universally-quantified constant for small Sidon sets.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 56,
+    "theoremCount": 11,
     "definitionCount": 26
   },
   "overview": {
@@ -47,67 +47,75 @@
   "sections": [
     {
       "id": "header",
-      "title": "Problem Statement and References",
+      "title": "Problem Statement, Status & References",
       "startLine": 1,
-      "endLine": 14,
-      "summary": "Documents the problem from Erdős-Sárközy-Sós (1994), J. Number Theory. States both the weak (unbounded) and strong ($\\gg |A|^2$) forms.",
-      "mathContext": "Bound: Documents the problem from Erdős-Sárközy-Sós (1994), J. Number Theory. States both the weak (unbounded) and strong ($\\gg |A|^2$) forms."
+      "endLine": 36,
+      "summary": "States Erdős #152 (Erdős–Sárközy–Sós 1994): a large finite Sidon set A has many isolated elements in A+A. The weak form (∀M, eventually ≥M isolated; equivalently Tendsto f atTop atTop) was resolved by DeepMind AlphaProof Nexus on 2026-05-21, formalized in companion Erdos152ProblemAPN.lean. The strong (≫|A|²) and infinite forms remain open.",
+      "mathContext": "Bound: States Erdős #152 (Erdős–Sárközy–Sós 1994): a large finite Sidon set A has many isolated elements in A+A. The weak form (∀M, eventually ≥M isolated; equivalently Tendsto f atTop atTop) was resolved by DeepMind AlphaProof Nexus on 2026-05-21, formalized in companion Erdos152ProblemAPN.lean. The strong (≫|A|²) and infinite forms remain open."
     },
     {
       "id": "imports",
       "title": "Imports",
-      "startLine": 15,
-      "endLine": 23,
-      "summary": "Imports Mathlib Sidon set library, pointwise finset operations, and filter basics. Opens `Pointwise` scope.",
-      "mathContext": "Mathematical content: Imports Mathlib Sidon set library, pointwise finset operations, and filter basics. Opens `Pointwise` scope."
+      "startLine": 37,
+      "endLine": 46,
+      "summary": "Imports Mathlib's Sidon-set, Finset (Basic, Pointwise), and Order.Filter infrastructure, and opens the Pointwise scope for the sumset notation A + A.",
+      "mathContext": "Bound: Imports Mathlib's Sidon-set, Finset (Basic, Pointwise), and Order.Filter infrastructure, and opens the Pointwise scope for the sumset notation A + A."
     },
     {
       "id": "sidon-sumsets",
-      "title": "Sidon Sets and Sumsets",
-      "startLine": 24,
-      "endLine": 36,
-      "summary": "Defines `IsSidonFinset` (distinct pairwise sums) and `sumsetFinset A = A + A`. The Sidon property gives $|A+A| = \\binom{n+1}{2}$.",
-      "mathContext": "Formal definition: Defines `IsSidonFinset` (distinct pairwise sums) and `sumsetFinset A = A + A`. The Sidon property gives $|A+A| = \\binom{n+1}{2}$."
+      "title": "Section I: Sidon Sets and Sumsets",
+      "startLine": 47,
+      "endLine": 59,
+      "summary": "Defines IsSidonFinset A (all pairwise sums a+b distinct as unordered pairs) and the pointwise sumset sumsetFinset A = A + A.",
+      "mathContext": "Bound: Defines IsSidonFinset A (all pairwise sums a+b distinct as unordered pairs) and the pointwise sumset sumsetFinset A = A + A."
     },
     {
       "id": "isolated-elements",
-      "title": "Isolated Elements",
-      "startLine": 37,
-      "endLine": 50,
-      "summary": "Defines `IsIsolated` ($s \\pm 1 \\notin A+A$) and `isolatedCount` via `Finset.filter`. The central counting function of the problem.",
-      "mathContext": "Formal definition: Defines `IsIsolated` ($s \\pm 1 \\notin A+A$) and `isolatedCount` via `Finset.filter`. The central counting function of the problem."
-    },
-    {
-      "id": "weak-conjecture",
-      "title": "Weak Conjecture: Unbounded Isolated Count",
-      "startLine": 51,
-      "endLine": 61,
-      "summary": "States `ErdosProblem152`: $\\forall M, \\exists N_0, \\forall$ Sidon $A$ with $|A| \\geq N_0$, $I(A) \\geq M$.",
-      "mathContext": "Mathematical content: States `ErdosProblem152`: $\\forall M, \\exists N_0, \\forall$ Sidon $A$ with $|A| \\geq N_0$, $I(A) \\geq M$."
-    },
-    {
-      "id": "strong-conjecture",
-      "title": "Strong Conjecture: $\\gg |A|^2$ Isolated Elements",
-      "startLine": 62,
+      "title": "Section II: Isolated Elements",
+      "startLine": 60,
       "endLine": 73,
-      "summary": "States `ErdosProblem152Strong`: $\\exists c > 0$ with $I(A) \\geq c|A|^2$ for all Sidon $A$. A constant fraction of the sumset is isolated.",
-      "mathContext": "Mathematical content: States `ErdosProblem152Strong`: $\\exists c > 0$ with $I(A) \\geq c|A|^2$ for all Sidon $A$. A constant fraction of the sumset is isolated."
+      "summary": "Defines IsIsolated A s (s ∈ A+A but s-1, s+1 ∉ A+A) and the noncomputable count isolatedCount A of isolated sumset elements.",
+      "mathContext": "Bound: Defines IsIsolated A s (s ∈ A+A but s-1, s+1 ∉ A+A) and the noncomputable count isolatedCount A of isolated sumset elements."
     },
     {
-      "id": "sumset-bounds",
-      "title": "Sumset Size and Range Bounds",
+      "id": "conjecture",
+      "title": "Section III: The Conjecture",
       "startLine": 74,
-      "endLine": 89,
-      "summary": "Axiomatizes $|A+A| = n(n+1)/2$ and $\\max A \\geq n^2 - n + 1$ for Sidon sets of size $n$.",
-      "mathContext": "Axiomatizes $|A+A| = n(n+1)/2$ and $\\max A \\geq $n^{2}$ - n + 1$ for Sidon sets of size $n$."
+      "endLine": 84,
+      "summary": "States ErdosProblem152: the weak form asserting that for every M there is a threshold N₀ beyond which every Sidon set of size ≥ N₀ has at least M isolated elements.",
+      "mathContext": "Bound: States ErdosProblem152: the weak form asserting that for every M there is a threshold N₀ beyond which every Sidon set of size ≥ N₀ has at least M isolated elements."
     },
     {
-      "id": "related",
-      "title": "Pigeonhole and Infinite Version",
-      "startLine": 90,
-      "endLine": 108,
-      "summary": "Pigeonhole: $I(A) \\geq 1$ for $|A| \\geq 5$. Infinite version: does $I(A \\cap [1,N]) \\to \\infty$ for infinite Sidon $A$?",
-      "mathContext": "Mathematical content: Pigeonhole: $I(A) \\geq 1$ for $|A| \\geq 5$. Infinite version: does $I(A \\cap [1,N]) \\to \\infty$ for infinite Sidon $A$?"
+      "id": "stronger-conjecture",
+      "title": "Section IV: The Stronger Conjecture",
+      "startLine": 85,
+      "endLine": 96,
+      "summary": "States ErdosProblem152Strong: there is an absolute constant c > 0 with isolatedCount A ≥ c·|A|² for every Sidon set A — a positive proportion of the sumset is isolated.",
+      "mathContext": "Bound: States ErdosProblem152Strong: there is an absolute constant c > 0 with isolatedCount A ≥ c·|A|² for every Sidon set A — a positive proportion of the sumset is isolated."
+    },
+    {
+      "id": "proved-properties",
+      "title": "Section V: Proved Properties of Sidon Sets and Their Sumsets",
+      "startLine": 97,
+      "endLine": 145,
+      "summary": "Verified structural lemmas: sumset_mem and sumset_self_double (membership of a+b and 2a in A+A); sidon_no_three_ap / sidon_no_three_ap' (Sidon sets have no nontrivial 3-term APs: a+c=2b ⟹ a=b=c); and sidon_sum_ne_double (distinct a,b give a+b ≠ 2a).",
+      "mathContext": "Bound: Verified structural lemmas: sumset_mem and sumset_self_double (membership of a+b and 2a in A+A); sidon_no_three_ap / sidon_no_three_ap' (Sidon sets have no nontrivial 3-term APs: a+c=2b ⟹ a=b=c); and sidon_sum_ne_double (distinct a,b give a+b ≠ 2a)."
+    },
+    {
+      "id": "sumset-size",
+      "title": "Section VI: Sumset Size and Range Bounds",
+      "startLine": 146,
+      "endLine": 360,
+      "summary": "Quantitative Sidon facts: sidon_ordered_pair_inj (ordered-pair injectivity), card_ordered_pairs (|{(a,b):a≤b}| = n(n+1)/2 via swap involution and diagonal split), sidon_sumset_size (|A+A| = n(n+1)/2), sidon_diff_injective (distinct differences), and sidon_set_range_lower_bound (max element ≥ n(n-1)/2 by injecting differences into a range).",
+      "mathContext": "Bound: Quantitative Sidon facts: sidon_ordered_pair_inj (ordered-pair injectivity), card_ordered_pairs (|{(a,b):a≤b}| = n(n+1)/2 via swap involution and diagonal split), sidon_sumset_size (|A+A| = n(n+1)/2), sidon_diff_injective (distinct differences), and sidon_set_range_lower_bound (max element ≥ n(n-1)/2 by injecting differences into a range)."
+    },
+    {
+      "id": "related-results",
+      "title": "Section VII: Related Results — Gap Existence & Infinite Version",
+      "startLine": 361,
+      "endLine": 493,
+      "summary": "gap_existence_pigeonhole: every Sidon set of size ≥ 5 has at least one isolated element, by a case analysis on the endpoints (2M always has no right neighbor; the second-smallest element handles the m=0 case) using difference injectivity. Closes with ErdosProblem152Infinite, the open infinite-set formulation. (Source mislabels this as a second 'Section VI'.)",
+      "mathContext": "Bound: gap_existence_pigeonhole: every Sidon set of size ≥ 5 has at least one isolated element, by a case analysis on the endpoints (2M always has no right neighbor; the second-smallest element handles the m=0 case) using difference injectivity. Closes with ErdosProblem152Infinite, the open infinite-set formulation. (Source mislabels this as a second 'Section VI'.)"
     }
   ],
   "conclusion": {
@@ -138,7 +146,7 @@
     "namespace": "Erdos152APN",
     "lineCount": 493,
     "axiomCount": 0,
-    "theoremCount": 56,
+    "theoremCount": 11,
     "definitionCount": 26,
     "path": "Proofs/Erdos152Problem.lean",
     "companionFiles": [

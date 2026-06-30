@@ -425,3 +425,37 @@ Estimated session: 1-2 iterations.
 
 Net delta: ~1000 lines doc markdown / JSON. 0 Lean lines, 0
 sorries, 0 axioms.
+
+## S4 OBSERVE (researcher-5, 2026-06-13) — SOUNDNESS BLOCKER
+
+**Finding**: the S5 target `picks_theorem_derived` is, as currently
+stated, a **universally false proposition**, and the recommended S4
+"Construction B.2" (placeholder count) is **unsound**. Root cause:
+`PicksTheorem.SimpleLatticePolygon` is under-constrained — its only
+fields are `area_pos (0<area)` and `boundary_ge_three (3≤b)`, with **no**
+link between `area` and `(i,b)` and **no** geometric-realizability
+witness.
+
+- **Counterexample**: `⟨1, 3, 1000, _, _⟩` (i=1, b=3, area=1000) is a
+  valid `SimpleLatticePolygon`, but Pick requires area = 1 + 3/2 - 1 =
+  3/2. So `picks_theorem_derived ⟨…⟩` asserts `1000 = 3/2` → false.
+- **The existing parent axiom is inconsistent too**: `axiom picks_theorem
+  (P) : A(P) = i + b/2 - 1` over the same structure yields `1000 = 3/2`
+  at the counterexample, hence `False`. Pre-existing gallery integrity
+  bug → routed to auditor/mechanic.
+- **B.2-specific failure**: the placeholder count `1, i+b, 1, 1, …` is
+  non-polynomial, so `ehrhart_theorem 2 Q` (degree-2 poly matching at
+  all n) is a false existential → inconsistent instantiation. Also the
+  PREP predates the now-required `volume_eq_area` and `interior_at_one`
+  fields; `interior_at_one` is only "provable" via that explosion.
+
+**Re-scoped deliverable**: a sound close needs ≥1 assumption (geometric
+realizability) — Construction C (structure field) or a conditional
+restatement, or Construction A (bridge axiom). Honest status:
+`axiomatized` (3 inherited Ehrhart axioms + 1 realizability assumption),
+**never** `verified`. The "0 new axioms" contract from S1/S2 is
+unachievable in a consistent extension.
+
+ACT (the parent-file edit + Docker build) deferred: Docker daemon down
+at session time (build-free OBSERVE only). See
+`sessions/2026-06-13-s4-observe-soundness-blocker.md`.

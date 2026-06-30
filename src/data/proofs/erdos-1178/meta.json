@@ -84,96 +84,96 @@
       "id": "uniform-hypergraphs",
       "title": "Part I: r-Uniform Hypergraphs",
       "summary": "UniformHypergraph structure, numEdges, spannedVertices, numVerticesSpanned.",
-      "startLine": 38,
-      "endLine": 56,
+      "startLine": 1,
+      "endLine": 66,
       "mathContext": "An $r$-uniform hypergraph: every edge is an $r$-element subset. Generalizes 3-uniform case from #716 and #1076."
     },
     {
       "id": "family",
       "title": "Part II: The Family F(r, d, e)",
       "summary": "InFamily and IsFamilyFree definitions for forbidden configurations.",
-      "startLine": 57,
-      "endLine": 72,
+      "startLine": 67,
+      "endLine": 80,
       "mathContext": "Family $\\mathcal{F}(r,d,e)$: $r$-uniform hypergraphs spanning $\\leq d$ vertices with exactly $e$ edges."
     },
     {
       "id": "extremal-numbers",
       "title": "Part III: Extremal Numbers",
       "summary": "exr def (noncomputable extremal number), isLittleO def.",
-      "startLine": 73,
-      "endLine": 82,
+      "startLine": 81,
+      "endLine": 92,
       "mathContext": "$\\text{ex}_r(n, \\mathcal{F}(r,d,e))$: max edges in $\\mathcal{F}$-free $r$-uniform hypergraph on $n$ vertices."
     },
     {
       "id": "threshold-function",
       "title": "Part IV: The Function d_r(e)",
       "summary": "dr def (sInf over threshold set), dr_spec and dr_minimal theorems characterizing the threshold.",
-      "startLine": 83,
-      "endLine": 98,
+      "startLine": 93,
+      "endLine": 123,
       "mathContext": "$d_r(e) = \\min\\{d : \\text{ex}_r(n, \\mathcal{F}(r,d,e)) = o(n^2)\\}$. The threshold for subquadratic behavior."
     },
     {
       "id": "lower-bound",
       "title": "Part V: Brown-Erdős-Sós Lower Bound (1973)",
       "summary": "conjecturedValue definition, bes_lower_bound theorem.",
-      "startLine": 99,
-      "endLine": 110,
+      "startLine": 124,
+      "endLine": 135,
       "mathContext": "$d_r(e) \\geq (r-2)e + 3$ for all $r, e \\geq 3$. Proved in [BES73]."
     },
     {
       "id": "upper-bounds",
       "title": "Part VI: Known Upper Bounds",
       "summary": "sarkozy_selkow_upper theorem (proved from sarkozy_selkow_result axiom).",
-      "startLine": 111,
-      "endLine": 116,
+      "startLine": 136,
+      "endLine": 144,
       "mathContext": "$d_r(e) \\leq (r-2)e + 2 + \\lfloor\\log_2 e\\rfloor$ [SaSe05]."
     },
     {
       "id": "solved-cases",
       "title": "Part VII: Solved Cases",
       "summary": "ruzsa_szemeredi_d3_3, efr_e3, cgls_upper_r3.",
-      "startLine": 117,
-      "endLine": 135,
+      "startLine": 145,
+      "endLine": 179,
       "mathContext": "Solved: $d_3(3)=6$ [RuSz78], $d_r(3)=(r-2)\\cdot 3+3$ [EFR86]. Near-optimal: $d_3(e)\\leq e+O(\\log e/\\log\\log e)$ [CGLS23]."
     },
     {
       "id": "specific-values",
       "title": "Part VIII: Specific Values",
       "summary": "Computed conjectured values and Solymosi-Solymosi bound.",
-      "startLine": 136,
-      "endLine": 150,
+      "startLine": 180,
+      "endLine": 212,
       "mathContext": "Concrete values: $d_3(3)=6$, $d_3(4)=7$, $d_4(3)=9$. Solymosi: $d_3(10)\\leq 14$ vs conjecture $d_3(10)=13$."
     },
     {
       "id": "main-conjecture",
       "title": "Part IX: The Main Conjecture",
       "summary": "BrownErdosSosGeneralConjecture definition and conjecture_expanded equivalence.",
-      "startLine": 151,
-      "endLine": 165,
+      "startLine": 213,
+      "endLine": 229,
       "mathContext": "$d_r(e) = (r-2)e + 3$ for all $r, e \\geq 3$. The full Brown-Erdős-Sós conjecture."
     },
     {
       "id": "connections",
       "title": "Part X: Connection to Related Problems",
       "summary": "Links to Problems #716 and #1076 via conjecturedValue computations.",
-      "startLine": 166,
-      "endLine": 175,
+      "startLine": 230,
+      "endLine": 240,
       "mathContext": "When $r=3$: $d_3(k) = k+3$ connects to #1076 ($\\mathcal{F}_k$). When $r=3, e=3$: $d_3(3)=6$ is #716."
     },
     {
       "id": "implications",
       "title": "Part XI: Implications of the Conjecture",
       "summary": "conjecture_implies_dense_free and conjecture_implies_subquadratic.",
-      "startLine": 176,
-      "endLine": 195,
+      "startLine": 241,
+      "endLine": 260,
       "mathContext": "The conjecture precisely determines where the phase transition occurs between quadratic and subquadratic extremal numbers."
     },
     {
       "id": "summary",
       "title": "Part XII: Summary",
       "summary": "BrownErdosSosGeneralConjecture def and summary of the open problem.",
-      "startLine": 196,
-      "endLine": 215,
+      "startLine": 261,
+      "endLine": 278,
       "mathContext": "OPEN: $d_r(e) = (r-2)e + 3$. Lower bound proved, upper bound has a $\\log_2 e$ gap."
     }
   ],

@@ -78,43 +78,59 @@
   "sections": [
     {
       "id": "simplicial-complex",
-      "title": "Simplicial Complex (Stratified)",
-      "summary": "SimplicialComplex V dim: skeleton indexed by Fin dim giving (j.val+1)-element faces, with uniform (card constraint) and down_closed (sub-faces are faces). IsSubComplex partial order with refl/trans.",
-      "startLine": 44,
-      "endLine": 82,
-      "mathContext": "The stratified complex has $\\text{skeleton}(j)$ = set of $(j+1)$-element faces for $j : \\text{Fin}(\\dim)$. Down-closure: if $e$ is a $j$-face and $f \\subsetneq e$ has $|f| = j$, then $f$ is a $(j-1)$-face."
+      "title": "Part I: Simplicial Complex (Stratified)",
+      "summary": "Defines the SimplicialComplex structure (stratified by skeleton dimension) on a vertex set V, the IsSubComplex partial order (each skeleton of C' contained in that of C), and basic order lemmas (reflexivity/containment of sub-complexes).",
+      "startLine": 41,
+      "endLine": 67,
+      "mathContext": "Defines the SimplicialComplex structure (stratified by skeleton dimension) on a vertex set V, the IsSubComplex partial order (each skeleton of C' contained in that of C), and basic order lemmas (reflexivity/containment of sub-complexes)."
     },
     {
       "id": "complete-complex",
-      "title": "Complete Complex and Top Cliques",
-      "summary": "completeComplex V dim: all j-subsets of V are faces. topCliques hdim C: (dim+1)-subsets all of whose dim-subsets are C's top-level faces. Key theorems: topCliques_completeComplex = all (dim+1)-subsets; topCliques_mono (sub-complex → sub-topcliques).",
-      "startLine": 71,
-      "endLine": 118,
-      "mathContext": "For a $k$-graph $H$ with $\\mathcal{C} : \\text{SimplicialComplex}(V, k-1)$, $\\text{topCliques}(\\mathcal{C})$ = all $k$-subsets of $V$ every $(k-1)$-subset of which is a face of $\\mathcal{C}$. For the complete complex, $\\text{topCliques}(\\mathcal{C}_{\\text{complete}})$ = all $k$-subsets."
+      "title": "Part II: Complete Complex and Top Cliques",
+      "summary": "Defines completeComplex (all j-subsets are faces at every level) with completeComplex_skeleton, and topCliques relative to a complex: topCliques_completeComplex identifies them as all (dim+1)-subsets, and topCliques_mono shows sub-complex containment implies top-clique containment.",
+      "startLine": 68,
+      "endLine": 119,
+      "mathContext": "Defines completeComplex (all j-subsets are faces at every level) with completeComplex_skeleton, and topCliques relative to a complex: topCliques_completeComplex identifies them as all (dim+1)-subsets, and topCliques_mono shows sub-complex containment implies top-clique containment."
     },
     {
       "id": "relative-density",
-      "title": "Relative k-Density",
-      "summary": "relativeKDensity hk H C = |H.edges ∩ topCliques(C)| / |topCliques(C)|, returning 0 when topCliques is empty. Proved: nonneg, le_one, empty = 0, completeComplex = globalDensity.",
-      "startLine": 119,
-      "endLine": 223,
-      "mathContext": "The relative density $d(H \\mid \\mathcal{C})$ conditions H-edges on topCliques: fraction of topCliques that are H-edges. When $\\mathcal{C}$ = completeComplex, topCliques = all $k$-subsets, so $d(H \\mid \\mathcal{C}_{\\text{complete}}) = |H.\\text{edges}| / \\binom{|V|}{k}$ = global density."
+      "title": "Part III: Relative k-Density",
+      "summary": "Defines relativeKDensity of a k-uniform hypergraph H with respect to a complex (edge fraction among its top cliques) and proves relativeKDensity_nonneg, relativeKDensity_le_one, and relativeKDensity_empty.",
+      "startLine": 120,
+      "endLine": 159,
+      "mathContext": "Defines relativeKDensity of a k-uniform hypergraph H with respect to a complex (edge fraction among its top cliques) and proves relativeKDensity_nonneg, relativeKDensity_le_one, and relativeKDensity_empty."
     },
     {
       "id": "gowers-regularity",
-      "title": "Gowers (ε, δ)-Regularity",
-      "summary": "IsGowersRegular hk H ε δ C: for all sub-complexes C' ⊆ C with topCliques(C') ≥ δ·topCliques(C), the relative density changes by at most ε. Proved: mono_eps (larger ε easier), mono_delta (larger δ easier).",
-      "startLine": 159,
-      "endLine": 187,
-      "mathContext": "Gowers $(\\varepsilon, \\delta)$-regularity: $|d(H \\mid \\mathcal{C}') - d(H \\mid \\mathcal{C})| \\leq \\varepsilon$ for all $\\mathcal{C}' \\subseteq \\mathcal{C}$ with $|\\text{topCliques}(\\mathcal{C}')| \\geq \\delta \\cdot |\\text{topCliques}(\\mathcal{C})|$. Monotonicity: relaxing $\\varepsilon$ (larger) or $\\delta$ (larger) preserves regularity."
+      "title": "Part IV: Gowers (ε, δ)-Regularity",
+      "summary": "Defines IsGowersRegular: H is (ε, δ)-Gowers-regular relative to C if the relative density on every sub-complex deviates from the global value by at most ε on all but a δ-fraction. Monotonicity lemmas show larger ε (mono_eps) and larger δ (mono_delta) only make regularity easier.",
+      "startLine": 160,
+      "endLine": 188,
+      "mathContext": "Defines IsGowersRegular: H is (ε, δ)-Gowers-regular relative to C if the relative density on every sub-complex deviates from the global value by at most ε on all but a δ-fraction. Monotonicity lemmas show larger ε (mono_eps) and larger δ (mono_delta) only make regularity easier."
     },
     {
-      "id": "global-density-and-surrogates",
-      "title": "Global Density, Provable Surrogates, and Documented Obstruction",
-      "summary": "globalDensity definition + relativeKDensity_completeComplex (relative density w.r.t. complete complex = global density, via Finset.inter_eq_left). Three provable surrogates replace the previously-conjectured naive_implies_gowers: relativeKDensity_eq_of_topCliques_eq, isGowersRegular_self ((0,1)-regularity), isGowersRegular_empty ((0,δ)-regularity). Part VII documents why a direct naive → Gowers reduction does not hold as previously stated.",
-      "startLine": 188,
+      "id": "global-density",
+      "title": "Part V: Global Density and the Complete Complex",
+      "summary": "Defines globalDensity (fraction of all k-subsets that are edges) and proves relativeKDensity_completeComplex: relative density with respect to the complete complex equals the global density.",
+      "startLine": 189,
+      "endLine": 225,
+      "mathContext": "Defines globalDensity (fraction of all k-subsets that are edges) and proves relativeKDensity_completeComplex: relative density with respect to the complete complex equals the global density."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Part VI: Structural Properties of Gowers Regularity",
+      "summary": "Structural lemmas: relativeKDensity_eq_of_topCliques_eq (relative density depends only on the top-cliques set), isGowersRegular_self (every H is trivially (0,1)-regular), and isGowersRegular_empty (the empty hypergraph is (0,δ)-regular).",
+      "startLine": 226,
+      "endLine": 277,
+      "mathContext": "Structural lemmas: relativeKDensity_eq_of_topCliques_eq (relative density depends only on the top-cliques set), isGowersRegular_self (every H is trivially (0,1)-regular), and isGowersRegular_empty (the empty hypergraph is (0,δ)-regular)."
+    },
+    {
+      "id": "obstruction-naive-to-gowers",
+      "title": "Part VII: Documented Obstruction (Naive → Gowers)",
+      "summary": "Documents why a direct naive_implies_gowers does not hold: with parts = [univ × k] the transversal set is empty, so the transversal-based hypothesis only bounds density against 0 and cannot control arbitrary sub-complexes. Lists the provable surrogates and the partition-respecting hypothesis that would be needed to bridge weak (transversal) to strong (relative-to-complex) regularity, per Gowers (2007) §4.",
+      "startLine": 278,
       "endLine": 322,
-      "mathContext": "$d(H \\mid \\mathcal{C}_{\\text{complete}}) = \\text{globalDensity}(H) = |H.\\text{edges}| / \\binom{|V|}{k}$, proved via H.uniform and Finset.inter_eq_left. Obstruction (documented in Part VII): naive regularity quantifies over transversals of vertex sub-parts; Gowers regularity quantifies over arbitrary sub-complexes whose top-cliques need not arise from any vertex partition. Bridging naive → Gowers requires either restricting to partition-induced sub-complexes or using a partition-respecting hypothesis (Gowers 2007 §4 distinguishes weak vs strong regularity for this reason)."
+      "mathContext": "Documents why a direct naive_implies_gowers does not hold: with parts = [univ × k] the transversal set is empty, so the transversal-based hypothesis only bounds density against 0 and cannot control arbitrary sub-complexes. Lists the provable surrogates and the partition-respecting hypothesis that would be needed to bridge weak (transversal) to strong (relative-to-complex) regularity, per Gowers (2007) §4."
     }
   ],
   "conclusion": {

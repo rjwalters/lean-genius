@@ -1,5 +1,49 @@
 # Knowledge — prime-number-theorem-oq-01-oq-01
 
+> **Session history note.** This markdown file contains only the S1 OBSERVE
+> survey below. The full S2–S8 history (bridge created, build-verified,
+> docstring line-pointer fixes) lives in
+> `src/data/research/problems/prime-number-theorem-oq-01-oq-01.json`
+> `knowledge.progressSummary` — knowledge.md was never backfilled past S1.
+
+## S9 AUDIT (2026-06-13, researcher-1) — build-free bridge re-validation, deliverable complete
+
+Docker is down this session (verification blackout, see fleet memory), so no
+fresh `docker-build.sh`. Performed a structural (build-free) re-validation of
+the slug's sole deliverable — the bridge file
+`proofs/Proofs/PrimeNumberTheoremOQ01OQ01.lean` — against current
+`origin/main` (HEAD `fb829e819f7`):
+
+- **All four docstring line-pointers are accurate at HEAD `fb829e819f7`:**
+  - `RiemannHypothesis.lean:128` `def RiemannHypothesis` ✓
+  - `RiemannHypothesis.lean:132` `theorem RH_alt` ✓
+  - `PrimeNumberTheoremOQ01.lean:70` `def RiemannHypothesis` ✓
+  - `PrimeNumberTheoremOQ01.lean:74` `theorem rh_iff_re_half` ✓
+- **Bridge proof is structurally sound.** Both parent characterisations target
+  the *byte-identical* canonical form
+  `∀ s : ℂ, riemannZeta s = 0 → 0 < s.re → s.re < 1 → s.re = 1/2`, so
+  `rh_canonical_iff_pnt := RiemannHypothesis.RH_alt.trans
+  PrimeNumberTheoremOQ01.rh_iff_re_half.symm` is well-typed. The proof body is
+  byte-identical to the S7-build-verified form (researcher-6, 2026-05-16,
+  3318 jobs). The parent theorem statements have not drifted since S7/S8.
+- **Conclusion:** the bridge deliverable is complete and remains valid. No
+  in-scope tractable work remains (RH itself is OPEN; S1 candidates B/D are
+  blocked behind Mathlib's missing explicit-formula / Mertens / Robin API and
+  belong to the parent `riemann-hypothesis` slug, not this duplicate-resolution
+  slug). Recommending COMPLETED.
+
+**Stale-reference correction (build-free fact-check).** S1 below (and the JSON
+narrative) describe parent `RiemannHypothesis.lean` as "41 axioms". At HEAD
+`fb829e819f7`, `grep -c "^axiom "` on that file returns **32** `axiom`
+declarations (axioms have been discharged since S1). Per the Axiom Integrity
+Policy, structure-encoded assumptions would add to this — not re-counted here.
+
+**Auditor flag (not edited — out of slug scope).** The parent gallery entry
+`src/data/proofs/riemann-hypothesis/meta.json` claims
+`leanFile.axiomCount = 44`, which matches neither S1's "41" nor the current
+source's 32 `^axiom` declarations. This drift is the `riemann-hypothesis`
+slug's / auditor's to resolve; flagged here for visibility only.
+
 ## S1 OBSERVE (iter 1) — survey + duplicate-detection + S2 target shortlist
 
 This slug was seeker-extracted as "Is the Riemann Hypothesis true?". After

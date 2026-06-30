@@ -16,13 +16,17 @@
       "coloring",
       "infinite-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Property B",
+      "Set.Countable",
+      "Hypergraph 2-coloring"
+    ]
   },
   {
     "id": "ann-602-family",
     "proofId": "erdos-602",
     "range": {
-      "startLine": 44,
+      "startLine": 45,
       "endLine": 53
     },
     "type": "definition",
@@ -35,13 +39,17 @@
       "countable",
       "aleph0"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Indexed family of sets",
+      "Cardinal.aleph0",
+      "Set.Countable"
+    ]
   },
   {
     "id": "ann-602-intersection",
     "proofId": "erdos-602",
     "range": {
-      "startLine": 61,
+      "startLine": 62,
       "endLine": 79
     },
     "type": "definition",
@@ -54,13 +62,17 @@
       "finite",
       "almost-disjoint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Finite",
+      "Almost-disjoint family",
+      "Set intersection cardinality"
+    ]
   },
   {
     "id": "ann-602-coloring",
     "proofId": "erdos-602",
     "range": {
-      "startLine": 87,
+      "startLine": 88,
       "endLine": 104
     },
     "type": "definition",
@@ -73,13 +85,17 @@
       "monochromatic",
       "property-b"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2-coloring",
+      "Monochromatic set",
+      "Property B"
+    ]
   },
   {
     "id": "ann-602-family-b",
     "proofId": "erdos-602",
     "range": {
-      "startLine": 112,
+      "startLine": 113,
       "endLine": 123
     },
     "type": "definition",
@@ -91,14 +107,18 @@
       "valid-coloring",
       "family"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proper 2-coloring",
+      "Monochromatic set",
+      "Constraint satisfaction"
+    ]
   },
   {
     "id": "ann-602-conjecture",
     "proofId": "erdos-602",
     "range": {
-      "startLine": 131,
-      "endLine": 146
+      "startLine": 132,
+      "endLine": 139
     },
     "type": "definition",
     "title": "Main Conjecture",
@@ -109,14 +129,18 @@
       "conjecture",
       "property-b"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Property B",
+      "Contrapositive",
+      "Counterexample vs existence"
+    ]
   },
   {
     "id": "ann-602-conditions",
     "proofId": "erdos-602",
     "range": {
-      "startLine": 154,
-      "endLine": 166
+      "startLine": 140,
+      "endLine": 152
     },
     "type": "concept",
     "title": "Why Conditions Matter",
@@ -127,14 +151,18 @@
       "conditions",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pigeonhole principle",
+      "Cardinal.aleph0",
+      "Almost-disjoint family"
+    ]
   },
   {
     "id": "ann-602-komjath",
     "proofId": "erdos-602",
     "range": {
-      "startLine": 180,
-      "endLine": 181
+      "startLine": 181,
+      "endLine": 189
     },
     "type": "definition",
     "title": "Komjáth's Problem",
@@ -145,13 +173,17 @@
       "komjath",
       "attribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Property B",
+      "Infinite combinatorics",
+      "Set systems"
+    ]
   },
   {
     "id": "ann-602-special",
     "proofId": "erdos-602",
     "range": {
-      "startLine": 192,
+      "startLine": 193,
       "endLine": 203
     },
     "type": "definition",
@@ -164,7 +196,11 @@
       "almost-disjoint",
       "special-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pairwise-disjoint family",
+      "Almost-disjoint family",
+      "Property B"
+    ]
   },
   {
     "id": "ann-602-obstruction",
@@ -182,13 +218,17 @@
       "counterexample",
       "forcing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proper coloring obstruction",
+      "Negation of conjecture",
+      "Forced monochromatic set"
+    ]
   },
   {
     "id": "ann-602-status",
     "proofId": "erdos-602",
     "range": {
-      "startLine": 242,
+      "startLine": 243,
       "endLine": 269
     },
     "type": "concept",
@@ -201,6 +241,10 @@
       "set-theory",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite set theory",
+      "Combinatorial coloring",
+      "Open problem"
+    ]
   }
 ]

@@ -96,7 +96,7 @@
       "Convex sets in real vector spaces (definition, midpoint characterization)",
       "Lattices as discrete subgroups of R^n, covolume as |det(basis)|",
       "Linear algebra: determinants, basis, linear independence, inner product spaces",
-      "Lebesgue measure and volume in R^n (conceptual; the axiomatized proof defers measure theory)",
+      "Lebesgue measure and volume in R^n (the proof invokes Mathlib's measure-theoretic geometry of numbers)",
       "Pigeonhole principle (the heart of the classical proof)"
     ]
   },
@@ -105,73 +105,97 @@
       "id": "imports-docstring",
       "title": "Imports and Problem Overview",
       "startLine": 1,
-      "endLine": 97,
+      "endLine": 109,
       "summary": "Imports Mathlib modules for inner product spaces (`PiL2`), convexity, Lebesgue measure, matrix determinants, and `NumberTheory.SumTwoSquares`. The extensive 85-line docstring covers the theorem statement, historical context (Minkowski 1889/1896), the classical pigeonhole proof sketch, applications to Fermat's two-squares, Lagrange's four-squares, class number finiteness, and Diophantine approximation.",
       "mathContext": "Nine Mathlib imports provide the mathematical infrastructure: `InnerProductSpace.PiL2` for $\\ell^2$-type Euclidean space $\\mathbb{R}^n$, `Convex.Basic` for the `Convex` predicate, `MeasureTheory.Measure.Lebesgue.Basic` for volume concepts, `Matrix.Determinant.Basic` for $\\det(B)$, and `NumberTheory.SumTwoSquares` for Fermat's theorem via Gaussian integers."
     },
     {
       "id": "euclidean-symmetry",
       "title": "Euclidean Space and Central Symmetry",
-      "startLine": 101,
-      "endLine": 131,
+      "startLine": 110,
+      "endLine": 138,
       "summary": "Defines `EuclideanN n` as `EuclideanSpace R (Fin n)` and `CentrallySymmetric n S` as the predicate $\\forall x \\in S,\\, -x \\in S$. Proves `origin_mem_of_symmetric_nonempty`: any nonempty symmetric convex set contains the origin, via the midpoint argument $(x + (-x))/2 = 0$ with weights $1/2$.",
       "mathContext": "The origin membership proof uses Mathlib's `Convex R S` applied to $x$ and $-x$ with convex combination coefficients $1/2 + 1/2 = 1$. The key steps: `smul_neg` rewrites $\\frac{1}{2} \\cdot (-x)$ and `sub_eq_add_neg` converts to the standard form. This is the only fully machine-checked theorem in the file."
     },
     {
       "id": "lattice-defs",
       "title": "Lattice Definitions",
-      "startLine": 137,
-      "endLine": 188,
+      "startLine": 139,
+      "endLine": 194,
       "summary": "Defines the `Lattice n` structure with a basis matrix $B \\in M_{n \\times n}(\\mathbb{R})$ and proof $\\det(B) \\neq 0$. Introduces `covolume = |\\det(B)|$, proves covolume positivity via `abs_pos`, defines `isLatticeVector` ($x = \\sum a_i v_i$ with $a_i \\in \\mathbb{Z}$) and `latticePoints` (the set of all lattice vectors). Constructs the standard lattice $\\mathbb{Z}^n$ with identity basis and covolume 1.",
       "mathContext": "The covolume $|\\det(B)|$ equals the $n$-dimensional volume of the fundamental parallelotope $\\{\\sum t_i v_i : 0 \\leq t_i < 1\\}$. For the standard lattice, $B = I_n$ gives $\\text{covol} = |\\det(I)| = 1$. The structure avoids Mathlib's `ZLattice` (which requires more infrastructure) in favor of a self-contained matrix-based definition."
     },
     {
       "id": "convex-bodies",
       "title": "Convex Bodies",
-      "startLine": 193,
-      "endLine": 206,
+      "startLine": 195,
+      "endLine": 214,
       "summary": "Defines `ConvexBody n` bundling a carrier set with proofs of convexity (`Convex R carrier`), central symmetry (`CentrallySymmetric n carrier`), and nonemptiness (`carrier.Nonempty`). Provides a `Membership` instance and the corollary `ConvexBody.zero_mem` (the origin lies in every convex body).",
       "mathContext": "The `ConvexBody` structure packages the three hypotheses of Minkowski's theorem into a single Lean type. The `zero_mem` corollary follows immediately from the origin membership lemma, completing the chain: nonemptiness gives $x \\in S$, symmetry gives $-x \\in S$, convexity gives $0 = (x + (-x))/2 \\in S$."
     },
     {
       "id": "volume",
       "title": "Volume and Critical Threshold",
-      "startLine": 212,
-      "endLine": 234,
+      "startLine": 215,
+      "endLine": 245,
       "summary": "Introduces `HasVolume` typeclass abstracting Lebesgue measure as a positive real number. Defines `criticalVolume L = 2^n * L.covolume`, the Minkowski threshold, and proves `criticalVolume_pos` using `pow_pos` (for $2^n > 0$) and `mul_pos` (combined with `covolume_pos`).",
       "mathContext": "The critical volume $2^n \\cdot |\\det(B)|$ arises from the scaling $S \\mapsto S/2$: scaling by $1/2$ in $n$ dimensions reduces volume by $2^n$, so $\\text{vol}(S/2) > |\\det(B)|$ precisely when $\\text{vol}(S) > 2^n |\\det(B)|$. The `HasVolume` typeclass is a pragmatic abstraction avoiding the full Mathlib measure theory setup."
     },
     {
+      "id": "bridge-custom-to-mathlib",
+      "title": "Bridge from Custom Types to Mathlib",
+      "startLine": 246,
+      "endLine": 328,
+      "summary": "Connects the file's self-contained `Lattice` type to Mathlib's module API: `Lattice.basisVec`, `Lattice.toLinearEquiv` (via `LinearEquiv.ofBijective` on the basis matrix), `Lattice.toModuleBasis`, the matrix-equality lemma `toModuleBasis_matrix_eq`, `basisVec_eq_toModuleBasis`, and `latticePoints_eq_span` (identifying the custom `latticePoints` set with the ℤ-span of the Mathlib basis).",
+      "mathContext": "This adapter layer is what lets the elementary matrix-based `Lattice` definition feed Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`. `toModuleBasis` reinterprets the n×n basis matrix as a `Module.Basis (Fin n) ℝ (EuclideanN n)`, and `latticePoints_eq_span` certifies that integer combinations of the basis columns coincide with the `Submodule.span ℤ` used by Mathlib's geometry-of-numbers."
+    },
+    {
       "id": "main-theorem",
       "title": "Minkowski's Fundamental Theorem",
-      "startLine": 240,
-      "endLine": 307,
+      "startLine": 329,
+      "endLine": 403,
       "summary": "Proves `minkowski_fundamental` from Mathlib: given $\\text{vol}(S) > \\text{critVol}(L)$, there exists $x \\in S \\cap L$ with $x \\neq 0$. The proof bridges custom types to Mathlib via `Lattice.toModuleBasis` and `HasVolume.volume_eq`, then applies `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`. Derives `minkowski_fundamental'` and `minkowski_integer_lattice` as corollaries.",
       "mathContext": "The proof connects custom types to Mathlib in three steps: (1) `Lattice.toModuleBasis` constructs a `Module.Basis` from the matrix via `LinearEquiv.ofBijective` on the transpose, (2) `HasVolume.volume_eq` bridges abstract volume to Lebesgue measure, (3) `latticePoints_eq_span` identifies custom lattice points with the ℤ-span. The integer lattice specialization uses `standardLattice_covolume` to simplify $2^n \\cdot 1 = 2^n$."
     },
     {
+      "id": "special-cases-integer-lattice",
+      "title": "Special Cases: The Integer Lattice ℤⁿ",
+      "startLine": 404,
+      "endLine": 436,
+      "summary": "Specializes the fundamental theorem to the standard lattice: `minkowski_integer_lattice` states that any convex body with vol(S) > 2ⁿ contains a nonzero integer point, obtained from `minkowski_fundamental` via `standardLattice_covolume = 1`. A docstring discusses the dimension-2 case (lattice points in ellipses/disks).",
+      "mathContext": "The weak form vol(S) > 2ⁿ ⇒ S ∩ (ℤⁿ \\ {0}) ≠ ∅ is the version most often quoted and the one used directly in the Fermat application: it removes the covolume bookkeeping by fixing det = 1."
+    },
+    {
       "id": "applications",
       "title": "Applications: Fermat and Dirichlet",
-      "startLine": 322,
-      "endLine": 370,
+      "startLine": 437,
+      "endLine": 490,
       "summary": "Proves Fermat's two-squares theorem ($p \\equiv 1 \\pmod{4} \\Rightarrow p = a^2 + b^2$) via Mathlib's `Nat.Prime.sq_add_sq`. The docstring describes the Minkowski-based proof: apply the theorem to the lattice $\\{(a,b) : a \\equiv kb \\pmod{p}\\}$ (covolume $p$) and the disk $x^2 + y^2 < 2p$ (area $2\\pi p > 4p$). Also outlines Dirichlet's approximation theorem and Lagrange's four-squares theorem as further applications.",
       "mathContext": "The Fermat application is the most elegant 2D instance of Minkowski: the disk $D = \\{x^2 + y^2 < 2p\\}$ has area $2\\pi p > 4p = 2^2 \\cdot p = 2^2 \\cdot \\text{covol}(L)$, so $D$ contains a nonzero point $(a,b) \\in L$ with $0 < a^2 + b^2 < 2p$ and $a^2 + b^2 \\equiv 0 \\pmod{p}$, forcing $a^2 + b^2 = p$."
     },
     {
       "id": "generalizations",
       "title": "Variants and Generalizations",
-      "startLine": 375,
-      "endLine": 405,
+      "startLine": 491,
+      "endLine": 525,
       "summary": "Covers the boundary equality case ($\\text{vol}(S) = 2^n V$ still guarantees a lattice point for compact $S$), Blichfeldt's counting generalization (1914), and Minkowski's successive minima $\\lambda_1 \\leq \\cdots \\leq \\lambda_n$ satisfying $\\lambda_1 \\cdots \\lambda_n \\cdot \\text{vol}(S) \\leq 2^n \\det(L)$. States `blichfeldt_statement` as a Lean proposition.",
       "mathContext": "Blichfeldt's theorem: $\\text{vol}(S) > k \\cdot \\det(L)$ implies $S$ contains $k+1$ lattice points (not necessarily distinct from the origin). The successive minima refine Minkowski by measuring the 'widths' of $S$ in different lattice directions -- they connect to the LLL algorithm and the shortest vector problem."
     },
     {
       "id": "significance",
       "title": "Modern Significance",
-      "startLine": 411,
-      "endLine": 453,
+      "startLine": 526,
+      "endLine": 565,
       "summary": "Discusses the theorem's impact across mathematics and computer science: algebraic number theory (class number finiteness via Minkowski's bound), Diophantine equations (existence of integer solutions), lattice-based cryptography (LWE, NTRU, post-quantum security), coding theory (sphere packing bounds), and computational complexity (SVP is NP-hard under randomized reductions).",
       "mathContext": "Minkowski's bound states that every ideal class in a number field $K$ of degree $n$ and discriminant $\\Delta_K$ contains an ideal of norm $\\leq (n!/n^n)(4/\\pi)^{r_2} \\sqrt{|\\Delta_K|}$, where $r_2$ is the number of complex embeddings. This implies the class group is finite -- a foundational result that follows directly from the convex body theorem applied to a Minkowski embedding."
+    },
+    {
+      "id": "mathlib-proof-integer-lattice",
+      "title": "Proof from Mathlib: Eliminating the Axiom for ℤⁿ",
+      "startLine": 566,
+      "endLine": 686,
+      "summary": "The `MinkowskiProved` namespace gives fully machine-checked Minkowski theorems with no axioms. Builds `stdBasis` (`Pi.basisFun`), `stdLattice = Submodule.span ℤ`, `stdFundDomain`, and proves `stdFundDomain_measurableSet`, `stdLattice_isAddFundamentalDomain`, `stdBasis_matrix_eq_one`, `stdLattice_covolume = 1`. Concludes with `minkowski_integer_lattice_proved` and `minkowski_general_lattice_proved` (any basis b: the ℤ-span lattice satisfies Minkowski), exported at the file end.",
+      "mathContext": "This is the rigorous payoff: rather than abstracting volume through the `HasVolume` typeclass, it uses Mathlib's `IsAddFundamentalDomain` and geometry-of-numbers machinery to discharge Minkowski's theorem for ℤⁿ (and any real basis) with zero axioms and zero sorries, matching the file's `axiomCount = 0` claim."
     }
   ],
   "conclusion": {
@@ -249,6 +273,16 @@
       "targetId": "minkowski-fundamental-theorem-oq-02",
       "relationship": "related",
       "description": "Minkowski's Class Number Bound — From Geometry of Numbers to Finite Class Groups: answers whether the class number bound for algebraic number fields can be derived from the geometry-of-numbers framework. This entry's conclusion asks 'Can the Minkowski bound on ideal norms be formalized, connecting the convex body theorem to finiteness of class groups?' — OQ-02 of the sibling Minkowski formalization provides exactly this connection, proving that every ideal class contains an ideal of bounded norm via the convex body theorem applied to a Minkowski embedding of a number field."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Open-question extension (verified): packages the Minkowski ideal-norm bound M_K = (4/π)^{r₂}·(n!/nⁿ)·√|d_K| as a reusable class-number estimate, making the geometry-of-numbers ⟹ ideal-norm connection explicit."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-04",
+      "relationship": "extended-by",
+      "description": "Open-question extension (verified): Blichfeldt's theorem (1914) — any measurable S ⊆ ℝⁿ with vol(S) > k contains k+1 points with pairwise differences in ℤⁿ — generalizing Minkowski's lattice-point theorem with no convexity or symmetry hypothesis."
     }
   ],
   "leanFile": {

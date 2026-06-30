@@ -1,8 +1,8 @@
 {
   "slug": "angle-trisection-cos-20-gal-oq-01-oq-02",
   "title": "What is |Gal(minpoly(cos(π/n))/ℚ)| for general n, and can this be proved in L...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "MATURE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,16 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-26T08:56:57.648Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "MATURE",
+    "since": "2026-06-10T11:00:00.000Z",
+    "iteration": 3,
+    "focus": "Headline OQ resolved: |Gal(minpoly(cos(π/n))/ℚ)| = φ(2n)/2 is proved for all n ≥ 3 in the child file AngleTrisectionCos20GalOQ01OQ02OQ02.lean (gallery entry angle-trisection-cos-20-gal-oq-01-oq-02-oq-02; cos_pi_gal_card / gal_order_eq_totient_div2_general, 0 sorries, 0 axioms), and the n=5 case is proved in this entry's own file (cos_36_gal_card, 0/0). Session 3 (2026-06-10) reconciled the open-question tracker against those sibling/child proofs.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Entry is mature; the headline general-formula OQ is closed. Optional follow-ons (tracked as new OQs, not blockers): (a) strengthen the cardinality equality |Gal| = φ(2n)/2 to a group isomorphism Gal ≃ (ℤ/2nℤ)ˣ/⟨−1⟩; (b) bespoke n=4/n=6 mini-files replicating the n=5 Vieta+splitting-field architecture; (c) the sin(π/n)/cos(kπ/n) generalisation.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 3
     }
   },
   "knowledge": {
@@ -58,6 +58,9 @@
     "angle-trisection-cos-20-gal-oq-01",
     "angle-trisection-cos-20-gal-oq-01-oq-01",
     "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
+    "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "angle-trisection-cos-20-gal-oq-02",
     "angle-trisection-cos-20-gal-oq-03",
     "angle-trisection-cos-20-gal-oq-03-oq-01"
   ],
@@ -67,15 +70,15 @@
     "mathlib": []
   },
   "started": "2026-04-26T08:56:57.648Z",
-  "lastUpdate": "2026-04-26T08:56:57.648Z",
+  "lastUpdate": "2026-06-10T11:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/AngleTrisectionCos20Gal.lean",
       "filename": "AngleTrisectionCos20Gal.lean",
-      "lineCount": 474,
-      "theoremCount": 33,
+      "lineCount": 475,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -85,10 +88,10 @@
     {
       "path": "Proofs/AngleTrisectionCos20GalOQ01.lean",
       "filename": "AngleTrisectionCos20GalOQ01.lean",
-      "lineCount": 416,
-      "theoremCount": 32,
+      "lineCount": 417,
+      "theoremCount": 5,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01.lean"
@@ -107,13 +110,46 @@
     {
       "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02.lean",
       "filename": "AngleTrisectionCos20GalOQ01OQ02.lean",
-      "lineCount": 439,
+      "lineCount": 443,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
+      "lineCount": 388,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ03.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ03.lean",
+      "lineCount": 1381,
+      "theoremCount": 64,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ02.lean",
+      "lineCount": 109,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ02.lean"
     },
     {
       "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",

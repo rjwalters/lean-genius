@@ -100,53 +100,109 @@
   },
   "sections": [
     {
-      "id": "fourier-partial-sums",
-      "title": "Fourier Partial Sums",
+      "id": "header-overview",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Imports (Mathlib Fourier/AddCircle, InnerProductSpace, BoundedVariation, L2Space, Tactic), module docstring stating the research question and main result ($S_N f(x) \\to (f(x^+)+f(x^-))/2$ for BV $f$), the four-step approach, and the Mathlib infrastructure used. Sets maxHeartbeats, opens the noncomputable FourierDirichlet namespace."
+    },
+    {
+      "id": "part-1-fourier-partial-sums",
+      "title": "PART I: Fourier Partial Sums",
       "startLine": 55,
       "endLine": 82,
-      "summary": "Defines the N-th Fourier partial sum $S_N f(x) = \\sum_{n=-N}^{N} c_n(f) \\cdot e_n(x)$. Proves the base case (N=0) and continuity of partial sums."
+      "summary": "Defines the N-th Fourier partial sum $S_N f(x) = \\sum_{n=-N}^{N} c_n(f) \\cdot e_n(x)$ via `fourierPartialSum`. Proves the base case `fourierPartialSum_zero` (N=0) and `fourierPartialSum_continuous`."
     },
     {
-      "id": "dirichlet-kernel",
-      "title": "The Dirichlet Kernel",
+      "id": "part-2-dirichlet-kernel",
+      "title": "PART II: The Dirichlet Kernel",
       "startLine": 83,
       "endLine": 145,
-      "summary": "Defines the Dirichlet kernel $D_N(t) = \\sum_{n=-N}^{N} e_n(t)$ and proves key properties: continuity, cardinality (2N+1 terms), value at zero ($D_N(0) = 2N+1$), and conjugate symmetry ($D_N(-t) = \\overline{D_N(t)}$)."
+      "summary": "Defines the Dirichlet kernel $D_N(t) = \\sum_{n=-N}^{N} e_n(t)$ and proves continuity, cardinality (2N+1 terms), $D_N(0)=2N+1$, the monomial laws (`fourier_at_zero`, `fourier_apply_neg`, `fourier_eval_neg`), and conjugate symmetry $D_N(-t)=\\overline{D_N(t)}$."
     },
     {
-      "id": "convolution-representation",
-      "title": "Convolution Representation",
+      "id": "part-3-convolution-representation",
+      "title": "PART III: Convolution Representation",
       "startLine": 146,
-      "endLine": 175,
-      "summary": "Axiomatizes the convolution identity $S_N f(x) = \\int f(t) D_N(x-t)\\,dt$ and the normalization $\\int D_N = 1$. These connect partial sums to kernel analysis."
+      "endLine": 214,
+      "summary": "Proves the character property `fourier_char` and the central identity `fourierPartialSum_eq_convolution`: $S_N f(x) = \\int f(t) D_N(x-t)\\,d(\\text{haar})$, via a six-step calc using linearity of the integral and the Fourier character. Notes the $\\int D_N = 1$ normalization."
     },
     {
-      "id": "bounded-variation",
-      "title": "Bounded Variation on the Circle",
-      "startLine": 176,
-      "endLine": 222,
-      "summary": "Defines `HasBoundedVariationCircle` via Mathlib's `BoundedVariationOn` on [0,T]. Defines one-sided limits `rightLimit`/`leftLimit` using `limUnder` with `nhdsWithin`. Axiomatizes existence of BV limits."
+      "id": "part-4-bounded-variation",
+      "title": "PART IV: Bounded Variation on the Circle",
+      "startLine": 215,
+      "endLine": 230,
+      "summary": "Defines `HasBoundedVariationCircle` by lifting $f$ to $\\mathbb{R}$ and applying Mathlib's `BoundedVariationOn` on $[0,T]$ (equivalently $[-\\pi,\\pi]$ for $T=2\\pi$)."
     },
     {
-      "id": "riemann-lebesgue",
-      "title": "Riemann-Lebesgue Lemma (BV Version)",
-      "startLine": 223,
-      "endLine": 283,
-      "summary": "Axiomatizes the Riemann-Lebesgue lemma for BV functions: $\\int g(t) e^{i\\lambda t}\\,dt \\to 0$ as $\\lambda \\to \\infty$. Also axiomatizes the Dirichlet kernel localization lemma that combines integral splitting with Riemann-Lebesgue."
+      "id": "part-5-one-sided-limits",
+      "title": "PART V: One-Sided Limits on the Circle",
+      "startLine": 231,
+      "endLine": 261,
+      "summary": "Defines `rightLimit`/`leftLimit` via `limUnder` against `nhdsWithin` from the right/left. Axiomatizes that BV functions have well-defined one-sided limits everywhere (`hasBV_implies_rightLimit_exists`, `hasBV_implies_leftLimit_exists`)."
     },
     {
-      "id": "main-theorem",
-      "title": "Dirichlet Convergence Theorem",
-      "startLine": 284,
-      "endLine": 328,
-      "summary": "**The main result** (PROVED): $S_N f(x_0) \\to (f(x_0^+) + f(x_0^-))/2$ for BV functions. The proof chains: obtain one-sided limits, identify with rightLimit/leftLimit via uniqueness, rewrite as convolution, apply localization."
+      "id": "part-6-riemann-lebesgue",
+      "title": "PART VI: The Riemann-Lebesgue Lemma (BV Version)",
+      "startLine": 262,
+      "endLine": 277,
+      "summary": "Documents the Riemann-Lebesgue lemma for BV functions ($\\int g(t) e^{i\\lambda t}\\,dt \\to 0$ as $|\\lambda|\\to\\infty$, via integration by parts), the key analytical input for Dirichlet convergence."
     },
     {
-      "id": "consequences",
-      "title": "Consequences and Special Cases",
-      "startLine": 329,
-      "endLine": 731,
-      "summary": "Proves corollaries: convergence to $f(x_0)$ at continuity points (`dirichlet_at_continuity_point`), everywhere convergence for continuous BV functions (`dirichlet_continuous_BV`), and Lipschitz/monotone BV connections."
+      "id": "part-6b-localization-lemma",
+      "title": "PART VI-B: Dirichlet Kernel Localization Lemma",
+      "startLine": 278,
+      "endLine": 317,
+      "summary": "Axiomatizes `dirichlet_localization`: the convolution of a BV function with $D_N$ converges to the midpoint of the one-sided limits, $\\int f(t) D_N(x_0-t)\\,dt \\to (L_+ + L_-)/2$. Includes the classical integral-splitting proof outline."
+    },
+    {
+      "id": "part-7-convergence-theorem",
+      "title": "PART VII: The Dirichlet Convergence Theorem (Main Result)",
+      "startLine": 318,
+      "endLine": 362,
+      "summary": "**Main result** `dirichlet_pointwise_convergence` (PROVED): $S_N f(x_0) \\to (f(x_0^+)+f(x_0^-))/2$ for BV $f$. Chains one-sided limit existence, identification of rightLimit/leftLimit via uniqueness, the convolution rewrite, and the localization axiom."
+    },
+    {
+      "id": "part-8-consequences",
+      "title": "PART VIII: Consequences and Special Cases",
+      "startLine": 363,
+      "endLine": 421,
+      "summary": "Proves `rightLimit_eq_of_continuousAt`/`leftLimit_eq_of_continuousAt`, `dirichlet_at_continuity_point` (convergence to $f(x_0)$ at continuity points), and `dirichlet_continuous_BV` (everywhere convergence for continuous BV functions)."
+    },
+    {
+      "id": "part-9-lipschitz-smooth",
+      "title": "PART IX: Lipschitz and Smooth Functions (Corollaries)",
+      "startLine": 422,
+      "endLine": 441,
+      "summary": "`smooth_functions_converge`: continuously differentiable (hence Lipschitz, hence BV) functions converge pointwise to $f$, giving a large explicit class for which Dirichlet's theorem applies."
+    },
+    {
+      "id": "part-10-monotone",
+      "title": "PART X: Monotone Functions (Special Case)",
+      "startLine": 442,
+      "endLine": 449,
+      "summary": "Notes that monotone functions on closed intervals have bounded variation (total variation $= |f(b)-f(a)|$), placing them within the scope of Dirichlet's theorem."
+    },
+    {
+      "id": "part-11-fejer-cesaro",
+      "title": "PART XI: Fejér Kernel and Cesàro Summability",
+      "startLine": 450,
+      "endLine": 548,
+      "summary": "Defines the Fejér kernel `fejerKernel` (Cesàro mean of Dirichlet kernels) and the `cesaroMean`. Proves continuity, $F_1=1$, and $F_N(0)=N$ (via $\\sum$ of odd numbers $= N^2$). Discusses Fejér's theorem (uniform Cesàro convergence for continuous $f$)."
+    },
+    {
+      "id": "part-12-bessel-parseval",
+      "title": "PART XII: Bessel's Inequality and Parseval's Theorem",
+      "startLine": 549,
+      "endLine": 774,
+      "summary": "Defines `l2NormSq`/`fourierCoeffSumSq`, proves nonnegativity and monotonicity, and the bridge `hasSum_fourierCoeffSq`. Proves `bessel_inequality`, `parseval_theorem` (via cofinality of $\\text{Icc}(-N,N)$), `fourierCoeff_tendsto_zero` (L² Riemann-Lebesgue), and `fourier_uniqueness`."
+    },
+    {
+      "id": "part-13-verification",
+      "title": "PART XIII: Verification",
+      "startLine": 775,
+      "endLine": 808,
+      "summary": "`#check` commands verifying all main definitions and theorems type-check, followed by the FourierDirichlet namespace close."
     }
   ],
   "crossReferences": [

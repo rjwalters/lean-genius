@@ -452,7 +452,7 @@ theorem tourMoves_getElem_63 (t : ClosedTour) :
   have h'' : 63 - t.squares.tail.length < 1 := by rw [htail_len]; omega
   have h63_snd : (t.squares.tail ++ [t.squares.head t.nonempty])[63]'(by simp [htail_len]) =
                   t.squares.head t.nonempty := by
-    rw [@List.getElem_append_right _ _ t.squares.tail [t.squares.head t.nonempty] h_not_lt _ h'']
+    rw [List.getElem_append_right (Nat.le_of_not_lt h_not_lt)]
     simp only [htail_len, Nat.sub_self, List.getElem_singleton]
   have h63_fst : t.squares[63]'(by rw [t.length_eq]; omega) = t.squares.getLast t.nonempty := by
     simp only [List.getLast_eq_getElem]
@@ -483,13 +483,17 @@ theorem no_turn_angle_4_at_62 (t : ClosedTour) :
       congr 1
       simp [t.length_eq]
     rw [tourMoves_getElem_63]
-    simp only [← h63]
+    congr 1
+    exact h63.symm
   -- Adjacencies
   have hadj01 : knightGraph.Adj s0 s1 := tour_consecutive_adj t 62 (by omega)
   have hadj12 : knightGraph.Adj s1 s2 := by
     -- s1 = squares[63] = getLast, s2 = head
     have h63 : s1 = t.squares.getLast t.nonempty := by
-      simp only [List.getLast_eq_getElem, t.length_eq]
+      show t.squares[63]'(by rw [t.length_eq]; omega) = t.squares.getLast t.nonempty
+      simp only [List.getLast_eq_getElem]
+      congr 1
+      simp [t.length_eq]
     rw [h63]
     exact t.closes
   -- Turn angle is 4
@@ -513,7 +517,8 @@ theorem no_turn_angle_4_at_62 (t : ClosedTour) :
     have h1 : (62 : Nat) < t.squares.length := by rw [t.length_eq]; omega
     have h2 : (0 : Nat) < t.squares.length := by rw [t.length_eq]; omega
     have hfinEq := @hnodupIdx ⟨62, h1⟩ ⟨0, h2⟩ hbad
-    simp_all only [Fin.mk.injEq]
+    simp only [Fin.mk.injEq] at hfinEq
+    omega
   exact hdistinct heq
 
 /-- Turn angle 4 never occurs at position 63 (the cyclic wrap-around).
@@ -549,7 +554,10 @@ theorem no_turn_angle_4_at_63 (t : ClosedTour) :
     -- s0 = squares[63] = getLast, s1 = squares[0] = head
     -- t.closes says Adj getLast head
     have h63 : s0 = t.squares.getLast t.nonempty := by
-      simp only [List.getLast_eq_getElem, t.length_eq]
+      show t.squares[63]'(by rw [t.length_eq]; omega) = t.squares.getLast t.nonempty
+      simp only [List.getLast_eq_getElem]
+      congr 1
+      simp [t.length_eq]
     have hhead : s1 = t.squares.head t.nonempty :=
       List.getElem_zero (by rw [t.length_eq]; omega)
     rw [h63, hhead]
@@ -753,59 +761,33 @@ theorem corner77_oblique_2 :
     isOblique (getMoveVector neighbor77_2 corner77) (getMoveVector corner77 neighbor77_1) = true := by
   native_decide
 
--- Helper: check if all neighbors of a corner are in a given pair
-private def checkCornerNeighbors (c n1 n2 : Square) : Bool :=
-  (List.range 8).all fun r1 =>
-    (List.range 8).all fun c1 =>
-      let s : Square := (⟨r1, by omega⟩, ⟨c1, by omega⟩)
-      !knightAdj c s || s == n1 || s == n2
-
--- Pre-verified: corner neighbors check passes for all 4 corners
-private theorem corner00_check : checkCornerNeighbors corner00 neighbor00_1 neighbor00_2 = true := by
-  native_decide
-private theorem corner07_check : checkCornerNeighbors corner07 neighbor07_1 neighbor07_2 = true := by
-  native_decide
-private theorem corner70_check : checkCornerNeighbors corner70 neighbor70_1 neighbor70_2 = true := by
-  native_decide
-private theorem corner77_check : checkCornerNeighbors corner77 neighbor77_1 neighbor77_2 = true := by
-  native_decide
-
--- Extract the actual theorem from the check
-private theorem cornerNeighbors_of_check (c n1 n2 : Square) (hcheck : checkCornerNeighbors c n1 n2 = true)
-    (s : Square) (h : knightGraph.Adj c s) : s = n1 ∨ s = n2 := by
-  simp only [checkCornerNeighbors, List.all_eq_true, List.mem_range, decide_eq_true_eq] at hcheck
-  have hs := hcheck s.1.val s.1.isLt s.2.val s.2.isLt
-  simp only [knightGraph, SimpleGraph.Adj] at h
-  simp only [h, Bool.not_eq_true', Bool.false_eq_true, Bool.or_eq_true, beq_iff_eq, false_or] at hs
-  cases hs with
-  | inl h1 =>
-    left; ext <;> simp only [Fin.ext_iff]
-    · have := congrArg (·.1.val) h1; simp at this; omega
-    · have := congrArg (·.2.val) h1; simp at this; omega
-  | inr h2 =>
-    right; ext <;> simp only [Fin.ext_iff]
-    · have := congrArg (·.1.val) h2; simp at this; omega
-    · have := congrArg (·.2.val) h2; simp at this; omega
+-- Each corner has exactly two knight-neighbors. The adjacency relation is
+-- decidable on the finite board, so these are proved by `decide` directly
+-- (converting `knightGraph.Adj` to the decidable `knightAdj` first).
 
 /-- Corner (0,0) has exactly two neighbors -/
 theorem corner00_neighbors (s : Square) (h : knightGraph.Adj corner00 s) :
-    s = neighbor00_1 ∨ s = neighbor00_2 :=
-  cornerNeighbors_of_check corner00 neighbor00_1 neighbor00_2 corner00_check s h
+    s = neighbor00_1 ∨ s = neighbor00_2 := by
+  have h' : knightAdj corner00 s := h
+  clear h; revert h'; revert s; decide
 
 /-- Corner (0,7) has exactly two neighbors -/
 theorem corner07_neighbors (s : Square) (h : knightGraph.Adj corner07 s) :
-    s = neighbor07_1 ∨ s = neighbor07_2 :=
-  cornerNeighbors_of_check corner07 neighbor07_1 neighbor07_2 corner07_check s h
+    s = neighbor07_1 ∨ s = neighbor07_2 := by
+  have h' : knightAdj corner07 s := h
+  clear h; revert h'; revert s; decide
 
 /-- Corner (7,0) has exactly two neighbors -/
 theorem corner70_neighbors (s : Square) (h : knightGraph.Adj corner70 s) :
-    s = neighbor70_1 ∨ s = neighbor70_2 :=
-  cornerNeighbors_of_check corner70 neighbor70_1 neighbor70_2 corner70_check s h
+    s = neighbor70_1 ∨ s = neighbor70_2 := by
+  have h' : knightAdj corner70 s := h
+  clear h; revert h'; revert s; decide
 
 /-- Corner (7,7) has exactly two neighbors -/
 theorem corner77_neighbors (s : Square) (h : knightGraph.Adj corner77 s) :
-    s = neighbor77_1 ∨ s = neighbor77_2 :=
-  cornerNeighbors_of_check corner77 neighbor77_1 neighbor77_2 corner77_check s h
+    s = neighbor77_1 ∨ s = neighbor77_2 := by
+  have h' : knightAdj corner77 s := h
+  clear h; revert h'; revert s; decide
 
 /-- Two neighbors of a corner are distinct -/
 theorem corner00_neighbors_distinct : neighbor00_1 ≠ neighbor00_2 := by native_decide
@@ -896,10 +878,12 @@ theorem tour_cyclic_adj (t : ClosedTour) (i : Fin 64) :
     simp only [hi, Nat.add_mod_right]
     -- Need to show squares[63] adj squares[0]
     have hclose := t.closes
-    have hlast : t.squares.getLast t.nonempty = t.squares[63] := by
-      simp only [List.getLast_eq_getElem, t.length_eq]
-    have hhead : t.squares.head t.nonempty = t.squares[0] := by
-      simp only [List.head_eq_getElem, t.length_eq]
+    have hlast : t.squares.getLast t.nonempty = t.squares[63]'(by rw [t.length_eq]; omega) := by
+      simp only [List.getLast_eq_getElem]
+      congr 1
+      simp [t.length_eq]
+    have hhead : t.squares.head t.nonempty = t.squares[0]'(by rw [t.length_eq]; omega) := by
+      simp only [List.head_eq_getElem]
     rw [← hlast, ← hhead]
     exact hclose
 
@@ -907,11 +891,12 @@ theorem tour_cyclic_adj (t : ClosedTour) (i : Fin 64) :
 theorem tour_index_neq (t : ClosedTour) (i j : Nat) (hi : i < 64) (hj : j < 64) (hne : i ≠ j) :
     t.squares[i]'(by rw [t.length_eq]; exact hi) ≠ t.squares[j]'(by rw [t.length_eq]; exact hj) := by
   intro heq
-  have := List.Nodup.get_inj_iff t.nodup
-  have h : (⟨i, by rw [t.length_eq]; exact hi⟩ : Fin t.squares.length) =
-           ⟨j, by rw [t.length_eq]; exact hj⟩ := this.mp heq
-  simp at h
-  exact hne h
+  have hinj := List.nodup_iff_injective_getElem.mp t.nodup
+  have h1 : i < t.squares.length := by rw [t.length_eq]; exact hi
+  have h2 : j < t.squares.length := by rw [t.length_eq]; exact hj
+  have hfin := @hinj ⟨i, h1⟩ ⟨j, h2⟩ heq
+  simp only [Fin.mk.injEq] at hfin
+  exact hne hfin
 
 /-- A closed tour visits all 64 squares -/
 theorem tour_visits_all (t : ClosedTour) (s : Square) : s ∈ t.squares := by
@@ -941,27 +926,32 @@ theorem movePairs_getElem (t : ClosedTour) (i : Nat) (hi : i < 64) :
     (moves[i]'(by rw [tourMoves_length]; exact hi),
      moves[(i + 1) % 64]'(by rw [tourMoves_length]; omega)) := by
   simp only [List.getElem_zip]
+  rw [Prod.mk.injEq]
   constructor
   · rfl
   · have hlen : (tourMoves t).length = 64 := tourMoves_length t
     by_cases h63 : i < 63
     · -- For i < 63, the second element comes from tail
-      simp only [List.getElem_append_left, List.length_tail, hlen]
-      · simp only [List.getElem_tail]
-        have hmod : (i + 1) % 64 = i + 1 := by omega
-        rw [hmod]
-      · rw [hlen]; omega
+      have htl_len : (tourMoves t).tail.length = 63 := by rw [List.length_tail, hlen]
+      have hi_lt : i < (tourMoves t).tail.length := by rw [htl_len]; omega
+      rw [List.getElem_append_left hi_lt, List.getElem_tail]
+      congr 1
+      omega
     · -- For i = 63, the second element is head!
       have hi63 : i = 63 := by omega
       subst hi63
-      simp only [List.length_tail, hlen, Nat.sub_self, Nat.lt_irrefl,
-                 not_false_eq_true, List.getElem_append_right, List.length_nil]
-      simp only [List.getElem_singleton]
-      have hmod : (63 + 1) % 64 = 0 := by omega
-      rw [hmod]
-      have hhead : (tourMoves t).head! = (tourMoves t)[0]'(by rw [hlen]; omega) :=
-        List.head!_eq_getElem _ (by rw [hlen]; omega)
-      exact hhead
+      have htl_len : (tourMoves t).tail.length = 63 := by rw [List.length_tail, hlen]
+      have h_not_lt : ¬ (63 : Nat) < (tourMoves t).tail.length := by rw [htl_len]; omega
+      rw [List.getElem_append_right (Nat.le_of_not_lt h_not_lt)]
+      simp only [htl_len, Nat.sub_self, List.getElem_singleton]
+      have hhead : (tourMoves t).head! = (tourMoves t)[0]'(by rw [hlen]; omega) := by
+        have hgen : ∀ (m : List MoveVector) (hp : 0 < m.length), m.head! = m[0]'hp := by
+          intro m hp
+          cases m with
+          | nil => simp at hp
+          | cons a as => simp [List.head!_cons]
+        exact hgen _ _
+      rw [hhead]
 
 /-- tourMoves relates to getMoveVector at cyclic indices -/
 theorem tourMoves_cyclic_getElem (t : ClosedTour) (i : Nat) (hi : i < 64) :
@@ -971,16 +961,18 @@ theorem tourMoves_cyclic_getElem (t : ClosedTour) (i : Nat) (hi : i < 64) :
   by_cases h63 : i < 63
   · -- For i < 63, use tourMoves_getElem_lt
     rw [tourMoves_getElem_lt t i h63]
-    have hmod : (i + 1) % 64 = i + 1 := by omega
-    rw [hmod]
+    congr 1
+    congr 1
+    omega
   · -- For i = 63, use tourMoves_getElem_63
     have hi63 : i = 63 := by omega
     subst hi63
     rw [tourMoves_getElem_63]
-    have hmod : (63 + 1) % 64 = 0 := by omega
-    rw [hmod]
-    simp only [getMoveVector]
-    congr 1 <;> rfl
+    have hlast : t.squares.getLast t.nonempty = t.squares[63]'(by rw [t.length_eq]; omega) := by
+      simp only [List.getLast_eq_getElem]; congr 1; simp [t.length_eq]
+    have hhead : t.squares.head t.nonempty = t.squares[0]'(by rw [t.length_eq]; omega) := by
+      simp only [List.head_eq_getElem]
+    rw [hlast, hhead]
 
 /-- Filter length is at least the cardinality of indices satisfying the predicate -/
 theorem filter_length_ge_of_distinct_indices {α : Type*} (l : List α) (p : α → Bool)
@@ -1001,7 +993,7 @@ theorem filter_length_ge_of_distinct_indices {α : Type*} (l : List α) (p : α 
       let indicesPos : Finset (Fin (hd :: tl).length) := indices.filter (fun i => i.val ≠ 0)
       have hpart : indices = indices0 ∪ indicesPos := by
         ext i
-        simp only [Finset.mem_union, Finset.mem_filter]
+        simp only [indices0, indicesPos, Finset.mem_union, Finset.mem_filter]
         constructor
         · intro hi
           by_cases h0 : i.val = 0 <;> simp [hi, h0]
@@ -1010,7 +1002,7 @@ theorem filter_length_ge_of_distinct_indices {α : Type*} (l : List α) (p : α 
       have hdisj : Disjoint indices0 indicesPos := by
         simp only [Finset.disjoint_iff_ne]
         intro a ha b hb
-        simp only [Finset.mem_filter] at ha hb
+        simp only [indices0, indicesPos, Finset.mem_filter] at ha hb
         omega
       have hcard : indices.card = indices0.card + indicesPos.card := by
         rw [hpart, Finset.card_union_of_disjoint hdisj]
@@ -1019,49 +1011,41 @@ theorem filter_length_ge_of_distinct_indices {α : Type*} (l : List α) (p : α 
       have hzero_le : indices0.card ≤ 1 := by
         apply Finset.card_le_one.mpr
         intro a ha b hb
-        simp only [Finset.mem_filter, and_imp] at ha hb
+        simp only [indices0, Finset.mem_filter, and_imp] at ha hb
         ext; omega
-      -- Map indicesPos to indices in tl
-      let f : {i : Fin (hd :: tl).length // i.val ≠ 0} → Fin tl.length :=
-        fun i => ⟨i.val.val - 1, by
-          have := i.val.isLt
-          simp only [List.length_cons] at this
-          omega⟩
-      have hf_inj : Function.Injective f := by
-        intro ⟨a, ha⟩ ⟨b, hb⟩ heq
-        simp only [f, Subtype.mk.injEq, Fin.ext_iff] at heq
-        ext
-        omega
-      -- Create new finset for tail
+      -- Create new finset for tail (shift each positive index down by one)
       let indicesTl : Finset (Fin tl.length) :=
         indicesPos.attach.image (fun ⟨i, hi⟩ => ⟨i.val - 1, by
           have := i.isLt
           simp only [List.length_cons] at this
-          simp only [Finset.mem_filter] at hi
+          simp only [indicesPos, Finset.mem_filter] at hi
           omega⟩)
       have hcardTl : indicesTl.card = indicesPos.card := by
         rw [Finset.card_image_of_injective]
         · exact Finset.card_attach
-        · intro ⟨a, ha⟩ ⟨b, hb⟩ heq
+        · intro x y heq
           simp only [Fin.mk.injEq] at heq
-          ext
-          simp only [Finset.mem_filter] at ha hb
+          have hx := x.2; have hy := y.2
+          simp only [indicesPos, Finset.mem_filter] at hx hy
+          apply Subtype.ext
+          apply Fin.ext
           omega
       have hTl : ∀ i ∈ indicesTl, p (tl[i]) = true := by
         intro i hi
         simp only [indicesTl, Finset.mem_image, Finset.mem_attach, true_and, Subtype.exists] at hi
         obtain ⟨j, hj, hjval⟩ := hi
-        simp only [Finset.mem_filter] at hj
-        have hspec := h j hj.1
-        simp only [List.getElem_cons_succ] at hspec
-        have : (hd :: tl)[j.val] = tl[j.val - 1] := by
-          simp only [List.getElem_cons_succ_eq_getElem_tail hj.2]
-          congr 1
-          omega
-        rw [this] at hspec
-        convert hspec using 1
-        simp only [Fin.ext_iff] at hjval
-        omega
+        simp only [indicesPos, Finset.mem_filter] at hj
+        have hspec : p ((hd :: tl)[j.val]'j.isLt) = true := h j hj.1
+        have hjlt : j.val - 1 < tl.length := by
+          have := j.isLt; simp only [List.length_cons] at this; omega
+        have hcons : (hd :: tl)[j.val]'j.isLt = tl[j.val - 1]'hjlt := by
+          rw [List.getElem_cons, dif_neg hj.2]
+        rw [hcons] at hspec
+        have hidx : i.val = j.val - 1 := by
+          simp only [Fin.ext_iff] at hjval; omega
+        show p (tl[i.val]'i.isLt) = true
+        simp only [hidx]
+        exact hspec
       have ihapp := ih indicesTl hTl
       omega
     · simp only [List.filter_cons_of_neg hp, List.length_cons]
@@ -1069,10 +1053,11 @@ theorem filter_length_ge_of_distinct_indices {α : Type*} (l : List α) (p : α 
       have hindices_pos : ∀ i ∈ indices, i.val ≠ 0 := by
         intro i hi
         by_contra h0
-        have hspec := h i hi
-        simp only [h0, List.getElem_cons_zero] at hspec
-        rw [hp] at hspec
-        contradiction
+        have hspec : p ((hd :: tl)[i.val]'i.isLt) = true := h i hi
+        have hcons : (hd :: tl)[i.val]'i.isLt = hd := by
+          rw [List.getElem_cons, dif_pos h0]
+        rw [hcons] at hspec
+        exact hp hspec
       let indicesTl : Finset (Fin tl.length) :=
         indices.attach.image (fun ⟨i, hi⟩ => ⟨i.val - 1, by
           have := i.isLt
@@ -1082,22 +1067,29 @@ theorem filter_length_ge_of_distinct_indices {α : Type*} (l : List α) (p : α 
       have hcardTl : indicesTl.card = indices.card := by
         rw [Finset.card_image_of_injective]
         · exact Finset.card_attach
-        · intro ⟨a, ha⟩ ⟨b, hb⟩ heq
+        · intro x y heq
           simp only [Fin.mk.injEq] at heq
-          ext
-          have ha' := hindices_pos a ha
-          have hb' := hindices_pos b hb
+          have hx' := hindices_pos x.val x.2
+          have hy' := hindices_pos y.val y.2
+          apply Subtype.ext
+          apply Fin.ext
           omega
       have hTl : ∀ i ∈ indicesTl, p (tl[i]) = true := by
         intro i hi
         simp only [indicesTl, Finset.mem_image, Finset.mem_attach, true_and, Subtype.exists] at hi
         obtain ⟨j, hj, hjval⟩ := hi
-        have hspec := h j hj
         have hjpos := hindices_pos j hj
-        simp only [List.getElem_cons_succ_eq_getElem_tail hjpos] at hspec
-        convert hspec using 1
-        simp only [Fin.ext_iff] at hjval
-        omega
+        have hspec : p ((hd :: tl)[j.val]'j.isLt) = true := h j hj
+        have hjlt : j.val - 1 < tl.length := by
+          have := j.isLt; simp only [List.length_cons] at this; omega
+        have hcons : (hd :: tl)[j.val]'j.isLt = tl[j.val - 1]'hjlt := by
+          rw [List.getElem_cons, dif_neg hjpos]
+        rw [hcons] at hspec
+        have hidx : i.val = j.val - 1 := by
+          simp only [Fin.ext_iff] at hjval; omega
+        show p (tl[i.val]'i.isLt) = true
+        simp only [hidx]
+        exact hspec
       have ihapp := ih indicesTl hTl
       rw [← hcardTl]
       exact ihapp
@@ -1128,37 +1120,37 @@ theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
   have hc70 : corner70 ∈ t.squares := tour_visits_all t corner70
   have hc77 : corner77 ∈ t.squares := tour_visits_all t corner77
 
-  -- Get indices for each corner using List.mem_iff_get (avoiding BEq issues)
-  obtain ⟨⟨i00, hi00⟩, heq00⟩ := List.mem_iff_get.mp hc00
-  obtain ⟨⟨i07, hi07⟩, heq07⟩ := List.mem_iff_get.mp hc07
-  obtain ⟨⟨i70, hi70⟩, heq70⟩ := List.mem_iff_get.mp hc70
-  obtain ⟨⟨i77, hi77⟩, heq77⟩ := List.mem_iff_get.mp hc77
+  -- Get indices for each corner using List.mem_iff_getElem (avoiding BEq issues)
+  obtain ⟨i00, hi00, heq00⟩ := List.mem_iff_getElem.mp hc00
+  obtain ⟨i07, hi07, heq07⟩ := List.mem_iff_getElem.mp hc07
+  obtain ⟨i70, hi70, heq70⟩ := List.mem_iff_getElem.mp hc70
+  obtain ⟨i77, hi77, heq77⟩ := List.mem_iff_getElem.mp hc77
 
   -- The indices are distinct (since corners are distinct and tour is nodup)
   have hdist : i00 ≠ i07 ∧ i00 ≠ i70 ∧ i00 ≠ i77 ∧ i07 ≠ i70 ∧ i07 ≠ i77 ∧ i70 ≠ i77 := by
     refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
     all_goals intro h
-    · have hget : t.squares.get ⟨i00, hi00⟩ = t.squares.get ⟨i07, hi07⟩ := by simp [h]
+    · have hget : t.squares[i00]'hi00 = t.squares[i07]'hi07 := by simp only [h]
       exact corners_distinct.1 (heq00.symm.trans (hget.trans heq07))
-    · have hget : t.squares.get ⟨i00, hi00⟩ = t.squares.get ⟨i70, hi70⟩ := by simp [h]
+    · have hget : t.squares[i00]'hi00 = t.squares[i70]'hi70 := by simp only [h]
       exact corners_distinct.2.1 (heq00.symm.trans (hget.trans heq70))
-    · have hget : t.squares.get ⟨i00, hi00⟩ = t.squares.get ⟨i77, hi77⟩ := by simp [h]
+    · have hget : t.squares[i00]'hi00 = t.squares[i77]'hi77 := by simp only [h]
       exact corners_distinct.2.2.1 (heq00.symm.trans (hget.trans heq77))
-    · have hget : t.squares.get ⟨i07, hi07⟩ = t.squares.get ⟨i70, hi70⟩ := by simp [h]
+    · have hget : t.squares[i07]'hi07 = t.squares[i70]'hi70 := by simp only [h]
       exact corners_distinct.2.2.2.1 (heq07.symm.trans (hget.trans heq70))
-    · have hget : t.squares.get ⟨i07, hi07⟩ = t.squares.get ⟨i77, hi77⟩ := by simp [h]
+    · have hget : t.squares[i07]'hi07 = t.squares[i77]'hi77 := by simp only [h]
       exact corners_distinct.2.2.2.2.1 (heq07.symm.trans (hget.trans heq77))
-    · have hget : t.squares.get ⟨i70, hi70⟩ = t.squares.get ⟨i77, hi77⟩ := by simp [h]
+    · have hget : t.squares[i70]'hi70 = t.squares[i77]'hi77 := by simp only [h]
       exact corners_distinct.2.2.2.2.2 (heq70.symm.trans (hget.trans heq77))
 
   -- For each corner position j, the turn at that corner is oblique.
   -- The turn involves moves[(j+63)%64] and moves[j], which form a pair.
 
   -- Rename indices for clarity
-  have hi00_lt : i00 < 64 := by rw [t.length_eq] at hi00; exact hi00
-  have hi07_lt : i07 < 64 := by rw [t.length_eq] at hi07; exact hi07
-  have hi70_lt : i70 < 64 := by rw [t.length_eq] at hi70; exact hi70
-  have hi77_lt : i77 < 64 := by rw [t.length_eq] at hi77; exact hi77
+  have hi00_lt : i00 < 64 := by rw [← t.length_eq]; exact hi00
+  have hi07_lt : i07 < 64 := by rw [← t.length_eq]; exact hi07
+  have hi70_lt : i70 < 64 := by rw [← t.length_eq]; exact hi70
+  have hi77_lt : i77 < 64 := by rw [← t.length_eq]; exact hi77
 
   -- At each corner, prev ≠ next (different cyclic positions, nodup)
   have hprev00 : (i00 + 63) % 64 ≠ (i00 + 1) % 64 := by omega
@@ -1190,14 +1182,11 @@ theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
   have hadj_prev00 : knightGraph.Adj (t.squares[(i00 + 63) % 64]'(by rw [t.length_eq]; omega)) corner00 := by
     have h := tour_cyclic_adj t ⟨(i00 + 63) % 64, by omega⟩
     have hmod : ((i00 + 63) % 64 + 1) % 64 = i00 := by omega
-    rw [hmod] at h
-    convert h.symm using 1
-    rw [← heq00]
+    simp only [hmod] at h
+    rwa [heq00] at h
   have hadj_next00 : knightGraph.Adj corner00 (t.squares[(i00 + 1) % 64]'(by rw [t.length_eq]; omega)) := by
     have h := tour_cyclic_adj t ⟨i00, hi00_lt⟩
-    convert h using 1
-    · rw [← heq00]
-    · congr 1; omega
+    rwa [heq00] at h
 
   -- The turn at corner00 is oblique
   have hobl00 : isOblique (getMoveVector (t.squares[(i00 + 63) % 64]'(by rw [t.length_eq]; omega)) corner00)
@@ -1208,14 +1197,11 @@ theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
   have hadj_prev07 : knightGraph.Adj (t.squares[(i07 + 63) % 64]'(by rw [t.length_eq]; omega)) corner07 := by
     have h := tour_cyclic_adj t ⟨(i07 + 63) % 64, by omega⟩
     have hmod : ((i07 + 63) % 64 + 1) % 64 = i07 := by omega
-    rw [hmod] at h
-    convert h.symm using 1
-    rw [← heq07]
+    simp only [hmod] at h
+    rwa [heq07] at h
   have hadj_next07 : knightGraph.Adj corner07 (t.squares[(i07 + 1) % 64]'(by rw [t.length_eq]; omega)) := by
     have h := tour_cyclic_adj t ⟨i07, hi07_lt⟩
-    convert h using 1
-    · rw [← heq07]
-    · congr 1; omega
+    rwa [heq07] at h
   have hobl07 : isOblique (getMoveVector (t.squares[(i07 + 63) % 64]'(by rw [t.length_eq]; omega)) corner07)
                           (getMoveVector corner07 (t.squares[(i07 + 1) % 64]'(by rw [t.length_eq]; omega))) = true :=
     corner_forces_oblique corner07 _ _ hcorner07 hadj_prev07 hadj_next07 hsq_neq07
@@ -1224,14 +1210,11 @@ theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
   have hadj_prev70 : knightGraph.Adj (t.squares[(i70 + 63) % 64]'(by rw [t.length_eq]; omega)) corner70 := by
     have h := tour_cyclic_adj t ⟨(i70 + 63) % 64, by omega⟩
     have hmod : ((i70 + 63) % 64 + 1) % 64 = i70 := by omega
-    rw [hmod] at h
-    convert h.symm using 1
-    rw [← heq70]
+    simp only [hmod] at h
+    rwa [heq70] at h
   have hadj_next70 : knightGraph.Adj corner70 (t.squares[(i70 + 1) % 64]'(by rw [t.length_eq]; omega)) := by
     have h := tour_cyclic_adj t ⟨i70, hi70_lt⟩
-    convert h using 1
-    · rw [← heq70]
-    · congr 1; omega
+    rwa [heq70] at h
   have hobl70 : isOblique (getMoveVector (t.squares[(i70 + 63) % 64]'(by rw [t.length_eq]; omega)) corner70)
                           (getMoveVector corner70 (t.squares[(i70 + 1) % 64]'(by rw [t.length_eq]; omega))) = true :=
     corner_forces_oblique corner70 _ _ hcorner70 hadj_prev70 hadj_next70 hsq_neq70
@@ -1240,14 +1223,11 @@ theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
   have hadj_prev77 : knightGraph.Adj (t.squares[(i77 + 63) % 64]'(by rw [t.length_eq]; omega)) corner77 := by
     have h := tour_cyclic_adj t ⟨(i77 + 63) % 64, by omega⟩
     have hmod : ((i77 + 63) % 64 + 1) % 64 = i77 := by omega
-    rw [hmod] at h
-    convert h.symm using 1
-    rw [← heq77]
+    simp only [hmod] at h
+    rwa [heq77] at h
   have hadj_next77 : knightGraph.Adj corner77 (t.squares[(i77 + 1) % 64]'(by rw [t.length_eq]; omega)) := by
     have h := tour_cyclic_adj t ⟨i77, hi77_lt⟩
-    convert h using 1
-    · rw [← heq77]
-    · congr 1; omega
+    rwa [heq77] at h
   have hobl77 : isOblique (getMoveVector (t.squares[(i77 + 63) % 64]'(by rw [t.length_eq]; omega)) corner77)
                           (getMoveVector corner77 (t.squares[(i77 + 1) % 64]'(by rw [t.length_eq]; omega))) = true :=
     corner_forces_oblique corner77 _ _ hcorner77 hadj_prev77 hadj_next77 hsq_neq77
@@ -1295,9 +1275,17 @@ theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
       ∀ i ∈ s, isCorner (t.squares[i.val]'(by rw [t.length_eq]; exact i.isLt)) = true := by
     use {⟨i00, hi00_lt⟩, ⟨i07, hi07_lt⟩, ⟨i70, hi70_lt⟩, ⟨i77, hi77_lt⟩}
     constructor
-    · simp only [Finset.card_insert_of_not_mem, Finset.card_singleton, Finset.mem_insert,
-                 Finset.mem_singleton, Fin.ext_iff]
-      simp [hdist.1, hdist.2.1, hdist.2.2.1, hdist.2.2.2.1, hdist.2.2.2.2.1, hdist.2.2.2.2.2]
+    · obtain ⟨d1, d2, d3, d4, d5, d6⟩ := hdist
+      rw [Finset.card_insert_of_notMem (by
+            simp only [Finset.mem_insert, Finset.mem_singleton, Fin.mk.injEq]
+            push_neg; exact ⟨d1, d2, d3⟩),
+          Finset.card_insert_of_notMem (by
+            simp only [Finset.mem_insert, Finset.mem_singleton, Fin.mk.injEq]
+            push_neg; exact ⟨d4, d5⟩),
+          Finset.card_insert_of_notMem (by
+            simp only [Finset.mem_singleton, Fin.mk.injEq]
+            exact d6),
+          Finset.card_singleton]
     · intro i hi
       simp only [Finset.mem_insert, Finset.mem_singleton] at hi
       rcases hi with rfl | rfl | rfl | rfl
@@ -1317,7 +1305,8 @@ theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
 
   -- These pair indices are distinct (since corner positions are distinct)
   have hp_dist : p00 ≠ p07 ∧ p00 ≠ p70 ∧ p00 ≠ p77 ∧ p07 ≠ p70 ∧ p07 ≠ p77 ∧ p70 ≠ p77 := by
-    simp only [Fin.ext_iff, Fin.val_mk, ne_eq]
+    obtain ⟨d1, d2, d3, d4, d5, d6⟩ := hdist
+    simp only [p00, p07, p70, p77, ne_eq, Fin.mk.injEq]
     refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
 
   -- Prepare the pairs list
@@ -1332,39 +1321,39 @@ theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
   -- Connect tourMoves entries to hobl expressions
   have hpairs_obl00 : isOblique (moves[p00.val]'(by rw [tourMoves_length]; exact p00.isLt))
                                 (moves[(p00.val + 1) % 64]'(by rw [tourMoves_length]; omega)) = true := by
-    have hp00_eq : (p00.val + 1) % 64 = i00 := by simp only [Fin.val_mk]; omega
+    have hp00_eq : (p00.val + 1) % 64 = i00 := by
+      show ((i00 + 63) % 64 + 1) % 64 = i00; omega
     rw [tourMoves_cyclic_getElem t p00.val p00.isLt]
-    rw [tourMoves_cyclic_getElem t i00 hi00_lt]
-    have hp00_prev : p00.val = (i00 + 63) % 64 := rfl
-    have hprev_sq : (p00.val + 1) % 64 = i00 := by omega
-    -- The first move is from squares[(i00+63)%64] to squares[i00] = corner00
-    -- The second move is from corner00 to squares[(i00+1)%64]
     simp only [hp00_eq]
-    convert hobl00 using 2 <;> rfl
+    rw [tourMoves_cyclic_getElem t i00 hi00_lt, heq00]
+    exact hobl00
 
   have hpairs_obl07 : isOblique (moves[p07.val]'(by rw [tourMoves_length]; exact p07.isLt))
                                 (moves[(p07.val + 1) % 64]'(by rw [tourMoves_length]; omega)) = true := by
-    have hp07_eq : (p07.val + 1) % 64 = i07 := by simp only [Fin.val_mk]; omega
+    have hp07_eq : (p07.val + 1) % 64 = i07 := by
+      show ((i07 + 63) % 64 + 1) % 64 = i07; omega
     rw [tourMoves_cyclic_getElem t p07.val p07.isLt]
-    rw [tourMoves_cyclic_getElem t i07 hi07_lt]
     simp only [hp07_eq]
-    convert hobl07 using 2 <;> rfl
+    rw [tourMoves_cyclic_getElem t i07 hi07_lt, heq07]
+    exact hobl07
 
   have hpairs_obl70 : isOblique (moves[p70.val]'(by rw [tourMoves_length]; exact p70.isLt))
                                 (moves[(p70.val + 1) % 64]'(by rw [tourMoves_length]; omega)) = true := by
-    have hp70_eq : (p70.val + 1) % 64 = i70 := by simp only [Fin.val_mk]; omega
+    have hp70_eq : (p70.val + 1) % 64 = i70 := by
+      show ((i70 + 63) % 64 + 1) % 64 = i70; omega
     rw [tourMoves_cyclic_getElem t p70.val p70.isLt]
-    rw [tourMoves_cyclic_getElem t i70 hi70_lt]
     simp only [hp70_eq]
-    convert hobl70 using 2 <;> rfl
+    rw [tourMoves_cyclic_getElem t i70 hi70_lt, heq70]
+    exact hobl70
 
   have hpairs_obl77 : isOblique (moves[p77.val]'(by rw [tourMoves_length]; exact p77.isLt))
                                 (moves[(p77.val + 1) % 64]'(by rw [tourMoves_length]; omega)) = true := by
-    have hp77_eq : (p77.val + 1) % 64 = i77 := by simp only [Fin.val_mk]; omega
+    have hp77_eq : (p77.val + 1) % 64 = i77 := by
+      show ((i77 + 63) % 64 + 1) % 64 = i77; omega
     rw [tourMoves_cyclic_getElem t p77.val p77.isLt]
-    rw [tourMoves_cyclic_getElem t i77 hi77_lt]
     simp only [hp77_eq]
-    convert hobl77 using 2 <;> rfl
+    rw [tourMoves_cyclic_getElem t i77 hi77_lt, heq77]
+    exact hobl77
 
   -- Now apply filter_length_ge_of_distinct_indices
   simp only [obliqueCount]
@@ -1380,26 +1369,43 @@ theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
   }
 
   have hcard : pairIndices.card = 4 := by
-    simp only [Finset.card_insert_of_not_mem, Finset.card_singleton, Finset.mem_insert,
-               Finset.mem_singleton, Fin.ext_iff, Fin.val_mk]
-    simp only [hp_dist.1, hp_dist.2.1, hp_dist.2.2.1, hp_dist.2.2.2.1, hp_dist.2.2.2.2.1, hp_dist.2.2.2.2.2,
-               not_false_eq_true, and_self]
+    rw [Finset.card_insert_of_notMem (by
+          simp only [Finset.mem_insert, Finset.mem_singleton, Fin.mk.injEq]
+          push_neg
+          exact ⟨fun h => hp_dist.1 (Fin.ext h), fun h => hp_dist.2.1 (Fin.ext h),
+                 fun h => hp_dist.2.2.1 (Fin.ext h)⟩),
+        Finset.card_insert_of_notMem (by
+          simp only [Finset.mem_insert, Finset.mem_singleton, Fin.mk.injEq]
+          push_neg
+          exact ⟨fun h => hp_dist.2.2.2.1 (Fin.ext h), fun h => hp_dist.2.2.2.2.1 (Fin.ext h)⟩),
+        Finset.card_insert_of_notMem (by
+          simp only [Finset.mem_singleton, Fin.mk.injEq]
+          exact fun h => hp_dist.2.2.2.2.2 (Fin.ext h)),
+        Finset.card_singleton]
 
   have hsat : ∀ i ∈ pairIndices, obliquePred (pairs[i]) = true := by
     intro i hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
+    simp only [pairIndices, Finset.mem_insert, Finset.mem_singleton] at hi
     simp only [obliquePred]
     rcases hi with rfl | rfl | rfl | rfl
     · -- p00
+      show isOblique (pairs[p00.val]'(by rw [movePairs_length]; exact p00.isLt)).1
+                     (pairs[p00.val]'(by rw [movePairs_length]; exact p00.isLt)).2 = true
       rw [movePairs_getElem t p00.val p00.isLt]
       exact hpairs_obl00
     · -- p07
+      show isOblique (pairs[p07.val]'(by rw [movePairs_length]; exact p07.isLt)).1
+                     (pairs[p07.val]'(by rw [movePairs_length]; exact p07.isLt)).2 = true
       rw [movePairs_getElem t p07.val p07.isLt]
       exact hpairs_obl07
     · -- p70
+      show isOblique (pairs[p70.val]'(by rw [movePairs_length]; exact p70.isLt)).1
+                     (pairs[p70.val]'(by rw [movePairs_length]; exact p70.isLt)).2 = true
       rw [movePairs_getElem t p70.val p70.isLt]
       exact hpairs_obl70
     · -- p77
+      show isOblique (pairs[p77.val]'(by rw [movePairs_length]; exact p77.isLt)).1
+                     (pairs[p77.val]'(by rw [movePairs_length]; exact p77.isLt)).2 = true
       rw [movePairs_getElem t p77.val p77.isLt]
       exact hpairs_obl77
 
@@ -1480,57 +1486,11 @@ theorem rotate_reflect_conjugate (s : Square) :
 /-- applyD4 with inverse gives identity -/
 theorem applyD4_inv_left (g : Bool × Fin 4) (s : Square) :
     applyD4 (d4Inv g) (applyD4 g s) = s := by
-  simp only [applyD4, d4Inv]
-  cases hrefl : g.1 with
-  | false =>
-    -- Pure rotation: (false, k)⁻¹ = (false, 4-k)
-    simp only [hrefl, ↓reduceIte]
-    -- Need: rotateN (4-k) (rotateN k s) = s
-    match hrot : g.2 with
-    | ⟨0, _⟩ => simp only [rotateSquareN]
-    | ⟨1, _⟩ => simp only [rotateSquareN]; exact rotate90_four_times s
-    | ⟨2, _⟩ => simp only [rotateSquareN]; exact rotate90_four_times s
-    | ⟨3, _⟩ => simp only [rotateSquareN]; exact rotate90_four_times s
-  | true =>
-    -- Reflection: (true, k)⁻¹ = (true, k), and (r^k·s)² = 1
-    simp only [hrefl, ↓reduceIte]
-    -- Need: rotateN k (reflect (rotateN k (reflect s))) = s
-    match g.2 with
-    | ⟨0, _⟩ =>
-      simp only [rotateSquareN]
-      exact reflect_twice s
-    | ⟨1, _⟩ =>
-      simp only [rotateSquareN]
-      -- rotate90 (reflect (rotate90 (reflect s))) = s
-      -- Use conjugation: reflect ∘ rotate = rotate³ ∘ reflect
-      conv_lhs => rw [rotate_reflect_conjugate]
-      simp only [reflect_twice, rotate90_four_times]
-    | ⟨2, _⟩ =>
-      simp only [rotateSquareN]
-      -- rotate180 (reflect (rotate180 (reflect s))) = s
-      conv_lhs =>
-        arg 1; arg 1
-        rw [rotate_reflect_conjugate]
-        arg 1; arg 1; arg 1
-        rw [rotate_reflect_conjugate]
-      simp only [reflect_twice]
-      -- Now we have 8 rotations which is identity
-      simp only [rotateSquare90]
-      ext <;> simp only [Fin.ext_iff] <;> omega
-    | ⟨3, _⟩ =>
-      simp only [rotateSquareN]
-      -- rotate270 (reflect (rotate270 (reflect s))) = s
-      conv_lhs =>
-        arg 1; arg 1; arg 1
-        rw [rotate_reflect_conjugate]
-        arg 1; arg 1; arg 1
-        rw [rotate_reflect_conjugate]
-        arg 1; arg 1; arg 1
-        rw [rotate_reflect_conjugate]
-      simp only [reflect_twice]
-      -- Now we have 12 rotations = 0 mod 4
-      simp only [rotateSquare90]
-      ext <;> simp only [Fin.ext_iff] <;> omega
+  obtain ⟨b, k⟩ := g
+  fin_cases k <;> cases b <;>
+    simp only [applyD4, d4Inv, rotateSquareN, reflectSquare, rotateSquare90,
+               Bool.false_eq_true, if_false, if_true, ite_false, ite_true, Fin.isValue] <;>
+    (ext <;> simp only [Fin.ext_iff] <;> omega)
 
 /-- Rotation by 90° is injective -/
 theorem rotateSquare90_injective : Function.Injective rotateSquare90 := by
@@ -1666,10 +1626,8 @@ theorem knight_adj_invariant (g : Bool × Fin 4) (s1 s2 : Square) :
   simp only [applyD4]
   cases hg : g.1 with
   | false =>
-    simp only [hg, ↓reduceIte]
     exact rotateN_preserves_adj g.2 s1 s2
   | true =>
-    simp only [hg, ↓reduceIte]
     rw [reflect_preserves_adj]
     exact rotateN_preserves_adj g.2 (reflectSquare s1) (reflectSquare s2)
 
@@ -1768,23 +1726,9 @@ def applyD4MoveVector (g : Bool × Fin 4) (v : MoveVector) : MoveVector :=
 /-- D4 transformations preserve dot products -/
 theorem applyD4_preserves_dot (g : Bool × Fin 4) (v1 v2 : MoveVector) :
     (applyD4MoveVector g v1).dot (applyD4MoveVector g v2) = v1.dot v2 := by
-  simp only [applyD4MoveVector]
-  -- Handle the reflection case first
-  cases hr : g.1 with
-  | false =>
-    -- No reflection, just rotation
-    match g.2 with
-    | 0 => simp only [hr, ↓reduceIte]
-    | 1 => simp only [hr, ↓reduceIte, rotate_preserves_dot]
-    | 2 => simp only [hr, ↓reduceIte, rotate_preserves_dot]
-    | 3 => simp only [hr, ↓reduceIte, rotate_preserves_dot]
-  | true =>
-    -- Reflection then rotation
-    match g.2 with
-    | 0 => simp only [hr, ↓reduceIte, reflect_preserves_dot]
-    | 1 => simp only [hr, ↓reduceIte, rotate_preserves_dot, reflect_preserves_dot]
-    | 2 => simp only [hr, ↓reduceIte, rotate_preserves_dot, reflect_preserves_dot]
-    | 3 => simp only [hr, ↓reduceIte, rotate_preserves_dot, reflect_preserves_dot]
+  obtain ⟨b, k⟩ := g
+  fin_cases k <;> cases b <;>
+    simp [applyD4MoveVector, rotate_preserves_dot, reflect_preserves_dot]
 
 /-- D4 transformations preserve the isOblique predicate -/
 theorem applyD4_preserves_isOblique (g : Bool × Fin 4) (v1 v2 : MoveVector) :
@@ -1867,11 +1811,11 @@ theorem getMoveVector_rotateN (n : Fin 4) (s1 s2 : Square) (h : knightGraph.Adj 
 /-- D4 commutes with getMoveVector -/
 theorem getMoveVector_applyD4 (g : Bool × Fin 4) (s1 s2 : Square) (h : knightGraph.Adj s1 s2) :
     getMoveVector (applyD4 g s1) (applyD4 g s2) = applyD4MoveVector g (getMoveVector s1 s2) := by
-  simp only [applyD4, applyD4MoveVector]
-  cases hr : g.1 with
+  obtain ⟨b, k⟩ := g
+  cases b with
   | false =>
-    simp only [hr, ↓reduceIte]
-    match g.2 with
+    simp only [applyD4, applyD4MoveVector, Bool.false_eq_true, if_false]
+    match k with
     | 0 =>
       simp only [rotateSquareN, id_eq]
     | 1 =>
@@ -1887,9 +1831,9 @@ theorem getMoveVector_applyD4 (g : Bool × Fin 4) (s1 s2 : Square) (h : knightGr
       have h2 := (rotate90_preserves_adj _ _).mp h1
       rw [getMoveVector_rotate90 _ _ h2, getMoveVector_rotate90 _ _ h1, getMoveVector_rotate90 s1 s2 h]
   | true =>
-    simp only [hr, ↓reduceIte]
+    simp only [applyD4, applyD4MoveVector, if_true]
     have hrefl := (reflect_preserves_adj s1 s2).mp h
-    match g.2 with
+    match k with
     | 0 =>
       simp only [rotateSquareN, id_eq, Function.comp_apply]
       exact getMoveVector_reflect s1 s2 h
@@ -1919,9 +1863,9 @@ theorem tourPairs_applyD4Tour (g : Bool × Fin 4) (t : ClosedTour) :
   have h_nonempty : t.squares ≠ [] := List.ne_nil_of_length_pos (by rw [t.length_eq]; omega)
   have h_map_ne : t.squares.map f ≠ [] := List.ne_nil_of_length_pos (by simp [t.length_eq])
   -- Key: (l.map f).tail = l.tail.map f and head similarly
-  have h_tail : (t.squares.map f).tail = t.squares.tail.map f := List.map_tail f t.squares |>.symm
+  have h_tail : (t.squares.map f).tail = t.squares.tail.map f := List.map_tail.symm
   have h_head : (t.squares.map f).head h_map_ne = f (t.squares.head h_nonempty) :=
-    List.head_map f t.squares h_map_ne
+    List.head_map h_map_ne
   -- Rewrite second argument as a map
   have h_second : t.squares.tail.map f ++ [f (t.squares.head h_nonempty)] =
                   (t.squares.tail ++ [t.squares.head h_nonempty]).map f := by
@@ -1953,7 +1897,7 @@ theorem tourPairs_adj_63 (t : ClosedTour) :
                   t.squares.head t.nonempty := by
     have h_not_lt : ¬ (63 : Nat) < t.squares.tail.length := by rw [htail_len]; omega
     have h'' : 63 - t.squares.tail.length < 1 := by rw [htail_len]; omega
-    rw [@List.getElem_append_right _ _ t.squares.tail [t.squares.head t.nonempty] h_not_lt _ h'']
+    rw [List.getElem_append_right (Nat.le_of_not_lt h_not_lt)]
     simp only [htail_len, Nat.sub_self, List.getElem_singleton]
   simp only [h63_snd]
   -- squares[63] is the last element
@@ -2024,7 +1968,7 @@ theorem oblique_count_invariant (g : Bool × Fin 4) (t : ClosedTour) :
   have h_moves_ne : moves ≠ [] := by
     intro h
     simp [h] at h_len
-  have h_tail : (moves.map f).tail = moves.tail.map f := List.map_tail f moves |>.symm
+  have h_tail : (moves.map f).tail = moves.tail.map f := by rw [List.map_tail]
   have h_head! : (moves.map f).head! = f moves.head! := by
     obtain ⟨x, xs, hmoves'⟩ := List.exists_cons_of_ne_nil h_moves_ne
     simp [hmoves']
@@ -2074,117 +2018,48 @@ def lexLe (l1 l2 : List Square) : Bool :=
     | .gt => false
     | .eq => lexLe t1 t2
 
+/-- Definitional characterization of the lexicographic `Ord Square`. -/
+theorem square_compare_def (s1 s2 : Square) :
+    compare s1 s2 = (match compare s1.1.val s2.1.val with
+      | .lt => Ordering.lt | .gt => .gt | .eq => compare s1.2.val s2.2.val) := rfl
+
 /-- Compare is trichotomous: for any s1 s2, exactly one of lt, eq, gt holds -/
 theorem compare_trichotomy (s1 s2 : Square) :
     compare s1 s2 = .lt ∨ compare s1 s2 = .eq ∨ compare s1 s2 = .gt := by
-  simp only [compare, Ord.compare]
-  cases compare s1.1.val s2.1.val <;> simp
+  cases h : compare s1 s2 <;> simp
 
 /-- If compare s1 s2 = lt then compare s2 s1 = gt -/
 theorem compare_lt_gt (s1 s2 : Square) :
     compare s1 s2 = .lt ↔ compare s2 s1 = .gt := by
-  simp only [compare, Ord.compare]
-  constructor
-  · intro h
-    cases hr1 : compareOfLessAndEq s1.1.val s2.1.val with
-    | lt =>
-      simp only [hr1] at h
-      have : s1.1.val < s2.1.val := by
-        simp only [compareOfLessAndEq] at hr1
-        split_ifs at hr1 with h1 h2 <;> try contradiction
-        exact h1
-      simp only [compareOfLessAndEq]
-      split_ifs with h1 h2
-      · omega
-      · omega
-      · rfl
-    | eq =>
-      simp only [hr1] at h
-      have : s1.1.val = s2.1.val := by
-        simp only [compareOfLessAndEq] at hr1
-        split_ifs at hr1 with h1 h2 <;> try contradiction
-        exact h2
-      simp only [compareOfLessAndEq, this]
-      split_ifs with h1 h2
-      · omega
-      · cases hc2 : compareOfLessAndEq s1.2.val s2.2.val with
-        | lt =>
-          simp only [hc2] at h
-          have : s1.2.val < s2.2.val := by
-            simp only [compareOfLessAndEq] at hc2
-            split_ifs at hc2 <;> try contradiction
-            assumption
-          simp only [compareOfLessAndEq]
-          split_ifs <;> try omega
-          rfl
-        | eq => simp only [hc2] at h
-        | gt => simp only [hc2] at h
-      · omega
-    | gt => simp only [hr1] at h
-  · intro h
-    -- Symmetric argument
-    cases hr2 : compareOfLessAndEq s2.1.val s1.1.val with
-    | lt =>
-      have : s2.1.val < s1.1.val := by
-        simp only [compareOfLessAndEq] at hr2
-        split_ifs at hr2 <;> try contradiction
-        assumption
-      simp only [compareOfLessAndEq]
-      split_ifs <;> try omega
-      rfl
-    | eq =>
-      simp only [hr2] at h
-      have : s2.1.val = s1.1.val := by
-        simp only [compareOfLessAndEq] at hr2
-        split_ifs at hr2 <;> try contradiction
-        assumption
-      simp only [compareOfLessAndEq, ← this]
-      split_ifs with h1 h2
-      · omega
-      · cases hc2 : compareOfLessAndEq s2.2.val s1.2.val with
-        | lt => simp only [hc2] at h
-        | eq => simp only [hc2] at h
-        | gt =>
-          have : s2.2.val > s1.2.val := by
-            simp only [compareOfLessAndEq] at hc2
-            split_ifs at hc2 <;> try contradiction
-            omega
-          simp only [compareOfLessAndEq]
-          split_ifs <;> try omega
-          rfl
-      · omega
-    | gt => simp only [hr2] at h
+  rw [square_compare_def s1 s2, square_compare_def s2 s1]
+  rcases lt_trichotomy s1.1.val s2.1.val with h | h | h
+  · rw [Nat.compare_eq_lt.2 h, Nat.compare_eq_gt.2 h]; simp
+  · rw [Nat.compare_eq_eq.2 h, Nat.compare_eq_eq.2 h.symm]
+    rcases lt_trichotomy s1.2.val s2.2.val with h2 | h2 | h2
+    · rw [Nat.compare_eq_lt.2 h2, Nat.compare_eq_gt.2 h2]; simp
+    · rw [Nat.compare_eq_eq.2 h2, Nat.compare_eq_eq.2 h2.symm]; simp
+    · rw [Nat.compare_eq_gt.2 h2, Nat.compare_eq_lt.2 h2]; simp
+  · rw [Nat.compare_eq_gt.2 h, Nat.compare_eq_lt.2 h]; simp
 
 /-- If compare s1 s2 = eq then s1 = s2 -/
 theorem compare_eq_iff (s1 s2 : Square) :
     compare s1 s2 = .eq ↔ s1 = s2 := by
-  simp only [compare, Ord.compare]
-  constructor
-  · intro h
-    cases hr1 : compareOfLessAndEq s1.1.val s2.1.val with
-    | lt => simp only [hr1] at h
-    | eq =>
-      have h1 : s1.1.val = s2.1.val := by
-        simp only [compareOfLessAndEq] at hr1
-        split_ifs at hr1 <;> try contradiction
-        assumption
-      simp only [hr1] at h
-      cases hr2 : compareOfLessAndEq s1.2.val s2.2.val with
-      | lt => simp only [hr2] at h
-      | eq =>
-        have h2 : s1.2.val = s2.2.val := by
-          simp only [compareOfLessAndEq] at hr2
-          split_ifs at hr2 <;> try contradiction
-          assumption
-        ext <;> simp only [Fin.ext_iff] <;> omega
-      | gt => simp only [hr2] at h
-    | gt => simp only [hr1] at h
-  · intro h
-    subst h
-    simp only [compareOfLessAndEq]
-    split_ifs <;> try omega
-    split_ifs <;> try omega
-    rfl
+  rw [square_compare_def s1 s2]
+  rcases lt_trichotomy s1.1.val s2.1.val with h | h | h
+  · rw [Nat.compare_eq_lt.2 h]; simp only [reduceCtorEq, false_iff]
+    intro he; rw [he] at h; exact absurd h (lt_irrefl _)
+  · rw [Nat.compare_eq_eq.2 h]
+    rcases lt_trichotomy s1.2.val s2.2.val with h2 | h2 | h2
+    · rw [Nat.compare_eq_lt.2 h2]; simp only [reduceCtorEq, false_iff]
+      intro he; rw [he] at h2; exact absurd h2 (lt_irrefl _)
+    · rw [Nat.compare_eq_eq.2 h2]; simp only [true_iff]
+      ext
+      · exact h
+      · exact h2
+    · rw [Nat.compare_eq_gt.2 h2]; simp only [reduceCtorEq, false_iff]
+      intro he; rw [he] at h2; exact absurd h2 (lt_irrefl _)
+  · rw [Nat.compare_eq_gt.2 h]; simp only [reduceCtorEq, false_iff]
+    intro he; rw [he] at h; exact absurd h (lt_irrefl _)
 
 /-- lexLe is antisymmetric: l1 ≤ l2 and l2 ≤ l1 implies l1 = l2 -/
 theorem lexLe_antisymm (l1 l2 : List Square) :
@@ -2194,18 +2069,18 @@ theorem lexLe_antisymm (l1 l2 : List Square) :
     intro _ h2
     cases l2 with
     | nil => rfl
-    | cons h t => simp only [lexLe] at h2
+    | cons h t => simp only [lexLe, reduceCtorEq] at h2
   | cons h1 t1 ih =>
     intro h12 h21
     cases l2 with
-    | nil => simp only [lexLe] at h12
+    | nil => simp only [lexLe, reduceCtorEq] at h12
     | cons h2 t2 =>
       simp only [lexLe] at h12 h21
       cases hcmp12 : compare h1 h2 with
       | lt =>
         simp only [hcmp12] at h12
         have hcmp21 := (compare_lt_gt h1 h2).mp hcmp12
-        simp only [hcmp21] at h21
+        simp only [hcmp21, reduceCtorEq] at h21
       | eq =>
         simp only [hcmp12] at h12 h21
         have heq := (compare_eq_iff h1 h2).mp hcmp12
@@ -2215,7 +2090,7 @@ theorem lexLe_antisymm (l1 l2 : List Square) :
         simp only [hcmp21] at h21
         rw [ih t2 h12 h21]
       | gt =>
-        simp only [hcmp12] at h12
+        simp only [hcmp12, reduceCtorEq] at h12
 
 /-- All 8 D4 symmetry elements -/
 def allD4Elements : List (Bool × Fin 4) :=
@@ -2230,7 +2105,7 @@ def isCanonical (t : ClosedTour) : Prop :=
   -- Lexicographically smallest among all D4 transforms
   ∀ g : Bool × Fin 4, lexLe t.squares (t.squares.map (applyD4 g))
 
-/-- The unique tour with exactly 4 oblique turns, explicitly constructed.
+/- The unique tour with exactly 4 oblique turns, explicitly constructed.
 
     This is the "beauty" Knuth identified in his 2025 lecture.
     Construction requires the explicit 64-square sequence from Knuth's result.
@@ -2238,41 +2113,41 @@ def isCanonical (t : ClosedTour) : Prop :=
     Format: List of (row, col) coordinates forming a Hamiltonian cycle in the
     knight graph, starting from (0,0) in canonical form. -/
 /-- The explicit 64-square sequence for the minimal oblique tour.
-    Computationally reconstructed using the constraint that oblique
-    turns occur only at the 4 corners. -/
+    This is the lexicographically-minimal D4 representative (canonical form),
+    so that `isCanonical` holds. Oblique turns occur only at the 4 corners. -/
 private def minimalObliqueTourSquares : List Square := [
-  (⟨0, by omega⟩, ⟨0, by omega⟩), (⟨2, by omega⟩, ⟨1, by omega⟩),
-  (⟨4, by omega⟩, ⟨0, by omega⟩), (⟨6, by omega⟩, ⟨1, by omega⟩),
-  (⟨7, by omega⟩, ⟨3, by omega⟩), (⟨6, by omega⟩, ⟨5, by omega⟩),
-  (⟨7, by omega⟩, ⟨7, by omega⟩), (⟨5, by omega⟩, ⟨6, by omega⟩),
-  (⟨3, by omega⟩, ⟨7, by omega⟩), (⟨1, by omega⟩, ⟨6, by omega⟩),
-  (⟨0, by omega⟩, ⟨4, by omega⟩), (⟨2, by omega⟩, ⟨3, by omega⟩),
-  (⟨1, by omega⟩, ⟨1, by omega⟩), (⟨3, by omega⟩, ⟨0, by omega⟩),
-  (⟨4, by omega⟩, ⟨2, by omega⟩), (⟨6, by omega⟩, ⟨3, by omega⟩),
-  (⟨7, by omega⟩, ⟨1, by omega⟩), (⟨5, by omega⟩, ⟨0, by omega⟩),
-  (⟨3, by omega⟩, ⟨1, by omega⟩), (⟨1, by omega⟩, ⟨0, by omega⟩),
-  (⟨0, by omega⟩, ⟨2, by omega⟩), (⟨1, by omega⟩, ⟨4, by omega⟩),
-  (⟨0, by omega⟩, ⟨6, by omega⟩), (⟨2, by omega⟩, ⟨7, by omega⟩),
-  (⟨3, by omega⟩, ⟨5, by omega⟩), (⟨5, by omega⟩, ⟨4, by omega⟩),
-  (⟨7, by omega⟩, ⟨5, by omega⟩), (⟨6, by omega⟩, ⟨7, by omega⟩),
-  (⟨4, by omega⟩, ⟨6, by omega⟩), (⟨3, by omega⟩, ⟨4, by omega⟩),
-  (⟨5, by omega⟩, ⟨3, by omega⟩), (⟨7, by omega⟩, ⟨2, by omega⟩),
-  (⟨6, by omega⟩, ⟨0, by omega⟩), (⟨4, by omega⟩, ⟨1, by omega⟩),
-  (⟨2, by omega⟩, ⟨0, by omega⟩), (⟨0, by omega⟩, ⟨1, by omega⟩),
-  (⟨1, by omega⟩, ⟨3, by omega⟩), (⟨2, by omega⟩, ⟨5, by omega⟩),
-  (⟨4, by omega⟩, ⟨4, by omega⟩), (⟨3, by omega⟩, ⟨2, by omega⟩),
-  (⟨5, by omega⟩, ⟨1, by omega⟩), (⟨7, by omega⟩, ⟨0, by omega⟩),
-  (⟨6, by omega⟩, ⟨2, by omega⟩), (⟨7, by omega⟩, ⟨4, by omega⟩),
-  (⟨6, by omega⟩, ⟨6, by omega⟩), (⟨4, by omega⟩, ⟨7, by omega⟩),
-  (⟨2, by omega⟩, ⟨6, by omega⟩), (⟨0, by omega⟩, ⟨7, by omega⟩),
-  (⟨1, by omega⟩, ⟨5, by omega⟩), (⟨0, by omega⟩, ⟨3, by omega⟩),
-  (⟨2, by omega⟩, ⟨2, by omega⟩), (⟨4, by omega⟩, ⟨3, by omega⟩),
-  (⟨5, by omega⟩, ⟨5, by omega⟩), (⟨3, by omega⟩, ⟨6, by omega⟩),
+  (⟨0, by omega⟩, ⟨0, by omega⟩), (⟨1, by omega⟩, ⟨2, by omega⟩),
+  (⟨0, by omega⟩, ⟨4, by omega⟩), (⟨1, by omega⟩, ⟨6, by omega⟩),
+  (⟨3, by omega⟩, ⟨7, by omega⟩), (⟨5, by omega⟩, ⟨6, by omega⟩),
+  (⟨7, by omega⟩, ⟨7, by omega⟩), (⟨6, by omega⟩, ⟨5, by omega⟩),
+  (⟨7, by omega⟩, ⟨3, by omega⟩), (⟨6, by omega⟩, ⟨1, by omega⟩),
+  (⟨4, by omega⟩, ⟨0, by omega⟩), (⟨3, by omega⟩, ⟨2, by omega⟩),
+  (⟨1, by omega⟩, ⟨1, by omega⟩), (⟨0, by omega⟩, ⟨3, by omega⟩),
+  (⟨2, by omega⟩, ⟨4, by omega⟩), (⟨3, by omega⟩, ⟨6, by omega⟩),
   (⟨1, by omega⟩, ⟨7, by omega⟩), (⟨0, by omega⟩, ⟨5, by omega⟩),
-  (⟨2, by omega⟩, ⟨4, by omega⟩), (⟨4, by omega⟩, ⟨5, by omega⟩),
+  (⟨1, by omega⟩, ⟨3, by omega⟩), (⟨0, by omega⟩, ⟨1, by omega⟩),
+  (⟨2, by omega⟩, ⟨0, by omega⟩), (⟨4, by omega⟩, ⟨1, by omega⟩),
+  (⟨6, by omega⟩, ⟨0, by omega⟩), (⟨7, by omega⟩, ⟨2, by omega⟩),
+  (⟨5, by omega⟩, ⟨3, by omega⟩), (⟨4, by omega⟩, ⟨5, by omega⟩),
   (⟨5, by omega⟩, ⟨7, by omega⟩), (⟨7, by omega⟩, ⟨6, by omega⟩),
-  (⟨6, by omega⟩, ⟨4, by omega⟩), (⟨5, by omega⟩, ⟨2, by omega⟩),
-  (⟨3, by omega⟩, ⟨3, by omega⟩), (⟨1, by omega⟩, ⟨2, by omega⟩)
+  (⟨6, by omega⟩, ⟨4, by omega⟩), (⟨4, by omega⟩, ⟨3, by omega⟩),
+  (⟨3, by omega⟩, ⟨5, by omega⟩), (⟨2, by omega⟩, ⟨7, by omega⟩),
+  (⟨0, by omega⟩, ⟨6, by omega⟩), (⟨1, by omega⟩, ⟨4, by omega⟩),
+  (⟨0, by omega⟩, ⟨2, by omega⟩), (⟨1, by omega⟩, ⟨0, by omega⟩),
+  (⟨3, by omega⟩, ⟨1, by omega⟩), (⟨5, by omega⟩, ⟨2, by omega⟩),
+  (⟨4, by omega⟩, ⟨4, by omega⟩), (⟨2, by omega⟩, ⟨3, by omega⟩),
+  (⟨1, by omega⟩, ⟨5, by omega⟩), (⟨0, by omega⟩, ⟨7, by omega⟩),
+  (⟨2, by omega⟩, ⟨6, by omega⟩), (⟨4, by omega⟩, ⟨7, by omega⟩),
+  (⟨6, by omega⟩, ⟨6, by omega⟩), (⟨7, by omega⟩, ⟨4, by omega⟩),
+  (⟨6, by omega⟩, ⟨2, by omega⟩), (⟨7, by omega⟩, ⟨0, by omega⟩),
+  (⟨5, by omega⟩, ⟨1, by omega⟩), (⟨3, by omega⟩, ⟨0, by omega⟩),
+  (⟨2, by omega⟩, ⟨2, by omega⟩), (⟨3, by omega⟩, ⟨4, by omega⟩),
+  (⟨5, by omega⟩, ⟨5, by omega⟩), (⟨6, by omega⟩, ⟨3, by omega⟩),
+  (⟨7, by omega⟩, ⟨1, by omega⟩), (⟨5, by omega⟩, ⟨0, by omega⟩),
+  (⟨4, by omega⟩, ⟨2, by omega⟩), (⟨5, by omega⟩, ⟨4, by omega⟩),
+  (⟨7, by omega⟩, ⟨5, by omega⟩), (⟨6, by omega⟩, ⟨7, by omega⟩),
+  (⟨4, by omega⟩, ⟨6, by omega⟩), (⟨2, by omega⟩, ⟨5, by omega⟩),
+  (⟨3, by omega⟩, ⟨3, by omega⟩), (⟨2, by omega⟩, ⟨1, by omega⟩)
 ]
 
 -- NOTE: The following proofs use axioms due to computational limits in Lean's
@@ -2301,17 +2176,17 @@ private theorem checkPath_implies_adj (squares : List Square) (h : checkPath squ
       cases i with
       | zero =>
         simp only [List.getElem_cons_zero, List.getElem_cons_succ, knightGraph]
-        exact h.1
+        exact of_decide_eq_true h.1
       | succ j =>
         simp only [List.length_cons, Nat.add_lt_add_iff_right] at hi
         simp only [List.getElem_cons_succ]
-        exact ih h.2 j (by omega)
+        exact ih h.2 j (by simp only [List.length_cons]; omega)
 
 -- Pre-verify the tour properties with small native_decide calls
 private theorem tour_nodup_check : minimalObliqueTourSquares.Nodup := by native_decide
 private theorem tour_path_check : checkPath minimalObliqueTourSquares = true := by native_decide
 private theorem tour_closes_check : knightAdj (minimalObliqueTourSquares.getLast (by decide))
-    (minimalObliqueTourSquares.head (by decide)) = true := by native_decide
+    (minimalObliqueTourSquares.head (by decide)) := by native_decide
 
 def minimalObliqueTour : ClosedTour where
   squares := minimalObliqueTourSquares
@@ -2415,10 +2290,10 @@ theorem canonical_unique_in_orbit (t1 t2 : ClosedTour)
     have hinv : applyD4Tour (d4Inv g) t2 = t1 := by
       rw [← hg]
       exact applyD4Tour_inv_left g t1
-    simp only [applyD4Tour] at h2_inv
-    rw [← hinv] at h2_inv
-    simp only [applyD4Tour] at h2_inv
-    exact h2_inv
+    -- so t2's squares mapped by (d4Inv g) are exactly t1's squares
+    have hsq : t2.squares.map (applyD4 (d4Inv g)) = t1.squares :=
+      congrArg ClosedTour.squares hinv
+    rwa [hsq] at h2_inv
   -- If t1 ≤ t2 and t2 ≤ t1, then t1 = t2
   rw [closedTour_eq_iff]
   exact lexLe_antisymm t1.squares t2.squares h1_le h2_le
@@ -2444,7 +2319,10 @@ theorem unique_minimum_oblique_tour :
   -- Both are canonical, so by canonical_unique_in_orbit they're equal
   symm
   apply canonical_unique_in_orbit minimalObliqueTour t' minimal_tour_is_canonical hcan'
-  exact ⟨g, hg.symm⟩
+  -- from `applyD4Tour g t' = minimalObliqueTour`, the inverse maps minimal back to t'
+  refine ⟨d4Inv g, ?_⟩
+  rw [← hg]
+  exact applyD4Tour_inv_left g t'
 
 end KnightsTourOblique
 

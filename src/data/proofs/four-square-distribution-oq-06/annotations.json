@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fsd06-ann-header",
+    "proofId": "four-square-distribution-oq-06",
+    "range": { "startLine": 1, "endLine": 66 },
+    "type": "context",
+    "title": "From a native_decide Table to Symbolic Closed Forms",
+    "content": "The header states OQ-06: replace the parent family's case-by-case verification of Jacobi's prediction jacobiR4(n) = 8·σ*(n) — checked only at n = 1..10, each by `native_decide` — with symbolic closed forms valid for whole infinite families. Two definitions set the stage: `sigmaStar n = Σ_{d∣n, 4∤d} d` (Jacobi's modified divisor sum, restated from the parent so the file stands alone against Mathlib) and `jacobiR4 n = 8·σ*(n)`. The honest-scope note is important: jacobiR4 is *defined* as 8·σ*, so these theorems compute the arithmetic prediction symbolically; they do NOT prove the geometric count r₄(n) = #{(a,b,c,d) : a²+b²+c²+d² = n} equals it (that open problem needs the q-expansion of jacobiTheta⁴). Imports are `Mathlib.NumberTheory.Divisors` and `Mathlib.Tactic`.",
+    "mathContext": "$\\sigma^*(n) = \\sum_{d \\mid n,\\ 4 \\nmid d} d$; Jacobi: $r_4(n) = 8\\sigma^*(n)$. The parent verified this at fixed $n$ via native_decide; here $\\sigma^*$ is computed as a function of a prime.",
+    "significance": "context",
+    "relatedConcepts": ["Jacobi four-square theorem", "sum of divisors", "modified divisor sum", "native_decide vs symbolic proof"],
+    "prerequisites": ["divisor functions", "Jacobi's r₄ formula"]
+  },
+  {
+    "id": "fsd06-ann-odd-prime-pow",
+    "proofId": "four-square-distribution-oq-06",
+    "range": { "startLine": 68, "endLine": 102 },
+    "type": "theorem",
+    "title": "σ* on Odd Prime Powers Is the Full Geometric Divisor Sum",
+    "content": "`sigmaStar_odd_prime_pow` proves that for an odd prime p, $\\sigma^*(p^k) = \\sum_{i=0}^{k} p^i$ — the modified sum drops *nothing*, because no divisor of an odd number can be divisible by 4. The proof enumerates the divisors of $p^k$ via `Nat.divisors_prime_pow` (they are exactly $p^0, \\ldots, p^k$), maps the sum, and discharges each `if 4 ∣ pⁱ` to the `else` branch: $p^i$ is odd (`hp.odd_of_ne_two`), so $4 \\nmid p^i$, closed by `omega` from $p^i \\bmod 2 = 1$. The corollaries `sigmaStar_prime_sq` ($\\sigma^*(p^2) = 1 + p + p^2$) and `sigmaStar_prime` ($\\sigma^*(p) = 1 + p$) specialize to $k = 2, 1$.",
+    "mathContext": "$\\sigma^*(p^k) = 1 + p + \\cdots + p^k = \\dfrac{p^{k+1}-1}{p-1}$ for odd prime $p$, since all $k+1$ divisors are odd and survive the $4 \\nmid d$ filter.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.divisors_prime_pow", "geometric divisor sum", "odd prime powers", "parity argument"],
+    "prerequisites": ["divisors of prime powers", "odd/even arithmetic"]
+  },
+  {
+    "id": "fsd06-ann-jacobi-pred",
+    "proofId": "four-square-distribution-oq-06",
+    "range": { "startLine": 104, "endLine": 119 },
+    "type": "insight",
+    "title": "The OQ-06 Headline: jacobiR4(p²) = 8(1 + p + p²)",
+    "content": "`jacobiR4_prime_sq` is the headline answer to OQ-06: Jacobi's prediction at an odd prime square is the symbolic closed form $8(1 + p + p^2)$, a genuine function of p rather than a table value. It follows by unfolding `jacobiR4` and applying `sigmaStar_prime_sq`. `jacobiR4_nine` then recovers the gallery's checked value $\\text{jacobiR4}(9) = 104$ as the $p = 3$ instance ($8 \\cdot 13 = 104$) — symbolically, with no `native_decide`, demonstrating the closed form subsumes the original numerical proof.",
+    "mathContext": "$\\text{jacobiR4}(p^2) = 8(1 + p + p^2)$; at $p = 3$: $8(1 + 3 + 9) = 8 \\cdot 13 = 104$.",
+    "significance": "key",
+    "relatedConcepts": ["closed form", "symbolic vs numerical proof", "Jacobi prediction"],
+    "prerequisites": ["the σ* prime-square value"]
+  },
+  {
+    "id": "fsd06-ann-two-pow",
+    "proofId": "four-square-distribution-oq-06",
+    "range": { "startLine": 121, "endLine": 150 },
+    "type": "theorem",
+    "title": "σ* on Powers of 2 Is Eventually Constant (= 3)",
+    "content": "For the even prime, the story flips: `sigmaStar_two_pow` proves $\\sigma^*(2^k) = 3$ for all $k \\ge 1$, because among the divisors $1, 2, 4, \\ldots, 2^k$ only $1$ and $2$ escape divisibility by 4. The private helper `sumg_two_pow` runs a `Nat.le_induction` from the base $k = 1$ (`decide`, kernel — not `native_decide`): each new top divisor $2^{k+1}$ ($k \\ge 1$) is divisible by $4 = 2^2$, so its `if` branch contributes 0 and the running total stays 3. Hence `jacobiR4_two_pow` gives $\\text{jacobiR4}(2^k) = 24$ constantly — explaining the repeated 24 at $n = 2, 4, 8$ in the parent table.",
+    "mathContext": "$\\sigma^*(2^k) = 1 + 2 = 3$ for $k \\ge 1$ (all higher powers $2^i$, $i \\ge 2$, are killed by $4 \\mid 2^i$); so $\\text{jacobiR4}(2^k) = 24$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.le_induction", "powers of two", "eventually constant sequence", "decide (kernel)"],
+    "prerequisites": ["divisors of 2ᵏ", "induction from a base"]
+  },
+  {
+    "id": "fsd06-ann-odd-structural",
+    "proofId": "four-square-distribution-oq-06",
+    "range": { "startLine": 152, "endLine": 172 },
+    "type": "insight",
+    "title": "Structural Identity: σ* = σ on Odd Inputs",
+    "content": "`sigmaStar_eq_sumDivisors_of_odd` gives the structural reason behind Part 1: on *any* odd n (not just prime powers), every divisor is odd, hence not divisible by 4, so Jacobi's modified divisor sum coincides with the ordinary sum-of-divisors function σ. The proof rewrites each summand's `if 4 ∣ d` to the `else` branch by deriving a contradiction: $4 \\mid d$ and $d \\mid n$ force $2 \\mid n$, impossible for odd n (`omega`). This identifies σ* with σ precisely on the inputs where the '$4 \\nmid d$' restriction is vacuous, isolating $n = 2^k$ and multiples of 4 as the only places σ* genuinely differs from σ.",
+    "mathContext": "$n$ odd $\\Rightarrow \\sigma^*(n) = \\sum_{d \\mid n} d = \\sigma(n)$, since $4 \\mid d \\mid n$ would give $2 \\mid n$. The modification only bites on even $n$.",
+    "significance": "key",
+    "relatedConcepts": ["sum-of-divisors function σ", "odd numbers", "divisibility transitivity"],
+    "prerequisites": ["divisor sums", "parity"]
+  }
+]

@@ -20,7 +20,9 @@
     "since": "2026-05-08T00:00:00.000Z",
     "iteration": 8,
     "focus": "Strengthen the structural relationship between Green–Tao (lower bound) and PNT (upper bound) on longestPrimeAP(N): factor bddAbove_isPrimeAP / nonempty_isPrimeAP / longest_prime_ap_monotone and strengthen pnt_green_tao_bracket so M is a free parameter (was existentially quantified and trivially satisfied with M = 0).",
-    "blockers": ["Build verification deferred (broken proofs/.lake symlink in main repo forces a fresh Mathlib clone). PR #17195 marked as build pending per convention."],
+    "blockers": [
+      "Build verification deferred (broken proofs/.lake symlink in main repo forces a fresh Mathlib clone). PR #17195 marked as build pending per convention."
+    ],
     "nextAction": "Iteration 9 candidates: add prime_ap_8 (d=210, length-8 starting at 199) and prime_ap_10 (d=210, length-10 ending at 2089); prove quantitative lower bound on smallest N containing a length-k prime AP (combine ap_difference_primorial with primorial growth); replace inline le_csSup in longest_prime_ap_unbounded with factored bddAbove_isPrimeAP lemma (cleanup).",
     "attemptCounts": {
       "total": 8,
@@ -74,7 +76,7 @@
       "path": "Proofs/Erdos200Problem.lean",
       "filename": "Erdos200Problem.lean",
       "lineCount": 230,
-      "theoremCount": 11,
+      "theoremCount": 8,
       "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,

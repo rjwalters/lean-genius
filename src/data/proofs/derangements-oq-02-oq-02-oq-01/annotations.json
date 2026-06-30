@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-der0201-fixedEmbEquiv",
+    "proofId": "derangements-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 81
+    },
+    "type": "insight",
+    "title": "The fixed-embedding bijection: σ-fixed k-tuples ≃ embeddings into Fix(σ)",
+    "content": "`fixedEmbEquiv` is the geometric heart of the whole argument. Under the action σ • f = σ ∘ f, an embedding f : Fin k ↪ Fin n is fixed exactly when σ(f i) = f i for every i — i.e. every value f i is a fixed point of σ. The equivalence sends such an f to the same map viewed as an embedding into the fixed-point subtype {x // σ x = x}, and back. The forward direction uses `DFunLike.congr_fun hf i` to extract σ(f i) = f i pointwise; injectivity is inherited on both sides. Reframing the σ-fixed tuples as embeddings into Fix(σ) is what makes them countable by a clean closed form in the next lemma.",
+    "mathContext": "$\\{f:\\mathrm{Fin}\\,k\\hookrightarrow \\mathrm{Fin}\\,n \\mid \\sigma\\cdot f=f\\}\\;\\simeq\\;(\\mathrm{Fin}\\,k\\hookrightarrow \\mathrm{Fix}(\\sigma))$, since $\\sigma\\cdot f=f \\iff \\forall i,\\ \\sigma(f_i)=f_i \\iff \\mathrm{im}\\,f\\subseteq \\mathrm{Fix}(\\sigma)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "group action on embeddings",
+      "MulAction.fixedBy",
+      "Equiv.Perm.smul_def",
+      "DFunLike.congr_fun",
+      "fixed points of a permutation"
+    ],
+    "prerequisites": [
+      "Mathlib.GroupTheory.GroupAction.Embedding",
+      "Function.Embedding and Subtype.ext",
+      "the smul action σ • f = σ ∘ f on embeddings"
+    ]
+  },
+  {
+    "id": "ann-der0201-card-fixedBy",
+    "proofId": "derangements-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "Key count: #(k-tuples fixed by σ) = |Fix(σ)|.descFactorial k",
+    "content": "`card_fixedBy_emb` turns the abstract fixed-point set of the action into the falling factorial that the moment sum needs. Composing the bijection `fixedEmbEquiv` with `Equiv.subtypeEquivRight (MulAction.mem_fixedBy)`, the cardinality of the σ-fixed embeddings equals the number of embeddings Fin k ↪ Fix(σ). Mathlib's `Fintype.card_embedding_eq` evaluates that as |Fix(σ)|.descFactorial k (the number of injections from a k-set into an m-set is mᵏ falling). This is precisely the summand (X(σ))_k of the k-th factorial moment.",
+    "mathContext": "Number of injections $\\mathrm{Fin}\\,k\\hookrightarrow S$ with $|S|=m$ is the falling factorial $m^{\\underline{k}} = m(m-1)\\cdots(m-k+1) = m\\,\\mathrm{descFactorial}\\,k$. With $S=\\mathrm{Fix}(\\sigma)$, $X(\\sigma)=|\\mathrm{Fix}(\\sigma)|$, the count of σ-fixed k-tuples is $(X(\\sigma))_k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fintype.card_embedding_eq",
+      "Nat.descFactorial",
+      "falling factorial",
+      "factorial moments",
+      "Fintype.card_subtype"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Fintype.CardEmbedding",
+      "fixedEmbEquiv",
+      "descFactorial counts injections"
+    ]
+  },
+  {
+    "id": "ann-der0201-main-burnside",
+    "proofId": "derangements-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 131
+    },
+    "type": "insight",
+    "title": "Main theorem: Burnside + k-transitivity collapse the moment to n!",
+    "content": "`sum_descFactorial_fixedPoints_eq_factorial` proves ∑_σ (X(σ))_k = n! for k ≤ n. After `simp_rw [← card_fixedBy_emb]` rewrites every summand as the count of σ-fixed embeddings, the sum is exactly the left side of Burnside's lemma `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group`: ∑_σ |Fixβ(σ)| = (#orbits)·|G|. The decisive input is that the symmetric group is k-transitive — `Equiv.Perm.isMultiplyPretransitive` gives a pretransitive action on Fin k ↪ Fin n — and the embedding set is nonempty for k ≤ n (`Fin.castLEOrderEmb hk`). Pretransitive + nonempty ⟹ the orbit quotient is a singleton (`Unique`), so #orbits = 1 and the sum is 1·|Perm(Fin n)| = 1·n! = n!. The `maxHeartbeats 1000000` accommodates the instance search for the orbit quotient's Unique/Fintype structure.",
+    "mathContext": "Burnside: $\\sum_{\\sigma\\in G}|\\mathrm{Fix}_\\beta(\\sigma)| = |\\Omega|\\cdot|G|$ where $\\Omega$ is the orbit set. For $G=S_n$ acting on injective $k$-tuples with $k\\le n$, $k$-transitivity gives $|\\Omega|=1$, so $\\sum_\\sigma (X(\\sigma))_k = 1\\cdot n! = n!$, i.e. $E[(X)_k]=1$ for all $k\\le n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Burnside's lemma (orbit-counting)",
+      "Equiv.Perm.isMultiplyPretransitive",
+      "k-transitivity of the symmetric group",
+      "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+      "orbitRel.Quotient"
+    ],
+    "prerequisites": [
+      "Mathlib.GroupTheory.GroupAction.MultipleTransitivity",
+      "Burnside / orbit-counting lemma",
+      "pretransitive_iff_unique_quotient_of_nonempty"
+    ]
+  },
+  {
+    "id": "ann-der0201-first-moment",
+    "proofId": "derangements-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 137,
+      "endLine": 143
+    },
+    "type": "context",
+    "title": "k = 1 recovers the parent's expected-fixed-points result",
+    "content": "Specializing the main theorem at k = 1 and rewriting with `Nat.descFactorial_one` (X.descFactorial 1 = X) gives ∑_σ |Fix(σ)| = n!, exactly the parent entry's first-moment result E[X] = 1. The higher-moment theorem thus strictly generalizes the parent: the same Burnside argument, run on 1-tuples (= points) rather than k-tuples, is the parent's proof.",
+    "mathContext": "$(X)_1 = X$, so $\\sum_\\sigma |\\mathrm{Fix}(\\sigma)| = n!$ and $E[X]=1$ — the expected number of fixed points of a uniform random permutation is exactly 1, independent of n.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "first factorial moment",
+      "Nat.descFactorial_one",
+      "expected number of fixed points",
+      "parent entry derangements-oq-02-oq-02"
+    ],
+    "prerequisites": [
+      "sum_descFactorial_fixedPoints_eq_factorial",
+      "descFactorial at k = 1"
+    ]
+  },
+  {
+    "id": "ann-der0201-variance",
+    "proofId": "derangements-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 154,
+      "endLine": 167
+    },
+    "type": "insight",
+    "title": "Second factorial moment ⟹ Var(X) = 1",
+    "content": "`sum_second_factorial_moment` specializes to k = 2, rewriting descFactorial _ 2 = X·(X−1) via `Nat.descFactorial_succ`, to get ∑_σ |Fix(σ)|·(|Fix(σ)|−1) = n! for n ≥ 2, i.e. E[X(X−1)] = 1. Combined with the first moment E[X] = 1, the variance is Var(X) = E[X(X−1)] + E[X] − (E[X])² = 1 + 1 − 1 = 1. So the fixed-point count of a random permutation has mean 1 and variance 1 — matching the Poisson(1) distribution, whose factorial moments are all identically 1.",
+    "mathContext": "$E[X(X-1)]=1$ and $E[X]=1$ give $\\mathrm{Var}(X)=E[X^2]-(E[X])^2=\\big(E[X(X-1)]+E[X]\\big)-(E[X])^2=1+1-1=1$. All factorial moments being 1 is the exact finite-$n$ signature of the $\\mathrm{Poisson}(1)$ limit.",
+    "significance": "key",
+    "relatedConcepts": [
+      "variance of fixed-point count",
+      "Poisson(1) limit",
+      "factorial moments characterize Poisson",
+      "Nat.descFactorial_succ"
+    ],
+    "prerequisites": [
+      "sum_descFactorial_fixedPoints_eq_factorial at k = 2",
+      "Var = E[X(X-1)] + E[X] - (E[X])²"
+    ]
+  },
+  {
+    "id": "ann-der0201-vanishing",
+    "proofId": "derangements-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 169,
+      "endLine": 181
+    },
+    "type": "context",
+    "title": "Sharp threshold: the moment sum vanishes for k > n",
+    "content": "`sum_descFactorial_fixedPoints_eq_zero` records the complementary regime: when k > n, every summand is 0 because no permutation of Fin n can have more than n fixed points, and m.descFactorial k = 0 whenever m < k (`Nat.descFactorial_eq_zero_iff_lt`). The bound |Fix(σ)| ≤ n is the trivial `Finset.card_filter_le`. So the factorial-moment sum is a sharp step function: n! for k ≤ n and 0 for k > n — the finite-n cutoff of the Poisson(1) moment sequence, which only equals 1 in the limit.",
+    "mathContext": "For $k>n$: $|\\mathrm{Fix}(\\sigma)|\\le n<k\\Rightarrow (X(\\sigma))_k=0$, so $\\sum_\\sigma (X(\\sigma))_k=0$. The exact moment $E[(X)_k]=1$ holds only for $k\\le n$; beyond $n$ the falling factorial truncates the sequence to 0.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.descFactorial_eq_zero_iff_lt",
+      "Finset.card_filter_le",
+      "finite-n cutoff vs Poisson limit",
+      "Finset.sum_eq_zero"
+    ],
+    "prerequisites": [
+      "descFactorial vanishing below the argument",
+      "at most n fixed points in Sₙ"
+    ]
+  }
+]

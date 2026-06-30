@@ -2,7 +2,7 @@
   "id": "konigsberg-oq-01-oq-02",
   "title": "Eulerian Paths in Directed Graphs",
   "slug": "konigsberg-oq-01-oq-02",
-  "description": "Extends the Eulerian circuit characterization to directed graphs. A weakly connected digraph has an Eulerian circuit iff every vertex has equal in-degree and out-degree; it has an Eulerian path from s to t iff outdeg(s)=indeg(s)+1, indeg(t)=outdeg(t)+1, and all other vertices are balanced. The directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg) and necessity direction (Eulerian circuit → balanced) are proved from first principles. 12 theorems proved, 2 axioms (Hierholzer sufficiency and path characterization).",
+  "description": "Extends the Eulerian circuit characterization to directed graphs. A weakly connected digraph has an Eulerian circuit iff every vertex has equal in-degree and out-degree; it has an Eulerian path from s to t iff outdeg(s)=indeg(s)+1, indeg(t)=outdeg(t)+1, and all other vertices are balanced. The directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg), the necessity direction (Eulerian circuit → balanced), and the Hierholzer infrastructure (greedy maximal trail, its closure in a balanced graph, circuit existence, and Eulerian-path necessity) are proved from first principles. 25 of 26 theorems are proved from first principles (1 sorry remains in remove_circuit_balanced, blocked on a Finset.sdiff distributivity step); 2 axioms (Hierholzer sufficiency and the full Eulerian path characterization) remain.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-05-03",
@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "overview-directed-eulerian",
+      "title": "Overview: The Directed Eulerian Theorem",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "The file docstring poses the open question inherited from the undirected Königsberg formalization — extend the Eulerian characterization to *directed* graphs — and states the target theorem. For a connected digraph $G=(V,E)$: an **Eulerian circuit** (every edge once, returning to start) exists iff every vertex is balanced, $\\mathrm{indeg}(v)=\\mathrm{outdeg}(v)$; an **Eulerian path** from $s$ to $t$ ($s\\neq t$) exists iff $\\mathrm{outdeg}(s)=\\mathrm{indeg}(s)+1$, $\\mathrm{indeg}(t)=\\mathrm{outdeg}(t)+1$, and all other vertices are balanced. The header also records the *partial* proof status that the `axiomatized` (2 axioms, 1 sorry) metadata reflects: the directed handshaking lemmas ($\\sum_v\\mathrm{outdeg}(v)=|E|=\\sum_v\\mathrm{indeg}(v)$) and the **necessity** direction (balance is forced by any Eulerian circuit) are proved from first principles, while Hierholzer *sufficiency* and the full path characterization are axiomatized. Lines 35–42 set up the Mathlib imports (Finset, BigOperators) and the `KonigsbergOQ01OQ02` namespace, and lines 44–47 open Part I. References cited: Euler (1741, original Königsberg bridges), Hierholzer (1873, constructive undirected proof), and West, *Introduction to Graph Theory* (2001, §1.3).",
+      "mathContext": "Circuit: $\\exists$ Eulerian circuit $\\iff \\forall v,\\ \\mathrm{indeg}(v)=\\mathrm{outdeg}(v)$. Path $s\\to t$: $\\mathrm{outdeg}(s)=\\mathrm{indeg}(s)+1,\\ \\mathrm{indeg}(t)=\\mathrm{outdeg}(t)+1,\\ \\forall v\\neq s,t:\\mathrm{indeg}(v)=\\mathrm{outdeg}(v)$."
+    },
+    {
       "id": "definitions",
       "title": "Directed Graph Basics",
       "startLine": 50,
@@ -91,7 +99,7 @@
       "id": "characterization",
       "title": "Directed Eulerian Theorem and Path Characterization",
       "startLine": 314,
-      "endLine": 341,
+      "endLine": 347,
       "summary": "Defines IsWeaklyConnected and HasEulerianPath. Axiomatizes directed_eulerian_iff (Hierholzer) and directed_euler_path_iff.",
       "mathContext": "$G$ has an Eulerian circuit $\\iff$ $\\text{IsEulerianBalanced}(G)$ (weak connectivity required). $G$ has Eulerian path $s \\to t$ $\\iff$ $\\text{outDeg}(s) = \\text{inDeg}(s)+1$, $\\text{inDeg}(t) = \\text{outDeg}(t)+1$, and all others balanced."
     },
@@ -112,12 +120,59 @@
       "mathContext": "Eulerian circuit $\\Rightarrow$ $\\sum_v \\text{outDeg}(v) = \\sum_v \\text{inDeg}(v)$ (as integers). Eulerian circuit $\\Rightarrow$ $\\text{inDeg}(v) = \\text{outDeg}(v)$ for all $v$."
     },
     {
-      "id": "hierholzer-infrastructure",
-      "title": "Hierholzer Infrastructure: Greedy Trail and Circuit Existence",
+      "id": "hierholzer-roadmap",
+      "title": "Degree-Balance Corollary and Hierholzer Roadmap",
       "startLine": 390,
+      "endLine": 412,
+      "summary": "States eulerian_balanced_implies_degree_balance (a direct corollary of the proved necessity theorem) and opens Part VII with the six-step roadmap for the Hierholzer sufficiency infrastructure: open-walk counting, the greedy maximal trail, closure of that trail in a balanced graph, circuit existence, balance-preservation under circuit removal, and the path-necessity direction. The roadmap also flags the one ingredient left axiomatized — splicing component circuits together — which is why directed_eulerian_iff (balanced → Eulerian) remains an axiom."
+    },
+    {
+      "id": "hierholzer-step1-open-walk-counting",
+      "title": "Hierholzer Step 1: Open-Walk Counting Lemmas",
+      "startLine": 413,
+      "endLine": 561,
+      "summary": "Proves the endpoint-asymmetry facts for an open walk v₀,…,vₙ with v₀ ≠ vₙ: open_walk_last_target_excess (target-count of the last vertex = source-count + 1) and the symmetric open_walk_first_source_excess for the first vertex, plus open_walk_interior_balanced showing every other vertex has equal source- and target-counts. Each is established by an explicit Finset.card_bij — the shift i ↦ i+1 (or i ↦ i−1) bijects source positions with target positions, leaving exactly one unmatched endpoint position.",
+      "mathContext": "For a walk of length $n$ ending at $w$ with $v_0 \\neq w$: $\\#\\{i < n : v_{i+1} = w\\} = \\#\\{i < n : v_i = w\\} + 1$. The bijection $i \\mapsto i+1$ matches each source occurrence of $w$ with a target occurrence, and position $n-1$ supplies the surplus target occurrence."
+    },
+    {
+      "id": "hierholzer-step2-greedy-trail",
+      "title": "Hierholzer Step 2: Greedy Maximal Trail",
+      "startLine": 562,
+      "endLine": 917,
+      "summary": "Constructs maxTrail E v, the greedy trail that repeatedly follows an unused outgoing edge until none remains, and proves its structural lemmas: it is non-empty and starts at v (maxTrail_nonempty', maxTrail_head'), its used-edge set is a subset of E that shrinks by one per step (maxTrailRem_subset, maxTrail_used_eq), its final vertex has no remaining outgoing edge (maxTrailRem_last_no_out, maxTrail_last_exhausted), every step is an edge of E (maxTrail_steps_in_E), and all steps are distinct (maxTrail_steps_distinct). Termination follows because |E| strictly decreases each step.",
+      "mathContext": "$\\mathrm{maxTrail}\\,E\\,v$ is well-founded on $|E|$: each step consumes one edge, so the recursion halts at a vertex with no unused outgoing edge. Distinctness of steps makes the trail a genuine trail (no repeated edge), the prerequisite for the closure argument."
+    },
+    {
+      "id": "hierholzer-step3-trail-closed",
+      "title": "Hierholzer Step 3: Maximal Trail Is Closed in a Balanced Graph",
+      "startLine": 918,
+      "endLine": 1043,
+      "summary": "Proves maxTrail_closed: in a balanced digraph the greedy trail from v returns to v, i.e. it is a closed circuit. The argument is by contradiction — if the trail ended at some w ≠ v, the Step 1 open-walk counting would force target-count(w) = source-count(w) + 1 along the trail, but the trail exhausts w's outgoing edges at its terminus while balance (inDeg w = outDeg w) leaves an unused outgoing edge, contradicting maximality.",
+      "mathContext": "Balance $\\mathrm{inDeg}(w) = \\mathrm{outDeg}(w)$ together with the open-walk excess $\\#\\text{target} = \\#\\text{source} + 1$ at a terminus $w \\neq v$ leaves an outgoing edge at $w$ unused, contradicting that maxTrail stops only when no outgoing edge remains. Hence the trail closes."
+    },
+    {
+      "id": "hierholzer-step4-circuit-existence",
+      "title": "Hierholzer Step 4: Circuit Existence",
+      "startLine": 1044,
+      "endLine": 1080,
+      "summary": "Packages the closed greedy trail as a DirectedCircuit structure and proves circuit_exists: every non-empty balanced digraph contains a directed circuit. This is the existence half of Hierholzer's decomposition — the object whose iterated removal will eventually consume all edges.",
+      "mathContext": "$G$ balanced and $G.\\mathrm{edges} \\neq \\emptyset$ $\\Rightarrow$ $\\exists$ a directed circuit in $G$: instantiate the circuit with $\\mathrm{maxTrail}\\,G.\\mathrm{edges}\\,v$ at any $v$ with an outgoing edge, closed by Step 3."
+    },
+    {
+      "id": "hierholzer-step5-removal-preserves-balance",
+      "title": "Hierholzer Step 5: Removing a Circuit Preserves Balance",
+      "startLine": 1081,
+      "endLine": 1109,
+      "summary": "Defines walkEdges and DiGraph.removeEdgeSet, then states remove_circuit_balanced: deleting a circuit's edge set from a balanced digraph leaves a balanced digraph. This is the inductive step that lets Hierholzer peel off circuits until no edges remain. It carries the file's single sorry (line 1105), blocked on a Finset.sdiff distributivity lemma rather than any mathematical gap — each vertex loses equally many incoming and outgoing edges because a circuit visits it equally often as source and target.",
+      "mathContext": "A circuit traverses each vertex the same number of times as source and as target, so removing its edges subtracts the same amount from $\\mathrm{inDeg}$ and $\\mathrm{outDeg}$ at every vertex, preserving $\\mathrm{inDeg} = \\mathrm{outDeg}$."
+    },
+    {
+      "id": "hierholzer-step6-path-necessity",
+      "title": "Hierholzer Step 6: Necessity Direction for Eulerian Paths",
+      "startLine": 1110,
       "endLine": 1198,
-      "summary": "Develops the mathematical infrastructure for Hierholzer's directed Eulerian algorithm in 6 steps. (1) Open-walk counting (lines 419-504): for an open walk u→w (u≠w), target-count(w) = source-count(w)+1, plus the symmetric source-excess lemma. (2) maxTrail (lines 513-728): a greedy trail following outgoing edges, terminating since |E| decreases by 1 per step. (3) maxTrail_closed (lines 933-1041): in a balanced digraph, the greedy trail is always a closed circuit — proved via a 5-step balance contradiction (STEPs A-E). (4) circuit_exists + DirectedCircuit (lines 1052-1078): every non-empty balanced digraph contains a directed circuit. (5) remove_circuit_balanced (lines 1100-1107, sorry): removing a circuit preserves balance — the only sorry in the file, blocked on Finset.sdiff distributivity API. (6) euler_path_implies_degree_balance (lines 1125-1198, FULLY PROVED): Eulerian path implies asymmetric degree conditions at start/end. Five of the six steps are proved; only step 5 carries a sorry.",
-      "mathContext": "Key theorem: $G$ balanced + $G.edges \\neq \\emptyset$ $\\Rightarrow$ $\\exists$ directed circuit in $G$. Proof: run greedy trail from any vertex $v$ with an outgoing edge; by balance, the trail closes (proof by contradiction using open-walk counting). Removing the circuit preserves balance (each vertex appears equally often as trail source and target). The path-necessity step is the open-walk analogue: an Eulerian path $s \\to t$ creates a +1 source asymmetry at $s$ and a +1 target asymmetry at $t$, while interior vertices remain balanced."
+      "summary": "Proves euler_path_implies_degree_balance (fully, no sorry): an Eulerian path from s to t (s ≠ t) forces outDeg(s) = inDeg(s) + 1, inDeg(t) = outDeg(t) + 1, and balance at every interior vertex. This is the open-walk analogue of the circuit necessity result, obtained by applying the Step 1 endpoint-excess and interior-balance lemmas to the path's vertex sequence.",
+      "mathContext": "An Eulerian path $s \\to t$ is an open walk covering every edge once, so the endpoint asymmetries of Step 1 transfer directly: $+1$ out-excess at $s$, $+1$ in-excess at $t$, balance elsewhere."
     }
   ],
   "conclusion": {

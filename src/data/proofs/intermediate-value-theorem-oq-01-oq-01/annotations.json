@@ -1,0 +1,175 @@
+[
+  {
+    "id": "ann-ivtoq0101-00-header",
+    "proofId": "intermediate-value-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Module Overview: Why Sign Persistence Matters",
+    "content": "The bisection method works because two facts hold together: the intervals shrink (proved in the parent entry intermediate-value-theorem-oq-01, width = (b-a)/2^n), and the sign change is never lost (proved here). Width decay alone lets the intervals converge to an arbitrary point; the sign-persistence invariant f(a_n)*f(b_n) <= 0 is what forces that limit to be a root, via the intermediate value theorem. This file resolves the FIRST open question left by the parent entry.",
+    "mathContext": "Invariant: f(a_n) * f(b_n) <= 0 for all n, given f(a_0) * f(b_0) <= 0.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bisection method",
+      "intermediate value theorem",
+      "loop invariant",
+      "constructive root finding"
+    ],
+    "prerequisites": [
+      "intermediate_value_Icc",
+      "BisectionMethod.bisect_width"
+    ]
+  },
+  {
+    "id": "ann-ivtoq0101-01-sign-algebra",
+    "proofId": "intermediate-value-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 52
+    },
+    "type": "key-step",
+    "title": "The Sign-Transfer Lemma",
+    "content": "sign_persist_aux is the algebraic heart of the proof. Given p*q <= 0 (the running sign change between the endpoints) and 0 < p*m (the midpoint m shares the LEFT endpoint's sign), it concludes m*q <= 0 (the sign change has moved to the right pair). The trick is the polynomial identity (p*m)*(m*q) = (p*q)*m^2: the right side is <= 0 (nonpositive times a square), so the left side is <= 0; since p*m > 0, the factor m*q must be <= 0. nlinarith discharges it with the hint mul_nonpos_of_nonpos_of_nonneg hpq (sq_nonneg m).",
+    "mathContext": "(p*m)*(m*q) = (p*q)*m^2 <= 0 and p*m > 0 imply m*q <= 0.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sign analysis",
+      "nlinarith",
+      "nonnegativity of squares"
+    ],
+    "prerequisites": [
+      "mul_nonpos_of_nonpos_of_nonneg",
+      "sq_nonneg"
+    ]
+  },
+  {
+    "id": "ann-ivtoq0101-02-one-step",
+    "proofId": "intermediate-value-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 68
+    },
+    "type": "technique",
+    "title": "One Bisection Step Preserves the Sign Change",
+    "content": "bisectStep_sign_persist case-splits on the bisection step's if-condition (simp only [bisectStep] then split_ifs). In the 'then' branch the algorithm kept the left half precisely because f a * f mid <= 0, which IS the goal — no work needed. In the 'else' branch f a * f mid > 0 (push_neg), meaning the midpoint shares the left endpoint's sign, so sign_persist_aux transfers the sign change to the right pair f mid * f b. Only the 'else' branch requires the lemma.",
+    "mathContext": "if f a * f mid <= 0 then keep (a, mid) [sign change immediate]; else keep (mid, b) [sign change via sign_persist_aux].",
+    "significance": "key",
+    "relatedConcepts": [
+      "case analysis",
+      "split_ifs",
+      "bisection step"
+    ],
+    "prerequisites": [
+      "BisectionMethod.bisectStep"
+    ]
+  },
+  {
+    "id": "ann-ivtoq0101-03-invariant",
+    "proofId": "intermediate-value-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 72,
+      "endLine": 86
+    },
+    "type": "key-step",
+    "title": "Sign Persistence for All n",
+    "content": "bisect_sign_persist is the headline result and the answer to the parent's open question: f(a_n) * f(b_n) <= 0 for every n. The proof is induction on n. The base case n = 0 is the initial hypothesis (the endpoints are a and b). The successor case feeds the inductive hypothesis into bisectStep_sign_persist, since the (n+1)st interval is one bisection step applied to the nth. This is the loop invariant that makes the bisection method correct.",
+    "mathContext": "Base: f(a_0)*f(b_0) = f(a)*f(b) <= 0. Step: bisectStep_sign_persist carries the invariant from n to n+1.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "mathematical induction",
+      "loop invariant",
+      "bisection method correctness"
+    ],
+    "prerequisites": [
+      "BisectionMethod.bisectStep_sign_persist"
+    ]
+  },
+  {
+    "id": "ann-ivtoq0101-04-ordering",
+    "proofId": "intermediate-value-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 100
+    },
+    "type": "technique",
+    "title": "Intervals Stay Ordered",
+    "content": "bisect_le shows a_n <= b_n for every n, needed so that the intervals are genuine (non-empty) closed intervals on which the IVT applies. It reads off the parent entry's width law bisect_width (bisectRight - bisectLeft = (b-a)/2^n): since b - a >= 0 and 2^n > 0, the width is nonnegative, hence bisectLeft <= bisectRight.",
+    "mathContext": "bisectRight - bisectLeft = (b-a)/2^n >= 0, so bisectLeft <= bisectRight.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval ordering",
+      "width decay"
+    ],
+    "prerequisites": [
+      "BisectionMethod.bisect_width"
+    ]
+  },
+  {
+    "id": "ann-ivtoq0101-05-ivt-root",
+    "proofId": "intermediate-value-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 104,
+      "endLine": 124
+    },
+    "type": "key-step",
+    "title": "From Sign Change to Root (IVT)",
+    "content": "sign_change_root packages the intermediate value theorem for root finding: a continuous f with f a * f b <= 0 has a root in [a,b]. mul_nonpos_iff splits the product condition into the two orderings (0 <= f a and f b <= 0, or f a <= 0 and 0 <= f b); each feeds the descending intermediate_value_Icc' or the ascending intermediate_value_Icc respectively, yielding 0 in the image f '' (Icc a b), i.e. a point c with f c = 0.",
+    "mathContext": "f a * f b <= 0 and ContinuousOn f (Icc a b) imply exists c in Icc a b with f c = 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "mul_nonpos_iff",
+      "image of an interval"
+    ],
+    "prerequisites": [
+      "intermediate_value_Icc",
+      "intermediate_value_Icc'",
+      "mul_nonpos_iff"
+    ]
+  },
+  {
+    "id": "ann-ivtoq0101-06-contains-root",
+    "proofId": "intermediate-value-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 126,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Every Bisection Interval Contains a Root",
+    "content": "bisect_interval_contains_root is the full correctness statement: for a continuous f with an initial sign change, EVERY bisection interval [a_n, b_n] contains a true root of f. It is a one-line composition of the three pillars — bisect_le (intervals ordered), bisect_sign_persist (sign change kept), and sign_change_root (sign change implies root). Together with the parent's width decay, this certifies that the algorithm's intervals shrink to zero width while each one provably brackets a root.",
+    "mathContext": "Continuous f, f a * f b <= 0 imply for all n, exists c in Icc (a_n) (b_n) with f c = 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algorithm correctness",
+      "root bracketing"
+    ],
+    "prerequisites": [
+      "BisectionMethod.sign_change_root",
+      "BisectionMethod.bisect_sign_persist",
+      "BisectionMethod.bisect_le"
+    ]
+  },
+  {
+    "id": "ann-ivtoq0101-07-sqrt2",
+    "proofId": "intermediate-value-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 133,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Concrete Instance: the √2 Search",
+    "content": "bisect_sqrt2_sign_persist and bisect_sqrt2_contains_root instantiate the general results for f(x) = x^2 - 2 on [1,2] — the √2 example of the parent entry. Since f(1) = -1 and f(2) = 2, the initial sign change f(1)*f(2) = -2 <= 0 holds (norm_num), so every bisection interval keeps the sign change and, by continuity (continuity tactic), contains a genuine root of x^2 - 2, namely √2.",
+    "mathContext": "f(x) = x^2 - 2 on [1,2]: f(1)*f(2) = -2 <= 0, so √2 is bracketed in every bisection interval.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "square root of 2",
+      "worked example"
+    ],
+    "prerequisites": [
+      "BisectionMethod.bisect_sign_persist",
+      "BisectionMethod.bisect_interval_contains_root"
+    ]
+  }
+]

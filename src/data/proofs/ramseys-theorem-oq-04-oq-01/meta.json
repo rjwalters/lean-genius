@@ -1,0 +1,159 @@
+{
+  "id": "ramseys-theorem-oq-04-oq-01",
+  "title": "Hypergraph Ramsey OQ-04-OQ-01: The δ-Function Engine of the Stepping-Up Lemma",
+  "slug": "ramseys-theorem-oq-04-oq-01",
+  "description": "The Erdős–Hajnal stepping-up lemma (the central tool for hypergraph Ramsey lower bounds) is driven by one gadget: δ(a,b), the most-significant differing bit of a and b in binary. This entry formalizes δ relationally via Nat.testBit and proves its three stepping-up properties — winner bit (the larger number has 1 at δ), adjacent distinctness (δ(a,b)≠δ(b,c) for a<b<c), and the max law (δ(a,c)=max(δ(a,b),δ(b,c))) — plus existence, uniqueness, symmetry. 0-axiom, fully constructive.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ramsey%27s_theorem",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/RamseysTheoremOQ04OQ01.lean",
+    "tags": [
+      "ramsey-theory",
+      "combinatorics",
+      "hypergraph",
+      "stepping-up-lemma",
+      "erdos-hajnal",
+      "binary",
+      "testBit",
+      "number-theory"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.exists_most_significant_bit",
+        "description": "Every nonzero n has a top set bit i: testBit n i = true and all higher bits clear",
+        "module": "Mathlib.Data.Nat.Bitwise"
+      },
+      {
+        "theorem": "Nat.lt_of_testBit",
+        "description": "If n,m agree above bit i, n has 0 and m has 1 at i, then n < m — the order/top-bit bridge",
+        "module": "Mathlib.Data.Nat.Bitwise"
+      },
+      {
+        "theorem": "Nat.testBit_xor",
+        "description": "(x XOR y).testBit i = (x.testBit i) ^^ (y.testBit i): bit i of a XOR is the Bool-xor of bits",
+        "module": "Init.Data.Nat.Bitwise.Lemmas"
+      },
+      {
+        "theorem": "Nat.xor_eq_zero_iff",
+        "description": "a XOR b = 0 ↔ a = b — distinctness of a,b gives a nonzero XOR (so δ exists)",
+        "module": "Mathlib.Data.Nat.Bitwise"
+      }
+    ],
+    "originalContributions": [
+      "IsMSB (def): i is the most significant set bit of n (testBit n i ∧ all higher bits clear); existence (isMSB_exists) and uniqueness (isMSB_unique)",
+      "TopDiff a b i (def): the relational δ — i is the top differing bit of a and b = MSB of a XOR b; constructive, no choice",
+      "topDiff_exists / topDiff_unique / topDiff_comm: δ is well-defined for distinct a,b and symmetric",
+      "topDiff_winner (A): for a<b at bit δ(a,b) the larger b has 1, the smaller a has 0 (recovers order from top bit)",
+      "topDiff_ne (B): for a<b<c, δ(a,b)≠δ(b,c) (b cannot carry both 1 and 0 at a shared top bit)",
+      "isMSB_xor_of_ne: MSB of N₁ XOR N₂ with distinct MSBs is at max(i,i')",
+      "topDiff_max (C): for a<b<c, δ(a,c)=max(δ(a,b),δ(b,c)) via a XOR c = (a XOR b) XOR (b XOR c)"
+    ],
+    "axiomCount": 0,
+    "lineCount": 169,
+    "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext / Classical.choice / Quot.sound are used (topDiff_comm uses just propext / Quot.sound). No native_decide — the only decide calls are over Bool.",
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**The Erdős–Hajnal stepping-up lemma.** Hypergraph Ramsey numbers grow as towers of exponentials, and the standard way to prove such *lower* bounds is the stepping-up lemma: it converts a 2-colouring of the k-subsets of [n] with no large monochromatic set into a 2-colouring of the (k+1)-subsets of [2ⁿ] with no large monochromatic set, raising the tower height. Identifying [2ⁿ] with binary strings of length n, the whole construction is run by one gadget — the top differing bit δ(a,b) of two numbers — and the correctness proof reduces to three combinatorial properties of δ.\n\nThis entry formalizes δ and proves exactly those three properties, supplying the verified primitives a full Lean stepping-up colouring would stand on.",
+    "problemStatement": "**δ(a,b)** is the highest bit position at which the binary expansions of distinct a,b differ — equivalently the most significant set bit of `a XOR b`. The stepping-up lemma needs:\n\n- **(A) winner bit:** if a < b then at bit δ(a,b) the larger b has a 1 and a has a 0;\n- **(B) distinctness:** for a < b < c, δ(a,b) ≠ δ(b,c);\n- **(C) max law:** for a < b < c, δ(a,c) = max(δ(a,b), δ(b,c)).\n\nAll three are formalized here (0-axiom), with δ captured as a relation `TopDiff a b i` to stay fully constructive.",
+    "text": "The stepping-up lemma's combinatorial engine is δ(a,b), the most-significant differing bit. This entry formalizes δ via Nat.testBit and proves, 0-axiom, its three driving properties: the winner bit (the larger number has 1 at δ), adjacent distinctness (δ(a,b)≠δ(b,c) for a<b<c), and the max law (δ(a,c)=max(δ(a,b),δ(b,c))).",
+    "proofStrategy": "**Setup.** `IsMSB n i` = bit i of n set and all higher bits clear; existence is Mathlib's `Nat.exists_most_significant_bit`, uniqueness by trichotomy. `TopDiff a b i := IsMSB (a XOR b) i`; existence from `Nat.xor_eq_zero_iff` (distinct ⇒ nonzero XOR).\n\n**(A) Winner bit.** `Nat.testBit_xor` turns the top-bit condition into 'a,b differ at i, agree above i'. A Bool case split plus `Nat.lt_of_testBit` shows the only consistent assignment with a<b is a:0, b:1 (the other would give b<a).\n\n**(B) Distinctness.** If δ(a,b)=δ(b,c)=i then (A) makes b carry a 1 (as the larger of a,b) and a 0 (as the smaller of b,c) at bit i — contradiction.\n\n**(C) Max law.** `a XOR c = (a XOR b) XOR (b XOR c)` (xor associativity/cancellation). With the two MSBs distinct (by B), at bit max(i,i') exactly one summand is set and all higher bits vanish in both, so that is the MSB of a XOR c; uniqueness gives δ(a,c)=max(i,i').",
+    "keyInsights": [
+      "**One gadget runs the whole lemma:** the top differing bit δ encodes both the order of two elements (winner bit) and how orders compose along a chain (max law).",
+      "**Order ↔ top bit:** `Nat.lt_of_testBit` is the precise bridge — a<b is decided by who carries the 1 at their most significant difference.",
+      "**Distinctness is a parity-of-roles fact:** a shared adjacent δ would force the middle element b to be simultaneously the bigger and the smaller at one bit.",
+      "**The max law is XOR cancellation:** a XOR c = (a XOR b) XOR (b XOR c), and distinct top bits never cancel, so the higher one survives.",
+      "**Fully constructive:** δ is relational (`TopDiff`), so no choice or noncomputable definitions enter; the proofs are 0-axiom with only Bool-level `decide`."
+    ],
+    "prerequisites": [
+      "Binary representation and Nat.testBit",
+      "XOR and its bitwise/algebraic laws",
+      "Ramsey theory and hypergraph Ramsey numbers (motivation)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bit-helpers",
+      "title": "Bit-Level Helpers and the Most Significant Bit",
+      "summary": "Bool-xor differ/agree lemmas; IsMSB (most significant set bit) with existence and uniqueness.",
+      "startLine": 47,
+      "endLine": 76,
+      "mathContext": "bool_xor_true/false; IsMSB via Nat.exists_most_significant_bit; isMSB_unique by trichotomy."
+    },
+    {
+      "id": "topdiff",
+      "title": "The Top Differing Bit δ",
+      "summary": "TopDiff a b i = MSB of a XOR b; existence (distinct ⇒ nonzero XOR), uniqueness, symmetry.",
+      "startLine": 78,
+      "endLine": 91,
+      "mathContext": "TopDiff (relational δ); topDiff_exists via Nat.xor_eq_zero_iff; topDiff_unique; topDiff_comm via Nat.xor_comm."
+    },
+    {
+      "id": "winner",
+      "title": "Property (A): The Winner Bit",
+      "summary": "For a<b, at δ(a,b) the larger b carries 1 and the smaller a carries 0.",
+      "startLine": 93,
+      "endLine": 116,
+      "mathContext": "topDiff_winner: Bool case split + Nat.lt_of_testBit rule out the b<a assignment."
+    },
+    {
+      "id": "distinct",
+      "title": "Property (B): Adjacent δ-Values Are Distinct",
+      "summary": "For a<b<c, δ(a,b)≠δ(b,c): b cannot be both larger and smaller at one shared top bit.",
+      "startLine": 117,
+      "endLine": 129,
+      "mathContext": "topDiff_ne: combine the two winner-bit conclusions on b at a shared index."
+    },
+    {
+      "id": "maxlaw",
+      "title": "Property (C): The Max Law",
+      "summary": "For a<b<c, δ(a,c)=max(δ(a,b),δ(b,c)) via a XOR c = (a XOR b) XOR (b XOR c).",
+      "startLine": 130,
+      "endLine": 160,
+      "mathContext": "isMSB_xor_of_ne (MSB of XOR with distinct MSBs at the max) + uniqueness give topDiff_max."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Erdős–Hajnal stepping-up lemma — the central engine for hypergraph Ramsey lower bounds — is driven by the top differing bit δ(a,b). This entry formalizes δ relationally via Nat.testBit and proves, 0-axiom and fully constructively, its three stepping-up properties: the winner bit (the larger number carries 1 at δ), adjacent distinctness (δ(a,b)≠δ(b,c) for a<b<c), and the max law (δ(a,c)=max(δ(a,b),δ(b,c))), together with existence, uniqueness, and symmetry.",
+    "implications": "These are precisely the combinatorial primitives the stepping-up colouring of (k+1)-subsets is read off from. With δ and its three laws machine-checked, a future Lean formalization of the full stepping-up construction (and hence tower-type lower bounds for hypergraph Ramsey numbers) can build directly on this verified core rather than re-deriving the bit combinatorics.",
+    "openQuestions": [
+      "Formalize the stepping-up colouring of (k+1)-subsets of [2ⁿ] from a colouring of k-subsets of [n], using δ and these three laws",
+      "Derive the resulting tower lower bound R_{k+1} ≥ 2^{R_k - 1}-type recursion for hypergraph Ramsey numbers",
+      "Extend the max law to longer chains: the δ-pattern of an increasing tuple x₀<⋯<x_k",
+      "A computable δ (e.g. via Nat.log2 of the XOR) with the same three properties"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "RamseyStepUp",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/RamseysTheoremOQ04OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem-oq-04",
+      "relationship": "specializes",
+      "description": "Parent: k-uniform hypergraph Ramsey. This entry formalizes the δ-function engine of the stepping-up lemma used for hypergraph Ramsey lower bounds."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Classical Ramsey theorem (the k=2 case); stepping-up lifts colourings to higher uniformity."
+    }
+  ],
+  "sorries": 0
+}

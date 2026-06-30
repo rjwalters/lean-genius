@@ -2,7 +2,7 @@
   "slug": "bounded-prime-gaps-oq-03-oq-02",
   "title": "Certified-computation replacement for engelsma_lower_bound axiom (50-tuple diameter 246)",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -65,7 +65,7 @@
     "lastUpdate": "2026-06-02T17:50:00Z"
   },
   "knowledge": {
-    "progressSummary": "S22 PREP (PR #PENDING, researcher-10, T = 2026-05-17T00:00Z, this PR) activates Path C cancellation clause (Docker hang 18h > 12h threshold; +6h past 2026-05-16T18:01Z trigger): discharges 2 paper sorries from S20 PREP §6 paste-ready skeleton — S11b-α-1 (forward direction prime extraction, ~4-6 LOC: `((Nat.primesBelow (k+1)).mem_sort (· ≤ ·)).mp hp` → `Nat.mem_primesBelow.mp _ |>.2`) and S11b-α-2 (reverse direction membership construction, ~5-7 LOC: `((Nat.primesBelow (k+1)).mem_sort (· ≤ ·)).mpr` + `Nat.mem_primesBelow.mpr ⟨Nat.lt_succ_of_le hpk, hp_prime⟩`). Discharge fallback path documented (`simp only [Nat.primesBelow, Finset.mem_filter, Finset.mem_range]` unfold) for cases where lemma name differs at pin. §3.5 refines S11b-α post-discharge LOC budget +30-40 (was +25-40 in S20 PREP §6). §2 escalates INFRA from 1-RED (B1 Docker only) to 3-RED: B1 Docker +9h elapsed (18h total, +6h past Path C threshold); new B2 disk RED 4.2 Gi below 5 Gi same-day soft-floor (−2.5 Gi from S21 STATE-SYNC); new B3 proofs/.lake circular self-symlink RED escalated from implicit AMBER to explicit RED (aligning with sibling-slug same-day STATE-SYNC precedents). §4 spot-checks 1 new bearer `Finset.mem_sort` via codebase usage `SpernerFreudenthal.lean:133`; 3 prior bearers carry-forward SHA-stable at pin `2df2f0150c…`. §6 ships 6-row picker decision matrix mapping next pickers across G7×G8×G9 host-state combinations. §7 informational host recovery script (not auto-executed; agent does not auto-restart Docker Desktop). Build-pending at pin; S22b ACT under recovered Docker is primary path (LOW risk, +30-40 LOC, 1 Docker iter). S11a ACT (PR #19519, researcher-9, merged 2026-05-16T08:52:27Z, **build pending** — Docker daemon hung at paste time, B1 still RED) ships the S17 PREP §6 paste-ready skeleton verbatim: 7 new Lean items (1 private def `tryBranch`, 2 def `searchAux`/`engelsmaSearchPruned`, 4 theorem incl. `engelsmaSearchPruned_eq_false_iff` with 1 named `sorry` at line 925 for S11b discharge) appended as +118-LOC block. File 835 → 953 LOC; axiomCount stays 1, sorries 0 → 1. S20 PREP (PR #19570, researcher-10, merged 2026-05-16T13:52:39Z, doc-only) closes the post-paste audit: §2 confirms 7/7 sub-sections + 7/7 identifiers EXACT; §3 surfaces 3 DELTAs vs S18 PREP §2 (DELTA-1 `tryBranch` chosen-shrink runtime check needs soundness case-split + completeness residue-witness CORRECTION — S18's `(H \\ chosen.toFinset).min' _ % p` picks EXISTING residue but admissibility needs MISSING residue, corrected to `(List.range p).filter (· ∉ H.image (· % p)) |>.head!`; DELTA-2 `searchAux` candidates-feasibility early-exit appeals to leaf-case lemma; DELTA-3 partial-app continuation zero-LOC-impact); §4 spot-checks 4 Mathlib SHAs at pin `2df2f0150c…` (zero drift); §5 recommends splitting S11b into 4 sub-PRs (α combiner +25-40 LOC LOW; β soundness +70-120 LOC MEDIUM; γ completeness +110-170 LOC HIGH; δ bridge +20-30 LOC LOW; refined S11b +225-360 LOC, was +190-300 in S18 PREP §2.4); §6 ships paste-ready ~30-40 LOC S11b-α combiner skeleton w/ 2 named sorries (S11b-α-1 / S11b-α-2 on `primesUpTo` membership extraction); §7 risk inventory 1 INFRA + 5 LEAN-CORR + 1 LEAN-MATHLIB + 1 LEAN-WF; §8 ACT-readiness gate 6/8 GREEN + 2/8 RED (both INFRA same root cause). S21 STATE-SYNC (this PR, researcher-11, doc-only) refreshes JSON `knowledge.{progressSummary,builtItems,nextSteps}` + `lastUpdate` to absorb both — S20 PREP updated `currentState.*` + iteration but missed knowledge.* and lastUpdate. Predecessor S17/S18/S19 chain: S17 PREP (#19354) + S18 PREP (#19386) ship paste-ready S11 ACT skeleton + §6.4 bridge sub-lemma decomposition + S11a/S11b split recommendation; S19 STATE-SYNC (#19425) absorbs both into state.md+JSON. S10 ACT (PR #19014, build verified 7745 jobs): Part A unblocks 7-deep S2-S9 build-pending chain (3 v4.26.0 regressions + 2 deprecation renames); Part B introduces canonical pruner bearer `primesUpTo` + 2 native_decide sanity tests. S9 ACT prior baseline: Path-B Option-3 hybrid scaffold (Bool surface engelsmaSearch + Bool/Prop bridge + S8 composition + positive unit test at (7,3) witnessed by {0,2,6}).",
+    "progressSummary": "S23 STATE-SYNC + BLOCKED (2026-06-13, researcher-1): build-free audit at origin/main HEAD fb829e819f7 (Docker down, no build). ACTUAL file state corrects stale tracker numbers: BoundedPrimeGapsOQ03OQ02.lean is 997 LOC (tracker said 953; S11a PR #19519 confirmed merged into origin/main), exactly 1 real sorry = engelsmaSearchPruned_eq_false_iff at line 969 (tracker said 925; greps at 852/964 are docstring text), 0 literal axiom decls (engelsma_lower_bound axiom lives in parent BoundedPrimeGapsOQ03.lean; native_decide gives the implicit Lean.ofReduceBool = the meta axiomCount=1), no structure assumptions, no gallery meta.json (research-only slug). FLAGGING BLOCKED: the lone remaining sorry needs the full S11b decomposition (+225-360 LOC searchAux_sound/complete/combiner) which is gated on (1) fleet-wide Docker outage — pasting unverifiable +225-360 LOC WF-recursion proofs is disallowed blind-ship, and (2) churn — S17-S22 (~10 sessions) produced only doc-only PREP/STATE-SYNC memos circling this same sorry, meeting the role's '3+ sessions stuck -> BLOCKED, move on'. Unblock path unchanged and fully specified in nextSteps (use the S20 PREP §3.1-corrected missing-residue witness, NOT the S18 existing-residue sketch); no new PREP memo needed. | S22 PREP (PR #PENDING, researcher-10, T = 2026-05-17T00:00Z, this PR) activates Path C cancellation clause (Docker hang 18h > 12h threshold; +6h past 2026-05-16T18:01Z trigger): discharges 2 paper sorries from S20 PREP §6 paste-ready skeleton — S11b-α-1 (forward direction prime extraction, ~4-6 LOC: `((Nat.primesBelow (k+1)).mem_sort (· ≤ ·)).mp hp` → `Nat.mem_primesBelow.mp _ |>.2`) and S11b-α-2 (reverse direction membership construction, ~5-7 LOC: `((Nat.primesBelow (k+1)).mem_sort (· ≤ ·)).mpr` + `Nat.mem_primesBelow.mpr ⟨Nat.lt_succ_of_le hpk, hp_prime⟩`). Discharge fallback path documented (`simp only [Nat.primesBelow, Finset.mem_filter, Finset.mem_range]` unfold) for cases where lemma name differs at pin. §3.5 refines S11b-α post-discharge LOC budget +30-40 (was +25-40 in S20 PREP §6). §2 escalates INFRA from 1-RED (B1 Docker only) to 3-RED: B1 Docker +9h elapsed (18h total, +6h past Path C threshold); new B2 disk RED 4.2 Gi below 5 Gi same-day soft-floor (−2.5 Gi from S21 STATE-SYNC); new B3 proofs/.lake circular self-symlink RED escalated from implicit AMBER to explicit RED (aligning with sibling-slug same-day STATE-SYNC precedents). §4 spot-checks 1 new bearer `Finset.mem_sort` via codebase usage `SpernerFreudenthal.lean:133`; 3 prior bearers carry-forward SHA-stable at pin `2df2f0150c…`. §6 ships 6-row picker decision matrix mapping next pickers across G7×G8×G9 host-state combinations. §7 informational host recovery script (not auto-executed; agent does not auto-restart Docker Desktop). Build-pending at pin; S22b ACT under recovered Docker is primary path (LOW risk, +30-40 LOC, 1 Docker iter). S11a ACT (PR #19519, researcher-9, merged 2026-05-16T08:52:27Z, **build pending** — Docker daemon hung at paste time, B1 still RED) ships the S17 PREP §6 paste-ready skeleton verbatim: 7 new Lean items (1 private def `tryBranch`, 2 def `searchAux`/`engelsmaSearchPruned`, 4 theorem incl. `engelsmaSearchPruned_eq_false_iff` with 1 named `sorry` at line 925 for S11b discharge) appended as +118-LOC block. File 835 → 953 LOC; axiomCount stays 1, sorries 0 → 1. S20 PREP (PR #19570, researcher-10, merged 2026-05-16T13:52:39Z, doc-only) closes the post-paste audit: §2 confirms 7/7 sub-sections + 7/7 identifiers EXACT; §3 surfaces 3 DELTAs vs S18 PREP §2 (DELTA-1 `tryBranch` chosen-shrink runtime check needs soundness case-split + completeness residue-witness CORRECTION — S18's `(H \\ chosen.toFinset).min' _ % p` picks EXISTING residue but admissibility needs MISSING residue, corrected to `(List.range p).filter (· ∉ H.image (· % p)) |>.head!`; DELTA-2 `searchAux` candidates-feasibility early-exit appeals to leaf-case lemma; DELTA-3 partial-app continuation zero-LOC-impact); §4 spot-checks 4 Mathlib SHAs at pin `2df2f0150c…` (zero drift); §5 recommends splitting S11b into 4 sub-PRs (α combiner +25-40 LOC LOW; β soundness +70-120 LOC MEDIUM; γ completeness +110-170 LOC HIGH; δ bridge +20-30 LOC LOW; refined S11b +225-360 LOC, was +190-300 in S18 PREP §2.4); §6 ships paste-ready ~30-40 LOC S11b-α combiner skeleton w/ 2 named sorries (S11b-α-1 / S11b-α-2 on `primesUpTo` membership extraction); §7 risk inventory 1 INFRA + 5 LEAN-CORR + 1 LEAN-MATHLIB + 1 LEAN-WF; §8 ACT-readiness gate 6/8 GREEN + 2/8 RED (both INFRA same root cause). S21 STATE-SYNC (this PR, researcher-11, doc-only) refreshes JSON `knowledge.{progressSummary,builtItems,nextSteps}` + `lastUpdate` to absorb both — S20 PREP updated `currentState.*` + iteration but missed knowledge.* and lastUpdate. Predecessor S17/S18/S19 chain: S17 PREP (#19354) + S18 PREP (#19386) ship paste-ready S11 ACT skeleton + §6.4 bridge sub-lemma decomposition + S11a/S11b split recommendation; S19 STATE-SYNC (#19425) absorbs both into state.md+JSON. S10 ACT (PR #19014, build verified 7745 jobs): Part A unblocks 7-deep S2-S9 build-pending chain (3 v4.26.0 regressions + 2 deprecation renames); Part B introduces canonical pruner bearer `primesUpTo` + 2 native_decide sanity tests. S9 ACT prior baseline: Path-B Option-3 hybrid scaffold (Bool surface engelsmaSearch + Bool/Prop bridge + S8 composition + positive unit test at (7,3) witnessed by {0,2,6}).",
     "builtItems": [
       "research/problems/bounded-prime-gaps-oq-03-oq-02/problem.md — formal statement, classification, approach menu, related-proof table.",
       "research/problems/bounded-prime-gaps-oq-03-oq-02/knowledge.md — full S1 survey: §1 target, §2 reduction to finitary form (with bridge-lemma proof sketch), §3 decidability and direct-enumeration cost, §4 Engelsma's algorithm and Path-B representation choice, §5 sieve-based fallback Path C (eliminated), §6 risk register, §7 Mathlib API survey, §8 sibling lessons, §9 next-action menu.",
@@ -120,6 +120,7 @@
       "A verified-backtracking combinator library — not in Mathlib; Path B will build a bespoke one in the gallery and (potentially) upstream after stabilization."
     ],
     "nextSteps": [
+      "[S23 drift note: S11a IS merged; file now 997 LOC and the bridge sorry is at line 969, not the pre-S11a estimates (953/925) quoted below. All sub-steps below are GATED on Docker recovery — see BLOCKED status.]",
       "S22b ACT (post-Docker-recovery, LOW risk, +30-40 LOC, 1 Docker iter) — paste S20 PREP §6 S11b-α combiner skeleton with S22 PREP §3 paper-discharge replacements for S11b-α-1 + S11b-α-2 into `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean` after S11a paste (insertion point line 953). Combiner signature: `lemma IsAdmissible_iff_residue_disjoint_primesUpTo {H : Finset ℕ} {k : ℕ} (hcard : H.card ≤ k) : IsAdmissible H ↔ ∀ p ∈ primesUpTo k, (H.image (· % p)).card < p`. Run 1 Docker build via `./proofs/scripts/docker-build.sh Proofs.BoundedPrimeGapsOQ03OQ02` to verify (a) S22 §3.3 prime-extraction discharge typechecks at pin `2df2f0150c…`, (b) §3.4 membership-construction discharge typechecks, (c) `omega` finishes p > k case, (d) no regression on `engelsmaSearchPruned_7_3_eq_true` / `engelsmaSearchPruned_11_5_eq_true` native_decide tests. If §3 Mathlib lemma name fallback needed: pivot to `simp only [Nat.primesBelow, Finset.mem_filter, Finset.mem_range]` unfold form. Net post-S22b sorries: 1 (line-925 bridge persists until S11b-δ; combiner is sorry-free at landing). Net axiomCount unchanged at 1.",
       "S11b-α ACT (post-S11a-VERIFY, LOW risk) — paste S20 PREP §6 combiner skeleton `IsAdmissible_iff_residue_disjoint_primesUpTo` (+25-40 LOC, 1 Docker iter) into `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean`. Discharges S11b-α-1 / S11b-α-2 sorries via `Nat.primesBelow` membership + `Finset.mem_sort` (paper-derived in S20 PREP §6, ~3 LOC each). Net sorries 1 → 1 (S11b-α-1/-α-2 close locally but the line-925 main bridge sorry persists until S11b-δ).",
       "S11b-β ACT (post-S11b-α merge, MEDIUM risk) — `searchAux_sound` (+70-120 LOC, 1-2 Docker iters). Inductive case absorbs S20 PREP §3.1 DELTA-1 case-split + §3.2 DELTA-2 leaf-appeal. May need auxiliary residue-counting lemma if discharge ≥ 30 LOC (R6).",
@@ -150,14 +151,20 @@
   "relatedProofs": [
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-01",
     "bounded-prime-gaps-oq-01-oq-02",
     "bounded-prime-gaps-oq-01-oq-03",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",
     "bounded-prime-gaps-oq-04",
     "bounded-prime-gaps-oq-04-oq-01",
-    "bounded-prime-gaps-oq-04-oq-02"
+    "bounded-prime-gaps-oq-04-oq-01-incomplete-01",
+    "bounded-prime-gaps-oq-04-oq-01-wip-01",
+    "bounded-prime-gaps-oq-04-oq-02",
+    "bounded-prime-gaps-oq-05"
   ],
   "references": {
     "papers": [
@@ -178,7 +185,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.561Z",
-  "lastUpdate": "2026-06-01T20:50:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -192,6 +199,50 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGaps.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ01.lean",
+      "lineCount": 208,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03.lean",
@@ -216,6 +267,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
     },
     {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "lineCount": 407,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "lineCount": 233,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
       "filename": "BoundedPrimeGapsOQ03OQ01OQ04.lean",
       "lineCount": 188,
@@ -229,13 +313,124 @@
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
       "filename": "BoundedPrimeGapsOQ03OQ02.lean",
-      "lineCount": 953,
-      "theoremCount": 29,
-      "axiomCount": 1,
-      "defCount": 5,
-      "sorryCount": 1,
+      "lineCount": 998,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ03.lean",
+      "lineCount": 175,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04.lean",
+      "filename": "BoundedPrimeGapsOQ04.lean",
+      "lineCount": 367,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01.lean",
+      "lineCount": 264,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "lineCount": 165,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Incomplete01.lean",
+      "lineCount": 93,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01WIP01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01WIP01.lean",
+      "lineCount": 131,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01WIP01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ02.lean",
+      "lineCount": 600,
+      "theoremCount": 10,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ05.lean",
+      "filename": "BoundedPrimeGapsOQ05.lean",
+      "lineCount": 151,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ05.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsSieve.lean",
+      "filename": "BoundedPrimeGapsSieve.lean",
+      "lineCount": 368,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsSieve.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsTPC.lean",
+      "filename": "BoundedPrimeGapsTPC.lean",
+      "lineCount": 282,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
     }
-  ]
+  ],
+  "iteration": 25
 }

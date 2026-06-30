@@ -1,0 +1,156 @@
+{
+  "id": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+  "slug": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GeometricSeriesOQ07OQ01OQ01"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "Polynomial"
+    ],
+    "namespace": "GeometricSeriesOQ08OQ01OQ01OQ01OQ02OQ01OQ01",
+    "lineCount": 255,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/GeometricSeriesOQ08OQ01OQ01OQ01OQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "An Analysis-Free Proof of the Eulerian (★∞) Recurrence — via the Binomial Transform of Stirling Numbers",
+  "description": "Answers the parent's open question by giving a purely algebraic, analysis-free proof of the Eulerian binomial-convolution recurrence (1 − X)·Eₘ = 0ᵐ·(1 − X)^{m+1} + X·∑_{i<m} C(m,i)·Eᵢ·(1 − X)^{m−i}, valid over an arbitrary commutative ring (the parent proved it only over ℝ[X], by evaluating both sides at infinitely many real points). The engine is a new combinatorial identity not in Mathlib — the binomial transform of the second-kind Stirling numbers ∑_{i≤n} C(n,i)·S(i,j) = S(n+1,j+1) — proved from Pascal's rule and the Stirling recurrence alone. Substituting the Stirling closed form for the Eulerian polynomials and interchanging a double sum reduces (★∞) to this identity.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ08OQ01OQ01OQ01OQ02OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "combinatorics",
+      "geometric-series",
+      "eulerian",
+      "eulerian-polynomial",
+      "stirling-numbers",
+      "binomial-transform",
+      "frobenius",
+      "polynomial-identity",
+      "recurrence",
+      "analysis-free",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 255,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "sum_choose_mul_stirlingSecond: the binomial transform of the Stirling numbers of the second kind, ∑_{i≤n} C(n,i)·S(i,j) = S(n+1,j+1). Proved by induction on n using only Pascal's rule (Nat.choose_succ_succ) and the Stirling recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k). The inductive step closes because two boundary terms vanish — S(0,j+1)=0 and C(n,n+1)=0 — so a shifted sum ∑ g(i+1) equals ∑ g(i). This identity is NOT present in Mathlib (whose Stirling file has only the defining recurrences and edge values).",
+      "sum_range_choose_mul_stirlingSecond: the half-open corollary ∑_{i<m} C(m,i)·S(i,j) = (j+1)·S(m,j+1), obtained from the transform by peeling the top term and the Stirling recurrence.",
+      "eulerPoly_recurrence_alg: the headline — the Eulerian (★∞) binomial-convolution recurrence (1 − X)·Eₘ = 0ᵐ·(1 − X)^{m+1} + X·∑_{i<m} C(m,i)·Eᵢ·(1 − X)^{m−i} proved over an ARBITRARY commutative ring R[X], with no appeal to analysis. The parent proved this only over ℝ[X] via Polynomial.eq_of_infinite_eval_eq (agreement at the infinitely many points of (−1,1)); this entry replaces that analytic step by a ring-theoretic computation. Both sides, after substituting the Stirling closed form Eₘ = ∑_{k≤m} S(m,k)·k!·Xᵏ·(1−X)^{m−k} (the sibling's Frobenius identity eulerPoly_eq_stirlingForm) and interchanging the resulting double sum, collapse to the common canonical form ∑_j C((j+1)!·S(m+1,j+1))·X^{j+1}·(1−X)^{m+1−j}; the scalar coefficients match exactly via the binomial transform.",
+      "one_sub_X_mul_stirlingForm / X_mul_convolution_stirlingForm: the two reduction lemmas putting each side of (★∞) into the shared canonical form — the left side by raising every power of (1−X) and dropping the vanishing k=0 term, the right side by extending each inner Stirling sum to a square, interchanging the double sum (Finset.sum_comm), factoring out X^{j+1}(1−X)^{m+1−j}, and collapsing the scalar bracket via the binomial transform.",
+      "eulerPoly_recurrence: the parent's exact ℝ[X] statement re-derived analysis-free, as the R = ℝ specialisation of eulerPoly_recurrence_alg — exhibiting the originally analytic theorem as the shadow of a ring-theoretic identity."
+    ],
+    "prerequisites": [
+      "GeometricSeriesOQ07OQ01OQ01.eulerPoly — the Eulerian polynomial defined by its differential recurrence E_{m+1} = X(1−X)·E'ₘ + (m+1)·X·Eₘ",
+      "GeometricSeriesOQ07OQ01OQ01.stirlingForm — the Stirling closed form Nₘ(X) = ∑_{k≤m} S(m,k)·k!·Xᵏ·(1−X)^{m−k}",
+      "GeometricSeriesOQ07OQ01OQ01.eulerPoly_eq_stirlingForm — Frobenius' identity eulerPoly m = stirlingForm m, itself proved (in the sibling) by induction on m from the differential recurrence; the bridge that lets the algebraic computation start from the Stirling closed form",
+      "Nat.stirlingSecond_succ_succ — the Stirling recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k), the only Stirling input to the binomial transform",
+      "Nat.choose_succ_succ — Pascal's rule, the binomial input to the transform",
+      "Finset.sum_comm — interchange of a finite double sum (over a square), the key step of the right-hand-side reduction"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.stirlingSecond_succ_succ",
+        "description": "The defining recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k) for Stirling numbers of the second kind. The sole Stirling-number input to the new binomial transform identity and its corollary.",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule (n+1).choose (k+1) = n.choose k + n.choose (k+1). Splits the binomial weight in the inductive step of the binomial transform.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_comm",
+        "description": "Interchanges the order of a finite double sum over a product of finsets. After extending each inner Stirling sum to the full square range, this swaps the (i,j) summation so the binomial transform can be applied for each fixed column j.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_subset",
+        "description": "Equality of sums when extending the index set by terms that vanish. Used to extend each inner sum from range (i+1) to range (m+1), the added j>i terms being zero since S(i,j)=0.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Eulerian polynomials Eₘ — numerators of the rational closed forms ∑_{k≥0} kᵐ·xᵏ = Eₘ(x)/(1 − x)^{m+1} — satisfy two structurally different recurrences: a differential one, Eₘ₊₁ = X(1−X)E′ₘ + (m+1)X·Eₘ (which defines them in the gallery), and a Pascal-style binomial-convolution one, (★∞). The parent line proved that the Eulerian polynomials obey (★∞) as a polynomial identity, but only over ℝ[X], and only by an analytic device: evaluate both sides at the infinitely many points of (−1,1), where the convergent-series moment recurrence applies, then invoke polynomial extensionality. The parent's recorded open question asks for a derivation that never leaves the world of algebra. The bridge turns out to be a classical-but-unmechanised fact about Stirling numbers of the second kind: their binomial transform ∑_{i≤n} C(n,i)·S(i,j) = S(n+1,j+1). Stirling's S(n,k) count partitions of an n-set into k blocks; the transform reflects building a partition of an (n+1)-set by choosing which elements share the last element's block. Mathlib formalises the second-kind Stirling numbers and their basic recurrence, but not this convolution identity.",
+    "problemStatement": "The parent (geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01) proves, over ℝ[X] and through real analysis, that the Eulerian polynomials Eₘ = eulerPoly m satisfy $(1-X)E_m = 0^m(1-X)^{m+1} + X\\sum_{i<m}\\binom{m}{i}E_i(1-X)^{m-i}$ (★∞). Re-prove this purely algebraically — with no appeal to convergence, evaluation at points, or polynomial extensionality — and over an arbitrary commutative ring.",
+    "proofStrategy": "Reduce (★∞) to a combinatorial identity. Part 1 proves the engine: the binomial transform ∑_{i≤n} C(n,i)·S(i,j) = S(n+1,j+1), by induction on n. The j=0 column is immediate; for j=j'+1 the inductive step splits the binomial weight by Pascal's rule, rewrites S(i+1,j'+1) by the Stirling recurrence, and crucially observes that the shifted sum ∑_i C(n,i)·S(i+1,j'+1) equals ∑_i C(n,i)·S(i,j'+1) because the two boundary contributions S(0,j'+1) and C(n,n+1)·S(n+1,…) both vanish — collapsing four sub-sums to the target via the IH at two columns. The half-open corollary follows by peeling the top term. Part 2 substitutes the sibling's Frobenius closed form Eₘ = stirlingForm m into both sides of (★∞) and reduces each to the canonical sum ∑_j C((j+1)!·S(m+1,j+1))·X^{j+1}·(1−X)^{m+1−j}: the left side by (1−X)·(1−X)^{m+1−k} = (1−X)^{m+2−k} and dropping the k=0 term; the right side by extending each inner Stirling sum to a square (vanishing j>i terms), interchanging the double sum, factoring out the common monomial, and collapsing the scalar bracket via the binomial transform of Part 1. Part 3 assembles them: m=0 is (1−X)·1 = (1−X); m=m'+1 chains the two reductions. The ℝ[X] specialisation reproduces the parent's exact statement.",
+    "keyInsights": [
+      "The analytic step in the parent — agreement on the infinite set (−1,1) forces equality in ℝ[X] — is entirely eliminable. The same polynomial identity is a consequence of a finite combinatorial identity about Stirling numbers, so it holds verbatim over any commutative ring, not just over a field admitting infinitely many evaluation points. Generalising from ℝ[X] to arbitrary R[X] is the cleanest signal that no analysis is involved.",
+      "The right combinatorial lemma is the binomial transform of the second-kind Stirling numbers, ∑_{i≤n} C(n,i)·S(i,j) = S(n+1,j+1). It is exactly the bookkeeping needed when the Stirling closed forms of E_i are convolved against the binomial weights C(m,i): summing over i for a fixed power of X collapses to a single Stirling number of order m+1.",
+      "The inductive step of the binomial transform succeeds because of a vanishing-boundary phenomenon: the differential between ∑ g(i+1) and ∑ g(i) is g(n+1) − g(0), and both ends are zero (C(n,n+1)=0 and S(0,j+1)=0). This is what lets the column recurrence and Pascal's rule close without leftover terms.",
+      "The double-sum interchange is made painless by first padding each triangular inner sum ∑_{j≤i} up to the full square ∑_{j≤m} — legitimate because the added entries carry the factor S(i,j) with j>i, which is 0. Over a square, Finset.sum_comm swaps freely, after which each column j is a clean scalar multiple of the monomial X^{j+1}(1−X)^{m+1−j}.",
+      "The derivation is still grounded in the differential recurrence and Pascal's rule, as the open question asked: the differential recurrence enters through the sibling's Frobenius identity eulerPoly_eq_stirlingForm (proved by induction on m from E_{m+1} = X(1−X)E′ₘ + …), and Pascal's rule is the binomial input to the transform. What changes is that no analytic continuation, convergence, or point-evaluation is used anywhere."
+    ]
+  },
+  "sections": [
+    {
+      "id": "binomial-transform",
+      "title": "Part 1: The Binomial Transform of the Stirling Numbers",
+      "startLine": 61,
+      "endLine": 121,
+      "summary": "sum_choose_mul_stirlingSecond proves ∑_{i≤n} C(n,i)·S(i,j) = S(n+1,j+1) by induction on n, using only Pascal's rule and the Stirling recurrence; the inductive step hinges on a vanishing-boundary shift lemma (∑ g(i+1) = ∑ g(i) since g(0)=g(n+1)=0). sum_range_choose_mul_stirlingSecond is the half-open corollary ∑_{i<m} C(m,i)·S(i,j) = (j+1)·S(m,j+1). Neither identity is in Mathlib."
+    },
+    {
+      "id": "polynomial-reduction",
+      "title": "Part 2: Both Sides Collapse to a Common Canonical Sum",
+      "startLine": 123,
+      "endLine": 218,
+      "summary": "After substituting the Frobenius closed form Eₘ = stirlingForm m, one_sub_X_mul_stirlingForm rewrites the left side of (★∞) as ∑_j C((j+1)!·S(m+1,j+1))·X^{j+1}·(1−X)^{m+1−j}, and X_mul_convolution_stirlingForm rewrites the right (convolution) side to the same sum — by extending each inner range to a square, interchanging the double sum, factoring the common monomial, and collapsing the scalar bracket via the binomial transform."
+    },
+    {
+      "id": "analysis-free-recurrence",
+      "title": "Part 3: The Analysis-Free Eulerian Recurrence",
+      "startLine": 220,
+      "endLine": 254,
+      "summary": "eulerPoly_recurrence_alg assembles the two reductions into (★∞) over an arbitrary commutative ring (m=0 is (1−X)·1=(1−X); m=m'+1 chains the canonical forms). eulerPoly_recurrence specialises to ℝ[X], reproducing verbatim the parent's analytically-proved statement — now with an analysis-free proof."
+    }
+  ],
+  "openQuestions": [],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent. The parent proves the Eulerian recurrence eulerPoly_recurrence over ℝ[X] analytically (agreement at the infinitely many points of (−1,1) via Polynomial.eq_of_infinite_eval_eq). This entry answers its recorded open question: a purely algebraic, analysis-free proof, valid over any commutative ring."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01",
+      "relationship": "uses",
+      "description": "Supplies the Eulerian polynomial eulerPoly (differential recurrence), the Stirling closed form stirlingForm, and Frobenius' identity eulerPoly_eq_stirlingForm. Substituting the closed form for the Eulerian polynomials is what reduces the recurrence to a Stirling-number identity; the Frobenius identity is itself proved there by induction from the differential recurrence."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (Stirling numbers of the second kind, Eulerian numbers, ∑ kᵐ·xᵏ closed forms)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for second-kind Stirling numbers and their identities, the Eulerian polynomials, and the geometric moment sums."
+    },
+    {
+      "title": "Mathlib4: Combinatorics.Enumerative.Stirling",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Provides Nat.stirlingSecond and its defining recurrences and edge values; the binomial transform proved here is not among them."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Eulerian binomial-convolution recurrence (1 − X)·Eₘ = 0ᵐ·(1 − X)^{m+1} + X·∑_{i<m} C(m,i)·Eᵢ·(1 − X)^{m−i}, proved in the parent only over ℝ[X] and only by an analytic device (agreement at the infinitely many points of (−1,1)), is re-established here purely algebraically and over an arbitrary commutative ring. The engine is a new combinatorial identity, the binomial transform of the second-kind Stirling numbers ∑_{i≤n} C(n,i)·S(i,j) = S(n+1,j+1), proved from Pascal's rule and the Stirling recurrence alone — its inductive step closing through a vanishing-boundary shift. Substituting the Frobenius/Stirling closed form for the Eulerian polynomials and interchanging a (padded, square) double sum reduces both sides of the recurrence to the common canonical form ∑_j C((j+1)!·S(m+1,j+1))·X^{j+1}·(1−X)^{m+1−j}. 255 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries; every result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "Eliminating the analytic step shows that the Eulerian convolution recurrence is a ring-theoretic fact, not an analytic accident: it holds over every commutative ring, not just over fields with infinitely many evaluation points. The reusable by-product is the binomial transform of the second-kind Stirling numbers — a clean Mathlib-absent identity that future entries needing to convolve Stirling closed forms against binomial weights can call directly. Honest scope: the proof still rests on the sibling's Frobenius identity (and hence, transitively, on the differential recurrence proved there by induction) and on Pascal's rule, exactly the ingredients the open question named; the genuinely new content is the binomial transform and the analysis-free, ring-general assembly.",
+    "openQuestions": []
+  }
+}

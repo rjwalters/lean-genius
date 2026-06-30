@@ -1,0 +1,175 @@
+[
+  {
+    "id": "inverse-galois-a5-oq-03-realizable-predicate",
+    "proofId": "inverse-galois-a5-oq-03",
+    "type": "definition",
+    "range": {
+      "startLine": 79,
+      "endLine": 83
+    },
+    "title": "RealizableOverRat: the \"is a Galois group over ℚ\" predicate",
+    "content": "`RealizableOverRat G` packages the assertion that the finite group `G` occurs as the automorphism group `Gal(K/ℚ) = (K ≃ₐ[ℚ] K)` of *some* finite Galois extension `K/ℚ`. Formally it bundles five existential witnesses — the carrier type `K`, a `Field K` instance, an `Algebra ℚ K`, finite-dimensionality `FiniteDimensional ℚ K`, and `IsGalois ℚ K` — together with `Nonempty (G ≃* (K ≃ₐ[ℚ] K))`, a group isomorphism between `G` and the Galois group.\n\nUsing `Nonempty (... ≃* ...)` rather than a bare cardinality equality is what makes the predicate *structural*: realizing `G` means matching it as a group up to isomorphism, which is exactly what lets `congr` and `quotient` below transport realizability along group-theoretic constructions. The shape deliberately mirrors the parent `inverse-galois-a5` entry's `a5_realizable_iso` conclusion, so the two entries compose.",
+    "significance": "critical",
+    "mathContext": "The inverse Galois problem over $\\mathbb{Q}$ asks: for which finite groups $G$ does there exist a Galois extension $K/\\mathbb{Q}$ with $\\mathrm{Gal}(K/\\mathbb{Q}) \\cong G$? Encoding this as the existential predicate $\\mathrm{RealizableOverRat}\\,G := \\exists K,\\ G \\cong \\mathrm{Gal}(K/\\mathbb{Q})$ turns realizability into something closed under group operations.",
+    "relatedConcepts": [
+      "inverse Galois problem",
+      "Galois group as automorphism group",
+      "IsGalois",
+      "MulEquiv (group isomorphism)",
+      "finite Galois extensions of ℚ"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "field extensions and FiniteDimensional",
+      "existential quantification over types in Lean 4"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-oq-03-congr",
+    "proofId": "inverse-galois-a5-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 84,
+      "endLine": 90
+    },
+    "title": "RealizableOverRat.congr: realizability transports along isomorphisms",
+    "content": "If `G ≃* H` and `G` is realizable over `ℚ`, then so is `H`. The proof destructures the realization of `G` to extract the field `K` and the isomorphism `φ : G ≃* (K ≃ₐ[ℚ] K)`, then reuses the *same* field `K`, composing `e.symm.trans φ : H ≃* (K ≃ₐ[ℚ] K)`.\n\nThis is the trivial-but-essential observation that realizability is a property of the *isomorphism class* of a group, not of any particular presentation. It is the lemma that lets the quotient theorem's output `G ⧸ N` be re-identified with whatever concrete group (e.g. `ℤ/2`) one actually cares about.",
+    "significance": "key",
+    "mathContext": "If $K/\\mathbb{Q}$ witnesses $G \\cong \\mathrm{Gal}(K/\\mathbb{Q})$ and $e : G \\cong H$, then the *same* field witnesses $H$ via $e^{-1}$ followed by the original isomorphism: $H \\xrightarrow{e^{-1}} G \\xrightarrow{\\sim} \\mathrm{Gal}(K/\\mathbb{Q})$.",
+    "relatedConcepts": [
+      "isomorphism invariance",
+      "MulEquiv.symm",
+      "MulEquiv.trans",
+      "transport of structure"
+    ],
+    "prerequisites": [
+      "group isomorphisms",
+      "destructuring existentials in Lean 4"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-oq-03-quotient",
+    "proofId": "inverse-galois-a5-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 92,
+      "endLine": 130
+    },
+    "title": "RealizableOverRat.quotient: realizability is closed under normal quotients (the centerpiece)",
+    "content": "**The session's substantive machine-checked result.** If `G` is a Galois group over `ℚ` and `N ◁ G`, then `G ⧸ N` is also a Galois group over `ℚ`.\n\nThe public theorem (line 117) destructures the realization of `G` and delegates to the private `realizable_quotient_aux` (line 92), which carries genuine instance-implicit binders on `K`. This split is the crux of the formalization: existential witnesses obtained by `obtain` do **not** register as typeclass instances, so the fundamental-theorem lemmas (`IsGalois.of_fixedField_normal_subgroup`, `IsGalois.normalAutEquivQuotient`) cannot synthesize their `IsGalois`/`FiniteDimensional` arguments unless `K`'s structure is reintroduced via `[Field K] [Algebra ℚ K] [FiniteDimensional ℚ K] [IsGalois ℚ K]` instance binders and the auxiliary lemma is invoked with `@`-applied explicit instances.\n\nThe mathematical content: transport `N` to a normal subgroup `H = N.map φ` of `Gal(K/ℚ)` (normality preserved because `φ` is surjective), then take the **fixed field** `K^H`. By the fundamental theorem of Galois theory, `K^H/ℚ` is itself Galois with `Gal(K^H/ℚ) ≅ Gal(K/ℚ) ⧸ H`, and `QuotientGroup.congr` carries `G ⧸ N ≅ Gal(K/ℚ) ⧸ H` across `φ`. A subtle instance-diamond point: the `Algebra ℚ` instance is supplied as the intermediate field's own `.algebra'`, not the generic `DivisionRing.toRatAlgebra`, so all fundamental-theorem terms cohere.",
+    "significance": "critical",
+    "mathContext": "Fundamental theorem of Galois theory (normal case): for a finite Galois extension $K/\\mathbb{Q}$ and a normal subgroup $H \\trianglelefteq \\mathrm{Gal}(K/\\mathbb{Q})$, the fixed field $K^H$ is Galois over $\\mathbb{Q}$ and $\\mathrm{Gal}(K^H/\\mathbb{Q}) \\cong \\mathrm{Gal}(K/\\mathbb{Q})/H$. Combined with isomorphism transport, this gives $G/N \\cong \\mathrm{Gal}(K/\\mathbb{Q})/H \\cong \\mathrm{Gal}(K^H/\\mathbb{Q})$, so $G/N$ is realizable. This is structural progress: one fundamental-theorem reduction subsumes infinitely many quotient instances.",
+    "relatedConcepts": [
+      "fundamental theorem of Galois theory",
+      "IsGalois.normalAutEquivQuotient",
+      "IntermediateField.fixedField",
+      "Subgroup.Normal.map",
+      "QuotientGroup.congr",
+      "ℚ-algebra instance diamond"
+    ],
+    "prerequisites": [
+      "Galois correspondence and fixed fields",
+      "normal subgroups and quotient groups",
+      "Lean 4 typeclass instance synthesis and the @-application escape hatch"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-oq-03-sign-criterion",
+    "proofId": "inverse-galois-a5-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 132,
+      "endLine": 140
+    },
+    "title": "le_alternatingGroup_iff_forall_sign: the abstract square-discriminant criterion",
+    "content": "A subgroup `G ≤ Perm α` is contained in the alternating group `Aₙ = alternatingGroup α` iff every element of `G` is an even permutation (`sign σ = 1`). The proof is a clean two-way unfolding through `Equiv.Perm.mem_alternatingGroup` (`σ ∈ Aₙ ↔ sign σ = 1`).\n\nThis is the *permutation-group shadow* of the classical square-discriminant criterion. When `G` is the Galois group of a polynomial `f` acting on its roots, the left side `Gal(f) ⊆ Aₙ` holds exactly when `disc f` is a square in the base field, because the sign of `σ` equals `σ`'s action on the Vandermonde element `Δ = ∏_{i<j}(αᵢ - αⱼ)` and `disc f = Δ²`. Lifting this to the `Polynomial.Gal` level is itself a current Mathlib gap, so the entry isolates the purely group-theoretic core.",
+    "significance": "key",
+    "mathContext": "For a separable polynomial $f$ with roots $\\alpha_i$, the discriminant is $\\mathrm{disc}(f) = \\Delta^2$ where $\\Delta = \\prod_{i<j}(\\alpha_i - \\alpha_j)$. A Galois automorphism $\\sigma$ acts by $\\sigma(\\Delta) = \\mathrm{sgn}(\\sigma)\\,\\Delta$, so $\\mathrm{Gal}(f) \\subseteq A_n \\iff \\sigma(\\Delta) = \\Delta\\ \\forall\\sigma \\iff \\Delta \\in \\text{base field} \\iff \\mathrm{disc}(f)$ is a square.",
+    "relatedConcepts": [
+      "sign homomorphism",
+      "alternatingGroup",
+      "discriminant of a polynomial",
+      "Vandermonde determinant",
+      "Equiv.Perm.mem_alternatingGroup"
+    ],
+    "prerequisites": [
+      "symmetric and alternating groups",
+      "the sign of a permutation",
+      "subgroups of permutation groups"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-oq-03-group-orders",
+    "proofId": "inverse-galois-a5-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 143,
+      "endLine": 160
+    },
+    "title": "Orders of Sₙ and Aₙ: |Sₙ| = n! and 2·|Aₙ| = n!",
+    "content": "Two cardinality lemmas anchoring the two infinite families:\n\n- **`card_symmetricGroup`**: `Fintype.card (Perm (Fin n)) = n!`, proved by rewriting with `Fintype.card_perm` (`|Perm α| = (card α)!`) and `Fintype.card_fin` (`|Fin n| = n`).\n- **`card_alternatingGroup_fin`**: `2 * |alternatingGroup (Fin n)| = n!` under `[Nontrivial (Fin n)]` (i.e. `n ≥ 2`), via `two_mul_card_alternatingGroup`. Equivalently `|Aₙ| = n!/2`, reflecting that `Aₙ` is the index-2 kernel of the sign homomorphism.\n\nThe `Nontrivial` hypothesis is necessary: for `n ≤ 1` the sign map is trivial and `Aₙ = Sₙ`, so the factor-of-2 statement would fail.",
+    "significance": "supporting",
+    "mathContext": "$|S_n| = n!$ since permutations of an $n$-element set number $n!$. The sign homomorphism $\\mathrm{sgn} : S_n \\to \\{\\pm 1\\}$ is surjective for $n \\ge 2$ with kernel $A_n$, so $[S_n : A_n] = 2$ and $|A_n| = n!/2$.",
+    "relatedConcepts": [
+      "Fintype.card_perm",
+      "two_mul_card_alternatingGroup",
+      "index-2 subgroup",
+      "factorial"
+    ],
+    "prerequisites": [
+      "cardinality of permutation groups",
+      "Nontrivial typeclass",
+      "the sign homomorphism as a short exact sequence"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-oq-03-axioms",
+    "proofId": "inverse-galois-a5-oq-03",
+    "type": "axiom",
+    "range": {
+      "startLine": 163,
+      "endLine": 184
+    },
+    "title": "The two assumptions: generic family + Hilbert Irreducibility (Sₙ and Aₙ)",
+    "content": "The deep analytic certificate, isolated as exactly two honest axioms:\n\n- **`symmetricGroup_realizableOverRat n`**: for every `n`, `Perm (Fin n)` is realizable over `ℚ`. This bundles two ingredients absent from Mathlib — (i) the generic degree-`n` polynomial `Xⁿ − t₁Xⁿ⁻¹ + ⋯ ± tₙ` has Galois group the full `Sₙ` over `ℚ(t₁,…,tₙ)` (algebraically independent roots), and (ii) Hilbert's Irreducibility Theorem produces infinitely many rational specializations preserving the group.\n- **`alternatingGroup_realizableOverRat n`**: `alternatingGroup (Fin n)` is realizable over `ℚ`, via the square-discriminant twist `√(disc f_n)` plus HIT.\n\nWhy two axioms and not one? The `Aₙ` case is **provably not derivable** from `Sₙ` within this framework: `Aₙ ◁ Sₙ` is normal with quotient `ℤ/2`, so by `RealizableOverRat.quotient` an `Sₙ`-realization `K/ℚ` only realizes `Aₙ` over the quadratic subfield `K^{Aₙ}`, not over `ℚ`. Pulling `Aₙ` down to `ℚ` needs the specialized discriminant to be a square — a genuinely separate analytic input. Both are stated as `axiom` (so they count toward `axiomCount = 2`); neither the function-field Galois computation nor HIT (no thin sets, no `RatFunc` specialization API) exists in Mathlib 4.26.0.",
+    "significance": "critical",
+    "mathContext": "Hilbert's Irreducibility Theorem (1892): if $f(t_1,\\dots,t_m, X) \\in \\mathbb{Q}(t_1,\\dots,t_m)[X]$ is irreducible, then for a Zariski-dense (in fact thin-complement) set of specializations $t_i \\mapsto a_i \\in \\mathbb{Q}$ the specialized polynomial stays irreducible with the same Galois group. Applied to the generic polynomial (Galois group $S_n$ over the function field), this realizes $S_n$ over $\\mathbb{Q}$; the $\\sqrt{\\mathrm{disc}}$ twist realizes $A_n$. This is the 'easy half' of the inverse Galois problem.",
+    "relatedConcepts": [
+      "Hilbert's irreducibility theorem",
+      "generic polynomial",
+      "rational function field ℚ(t)",
+      "thin sets / specialization",
+      "Shafarevich (solvable groups)",
+      "Mathlib gaps"
+    ],
+    "prerequisites": [
+      "Galois groups over function fields",
+      "specialization of polynomials",
+      "axioms vs. theorems in Lean (axiom integrity)"
+    ]
+  },
+  {
+    "id": "inverse-galois-a5-oq-03-easy-half",
+    "proofId": "inverse-galois-a5-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 186,
+      "endLine": 204
+    },
+    "title": "The easy half of IGP + the quotient consistency check",
+    "content": "The headline conclusions and one genuinely-derived corollary:\n\n- **`symmetricGroup_isGaloisGroup`** / **`alternatingGroup_isGaloisGroup`**: every `Sₙ` and every `Aₙ` is a Galois group over `ℚ`. These are *restatements* of the two axioms — their entire mathematical weight lives in the assumptions, which is why the entry is honestly labelled `axiomatized`, not `verified`.\n- **`quotient_Sn_An_realizableOverRat`**: the order-2 group `Sₙ ⧸ Aₙ` is realizable over `ℚ`. Crucially this is **not** a fresh assumption: it is obtained by applying the *proved* `RealizableOverRat.quotient` to the `Sₙ` axiom. It serves as a non-vacuity / consistency check — the realizability framework genuinely meshes with Mathlib's fundamental theorem of Galois theory, and the quotient machinery produces new realizations from old.\n\nThe contrast between the two restatement theorems (which carry axiom weight) and the genuinely-derived quotient corollary makes the proved-vs-assumed boundary precise.",
+    "significance": "key",
+    "mathContext": "Hilbert's theorem: $S_n$ and $A_n$ are Galois groups over $\\mathbb{Q}$ for all $n$. Since $S_n/A_n \\cong \\mathbb{Z}/2$, the proved quotient theorem yields $\\mathbb{Z}/2$ as a Galois group over $\\mathbb{Q}$ for free — consistent with the elementary fact that $\\mathbb{Q}(\\sqrt{d})/\\mathbb{Q}$ realizes $\\mathbb{Z}/2$.",
+    "relatedConcepts": [
+      "easy half of the inverse Galois problem",
+      "restatement vs. derived theorem",
+      "axiom integrity / honest staging",
+      "ℤ/2 as a Galois group"
+    ],
+    "prerequisites": [
+      "the two assumptions above",
+      "RealizableOverRat.quotient",
+      "quotient groups Sₙ/Aₙ"
+    ]
+  }
+]

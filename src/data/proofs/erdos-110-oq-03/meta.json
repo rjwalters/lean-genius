@@ -77,67 +77,83 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Imports",
+      "summary": "Module docstring framing Open Question 3 of Erdős #110 (higher cardinals) and Mathlib imports.",
+      "startLine": 1,
+      "endLine": 32,
+      "mathContext": "Sets up the question: the Erdős–Hajnal–Szemerédi conjecture was disproved at $\\aleph_1$ by Lambie-Hanson (2020); this file generalizes the conjecture to arbitrary uncountable cardinals and proves structural results about its failure at all successor cardinals."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "Restated definitions from the parent problem",
-      "startLine": 31,
-      "endLine": 68,
+      "startLine": 33,
+      "endLine": 72,
       "mathContext": "Restates the core graph coloring infrastructure: proper colorings, $k$-colorability, induced subgraphs, chromatic numbers, and the finite $n$-chromatic subgraph predicate $\\text{HasFiniteNChromaticSubgraph}\\,G\\,n\\,b$. These are identical to the parent Erdős #110 formalization."
     },
     {
       "id": "generalized-conjecture",
       "title": "Generalized EHS Conjecture",
       "summary": "The conjecture parametrized by any cardinal κ",
-      "startLine": 75,
-      "endLine": 87,
+      "startLine": 73,
+      "endLine": 92,
       "mathContext": "Defines $\\text{GeneralizedEHSConjecture}(\\kappa)$: for every graph $G$ with $\\chi(G) = \\kappa$, there exist $F : \\mathbb{N} \\to \\mathbb{N}$ and $N_0$ such that for all $n \\geq N_0$, $G$ has an $n$-chromatic subgraph on $\\leq F(n)$ vertices. The original EHS conjecture is the special case $\\kappa = \\aleph_1$."
     },
     {
-      "id": "aleph1-case",
-      "title": "The ℵ₁ Case (Known Disproof)",
-      "summary": "Lambie-Hanson's 2020 counterexample at ℵ₁",
-      "startLine": 93,
-      "endLine": 106,
-      "mathContext": "Axiomatizes Lambie-Hanson's counterexample and proves $\\neg\\text{GeneralizedEHSConjecture}(\\aleph_1)$ by extracting the counterexample graph and deriving a contradiction with any proposed bound $F$."
-    },
-    {
       "id": "successor-cardinals",
-      "title": "Higher Successor Cardinals",
+      "title": "Successor Cardinal Counterexamples",
       "summary": "Failure at all successor alephs via ordinal walks",
-      "startLine": 113,
-      "endLine": 140,
+      "startLine": 93,
+      "endLine": 123,
       "mathContext": "Axiomatizes the existence of counterexamples at every successor aleph $\\aleph_{\\alpha+1}$, based on generalizing Lambie-Hanson's technique via Todorcevic's walks on $\\omega_{\\alpha+1}$. The main theorem `generalized_ehs_fails_all_successor_alephs` shows $\\forall \\alpha, \\neg\\text{GeneralizedEHSConjecture}(\\aleph_{\\alpha+1})$."
     },
     {
+      "id": "aleph1-case",
+      "title": "The ℵ₁ Case — Derived from General Result",
+      "summary": "Lambie-Hanson's 2020 counterexample at ℵ₁",
+      "startLine": 124,
+      "endLine": 150,
+      "mathContext": "Axiomatizes Lambie-Hanson's counterexample and proves $\\neg\\text{GeneralizedEHSConjecture}(\\aleph_1)$ by extracting the counterexample graph and deriving a contradiction with any proposed bound $F$."
+    },
+    {
       "id": "structural-analysis",
-      "title": "Structural Analysis",
+      "title": "Structural Analysis — Why Successor Cardinals Fail",
       "summary": "CounterexampleGraph structure and existence",
-      "startLine": 147,
-      "endLine": 167,
+      "startLine": 151,
+      "endLine": 181,
       "mathContext": "The `CounterexampleGraph` structure packages: (1) $\\chi(G) = \\kappa$ exactly, and (2) $G$ defeats all proposed bounds $F$. The theorem `counterexample_exists_at_successor` shows such structures exist at every successor level, and `counterexample_implies_failure` shows any counterexample implies conjecture failure."
     },
     {
       "id": "limit-cardinals",
       "title": "The Limit Cardinal Question",
       "summary": "Open question: what happens at ℵ_ω, etc.?",
-      "startLine": 174,
-      "endLine": 184,
+      "startLine": 182,
+      "endLine": 198,
       "mathContext": "For limit cardinals $\\aleph_\\lambda$ where $\\lambda$ is a limit ordinal, the EHS conjecture's status is genuinely unknown. C-sequences on limit ordinals have fundamentally different combinatorial properties, and the walk-based constructions do not directly transfer. This is defined as `LimitCardinalEHSOpen` to mark it as an open problem."
     },
     {
       "id": "no-universal-bound",
       "title": "No Universal Bounding Function",
       "summary": "No single F works for all uncountable graphs",
-      "startLine": 191,
-      "endLine": 203,
+      "startLine": 199,
+      "endLine": 252,
       "mathContext": "A stronger result than individual cardinal failures: there is no single $F : \\mathbb{N} \\to \\mathbb{N}$ such that for ALL graphs $G$ with $\\chi(G) \\geq \\aleph_1$, the function $F$ bounds $n$-chromatic subgraph sizes. Proved directly from the Lambie-Hanson counterexample."
+    },
+    {
+      "id": "cardinal-monotonicity",
+      "title": "Cardinal Monotonicity",
+      "summary": "Failures at distinct successor cardinals are independent, not corollaries of the ℵ₁ case.",
+      "startLine": 253,
+      "endLine": 268,
+      "mathContext": "The theorem `independent_failures` shows that for distinct ordinals $\\alpha \\neq \\beta$, the conjecture fails at both $\\aleph_{\\alpha+1}$ and $\\aleph_{\\beta+1}$ independently: each successor cardinal carries its own counterexample graph, so the failure at $\\kappa^+$ does not automatically propagate from the failure at $\\kappa$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Main results combined",
-      "startLine": 217,
-      "endLine": 230,
+      "startLine": 269,
+      "endLine": 287,
       "mathContext": "The summary theorem `erdos_110_oq_03_summary` combines three results: (1) failure at $\\aleph_1$, (2) failure at all successor alephs $\\aleph_{\\alpha+1}$, and (3) no universal bounding function. Together these give a comprehensive negative answer to the higher cardinal question for all successor levels."
     }
   ],
@@ -151,25 +167,19 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-110",
-      "title": "Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs",
-      "relation": "parent-problem",
-      "description": "The parent problem whose disproof this extends to higher cardinals",
-      "relationship": "extends"
+      "targetId": "erdos-110",
+      "relationship": "extends",
+      "description": "The parent problem whose disproof this extends to higher cardinals"
     },
     {
-      "slug": "erdos-62",
-      "title": "Erdős Problem #62: Common Subgraphs of Graphs with Chromatic Number ℵ₁",
-      "relation": "sibling-problem",
-      "description": "Another question about finite structure inside uncountably chromatic graphs",
-      "relationship": "related"
+      "targetId": "erdos-62",
+      "relationship": "related",
+      "description": "Another question about finite structure inside uncountably chromatic graphs"
     },
     {
-      "slug": "erdos-593",
-      "title": "Erdős Problem #593: Finite Subhypergraphs of Uncountably Chromatic 3-Uniform Hypergraphs",
-      "relation": "generalization",
-      "description": "Hypergraph analogue: does the higher cardinal failure extend to hypergraphs?",
-      "relationship": "related"
+      "targetId": "erdos-593",
+      "relationship": "related",
+      "description": "Hypergraph analogue: does the higher cardinal failure extend to hypergraphs?"
     }
   ],
   "references": [

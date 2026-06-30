@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-strategy-docstring",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05",
+    "range": { "startLine": 1, "endLine": 19 },
+    "type": "concept",
+    "title": "Strategy: Newton-Girard plus Cauchy-Schwarz",
+    "content": "The docstring lays out the two-ingredient plan for the first Maclaurin rung $S_1^2 \\ge S_2$. After clearing denominators the averaged inequality becomes $\\binom{n}{2}e_1^2 \\ge n^2 e_2$; substituting the Newton-Girard identity $2e_2 = e_1^2 - p_2$ collapses everything to the single Cauchy-Schwarz bound $n\\,p_2 \\ge e_1^2$. A notable observation recorded here: although Maclaurin's chain is stated for nonnegative reals, this base rung needs no sign hypothesis — both ingredients are sign-agnostic.",
+    "mathContext": "$S_1 = e_1/n,\\quad S_2 = e_2/\\binom{n}{2},\\quad S_1^2 \\ge S_2 \\iff \\binom{n}{2}e_1^2 \\ge n^2 e_2.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Maclaurin's inequality", "AM-GM refinement", "Cauchy-Schwarz", "Newton-Girard identities"],
+    "prerequisites": ["elementary symmetric polynomials", "power means"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05",
+    "range": { "startLine": 20, "endLine": 35 },
+    "type": "definition",
+    "title": "The three symmetric quantities e₁, p₂, e₂",
+    "content": "Imports Mathlib and defines the range-$n$ family of symmetric quantities used throughout: `e1` is the first elementary symmetric sum $e_1 = \\sum_{i<n} x_i$, `p2` is the second power sum $p_2 = \\sum_{i<n} x_i^2$, and `e2` is the second elementary symmetric sum encoded with an `if i < j` guard so the off-diagonal pairs are counted once. Indexing over `range n` (rather than an abstract Finset) keeps the cardinality concrete as $n$, which matters for the Cauchy-Schwarz step.",
+    "mathContext": "$e_1 = \\sum_{i<n} x_i,\\quad p_2 = \\sum_{i<n} x_i^2,\\quad e_2 = \\sum_{i<j<n} x_i x_j.$",
+    "significance": "supporting",
+    "relatedConcepts": ["elementary symmetric polynomial", "power sum", "Finset.range"],
+    "prerequisites": ["Finset summation", "BigOperators"]
+  },
+  {
+    "id": "ann-double-sum-split",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05",
+    "range": { "startLine": 41, "endLine": 63 },
+    "type": "insight",
+    "title": "Trichotomy split of the double sum",
+    "content": "`double_sum_split` decomposes the full square $\\sum_i \\sum_j x_i x_j$ into three pieces by `lt_trichotomy` on each index pair $(i,j)$: the strictly-upper triangle ($i<j$, giving $e_2$), the diagonal ($i=j$, giving $p_2$), and the strictly-lower triangle ($j<i$). The diagonal term is isolated with `Finset.sum_ite_eq` (which collapses $\\sum_j [i=j]\\,x_i x_j$ to $x_i^2$), and the three `simp` branches discharge the trichotomy cases using `asymm` to rule out the impossible comparisons.",
+    "mathContext": "$\\Big(\\sum_i x_i\\Big)\\Big(\\sum_j x_j\\Big) = \\underbrace{\\sum_{i<j} x_i x_j}_{e_2} + \\underbrace{\\sum_i x_i^2}_{p_2} + \\underbrace{\\sum_{j<i} x_i x_j}_{e_2}.$",
+    "significance": "key",
+    "relatedConcepts": ["index trichotomy", "diagonal/off-diagonal decomposition", "Finset.sum_ite_eq"],
+    "prerequisites": ["lt_trichotomy", "Finset.sum_add_distrib"]
+  },
+  {
+    "id": "ann-upper-eq-lower",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "insight",
+    "title": "Symmetry of the two off-diagonal triangles",
+    "content": "`upper_eq_lower` shows the strictly-lower triangle equals the strictly-upper one. Swapping the order of summation with `Finset.sum_comm` turns the `j < i` guard into an `i < j` guard over the swapped indices, and `mul_comm` matches $x_j x_i = x_i x_j$. This is the symmetry that lets the two off-diagonal copies of $e_2$ combine into the factor of 2 in Newton-Girard.",
+    "mathContext": "$\\sum_{j<i} x_i x_j = \\sum_{i<j} x_i x_j$ by relabeling $(i,j) \\mapsto (j,i)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_comm", "symmetric function", "commutativity of multiplication"],
+    "prerequisites": ["Finset.sum_comm"]
+  },
+  {
+    "id": "ann-newton-girard",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05",
+    "range": { "startLine": 78, "endLine": 84 },
+    "type": "insight",
+    "title": "Newton-Girard: e₁² = p₂ + 2e₂",
+    "content": "`newton_girard` assembles the identity. After `rw [sq, Finset.sum_mul_sum]` turns $e_1^2$ into the full double sum, the split (`double_sum_split`) and the triangle symmetry (`upper_eq_lower`) rewrite it as $e_2 + p_2 + e_2$, and `ring` collects the two $e_2$ terms. This is the Newton-Girard square-of-sum identity, re-derived locally so the file depends only on Mathlib's Cauchy-Schwarz lemma rather than the parent entry.",
+    "mathContext": "$e_1^2 = p_2 + 2e_2$, equivalently $2e_2 = e_1^2 - p_2$.",
+    "significance": "key",
+    "relatedConcepts": ["Newton-Girard identities", "square of a sum", "Finset.sum_mul_sum"],
+    "prerequisites": ["double_sum_split", "upper_eq_lower"]
+  },
+  {
+    "id": "ann-cauchy-schwarz",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05",
+    "range": { "startLine": 90, "endLine": 94 },
+    "type": "insight",
+    "title": "Power-mean bound e₁² ≤ n·p₂",
+    "content": "`sq_e1_le_card_mul_p2` is the only imported inequality: Mathlib's `Finset.sq_sum_le_card_mul_sum_sq` gives $(\\sum_{i\\in s} f_i)^2 \\le |s| \\cdot \\sum_{i\\in s} f_i^2$. Specializing $s = \\mathrm{range}\\,n$ and simplifying the cardinality with `Finset.card_range` yields exactly $e_1^2 \\le n\\,p_2$. This is the Cauchy-Schwarz inequality $\\langle x, \\mathbf{1}\\rangle^2 \\le \\|x\\|^2 \\|\\mathbf{1}\\|^2$ in disguise, with $\\|\\mathbf{1}\\|^2 = n$.",
+    "mathContext": "$\\Big(\\sum_{i<n} x_i\\Big)^2 \\le n \\sum_{i<n} x_i^2$, i.e. $e_1^2 \\le n\\,p_2$.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "power-mean inequality", "Finset.sq_sum_le_card_mul_sum_sq"],
+    "prerequisites": ["Cauchy-Schwarz over a Finset", "Finset.card_range"]
+  },
+  {
+    "id": "ann-maclaurin-cleared",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05",
+    "range": { "startLine": 100, "endLine": 110 },
+    "type": "insight",
+    "title": "Cleared-denominator form C(n,2)·e₁² ≥ n²·e₂",
+    "content": "`maclaurin_cleared` proves the denominator-free inequality, valid for every $n$ (both sides vanish for $n = 0, 1$). Combining Cauchy-Schwarz `hcs` and Newton-Girard `hng`, `nlinarith` derives the linear relation $2n\\,e_2 \\le (n-1)e_1^2$ (`hstar`). Rewriting $\\binom{n}{2} = n(n-1)/2$ via `Nat.cast_choose_two`, a final `nlinarith` — using $n \\ge 0$ from `Nat.cast_nonneg` — multiplies through by $n$ to close the goal. This is the robust integer-polynomial statement underlying the averaged inequality.",
+    "mathContext": "$\\binom{n}{2} e_1^2 \\ge n^2 e_2,\\quad \\text{from } 2n\\,e_2 \\le (n-1)e_1^2 \\text{ and } \\binom{n}{2} = \\tfrac{n(n-1)}{2}.$",
+    "significance": "key",
+    "relatedConcepts": ["clearing denominators", "Nat.cast_choose_two", "nlinarith"],
+    "prerequisites": ["nlinarith", "binomial coefficient cast"]
+  },
+  {
+    "id": "ann-maclaurin-base-step",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05",
+    "range": { "startLine": 112, "endLine": 124 },
+    "type": "insight",
+    "title": "The headline: S₁² ≥ S₂",
+    "content": "`maclaurin_base_step` passes from the cleared form to the averaged statement $(e_1/n)^2 \\ge e_2/\\binom{n}{2}$ for $n \\ge 2$. The hypothesis $n \\ge 2$ is used only to obtain strict positivity of $n$ and of $\\binom{n}{2}$ (`Nat.choose_pos`), so that `div_pow` and `div_le_div_iff` can cross-multiply without flipping the inequality; `nlinarith [maclaurin_cleared n f]` then discharges the cross-multiplied goal. This is the first rung $S_1^2 \\ge S_2$ of the Maclaurin chain.",
+    "mathContext": "$\\left(\\dfrac{e_1}{n}\\right)^2 \\ge \\dfrac{e_2}{\\binom{n}{2}}\\quad (n \\ge 2).$",
+    "significance": "key",
+    "relatedConcepts": ["Maclaurin's inequality chain", "div_le_div_iff", "positivity from n ≥ 2"],
+    "prerequisites": ["div_pow", "Nat.choose_pos"]
+  }
+]

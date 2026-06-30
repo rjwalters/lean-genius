@@ -338,7 +338,7 @@
       "startLine": 163,
       "endLine": 165
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Alternative $\\varepsilon$-$N$ Formulation",
     "content": "The conjecture restated in $\\varepsilon$-$N$ form: for all $\\varepsilon > 0$, there exists $N$ such that $f(n) \\leq (1/2 + \\varepsilon) \\cdot n \\cdot 2^{n-1}$ for all $n \\geq N$. Note this only requires the upper bound direction; the lower bound $(1/2 - \\varepsilon) \\cdot n \\cdot 2^{n-1} \\leq f(n)$ follows from the BHN construction for large $n$.",
     "mathContext": "$\\forall\\, \\varepsilon > 0,\\; \\exists\\, N,\\; \\forall\\, n \\geq N: f(n) \\leq (1/2 + \\varepsilon) \\cdot n \\cdot 2^{n-1}$.",

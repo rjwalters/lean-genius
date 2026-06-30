@@ -1,8 +1,8 @@
 {
   "slug": "central-limit-theorem-oq-01-oq-01-oq-04-oq-01",
   "title": "Partial Mathlib formalization of the Meerschaert-Scheffler DOA theorem",
-  "phase": "DISCHARGING",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "partial",
   "problemStatement": {
@@ -30,28 +30,18 @@
     "goal": "Produce a Gaussian-specialised version of the M-S characteristic-function convergence (R1 route, ~80-150 Lean lines)"
   },
   "currentState": {
-    "phase": "DISCHARGING",
+    "phase": "BLOCKED",
     "since": "2026-05-16T18:02:00Z",
-    "iteration": 10,
+    "iteration": 14,
     "focus": "S10 (2026-05-16T18:02Z, researcher-10, STATE-SYNC — doc-only 3-file ship; ABSORBS 3-PR mechanic cascade in T+2-3h window after S9 ACT merge 15:20Z): (a) PR #19676 MERGED 16:20Z — parent gallery `meta.json` `leanFile.{lineCount,axiomCount,theoremCount}` 343→359, 7→6, 9→10 (verified at HEAD); (b) PR #19720 MERGED 17:20Z — sibling slug `central-limit-theorem-oq-02-oq-04` `leanFiles[CentralLimitTheoremOQ01OQ01OQ04]` post-S9-ACT drift; (c) PR #19742 MERGED 18:19:57Z — parent slug research JSON `leanFiles[]` array gained missing entry for `CentralLimitTheoremOQ01OQ01OQ04.lean` with `{lineCount:359, theoremCount:10, axiomCount:6, defCount:7, sorryCount:0}`. RAISES 3 RED INFRA blockers structurally barring S11 ACT: (1) Docker daemon hung (`docker info` empty Server: section); (2) disk 3.3 Gi avail / 100% — below same-day ACT floor 5.4 Gi (ballot S78 baseline 5.4 Gi, shannon S18a 5.8 Gi); (3) `proofs/.lake` circular self-symlink (cold rebuild won't recover). Bearer 2/8 spot-check at unchanged lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `Real.rpow_neg` @ `Pow/Real.lean:252` + `Real.sqrt_eq_rpow` @ `Pow/Real.lean:981` byte-stable; 6 remaining S5/S7 bearers carry forward via SHA transitivity. Parent file `proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean` verified at HEAD: 359 lines; `theorem gaussian_has_scalar_exponent` at line 186 (S9 axiom→theorem swap landed); 6 axioms total (212/272/302/317/341/349); next axiom target `gaussian_is_operator_stable` at line 212 (S11 ACT). Per memory pattern `feedback_researcher_postship_pivot_to_act_ready_slug_whose_predecessor_statesync_mandated_pre_claim_docker_baseline_due_to_historic_build_pending_chain_but_3_red_infra_blockers_post_merge_with_mechanic_partial_discharge`, 3-RED + mechanic-discharge combo mandates doc-only STATE-SYNC w/ INFRA escalation (not ACT). Net JSON edits: 8. Net file edits: 3 (state.md + this JSON + new session memo).\n",
     "blockers": [
       {
         "type": "infra",
         "severity": "high",
-        "description": "Docker daemon hung. `docker info` returns Client: header but empty Server: section (no exit code returned but no daemon connection). Cold rebuild via docker-build.sh would fail at daemon-connect step. Recovery: host-side Docker Desktop restart."
-      },
-      {
-        "type": "infra",
-        "severity": "high",
-        "description": "Disk pressure 3.3 Gi avail / 100% capacity (worsened −2.9 Gi vs S9 ACT author-time 6.2 Gi over ~3.5h). Below same-day ACT floor (ballot-problem-oq-03-oq-02 S78 baseline 5.4 Gi, shannon-channel-coding S18a 5.8 Gi). Per memory pattern, ACT under <5.4 Gi is structurally barred."
-      },
-      {
-        "type": "infra",
-        "severity": "high",
-        "description": "`proofs/.lake` is a circular self-symlink in the main repo (`readlink proofs/.lake` returns `/Users/rwalters/GitHub/lean-genius/proofs/.lake` itself). Cold rebuild won't recover — needs host-side `rm proofs/.lake && lake build`. Independent of Docker daemon state."
+        "description": "Verification blackout 2026-06-13: Docker daemon hung + Aristotle backend 404 — no verification route. The S13 AUDIT (#22993) established the only remaining work is a build-dependent SOUNDNESS FIX of the meerschaert_scheffler axiom (parent CentralLimitTheoremOQ01OQ01OQ04.lean:409), which is mis-stated (RHS unsatisfiable for non-degenerate operator-stable laws; biconditional FALSE at d=1,Sg=!![1]). 3 fix options documented in sessions/2026-06-13-s13-audit-meerschaert-scheffler-soundness.md; all build-dependent. Flagged blocked to stop depth-first re-claim churn until Docker recovers."
       }
     ],
-    "nextAction": "**S11 ACT (BLOCKED — 3 RED INFRA)**: host-side recovery REQUIRED before any ACT proceeds: (1) restart Docker Desktop until `docker info --format '{{.ServerVersion}}'` returns non-empty version string; (2) free disk to ≥5.4 Gi (same-day ACT floor); (3) `cd /Users/rwalters/GitHub/lean-genius && rm proofs/.lake && cd proofs && lake build` to break circular self-symlink + repopulate `.lake/`. Once GREEN: ship S11 ACT discharge of `gaussian_is_operator_stable` (parent line 212; post-S9-drift +16 from pre-S9 line 196). S4 PREP §4.3 sketches witness-matrix reduction; depends on S9's `gaussian_has_scalar_exponent` (now a theorem at line 186). Budget ~10-20 LOC; result axiomCount 6→5. **S12 ACT (queued, INDEPENDENT of S11)**: discharge `gaussian_in_own_doa` at parent line 341 (post-S9 +16 from pre-S9 line 325). S4 PREP §4.6 sketches via existing companion `gaussian_in_own_doa_via_charfun_form`. Budget ~25-40 LOC; result 5→4 (or 6→5 if S11 deferred). **S13+ doctor honesty corrections (any order, ~5 LOC each)**: E.1 replace `finite_cov_in_gaussian_doa` vacuous `hφ_reg : True`; E.2 add `(hB : IsUnit B.det)` hyp to `operator_stable_linear_image`. **Bearer carry-forward**: 6 of 8 S5/S7 bearers (`PosSemidef.dotProduct_mulVec_nonneg`, `Complex.ofReal_re`, `Real.exp_le_one_iff`, `Real.rpow_div_two_eq_sqrt`, `tendsto_const_nhds`, plus 1 more from S5 catalog) NOT re-spot-checked this session — covered by SHA-transitivity (lake SHA unchanged); per memory pattern, full 8/8 re-spot-check at unchanged SHA is busywork. **DO NOT** touch: parent .lean file (S9 ACT shipped; build-pending verified-by-mechanic on numerics), gallery `meta.json` (mechanic #19676 discharged), parent slug JSON `leanFiles[]` (mechanic #19742 discharged), sibling OQ-02-OQ-04 JSON (mechanic #19720 discharged), `knowledge.md` (no domain advance this session), `problem.md` (statement unchanged), `lake-manifest.json` (pin unchanged), other 13 OQ-04 child slug research JSONs (no mechanic-discharged work present), bearers' line-by-line gh-api re-fetch (SHA unchanged). **Picker hint**: next researcher who claims this slug should first run host-side INFRA recovery script before any ACT; if INFRA still RED, ship S12 ACT (independent of S11 + 0 new bearers needed) as fallback, OR move to PREP for one of the queued ACTs to keep momentum.\n",
+    "nextAction": "BLOCKED on infra. When Docker recovers: apply one of the 3 documented soundness fixes to the meerschaert_scheffler axiom (parent line 409) per the S13 AUDIT memo, then build-verify. The old axiom-discharge roadmap (gaussian_in_own_doa etc.) is DONE/merged — do not re-pursue (parent file is axiomCount=1, 0 sorries, 529 LOC, 15 theorems). The S1-planned R1 Gaussian-restatement is SUPERSEDED (refuted premise).",
     "attemptCounts": {
       "total": 7,
       "currentApproach": 6,
@@ -59,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S10 STATE-SYNC (researcher-10, 2026-05-16T18:02Z): doc-only 3-file absorb of T+2-3h mechanic cascade (PR #19676 16:20Z parent gallery `meta.json` `leanFile.{lineCount,axiomCount,theoremCount}` 343→359/7→6/9→10 + PR #19720 17:20Z sibling OQ-02-OQ-04 leanFiles drift + PR #19742 18:19:57Z parent research JSON missing leanFiles[] entry) + INFRA escalation 3 RED blockers (Docker hung empty Server: + disk 3.3 Gi below 5.4 Gi floor + `proofs/.lake` circular self-symlink) + bearer 2/8 spot-check (Real.rpow_neg, Real.sqrt_eq_rpow byte-stable at unchanged lake SHA 2df2f0150c) + parent file verification (359 LOC, theorem gaussian_has_scalar_exponent @186, 6 axioms @212/272/302/317/341/349). | Pre-S10: S9 ACT (researcher-9, 2026-05-16T~14:55Z, PR #19652 MERGED 15:20Z): axiomCount 7→6 via S8 PREP §2.2 corrected paste-ready recipe for `gaussian_has_scalar_exponent` (parent line 186; +16 LOC; build pending — Docker daemon hung). 2 of 4 discharges shipped per S4 PREP roadmap (8→7→6); 2 remaining (S11 ACT 6→5 `gaussian_is_operator_stable`, S12 ACT 5→4 `gaussian_in_own_doa`). | Pre-S9: S8 PREP (researcher-1, PR #19568) corrected S7 PREP §4 structural bug (refine arity 3→2; +RHS handling; +Complex.exp_zero disambiguation). S7 PREP (researcher-9, PR #19490) catalogued line drift + bearer pin recheck. S6 ACT (researcher-3, PR #19445) discharged `gaussCharFun_norm_le_one` 8→7 (Docker 7744/7744 clean). S5 STATE-SYNC absorbed S4-PREP roadmap. S1-S4: survey, scoping, build-verify, axiom-rediscovery audit.\n",
+    "progressSummary": "S13 AUDIT (researcher-1, 2026-06-13, build-free — Docker down + Aristotle 404): (A) STATE CORRECTION — parent CLT-OQ04 file is now axiomCount=1 (sole axiom `meerschaert_scheffler` @409), 0 sorries, 529 LOC, 15 theorems; the stale knowledge.md described 6 axioms + a discharge roadmap that is in fact DONE/merged. (B) SOUNDNESS FINDING — `meerschaert_scheffler` is mis-stated: its RHS is unsatisfiable for non-degenerate operator-stable laws (numerator (φ(n·ξ))^n=exp(-n³/2)→0 with n-independent denominator) while its LHS is provably true (gaussian_in_own_doa), so the biconditional is FALSE at d=1,Sg=!![1] — an axiom-integrity (unsoundness) issue, not merely a deep-pending result. Root cause: growing argument φ(n·ξ) vs M&S 8.2.1 shrinking normalization A_n→0. The S1-planned R1 restatement deliverable is SUPERSEDED (its premise is the refuted RHS-for-Gaussian). Next actionable step is a soundness fix (3 options documented), all build-dependent → deferred to recovered infra. 0 Lean changes this session.",
     "builtItems": [
       "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/problem.md (~280 lines: three-route survey + Mathlib gap map + reference reading)",
       "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/knowledge.md (~210 lines: S1 session note + R1 Lean skeleton)",
@@ -82,7 +72,10 @@
       "Bearer pin discipline at the lake SHA (S5 PREP §3): all 7 cited Mathlib bearers verified at exact line numbers at SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 on 2026-05-16T02:42Z (0/7 drift across ~8.5h since S4 PREP). Verification method: `gh api repos/leanprover-community/mathlib4/contents/<path>?ref=<SHA> -q .download_url | xargs -I{} curl -sL {} | sed -n '<line>p'`. Bearers: PosSemidef.dotProduct_mulVec_nonneg @ PosDef.lean:298, Complex.ofReal_re @ Complex/Basic.lean:87, Real.exp_le_one_iff @ Exponential.lean:339, Real.rpow_neg @ Pow/Real.lean:252, Real.sqrt_eq_rpow @ Pow/Real.lean:981, Real.rpow_div_two_eq_sqrt @ Pow/Real.lean:989, tendsto_const_nhds @ Neighborhoods.lean:190.",
       "S6 ACT lesson — `Matrix.dotProduct` namespace illusion: in Mathlib v4.26.0 (lake SHA 2df2f0150c, `Mathlib/Data/Matrix/Mul.lean`), the file `open Matrix`s at line 60 but does NOT enter `namespace Matrix` until line 284. `def dotProduct` at line 70 is therefore declared at top-level (`_root_.dotProduct`), accessible as bare `dotProduct` everywhere — `Matrix.dotProduct` is `Unknown constant`. `def mulVec` at line 661 IS inside the later `namespace Matrix` so the canonical name is `Matrix.mulVec`. The `⬝ᵥ` infix at line 76 is global (NOT scoped) while `*ᵥ` infix is `scoped infixr:73` to Matrix — `*ᵥ` requires `open scoped Matrix` to parse, `⬝ᵥ` works without. The ACT picker who reused S5's discharge sketch hit `Unknown constant Matrix.dotProduct` and `subscriptTerm ᵥ not implemented` on first build — fix is `open scoped Matrix` + bare `dotProduct` in simp sets.",
       "S6 ACT lesson — `(-e : ℝ) : ℂ` elaboration shape: Lean's elaborator on type ascription `(-e : ℂ)` where `e : ℝ` prefers `Neg.neg : ℂ → ℂ` on `(e : ℂ)` over `((-e : ℝ) : ℂ)`. So `(-(quadForm d Sg ξ / 2 : ℝ) : ℂ)` in `gaussCharFun`'s def body elaborates to `-↑(quadForm d Sg ξ / 2)` (negation OUTSIDE the coercion), not `↑(-(quadForm d Sg ξ / 2))` (negation INSIDE). After `unfold gaussCharFun`, `Complex.norm_exp_ofReal` (pattern `‖cexp ↑x‖`) does NOT directly match — need `← Complex.ofReal_neg` rewrite first to bridge `-↑(q/2)` → `↑(-(q/2))`, then `Complex.norm_exp_ofReal` fires.",
-      "S9 ACT (2026-05-16, researcher-9): S8 PREP §2.2 paste recipe activated successfully by inspection. Net delta: axiom→theorem swap for `gaussian_has_scalar_exponent`, axiomCount 7→6, theoremCount 9→10, lineCount 343→359 (+16 LOC), 0 new imports, 0 new sorries. Recipe byte-stable from S8 PREP §2.2 modulo 3 non-structural enhancements (compact rw chain, (1/2:ℝ) type ascription, docstring polish). Build verification deferred to S10 STATE-SYNC under recovered Docker per build-pending qualifier (≥5 same-wave precedents in past ~2h)."
+      "S9 ACT (2026-05-16, researcher-9): S8 PREP §2.2 paste recipe activated successfully by inspection. Net delta: axiom→theorem swap for `gaussian_has_scalar_exponent`, axiomCount 7→6, theoremCount 9→10, lineCount 343→359 (+16 LOC), 0 new imports, 0 new sorries. Recipe byte-stable from S8 PREP §2.2 modulo 3 non-structural enhancements (compact rw chain, (1/2:ℝ) type ascription, docstring polish). Build verification deferred to S10 STATE-SYNC under recovered Docker per build-pending qualifier (≥5 same-wave precedents in past ~2h).",
+      "S13 AUDIT (2026-06-13, researcher-1): the parent CLT-OQ04 file is now axiomCount=1 (only `meerschaert_scheffler` @line 409), NOT the 6 the stale knowledge.md/progressSummary described. The entire S4/S7/S8/S9 Gaussian-axiom discharge roadmap is DONE/merged (gaussian_has_scalar_exponent @186, gaussian_is_operator_stable @216, gaussian_in_own_doa @442, scalar_exponent_ge_half @392, finite_cov_in_gaussian_doa @499 are all proven theorems). Do not re-pursue that roadmap.",
+      "S13 SOUNDNESS FINDING: `meerschaert_scheffler` (parent @409) is mis-stated and its asserted biconditional is FALSE at concrete instances. Witness d=1, Sg=!![1], ξ=![1], any t>0: LHS true (gaussian_in_own_doa 1 Sg gives ∃ψ ∈ DOA); RHS false because the numerator uses a GROWING argument φ(n·ξ), so (gaussCharFun(n·ξ))^n = exp(-n³/2) → 0 while the denominator ν(exp(log t•E)·ξ) is n-independent (a constant in n) — the ratio → 0 ≠ 1 for any choice of existential E,ν. So True↔False = False; the axiom instance is unsound. Real M&S 8.2.1 uses a SHRINKING normalization (A_n→0) on the tail measure, not (φ(n·ξ))^n.",
+      "S13: the S1-planned R1 deliverable (Gaussian-specialised M-S restatement via matrix_exp_log_smul_half_id + gaussian_in_own_doa) is SUPERSEDED — its premise is precisely the false RHS-for-Gaussian claim refuted above. R1 must wait on a soundness fix to the axiom statement."
     ],
     "mathlibGaps": [
       "Multivariate Levy continuity theorem (charFun -> weak convergence in R^d): scalar exists, multivariate gap",
@@ -91,13 +84,9 @@
       "Slowly-varying function API beyond BGT §1.4 scope: partial"
     ],
     "nextSteps": [
-      "S7 ACT (paste-ready): use **S8 PREP §2.2 corrected ~25-LOC recipe** (NOT predecessor S7 PREP §4 — has 3-component refine bug for 1-existential def). Replace `axiom gaussian_has_scalar_exponent` at line 186 with theorem version: `refine ⟨fun _ => 0, fun n hn ξ => ?_⟩; simp [vecInner]; ...`. 4 falsifiability risks documented with 1-line fallbacks. Expected: axiomCount 7→6, +25 LOC, 0 sorries, 0 new imports, Docker-verify required.",
-      "S7 ACT (doctor-scope — recommended, template established by this PR's S6 ACT): replace axiom `gaussian_has_scalar_exponent` (parent line 165) using Real.rpow_neg + Real.sqrt_eq_rpow + proven gaussian_operator_stable. ~20–35 LOC, risk medium-low. Result: axiomCount 7 → 6. Will likely need to budget 1-2 ACT-time elaborator fixes per S6 ACT pattern (namespace scoping / cast shape).",
-      "S8 ACT (doctor-scope, depends on S7 landing): replace axiom `gaussian_is_operator_stable` (parent line 175) via tactic restructure (funext + congr 1 instead of conv_lhs ext). ~10–20 LOC, risk low. Result: axiomCount 6 → 5.",
-      "S9 ACT (doctor-scope, independent of S7/S8): replace axiom `gaussian_in_own_doa` (parent line 304) using Filter.Tendsto.congr' + tendsto_const_nhds. ~25–40 LOC, risk medium. Result: axiomCount 5 → 4.",
-      "E.1 honesty correction (doctor-scope, ~5 LOC, any order): replace `finite_cov_in_gaussian_doa`'s vacuous `hφ_reg : True` hypothesis with a proper regularity placeholder. Independent of S7–S9.",
-      "E.2 honesty correction (doctor-scope, ~3 LOC, any order): add `(hB : IsUnit B.det)` to `operator_stable_linear_image` statement. Independent of S7–S9.",
-      "S10+ (deferred): R3 full forward direction of Meerschaert–Scheffler remains blocked until Mathlib lands matrix regular variation (BGT §2.10 scope, 6–12 month infrastructure project)."
+      "PRIORITY (ACT, needs recovered build infra): soundness fix to `meerschaert_scheffler` (parent line 409). Option 1 (preferred): restate RHS to match M&S 2001 Thm 8.2.1 — shrinking normalization A_n→0 on the tail measure, reusing this file IsOperatorStable/InOperatorDomainOfAttraction normalization shape so the Gaussian is a true instance not a contradiction (remains an honest axiom; matrix RV still absent from Mathlib). Option 2 (min honesty patch): change numerator arg `(n:ℝ)*ξ i` → `ξ i / (n:ℝ)` and re-derive Gaussian instance with ν=ψ, E=(1/2)·I (build to confirm). Option 3 (disprove-and-demote): land theorem `¬(RHS for d=1,Sg=!![1])` via Tendsto (fun n => exp(-n³/2)) atTop (nhds 0), then rename axiom `*_BROKEN`. See sessions/2026-06-13-s13-*.md §3-4.",
+      "DEFERRED until soundness fix lands: any R1 Gaussian-specialised restatement work. Old R2 (scalar-exponent reduction) / R3 (full forward direction, blocked by absent matrix regular variation in Mathlib) remain valid only against a CORRECTED axiom statement.",
+      "Infra note (2026-06-13): Docker daemon down + Aristotle backend 404 + CI does not build Lean = no verification route. Only build-free work is safe to ship. The soundness fix is build-dependent — do NOT paste-ship blind."
     ]
   },
   "tags": [
@@ -115,5 +104,232 @@
   ],
   "createdAt": "2026-05-12T19:28:00Z",
   "updatedAt": "2026-05-16T04:10:00Z",
-  "lastUpdate": "2026-05-16T18:02:00Z"
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/CentralLimitTheorem.lean",
+      "filename": "CentralLimitTheorem.lean",
+      "lineCount": 621,
+      "theoremCount": 16,
+      "axiomCount": 12,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheorem.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01.lean",
+      "filename": "CentralLimitTheoremOQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01.lean",
+      "lineCount": 1131,
+      "theoremCount": 54,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01OQ04.lean",
+      "lineCount": 530,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02.lean",
+      "lineCount": 323,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01.lean",
+      "lineCount": 113,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ03.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01OQ03.lean",
+      "lineCount": 109,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ03.lean",
+      "filename": "CentralLimitTheoremOQ01OQ03.lean",
+      "lineCount": 147,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ04.lean",
+      "filename": "CentralLimitTheoremOQ01OQ04.lean",
+      "lineCount": 172,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02.lean",
+      "filename": "CentralLimitTheoremOQ02.lean",
+      "lineCount": 935,
+      "theoremCount": 20,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02Aristotle.lean",
+      "filename": "CentralLimitTheoremOQ02Aristotle.lean",
+      "lineCount": 137,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02OQ02.lean",
+      "filename": "CentralLimitTheoremOQ02OQ02.lean",
+      "lineCount": 157,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02OQ04.lean",
+      "filename": "CentralLimitTheoremOQ02OQ04.lean",
+      "lineCount": 808,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03.lean",
+      "filename": "CentralLimitTheoremOQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 8,
+      "axiomCount": 14,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ01.lean",
+      "filename": "CentralLimitTheoremOQ03OQ01.lean",
+      "lineCount": 199,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "filename": "CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "lineCount": 85,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ02.lean",
+      "filename": "CentralLimitTheoremOQ03OQ02.lean",
+      "lineCount": 292,
+      "theoremCount": 13,
+      "axiomCount": 11,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ04.lean",
+      "filename": "CentralLimitTheoremOQ04.lean",
+      "lineCount": 649,
+      "theoremCount": 21,
+      "axiomCount": 9,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ04.lean"
+    }
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "central-limit-theorem-oq-01",
+    "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-01-oq-04",
+    "central-limit-theorem-oq-01-oq-02",
+    "central-limit-theorem-oq-01-oq-02-oq-01",
+    "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-02-oq-01-oq-03",
+    "central-limit-theorem-oq-01-oq-03",
+    "central-limit-theorem-oq-01-oq-04",
+    "central-limit-theorem-oq-02",
+    "central-limit-theorem-oq-02-oq-04",
+    "central-limit-theorem-oq-03",
+    "central-limit-theorem-oq-04"
+  ]
 }

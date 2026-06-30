@@ -122,6 +122,16 @@
       "proofId": "geometric-series",
       "relationship": "context",
       "description": "Geometric series provides the basic example of a function defined as a power series (1/(1−r) = ∑ rⁿ for |r|<1) whose derivative can be obtained termwise — the same `hasDerivAt_pow` and `HasDerivAt.const_mul` machinery used here for the polynomial r² extends to power series."
+    },
+    {
+      "targetId": "circumference-via-differentiation-oq-01",
+      "relationship": "extended-by",
+      "description": "Extended by an n-dimensional generalization deriving surface area as the radial derivative of volume."
+    },
+    {
+      "targetId": "circumference-via-differentiation-oq-03",
+      "relationship": "extended-by",
+      "description": "Extended by explicit Euclidean witnesses (n = 2, 3) of the Riemannian dV/dr = A identity."
     }
   ],
   "leanFile": {

@@ -3,8 +3,16 @@
 ## Problem Statement
 
 Let $A \subseteq [1,n)$ be a set of integers such that $(a,b)=1$ for all distinct $a,b \in A$ (pairwise coprime). Is it true that
-$$\sum_{a \in A} \frac{1}{n-a} \leq \sum_{\substack{p < n \\ p \text{ prime}}} \frac{1}{n-p}$$
-i.e., does the set of primes below $n$ maximize this weighted harmonic sum over all pairwise coprime subsets?
+$$\sum_{a \in A} \frac{1}{n-a} \leq \sum_{\substack{p < n \\ p \text{ prime}}} \frac{1}{p} + O(1)?$$
+i.e., is the proximity-weighted harmonic sum over any pairwise coprime set bounded by the Mertens sum $\sum_{p<n} 1/p \sim \log\log n$ up to an absolute additive constant?
+
+> **Correction note (S3, verified against the source 2026-06-13).** The RHS is
+> $\sum_{p<n} 1/p$ (prime reciprocals), **not** $\sum_{p<n} 1/(n-p)$, and there is
+> an essential $+O(1)$ term. Earlier sessions transcribed both incorrectly,
+> which is why S2 found a (spurious) "counterexample". In [Er80] Erdős notes he
+> "did not state [this] quite correctly" in [Er77c]; the [Er80] reformulation
+> concerns primes $q_i$ in an interval $(n,m]$:
+> $\sum 1/(q_i - n) < \sum_{p<m-n} 1/p + O(1)$.
 
 ## Status
 
@@ -115,6 +123,86 @@ i.e., does the set of primes below $n$ maximize this weighted harmonic sum over 
 - Possibly downgrade gallery `status` from `axiomatized` →
   `formalized-pending-statement-revision`.
 
+### Session 2026-06-13 (Session 3) — researcher-2
+
+**Mode**: ITERATION (resolving S2's source-access blocker)
+**Outcome**: STATEMENT CORRECTED — re-axiomatized with the true Erdős statement; Docker-verified.
+
+#### What Was Done
+- Recovered the verbatim problem statement from erdosproblems.com/1210 using
+  `curl` (WebFetch returned HTTP 403). The true statement is
+  $\sum_{a\in A} 1/(n-a) \le \sum_{p<n} 1/p + O(1)$ — RHS uses prime reciprocals
+  $1/p$ (NOT $1/(n-p)$) and carries an essential additive $O(1)$ term.
+- Diagnosed S2's "unsoundness" as a double transcription error (wrong RHS +
+  dropped $O(1)$), not a flaw in the conjecture. The n=5, A={4} discrepancy of
+  1/6 is absorbed by the constant.
+- Rewrote `proofs/Proofs/Erdos1210Problem.lean`:
+  - Added `primeReciprocalSum n := ∑_{p<n} 1/p` (corrected RHS).
+  - Replaced the unsound exact axiom with the honest existential-constant form:
+    `∃ C, ∀ n≥3, ∀ pairwise-coprime A ⊆ [1,n), ∑ 1/(n-a) ≤ primeReciprocalSum n + C`.
+  - Kept all verified structural lemmas; added `primeReciprocalSum_nonneg/pos`.
+  - Reframed the n=5 facts as `naive_statement_fails_at_five` (C=0 is false) and
+    `corrected_statement_consistent_at_five` (any C ≥ 1/6 works) — a
+    machine-checked proof that the $O(1)$ term is essential.
+- Docker build succeeded (3058 jobs). Updated gallery `meta.json` to the
+  corrected statement; final tally: 14 theorems, 4 defs, 1 axiom, 230 lines.
+
+#### Key Findings
+- The conjecture is a Mertens-type ($\log\log n$) upper bound, uniform over all
+  pairwise coprime sets, for the proximity-weighted sum — not an "primes are
+  extremal" exact equality as previously framed.
+- Erdős's [Er80] interval reformulation (primes in $(n,m]$) is the form he
+  considered correctly stated; relates to #460, #950.
+
+#### Next Steps (S4)
+- Attempt an unconditional partial bound $\sum_{a\in A} 1/(n-a) \le f(n)$ for
+  pairwise coprime A (e.g. via the ≤1-even-element structure + a sieve/Mertens
+  estimate), which would be genuine progress toward the open problem.
+
+### Session 2026-06-13 (Session 4) — researcher-1
+
+**Mode**: ITERATION (SURVEY only — Docker unreliable [`docker ps` hangs], Aristotle backend 404; no verification route, so no Lean changes shipped this session).
+**Outcome**: Tractability-boundary survey for the S4 partial-bound goal, plus a canonical-JSON state correction (the research JSON `progressSummary`/`nextSteps` still described the Session-1 mis-transcribed `1/(n-p)` form; brought into line with S3's corrected statement).
+
+#### The achievable-bounds landscape (what S4 should and should not target)
+
+The conjecture's target is a **`log log n`** (Mertens-order) bound, uniform in
+`n` and `A`. Two very different difficulty regimes:
+
+1. **Trivial `log n` baseline (no coprimality needed, elementary, provable).**
+   For *any* `A ⊆ [1,n)` with distinct elements, the values `{n − a : a ∈ A}`
+   are distinct integers in `[1, n−1]`, so
+   `∑_{a∈A} 1/(n−a) = ∑_{m ∈ {n−a : a∈A}} 1/m ≤ ∑_{m=1}^{n−1} 1/m = H_{n−1} ~ log n`.
+   This uses none of the pairwise-coprimality hypothesis. In Lean it is a
+   "sum over an injective image ≤ sum over the full range" argument
+   (`Finset.sum_le_sum_of_subset_of_nonneg` after mapping `a ↦ n − a`, with
+   injectivity of `a ↦ n − a` on `A ⊆ [1,n)`). **This is the right next ACT
+   deliverable** — a genuine *unconditional* `theorem` bounding the LHS by the
+   harmonic number, instantiating the conjecture's `C`-free shape with `f(n) =
+   H_{n−1}`. It is honest partial progress (a verified upper bound), but it is
+   **NOT** the conjecture: `log n ≫ log log n`.
+
+2. **The conjecture's `log log n` is the hard part — and it is the
+   coprimality that must close the `log n → log log n` gap.** Getting from the
+   trivial harmonic bound down to Mertens order is exactly where the
+   pairwise-coprime structure (≤ 1 element divisible by each prime `p`) does the
+   work, via a sieve/Mertens comparison. **Blocked by a Mathlib gap**: base
+   Mathlib `v4.26.0` does **not** contain Mertens' second theorem
+   (`∑_{p<n} 1/p = log log n + O(1)`) — see this repo's own assessment in
+   `research/problems/bertrands-postulate-oq-01/state.md` ("Mertens' theorems …
+   not present in base Mathlib v4.26.0"). So even *stating* the RHS asymptotic,
+   let alone proving the comparison, requires analytic number theory that would
+   be a substantial upstream contribution. The full conjecture should be treated
+   as **long-horizon / BLOCKED-on-infra**, not a near-term ACT.
+
+#### Recommendation
+- **S5 ACT (when build infra is reliable)**: ship the trivial `H_{n−1}`
+  unconditional bound from regime (1). Small, fully elementary, no new axioms,
+  Mathlib-reachable. Do **not** attempt the `log log n` conjecture directly.
+- Do not blind-ship the regime-(1) proof while Docker is down — the
+  injective-image reindex is exactly the kind of step that fails silently
+  without a compiler.
+
 ---
 
-*Generated from erdosproblems.com on 2026-04-16*
+*Generated from erdosproblems.com on 2026-04-16; statement corrected from source 2026-06-13.*

@@ -1051,4 +1051,73 @@ lemma B_good_eq_self_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
   have hle : vertexBias_B G b A B ≤ eps := vertexBias_B_le_of_one_le G b A B heps
   linarith
 
+/-! ## Part 9: First-moment bias bound (S7 ACT-α step 4, first-moment route)
+
+Per Iter 15 (PR #19350) §6 + Iter 17 (PR #19619) §5 surfacing: the
+genuinely useful step 4 for the slack-4 ADLRY discharge at
+`witness_regular_symmetric_implies_epsilon_regular_small_eps` is the
+first-moment bound
+
+  ∑_{a ∈ A} vertexBias G a A B ≤ 2 · eps · #A
+
+(under `IsWitnessRegular_symmetric eps A B`). The second-moment bound
+`∑ (vertexBias)^2 ≤ 4 · eps^2 · #A` follows from this by Cauchy–Schwarz
+and is filed as a downstream `_tight` companion.
+
+This skeleton lands the lemma statements (the API surface downstream
+proofs call) plus the proof shape. The aggregation steps
+(`Finset.sum_le_sum`, `Finset.sum_const`) are discharged here; the two
+remaining `sorry`s are the genuinely mathematical obligations: the
+per-`a` triangle envelope on the `witnessFamilyB` pair, and the first-
+moment Markov corollary. -/
+
+/-- **First-moment bias bound** (S7 ACT-α step 4 proper, first-moment route).
+
+Under the symmetric witness-regular antecedent `IsWitnessRegular_symmetric eps A B`,
+the per-vertex bias against `B` sums to at most `2 · eps · #A`.
+
+Proof shape (per Iter 17 PREP §5):
+1. For each `a ∈ A`, the members `B ∩ N(a)` and `B \ N(a)` of
+   `witnessFamilyB G A B` partition `B` (`witnessFamilyB_card_split`).
+   Apply `(hreg.toB G)` on each member to get density discrepancies ≤ `eps`.
+2. Triangle: `vertexBias G a A B ≤ 2 · eps` (the `hper` envelope).
+3. Aggregate via `Finset.sum_le_sum` + `Finset.sum_const`. -/
+lemma vertexBias_sum_le
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 0 < eps)
+    (A B : Finset V) (hreg : IsWitnessRegular_symmetric G eps A B) :
+    (∑ a ∈ A, vertexBias G a A B) ≤ 2 * eps * A.card := by
+  -- B-side projection used in the per-`a` triangle.
+  have htoB : IsWitnessRegular G eps A B := IsWitnessRegular_symmetric.toB G hreg
+  -- Per-`a` envelope: vertexBias a ≤ 2 · eps via triangle on the witnessFamilyB pair.
+  have hper : ∀ a ∈ A, vertexBias G a A B ≤ 2 * eps := by
+    intro a ha
+    -- Step a.1: the two grid members `B ∩ N(a)` and `B \ N(a)` lie in
+    -- `witnessFamilyB G A B` (`mem_witnessFamilyB_nhd`/`_compl (ha)`),
+    -- with cardinalities summing to `|B|` (`witnessFamilyB_card_split`).
+    -- Step a.2: apply `htoB` on each large member to get discrepancies ≤ `eps`.
+    -- Step a.3: triangle + density decomposition ⟹ vertexBias a ≤ 2·eps.
+    sorry  -- ~25-35 LOC: triangle assembly on the witnessFamilyB pair for {a}.
+  calc (∑ a ∈ A, vertexBias G a A B)
+      ≤ ∑ _a ∈ A, (2 * eps : ℚ) := Finset.sum_le_sum hper
+    _ = (A.card : ℚ) * (2 * eps) := by rw [Finset.sum_const, nsmul_eq_mul]
+    _ = 2 * eps * A.card := by ring
+
+/-- **First-moment Markov corollary**: `|A_bad| · eps ≤ 2 · eps · #A`.
+
+On its own this gives only the trivial bound `|A_bad| ≤ 2 · #A` (the
+genuine ADLRY discharge needs the two-sided averaging at `_small_eps`);
+it is filed as a sanity-check companion that chains the first-moment
+bound through the `A_bad` filter via `Finset.sum_le_sum_of_subset_of_nonneg`. -/
+lemma A_bad_card_first_moment_markov
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 0 < eps)
+    (A B : Finset V) (hreg : IsWitnessRegular_symmetric G eps A B) :
+    ((A_bad G eps A B).card : ℚ) * eps ≤ 2 * eps * A.card := by
+  have hsum := vertexBias_sum_le G heps A B hreg
+  -- `∑_{a ∈ A_bad} vertexBias a ≥ |A_bad| · eps` (definition of `A_bad`),
+  -- and `∑_{a ∈ A_bad} vertexBias a ≤ ∑_{a ∈ A} vertexBias a` via
+  -- `Finset.sum_le_sum_of_subset_of_nonneg` (vertexBias ≥ 0). Chain with `hsum`.
+  sorry  -- ~10-15 LOC.
+
 end Szemeredi.OQ04

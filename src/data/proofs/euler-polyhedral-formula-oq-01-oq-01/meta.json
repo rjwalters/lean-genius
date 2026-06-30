@@ -72,46 +72,102 @@
   },
   "sections": [
     {
-      "id": "infrastructure",
-      "title": "Planar Graph Infrastructure",
-      "startLine": 40,
-      "endLine": 84,
-      "summary": "PlanarEmbedding structure with Euler formula axiom. edge_bound_planar (E ≤ 3V-6). exists_low_degree: every planar graph has vertex of degree ≤ 5 via handshaking lemma."
+      "id": "header-overview",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Imports (SimpleGraph Basic/Finite/DegreeSum/Coloring, Mathlib.Tactic), module docstring outlining the Kempe chain argument (Kempe 1879, Heawood 1890), proof approach and status, references, and the FiveColorTheorem namespace with SimpleGraph/Finset opened."
     },
     {
-      "id": "kempe-definitions",
-      "title": "Kempe Chain Definitions",
-      "startLine": 85,
+      "id": "part-1-planar-infrastructure",
+      "title": "PART 1: Planar Graph Infrastructure",
+      "startLine": 46,
+      "endLine": 85,
+      "summary": "PlanarEmbedding structure encoding the Euler relation V-E+F=2. edge_bound_planar derives E ≤ 3V-6. exists_low_degree: every planar graph has a vertex of degree ≤ 5, via the handshaking lemma and a by_contra argument."
+    },
+    {
+      "id": "part-2-kempe-definitions",
+      "title": "PART 2: Kempe Chain Definitions",
+      "startLine": 86,
       "endLine": 115,
-      "summary": "swapColors via Equiv.swap composition. swapColors_proper: proper coloring preservation via Equiv.swap injectivity. KempeChain and kempeSwap definitions."
+      "summary": "swapColors defined as composition with Equiv.swap c₁ c₂. swapColors_proper: a global color transposition preserves proper coloring, proved in one line via injectivity of the transposition."
     },
     {
-      "id": "kempe-correctness",
-      "title": "Kempe Chain Swap Correctness",
-      "startLine": 188,
-      "endLine": 236,
-      "summary": "kempeSwap_proper_internal: full correctness proof for Kempe chain swap with four cases (both-in, u-in/v-out, u-out/v-in, both-out). Uses maximality condition and Equiv.swap_apply_def."
+      "id": "part-3-color-counting",
+      "title": "PART 3: Color Counting Arguments",
+      "startLine": 116,
+      "endLine": 141,
+      "summary": "free_color_exists and degree_four_free_color: with k+1 colors and ≤ k used by neighbors a free color remains (the degree ≤ 4 case). five_colors_non_adjacent_pair: a complete K₅ neighborhood would need 10 > 3·5-6 = 9 edges."
     },
     {
-      "id": "five-color-theorem",
-      "title": "Five Color Theorem",
-      "startLine": 275,
-      "endLine": 340,
-      "summary": "five_color_theorem: complete structural proof. Base case via Fintype.equivFin. Inductive step uses low-degree vertex, K₅ non-planarity, Kempe chain separation. five_implies_six_colorable and planar_chromatic_le_five as corollaries."
+      "id": "part-4-k5-non-planarity",
+      "title": "PART 4: K₅ Non-Planarity (Five Color Theorem Prerequisite)",
+      "startLine": 142,
+      "endLine": 171,
+      "summary": "k5_not_planar: V=5, E=10 contradicts the planar edge bound via Euler's formula. five_neighbors_not_complete and exists_non_adjacent_pair: a 5-vertex induced subgraph of a planar graph has < 10 edges, so two of the degree-5 neighbors are non-adjacent."
     },
     {
-      "id": "kempe-properties",
-      "title": "Kempe Chain Algebraic Properties",
-      "startLine": 351,
-      "endLine": 400,
-      "summary": "swapColors_self (self-swap is identity), swapColors_involutive (double swap), swapColors_comm (swap symmetry). kempeSwap properties: empty chain, outside chain, c₁→c₂, c₂→c₁."
+      "id": "part-5-kempe-separation",
+      "title": "PART 5: Kempe Chain Separation in Planar Graphs",
+      "startLine": 172,
+      "endLine": 235,
+      "summary": "KempeChain structure (bichromatic vertex set) and kempeSwap (localized transposition on a chain). kempeSwap_proper_internal: full correctness across all four edge cases (both-in, u-in/v-out, u-out/v-in, both-out), using the maximality condition and Equiv.swap_apply_def."
     },
     {
-      "id": "colorability",
-      "title": "Graph Colorability Results",
-      "startLine": 440,
+      "id": "part-6-core-structure",
+      "title": "PART 6: Five Color Theorem — Core Proof Structure",
+      "startLine": 236,
+      "endLine": 277,
+      "summary": "planar_hereditary axiom (subgraph edge bounds) and kempe_chain_separation axiom: for a degree-5 vertex with 5 distinctly-colored neighbors, a Kempe chain swap always yields a proper recoloring with < 5 distinct neighbor colors."
+    },
+    {
+      "id": "part-7-inductive-proof",
+      "title": "PART 7: Five Color Theorem — Inductive Proof",
+      "startLine": 278,
+      "endLine": 336,
+      "summary": "five_color_axiom bridging the Mathlib SimpleGraph vertex-deletion gap, and five_color_theorem: small graphs (≤ 5 vertices) colored directly via Fintype.equivFin; larger graphs reduced through exists_low_degree to the axiomatized inductive step."
+    },
+    {
+      "id": "part-8-consequences",
+      "title": "PART 8: Consequences of the Five Color Theorem",
+      "startLine": 337,
+      "endLine": 355,
+      "summary": "five_implies_six_colorable (mono to 6 colors) and planar_chromatic_le_five: the chromatic number of any planar graph is at most 5 (sharpened to 4 by the Four Color Theorem)."
+    },
+    {
+      "id": "part-9-kempe-properties",
+      "title": "PART 9: Kempe Chain Properties (Fully Proved)",
+      "startLine": 356,
+      "endLine": 399,
+      "summary": "swapColors_self, swapColors_involutive, swapColors_comm (algebraic laws of the transposition). kempeSwap_empty, kempeSwap_outside, kempeSwap_c1_to_c2, kempeSwap_c2_to_c1: membership-based behavior of the localized swap."
+    },
+    {
+      "id": "part-10-degree-5-analysis",
+      "title": "PART 10: Degree-5 Analysis for the Five Color Theorem",
+      "startLine": 400,
+      "endLine": 423,
+      "summary": "color_extension: a free color exists whenever the used-color count is below the palette size. kempe_reduces_colors: after a Kempe swap reduces 5 used colors to fewer, at most 4 distinct colors remain among the neighbors."
+    },
+    {
+      "id": "part-11-graph-minor-connection",
+      "title": "PART 11: Graph Minor Connection",
+      "startLine": 424,
+      "endLine": 447,
+      "summary": "kuratowski_wagner axiom (no K₅/K₃,₃ minor ⟹ planar edge bound) and hadwiger_implies_five_color: the Hadwiger-conjecture chain (no K₆ minor ⟹ 5-colorable), proved for t ≤ 6 by Robertson–Seymour–Thomas."
+    },
+    {
+      "id": "part-12-small-graph-colorability",
+      "title": "PART 12: Small Graph Colorability",
+      "startLine": 448,
+      "endLine": 468,
+      "summary": "colorable_five_vertices: graphs on ≤ 5 vertices are 5-colorable. colorable_card_vertices: any graph on n vertices is n-colorable, both via Fintype.equivFin and injectivity."
+    },
+    {
+      "id": "part-13-summary-exports",
+      "title": "PART 13: Summary and Exports",
+      "startLine": 469,
       "endLine": 507,
-      "summary": "colorable_five_vertices: ≤5-vertex graphs are 5-colorable. colorable_card_vertices: n-vertex graphs are n-colorable. Hadwiger's conjecture connection."
+      "summary": "Closing docstring summarizing the fully-proved combinatorial ingredients and the axioms bridging Mathlib's SimpleGraph API gaps, plus the namespace close."
     }
   ],
   "conclusion": {

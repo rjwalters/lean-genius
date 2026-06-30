@@ -147,13 +147,13 @@ theorem diagInter_isClosedBelow {κ : Cardinal.{u}} {f : Ordinal.{u} → Set Ord
          lt_of_le_of_lt (le_max_left α β) hlt, hδγ⟩
 
 -- ============================================================================
--- § 5. Diagonal Intersection of Clubs is Unbounded (SORRY with Proof Sketch)
+-- § 5. Diagonal Intersection of Clubs is Unbounded (PROVED)
 -- ============================================================================
 
-/-- **Theorem (Unbounded Part — SORRY):** If every f(β) is a club, then diagInter f
+/-- **Theorem (Unbounded Part — PROVED):** If every f(β) is a club, then diagInter f
     is unbounded below κ.ord.
 
-    **Complete Proof Sketch (for the sorry):**
+    **Proof outline (matching the term below):**
 
     Given α₀ < κ.ord, construct a strictly increasing ω-sequence (α_n) by:
     - α_{n+1} ∈ ∩_{β ≤ α_n} f(β) with α_{n+1} > α_n and α_{n+1} < κ.ord
@@ -248,7 +248,7 @@ theorem diagInter_isUnbounded {κ : Cardinal.{u}} (hκ : κ.IsRegular) (hκ_unc 
 -- ============================================================================
 
 /-- For a regular uncountable κ, the diagonal intersection of a κ-indexed family
-    of clubs is itself a club. This combines the proved closed part with the sorry
+    of clubs is itself a club. This combines the proved closed part with the proved
     unbounded part. -/
 theorem diagInter_isClub {κ : Cardinal.{u}} (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
     {f : Ordinal.{u} → Set Ordinal.{u}} (hf : ∀ β, β < κ.ord → IsClub κ (f β)) :
@@ -359,15 +359,17 @@ Both proofs use regularity in an essential way.
 
 ## What Remains (Future Work)
 
-1. **`diagInter_isUnbounded`** (the one sorry): needs `isClub_inter` (intersection of
-   finitely many clubs is a club) and an ω-sequence argument using `Ordinal.iSup_lt_ord`.
-   Estimated effort: ~80 lines.
+The core result is complete: `diagInter_isUnbounded`, `diagInter_isClub`, and
+`fodors_pressing_down` are all proved with no sorries and no axioms. The unbounded
+part is established directly via a `bump` operator (a `bsup` over β < δ+1) rather than
+a standalone finite-intersection lemma. Natural extensions:
 
-2. **`isClub_inter`**: prove that ∩(C₁, C₂) is a club. The "ping-pong" argument needs:
-   - Building an ω-sequence alternating between C₁ and C₂
-   - Showing the limit is < κ.ord (by `Ordinal.iSup_lt_ord`)
-   - Showing the limit is in C₁ ∩ C₂ (by the closed condition on each club)
-   Estimated effort: ~50 lines.
+1. **`isClub_inter`** as a reusable lemma: prove that ∩(C₁, C₂) is a club via the
+   "ping-pong" argument (alternating ω-sequence, sup < κ.ord by `Ordinal.iSup_lt_ord`,
+   limit in C₁ ∩ C₂ by closedness). The current file inlines an equivalent argument.
+
+2. **Club filter / stationary ideal**: show clubs generate a filter and that stationary
+   sets are exactly those not in the dual ideal.
 -/
 
 -- Type-check the main results

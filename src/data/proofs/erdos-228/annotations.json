@@ -16,7 +16,11 @@
       "unit circle",
       "harmonic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Littlewood's conjecture on flat polynomials",
+      "polynomials with ±1 coefficients on the unit circle",
+      "uniform magnitude growth like √n"
+    ]
   },
   {
     "id": "ann-e228-littlewood-def",
@@ -35,7 +39,11 @@
       "binary constraints",
       "unimodular"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial coefficients restricted to {-1, +1}",
+      "polynomial degree and the natDegree convention",
+      "unimodular coefficient sequences"
+    ]
   },
   {
     "id": "ann-e228-flat-def",
@@ -54,7 +62,11 @@
       "magnitude",
       "complex norm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "evaluating a polynomial on the unit circle |z|=1",
+      "complex modulus and norm of polynomial values",
+      "two-sided uniform bounds c₁√n ≤ |P(z)| ≤ c₂√n"
+    ]
   },
   {
     "id": "ann-e228-question",
@@ -73,7 +85,11 @@
       "eventually",
       "Filter.atTop"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential quantification over polynomials of a given degree",
+      "the eventually-for-large-n filter Filter.atTop",
+      "combining the Littlewood and flatness conditions"
+    ]
   },
   {
     "id": "ann-e228-sqrt-heuristic",
@@ -92,7 +108,11 @@
       "random sums",
       "expected value"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the central limit theorem for sums of random signs",
+      "expected magnitude of a random ±1 coefficient sum",
+      "positivity of √n via Real.sqrt_pos"
+    ]
   },
   {
     "id": "ann-e228-bbmst",
@@ -111,7 +131,11 @@
       "derandomization",
       "Annals of Mathematics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the probabilistic method and derandomization",
+      "Littlewood's flat-polynomial conjecture and its 2019 resolution",
+      "axiomatizing a deep published theorem in Lean"
+    ]
   },
   {
     "id": "ann-e228-answer",
@@ -129,7 +153,11 @@
       "resolution",
       "positive answer"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the axiomatized BBMST theorem bbmst_theorem",
+      "deriving a theorem directly from an axiom",
+      "the Erdos228Question statement"
+    ]
   },
   {
     "id": "ann-e228-explicit",
@@ -148,7 +176,11 @@
       "threshold",
       "universal constants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal constants and a threshold N₀",
+      "constructive versus abstract existence statements",
+      "non-computable bounds from the BBMST construction"
+    ]
   },
   {
     "id": "ann-e228-hayman",
@@ -167,7 +199,11 @@
       "lower bounds",
       "Hayman 1974"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the maximum modulus max over the unit circle",
+      "lower bounds of the form (1+c)√n on Littlewood polynomials",
+      "Hayman's 1974 question distinct from flatness"
+    ]
   },
   {
     "id": "ann-e228-summary",
@@ -186,6 +222,10 @@
       "summary",
       "verified facts"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical conjunction of verified facts",
+      "the axiomatized Erdos228Question result",
+      "positivity of √n for n ≥ 1"
+    ]
   }
 ]

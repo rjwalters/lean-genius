@@ -16,7 +16,11 @@
       "Sidon sets",
       "counting functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "Sidon sets (B\u2082 sets)",
+      "counting functions of a set"
+    ]
   },
   {
     "id": "ann-e39-sidon-def",
@@ -35,7 +39,11 @@
       "sum-free sets",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sums a+b of pairs from a set",
+      "Sidon / B\u2082 sequences (all pairwise sums distinct)",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e39-counting",
@@ -54,7 +62,11 @@
       "growth rate",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the counting function A(n)=|A\u2229[1,n]|",
+      "asymptotic growth rates",
+      "cardinality in intervals"
+    ]
   },
   {
     "id": "ann-e39-conjecture",
@@ -73,7 +85,11 @@
       "Erdős prizes",
       "asymptotic growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the growth of infinite Sidon sets",
+      "the \u221an barrier",
+      "the Erd\u0151s prize conjecture"
+    ]
   },
   {
     "id": "ann-e39-upper-bound",
@@ -92,7 +108,11 @@
       "upper bounds",
       "counting arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting distinct pairwise sums",
+      "liminf of A(n)/\u221an",
+      "upper-bound counting arguments"
+    ]
   },
   {
     "id": "ann-e39-greedy",
@@ -111,7 +131,11 @@
       "constructive bounds",
       "lower bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the greedy algorithm",
+      "constructive lower bounds",
+      "building a Sidon set element by element"
+    ]
   },
   {
     "id": "ann-e39-ruzsa",
@@ -130,7 +154,11 @@
       "algebraic constructions",
       "current records"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets in finite fields",
+      "algebraic constructions",
+      "Ruzsa's 1998 record construction"
+    ]
   },
   {
     "id": "ann-e39-gap",
@@ -149,7 +177,11 @@
       "square roots",
       "gap analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the gap between upper and lower bounds",
+      "square-root growth \u221an",
+      "verified gap computations"
+    ]
   },
   {
     "id": "ann-e39-erdos-renyi",
@@ -168,7 +200,11 @@
       "relaxed conditions",
       "probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "representation numbers r(n)",
+      "the probabilistic method",
+      "the Erd\u0151s\u2013R\u00e9nyi relaxed construction"
+    ]
   },
   {
     "id": "ann-e39-examples",
@@ -187,6 +223,10 @@
       "exhaustive verification",
       "omega tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "small Sidon sets",
+      "exhaustive verification of distinct sums",
+      "arithmetic via omega"
+    ]
   }
 ]

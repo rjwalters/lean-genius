@@ -1,0 +1,123 @@
+[
+  {
+    "id": "csq0203-ann-01",
+    "proofId": "cauchy-schwarz-oq-02-oq-03",
+    "range": {
+      "startLine": 50,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Complex Polarization Identity: Four Norms Recover a Sesquilinear Form",
+    "content": "`polarization_identity_complex` is the headline result: on any inner product space over an RCLike field 𝕜, ⟨f,g⟩ = (‖f+g‖² - ‖f-g‖² + (‖f-i·g‖² - ‖f+i·g‖²)·i)/4. The real polarization identity in the OQ-02 parent uses only two norm evaluations (‖f+g‖, ‖f-g‖) because it recovers a *symmetric* bilinear form. A complex inner product is *sesquilinear* — conjugate-linear in the first argument, linear in the second — so its imaginary part is invisible to those two norms. Evaluating at f ± i·g supplies the missing two values. The proof is a typed one-line application of Mathlib's `inner_eq_sum_norm_sq_div_four`, with i = RCLike.I the abstract imaginary unit that specializes to Complex.I over ℂ and to 0 over ℝ (collapsing the formula back to the real identity).",
+    "mathContext": "$\\langle f,g\\rangle = \\frac{\\|f+g\\|^2 - \\|f-g\\|^2 + \\left(\\|f-ig\\|^2 - \\|f+ig\\|^2\\right) i}{4}$, with $i = \\mathrm{RCLike.I}$. Over $\\mathbb{R}$, $i = 0$ and the bracketed term vanishes, recovering $\\langle f,g\\rangle_\\mathbb{R} = \\frac{\\|f+g\\|^2 - \\|f-g\\|^2}{4}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sesquilinear form",
+      "RCLike field abstraction",
+      "real polarization identity",
+      "inner product from norm"
+    ],
+    "prerequisites": [
+      "complex inner product spaces",
+      "sesquilinearity vs bilinearity",
+      "RCLike.I abstract imaginary unit",
+      "norm induced by an inner product"
+    ]
+  },
+  {
+    "id": "csq0203-ann-02",
+    "proofId": "cauchy-schwarz-oq-02-oq-03",
+    "range": {
+      "startLine": 62,
+      "endLine": 75
+    },
+    "type": "insight",
+    "title": "Real and Imaginary Parts Split the Identity",
+    "content": "`re_inner_eq_norm_polarization` and `im_inner_eq_norm_polarization` decompose the headline identity into its two RCLike components: Re⟨f,g⟩ = (‖f+g‖² - ‖f-g‖²)/4 and Im⟨f,g⟩ = (‖f-i·g‖² - ‖f+i·g‖²)/4. The first is *exactly* the real polarization identity — confirming that the complex identity contains the real one as its real part, and that the f ± i·g evaluations carry all and only the imaginary information. Each wraps the corresponding Mathlib re/im polarization lemma after a `pow_two` rewrite that converts Mathlib's ‖·‖·‖·‖ products to the ‖·‖² notation used in the headline. The reassembly ⟨f,g⟩ = Re⟨f,g⟩ + i·Im⟨f,g⟩ is what `inner_eq_sum_norm_sq_div_four` packages.",
+    "mathContext": "$\\operatorname{Re}\\langle f,g\\rangle = \\frac{\\|f+g\\|^2 - \\|f-g\\|^2}{4}$, $\\quad \\operatorname{Im}\\langle f,g\\rangle = \\frac{\\|f-ig\\|^2 - \\|f+ig\\|^2}{4}$. Then $\\langle f,g\\rangle = \\operatorname{Re}\\langle f,g\\rangle + i\\operatorname{Im}\\langle f,g\\rangle$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "real part of inner product",
+      "imaginary part of inner product",
+      "RCLike.re / RCLike.im",
+      "pow_two normalization"
+    ],
+    "prerequisites": [
+      "RCLike.re and RCLike.im projections",
+      "real polarization identity",
+      "squared-norm notation"
+    ]
+  },
+  {
+    "id": "csq0203-ann-03",
+    "proofId": "cauchy-schwarz-oq-02-oq-03",
+    "range": {
+      "startLine": 77,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Parallelogram Law: The Norm-Side Companion",
+    "content": "`parallelogram_law_complex` states ‖f+g‖² + ‖f-g‖² = 2‖f‖² + 2‖g‖² for complex inner product spaces, restating Mathlib's `parallelogram_law_with_norm` in ‖·‖² form. Polarization and the parallelogram law are the two halves of the Jordan–von Neumann dictionary: the parallelogram law detects *whether* a norm comes from an inner product, and polarization *reconstructs* that product when it does. Note the `include 𝕜` directive — the statement mentions only norms (which live on the additive group E), so Lean's automatic variable binding would otherwise drop the field 𝕜 and the `InnerProductSpace 𝕜 E` instance needed to invoke the Mathlib lemma.",
+    "mathContext": "$\\|f+g\\|^2 + \\|f-g\\|^2 = 2\\|f\\|^2 + 2\\|g\\|^2$. Jordan–von Neumann (1935): a normed space is an inner product space $\\iff$ its norm satisfies this identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Jordan-von Neumann theorem",
+      "parallelogram law",
+      "Banach space characterization",
+      "Lean variable inclusion"
+    ],
+    "prerequisites": [
+      "parallelogram_law_with_norm",
+      "norm of an inner product space",
+      "Lean autobound / include directive"
+    ]
+  },
+  {
+    "id": "csq0203-ann-04",
+    "proofId": "cauchy-schwarz-oq-02-oq-03",
+    "range": {
+      "startLine": 86,
+      "endLine": 94
+    },
+    "type": "insight",
+    "title": "Uniqueness: The Norm Completely Determines the Inner Product",
+    "content": "`inner_eq_of_norm_eq` is the conceptual payoff of polarization: if two vector pairs (f₁,g₁) and (f₂,g₂) are equinormed in all four polarization arguments (f+g, f-g, f-i·g, f+i·g), their inner products are equal. The proof rewrites both inner products through the headline identity and substitutes the four norm equalities — the inner product is a *function of the norm*, nothing more. Operationally this is the engine behind isometry-rigidity theorems: any surjective norm-preserving map fixing 0 must preserve the inner product, hence (over ℝ) be linear (Mazur–Ulam). It is also why two distinct inner products can never induce the same norm.",
+    "mathContext": "If $\\|f_1+g_1\\| = \\|f_2+g_2\\|$, $\\|f_1-g_1\\| = \\|f_2-g_2\\|$, $\\|f_1 - i g_1\\| = \\|f_2 - i g_2\\|$, and $\\|f_1 + i g_1\\| = \\|f_2 + i g_2\\|$, then $\\langle f_1,g_1\\rangle = \\langle f_2,g_2\\rangle$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "uniqueness of inner product",
+      "Mazur-Ulam theorem",
+      "isometry rigidity",
+      "norm determines geometry"
+    ],
+    "prerequisites": [
+      "complex polarization identity",
+      "rewriting under equalities",
+      "isometries and norm preservation"
+    ]
+  },
+  {
+    "id": "csq0203-ann-05",
+    "proofId": "cauchy-schwarz-oq-02-oq-03",
+    "range": {
+      "startLine": 99,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Concrete ℂ Instance with Complex.I",
+    "content": "`polarization_identity_C` specializes the RCLike-generic headline to the field 𝕜 = ℂ, stating the identity with the concrete `Complex.I` in place of the abstract `RCLike.I`. The wrapper compiles by a single application of `inner_eq_sum_norm_sq_div_four` because `Complex.I = RCLike.I` *definitionally* for the ℂ instance (the RCLike structure on ℂ defines its imaginary unit as `Complex.I`). This gives gallery readers the literal complex-Hilbert-space statement matching the problem as posed, while the generic version remains available for ℝ/ℂ-uniform developments.",
+    "mathContext": "For a complex inner product space $E$: $\\langle f,g\\rangle = \\frac{\\|f+g\\|^2 - \\|f-g\\|^2 + \\left(\\|f - \\mathrm{i}\\,g\\|^2 - \\|f + \\mathrm{i}\\,g\\|^2\\right)\\mathrm{i}}{4}$ with $\\mathrm{i} = $ `Complex.I`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.I vs RCLike.I",
+      "definitional equality",
+      "field specialization",
+      "complex Hilbert space"
+    ],
+    "prerequisites": [
+      "RCLike instance on ℂ",
+      "definitional equality in Lean",
+      "complex inner product spaces"
+    ]
+  }
+]

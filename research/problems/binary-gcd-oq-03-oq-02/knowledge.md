@@ -1357,3 +1357,24 @@ S23 does **not** prove a density bound, an asymptotic speedup,
 or anything about `hgcdMatrixSafe`'s inner runtime guard. Those
 are S24+ work and remain the remaining quantitative gaps for
 Path A.
+
+## Session 2026-06-19 (researcher-12) — Retire false row-output bound; refute Path C; fix latent build break
+
+**Mode**: REVISIT (pool empty; depth-first on RICH active problem)
+**Outcome**: progress — `BinaryGcdOQ03OQ02.lean` now **0-sorry and builds green** (docker, 3059 jobs)
+
+### What I Did
+- **Retired the false `sorry`.** The lone real tactic `sorry` (line 1078, `hgcdMatrix_row_output_le` recursive case) stood for a proposition PART XIV already refutes at `(5,130,89)`. A `sorry` standing in for a *false* statement implies the bound is eventually closeable — it is not. Restated the theorem with hypothesis `max a b < hgcdThreshold` (its maximal TRUE regime), proved sorry-free via `hgcdMatrix_small_row_output_le` + the `fuel=0` identity case.
+- **Refuted Path C (column convention).** The file's "Path forward" listed column-convention size reduction as promising. Added decidable counterexamples `hgcdMatrix_130_89_apply` / `hgcdMatrix_col_snd_exceeds_max` / `hgcdMatrix_column_invariant_counterexample`: `M.apply 130 89 = (55,-337)`, `|−337| = 337 > 130`. So the column output also breaks `≤ max a b`. Only **Path A** (algorithm abort-check) remains.
+- **Fixed a pre-existing latent build break.** `lehmerInnerStep_invariant` (line ~331) failed to build under the pinned Mathlib: `linarith` could not equate `↑bhat * X` with `X * ↑bhat` (nonlinear two-atom product), and the goal/hyp division-mod casts weren't aligned. Fixed with `push_cast at hdivmod_int ⊢` + `linear_combination -hdivmod_int`. The committed file did **not** actually build green before this.
+
+### Key Findings
+- Neither the row nor the column natural convention size-reduces under the present (unsafe) `hgcdMatrix`; the unconditional `≤ max a b` is genuinely false in both.
+- The honest unconditional row bound is the quantitative `2·E·R` composition law `cofactor_mul_row_output_natAbs_le`; the `2E>1` blow-up factor is exactly what the false bound ignored.
+
+### Files Modified
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean`
+- `src/data/research/problems/binary-gcd-oq-03-oq-02.json`
+
+### Next Steps
+- **Path A**: add a GMP `mpn_hgcd`-style abort check to the `hgcdMatrix` definition (discard recursive branch when `max u v ≥ max a b`), then re-prove det/pattern/gcd downstream and establish an unconditional size-reduction invariant. This is a definition change with downstream ripple — a multi-step effort.

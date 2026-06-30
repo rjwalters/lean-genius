@@ -1,11 +1,14 @@
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
+import Mathlib.LinearAlgebra.Charpoly.Basic
+import Mathlib.LinearAlgebra.Charpoly.ToMatrix
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.Algebra.Polynomial.Module.AEval
 import Mathlib.Algebra.Module.Torsion.Basic
 import Mathlib.RingTheory.Finiteness.Defs
 import Mathlib.Tactic
 import Proofs.MinpolyCharpolyOQ03
+import Proofs.RationalCanonicalFormExists
 
 /-
 # OQ-03-OQ-01 (S1 Scaffold): F[X]-Module Structure on K^n via Matrix Action
@@ -47,16 +50,36 @@ that OQ-03-OQ-02 will consume:
    which is monic (hence nonzero in `F[X]`). This is the Cayley–Hamilton
    contribution.
 
-## S1 Scaffold scope (deliberate boundary)
+## Current scope (deliberate boundary)
 
-The deeper theorem `xModule_isTorsion` is **stated** here but its proof
-is left as `sorry`. The proof routes through Mathlib's
-`LinearMap.aeval_self_charpoly`, plus the basis-induced compatibility
-between `Matrix.charpoly` and `LinearMap.charpoly` for the standard
-basis on `n → F`. S2+ iterations of this sub-OQ will discharge the
-sorry; the public statement is final.
+Both structural deliverables consumed by OQ-03-OQ-02 are now **proved**:
 
-The `Module.Finite F[X]` instance is provided unconditionally (no sorry).
+* `Module.Finite F[X] (xModule M)` — provided unconditionally (no sorry)
+  via `Module.AEval.instFinitePolynomial`.
+* `xModule_isTorsionBy_charpoly` and `xModule_isTorsion` — proved
+  (Cayley–Hamilton on the `Module.AEval'` synonym, routed through
+  `charpoly_mulVecLin` + `LinearMap.aeval_self_charpoly`, then upgraded
+  to torsion via `charpoly_monic ⇒ nonZeroDivisor`).
+
+The invariant-factor-chain bridge `xModule_has_invariantFactorChain` (to
+the parent's strong form) is now **fully discharged** — no `sorry`. The
+heavy regrouping algorithm (`Module.equiv_directSum_of_isTorsion` →
+primary decomposition → prime-power regrouping into a divisibility chain)
+lives in the companion file `Proofs/RationalCanonicalFormExists.lean` as
+the axiom-free theorem `rational_canonical_form_exists`; the bridge here
+is a one-line field copy between the two field-identical
+`InvariantFactorChain` structures.
+
+Note: this file is now **build-verified sorry-free** (researcher-1, S15:
+`docker-build.sh Proofs.MinpolyCharpolyOQ03OQ01`, 7746 jobs, 0 sorry in
+this file and its companion; the lone `sorry` warning in the build is the
+unrelated parent `Proofs/MinpolyCharpolyOQ03.lean:228`). The torsion
+proofs were previously build-verified (researcher-7, S13: 3070 jobs). An
+earlier revision was build-broken: it
+relied on `LinearMap.charpoly`/`aeval_self_charpoly` and
+`charpoly_mulVecLin` without importing `Mathlib.LinearAlgebra.Charpoly.{Basic,ToMatrix}`,
+and tried to feed the strict-implicit `IsTorsionBy` proof directly into
+the `IsTorsion` existential. Both are now fixed.
 
 ## References
 
@@ -122,7 +145,7 @@ instance for downstream use. -/
 instance xModule.instFinite (M : Matrix n n F) :
     Module.Finite F[X] (xModule M) := inferInstance
 
-/-! ## Part 3: Torsion over F[X] (statement; proof deferred)
+/-! ## Part 3: Torsion over F[X] (proved)
 
 The F[X]-module `xModule M` is torsion: every element is annihilated
 by `charpoly M`, which is monic (hence nonzero in F[X] as F is a
@@ -138,9 +161,9 @@ The proof routes through:
 4. Lift `IsTorsionBy F[X] (xModule M) M.charpoly` to `IsTorsion` via
    monic ⇒ nonzero ⇒ nonZeroDivisor.
 
-The lemma `xModule_isTorsionBy_charpoly` (statement) captures step 1–3;
-`xModule_isTorsion` (statement) is the deliverable consumed by
-OQ-03-OQ-02. Both are sorry-guarded in this S1 scaffold. -/
+The lemma `xModule_isTorsionBy_charpoly` captures steps 1–3;
+`xModule_isTorsion` is the deliverable consumed by OQ-03-OQ-02. Both
+are proved and build-verified. -/
 
 /-- The characteristic polynomial of `M` annihilates every element of
     the `F[X]`-module `xModule M`. This is Cayley–Hamilton transported
@@ -154,11 +177,16 @@ OQ-03-OQ-02. Both are sorry-guarded in this S1 scaffold. -/
     for the API audit and alternate routes. -/
 theorem xModule_isTorsionBy_charpoly (M : Matrix n n F) :
     Module.IsTorsionBy F[X] (xModule M) M.charpoly := by
+  -- Cayley–Hamilton on the endomorphism, transported to `M.charpoly` via
+  -- `charpoly_mulVecLin` (note `endo` is a `def`, so it needs unfolding to
+  -- expose `M.mulVecLin` for the rewrite).
+  have hk : aeval (endo M) M.charpoly = 0 := by
+    have h1 : (endo M).charpoly = M.charpoly := by
+      unfold endo; exact charpoly_mulVecLin M
+    rw [← h1]; exact LinearMap.aeval_self_charpoly (endo M)
   intro x
-  have hC : (endo M).charpoly = M.charpoly := charpoly_mulVecLin M
-  apply (AEval'.of (endo M)).symm.injective
-  rw [Module.AEval.of_symm_smul, ← hC, LinearMap.aeval_self_charpoly]
-  simp
+  obtain ⟨m, rfl⟩ := (Module.AEval'.of (endo M)).surjective x
+  rw [← Module.AEval.of_aeval_smul, hk, zero_smul, map_zero]
 
 /-- **The F[X]-module `xModule M` is torsion.**
 
@@ -170,11 +198,21 @@ theorem xModule_isTorsionBy_charpoly (M : Matrix n n F) :
     to extract the invariant-factor decomposition. -/
 theorem xModule_isTorsion (M : Matrix n n F) :
     Module.IsTorsion F[X] (xModule M) := by
-  intro x
   have hne : M.charpoly ≠ 0 := (charpoly_monic M).ne_zero
   have hnzd : M.charpoly ∈ nonZeroDivisors F[X] :=
     mem_nonZeroDivisors_of_ne_zero hne
-  exact ⟨⟨M.charpoly, hnzd⟩, xModule_isTorsionBy_charpoly M x⟩
+  have hk : aeval (endo M) M.charpoly = 0 := by
+    have h1 : (endo M).charpoly = M.charpoly := by
+      unfold endo; exact charpoly_mulVecLin M
+    rw [← h1]; exact LinearMap.aeval_self_charpoly (endo M)
+  intro x
+  -- The `F[X]⁰`-element `⟨M.charpoly, hnzd⟩` annihilates `x`; its submonoid
+  -- smul reduces definitionally to the `F[X]`-smul, so `show` recovers the
+  -- plain Cayley–Hamilton computation.
+  refine ⟨⟨M.charpoly, hnzd⟩, ?_⟩
+  obtain ⟨m, rfl⟩ := (Module.AEval'.of (endo M)).surjective x
+  show (M.charpoly : F[X]) • (Module.AEval'.of (endo M) m) = 0
+  rw [← Module.AEval.of_aeval_smul, hk, zero_smul, map_zero]
 
 /-! ## Part 4: Deliverable surface for OQ-03-OQ-02 (statement only)
 
@@ -187,16 +225,34 @@ the deliverable here so its API surface is fixed by this sub-OQ.
 The chain is packaged as the parent's `InvariantFactorChain` structure
 (see `Proofs/MinpolyCharpolyOQ03.lean`). -/
 
-/-- **OQ-03-OQ-02 target (statement, sorry-guarded here)**:
+/-- **OQ-03-OQ-02 target (now fully proved)**:
     `xModule M` admits an invariant-factor chain whose product equals
-    `M.charpoly`. This is a restatement of the parent's
-    `rational_canonical_form_exists` consuming the F[X]-module
-    constructed in this file. The two are mutually-derivable; the
-    benefit of stating both is to fix the bridging surface between
-    this sub-OQ and the parent. -/
+    `M.charpoly` **and** whose last factor equals `minpoly F M`. This is
+    a restatement of the parent's `rational_canonical_form_exists`
+    consuming the F[X]-module constructed in this file. The two are
+    mutually-derivable; the benefit of stating both is to fix the
+    bridging surface between this sub-OQ and the parent.
+
+    *Faithfulness note (S14-alignment).* The `lastFactor = minpoly`
+    conjunct is **not** optional padding: without it the existential is
+    vacuously satisfiable by a degenerate chain (`factors = [M.charpoly]`
+    for nonempty `n`, or the empty chain for the `0 × 0` case), which
+    would make the bridge strictly weaker than the parent's S14
+    strong-form `rational_canonical_form_exists`. Adding `c.lastFactor =
+    minpoly F M` forces the genuine invariant-factor decomposition
+    (`minpoly = charpoly` holds only for non-derogatory `M`), restoring
+    the claimed mutual-derivability with the parent. The proof is
+    discharged by the companion `rational_canonical_form_exists`. -/
 theorem xModule_has_invariantFactorChain (M : Matrix n n F) :
     ∃ c : MinpolyCharpolyOQ03.InvariantFactorChain F,
-      c.prodFactors = M.charpoly := by
-  sorry
+      c.prodFactors = M.charpoly ∧ c.lastFactor = minpoly F M := by
+  -- Discharged by `RationalCanonicalFormExists.rational_canonical_form_exists`
+  -- (the strong-form RCF existence theorem, proved axiom-free in the companion
+  -- file). Its `InvariantFactorChain` is field-identical to the parent's, so we
+  -- copy the four fields across; `prodFactors`/`lastFactor` are definitionally
+  -- `factors.prod` / `factors.getLast?.getD 1` on both, hence the equalities
+  -- transport unchanged.
+  obtain ⟨c, hprod, hlast⟩ := RationalCanonicalFormExists.rational_canonical_form_exists M
+  exact ⟨⟨c.factors, c.monic, c.posDegree, c.chain⟩, hprod, hlast⟩
 
 end MinpolyCharpolyOQ03OQ01

@@ -42,13 +42,14 @@
       "Formalized factorial divisibility modulo small primes",
       "Axiomatized Barreto-Leeham's extension of Erdős's bound",
       "Connected Legendre's formula to the divisibility constraint",
-      "Defined relaxed divisibility allowing small prime factors"
+      "Defined relaxed divisibility allowing small prime factors",
+      "Discharged the Legendre identity v_2(n!) = n - s_2(n) from Mathlib (removed legendre_identity axiom)"
     ],
-    "axiomCount": 4,
-    "lineCount": 217,
-    "assumptions": "4 axioms: erdos_1968_classical, barreto_leeham_theorem, barreto_leeham_bound, legendre_identity. 0 sorries.",
+    "axiomCount": 3,
+    "lineCount": 234,
+    "assumptions": "3 axioms: erdos_1968_classical, barreto_leeham_theorem, barreto_leeham_bound. 0 sorries. The Legendre identity v_2(n!) = n - s_2(n) (legendre_for_two) is now fully proved from Mathlib's sub_one_mul_padicValNat_factorial; the former legendre_identity axiom has been removed.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 8
   },
   "overview": {
@@ -120,10 +121,10 @@
     {
       "id": "legendre-details",
       "title": "Legendre's Formula Details",
-      "startLine": 141,
-      "endLine": 162,
-      "summary": "Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. Proves `legendre_for_two` ($v_2(n!) = n - s_2(n)$) by forwarding to the axiom via `simp`.",
-      "mathContext": "Formal definition: Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. Proves `legendre_for_two` ($v_2(n!) = n - s_2(n)$) by forwarding to the axiom via `simp`."
+      "startLine": 147,
+      "endLine": 178,
+      "summary": "Defines `digitSum p n` recursively, proves `digitSum_eq_digits_sum` (it agrees with Mathlib's `(Nat.digits p n).sum`), and proves `legendre_for_two` ($v_2(n!) = n - s_2(n)$) outright from Mathlib's Legendre theorem `sub_one_mul_padicValNat_factorial`. No axiom is used.",
+      "mathContext": "Formal definition: Defines `digitSum p n` recursively. The helper `digitSum_eq_digits_sum` bridges it to Mathlib's base-$p$ digit sum `(Nat.digits p n).sum` by strong induction. `legendre_for_two` ($v_2(n!) = n - s_2(n)$) then follows directly from `sub_one_mul_padicValNat_factorial`, since $p - 1 = 1$ for $p = 2$."
     },
     {
       "id": "implications",
@@ -189,9 +190,9 @@
       "Real"
     ],
     "namespace": "Erdos729",
-    "lineCount": 217,
-    "axiomCount": 4,
-    "theoremCount": 6,
+    "lineCount": 234,
+    "axiomCount": 3,
+    "theoremCount": 7,
     "definitionCount": 8,
     "path": "Proofs/Erdos729Problem.lean",
     "sorries": 0

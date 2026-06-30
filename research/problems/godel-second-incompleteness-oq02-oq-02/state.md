@@ -1,6 +1,114 @@
 # State — godel-second-incompleteness-oq02-oq-02
 
-## Phase: ACT — S15 translate ACT shipped (researcher-1, 2026-06-01T16:00Z)
+## Phase: BLOCKED — verification blackout, all ACTs build-gated (researcher-2, 2026-06-13)
+
+**Snapshot date**: 2026-06-13 (researcher-2, S17 flag-BLOCKED)
+**Iteration**: 16 → 17 (status flipped `active` → `blocked` in slug JSON)
+
+> _Status change, not new math. This slug is fully ACT-runway-ready but has
+> nothing left that ships without a Docker build, and **Docker is DOWN on
+> 2026-06-13 (verification blackout)**. All three remaining next-steps add Lean
+> code that requires a build to verify:_
+>
+> - **S17 — discharge `Hk`** (internal deduction theorem lifting meta-level
+>   `internal_K` to object level; +0/+1 axiom) — most tractable.
+> - **S4 — Löb's theorem** (~150 LOC, +1 axiom `lob_henkin_fixed_point`,
+>   discharges `Hlob`).
+> - **S7 — arithmetical-soundness `taut` lift** (Łukasiewicz/Kalmár CPL
+>   completeness, ~80–120 LOC, discharges `Htaut`).
+>
+> _Verification at this snapshot (origin/main): trackers are **fully in sync** at
+> iteration 16 — `state.md`, slug JSON (`currentState.iteration=16`), and
+> `knowledge.md` all carry the S16 soundness ACT. Axiom census re-confirmed:
+> `GodelFirst…OQ01`=5, parent=1 (`con_implies_G`), Companion=3 → **9 total**,
+> **0 real sorries** (the parent's lone `sorry`-grep hit is the line-236 comment
+> "free of unprovable sorry-substitutes", a prose false positive). No open PRs on
+> the slug or the `GodelSecondIncompletenessOQ02*` family._
+>
+> _Why BLOCKED rather than another STATE-SYNC: this slug has already absorbed
+> three doc-only catch-up sessions (S13/S14/S16) while the build infra has been
+> intermittently down. Flipping `active` → `blocked` removes it from the
+> claim-random rotation so the blackout doesn't keep generating no-op re-claims.
+> **Re-open (`blocked` → `active`) when Docker recovers**; resume at S17._
+
+## Phase: STATE-SYNC — S16 ACT absorbed into state.md (researcher-6, 2026-06-13)
+
+**Snapshot date**: 2026-06-13 (researcher-6, S16 STATE-SYNC)
+**Iteration**: 15 → 16 (S16 ACT #22869 MERGED 2026-06-11; state.md was the one tracker the merge never touched)
+
+> _Phase note: the **S16 ACT shipped 2026-06-11 via PR #22869** ("arithmetical
+> soundness of GL — rule cases, 0 new axioms"), adding the companion file
+> `proofs/Proofs/GodelSecondIncompletenessOQ02Soundness.lean` (129 LOC,
+> Docker-verified 3063 jobs, 0 sorries). That PR updated `knowledge.md` and
+> `src/data/research/problems/<slug>.json` (→ iteration 16) but **did not touch
+> this `state.md`**, which still led with the S15 block and listed "S16 ACT" as a
+> pending next-step. This doc-only STATE-SYNC catches `state.md` up so the
+> primary human-facing tracker no longer trails its own JSON/knowledge twins by
+> one iteration. **Docker is DOWN on 2026-06-13 (blackout); no ACT possible this
+> session — the remaining S17/S4 next-steps are all build-gated._
+
+## What changed since the S15 snapshot (2026-06-01T16:00Z)
+
+| Event | PR | Status | When |
+|---|---|---|---|
+| S15 ACT translate | #22009 | MERGED | 2026-06-01T23:45:18Z |
+| S16 ACT arithmetical soundness (rule cases) | #22869 | **MERGED** | 2026-06-11 |
+| New slug PRs since #22869 merge | — | none observed | n/a |
+
+## S16 ACT summary (what landed in #22869)
+
+`GodelSecondIncompletenessOQ02Soundness.lean` proves the soundness direction —
+*if `GL ⊢ φ` then for every realization `ρ`, `PA ⊢ translate ρ φ`* — built on the
+S15 `translate` function. The five `GL_proves` constructors split cleanly:
+
+- **Inference rules `mp`, `nec` are unconditionally sound** — genuine theorems
+  from existing infrastructure (`nec ⟶ d1_representability`, `mp ⟶ impl_mp`),
+  exported as `arith_sound_nec` / `arith_sound_mp`. **0 new axioms.**
+- **Axiom schemas `taut`, `k`, `lob`** assert PA-provability of specific object
+  formulas; under the opaque `Provable` predicate they are not derivable, so
+  `arithmetical_soundness_of` takes them as explicit hypotheses `Htaut`/`Hk`/`Hlob`
+  — a fully build-verified, 0-new-axiom soundness induction whose only
+  assumptions are the three named derivability facts.
+
+## Post-S16 axiom census (9 axioms total — UNCHANGED from S2-α post-merge)
+
+| File | Axioms | Sorries (real) |
+|---|---|---|
+| `GodelIncompleteness.lean` (wrapper) | 0 | 0 |
+| `GodelFirstIncompletenessOQ01.lean` (transitive) | 5 | 0 |
+| `GodelSecondIncompletenessOQ02.lean` (parent) | 1 (`con_implies_G`) | 0 |
+| `GodelSecondIncompletenessOQ02Companion.lean` (S2-α) | 3 (`impl_mp`, `d2_distribution`, `d3_internal_necessitation`) | 0 |
+| `GodelSecondIncompletenessOQ02GLSyntax.lean` (S8) | 0 | 0 |
+| `GodelSecondIncompletenessOQ02Translate.lean` (S15) | 0 | 0 |
+| `GodelSecondIncompletenessOQ02Soundness.lean` (S16) | 0 | 0 |
+| **Total slug-attributable** | **9** | **0** |
+
+Verified by `grep -cE "^axiom "` over each file at `origin/main`. S16's 129 LOC
+added **0** axioms (the parent's `sorry`-grep=1 is a docstring false positive;
+real proof-position sorries = 0). The slug remains at the S2-α 9-axiom floor.
+
+## Next priorities (post-S16, all build-gated — Docker DOWN 2026-06-13)
+
+1. **S17 ACT — discharge one of `Htaut`/`Hk`/`Hlob` into a theorem.** Most
+   tractable: `Hk` via an object-level deduction theorem composing the meta-level
+   `internal_K` with a curry lemma. (+0 or +1 axiom depending on route.)
+2. **S4 ACT — Löb's theorem** (~150 LOC, **+1 axiom** `lob_henkin_fixed_point`)
+   — discharges `Hlob`; fills the parent's informal Löb flag.
+3. **`Htaut`** needs a Łukasiewicz/Kalmár CPL-completeness lift (largest, ~80–120
+   LOC of new propositional-completeness work).
+
+All three require a Docker build to ship; defer until the verification blackout
+clears.
+
+## S16 STATE-SYNC honesty footprint
+
+- **1** doc-only file modified (this `state.md` prepend)
+- **0** Lean file modifications · **0** new theorems · **0** sorries closed
+- **0** axiom changes (9-axiom slug total unchanged)
+- **0** build runs · **0** JSON edits (JSON `currentState` already at iteration 16
+  from #22869) · **0** `knowledge.md` edits (already carries the S16 section)
+
+## Previous Phase: ACT — S15 translate ACT shipped (researcher-1, 2026-06-01T16:00Z)
 
 **Snapshot date**: 2026-06-01T16:00Z (researcher-1, S15 ACT)
 **Iteration**: 14 → 15 (S10 translate ACT shipped per S14 priority #1; Docker-verified 3062 jobs)

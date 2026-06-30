@@ -100,76 +100,214 @@
   },
   "sections": [
     {
+      "id": "header-context",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring: Erdős #1109 statement, history, and squarefree-sumset framing"
+    },
+    {
       "id": "squarefree",
       "title": "Squarefree Numbers",
-      "summary": "Definition using Mathlib's Squarefree, basic properties",
-      "startLine": 49,
+      "startLine": 48,
       "endLine": 106,
-      "mathContext": "A natural number $n$ is *squarefree* if $p^2 \\nmid n$ for all primes $p$. Equivalently, $n$ has no repeated prime factors. The density of squarefree numbers is $6/\\pi^2 \\approx 0.608$."
+      "summary": "Definition using Mathlib's Squarefree, basic properties"
     },
     {
       "id": "sumset",
       "title": "The Sumset",
-      "summary": "sumset definition and hasSquarefreeSumset predicate",
-      "startLine": 108,
+      "startLine": 107,
       "endLine": 118,
-      "mathContext": "The sumset $A + A = \\{a + b : a, b \\in A\\}$ has at most $|A|(|A|+1)/2$ distinct elements. The predicate  requires every element of $A + A$ to be squarefree."
+      "summary": "sumset definition and hasSquarefreeSumset predicate"
     },
     {
       "id": "f-function",
       "title": "The Function f(N)",
-      "summary": "Definition of f(N) as max size of squarefree-sumset sets",
-      "startLine": 120,
+      "startLine": 119,
       "endLine": 126,
-      "mathContext": "$f(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\, \\forall s \\in A+A,\\, s \\text{ squarefree}\\}$. The question is whether $f(N)$ grows subpolynomially or polylogarithmically."
+      "summary": "Definition of f(N) as max size of squarefree-sumset sets"
     },
     {
       "id": "erdos-sarkozy",
       "title": "Erdős-Sárközy Bounds (1987)",
-      "summary": "Original bounds: log N ≪ f(N) ≪ N^{3/4} log N",
-      "startLine": 128,
+      "startLine": 127,
       "endLine": 140,
-      "mathContext": "Erdős-Sárközy (1987): $\\log N \\ll f(N) \\ll N^{3/4} \\log N$. The lower bound constructs sets via careful residue class selection; the upper bound uses counting arguments about squarefree distribution."
+      "summary": "Original bounds: log N ≪ f(N) ≪ N^{3/4} log N"
     },
     {
       "id": "konyagin",
       "title": "Konyagin's Improvements (2004)",
-      "summary": "Current best bounds and current_bounds theorem",
-      "startLine": 142,
+      "startLine": 141,
       "endLine": 162,
-      "mathContext": "Konyagin (2004): $(\\log\\log N)(\\log N)^2 \\ll f(N) \\ll N^{11/15+o(1)}$. The exponent $11/15 \\approx 0.733$ improves the Erdős-Sárközy upper bound $3/4 = 0.75$. The lower bound is significantly stronger than $\\log N$."
+      "summary": "Current best bounds and current_bounds theorem"
+    },
+    {
+      "id": "current-state-of-knowledge",
+      "title": "Current State of Knowledge",
+      "startLine": 163,
+      "endLine": 180,
+      "summary": "Survey of the known upper/lower bounds and the polylog–polynomial gap"
     },
     {
       "id": "open-questions",
       "title": "The Open Questions",
-      "summary": "Subpolynomial and polylogarithmic conjectures",
-      "startLine": 182,
+      "startLine": 181,
       "endLine": 206,
-      "mathContext": "Question 1: Is $f(N) \\leq N^{o(1)}$? (subpolynomial). Question 2: Is $f(N) \\leq (\\log N)^{O(1)}$? (polylogarithmic). Erdős-Sárközy conjecture: Q2 holds. Both remain OPEN."
+      "summary": "Subpolynomial and polylogarithmic conjectures"
     },
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Connection to #1103, k-power-free generalization",
-      "startLine": 208,
+      "startLine": 207,
       "endLine": 225,
-      "mathContext": "Problem #1103 (infinite analogue): if $f(N) = (\\log N)^{O(1)}$, then any infinite sequence with squarefree pairwise sums satisfies $a_n \\geq n^c$ for some $c > 0$. Sárközy (1992) generalized to $k$-power-free sumsets."
+      "summary": "Connection to #1103, k-power-free generalization"
     },
     {
       "id": "intuition",
-      "title": "Why Squarefree Sumsets are Small",
-      "summary": "Density of squarefree numbers and modular constraint intuition",
-      "startLine": 227,
+      "title": "Structural Constraints on Squarefree Sumsets",
+      "startLine": 226,
       "endLine": 314,
-      "mathContext": "For each prime $p$, avoiding $p^2 \\mid (a+b)$ restricts $A$ to at most $\\lfloor p/2 \\rfloor + 1$ residue classes mod $p^2$. These constraints across all primes interact multiplicatively via CRT, severely limiting $|A|$."
+      "summary": "Density of squarefree numbers and modular constraint intuition"
     },
     {
       "id": "summary",
       "title": "Main Results",
-      "summary": "erdos_1109_summary theorem combining both bounds",
-      "startLine": 316,
+      "startLine": 315,
+      "endLine": 338,
+      "summary": "erdos_1109_summary theorem combining both bounds"
+    },
+    {
+      "id": "concrete-examples-and-constructions",
+      "title": "Concrete Examples and Constructions",
+      "startLine": 339,
+      "endLine": 589,
+      "summary": "Explicit witness sets and worked squarefree-sumset constructions"
+    },
+    {
+      "id": "deeper-residue-class-analysis",
+      "title": "Deeper Residue Class Analysis",
+      "startLine": 590,
+      "endLine": 705,
+      "summary": "Finer residue-class structure underlying the density bounds"
+    },
+    {
+      "id": "density-constraints-via-multiple-primes",
+      "title": "Density Constraints via Multiple Primes",
+      "startLine": 706,
+      "endLine": 785,
+      "summary": "Per-prime residue avoidance mod p² combined multiplicatively via CRT"
+    },
+    {
+      "id": "explicit-lower-bound-fn-ge-2",
+      "title": "Explicit Lower Bound f(N) ≥ 2",
+      "startLine": 786,
+      "endLine": 816,
+      "summary": "{1,5} witnesses f(N) ≥ 2 for N ≥ 5, lifted from pair_1_5_squarefree_sumset"
+    },
+    {
+      "id": "mod-25-constraints-p-5",
+      "title": "Mod 25 Constraints (p = 5)",
+      "startLine": 817,
+      "endLine": 866,
+      "summary": "p = 5: elements avoid residue 0 mod 25; no pair sums to a multiple of 25"
+    },
+    {
+      "id": "residue-class-counting-framework",
+      "title": "Residue Class Counting Framework",
+      "startLine": 867,
+      "endLine": 935,
+      "summary": "Counting allowed residue classes mod p² to derive density bounds"
+    },
+    {
+      "id": "counting-allowed-residues-mod-9",
+      "title": "Counting Allowed Residues mod 9",
+      "startLine": 936,
+      "endLine": 1301,
+      "summary": "p = 3: residues mod 9 pair as {r,9-r}; at most one per pair, class 0 forbidden"
+    },
+    {
+      "id": "counting-allowed-residues-mod-25",
+      "title": "Counting Allowed Residues mod 25",
+      "startLine": 1302,
+      "endLine": 1516,
+      "summary": "p = 5: residues mod 25 pair as {r,25-r}; at most one per pair"
+    },
+    {
+      "id": "general-density-framework",
+      "title": "General Density Framework",
+      "startLine": 1517,
+      "endLine": 1563,
+      "summary": "Product of per-prime allowed-fraction constraints across primes"
+    },
+    {
+      "id": "improved-lower-bound-fn-ge-4",
+      "title": "Improved Lower Bound f(N) ≥ 4",
+      "startLine": 1564,
+      "endLine": 1643,
+      "summary": "{1,5,21,37} witnesses f(N) ≥ 4 for N ≥ 37 (all pairwise sums squarefree)"
+    },
+    {
+      "id": "fn-ge-5",
+      "title": "f(N) ≥ 5",
+      "startLine": 1644,
+      "endLine": 1745,
+      "summary": "{1,5,21,37,41} witnesses f(N) ≥ 5 for N ≥ 41"
+    },
+    {
+      "id": "general-residue-counting-theorem",
+      "title": "General Residue Counting Theorem",
+      "startLine": 1746,
+      "endLine": 1857,
+      "summary": "image of A mod p² has ≤ (p²-1)/2 elements, via injection g(r)=min(r,p²-r)"
+    },
+    {
+      "id": "fn-ge-6",
+      "title": "f(N) ≥ 6",
+      "startLine": 1858,
+      "endLine": 1992,
+      "summary": "{1,5,21,37,41,65} witnesses f(N) ≥ 6 for N ≥ 65"
+    },
+    {
+      "id": "coprime-moduli-and-crt",
+      "title": "Coprime Moduli and CRT",
+      "startLine": 1993,
+      "endLine": 2235,
+      "summary": "CRT independence of constraints from distinct primes p ≠ q"
+    },
+    {
+      "id": "fn-ge-7-and-fn-ge-8",
+      "title": "f(N) >= 7 and f(N) >= 8",
+      "startLine": 2236,
+      "endLine": 2799,
+      "summary": "Witness sets give f(N) ≥ 7 (N ≥ 73) and f(N) ≥ 8 (N ≥ 101); all elements ≡ 1 mod 4"
+    },
+    {
+      "id": "four-prime-crt-density-bound",
+      "title": "Four-Prime CRT Density Bound",
+      "startLine": 2800,
+      "endLine": 2908,
+      "summary": "Primes 2,3,5,7 (moduli 4,9,25,49, lcm 44100) per-prime density bounds"
+    },
+    {
+      "id": "density-bound-from-residue-constraints",
+      "title": "Density Bound from Residue Constraints",
+      "startLine": 2909,
+      "endLine": 2995,
+      "summary": "k residue classes mod m give |A| ≤ k·(N/m+1); combined with 4-prime CRT"
+    },
+    {
+      "id": "general-k-prime-crt-density-product",
+      "title": "General k-Prime CRT Density Product",
+      "startLine": 2996,
+      "endLine": 3177,
+      "summary": "General k-prime pattern: allowed residues mod ∏ p² bounded by product of per-prime bounds"
+    },
+    {
+      "id": "fn-ge-11",
+      "title": "f(N) >= 11",
+      "startLine": 3178,
       "endLine": 3713,
-      "mathContext": "Current state: $(\\log\\log N)(\\log N)^2 \\ll f(N) \\ll N^{11/15+o(1)}$. The gap between polylogarithmic and $N^{0.733}$ is fundamental. The exact growth rate of $f(N)$ remains one of the key open problems in additive combinatorics."
+      "summary": "{1,5,21,37,41,65,73,101,137,165,181} witnesses f(N) ≥ 11 for N ≥ 181"
     }
   ],
   "conclusion": {

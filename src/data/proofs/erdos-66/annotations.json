@@ -16,7 +16,11 @@
       "additive-combinatorics",
       "representation-function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "representation functions r(n)",
+      "asymptotic behavior of counting functions"
+    ]
   },
   {
     "id": "ann-e66-background",
@@ -35,7 +39,11 @@
       "convolution",
       "additive-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sumsets and additive number theory",
+      "the convolution counting ordered pairs",
+      "the Goldbach-type representation problem"
+    ]
   },
   {
     "id": "ann-e66-rep-function",
@@ -54,7 +62,11 @@
       "set-builder",
       "ordered-pairs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ordered pairs (a,b) with a+b=n",
+      "set cardinality (Set.ncard)",
+      "the representation function r_A(n)"
+    ]
   },
   {
     "id": "ann-e66-main-question",
@@ -73,7 +85,11 @@
       "limit",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits of sequences (Tendsto)",
+      "whether r(n) tends to a limit",
+      "existence of an asymptotic"
+    ]
   },
   {
     "id": "ann-e66-conjecture",
@@ -92,7 +108,11 @@
       "negation",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the representation function r(n)",
+      "logical negation of convergence",
+      "Erd\u0151s's conjecture (no nice limit)"
+    ]
   },
   {
     "id": "ann-e66-erdos-sarkozy",
@@ -111,7 +131,11 @@
       "error-bound",
       "sqrt-log"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "error terms for representation functions",
+      "\u221a(log n) error bounds",
+      "the Erd\u0151s\u2013S\u00e1rk\u00f6zy theorem (axiom)"
+    ]
   },
   {
     "id": "ann-e66-horvath",
@@ -130,7 +154,11 @@
       "quantitative-bound",
       "limsup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "quantitative bounds on r(n)\u2212n",
+      "limsup estimates",
+      "Horv\u00e1th's 2007 improvement"
+    ]
   },
   {
     "id": "ann-e66-random-sets",
@@ -149,7 +177,11 @@
       "density-zero",
       "variance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "random / probabilistic set constructions",
+      "density-zero exceptional sets",
+      "variance of the representation count"
+    ]
   },
   {
     "id": "ann-e66-stronger",
@@ -168,7 +200,11 @@
       "liminf",
       "universal-constant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limsup and liminf of r(n)",
+      "a universal constant bound",
+      "Erd\u0151s's stronger conjecture"
+    ]
   },
   {
     "id": "ann-e66-implication",
@@ -187,6 +223,10 @@
       "proof",
       "linarith"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the stronger vs original conjecture",
+      "logical implication",
+      "arithmetic deduction (linarith)"
+    ]
   }
 ]

@@ -86,44 +86,92 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "module-header",
       "title": "Problem Overview and Imports",
       "startLine": 1,
       "endLine": 34,
-      "summary": "Documentation header describing the problem, imports from Mathlib",
-      "mathContext": "For $A \\subseteq \\mathbb{N}$ with $|A| = n$, define $Q(A) = \\{a/\\gcd(a,b) : a, b \\in A\\}$. The function $h(n) = \\min_{|A|=n} |Q(A)|$ measures the minimum quotient set size."
+      "summary": "Module docstring stating Erdős Problem #539 (estimate h(n), the minimum size of {a/gcd(a,b) : a,b ∈ A} over n-element A ⊆ ℕ), the known Erdős-Szemerédi and Freiman-Lev bounds and references, the Nat/Finset/Real imports, open Finset BigOperators Nat, and namespace Erdos539.",
+      "mathContext": "$h(n)$ is the largest value such that every $n$-element $A \\subseteq \\mathbb{N}$ has $|\\{a/\\gcd(a,b) : a,b \\in A\\}| \\ge h(n)$. Known: $n^{1/2} \\ll h(n) \\ll n^{2/3}$."
     },
     {
-      "id": "definitions",
-      "title": "GCD Quotient Definitions",
+      "id": "part1-quotient-set",
+      "title": "Part I: The GCD-Reduced Quotient Set",
       "startLine": 35,
+      "endLine": 63,
+      "summary": "gcdQuotient a b = a / gcd(a,b) and its basic properties: gcdQuotient_pos (positive for a,b>0) and gcdQuotient_is_nat (gcdQuotient·gcd = a). Defines gcdQuotientSet (the image over A×A) and gcdQuotientSize (its cardinality).",
+      "mathContext": "The reduced quotient $a/\\gcd(a,b)$ is a positive integer; the quotient set is $\\{a/\\gcd(a,b) : (a,b) \\in A \\times A\\}$."
+    },
+    {
+      "id": "part2-function-h",
+      "title": "Part II: The Function h(n)",
+      "startLine": 64,
       "endLine": 95,
-      "summary": "Core definitions: gcdQuotient, gcdQuotientSet, gcdQuotientSize, h(n), and basic properties",
-      "mathContext": "$\\text{gcdQuotient}(a, b) = a / \\gcd(a, b)$ extracts the coprime part of $a$ relative to $b$. The quotient set $Q(A) = \\{a/\\gcd(a,b) : a, b \\in A\\}$ always contains 1 (since $a/\\gcd(a,a) = 1$)."
+      "summary": "Defines h(n) as the infimum of gcdQuotientSize over all n-element positive sets. Theorems: quotient_set_nonempty, gcdQuotient_self (= 1 for a>0), and one_in_quotient_set (1 always lies in the quotient set).",
+      "mathContext": "$h(n) = \\min_{|A|=n} |\\{a/\\gcd(a,b)\\}|$. Since $a/\\gcd(a,a)=1$, the value $1$ always belongs to the quotient set."
     },
     {
-      "id": "bounds",
-      "title": "Erdős-Szemerédi and Freiman-Lev Bounds",
+      "id": "part3-erdos-szemeredi",
+      "title": "Part III: Erdős-Szemerédi Bounds",
       "startLine": 96,
-      "endLine": 136,
-      "summary": "The main asymptotic bounds: $n^{1/2} \\ll h(n) \\ll n^{2/3}$",
-      "mathContext": "Erdős-Szemerédi: $\\exists c_1, c_2 > 0$ such that $c_1 n^{1/2} \\le h(n) \\le c_2 n^{1-c}$ for some $c > 0$. Freiman-Lev improved the upper bound: $h(n) \\ll n^{2/3}$."
+      "endLine": 104,
+      "summary": "ErdosSzemeredi_Bounds: the proposition packaging the original bounds n^{1/2} ≪ h(n) ≪ n^{1-c} for some c>0.",
+      "mathContext": "Erdős-Szemerédi: $\\exists c_1>0,\\ h(n) \\ge c_1 n^{1/2}$ and $\\exists\\, 0<c_2<1,\\ h(n) \\le n^{1-c_2}$."
     },
     {
-      "id": "examples",
-      "title": "Examples: APs and GPs",
-      "startLine": 137,
-      "endLine": 160,
-      "summary": "Quotient set sizes for arithmetic and geometric progressions",
-      "mathContext": "For an AP $\\{a, a+d, \\ldots, a+(n-1)d\\}$: $|Q(A)| \\sim n$. For a GP $\\{1, p, p^2, \\ldots\\}$ with prime $p$: $|Q(A)| = 2n-1$ (all powers $p^j$ for $|j| < n$)."
+      "id": "part4-freiman-lev",
+      "title": "Part IV: Freiman-Lev Improvement",
+      "startLine": 105,
+      "endLine": 113,
+      "summary": "ImprovedBounds: the proposition encoding the improved upper bound h(n) ≪ n^{2/3} alongside the n^{1/2} lower bound.",
+      "mathContext": "Freiman-Lev sharpen the upper bound to $h(n) \\le C n^{2/3}$, narrowing the window to $n^{1/2} \\ll h(n) \\ll n^{2/3}$."
     },
     {
-      "id": "structure",
-      "title": "Matrix and Geometric Views",
-      "startLine": 161,
+      "id": "part5-examples",
+      "title": "Part V: Examples",
+      "startLine": 114,
+      "endLine": 125,
+      "summary": "Extremal example constructions: arithmeticProgression {a,2a,…,na} and geometricProgression {a^0,…,a^{n-1}}, which produce small quotient sets.",
+      "mathContext": "Arithmetic progressions $\\{a, 2a, \\dots, na\\}$ and geometric progressions $\\{a^i\\}$ are candidate extremal sets minimizing the quotient set size."
+    },
+    {
+      "id": "part6-gcd-structure",
+      "title": "Part VI: Connection to GCD Structure",
+      "startLine": 126,
+      "endLine": 137,
+      "summary": "gcdMatrix and quotientMatrix: the GCD matrix (i,j) ↦ gcd(i,j) and the quotient matrix (i,j) ↦ gcdQuotient i j restricted to A, linking the problem to GCD-matrix structure.",
+      "mathContext": "The quotient set is encoded by the entries of the GCD/quotient matrices $(\\gcd(i,j))$ and $(i/\\gcd(i,j))$ indexed by $A$."
+    },
+    {
+      "id": "part7-geometric-reformulation",
+      "title": "Part VII: Geometric Reformulation (Granville-Roesler)",
+      "startLine": 138,
+      "endLine": 141,
+      "summary": "Docstring marker for the Granville-Roesler geometric reformulation of the quotient-set problem (no Lean declarations in this part).",
+      "mathContext": "Granville-Roesler recast $h(n)$ geometrically via lattice-point/dilation structure of the set $A$."
+    },
+    {
+      "id": "part8-extremal-sets",
+      "title": "Part VIII: Special Sets with Small Quotient Sets",
+      "startLine": 142,
+      "endLine": 151,
+      "summary": "extremalSets: the proposition asserting that for every n≥2 there is an n-element positive set whose quotient-set size is at most n^{2/3}, witnessing the upper bound.",
+      "mathContext": "$\\forall n \\ge 2,\\ \\exists A,\\ |A|=n,\\ |\\text{quotientSet}(A)| \\le n^{2/3}$ — extremal sets realizing the Freiman-Lev upper bound."
+    },
+    {
+      "id": "part9-erdos-question",
+      "title": "Part IX: The Erdős Question",
+      "startLine": 152,
+      "endLine": 171,
+      "summary": "ErdosQuestion539 (does h(n)=Θ(n^α) for some α∈[1/2,2/3]?) and openExponentQuestion (is the true exponent near 2/3?), formalizing the open problem.",
+      "mathContext": "Open: is $h(n) = \\Theta(n^\\alpha)$ for a single $\\alpha \\in [1/2, 2/3]$? Extremal evidence hints $\\alpha$ may be $2/3$."
+    },
+    {
+      "id": "part10-summary",
+      "title": "Part X: Summary",
+      "startLine": 172,
       "endLine": 188,
-      "summary": "GCD/quotient matrices, Granville-Roesler reformulation, extremal structure",
-      "mathContext": "The GCD matrix $G_{ij} = \\gcd(a_i, a_j)$ and quotient matrix $Q_{ij} = a_i/\\gcd(a_i, a_j)$ encode the divisibility structure. Granville-Roesler reformulate via lattice points in dilated simplices."
+      "summary": "Closing summary docstring restating the OPEN status, the lower bound n^{1/2} (Erdős-Szemerédi) and upper bound n^{2/3} (Freiman-Lev), and the closing of namespace Erdos539.",
+      "mathContext": "Status OPEN: bounds $n^{1/2} \\ll h(n) \\ll n^{2/3}$ established; the exact growth exponent is unknown."
     }
   ],
   "conclusion": {

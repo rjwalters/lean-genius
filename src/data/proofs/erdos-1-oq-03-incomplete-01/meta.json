@@ -1,0 +1,200 @@
+{
+  "id": "erdos-1-oq-03-incomplete-01",
+  "title": "General two-sided bounds on the Erdős distinct-subset-sums function f(n)",
+  "slug": "erdos-1-oq-03-incomplete-01",
+  "description": "A self-contained, working development that bounds the Erdős #1 function f(n) — the least N admitting an n-element set in {0,…,N} with distinct subset sums — for EVERY n, with the explicit sandwich (2ⁿ−1)/n ≤ f(n) ≤ 2^(n−1). The lower bound is the pigeonhole counting bound; the upper bound is the powers-of-two construction, re-derived in working form (the prior OQ-03/WIP lineage only computed 5 hardcoded values and no longer compiles against current Mathlib).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1OQ03Incomplete01.lean",
+    "tags": [
+      "combinatorics",
+      "additive-number-theory",
+      "erdos",
+      "distinct-subset-sums",
+      "conway-guy",
+      "counting-bound",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. Fully machine-checked with only Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). Reuses hasDistinctSubsetSums and erdos_1_counting_bound from Erdos1Problem (which compiles); the construction side is re-derived self-containedly because Erdos1WIP01.lean no longer builds against Mathlib v4.26.0.",
+    "dateAdded": "2026-06-21",
+    "lineCount": 222,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "originalContributions": [
+      "f (def): the Erdős #1 function as sInf of the set of valid bounds — total and decidability-free (uses Nat.sInf, no Decidable instance needed, unlike the Nat.find definition in the non-compiling OQ-03)",
+      "f_le_two_pow_pred (PROVED): f n ≤ 2^(n−1) for n ≥ 1 — the powers-of-two upper bound, GENERAL in n (the prior lineage only verified 5 hardcoded values)",
+      "two_pow_le / f_ge (PROVED): 2ⁿ ≤ n·f n + 1 and (2ⁿ−1)/n ≤ f n — the counting lower bound applied to the minimiser",
+      "f_sandwich (PROVED): (2ⁿ−1)/n ≤ f n ≤ 2^(n−1) for all n ≥ 1 — the explicit two-sided bound on f(n)",
+      "dss_insert_of_sum_lt / powersTwo_dss (PROVED): a working re-derivation of the superincreasing extension lemma and the powers-of-two distinct-subset-sums construction (the Erdos1WIP01 versions no longer compile)",
+      "f_one (PROVED): f 1 = 1, where the two bounds coincide"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "erdos_1_counting_bound",
+        "description": "Pigeonhole bound 2^|A| ≤ |A|·N + 1 for an n-element distinct-subset-sums set bounded by N (from Erdos1Problem.lean).",
+        "module": "Proofs.Erdos1Problem"
+      },
+      {
+        "theorem": "Finset.add_sum_erase",
+        "description": "f a + ∑_{x ∈ s.erase a} f x = ∑_{x ∈ s} f x — used to peel the largest element in the superincreasing extension.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.sInf_le / Nat.sInf_mem",
+        "description": "Least-element API for sets of naturals: gives the upper bound (membership ⟹ sInf ≤) and the attainment of the minimiser (nonempty ⟹ sInf ∈ s).",
+        "module": "Mathlib.Order.Bounds.Basic"
+      },
+      {
+        "theorem": "Nat.pow_right_injective",
+        "description": "i ↦ bⁱ is injective for b ≥ 2 — gives cardinality n of the powers-of-two set and 2ⁱ ≠ 2ⁿ.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1 asks whether an n-element set of positive integers with distinct subset sums must contain an element of size ≥ c·2ⁿ for an absolute constant c > 0 (a $500 problem). Equivalently, writing f(n) for the least N such that some n-element subset of {0,…,N} has distinct subset sums, the question is whether f(n) ≥ c·2ⁿ. Two classical bounds frame it: the pigeonhole counting bound f(n) ≥ (2ⁿ−1)/n, and the powers-of-two construction f(n) ≤ 2^(n−1). Conway and Guy (1968) improved the upper bound to ≈ 0.22009·2ⁿ; the matching lower bound is open. The gallery's existing OQ-03 entry only evaluated f(n) for the five hardcoded values n ≤ 5 via native_decide, and its supporting file Erdos1WIP01.lean no longer compiles against current Mathlib.",
+    "problemStatement": "**OQ-03 (completion) of Erdős #1**\n\nProvide a working, general development bounding f(n) for all n, rather than hardcoded small cases.",
+    "text": "(2ⁿ − 1)/n ≤ f(n) ≤ 2^(n−1) for all n ≥ 1, where f(n) = sInf { N | ∃ A, |A| = n ∧ (∀ a ∈ A, a ≤ N) ∧ A has distinct subset sums }.",
+    "proofStrategy": "Define f(n) = sInf of the set of valid bounds (Nat.sInf, so no decidability instance is needed). Upper bound: the powers-of-two set {2⁰,…,2^(n−1)} has n elements (injectivity of i ↦ 2ⁱ), maximum 2^(n−1), and distinct subset sums; the last is re-derived via a superincreasing extension lemma (appending an element larger than the running sum preserves distinct subset sums, by case analysis on membership of the new element). Hence f(n) ≤ 2^(n−1). Lower bound: the minimiser is attained (Nat.sInf_mem), giving an n-element distinct-subset-sums set bounded by f(n); the pigeonhole counting bound erdos_1_counting_bound then yields 2ⁿ ≤ n·f(n) + 1, i.e. (2ⁿ−1)/n ≤ f(n).",
+    "keyInsights": [
+      "Defining f(n) with Nat.sInf (greatest-lower-bound on a set of naturals) avoids the Decidable instance that a Nat.find definition requires for an existential over all finite sets — a subtle obstruction that the prior OQ-03 definition ran into.",
+      "The two classical bounds sandwich f(n) for every n at once, replacing the prior entry's five hardcoded native_decide evaluations with theorems valid for all n.",
+      "The superincreasing extension lemma is the combinatorial core of the upper bound: any subset containing the newly appended (large) element has sum exceeding every subset of the old set, so the two cases are sum-disjoint and distinctness reduces to the smaller set.",
+      "The gap between the bounds — (2ⁿ−1)/n versus 2^(n−1) — is exactly the territory of the open Erdős conjecture: Conway-Guy pushes the upper bound down to ≈ 0.22·2ⁿ, but proving a matching f(n) ≥ c·2ⁿ remains open and is NOT claimed here."
+    ],
+    "prerequisites": [
+      "hasDistinctSubsetSums and the pigeonhole counting bound erdos_1_counting_bound (Erdos1Problem.lean)",
+      "Finset.add_sum_erase for peeling the maximal element",
+      "Nat.sInf API (sInf_le, sInf_mem) and Nat.pow_right_injective"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Docstring framing f(n), the sandwich, and the honest scope (baseline bounds, not the open conjecture). Imports Erdos1Problem (for hasDistinctSubsetSums and the counting bound) and Mathlib. Namespace Erdos1OQ03Incomplete01.",
+      "mathContext": "f(n) = least N admitting an n-element distinct-subset-sums set in {0,…,N}; target sandwich (2ⁿ−1)/n ≤ f(n) ≤ 2^(n−1)."
+    },
+    {
+      "id": "sec-super",
+      "title": "§1 Superincreasing Extension Lemma",
+      "startLine": 53,
+      "endLine": 113,
+      "summary": "dss_insert_of_sum_lt: if A has distinct subset sums and b > sum A with b ∉ A, then insert b A has distinct subset sums. Proof by case analysis on whether each of the two subsets contains b; the contains-b case has strictly larger sum than any subset of A.",
+      "mathContext": "A subset containing b has sum ≥ b > sum A ≥ (sum of any subset of A); within each case distinctness reduces to A via erasing b."
+    },
+    {
+      "id": "sec-powers",
+      "title": "§2 The Powers-of-Two Construction Has Distinct Subset Sums",
+      "startLine": 114,
+      "endLine": 148,
+      "summary": "sum_two_pow_succ (geometric sum ∑_{i<n}2ⁱ + 1 = 2ⁿ) and powersTwo_dss: {2⁰,…,2^(n−1)} has distinct subset sums, by induction using the superincreasing extension since 2ⁿ exceeds the sum of all smaller powers.",
+      "mathContext": "Binary representation: subset sums of {2⁰,…,2^(n−1)} are exactly the n-bit numbers, hence distinct."
+    },
+    {
+      "id": "sec-bounds",
+      "title": "§3 The Erdős Function f(n) and Its Two-Sided Bounds",
+      "startLine": 149,
+      "endLine": 222,
+      "summary": "Defines dssBounds, f (= sInf), and proves f_le_two_pow, f_le_two_pow_pred (upper bound 2^(n−1)), f_spec (minimiser attained), two_pow_le and f_ge (counting lower bound), the combined f_sandwich, and f_one (f 1 = 1).",
+      "mathContext": "(2ⁿ − 1)/n ≤ f(n) ≤ 2^(n−1); at n = 1 both equal 1, pinning f(1) = 1."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1-oq-03",
+      "relationship": "parent",
+      "description": "Parent entry: computes f(n) for the five hardcoded values n ≤ 5 via native_decide and states the Conway-Guy optimality conjecture. This entry supplies the GENERAL two-sided bounds on f(n) (valid for all n) that the parent lacks, in a self-contained form that compiles against current Mathlib."
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "foundational",
+      "description": "Root Erdős #1 entry: the distinct-subset-sums problem and the $500 conjecture f(n) ≥ c·2ⁿ. This entry establishes the classical baseline sandwich around f(n)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified general bounds on the Erdős #1 function: (2ⁿ−1)/n ≤ f(n) ≤ 2^(n−1) for every n ≥ 1, via the pigeonhole counting bound and a working re-derivation of the powers-of-two distinct-subset-sums construction. Zero sorries, zero axioms beyond the foundational ones.",
+    "implications": "Replaces five hardcoded small-case evaluations with theorems valid for all n, and supplies a decidability-free definition of f(n). The gap between the lower bound (2ⁿ−1)/n and the upper bound 2^(n−1) localizes the open Erdős $500 conjecture: Conway-Guy improves the upper side to ≈ 0.22·2ⁿ, while a matching lower bound f(n) ≥ c·2ⁿ remains unproven."
+  },
+  "mainTheorems": [
+    {
+      "name": "f_sandwich",
+      "type": "theorem",
+      "description": "The two-sided bound (2ⁿ − 1)/n ≤ f n ≤ 2^(n−1) for n ≥ 1.",
+      "leanType": "{n : ℕ} → 1 ≤ n → (2 ^ n - 1) / n ≤ f n ∧ f n ≤ 2 ^ (n - 1)"
+    },
+    {
+      "name": "f_le_two_pow_pred",
+      "type": "theorem",
+      "description": "Powers-of-two upper bound: f n ≤ 2^(n−1) for n ≥ 1.",
+      "leanType": "{n : ℕ} → 1 ≤ n → f n ≤ 2 ^ (n - 1)"
+    },
+    {
+      "name": "two_pow_le",
+      "type": "theorem",
+      "description": "Counting lower bound: 2ⁿ ≤ n·f n + 1.",
+      "leanType": "(n : ℕ) → 2 ^ n ≤ n * f n + 1"
+    },
+    {
+      "name": "powersTwo_dss",
+      "type": "theorem",
+      "description": "The set {2⁰,…,2^(n−1)} has distinct subset sums.",
+      "leanType": "(n : ℕ) → hasDistinctSubsetSums ((Finset.range n).image (2 ^ ·))"
+    },
+    {
+      "name": "dss_insert_of_sum_lt",
+      "type": "theorem",
+      "description": "Superincreasing extension: appending an element larger than the running sum preserves distinct subset sums.",
+      "leanType": "{A : Finset ℕ} → hasDistinctSubsetSums A → {b : ℕ} → A.sum id < b → b ∉ A → hasDistinctSubsetSums (insert b A)"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1Problem",
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1OQ03Incomplete01",
+    "lineCount": 222,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "substantiveTheoremCount": 8,
+    "duplicateTheorems": 0,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos1OQ03Incomplete01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Paul Erdős",
+      "title": "Problems and results in additive number theory",
+      "year": "1955",
+      "venue": "Colloque sur la Théorie des Nombres, Bruxelles, pp. 127–137",
+      "note": "Origin of the distinct-subset-sums problem and the $500 conjecture f(n) ≥ c·2ⁿ."
+    },
+    {
+      "authors": "John H. Conway, Richard K. Guy",
+      "title": "Sets of natural numbers with distinct sums",
+      "year": "1968",
+      "venue": "Notices Amer. Math. Soc. 15, p. 345",
+      "note": "Upper-bound construction improving 2^(n−1) to ≈ 0.22009·2ⁿ; OEIS A005318."
+    },
+    {
+      "authors": "Quentin Dubroff, Jacob Fox, Max Wenqiang Xu",
+      "title": "A note on the Erdős distinct subset sums problem",
+      "year": "2021",
+      "venue": "SIAM J. Discrete Math. 35(1)",
+      "note": "Best known lower bound f(n) ≥ Ω(2ⁿ/√n)."
+    }
+  ]
+}

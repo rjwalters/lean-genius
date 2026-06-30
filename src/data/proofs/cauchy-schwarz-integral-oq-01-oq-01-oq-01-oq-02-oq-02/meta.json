@@ -158,6 +158,26 @@
       "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
       "relationship": "parent",
       "description": "Parent file with original nlinarith-based proofs of the same power mean chain — this file answers OQ-02 by replacing nlinarith [sq_nonneg ...] with ring + positivity"
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Full power mean monotonicity M_r ≤ M_s for all r ≤ s — the general-r theorem behind this two-point chain (r ∈ {-1,0,1,2}). Directly addresses open question 3 here: whether the SOS automation scales beyond the fixed HM-GM-AM-QM links."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Weighted power mean chain WHM ≤ WGM ≤ WAM ≤ WQM — generalizes the equal-weight chain proved here to arbitrary positive weights."
+    },
+    {
+      "proofId": "amgm-inequality",
+      "relationship": "related",
+      "description": "The AM-GM inequality √(ab) ≤ (a+b)/2 is the central GM ≤ AM link of this chain; its gap ((a-b)/2)² is the same perfect-square certificate that ring + positivity discharges here."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral",
+      "relationship": "ancestor",
+      "description": "The Bunyakovsky-Schwarz integral inequality at the root of this OQ lineage; the QM (root-mean-square) endpoint of the chain is the Cauchy-Schwarz bound applied to the constant function."
     }
   ],
   "leanFile": {

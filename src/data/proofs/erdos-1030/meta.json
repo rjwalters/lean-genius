@@ -98,79 +98,87 @@
       "title": "The Ramsey Number R(k, ℓ)",
       "summary": "$R(k, \\ell) = \\min\\{n : \\text{RamseyProperty}(n, k, \\ell)\\}$ via `Nat.find`",
       "startLine": 56,
-      "endLine": 79,
+      "endLine": 71,
       "mathContext": "$R(k,l) = \\\\min\\\\{n : \\\\text{every 2-coloring of } K_n \\\\text{ has red } K_k \\\\text{ or blue } K_l\\\\}$."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "$R(k,\\ell) = R(\\ell,k)$, recursive bound $R(k,\\ell) \\le R(k-1,\\ell) + R(k,\\ell-1)$, binomial bound $\\le \\binom{k+\\ell-2}{k-1}$",
-      "startLine": 80,
-      "endLine": 107,
+      "startLine": 72,
+      "endLine": 95,
       "mathContext": "$R(k,l) = R(l,k)$. Recursive: $R(k,l) \\\\leq R(k-1,l) + R(k,l-1)$. From this: $R(k,l) \\\\leq \\\\binom{k+l-2}{k-1}$."
     },
     {
       "id": "diagonal",
       "title": "Diagonal Ramsey Numbers",
       "summary": "$R_{\\text{diag}}(k) = R(k,k)$ with bounds $2^{k/2} \\le R(k,k) \\le \\binom{2k-2}{k-1}$",
-      "startLine": 108,
-      "endLine": 134,
+      "startLine": 96,
+      "endLine": 115,
       "mathContext": "$R(k,k)$: diagonal Ramsey. Bounds: $2^{k/2} \\\\leq R(k,k) \\\\leq \\\\binom{2k-2}{k-1} \\\\leq 4^k$."
     },
     {
       "id": "off-diagonal",
       "title": "The Off-Diagonal Difference",
       "summary": "$\\text{RamseyDiff}(k) = R(k+1,k) - R(k,k) \\ge k - 2$ (trivial bound)",
-      "startLine": 135,
-      "endLine": 153,
+      "startLine": 116,
+      "endLine": 129,
       "mathContext": "$R(k+1,k) - R(k,k) \\\\geq k-2$ (trivial). The problem asks for a linear lower bound."
     },
     {
       "id": "befs",
       "title": "Burr-Erdős-Faudree-Schelp Theorem",
       "summary": "BEFS theorem: $R(k+1,k) - R(k,k) \\ge 2k - 5$, doubling the trivial bound",
-      "startLine": 154,
-      "endLine": 172,
+      "startLine": 130,
+      "endLine": 151,
       "mathContext": "Burr-Erdos-Faudree-Schelp: $R(k+1,k) - R(k,k) \\\\geq 2k-5$. Doubles the trivial bound."
     },
     {
       "id": "growth-ratio",
       "title": "The Growth Ratio",
       "summary": "$\\text{GrowthRatio}(k) = R(k+1,k)/R(k,k) = 1 + \\text{diff}/R(k,k)$ and $\\liminf$ definition",
-      "startLine": 173,
-      "endLine": 194,
+      "startLine": 152,
+      "endLine": 175,
       "mathContext": "$R(k+1,k)/R(k,k) = 1 + (R(k+1,k)-R(k,k))/R(k,k)$. If diff grows linearly and $R(k,k)$ grows exponentially, ratio -> 1."
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture",
-      "summary": "$\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ — conjecture statement and BEFS-based resolution",
-      "startLine": 195,
-      "endLine": 235,
-      "mathContext": "SOLVED: $\\\\exists c > 0$ with $\\\\liminf R(k+1,k)/R(k,k) > 1+c$. The off-diagonal Ramsey numbers grow strictly faster than diagonal."
+      "summary": "$\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ (`ErdosSosConjecture`) plus the weaker $R(k+1,k)-R(k,k) > k^c$ question Erdős–Sós left open",
+      "startLine": 176,
+      "endLine": 191,
+      "mathContext": "Statement of the main conjecture and the weaker super-polynomial-difference question; the resolution follows in Part IX."
+    },
+    {
+      "id": "resolution",
+      "title": "Resolution of the Conjecture",
+      "summary": "BEFS bound resolves the conjecture: `befs_implies_weaker` ($\\text{RamseyDiff}(k)\\ge 2k-5$) and `ratio_lower_from_befs` ($\\text{GrowthRatio}(k)\\ge 1+(2k-5)/4^k$) via $R(k,k)\\le 4^k$; the `erdos_sos_solved` axiom records the conclusion",
+      "startLine": 192,
+      "endLine": 263,
+      "mathContext": "Combines the BEFS linear difference bound with the binomial upper bound $R(k,k)\\le 4^k$ to lower-bound the growth ratio; the `erdos_sos_solved` axiom encapsulates the positive-limit conclusion."
     },
     {
       "id": "known-values",
       "title": "Known Ramsey Numbers",
       "summary": "Known exact values $R(3,3)=6$, $R(4,4)=18$, $R(4,5)=25$ and $R(3,k)$ bounds",
-      "startLine": 236,
-      "endLine": 250,
+      "startLine": 264,
+      "endLine": 269,
       "mathContext": "$R(3,3)=6$, $R(4,4)=18$, $R(4,5)=25$. $R(3,k) = \\\\Theta(k^2/\\\\log k)$ (Kim 1995, Bohman-Keevash 2021)."
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "summary": "Problem #544 ($R(3,k) \\le Ck^2/\\log k$) and Problem #1014 ($R(k+j,k)/R(k,k) > 1 + c_j$ for general $j$)",
-      "startLine": 251,
-      "endLine": 266,
+      "startLine": 270,
+      "endLine": 285,
       "mathContext": "Connected to Problem #544 ($R(3,k)$ bounds) and #1014 (ratio $R(k+j,k)/R(k,k)$)."
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "$\\texttt{erdos\\_1030} : \\texttt{ErdosSosConjecture}$ — problem SOLVED via BEFS axiomatization",
-      "startLine": 267,
-      "endLine": 293,
+      "startLine": 286,
+      "endLine": 312,
       "mathContext": "SOLVED: Erdos-Sos conjecture confirmed. The growth ratio exceeds $1+c$ for some absolute $c > 0$."
     }
   ],

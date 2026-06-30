@@ -1,0 +1,157 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-01",
+  "title": "Cyclic Vectors for Irreducible Minimal Polynomial: Full Characterization and Count",
+  "slug": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-01",
+  "description": "Closes the parent's one-directional result (irreducible minimal polynomial ⟹ every nonzero vector is cyclic) into a complete characterization: a vector is cyclic for M iff it is nonzero. The zero vector is never cyclic (the constant 1 annihilates it), so the cyclic-vector set is exactly {0}ᶜ — the punctured space. Over a finite field with q elements this gives an exact enumeration: a matrix with irreducible minimal polynomial of full degree n has exactly qⁿ − 1 cyclic vectors. 4 theorems, 0 axioms, 0 sorries; verified, no native_decide.",
+  "leanFile": {
+    "path": "Proofs/CayleyHamiltonMinpolyOQ04BackwardIncomplete01OQ01.lean",
+    "namespace": "CayleyHamiltonMinpolyOQ04BackwardInc01",
+    "imports": [
+      "Proofs.CayleyHamiltonMinpolyOQ04BackwardIncomplete01",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Fintype.BigOperators",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 86,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "openQuestion": {
+    "id": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-01",
+    "parentId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
+    "question": "The parent proves only one direction — irreducible minimal polynomial of degree n ⟹ every nonzero vector is cyclic. Is the converse also true (so that cyclic = nonzero exactly), and what does that say about how many cyclic vectors exist?",
+    "answer": "Yes: the characterization is an iff. The zero vector is never cyclic (the nonzero constant polynomial 1 has degree 0 < n and annihilates 0), so cyclic ⟺ nonzero. Hence the cyclic-vector set is exactly {0}ᶜ, the punctured space Kⁿ ∖ {0}. Over a finite field K with q = #K elements this enumerates the cyclic vectors precisely: there are qⁿ − 1 of them. A matrix with irreducible minimal polynomial of full degree is therefore 'uniformly cyclic' — its cyclic locus is as large as possible."
+  },
+  "highlights": [
+    "Upgrades the parent's one-directional theorem to a full iff: cyclic ⟺ nonzero",
+    "The zero vector is never cyclic (the constant polynomial 1 witnesses it)",
+    "The cyclic-vector set equals {0}ᶜ — the punctured space, the largest possible cyclic locus",
+    "Exact count over a finite field: qⁿ − 1 cyclic vectors",
+    "Builds directly on the verified parent (imported, not re-proved)"
+  ],
+  "assumptions": [],
+  "implications": [
+    {
+      "statement": "For irreducible minpoly of degree n (n>0), IsCyclicVector M v ↔ v ≠ 0",
+      "type": "theorem"
+    },
+    {
+      "statement": "The set of cyclic vectors equals {0}ᶜ",
+      "type": "theorem"
+    },
+    {
+      "statement": "Over a finite field with q elements there are exactly qⁿ − 1 cyclic vectors",
+      "type": "theorem"
+    },
+    {
+      "statement": "The zero vector is never a cyclic vector (n>0)",
+      "type": "lemma"
+    }
+  ],
+  "overview": {
+    "historicalContext": "A cyclic vector for M ∈ Mₙ(K) generates Kⁿ under the action of M (its Krylov sequence is a basis). The parent entry established that when the minimal polynomial is irreducible of full degree n, every nonzero vector is cyclic — a one-directional statement. The natural completion is the converse and the resulting enumeration. Over a finite field 𝔽_q this connects to the classical count of cyclic (generating) vectors of a module over 𝔽_q[X]/(μ): when μ is irreducible the module is the field 𝔽_q[X]/(μ) ≅ 𝔽_{qⁿ}, whose nonzero elements are exactly its generators, giving qⁿ − 1.",
+    "problemStatement": "Determine the exact cyclic-vector locus of a matrix with irreducible minimal polynomial of full degree n: prove that a vector is cyclic iff it is nonzero, identify the cyclic-vector set as {0}ᶜ, and count it over a finite field.",
+    "proofStrategy": "Forward direction of the iff is the contrapositive of zero_not_cyclic: the constant polynomial 1 is nonzero, has natDegree 0 < n, and satisfies (aeval M 1).mulVec 0 = 0, so 0 fails the cyclic condition. Backward direction is the parent's cyclic_of_irreducible_minpoly. The set equality {v | IsCyclicVector M v} = {0}ᶜ follows by extensionality from the iff. For the count, rewrite the cyclic set as {0}ᶜ, pass to a Fintype via Set.ncard_eq_toFinset_card', compute the complement-of-singleton cardinality with Finset.card_compl, and evaluate Fintype.card (Fin n → K) = (Fintype.card K)^n via Fintype.card_fun and Fintype.card_fin.",
+    "keyInsights": [
+      "The zero vector is annihilated by the unit constant 1, so it can never be cyclic — this single observation supplies the missing direction of the characterization.",
+      "Once cyclic ⟺ nonzero, the cyclic locus is forced to be {0}ᶜ, the maximal possible: a matrix with irreducible full-degree minimal polynomial is as cyclic as a matrix can be.",
+      "The finite-field count qⁿ − 1 drops out of the set description with no extra structure — it is the cardinality of the punctured space.",
+      "The result is a clean strengthening that reuses the verified parent unchanged (imported), rather than re-deriving the Bézout argument."
+    ],
+    "prerequisites": [
+      "Parent: cayley-hamilton-minpoly-oq-04-backward-incomplete-01 (IsCyclicVector, cyclic_of_irreducible_minpoly)",
+      "Polynomial.natDegree_one, aeval/map_one, Matrix.mulVec_zero",
+      "Set.ncard / Set.ncard_eq_toFinset_card', Finset.card_compl",
+      "Fintype.card_fun and Fintype.card_fin for the function-space cardinality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "zero",
+      "title": "The Zero Vector is Never Cyclic",
+      "startLine": 39,
+      "endLine": 50,
+      "summary": "zero_not_cyclic: for n>0 the nonzero constant polynomial 1 has degree 0 < n and annihilates 0 under M, so the zero vector fails the cyclic-vector condition.",
+      "mathContext": "(aeval M 1).mulVec 0 = 0 with 1 ≠ 0 and deg 1 = 0 < n witnesses non-cyclicity of 0."
+    },
+    {
+      "id": "iff",
+      "title": "Full Characterization and Set Description",
+      "startLine": 52,
+      "endLine": 74,
+      "summary": "cyclic_iff_ne_zero combines zero_not_cyclic (forward) with the parent's cyclic_of_irreducible_minpoly (backward) into cyclic ⟺ nonzero. setOf_cyclic_eq_compl_zero rephrases this as {v | IsCyclicVector M v} = {0}ᶜ.",
+      "mathContext": "cyclic ⟺ v ≠ 0; equivalently the cyclic locus is the punctured space {0}ᶜ."
+    },
+    {
+      "id": "count",
+      "title": "Count over a Finite Field",
+      "startLine": 76,
+      "endLine": 86,
+      "summary": "ncard_cyclic_vectors: over a finite field with q elements, the cyclic-vector set has cardinality qⁿ − 1, via the {0}ᶜ description, Finset.card_compl, and Fintype.card (Fin n → K) = qⁿ.",
+      "mathContext": "#{v | cyclic} = #({0}ᶜ) = qⁿ − 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Sharpens the parent's one-directional result into a complete characterization: for a matrix with irreducible minimal polynomial of full degree n, a vector is cyclic iff it is nonzero, so the cyclic locus is exactly {0}ᶜ and, over a finite field with q elements, has exactly qⁿ − 1 points. 4 theorems, 0 axioms, 0 sorries.",
+    "implications": "The characterization shows such matrices are 'uniformly cyclic' (maximal cyclic locus), and the finite-field count gives a concrete enumerative invariant. The result reuses the verified parent unchanged.",
+    "openQuestions": [
+      "Extend the characterization to the prime-power minimal polynomial case μ = q^k, where the cyclic locus is a proper subset of {0}ᶜ (vectors not annihilated by q^{k-1}(M)).",
+      "Give the general count of cyclic vectors over a finite field in terms of the elementary divisors of M (Reiner's / the 𝔽_q[X]-module generator count)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
+      "relationship": "parent"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-04",
+      "relationship": "related"
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-22",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ04BackwardIncomplete01OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "cayley-hamilton",
+      "minimal-polynomial",
+      "cyclic-vector",
+      "nonderogatory",
+      "irreducible-polynomial",
+      "finite-fields"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 86,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "originalContributions": [
+      "zero_not_cyclic: the zero vector is never cyclic (n>0)",
+      "cyclic_iff_ne_zero: full characterization — cyclic ⟺ nonzero — for irreducible full-degree minimal polynomial",
+      "setOf_cyclic_eq_compl_zero: the cyclic-vector set equals {0}ᶜ",
+      "ncard_cyclic_vectors: exactly qⁿ − 1 cyclic vectors over a finite field with q elements"
+    ],
+    "proofStrategy": "Forward direction via the unit constant polynomial 1 annihilating 0; backward via the parent's cyclic_of_irreducible_minpoly; set equality by extensionality; finite count via {0}ᶜ, Finset.card_compl, and Fintype.card_fun.",
+    "openQuestions": [
+      "Extend to the prime-power minimal polynomial case μ = q^k",
+      "General finite-field cyclic-vector count via elementary divisors"
+    ],
+    "mathContext": {
+      "field": "Linear Algebra / Module Theory",
+      "keyTheorem": "For a matrix with irreducible minimal polynomial of full degree n, a vector is cyclic iff it is nonzero; over a finite field with q elements there are exactly qⁿ − 1 cyclic vectors.",
+      "historicalBackground": "When μ is irreducible the 𝔽_q[X]-module Kⁿ is the field 𝔽_{qⁿ}, whose generators are exactly its nonzero elements — qⁿ − 1 of them.",
+      "significance": "Completes the parent's one-directional result into a sharp characterization and an exact enumeration, identifying the maximal cyclic locus."
+    }
+  },
+  "sorries": 0
+}

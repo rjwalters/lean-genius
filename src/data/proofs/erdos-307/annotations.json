@@ -362,7 +362,7 @@
       "startLine": 198,
       "endLine": 203
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Prime Reciprocal Partial Sum",
     "content": "Computes $\\sum_{p_i \\text{ prime}, p_i \\leq n} 1/p_i$ using a filter on `Finset.range n` selecting primes via `minFac`. The implementation checks both `minFac = k+1` and `k+1 > 1`.",
     "significance": "supporting",
@@ -519,7 +519,7 @@
       "startLine": 276,
       "endLine": 283
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Multiplicative Formulation",
     "content": "Alternative form: clearing denominators gives a polynomial identity in the prime elements. The product equation becomes $(\\sum_{S \\subseteq P} \\prod_{P \\setminus S} p)(\\sum_{T \\subseteq Q} \\prod_{Q \\setminus T} q) = \\prod P \\cdot \\prod Q$.",
     "significance": "supporting",

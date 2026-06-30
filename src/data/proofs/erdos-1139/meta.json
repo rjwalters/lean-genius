@@ -100,40 +100,40 @@
     {
       "id": "structural-results",
       "title": "Structural Results on Semiprimes",
-      "startLine": 86,
-      "endLine": 105,
-      "summary": "Proves pq ≥ 4 for prime products and that semiprimes are almost-primes (sorry on Ω(pq) = 2, needs factorization multiplicativity).",
+      "startLine": 113,
+      "endLine": 135,
+      "summary": "Proves pq ≥ 4 for prime products and that semiprimes are almost-primes (Ω(pq) = 2, fully proved via factorization multiplicativity — no sorry).",
       "mathContext": "$p, q$ prime $\\Rightarrow pq \\geq 4$ and $\\Omega(pq) = 2$"
     },
     {
       "id": "counting",
       "title": "Counting: Primes ⊆ Almost-Primes",
-      "startLine": 107,
-      "endLine": 117,
+      "startLine": 137,
+      "endLine": 147,
       "summary": "Proves the set of primes up to N is contained in almostPrimesUpTo N, giving $\\pi_2(N) \\geq \\pi(N)$ and hence infinitude of almost-primes.",
       "mathContext": "$\\pi_2(N) \\geq \\pi(N) \\sim N/\\log N$"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (Open)",
-      "startLine": 119,
-      "endLine": 127,
+      "startLine": 149,
+      "endLine": 157,
       "summary": "Axiomatizes the open conjecture: for every C > 0 and K, there exists k ≥ K with gap gₖ > C log k, i.e., lim sup gₖ/log k = ∞.",
       "mathContext": "$\\forall C > 0,\\; \\forall K,\\; \\exists k \\geq K : g_k > C \\log k$"
     },
     {
       "id": "cube-gap",
       "title": "Gap Lower Bound from Consecutive Cubes",
-      "startLine": 129,
-      "endLine": 141,
+      "startLine": 159,
+      "endLine": 176,
       "summary": "Shows that multiples of 8 between consecutive cubes cannot be almost-primes (Ω(8k) ≥ 3), giving a structural source of gaps in the sequence.",
       "mathContext": "$8 \\mid m \\Rightarrow \\Omega(m) \\geq 3 > 2$"
     },
     {
       "id": "density",
       "title": "Hardy-Ramanujan Asymptotic Density",
-      "startLine": 143,
-      "endLine": 157,
+      "startLine": 178,
+      "endLine": 190,
       "summary": "Axiomatizes the Landau-Ramanujan counting asymptotic: π₂(N) ≥ c(1−ε)N log log N / log N for large N, quantifying almost-prime density.",
       "mathContext": "$\\pi_2(N) \\sim cN \\log \\log N / \\log N$"
     }

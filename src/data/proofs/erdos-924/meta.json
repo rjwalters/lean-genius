@@ -82,76 +82,81 @@
   },
   "sections": [
     {
+      "id": "header-context",
+      "title": "Module Header and Folkman/Erdős-Hajnal Context",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring: Erdős #924 (Folkman numbers / Erdős-Hajnal question) statement and context"
+    },
+    {
       "id": "graph-basics",
       "title": "Basic Graph Concepts",
-      "summary": "Defines `completeGraph` as $\\top$ in the `SimpleGraph` lattice, `IsCliqueOfSize` via `Finset`/`IsClique`, `IsCliqueFree` ($\\neg \\text{IsCliqueOfSize}$), and `ContainsClique` (semantic alias).",
       "startLine": 36,
       "endLine": 68,
-      "mathContext": "Formal definition: Defines `completeGraph` as $\\top$ in the `SimpleGraph` lattice, `IsCliqueOfSize` via `Finset`/`IsClique`, `IsCliqueFree` ($\\neg \\text{IsCliqueOfSize}$), and `ContainsClique` (semantic alias)."
+      "summary": "Defines `completeGraph` as $\\top$ in the `SimpleGraph` lattice, `IsCliqueOfSize` via `Finset`/`IsClique`, `IsCliqueFree` ($\\neg \\text{IsCliqueOfSize}$), and `ContainsClique` (semantic alias)."
     },
     {
       "id": "edge-colorings",
       "title": "Edge Colorings",
-      "summary": "`EdgeColoring` as $G.\\text{edgeSet} \\to \\text{Fin}\\, k$, `MonochromaticSubgraph` with `symm`/`loopless` proofs via `Sym2.eq_swap`, and `HasMonochromaticClique` ($\\exists c,\\; K_l \\subseteq G_c$).",
       "startLine": 69,
       "endLine": 105,
-      "mathContext": "Verified: `EdgeColoring` as $G.\\text{edgeSet} \\to \\text{Fin}\\, k$, `MonochromaticSubgraph` with `symm`/`loopless` proofs via `Sym2.eq_swap`, and `HasMonochromaticClique` ($\\exists c,\\; K_l \\subseteq G_c$)."
+      "summary": "`EdgeColoring` as $G.\\text{edgeSet} \\to \\text{Fin}\\, k$, `MonochromaticSubgraph` with `symm`/`loopless` proofs via `Sym2.eq_swap`, and `HasMonochromaticClique` ($\\exists c,\\; K_l \\subseteq G_c$)."
     },
     {
       "id": "ramsey-property",
       "title": "The Ramsey Property",
-      "summary": "`HasRamseyProperty`: $\\forall \\chi,\\; \\exists c,\\; K_l \\subseteq G_c$. `ErdosHajnalQuestion`: $\\exists G,\\; \\omega(G) \\le l \\land G \\to (K_l)^k_2$.",
       "startLine": 106,
       "endLine": 126,
-      "mathContext": "Mathematical content: `HasRamseyProperty`: $\\forall \\chi,\\; \\exists c,\\; K_l \\subseteq G_c$. `ErdosHajnalQuestion`: $\\exists G,\\; \\omega(G) \\le l \\land G \\to (K_l)^k_2$."
+      "summary": "`HasRamseyProperty`: $\\forall \\chi,\\; \\exists c,\\; K_l \\subseteq G_c$. `ErdosHajnalQuestion`: $\\exists G,\\; \\omega(G) \\le l \\land G \\to (K_l)^k_2$."
     },
     {
       "id": "folkman-graphs",
       "title": "Folkman Graphs",
-      "summary": "`IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber (k l : ℕ) : ℕ` axiomatized as the minimum vertex count.",
       "startLine": 127,
       "endLine": 145,
-      "mathContext": "Axiomatized: `IsFolkmanGraph` definition; `FolkmanNumber` is an axiom (minimum vertex count for Folkman graphs — witnesses existence)."
+      "summary": "`IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber (k l : ℕ) : ℕ` axiomatized as the minimum vertex count."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "Axioms: `folkman_1970` ($k=2$, $\\forall l \\ge 3$) and `nesetril_rodl_1976` ($\\forall k \\ge 2, l \\ge 3$). The general theorem completely solves the Erdős-Hajnal question.",
-      "startLine": 147,
-      "endLine": 166,
-      "mathContext": "Verified: Axioms: `folkman_1970` ($k=2$, $\\forall l \\ge 3$) and `nesetril_rodl_1976` ($\\forall k \\ge 2, l \\ge 3$). The general theorem completely solves the Erdős-Hajnal question."
+      "startLine": 146,
+      "endLine": 165,
+      "summary": "Axioms: `folkman_1970` ($k=2$, $\\forall l \\ge 3$) and `nesetril_rodl_1976` ($\\forall k \\ge 2, l \\ge 3$). The general theorem completely solves the Erdős-Hajnal question."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "`FolkmanNumber_3_2` definition (existence question for $f(3;2)$ as `ErdosHajnalQuestion 2 3`). Graham's bound $f(3;2) \\le 941$ and the exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014) appear only in consecutive docstring comments with no declarations following them — not as formal axioms or theorems.",
-      "startLine": 167,
-      "endLine": 197,
-      "mathContext": "`FolkmanNumber_3_2 : Prop := ErdosHajnalQuestion 2 3` is the only real declaration; the Graham bound and exact value appear in docstrings only."
+      "startLine": 166,
+      "endLine": 188,
+      "summary": "`FolkmanNumber_3_2` definition (existence question for $f(3;2)$ as `ErdosHajnalQuestion 2 3`). Graham's bound $f(3;2) \\le 941$ and the exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014) appear only in docstring commentary, not as formal declarations."
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
-      "summary": "`RamseyNumber` $R(l,l)$ placeholder definition via `Nat.find` with `Classical.exists_of_ramsey` (not in Mathlib; this definition does not typecheck). Comparison commentary in docstrings: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$.",
-      "startLine": 198,
-      "endLine": 221,
-      "mathContext": "`RamseyNumber` is a non-typechecking placeholder; the comparison with Folkman graphs is in docstring commentary only."
+      "startLine": 189,
+      "endLine": 205,
+      "summary": "`RamseyNumber` $R(l,l)$ placeholder definition via `Nat.find` with `Classical.exists_of_ramsey`. Docstring commentary: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs force with $\\omega(G) \\le l$."
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
-      "summary": "Three proof techniques: Hales-Jewett ($[m]^n$ cubes), partite construction (controlling $\\omega(G)$), shift graphs (Folkman's original). Also `GeneralizedFolkmanNumber` $f(l_1, \\ldots, l_k; r)$ for asymmetric parameters.",
-      "startLine": 222,
-      "endLine": 265,
-      "mathContext": "Three proof techniques: Hales-Jewett ($[m]^n$ cubes), partite construction (controlling $\\omega(G)$), shift graphs (Folkman's original). Also `GeneralizedFolkmanNumber` $f(l_1, \\ldots, l_k; r)$ for asymmetric parameters."
+      "startLine": 206,
+      "endLine": 227,
+      "summary": "Three proof techniques surveyed in docstrings: Hales-Jewett ($[m]^n$ cubes), partite construction (controlling $\\omega(G)$), and shift graphs (Folkman's original)."
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions",
+      "startLine": 228,
+      "endLine": 247,
+      "summary": "`GeneralizedFolkmanNumber (ls : List ℕ) (r : ℕ)` for asymmetric parameters $f(l_1, \\ldots, l_k; r)$, plus a docstring note that the result extends to $r$-uniform hypergraphs."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "`erdos_924_summary` combines three results in a single conjunction. `erdos_924 := nesetril_rodl_1976` identifies the solution. `erdos_924_answer` unpacks the existential for downstream use.",
       "startLine": 248,
       "endLine": 301,
-      "mathContext": "Mathematical content: `erdos_924_summary` combines three results in a single conjunction. `erdos_924 := nesetril_rodl_1976` identifies the solution. `erdos_924_answer` unpacks the existential for downstream use."
+      "summary": "`erdos_924_summary` combines three results in a single conjunction. `erdos_924 := nesetril_rodl_1976` identifies the solution. `erdos_924_answer` unpacks the existential for downstream use."
     }
   ],
   "conclusion": {

@@ -2,7 +2,7 @@
   "slug": "euler-polyhedral-formula-oq-01-oq-02",
   "title": "Four Color Theorem Lean feasibility and small coloring cases",
   "phase": "COMPLETED",
-  "status": "active",
+  "status": "graduated",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -69,7 +69,8 @@
   "relatedProofs": [
     "euler-polyhedral-formula",
     "euler-polyhedral-formula-oq-01",
-    "euler-polyhedral-formula-oq-01-oq-02"
+    "euler-polyhedral-formula-oq-01-oq-02",
+    "euler-polyhedral-formula-oq-01-oq-02-oq-01"
   ],
   "references": {
     "papers": [],
@@ -77,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T22:57:01.595Z",
-  "lastUpdate": "2026-03-28T22:57:01.614Z",
+  "lastUpdate": "2026-06-14T01:14:16Z",
   "leanFiles": [
     {
       "path": "Proofs/EulerPolyhedralFormula.lean",

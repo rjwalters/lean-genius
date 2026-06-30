@@ -2,10 +2,10 @@
   "id": "ramsey-r4k",
   "title": "Ramsey R(4,k): Structural Bounds and Cubic Growth",
   "slug": "ramsey-r4k",
-  "description": "Formalizes structural results for the off-diagonal Ramsey numbers R(4,k): upper bound R(4,k) ≤ C(k+2,3) via the classical Erdős-Szekeres binomial bound, the fundamental Pascal recursion R(r,s) ≤ R(r-1,s) + R(r,s-1) proved via vertex neighborhood splitting, concrete upper bound values for k=3..10, strict monotonicity, cubic growth rate R(4,k) ≤ (k+2)³, and a probabilistic lower bound counting framework. 30 theorems, 0 sorries, 0 axioms.",
+  "description": "Formalizes structural results for the off-diagonal Ramsey numbers R(4,k): upper bound R(4,k) ≤ C(k+2,3) via the classical Erdős-Szekeres binomial bound, the fundamental Pascal recursion R(r,s) ≤ R(r-1,s) + R(r,s-1) proved via vertex neighborhood splitting, concrete upper bound values for k=3..10, strict monotonicity, cubic growth rate R(4,k) ≤ (k+2)³, and a probabilistic lower bound counting framework. 30 theorems, 0 sorries; the concrete numeric bounds use `native_decide`, so they depend on the `Lean.ofReduceBool` axiom.",
   "meta": {
     "author": "Lean Genius RamseyR4k",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/RamseyR4k.lean",
     "tags": [
       "combinatorics",
@@ -15,12 +15,12 @@
       "number-theory",
       "upper-bounds"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 587,
     "theoremCount": 30,
-    "assumptions": "None. All 30 theorems proved. Concrete values via native_decide. The formalized bounds are classical upper bounds (C(k+2,3)), not exact Ramsey numbers.",
+    "assumptions": "The concrete upper-bound theorems (`r4_3_upper`..`r4_7_upper`, `r3_3_le`/`r3_4_le`/`r3_5_le`, `r4_bounds_table`, `r4_growth_examples`, `complete_edges_*`, `r4_red_term`, `prob_bound_r4_example`) discharge fixed numeric `ramseyUpperBound`/`completeEdges`/`Nat.choose` evaluations via `native_decide`, so they depend on the `Lean.ofReduceBool` axiom (which trusts the compiler's kernel reduction; `#print axioms r4_3_upper` lists it). The structural results (monotonicity, Pascal recursion, cubic-growth bounds) are fully machine-verified. The formalized bounds are classical upper bounds (C(k+2,3)), not exact Ramsey numbers. `leanFile.axiomCount` remains 0 since there are no literal `axiom` declarations.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -51,7 +51,7 @@
     "definitionCount": 4
   },
   "overview": {
-    "historicalContext": "Ramsey theory began with Frank Plumpton Ramsey's 1930 paper 'On a Problem of Formal Logic', which proved that for any $r, s$, there exists a minimum $n = R(r,s)$ such that every 2-coloring of the edges of the complete graph $K_n$ contains a monochromatic red $K_r$ or blue $K_s$. The bound Ramsey gave was doubly exponential. Erdős and Szekeres (1935) improved this to the central Pascal-based bound:\n$$R(r,s) \\leq \\binom{r+s-2}{r-1}$$\nwhich is the bound formalized here. For $r = 4$, this gives $R(4,k) \\leq \\binom{k+2}{3} = O(k^3)$.\n\nThe off-diagonal Ramsey numbers $R(4,k)$ are among the most studied special cases. Exact values include: $R(4,3) = 9$ (Chung 1973), $R(4,4) = 18$ (Chung, Grinstead 1983 — proving $R(4,4) > 17$ was the hard part), $R(4,5) = 25$ (McKay, Radziszowski 1995), $R(4,6) = 36$ (determined rigorously by 2012 through a combination of computational and theoretical work). The formalized binomial bounds (10, 20, 35, 56, 84) are overestimates — the gap widens with $k$.\n\nThe best known asymptotic upper bound is $R(4,k) = O(k^3/\\log^2 k)$, proved by Ajtai, Komlós, and Szemerédi (1980) using a probabilistic deletion argument (a forerunner of the 'Lovász local lemma' method). The best known lower bound is $R(4,k) = \\Omega(k^{5/2}/\\log^2 k)$, proved by Bohman and Keevash (2013) using the 'triangle-free process'. The gap between these bounds remains open and is a major problem in combinatorics.\n\nThis formalization captures the classical structural framework: the Erdős-Szekeres upper bound via Pascal recursion, concrete values for $k = 3$ to $10$, and the cubic growth rate $R(4,k) \\leq (k+2)^3$. The probabilistic lower bound framework (Part VIII) sets up the first-moment method infrastructure for future lower bound work.",
+    "historicalContext": "Ramsey theory began with Frank Plumpton Ramsey's 1930 paper 'On a Problem of Formal Logic', which proved that for any $r, s$, there exists a minimum $n = R(r,s)$ such that every 2-coloring of the edges of the complete graph $K_n$ contains a monochromatic red $K_r$ or blue $K_s$. The bound Ramsey gave was doubly exponential. Erdős and Szekeres (1935) improved this to the central Pascal-based bound:\n$$R(r,s) \\leq \\binom{r+s-2}{r-1}$$\nwhich is the bound formalized here. For $r = 4$, this gives $R(4,k) \\leq \\binom{k+2}{3} = O(k^3)$.\n\nThe off-diagonal Ramsey numbers $R(4,k)$ are among the most studied special cases. Exact values include: $R(4,3) = 9$ and $R(4,4) = 18$ (both Greenwood-Gleason 1955; exhibiting a 17-vertex coloring to show $R(4,4) > 17$ was the hard part), $R(4,5) = 25$ (McKay, Radziszowski 1995). The value of $R(4,6)$ remains undetermined, with the best known bounds $36 \\leq R(4,6) \\leq 40$. The formalized binomial bounds (10, 20, 35, 56, 84) are overestimates — the gap widens with $k$.\n\nThe best known asymptotic upper bound is $R(4,k) = O(k^3/\\log^2 k)$, proved by Ajtai, Komlós, and Szemerédi (1980) using a probabilistic deletion argument (a forerunner of the 'Lovász local lemma' method). The best known lower bound is $R(4,k) = \\Omega(k^{5/2}/\\log^2 k)$, proved by Bohman and Keevash (2013) using the 'triangle-free process'. The gap between these bounds remains open and is a major problem in combinatorics.\n\nThis formalization captures the classical structural framework: the Erdős-Szekeres upper bound via Pascal recursion, concrete values for $k = 3$ to $10$, and the cubic growth rate $R(4,k) \\leq (k+2)^3$. The probabilistic lower bound framework (Part VIII) sets up the first-moment method infrastructure for future lower bound work.",
     "problemStatement": "For the Ramsey property `RamseyProp(n,r,s)` — every symmetric irreflexive Bool-valued 2-coloring of `Fin n × Fin n` contains a red $r$-clique (all pairs colored `true`) or blue $s$-clique (all pairs colored `false`) — prove:\n1. Structural lemmas: monotonicity in $n$, $r$, $s$; symmetry; base cases $R(1,s)$, $R(r,1)$, $R(2,s) \\leq s$\n2. Classical Pascal recursion: if `RamseyProp n1 (r-1) s` and `RamseyProp n2 r (s-1)`, then `RamseyProp (n1+n2) r s`\n3. Upper bounds: `ramseyUpperBound 4 k = C(k+2,3)` for $k \\geq 1$; concrete values for $k = 3, \\ldots, 10$\n4. Cubic growth: `ramseyUpperBound 4 k ≤ (k+2)³`",
     "proofStrategy": "The main structural contribution is `ramsey_recursion` (lines 237–415), a 170-line proof of $R(r,s) \\leq R(r-1,s) + R(r,s-1)$. Given $n = n_1 + n_2$ vertices and any 2-coloring:\n1. Pick vertex $v = \\langle 0, \\text{hpos} \\rangle$.\n2. Partition the remaining $n-1$ vertices into $N_{\\text{red}}$ (red neighbors of $v$) and $N_{\\text{blue}}$ (blue neighbors of $v$). Their sizes sum to $n-1$.\n3. By pigeonhole: $|N_{\\text{red}}| \\geq n_1$ or $|N_{\\text{blue}}| \\geq n_2$.\n4. **Red case**: Extract an injection $\\text{Fin}(n_1) \\to N_{\\text{red}}$ via `embed_from_finset`, restrict the coloring, apply hypothesis $h_1$ (`RamseyProp n1 (r-1) s`). Either find an $s$-blue clique (lift it back) or find an $(r-1)$-red clique (extend with $v$ to get an $r$-red clique).\n5. **Blue case**: Symmetric with $h_2$ (`RamseyProp n2 r (s-1)`).\n\nThe cubic bound uses `choose_le_pow_three` proved by induction with `nlinarith [sq_nonneg n]` as the polynomial certificate.",
     "keyInsights": [
@@ -223,11 +223,6 @@
       "targetId": "ramseys-theorem",
       "relationship": "extends",
       "description": "The parent entry formalizes the general Ramsey theorem $R(r,s) < \\infty$ for all $r,s$. This entry specializes to off-diagonal $R(4,k)$ and proves quantitative upper bounds via the Pascal recursion and the Erdős-Szekeres binomial bound $\\binom{k+2}{3}$"
-    },
-    {
-      "targetId": "probabilistic-method",
-      "relationship": "related",
-      "description": "The probabilistic method (Erdős 1947) gives lower bounds for Ramsey numbers via the first-moment method. This entry's Part VIII sets up the `expectedCliqueTerm` framework for this calculation. The full Lovász local lemma (used for asymptotically sharper bounds) would extend this infrastructure"
     },
     {
       "targetId": "combinations-formula",

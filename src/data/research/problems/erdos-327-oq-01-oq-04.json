@@ -24,7 +24,7 @@
     "erdos-327-oq-01",
     "erdos-327-oq-01-oq-04"
   ],
-  "status": "available",
+  "status": "completed",
   "selectedDate": "2026-04-12",
   "selectedBy": "seeker",
   "leanFiles": [
@@ -61,5 +61,7 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos327Problem.lean"
     }
-  ]
+  ],
+  "phase": "COMPLETED",
+  "currentState": "PROVED 2026-04-13: D(N) ≥ ⌊N/6⌋ via explicit witness family {(3k,6k)}; Erdos327OQ01OQ04.lean is 0-sorry, 0-axiom, gallery-verified."
 }

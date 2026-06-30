@@ -104,16 +104,22 @@
       "summary": "The heart of the proof: hyp_sinh_ratio proves sinh(d(B,D))/sinh(d(D,C)) = β/α in two steps. First, unfold both sinh expressions (β·√(m²−1)/n and α·√(m²−1)/n respectively). Then field_simp cancels the common √(m²−1) factor. The n normalization also cancels, leaving only β/α. Positivity lemmas ensure division is well-defined."
     },
     {
-      "title": "Triple Product and the Full Ceva Criterion",
+      "title": "The Triple Product Formula",
       "startLine": 163,
+      "endLine": 181,
+      "summary": "hyp_ceva_product_eq_weight_ratio rewrites all three cevian sinh-ratios via hyp_sinh_ratio, collapsing the product of sinh-ratios to (βD·βE·βF)/(αD·αE·αF). The geometry-specific √(m²−1)/n factors have already cancelled in hyp_sinh_ratio, so the triple product reduces to the same weight-product ratio as the spherical (sin) case."
+    },
+    {
+      "title": "The Weight Balance Criterion for Concurrency",
+      "startLine": 182,
       "endLine": 228,
-      "summary": "hyp_ceva_product_eq_weight_ratio rewrites all three sinh-ratios using hyp_sinh_ratio, giving product = (βD·βE·βF)/(αD·αE·αF). Then hyp_ceva_iff_weight_balance combines with hyp_weight_balance_iff (proved by field_simp + linarith) to give: cevians concurrent iff αD·αE·αF = βD·βE·βF. The equal_weight_hyp_ceva handles the trivial αD=βD=αE=βE=αF=βF case."
+      "summary": "hyp_weight_balance_iff proves (βD/αD)·(βE/αE)·(βF/αF) = 1 ↔ αD·αE·αF = βD·βE·βF by field_simp + linarith. hyp_ceva_iff_weight_balance composes this with the triple-product formula to conclude the cevians are concurrent iff αD·αE·αF = βD·βE·βF — algebraically identical to the spherical criterion, since sin vs sinh is irrelevant once the ratios are formed."
     },
     {
       "title": "Universality and Summary Answer to OQ-02-OQ-01-OQ-02",
       "startLine": 230,
       "endLine": 301,
-      "summary": "universal_weight_balance is a purely algebraic theorem (no geometry): αD·αE·αF = βD·βE·βF iff (βD/αD)·(βE/αE)·(βF/αF) = 1, proved by field_simp + linarith. The summary theorem bundles all three geometries into a conjunction. The universality confirms that the weight-parameter criterion is independent of the metric, hinting at the projective foundations of Ceva's theorem."
+      "summary": "universal_weight_balance is a purely algebraic theorem (no geometry): αD·αE·αF = βD·βE·βF iff (βD/αD)·(βE/αE)·(βF/αF) = 1, proved by field_simp + linarith. equal_weight_hyp_ceva handles the trivial equal-weight case, and summary_answer_oq02oq01oq02 bundles all three geometries into a conjunction. The universality confirms that the weight-parameter criterion is independent of the metric, hinting at the projective foundations of Ceva's theorem."
     }
   ],
   "sorries": 0

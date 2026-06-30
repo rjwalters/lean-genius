@@ -79,52 +79,84 @@
   },
   "sections": [
     {
-      "id": "subset-sums-completeness",
+      "id": "header",
+      "title": "Header: Statement and Known Values",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "States Erdős Problem #345 (completeness thresholds for power sequences). For complete $A\\subseteq\\mathbb{N}$ (subset sums cover all large integers), $T(A)$ is the least $m$ with all $n\\geq m$ representable. Question: are there infinitely many $k$ with $T(n^k)>T(n^{k+1})$? Known: $T(n)=1,T(n^2)=129,T(n^3)=12759,T(n^4)=5134241,T(n^5)=67898772$ (largest non-representable + 1; cf. OEIS A001661). Imports `Nat`/`Finset`/`Set`/tactics.",
+      "mathContext": "$T(A)=\\min\\{m:\\forall n\\geq m,\\ n\\in P(A)\\}$. Known $T(n^k)$: $1,129,12759,5134241,67898772$."
+    },
+    {
+      "id": "subset-sums",
       "title": "Subset Sums and Completeness",
-      "startLine": 21,
-      "endLine": 31,
-      "summary": "Defines `subsetSums(A) = P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A\\}$ and `IsComplete(A)`: $\\exists m, \\forall n \\ge m: n \\in P(A)$.",
-      "mathContext": "$P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A,\\, S \\text{ finite}\\}$. $\\text{IsComplete}(A) \\iff \\exists m,\\, \\forall n \\ge m: n \\in P(A)$. Subset sums use distinct elements (no repetition)."
+      "startLine": 28,
+      "endLine": 40,
+      "summary": "Defines `subsetSums A` = $\\{$nonempty finite subset sums of $A\\}$ (empty sum $0$ excluded) and `IsCompleteSeq A` ($\\exists m,\\forall n\\geq m,\\ n\\in P(A)$).",
+      "mathContext": "$P(A)=\\{\\sum_{a\\in S}a:\\emptyset\\neq S\\subseteq A\\}$; complete iff cofinitely covered."
     },
     {
       "id": "threshold",
       "title": "Completeness Threshold",
-      "startLine": 32,
-      "endLine": 48,
-      "summary": "Axiomatizes $T(A) = \\min\\{m : \\forall n \\ge m, n \\in P(A)\\}$ via correctness and minimality axioms.",
-      "mathContext": "$T(A) = \\min\\{m : \\forall n \\ge m,\\, n \\in P(A)\\}$. Axiomatized via correctness ($\\forall n \\ge T(A): n \\in P(A)$) and minimality ($T(A) > 0 \\implies \\exists n < T(A): n \\notin P(A)$)."
+      "startLine": 41,
+      "endLine": 72,
+      "summary": "Defines `threshold A` $=T(A)$ via `Nat.find` (or $0$ if not complete). PROVES `threshold_spec` (all $n\\geq T(A)$ are representable) and `threshold_minimal` (some $n<T(A)$ is non-representable when $T(A)>0$) — both theorems, not axioms.",
+      "mathContext": "$T(A)$ defined by `Nat.find`; spec + minimality proved."
+    },
+    {
+      "id": "subset-sum-mono",
+      "title": "Monotonicity of Subset Sums",
+      "startLine": 73,
+      "endLine": 97,
+      "summary": "PROVES `subsetSums_mono` ($A\\subseteq B\\Rightarrow P(A)\\subseteq P(B)$), `isComplete_of_subset` (completeness is upward-closed under $\\subseteq$), and `threshold_le_of_subset` ($A\\subseteq B\\Rightarrow T(B)\\leq T(A)$ — more elements reach completeness sooner).",
+      "mathContext": "$A\\subseteq B\\Rightarrow P(A)\\subseteq P(B)$ and $T(B)\\leq T(A)$."
     },
     {
       "id": "power-sequences",
       "title": "Power Sequences",
-      "startLine": 49,
-      "endLine": 58,
-      "summary": "Defines `powerSeq(k) = \\{n^k : n \\ge 1\\}$. Proves $T(n^1) = 1$. Axiomatizes completeness for all $k \\ge 1$ via Waring's problem.",
-      "mathContext": "$\\text{powerSeq}(k) = \\{n^k : n \\ge 1\\}$. $T(n^1) = 1$ since every positive integer is a sum of distinct positive integers. Completeness for all $k \\ge 1$ follows from Waring's problem."
+      "startLine": 98,
+      "endLine": 152,
+      "summary": "Defines `powerSeq k` $=\\{n^k:n\\geq1\\}$. PROVES `powerSeq_subset_powerSeq_1` ($k\\geq1\\Rightarrow\\text{powerSeq }k\\subseteq\\text{powerSeq }1$), `powerSeq_complete_from_1`, `powerSeq_1_complete` (the naturals are complete), and `threshold_powerSeq_1` ($T(n)=1$: singletons represent every $n\\geq1$, and $0$ is not a nonempty subset sum).",
+      "mathContext": "$\\text{powerSeq }k=\\{n^k:n\\geq1\\}\\subseteq\\text{powerSeq }1$; $T(n)=1$ (proved)."
     },
     {
       "id": "known-values",
       "title": "Known Threshold Values",
-      "startLine": 59,
-      "endLine": 71,
-      "summary": "Axiomatized exact values (least-$m$ convention): $T(n^2) = 129$, $T(n^3) = 12759$, $T(n^4) = 5134241$, $T(n^5) = 67898772$. Growth ratios erratic: $129, 98.9, 402.4, 13.2$.",
-      "mathContext": "$T(n) = 1$, $T(n^2) = 129$, $T(n^3) = 12759$, $T(n^4) = 5134241$, $T(n^5) = 67898772$ (largest non-representable integers $0, 128, 12758, 5134240, 67898771$, OEIS A001661, plus 1). Growth ratios: $129, 98.9, 402.4, 13.2$. The sequence is strictly increasing for $k \\le 5$."
+      "startLine": 153,
+      "endLine": 170,
+      "summary": "The exact higher thresholds as AXIOMS (deep number-theoretic results): `threshold_squares` ($T(n^2)=129$, Sprague 1948), `threshold_cubes` ($T(n^3)=12759$), `threshold_fourth` ($T(n^4)=5134241$), `threshold_fifth` ($T(n^5)=67898772$) — largest non-representable $+1$, OEIS A001661.",
+      "mathContext": "Axioms: $T(n^2)=129$, $T(n^3)=12759$, $T(n^4)=5134241$, $T(n^5)=67898772$."
+    },
+    {
+      "id": "completeness-derived",
+      "title": "Completeness Derived from Threshold Values",
+      "startLine": 171,
+      "endLine": 197,
+      "summary": "PROVES `powerSeq_2_complete`, `powerSeq_3_complete`, `powerSeq_4_complete`, `powerSeq_5_complete` — each by contradiction: if not complete, `threshold = 0` by definition, contradicting the nonzero known value axioms.",
+      "mathContext": "$\\text{powerSeq }k$ complete for $k=2,3,4,5$ (derived from nonzero $T(n^k)$ axioms)."
+    },
+    {
+      "id": "general-completeness",
+      "title": "Completeness of Power Sequences (General)",
+      "startLine": 198,
+      "endLine": 204,
+      "summary": "States the AXIOM `powerSeq_complete`: every `powerSeq k` ($k\\geq1$) is complete (guaranteed by Waring's problem; derived above for $k=1,\\dots,5$).",
+      "mathContext": "Axiom (Waring): $\\text{powerSeq }k$ complete for all $k\\geq1$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 79,
-      "endLine": 85,
-      "summary": "Conjecture: $\\exists^\\infty k: T(n^k) > T(n^{k+1})$. Formalized as $\\forall K, \\exists k \\ge K: T(n^{k+1}) < T(n^k)$.",
-      "mathContext": "$\\exists^\\infty k: T(n^k) > T(n^{k+1})$. Erdos-Graham suggest $k = 2^t$ for large $t$ as candidates for threshold reversal. Any reversal must occur for $k \\ge 5$ by the computed monotonicity."
+      "startLine": 205,
+      "endLine": 212,
+      "summary": "Defines `ErdosProblem345`: $\\forall K,\\exists k\\geq K$ with $T(n^{k+1})<T(n^k)$ — infinitely many descents in the threshold sequence.",
+      "mathContext": "Conjecture: $\\exists^\\infty k,\\ T(n^{k+1})<T(n^k)$."
     },
     {
-      "id": "monotonicity",
+      "id": "monotonicity-obs",
       "title": "Monotonicity Observations",
-      "startLine": 86,
-      "endLine": 96,
-      "summary": "Strict monotonicity: $T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$. No reversal in the computable range; any reversal requires $k \\ge 5$.",
-      "mathContext": "$T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$: strict monotonicity holds in the computable range. Computing $T(n^k)$ for $k \\ge 6$ is currently infeasible."
+      "startLine": 213,
+      "endLine": 226,
+      "summary": "PROVES `threshold_mono_small`: $T(n)<T(n^2)<T(n^3)<T(n^4)<T(n^5)$ ($1<129<12759<5134241<67898772$), so no descent occurs in the computed range — any reversal needs $k\\geq5$.",
+      "mathContext": "$1<129<12759<5134241<67898772$: strictly increasing through $k=5$."
     }
   ],
   "conclusion": {

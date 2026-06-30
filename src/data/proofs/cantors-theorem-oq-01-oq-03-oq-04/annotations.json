@@ -23,7 +23,7 @@
   {
     "id": "general-vs-specific",
     "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
-    "range": { "startLine": 80, "endLine": 100 },
+    "range": { "startLine": 81, "endLine": 98 },
     "type": "insight",
     "title": "Pattern: Every Strict Inequality Yields a Family of Disequalities",
     "content": "The proof of `cf_powerSet_real_ne_of_le_continuum` exhibits a general pattern in cardinal arithmetic: every parent inequality of the form $c < \\operatorname{cf}(\\#X)$ automatically yields the entire family of disequalities $\\{\\operatorname{cf}(\\#X) \\neq \\kappa : \\kappa \\leq c\\}$. This is mathematically trivial — strict inequality implies disequality — but proof-engineering matters: by naming the general lemma, every downstream specialisation is one application of the lemma rather than an independent contradiction-style argument.\n\nThis pattern recurs throughout Mathlib's cardinal arithmetic library. Consider `Cardinal.aleph_lt_continuum_iff` or `Cardinal.beth_strictMono.lt_iff_lt`: each is a strict-inequality lemma that *implicitly* defines a family of disequalities for downstream use. Codifying the named version of the disequality family — as this file does for the König-constraint case — saves later proofs the work of repeated `intro h; rw at; absurd` steps.",
@@ -39,10 +39,29 @@
     ]
   },
   {
+    "id": "aleph0-rederivation",
+    "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
+    "range": { "startLine": 104, "endLine": 112 },
+    "type": "theorem",
+    "title": "ℵ₀ Specialisation: Re-deriving the Parent Corollary",
+    "content": "`cf_powerSet_real_ne_aleph0_general` recovers the parent file's `cf_powerSet_real_ne_aleph0` as the smallest instance ($\\kappa = \\aleph_0$) of the general exclusion, by feeding `Cardinal.aleph0_le_continuum` to `cf_powerSet_real_ne_of_le_continuum`. The point is structural rather than mathematical: the parent stated this corollary as an independent result, whereas here it falls out of the general lemma in a single term-mode application, refactoring the proof tree so the family of exclusions has one common root. The $\\aleph_0$ case is the one with the most classical bite: via the Hausdorff cofinality formula $\\operatorname{cf}(\\aleph_\\omega) = \\aleph_0$, it is exactly what rules out $|\\mathcal{P}(\\mathbb{R})| = \\aleph_\\omega$ — the smallest singular cardinal that König's theorem forbids the continuum's power set from equalling.",
+    "mathContext": "$\\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|) \\neq \\aleph_0$, obtained as `cf_powerSet_real_ne_of_le_continuum aleph0_le_continuum`. Combined with $\\operatorname{cf}(\\aleph_\\omega) = \\aleph_0$ this yields $|\\mathcal{P}(\\mathbb{R})| \\neq \\aleph_\\omega$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Cardinal.aleph0_le_continuum",
+      "Hausdorff cofinality cf(ℵ_ω) = ℵ₀"
+    ],
+    "relatedConcepts": [
+      "König's theorem",
+      "singular cardinals",
+      "proof-tree refactoring"
+    ]
+  },
+  {
     "id": "continuum-boundary",
     "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
     "range": { "startLine": 117, "endLine": 130 },
-    "type": "remark",
+    "type": "insight",
     "title": "The κ = 𝔠 Boundary Case Is the Strongest Single-Cardinal Exclusion",
     "content": "The specialisation `cf_powerSet_real_ne_continuum : cf(|\\mathcal{P}(\\mathbb{R})|) \\neq \\mathfrak{c}` is the strongest below-continuum exclusion implied by König's constraint. The parent file proved the *strict* inequality $\\mathfrak{c} < \\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|)$; this file extracts the disequational form. They differ logically only on the question of *direction* (the parent says cof is bigger; this says cof is not equal), but downstream proofs often care only about the disequality — typically when they have a parameter that may or may not equal $\\mathfrak{c}$ and need to rule out one value.\n\nThe `κ = 𝔠` case was not stated explicitly in the parent file. Adding it here closes a small gap and makes the bundle complete: the parent's bundle covered general-κ, 𝔠-application, |𝒫(ℝ)|-application, and cf ≠ ℵ₀; the OQ-04 bundle covers the general-disequation form and four named specialisations.",
     "mathContext": "$\\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|) \\neq \\mathfrak{c}$ is the boundary case of the general exclusion family. The parent proved the strict $\\mathfrak{c} < \\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|)$; the disequality form makes it citable in `≠`-shaped downstream goals.",

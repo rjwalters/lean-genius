@@ -90,9 +90,10 @@ The S1 OBSERVE iteration provided:
 * **`jordanBlock_diag_eq`** / **`jordanBlock_super_diag_eq`** —
   unconditional sanity lemmas for the diagonal entries (all `λ`) and
   super-diagonal entries (all `1`) of `jordanBlock K λ d`.
-* **`jordan_normal_form_exists`** — the **main JNF existence theorem
-  statement**, guarded by a single `sorry` that the four sub-OQs above
-  are intended to discharge.
+* **`jordan_normal_form_exists`** — the **weak (dimension-matching)
+  form** of the JNF existence theorem. As of S10 this is fully
+  discharged (constructive, sorry-free): see the theorem docstring. The
+  stronger *similarity* form remains the target of the four sub-OQs.
 
 The S2 iteration (this PR) adds the *third* case of the entry-wise
 classification, completing the case-by-case coverage of every
@@ -116,9 +117,12 @@ iteration (this PR) adds the `toFinset.card`-side refinement:
   characterises the "diagonalisable, simple spectrum" boundary of the
   JNF shape data.
 
-These lemmas do **not** discharge any of OQ-01-OQ-01..04. The single
-sorry on `jordan_normal_form_exists` is the entire JNF assembly. The
-contribution of S1+S2 is the resolution of the OQ at the strategy
+These lemmas do **not** discharge any of OQ-01-OQ-01..04. The entire
+JNF *similarity* assembly remains open (the load-bearing content of the
+four sub-OQs); only the weak dimension-matching form of
+`jordan_normal_form_exists` is proved (S10), so the file is now
+sorry-free. The contribution of S1+S2 is the resolution of the OQ at the
+strategy
 level (affirmative + 4-step roadmap + 1 identified Mathlib gap), the
 Lean-side surface for follow-on iterations, and a complete entry-wise
 API for the `jordanBlock` definition. Together the three entry-wise
@@ -145,7 +149,11 @@ upcoming OQ-01-OQ-01 charpoly identity will consume.
   `eigenvalueMultiset_card_eq_totalDim`; S4-E:
   `eigenvalueMultiset_toFinset_card_le_totalDim` +
   `_eq_totalDim_iff`)
-* [ ] Discharge `jordan_normal_form_exists` (sorry-guarded — deferred to sub-OQs)
+* [x] Discharge the **weak (dimension-matching) form** of
+  `jordan_normal_form_exists` (S10 — constructive, sorry-free; file now
+  fully machine-checked, 0 sorries, 0 axioms)
+* [ ] Full **similarity** form of the JNF theorem (similarity transform
+  `P`) — deferred to sub-OQs OQ-01-OQ-02..04
 
 ## Mathlib Dependencies
 
@@ -390,22 +398,41 @@ Chevalley + a local nilpotent-canonical-form construction (OQ-01-OQ-02).
 -/
 
 /--
-**The Jordan normal form theorem (statement, S1)**: every square matrix
-over an algebraically closed field is similar to a block-diagonal matrix
-of Jordan blocks. The full similarity assembly is deferred to
-OQ-01-OQ-02..04 (see module docstring).
+**JNF shape-dimension consistency (S10, weak form of the JNF theorem)**:
+for every square matrix over an algebraically closed field there exists a
+`JordanBlockShape` whose total dimension equals the matrix size.
+
+This is the *dimension-matching* necessary condition for a Jordan normal
+form: it asserts only that a shape of the correct total dimension exists,
+**not** that `M` is similar to the corresponding block-diagonal matrix.
+That stronger similarity claim — the genuine content of the JNF theorem —
+is the load-bearing target deferred to OQ-01-OQ-02..04 (see the module
+docstring and the sub-OQ table).
+
+Because the statement quantifies existentially over the shape *without*
+referencing `M`'s spectral data, it is discharged constructively: when
+`Fintype.card n = 0` the empty shape works; otherwise a single block of
+size `Fintype.card n` (eigenvalue `0`, chosen arbitrarily — the statement
+constrains only the dimension) witnesses it. No gen-eigenspace or
+Jordan-Chevalley machinery is required for *this* weak form; those enter
+only for the deferred similarity assembly.
 -/
 theorem jordan_normal_form_exists
     {K : Type*} [Field K] [IsAlgClosed K]
     {n : Type*} [DecidableEq n] [Fintype n]
     (M : Matrix n n K) :
     ∃ S : JordanBlockShape K, S.totalDim = Fintype.card n := by
-  -- The full statement (existence of a similarity transform) is the
-  -- target of OQ-01-OQ-04. The weak-form S1 statement above asserts
-  -- only existence of a shape with the correct total dimension, which
-  -- already requires the gen-eigenspace decomposition (#1, #2). This
-  -- is sorry-guarded in S1; sub-OQs OQ-01-OQ-01..04 discharge it.
-  sorry
+  rcases Nat.eq_zero_or_pos (Fintype.card n) with h | h
+  · -- Empty matrix: the empty shape has total dimension `0`.
+    exact ⟨⟨[], by intro _ hp; nomatch hp⟩, by
+      simp [JordanBlockShape.totalDim, h]⟩
+  · -- Nonempty: one block of size `Fintype.card n` with eigenvalue `0`.
+    refine ⟨⟨[(0, Fintype.card n)], ?_⟩, ?_⟩
+    · intro p hp
+      simp only [List.mem_singleton] at hp
+      subst hp
+      exact h
+    · simp [JordanBlockShape.totalDim]
 
 /-- Sanity check: `JordanBlockShape.totalDim` of the empty shape is `0`.
 
@@ -449,5 +476,49 @@ theorem JordanBlockShape.totalDim_eq_zero_iff_blocks_empty
       omega
   · intro h
     rw [h]; simp
+
+/-! ## S10: characteristic polynomial of a single Jordan block
+
+The first genuinely spectral identity in this development: the characteristic
+polynomial of a single Jordan block is a pure power of a linear factor.  This is
+the per-block content that the global Jordan-normal-form charpoly factorisation
+(`charpoly = ∏_λ (X - C λ)^{m_λ}`) is assembled from, and it is the natural
+consumer of the S2 entry-wise classification (`jordanBlock_diag_eq`,
+`jordanBlock_off_diag_eq`): the block is upper-triangular, so its characteristic
+matrix is `BlockTriangular id` and its determinant collapses to the product of
+the diagonal entries `X - C λ`. -/
+
+open Polynomial in
+/-- **S10**: the characteristic polynomial of a single Jordan block
+`jordanBlock R lam d` is `(X - C lam) ^ d`.
+
+`jordanBlock R lam d` is upper-triangular: its `(i, j)` entry vanishes whenever
+the column index `j` is strictly below the row index `i` (the only nonzero
+entries are the diagonal `lam` and the super-diagonal `1`).  Hence its
+characteristic matrix `charmatrix (jordanBlock R lam d)` is `BlockTriangular id`,
+so by `Matrix.det_of_upperTriangular` its determinant is the product over `i` of
+the diagonal entries `charmatrix _ i i = X - C (jordanBlock _ i i) = X - C lam`
+(`jordanBlock_diag_eq`).  The product of `d` copies of `X - C lam` is
+`(X - C lam) ^ d`. -/
+theorem charpoly_jordanBlock (R : Type*) [CommRing R] (lam : R) (d : Nat) :
+    (jordanBlock R lam d).charpoly = (X - C lam) ^ d := by
+  have htri : (charmatrix (jordanBlock R lam d)).BlockTriangular id := by
+    intro i j hlt
+    simp only [id_eq] at hlt
+    have hji : (j : ℕ) < (i : ℕ) := hlt
+    have hne : i ≠ j := by
+      intro h; subst h; exact lt_irrefl _ hji
+    rw [charmatrix_apply_ne hne,
+        jordanBlock_off_diag_eq R lam d i j hne (by omega),
+        map_zero, neg_zero]
+  unfold Matrix.charpoly
+  rw [det_of_upperTriangular htri]
+  calc ∏ i : Fin d, charmatrix (jordanBlock R lam d) i i
+      = ∏ _i : Fin d, (X - C lam) := by
+        apply Finset.prod_congr rfl
+        intro i _
+        rw [charmatrix_apply_eq, jordanBlock_diag_eq]
+    _ = (X - C lam) ^ d := by
+        rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
 end MinpolyCharpolyOQ01

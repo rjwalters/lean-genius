@@ -921,7 +921,7 @@ lemma vEnd_mem_latticeSegmentPoints (v w : ℤ × ℤ) :
     rw [hxe, hye]
     show (v.1 + dx, v.2 + dy) = w
     rw [hdx_def, hdy_def]
-    ext <;> simp <;> ring
+    ext <;> simp
 
 end LatticeTriangle
 
@@ -980,7 +980,7 @@ theorem no_strict_edge_interior_of_edgeGCD_eq_one
     · rw [hxv]; exact hv_mem
     · rw [Finset.mem_singleton] at hxw; rw [hxw]; exact hw_mem
   have hpair_card : ({T.vEdgeStart i, T.vEdgeEnd i} : Finset (ℤ × ℤ)).card = 2 := by
-    rw [Finset.card_insert_of_not_mem (by simp [hvw]), Finset.card_singleton]
+    rw [Finset.card_insert_of_notMem (by simp [hvw]), Finset.card_singleton]
   have hSeq : LatticeTriangle.latticeSegmentPoints
                 (T.vEdgeStart i) (T.vEdgeEnd i) =
               ({T.vEdgeStart i, T.vEdgeEnd i} : Finset (ℤ × ℤ)) := by
@@ -1011,13 +1011,12 @@ theorem exists_strict_edge_interior_iff_edgeGCD_ge_two
   -- edgeGCD i < 2 means edgeGCD i ∈ {0, 1}.
   by_contra hlt
   push_neg at hlt
-  interval_cases (T.edgeGCD i)
+  rcases (by omega : T.edgeGCD i = 0 ∨ T.edgeGCD i = 1) with hg0 | hg1
   · -- edgeGCD i = 0.  Then both v and w are equal (since Int.gcd Δx Δy = 0
     -- forces Δx = Δy = 0), and the segment is just {v}, so card = 1.  But
     -- `OnStrictEdgeInterior` requires p in the segment with p ≠ v, impossible.
     -- Alternatively: g = 0 ⟹ segment has card 1, and (p ∈ segment, p ≠ v) is
     -- self-contradictory.
-    have hg0 : T.edgeGCD i = 0 := by assumption
     have hcard : (LatticeTriangle.latticeSegmentPoints
                     (T.vEdgeStart i) (T.vEdgeEnd i)).card = 1 := by
       have := card_latticeSegmentPoints (T.vEdgeStart i) (T.vEdgeEnd i)
@@ -1036,13 +1035,215 @@ theorem exists_strict_edge_interior_iff_edgeGCD_ge_two
       · rw [hxp]; exact hmem
       · rw [Finset.mem_singleton] at hxv; rw [hxv]; exact hv_mem
     have hcard2 : ({p, T.vEdgeStart i} : Finset (ℤ × ℤ)).card = 2 := by
-      rw [Finset.card_insert_of_not_mem (by simp [hne_v]), Finset.card_singleton]
+      rw [Finset.card_insert_of_notMem (by simp [hne_v]), Finset.card_singleton]
     have : 2 ≤ 1 := by
       have := Finset.card_le_card hsub
       rw [hcard2, hcard] at this
       exact this
     omega
   · -- edgeGCD i = 1.  Direct application of S3b-act-3.
-    exact no_strict_edge_interior_of_edgeGCD_eq_one T i (by assumption) p hp
+    exact no_strict_edge_interior_of_edgeGCD_eq_one T i hg1 p hp
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION XII (S4-prep): Translation Invariance of the Pick Bridge
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### Why translation invariance is the next step
+
+The future Pick induction (S4/S5) decomposes a triangle into `|det|`
+primitive sub-triangles and reasons about each.  Every step of that
+argument needs to *reposition* a sub-triangle to a canonical location
+(e.g. anchor a vertex at the origin) without changing any of the
+Pick data.  This section proves exactly that: translating all three
+vertices by a fixed lattice vector `t` leaves invariant
+
+  * the determinant `det` (hence `twiceArea`),
+  * every `edgeGCD` (hence `boundaryCount`),
+  * the rational `pickInterior` and the integer `pickInteriorNum`,
+  * the orientation predicate `StrictInterior` (up to the same shift),
+  * and — the substantive result — the geometric count
+    `realInteriorCount`, via an explicit `Finset` bijection.
+
+Unlike the S2 base-case agreements (which are `native_decide` facts
+about three concrete triangles), these lemmas hold for *every* lattice
+triangle and *every* translation vector.  The capstone
+`pick_agrees_translate_iff` records the payoff: Pick's agreement is a
+translation-invariant property, so it suffices to prove it at any single
+canonical position. -/
+
+namespace LatticeTriangle
+
+/-- Translate every vertex of `T` by a fixed lattice vector `t`. -/
+def translate (T : LatticeTriangle) (t : ℤ × ℤ) : LatticeTriangle :=
+  ⟨(T.v1.1 + t.1, T.v1.2 + t.2),
+   (T.v2.1 + t.1, T.v2.2 + t.2),
+   (T.v3.1 + t.1, T.v3.2 + t.2)⟩
+
+end LatticeTriangle
+
+/-! #### Algebraic invariances (det / area / boundary / Pick formula) -/
+
+/-- The determinant is translation-invariant: shifting all vertices by `t`
+    cancels in every coordinate difference. -/
+lemma det_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).det = T.det := by
+  simp only [LatticeTriangle.det, LatticeTriangle.translate]
+  ring
+
+/-- `twiceArea = |det|` is translation-invariant. -/
+lemma twiceArea_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).twiceArea = T.twiceArea := by
+  unfold LatticeTriangle.twiceArea
+  rw [det_translate]
+
+/-- Each signed edge vector is unchanged by translation (the shift `t`
+    cancels in the difference of consecutive vertices). -/
+lemma signedDelta_translate (T : LatticeTriangle) (t : ℤ × ℤ) (i : Fin 3) :
+    (T.translate t).signedDelta i = T.signedDelta i := by
+  fin_cases i <;>
+    simp only [LatticeTriangle.signedDelta, LatticeTriangle.translate,
+      Prod.mk.injEq] <;>
+    refine ⟨?_, ?_⟩ <;> ring
+
+/-- Each absolute edge delta is unchanged by translation. -/
+lemma edgeDelta_translate (T : LatticeTriangle) (t : ℤ × ℤ) (i : Fin 3) :
+    (T.translate t).edgeDelta i = T.edgeDelta i := by
+  rw [edgeDelta_eq_natAbs_signedDelta, edgeDelta_eq_natAbs_signedDelta,
+      signedDelta_translate]
+
+/-- Each edge GCD is translation-invariant. -/
+lemma edgeGCD_translate (T : LatticeTriangle) (t : ℤ × ℤ) (i : Fin 3) :
+    (T.translate t).edgeGCD i = T.edgeGCD i := by
+  unfold LatticeTriangle.edgeGCD
+  rw [edgeDelta_translate]
+
+/-- The boundary lattice-point count is translation-invariant. -/
+lemma boundaryCount_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).boundaryCount = T.boundaryCount := by
+  unfold LatticeTriangle.boundaryCount
+  rw [edgeGCD_translate, edgeGCD_translate, edgeGCD_translate]
+
+/-- Pick's rational interior formula is translation-invariant. -/
+lemma pickInterior_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).pickInterior = T.pickInterior := by
+  unfold LatticeTriangle.pickInterior
+  rw [twiceArea_translate, boundaryCount_translate]
+
+/-- The cleared-denominator integer form is translation-invariant. -/
+lemma pickInteriorNum_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).pickInteriorNum = T.pickInteriorNum := by
+  unfold LatticeTriangle.pickInteriorNum
+  rw [twiceArea_translate, boundaryCount_translate]
+
+/-! #### Geometric invariance (orientation predicate and interior count) -/
+
+/-- Translating the two reference vertices by `t` is the same as shifting
+    the test point by `-t`: `cross2 (a+t) (b+t) p = cross2 a b (p - t)`. -/
+lemma cross2_translate_pt (a b p t : ℤ × ℤ) :
+    cross2 (a.1 + t.1, a.2 + t.2) (b.1 + t.1, b.2 + t.2) p
+      = cross2 a b (p.1 - t.1, p.2 - t.2) := by
+  unfold cross2
+  ring
+
+/-- A point is strictly interior to the translated triangle iff its
+    back-shift `p - t` is strictly interior to the original.  Both
+    orientation disjuncts transport simultaneously. -/
+lemma strictInterior_translate (T : LatticeTriangle) (t p : ℤ × ℤ) :
+    (T.translate t).StrictInterior p ↔ T.StrictInterior (p.1 - t.1, p.2 - t.2) := by
+  simp only [LatticeTriangle.StrictInterior, LatticeTriangle.translate]
+  rw [cross2_translate_pt, cross2_translate_pt, cross2_translate_pt]
+
+/-! #### Bounding-box transport (each extreme coordinate shifts by `t`) -/
+
+lemma xmin_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).xmin = T.xmin + t.1 := by
+  simp only [LatticeTriangle.xmin, LatticeTriangle.translate]
+  omega
+
+lemma xmax_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).xmax = T.xmax + t.1 := by
+  simp only [LatticeTriangle.xmax, LatticeTriangle.translate]
+  omega
+
+lemma ymin_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).ymin = T.ymin + t.2 := by
+  simp only [LatticeTriangle.ymin, LatticeTriangle.translate]
+  omega
+
+lemma ymax_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).ymax = T.ymax + t.2 := by
+  simp only [LatticeTriangle.ymax, LatticeTriangle.translate]
+  omega
+
+/-- A point lies in the translated bounding box iff its back-shift lies in
+    the original bounding box. -/
+lemma mem_boundingBox_translate (T : LatticeTriangle) (t q : ℤ × ℤ) :
+    q ∈ (T.translate t).boundingBox ↔
+      (q.1 - t.1, q.2 - t.2) ∈ T.boundingBox := by
+  simp only [LatticeTriangle.boundingBox, Finset.mem_product, Finset.mem_Icc,
+    xmin_translate, xmax_translate, ymin_translate, ymax_translate]
+  omega
+
+/-! #### The substantive result: `realInteriorCount` is translation-invariant -/
+
+/-- The strictly-interior lattice points of the translated triangle are
+    exactly the image of those of the original under the shift map
+    `p ↦ p + t`.  This packages the orientation and bounding-box
+    transports into a single `Finset` identity. -/
+theorem realInterior_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).realInterior
+      = T.realInterior.image (fun p : ℤ × ℤ => (p.1 + t.1, p.2 + t.2)) := by
+  ext q
+  simp only [LatticeTriangle.realInterior, Finset.mem_filter, Finset.mem_image]
+  constructor
+  · rintro ⟨hbb, hsi⟩
+    exact ⟨(q.1 - t.1, q.2 - t.2),
+      ⟨(mem_boundingBox_translate T t q).mp hbb,
+       (strictInterior_translate T t q).mp hsi⟩,
+      by simp⟩
+  · rintro ⟨p, ⟨hbb, hsi⟩, rfl⟩
+    refine ⟨?_, ?_⟩
+    · rw [mem_boundingBox_translate]; simpa using hbb
+    · rw [strictInterior_translate]; simpa using hsi
+
+/-- **Translation invariance of the interior count.**  For every lattice
+    triangle `T` and every shift `t`, the strictly-interior lattice-point
+    count is unchanged.  The shift map is a bijection on lattice points,
+    so the filtered bounding boxes have equal cardinality.
+
+    This is the general repositioning lemma the Pick induction needs:
+    a primitive sub-triangle may be translated to any canonical anchor
+    without affecting its geometric interior count. -/
+theorem realInteriorCount_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).realInteriorCount = T.realInteriorCount := by
+  unfold LatticeTriangle.realInteriorCount
+  rw [realInterior_translate]
+  apply Finset.card_image_of_injective
+  intro a b hab
+  simp only [Prod.mk.injEq] at hab
+  exact Prod.ext (add_right_cancel hab.1) (add_right_cancel hab.2)
+
+/-- **Capstone — Pick's agreement is translation-invariant.**  The property
+    "the real interior count equals Pick's formula" holds for `T` iff it
+    holds for any translate `T.translate t`.  Consequently it suffices to
+    establish Pick's theorem at a single canonical position (e.g. a vertex
+    anchored at the origin), and the general case follows by translation.
+
+    Both sides of the equivalence reduce to the same statement once the
+    two invariances `realInteriorCount_translate` and
+    `pickInterior_translate` are applied. -/
+theorem pick_agrees_translate_iff (T : LatticeTriangle) (t : ℤ × ℤ) :
+    ((T.translate t).realInteriorCount : ℚ) = (T.translate t).pickInterior
+      ↔ ((T.realInteriorCount : ℚ) = T.pickInterior) := by
+  rw [realInteriorCount_translate, pickInterior_translate]
+
+/-- **Sanity check.**  The primitive base case `primitive_pick_agrees`
+    transports across translation: any translate of a primitive triangle
+    still satisfies Pick's agreement (its `twiceArea` is also `1`).  This
+    confirms the new invariance machinery is consistent with the S3a
+    primitive base case. -/
+example (T : LatticeTriangle) (t : ℤ × ℤ) (h : T.twiceArea = 1) :
+    ((T.translate t).realInteriorCount : ℚ) = (T.translate t).pickInterior :=
+  (pick_agrees_translate_iff T t).mpr (primitive_pick_agrees T h)
 
 end PicksTheoremOQ01OQ01OQ01

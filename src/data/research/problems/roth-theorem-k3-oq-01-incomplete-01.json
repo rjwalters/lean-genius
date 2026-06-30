@@ -1,7 +1,7 @@
 {
   "slug": "roth-theorem-k3-oq-01-incomplete-01",
   "title": "Roth's Theorem: Main k=3 Formalization",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -27,29 +27,29 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-09T00:00:00.000Z",
-    "iteration": 5,
-    "focus": "S5 ACT VERIFY-DISCOVERY (researcher-4, 2026-06-09): Attempted to Docker-verify the S4 four-fix surgical repair on a remediated host (105 GiB free vs S4's 158 Mi). The verification FAILED: S4's diagnosis was incomplete. Fix #1 (div_lt_iff → div_lt_iff₀ rename) is necessary and correct. Fix #2 (remove math-false max_iterations_bound) is necessary and correct. Fix #3 (maxHeartbeats 400000 for rothNumber_three) is based on a WRONG hypothesis — the actual fresh-build failure is simp_all returning successfully with 3 unresolved subgoals of ZMod 3 arithmetic (1 + 2 * 2 = 0 etc.) that a Mathlib v4.26.0 lemma move no longer reduces, NOT a heartbeat panic. Fix #4 (set S type annotation in rothNumber_achieved) is necessary but INSUFFICIENT: the actual failure is `failed to synthesize DecidablePred APFree` at 3 sites in rothNumber_achieved AND in rothNumber_pos + card_le_rothNumber. S5 tried 10+ tactic replacements (revert decide, refine decide, simp_all decide config, all_goals discharge variants, sorry stub, removed theorem entirely, added `classical` tactic to affected theorems) — every approach surfaced DecidablePred APFree synthesis errors. Adding `classical` shifted the error to a unification mismatch between the local classical Decidable instance and the global Classical.dec used by noncomputable def rothNumber. The correct fix needs file-scoped noncomputable instance for DecidablePred APFree OR explicit Classical.decPred at every Finset.filter site OR relocating the decide-cascade trigger to a separate file. S5 ships this as a doc-only PR (no Lean changes) — the verification revealed the repair is materially larger than S4 envisaged.",
-    "blockers": [
-      "RothTheoremQuantitative.lean fails fresh Docker build on Mathlib v4.26.0 with 4 root causes (S5-revised diagnosis): (1) div_lt_iff rename (drop-in fix), (2) math-false max_iterations_bound (remove + document), (3) rothNumber_three simp_all leaves 3 ZMod 3 arithmetic subcases (needs tactic redesign), (4) DecidablePred APFree synthesis failure across noncomputable filter chain in rothNumber, rothNumber_pos, card_le_rothNumber, rothNumber_achieved (needs instance-handling redesign, not just set type annotations)."
-    ],
-    "nextAction": "S6 ACT REPAIR-DESIGN: investigate Finset.filter over DecidablePred for noncomputable-by-default predicates. Three candidate approaches sketched in S5 session report — (a) file-scoped noncomputable instance for DecidablePred APFree; (b) explicit Classical.decPred at every Finset.filter site; (c) relocate rothNumber_three (the decide-cascade trigger) to a separate RothTheoremK3Small.lean. After S6 lands a green-on-fresh-build file, the originally-planned r₃(4) ∈ [2, 3] enumeration can resume. The four landmark sorries (roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound) remain multi-PR research efforts. S4 PR #22075 may stay open or be closed superseded — fixes #1 and #2 from S4 are still cherry-pickable independently.",
+    "since": "2026-06-12T00:00:00.000Z",
+    "iteration": 6,
+    "focus": "S6 ACT REPAIR (researcher-1, 2026-06-12): Implemented the full fresh-build repair AND found the true root cause S3–S5 all missed: the noncomputable def rothNumber itself never compiled on fresh Mathlib v4.26.0. Finset.univ : Finset (ZMod N) needs Fintype (ZMod N), whose only instance requires NeZero N; with N free, synthesis fails and Lean error-recovers by elaborating rothNumber to sorry — every baffling downstream symptom S5 recorded (sorry.sup card mismatches, wandering DecidablePred errors, the cache fluke) was a casualty of the sorried def. Repair: (1) rothNumber totalized via dite (N = 0) with junk value 0 and haveI NeZero in the else-branch, plus equation lemma rothNumber_def := dif_neg (NeZero.ne N) replacing every unfold rothNumber site; (2) global noncomputable instance DecidablePred (@APFree N) := fun _ => Classical.dec _ so every Finset.filter site elaborates against the same instance term and filter expressions unify syntactically (S5 proved per-theorem classical yields non-unifying terms); (3) [NeZero N] added to not_apFree_univ (statement-level Finset.univ) and card_le_rothNumber (false for N = 0 under the junk value); (4) div_lt_iff → div_lt_iff₀; (5) removed math-false max_iterations_bound, RETAINED iterations_before_contradiction (true weak direction) with repaired le_div_iff₀ + linarith proof; (6) rothNumber_three as defeq show (unfolding APFree to its ∀-statement) + decide — unfold-first mandatory since the global instance is classical and decide cannot evaluate it; (7) rothNumber_achieved rewritten without set (filter terms now unify); (8) notMem_empty deprecation fix. Cache-fluke protocol observed: cleared /cache/{ir,lib/lean}/Proofs/RothTheoremQuantitative.* before Docker verification.",
+    "blockers": [],
+    "nextAction": "S7 ACT SMALL-N: on the repaired base, re-add the r₃(4) ∈ [2, 3] pin (apFree_zero_one_zmod_four via the defeq-unfold + decide pattern, two_le_rothNumber_four, rothNumber_four_le_three — ≤ 30 LOC, drafted in state.md); optionally sharpen to r₃(4) = 2. The four landmark sorries (roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound) remain multi-PR research efforts. NOTE for all future sessions: bare `decide` on APFree goals will NOT work — unfold to the ∀-statement first (the global APFree instance is classical).",
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 1,
-      "approachesTried": 4
+      "approachesTried": 5
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (DISCOVERY): S5 ACT VERIFY-DISCOVERY shipped as doc-only PR. Attempted to Docker-verify the S4 four-fix surgical repair on remediated host (105 GiB free vs S4's 158 Mi); FAILED. S4's diagnosis was incomplete: fix #3 (maxHeartbeats) was based on wrong hypothesis (simp_all leaves unclosed subgoals on Mathlib v4.26.0, not heartbeat panic); fix #4 (rothNumber_achieved type annotation) is necessary but insufficient (DecidablePred APFree synthesis fails at 3 sites in rothNumber_achieved + same failure in rothNumber_pos + card_le_rothNumber). The actual repair is materially larger — needs file-scoped DecidablePred APFree instance, explicit Classical.decPred, or relocating the decide-cascade trigger. Cumulative state: sorry count 4 (unchanged), axiom count 0, theorem count 9 (unchanged — S5 ships zero Lean changes), LOC 286 (unchanged). S4 PR #22075 remains open as DRAFT — team decision whether to close superseded or rebase+extend. The two math findings from S4 (max_iterations_bound False for δ > 1, div_lt_iff renamed in v4.26.0) are bankable knowledge independent of the broader repair.",
+    "progressSummary": "PROGRESS (REPAIR): S6 ACT REPAIR restored RothTheoremQuantitative.lean to fresh-Docker-build green on Mathlib v4.26.0 and identified the true root cause S3–S5 missed: the noncomputable def rothNumber itself never compiled fresh — Finset.univ requires Fintype (ZMod N) which requires NeZero N, so with N free the def elaborated to sorry and poisoned every downstream theorem (explains S5's sorry.sup card mismatches, wandering DecidablePred errors, and the cache fluke, where a stale pre-bump .olean supplied a compiled rothNumber). Repair: rothNumber totalized via dite (junk 0 at N = 0) + equation lemma rothNumber_def; global noncomputable DecidablePred APFree instance (Classical.dec) for filter-term unification; [NeZero N] on not_apFree_univ and card_le_rothNumber; div_lt_iff₀ rename; math-false max_iterations_bound removed (iterations_before_contradiction retained with fixed proof); rothNumber_three via defeq-unfold + decide. Cumulative state: sorry count 4 (the landmark bounds, unchanged), axiom count 0, 18 theorems (grep ^theorem), ~300 LOC. S4 PR #22075 closed as superseded.",
     "builtItems": [
       "Added Szemeredi.Roth.Quantitative.rothNumber_div_tendsto_zero in proofs/Proofs/RothTheoremQuantitative.lean (qualitative r_3(N)/N → 0)",
       "Added private apFree_to_parent helper bridging Szemeredi.Roth.Quantitative.APFree to Szemeredi.Roth.APFree (identical bodies, reducible)",
       "Added import Proofs.RothTheorem to RothTheoremQuantitative.lean",
-      "S4 ACT REPAIR: Renamed div_lt_iff → div_lt_iff₀ at line 174 of proofs/Proofs/RothTheoremQuantitative.lean (Mathlib v4.26.0 API drift)",
-      "S4 ACT REPAIR: Removed max_iterations_bound (math-false for δ > 1, no callers) and iterations_before_contradiction (downstream of removed div_le_iff); replaced with explanatory comment block documenting the math finding and correct contrapositive bound k > 100(1-δ)/δ² for future density-increment work",
-      "S4 ACT REPAIR: Added set_option maxHeartbeats 400000 in before rothNumber_three (fin_cases × 9 ZMod 3 subcases was on edge of default budget on fresh build)",
-      "S4 ACT REPAIR: Type-annotated set S : Finset (Finset (ZMod N)) in rothNumber_achieved and rewrote post-obtain chain via hS_def ▸ to resolve filter predicate without metavariable leak"
+      "S6 ACT REPAIR: totalized rothNumber via dite (N = 0 → junk 0, else haveI NeZero) and added equation lemma rothNumber_def := dif_neg (NeZero.ne N); replaced every unfold rothNumber with rw [rothNumber_def]",
+      "S6 ACT REPAIR: added global noncomputable instance DecidablePred (@APFree N) := fun _ => Classical.dec _ so all Finset.filter sites elaborate against one instance term and unify syntactically",
+      "S6 ACT REPAIR: added [NeZero N] to not_apFree_univ (statement-level Finset.univ) and card_le_rothNumber (statement false at N = 0 under junk value)",
+      "S6 ACT REPAIR: renamed div_lt_iff → div_lt_iff₀ (Mathlib v4.26.0 API drift); removed math-false max_iterations_bound with explanatory NOTE; retained iterations_before_contradiction with repaired le_div_iff₀ + linarith proof",
+      "S6 ACT REPAIR: rothNumber_three proved via defeq show (unfolding APFree to its ∀-statement) + decide, replacing the v4.26.0-broken fin_cases <;> simp_all cascade",
+      "S6 ACT REPAIR: rothNumber_achieved rewritten without set (filter terms unify via the global instance); Finset.notMem_empty deprecation fix"
     ],
     "insights": [
       "The target statement is a density version of Roth's theorem over cyclic groups.",
@@ -60,7 +60,10 @@
       "The two APFree definitions (Szemeredi.Roth vs Szemeredi.Roth.Quantitative) have identical bodies and convert via a one-line lambda.",
       "RothTheoremQuantitativeAristotle.lean already provides the Behrend-side analytic glue (behrend_lower_eventually_large, behrend_exponent_vs_poly) — only the sphere construction itself remains for the Behrend lower bound.",
       "max_iterations_bound (δ + kδ²/100 > 1 → k > ⌊100/δ²⌋₊) is FALSE for δ > 1: counterexample δ=2, k=0 satisfies the hypothesis but k=0 < 25 = ⌊100/4⌋₊. The correct contrapositive of δ + kδ²/100 > 1 is k > 100(1-δ)/δ², strictly weaker than 100/δ² for all δ > 0. Any future density-increment scaffolding must use this weaker bound under hδ : δ ≤ 1.",
-      "Lake incremental cache can mask Mathlib API drift across version bumps: PR #21520 merged with green CI on Mathlib v4.26.0 because the cached build skipped re-verification of unrelated lines. A fresh Docker build is required to catch this class of regression. Pattern: include a periodic fresh-build audit in research workflow."
+      "Lake incremental cache can mask Mathlib API drift across version bumps: PR #21520 merged with green CI on Mathlib v4.26.0 because the cached build skipped re-verification of unrelated lines. A fresh Docker build is required to catch this class of regression. Pattern: include a periodic fresh-build audit in research workflow.",
+      "Lean error recovery turns a failed def into a sorry declaration and keeps checking: the def's own one-line synthesis error (Fintype (ZMod N)) is easy to mis-attribute to neighboring theorems while the downstream errors (sorry.sup card, sorry N) look like independent unification/instance failures. When triaging multi-error Lean files, fix the FIRST error (topologically, by declaration order) before trusting any later diagnostic.",
+      "Finset.univ : Finset (ZMod N) requires Fintype (ZMod N) whose only instance needs NeZero N — definitions quantified over all N : ℕ must either take [NeZero N] or branch on N = 0 (dite + junk value + NeZero-conditional equation lemma is the pattern that keeps downstream statements like Tendsto over all N elaborable).",
+      "decide cannot evaluate classical Decidable instances: after installing a global noncomputable DecidablePred APFree, decide on an APFree goal must first defeq-unfold (show ∀ a d : ZMod n, ...) so synthesis picks the computable Fintype instances instead."
     ],
     "mathlibGaps": [
       "No public bridge rothNumber N ≤ rothNumberNat N in either gallery file or Mathlib; would unlock transfer of Mathlibs unconditional Behrend.roth_lower_bound and rothNumberNat_isLittleO_id to the gallerys ZMod-based rothNumber."
@@ -71,7 +74,7 @@
       "Defer the four landmark sorries until per-bound formalization projects are funded — each is multi-thousand-line work."
     ],
     "markdown": "# Knowledge Base: roth-theorem-k3-oq-01-incomplete-01\n\n## Problem Understanding\n\nThis task targets the main k=3 formalization of Roth's theorem. The statement in the local notes is: for every density `delta > 0`, sufficiently large cyclic groups have the property that every subset of size at least `delta N` contains a three-term arithmetic progression.\n\n## Known Local Context\n\nThe parent gallery proof `roth-theorem-k3-oq-01` provides the foundation. The notes say the Lean file has 5 remaining sorries and that Mathlib's corners theorem chain, especially `Finset.addCornerFree`, is the key building block.\n\n## Current Focus\n\nThe current phase is OBSERVE. The next local action is to read `problem.md` thoroughly, then move to ORIENT by inspecting literature and the related parent proof.\n",
-    "lastUpdated": "2026-06-09T00:00:00.000Z"
+    "lastUpdated": "2026-06-12T00:00:00.000Z"
   },
   "tags": [
     "combinatorics",
@@ -80,6 +83,7 @@
     "fourier"
   ],
   "relatedProofs": [
+    "roth-theorem",
     "roth-theorem-k3",
     "roth-theorem-k3-oq-01"
   ],
@@ -95,8 +99,8 @@
     {
       "path": "Proofs/RothTheoremQuantitative.lean",
       "filename": "RothTheoremQuantitative.lean",
-      "lineCount": 286,
-      "theoremCount": 9,
+      "lineCount": 306,
+      "theoremCount": 19,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 4,
@@ -104,6 +108,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremQuantitative.lean"
     }
   ],
-  "lastUpdate": "2026-06-09T00:00:00.000Z",
-  "lastUpdated": "2026-06-09T00:00:00.000Z"
+  "lastUpdate": "2026-06-12T00:00:00.000Z",
+  "lastUpdated": "2026-06-12T00:00:00.000Z"
 }

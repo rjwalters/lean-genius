@@ -1016,6 +1016,58 @@ private lemma finsupport_nonempty {n : ℕ}
   rw [hempty, Finset.sum_empty] at hsum
   exact one_ne_zero hsum.symm
 
+/-- **S31 step (per-`j` thickening witness extraction, two-scale construction):**
+
+    Given a finset `T` of indices with `F j ⊆ Metric.thickening ε (F i_outer)`
+    for every `j ∈ T`, and a selection `ysel_in j ∈ F j`, extract a companion
+    selection `zsel j ∈ F i_outer` with
+    `dist (ysel_in j) (zsel j) < ε` for every `j ∈ T`.
+
+    This isolates the `Classical.choose`-over-finset step of the S30 PREP
+    two-scale construction (§3): each `ysel_in j ∈ F j ⊆ thickening ε (F i_outer)`
+    admits, by `Metric.mem_thickening_iff`, a point of `F i_outer` within `ε`
+    (in the ambient `EuclideanSpace` metric, via `Subtype.dist_eq`); the witness
+    function `zsel` selects one such point per `j`, using the identity as junk
+    value off `T` so that **no `Nonempty ↥S` hypothesis is required**.
+
+    With `zsel` in hand the eventual `approx_selection_exists_proof` body forms
+    the inner convex combination `z x = ∑ⱼ ρ j x • (zsel j) ∈ F i_outer` (via
+    `convex_combination_of_partition_in_S` applied to the convex image of
+    `F i_outer`) and bounds `dist (f x) (z x) < ε` term-by-term — the output-side
+    graph bound that S26→S27→S28 could not reach under the single-scale framing.
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom 2 above)
+    remains in the file unchanged. -/
+private lemma exists_per_j_thickening_witness {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n)))
+    (F : SetValuedMap (↥S) (↥S))
+    (i_outer : ↥S)
+    (ε : ℝ) (hε : 0 < ε)
+    (T : Finset ↥S)
+    (hT_in_U : ∀ j ∈ T, F j ⊆ Metric.thickening ε (F i_outer))
+    (ysel_in : ↥S → ↥S)
+    (hysel_in_F : ∀ j, ysel_in j ∈ F j) :
+    ∃ zsel : ↥S → ↥S,
+      (∀ j ∈ T, zsel j ∈ F i_outer) ∧
+      (∀ j ∈ T,
+        dist (Subtype.val (ysel_in j)) (Subtype.val (zsel j)) < ε) := by
+  classical
+  have hex : ∀ j ∈ T, ∃ z : ↥S, z ∈ F i_outer ∧
+      dist (Subtype.val (ysel_in j)) (Subtype.val z) < ε := by
+    intro j hj
+    have hmem : ysel_in j ∈ Metric.thickening ε (F i_outer) :=
+      hT_in_U j hj (hysel_in_F j)
+    rw [Metric.mem_thickening_iff] at hmem
+    obtain ⟨z, hz_mem, hz_dist⟩ := hmem
+    exact ⟨z, hz_mem, by rwa [Subtype.dist_eq] at hz_dist⟩
+  refine ⟨fun j => if hj : j ∈ T then (hex j hj).choose else j, ?_, ?_⟩
+  · intro j hj
+    simp only [dif_pos hj]
+    exact (hex j hj).choose_spec.1
+  · intro j hj
+    simp only [dif_pos hj]
+    exact (hex j hj).choose_spec.2
+
 /-- **S27 step (output-side graph-distance reduction, `dist (f x) (ysel i) < ε`
     half):**
 

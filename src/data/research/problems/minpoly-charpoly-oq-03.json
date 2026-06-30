@@ -1,8 +1,8 @@
 {
   "slug": "minpoly-charpoly-oq-03",
   "title": "Rational Canonical Form via Minimal-Polynomial Invariant Factors",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,15 +28,19 @@
     "goal": "Statement and proof of `rational_canonical_form_exists`: every square matrix M over a field F admits an invariant-factor chain (p_1, ..., p_k) with product charpoly(M), last entry minpoly(M), and similarity to the block diagonal of the companion matrices."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-02T19:00:00Z",
-    "iteration": 13,
-    "focus": "S13 ACT firstFactor-side mirror pass on InvariantFactorChain — discharges S6 PREP (PR #18425) option-4 firstFactor design. Adds Part 7 (+140 LOC) with InvariantFactorChain.firstFactor + 4 public mirror lemmas + 2 private helpers, sorry-free, no new imports. Yields the two-sided sandwich k · deg(firstFactor) ≤ deg(prodFactors) ≤ k · deg(lastFactor) on the abstract InvariantFactorChain F (the dual of S5's upper bound). Sorry count unchanged (1 on rational_canonical_form_exists). Build-pending per S2/S3/S4/S5 convention.",
-    "blockers": [],
-    "nextAction": "S14 options (one of, recommended order unchanged from S12): (1) OQ-03-OQ-02 ACT (Route B) — implement elementary-divisors → invariant-factors regrouping algorithm sketched in S11 PREP §6 (PR #18668), ~340 LOC in a new file Proofs/MinpolyCharpolyOQ03OQ02.lean; (2) c.lastFactor = M.minpoly follow-up — independent ~15-30 LOC ACT on MinpolyCharpolyOQ03.lean (S11 PREP §7); (3) Strong-form statement upgrade — extend rational_canonical_form_exists to assert c.lastFactor = M.minpoly, sorry-preserved (~5 lines); (4) prodFactors_natDegree_sandwich named corollary — pair the S5 upper bound and S13 lower bound into a single public theorem, but only if a caller actually needs it (S6 PREP §6 deferred this as anti-target until justified by a consumer).",
+    "phase": "BLOCKED",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 15,
+    "focus": "S15 STATUS-SYNC — flag BLOCKED on the verification blackout. The sole remaining sorry (rational_canonical_form_exists, line 232) is dischargeable only via the OQ-03-OQ-02 elementary-divisors→invariant-factors regrouping (~340 LOC new Lean), which is build-dependent. Both verification routes are down (Docker daemon HUNG — `docker info` times out; Aristotle backend 404), and CI does not build Lean, so a blind edit could silently break the currently-green file. Per the flag-BLOCKED-over-PREP-churn rule (14 iters: 1 OBSERVE + multiple PREP/statement-only ACTs around one build-gated sorry), this flags blocked rather than adding doc memo #N. Sibling minpoly-charpoly-oq-02 was flagged BLOCKED today for the identical reason (PR #23025). Also synced gallery meta.json lineCount 631→639 to the actual origin/main source.",
+    "blockers": [
+      "Docker daemon HUNG (`docker info` times out / killed exit 144) — Lean builds unverifiable.",
+      "Aristotle backend 404 (MCP connects but proof jobs fail).",
+      "CI does not build Lean — blind ACT on the 340-LOC OQ-03-OQ-02 regrouping could silently break the green file."
+    ],
+    "nextAction": "UNBLOCK when Docker is restored: implement OQ-03-OQ-02 ACT (Route B) — the elementary-divisors → invariant-factors regrouping algorithm sketched in S11 PREP §6 (PR #18668), ~340 LOC in a new file Proofs/MinpolyCharpolyOQ03OQ02.lean. On completion the xModule_has_invariantFactorChain sorry collapses to a ~5-line glue import and rational_canonical_form_exists can be discharged. Independent follow-ups available once a chain exists: c.lastFactor = M.minpoly (~15-30 LOC, S11 PREP §7 via annihilator_top_eq_ker_aeval). All require a working Docker build (~45 min cold per .lake self-symlink trap).",
     "attemptCounts": {
-      "total": 13,
-      "currentApproach": 13,
+      "total": 15,
+      "currentApproach": 15,
       "approachesTried": 1
     }
   },
@@ -104,10 +108,13 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "minpoly-charpoly",
     "cayley-hamilton",
+    "cayley-hamilton-cyclic-vector-all-fields",
     "cayley-hamilton-reduction-oq-02-oq-01",
-    "cayley-hamilton-cyclic-vector-all-fields"
+    "minpoly-charpoly",
+    "minpoly-charpoly-oq-02",
+    "minpoly-charpoly-oq-03",
+    "minpoly-charpoly-oq-03-oq-01"
   ],
   "references": {
     "papers": [
@@ -133,7 +140,7 @@
     {
       "path": "Proofs/MinpolyCharpoly.lean",
       "filename": "MinpolyCharpoly.lean",
-      "lineCount": 246,
+      "lineCount": 247,
       "theoremCount": 18,
       "axiomCount": 0,
       "defCount": 0,
@@ -142,15 +149,59 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpoly.lean"
     },
     {
-      "path": "Proofs/MinpolyCharpolyOQ03.lean",
-      "filename": "MinpolyCharpolyOQ03.lean",
-      "lineCount": 377,
-      "theoremCount": 10,
+      "path": "Proofs/MinpolyCharpolyOQ01.lean",
+      "filename": "MinpolyCharpolyOQ01.lean",
+      "lineCount": 525,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ01.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ02.lean",
+      "filename": "MinpolyCharpolyOQ02.lean",
+      "lineCount": 280,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ02.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ02Incomplete01.lean",
+      "filename": "MinpolyCharpolyOQ02Incomplete01.lean",
+      "lineCount": 104,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ02Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ03.lean",
+      "filename": "MinpolyCharpolyOQ03.lean",
+      "lineCount": 640,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 6,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ03.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ03OQ01.lean",
+      "filename": "MinpolyCharpolyOQ03OQ01.lean",
+      "lineCount": 259,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ03OQ01.lean"
     }
   ]
 }

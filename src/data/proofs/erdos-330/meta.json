@@ -47,22 +47,22 @@
       "id": "minimality-definitions",
       "title": "Minimality Definitions: IsMinimalBasis and unrepresentableWithout",
       "startLine": 42,
-      "endLine": 55,
-      "summary": "Two definitions: IsMinimalBasis (A is an asymptotic basis and removing any element of A destroys the basis property), unrepresentableWithout (the set of integers not representable from A \\ {n} with ≤h summands). The /- ## Known Results -/ section header at line 53.",
+      "endLine": 52,
+      "summary": "Two definitions: IsMinimalBasis (A is an asymptotic basis and removing any element of A destroys the basis property), unrepresentableWithout (the set of integers not representable from A \\ {n} with ≤h summands).",
       "mathContext": "$\\text{IsMinimalBasis}(A,h) :\\iff \\text{IsAsympBasis}(A,h) \\wedge \\forall n \\in A, \\neg\\text{IsAsympBasis}(A \\setminus \\{n\\}, h)$. By definition, removing any element leaves infinitely many integers unrepresentable. $\\text{unrepresentableWithout}(A,n,h) = \\{m : \\neg\\text{IsRepresentable}(A \\setminus \\{n\\}, h, m)\\}$."
     },
     {
       "id": "known-results",
       "title": "Known Results: Stöhr-Härtter and Minimality Hierarchy",
-      "startLine": 55,
-      "endLine": 60,
-      "summary": "Comments on the known hierarchy: (1) minimal bases exist for all h ≥ 2 (elementary via greedy construction), (2) minimal bases with positive upper density exist (Härtter 1956, Stöhr 1955 for h=2). The section header /- ## Known Results -/ at line 53 (also covered in minimality-definitions) and these results form the backdrop against which Problem #330 is posed.",
+      "startLine": 53,
+      "endLine": 59,
+      "summary": "Comments on the known hierarchy: (1) minimal bases exist for all h ≥ 2 (elementary via greedy construction), (2) minimal bases with positive upper density exist (Härtter 1956, Stöhr 1955 for h=2). These results form the backdrop against which Problem #330 is posed.",
       "mathContext": "Stöhr (1955): for $h = 2$, there exists a minimal additive basis $A$ with $\\bar{d}(A) > 0$. Härtter (1956): generalized to all $h \\geq 2$. These show that density and minimality are compatible. Problem #330 asks whether the stronger quantitative minimality (positive density of unrepresentable integers upon removal) is also achievable."
     },
     {
       "id": "open-question",
       "title": "The Formal Open Question: Problem #330",
-      "startLine": 61,
+      "startLine": 60,
       "endLine": 65,
       "summary": "Docstring statement of the open question (no `def`/`axiom`/`theorem` — the proposition `IsMinimalBasis A h ∧ HasPosDensity A ∧ ∀ n ∈ A, HasPosDensity (unrepresentableWithout A n h)` is described in prose only). The file ends at line 65 with the closing `-/` of this docstring; no Lean formalization of this proposition exists.",
       "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, h \\geq 2,\\; \\text{IsMinimalBasis}(A,h) \\wedge \\bar{d}(A) > 0 \\wedge \\forall n \\in A,\\, \\bar{d}(\\text{unrepresentableWithout}(A,n,h)) > 0$. Prose statement only; no Lean formalization of this proposition exists in this file. The gap from known (2) to this (3) is replacing '$\\text{infinitely many}$' with '$\\bar{d} > 0$' for unrepresentable integers after removal."

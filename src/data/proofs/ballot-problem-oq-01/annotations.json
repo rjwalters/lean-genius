@@ -122,7 +122,7 @@
     },
     "type": "concept",
     "title": "The Generalized Ballot Theorem Statement",
-    "content": "The main theorem statements: `generalized_ballot_count` asserts the counting formula via double counting (still has 1 sorry), while `generalized_ballot_prob` proves the probability $(a - kb)/(a + b) > 0$ when $a > kb$. Verified special cases include $(5, 2, 2) \\to 1/7$, $(10, 3, 3) \\to 1/13$, $(3, 1, 1) \\to 1/2$, and $(7, 2, 3) \\to 1/10$.",
+    "content": "The main theorem statements: `generalized_ballot_count` asserts the counting formula via double counting (fully proved), while `generalized_ballot_prob` proves the probability $(a - kb)/(a + b) > 0$ when $a > kb$. Verified special cases include $(5, 2, 2) \\to 1/7$, $(10, 3, 3) \\to 1/13$, $(3, 1, 1) \\to 1/2$, and $(7, 2, 3) \\to 1/10$.",
     "mathContext": "$$P(\\text{A leads throughout}) = \\frac{a - kb}{a + b} > 0 \\quad \\text{when } a > kb$$",
     "significance": "key",
     "relatedConcepts": [

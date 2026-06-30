@@ -167,7 +167,7 @@
       "startLine": 86,
       "endLine": 103
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "The Function f(n) and Alternative Definition",
     "content": "**erdos609_f n:** Defined via `Nat.find` as the minimum $m$ such that every $n$-coloring of $K_{2^n+1}$ has a monochromatic odd cycle of length $\\leq m$. The existence of such $m$ (`f_exists`) is the content of the forcing theorem (sorry'd). **IsErdos609_f n m** gives an alternative characterization: $m$ is the threshold iff it forces and is minimal.",
     "mathContext": "The `Nat.find` construction yields $f(n) = \\min\\{m \\in \\mathbb{N} : \\forall c,\\; \\exists \\text{mono odd } C_\\ell,\\; \\ell \\leq m\\}$. The alternative `IsErdos609_f` adds the minimality clause: $f(n) = m$ iff $m$ forces and $m-1$ does not. This is a standard well-ordering argument on $\\mathbb{N}$.",

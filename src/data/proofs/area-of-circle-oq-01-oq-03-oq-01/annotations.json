@@ -130,12 +130,12 @@
     "id": "ann-ift-axioms",
     "proofId": "area-of-circle-oq-01-oq-03-oq-01",
     "range": {
-      "startLine": 319,
-      "endLine": 339
+      "startLine": 333,
+      "endLine": 401
     },
     "type": "concept",
-    "title": "IFT Axioms: C¹ Smoothness and the Derivative Formula for σ",
-    "content": "Two axioms capture the inverse function theorem for the global bijection s: (1) `arcLengthInv_contDiff` states σ = s⁻¹ is C¹ — this requires the IFT applied globally to ℝ → ℝ, not just locally; (2) `arcLengthInv_hasDerivAt` gives σ'(y) = 1/speed(σ(y)), the classical IFT derivative reciprocal formula. Both follow from speed(t) > 0 everywhere. Mathlib has local IFT (`ContDiff.hasStrictFDerivAt_of_hasStrictFDerivAt`) but globalizing it requires additional infrastructure that was not yet available at the time of formalization.",
+    "title": "IFT Theorems: C¹ Smoothness and the Derivative Formula for σ",
+    "content": "Two theorems supply the inverse function theorem for the global bijection s: (1) `arcLengthInv_hasDerivAt` (line 333) gives σ'(y) = 1/speed(σ(y)), the classical IFT derivative reciprocal formula, proved via `HasStrictDerivAt` of `arcLength` together with the global left-inverse property; (2) `arcLengthInv_contDiff` (line 366) states σ = s⁻¹ is C¹. Both follow from speed(t) > 0 everywhere. These were once stated as axioms (Mathlib supplied only the local IFT at the time), but are now fully proved in-file — the entry is axiom-free.",
     "mathContext": "Inverse function theorem: if $s' = \\text{speed} > 0$ everywhere, then $\\sigma = s^{-1}$ is $C^1$ with\n$$\\sigma'(y) = \\frac{1}{s'(\\sigma(y))} = \\frac{1}{\\text{speed}(\\sigma(y))}$$\nThis is the key formula used in the main theorem's speed computation.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -143,7 +143,7 @@
       "global diffeomorphism",
       "ContDiff",
       "HasDerivAt",
-      "open question: remove axiom"
+      "axiom eliminated: now proved"
     ],
     "prerequisites": [
       "arcLength_bijective",
@@ -155,12 +155,12 @@
     "id": "ann-changevar-axioms",
     "proofId": "area-of-circle-oq-01-oq-03-oq-01",
     "range": {
-      "startLine": 344,
-      "endLine": 377
+      "startLine": 409,
+      "endLine": 586
     },
     "type": "concept",
-    "title": "Change-of-Variables Axioms: Circumference and Area Preservation",
-    "content": "Two axioms state that the reparametrization τ = σ∘(c·) preserves both circumference and area. For circumference: the chain rule gives |γ'(τ(t))|·|τ'(t)| = speed(τ(t))·c/speed(τ(t)) = c, so the circumference of the reparametrized curve is ∫_0^{2π} c dt = 2πc = L. For area: τ is an orientation-preserving diffeomorphism [0,2π]→[0,2π], so it preserves the signed area integral ∫(x dy - y dx). Both axioms could in principle be discharged using `MeasureTheory.integral_image_eq_integral_abs_deriv_smul`, but require careful composition setup.",
+    "title": "Change-of-Variables Theorems: Circumference and Area Preservation",
+    "content": "Two theorems establish that the reparametrization τ = σ∘(c·) preserves both circumference and area: `circumference_reparam_preserved` (line 409) and `area_reparam_preserved` (line 462). For circumference: the chain rule gives |γ'(τ(t))|·|τ'(t)| = speed(τ(t))·c/speed(τ(t)) = c, so the circumference of the reparametrized curve is ∫_0^{2π} c dt = 2πc = L. For area: τ is an orientation-preserving diffeomorphism [0,2π]→[0,2π], so it preserves the signed area integral ∫(x dy - y dx). These were once stated as axioms, but are now fully discharged in-file — the entry is axiom-free.",
     "mathContext": "With $\\tau(t) = \\sigma(ct)$, $\\tau'(t) = c/\\text{speed}(\\tau(t))$:\n$$|\\gamma'(\\tau(t))| \\cdot |\\tau'(t)| = \\text{speed}(\\tau(t)) \\cdot \\frac{c}{\\text{speed}(\\tau(t))} = c$$\n$$\\int_0^{2\\pi} |(\\gamma\\circ\\tau)'(t)|\\,dt = 2\\pi c = L$$\n\nArea: $\\tau$ is orientation-preserving, so $\\int_0^{2\\pi} (x\\circ\\tau)\\,d(y\\circ\\tau) = \\int_0^{2\\pi} x\\,dy$.",
     "significance": "supporting",
     "relatedConcepts": [

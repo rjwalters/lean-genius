@@ -90,67 +90,83 @@
   "sections": [
     {
       "id": "triangle-config",
-      "title": "Triangle Configuration in R^2",
+      "title": "Part 1: Triangle Configuration in ℝ²",
+      "summary": "Sets up the coordinate model: Point as ℝ², the Triangle structure with non-degeneracy, and the basic vertex/side accessors and side-length definitions used throughout.",
       "startLine": 1,
-      "endLine": 94,
-      "summary": "Defines Point = R x R, the Triangle structure with non-degeneracy condition, side lengths a/b/c via sqrt, semiperimeter, and area via the shoelace formula.",
-      "mathContext": "Triangle $ABC$ in $\\mathbb{R}^2$ with non-degeneracy: $(B_x - A_x)(C_y - A_y) - (C_x - A_x)(B_y - A_y) \\neq 0$. Side lengths via Euclidean distance, area via signed area formula."
+      "endLine": 95,
+      "mathContext": "Sets up the coordinate model: Point as ℝ², the Triangle structure with non-degeneracy, and the basic vertex/side accessors and side-length definitions used throughout."
     },
     {
       "id": "special-points",
-      "title": "Special Points of a Triangle",
-      "startLine": 95,
-      "endLine": 186,
-      "summary": "Defines midpoints of sides, circumcenter O via perpendicular bisector formula, circumradius R, orthocenter H = A + B + C - 2O (Euler line relation), centroid G = (A+B+C)/3, and the dist2 distance function.",
-      "mathContext": "Circumcenter $O$: intersection of perpendicular bisectors. Orthocenter $H = A + B + C - 2O$. Centroid $G = (A+B+C)/3$. Euler line: $O$, $G$, $H$ collinear with $G$ dividing $OH$ in ratio $1:2$."
+      "title": "Part 2: Special Points of a Triangle",
+      "summary": "Defines the classical triangle centers and auxiliary points (midpoints via pointMidpoint, centroid, orthocenter, circumcenter, and related constructions) together with the squared-distance helper dist2.",
+      "startLine": 96,
+      "endLine": 139,
+      "mathContext": "Defines the classical triangle centers and auxiliary points (midpoints via pointMidpoint, centroid, orthocenter, circumcenter, and related constructions) together with the squared-distance helper dist2."
     },
     {
       "id": "nine-point-circle",
-      "title": "The Nine-Point Circle",
-      "startLine": 139,
-      "endLine": 186,
-      "summary": "Defines nine-point center N = midpoint(O, H), nine-point radius R/2, Euler midpoints (midpoints of AH, BH, CH), altitude feet via orthogonal projection, and squared distance function.",
-      "mathContext": "Nine-point center $N = (O + H)/2$, nine-point radius $R_9 = R/2$. The 9 special points: side midpoints $M_a, M_b, M_c$; Euler midpoints mid$(A,H)$, mid$(B,H)$, mid$(C,H)$; altitude feet $H_a, H_b, H_c$."
+      "title": "Part 3: The Nine-Point Circle",
+      "summary": "Defines the nine-point center and nine-point radius (and squared-distance variants dist2_sq) that specify the nine-point circle whose tangency to the incircle is Feuerbach's theorem.",
+      "startLine": 140,
+      "endLine": 187,
+      "mathContext": "Defines the nine-point center and nine-point radius (and squared-distance variants dist2_sq) that specify the nine-point circle whose tangency to the incircle is Feuerbach's theorem."
     },
     {
       "id": "incircle-excircles",
-      "title": "Incircle and Excircles",
-      "startLine": 189,
-      "endLine": 253,
-      "summary": "Defines incenter I as weighted average of vertices by opposite side lengths, inradius r = area/semiperimeter, three excenters and exradii. Defines internal and external circle tangency.",
-      "mathContext": "Incenter $I = (aA + bB + cC)/(a+b+c)$, inradius $r = \\Delta/s$. Excircle opposite $A$: center $I_A = (-aA + bB + cC)/(-a+b+c)$, exradius $r_A = \\Delta/(s-a)$."
+      "title": "Part 4: Incircle and Excircles",
+      "summary": "Defines the incircle and the three excircles (centers and radii) of the triangle, the objects whose tangency with the nine-point circle Feuerbach's theorem asserts.",
+      "startLine": 188,
+      "endLine": 240,
+      "mathContext": "Defines the incircle and the three excircles (centers and radii) of the triangle, the objects whose tangency with the nine-point circle Feuerbach's theorem asserts."
     },
     {
-      "id": "euler-line-circumcenter",
-      "title": "Euler Line and Circumcenter Properties",
-      "startLine": 254,
-      "endLine": 372,
-      "summary": "Proves the Euler line relation G = (2O+H)/3, nine-point center on the Euler line, R/2 radius, helper lemmas (eq_of_sq_eq, dist2_nonneg, ninePointRadius_nonneg), circumcenter denominator nonzero, and circumcenter equidistance from vertices via perpendicular bisector conditions.",
-      "mathContext": "Euler line: $G = (2O + H)/3$. Circumcenter equidistance: $|OB|^2 = |OA|^2$ and $|OC|^2 = |OA|^2$, proved via the linear perpendicular bisector condition."
+      "id": "tangency-definitions",
+      "title": "Part 5: Tangency Definitions",
+      "summary": "Defines circlesInternallyTangent and circlesExternallyTangent, the predicates expressing the tangency conclusions of Feuerbach's theorem.",
+      "startLine": 241,
+      "endLine": 254,
+      "mathContext": "Defines circlesInternallyTangent and circlesExternallyTangent, the predicates expressing the tangency conclusions of Feuerbach's theorem."
+    },
+    {
+      "id": "key-relations",
+      "title": "Part 6: Key Relations for Feuerbach's Theorem",
+      "summary": "Establishes the Euler-line relations: euler_line_relation and ninePointCenter_on_euler_line place the nine-point center on the Euler line, a key relation underpinning the tangency proof.",
+      "startLine": 255,
+      "endLine": 272,
+      "mathContext": "Establishes the Euler-line relations: euler_line_relation and ninePointCenter_on_euler_line place the nine-point center on the Euler line, a key relation underpinning the tangency proof."
+    },
+    {
+      "id": "nine-point-properties",
+      "title": "Part 8: Nine-Point Circle Properties",
+      "summary": "Core properties: ninePointRadius_eq_half_circumradius, nonnegativity lemmas (dist2_nonneg, ninePointRadius_nonneg), circumcenter denominator/perpendicular-bisector and equidistance lemmas, and the central ninepoint_membership criterion for a point lying on the nine-point circle.",
+      "startLine": 273,
+      "endLine": 375,
+      "mathContext": "Core properties: ninePointRadius_eq_half_circumradius, nonnegativity lemmas (dist2_nonneg, ninePointRadius_nonneg), circumcenter denominator/perpendicular-bisector and equidistance lemmas, and the central ninepoint_membership criterion for a point lying on the nine-point circle."
     },
     {
       "id": "midpoint-membership",
-      "title": "Side Midpoints and Euler Midpoints on the Nine-Point Circle",
-      "startLine": 373,
-      "endLine": 441,
-      "summary": "Proves all 6 midpoints lie on the nine-point circle: 3 side midpoints (M_a - N = (O-A)/2 etc.) and 3 Euler midpoints (mid(A,H) - N = (A-O)/2 etc.). Uses the ninepoint_membership lemma and circumcenter equidistance.",
-      "mathContext": "For each midpoint $P$: $|P - N|^2 = |O - V|^2/4 = R^2/4$, so $\\text{dist}(N, P) = R/2$. Side midpoints use $M_a - N = (O - A)/2$; Euler midpoints use mid$(A,H) - N = (A - O)/2$."
+      "title": "Part 8: Side and Euler Midpoints on the Nine-Point Circle",
+      "summary": "Proves six of the nine points lie on the nine-point circle: the three side midpoints (midpoint_a/b/c_on_ninePointCircle) and the three Euler midpoints of the segments from vertices to the orthocenter (midpoint_AH/BH/CH_on_ninePointCircle).",
+      "startLine": 376,
+      "endLine": 442,
+      "mathContext": "Proves six of the nine points lie on the nine-point circle: the three side midpoints (midpoint_a/b/c_on_ninePointCircle) and the three Euler midpoints of the segments from vertices to the orthocenter (midpoint_AH/BH/CH_on_ninePointCircle)."
     },
     {
       "id": "altitude-feet",
-      "title": "Altitude Feet on the Nine-Point Circle",
-      "startLine": 442,
-      "endLine": 576,
-      "summary": "Proves all 3 altitude feet lie on the nine-point circle. These are the most computationally intensive proofs (maxHeartbeats 25,600,000): after clearing denominators (side length squared and circumcenter denominator), the equality reduces to a polynomial identity verified by ring.",
-      "mathContext": "Altitude foot $H_a$ = projection of $A$ onto $BC$. After clearing $|BC|^2$ and the circumcenter denominator $d$: $|H_a - N|^2 = R^2/4$ reduces to a polynomial identity in the vertex coordinates."
+      "title": "Part 8b: Altitude Feet on the Nine-Point Circle",
+      "summary": "Proves the remaining three of the nine points lie on the circle: the feet of the altitudes (foot_a/b/c_on_ninePointCircle), with side-square nonvanishing lemmas, culminating in ninePoints_all_on_circle.",
+      "startLine": 443,
+      "endLine": 577,
+      "mathContext": "Proves the remaining three of the nine points lie on the circle: the feet of the altitudes (foot_a/b/c_on_ninePointCircle), with side-square nonvanishing lemmas, culminating in ninePoints_all_on_circle."
     },
     {
       "id": "numerical-verification",
-      "title": "Numerical Verification: 3-4-5 Right Triangle",
-      "startLine": 577,
+      "title": "Part 12: Numerical Verification — 3-4-5 Right Triangle",
+      "summary": "Instantiates the 3-4-5 right triangle (triangle_345) and computes its area, semiperimeter, inradius, circumcenter/radius, nine-point radius/center, orthocenter, and incenter, verifying triangle_345_feuerbach_incircle: the incircle is tangent to the nine-point circle.",
+      "startLine": 578,
       "endLine": 687,
-      "summary": "Constructs the 3-4-5 right triangle and verifies: area = 6, semiperimeter = 6, inradius = 1, circumcenter = (3/2, 2), circumradius = 5/2, orthocenter = (0,0), nine-point center = (3/4, 1), nine-point radius = 5/4, incenter = (1,1). Verifies Feuerbach incircle tangency: |NI| = |R/2 - r| = 1/4.",
-      "mathContext": "3-4-5 triangle: $R = 5/2$, $r = 1$, $R/2 - r = 1/4$. $|NI| = |(3/4, 1) - (1, 1)| = 1/4 = |R/2 - r|$, confirming internal tangency of nine-point circle and incircle."
+      "mathContext": "Instantiates the 3-4-5 right triangle (triangle_345) and computes its area, semiperimeter, inradius, circumcenter/radius, nine-point radius/center, orthocenter, and incenter, verifying triangle_345_feuerbach_incircle: the incircle is tangent to the nine-point circle."
     }
   ],
   "crossReferences": [

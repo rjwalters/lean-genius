@@ -213,6 +213,11 @@ structure LatticePolygon extends LatticePolytope 2 where
   area : ℚ
   /-- Area is positive -/
   area_pos : 0 < area
+  /-- For a 2D lattice polytope the normalized volume coincides with the
+      polygon's area. This is a definitional bridge between the inherited
+      `volume` field (which pins the Ehrhart leading coefficient via
+      `ehrhart_leading_coeff_volume`) and the polygon's `area`. -/
+  volume_eq_area : volume = area
   /-- Number of boundary lattice points -/
   boundaryPoints : ℕ
   /-- Number of interior lattice points -/

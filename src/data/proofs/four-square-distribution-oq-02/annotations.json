@@ -1,0 +1,74 @@
+[
+  {
+    "id": "fsq-oq02-header",
+    "proofId": "four-square-distribution-oq-02",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "Bounding four-square representation types by orbit counting",
+    "content": "The header frames the question: Jacobi's theorem gives the exact count r₄(n) = 8·∑_{d|n, 4∤d} d of ordered, signed four-square representations, and the natural symmetry group acting on solution vectors is the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄ of order 2⁴·4! = 384 (sign flips then permutations). A 'representation type' is a B₄-orbit, so the number of types t(n) is squeezed r₄(n)/384 ≤ t(n) ≤ r₄(n). The honest-scope note is important: the file proves a general orbit-counting double bound from Mathlib's MulAction API and specializes it to an arbitrary finite group of order 384 — it does not rebuild B₄'s semidirect-product action on ℤ⁴ or re-derive Jacobi's r₄(n). Because the bound depends only on |G|, taking the action abstractly loses nothing while keeping the file genuinely 0-axiom.",
+    "mathContext": "$\\frac{r_4(n)}{384} \\le t(n) \\le r_4(n),\\quad |B_4| = 2^4\\cdot 4! = 384$",
+    "significance": "context",
+    "relatedConcepts": ["Jacobi four-square theorem", "hyperoctahedral group", "orbit counting", "representation types", "Burnside's lemma"],
+    "prerequisites": ["group actions and orbits", "Jacobi's r₄(n)"]
+  },
+  {
+    "id": "fsq-oq02-orbit-le",
+    "proofId": "four-square-distribution-oq-02",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "theorem",
+    "title": "card_orbit_le: each orbit has at most |G| elements",
+    "content": "`card_orbit_le` bounds a single orbit: the map g ↦ g • a surjects G onto orbit G a (every orbit element is g • a for some g by mem_orbit), so Nat.card_le_card_of_surjective gives |orbit| ≤ |G|. This is the orbit side of orbit–stabilizer used in its inequality form — no need for the exact |orbit| = |G|/|stab| identity, only the upper bound.",
+    "mathContext": "$|\\,\\mathrm{orbit}_G(a)\\,| \\le |G|\\quad(\\text{image of } g \\mapsto g \\cdot a)$",
+    "significance": "key",
+    "relatedConcepts": ["orbit–stabilizer", "Nat.card_le_card_of_surjective", "mem_orbit"],
+    "prerequisites": ["group orbits", "surjections and cardinality"]
+  },
+  {
+    "id": "fsq-oq02-upper",
+    "proofId": "four-square-distribution-oq-02",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "theorem",
+    "title": "numOrbits_le_card: #orbits ≤ |X|",
+    "content": "`numOrbits_le_card` gives the easy upper bound: the orbit quotient map X → X/∼ = orbitRel.Quotient G X is surjective (Quotient.mk_surjective), so the number of orbits cannot exceed |X|. For the four-square problem this is t(n) ≤ r₄(n): there are never more types than ordered representations.",
+    "mathContext": "$\\#\\text{orbits} = |X/{\\sim}| \\le |X|$",
+    "significance": "key",
+    "relatedConcepts": ["orbit quotient", "Quotient.mk_surjective"],
+    "prerequisites": ["quotient by the orbit relation"]
+  },
+  {
+    "id": "fsq-oq02-lower",
+    "proofId": "four-square-distribution-oq-02",
+    "range": { "startLine": 74, "endLine": 103 },
+    "type": "theorem",
+    "title": "card_le_card_group_mul_numOrbits: |X| ≤ |G|·#orbits",
+    "content": "The substantive lower bound. `card_le_card_group_mul_numOrbits` decomposes X as the disjoint union of its orbits via MulAction.selfEquivSigmaOrbits, so Nat.card X = ∑_ω |orbit(ω.out)| (using Nat.card_sigma). Bounding each summand by |G| with card_orbit_le and summing the constant gives |X| ≤ |G|·#orbits. `numOrbits_bounds` packages this with the upper bound, and `numOrbits_pos` records that a nonempty X has at least one orbit. Together: |X|/|G| ≤ #orbits ≤ |X|.",
+    "mathContext": "$|X| = \\sum_{\\omega} |\\mathrm{orbit}(\\omega)| \\le \\sum_{\\omega} |G| = |G|\\cdot\\#\\text{orbits}$",
+    "significance": "key",
+    "relatedConcepts": ["MulAction.selfEquivSigmaOrbits", "orbit decomposition", "Nat.card_sigma", "Finset.sum_le_sum"],
+    "prerequisites": ["card_orbit_le", "disjoint orbit decomposition"]
+  },
+  {
+    "id": "fsq-oq02-card384",
+    "proofId": "four-square-distribution-oq-02",
+    "range": { "startLine": 109, "endLine": 119 },
+    "type": "definition",
+    "title": "card_hyperoctahedral_four: |B₄| = 384",
+    "content": "`card_hyperoctahedral_four` pins the constant: the underlying set of B₄ = (ℤ/2)⁴ ⋊ S₄ is S₄ × (Fin 4 → ZMod 2), so its cardinality is 4!·2⁴ = 24·16 = 384. The proof reduces via Fintype.card_perm (|S₄| = 4!), Fintype.card_fun and ZMod.card (|(Fin 4 → ZMod 2)| = 2⁴), then closes by kernel `decide` (not native_decide — so no Lean.ofReduceBool, the file stays 0-axiom). Only the group order matters for the bound, which is why the abstract order-384 hypothesis suffices.",
+    "mathContext": "$|B_4| = |S_4| \\cdot |(\\mathbb{Z}/2)^4| = 4!\\cdot 2^4 = 24\\cdot 16 = 384$",
+    "significance": "supporting",
+    "relatedConcepts": ["Fintype.card_perm", "ZMod.card", "kernel decide", "signed permutations"],
+    "prerequisites": ["cardinality of product and function types"]
+  },
+  {
+    "id": "fsq-oq02-corollary",
+    "proofId": "four-square-distribution-oq-02",
+    "range": { "startLine": 125, "endLine": 147 },
+    "type": "theorem",
+    "title": "fourSquare_numTypes_bounds: the squeeze on t(n)",
+    "content": "The corollary specializes the general bound to a finite group G of order 384 acting on the solution set S (with Nat.card S = r₄(n)): r₄(n) ≤ 384·t(n) and t(n) ≤ r₄(n), where t(n) = #(B₄-orbits). It substitutes hG : |G| = 384 into card_le_card_group_mul_numOrbits and reuses numOrbits_le_card. `fourSquare_numTypes_ge` rephrases the lower half in divided form r₄(n)/384 ≤ t(n) via Nat.div_le_of_le_mul. The lower bound is sharp when the generic orbit (vectors with four distinct nonzero coordinates, trivial stabilizer, size 384) dominates.",
+    "mathContext": "$r_4(n) \\le 384\\,t(n) \\ \\wedge\\ t(n) \\le r_4(n) \\iff \\tfrac{r_4(n)}{384} \\le t(n) \\le r_4(n)$",
+    "significance": "key",
+    "relatedConcepts": ["specialization", "Nat.div_le_of_le_mul", "sharpness of orbit bounds"],
+    "prerequisites": ["card_le_card_group_mul_numOrbits", "card_hyperoctahedral_four"]
+  }
+]

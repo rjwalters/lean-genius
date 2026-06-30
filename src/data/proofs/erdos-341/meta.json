@@ -104,41 +104,65 @@
       "id": "preamble",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 27,
       "summary": "File header documenting Dickson's sum-free extension problem, the eventual periodicity conjecture, and its OPEN status. Imports Mathlib for Finset, natural numbers, and tactics.",
       "mathContext": "Dickson's construction: start with $A_0 \\subset \\mathbb{N}^+$ finite, extend by $a_{n+1} = \\min\\{m \\notin \\text{pairwiseSums}(A_n)\\}$. Conjecture: $a_{n+1} - a_n$ is eventually periodic."
     },
     {
-      "id": "definitions",
+      "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 27,
-      "endLine": 54,
-      "summary": "`pairwiseSums`, `IsSumRepresentable`, `dicksonSeq` (greedy extension via `Nat.find`), `dicksonDiff`, and `IsEventuallyPeriodic`.",
-      "mathContext": "`pairwiseSums(S) = \\{a + b : a, b \\in S\\}$; `dicksonSeq A0 n` defined recursively via `Nat.find` (smallest $m$ not in pairwiseSums); `IsEventuallyPeriodic f p N` $\\iff$ $\\forall n \\geq N, f(n+p) = f(n)$."
+      "startLine": 28,
+      "endLine": 38,
+      "summary": "Defines `pairwiseSums` (the set $\\{a+b : a,b \\in S\\}$) and `IsSumRepresentable`.",
+      "mathContext": "`pairwiseSums(S) = \\{a + b : a, b \\in S\\}$; `IsSumRepresentable S n` $\\iff n \\in \\text{pairwiseSums}(S)$."
     },
     {
-      "id": "conjecture",
+      "id": "key-lemma",
+      "title": "Key Lemma: Existence of Valid Extensions",
+      "startLine": 39,
+      "endLine": 53,
+      "summary": "`dickson_next_exists` (private lemma): for any finite set there is some bound beyond which a non-sum-representable integer exists, ensuring the greedy step is well-defined.",
+      "mathContext": "$\\forall S$ finite, $\\exists m$ not in $\\text{pairwiseSums}(S)$ — the greedy choice always exists."
+    },
+    {
+      "id": "dickson-sequence",
+      "title": "Dickson Sequence Definition",
+      "startLine": 54,
+      "endLine": 81,
+      "summary": "Defines `dicksonStep`, `dicksonSeq` (greedy extension picking the smallest non-sum), `dicksonDiff` (consecutive differences), and `IsEventuallyPeriodic`.",
+      "mathContext": "`dicksonSeq A0 n` defined recursively (smallest $m$ not in pairwiseSums); `IsEventuallyPeriodic f p N` $\\iff \\forall n \\geq N, f(n+p) = f(n)$."
+    },
+    {
+      "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 55,
-      "endLine": 62,
-      "summary": "Erdos-Dickson conjecture: for every finite nonempty starting set, the difference sequence is eventually periodic.",
+      "startLine": 82,
+      "endLine": 89,
+      "summary": "Defines `erdos_341_conjecture` as a `def` (a Prop, not an axiom): for every finite nonempty starting set, the difference sequence is eventually periodic.",
       "mathContext": "$\\forall A_0 \\subseteq \\mathbb{N}^+$ finite nonempty, $\\exists p > 0, N: \\forall n \\geq N, (a_{n+1} - a_n) = (a_{n+p+1} - a_{n+p})$."
     },
     {
-      "id": "structural",
-      "title": "Structural Properties",
-      "startLine": 63,
-      "endLine": 88,
-      "summary": "Strict monotonicity, positive differences, sum avoidance at each step, and minimality of the greedy choice.",
-      "mathContext": "Axiomatized: $a_n < a_{n+1}$ (strict), $a_{n+1} - a_n > 0$, $a_{n+1} \\notin \\text{pairwiseSums}(\\{a_0, \\ldots, a_n\\})$, $a_{n+1} = \\min\\{m : m \\notin \\text{pairwiseSums}\\}$."
+      "id": "structural-properties",
+      "title": "Structural Properties (proved from definition)",
+      "startLine": 90,
+      "endLine": 142,
+      "summary": "Fully proved: `dickson_strictly_increasing` (strict monotonicity), `dickson_diff_pos` (positive differences), `dickson_avoids_sums` (sum avoidance at each step), and `dickson_minimal` (minimality of the greedy choice).",
+      "mathContext": "Proved (no axioms): $a_n < a_{n+1}$, $a_{n+1} - a_n > 0$, $a_{n+1} \\notin \\text{pairwiseSums}(\\{a_0, \\ldots, a_n\\})$, $a_{n+1} = \\min\\{m : m \\notin \\text{pairwiseSums}\\}$."
     },
     {
-      "id": "examples",
-      "title": "Examples and Growth",
-      "startLine": 89,
-      "endLine": 116,
-      "summary": "Singleton example, slow periodicity for squares, period dependence on initial set, and at-least-linear growth.",
-      "mathContext": "Axiomatized: $A_0 = \\{1\\}$ gives Mian–Chowla (Problem #340); $A_0 = \\{1,4,9,16,25\\}$ takes $>1000$ terms for periodicity; $a_n \\geq cn$ (linear growth lower bound)."
+      "id": "derived-properties",
+      "title": "Derived Properties",
+      "startLine": 143,
+      "endLine": 159,
+      "summary": "`dickson_linear_growth`: the sequence grows at least linearly, $a_n \\geq c n$ — proved from the structural properties.",
+      "mathContext": "Proved: $a_n \\geq c n$ (linear growth lower bound) from strict monotonicity over the naturals."
+    },
+    {
+      "id": "singleton-instance",
+      "title": "Singleton Instance: A₀ = {1} Produces Odd Numbers",
+      "startLine": 160,
+      "endLine": 252,
+      "summary": "Fully proves the conjecture for $A_0 = \\{1\\}$: `odd_not_in_pairwiseSums_odd` and `dicksonStep_singleton_props` establish that the sequence is exactly the odd numbers, so `dicksonSeq_singleton`, `dicksonDiff_singleton` (constant difference 2), and `erdos_341_singleton` confirm eventual periodicity for this case.",
+      "mathContext": "Proved: starting from $\\{1\\}$, $a_n = 2n+1$ (odd numbers), difference $\\equiv 2$ — eventual periodicity holds with period 1."
     }
   ],
   "conclusion": {

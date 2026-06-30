@@ -265,3 +265,27 @@ No risk of API drift: all three lemmas have been stable in Mathlib
 for the duration of this slug's work, and analogous patterns
 (`Set.ncard_diff_singleton_of_mem`, `Nat.card_coe_set_eq`) are
 already exercised in this same file's S18 proof.
+
+## Session 2026-06-14 (Session 15) — gallery prose drift fix (sorry already closed)
+
+**Mode**: BLOCKED for new proof (Docker down) → gallery metadata correction.
+
+**Finding**: The Lean file `AbelRuffiniGaloisExtensionsOQ07.lean` has grown to 1973 lines
+and is now **sorry-free** (`meta.sorries=0` is correct; 0 real `sorry` in source). The S10
+element-counting lemma `sylow_two_unique_when_n3_four` — described throughout the gallery
+meta (Iteration 14 era) as an open "single sorry deferred to S10" — was actually **closed in
+S21–S24** (file comment at L1381: "now sorry-free"; L1382: "axiom-free post-S24"). The
+`burnside_pq` dispatch was also extended (S25/S31/S32) to peel off `a=b=1`, `(2,1)`, `(1,2)`,
+`(a,1) with q<p`, `(1,b) with p<q` all axiom-free, invoking the umbrella axiom
+`burnside_pq_nontrivial` only for the residue `a+b ≥ 4`.
+
+**What I did**: Corrected 7 stale prose locations in `src/data/proofs/abel-ruffini-galois-extensions-oq-07/meta.json`
+(originalContributions ×4, assumptions, keyInsights, crossReferences) that described the S10
+sorry as still open — an **underclaim** of the entry's completeness. No counts changed
+(sorries=0, axiomCount=1, theoremCount=40, lineCount=1973 all already correct). No Lean changed.
+Verified the dispatch in source before writing the "axiom needed only for a+b≥4 residue" claim
+(initial draft overclaimed "only 2≤a∧2≤b" — corrected after reading burnside_pq L1691).
+
+**Still open (Docker-gated)**: the umbrella axiom `burnside_pq_nontrivial` (residue a+b≥4) —
+needs character theory + algebraic integers (Burnside 1904) or transfer + focal subgroup
+(Goldschmidt-Matsuyama), ~400–1000 LOC, neither in Mathlib. Unchanged.

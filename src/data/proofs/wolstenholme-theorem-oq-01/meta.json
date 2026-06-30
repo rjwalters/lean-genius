@@ -94,74 +94,82 @@
   },
   "sections": [
     {
+      "id": "header-binomial",
+      "title": "Module Header and Efficient Binomial Computation",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring stating the conjecture and the O(k) binomial helper choose_fast, proved equal to Nat.choose.",
+      "mathContext": "choose_fast n k computes C(n,k) via the multiplicative recurrence C(n,k+1) = C(n,k)·(n-k)/(k+1), enabling native_decide on large values where Mathlib's Pascal-triangle Nat.choose is infeasible. choose_fast_eq proves choose_fast = Nat.choose by induction."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 30,
-      "endLine": 37,
+      "startLine": 50,
+      "endLine": 59,
       "summary": "Central binomial coefficient cb(p) and the IsWP predicate.",
       "mathContext": "cb(p) = C(2p-1, p-1). IsWP(p) := Nat.Prime p ∧ cb(p) % p⁴ = 1."
     },
     {
       "id": "known-wps",
       "title": "Known Wolstenholme Primes",
-      "startLine": 42,
-      "endLine": 79,
+      "startLine": 60,
+      "endLine": 94,
       "summary": "Primality of 16843 and 2124679 by native_decide; mod p⁴ values axiomatized; at least two WPs exist.",
       "mathContext": "16843 and 2124679 are the only known Wolstenholme primes. C(33685,16842) mod 16843⁴ = 1 and C(4249357,2124678) mod 2124679⁴ = 1 (axiomatized from McIntosh 1995, McIntosh-Roettger 2007)."
     },
     {
       "id": "infinitude-conjecture",
       "title": "The Infinitude Conjecture",
-      "startLine": 84,
-      "endLine": 108,
+      "startLine": 95,
+      "endLine": 126,
       "summary": "InfinitelyManyWP and BoundedWP definitions; proof they are exactly complementary.",
       "mathContext": "InfinitelyManyWP := ∀ N, ∃ p > N, IsWP p. BoundedWP := ∃ N, ∀ p, IsWP p → p ≤ N. These are logically complementary (proved via push_neg and classical reasoning)."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
-      "startLine": 113,
-      "endLine": 133,
+      "startLine": 127,
+      "endLine": 153,
       "summary": "Every WP is ≥ 5 and odd (exhaustive case analysis and primality).",
       "mathContext": "WP ≥ 5: p ∈ {0,1,4} not prime; p ∈ {2,3} fail mod p⁴ test. WP odd: the only even prime is 2, and WPs are ≥ 5."
     },
     {
       "id": "finiteness-consequences",
       "title": "Consequences of Finiteness",
-      "startLine": 138,
-      "endLine": 151,
+      "startLine": 154,
+      "endLine": 172,
       "summary": "If WPs are bounded, the bound is at least 2124679.",
       "mathContext": "Any upper bound N with ∀ p, IsWP p → p ≤ N must satisfy N ≥ 2124679 (from the known WP)."
     },
     {
       "id": "computational-bound",
       "title": "McIntosh-Roettger Computational Bound",
-      "startLine": 156,
-      "endLine": 176,
+      "startLine": 173,
+      "endLine": 198,
       "summary": "No third WP below 10⁹; any new WP exceeds a billion.",
       "mathContext": "McIntosh-Roettger (2007): exhaustive search up to 10⁹ found only 16843 and 2124679. A third WP must exceed 10⁹."
     },
     {
       "id": "bernoulli",
       "title": "Bernoulli Number Characterization",
-      "startLine": 181,
-      "endLine": 192,
+      "startLine": 199,
+      "endLine": 213,
       "summary": "The equivalence IsWP p ↔ p | num(B_{p-3}) connects WPs to irregular prime theory.",
       "mathContext": "McIntosh (1995): p ≥ 5 is a Wolstenholme prime iff p divides the numerator of B_{p-3}. This makes every WP an irregular prime (specifically (p-3)-irregular)."
     },
     {
       "id": "wieferich",
       "title": "Parallel with Wieferich Primes",
-      "startLine": 197,
-      "endLine": 219,
+      "startLine": 214,
+      "endLine": 247,
       "summary": "Wieferich primes defined; 1093 and 3511 verified computationally; structural parallel documented.",
       "mathContext": "IsWieferich p := Nat.Prime p ∧ 2^{p-1} % p² = 1. Known: 1093 (Meissner 1913), 3511 (Beeger 1922). Both families: 2 known examples, density ≈ 1/p, infinitude conjectured."
     },
     {
       "id": "wolstenholme-connection",
       "title": "Connection to Wolstenholme's Theorem",
-      "startLine": 221,
-      "endLine": 240,
+      "startLine": 248,
+      "endLine": 271,
       "summary": "Every WP satisfies Wolstenholme's theorem (mod p³) and Babbage's theorem (mod p²) via divisibility chain.",
       "mathContext": "p⁴ | (cb(p) - 1) ⟹ p³ | (cb(p) - 1) ⟹ p² | (cb(p) - 1). Uses Nat.mod_mod_of_dvd with p³ | p⁴ and p² | p³."
     }

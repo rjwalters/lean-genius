@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-05",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ02.lean",
     "tags": [
       "group-theory",
@@ -17,9 +17,9 @@
       "orbit-stabilizer",
       "research"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 262,
     "theoremCount": 13,
     "definitionCount": 1,
@@ -72,7 +72,7 @@
       "card_conjClass_eq_one_iff_mem_center: |[x]| = 1 ↔ x ∈ Z(G) proved from orbit uniqueness and commutativity",
       "A₄ class equation verification: 4 conjugacy classes of sizes 1+3+4+4=12 via native_decide"
     ],
-    "assumptions": "0 sorries. 0 axiom declarations. All theorems fully machine-checked. card_conjClass_eq_centralizer_index proved via Subgroup.index_comap_of_surjective applied to the ConjAct.toConjAct isomorphism.",
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The presented A₄ class-equation facts `card_A4`, `card_conjClasses_A4`, and `card_center_A4` (sizes 1+3+4+4=12) are proved by `native_decide`. Under the gallery convention (CLAUDE.md), a presented result discharged by `native_decide` depends on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "additionalFiles": []
   },
   "overview": {

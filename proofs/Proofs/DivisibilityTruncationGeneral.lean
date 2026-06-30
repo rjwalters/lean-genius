@@ -181,6 +181,16 @@ theorem thirtyseven_dvd_trunc (n : ℕ) :
     (37 : ℤ) ∣ n ↔ (37 : ℤ) ∣ (↑(n / 10) - 11 * ↑(n % 10)) :=
   truncation_neg 37 11 n (by decide) ⟨3, by norm_num⟩
 
+/-- d=41, negative osculator c=4: 10·4+1 = 41 = 1·41 -/
+theorem fortyone_dvd_trunc (n : ℕ) :
+    (41 : ℤ) ∣ n ↔ (41 : ℤ) ∣ (↑(n / 10) - 4 * ↑(n % 10)) :=
+  truncation_neg 41 4 n (by decide) ⟨1, by norm_num⟩
+
+/-- d=43, positive osculator c=13: 10·13-1 = 129 = 3·43 -/
+theorem fortythree_dvd_trunc (n : ℕ) :
+    (43 : ℤ) ∣ n ↔ (43 : ℤ) ∣ (↑(n / 10) + 13 * ↑(n % 10)) :=
+  truncation_pos 43 13 n (by decide) ⟨3, by norm_num⟩
+
 /-
 ## Osculator Table
 -/
@@ -193,6 +203,7 @@ example : (3 : ℤ) ∣ 10 * 1 - 1 := ⟨3, by norm_num⟩    -- 9 = 3 × 3
 example : (9 : ℤ) ∣ 10 * 1 - 1 := ⟨1, by norm_num⟩    -- 9 = 1 × 9
 example : (23 : ℤ) ∣ 10 * 7 - 1 := ⟨3, by norm_num⟩   -- 69 = 3 × 23
 example : (29 : ℤ) ∣ 10 * 3 - 1 := ⟨1, by norm_num⟩   -- 29 = 1 × 29
+example : (43 : ℤ) ∣ 10 * 13 - 1 := ⟨3, by norm_num⟩  -- 129 = 3 × 43
 
 -- Negative osculators (10c + 1 ≡ 0 mod d):
 example : (7 : ℤ) ∣ 10 * 2 + 1 := ⟨3, by norm_num⟩    -- 21 = 3 × 7
@@ -200,6 +211,7 @@ example : (11 : ℤ) ∣ 10 * 1 + 1 := ⟨1, by norm_num⟩   -- 11 = 1 × 11
 example : (17 : ℤ) ∣ 10 * 5 + 1 := ⟨3, by norm_num⟩   -- 51 = 3 × 17
 example : (31 : ℤ) ∣ 10 * 3 + 1 := ⟨1, by norm_num⟩   -- 31 = 1 × 31
 example : (37 : ℤ) ∣ 10 * 11 + 1 := ⟨3, by norm_num⟩  -- 111 = 3 × 37
+example : (41 : ℤ) ∣ 10 * 4 + 1 := ⟨1, by norm_num⟩   -- 41 = 1 × 41
 
 /-
 ## Examples and Sanity Checks
@@ -251,5 +263,22 @@ theorem truncation_method_summary :
     (∀ n : ℕ, (19 : ℤ) ∣ n ↔ (19 : ℤ) ∣ (↑(n / 10) + 2 * ↑(n % 10))) :=
   ⟨seven_dvd_trunc, eleven_dvd_trunc, thirteen_dvd_trunc,
    seventeen_dvd_trunc, nineteen_dvd_trunc⟩
+
+/-- **Extended Coverage (osculators beyond 19)**: bundles the truncation rules for
+    the next primes coprime to 10 — 23, 29, 31, 37, 41, 43 — each obtained as a direct
+    instance of the parametric `truncation_pos` / `truncation_neg` theorems.
+
+    This answers the follow-up question "extend truncation coverage beyond 19
+    (23, 29, 31, 37, 41, 43)": every listed prime is covered, with no new machinery
+    required — only its osculator constant. -/
+theorem extended_truncation_coverage :
+    (∀ n : ℕ, (23 : ℤ) ∣ n ↔ (23 : ℤ) ∣ (↑(n / 10) + 7 * ↑(n % 10))) ∧
+    (∀ n : ℕ, (29 : ℤ) ∣ n ↔ (29 : ℤ) ∣ (↑(n / 10) + 3 * ↑(n % 10))) ∧
+    (∀ n : ℕ, (31 : ℤ) ∣ n ↔ (31 : ℤ) ∣ (↑(n / 10) - 3 * ↑(n % 10))) ∧
+    (∀ n : ℕ, (37 : ℤ) ∣ n ↔ (37 : ℤ) ∣ (↑(n / 10) - 11 * ↑(n % 10))) ∧
+    (∀ n : ℕ, (41 : ℤ) ∣ n ↔ (41 : ℤ) ∣ (↑(n / 10) - 4 * ↑(n % 10))) ∧
+    (∀ n : ℕ, (43 : ℤ) ∣ n ↔ (43 : ℤ) ∣ (↑(n / 10) + 13 * ↑(n % 10))) :=
+  ⟨twentythree_dvd_trunc, twentynine_dvd_trunc, thirtyone_dvd_trunc,
+   thirtyseven_dvd_trunc, fortyone_dvd_trunc, fortythree_dvd_trunc⟩
 
 end DivisibilityTruncationGeneral

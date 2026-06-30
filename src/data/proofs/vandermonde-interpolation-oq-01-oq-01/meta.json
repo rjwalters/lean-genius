@@ -1,0 +1,148 @@
+{
+  "id": "vandermonde-interpolation-oq-01-oq-01",
+  "title": "The Explicit Lagrange Interpolant Realizes the Unique Interpolant",
+  "slug": "vandermonde-interpolation-oq-01-oq-01",
+  "description": "Over a field, fix n distinct nodes v and target values r. The companion entry vandermonde-interpolation-oq-01 proves the uniqueness half of the interpolation problem (a polynomial of degree < n is determined by its values at n distinct points). This entry supplies the complementary existence half: the explicit Lagrange interpolant interp v r = ∑ i, r_i·ℓ_i takes the value r_j at each node v_j and has degree < n, so the interpolation problem is well-posed — there is a unique polynomial of degree < n through the data, and it is exactly the Lagrange interpolant. Packaged as ∃! in both the degree and natDegree idioms, plus reproduction (interpolation is a left inverse to evaluation) and F-linearity of r ↦ interp v r. 13 theorems, 1 definition, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lagrange_polynomial",
+    "date": "Joseph-Louis Lagrange (1795); Edward Waring (1779)",
+    "status": "verified",
+    "tags": [
+      "linear-algebra",
+      "polynomials",
+      "interpolation",
+      "lagrange",
+      "vandermonde",
+      "existence-uniqueness",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/VandermondeInterpolationOQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide is used anywhere.",
+    "originalContributions": [
+      "interp: the explicit Lagrange interpolant Lagrange.interpolate over Fin n nodes, recast in the Function.Injective / Polynomial.eval idiom of the companion entry",
+      "eval_interp: existence — the Lagrange interpolant takes the prescribed value r_j at every node v_j",
+      "natDegree_interp_lt: the interpolant has natDegree < n for n ≥ 1, matching the companion's natDegree framing (bridging Mathlib's degree < #s form)",
+      "eq_interp_of_eval_eq: any degree-< n polynomial matching the values equals the Lagrange interpolant (the realizer is the unique answer)",
+      "existsUnique_interp / existsUnique_interp_natDegree: well-posedness — ∃! polynomial of degree < n (resp. natDegree < n) interpolating the data, in both idioms",
+      "interp_eval_self: reproduction — interpolating the values of a degree-< n polynomial returns it; interpolation is a left inverse to evaluation",
+      "interp_add / interp_smul: the value-vector ↦ interpolant map is F-linear"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 135,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Polynomial interpolation through n distinct points is well-posed: there is exactly one polynomial of degree < n matching the data. The companion entry established uniqueness from the nonvanishing of the Vandermonde determinant; the existence half is classically witnessed by the explicit Lagrange interpolating polynomial ∑_i r_i · ℓ_i, where ℓ_i is the i-th Lagrange basis polynomial (ℓ_i(v_j) = δ_{ij}). Lagrange's construction (1795), anticipated by Waring (1779) and Euler (1783), turns the abstract existence-uniqueness statement into a usable formula and is the foundation of Newton–Cotes quadrature, Reed–Solomon codes, and finite-element shape functions.",
+    "problemStatement": "**Open Question (OQ-01 of vandermonde-interpolation-oq-01)**: Construct the explicit Lagrange interpolant and prove it realizes the unique interpolant guaranteed by the uniqueness theorem.\n\n**Formalized**: interp (the explicit Lagrange interpolant), eval_interp (it interpolates), degree_interp_lt / natDegree_interp_lt (degree bound), eq_interp_of_eval_eq (it is the unique answer), existsUnique_interp / existsUnique_interp_natDegree (well-posedness), interp_eval_self (reproduction), interp_add / interp_smul (linearity).",
+    "text": "A 135-line formalization completing the interpolation problem begun in the companion entry. The witness interp v r is Mathlib's Lagrange.interpolate over the full node set univ : Finset (Fin n). The two characteristic facts come straight from Mathlib's Lagrange API: eval_interpolate_at_node gives eval_interp (the interpolant hits r_j at v_j), and degree_interpolate_lt gives degree_interp_lt (degree < #univ = n). The contribution is to recast these in the Fin n / Function.Injective / Polynomial.eval / natDegree idiom of the companion uniqueness entry and to expose existence-and-uniqueness explicitly: eq_interp_of_eval_eq (from eq_interpolate_of_eval_eq) shows any degree-< n match equals the interpolant, and combining with eval_interp / degree_interp_lt yields existsUnique_interp — a clean ∃! well-posedness statement. The natDegree form existsUnique_interp_natDegree (for n ≥ 1) mirrors the companion's natDegree < n framing, via the degree ↔ natDegree bridge that handles the zero polynomial. interp_eval_self states the reproduction property (interpolation is a left inverse to evaluation on degree-< n polynomials), and interp_add / interp_smul record that r ↦ interp v r is F-linear (Mathlib's interpolate is a LinearMap). All theorems compile with 0 sorries and 0 axioms; no native_decide.",
+    "proofStrategy": "**eval_interp**: Lagrange.eval_interpolate_at_node with the node map injective on univ (hv.injOn) and j ∈ univ.\n\n**degree_interp_lt**: Lagrange.degree_interpolate_lt gives degree < #univ; rewrite #(univ : Finset (Fin n)) = n.\n\n**natDegree_interp_lt**: from degree < ↑n, split on interp = 0 (then natDegree = 0 < n needs n ≥ 1) versus interp ≠ 0 (then degree = ↑natDegree and Nat.cast_lt transfers the bound).\n\n**eq_interp_of_eval_eq**: Lagrange.eq_interpolate_of_eval_eq with the degree bound (#univ = n) and the per-node value match.\n\n**existsUnique_interp**: provide interp v r with ⟨degree_interp_lt, eval_interp⟩; any other q with the same properties equals it by eq_interp_of_eval_eq. The natDegree variant routes through the degree ↔ natDegree bridge.\n\n**interp_eval_self**: eq_interp_of_eval_eq applied with r_i := f.eval (v_i) and the trivial match, then symmetry.\n\n**interp_add / interp_smul**: map_add / map_smul of the LinearMap Lagrange.interpolate univ v.",
+    "keyInsights": [
+      "**Existence by explicit construction**: the abstract guarantee 'an interpolant exists' is realized by the concrete formula ∑_i r_i·ℓ_i, where the Lagrange basis polynomial ℓ_i is built to satisfy ℓ_i(v_j) = δ_{ij}, so eval at v_j picks out exactly r_j.",
+      "**Existence + uniqueness = well-posedness**: combining this entry's existence (eval_interp, degree_interp_lt) with the companion's uniqueness gives ∃! — the interpolation problem has exactly one solution of degree < n, and it is the Lagrange interpolant.",
+      "**The interpolant is the unique answer**: any degree-< n polynomial agreeing with the data at the nodes is forced to equal the Lagrange interpolant, so the explicit formula is not merely a solution but the solution.",
+      "**Reproduction / left inverse**: interpolating the sampled values of a degree-< n polynomial f returns f exactly — Lagrange interpolation inverts evaluation on the degree-< n subspace.",
+      "**Linearity of the solution operator**: the data-to-interpolant map r ↦ ∑_i r_i·ℓ_i is F-linear, the structural fact behind superposition in interpolation and the basis-expansion view of the degree-< n polynomial space.",
+      "**The degree ↔ natDegree bridge**: Mathlib states the characteristic property with degree < #s (which correctly includes the zero polynomial); recasting in the companion's natDegree < n idiom requires the 0 < n hypothesis and a case split on the zero polynomial.",
+      "**0-axiom, no native_decide**: every step is kernel-checked, depending only on propext / Classical.choice / Quot.sound."
+    ],
+    "prerequisites": [
+      "The companion entry vandermonde-interpolation-oq-01 (interpolation uniqueness from Vandermonde nonvanishing)",
+      "Mathlib's Lagrange interpolation API: Lagrange.interpolate, Lagrange.basis, eval_interpolate_at_node, degree_interpolate_lt, eq_interpolate_of_eval_eq (LinearAlgebra/Lagrange.lean)",
+      "Polynomial degree vs natDegree and the bridge degree_eq_natDegree / natDegree_lt_iff_degree_lt for the natDegree form",
+      "Set.InjOn from Function.Injective (Function.Injective.injOn) and Finset.card_fin",
+      "ExistsUnique and LinearMap.map_add / map_smul for the well-posedness and linearity statements"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "vandermonde-interpolation-oq-01",
+      "relationship": "extends",
+      "description": "The companion entry proves interpolation uniqueness (at most one degree-< n interpolant) from the nonvanishing of the Vandermonde determinant. This entry supplies the matching existence half via the explicit Lagrange interpolant and packages the two into a single ∃! well-posedness statement in the same Fin n / natDegree idiom."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "VandermondeInterpolationOQ01OQ01",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "path": "Proofs/VandermondeInterpolationOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "existsUnique_interp",
+      "type": "core",
+      "statement": "$v$ injective $\\Rightarrow$ $\\exists!\\, p,\\ \\deg p < n \\wedge \\forall j,\\ p(v_j) = r_j$",
+      "significance": "Well-posedness of polynomial interpolation: there is a unique polynomial of degree < n through the data, and the existence witness is the explicit Lagrange interpolant. Combines this entry's existence with the companion's uniqueness.",
+      "description": "A unique degree-< n interpolant exists; it is the Lagrange interpolant."
+    },
+    {
+      "name": "eval_interp",
+      "type": "core",
+      "statement": "$v$ injective $\\Rightarrow$ $(\\mathrm{interp}\\,v\\,r)(v_j) = r_j$",
+      "significance": "Existence (the realizer): the explicit Lagrange interpolant takes the prescribed value at every node, witnessing solvability of the interpolation system.",
+      "description": "The Lagrange interpolant interpolates the data."
+    },
+    {
+      "name": "eq_interp_of_eval_eq",
+      "type": "core",
+      "statement": "$v$ injective, $\\deg p < n$, $p(v_j) = r_j\\ \\forall j$ $\\Rightarrow$ $p = \\mathrm{interp}\\,v\\,r$",
+      "significance": "The interpolant is the unique answer: any degree-< n polynomial matching the data equals the Lagrange interpolant, so the explicit formula is the solution.",
+      "description": "Any degree-< n match equals the Lagrange interpolant."
+    },
+    {
+      "name": "existsUnique_interp_natDegree",
+      "type": "supporting",
+      "statement": "$v$ injective, $0 < n$ $\\Rightarrow$ $\\exists!\\, p,\\ \\deg_{\\mathbb{N}} p < n \\wedge \\forall j,\\ p(v_j) = r_j$",
+      "significance": "Well-posedness in the natDegree < n idiom of the companion uniqueness entry, via the degree ↔ natDegree bridge.",
+      "description": "Unique interpolant in the natDegree framing (n ≥ 1)."
+    },
+    {
+      "name": "interp_eval_self",
+      "type": "supporting",
+      "statement": "$v$ injective, $\\deg f < n$ $\\Rightarrow$ $\\mathrm{interp}\\,v\\,(f \\circ v) = f$",
+      "significance": "Reproduction: interpolating the sampled values of a degree-< n polynomial returns it. Lagrange interpolation is a left inverse to evaluation on the degree-< n subspace.",
+      "description": "Interpolation inverts evaluation on degree-< n polynomials."
+    },
+    {
+      "name": "interp_add",
+      "type": "supporting",
+      "statement": "$\\mathrm{interp}\\,v\\,(r + r') = \\mathrm{interp}\\,v\\,r + \\mathrm{interp}\\,v\\,r'$",
+      "significance": "The data-to-interpolant operator is additive (and, with interp_smul, F-linear) — superposition for interpolation.",
+      "description": "The interpolation operator is F-linear in the data."
+    }
+  ],
+  "references": [
+    {
+      "text": "Lagrange polynomial: the explicit interpolant ∑_i y_i ∏_{j≠i} (x − x_j)/(x_i − x_j) through n distinct points.",
+      "url": "https://en.wikipedia.org/wiki/Lagrange_polynomial"
+    },
+    {
+      "text": "Polynomial interpolation — existence and uniqueness of the degree-< n interpolant through n distinct points.",
+      "url": "https://en.wikipedia.org/wiki/Polynomial_interpolation"
+    },
+    {
+      "text": "Mathlib4: Lagrange.interpolate, Lagrange.eval_interpolate_at_node, Lagrange.degree_interpolate_lt, Lagrange.eq_interpolate_of_eval_eq (LinearAlgebra/Lagrange.lean).",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Lagrange.html"
+    }
+  ],
+  "conclusion": {
+    "summary": "Completes the polynomial interpolation problem begun in vandermonde-interpolation-oq-01. The explicit Lagrange interpolant interp v r realizes the unique degree-< n interpolant: it takes the prescribed value r_j at each node (eval_interp) and has degree < n (degree_interp_lt / natDegree_interp_lt), and any degree-< n polynomial matching the data equals it (eq_interp_of_eval_eq). Packaged as existsUnique_interp / existsUnique_interp_natDegree (well-posedness in both idioms), with reproduction (interp_eval_self) and F-linearity (interp_add, interp_smul). All 13 theorems verified with 0 sorries and 0 axioms, no native_decide.",
+    "implications": "Together with the companion uniqueness entry, this shows polynomial interpolation through n distinct nodes is well-posed in the strongest sense: existence, uniqueness, an explicit formula, reproduction, and linearity of the solution operator. These are the structural facts underlying Lagrange/Newton interpolation, Reed–Solomon encoding/decoding, Newton–Cotes quadrature, and finite-element shape functions.",
+    "openQuestions": [
+      "Identify the Lagrange and Newton forms: prove interp v r equals the Newton divided-difference interpolant, exposing the change of basis between the two classical representations.",
+      "Generalize the existence witness from a field to an integral domain (or to its fraction field), pinning down exactly when an explicit interpolant of degree < n exists."
+    ]
+  },
+  "sorries": 0
+}

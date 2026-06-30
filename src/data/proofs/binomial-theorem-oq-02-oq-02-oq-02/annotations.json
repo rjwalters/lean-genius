@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "The Hockey-Stick Identity (OQ#2)",
+    "content": "The parent proves Vandermonde's identity and asks whether the hockey-stick identity C(r,r)+…+C(n,r) = C(n+1,r+1) can be derived using Finset.sum_range_succ and a telescoping argument. This file does exactly that with an independent induction proof, relates it to Mathlib's interval form, and derives the classical figurate-number sums — all 0 axioms / 0 sorries.",
+    "mathContext": "Summing a diagonal of Pascal's triangle gives the entry just past the diagonal's end.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hockey-stick identity",
+      "Pascal's triangle",
+      "figurate numbers"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "Pascal's rule"
+    ]
+  },
+  {
+    "id": "ann-hockey-induction",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 50
+    },
+    "type": "theorem",
+    "title": "Hockey-Stick by Induction (diagonal form)",
+    "content": "Proves ∑_{i=0}^{n} C(r+i, r) = C(r+n+1, r+1) by induction on n. Each step peels the top term with `Finset.sum_range_succ`, applies the IH, and closes with Pascal's rule `Nat.choose_succ_succ`: C(r+m+1, r+1) + C(r+m+1, r) = C(r+m+2, r+1). This is the telescoping derivation the parent's OQ#2 requested.",
+    "mathContext": "Base: C(r,r) = C(r+1,r+1) = 1. Step: Pascal absorbs the new term.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "induction",
+      "Pascal's rule",
+      "sum_range_succ"
+    ]
+  },
+  {
+    "id": "ann-icc",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    },
+    "type": "theorem",
+    "title": "Interval Form",
+    "content": "Relates the diagonal form to Mathlib's `Nat.sum_Icc_choose`: ∑_{m∈Icc r n} C(m, r) = C(n+1, r+1), giving both standard phrasings of the identity.",
+    "mathContext": "The interval [r, n] version of the hockey-stick sum.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval sum"
+    ]
+  },
+  {
+    "id": "ann-gauss",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-02",
+    "range": {
+      "startLine": 65,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Gauss's Sum: 1 + 2 + … + n = C(n+1, 2)",
+    "content": "Specializing the hockey-stick to r = 1 with C(m,1) = m gives 1 + 2 + … + n = C(n+1, 2), and `gauss_sum` derives the closed form n(n+1)/2 via C(n+1,2) = (n+1)n/2.",
+    "mathContext": "The triangular numbers are the r=1 diagonal of Pascal's triangle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss sum",
+      "triangular numbers"
+    ]
+  },
+  {
+    "id": "ann-tetrahedral",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-02",
+    "range": {
+      "startLine": 77,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "Tetrahedral Numbers: ∑ C(m, 2) = C(n+1, 3)",
+    "content": "The r = 2 diagonal: the partial sums of the triangular numbers ∑_{m≤n} C(m,2) are the tetrahedral numbers C(n+1,3). A numeric sanity check confirms 1+2+3+4+5 = 15 = C(6,2).",
+    "mathContext": "Partial sums of triangular numbers are tetrahedral numbers.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tetrahedral numbers",
+      "figurate numbers"
+    ]
+  }
+]

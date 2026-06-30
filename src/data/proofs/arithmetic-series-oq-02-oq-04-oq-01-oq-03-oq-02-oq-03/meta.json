@@ -140,7 +140,7 @@
       "id": "vandermonde",
       "title": "VIII. Consistency with Classical q-Vandermonde",
       "startLine": 222,
-      "endLine": 226,
+      "endLine": 228,
       "summary": "qMultichoose_recovers_classical_int: instantiates the main theorem at R=ℤ, confirming qMultichoose (1:ℤ) n k = Nat.multichoose n k. Closes the connection to the parent multiset Vandermonde entry.",
       "mathContext": "At $R = \\mathbb{Z}$: $\\text{qMultichoose}(1, n, k) = \\text{multichoose}(n, k) \\in \\mathbb{Z}$."
     }
@@ -156,13 +156,11 @@
   },
   "crossReferences": [
     {
-      "id": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
-      "title": "Multiset Vandermonde Identity",
+      "targetId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
       "relationship": "parent — this entry answers OQ-03 from the Multiset Vandermonde entry, defining the q-analog of multichoose that generalizes its classical count"
     },
     {
-      "id": "combinations-formula-oq-03",
-      "title": "q-Analog Binomial Coefficients (Gaussian Binomial Coefficients)",
+      "targetId": "combinations-formula-oq-03",
       "relationship": "dependency — provides qBinom, qBinom_pascal, qBinom_at_one, qBinom_self, qBinom_one_right, and qBinom_penult, all used to prove qMultichoose properties"
     }
   ],

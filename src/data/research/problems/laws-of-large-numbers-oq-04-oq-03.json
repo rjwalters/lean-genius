@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-02T06:30:00.000Z",
-    "iteration": 11,
-    "focus": "S13 ACT (researcher-1, 2026-06-02): shipped typed scaffold QuantileBracketingGrid in new companion file Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean (153 LOC, ~110 docstring + 1 structure declaration). Mirrors S3 (PR #17442) scaffold-only approach to the now-refuted BracketingGrid. The new structure carries Function.leftLim F (q j.succ) - F (q j.castSucc) ≤ ε as the interior step bound (replacing the refuted F (q j.succ) - F (q j.castSucc) ≤ ε which fails on atomic CDFs) and drops the cont field (left limits exist for any monotone F). 0 axioms added, 0 sorries added, 0 theorems added. The genuine existence statement Nonempty (QuantileBracketingGrid (trueCDF X μ) ε) is provable from the quantile construction and will be shipped as a theorem (not axiom) in S14 ACT. Build verification pending Docker (high type-check confidence — single structure declaration with Mathlib 4.26 stable references).",
+    "iteration": 12,
+    "focus": "S14a.2 ACT (researcher-2, 2026-06-12): proved the generic monotone leftLim upper-bracket lemma leftLim_le_of_forall_lt in LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean (+25 LOC, 153→239 incl. prior S14a boundary helpers). Statement: for Monotone F : ℝ → ℝ, (∀ x < q, F x ≤ p) → Function.leftLim F q ≤ p, via le_of_tendsto (hF.tendsto_leftLim q) on the left neighbourhood filter. This supplies the leftLim F qⱼ₊₁ ≤ (j+1)ε half of the S14 step_le bound with no continuity hypothesis. Docker-verified (3113 jobs, 0 sorries, 0 axioms; only pre-existing unusedSectionVars warnings in the LawsOfLargeNumbersOQ04 dependency, none in this file).",
     "blockers": [],
-    "nextAction": "S14 ACT (next session): prove quantileBracketingGrid_exists via the standard quantile construction qⱼ = inf {x | F x ≥ jε}. At qⱼ, leftLim F qⱼ ≤ jε ≤ F qⱼ by infimum monotonicity, so leftLim F qⱼ₊₁ − F qⱼ ≤ (j+1)ε − jε = ε. ~150 LOC; S10 PREP-1 (#18499) and PREP-2 (#18528) supply much of the Stieltjes API audit. After S14, S15 rewrites §2.4 (bracketing_pointwise_bound, bracketing_uniform_sup_bound) with two-sided step bounds (~150 LOC), S16 rewrites §2.5 glivenko_cantelli_uniform with the two-sided per-grid hypothesis (~75 LOC), and S17 retires the refuted bracketingGrid_exists axiom + the disproof file, restoring chain to axiom-free.",
+    "nextAction": "S14b ACT: prove the right-continuous half jε ≤ F qⱼ at the quantile node qⱼ = sInf {x | jε ≤ F x} (uses CDF right-continuity: F (sInf S) ≥ jε via tendsto along a decreasing sequence in S), then combine with leftLim_le_of_forall_lt (S14a.2) to get the per-pair step_le bound, then assemble quantileBracketingGrid_exists (existence: build the Fin (k+2) node sequence from the per-level quantiles, discharge left_le/right_ge via trueCDF_exists_le/ge). After S14, S15 rewrites §2.4 with two-sided step bounds (~150 LOC), S16 rewrites §2.5 glivenko_cantelli_uniform (~75 LOC), S17 retires the refuted bracketingGrid_exists axiom + disproof file, restoring chain to axiom-free.",
     "attemptCounts": {
-      "total": 11,
-      "currentApproach": 1,
+      "total": 12,
+      "currentApproach": 2,
       "approachesTried": 2
     }
   },
@@ -37,7 +37,8 @@
       "S13: Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean — new companion file (153 LOC, 1 structure QuantileBracketingGrid, 0 axioms, 0 theorems, 0 sorries). Imports Proofs.LawsOfLargeNumbersOQ04OQ03, Mathlib.Topology.Order.LeftRightLim (for Function.leftLim), Mathlib.Probability.CDF.",
       "trueCDF_exists_le: boundary helper (∃ x, F x ≤ ε for ε > 0) via tendsto_cdf_atBot + Iio_mem_nhds — LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean:181",
       "trueCDF_exists_ge: boundary helper (∃ x, η ≤ F x for η < 1) via tendsto_cdf_atTop + Ioi_mem_nhds — LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean:203",
-      "trueCDF_eq_cdf_map (private dup): bridge to Mathlib cdf, self-contained restatement avoiding transitive dep on refuted Bracketing axiom — LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean:164"
+      "trueCDF_eq_cdf_map (private dup): bridge to Mathlib cdf, self-contained restatement avoiding transitive dep on refuted Bracketing axiom — LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean:164",
+      "S14a.2: leftLim_le_of_forall_lt (researcher-2, 2026-06-12) — generic monotone lemma: (∀ x < q, F x ≤ p) → Function.leftLim F q ≤ p. Proof: le_of_tendsto (hF.tendsto_leftLim q) of the eventually-bound on 𝓝[<] q. No continuity/right-continuity needed. This is the leftLim F qⱼ₊₁ ≤ (j+1)ε half of the S14 step_le bound. Docker-verified (3113 jobs). LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean:235"
     ],
     "insights": [
       "Basic Glivenko-Cantelli is in LawsOfLargeNumbersOQ04.lean with 3 axioms (indicator_integrable, indicator_integral_eq_cdf, glivenko_cantelli_uniform)",
@@ -87,14 +88,14 @@
     "mathlib": []
   },
   "started": "2026-05-04T17:47:35.846Z",
-  "lastUpdate": "2026-06-10T17:00:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/LawsOfLargeNumbers.lean",
       "filename": "LawsOfLargeNumbers.lean",
-      "lineCount": 396,
+      "lineCount": 397,
       "theoremCount": 11,
       "axiomCount": 1,
       "defCount": 3,
@@ -105,7 +106,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ01.lean",
       "filename": "LawsOfLargeNumbersOQ01.lean",
-      "lineCount": 403,
+      "lineCount": 404,
       "theoremCount": 13,
       "axiomCount": 1,
       "defCount": 0,
@@ -116,18 +117,18 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean",
       "filename": "LawsOfLargeNumbersOQ01Aristotle.lean",
-      "lineCount": 723,
+      "lineCount": 724,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 0,
+      "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
     },
     {
       "path": "Proofs/LawsOfLargeNumbersOQ01OQ01.lean",
       "filename": "LawsOfLargeNumbersOQ01OQ01.lean",
-      "lineCount": 74,
+      "lineCount": 75,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
@@ -138,7 +139,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ01OQ02.lean",
       "filename": "LawsOfLargeNumbersOQ01OQ02.lean",
-      "lineCount": 344,
+      "lineCount": 345,
       "theoremCount": 10,
       "axiomCount": 3,
       "defCount": 1,
@@ -149,7 +150,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ01OQ03.lean",
       "filename": "LawsOfLargeNumbersOQ01OQ03.lean",
-      "lineCount": 98,
+      "lineCount": 99,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
@@ -160,7 +161,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
       "filename": "LawsOfLargeNumbersOQ02.lean",
-      "lineCount": 356,
+      "lineCount": 357,
       "theoremCount": 9,
       "axiomCount": 2,
       "defCount": 2,
@@ -171,7 +172,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ03.lean",
       "filename": "LawsOfLargeNumbersOQ03.lean",
-      "lineCount": 404,
+      "lineCount": 405,
       "theoremCount": 9,
       "axiomCount": 4,
       "defCount": 5,
@@ -182,18 +183,18 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ03Aristotle.lean",
       "filename": "LawsOfLargeNumbersOQ03Aristotle.lean",
-      "lineCount": 71,
+      "lineCount": 72,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03Aristotle.lean"
     },
     {
       "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
       "filename": "LawsOfLargeNumbersOQ04.lean",
-      "lineCount": 228,
+      "lineCount": 229,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 3,
@@ -204,7 +205,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ04OQ03.lean",
       "filename": "LawsOfLargeNumbersOQ04OQ03.lean",
-      "lineCount": 180,
+      "lineCount": 181,
       "theoremCount": 3,
       "axiomCount": 1,
       "defCount": 0,
@@ -215,7 +216,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean",
       "filename": "LawsOfLargeNumbersOQ04OQ03Bracketing.lean",
-      "lineCount": 672,
+      "lineCount": 673,
       "theoremCount": 11,
       "axiomCount": 2,
       "defCount": 0,
@@ -226,7 +227,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean",
       "filename": "LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean",
-      "lineCount": 150,
+      "lineCount": 151,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
@@ -237,8 +238,8 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean",
       "filename": "LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean",
-      "lineCount": 216,
-      "theoremCount": 2,
+      "lineCount": 240,
+      "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

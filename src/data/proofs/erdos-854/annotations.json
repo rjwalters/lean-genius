@@ -88,7 +88,7 @@
   {
     "id": "ann-e854-sortedCoprimes",
     "proofId": "erdos-854",
-    "type": "definition",
+    "type": "theorem",
     "title": "Sorted Coprime Sequence",
     "content": "Axiomatizes the sorted list of coprime residues with sortedness and membership equivalence.",
     "mathContext": "The sorted enumeration $a_1 < a_2 < \\cdots < a_{\\varphi(n)}$ is axiomatized as a `List ℕ` with `List.Sorted (· < ·)` and membership equivalence with `coprimeResidues`. This separation between the `Finset` (for cardinality/membership) and the `List` (for ordering/consecutive gaps) reflects the fact that gap structure depends on the linear order, which `Finset` does not directly expose.",

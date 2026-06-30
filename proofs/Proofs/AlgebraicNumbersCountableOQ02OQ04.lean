@@ -48,7 +48,7 @@ cardinality (computable is countable but ℝ has cardinality 𝔠).
 
 ## Main Results
 
-* `computable_reals_countable` (S3, build pending): the set `{r : ℝ | IsComputable r}`
+* `computable_reals_countable` (S3, proved): the set `{r : ℝ | IsComputable r}`
   is countable.
 * `card_computable_reals_le_aleph0` (cardinal upper bound, now unconditional).
 * `aleph0_le_card_computable_reals` (cardinal lower bound, unconditional).
@@ -90,7 +90,7 @@ The proof rests on the Mathlib infrastructure for partial recursive functions:
   via rational embedding; five concrete computable witnesses (rat/int/nat/0/1);
   exact equality stated (contingent on the S1 sorry).
 - **S3** (#17768): full proof of `computable_reals_countable` via `decodeReal` +
-  `Nat.Partrec.Code.exists_code` pipeline. **Build pending** — verification
+  `Nat.Partrec.Code.exists_code` pipeline. **Verified** — the proof
   relies on the named Mathlib API (`Computable.encode`, `Computable.comp`,
   `Partrec.nat_iff`, `Nat.Partrec.Code.exists_code`, `Set.countable_range`,
   `Set.Countable.mono`, `tendsto_nhds_unique`, `Encodable.encode_injective`,
@@ -994,5 +994,86 @@ theorem computable_reals_isFsigma_witness :
       exact hc.symm
     · obtain ⟨c, hc⟩ := Set.mem_iUnion.mp hr
       exact hc.2
+
+/-! ## S11 — Open/closed status: neither half is open or closed
+
+S7-S10 computed every fine topological invariant of the computable/non-computable
+partition — closure (`= univ` for both halves), interior (`= ∅` for both halves),
+frontier (`= univ` for both halves), `IsGδ`/Fσ-witness, residual, and meagre.
+What the file never stated is the single headline consequence those invariants
+force: **neither half of the partition is open, and neither is closed.**
+
+This is immediate from the invariants already proven, with no new Mathlib API
+beyond `IsClosed.closure_eq` and `IsOpen.interior_eq`:
+
+* A closed set equals its closure; both halves have closure `univ`, so a closed
+  half would equal `univ` — contradicted by `exists_non_computable_real`
+  (a non-computable witness) and `zero_isComputable` (a computable witness)
+  respectively.
+* An open set equals its interior; both halves have empty interior, so an open
+  half would be `∅` — contradicted by `computable_reals_nonempty` and
+  `nonComputableReals_nonempty`.
+
+The four statements complete the topological-status profile: each half of the
+computable/non-computable split is a proper, dense, boundaryless subset of `ℝ`
+that is simultaneously not open and not closed — the canonical signature of a
+countable-dense set and its residual complement sharing the line.
+
+* `computable_reals_not_isClosed`, `computable_reals_not_isOpen`
+* `nonComputableReals_not_isClosed`, `nonComputableReals_not_isOpen`
+-/
+
+/-- **S11 — the computable reals are not closed.**
+
+    A closed set equals its closure (`IsClosed.closure_eq`), but
+    `closure_computable_reals_eq_univ` gives closure `= univ`; a closed
+    `{r | IsComputable r}` would therefore be all of `ℝ`, contradicting the
+    existence of a non-computable real (`exists_non_computable_real`). -/
+theorem computable_reals_not_isClosed :
+    ¬ IsClosed {r : ℝ | IsComputable r} := by
+  intro h
+  have h_eq : {r : ℝ | IsComputable r} = Set.univ := by
+    rw [← h.closure_eq, closure_computable_reals_eq_univ]
+  obtain ⟨r, hr⟩ := exists_non_computable_real
+  have hmem : r ∈ {r : ℝ | IsComputable r} := by rw [h_eq]; exact Set.mem_univ r
+  exact hr hmem
+
+/-- **S11 — the computable reals are not open.**
+
+    An open set equals its interior (`IsOpen.interior_eq`), but
+    `interior_computable_reals_eq_empty` gives interior `= ∅`; an open
+    `{r | IsComputable r}` would therefore be empty, contradicting
+    `computable_reals_nonempty` (`0` is computable). -/
+theorem computable_reals_not_isOpen :
+    ¬ IsOpen {r : ℝ | IsComputable r} := by
+  intro h
+  have h_eq : {r : ℝ | IsComputable r} = ∅ := by
+    rw [← h.interior_eq, interior_computable_reals_eq_empty]
+  exact absurd h_eq computable_reals_nonempty.ne_empty
+
+/-- **S11 — the non-computable reals are not closed.**
+
+    Symmetric to `computable_reals_not_isClosed`: a closed `nonComputableReals`
+    would equal its closure `univ` (`closure_nonComputableReals_eq_univ`), making
+    every real non-computable — contradicted by `zero_isComputable`. -/
+theorem nonComputableReals_not_isClosed :
+    ¬ IsClosed nonComputableReals := by
+  intro h
+  have h_eq : nonComputableReals = Set.univ := by
+    rw [← h.closure_eq, closure_nonComputableReals_eq_univ]
+  have hmem : (0 : ℝ) ∈ nonComputableReals := by rw [h_eq]; exact Set.mem_univ 0
+  exact hmem zero_isComputable
+
+/-- **S11 — the non-computable reals are not open.**
+
+    Symmetric to `computable_reals_not_isOpen`: an open `nonComputableReals`
+    would equal its interior `∅` (`interior_nonComputableReals_eq_empty`),
+    contradicting `nonComputableReals_nonempty`. -/
+theorem nonComputableReals_not_isOpen :
+    ¬ IsOpen nonComputableReals := by
+  intro h
+  have h_eq : nonComputableReals = ∅ := by
+    rw [← h.interior_eq, interior_nonComputableReals_eq_empty]
+  exact absurd h_eq nonComputableReals_nonempty.ne_empty
 
 end AlgebraicNumbersCountableOQ02OQ04

@@ -56,42 +56,50 @@
   },
   "sections": [
     {
+      "id": "module-overview",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "File docstring (the LLL tightness threshold T(d) = max_x x(1-x)^d and the d=1,2 small-case anchors), imports, and namespace.",
+      "mathContext": "Header only; no declarations. Imports Proofs.LovaszLocalLemma and works in namespace ProbMethod.LovaszLocal.OQ02."
+    },
+    {
       "id": "sec-small-cases",
       "title": "Part I: Explicit Small Cases (d = 1, 2, 3)",
-      "startLine": 33,
-      "endLine": 74,
+      "startLine": 34,
+      "endLine": 76,
       "summary": "Polynomial non-negativity proofs for d=1,2,3 via sq_nonneg + mul_nonneg + nlinarith. Each achievability theorem confirms the maximum is attained at x = 1/(d+1).",
       "mathContext": "The gap T(d) - x·(1-x)^d factors explicitly for each small d. These proofs are complete with 0 sorries."
     },
     {
       "id": "sec-achievability",
       "title": "Part II: Achievability — T(d) Is Attained at x = 1/(d+1)",
-      "startLine": 76,
-      "endLine": 88,
+      "startLine": 77,
+      "endLine": 89,
       "summary": "lllThreshold_achieved proves 1/(d+1)·(1-1/(d+1))^d = T(d) for all d ≥ 1 by rewriting via lllThreshold_eq_product and field_simp.",
       "mathContext": "This general achievability result confirms the maximum is always attained and that the formula for T(d) is correct."
     },
     {
       "id": "sec-general-max",
       "title": "Part III: General Maximum Theorem",
-      "startLine": 89,
-      "endLine": 113,
+      "startLine": 90,
+      "endLine": 163,
       "summary": "lllThreshold_is_maximum (sorry): x·(1-x)^d ≤ T(d) for all x ∈ [0,1] and d ≥ 1. Blocked on AM-GM over ℝ or inductive polynomial argument.",
       "mathContext": "The AM-GM strategy is mathematically clear but requires casting ℚ→ℝ and applying Real.geom_mean_le_arith_mean3_weighted, or constructing the polynomial factorization by induction."
     },
     {
       "id": "sec-tightness",
       "title": "Part IV: Algebraic Tightness Corollary",
-      "startLine": 114,
-      "endLine": 137,
+      "startLine": 164,
+      "endLine": 187,
       "summary": "lll_threshold_tight and lll_threshold_no_improvement: p > T(d) implies no x ∈ [0,1] satisfies p ≤ x·(1-x)^d. Proved modulo lllThreshold_is_maximum.",
       "mathContext": "These corollaries follow immediately from the maximum theorem by linarith, confirming the algebraic lower bound on the LLL threshold."
     },
     {
       "id": "sec-uniqueness",
       "title": "Part V: Uniqueness and Exact Threshold",
-      "startLine": 138,
-      "endLine": 186,
+      "startLine": 188,
+      "endLine": 240,
       "summary": "lllThreshold_strict_maximum (sorry for equality case), lllThreshold_fixed_point, lllThreshold_exact_algebraic_threshold. The biconditional is proved completely.",
       "mathContext": "The exact threshold biconditional captures the full algebraic content: the symmetric LLL condition p ≤ T(d) is both necessary and sufficient for the existence of a valid LLL witness x ∈ [0,1]."
     }

@@ -1,0 +1,217 @@
+{
+  "id": "buffons-needle-oq-01-oq-04",
+  "title": "Buffon's Coin: the Cauchy Mean-Width Specialization",
+  "slug": "buffons-needle-oq-01-oq-04",
+  "description": "Resolves the fourth open question of buffons-needle-oq-01 by packaging Buffon's coin (Laplace 1812) as a corollary of the C¹ smooth-noodle theorem. For a convex body K with closed C¹ boundary dropped on a parallel line grid of spacing d, the expected boundary crossings equal 2·perimeter/(πd) and the expected number of cutting lines equals perimeter/(πd). Verified on the circle: a coin of radius r has E[crossings]=4r/d and E[line-cuts]=2r/d (the classical diameter/d probability).",
+  "meta": {
+    "author": "Laplace (1812), Cauchy (1850); formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_needle_problem#Buffon's_coin_problem",
+    "date": "1812",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ04.lean",
+    "tags": [
+      "probability",
+      "geometric-probability",
+      "integral-geometry",
+      "cauchy-crofton",
+      "buffon-coin",
+      "convex-bodies",
+      "mean-width",
+      "research",
+      "open-question"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "defCount": 3,
+    "lineCount": 209,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.hasDerivAt_cos",
+        "description": "d/dx cos x = -sin x",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "Real.hasDerivAt_sin",
+        "description": "d/dx sin x = cos x",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "Real.sin_sq_add_cos_sq",
+        "description": "sin²x + cos²x = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sqrt_sq",
+        "description": "√(a²) = a for a ≥ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      },
+      {
+        "theorem": "intervalIntegral.integral_const",
+        "description": "∫ over [a,b] of a constant equals (b-a)·c",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      },
+      {
+        "theorem": "intervalIntegral.integral_nonneg",
+        "description": "Nonnegative integrand gives nonnegative integral",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      }
+    ],
+    "originalContributions": [
+      "buffon_coin_boundary_crossings: E[∂K crossings] = 2·perimeter/(πd) for any closed C¹ boundary, as a one-line corollary of buffon_smooth_of_contDiff",
+      "expectedLineCuts / buffon_coin_lineCuts: E[lines cutting K] = perimeter/(πd), with the convex 0-or-2 dichotomy modeled by the factor-of-two halving",
+      "circle_perimeter: the disk of radius r has boundary perimeter 2πr (arc-length of (r cos t, r sin t))",
+      "circle_crossings: a coin of radius r has E[boundary crossings] = 4r/d",
+      "circle_lineCuts: a coin of radius r has E[lines cutting] = 2r/d — the classical Buffon's-coin probability diameter/d for r ≤ d/2",
+      "coin_shape_independence: convex bodies of equal perimeter share the same expected cut-line count regardless of shape",
+      "coin_lineCuts_mono: monotonicity of expected cut-lines in perimeter",
+      "boundaryPerimeter_nonneg, expectedLineCuts_nonneg: sign structure"
+    ],
+    "dateAdded": "2026-06-11",
+    "assumptions": "Fully verified: 0 axioms, 0 sorries. The C¹ smoothness hypothesis (ContDiff ℝ 1 γ) and the closed-curve hypothesis (γ a = γ b) are explicit. The convex 'each cutting line meets ∂K in exactly 0 or 2 points' fact is encoded definitionally as the factor-of-two halving in expectedLineCuts rather than derived from a convex-geometry API (Mathlib v4.26.0 has no such bearer, and concreteSmoothExpectedCrossings is an integral model rather than a literal point count). The analytic content is entirely inherited from the parent's 0-axiom-0-sorry bearer buffon_smooth_of_contDiff.",
+    "prerequisites": [
+      "Buffon-Barbier smooth-noodle theorem for C¹ curves (buffons-needle-oq-01)",
+      "Arc length of a planar C¹ curve",
+      "Cauchy's mean-width formula for convex bodies",
+      "Buffon's needle problem in 2D"
+    ],
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Buffon's original 1733 needle problem asks for the probability that a needle of length ℓ dropped on a floor of parallel lines spaced d apart crosses a line: P = 2ℓ/(πd) for ℓ ≤ d. Laplace (1812) generalized this to **Buffon's coin**: drop a 2-D convex object — a coin, ellipse, or triangle — instead of a 1-D needle, and ask how often its boundary meets the line grid. The answer depends only on the perimeter, not the shape: E[boundary crossings] = 2p/(πd). This is a special case of **Cauchy's mean-width formula** (1850), which states that the average projection length of a convex body onto a random line equals p/π.",
+    "problemStatement": "**Buffon's Coin**: Let K ⊂ ℝ² be a convex body whose boundary ∂K is a closed C¹ curve of perimeter p. Drop K uniformly at random onto an infinite family of parallel lines spaced d apart. Then\n$$\\mathbb{E}[\\#\\{\\text{crossings of } \\partial K\\text{ with the grid}\\}] = \\frac{2p}{\\pi d},$$\nand the expected number of grid lines that cut K (meet its interior) is p/(πd), since each cutting line meets ∂K in exactly two points.\n\nFor a coin (disk) of radius r ≤ d/2, the expected number of lines cut is 2r/d = diameter/d, recovering Laplace's classical probability.",
+    "text": "Packages Buffon's coin as a corollary of the C¹ smooth-noodle theorem. The expected boundary-crossing count equals 2·perimeter/(πd); the expected cut-line count equals perimeter/(πd). Verified concretely on the circle, where a radius-r coin gives 4r/d crossings and 2r/d cut lines.",
+    "proofStrategy": "1. **Define the perimeter** of a closed C¹ boundary as its planar arc length (boundaryPerimeter).\n\n2. **Apply the bearer**: buffon_coin_boundary_crossings is buffon_smooth_of_contDiff (the parent's main theorem) applied to the closed boundary curve — the entire analytic computation is reused.\n\n3. **Translate to cut lines**: each line cutting a convex body meets its boundary in exactly two points, so expectedLineCuts := crossings/2, giving perimeter/(πd).\n\n4. **Verify on the circle**: compute the arc length of (r cos t, r sin t) on [0,2π] via sin²+cos²=1, obtaining perimeter 2πr, hence 4r/d crossings and 2r/d cut lines.\n\n5. **Structural lemmas**: shape independence, monotonicity, and nonnegativity follow algebraically from the formula.",
+    "keyInsights": [
+      "Buffon's coin is structurally a one-line corollary of the smooth-noodle theorem applied to the boundary curve — the perimeter, not the shape, is all that matters",
+      "Convexity enters in exactly one place: the factor of two relating boundary crossings to cutting lines (each line meets a convex boundary in 0 or 2 points)",
+      "The circle of radius r gives the cleanest instance: 4r/d crossings, 2r/d cut lines — and 2r/d = diameter/d is exactly Laplace's classical Buffon's-coin probability",
+      "Shape independence is immediate: two convex bodies of equal perimeter cut the same expected number of lines, however different their shapes",
+      "This is the most tractable of the parent's four open questions; the other three (random-line measures, ℝⁿ hyperplane arrangements, Lipschitz boundaries) require Mathlib infrastructure that does not yet exist"
+    ],
+    "prerequisites": [
+      "Buffon-Barbier smooth-noodle theorem for C¹ curves (buffons-needle-oq-01)",
+      "Arc length of a planar C¹ curve",
+      "Cauchy's mean-width formula for convex bodies",
+      "Buffon's needle problem in 2D"
+    ]
+  },
+  "sections": [
+    {
+      "id": "perimeter",
+      "title": "Perimeter of a C¹ Convex Boundary",
+      "startLine": 52,
+      "endLine": 66,
+      "summary": "Defines boundaryPerimeter as the arc length of a closed C¹ boundary curve and proves it is nonnegative.",
+      "mathContext": "perimeter(K) = ∫ₐᵇ ‖γ'(t)‖ dt for a closed C¹ parametrisation γ of ∂K."
+    },
+    {
+      "id": "boundary-crossings",
+      "title": "Buffon's Coin — Boundary Crossings",
+      "startLine": 67,
+      "endLine": 85,
+      "summary": "The boundary-crossing formula E[crossings] = 2·perimeter/(πd), a corollary of buffon_smooth_of_contDiff.",
+      "mathContext": "Applies the parent's C¹ smooth-noodle bearer to the closed boundary curve."
+    },
+    {
+      "id": "line-cuts",
+      "title": "Buffon's Coin — Lines that Cut K",
+      "startLine": 86,
+      "endLine": 112,
+      "summary": "Expected cut-line count = perimeter/(πd) via the convex 0-or-2 dichotomy (factor of two).",
+      "mathContext": "Each line cutting a convex body meets ∂K in exactly two points, so cut lines = crossings/2."
+    },
+    {
+      "id": "circle",
+      "title": "The Circle (the Coin)",
+      "startLine": 113,
+      "endLine": 179,
+      "summary": "The disk of radius r: C¹, closed, perimeter 2πr; E[crossings] = 4r/d, E[cut-lines] = 2r/d.",
+      "mathContext": "Arc length of (r cos t, r sin t) on [0,2π] is 2πr via sin²+cos²=1; 2r/d = diameter/d is Laplace's probability."
+    },
+    {
+      "id": "shape-independence",
+      "title": "Shape Independence and Monotonicity",
+      "startLine": 181,
+      "endLine": 209,
+      "summary": "Convex bodies of equal perimeter cut the same expected number of lines; monotonicity in perimeter.",
+      "mathContext": "The cut-line count depends only on perimeter, not on shape."
+    }
+  ],
+  "conclusion": {
+    "summary": "Buffon's coin — the 2-D convex-body generalization of Buffon's needle — is formalized as a corollary of the parent's C¹ smooth-noodle theorem. The expected boundary-crossing count is 2·perimeter/(πd) and the expected number of cut lines is perimeter/(πd), verified concretely on the circle where a radius-r coin gives 4r/d crossings and 2r/d cut lines (the classical diameter/d probability). 0 axioms, 0 sorries.",
+    "implications": "1. **Shape independence**: any two convex bodies of equal perimeter cut the same expected number of grid lines — a circle, square (smoothed), or ellipse all behave identically.\n\n2. **Reuse of the smooth-noodle bearer**: the entire analytic content is inherited from buffon_smooth_of_contDiff; the coin result is a packaging step, showing the value of a well-stated general theorem.\n\n3. **Mean-width direction**: this closes the most tractable of the parent's four open questions and points toward the full Cauchy mean-width theory for general convex bodies.",
+    "openQuestions": [
+      "Derive the convex 0-or-2 boundary-intersection dichotomy from a Mathlib convex-geometry API rather than modeling it definitionally",
+      "Extend to rectifiable (Lipschitz) boundaries via C¹ approximation, covering polygons and the unit square",
+      "Formalize the full Cauchy mean-width formula for general convex bodies, defining Convex.perimeter and Convex.meanWidth",
+      "The full Cauchy-Crofton formula for arbitrary measures on lines in ℝ²"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BuffonsNeedleOQ01"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "BuffonsNeedleOQ01OQ04",
+    "lineCount": 209,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 3,
+    "path": "Proofs/BuffonsNeedleOQ01OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-01",
+      "relationship": "extends",
+      "description": "Applies the parent's main theorem buffon_smooth_of_contDiff (E[crossings] = 2·arcLength/(πd) for C¹ curves) to the closed boundary curve of a convex body, yielding Buffon's coin"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "extends",
+      "description": "Generalizes the 1-D needle (P = 2ℓ/(πd)) to a 2-D convex body; the needle is the degenerate boundary case"
+    },
+    {
+      "targetId": "buffons-needle-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question of the same parent, exploring n-dimensional hyperplane arrangements via the Gamma-function dimensional constant"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Laplace, Pierre-Simon"
+      ],
+      "title": "Théorie analytique des probabilités",
+      "year": "1812",
+      "venue": "Courcier, Paris",
+      "note": "Extended Buffon's needle to the coin problem and to grids of perpendicular lines"
+    },
+    {
+      "authors": [
+        "Cauchy, Augustin-Louis"
+      ],
+      "title": "Note sur divers théorèmes relatifs à la rectification des courbes",
+      "year": "1850",
+      "venue": "Comptes Rendus de l'Académie des Sciences 31, 344-346",
+      "note": "Established the mean-width formula: the average projection length of a convex body equals p/π"
+    },
+    {
+      "authors": [
+        "Santaló, Lluís"
+      ],
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "1976",
+      "venue": "Cambridge University Press",
+      "note": "Definitive reference for integral geometry, including Buffon's coin and the Cauchy-Crofton formulas"
+    }
+  ],
+  "sorries": 0
+}

@@ -124,15 +124,14 @@
       "title": "Machin's Formula (Exponential Alternative)",
       "startLine": 129,
       "endLine": 134,
-      "summary": "Axiomatizes the arctan addition formula and states Machin's identity $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ (proved); demonstrates $O(1/25^N)$ exponential convergence vs Leibniz's $O(1/N)$",
+      "summary": "Proves Machin's identity $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ via Mathlib's `four_mul_arctan_inv_5_sub_arctan_inv_239`; demonstrates $O(1/25^N)$ exponential convergence vs Leibniz's $O(1/N)$",
       "mathContext": "States Machin's formula $\\frac{\\pi}{4} = 4\\arctan\\frac{1}{5} - \\arctan\\frac{1}{239}$, where the Taylor series $\\arctan(1/m) = \\sum_{k=0}^{\\infty} \\frac{(-1)^k}{(2k+1)m^{2k+1}}$ converges at rate $O(1/m^{2N})$. For $m = 5$ this gives $O(1/25^N)$ vs Leibniz's $O(1/N)$."
     }
   ],
   "conclusion": {
     "summary": "The Leibniz series converges at rate Θ(1/N) — specifically |π/4 - Sₙ| ≤ 1/(2N+1) with equality in the limit. Machin-type formulas demonstrate that arctangent-based series can achieve exponential convergence by evaluating at small arguments 1/m, where the effective rate is O(1/m^(2N)). The optimal arctangent formula minimizes the effective convergence base across all arguments.",
-    "implications": "**Convergence Rate Hierarchy:**\n\n- Leibniz (arctan at 1): O(1/N) — ~10^6 terms for 6 digits\n- Machin (arctan at 1/5, 1/239): O(1/25^N) — ~10 terms for 14 digits\n- Chudnovsky (non-arctangent): O(1/10^{14N}) — 1 term per 14 digits\n\n**Open direction**: Complete proof of Machin's formula from the arctan addition formula.",
+    "implications": "**Convergence Rate Hierarchy:**\n\n- Leibniz (arctan at 1): O(1/N) — ~10^6 terms for 6 digits\n- Machin (arctan at 1/5, 1/239): O(1/25^N) — ~10 terms for 14 digits\n- Chudnovsky (non-arctangent): O(1/10^{14N}) — 1 term per 14 digits\n\n**Open direction**: Identify the optimal Machin-like formula minimizing the number of terms for a given accuracy.",
     "openQuestions": [
-      "Prove Machin's formula from the arctan addition formula (currently sorry)",
       "What is the optimal Machin-like formula (minimizing number of terms for given accuracy)?",
       "Can the arctan addition formula be proved purely from Mathlib's existing API?"
     ]

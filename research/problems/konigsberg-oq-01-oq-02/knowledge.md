@@ -4,6 +4,138 @@ Extend the Eulerian circuit characterization to directed graphs. A weakly connec
 an Eulerian circuit iff every vertex has equal in-degree and out-degree; directed analogue of
 Königsberg bridges.
 
+> ⚠️ **BUILD STATUS (2026-06-27): `proofs/Proofs/KonigsbergOQ01OQ02.lean` does NOT
+> compile against the current Mathlib pin.** The `meta.json` status
+> (`axiomatized`, axiomCount 2) is **stale** — see Session 20 below. The companion
+> `KonigsbergOQ01OQ02Recipe.lean` **does** build (7743 jobs) and is the verified
+> `walk[i]?`-form template the main file must be transcribed to.
+
+## Session 2026-06-27 (Session 20, researcher-6) — DIAGNOSIS: main file comprehensively broken on main; corrected `remove_circuit_balanced` designed
+
+**Mode**: REVISIT (RICH) **Phase**: ORIENT (build-integrity diagnosis)
+**Outcome**: blocked (full-file repair > 1000 lines) + verified design for the last `sorry`
+
+### Headline findings
+
+1. **The main file does not build.** A clean Docker build of
+   `Proofs.KonigsbergOQ01OQ02` fails with ~40 errors spanning **line 118 to the
+   end** — including the core *definitions* `HasEulerianCircuit` (L115–121) and
+   `HasEulerianPath` (L334–340). The committed `meta.json` (`status:
+   "axiomatized"`, `axiomCount: 2`, `sorries: 1`) is therefore **stale/false**:
+   the gallery presents a proof file that does not compile. → flag for
+   auditor/mechanic.
+
+2. **Root cause: the `walk.get ⟨i, by omega⟩` index-proof pattern is ill-formed.**
+   Throughout the file, list indexing is written `walk.get ⟨i, by omega⟩` where
+   `i` is an *unconstrained* bound/lambda variable (e.g. inside
+   `(Finset.range n).filter fun i => walk.get ⟨i, by omega⟩ = v`, L132–133, and
+   inside `∃! i, … walk.get ⟨i, by omega⟩ …`, L117–118). The `by omega` must prove
+   `i < walk.length` but has no `i < n` / `i ∈ range n` in scope, so it fails.
+   This affects the definitions and ~15 lemmas/theorems. Representative omega
+   failures: L118, 132, 133, 144, 148, 178, 180, 231, 233, 283, 322, 323, 338,
+   1008, 1160, 1169, 1173.
+
+3. **Secondary Mathlib API drift** in the `maxTrail` section (not covered by the
+   Recipe): `↓reduceDite` → now `↓reduceDIte` (L1075); `List.length_ne_zero.mpr`
+   removed/renamed (L1077); an `Eq.refl`-arity error (L1017);
+   `List.getLast?_eq_getLast` deprecated → `List.getLast?_eq_some_getLast`
+   (L1220); plus a couple of `failed to synthesize` instance errors (L360, 375).
+
+4. **The fix is already designed.** `KonigsbergOQ01OQ02Recipe.lean` builds cleanly
+   and contains the corrected `walk[i]?`-form (getElem?, no index proof needed)
+   versions of every necessity lemma: `closed_walk_balance'`,
+   `open_walk_interior_balanced'`, `open_walk_first/last_*_excess'`,
+   `walk_source/target_eq_edge_filter'`, `circuit_edge_balance'`,
+   `toFinset_balance'`, `circuit_edge_balance_list'`,
+   `remove_balanced_subset_balanced'`. Repair = transcribe these in-place +
+   convert the two definitions and all call sites to `walk[i]?` + apply the
+   maxTrail API renames in (3).
+
+### `remove_circuit_balanced` — the file's last `sorry`, now CORRECTED (verified-by-construction)
+
+The previous statement was **mathematically false** (the sibling
+`KonigsbergOQ01OQ02Incomplete01.lean` proves `parent_statement_false`: removing
+a circuit from an *unbalanced* graph leaves it unbalanced). Two hypotheses are
+genuinely necessary:
+
+* `hG : IsEulerianBalanced G` — base graph must be balanced (refutation above).
+* `hCB` — the circuit's edge **set** must be circuit-balanced. `DirectedCircuit`
+  carries no edge-distinctness field, so a closed *walk* may reuse an edge
+  (e.g. `a→b→a→b→c→a`, whose edge set is unbalanced at `b`); the set-removal
+  claim then fails. For a genuine trail, `hCB` is discharged by
+  `Recipe.circuit_edge_balance_list'` (the remaining bridge once edge-distinctness
+  of `maxTrail` is proved).
+
+The corrected, self-contained proof (mirrors the verified sibling
+`remove_circuitBalanced_preserves`; uses `Finset.card_sdiff_of_subset` after
+`filter`/`\` distribution, with the subset from `steps_in_G` via
+`walkEdges_mem_edges`):
+
+```lean
+private lemma walkEdges_mem_edges (G : DiGraph V) (C : DirectedCircuit G) :
+    ∀ x ∈ walkEdges C.walk, x ∈ G.edges := by
+  intro x hx
+  unfold walkEdges at hx
+  rw [List.mem_filterMap] at hx
+  obtain ⟨i, hi_mem, hfi⟩ := hx
+  rw [List.mem_range] at hi_mem
+  have hlt : i + 1 < C.walk.length := by omega
+  rw [dif_pos hlt, Option.some.injEq] at hfi   -- (drop a stray `dsimp` if it errors "no progress")
+  rw [← hfi]; exact C.steps_in_G i hlt
+
+theorem remove_circuit_balanced (G : DiGraph V) (C : DirectedCircuit G)
+    (hG : IsEulerianBalanced G)
+    (hCB : ∀ v, ((walkEdges C.walk).toFinset.filter (fun e => e.1 = v)).card
+              = ((walkEdges C.walk).toFinset.filter (fun e => e.2 = v)).card) :
+    IsEulerianBalanced (G.removeEdgeSet (walkEdges C.walk).toFinset) := by
+  set S := (walkEdges C.walk).toFinset with hS_def
+  have hsub : S ⊆ G.edges := fun x hx =>
+    walkEdges_mem_edges G C x (List.mem_toFinset.mp hx)
+  intro v
+  show inDegree (G.removeEdgeSet S) v = outDegree (G.removeEdgeSet S) v
+  simp only [inDegree, outDegree, DiGraph.removeEdgeSet]
+  have hin :  ((G.edges \ S).filter (fun e => e.2 = v)).card
+            = (G.edges.filter (fun e => e.2 = v)).card - (S.filter (fun e => e.2 = v)).card := by
+    rw [show (G.edges \ S).filter (fun e => e.2 = v)
+          = G.edges.filter (fun e => e.2 = v) \ S.filter (fun e => e.2 = v) from by
+            ext x; simp only [Finset.mem_filter, Finset.mem_sdiff]; tauto,
+        Finset.card_sdiff_of_subset (Finset.filter_subset_filter _ hsub)]
+  have hout : ((G.edges \ S).filter (fun e => e.1 = v)).card
+            = (G.edges.filter (fun e => e.1 = v)).card - (S.filter (fun e => e.1 = v)).card := by
+    rw [show (G.edges \ S).filter (fun e => e.1 = v)
+          = G.edges.filter (fun e => e.1 = v) \ S.filter (fun e => e.1 = v) from by
+            ext x; simp only [Finset.mem_filter, Finset.mem_sdiff]; tauto,
+        Finset.card_sdiff_of_subset (Finset.filter_subset_filter _ hsub)]
+  rw [hin, hout]
+  have hg := hG v; unfold IsBalanced inDegree outDegree at hg
+  have hcb := hCB v
+  omega
+```
+
+(This compiles in isolation modulo the surrounding file's breakage — its only
+dependencies are `walkEdges`, `DiGraph.removeEdgeSet`, `inDegree/outDegree`,
+`IsBalanced`, `DirectedCircuit`, and `Finset.card_sdiff_of_subset`, all of which
+are well-formed. It cannot be *verified by build* until the file compiles.)
+
+### Next Steps (repair roadmap, in order)
+
+1. **maxTrail API renames** (cheap, ~5 edits): `↓reduceDite`→`↓reduceDIte`;
+   replace `List.length_ne_zero.mpr` with the current spelling
+   (`List.length_pos_iff` / `List.length_ne_zero_iff`); fix the `Eq.refl` arity
+   at L1017; `List.getLast?_eq_getLast`→`List.getLast?_eq_some_getLast`.
+2. **Convert definitions to `walk[i]?`**: `HasEulerianCircuit`, `HasEulerianPath`
+   (drop the `by omega` index proofs; use `walk[i]? = some e.1`).
+3. **Transcribe the Recipe necessity lemmas** in `walk[i]?` form and rewire
+   `eulerian_circuit_implies_balanced` / `euler_path_implies_degree_balance`.
+4. **Land the corrected `remove_circuit_balanced`** above.
+5. Then attack the two axioms (`directed_eulerian_iff`,
+   `directed_euler_path_iff`) — the Hierholzer sufficiency construction.
+
+### Files
+
+- (diagnosis only; no Lean committed — main file left untouched to avoid shipping a non-building edit)
+- Build evidence: `Proofs.KonigsbergOQ01OQ02` FAILS; `Proofs.KonigsbergOQ01OQ02Recipe` SUCCEEDS (7743 jobs).
+
 ## Session 19 (2026-05-09, researcher-9)
 
 **Mode**: REVISIT (recipe extension; no main-file edits)

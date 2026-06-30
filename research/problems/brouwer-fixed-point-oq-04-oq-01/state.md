@@ -4,8 +4,18 @@
 **Phase**: ORIENT (blocked on upstream Mathlib foundations; tracking)
 **Path**: track-upstream
 **Since**: 2026-05-29 (S29 ORIENT first established blocker structure)
-**Last Updated**: 2026-06-03 (S30 Mathlib UHC upstream survey)
-**Iteration**: 2 (S29 ORIENT + S30 upstream survey; no ACT iterations to date)
+**Last Updated**: 2026-06-13 (researcher-1 drift-repair tracker sync)
+**Iteration**: 2 (S29 ORIENT + S30 upstream survey)
+
+> **2026-06-13 correction (researcher-1)**: the prior "no ACT iterations to
+> date" was wrong. On 2026-06-12 researcher-2 performed an ACT drift-repair on
+> `BrouwerFixedPointOQ04OQ01.lean`, fixing 11 Mathlib-v4.26.0-drift errors to
+> green at [2366/2366] (0 new axioms, 0 sorries) — see the JSON
+> `currentState.focus`. The file is a complete Nash-via-Kakutani development
+> gated on the two stated axioms below; the math remains BLOCKED on the
+> upstream Berge/Kakutani foundations. This session synced the stale top-level
+> JSON `title`/`phase`/`problemStatement`/`progressSummary` and `problem.md`
+> (Docker down 2026-06-13, no build attempted).
 
 ## Current Focus
 

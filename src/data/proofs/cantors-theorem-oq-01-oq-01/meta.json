@@ -32,7 +32,8 @@
       "Cantor's own theorem provides the key leverage in the forward direction: |𝒫(ℝ)| = ℵ₂ forces 𝔠 < ℵ₂ = succ(ℵ₁), and successor cardinal arithmetic then extracts CH directly from the cardinality equation.",
       "The unconditional bound ℵ₁ < |𝒫(ℝ)| holds in pure ZFC: Cantor gives |ℝ| < |𝒫(ℝ)|, and ℵ₁ ≤ 𝔠 = |ℝ| is ZFC-provable. So the power set of ℝ is provably 'bigger than ℵ₁' without any additional axioms.",
       "The beth representation #(Set ℝ) = ℶ₂ is unconditional: ℶ₀ = ℵ₀, ℶ₁ = 2^ℵ₀ = 𝔠, ℶ₂ = 2^𝔠 = |𝒫(ℝ)|. The question |𝒫(ℝ)| = ℵ₂ is precisely whether the beth and aleph hierarchies agree at index 2.",
-      "The file demonstrates a clean proof architecture: define the proposition, state multiple equivalent reformulations, prove the iff directions separately, characterize the negation, and bundle everything into a summary theorem — a reusable pattern for independence-type results."
+      "The file demonstrates a clean proof architecture: define the proposition, state multiple equivalent reformulations, prove the iff directions separately, characterize the negation, and bundle everything into a summary theorem — a reusable pattern for independence-type results.",
+      "König's theorem already forces the forward direction: it gives cf(2^𝔠) > 𝔠, so if 2^𝔠 = |𝒫(ℝ)| = ℵ₂ then cf(ℵ₂) = ℵ₂ > 𝔠 (ℵ₂ is regular), hence 𝔠 < ℵ₂, i.e. 𝔠 ≤ ℵ₁, and with the unconditional ℵ₁ ≤ 𝔠 this pins 𝔠 = ℵ₁ — CH. The equation is consistent precisely because the target ℵ₂ is a regular cardinal that evades König's cofinality obstruction (an ℵ_ω-style value would be outright impossible for 2^𝔠)."
     ],
     "prerequisites": [
       "Cardinal arithmetic (aleph, beth, continuum hierarchies)",
@@ -104,6 +105,26 @@
       "targetId": "cantors-theorem",
       "relationship": "parent-problem",
       "description": "Based on Cantor's theorem |X| < |𝒫(X)| which provides the key inequality 𝔠 < |𝒫(ℝ)|"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "The forward direction extracts CH (𝔠 = ℵ₁) from |𝒫(ℝ)| = ℵ₂; that entry establishes the Gödel/Cohen independence of CH from ZFC, which is exactly why this equation cannot be settled in ZFC despite being a precise cardinality statement."
+    },
+    {
+      "targetId": "continuum-hypothesis-oq-01",
+      "relationship": "related",
+      "description": "This entry's open question — finding a 'positive' axiom (e.g. Martin's Maximum) that implies |𝒫(ℝ)| = ℵ₂ instead of assuming CH + GCH_𝔠 — is the cardinal-arithmetic instance of the broader debate, formalized there, over which new axioms ought to decide the continuum."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument is the source of the strict inequality |ℝ| < |𝒫(ℝ)| (= 𝔠 < ℶ₂) that drives the unconditional lower bound ℵ₁ < |𝒫(ℝ)| used here."
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "foundational",
+      "description": "The cardinal comparison underlying every equation here — extracting equalities from two-sided ≤ on cardinals, and the well-definedness of the aleph/beth hierarchies — rests on Schröder–Bernstein antisymmetry of cardinal injections."
     }
   ],
   "references": [

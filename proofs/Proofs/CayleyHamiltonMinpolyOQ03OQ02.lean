@@ -52,6 +52,7 @@
 -/
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
 import Mathlib.Data.Nat.BitIndices
+import Mathlib.Data.Nat.Size
 import Mathlib.Tactic
 
 namespace MinpolyComplexity.SubcubicKrylov
@@ -218,6 +219,52 @@ theorem squareKrylovProd_factor_count_le (j : ℕ) :
   have hL := length_le_twoPow_sum j.bitIndices
   omega
 
+/-- **Sharper factor-count bound (asymptotically tight).** The number of
+    squared-Krylov factors needed to assemble `M^j` — the popcount of `j`,
+    i.e. `j.bitIndices.length` — is bounded by the *bit-length* of `j`,
+    `Nat.size j` (which equals `⌈log₂ (j+1)⌉`). This is the genuinely
+    logarithmic bound promised by the Keller–Gehrig analysis; the elementary
+    `squareKrylovProd_factor_count_le` (`≤ j`) is exponentially weaker.
+
+    Proof outline. Every set-bit index `i ∈ j.bitIndices` contributes a
+    summand `2 ^ i` to `(j.bitIndices.map (2 ^ ·)).sum = j`
+    (`Nat.twoPowSum_bitIndices`), so `2 ^ i ≤ j`, hence `i < Nat.size j`.
+    The index list is `Nodup` (it is strictly sorted), so it injects into
+    `Finset.range (Nat.size j)` and its length is bounded by that range's
+    cardinality. -/
+theorem squareKrylovProd_factor_count_le_size (j : ℕ) :
+    j.bitIndices.length ≤ Nat.size j := by
+  have hsum : (j.bitIndices.map (fun i => 2 ^ i)).sum = j :=
+    Nat.twoPowSum_bitIndices j
+  -- every set-bit index is strictly below the bit-length of `j`
+  have hlt : ∀ i ∈ j.bitIndices, i < Nat.size j := by
+    intro i hi
+    have hmem : (2 : ℕ) ^ i ∈ j.bitIndices.map (fun i => 2 ^ i) :=
+      List.mem_map.mpr ⟨i, hi, rfl⟩
+    have hle : (2 : ℕ) ^ i ≤ j := by
+      have h := List.single_le_sum (fun x _ => Nat.zero_le x) _ hmem
+      rwa [hsum] at h
+    exact Nat.lt_size.mpr hle
+  -- the index list has no duplicates (strictly sorted ⇒ nodup)
+  have hnodup : j.bitIndices.Nodup := by
+    first
+      | exact List.Pairwise.nodup Nat.bitIndices_sorted
+      | exact Nat.bitIndices_sorted.nodup
+  -- a nodup list with all entries `< size j` embeds into `range (size j)`
+  have hsub : j.bitIndices.toFinset ⊆ Finset.range (Nat.size j) := by
+    intro x hx
+    rw [List.mem_toFinset] at hx
+    exact Finset.mem_range.mpr (hlt x hx)
+  have hcard : j.bitIndices.toFinset.card = j.bitIndices.length :=
+    List.toFinset_card_of_nodup hnodup
+  have hcardle :
+      j.bitIndices.toFinset.card ≤ (Finset.range (Nat.size j)).card :=
+    Finset.card_le_card hsub
+  calc j.bitIndices.length
+      = j.bitIndices.toFinset.card := hcard.symm
+    _ ≤ (Finset.range (Nat.size j)).card := hcardle
+    _ = Nat.size j := Finset.card_range _
+
 -- ============================================================
 -- Layer 3 (axiomatized): O(n^ω) operation count
 -- ============================================================
@@ -268,9 +315,9 @@ end MinpolyComplexity.SubcubicKrylov
   to a binary-expansion product formula recovering every Krylov power M^j.
 
   **Status.** Complete formalization of Layers 1 + 2 + vector-level
-  corollaries + matrix-multiplication factor-count bound (Layer 2.5) +
-  axiomatized Layer 3 placeholder for ω. 11 theorems (3 Layer 1 +
-  4 Layer 2 matrix-level + 2 Layer 2 vector-level + 1 Layer 2.5
+  corollaries + matrix-multiplication factor-count bounds (Layer 2.5) +
+  axiomatized Layer 3 placeholder for ω. 12 theorems (3 Layer 1 +
+  4 Layer 2 matrix-level + 2 Layer 2 vector-level + 2 Layer 2.5
   factor-count + 1 Layer 3 ω two-sided sanity), 0 sorries, 3 axioms
   (`omegaMM`, `omegaMM_two_le`, `omegaMM_lt_three` — opaque
   Layer 3 ω with its known bounds).
@@ -292,15 +339,18 @@ end MinpolyComplexity.SubcubicKrylov
   - `squareKrylovProd_mulVec` — vector corollary: `(squareKrylovProd M j).mulVec v = (M^j).mulVec v`.
   - `krylov_in_squareKrylov_range` — reachability: every Krylov vector lies in the image of the squared-Krylov product matrix-vector map.
 
-  **Layer 2.5 factor-count bound (S5 addition, 1 helper + 1 theorem).**
+  **Layer 2.5 factor-count bounds (S5 + S8 additions, 1 helper + 2 theorems).**
   - `length_le_twoPow_sum` (helper) — for any `L : List ℕ`,
     `L.length ≤ (L.map (2^·)).sum`.
   - `squareKrylovProd_factor_count_le` — `j.bitIndices.length ≤ j`, the
-    matrix-multiplication factor count for assembling `M^j`. Combined
-    with `Layer 1 + Layer 2`, this realises the `O(log j)` matrix-product
-    bound of the Keller–Gehrig assembly loop (popcount(j) ≤ j; the
-    sharper `popcount(j) ≤ Nat.size j` bound is omitted pending the
-    appropriate Mathlib API).
+    elementary matrix-multiplication factor count for assembling `M^j`.
+  - `squareKrylovProd_factor_count_le_size` (S8) — the asymptotically
+    tight `j.bitIndices.length ≤ Nat.size j ≈ ⌈log₂ (j+1)⌉`. Every
+    set-bit index `i` satisfies `2^i ≤ j` (so `i < Nat.size j` via
+    `Nat.lt_size`); the `Nodup` bit-index list therefore embeds into
+    `Finset.range (Nat.size j)`, bounding its length by that range's
+    cardinality. This realises the genuinely `O(log j)` matrix-product
+    bound of the Keller–Gehrig assembly loop.
 
   **Layer 3 axiomatized placeholder (S5 addition, 3 axioms + 1 theorem).**
   - `axiom omegaMM : ℝ` — the matrix-multiplication exponent.

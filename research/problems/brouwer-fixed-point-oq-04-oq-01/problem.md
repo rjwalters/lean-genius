@@ -1,4 +1,4 @@
-# Problem: Prove Kakutani Fixed Point Theorem from Brouwer via Mathlib topology
+# Problem: Nash equilibrium existence for finite games via the Kakutani fixed point theorem
 
 **Slug**: brouwer-fixed-point-oq-04-oq-01
 **Created**: 2026-04-02T21:57:15-07:00
@@ -9,103 +9,91 @@
 
 ### Formal Statement
 
-$$
-\text{[LaTeX formulation of the theorem/conjecture]}
-$$
+For every finite N-player normal-form game `G` with `N > 0`, there exists a
+mixed-strategy profile that is a fixed point of the joint best-response
+correspondence — a Nash equilibrium. Formalized as `nash_existence` in
+`proofs/Proofs/BrouwerFixedPointOQ04OQ01.lean`, modulo two stated axioms:
+
+- `bestResponse_uhc` — upper hemicontinuity of the best-response
+  correspondence (Berge maximum theorem).
+- `kakutani_product_simplex` — Kakutani fixed point theorem on the product
+  simplex.
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+Prove that every finite normal-form game has at least one Nash equilibrium in
+mixed strategies, using the Kakutani fixed point theorem. The Lean development
+defines expected utility and the best-response correspondence (proved nonempty,
+convex, and closed), then derives Nash existence from a Kakutani fixed point of
+the joint best response.
 
 ### Why This Matters
 
-[Significance of the problem - mathematical importance, applications, connections]
+- Nash existence is the foundational theorem of non-cooperative game theory
+  (Nash 1950).
+- It connects a Brouwer/Kakutani fixed-point development to a set-valued
+  (correspondence) fixed point application inside Lean.
+- The two remaining axioms (Berge maximum theorem, Kakutani) are not yet in
+  Mathlib, so this entry also scopes concrete Mathlib gaps.
 
 ## Known Results
 
-### What's Already Proven
+### What's Already Proven (in this repo)
 
-- [Related theorem 1] — [citation/location]
-- [Related theorem 2] — [citation/location]
+- `proofs/Proofs/BrouwerFixedPointOQ04OQ01.lean` (297 lines, 8 theorems, 2
+  axioms, 0 sorries): expected-utility/best-response framework, with the
+  best-response correspondence proved nonempty (`bestResponse_nonempty`),
+  convex (`bestResponse_convex`), and closed (`bestResponse_closed`), and
+  `nash_existence` derived from the two axioms.
 
 ### What's Still Open
 
-- [Open question 1]
-- [Open question 2]
+- Discharge `bestResponse_uhc` (Berge maximum theorem).
+- Discharge `kakutani_product_simplex` (Kakutani fixed point theorem).
 
 ### Our Goal
 
-[Specific scope of what we're attempting — which piece of the puzzle]
-
-## Related Gallery Proofs
-
-| Proof | Relevance | Techniques |
-|-------|-----------|------------|
-| [proof-slug-1] | [why related] | [techniques used] |
-| [proof-slug-2] | [why related] | [techniques used] |
-
-## Initial Thoughts
-
-### Potential Approaches
-
-1. **Approach A**: [brief description]
-   - Why it might work: ...
-   - Risk: ...
-
-2. **Approach B**: [brief description]
-   - Why it might work: ...
-   - Risk: ...
-
-### Key Difficulties
-
-- [Difficulty 1]
-- [Difficulty 2]
-
-### What Would a Proof Need?
-
-- Key lemma 1: ...
-- Key lemma 2: ...
-- Technical requirements: ...
+Reduce the two stated axioms to theorems. Both are large upstream-Mathlib
+foundations rather than gallery-sized work — see `state.md` for the live
+upstream-tracking analysis and `knowledge.md` for the dependency map.
 
 ## Tractability Assessment
 
-**Difficulty**: Low | Medium | High | Moonshot
+**Difficulty**: High (blocked on upstream Mathlib foundations)
 
 **Justification**:
-- [Reason for assessment]
-- [Similar problems that have been solved]
-- [Techniques available in Mathlib]
-
-**Estimated Effort**:
-- Exploration: [hours/days]
-- If tractable: [days/weeks]
-- If hard: [unknown]
+- Berge's maximum theorem is estimated at ~300–500 LOC of Mathlib-style work.
+- Kakutani's fixed point theorem is estimated at ~500–1500 LOC and has no
+  Mathlib activity at head-of-tree.
+- The pinned Mathlib (v4.26.0) lacks an upper-hemicontinuity predicate API;
+  the UHC API merged to Mathlib head-of-tree on 2026-01-09 (PR #33626) but is
+  not in the pin.
 
 ## References
 
 ### Papers
-- [Author, Title, Year] — [brief note]
-
-### Online Resources
-- [URL] — [description]
+- Nash, J. (1950), "Equilibrium points in n-person games", PNAS.
+- Berge, C. (1963), *Topological Spaces* (maximum theorem).
+- Kakutani, S. (1941), "A generalization of Brouwer's fixed point theorem".
 
 ### Mathlib
-- [Relevant Mathlib module] — [what it provides]
+- `Mathlib.Topology.*`, `Mathlib.Analysis.Convex.*` — used for the
+  best-response framework. Missing: UHC predicate API (in head-of-tree),
+  Berge maximum theorem, Kakutani fixed point theorem.
 
 ## Metadata
 
 ```yaml
 tags:
-  - number-theory  # or: algebra, analysis, topology, combinatorics, etc.
-  - prime-gaps
-  - sieve-methods
+  - game-theory
+  - topology
+  - fixed-point
 related_proofs:
-  - infinitude-of-primes
-  - sieve-of-eratosthenes
-difficulty: medium
-source: proof-suggestion
+  - brouwer-fixed-point
+difficulty: high
+source: user-request
 created: 2026-04-02T21:57:15-07:00
 ```
 
 **Significance**: 8/10
-**Tractability**: 6/10
+**Tractability**: 3/10

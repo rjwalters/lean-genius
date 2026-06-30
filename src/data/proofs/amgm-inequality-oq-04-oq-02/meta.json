@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1575,
+    "lineCount": 1601,
     "theoremCount": 47,
     "definitionCount": 10,
     "assumptions": "1 axiom: legendre_relation (the general Legendre relation E(k)·K(k') + E(k')·K(k) − K(k)·K(k') = π/2 for 0 < k < 1; classical 19th-century result; proof requires differentiation under the integral sign and the Wronskian of the Legendre ODE — to be replaced with a constructive proof in a future session). The file inherits 1 additional axiom from AmgmInequalityOQ04OQ01 (agm_ellipticK_connection), but that is not declared in this file.",
@@ -61,11 +61,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "amgm-inequality-oq-04-oq-01",
-      "relationship": "extends",
-      "description": "Reuses the rigorous `ellipticK` definition (Mathlib intervalIntegral). This file defines `ellipticE` analogously and adds the complementary modulus k' = √(1-k²) plus the Legendre relation."
-    },
-    {
       "targetId": "amgm-inequality-oq-04-oq-05",
       "relationship": "supports",
       "description": "OQ04OQ05 (Brent-Salamin) currently axiomatizes the symmetric Legendre relation `2KE - K² = π/2` at k = 1/√2. This file's `legendre_relation_symmetric` theorem (proved from the more general axiom) provides exactly that statement, enabling a future session to discharge the OQ04OQ05 axiom."
@@ -81,65 +76,145 @@
       "id": "sec-preamble",
       "title": "Preamble: Goals and Status Checklist",
       "startLine": 1,
-      "endLine": 56,
+      "endLine": 70,
       "summary": "Module docstring laying out the seven-step plan: reuse ellipticK from OQ04OQ01; define ellipticE via intervalIntegral; define complementary modulus and K', E'; prove basic properties; axiomatize the general Legendre relation; derive the symmetric case at k = 1/√2. Includes a status checklist tracking which steps are proved vs axiomatized.",
       "mathContext": "Legendre's relation (DLMF §19.7.1) for complete elliptic integrals: $E(k) K(k') + E(k') K(k) - K(k) K(k') = \\pi/2$ where $k' = \\sqrt{1-k^2}$. The standard textbook proof differentiates the bracketed combination using $\\frac{dK}{dk} = \\frac{E - (k')^2 K}{k (k')^2}$ and $\\frac{dE}{dk} = \\frac{E - K}{k}$, shows the derivative is zero, and pins the constant by the boundary value at k = 1/√2 (or the limit k → 0)."
     },
     {
       "id": "sec-ellipticE",
       "title": "§ 1: Complete Elliptic Integral E(k) of the Second Kind",
-      "startLine": 62,
-      "endLine": 76,
+      "startLine": 71,
+      "endLine": 85,
       "summary": "Defines `ellipticIntegrandE k θ = √(1 - k²·sin²θ)` and `ellipticE k = ∫₀^{π/2} ellipticIntegrandE k θ dθ` via Mathlib's `intervalIntegral`. Both are `noncomputable def`s.",
       "mathContext": "$E(k) = \\int_0^{\\pi/2} \\sqrt{1 - k^2 \\sin^2 \\theta} \\, d\\theta$. Unlike $K(k)$, which requires $|k| < 1$ for the denominator to stay positive, $E(k)$'s integrand is well-defined for all real $k$ (using `Real.sqrt`'s convention that `sqrt` of a negative is 0). For $|k| \\leq 1$ the integrand is also bounded above by 1, since $1 - k^2 \\sin^2 \\theta \\leq 1$."
     },
     {
       "id": "sec-integrand",
       "title": "§ 2: Basic Properties of the E-Integrand",
-      "startLine": 78,
-      "endLine": 117,
+      "startLine": 86,
+      "endLine": 127,
       "summary": "Six lemmas: integrandE_nonneg (Real.sqrt is nonneg), integrandE_le_one (uses 1 - k²sin²θ ≤ 1), integrandE_zero_eq_one (the integrand at k=0 is √1=1), integrandE_lower_bound (`√(1-k²) ≤ ellipticIntegrandE k θ` for k² < 1), integrandE_continuous (composition of continuous functions), ellipticE_integrable (continuous ⇒ intervalIntegrable on a closed interval).",
       "mathContext": "The lower bound $\\sqrt{1-k^2} \\leq \\sqrt{1 - k^2 \\sin^2 \\theta}$ uses $\\sin^2 \\theta \\leq 1$, hence $k^2 \\sin^2 \\theta \\leq k^2$, hence $1 - k^2 \\leq 1 - k^2 \\sin^2 \\theta$, then `Real.sqrt_le_sqrt`. This lower bound is the engine behind `ellipticE_pos`."
     },
     {
       "id": "sec-keyvalues",
       "title": "§ 3: Key Values of E",
-      "startLine": 119,
-      "endLine": 153,
+      "startLine": 128,
+      "endLine": 193,
       "summary": "Two main theorems: `ellipticE_zero : E(0) = π/2` (one-line proof: simp_rw integrandE_zero_eq_one + integral_const) and `ellipticE_pos : 0 < E(k)` for k² < 1 (uses `intervalIntegral.integral_mono_on` with the lower bound √(1-k²)).",
       "mathContext": "$E(0) = \\int_0^{\\pi/2} 1 \\, d\\theta = \\pi/2$. For $|k| < 1$: $E(k) \\geq \\sqrt{1 - k^2} \\cdot \\frac{\\pi}{2} > 0$ since both factors are positive."
     },
     {
       "id": "sec-complmodulus",
       "title": "§ 4: The Complementary Modulus k' = √(1-k²)",
-      "startLine": 155,
-      "endLine": 184,
+      "startLine": 194,
+      "endLine": 264,
       "summary": "Defines `complModulus k = Real.sqrt (1 - k^2)`. Five lemmas: complModulus_nonneg, complModulus_pos (when k² < 1), complModulus_sq (Pythagorean: (k')² = 1 - k² when k² ≤ 1), complModulus_sq_lt_one (when 0 < k² < 1), complModulus_complModulus (k'' = k for k ∈ [0, 1]).",
       "mathContext": "$k' = \\sqrt{1 - k^2}$ is defined for all real $k$ via `Real.sqrt`. The key identities are $(k')^2 = 1 - k^2$ for $|k| \\leq 1$ (using `Real.mul_self_sqrt`) and the involutive property $k'' = k$ for $0 \\leq k \\leq 1$ (using `Real.sqrt_sq`). The pair $(k, k')$ with $k^2 + (k')^2 = 1$ parametrizes the unit circle's first quadrant."
     },
     {
       "id": "sec-Kprime-Eprime",
       "title": "§ 5: K and E at the Complementary Modulus",
-      "startLine": 186,
-      "endLine": 200,
+      "startLine": 265,
+      "endLine": 282,
       "summary": "Defines ellipticK' k = K(k') and ellipticE' k = E(k'). Two positivity lemmas: ellipticK'_pos and ellipticE'_pos for 0 < k² < 1 (since k' is then in the open interval (0, 1)).",
       "mathContext": "$K'(k) := K(k') = K(\\sqrt{1-k^2})$ and $E'(k) := E(k')$ are the standard *complementary* elliptic integrals. The notation $K'$ is overloaded in the literature (sometimes meaning $\\frac{dK}{dk}$, sometimes $K(k')$); we use the latter convention."
     },
     {
       "id": "sec-legendre",
       "title": "§ 6: Legendre's Relation (Axiomatized)",
-      "startLine": 202,
-      "endLine": 244,
+      "startLine": 283,
+      "endLine": 312,
       "summary": "States `axiom legendre_relation` for 0 < k < 1: E(k)·K'(k) + E'(k)·K(k) − K(k)·K'(k) = π/2. Comment block explains the axiom is a deep classical analytic identity proved via the Legendre ODE Wronskian, requires differentiation under the integral, and is targeted for elimination in a future session.",
       "mathContext": "Legendre's relation (NIST DLMF 19.7.1, Whittaker–Watson §22.41): $E(k) K(k') + E(k') K(k) - K(k) K(k') = \\pi/2$ for $0 < k < 1$. The standard proof: define $f(k) := E K' + E' K - K K'$ and compute $f'(k) = 0$ using $\\frac{dK}{dk} = \\frac{E - (k')^2 K}{k (k')^2}$ and $\\frac{dE}{dk} = \\frac{E - K}{k}$ (with corresponding derivatives in $k'$). Pin the constant by evaluating at any convenient point — e.g. $k = 1/\\sqrt{2}$ where $f = 2KE - K^2$, or the limit $k \\to 0^+$ where $K \\to \\pi/2$, $E \\to \\pi/2$, $K' \\to \\infty$, $E' \\to 1$, and a careful limit gives $\\pi/2$."
     },
     {
       "id": "sec-symmetric",
       "title": "§ 7: Symmetric Special Case at k = 1/√2",
-      "startLine": 246,
-      "endLine": 285,
+      "startLine": 313,
+      "endLine": 366,
       "summary": "Four private helper lemmas (sqrt_two_pos, one_div_sqrt_two_sq, one_div_sqrt_two_pos, one_div_sqrt_two_lt_one) plus two main theorems: `complModulus_symmetric : complModulus(1/√2) = 1/√2` (uses `Real.sqrt_sq` after reducing `1 - (1/√2)² = (1/√2)²`); `legendre_relation_symmetric : 2·K(1/√2)·E(1/√2) − K(1/√2)² = π/2` (specializes the general axiom and uses `linear_combination`).",
       "mathContext": "At $k = 1/\\sqrt{2}$: $k' = \\sqrt{1 - 1/2} = \\sqrt{1/2} = 1/\\sqrt{2} = k$. So $K(k') = K(k)$ and $E(k') = E(k)$. The general Legendre relation $E K' + E' K - K K' = \\pi/2$ becomes $E K + E K - K K = 2 E K - K^2 = \\pi/2$. This is the symmetric form used in the Brent-Salamin algorithm and currently axiomatized in `AmgmInequalityOQ04OQ05.legendre_relation`."
+    },
+    {
+      "id": "sec-dE-dk",
+      "title": "§ 8: Partial Derivative ∂ₖF_E and the Integral Identity ∫∂ₖF = (E−K)/k",
+      "startLine": 367,
+      "endLine": 512,
+      "summary": "Defines `dIntegrandE k θ = -k·sin²θ/√(1-k²sin²θ)` (the k-derivative of the E-integrand) with continuity/integrability lemmas, the pointwise derivative `integrandE_hasDerivAt_in_k`, the algebraic rewrite `dIntegrandE_mul_k`, and the key identity `integral_dIntegrandE_eq : ∫₀^{π/2} dIntegrandE k θ dθ = (E(k) − K(k))/k`.",
+      "mathContext": "$\\partial_k \\sqrt{1 - k^2\\sin^2\\theta} = \\frac{-k\\sin^2\\theta}{\\sqrt{1-k^2\\sin^2\\theta}}$. Integrating over $[0,\\pi/2]$ and rewriting $k^2\\sin^2\\theta$ against the integrands of $E$ and $K$ yields $\\frac{dE}{dk} = \\frac{E(k) - K(k)}{k}$, the E-side derivative formula needed for the Wronskian proof of Legendre's relation."
+    },
+    {
+      "id": "sec-bound-dE",
+      "title": "§ 9: Uniform Bound for `dIntegrandE` (dominated-derivative hypotheses)",
+      "startLine": 513,
+      "endLine": 604,
+      "summary": "Provides the dominating function for differentiation under the integral sign: `boundDIntegrandE M θ` with continuity/integrability, and `dIntegrandE_abs_le_bound` showing `|dIntegrandE k θ| ≤ boundDIntegrandE M θ` uniformly for k with k² ≤ M² < 1.",
+      "mathContext": "Mathlib's `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` needs a fixed integrable dominating function for the parametrized derivative near $k$. Since $\\left|\\partial_k\\,\\text{integrand}\\right| = \\frac{k\\sin^2\\theta}{\\sqrt{1-k^2\\sin^2\\theta}} \\le \\frac{M}{\\sqrt{1-M^2}}$ for $k^2 \\le M^2 < 1$, `boundDIntegrandE` dominates the family."
+    },
+    {
+      "id": "sec-dK-integrand",
+      "title": "§ 10: Partial Derivative ∂ₖF_K and Chain-Rule Infrastructure for `dK/dk`",
+      "startLine": 605,
+      "endLine": 735,
+      "summary": "K-side analog of §8: defines `dIntegrandK k θ` (the k-derivative of the K-integrand `1/√(1-k²sin²θ)`) with continuity/integrability and the pointwise derivative `integrandK_hasDerivAt_in_k`, mirroring §8 for the K-integrand to set up the IBP route to `dK/dk`.",
+      "mathContext": "$\\partial_k \\frac{1}{\\sqrt{1-k^2\\sin^2\\theta}} = \\frac{k\\sin^2\\theta}{(1-k^2\\sin^2\\theta)^{3/2}}$. Unlike the E-side, the K-side integral is not pointwise-splittable and ultimately requires integration by parts (developed in §13–§16); this section supplies the regularity facts for $k^2 < 1$."
+    },
+    {
+      "id": "sec-bound-dK",
+      "title": "§ 11: Uniform Bound for `dIntegrandK` (K-side analog of §9)",
+      "startLine": 736,
+      "endLine": 868,
+      "summary": "K-side counterpart of §9: `boundDIntegrandK M θ` with continuity/integrability and `dIntegrandK_abs_le_bound`, the dominating function enabling differentiation under the integral for `K(k)`. Mirrors §9 with the higher power $(1-k²sin²θ)^{3/2}$ in the denominator.",
+      "mathContext": "The K-side derivative $\\frac{k\\sin^2\\theta}{(1-k^2\\sin^2\\theta)^{3/2}}$ is bounded for $k^2 \\le M^2 < 1$ by $\\frac{M}{(1-M^2)^{3/2}}$, giving the integrable dominating function required by Mathlib's dominated-derivative lemma — the K-analog of `dIntegrandE_abs_le_bound`."
+    },
+    {
+      "id": "sec-kside-algebra",
+      "title": "§ 12: K-side Algebraic Identities — Building Blocks for the IBP Step",
+      "startLine": 869,
+      "endLine": 1012,
+      "summary": "Two trigonometric integral identities `integral_sin_sq_div_sqrt_denom` and `integral_cos_sq_div_sqrt_denom` (for 0 < k < 1) expressing ∫ sin²θ/√(denom) and ∫ cos²θ/√(denom) in terms of E and K — the algebraic pieces consumed by the integration-by-parts closure for the K-side derivative.",
+      "mathContext": "Reducing the K-side derivative needs $\\int_0^{\\pi/2}\\frac{\\sin^2\\theta}{\\sqrt{1-k^2\\sin^2\\theta}}\\,d\\theta = \\frac{K - E}{k^2}$ and the complementary $\\cos^2\\theta$ integral; together they rewrite every K-side term as a combination of $E(k)$ and $K(k)$."
+    },
+    {
+      "id": "sec-auxFnK",
+      "title": "§ 13: Auxiliary Function `auxFnK` for the K-side IBP Step",
+      "startLine": 1013,
+      "endLine": 1064,
+      "summary": "Defines the helper `auxFnK k θ` whose boundary values vanish (`auxFnK_zero : auxFnK k 0 = 0`, `auxFnK_pi_div_two : auxFnK k (π/2) = 0`). These endpoint zeros are exactly what makes the integration-by-parts boundary term drop out.",
+      "mathContext": "Integration by parts for $\\frac{dK}{dk}$ writes the awkward $(1-k^2\\sin^2\\theta)^{-3/2}$ term as a total $\\theta$-derivative of a product $u\\,v$; `auxFnK` is that product. Because it vanishes at $\\theta = 0$ and $\\theta = \\pi/2$, the boundary contribution $[u v]_0^{\\pi/2} = 0$ and only $\\int (uv)'$ survives."
+    },
+    {
+      "id": "sec-auxFnK-deriv",
+      "title": "§ 14: Pointwise Chain Rule for `auxFnK` in θ",
+      "startLine": 1065,
+      "endLine": 1250,
+      "summary": "Establishes the θ-derivative of `auxFnK`: the algebraic form `auxFnK_deriv_form_eq` and the `HasDerivAt` statement `auxFnK_hasDerivAt` for k² < 1 — the differentiated identity whose integral (§15) closes the IBP step.",
+      "mathContext": "Differentiating $\\text{auxFnK}\\,k\\,\\theta$ in $\\theta$ via the product and chain rules relates $(1-k^2\\sin^2\\theta)^{-3/2}$ to lower-order $\\cos\\theta$/$\\sin\\theta$ terms, valid for $k^2 < 1$ where the denominators stay positive."
+    },
+    {
+      "id": "sec-auxFnK-ftc",
+      "title": "§ 15: FTC Closure for `auxFnK`: ∫₀^{π/2} (auxFnK k)′ dθ = 0",
+      "startLine": 1251,
+      "endLine": 1354,
+      "summary": "Combines §13's boundary zeros with §14's derivative: `auxFnK_deriv_continuous` and `integral_auxFnK_deriv_eq_zero`, which apply the Fundamental Theorem of Calculus to get ∫₀^{π/2} (auxFnK k)′ dθ = auxFnK k (π/2) − auxFnK k 0 = 0.",
+      "mathContext": "By the FTC, $\\int_0^{\\pi/2}\\frac{d}{d\\theta}\\text{auxFnK}\\,k\\,\\theta\\,d\\theta = \\text{auxFnK}\\,k\\,(\\pi/2) - \\text{auxFnK}\\,k\\,0 = 0$ (both endpoints vanish by §13). Via §14's derivative form, this is exactly the integration-by-parts identity linking the hard $(1-k^2\\sin^2\\theta)^{-3/2}$ integral to the $E$/$K$ integrals of §12."
+    },
+    {
+      "id": "sec-dK-integral",
+      "title": "§ 16: K-side Integral Identity (IBP closure for `dIntegrandK`)",
+      "startLine": 1355,
+      "endLine": 1453,
+      "summary": "`integral_dIntegrandK_eq` (0 < k < 1): assembles §12's algebraic identities and §15's FTC closure into ∫₀^{π/2} dIntegrandK k θ dθ = (E(k) − (1−k²)K(k)) / (k(1−k²)) — the integral of the K-derivative.",
+      "mathContext": "Integration by parts removes the non-splittable $(1-k^2\\sin^2\\theta)^{-3/2}$ term, leaving $\\int_0^{\\pi/2}\\partial_k\\frac{1}{\\sqrt{1-k^2\\sin^2\\theta}}\\,d\\theta = \\frac{E(k) - (k')^2 K(k)}{k (k')^2}$ with $(k')^2 = 1-k^2$ — the integral form of the classical $dK/dk$ formula."
+    },
+    {
+      "id": "sec-dK-dk",
+      "title": "§ 17: K-side Differentiation Under the Integral: dK/dk = (E − (1−k²)K)/(k(1−k²))",
+      "startLine": 1454,
+      "endLine": 1601,
+      "summary": "`dK_dk` (0 < k < 1): combines the dominated-derivative machinery (§10–§11) with the integral identity (§16) to prove `HasDerivAt ellipticK ((E(k) − (1−k²)K(k))/(k(1−k²))) k` — the K-side derivative formula required, alongside §8's E-side formula, for a future axiom-free Wronskian proof of Legendre's relation.",
+      "mathContext": "Differentiation under the integral sign gives $\\frac{dK}{dk} = \\int_0^{\\pi/2}\\partial_k\\frac{1}{\\sqrt{1-k^2\\sin^2\\theta}}\\,d\\theta$, which §16 evaluates to $\\frac{E - (1-k^2)K}{k(1-k^2)}$. With $\\frac{dE}{dk} = \\frac{E-K}{k}$ (§8), this supplies both Wronskian ingredients to eventually discharge the `legendre_relation` axiom (§6)."
     }
   ],
   "mainTheorems": [
@@ -176,7 +251,7 @@
       "AmgmInequalityOQ04OQ01"
     ],
     "namespace": "AmgmInequalityOQ04OQ02",
-    "lineCount": 1575,
+    "lineCount": 1601,
     "axiomCount": 1,
     "theoremCount": 47,
     "definitionCount": 10,

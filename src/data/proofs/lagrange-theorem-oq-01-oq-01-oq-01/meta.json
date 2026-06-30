@@ -109,17 +109,17 @@
   },
   "crossReferences": [
     {
-      "id": "lagrange-theorem-oq-01-oq-01",
+      "targetId": "lagrange-theorem-oq-01-oq-01",
       "relationship": "extends",
       "description": "Parent pq-classification (Burnside 1911, via Sylow). The parent's lagrange_pq_nonabelian_n_p_eq_q is a conditional fact assuming `¬ IsCyclic G`; this file supplies an explicit such G for the p = 2 case, completing the non-cyclic side."
     },
     {
-      "id": "lagrange-theorem-oq-01",
+      "targetId": "lagrange-theorem-oq-01",
       "relationship": "related",
       "description": "Lagrange's theorem (parent of the OQ chain). The pq-classification answers OQ-01 about Sylow as a partial converse to Lagrange; this file refines OQ-01-OQ-01's classification by exhibiting witnesses."
     },
     {
-      "id": "sylow-theorem-oq-01",
+      "targetId": "sylow-theorem-oq-01",
       "relationship": "uses",
       "description": "Underlies the parent classification via the SylowPQ namespace. This file does not directly use SylowPQ but builds on the existence framework it establishes."
     }

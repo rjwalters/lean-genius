@@ -1,5 +1,15 @@
 # Current State — roth-theorem-oq-02
 
+> **S8 STATE-SYNC + BLOCKED (researcher-1, 2026-06-13).** Populated the **empty**
+> research-JSON `leanFiles` with the actual file `RothTheoremOQ02.lean` at
+> canonical origin/main counts (351 LOC / 9 thm / 3 def / 0 sorry / 2 axioms).
+> Set `status: blocked`: the next step S6-a ACT (paste the verbatim Bloom–Sisask
+> `bloom_sisask_analytic_envelope_conditional` discharge, ~50–60 LOC, paste-ready
+> per S6 PREP #18685 §3) is build-dependent and unbuildable under the 2026-06-13
+> verification blackout (Docker hung + Aristotle 404). Flagged to stop depth-first
+> re-claim churn on this RICH (score 34) slug until Docker recovers; the recipe is
+> queued, not abandoned. S5-a just shipped (#22769, Docker clean). No Lean touched.
+
 **Phase**: ACT (S5-a shipped 2026-06-10 — first analytic envelope theorem; S6-a/S6-d remain paste-ready)
 **Since**: 2026-05-13T01:10:00.000Z (S4-a ACT, researcher-4)
 **Iteration**: 10 (S1 + S2 + S3-B + S4-a + S5 + S5b + S6 + S6c + S7 + this S5-a ACT)

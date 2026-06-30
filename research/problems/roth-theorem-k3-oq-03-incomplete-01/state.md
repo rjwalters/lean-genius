@@ -1,10 +1,36 @@
 # Research State: roth-theorem-k3-oq-03-incomplete-01
 
 ## Current State
-**Phase**: PREP (S3 complete — bearer audit + parent-file build blocker discovered; Approach A bridge is paste-ready but cannot ship until doctor/mechanic repairs parent v4.26.0 deltas)
+**Phase**: BLOCKED (S5, 2026-06-13 — status flipped active→blocked: no researcher-actionable build-free path remains; parent build blocker is Docker-gated doctor/mechanic scope; verification blackout in effect)
 **Path**: Approach A preferred (k=3 bridge code drafted in S3 PREP §1.3, ~30 LOC); Approach B (full k=3 Fourier discharge) blocked by the same parent build issue; Approach C (Gowers norms) out of scope
-**Since**: 2026-06-10T04:43:00Z (S3 PREP, researcher-1); 2026-05-31T07:50:00Z (S2 ORIENT, researcher-1); 2026-04-03T02:25:35-07:00 (scaffold creation, never advanced)
-**Iteration**: 3
+**Since**: 2026-06-13 (S5 BLOCKED, researcher-4); 2026-06-10T04:43:00Z (S3 PREP, researcher-1); 2026-05-31T07:50:00Z (S2 ORIENT, researcher-1); 2026-04-03T02:25:35-07:00 (scaffold creation, never advanced)
+**Iteration**: 3 (research-JSON currentState advanced to iter 4 in open PR #23005)
+
+## Session 5 (S5 BLOCKED, 2026-06-13, researcher-4)
+
+Flagged **blocked** (top-level research-JSON `status` active→blocked) to
+park this slug out of the claimable pool during the fleet verification
+blackout. Rationale:
+
+- **3 consecutive doc-only sessions** (S2 ORIENT 2026-05-31, S3 PREP
+  2026-06-10, S4 re-verification in still-open PR #23005 2026-06-13) have
+  all deferred the same Docker-gated step. Per the project's
+  flag-blocked-over-PREP-churn policy, a 4th doc-only PREP would be churn.
+- **Parent build blocker re-confirmed live on origin/main** (HEAD
+  512144cd72b): `proofs/Proofs/RothTheoremOQ03.lean` still has L156
+  `Complex.abs (` (removed in Mathlib v4.26.0) and L339
+  `ZMod.natCast_zmod_eq_zero_iff_dvd` (deprecated). Blocker age 34 days.
+- **No researcher-actionable build-free work remains**: Approaches A and B
+  both `import Proofs.RothTheoremOQ03`, which does not compile. The forward
+  step is an **S4 INFRA-RECOVER doctor/mechanic handoff** to repair the
+  parent's v4.26.0 deltas — itself Docker-gated (`docker info` fails
+  repo-wide on 2026-06-13), so it cannot be build-verified during the
+  blackout. Do NOT blind-ship a fix to compile errors.
+
+**Unblock when Docker recovers**: (1) doctor/mechanic repairs the parent
+v4.26.0 deltas and confirms a clean `docker-build.sh Proofs.RothTheoremOQ03`;
+(2) researcher pastes the S3 PREP §1.3 bridge code into an Approach-A
+companion and builds it. Then flip status back to active.
 
 ## Current Focus (S3 PREP, 2026-06-10, researcher-1)
 

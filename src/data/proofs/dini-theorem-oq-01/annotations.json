@@ -1,0 +1,62 @@
+[
+  {
+    "id": "dini-oq01-ann-header",
+    "proofId": "dini-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Dini's Theorem and Why Its Hypotheses Are Sharp",
+    "content": "Dini's theorem is a clean instance of a pointwise hypothesis being promoted to a uniform conclusion: a monotone sequence of continuous functions on a compact space converging pointwise to a continuous limit converges uniformly. Mathlib proves it in full generality; the gallery value of this entry is the formalized demonstration that each hypothesis is load-bearing, built from the canonical counterexample xⁿ. The setup opens Filter / Topology / Set and works over ℝ.",
+    "mathContext": "$F_n \\nearrow f \\text{ pointwise},\\ F_n, f \\text{ continuous},\\ \\text{domain compact} \\implies F_n \\to f \\text{ uniformly}.$",
+    "significance": "key",
+    "relatedConcepts": ["uniform convergence", "pointwise convergence", "compactness", "monotone sequences"],
+    "prerequisites": ["sequences of functions", "continuity", "compactness"]
+  },
+  {
+    "id": "dini-oq01-ann-faces",
+    "proofId": "dini-theorem-oq-01",
+    "range": { "startLine": 33, "endLine": 68 },
+    "type": "theorem",
+    "title": "The Four Faces of Dini's Theorem",
+    "content": "Four real-valued re-exports of Mathlib's Dini lemmas: `dini_monotone` and `dini_antitone` over a compact space (increasing/decreasing), and `dini_monotone_on` / `dini_antitone_on` localized to a compact subset s (requiring continuity, monotonicity, and pointwise convergence only on s). Each delegates directly to `Monotone/Antitone.tendstoUniformly[On]_of_forall_tendsto`, specialized to ℝ — the gallery-facing statements of the theorem.",
+    "mathContext": "$\\text{Monotone/Antitone } F,\\ \\text{continuous } F_n, f,\\ F_n(x) \\to f(x) \\implies \\mathrm{TendstoUniformly}\\,F\\,f.$",
+    "significance": "supporting",
+    "relatedConcepts": ["TendstoUniformly", "compact subset", "Mathlib re-export"],
+    "prerequisites": ["Mathlib Dini lemmas", "CompactSpace / IsCompact"]
+  },
+  {
+    "id": "dini-oq01-ann-limitpow",
+    "proofId": "dini-theorem-oq-01",
+    "range": { "startLine": 70, "endLine": 91 },
+    "type": "definition",
+    "title": "The Discontinuous Pointwise Limit of xⁿ",
+    "content": "`limitPow x = if x = 1 then 1 else 0` is the pointwise limit of xⁿ on [0,1] — it equals 0 on [0,1) and jumps to 1 at x = 1. Supporting facts: `pow_continuous` (each x ↦ xⁿ is continuous, by `fun_prop`), `pow_antitone_on` (n ↦ xⁿ is antitone on [0,1], from `pow_right_anti₀` — so xⁿ genuinely satisfies Dini's monotonicity hypothesis), and `pow_tendsto_limitPow` (pointwise convergence, splitting on x = 1 vs x < 1 via `tendsto_pow_atTop_nhds_zero_of_lt_one`).",
+    "mathContext": "$\\lim_n x^n = \\begin{cases} 0 & 0 \\le x < 1 \\\\ 1 & x = 1 \\end{cases}.$",
+    "significance": "key",
+    "relatedConcepts": ["pointwise limit", "discontinuity", "antitone in n", "tendsto_pow_atTop"],
+    "prerequisites": ["limits of xⁿ", "if-then-else definitions"]
+  },
+  {
+    "id": "dini-oq01-ann-discontinuous",
+    "proofId": "dini-theorem-oq-01",
+    "range": { "startLine": 93, "endLine": 138 },
+    "type": "theorem",
+    "title": "Witness #1: Continuity of the Limit Is Necessary",
+    "content": "`limitPow_not_continuousOn` proves the limit is discontinuous on [0,1]: along aₖ = 1 − 1/(k+1) → 1 (all aₖ ≠ 1, so limitPow(aₖ) = 0 → 0), continuity at 1 would force the limit to be limitPow(1) = 1, and uniqueness of limits gives 1 = 0, a contradiction. Then `pow_not_tendstoUniformlyOn` concludes non-uniform convergence FOR FREE: if xⁿ → limitPow uniformly, `TendstoUniformlyOn.continuousOn` would make limitPow continuous, contradicting the above. No ε–N argument is needed — the single Mathlib fact 'a uniform limit of continuous functions is continuous' does all the work.",
+    "mathContext": "$x^n \\text{ on } [0,1] \\text{ (compact): all Dini hypotheses hold except continuity of the limit} \\implies \\text{not uniform}.$",
+    "significance": "critical",
+    "relatedConcepts": ["TendstoUniformlyOn.continuousOn", "uniqueness of limits", "left-approaching sequence", "failure of uniformity"],
+    "prerequisites": ["the discontinuous limit", "uniform limit of continuous is continuous"]
+  },
+  {
+    "id": "dini-oq01-ann-noncompact",
+    "proofId": "dini-theorem-oq-01",
+    "range": { "startLine": 140, "endLine": 180 },
+    "type": "theorem",
+    "title": "Witness #2: Compactness of the Domain Is Necessary",
+    "content": "On the non-compact [0,1), the limit IS continuous (the constant 0, via `pow_tendsto_zero_on_Ico`), so the continuity route is unavailable. Instead `pow_not_tendstoUniformlyOn_Ico` unfolds uniform convergence metrically (`Metric.tendstoUniformlyOn_iff`, `push_neg`) and, for ε = 1/2 and every threshold N, uses the intermediate value theorem (`intermediate_value_Icc`) to produce a point x ∈ [0,1) with x^(N+1) = 1/2 (the endpoint x = 1 is excluded since 1^(N+1) = 1 ≠ 1/2). So the supremum error stays ≥ 1/2 for arbitrarily large n. The two witnesses isolate two distinct failure modes of the same sequence.",
+    "mathContext": "$x^n \\text{ on } [0,1) \\text{ (non-compact): continuous limit } 0, \\text{ yet } \\sup_x |x^n - 0| \\ge \\tfrac12 \\text{ for all } n.$",
+    "significance": "critical",
+    "relatedConcepts": ["intermediate value theorem", "non-compact domain", "metric uniform convergence", "independent necessity"],
+    "prerequisites": ["intermediate_value_Icc", "Metric.tendstoUniformlyOn_iff"]
+  }
+]

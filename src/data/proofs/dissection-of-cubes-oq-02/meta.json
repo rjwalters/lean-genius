@@ -85,7 +85,7 @@
       "id": "niven",
       "title": "Niven's Theorem: arccos(1/3)/π is Irrational (Chebyshev Recurrence)",
       "startLine": 81,
-      "endLine": 233,
+      "endLine": 235,
       "summary": "The entry's primary contribution (~150 lines of original number theory). Defines the nivenSeq recurrence (c₀=2, c₁=2, c_{k+2}=2c_{k+1}-9c_k), proves 3∤c_k by strong induction with modular arithmetic, establishes the cosine link via cos_step (Chebyshev identity), proves nivenSeq_eq_cos relating the integer sequence to 3^k·2·cos(k·arccos(1/3)), and derives tetrahedron_angle_irrational_pi by contradiction: if arccos(1/3)/π = p/q then cos(q·arccos(1/3)) = cos(pπ) = ±1, so c_q = ±2·3^q, contradicting 3∤c_q.",
       "mathContext": "Define $c_k$ by $c_0 = c_1 = 2$, $c_{k+2} = 2c_{k+1} - 9c_k$. Then $c_k = 3^k \\cdot 2\\cos(k \\cdot \\arccos(1/3))$ and $3 \\nmid c_k$. If $\\arccos(1/3) = (p/q)\\pi$ then $c_q = 2 \\cdot 3^q \\cos(p\\pi) = \\pm 2 \\cdot 3^q$, so $3 \\mid c_q$ — contradiction."
     },
@@ -100,42 +100,50 @@
     {
       "id": "dehn-theorem",
       "title": "Dehn's Theorem (Invariance Under Dissection)",
-      "startLine": 114,
-      "endLine": 127,
+      "startLine": 264,
+      "endLine": 277,
       "summary": "Dehn's theorem (scissors congruent polyhedra have equal Dehn invariant) is encoded as an explicit hypothesis rather than proved. The dehn_invariant_modus_ponens wrapper is propositional modus ponens applying this hypothesis — it does not prove Dehn's theorem.",
       "mathContext": "Dehn's theorem: $P \\sim_{\\mathrm{sc}} Q \\Rightarrow D(P) = D(Q)$. Assumed as an explicit hypothesis in the formalization; proving additivity of the Dehn invariant under polyhedral decomposition remains open."
     },
     {
       "id": "hilbert",
       "title": "Hilbert's Third Problem",
-      "startLine": 128,
-      "endLine": 150,
+      "startLine": 278,
+      "endLine": 304,
       "summary": "The dehn_obstruction theorem proves cube and tetrahedron have different Dehn invariants. The hilbert_third_problem theorem takes Dehn's theorem as an explicit hypothesis (h_dehn_thm) and concludes the cube and tetrahedron are not scissors congruent.",
       "mathContext": "Conditional result: IF Dehn's theorem holds (scissors congruence preserves Dehn invariant), THEN cube $\\not\\sim_{\\mathrm{sc}}$ tetrahedron, because $D(\\text{cube}) = 0 \\neq D(\\text{tetrahedron})$."
     },
     {
       "id": "bolyai-gerwien",
       "title": "2D Contrast: Bolyai-Gerwien Theorem",
-      "startLine": 151,
-      "endLine": 177,
+      "startLine": 305,
+      "endLine": 330,
       "summary": "Proves polygon_dehn_zero: in 2D all interior angles are integer multiples of π, so the Dehn invariant vanishes for all polygons. This formalizes the dimensional contrast between 2D (always scissors congruent) and 3D (not always).",
       "mathContext": "Proves polygon_dehn_zero: in 2D all interior angles are integer multiples of π, so the Dehn invariant vanishes for all polygons. This formalizes the dimensional contrast between 2D (always scissors congruent) and 3D (not always)."
     },
     {
       "id": "dehn-sydler",
       "title": "Dehn-Sydler Completeness",
-      "startLine": 178,
-      "endLine": 199,
+      "startLine": 331,
+      "endLine": 351,
       "summary": "States the Dehn-Sydler theorem (1965): volume and Dehn invariant are the complete scissors congruence invariants in 3D. Two polyhedra are scissors congruent iff they have equal volume and equal Dehn invariant.",
       "mathContext": "States the Dehn-Sydler theorem (1965): volume and Dehn invariant are the complete scissors congruence invariants in 3D. Two polyhedra are scissors congruent iff they have equal volume and equal Dehn invariant."
     },
     {
       "id": "specific-angles",
-      "title": "Dihedral Angles of Other Platonic Solids",
-      "startLine": 200,
-      "endLine": 379,
-      "summary": "Defines dihedral angles for the regular octahedron (arccos(-1/3)) and icosahedron (arccos(-√5/3)). Proves positivity of the tetrahedron angle. Provides verification checks for the main results.",
-      "mathContext": "Formal definition: Defines dihedral angles for the regular octahedron (arccos(-1/3)) and icosahedron (arccos(-√5/3)). Proves positivity of the tetrahedron angle. Provides verification checks for the main results."
+      "title": "Specific Dihedral Angles",
+      "startLine": 352,
+      "endLine": 369,
+      "summary": "Defines dihedral angles for the regular octahedron (arccos(-1/3)) and icosahedron (arccos(-√5/3)), confirms the cube angle equals π/2 by rfl, and proves positivity of the tetrahedron angle arccos(1/3).",
+      "mathContext": "Octahedron: $\\theta = \\arccos(-1/3)$. Icosahedron: $\\theta = \\arccos(-\\sqrt{5}/3)$. Cube: $\\theta = \\pi/2$ (definitional). Tetrahedron: $0 < \\arccos(1/3)$."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 370,
+      "endLine": 380,
+      "summary": "Final `#check` commands confirming the type-correctness of the entry's main results: cube_dehn_zero, tetrahedron_dehn_nonzero, dehn_obstruction, polygon_dehn_zero, and tetrahedron_angle_irrational_pi.",
+      "mathContext": "Type-level confirmation of the cube/tetrahedron Dehn-invariant separation and the irrationality of $\\arccos(1/3)/\\pi$."
     }
   ],
   "conclusion": {

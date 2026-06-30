@@ -38,6 +38,10 @@ print_success() { echo -e "${GREEN}✓ $1${NC}"; }
 print_warning() { echo -e "${YELLOW}! $1${NC}"; }
 print_error() { echo -e "${RED}x $1${NC}" >&2; }
 
+# Shared worktree reclaim helper (remove_own_worktree, guards 1-5).
+# shellcheck source=lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
+
 # Check dependencies
 check_deps() {
     local missing=()
@@ -196,28 +200,51 @@ stop_agents() {
     # Cleanup stale claims
     print_info "Cleaning up claims..."
     "$REPO_ROOT/scripts/enricher/claim-target.sh" cleanup 2>/dev/null || true
+
+    # Reclaim the now-idle worktrees. The sessions are killed above, so each
+    # enricher-N worktree is idle; the shared guards preserve any that are
+    # dirty / unpushed-or-unbacked / locked / current-checkout. Previously only
+    # the explicit --cleanup path removed worktrees, leaking them on --stop.
+    reclaim_worktrees
+}
+
+# Reclaim each enricher-N worktree using the shared safety guards. A dirty,
+# unpushed/unbacked, locked, busy, or current-checkout worktree is preserved.
+# Idempotent and quiet when there is nothing to remove.
+reclaim_worktrees() {
+    for i in $(seq 1 "$MAX_AGENTS"); do
+        local worktree_path="$WORKTREES_DIR/enricher-$i"
+        [[ -d "$worktree_path" ]] || continue
+        remove_own_worktree "$worktree_path"
+    done
+    git worktree prune 2>/dev/null || true
 }
 
 # Cleanup all enricher worktrees
 cleanup_worktrees() {
     echo "Cleaning up enricher worktrees..."
 
-    # First stop any running agents
+    # First stop any running agents (this also reclaims idle worktrees via the
+    # shared guards).
     stop_agents
 
-    # Remove worktrees
-    for i in $(seq 1 $MAX_AGENTS); do
+    # Reclaim any worktrees that survived stop_agents (e.g. no agent was
+    # running), and delete their fully-backed-up branches.
+    for i in $(seq 1 "$MAX_AGENTS"); do
         local worktree_path="$WORKTREES_DIR/enricher-$i"
         local branch_name="feature/enricher-$i"
 
         if [[ -d "$worktree_path" ]]; then
-            print_info "Removing worktree: $worktree_path"
-            git worktree remove "$worktree_path" --force 2>/dev/null || rm -rf "$worktree_path"
+            remove_own_worktree "$worktree_path"
         fi
 
-        # Delete branch
-        git branch -D "$branch_name" 2>/dev/null && \
-            print_info "Deleted branch: $branch_name" || true
+        # Delete branch only if its worktree was actually reclaimed (git refuses
+        # to delete a branch still checked out in a worktree). A preserved
+        # worktree keeps its branch.
+        if [[ ! -d "$worktree_path" ]]; then
+            git branch -D "$branch_name" 2>/dev/null && \
+                print_info "Deleted branch: $branch_name" || true
+        fi
     done
 
     # Prune worktree references

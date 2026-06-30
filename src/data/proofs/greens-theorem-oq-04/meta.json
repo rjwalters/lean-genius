@@ -113,87 +113,95 @@
       "id": "structure",
       "title": "Part I: Multiply-Connected Region Structure",
       "startLine": 46,
-      "endLine": 92,
+      "endLine": 109,
       "summary": "Defines `MultiplyConnectedRegion` with an outer `TypeIRegion`, a list of hole `TypeIRegion`s, and a containment proof. Defines the point set as outer minus holes, the number of holes (first Betti number), and `simplyConnectedOf` as the zero-hole case. Proves the simply-connected point set equals the outer region.",
       "mathContext": "A multiply-connected region D = D_outer \\ (H_1 \\cup ... \\cup H_n) with first Betti number beta_1 = n."
     },
     {
       "id": "area",
       "title": "Part II: Area of Multiply-Connected Regions",
-      "startLine": 93,
-      "endLine": 124,
+      "startLine": 110,
+      "endLine": 136,
       "summary": "Defines the area as outer area minus sum of hole areas. Proves that simply-connected regions have zero hole area and area equal to the outer region.",
       "mathContext": "Area(D) = Area(D_outer) - sum_i Area(H_i) when holes are pairwise disjoint."
     },
     {
       "id": "annular",
       "title": "Part III: Annular Region",
-      "startLine": 125,
-      "endLine": 172,
+      "startLine": 137,
+      "endLine": 181,
       "summary": "Constructs the annular region (disk of radius R minus disk of radius r) as a multiply-connected region. Proves the inner disk is contained in the outer disk (via nlinarith on x^2+y^2 bounds). Proves annular area = pi(R^2 - r^2) from the disk area axiom.",
       "mathContext": "The annulus {(x,y) | r^2 <= x^2+y^2 <= R^2} is the prototypical multiply-connected region with one hole."
     },
     {
       "id": "integrals",
-      "title": "Part IV: Line and Curl Integrals",
-      "startLine": 173,
-      "endLine": 228,
+      "title": "Part IV: Green’s Theorem for Multiply-Connected Regions",
+      "startLine": 182,
+      "endLine": 248,
       "summary": "Defines `typeILineIntegral` (4 edge integrals around a TypeI boundary), `multiplyConnectedLineIntegral` (outer minus hole sum), and `multiplyConnectedCurlIntegral` (iterated integral difference). Proves these reduce to ordinary integrals for simply-connected regions.",
       "mathContext": "The corrected line integral: outer boundary integral minus sum of hole boundary integrals, accounting for orientation."
     },
     {
       "id": "greens-theorem",
-      "title": "Part V: Green's Theorem for Multiply-Connected Regions",
-      "startLine": 229,
-      "endLine": 267,
+      "title": "Part V: Green’s Theorem — The Main Result",
+      "startLine": 249,
+      "endLine": 308,
       "summary": "PROVED: `greens_theorem_multiply_connected` — the corrected line integral equals the curl integral over the multiply-connected region. Proved from `greens_theorem_typeI` (OQ-03) by applying it to each TypeI subregion and using congruence on the hole sum.",
       "mathContext": "The main theorem: corrected boundary integral = double integral of curl over D. Proved by reduction to the simply-connected case."
     },
     {
       "id": "zero-curl",
-      "title": "Part VI: Zero-Curl Corollary - Topological Obstruction",
-      "startLine": 268,
-      "endLine": 315,
+      "title": "Part VI: Zero-Curl Corollary — The Topological Obstruction",
+      "startLine": 309,
+      "endLine": 364,
       "summary": "PROVED: when curl = 0, the outer circulation equals the sum of inner circulations. This is the topological obstruction to exactness of curl-free fields. Connects to de Rham cohomology, Cauchy's integral formula, and the Aharonov-Bohm effect.",
       "mathContext": "curl(F) = 0 implies circulation_outer = sum_i circulation_i. Proved from the axiom by showing the integral of zero vanishes."
     },
     {
       "id": "single-hole",
       "title": "Part VII: Single-Hole Special Case",
-      "startLine": 316,
-      "endLine": 397,
+      "startLine": 365,
+      "endLine": 422,
       "summary": "Constructs single-hole regions and PROVES: (1) line integral = outer - inner, (2) deformation invariance for curl-free fields (outer integral = inner integral), (3) area = outer area - hole area.",
       "mathContext": "The clean one-hole formula used in complex analysis: the integral around any curve encircling the hole is constant for curl-free fields."
     },
     {
-      "id": "annular-decomp",
-      "title": "Parts VIII-IX: Annular Decompositions",
-      "startLine": 398,
-      "endLine": 435,
-      "summary": "PROVES the annular curl integral and line integral decompose into outer disk minus inner disk contributions.",
-      "mathContext": "Explicit decomposition for the annulus: the prototype for Laurent series domains."
+      "id": "iterated-integral",
+      "title": "Part VIII: Iterated Integral over Multiply-Connected Regions",
+      "startLine": 423,
+      "endLine": 448,
+      "summary": "PROVES singleHole_area (single-hole region area = outer area minus hole area) and annular_curl_integral_decomp (the annular curl integral decomposes into outer-disk minus inner-disk iterated integrals). Establishes that the double integral over a multiply-connected region decomposes additively over disjoint holes.",
+      "mathContext": "The double integral over D = D_outer \\ (H_1 cup ... cup H_n) decomposes additively for disjoint holes: integral_D F dA = integral_{D_outer} F dA - sum_i integral_{H_i} F dA."
+    },
+    {
+      "id": "annular-line-decomp",
+      "title": "Part IX: Annular Line Integral Decomposition",
+      "startLine": 449,
+      "endLine": 465,
+      "summary": "PROVES annular_line_integral_decomp — the corrected multiply-connected line integral on an annulus decomposes into the outer-circle integral minus the inner-circle integral. This is the prototype decomposition underlying Laurent-series domains.",
+      "mathContext": "For the annulus the corrected line integral is circulation_outer - circulation_inner: oint_{outer circle} F.dr - oint_{inner circle} F.dr."
     },
     {
       "id": "additivity",
-      "title": "Part X: Multiple Holes - Additivity",
-      "startLine": 436,
-      "endLine": 470,
+      "title": "Part X: Multiple Holes — Additivity",
+      "startLine": 466,
+      "endLine": 500,
       "summary": "PROVES that adding a hole to a multiply-connected region subtracts the new hole's boundary integral from the total. Uses list append and sum decomposition.",
       "mathContext": "The correction is additive: each additional hole subtracts its boundary integral."
     },
     {
       "id": "de-rham",
-      "title": "Part XI: De Rham Cohomology Connection",
-      "startLine": 471,
-      "endLine": 504,
+      "title": "Part XI: Connection to De Rham Cohomology",
+      "startLine": 501,
+      "endLine": 536,
       "summary": "Defines the period vector (line integral around each hole) and PROVES that the sum of periods equals the outer circulation when curl = 0. This formalizes the de Rham cohomology structure H^1(D) = R^n.",
       "mathContext": "The period vector determines a closed 1-form up to an exact form. dim H^1_dR(D) = n holes."
     },
     {
       "id": "stokes",
-      "title": "Part XII: Stokes' Theorem Interpretation",
-      "startLine": 505,
-      "endLine": 552,
+      "title": "Part XII: Boundary Orientation and Stokes’ Interpretation",
+      "startLine": 537,
+      "endLine": 587,
       "summary": "Defines the oriented boundary integral and PROVES the Stokes' theorem form: integral over oriented boundary = integral of exterior derivative. This connects the multiply-connected Green's theorem to the general Stokes' theorem framework.",
       "mathContext": "Stokes' theorem: integral_{partial M} omega = integral_M d(omega) with the full oriented boundary."
     }

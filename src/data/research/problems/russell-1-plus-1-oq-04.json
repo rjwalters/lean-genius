@@ -2,7 +2,7 @@
   "slug": "russell-1-plus-1-oq-04",
   "title": "Minimal reduction rules (β, ι, δ, ζ) for `1+1=2 := rfl` across ℕ encodings",
   "phase": "ACT",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete: produced a full reduction-rule taxonomy across five canonical ℕ encodings, with hand-traces, lower-bound (necessity) arguments per rule, and a concrete next-step decomposition for S2 (a Lean witness file). The minimality results are: ∅ for the fully-unfolded baseline, {δ,ι} for Peano pattern-matched and binary, {δ,ι,β} for Peano raw-recursor, {δ,β} for Church numerals, +ζ whenever `let`-bindings mediate. Step counts (1+1=2): 0, 5, 6, 3, 6 respectively. The Principia ↔ Lean comparison is reframed: 362 pages = cost of deriving β/ι/δ analogues from logical axioms, not a count of unfolding steps. S2 ACT complete (researcher-3, 2026-05-12): new file proofs/Proofs/OnePlusOneOQ04.lean (161 lines, 0 axioms, 0 sorries) with five `example := rfl` theorems, one per row of the S1 table. New defs `addRec` (raw recursor), `Church/cOne/cTwo/cAdd` (Church numerals, `Church : Type 1`), `inductive Bin` + `Bin.succ` (carry-chain) + `Bin.add` (struct-rec on 2nd arg). Imported into proofs/Proofs.lean. S3 ACT (researcher-1): renamed each `example` to a named `theorem` (row0..row4) and added Part 6: Axiom-Freedom Verification with five `#print axioms` stanzas (187 lines). S4 ACT (researcher-9, PR #18040): added gallery entry src/data/proofs/russell-1-plus-1-oq-04/. S5 ACT complete (researcher-6, 2026-05-12): added the optional ζ-demonstrator row from S1 nextSteps. New `def addLet (n m : Peano.ℕ) : Peano.ℕ := let n' := n; let m' := m; Peano.add n' m'` and `theorem row5_let : addLet Peano.one Peano.one = Peano.two := rfl`. Rules(E) = {δ, ι, ζ}, 7 kernel steps (row 1 + 2 ζ-steps). Header table extended to 6 rows with new `Observation (ζ)` paragraph explaining that ζ is a fourth CIC primitive (not derivable from {β, ι, δ} on closed terms with let-binders, because no β/ι/δ rule has `let` in its LHS pattern). Part 6 docstring updated 'five'→'six' and `#print axioms row5_let` stanza appended. File 187 → 239 lines (+52), 0 sorries, 0 axioms. OQ-04 now saturated at the worked-example level; minimality meta-theorem deferred to OQ-04-OQ-01.",
+    "progressSummary": "S6 COMPLETION-SYNC (2026-06-13, researcher-1) — set top-level status active→completed: OQ-04 is saturated at the worked-example level per S5 (full reduction-rule taxonomy across 5 ℕ encodings with per-encoding minimality results + step counts, named theorems + #print axioms, and a gallery entry from S4). state.md/currentState declare the required research answered; the precise minimality meta-theorem is explicitly delegated to child OQ-04-OQ-01, and S6/S7 (#reduce stanzas, kernel-cost timing harness) are flagged 'optional, not strictly required for OQ-04'. Top-level status had lingered 'active', keeping the slug in the depth-first claimable set (no-op churn). No Lean source touched (Docker down this cycle; optional follow-ons are Docker-gated and out of required scope). S1 OBSERVE complete: produced a full reduction-rule taxonomy across five canonical ℕ encodings, with hand-traces, lower-bound (necessity) arguments per rule, and a concrete next-step decomposition for S2 (a Lean witness file). The minimality results are: ∅ for the fully-unfolded baseline, {δ,ι} for Peano pattern-matched and binary, {δ,ι,β} for Peano raw-recursor, {δ,β} for Church numerals, +ζ whenever `let`-bindings mediate. Step counts (1+1=2): 0, 5, 6, 3, 6 respectively. The Principia ↔ Lean comparison is reframed: 362 pages = cost of deriving β/ι/δ analogues from logical axioms, not a count of unfolding steps. S2 ACT complete (researcher-3, 2026-05-12): new file proofs/Proofs/OnePlusOneOQ04.lean (161 lines, 0 axioms, 0 sorries) with five `example := rfl` theorems, one per row of the S1 table. New defs `addRec` (raw recursor), `Church/cOne/cTwo/cAdd` (Church numerals, `Church : Type 1`), `inductive Bin` + `Bin.succ` (carry-chain) + `Bin.add` (struct-rec on 2nd arg). Imported into proofs/Proofs.lean. S3 ACT (researcher-1): renamed each `example` to a named `theorem` (row0..row4) and added Part 6: Axiom-Freedom Verification with five `#print axioms` stanzas (187 lines). S4 ACT (researcher-9, PR #18040): added gallery entry src/data/proofs/russell-1-plus-1-oq-04/. S5 ACT complete (researcher-6, 2026-05-12): added the optional ζ-demonstrator row from S1 nextSteps. New `def addLet (n m : Peano.ℕ) : Peano.ℕ := let n' := n; let m' := m; Peano.add n' m'` and `theorem row5_let : addLet Peano.one Peano.one = Peano.two := rfl`. Rules(E) = {δ, ι, ζ}, 7 kernel steps (row 1 + 2 ζ-steps). Header table extended to 6 rows with new `Observation (ζ)` paragraph explaining that ζ is a fourth CIC primitive (not derivable from {β, ι, δ} on closed terms with let-binders, because no β/ι/δ rule has `let` in its LHS pattern). Part 6 docstring updated 'five'→'six' and `#print axioms row5_let` stanza appended. File 187 → 239 lines (+52), 0 sorries, 0 axioms. OQ-04 now saturated at the worked-example level; minimality meta-theorem deferred to OQ-04-OQ-01.",
     "builtItems": [
       "research/problems/russell-1-plus-1-oq-04/problem.md (~210 lines) — expanded problem statement, theoretical framework, representation catalogue, summary table, Principia comparison, Mathlib infrastructure map, next-action decomposition, risk notes.",
       "research/problems/russell-1-plus-1-oq-04/knowledge.md (~200 lines) — S1 entry with taxonomy table, five hand-traces, lower-bound arguments, 6 insights, 3 Mathlib gaps, 5 next steps, risk notes, references.",
@@ -92,10 +92,11 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "russell-1-plus-1",
+    "arithmetic-series",
     "cantor-diagonalization",
     "derangements",
-    "arithmetic-series"
+    "russell-1-plus-1",
+    "russell-1-plus-1-oq-04"
   ],
   "references": {
     "papers": [

@@ -95,7 +95,7 @@
     },
     {
       "id": "core-theorem",
-      "title": "Irreducible Polynomial Has No Rational Root",
+      "title": "Part I: Irreducible Polynomial Has No Rational Root",
       "startLine": 38,
       "endLine": 60,
       "summary": "Proves irreducible_no_rational_root: if p in Q[X] is irreducible with degree >= 2, then p has no rational root. The proof uses the factorization p = (X - r) * q from a root r, then applies irreducibility to show either X - r or q is a unit, both leading to contradictions.",
@@ -103,27 +103,51 @@
     },
     {
       "id": "irrationality-lift",
-      "title": "Irrational Roots of Irreducible Polynomials",
+      "title": "Part II: Irrational Roots of Irreducible Polynomials",
       "startLine": 61,
+      "endLine": 78,
+      "summary": "Proves irrational_root_of_irreducible: lifts the rational non-root result to real roots via injectivity of algebraMap Q -> R, so any real root of an irreducible degree >= 2 polynomial is irrational.",
+      "mathContext": "If $\\alpha \\in \\mathbb{R}$ satisfies $p(\\alpha) = 0$ for irreducible $p$ with $\\deg(p) \\geq 2$, then $\\alpha \\notin \\mathbb{Q}$, since a rational root would contradict irreducibility."
+    },
+    {
+      "id": "degree-characterization",
+      "title": "Part III: Algebraic Degree Characterization",
+      "startLine": 79,
       "endLine": 90,
-      "summary": "Proves irrational_root_of_irreducible and irrational_of_minpoly_degree_ge_two. The first lifts the rational non-root result to real roots via injectivity of algebraMap Q -> R. The second applies this to minimal polynomials.",
-      "mathContext": "If $\\alpha \\in \\mathbb{R}$ satisfies $p(\\alpha) = 0$ for irreducible $p$ with $\\deg(p) \\geq 2$, then $\\alpha \\notin \\mathbb{Q}$. Equivalently, $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\geq 2 \\implies \\alpha$ is irrational."
+      "summary": "Proves irrational_of_minpoly_degree_ge_two: if the minimal polynomial of an integral element alpha over Q has degree >= 2, then alpha is irrational. Applies the irreducibility lift to minpoly.",
+      "mathContext": "If $\\alpha$ is integral over $\\mathbb{Q}$ with $\\deg(\\text{minpoly}_{\\mathbb{Q}}(\\alpha)) \\geq 2$, then $\\alpha \\notin \\mathbb{Q}$. Equivalently, $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\geq 2 \\implies \\alpha$ is irrational."
     },
     {
       "id": "eisenstein",
-      "title": "Eisenstein Criterion for X^n - p",
+      "title": "Part IV: Eisenstein Criterion for X^n - p",
       "startLine": 91,
       "endLine": 155,
-      "summary": "Proves X^n - p is irreducible over Z (via Eisenstein at the prime ideal (p)) and then over Q (via the Gauss lemma). The Eisenstein verification checks: leading coefficient not in (p), lower coefficients in (p), constant term not in (p^2), and the polynomial is primitive (monic).",
+      "summary": "Proves X^n - p is irreducible over Z (via Eisenstein at the prime ideal (p)) and then over Q (via the Gauss lemma). The Eisenstein verification checks: leading coefficient not in (p), lower coefficients in (p), constant term not in (p^2), and the polynomial is primitive (monic). Also proves deg(X^n - c) = n for c != 0.",
       "mathContext": "For prime $p$ and $n \\geq 2$: $X^n - p \\in \\mathbb{Z}[X]$ is irreducible by Eisenstein's criterion at $(p)$, hence irreducible in $\\mathbb{Q}[X]$ by the Gauss lemma. Also proves $\\deg(X^n - c) = n$ for $c \\neq 0$."
     },
     {
       "id": "nth-root-irrationality",
-      "title": "Irrationality of Nth Roots of Primes",
+      "title": "Part V: Structural Irrationality of Nth Roots of Primes",
       "startLine": 156,
+      "endLine": 174,
+      "summary": "Proves irrational_nthRoot_of_prime: for prime p and n >= 2, p^(1/n) is irrational, by exhibiting it as a root of the irreducible polynomial X^n - p and applying the irrationality lift.",
+      "mathContext": "For prime $p$ and $n \\geq 2$: $p^{1/n}$ is a root of the irreducible polynomial $X^n - p$, hence irrational."
+    },
+    {
+      "id": "concrete-applications",
+      "title": "Part VI: Concrete Applications",
+      "startLine": 175,
+      "endLine": 194,
+      "summary": "Concrete irrationality results obtained from irrational_nthRoot_of_prime: sqrt(2), cbrt(2), cbrt(3), and the fifth root of 7.",
+      "mathContext": "Instances of the structural theorem: $\\sqrt{2}$, $\\sqrt[3]{2}$, $\\sqrt[3]{3}$, $\\sqrt[5]{7}$ are all irrational, each via irreducibility of the corresponding $X^n - p$."
+    },
+    {
+      "id": "structural-hierarchy",
+      "title": "Part VII: The Structural Hierarchy",
+      "startLine": 195,
       "endLine": 209,
-      "summary": "Proves irrational_nthRoot_of_prime: for prime p and n >= 2, p^(1/n) is irrational. Combines Eisenstein irreducibility with the irrationality lift. Concrete applications: sqrt(2), cbrt(2), cbrt(3), 5th-root(7). The structural_subsumes_counting theorem highlights that this approach subsumes counting arguments.",
-      "mathContext": "For prime $p$ and $n \\geq 2$: $p^{1/n}$ is a root of the irreducible polynomial $X^n - p$, hence irrational. Concrete: $\\sqrt{2}$, $\\sqrt[3]{2}$, $\\sqrt[3]{3}$, $\\sqrt[5]{7}$ are all irrational."
+      "summary": "Proves structural_subsumes_counting, showing the irreducible-polynomial approach (Level 3) subsumes counting arguments (Level 2) by reducing irrationality to a single algebraic property.",
+      "mathContext": "The irreducible-polynomial method subsumes elementary counting arguments: for any prime $p$ and $n \\geq 2$, irrationality of $p^{1/n}$ follows from one algebraic fact (irreducibility of $X^n - p$) rather than case-specific divisibility counting."
     }
   ],
   "crossReferences": [

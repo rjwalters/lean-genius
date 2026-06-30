@@ -23,9 +23,10 @@
       "Generic EquivModel S (cs : List (S × S)) constructor + structural iso EquivModel S cs ≃ HornModel S (cs ++ cs.map Prod.swap) + T1b-refines-T1a + biconditional-tier independence failure (TractatusOntologyEquiv.lean, S11 ACT this PR — Docker 3061 jobs clean)."
     ],
     "open": [
-      "Refinement preorder forms a (semi)lattice — meet/join existence on WorldModel S (S4 ACT target, PREP doc #18470)."
+      "None remaining — all S1 OBSERVE open questions and PREP-deferred candidates are realised in Lean as of S4 ACT (this PR)."
     ],
     "verified": [
+      "Refinement lattice on (WorldModel S, Refines) via image profiles (S4 ACT, this PR, PREP #18470): Refines collapses to subset-inclusion on Boolean image profiles (refines_iff_subset_imageProfiles); freeModel S is the top (imageProfiles_freeModel = Set.univ); binary join = profile union (JoinModel/refines_join_iff, always defined); binary meet = profile intersection (MeetModel/refines_meet_iff, partial — defined when the intersection is non-empty); arbitrary join of a non-empty indexed family (iJoinModel/refines_iJoin_iff). Structure: bounded-above, non-empty-meet-partial, complete join-semilattice with NO bottom. Docker-verified 3059 jobs clean. Corrects the obsolete pointwise-intersection meet candidate (ConjModel is neither <= nor >= the GLB).",
       "Refines : WorldModel S → WorldModel S → Prop is reflexive, transitive (TractatusOntologySpectrum.lean refines_refl, refines_trans).",
       "freeModel S is the maximum element of the refinement preorder (refines_freeModel).",
       "Evaluation is invariant along refinements (refines_preserves_eval).",
@@ -37,14 +38,14 @@
     "goal": "Four-tier classification (free / Horn-constrained / equivalence-constrained / Kripke or quotient), with theorem-survival table and a refinement preorder making freeModel the maximum element."
   },
   "currentState": {
-    "phase": "S11 ACT — EquivModel / T1b via symmetric Horn closure (this PR; Docker 3061 jobs clean)",
-    "since": "2026-05-31T20:50:00Z",
-    "iteration": 11,
-    "focus": "S11 ACT (this PR, researcher-1) — TractatusOntologyEquiv.lean (138 LOC, 3 defs + 3 def/theorems, 0 sorries, 0 axioms). Implements S6 PREP #18518 §8 sequence: EquivModel S cs subtype, EquivModel.toWorldModel packaging, equivModel_iso_hornModel_symm (the structural iso EquivModel S cs ≃ HornModel S (cs ++ cs.map Prod.swap) witnessing T1b ⊆ T1a-symm), refines_equivModel_hornModel (T1b refines into T1a), and equivModel_independence_fails (HasIndependentProfiles failure at the spectrum level). Closes the last T1-tier deferral from S1 OBSERVE. Architecture decision: S6 PREP §6 Option C (keep both HornModel and EquivModel named, document subsumption). Build status: Docker-verified end-to-end via ./proofs/scripts/docker-build.sh Proofs.TractatusOntologyEquiv (3061 jobs OK, the new file builds in 10s on top of TractatusOntologyHorn and TractatusOntologySpectrum). Imports: only Proofs.TractatusOntologyHorn + Proofs.TractatusOntologySpectrum; no new Mathlib imports. ONE remaining ACT candidate: S4 Refines lattice via image-profiles (PREP #18470).",
+    "phase": "S4 ACT — Refinement lattice via image profiles (this PR; Docker 3059 jobs clean)",
+    "since": "2026-06-11T00:00:00Z",
+    "iteration": 12,
+    "focus": "S4 ACT (this PR, researcher-2) — appended the refinement-lattice section to TractatusOntologySpectrum.lean (+14 declarations: 3 defs + 11 theorems, 0 sorries, 0 axioms, Docker-verified 3059 jobs clean). Implements S4 PREP #18470 in full plus the arbitrary-suprema bonus. ImageProfiles M (Boolean profiles realised by some world) + imageProfiles_nonempty; refines_iff_subset_imageProfiles (R-Lattice-1: Refines collapses to subset-inclusion on profiles — the load-bearing reduction); refinesEquiv_iff_image_eq; imageProfiles_freeModel (top = Set.univ); JoinModel/imageProfiles_join/refines_join_iff (binary LUB = profile union, always defined); MeetModel/imageProfiles_meet/refines_meet_iff (binary GLB = profile intersection, partial — defined when the intersection is non-empty); iJoinModel/imageProfiles_iJoin/refines_iJoin_iff (arbitrary join of a non-empty indexed family). Structural result: (WorldModel S, Refines) mod refinement-equivalence is a bounded-above, non-empty-meet-partial, complete join-semilattice — top freeModel S, arbitrary joins, partial binary meets, NO bottom (image profiles forced non-empty). Corrected the obsolete 'pointwise intersection of holds-relations' meet candidate (ConjModel is neither <= nor >= the GLB; the correct meet is the Boolean-profile pullback). One deviation from PREP: the backward direction of refines_iff_subset_imageProfiles needed Classical.choose_spec WITHOUT the PREP's spurious .symm. Build: ./proofs/scripts/docker-build.sh Proofs.TractatusOntologySpectrum, 3059 jobs OK. No new imports. CLOSES the last remaining ACT candidate — all five S1 OBSERVE open questions realised in Lean.",
     "blockers": [],
-    "nextAction": "S4 ACT (PREP #18470) — Refines lattice via image-profiles on (WorldModel S, Refines): meet/join existence and characterisation via subset-inclusion on Boolean-profile sets. ~40-80 LOC, higher complexity than T1-tier ACTs because of the Boolean-profile pullback infrastructure. After S4 lands, all five S1 OBSERVE open questions and four PREP-deferred candidates are realised in Lean; the slug closes on the T0/T1a/T1b/T2/T3 spectrum architecture.",
+    "nextAction": "No remaining ACT candidates. The slug's T0/T1a/T1b spectrum tiers, refinement preorder, freeModel uniqueness/maximum, spectrum-invariance, and the refinement lattice are all realised in Lean. T2 (Kripke) and T3 (quotient) remain out of scope per S1 OBSERVE. Optional future bonuses only: S6-bonus IsTight/Equiv freeModel_unique upgrade (~12 LOC), S5-bonus hornModel_independent_iff_vacuous (~3 LOC), S11-bonus equivModel_card cardinality (~25 LOC + Fintype scope), and a Mathlib SemilatticeSup/BoundedOrder typeclass bridge on the RefinesEquiv quotient (deferred Quotient plumbing).",
     "attemptCounts": {
-      "total": 11,
+      "total": 12,
       "currentApproach": 1,
       "approachesTried": 4
     }
@@ -111,14 +112,14 @@
     ]
   },
   "started": "2026-05-12T14:35:20.294Z",
-  "lastUpdate": "2026-05-31T20:50:00Z",
+  "lastUpdate": "2026-06-11T00:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/TractatusOntology.lean",
       "filename": "TractatusOntology.lean",
-      "lineCount": 1235,
+      "lineCount": 1236,
       "theoremCount": 40,
       "axiomCount": 1,
       "defCount": 26,
@@ -127,20 +128,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntology.lean"
     },
     {
-      "path": "Proofs/TractatusOntologySpectrum.lean",
-      "filename": "TractatusOntologySpectrum.lean",
-      "lineCount": 307,
-      "theoremCount": 19,
+      "path": "Proofs/TractatusOntologyEquiv.lean",
+      "filename": "TractatusOntologyEquiv.lean",
+      "lineCount": 138,
+      "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntologySpectrum.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntologyEquiv.lean"
     },
     {
       "path": "Proofs/TractatusOntologyHorn.lean",
       "filename": "TractatusOntologyHorn.lean",
-      "lineCount": 130,
+      "lineCount": 131,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 5,
@@ -149,15 +150,15 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntologyHorn.lean"
     },
     {
-      "path": "Proofs/TractatusOntologyEquiv.lean",
-      "filename": "TractatusOntologyEquiv.lean",
-      "lineCount": 137,
-      "theoremCount": 2,
+      "path": "Proofs/TractatusOntologySpectrum.lean",
+      "filename": "TractatusOntologySpectrum.lean",
+      "lineCount": 460,
+      "theoremCount": 29,
       "axiomCount": 0,
-      "defCount": 4,
+      "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntologyEquiv.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntologySpectrum.lean"
     }
   ]
 }

@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "assumptions": "0 axiom declarations, 0 sorries. All 3 previously sorry'd theorems proved: cyclic_when_coprime via commutator argument + order calculation, nonabelian_sylow_p_count by contradiction, pq_cyclic_classification by universal instantiation.",
     "lineCount": 387,
-    "theoremCount": 13,
+    "theoremCount": 21,
     "definitionCount": 3
   },
   "overview": {
@@ -40,57 +40,65 @@
   "sections": [
     {
       "id": "setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "File header documenting the classification of groups of order pq (distinct primes p<q): cyclic when p∤(q−1), and one additional non-abelian semidirect product ℤ/q⋊ℤ/p when p|(q−1). Imports Mathlib, opens Subgroup and Fintype, declares the SylowPQ namespace and the ambient variable G : Type* with [Group G] [Fintype G].",
+      "mathContext": "The third Sylow theorem governs the counts n_p, n_q of Sylow subgroups: n_q≡1 mod q with n_q|p forces n_q=1, while n_p≡1 mod p with n_p|q gives n_p∈{1,q}. References: Sylow (1872), Burnside (1911)."
+    },
+    {
+      "id": "setup",
       "title": "Part I: IsPQGroup Structure and Helper Lemmas",
-      "startLine": 39,
-      "endLine": 116,
+      "startLine": 31,
+      "endLine": 117,
       "summary": "IsPQGroup bundles primes p, q, the inequality p ≠ q, and |G| = pq. Helper lemmas: factorization_pq_at_q/p compute p-adic/q-adic valuations of pq using Nat.factorization + Finsupp.single_apply. sylow_q_card/sylow_p_card use Q.card_eq_multiplicity. sylow_q_index/sylow_p_index use card_mul_index + mul_left_cancel₀. sylow_normal_of_card_one: card=1 → Subsingleton → smul_eq_iff_mem_normalizer → normalizer_eq_top → normal.",
       "mathContext": "The `IsPQGroup G` structure encodes: $p, q$ prime, $p \\neq q$, $|G| = pq$. Mathlib's `Sylow p G` is the type of Sylow $p$-subgroups of $G$; `Q.card_eq_multiplicity` states $|Q| = p^{v_p(|G|)}$ where $v_p$ is the $p$-adic valuation. Since $|G| = pq$ with $p, q$ distinct primes, $v_p(pq) = 1$ (computed via `Nat.factorization_mul` and `Finsupp.single_apply`), giving $|Q| = p$."
     },
     {
       "id": "unique-sylow-q",
       "title": "Part II: Sylow q-Subgroup is Unique (n_q = 1)",
-      "startLine": 125,
-      "endLine": 159,
+      "startLine": 118,
+      "endLine": 160,
       "summary": "sylow_q_count_constraint: n_q | p (via card_sylow_dvd_index) and n_q ≡ 1 mod q (via card_sylow_modEq_one). unique_sylow_q: if n_q = p then p % q = 1, but p < q gives p % q = p ≥ 2 — contradiction by omega. sylow_q_normal: delegates to sylow_normal_of_card_one.",
       "mathContext": "Sylow's third theorem: $n_q \\mid \\text{index}(Q) = p$ and $n_q \\equiv 1 \\pmod{q}$. Since $p < q$, the only divisor of $p$ satisfying $n_q \\equiv 1 \\pmod{q}$ is $n_q = 1$ (as $p < q$ means $p \\not\\equiv 1 \\pmod{q}$). Mathlib: `card_sylow_dvd_index` and `card_sylow_modEq_one`."
     },
     {
       "id": "sylow-p-analysis",
       "title": "Part III: Sylow p-Subgroup Analysis (n_p ∈ {1, q})",
-      "startLine": 168,
-      "endLine": 189,
+      "startLine": 161,
+      "endLine": 190,
       "summary": "sylow_p_count: n_p | q (prime), so n_p ∈ {1, q} by hq.eq_one_or_self_of_dvd. unique_sylow_p_when_coprime: if n_p = q, then card_sylow_modEq_one gives q ≡ 1 mod p, so p | (q-1) by modEq_iff_dvd', contradicting hndvd.",
       "mathContext": "Sylow's third theorem: $n_p \\mid \\text{index}(P) = q$. Since $q$ is prime, $n_p \\in \\{1, q\\}$. If $n_p = q$, then $q \\equiv 1 \\pmod{p}$ (from `card_sylow_modEq_one`), i.e., $p \\mid (q-1)$. Contrapositive: $p \\nmid (q-1) \\Rightarrow n_p = 1$."
     },
     {
       "id": "cyclic-case",
       "title": "Part IV: Both Sylow Subgroups Normal → G Cyclic",
-      "startLine": 198,
-      "endLine": 304,
+      "startLine": 191,
+      "endLine": 305,
       "summary": "cyclic_of_both_sylow_normal: the core proof. (1) P ∩ Q = {1} by coprimality + Nat.eq_one_of_dvd_coprimes. (2) P–Q commutativity by commutator argument. (3) IsCyclic of prime-order subgroups by isCyclic_of_prime_card. (4) Get generators g (order p), k (order q). (5) orderOf(gk) = pq by Commute.orderOf_mul_eq. (6) zpowers(gk) = ⊤ by card = |G|.",
       "mathContext": "When both Sylow subgroups $P$ (order $p$) and $Q$ (order $q$) are normal with $\\gcd(p,q)=1$: $P \\cap Q = \\{1\\}$ (order of any element in both divides $\\gcd(p,q)=1$). Commutativity: for $g \\in P, k \\in Q$, the commutator $c = g^{-1}k^{-1}gk \\in P$ (since $P$ normal: $k^{-1}gk \\in P$) and $c \\in Q$ (since $Q$ normal: $g^{-1}k^{-1}g \\in Q$); so $c = 1$, giving $gk = kg$. Then $\\mathrm{ord}(gk) = \\mathrm{lcm}(p,q) = pq = |G|$."
     },
     {
       "id": "nonabelian-case",
       "title": "Part V: Non-Abelian Case When p | (q-1)",
-      "startLine": 314,
-      "endLine": 331,
+      "startLine": 306,
+      "endLine": 332,
       "summary": "nonAbelianPQExists: Prop asserting the non-cyclic pq-group exists (existence not proved, stated as a definition). nonabelian_sylow_p_count: if G is non-cyclic with p | (q-1), then n_p = q (proved by contradiction: n_p = 1 → both normal → G cyclic → contradiction).",
       "mathContext": "When $p \\mid (q-1)$, there exists a non-trivial homomorphism $\\varphi : \\mathbb{Z}/p \\to \\operatorname{Aut}(\\mathbb{Z}/q) \\cong \\mathbb{Z}/(q-1)$ (since $p \\mid |\\operatorname{Aut}(\\mathbb{Z}/q)|$). The semidirect product $\\mathbb{Z}/q \\rtimes_\\varphi \\mathbb{Z}/p$ is a non-abelian group of order $pq$ with $n_p = q$."
     },
     {
       "id": "classification",
       "title": "Part VI: Complete Classification Theorem",
-      "startLine": 343,
-      "endLine": 359,
+      "startLine": 333,
+      "endLine": 360,
       "summary": "pqClassification: Prop encoding the full classification as an if-then-else (non-divisibility branch: ∀ G, |G|=pq → IsCyclic G; divisibility branch: True placeholder pending isomorphism machinery). pq_cyclic_classification: the proved half — p ∤ (q-1) → every pq-group is cyclic.",
       "mathContext": "The complete classification: (1) if $p \\nmid (q-1)$: unique group $\\mathbb{Z}/pq$; (2) if $p \\mid (q-1)$: exactly two groups — $\\mathbb{Z}/pq$ and $\\mathbb{Z}/q \\rtimes \\mathbb{Z}/p$. Case (1) is fully proved; case (2) uses `True` as a placeholder since stating the uniqueness of the semidirect product requires isomorphism machinery not yet formalized."
     },
     {
       "id": "examples",
       "title": "Part VII: Concrete Examples",
-      "startLine": 365,
-      "endLine": 382,
+      "startLine": 361,
+      "endLine": 387,
       "summary": "Four omega-proved arithmetic facts: order 15 (3 ∤ 4 → cyclic), order 6 (2 | 2 → non-abelian exists), order 35 (5 ∤ 6 → cyclic), order 21 (3 | 6 → non-abelian exists).",
       "mathContext": "The examples verify the arithmetic conditions: $15 = 3 \\times 5$: $3 \\nmid (5-1)=4$ (cyclic only); $6 = 2 \\times 3$: $2 \\mid (3-1)=2$ (two groups: $\\mathbb{Z}/6$ and $S_3$); $35 = 5 \\times 7$: $5 \\nmid (7-1)=6$ (cyclic only); $21 = 3 \\times 7$: $3 \\mid (7-1)=6$ (two groups: $\\mathbb{Z}/21$ and non-abelian)."
     }
@@ -100,6 +108,36 @@
       "targetId": "sylow-theorem",
       "relationship": "extends",
       "description": "Applies Sylow theorems to classify groups of order pq"
+    },
+    {
+      "targetId": "sylow-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "A parallel Lean formalization of the same order-pq classification, also driven by Sylow's third theorem (n_q = 1, n_p ∈ {1, q}); a useful cross-check of the cyclic-vs-semidirect dichotomy."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Reaches the same classification of groups of order pq through the Lagrange's Theorem development line, offering an alternate route to the n_p, n_q counting arguments."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's Theorem (|H| divides |G|) is the foundation that Sylow's theorems refine: they supply the partial converse guaranteeing subgroups of prime-power order, which this proof exploits to force |P| = p and |Q| = q."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-01-oq-02",
+      "relationship": "complementary",
+      "description": "A₄ has no subgroup of order 6 — the converse of Lagrange fails in general; this complements the pq case, where the Sylow subgroups of each prime order are guaranteed to exist."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-02-oq-02",
+      "relationship": "foundational",
+      "description": "The class equation for finite groups is the orbit-counting identity underlying the proof of Sylow's third theorem, the n_p ≡ 1 (mod p) congruence used throughout this classification."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Every group of order pq < 60 is solvable; this situates the cyclic and semidirect-product pq-groups within the broader solvable hierarchy classified there."
     }
   ],
   "conclusion": {
@@ -118,7 +156,7 @@
     "namespace": "SylowPQ",
     "lineCount": 387,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 21,
     "sorryTheorems": 0,
     "definitionCount": 3,
     "path": "Proofs/SylowTheoremOQ01.lean",

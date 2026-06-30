@@ -25,8 +25,8 @@
     "id": "ann-277-sigma",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 42,
-      "endLine": 44
+      "startLine": 44,
+      "endLine": 46
     },
     "type": "definition",
     "title": "Sum of Divisors Function",
@@ -48,8 +48,8 @@
     "id": "ann-277-sigma-one",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 47,
-      "endLine": 48
+      "startLine": 48,
+      "endLine": 50
     },
     "type": "concept",
     "title": "σ(1) = 1",
@@ -69,8 +69,8 @@
     "id": "ann-277-sigma-prime",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 51,
-      "endLine": 52
+      "startLine": 52,
+      "endLine": 55
     },
     "type": "concept",
     "title": "σ(p) = p + 1 for Primes",
@@ -91,8 +91,8 @@
     "id": "ann-277-abundancy",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 58,
-      "endLine": 60
+      "startLine": 63,
+      "endLine": 65
     },
     "type": "definition",
     "title": "Abundancy Ratio",
@@ -113,8 +113,8 @@
     "id": "ann-277-isabundant",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 62,
-      "endLine": 64
+      "startLine": 67,
+      "endLine": 69
     },
     "type": "definition",
     "title": "c-Abundancy Predicate",
@@ -135,8 +135,8 @@
     "id": "ann-277-congruence",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 70,
-      "endLine": 75
+      "startLine": 75,
+      "endLine": 80
     },
     "type": "definition",
     "title": "Congruence Class Structure",
@@ -157,8 +157,8 @@
     "id": "ann-277-covers",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 77,
-      "endLine": 79
+      "startLine": 82,
+      "endLine": 84
     },
     "type": "definition",
     "title": "Congruence Membership",
@@ -179,8 +179,8 @@
     "id": "ann-277-covering",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 81,
-      "endLine": 83
+      "startLine": 86,
+      "endLine": 88
     },
     "type": "definition",
     "title": "Covering System Definition",
@@ -202,8 +202,8 @@
     "id": "ann-277-moduliset",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 86,
-      "endLine": 87
+      "startLine": 90,
+      "endLine": 92
     },
     "type": "definition",
     "title": "Moduli Set Extraction",
@@ -224,8 +224,8 @@
     "id": "ann-277-alldivide",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 89,
-      "endLine": 91
+      "startLine": 94,
+      "endLine": 96
     },
     "type": "definition",
     "title": "All Moduli Divide n",
@@ -246,8 +246,8 @@
     "id": "ann-277-hascovering",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 93,
-      "endLine": 95
+      "startLine": 98,
+      "endLine": 120
     },
     "type": "definition",
     "title": "Coverability Predicate",
@@ -268,8 +268,8 @@
     "id": "ann-277-question",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 101,
-      "endLine": 107
+      "startLine": 126,
+      "endLine": 138
     },
     "type": "definition",
     "title": "Erdős Question #277 (Formal Statement)",
@@ -290,8 +290,8 @@
     "id": "ann-277-haight",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 113,
-      "endLine": 116
+      "startLine": 144,
+      "endLine": 147
     },
     "type": "concept",
     "title": "Haight's Theorem (1979)",
@@ -312,8 +312,8 @@
     "id": "ann-277-answer",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 118,
-      "endLine": 119
+      "startLine": 149,
+      "endLine": 150
     },
     "type": "concept",
     "title": "Answer: YES",
@@ -333,8 +333,8 @@
     "id": "ann-277-trivial",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 125,
-      "endLine": 127
+      "startLine": 156,
+      "endLine": 158
     },
     "type": "definition",
     "title": "Trivial Covering System",
@@ -355,12 +355,12 @@
     "id": "ann-277-trivial-proofs",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 130,
-      "endLine": 150
+      "startLine": 160,
+      "endLine": 181
     },
     "type": "concept",
     "title": "Trivial Covering Properties (Proved)",
-    "content": "Three proved results: (1) the trivial covering is indeed a covering system, (2) its modulus 1 divides every $n \\geq 1$, and (3) therefore every $n \\geq 1$ has some covering with divisor moduli. These are the only fully proved theorems in the file.",
+    "content": "Three proved results: (1) `trivial_is_covering` — the trivial covering is indeed a covering system, (2) `trivial_divides_all` — its modulus 1 divides every $n \\geq 1$, and (3) `every_n_has_trivial_covering` — therefore every $n \\geq 1$ has some covering with divisor moduli. These establish that the unrefined `HasCoveringWithDivisorModuli` is always satisfiable, motivating the non-trivial refinement.",
     "significance": "key",
     "mathContext": "These proofs use `simp` and basic Finset reasoning. The key observation that $1 \\mid n$ (proved via `one_dvd n`) makes the trivial covering universally applicable. This motivates the refinement to non-trivial coverings in the next section.",
     "relatedConcepts": [
@@ -378,8 +378,8 @@
     "id": "ann-277-distinct",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 153,
-      "endLine": 154
+      "startLine": 233,
+      "endLine": 235
     },
     "type": "definition",
     "title": "Distinct Moduli Condition",
@@ -400,14 +400,14 @@
     "id": "ann-277-nontrivial",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 156,
-      "endLine": 162
+      "startLine": 237,
+      "endLine": 239
     },
     "type": "definition",
     "title": "Non-Trivial Covering Definitions",
     "content": "Two refinements: `IsNonTrivialCovering` requires $\\geq 2$ distinct moduli, and `HasNonTrivialCoveringWithDivisorModuli` is the existential version. These formalize the intended meaning of Erdős's question.",
     "significance": "key",
-    "mathContext": "The non-triviality condition $(|\\text{moduliSet}| \\geq 2)$ excludes the degenerate case $\\{0 \\pmod{1}\\}$. Haight's stronger theorem (`haight_strong_theorem`) applies to this refined notion, showing that high abundancy does not force even non-trivial coverability.",
+    "mathContext": "The non-triviality condition $(|\\text{moduliSet}| \\geq 2)$ excludes the degenerate case $\\{0 \\pmod{1}\\}$. A source comment notes that Haight actually proved the stronger result about non-trivial coverings, showing that high abundancy does not force even non-trivial coverability; that strengthening is not separately formalized as an axiom here.",
     "relatedConcepts": [
       "non-trivial covering systems",
       "moduli cardinality",
@@ -423,12 +423,12 @@
     "id": "ann-277-strong",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 164,
-      "endLine": 169
+      "startLine": 241,
+      "endLine": 245
     },
     "type": "concept",
     "title": "Haight's Strong Theorem",
-    "content": "The stronger axiomatized result: for every $c > 0$, there exists $n \\geq 1$ with $\\sigma(n) > cn$ and $\\neg\\text{HasNonTrivialCoveringWithDivisorModuli}(n)$. This is the precise formalization of Haight's 1979 paper.",
+    "content": "The `HasNonTrivialCoveringWithDivisorModuli` predicate, and a source comment recording that Haight actually proved the stronger result: for every $c > 0$, there exists $n \\geq 1$ with $\\sigma(n) > cn$ and $\\neg\\text{HasNonTrivialCoveringWithDivisorModuli}(n)$. Only the basic question (`haight_theorem`) is axiomatized in this file; this strengthening is stated in prose, matching Haight's 1979 paper.",
     "significance": "key",
     "mathContext": "This strengthening clarifies that Haight's result rules out all non-trivial coverings, not just those with distinct moduli. The proof in Mathematika constructs $n$ as products of sufficiently large primes, ensuring that no subset of divisors can satisfy the reciprocal sum bound needed for covering.",
     "relatedConcepts": [
@@ -445,8 +445,8 @@
     "id": "ann-277-reciprocal",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 175,
-      "endLine": 177
+      "startLine": 250,
+      "endLine": 252
     },
     "type": "definition",
     "title": "Reciprocal Sum of Moduli",
@@ -468,14 +468,14 @@
     "id": "ann-277-bound",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 179,
-      "endLine": 182
+      "startLine": 254,
+      "endLine": 261
     },
     "type": "concept",
-    "title": "Reciprocal Sum Bound",
-    "content": "Axiomatized: for a covering system with distinct moduli, $\\sum 1/m_i \\geq 1$. This is the fundamental necessary condition constraining covering systems.",
+    "title": "Covering–CRT Connection",
+    "content": "The proved theorem `covering_crt_connection`: in any covering system $S$, every modulus appearing in `moduliSet S` is realized by some congruence $c \\in S$ (proved directly via `Finset.mem_image`). Its docstring motivates the deeper necessary condition $\\sum 1/m_i \\geq 1$ for distinct-moduli systems, which is stated as motivation rather than formalized here.",
     "significance": "key",
-    "mathContext": "This bound is tight: the system $\\{0 \\pmod{2}, 0 \\pmod{3}, 1 \\pmod{4}, 5 \\pmod{6}, 7 \\pmod{12}\\}$ achieves $1/2 + 1/3 + 1/4 + 1/6 + 1/12 = 4/3 > 1$. The bound follows from the pigeonhole principle applied to the $\\text{lcm}$ of all moduli.",
+    "mathContext": "The reciprocal-sum bound is tight: the system $\\{0 \\pmod{2}, 0 \\pmod{3}, 1 \\pmod{4}, 5 \\pmod{6}, 7 \\pmod{12}\\}$ achieves $1/2 + 1/3 + 1/4 + 1/6 + 1/12 = 4/3 > 1$, and the bound follows from the density/pigeonhole argument over the $\\text{lcm}$ of all moduli. The Lean theorem captures the structural 'every modulus has a residue class' half of this picture.",
     "relatedConcepts": [
       "pigeonhole principle",
       "covering density",
@@ -491,12 +491,12 @@
     "id": "ann-277-lcm",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 217,
-      "endLine": 224
+      "startLine": 282,
+      "endLine": 290
     },
     "type": "definition",
     "title": "Covering LCM and Divisibility",
-    "content": "The LCM of a covering system's moduli, computed via `Finset.fold`. The theorem `lcm_divides_of_all_divide` (sorry) states that if all moduli divide $n$, then $\\text{lcm}(\\text{moduli}) \\mid n$.",
+    "content": "The LCM of a covering system's moduli (`coveringLCM`), computed via `Finset.fold`. The proved theorem `lcm_divides_of_all_divide` states that if all moduli divide $n$, then $\\text{lcm}(\\text{moduli}) \\mid n$.",
     "significance": "supporting",
     "mathContext": "The LCM gives the period of the covering system: the system repeats every $L = \\text{lcm}(m_1, \\ldots, m_k)$ integers. If all moduli divide $n$, then $L \\mid n$, so covering $\\mathbb{Z}$ reduces to covering $\\{0, \\ldots, L-1\\}$.",
     "relatedConcepts": [
@@ -513,8 +513,8 @@
     "id": "ann-277-hc-super",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 226,
-      "endLine": 232
+      "startLine": 292,
+      "endLine": 298
     },
     "type": "definition",
     "title": "Highly Composite and Superabundant Numbers",
@@ -536,12 +536,12 @@
     "id": "ann-277-connections",
     "proofId": "erdos-277",
     "range": {
-      "startLine": 245,
-      "endLine": 259
+      "startLine": 325,
+      "endLine": 352
     },
     "type": "concept",
     "title": "Connections to Adjacent Problems",
-    "content": "Placeholder definitions linking to Problem #276 (distinct-moduli covering systems) and Problem #278 (covering density questions), plus an Egyptian fraction connection: the reciprocal sum $\\sum 1/m_i$ is an Egyptian fraction representation.",
+    "content": "The closing theorems (`erdos_277`, `erdos_277_main`, `erdos_277_summary`) restate the result, accompanied by source notes linking to Problem #276 (distinct-moduli covering systems) and Problem #278 (covering density questions), plus an Egyptian fraction connection: the reciprocal sum $\\sum 1/m_i$ is an Egyptian fraction representation.",
     "significance": "supporting",
     "mathContext": "Erdős's covering system problems form a cluster: #273 (prime-minus-one moduli), #274 (Herzog-Schönheim on exact coverings), #275 (covering congruences), #276 (Lucas sequences), #278 (maximum density), #279 (shifted primes). Together they probe the combinatorics of modular arithmetic.",
     "relatedConcepts": [

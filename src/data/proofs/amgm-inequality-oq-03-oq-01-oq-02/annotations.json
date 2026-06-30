@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-amgm-oq030102-01-statement",
+    "proofId": "amgm-inequality-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 239,
+      "endLine": 254
+    },
+    "type": "concept",
+    "title": "The Theorem That Fills the Mathlib TODO",
+    "content": "rpow_mean_le_rpow_mean is stated on the bare expression (∑ i ∈ s, w i * z i ^ p) ^ (1/p), exactly matching the idiom of Mathlib's existing Real.arith_mean_le_rpow_mean (its p=1 special case). The hypotheses are the standard ones: nonnegative weights summing to 1, strictly positive values (needed so zᵢ^p is defined for negative p), and nonzero p ≤ q. The proof is a single lt_trichotomy dispatch: p<0 with q<0 → Case 2; p<0 with q>0 → Case 3 (sign-crossing); 0<p≤q → Case 1; the p=0 and q=0 branches are dismissed by the nonzero hypotheses. The 'show pmean s w z p ≤ pmean s w z q' step relies on the private pmean abbreviation being definitionally equal to the raw expression.",
+    "mathContext": "$\\forall\\, p \\le q,\\ p,q \\ne 0:\\quad \\left(\\sum_{i\\in s} w_i z_i^p\\right)^{1/p} \\le \\left(\\sum_{i\\in s} w_i z_i^q\\right)^{1/q}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "generalized mean inequality",
+      "lt_trichotomy",
+      "Real.arith_mean_le_rpow_mean",
+      "Mathlib TODO"
+    ],
+    "prerequisites": [
+      "weighted power mean",
+      "case analysis on exponent sign"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq030102-02-positive",
+    "proofId": "amgm-inequality-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 124,
+      "endLine": 159
+    },
+    "type": "proof-technique",
+    "title": "Case 1: Positive Exponents via Jensen",
+    "content": "pmean_mono_pos handles 0 < p ≤ q. With q/p ≥ 1 the map t ↦ t^(q/p) is convex, so Real.rpow_arith_mean_le_arith_mean_rpow (Jensen) applied to the values aᵢ = zᵢ^p gives (∑ wᵢzᵢ^p)^(q/p) ≤ ∑ wᵢ(zᵢ^p)^(q/p). The summand (zᵢ^p)^(q/p) = zᵢ^q simplifies via Real.rpow_mul + field_simp. Raising both sides to 1/q (monotone since q>0) and collapsing ((·)^(q/p))^(1/q) = (·)^(1/p) yields M_p ≤ M_q.",
+    "mathContext": "$\\left(\\sum w_i z_i^p\\right)^{q/p} \\le \\sum w_i (z_i^p)^{q/p} = \\sum w_i z_i^q$, then $(\\cdot)^{1/q}$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Jensen's inequality",
+      "convexity of t ↦ t^a",
+      "Real.rpow_mul"
+    ],
+    "prerequisites": [
+      "Real.rpow_arith_mean_le_arith_mean_rpow",
+      "Real.rpow_le_rpow"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq030102-03-duality",
+    "proofId": "amgm-inequality-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 107,
+      "endLine": 174
+    },
+    "type": "proof-technique",
+    "title": "Duality Reduces the Negative Case to the Positive Case",
+    "content": "pmean_neg_inv proves the involution M_p(z) = M_{-p}(z⁻¹)⁻¹: the summand identity (zᵢ⁻¹)^(-p) = zᵢ^p comes from Real.inv_rpow + Real.rpow_neg + inv_inv, and the outer power uses 1/(-p) = -(1/p) with Real.rpow_neg. Case 2 (pmean_mono_neg) then needs no new analysis: for p ≤ q < 0 we have 0 < -q ≤ -p, so Case 1 on the inverted values gives M_{-q}(z⁻¹) ≤ M_{-p}(z⁻¹), and inv_anti_of_le (a ≤ b, 0<a ⟹ b⁻¹ ≤ a⁻¹) flips it through the duality identity to M_p(z) ≤ M_q(z). The involution means the entire negative-exponent theory is a mechanical mirror of the positive one.",
+    "mathContext": "$M_p(z) = M_{-p}(z^{-1})^{-1}$; for $p \\le q < 0$, $\\ 0 < -q \\le -p \\Rightarrow M_{-q}(z^{-1}) \\le M_{-p}(z^{-1}) \\Rightarrow M_p(z) \\le M_q(z).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "duality involution",
+      "Real.inv_rpow",
+      "Real.rpow_neg",
+      "inversion antitonicity"
+    ],
+    "prerequisites": [
+      "pmean_mono_pos",
+      "inv_anti_of_le",
+      "Real.rpow properties"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq030102-04-crossing",
+    "proofId": "amgm-inequality-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 176,
+      "endLine": 237
+    },
+    "type": "insight",
+    "title": "The Geometric Mean Bridges the Sign-Crossing Case",
+    "content": "When p < 0 < q the power mean is undefined at the crossing point p=0, so monotonicity cannot be carried across by a single Jensen step. Instead the geometric mean G = ∏ zᵢ^wᵢ (the p→0 limit) is sandwiched in: M_p ≤ G ≤ M_q. The right half geom_mean_le_pmean_of_pos is weighted AM-GM in disguise — applying Real.geom_mean_le_arith_mean_weighted to the values zᵢ^q gives ∏(zᵢ^q)^wᵢ ≤ ∑ wᵢzᵢ^q, and finset_prod_rpow collapses the left side to (∏zᵢ^wᵢ)^q = G^q, so G^q ≤ ∑ wᵢzᵢ^q and G ≤ M_q after raising to 1/q. The left half pmean_le_geom_mean_of_neg is the dual: apply the right half to z⁻¹ at exponent -p>0, then use G(z⁻¹) = G(z)⁻¹ (from inv_rpow + prod_inv_distrib) and the duality identity to get M_p ≤ G.",
+    "mathContext": "$G^q = \\prod_i (z_i^q)^{w_i} \\le \\sum_i w_i z_i^q \\Rightarrow G \\le M_q$ for $q>0$; dually $M_p \\le G$ for $p<0$; hence $M_p \\le G \\le M_q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "weighted AM-GM",
+      "geometric mean as p→0 limit",
+      "Real.finset_prod_rpow",
+      "Finset.prod_inv_distrib"
+    ],
+    "prerequisites": [
+      "Real.geom_mean_le_arith_mean_weighted",
+      "pmean_neg_inv",
+      "geometric mean positivity"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq030102-05-packaging",
+    "proofId": "amgm-inequality-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "Raw-Expression Packaging for Upstream Contribution",
+    "content": "The parent entry proves the same mathematics but exposes a custom `weightedPowerMean s w z p hp` definition (carrying a p≠0 proof) in its public statements. Mathlib cannot import a gallery file, so a contribution must speak Mathlib's own language: bare sums. Here the only definition is a private, definitionally-transparent abbreviation `pmean p = (∑ wᵢzᵢ^p)^(1/p)` (no embedded proof argument), used purely to keep the case lemmas readable; the public theorem unfolds it via `show` so its statement is the raw expression. The positivity helpers (weighted_sum_pos, pmean_pos) and the inversion helper (inv_anti_of_le) are the minimal supporting API.",
+    "mathContext": "$M_p := (\\sum_i w_i z_i^p)^{1/p}$ as a transparent abbreviation; the headline theorem is stated without it.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib contribution style",
+      "definitional transparency",
+      "API minimality"
+    ],
+    "prerequisites": [
+      "Finset.single_le_sum",
+      "Real.rpow_pos_of_pos"
+    ]
+  }
+]

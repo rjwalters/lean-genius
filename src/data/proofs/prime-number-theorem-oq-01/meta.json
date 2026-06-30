@@ -20,9 +20,9 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 5,
-    "lineCount": 282,
+    "lineCount": 315,
     "dateAdded": "2026-05-04",
-    "assumptions": "5 axioms: vonKoch_rh_error (von Koch 1901), pnt_classical_error (Vinogradov-Korobov), littlewood_omega (Littlewood 1914), pi_exceeds_li_infinitely (sign change), backlund_zero_counting (Backlund 1918). The Riemann Hypothesis itself is the main open conjecture.",
+    "assumptions": "5 axioms: vonKoch_rh_error (von Koch 1901), pnt_classical_error (Vinogradov-Korobov), littlewood_omega (Littlewood 1914), pi_exceeds_li_infinitely (sign change), backlund_zero_counting (Backlund 1918). The Riemann Hypothesis itself is the main open conjecture. Axiom-free additions: reflected_mem_strip, zeros_pair_in_strip, and rh_pair_on_line establish that ζ-zeros come in functional-equation pairs {s, 1-s} within the critical strip, both on the line Re=1/2 under RH.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -53,7 +53,7 @@
       "zeros_symmetric_in_strip: Functional equation gives zero symmetry about Re(s) = 1/2 (proved)",
       "pnt_rh_landscape: Summary theorem collecting all three proved structural results"
     ],
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 6,
     "additionalFiles": [
       "Proofs/PrimeNumberTheoremOQ01OQ01.lean"
@@ -63,42 +63,58 @@
     {
       "id": "formal-rh",
       "title": "The Formal Riemann Hypothesis",
-      "startLine": 45,
-      "endLine": 70,
+      "startLine": 58,
+      "endLine": 81,
       "summary": "Defines criticalStrip, criticalLine, and RiemannHypothesis formally using Mathlib's riemannZeta function.",
       "mathContext": "RH states all zeros ρ of ζ(s) in 0 < Re(ρ) < 1 satisfy Re(ρ) = 1/2. This is one of the seven Millennium Prize Problems."
     },
     {
       "id": "zero-free-regions",
       "title": "Zero-Free Regions (Proved)",
-      "startLine": 73,
-      "endLine": 130,
-      "summary": "Proves: (1) Euler product gives ζ(s) ≠ 0 for Re(s) > 1, (2) PNT-strength ζ(s) ≠ 0 for Re(s) ≥ 1, (3) trivial zeros at s = -2n, (4) under RH the strip 1/2 < Re(s) < 1 is zero-free, (5) zeros are symmetric under s ↔ 1-s.",
+      "startLine": 82,
+      "endLine": 104,
+      "summary": "Proves the unconditional zero-free facts: (1) the Euler product gives ζ(s) ≠ 0 for Re(s) > 1 (`no_zeros_euler_product`), (2) the PNT-strength zero-free line ζ(s) ≠ 0 for Re(s) ≥ 1 (`pnt_zero_free_region`, `no_zeros_on_line_one`), and (3) the trivial zeros at s = -2(n+1) (`trivial_zeros`).",
       "mathContext": "The PNT zero-free region (Re(s) ≥ 1) is equivalent to PNT itself. RH extends the zero-free region to Re(s) > 1/2, which is why RH implies the optimal PNT error bound."
+    },
+    {
+      "id": "rh-zero-locations",
+      "title": "What RH Implies for Zero Locations",
+      "startLine": 105,
+      "endLine": 179,
+      "summary": "Conditional-on-RH zero-location results plus functional-equation symmetry: `rh_strip_zero_free` (RH ⇒ the strip 1/2 < Re(s) < 1 is zero-free), `rh_zeros_on_half_line`/`rh_pair_on_line` (RH ⇒ nontrivial zeros lie on Re(s) = 1/2), and `zeros_symmetric_in_strip`/`reflected_mem_strip`/`zeros_pair_in_strip` (zeros come in s ↔ 1−s pairs via the functional equation).",
+      "mathContext": "The functional equation ζ(s) = χ(s)ζ(1−s) forces zeros to be symmetric about the critical line Re(s) = 1/2; RH is the statement that this symmetry degenerates to all nontrivial zeros lying exactly on the line."
     },
     {
       "id": "quantitative-bounds",
       "title": "Quantitative Error Bounds (Axiomatized)",
-      "startLine": 155,
-      "endLine": 220,
+      "startLine": 180,
+      "endLine": 232,
       "summary": "Axiomatizes von Koch's O(√x log x) conditional bound, the unconditional O(x exp(-c√log x)) bound, and the improved RH-conditional bound.",
       "mathContext": "Von Koch (1901) proved RH → |π(x) - Li(x)| = O(√x log x). The unconditional bound O(x exp(-c√log x)) follows from Hadamard-de la Vallée Poussin plus Vinogradov-Korobov zero-free region estimates."
     },
     {
       "id": "sharpness",
       "title": "Sharpness: Littlewood's Omega Bound",
-      "startLine": 222,
-      "endLine": 245,
+      "startLine": 233,
+      "endLine": 256,
       "summary": "Axiomatizes Littlewood's result that |π(x) - Li(x)| = Ω(√x log log log x / log x) and the sign change of π(x) - Li(x).",
       "mathContext": "Littlewood (1914) refuted Gauss's conjecture that π(x) < Li(x) always, showing the error oscillates with amplitude ≥ C√x log log log x / log x. This shows Von Koch's O(√x log x) is near-optimal."
     },
     {
       "id": "zero-counting",
       "title": "The Zero-Counting Function N(T)",
-      "startLine": 248,
-      "endLine": 275,
+      "startLine": 257,
+      "endLine": 281,
       "summary": "Defines zeroCounting T = #{zeros ρ with Im(ρ) ≤ T} and axiomatizes Backlund's asymptotic N(T) ~ (T/2π) log(T/2π).",
       "mathContext": "Backlund (1918) proved N(T) = (T/2π) log(T/2π) - T/(2π) + O(log T) by integrating log ζ(s) around the critical rectangle. The explicit formula connects these zeros to prime distribution."
+    },
+    {
+      "id": "rh-landscape",
+      "title": "Summary Theorem: The RH Landscape",
+      "startLine": 282,
+      "endLine": 312,
+      "summary": "`pnt_rh_landscape`: a single summary theorem bundling the RH-conditional consequences proved above — the optimal error term, all nontrivial zeros on the critical line, and the zero-free strip — into one statement parameterized by a proof of RiemannHypothesis.",
+      "mathContext": "Collects the conditional corollaries into a landscape view: assuming RH, the prime-counting error, zero locations, and zero-free region all sharpen simultaneously to their conjectured-optimal forms."
     }
   ],
   "overview": {
@@ -182,9 +198,9 @@
       "Mathlib.Tactic"
     ],
     "namespace": "PrimeNumberTheoremOQ01",
-    "lineCount": 282,
+    "lineCount": 315,
     "axiomCount": 5,
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 6,
     "path": "Proofs/PrimeNumberTheoremOQ01.lean",
     "sorries": 0,

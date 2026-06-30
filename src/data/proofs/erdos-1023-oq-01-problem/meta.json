@@ -50,58 +50,66 @@
     {
       "id": "module-header",
       "title": "Module Header, Imports, and Namespace",
+      "summary": "File docstring stating Erdős #1023 OQ-01 (constrained union-free families building on F(n)=C(n,n/2)), Mathlib imports, and the Erdos1023OQ01 namespace.",
       "startLine": 1,
-      "endLine": 25,
-      "summary": "Docstring describes the three extensions of Erdős #1023: k-union-free families, intersection-free families, and the hierarchy. Imports: `Finset.Basic`, `Finset.Powerset`, `Finset.Card`, `Fintype.Basic`, `Nat.Choose.Central`. Namespace `Erdos1023OQ01`. Abbreviation `SetFamily n = Finset (Finset (Fin n))`.",
-      "mathContext": "The type `SetFamily n = Finset (Finset (Fin n))` represents finite families of finite subsets of $\\{0, 1, \\ldots, n-1\\}$. Using `Finset` (not `Set`) makes cardinality and decidable equality available without additional assumptions."
+      "endLine": 27,
+      "mathContext": "File docstring stating Erdős #1023 OQ-01 (constrained union-free families building on F(n)=C(n,n/2)), Mathlib imports, and the Erdos1023OQ01 namespace."
     },
     {
       "id": "core-definitions",
-      "title": "Core Definitions: Families, Antichains, Union/Intersection-Free",
-      "startLine": 26,
-      "endLine": 64,
-      "summary": "Defines `familyUnion` (Finset.sup), `familyInter` (Finset.inf'), `isAntichain` (no proper subset in family), `isUnionFree` (no member equals union of ≥ 2 others), `isKUnionOf`/`isKUnionFree` (k-element union variant), `isInterOf`/`isInterFree`, `isKInterOf`/`isKInterFree`. Seven definitions total.",
-      "mathContext": "`familyUnion F = F.sup id = \\bigcup_{A \\in F} A`. `familyInter F hF = F.inf' hF id = \\bigcap_{A \\in F} A`. `isAntichain F`: $\\forall A, B \\in \\mathcal{F},\\; A \\subseteq B \\Rightarrow A = B$. `isKUnionFree k F`: no $A \\in \\mathcal{F}$ has $A = B_1 \\cup \\cdots \\cup B_k$ for $\\{B_i\\} \\subseteq \\mathcal{F} \\setminus \\{A\\}$ with $|\\{B_i\\}| = k$."
+      "title": "Core Definitions: Families, Antichains, Union-Free",
+      "summary": "Defines SetFamily n (a Finset of subsets of Fin n), familyUnion / familyInter (sup/inf' of a family), isAntichain, and isUnionFree (no member is the union of ≥2 others).",
+      "startLine": 28,
+      "endLine": 41,
+      "mathContext": "Defines SetFamily n (a Finset of subsets of Fin n), familyUnion / familyInter (sup/inf' of a family), isAntichain, and isUnionFree (no member is the union of ≥2 others)."
     },
     {
-      "id": "antichain-union-free",
-      "title": "Antichains are k-Union-Free",
-      "startLine": 51,
-      "endLine": 88,
-      "summary": "Lemma `mem_sub_familyUnion`: B ∈ G → B ⊆ familyUnion G. Theorem `unionFree_implies_kUnionFree`: union-free → k-union-free for k ≥ 2. Theorem `antichain_kUnionFree`: antichain → k-union-free for k ≥ 2.",
-      "mathContext": "`antichain_kUnionFree` proof: assume $A = B_1 \\cup \\cdots \\cup B_k$. Then $B_i \\subseteq A$ for all $i$ (by `mem_sub_familyUnion`). Antichain forces $B_i = A$. But $A \\notin G$ ($G \\subseteq \\mathcal{F}.\\text{erase}\\;A$), so $B_i \\neq A$ — contradiction. The contradiction arises from: $G \\neq \\emptyset$ (card = k ≥ 2) but every element of $G$ must equal $A$ which is not in $G$."
+      "id": "k-union-free",
+      "title": "k-Union-Free Families",
+      "summary": "Defines isKUnionOf and isKUnionFree and proves unionFree_implies_kUnionFree, the helper mem_sub_familyUnion, and the main antichain_kUnionFree (every antichain is k-union-free for all k ≥ 2).",
+      "startLine": 42,
+      "endLine": 79,
+      "mathContext": "Defines isKUnionOf and isKUnionFree and proves unionFree_implies_kUnionFree, the helper mem_sub_familyUnion, and the main antichain_kUnionFree (every antichain is k-union-free for all k ≥ 2)."
     },
     {
       "id": "intersection-free",
-      "title": "Antichains are Intersection-Free",
-      "startLine": 75,
-      "endLine": 119,
-      "summary": "Theorem `antichain_interFree`: antichain → intersection-free. Theorem `interFree_implies_kInterFree`: intersection-free → k-intersection-free for k ≥ 2. Theorem `antichain_kInterFree`: antichain → k-intersection-free.",
-      "mathContext": "`antichain_interFree` proof: assume $A = B_1 \\cap \\cdots \\cap B_m$. Then $A \\subseteq B_i$ for all $i$ (by `Finset.inf'_le`). Antichain forces $B_i = A$ (from $A \\subseteq B_i$ and $A, B_i \\in \\mathcal{F}$, using $(h.symm)$ since the antichain condition gives $A = B_i$ from $A \\subseteq B_i$). But $A \\notin G$, so $B_i \\neq A$. Contradiction. This is the exact dual of `antichain_kUnionFree` with $\\subseteq$ reversed."
+      "title": "Intersection-Free Families",
+      "summary": "Dual notion: defines isInterOf and isInterFree and proves antichain_interFree (every antichain is intersection-free).",
+      "startLine": 80,
+      "endLine": 107,
+      "mathContext": "Dual notion: defines isInterOf and isInterFree and proves antichain_interFree (every antichain is intersection-free)."
+    },
+    {
+      "id": "k-intersection-free",
+      "title": "k-Intersection-Free Families",
+      "summary": "Defines isKInterOf and isKInterFree and proves interFree_implies_kInterFree and antichain_kInterFree, the k-fold analogue of the intersection-free results.",
+      "startLine": 108,
+      "endLine": 127,
+      "mathContext": "Defines isKInterOf and isKInterFree and proves interFree_implies_kInterFree and antichain_kInterFree, the k-fold analogue of the intersection-free results."
     },
     {
       "id": "middle-layer",
-      "title": "Middle Layer: Maximum Antichain",
-      "startLine": 120,
-      "endLine": 142,
-      "summary": "Definition `middleLayer n = {A ⊆ Fin n : |A| = n/2}`. Theorems: `middleLayer_card = C(n, n/2)`, `middleLayer_antichain`, `middleLayer_kUnionFree`, `middleLayer_interFree`, `middleLayer_kInterFree`.",
-      "mathContext": "`middleLayer_antichain` proof: if $A \\subseteq B$ and $|A| = |B| = n/2$ (both in middle layer), then `eq_of_subset_of_card_le hAB (hA.2 ▸ hB.2 ▸ le_refl _)` gives $A = B$. This uses only the fact that a finite set $A$ with $A \\subseteq B$ and $|A| = |B|$ satisfies $A = B$. `middleLayer_card` uses `Finset.card_filter` with `Fintype.card_fin n = n` to count elements of size $n/2$, giving $\\binom{n}{n/2}$ via `Nat.centralBinom`."
+      "title": "The Middle Layer: Maximum Antichain",
+      "summary": "Defines middleLayer (the family of all (n/2)-subsets) and proves middleLayer_card (= central binomial coefficient), middleLayer_antichain, and that it is k-union-free, intersection-free, and k-intersection-free.",
+      "startLine": 128,
+      "endLine": 151,
+      "mathContext": "Defines middleLayer (the family of all (n/2)-subsets) and proves middleLayer_card (= central binomial coefficient), middleLayer_antichain, and that it is k-union-free, intersection-free, and k-intersection-free."
     },
     {
       "id": "complement-duality",
       "title": "Complement Duality and De Morgan Structure",
-      "startLine": 143,
-      "endLine": 185,
-      "summary": "Definitions `setComplement A = univ \\ A` and `complementFamily F = F.image setComplement`. Theorems: `setComplement_involutive` (double complement = identity), `setComplement_injective`, `setComplement_antitone` (complement reverses ⊆), `complementFamily_card`, `complementFamily_involutive`, `complementFamily_antichain`, `complementFamily_middleLayer_antichain`.",
-      "mathContext": "`setComplement_antitone`: if $A \\subseteq B$ then $[n] \\setminus B \\subseteq [n] \\setminus A$ (`sdiff_subset_sdiff`). `complementFamily_antichain`: if $\\text{compl}(A') \\subseteq \\text{compl}(B')$, then $B' \\subseteq A'$ by `setComplement_antitone` twice; original antichain gives $B' = A'$; hence $\\text{compl}(A') = \\text{compl}(B')$. This establishes the duality: antichain families are closed under complement."
+      "summary": "Defines setComplement and complementFamily and proves their involutivity/injectivity/antitonicity (setComplement_involutive, complementFamily_involutive, setComplement_antitone), cardinality preservation, and that complementation preserves antichains, including for the middle layer.",
+      "startLine": 152,
+      "endLine": 204,
+      "mathContext": "Defines setComplement and complementFamily and proves their involutivity/injectivity/antitonicity (setComplement_involutive, complementFamily_involutive, setComplement_antitone), cardinality preservation, and that complementation preserves antichains, including for the middle layer."
     },
     {
-      "id": "summary-comment",
+      "id": "summary",
       "title": "Summary: Definitions and Theorems",
-      "startLine": 186,
+      "summary": "Closing comment summarizing the defined notions and proved results across the union-free / intersection-free hierarchy and the middle-layer extremal family.",
+      "startLine": 205,
       "endLine": 244,
-      "summary": "Block comment listing all 7 definitions and 16 theorems (0 sorries). Notes three open directions: full De Morgan duality for union-free/intersection-free, maximum k-union-free family size, maximum intersection-free family size.",
-      "mathContext": "The comment is a proof artifact (large Lean docstring), not executable code. It summarizes the 18 theorems proved (16 listed plus 2 additional minor lemmas). Open questions: (1) full De Morgan duality (union-free $\\mathcal{F}$ iff $\\bar{\\mathcal{F}}$ is intersection-free); (2) maximum k-union-free family = middle layer for all k? (3) maximum intersection-free family = middle layer?"
+      "mathContext": "Closing comment summarizing the defined notions and proved results across the union-free / intersection-free hierarchy and the middle-layer extremal family."
     }
   ],
   "conclusion": {
@@ -139,11 +147,6 @@
       "targetId": "combinations-formula",
       "relationship": "foundational",
       "description": "The binomial coefficient $\\binom{n}{\\lfloor n/2 \\rfloor}$ appears as `middleLayer_card` — the size of the middle layer antichain. The formalization uses `Nat.centralBinom` from `Nat.Choose.Central` to compute this cardinality."
-    },
-    {
-      "targetId": "dilworth-theorem",
-      "relationship": "related",
-      "description": "Dilworth's theorem (1950) states that in any finite partially ordered set, the maximum antichain size equals the minimum number of chains needed to cover the poset. For the boolean lattice $2^{[n]}$, Dilworth gives maximum antichain size $= \\binom{n}{\\lfloor n/2 \\rfloor}$ (Sperner 1928). The present entry uses `middleLayer_antichain` but does not prove it is the *maximum* antichain."
     }
   ],
   "mainTheorems": [

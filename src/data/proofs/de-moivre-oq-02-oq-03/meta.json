@@ -1,0 +1,214 @@
+{
+  "id": "de-moivre-oq-02-oq-03",
+  "title": "Chebyshev Minimax Theorem: Equioscillation and the Full Minimax (Both Halves)",
+  "slug": "de-moivre-oq-02-oq-03",
+  "description": "Proves the classical Chebyshev minimax theorem in full: the monic Chebyshev polynomial Tₙ/2^(n-1) minimizes the sup-norm on [-1,1] among all monic degree-n real polynomials, with minimal value exactly 2^(1-n). Proves the analytic core from De Moivre — |Tₙ(x)| ≤ 1 on [-1,1] and equioscillation Tₙ(cos(kπ/n)) = (-1)^k at the n+1 extreme nodes — and the degree/leading-coefficient facts Mathlib lacks (natDegree Tₙ = n, leadingCoeff Tₙ = 2^(n-1)). Assembles the achievability half (the monic Chebyshev polynomial is monic of degree n, has sup-norm 2^(1-n) on [-1,1], and equioscillates between ±2^(1-n)) and the optimality half (every monic degree-n polynomial attains absolute value ≥ 2^(1-n) somewhere on [-1,1], via the equioscillation + intermediate-value root-counting argument). The capstone chebyshev_minimax bundles both. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_polynomials#Minimal_%E2%88%9E-norm",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ02OQ03.lean",
+    "tags": [
+      "chebyshev-polynomials",
+      "de-moivre",
+      "minimax",
+      "equioscillation",
+      "approximation-theory",
+      "polynomial-degree",
+      "leading-coefficient",
+      "real-analysis",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 378,
+    "assumptions": "0 axioms, 0 sorries. All results proved over ℝ from the De Moivre identity Tₙ(cos θ) = cos(nθ) and the two-term Chebyshev recurrence. The full minimax theorem is complete: the optimality (lower-bound) half — every monic degree-n polynomial has sup-norm ≥ 2^(1-n) on [-1,1] — is proven by the classical equioscillation + intermediate-value root-counting argument, and the capstone chebyshev_minimax bundles both halves.",
+    "theoremCount": 15,
+    "definitionCount": 1,
+    "originalContributions": [
+      "chebyshev_abs_eval_le_one: |Tₙ(x)| ≤ 1 for x ∈ [-1,1], via x = cos(arccos x) and Tₙ(cos θ) = cos(nθ)",
+      "chebyshev_eval_node: Tₙ(cos(kπ/n)) = (-1)^k — equioscillation at the n+1 Chebyshev extreme nodes",
+      "chebyshev_natDegree: natDegree(Tₙ) = n (absent from Mathlib)",
+      "chebyshev_leadingCoeff: leadingCoeff(Tₙ) = 2^(n-1) for n ≥ 1 (absent from Mathlib)",
+      "monicChebyshev: the monic Chebyshev polynomial Tₙ/2^(n-1)",
+      "monicChebyshev_monic / monicChebyshev_natDegree: it is monic of degree n",
+      "monicChebyshev_abs_le: its sup-norm on [-1,1] is ≤ 2^(1-n)",
+      "monicChebyshev_eval_node: it equioscillates between ±2^(1-n)",
+      "node_strict_anti / node_anti: strict/non-strict monotonicity of the extreme nodes cos(kπ/n) in k",
+      "monicChebyshev_minimax: optimality (lower-bound) half — every monic degree-n p attains |p| ≥ 2^(1-n) somewhere on [-1,1] (equioscillation + IVT root-count + degree_sub_lt)",
+      "chebyshev_minimax: the full Chebyshev minimax theorem (achievability ∧ optimality)"
+    ],
+    "historicalContext": "Chebyshev's 1854 theorem states that among all monic real polynomials of degree n, the rescaled Chebyshev polynomial Tₙ/2^(n-1) has the smallest possible maximum absolute value on [-1,1], namely 2^(1-n). The mechanism is equioscillation: Tₙ alternately attains +1 and -1 at the n+1 points cos(kπ/n), k = 0..n, so the monic normalization alternates between ±2^(1-n). Mathlib's RingTheory/Polynomial/Chebyshev.lean explicitly flags 'Prove minimax properties of Chebyshev polynomials' and 'Compute zeroes and extrema' as open TODOs, and provides no degree or leading-coefficient lemmas for Tₙ. This entry supplies that missing infrastructure and the full theorem — both the achievability and the optimality halves.",
+    "problemStatement": "**The Open Question**\n\nDoes the monic Chebyshev polynomial $M_n = T_n/2^{n-1}$ minimize the sup-norm on $[-1,1]$ among all monic degree-$n$ real polynomials, with minimal value $2^{1-n}$?\n\n**This entry's contribution — the full theorem, both halves, fully verified**\n\n- $|T_n(x)| \\le 1$ on $[-1,1]$ with equioscillation $T_n(\\cos(k\\pi/n)) = (-1)^k$;\n- $\\deg T_n = n$ and $\\operatorname{lead} T_n = 2^{n-1}$ (new infrastructure);\n- *Achievability:* $M_n$ is monic of degree $n$, has sup-norm $\\le 2^{1-n}$, and equioscillates between $\\pm 2^{1-n}$;\n- *Optimality:* every monic degree-$n$ polynomial attains $|p(x)| \\ge 2^{1-n}$ for some $x \\in [-1,1]$ (`monicChebyshev_minimax`), by the alternation/root-counting argument;\n- *Capstone:* `chebyshev_minimax` bundles achievability $\\wedge$ optimality, so $M_n$ is a sup-norm minimizer with minimal value exactly $2^{1-n}$.",
+    "proofStrategy": "**De Moivre for the analysis core; two-step induction for the degree facts.**\n\n1. **Sup-norm bound** `chebyshev_abs_eval_le_one`: for $x \\in [-1,1]$ write $x = \\cos(\\arccos x)$; then $T_n(x) = \\cos(n\\arccos x)$ by `T_real_cos`, so $|T_n(x)| \\le 1$.\n2. **Equioscillation** `chebyshev_eval_node`: at $x_k = \\cos(k\\pi/n)$, $T_n(x_k) = \\cos(n \\cdot k\\pi/n) = \\cos(k\\pi) = (-1)^k$ (`cos_nat_mul_pi`).\n3. **Degree infrastructure** `chebyshev_deg_lead_pair`: a single induction over the paired statement for $T_{n+1}, T_{n+2}$, driven by $T_{n+2} = 2X T_{n+1} - T_n$. The recurrence step `deg_lead_recurrence_step` shows $\\deg(2Xa - b) = d+1$ and $\\operatorname{lead}(2Xa - b) = 2c$ when $\\deg a = d$, $\\operatorname{lead} a = c \\ne 0$, $\\deg b \\le d$ (the $-b$ term is below the top degree, so it does not perturb the leading coefficient).\n4. **Monic normalization** `monicChebyshev` $= C(2^{n-1})^{-1} \\cdot T_n$: monicity and degree follow from the leading-coefficient and degree facts; the sup-norm bound and equioscillation follow by scaling the core results.\n5. **Optimality** `monicChebyshev_minimax`: by contradiction, suppose a monic degree-$n$ $p$ has $|p| < 2^{1-n}$ everywhere on $[-1,1]$. Then $q = M_n - p$ satisfies $(-1)^k q(\\cos(k\\pi/n)) > 0$ (strict sign alternation, since $M_n$ equioscillates and $p$ is dominated). Between each consecutive node pair the sign of $q$ flips, so `intermediate_value_uIcc` gives a root strictly interior to each of the $n$ intervals; `node_strict_anti` makes these $n$ roots distinct (`StrictAnti.injective`). But $q$ is a difference of two monic degree-$n$ polynomials, so $\\deg q < n$ by `degree_sub_lt`; a nonzero polynomial of degree $< n$ has at most $\\deg q < n$ roots (`card_roots'`), a contradiction.\n6. **Capstone** `chebyshev_minimax`: pairs `monicChebyshev_abs_le` (achievability) with `monicChebyshev_minimax` (optimality).",
+    "keyInsights": [
+      "**De Moivre is the whole analytic story**: the single identity $T_n(\\cos\\theta) = \\cos(n\\theta)$ delivers both the envelope bound $|T_n| \\le 1$ and the equioscillation values $(-1)^k$ at $\\cos(k\\pi/n)$ — no calculus of extrema needed.",
+      "**Degree facts need a paired induction**: the Chebyshev recurrence is second-order, so degree $n$ and leading coefficient $2^{n-1}$ must be carried for two consecutive indices simultaneously; the single recurrence step is isolated as a reusable lemma.",
+      "**The subtraction is harmless to the top**: in $T_{n+2} = 2X T_{n+1} - T_n$, the subtracted $T_n$ has degree $n < n+2$, so `leadingCoeff_sub_of_degree_lt` keeps the leading coefficient equal to that of $2X T_{n+1}$, doubling it each step to give $2^{n-1}$.",
+      "**Mathlib gap**: there are no `natDegree`/`leadingCoeff` lemmas for `Polynomial.Chebyshev.T`; this file derives them and they are candidates for upstreaming (the Chebyshev file lists exactly these as TODOs).",
+      "**Achievability vs. minimality**: equioscillation between $\\pm 2^{1-n}$ at $n+1$ nodes is the engine of *both* halves of the minimax theorem; this entry completes the upper (achievability) half, leaving the alternation→root-counting lower bound as the open continuation."
+    ]
+  },
+  "overview": {
+    "historicalContext": "Chebyshev's 1854 theorem states that among all monic real polynomials of degree n, the rescaled Chebyshev polynomial Tₙ/2^(n-1) has the smallest possible maximum absolute value on [-1,1], namely 2^(1-n). The mechanism is equioscillation: Tₙ alternately attains +1 and -1 at the n+1 points cos(kπ/n), k = 0..n, so the monic normalization alternates between ±2^(1-n). Mathlib's RingTheory/Polynomial/Chebyshev.lean explicitly flags 'Prove minimax properties of Chebyshev polynomials' and 'Compute zeroes and extrema' as open TODOs, and provides no degree or leading-coefficient lemmas for Tₙ. This entry supplies that missing infrastructure and the full theorem — both the achievability and the optimality halves — all derived from the single De Moivre identity Tₙ(cos θ) = cos(nθ) and the two-term recurrence Tₙ₊₂ = 2X·Tₙ₊₁ − Tₙ.",
+    "problemStatement": "**The Open Question**\n\nDoes the monic Chebyshev polynomial $M_n = T_n/2^{n-1}$ minimize the sup-norm on $[-1,1]$ among all monic degree-$n$ real polynomials, with minimal value $2^{1-n}$?\n\n**This entry's contribution — the full theorem, both halves, fully verified**\n\n- $|T_n(x)| \\le 1$ on $[-1,1]$ with equioscillation $T_n(\\cos(k\\pi/n)) = (-1)^k$;\n- $\\deg T_n = n$ and $\\operatorname{lead} T_n = 2^{n-1}$ (new infrastructure);\n- *Achievability:* $M_n$ is monic of degree $n$, has sup-norm $\\le 2^{1-n}$, and equioscillates between $\\pm 2^{1-n}$;\n- *Optimality:* every monic degree-$n$ polynomial attains $|p(x)| \\ge 2^{1-n}$ for some $x \\in [-1,1]$ (`monicChebyshev_minimax`), by the alternation/root-counting argument;\n- *Capstone:* `chebyshev_minimax` bundles achievability $\\wedge$ optimality, so $M_n$ is a sup-norm minimizer with minimal value exactly $2^{1-n}$.",
+    "text": "Proves the full Chebyshev minimax theorem from the De Moivre identity: the sup-norm envelope |Tₙ| ≤ 1, equioscillation at the n+1 extreme nodes, the degree and leading-coefficient infrastructure Mathlib lacks, the monic Chebyshev polynomial with sup-norm 2^(1-n) (achievability), and the matching lower bound that every monic degree-n polynomial reaches ≥ 2^(1-n) somewhere (optimality), bundled as chebyshev_minimax.",
+    "proofStrategy": "**De Moivre for the analysis core; two-step induction for the degree facts.**\n\n1. **Sup-norm bound** `chebyshev_abs_eval_le_one`: for $x \\in [-1,1]$ write $x = \\cos(\\arccos x)$; then $T_n(x) = \\cos(n\\arccos x)$ by `T_real_cos`, so $|T_n(x)| \\le 1$.\n2. **Equioscillation** `chebyshev_eval_node`: at $x_k = \\cos(k\\pi/n)$, $T_n(x_k) = \\cos(n \\cdot k\\pi/n) = \\cos(k\\pi) = (-1)^k$ (`cos_nat_mul_pi`).\n3. **Degree infrastructure** `chebyshev_deg_lead_pair`: a single induction over the paired statement for $T_{n+1}, T_{n+2}$, driven by $T_{n+2} = 2X T_{n+1} - T_n$. The recurrence step `deg_lead_recurrence_step` shows $\\deg(2Xa - b) = d+1$ and $\\operatorname{lead}(2Xa - b) = 2c$ when $\\deg a = d$, $\\operatorname{lead} a = c \\ne 0$, $\\deg b \\le d$ (the $-b$ term is below the top degree, so it does not perturb the leading coefficient).\n4. **Monic normalization** `monicChebyshev` $= C(2^{n-1})^{-1} \\cdot T_n$: monicity and degree follow from the leading-coefficient and degree facts; the sup-norm bound and equioscillation follow by scaling the core results.\n5. **Optimality** `monicChebyshev_minimax`: by contradiction, suppose a monic degree-$n$ $p$ has $|p| < 2^{1-n}$ everywhere on $[-1,1]$. Then $q = M_n - p$ satisfies $(-1)^k q(\\cos(k\\pi/n)) > 0$ (strict sign alternation, since $M_n$ equioscillates and $p$ is dominated). Between each consecutive node pair the sign of $q$ flips, so `intermediate_value_uIcc` gives a root strictly interior to each of the $n$ intervals; `node_strict_anti` makes these $n$ roots distinct (`StrictAnti.injective`). But $q$ is a difference of two monic degree-$n$ polynomials, so $\\deg q < n$ by `degree_sub_lt`; a nonzero polynomial of degree $< n$ has at most $\\deg q < n$ roots (`card_roots'`), a contradiction.\n6. **Capstone** `chebyshev_minimax`: pairs `monicChebyshev_abs_le` (achievability) with `monicChebyshev_minimax` (optimality).",
+    "keyInsights": [
+      "**De Moivre is the whole analytic story**: the single identity $T_n(\\cos\\theta) = \\cos(n\\theta)$ delivers both the envelope bound $|T_n| \\le 1$ and the equioscillation values $(-1)^k$ at $\\cos(k\\pi/n)$ — no calculus of extrema needed.",
+      "**Degree facts need a paired induction**: the Chebyshev recurrence is second-order, so degree $n$ and leading coefficient $2^{n-1}$ must be carried for two consecutive indices simultaneously; the single recurrence step is isolated as a reusable lemma.",
+      "**The subtraction is harmless to the top**: in $T_{n+2} = 2X T_{n+1} - T_n$, the subtracted $T_n$ has degree $n < n+2$, so `leadingCoeff_sub_of_degree_lt` keeps the leading coefficient equal to that of $2X T_{n+1}$, doubling it each step to give $2^{n-1}$.",
+      "**Mathlib gap**: there are no `natDegree`/`leadingCoeff` lemmas for `Polynomial.Chebyshev.T`; this file derives them and they are candidates for upstreaming (the Chebyshev file lists exactly these as TODOs).",
+      "**Achievability and optimality from one envelope**: equioscillation between $\\pm 2^{1-n}$ at $n+1$ nodes is the engine of *both* halves; this entry now closes the optimality half via the alternation→root-counting argument, so the full minimax theorem is proven.",
+      "**Avoiding parity case-explosion in the IVT step**: rather than splitting on the sign at each node, the root-existence lemma uses `intermediate_value_uIcc` on the *unordered* interval plus `Set.mem_uIcc_of_le`/`_of_ge`, so a single `Nat.even_or_odd` split suffices to place $0$ between the two node values.",
+      "**Distinct roots for free from monotonicity**: the chosen roots are strictly interior (open intervals, since $q$ is nonzero at the nodes), and `node_strict_anti` (strict decrease of $\\cos(k\\pi/n)$) makes the root-selection map `StrictAnti`, hence injective — yielding $n$ distinct roots without extra bookkeeping.",
+      "**Degree drop is the contradiction**: $q = M_n - p$ is a difference of two *monic* degree-$n$ polynomials, so `degree_sub_lt` forces $\\deg q < n$; pairing $n$ distinct roots against `card_roots'` for the nonzero $q$ is the whole optimality argument."
+    ],
+    "prerequisites": [
+      "Chebyshev polynomials of the first kind Tₙ and the De Moivre identity Tₙ(cos θ) = cos(nθ)",
+      "The two-term recurrence Tₙ₊₂ = 2X·Tₙ₊₁ − Tₙ",
+      "Polynomial degree and leading-coefficient algebra (natDegree_mul, leadingCoeff_mul, leadingCoeff_sub_of_degree_lt)",
+      "Monic polynomials and the sup-norm on [-1,1]"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview and Research Question",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring posing the classical Chebyshev minimax / equioscillation question — among monic degree-n real polynomials, Mₙ = Tₙ/2^(n-1) minimizes the sup-norm on [-1,1] with value 2^(1-n) — and stating what this entry contributes: the analysis core, the missing degree/leading-coefficient infrastructure, and the achievability half. Notes Mathlib's explicit TODO flag for Chebyshev minimax properties.",
+      "mathContext": "Target: $\\min_{p\\ \\text{monic},\\ \\deg p=n}\\ \\|p\\|_{\\infty,[-1,1]} = 2^{1-n}$, attained by $M_n=T_n/2^{n-1}$. This file proves the upper (achievability) half and the supporting envelope, degree, and equioscillation facts."
+    },
+    {
+      "id": "analysis-core",
+      "title": "Part I: Sup-norm bound and equioscillation",
+      "startLine": 52,
+      "endLine": 79,
+      "summary": "The De Moivre analysis core: chebyshev_abs_eval_le_one proves |Tₙ(x)| ≤ 1 on [-1,1] by writing x = cos(arccos x) and using Tₙ(cos θ) = cos(nθ); chebyshev_eval_node proves the equioscillation Tₙ(cos(kπ/n)) = (-1)^k via cos(kπ) = (-1)^k; chebyshev_eval_one records the sharp endpoint value Tₙ(1) = 1.",
+      "mathContext": "$|T_n(x)|=|\\cos(n\\arccos x)|\\le 1$, with equality at $x_k=\\cos(k\\pi/n)$ where $T_n(x_k)=\\cos(k\\pi)=(-1)^k$ for $k=0,\\dots,n$."
+    },
+    {
+      "id": "recurrence-step",
+      "title": "Part II-a: One recurrence step on degree and leading coefficient",
+      "startLine": 81,
+      "endLine": 114,
+      "summary": "deg_lead_recurrence_step isolates exactly what one application of T_{n+2} = 2X·T_{n+1} − Tₙ does: given deg a = d, lead a = c ≠ 0, deg b ≤ d, the polynomial 2X·a − b has degree d+1 and leading coefficient 2c. The subtracted term sits strictly below the top degree, so natDegree_sub_eq_left_of_natDegree_lt and leadingCoeff_sub_of_degree_lt leave both unchanged.",
+      "mathContext": "$\\deg(2Xa-b)=d+1$ and $\\operatorname{lead}(2Xa-b)=2c$ whenever $\\deg a=d,\\ \\operatorname{lead}a=c\\ne0,\\ \\deg b\\le d$. Iterating doubles the leading coefficient to $2^{n-1}$."
+    },
+    {
+      "id": "degree-facts",
+      "title": "Part II-b: Paired induction and the degree/leading-coefficient facts",
+      "startLine": 116,
+      "endLine": 173,
+      "summary": "chebyshev_deg_lead_pair carries the degree/leading-coefficient statement for two consecutive indices through one induction driven by the recurrence; the scalar theorems chebyshev_natDegree (= n) and chebyshev_leadingCoeff (= 2^(n-1)) project out a component and rebase the index. These fill a documented Mathlib gap.",
+      "mathContext": "$\\deg T_n=n$, $\\operatorname{lead}T_n=2^{n-1}$ ($n\\ge1$): $T_n(x)=2^{n-1}x^n+\\text{lower order}$."
+    },
+    {
+      "id": "monic-achievability",
+      "title": "Part III: Monic Chebyshev polynomial and achievability",
+      "startLine": 175,
+      "endLine": 205,
+      "summary": "Defines monicChebyshev n = Tₙ/2^(n-1) and proves the achievability half: monicChebyshev_monic (monic), monicChebyshev_natDegree (degree n), monicChebyshev_abs_le (sup-norm ≤ 2^(1-n) on [-1,1]) and monicChebyshev_eval_node (equioscillates between ±2^(1-n) at the n+1 nodes). These scale the Part I bounds by the inverse leading coefficient from Part II.",
+      "mathContext": "$M_n=T_n/2^{n-1}$ is monic of degree $n$, $\\|M_n\\|_{\\infty,[-1,1]}\\le 2^{1-n}$, and $M_n(\\cos(k\\pi/n))=(-1)^k2^{1-n}$ — the equioscillation certificate of the minimax polynomial."
+    },
+    {
+      "id": "optimality-lower-bound",
+      "title": "Part IV: Optimality (lower bound) and the full minimax theorem",
+      "startLine": 207,
+      "endLine": 378,
+      "summary": "node_strict_anti/node_anti establish strict/non-strict monotonicity of the extreme nodes cos(kπ/n) in k. monicChebyshev_minimax then proves the optimality half by contradiction: if a monic degree-n p had |p| < 2^(1-n) everywhere on [-1,1], the difference q = Mₙ − p would inherit strict sign alternation (-1)^k·q(cos(kπ/n)) > 0 at the n+1 nodes, so the intermediate value theorem (intermediate_value_uIcc) places a root strictly inside each of the n consecutive-node intervals; node_strict_anti makes the root-selection map StrictAnti hence injective, giving n distinct roots — but q = Mₙ − p is a difference of two monic degree-n polynomials so deg q < n (degree_sub_lt), and a nonzero polynomial of degree < n cannot have n roots (card_roots'). The capstone chebyshev_minimax bundles achievability ∧ optimality.",
+      "mathContext": "If $p$ is monic of degree $n$ then $\\|p\\|_{\\infty,[-1,1]}\\ge 2^{1-n}$. Proof: $q=M_n-p$ alternates sign at $x_k=\\cos(k\\pi/n)$, giving $n$ interior roots, yet $\\deg q<n$ — contradiction. Hence $\\min_{p\\ \\text{monic},\\deg p=n}\\|p\\|_{\\infty,[-1,1]}=2^{1-n}$, attained by $M_n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes, axiom-free and sorry-free, the full classical Chebyshev minimax theorem. From the single De Moivre identity Tₙ(cos θ) = cos(nθ) it derives the sup-norm envelope |Tₙ| ≤ 1 on [-1,1] and the equioscillation values Tₙ(cos(kπ/n)) = (-1)^k at the n+1 extreme nodes. It supplies the degree and leading-coefficient infrastructure that Mathlib lacks — natDegree(Tₙ) = n and leadingCoeff(Tₙ) = 2^(n-1) — via a paired induction over the second-order recurrence, and assembles the monic Chebyshev polynomial Tₙ/2^(n-1), proving it is monic of degree n with sup-norm ≤ 2^(1-n) and equioscillation between ±2^(1-n) (achievability). It then proves the optimality half (monicChebyshev_minimax): every monic degree-n polynomial attains |p| ≥ 2^(1-n) somewhere on [-1,1], by turning the strict sign alternation of q = Mₙ − p at the n+1 nodes into n distinct interior roots (intermediate value theorem) that contradict the degree drop deg q < n. The capstone chebyshev_minimax bundles both halves.",
+    "implications": "Proves the complete minimax statement: the monic Chebyshev polynomial Tₙ/2^(n-1) minimizes the sup-norm on [-1,1] among all monic degree-n real polynomials, with minimal value exactly 2^(1-n). The degree and leading-coefficient lemmas fill a documented gap in Mathlib's Chebyshev file (which lists 'minimax properties' and 'zeroes and extrema' as open TODOs) and, together with the minimax theorem itself, are reusable, upstreamable infrastructure for approximation theory.",
+    "openQuestions": [
+      "Strengthen optimality to uniqueness: Tₙ/2^(n-1) is the *unique* monic degree-n minimizer (equality in the equioscillation argument forces the competitor to coincide with Mₙ).",
+      "Upstream natDegree(Tₙ) = n, leadingCoeff(Tₙ) = 2^(n-1), and the minimax theorem to Mathlib's RingTheory/Polynomial/Chebyshev.lean, closing the listed TODOs.",
+      "Extend to the second-kind Chebyshev polynomials Uₙ and the corresponding L¹/weighted extremal problems."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Polynomial.Chebyshev",
+      "Real"
+    ],
+    "namespace": "DeMoivreOQ0203",
+    "lineCount": 378,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 1,
+    "path": "Proofs/DeMoivreOQ02OQ03.lean",
+    "sorries": 0,
+    "mainTheorems": [
+      {
+        "name": "chebyshev_eval_node",
+        "statement": "∀ (n k : ℕ), 0 < n → (T ℝ (n : ℤ)).eval (Real.cos (k * π / n)) = (-1) ^ k",
+        "description": "Equioscillation at the n+1 Chebyshev extreme nodes"
+      },
+      {
+        "name": "chebyshev_leadingCoeff",
+        "statement": "∀ (n : ℕ), 0 < n → (T ℝ (n : ℤ)).leadingCoeff = 2 ^ (n - 1)",
+        "description": "Leading coefficient of Tₙ is 2^(n-1) (new infrastructure)"
+      },
+      {
+        "name": "monicChebyshev_abs_le",
+        "statement": "∀ (n : ℕ) {x : ℝ}, x ∈ Set.Icc (-1) 1 → |(monicChebyshev n).eval x| ≤ ((2 : ℝ) ^ (n - 1))⁻¹",
+        "description": "Sup-norm of the monic Chebyshev polynomial on [-1,1] is ≤ 2^(1-n)"
+      },
+      {
+        "name": "monicChebyshev_monic",
+        "statement": "∀ (n : ℕ), 0 < n → (monicChebyshev n).Monic",
+        "description": "The monic Chebyshev polynomial Tₙ/2^(n-1) is monic"
+      },
+      {
+        "name": "monicChebyshev_minimax",
+        "statement": "∀ (p : ℝ[X]), p.Monic → ∀ (n : ℕ), 0 < n → p.natDegree = n → ∃ x ∈ Set.Icc (-1 : ℝ) 1, ((2 : ℝ) ^ (n - 1))⁻¹ ≤ |p.eval x|",
+        "description": "Optimality (lower-bound) half: every monic degree-n polynomial attains |p| ≥ 2^(1-n) somewhere on [-1,1]"
+      },
+      {
+        "name": "chebyshev_minimax",
+        "statement": "∀ (n : ℕ), 0 < n → (∀ x ∈ Set.Icc (-1 : ℝ) 1, |(monicChebyshev n).eval x| ≤ ((2 : ℝ) ^ (n - 1))⁻¹) ∧ (∀ p : ℝ[X], p.Monic → p.natDegree = n → ∃ x ∈ Set.Icc (-1 : ℝ) 1, ((2 : ℝ) ^ (n - 1))⁻¹ ≤ |p.eval x|)",
+        "description": "Full Chebyshev minimax theorem: achievability ∧ optimality"
+      }
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre-oq-02",
+      "relationship": "Open sub-question of de-moivre-oq-02, applying De Moivre's identity to the minimax/equioscillation property of Chebyshev polynomials."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-02",
+      "relationship": "parent",
+      "description": "Parent entry on Chebyshev polynomial properties via De Moivre's theorem."
+    },
+    {
+      "targetId": "de-moivre-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling proving Chebyshev product-to-sum formulas; this entry treats the minimax/equioscillation property."
+    }
+  ],
+  "references": [
+    {
+      "authors": "J. C. Mason, D. C. Handscomb",
+      "title": "Chebyshev Polynomials",
+      "year": "2003",
+      "venue": "CRC Press",
+      "note": "Minimax property and equioscillation, Chapter 3"
+    }
+  ],
+  "sorries": 0
+}

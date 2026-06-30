@@ -54,8 +54,8 @@
       "WF descent on Carathéodory vertex count: needed for Sub-case B2 where bv ∉ S; formal prerequisite is binary_repr_of_mem_convexHull_not_mem returning full n-vertex count so caraDepth(bv) = caraDepth(x) - 1 can be tracked"
     ],
     "nextSteps": [
-      "Implement WF descent for Sub-case B2: add caraDepth parameter to reduce_excess, strong induction on totalCaraDepth — ~80 lines",
-      "Alternative: submit Sub-case B2 sorry to Aristotle proof search for automated verification"
+      "DONE (PR #12242): the Sub-case B2 WF descent was implemented via well-founded induction on total minCaraDepth; Docker build passes. Kept for record.",
+      "DONE: no Sub-case B2 sorry remains to submit — ShapleyFolkman.lean / ShapleyFolkmanAristotle.lean / ShapleyFolkmanOQ03.lean are 0-sorry; slug status is completed/COMPLETED. No live next step — SOLVED."
     ],
     "phase": "ACT"
   },
@@ -81,6 +81,17 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanOQ01.lean",
+      "filename": "ShapleyFolkmanOQ01.lean",
+      "lineCount": 400,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanOQ01.lean"
     },
     {
       "path": "Proofs/ShapleyFolkmanOQ03.lean",

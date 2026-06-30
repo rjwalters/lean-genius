@@ -99,6 +99,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview — Vector-Valued Mean Value Inequality",
+      "summary": "Imports, file docstring, and namespace setup: states what the file proves (the mean value inequality for vector- and Banach-space-valued functions), explains why the classical equality form of the MVT fails for vectors, and gives status and references.",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "For $f : \\mathbb{R} \\to E$ (or $E \\to F$) the equality form of the MVT fails — there need be no $c$ with $f(b)-f(a) = f'(c)(b-a)$ — but the inequality $\\|f(b)-f(a)\\| \\leq \\sup\\|f'\\|\\cdot(b-a)$ survives and is what this file develops."
+    },
+    {
       "id": "core-inequality",
       "title": "The Mean Value Inequality",
       "summary": "The central theorem: for $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, $\\|f(x) - f(a)\\| \\leq C \\cdot (x-a)$ for all $x \\in [a,b]$. One-line proof delegating to Mathlib's `norm_image_sub_le_of_norm_deriv_le_segment'`.",
@@ -167,8 +175,16 @@
       "title": "Scalar vs Vector: Strict Monotonicity and Antiderivatives",
       "summary": "Strict monotonicity ($f' > 0 \\Rightarrow f(a) < f(b)$) requires the scalar MVT equality. Antiderivative uniqueness ($f' = g' \\Rightarrow f - g$ constant) uses the vector inequality with $C = 0$.",
       "startLine": 307,
-      "endLine": 363,
+      "endLine": 364,
       "mathContext": "Strict monotonicity ($f > 0 \\Rightarrow f(a) < f(b)$) requires the ordering of $\\mathbb{R}$. In $\\mathbb{R}^n$ or Banach spaces, only the norm inequality $\\|\\Delta f\\| \\leq \\sup\\|f\\| \\cdot \\Delta t$ survives."
+    },
+    {
+      "id": "summary",
+      "title": "Summary of Results",
+      "summary": "Recap of the twelve results — the mean value inequality, its scalar special case, the circular-motion counterexample, Lipschitz and contraction bounds, the displacement/Gronwall estimate, the Banach-space MVT, ODE uniqueness, strict monotonicity, and antiderivative uniqueness — framed as the answer to MVT gallery Open Question #3.",
+      "startLine": 365,
+      "endLine": 388,
+      "mathContext": "Answers Open Question #3 from the MVT gallery: the vector-valued generalization of the mean value theorem is the mean value inequality $\\|f(b)-f(a)\\| \\leq \\sup\\|f'\\|\\cdot(b-a)$, which holds in any normed space even though the equality form does not."
     },
     {
       "id": "banach-extensions",

@@ -1,0 +1,208 @@
+{
+  "id": "mean-value-theorem-oq-02-oq-01-oq-01",
+  "title": "Exponential Taylor series convergence for all real x via reflection",
+  "slug": "mean-value-theorem-oq-02-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Proofs.MeanValueTheoremOQ02OQ01",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "Filter",
+      "Topology",
+      "MeanValueTheoremOQ02",
+      "MeanValueTheoremOQ02OQ01"
+    ],
+    "namespace": "MeanValueTheoremOQ02OQ01OQ01",
+    "lineCount": 149,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/MeanValueTheoremOQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Answers the lead open question of mean-value-theorem-oq-02-oq-01: extend the parent's exponential Taylor-series convergence ∑_{k≤n} xᵏ/k! → exp x from x > 0 to ALL real x, including x ≤ 0. The parent's MVT-rooted convergence lemma taylorPolynomial_tendsto is one-sided — it needs an interval (a,b) with a < b — so it only reached the right half-line. The fix is a reflection rather than a new leftward Lagrange remainder: for x < 0 apply taylorPolynomial_tendsto to the function t ↦ exp(-t) on the positive interval (0, -x). Its iterated derivatives are (-1)ⁿ exp(-t), all bounded by 1 there; its Taylor polynomial at 0 is exactly ∑_{k≤n} xᵏ/k! (because (-(-x))ᵏ = xᵏ); and its value at -x is exp x. Gluing this with the trivial x = 0 case (every partial sum is 1 = exp 0) and the parent's x > 0 result via trichotomy yields the all-ℝ statement exp_taylor_tendsto_all. All 4 theorems are fully machine-checked, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius researchers (2026)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MeanValueTheoremOQ02OQ01OQ01.lean",
+    "tags": [
+      "calculus",
+      "taylor-theorem",
+      "mean-value-theorem",
+      "taylor-remainder",
+      "series-convergence",
+      "exponential-function",
+      "analysis",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 149,
+    "assumptions": "None. All four theorems depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound), confirmed via #print axioms on exp_taylor_tendsto_all, exp_taylor_tendsto_neg, and iteratedDeriv_exp_neg. The remainder-convergence engine taylorPolynomial_tendsto and the x > 0 base case exp_taylor_tendsto are reused as proven 0-axiom theorems from the parent file Proofs/MeanValueTheoremOQ02OQ01.lean; no axioms or sorries are introduced or inherited.",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.hasDerivAt_exp",
+        "description": "HasDerivAt Real.exp (exp x) x; composed with the derivative of negation to differentiate t ↦ exp(-t)",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Real.contDiff_exp",
+        "description": "exp is C^∞; composed with negation gives the smoothness of the reflected exponential needed by taylorPolynomial_tendsto",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "iteratedDeriv_succ",
+        "description": "iteratedDeriv (n+1) f = deriv (iteratedDeriv n f); the induction step computing the iterated derivatives of exp(-t)",
+        "module": "Mathlib.Analysis.Calculus.IteratedDeriv.Defs"
+      },
+      {
+        "theorem": "neg_pow",
+        "description": "(-a)ⁿ = (-1)ⁿ aⁿ; converts (-x)ᵏ = (-(-x))ᵏ-style terms and identifies the reflected Taylor polynomial with ∑ xᵏ/k!",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Finset.sum_eq_single",
+        "description": "Collapses the x = 0 partial sum to its single surviving k = 0 term (value 1)",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "MeanValueTheoremOQ02OQ01.taylorPolynomial_tendsto",
+        "description": "Parent lemma: a uniform bound on all derivatives of f on (a,b) forces its Taylor polynomials at a to converge to f(b). Applied to t ↦ exp(-t) on (0,-x) to obtain the x < 0 case.",
+        "module": "Proofs.MeanValueTheoremOQ02OQ01"
+      },
+      {
+        "theorem": "MeanValueTheoremOQ02OQ01.exp_taylor_tendsto",
+        "description": "Parent lemma: ∑_{k≤n} xᵏ/k! → exp x for x > 0. Reused verbatim as the positive branch of the trichotomy.",
+        "module": "Proofs.MeanValueTheoremOQ02OQ01"
+      }
+    ],
+    "additionalFiles": [
+      "Proofs/MeanValueTheoremOQ02OQ01.lean",
+      "Proofs/MeanValueTheoremOQ02.lean"
+    ],
+    "originalContributions": [
+      "exp_taylor_tendsto_all: the headline — for EVERY real x, the partial sums ∑_{k≤n} xᵏ/k! converge to exp x. Closes the parent's leading open question, extending its x > 0 result to the whole real line by trichotomy over the three regimes.",
+      "exp_taylor_tendsto_neg: the genuinely new direction (x < 0). Rather than proving a separate leftward Taylor remainder, it reflects: it applies the parent's one-sided taylorPolynomial_tendsto to t ↦ exp(-t) on the positive interval (0,-x), whose derivatives are all bounded by 1 and whose Taylor polynomial at 0 is exactly ∑ xᵏ/k!. This shows the one-sided MVT remainder machinery already covers the left half-line, for free, through reflection.",
+      "iteratedDeriv_exp_neg / deriv_exp_neg: the iterated derivatives of the reflected exponential t ↦ exp(-t) are t ↦ (-1)ⁿ exp(-t), proved by induction from the chain rule. These identify the reflected Taylor coefficients ((-1)ᵏ at the center 0) and supply the uniform derivative bound 1 on (0,-x)."
+    ],
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "That the exponential series ∑ xᵏ/k! converges to eˣ on all of ℝ is classical (Euler; Rudin, Principles of Mathematical Analysis, §8). The standard analytic route bounds the Taylor remainder: on any bounded interval every derivative of exp is bounded, so the remainder M·(b−a)ⁿ⁺¹/(n+1)! → 0. The parent entry formalized exactly this estimate-to-convergence route but, because its remainder lemma was stated one-sidedly on an interval (a,b) with a < b, only obtained convergence for x > 0. This entry supplies the missing left half-line, staying inside the same Mean-Value/Taylor remainder framework by reflecting through t ↦ exp(-t).",
+    "problemStatement": "Question (lead OQ of mean-value-theorem-oq-02-oq-01): the parent proved ∑_{k≤n} xᵏ/k! → exp x only for x > 0, since its convergence lemma taylorPolynomial_tendsto requires an interval (a,b) with a < b. Extend the convergence to all real x, including x ≤ 0, without abandoning the MVT remainder machinery.",
+    "proofStrategy": "Trichotomy on x. (i) x < 0 (exp_taylor_tendsto_neg): set y = -x > 0. The reflected function f(t) = exp(-t) is C^∞ with iteratedDeriv n f = (-1)ⁿ exp(-·) (iteratedDeriv_exp_neg, by induction from the chain rule deriv_exp_neg); on (0,y) these are bounded in absolute value by exp(-t) ≤ exp 0 = 1. Apply the parent's taylorPolynomial_tendsto with M = 1 to get its Taylor polynomials at 0 converging to f(y) = exp(-y) = exp x. Finally identify each Taylor polynomial with the target partial sum: the k-th coefficient is iteratedDeriv k f 0 / k! = (-1)ᵏ/k!, and (y−0)ᵏ = yᵏ, while xᵏ = (-y)ᵏ = (-1)ᵏ yᵏ (neg_pow), so the term equals xᵏ/k! (Finset.sum_congr + Tendsto.congr). (ii) x = 0: every partial sum collapses to its k=0 term 1 = exp 0 (Finset.sum_eq_single), a constant sequence. (iii) x > 0: the parent's exp_taylor_tendsto applies verbatim.",
+    "keyInsights": [
+      "**Reflection, not re-derivation.** The one-sided remainder lemma seems to leave x < 0 uncovered, but composing with negation turns the left half-line into the right: t ↦ exp(-t) on (0,-x) is the exact mirror that lets the existing lemma fire. No new (leftward) Taylor theorem is needed.",
+      "**The reflected Taylor polynomial is the same series.** Because the center is 0 and (-(-x))ᵏ = xᵏ, the Taylor polynomial of exp(-t) at 0 evaluated at -x is literally ∑_{k≤n} xᵏ/k! — the very sequence whose limit we want. The alternating signs of the reflected coefficients recombine with the sign of -x to reproduce xᵏ.",
+      "**A constant bound suffices.** On (0,-x) the reflected derivatives (-1)ⁿ exp(-t) have absolute value exp(-t) ≤ 1, so the uniform-bound hypothesis holds with M = 1 — simpler than the parent's x-dependent M = exp x, because here -t ranges over the negative reals where exp ≤ 1.",
+      "**x = 0 is genuinely degenerate.** The series there is the single term 1, not a limit that needs the remainder machinery; isolating it keeps the trichotomy honest and the other two branches clean."
+    ],
+    "prerequisites": [
+      "The parent's remainder-convergence lemma taylorPolynomial_tendsto and its x > 0 application exp_taylor_tendsto (entry mean-value-theorem-oq-02-oq-01)",
+      "Iterated derivatives (Mathlib iteratedDeriv) and the chain rule for negation",
+      "Limits of sequences (Filter.Tendsto) and Tendsto.congr",
+      "Trichotomy and basic Finset sum manipulation"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "deriv_exp_neg",
+      "type": "theorem",
+      "description": "deriv (fun t => Real.exp (-t)) x = -Real.exp (-x). The first derivative of the reflected exponential, from the chain rule (HasDerivAt.comp with the derivative of negation)."
+    },
+    {
+      "name": "iteratedDeriv_exp_neg",
+      "type": "theorem",
+      "description": "iteratedDeriv n (fun t => Real.exp (-t)) = fun t => (-1)ⁿ · Real.exp (-t). All iterated derivatives of the reflected exponential, by induction; supplies both the Taylor coefficients at 0 and the uniform bound 1 on (0,-x)."
+    },
+    {
+      "name": "exp_taylor_tendsto_neg",
+      "type": "theorem",
+      "description": "For x < 0, ∑_{k≤n} xᵏ/k! → exp x. The new direction: applies the parent's one-sided taylorPolynomial_tendsto to t ↦ exp(-t) on (0,-x), whose Taylor polynomial at 0 is exactly the target partial sum and whose limit value is exp x."
+    },
+    {
+      "name": "exp_taylor_tendsto_all",
+      "type": "theorem",
+      "description": "For every real x, ∑_{k≤n} xᵏ/k! → exp x. The headline: trichotomy glues the reflection-based x < 0 case, the constant x = 0 case, and the parent's x > 0 case into convergence on all of ℝ."
+    }
+  ],
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "Rudin, W. (1976). \"Principles of Mathematical Analysis,\" 3rd ed. McGraw-Hill. §8 (the exponential function) and Theorem 5.15 (Taylor's theorem).",
+      "relevance": "Classical source for the convergence of the exponential Taylor series on all of ℝ via remainder bounds — the fact this entry completes from the MVT/Taylor remainder side for the left half-line."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Analysis.SpecialFunctions.ExpDeriv\" — Real.hasDerivAt_exp, Real.contDiff_exp. (accessed 2026)",
+      "relevance": "Differentiability and smoothness of exp, composed with negation to control the reflected exponential t ↦ exp(-t)."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "File Header and Imports",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring framing the open question (extend exp Taylor convergence from x > 0 to all real x) and the reflection strategy, with an honesty note that the negative case still flows from the parent's MVT remainder lemma — the reflection t ↦ exp(-t) is precisely what lets the one-sided parent lemma cover the left half-line. Imports the parent file and Mathlib.Tactic; opens Real/Set/Filter/Topology and both ancestor namespaces.",
+      "mathContext": "Goal: $\\sum_{k\\le n} \\frac{x^k}{k!} \\to e^x$ for all $x \\in \\mathbb{R}$, completing the parent's $x>0$ result."
+    },
+    {
+      "id": "part1-derivs",
+      "title": "Part I: Derivatives of the Reflected Exponential",
+      "startLine": 49,
+      "endLine": 78,
+      "summary": "deriv_exp_neg (deriv of exp(-t) is -exp(-t), via HasDerivAt.comp with the derivative of negation) and iteratedDeriv_exp_neg (iteratedDeriv n of exp(-t) is (-1)ⁿ exp(-t), by induction using iteratedDeriv_succ, deriv_const_mul, and deriv_exp_neg, closed by ring on the sign).",
+      "mathContext": "$\\frac{d^n}{dt^n} e^{-t} = (-1)^n e^{-t}$."
+    },
+    {
+      "id": "part2-negative",
+      "title": "Part II: Convergence for Negative Arguments",
+      "startLine": 79,
+      "endLine": 122,
+      "summary": "exp_taylor_tendsto_neg: for x < 0, set y = -x > 0; bound all reflected derivatives on (0,y) by 1 (|(-1)ⁿ exp(-t)| = exp(-t) ≤ exp 0 = 1); apply the parent's taylorPolynomial_tendsto with M = 1 to get convergence to f(y) = exp(-y) = exp x; then identify each Taylor polynomial with ∑ xᵏ/k! by a per-term computation (coefficient (-1)ᵏ at center 0, and xᵏ = (-1)ᵏ yᵏ via neg_pow) wrapped in Tendsto.congr.",
+      "mathContext": "Reflection: $T_n^{e^{-\\cdot}}(0)(y) = \\sum_{k\\le n}\\frac{(-1)^k}{k!}y^k = \\sum_{k\\le n}\\frac{x^k}{k!}$ and $e^{-y}=e^{x}$."
+    },
+    {
+      "id": "part3-all",
+      "title": "Part III: Convergence for All Real x",
+      "startLine": 123,
+      "endLine": 149,
+      "summary": "exp_taylor_tendsto_all: trichotomy on x. x < 0 delegates to exp_taylor_tendsto_neg; x = 0 collapses each partial sum to its k=0 term 1 = exp 0 (Finset.sum_eq_single) and uses a constant-sequence limit; x > 0 delegates to the parent's exp_taylor_tendsto.",
+      "mathContext": "$\\forall x\\in\\mathbb{R},\\ \\sum_{k\\le n}\\frac{x^k}{k!} \\to e^x$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Extending the parent's exponential Taylor-series convergence from x > 0 to all real x, this entry supplies the left half-line by reflecting through t ↦ exp(-t): the parent's one-sided remainder-convergence lemma, applied to the reflected exponential on (0,-x), delivers convergence for x < 0, whose reflected Taylor polynomial is exactly the target partial sum. With the trivial x = 0 case and the parent's x > 0 result, the headline exp_taylor_tendsto_all gives ∑_{k≤n} xᵏ/k! → exp x for every real x. All four results are fully machine-checked, 0 axioms, 0 sorries.",
+    "implications": "The reflection technique shows that a one-sided Taylor remainder is no obstruction to two-sided series convergence: composing with negation transports the bound to the opposite half-line at no cost. The same pattern extends verbatim to other even/odd-symmetric smooth functions (sin, cos), where a global uniform derivative bound M = 1 then yields all-ℝ convergence directly.",
+    "openQuestions": [
+      "Prove the all-ℝ convergence of the Taylor series of sin and cos, where the uniform derivative bound M = 1 holds globally, so taylorPolynomial_tendsto applies on both half-lines by the same reflection.",
+      "Give a quantitative two-sided remainder bound: an explicit N(ε,R) with |exp x − ∑_{k≤N} xᵏ/k!| < ε for all x ∈ [-R, R], read off from the parent's taylor_remainder_bound with M = exp R."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem-oq-02-oq-01",
+      "relationship": "parent-problem",
+      "description": "The parent entry: the Taylor remainder estimate and its convergence lemma taylorPolynomial_tendsto, plus the x > 0 case exp_taylor_tendsto. This entry answers its leading open question by extending that convergence to all real x."
+    },
+    {
+      "targetId": "mean-value-theorem-oq-02",
+      "relationship": "ancestor",
+      "description": "Taylor's theorem with the exact Lagrange remainder, the ultimate source of the remainder estimate underlying both the parent's and this entry's convergence results."
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "ancestor",
+      "description": "The base Mean Value Theorem (Wiedijk #75); Taylor's theorem is its higher-order generalization and the engine behind the remainder estimate reused here."
+    }
+  ]
+}

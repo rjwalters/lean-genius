@@ -110,34 +110,29 @@
   },
   "crossReferences": [
     {
-      "slug": "ramseys-theorem",
-      "relation": "foundation",
-      "note": "Ramsey's theorem establishes that R(k) is finite for all k, providing the fundamental existence result that this problem refines into a quantitative growth-rate question.",
-      "relationship": "related"
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's theorem establishes that R(k) is finite for all k, providing the fundamental existence result that this problem refines into a quantitative growth-rate question."
     },
     {
-      "slug": "erdos-1015",
-      "relation": "closely-related",
-      "note": "Erdős Problem #1015 concerns partitioning 2-colored complete graphs using monochromatic cliques and directly involves the off-diagonal Ramsey number R(t, t-1), sharing the same extremal graph-theoretic setting.",
-      "relationship": "related"
+      "targetId": "erdos-1015",
+      "relationship": "related",
+      "description": "Erdős Problem #1015 concerns partitioning 2-colored complete graphs using monochromatic cliques and directly involves the off-diagonal Ramsey number R(t, t-1), sharing the same extremal graph-theoretic setting."
     },
     {
-      "slug": "erdos-1",
-      "relation": "thematic",
-      "note": "Erdős Problem #1 (distinct subset sums) is another of Erdős's oldest open problems carrying a prize, illustrating his broader program of quantitative combinatorics where probabilistic lower bounds are expected to be far from tight.",
-      "relationship": "related"
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Erdős Problem #1 (distinct subset sums) is another of Erdős's oldest open problems carrying a prize, illustrating his broader program of quantitative combinatorics where probabilistic lower bounds are expected to be far from tight."
     },
     {
-      "slug": "erdos-500",
-      "relation": "thematic",
-      "note": "Turán density for hypergraphs is a parallel open problem in extremal combinatorics where the gap between probabilistic and algebraic bounds is also enormous and unresolved.",
-      "relationship": "related"
+      "targetId": "erdos-500",
+      "relationship": "related",
+      "description": "Turán density for hypergraphs is a parallel open problem in extremal combinatorics where the gap between probabilistic and algebraic bounds is also enormous and unresolved."
     },
     {
-      "slug": "szemeredi-regularity",
-      "relation": "technique",
-      "note": "The Szemerédi Regularity Lemma is a key structural tool in extremal graph theory; progress on Ramsey upper bounds often passes through regularity-type arguments and graph decompositions.",
-      "relationship": "related"
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi Regularity Lemma is a key structural tool in extremal graph theory; progress on Ramsey upper bounds often passes through regularity-type arguments and graph decompositions."
     }
   ],
   "references": [

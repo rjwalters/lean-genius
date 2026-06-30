@@ -79,43 +79,45 @@
   "sections": [
     {
       "id": "unimodular",
-      "title": "Unimodular Matrices over a PID",
+      "title": "Unimodular Matrices over a Commutative Ring",
       "startLine": 36,
-      "endLine": 58,
-      "summary": "Defines IsUnimodularPID (IsUnit det), proves it holds for the identity, is closed under multiplication, and specializes to det = ±1 over ℤ.",
-      "mathContext": "Over a PID R, the group of invertible matrices GL_n(R) consists exactly of matrices with IsUnit det. This is because invertibility over R requires a matrix inverse with entries in R, and Cramer's rule gives M⁻¹ = det(M)⁻¹ · adj(M) — requiring det(M) to be a unit."
+      "endLine": 57,
+      "summary": "Unimodular matrices over a commutative ring and their basic properties, the algebraic setting for the Smith-normal-form / Bézout characterization."
     },
     {
-      "id": "snf-structure",
+      "id": "smith-normal-form",
       "title": "Smith Normal Form Structure",
-      "startLine": 61,
-      "endLine": 80,
-      "summary": "Defines SmithNormalFormPID R m n with unimodular U, V over R, diagonal D with divisibility chain. Identical structure to ℤ case but parameterized by ring R.",
-      "mathContext": "The SNF decomposition A = UDV over a PID R has the same structure as over ℤ. The invariant factors d₁|d₂|...|dₖ are elements of R determined up to units, giving an invariant of the R-module structure."
+      "startLine": 58,
+      "endLine": 81,
+      "summary": "Smith normal form structure used to characterize gcd and Bézout coefficients."
     },
     {
-      "id": "gcd-char",
+      "id": "gcd-1x2",
       "title": "GCD Characterization: 1×2 Case",
       "startLine": 82,
-      "endLine": 154,
-      "summary": "Main theorem: the 1×2 invariant factor is associated to gcd(a,b) in any GCDMonoid. New vs. parent: uses unit.inv_val cancellation instead of ±1 case split.",
-      "mathContext": "For [a, b] = U·D·V with U 1×1 unimodular and V 2×2 unimodular, extracting entries gives a = u·d·v₀₀ and b = u·d·v₀₁ where u = U[0,0] is a unit. Then d|a and d|b so d|gcd. For the reverse: a·v₁₁ - b·v₁₀ = u·d·det(V), and u·det(V) is a unit, so cancellation gives gcd|d."
+      "endLine": 155,
+      "summary": "The gcd characterization for 1×2 matrices: relating unimodular column operations to the Bézout identity."
     },
     {
-      "id": "axioms",
+      "id": "existence-axioms",
       "title": "Existence and Solvability Axioms",
       "startLine": 156,
       "endLine": 171,
-      "summary": "Two axioms encode the genuine ring-theoretic↔matrix-theoretic gap in current Mathlib: snf_pid_exists (every matrix over a PID has an SNF) and snf_pid_solvability (Ax = b is solvable iff invariant factors satisfy a divisibility/zero-row criterion).",
-      "mathContext": "Mathlib has `Submodule.smithNormalForm` (LinearAlgebra.FreeModule.PID) for finitely generated submodules of free modules over PIDs, but bridging it to the matrix-theoretic `SmithNormalFormPID` structure requires picking bases and translating between $A : R^n \\to R^m$ and the image submodule $A(R^n) \\subseteq R^m$. The two axioms here are exactly the assumptions needed to use SNF as a black box, deferring this bridge as future work."
+      "summary": "Existence and solvability axioms for the matrix Bézout formulation (the 2 stated assumptions)."
     },
     {
-      "id": "bezout",
+      "id": "bezout-gcdmonoid",
       "title": "Bezout in GCDMonoid and the k[X] Instance",
       "startLine": 172,
-      "endLine": 191,
-      "summary": "Forward direction ax+by=c → gcd|c in any GCDMonoid. Backward direction for ℤ via Bezout coefficients. Single-line k[X] is a PID instance via Mathlib inference.",
-      "mathContext": "The forward direction is purely algebraic and holds in any GCDMonoid. The backward direction requires Bezout coefficients (the existence of which is equivalent to the Bezout domain property, holding in any PID). Over ℤ, Int.gcdA and Int.gcdB provide these coefficients explicitly. The k[X] PID instance unlocks the entire SNF apparatus for polynomial matrices — the algebraic backbone of rational canonical form."
+      "endLine": 192,
+      "summary": "Bézout over a GCDMonoid and the concrete k[X] polynomial-ring instance."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 193,
+      "endLine": 206,
+      "summary": "Recap of the unimodular / Smith-normal-form Bézout characterization, the stated axioms, and the GCDMonoid instances."
     }
   ],
   "conclusion": {
@@ -159,7 +161,10 @@
       "Mathlib.LinearAlgebra.Matrix.Determinant",
       "Mathlib.Tactic"
     ],
-    "opens": ["Matrix", "GCDMonoid"],
+    "opens": [
+      "Matrix",
+      "GCDMonoid"
+    ],
     "namespace": "BezoutIdentityOQ04OQ01OQ01",
     "path": "Proofs/BezoutIdentityOQ04OQ01OQ01.lean",
     "lineCount": 206,

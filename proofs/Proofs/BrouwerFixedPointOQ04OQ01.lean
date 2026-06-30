@@ -129,10 +129,20 @@ theorem bestResponse_convex {N : ℕ} (G : FiniteGame N) (i : Fin N)
       a * G.utility i (Function.update σ i x) +
       b * G.utility i (Function.update σ i y) := hlin i σ x y a b
   simp only [expectedUtility] at *
-  rw [hlin_eq]
+  have hcomb : (a • x + b • y : Fin (G.strategies i) → ℝ)
+      = fun k => a * x k + b * y k := by
+    funext k; simp [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+  rw [hcomb, hlin_eq]
   have h1 := hx_best τ' hτ'
   have h2 := hy_best τ' hτ'
-  nlinarith [hab]
+  -- a·EU(x) + b·EU(y) ≥ a·EU(τ') + b·EU(τ') = (a+b)·EU(τ') = EU(τ')
+  have key := add_le_add (mul_le_mul_of_nonneg_left h1 ha)
+    (mul_le_mul_of_nonneg_left h2 hb)
+  have hcollapse : a * G.utility i (Function.update σ i τ') +
+      b * G.utility i (Function.update σ i τ') =
+      G.utility i (Function.update σ i τ') := by
+    rw [← add_mul, hab, one_mul]
+  linarith [key, hcollapse]
 
 /-- The best response set is closed.
 
@@ -156,7 +166,7 @@ theorem bestResponse_closed {N : ℕ} (G : FiniteGame N) (i : Fin N)
   have heq : bestResponse G i σ =
       MixedStrategy (G.strategies i) ∩ {τ | M ≤ eu τ} := by
     ext τ
-    simp only [bestResponse, Set.mem_sep_iff, Set.mem_inter_iff,
+    simp only [bestResponse, Set.mem_inter_iff,
                Set.mem_setOf_eq, expectedUtility, eu, M]
     constructor
     · intro ⟨hτ_mixed, hτ_best⟩
@@ -201,7 +211,9 @@ theorem fixed_point_is_nash {N : ℕ} (G : FiniteGame N)
   · intro j
     exact bestResponse_subset G j σ (hfp j)
   · intro i τ hτ
-    exact (hfp i).2 τ hτ
+    have h := (hfp i).2 τ hτ
+    simp only [expectedUtility] at h
+    rwa [Function.update_eq_self] at h
 
 /-- **Kakutani on Product Simplices** (axiom).
 
@@ -231,7 +243,7 @@ axiom kakutani_product_simplex {N : ℕ} (G : FiniteGame N)
     Proof: The joint best response correspondence on Πᵢ Δᵢ satisfies all
     Kakutani hypotheses (by bestResponse_nonempty, _convex, _closed, _uhc),
     so Kakutani gives a fixed point which is a Nash equilibrium. -/
-theorem nash_existence {N : ℕ} (hN : 0 < N) (G : FiniteGame N)
+theorem nash_existence {N : ℕ} (_hN : 0 < N) (G : FiniteGame N)
     (hcont : ∀ i : Fin N, ∀ σ : ∀ j, Fin (G.strategies j) → ℝ,
       Continuous (fun τ : Fin (G.strategies i) → ℝ =>
         G.utility i (Function.update σ i τ))) :
@@ -246,12 +258,14 @@ theorem nash_existence {N : ℕ} (hN : 0 < N) (G : FiniteGame N)
 theorem matching_pennies_uniform_is_mixed :
     (![1/2, 1/2] : Fin 2 → ℝ) ∈ MixedStrategy 2 := by
   constructor
-  · intro j; fin_cases j <;> simp [Matrix.cons_val_zero, Matrix.cons_val_one]
-  · simp [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+  · intro j; fin_cases j <;> norm_num [Matrix.cons_val_zero, Matrix.cons_val_one]
+  · norm_num [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-- **Prisoner's Dilemma**: The unique Nash equilibrium is mutual defection.
-    We exhibit the dominant strategy equilibrium directly. -/
-def prisonersDilemmaGame : FiniteGame 2 where
+    We exhibit the dominant strategy equilibrium directly.
+    Marked `@[reducible]` so `strategies i` unfolds to `2` during instance
+    synthesis (lets numerals `0`/`1 : Fin (strategies i)` elaborate). -/
+@[reducible] def prisonersDilemmaGame : FiniteGame 2 where
   strategies := fun _ => 2  -- 2 strategies each: Cooperate (0) or Defect (1)
   strategies_pos := fun _ => by norm_num
   utility := fun i σ =>
@@ -260,33 +274,28 @@ def prisonersDilemmaGame : FiniteGame 2 where
     -- Payoff matrix: (C,C)→3, (C,D)→0, (D,C)→5, (D,D)→1
     3 * c * c' + 0 * c * (1 - c') + 5 * (1 - c) * c' + 1 * (1 - c) * (1 - c')
 
-/-- In the Prisoner's Dilemma, both-defect is a Nash equilibrium. -/
+/-- In the Prisoner's Dilemma, both-defect is a Nash equilibrium.
+    The "always defect" profile assigns probability 1 to strategy 1. -/
 theorem prisoners_dilemma_nash :
-    let σ : ∀ j : Fin 2, Fin 2 → ℝ := fun _ k => if k = 1 then 1 else 0  -- always defect
-    IsNashEquilibrium prisonersDilemmaGame σ := by
-  constructor
-  · intro j; constructor
-    · intro k; fin_cases k <;> simp
-    · simp [Fin.sum_univ_two]
-  · intro i τ hτ
-    simp only [prisonersDilemmaGame, Function.update]
-    split_ifs with hi
-    · -- Player 0 unilaterally deviates
-      have hτ_prob : τ 0 + τ 1 = 1 := by
-        have := hτ.2; simp [Fin.sum_univ_two] at this; linarith
-      have hτ_nn : 0 ≤ τ 0 ∧ 0 ≤ τ 1 := ⟨hτ.1 0, hτ.1 1⟩
-      -- EU(defect | opponent defects) = 1 ≥ EU(τ | opponent defects)
-      -- = 3*τ0*0 + 0*τ0*1 + 5*τ1*0 + 1*τ1*1 = τ1 ≤ τ0 + τ1 = 1
-      ring_nf
-      nlinarith [hτ_prob, hτ_nn.1, hτ_nn.2]
-    · -- Player 1 unilaterally deviates
-      have hi1 : i = 1 := by fin_cases i <;> simp_all [Fin.ext_iff]
-      subst hi1
-      have hτ_prob : τ 0 + τ 1 = 1 := by
-        have := hτ.2; simp [Fin.sum_univ_two] at this; linarith
-      have hτ_nn : 0 ≤ τ 0 ∧ 0 ≤ τ 1 := ⟨hτ.1 0, hτ.1 1⟩
-      ring_nf
-      nlinarith [hτ_prob, hτ_nn.1, hτ_nn.2]
+    IsNashEquilibrium prisonersDilemmaGame (fun _ k => if k = 1 then 1 else 0) := by
+  refine ⟨fun j => ⟨fun k => ?_, ?_⟩, ?_⟩
+  · -- each component is nonnegative
+    show (0:ℝ) ≤ if k = 1 then 1 else 0
+    split_ifs <;> norm_num
+  · -- each player's strategy sums to 1
+    show ∑ k : Fin 2, (if k = 1 then (1:ℝ) else 0) = 1
+    rw [Fin.sum_univ_two]; norm_num
+  · -- no player gains by unilateral deviation from "always defect"
+    intro i τ hτ
+    have h0 : (0:ℝ) ≤ τ 0 := hτ.1 0
+    have h1 : (0:ℝ) ≤ τ 1 := hτ.1 1
+    have hsum : τ 0 + τ 1 = 1 := by
+      have hs : ∑ k : Fin 2, τ k = 1 := hτ.2
+      rwa [Fin.sum_univ_two] at hs
+    fin_cases i <;>
+      · simp only [prisonersDilemmaGame, Function.update]
+        norm_num
+        nlinarith [h0, h1, hsum]
 
 end NashEquilibrium
 
