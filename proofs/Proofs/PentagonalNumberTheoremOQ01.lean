@@ -702,4 +702,108 @@ axioms, that the staircases `{k, …, 2k-1}` and `{k+1, …, 2k}` are partitions
 arithmetically; what remains genuinely open is the *involution on the non-fixed
 partitions* witnessing the cancellation of all other terms. -/
 
+/-! ## Part 8: The staircase fixed points as genuine `Nat.Partition` / `distincts` members
+
+Part 7 records the staircases `{k,…,2k-1}` and `{k+1,…,2k}` arithmetically, as
+`Finset.Ico` sums.  Here we promote each to an honest element of Mathlib's
+`Nat.Partition` type and show it lies in `Nat.Partition.distincts` — the very Finset
+that the Part-6 bridges `coeff_genFun_pent` / `coeff_tprod_pent` sum over.  This
+closes the bookkeeping gap between Part 7's fixed-point data and Part 6's
+generating-function coefficient: the pentagonal staircases are *literally* among the
+distinct-part partitions whose signed count is `[Xⁿ]∏(1-Xᵐ)`, each contributing
+exactly `pentSign (±k)`.  (Showing they are the *only* surviving contributors — i.e.
+evaluating the whole signed sum — is Franklin's involution, still the open core.) -/
+
+/-- The natural-number value of the positive staircase `{k,…,2k-1}`; equals `g(k)`. -/
+def genPentNat (k : ℕ) : ℕ := ∑ i ∈ Finset.Ico k (2 * k), i
+
+/-- The natural-number value of the negative staircase `{k+1,…,2k}`; equals `g(-k)`. -/
+def genPentNatNeg (k : ℕ) : ℕ := ∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), i
+
+@[simp] theorem genPentNat_cast (k : ℕ) : (genPentNat k : ℤ) = genPent (k : ℤ) := by
+  rw [genPentNat, Nat.cast_sum]; exact staircase_sum_eq_genPent k
+
+@[simp] theorem genPentNatNeg_cast (k : ℕ) :
+    (genPentNatNeg k : ℤ) = genPent (-(k : ℤ)) := by
+  rw [genPentNatNeg, Nat.cast_sum]; exact staircase_sum_eq_genPent_neg k
+
+/-- The positive staircase `{k,…,2k-1}` as a genuine `Nat.Partition` of `g(k)`.
+Positivity holds for every `k` (`0 ∉ Ico k (2k)`); `parts_sum` is the very definition
+of `genPentNat`. -/
+def staircasePartition (k : ℕ) : Nat.Partition (genPentNat k) where
+  parts := (Finset.Ico k (2 * k)).val
+  parts_pos := by
+    intro i hi
+    simp only [Finset.mem_val, Finset.mem_Ico] at hi
+    omega
+  parts_sum := by
+    rw [genPentNat, Finset.sum, Multiset.map_id']
+
+/-- The negative staircase `{k+1,…,2k}` as a genuine `Nat.Partition` of `g(-k)`. -/
+def staircasePartitionNeg (k : ℕ) : Nat.Partition (genPentNatNeg k) where
+  parts := (Finset.Ico (k + 1) (2 * k + 1)).val
+  parts_pos := by
+    intro i hi
+    simp only [Finset.mem_val, Finset.mem_Ico] at hi
+    omega
+  parts_sum := by
+    rw [genPentNatNeg, Finset.sum, Multiset.map_id']
+
+/-- The positive staircase partition has **distinct** parts (a `Finset`'s parts are
+`Nodup`), so it is a genuine member of `Nat.Partition.distincts (g k)`. -/
+theorem staircasePartition_mem_distincts (k : ℕ) :
+    staircasePartition k ∈ Nat.Partition.distincts (genPentNat k) := by
+  rw [Nat.Partition.distincts, Finset.mem_filter]
+  exact ⟨Finset.mem_univ _, (Finset.Ico k (2 * k)).nodup⟩
+
+/-- The negative staircase partition is a member of `Nat.Partition.distincts (g (-k))`. -/
+theorem staircasePartitionNeg_mem_distincts (k : ℕ) :
+    staircasePartitionNeg k ∈ Nat.Partition.distincts (genPentNatNeg k) := by
+  rw [Nat.Partition.distincts, Finset.mem_filter]
+  exact ⟨Finset.mem_univ _, (Finset.Ico (k + 1) (2 * k + 1)).nodup⟩
+
+@[simp] theorem staircasePartition_card (k : ℕ) :
+    (staircasePartition k).parts.card = k := by
+  show Multiset.card (Finset.Ico k (2 * k)).val = k
+  rw [← Finset.card_def, Nat.card_Ico]; omega
+
+@[simp] theorem staircasePartitionNeg_card (k : ℕ) :
+    (staircasePartitionNeg k).parts.card = k := by
+  show Multiset.card (Finset.Ico (k + 1) (2 * k + 1)).val = k
+  rw [← Finset.card_def, Nat.card_Ico]; omega
+
+/-- The signed weight `(-1)^{#parts}` of the positive staircase partition is exactly
+the pentagonal sign `pentSign k`. -/
+theorem staircasePartition_sign (k : ℕ) :
+    (-1 : ℤ) ^ (staircasePartition k).parts.card = pentSign (k : ℤ) := by
+  rw [staircasePartition_card, pentSign, Int.natAbs_natCast]
+
+/-- The signed weight of the negative staircase partition is `pentSign (-k)`. -/
+theorem staircasePartitionNeg_sign (k : ℕ) :
+    (-1 : ℤ) ^ (staircasePartitionNeg k).parts.card = pentSign (-(k : ℤ)) := by
+  rw [staircasePartitionNeg_card, pentSign, Int.natAbs_neg, Int.natAbs_natCast]
+
+/-- **Headline (positive arm).** The positive staircase is a genuine element of
+`Nat.Partition.distincts (g k)` with exactly `k` parts, signed weight `pentSign k`,
+and underlying value `g(k)`.  This places Part 7's fixed point inside the exact Finset
+`coeff_genFun_pent`/`coeff_tprod_pent` range over. -/
+theorem franklin_fixed_point_isPartition (k : ℕ) :
+    staircasePartition k ∈ Nat.Partition.distincts (genPentNat k) ∧
+    (staircasePartition k).parts.card = k ∧
+    (-1 : ℤ) ^ (staircasePartition k).parts.card = pentSign (k : ℤ) ∧
+    (genPentNat k : ℤ) = genPent (k : ℤ) :=
+  ⟨staircasePartition_mem_distincts k, staircasePartition_card k,
+   staircasePartition_sign k, genPentNat_cast k⟩
+
+/-- **Headline (negative arm).** The negative staircase is a genuine element of
+`Nat.Partition.distincts (g (-k))` with exactly `k` parts, signed weight
+`pentSign (-k)`, and underlying value `g(-k)`. -/
+theorem franklin_fixed_point_isPartition_neg (k : ℕ) :
+    staircasePartitionNeg k ∈ Nat.Partition.distincts (genPentNatNeg k) ∧
+    (staircasePartitionNeg k).parts.card = k ∧
+    (-1 : ℤ) ^ (staircasePartitionNeg k).parts.card = pentSign (-(k : ℤ)) ∧
+    (genPentNatNeg k : ℤ) = genPent (-(k : ℤ)) :=
+  ⟨staircasePartitionNeg_mem_distincts k, staircasePartitionNeg_card k,
+   staircasePartitionNeg_sign k, genPentNatNeg_cast k⟩
+
 end PentagonalNumberTheoremOQ01
