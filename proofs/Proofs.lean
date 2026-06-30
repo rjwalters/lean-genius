@@ -867,6 +867,7 @@ import Proofs.ChebyshevBoundsOQ02OQ01
 import Proofs.ChebyshevBoundsOQ02OQ01OQ01
 import Proofs.ChebyshevBoundsOQ02OQ02
 import Proofs.ChebyshevBoundsOQ03
+import Proofs.ChebyshevBoundsOQ03OQ01
 import Proofs.ChebyshevBoundsOQ04
 import Proofs.ChebyshevBoundsOQ04Aristotle
 import Proofs.ChebyshevBoundsOQ04OQ01
@@ -2971,6 +2972,7 @@ import Proofs.EulerTotientOQ04OQ01
 import Proofs.EulerTotientOQ05
 import Proofs.EulerTotientOQ06
 import Proofs.EulerTotientOQ07
+import Proofs.EulerTotientOQ07OQ03
 import Proofs.EulerTotientOQ07OQ04
 import Proofs.EulerTotientOQ09
 import Proofs.EulerTotientOQ09OQ01
@@ -3882,6 +3884,7 @@ import Proofs.QuadraticGaussSumSquareOQ02
 import Proofs.QuadraticGaussSumSquareOQ03
 import Proofs.QuadraticGaussSumSquareOQ04
 import Proofs.QuadraticGaussSumSquareOQ04OQ01
+import Proofs.QuadraticGaussSumTwist
 import Proofs.QuadraticReciprocity
 import Proofs.QuadraticReciprocityAlgorithmOQ01
 import Proofs.QuadraticReciprocityAlgorithmOQ02
@@ -3897,6 +3900,7 @@ import Proofs.QuadraticReciprocityOQ03OQ03
 import Proofs.RamanujanSumFallacy
 import Proofs.RamseyFirstMoment
 import Proofs.RamseyFirstMomentOQ01
+import Proofs.RamseyFirstMomentOffDiagonal
 import Proofs.RamseyHypergraph
 import Proofs.RamseyR4k
 import Proofs.RamseyR4kExtensions
