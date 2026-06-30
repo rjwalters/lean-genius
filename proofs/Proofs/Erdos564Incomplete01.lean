@@ -189,4 +189,71 @@ theorem hasHypergraphRamseyProperty_antitone_clique {k m n n' : ℕ} (hnn : n' �
   obtain ⟨T, hTsub, hTcard⟩ := Finset.le_card_iff_exists_subset_card.mp (hScard ▸ hnn)
   exact ⟨T, colour, hTcard, fun e hesub hecard => hSmono e (hesub.trans hTsub) hecard⟩
 
+/-! ## The triviality boundary of the Ramsey property
+
+The monotonicity lemmas above describe how the property *propagates*; this section pins
+down where it *starts* — the base cases the whole threshold picture rests on.  The property
+`HasHypergraphRamseyProperty k m n` is **trivially true whenever the target clique is no
+larger than the edge size**, `n ≤ k` (and `n ≤ m` so an `n`-set exists at all):
+
+* `n < k` — a clique on `< k` vertices has **no** `k`-subsets, so the monochromaticity
+  condition is vacuous (any `n`-set, any colour, works);
+* `n = k` — a clique on exactly `k` vertices has a **single** `k`-subset, namely itself, so
+  it is automatically monochromatic for the colour that the colouring already assigns it.
+
+Equivalently `R_k(n) = n` for `n ≤ k`: the Ramsey number is degenerate below the diagonal,
+and the genuine combinatorial content of `R₃(n)` (the Erdős #564 regime) only appears for
+`n > k = 3`.  All results are **0-axiom** (they never touch `R` or the EHR bounds). -/
+
+/-- The property holds vacuously for the empty clique (`n = 0`): take `S = ∅`, whose only
+subset is `∅` itself, monochromatic for the colour `c ∅`. -/
+theorem hasHypergraphRamseyProperty_clique_zero (k m : ℕ) :
+    HasHypergraphRamseyProperty k m 0 := by
+  intro c
+  refine ⟨∅, c ∅, Finset.card_empty, ?_⟩
+  intro e he _
+  rw [Finset.subset_empty.mp he]
+
+/-- **Sub-uniformity cliques are free.** If `n < k` then an `n`-clique has no `k`-subsets,
+so the monochromaticity condition is vacuous: any `n`-element vertex set (which exists since
+`n ≤ m`) witnesses the property, with an arbitrary colour. -/
+theorem hasHypergraphRamseyProperty_clique_lt_uniformity {k m n : ℕ}
+    (hn : n < k) (hnm : n ≤ m) : HasHypergraphRamseyProperty k m n := by
+  intro c
+  obtain ⟨S, _, hScard⟩ :=
+    Finset.le_card_iff_exists_subset_card.mp
+      (show n ≤ (Finset.univ : Finset (Fin m)).card by simpa using hnm)
+  refine ⟨S, true, hScard, ?_⟩
+  intro e he hecard
+  have hle : e.card ≤ n := hScard ▸ Finset.card_le_card he
+  omega
+
+/-- **Diagonal base case.** For `n = k` (and `k ≤ m`) the property holds: any `k`-element
+vertex set `S` has exactly one `k`-subset — itself — so colouring it the colour `c S` makes
+it monochromatic.  Hence `R_k(k) = k`. -/
+theorem hasHypergraphRamseyProperty_diagonal_base {k m : ℕ} (hkm : k ≤ m) :
+    HasHypergraphRamseyProperty k m k := by
+  intro c
+  obtain ⟨S, _, hScard⟩ :=
+    Finset.le_card_iff_exists_subset_card.mp
+      (show k ≤ (Finset.univ : Finset (Fin m)).card by simpa using hkm)
+  refine ⟨S, c S, hScard, ?_⟩
+  intro e he hecard
+  have heq : e = S :=
+    Finset.eq_of_subset_of_card_le he (le_of_eq (hScard.trans hecard.symm))
+  rw [heq]
+
+/-- **The triviality boundary, unified.** Whenever the target clique is no larger than the
+edge size, `n ≤ k`, and fits in the vertex set, `n ≤ m`, the Ramsey property holds.  This is
+the sharp statement that `R_k(n) = n` for all `n ≤ k`: the Ramsey number is degenerate on
+and below the diagonal, so the substance of Erdős #564 lives strictly above it (`n > k`). -/
+theorem hasHypergraphRamseyProperty_of_clique_le_uniformity {k m n : ℕ}
+    (hn : n ≤ k) (hnm : n ≤ m) : HasHypergraphRamseyProperty k m n := by
+  rcases lt_or_eq_of_le hn with h | h
+  · exact hasHypergraphRamseyProperty_clique_lt_uniformity h hnm
+  · subst h; exact hasHypergraphRamseyProperty_diagonal_base hnm
+
+#print axioms hasHypergraphRamseyProperty_of_clique_le_uniformity
+#print axioms hasHypergraphRamseyProperty_clique_zero
+
 end Erdos564.Incomplete01
