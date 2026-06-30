@@ -59,7 +59,40 @@ def ProductMapInjective (A B : Finset ℕ) : Prop :=
   ∀ a₁ a₂ b₁ b₂, a₁ ∈ A → a₂ ∈ A → b₁ ∈ B → b₂ ∈ B →
     a₁ * b₁ = a₂ * b₂ → (a₁ = a₂ ∧ b₁ = b₂)
 
-/- The two definitions `HasDistinctProducts` and `ProductMapInjective` are equivalent. -/
+/-- The product set `A·B` is exactly the image of the product map `(a, b) ↦ a·b`
+on `A ×ˢ B`. -/
+theorem productSet_eq_image (A B : Finset ℕ) :
+    productSet A B = (A ×ˢ B).image (fun p : ℕ × ℕ => p.1 * p.2) := by
+  ext n
+  simp only [productSet, Finset.mem_biUnion, Finset.mem_image, Finset.mem_product]
+  constructor
+  · rintro ⟨a, ha, b, hb, rfl⟩; exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩
+  · rintro ⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩; exact ⟨a, ha, b, hb, rfl⟩
+
+/-- **`HasDistinctProducts` is injectivity of the product map.**  The cardinality
+condition `|A·B| = |A||B|` holds iff `(a, b) ↦ a·b` is injective on `A ×ˢ B`
+(via `Finset.card_image_iff`). -/
+theorem hasDistinctProducts_iff_injOn (A B : Finset ℕ) :
+    HasDistinctProducts A B ↔ Set.InjOn (fun p : ℕ × ℕ => p.1 * p.2) ↑(A ×ˢ B) := by
+  rw [HasDistinctProducts, productSet_eq_image, ← Finset.card_product A B,
+    Finset.card_image_iff]
+
+/-- **The two distinctness notions agree.**  `ProductMapInjective` (the elementwise
+quantified form) is equivalent to `HasDistinctProducts` (the cardinality form). -/
+theorem productMapInjective_iff_hasDistinctProducts (A B : Finset ℕ) :
+    ProductMapInjective A B ↔ HasDistinctProducts A B := by
+  rw [hasDistinctProducts_iff_injOn]
+  constructor
+  · intro h
+    rintro ⟨a₁, b₁⟩ hx ⟨a₂, b₂⟩ hy hfxy
+    rw [Finset.mem_coe, Finset.mem_product] at hx hy
+    have := h a₁ a₂ b₁ b₂ hx.1 hy.1 hx.2 hy.2 hfxy
+    rw [Prod.mk.injEq]; exact this
+  · intro h a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ heq
+    have hx : ((a₁, b₁) : ℕ × ℕ) ∈ A ×ˢ B := Finset.mem_product.mpr ⟨ha₁, hb₁⟩
+    have hy : ((a₂, b₂) : ℕ × ℕ) ∈ A ×ˢ B := Finset.mem_product.mpr ⟨ha₂, hb₂⟩
+    have := h (Finset.mem_coe.mpr hx) (Finset.mem_coe.mpr hy) heq
+    rw [Prod.mk.injEq] at this; exact this
 /-
 ## Part II: The Erdős Question
 -/
@@ -125,9 +158,9 @@ def optimalA (N : ℕ) : Finset ℕ :=
 def optimalB (N : ℕ) : Finset ℕ :=
   Finset.filter (fun p => Nat.Prime p ∧ N / 2 < p ∧ p ≤ N) (Finset.range (N + 1))
 
-/-- The optimal example has distinct products. -/
-axiom optimal_has_distinct_products (N : ℕ) (hN : N ≥ 4) :
-  HasDistinctProducts (optimalA N) (optimalB N)
+/- The optimal example has distinct products.  **Proved** (0-axiom) as
+`optimal_has_distinct_products` below, once the elementwise distinctness lemma
+`optimal_works_because_primes` is available; placed there to respect dependency order. -/
 
 /-- The first half is exactly `Icc 1 (N/2)`, so it has `⌊N/2⌋` elements. -/
 theorem optimalA_card (N : ℕ) : (optimalA N).card = N / 2 := by
@@ -219,6 +252,24 @@ theorem optimal_works_because_primes (a₁ a₂ : ℕ) (p₁ p₂ : ℕ)
   have hp₁_pos : 0 < p₁ := hp₁.pos
   have : a₁ * p₁ = a₂ * p₁ := by rw [heq, hp₁p₂]
   exact Nat.eq_of_mul_eq_mul_right hp₁_pos this
+
+/-- **The optimal example has distinct products** (0-axiom).  Formerly an axiom;
+now derived from `optimal_works_because_primes` via the
+`ProductMapInjective ↔ HasDistinctProducts` bridge.  Every `a ∈ optimalA N` lies in
+`[1, N/2]` (so `1 ≤ a` and `a ≤ N/2`) and every `p ∈ optimalB N` is a prime in
+`(N/2, N]`, exactly the hypotheses of `optimal_works_because_primes`. -/
+theorem optimal_has_distinct_products (N : ℕ) (hN : N ≥ 4) :
+    HasDistinctProducts (optimalA N) (optimalB N) := by
+  rw [← productMapInjective_iff_hasDistinctProducts]
+  intro a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ heq
+  simp only [optimalA, Finset.mem_filter, Finset.mem_range] at ha₁ ha₂
+  simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hb₁ hb₂
+  obtain ⟨_, ha₁1, ha₁2⟩ := ha₁
+  obtain ⟨_, ha₂1, ha₂2⟩ := ha₂
+  obtain ⟨_, hb₁p, hb₁lt, _⟩ := hb₁
+  obtain ⟨_, hb₂p, hb₂lt, _⟩ := hb₂
+  exact optimal_works_because_primes a₁ a₂ b₁ b₂ ha₁1 ha₂1 ha₁2 ha₂2
+    hb₁p hb₂p hb₁lt hb₂lt heq
 
 /-
 ## Part V: The Limit Question (Open)

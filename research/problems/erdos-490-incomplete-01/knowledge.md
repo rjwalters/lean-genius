@@ -131,3 +131,46 @@ theoremCount→13, assumptions rewritten, stale "sorried" section prose correcte
   `π(N)−π(N/2)` built from Mathlib's Bertrand/`centralBinom` machinery — a multi-session
   infrastructure effort, not a single sorry. Optional bridge:
   `(optimalB N).card = N.primeCounting − (N/2).primeCounting`.
+
+## Session 2026-06-30 (researcher-3) — AXIOM ELIMINATED: optimal_has_distinct_products (3 → 2 axioms)
+
+**Mode**: ACT (axiom hunt). **Outcome**: progress — eliminated the axiom
+`optimal_has_distinct_products`, proving it 0-axiom from existing lemmas. Axiom
+count 3 → 2 (only `szemeredi_theorem` and `primes_upper_half_lower_bound` remain,
+both genuinely deep/analytic).
+
+### What I Did (verified, 0-axiom)
+The file already contained `optimal_works_because_primes` (the elementwise fact:
+`a₁p₁ = a₂p₂` with `aᵢ∈[1,N/2]`, `pᵢ` prime `>N/2` ⟹ `a₁=a₂ ∧ p₁=p₂`, via prime
+divisibility). The axiom `optimal_has_distinct_products` was just the packaged
+`HasDistinctProducts (optimalA N) (optimalB N)` form of that. Bridged them:
+- `productSet_eq_image`: `productSet A B = (A ×ˢ B).image (·.1 * ·.2)`.
+- `hasDistinctProducts_iff_injOn`: `HasDistinctProducts A B ↔ Set.InjOn (·.1*·.2) ↑(A×ˢB)`
+  — one `rw` chain: `HasDistinctProducts, productSet_eq_image, ← card_product, card_image_iff`.
+- `productMapInjective_iff_hasDistinctProducts`: the elementwise `ProductMapInjective`
+  def (which was defined but never used!) equals `HasDistinctProducts`.
+- `optimal_has_distinct_products` (now a theorem): `rw [← productMapInjective_iff_…]`,
+  unfold `optimalA`/`optimalB` filter membership, feed `optimal_works_because_primes`.
+
+`#print axioms optimal_has_distinct_products = [propext, Classical.choice, Quot.sound]`.
+
+### Gotchas / API
+- `Finset.card_image_iff : #(s.image f) = #s ↔ Set.InjOn f ↑s` is the clean bridge
+  (same one `distinct_minimal_energy` used internally — I extracted it as a reusable lemma).
+- `Set.InjOn f ↑s` unpacks with `rintro ⟨a₁,b₁⟩ hx ⟨a₂,b₂⟩ hy hfxy` then
+  `Finset.mem_coe, Finset.mem_product` on the hyps; conclude with `Prod.mk.injEq`.
+- A placeholder comment left where the `axiom` was MUST be a plain `/- -/` block, not
+  `/-- -/` doc-comment — an unattached doc-comment gives `unexpected token '/--'; expected lemma`.
+- `optimal_works_because_primes` has auto-bound implicit `{N}`; it unifies from the
+  `aᵢ ≤ N/2` hypotheses, so no explicit `N` arg needed.
+
+### Status
+File 506 → 557 lines, axioms 3 → 2, theorems 14 → 16, sorries 0. Host
+`lake env lean Proofs/Erdos490Problem.lean` EXIT 0. Gallery meta updated
+(axiomCount 3→2, lineCount, theoremCount, originalContributions).
+
+### Still open (NOT done here)
+- `szemeredi_theorem` (Szemerédi 1976 upper bound) — deep, correctly axiomatized.
+- `primes_upper_half_lower_bound` (Chebyshev π(N)−π(N/2) ≳ N/log N) — needs central-binomial
+  infrastructure absent from the Mathlib pin (only an UPPER prime-count bound exists);
+  multi-session build. `optimalB_card_eq_primeCounting` already pins it to `Nat.primeCounting`.

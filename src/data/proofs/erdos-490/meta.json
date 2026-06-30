@@ -60,7 +60,6 @@
       "ErdosQuestion490: formal ∃C, |A||B| ≤ CN²/log N",
       "szemeredi_theorem axiom: Szemerédi's 1976 upper bound",
       "optimalA, optimalB: extremal construction with primes > N/2",
-      "optimal_has_distinct_products axiom: construction is valid",
       "optimal_works_because_primes: divisibility argument (proved)",
       "optimalA_card: |optimalA N| = ⌊N/2⌋ (0-axiom, proved)",
       "optimalB_card_eq_primeCounting: |optimalB N| = π(N) − π(N/2) via Mathlib's Nat.primeCounting (0-axiom, proved) — pins the Chebyshev axiom to Mathlib's prime-counting API",
@@ -68,7 +67,11 @@
       "productRatio, LimitQuestion: open limit formalization",
       "IsMultiplicativeSidon: A = B special case",
       "multiplicativeEnergy: counting quadruples a₁b₁ = a₂b₂",
-      "bound_is_optimal: matching lower bound (proved from the 3 axioms, 0 sorries)"
+      "bound_is_optimal: matching lower bound (proved from the 3 axioms, 0 sorries)",
+      "optimal_has_distinct_products: PROVED 0-axiom (formerly an axiom) — the optimal construction A=[1,N/2], B=primes in (N/2,N] has distinct products, derived from optimal_works_because_primes via the ProductMapInjective↔HasDistinctProducts bridge",
+      "hasDistinctProducts_iff_injOn: HasDistinctProducts A B ↔ injectivity of (a,b)↦a·b on A×ˢB (via Finset.card_image_iff)",
+      "productMapInjective_iff_hasDistinctProducts: the two distinctness notions agree",
+      "productSet_eq_image: productSet A B = image of product map on A×ˢB"
     ],
     "axiomCount": 3,
     "lineCount": 506,
@@ -205,9 +208,9 @@
       "Real"
     ],
     "namespace": "Erdos490",
-    "lineCount": 506,
-    "axiomCount": 3,
-    "theoremCount": 14,
+    "lineCount": 557,
+    "axiomCount": 2,
+    "theoremCount": 16,
     "definitionCount": 15,
     "path": "Proofs/Erdos490Problem.lean",
     "sorries": 0,
