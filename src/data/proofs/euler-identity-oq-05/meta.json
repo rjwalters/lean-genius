@@ -2,7 +2,7 @@
   "id": "euler-identity-oq-05",
   "title": "Euler Identity OQ-05: Four-Square Identity and Multiplicative Closure",
   "slug": "euler-identity-oq-05",
-  "description": "Euler's four-square identity and the multiplicative closure of sums of four squares. The identity (x₁²+x₂²+x₃²+x₄²)(y₁²+y₂²+y₃²+y₄²) = (x₁y₁−x₂y₂−x₃y₃−x₄y₄)² + (x₁y₂+x₂y₁+x₃y₄−x₄y₃)² + (x₁y₃−x₂y₄+x₃y₁+x₄y₂)² + (x₁y₄+x₂y₃−x₃y₂+x₄y₁)² expresses the product of two sums of four squares as itself a sum of four squares — the algebraic engine that reduces Lagrange's four-square theorem to the prime case. Mathlib proves the bare polynomial identity (euler_four_squares, sum_four_sq_mul_sum_four_sq, both by ring) and Lagrange's theorem (Nat.sum_four_squares), and for TWO squares it additionally packages the multiplicative closure as sq_add_sq_mul; but it provides no four-square analogue of that closure lemma. This entry supplies it: a predicate IsSumFourSq a := ∃ x y z w, a = x²+y²+z²+w² over an arbitrary commutative ring, together with the proof that the sums of four squares are closed under multiplication (IsSumFourSq.mul, witnesses read straight off Euler's identity), contain 0 and 1 and every square, and are closed under finite products and powers — i.e. they form a multiplicative submonoid. It also records the embedding of two-square sums into four-square sums and concrete worked examples (3 = 1²+1²+1², 7 = 2²+1²+1²+1², and 21 = 3·7 with witnesses produced mechanically by the closure theorem). The conceptual content Euler's identity provides — multiplicative structure — is thereby made explicit beyond the raw ring equation.",
+  "description": "Euler's four-square identity and the multiplicative closure of sums of four squares. The identity (x₁²+x₂²+x₃²+x₄²)(y₁²+y₂²+y₃²+y₄²) = (x₁y₁−x₂y₂−x₃y₃−x₄y₄)² + (x₁y₂+x₂y₁+x₃y₄−x₄y₃)² + (x₁y₃−x₂y₄+x₃y₁+x₄y₂)² + (x₁y₄+x₂y₃−x₃y₂+x₄y₁)² expresses the product of two sums of four squares as itself a sum of four squares — the algebraic engine that reduces Lagrange's four-square theorem to the prime case. Mathlib proves the bare polynomial identity (euler_four_squares, sum_four_sq_mul_sum_four_sq, both by ring) and Lagrange's theorem (Nat.sum_four_squares), and for TWO squares it additionally packages the multiplicative closure as sq_add_sq_mul; but it provides no four-square analogue of that closure lemma. This entry supplies it: a predicate IsSumFourSq a := ∃ x y z w, a = x²+y²+z²+w² over an arbitrary commutative ring, together with the proof that the sums of four squares are closed under multiplication (IsSumFourSq.mul, witnesses read straight off Euler's identity), contain 0 and 1 and every square, and are closed under finite products and powers — i.e. they form a multiplicative submonoid. It also records the embedding of two-square sums into four-square sums and concrete worked examples (3 = 1²+1²+1², 7 = 2²+1²+1²+1², and 21 = 3·7 with witnesses produced mechanically by the closure theorem). The conceptual content Euler's identity provides — multiplicative structure — is thereby made explicit beyond the raw ring equation. The entry also establishes the sharpness of \"four\": sums of three squares are NOT multiplicatively closed (not_isSumThreeSq_mul_closed) — 3 = 1²+1²+1² and 5 = 0²+1²+2² are each sums of three squares, but 15 = 3·5 ≡ 7 (mod 8) is not, since squares are 0/1/4 mod 8 (proved self-containedly by a finite decide over ZMod 8, no appeal to the full three-square theorem). So four squares is the minimal count for which Euler-style multiplicative closure can hold.",
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.SumFourSquares",
@@ -11,10 +11,10 @@
     ],
     "opens": [],
     "namespace": "EulerIdentityOQ05",
-    "lineCount": 145,
+    "lineCount": 200,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 1,
+    "theoremCount": 15,
+    "definitionCount": 2,
     "path": "Proofs/EulerIdentityOQ05.lean",
     "sorries": 0
   },
@@ -45,11 +45,11 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 145,
+    "lineCount": 200,
     "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound may appear (no Lean.ofReduceBool, no native_decide; verifiable with #print axioms EulerIdentityOQ05.IsSumFourSq.mul). The result is unconditional over any commutative ring. Mathlib supplies the bilinear identity (euler_four_squares / sum_four_sq_mul_sum_four_sq, both ring identities) and Lagrange's four-square theorem; the original in-file content is the four-square sum-of-squares PREDICATE IsSumFourSq and its multiplicative-monoid structure — closure under multiplication (the four-square analogue of Mathlib's two-square sq_add_sq_mul, which has no four-square counterpart), under finite products and powers, membership of 0/1/squares, and the two-square embedding — together with the worked closure examples over ℤ. The identity itself is restated and re-discharged by ring so the file is self-contained.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
-    "definitionCount": 1
+    "theoremCount": 15,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The identity that the product of two sums of four squares is again a sum of four squares was discovered by Leonhard Euler in 1748, in a letter to Goldbach — predating Lagrange's four-square theorem (1770) and providing its crucial multiplicative step. Euler could not himself prove that every positive integer is a sum of four squares, but his identity reduced the problem to primes: if every prime is a sum of four squares, then so is every product of primes, hence every integer. Lagrange completed the argument; Euler later simplified it. In modern language the identity is the multiplicativity of the norm form on the Hamilton quaternions ℍ: writing q = x₁ + x₂i + x₃j + x₄k, one has N(q)N(q') = N(qq') where N(q) = x₁²+x₂²+x₃²+x₄², and the four bilinear forms are exactly the components of the quaternion product. The sign conventions in the identity are precisely those of quaternion multiplication. The analogous two-square identity (Brahmagupta–Fibonacci) reflects the multiplicativity of the complex modulus, and Degen's eight-square identity that of the octonion norm; by Hurwitz's theorem these are the only dimensions (1, 2, 4, 8) in which such an identity exists.",

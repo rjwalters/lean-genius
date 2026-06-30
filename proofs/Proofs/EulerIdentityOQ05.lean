@@ -1,5 +1,6 @@
 import Mathlib.NumberTheory.SumFourSquares
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 
 /-
@@ -141,5 +142,59 @@ example : ((1 * 2 - 1 * 1 - 1 * 1 - (0 : ℤ) * 1) ^ 2 +
     (1 * 1 + 1 * 2 + 1 * 1 - 0 * 1) ^ 2 +
     (1 * 1 - 1 * 1 + 1 * 2 + 0 * 1) ^ 2 +
     (1 * 1 + 1 * 1 - 1 * 1 + 0 * 2) ^ 2) = 21 := by norm_num
+
+/-! ## Sharpness: *three* squares are NOT multiplicatively closed
+
+The closure theorem `IsSumFourSq.mul` makes "sums of four squares" a multiplicative
+submonoid. A natural question is whether *fewer* squares already suffice. The answer is
+no: sums of **three** squares fail to be closed under multiplication, so four is the
+minimal number of squares for which Euler-type multiplicativity can hold.
+
+The obstruction is the classical mod-`8` invariant. A square is `≡ 0, 1, 4 (mod 8)`, so a
+sum of three squares can never be `≡ 7 (mod 8)`. Taking `3 = 1²+1²+1²` and `5 = 0²+1²+2²`
+— each a sum of three squares — their product `15 = 3·5 ≡ 7 (mod 8)` is therefore not a
+sum of three squares. This is exactly the residue class excluded by the
+Legendre–Gauss three-square theorem (`15 = 4⁰·(8·1+7)`), proved here self-containedly by
+a finite `decide` over `ZMod 8` (no appeal to the full three-square theorem). -/
+
+/-- `IsSumThreeSq a` means `a` is a sum of three integer squares. -/
+def IsSumThreeSq (a : ℤ) : Prop :=
+  ∃ x y z : ℤ, a = x ^ 2 + y ^ 2 + z ^ 2
+
+/-- Every square in `ZMod 8` is `0`, `1`, or `4`. -/
+theorem sq_zmod_eight (a : ZMod 8) : a ^ 2 = 0 ∨ a ^ 2 = 1 ∨ a ^ 2 = 4 := by
+  decide +revert
+
+/-- A sum of three squares in `ZMod 8` is never `15` (i.e. never `≡ 7 (mod 8)`):
+the squares `{0,1,4}` admit no triple summing to `7`. Verified by finite `decide`
+over the `8³ = 512` residue triples. -/
+theorem sum_three_sq_ne_fifteen_zmod_eight (a b c : ZMod 8) :
+    a ^ 2 + b ^ 2 + c ^ 2 ≠ 15 := by
+  decide +revert
+
+/-- `15` is not a sum of three integer squares: reducing mod `8` would force the
+forbidden residue `7`. -/
+theorem fifteen_not_isSumThreeSq : ¬ IsSumThreeSq (15 : ℤ) := by
+  rintro ⟨x, y, z, h⟩
+  have h' : ((15 : ℤ) : ZMod 8) = ((x ^ 2 + y ^ 2 + z ^ 2 : ℤ) : ZMod 8) :=
+    congrArg _ h
+  push_cast at h'
+  exact sum_three_sq_ne_fifteen_zmod_eight _ _ _ h'.symm
+
+/-- `3 = 1² + 1² + 1²` is a sum of three squares. -/
+theorem three_isSumThreeSq : IsSumThreeSq (3 : ℤ) := ⟨1, 1, 1, by ring⟩
+
+/-- `5 = 0² + 1² + 2²` is a sum of three squares. -/
+theorem five_isSumThreeSq : IsSumThreeSq (5 : ℤ) := ⟨0, 1, 2, by ring⟩
+
+/-- **Sharpness of "four".** Sums of three squares are *not* closed under
+multiplication: `3` and `5` are each sums of three squares, yet their product
+`15 ≡ 7 (mod 8)` is not. Contrast `IsSumFourSq.mul`: four squares is the minimal
+count for which Euler-style multiplicative closure holds. -/
+theorem not_isSumThreeSq_mul_closed :
+    ∃ a b : ℤ, IsSumThreeSq a ∧ IsSumThreeSq b ∧ ¬ IsSumThreeSq (a * b) :=
+  ⟨3, 5, three_isSumThreeSq, five_isSumThreeSq, by
+    have h : (3 : ℤ) * 5 = 15 := by norm_num
+    rw [h]; exact fifteen_not_isSumThreeSq⟩
 
 end EulerIdentityOQ05
