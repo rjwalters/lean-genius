@@ -1,0 +1,129 @@
+import Mathlib.RingTheory.PowerSeries.WellKnown
+import Mathlib.Tactic
+import Proofs.StarsAndBarsWeakCompositions
+import Proofs.StarsAndBarsWeakCompositionsOQ01
+import Proofs.StarsAndBarsWeakCompositionsOQ03
+
+/-
+# Generating Function of Positive (Strong) Compositions: ∑ₙ #(positive comps) Xⁿ = Xᵏ/(1−X)ᵏ
+
+## What This Proves
+
+A *positive* (or *strong*) composition of `n` into `k` parts is a function
+`g : Fin k → ℕ` with every part `≥ 1` and `∑ᵢ g(i) = n`. The sibling entry
+(`StarsAndBarsWeakCompositionsOQ03.lean`) counts them via the explicit `±1`
+bijection with *weak* compositions of `n − k` (`positiveCompositionEquivWeak`):
+there are `C(n − 1, k − 1)` of them for `0 < k ≤ n`.
+
+The parent entry (`StarsAndBarsWeakCompositionsOQ01.lean`) records the
+generating-function incarnation of the *weak* count: over any commutative ring `S`,
+
+  `W k = ∑ₙ #(weak comps of n into k parts) · Xⁿ = (invOneSubPow S k).val = 1/(1 − X)ᵏ`.
+
+This entry records the matching generating function for *positive* compositions:
+
+  `P k = ∑ₙ #(positive comps of n into k parts) · Xⁿ`,    and    `P k = Xᵏ · W k = Xᵏ/(1 − X)ᵏ`.
+
+The factor `Xᵏ` is the algebraic shadow of the bijection "subtract `1` from each of the
+`k` parts": it lowers the degree by exactly `k`. Reading off the coefficient of `Xⁿ`
+recovers the closed form `C(n − 1, k − 1)` for `0 < k ≤ n`, and `0` when `n < k`
+(there is no positive composition of a number smaller than its part count).
+
+## The argument
+
+The defining identity `P k = Xᵏ · W k` holds **for every `k`** (no positivity
+hypothesis), coefficientwise:
+
+* `coeff n (Xᵏ · W k) = ite (k ≤ n) (coeff (n − k) (W k)) 0` (Mathlib's `coeff_X_pow_mul'`);
+* for `k ≤ n`, `coeff (n − k) (W k) = #(weak comps of n − k) = #(positive comps of n)`
+  by `positiveCompositionEquivWeak` (the sibling's `±1` bijection);
+* for `n < k`, there are no positive compositions, so both sides vanish.
+
+The `Xᵏ/(1 − X)ᵏ` form and the `· (1 − X)ᵏ = Xᵏ` relation then follow from the parent's
+weak-composition identities (which require `0 < k`).
+
+## What Mathlib has — and what this adds
+
+Mathlib has the algebraic series `invOneSubPow` and the multiplication-by-`Xᵏ`
+coefficient rule. The sibling entries supply the weak generating function and the
+positive-composition count/bijection. Neither records that the ordinary generating
+function of the positive-composition *counts* is `Xᵏ/(1 − X)ᵏ`. The new content is that
+bridge: `positiveCompositionGenFun_eq` (`P k = Xᵏ · W k`, all `k`) and its corollaries
+`positiveCompositionGenFun_eq_X_pow_mul_invOneSubPow`,
+`positiveCompositionGenFun_mul_one_sub_pow` (`P k · (1 − X)ᵏ = Xᵏ`) and
+`coeff_positiveCompositionGenFun_eq_choose` (the coefficient is `C(n − 1, k − 1)`).
+-/
+
+open PowerSeries
+
+namespace StarsAndBarsGenFun
+
+variable (S : Type*) [CommRing S]
+
+/-- The ordinary generating function of the positive-composition counts:
+`P k = ∑ₙ #{g : Fin k → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = n} · Xⁿ` in `S⟦X⟧`. -/
+noncomputable def positiveCompositionGenFun (k : ℕ) : S⟦X⟧ :=
+  mk fun n => (Fintype.card {g : Fin k → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = n} : S)
+
+@[simp]
+theorem coeff_positiveCompositionGenFun (k n : ℕ) :
+    coeff n (positiveCompositionGenFun S k) =
+      (Fintype.card {g : Fin k → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = n} : S) := by
+  rw [positiveCompositionGenFun, coeff_mk]
+
+/-- **Positive-composition generating function, factored form.** Over any commutative
+ring `S` and for *every* `k` (no positivity needed), the ordinary generating function of
+the positive-composition counts is `Xᵏ` times the weak-composition generating function:
+
+  `P k = Xᵏ · W k`.
+
+The `Xᵏ` factor is the `±1` bijection's degree shift: a positive composition of `n`
+into `k` parts is a weak composition of `n − k`, present only once `k ≤ n`. -/
+theorem positiveCompositionGenFun_eq (k : ℕ) :
+    positiveCompositionGenFun S k = X ^ k * weakCompositionGenFun S k := by
+  ext n
+  rw [coeff_positiveCompositionGenFun, coeff_X_pow_mul']
+  split_ifs with h
+  · -- `k ≤ n`: positive comps of `n` biject with weak comps of `n - k`
+    rw [coeff_weakCompositionGenFun]
+    congr 1
+    exact Fintype.card_congr (StarsAndBars.positiveCompositionEquivWeak k n h)
+  · -- `n < k`: no positive composition of `n` into `k` positive parts
+    have hemp : IsEmpty {g : Fin k → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = n} := by
+      refine ⟨fun g => ?_⟩
+      have hlt : n < ∑ i, g.1 i := by
+        calc n < k := by omega
+          _ = ∑ _i : Fin k, 1 := by
+                rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
+          _ ≤ ∑ i, g.1 i := Finset.sum_le_sum (fun i _ => g.2.1 i)
+      exact absurd g.2.2 (by omega)
+    haveI := hemp
+    rw [Fintype.card_eq_zero, Nat.cast_zero]
+
+/-- **The generating function is `Xᵏ/(1 − X)ᵏ`.** For `0 < k`, the positive-composition
+generating function equals `Xᵏ · (invOneSubPow S k).val`, i.e. `Xᵏ/(1 − X)ᵏ`. -/
+theorem positiveCompositionGenFun_eq_X_pow_mul_invOneSubPow (k : ℕ) (hk : 0 < k) :
+    positiveCompositionGenFun S k = X ^ k * (invOneSubPow S k).val := by
+  rw [positiveCompositionGenFun_eq, weakCompositionGenFun_eq_invOneSubPow S k hk]
+
+/-- **The defining relation `P k · (1 − X)ᵏ = Xᵏ`.** Multiplying the positive-composition
+generating function by `(1 − X)ᵏ` clears the `1/(1 − X)ᵏ` factor, leaving `Xᵏ`. -/
+theorem positiveCompositionGenFun_mul_one_sub_pow (k : ℕ) (hk : 0 < k) :
+    positiveCompositionGenFun S k * (1 - X) ^ k = X ^ k := by
+  rw [positiveCompositionGenFun_eq, mul_assoc,
+    weakCompositionGenFun_mul_one_sub_pow S k hk, mul_one]
+
+/-- The `n`-th coefficient of `Xᵏ/(1 − X)ᵏ` is the number of positive compositions of `n`
+into `k` parts — the generating-function reading of the strong stars-and-bars count. -/
+theorem coeff_positiveCompositionGenFun_eq_card (k n : ℕ) :
+    coeff n (positiveCompositionGenFun S k) =
+      (Fintype.card {g : Fin k → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = n} : S) :=
+  coeff_positiveCompositionGenFun S k n
+
+/-- The same coefficient as the closed form `C(n − 1, k − 1)` for `0 < k ≤ n`, casting the
+sibling entry's `card_positiveComposition`. -/
+theorem coeff_positiveCompositionGenFun_eq_choose (k n : ℕ) (hk : 0 < k) (hkn : k ≤ n) :
+    coeff n (positiveCompositionGenFun S k) = ((n - 1).choose (k - 1) : S) := by
+  rw [coeff_positiveCompositionGenFun, StarsAndBars.card_positiveComposition k n hk hkn]
+
+end StarsAndBarsGenFun
