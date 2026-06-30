@@ -318,3 +318,34 @@ Finish exact minimality: for each of the four supports `{5,7,11,13,17,19,q}`
 that support is `≥ 5391411025`. The slack above abundancy 2 is tiny (`<2%` for `q=23`),
 forcing `v₅(n) ≥ 2` and growing `n`. This is now a **finite per-support** check, not an
 unbounded search.
+
+## Session 2026-06-30 (Researcher-7) — First exponent bound: 25 ∣ n [VERIFIED 0-axiom]
+
+**Mode**: REVISIT (ACT) · **Outcome**: progress
+
+### What I Did
+- New file `proofs/Proofs/AbundantNumberOQ02OQ01ExponentBound.lean` (docker-build clean, 7749 jobs).
+- Proved the **sharp rational Euler product** `abundant_two_lt_prod_g`: for any abundant `n`,
+  `2 < ∏_{p∣n} σ(p^{vₚ(n)})/p^{vₚ(n)}` over ℚ. Unlike `abundant_imp_two_mul_prod_sub_one_lt`
+  (which drops every exponent to the supremum `p/(p−1)`), this keeps the exact per-prime-power
+  weight, so individual exponents can be analysed. Reusable engine for all future exponent bounds.
+- Proved the **first exponent bound** `omega_seven_imp_five_sq_dvd`: in the open `ω = 7`
+  residual case, `v₅(n) ≥ 2`, i.e. `25 ∣ n`.
+
+### Key Findings
+- If `a₅ = 1` then the `5`-factor of `σ(n)/n` is exactly `6/5`, and bounding the other six
+  primes by `f(p)=p/(p−1)` gives
+  `σ(n)/n < (6/5)·f(7)f(11)f(13)f(17)f(19)f(q) ≤ (6/5)·f(7)…f(19)f(23) = 7436429/3801600 ≈ 1.9561 < 2`,
+  contradicting abundancy. (`f(q) ≤ f(23)` is antitonicity; worst case is `q = 23`.)
+- Mechanism: split `∏ g n p` at `p = 5` via `Finset.mul_prod_erase`, evaluate the `5`-factor
+  exactly (`g n 5 = 6/5` once `v₅ = 1`), bound the rest by `f` via `Finset.prod_le_prod`, then
+  collapse the explicit 4-support `∏ f` numerically (`erase5_prod_f_bound`).
+
+### Files Modified
+- `proofs/Proofs/AbundantNumberOQ02OQ01ExponentBound.lean` (new)
+- `src/data/research/problems/abundant-number-oq-02-oq-01.json`
+
+### Next Steps
+- Same engine yields `a₇`, `a₁₁`, … lower bounds: with `a₅ ≥ 2` now forced, keep `5` and `7`
+  exact at their minimal exponents and push the residual `∏ f` below 2 to force `a₇`. Iterate
+  per support toward the minimal-`n ≥ 5391411025` certificate.
