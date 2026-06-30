@@ -51,6 +51,50 @@
       "The bounds Real.pi_gt_three and Real.pi_lt_four for the bracket-recovery corollary"
     ]
   },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Docstring placing the entry at the end of the central-binomial thread: the grandparent fixed the 1/2 exponent, its child bracketed the leading constant between 1/2 and 1/√3 (i.e. 3 < π < 4), and this file closes the bracket to the exact Wallis constant 1/√π. Explains the method — route through Mathlib's Stirling sequence via a single square-root-free identity. Imports Mathlib and opens the Stirling namespace."
+    },
+    {
+      "id": "factorial-identity",
+      "title": "§ The Factorial Identity (2n)! = C(2n,n)·(n!)²",
+      "startLine": 50,
+      "endLine": 61,
+      "summary": "two_mul_factorial_eq specialises Nat.choose_mul_factorial_mul_factorial at the central binomial coefficient (using 2n − n = n and centralBinom n = (2n).choose n) and casts to ℝ. This is the lone number-theoretic input feeding the otherwise purely-analytic proof."
+    },
+    {
+      "id": "bridge-identity",
+      "title": "§ The Square-Root-Free Bridge Identity",
+      "startLine": 63,
+      "endLine": 103,
+      "summary": "cb_sq_identity proves, for n ≥ 1, C(2n,n)²·n/16^n = stirlingSeq(2n)²/stirlingSeq(n)⁴. Two closed-form computations (hSn, hS2n) square/fourth-power the Stirling expressions so that (√(4n))² = 4n and (√(2n))⁴ = (2n)² eliminate every root; substituting the factorial identity and ((2n)/e)^{2n} = 16^n·((n/e)^n)² leaves a rational identity that field_simp closes."
+    },
+    {
+      "id": "exact-limit",
+      "title": "§ The Exact Limit 1/√π",
+      "startLine": 104,
+      "endLine": 140,
+      "summary": "centralBinom_mul_sqrt_div_tendsto proves C(2n,n)·√n/4^n → 1/√π. Composing tendsto_stirlingSeq_sqrt_pi with n ↦ 2n and taking powers/quotients gives stirlingSeq(2n)²/stirlingSeq(n)⁴ → π/π² = 1/π; the bridge identity (via Tendsto.congr' eventually for n ≥ 1) transfers this to (C(2n,n)√n/4^n)² → 1/π, and a final Tendsto.sqrt (sequence non-negative, Real.sqrt_sq, Real.sqrt_inv) gives the 1/√π limit."
+    },
+    {
+      "id": "consequences",
+      "title": "§ Consequences: Normalisation and Bracket Recovery",
+      "startLine": 142,
+      "endLine": 155,
+      "summary": "centralBinom_mul_sqrt_pi_div_tendsto_one rescales to C(2n,n)·√(πn)/4^n → 1, the textbook form C(2n,n) ∼ 4^n/√(πn), by multiplying the limit by the constant √π."
+    },
+    {
+      "id": "bracket-recovery",
+      "title": "§ Bracket Recovery",
+      "startLine": 156,
+      "endLine": 167,
+      "summary": "sqrt_pi_inv_mem_bracket shows the exact constant 1/√π lies in the parent's elementary bracket [1/2, 1/√3], equivalently 3 ≤ π ≤ 4, from Real.pi_lt_four and Real.pi_gt_three via monotonicity of √ and of x ↦ 1/x. The parent could only sandwich; this entry pins the single value between the endpoints."
+    }
+  ],
   "conclusion": {
     "summary": "The normalised central binomial coefficient converges to the exact Wallis constant: C(2n,n)·√n/4^n → 1/√π, equivalently C(2n,n) ∼ 4^n/√(πn). The proof rests on a single square-root-free identity C(2n,n)²·n/16^n = stirlingSeq(2n)²/stirlingSeq(n)⁴ that reduces the asymptotic to Mathlib's Stirling limit stirlingSeq → √π; squaring the target sequence is what eliminates the square roots in the Stirling expression, leaving a polynomial identity closed by field_simp. The right side tends to π/π² = 1/π and a final square root yields 1/√π. The parent's elementary bracket 1/2 ≤ 1/√π ≤ 1/√3 (i.e. 3 ≤ π ≤ 4) is recovered as a corollary. All five theorems are fully machine-checked with no axioms or sorries.",
     "implications": "The entry closes the parent's open question on the exact value of the leading constant: the recurrence-only thread bracketed it in [1/2, 1/√3] without analytic input, and this file pins the single point 1/√π using exactly one analytic ingredient — the Wallis product, packaged in Mathlib's tendsto_stirlingSeq_sqrt_pi. The square-root-free bridge identity is a reusable device: any asymptotic of the shape a_n ∼ c/√n can be attacked by squaring to a_n²·n → c² before invoking a Stirling-type limit, sidestepping square-root manipulation in the algebraic core.",

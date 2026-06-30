@@ -19,7 +19,7 @@
       "base change along ring homomorphisms",
       "Lucas sequences"
     ],
-    "significance": "Generalizes the test's arithmetic engine from the fixed seed 4 to an arbitrary seed over an arbitrary ring, and records the base-change property that ports the sequence into the rings where its closed form becomes visible."
+    "significance": "key"
   },
   {
     "id": "ann-doubling-closed-form",
@@ -41,7 +41,7 @@
       "norm-1 units (ω + ω⁻¹)",
       "closed forms for quadratic recurrences"
     ],
-    "significance": "Pinpoints exactly how the seed enters the Lucas–Lehmer recurrence — only through the unit it represents — making 'seed-independence' a precise structural statement rather than folklore."
+    "significance": "critical"
   },
   {
     "id": "ann-seed-shift",
@@ -62,7 +62,7 @@
       "shift equivariance",
       "orbit of the recurrence map"
     ],
-    "significance": "Shows the seeded family is internally consistent under the recurrence map, so a one-step change of seed is just a re-indexing."
+    "significance": "supporting"
   },
   {
     "id": "ann-classical-closed-form",
@@ -85,7 +85,7 @@
       "Binet-type closed form",
       "quadratic integers ℤ[√3]"
     ],
-    "significance": "Recovers the textbook closed form for the Lucas–Lehmer sequence and exhibits the seed 4 as forced by the fundamental unit 2+√3 of ℤ[√3]."
+    "significance": "key"
   },
   {
     "id": "ann-seed-ten",
@@ -107,6 +107,6 @@
       "norm-1 units in ℤ[√6]",
       "structural vs verdict independence"
     ],
-    "significance": "Directly answers the seed-10 part of the parent's open question by exhibiting 10 as the same ω + ω⁻¹ shape, while honestly delimiting structural from verdict independence."
+    "significance": "key"
   }
 ]

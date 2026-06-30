@@ -64,7 +64,8 @@
     "erdos-1",
     "erdos-11",
     "erdos-110",
-    "erdos-1101"
+    "erdos-1101",
+    "erdos-1101-oq-01"
   ],
   "references": {
     "papers": [],
@@ -76,6 +77,17 @@
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos1101OQ01.lean",
+      "filename": "Erdos1101OQ01.lean",
+      "lineCount": 122,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1101OQ01.lean"
+    },
     {
       "path": "Proofs/Erdos1101Problem.lean",
       "filename": "Erdos1101Problem.lean",

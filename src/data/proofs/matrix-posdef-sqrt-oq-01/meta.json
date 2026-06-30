@@ -123,7 +123,15 @@
       "summary": "diag_two_three_posSemidef establishes diag(2,3) ⪰ 0 via Matrix.PosSemidef.diagonal, and sqrt_diag_four_nine concludes from uniqueness: diag(2,3) is PSD and squares to diag(4,9) (diagonal_mul_diagonal plus the entrywise check 2·2 = 4, 3·3 = 9). The abstract CFC.sqrt agrees with the elementary entrywise square root."
     }
   ],
-  "conclusion": "The positive semidefinite square root is formalised sorry-free and axiom-free as the three pillars existence/defining-property, structure, and uniqueness, with the standard corollaries (√0 = 0, √1 = 1, √(A²) = A), the determinant shadow det(√A)² = det A, and a concrete diagonal computation √diag(4,9) = diag(2,3). The square root itself is Mathlib's C⋆-algebraic CFC.sqrt; the original content is the matrix-level packaging — pinning the existence/structure/uniqueness triad together and reading the corollaries off uniqueness. Natural follow-ups: the polar decomposition A = P·U with P = √(AᴴA) PSD and U unitary; the operator absolute value |A| = √(AᴴA) and the identity ‖A x‖ = ‖|A| x‖; or the Loewner-monotonicity of the square root, 0 ⪯ A ⪯ B ⟹ √A ⪯ √B, the operator-monotone half of the theory.",
+  "conclusion": {
+    "summary": "The positive semidefinite square root is formalised sorry-free and axiom-free as the three pillars existence/defining-property, structure, and uniqueness, with the standard corollaries (√0 = 0, √1 = 1, √(A²) = A), the determinant shadow det(√A)² = det A, and a concrete diagonal computation √diag(4,9) = diag(2,3). The square root itself is Mathlib's C⋆-algebraic CFC.sqrt.",
+    "implications": "The original content is the matrix-level packaging — pinning the existence/structure/uniqueness triad together and reading the corollaries off uniqueness. Uniqueness is the load-bearing half: it licenses the notation 'the' square root and is what every downstream corollary actually uses, while the determinant shadow recovers det A ≥ 0 for real PSD matrices as a one-line consequence.",
+    "openQuestions": [
+      "Can the polar decomposition A = P·U be formalised, with P = √(AᴴA) positive semidefinite and U unitary?",
+      "Can the operator absolute value |A| = √(AᴴA) and the norm-preservation identity ‖A x‖ = ‖|A| x‖ be derived from this square root?",
+      "Does the Loewner-monotonicity of the square root hold formally, 0 ⪯ A ⪯ B ⟹ √A ⪯ √B, the operator-monotone half of the theory?"
+    ]
+  },
   "crossReferences": [
     "det-conjugate-transpose-oq-01"
   ]

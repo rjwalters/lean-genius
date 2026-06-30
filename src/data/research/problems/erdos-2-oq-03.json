@@ -79,6 +79,7 @@
     "erdos-21",
     "erdos-210",
     "erdos-211",
+    "erdos-211-incomplete-01",
     "erdos-212",
     "erdos-213",
     "erdos-214",
@@ -121,6 +122,7 @@
     "erdos-246",
     "erdos-247",
     "erdos-247-oq-01",
+    "erdos-247-oq-01-oq-02",
     "erdos-248",
     "erdos-249",
     "erdos-249-oq-01",
@@ -346,6 +348,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos211Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos211SteinerLineCount.lean",
+      "filename": "Erdos211SteinerLineCount.lean",
+      "lineCount": 177,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos211SteinerLineCount.lean"
     },
     {
       "path": "Proofs/Erdos212Problem.lean",
@@ -636,11 +649,11 @@
     {
       "path": "Proofs/Erdos230Problem.lean",
       "filename": "Erdos230Problem.lean",
-      "lineCount": 231,
+      "lineCount": 264,
       "theoremCount": 5,
-      "axiomCount": 1,
+      "axiomCount": 2,
       "defCount": 6,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos230Problem.lean"
     },
@@ -779,11 +792,11 @@
     {
       "path": "Proofs/Erdos240Problem.lean",
       "filename": "Erdos240Problem.lean",
-      "lineCount": 265,
+      "lineCount": 317,
       "theoremCount": 5,
-      "axiomCount": 3,
+      "axiomCount": 4,
       "defCount": 5,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos240Problem.lean"
     },
@@ -885,6 +898,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos247Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos247RatioGrowth.lean",
+      "filename": "Erdos247RatioGrowth.lean",
+      "lineCount": 318,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos247RatioGrowth.lean"
     },
     {
       "path": "Proofs/Erdos248Problem.lean",

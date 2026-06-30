@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "connected-space-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "context",
+    "title": "Why Limit Points Cannot Break Connectedness",
+    "content": "The intuition behind the whole file: preconnectedness is the impossibility of splitting a set across two disjoint open sets that both meet it. Adding limit points (passing to the closure) cannot create such a split, because any open separation of closure s would already separate the dense original s — contradiction. This gives three results of increasing strength. (1) closure of a (pre)connected set is (pre)connected. (2) 'Bark and tree': ANY set t with s ⊆ t ⊆ closure s is preconnected, not just the closure itself — the tree (s) plus any amount of its bark (limit points) stays in one piece. (3) The density corollary: if a connected subset is dense (closure = univ), the whole space is connected. The core lemmas are Mathlib's (IsPreconnected.closure, IsPreconnected.subset_closure); the gallery packaging and the dense-subset corollary are the contribution.",
+    "mathContext": "An open separation of $\\overline{s}$ restricts to an open separation of the dense $s$; hence $\\overline{s}$ — and any $t$ with $s \\subseteq t \\subseteq \\overline{s}$ — stays preconnected.",
+    "significance": "context",
+    "relatedConcepts": [
+      "preconnected vs connected",
+      "closure and limit points",
+      "dense subset",
+      "open separation",
+      "bark and tree"
+    ],
+    "prerequisites": [
+      "topological closure",
+      "the definition of (pre)connectedness via open separations",
+      "dense sets (closure = univ)"
+    ]
+  },
+  {
     "id": "ann-closure",
     "proofId": "connected-space-oq-01",
     "range": {

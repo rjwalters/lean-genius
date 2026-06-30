@@ -89,14 +89,14 @@ theorem arcsin_sqrt_half : arcsin (Real.sqrt (1 / 2)) = π / 4 := by
   have hsqrt : Real.sqrt (1 / 2) = Real.sqrt 2 / 2 := by
     rw [← hsq, Real.sqrt_sq hnn]
   rw [hsqrt, ← Real.sin_pi_div_four,
-    Real.arcsin_sin (by positivity)
-      (by rw [div_le_div_iff (by norm_num) (by norm_num)]; nlinarith [Real.pi_pos])]
+    Real.arcsin_sin (by nlinarith [Real.pi_pos]) (by nlinarith [Real.pi_pos])]
 
 /-- `F(1/2) = 1/2`: the median of the arcsine law is the fair value `1/2`,
     even though the distribution concentrates mass away from it. -/
 theorem arcsineCDF_half : arcsineCDF (1 / 2) = 1 / 2 := by
   rw [arcsineCDF, arcsin_sqrt_half]
   field_simp
+  ring
 
 /-! ### Monotonicity: `F` is a genuine CDF -/
 
@@ -132,7 +132,6 @@ theorem arcsineCDF_symm {x : ℝ} (h0 : 0 ≤ x) (h1 : x ≤ 1) :
   have hsum := arcsin_sqrt_add_arcsin_sqrt_one_sub h0 h1
   rw [arcsineCDF, arcsineCDF, ← mul_add, hsum]
   field_simp
-  ring
 
 /-! ### The U-shaped density -/
 
@@ -149,5 +148,52 @@ theorem arcsineDensity_half : arcsineDensity (1 / 2) = 2 / π := by
   rw [show (1 : ℝ) / 2 * (1 - 1 / 2) = (1 / 2) ^ 2 by norm_num,
     Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1 / 2)]
   field_simp
+
+/-! ### The density really is the derivative of the CDF (the FTC link)
+
+The two objects above — `arcsineCDF` and `arcsineDensity` — are introduced
+independently. The name "density" is only *justified* once we prove that
+`arcsineDensity` is the derivative of `arcsineCDF`. That is the content here:
+on the open interval `(0,1)`, `F'(x) = f(x)`. The derivative computation is the
+chain rule applied to `arcsin ∘ √`, using `Real.hasDerivAt_arcsin` and
+`Real.hasDerivAt_sqrt`, with the algebraic simplification
+`√(1 - (√x)²)·(2√x) = 2·√(x(1-x))`. -/
+
+/-- **Fundamental link**: `arcsineDensity` is the derivative of `arcsineCDF` on
+    `(0,1)`. `HasDerivAt` form: `F` has derivative `f(x)` at every interior point. -/
+theorem hasDerivAt_arcsineCDF {x : ℝ} (h0 : 0 < x) (h1 : x < 1) :
+    HasDerivAt arcsineCDF (arcsineDensity x) x := by
+  have hx0 : x ≠ 0 := ne_of_gt h0
+  have hsx_pos : 0 < Real.sqrt x := Real.sqrt_pos.mpr h0
+  have hsx_lt1 : Real.sqrt x < 1 := by
+    rw [show (1 : ℝ) = Real.sqrt 1 by simp]
+    exact Real.sqrt_lt_sqrt (le_of_lt h0) h1
+  have hne_neg1 : Real.sqrt x ≠ -1 := by
+    have := Real.sqrt_nonneg x; linarith
+  have hne_1 : Real.sqrt x ≠ 1 := ne_of_lt hsx_lt1
+  -- chain rule: derivative of `arcsin ∘ √` at x
+  have hsqrt : HasDerivAt (fun y => Real.sqrt y) (1 / (2 * Real.sqrt x)) x :=
+    Real.hasDerivAt_sqrt hx0
+  have harcsin : HasDerivAt arcsin (1 / Real.sqrt (1 - (Real.sqrt x) ^ 2)) (Real.sqrt x) :=
+    Real.hasDerivAt_arcsin hne_neg1 hne_1
+  have hcomp := harcsin.comp x hsqrt
+  have hfull := hcomp.const_mul (2 / π)
+  rw [Real.sq_sqrt (le_of_lt h0)] at hfull
+  -- identify the derivative value with `arcsineDensity x`
+  have hden : (2 / π) * (1 / Real.sqrt (1 - x) * (1 / (2 * Real.sqrt x)))
+      = arcsineDensity x := by
+    have hpi : π ≠ 0 := Real.pi_ne_zero
+    have hsx : Real.sqrt x ≠ 0 := ne_of_gt hsx_pos
+    have hs1x : Real.sqrt (1 - x) ≠ 0 := Real.sqrt_ne_zero'.mpr (by linarith)
+    unfold arcsineDensity
+    rw [Real.sqrt_mul (le_of_lt h0)]
+    field_simp
+  rw [hden] at hfull
+  exact hfull
+
+/-- `deriv` form of the FTC link: `F'(x) = f(x)` for `x ∈ (0,1)`. -/
+theorem deriv_arcsineCDF {x : ℝ} (h0 : 0 < x) (h1 : x < 1) :
+    deriv arcsineCDF x = arcsineDensity x :=
+  (hasDerivAt_arcsineCDF h0 h1).deriv
 
 end ArcsineLaw

@@ -51,6 +51,7 @@
     "law-of-cosines-oq-01",
     "law-of-cosines-oq-01-oq-01",
     "law-of-cosines-oq-01-oq-01-oq-01",
+    "law-of-cosines-oq-01-oq-01-oq-01-oq-02",
     "law-of-cosines-oq-01-oq-01-oq-03",
     "law-of-cosines-oq-01-oq-02",
     "law-of-cosines-oq-01-oq-04",
@@ -61,7 +62,10 @@
     "law-of-cosines-oq-04",
     "law-of-cosines-oq-04-oq-01",
     "law-of-cosines-oq-04-oq-02",
-    "law-of-cosines-oq-07"
+    "law-of-cosines-oq-07",
+    "law-of-cosines-oq-07-oq-02",
+    "law-of-cosines-oq-07-oq-02-oq-01",
+    "law-of-cosines-oq-08"
   ],
   "references": {
     "papers": [],
@@ -87,7 +91,7 @@
     {
       "path": "Proofs/LawOfCosinesOQ01OQ01.lean",
       "filename": "LawOfCosinesOQ01OQ01.lean",
-      "lineCount": 335,
+      "lineCount": 338,
       "theoremCount": 21,
       "axiomCount": 0,
       "defCount": 3,
@@ -105,6 +109,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ01OQ01OQ02.lean",
+      "filename": "LawOfCosinesOQ01OQ01OQ01OQ02.lean",
+      "lineCount": 142,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ01OQ01OQ02.lean"
     },
     {
       "path": "Proofs/LawOfCosinesOQ01OQ01OQ03.lean",
@@ -248,6 +263,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ07.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ07OQ02.lean",
+      "filename": "LawOfCosinesOQ07OQ02.lean",
+      "lineCount": 89,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ07OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ07OQ02OQ01.lean",
+      "filename": "LawOfCosinesOQ07OQ02OQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ07OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ08.lean",
+      "filename": "LawOfCosinesOQ08.lean",
+      "lineCount": 150,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ08.lean"
     }
   ]
 }

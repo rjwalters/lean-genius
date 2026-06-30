@@ -85,5 +85,26 @@
       "Fintype.card_fin",
       "the symmetric-group solvability threshold"
     ]
+  },
+  {
+    "id": "ann-minimum-element",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01",
+    "range": { "startLine": 108, "endLine": 142 },
+    "type": "insight",
+    "title": "5 is a minimum, not merely a member: the boundary as a successor",
+    "content": "An up-set in $\\mathbb{N}$ that is bounded below has a least element, and `five_is_min_unsolvable_card` pins it down: $\\neg\\,\\mathrm{IsSolvable}(S_{\\mathrm{Fin}\\,5})$ holds, and every non-solvable cardinality satisfies $n \\ge 5$. This is strictly sharper than 'S₅ is non-solvable' — it certifies that $5$ is the *threshold*, the order-dual of the parent's `four_is_max_solvable_card`. `boundary_is_successor` then welds the two extremal facts together with the arithmetic identity $4 + 1 = 5$:\n$$\\bigl(\\forall n,\\ \\mathrm{IsSolvable}(S_{\\mathrm{Fin}\\,n}) \\to n \\le 4\\bigr) \\ \\wedge\\ \\bigl(\\forall n,\\ \\neg\\,\\mathrm{IsSolvable}(S_{\\mathrm{Fin}\\,n}) \\to 5 \\le n\\bigr) \\ \\wedge\\ (4 + 1 = 5).$$\nThe greatest solvable cardinality and the least non-solvable one are *adjacent*: there is no gap and no overlap, so the Abel–Ruffini boundary is a single successor step rather than an isolated property of the quintic.",
+    "mathContext": "A subset of ℕ closed upward and nonempty is {k | k ≥ min} for a unique min; here min = 5 = succ 4, certifying that the solvable/unsolvable cut is sharp and exhaustive.",
+    "significance": "high",
+    "relatedConcepts": [
+      "well-ordering of ℕ",
+      "least element of an up-set",
+      "threshold / boundary",
+      "four_is_max_solvable_card"
+    ],
+    "prerequisites": [
+      "well-ordering principle",
+      "up-sets in ℕ",
+      "the parent's maximal solvable cardinality"
+    ]
   }
 ]

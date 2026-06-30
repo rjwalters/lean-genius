@@ -65,7 +65,8 @@
     "combinatorial-geometry"
   ],
   "relatedProofs": [
-    "unit-distance-independence"
+    "unit-distance-independence",
+    "unit-distance-independence-oq-01"
   ],
   "started": "2026-04-05T21:40:00Z",
   "lastUpdate": "2026-05-16T08:56:13Z",
@@ -82,6 +83,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/UnitDistanceIndependence.lean"
+    },
+    {
+      "path": "Proofs/UnitDistanceIndependenceOQ01.lean",
+      "filename": "UnitDistanceIndependenceOQ01.lean",
+      "lineCount": 301,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/UnitDistanceIndependenceOQ01.lean"
     }
   ]
 }

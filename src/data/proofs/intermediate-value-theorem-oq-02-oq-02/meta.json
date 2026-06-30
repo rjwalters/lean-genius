@@ -124,5 +124,28 @@
       "summary": "quadratic_dominates_linear (r^(2ⁿ) ≤ rⁿ for 0 ≤ r ≤ 1) and quadratic_strictly_dominates (strict for n ≥ 1, r < 1), packaged with both convergence-to-zero statements in rate_comparison_summary: started from the same contraction factor, Newton's bound beats bisection's from the first step."
     }
   ],
+  "references": [
+    {
+      "author": "Burden, R. L. and Faires, J. D.",
+      "year": 2010,
+      "title": "Numerical Analysis",
+      "venue": "Brooks/Cole, 9th edition, Ch. 2",
+      "note": "Standard reference for the bisection method (linear convergence, one bit per step) and Newton's method (quadratic convergence), including the error recurrences formalized here."
+    },
+    {
+      "author": "Heron of Alexandria",
+      "year": 60,
+      "title": "Metrica",
+      "venue": "c. 60 CE",
+      "note": "The iteration xₙ₊₁ = (xₙ + A/xₙ)/2 for √A — the Babylonian/Heron method — is the special case of Newton's method whose exact error identity drives the quadratic-convergence proof in this file."
+    },
+    {
+      "author": "The Mathlib Community",
+      "year": 2026,
+      "title": "Mathlib.Analysis.SpecificLimits.Basic, Filter.Tendsto",
+      "venue": "Mathlib4 (accessed 2026)",
+      "note": "Supplies the geometric-limit lemma qⁿ → 0 and the squeeze (tendsto_of_tendsto_of_tendsto_of_le_of_le) used to push the doubly-exponential Newton bound q^(2ⁿ) to zero."
+    }
+  ],
   "sorries": []
 }

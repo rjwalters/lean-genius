@@ -134,7 +134,15 @@
       "summary": "The identity matrix is both Hermitian (Matrix.isHermitian_one) and unitary, so the two corollaries apply to it: det 1 = 1 is real and lies on the unit circle, exhibiting both results concretely."
     }
   ],
-  "conclusion": "The conjugate-transpose determinant identity det Mᴴ = star (det M) and its two structural corollaries are formalised sorry-free and axiom-free. The base identity re-exports Mathlib's Matrix.det_conjTranspose; the original content is the pair of corollaries it powers: the determinant of a Hermitian matrix is self-adjoint, hence real over ℂ (the scalar form of the real-spectrum property), and the determinant of a unitary matrix lies on the unit circle (the det : U(n) → U(1) homomorphism, whose kernel is SU(n)). A natural follow-up is the special unitary group itself — characterising U with det U = 1 — or the multiplicativity ‖det (U · V)‖ = ‖det U‖ · ‖det V‖ giving det as a group homomorphism U(n) → U(1), and the analogous orthogonal statement det O = ±1 for Oᵀ O = 1 over ℝ.",
+  "conclusion": {
+    "summary": "The conjugate-transpose determinant identity det Mᴴ = star (det M) and its two structural corollaries are formalised sorry-free and axiom-free. The base identity re-exports Mathlib's Matrix.det_conjTranspose; the original content is the pair of corollaries it powers: the determinant of a Hermitian matrix is self-adjoint, hence real over ℂ, and the determinant of a unitary matrix lies on the unit circle.",
+    "implications": "The two corollaries tie the adjoint/spectral structure of complex matrices to the single scalar invariant det. The Hermitian case is the scalar form of the real-spectrum property (the determinant, a product of eigenvalues, is real), and the unitary case is the det : U(n) → U(1) homomorphism whose kernel is the special unitary group SU(n).",
+    "openQuestions": [
+      "Can one characterise the special unitary group itself — the matrices U with det U = 1 — as the kernel of this determinant map?",
+      "Does the multiplicativity ‖det (U · V)‖ = ‖det U‖ · ‖det V‖ formalise det as a group homomorphism U(n) → U(1)?",
+      "What is the analogous orthogonal statement det O = ±1 for Oᵀ O = 1 over ℝ?"
+    ]
+  },
   "crossReferences": [
     "cramers-rule-oq-05"
   ]

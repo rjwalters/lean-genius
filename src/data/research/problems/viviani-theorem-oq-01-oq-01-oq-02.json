@@ -15,12 +15,56 @@
     "research"
   ],
   "leanFiles": [
-    "proofs/Proofs/VivianiTheoremOQ01OQ01OQ02.lean"
+    {
+      "path": "Proofs/VivianiTheorem.lean",
+      "filename": "VivianiTheorem.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VivianiTheorem.lean"
+    },
+    {
+      "path": "Proofs/VivianiTheoremOQ01OQ01.lean",
+      "filename": "VivianiTheoremOQ01OQ01.lean",
+      "lineCount": 220,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VivianiTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/VivianiTheoremOQ01OQ01OQ01.lean",
+      "filename": "VivianiTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VivianiTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/VivianiTheoremOQ01OQ01OQ02.lean",
+      "filename": "VivianiTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 151,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VivianiTheoremOQ01OQ01OQ02.lean"
+    }
   ],
   "relatedProofs": [
+    "viviani-theorem-oq-01",
     "viviani-theorem-oq-01-oq-01",
     "viviani-theorem-oq-01-oq-01-oq-01",
-    "viviani-theorem-oq-01"
+    "viviani-theorem-oq-01-oq-01-oq-02"
   ],
   "knownResults": [
     "Parent viviani-theorem-oq-01-oq-01 proves the converse: sumDist is constant on the whole plane ⇔ the triangle is equilateral, via an affine/gradient reduction (constant ⇔ normals sum to zero) plus a normal-vector lemma (normals sum to zero ⇔ equal sides).",

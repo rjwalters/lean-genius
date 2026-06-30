@@ -1,7 +1,7 @@
 {
   "slug": "inverse-galois-oq-04",
   "title": "Dedekind Theorem to Eliminate A5 Axiom",
-  "phase": "NEW",
+  "phase": "BLOCKED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T22:19:31.122Z",
+    "phase": "BLOCKED",
+    "since": "2026-06-28T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Eliminate three_dvd_gal_card via Dedekind's theorem at p=7.",
+    "blockers": [
+      "Dedekind's theorem (factorization type mod p = cycle type of Frobenius in Gal) is absent from Mathlib 4.26.0; no Frobenius-as-Galois-permutation primitive. Estimated 800-1500 lines of foundational number theory to build."
+    ],
+    "nextAction": "Park until Mathlib gains Dedekind's theorem / Frobenius-as-Galois-automorphism, or commit a dedicated multi-session bridge effort.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +31,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Assessed (researcher-3, 2026-06-28). InverseGaloisA5.lean has exactly 1 axiom, three_dvd_gal_card (3 | |Gal(q)|), encoding Dedekind's theorem at p=7. All other inputs to |Gal|=60 are proved (5|Gal, Gal|60 via discriminant, no order-15/30 subgroup). The 3|Gal step has no axiom-free or computational shortcut: distinguishing D5 from A5 requires detecting an order-3 element, i.e. Dedekind's theorem (mod-7 cycle type) or Dummit's resolvent correspondence -- both absent from Mathlib.",
     "builtItems": [],
     "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "mathlibGaps": [
+      "Dedekind's theorem: factorization type of f mod p (p not dividing disc) = cycle type of Frobenius in Gal on roots. Entirely absent.",
+      "Frobenius element as a Galois automorphism / permutation of roots: no primitive.",
+      "Building blocks present: KummerDedekind.normalizedFactorsMapEquivNormalizedFactorsMinPolyMk; Ideal.inertiaDeg/ramificationIdx + RamificationInertia/Galois identities; Polynomial.Gal.galActionHom; Equiv.Perm.cycleType."
+    ],
+    "nextSteps": [
+      "If pursued: define Frobenius automorphism at an unramified prime P|(7), show it induces residue-field Frobenius, prove its cycle type on roots = inertia-degree multiset = mod-7 factorization degrees. ~800-1500 lines.",
+      "Alternatively formalize Dummit's resolvent-sextic correspondence (resolvent_no_*_root evidence already in file)."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -43,6 +52,7 @@
   "relatedProofs": [
     "inverse-galois",
     "inverse-galois-a5",
+    "inverse-galois-a5-oq-01",
     "inverse-galois-a5-oq-02",
     "inverse-galois-a5-oq-03",
     "inverse-galois-d4",
@@ -51,6 +61,7 @@
     "inverse-galois-f20",
     "inverse-galois-oq-01",
     "inverse-galois-oq-02",
+    "inverse-galois-oq-03",
     "inverse-galois-oq-06"
   ],
   "references": {
@@ -59,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T22:19:31.122Z",
-  "lastUpdate": "2026-03-30T22:19:31.122Z",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -95,6 +106,17 @@
       "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5Dedekind.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5DedekindInstantiation.lean",
+      "filename": "InverseGaloisA5DedekindInstantiation.lean",
+      "lineCount": 109,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5DedekindInstantiation.lean"
     },
     {
       "path": "Proofs/InverseGaloisA5OQ02.lean",
@@ -238,6 +260,17 @@
       "sorryCount": 10,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisOQ03.lean",
+      "filename": "InverseGaloisOQ03.lean",
+      "lineCount": 262,
+      "theoremCount": 14,
+      "axiomCount": 6,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ03.lean"
     },
     {
       "path": "Proofs/InverseGaloisOQ06OQ01.lean",

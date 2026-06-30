@@ -117,8 +117,31 @@
     },
     {
       "targetId": "chebyshev-bounds-oq-02",
-      "relationship": "relatedTo",
+      "relationship": "related-to",
       "description": "The parent strand: the second Chebyshev function ψ and Legendre's identity log(n!) = ∑ Λ(d)⌊n/d⌋, the foundation on which the ψ — and now θ — bounds are built."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Chebyshev, P. L.",
+      "title": "Mémoire sur les nombres premiers",
+      "year": "1852",
+      "venue": "Journal de mathématiques pures et appliquées, 1re série, tome 17, pp. 366–390",
+      "note": "The original elementary bounds c₁·n/log n ≤ π(n) ≤ c₂·n/log n, equivalently θ(n), ψ(n) = Θ(n), via the prime factorization of the central binomial coefficient — the method this entry's lower bound descends from."
+    },
+    {
+      "authors": "Apostol, T. M.",
+      "title": "Introduction to Analytic Number Theory",
+      "year": "1976",
+      "venue": "Springer, Undergraduate Texts in Mathematics, ch. 4",
+      "note": "The Chebyshev functions θ and ψ, the relation 0 ≤ ψ(x) − θ(x) and its O(√x·log x) size, and Chebyshev-type bounds (Theorems 4.5–4.7)."
+    },
+    {
+      "authors": "Tenenbaum, G.",
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "year": "2015",
+      "venue": "AMS, Graduate Studies in Mathematics 163, 3rd ed., §I.1–I.2",
+      "note": "Modern treatment of Chebyshev's elementary estimates and the passage between θ, ψ, and π."
     }
   ]
 }

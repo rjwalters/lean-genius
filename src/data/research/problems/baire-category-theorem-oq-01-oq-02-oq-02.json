@@ -21,11 +21,81 @@
     "Mathlib has Perfect.exists_nat_bool_injection (Cantor scheme) and not_countable_real."
   ],
   "leanFiles": [
-    "proofs/Proofs/BaireCantorBendixsonOQ010202.lean"
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01.lean",
+      "filename": "BaireCategoryTheoremOQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ01.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ01OQ01.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 257,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ01OQ02.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 133,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ02.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ02.lean",
+      "lineCount": 107,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ03.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ03.lean",
+      "lineCount": 96,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ03.lean"
+    }
   ],
   "relatedProofs": [
+    "baire-category-theorem-oq-01",
+    "baire-category-theorem-oq-01-oq-01",
+    "baire-category-theorem-oq-01-oq-01-oq-01",
+    "baire-category-theorem-oq-01-oq-01-oq-02",
     "baire-category-theorem-oq-01-oq-02",
-    "baire-category-theorem-oq-01"
+    "baire-category-theorem-oq-01-oq-02-oq-02",
+    "baire-category-theorem-oq-01-oq-03"
   ],
   "knowledge": {
     "progressSummary": "COMPLETE: Strengthened Mathlib's Cantor–Bendixson corollary from 'perfect kernel nonempty' to 'perfect kernel uncountable', then to the cardinal bound 𝔠 ≤ #D and 𝔠 ≤ #α for arbitrary uncountable Polish spaces. The new content is retaining the countable remainder V (which Mathlib's exists_perfect_nonempty_of_isClosed_of_not_countable discards) and arguing univ = V ∪ D uncountable + V countable ⟹ D uncountable. 6 theorems, 0 defs, 117 lines, 0 sorries, 0 axioms.",

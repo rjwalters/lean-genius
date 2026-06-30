@@ -37,12 +37,133 @@
   "knownResults": [],
   "references": [],
   "relatedProofs": [
-    "compactness-finite-subcover-oq-01-oq-02-oq-01"
+    "compactness-finite-subcover-oq-01",
+    "compactness-finite-subcover-oq-01-oq-01",
+    "compactness-finite-subcover-oq-01-oq-01-oq-01",
+    "compactness-finite-subcover-oq-01-oq-02",
+    "compactness-finite-subcover-oq-01-oq-02-oq-01",
+    "compactness-finite-subcover-oq-01-oq-02-oq-01-oq-02",
+    "compactness-finite-subcover-oq-01-oq-02-oq-02",
+    "compactness-finite-subcover-oq-02",
+    "compactness-finite-subcover-oq-02-oq-01",
+    "compactness-finite-subcover-oq-02-oq-02"
   ],
   "tags": [
     "topology",
     "metric-spaces",
     "completeness",
     "cantor-intersection-theorem"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/CompactnessFiniteSubcover.lean",
+      "filename": "CompactnessFiniteSubcover.lean",
+      "lineCount": 124,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcover.lean"
+    },
+    {
+      "path": "Proofs/CompactnessFiniteSubcoverOq01Oq01.lean",
+      "filename": "CompactnessFiniteSubcoverOq01Oq01.lean",
+      "lineCount": 138,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcoverOq01Oq01.lean"
+    },
+    {
+      "path": "Proofs/CompactnessFiniteSubcoverOq01Oq01Oq01.lean",
+      "filename": "CompactnessFiniteSubcoverOq01Oq01Oq01.lean",
+      "lineCount": 147,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcoverOq01Oq01Oq01.lean"
+    },
+    {
+      "path": "Proofs/CompactnessFiniteSubcoverOq01Oq02.lean",
+      "filename": "CompactnessFiniteSubcoverOq01Oq02.lean",
+      "lineCount": 134,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcoverOq01Oq02.lean"
+    },
+    {
+      "path": "Proofs/CompactnessFiniteSubcoverOq01Oq02Oq01.lean",
+      "filename": "CompactnessFiniteSubcoverOq01Oq02Oq01.lean",
+      "lineCount": 101,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcoverOq01Oq02Oq01.lean"
+    },
+    {
+      "path": "Proofs/CompactnessFiniteSubcoverOQ01OQ02OQ01OQ02.lean",
+      "filename": "CompactnessFiniteSubcoverOQ01OQ02OQ01OQ02.lean",
+      "lineCount": 117,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcoverOQ01OQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CompactnessFiniteSubcoverOq01Oq02Oq02.lean",
+      "filename": "CompactnessFiniteSubcoverOq01Oq02Oq02.lean",
+      "lineCount": 137,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcoverOq01Oq02Oq02.lean"
+    },
+    {
+      "path": "Proofs/CompactnessFiniteSubcoverOq02.lean",
+      "filename": "CompactnessFiniteSubcoverOq02.lean",
+      "lineCount": 110,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcoverOq02.lean"
+    },
+    {
+      "path": "Proofs/CompactnessFiniteSubcoverOq02Oq01.lean",
+      "filename": "CompactnessFiniteSubcoverOq02Oq01.lean",
+      "lineCount": 106,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcoverOq02Oq01.lean"
+    },
+    {
+      "path": "Proofs/CompactnessFiniteSubcoverOq02Oq02.lean",
+      "filename": "CompactnessFiniteSubcoverOq02Oq02.lean",
+      "lineCount": 207,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CompactnessFiniteSubcoverOq02Oq02.lean"
+    }
   ]
 }

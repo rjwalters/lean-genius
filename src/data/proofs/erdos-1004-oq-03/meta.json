@@ -91,6 +91,48 @@
       "Erdős #1004 parent entry"
     ]
   },
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background: Erdős #1004 and the EPS axiom",
+      "startLine": 3,
+      "endLine": 34,
+      "summary": "The module docstring frames the problem: a distinct totient run of length K starting at n is a block φ(n+1),…,φ(n+K) of pairwise-distinct totient values, and Erdős #1004 asks how long such runs can be. The deep Erdős–Pomerance–Sárközy (1987) bound K ≤ n/exp(c·(log n)^{1/3}) is recorded as an axiom in the parent entry. This file instead proves a fully verified, 0-axiom, unconditional bound K ≤ n−1 for all n ≥ 2, sharp at small n, via totient parity.",
+      "mathContext": "EPS: $K \\le n/\\exp(c(\\log n)^{1/3})$ (axiom in parent). This file: $n \\ge 2 \\Rightarrow K \\le n-1$ (0-axiom, all n)."
+    },
+    {
+      "id": "definition",
+      "title": "Definition: distinct totient run",
+      "startLine": 40,
+      "endLine": 44,
+      "summary": "IsDistinctTotientRun n K is defined as injectivity of Nat.totient on the block of arguments Icc (n+1) (n+K) — a self-contained restatement of the parent entry's predicate so this file verifies standalone.",
+      "mathContext": "$\\mathrm{IsDistinctTotientRun}(n,K) \\equiv \\varphi$ is injective on $\\{n+1,\\dots,n+K\\}$."
+    },
+    {
+      "id": "parity-facts",
+      "title": "Parity and size facts for arguments ≥ 3",
+      "startLine": 46,
+      "endLine": 59,
+      "summary": "totient_even_ge_two: for m ≥ 3, φ(m) is even and ≥ 2 (Nat.totient_even plus positivity). totient_le_pred: φ(m) ≤ m−1 for m ≥ 2 (Nat.totient_lt). These two facts — that totient values of arguments ≥ 3 are even and bounded — are the entire engine of the main bound.",
+      "mathContext": "$m \\ge 3 \\Rightarrow \\varphi(m)$ even and $2 \\le \\varphi(m) \\le m-1$."
+    },
+    {
+      "id": "main-bound",
+      "title": "The main unconditional bound K ≤ n−1",
+      "startLine": 61,
+      "endLine": 118,
+      "summary": "run_length_le_pred: for n ≥ 2, a distinct totient run has K ≤ n−1. The K distinct totient values are distinct even numbers in [2, n+K−1]; halving them gives K distinct integers in [1, (n+K−1)/2], so a Finset.card_le_card_of_injOn comparison forces K ≤ (n+K−1)/2, i.e. K ≤ n−1. run_length_lt (K < n) and no_run_of_length_n (no run of length n) are immediate corollaries.",
+      "mathContext": "$K$ distinct evens in $[2,n+K-1]$ $\\xrightarrow{/2}$ $K$ distinct integers in $[1,(n+K-1)/2]$ $\\Rightarrow K \\le (n+K-1)/2 \\Rightarrow K \\le n-1$."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness at small n",
+      "startLine": 120,
+      "endLine": 134,
+      "summary": "run_sharp_at_three: the bound is attained at n = 3 — φ(4), φ(5) = 2, 4 is a distinct run of length K = 2 = n−1 (verified by interval_cases + decide). no_run_three_three: no run of length 3 starts at 3 (φ(6) = 2 = φ(4) breaks distinctness), consistent with K ≤ n−1 = 2.",
+      "mathContext": "$n=3$: $\\varphi(4),\\varphi(5) = 2,4$ distinct ($K=2=n-1$); $\\varphi(6)=2=\\varphi(4)$ blocks $K=3$."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-1004",

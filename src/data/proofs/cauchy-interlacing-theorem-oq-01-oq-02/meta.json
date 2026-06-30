@@ -86,7 +86,8 @@
       "The explicit-compression construction is codimension-agnostic: nothing in compress, isSymmetric_compress, or rayleigh_compress_eq uses that H is a hyperplane, so the same machinery that yields the codimension-one corollary yields the arbitrary-codimension theorem with zero additional spectral work",
       "Joining the abstract Poincaré inequality (which abstracts away the compression) with the explicit compression (which abstracts away the codimension) removes BOTH the Rayleigh hypothesis and the codimension restriction simultaneously",
       "The main theorem differs from the merged codimension-one compression corollary only in calling poincare_separation rather than the codimension-one assembly — the surrounding spectral plumbing is identical, evidence the abstraction boundaries were drawn at the right place",
-      "Proof-irrelevance of the Fin.mk bounds lets the abstract theorem's ⟨k+m⟩ / ⟨k⟩ conclusion discharge the corollary's goal directly by exact, with no index-coercion rewriting in the main theorem"
+      "Proof-irrelevance of the Fin.mk bounds lets the abstract theorem's ⟨k+m⟩ / ⟨k⟩ conclusion discharge the corollary's goal directly by exact, with no index-coercion rewriting in the main theorem",
+      "The reason no Rayleigh side condition survives is geometric: the orthogonal projection is self-adjoint (P_H = P_H*), so for x in H one has ⟨(compress T H) x, x⟩ = ⟨P_H T x, x⟩ = ⟨T x, P_H x⟩ = ⟨T x, x⟩ — the Rayleigh quotient of the compression agrees with that of T on H by construction. rayleigh_compress_eq packages exactly this identity, which is precisely the hypothesis the abstract Poincaré theorem demanded, so the variational max–min argument applies verbatim to μ"
     ],
     "prerequisites": [
       "The spectral theorem: orthonormal eigenbases and antitone descending eigenvalue families for symmetric operators on finite-dimensional inner product spaces",

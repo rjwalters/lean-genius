@@ -64,7 +64,8 @@
   ],
   "relatedProofs": [
     "szemeredi-hypergraph-core",
-    "szemeredi-hypergraph-core-oq-01"
+    "szemeredi-hypergraph-core-oq-01",
+    "szemeredi-hypergraph-core-oq-02"
   ],
   "references": {
     "papers": [],
@@ -95,6 +96,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediHypergraphCoreOQ01.lean"
+    },
+    {
+      "path": "Proofs/SzemerediHypergraphCoreOQ02.lean",
+      "filename": "SzemerediHypergraphCoreOQ02.lean",
+      "lineCount": 246,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediHypergraphCoreOQ02.lean"
     }
   ]
 }

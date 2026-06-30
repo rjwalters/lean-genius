@@ -76,7 +76,12 @@
       }
     ]
   },
-  "openQuestions": [],
+  "openQuestions": [
+    "Can the companion closed forms for the *other* special diagonals be formalized — e.g. the duplication/multiplication-theorem values such as B(s, 1−s) combined with Legendre's Γ(s)Γ(s+1/2) = 2^{1−2s}√π·Γ(2s), or the Gauss multiplication theorem ∏_{k=0}^{n−1} Γ(s + k/n) = (2π)^{(n−1)/2} n^{1/2−ns} Γ(ns)?",
+    "Beyond the reflection diagonal y = 1−x, which diagonals y = c − x admit an elementary closed form for B(x, c−x), and can a Lean characterization separate the 'reflection-solvable' lines from the generic case where no elementary closed form exists?",
+    "The value Γ(1/3)·Γ(2/3) = 2π/√3 is a rational multiple of π even though Γ(1/3) itself is (by Chudnovsky's theorem) transcendental and algebraically independent of π. Can the gallery formalize this contrast — products of complementary Gamma values are 'tame' while the individual factors are not?",
+    "Can the identity be upgraded to a statement about the meromorphic continuation B(s, 1−s) = π/sin(πs) on all of ℂ ∖ ℤ, exhibiting the simple poles at the integers and matching residues, rather than only the strip 0 < Re s < 1?"
+  ],
   "crossReferences": [
     {
       "targetId": "gamma-reflection-formula-oq-01-oq-01",
@@ -113,7 +118,8 @@
       "The symmetric Beta value is the cleanest meeting point of Euler's two great Gamma identities: the Beta–Gamma relation contributes the Γ(1) = 1 collapse, and the reflection formula contributes the π/sin(πs).",
       "The diagonal y = 1−x is special precisely because it forces the argument sum to 1, the unique point where the Gamma normalising factor in the Beta–Gamma relation vanishes — so no Gamma value other than Γ(1) is needed.",
       "The midpoint s = 1/2 is the degenerate case where the sine denominator is 1; the family is genuinely s-dependent, as the value Γ(1/3)·Γ(2/3) = 2π/√3 shows.",
-      "The badge is original: Mathlib supplies both input identities but neither the symmetric Beta value B(s,1−s) = π/sin(πs) nor its concrete specializations."
+      "The badge is original: Mathlib supplies both input identities but neither the symmetric Beta value B(s,1−s) = π/sin(πs) nor its concrete specializations.",
+      "The closed form tames objects that are individually wild: Γ(1/3) is transcendental and (Chudnovsky) algebraically independent of π, yet the complementary product Γ(1/3)·Γ(2/3) = 2π/√3 is a rational multiple of π — the reflection formula is exactly the mechanism that collapses the transcendental factors into a π/√3 expression."
     ]
   },
   "sections": [
@@ -146,6 +152,10 @@
   "conclusion": {
     "summary": "The general symmetric Beta value B(s,1−s) = π/sin(πs) (for 0 < Re s < 1) is derived by combining Mathlib's Beta–Gamma relation Γ(s)Γ(t) = Γ(s+t)B(s,t) at t = 1−s (where Γ(s+t) = Γ(1) = 1) with Euler's reflection formula Γ(s)Γ(1−s) = π/sin(πs). The parent's B(1/2,1/2) = π is recovered as the case s = 1/2 (sin(π/2) = 1), the real ratio form is recorded, and a second concrete value Γ(1/3)·Γ(2/3) = 2π/√3 (sin(π/3) = √3/2) exhibits the s-dependence. 95 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries.",
     "implications": "Both input identities — the Beta–Gamma relation and the reflection formula — are Mathlib's, but the symmetric Beta value B(s,1−s) = π/sin(πs) that results from putting them together, together with its specializations, is new; hence the original badge. The entry generalizes the parent's single midpoint value to the full one-parameter family.",
-    "openQuestions": []
+    "openQuestions": [
+      "Formalize the neighbouring closed-form families (Legendre duplication, Gauss multiplication) and the general reflection on diagonals y = c − x.",
+      "Capture the transcendence contrast behind Γ(1/3)·Γ(2/3) = 2π/√3: the product is a rational multiple of π though Γ(1/3) is transcendental (Chudnovsky).",
+      "Upgrade B(s,1−s) = π/sin(πs) to the full meromorphic continuation on ℂ ∖ ℤ, with the simple poles at the integers."
+    ]
   }
 }

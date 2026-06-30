@@ -208,6 +208,8 @@
   "relatedProofs": [
     "four-square-distribution",
     "four-square-distribution-oq-01",
+    "four-square-distribution-oq-01-oq-01",
+    "four-square-distribution-oq-02",
     "four-square-distribution-oq-04",
     "four-square-distribution-oq-05",
     "four-square-distribution-oq-06",
@@ -257,6 +259,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ01.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ01OQ01.lean",
+      "filename": "FourSquareDistributionOQ01OQ01.lean",
+      "lineCount": 115,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ02.lean",
+      "filename": "FourSquareDistributionOQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ02.lean"
     },
     {
       "path": "Proofs/FourSquareDistributionOQ04.lean",
@@ -349,8 +373,8 @@
     {
       "path": "Proofs/FourSquareDistributionOQ05.lean",
       "filename": "FourSquareDistributionOQ05.lean",
-      "lineCount": 108,
-      "theoremCount": 8,
+      "lineCount": 214,
+      "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
