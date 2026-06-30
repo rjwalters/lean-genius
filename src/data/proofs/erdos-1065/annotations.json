@@ -349,7 +349,7 @@
       "startLine": 270,
       "endLine": 279
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Decidable Check Function",
     "content": "Implements a bounded decidable check `checkTwoTimePrime p` that tests whether $p$ is of the $2^k q + 1$ form by iterating over all $k < p$ and checking if $(p-1)/2^k$ is prime. This is a brute-force algorithm but suffices for small examples. The function returns `Bool` rather than `Prop`, enabling `#eval` computation.",
     "mathContext": "Algorithm: for each $k = 0, 1, \\ldots, p-1$, check if $2^k \\mid (p-1)$ and $(p-1)/2^k$ is prime. Complexity: $O(p \\cdot T_{\\text{prime}}(p))$ where $T_{\\text{prime}}$ is the cost of primality testing.",

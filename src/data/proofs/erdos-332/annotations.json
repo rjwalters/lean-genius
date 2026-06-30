@@ -28,7 +28,7 @@
     "type": "concept",
     "range": {
       "startLine": 15,
-      "endLine": 21
+      "endLine": 22
     },
     "title": "Imports and Setup",
     "content": "Imports Mathlib for integer arithmetic ($\\mathbb{Z}$ for differences), set theory (for $D(A)$ as a set of integers), Finset with cardinality (for the counting function), and tactics. Opens the `Set` namespace for cleaner notation. The formalization works with $A \\subseteq \\mathbb{N}$ but differences $a_1 - a_2$ live in $\\mathbb{Z}$, requiring the coercion $\\mathbb{N} \\to \\mathbb{Z}$.",
@@ -49,8 +49,8 @@
     "proofId": "erdos-332",
     "type": "definition",
     "range": {
-      "startLine": 25,
-      "endLine": 29
+      "startLine": 26,
+      "endLine": 30
     },
     "title": "Difference Set D(A)",
     "content": "Defines $D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1, a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$, the set of differences occurring infinitely often. This is stricter than the ordinary difference set $A - A = \\{a_1 - a_2 : a_1, a_2 \\in A\\}$: only differences realized by infinitely many pairs qualify. For finite sets, $D(A) = \\emptyset$. The fibre condition uses `Set.Infinite` on the set of witnessing pairs.",
@@ -73,8 +73,8 @@
     "proofId": "erdos-332",
     "type": "definition",
     "range": {
-      "startLine": 33,
-      "endLine": 38
+      "startLine": 34,
+      "endLine": 39
     },
     "title": "Bounded Gaps (Syndeticity)",
     "content": "A set $S \\subseteq \\mathbb{Z}$ has bounded gaps (is **syndetic**) if there exists $M > 0$ such that every interval $[z, z+M)$ contains an element of $S$. This means $S$ has no arbitrarily long gaps — its complement has bounded 'runs'. Syndetic sets are the dual of thick sets in topological dynamics. For $D(A)$, syndeticity means that for every $M$-length window of integers, at least one difference occurs infinitely often.",
@@ -96,8 +96,8 @@
     "proofId": "erdos-332",
     "type": "definition",
     "range": {
-      "startLine": 42,
-      "endLine": 44
+      "startLine": 43,
+      "endLine": 57
     },
     "title": "Counting Function",
     "content": "The counting function $|A \\cap \\{1, \\ldots, N\\}|$ measures how many elements of $A$ lie in $[1, N]$. This is the standard way to define density of sets of natural numbers. Made `noncomputable` because set membership in general is not decidable.",
@@ -119,8 +119,8 @@
     "proofId": "erdos-332",
     "type": "definition",
     "range": {
-      "startLine": 46,
-      "endLine": 56
+      "startLine": 58,
+      "endLine": 68
     },
     "title": "Positive Upper and Lower Density",
     "content": "Two density conditions: **positive upper density** ($\\exists \\delta > 0$ such that $A(N) \\geq \\delta N$ for infinitely many $N$) and **positive lower density** ($A(N) \\geq \\delta N$ for all sufficiently large $N$). Positive lower density implies positive upper density, but not conversely. Both are formalized over $\\mathbb{Q}$ to avoid real-valued limsup. Positive upper density is the known sufficient condition for $D(A)$ to be syndetic.",
@@ -144,8 +144,8 @@
     "proofId": "erdos-332",
     "type": "concept",
     "range": {
-      "startLine": 60,
-      "endLine": 63
+      "startLine": 72,
+      "endLine": 75
     },
     "title": "Prikry's Theorem: Density Implies Bounded Gaps",
     "content": "The central known result: if $A$ has positive upper density, then $D(A)$ has bounded gaps (is syndetic). This was established by Karel Prikry, with related contributions by Robert Tijdeman and Cameron Stewart. The proof uses the pigeonhole principle in a quantitative form: if $A$ has density $\\delta$, then among any $\\lceil 1/\\delta \\rceil + 1$ consecutive translates, two must overlap, giving a difference in $D(A)$.",
@@ -164,34 +164,12 @@
     ]
   },
   {
-    "id": "erdos-332-diffset-dense",
-    "proofId": "erdos-332",
-    "type": "concept",
-    "range": {
-      "startLine": 65,
-      "endLine": 68
-    },
-    "title": "D(A) Inherits Positive Density",
-    "content": "If $A$ has positive upper density, then $D(A) \\cap \\mathbb{N}$ (the positive differences) also has positive upper density. This strengthens syndeticity: not only does $D(A)$ have bounded gaps, but it is itself a quantitatively dense subset of $\\mathbb{Z}$.",
-    "mathContext": "$\\overline{d}(A) > 0 \\Rightarrow \\overline{d}(\\{n \\in \\mathbb{N} : n \\in D(A)\\}) > 0$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "density inheritance",
-      "sumset density",
-      "Plünnecke–Ruzsa inequality"
-    ],
-    "prerequisites": [
-      "HasPositiveUpperDensity",
-      "diffSet"
-    ]
-  },
-  {
     "id": "erdos-332-symmetry",
     "proofId": "erdos-332",
     "type": "concept",
     "range": {
-      "startLine": 71,
-      "endLine": 85
+      "startLine": 77,
+      "endLine": 94
     },
     "title": "Symmetry of D(A)",
     "content": "$D(A)$ is symmetric about the origin: $d \\in D(A) \\iff -d \\in D(A)$. This follows immediately from swapping $a_1$ and $a_2$ in the definition. The bijection $(a_1, a_2) \\mapsto (a_2, a_1)$ maps the fibre over $d$ to the fibre over $-d$, preserving infiniteness.",
@@ -212,8 +190,8 @@
     "proofId": "erdos-332",
     "type": "concept",
     "range": {
-      "startLine": 87,
-      "endLine": 97
+      "startLine": 95,
+      "endLine": 106
     },
     "title": "Zero Membership in D(A)",
     "content": "If $A$ is infinite, then $0 \\in D(A)$: the difference $a - a = 0$ is realized by every $a \\in A$, and infinitely many such $a$ exist. This is the simplest structural property of $D(A)$.",
@@ -230,59 +208,12 @@
     ]
   },
   {
-    "id": "erdos-332-main-problem",
-    "proofId": "erdos-332",
-    "type": "concept",
-    "range": {
-      "startLine": 101,
-      "endLine": 109
-    },
-    "title": "Erdős Problem 332: Weakest Sufficient Condition",
-    "content": "The main open question formalized: find the weakest property $P$ of subsets $A \\subseteq \\mathbb{N}$ such that $P(A)$ implies $D(A)$ has bounded gaps. The formalization states this as: any such $P$ must be implied by positive upper density. The actual open question is whether conditions strictly weaker than positive density also work — for instance, does $\\sum_{a \\in A} 1/a = \\infty$ suffice?",
-    "mathContext": "The problem asks: what is $\\inf\\{P : P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))\\}$ in the partial order of set properties? Positive upper density is the current 'best known' sufficient $P$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "optimal sufficient conditions",
-      "density hierarchy",
-      "syndetic difference sets"
-    ],
-    "prerequisites": [
-      "HasBoundedGaps",
-      "diffSet",
-      "HasPositiveUpperDensity"
-    ]
-  },
-  {
-    "id": "erdos-332-harmonic",
-    "proofId": "erdos-332",
-    "type": "concept",
-    "range": {
-      "startLine": 113,
-      "endLine": 118
-    },
-    "title": "Harmonic Sum Divergence for D(A)",
-    "content": "An axiomatized related question: does positive upper density of $A$ imply that $\\sum_{d \\in D(A) \\cap \\mathbb{N}} 1/d = \\infty$? If true, this would show $D(A)$ is not only syndetic but has 'harmonic thickness'. The divergence of the harmonic sum is strictly weaker than positive density (the primes have divergent harmonic sum but zero density), so this would be a different kind of structural richness.",
-    "mathContext": "$\\overline{d}(A) > 0 \\Rightarrow \\sum_{\\substack{d > 0 \\\\ d \\in D(A)}} \\frac{1}{d} = \\infty$? This is related to the question of whether $D(A)$ is an **IP set** or has other additive structure beyond syndeticity.",
-    "significance": "key",
-    "relatedConcepts": [
-      "harmonic series",
-      "divergence of reciprocal sums",
-      "IP sets",
-      "additive structure"
-    ],
-    "prerequisites": [
-      "HasPositiveUpperDensity",
-      "diffSet",
-      "Finset.sum"
-    ]
-  },
-  {
     "id": "erdos-332-finite-empty",
     "proofId": "erdos-332",
     "type": "concept",
     "range": {
-      "startLine": 119,
-      "endLine": 131
+      "startLine": 107,
+      "endLine": 129
     },
     "title": "Finite Sets Have Empty D(A); Infinite Sets Have Nonempty D(A)",
     "content": "`diffSet_finite_eq_empty` proves $D(A) = \\emptyset$ when $A$ is finite: since $A \\times A$ is finite (as `Set.Finite.prod`), the fibre over any $d$ cannot be infinite, so no difference qualifies. The proof is by extensionality — for any $d$, membership in $D(A)$ requires an infinite fibre, but finite $A$ bounds the total pair count by $|A|^2$. `diffSet_nonempty_of_infinite` is then the immediate corollary: $A$ infinite $\\Rightarrow 0 \\in D(A)$ (by `zero_mem_diffSet`) $\\Rightarrow D(A)$ nonempty.",
@@ -304,7 +235,7 @@
     "proofId": "erdos-332",
     "type": "concept",
     "range": {
-      "startLine": 132,
+      "startLine": 131,
       "endLine": 163
     },
     "title": "Biconditional Characterizations and Lower-Density Corollaries",
@@ -331,7 +262,7 @@
     "proofId": "erdos-332",
     "type": "concept",
     "range": {
-      "startLine": 165,
+      "startLine": 166,
       "endLine": 191
     },
     "title": "Union Subadditivity and HasBoundedGaps Closure Properties",
@@ -352,26 +283,94 @@
   {
     "id": "erdos-332-density-chain",
     "proofId": "erdos-332",
-    "type": "insight",
+    "type": "theorem",
     "range": {
-      "startLine": 192,
-      "endLine": 254
+      "startLine": 193,
+      "endLine": 224
     },
-    "title": "Density–Finiteness Bridge, Archimedean Contradiction, and ErdosProblem332",
-    "content": "`countingFn_le` is the trivial bound $A(N) \\leq N$ (at most $N$ elements in $\\{1,\\ldots,N\\}$). `positive_upper_density_infinite` uses an Archimedean contradiction: if $A$ has positive density $\\delta$ but is finite of size $C$, then $A(N) \\leq C$ for all $N$; but density gives $\\delta N \\leq A(N)$ for large $N$; choosing $N > C/\\delta$ gives $C < \\delta N \\leq A(N) \\leq C$, a contradiction. `density_chain` packages the full implication as a triple: density $\\Rightarrow A$ infinite (Archimedean), $A$ infinite $\\Rightarrow D(A) \\neq \\emptyset$ (diagonal), $D(A) \\neq \\emptyset \\Rightarrow$ syndetic (Prikry). `ErdosProblem332` formalizes the meta-question: any property $P$ implying syndeticity of $D(A)$ must be implied by positive upper density. The file closes with the related harmonic question.",
-    "mathContext": "$A$ finite, $|A| = C$, $\\overline{d}(A) \\geq \\delta > 0$: $\\exists N > C/\\delta$ with $\\delta N \\leq A(N) \\leq C < \\delta N$, contradiction. `ErdosProblem332` $\\equiv$ $\\overline{d}$ is the weakest known $P$: $\\forall P, (P \\Rightarrow \\text{syndetic}) \\Rightarrow (\\overline{d} > 0 \\Rightarrow P)$.",
+    "title": "Counting Bound and the Archimedean Density ⟹ Infinite Argument",
+    "content": "`countingFn_le` is the trivial bound $A(N) \\leq N$ (at most $N$ elements lie in $\\{1,\\ldots,N\\}$). `positive_upper_density_infinite` then derives infinitude from density via an Archimedean contradiction: if $A$ has density $\\delta$ but is finite of size $C$, then $A(N) \\leq C$ for all $N$, while density gives $\\delta N \\leq A(N)$ for arbitrarily large $N$; choosing $N > C/\\delta$ yields $C < \\delta N \\leq A(N) \\leq C$, a contradiction.",
+    "mathContext": "$A$ finite with $|A| = C$ and $\\overline{d}(A) \\geq \\delta > 0$ gives $\\exists N > C/\\delta$ with $\\delta N \\leq A(N) \\leq C < \\delta N$ — impossible. The argument is purely Archimedean ($\\mathbb{Q}$ has no infinitesimals), realized in Lean through `exists_nat_gt (C/\\delta)`.",
     "significance": "key",
     "relatedConcepts": [
       "Archimedean property",
-      "implication chain",
-      "meta-mathematical characterization",
-      "Prikry's theorem"
+      "counting function bound",
+      "density implies infinite"
     ],
     "prerequisites": [
       "countingFn",
       "HasPositiveUpperDensity",
-      "positive_density_bounded_gaps",
-      "diffSet_nonempty_of_infinite"
+      "Finset.card_filter_le"
+    ]
+  },
+  {
+    "id": "erdos-332-diffset-dense",
+    "proofId": "erdos-332",
+    "type": "theorem",
+    "range": {
+      "startLine": 225,
+      "endLine": 239
+    },
+    "title": "Density Chain: D(A) Nonempty, then Syndetic",
+    "content": "`positive_upper_density_diffSet_nonempty` completes the first half of the chain — positive upper density $\\Rightarrow$ $A$ infinite $\\Rightarrow$ $D(A) \\neq \\emptyset$ (since $0 \\in D(A)$). `density_chain` then packages the entire implication as a triple: density $\\Rightarrow$ $A$ infinite (Archimedean) $\\Rightarrow$ $D(A)$ nonempty (the diagonal $a-a=0$) $\\Rightarrow$ $D(A)$ syndetic (the Prikry axiom). A strictly stronger statement — that $D(A)$ itself *inherits* positive density — is a natural related question but is not formalized in this file.",
+    "mathContext": "$\\overline{d}(A) > 0 \\Rightarrow \\big(\\text{Infinite } A\\big) \\wedge \\big(D(A) \\neq \\emptyset\\big) \\wedge \\text{HasBoundedGaps}(D(A))$. Each conjunct is a separately proved lemma, assembled by `density_chain` into the headline reduction underlying Erdős Problem 332.",
+    "significance": "key",
+    "relatedConcepts": [
+      "implication chain",
+      "syndetic difference sets",
+      "density inheritance (related, unformalized)"
+    ],
+    "prerequisites": [
+      "positive_upper_density_infinite",
+      "diffSet_nonempty_of_infinite",
+      "positive_density_bounded_gaps"
+    ]
+  },
+  {
+    "id": "erdos-332-main-problem",
+    "proofId": "erdos-332",
+    "type": "concept",
+    "range": {
+      "startLine": 243,
+      "endLine": 247
+    },
+    "title": "Erdős Problem 332: Weakest Sufficient Condition",
+    "content": "The main open question formalized: find the weakest property $P$ of subsets $A \\subseteq \\mathbb{N}$ such that $P(A)$ implies $D(A)$ has bounded gaps. The formalization states this as: any such $P$ must be implied by positive upper density. The actual open question is whether conditions strictly weaker than positive density also work — for instance, does $\\sum_{a \\in A} 1/a = \\infty$ suffice?",
+    "mathContext": "The problem asks: what is $\\inf\\{P : P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))\\}$ in the partial order of set properties? Positive upper density is the current 'best known' sufficient $P$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimal sufficient conditions",
+      "density hierarchy",
+      "syndetic difference sets"
+    ],
+    "prerequisites": [
+      "HasBoundedGaps",
+      "diffSet",
+      "HasPositiveUpperDensity"
+    ]
+  },
+  {
+    "id": "erdos-332-harmonic",
+    "proofId": "erdos-332",
+    "type": "concept",
+    "range": {
+      "startLine": 248,
+      "endLine": 256
+    },
+    "title": "Harmonic Sum Divergence for D(A)",
+    "content": "Immediately after the formalized `ErdosProblem332` definition, the source records a related open question as a plain comment: does positive upper density of $A$ imply $\\sum_{d \\in D(A) \\cap \\mathbb{N}} 1/d = \\infty$? It is explicitly *not formalized here*. If true it would show $D(A)$ has 'harmonic thickness': divergence of the reciprocal sum is strictly weaker than positive density (the primes diverge yet have zero density), so this is a different kind of structural richness than syndeticity.",
+    "mathContext": "$\\overline{d}(A) > 0 \\Rightarrow \\sum_{\\substack{d > 0 \\\\ d \\in D(A)}} \\frac{1}{d} = \\infty$? This is related to the question of whether $D(A)$ is an **IP set** or has other additive structure beyond syndeticity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic series",
+      "divergence of reciprocal sums",
+      "IP sets",
+      "additive structure"
+    ],
+    "prerequisites": [
+      "HasPositiveUpperDensity",
+      "diffSet",
+      "Finset.sum"
     ]
   }
 ]

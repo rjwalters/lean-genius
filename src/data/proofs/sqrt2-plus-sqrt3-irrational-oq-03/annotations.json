@@ -29,7 +29,7 @@
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
       "startLine": 38,
-      "endLine": 74
+      "endLine": 70
     },
     "type": "concept",
     "title": "Root Witness: Step-by-Step Algebraic Computation",
@@ -53,8 +53,8 @@
     "id": "ann-sqrt23-monic",
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
-      "startLine": 76,
-      "endLine": 99
+      "startLine": 71,
+      "endLine": 92
     },
     "type": "concept",
     "title": "Monic Polynomial: natDegree Computation",
@@ -77,12 +77,12 @@
     "id": "ann-sqrt23-irreducibility",
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
-      "startLine": 101,
-      "endLine": 121
+      "startLine": 93,
+      "endLine": 356
     },
     "type": "insight",
-    "title": "Irreducibility: Klein 4-Group Obstruction and Sorry",
-    "content": "The theorem `irred_f` is the deepest part — it is currently `sorry`. The proof sketch in the docstring gives the complete mathematical argument: (1) No rational roots: the rational root theorem limits candidates to ±1, and f(±1) = 1 − 10 + 1 = −8 ≠ 0. (2) No quadratic factors over ℚ: if f = (X²+aX+b)(X²−aX+d), expanding and equating coefficients gives the system {bd=1, a(d-b)=0, b+d−a²=−10, a(b−d)=0}. Case a=0: b+d=−10, bd=1 → b,d are roots of t²+10t+1=0 with discriminant 96=4·24, and √24 ∉ ℚ. Case a≠0: b=d, so b²=1 and 2b−a²=−10. For b=1: a²=12, but √12 ∉ ℚ. For b=−1: a²=8, but √8 ∉ ℚ. The reason this is harder to formalize in Lean is that Mathlib's polynomial irreducibility infrastructure for ℚ[X] requires case-bashing through `Polynomial.roots` or a decision procedure.",
+    "title": "Irreducibility: Klein 4-Group Obstruction (via Gauss's Lemma)",
+    "content": "The theorem `irred_f` is the deepest part and is fully proved (0 sorries). The argument: (1) No rational roots: the rational root theorem limits candidates to ±1, and f(±1) = 1 − 10 + 1 = −8 ≠ 0. (2) No quadratic factors over ℚ: if f = (X²+aX+b)(X²−aX+d), expanding and equating coefficients gives the system {bd=1, a(d−b)=0, b+d−a²=−10, a(b−d)=0}. Case a=0: b+d=−10, bd=1 → b,d are roots of t²+10t+1=0 with discriminant 96=4·24, and √24 ∉ ℚ. Case a≠0: b=d, so b²=1 and 2b−a²=−10. For b=1: a²=12, but √12 ∉ ℚ. For b=−1: a²=8, but √8 ∉ ℚ. The formalization establishes irreducibility over ℤ[X] first (handling the degree-1/2/3 factorizations by the integer obstructions above) and transfers to ℚ[X] via Gauss's lemma (`IsPrimitive.Int.irreducible_iff_irreducible_map_cast`).",
     "mathContext": "The irreducibility of $X^4 - 10X^2 + 1$ over $\\mathbb{Q}$ also follows from Galois theory: its splitting field is $\\mathbb{Q}(\\sqrt{2}, \\sqrt{3})$, which has Galois group $\\mathrm{Gal}(\\mathbb{Q}(\\sqrt{2},\\sqrt{3})/\\mathbb{Q}) \\cong V_4 = \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ (the Klein 4-group). Since this group is transitive on the 4 roots $\\{\\pm\\sqrt{2}\\pm\\sqrt{3}\\}$, the polynomial is irreducible over $\\mathbb{Q}$. Notably, $V_4$ has no element of order 4 — this is why $X^4-10X^2+1$ factors modulo every prime (its Frobenius elements lie in the abelian group $V_4$) but remains irreducible over $\\mathbb{Q}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -103,8 +103,8 @@
     "id": "ann-sqrt23-minpoly-main",
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
-      "startLine": 123,
-      "endLine": 131
+      "startLine": 357,
+      "endLine": 368
     },
     "type": "insight",
     "title": "Main Theorem: One-Line Assembly via minpoly.eq_of_irreducible_of_monic",
@@ -127,12 +127,12 @@
     "id": "ann-sqrt23-consequences",
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
-      "startLine": 133,
-      "endLine": 147
+      "startLine": 369,
+      "endLine": 403
     },
     "type": "insight",
     "title": "Consequences: Extension Degree 4 and Irrationality Certificate",
-    "content": "Two consequences follow from the minimal polynomial. First, `adjoin_sqrt2_plus_sqrt3_finrank` proves [ℚ(√2+√3):ℚ]=4 by combining `IntermediateField.adjoin.finrank` (which gives the degree as natDegree of the minimal polynomial) with a second natDegree computation (the same chain as in `f_monic`). Second, `sqrt2_plus_sqrt3_irrational` is proved by contradiction: if √2+√3 = q ∈ ℚ, then the minimal polynomial of q over ℚ is X−q (degree 1), but we also know it is X⁴−10X²+1 (degree 4) — a contradiction. This sorry reflects the Lean API gap of connecting the rational embedding to the minimal polynomial's degree computation.",
+    "content": "Two consequences follow from the minimal polynomial. First, `adjoin_sqrt2_plus_sqrt3_finrank` proves [ℚ(√2+√3):ℚ]=4 by combining `IntermediateField.adjoin.finrank` (which gives the degree as natDegree of the minimal polynomial) with a natDegree computation showing deg(X⁴−10X²+1)=4. Second, `sqrt2_plus_sqrt3_irrational` is proved directly: if √2+√3 = q ∈ ℚ, then squaring gives q² = 5 + 2√6, so √6 = (q²−5)/2 ∈ ℚ, contradicting the irrationality of √6 (`irrational_sqrt_natCast_iff`). Both theorems are fully proved (0 sorries).",
     "mathContext": "The degree formula: $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg(\\mathrm{minpoly}_{\\mathbb{Q}}(\\alpha)) = 4$. This confirms $\\mathbb{Q}(\\sqrt{2}+\\sqrt{3}) = \\mathbb{Q}(\\sqrt{2},\\sqrt{3})$ — the single element generates the full biquadratic extension. Recovery formulas: $\\sqrt{2} = \\frac{(\\sqrt{2}+\\sqrt{3})^3 - 9(\\sqrt{2}+\\sqrt{3})}{2}$ and $\\sqrt{3} = (\\sqrt{2}+\\sqrt{3}) - \\sqrt{2}$.",
     "significance": "key",
     "relatedConcepts": [

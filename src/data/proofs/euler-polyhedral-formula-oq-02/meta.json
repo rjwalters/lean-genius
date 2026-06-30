@@ -62,46 +62,116 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring stating the discrete Gauss-Bonnet goal Σδ(v)=2πχ, the double-counting proof outline, and references (Descartes 1630, Euler 1758, Gauss 1827, Bonnet 1848). Imports Trigonometric.Basic and Mathlib.Tactic, opens Real, and opens the noncomputable DiscreteGaussBonnet namespace."
+    },
+    {
       "id": "polyhedral-surface",
-      "title": "Polyhedral Surface Structure",
-      "startLine": 56,
+      "title": "Polyhedral Surface with Angle Data",
+      "startLine": 40,
+      "endLine": 56,
+      "summary": "PART 1: The PolyhedralSurface structure carrying V, E, F counts, χ, the Euler relation V-E+F=χ, totalFaceAngleSum with the double-counting identity (2E-2F)π, and totalDeficiency = 2πV - totalFaceAngleSum."
+    },
+    {
+      "id": "polygon-angle-sum",
+      "title": "Polygon Interior Angle Sum",
+      "startLine": 57,
       "endLine": 72,
-      "summary": "Definition of a polyhedral surface with V-E-F data and angle information."
+      "summary": "PART 2: Interior angle sums (p-2)π for triangle, quadrilateral, pentagon, and hexagon, established by ring."
+    },
+    {
+      "id": "double-counting",
+      "title": "Double Counting Identity",
+      "startLine": 73,
+      "endLine": 80,
+      "summary": "PART 3: The double-counting rewrite total face angles = 2(E-F)π, the algebraic core linking face-angle data to E and F."
     },
     {
       "id": "gauss-bonnet",
       "title": "The Discrete Gauss-Bonnet Theorem",
-      "startLine": 73,
-      "endLine": 109,
-      "summary": "Main theorem: Σδ(v) = 2πχ, with Descartes' special case."
+      "startLine": 81,
+      "endLine": 115,
+      "summary": "PART 4: Main theorem discrete_gauss_bonnet (Σδ = 2πχ) via the deficiency and angle-sum identities, with corollaries descartes_total_deficiency (χ=2 ⟹ 4π) and torus_zero_deficiency (χ=0 ⟹ 0)."
     },
     {
       "id": "genus-generalization",
       "title": "Genus Generalization",
-      "startLine": 110,
-      "endLine": 146,
-      "summary": "Extension to orientable surfaces of genus g: Σδ(v) = 2π(2-2g)."
+      "startLine": 116,
+      "endLine": 164,
+      "summary": "PART 5: OrientableSurface with χ = 2-2g, gauss_bonnet_genus (Σδ = 2π(2-2g)), and the sphere/torus/double-torus deficiency values plus non-positive curvature for genus ≥ 2."
     },
     {
       "id": "curvature-topology",
-      "title": "Curvature-Topology Correspondence",
-      "startLine": 147,
-      "endLine": 195,
-      "summary": "Sign of total curvature determines Euler characteristic and genus."
+      "title": "Curvature Sign and Topology",
+      "startLine": 165,
+      "endLine": 206,
+      "summary": "PART 6: Sign of total deficiency determines χ (positive/nonneg/zero curvature ⟹ corresponding χ sign) and positive curvature ⟹ genus 0."
+    },
+    {
+      "id": "uniform-curvature",
+      "title": "Uniform Curvature (Regular Polyhedra)",
+      "startLine": 207,
+      "endLine": 220,
+      "summary": "PART 7: For uniform per-vertex curvature, each vertex carries deficiency 2πχ/V."
     },
     {
       "id": "platonic-solids",
-      "title": "Platonic Solid Computations",
-      "startLine": 200,
-      "endLine": 310,
-      "summary": "Gauss-Bonnet verified for all five Platonic solids with per-vertex deficiencies."
+      "title": "Platonic Solid Angular Deficiencies",
+      "startLine": 221,
+      "endLine": 299,
+      "summary": "PART 8: Concrete PolyhedralSurface instances for all five Platonic solids (tetrahedron, cube, octahedron, dodecahedron, icosahedron), each verified to satisfy Gauss-Bonnet with total deficiency 4π."
+    },
+    {
+      "id": "per-vertex-deficiency",
+      "title": "Per-Vertex Deficiency Computations",
+      "startLine": 300,
+      "endLine": 316,
+      "summary": "PART 9: Per-vertex angular deficiencies for each Platonic solid (2π minus face-angle sum) and the V × deficiency = 4π consistency checks."
+    },
+    {
+      "id": "genus-bounds",
+      "title": "Genus Bounds from Curvature",
+      "startLine": 317,
+      "endLine": 352,
+      "summary": "PART 10: Total deficiency determines genus via Σδ = 4π(1-g); positive ⟹ genus 0, zero ⟹ genus 1, negative ⟹ genus ≥ 2."
+    },
+    {
+      "id": "topological-invariance",
+      "title": "Topological Invariance",
+      "startLine": 353,
+      "endLine": 374,
+      "summary": "PART 11: Equal Euler characteristic forces equal total deficiency, so face and edge subdivisions preserve total curvature."
+    },
+    {
+      "id": "toroidal-examples",
+      "title": "Toroidal and Higher-Genus Examples",
+      "startLine": 375,
+      "endLine": 414,
+      "summary": "PART 12: Explicit OrientableSurface instances for a minimal polyhedral torus (χ=0, Σδ=0) and a double torus (χ=-2, Σδ=-4π)."
+    },
+    {
+      "id": "vertex-bounds",
+      "title": "Vertex Count Bounds",
+      "startLine": 415,
+      "endLine": 445,
+      "summary": "PART 13: For convex polyhedra (χ=2), a positive minimum deficiency bounds V ≤ 4π/δ_min, with average deficiency 4π/V and the bound ≤ π for V ≥ 4."
+    },
+    {
+      "id": "continuous-connection",
+      "title": "Connection to Continuous Gauss-Bonnet",
+      "startLine": 446,
+      "endLine": 460,
+      "summary": "PART 14: The discrete curvature measure equals 2πχ and all curvature concentrates at vertices (face and edge curvature vanish)."
     },
     {
       "id": "classification",
-      "title": "Regular Polyhedra Classification",
-      "startLine": 420,
+      "title": "Regular Polyhedra Classification from Curvature",
+      "startLine": 461,
       "endLine": 507,
-      "summary": "Schläfli constraint limits regular polyhedra to exactly 5 types."
+      "summary": "PART 15: The Schläfli constraint 2p+2q>pq for positive curvature yields exactly five regular polyhedra (p,q ≤ 5), with p≥6 or q≥6 ruled out; followed by the summary block."
     }
   ],
   "conclusion": {

@@ -170,7 +170,10 @@
       "native_decide in Lean 4",
       "OEIS A003434"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "$\\phi(n)$ values for small $n$",
+      "native_decide kernel evaluation in Lean 4"
+    ]
   },
   {
     "id": "ann-e408-related",
@@ -210,6 +213,10 @@
       "Distribution of additive functions",
       "Level of distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Iterated totient $\\phi_k$ and iteration length $f(n)$",
+      "Axioms vs. proved theorems in a formalization",
+      "Conditional implication structure $H \\to (Q_1 \\wedge Q_2)$"
+    ]
   }
 ]

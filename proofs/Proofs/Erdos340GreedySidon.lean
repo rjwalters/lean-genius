@@ -3,18 +3,10 @@ Copyright (c) 2026 LeanGenius Contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: LeanGenius AI Research
 -/
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Prod
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Set.Card
-import Mathlib.Analysis.Asymptotics.Defs
-import Mathlib.Analysis.Asymptotics.Lemmas
-import Mathlib.Order.Filter.Basic
-import Mathlib.Algebra.Order.Field.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+-- Full Mathlib: the explicit greedy construction below uses `Finset.le_sup`, `Nat.find`,
+-- `strictMono_nat_of_lt_succ`, `Finset.image_insert`, and `decidable_of_iff`, which span
+-- several Mathlib namespaces; a single import keeps the construction robust.
+import Mathlib
 
 /-
 # Erdős Problem #340: Greedy Sidon Sequence Growth
@@ -372,35 +364,169 @@ theorem sidon_upper_bound_weak (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
     simp only [Finset.not_nonempty_iff_eq_empty] at hempty
     simp [hempty]
 
-/-- **Axiom: Erdős-Turán upper bound**: A Sidon subset of {1,...,N} has ≤ √N + O(N^{1/4}) elements.
+/- **Erdős–Turán upper bound (no longer an axiom).**
 
-This uses counting sums (not differences) and is the optimal bound up to lower order terms.
-The proof requires showing |A + A| ≤ 2N and |A + A| ≥ n(n+1)/2, giving n ≲ √(4N) = 2√N.
-The actual bound √N + O(N^{1/4}) comes from a more careful analysis.
+This file previously carried a single axiom
+`sidon_upper_bound : |A| ≤ √N + ⁴√N + 1` (the sharp Lindström additive constant).
+That axiom has been **retired**: the verified, axiom-free Erdős–Turán bound
+`Erdos340.sidon_card_le_sqrt : |A| ≤ √N + ⁴√N + 2` (proved in
+`Erdos340SidonErdosTuran.lean` by optimising the master window inequality
+`sidon_window_key`) supersedes it for every downstream use.  The only consumer was
+`Erdos28AdditiveBases.sidon_not_basis`, which now routes through the `+2` theorem
+(its contradiction has ample slack, so the `+1` vs `+2` constant is immaterial).
 
-**Proof status**: HARD (known result, needs formalization ~100 lines)
+The weaker elementary difference bound `√(2N) + 1` remains available above as
+`sidon_upper_bound_weak`. -/
 
-Note: The weaker bound √(2N) + 1 is proved above as `sidon_upper_bound_weak`.
-This tighter bound requires additional counting machinery. -/
-axiom sidon_upper_bound (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
-    (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1
+/- ## Part 3: Greedy Sidon Sequence Construction (explicit, axiom-free)
 
-/- ## Part 3: Greedy Sidon Sequence Construction -/
+The greedy (Mian–Chowla) sequence is built **explicitly** below: start from `a₀ = 1` and
+repeatedly adjoin the least integer strictly above the current maximum that preserves the
+Sidon property.  Well-definedness — that such an integer always exists — is the extension
+lemma `sidon_exists_extension`, proved here with the explicit witness `2·(sup A) + 1`.  This
+discharges what were previously three opaque `greedySidonSeq*` *existence axioms*: the
+sequence is now a genuine recursive `def` and its monotonicity / Sidon-ness are theorems.
+
+(The open growth conjecture `|A ∩ [1,N]| ≫ N^{1/2−ε}` is untouched; with the Erdős–Turán
+upper bound retired in favour of the verified `sidon_card_le_sqrt`, this file is now
+entirely axiom-free.) -/
 
 /-- Check if adding n to A preserves the Sidon property (Prop version). -/
 def CanAddProp (A : Finset ℕ) (n : ℕ) : Prop :=
   n ∉ A ∧ IsSidon (A ∪ {n})
 
-/-- The greedy Sidon sequence exists and is unique.
-    We axiomatize its values directly for computational efficiency. -/
-axiom greedySidonSeq : ℕ → ℕ
+/-- `IsSidon` is decidable for a finite set: the four quantifiers are effectively bounded by
+membership in `A`.  This makes the greedy "least valid extension" well-defined via `Nat.find`. -/
+instance instDecidableIsSidon (A : Finset ℕ) : Decidable (IsSidon A) :=
+  decidable_of_iff
+    (∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A,
+      a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d)
+    ⟨fun h a b c d ha hb hc hd => h a ha b hb c hc d hd,
+     fun h a ha b hb c hc d hd => h a b c d ha hb hc hd⟩
 
-/-- The greedy Sidon sequence is strictly increasing. -/
-axiom greedySidonSeq_strictMono : StrictMono greedySidonSeq
+/-- If `m` is strictly above every element of the Sidon set `A`, and no triple `a, c, d ∈ A`
+realises a collision `m + a = c + d`, then `insert m A` is again Sidon.  (The only way a top
+element breaks the Sidon property is via such a forbidden collision.) -/
+theorem sidon_insert_of_large {A : Finset ℕ} (hA : IsSidon A) {m : ℕ}
+    (hm : ∀ a ∈ A, a < m)
+    (hbad : ∀ a ∈ A, ∀ c ∈ A, ∀ d ∈ A, m + a ≠ c + d) :
+    IsSidon (insert m A) := by
+  have hbnd : ∀ x ∈ insert m A, x ≤ m := by
+    intro x hx
+    rcases Finset.mem_insert.1 hx with hxm | hxA
+    · exact hxm.le
+    · exact (hm x hxA).le
+  intro a b c d ha hb hc hd hab hcd heq
+  have ha' := hbnd a ha
+  have hb' := hbnd b hb
+  have hc' := hbnd c hc
+  have hd' := hbnd d hd
+  rcases Finset.mem_insert.1 ha with rfl | haA <;>
+    rcases Finset.mem_insert.1 hb with rfl | hbA <;>
+    rcases Finset.mem_insert.1 hc with rfl | hcA <;>
+    rcases Finset.mem_insert.1 hd with rfl | hdA
+  all_goals first
+    | (exact hA a b c d haA hbA hcA hdA hab hcd heq)
+    | omega
+    | (exfalso; first
+        | exact hbad a haA c hcA d hdA (by omega)
+        | exact hbad a haA d hdA c hcA (by omega)
+        | exact hbad b hbA c hcA d hdA (by omega)
+        | exact hbad b hbA d hdA c hcA (by omega)
+        | exact hbad c hcA a haA b hbA (by omega)
+        | exact hbad d hdA a haA b hbA (by omega)
+        | exact hbad c hcA b hbA a haA (by omega)
+        | exact hbad d hdA b hbA a haA (by omega))
 
-/-- The set of first n+1 terms is always Sidon. -/
-axiom greedySidonSeq_isSidon (n : ℕ) :
-  IsSidon (Finset.image greedySidonSeq (Finset.range (n + 1)))
+/-- **Extension theorem.** Every finite Sidon set can be extended, by an element above any
+prescribed bound `B`, to a strictly larger Sidon set.  In particular the greedy construction
+never gets stuck: there is always a next, strictly increasing valid choice. -/
+theorem sidon_exists_extension (A : Finset ℕ) (hA : IsSidon A) (B : ℕ) :
+    ∃ m, B < m ∧ (∀ a ∈ A, a < m) ∧ IsSidon (insert m A) := by
+  refine ⟨max (B + 1) (2 * A.sup id + 1), ?_, ?_, ?_⟩
+  · exact lt_of_lt_of_le (Nat.lt_succ_self B) (le_max_left _ _)
+  · intro a ha
+    have ha_le : a ≤ A.sup id := Finset.le_sup (f := id) ha
+    have hge : 2 * A.sup id + 1 ≤ max (B + 1) (2 * A.sup id + 1) := le_max_right _ _
+    omega
+  · refine sidon_insert_of_large hA ?_ ?_
+    · intro a ha
+      have ha_le : a ≤ A.sup id := Finset.le_sup (f := id) ha
+      have hge : 2 * A.sup id + 1 ≤ max (B + 1) (2 * A.sup id + 1) := le_max_right _ _
+      omega
+    · intro a ha c hc d hd
+      have hc_le : c ≤ A.sup id := Finset.le_sup (f := id) hc
+      have hd_le : d ≤ A.sup id := Finset.le_sup (f := id) hd
+      have hge : 2 * A.sup id + 1 ≤ max (B + 1) (2 * A.sup id + 1) := le_max_right _ _
+      omega
+
+open Classical in
+/-- The next greedy term after a set `S` with strict lower bound `b`: the least `m > b` that
+keeps the set Sidon. (Junk value `b + 1` if none exists; `nextSidon_spec` shows that never
+happens when `S` is Sidon.) -/
+noncomputable def nextSidon (S : Finset ℕ) (b : ℕ) : ℕ :=
+  if h : ∃ m, b < m ∧ IsSidon (insert m S) then Nat.find h else b + 1
+
+/-- When `S` is Sidon, the next greedy term is strictly above `b` and keeps the set Sidon. -/
+theorem nextSidon_spec {S : Finset ℕ} (hS : IsSidon S) (b : ℕ) :
+    b < nextSidon S b ∧ IsSidon (insert (nextSidon S b) S) := by
+  classical
+  have hex : ∃ m, b < m ∧ IsSidon (insert m S) := by
+    obtain ⟨m, hb, _, hm⟩ := sidon_exists_extension S hS b
+    exact ⟨m, hb, hm⟩
+  have hval : nextSidon S b = Nat.find hex := by
+    unfold nextSidon; exact dif_pos hex
+  rw [hval]
+  exact Nat.find_spec hex
+
+/-- Greedy construction as pairs `(aₙ, {a₀, …, aₙ})`, starting from `a₀ = 1`. -/
+noncomputable def greedyPair : ℕ → ℕ × Finset ℕ
+  | 0 => (1, {1})
+  | (n + 1) =>
+      (nextSidon (greedyPair n).2 (greedyPair n).1,
+       insert (nextSidon (greedyPair n).2 (greedyPair n).1) (greedyPair n).2)
+
+/-- The greedy Sidon sequence `aₙ` (Mian–Chowla, OEIS A005282).  This **defines** — rather
+than axiomatizes — the sequence: it is the first coordinate of the greedy recursion. -/
+noncomputable def greedySidonSeq (n : ℕ) : ℕ := (greedyPair n).1
+
+/-- The first `n + 1` greedy terms `{a₀, …, aₙ}` as a finite set. -/
+noncomputable def greedySeqSet (n : ℕ) : Finset ℕ := (greedyPair n).2
+
+/-- Every initial segment of the greedy construction is a Sidon set. -/
+theorem greedySeqSet_isSidon : ∀ n, IsSidon (greedySeqSet n)
+  | 0 => isSidon_singleton 1
+  | (n + 1) => (nextSidon_spec (greedySeqSet_isSidon n) (greedySidonSeq n)).2
+
+/-- Each greedy term is strictly larger than its predecessor. -/
+theorem greedySidonSeq_lt_succ (n : ℕ) : greedySidonSeq n < greedySidonSeq (n + 1) :=
+  (nextSidon_spec (greedySeqSet_isSidon n) (greedySidonSeq n)).1
+
+/-- The greedy Sidon sequence is strictly increasing.
+    (Was `axiom greedySidonSeq_strictMono`; now a theorem.) -/
+theorem greedySidonSeq_strictMono : StrictMono greedySidonSeq :=
+  strictMono_nat_of_lt_succ greedySidonSeq_lt_succ
+
+/-- The greedy set after `n` steps is the image of the first `n + 1` terms of the sequence. -/
+theorem greedySeqSet_eq_image (n : ℕ) :
+    greedySeqSet n = Finset.image greedySidonSeq (Finset.range (n + 1)) := by
+  induction n with
+  | zero => simp [greedySeqSet, greedySidonSeq, greedyPair]
+  | succ n ih =>
+      have hrec : greedySeqSet (n + 1)
+          = insert (greedySidonSeq (n + 1)) (greedySeqSet n) := rfl
+      have himg : Finset.image greedySidonSeq (Finset.range (n + 1 + 1))
+          = insert (greedySidonSeq (n + 1))
+              (Finset.image greedySidonSeq (Finset.range (n + 1))) := by
+        rw [Finset.range_succ, Finset.image_insert]
+      rw [hrec, ih, himg]
+
+/-- The set of the first `n + 1` greedy terms is always Sidon.
+    (Was `axiom greedySidonSeq_isSidon`; now a theorem.) -/
+theorem greedySidonSeq_isSidon (n : ℕ) :
+    IsSidon (Finset.image greedySidonSeq (Finset.range (n + 1))) := by
+  rw [← greedySeqSet_eq_image]
+  exact greedySeqSet_isSidon n
 
 /-- Alias for compatibility. -/
 noncomputable def greedySidon : ℕ → ℕ := greedySidonSeq
@@ -425,19 +551,34 @@ theorem greedySidonSet_isSidon (n : ℕ) : IsSidon (greedySidonSet n) :=
 noncomputable def greedySidonCount (N : ℕ) : ℕ :=
   (Set.range greedySidon ∩ Set.Icc 1 N).ncard
 
-/-- **Axiom: Greedy Sidon sequence grows at least like N^(1/3)**.
+/- **Note: Greedy Sidon sequence grows at least like N^(1/3)**.
 
 This is the "trivial" lower bound from the greedy construction, but formalizing it
 requires setting up the growth argument carefully.
 
-**Proof sketch**:
-- The greedy sequence adds the smallest integer maintaining Sidon property
-- At step n, greedySidon(n) ≤ n(n-1)/2 + n + 1 (worst case: all differences used)
-- Inverting: if greedySidon(n) ≤ N, then n ≥ Ω(N^(1/3))
+**Proof sketch** (forbidden-set covering argument):
+- The greedy sequence adds the smallest integer maintaining the Sidon property.
+- With `A = {a_0,…,a_n}` placed, an integer `m > max A` breaks the Sidon property of
+  `A ∪ {m}` iff `m = a_i + a_j − a_l` for some `a_i, a_j, a_l ∈ A` (the only surviving
+  collision type once `m` exceeds every element). Call these the *forbidden* values; there
+  are at most `|A|^3` of them.
+- **Covering bound** (global, not incremental): by greedy minimality every integer in
+  `[1, a_n]` is either an element of `A` or one of these forbidden values, evaluated against
+  the *full* set `A = A_n`. Hence
+  `a_n = |[1,a_n]| ≤ |A_n| + |forbidden A_n| ≤ (n+1) + (n+1)^3 = O(n^3)`.
+- Inverting: `a_n ≤ 2(n+1)^3 ⟹ |A ∩ [1,N]| ≥ (N/2)^{1/3} = Ω(N^(1/3))`.
 
-**Proof status**: HARD (known result, needs asymptotic formalization ~80 lines) -/
+  NOTE: the bound is **cubic** `O(n^3)`, NOT the `O(n^2)` one might guess from a per-step
+  "all differences used" heuristic — an `O(n^2)` term bound would invert to `N^(1/2)` and
+  thereby settle the OPEN Erdős conjecture. The `1/3`-vs-`1/2` exponent gap *is* #340.
+  (A naive *incremental* gap bound `a_{k+1}−a_k ≤ |A_k|^3` only telescopes to `O(n^4)`; the
+  cubic bound genuinely requires re-using the full set `A_n` to forbid every skipped value.)
 
-/-- **Main Conjecture (Erdős #340)**: For all ε > 0, the growth is at least N^(1/2 - ε).
+**Proof status**: HARD (known result, needs asymptotic formalization ~200 lines). A turnkey
+Lean construction discharging this and the three `greedySidonSeq*` axioms is drafted in
+`research/problems/erdos-340-greedy-sidon-oq-01/construction-draft.lean`. -/
+
+/- **Main Conjecture (Erdős #340)**: For all ε > 0, the growth is at least N^(1/2 - ε).
 
 **STATUS: OPEN CONJECTURE**
 

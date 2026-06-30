@@ -37,6 +37,35 @@ Created new Lean file `PartitionTheoremOQ01OQ01.lean` with:
 - `src/data/proofs/partition-theorem-oq-01-oq-01/meta.json`
 - `src/data/research/problems/partition-theorem-oq-01-oq-01.json`
 
+## Session 2026-06-13 (Session 2) — STATE-SYNC
+
+**Mode**: REVISIT
+**Outcome**: status sync (no Lean change)
+
+### What I Did
+
+- Found this slug's research JSON stale: `status: available`, `slug/phase/knowledge` all null,
+  and a misleading broad title ("Can RR be proved via q-series…") despite the deliverable
+  being **done** since 2026-04-13 (gallery `meta.json` status=verified, 0 sorries, 0 axioms).
+- Flipped research JSON to `completed`/`COMPLETED`, corrected the title to match the real
+  scope (n≤8 computational verification), and populated the knowledge block.
+
+### Scope Clarification (important)
+
+This sub-question is the **computational verification** of RR1/RR2 for n ≤ 8 — and that is
+complete. The **general** Rogers-Ramanujan identities remain **axiomatized** in the parent
+`PartitionTheoremOQ01.lean` (`rogers_ramanujan_first`/`second`). The parent's axiom-elimination
+roadmap is at step 8/9: mod-side generating functions are fully connected
+(`partGF_coeff_eq_card`, `rr1Mod_card_eq_gf_coeff`, …, steps 1–7f ✅), but the **gap-side**
+generating function (step 8) and the composition (step 9) are unbuilt. The gap-side is the
+deep RR core (Bailey chain / Jacobi triple product / RR continued fraction), none of which
+is in Mathlib — a >1000-line foundational build. General proof should be pursued in the
+parent slug, not here.
+
+### Files Modified
+
+- `src/data/research/problems/partition-theorem-oq-01-oq-01.json` (status/title/knowledge sync)
+
 ## Key References
 
 - Parent: `src/data/proofs/partition-theorem-oq-01/`

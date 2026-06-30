@@ -54,7 +54,7 @@
       "startLine": 106,
       "endLine": 142
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Lines in Projective 3-Space",
     "content": "Lines in P³ are identified with points of Gr(2,4) via the abbreviation LineInP3. Two notions of intersection are defined: SubspacesMeet (nontrivial intersection V ⊓ W ≠ ⊥) and LinesMeet' (span has dimension < 4). The equivalence is axiomatized via linesMeet_iff_linesMeet'. The dimensional argument: two 2-planes in K⁴ generically span all 4 dimensions, but when they meet, their span drops to dimension 3.",
     "mathContext": "Two lines $L_1, L_2 \\subset \\mathbb{P}^3$ intersect iff $\\dim(V_1 + V_2) < 4$, equivalently $\\dim(V_1 \\cap V_2) \\geq 1$, by the dimension formula $\\dim(V_1 + V_2) = \\dim V_1 + \\dim V_2 - \\dim(V_1 \\cap V_2) = 4 - \\dim(V_1 \\cap V_2)$.",

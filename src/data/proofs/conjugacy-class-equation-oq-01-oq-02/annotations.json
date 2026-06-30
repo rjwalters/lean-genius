@@ -1,0 +1,77 @@
+[
+  {
+    "id": "pgroup-center-overview",
+    "proofId": "conjugacy-class-equation-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 45 },
+    "type": "concept",
+    "title": "p-group center theorem via the class equation",
+    "content": "The docstring states the target — a nontrivial finite p-group has nontrivial center — and the strategy. Mathlib already proves this as IsPGroup.center_nontrivial by counting fixed points of the conjugation action (card_modEq_card_fixedPoints). This entry instead gives the textbook class-equation derivation requested by the parent's second open question: lift per-class divisibility to the quotient, show every noncentral class has size a positive power of p, and read |Z(G)| + Σ = |G| modulo p.",
+    "mathContext": "$|G| = |Z(G)| + \\sum_i [G : C_G(g_i)]$",
+    "significance": "key",
+    "relatedConcepts": [
+      "class equation",
+      "p-group",
+      "center of a group",
+      "conjugacy classes",
+      "prime-power order"
+    ],
+    "prerequisites": [
+      "conjugacy classes as orbits",
+      "orbit–stabilizer / per-class divisibility",
+      "p-groups have prime-power order"
+    ]
+  },
+  {
+    "id": "carrier-card-dvd",
+    "proofId": "conjugacy-class-equation-oq-01-oq-02",
+    "range": { "startLine": 47, "endLine": 57 },
+    "type": "lemma",
+    "title": "Per-class divisibility on the quotient ConjClasses G",
+    "content": "conjClass_carrier_card_dvd_card promotes the parent's conjClass_card_dvd_card — stated for the class of a chosen representative g — to an arbitrary class x : ConjClasses G. Since ConjClasses.mk is surjective, x = ConjClasses.mk g for some g, and x.carrier is then literally (ConjClasses.mk g).carrier, so the parent lemma applies verbatim. This is the bridge that lets the class equation, indexed by ConjClasses G, plug into the divisibility count.",
+    "mathContext": "$|x| \\mid |G|\\quad\\text{for all } x : \\mathrm{ConjClasses}\\,G$",
+    "significance": "supporting",
+    "relatedConcepts": ["ConjClasses.mk_surjective", "conjugacy class carrier"],
+    "prerequisites": ["the parent's per-class divisibility lemma"]
+  },
+  {
+    "id": "noncentral-prime-power",
+    "proofId": "conjugacy-class-equation-oq-01-oq-02",
+    "range": { "startLine": 59, "endLine": 80 },
+    "type": "lemma",
+    "title": "Noncentral classes have size a positive power of p",
+    "content": "noncentral_class_card_eq_prime_pow is the arithmetic heart. For a finite p-group, IsPGroup.iff_card gives |G| = pⁿ; any class size divides pⁿ, so by Nat.dvd_prime_pow it equals pᵏ for some k. A class lies in ConjClasses.noncenter G exactly when its carrier is a nontrivial set — more than one element — which forces 1 < pᵏ and hence k > 0. Thus p divides every noncentral class size. Mathlib does not package this intermediate fact on its own.",
+    "mathContext": "$x \\in \\mathrm{noncenter}\\,G \\Rightarrow |x| = p^k,\\ k>0$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.dvd_prime_pow", "noncenter", "nontrivial set", "prime power"],
+    "prerequisites": ["divisors of a prime power", "IsPGroup.iff_card"]
+  },
+  {
+    "id": "center-nontrivial-main",
+    "proofId": "conjugacy-class-equation-oq-01-oq-02",
+    "range": { "startLine": 82, "endLine": 113 },
+    "type": "theorem",
+    "title": "The center is nontrivial",
+    "content": "center_nontrivial_of_isPGroup assembles the result. p divides |G| (since |G| = pⁿ with n > 0 by IsPGroup.nontrivial_iff_card) and p divides the noncentral sum (each term is a positive power of p; the finsum over noncenter G is rewritten as a Finset sum and handled by Finset.dvd_sum). The numeric class equation Group.nat_card_center_add_sum_card_noncenter_eq_card then gives |Z(G)| = |G| − Σ, so Nat.dvd_sub yields p ∣ |Z(G)|. As Z(G) is nonempty and finite, |Z(G)| > 0; with p ≥ 2 we get p ≤ |Z(G)|, so 1 < |Z(G)| and the center is nontrivial.",
+    "mathContext": "$p \\mid |Z(G)|,\\ |Z(G)|>0 \\Rightarrow \\mathrm{Nontrivial}(Z(G))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "class equation",
+      "Nat.dvd_sub",
+      "Finset.dvd_sum",
+      "Finite.one_lt_card_iff_nontrivial"
+    ],
+    "prerequisites": ["the numeric class equation", "divisibility of natural-number subtraction"]
+  },
+  {
+    "id": "example-zmod4",
+    "proofId": "conjugacy-class-equation-oq-01-oq-02",
+    "range": { "startLine": 115, "endLine": 123 },
+    "type": "example",
+    "title": "Concrete 2-group instance",
+    "content": "The closing example applies the theorem to Multiplicative (ZMod 4), the cyclic 2-group of order 4, exhibiting a nontrivial center. It supplies the Fact (Nat.Prime 2), Nontrivial, and IsPGroup 2 instances (the last via IsPGroup.of_card with |G| = 2²) and fires the main theorem.",
+    "mathContext": "$Z(\\mathrm{Mult}(\\mathbb{Z}/4))$ is nontrivial",
+    "significance": "supporting",
+    "relatedConcepts": ["IsPGroup.of_card", "ZMod", "Multiplicative"],
+    "prerequisites": ["the main theorem"]
+  }
+]

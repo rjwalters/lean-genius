@@ -25,9 +25,13 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.Order.Filter.AtTopBot.Field
 import Mathlib.Tactic
 
-open Finset
+open Finset Real Filter Topology
 
 namespace Erdos160
 
@@ -130,12 +134,12 @@ noncomputable def h (n : ℕ) : ℕ :=
 
 /-- h(N) is achievable: the minimum is attained (Nat.sInf_mem). -/
 theorem h_achievable (n : ℕ) : Achievable n (h n) :=
-  Nat.sInf_mem ⟨n, achievable_self n⟩
+  Nat.sInf_mem (s := {k | Achievable n k}) ⟨n, achievable_self n⟩
 
 /-- h(N) is minimal: no smaller k works (Nat.sInf_le). -/
 theorem h_minimal (n : ℕ) : ∀ k < h n, ¬Achievable n k := by
   intro k hk hak
-  exact absurd (Nat.sInf_le hak) (not_le_of_lt hk)
+  exact absurd (Nat.sInf_le hak) (not_le_of_gt hk)
 
 /-- h(N) ≥ 1 for N ≥ 4 (at least one color needed, and the problem
     is nontrivial once there exist 4-APs). -/
@@ -210,14 +214,52 @@ axiom lower_bound_exp :
     statement would be h(n) ≤ n^(2/3+ε) for any ε > 0. -/
 theorem h_sublinear : ∀ ε > (0 : ℝ), ε < 1/3 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
     (h n : ℝ) ≤ (n : ℝ) ^ (1 - ε) := by
-  sorry -- Follows from upper_bound_two_thirds for ε < 1/3; needs rpow_le_rpow
+  obtain ⟨C, _hC, hub⟩ := upper_bound_two_thirds
+  intro ε _hε hε3
+  -- Let δ = 1/3 - ε > 0.  Since n^δ → ∞, eventually C ≤ n^δ, so
+  -- C · n^{2/3} ≤ n^δ · n^{2/3} = n^{δ + 2/3} = n^{1-ε}.
+  have hδ : (0 : ℝ) < 1 / 3 - ε := by linarith
+  have htends : Tendsto (fun n : ℕ => (n : ℝ) ^ (1 / 3 - ε)) atTop atTop :=
+    (tendsto_rpow_atTop hδ).comp tendsto_natCast_atTop_atTop
+  have hev := htends.eventually_ge_atTop C
+  rw [Filter.eventually_atTop] at hev
+  obtain ⟨N₁, hN₁⟩ := hev
+  refine ⟨max N₁ 1, fun n hn => ?_⟩
+  have hn1 : n ≥ N₁ := le_trans (le_max_left _ _) hn
+  have hnpos : n ≥ 1 := le_trans (le_max_right _ _) hn
+  have hnR : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hnpos
+  calc (h n : ℝ) ≤ C * (n : ℝ) ^ ((2 : ℝ) / 3) := hub n hnpos
+    _ ≤ (n : ℝ) ^ (1 / 3 - ε) * (n : ℝ) ^ ((2 : ℝ) / 3) :=
+        mul_le_mul_of_nonneg_right (hN₁ n hn1) (by positivity)
+    _ = (n : ℝ) ^ (1 - ε) := by
+        rw [← Real.rpow_add hnR]
+        congr 1
+        ring
 
 /-- The lower bound implies h grows without bound: for any C,
     h(n) ≥ C for all sufficiently large n. Proof: the exponential
     lower bound exp(c · (log n)^{1/9}) → ∞ as n → ∞. -/
 theorem h_superlog : ∀ C : ℝ, ∃ N₀ : ℕ, ∀ n ≥ N₀,
     (h n : ℝ) ≥ C := by
-  sorry -- Requires showing exp(c · (log n)^{1/9}) → ∞, needs Filter.Tendsto infrastructure
+  obtain ⟨c, hc, hlb⟩ := lower_bound_exp
+  -- exp(c · (log n)^{1/9}) → ∞ : compose natCast → log → (·)^{1/9} → c·(·) → exp.
+  have hlog : Tendsto (fun n : ℕ => Real.log n) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hrpow : Tendsto (fun n : ℕ => (Real.log n) ^ ((1 : ℝ) / 9)) atTop atTop :=
+    (tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 1 / 9)).comp hlog
+  have hmul : Tendsto (fun n : ℕ => c * (Real.log n) ^ ((1 : ℝ) / 9)) atTop atTop :=
+    hrpow.const_mul_atTop hc
+  have htends : Tendsto (fun n : ℕ => Real.exp (c * (Real.log n) ^ ((1 : ℝ) / 9)))
+      atTop atTop := Real.tendsto_exp_atTop.comp hmul
+  intro C
+  have hev := htends.eventually_ge_atTop C
+  rw [Filter.eventually_atTop] at hev
+  obtain ⟨N₁, hN₁⟩ := hev
+  refine ⟨max N₁ 2, fun n hn => ?_⟩
+  have hn1 : n ≥ N₁ := le_trans (le_max_left _ _) hn
+  have hn2 : n ≥ 2 := le_trans (le_max_right _ _) hn
+  calc C ≤ Real.exp (c * (Real.log n) ^ ((1 : ℝ) / 9)) := hN₁ n hn1
+    _ ≤ (h n : ℝ) := hlb n hn2
 
 /-- The Hunter upper bound improves on the LeechLattice bound
     (log 3 / log 22 < 2/3). Proof: log 3 < (2/3) · log 22 since
@@ -226,7 +268,7 @@ theorem h_superlog : ∀ C : ℝ, ∃ N₀ : ℕ, ∀ n ≥ N₀,
 theorem hunter_improves_leechlattice :
     Real.log 3 / Real.log 22 < (2 : ℝ) / 3 := by
   have hlog22_pos : (0 : ℝ) < Real.log 22 := Real.log_pos (by norm_num)
-  rw [div_lt_div_iff hlog22_pos (by norm_num : (0 : ℝ) < 3)]
+  rw [div_lt_div_iff₀ hlog22_pos (by norm_num : (0 : ℝ) < 3)]
   -- Goal: Real.log 3 * 3 < 2 * Real.log 22
   -- Equivalently: log(3^3) < log(22^2), i.e., log 27 < log 484
   rw [show Real.log 3 * 3 = Real.log (3 ^ 3) by rw [Real.log_pow]; ring,

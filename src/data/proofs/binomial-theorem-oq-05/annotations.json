@@ -1,0 +1,76 @@
+[
+  {
+    "id": "bernoulli-context",
+    "proofId": "binomial-theorem-oq-05",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "concept",
+    "title": "Bernoulli's Inequality as the First-Order Binomial Truncation",
+    "content": "The binomial theorem expands (1+a)ⁿ = Σₖ C(n,k) aᵏ. Discarding every term past the linear one leaves 1 + n·a, and the discarded tail C(n,2)a² + C(n,3)a³ + ⋯ is nonnegative whenever a ≥ 0 — that is Bernoulli's inequality 1 + n·a ≤ (1+a)ⁿ. Remarkably the bound persists all the way down to a ≥ -2, where the tail is no longer term-by-term nonnegative; Mathlib's one_add_mul_le_pow captures this sharper range.",
+    "mathContext": "For $a \\ge 0$ the inequality is immediate from the binomial theorem: $(1+a)^n = \\sum_k \\binom{n}{k} a^k \\ge \\binom{n}{0} + \\binom{n}{1} a = 1 + na$. Extending to $-2 \\le a$ requires an induction that tracks the sign of the running product, which is what Mathlib's lemma does.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial theorem",
+      "Bernoulli's inequality",
+      "convexity of t ↦ tⁿ",
+      "geometric growth"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "the binomial theorem"
+    ]
+  },
+  {
+    "id": "base-inequality",
+    "proofId": "binomial-theorem-oq-05",
+    "range": { "startLine": 38, "endLine": 49 },
+    "type": "theorem",
+    "title": "Bernoulli's Inequality (a ≥ -2) and the Textbook Form",
+    "content": "bernoulli is the base estimate 1 + n·a ≤ (1+a)ⁿ for a ≥ -2, a thin wrapper over Mathlib's one_add_mul_le_pow. bernoulli_nonneg specializes to a ≥ 0, the form found in most textbooks, where the hypothesis a ≥ -2 is automatic.",
+    "mathContext": "Mathlib's `one_add_mul_le_pow (H : -2 ≤ a) (n : ℕ) : 1 + n * a ≤ (1 + a) ^ n` holds in any `Ring` that is a `LinearOrder` with `IsStrictOrderedRing`; here it is instantiated at ℝ.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "one_add_mul_le_pow"
+    ],
+    "prerequisites": [
+      "ordered rings"
+    ]
+  },
+  {
+    "id": "strict-bernoulli",
+    "proofId": "binomial-theorem-oq-05",
+    "range": { "startLine": 51, "endLine": 71 },
+    "type": "theorem",
+    "title": "Strict Bernoulli Inequality by Induction",
+    "content": "bernoulli_strict proves 1 + n·a < (1+a)ⁿ for a > 0 and n ≥ 2. Mathlib provides only an rpow (real-exponent) strict version, so this ℕ-power statement is proved here directly by Nat.le_induction from n = 2. Base case: (1+a)² = 1 + 2a + a² and a² > 0. Step: multiply the inductive hypothesis by 1 + a > 0, giving (1+a)·(1+m·a) = 1 + (m+1)a + m·a² ≥ 1 + (m+1)a, with the positive m·a² absorbed by nlinarith.",
+    "mathContext": "The strict gap is the quadratic-and-higher tail $\\binom{n}{2}a^2 + \\cdots$, which is strictly positive once $n \\ge 2$ and $a > 0$. The induction realizes this: each step contributes a fresh positive $m a^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.le_induction",
+      "mul_lt_mul_of_pos_left",
+      "strict inequalities"
+    ],
+    "prerequisites": [
+      "induction from a base value",
+      "monotonicity of multiplication"
+    ]
+  },
+  {
+    "id": "power-and-divergence",
+    "proofId": "binomial-theorem-oq-05",
+    "range": { "startLine": 73, "endLine": 109 },
+    "type": "theorem",
+    "title": "Tangent-Line Form and Divergence of Powers",
+    "content": "bernoulli_pow restates Bernoulli for aⁿ: 1 + n·(a-1) ≤ aⁿ for a ≥ -1, the tangent line to t ↦ tⁿ at t = 1. one_add_pow_tendsto_atTop deduces (1+a)ⁿ → ∞ for a > 0 from tendsto_pow_atTop_atTop_of_one_lt, with the explicit linear rate 1 + n·a recorded by one_add_pow_ge_one_add_nmul. Three numeric witnesses close the file, including the strict 1 + 5 < 2⁵ and a negative-base instance.",
+    "mathContext": "The form $1 + n(a-1) \\le a^n$ exhibits $t^n$ lying above its tangent at $t=1$. For $a>0$, $1+a>1$ so the power diverges; Bernoulli quantifies the divergence as at-least-linear, $1 + na \\le (1+a)^n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "one_add_mul_sub_le_pow",
+      "tendsto_pow_atTop_atTop_of_one_lt",
+      "geometric progressions"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto and atTop",
+      "tangent lines / convexity"
+    ]
+  }
+]

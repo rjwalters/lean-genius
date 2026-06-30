@@ -145,7 +145,7 @@
       "startLine": 87,
       "endLine": 92
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Ultraflat Polynomial Sequence",
     "content": "A sequence (Pₙ) of Littlewood polynomials is ultraflat if deg(Pₙ) = n and ‖Pₙ‖∞/√n → 1 as n → ∞. This means the polynomial becomes 'almost constant' in modulus on the unit circle as degree grows — its values are all approximately √n. Kahane showed this is achievable for unimodular coefficients but the ±1 case remains open.",
     "mathContext": "A sequence $(P_n)_{n \\ge 1}$ is ultraflat if each $P_n$ is Littlewood of degree $n$ and\n$$\\lim_{n \\to \\infty} \\frac{\\|P_n\\|_\\infty}{\\sqrt{n}} = 1.$$\nEquivalently, $\\max_{|z|=1}|P_n(z)| = (1 + o(1))\\sqrt{n}$.",

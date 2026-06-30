@@ -165,7 +165,7 @@
       "description": "Abel-Ruffini Theorem (insolubility of the general quintic) — the failure of unique factorization in cyclotomic integers ℤ[ζₚ] (discovered by Kummer, 1844) was the historical crisis that motivated ideal theory and the Dedekind domain framework. Abel-Ruffini's Galois-theoretic proof works in polynomial rings k[x] which ARE UFDs (via the instance chain formalized here), while the quintic's insolubility concerns the splitting field structure. The contrast illuminates the scope of the ED→UFD theorem: it governs the ring structure, not the Galois group action."
     },
     {
-      "targetId": "fundamental-theorem-arithmetic",
+      "targetId": "fundamental-arithmetic",
       "relationship": "generalization-of",
       "description": "Fundamental Theorem of Arithmetic (ℤ) — the base case that this entry generalizes. The FTA states that every integer has a unique prime factorization (up to sign); this entry extends that to all Euclidean domains R via Mathlib's instance chain. The `UniqueFactorizationMonoid ℤ` inference in this file is literally a one-line proof of the FTA as a special case."
     }

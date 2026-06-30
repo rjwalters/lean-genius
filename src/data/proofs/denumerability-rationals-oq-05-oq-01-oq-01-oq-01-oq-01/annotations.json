@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-loc-overview",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "Localization Was Never About ℵ₀",
+    "content": "The docstring frames the entry as the quantitative core of the parent's countability result. The parent showed localization never escapes countability (#(FractionRing R) = ℵ₀ for countable R), but that argument is really a cardinal-arithmetic fact specialized to ℵ₀. This file drops the [Countable R] hypothesis entirely and proves the principle at every infinite level: inverting a multiplicative set never changes cardinality. The single surjection R × M ↠ S carries the whole bound; the only change from the parent is invoking Cardinal.mul_eq_self instead of a countability-closure lemma. The chain culminates in #ℚ = #ℤ = ℵ₀ — recovering the parent's headline through the sharper equality, the rationals having exactly the integers' cardinality because Frac is cardinality-preserving.",
+    "mathContext": "$\\#(\\mathrm{FractionRing}\\,R) = \\#R$ for infinite $R$ — the cardinal generalization of $\\#(\\mathrm{FractionRing}\\,R) = \\aleph_0$.",
+    "significance": "context",
+    "relatedConcepts": ["localization", "fraction field", "cardinal arithmetic", "cardinality preservation", "denumerability"],
+    "prerequisites": ["cardinal arithmetic", "localization of rings"]
+  },
+  {
+    "id": "ann-loc-bound",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 41, "endLine": 61 },
+    "type": "theorem",
+    "title": "Localization Never Increases Cardinality",
+    "content": "mk_isLocalization_le is the headline bound: for an infinite commutative semiring R, any submonoid M, and any localization S at M, #S ≤ #R — with no domain or injectivity hypothesis. IsLocalization.mk'_surjective exhibits S as a surjective image of R × M (every z : S is mk' S r m), so mk_le_of_surjective gives #S ≤ #(R × M). Then Cardinal.mk_prod rewrites #(R × M) = #R · #M, the subtype bound #M ≤ #R (mk_le_of_injective Subtype.val_injective) with gcongr gives #R · #M ≤ #R · #R, and Cardinal.mul_eq_self (aleph0_le_mk R) collapses #R · #R = #R. The ring, monoid, and size of M are all irrelevant to the count — pure cardinal arithmetic past the surjection.",
+    "mathContext": "$\\#S \\le \\#(R\\times M) = \\#R\\cdot\\#M \\le \\#R\\cdot\\#R = \\#R$ (infinite $R$).",
+    "significance": "critical",
+    "relatedConcepts": ["IsLocalization.mk'_surjective", "Cardinal.mul_eq_self", "Cardinal.mk_prod", "mk_le_of_surjective", "gcongr"],
+    "prerequisites": ["localization mk'", "infinite cardinal multiplication"]
+  },
+  {
+    "id": "ann-loc-equality",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 62, "endLine": 71 },
+    "type": "theorem",
+    "title": "Equality When the Structure Map Is Injective",
+    "content": "mk_localization_eq_of_le_nonZeroDivisors upgrades the bound to an equality #S = #R when the inverted submonoid avoids zero divisors (M ≤ nonZeroDivisors R). In that case IsLocalization.injective makes algebraMap R S injective, so mk_le_of_injective gives the reverse #R ≤ #S, and le_antisymm with the headline bound yields equality. Separating the general semiring bound from this equality keeps the bound maximally weak-hypothesis: #S ≤ #R needs nothing, the equality needs only that the base ring embeds.",
+    "mathContext": "$M \\le R^\\circ \\Rightarrow \\mathrm{algebraMap}\\,R\\,S$ injective $\\Rightarrow \\#R \\le \\#S$, so $\\#S = \\#R$.",
+    "significance": "key",
+    "relatedConcepts": ["nonZeroDivisors", "IsLocalization.injective", "le_antisymm", "mk_le_of_injective"],
+    "prerequisites": ["injective structure maps", "antisymmetry of ≤"]
+  },
+  {
+    "id": "ann-loc-fractionring",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 73, "endLine": 86 },
+    "type": "theorem",
+    "title": "The Fraction Field of an Infinite Domain",
+    "content": "mk_isFractionRing_eq specializes the equality to any field of fractions S of an infinite integral domain R: a fraction ring inverts nonZeroDivisors R, and IsFractionRing.injective supplies the reverse bound, so #S = #R. mk_fractionRing_eq instantiates this at Mathlib's canonical FractionRing R, giving #(FractionRing R) = #R — the direct answer to the parent's first open question (whether the ℵ₀ result extends to general infinite R). Localization thus joins univariate and multivariate polynomial/monoid-algebra constructions as a cardinality-preserving operation on infinite rings.",
+    "mathContext": "$\\#(\\mathrm{FractionRing}\\,R) = \\#R$ for an infinite integral domain $R$.",
+    "significance": "critical",
+    "relatedConcepts": ["IsFractionRing", "IsFractionRing.injective", "FractionRing", "cardinality preservation"],
+    "prerequisites": ["fraction fields", "integral domains"]
+  },
+  {
+    "id": "ann-loc-rationals",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 87, "endLine": 100 },
+    "type": "context",
+    "title": "Closing the Loop: #ℚ = #ℤ = ℵ₀",
+    "content": "mk_rat_eq_int applies the principle at R = ℤ: ℚ carries IsFractionRing ℤ ℚ (Rat.isFractionRing), so #ℚ = #ℤ — the rationals have exactly the integers' cardinality because Frac is cardinality-preserving. mk_rat_eq_aleph0 then recovers the parent's headline #ℚ = ℵ₀ by rewriting through #ℚ = #ℤ and supplying #ℤ = ℵ₀ (mk_eq_aleph0). The loop closes through an equality rather than a mere ℵ₀ bound: the value comes from #ℤ = ℵ₀, the structure from cardinality preservation.",
+    "mathContext": "$\\mathbb{Q} = \\mathrm{Frac}(\\mathbb{Z}) \\Rightarrow \\#\\mathbb{Q} = \\#\\mathbb{Z} = \\aleph_0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Rat.isFractionRing", "Cardinal.mk_eq_aleph0", "ℚ as Frac(ℤ)"],
+    "prerequisites": ["the fraction-field equality", "denumerability of ℤ"]
+  }
+]

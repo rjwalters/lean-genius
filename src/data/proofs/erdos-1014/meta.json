@@ -73,68 +73,100 @@
   ],
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "startLine": 21,
-      "endLine": 23,
-      "summary": "Imports `SimpleGraph.Basic`, `Data.Real.Basic`, and `Tactic` for the axiomatic Ramsey number formalization.",
-      "mathContext": "Imports `SimpleGraph.Basic` (graph-theoretic types), `Data.Real.Basic` ($\\mathbb{R}$ for ratio limits), and `Tactic` (automation). The Ramsey number is axiomatized rather than constructed from graph colorings."
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module docstring for Erdős Problem #1014 (Ramsey number ratio convergence): statement, key results, and references. Imports Mathlib.",
+      "mathContext": "Goal: for fixed $k \\ge 3$, decide whether $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$. The Ramsey number $R(k,l)$ is axiomatized (not constructed from colorings); the file derives consequences and the $k=3$ reduction from those axioms."
     },
     {
       "id": "core-definitions",
-      "title": "Core Definitions and Basic Properties",
-      "startLine": 27,
-      "endLine": 36,
-      "summary": "Axiomatizes $R(k,l)$ with positivity ($R(k,l) \\geq 1$) and symmetry ($R(k,l) = R(l,k)$).",
-      "mathContext": "$R(k,l)$ axiomatized with $R(k,l) \\geq 1$ (ensuring well-defined ratios) and $R(k,l) = R(l,k)$ (from color-swapping). These are the minimal properties needed to state and analyze the ratio convergence conjecture."
+      "title": "Core Definitions",
+      "startLine": 23,
+      "endLine": 31,
+      "summary": "Axiomatizes the Ramsey number ramseyNumber k l = R(k,l) (minimum n forcing a red K_k or blue K_l) and its symmetry R(k,l) = R(l,k).",
+      "mathContext": "$R(k,l)$ axiomatized as the least $n$ such that every 2-coloring of $K_n$'s edges contains a red $K_k$ or a blue $K_l$, with the symmetry $R(k,l) = R(l,k)$ from swapping colors."
     },
     {
       "id": "classical-bounds",
       "title": "Classical Bounds",
-      "startLine": 40,
-      "endLine": 50,
-      "summary": "Erdős-Szekeres upper bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$, monotonicity $R(k,l) \\leq R(k,l+1)$, and the recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$.",
-      "mathContext": "$R(k,l) \\leq \\binom{k+l-2}{k-1}$ (Erdős-Szekeres 1935), $R(k,l) \\leq R(k,l+1)$ (monotonicity), $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$ (recurrence from vertex-neighborhood argument)."
+      "startLine": 32,
+      "endLine": 77,
+      "summary": "Erdős–Szekeres upper bound R(k,l) ≤ C(k+l-2, k-1), monotonicity R(k,l) ≤ R(k,l+1), the recurrence R(k,l+1) ≤ R(k,l) + R(k-1,l+1), the base case R(2,l) = l with ratio (l+1)/l → 1, the comparison R(2,l) ≤ R(k,l), and positivity R(k,l) ≥ 1.",
+      "mathContext": "$R(k,l) \\leq \\binom{k+l-2}{k-1}$ (Erdős–Szekeres 1935), $R(k,l) \\leq R(k,l+1)$ (monotonicity), $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$ (vertex-neighborhood recurrence), $R(2,l) = l$, and $R(k,l) \\geq 1$."
     },
     {
       "id": "r3-bounds",
-      "title": "R(3,l) Tight Bounds",
-      "startLine": 54,
-      "endLine": 62,
-      "summary": "Shearer/Kim lower bound and AKS upper bound: $R(3,l) = \\Theta(l^2/\\log l)$. The tightest known bounds for any off-diagonal Ramsey number.",
-      "mathContext": "$c_1 l^2/\\log l \\leq R(3,l) \\leq c_2 l^2/\\log l$. Lower bound: Shearer (1983), Kim (1995) via triangle-free process. Upper bound: Ajtai-Komlós-Szemerédi (1980). Improved constants: Mattheus-Verstraëte (2024)."
+      "title": "R(3, l) Bounds",
+      "startLine": 78,
+      "endLine": 89,
+      "summary": "Shearer/Kim lower bound R(3,l) ≥ c·l²/log l and the Ajtai–Komlós–Szemerédi upper bound R(3,l) ≤ C·l²/log l — together R(3,l) = Θ(l²/log l), the tightest known bounds for any off-diagonal Ramsey number.",
+      "mathContext": "$c_1 l^2/\\log l \\leq R(3,l) \\leq c_2 l^2/\\log l$. Lower bound: Shearer (1983), Kim (1995) via the triangle-free process. Upper bound: Ajtai–Komlós–Szemerédi (1980). Improved constants: Mattheus–Verstraëte (2024)."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: Ratio Convergence",
-      "startLine": 66,
-      "endLine": 70,
-      "summary": "**Erdős Problem #1014** (OPEN): $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$ for fixed $k \\geq 3$, formalized via $\\varepsilon$-$\\delta$ convergence.",
+      "startLine": 90,
+      "endLine": 97,
+      "summary": "**Erdős Problem #1014** (OPEN): for fixed k ≥ 3, R(k,l+1)/R(k,l) → 1 as l → ∞, formalized via ε–δ convergence.",
       "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists L_0,\\, \\forall l > L_0: |R(k,l+1)/R(k,l) - 1| < \\varepsilon$. Equivalently, $R(k,l+1) = R(k,l)(1 + o(1))$ as $l \\to \\infty$."
     },
     {
+      "id": "growth-helpers",
+      "title": "Growth Ratio Convergence Helpers",
+      "startLine": 98,
+      "endLine": 180,
+      "summary": "Section GrowthRatioHelpers: real-analysis lemmas proving ((n+1)/n)^a → 1, (log n / log(n+1))^b → 1, and the combined growth ratio of c·l^a/(log l)^b → 1 — the analytic core used to reduce the conjecture to power-law asymptotics.",
+      "mathContext": "For fixed $a,b$: $((n+1)/n)^a \\to 1$ and $(\\log n / \\log(n+1))^b \\to 1$, so the ratio of $c\\, l^a/(\\log l)^b$ at $l+1$ vs $l$ tends to $1$ — meaning any power-law-with-log asymptotic gives consecutive-ratio convergence."
+    },
+    {
       "id": "consequences",
-      "title": "Consequences and Equivalences",
-      "startLine": 74,
-      "endLine": 88,
-      "summary": "The conjecture follows from power-law asymptotics $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$. Equivalently: $R(k,l+1) - R(k,l) = o(R(k,l))$. Contains the proved theorem `ratio_equiv_difference`.",
+      "title": "Consequences and Implications",
+      "startLine": 181,
+      "endLine": 317,
+      "summary": "The conjecture follows from power-law asymptotics R(k,l) ~ c_k·l^{k-1}/(log l)^{k-2} (applied via the growth-ratio helpers), and the equivalent difference reformulation R(k,l+1) - R(k,l) = o(R(k,l)).",
       "mathContext": "If $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$, then $R(k,l+1)/R(k,l) \\to 1$ follows from $((l+1)/l)^{k-1} \\to 1$. The difference reformulation $\\Delta_l R(k,l) = o(R(k,l))$ is proved equivalent via real analysis."
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Known Values",
-      "startLine": 92,
-      "endLine": 100,
-      "summary": "Trivial case $R(2,l) = l$ with ratio $(l+1)/l \\to 1$. Known exact values $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$ show slow convergence.",
-      "mathContext": "$R(2,l) = l$ (trivial). Known: $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$. Ratios: $9/6 = 1.50$, $14/9 \\approx 1.56$ — far from 1, suggesting slow convergence."
+      "startLine": 318,
+      "endLine": 333,
+      "summary": "Known exact small values R(3,3) = 6, R(3,4) = 9, R(3,5) = 14 (ratios 1.50, 1.56 — far from 1, slow convergence), and the diagonal Erdős–Szekeres bound R(k,k) ≤ C(2k-2, k-1).",
+      "mathContext": "Known: $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$ (ratios $9/6 = 1.50$, $14/9 \\approx 1.56$). Diagonal: $R(k,k) \\leq \\binom{2k-2}{k-1} \\sim 4^k/\\sqrt{\\pi k}$ (Stirling)."
     },
     {
-      "id": "diagonal",
-      "title": "Diagonal Ramsey Connection",
-      "startLine": 101,
-      "endLine": 134,
-      "summary": "Proved theorem `diagonal_ramsey_upper`: $R(k,k) \\leq \\binom{2k-2}{k-1}$ from the Erdős-Szekeres axiom. Connects to Problem #1030 on diagonal Ramsey asymptotics.",
-      "mathContext": "$R(k,k) \\leq \\binom{2k-2}{k-1} \\sim 4^k/\\sqrt{\\pi k}$ (Stirling). Erdős (1947) proved $R(k,k) \\geq 2^{k/2}$ probabilistically. The gap between $2^{k/2}$ and $4^k/\\sqrt{k}$ is one of the great open problems in combinatorics."
+      "id": "derived-properties",
+      "title": "Derived Ramsey Properties",
+      "startLine": 334,
+      "endLine": 381,
+      "summary": "Proved consequences of the axioms: ramsey_2k (R(l,2) = l), ramsey_monotone_left, the strict chain R(3,3) < R(3,4) < R(3,5), R22 (R(2,2) = 2), and the probabilistic diagonal lower bound diagonal_ramsey_lower (R(k,k) ≥ 2^{k/2}).",
+      "mathContext": "Erdős (1947) proved $R(k,k) \\geq 2^{k/2}$ probabilistically; combined with $R(k,k) \\leq \\binom{2k-2}{k-1} \\sim 4^k/\\sqrt{k}$, the exponential gap between $2^{k/2}$ and $4^k$ is a central open problem in combinatorics."
+    },
+    {
+      "id": "increment-bound",
+      "title": "General Increment Bound",
+      "startLine": 382,
+      "endLine": 397,
+      "summary": "increment_bound_general: the recurrence gives the linear increment bound R(k,l+1) - R(k,l) ≤ R(k-1,l+1), and its k=3 specialization increment_bound_k3: R(3,l+1) ≤ R(3,l) + (l+1).",
+      "mathContext": "From the recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$: the increment $R(k,l+1) - R(k,l) \\leq R(k-1,l+1)$, and for $k=3$, using $R(2,l+1) = l+1$, $R(3,l+1) \\leq R(3,l) + (l+1)$."
+    },
+    {
+      "id": "tight-asymptotics",
+      "title": "R(3, l) Tight Asymptotics",
+      "startLine": 398,
+      "endLine": 410,
+      "summary": "R3_asymptotic_bounds: combines Kim's lower and the AKS upper bound to state R(3,l) = Θ(l²/log l) for large l.",
+      "mathContext": "$R(3,l) = \\Theta(l^2/\\log l)$: combining the Kim/Shearer lower bound and the AKS upper bound pins the exact order of magnitude, though the implied constants differ and so do not settle the consecutive-ratio question."
+    },
+    {
+      "id": "k3-case",
+      "title": "The k = 3 Case of the Conjecture",
+      "startLine": 411,
+      "endLine": 483,
+      "summary": "Erdős Problem #1014 for k = 3: R(3,l+1)/R(3,l) → 1 as l → ∞, the best-understood case. Develops the ε–δ argument from the increment bound R(3,l+1) ≤ R(3,l) + (l+1) and the Θ(l²/log l) lower bound, bounding the ratio gap by ((l+1)·log l)/(c·l²) → 0.",
+      "mathContext": "$|R(3,l+1)/R(3,l) - 1| = (R(3,l+1)-R(3,l))/R(3,l) \\leq (l+1)/R(3,l) \\leq (l+1)\\log l/(c\\, l^2) \\to 0$, using the increment bound numerator and the $c\\,l^2/\\log l$ lower bound denominator."
     }
   ],
   "overview": {
@@ -147,7 +179,9 @@
       "**Tight bounds insufficient**: For k=3, the bounds $R(3,l) = \\Theta(l^2/\\log l)$ are tight up to constants, but the ratio convergence needs finer information about the multiplicative constant",
       "**Power-law reduction**: The conjecture follows from any asymptotic of the form $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$, making it strictly weaker than the full asymptotic problem",
       "**Difference reformulation**: Equivalently, the discrete increment $R(k,l+1) - R(k,l)$ is $o(R(k,l))$, connecting to finite difference methods in number theory",
-      "**Monotonicity constraint**: Since $R(k,l) \\leq R(k,l+1)$, the ratio is always $\\geq 1$, so convergence to 1 means the ratio decreases toward 1 from above"
+      "**Monotonicity constraint**: Since $R(k,l) \\leq R(k,l+1)$, the ratio is always $\\geq 1$, so convergence to 1 means the ratio decreases toward 1 from above",
+      "**The k=3 case is proved**: While the conjecture is open for general $k$, `R3_ratio_convergence` settles it unconditionally for $k=3$ — the recurrence gives a *linear* increment $R(3,l+1)-R(3,l)\\leq l+1$, negligible against the *superlinear* lower bound $R(3,l)\\geq c\\,l^2/\\log l$, so the relative increment is $O(\\log l/l)\\to 0$. Only the lower bound (not the matching upper bound) is needed",
+      "**Why k≥4 resists this argument**: The k=3 proof hinges on the increment $R(2,l+1)=l+1$ being far smaller than $R(3,l)$. For $k\\geq 4$ the increment $R(k-1,l+1)$ is itself superlinear and of comparable order to $R(k,l)$, so no analogous gap is available and the conjecture remains open"
     ],
     "prerequisites": [
       "Combinatorics and number theory",

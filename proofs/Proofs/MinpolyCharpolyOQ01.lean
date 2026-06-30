@@ -477,4 +477,48 @@ theorem JordanBlockShape.totalDim_eq_zero_iff_blocks_empty
   · intro h
     rw [h]; simp
 
+/-! ## S10: characteristic polynomial of a single Jordan block
+
+The first genuinely spectral identity in this development: the characteristic
+polynomial of a single Jordan block is a pure power of a linear factor.  This is
+the per-block content that the global Jordan-normal-form charpoly factorisation
+(`charpoly = ∏_λ (X - C λ)^{m_λ}`) is assembled from, and it is the natural
+consumer of the S2 entry-wise classification (`jordanBlock_diag_eq`,
+`jordanBlock_off_diag_eq`): the block is upper-triangular, so its characteristic
+matrix is `BlockTriangular id` and its determinant collapses to the product of
+the diagonal entries `X - C λ`. -/
+
+open Polynomial in
+/-- **S10**: the characteristic polynomial of a single Jordan block
+`jordanBlock R lam d` is `(X - C lam) ^ d`.
+
+`jordanBlock R lam d` is upper-triangular: its `(i, j)` entry vanishes whenever
+the column index `j` is strictly below the row index `i` (the only nonzero
+entries are the diagonal `lam` and the super-diagonal `1`).  Hence its
+characteristic matrix `charmatrix (jordanBlock R lam d)` is `BlockTriangular id`,
+so by `Matrix.det_of_upperTriangular` its determinant is the product over `i` of
+the diagonal entries `charmatrix _ i i = X - C (jordanBlock _ i i) = X - C lam`
+(`jordanBlock_diag_eq`).  The product of `d` copies of `X - C lam` is
+`(X - C lam) ^ d`. -/
+theorem charpoly_jordanBlock (R : Type*) [CommRing R] (lam : R) (d : Nat) :
+    (jordanBlock R lam d).charpoly = (X - C lam) ^ d := by
+  have htri : (charmatrix (jordanBlock R lam d)).BlockTriangular id := by
+    intro i j hlt
+    simp only [id_eq] at hlt
+    have hji : (j : ℕ) < (i : ℕ) := hlt
+    have hne : i ≠ j := by
+      intro h; subst h; exact lt_irrefl _ hji
+    rw [charmatrix_apply_ne hne,
+        jordanBlock_off_diag_eq R lam d i j hne (by omega),
+        map_zero, neg_zero]
+  unfold Matrix.charpoly
+  rw [det_of_upperTriangular htri]
+  calc ∏ i : Fin d, charmatrix (jordanBlock R lam d) i i
+      = ∏ _i : Fin d, (X - C lam) := by
+        apply Finset.prod_congr rfl
+        intro i _
+        rw [charmatrix_apply_eq, jordanBlock_diag_eq]
+    _ = (X - C lam) ^ d := by
+        rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+
 end MinpolyCharpolyOQ01

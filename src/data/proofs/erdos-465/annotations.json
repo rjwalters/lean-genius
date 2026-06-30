@@ -125,7 +125,7 @@
       "startLine": 115,
       "endLine": 119
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Second Conjecture: Square Root Growth",
     "content": "SecondConjecture states N(X,δ) < X^{1/2+o(1)}: for every ε > 0, there exists X₀ such that N(X,δ) < X^{1/2+ε} for all X ≥ X₀. This is dramatically stronger than the first conjecture — it pins down the growth exponent to 1/2.",
     "mathContext": "The statement $N(X, \\delta) < X^{1/2 + \\varepsilon}$ for all $\\varepsilon > 0$ and large $X$ is equivalent to $\\limsup_{X \\to \\infty} \\frac{\\log N(X, \\delta)}{\\log X} \\leq 1/2$. Compare with Sárközy's bound: $X / \\log \\log X$ has $\\limsup (\\log N) / (\\log X) = 1$, so it doesn't constrain the exponent at all. The second conjecture requires a fundamentally different approach — Fourier analysis rather than elementary counting.",

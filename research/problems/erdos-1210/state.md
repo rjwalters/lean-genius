@@ -1,10 +1,26 @@
 # Current State
 
-**Phase**: AXIOMATIZED (statement corrected)
-**Since**: 2026-06-13T08:00:00Z
-**Iteration**: 3
+**Phase**: BLOCKED (next ACT is build-gated; conjecture is Mathlib-gap-blocked)
+**Since**: 2026-06-13T15:00:00Z
+**Iteration**: 4
+
+> STATE-SYNC (2026-06-14, researcher-6): the registry
+> `src/data/research/problems/erdos-1210.json` trailed this file — its
+> `currentState` still read iteration 3 / phase AXIOMATIZED / status active
+> with a stale `nextAction` ("do S4", already done), and `leanFiles[]` read
+> 179 LOC / 11 thm / 3 def while the file is 230 / 14 / 4. Brought in line
+> (iter 4 / BLOCKED, blockers populated, nextAction advanced to the S5
+> unconditional-log-n deliverable, counts corrected against gallery
+> meta.json + grep) and marked the pool entry blocked. No Lean changes.
 
 ## Current Focus
+
+S4 surveyed the achievable-bounds landscape (see knowledge.md Session 4) and
+concluded the slug is blocked during the verification blackout. The statement
+and formalization on `main` are sound and fully in sync; what remains is
+build-gated. See "Blockers" and "Next Action" below.
+
+## Prior Focus (S3)
 
 S3 RESOLVED the S2 blocker. Recovered the correct Erdős statement directly from
 erdosproblems.com/1210 (via curl; WebFetch was 403-blocked). The earlier
@@ -44,20 +60,43 @@ Rewrote `proofs/Proofs/Erdos1210Problem.lean` (Docker-verified, 3058 jobs):
 - Updated gallery `meta.json` to the corrected statement and counts
   (14 theorems, 4 defs, 1 axiom, 230 lines).
 
+## S4 survey outcome (the two difficulty regimes)
+
+1. **Trivial `log n` baseline (elementary, build-gated).** For any `A ⊆ [1,n)`
+   the values `{n−a : a∈A}` are distinct integers in `[1,n−1]`, so
+   `∑_{a∈A} 1/(n−a) ≤ H_{n−1} ~ log n` (an injective-image reindex + harmonic
+   bound; uses no coprimality). This is the right next ACT deliverable — a
+   verified unconditional upper bound instantiating the `C`-free shape with
+   `f(n) = H_{n−1}`. Honest partial progress, but NOT the conjecture
+   (`log n ≫ log log n`).
+2. **The conjecture's `log log n` is Mathlib-gap-blocked.** Closing the
+   `log n → log log n` gap is where the coprimality (≤1 element per prime) does
+   the work, via a sieve/Mertens comparison. Base Mathlib v4.26.0 lacks Mertens'
+   second theorem (`∑_{p<n} 1/p = log log n + O(1)`) — so even *stating* the RHS
+   asymptotic requires upstream analytic number theory. Long-horizon.
+
 ## Blockers
 
-None remaining for the statement. The conjecture itself is open and "cannot be
-resolved with a finite computation" (per the source).
+- **Verification blackout (2026-06-13).** Docker `docker ps` hangs (no build
+  route) and the Aristotle backend 404s. The regime-(1) ACT is an
+  injective-image reindex — exactly the kind of step that fails silently without
+  a compiler, so it must not be blind-shipped (per S4 recommendation).
+- **Mathlib gap.** The full `log log n` conjecture needs Mertens' second theorem,
+  absent from base Mathlib v4.26.0; a substantial upstream contribution.
 
-## Next Action
+The statement itself has no open blocker: `main` is sound and fully in sync
+(meta.json ↔ .lean: 14 theorems, 4 defs, 1 axiom, 230 lines; status
+`axiomatized`, badge `axiom` — correct for an open conjecture).
 
-S4 — explore a partial bound: can one prove ∑_{a∈A} 1/(n-a) ≤ C·log log n
-(or any explicit unconditional upper bound) for pairwise coprime A, e.g. via
-the "at most one even element" structure plus a sieve/Mertens estimate? That
-would be a genuine partial result toward the open conjecture.
+## Next Action (when build infra returns)
+
+S5 ACT — ship the regime-(1) trivial `H_{n−1}` unconditional bound (elementary,
+no new axioms, Mathlib-reachable). Do NOT attempt the `log log n` conjecture
+directly until Mertens' second theorem is available in Mathlib.
 
 ## Attempt Counts
 
-- Total attempts: 3
-- Approaches tried: 3 (S1 formalization/axiomatization; S2 falsification of the
-  mis-transcribed statement; S3 source recovery + corrected re-axiomatization)
+- Total attempts: 4
+- Approaches tried: 4 (S1 formalization/axiomatization; S2 falsification of the
+  mis-transcribed statement; S3 source recovery + corrected re-axiomatization;
+  S4 achievable-bounds survey → BLOCKED on build infra + Mathlib gap)

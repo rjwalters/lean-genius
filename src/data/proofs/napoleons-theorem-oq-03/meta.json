@@ -1,0 +1,184 @@
+{
+  "id": "napoleons-theorem-oq-03",
+  "title": "Napoleon's Theorem: Spectral Complementarity & Shape Annihilation",
+  "slug": "napoleons-theorem-oq-03",
+  "description": "The outer and inner Napoleon constructions are complementary spectral filters of the 3-point DFT: outer kills frequency-2 and negates frequency-1, inner kills frequency-1 and negates frequency-2. Composing them (in either order) annihilates BOTH non-DC frequencies, collapsing any triangle to the single point at its centroid (z₁+z₂+z₃)/3.",
+  "meta": {
+    "author": "Lean Genius Researcher (2026)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Napoleon%27s_theorem",
+    "date": "2026-06-18",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NapoleonsTheoremOQ03.lean",
+    "tags": [
+      "geometry",
+      "napoleon",
+      "discrete-fourier-transform",
+      "complex-analysis",
+      "spectral-filter",
+      "composition-law"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.I_sq",
+        "description": "i² = -1, used to evaluate the displacement coefficient square",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "√3² = 3 for the real square root",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "disp_sq: the Napoleon displacement coefficient a = i√3/6 satisfies a² = -1/12 — the single non-ring fact behind every collapse",
+      "outer_inner_G₁/₂/₃: the three outer-Napoleon vertices of the inner Napoleon triangle each equal the centroid (z₁+z₂+z₃)/3",
+      "inner_outer_G₁/₂/₃: the symmetric inner-of-outer collapse to the centroid",
+      "outer_of_inner_collapses / inner_of_outer_collapses: packaged shape-annihilation — composing the two constructions destroys all triangle shape, leaving only the centroid",
+      "outer_inner_eq_inner_outer: the two composition orders agree vertex-by-vertex (the constructions commute on shape)",
+      "outer_of_inner_degenerate: the composed vertices are pairwise equal (a degeneracy certificate)",
+      "doubled_napoleon_is_centroid: sharpens centroid preservation — not only is the centroid kept, everything else is annihilated"
+    ],
+    "dateAdded": "2026-06-18",
+    "axiomCount": 0,
+    "lineCount": 214,
+    "assumptions": "0 axioms. 0 sorries. Fully verified. The vertex definitions are reproduced verbatim from the parent NapoleonsTheorem.lean so the file is self-contained; every collapse is closed by a single deterministic linear_combination using only a² = -1/12 (i.e. i² = -1 and √3² = 3).",
+    "mathlib_version": "4.26.0",
+    "parentProof": "napoleons-theorem-oq-02",
+    "theoremCount": 14,
+    "definitionCount": 8
+  },
+  "sections": [
+    {
+      "title": "Napoleon Vertex Definitions",
+      "startLine": 64,
+      "endLine": 86,
+      "description": "Reproduce (verbatim from the parent) the outer center napoleonCenter(b,c) = (b+c)/2 + i√3/6·(c-b), the inner center with the opposite displacement, and the six Napoleon vertices G₁..G₃ (outer) and G₁'..G₃' (inner).",
+      "summary": "Self-contained outer/inner Napoleon vertex definitions",
+      "id": "vertex-defs",
+      "mathContext": "Each Napoleon vertex is a ℂ-affine function of the input vertices. The outer center on side $(b,c)$ is $\\frac{b+c}{2} + \\frac{i\\sqrt3}{6}(c-b)$; the inner center negates the displacement. $G_k$ uses the side opposite $z_k$. Being ℂ-affine, any composition of these maps is again a polynomial identity over $\\mathbb{C}$ — the structural fact that makes the whole file provable by `linear_combination` without real/imaginary splitting."
+    },
+    {
+      "title": "Displacement-Square Identity",
+      "startLine": 89,
+      "endLine": 103,
+      "description": "Prove sqrt3_sq (√3²=3 in ℂ) and the key lemma disp_sq: (i√3/6)² = -1/12, from Complex.I_sq and sqrt3_sq.",
+      "summary": "a = i√3/6 satisfies a² = -1/12",
+      "id": "disp-sq",
+      "mathContext": "The single non-ring fact powering every collapse: $a^2 = (i\\sqrt3/6)^2 = i^2(\\sqrt3)^2/36 = (-1)(3)/36 = -1/12$. Once `disp_sq` is available, each composed-vertex goal is a pure polynomial identity in $z_1,z_2,z_3$ modulo this one relation, closed by `linear_combination (coeff) * disp_sq`."
+    },
+    {
+      "title": "Outer ∘ Inner Collapses to the Centroid",
+      "startLine": 106,
+      "endLine": 125,
+      "description": "outer_inner_G₁/₂/₃: applying the outer Napoleon construction to the inner Napoleon triangle sends each vertex to the centroid (z₁+z₂+z₃)/3. Coefficients 2z₁-z₂-z₃, -z₁+2z₂-z₃, -z₁-z₂+2z₃.",
+      "summary": "Outer-of-inner: all three vertices → centroid",
+      "id": "outer-inner",
+      "mathContext": "Spectrally, inner sends $(X_0,X_1,X_2)\\mapsto(X_0,0,-X_2)$ and outer then sends $X_1\\mapsto 0$, $X_2\\mapsto 0$, leaving $(X_0,0,0)$ — the constant triangle at $X_0/3$. Each vertex reduces algebraically to $(z_1+z_2+z_3)/4 + a^2(2z_1-z_2-z_3)$ (and cyclic), which equals the centroid exactly because $a^2 = -1/12$."
+    },
+    {
+      "title": "Inner ∘ Outer Collapses to the Centroid",
+      "startLine": 128,
+      "endLine": 147,
+      "description": "inner_outer_G₁/₂/₃: the symmetric statement — applying the inner construction to the outer Napoleon triangle also collapses every vertex to the centroid, with the same coefficients.",
+      "summary": "Inner-of-outer: all three vertices → centroid",
+      "id": "inner-outer",
+      "mathContext": "Outer sends $(X_0,X_1,X_2)\\mapsto(X_0,-X_1,0)$ and inner then sends $X_1\\mapsto 0$, $X_2\\mapsto 0$. The per-vertex algebra is identical to the outer-of-inner case (the same $a^2(2z_1-z_2-z_3)$ correction), so the same `linear_combination` coefficients close it."
+    },
+    {
+      "title": "Capstone — Shape Annihilation in Either Order",
+      "startLine": 150,
+      "endLine": 214,
+      "description": "Bundle theorems: outer_of_inner_collapses and inner_of_outer_collapses (both compositions land on the centroid); outer_inner_eq_inner_outer (the two orders agree); outer_of_inner_degenerate (vertices pairwise equal); napoleon_centroid_eq_original and doubled_napoleon_is_centroid (sharpening of centroid preservation).",
+      "summary": "Packaged annihilation, commutation, degeneracy, and centroid-invariance",
+      "id": "capstone",
+      "mathContext": "The composed construction is the zero map on shape: both non-DC DFT frequencies vanish, so the result is the constant triangle at the original centroid. `outer_inner_eq_inner_outer` shows the two constructions commute on shape; `outer_of_inner_degenerate` certifies the vertices are pairwise equal; `doubled_napoleon_is_centroid` sharpens centroid preservation — the centroid is not merely preserved, it is the *only* surviving information."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Napoleon's theorem — that the centers of equilateral triangles erected on the sides of any triangle form an equilateral triangle — is a 19th-century gem of elementary geometry whose attribution to Napoleon Bonaparte is almost certainly apocryphal. Its complex-coordinate proof (Argand, Gauss) turns the 60° rotation of the construction into multiplication by e^{iπ/3}, giving the centroid formula Gₖ = (z_{k-1}+z_{k+1})/2 + i√3/6·(z_{k+1}-z_{k-1}). The sibling entry napoleons-theorem-oq-02 reframes this in the discrete Fourier transform: the construction is a circulant linear map, diagonal in the DFT basis, with eigenvalues (1,-1,0) for the outer triangle and (1,0,-1) for the inner. This entry takes the natural next step — composing the two filters — and finds that they are jointly complete: together they annihilate every non-DC frequency. The result is the n=3 shadow of the Petr–Douglas–Neumann circle of theorems, in which a sequence of regular-polygon constructions strips a polygon down one frequency at a time until only its centroid remains.",
+    "problemStatement": "The outer Napoleon construction acts on the 3-point DFT (X₀,X₁,X₂) of a triangle as (X₀,-X₁,0); the inner as (X₀,0,-X₂). Compute the composition. Prove that applying both constructions, in either order, yields the spectrum (X₀,0,0) — the constant triangle whose three vertices all equal the centroid (z₁+z₂+z₃)/3.",
+    "text": "Composing the outer and inner Napoleon constructions destroys a triangle's shape entirely: both non-DC Fourier frequencies are annihilated and only the centroid survives. The two constructions are complementary spectral filters whose product is the projection onto the centroid.",
+    "proofStrategy": "Every Napoleon vertex map is ℂ-affine, so each composed vertex is a polynomial identity over ℂ. The proof needs exactly one non-ring fact.\n\n1. **Displacement square**: prove disp_sq, a² = (i√3/6)² = -1/12, from i²=-1 (Complex.I_sq) and √3²=3 (sqrt3_sq).\n\n2. **Per-vertex collapse**: unfold the relevant vertex maps; the result is algebraically (z₁+z₂+z₃)/4·(scaled) + a²·(2z₁-z₂-z₃) for the first vertex (and cyclic shifts). Subtracting the centroid leaves (2z₁-z₂-z₃)·(a²+1/12), which is zero by disp_sq.\n\n3. **One tactic each**: close with `linear_combination (2z₁-z₂-z₃) * disp_sq` (and the two cyclic coefficients). This is deterministic — no nlinarith, no real/imaginary case split — and robust to simp-normal-form drift.\n\n4. **Package**: combine the six per-vertex results into the annihilation, commutation, and degeneracy capstones; reprove centroid preservation by `ring` for the sharpening doubled_napoleon_is_centroid.",
+    "keyInsights": [
+      "**Joint completeness**: outer kills frequency-2, inner kills frequency-1; composing them kills both, so the composite is the projection onto the DC component (centroid). The two Napoleon constructions are complementary spectral filters.",
+      "**Shape annihilation**: a spectrum (X₀,0,0) is the constant triangle. The doubled construction therefore collapses any triangle to a single point — its shape is completely destroyed.",
+      "**Order independence**: outer∘inner and inner∘outer give identical composed vertices (outer_inner_eq_inner_outer); the constructions commute on shape because they are simultaneously diagonalized by the DFT.",
+      "**One fact, six identities**: every collapse follows from a² = -1/12 via a single linear_combination, exploiting that ℂ-affine maps compose to polynomial identities — a cleaner proof architecture than the parent's Complex.ext/nlinarith idiom.",
+      "**Sharpened invariance**: doubled_napoleon_is_centroid strengthens centroid preservation — the centroid is not merely preserved by Napoleon, it is the unique information that survives the doubled construction."
+    ],
+    "prerequisites": [
+      "Complex numbers and arithmetic in ℂ",
+      "The 60° rotation = multiplication by e^{iπ/3}; the Napoleon centroid formula",
+      "3-point discrete Fourier transform and the spectral filter picture (napoleons-theorem-oq-02)"
+    ],
+    "openQuestions": [
+      "Iterating a single construction: outer∘outer maps X₁ ↦ X₁ and keeps X₂ = 0, so the doubly-outer triangle preserves frequency-1 and remains equilateral. What is the orbit structure of the Napoleon map?",
+      "n-gon generalization (Petr–Douglas–Neumann): composing the n-1 regular-polygon constructions collapses any n-gon to its centroid. Can the DFT filter proof be lifted to general n?",
+      "Is there a metric refinement — how fast does shape (e.g. the X₁,X₂ energy) decay under repeated mixed constructions?"
+    ]
+  },
+  "conclusion": {
+    "summary": "Composing the outer and inner Napoleon constructions annihilates a triangle's shape: both non-DC Fourier frequencies vanish and the result is the constant triangle at the original centroid (z₁+z₂+z₃)/3. The two constructions are complementary spectral filters whose product is the projection onto the centroid; they commute on shape, and the composed vertices are pairwise equal.",
+    "implications": "This sharpens the spectral reading of Napoleon's theorem from napoleons-theorem-oq-02. Individually each construction is frequency-selective; jointly they are complete, recovering centroid preservation as the special case where the single surviving invariant is the DC component. The result is the n=3 instance of the Petr–Douglas–Neumann phenomenon.",
+    "openQuestions": [
+      "Orbit structure of iterated single constructions (outer∘outer, etc.)",
+      "n-gon generalization via the n-point DFT (Petr–Douglas–Neumann)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "napoleons-theorem-oq-02",
+      "relationship": "parent",
+      "description": "Provides the DFT filter characterization (outer ↦ (X₀,-X₁,0), inner ↦ (X₀,0,-X₂)) that this entry composes. The shape-annihilation result here is the direct consequence of the two filters being complementary."
+    },
+    {
+      "targetId": "napoleons-theorem",
+      "relationship": "foundational",
+      "description": "Supplies the napoleonCenter formula and centroid preservation (napoleon_centroid_eq_original), reproduced self-contained here and sharpened by doubled_napoleon_is_centroid."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "The 3-point DFT used here is the finite analogue of Fourier series; the doubled Napoleon construction is a band-stop filter that removes all non-DC content, the discrete counterpart of projecting a signal onto its mean."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Wetzel, John E.",
+      "title": "Converses of Napoleon's Theorem",
+      "year": "1992",
+      "venue": "The American Mathematical Monthly, vol. 99, no. 4, pp. 339–351",
+      "note": "Comprehensive treatment of Napoleon's theorem, its converses, the disputed historical attribution, and the complex-number proof strategy underlying this formalization."
+    },
+    {
+      "authors": "Douglas, Jesse",
+      "title": "Geometry of polygons in the complex plane",
+      "year": "1940",
+      "venue": "Journal of Mathematics and Physics, vol. 19, pp. 93–130",
+      "note": "Origin of the spectral (DFT) view of polygon constructions generalizing Napoleon's theorem to n-gons — the Petr–Douglas–Neumann theorem that frames the shape-annihilation result of this entry."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": "NapoleonsTheoremOQ03",
+    "lineCount": 214,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "sorries": 0,
+    "path": "Proofs/NapoleonsTheoremOQ03.lean",
+    "definitionCount": 8
+  }
+}

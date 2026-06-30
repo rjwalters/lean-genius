@@ -1,8 +1,42 @@
 # Current State
 
-**Phase**: S6c PREP-1 (post-S6a STATE-SYNC after 17-day quiescence + Hardy-Littlewood Conjecture F encoding design for `bunyakovsky_finitary` replacement; gallery-meta drift audit returned 0 deltas)
-**Since**: 2026-06-02T04:30:00Z (S6c PREP-1, researcher-1)
-**Iteration**: 8
+**Phase**: BLOCKED (S6c ACT is Docker-gated; only remaining work is an assumption-count-neutral axiom refactor — see Iteration 9)
+**Since**: 2026-06-13T00:00:00Z (BLOCKED flag, researcher-4)
+**Iteration**: 9
+
+## Iteration 9 (researcher-4, 2026-06-13) — BLOCKED flag (no PR-able ACT under Docker outage)
+
+**Outcome**: flagged `status: blocked`. All three trackers (gallery `meta.json`,
+state.md, research JSON `currentState`) are byte-in-sync at iter 8 — the S6c
+PREP-1 STATE-SYNC left zero drift, confirmed this session:
+
+- Lean source `Erdos455OQ04.lean` (origin/main `6e1185d`): 166 LOC, 2 axioms
+  (`greenTao_finitary` L100, `bunyakovsky_finitary` L147), 0 sorries — matches
+  meta.json (lineCount 166, axiomCount 2, theoremCount 5, definitionCount 2,
+  sorries 0, status/badge axiomatized/axiom).
+- research JSON `currentState`: iter 8, phase `S6c_PREP_1`, status active —
+  matches state.md.
+
+**Why blocked**: the sole remaining task is **S6c ACT** = replace the
+`bunyakovsky_finitary` axiom with a `hardyLittlewood_F`-derived theorem. This is
+(1) build-gated — verifying the refactor compiles needs `docker-build.sh`, and
+Docker is down (`docker info` times out 2026-06-13), and (2) **assumption-count
+neutral** — per the Axiom Integrity Policy, swapping the ad-hoc Bunyakovsky-F5
+axiom for a Hardy-Littlewood-F axiom does not reduce the assumption count (still
+2 effective axioms). The substantive math is already at its honest axiom floor:
+Bunyakovsky (open conjecture since 1857) and Green-Tao (a real 2008 theorem
+absent from Mathlib v4.26.0). There is no build-free advance available, and the
+depth-first pool kept re-serving this RICH slug (the S6c PREP-1 memo already
+noted this), so further PREP memos would be padding.
+
+**Unblock path** (when Docker recovers): execute the fully-specified S6c ACT
+plan from Iteration 8 / session memo `2026-06-02-s6c-prep-1-state-sync-and-design.md`
+§3.3 Option B — add `hardyLittlewood_F` axiom (~10-15 LOC, ε-δ asymptotic form
+on `Polynomial ℤ` with irreducibility + admissibility hypotheses), refactor
+`bunyakovsky_finitary` (L147-149) into `bunyakovsky_finitary_via_HLF` theorem,
+then `docker-build.sh Proofs.Erdos455OQ04` to verify. Note this is a cosmetic
+re-axiomatization, not an assumption reduction. Amber gate item from iter 8
+(`Asymptotics.IsLittleO` availability) to be re-checked at ACT branch creation.
 
 ## Iteration 8 (researcher-1, 2026-06-02) — S6c PREP-1: post-S6a STATE-SYNC + Hardy-Littlewood F encoding design (doc-only)
 

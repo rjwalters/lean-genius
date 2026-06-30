@@ -47,9 +47,9 @@
     ],
     "dateAdded": "2026-02-21",
     "axiomCount": 0,
-    "lineCount": 255,
+    "lineCount": 284,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "theoremCount": 15,
+    "theoremCount": 18,
     "definitionCount": 0
   },
   "overview": {
@@ -77,20 +77,20 @@
       "id": "setup",
       "title": "Setup",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 43,
       "summary": "Module documentation, imports, and the div-mod identity lemma."
     },
     {
       "id": "positive-osculator",
       "title": "Positive Osculator Theorem",
-      "startLine": 37,
-      "endLine": 81,
+      "startLine": 44,
+      "endLine": 85,
       "summary": "General theorem for d | n ↔ d | (n/10 + c*(n%10)) when d | 10c-1."
     },
     {
       "id": "negative-osculator",
       "title": "Negative Osculator Theorem",
-      "startLine": 82,
+      "startLine": 86,
       "endLine": 125,
       "summary": "General theorem for d | n ↔ d | (n/10 - c*(n%10)) when d | 10c+1."
     },
@@ -112,8 +112,15 @@
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 242,
-      "endLine": 255,
+      "endLine": 266,
       "summary": "Master theorem packaging the five classical cases."
+    },
+    {
+      "id": "extended-coverage",
+      "title": "Extended Coverage (Osculators Beyond 19)",
+      "startLine": 267,
+      "endLine": 284,
+      "summary": "`extended_truncation_coverage` bundles the truncation divisibility rules for the next primes coprime to 10 — 23, 29, 31, 37, 41, 43 — each a direct instance of the parametric `truncation_pos` / `truncation_neg` theorems (no new machinery, only each prime's osculator constant). Answers the follow-up 'extend coverage beyond 19'."
     }
   ],
   "conclusion": {
@@ -134,9 +141,9 @@
       "Nat"
     ],
     "namespace": "DivisibilityTruncationGeneral",
-    "lineCount": 255,
+    "lineCount": 284,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 18,
     "definitionCount": 0,
     "path": "Proofs/DivisibilityTruncationGeneral.lean",
     "sorries": 0
@@ -179,6 +186,16 @@
       "targetId": "chinese-remainder-constructive",
       "relationship": "foundational",
       "description": "The IsCoprime condition (gcd(d,10)=1) enabling the key cancellation step is the same coprimality machinery used in the Chinese Remainder Theorem"
+    },
+    {
+      "targetId": "divisibility-truncation-general-oq-01",
+      "relationship": "extended-by",
+      "description": "The Unified Osculator Theorem merges the positive and negative osculator cases into one signed-osculator statement over ℤ, deriving the negative case as a corollary via c ↦ −c and proving the dual relationship between paired osculators — generalizing the osculator c (with d | 10c−1) used in this truncation rule."
+    },
+    {
+      "targetId": "divisibility-truncation-general-oq-03",
+      "relationship": "extended-by",
+      "description": "Identifies where the osculator comes from: it proves the divisibility osculator (the integer c with d | 10c−1) is canonically the Bézout coefficient gcdA(10,d) from the extended Euclidean algorithm, making the truncation rule's key constant constructive rather than guessed."
     }
   ],
   "mainTheorems": [

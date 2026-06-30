@@ -4,7 +4,7 @@
     "proofId": "erdos-188",
     "range": {
       "startLine": 1,
-      "endLine": 23
+      "endLine": 20
     },
     "type": "concept",
     "title": "Problem Overview",
@@ -27,8 +27,8 @@
     "id": "ann-188-coloring",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 31,
-      "endLine": 38
+      "startLine": 36,
+      "endLine": 42
     },
     "type": "definition",
     "title": "Plane Coloring",
@@ -50,7 +50,7 @@
     "id": "ann-188-red-constraint",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 44,
+      "startLine": 45,
       "endLine": 46
     },
     "type": "definition",
@@ -73,12 +73,12 @@
     "id": "ann-188-blue-constraint",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 52,
+      "startLine": 49,
       "endLine": 60
     },
     "type": "definition",
     "title": "Blue Arithmetic Progression",
-    "content": "`BlueContainsUnitAP(c, k)` asserts the existence of a $k$-term arithmetic progression $a, a+d, a+2d, \\ldots, a+(k-1)d$ where all points are blue and $|d| = 1$. The direction $d$ is a unit vector in $\\mathbb{C}$ but otherwise unconstrained, so APs can point in any direction in the plane.",
+    "content": "`IsAPInPlane`, `HasBlueAPWithUnitStep`, and `BlueContainsUnitAP` formalize a $k$-term arithmetic progression $a, a+d, \\ldots, a+(k-1)d$ of blue points with unit step $|d| = 1$. The direction $d$ is a unit vector in $\\mathbb{C}$ but otherwise unconstrained, so APs can point in any direction in the plane.",
     "mathContext": "$\\text{BlueUnitAP}(c, k) :\\equiv \\exists a, d \\in \\mathbb{C},\\, |d| = 1 \\land \\forall i < k,\\, c(a + i \\cdot d) = 1$. The unit step condition $|d| = 1$ is the crucial restriction that makes the problem well-posed (Alon showed the unrestricted version has no solution).",
     "significance": "key",
     "relatedConcepts": [
@@ -96,7 +96,7 @@
     "id": "ann-188-valid",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 62,
+      "startLine": 63,
       "endLine": 64
     },
     "type": "definition",
@@ -124,7 +124,7 @@
     },
     "type": "definition",
     "title": "Achievable Set",
-    "content": "`achievableSet := {k | ∃ c, IsValidColoring c k}` collects all $k$ values for which some valid coloring exists. Since a valid coloring for $k$ is also valid for any $k' > k$ (the AP condition is monotone), this set is upward-closed in $\\mathbb{N}$. The problem asks for $\\inf s = \\min s$.",
+    "content": "`achievableSet := {k | ∃ c, IsValidColoring c k}` collects all $k$ values for which some valid coloring exists. `ErdosProblem188` asks for an `IsLeast` element, and `minAchievable := sInf achievableSet` names the minimum. Since a valid coloring for $k$ is also valid for any $k' > k$ (the AP condition is monotone), this set is upward-closed in $\\mathbb{N}$.",
     "mathContext": "$s = \\{k \\in \\mathbb{N} \\mid \\exists c,\\, \\text{IsValid}(c, k)\\}$ is upward-closed: $k \\in s \\land k' \\geq k \\implies k' \\in s$. Since $s$ is a nonempty upward-closed subset of $\\mathbb{N}$, it has a minimum. The `sInf` definition uses Lean's conditionally complete lattice structure.",
     "significance": "key",
     "relatedConcepts": [
@@ -142,13 +142,13 @@
     "id": "ann-188-lower-bound",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 88,
-      "endLine": 92
+      "startLine": 89,
+      "endLine": 89
     },
     "type": "concept",
-    "title": "Lower Bounds (EGMRSS and Tsaturian)",
-    "content": "Two axiomatized lower bounds: `lower_bound_5` (EGMRSS 1973, $k \\geq 5$) and `lower_bound_6` (Tsaturian 2017, $k \\geq 6$). The proofs construct explicit finite point configurations in $\\mathbb{R}^2$ where any red-independent coloring is forced to contain a long blue unit-step AP. Tsaturian's improvement required a more intricate configuration.",
-    "mathContext": "$\\forall k \\in s,\\, k \\geq 6$. Tsaturian constructs a finite set $P \\subset \\mathbb{R}^2$ of unit-distance pairs such that in any 2-coloring with red independent, the blue points contain a 6-term unit-step AP. This combinatorial argument is axiomatized because it requires detailed case analysis on specific geometric configurations.",
+    "title": "Lower Bound (Tsaturian 2017)",
+    "content": "The single axiom `lower_bound_6` states $\\forall k \\in s,\\, k \\geq 6$ — Tsaturian's 2017 bound, improving the earlier EGMRSS (1973) bound of $k \\geq 5$. The proof constructs explicit finite point configurations in $\\mathbb{R}^2$ where any red-independent coloring is forced to contain a 6-term blue unit-step AP; it is taken as an axiom here because it requires detailed geometric case analysis.",
+    "mathContext": "$\\forall k \\in s,\\, k \\geq 6$. Tsaturian constructs a finite set $P \\subset \\mathbb{R}^2$ of unit-distance pairs such that in any 2-coloring with red independent, the blue points contain a 6-term unit-step AP. The earlier $k \\geq 5$ bound (EGMRSS) is noted in the source docstring but is not separately formalized.",
     "significance": "key",
     "relatedConcepts": [
       "lower-bound",
@@ -166,8 +166,8 @@
     "id": "ann-188-upper-bound",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 94,
-      "endLine": 95
+      "startLine": 92,
+      "endLine": 92
     },
     "type": "concept",
     "title": "Upper Bound (Erdős-Graham)",
@@ -189,8 +189,8 @@
     "id": "ann-188-bounds-theorem",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 97,
-      "endLine": 105
+      "startLine": 95,
+      "endLine": 102
     },
     "type": "concept",
     "title": "Combined Bounds and Nonemptiness",
@@ -212,8 +212,8 @@
     "id": "ann-188-unit-graph",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 107,
-      "endLine": 128
+      "startLine": 111,
+      "endLine": 125
     },
     "type": "definition",
     "title": "Unit Distance Graph",
@@ -236,45 +236,23 @@
     "id": "ann-188-van-der-waerden",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 136,
-      "endLine": 140
+      "startLine": 127,
+      "endLine": 134
     },
     "type": "concept",
-    "title": "Van der Waerden's Theorem",
-    "content": "The axiomatized `vanDerWaerden` states: for any $r$ colors and length $k$, there exists $N$ such that any $r$-coloring of $\\{1, \\ldots, N\\}$ contains a monochromatic $k$-term AP. This 1927 result is a pillar of Ramsey theory and explains why the original Problem #188 (without unit-step restriction) has no finite solution.",
-    "mathContext": "$\\forall r, k \\in \\mathbb{N},\\, r > 0 \\implies \\exists N,\\, \\forall c : \\text{Fin}\\, r \\to \\mathbb{N} \\to \\text{Bool},\\, \\exists$ monochromatic $k$-AP. Van der Waerden's theorem applies to any embedding of $\\mathbb{Z}$ in blue, forcing long blue APs if no step-length restriction is imposed.",
+    "title": "Van der Waerden and Alon's Observation",
+    "content": "Part 5 commentary (no formal declarations): van der Waerden's theorem says any finite coloring of $\\mathbb{Z}$ has arbitrarily long monochromatic APs. Noga Alon observed that this dooms the *original* problem — without the unit-step restriction, a red-independent coloring leaves a copy of $\\mathbb{Z}$ in blue (via collinear unit translations), so van der Waerden forces long blue APs for every $k$. This is why the unit-step condition is imposed; both facts are discussed here as motivation rather than formalized.",
+    "mathContext": "van der Waerden: $\\forall r, k,\\, r > 0 \\implies \\exists N$ s.t. any $r$-coloring of $\\{1, \\ldots, N\\}$ has a monochromatic $k$-AP. Alon's corollary: $\\lnot\\exists k$ solving the step-unrestricted problem, since blue contains $\\mathbb{Z}$ up to unit translation.",
     "significance": "key",
     "relatedConcepts": [
       "van-der-Waerden-theorem",
-      "Ramsey-theory",
-      "monochromatic-AP"
-    ],
-    "prerequisites": [
-      "finite colorings of integers",
-      "arithmetic progressions",
-      "Ramsey theory fundamentals"
-    ]
-  },
-  {
-    "id": "ann-188-alon",
-    "proofId": "erdos-188",
-    "range": {
-      "startLine": 144,
-      "endLine": 146
-    },
-    "type": "concept",
-    "title": "Alon's Observation",
-    "content": "`alon_observation` axiomatizes Noga Alon's key insight: the original problem (forbidding blue APs with arbitrary step length) has no solution for any $k$. If the red set is independent in the unit distance graph, blue contains a copy of $\\mathbb{Z}$ via unit translations, and van der Waerden forces arbitrarily long monochromatic APs. This motivates the unit-step restriction.",
-    "mathContext": "$\\lnot\\exists k,\\, \\forall c,\\, \\text{RedUnitDistFree}(c) \\implies \\lnot\\exists a, d \\neq 0,\\, \\forall i < k,\\, c(a + id) = 1$. Alon's argument: embed $\\mathbb{Z}$ into blue via collinear unit-spaced points; by van der Waerden, blue must contain arbitrarily long APs regardless of $k$.",
-    "significance": "key",
-    "relatedConcepts": [
       "Noga-Alon",
-      "van-der-Waerden-application",
+      "Ramsey-theory",
       "problem-correction"
     ],
     "prerequisites": [
-      "van der Waerden's theorem",
-      "unit distance graph independence",
+      "arithmetic progressions",
+      "Ramsey theory fundamentals",
       "embedding integers in the plane"
     ]
   },
@@ -282,13 +260,13 @@
     "id": "ann-188-generalization",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 159,
-      "endLine": 161
+      "startLine": 135,
+      "endLine": 148
     },
     "type": "concept",
     "title": "Constructions and Large k",
-    "content": "The theorem `large_k_valid` derives the existence of some valid coloring as an immediate consequence of `upper_bound_exists`. The Erdős-Graham stripe construction shows that for sufficiently large $k$ (at most $10^7$), one can color the plane to satisfy both constraints. The section also mentions schematic stripe-based colorings.",
-    "mathContext": "$\\exists k, c,\\, \\text{IsValid}(c, k)$. This is a simple projection from the upper bound axiom. The actual construction colors points red when they lie within thin strips (width $< 1/2$ to avoid unit distances) parallel to a fixed direction, leaving blue points in the gaps.",
+    "content": "The theorem `large_k_valid` derives the existence of some valid coloring as an immediate consequence of `upper_bound_exists`. The Part 6 commentary sketches the Erdős-Graham stripe construction: color a point red when it lies within a thin lattice strip (avoiding red unit distances), leaving blue points in the gaps so that blue unit-step APs stay bounded.",
+    "mathContext": "$\\exists k, c,\\, \\text{IsValid}(c, k)$. This is a simple projection from the upper bound axiom. The stripe construction colors points red within thin strips (width $< 1/2$ to avoid unit distances) parallel to a fixed direction, leaving blue points in the gaps.",
     "significance": "supporting",
     "relatedConcepts": [
       "existence-proof",
@@ -304,8 +282,8 @@
     "id": "ann-188-status",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 170,
-      "endLine": 188
+      "startLine": 157,
+      "endLine": 173
     },
     "type": "definition",
     "title": "Problem Status and Formal Statement",

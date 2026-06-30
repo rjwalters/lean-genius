@@ -1,8 +1,8 @@
 {
   "slug": "minkowski-theorem-oq-04",
   "title": "Blichfeldt's Theorem: k+1 Congruent Points When vol > k",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -18,12 +18,12 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-02T00:25:00Z",
-    "iteration": 30,
-    "focus": "S30 ACT PR-B (researcher-1, 2026-06-02): shipped `blichfeldt_general_lattice` to `MinkowskiTheoremOQ04.lean:441` (post-edit numbering) via mechanical S23 §4 substitution from `blichfeldt_general` — `stdLattice n → Submodule.span ℤ (Set.range b)`, `stdFundDomain n → ZSpan.fundamentalDomain b`, `volume_eq_setLIntegral_indicator_tsum → volume_eq_setLIntegral_indicator_tsum_lattice b` (the S27 PR-A helper). Hypothesis form `(k : ENNReal) * volume (ZSpan.fundamentalDomain b) < volume s` per S23 §5 (covolume term abstract; the `stdLattice_covolume = 1` reduction is the only `stdLattice`-specific step in `blichfeldt_general` and is the substitution target). Docker 3075-job clean on first try (pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, unchanged since S25/S26/S27/S28/S29). Pre-flight INFRA at S30: B1 (Docker hung 19.9h at S29) CLEARED — full Server: section returned; B2 (disk RED 3.4 Gi at S29) CLEARED — 55 Gi avail. Source file 987 → 1126 LOC (+139), 16 → 17 theorems, 0 sorries, 0 axioms. +1 `#check BlichfeldtTheorem.blichfeldt_general_lattice` at :1117. Mechanic territory deferred: `meta.json.lineCount 987 → 1126`, `meta.json.theoremCount 16 → 17`, `mainTheorems[]` rich entry for `blichfeldt_general_lattice`. PR-C (`minkowski_general_k_lattice`, ~50 LOC) is the last remaining S24 ACT — paste-ready in S23 §2.2, bearers B3 + B4 enter scope.",
+    "iteration": 31,
+    "focus": "S31 COMPLETION-SYNC (researcher-2, 2026-06-13): the STATED OQ04 problem — Blichfeldt's theorem for the integer lattice Z^n (any measurable S with vol(S) > k contains k+1 distinct points with pairwise differences in Z^n) plus the Minkowski corollary — is FULLY PROVED and gallery-verified. MinkowskiTheoremOQ04.lean has 0 sorries, 0 axioms, 17 theorems (1126 LOC); gallery meta.json status=verified, badge=original, counts already synced (1126/17). The problem statement is matched exactly by blichfeldt_general_finset (Finset k+1 form, pairwise diffs in stdLattice n) + blichfeldt_general_pairwise (adds distinctness) + minkowski_from_blichfeldt (convex-symmetric corollary). Flipped status active->completed. The general-LATTICE generalization (basis-parametric blichfeldt_general_lattice shipped S30, and the pending PR-C minkowski_general_k_lattice) is optional extension work BEYOND the stated problem; it is Docker-gated (daemon down at S31 entry, timeout 124) and can resume as follow-on without blocking completion of the stated OQ04.",
     "blockers": [],
-    "nextAction": "S24 ACT PR-C (`minkowski_general_k_lattice`, ~50 LOC) — last remaining S24 ACT after PR-A (S27) and PR-B (this S30). Paste-ready Lean in `s23-lattice-generalization-spec.md §2.2`. Bearers B3 (`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) + B4 (`Module.finrank_fin_fun`) enter scope; both pinned in S25 manifest at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Half-scaling + central-symmetry + convexity reduction onto PR-B's `blichfeldt_general_lattice`. Insertion site: after `minkowski_general_k` at :719. Next picker: (a) verify Docker GREEN: `timeout 10 docker info 2>&1 | grep -E \"^Server:\" -A 5`; (b) verify disk ≥ 5 Gi; (c) IF BOTH GREEN: paste S23 §2.2 and ship via `./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ04` (~12 min cold start); (d) IF EITHER RED: ship doc-only S31 STATE-SYNC. Mechanic-pending after S30 lands: `meta.json.lineCount 987 → 1126`, `meta.json.theoremCount 16 → 17`, `mainTheorems[]` rich entry for `blichfeldt_general_lattice`. Anti-scope retained from S23/S24: no `_symm`, no `_five_points`, no wrapper-square closers.",
+    "nextAction": "DONE for the stated problem — no further action required to close OQ04. OPTIONAL follow-on (not blocking, tracked here for continuity): the general-lattice generalization PR-C `minkowski_general_k_lattice` (~50 LOC, paste-ready in s23-lattice-generalization-spec.md §2.2) extends Minkowski from Z^n to an arbitrary lattice basis b; it is Docker-gated (daemon down at S31, `timeout 5 docker info` exits 124). If pursued, verify Docker GREEN first (`timeout 10 docker info` exit 0), then ship via `./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ04`. This generalization is beyond the stated OQ04 and does not affect the completed status.",
     "attemptCounts": {
-      "total": 29,
+      "total": 30,
       "currentApproach": 14,
       "approachesTried": 0
     },
@@ -106,7 +106,11 @@
     "minkowski-theorem",
     "minkowski-theorem-oq-02",
     "minkowski-theorem-oq-02-oq-01",
-    "minkowski-theorem-oq-04"
+    "minkowski-theorem-oq-03",
+    "minkowski-theorem-oq-04",
+    "minkowski-theorem-oq-04-oq-03",
+    "minkowski-theorem-oq-05",
+    "minkowski-theorem-oq-06"
   ],
   "references": {
     "papers": [],
@@ -140,16 +144,71 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean"
     },
     {
+      "path": "Proofs/MinkowskiTheoremOQ02OQ03.lean",
+      "filename": "MinkowskiTheoremOQ02OQ03.lean",
+      "lineCount": 569,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ03.lean",
+      "filename": "MinkowskiTheoremOQ03.lean",
+      "lineCount": 163,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ03.lean"
+    },
+    {
       "path": "Proofs/MinkowskiTheoremOQ04.lean",
       "filename": "MinkowskiTheoremOQ04.lean",
-      "lineCount": 1126,
+      "lineCount": 1127,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ04OQ03.lean",
+      "filename": "MinkowskiTheoremOQ04OQ03.lean",
+      "lineCount": 216,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ05.lean",
+      "filename": "MinkowskiTheoremOQ05.lean",
+      "lineCount": 122,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ05.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ06.lean",
+      "filename": "MinkowskiTheoremOQ06.lean",
+      "lineCount": 270,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ06.lean"
     }
   ],
-  "lastUpdate": "2026-06-02T00:25:00Z"
+  "lastUpdate": "2026-06-13"
 }

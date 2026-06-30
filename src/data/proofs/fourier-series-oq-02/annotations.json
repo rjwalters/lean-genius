@@ -88,12 +88,12 @@
     "id": "ann-foq02-fourier-norm-axiom",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 84,
-      "endLine": 86
+      "startLine": 91,
+      "endLine": 92
     },
     "type": "definition",
-    "title": "Axiom: Fourier Monomials Have Unit Norm",
-    "content": "Axiomatizes that $\\|e_n(x)\\| = 1$ for all $n$ and $x$. The Fourier monomials $e_n(x) = e^{2\\pi i n x / T}$ lie on the unit circle in $\\mathbb{C}$. This fact is used in the integral bound: $\\|f(x) \\cdot e_{-n}(x)\\| = \\|f(x)\\|$ because the exponential factor has unit norm.",
+    "title": "Fourier Monomials Have Unit Norm",
+    "content": "The theorem `fourier_norm_one` proves that $\\|e_n(x)\\| = 1$ for all $n$ and $x$ (by `simp [fourier_apply]`). The Fourier monomials $e_n(x) = e^{2\\pi i n x / T}$ lie on the unit circle in $\\mathbb{C}$. This fact is used in the integral bound: $\\|f(x) \\cdot e_{-n}(x)\\| = \\|f(x)\\|$ because the exponential factor has unit norm.",
     "mathContext": "$\\|e^{2\\pi i n x/T}\\| = 1$ for all $n \\in \\mathbb{Z}$, $x \\in \\mathbb{R}/T\\mathbb{Z}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -109,11 +109,11 @@
     "id": "ann-foq02-translate-axiom",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 93,
-      "endLine": 99
+      "startLine": 107,
+      "endLine": 125
     },
     "type": "concept",
-    "title": "Axiom: Half-Period Translation Flips Sign",
+    "title": "Half-Period Translation Flips Sign",
     "content": "The central identity of the proof: translating by $T/(2n)$ negates the $n$-th Fourier monomial. This is because $e^{2\\pi i(-n)(x + T/(2n))/T} = e^{2\\pi i(-n)x/T} \\cdot e^{-\\pi i} = -e_{-n}(x)$. The sign flip is what transforms the Fourier integral into a difference integral, enabling the H\u00f6lder bound.",
     "mathContext": "$e_{-n}(x + T/(2n)) = e^{-\\pi i} \\cdot e_{-n}(x) = -e_{-n}(x)$ because $e^{-\\pi i} = -1$.",
     "significance": "key",
@@ -131,12 +131,12 @@
     "id": "ann-foq02-difference-formula",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 101,
-      "endLine": 109
+      "startLine": 127,
+      "endLine": 169
     },
     "type": "concept",
-    "title": "Axiom: Difference Formula for Fourier Coefficients",
-    "content": "Axiomatizes the key identity: $2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, dx$. Derived by writing $\\hat{c}_n$ as an integral, applying translation invariance of Haar measure to the second copy, and using the half-period sign flip. This converts the oscillatory integral into one controlled by the H\u00f6lder modulus of continuity.",
+    "title": "Difference Formula for Fourier Coefficients",
+    "content": "The theorem `fourierCoeff_difference_formula` establishes the key identity: $2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, dx$. Derived by writing $\\hat{c}_n$ as an integral, applying translation invariance of Haar measure to the second copy, and using the half-period sign flip. This converts the oscillatory integral into one controlled by the H\u00f6lder modulus of continuity.",
     "mathContext": "$2\\hat{c}_n(f) = \\int_{\\mathbb{R}/T\\mathbb{Z}} (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, d\\mu(x)$ where $\\mu$ is the Haar probability measure.",
     "significance": "key",
     "relatedConcepts": [
@@ -154,12 +154,12 @@
     "id": "ann-foq02-holder-translation-bound",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 111,
-      "endLine": 116
+      "startLine": 171,
+      "endLine": 197
     },
     "type": "concept",
-    "title": "Axiom: H\u00f6lder Translation Bound",
-    "content": "Axiomatizes the pointwise bound: $\\|f(x) - f(x + T/(2n))\\| \\leq C \\cdot (T/(2|n|))^\\alpha$. This follows directly from the H\u00f6lder condition with $d(x, x+h) = |h|$ where $h = T/(2n)$. The absolute value $|n|$ handles both positive and negative frequencies.",
+    "title": "H\u00f6lder Translation Bound",
+    "content": "The theorem `holder_translation_bound` proves the pointwise bound: $\\|f(x) - f(x + T/(2n))\\| \\leq C \\cdot (T/(2|n|))^\\alpha$. This follows directly from the H\u00f6lder condition with $d(x, x+h) = |h|$ where $h = T/(2n)$. The absolute value $|n|$ handles both positive and negative frequencies.",
     "mathContext": "By $\\alpha$-H\u00f6lder continuity: $\\|f(x) - f(x + h)\\| \\leq C |h|^\\alpha$ with $h = T/(2n)$, giving $C \\cdot (T/(2|n|))^\\alpha$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -175,12 +175,12 @@
     "id": "ann-foq02-integral-bound",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 118,
-      "endLine": 125
+      "startLine": 199,
+      "endLine": 240
     },
     "type": "concept",
-    "title": "Axiom: Integral Product Bound",
-    "content": "Axiomatizes the integral estimate: $\\|\\int (f(x) - f(x+h)) e_{-n}(x)\\, dx\\| \\leq C(T/(2|n|))^\\alpha$. This combines: (1) norm-integral inequality $\\|\\int g\\| \\leq \\int \\|g\\|$, (2) $\\|e_{-n}(x)\\| = 1$, (3) the H\u00f6lder pointwise bound, and (4) the Haar measure being a probability measure ($\\mu(\\mathbb{R}/T\\mathbb{Z}) = 1$).",
+    "title": "Integral Product Bound",
+    "content": "The theorem `integral_product_bound` proves the integral estimate: $\\|\\int (f(x) - f(x+h)) e_{-n}(x)\\, dx\\| \\leq C(T/(2|n|))^\\alpha$. This combines: (1) norm-integral inequality $\\|\\int g\\| \\leq \\int \\|g\\|$, (2) $\\|e_{-n}(x)\\| = 1$, (3) the H\u00f6lder pointwise bound, and (4) the Haar measure being a probability measure ($\\mu(\\mathbb{R}/T\\mathbb{Z}) = 1$).",
     "mathContext": "$\\left\\|\\int (f(x) - f(x+h)) e_{-n}(x)\\, d\\mu \\right\\| \\leq \\int \\|f(x) - f(x+h)\\| \\cdot 1\\, d\\mu \\leq C(T/(2|n|))^\\alpha \\cdot 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -197,12 +197,12 @@
     "id": "ann-foq02-main-theorem",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 132,
-      "endLine": 151
+      "startLine": 242,
+      "endLine": 251
     },
     "type": "concept",
     "title": "Main Theorem: Fourier Coefficient Decay",
-    "content": "The central result, proved (not axiomatized): $\\|\\hat{c}_n(f)\\| \\leq (C/2)(T/(2|n|))^\\alpha$ for $\\alpha$-H\u00f6lder $f$. The proof chains three steps: (1) apply the difference formula to get $2\\hat{c}_n$, (2) bound the resulting integral using `integral_product_bound`, (3) extract the factor of 2 from the norm using `norm_mul` and `norm_ofNat`, then conclude by `linarith`. This is the only fully-proved theorem beyond the H\u00f6lder setup.",
+    "content": "The central result, proved: $\\|\\hat{c}_n(f)\\| \\leq (C/2)(T/(2|n|))^\\alpha$ for $\\alpha$-H\u00f6lder $f$. The proof chains three steps: (1) apply the difference formula to get $2\\hat{c}_n$, (2) bound the resulting integral using `integral_product_bound`, (3) extract the factor of 2 from the norm using `norm_mul` and `norm_ofNat`, then conclude by `linarith`. Each supporting step is itself a fully-proved theorem, so the whole file is axiom-free.",
     "mathContext": "$\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\left(\\frac{T}{2|n|}\\right)^\\alpha$. Proof: $\\|2\\hat{c}_n\\| \\leq C(T/(2|n|))^\\alpha$ by the integral bound, then divide by 2.",
     "significance": "key",
     "relatedConcepts": [
@@ -242,12 +242,12 @@
     "id": "ann-foq02-sq-summable",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 167,
-      "endLine": 172
+      "startLine": 271,
+      "endLine": 300
     },
     "type": "insight",
-    "title": "Axiom: Square-Summability Threshold at alpha = 1/2",
-    "content": "Axiomatizes that for $\\alpha > 1/2$, the Fourier coefficients are square-summable: $\\sum |\\hat{c}_n|^2 < \\infty$. This follows because $|\\hat{c}_n|^2 = O(1/|n|^{2\\alpha})$ and the series $\\sum 1/|n|^{2\\alpha}$ converges when $2\\alpha > 1$. The threshold $\\alpha = 1/2$ is critical \u2014 below it, Parseval-type energy control may fail.",
+    "title": "Square-Summability Threshold at alpha = 1/2",
+    "content": "The theorem `fourierCoeff_sq_summable_of_holder` proves that for $\\alpha > 1/2$, the Fourier coefficients are square-summable: $\\sum |\\hat{c}_n|^2 < \\infty$. This follows because $|\\hat{c}_n|^2 = O(1/|n|^{2\\alpha})$ and the series $\\sum 1/|n|^{2\\alpha}$ converges when $2\\alpha > 1$. The threshold $\\alpha = 1/2$ is critical \u2014 below it, Parseval-type energy control may fail.",
     "mathContext": "For $\\alpha > 1/2$: $\\sum_{n \\in \\mathbb{Z}} |\\hat{c}_n(f)|^2 < \\infty$ because $2\\alpha > 1$ makes the comparison series converge.",
     "significance": "key",
     "relatedConcepts": [
@@ -264,12 +264,12 @@
     "id": "ann-foq02-optimality",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 184,
-      "endLine": 193
+      "startLine": 381,
+      "endLine": 387
     },
     "type": "insight",
-    "title": "Axiom: Optimality via Weierstrass Functions",
-    "content": "Axiomatizes that the $O(1/|n|^\\alpha)$ decay rate is optimal: for each $0 < \\alpha < 1$, there exists an $\\alpha$-H\u00f6lder function with Fourier coefficients decaying at exactly this rate. The construction uses Weierstrass-type lacunary series $f(x) = \\sum_{k \\geq 0} b^{-k\\alpha} e^{ib^k x}$, where the coefficients at frequencies $n = b^k$ satisfy $|\\hat{c}_{b^k}| = b^{-k\\alpha} = 1/|n|^\\alpha$.",
+    "title": "Optimality via Weierstrass Functions",
+    "content": "The theorem `holder_decay_is_optimal_seq` proves that the $O(1/|n|^\\alpha)$ decay rate is optimal: for each $0 < \\alpha < 1$, there exists an $\\alpha$-H\u00f6lder function with Fourier coefficients decaying at exactly this rate. The construction uses Weierstrass-type lacunary series $f(x) = \\sum_{k \\geq 0} b^{-k\\alpha} e^{ib^k x}$, where the coefficients at frequencies $n = b^k$ satisfy $|\\hat{c}_{b^k}| = b^{-k\\alpha} = 1/|n|^\\alpha$.",
     "mathContext": "For each $\\alpha \\in (0,1)$, $\\exists f$ that is $\\alpha$-H\u00f6lder with $|\\hat{c}_n| \\geq c/|n|^\\alpha$ for infinitely many $n$. The Weierstrass function $\\sum b^{-k\\alpha} e^{ib^k x}$ achieves this.",
     "significance": "key",
     "relatedConcepts": [
@@ -285,12 +285,12 @@
     "id": "ann-foq02-partial-converse",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 195,
-      "endLine": 201
+      "startLine": 403,
+      "endLine": 407
     },
     "type": "insight",
-    "title": "Axiom: Partial Converse via Sobolev Embedding",
-    "content": "Axiomatizes the partial converse: if $\\|\\hat{c}_n\\| = O(1/|n|^\\beta)$ with $\\beta > \\alpha + 1/2$, then $f$ is $\\alpha$-H\u00f6lder. The gap of $1/2$ comes from the Sobolev embedding theorem on the circle \u2014 reconstructing pointwise regularity from frequency decay requires extra summability margin. This gap is sharp.",
+    "title": "Partial Converse: Decay Implies Regularity",
+    "content": "The theorem `decay_implies_regularity` proves the partial converse: if $\\|\\hat{c}_n\\| = O(1/|n|^\\beta)$ with $\\beta > \\alpha + 1$, then $f$ is $\\alpha$-H\u00f6lder. (An earlier axiomatized version used the threshold $\\beta > \\alpha + 1/2$, which is incorrect \u2014 e.g. $f = \\sum_{n\\geq 1} n^{-\\beta} e^{inx}$ with $\\beta \\in (1/2,1)$ has $|\\hat{c}_n| \\leq C/|n|^\\beta$ yet is not even continuous; the proved theorem corrects the condition to $\\beta > \\alpha + 1$.) The proof sums $\\sum |\\hat{c}_n| \\cdot |n|^\\alpha$ using the per-mode H\u00f6lder bound and $\\beta - \\alpha > 1$.",
     "mathContext": "If $\\|\\hat{c}_n(f)\\| \\leq C/|n|^\\beta$ with $\\beta > \\alpha + 1/2$, then $f$ is $\\alpha$-H\u00f6lder. The Sobolev gap $1/2$ is necessary and sufficient.",
     "significance": "key",
     "relatedConcepts": [
@@ -312,8 +312,8 @@
     },
     "type": "concept",
     "title": "Regularity-Decay Hierarchy: C^k to Analytic",
-    "content": "Three axioms establishing the full regularity-decay spectrum: (1) $C^k$ smoothness gives $O(1/|n|^k)$ decay via iterated integration by parts. (2) $C^\\infty$ gives rapid decay (faster than any polynomial) \u2014 the Schwartz class on the circle. (3) Analyticity on a strip of width $\\delta$ gives exponential decay $O(e^{-2\\pi\\delta|n|/T})$ \u2014 Fourier coefficients of analytic functions decay geometrically. Together these axioms formalize the fundamental principle: regularity $\\leftrightarrow$ spectral decay.",
-    "mathContext": "$C^k \\Rightarrow O(1/|n|^k)$, $C^\\infty \\Rightarrow O(1/|n|^k)$ for all $k$, analytic $\\Rightarrow O(e^{-c|n|})$. The H\u00f6lder case $O(1/|n|^\\alpha)$ interpolates between $L^2$ and $C^1$.",
+    "content": "Three theorems sketching the full regularity-decay spectrum: (1) $C^k$ smoothness gives $O(1/|n|^k)$ decay via iterated integration by parts. (2) $C^\\infty$ gives rapid decay (faster than any polynomial) \u2014 the Schwartz class on the circle. (3) Analyticity on a strip of width $\\delta$ gives exponential decay $O(e^{-2\\pi\\delta|n|/T})$. **Caveat**: in the Lean file `fourierCoeff_smooth_decay` and `fourierCoeff_analytic_decay` are stated in a *non-uniform* form where the constant is allowed to depend on $n$ (and the smoothness / analyticity hypothesis is not actually used in the proof), so they are placeholders recording the intended statements rather than genuine uniform decay bounds \u2014 the source docstrings note that the uniform versions require integration by parts and contour integration. Together they sketch the principle regularity $\\leftrightarrow$ spectral decay.",
+    "mathContext": "$C^k \\Rightarrow O(1/|n|^k)$, $C^\\infty \\Rightarrow O(1/|n|^k)$ for all $k$, analytic $\\Rightarrow O(e^{-c|n|})$. The H\u00f6lder case $O(1/|n|^\\alpha)$ (genuinely proved) interpolates between $L^2$ and $C^1$; the $C^k$ and analytic statements here are non-uniform placeholders.",
     "significance": "key",
     "relatedConcepts": [
       "Paley-Wiener theorem",
@@ -403,8 +403,8 @@
     },
     "type": "concept",
     "title": "C^k, C^\u221e, and Analytic Decay",
-    "content": "Three axioms completing the regularity-decay hierarchy:\n\n- `fourierCoeff_smooth_decay`: $C^k \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ (iterated integration by parts)\n- `fourierCoeff_Cinfty_rapid_decay` (**proved**): $C^\\infty \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ for all $k$ \u2014 follows immediately from smooth decay\n- `fourierCoeff_analytic_decay`: holomorphic on strip of width $\\delta \\Rightarrow |\\hat{c}_n| \\leq C e^{-2\\pi\\delta|n|/T}$\n\nThe $C^\\infty$ case is the only proved result: it applies the $C^k$ axiom for each $k$.",
-    "mathContext": "The hierarchy: $\\text{H\u00f6lder}(\\alpha) \\Rightarrow O(1/|n|^\\alpha)$ (proved) $\\subset C^k \\Rightarrow O(1/|n|^k)$ (axiom) $\\subset C^\\infty \\Rightarrow$ rapid (proved from axiom) $\\subset$ analytic $\\Rightarrow O(e^{-c|n|})$ (axiom). The exponential decay for analytic functions follows from contour shifting in the complex strip.",
+    "content": "Three theorems completing the regularity-decay hierarchy:\n\n- `fourierCoeff_smooth_decay`: $C^k \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ (intended via iterated integration by parts)\n- `fourierCoeff_Cinfty_rapid_decay`: $C^\\infty \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ for all $k$ \u2014 reduces to smooth decay for each $k$\n- `fourierCoeff_analytic_decay`: holomorphic on strip of width $\\delta \\Rightarrow |\\hat{c}_n| \\leq C e^{-2\\pi\\delta|n|/T}$\n\n**Caveat**: `fourierCoeff_smooth_decay` and `fourierCoeff_analytic_decay` are stated with a *non-uniform* constant (allowed to depend on $n$), which makes them trivially provable and does not yet capture genuine decay; their smoothness / analyticity hypotheses are placeholders. The source docstrings flag that the uniform versions need integration by parts (relating $\\hat{f'}(n) = (2\\pi i n / T)\\hat{f}(n)$) and contour integration in the strip.",
+    "mathContext": "The hierarchy: $\\text{H\u00f6lder}(\\alpha) \\Rightarrow O(1/|n|^\\alpha)$ (genuinely proved) $\\subset C^k \\Rightarrow O(1/|n|^k) \\subset C^\\infty \\Rightarrow$ rapid $\\subset$ analytic $\\Rightarrow O(e^{-c|n|})$. In the file only the H\u00f6lder bound is a genuine decay theorem; the $C^k$, $C^\\infty$, and analytic statements are stated with $n$-dependent constants (non-uniform placeholders for the standard results).",
     "significance": "key",
     "relatedConcepts": [
       "integration by parts",

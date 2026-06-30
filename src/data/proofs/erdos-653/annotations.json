@@ -16,7 +16,11 @@
       "Combinatorial geometry",
       "Point configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "Euclidean plane geometry",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e653-distance",
@@ -35,7 +39,11 @@
       "Distance set",
       "Local diversity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "set theory",
+      "Lean 4 / Mathlib Finset operations"
+    ]
   },
   {
     "id": "ann-e653-g-function",
@@ -54,7 +62,11 @@
       "R-diversity",
       "Extremal configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis (suprema)",
+      "extremal combinatorics",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e653-bounds",
@@ -74,7 +86,11 @@
       "Csizmadia",
       "Erdős-Fishburn"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "asymptotic analysis",
+      "incidence geometry"
+    ]
   },
   {
     "id": "ann-e653-conjecture",
@@ -93,7 +109,11 @@
       "Asymptotic analysis",
       "Almost-injectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis (limits)",
+      "mathematical logic (quantifiers)"
+    ]
   },
   {
     "id": "ann-e653-special",
@@ -102,7 +122,7 @@
       "startLine": 160,
       "endLine": 187
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Special Configurations: Collinear and Regular Polygon",
     "content": "**IsCollinear(S):** Points lying on a single line. Equally spaced collinear points give varying R-values since endpoints see different distance sets than interior points.\n\n**IsRegularPolygon(S):** Points on a circle at equal spacing. By rotational symmetry, every vertex has the same R-value, giving only g = 1 distinct R-value regardless of n — the worst case.\n\n**regular_polygon_r_value** (axiom): In a regular n-gon (n ≥ 3), all points have the same distinctDistCount. This formalizes the symmetry argument.",
     "mathContext": "Regular polygons demonstrate that symmetric configurations are bad for R-diversity. Configurations maximizing g(n) must break symmetry to create varied local distance structures.",
@@ -113,7 +133,11 @@
       "Regular polygons",
       "Worst case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "plane geometry",
+      "group theory (symmetry)",
+      "combinatorial geometry"
+    ]
   },
   {
     "id": "ann-e653-gap",
@@ -132,7 +156,11 @@
       "Sublinear growth",
       "Geometric constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "combinatorial geometry"
+    ]
   },
   {
     "id": "ann-e653-summary",
@@ -151,6 +179,10 @@
       "Axiom composition",
       "Known results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 tactic mode",
+      "asymptotic analysis"
+    ]
   }
 ]

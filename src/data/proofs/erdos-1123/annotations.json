@@ -23,7 +23,12 @@
       "boolean-algebras",
       "independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Boolean algebra",
+      "analytic number theory",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-e1123-density",
@@ -48,7 +53,12 @@
       "number-theory",
       "ideals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "real analysis",
+      "asymptotic limits",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e1123-algebras",
@@ -73,7 +83,12 @@
       "quotient-type",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "quotient constructions in Lean 4",
+      "Setoid and equivalence relations",
+      "Boolean algebra",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e1123-resolution",
@@ -99,7 +114,12 @@
       "back-and-forth",
       "independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "model theory",
+      "cardinal arithmetic",
+      "independence proofs in ZFC"
+    ]
   },
   {
     "id": "ann-e1123-ideals",
@@ -123,6 +143,10 @@
       "sigma-ideal",
       "closure-properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "lattice and ideal theory",
+      "countable set operations"
+    ]
   }
 ]

@@ -8,7 +8,7 @@
     "author": "Johann Faulhaber / Nicomachus (formalized)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Faulhaber%27s_formulas",
     "date": "c. 100 CE",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/SumOfKthPowers.lean",
     "tags": [
       "algebra",
@@ -17,7 +17,7 @@
       "wiedijk-100",
       "induction"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -39,9 +39,9 @@
       "Closed-form formula for sum of fifth powers: n²(n+1)²(2n²+2n-1)/12"
     ],
     "dateAdded": "2025-12-27",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 600,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Relies on `Lean.ofReduceBool`: 14 named verification theorems (sum_squares_100, sum_cubes_100, sum_sixth_powers_10, sum_seventh_powers_5/10, sum_fourth/fifth_powers_5/10, sum_fourth/fifth_formula_check_10, sum_squares_10, sum_cubes_10, sum_10_squared) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction (the `Lean.ofReduceBool` axiom). The closed-form Faulhaber/Nicomachus formula proofs themselves are by ordinary induction and are axiom-free; only the concrete numeric instance checks invoke `native_decide`. 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 55,
     "definitionCount": 0
@@ -149,6 +149,21 @@
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Euler's totient function connects to Bernoulli numbers via the von Staudt-Clausen theorem: the denominator of $B_{2k}$ is $\\prod_{p-1 \\mid 2k} p$, involving primes whose relationship to $\\phi$ governs the arithmetic of power sums"
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes the $k=1,\\dots,5$ closed forms here into the single Faulhaber formula $\\sum_{i=1}^{n} i^k = \\frac{1}{k+1}\\sum_{j=0}^{k}\\binom{k+1}{j}B_j\\,n^{k+1-j}$, formalized via Mathlib's Bernoulli infrastructure so each specific formula falls out by pure computation"
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-02",
+      "relationship": "extended-by",
+      "description": "Pushes power sums to real exponents through the $p$-series $\\zeta(s) = \\sum_n n^{-s}$, proving the convergence dichotomy ($\\zeta(s)$ converges iff $s > 1$) and recovering $\\zeta(2) = \\pi^2/6$ and $\\zeta(4) = \\pi^4/90$"
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-03",
+      "relationship": "extended-by",
+      "description": "Gives a second, structurally independent proof of Nicomachus's identity $\\sum_{i\\le n} i^3 = (\\sum_{i\\le n} i)^2$ by tiling consecutive odd numbers, complementing the parent's closed-form algebraic route"
     }
   ],
   "leanFile": {

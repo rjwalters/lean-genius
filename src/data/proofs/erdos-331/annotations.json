@@ -17,7 +17,11 @@
       "binary representation",
       "Filter.Tendsto"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean module headers and import statements",
+      "Mathlib namespaces (Nat, Real, Finset, Filter)",
+      "binary-digit representation of natural numbers"
+    ]
   },
   {
     "id": "ann-331-counting",

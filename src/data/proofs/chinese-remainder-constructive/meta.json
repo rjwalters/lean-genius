@@ -6,7 +6,7 @@
   "meta": {
     "author": "Sun Zi (formalized in Lean 4)",
     "date": "3rd-5th century CE",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ChineseRemainderConstructive.lean",
     "tags": [
       "number-theory",
@@ -14,7 +14,7 @@
       "algorithms",
       "classical"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -54,9 +54,9 @@
       "Modular arithmetic preservation (add, mul, pow)"
     ],
     "dateAdded": "2025-12-31",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 416,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Depends on `Lean.ofReduceBool`. The advertised concrete worked examples — the classic Sunzi problem solution (23 mod 105) and the four-moduli example (53 mod 210), along with the other numeric congruence checks — are established solely by `native_decide`, which trusts the Lean compiler's kernel reduction and so introduces the `Lean.ofReduceBool` axiom. The general structural results (existence `crt_exists`, uniqueness `crt_unique`/`crt_three_unique`/`crt_four_unique`, the Bezout construction, and modular-arithmetic preservation) are proved symbolically and are axiom-free; only the named computational examples carry the `native_decide` dependency. No literal `axiom` declarations and 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 17,
     "definitionCount": 2
@@ -64,7 +64,7 @@
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem first appeared in the Sunzi Suanjing ('The Mathematical Classic of Sun Zi'), a Chinese treatise from the 3rd-5th century CE. The classic problem asks:\n\n'Find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7.'\n\nThe answer is 23, unique modulo 105 = 3 * 5 * 7. Indian mathematicians, notably Aryabhata (499 CE), independently developed similar techniques for astronomical calculations involving planetary periods. The theorem was rediscovered in Europe by Euler and fully developed by Gauss in his Disquisitiones Arithmeticae (1801), where it appears as a tool for reducing modular computations. The modern ring-theoretic formulation — CRT gives an isomorphism Z/mnZ -> Z/mZ x Z/nZ — emerged in the 20th century and is fundamental to algebraic number theory and cryptography.",
     "problemStatement": "**Chinese Remainder Theorem**: Given pairwise coprime moduli m1, m2, ..., mk and any integers a1, a2, ..., ak, there exists a unique x (mod m1*m2*...*mk) such that:\n\nx = a1 (mod m1)\nx = a2 (mod m2)\n...\nx = ak (mod mk)\n\n**Constructive Formula**: For two moduli m, n with gcd(m,n) = 1, find u, v with mu + nv = 1 (Bezout). Then:\nx = a*n*v + b*m*u\nsatisfies x = a (mod m) and x = b (mod n).",
-    "text": "A 416-line constructive formalization of the Chinese Remainder Theorem with 21 declarations, 0 sorries, 0 axioms. Uses Mathlib's `Nat.chineseRemainder` for the core two-moduli case, then iterates via `Nat.Coprime.mul_left` for multi-moduli systems. The explicit Bezout witness $x = a \\cdot n \\cdot v + b \\cdot m \\cdot u$ (where $mu + nv = 1$) is computed via `Nat.gcdA`/`Nat.gcdB`. Includes `crt_sunzi` solving the classic Sunzi problem ($n \\equiv 2 \\pmod{3}$, $n \\equiv 3 \\pmod{5}$, $n \\equiv 2 \\pmod{7}$, answer 23) verified by `native_decide`, `crt_unique` proving uniqueness modulo $\\prod m_i$, and `crt_ring_iso` establishing the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ via `ZMod.chineseRemainder`.",
+    "text": "A 416-line constructive formalization of the Chinese Remainder Theorem with 21 declarations and 0 sorries. The general structural results are axiom-free; the concrete worked examples (the Sunzi solution 23 mod 105, the four-moduli solution 53 mod 210, and the other numeric congruence checks) are discharged by `native_decide`, which introduces the `Lean.ofReduceBool` axiom. Uses Mathlib's `Nat.chineseRemainder` for the core two-moduli case, then iterates via `Nat.Coprime.mul_left` for multi-moduli systems. The explicit Bezout witness $x = a \\cdot n \\cdot v + b \\cdot m \\cdot u$ (where $mu + nv = 1$) is computed via `Nat.gcdA`/`Nat.gcdB`. Includes `crt_sunzi` solving the classic Sunzi problem ($n \\equiv 2 \\pmod{3}$, $n \\equiv 3 \\pmod{5}$, $n \\equiv 2 \\pmod{7}$, answer 23) verified by `native_decide`, `crt_unique` proving uniqueness modulo $\\prod m_i$, and `crt_ring_iso` establishing the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ via `ZMod.chineseRemainder`.",
     "proofStrategy": "The proof uses Mathlib's `Nat.chineseRemainder` for the core result.\n\n**Existence**: Bezout's identity gives coefficients u, v with mu + nv = 1. The solution x = a*n*v + b*m*u works because:\n- x = a*n*v + b*m*u = a*(1-mu) + b*m*u = a + m*(bu-au) = a (mod m)\n- Similarly x = b (mod n)\n\n**Uniqueness**: If x1 = x2 = a (mod m) and x1 = x2 = b (mod n), then m | (x1-x2) and n | (x1-x2). Since gcd(m,n)=1, we have m*n | (x1-x2).\n\n**Multi-moduli**: Iterate the two-moduli case — solve for the first two, then combine the intermediate result with the third modulus. Coprimality of products follows from `Nat.Coprime.mul_left`.",
     "keyInsights": [
       "CRT converts a congruence mod $M = m_1 \\cdots m_k$ into $k$ independent congruences mod each $m_i$",

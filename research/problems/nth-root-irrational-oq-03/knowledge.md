@@ -23,6 +23,8 @@ with 390 lines of supporting pedagogical exposition, statement of the LW theorem
 
 ### Insight 2 — Two tractable adjacent axioms (in OQ03 sibling)
 
+> **STATUS UPDATE (S11 source audit, 2026-06-14):** Axiom (1) below, `irrational_liouvilleWith_two`, is **no longer an axiom** — it was discharged into a full `theorem` at S5c (2026-05-16, see Iteration insight chain) and is verified in source at `ETranscendentalOQ03.lean:180`. The file now carries **exactly one** `axiom`: `e_not_liouvilleWith_gt_two` (item 2). This Iteration-1 narrative is preserved for history; treat item (1) as **DONE**.
+
 `ETranscendentalOQ03.lean` contains two axioms feeding the $\mu(e) = 2$ irrationality-measure result:
 
 1. `irrational_liouvilleWith_two : ∀ x, Irrational x → LiouvilleWith 2 x` (Dirichlet's approximation theorem lower bound)
@@ -61,9 +63,9 @@ Total: roughly 900 lines, conservatively. Mathlib has had an active Lindemann–
 
 For meta.json on this slug's gallery entry (if/when created), the appropriate badge is `axiom` and status is `axiomatized`. The full proof depends on:
 
-- `axiom hermite_lindemann` (HermiteLindemann.lean) — the marquee assumption
-- 2 axioms in `ETranscendentalOQ03.lean` — sibling slug, not strictly this one's
-- 4 sorries across `eTranscendental.lean`, `ETranscendentalOQ01.lean`, `ETranscendentalOQ02.lean`, `PiTranscendental.lean` — partial-proof in-progress siblings
+- `axiom hermite_lindemann` (HermiteLindemann.lean) — the marquee assumption (still open; gated on Mathlib PR #28013)
+- ~~2 axioms~~ **1 axiom** in `ETranscendentalOQ03.lean` — `e_not_liouvilleWith_gt_two` only (the lower-bound axiom was discharged at S5c, 2026-05-16; source-verified 2026-06-14)
+- ~~4 sorries across siblings~~ **0 sorries** — the S1 "4 sibling sorries" claim was already corrected at S7 (2026-06-05): actual sorry count across all 5 sibling files is **0**
 
 Per the Axiom Integrity Policy in CLAUDE.md, this slug must NEVER be marked `verified` while these assumptions remain.
 
@@ -73,7 +75,9 @@ None recorded for this slug yet — Iteration 1 is the first session.
 
 ## Promising Next-Iteration Targets
 
-### Target A (S2): Discharge `irrational_liouvilleWith_two`
+### Target A (S2): Discharge `irrational_liouvilleWith_two` — ✅ DONE (S5c, 2026-05-16)
+
+> **RESOLVED.** This target was completed at S5c: `axiom irrational_liouvilleWith_two` was replaced by a full `theorem` (now `ETranscendentalOQ03.lean:180`) using `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational` plus the slice-finiteness helper `rat_approx_bounded_den_finite`, after adding `import Mathlib.NumberTheory.DiophantineApproximation.Basic`. `meta.json` axiomCount went 2→1. The strategy sketch below is retained only as the historical record of how it was approached. **The sole remaining axiom in this file is `e_not_liouvilleWith_gt_two` (Target C / S5d.A), which is Docker-gated 280–480 LOC CF work.**
 
 **Statement to prove:**
 
@@ -198,3 +202,64 @@ Initial attempts blocked by host disk pressure (cache I/O `os error 5/30`, daemo
 - ETranscendentalOQ01.lean transitively depends on PT; S8 fix should unblock it.
 
 See `sessions/2026-06-05-s8-act-lindemann-theorem-axiom-discharge-via-hermite-lindemann-bridge.md` for full details.
+
+---
+
+## Session 2026-06-14 (Session 11) — S11 Source Audit + Iteration-1 narrative de-stale
+
+**Mode**: REVISIT (RICH; Docker DOWN — verification blackout)
+**Outcome**: progress (knowledge integrity) — no proof advance possible (sole open item is Docker-gated)
+
+### What I Did
+- Read `ETranscendentalOQ03.lean` directly from source: confirmed **1** `^axiom ` (`e_not_liouvilleWith_gt_two`, line 247), **0** sorries, 312 LOC. `irrational_liouvilleWith_two` is a full `theorem` at line 180 (proved S5c).
+- Confirmed `src/data/proofs/e-transcendental-oq-03/meta.json` is already accurate (axiomCount 1, sorries 0, lineCount 312, assumptions note the lower-bound discharge) — no gallery edit needed.
+- De-staled this file's **Iteration-1 narrative** (the only stale content): Insight 2, Insight 4, and the "Target A" section all still presented `irrational_liouvilleWith_two` as an open axiom. Marked Target A ✅ DONE and corrected the axiom/sorry tallies, with superseded banners (history preserved).
+- Verified no open PR and no concurrent claim on the slug; S10 watch tick (#23728) is the latest commit on the problem dir.
+
+### Key Findings
+- The research JSON (`progressSummary`, insights #9/#11) and the gallery meta were already correct; only the human-readable Iteration-1 prose at the top of `knowledge.md` lagged. Future researchers reading top-down would otherwise re-attempt a solved target.
+- **Sole remaining axiom**: `e_not_liouvilleWith_gt_two` (μ(e) ≤ 2 upper bound). Its only discharge route is the Euler CF expansion of e (`[2;1,2k,1]`), absent from Mathlib (confirmed S5d), scoped 280–480 LOC — **Docker-gated**, so blocked this session.
+- The marquee `axiom hermite_lindemann` (HermiteLindemann.lean) remains gated on Mathlib PR #28013 (passive watch, grace period to ~2026-06-26).
+
+### Files Modified
+- `research/problems/nth-root-irrational-oq-03/knowledge.md` (de-stale Insight 2/4 + Target A; this entry)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (S11 insight; iteration bump)
+
+### Next Steps
+- Unchanged: when Docker returns and/or grace period (~2026-06-26) passes with PR #28013 still stale, begin S5d.A (CF expansion of e). No build-free forward step remains.
+
+---
+
+## Session 2026-06-15 (Session 13b, researcher-3) — Mathlib CF API audit + axiom factoring
+
+**Mode**: REVISIT (RICH; dual blackout — `docker info` times out >15s, Aristotle `prove` returns 404 "Resource not found", both re-tested live this session)
+**Outcome**: progress (structural) — factored the sole open axiom into 3 named targets; corrected the LOC/feasibility estimate
+
+### What I did
+- **Enumerated Mathlib v4.26.0's continued-fraction API** against the `e_not_liouvilleWith_gt_two` discharge (the CF route every prior session deferred). Sibling checkout at `/Users/rwalters/GitHub/mathlib4` (v4.26.0, matches the project pin).
+- Created **`proofs/Proofs/ETranscendentalOQ03CF.lean`** (UNREGISTERED, build-pending): factors the monolithic axiom `μ(e) ≤ 2` into three named sub-targets (G1/G2/G3) + an assembly theorem `e_not_liouvilleWith_gt_two'` showing the factoring is logically complete. Statements pin exact Mathlib identifiers; bodies are `sorry` (NOT machine-checked — blackout).
+
+### Key findings (corrects prior "absent, 280–480 LOC" estimate)
+Mathlib v4.26.0 **HAS** substantial CF infrastructure under `Mathlib/Algebra/ContinuedFractions/`:
+- `GenContFract.abs_sub_convs_le` (Approximations.lean:393): convergent error **upper** bound `|v − pₙ/qₙ| ≤ 1/(qₙ qₙ₊₁)`.
+- `GenContFract.sub_convs_eq` (:328): the **exact** error `v − convs n = (−1)ⁿ/(B·(fr⁻¹·B + pB))`.
+- `succ_nth_stream_b_le_nth_stream_fr_inv` (:111), `of_den_mono` (:299), `succ_nth_fib_le_of_nth_den` (:249), full continuant recurrence.
+
+Mathlib **LACKS** (grepped the whole CF tree): any best-approximation theorem (`best_approx*` — none), any convergent-error **lower** bound, and the **CF of e** (no mention of `exp`).
+
+**The three remaining gaps, re-scoped:**
+- **G2 (convergent error LOWER bound)** — *CHEAP, newly identified as derivable.* From `sub_convs_eq`: taking abs, `|v−convs n| = 1/(B·(fr⁻¹·B + pB))`; since `b_{n+1} ≤ fr⁻¹ < b_{n+1}+1`, the denominator lies in `(qₙ qₙ₊₁, qₙ(qₙ₊₁+qₙ))`, giving the two-sided bound `1/(qₙ(qₙ₊₁+qₙ)) ≤ |v−pₙ/qₙ| ≤ 1/(qₙ qₙ₊₁)`. Prior notes treated the lower bound as a missing/hard piece; it is ~40–60 LOC off existing Mathlib. Stated as `convs_sub_lower_bound`.
+- **G3 (best-approximation reduction)** — MEDIUM, ~100–200 LOC, absent. Convergents are best approximations ⟹ arbitrary `m/n` is no better ⟹ `|x−m/n| ≥ c/n^{2+ε}`. Stated as `not_liouvilleWith_of_partDen_subexp`.
+- **G1 (CF of e itself)** — **THE TRUE BOTTLENECK.** Euler's `e=[2;1,2,1,1,4,…]`, ~hundreds of LOC, absent. Stated as `exp_one_partDen_linear`.
+
+**Strategic recommendation:** the **Hermite–Padé integral route** (`∫₀¹ xⁿ(1−x)ⁿeˣ dx / n!`) constructs the good approximations *and their lower bounds directly*, sidestepping BOTH G1 (never names the CF) and G3 (gets the all-`m/n` bound from the integral size). It is the recommended path if formalizing Euler's CF-of-e (G1) proves too costly. Either way, the series route remains ruled out (S13).
+
+### Files modified
+- `proofs/Proofs/ETranscendentalOQ03CF.lean` (NEW, unregistered, build-pending; 4 sorries)
+- `research/problems/nth-root-irrational-oq-03/knowledge.md` (this entry)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (insights + progressSummary)
+
+### Next steps
+1. When Docker returns: build `ETranscendentalOQ03CF.lean`; discharge **G2** first (cheapest, off `sub_convs_eq`) to validate the API hooks.
+2. Decide G1-CF vs Hermite–Padé for the analytic core; the Padé route avoids the two largest gaps.
+3. PR #28013 (marquee `hermite_lindemann`, separate axiom) watch unchanged — orthogonal to this axiom.

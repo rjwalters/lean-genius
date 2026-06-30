@@ -25,7 +25,14 @@ This file formalizes:
 - Algebraic properties: Lyapunov at δ=0, variance formulas, zero-variable results
 - Characteristic function properties
 
-Proved theorems: 17, Axioms: 2, Sorries: 3
+Proved theorems: 21, Axioms: 2, Sorries: 1
+
+NOTE: The `IIDSequence` structure now carries an `ident` field recording that the
+`X_k` are identically distributed (equal laws). This is the "identically
+distributed" half of i.i.d., and it powers `iid_satisfies_lindeberg`
+(the classical Lindeberg condition via dominated convergence on truncated
+moments) as well as subsuming the explicit `hIdent` hypothesis of
+`iid_satisfies_lyapunov`.
 -/
 
 import Mathlib.Probability.Martingale.Basic
@@ -349,6 +356,13 @@ structure IIDSequence (Ω : Type*) [MeasurableSpace Ω]
   hσ : 0 < sigma_sq
   /-- Each X_k has variance σ² -/
   variance : ∀ k, ∫ ω, (X k ω) ^ 2 ∂μ = sigma_sq
+  /-- **Identically distributed**: every `X_k` has the same law as `X₀`.
+      This is the "identically distributed" half of i.i.d.. Without it the
+      truncated second moments `E[X_k² · 1{|X_k|>c}]` could differ across `k`
+      and the Lindeberg sum would not collapse to a single truncated moment.
+      (It also subsumes the explicit `hIdent` hypothesis of
+      `iid_satisfies_lyapunov`, since equal laws give equal moments.) -/
+  ident : ∀ k, Measure.map (X k) μ = Measure.map (X 0) μ
 
 /-- Construct a MDA from i.i.d. variables: X_{n,k} = X_k / √n. -/
 noncomputable def IIDSequence.toMDA
@@ -488,15 +502,38 @@ theorem independent_implies_zero_mixing
     ∀ k n, n ≥ 1 →
       alphaMixingCoeff μ (σ_k k) (σ_k (k + n)) = 0 := by
   intro k n hn
-  simp only [alphaMixingCoeff]
-  -- Each term = 0 by independence: μ(A∩B) = μ(A)·μ(B)
-  -- For all measurable A ∈ σ_k(k), B ∈ σ_k(k+n):
-  --   k + n = k + (n-1) + 1, so hIndep applies with gap (n-1)
-  --   |μ(A∩B).toReal - μ(A).toReal · μ(B).toReal| = |0| = 0
-  -- The nested ciSup of all-zero nonneg terms over ℝ (ConditionallyCompleteLattice)
-  -- requires showing sSup of range = 0, which is technically involved due to
-  -- the interaction of Prop-indexed sups and missing CompleteLattice on ℝ.
-  sorry
+  -- Every term in the defining supremum vanishes: for measurable `A ∈ σ_k k`
+  -- and `B ∈ σ_k (k+n)`, independence (gap `n-1`) gives `μ (A ∩ B) = μ A * μ B`,
+  -- so `|(μ (A∩B)).toReal - (μ A).toReal * (μ B).toReal| = 0`.
+  have hbody : ∀ (A : Set Ω), @MeasurableSet Ω (σ_k k) A →
+      ∀ (B : Set Ω), @MeasurableSet Ω (σ_k (k + n)) B →
+      |(μ (A ∩ B)).toReal - (μ A).toReal * (μ B).toReal| = 0 := by
+    intro A hA B hB
+    have hk : k + n = k + (n - 1) + 1 := by omega
+    have hB' : @MeasurableSet Ω (σ_k (k + (n - 1) + 1)) B := by rw [← hk]; exact hB
+    have hind : μ (A ∩ B) = μ A * μ B := hIndep k (n - 1) A B hA hB'
+    rw [hind, ENNReal.toReal_mul]
+    simp
+  -- A Prop-indexed supremum of the constant `0` is `0` (both when the Prop
+  -- holds and when it is empty), sidestepping the lack of a `CompleteLattice`
+  -- instance on `ℝ`.
+  have h0p : ∀ (p : Prop), (⨆ (_ : p), (0 : ℝ)) = 0 := by
+    intro p
+    by_cases h : p
+    · haveI : Nonempty p := ⟨h⟩; simp
+    · haveI : IsEmpty p := ⟨h⟩; simp
+  -- Rewrite the whole nested supremum as a nested supremum of `0`, then collapse.
+  have collapse : alphaMixingCoeff μ (σ_k k) (σ_k (k + n))
+      = ⨆ (A : Set Ω), ⨆ (_ : @MeasurableSet Ω (σ_k k) A),
+          ⨆ (B : Set Ω), ⨆ (_ : @MeasurableSet Ω (σ_k (k + n)) B), (0 : ℝ) := by
+    simp only [alphaMixingCoeff]
+    apply iSup_congr; intro A
+    apply iSup_congr; intro hA
+    apply iSup_congr; intro B
+    apply iSup_congr; intro hB
+    exact hbody A hA B hB
+  rw [collapse]
+  simp only [h0p, ciSup_const]
 
 /-
 ## Part IX: Relationship Between Generalizations
@@ -514,6 +551,121 @@ proof techniques. The common thread is that individual terms become
 "asymptotically negligible" — no single summand dominates.
 -/
 
+/-- Measurability of the truncated-square kernel `x ↦ x² · 1{|x| > c}`. -/
+private theorem measurable_truncSq (c : ℝ) :
+    Measurable (fun x : ℝ => x ^ 2 * (if c < |x| then (1 : ℝ) else 0)) := by
+  apply Measurable.mul
+  · exact (continuous_pow 2).measurable
+  · refine Measurable.ite ?_ measurable_const measurable_const
+    exact measurableSet_lt measurable_const continuous_abs.measurable
+
+/-- **Identically distributed ⇒ equal truncated second moments.**
+    Each `X_k` has the same law as `X₀`, so the integral of the truncated
+    square `x² · 1{|x| > c}` is the same for every index. -/
+private theorem iid_trunc_swap
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (S : IIDSequence Ω μ) (c : ℝ) (k : ℕ) :
+    ∫ ω, (S.X k ω) ^ 2 * (if c < |S.X k ω| then (1 : ℝ) else 0) ∂μ
+    = ∫ ω, (S.X 0 ω) ^ 2 * (if c < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ := by
+  have hm := measurable_truncSq c
+  calc ∫ ω, (S.X k ω) ^ 2 * (if c < |S.X k ω| then (1 : ℝ) else 0) ∂μ
+      = ∫ y, (y ^ 2 * (if c < |y| then (1 : ℝ) else 0)) ∂(Measure.map (S.X k) μ) :=
+        (integral_map (S.measurable k).aemeasurable hm.aestronglyMeasurable).symm
+    _ = ∫ y, (y ^ 2 * (if c < |y| then (1 : ℝ) else 0)) ∂(Measure.map (S.X 0) μ) := by
+        rw [S.ident k]
+    _ = ∫ ω, (S.X 0 ω) ^ 2 * (if c < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ :=
+        integral_map (S.measurable 0).aemeasurable hm.aestronglyMeasurable
+
+/-- **For i.i.d. sequences the Lindeberg condition holds.**
+
+    Writing `c_n = ε√n`, the Lindeberg sum for the normalized array
+    `X_{n,k} = X_k/√n` collapses — using identical distribution — to the single
+    truncated second moment
+      `L_n(ε) = E[X₀² · 1{|X₀| > ε√n}]`,
+    which tends to `0` by dominated convergence: the integrands are dominated by
+    the integrable `X₀²`, and the indicators vanish pointwise because `ε√n → ∞`.
+
+    This is the classical Lindeberg–Lévy route to the CLT (finite variance only,
+    no `(2+δ)`-moment needed), discharging the dominated-convergence step.
+    Reference: Billingsley "Probability and Measure" §27. -/
+theorem iid_satisfies_lindeberg
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (S : IIDSequence Ω μ) :
+    S.toMDA.lindebergCondition := by
+  intro ε hε
+  -- Reduction: for n > 0 the Lindeberg sum equals one truncated second moment.
+  have hkey : ∀ n : ℕ, 0 < n →
+      S.toMDA.lindebergSum n ε
+      = ∫ ω, (S.X 0 ω) ^ 2 * (if ε * Real.sqrt ↑n < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ := by
+    intro n hn
+    have hn_real : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+    have hsqrt_pos : 0 < Real.sqrt ↑n := Real.sqrt_pos.mpr hn_real
+    -- Per-index identity: term_k = (1/n) · E[X₀² · 1{|X₀|>ε√n}].
+    have hterm : ∀ k,
+        (∫ ω, (S.X k ω / Real.sqrt ↑n) ^ 2 *
+            (if ε < |S.X k ω / Real.sqrt ↑n| then (1 : ℝ) else 0) ∂μ)
+        = (↑n)⁻¹ *
+            ∫ ω, (S.X 0 ω) ^ 2 *
+              (if ε * Real.sqrt ↑n < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ := by
+      intro k
+      have hpt : (fun ω => (S.X k ω / Real.sqrt ↑n) ^ 2 *
+            (if ε < |S.X k ω / Real.sqrt ↑n| then (1 : ℝ) else 0))
+          = (fun ω => (↑n)⁻¹ * ((S.X k ω) ^ 2 *
+              (if ε * Real.sqrt ↑n < |S.X k ω| then (1 : ℝ) else 0))) := by
+        funext ω
+        have hsq : (S.X k ω / Real.sqrt ↑n) ^ 2 = (↑n)⁻¹ * (S.X k ω) ^ 2 := by
+          rw [div_pow, Real.sq_sqrt hn_real.le]; ring
+        have hiff : (ε < |S.X k ω / Real.sqrt ↑n|) ↔ (ε * Real.sqrt ↑n < |S.X k ω|) := by
+          rw [abs_div, abs_of_nonneg (Real.sqrt_nonneg _), lt_div_iff₀ hsqrt_pos]
+        rw [hsq]
+        by_cases hc : ε * Real.sqrt ↑n < |S.X k ω|
+        · rw [if_pos (hiff.mpr hc), if_pos hc]; ring
+        · rw [if_neg (fun hh => hc (hiff.mp hh)), if_neg hc]; ring
+      rw [hpt, integral_const_mul]
+      congr 1
+      exact iid_trunc_swap S (ε * Real.sqrt ↑n) k
+    -- Sum the n identical terms: n · (1/n) · G = G.
+    simp only [MartingaleDiffArray.lindebergSum, IIDSequence.toMDA, gt_iff_lt]
+    rw [Finset.sum_congr rfl fun k _ => hterm k, Finset.sum_const, Finset.card_range,
+      nsmul_eq_mul, ← mul_assoc, mul_inv_cancel₀ (ne_of_gt hn_real), one_mul]
+  -- The single truncated moment vanishes by dominated convergence.
+  have hG : Tendsto (fun n : ℕ =>
+      ∫ ω, (S.X 0 ω) ^ 2 * (if ε * Real.sqrt ↑n < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ)
+      atTop (nhds (∫ (_ω : Ω), (0 : ℝ) ∂μ)) := by
+    apply tendsto_integral_of_dominated_convergence (fun ω => (S.X 0 ω) ^ 2)
+    · -- measurability of each truncated integrand
+      intro n
+      exact ((measurable_truncSq (ε * Real.sqrt ↑n)).comp (S.measurable 0)).aestronglyMeasurable
+    · -- dominating function is integrable
+      exact S.sq_integrable 0
+    · -- pointwise domination by X₀²
+      intro n
+      refine ae_of_all _ (fun ω => ?_)
+      have hnn : (0 : ℝ) ≤ (S.X 0 ω) ^ 2 := sq_nonneg _
+      have hge : (0 : ℝ) ≤ (S.X 0 ω) ^ 2 *
+          (if ε * Real.sqrt ↑n < |S.X 0 ω| then (1 : ℝ) else 0) := by
+        apply mul_nonneg hnn; split_ifs <;> norm_num
+      rw [Real.norm_eq_abs, abs_of_nonneg hge]
+      refine le_trans (mul_le_mul_of_nonneg_left ?_ hnn) (le_of_eq (mul_one _))
+      split_ifs <;> norm_num
+    · -- pointwise convergence to 0 since ε√n → ∞
+      refine ae_of_all _ (fun ω => ?_)
+      have hsqrt_tendsto : Tendsto (fun n : ℕ => Real.sqrt (↑n)) atTop atTop := by
+        have := (tendsto_rpow_atTop (show (0 : ℝ) < 1 / 2 by norm_num)).comp
+          tendsto_natCast_atTop_atTop
+        exact this.congr'
+          (by filter_upwards [eventually_ge_atTop 0] with N _; simp [Real.sqrt_eq_rpow])
+      have hthr : Tendsto (fun n : ℕ => ε * Real.sqrt (↑n)) atTop atTop :=
+        hsqrt_tendsto.const_mul_atTop hε
+      refine tendsto_const_nhds.congr' ?_
+      filter_upwards [hthr.eventually_gt_atTop |S.X 0 ω|] with n hn
+      rw [if_neg (not_lt.mpr (le_of_lt hn)), mul_zero]
+  rw [integral_zero] at hG
+  -- Conclude: lindebergSum is eventually equal to G, hence also tends to 0.
+  refine hG.congr' ?_
+  filter_upwards [eventually_ge_atTop 1] with n hn
+  exact (hkey n (by omega)).symm
+
 /-- Classical CLT follows from martingale CLT: i.i.d. sequences with
     mean 0 and variance σ² satisfy the Lindeberg condition. -/
 theorem classical_clt_from_martingale
@@ -526,27 +678,80 @@ theorem classical_clt_from_martingale
   -- 2. Lindeberg condition (from dominated convergence + finite variance)
   intro t
   apply martingale_clt S.toMDA S.sigma_sq S.hσ
-  · -- Lindeberg condition for i.i.d./√n
-    -- Key: E[(X_k/√n)² · 1{|X_k/√n|>ε}] = (1/n) E[X_k² · 1{|X_k|>ε√n}]
-    -- Sum of n such terms = E[X₁² · 1{|X₁|>ε√n}] → 0 by DCT
-    sorry -- requires dominated convergence theorem for truncated moments
+  · -- Lindeberg condition for i.i.d./√n (dominated convergence on truncated moments)
+    exact iid_satisfies_lindeberg S
   · -- Variance convergence
     exact iid_mda_variance_converges S
 
 /-- For i.i.d. sequences, the Lyapunov condition is automatically satisfied
-    if the (2+δ)-th moment is finite (for any δ > 0). -/
+    if the (2+δ)-th moment is finite (for any δ > 0).
+
+    NOTE on the `hIdent` hypothesis: the `IIDSequence` structure only encodes
+    *independence* and a *common second moment* (`variance`); it does **not**
+    record that the `X_k` are identically distributed in their higher moments.
+    The "identically distributed" half of i.i.d. is exactly what forces the
+    common `(2+δ)`-th moment `∫|X_k|^{2+δ} = ∫|X_0|^{2+δ}` used below, so it is
+    supplied explicitly as `hIdent`. Without it the Lyapunov sum need not reduce
+    to `n · E[|X₀|^{2+δ}] / n^{(2+δ)/2}` and the statement is false in general. -/
 theorem iid_satisfies_lyapunov
     {μ : Measure Ω} [IsProbabilityMeasure μ]
     (S : IIDSequence Ω μ) (δ : ℝ) (hδ : 0 < δ)
-    (hMoment : Integrable (fun ω => |S.X 0 ω| ^ (2 + δ)) μ) :
+    (hMoment : Integrable (fun ω => |S.X 0 ω| ^ (2 + δ)) μ)
+    (hIdent : ∀ k, ∫ ω, |S.X k ω| ^ (2 + δ) ∂μ
+                = ∫ ω, |S.X 0 ω| ^ (2 + δ) ∂μ) :
     S.toMDA.lyapunovCondition δ := by
   refine ⟨hδ, ?_⟩
-  simp only [MartingaleDiffArray.lyapunovSum, IIDSequence.toMDA]
-  -- Λ_n(δ) = ∑_{k<n} E[|X_k/√n|^{2+δ}]
-  --         = n · E[|X₀|^{2+δ}] / n^{(2+δ)/2}
-  --         = E[|X₀|^{2+δ}] / n^{δ/2}
-  --         → 0 since δ > 0
-  sorry -- requires moment computation + rpow decay
+  -- Common `(2+δ)`-th moment.
+  set C : ℝ := ∫ ω, |S.X 0 ω| ^ (2 + δ) ∂μ
+  -- Closed form of the Lyapunov sum:  Λ_n(δ) = C / n^{δ/2}  for n ≥ 1.
+  have hclosed : ∀ n : ℕ, 1 ≤ n →
+      S.toMDA.lyapunovSum n δ = C / (n : ℝ) ^ (δ / 2) := by
+    intro n hn
+    have hn_pos : (0 : ℝ) < n := by exact_mod_cast hn
+    have hnne : (n : ℝ) ≠ 0 := ne_of_gt hn_pos
+    have hsqrt_pos : 0 < Real.sqrt (n : ℝ) := Real.sqrt_pos.mpr hn_pos
+    have hsqrt_nonneg : 0 ≤ Real.sqrt (n : ℝ) := hsqrt_pos.le
+    simp only [MartingaleDiffArray.lyapunovSum, IIDSequence.toMDA]
+    -- Pointwise: |X_k/√n|^{2+δ} = |X_k|^{2+δ} · ((√n)^{2+δ})⁻¹.
+    have hpt : ∀ k, ∀ ω,
+        |S.X k ω / Real.sqrt (n : ℝ)| ^ (2 + δ)
+          = |S.X k ω| ^ (2 + δ) * ((Real.sqrt (n : ℝ)) ^ (2 + δ))⁻¹ := by
+      intro k ω
+      rw [abs_div, abs_of_nonneg hsqrt_nonneg, div_eq_mul_inv,
+        Real.mul_rpow (abs_nonneg _) (by positivity),
+        Real.inv_rpow hsqrt_nonneg]
+    -- Each integral term equals C · ((√n)^{2+δ})⁻¹.
+    have hterm : ∀ k,
+        (∫ ω, |S.X k ω / Real.sqrt (n : ℝ)| ^ (2 + δ) ∂μ)
+          = C * ((Real.sqrt (n : ℝ)) ^ (2 + δ))⁻¹ := by
+      intro k
+      have hfun : (fun ω => |S.X k ω / Real.sqrt (n : ℝ)| ^ (2 + δ))
+          = (fun ω => |S.X k ω| ^ (2 + δ) * ((Real.sqrt (n : ℝ)) ^ (2 + δ))⁻¹) :=
+        funext (hpt k)
+      rw [hfun, integral_mul_const, hIdent k]
+    simp_rw [hterm]
+    rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    -- (√n)^{2+δ} = n^{1 + δ/2}.
+    have hpow : (Real.sqrt (n : ℝ)) ^ (2 + δ) = (n : ℝ) ^ (1 + δ / 2) := by
+      rw [Real.sqrt_eq_rpow, ← Real.rpow_mul hn_pos.le]
+      congr 1
+      ring
+    -- n^{1 + δ/2} = n · n^{δ/2}.
+    have hsplit : (n : ℝ) ^ (1 + δ / 2) = (n : ℝ) * (n : ℝ) ^ (δ / 2) := by
+      rw [Real.rpow_add hn_pos, Real.rpow_one]
+    have hd : (0 : ℝ) < (n : ℝ) ^ (δ / 2) := Real.rpow_pos_of_pos hn_pos _
+    rw [hpow, hsplit]
+    field_simp [hnne, hd.ne']
+  -- The closed form tends to 0 since δ/2 > 0.
+  have hlim : Tendsto (fun n : ℕ => C / (n : ℝ) ^ (δ / 2)) atTop (nhds 0) := by
+    have hpow_tendsto : Tendsto (fun n : ℕ => (n : ℝ) ^ (δ / 2)) atTop atTop :=
+      (tendsto_rpow_atTop (by positivity : (0 : ℝ) < δ / 2)).comp
+        tendsto_natCast_atTop_atTop
+    simpa using hpow_tendsto.const_div_atTop C
+  -- Transfer the limit back to the Lyapunov sum via eventual equality.
+  refine hlim.congr' ?_
+  filter_upwards [eventually_ge_atTop 1] with n hn
+  exact (hclosed n hn).symm
 
 /-
 ## Part X: Additional Proved Results

@@ -97,39 +97,81 @@
   },
   "sections": [
     {
-      "id": "basic-setup",
-      "title": "Basic Setup",
+      "id": "overview-and-setup",
+      "title": "Overview and Setup",
       "startLine": 1,
-      "endLine": 50,
-      "summary": "Unit circle, arcs, and arc sequence conditions"
+      "endLine": 42,
+      "summary": "Problem statement, Shepp's 1972 solution criterion, historical results (Dvoretzky, Kahane, Erdős), references, imports, and namespace setup."
     },
     {
-      "id": "shepp-criterion",
-      "title": "Shepp's Criterion",
-      "startLine": 51,
-      "endLine": 100,
-      "summary": "The sum Σ exp(S_n)/n² characterization"
+      "id": "basic-setup",
+      "title": "Part I: Basic Setup",
+      "startLine": 43,
+      "endLine": 67,
+      "summary": "The unit circle [0,1) with wraparound, the Arc definition, and the ArcSequence structure encoding a_n ≥ 0, a_n → 0, and Σa_n = ∞."
     },
     {
-      "id": "critical-cases",
-      "title": "Critical Cases",
-      "startLine": 101,
-      "endLine": 150,
-      "summary": "Boundary at a_n = 1/n and near cases"
+      "id": "coverage-condition",
+      "title": "Part II: The Coverage Condition",
+      "startLine": 68,
+      "endLine": 93,
+      "summary": "Partial sum S_n, Shepp's criterion as divergence of Σ exp(S_n)/n², and the axiomatized CoversWithProbOne event."
     },
     {
-      "id": "verification",
-      "title": "Verification",
-      "startLine": 151,
-      "endLine": 200,
-      "summary": "Checking Shepp's criterion for special sequences"
+      "id": "shepps-theorem",
+      "title": "Part III: Shepp's Theorem (1972)",
+      "startLine": 94,
+      "endLine": 112,
+      "summary": "Shepp's characterization axiom (coverage ⇔ Shepp's criterion) and the main theorem erdos_526_solved restating it."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part IV: Special Cases",
+      "startLine": 113,
+      "endLine": 142,
+      "summary": "Supercritical a_n=(1+c)/n, critical a_n=1/n (criticalSeq, erdos_critical), and subcritical a_n=(1-c)/n at the 1/n boundary."
+    },
+    {
+      "id": "verification-special-cases",
+      "title": "Part V: Verification of Shepp's Criterion for Special Cases",
+      "startLine": 143,
+      "endLine": 163,
+      "summary": "Asymptotics of exp(S_n)/n² for each regime: n^{c-1} diverges (super), 1/n diverges (critical), n^{-1-c} converges (sub)."
+    },
+    {
+      "id": "dvoretzky-observation",
+      "title": "Part VI: Dvoretzky's Observation",
+      "startLine": 164,
+      "endLine": 176,
+      "summary": "Dvoretzky (1956): under the basic conditions almost all the circle is covered (uncovered Lebesgue measure → 0), though uncovered points may remain."
     },
     {
       "id": "poisson-connection",
-      "title": "Poisson Connection",
+      "title": "Part VII: The Poisson Process Connection",
       "startLine": 177,
-      "endLine": 194,
-      "summary": "Proof techniques via Poisson processes"
+      "endLine": 195,
+      "summary": "Shepp's proof technique modeling arc placements as a Poisson process and relating expected uncovered points to exp(-S_n)."
+    },
+    {
+      "id": "computational-examples",
+      "title": "Part VIII: Computational Examples",
+      "startLine": 196,
+      "endLine": 202,
+      "summary": "Numerical sanity check that the partial harmonic sum 1 + 1/2 + ... + 1/5 exceeds 2, verified by native_decide."
+    },
+    {
+      "id": "logarithmic-growth",
+      "title": "Part IX: Logarithmic Growth and the Critical Boundary",
+      "startLine": 203,
+      "endLine": 214,
+      "summary": "Harmonic sum growth H_n ≈ log n + γ explaining why 1/n is critical: exp(H_n)/n² ≈ exp(γ)/n, whose sum diverges."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 215,
+      "endLine": 242,
+      "summary": "Final summary theorem erdos_526_summary combining Shepp's characterization with the critical-case coverage, recapping the answer and critical boundary."
     }
   ],
   "conclusion": {

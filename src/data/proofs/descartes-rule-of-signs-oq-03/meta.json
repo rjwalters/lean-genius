@@ -157,6 +157,13 @@
       "startLine": 339,
       "endLine": 412,
       "summary": "Concrete examples: x - c has 1 positive root, x + c has none, cauchyBound(X - C c) = ‖c‖₊ + 1. IVT-based root existence: if p(a) < 0 < p(b), there exists a root in [a,b]. Negative root summary combines negative_root_iff with Cauchy bound."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 414,
+      "endLine": 440,
+      "summary": "Closing module docstring recapping the OQ-03 bridge between Descartes' Rule of Signs and constructive root-bound computation, with a numbered list of the named theorems (all proved, 0 sorries), followed by the closing `end DescartesConstructiveBounds`."
     }
   ],
   "sorries": 0

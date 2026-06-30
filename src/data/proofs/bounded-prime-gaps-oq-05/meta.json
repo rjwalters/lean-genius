@@ -1,0 +1,108 @@
+{
+  "id": "bounded-prime-gaps-oq-05",
+  "title": "Firoozbakht's Conjecture: Equivalence of the Three Standard Formulations",
+  "slug": "bounded-prime-gaps-oq-05",
+  "description": "Firoozbakht's conjecture (1982) is usually stated in three interchangeable ways: the original ROOT form that p_n^{1/n} is strictly decreasing, the RPOW form p_{n+1} < p_n^{1+1/n} (the version the gallery's BoundedPrimeGaps.lean formalizes), and the elementary INTEGER-POWER form p_{n+1}^n < p_n^{n+1}, a statement purely about natural numbers. Their equivalence is folklore but, unlike the conjecture itself, is an unconditional theorem of real analysis. This file proves that equivalence: a pointwise three-way iff reducing each inequality for positive reals a,b to the common core a^n < b^{n+1}, a bridge from real rpow to the natural-number inequality, and the final TFAE for the prime sequence. All results are verified and axiom-free; the conjecture is neither assumed nor asserted.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsOQ05.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "prime-gaps",
+      "firoozbakht",
+      "real-analysis",
+      "rpow",
+      "equivalence"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None beyond Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). 0 sorries, 0 literal axiom declarations, 0 native_decide (no Lean.ofReduceBool). The file proves only the UNCONDITIONAL equivalence of the three formulations of Firoozbakht's conjecture; it does not assume or assert the conjecture itself, which remains open.",
+    "lineCount": 150,
+    "theoremCount": 8,
+    "definitionCount": 4,
+    "originalContributions": [
+      "root_lt_iff: for a,b>0 and n≥1, the root inequality a^{1/(n+1)} < b^{1/n} is equivalent to the core a^n < b^{n+1} (real rpow), via Real.rpow_lt_rpow_iff with exponent n(n+1) and rpow_mul simplification",
+      "rpow_lt_iff: for a,b>0 and n≥1, a < b^{1+1/n} is equivalent to the same core a^n < b^{n+1} (real rpow), via Real.rpow_lt_rpow_iff with exponent n",
+      "core_real_iff_nat: the real rpow core (p:ℝ)^n < (q:ℝ)^{n+1} is equivalent to the natural-number inequality p^n < q^{n+1}, via rpow_natCast and Nat.cast_lt",
+      "FiroozbakhtRoot / FiroozbakhtRpow / FiroozbakhtIntPow: the three standard formulations stated for the prime sequence (nthPrime = Nat.nth Nat.Prime)",
+      "firoozbakht_root_iff_intPow, firoozbakht_rpow_iff_intPow, firoozbakht_root_iff_rpow: the pairwise equivalences specialized to primes",
+      "firoozbakht_forms_tfae: the three formulations are TFAE-equivalent, an unconditional bridge connecting the gallery's RPOW formalization to the original root statement and the elementary integer-power statement"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Farideh Firoozbakht conjectured in 1982 that the sequence $p_n^{1/n}$ (the n-th root of the n-th prime) is strictly decreasing. The conjecture is unproven but has been verified for all primes below roughly $10^{19}$. It is one of the strongest conjectures about prime gaps: if true, it implies a sharp upper bound $p_{n+1} - p_n < (\\log p_n)^2 - \\log p_n$ for $n$ large, slightly stronger than Cramér's conjecture for the gaps it constrains.\n\nIn the literature the conjecture is quoted in three equivalent forms — the original n-th-root form $p_{n+1}^{1/(n+1)} < p_n^{1/n}$, the exponential form $p_{n+1} < p_n^{1+1/n}$, and the integer-power form $p_{n+1}^n < p_n^{n+1}$ — usually with the equivalence asserted as 'obvious'. The gallery's BoundedPrimeGaps.lean formalizes only the exponential (RPOW) form. This file supplies the missing formal bridge to the other two, isolating the genuinely unconditional content from the open conjecture.",
+    "problemStatement": "Show that the three standard formulations of Firoozbakht's conjecture for the prime sequence $p_n$ ($n \\ge 1$) are equivalent as propositions:\n1. (ROOT) $p_{n+1}^{1/(n+1)} < p_n^{1/n}$,\n2. (RPOW) $p_{n+1} < p_n^{1+1/n}$,\n3. (INTPOW) $p_{n+1}^n < p_n^{n+1}$ (a statement in ℕ).\nThe equivalence must be unconditional — it should not assume the conjecture holds.",
+    "proofStrategy": "The equivalences are proved pointwise first, for an arbitrary pair of positive reals $a, b$ and any $n \\ge 1$, by reducing all three inequalities to a common core $a^n < b^{n+1}$ (real rpow):\n\n- **root_lt_iff**: raise both sides of $a^{1/(n+1)} < b^{1/n}$ to the positive power $n(n+1)$ using `Real.rpow_lt_rpow_iff` (a strictly-monotone equivalence for positive exponents), then collapse the iterated exponents with `Real.rpow_mul`; the left exponent simplifies to $n$ and the right to $n+1$.\n- **rpow_lt_iff**: raise both sides of $a < b^{1+1/n}$ to the power $n$ by the same `Real.rpow_lt_rpow_iff`; $(1+1/n)\\cdot n = n+1$ and $a^n$ stays as is.\n- **core_real_iff_nat**: convert the real-exponent core to the natural-number inequality via `Real.rpow_natCast` and `Nat.cast_lt`, since the exponents $n$ and $n+1$ are natural.\n\nFor the prime sequence, `nthPrime n = Nat.nth Nat.Prime n` and `nthPrime_pos` supplies positivity. Each pairwise prime equivalence chains the pointwise lemma with `core_real_iff_nat`, and `firoozbakht_forms_tfae` packages the three as a `List.TFAE`.",
+    "keyInsights": [
+      "All three inequalities are strictly-monotone images of the single core inequality $a^n < b^{n+1}$: the ROOT form is the core raised to power $1/(n(n+1))$ on each side, the RPOW form is the core raised to power $1/n$. Because $x \\mapsto x^c$ is strictly monotone on positive reals for $c>0$, each transformation is a genuine equivalence, not just an implication.",
+      "The integer-power form is the most elementary: for primes it is a statement entirely about natural numbers ($p_{n+1}^n < p_n^{n+1}$), needing no real analysis to state. The bridge core_real_iff_nat shows the analytic and arithmetic phrasings coincide.",
+      "Separating the unconditional equivalence from the open conjecture is the point: the gallery formalizes RPOW as FireoozbakhtConjecture, but a reader cannot see that the original root statement is the same claim without this bridge. The result is axiom-free precisely because it asserts nothing about whether the inequalities actually hold.",
+      "The pointwise lemmas root_lt_iff / rpow_lt_iff hold for ALL positive reals a,b, not just primes — they are a reusable fact about comparing $a^{1/(n+1)}$ with $b^{1/n}$, applicable to any monotonicity question of the same shape."
+    ],
+    "prerequisites": [
+      "Real.rpow and its strict-monotonicity lemma Real.rpow_lt_rpow_iff for positive exponents",
+      "Real.rpow_mul / Real.rpow_natCast for collapsing and casting real exponents",
+      "Nat.nth Nat.Prime (the n-th prime) and Nat.prime_nth_prime for positivity",
+      "List.TFAE and the tfae_have / tfae_finish tactics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-bgp-oq05-header",
+      "title": "Header: The Three Formulations and What Is Proved",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module header stating Firoozbakht's 1982 root conjecture and its two standard reformulations (rpow and integer-power), explaining that only the equivalence — not the conjecture — is proved here, unconditionally and axiom-free."
+    },
+    {
+      "id": "sec-bgp-oq05-pointwise",
+      "title": "Part I: Pointwise Three-Way Equivalence for Positive Reals",
+      "startLine": 40,
+      "endLine": 90,
+      "summary": "root_lt_iff and rpow_lt_iff reduce the root and rpow inequalities for arbitrary positive reals a,b (n≥1) to the common core a^n < b^{n+1} via Real.rpow_lt_rpow_iff and Real.rpow_mul; core_real_iff_nat bridges the real-exponent core to the natural-number inequality via rpow_natCast and Nat.cast_lt.",
+      "mathContext": "Each inequality is a strictly-monotone image of $a^n < b^{n+1}$: ROOT via power $1/(n(n+1))$, RPOW via power $1/n$."
+    },
+    {
+      "id": "sec-bgp-oq05-prime",
+      "title": "Part II: Specialization to the Prime Sequence and TFAE",
+      "startLine": 92,
+      "endLine": 150,
+      "summary": "Defines nthPrime = Nat.nth Nat.Prime and the three prime formulations FiroozbakhtRoot / FiroozbakhtRpow / FiroozbakhtIntPow, proves the three pairwise equivalences by chaining the pointwise lemmas with core_real_iff_nat and nthPrime_pos, and packages them as firoozbakht_forms_tfae (List.TFAE)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proved, unconditionally and axiom-free, that the three standard formulations of Firoozbakht's conjecture — the original root form $p_{n+1}^{1/(n+1)} < p_n^{1/n}$, the rpow form $p_{n+1} < p_n^{1+1/n}$, and the integer-power form $p_{n+1}^n < p_n^{n+1}$ — are equivalent. The core mechanism is a pointwise reduction of each inequality (for positive reals) to the single inequality $a^n < b^{n+1}$ via strict monotonicity of real rpow, followed by a bridge to the natural-number statement. 150 lines, 8 theorems, 4 definitions, 0 sorries, 0 axioms.",
+    "implications": "This connects the gallery's RPOW formalization (BoundedPrimeGaps.lean's FireoozbakhtConjecture) to the original 1982 root statement and to the elementary integer-power statement, so a result proved against any one form transfers to the others. The pointwise lemmas root_lt_iff / rpow_lt_iff are reusable for any strictly-monotone comparison of $a^{1/(n+1)}$ and $b^{1/n}$. Establishing the equivalence is the prerequisite for any future formal work that would, e.g., verify the conjecture for an initial range of primes via the elementary integer-power form (the cheapest to decide) and conclude the analytic forms.",
+    "openQuestions": [
+      "Formalize the implication Firoozbakht ⟹ Cramér-type gap bound $p_{n+1} - p_n < (\\log p_n)^2 - \\log p_n$ (for $n$ large), the consequence that makes Firoozbakht one of the strongest prime-gap conjectures.",
+      "Build a Decidable bridge for the integer-power form on an initial segment: since $p_{n+1}^n < p_n^{n+1}$ is a natural-number inequality, a decision procedure could verify Firoozbakht for all $n \\le N$ from a table of the first $N{+}2$ primes, certifying the conjecture's known numerical range inside Lean."
+    ],
+    "crossReferences": [
+      "bounded-prime-gaps",
+      "bounded-prime-gaps-oq-03",
+      "bounded-prime-gaps-oq-04"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "extends",
+      "description": "Parent proof whose conclusion lists connecting Firoozbakht's conjecture to the bounded-gaps formalization as an open question; it formalizes the RPOW form as FireoozbakhtConjecture, and this file bridges that form to the original root and integer-power formulations"
+    }
+  ],
+  "leanFile": {
+    "namespace": "FiroozbakhtForms",
+    "lineCount": 150,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 4,
+    "path": "Proofs/BoundedPrimeGapsOQ05.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

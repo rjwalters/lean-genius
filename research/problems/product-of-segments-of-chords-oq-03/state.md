@@ -2,7 +2,19 @@
 
 ## Current State
 
-**Phase**: ACT (S17 STATE-SYNC 2026-06-13 — registry catch-up after two
+**Phase**: BLOCKED (S18, verification blackout 2026-06-13) — no build-free
+work remains. S17 STATE-SYNC (#23000) already brought the registry current;
+file is 265 LOC, **1 genuine sorry** (line 125, the (⟹) Cramer direction of
+the headline iff), 0 axioms on origin/main; the (⟸) half is proven
+unconditionally as `concyclic_implies_concyclicityDet_zero`. The single open
+sorry is build-dependent ACT (Cramer paste, ~80 LOC) and both verification
+routes are down this session (docker daemon down + Aristotle MCP 404).
+Flagged blocked (status active→blocked) to stop claim churn during the
+blackout. **Re-open when Docker recovers**: discharge the (⟹) sorry via
+`Matrix.cramer` on the implicit-circle system, then
+`./proofs/scripts/docker-build.sh Proofs.ProductOfSegmentsOfChordsOQ03`.
+
+### Prior (pre-blackout): ACT (S17 STATE-SYNC 2026-06-13 — registry catch-up after two
 untracked Lean merges; S7b ACT shipped the two numeric lemmas PR #22967;
 the **easy direction `concyclic_implies_concyclicityDet_zero` is now PROVEN
 standalone** PR #22917; S16 ACT shipped `coord_of_smul_diff` 2026-06-01)

@@ -1,0 +1,364 @@
+import Mathlib.Tactic
+import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+
+/-!
+# Simson's line theorem (simson-line-theorem-oq-01)
+
+Let `A, B, C` be three points of a circle and `P` a fourth point of the plane. Drop the
+perpendicular from `P` onto each of the three side-lines `AB`, `BC`, `CA`, obtaining the three feet
+`F_AB`, `F_BC`, `F_CA`. **Simson's theorem** states that these three feet are **collinear** if and
+only if `P` lies on the **same** circle (the line they span is then the *Simson line* of `P`).
+
+We model the points as complex numbers and normalise the circumcircle to the **unit circle**,
+encoded by `Complex.normSq A = 1` (i.e. `|A|² = 1`), and likewise for `B, C, P`. Any circle is
+carried to the unit circle by an affine map of `ℂ`, which preserves both perpendicularity and
+collinearity, so this is no loss of generality.
+
+The engine of the proof is the closed form for the foot of a perpendicular onto a chord of the
+unit circle:
+
+    foot u v p = (u + v + p - u * v * conj p) / 2.                       (`foot`)
+
+For `u, v` on the unit circle this is exactly the orthogonal projection of `p` onto the line
+`u v`: the segment `P → foot` is perpendicular to the chord (`foot_perp`) and the foot lies on
+the chord line (`foot_on_chord`). Its decisive feature is the **difference identity**
+
+    foot b c p - foot a b p = (c - a) * (1 - b * conj p) / 2,            (`foot_diff`)
+
+a pure `ring` fact, with the symmetric companion (`foot_diff'`). Writing
+`w = (F_BC - F_AB) * conj (F_CA - F_AB)`, collinearity of the three feet is the classical
+complex criterion `w ∈ ℝ`, i.e. `w = conj w` (`simson_key`), equivalently the vanishing of the
+signed-area cross product `w.im = 0` (`simson_collinear`). Substituting `conj z = z⁻¹` (valid on
+the unit circle) turns `simson_key` into a rational-function identity closed by `field_simp; ring`.
+
+Keeping `conj p` **free** (i.e. not assuming `P` on the circle) upgrades this to the master identity
+`w - conj w = (c - a)(b - c)(a - b)(1 - p * conj p)/(4 a b c)` (`simson_area_identity`), whose
+right-hand side carries the deviation `1 - |P|²`. For a nondegenerate triangle this gives the full
+**biconditional** `simson_iff`: the feet are collinear iff `P` is concyclic with `A, B, C`. The new
+converse direction is `simson_converse`.
+
+The proof is fully machine-checked: no axioms, no `sorry`. Not a named Mathlib result.
+-/
+
+namespace SimsonLineTheorem
+
+open Complex ComplexConjugate
+
+/-- Foot of the perpendicular dropped from `p` onto the chord through `u` and `v` of the unit
+circle, in closed form. For `u, v` on the unit circle this is the orthogonal projection of `p`
+onto the line `u v` (see `foot_perp` and `foot_on_chord`). -/
+noncomputable def foot (u v p : ℂ) : ℂ := (u + v + p - u * v * conj p) / 2
+
+/-- A point on the unit circle is nonzero. -/
+private lemma ne_zero_of_normSq_one {z : ℂ} (h : Complex.normSq z = 1) : z ≠ 0 := by
+  rintro rfl; simp at h
+
+/-- On the unit circle, `conj z = z⁻¹`. -/
+private lemma conj_eq_inv {z : ℂ} (h : Complex.normSq z = 1) : conj z = z⁻¹ := by
+  have h0 : z ≠ 0 := ne_zero_of_normSq_one h
+  have hzz : z * conj z = 1 := by rw [Complex.mul_conj, h]; norm_num
+  rw [inv_eq_one_div, eq_div_iff h0]
+  linear_combination hzz
+
+/-- If `conj z = z` then `z` is real, so `z.im = 0`. -/
+private lemma im_eq_zero_of_conj_eq {z : ℂ} (h : conj z = z) : z.im = 0 := by
+  have h1 : (conj z).im = z.im := by rw [h]
+  rw [Complex.conj_im] at h1
+  linarith
+
+/-- If `conj z = -z` then `z` is purely imaginary, so `z.re = 0`. -/
+private lemma re_eq_zero_of_conj_eq_neg {z : ℂ} (h : conj z = -z) : z.re = 0 := by
+  have h1 : (conj z).re = (-z).re := by rw [h]
+  rw [Complex.conj_re, Complex.neg_re] at h1
+  linarith
+
+/-- **Difference identity** (pure `ring`). The vector between the `BC`-foot and the `AB`-foot
+of `p` factors through the chord direction `c - a`. -/
+theorem foot_diff (a b c p : ℂ) :
+    foot b c p - foot a b p = (c - a) * (1 - b * conj p) / 2 := by
+  simp only [foot]; ring
+
+/-- Companion difference identity for the `CA`-foot and the `AB`-foot. -/
+theorem foot_diff' (a b c p : ℂ) :
+    foot c a p - foot a b p = (c - b) * (1 - a * conj p) / 2 := by
+  simp only [foot]; ring
+
+/-- The segment `P → foot u v p` is **perpendicular** to the chord `u v`: the real part of
+`(p - foot u v p) * conj (v - u)` vanishes. Needs only `u, v` on the unit circle (any `p`).
+Together with `foot_on_chord` this certifies that `foot u v p` is the orthogonal projection. -/
+theorem foot_perp {u v p : ℂ} (hu : Complex.normSq u = 1) (hv : Complex.normSq v = 1) :
+    ((p - foot u v p) * conj (v - u)).re = 0 := by
+  apply re_eq_zero_of_conj_eq_neg
+  have hu0 := ne_zero_of_normSq_one hu
+  have hv0 := ne_zero_of_normSq_one hv
+  simp only [foot, map_mul, map_sub, map_add, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  rw [conj_eq_inv hu, conj_eq_inv hv]
+  field_simp
+  ring
+
+/-- The foot **lies on** the chord line `u v`: `foot u v p - u` is a real multiple of the
+direction `v - u`, encoded as the vanishing imaginary part of `(foot u v p - u) * conj (v - u)`.
+Needs only `u, v` on the unit circle (any `p`). -/
+theorem foot_on_chord {u v p : ℂ} (hu : Complex.normSq u = 1) (hv : Complex.normSq v = 1) :
+    ((foot u v p - u) * conj (v - u)).im = 0 := by
+  apply im_eq_zero_of_conj_eq
+  have hu0 := ne_zero_of_normSq_one hu
+  have hv0 := ne_zero_of_normSq_one hv
+  simp only [foot, map_mul, map_sub, map_add, map_div₀, map_ofNat, Complex.conj_conj]
+  rw [conj_eq_inv hu, conj_eq_inv hv]
+  field_simp
+  ring
+
+/-- **Simson's theorem (collinearity equation).** For `A, B, C, P` on the unit circle, the three
+feet of the perpendiculars from `P` to the side-lines `AB`, `BC`, `CA` satisfy the complex
+collinearity criterion: `(F_BC - F_AB) * conj (F_CA - F_AB)` equals its own conjugate, i.e. it is
+real. This says precisely that the three feet lie on a common line — the *Simson line* of `P`. -/
+theorem simson_key {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1)
+    (hc : Complex.normSq c = 1) (hp : Complex.normSq p = 1) :
+    (foot b c p - foot a b p) * conj (foot c a p - foot a b p)
+      = conj (foot b c p - foot a b p) * (foot c a p - foot a b p) := by
+  rw [foot_diff, foot_diff']
+  simp only [map_mul, map_sub, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  rw [conj_eq_inv ha, conj_eq_inv hb, conj_eq_inv hc, conj_eq_inv hp]
+  have ha0 := ne_zero_of_normSq_one ha
+  have hb0 := ne_zero_of_normSq_one hb
+  have hc0 := ne_zero_of_normSq_one hc
+  have hp0 := ne_zero_of_normSq_one hp
+  field_simp
+  ring
+
+/-- **Simson's theorem (signed-area form).** The cross product of the two edge-vectors of the
+triangle of feet vanishes: `((F_BC - F_AB) * conj (F_CA - F_AB)).im = 0`. Since this imaginary
+part is twice the signed area of the triangle `F_AB F_BC F_CA`, the three feet are collinear. -/
+theorem simson_collinear {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1)
+    (hc : Complex.normSq c = 1) (hp : Complex.normSq p = 1) :
+    ((foot b c p - foot a b p) * conj (foot c a p - foot a b p)).im = 0 := by
+  apply im_eq_zero_of_conj_eq
+  rw [map_mul, Complex.conj_conj]
+  exact (simson_key ha hb hc hp).symm
+
+/-! ## The converse: collinearity forces `P` onto the circumcircle
+
+`simson_collinear` is the forward half of Simson's theorem: if `P` lies on the circumcircle then
+the three pedal feet are collinear. The **converse** completes the classical biconditional —
+collinearity of the feet *forces* `P` onto the circumcircle.
+
+The engine is a single **master identity** (`simson_area_identity`): for `A, B, C` on the unit
+circle and **any** `P`, the conjugate-difference of the collinearity quantity
+`w = (F_BC - F_AB) * conj (F_CA - F_AB)` factors as
+
+    w - conj w = (c - a) * (b - c) * (a - b) * (1 - p * conj p) / (4 * a * b * c).
+
+The numerator carries the deviation `1 - p * conj p = 1 - |P|²` of `P` from the unit circle, and
+for a nondegenerate triangle the prefactor `(c - a)(b - c)(a - b)/(4 a b c)` is nonzero. Hence `w`
+is real (the feet are collinear) **iff** `|P|² = 1`. This delivers both directions at once: the
+forward direction recovers `simson_key`, and the converse (`simson_converse`) is new. The complete
+biconditional is `simson_iff`. -/
+
+/-- **Master identity.** For `A, B, C` on the unit circle and **any** `P` (no constraint on `P`),
+the conjugate-difference of the collinearity quantity `w = (F_BC - F_AB) * conj (F_CA - F_AB)`
+equals `(c - a)(b - c)(a - b)(1 - p * conj p)/(4 a b c)`. The factor `1 - p * conj p` is `1 - |P|²`,
+the signed deviation of `P` from the unit circumcircle; it vanishes exactly when `P` is concyclic
+with `A, B, C`. Proved, like `simson_key`, by the `conj z = z⁻¹` substitution on `A, B, C` followed
+by `field_simp; ring` — but here `conj p` is left free, so the identity holds off the circle too. -/
+theorem simson_area_identity {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1) (hc : Complex.normSq c = 1) :
+    (foot b c p - foot a b p) * conj (foot c a p - foot a b p)
+      - conj ((foot b c p - foot a b p) * conj (foot c a p - foot a b p))
+      = (c - a) * (b - c) * (a - b) * (1 - p * conj p) / (4 * a * b * c) := by
+  rw [foot_diff, foot_diff']
+  simp only [map_mul, map_sub, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  rw [conj_eq_inv ha, conj_eq_inv hb, conj_eq_inv hc]
+  have ha0 := ne_zero_of_normSq_one ha
+  have hb0 := ne_zero_of_normSq_one hb
+  have hc0 := ne_zero_of_normSq_one hc
+  field_simp
+  ring
+
+/-- **Converse of Simson's theorem.** For a *nondegenerate* triangle `A, B, C` on the unit circle
+(distinct vertices), if the three pedal feet of `P` are collinear then `P` lies on the
+circumcircle: `|P|² = 1`. Extracted from the master identity `simson_area_identity`: collinearity
+makes its left-hand side vanish, and the nonzero triangle prefactor `(c - a)(b - c)(a - b)/(4 a b c)`
+forces the remaining factor `1 - p * conj p` to be `0`. -/
+theorem simson_converse {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1) (hc : Complex.normSq c = 1)
+    (hab : a ≠ b) (hbc : b ≠ c) (hca : c ≠ a)
+    (hcol : ((foot b c p - foot a b p) * conj (foot c a p - foot a b p)).im = 0) :
+    Complex.normSq p = 1 := by
+  have ha0 := ne_zero_of_normSq_one ha
+  have hb0 := ne_zero_of_normSq_one hb
+  have hc0 := ne_zero_of_normSq_one hc
+  -- The collinearity quantity is real, so it equals its own conjugate.
+  have hreal :
+      conj ((foot b c p - foot a b p) * conj (foot c a p - foot a b p))
+        = (foot b c p - foot a b p) * conj (foot c a p - foot a b p) := by
+    apply Complex.ext
+    · rw [Complex.conj_re]
+    · rw [Complex.conj_im, hcol, neg_zero]
+  have key := simson_area_identity (a := a) (b := b) (c := c) (p := p) ha hb hc
+  rw [hreal, sub_self] at key
+  -- key : 0 = (c - a) * (b - c) * (a - b) * (1 - p * conj p) / (4 * a * b * c)
+  have hden : (4 : ℂ) * a * b * c ≠ 0 :=
+    mul_ne_zero (mul_ne_zero (mul_ne_zero (by norm_num) ha0) hb0) hc0
+  rw [eq_comm, div_eq_zero_iff] at key
+  rcases key with hnum | hbad
+  · have hpp : (1 : ℂ) - p * conj p = 0 := by
+      rcases mul_eq_zero.mp hnum with h | h
+      · exfalso
+        rcases mul_eq_zero.mp h with h' | h'
+        · rcases mul_eq_zero.mp h' with h'' | h''
+          · exact (sub_ne_zero.mpr hca) h''
+          · exact (sub_ne_zero.mpr hbc) h''
+        · exact (sub_ne_zero.mpr hab) h'
+      · exact h
+    have h2 : p * conj p = 1 := by linear_combination -hpp
+    rw [Complex.mul_conj] at h2
+    exact_mod_cast h2
+  · exact absurd hbad hden
+
+/-- **Simson's theorem (biconditional).** For a nondegenerate triangle `A, B, C` on the unit circle,
+the three pedal feet of `P` are collinear **if and only if** `P` lies on the circumcircle. The
+forward direction is `simson_collinear`; the converse is `simson_converse`. This is the complete
+statement of Simson's (Wallace's) theorem. -/
+theorem simson_iff {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1) (hc : Complex.normSq c = 1)
+    (hab : a ≠ b) (hbc : b ≠ c) (hca : c ≠ a) :
+    ((foot b c p - foot a b p) * conj (foot c a p - foot a b p)).im = 0
+      ↔ Complex.normSq p = 1 :=
+  ⟨simson_converse ha hb hc hab hbc hca, fun hp => simson_collinear ha hb hc hp⟩
+
+/-! ## The Simson line bisects the segment to the orthocenter
+
+A classical strengthening of Simson's theorem: the Simson line of `P` passes through the
+**midpoint of the segment `P H`**, where `H` is the orthocenter of `△ABC`. Equivalently, the
+Simson line *bisects* `P H`.
+
+With the circumcircle normalised to the unit circle (centre `0`), the orthocenter has the
+closed form `H = A + B + C`, so the midpoint is `M = (P + A + B + C) / 2`. We reuse the foot
+machinery above: the vector from `M` to each foot factors cleanly (`foot_ab_sub_midpoint`,
+`foot_bc_sub_midpoint`), and the collinearity of `M` with two of the feet is closed by the same
+`conj z = z⁻¹` substitution that drives `simson_key`. Since the three feet are already collinear
+(`simson_collinear`), `M` lying on the line through two of them places it on the Simson line. -/
+
+/-- The **orthocenter** of a triangle inscribed in the unit circle (centre `0`) is the sum of its
+vertices. We take this closed form (valid precisely for the unit circumcircle) as the definition
+of `orthocenter a b c`. -/
+noncomputable def orthocenter (a b c : ℂ) : ℂ := a + b + c
+
+/-- Midpoint of the segment `P H`, where `H = orthocenter a b c`. Simson's bisection theorem
+(`simson_bisects_orthocenter_segment`) states that the Simson line of `P` passes through this
+point, i.e. it bisects `P H`. -/
+noncomputable def simsonMidpoint (a b c p : ℂ) : ℂ := (p + orthocenter a b c) / 2
+
+/-- Closed form for the vector from the midpoint `M = (P + H)/2` to the `AB`-foot (pure `ring`).
+The opposite vertex `c` appears, mirroring the chord-direction factoring in `foot_diff`. -/
+theorem foot_ab_sub_midpoint (a b c p : ℂ) :
+    foot a b p - simsonMidpoint a b c p = -(c + a * b * conj p) / 2 := by
+  simp only [foot, simsonMidpoint, orthocenter]; ring
+
+/-- Closed form for the vector from the midpoint `M` to the `BC`-foot (pure `ring`). -/
+theorem foot_bc_sub_midpoint (a b c p : ℂ) :
+    foot b c p - simsonMidpoint a b c p = -(a + b * c * conj p) / 2 := by
+  simp only [foot, simsonMidpoint, orthocenter]; ring
+
+/-- **Bisection theorem (collinearity equation).** For `A, B, C, P` on the unit circle, the
+midpoint `M` of `P` and the orthocenter `H = A + B + C` is collinear with the feet `F_AB` and
+`F_BC`: `(F_BC - M) * conj (F_AB - M)` equals its own conjugate, i.e. it is real. The analogue of
+`simson_key` with one foot replaced by `M`. -/
+theorem simson_bisects_key {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1)
+    (hc : Complex.normSq c = 1) (hp : Complex.normSq p = 1) :
+    (foot b c p - simsonMidpoint a b c p) * conj (foot a b p - simsonMidpoint a b c p)
+      = conj (foot b c p - simsonMidpoint a b c p) * (foot a b p - simsonMidpoint a b c p) := by
+  rw [foot_bc_sub_midpoint, foot_ab_sub_midpoint]
+  simp only [map_mul, map_sub, map_add, map_neg, map_div₀, map_ofNat, Complex.conj_conj]
+  rw [conj_eq_inv ha, conj_eq_inv hb, conj_eq_inv hc, conj_eq_inv hp]
+  have ha0 := ne_zero_of_normSq_one ha
+  have hb0 := ne_zero_of_normSq_one hb
+  have hc0 := ne_zero_of_normSq_one hc
+  have hp0 := ne_zero_of_normSq_one hp
+  field_simp
+  ring
+
+/-- **Simson's bisection theorem (signed-area form).** The midpoint `M` of `P` and the orthocenter
+`H = A + B + C` lies on the Simson line of `P`: the cross product `((F_BC - M) * conj (F_AB - M))`
+has vanishing imaginary part, so `M`, `F_AB`, `F_BC` are collinear. Combined with `simson_collinear`
+(the three feet are collinear), this places `M` on the Simson line — the Simson line **bisects**
+the segment from `P` to the orthocenter. -/
+theorem simson_bisects_orthocenter_segment {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1)
+    (hc : Complex.normSq c = 1) (hp : Complex.normSq p = 1) :
+    ((foot b c p - simsonMidpoint a b c p) * conj (foot a b p - simsonMidpoint a b c p)).im = 0 := by
+  apply im_eq_zero_of_conj_eq
+  rw [map_mul, Complex.conj_conj]
+  exact (simson_bisects_key ha hb hc hp).symm
+
+/-! ## Simson lines of antipodal points are perpendicular
+
+A second classical strengthening of Simson's theorem: if `P` and its **antipode** `-P` (the
+diametrically opposite point on the circumcircle, centre `0`) both lie on the unit circle, then
+the Simson line of `P` and the Simson line of `-P` are **perpendicular**.
+
+The Simson line of a point `q` is spanned by the edge-vector `F_BC - F_AB` of its triangle of
+feet, which `foot_diff` puts in the closed form `(c - a) * (1 - b * conj q) / 2`. For the two
+antipodal points the `conj q` factors are `conj p` and `conj (-p) = -conj p`, and the Hermitian
+product `(F_BC - F_AB)(P) * conj ((F_BC - F_AB)(-P))` reduces — via `conj z = z⁻¹` on the unit
+circle — to `|c - a|² / 4 * (conj b * p - b * conj p)`, a purely imaginary number (it is `z - conj z`
+for `z = conj b * p`). Its vanishing real part is exactly perpendicularity of the two direction
+vectors, hence of the two Simson lines. -/
+
+/-- **Antipodal Simson lines are perpendicular.** For `A, B, C, P` on the unit circle, the Simson
+line of `P` and the Simson line of the antipode `-P` are orthogonal: the real part of
+`(F_BC(P) - F_AB(P)) * conj (F_BC(-P) - F_AB(-P))` vanishes. Each factor is a direction vector of
+the respective Simson line (`foot_diff`, `simson_collinear`), so the vanishing real part of their
+Hermitian product is precisely perpendicularity of the two lines. -/
+theorem antipodal_simson_perp {a b c p : ℂ}
+    (ha : Complex.normSq a = 1) (hb : Complex.normSq b = 1)
+    (hc : Complex.normSq c = 1) (hp : Complex.normSq p = 1) :
+    ((foot b c p - foot a b p) * conj (foot b c (-p) - foot a b (-p))).re = 0 := by
+  apply re_eq_zero_of_conj_eq_neg
+  rw [foot_diff, foot_diff]
+  simp only [map_mul, map_sub, map_neg, map_div₀, map_one, map_ofNat, Complex.conj_conj]
+  rw [conj_eq_inv ha, conj_eq_inv hb, conj_eq_inv hc, conj_eq_inv hp]
+  have ha0 := ne_zero_of_normSq_one ha
+  have hb0 := ne_zero_of_normSq_one hb
+  have hc0 := ne_zero_of_normSq_one hc
+  have hp0 := ne_zero_of_normSq_one hp
+  field_simp
+  ring
+
+/-! ## The Simson bisection point lies on the nine-point circle
+
+A further classical refinement. The Simson line of `P` passes through the midpoint
+`M = (P + H)/2` of `P` and the orthocenter `H` (`simson_bisects_orthocenter_segment`). That
+midpoint `M` is itself distinguished: it lies on the **nine-point circle** of `△ABC`.
+
+For the unit circumcircle (centre `0`) the nine-point circle has centre `N = H/2 = (A+B+C)/2`
+and radius `1/2`. The vector from `N` to `M` is `M - N = P/2`, so `|M - N| = |P|/2 = 1/2`,
+placing `M` on that circle. Combined with the bisection theorem, the point where the Simson line
+of `P` meets the segment `PH` is pinned to the nine-point circle — independently of `P`. -/
+
+/-- The **nine-point centre** of a triangle inscribed in the unit circle (centre `0`): the
+midpoint of the segment from the circumcentre `0` to the orthocenter `H = A + B + C`, i.e. `H/2`.
+The nine-point circle has this centre and radius `1/2`. -/
+noncomputable def ninePointCenter (a b c : ℂ) : ℂ := orthocenter a b c / 2
+
+/-- The vector from the nine-point centre `N = H/2` to the Simson bisection point `M = (P+H)/2`
+is exactly `P/2` (pure `ring`). -/
+theorem simsonMidpoint_sub_ninePointCenter (a b c p : ℂ) :
+    simsonMidpoint a b c p - ninePointCenter a b c = p / 2 := by
+  simp only [simsonMidpoint, ninePointCenter, orthocenter]; ring
+
+/-- **The Simson bisection point lies on the nine-point circle.** For `A, B, C, P` on the unit
+circumcircle, the midpoint `M = (P + H)/2` of `P` and the orthocenter — the point at which the
+Simson line of `P` bisects `PH` (`simson_bisects_orthocenter_segment`) — lies on the nine-point
+circle of `△ABC`, which has centre `N = H/2` (`ninePointCenter`) and radius `1/2`, encoded as
+`|M - N|² = 1/4`. -/
+theorem simsonMidpoint_on_nine_point_circle {a b c p : ℂ} (hp : Complex.normSq p = 1) :
+    Complex.normSq (simsonMidpoint a b c p - ninePointCenter a b c) = 1 / 4 := by
+  rw [simsonMidpoint_sub_ninePointCenter, Complex.normSq_div, hp, Complex.normSq_ofNat]
+  norm_num
+
+end SimsonLineTheorem

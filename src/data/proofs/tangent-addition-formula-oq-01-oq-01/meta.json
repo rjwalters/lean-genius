@@ -1,0 +1,140 @@
+{
+  "id": "tangent-addition-formula-oq-01-oq-01",
+  "title": "The Three-Argument Tangent Addition Law",
+  "slug": "tangent-addition-formula-oq-01-oq-01",
+  "description": "Extends the parent tangent addition entry from two angles to three: proves tan(x+y+z) = (e₁ - e₃)/(1 - e₂) in the elementary symmetric polynomials of tan x, tan y, tan z, derives the triple-angle formula tan(3x) = (3 tan x - tan³x)/(1 - 3 tan²x) as the diagonal, and recovers the parent's triangle identity tan A + tan B + tan C = tan A·tan B·tan C (for A+B+C=π) as the vanishing of the numerator of tan(π)=0. 0 axioms.",
+  "meta": {
+    "author": "classical (symmetric-function form)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Angle_sum_and_difference_identities",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TangentAdditionFormulaOQ01.lean",
+    "tags": [
+      "trigonometry",
+      "tangent",
+      "addition-formula",
+      "symmetric-polynomials",
+      "triple-angle",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sin_add",
+        "description": "sin(a+b) = sin a cos b + cos a sin b; expands sin(x+y+z) into the symmetric numerator",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_add",
+        "description": "cos(a+b) = cos a cos b - sin a sin b; expands cos(x+y+z) into the symmetric denominator",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.tan_eq_sin_div_cos",
+        "description": "tan θ = sin θ / cos θ; the bridge that puts numerator and denominator over the common product cos x·cos y·cos z",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "div_div_div_cancel_right₀",
+        "description": "(a/c)/(b/c) = a/b for c ≠ 0; collapses the common-denominator form to the symmetric quotient",
+        "module": "Mathlib.Algebra.GroupWithZero.Units.Basic"
+      },
+      {
+        "theorem": "div_eq_zero_iff",
+        "description": "a/b = 0 ↔ a = 0 ∨ b = 0; extracts the triangle identity from tan(π) = 0",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Three-argument tangent addition law tan(x+y+z) = (e₁ - e₃)/(1 - e₂) stated in the elementary symmetric polynomials of the three tangents, with directly checkable cos≠0 side-conditions — not in Mathlib and not in the parent entry",
+      "Robust common-denominator proof: the claimed numerator and denominator are exactly the sin/cos expansions of sin(x+y+z) and cos(x+y+z), so the law collapses to the field cancellation (N/c)/(D/c) = N/D, avoiding fragile nested fractions",
+      "Triple-angle tangent formula tan(3x) = (3 tan x - tan³x)/(1 - 3 tan²x) obtained as the x=y=z diagonal in one ring step",
+      "Unification: the parent's triangle identity tan A + tan B + tan C = tan A·tan B·tan C (A+B+C=π) recovered as the statement that the numerator e₁-e₃ of tan(A+B+C) = tan π = 0 vanishes"
+    ],
+    "axiomCount": 0,
+    "lineCount": 108,
+    "assumptions": "None — fully verified from Mathlib with 0 axioms (only propext / Classical.choice / Quot.sound) and 0 sorries; no native_decide. The law carries the standard side-conditions cos x, cos y, cos z ≠ 0 and cos(x+y+z) ≠ 0 (the angles and their sum are not odd multiples of π/2), which are hypotheses of the theorem, not assumptions about the ambient logic.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The tangent addition law tan(x+y) = (tan x + tan y)/(1 - tan x tan y) is among the oldest trigonometric identities; its three-angle form is the natural next step and exposes the elementary symmetric polynomials e₁ = Σ tan, e₂ = Σ tan·tan, e₃ = ∏ tan. The numerator e₁ - e₃ and denominator 1 - e₂ are the tangent analogue of the symmetric shape of sin and cos of a triple sum, and they specialize to the triple-angle formula and to the classical triangle identity tan A + tan B + tan C = tan A tan B tan C.",
+    "problemStatement": "Going beyond the parent's two-argument tangent law, derive the three-argument addition formula tan(x+y+z) in terms of the tangents of the summands, and obtain the triple-angle formula and the triangle identity as corollaries.",
+    "text": "The three-argument tangent addition law in elementary symmetric form, with the triple-angle formula and the triangle identity as corollaries.",
+    "proofStrategy": "Write everything over the common denominator cos x·cos y·cos z. The numerator e₁ - e₃ then equals sin x cos y cos z + cos x sin y cos z + cos x cos y sin z - sin x sin y sin z, which is the sin_add/cos_add expansion of sin(x+y+z); the denominator 1 - e₂ equals the expansion of cos(x+y+z). The law is therefore (N/c)/(D/c) = N/D, closed by div_div_div_cancel_right₀ with c = cos x cos y cos z ≠ 0. The triple-angle formula is the x=y=z diagonal (one ring step), and the triangle identity follows from tan(A+B+C) = tan π = 0 via div_eq_zero_iff once the denominator is shown nonzero (using cos(A+B+C) = cos A cos B cos C·(1-e₂)).",
+    "keyInsights": [
+      "The numerator e₁-e₃ and denominator 1-e₂ of the tangent triple-sum are literally the sin/cos expansions of sin(x+y+z) and cos(x+y+z) divided by cos x cos y cos z",
+      "Casting the identity as (N/c)/(D/c)=N/D sidesteps the brittle nested-fraction form (tan(x+y) substituted into another tan_add) and its many denominator side-conditions",
+      "Setting x=y=z collapses the symmetric polynomials to (3t - t³)/(1 - 3t²): the classical triple-angle tangent formula",
+      "The triangle identity is the special case x+y+z = π, where tan = 0 forces the numerator e₁ - e₃ to vanish, i.e. Σ tan = ∏ tan",
+      "cos(x+y+z) = cos x cos y cos z·(1 - e₂) gives both the nonzero denominator and the geometric meaning of the side-condition"
+    ],
+    "prerequisites": [
+      "Tangent addition law (parent entry)",
+      "Angle-sum identities for sine and cosine",
+      "Elementary symmetric polynomials"
+    ]
+  },
+  "sections": [
+    {
+      "id": "three-arg-law",
+      "title": "The Three-Argument Tangent Addition Law",
+      "startLine": 46,
+      "endLine": 72,
+      "summary": "Proves tan(x+y+z) = (e₁ - e₃)/(1 - e₂) by recognizing the symmetric numerator/denominator as the sin/cos expansions of sin(x+y+z) and cos(x+y+z) over cos x cos y cos z, then cancelling via div_div_div_cancel_right₀.",
+      "mathContext": "e₁ = tan x+tan y+tan z, e₂ = Σ tan·tan, e₃ = tan x tan y tan z."
+    },
+    {
+      "id": "triple-angle",
+      "title": "Triple-Angle Formula",
+      "startLine": 74,
+      "endLine": 81,
+      "summary": "The x=y=z diagonal: tan(3x) = (3 tan x - tan³x)/(1 - 3 tan²x), one ring specialization of the three-argument law.",
+      "mathContext": "Classical multiple-angle formula for the tangent."
+    },
+    {
+      "id": "triangle-identity",
+      "title": "Triangle Identity Recovered",
+      "startLine": 83,
+      "endLine": 108,
+      "summary": "For A+B+C = π, tan(A+B+C) = tan π = 0, so the numerator e₁ - e₃ vanishes: tan A + tan B + tan C = tan A·tan B·tan C, recovering the parent's identity from the general law.",
+      "mathContext": "Denominator 1-e₂ shown nonzero via cos(A+B+C) = cos A cos B cos C·(1-e₂)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 axioms, 0 sorries, no native_decide) three-argument tangent addition law in elementary symmetric form, with the triple-angle formula and the parent's triangle identity recovered as corollaries.",
+    "implications": "The symmetric-polynomial shape (e₁-e₃)/(1-e₂) unifies the tangent multiple-angle and triangle identities: the triple-angle formula is its diagonal and the triangle identity is its value at angle-sum π. The same common-denominator method extends to n angles, with numerator and denominator the odd- and even-degree elementary symmetric polynomials of the tangents.",
+    "openQuestions": [
+      "State the general n-argument tangent law tan(x₁+…+xₙ) = (e₁ - e₃ + e₅ - …)/(e₀ - e₂ + e₄ - …) with eₖ the elementary symmetric polynomials of the tangents.",
+      "Derive the cotangent triple-sum and triple-angle formulas by the same common-denominator method.",
+      "Use the triple-angle formula to give a tangent-side proof of a Machin-like π identity (cf. the MachinFromAddition gallery entry)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "tangent-addition-formula-oq-01",
+      "relationship": "parent",
+      "description": "Parent entry establishing the two-argument tangent law, the triangle identity, and the arctan(1/2)+arctan(1/3)=π/4 application; this entry generalizes to three arguments and re-derives the triangle identity from the general law"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
+      "Mathlib.Analysis.Complex.Trigonometric",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "",
+    "lineCount": 108,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/TangentAdditionFormulaOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

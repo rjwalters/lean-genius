@@ -1,8 +1,8 @@
 {
   "slug": "inverse-galois-d4-oq-03",
   "title": "Is there a general criterion for when Gal(X^n - a/ℚ) is dihedral",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,18 +29,19 @@
     "goal": "S1 OBSERVE survey deliverable: classify the (n, a) cases for which dihedral arises, audit Mathlib API gaps, and propose an S2 scaffold structure."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-05-12T06:40:00.000Z",
-    "iteration": 4,
+    "phase": "BLOCKED",
+    "since": "2026-06-13",
+    "iteration": 5,
     "focus": "S4 PREP (researcher-1, 2026-06-10, claim researcher-79710): JSON STATE-SYNC absorbing 3 sessions of drift (S2 SCAFFOLD → S3a → S3b, all merged 2026-05-12 via PRs #17999, #18063, #18154; JSON tracker never updated past S1 OBSERVE). Mathlib `DihedralGroup` API audit at pinned SHA `2df2f0150c…`: confirmed `DihedralGroup.lift` is ABSENT from Mathlib v4.26.0 — S3b §Next action's \"(d) apply DihedralGroup.lift (if in Mathlib) or hand-construct\" collapses to hand-construct only. Sharpened S5 decomposition into 3-PR series: S5a Generators ~40-60 LOC, S5b Forward map ~30-50 LOC, S5c Bijectivity+MulEquiv ~30-50 LOC. Optional S5∗ combined single-PR alternative ~120-160 LOC. NO Lean changes at S4 — pure doc-only PREP. Build status carried-forward from S3b PR #18154 verified-merge (~29 days, Mathlib SHA unchanged, low drift risk; BUILD-VERIFY recommended before S5 actual code commits).",
     "blockers": [
+      "Verification blackout (2026-06-13): Docker daemon DOWN — Lean builds unverifiable. The sole remaining sorry (dihedral_galois_xPow4_sub_2, InverseGaloisD4OQ03.lean:111) is discharged only by hand-constructing MulEquiv ((xPowSub 4 2).Gal ≃* DihedralGroup 4) (S5a/b/c series), all of which add Lean code requiring a Docker build to verify. No build-free ACT remains; gallery meta and JSON tracker are in sync (axiomCount 0, 1 sorry, theoremCount 11, lineCount 235, status=formalized). Re-open when Docker recovers; resume at S5a (generators).",
       "Capelli's theorem (full n) not present in Mathlib v4.26.0.",
       "Generic Galois order |G| = n·φ(n) not packaged as a single Mathlib lemma."
     ],
-    "nextAction": "S5 ACT (recommended next step): hand-construct `MulEquiv ((xPowSub 4 2).Gal ≃* DihedralGroup 4)` to discharge the sole remaining sorry on `dihedral_galois_xPow4_sub_2`. Recommended decomposition (3-PR series, each <100 LOC, each 1 Docker iter): (S5a) Generators — define σ, τ : (xPowSub 4 2).Gal borrowing parent's `phi_action`/`psi_action` names (per InverseGaloisD4.lean); prove `σ^4 = 1`, `τ^2 = 1`, `τ*σ*τ⁻¹ = σ⁻¹` as theorems by reducing each to evaluation on generators ⁴√2 and i. (S5b) Forward map — define `galToD4 : (xPowSub 4 2).Gal →* DihedralGroup 4` by decomposing each f as `(σ^a) * (τ^b)` with a ∈ ZMod 4, b ∈ ZMod 2 and returning `r a` or `sr a`; prove `MonoidHom`-ness. (S5c) Bijectivity + MulEquiv — use S3a's `gal_card_eq_dihedralGroup_4_card` cardinality lift + injectivity (f = id ↔ f(⁴√2) = ⁴√2 ∧ f(i) = i) → bijectivity → `MulEquiv.ofBijective`; apply S3b's `dihedral_galois_xPow4_sub_2_of_mulEquiv` to discharge. S5∗ ALT: combine into single ~120-160 LOC PR if researcher confident. Capelli (1897) upstream contribution separate (~200 LOC, blocker for full Schinzel-Velez). INFRA expected GREEN through S5; recommend BUILD-VERIFY iteration before S5a to confirm 29-day-old file still builds.",
+    "nextAction": "BLOCKED on verification blackout. Resume S5a (define σ,τ generators of (xPowSub 4 2).Gal) once Docker is back; see prior nextAction for full S5a/b/c decomposition.",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 1,
+      "total": 5,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
@@ -92,7 +93,9 @@
   ],
   "relatedProofs": [
     "inverse-galois",
-    "inverse-galois-d4"
+    "inverse-galois-d4",
+    "inverse-galois-d4-oq-01",
+    "inverse-galois-d4-oq-03"
   ],
   "references": {
     "papers": [
@@ -116,7 +119,7 @@
     ]
   },
   "started": "2026-05-12T04:48:16.449Z",
-  "lastUpdate": "2026-06-10",
+  "lastUpdate": "2026-06-13",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -130,6 +133,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4OQ01.lean",
+      "filename": "InverseGaloisD4OQ01.lean",
+      "lineCount": 203,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4OQ01.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4OQ01External.lean",
+      "filename": "InverseGaloisD4OQ01External.lean",
+      "lineCount": 172,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4OQ01External.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4OQ03.lean",
+      "filename": "InverseGaloisD4OQ03.lean",
+      "lineCount": 236,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 15,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4OQ03.lean"
     }
   ]
 }

@@ -153,11 +153,6 @@
       "targetId": "cantor-diagonalization",
       "relationship": "related",
       "description": "Both entries explore the *expressive power* of formal systems by separating their *computational content* from their *propositional content*. Cantor's diagonal shows the limits of any enumeration (a propositional impossibility); this entry refines `1+1=2 := rfl` (a propositional triviality) into a non-trivial *computational* taxonomy depending on representation."
-    },
-    {
-      "targetId": "ackermann-function",
-      "relationship": "related",
-      "description": "Ackermann's function is the canonical example of a primitive-recursive-vs.-recursive boundary. This entry's representation-dependent rule analysis hints at a finer hierarchy: not just *what is computable* (Ackermann's signature concern) but *what kernel rules suffice* — a refinement of recursion-theoretic complexity into reduction-rule complexity."
     }
   ],
   "mainTheorems": [

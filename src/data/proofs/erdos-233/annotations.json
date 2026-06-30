@@ -16,7 +16,11 @@
       "Prime number theorem",
       "Riemann Hypothesis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive primes and the prime gap dₙ = pₙ₊₁ - pₙ",
+      "asymptotic growth rate N(log N)²",
+      "conditional results under the Riemann Hypothesis"
+    ]
   },
   {
     "id": "ann-e233-nth-prime",
@@ -35,7 +39,11 @@
       "Prime numbers",
       "Enumeration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's Nat.nth enumeration of a predicate",
+      "the Nat.Prime primality predicate",
+      "noncomputability from unbounded primality search"
+    ]
   },
   {
     "id": "ann-e233-prime-gap",
@@ -54,7 +62,11 @@
       "Cramér's conjecture",
       "Twin primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the n-th prime function nthPrime",
+      "differences of consecutive primes pₙ₊₁ - pₙ",
+      "average gap log x from the prime number theorem"
+    ]
   },
   {
     "id": "ann-e233-sum-squares",
@@ -73,7 +85,11 @@
       "Variance",
       "Statistical moments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime gap function dₙ",
+      "summation over range(N)",
+      "second moments and variance of a distribution"
+    ]
   },
   {
     "id": "ann-e233-conjecture",
@@ -92,7 +108,11 @@
       "Asymptotic analysis",
       "Heath-Brown"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sum of squared prime gaps sumSquaresGaps",
+      "Mathlib's =O[atTop] big-O asymptotic notation",
+      "the expected gap size log p from the PNT"
+    ]
   },
   {
     "id": "ann-e233-lower-bound",
@@ -111,7 +131,11 @@
       "de la Vallée Poussin",
       "Asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime number theorem and average gap log p",
+      "reverse big-O notation for a lower bound",
+      "unconditional summation of (log p)² over N terms"
+    ]
   },
   {
     "id": "ann-e233-cramer",
@@ -130,7 +154,11 @@
       "Cramér",
       "Zeta function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Riemann Hypothesis as a hypothesis",
+      "the conditional big-O bound N(log N)⁴",
+      "zeros of the Riemann zeta function and prime distribution"
+    ]
   },
   {
     "id": "ann-e233-selberg",
@@ -149,7 +177,11 @@
       "Weighted sums",
       "Analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the weighted sum Σ dₙ²/(n+1)",
+      "the Riemann Hypothesis premise",
+      "the Selberg sieve technique"
+    ]
   },
   {
     "id": "ann-e233-status",
@@ -168,7 +200,11 @@
       "Gap between bounds",
       "Number theory frontiers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the unconditional lower bound N(log N)²",
+      "the RH-conditional upper bound N(log N)⁴",
+      "the law of excluded middle P ∨ ¬P"
+    ]
   },
   {
     "id": "ann-e233-cramer-conjecture",
@@ -187,7 +223,11 @@
       "Probabilistic number theory",
       "Random primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "individual prime gaps dₙ bounded by (log pₙ)²",
+      "the ε-quantified eventual bound for n ≥ N₀",
+      "Cramér's probabilistic random-primes model"
+    ]
   },
   {
     "id": "ann-e233-examples",
@@ -206,7 +246,11 @@
       "Concrete examples",
       "Verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime gap values d₀=1, d₁=2, d₂=2",
+      "noncomputability of nthPrime forcing axiomatization",
+      "external verification of small prime gaps"
+    ]
   },
   {
     "id": "ann-e233-summary",
@@ -225,6 +269,10 @@
       "Known results",
       "Open questions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the axiomatized first prime gaps d₀=1, d₁=2, d₂=2",
+      "the open status expressed via excluded middle",
+      "conjunction of formalized known facts"
+    ]
   }
 ]

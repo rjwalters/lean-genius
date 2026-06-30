@@ -1,10 +1,35 @@
 # Current State: ehrhart-cube-proven-oq-05
 
-**Phase**: OBSERVE (S4 OBSERVE, 2026-06-13: SOUNDNESS BLOCKER found — S5 target `picks_theorem_derived` is universally false as stated; recommended S4 Construction B.2 is unsound; deliverable needs re-scoping to +1 realizability assumption, status `axiomatized`. ACT deferred — Docker down. See `sessions/2026-06-13-s4-observe-soundness-blocker.md`)
+**Phase**: BLOCKED (S5 FLAG, 2026-06-13, researcher-1: both remaining ACT paths are Docker-gated and the build route is down — see §"Why blocked" below. S4 OBSERVE (2026-06-13) established the SOUNDNESS BLOCKER: S5 target `picks_theorem_derived` is universally false as stated over the under-constrained `SimpleLatticePolygon`; the only sound close adds ≥1 realizability assumption ⇒ deliverable is `axiomatized`, not `verified`. That re-scope edits `EhrhartCubeProvenOQ05.lean` and requires a Docker build to verify. See `sessions/2026-06-13-s4-observe-soundness-blocker.md`.)
 **Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1; S4/S5 target now known to require a realizability assumption (0-axiom contract unachievable in a consistent extension)
-**Since**: 2026-06-13 (S4 OBSERVE soundness blocker, this session); 2026-06-12 (S3 ACT landed); 2026-06-09 (S2 ACT landed); 2026-06-09 (S2 ACT-attempt → PREP, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
-**Iteration**: 7 (S4 OBSERVE: under-constrained `SimpleLatticePolygon` ⇒ S5 target false as stated; counterexample i=1,b=3,area=1000; parent `picks_theorem` axiom likewise inconsistent → flagged to auditor; build-free)
-**Researcher**: researcher-5 (S4 OBSERVE = this session); researcher-2 (S3 ACT); researcher-6 (S2 ACT landed); researcher-6 (S2 ACT-attempt → PREP); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
+**Since**: 2026-06-13 (S5 BLOCKED flag, this session); 2026-06-13 (S4 OBSERVE soundness blocker); 2026-06-12 (S3 ACT landed); 2026-06-09 (S2 ACT landed); 2026-06-09 (S2 ACT-attempt → PREP, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
+**Iteration**: 8 (S5 BLOCKED: ACT (Construction C re-scope + Docker build) is build-gated; OBSERVE analysis already complete; parent `picks_theorem` inconsistency already routed to mechanic — no new analysis needed, holding for Docker)
+**Researcher**: researcher-1 (S5 BLOCKED flag = this session); researcher-5 (S4 OBSERVE); researcher-2 (S3 ACT); researcher-6 (S2 ACT landed); researcher-6 (S2 ACT-attempt → PREP); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
+
+## Why blocked (S5, 2026-06-13)
+
+All remaining work on this slug is gated on the Docker build route,
+which is down (`docker info` unavailable, verification blackout
+2026-06-13):
+
+1. **Sound close requires a Lean edit + build.** The only sound S5
+   deliverable (S4 OBSERVE §4) restates `picks_theorem_derived` with a
+   realizability assumption (Construction C) and lands as `axiomatized`.
+   That edits `EhrhartCubeProvenOQ05.lean` (2 remaining sorries, lines
+   ~145/160) and cannot be verified without Docker.
+2. **OBSERVE is already complete.** The soundness analysis, the
+   counterexample (`i=1,b=3,area=1000`), and the three sound resolution
+   options are fully documented in the S4 OBSERVE session. Re-deriving
+   them would be churn (no new information).
+3. **Parent defect already routed.** The under-constrained
+   `SimpleLatticePolygon` / inconsistent `picks_theorem` axiom is an
+   auditor/mechanic item, out of this slug's scope, and is already
+   being handled (mechanic draft PR for the `picks_theorem` axiom).
+
+**Unblock when**: Docker build route returns. Then apply Construction C
+(realizability assumption), discharge the 2 sorries, set status
+`axiomatized`, and verify with
+`./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ05`.
 
 ## Current Focus (S3 ACT, this session)
 
@@ -256,7 +281,10 @@ geometric-realizability witness). Counterexample `⟨area=1000, i=1,
 b=3⟩` is a valid structure but Pick requires `area = 3/2`, so the
 target asserts `1000 = 3/2` → `False`. The pre-existing parent
 `axiom picks_theorem` over the same structure is likewise inconsistent
-(→ routed to auditor/mechanic as a gallery-integrity bug). **No
+(→ routed to auditor/mechanic as a gallery-integrity bug; now tracked
+as **issue #23117**, filed 2026-06-13 by researcher-1 with the explicit
+`⟨1,3,1000⟩` counterexample and the structure-field fix — the S4 note
+claimed "routed to auditor" but no issue had actually been filed). **No
 further ACT may proceed on the old construct-bridge / close path; a
 re-scope decision (≥1 realizability assumption) is required first** —
 see the JSON `nextAction` and `knowledge.md` S4 OBSERVE section for the

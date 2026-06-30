@@ -67,7 +67,7 @@
       "title": "Problem History and Imports",
       "startLine": 1,
       "endLine": 38,
-      "summary": "Module docstring with full historical timeline (Sylvester 1893, Gallai 1944, Kelly 1948, Green-Tao 2013), axiom status, and references. Imports SimpleGraph basics, InnerProductSpace for distance, and Finset.",
+      "summary": "Module docstring with full historical timeline (Sylvester 1893, Gallai 1944, Kelly 1948, Green-Tao 2013), axiom status, and references. Imports Real and Finset basics plus InnerProductSpace (for the distance/sqrt machinery) and Mathlib.Tactic.",
       "mathContext": "The Sylvester-Gallai theorem: $|S| \\ge 3 \\wedge \\neg\\text{AllCollinear}(S) \\Rightarrow \\text{HasOrdinaryLine}(S)$."
     },
     {
@@ -90,17 +90,25 @@
       "id": "kelly",
       "title": "Kelly's Key Lemma and Point-Line Distance",
       "startLine": 93,
-      "endLine": 129,
-      "summary": "Defines pointLineDistance via the cross product formula. Proves kelly_distance_lemma via 6-case analysis on foot parameter: in each case finds a strictly closer (point,line) pair, contradicting minimality.",
+      "endLine": 417,
+      "summary": "Defines pointLineDistance via the cross-product formula d = |det[b-a, p-a]| / |b-a|, with helpers pld_nonneg and not_collinear_of_cross. Proves kelly_distance_lemma by a full 6-case analysis on the foot parameter s = (u·v)/D and t (the collinearity parameter of c): each case (s≤0; s≥1; and the four C-subcases for 0<s<1) exhibits a (point, line) pair whose squared distance C²/den is strictly smaller than C²/D, via an nlinarith certificate from the Cauchy–Schwarz identity (u·v)² + C² = D·|v|², contradicting minimality.",
       "mathContext": "After placing the foot at the origin: $d(a, \\overline{pc}) = \\frac{h|\\gamma-\\alpha|}{\\sqrt{h^2+\\gamma^2}} < h = d(p, \\ell)$ because $\\alpha(\\alpha-2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$."
     },
     {
       "id": "main",
       "title": "Sylvester-Gallai Main Theorem",
-      "startLine": 131,
-      "endLine": 184,
-      "summary": "States and proves sylvester_gallai: by contradiction, assumes no ordinary line, uses Finset.exists_min_image to extract the minimum-distance pair, then applies kelly_distance_lemma for contradiction. No sorry.",
+      "startLine": 419,
+      "endLine": 481,
+      "summary": "States and proves sylvester_gallai: by contradiction assume no ordinary line, so every 2-point line carries a third point (hall3). Extract an initial non-incident triple, then use Finset.exists_min_image over the filtered product S×S×S to take the minimum point-to-line-distance pair, and apply kelly_distance_lemma to that minimal pair for the contradiction. No sorry.",
       "mathContext": "The proof structure: $\\neg\\text{HasOrdinaryLine}(S) \\Rightarrow$ every line through 2 points of $S$ has $\\ge 3$ points $\\Rightarrow$ Kelly's lemma applies to the minimum-distance pair $\\Rightarrow \\bot$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 483,
+      "endLine": 508,
+      "summary": "Closing docstring recording the 0-axiom status, the four proved results (collinear_self_left, collinear_comm, kelly_distance_lemma, sylvester_gallai), and a table of the six Kelly cases with their pair choices and key inequalities, followed by #check exports.",
+      "mathContext": "The case table makes explicit the extremal-argument core: for each sign regime of s and t, the constructed pair's distance is governed by an inequality of the form k²·D < |offset|², all instances of the single Cauchy–Schwarz identity (u·v)² + C² = D·|v|²."
     }
   ],
   "crossReferences": [

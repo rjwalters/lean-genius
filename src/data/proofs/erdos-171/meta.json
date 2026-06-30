@@ -110,66 +110,66 @@
     {
       "id": "header",
       "title": "Problem Overview",
-      "startLine": 48,
-      "endLine": 67,
-      "summary": "Problem statement, history, and current status.",
-      "mathContext": "Mathematical content: Problem statement, history, and current status."
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Introduces Erdős #171: the chromatic number of the plane (Hadwiger–Nelson) — the least colors so that no two points at unit distance share a color. Overview of the known bounds $5\\leq\\chi\\leq7$.",
+      "mathContext": "Hadwiger–Nelson: chromatic number of the plane, $5\\leq\\chi\\leq7$."
     },
     {
-      "id": "unit-graph",
-      "title": "Unit Distance Graph",
-      "startLine": 78,
-      "endLine": 83,
-      "summary": "Definition of UnitDistanceGraph as SimpleGraph on ℝ².",
-      "mathContext": "Formal definition: Definition of UnitDistanceGraph as SimpleGraph on ℝ²."
+      "id": "part1",
+      "title": "The Unit Distance Graph",
+      "startLine": 76,
+      "endLine": 84,
+      "summary": "Defines `UnitDistanceGraph` on $\\mathbb{R}^2$: vertices are points, edges join points at Euclidean distance $1$.",
+      "mathContext": "Unit-distance graph on $\\mathbb{R}^2$."
     },
     {
-      "id": "chromatic",
+      "id": "part2",
       "title": "Chromatic Number Definitions",
-      "startLine": 87,
+      "startLine": 85,
       "endLine": 96,
-      "summary": "IsProperColoring and chromaticNumberPlane definitions.",
-      "mathContext": "Formal definition: IsProperColoring and chromaticNumberPlane definitions."
+      "summary": "Defines `IsProperColoring` and `chromaticNumberPlane` (the chromatic number $\\chi$ of the unit-distance graph).",
+      "mathContext": "$\\chi$ = chromatic number of the unit-distance graph."
     },
     {
-      "id": "lower-bounds",
-      "title": "Lower Bounds",
-      "startLine": 97,
-      "endLine": 120,
-      "summary": "Moser spindle (χ ≥ 4) and de Grey (χ ≥ 5).",
-      "mathContext": "Moser spindle (χ $\\geq$ 4) and de Grey (χ $\\geq$ 5)."
-    },
-    {
-      "id": "upper-bounds",
+      "id": "part3",
       "title": "Upper Bounds",
-      "startLine": 121,
-      "endLine": 127,
-      "summary": "Isbell's hexagonal tiling (χ ≤ 7).",
-      "mathContext": "Isbell's hexagonal tiling (χ $\\leq$ 7)."
+      "startLine": 97,
+      "endLine": 110,
+      "summary": "States the AXIOM `isbell_coloring` (Isbell's 7-coloring exists) and proves `isbell_upper_bound`: $\\chi\\leq7$.",
+      "mathContext": "Isbell 7-coloring $\\Rightarrow\\chi\\leq7$."
     },
     {
-      "id": "current",
+      "id": "part4",
+      "title": "Lower Bounds (Moser Spindle & de Grey)",
+      "startLine": 111,
+      "endLine": 244,
+      "summary": "Builds the Moser spindle explicitly (`moserAdj`, `moserPt`, injectivity, unit-edge and not-3-colorable lemmas) to prove `moser_spindle` and `lower_bound_4` ($\\chi\\geq4$); then states the AXIOM `de_grey_graph` and proves `de_grey`: $\\chi\\geq5$.",
+      "mathContext": "Moser spindle $\\Rightarrow\\chi\\geq4$; de Grey graph $\\Rightarrow\\chi\\geq5$."
+    },
+    {
+      "id": "part5",
       "title": "Current State",
-      "startLine": 128,
-      "endLine": 134,
-      "summary": "Combined bounds: 5 ≤ χ(ℝ²) ≤ 7.",
-      "mathContext": "Combined bounds: 5 $\\leq$ χ(ℝ²) $\\leq$ 7."
+      "startLine": 245,
+      "endLine": 252,
+      "summary": "Proves `current_bounds`: $5\\leq\\chi\\leq7$, the best known bounds.",
+      "mathContext": "$5\\leq\\chi\\leq7$ (current best bounds)."
     },
     {
-      "id": "clique",
-      "title": "Clique Number",
-      "startLine": 144,
-      "endLine": 159,
-      "summary": "Aristotle-verified: ω = 3 (equilateral triangle, no 4-clique).",
-      "mathContext": "Mathematical content: Aristotle-verified: ω = 3 (equilateral triangle, no 4-clique)."
+      "id": "part6",
+      "title": "Related Results",
+      "startLine": 253,
+      "endLine": 275,
+      "summary": "Proves `clique_number_3` and `no_4_clique`: the unit-distance graph contains a triangle but no $K_4$.",
+      "mathContext": "Clique number $=3$ (triangle yes, $K_4$ no)."
     },
     {
-      "id": "summary",
+      "id": "part7",
       "title": "Summary",
-      "startLine": 160,
-      "endLine": 184,
-      "summary": "Problem status and references.",
-      "mathContext": "Mathematical content: Problem status and references."
+      "startLine": 276,
+      "endLine": 302,
+      "summary": "Recaps the construction and bounds: definitions, Isbell upper bound, Moser/de Grey lower bounds, and clique structure; the exact value of $\\chi$ remains open.",
+      "mathContext": "Summary; exact $\\chi$ remains open."
     }
   ],
   "conclusion": {

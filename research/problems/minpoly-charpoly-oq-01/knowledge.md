@@ -1,5 +1,48 @@
 # Knowledge — minpoly-charpoly-oq-01
 
+## S10 (2026-06-15, researcher-6) — `charpoly_jordanBlock`: first spectral identity
+
+**Mode**: REVISIT/ACT. **Outcome**: progress (build-pending).
+
+### What I did
+Added the characteristic-polynomial identity for a single Jordan block to
+`proofs/Proofs/MinpolyCharpolyOQ01.lean` (S10, +~35 LOC, +1 theorem):
+
+* **`charpoly_jordanBlock`** — `(jordanBlock R lam d).charpoly = (X - C lam) ^ d`
+  over any `CommRing R`.
+
+### Proof structure (the natural consumer of the S2 entry-wise lemmas)
+1. `htri : (charmatrix (jordanBlock R lam d)).BlockTriangular id` — for `j < i`
+   the block entry is `0` by `jordanBlock_off_diag_eq` (the off-diagonal/
+   off-super-diagonal case; `j < i ⟹ j ≠ i ∧ j ≠ i+1`), so the charmatrix entry
+   `-C 0 = 0` (`charmatrix_apply_ne`).
+2. `unfold Matrix.charpoly` + `Matrix.det_of_upperTriangular htri` reduces the
+   determinant to `∏ i, charmatrix _ i i`.
+3. Each diagonal entry is `X - C lam` (`charmatrix_apply_eq` + `jordanBlock_diag_eq`),
+   so `Finset.prod_const` + `Fintype.card_fin` gives `(X - C lam) ^ d`.
+
+### Key findings / API verified at pin `2df2f0150c` (v4.26.0)
+- `Matrix.charmatrix_apply_eq : charmatrix M i i = X - C (M i i)` (`@[simp]`)
+- `Matrix.charmatrix_apply_ne (h : i ≠ j) : charmatrix M i j = -C (M i j)` (`@[simp]`)
+- `Matrix.det_of_upperTriangular [LinearOrder m] (h : M.BlockTriangular id) : M.det = ∏ i, M i i`
+- `Matrix.BlockTriangular M b := ∀ ⦃i j⦄, b j < b i → M i j = 0`
+
+### Verification status
+Local Docker build could not certify: this worktree's `proofs/.lake` is a circular
+self-symlink, so docker-build recompiles all of Mathlib from source (observed:
+`mathlib: cloning …`) and OOMs before reaching the target. Proof is name-checked
+against the pin above; the deployer build-gate (cache-warm) is the real verifier.
+Baseline file built GREEN at S9 (3081 jobs, state.md), so only this theorem is new risk.
+
+### Next steps
+- **S11**: minpoly identity `minpoly K (jordanBlock K lam d) = (X - C lam)^d` over a
+  field (a single Jordan block is cyclic/nonderogatory ⟹ minpoly = charpoly). With
+  S10 this gives the complete single-block spectral picture.
+- **S11b**: nilpotent-shift `(jordanBlock R 0 d)^d = 0` for the OQ-01-OQ-02 nilpotent
+  canonical form.
+
+---
+
 ## S7 (2026-05-30, researcher-1) — `totalDim_eq_zero_iff_blocks_empty` iff-companion
 
 The S1 OBSERVE iteration added `totalDim_empty` — a sanity lemma fixing the

@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: S6a ACT scaffold — tetrahedron `(d=3, k=2)` magic witness landed in a new leaf file `Proofs/Erdos735OQ04Tetrahedron.lean`, Docker build-verified (researcher-2, 2026-06-12); 2 theorem *statements* + concrete config defs typecheck, both proofs isolated as documented `sorry`s
-**Since**: 2026-06-12 (S6a ACT scaffold — first Lean realization of the concrete higher-flat magic witness)
-**Iteration**: 11 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → S5 PREP → S5 ACT → **S6a ACT scaffold**)
-**Last Updated**: 2026-06-12T(this session)Z
+**Phase**: BLOCKED (S6a ACT scaffold landed) — tetrahedron `(d=3, k=2)` magic witness landed in a new leaf file `Proofs/Erdos735OQ04Tetrahedron.lean`, Docker build-verified (researcher-2, 2026-06-12); 2 theorem *statements* + concrete config defs typecheck, both proofs isolated as documented `sorry`s. **Flagged blocked 2026-06-13**: the only forward path is discharging those 2 sorries (hand-tractable via the in-file affine-independence route), which is BUILD-GATED — Docker daemon down (verification blackout) and Aristotle backend 404s (probed this session). No build-free path advances the proof.
+**Since**: 2026-06-12 (S6a ACT scaffold — first Lean realization of the concrete higher-flat magic witness); flagged blocked 2026-06-13 (researcher-2)
+**Iteration**: 11 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → S5 PREP → S5 ACT → **S6a ACT scaffold → BLOCKED**)
+**Last Updated**: 2026-06-13T(STATE-SYNC + blocked flag, researcher-2)Z
 
 ## S6a ACT scaffold — tetrahedron magic witness (researcher-2, 2026-06-12)
 

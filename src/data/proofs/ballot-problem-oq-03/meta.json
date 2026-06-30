@@ -95,125 +95,202 @@
       "Basic Lean 4 induction and Fintype"
     ]
   },
-  "sections": [
+  "sections":   [
     {
       "id": "preamble-imports",
       "title": "Module Documentation and Imports",
       "startLine": 1,
-      "endLine": 61,
-      "summary": "Module docstring describing the Lindström-Gessel-Viennot lemma approach via 2D reflection. Documents the lattice path encoding (Boolean lists), crossing lemma, and the connection to the ballot problem and Catalan numbers. Imports Mathlib combinatorics and tactic libraries."
+      "endLine": 69,
+      "summary": "Module docstring for ballot-problem-oq-03: the ballot/Catalan problem proved via the Lindström–Gessel–Viennot (LGV) lemma on non-intersecting lattice paths. Status: 0 sorries, 0 axioms, fully proved. References and imports."
     },
     {
       "id": "path-definitions",
-      "title": "Lattice Path Definitions",
-      "startLine": 62,
-      "endLine": 106,
-      "summary": "LPath as List Bool (false=East, true=North), eastSteps, northSteps, pathType subtype with Fintype instance via List.Vector equivalence.",
-      "mathContext": "A lattice path from $(0,y_0)$ to $(m, y_0+n)$ is encoded as a Boolean list of length $m+n$, where $\\texttt{false}$ is an East step and $\\texttt{true}$ is a North step. The subtype $\\texttt{pathType}\\, m\\, n$ restricts to lists with exactly $m$ East and $n$ North steps, and a $\\texttt{Fintype}$ instance (via $\\texttt{List.Vector}$ equivalence) enables cardinality computations."
+      "title": "Part I: Lattice Path Definitions",
+      "startLine": 70,
+      "endLine": 114,
+      "summary": "Core lattice-path types: `LPath` (list of east/north steps), `eastSteps`/`northSteps` counts with `eastSteps_add_northSteps`, and `pathType`."
     },
     {
       "id": "north-before-east",
-      "title": "northBeforeEast and Column Entry",
-      "startLine": 107,
-      "endLine": 198,
-      "summary": "northBeforeEast l k counts North steps before k-th East step. colEntry l k is the y-offset at column k. Key lemmas: monotonicity, northBeforeEast ≤ northSteps, colEntry ≤ northSteps.",
-      "mathContext": "For a path $l$ with $m$ East steps, $\\texttt{northBeforeEast}(l,k)$ gives the number of North steps before the $k$-th East step, encoding the $y$-offset at column $k$. The derived function $\\texttt{colEntry}(l,k)$ satisfies $\\texttt{colEntry}(l,0) = 0$ and $\\texttt{colEntry}(l,k) \\leq \\texttt{colEntry}(l,k{+}1) \\leq \\texttt{northSteps}(l)$, enabling column-by-column inductive analysis of path geometry."
+      "title": "Part II: The northBeforeEast Function",
+      "startLine": 115,
+      "endLine": 206,
+      "summary": "`northBeforeEast` (north steps preceding a given position) and its zero/monotonicity lemmas; `colEntry` (column-entry height) with `colEntry_zero/_succ/_mono` and `northSteps_cons_false`."
     },
     {
       "id": "non-intersecting",
-      "title": "Column Ranges and Non-Intersecting",
-      "startLine": 199,
-      "endLine": 213,
-      "summary": "colYRange: y-values visited at column x. finalRange: y-values at final column. NonIntersecting: column-wise disjoint y-ranges for two paths.",
-      "mathContext": "Two paths $P_1$ from $(0,y_1)$ and $P_2$ from $(0,y_2)$ are non-intersecting when the $y$-intervals $[y_i + \\text{colEntry}(l_i,x),\\, y_i + \\text{colEntry}(l_i,x{+}1)]$ are disjoint at every column $x < m$, and similarly for the final column range. This column-wise disjointness condition is the predicate that the Crossing Lemma negates."
+      "title": "Part III: Column Ranges and Non-Intersecting",
+      "startLine": 207,
+      "endLine": 221,
+      "summary": "`colYRange`, `finalRange`, and the `NonIntersecting` predicate on pairs of paths."
     },
     {
       "id": "crossing-lemma",
-      "title": "The 2D Crossing Lemma",
-      "startLine": 214,
-      "endLine": 290,
-      "summary": "FULLY PROVED: If y₁ < y₂ and y₂+n₂ < y₁+n₁, paths cannot be non-intersecting. Proof via column-by-column induction using nonIntersecting_entry_order (disjoint interval preservation).",
-      "mathContext": "The 2D Crossing Lemma: if $y_1 < y_2$ and $y_2 + n_2 < y_1 + n_1$ (paths cross in $y$-coordinate), then $\\neg\\text{NonIntersecting}(l_1, l_2, m, y_1, y_2)$. The proof inducts on columns: the helper $\\texttt{nonIntersecting\\_entry\\_order}$ shows disjoint column ranges force the lower path to stay below, contradicting the endpoint crossing condition at column $m$."
+      "title": "Part IV: The Crossing Lemma",
+      "startLine": 222,
+      "endLine": 298,
+      "summary": "`nonIntersecting_entry_order` and the 2D `crossing_lemma`: two paths from ordered sources to ordered sinks must cross."
     },
     {
       "id": "path-count",
-      "title": "Path Count Formula",
-      "startLine": 291,
-      "endLine": 394,
-      "summary": "FULLY PROVED: |pathType m n| = C(m+n, m). pathSplitEquiv bijects pathType (m+1) (n+1) ≃ pathType m (n+1) ⊕ pathType (m+1) n, giving Pascal's recurrence.",
-      "mathContext": "$|\\texttt{pathType}(m,n)| = \\binom{m+n}{m}$. The bijection $\\texttt{pathSplitEquiv}$ decomposes $\\texttt{pathType}(m{+}1, n{+}1) \\simeq \\texttt{pathType}(m, n{+}1) \\oplus \\texttt{pathType}(m{+}1, n)$ by the first step (East or North), yielding Pascal's recurrence $\\binom{m+n+2}{m+1} = \\binom{m+n+1}{m} + \\binom{m+n+1}{m+1}$ on cardinalities."
+      "title": "Part V: Path Count Formula",
+      "startLine": 299,
+      "endLine": 402,
+      "summary": "`pathSplitEquiv` and `path_count_eq_choose`: the number of monotone lattice paths is a binomial coefficient."
     },
     {
       "id": "lgv-count",
-      "title": "NI Pair Count and LGV Statement",
-      "startLine": 395,
-      "endLine": 425,
-      "summary": "niPairCount via Classical decidability. lgvDet 2×2 determinant. lgv_lemma_2x2 proved via complement counting plus Lindström involution bijection.",
-      "mathContext": "The non-intersecting pair count $\\texttt{niPairCount}$ uses classical decidability to count over $\\texttt{pathType}$ products. The LGV determinant $\\texttt{lgvDet} = \\binom{m+n_1}{m}\\binom{m+n_2}{m} - \\binom{m+n_1'}{m}\\binom{m+n_2'}{m}$ is proved equal to $\\texttt{niPairCount}$ via complement counting: total identity pairs minus intersecting identity pairs, where the Lindström involution bijects intersecting identity pairs with crossing pairs."
+      "title": "Part VI: Non-Intersecting Pair Count and LGV",
+      "startLine": 403,
+      "endLine": 492,
+      "summary": "`niPairCount` (count of non-intersecting path pairs) and `lgvDet` (the LGV determinant), setting up the LGV statement."
     },
     {
       "id": "vandermonde",
-      "title": "Vandermonde's Identity",
-      "startLine": 426,
-      "endLine": 437,
-      "summary": "FULLY PROVED: C(m+n, r) = Σ C(m,k)*C(n,r-k) via Nat.add_choose_eq and Finset.Nat.sum_antidiagonal.",
-      "mathContext": "Vandermonde's identity: $\\binom{m+n}{r} = \\sum_{k=0}^{r} \\binom{m}{k}\\binom{n}{r-k}$. Proved by invoking Mathlib's $\\texttt{Nat.add\\_choose\\_eq}$ and rewriting with $\\texttt{Finset.Nat.sum\\_antidiagonal}$. This identity has a lattice path interpretation: paths from $(0,0)$ to $(m+n, r)$ are partitioned by where they cross the column $x = m$."
+      "title": "Part VII: Vandermonde's Identity",
+      "startLine": 493,
+      "endLine": 504,
+      "summary": "`vandermonde`: the Vandermonde convolution identity for binomial coefficients."
     },
     {
       "id": "catalan",
-      "title": "Catalan Numbers",
-      "startLine": 438,
-      "endLine": 489,
-      "summary": "FULLY PROVED: Catalan formula Cn(n)*(n+1) = C(2n,n) via absorption identity. Verified for n=0..6.",
-      "mathContext": "The $n$-th Catalan number $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$ satisfies $C_n(n+1) = \\binom{2n}{n}$, i.e., $C_n = \\frac{1}{n+1}\\binom{2n}{n}$. Proved algebraically via the absorption identity $\\texttt{Nat.add\\_one\\_mul\\_choose\\_eq}$ and verified computationally for $n = 0, \\ldots, 6$ via $\\texttt{native\\_decide}$."
+      "title": "Part VIII: Catalan Numbers",
+      "startLine": 505,
+      "endLine": 556,
+      "summary": "`Cn` (Catalan numbers) and `catalan_formula` (the closed-form binomial expression)."
     },
     {
       "id": "ballot",
-      "title": "Ballot Theorem",
-      "startLine": 490,
-      "endLine": 571,
-      "summary": "FULLY PROVED: ballotSeqCount p q * (p+q) = (p-q) * C(p+q,p) via absorption identity. Verified for several (p,q) pairs. ballot_via_path_count: ballot = path count difference (1D reflection).",
-      "mathContext": "The ballot formula: $\\texttt{ballotSeqCount}(p,q) \\cdot (p+q) = (p-q) \\cdot \\binom{p+q}{p}$ for $q < p$. Proved using the same absorption identity technique as the Catalan section. The theorem $\\texttt{ballot\\_via\\_path\\_count}$ expresses the ballot count as a path count difference $\\binom{p+q}{p} - \\binom{p+q}{p+1}$, connecting the ballot problem to the 1D reflection principle."
+      "title": "Part IX: Ballot Theorem",
+      "startLine": 557,
+      "endLine": 619,
+      "summary": "`ballotSeqCount` and `ballot_formula`: the classical ballot theorem count."
+    },
+    {
+      "id": "ballot-path-difference",
+      "title": "Part X: Ballot Count via Path Difference",
+      "startLine": 620,
+      "endLine": 638,
+      "summary": "`ballot_via_path_count`: realizing the ballot count as a difference of path counts."
     },
     {
       "id": "involution-infra",
-      "title": "Involution Infrastructure",
-      "startLine": 572,
-      "endLine": 771,
-      "summary": "splitAfterEast splits a path after k East steps. Key theorem: northSteps(prefix) = northBeforeEast l k. swapTails exchanges suffixes for the Lindström involution. lgvDet = 0 for same start/end degenerate cases.",
-      "mathContext": "The function $\\texttt{splitAfterEast}(l, k)$ decomposes a path into prefix (up to the $k$-th East step) and suffix, with the key property $\\texttt{northSteps}(\\text{prefix}) = \\texttt{northBeforeEast}(l, k)$. The $\\texttt{swapTails}$ operation exchanges suffixes of two paths at a given column, forming the core of the Lindström sign-reversing involution. Degenerate cases (equal sources or equal targets) yield $\\texttt{lgvDet} = 0$."
+      "title": "Part XI: Involution Infrastructure for LGV",
+      "startLine": 639,
+      "endLine": 940,
+      "summary": "Path-splitting and swap infrastructure for the LGV involution: `splitAfterEast` with its append/eastSteps/northSteps lemmas, plus the tail-swap `swapTails` and `swapTails_involutive`."
+    },
+    {
+      "id": "lgv-examples",
+      "title": "Part XIII: Verified LGV Examples",
+      "startLine": 941,
+      "endLine": 962,
+      "summary": "Machine-verified concrete LGV examples (`native_decide`)."
+    },
+    {
+      "id": "complement-counting",
+      "title": "Part XIII: Complement Counting and Lindström Involution",
+      "startLine": 963,
+      "endLine": 995,
+      "summary": "`ni_complement_count` and `total_identity_count`: complement counting used in the Lindström involution argument."
     },
     {
       "id": "path-transposition",
-      "title": "Path Transposition",
-      "startLine": 1083,
-      "endLine": 1161,
-      "summary": "FULLY PROVED: pathFlip bijection (East↔North swap) gives pathType m n ≃ pathType n m. Proves C(m+n,m) = C(m+n,n) via combinatorial path bijection.",
-      "mathContext": "The map $\\texttt{pathFlip}(l) = \\texttt{map}(\\neg, l)$ swaps East and North steps, yielding an equivalence $\\texttt{pathType}(m,n) \\simeq \\texttt{pathType}(n,m)$. Involutivity ($\\texttt{pathFlip} \\circ \\texttt{pathFlip} = \\text{id}$) makes the $\\texttt{Equiv}$ construction direct. This gives a purely bijective proof of binomial symmetry $\\binom{m+n}{m} = \\binom{m+n}{n}$ without algebraic manipulation."
+      "title": "Part XIV: Path Transposition (East ↔ North Flip)",
+      "startLine": 996,
+      "endLine": 1070,
+      "summary": "`pathFlip` (transpose east/north) with length/involutivity/step-count lemmas, `pathFlipEquiv`, and `choose_symm_via_paths` (binomial symmetry via the flip)."
     },
     {
       "id": "lgv-det-algebra",
-      "title": "LGV Determinant Algebra",
-      "startLine": 1162,
-      "endLine": 1189,
-      "summary": "FULLY PROVED: LGV determinant antisymmetry (source/target swaps negate), non-negativity under proper ordering, double swap invariance.",
-      "mathContext": "Algebraic properties of $\\texttt{lgvDet}$: swapping sources negates the determinant ($\\texttt{lgvDet\\_swap\\_sources}$), swapping targets negates it ($\\texttt{lgvDet\\_swap\\_targets}$), and the double swap is invariant. Under proper ordering ($a_1 \\leq a_2$, $b_1 \\leq b_2$), the determinant is non-negative ($\\texttt{lgvDet\\_nonneg}$), since it counts non-intersecting path pairs."
+      "title": "Part XV: LGV Determinant Algebra",
+      "startLine": 1071,
+      "endLine": 1089,
+      "summary": "`lgvDet_swap_sources`, `lgvDet_swap_targets`, `lgvDet_swap_both`: antisymmetry of the LGV determinant under swapping sources/targets."
     },
     {
       "id": "catalan-ballot-unification",
-      "title": "Catalan-Ballot Unification",
-      "startLine": 1190,
-      "endLine": 1215,
-      "summary": "FULLY PROVED: Cn(n) = ballotSeqCount(n+1,n) unifying the two reflection-based formulas. catalan_ballot_division: ballotSeqCount(n+1,n)*(n+1) = C(2n,n).",
-      "mathContext": "The identity $C_n = \\texttt{ballotSeqCount}(n{+}1, n)$ shows the $n$-th Catalan number counts ballot sequences where candidate $A$ (with $n{+}1$ votes) always leads candidate $B$ (with $n$ votes). Combined with the ballot formula, this yields $\\texttt{ballotSeqCount}(n{+}1,n) \\cdot (n{+}1) = \\binom{2n}{n}$, linking the Catalan division formula to the ballot theorem through a single algebraic identity."
+      "title": "Part XVI: Catalan-Ballot Unification",
+      "startLine": 1090,
+      "endLine": 1118,
+      "summary": "`catalan_eq_ballot` and `catalan_ballot_division`: identifying the Catalan and ballot counts."
     },
     {
       "id": "entry-gap-analysis",
-      "title": "Entry Gap Analysis and swapTails Properties",
-      "startLine": 1215,
-      "endLine": 2878,
-      "summary": "FULLY PROVED: Entry gap framework (NI preserves positive gap, gap positive at all columns under NI + y₁<y₂). swapTails East step count preservation. Suffix North step count decomposition.",
-      "mathContext": "The entry gap $\\texttt{entryGap}(l_1, l_2, y_1, y_2, k) = (y_2 + \\text{colEntry}(l_2, k)) - (y_1 + \\text{colEntry}(l_1, k))$ measures path separation at each column. Under non-intersection with $y_1 < y_2$, the gap stays positive at all columns ($\\texttt{entryGap\\_pos\\_all}$). This section also proves $\\texttt{swapTails}$ preserves East step counts and decomposes suffix North steps, completing the infrastructure for the Lindström involution."
+      "title": "Part XVII: Entry Gap Analysis and swapTails Properties",
+      "startLine": 1119,
+      "endLine": 1189,
+      "summary": "`entryGap` with positivity lemmas (`entryGap_pos_succ/_all`) and crossing-column entry comparisons (`crossing_col_entry_ge`, `crossing_col_prev_lt`)."
+    },
+    {
+      "id": "swaptails-east-step",
+      "title": "swapTails East Step and Length Preservation",
+      "startLine": 1190,
+      "endLine": 1600,
+      "summary": "East-step and length preservation under `swapTails` (`eastSteps_swapTails_fst/_snd`, `length_swapTails_fst/_snd`) and column overlap analysis (`columnsOverlap`, `columnsOverlap_iff_exists_shared_y`)."
+    },
+    {
+      "id": "step-index-recovery",
+      "title": "Step Index Recovery",
+      "startLine": 1601,
+      "endLine": 1640,
+      "summary": "`stepIndexOf` and its specification/length lemmas, plus `take_east/north_at_stepIndex` — recovering a step index from a path position."
+    },
+    {
+      "id": "lindstrom-swap-shared",
+      "title": "The Lindström Swap at a Shared Point",
+      "startLine": 1641,
+      "endLine": 1743,
+      "summary": "`lindstromSwapAt` (the tail swap at a shared lattice point) with its east/north/length lemmas and `take_drop_countP_sum`."
+    },
+    {
+      "id": "computable-swap",
+      "title": "Computable Swap and Involutivity",
+      "startLine": 1744,
+      "endLine": 2007,
+      "summary": "`splitIdx` and the computable `swapAtPoint` with `swapAtPoint_involutive` and full east/north/length characterization."
+    },
+    {
+      "id": "involution-equiv",
+      "title": "The Lindström Involution Equiv",
+      "startLine": 2008,
+      "endLine": 2058,
+      "summary": "`selectSharedPoint` (choosing the intersection point) with membership and y-coordinate bounds, and `splitIdx_le_length`."
+    },
+    {
+      "id": "north-step-corrected",
+      "title": "Part XX: Corrected North Step Formula and Path Forward",
+      "startLine": 2059,
+      "endLine": 2164,
+      "summary": "`swapAtPoint_snd_north_corrected`, `swapAtPoint_fst/snd_visits_point`, and `swapAtPoint_not_ni`: the swap produces visiting (hence intersecting) paths."
+    },
+    {
+      "id": "canonical-shared-point",
+      "title": "Part XXI: Canonical Shared Point Selection",
+      "startLine": 2165,
+      "endLine": 2220,
+      "summary": "`minSharedStepIdx` (achieved) and the canonical shared point `canonSharedPoint` with membership and minimality lemmas."
+    },
+    {
+      "id": "proving-involution",
+      "title": "Part XXII: Proving the Lindström Involution",
+      "startLine": 2221,
+      "endLine": 2366,
+      "summary": "`crossing_always_intersecting`, and the forward/backward maps `lindstromForward` / `lindstromBackward` of the involution."
+    },
+    {
+      "id": "index-preservation-injectivity",
+      "title": "Part XXIII: Canonical Index Preservation and Injectivity",
+      "startLine": 2367,
+      "endLine": 2839,
+      "summary": "`lindstromForward_injective` and `lindstromBackward_injective`: injectivity of the involution maps via canonical-index preservation."
+    },
+    {
+      "id": "lindstrom-lgv-lemma",
+      "title": "Part XXIV: Lindström Involution and LGV Lemma",
+      "startLine": 2840,
+      "endLine": 2922,
+      "summary": "The capstone: `lindstrom_involution` and `lindstrom_involution_card`, yielding the `lgv_lemma_2x2` and `lgvDet_nonneg` (non-negativity of the 2×2 LGV determinant)."
     }
   ],
   "conclusion": {

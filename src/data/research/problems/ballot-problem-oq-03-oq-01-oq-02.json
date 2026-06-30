@@ -1,8 +1,8 @@
 {
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Apply LGV lemma to prove the hook-length formula for standard Young tableaux",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -33,17 +33,18 @@
   "currentState": {
     "phase": "DIAGNOSE (S87 researcher-2: tested + FALSIFIED S86 dead-simp hypothesis; deleting the 3 Cluster B `simp only [splitPosAt] at ki kj` lines gives 20->23, not 20->17 — they MASK 6 latent omega failures. Reverted, baseline 20 errors unchanged: 12 Cluster B + 8 Cluster D)",
     "since": "2026-06-12",
-    "iteration": 87,
-    "focus": "S87 DIAGNOSE (researcher-2, 2026-06-12): the 3 Cluster B `simp made no progress` errors (L2109/L2123/L2152, all `simp only [splitPosAt] at ki kj`) are NOT dead. Docker experiment (delete all 3): simp errors 3->0 but +6 new `omega could not prove the goal` at the following `rcases hcol/hfinal with h|h <;> omega` (2 each in zero/succ/final-succ branches); total 20->23. Root cause: simp `no progress` error short-circuits the block so the omega is never run/reported; the simp line MASKS 6 real omega failures. omega counterexample shows `c` still symbolic inside `cases c | zero =>` (atom `q := match c with |0=>0|k.succ=>...` opaque, colEntry(c+1) facts disconnected) because `c` is `set`-bound (set c := canonCol, L2048) so `cases c` does not substitute c:=0. Reverted; no .lean shipped.",
+    "iteration": 88,
+    "focus": "S88 BLOCKED (researcher-2, 2026-06-13): renewed Docker daemon outage (timeout 124, two checks) makes the S87 next-action unverifiable. The S88 Cluster-B fix is fully specified (clear_value c / equation-carrying split before cases c, then delete the 3 `simp only [splitPosAt] at ki kj` lines + close the 6 unmasked omegas together) but each candidate requires a Docker build to confirm the 20->~17 error-count delta on parent BallotProblemOQ03OQ02.lean. Parent file is in a broken-build state (20 Mathlib-drift errors across Clusters B+D); cannot be repaired or verified during the outage. Disk recovered (17% used). No .lean shipped; status flipped in-progress->blocked.",
     "blockers": [
+      "B1' INFRA RENEWED Docker daemon outage at S88 entry 2026-06-13: `timeout 5 docker info` exits 124 (Server section unresponsive, two consecutive checks). Same B1 daemon-hang pathology that ran 13d 14h between S78 (2026-05-16) and S81 recovery (2026-05-30); cleared then, DOWN AGAIN now. Disk RECOVERED (`df -h /` 17% used). Aristotle backend 404s (per fleet memory). Every S88 Cluster-B candidate fix (clear_value c recipe) needs >=1 Docker build to verify the error-count delta; with no build route, the parent BallotProblemOQ03OQ02.lean repair (20 Mathlib-drift errors) is unverifiable -> slug status set blocked until Docker recovers.",
       "B1 INFRA Docker daemon Server section was unresponsive 2026-05-16T08:50Z S78 entry → ~16.5h at S80T~01:20Z 2026-05-17; **CLEARED at S81T~15:51Z 2026-05-30** (`timeout 10 docker info --format '{{.ServerVersion}}'` → `29.4.1`, exit 0; Server section populated). Total downtime ≈ 13d 14h between S78 ACT (2026-05-16T08:50Z) and observed S81 entry recovery. No host intervention recorded in researcher-1 session memory; likely champion / daemon-scope recovery (Docker Desktop restart + system prune per S80 §B2 mitigation candidates). Independent corroboration on `main`: commit `37b6dbbfea8 research(infinitude-primes-4k3-oq-01): S11 STATE-SYNC ACT-VERIFIED — Docker recovered, S9 Tower file 3059 jobs clean` between S80 and S81. S78 ACT's `cast_PathMN_coe` patch consequently build-tested at S81 = **FAILED** (18 errors, not 8; Cluster A lemma type signature malformed — see `focus`). Trap.4 fallback applied within this S81 session.",
       "B2 INFRA disk `/System/Volumes/Data` was 2.9 Gi avail at S80T~01:20Z 2026-05-17 (−0.8 Gi/h drain at S80 entry, ~5× S79's −0.17 Gi/h slope); **CLEARED at S81T~15:51Z 2026-05-30** with 62 Gi avail (`df -h /System/Volumes/Data` → 836 Gi used / 62 Gi avail / 94% capacity on 926 Gi disk). Recovery delta +59 Gi well above S79's ≥5.0 Gi gate and S80's projected ~05:00Z 2026-05-17 zero-crossing point. Either active recovery (`docker system prune` + qcow2 audit per S80 candidates) reclaimed the disk, or ~13d of natural drain reversal cleared the pressure. Out-of-scope at S81 to attribute root cause; note that the S81 cold-cache rebuild itself re-populated the `lean-mathlib-cache` Docker volume so S82+ runs from the same host will be faster (skip P3 cache-get phase, ~90s saved per run).",
       "B3 INFRA `proofs/.lake` self-symlink (`ls -la proofs/.lake` → `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake`; circular). Detected at S79T~23:20Z entry. Same pathology as the abel-ruffini-oq-04-oq-09 S6 PREP report (PR #19633) + schauder-fixed-point-oq-03-oq-01-incomplete-01 S22 ACT (PR #19671) — does NOT independently block Docker build (build runs inside container, lake cache mounted as volume), but breaks host-side `lake` introspection if a doctor/mechanic attempts to query `proofs/.lake/build/...` paths. Mitigation: `rm proofs/.lake && ln -s build/lakefile/.lake proofs/.lake` (per abel-ruffini S6 §host-recovery script).",
       "gnwProb_exchange (math, pre-existing through S52): GNW 1979 hook-weight shift identity in product form. S52 closed the algebraic easy half (`hookProd_doubleRemove_factor`, sorry-free). Remaining: F-side joint K-induction (S53, ~100-200 lines) using `gnwProb_step` for K-stability and the S43 sum-bridges, then S54+ combines via gnwProb bookkeeping. Helpers.lean at 15995 lines = ~495 over Docker 32GB ceiling; Option E3 extraction into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` is blocking prerequisite for S53. ORTHOGONAL to B1/B2/B3 INFRA triad — this math blocker is downstream of parent file (BallotProblemOQ03OQ02.lean) being rebuildable + Helpers.lean extracted; current parent-rebuild path is Cluster A (S78 ACT, build pending) → Cluster B-cascade (auto) → Cluster D → Cluster C → 0-error parent."
     ],
-    "nextAction": "S88+ ACT: do NOT touch the 3 `simp only [splitPosAt] at ki kj` lines in isolation. First make the branch value of `c` (and `cfg.m`) omega-visible: (1) `clear_value c` before `cases c` so it substitutes c:=0 / c:=c'+1 into hypotheses, OR (2) equation-carrying split (`obtain ⟨c', rfl⟩` / `rcases Nat.eq_zero_or_pos c`). Then delete the 3 simp lines AND the 6 omegas close together (Cluster B 12 -> ~3), modulo separate L2116/L2121/L2143/L2148 `northBeforeEast_prefix` side-goal omegas + L2124/L2128/L2132 `No goals`/`split_ifs`. Each candidate needs 1 Docker build. Memo: sessions/2026-06-12-s87-clusterB-simp-masks-omega-diagnosis.md",
+    "nextAction": "WHEN Docker recovers (timeout 10 docker info -> ServerVersion, exit 0): resume S88 ACT from the S87 recipe — make branch value of c omega-visible via clear_value c before cases c (or obtain <c', rfl>), then delete the 3 `simp only [splitPosAt] at ki kj` lines (L2109/L2123/L2152) AND close the 6 unmasked `rcases ... <;> omega` goals together. Expected Cluster B 12 -> ~3; full parent path B-cascade -> D -> 0 errors. One Docker build per candidate. Recipe + root-cause in sessions/2026-06-12-s87-clusterB-simp-masks-omega-diagnosis.md.",
     "attemptCounts": {
-      "total": 87,
+      "total": 88,
       "currentApproach": 39,
       "approachesTried": 12
     }
@@ -336,15 +337,19 @@
     "ballot-problem-oq-01",
     "ballot-problem-oq-01-oq-01",
     "ballot-problem-oq-01-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-01-oq-02-oq-01",
     "ballot-problem-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-01",
     "ballot-problem-oq-01-oq-02-oq-01-oq-01",
     "ballot-problem-oq-01-oq-02-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-04",
+    "ballot-problem-oq-01-oq-03",
     "ballot-problem-oq-01-oq-04",
     "ballot-problem-oq-01-oq-04-oq-01",
     "ballot-problem-oq-02",
     "ballot-problem-oq-02-oq-02",
+    "ballot-problem-oq-02-oq-02-oq-05",
+    "ballot-problem-oq-02-oq-04",
     "ballot-problem-oq-03",
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
@@ -352,7 +357,12 @@
     "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-01-oq-04",
     "ballot-problem-oq-03-oq-02",
-    "ballot-problem-oq-03-oq-03"
+    "ballot-problem-oq-03-oq-02-oq-01",
+    "ballot-problem-oq-03-oq-02-oq-03",
+    "ballot-problem-oq-03-oq-03",
+    "ballot-problem-oq-04",
+    "ballot-problem-oq-04-oq-02",
+    "ballot-problem-oq-04-oq-02-oq-01"
   ],
   "references": {
     "papers": [
@@ -367,7 +377,7 @@
     ]
   },
   "started": "2026-04-21T12:53:48.109Z",
-  "lastUpdate": "2026-06-12",
+  "lastUpdate": "2026-06-13",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
@@ -418,8 +428,8 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean",
       "filename": "BallotProblemOQ01OQ01OQ02OQ01.lean",
-      "lineCount": 228,
-      "theoremCount": 6,
+      "lineCount": 641,
+      "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -451,7 +461,7 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean",
       "filename": "BallotProblemOQ01OQ02OQ01Aristotle.lean",
-      "lineCount": 112,
+      "lineCount": 113,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
@@ -502,6 +512,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ03.lean",
+      "filename": "BallotProblemOQ01OQ03.lean",
+      "lineCount": 93,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ04.lean",
@@ -559,6 +580,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ02OQ02OQ05.lean",
+      "filename": "BallotProblemOQ02OQ02OQ05.lean",
+      "lineCount": 205,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02OQ05.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ04.lean",
+      "filename": "BallotProblemOQ02OQ04.lean",
+      "lineCount": 154,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ05.lean",
+      "filename": "BallotProblemOQ02OQ05.lean",
+      "lineCount": 358,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ05.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ03.lean",
       "filename": "BallotProblemOQ03.lean",
       "lineCount": 2923,
@@ -583,8 +637,8 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 2437,
-      "theoremCount": 52,
+      "lineCount": 2558,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 17,
@@ -594,7 +648,7 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
-      "lineCount": 131,
+      "lineCount": 132,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
@@ -616,7 +670,7 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "lineCount": 117,
+      "lineCount": 118,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
@@ -627,8 +681,8 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
-      "lineCount": 15995,
-      "theoremCount": 527,
+      "lineCount": 15996,
+      "theoremCount": 79,
       "axiomCount": 0,
       "defCount": 15,
       "sorryCount": 9,
@@ -649,8 +703,8 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ02.lean",
       "filename": "BallotProblemOQ03OQ02.lean",
-      "lineCount": 2532,
-      "theoremCount": 92,
+      "lineCount": 2590,
+      "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 23,
       "sorryCount": 0,
@@ -658,15 +712,70 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ03OQ02OQ01.lean",
+      "filename": "BallotProblemOQ03OQ02OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ02OQ03.lean",
+      "filename": "BallotProblemOQ03OQ02OQ03.lean",
+      "lineCount": 164,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ03OQ03.lean",
       "filename": "BallotProblemOQ03OQ03.lean",
-      "lineCount": 188,
-      "theoremCount": 9,
+      "lineCount": 281,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04.lean",
+      "filename": "BallotProblemOQ04.lean",
+      "lineCount": 193,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04OQ02.lean",
+      "filename": "BallotProblemOQ04OQ02.lean",
+      "lineCount": 153,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04OQ02OQ01.lean",
+      "filename": "BallotProblemOQ04OQ02OQ01.lean",
+      "lineCount": 115,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean"
     }
   ]
 }

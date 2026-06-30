@@ -69,76 +69,100 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview, Imports and Namespace",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "File header: states Erdős #169 (f(k) = sup harmonic sum over k-AP-free sets; the ratio question f(k)/log W(k) → ∞?), background, key results (Berlekamp, Gerver, Walker), imports, and the `Erdos169` namespace.",
+      "mathContext": "File header and imports for the Erdős #169 formalization, opening `Finset` and `BigOperators`."
+    },
+    {
       "id": "arithmetic-progressions",
-      "title": "Arithmetic Progressions",
+      "title": "Part I: Arithmetic Progressions",
       "startLine": 44,
       "endLine": 61,
-      "summary": "Definitions of k-term arithmetic progressions and AP-free sets",
-      "mathContext": "Formal definition: Definitions of k-term arithmetic progressions and AP-free sets"
+      "summary": "Definitions of k-term arithmetic progressions (IsArithmeticProgression) and AP-free sets (IsAPFree).",
+      "mathContext": "Formal definition: k-term arithmetic progressions and AP-free sets."
     },
     {
       "id": "harmonic-sum",
-      "title": "Harmonic Sum Function",
+      "title": "Part II: Harmonic Sum of a Set",
       "startLine": 62,
       "endLine": 79,
-      "summary": "Definition of f(k) as supremum of harmonic sums over AP-free sets",
-      "mathContext": "Formal definition: Definition of f(k) as supremum of harmonic sums over AP-free sets"
+      "summary": "Defines harmonicSum (sum of reciprocals) and f(k) as the supremum of harmonic sums over AP-free sets.",
+      "mathContext": "Formal definition: harmonicSum and f(k) as supremum of harmonic sums over AP-free sets."
     },
     {
       "id": "van-der-waerden",
-      "title": "Van der Waerden Numbers",
+      "title": "Part III: Van der Waerden Numbers",
       "startLine": 80,
-      "endLine": 100,
-      "summary": "Definition of W(k) and van der Waerden's theorem",
-      "mathContext": "Formal definition: Definition of W(k) and van der Waerden's theorem"
+      "endLine": 98,
+      "summary": "Definition of W(k) and statement of van der Waerden's theorem (W(k) finite for k ≥ 3).",
+      "mathContext": "Formal definition: Definition of W(k) and van der Waerden's theorem."
     },
     {
       "id": "berlekamp",
-      "title": "Berlekamp's Lower Bound",
-      "startLine": 101,
-      "endLine": 123,
-      "summary": "f(k) ≥ (log 2 / 2) · k from 1968",
-      "mathContext": "f(k) $\\geq$ (log 2 / 2) · k from 1968"
+      "title": "Part IV: Berlekamp's Lower Bound (1968)",
+      "startLine": 99,
+      "endLine": 118,
+      "summary": "Axiomatizes Berlekamp (1968): f(k) ≥ (log 2 / 2) · k, with its binary-representation construction.",
+      "mathContext": "f(k) $\\geq$ (log 2 / 2) · k from 1968 (axiomatized)."
     },
     {
       "id": "gerver",
-      "title": "Gerver's Improvement",
-      "startLine": 124,
-      "endLine": 145,
-      "summary": "f(k) ≥ (1-o(1)) k log k from 1977",
-      "mathContext": "f(k) $\\geq$ (1-o(1)) k log k from 1977"
+      "title": "Part V: Gerver's Improvement (1977)",
+      "startLine": 119,
+      "endLine": 136,
+      "summary": "Documents Gerver (1977): f(k) ≥ (1-o(1)) k log k, and his equivalence linking Problem #3 to finiteness of f(k).",
+      "mathContext": "f(k) $\\geq$ (1-o(1)) k log k from 1977."
     },
     {
       "id": "ratio-question",
-      "title": "The Ratio Question",
-      "startLine": 146,
-      "endLine": 165,
-      "summary": "Whether f(k)/log W(k) → ∞ remains open",
-      "mathContext": "Whether f(k)/log W(k) $\\to$ ∞ remains open"
+      "title": "Part VI: The Ratio Question",
+      "startLine": 137,
+      "endLine": 159,
+      "summary": "Axiomatizes the trivial bound f(k)/log W(k) ≥ 1/2 and states RatioQuestion (whether f(k)/log W(k) → ∞), which remains open.",
+      "mathContext": "Whether f(k)/log W(k) $\\to$ ∞ remains open; trivial bound ≥ 1/2 axiomatized."
     },
     {
       "id": "computational-records",
-      "title": "Computational Records",
-      "startLine": 166,
-      "endLine": 181,
-      "summary": "Best known values for f(3) and f(4)",
-      "mathContext": "Mathematical content: Best known values for f(3) and f(4)"
+      "title": "Part VII: Computational Records",
+      "startLine": 160,
+      "endLine": 173,
+      "summary": "Best known computational values: f(3) ≥ 3.00849 (Wróblewski 1984) and f(4) ≥ 4.43975 (Walker 2025).",
+      "mathContext": "Mathematical content: Best known values for f(3) and f(4)."
     },
     {
       "id": "walker-results",
-      "title": "Walker's Results",
-      "startLine": 182,
-      "endLine": 203,
-      "summary": "Kempner sets suffice for optimal AP-free harmonic sums",
-      "mathContext": "Mathematical content: Kempner sets suffice for optimal AP-free harmonic sums"
+      "title": "Part VIII: Walker's Results (2025)",
+      "startLine": 174,
+      "endLine": 193,
+      "summary": "Defines Kempner sets (digit-restricted integers) and documents Walker (2025): optimal AP-free sets for harmonic sum can be approximated by Kempner sets.",
+      "mathContext": "Mathematical content: Kempner sets suffice for optimal AP-free harmonic sums."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Part IX: Basic Properties",
+      "startLine": 194,
+      "endLine": 211,
+      "summary": "Documents basic properties of f: monotonic decrease in k, positivity f(k) > 0, and that the singleton {1} is k-AP-free for all k ≥ 2.",
+      "mathContext": "Mathematical content: monotonicity, positivity, and singleton AP-freeness of f."
+    },
+    {
+      "id": "related-problems",
+      "title": "Part X: Related Problems",
+      "startLine": 212,
+      "endLine": 232,
+      "summary": "Connections to related questions: Problem #3 (finiteness of f(k)), Problem #170, and OEIS A005346 (subsets of {1,...,n} with no 3-term AP).",
+      "mathContext": "Mathematical content: links to Problem #3, Problem #170, and OEIS A005346."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 253,
+      "title": "Part XI: Summary",
+      "startLine": 233,
       "endLine": 279,
-      "summary": "Complete summary of what's known and what's open",
-      "mathContext": "Mathematical content: Complete summary of what's known and what's open"
+      "summary": "Complete status summary of what is known and open, plus the proved theorems erdos_169_summary and erdos_169_open combining the Berlekamp and trivial-ratio bounds.",
+      "mathContext": "Mathematical content: Complete summary of what's known and what's open; proves erdos_169_summary / erdos_169_open."
     }
   ],
   "conclusion": {

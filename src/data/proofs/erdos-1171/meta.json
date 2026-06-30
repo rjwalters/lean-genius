@@ -103,94 +103,102 @@
       "Ramsey theory (partition regularity)"
     ]
   },
-  "sections": [
+  "sections":   [
     {
-      "id": "header-imports",
+      "id": "problem-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 38,
-      "summary": "Documentation header describing the multicolor partition relation problem, its relationship to #1169, known results under CH and MA, and imports from Mathlib for ordinal arithmetic, cardinal theory, and tactics.",
-      "mathContext": "Documentation header describing the multicolor partition relation problem, its relationship to #1169, known results under CH and MA, and imports from Mathlib for ordinal arithmetic, cardinal theory, and tactics."
+      "summary": "Module docstring for Erdős Problem #1171 (multicolor ordinal partition relation, OPEN) and imports. States the generalization of Problem #1169: whether ω₁² → (ω₁·ω, 3, …, 3)² holds for all finite color counts k, weakening #1169's primary target from ω₁² to ω₁·ω in exchange for extra colors whose target is just a triangle.",
+      "mathContext": "The partition relation $\\omega_1^2 \\to (\\omega_1\\cdot\\omega, 3, \\dots, 3)^2_k$: every 2-edge-coloring of $\\omega_1^2$ with $k$ colors yields either a primary-colored $\\omega_1\\cdot\\omega$ set or a non-primary triangle."
     },
     {
       "id": "ordinal-setup",
-      "title": "Ordinal Setup",
+      "title": "Part 1 — Ordinal Setup",
       "startLine": 39,
       "endLine": 51,
-      "summary": "Defines the three key ordinals: ω₁ = (ℵ₁).ord, ω₁² = ω₁·ω₁, and ω₁·ω, all marked noncomputable.",
-      "mathContext": "Formal definition: Defines the three key ordinals: ω₁ = (ℵ₁).ord, ω₁² = ω₁·ω₁, and ω₁·ω, all marked noncomputable."
+      "summary": "Defines the key ordinals: `omega1` = ω₁ (the first uncountable ordinal, `(Cardinal.aleph 1).ord`), `omega1Sq` = ω₁², and `omega1TimesOmega` = ω₁·ω.",
+      "mathContext": "$\\omega_1$ is the order type of the countable ordinals; $\\omega_1^2$ and $\\omega_1\\cdot\\omega$ are the source and weakened target of the partition relation."
     },
     {
       "id": "partition-defs",
-      "title": "Partition Relation Definitions",
+      "title": "Part 2 — Partition Relation Definitions",
       "startLine": 52,
-      "endLine": 69,
-      "summary": "Defines the 2-color partition relation ordinalPartitionRel2(α, β, k) and the multicolor partition relation ordinalPartitionRelMulti(α, β, clique, numColors) concretely using coloring functions and strict-mono embeddings.",
-      "mathContext": "Concrete definitions: ordinalPartitionRel2(α, β, k) and ordinalPartitionRelMulti(α, β, clique, numColors) defined via coloring functions c : Ordinal → Ordinal → ℕ, validity hypotheses, StrictMono embeddings for order-type witnesses, and Fin clique for triangle witnesses."
+      "endLine": 86,
+      "summary": "Concrete definitions of the partition relations: `ordinalPartitionRelMulti α β clique numColors` (the multicolor relation — a primary-colored copy of β or a non-primary clique of the given size) and `ordinalPartitionRel2` (the two-color specialization).",
+      "mathContext": "$\\alpha \\to (\\beta, \\text{clique})^2_{\\text{numColors}}$: a coloring yields a primary $\\beta$-set or a smaller monochromatic clique in some other color."
     },
     {
-      "id": "ordinal-props",
-      "title": "Basic Ordinal Properties",
-      "startLine": 70,
-      "endLine": 97,
-      "summary": "Proves ω < ω₁ (via Cardinal.aleph_lt_aleph), ω₁ > 0, ω₁·ω < ω₁² (via left-cancellation), and that ω₁ and ω₁·ω are limit ordinals (via Cardinal.ord_isLimit and Ordinal.mul_isLimit).",
-      "mathContext": "Verified: All ordinal properties proved from Mathlib. omega_lt_omega1 via aleph comparison, omega1_isLimit via Cardinal.ord_isLimit, omega1TimesOmega_isLimit via Ordinal.mul_isLimit."
+      "id": "basic-ordinal-props",
+      "title": "Part 3 — Basic Ordinal Properties",
+      "startLine": 87,
+      "endLine": 120,
+      "summary": "Proved ordinal facts: `omega_lt_omega1` (ω < ω₁), `omega1_pos`, `omega1TimesOmega_lt_omega1Sq` (ω₁·ω < ω₁²), and the limit-ordinal properties `omega1_isLimit` and `omega1TimesOmega_isLimit`.",
+      "mathContext": "Establishes $\\omega_1\\cdot\\omega < \\omega_1^2$ and that both ordinals are limits — structural facts the partition arguments rely on."
     },
     {
       "id": "problem-statement",
-      "title": "The Problem Statement",
-      "startLine": 98,
-      "endLine": 110,
-      "summary": "Defines erdos_1171_statement as ∀ k : ℕ, ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1).",
-      "mathContext": "Defines erdos_1171_statement as ∀ k : $\\mathbb{N}$, ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1)."
+      "title": "Part 4 — The Problem Statement",
+      "startLine": 121,
+      "endLine": 133,
+      "summary": "Defines `erdos_1171_statement`: the proposition that the multicolor partition relation ω₁² → (ω₁·ω, 3)²_k holds for all finite k ≥ 1 (the open conjecture).",
+      "mathContext": "The formal target: $\\forall k,\\ \\omega_1^2 \\to (\\omega_1\\cdot\\omega, 3, \\dots, 3)^2_k$, whose ZFC status is unknown."
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity Properties",
-      "startLine": 111,
-      "endLine": 135,
-      "summary": "Four proved theorems: monotonicity in number of colors (with 2≤clique guard), target ordinal, source ordinal, and equivalence between multicolor with 2 colors and standard 2-color relations.",
-      "mathContext": "Verified: partition_multi_mono_colors, partition_multi_mono_target, partition_multi_mono_source, multi_two_eq — all proved from the concrete partition relation definitions."
+      "title": "Part 5 — Monotonicity",
+      "startLine": 134,
+      "endLine": 197,
+      "summary": "Proved monotonicity lemmas for the partition relation: `partition_multi_mono_colors` (in the number of colors), `partition_multi_mono_target` (in the target ordinal), `partition_multi_mono_source` (in the source), and `multi_two_eq` (the multicolor relation reduces to the two-color one when k = 2).",
+      "mathContext": "Partition relations are monotone: strengthening the source or weakening the target/color demands preserves the relation."
     },
     {
-      "id": "ch-connection",
-      "title": "CH Resolution via Hajnal",
-      "startLine": 136,
-      "endLine": 165,
-      "summary": "Defines CH, axiomatizes Hajnal's theorem (ω₁² → (ω₁², k)² under CH), proves 2-color monotonicity (target and source), and proves the k=1 case under CH by target monotonicity.",
-      "mathContext": "Defines CH as 2^ℵ₀ = ℵ₁. Hajnal's theorem (axiom): under CH, ω₁² → (ω₁², k)² for all k ≥ 2. partition2_mono_target and partition2_mono_source proved from concrete defs. erdos_1171_k1_under_ch proved by composing Hajnal with target monotonicity."
+      "id": "connection-1169-ch",
+      "title": "Part 6 — Connection to Problem #1169",
+      "startLine": 198,
+      "endLine": 241,
+      "summary": "Defines `CH` (the Continuum Hypothesis, 2^ℵ₀ = ℵ₁) and introduces the axiom `hajnal_ch`: under CH, Hajnal's theorem gives the multicolor relation for k ≥ 2. Proves two-color monotonicity (`partition2_mono_target`, `partition2_mono_source`) and `erdos_1171_k1_under_ch` (the k = 1 case under CH).",
+      "mathContext": "Under CH, Hajnal's color-merging argument resolves the problem — this is the axiomatized set-theoretic input (assumption 1 of 2)."
     },
     {
-      "id": "baumgartner",
-      "title": "Baumgartner's Result Under MA",
-      "startLine": 166,
-      "endLine": 186,
-      "summary": "Defines Martin's Axiom concretely via CCC partial orders, dense subsets, and generic filters. Axiomatizes Baumgartner's theorem ω₁·ω → (ω₁·ω, 3)² under MA. Proves the k=1 case of #1171 under MA by source monotonicity (ω₁·ω < ω₁²).",
-      "mathContext": "MartinsAxiom: concrete Prop definition (∀ CCC preorder, ∀ family of < 2^ℵ₀ dense sets, ∃ generic filter). baumgartner_ma (axiom): under MA, ω₁·ω → (ω₁·ω, 3)². erdos_1171_k1_under_ma: proved by composing Baumgartner with source monotonicity."
+      "id": "baumgartner-ma",
+      "title": "Part 7 — Baumgartner's Partial Result",
+      "startLine": 242,
+      "endLine": 284,
+      "summary": "Defines `MartinsAxiom` concretely (CCC posets, dense sets, generic filters) and introduces the axiom `baumgartner_ma`: Baumgartner [Ba89b] proved the k = 1 case under Martin's Axiom (strictly weaker than CH). Proves `erdos_1171_k1_under_ma` from it.",
+      "mathContext": "Baumgartner's MA result is the second axiomatized input — MA is weaker than CH, but his technique for $\\omega_1\\cdot\\omega$ does not obviously extend to higher $k$."
     },
     {
       "id": "ordinal-arithmetic",
-      "title": "Ordinal Arithmetic Properties",
-      "startLine": 187,
-      "endLine": 207,
-      "summary": "Proves ω₁ < ω₁·ω (via 1 < ω and left-cancellation), the sandwich ω₁ < ω₁·ω < ω₁², and ω₁² > 0.",
-      "mathContext": "Verified: Proves ω₁ < ω₁·ω (via 1 < ω and left-cancellation), the sandwich ω₁ < ω₁·ω < ω₁², and ω₁² > 0."
+      "title": "Part 8 — Ordinal Arithmetic Properties",
+      "startLine": 285,
+      "endLine": 305,
+      "summary": "Further proved ordinal arithmetic: `omega1_lt_omega1TimesOmega` (ω₁ < ω₁·ω), `omega1TimesOmega_structure`, and `omega1Sq_pos` (0 < ω₁²).",
+      "mathContext": "Refines the ordering $\\omega_1 < \\omega_1\\cdot\\omega < \\omega_1^2$ used to position the targets in the hierarchy."
     },
     {
       "id": "multicolor-hierarchy",
-      "title": "The Multicolor Hierarchy",
-      "startLine": 208,
-      "endLine": 254,
-      "summary": "Proves the trivial 1-color case (partition_multi_trivial), the conjecture's k=1 and k=2 special cases, the reduction to Problem #1169, the CH color-merging argument, and erdos_1171_under_ch.",
-      "mathContext": "Verified: partition_multi_trivial proved (identity embedding). reduction_to_1169 shows the multicolor generalization is purely combinatorial — only needs ω₁² → (ω₁², 3)². ch_implies_multicolor and erdos_1171_under_ch follow as corollaries via Hajnal's theorem."
+      "title": "Part 9 — The Multicolor Hierarchy",
+      "startLine": 306,
+      "endLine": 329,
+      "summary": "Relates the cases across color counts: `partition_multi_trivial` (the relation when the target is below the source), `erdos_1171_implies_k1`, and `erdos_1171_implies_k2` (the full statement implies its low-color instances).",
+      "mathContext": "The conjecture's logical structure: the all-k statement entails each fixed-k case, organizing the hierarchy of partition relations."
+    },
+    {
+      "id": "reduction-ch-resolution",
+      "title": "Part 10 — Reduction to Problem #1169 and CH Resolution",
+      "startLine": 330,
+      "endLine": 400,
+      "summary": "`reduction_to_1169` (relates #1171 to the better-studied #1169), `ch_implies_multicolor` (CH ⟹ the multicolor relation for all k, combining Hajnal with the monotonicity lemmas), and `erdos_1171_under_ch` (CH ⟹ the full `erdos_1171_statement`).",
+      "mathContext": "Assembles the conditional resolution: under CH the entire conjecture holds; the open question is whether ZFC alone suffices."
     },
     {
       "id": "summary",
-      "title": "Summary of Formalization",
+      "title": "Part 11 — Summary",
       "startLine": 401,
-      "endLine": 443,
-      "summary": "Comment block summarizing: the problem, what is formalized, the status (open in ZFC, solved under CH, k=1 under MA), key insights including the reduction to #1169, and axiom/theorem count (2 axioms, 22 theorems).",
-      "mathContext": "Summary: 2 axioms (hajnal_ch, baumgartner_ma), 22 theorems. Key structural result: reduction_to_1169 proves #1171 follows purely combinatorially from #1169. The multicolor generalization adds no mathematical difficulty beyond the 2-color case."
+      "endLine": 445,
+      "summary": "Closing documentation summarizing the formalization: the two axiomatized set-theoretic inputs (Hajnal under CH, Baumgartner under MA), the conditional CH resolution, the monotonicity infrastructure, and the remaining open ZFC status for general finite k.",
+      "mathContext": "State of knowledge: resolved under CH and (for k = 1) under MA; the ZFC status for all finite $k$ remains open ([Va99, 7.84])."
     }
   ],
   "conclusion": {

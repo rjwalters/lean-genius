@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-module-overview",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "From 2–3 moduli to an arbitrary finite family",
+    "content": "The module answers the first open question of the parent ChineseRemainderNonCoprimeOQ03: lift the non-coprime CRT from a fixed number of moduli (2, 3) to an arbitrary finite family, modelled as a list of (modulus, residue) pairs over any Euclidean domain. The headline crt_list_iff states the system {x ≡ aᵢ mod mᵢ} is solvable iff every pair satisfies gcd(mᵢ,mⱼ) ∣ (aᵢ−aⱼ); crt_list_unique gives uniqueness modulo the lcm of all moduli. The reusable engine is a generalized GCD–LCM distributive law over a list, gcd_lcmList_dvd, built by one-step induction from the binary case (reproduced verbatim to keep the file self-contained).",
+    "mathContext": "$\\{x \\equiv a_i \\pmod{m_i}\\}_{i=1}^n \\text{ solvable} \\iff \\forall i,j:\\ \\gcd(m_i,m_j) \\mid (a_i - a_j)$",
+    "significance": "context",
+    "relatedConcepts": ["Chinese Remainder Theorem", "Euclidean domain", "non-coprime moduli", "GCD–LCM lattice"],
+    "prerequisites": ["modular arithmetic", "GCD and LCM", "structural induction"]
+  },
+  {
+    "id": "ann-binary-crt-sufficient",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-01",
+    "range": { "startLine": 46, "endLine": 62 },
+    "type": "technique",
+    "title": "Binary solver via Bézout",
+    "content": "ed_crt_sufficient is the two-modulus merge step, reused once per inductive layer. Given gcd(m,n) ∣ (a−b), it constructs an explicit solution x = a − m·(gcdA·q) using the Bézout coefficients from EuclideanDomain.gcd_eq_gcd_ab. The first divisibility m ∣ (x−a) is immediate from the construction; the second n ∣ (x−b) is a calc chain that substitutes the Bézout identity gcd m n = m·gcdA + n·gcdB to expose the factor of n. This is the imported binary base case of the whole induction.",
+    "mathContext": "$x = a - m\\,(\\mathrm{gcdA}\\cdot q),\\quad \\gcd(m,n) = m\\,\\mathrm{gcdA} + n\\,\\mathrm{gcdB}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Bézout's identity", "binary CRT", "explicit construction"],
+    "prerequisites": ["Bézout's identity", "Euclidean domain gcd"]
+  },
+  {
+    "id": "ann-binary-distributive",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-01",
+    "range": { "startLine": 64, "endLine": 214 },
+    "type": "concept",
+    "title": "The binary GCD–LCM distributive law (hard direction)",
+    "content": "gcd_lcm_dvd_lcm_gcd proves gcd(lcm(a,b),c) ∣ lcm(gcd(a,c),gcd(b,c)) — a defining identity of distributive lattices (Birkhoff 1935), and the algebraic crux reproduced verbatim from the parent. Over a general Euclidean domain it cannot be rewritten symbolically: the proof factors a and b through g = gcd(a,b) into coprime cofactors α, β (IsCoprime via Bézout), factors g and c similarly, and then performs a delicate nested coprimality argument to show c' and β each divide the relevant combination, assembling the divisibility from an explicit decomposition of the lcm. It is by far the longest single proof in the file.",
+    "mathContext": "$\\gcd(\\mathrm{lcm}(a,b),c) \\mid \\mathrm{lcm}(\\gcd(a,c),\\gcd(b,c))$",
+    "significance": "key",
+    "relatedConcepts": ["distributive lattice", "coprime factorization", "Birkhoff", "divisibility lattice"],
+    "prerequisites": ["IsCoprime", "Bézout's identity", "lcm in Euclidean domains"]
+  },
+  {
+    "id": "ann-lcmlist",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-01",
+    "range": { "startLine": 216, "endLine": 242 },
+    "type": "definition",
+    "title": "lcm over a list of moduli",
+    "content": "lcmList is the foldr of EuclideanDomain.lcm with identity 1 (empty list ↦ 1). Two divisibility lemmas pin down its lattice behaviour: dvd_lcmList (every element divides the list lcm, by induction on membership) and lcmList_dvd (the list lcm divides any common multiple t, by induction using lcm_dvd). Together these make lcmList the least common multiple of the whole family — the modulus governing uniqueness.",
+    "mathContext": "$\\mathrm{lcmList}(m_1, \\ldots, m_n) = \\mathrm{lcm}(m_1, \\mathrm{lcm}(m_2, \\ldots)),\\quad \\mathrm{lcmList}([]) = 1$",
+    "significance": "supporting",
+    "relatedConcepts": ["least common multiple", "foldr", "list induction", "divisibility lattice"],
+    "prerequisites": ["lcm", "List.foldr"]
+  },
+  {
+    "id": "ann-generalized-distributive",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-01",
+    "range": { "startLine": 244, "endLine": 261 },
+    "type": "insight",
+    "title": "The n-fold GCD–LCM distributive law: the engine",
+    "content": "gcd_lcmList_dvd is the genuinely new contribution and the engine of the induction: gcd(lcmList l, c) ∣ lcmList (l.map (gcd · c)). The proof is a clean one-step induction — the nil case is gcd(1,c) ∣ 1, and the cons step applies the binary distributive law gcd_lcm_dvd_lcm_gcd to the head m and the tail lcm, then closes with lcm monotonicity against the inductive hypothesis. This lifts the hard binary lattice identity to an arbitrary finite family without re-running the heavy coprime-factoring argument.",
+    "mathContext": "$\\gcd\\!\\left(\\mathrm{lcmList}\\,l,\\ c\\right) \\mid \\mathrm{lcmList}\\big(l.\\mathrm{map}(\\gcd(\\cdot, c))\\big)$",
+    "significance": "key",
+    "relatedConcepts": ["iterated distributive law", "one-step induction", "lcm monotonicity"],
+    "prerequisites": ["the binary distributive law", "list induction"]
+  },
+  {
+    "id": "ann-necessity",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-01",
+    "range": { "startLine": 263, "endLine": 287 },
+    "type": "technique",
+    "title": "Necessity: solvable ⟹ pairwise compatible",
+    "content": "The system is modelled by Solves x l (each modulus divides x − its residue) and Compat l (all-pairs gcd condition). crt_list_necessary is the easy direction: a common solution x makes gcd(mᵢ,mⱼ) divide both x−aᵢ and x−aⱼ (via gcd_dvd_left/right), hence their difference, which a ring-normalising rewrite turns into aᵢ−aⱼ. Pure divisibility, no induction.",
+    "mathContext": "$\\gcd(m_i,m_j) \\mid (x-a_i),\\ (x-a_j) \\implies \\gcd(m_i,m_j) \\mid (a_i - a_j)$",
+    "significance": "supporting",
+    "relatedConcepts": ["divisibility of differences", "Solves predicate", "Compat predicate"],
+    "prerequisites": ["divisibility"]
+  },
+  {
+    "id": "ann-sufficiency",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-01",
+    "range": { "startLine": 289, "endLine": 347 },
+    "type": "insight",
+    "title": "Sufficiency: the inductive merge",
+    "content": "crt_list_sufficient is the hard direction, by induction on the list. Writing l = (m₀,a₀) :: rest, the IH gives a tail solution x₀. The crux is gcd(M, m₀) ∣ (a₀−x₀) where M = lcmList of the tail moduli: each tail modulus contributes gcd(m₀,mᵢ) ∣ (a₀−x₀) (combining head/tail compatibility with mᵢ ∣ x₀−aᵢ), so the lcm of those pairwise gcds divides a₀−x₀, and gcd_lcmList_dvd upgrades gcd(M,m₀) to a divisor of that lcm. Note the gcd-commutativity bridge: in a general Euclidean domain gcd is commutative only up to associatedness, so the proof routes gcd q.1 p.1 ∣ gcd p.1 q.1 through dvd_gcd rather than rewriting. The binary solver ed_crt_sufficient then merges (M,x₀) with (m₀,a₀); back-substitution recovers every original congruence.",
+    "mathContext": "$M = \\mathrm{lcmList}(\\text{tail moduli}),\\quad \\gcd(M, m_0) \\mid (a_0 - x_0) \\Rightarrow \\text{merge head with tail}$",
+    "significance": "key",
+    "relatedConcepts": ["induction on lists", "associatedness", "dvd_gcd bridge", "back-substitution"],
+    "prerequisites": ["the n-fold distributive law", "the binary solver", "structural induction"]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-01",
+    "range": { "startLine": 349, "endLine": 359 },
+    "type": "concept",
+    "title": "Uniqueness modulo the lcm",
+    "content": "crt_list_unique shows any two solutions x, y agree modulo lcmList of all moduli. Each modulus p.1 divides both x−p.2 and y−p.2, hence their difference x−y; since every modulus divides x−y, so does their lcm (lcmList_dvd). This is the non-coprime analogue of the classical 'unique modulo the product' — in the coprime case lcm equals the product, but in general it can be strictly smaller, which is exactly where the non-coprime theory differs.",
+    "mathContext": "$\\mathrm{lcmList}(m_1, \\ldots, m_n) \\mid (x - y);\\quad \\text{coprime} \\Rightarrow \\mathrm{lcm} = \\prod m_i$",
+    "significance": "supporting",
+    "relatedConcepts": ["uniqueness modulo lcm", "coprime vs non-coprime", "common multiple"],
+    "prerequisites": ["lcmList_dvd", "divisibility"]
+  }
+]

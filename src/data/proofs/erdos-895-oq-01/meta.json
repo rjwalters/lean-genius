@@ -52,9 +52,9 @@
     ],
     "assumptions": "1 axiom: hajnal_conjecture (Hajnal's open conjecture, unsolved as of 2026). 0 sorries: all structural lemmas and the greedy independence bound are fully proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 6,
-    "lineCount": 289
+    "lineCount": 319
   },
   "overview": {
     "historicalContext": "**Hajnal's Generalization of Erd\u0151s Problem #895**\n\nThe parent problem, Erd\u0151s #895, was solved by Ben Barber (2015) using SAT verification: every triangle-free graph on $\\{1,\\ldots,n\\}$ for $n \\geq 18$ contains three mutually non-adjacent vertices $a$, $b$, $a+b$. This is the $k=2$ base case of a more ambitious conjecture by Andr\u00e1s Hajnal.\n\nHajnal asks: does every sufficiently large triangle-free graph contain an **independent Hindman set** \u2014 a base $B = \\{a_1, \\ldots, a_k\\}$ with $k \\geq 2$ such that ALL finite nonempty sub-sums of $B$ form a mutually non-adjacent set in the graph?\n\nThe $k=2$ case gives FS($\\{a,b\\}$) = $\\{a, b, a+b\\}$, which is exactly Barber's result. The challenge for $k \\geq 3$ is that sums can grow (possibly exceeding $n$) while graph independence must be maintained for all sub-sums simultaneously.\n\n**Connection to Hindman's Theorem (1974):** Hindman proved that for any finite coloring of $\\mathbb{N}$, there exists an infinite Hindman set that is monochromatic. Hajnal's conjecture replaces 'monochromatic' with 'graph-independent' and works in the finite setting \u2014 a fundamentally different kind of constraint.",
@@ -108,56 +108,56 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "Graph-on-interval, triangle-free predicate, additive triple, and the hindmanSet (Hindman finite-sums set FS(B)).",
-      "startLine": 33,
-      "endLine": 49,
+      "startLine": 35,
+      "endLine": 52,
       "mathContext": "Sets up $G$ on vertices $\\{0,\\ldots,n-1\\}$ via `Fin n`, defines triangle-freeness ($\\nexists$ three mutually adjacent vertices), additive triples ($a + b = c$ with $a,b > 0$), and $\\mathrm{FS}(B) = \\{\\sum_{i \\in T} a_i : \\emptyset \\neq T \\subseteq B\\}$ as a `Set \u2115`."
     },
     {
       "id": "hindman-structure",
       "title": "Hindman Set Structure",
       "summary": "Monotonicity, singleton membership, and pair-sum characterization of hindmanSet.",
-      "startLine": 51,
-      "endLine": 77,
+      "startLine": 53,
+      "endLine": 110,
       "mathContext": "Four sorry-free lemmas: $a \\in B \\Rightarrow a \\in \\mathrm{FS}(B)$; $B_1 \\subseteq B_2 \\Rightarrow \\mathrm{FS}(B_1) \\subseteq \\mathrm{FS}(B_2)$; for $B = \\{a,b\\}$ with $a \\neq b$, both $a, b$ and the sum $a+b$ are in $\\mathrm{FS}(\\{a,b\\})$ (via `Finset.sum_pair`)."
     },
     {
       "id": "hajnal-conjecture",
       "title": "Hajnal's Conjecture",
       "summary": "Formal statement of Hajnal's generalization of Erd\u0151s #895 and its axiomatization as an open problem.",
-      "startLine": 79,
-      "endLine": 91,
+      "startLine": 111,
+      "endLine": 124,
       "mathContext": "$\\exists N, \\forall n \\geq N, \\forall G$ triangle-free on `Fin n`, $\\exists B \\subseteq V$ with $|B| \\geq 2$ such that $\\mathrm{FS}(B.\\mathrm{image}\\,(\\cdot.\\mathrm{val}))$ is a graph-independent set. Asserted via `axiom hajnal_conjecture` (OPEN as of 2026)."
     },
     {
       "id": "k2-reduction",
       "title": "The k=2 Reduction",
       "summary": "Hajnal k=2 base {a,b} with a+b < n yields an independent additive triple (a, b, a+b) \u2014 recovers Erd\u0151s-Barber.",
-      "startLine": 93,
-      "endLine": 129,
+      "startLine": 125,
+      "endLine": 162,
       "mathContext": "Theorem `hajnal_k2_gives_additive_triple`: given `hindep` for the 2-element base and the in-range condition $a.\\mathrm{val} + b.\\mathrm{val} < n$, the witness $d := \\langle a + b, \\text{hsum}\\rangle$ together with `hindmanSet_pair_*` lemmas produces an independent triple. This is the formal sense in which Hajnal $\\Rightarrow$ Erd\u0151s-Barber on the $k=2$ slice."
     },
     {
       "id": "triangle-free-neighborhoods",
       "title": "Triangle-Free Neighborhoods Are Independent",
       "summary": "Defining lemma: in a triangle-free graph, no two distinct neighbors of v are adjacent (used as Case 1 of the bound).",
-      "startLine": 131,
-      "endLine": 147,
+      "startLine": 163,
+      "endLine": 181,
       "mathContext": "`triangleFree_nbhd_independent` and its corollary `triangleFree_indep_high_deg`: if $\\deg(v) \\geq \\sqrt{n}$ then $N(v)$ is an independent set of size $\\geq \\sqrt{n}$ (Case 1)."
     },
     {
       "id": "greedy-bounded-degree",
       "title": "Greedy Independent Set on Bounded-Degree Subgraphs",
       "summary": "Strong induction on candidate-set cardinality: greedy removal of v and N(v) gives \u03b1 \u2265 |C|/(\u0394+1).",
-      "startLine": 149,
-      "endLine": 242,
+      "startLine": 182,
+      "endLine": 279,
       "mathContext": "Private lemma `greedy_indep_of_bounded_deg`: if $\\Delta(G[C]) \\leq \\Delta$, greedy step removes $\\leq \\Delta + 1$ vertices and recurses, yielding $|C| \\leq |S|(\\Delta+1)$. Wrapper `indep_from_bounded_deg` specializes to $C = V$."
     },
     {
       "id": "independence-bound",
       "title": "Independence Number Bound \u03b1(G) \u2265 \u221an",
       "summary": "Two-case proof: high-degree vertex (Case 1) or all-low-degree (Case 2 via greedy) yields an independent set of size \u2265 \u221an.",
-      "startLine": 244,
-      "endLine": 271,
+      "startLine": 280,
+      "endLine": 319,
       "mathContext": "`triangleFree_independence_bound`: split on $\\exists v$ with $\\deg(v) \\geq \\sqrt{n}$. Case 1 reuses `triangleFree_indep_high_deg`. Case 2: all $\\deg \\leq \\sqrt{n} - 1$, so greedy gives $n \\leq |S| \\cdot \\sqrt{n}$; combined with `Nat.sqrt_le'` ($\\lfloor\\sqrt{n}\\rfloor^2 \\leq n$) and `Nat.le_of_mul_le_mul_right` we conclude $|S| \\geq \\sqrt{n}$."
     }
   ],
@@ -254,8 +254,8 @@
     "namespace": "Erdos895OQ01Problem",
     "imports": ["Mathlib"],
     "opens": ["Finset", "SimpleGraph"],
-    "lineCount": 289,
-    "theoremCount": 12,
+    "lineCount": 319,
+    "theoremCount": 15,
     "definitionCount": 6,
     "axiomCount": 1,
     "sorries": 0,

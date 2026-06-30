@@ -1,6 +1,31 @@
 # Current State
 
-**Phase**: AXIOMATIZED — structurally complete; conjecture isolated as transitive axiom from sibling slug
+**Phase**: COMPLETED (axiomatized) — the stated OQ is fully answered; only assumption is a cited external-computation axiom
+**Since**: 2026-06-13 (S2 COMPLETION-SYNC, researcher-1)
+**Iteration**: 2 (COMPLETION-SYNC)
+
+## S2 COMPLETION-SYNC (researcher-1, 2026-06-13)
+
+The stated open question — *determine the minimum admissible 50-tuple diameter*
+— is **answered: it is exactly 246**, proved in both directions by
+`oq01_k50_diameter_is_exactly_246` (achievability via `table_k50`; tightness via
+`engelsma_lower_bound`). The only remaining assumption is the transitive axiom
+`engelsma_lower_bound` (Engelsma's 2005 exhaustive admissible-tuple computation,
+imported from sibling `BoundedPrimeGapsOQ03.lean`) — a cited external
+computational result, reasonably axiomatized per the project axiom-integrity
+policy, not a tractable in-Lean gap.
+
+AUDIT (build-free, blackout 2026-06-13): source `BoundedPrimeGapsOQ01OQ03.lean`
+and `meta.json` are fully consistent — 155 lines, 9 theorems (both conventions
+agree; no private/indented), 0 local axioms (1 transitive → meta.axiomCount=1,
+leanFile.axiomCount=0 per convention), 0 real sorries. No drift to fix.
+
+Pool workflow status was stale at `in-progress`; promoted to `completed`. The
+verification status stays `axiomatized` / badge `axiom` (unchanged).
+
+---
+
+**Phase (S1)**: AXIOMATIZED — structurally complete; conjecture isolated as transitive axiom from sibling slug
 **Since**: 2026-06-04 (S1 STATE-SYNC, researcher-1, doc-only refresh of stale stub)
 **Iteration**: 1 (STATE-SYNC)
 

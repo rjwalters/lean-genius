@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-erdos895ce-docstring",
+    "proofId": "erdos-895-counterexample-fin18",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "concept",
+    "title": "The corrected sharp counterexample for Erdős #895",
+    "content": "Barber (2015) proved every triangle-free graph on {1,…,n} has an independent additive triple a, b, a+b for n ≥ 18, sharp at {1,…,17}. The sibling Erdos895Problem.lean states `counterexample_17` over Fin 17 with a predicate omitting `a ≠ b` — which is FALSE: an exhaustive Z3 search proves every triangle-free graph on Fin 17 has a (loose) triple. The genuine distinct-vertex counterexample lives on Fin 18 (vertex 0 isolated = {1,…,17}). This file builds and machine-verifies it; native_decide introduces the disclosed Lean.ofReduceBool assumption.",
+    "mathContext": "Threshold n = 18 is sharp: a triangle-free graph on {1,…,17} has no independent additive triple in distinct vertices.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős 895", "Barber's theorem", "Schur triple", "triangle-free graph"],
+    "prerequisites": ["additive combinatorics", "graph theory"]
+  },
+  {
+    "id": "ann-erdos895ce-predicate",
+    "proofId": "erdos-895-counterexample-fin18",
+    "range": { "startLine": 44, "endLine": 57 },
+    "type": "definition",
+    "title": "IsDistinctAdditiveTriple — the distinctness fix",
+    "content": "The corrected additive-triple predicate adds `a ≠ b` to `a.val + b.val = c.val ∧ a > 0 ∧ b > 0`. This is precisely the constraint the sibling file's `IsAdditiveTriple` omits, admitting the degenerate (k, k, 2k) and flipping the answer. The triple of predicates is marked @[reducible] so native_decide's Decidable-instance synthesis sees through to the bounded quantifiers over Fin 18.",
+    "mathContext": "Barber's theorem is about three DISTINCT vertices a, b, a+b.",
+    "significance": "key",
+    "relatedConcepts": ["Schur triple", "distinct vertices", "decidability"],
+    "prerequisites": ["predicates", "reducibility"]
+  },
+  {
+    "id": "ann-erdos895ce-graph",
+    "proofId": "erdos-895-counterexample-fin18",
+    "range": { "startLine": 58, "endLine": 86 },
+    "type": "definition",
+    "title": "G895 — the explicit 42-edge witness graph",
+    "content": "ce895Pairs lists the 42 edges (ascending pairs on {1,…,17}) of researcher-1's Z3/Python-verified witness. ce895Adj is a symmetric Boolean adjacency via the ascending pair (min a b, max a b); ce895Adj_comm proves symmetry from Nat.min_comm/max_comm. G895 is the SimpleGraph structure (Adj := ce895Adj = true ∧ a ≠ b) with symmetry and looplessness, plus a clean DecidableRel instance — chosen over SimpleGraph.fromRel so adjacency is directly decidable for native_decide.",
+    "mathContext": "Vertex 0 is isolated; the graph models {1,…,17}.",
+    "significance": "key",
+    "relatedConcepts": ["SimpleGraph", "DecidableRel", "symmetric relation"],
+    "prerequisites": ["simple graphs", "Boolean decidability"]
+  },
+  {
+    "id": "ann-erdos895ce-verified",
+    "proofId": "erdos-895-counterexample-fin18",
+    "range": { "startLine": 87, "endLine": 111 },
+    "type": "theorem",
+    "title": "native_decide verification of the counterexample",
+    "content": "ce895_triangleFree proves G895 has no triangle (exhaustive over Fin 18³). ce895_no_distinct_independent_additive_triple proves there is no independent additive triple in three distinct vertices. counterexample_fin18 packages both into the sharp-threshold witness — the corrected, machine-verified replacement for the false counterexample_17 (Fin 17). Both native_decide checks are exhaustive finite computations, cross-checked by an independent Z3 UNSAT proof and a pure-Python verifier.",
+    "mathContext": "Triangle-free and no distinct-vertex independent additive triple ⟹ the {1,…,17} counterexample, hence n = 18 sharp.",
+    "significance": "critical",
+    "relatedConcepts": ["native_decide", "exhaustive verification", "Lean.ofReduceBool"],
+    "prerequisites": ["decidable propositions", "Fintype quantifiers"]
+  }
+]

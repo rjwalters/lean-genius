@@ -88,38 +88,45 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Second Incompleteness and the HBL Conditions",
+      "summary": "Module docstring: states Goedel's Second Incompleteness Theorem — a consistent formal system F strong enough to encode arithmetic cannot prove its own consistency Con(F) — and summarizes the Hilbert-Bernays-Loeb derivability conditions D1-D3, the history (Hilbert-Bernays 1939, Loeb 1955), and the provability-logic formulation in GL.",
+      "startLine": 1,
+      "endLine": 64
+    },
+    {
       "id": "consistency-formula",
       "title": "Part 1: The Consistency Formula",
-      "startLine": 60,
-      "endLine": 80,
+      "startLine": 65,
+      "endLine": 85,
       "summary": "def falsum : Formula := ⟨0⟩ and def Con : Formula := neg (Prov (godelNum falsum)). Con(F) asserts '⊥ is not provable in F', i.e., F is consistent."
     },
     {
       "id": "hbl-conditions",
       "title": "Part 2: HBL Derivability Conditions D2 and D3",
-      "startLine": 82,
-      "endLine": 110,
+      "startLine": 86,
+      "endLine": 115,
       "summary": "Documentation of D2 (modus ponens internalization: ⊢(φ→ψ) → ⊢φ → ⊢ψ) and D3 (iteration: ⊢φ → ⊢Prov(⌜Prov(⌜φ⌝)⌝)). These conditions are needed to formalize First Incompleteness inside F."
     },
     {
       "id": "con-implies-g",
       "title": "Part 3: Formalized First Incompleteness (Key Axiom)",
-      "startLine": 112,
-      "endLine": 148,
+      "startLine": 116,
+      "endLine": 154,
       "summary": "axiom con_implies_G: (⊢ Con) → (⊢ G). The deepest axiom: bundles D2+D3+object-level Diagonal Lemma to give F ⊢ (Con → G). Full justification requires ~500-1000 lines of formal arithmetic."
     },
     {
       "id": "second-incompleteness",
       "title": "Part 4: Second Incompleteness Theorem",
-      "startLine": 150,
-      "endLine": 185,
+      "startLine": 155,
+      "endLine": 188,
       "summary": "theorem second_incompleteness: Consistent → ¬(⊢ Con). One-line proof: fun hCon => G_not_provable h (con_implies_G hCon). Extensive documentation of philosophical significance."
     },
     {
       "id": "corollaries",
       "title": "Part 5: Corollaries and Löb Context",
-      "startLine": 187,
-      "endLine": 205,
+      "startLine": 189,
+      "endLine": 258,
       "summary": "G_and_Con_both_unprovable (joint package), con_proof_witnesses_inconsistency (contrapositive), discussion of Löb's theorem and its relationship to Second Incompleteness."
     }
   ],

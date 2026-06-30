@@ -364,7 +364,7 @@
       "startLine": 395,
       "endLine": 397
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Non-Averaging Function g(N)",
     "content": "$g(N)$ is the maximum size of a non-averaging subset of $\\{1,\\ldots,N\\}$, the central object of Problem #186. Defined identically to $F(N)$ but with `IsNonAveraging` replacing `IsNonDividing`.",
     "mathContext": "$g(N) = \\max\\{|A| : A \\subseteq [N],\\; \\text{IsNonAveraging}(A)\\}$. Since non-dividing $\\implies$ non-averaging, every non-dividing set is a candidate for $g(N)$, giving $F(N) \\leq g(N)$.",

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "intersecting-chords",
+    "proofId": "ptolemys-theorem-oq-04",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "concept",
+    "title": "Intersecting Chords Theorem (Freek No. 55)",
+    "content": "`intersecting_chords` states the classical fact: if A, B, C, D lie on a common sphere and P lies between A,B and between C,D (both angles at P are straight, ∠APB = ∠CPD = π), then the chord-segment products agree, PA·PB = PC·PD. It is a thin wrapper over Mathlib's `mul_dist_eq_mul_dist_of_cospherical_of_angle_eq_pi`. This is item No. 55 on Freek Wiedijk's list of 100 theorems to formalize; the angle = π hypothesis encodes 'P is an interior crossing point of the two chords'.",
+    "mathContext": "Cospherical $A,B,C,D$, $\\angle APB = \\angle CPD = \\pi$ $\\Rightarrow$ $PA\\cdot PB = PC\\cdot PD$.",
+    "significance": "key",
+    "relatedConcepts": ["intersecting chords", "cospherical points", "Freek No. 55", "Euclid III.35"],
+    "prerequisites": ["circles", "angles", "cospherical points"]
+  },
+  {
+    "id": "intersecting-secants",
+    "proofId": "ptolemys-theorem-oq-04",
+    "range": { "startLine": 67, "endLine": 73 },
+    "type": "concept",
+    "title": "Intersecting Secants Theorem",
+    "content": "`intersecting_secants` is the exterior-point companion: for cospherical A, B, C, D, when P lies on the two secant lines on the same side (both angles at P are zero, ∠APB = ∠CPD = 0), the secant-segment products agree. It wraps `mul_dist_eq_mul_dist_of_cospherical_of_angle_eq_zero`. The angle = 0 hypothesis (versus π for chords) is exactly what distinguishes an external crossing from an internal one — and the power invariant below shows both are the same statement up to the sign of the power.",
+    "mathContext": "Cospherical $A,B,C,D$, $\\angle APB = \\angle CPD = 0$ $\\Rightarrow$ $PA\\cdot PB = PC\\cdot PD$ (P external).",
+    "significance": "key",
+    "relatedConcepts": ["intersecting secants", "external point", "cospherical points"],
+    "prerequisites": ["circles", "secant lines"]
+  },
+  {
+    "id": "power-invariant",
+    "proofId": "ptolemys-theorem-oq-04",
+    "range": { "startLine": 77, "endLine": 92 },
+    "type": "insight",
+    "title": "The Power Invariant: PA·PB = |power P|",
+    "content": "The keystone of the file. `mul_dist_eq_abs_power` records that for ANY line through P meeting the sphere s at A, B, the segment product equals |power P| = |dist(P,center)² − r²|. Because the right-hand side mentions only P and s — not the chosen line — line-independence (`mul_dist_eq_mul_dist_of_mem_sphere`) is immediate: rewrite the products along two different lines, both become |power P|, done. This single scalar is the conceptual engine from which every classical chord/secant/tangent theorem in the file is a corollary.",
+    "mathContext": "$PA\\cdot PB = |\\operatorname{pow}_s(P)| = |\\operatorname{dist}(P,\\text{center})^2 - r^2|$, independent of the line through $P$.",
+    "significance": "key",
+    "relatedConcepts": ["power of a point", "invariant", "line-independence", "radical axis"],
+    "prerequisites": ["inner-product spaces", "spheres", "distance"]
+  },
+  {
+    "id": "signed-forms",
+    "proofId": "ptolemys-theorem-oq-04",
+    "range": { "startLine": 94, "endLine": 107 },
+    "type": "concept",
+    "title": "Signed Forms: Inside vs Outside the Sphere",
+    "content": "Splitting on the sign of the power makes the geometry explicit. `mul_dist_eq_power_outside`: when P is on or outside the sphere (radius ≤ dist to center), the secant product equals the nonnegative power. `mul_dist_eq_neg_power_inside`: when P is on or inside, the chord product equals minus the (nonpositive) power. The absolute value in the keystone invariant is exactly what reconciles these two signs into one statement — the power is positive outside, negative inside, zero on the sphere.",
+    "mathContext": "Outside: $PA\\cdot PB = \\operatorname{pow}(P)\\ge 0$. Inside: $PA\\cdot PB = -\\operatorname{pow}(P)\\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sign of the power", "interior vs exterior point", "secant product"],
+    "prerequisites": ["power of a point", "ordering of reals"]
+  },
+  {
+    "id": "tangents",
+    "proofId": "ptolemys-theorem-oq-04",
+    "range": { "startLine": 111, "endLine": 128 },
+    "type": "technique",
+    "title": "Tangent–Secant and Equal Tangents",
+    "content": "`tangent_sq_eq_secant_product` gives tangent² = PA·PB at a tangent point t, since the power equals the squared tangent length there. `dist_tangent_eq_of_tangent` then derives the Equal Tangents Theorem — the two tangent segments from an external point have equal length — which is NOT a single Mathlib lemma: both squared tangent lengths equal the power of P, and squaring is injective on nonnegative reals (`pow_left_inj₀` with `dist_nonneg`), so the lengths coincide. A clean example of recovering a named classical theorem from an invariant plus a monotonicity fact.",
+    "mathContext": "$PT^2 = PA\\cdot PB = \\operatorname{pow}(P)$; two tangents $T_1,T_2$ give $PT_1^2 = PT_2^2 \\Rightarrow PT_1 = PT_2$.",
+    "significance": "key",
+    "relatedConcepts": ["tangent–secant relation", "equal tangents", "injectivity of squaring", "tangent length"],
+    "prerequisites": ["tangent lines", "power of a point"]
+  },
+  {
+    "id": "concrete-witness",
+    "proofId": "ptolemys-theorem-oq-04",
+    "range": { "startLine": 136, "endLine": 163 },
+    "type": "technique",
+    "title": "A Fully Explicit ℂ Witness",
+    "content": "To show the abstract theorem has real content, the file builds an explicit configuration in ℂ: the unit circle with perpendicular diameters [1,−1] and [I,−I] crossing at the centre 0. `cospherical_unit` certifies the four points lie on the circle (center 0, radius 1); `center_mem_diam_re`/`_im` place 0 on each diameter by exhibiting it as `AffineMap.lineMap` at parameter 1/2 (the midpoint); `concrete_intersecting_chords` then reads off 1·1 = 1·1. This discharges, by hand, the cospherical and on-line hypotheses that the general theorems take as input.",
+    "mathContext": "Unit circle in $\\mathbb{C}$, diameters $[1,-1]\\perp[I,-I]$ meeting at $0$: $\\operatorname{dist}(1,0)\\cdot\\operatorname{dist}(-1,0) = 1 = \\operatorname{dist}(I,0)\\cdot\\operatorname{dist}(-I,0)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked example", "unit circle", "affine line map", "midpoint"],
+    "prerequisites": ["complex plane", "affine combinations"]
+  }
+]

@@ -64,7 +64,6 @@
     "theoremCount": 13,
     "lineCount": 379,
     "assumptions": "2 axioms: goldberg_toppila_existence (Gol'dberg-Toppila construction, deep result), polynomial_not_extreme (FTA-based, needs algebraic closure). 4 former axioms proved: exp_not_extreme (exp never 0), nevanlinna_deficiency_sum/first_main_theorem_heuristic (trivial from placeholder defs), oscillation_key_insight (derived from main existence).",
-    "theoremCount": 13,
     "definitionCount": 13
   },
   "overview": {
@@ -87,6 +86,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring stating Erdős Problem #1116: does there exist a meromorphic (or entire) function f such that for every a ≠ b, lim sup_{r→∞} n(r,a)/n(r,b) = ∞, where n(r,a) counts roots of f(z)=a in |z|<r? Answer: YES — Gol'dberg (1978) and Toppila (1976) independently constructed entire functions with this extreme property. Imports complex-analysis and filter basics; opens Complex/Set/Filter and the Erdos1116 namespace.",
+      "mathContext": "The counting function $n(r,a)$ records how often $f$ takes the value $a$ in $|z|<r$. The problem asks whether some entire $f$ can have $\\limsup_{r\\to\\infty} n(r,a)/n(r,b) = \\infty$ for every pair $a \\ne b$. This is striking against Nevanlinna theory, whose deficiency relation bounds the total \"average\" irregularity ($\\sum \\delta(a) \\le 2$); the Gol'dberg–Toppila constructions show the pointwise counts can still oscillate without bound."
+    },
+    {
       "id": "meromorphic-functions",
       "title": "Meromorphic Functions and Value Distribution",
       "summary": "IsMeromorphic, IsEntire, entire_is_meromorphic",
@@ -99,63 +106,63 @@
       "title": "The Counting Function",
       "summary": "aPoints, countingFunction definitions",
       "startLine": 78,
-      "endLine": 105,
+      "endLine": 125,
       "mathContext": "Formal definition: aPoints, countingFunction definitions"
     },
     {
       "id": "problem-statement",
       "title": "The Problem Statement",
       "summary": "HasUnboundedRatio, HasExtremeValueDistribution definitions",
-      "startLine": 106,
-      "endLine": 136,
+      "startLine": 126,
+      "endLine": 168,
       "mathContext": "Formal definition: HasUnboundedRatio, HasExtremeValueDistribution definitions"
     },
     {
       "id": "solution",
       "title": "The Solution",
       "summary": "goldberg_toppila_existence axiom, erdos_1116 theorem",
-      "startLine": 137,
-      "endLine": 160,
+      "startLine": 169,
+      "endLine": 192,
       "mathContext": "Verified: goldberg_toppila_existence axiom, erdos_1116 theorem"
     },
     {
       "id": "nevanlinna-theory",
       "title": "Nevanlinna Theory Context",
       "summary": "characteristic, integratedCounting, deficiency, nevanlinna_deficiency_sum",
-      "startLine": 161,
-      "endLine": 196,
+      "startLine": 193,
+      "endLine": 229,
       "mathContext": "Mathematical content: characteristic, integratedCounting, deficiency, nevanlinna_deficiency_sum"
     },
     {
       "id": "surprising",
       "title": "Why This is Surprising",
       "summary": "first_main_theorem_heuristic, oscillation_key_insight",
-      "startLine": 197,
-      "endLine": 229,
+      "startLine": 230,
+      "endLine": 267,
       "mathContext": "Verified: first_main_theorem_heuristic, oscillation_key_insight"
     },
     {
       "id": "construction",
       "title": "Construction Sketch",
       "summary": "IsLacunarySeries, WeierstrassProduct definitions",
-      "startLine": 230,
-      "endLine": 265,
+      "startLine": 268,
+      "endLine": 296,
       "mathContext": "Formal definition: IsLacunarySeries, WeierstrassProduct definitions"
     },
     {
       "id": "examples",
       "title": "Examples and Non-examples",
       "summary": "expFunction, exp_not_extreme, polynomial_not_extreme",
-      "startLine": 266,
-      "endLine": 290,
+      "startLine": 297,
+      "endLine": 341,
       "mathContext": "Mathematical content: expFunction, exp_not_extreme, polynomial_not_extreme"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_1116_summary, keyInsightStatement",
-      "startLine": 291,
-      "endLine": 317,
+      "startLine": 342,
+      "endLine": 379,
       "mathContext": "Mathematical content: erdos_1116_summary, keyInsightStatement"
     }
   ],

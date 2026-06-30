@@ -1,0 +1,189 @@
+{
+  "id": "brianchon-theorem-oq-01",
+  "title": "Brianchon's Theorem (projective dual of Pascal's Hexagon Theorem)",
+  "slug": "brianchon-theorem-oq-01",
+  "description": "If a hexagon is circumscribed about a conic (each side tangent to it), the three main diagonals joining opposite vertices are concurrent. Proved as the projective dual of Pascal's Hexagon Theorem, with the duality realized definitionally via the dual (adjugate) conic.",
+  "meta": {
+    "author": "Charles-Julien Brianchon (1806)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brianchon%27s_theorem",
+    "date": "1806",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BrianchonTheorem.lean",
+    "tags": [
+      "geometry",
+      "projective",
+      "conic",
+      "concurrency",
+      "duality",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.LinearAlgebra.Matrix.Adjugate",
+        "description": "Adjugate matrix, used to represent the dual conic (locus of tangent lines)",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Mathlib.LinearAlgebra.CrossProduct",
+        "description": "Cross product in ℝ³ (inherited from PascalsHexagon) for join/meet of points and lines",
+        "module": "Mathlib.LinearAlgebra.CrossProduct"
+      },
+      {
+        "theorem": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+        "description": "Matrix determinant used for the concurrency predicate",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal proof of Brianchon's theorem as the projective dual of Pascal's Hexagon Theorem, answering an open question posed in the pascals-hexagon entry",
+      "Realization of point–line projective duality via the dual (adjugate) conic: tangency to a conic C is incidence with adjugate C",
+      "CircumscribedHexagon structure (six tangent lines) dual to InscribedHexagon, with the toInscribedDual bridge identifying the two",
+      "concurrent_diagonals_eq_pascalConstraint: the verified observation that Brianchon's concurrency determinant is definitionally identical to Pascal's collinearity determinant for the dual configuration"
+    ],
+    "dateAdded": "2026-06-18",
+    "axiomCount": 1,
+    "lineCount": 201,
+    "assumptions": "Inherits the single axiom conic_implies_pascal_constraint from PascalsHexagon.lean (the Cayley–Bacharach/Bézout fact underlying Pascal's theorem). This file introduces no new axiom, sorry, or native_decide: the dual reduction is fully machine-checked. leanFile.axiomCount is 0 because no axiom is declared in this file; meta.axiomCount is 1 to disclose the inherited assumption.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2,
+    "definitionCount": 12
+  },
+  "overview": {
+    "historicalContext": "Charles-Julien Brianchon (1783–1864) discovered this theorem in 1806 while a student at the École Polytechnique, publishing it in the Journal de l'École Polytechnique. It is the projective dual of Pascal's Hexagon Theorem (1639): where Pascal concerns six points lying *on* a conic and concludes that three intersection points are collinear, Brianchon concerns six lines *tangent to* a conic and concludes that three diagonals are concurrent. The two theorems are exchanged by the point↔line duality of the projective plane, which had only become a precise tool through the work of Poncelet and Gergonne in the early nineteenth century — making Brianchon's result one of the first major theorems discovered specifically through projective duality.",
+    "problemStatement": "**Brianchon's Theorem**: Let a hexagon with sides $a, b, c, d, e, f$ be circumscribed about a conic (each side tangent to it). Its vertices are the intersections of consecutive sides. Then the three **main diagonals** — the lines joining opposite vertices $(a\\cap b)$–$(d\\cap e)$, $(b\\cap c)$–$(e\\cap f)$, $(c\\cap d)$–$(f\\cap a)$ — are **concurrent** (meet in a single point, the *Brianchon point*).",
+    "text": "If a hexagon is circumscribed about a conic, the three main diagonals are concurrent. The projective dual of Pascal's theorem.",
+    "proofStrategy": "We reuse the homogeneous-coordinate model of PascalsHexagon.lean, in which points and lines are both nonzero vectors in $\\mathbb{R}^3$ and the cross product simultaneously computes the line through two points and the meet of two lines. Point↔line duality is therefore the identity on $\\mathbb{R}^3$, and a conic $C$ (a symmetric matrix) maps to its **dual conic** — the locus of its tangent lines — represented by the adjugate $\\operatorname{adj}(C)$ (which equals $\\det(C)\\cdot C^{-1}$ for nondegenerate $C$). A line is tangent to $C$ exactly when it lies on $\\operatorname{adj}(C)$. The pivotal fact, verified as `concurrent_diagonals_eq_pascalConstraint`, is that Brianchon's concurrency determinant for the three main diagonals is *the very same algebraic expression* as Pascal's collinearity determinant evaluated on the six tangent lines — because the diagonal joining $(a\\cap b)$ and $(d\\cap e)$ is $\\operatorname{cross}(\\operatorname{cross}(a,b),\\operatorname{cross}(d,e))$, identical to Pascal's point $AB\\cap DE$. Brianchon then follows from Pascal's theorem (the axiom `conic_implies_pascal_constraint`) applied to the six tangent lines viewed as points on the dual conic, with no new axiom.",
+    "keyInsights": [
+      "**Duality is definitional here**: because `lineThrough = lineIntersection = crossProduct`, Brianchon's conclusion `concurrent (d₁) (d₂) (d₃)` is *literally* `pascalConstraint a b c d e f` after unfolding — the proof of the bridge lemma is `Iff.rfl`",
+      "**Tangency = incidence with the dual conic**: a line $\\ell$ is tangent to $C$ iff $\\ell^\\top \\operatorname{adj}(C)\\,\\ell = 0$, i.e. $\\ell$ lies on the adjugate conic; this turns 'circumscribed about $C$' into 'inscribed in $\\operatorname{adj}(C)$'",
+      "**No new assumption**: Brianchon inherits exactly the one axiom Pascal already isolates (Cayley–Bacharach); the dual reduction adds zero sorries and zero new axioms",
+      "**Answers a stated open question**: the pascals-hexagon entry explicitly asks whether the Brianchon dual can be formally derived from Pascal via projective duality — this entry does so"
+    ],
+    "prerequisites": [
+      "Projective geometry (conics, duality, tangent lines)",
+      "Linear algebra (adjugate matrix, determinants, cross product)",
+      "Pascal's Hexagon Theorem (the dual statement, here imported)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Module docstring (statement, the definitional-duality approach, axiom status) and imports of PascalsHexagon plus Mathlib's adjugate.",
+      "mathContext": "Brianchon's theorem (1806) is the projective dual of Pascal's; this file derives it from the imported Pascal axiom by sending a conic to its dual (adjugate) conic."
+    },
+    {
+      "id": "dual-conic",
+      "title": "PART 1: The dual conic and tangency",
+      "startLine": 68,
+      "endLine": 81,
+      "summary": "`dualConic C = adjugate C` and `lineTangentToConic l C = pointOnConic l (dualConic C)`.",
+      "mathContext": "The dual conic is the locus of tangent lines of C; for a symmetric matrix C it is represented by the adjugate, and tangency of a line is incidence with this dual conic."
+    },
+    {
+      "id": "circumscribed-hexagon",
+      "title": "PART 2: Hexagon circumscribed about a conic",
+      "startLine": 82,
+      "endLine": 145,
+      "summary": "`CircumscribedHexagon C` (six tangent lines with validity), the six vertices `vertexAB`…`vertexFA` as consecutive meets, and the three main diagonals `mainDiagonal1/2/3` joining opposite vertices.",
+      "mathContext": "Dual to InscribedHexagon: the six sides are tangent lines, the vertices are their consecutive intersections, and the main diagonals connect opposite vertices."
+    },
+    {
+      "id": "duality-bridge",
+      "title": "PART 3: The duality bridge (fully verified)",
+      "startLine": 146,
+      "endLine": 192,
+      "summary": "`toInscribedDual` exhibits a circumscribed hexagon for C as a hexagon inscribed in `dualConic C`; `concurrent_diagonals_eq_pascalConstraint` proves (by `Iff.rfl`) that the diagonals' concurrency is identical to Pascal's constraint on the tangent lines.",
+      "mathContext": "Tangency to C is incidence with adjugate C, so the data coincide; and the concurrency determinant equals Pascal's collinearity determinant term-for-term — the formal content of 'Brianchon is the dual of Pascal'."
+    },
+    {
+      "id": "main-theorem",
+      "title": "PART 4: Brianchon's Theorem",
+      "startLine": 193,
+      "endLine": 201,
+      "summary": "`brianchon_theorem`: for a hexagon circumscribed about C the three main diagonals are concurrent, obtained by rewriting along the bridge and applying `conic_implies_pascal_constraint` to the dual conic.",
+      "mathContext": "Pascal's theorem for the six tangent lines (as points on the dual conic) yields the Pascal constraint, which is definitionally the concurrency of Brianchon's main diagonals."
+    }
+  ],
+  "conclusion": {
+    "summary": "Brianchon's theorem is formalized as the projective dual of Pascal's Hexagon Theorem. By representing the dual conic with the adjugate matrix and observing that the cross product computes both join and meet, the concurrency of the three main diagonals reduces — definitionally — to Pascal's collinearity constraint for the six tangent lines. The proof introduces no new axiom beyond the one Pascal already uses.",
+    "implications": "The entry demonstrates that point–line projective duality can be made fully computational in the homogeneous-coordinate model: a dual theorem is obtained from its primal not by an abstract duality functor but by the identity map on coordinates together with the adjugate on conics. The same template applies to dualizing other incidence theorems (e.g. the self-dual Desargues).",
+    "openQuestions": [
+      "Can `conic_implies_pascal_constraint` itself be eliminated (Cayley–Bacharach from Mathlib's algebraic geometry), making both Pascal and Brianchon fully axiom-free?",
+      "Can the equivalence between the algebraic tangency condition (incidence with the adjugate conic) and the geometric tangency condition (the line meets the conic in a double point) be proved, upgrading lineTangentToConic from a definition to a characterization?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Brianchon's theorem is the exact projective dual of Pascal's Hexagon Theorem; this entry derives it from the Pascal axiom via the dual conic and answers an open question posed there",
+      "sharedConcepts": [
+        "projective-geometry",
+        "conic",
+        "duality",
+        "incidence-theorem"
+      ],
+      "targetId": "pascals-hexagon"
+    },
+    {
+      "relationship": "Both are fundamental incidence theorems of projective geometry formalized in the same homogeneous-coordinate / cross-product model; Desargues is self-dual while Brianchon is dual to Pascal",
+      "sharedConcepts": [
+        "projective-geometry",
+        "concurrency",
+        "duality"
+      ],
+      "targetId": "desargues-theorem"
+    },
+    {
+      "relationship": "Pappus's theorem is the degenerate-conic specialization of Pascal; its dual specializes Brianchon, both living in the same projective framework",
+      "sharedConcepts": [
+        "projective-geometry",
+        "conic",
+        "duality"
+      ],
+      "targetId": "pappus-theorem-oq-02"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/BrianchonTheorem.lean",
+    "lineCount": 201,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 2,
+    "definitionCount": 12,
+    "imports": [
+      "import Proofs.PascalsHexagon",
+      "import Mathlib.LinearAlgebra.Matrix.Adjugate"
+    ],
+    "opens": [
+      "Matrix"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Brianchon, Charles-Julien",
+      "title": "Mémoire sur les surfaces courbes du second degré",
+      "year": "1806",
+      "venue": "Journal de l'École Polytechnique, vol. 13, pp. 297–311",
+      "note": "Original statement of Brianchon's theorem, discovered via the projective duality of Pascal's hexagram"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "brianchon_theorem",
+      "type": "core",
+      "description": "If a hexagon is circumscribed about a conic, its three main diagonals (joining opposite vertices) are concurrent",
+      "leanType": "(C : Conic) -> (hex : CircumscribedHexagon C) -> concurrent (mainDiagonal1 hex) (mainDiagonal2 hex) (mainDiagonal3 hex)"
+    },
+    {
+      "name": "concurrent_diagonals_eq_pascalConstraint",
+      "type": "supporting",
+      "description": "The concurrency determinant of Brianchon's three main diagonals is definitionally identical to Pascal's collinearity constraint for the six tangent lines — the formal duality bridge",
+      "leanType": "(hex : CircumscribedHexagon C) -> (concurrent (mainDiagonal1 hex) (mainDiagonal2 hex) (mainDiagonal3 hex) <-> pascalConstraint hex.a hex.b hex.c hex.d hex.e hex.f)"
+    }
+  ],
+  "sorries": 0
+}

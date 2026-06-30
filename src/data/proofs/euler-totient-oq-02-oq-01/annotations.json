@@ -61,7 +61,11 @@
       "totient density",
       "squarefree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler Totient Function",
+      "Prime Factors",
+      "Radical Of Integer"
+    ]
   },
   {
     "id": "ann-finsupp-prod-congr",
@@ -80,7 +84,11 @@
       "Nat.support_factorization",
       "Finsupp.mem_support_iff"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finsupp Product",
+      "Prime Factorization",
+      "Totient Of Prime Power"
+    ]
   },
   {
     "id": "ann-density-proof",
@@ -99,6 +107,10 @@
       "div_self",
       "Nat.cast_ne_zero"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rational Coercion",
+      "Field Division Lemmas",
+      "Totient Product Formula"
+    ]
   }
 ]

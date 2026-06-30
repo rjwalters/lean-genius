@@ -1,7 +1,7 @@
 {
   "slug": "sperner-simplicial-instance-oq-05",
   "title": "Implement Scarf's algorithm as a *computable* function in Lean 4: input a Spe...",
-  "phase": "S9 PREP shipped (researcher-1, 2026-06-13) — CORRECTION: S8's hypothesis c 0 ≠ c m is INSUFFICIENT (Scarf walk is strictly directional; global endpoint parity cannot place the panchromatic cell in the walk's direction). Counterexample m=4,c=(0,1,1,1,1),start=2,k=1. Corrected directional hypothesis: rightward needs c start.val ≠ c m. Fuel-induction proof strategy (~40 LOC) documented. S9 ACT (Docker-gated) outstanding.",
+  "phase": "C2-1d Scarf-walk soundness DISCHARGED & Docker-verified (S8 ACT, PR #22900, 2026-06-13T13:58Z). scarfWalk_isPanchromatic proved with corrected directional hypothesis c start.val ≠ c m; SpernerSimplicialInstanceOQ05Scarf1d.lean now 0 sorries / 0 axioms (Docker 1098/1098). The S9 ACT described by the concurrent S9 PREP (#22981, merged 70 min earlier) is therefore already complete. Remaining open: C2-gen, C3 (findOppositeIdx decomputification), discharge scarf_approx_fixed_point axiom in Brouwer.",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -30,14 +30,14 @@
     "goal": "Replace `axiom scarf_approx_fixed_point` in `BrouwerFixedPointOQ04OQ04.lean:244` with a verified Lean term backed by a computable Scarf algorithm."
   },
   "currentState": {
-    "phase": "S9 PREP shipped (researcher-1, 2026-06-13) — CORRECTION: S8's hypothesis c 0 ≠ c m is INSUFFICIENT (Scarf walk is strictly directional; global endpoint parity cannot place the panchromatic cell in the walk's direction). Counterexample m=4,c=(0,1,1,1,1),start=2,k=1. Corrected directional hypothesis: rightward needs c start.val ≠ c m. Fuel-induction proof strategy (~40 LOC) documented. S9 ACT (Docker-gated) outstanding.",
+    "phase": "C2-1d Scarf-walk soundness DISCHARGED & Docker-verified (S8 ACT, PR #22900, 2026-06-13T13:58Z). scarfWalk_isPanchromatic proved with corrected directional hypothesis c start.val ≠ c m; SpernerSimplicialInstanceOQ05Scarf1d.lean now 0 sorries / 0 axioms (Docker 1098/1098). The S9 ACT described by the concurrent S9 PREP (#22981, merged 70 min earlier) is therefore already complete. Remaining open: C2-gen, C3 (findOppositeIdx decomputification), discharge scarf_approx_fixed_point axiom in Brouwer.",
     "since": "2026-06-13T00:00:00Z",
-    "iteration": 15,
-    "focus": "S9 PREP correction (researcher-1, 2026-06-13, doc-only) — pre-ACT audit found S8's scarfWalk_isPanchromatic hypothesis c 0 ≠ c m insufficient because the 1-d Scarf walk is strictly directional (entry face fixes left/right travel; new entry face = old). Counterexample m=4 c=(0,1,1,1,1) start=2 k=1 satisfies c0≠c4 yet returns non-panchromatic cell 3. Corrected: rightward (k=1) hypothesis c start.val ≠ c m; leftward dual c 0 ≠ c (start+1). Full fuel-induction proof strategy + step_right_eq helper recommendation in new memo sessions/2026-06-13-s9-prep-directional-hypothesis-fix.md. Docker DOWN this session — doc-only.",
-    "blockers": "Docker daemon DOWN (docker info times out); cannot Lean-build, so S9 ACT discharge is gated on Docker recovery. Disk recovered (97 GiB free).",
-    "nextAction": "S9 ACT (Docker-gated, ~40 LOC, MED): discharge scarfWalk_isPanchromatic_right (hypothesis c start.val ≠ c m) via scarfWalkAux_right_sound fuel-induction (memo §4); remove the false general scarfWalk_isPanchromatic sorry; re-prove exists_panchromatic_constructive in canonical left-boundary form (memo §5); optional counterexample regression-guard example. Requires Docker daemon recovery.",
+    "iteration": 16,
+    "focus": "S8 ACT #22900 propagated to trackers (researcher-6 STATE-SYNC). Discharge-detector: df92c4792ea (#22900 \"discharge Scarf-walk soundness, corrected hypothesis\") landed Docker-verified 70 min after the S9 PREP (#22981) that updated these trackers, so Session-17 status \"S9 ACT outstanding/Docker-gated\" was stale-on-arrival. C2-1d soundness (scarfWalk_isPanchromatic, exists_panchromatic_constructive, discrete_ivt_panchromatic_cell, decide smoke test) all proved; parent gained intervalTriangulation_adj_zero. Gallery meta CLEAN (185/3/1/0/0, sections aligned). leanFiles[] left untouched (deployer-owned).",
+    "blockers": "C2-1d build-gated blocker RESOLVED by #22900 (Docker-verified). Remaining C3 design is doc-tractable during the Docker blackout; C3/C2-gen discharge still need Docker recovery for build verification.",
+    "nextAction": "C3 (doc-tractable design now, Docker-gated discharge later): refactor AbstractSimplicialData.findOppositeIdx from Classical.choose to Finset.filter ... .min' (~80 LOC, MED). Then C2-gen: generalise the proved 1-d Scarf walk to arbitrary Triangulation (~250 LOC, HIGH, behind C3). Bonus: discharge axiom scarf_approx_fixed_point in BrouwerFixedPointOQ04OQ04.lean.",
     "attemptCounts": {
-      "total": 15,
+      "total": 16,
       "currentApproach": 4,
       "approachesTried": 4
     }
@@ -100,9 +100,10 @@
     "fixed-point-search"
   ],
   "relatedProofs": [
-    "sperner-simplicial-instance",
+    "brouwer-fixed-point-oq-04-oq-04",
     "sperner-mathlib4",
-    "brouwer-fixed-point-oq-04-oq-04"
+    "sperner-simplicial-instance",
+    "sperner-simplicial-instance-oq-05"
   ],
   "references": {
     "papers": [
@@ -132,24 +133,79 @@
     {
       "path": "Proofs/SpernerSimplicialInstance.lean",
       "filename": "SpernerSimplicialInstance.lean",
-      "lineCount": 995,
-      "theoremCount": 25,
+      "lineCount": 1040,
+      "theoremCount": 26,
       "axiomCount": 0,
-      "defCount": 9,
+      "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstance.lean"
     },
     {
+      "path": "Proofs/SpernerSimplicialInstanceOQ01.lean",
+      "filename": "SpernerSimplicialInstanceOQ01.lean",
+      "lineCount": 147,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ01.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ03.lean",
+      "filename": "SpernerSimplicialInstanceOQ03.lean",
+      "lineCount": 109,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ03.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ03Tower.lean",
+      "filename": "SpernerSimplicialInstanceOQ03Tower.lean",
+      "lineCount": 88,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ03Tower.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ04.lean",
+      "filename": "SpernerSimplicialInstanceOQ04.lean",
+      "lineCount": 108,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ04.lean"
+    },
+    {
       "path": "Proofs/SpernerSimplicialInstanceOQ05.lean",
       "filename": "SpernerSimplicialInstanceOQ05.lean",
-      "lineCount": 168,
+      "lineCount": 186,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "filename": "SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "lineCount": 299,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
     }
   ]
 }

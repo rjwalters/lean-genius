@@ -198,11 +198,6 @@
       "description": "Provides the Freudenthal pseudomanifold proof and `prefixSet_card_eq` (cardinality of prefix sets), used in `prefixSet_inj`."
     },
     {
-      "targetId": "sperner-lemma",
-      "relationship": "specializes-to",
-      "description": "Sperner's lemma for the Freudenthal triangulation of $[0,1]^n$ is a special case of the classical Sperner lemma, with the specific triangulation made explicit."
-    },
-    {
       "targetId": "brouwer-fixed-point",
       "relationship": "implies",
       "description": "Sperner's lemma on the Freudenthal triangulation implies Brouwer's fixed-point theorem for $[0,1]^n$ via the standard reduction (Knaster–Kuratowski–Mazurkiewicz)."

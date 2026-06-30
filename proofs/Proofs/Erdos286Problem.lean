@@ -104,9 +104,36 @@ theorem example_k4 : HasShortIntervalRepresentation 4 18 := by
       rcases hn with rfl | rfl | rfl | rfl <;> omega
     · native_decide
 
-/-- k=2 is impossible: 1/a + 1/b = 1 has no solution with distinct positive integers.
-The only solution to 1/a + 1/b = 1 with a,b > 0 is a = b = 2, but Finset elements
-are distinct, so no 2-element Finset can sum to 1. -/
+/-- **k = 2 is impossible.** There is no two-element representation
+`1 = 1/x + 1/y` with distinct positive integers. The equation `1/x + 1/y = 1`
+forces `x + y = x*y`, i.e. `(x-1)(y-1) = 1`, whose only positive-integer solution
+is `x = y = 2` — contradicting distinctness (`Finset` elements are distinct).
+Hence `HasShortIntervalRepresentation 2 width` fails for every width, confirming
+that the problem genuinely requires `k ≥ 3`. -/
+theorem no_k2_representation (width : ℕ) :
+    ¬ HasShortIntervalRepresentation 2 width := by
+  intro h
+  simp only [HasShortIntervalRepresentation, SumsToOne, IsUnitFractionSum] at h
+  obtain ⟨_a, S, hcard, _hint, hpos, hsumeq⟩ := h
+  obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.mp hcard
+  have hx : 0 < x := hpos x (by simp)
+  have hy : 0 < y := hpos y (by simp)
+  rw [Finset.sum_pair hxy] at hsumeq
+  have hx0 : (x : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hy0 : (y : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  rw [div_add_div _ _ hx0 hy0, div_eq_one_iff_eq (mul_ne_zero hx0 hy0)] at hsumeq
+  -- hsumeq : 1 * ↑y + ↑x * 1 = ↑x * ↑y
+  have key : (x : ℚ) + y = x * y := by linarith [hsumeq]
+  have hnat : x + y = x * y := by exact_mod_cast key
+  obtain ⟨x', rfl⟩ : ∃ x', x = x' + 1 := ⟨x - 1, by omega⟩
+  obtain ⟨y', rfl⟩ : ∃ y', y = y' + 1 := ⟨y - 1, by omega⟩
+  have e : (x' + 1) * (y' + 1) = x' * y' + x' + y' + 1 := by ring
+  rw [e] at hnat
+  have hprod : x' * y' = 1 := by linarith [hnat]
+  have hx'1 : x' = 1 := Nat.dvd_one.mp ⟨y', hprod.symm⟩
+  have hy'1 : y' = 1 := Nat.dvd_one.mp ⟨x', by rw [mul_comm] at hprod; exact hprod.symm⟩
+  exact hxy (by omega)
+
 /- ## The Optimal Constant -/
 
 /--

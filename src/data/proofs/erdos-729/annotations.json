@@ -73,7 +73,7 @@
   {
     "id": "erdos-729-divides",
     "proofId": "erdos-729",
-    "type": "definition",
+    "type": "theorem",
     "range": {
       "startLine": 53,
       "endLine": 55
@@ -144,7 +144,7 @@
   {
     "id": "erdos-729-small-primes",
     "proofId": "erdos-729",
-    "type": "definition",
+    "type": "theorem",
     "range": {
       "startLine": 81,
       "endLine": 83
@@ -336,23 +336,23 @@
     "proofId": "erdos-729",
     "type": "concept",
     "range": {
-      "startLine": 152,
-      "endLine": 155
+      "startLine": 166,
+      "endLine": 178
     },
-    "title": "Legendre for p = 2 (sorry)",
-    "content": "States $v_2(n!) = n - s_2(n)$ as a theorem with `sorry`. This is the special case of Legendre's identity for $p = 2$, where $p - 1 = 1$ eliminates the denominator. A proof would instantiate `legendre_identity` at $p = 2$ and simplify $(n - s_2(n))/1 = n - s_2(n)$. This is one of two remaining `sorry`s in the file.",
+    "title": "Legendre for p = 2 (proved)",
+    "content": "Proves $v_2(n!) = n - s_2(n)$ outright from Mathlib's Legendre theorem `sub_one_mul_padicValNat_factorial`, which states $(p-1)\\,v_p(n!) = n - (\\text{digits}_p\\,n).\\text{sum}$. For $p = 2$ the factor $p - 1 = 1$ collapses, giving the identity directly. The helper `digitSum_eq_digits_sum` bridges the file's recursive `digitSum 2 n` to Mathlib's `(Nat.digits 2 n).sum`. This replaced the former `legendre_identity` axiom, which has been deleted — the OQ-02 question (can `legendre_for_two` be completed via Mathlib's padicValNat machinery?) is answered yes.",
     "mathContext": "$v_2(n!) = n - s_2(n)$, the simplest case of Legendre's identity since $p - 1 = 1$",
     "significance": "supporting",
     "relatedConcepts": [
-      "legendre_identity",
+      "sub_one_mul_padicValNat_factorial",
       "binary digit sum",
-      "Nat.div_one",
-      "sorry elimination"
+      "Nat.digits",
+      "axiom discharge"
     ],
     "prerequisites": [
-      "legendre_identity axiom",
+      "sub_one_mul_padicValNat_factorial",
       "Nat.Prime 2",
-      "division by 1"
+      "Nat.digits_def'"
     ]
   },
   {

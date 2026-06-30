@@ -431,7 +431,10 @@ The results in this file together with the parent gallery entries establish:
 2. **n=7** [OQ-01]: |Gal(8X³-4X²-4X+1/ℚ)| = 3 = φ(14)/2
 3. **n=9** [Cos20Gal]: |Gal(8X³-6X-1/ℚ)| = 3 = φ(18)/2
 
-The general formula φ(2n)/2 follows from cyclotomic field theory (sorry for full proof).
+The general formula φ(2n)/2 for all n ≥ 3 is proved sorry-free from cyclotomic field
+theory in the child file `AngleTrisectionCos20GalOQ01OQ02OQ02` (theorem
+`gal_order_eq_totient_div2_general`); this file keeps the n=5 case and a tautological
+placeholder for the general statement.
 The key simplification for n=5 over n=7,9: the second root is β = 1/2 - α (Vieta's),
 avoiding the more complex algebraic identities needed for the cubic cases.
 -/

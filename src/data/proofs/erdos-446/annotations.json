@@ -16,7 +16,11 @@
       "divisor-distribution",
       "analytic-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive integers and their divisors",
+      "logarithm function",
+      "limiting behavior of sequences"
+    ]
   },
   {
     "id": "ann-e446-divisor-interval",
@@ -35,7 +39,11 @@
       "open-interval",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divides relation a | b",
+      "existential quantifier",
+      "integer intervals"
+    ]
   },
   {
     "id": "ann-e446-delta",
@@ -54,7 +62,11 @@
       "axiomatization",
       "limit"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting finite sets of integers",
+      "ratios and proportions",
+      "convergence of a limit"
+    ]
   },
   {
     "id": "ann-e446-divisor-count",
@@ -73,7 +85,11 @@
       "decomposition",
       "finset-filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinality of a finite set",
+      "filtering a set by a predicate",
+      "summation over an index"
+    ]
   },
   {
     "id": "ann-e446-alpha",
@@ -92,7 +108,11 @@
       "nested-logarithm",
       "slow-decay"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural logarithm and its values",
+      "iterated function application",
+      "real-valued numerical constants"
+    ]
   },
   {
     "id": "ann-e446-historical",
@@ -112,7 +132,11 @@
       "erdos-1960",
       "quantitative-bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limit inferior of a sequence",
+      "little-o notation",
+      "chronology of mathematical results"
+    ]
   },
   {
     "id": "ann-e446-ford-main",
@@ -131,7 +155,11 @@
       "annals-of-mathematics",
       "ford-2008"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "upper and lower bounds with constants",
+      "exponential and power functions",
+      "peer-reviewed mathematical literature"
+    ]
   },
   {
     "id": "ann-e446-ford-disproof",
@@ -150,7 +178,11 @@
       "concentration",
       "erdos-conjecture-false"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "negation of a limit statement",
+      "existential constants in inequalities",
+      "asymptotic comparison of functions"
+    ]
   },
   {
     "id": "ann-e446-prime",
@@ -169,6 +201,10 @@
       "constructive-proof",
       "omega-tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "definition of a prime number",
+      "divisors of a prime",
+      "proof by contradiction"
+    ]
   }
 ]

@@ -16,7 +16,11 @@
       "Harmonic series",
       "Unit fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Unit Fractions",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-284-egyptian",
@@ -34,7 +38,11 @@
       "Finset operations",
       "Rational arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset Operations",
+      "Rational Arithmetic",
+      "Unit Fractions"
+    ]
   },
   {
     "id": "ann-284-f",
@@ -52,7 +60,11 @@
       "Supremum in ℕ",
       "Bounded sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Supremum In Naturals",
+      "Bounded Above Sets",
+      "Egyptian Fractions"
+    ]
   },
   {
     "id": "ann-284-upper",
@@ -71,7 +83,11 @@
       "Integral approximation",
       "Euler's number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Harmonic Series",
+      "Integral Approximation",
+      "Euler's Number"
+    ]
   },
   {
     "id": "ann-284-croot",
@@ -90,7 +106,11 @@
       "Greedy algorithms",
       "Number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Constructive Existence Proofs",
+      "Harmonic Series Bounds",
+      "Distinct Denominators"
+    ]
   },
   {
     "id": "ann-284-summary",
@@ -108,6 +128,10 @@
       "Asymptotic equivalence",
       "Solved problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Equivalence",
+      "Little-o Notation",
+      "Upper And Lower Bounds"
+    ]
   }
 ]

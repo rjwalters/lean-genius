@@ -54,7 +54,10 @@
     "summary": "q-Vandermonde identity [m+n choose r]_q = ∑_k q^{k*(m+k-r)} [m choose r-k]_q [n choose k]_q proved by induction on m. Works in any CommRing. Key infrastructure: Part A exponent identity (zify+ring) and Part B ℕ subtraction alignment (omega). Fully verified: 0 axioms, 0 sorries.",
     "implications": "The q-Vandermonde identity is a fundamental identity in quantum calculus with applications to q-hypergeometric series and representation theory of quantum groups. Connects the Gaussian binomial convolution structure to classical Vandermonde via q=1 specialization.",
     "openQuestions": [
-      "Extend to the full q-Chu-Vandermonde identity with non-integer q-exponents"
+      "Extend to the full q-Chu–Vandermonde identity (the ${}_2\\phi_1$ basic hypergeometric summation) with non-integer or formal parameters, recovering this polynomial identity as the terminating special case.",
+      "Formalize the subspace-counting bijective interpretation: $[m+n \\text{ choose } r]_q$ counts $r$-dimensional subspaces of $\\mathbb{F}_q^{m+n}$, and the sum stratifies them by intersection dimension with a fixed $\\mathbb{F}_q^m$. A combinatorial Lean proof along these lines would complement the current algebraic induction.",
+      "Derive the dual/symmetric forms of the identity (swapping the roles of $m$ and $n$, or reflecting $r \\mapsto m+n-r$) and verify they are equivalent within Lean, exposing the hidden symmetry of the $q$-exponent $q^{k(m+k-r)}$.",
+      "Generalize from $q$-binomial coefficients to the elliptic / multivariate analogues (e.g. the $\\mathfrak{sl}_n$ or Macdonald-polynomial setting), where a Vandermonde-type convolution is conjectured but not yet machine-verified."
     ]
   },
   "leanFile": {

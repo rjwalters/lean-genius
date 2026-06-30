@@ -17,7 +17,11 @@
       "probabilistic-method",
       "Erdos-Spencer"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimax optimization over function spaces",
+      "two-coloring of edges of a complete graph",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-1028-definitions",
@@ -37,7 +41,11 @@
       "natAbs",
       "sSup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "functions on Fin n and finite types",
+      "ordered versus unordered pairs",
+      "integer absolute value and natural-number coercion"
+    ]
   },
   {
     "id": "ann-1028-h-function",
@@ -57,7 +65,11 @@
       "optimal-sign-function",
       "finiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infimum over a finite set attains its value",
+      "Cartesian product of finite sets is finite",
+      "csInf and le_csInf order lemmas"
+    ]
   },
   {
     "id": "ann-1028-bounds",
@@ -77,7 +89,11 @@
       "asymptotic-bounds",
       "random-signing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "expectation of a sum of independent Rademacher variables",
+      "fractional powers and monotonicity of n^{3/2}",
+      "first-moment / averaging argument"
+    ]
   },
   {
     "id": "ann-1028-main-result",
@@ -97,7 +113,11 @@
       "combining-bounds",
       "growth-rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "big-Theta two-sided asymptotic bounds",
+      "existential quantification over constants and thresholds",
+      "max of two natural-number thresholds"
+    ]
   },
   {
     "id": "ann-1028-symmetric",
@@ -117,7 +137,11 @@
       "double-counting",
       "imbalance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "splitting a double sum by index order (x<y, x>y)",
+      "complete graph adjacency representation",
+      "reindexing sums via a symmetry bijection"
+    ]
   },
   {
     "id": "ann-1028-probabilistic",
@@ -137,7 +161,11 @@
       "standard-deviation",
       "union-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "variance of sums of independent sign variables",
+      "Real.sqrt and sqrt_le_iff inequalities",
+      "union bound over subsets"
+    ]
   },
   {
     "id": "ann-1028-special-cases",
@@ -157,6 +185,10 @@
       "Ramsey-theory",
       "monochromatic-subgraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monochromatic clique edge count k(k-1)",
+      "Ramsey number growth (logarithmic monochromatic cliques)",
+      "base-case computation of small discrepancy values"
+    ]
   }
 ]

@@ -47,9 +47,9 @@
       "Edge-disjointness lower bound: edge removal requires >= |A|N edges",
       "Statement of Roth's theorem via triangle removal as alternative to Fourier proof"
     ],
-    "lineCount": 465,
-    "theoremCount": 16,
-    "definitionCount": 7,
+    "lineCount": 534,
+    "theoremCount": 18,
+    "definitionCount": 4,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -75,40 +75,41 @@
       "id": "graph-construction",
       "title": "Part I: Ruzsa-Szemerédi Graph Construction",
       "startLine": 1,
-      "endLine": 47,
-      "summary": "Defines the vertex type RSVertex = Fin 3 × ZMod N and the adjacency relation rsAdj encoding differences in A. Proves symmetry and irreflexivity, constructing the SimpleGraph. 0 sorries.",
+      "endLine": 91,
+      "summary": "Defines the vertex type RSVertex = Fin 3 × ZMod N and the adjacency relation rsAdj encoding differences in A. Proves rsAdj_symm (symmetry) and rsAdj_loopless (irreflexivity), then assembles the SimpleGraph ruzsaSzemerediGraph. 0 sorries.",
       "mathContext": "Graph $G(A)$ on $3N$ vertices: $(0,x) \\sim (1,y) \\iff y-x \\in A$, $(1,y) \\sim (2,z) \\iff z-y \\in A$, $(0,x) \\sim (2,z) \\iff \\exists a \\in A,\\; z-x = 2a$."
-    },
-    {
-      "id": "section-48",
-      "title": "Part I: Ruzsa-Szemerédi Graph Construction (continued)",
-      "startLine": 48,
-      "endLine": 94,
-      "summary": "Continuation of Part I: Ruzsa-Szemerédi Graph Construction."
     },
     {
       "id": "triangle-ap",
       "title": "Part II: Triangle ↔ 3-AP Correspondence",
-      "startLine": 95,
-      "endLine": 183,
-      "summary": "Defines APTriple structure (a,b,c ∈ A with a+b=2c). Proves triangle_yields_ap_triple (forward: triangle → AP triple) and ap_triple_yields_triangle (reverse: AP triple + base point → triangle). 0 sorries.",
+      "startLine": 92,
+      "endLine": 185,
+      "summary": "Provides the edge-extraction helpers rsAdj_xy_mem, rsAdj_yz_mem, rsAdj_xz_exists and defines the APTriple structure (a,b,c ∈ A with a+b=2c). Proves triangle_yields_ap_triple (forward: triangle → AP triple) and ap_triple_yields_triangle (reverse: AP triple + base point → triangle). 0 sorries.",
       "mathContext": "Triangle $(0,x),(1,y),(2,z)$ in $G(A)$ $\\iff$ $\\exists a,b,c \\in A$: $a = y-x$, $b = z-y$, $a+b = 2c$."
     },
     {
       "id": "edge-disjointness",
       "title": "Part III: Edge-Disjointness When AP-Free",
-      "startLine": 184,
-      "endLine": 269,
-      "summary": "Proves ap_free_forces_equal: AP-free forces a=b=c in any AP triple. Proves xy_edge_unique_triangle: each XY-edge determines a unique triangle. Proves ap_free_triangle_exists: explicit triangle construction for each a ∈ A. 0 sorries.",
+      "startLine": 186,
+      "endLine": 340,
+      "summary": "Proves ap_free_forces_equal: AP-free forces a=b=c in any AP triple. Proves xy_edge_unique_triangle, yz_edge_unique_triangle, and xz_edge_unique_triangle: each edge determines a unique triangle when AP-free (the XZ case needs N odd). Proves ap_free_triangle_exists: explicit triangle construction for each a ∈ A and base x. 0 sorries.",
       "mathContext": "AP-free $A$ $\\implies$ every triangle is $(x, x+a, x+2a)$ for unique $a \\in A$, $x \\in \\mathbb{Z}/N\\mathbb{Z}$. Each edge in exactly one triangle."
     },
     {
+      "id": "counting-lower-bound",
+      "title": "Part IV: Triangle Counting and Edge-Removal Lower Bound",
+      "startLine": 341,
+      "endLine": 430,
+      "summary": "Proves rsVertex_card (|RSVertex N| = 3N). Contains the 2 sorry'd private helpers rs_tc_ap_free_le (triangle count upper bound ≤ 6|A|N) and rs_removal_lb (edge removal lower bound |R| ≥ |A|N in the finite triangleCount/removeEdges setting). Proves ap_free_min_removal (0 sorries): using ap_free_triangle_exists and edge-disjointness, any edge set R making the graph triangle-free must hit each of the |A|·N triangles, so |R| ≥ |A|·N.",
+      "mathContext": "$|\\text{RSVertex}(N)| = 3N$. Edge-disjoint triangles $\\implies$ $|R| \\geq |A| \\cdot N$ to destroy all triangles. Open: $\\text{triangleCount} \\leq 6|A|N$ and the finite-setting removal bound."
+    },
+    {
       "id": "roth-via-trl",
-      "title": "Part IV: Roth's Theorem via Triangle Removal",
-      "startLine": 270,
-      "endLine": 465,
-      "summary": "Contains 2 sorry'd private helpers: rs_tc_ap_free_le (triangle count upper bound ≤ 6|A|N) and rs_removal_lb (edge removal lower bound |R| ≥ |A|N in finite setting). Proves ap_free_min_removal: hitting every edge-disjoint triangle requires R to intersect each (0 sorries — uses fully proved ap_free_triangle_exists). Proves roth_via_triangle_removal: full Roth theorem via TRL (0 sorries in theorem itself, but calls the 2 sorry'd helpers above). Proves roth_proofs_agree: Fourier proof implies TRL proof.",
-      "mathContext": "Edge-disjoint triangles $\\implies$ $|R| \\geq |A| \\cdot N$. Triangle removal lemma: $|R| \\leq \\delta' \\cdot 9N^2$. Contradiction for $|A| \\geq \\delta N$."
+      "title": "Part V: Roth's Theorem and Proof Equivalence",
+      "startLine": 431,
+      "endLine": 534,
+      "summary": "Proves roth_via_triangle_removal: the full Roth theorem (restricted to odd N) via the triangle removal lemma, assembling the density-vs-removal contradiction in a multi-step argument (0 sorries in the theorem body, but it calls the 2 sorry'd counting helpers). Proves roth_proofs_agree: the Fourier-analytic proof (RothTheorem.lean) implies this TRL version, certifying that the gallery's two proofs of Roth's theorem are logically consistent within the same formal system.",
+      "mathContext": "$|A| \\geq \\delta N$ (AP-free) $\\Rightarrow |R| \\geq \\delta N^2$, but TRL gives $|R| \\leq \\delta' \\cdot 9N^2$ — contradiction for $\\delta' < \\delta/9$. $\\text{Roth}_{\\text{Fourier}} \\Rightarrow \\text{Roth}_{\\text{TRL}}$."
     }
   ],
   "crossReferences": [
@@ -180,10 +181,10 @@
       "Finset"
     ],
     "namespace": "Szemeredi.Roth.TriangleRemoval",
-    "lineCount": 465,
+    "lineCount": 534,
     "axiomCount": 0,
-    "theoremCount": 16,
-    "definitionCount": 7,
+    "theoremCount": 18,
+    "definitionCount": 4,
     "path": "Proofs/RothTriangleRemoval.lean",
     "sorries": 2
   },

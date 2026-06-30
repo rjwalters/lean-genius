@@ -58,7 +58,7 @@
     "historicalContext": "Erdős posed this problem in 1971, asking a fundamental question in extremal graph theory: how far can a triangle-free graph be from bipartite? Triangle-freeness is a local property (no $K_3$), while bipartiteness is global (no odd cycles at all). The blow-up of $C_5$ — replacing each vertex of the 5-cycle with $n$ independent vertices and connecting all vertices between adjacent parts — gives a triangle-free graph on $5n$ vertices requiring exactly $n^2$ edge deletions to become bipartite.\n\nErdős conjectured that $n^2$ always suffices, which would make the $C_5$ blow-up extremal. In 1992, he generalized: for graphs on $(2k+1)n$ vertices with odd girth $\\geq 2k+1$, the blow-up of $C_{2k+1}$ should be extremal with $n^2$ deletions.\n\nThe best known upper bound is $1.064n^2$ by Balogh, Clemen, and Lidický (2021) using flag algebra computations. Earlier results by Krivelevich (1995) and others gave weaker bounds. The problem is falsifiable — a finite counterexample would disprove it — but no such counterexample has been found.",
     "problemStatement": "Can every triangle-free graph on $5n$ vertices be made bipartite by deleting at most $n^2$ edges? The blow-up of $C_5$ shows this bound would be tight if true.",
     "text": "Can every triangle-free graph on 5n vertices be made bipartite by deleting at most n² edges?",
-    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds from first principles to the conjecture statement:\n\n1. **Graph infrastructure**: Custom `Graph V` structure with `IsBipartite`, `ContainsTriangle`, `IsTriangleFree`, and `HasCycle` definitions, independent of Mathlib's `SimpleGraph` for flexibility.\n\n2. **Edge deletion**: `bipartiteEdgeDeletion G` is axiomatized as the minimum edge set whose removal makes $G$ bipartite. The property `bipartite_iff_deletion_zero` connects bipartiteness to zero deletion cost.\n\n3. **Extremal construction**: The blow-up of $C_5$ is explicitly constructed on `Fin 5 × Fin n` with adjacency inherited from the 5-cycle. Two theorems are proved: `c5_triangle_free` (by exhaustive case analysis on `Fin 5`) and `c5_blowup_triangle_free` (by projection to $C_5$).\n\n4. **Conjecture and bounds**: `ErdosConjecture23` states $\\forall G$ triangle-free on $5n$ vertices, deletion cost $\\leq n^2$. The Balogh-Clemen-Lidický bound $1.064n^2$ and Mantel's theorem are axiomatized.",
+    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds from first principles to the conjecture statement:\n\n1. **Graph infrastructure**: Custom `Graph V` structure with `IsBipartite`, `ContainsTriangle`, `IsTriangleFree`, and `HasCycle` definitions, independent of Mathlib's `SimpleGraph` for flexibility.\n\n2. **Edge deletion**: `bipartiteEdgeDeletion G` is axiomatized (an opaque $\\mathbb{N}$-valued constant) as the minimum number of edges whose removal makes $G$ bipartite. (`edgeCount` is similarly axiomatized.)\n\n3. **Extremal construction**: The blow-up of $C_5$ is explicitly constructed on `Fin 5 × Fin n` with adjacency inherited from the 5-cycle. Three theorems are proved: `c5_blowup_vertices` ($5n$ vertices), `c5_triangle_free` (by exhaustive case analysis on `Fin 5`), and `c5_blowup_triangle_free` (by projection to $C_5$).\n\n4. **Conjecture and generalization**: `ErdosConjecture23` states $\\forall G$ triangle-free on $5n$ vertices, deletion cost $\\leq n^2$ (an unproved `Prop` def). `GeneralizedConjecture k` extends this to odd girth $\\geq 2k+1$ on $(2k+1)n$ vertices. The Balogh-Clemen-Lidický $1.064n^2$ bound and Mantel's theorem are cited in the references but are NOT formalized in this file.",
     "keyInsights": [
       "**Local vs global**: Triangle-freeness (no $K_3$) is a local forbidden subgraph property, while bipartiteness (no odd cycles) is global. The problem measures the 'distance' between these properties via edge deletions, quantifying how much extra structure beyond triangle-freeness is needed for bipartiteness.",
       "**The blow-up construction**: Replacing each vertex of $C_5$ with $n$ independent vertices gives a graph on $5n$ vertices with $2n^2$ edges that is triangle-free (adjacency depends only on the $C_5$ indices) but requires exactly $n^2$ deletions. This is proved in the formalization: `c5_triangle_free` by exhaustive case analysis, `c5_blowup_triangle_free` by projection.",
@@ -96,10 +96,10 @@
     {
       "id": "edge-deletion",
       "title": "Edge Deletion and Bipartiteness",
-      "summary": "bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero",
+      "summary": "bipartiteEdgeDeletion axiom: minimum number of edges to delete to make a graph bipartite",
       "startLine": 87,
       "endLine": 101,
-      "mathContext": "Axiomatized: bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero"
+      "mathContext": "Axiomatized: bipartiteEdgeDeletion (an opaque ℕ-valued constant for the minimum number of edges whose removal makes the graph bipartite)"
     },
     {
       "id": "c5-construction",
@@ -120,10 +120,10 @@
     {
       "id": "best-bounds",
       "title": "Best Known Bounds",
-      "summary": "Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound",
+      "summary": "Commentary header for the best known bound (Balogh-Clemen-Lidický 1.064n²); documented, not formalized",
       "startLine": 171,
       "endLine": 187,
-      "mathContext": "Bound: Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound"
+      "mathContext": "Documentation-only section: the best known bound 1.064n² (Balogh-Clemen-Lidický 2021) is recorded in the references but not formalized in Lean."
     },
     {
       "id": "generalized-conjecture",

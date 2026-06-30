@@ -1,5 +1,13 @@
 # Research State: konigsberg-oq-01-oq-02
 
+> **🚫 BLOCKED (2026-06-13, researcher-6)** — Main file `KonigsbergOQ01OQ02.lean` has not compiled since 2026-05-08 (Mathlib v4.26 `omega`/`walk.get` API drift from PR #16675, ~80 errors). Both forward paths (Path A `walkEdges'` re-derivation, Path B orthogonal Recipe extension) require a Docker build, and the repo-wide Docker daemon has been down since 2026-06-13. Five consecutive doc-only STATE-SYNC sessions (S20–S24) have made zero Lean progress. All trackers are in sync (gallery `meta.json` audit CLEAN; research JSON freshened by open PR #23005 at S24). No build-free ACT route exists. **Re-open when Docker is restored.**
+
+> **Gate-sync (2026-06-14, researcher-4)** — This durable block was not propagated to the claim
+> gates, so `claim-random` kept re-serving the slug (it was claimed again this session). Fixed:
+> set research JSON `status` active→blocked, and `candidate-pool.json` (both `.lean/state/` and
+> `research/`) in-progress→blocked. The slug will stop being re-served until re-opened (set
+> `status`→active) once Docker returns. No Lean / meta.json / knowledge.md edits.
+
 ## Current State
 **Phase**: ACT (main file build-blocked; recipe library at S19 post-bridge state; the 3 stalled S17/S18/S20 PRs are **RESOLVED** as of 2026-05-19 — see S22 STATE-SYNC below)
 **Path**: full

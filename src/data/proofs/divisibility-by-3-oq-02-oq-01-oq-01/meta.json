@@ -1,0 +1,273 @@
+{
+  "id": "divisibility-by-3-oq-02-oq-01-oq-01",
+  "slug": "divisibility-by-3-oq-02-oq-01-oq-01",
+  "title": "The Unified Weighted-Digit Divisibility Framework for General Moduli",
+  "description": "Answers the first open question of OQ-02-OQ-01 verbatim: unify the (b−1) digit-sum rule and the (b+1) alternating-sum rule into one weighted-digit framework valid for every modulus m. For any base b, modulus m, and integer representative c with b ≡ c (mod m), n ≡ ofDigits c (digits b n) = Σ dᵢ·cⁱ (mod m); the weights are cⁱ (over ℤ) or the powers (b : ZMod m)ⁱ (over ZMod m), which — because ZMod m is finite — form a periodic weight table. The two parent rules are the cases c = 1 (weights all 1) and c = −1 (weights alternating); supplying other representatives yields the genuinely new general-modulus tests Mathlib lacks: divisibility by 7 (base-10 weights 1,3,2,6,4,5 of period 6), by 13 (period 6), and the last-k-digits rules for 4 and 8 (weights that vanish). Built on Mathlib's Nat.zmodeq_ofDigits_digits and Nat.dvd_iff_dvd_ofDigits, promoted from b ± 1 to arbitrary moduli.",
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Nat"],
+    "namespace": "DivisibilityBy3OQ02OQ01OQ01",
+    "lineCount": 243,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "modEq_ofDigits_repr",
+        "type": "original",
+        "description": "Master congruence: for any modulus m and representative c of the base (b ≡ c mod m), n ≡ ofDigits c (digits b n) (mod m). The c = ±1 cases are the parent digit-sum / alternating-sum rules.",
+        "leanType": "(m b : ℕ) → (c : ℤ) → (b : ℤ) ≡ c [ZMOD m] → (n : ℕ) → (n : ℤ) ≡ Nat.ofDigits c (Nat.digits b n) [ZMOD m]"
+      },
+      {
+        "name": "dvd_iff_dvd_ofDigits_repr",
+        "type": "original",
+        "description": "Master divisibility rule for an arbitrary modulus m: m ∣ n ↔ (m : ℤ) ∣ ofDigits c (digits b n), given m ∣ b − c.",
+        "leanType": "(m b : ℕ) → (c : ℤ) → (m : ℤ) ∣ (b : ℤ) - c → (n : ℕ) → m ∣ n ↔ (m : ℤ) ∣ Nat.ofDigits c (Nat.digits b n)"
+      },
+      {
+        "name": "natCast_eq_ofDigits_zmod",
+        "type": "original",
+        "description": "ZMod m master form: the residue of n is the weighted digit value whose weight on digit i is the power (b : ZMod m)ⁱ; finiteness of ZMod m makes the weight table periodic.",
+        "leanType": "(m b n : ℕ) → (n : ZMod m) = Nat.ofDigits (b : ZMod m) (Nat.digits b n)"
+      },
+      {
+        "name": "seven_dvd_iff",
+        "type": "original",
+        "description": "New general-modulus instance absent from Mathlib: 7 ∣ n ↔ 7 ∣ Σ dᵢ·3ⁱ in base 10, with period-6 weight cycle 1,3,2,6,4,5.",
+        "leanType": "(n : ℕ) → 7 ∣ n ↔ (7 : ℤ) ∣ Nat.ofDigits (3 : ℤ) (Nat.digits 10 n)"
+      },
+      {
+        "name": "four_dvd_iff",
+        "type": "original",
+        "description": "New last-two-digits rule: 4 ∣ n ↔ 4 ∣ d₀ + 2 d₁, because the weights 2ⁱ mod 4 = 1,2,0,0,… vanish past the first two digits.",
+        "leanType": "(n : ℕ) → 4 ∣ n ↔ (4 : ℤ) ∣ Nat.ofDigits (2 : ℤ) (Nat.digits 10 n)"
+      },
+      {
+        "name": "modEq_altDigitSum",
+        "type": "application",
+        "description": "Recovers the parent OQ-02-OQ-01 alternating-sum rule as the c = −1 instance of the master congruence.",
+        "leanType": "(b n : ℕ) → (n : ℤ) ≡ ((Nat.digits b n).map (Nat.cast : ℕ → ℤ)).alternatingSum [ZMOD (b + 1 : ℕ)]"
+      },
+      {
+        "name": "modEq_digitSum",
+        "type": "application",
+        "description": "Recovers the grandparent OQ-02 digit-sum rule as the c = 1 instance of the master congruence.",
+        "leanType": "(b n : ℕ) → 2 ≤ b → (n : ℤ) ≡ ((Nat.digits b n).map (Nat.cast : ℕ → ℤ)).sum [ZMOD (b - 1 : ℕ)]"
+      }
+    ],
+    "path": "Proofs/DivisibilityBy3OQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Unified weighted-digit divisibility framework (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_rule",
+    "date": "Ancient",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "divisibility",
+      "digit-sums",
+      "research",
+      "open-problem"
+    ],
+    "proofRepoPath": "Proofs/DivisibilityBy3OQ02OQ01OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "prerequisites": [
+      "modular arithmetic",
+      "positional notation / digit representation",
+      "ZMod and finite rings"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.zmodeq_ofDigits_digits",
+        "description": "n ≡ ofDigits c (digits b' n) [ZMOD b] when (b' : ℤ) ≡ c [ZMOD b]",
+        "module": "Mathlib.Data.Nat.Digits.Lemmas"
+      },
+      {
+        "theorem": "Nat.dvd_iff_dvd_ofDigits",
+        "description": "b ∣ n ↔ (b : ℤ) ∣ ofDigits c (digits b' n) when (b : ℤ) ∣ (b' : ℤ) − c",
+        "module": "Mathlib.Data.Nat.Digits.Div"
+      },
+      {
+        "theorem": "Nat.ofDigits_digits",
+        "description": "ofDigits b (digits b n) = n, the exactness of positional notation",
+        "module": "Mathlib.Data.Nat.Digits.Defs"
+      },
+      {
+        "theorem": "Nat.ofDigits_eq_foldr",
+        "description": "ofDigits over a semiring base as a Horner foldr — used to push casts and prove the general-ring cons unfolding",
+        "module": "Mathlib.Data.Nat.Digits.Lemmas"
+      },
+      {
+        "theorem": "Nat.ofDigits_neg_one",
+        "description": "ofDigits (−1) L = (L.map (↑·)).alternatingSum, collapsing the c = −1 case",
+        "module": "Mathlib.Data.Nat.Digits.Lemmas"
+      },
+      {
+        "theorem": "Nat.ofDigits_one",
+        "description": "ofDigits 1 L = L.sum, collapsing the c = 1 case to the plain digit sum",
+        "module": "Mathlib.Data.Nat.Digits.Defs"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(n : ZMod m) = 0 ↔ m ∣ n, turning the ZMod weighted value into a divisibility test",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "modEq_ofDigits_repr: the master weighted-digit congruence n ≡ ofDigits c (digits b n) (mod m) for an arbitrary modulus m and any representative c of the base, unifying the b−1 (c=1) and b+1 (c=−1) rules as two instances",
+      "dvd_iff_dvd_ofDigits_repr: the master divisibility rule for arbitrary modulus, promoting Mathlib's transfer lemma from b ± 1 to every m",
+      "natCast_eq_ofDigits_zmod: the ZMod m form exhibiting the weights as the powers (b : ZMod m)ⁱ, with the finite weight table",
+      "cast_ofDigits: ofDigits commutes with ℕ → R for any commutative ring R (the cast-pushforward underpinning the ZMod form); ofDigits_cons_ring: the Horner unfolding for a general-ring base, absent from Mathlib (which states ofDigits_cons only for ℕ bases)",
+      "New general-modulus divisibility tests absent from Mathlib: seven_dvd_iff (base 10, period-6 weights 1,3,2,6,4,5), thirteen_dvd_iff (period 6), four_dvd_iff and eight_dvd_iff (last-two- / last-three-digit rules from vanishing weights)",
+      "weight_period_seven / weight_period_thirteen / weight_vanish_four / weight_vanish_eight: concrete periodic and vanishing weight tables, the algebraic reason each test works",
+      "Recovers the parent (b+1 alternating, modEq_altDigitSum) and grandparent (b−1 digit sum, modEq_digitSum) rules as corollaries of the single master theorem"
+    ],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 243,
+    "theoremCount": 19,
+    "definitionCount": 0,
+    "relatedProblems": [
+      {
+        "id": "divisibility-by-3-oq-02-oq-01",
+        "relationship": "Parent: OQ-02-OQ-01 proves the (b+1) alternating-sum rule and asks (openQuestion #1, verbatim) whether the two rules unify into a single weighted-digit framework for arbitrary moduli m (e.g. divisibility by 7 in base 10, where 10 has order 6). This file answers it."
+      },
+      {
+        "id": "divisibility-by-3-oq-02",
+        "relationship": "Grandparent: proves the (b−1) digit-sum rule, recovered here as the c = 1 instance."
+      }
+    ],
+    "assumptions": "0 axioms, 0 sorries, no native_decide. The framework is derived from Mathlib's generic Nat.zmodeq_ofDigits_digits and Nat.dvd_iff_dvd_ofDigits (which Mathlib applies only to b ± 1) together with the cast-pushforward cast_ofDigits proved here. All numerical checks evaluate Nat.digits by simp and Nat.ofDigits over ℤ by decide (kernel reduction), so no result depends on Lean.ofReduceBool — every named theorem depends solely on propext/Classical.choice/Quot.sound. The weight-table lemmas use decide (not native_decide) on small ZMod computations.",
+    "mathlib_version": "4.26.0",
+    "relatedProblemsCount": 2
+  },
+  "overview": {
+    "historicalContext": "Classical divisibility tests come in families keyed to the residue of the base. Casting out nines (10 ≡ 1 mod 9) and the divisibility-by-11 alternating-sum test (10 ≡ −1 mod 11) are the two extreme cases b ≡ ±1; the parent proofs OQ-02 and OQ-02-OQ-01 formalize exactly these for arbitrary base b. But the same positional-notation identity n = Σ dᵢ bⁱ supports a test for every modulus m: reduce each power bⁱ modulo m and weight digit i by bⁱ mod m. Over ℤ this is ofDigits evaluated at a representative c ≡ b (mod m); over ZMod m the weights are literally the powers (b : ZMod m)ⁱ, which cycle because ZMod m is finite. This file promotes the b ± 1 machinery to that universal weighted-digit framework, recovering both parents and producing the general-modulus tests (by 7, 13, 4, 8) the special cases cannot reach.",
+    "problemStatement": "**The Unified Weighted-Digit Divisibility Framework:**\n\nFor every base $b$, modulus $m$, and integer $c$ with $b \\equiv c \\pmod m$, writing the base-$b$ digits of $n$ as $d_0, d_1, d_2, \\dots$,\n$$n \\equiv \\sum_i d_i\\, c^i = \\operatorname{ofDigits} c\\,(\\operatorname{digits} b\\, n) \\pmod m,$$\nhence\n$$m \\mid n \\iff m \\mid \\sum_i d_i\\, c^i.$$\nOver $\\mathbb{Z}/m$ the weights are the powers $(b \\bmod m)^i$, which form a periodic table. Taking $c = 1$ (modulus $b-1$) gives the digit-sum rule; $c = -1$ (modulus $b+1$) gives the alternating-sum rule; $m = 7, c = 3$ in base 10 gives the period-6 divisibility-by-7 test; $m = 4, c = 2$ gives the last-two-digits rule.",
+    "text": "A 243-line, 0-axiom formalization answering the first open question of OQ-02-OQ-01 verbatim. The crux is that positional notation n = ofDigits b (digits b n) is a ring polynomial in the base, so reducing the base modulo m reduces n to a weighted digit value. The master congruence modEq_ofDigits_repr is one application of Mathlib's Nat.zmodeq_ofDigits_digits at an arbitrary modulus; the master divisibility rule dvd_iff_dvd_ofDigits_repr similarly promotes Nat.dvd_iff_dvd_ofDigits. The ZMod m form natCast_eq_ofDigits_zmod is obtained from ofDigits_digits via the cast-pushforward lemma cast_ofDigits (proved here for every commutative ring), and exhibits the weights as the powers (b : ZMod m)ⁱ. Both parents fall out as instances: c = −1 with Nat.ofDigits_neg_one gives the alternating-sum rule modEq_altDigitSum (the parent's main theorem), and c = 1 with Nat.ofDigits_one gives the digit-sum rule modEq_digitSum (the grandparent's). The genuinely new content — unreachable from b ± 1 — is the general-modulus family: seven_dvd_iff and thirteen_dvd_iff (period-6 weight cycles, which Mathlib does not provide), and four_dvd_iff / eight_dvd_iff, the last-k-digit rules whose weights 2ⁱ vanish modulo 4 and 8 (weight_vanish_four: (10:ZMod 4)²=0; weight_vanish_eight: (10:ZMod 8)³=0). Six numerical checks (1001 = 7·11·13 by both the 7- and 13-tests; 1234 ∤ 7; 124, 1000, 123 against the 4- and 8-tests) evaluate the digits by simp and the weighted sums by decide, keeping the whole development free of native_decide and of Lean.ofReduceBool.",
+    "proofStrategy": "Everything factors through positional notation. Mathlib's Nat.zmodeq_ofDigits_digits says: if b ≡ c (mod m) then n ≡ ofDigits c (digits b n) (mod m). The parent proofs instantiated this only at the two residues c = ±1; the unification simply leaves m and c free, giving modEq_ofDigits_repr, and packages the divisibility form via Nat.dvd_iff_dvd_ofDigits. For the ZMod m view, cast n = ofDigits b (digits b n) into ZMod m using cast_ofDigits (proved by induction on the digit list through ofDigits_eq_foldr), so the residue becomes ofDigits (b : ZMod m) (digits b n) with weights (b : ZMod m)ⁱ. The parent and grandparent rules are recovered by collapsing c = −1 and c = 1 with Nat.ofDigits_neg_one and Nat.ofDigits_one; the new tests by 7, 13, 4, 8 are read off by supplying the appropriate representative and a one-line divisibility side-condition.",
+    "keyInsights": [
+      "Both classical digit tests are the residues c = ±1 of one master congruence n ≡ Σ dᵢ cⁱ (mod m); leaving the modulus and representative free is the entire unification",
+      "Over ZMod m the weight on digit i is exactly the power (b : ZMod m)ⁱ, so the weight table is periodic — the algebraic reason every modulus gets a finite, repeating test",
+      "Divisibility by 7 in base 10 uses weights 1,3,2,6,4,5 of period 6 (the order of 10 mod 7); divisibility by 13 likewise has period 6 — neither is in Mathlib",
+      "Last-k-digit rules (by 4, 8, 25, …) are the case where the base is nilpotent mod m: the weights bⁱ vanish past the k-th digit, e.g. (10 : ZMod 4)² = 0",
+      "The whole framework needs no native_decide: digit lists reduce by simp and weighted sums over ℤ by decide, so no named theorem trusts the compiler's kernel reduction"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "positional notation / digit representation",
+      "ZMod and finite rings"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and the ofDigits Cast Lemmas",
+      "startLine": 1,
+      "endLine": 92,
+      "summary": "Documents the unification table (b−1, b+1, 7, 13, 4, 8) and proves the two ring-cast helpers: cast_ofDigits (ofDigits commutes with ℕ → R for any commutative ring R) and ofDigits_cons_ring (the Horner unfolding d + base·rest for a general-ring base).",
+      "mathContext": "ofDigits is a ring polynomial in the base; casting it into R or ZMod m yields the weighted digit value with weights (base)ⁱ in R."
+    },
+    {
+      "id": "master-congruence",
+      "title": "Part I — The Master Congruence (any modulus, any representative)",
+      "startLine": 93,
+      "endLine": 116,
+      "summary": "Proves modEq_ofDigits_repr: n ≡ ofDigits c (digits b n) (mod m) whenever b ≡ c (mod m), and modEq_ofDigits_emod, the canonical small-representative form c = b % m.",
+      "mathContext": "The single statement that specializes to every classical digit test by choosing (m, c)."
+    },
+    {
+      "id": "master-divisibility",
+      "title": "Part II — The Master Divisibility Rule",
+      "startLine": 117,
+      "endLine": 130,
+      "summary": "Proves dvd_iff_dvd_ofDigits_repr: m ∣ n ↔ (m : ℤ) ∣ ofDigits c (digits b n), promoting Mathlib's Nat.dvd_iff_dvd_ofDigits from b ± 1 to an arbitrary modulus.",
+      "mathContext": "The divisibility form of the framework, valid for every modulus."
+    },
+    {
+      "id": "zmod-form",
+      "title": "Part III — The ZMod m Form: Weights Are the Powers (b : ZMod m)ⁱ",
+      "startLine": 131,
+      "endLine": 150,
+      "summary": "Proves natCast_eq_ofDigits_zmod (residue of n as the ZMod m weighted digit value) and dvd_iff_ofDigits_zmod (m ∣ n ↔ value = 0), exhibiting the weights as powers of the base in the finite ring ZMod m.",
+      "mathContext": "Finiteness of ZMod m forces the weight powers to cycle, giving each modulus a periodic weight table."
+    },
+    {
+      "id": "recover",
+      "title": "Part IV — Recovering the Digit-Sum and Alternating-Sum Rules",
+      "startLine": 151,
+      "endLine": 185,
+      "summary": "Proves ofDigits_one_int (base-1 weighted value = integer digit sum), then modEq_digitSum (c = 1, modulus b−1: the grandparent rule) and modEq_altDigitSum (c = −1, modulus b+1: the parent rule).",
+      "mathContext": "The two parent theorems are the extreme residues b ≡ ±1 of the master congruence."
+    },
+    {
+      "id": "new-instances",
+      "title": "Part V — New General-Modulus Instances",
+      "startLine": 186,
+      "endLine": 224,
+      "summary": "Derives tests Mathlib does not provide: seven_dvd_iff (base-10 weights 1,3,2,6,4,5, period 6), thirteen_dvd_iff (period 6), four_dvd_iff and eight_dvd_iff (last-two- and last-three-digit rules from vanishing weights), and recovers nine_dvd_iff.",
+      "mathContext": "Supplying a representative c with m ∣ 10 − c instantiates the framework at any modulus, reaching tests beyond b ± 1."
+    },
+    {
+      "id": "weight-tables",
+      "title": "Part VI — Periodic Weight Tables",
+      "startLine": 225,
+      "endLine": 240,
+      "summary": "weight_period_seven ((10:ZMod 7)⁶=1), weight_period_thirteen ((10:ZMod 13)⁶=1), weight_vanish_four ((10:ZMod 4)²=0), weight_vanish_eight ((10:ZMod 8)³=0) — all by decide, the algebraic justification for each test's period or prefix length.",
+      "mathContext": "The order of the base in (ZMod m)ˣ is the period of the weight cycle; a nilpotent base gives a last-k-digit rule."
+    },
+    {
+      "id": "verifications",
+      "title": "Part VII — Numerical Verifications (no native_decide)",
+      "startLine": 241,
+      "endLine": 243,
+      "summary": "Six checks: 1001 against the 7- and 13-tests, 1234 ∤ 7, 124 against the 4-test, 1000 and 123 against the 8-test. Digits evaluate by simp, weighted sums over ℤ by decide — no native_decide anywhere.",
+      "mathContext": "Concrete arithmetic confirming the abstract framework on numbers the reader can verify by hand."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete 0-axiom, 0-sorry, native_decide-free formalization answering OQ-02-OQ-01's first open question: the (b−1) digit-sum rule and the (b+1) alternating-sum rule are two residues of one master weighted-digit congruence n ≡ Σ dᵢ cⁱ (mod m) valid for every modulus m. Over ZMod m the weights are the powers (b mod m)ⁱ, forming a periodic table; supplying any representative recovers both parents and yields the general-modulus tests (by 7, 13, 4, 8) the special cases cannot reach.",
+    "implications": "Every modulus m now carries a digit-based divisibility test, not just b ± 1: choose any representative c of the base mod m and weight digit i by cⁱ. The period of the weight cycle is the order of the base in (ZMod m)ˣ, and a base that is nilpotent mod m (e.g. 10 mod 4, 8, 25) gives a last-k-digit rule. This subsumes casting out nines, the elevens test, and the classical period-6 divisibility-by-7 and -13 rules under one Lean theorem.",
+    "openQuestions": [
+      "Can the period of the weight table be packaged as a theorem — for b coprime to m, weights repeat with period orderOf (b : ZMod m), giving a finite canonical weight vector for each (b, m)?",
+      "For composite m = ∏ pᵢ^{eᵢ}, does the weighted-digit test factor through the CRT decomposition, so that a single pass over the digits simultaneously decides divisibility by every prime-power factor?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-by-3-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Answers OQ-02-OQ-01's first open question verbatim: unifies its (b+1) alternating-sum rule with the (b−1) digit-sum rule into one weighted-digit framework for arbitrary moduli, recovering both as the c = ±1 instances."
+    },
+    {
+      "targetId": "divisibility-by-3-oq-02",
+      "relationship": "extends",
+      "description": "OQ-02 proves the (b−1) digit-sum rule via b ≡ 1 (mod b−1); recovered here as the c = 1 instance of the master congruence (modEq_digitSum)."
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "The root proof formalizes the base-10 divisibility-by-3 rule (10 ≡ 1 mod 3); this generalizes digit-based tests to every modulus and representative."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed.",
+      "note": "Standard reference for positional notation and digit-based divisibility tests, including the period-6 weighted tests for 7 and 13"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems (Theorem #85: Divisibility by 11)",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The base-10 alternating-sum test for 11, the c = −1 instance of the framework"
+    }
+  ],
+  "sorries": []
+}

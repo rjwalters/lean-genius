@@ -65,13 +65,13 @@ The needle's position is characterized by two parameters:
 Both parameters are uniformly distributed and independent.
 -/
 
-/-- The length of the needle -/
+-- The length of the needle
 variable (ℓ : ℝ) (hℓ : 0 < ℓ)
 
-/-- The spacing between parallel lines -/
+-- The spacing between parallel lines
 variable (d : ℝ) (hd : 0 < d)
 
-/-- The needle is shorter than the line spacing (short needle case) -/
+-- The needle is shorter than the line spacing (short needle case)
 variable (hℓd : ℓ ≤ d)
 
 /-! ## Part II: The Crossing Condition
@@ -112,13 +112,12 @@ theorem sampleSpace_area : (d / 2) * π = π * d / 2 := by ring
 
 /-- The integral of sin over [0, π] equals 2 -/
 theorem integral_sin_zero_pi : ∫ θ in (0 : ℝ)..π, sin θ = 2 := by
-  rw [integral_sin]
-  simp [cos_zero, cos_pi]
+  rw [integral_sin, cos_zero, cos_pi]
+  norm_num
 
 /-- The area of the crossing region is ℓ -/
 theorem crossingRegion_area : ∫ θ in (0 : ℝ)..π, (ℓ / 2) * sin θ = ℓ := by
-  rw [integral_const_mul]
-  rw [integral_sin_zero_pi]
+  rw [intervalIntegral.integral_const_mul, integral_sin_zero_pi]
   ring
 
 /-! ## Part IV: The Main Theorem
@@ -143,14 +142,12 @@ Therefore P = ℓ / (πd/2) = 2ℓ/(πd)
 theorem buffon_needle_probability :
     ℓ / (π * d / 2) = 2 * ℓ / (π * d) := by
   field_simp
-  ring
 
 /-- The crossing probability in simplified form -/
 theorem buffon_needle_probability' (hπ : π ≠ 0) (hd' : d ≠ 0) :
     (∫ θ in (0 : ℝ)..π, (ℓ / 2) * sin θ) / ((d / 2) * π) = 2 * ℓ / (π * d) := by
   rw [crossingRegion_area ℓ]
   field_simp
-  ring
 
 /-! ## Part V: Connection to π Estimation
 
@@ -172,20 +169,15 @@ almost two centuries.
 theorem pi_from_crossing_probability (p : ℝ) (hp : 0 < p)
     (h_buffon : p = 2 * ℓ / (π * d)) :
     π = 2 * ℓ / (p * d) := by
-  have hπd : π * d ≠ 0 := by
-    apply mul_ne_zero
-    · exact pi_ne_zero
-    · linarith
+  have hπ : (π : ℝ) ≠ 0 := pi_ne_zero
+  have hp0 : p ≠ 0 := hp.ne'
+  -- `d ≠ 0`: otherwise `h_buffon` forces `p = 0`, contradicting `0 < p`.
+  have hd0 : d ≠ 0 := by
+    rintro rfl; rw [mul_zero, div_zero] at h_buffon; exact hp0 h_buffon
   have h1 : p * (π * d) = 2 * ℓ := by
-    rw [h_buffon]
-    field_simp
-    ring
-  have hpd : p * d ≠ 0 := by
-    apply mul_ne_zero
-    · linarith
-    · linarith
-  field_simp at h1 ⊢
-  linarith
+    rw [h_buffon]; field_simp
+  rw [eq_div_iff (mul_ne_zero hp0 hd0)]
+  linear_combination h1
 
 /-! ## Part VI: Numerical Examples
 
@@ -193,18 +185,14 @@ Let's verify the formula with some concrete examples.
 -/
 
 /-- When ℓ = d (needle length equals line spacing), P = 2/π ≈ 0.6366 -/
-theorem buffon_equal_length (h : ℓ = d) (hπ : π ≠ 0) :
+theorem buffon_equal_length (h : ℓ = d) (hπ : π ≠ 0) (hd' : d ≠ 0) :
     2 * ℓ / (π * d) = 2 / π := by
-  rw [h]
-  field_simp
-  ring
+  rw [h, div_eq_div_iff (mul_ne_zero hπ hd') hπ]; ring
 
 /-- When ℓ = d/2 (needle half the spacing), P = 1/π ≈ 0.3183 -/
 theorem buffon_half_length (h : ℓ = d / 2) (hπ : π ≠ 0) (hd' : d ≠ 0) :
     2 * ℓ / (π * d) = 1 / π := by
-  rw [h]
-  field_simp
-  ring
+  rw [h, div_eq_div_iff (mul_ne_zero hπ hd') hπ]; ring
 
 /-! ## Part VII: The Long Needle Case
 

@@ -82,49 +82,57 @@
       "id": "lattice-os-data",
       "title": "Lattice OS Data — The Reconstruction Input",
       "summary": "Defines LatticeSite4D, LatticeSchwingerFunction (symmetric, diagonal-nonneg), and LatticeOSData encoding all five OS axioms: reflection positivity (OS2), clustering (OS5), and growth bounds (OS3). Each axiom is a named field with its mathematical content.",
-      "startLine": 55,
-      "endLine": 122,
+      "startLine": 54,
+      "endLine": 114,
       "mathContext": "LatticeOSData(L) packages the Euclidean data needed for OS reconstruction. OS2 (reflection_positive): $\\sum_{x,y} f(x) S_2(x,y) f(y) \\geq 0$ for $f$ supported in positive time half-space. OS5 (clustering): $S_2(x,y) \\to 0$ as $|x-y|_{\\text{time}} \\to \\infty$. OS3 (growth_bound): $|S_2(x,y)| \\leq C e^{\\mu|x-y|}$."
     },
     {
       "id": "transfer-matrix",
       "title": "Transfer Matrix and Reflection Positivity",
       "summary": "OSTransferMatrix extends TransferMatrix with positive eigenvalues (from OS2) and vacuum normalization. Proves: Hamiltonian H = -ln(T)/a ≥ 0, vacuum energy = 0 when λ₀ = 1, spectral mass gap Δ = -ln(λ₁/λ₀)/a > 0 when λ₁ < λ₀, and that the correlation length ξ = 1/Δlog is positive.",
-      "startLine": 123,
-      "endLine": 194,
+      "startLine": 115,
+      "endLine": 200,
       "mathContext": "OS2 ↔ T positive semi-definite. Mass gap: $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a > 0$ when $\\lambda_1 < \\lambda_0$. Correlation length $\\xi = 1/(-\\ln(\\lambda_1/\\lambda_0))$. Reciprocal relation: $\\Delta \\cdot \\xi \\cdot a = 1$."
     },
     {
       "id": "os-reconstruction",
       "title": "OS Reconstruction Theorem",
       "summary": "Axiomatizes the GNS construction (os_reconstruction) and mass gap transfer (os_mass_gap_transfer). Proves: lattice_mass_gap_to_wightman (lattice OS data + exponential decay → hasSomeMassGap) and lattice_mass_gap_le (downward closure of the mass gap set).",
-      "startLine": 195,
-      "endLine": 280,
+      "startLine": 201,
+      "endLine": 264,
       "mathContext": "os_reconstruction: LatticeOSData L → WightmanQFT (GNS construction, requires functional analysis). Key theorem: $\\forall$ LatticeOSData with Schwinger decay $|S_2| \\leq S_2(0) e^{-\\Delta t}$, the reconstructed QFT has hasMassGap $\\Delta$."
     },
     {
       "id": "2d-case",
       "title": "2D Yang-Mills — Reflection Positivity Proved",
-      "summary": "MigdalData structure with positive coupling, Casimir, representation dimension. Defines stringTension = g²C₂/(2 dim R) > 0. Proves migdalS2 is positive, antitone, and satisfies exponential decay. Computes SU(2) string tension = 3g²/16. Shows 2D Euclidean mass gap condition holds with Δ = σ.",
-      "startLine": 281,
-      "endLine": 375,
+      "summary": "MigdalData structure with positive coupling, Casimir, representation dimension. Defines stringTension = g²C₂/(2 dim R) > 0. Proves migdalS2 is positive, antitone, and satisfies exponential decay. Computes string tensions for SU(2) fundamental (3g²/16), SU(2) adjoint, and general SU(N) fundamental representations, plus the Migdal correlation length. Shows 2D Euclidean mass gap condition holds with Δ = σ.",
+      "startLine": 265,
+      "endLine": 442,
       "mathContext": "$S_2(t) = d_R e^{-\\sigma_R t}$ with $\\sigma_R = g^2 C_2/(2 d_R) > 0$. SU(2): $d_R = 2$, $C_2 = 3/4$, $\\sigma = 3g^2/16$. All proofs use only Mathlib (no axioms): positivity from exp_pos, decay from mul_le_mul_of_nonpos_left."
     },
     {
       "id": "millennium-problem",
       "title": "The Millennium Problem — Precise Lean Statement",
       "summary": "LatticeEuclideanMassGap structure (OS data + exponential decay certificate). euclidean_mass_gap_to_wightman: Euclidean mass gap → Wightman mass gap. YangMillsContinuumLimitProblem: precise Lean Prop for the Clay problem. millennium_implies_os_formulation: the 4D problem implies a finite-lattice Wightman QFT exists.",
-      "startLine": 376,
-      "endLine": 430,
+      "startLine": 443,
+      "endLine": 503,
       "mathContext": "YangMillsContinuumLimitProblem G 𝔤 = ∃ Δ∞ > 0, ∀ L ≥ 2, ∃ data : LatticeOSData L, ∃ mg : LatticeEuclideanMassGap L data, Δ∞ ≤ mg.gap. This captures uniform existence of mass gap in large-volume lattice limit."
     },
     {
       "id": "continuum-infrastructure",
       "title": "Continuum Limit Infrastructure",
       "summary": "continuum_limit_eigenvalue_ratio: as a→0 with fixed Δ, the eigenvalue ratio exp(-Δa) < 1 approaches 1. larger_gap_larger_mass: larger spectral separation → larger mass gap. coarser_lattice_gap_bound: monotonicity of mass gap with respect to OS data refinement.",
-      "startLine": 431,
-      "endLine": 465,
+      "startLine": 504,
+      "endLine": 552,
       "mathContext": "Continuum limit condition: $a \\cdot \\Delta < 1$ implies $e^{-\\Delta a} \\in (0,1)$. As $a \\to 0$: eigenvalue ratio $\\to 1$ (gapless lattice), but physical mass gap $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$ remains finite (renormalization group running)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "A narrative recap of the proof chain: OS transfer matrix positivity → Hamiltonian H ≥ 0, spectral gap → mass gap, lattice OS data with exponential decay → Wightman QFT with mass gap, the 2D Yang-Mills exponential decay and SU(2) string tension, the Millennium Problem as a Lean Prop, and the continuum-limit monotonicity results.",
+      "startLine": 553,
+      "endLine": 579,
+      "mathContext": "Proof chain: reflection positivity ⇒ $H \\ge 0$; spectral gap ⇒ $\\Delta > 0$; OS reconstruction ⇒ Wightman QFT; 2D case fully proven; 4D remains the Clay problem."
     }
   ],
   "conclusion": {

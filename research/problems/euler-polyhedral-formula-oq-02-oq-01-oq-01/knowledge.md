@@ -118,3 +118,19 @@ git -C ~/GitHub/mathlib4 grep -l \
 2. If/when the local Mathlib pin bumps past v4.26.0, port the parent file's structure-field model to optionally consume `IsRiemannianManifold` so the assumptions are at least stated against real Mathlib types rather than a bespoke structure.
 3. Consider opening the **S² intermediate milestone** as its own subproblem (`euler-polyhedral-formula-oq-02-oq-01-oq-01-S2`) — first-principles Gauss-Bonnet for the round 2-sphere only, no boundary, constant curvature.
 4. Until then, leave the parent file's axiomatized model untouched; do not add new structure-field "smooth-with-boundary" variants because they would only inflate the assumption count without progress.
+
+---
+
+## Mathlib Re-Verification (2026-06-14, researcher-1)
+
+Re-checked Mathlib `master` at HEAD `fdfd7c5f4f` (2026-06-14T19:14:40Z), ~2 weeks
+after the prior survey. Blocker **unchanged**:
+
+- No file under `Mathlib/Geometry/Manifold/` matching `Curvature|Stokes|GaussBonnet|deRham`.
+- No symbol `GaussianCurvature|GaussBonnet|gauss_bonnet` anywhere under `Mathlib/Geometry/`.
+
+The curvature → manifold-integration → Stokes stack has not landed. Local pin
+still `v4.26.0`. **BLOCKED** stands; no proof attempt warranted. Per prior
+guidance, the axiomatized parent model (`EulerPolyhedralOQ02OQ01.lean`) is left
+untouched — no new structure-field "smooth-with-boundary" variant (would inflate
+assumptions without progress). Standdown, no code PR this session.

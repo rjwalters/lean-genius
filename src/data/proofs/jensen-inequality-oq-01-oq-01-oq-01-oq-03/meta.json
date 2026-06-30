@@ -1,0 +1,114 @@
+{
+  "id": "jensen-inequality-oq-01-oq-01-oq-01-oq-03",
+  "title": "Sharpness of the Generalized Minkowski Inequality: Homogeneity, Definiteness, and Saturation on a Common Ray",
+  "slug": "jensen-inequality-oq-01-oq-01-oq-01-oq-03",
+  "description": "Records when the finite-family Minkowski inequality (proved in the sibling entry) is sharp, together with the structural facts that make the discrete ℓᵖ norm ‖g‖_p = (∑ᵢ g(i)ᵖ)^{1/p} a seminorm: positive homogeneity ‖c·g‖_p = c·‖g‖_p for c ≥ 0, definiteness ‖g‖_p = 0 ↔ g vanishes on the coordinate set, and saturation on a common ray — if every vector of a finite family is a nonnegative multiple F_j = c_j·h of a single direction h, then the Minkowski inequality holds with equality, ‖∑_j F_j‖_p = ∑_j ‖F_j‖_p, for every p > 0. The saturation result is the easy half of the equality case of Minkowski's inequality: it exhibits the extremal (collinear) configurations on which the ℓᵖ triangle inequality is tight. Mathlib provides neither the elementary closed-form homogeneity/definiteness of this discrete ℓᵖ norm nor the saturation characterization; this file supplies them, self-contained.",
+  "meta": {
+    "author": "Lean Genius (sharpness/saturation of finite-family Minkowski); H. Minkowski (1896)",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/JensenInequalityOQ01OQ01OQ01OQ03.lean",
+    "tags": [
+      "analysis",
+      "convexity",
+      "minkowski-inequality",
+      "lp-spaces",
+      "equality-case",
+      "triangle-inequality",
+      "inequalities",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-22",
+    "lineCount": 95,
+    "originalContributions": [
+      "minkowski_finset_eq_of_common_ray: the saturation case of the finite-family Minkowski inequality — if F_j = c_j·h for a common nonnegative direction h and nonnegative scalars c_j, then ‖∑_j F_j‖_p = ∑_j ‖F_j‖_p with equality, for every p > 0. This pins the extremal (collinear) configurations of the ℓᵖ triangle inequality, the easy half of its equality case; absent from Mathlib.",
+      "Lpnorm_smul: positive homogeneity of the discrete ℓᵖ norm, ‖c·g‖_p = c·‖g‖_p for c ≥ 0 and p > 0, via Real.mul_rpow, Finset.mul_sum, and the telescoping identity (c^p)^{1/p} = c.",
+      "Lpnorm_eq_zero_iff: definiteness of the discrete ℓᵖ norm, ‖g‖_p = 0 ↔ g vanishes everywhere on the coordinate set, for p > 0 and nonnegative g."
+    ],
+    "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide. Self-contained, importing only Mathlib (Real.mul_rpow, Real.rpow_eq_zero_iff_of_nonneg, and the rpow library); does not depend on any other gallery file (the discrete ℓᵖ norm is re-declared in its own namespace).",
+    "theoremCount": 3,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "jensen-inequality-oq-01-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "The sibling entry proves the finite-family Minkowski inequality ‖∑_j F_j‖_p ≤ ∑_j ‖F_j‖_p. This entry records when that inequality is sharp — equality on a common ray F_j = c_j·h — together with the homogeneity and definiteness of the same discrete ℓᵖ norm, completing the Minkowski story for finite families."
+    },
+    {
+      "targetId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Cousin of the generalized n-fold Hölder entry: where that entry generalizes Hölder to finite families, this entry supplies the sharpness/equality structure for the dual Minkowski inequality, both built on the same AM–GM / rpow toolkit."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Minkowski's inequality (H. Minkowski, 1896) makes the Lᵖ-norm a genuine norm for 1 ≤ p. Beyond the inequality itself, the structurally informative content is its equality case: the triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p is tight exactly when f and g are proportional (collinear). The forward, easy half — that proportional vectors saturate the bound — holds for every p > 0 and is a direct consequence of the positive homogeneity of the norm; the converse requires strict convexity of t ↦ tᵖ and p > 1. This entry formalizes the homogeneity and definiteness of the discrete ℓᵖ norm and the saturation of the finite-family Minkowski inequality on a common ray.",
+    "problemStatement": "Establish the seminorm structure of the discrete ℓᵖ norm ‖g‖_p = (∑ᵢ g(i)ᵖ)^{1/p} — positive homogeneity ‖c·g‖_p = c·‖g‖_p (c ≥ 0) and definiteness ‖g‖_p = 0 ↔ g ≡ 0 — and prove that the finite-family Minkowski inequality saturates on a common ray: if F_j = c_j·h (c_j ≥ 0, h ≥ 0), then ‖∑_j F_j‖_p = ∑_j ‖F_j‖_p for every p > 0.",
+    "proofStrategy": "Positive homogeneity Lpnorm_smul: in (∑ᵢ (c·g(i))ᵖ)^{1/p}, factor each summand (c·g(i))ᵖ = cᵖ·g(i)ᵖ (Real.mul_rpow), pull cᵖ through the sum (Finset.mul_sum), split the outer 1/p power (Real.mul_rpow again), and collapse (cᵖ)^{1/p} = c via the telescoping identity (a ≥ 0, p ≠ 0). Saturation minkowski_finset_eq_of_common_ray: when F_j = c_j·h, the inner sum ∑_j c_j·h(i) = (∑_j c_j)·h(i) (Finset.sum_mul), so the left side is ‖(∑_j c_j)·h‖_p = (∑_j c_j)·‖h‖_p by homogeneity; the right side is ∑_j ‖c_j·h‖_p = ∑_j c_j·‖h‖_p = (∑_j c_j)·‖h‖_p, again by homogeneity and Finset.sum_mul — both sides coincide with no inequality required. Definiteness Lpnorm_eq_zero_iff: the outer power is zero iff the sum is (Real.rpow_eq_zero_iff_of_nonneg, 1/p ≠ 0), the sum of nonnegatives is zero iff each term is (Finset.sum_eq_zero_iff_of_nonneg), and each g(i)ᵖ is zero iff g(i) is (rpow_eq_zero_iff again, p ≠ 0).",
+    "keyInsights": [
+      "Saturation needs no inequality at all: collinearity F_j = c_j·h collapses both sides of Minkowski to (∑_j c_j)·‖h‖_p purely by positive homogeneity, so the triangle inequality is an identity on rays.",
+      "Positive homogeneity is the single workhorse: it drives the saturation result and is the elementary content distinguishing a norm from an arbitrary functional; its proof is the same (cᵖ)^{1/p} = c telescoping used throughout the Young–Hölder family.",
+      "The saturation result is only the forward half of the equality case; the converse — equality forces proportionality — genuinely needs p > 1 and the strict convexity of t ↦ tᵖ, and is recorded as the leading open question.",
+      "Definiteness is a clean two-level rpow_eq_zero argument, exhibiting that the discrete ℓᵖ norm separates points (it vanishes only on the zero vector), the last seminorm axiom needed alongside homogeneity and subadditivity.",
+      "Together with the sibling subadditivity entry, homogeneity and definiteness assemble all three seminorm/norm axioms for the discrete ℓᵖ norm in elementary closed form."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Frames the goal — the sharpness (saturation) of the finite-family Minkowski inequality and the seminorm structure (homogeneity, definiteness) of the discrete ℓᵖ norm — and notes these are gaps in Mathlib's elementary API.",
+      "mathContext": "For $F_j = c_j\\cdot h$ ($c_j\\ge0$, $h\\ge0$): $\\|\\sum_j F_j\\|_p = \\sum_j \\|F_j\\|_p$ for every $p>0$, via homogeneity $\\|c\\cdot g\\|_p = c\\|g\\|_p$."
+    },
+    {
+      "id": "homogeneity",
+      "title": "Positive homogeneity of the discrete ℓᵖ norm",
+      "startLine": 49,
+      "endLine": 72,
+      "summary": "rpow_pow_inv: the telescoping (aᵖ)^{1/p} = a. Lpnorm_smul: ‖c·g‖_p = c·‖g‖_p for c ≥ 0 — factor cᵖ out of each summand (Real.mul_rpow), pull through the sum, split the outer power, telescope (cᵖ)^{1/p} = c.",
+      "mathContext": "$\\|c\\cdot g\\|_p = \\big(\\sum_i (c\\,g(i))^p\\big)^{1/p} = \\big(c^p\\sum_i g(i)^p\\big)^{1/p} = (c^p)^{1/p}\\,\\|g\\|_p = c\\,\\|g\\|_p$."
+    },
+    {
+      "id": "definiteness",
+      "title": "Definiteness of the discrete ℓᵖ norm",
+      "startLine": 74,
+      "endLine": 85,
+      "summary": "Lpnorm_eq_zero_iff: ‖g‖_p = 0 ↔ g vanishes on s — two rpow_eq_zero_iff_of_nonneg steps (outer 1/p power, inner p-th powers) bridged by Finset.sum_eq_zero_iff_of_nonneg, using p ≠ 0 at both ends.",
+      "mathContext": "$\\|g\\|_p = 0 \\iff \\sum_i g(i)^p = 0 \\iff \\forall i\\in s,\\ g(i)^p = 0 \\iff \\forall i\\in s,\\ g(i) = 0$ (for $p>0$, $g\\ge0$)."
+    },
+    {
+      "id": "saturation",
+      "title": "Saturation of Minkowski on a common ray",
+      "startLine": 87,
+      "endLine": 95,
+      "summary": "minkowski_finset_eq_of_common_ray: for F_j = c_j·h, the inner sum is (∑_j c_j)·h (Finset.sum_mul); both sides of Minkowski reduce to (∑_j c_j)·‖h‖_p by homogeneity, so equality holds — for every p > 0.",
+      "mathContext": "$\\|\\textstyle\\sum_j c_j\\,h\\|_p = \\|(\\sum_j c_j)\\,h\\|_p = (\\sum_j c_j)\\|h\\|_p = \\sum_j c_j\\|h\\|_p = \\sum_j \\|c_j\\,h\\|_p$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This fully verified 95-line file (0 sorries, 0 axioms, no native_decide) establishes the positive homogeneity and definiteness of the discrete ℓᵖ norm and the saturation case of the finite-family Minkowski inequality: equality holds on a common ray F_j = c_j·h for every p > 0. The saturation proof needs no inequality — collinearity collapses both sides to (∑_j c_j)·‖h‖_p by homogeneity. None of these elementary closed-form facts are in Mathlib.",
+    "implications": "Together with the sibling subadditivity entry, this assembles all three seminorm/norm axioms for the discrete ℓᵖ norm — homogeneity, definiteness, and the triangle inequality — in elementary form, and pins the extremal configurations of the ℓᵖ triangle inequality. The saturation-on-rays result is the forward half of the Minkowski equality case and the natural foundation for the converse rigidity statement.",
+    "openQuestions": [
+      "Prove the converse: for p > 1, equality in the finite-family Minkowski inequality forces the nonzero vectors to be pairwise proportional, via the strict convexity of t ↦ tᵖ or the equality case of Hölder's inequality.",
+      "Assemble homogeneity, definiteness, and subadditivity into an explicit seminorm or NormedAddCommGroup instance for the discrete ℓᵖ norm on functions supported on a finite set.",
+      "Transport the saturation characterization from finite sums to the Lᵖ / integral setting and to ℝ≥0∞-valued functions."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 95,
+    "axiomCount": 0,
+    "path": "Proofs/JensenInequalityOQ01OQ01OQ01OQ03.lean",
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 3,
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0
+}

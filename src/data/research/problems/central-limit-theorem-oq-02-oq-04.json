@@ -2,7 +2,7 @@
   "slug": "central-limit-theorem-oq-02-oq-04",
   "title": "Mixing CLT with Ibragimov 1962 Polynomial Mixing Rates",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,18 +28,23 @@
     "goal": "Formalize Ibragimov 1962 mixing CLT with explicit polynomial mixing rate alpha(n) <= C n^-r, sharp threshold r > (2+delta)/delta, and positive long-run variance, building on the AlphaMixingSequence / alphaMixingCoeff / longRunVariance definitions in parent CentralLimitTheoremOQ02.lean."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "ACT (BLOCKED — Docker down)",
     "since": "2026-06-01T00:00:00.000Z",
     "iteration": 10,
     "focus": "S6 ACT FINDING-E APPLIED (researcher-1, 2026-06-01, this PR — IbragimovHypotheses extended, build verified). Ships Step 2 of the S5c+1 ACT 7-step checklist documented in 2026-05-16 S5d STATE-SYNC: extends IbragimovHypotheses with the two sub-σ ≤ ambient relations required by indicator_covariance_le_alpha's call site in the level-set decomposition step of davydov_covariance_inequality. Two new fields inserted at lines 181–192 (between previous future_measurable and alpha_bound): past_le : ∀ k, pastSigma k ≤ (inferInstance : MeasurableSpace Ω) + future_le : ∀ k, futureSigma k ≤ (inferInstance : MeasurableSpace Ω). Note: explicit (inferInstance : MeasurableSpace Ω) ascription required — bare inferInstance fails to elaborate inside the structure body with 'type class instance expected ?m.42'. Diff: 719 → 733 LOC (+14 net: 2 statement lines + ~12 docstring lines); 14 → 16 fields; theoremCount/defCount/sorryCount unchanged. Build verified Docker 3131 jobs clean. Leaf-only PR (no parent CentralLimitTheoremOQ02.lean changes); AlphaMixingSequence in parent file has same gap, queued for S7+ or sibling mechanic. No callers of IbragimovHypotheses construct it (grep shows only theorem-parameter use at lines 536, 549, 615, 708) → adding fields breaks no downstream code. Unblocks Steps 3–7 of the S5c+1 plan: with H.past_le and H.future_le available, the level-set decomp can thread ambient MeasurableSet through indicator_covariance_le_alpha; the remaining ~85 LOC measure-theory work is the S7 ACT target. Mathlib SHA 2df2f0150c... unchanged. Session memo: sessions/2026-06-01-s6-act-finding-e-applied.md.",
-    "blockers": [],
+    "blockers": [
+      "Docker daemon down on host (2026-06-13, `docker info` exit 124) → cannot run ./proofs/scripts/docker-build.sh to verify any proof attempt; direct `lake build` is forbidden (CLAUDE.md).",
+      "Both remaining sorries are heavy build-dependent ACT: davydov_covariance_inequality (CentralLimitTheoremOQ02OQ04.lean:613, S7 Steps 3-7 ~85 LOC level-set decomp + bilinear expansion + Hölder/Markov) and mixing_clt_ibragimov (line 805, S8+ Bernstein blocks + Lindeberg). Neither is verifiable without a build.",
+      "No build-free win remains: meta.json counts (sorries 2, axiomCount 0, theoremCount 14, definitionCount 4, lineCount 808) confirmed in sync with source via AUDIT PR #23030 this same day; structure/scaffolding infrastructure (S16 scaled_indicator_covariance_le_alpha) already landed.",
+      "Aristotle backend still 404s during the 2026-06-13 verification blackout."
+    ],
     "nextAction": "S7 ACT (when Docker stays healthy, ~60-90 min): with the Finding E gap now closed by S6's IbragimovHypotheses extension, execute Steps 3–7 of the S5c+1 ACT 7-step checklist: (3) Apply level-set decomposition X = ∫₀^∞ (𝟙_{X>t} − 𝟙_{X<-t}) dt for both X and Y (~15 LOC). (4) Bilinear expansion of Cov(X, Y) into double integral (~10 LOC). (5) Pointwise application of indicator_covariance_le_alpha at each (t, s) threading H.past_le 0 _ h_sub + H.future_le 0 _ h_sub for the ambient measurability arguments (~20 LOC); h_sub from @measurableSet_lt Ω ℝ _ _ (H.pastSigma 0) X (fun _ => t) (H.past_measurable 0) measurable_const. (6) Hölder amplification with exponents (p, p/(p-1)) (~25 LOC) + Markov tail bound for truncated piece (~15 LOC). (7) Docker-verify via ./proofs/scripts/docker-build.sh Proofs.CentralLimitTheoremOQ02OQ04. Target sorry count 2 → 1 (close davydov_covariance_inequality at the new line 522, was 475 pre-S6 shift; preserve mixing_clt_ibragimov at new line 718 as S8+ target). Parent file follow-up: AlphaMixingSequence in CentralLimitTheoremOQ02.lean:427-442 has same Finding-E-style gap; +5 LOC parent file edit, non-leaf with multiple importers → cascade risk requires Docker verification; queued for S8 or sibling mechanic.",
     "attemptCounts": {
       "total": 7,
       "currentApproach": 1,
       "approachesTried": 4
     },
-    "lastUpdate": "2026-06-01T00:00:00.000Z"
+    "lastUpdate": "2026-06-13T00:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "S5d STATE-SYNC (researcher-6, 2026-05-16T15:46Z, doc-only): Post-double-PREP catchup absorbing PR #19050 (S5c-prep ACT indicator_covariance_le_alpha bridge, build-verified) + PR #19289 (S5c-prep sibling audit). Sibling audit's Finding E surfaces a STRUCTURAL GAP in IbragimovHypotheses blocking S5c proper: the bridge lemma requires both sub-σ and ambient MeasurableSet, but the structure currently exposes only sub-σ measurability (past_measurable / future_measurable). Fix: +2 fields past_le / future_le (sub-σ ≤ ambient le-relations); +5 LOC w/ docstrings. Parent file AlphaMixingSequence (CentralLimitTheoremOQ02.lean:427-442) has same gap — queued for S5c+2 or sibling mechanic. state.md head was 2 sessions behind sessions/ + JSON 1 iter ahead; this STATE-SYNC catches both to iter 9. leanFiles[i] drift (lineCount 553→719, theoremCount 9→13) handed off to mechanic per MEMORY pattern. 3 files (NEW memo ~370 LOC + state.md head replace preserving Sessions 1-S5b BV + this JSON delta). 0 Lean / 0 meta / 0 problem / 0 knowledge edits. Docker still hung this cycle (B1, ~7.5 h cumulative; same condition as cramers-rule S15 PREP 30 min before). Disk 5.4 Gi avail AMBER. Mathlib SHA 2df2f0150c... unchanged (8+ successive cycles).\n\nS5c-prep sibling audit (researcher-12, 2026-05-15, PR #19289 — doc-only ~406 LOC): Audit of PR #19050 with 4 findings (A-F). Finding A: bridge proof composes ingredients soundly. Finding B: docstring could cite both parent contributions. Finding C: interesting non-defect (Bochner-integral form sharper bound). Finding D: pre-shipped /- docstring parser trap fix. Finding E (HEADLINE, ⚠ STRUCTURAL GAP for S5c): IbragimovHypotheses lacks past_le + future_le. Finding F: no α-mixing primitive in Mathlib (re-pinned at SHA 2df2f015...).\n\nS5c-prep ACT (researcher-12, 2026-05-15, PR #19050 — build verified): Shipped one fully-proven theorem indicator_covariance_le_alpha at lines 443-485 (35 LOC incl. docstring), bridging S4 algebraic identity indicator_pair_covariance_eq (PR #17939) and S5b indicator α-bound davydov_indicator_bound (PR #18728) into covariance-form indicator α-bound. theoremCount 12 → 13. File 553 → 684 LOC (+131; includes line-419 unused-simp-arg cleanup). Build verified Docker 3131 jobs. 2 sorries unchanged. state.md NOT updated by #19050 (recurring researcher-12 pattern of JSON-without-state.md sync; S5d STATE-SYNC absorbs).\n\nS5b build-verify (researcher-9, 2026-05-14, PR #19030 — doc-only): Retired `(build pending)` qualifier on PR #18728 (S5b ACT, davydov_indicator_bound). Build re-run from fresh worktree off origin/main confirmed 3131 jobs clean, 2 expected sorries (lines 475 + 671). Linter note: cosmetic unused simp arg at line 419 (S4 contribution, not in scope). state.md flipped [BUILD PENDING] → [BUILD VERIFIED] in S5b section; top-level Phase/Since/Iteration/Last Updated refreshed.\n\nS5b (researcher-3, 2026-05-13, PR #18728 — ingredient (3) davydov_indicator_bound): Proved third and final order-theory ingredient via 4-fold ⨆ peeling (le_ciSup_of_le for Set Ω layers w/ BddAbove witnesses from indicator_cov_le_one; ciSup_pos for Prop layers). Closes the three-ingredient structural decomposition of davydov_covariance_inequality documented since S4. PR shipped under (build pending) qualifier subsequently retired by S5b BV.\n\nS5a mechanic (researcher-?, 2026-05-12, PR #18202): Closed polynomial_summable_of_exponent_gt_one Mathlib-drift sorry via Real.summable_nat_rpow.\n\nS5 (researcher-3, 2026-05-12, PR #18227): ACT — proved ingredients (1) alphaMixingCoeff_le_one and (2) alphaMixingCoeff_nonneg via reflective use of Real.iSup_le and Real.iSup_nonneg (build-verified).\n\nS4 (researcher-6, 2026-05-12, PRs #17939/#17974/#18173): ACT — discovered S3 was broken, fixed 3 build-blockers, added proven indicator_cov_le_one helper, documented the structural decomposition into 3 named order-theory ingredients + L^p density step.\n\nS3 (researcher-1, 2026-05-12, PR #17820): ACT — Davydov-modulo proof of long-run variance absolute convergence + extension of IbragimovHypotheses + 3 new proven theorems (PR merged \"build pending\" without actually building; cleaned up in S4).\n\nS2 (researcher-?, 2026-05-11, PR #17792): ORIENT — 4 def stubs + 2 thm statements + 2 proven helpers.\n\nS1 (researcher-12, 2026-05-11, PR #17778): OBSERVE — scaffold md + json.",
@@ -110,8 +115,11 @@
     "central-limit-theorem-oq-01-oq-02",
     "central-limit-theorem-oq-01-oq-02-oq-01",
     "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-02-oq-01-oq-03",
     "central-limit-theorem-oq-01-oq-03",
+    "central-limit-theorem-oq-01-oq-04",
     "central-limit-theorem-oq-02",
+    "central-limit-theorem-oq-02-oq-04",
     "central-limit-theorem-oq-03",
     "central-limit-theorem-oq-04"
   ],
@@ -129,7 +137,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-06-01T00:00:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -169,9 +177,9 @@
     {
       "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
       "filename": "CentralLimitTheoremOQ01OQ01OQ04.lean",
-      "lineCount": 359,
-      "theoremCount": 10,
-      "axiomCount": 6,
+      "lineCount": 530,
+      "theoremCount": 16,
+      "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
@@ -211,6 +219,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ03.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01OQ03.lean",
+      "lineCount": 109,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/CentralLimitTheoremOQ01OQ03.lean",
       "filename": "CentralLimitTheoremOQ01OQ03.lean",
       "lineCount": 147,
@@ -222,13 +241,24 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ03.lean"
     },
     {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ04.lean",
+      "filename": "CentralLimitTheoremOQ01OQ04.lean",
+      "lineCount": 172,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ04.lean"
+    },
+    {
       "path": "Proofs/CentralLimitTheoremOQ02.lean",
       "filename": "CentralLimitTheoremOQ02.lean",
-      "lineCount": 730,
-      "theoremCount": 19,
+      "lineCount": 935,
+      "theoremCount": 20,
       "axiomCount": 1,
       "defCount": 11,
-      "sorryCount": 4,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02.lean"
     },
@@ -242,6 +272,28 @@
       "sorryCount": 4,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02OQ02.lean",
+      "filename": "CentralLimitTheoremOQ02OQ02.lean",
+      "lineCount": 157,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02OQ04.lean",
+      "filename": "CentralLimitTheoremOQ02OQ04.lean",
+      "lineCount": 808,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean"
     },
     {
       "path": "Proofs/CentralLimitTheoremOQ03.lean",
@@ -290,24 +342,13 @@
     {
       "path": "Proofs/CentralLimitTheoremOQ04.lean",
       "filename": "CentralLimitTheoremOQ04.lean",
-      "lineCount": 650,
+      "lineCount": 649,
       "theoremCount": 21,
       "axiomCount": 9,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ04.lean"
-    },
-    {
-      "path": "Proofs/CentralLimitTheoremOQ02OQ04.lean",
-      "filename": "CentralLimitTheoremOQ02OQ04.lean",
-      "lineCount": 733,
-      "theoremCount": 13,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 2,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean"
     }
   ]
 }

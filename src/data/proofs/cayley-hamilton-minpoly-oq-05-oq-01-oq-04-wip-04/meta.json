@@ -166,11 +166,6 @@
       "description": "WIP03 proved the single prime power case (minpoly = p^e). WIP04 reuses its `pow_irred_dvd_of_annihilated` lemma and lifts the result to arbitrary k pairwise-coprime prime power factors via CRT projections."
     },
     {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
-      "relationship": "extends",
-      "description": "WIP02 proved the squarefree case (k pairwise coprime irreducible factors, all exponents 1). WIP04 generalizes by allowing arbitrary exponents, using the prime power divisibility induction on top of the same CRT projection scheme."
-    },
-    {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
       "relationship": "related",
       "description": "Grandparent: nonderogatory cyclic vector for infinite fields (proved via union avoidance). WIP04 covers any field including small finite fields where union avoidance fails."

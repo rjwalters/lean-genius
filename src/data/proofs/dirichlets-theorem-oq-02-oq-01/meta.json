@@ -80,53 +80,88 @@
   },
   "sections": [
     {
-      "id": "grh-definition",
-      "title": "GRH Definitions and Equivalences",
+      "id": "header",
+      "title": "File Overview",
       "startLine": 1,
-      "endLine": 120,
-      "summary": "GRH_for_character, GRH, GRH_right_half definitions. GRH ↔ GRH_right_half proved via functional equation."
+      "endLine": 53,
+      "summary": "GRH for Dirichlet L-functions: what is axiomatized vs proved, imports, options, and namespace setup"
+    },
+    {
+      "id": "grh-definition",
+      "title": "The Generalized Riemann Hypothesis",
+      "startLine": 54,
+      "endLine": 114,
+      "summary": "Critical strip/line, GRH_for_character, GRH, GRH_right_half; GRH ↔ GRH_right_half proved via the functional-equation symmetry axiom"
     },
     {
       "id": "zero-free-regions",
       "title": "Zero-Free Regions Under GRH",
-      "startLine": 121,
-      "endLine": 160,
-      "summary": "GRH_zero_free_region, GRH_real_zero_free proved. Classical zero-free region axiomized for comparison."
+      "startLine": 115,
+      "endLine": 155,
+      "summary": "GRH_zero_free_region and GRH_real_zero_free proved; classical unconditional zero-free region axiomatized; GRH shown to improve it"
     },
     {
       "id": "pnt-aps",
       "title": "Improved PNT for Arithmetic Progressions",
-      "startLine": 161,
+      "startLine": 156,
       "endLine": 206,
-      "summary": "Siegel-Walfisz (unconditional) and GRH PNT for APs axiomized. Error term comparison."
+      "summary": "Prime-counting function for APs (primeCountAP) and a proof that the GRH error term √x·log x is sublinear for x > e⁴"
     },
     {
       "id": "least-prime",
       "title": "Least Prime in Arithmetic Progressions",
       "startLine": 207,
-      "endLine": 260,
-      "summary": "Linnik (unconditional, O(q^L)) and GRH improvement (O(q² log² q)) axiomized. Improvement proved."
+      "endLine": 235,
+      "summary": "Proof that the GRH least-prime bound q²(log q)² beats Linnik's q⁵ for large q"
     },
     {
       "id": "character-sums",
-      "title": "Character Sum Improvements",
-      "startLine": 261,
-      "endLine": 300,
-      "summary": "Pólya-Vinogradov and Montgomery-Vaughan GRH improvement axiomized."
+      "title": "Character Sum Improvements Under GRH",
+      "startLine": 236,
+      "endLine": 247,
+      "summary": "Character-sum improvement log log q ≤ log q for q ≥ 3, underlying the GRH Pólya–Vinogradov gain"
     },
     {
       "id": "siegel-zeros",
       "title": "GRH Eliminates Siegel Zeros",
-      "startLine": 301,
-      "endLine": 360,
-      "summary": "GRH_no_siegel_zeros, GRH_L_nonzero_right_of_half proved. Connection to OQ01."
+      "startLine": 248,
+      "endLine": 279,
+      "summary": "GRH_no_siegel_zeros and GRH_L_nonzero_right_of_half proved (with Euler-product axiom for Re > 1); connects to OQ01"
     },
     {
-      "id": "class-numbers",
-      "title": "Class Numbers Under GRH",
-      "startLine": 361,
+      "id": "effective-l-one",
+      "title": "Effective Lower Bounds on L(1, χ)",
+      "startLine": 280,
+      "endLine": 300,
+      "summary": "Effective lower bound on L(1,χ) under GRH (axiom) and the proved positivity GRH_L_one_pos"
+    },
+    {
+      "id": "quadratic-characters",
+      "title": "Quadratic Characters and Class Numbers",
+      "startLine": 301,
+      "endLine": 308,
+      "summary": "Definition of quadratic Dirichlet characters (IsQuadratic) for the class-number specialization"
+    },
+    {
+      "id": "equivalent-formulations",
+      "title": "Equivalent Formulations of GRH",
+      "startLine": 309,
+      "endLine": 328,
+      "summary": "GRH via the log-derivative formulation and GRH_equivalences bundling the proved equivalences"
+    },
+    {
+      "id": "open-question",
+      "title": "Computational Evidence and the Open Question",
+      "startLine": 329,
+      "endLine": 343,
+      "summary": "The open question DirichletGRH_OpenQuestion and a summary of GRH's key implications"
+    },
+    {
+      "id": "dirichlet-nonvanishing",
+      "title": "GRH implies Dirichlet's Nonvanishing",
+      "startLine": 344,
       "endLine": 366,
-      "summary": "GRH class number bound and unconditional Goldfeld-Gross-Zagier bound axiomized."
+      "summary": "GRH implies Dirichlet's nonvanishing L(1,χ) ≠ 0 and the proved GRH consequence chain"
     }
   ],
   "conclusion": {

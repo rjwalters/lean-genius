@@ -81,82 +81,98 @@
     {
       "id": "imports-header",
       "title": "Imports and Problem Statement",
-      "summary": "Problem description and Lean header; imports `Nat.primeFactors` for $\\omega(n)$, `ArithmeticFunction` for multiplicative function framework, `Real.log` for $\\log\\log n$",
+      "summary": "Module header, imports, and the statement of Erdős #452",
       "startLine": 1,
       "endLine": 33,
-      "mathContext": "Problem description and Lean header; imports `Nat.primeFactors` for $\\omega(n)$, `ArithmeticFunction` for multiplicative function framework, `Real.log` for $\\log\\$\\log n$$"
+      "mathContext": "ω(n)=# distinct prime factors; question on intervals in [x,2x] where ω(n) > log log n."
     },
     {
       "id": "definitions",
-      "title": "Core Definitions",
-      "summary": "Defines $\\omega(n) = |n.\\text{primeFactors}|$, `satisfiesCondition` ($\\omega(n) > \\log\\log n$), `validInterval` ($[a,b] \\subseteq [x,2x]$ with universal condition), `intervalLength`",
+      "title": "Part 1: Basic Definitions",
+      "summary": "ω(n), the condition ω(n) > log log n, and valid intervals",
       "startLine": 34,
       "endLine": 57,
-      "mathContext": "Defines $\\omega(n) = |n.\\text{primeFactors}|$, `satisfiesCondition` ($\\omega(n) > \\log\\$\\log n$$), `validInterval` ($[a,b] \\subseteq [x,2x]$ with universal condition), `intervalLength`"
+      "mathContext": "omega n; satisfiesCondition: ω(n) > log log n; validInterval ⊆ [x,2x]; intervalLength."
     },
     {
       "id": "hardy-ramanujan",
-      "title": "Hardy–Ramanujan and Erdős Density",
-      "summary": "Axiomatizes Hardy–Ramanujan ($|\\omega(n) - \\log\\log n| < \\varepsilon \\cdot \\log\\log n$ eventually) and Erdős 1937 density ($\\frac{|\\{n \\leq x : \\omega(n) > \\log\\log n\\}|}{x} \\to \\frac{1}{2}$)",
+      "title": "Part 2: Hardy–Ramanujan and Erdős–Kac",
+      "summary": "Normal order of ω(n) and Erdős's 1937 density-1/2 result",
       "startLine": 58,
-      "endLine": 73,
-      "mathContext": "Axiomatizes Hardy–Ramanujan ($|\\omega(n) - \\log\\log n| < \\varepsilon \\cdot \\log\\log n$ eventually) and Erdős 1937 density ($\\frac{|\\{n \\leq x : \\omega(n) > \\log\\log n\\}|}{x} \\to \\frac{1}{2}$)"
+      "endLine": 68,
+      "mathContext": "erdos_1937_density (axiom): density of {n : ω(n) > log log n} is exactly 1/2."
     },
     {
       "id": "crt-bound",
-      "title": "Lower Bound via Chinese Remainder Theorem",
-      "summary": "Axiomatizes CRT construction: $\\exists [a,b] \\subseteq [x,2x]$ valid with $|I| \\geq (1 - o(1))\\frac{\\log x}{(\\log\\log x)^2}$; also `crt_construction_idea` that $P_k \\mid n \\Rightarrow \\omega(n) \\geq k$",
-      "startLine": 74,
-      "endLine": 89,
-      "mathContext": "Axiomatizes CRT construction: $\\exists [a,b] \\subseteq [x,2x]$ valid with $|I| \\geq (1 - o(1))\\frac{\\log x}{(\\log\\log x)^2}$; also `crt_construction_idea` that $P_k \\mid n \\Rightarrow \\omega(n) \\geq k$"
+      "title": "Part 3: Lower Bound via Chinese Remainder Theorem",
+      "summary": "CRT construction of valid intervals (exposition)",
+      "startLine": 69,
+      "endLine": 74,
+      "mathContext": "CRT yields valid intervals; the quantitative bound is stated later as known_lower_bound."
     },
     {
       "id": "main-question",
-      "title": "The Main Question and Conjecture",
-      "summary": "Axiomatizes `maxValidIntervalLength(x)`, the known lower bound, and the open conjecture that $(\\log x)^k$-length intervals exist for any $k$",
-      "startLine": 90,
-      "endLine": 107,
-      "mathContext": "Axiomatized: Axiomatizes `maxValidIntervalLength(x)`, the known lower bound, and the open conjecture that $(\\log x)^k$-length intervals exist for any $k$"
+      "title": "Part 4: The Main Question",
+      "summary": "Maximum length of a valid interval (axiomatized)",
+      "startLine": 75,
+      "endLine": 83,
+      "mathContext": "maxValidIntervalLength x (axiom): the quantity whose growth rate is the open problem."
     },
     {
       "id": "upper-bounds",
-      "title": "Upper Bounds: Prime Obstruction",
-      "summary": "Axiomatizes: primes $p > 16$ fail the condition ($\\omega(p) = 1 < \\log\\log p$ since $e^e \\approx 15.15$), so valid intervals cannot contain primes, connecting to prime gap theory",
-      "startLine": 108,
-      "endLine": 126,
-      "mathContext": "Axiomatized: Axiomatizes: primes $p > 16$ fail the condition ($\\omega(p) = 1 < \\log\\log p$ since $e^e \\approx 15.15$), so valid intervals cannot contain primes, connecting to prime gap theory"
+      "title": "Part 5: Upper Bounds",
+      "summary": "Prime obstruction limiting valid-interval length",
+      "startLine": 84,
+      "endLine": 93,
+      "mathContext": "prime_gap_constraint: for x≥16 some prime p∈[x,2x] fails the condition, capping interval length."
     },
     {
       "id": "primorial",
-      "title": "Primorial Connection",
-      "summary": "Defines $n\\# = \\prod_{p \\leq n, p \\text{ prime}} p$; axiomatizes $\\omega(n\\#) = \\pi(n)$ and $n\\# \\mid k \\Rightarrow \\omega(k) \\geq \\omega(n\\#)$",
-      "startLine": 127,
-      "endLine": 144,
-      "mathContext": "Defines $n\\# = \\prod_{p \\leq n, p \\text{ prime}} p$; axiomatizes $\\omega(n\\#) = \\$\\pi$(n)$ and $n\\# \\mid k \\Rightarrow \\omega(k) \\geq \\omega(n\\#)$"
+      "title": "Part 6: Primorial Connection",
+      "summary": "The primorial n# as a source of many distinct prime factors",
+      "startLine": 94,
+      "endLine": 103,
+      "mathContext": "primorial n = ∏ primes ≤ n; construction with many distinct prime factors."
     },
     {
       "id": "examples",
-      "title": "Small Examples",
-      "summary": "Proves $\\omega(1) = 0$, $\\omega(2) = 1$, $\\omega(6) = 2$, $\\omega(30) = 3$, $\\omega(210) = 4$ via `simp` and `native_decide`, illustrating primorial structure",
-      "startLine": 145,
-      "endLine": 164,
-      "mathContext": "Formal definition: Proves $\\omega(1) = 0$, $\\omega(2) = 1$, $\\omega(6) = 2$, $\\omega(30) = 3$, $\\omega(210) = 4$ via `simp` and `native_decide`, illustrating primorial structure"
+      "title": "Part 7: Small Examples",
+      "summary": "Computed values ω(1), ω(2), ω(6), ω(30), ω(210)",
+      "startLine": 104,
+      "endLine": 123,
+      "mathContext": "ω(1)=0, ω(2)=1, ω(6)=2, ω(30)=3, ω(210)=4, checked via native_decide."
     },
     {
       "id": "consecutive",
-      "title": "Consecutive Integers with Many Factors",
-      "summary": "Axiomatizes: for any $k, L$, there exist $L$ consecutive integers each with $\\omega(n) \\geq k$ (a strong existence result, though without the $\\omega(n) > \\log\\log n$ constraint)",
-      "startLine": 165,
-      "endLine": 172,
-      "mathContext": "Axiomatizes: for any $k, L$, there exist $L$ consecutive integers each with $\\omega(n) \\geq k$ (a strong existence result, though without the $\\omega(n) > \\log\\$\\log n$$ constraint)"
+      "title": "Part 8: Consecutive Integers with Many Prime Factors",
+      "summary": "Exposition heading — no formalized content in this section yet",
+      "startLine": 124,
+      "endLine": 127,
+      "mathContext": "Heading for consecutive-integer variants; not yet formalized."
     },
     {
       "id": "related",
-      "title": "Related Functions: $\\Omega(n)$ and $\\text{rad}(n)$",
-      "summary": "Defines $\\Omega(n)$ (prime factors with multiplicity), `radical(n)` (squarefree part); axiomatizes $\\omega(n) \\leq \\Omega(n)$ and $\\omega(n) = \\omega(\\text{rad}(n))$",
-      "startLine": 173,
+      "title": "Part 9: Related Problems",
+      "summary": "Variants for Ω(n) (with multiplicity) and the radical rad(n)",
+      "startLine": 128,
+      "endLine": 141,
+      "mathContext": "bigOmega n = Ω(n) counts prime factors with multiplicity; bigOmegaCondition; radical rad(n) = ∏ distinct primes."
+    },
+    {
+      "id": "current-state",
+      "title": "Part 10: Current State of Knowledge",
+      "summary": "Best known lower bound and open status",
+      "startLine": 142,
+      "endLine": 152,
+      "mathContext": "known_lower_bound (axiom): a valid interval of length ≥ log x/(log log x)² exists for x≥3."
+    },
+    {
+      "id": "summary",
+      "title": "Part 11: Summary",
+      "summary": "Collected results and the open conjecture as a single theorem",
+      "startLine": 153,
       "endLine": 175,
-      "mathContext": "Formal definition: Defines $\\Omega(n)$ (prime factors with multiplicity), `radical(n)` (squarefree part); axiomatizes $\\omega(n) \\leq \\Omega(n)$ and $\\omega(n) = \\omega(\\text{rad}(n))$"
+      "mathContext": "erdos_452_summary bundles density, CRT lower bound, and prime obstruction; open: intervals of length (log x)^k for any k."
     }
   ],
   "conclusion": {

@@ -1,0 +1,146 @@
+{
+  "id": "chinese-remainder-constructive-oq-04-oq-05",
+  "title": "Effective Canonical CRT Solver",
+  "slug": "chinese-remainder-constructive-oq-04-oq-05",
+  "description": "Upgrades the minimal-representative CRT theorem (OQ-04-OQ-04) from a non-constructive existence statement to an explicit computable solver. By wrapping Mathlib's certified combinator `Nat.chineseRemainderOfList`, the function `crtCanonical` returns the canonical representative in [0, M), and is proved to coincide with the unique minimal solution — in fact to be the least element of the entire solution set. Fully machine-verified with no axioms.",
+  "meta": {
+    "author": "Classical (Sunzi / CRT), formalized via Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem",
+    "date": "3rd century",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderConstructiveOQ04OQ05.lean",
+    "tags": [
+      "number-theory",
+      "chinese-remainder-theorem",
+      "constructive",
+      "computable",
+      "canonical-form"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "lineCount": 146,
+    "assumptions": "None. All results — `crtCanonical_satisfies`, `crtCanonical_lt`, `crtCanonical_eq_min`, `crtCanonical_isLeast`, and the worked Sunzi example `sunzi_canonical_eq_23` — depend only on the standard foundational axioms `propext`, `Classical.choice`, `Quot.sound` (confirmed via `#print axioms`). Unlike the sibling OQ-04-OQ-04 (which uses `native_decide` and is therefore axiomatized), the Sunzi example here is discharged with `decide`, so the entry is fully verified with no `Lean.ofReduceBool` dependency.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.chineseRemainderOfList",
+        "description": "Certified combinator: the natural number < (l.map s).prod congruent to a i mod s i for all i ∈ l",
+        "module": "Mathlib.Data.Nat.ChineseRemainder"
+      },
+      {
+        "theorem": "Nat.chineseRemainderOfList_lt_prod",
+        "description": "The combinator's output is strictly less than the product of the moduli",
+        "module": "Mathlib.Data.Nat.ChineseRemainder"
+      },
+      {
+        "theorem": "List.pairwise_map",
+        "description": "(l.map f).Pairwise R ↔ l.Pairwise (R on f), bridging moduli-list coprimality to the index-list hypothesis",
+        "module": "Mathlib.Data.List.Pairwise"
+      },
+      {
+        "theorem": "List.prod_pos",
+        "description": "A product of positive list entries is positive",
+        "module": "Mathlib.Algebra.Order.BigOperators.GroupWithZero.List"
+      }
+    ],
+    "originalContributions": [
+      "crtCanonical: an explicit computable solver List (ℕ × ℕ) → ℕ wrapping Mathlib's index-list combinator, answering OQ-04-OQ-04's open question on extracting the constructive witness",
+      "sys_pairwise_on_snd: the bridge identifying moduli-list pairwise coprimality with Mathlib's `Pairwise (Coprime on Prod.snd)` hypothesis via `List.pairwise_map`",
+      "crtCanonical_eq_min: proof that the explicit solver realises the unique minimal representative of OQ-04-OQ-04",
+      "crtCanonical_isLeast: the sharp order characterisation — crtCanonical is the least element of the entire solution set {x | Satisfies x sys}",
+      "sunzi_canonical_eq_23: the classic Sunzi system evaluated to 23 through the bridge, using `decide` (axiom-free)"
+    ],
+    "prerequisites": [
+      "Chinese Remainder Theorem (pairwise coprime moduli)",
+      "Modular arithmetic and least-element (IsLeast) characterisations",
+      "Lean 4 and Mathlib"
+    ],
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive-oq-04-oq-04",
+      "relationship": "extends",
+      "description": "Makes OQ-04-OQ-04's non-constructive minimal representative explicit: crtCanonical is the computable witness, proved equal to the unique solution in [0, M) and shown to be the least element of the solution set."
+    },
+    {
+      "targetId": "chinese-remainder-constructive-oq-04",
+      "relationship": "extends",
+      "description": "Builds on the arbitrary-length list CRT (existence + uniqueness modulo M) over List (ℕ × ℕ)."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Chinese Remainder Theorem traces to the 3rd-century mathematician Sun Tzu (Sunzi), whose classic problem asks for a number leaving remainders 2, 3, 2 when divided by 3, 5, 7 — the answer is 23. The general statement appears in Qin Jiushao's *Mathematical Treatise in Nine Sections* (1247) and Gauss's *Disquisitiones Arithmeticae* (1801). Modern algebra phrases it as the ring isomorphism $\\mathbb{Z}/M\\mathbb{Z} \\cong \\prod_i \\mathbb{Z}/m_i\\mathbb{Z}$. The element-level content is the *canonical representative* in $\\{0, \\ldots, M-1\\}$. Where OQ-04-OQ-04 proved this representative exists and is unique, the present entry exhibits it as a concrete algorithm, using Mathlib's certified `chineseRemainderOfList` (originally developed for Gödel's β-function in the incompleteness theorems).",
+    "problemStatement": "Given a system `sys : List (ℕ × ℕ)` of (remainder, modulus) pairs with pairwise coprime positive moduli and product $M$, produce an explicit computable $x = \\text{crtCanonical}(sys)$ with $0 \\le x < M$ and $x \\equiv a_i \\pmod{m_i}$ for every pair, and prove that $x$ is the unique such representative — indeed the least element of the whole solution set.",
+    "proofStrategy": "Feed the system to Mathlib's `Nat.chineseRemainderOfList` with `a = Prod.fst`, `s = Prod.snd`, `l = sys`, so that `(sys.map Prod.snd).prod = moduliProd sys`. The coprimality hypothesis is transported by `List.pairwise_map` (`sys_pairwise_on_snd`). Correctness (`crtCanonical_satisfies`) is the combinator's defining property; the bound (`crtCanonical_lt`) is `chineseRemainderOfList_lt_prod` given positive moduli. The bridge `crtCanonical_eq_min` invokes OQ-04-OQ-04's `crt_list_minimal_unique`. Finally `crtCanonical_isLeast` shows every solution $y$ satisfies $\\text{crtCanonical} = y \\bmod M \\le y$, using `crt_list_unique` and `Nat.mod_eq_of_lt`.",
+    "keyInsights": [
+      "The whole construction is a thin, certified wrapper: Mathlib's `chineseRemainderOfList` already returns the bounded representative, so `crtCanonical` inherits computability for free — directly answering the OQ-04-OQ-04 open question about extracting the constructive witness.",
+      "`List.pairwise_map` is the exact glue between the project's moduli-list phrasing `(moduli sys).Pairwise Coprime` and Mathlib's index-list phrasing `sys.Pairwise (Coprime on Prod.snd)`; providing `R` and `f` explicitly avoids the unifier defaulting `f` to the identity.",
+      "The order characterisation is sharper than uniqueness-in-[0,M): since any solution $y$ obeys $y \\equiv \\text{crtCanonical} \\pmod M$ and $\\text{crtCanonical} < M$, reduction gives $\\text{crtCanonical} = y \\bmod M \\le y$, so `crtCanonical` is literally the minimum of the solution set, expressed via `IsLeast`.",
+      "Choosing `decide` over `native_decide` for the Sunzi example keeps the entry axiom-free: `#print axioms` lists only `propext`, `Classical.choice`, `Quot.sound`, in contrast to the `Lean.ofReduceBool` dependency of the sibling OQ-04-OQ-04."
+    ]
+  },
+  "sections": [
+    {
+      "id": "bridge",
+      "title": "Bridge to Mathlib's Index-List CRT",
+      "startLine": 36,
+      "endLine": 46,
+      "summary": "`sys_pairwise_on_snd`: pairwise coprimality of `moduli sys` is exactly the `Pairwise (Coprime on Prod.snd)` hypothesis Mathlib's `chineseRemainderOfList` expects, via `List.pairwise_map` with explicit `R` and `f`."
+    },
+    {
+      "id": "solver",
+      "title": "Effective Canonical Solver",
+      "startLine": 47,
+      "endLine": 83,
+      "summary": "`crtCanonical` wraps `Nat.chineseRemainderOfList` into a computable `List (ℕ × ℕ) → ℕ`. `crtCanonical_satisfies` (defining property) and `crtCanonical_lt` (`chineseRemainderOfList_lt_prod`) establish correctness and the [0, M) bound; `moduliProd_pos` supplies positivity of M."
+    },
+    {
+      "id": "bridge-min",
+      "title": "Bridge to the OQ-04-OQ-04 Minimal Representative",
+      "startLine": 85,
+      "endLine": 113,
+      "summary": "`crtCanonical_eq_min` identifies the explicit solver with the unique minimal solution via `crt_list_minimal_unique`. `crtCanonical_isLeast` strengthens this to: crtCanonical is the least element of {x | Satisfies x sys}, since crtCanonical = y % M ≤ y for every solution y."
+    },
+    {
+      "id": "sunzi",
+      "title": "Concrete Verification: The Sunzi Problem",
+      "startLine": 115,
+      "endLine": 129,
+      "summary": "`sunzi_canonical_eq_23` computes the canonical solution of x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7) as 23 through the bridge, discharged with `decide` so the file stays axiom-free."
+    }
+  ],
+  "conclusion": {
+    "summary": "The entry turns OQ-04-OQ-04's existence-and-uniqueness statement into an explicit algorithm: `crtCanonical` is a computable solver, certified correct and bounded, proved to be the unique minimal representative and the least element of the solution set. All results are machine-verified with no axioms beyond Lean's foundational three.",
+    "implications": "An explicit, certified canonical CRT solver underpins practical applications — RSA Chinese-remainder exponentiation, hashing, and modular computation — where one needs the actual representative, not merely its existence. The `IsLeast` characterisation pins down `crtCanonical` as the minimum-of-set normal form, the element-level realisation of the isomorphism $\\mathbb{Z}/M \\cong \\prod \\mathbb{Z}/m_i$.",
+    "openQuestions": [
+      "Can `crtCanonical` be connected to Mathlib's `ZMod.chineseRemainder` ring isomorphism, lifting the element-level solver to the ring-level statement?",
+      "Can the `IsLeast` characterisation be packaged as a `Nat`-valued `OrderBot`/`Nat.find`-style API for the solution set, giving a reusable canonical-form combinator?",
+      "Does an analogous least-representative solver exist for non-pairwise-coprime systems, replacing $\\prod m_i$ by $\\mathrm{lcm}$ and tracking the solvability condition $\\gcd(m_i, m_j) \\mid (a_i - a_j)$?"
+    ]
+  },
+  "references": [
+    {
+      "type": "book",
+      "title": "An Introduction to the Theory of Numbers",
+      "authors": [
+        "G.H. Hardy",
+        "E.M. Wright"
+      ],
+      "year": 1979,
+      "section": "§5.3"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 146,
+    "path": "Proofs/ChineseRemainderConstructiveOQ04OQ05.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 7
+  },
+  "sorries": 0
+}

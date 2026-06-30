@@ -330,10 +330,10 @@
   },
   "mainTheorems": [
     {
-      "name": "clt_normalized_converges",
+      "name": "central_limit_theorem",
       "type": "core",
-      "description": "Normalized sum of i.i.d. random variables converges in distribution to standard normal",
-      "leanType": "[IID X] -> E[X_i] = mu -> Var(X_i) = sigma^2 -> sigma > 0 -> (S_n - n*mu)/(sigma*sqrt(n)) ->d N(0,1)"
+      "description": "For a probability measure with mean, positive variance, and an integrable third absolute moment, the characteristic function of the normalized sum converges pointwise to the Gaussian characteristic function exp(-t^2/2). Derived from clt_general_case_axiom (the non-standardized CLT, axiomatized).",
+      "leanType": "(mu : Measure R) -> [IsProbabilityMeasure mu] -> (mean variance : R) -> variance > 0 -> (integral x dmu = mean) -> (integral (x-mean)^2 dmu = variance) -> Integrable |x-mean|^3 mu -> forall t, Tendsto (fun n => (charFun mu ((t - n*mean)/(sqrt variance * sqrt n)))^n) atTop (nhds (Complex.exp (-t^2/2)))"
     }
   ],
   "sorries": 0

@@ -112,71 +112,49 @@
     ]
   },
   {
-    "id": "ann-non-derogatory-def",
+    "id": "ann-minpoly-reduction-comparison",
     "proofId": "cayley-hamilton-reduction-oq-02",
     "range": {
-      "startLine": 80,
-      "endLine": 84
+      "startLine": 109,
+      "endLine": 117
     },
-    "type": "definition",
-    "title": "Non-Derogatory Matrix Definition",
-    "content": "Defines a matrix M as non-derogatory when deg(μ_M) = deg(χ_M). Equivalently, μ_M and χ_M are associates (both monic, same degree, one divides the other implies equality). Non-derogatory matrices have the simplest invariant factor structure: a single invariant factor equal to the characteristic polynomial.",
-    "mathContext": "A matrix $M$ is non-derogatory if $\\deg(\\mu_M) = \\deg(\\chi_M) = n$. This is equivalent to $\\mu_M = \\chi_M$ (since both are monic and $\\mu_M \\mid \\chi_M$ with equal degrees).",
+    "type": "concept",
+    "title": "Minpoly Reduction Is At Least As Good As Charpoly Reduction",
+    "content": "Proves `minpoly_reduction_degree_le_charpoly_reduction`: for any f with f mod μ_M ≠ 0, the remainder satisfies deg(f mod μ_M) < deg(χ_M). It chains the strict bound deg(f mod μ_M) < deg(μ_M) (from `mod_minpoly_degree_lt`) with deg(μ_M) ≤ deg(χ_M) (from `minpoly_degree_le_charpoly`) via `lt_of_lt_of_le`. This is the headline comparison answering the open question: reducing modulo the minimal polynomial never produces a higher-degree remainder than reducing modulo the characteristic polynomial.",
+    "mathContext": "$\\deg(f \\bmod \\mu_M) < \\deg(\\mu_M) \\leq \\deg(\\chi_M)$, hence $\\deg(f \\bmod \\mu_M) < \\deg(\\chi_M)$. Minpoly reduction is always at least as efficient as charpoly reduction.",
     "significance": "key",
     "relatedConcepts": [
-      "invariant factors",
-      "rational canonical form",
-      "companion matrix",
-      "cyclic vector"
+      "polynomial reduction",
+      "degree bound",
+      "minimal polynomial efficiency"
+    ],
+    "prerequisites": [
+      "minpoly reduction degree bound",
+      "degree comparison"
+    ]
+  },
+  {
+    "id": "ann-scalar-derogatory-example",
+    "proofId": "cayley-hamilton-reduction-oq-02",
+    "range": {
+      "startLine": 123,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Scalar Matrix: The Derogatory Case",
+    "content": "Proves `scalar_minpoly_degree_le_one`: for a scalar matrix c·I (with Nontrivial index type), deg(μ_M) ≤ 1 because X - C c annihilates it (`minpoly.dvd` after reducing aeval to scalar - algebraMap c = 0), so μ_M ∣ (X - C c) and `natDegree_le_of_dvd` bounds the degree by 1. Since χ_M = (X - c)^n has degree n, this exhibits the canonical derogatory matrix where minpoly reduction (degree < 1) is strictly better than charpoly reduction (degree < n).",
+    "mathContext": "For $M = cI$ with $n \\geq 2$: $\\mu_M = X - c$ (degree 1) while $\\chi_M = (X-c)^n$ (degree $n$). The gap $\\deg(\\mu_M) < \\deg(\\chi_M)$ is the derogatory case where minpoly reduction strictly wins.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "scalar matrix",
+      "derogatory matrix",
+      "minimal polynomial",
+      "diagonal matrix"
     ],
     "prerequisites": [
       "minimal polynomial",
       "characteristic polynomial",
-      "monic polynomial"
-    ]
-  },
-  {
-    "id": "ann-nonderogatory-equiv",
-    "proofId": "cayley-hamilton-reduction-oq-02",
-    "range": {
-      "startLine": 86,
-      "endLine": 92
-    },
-    "type": "concept",
-    "title": "Equal Efficiency for Non-Derogatory Matrices",
-    "content": "States that for non-derogatory matrices, reduction modulo μ_M and χ_M produce remainders of equal degree (or both zero). Since μ_M = χ_M for non-derogatory matrices, this should follow directly. The sorry likely needs explicit reasoning about the degree equality implying the polynomials are equal (both monic, one divides the other, same degree).",
-    "mathContext": "If $M$ is non-derogatory, then $\\mu_M = \\chi_M$, so $p \\bmod \\mu_M = p \\bmod \\chi_M$ and the reductions have identical degrees.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "polynomial equality",
-      "monic divisors",
-      "reduction equivalence"
-    ],
-    "prerequisites": [
-      "non-derogatory definition",
-      "minpoly divides charpoly"
-    ]
-  },
-  {
-    "id": "ann-companion-existence",
-    "proofId": "cayley-hamilton-reduction-oq-02",
-    "range": {
-      "startLine": 94,
-      "endLine": 100
-    },
-    "type": "concept",
-    "title": "Companion Matrices Are Non-Derogatory",
-    "content": "Claims the existence of non-derogatory matrices: for any monic polynomial p of positive degree, there exists a matrix M (the companion matrix of p) with IsNonDerogatory M. The companion matrix of p has p as both its minimal and characteristic polynomial. This is the canonical construction in rational canonical form theory — every non-derogatory matrix is similar to a companion matrix.",
-    "mathContext": "For any monic $p \\in R[X]$ with $\\deg(p) > 0$, the companion matrix $C_p \\in M_{\\deg(p)}(R)$ satisfies $\\mu_{C_p} = \\chi_{C_p} = p$. Hence $C_p$ is non-derogatory.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "companion matrix",
-      "rational canonical form",
-      "Frobenius normal form"
-    ],
-    "prerequisites": [
-      "companion matrix definition",
-      "non-derogatory definition"
+      "polynomial divisibility"
     ]
   }
 ]

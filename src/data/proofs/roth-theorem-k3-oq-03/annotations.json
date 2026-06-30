@@ -32,7 +32,7 @@
       "startLine": 80,
       "endLine": 115
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Gowers U^s Norm: Hypercube Correlation Measure",
     "content": "The `gowersNorm N s f` definition uses two helpers: `hypercubeShift h ω = Σᵢ (if ω i then h i else 0)` (the shift x + ω·h for binary vector ω ∈ {0,1}^s) and `conjugateByWeight ω z` (complex conjugate when the Hamming weight |ω| = Σ ωᵢ is odd). The norm itself averages over all x ∈ ZMod N and all shift vectors h ∈ (ZMod N)^s, taking the product over all 2^s hypercube vertices. Both helpers are `noncomputable` due to complex arithmetic.",
     "mathContext": "The Gowers ^s$ norm of  : \\mathbb{Z}_N \\to \\mathbb{C}$ is defined by $\\|f\\|_{U^s}^{2^s} = \\mathbb{E}_{x, h_1,\\ldots,h_s} \\prod_{\\omega \\in \\{0,1\\}^s} \\mathcal{C}^{|\\omega|} f(x + \\omega \\cdot h)$ where $\\mathcal{C}$ denotes complex conjugation, $|\\omega| = \\sum_i \\omega_i$ is the Hamming weight, and $\\omega \\cdot h = \\sum_i \\omega_i h_i$. For =1$: $\\|f\\|_{U^1} = |\\mathbb{E}[f]|$. For =2$: $\\|f\\|_{U^2}^4 = \\sum_{\\xi} |\\hat{f}(\\xi)|^4$ (Fourier ^4$ norm). For general $, this measures correlation of $ with 569Xlorder polynomial phases.",

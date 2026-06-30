@@ -22,7 +22,11 @@
       "open-problem",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases of order k",
+      "the representation function r(n)",
+      "asymptotic log n growth"
+    ]
   },
   {
     "id": "ann-e870-additive-set",
@@ -45,7 +49,9 @@
       "natural-numbers"
     ],
     "mathContext": "See annotation content for formal details of additive set",
-    "prerequisites": []
+    "prerequisites": [
+      "sets of natural numbers"
+    ]
   },
   {
     "id": "ann-e870-k-rep",
@@ -69,7 +75,10 @@
       "additive-combinatorics"
     ],
     "mathContext": "See annotation content for formal details of k-representation",
-    "prerequisites": []
+    "prerequisites": [
+      "sums of at most k elements of A with repetition",
+      "Finset-based counting in Lean"
+    ]
   },
   {
     "id": "ann-e870-rep-count",
@@ -92,7 +101,10 @@
       "additive-bases"
     ],
     "mathContext": "See annotation content for formal details of representation count",
-    "prerequisites": []
+    "prerequisites": [
+      "the KRepresentation structure",
+      "Nat.card of a subtype"
+    ]
   },
   {
     "id": "ann-e870-basis",
@@ -116,7 +128,10 @@
       "number-theory"
     ],
     "mathContext": "See annotation content for formal details of additive basis of order k",
-    "prerequisites": []
+    "prerequisites": [
+      "the representation count r_k(A,n)",
+      "eventual (n ≥ n₀) quantification"
+    ]
   },
   {
     "id": "ann-e870-essential",
@@ -139,7 +154,10 @@
       "additive-bases"
     ],
     "mathContext": "See annotation content for formal details of essential element",
-    "prerequisites": []
+    "prerequisites": [
+      "the additive basis property IsAdditiveBasis",
+      "set removal A \\ {a}"
+    ]
   },
   {
     "id": "ann-e870-minimal",
@@ -163,7 +181,10 @@
       "additive-bases"
     ],
     "mathContext": "See annotation content for formal details of minimal additive basis",
-    "prerequisites": []
+    "prerequisites": [
+      "essential elements of a basis",
+      "the additive basis property"
+    ]
   },
   {
     "id": "ann-e870-contains-minimal",
@@ -186,7 +207,10 @@
       "substructures"
     ],
     "mathContext": "See annotation content for formal details of contains minimal basis",
-    "prerequisites": []
+    "prerequisites": [
+      "minimal additive bases",
+      "the subset relation B ⊆ A"
+    ]
   },
   {
     "id": "ann-e870-log-growth",
@@ -209,7 +233,11 @@
       "representation-function"
     ],
     "mathContext": "See annotation content for formal details of logarithmic growth condition",
-    "prerequisites": []
+    "prerequisites": [
+      "the representation count r_k(A,n)",
+      "the real logarithm log n",
+      "eventual lower bounds"
+    ]
   },
   {
     "id": "ann-e870-en-condition",
@@ -232,7 +260,11 @@
       "convolution"
     ],
     "mathContext": "See annotation content for formal details of erdos-nathanson condition",
-    "prerequisites": []
+    "prerequisites": [
+      "the order-2 representation count",
+      "the convolution 1_A * 1_A",
+      "the threshold constant (log 4/3)⁻¹"
+    ]
   },
   {
     "id": "ann-e870-hartter",
@@ -256,7 +288,11 @@
       "nathanson",
       "additive-bases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases without a minimal sub-basis",
+      "ContainsMinimalBasis",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e870-en-k2",
@@ -280,7 +316,11 @@
       "minimal-bases",
       "sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős–Nathanson condition",
+      "additive bases of order 2",
+      "ContainsMinimalBasis"
+    ]
   },
   {
     "id": "ann-e870-conjecture",
@@ -304,7 +344,11 @@
       "additive-bases"
     ],
     "mathContext": "See annotation content for formal details of the main conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases of order k ≥ 3",
+      "the logarithmic growth condition",
+      "ContainsMinimalBasis"
+    ]
   },
   {
     "id": "ann-e870-k2-resolved",
@@ -327,7 +371,10 @@
       "erdos-nathanson"
     ],
     "mathContext": "See annotation content for formal details of k = 2 case resolved",
-    "prerequisites": []
+    "prerequisites": [
+      "vacuous truth of a k ≥ 3 hypothesis",
+      "the erdos_nathanson_k2 result"
+    ]
   },
   {
     "id": "ann-e870-waring",
@@ -350,7 +397,11 @@
       "power-sums",
       "classical-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases",
+      "k-th powers as a subset of ℕ",
+      "Hilbert's solution of Waring's problem"
+    ]
   },
   {
     "id": "ann-e870-sidon",
@@ -373,7 +424,11 @@
       "additive-combinatorics"
     ],
     "mathContext": "See annotation content for formal details of sidon sets",
-    "prerequisites": []
+    "prerequisites": [
+      "unique pairwise sums (B₂ / Sidon sets)",
+      "representation functions",
+      "contrast with dense representation counts"
+    ]
   },
   {
     "id": "ann-e870-summary",
@@ -397,6 +452,10 @@
       "erdos"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "the order-2 result (Erdős–Nathanson 1979)",
+      "the Hartter–Nathanson counterexamples",
+      "the open k ≥ 3 question"
+    ]
   }
 ]

@@ -17,7 +17,12 @@
       "Cyclic groups",
       "Subset sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "number theory",
+      "modular arithmetic",
+      "pigeonhole principle"
+    ]
   },
   {
     "id": "ann-e540-definitions",
@@ -37,7 +42,12 @@
       "Modular arithmetic",
       "Subset predicates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "finite set operations",
+      "modular arithmetic"
+    ]
   },
   {
     "id": "ann-e540-conjecture",
@@ -56,7 +66,12 @@
       "Universal constants",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "first-order logic and quantifiers",
+      "asymptotic notation",
+      "modular arithmetic",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e540-olson",
@@ -76,7 +91,12 @@
       "Finite fields",
       "Prime moduli"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite field theory",
+      "polynomial algebra",
+      "number theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e540-szemeredi",
@@ -95,7 +115,12 @@
       "General cyclic groups",
       "Combinatorial proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "group theory",
+      "additive combinatorics",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e540-balandraud",
@@ -114,7 +139,12 @@
       "Extremal configurations",
       "Sum-free sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "group theory",
+      "real analysis",
+      "extremal set theory"
+    ]
   },
   {
     "id": "ann-e540-hamidoune",
@@ -133,7 +163,12 @@
       "Abelian groups",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "abelian group theory",
+      "additive combinatorics",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e540-davenport",
@@ -152,6 +187,11 @@
       "Sequences vs subsets",
       "Zero-sum sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "group theory",
+      "asymptotic counting",
+      "additive combinatorics"
+    ]
   }
 ]

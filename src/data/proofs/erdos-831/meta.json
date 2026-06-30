@@ -83,81 +83,90 @@
   "sections": [
     {
       "id": "points-plane",
-      "title": "Points in the Plane",
+      "title": "Part I: Points in the Plane",
       "summary": "Point type alias, PointTriple structure",
-      "startLine": 43,
-      "endLine": 60,
+      "startLine": 41,
+      "endLine": 61,
       "mathContext": "Formal definition: Point type alias, PointTriple structure"
     },
     {
       "id": "general-position",
-      "title": "Collinearity and Concyclicity",
+      "title": "Part II: Collinearity and Concyclicity Conditions",
       "summary": "areCollinear, areConcyclic, isInGeneralPosition definitions",
-      "startLine": 61,
-      "endLine": 95,
+      "startLine": 62,
+      "endLine": 96,
       "mathContext": "Formal definition: areCollinear, areConcyclic, isInGeneralPosition definitions"
     },
     {
       "id": "circumradius",
-      "title": "Circumcircles and Radii",
+      "title": "Part III: Circumcircles and Radii",
       "summary": "circumradius definition using triangle formula",
-      "startLine": 96,
-      "endLine": 122,
+      "startLine": 97,
+      "endLine": 128,
       "mathContext": "Formal definition: circumradius definition using triangle formula"
     },
     {
       "id": "counting",
-      "title": "Counting Distinct Radii",
+      "title": "Part IV: Counting Distinct Radii",
       "summary": "allCircumradii, countDistinctRadii, h function definitions",
-      "startLine": 123,
-      "endLine": 151,
+      "startLine": 129,
+      "endLine": 180,
       "mathContext": "Formal definition: allCircumradii, countDistinctRadii, h function definitions"
     },
     {
       "id": "basic-bounds",
-      "title": "Basic Bounds",
+      "title": "Part V: Basic Bounds",
       "summary": "h_upper_bound, h_three, h_four_lower",
-      "startLine": 152,
-      "endLine": 176,
+      "startLine": 181,
+      "endLine": 337,
       "mathContext": "Bound: h_upper_bound, h_three, h_four_lower"
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
+      "title": "Part VI: The Main Conjecture",
       "summary": "erdos_831_conjecture axiom on asymptotics",
-      "startLine": 177,
-      "endLine": 200,
+      "startLine": 338,
+      "endLine": 346,
       "mathContext": "Axiomatized: erdos_831_conjecture axiom on asymptotics"
     },
     {
       "id": "constructions",
-      "title": "Related Constructions",
+      "title": "Part VII: Related Constructions",
       "summary": "isRegularPolygon, regular_polygon_not_general",
-      "startLine": 201,
-      "endLine": 229,
+      "startLine": 347,
+      "endLine": 391,
       "mathContext": "Mathematical content: isRegularPolygon, regular_polygon_not_general"
     },
     {
       "id": "connections",
-      "title": "Connection to Other Problems",
+      "title": "Part VIII: Connection to Other Problems",
       "summary": "Orchard problem, unit distance problem connections",
-      "startLine": 230,
-      "endLine": 251,
+      "startLine": 392,
+      "endLine": 412,
       "mathContext": "Mathematical content: Orchard problem, unit distance problem connections"
     },
     {
-      "id": "small-cases",
-      "title": "Small Cases",
-      "summary": "h(5) and h(6) bounds",
-      "startLine": 252,
-      "endLine": 268
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 413,
+      "endLine": 440,
+      "summary": "Hereditary and symmetry lemmas: general position is closed under subsets (isInGeneralPosition_subset), circumradii of a subset are contained in those of the superset (allCircumradii_subset), and areCollinear / areConcyclic are invariant under permutations of their points.",
+      "mathContext": "$T \\subseteq S$ in general position $\\Rightarrow T$ in general position; $\\text{allCircumradii}(T) \\subseteq \\text{allCircumradii}(S)$; collinearity and concyclicity are permutation-symmetric."
+    },
+    {
+      "id": "infrastructure-small-cases",
+      "title": "Part IX: Infrastructure for Small Cases",
+      "startLine": 441,
+      "endLine": 681,
+      "summary": "Section PointHelpers: helper lemmas for explicit point configurations in EuclideanSpace ℝ (Fin 2) used to prove h_three and h_upper_bound. Includes circumradiusOf_eq_circumradius and the permutation invariances of circumradiusOf (swap and cyclic), plus concrete general-position witnesses.",
+      "mathContext": "circumradiusOf is permutation-invariant (the side-product abc is symmetric and the signed area's sign cancels under absolute value), enabling concrete GP configurations that pin down h(3) and small-n bounds."
     },
     {
       "id": "summary",
-      "title": "Summary",
+      "title": "Part X: Summary",
       "summary": "erdos_831_summary and erdos_831_open_question theorems",
-      "startLine": 269,
-      "endLine": 305,
+      "startLine": 682,
+      "endLine": 717,
       "mathContext": "Verified: erdos_831_summary and erdos_831_open_question theorems"
     }
   ],

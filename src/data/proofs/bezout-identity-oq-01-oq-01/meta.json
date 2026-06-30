@@ -124,23 +124,19 @@
         ]
     },
     "crossReferences": [
-        {
-            "proofId": "bezout-identity",
-            "relationship": "grandparent — Bézout identity statement and its basic Mathlib proof"
-        },
-        {
-            "proofId": "bezout-identity-oq-01",
-            "relationship": "parent — extended Euclidean algorithm with explicit Bézout coefficient computation using modular division"
-        },
-        {
-            "proofId": "binary-gcd-oq-01",
-            "relationship": "sibling — open questions about binary GCD algorithm variants and complexity"
-        },
-        {
-            "proofId": "binary-gcd-oq-01-oq-03",
-            "relationship": "sibling — further binary GCD variants and extended algorithms"
-        }
-    ],
+    {
+      "proofId": "bezout-identity",
+      "relationship": "grandparent — Bézout identity statement and its basic Mathlib proof"
+    },
+    {
+      "proofId": "bezout-identity-oq-01",
+      "relationship": "parent — extended Euclidean algorithm with explicit Bézout coefficient computation using modular division"
+    },
+    {
+      "proofId": "binary-gcd-oq-01",
+      "relationship": "sibling — open questions about binary GCD algorithm variants and complexity"
+    }
+  ],
     "leanFile": {
         "namespace": "BezoutIdentityOQ01OQ01",
         "lineCount": 188,

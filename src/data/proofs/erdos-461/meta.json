@@ -81,39 +81,60 @@
   },
   "sections": [
     {
-      "id": "smooth-components",
-      "title": "Smooth Components",
+      "id": "header",
+      "title": "Header: Statement and References",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "States Erdős Problem #461. The $t$-smooth component $s_t(n)$ is the largest divisor of $n$ whose prime factors are all $<t$; $f(n,t)$ counts the distinct $s_t(m)$ for $m\\in\\{n+1,\\dots,n+t\\}$. Question: is $f(n,t)\\gg t$ for all $n,t$? Erdős–Graham proved the weaker $f(n,t)\\gg t/\\log t$. Imports `Nat.Prime`, `Finset`, reals, tactics.",
+      "mathContext": "$s_t(n)=\\prod_{p\\mid n,\\,p<t}p$; $f(n,t)=|\\{s_t(m):n<m\\leq n+t\\}|$. Conjecture: $f(n,t)\\gg t$."
+    },
+    {
+      "id": "smooth-infra",
+      "title": "Smooth Components: Definition and Infrastructure",
       "startLine": 22,
-      "endLine": 107,
-      "summary": "Constructive definition of $s_t(n) = (n.\\text{factors}.\\text{filter}(\\cdot < t)).\\text{prod}$. **Proves** infrastructure lemmas, $s_t(n) \\mid n$, smoothness, positivity, complement coprimality. The maximality `smoothComponent_largest` has the file's only sorry."
+      "endLine": 62,
+      "summary": "Defines `smoothComponent t n` $=\\prod$ of the prime factors of $n$ (with multiplicity) that are $<t$ (`n.factors.filter (· < t) |>.prod`). PROVES the private list-infrastructure lemmas `list_prod_filter_dvd` (a filtered product divides the full product) and `prime_dvd_list_prod_mem` (a prime dividing a product of primes is one of them).",
+      "mathContext": "$s_t(n)=(\\text{factors}(n).\\text{filter}(<t)).\\text{prod}$; filtered product divides full product."
+    },
+    {
+      "id": "smooth-core",
+      "title": "Smooth Components: Core Properties",
+      "startLine": 63,
+      "endLine": 142,
+      "summary": "PROVES the defining properties of $s_t(n)$: `smoothComponent_dvd` ($s_t(n)\\mid n$), `smoothComponent_smooth` (every prime factor is $<t$), `smoothComponent_pos` ($s_t(n)>0$), and the key `smoothComponent_largest` ($s_t(n)$ is the largest $t$-smooth divisor: any $t$-smooth $d\\mid n$ divides $s_t(n)$, via the coprime partition $n=s_t(n)\\cdot\\text{comp}$). Helpers `no_small_prime_in_complement` and `list_prod_filter_mul_not` (partition identity).",
+      "mathContext": "$s_t(n)\\mid n$, all prime factors $<t$, and $s_t(n)$ is the largest such divisor (via coprime partition $n=s_t(n)\\cdot\\text{comp}$)."
     },
     {
       "id": "counting",
       "title": "Counting Distinct Smooth Components",
-      "startLine": 108,
-      "endLine": 113,
-      "summary": "Defines $f(n,t) = |\\text{image}(s_t, [n+1, n+t])|$ via `Finset.Icc` and `Finset.image`."
+      "startLine": 143,
+      "endLine": 148,
+      "summary": "Defines `smoothDistinctCount n t` $=f(n,t)=|\\text{image}(s_t,\\,[n+1,n+t])|$ via `Finset.Icc` and `Finset.image`.",
+      "mathContext": "$f(n,t)=|\\{s_t(m):m\\in[n+1,n+t]\\}|$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 114,
-      "endLine": 122,
-      "summary": "States `ErdosProblem461`: $\\exists C > 0, \\exists t_0, \\forall t \\geq t_0, \\forall n : f(n,t) \\geq Ct$."
+      "startLine": 149,
+      "endLine": 157,
+      "summary": "Defines `ErdosProblem461`: $\\exists C>0,\\exists t_0,\\forall t\\geq t_0,\\forall n,\\ C\\,t\\leq f(n,t)$ — the conjectured linear lower bound.",
+      "mathContext": "Conjecture: $\\exists C>0,\\ f(n,t)\\geq C\\,t$ for large $t$, all $n$."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 123,
-      "endLine": 130,
-      "summary": "Axiomatizes the Erdős–Graham bound $f(n,t) \\geq C \\cdot t/\\log t$ using `Real.log`."
+      "startLine": 158,
+      "endLine": 165,
+      "summary": "States the Erdős–Graham bound as the AXIOM `erdos_graham_lower`: $f(n,t)\\geq C\\,t/\\log t$ for some $C>0$ and all large $t$ — the best published lower bound (weaker than the conjectured $\\gg t$).",
+      "mathContext": "Axiom (Erdős–Graham): $f(n,t)\\geq C\\,t/\\log t$."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 131,
-      "endLine": 172,
-      "summary": "**Proves** 6 results: $s_t(1) = 1$, $s_t(0) = 1$, $t \\leq 1 \\implies s_t(n) = 1$, $s_t(p)$ for primes, $f(n,t) \\leq t$, $f(n,0) = 0$."
+      "startLine": 166,
+      "endLine": 290,
+      "summary": "A battery of PROVED lemmas on $s_t$ and $f$. Smooth component: `smoothComponent_one`/`_zero` ($s_t(1)=s_t(0)=1$), `_t_le_one` ($t\\leq1\\Rightarrow s_t(n)=1$), `_eq_self`/`_id_of_smooth`/`_id_of_lt` ($s_t(n)=n$ when $n$ is $t$-smooth or $n<t$), `_prime`/`_prime_ge` ($s_t(p)=p$ if $p<t$ else $1$), `_mul` (full multiplicativity $s_t(mn)=s_t(m)s_t(n)$), `_eq_one_iff`, `_dvd_mul_left`. Count: `smoothDistinctCount_le` ($f\\leq t$), `_zero` ($f(n,0)=0$), `_pos` ($t\\geq1\\Rightarrow f>0$), `_t_le_one` ($f\\leq1$), and the boundary case `smoothDistinctCount_one` ($f(n,1)=1$).",
+      "mathContext": "$s_t$ multiplicative, $=n$ on $t$-smooth $n$, $=1$ for $t\\leq1$; $0<f(n,t)\\leq t$, $f(n,1)=1$."
     }
   ],
   "crossReferences": [

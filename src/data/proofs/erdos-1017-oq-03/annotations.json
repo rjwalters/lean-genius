@@ -1,0 +1,102 @@
+[
+  {
+    "id": "erdos1017oq03-ann-header",
+    "proofId": "erdos-1017-oq-03",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "concept",
+    "title": "The Turán Bound T(n) = ⌊n²/4⌋ as the Quarter-Square Sequence",
+    "content": "Erdős Problem #1017 (Erdős–Goodman–Pósa, 1966) has extremal value T(n) = ⌊n²/4⌋ — both the worst-case number of complete subgraphs needed to edge-partition an n-vertex graph and the edge count of the balanced complete bipartite extremal graph K_{⌊n/2⌋,⌈n/2⌉}. The companion file gives T's product form and non-strict monotonicity; this sibling supplies the explicit even/odd closed forms, exact increment, strict growth, and real envelope. turanBound n := n²/4 is re-declared so the file is self-contained (the parent's two axioms are not imported). T(n) is the quarter-square sequence 0,0,1,2,4,6,9,12,… central to extremal graph theory.",
+    "mathContext": "$T(n) = \\lfloor n^2/4 \\rfloor$, the quarter-square sequence; $K_{\\lfloor n/2\\rfloor,\\lceil n/2\\rceil}$ has $T(n)$ edges.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Turán bound",
+      "quarter-square sequence",
+      "Erdős–Goodman–Pósa theorem",
+      "complete bipartite graph"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "floor function over ℕ"
+    ]
+  },
+  {
+    "id": "erdos1017oq03-ann-closedforms",
+    "proofId": "erdos-1017-oq-03",
+    "range": { "startLine": 41, "endLine": 51 },
+    "type": "theorem",
+    "title": "Parity-Split Closed Forms",
+    "content": "turanBound_two_mul: T(2m) = m², proved by (2m)² = 4m² and exact division Nat.mul_div_cancel_left. turanBound_two_mul_add_one: T(2m+1) = m(m+1), proved by (2m+1)² = 4·m(m+1) + 1 (remainder 1 < 4) and omega for the floor division. These are exactly the edge counts of the extremal graphs: K_{m,m} has m² edges, K_{m,m+1} has m(m+1) edges — the balanced and near-balanced complete bipartite graphs.",
+    "mathContext": "$T(2m) = m^2 = |E(K_{m,m})|,\\qquad T(2m+1) = m(m+1) = |E(K_{m,m+1})|.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quarter-square",
+      "balanced bipartite edge count",
+      "floor of a square",
+      "exact division"
+    ],
+    "prerequisites": [
+      "natural-number division",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "erdos1017oq03-ann-increment",
+    "proofId": "erdos-1017-oq-03",
+    "range": { "startLine": 53, "endLine": 67 },
+    "type": "key-step",
+    "title": "The Exact One-Step Increment",
+    "content": "turanBound_succ_diff: T(n+1) − T(n) = ⌊(n+1)/2⌋ = ⌈n/2⌉ — exactly the number of edges a new vertex adds to the balanced complete bipartite graph (it joins to the larger side). The proof splits on parity of n (Nat.even_or_odd) and reduces each case to the closed forms plus a ring identity (m(m+1) = m²+m for even n, (m+1)² = m(m+1)+(m+1) for odd n) fed to omega. This increment is the unit of 'edge surplus' the parametric Erdős #1017 question measures against.",
+    "mathContext": "$T(n+1) - T(n) = \\lfloor (n+1)/2 \\rfloor = \\lceil n/2 \\rceil.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "finite difference",
+      "ceiling vs floor",
+      "edge surplus",
+      "parity case-split"
+    ],
+    "prerequisites": [
+      "the closed forms",
+      "Nat.even_or_odd",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "erdos1017oq03-ann-strictmono",
+    "proofId": "erdos-1017-oq-03",
+    "range": { "startLine": 69, "endLine": 76 },
+    "type": "theorem",
+    "title": "Strict Monotonicity for n ≥ 1",
+    "content": "turanBound_strictMono: T(n) < T(n+1) for n ≥ 1, sharpening the companion's non-strict bound. Immediate from the increment formula: ⌊(n+1)/2⌋ > 0 once n ≥ 1, so the difference is positive (omega). Strictness certifies the extremal threshold grows without plateaus, so the dense regime k > T(n) — where the open clique-partition question lives — is always nonempty.",
+    "mathContext": "$n \\ge 1 \\Rightarrow T(n) < T(n+1)$, since $\\lfloor (n+1)/2\\rfloor \\ge 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strict monotonicity",
+      "positive increment",
+      "dense regime",
+      "no plateaus"
+    ],
+    "prerequisites": [
+      "the increment formula"
+    ]
+  },
+  {
+    "id": "erdos1017oq03-ann-envelope",
+    "proofId": "erdos-1017-oq-03",
+    "range": { "startLine": 78, "endLine": 107 },
+    "type": "insight",
+    "title": "The Real-Valued Envelope T(n) ≤ n²/4",
+    "content": "turanBound_le_sq_div_four: over ℝ, ⌊n²/4⌋ ≤ n²/4 — the integer floor never exceeds the exact quarter-square. Proved via Nat.cast_div_le (the cast of a floored quotient is ≤ the real quotient) and a push_cast/ring normalization. This is the bridge between the discrete extremal value and the asymptotic n²/4 that names the Turán/Mantel threshold, and the gap n²/4 − ⌊n²/4⌋ ∈ {0, 1/4} records the parity correction.",
+    "mathContext": "$\\lfloor n^2/4 \\rfloor \\le n^2/4$ over $\\mathbb{R}$; the gap is $0$ (even $n$) or $1/4$ (odd $n$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.cast_div_le",
+      "floor vs real quotient",
+      "asymptotic threshold",
+      "Mantel's theorem"
+    ],
+    "prerequisites": [
+      "casting ℕ to ℝ",
+      "floor division bound"
+    ]
+  }
+]

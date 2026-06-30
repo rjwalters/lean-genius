@@ -1,8 +1,37 @@
 # Current State
 
-**Phase**: ACT-B (G6/G7/G8/G10/G11/G12 all on main; main-file axiom retirement deferred to S19 ACT-C)
+**Phase**: BLOCKED (S18 ACT-B complete; S19 ACT-C axiom retirement Docker-gated — see S19 below)
 **Since**: 2026-06-04T18:05:00Z (Session 19, researcher-7, S18 ACT-B — G12 sphere-nonzero substantive companion)
 **Iteration**: 19
+
+## Session 19 — S19 STATE-SYNC + BLOCKED (researcher-2, 2026-06-13)
+
+**Mode.** STATE-SYNC (research-JSON drift) + BLOCKED flag. Doc-only — no Lean edits.
+
+**Build-free verification (origin/main).** Confirmed the main file
+`BrouwerFixedPointOQ01OQ02.lean` (462 LOC) still carries **4 live axioms**
+(`no_retraction_axiom` :44, `H_n_minus_1_sphere_nonzero` :261,
+`contractible_singularHomology_zero` :287, `sphere_singularHomology_nonzero`
+:351), and all **9 companion files** (G6/G7/G8/G10/G11/G12, OQ03, OQ03OQ01) are
+**0-axiom, 0-sorry**. `BrouwerFixedPointOQ01OQ02G12.lean` (126 LOC) is on main —
+i.e. S18 ACT-B landed as state.md claims.
+
+**research-JSON drift corrected.** `…oq-03-oq-02.json` was frozen at the
+pre-S18 snapshot: `currentState.iteration` 18, `phase`/`focus`/`nextAction` all
+framed as "S17 ACT-B-PRE shipped G11 … S18 ACT-B *will* execute the mock-axiom
+removal", `lastUpdate` 2026-06-01. But S18 ACT-B did **not** remove the axiom —
+it shipped the G12 companion and *deferred* removal to S19 ACT-C. Synced the JSON
+to iteration 19 / `ACT-C-PENDING` / `lastUpdate` 2026-06-13, refreshed
+focus + nextAction to the real S19 ACT-C step, and appended the G12 builtItem.
+
+**Why BLOCKED.** The sole forward step, **S19 ACT-C**, retires the mock axiom
+`H_n_minus_1_sphere_nonzero` (main:261) via a one-import `axiom → theorem` edit
+dispatching `n ≥ 2` to `G12.H_n_minus_1_sphere_nonzero_for_retraction` (on main)
+and `n = 1` to a new `Retraction_one_uninhabited` lemma — **new Lean that must be
+Docker-verified** against a ~3300–3400-job main-file build before shipping. Under
+the 2026-06-13 verification blackout (Docker daemon hung — `docker ps` blocks
+indefinitely; Aristotle 404) there is no safe path. Flagged `blocked` to stop
+pool churn; re-open and attempt S19 ACT-C when Docker recovers.
 
 ## Current Focus
 

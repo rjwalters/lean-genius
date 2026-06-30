@@ -59,46 +59,60 @@
   },
   "sections": [
     {
-      "id": "sec-preamble",
+      "id": "imports",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 27,
-      "summary": "Imports Mathlib's coprimality theory (RingTheory.Coprime.Basic) and tactic library. The module docstring states the open question — whether crtDirect generalizes beyond ℤ — and answers it affirmatively: only IsCoprime is needed, not IsBezout."
+      "endLine": 28,
+      "summary": "Imports and module overview for the generalized Bézout/CRT construction over a commutative ring."
     },
     {
-      "id": "sec-def",
-      "title": "Part 1: CRT Construction",
-      "startLine": 28,
-      "endLine": 37,
-      "summary": "crtRing over CommRing: b*s*m + a*t*n"
+      "id": "part1-crt",
+      "title": "Part 1: Generalized CRT Construction",
+      "startLine": 29,
+      "endLine": 38,
+      "summary": "The generalized Chinese Remainder Theorem construction producing a simultaneous solution from coprime moduli."
     },
     {
-      "id": "sec-correct",
-      "title": "Parts 2-3: Correctness and Uniqueness",
-      "startLine": 37,
-      "endLine": 79,
-      "summary": "crtRing_mod_m, crtRing_mod_n via linear_combination; crtRing_unique via IsCoprime.mul_dvd"
+      "id": "part2-correctness",
+      "title": "Part 2: Correctness Theorems",
+      "startLine": 39,
+      "endLine": 56,
+      "summary": "Correctness theorems: the CRT construction satisfies each congruence."
     },
     {
-      "id": "sec-existence",
-      "title": "Parts 4-5: Existence and IsBezout",
-      "startLine": 81,
-      "endLine": 110,
-      "summary": "crtRing_exists (IsCoprime → CRT solvable); crtRing_bezout (IsBezout specialization)"
+      "id": "part3-uniqueness",
+      "title": "Part 3: Uniqueness",
+      "startLine": 57,
+      "endLine": 67,
+      "summary": "Uniqueness of the CRT solution modulo the product of the coprime moduli."
     },
     {
-      "id": "sec-recovery",
-      "title": "Part 6: ℤ Recovery",
-      "startLine": 112,
-      "endLine": 125,
-      "summary": "crtInt_from_ring: the integer case is a special case of crtRing"
+      "id": "part4-existence",
+      "title": "Part 4: Existence via IsCoprime",
+      "startLine": 68,
+      "endLine": 81,
+      "summary": "Existence of the Bézout/CRT solution from the IsCoprime hypothesis."
     },
     {
-      "id": "sec-summary",
-      "title": "Summary and Type Signatures",
+      "id": "part5-isbezout",
+      "title": "Part 5: Connection to IsBezout",
+      "startLine": 82,
+      "endLine": 91,
+      "summary": "Connection of the construction to Mathlib's IsBezout structure."
+    },
+    {
+      "id": "part6-z-recovery",
+      "title": "Part 6: Recovering the ℤ Case",
+      "startLine": 92,
+      "endLine": 98,
+      "summary": "Recovering the classical integer Bézout/CRT statement as a special case."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
       "startLine": 99,
       "endLine": 129,
-      "summary": "Recaps the answer to OQ-01: crtDirect generalizes to any CommRing, with IsCoprime as the minimal hypothesis. Lists concrete ring instances (ℤ, k[X], ℤ[i], fields, PIDs). The #check commands confirm the exported signatures."
+      "summary": "Recap and type signatures of the generalized CRT/Bézout results."
     }
   ],
   "conclusion": {

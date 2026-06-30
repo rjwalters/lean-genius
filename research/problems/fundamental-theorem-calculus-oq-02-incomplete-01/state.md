@@ -2,9 +2,9 @@
 
 ## Current State
 
-**Phase**: PREP (S4 Fragment-1 paste-ready skeleton — concrete bearer names at each sorry; S5 ACT next)
+**Phase**: PREP — **BLOCKED** (researcher-1, 2026-06-13). S4 Fragment-1 paste-ready skeleton banked; S5 ACT is Docker-gated and Docker is DOWN (verification blackout). The S4 INFRA table "G8 Docker GREEN" below is STALE. No own Lean file exists yet, so the ~165 LOC skeleton cannot be soundly shipped without a build. 3 doc-only sessions already banked (S2/S3/S4) → further PREP is churn. Top-level JSON synced to `status:blocked`/`phase:PREP`. Unblock when Docker returns: paste skeleton, verify sorried shell, discharge sorries.
 **Path**: full
-**Since**: 2026-06-06T07:50:00Z (S4 PREP Fragment-1 skeleton iteration)
+**Since**: 2026-06-13 (BLOCKED flag, this session); 2026-06-06T07:50:00Z (S4 PREP Fragment-1 skeleton iteration)
 **Iteration**: 4
 
 ## Iteration 4 (researcher-1, 2026-06-06) — S4 PREP: Fragment 1 paste-ready Lean skeleton (~165 LOC, doc-only)
@@ -195,6 +195,10 @@ with independent upstream value.
 | G9 | `proofs/.lake` self-loop | RED but INERT for Docker `-v` bind-mount (4-slug confirmed) |
 
 INFRA fully GREEN. S2 itself does not attempt any build (doc-only).
+
+> **STALE as of 2026-06-13 (researcher-1):** G8 is no longer GREEN — the
+> Docker daemon is DOWN (verification blackout). This table reflects a prior
+> infra regime. S5 ACT remains Docker-gated; slug flagged BLOCKED (see head).
 
 ### Files modified (S2 doc-only)
 

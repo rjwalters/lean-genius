@@ -1,0 +1,174 @@
+{
+  "id": "gamma-log-convexity-oq-01",
+  "title": "Log-Convexity of Gamma: the Gautschi Double Inequality x^(1−s) ≤ Γ(x+1)/Γ(x+s) ≤ (x+1)^(1−s)",
+  "slug": "gamma-log-convexity-oq-01",
+  "description": "The Gamma function is logarithmically convex on (0,∞) — Mathlib records this as `Real.convexOn_log_Gamma` but derives none of its functional-inequality consequences. From log-convexity alone, together with the functional equation Γ(x+1)=x·Γ(x), this entry proves the classical Gautschi double inequality for the unit-shift ratio, x^(1−s) ≤ Γ(x+1)/Γ(x+s) ≤ (x+1)^(1−s) for x>0 and 0<s<1, plus the multiplicative midpoint inequality Γ((a+b)/2)² ≤ Γ(a)·Γ(b). None of these ratio bounds are in Mathlib.",
+  "meta": {
+    "author": "Walter Gautschi (1959)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GammaLogConvexityOQ01.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "convexity",
+      "gamma-function",
+      "inequalities",
+      "gautschi"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.convexOn_log_Gamma",
+        "description": "log ∘ Γ is convex on (0,∞); the single structural input from which every bound here is derived",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup"
+      },
+      {
+        "theorem": "Real.Gamma_add_one",
+        "description": "Functional equation Γ(x+1) = x·Γ(x) for x ≠ 0, used to turn shifted Gamma values into elementary factors",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_pos_of_pos",
+        "description": "Γ(x) > 0 for x > 0, supplying positivity needed to take and undo logarithms",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.log_rpow",
+        "description": "log(x^y) = y·log x for x > 0, converting power bounds to linear bounds on logarithms",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp_log",
+        "description": "exp(log x) = x for x > 0, used with monotonicity of exp to exponentiate log inequalities back to the originals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "gautschi_lower: x^(1−s) ≤ Γ(x+1)/Γ(x+s) for x>0, 0<s<1, from the convex decomposition x+s = (1−s)·x + s·(x+1)",
+      "gautschi_upper: Γ(x+1)/Γ(x+s) ≤ (x+1)^(1−s), from the convex decomposition x+1 = (1/(2−s))·(x+s) + ((1−s)/(2−s))·(x+2)",
+      "gautschi_bracket: the combined two-sided Gautschi double inequality",
+      "gamma_midpoint_sq_le: Γ((a+b)/2)² ≤ Γ(a)·Γ(b), the multiplicative form of midpoint log-convexity",
+      "logGamma_le_lower: the reusable core estimate log Γ(x+s) ≤ log Γ(x) + s·log x"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. All theorems depend only on propext, Classical.choice, Quot.sound (Lean's foundational axioms). No native_decide, so no Lean.ofReduceBool.",
+    "lineCount": 149,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Walter Gautschi's 1959 paper *Some elementary inequalities relating to the gamma and incomplete gamma function* gave sharp two-sided bounds for the ratio Γ(x+1)/Γ(x+s) of Gamma values at points differing by less than one. Such ratios pervade asymptotics, special-function theory, and numerical analysis (e.g. error estimates for the incomplete Gamma function). The bounds are the prototypical application of the Bohr–Mollerup principle that Γ is logarithmically convex: every Gautschi-type estimate is, at bottom, a convexity inequality for log Γ combined with the recurrence Γ(x+1)=x·Γ(x). Mathlib formalizes the log-convexity (it needs it to characterize Γ via Bohr–Mollerup) but stops there, deriving none of the downstream functional inequalities.",
+    "problemStatement": "Using only the log-convexity of Γ on (0,∞) and its functional equation, establish sharp power bounds for the unit-shift ratio of Gamma values.\n\n**Result:** for x>0 and 0<s<1,  x^(1−s) ≤ Γ(x+1)/Γ(x+s) ≤ (x+1)^(1−s); and for a,b>0,  Γ((a+b)/2)² ≤ Γ(a)·Γ(b).",
+    "text": "From log-convexity of the Gamma function this entry derives the Gautschi double inequality x^(1−s) ≤ Γ(x+1)/Γ(x+s) ≤ (x+1)^(1−s) and the multiplicative midpoint inequality, all verified in Lean with no axioms.",
+    "proofStrategy": "Every bound is an instance of the two-point convexity inequality `convexOn_log_Gamma.2`, applied at a tailored convex decomposition of the target point, then exponentiated (exp is monotone, Γ>0 so logs are reversible).\n1. logGamma_le_lower: write x+s = (1−s)·x + s·(x+1). Convexity gives log Γ(x+s) ≤ (1−s)log Γ(x) + s·log Γ(x+1); the functional equation log Γ(x+1) = log x + log Γ(x) collapses the right side to log Γ(x) + s·log x.\n2. gautschi_lower: exponentiate step 1 to Γ(x+s) ≤ Γ(x)·x^s, then since Γ(x+1)=x·Γ(x) and x^(1−s)·x^s = x, rearrange to x^(1−s) ≤ Γ(x+1)/Γ(x+s).\n3. gautschi_upper: write x+1 = (1/(2−s))·(x+s) + ((1−s)/(2−s))·(x+2). Convexity, after clearing the denominator (2−s) and substituting log Γ(x+2) = log(x+1) + log Γ(x+1), gives log Γ(x+1) − log Γ(x+s) ≤ (1−s)·log(x+1); exponentiating yields Γ(x+1)/Γ(x+s) ≤ (x+1)^(1−s).\n4. gamma_midpoint_sq_le: midpoint convexity (weights 1/2, 1/2) gives log Γ((a+b)/2) ≤ ½(log Γ(a)+log Γ(b)); doubling and exponentiating gives the squared multiplicative form.",
+    "keyInsights": [
+      "**One structural input, two decompositions.** Both Gautschi bounds come from the *same* convexity inequality for log Γ; only the convex combination of points differs — x+s split toward (x, x+1) for the lower bound, x+1 split toward (x+s, x+2) for the upper. No derivative or integral estimates are needed.",
+      "**The functional equation does the bookkeeping.** Γ(x+1)=x·Γ(x) is what turns an abstract convexity bound into an explicit power of x (or x+1): log Γ(x+1)−log Γ(x) = log x is exactly the linear term that produces x^s and (x+1)^(1−s).",
+      "**Filling a real Mathlib gap.** Mathlib carries `convexOn_log_Gamma` solely as a lemma inside the Bohr–Mollerup uniqueness proof; it never exposes a single ratio or midpoint inequality. This entry packages the classical consequences as directly citable theorems.",
+      "**Avoiding the secant-slope machinery.** The upper bound is usually phrased via monotonicity of secant slopes of a convex function. Recasting it as a single convex combination x+1 = (1/(2−s))(x+s) + ((1−s)/(2−s))(x+2) keeps the whole development inside the elementary two-point convexity API and avoids division-by-slope side conditions."
+    ],
+    "prerequisites": [
+      "Convex functions and the two-point (Jensen) inequality",
+      "Logarithmic convexity and the Bohr–Mollerup characterization of Γ",
+      "The Gamma functional equation Γ(x+1) = x·Γ(x)",
+      "Real powers (rpow) and the laws log(x^y)=y·log x, exp∘log = id on (0,∞)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and the Functional-Equation Lemma",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "File docstring describing the Gautschi inequality and its derivation from log-convexity. logGamma_add_one packages the log form of the functional equation: log Γ(x+1) = log x + log Γ(x) for x>0.",
+      "mathContext": "Γ(x+1)=x·Γ(x) with Γ(x)>0 gives, after taking logs, the linear increment log Γ(x+1)−log Γ(x) = log x."
+    },
+    {
+      "id": "core-lower-estimate",
+      "title": "Core Convexity Estimate",
+      "startLine": 36,
+      "endLine": 51,
+      "summary": "logGamma_le_lower: applying convexOn_log_Gamma.2 at the convex combination x+s = (1−s)·x + s·(x+1) and simplifying with the functional equation yields log Γ(x+s) ≤ log Γ(x) + s·log x.",
+      "mathContext": "The single convexity inequality underlying the lower Gautschi bound; s∈[0,1] is exactly the weight constraint."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Gautschi Lower Bound",
+      "startLine": 53,
+      "endLine": 82,
+      "summary": "gautschi_lower: exponentiating the core estimate gives Γ(x+s) ≤ Γ(x)·x^s; combined with Γ(x+1)=x·Γ(x) and x^(1−s)·x^s = x, rearrangement yields x^(1−s) ≤ Γ(x+1)/Γ(x+s).",
+      "mathContext": "Lower bound of the Gautschi double inequality, sharp as s→0 and s→1."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Gautschi Upper Bound",
+      "startLine": 84,
+      "endLine": 122,
+      "summary": "gautschi_upper: convexity at x+1 = (1/(2−s))·(x+s) + ((1−s)/(2−s))·(x+2), after clearing the (2−s) denominator and using log Γ(x+2)=log(x+1)+log Γ(x+1), gives log Γ(x+1)−log Γ(x+s) ≤ (1−s)·log(x+1); exponentiating gives Γ(x+1)/Γ(x+s) ≤ (x+1)^(1−s).",
+      "mathContext": "Upper bound of the Gautschi double inequality, using a forward convex combination toward x+2."
+    },
+    {
+      "id": "bracket-and-midpoint",
+      "title": "Combined Bracket and Midpoint Inequality",
+      "startLine": 124,
+      "endLine": 149,
+      "summary": "gautschi_bracket bundles the two bounds into the two-sided statement. gamma_midpoint_sq_le derives Γ((a+b)/2)² ≤ Γ(a)·Γ(b) from midpoint convexity (weights 1/2, 1/2) by doubling the log inequality and exponentiating.",
+      "mathContext": "The two-sided Gautschi inequality and the multiplicative midpoint log-convexity inequality."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Gautschi, Walter",
+      "title": "Some elementary inequalities relating to the gamma and incomplete gamma function",
+      "year": "1959",
+      "note": "Original source of the double inequality x^(1−s) ≤ Γ(x+1)/Γ(x+s) ≤ (x+1)^(1−s)"
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "note": "Develops the Bohr–Mollerup theorem and log-convexity as the defining property of Γ"
+    },
+    {
+      "authors": "Qi, Feng",
+      "title": "Bounds for the ratio of two gamma functions",
+      "year": "2010",
+      "note": "Survey placing Gautschi's inequality within the broader theory of Gamma-ratio bounds (Kershaw, Wendel, etc.)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-05",
+      "relationship": "related",
+      "description": "Both extract sharp functional inequalities from strict/ordinary convexity of a transcendental function (exp there, log∘Γ here)"
+    }
+  ],
+  "conclusion": {
+    "summary": "From the single fact that log∘Γ is convex on (0,∞), together with the recurrence Γ(x+1)=x·Γ(x), the Gautschi double inequality x^(1−s) ≤ Γ(x+1)/Γ(x+s) ≤ (x+1)^(1−s) (gautschi_lower, gautschi_upper, gautschi_bracket) and the multiplicative midpoint inequality Γ((a+b)/2)² ≤ Γ(a)·Γ(b) (gamma_midpoint_sq_le) are derived. Each is a two-point convexity inequality at a tailored decomposition, exponentiated. All five results are verified with 0 axioms and 0 sorries.",
+    "implications": "Exposes the classical Gamma-ratio bounds as directly citable theorems, turning Mathlib's internal-only log-convexity lemma into usable functional inequalities for asymptotics and special-function estimates.",
+    "openQuestions": [
+      "Can the sharper Kershaw bound (x + s/2)^(1−s) ≤ Γ(x+1)/Γ(x+s), which interpolates between the two Gautschi endpoints, be obtained by the same convex-decomposition method with a shifted midpoint?",
+      "Does strict convexity of log∘Γ (available via strict log-convexity of Γ) upgrade these to strict inequalities for 0<s<1, with equality characterized only in the degenerate limits?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Set"
+    ],
+    "namespace": "GammaLogConvexityOQ01",
+    "lineCount": 149,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/GammaLogConvexityOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

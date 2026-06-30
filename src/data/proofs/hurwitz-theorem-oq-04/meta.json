@@ -62,60 +62,116 @@
   },
   "sections": [
     {
-      "id": "module-overview",
+      "id": "preamble",
       "title": "Preamble: Context and Contents",
       "startLine": 1,
-      "endLine": 63,
-      "summary": "Module documentation places the formalization in context: Hurwitz's theorem (1898) gives 4 normed division algebras, and the Freudenthal-Tits magic square (1954–1966) connects them to 5 exceptional Lie algebras. The contents table lists all proved results (0 sorries, 0 axioms after PR #13632 closed the 7 Fano residuals in derEval14_injective). References: Baez 'The Octonions' (2002), Freudenthal (1964), Tits (1966).",
-      "mathContext": "The magic square table: rows and columns indexed by {ℝ,ℂ,ℍ,𝕆}. Entries: 𝔏(𝕆,ℝ)=F₄, 𝔏(𝕆,ℂ)=E₆, 𝔏(𝕆,ℍ)=E₇, 𝔏(𝕆,𝕆)=E₈, plus G₂=Der(𝕆). The 'magic': 𝔏(A,B)≅𝔏(B,A) despite the definition not being visibly symmetric."
+      "endLine": 71,
+      "summary": "Module docstring (what is formalized, contents map, references to Baez and the Freudenthal–Tits magic square) and imports from the parent octonion file.",
+      "mathContext": "The octonions 𝕆 are the unique 8-dimensional real normed division algebra (Hurwitz's theorem). This file develops Aut(𝕆) = G₂, the derivation algebra Der(𝕆) of dimension 14, and the exceptional-Lie-algebra correspondence."
     },
     {
-      "id": "octonion-automorphisms",
-      "title": "§I-II: Octonion Unit and Automorphism Structures",
-      "startLine": 64,
-      "endLine": 165,
-      "summary": "Defines the octonion unit e₀ = stdBasis 0, proves it is a two-sided identity (eightMul_right_unit, eightMul_left_unit). Introduces OctonionAlgHom (linear, multiplicative maps) and OctonionAut (invertible algebra homomorphisms). Proves algebra homs preserve products of norms via the 8-square identity.",
-      "mathContext": "An octonion algebra homomorphism φ: 𝕆 → 𝕆 satisfies φ(a+b)=φ(a)+φ(b), φ(r·a)=r·φ(a), and φ(a·b)=φ(a)·φ(b). An automorphism also has a two-sided inverse. The unit element e₀ satisfies e₀·a = a·e₀ = a for all a ∈ 𝕆."
+      "id": "octonion-unit",
+      "title": "PART I: The Octonion Unit Element",
+      "startLine": 72,
+      "endLine": 117,
+      "summary": "`octUnit = stdBasis 0` with `normSq_octUnit = 1`, the two-sided identity laws `eightMul_right_unit`/`eightMul_left_unit`, and `normSq_mul_octUnit`.",
+      "mathContext": "The unit $e_0$ of the octonion multiplication `eightMul` is the first standard basis vector; it is a two-sided identity and has norm 1, the starting point for the automorphism analysis."
     },
     {
-      "id": "norm-preservation-core",
-      "title": "§III-a: Automorphisms Fix e₀ and Preserve Im(𝕆)",
-      "startLine": 166,
-      "endLine": 291,
-      "summary": "Private helper lemmas and the core norm result: phi_unit_eq_unit (φ(e₀)=e₀ by surjectivity argument), imag_sq_eq_neg_norm (y²=−‖y‖²e₀ for pure imaginary y), phi_imag_props (φ maps Im(𝕆) to Im(𝕆) isometrically), alg_aut_preserves_norm (φ preserves all norms via real-imaginary decomposition).",
-      "mathContext": "Proof chain: $\\varphi(e_0)=e_0$ (left-identity uniqueness) → $\\varphi(y)^2 = -\\|y\\|^2 e_0$ for $y_0=0$ → $\\|\\varphi(y)\\| = \\|y\\|$ and $\\varphi(y)_0=0$ → $\\|\\varphi(a)\\| = \\|a\\|$ for all $a$ (decompose $a = r e_0 + w$, use orthogonality)."
+      "id": "alg-homs",
+      "title": "PART II: Octonion Algebra Homomorphisms",
+      "startLine": 118,
+      "endLine": 295,
+      "summary": "The `OctonionAlgHom` / `OctonionAut` structures with `idAlgHom`, `compAlgHom`, `alg_hom_preserves_norm_product`, helper lemmas (`normSq_expand`, `eightMul_self_zero`, `phi_unit_eq_unit`, `imag_sq_eq_neg_norm`, `phi_imag_props`), and `alg_aut_preserves_norm` (automorphisms are isometries).",
+      "mathContext": "An octonion automorphism is a linear bijection preserving multiplication. Such a map fixes the unit ($\\varphi(e_0) = e_0$) and preserves the norm, so $\\text{Aut}(\\mathbb{O}) \\subseteq O(8)$ — the first step toward $\\text{Aut}(\\mathbb{O}) = G_2$."
     },
     {
-      "id": "real-part-inner-product",
-      "title": "§III-b: Real Part, Conjugation, and Aut(𝕆) ⊆ O(7)",
-      "startLine": 292,
-      "endLine": 358,
-      "summary": "Defines realPart, imagPart, octConj. Proves real_part_preserved (Re(φ(x))=Re(x)) and alg_aut_preserves_inner (φ preserves the inner product by polarization). Together: Aut(𝕆) fixes e₀, maps Im(𝕆)=ℝ⁷ to itself, and acts isometrically — so Aut(𝕆) ⊆ O(7).",
-      "mathContext": "Polarization: $\\langle \\varphi(x), \\varphi(y) \\rangle = \\frac{1}{2}(\\|\\varphi(x+y)\\|^2 - \\|\\varphi(x)\\|^2 - \\|\\varphi(y)\\|^2) = \\langle x, y \\rangle$. Combined with $\\mathrm{Re}(\\varphi(x))=\\mathrm{Re}(x)$ (real part invariance), we get $\\mathrm{Aut}(\\mathbb{O}) \\subseteq \\mathrm{O}(7)$."
+      "id": "real-conj",
+      "title": "PART III: The Real Part and Conjugation",
+      "startLine": 296,
+      "endLine": 343,
+      "summary": "`realPart`/`imagPart`, the decomposition `oct_decomp`, conjugation `octConj` with `octConj_involutive`, and `real_part_preserved` (automorphisms fix the real part).",
+      "mathContext": "Every octonion splits as $x = \\text{Re}(x)\\,e_0 + \\text{Im}(x)$; conjugation $\\bar x = 2\\,\\text{Re}(x)e_0 - x$ is an involution. Automorphisms fix $e_0$, hence preserve the real part and map the 7-dimensional imaginary subspace to itself."
     },
     {
-      "id": "exceptional-lie-algebras",
-      "title": "§IV-VI: G₂, Magic Square, and Structural Consequences",
-      "startLine": 359,
-      "endLine": 583,
-      "summary": "Introduces ExceptionalType inductive type for G₂,F₄,E₆,E₇,E₈ with dimensions (14,52,78,133,248) and ranks (2,4,6,7,8). The G₂=Aut(𝕆) identification is documented but not formalized (requires Lie group theory not yet in Mathlib as of 2026-04). freudenthal_tits_f4/e6/e7/e8 are proved theorems (proved by rfl from the ExceptionalType.dim definition), not axioms. Proves exceptional_dims_strict_mono, G2_unique_low_rank, E8_is_largest, magic_square_corners_distinct, exceptional_chain by decidability. Closes with the Hurwitz-exceptional correspondence explaining why exactly 5 exceptional types exist.",
-      "mathContext": "G₂ has dimension 14 = dim(SO(7)) − 7 = 21 − 7 (Aut(𝕆) acts on Im(𝕆)≅ℝ⁷ and is constrained by the cross-product structure). The Freudenthal-Tits magic square: 𝔏(A,B) = Der(A) ⊕ (ImA⊗ImB) ⊕ Der(B). Corners: 𝔏(𝕆,ℝ)=F₄(52), 𝔏(𝕆,ℂ)=E₆(78), 𝔏(𝕆,ℍ)=E₇(133), 𝔏(𝕆,𝕆)=E₈(248)."
+      "id": "inner-imag",
+      "title": "PART IIIb: Inner Product and Imaginary Subspace Preservation",
+      "startLine": 344,
+      "endLine": 361,
+      "summary": "`alg_aut_preserves_inner` (automorphisms are orthogonal) and `imag_closed_under_aut` (the imaginary subspace Im(𝕆) is invariant).",
+      "mathContext": "Norm preservation polarizes to inner-product preservation, so $\\text{Aut}(\\mathbb{O})$ acts orthogonally; combined with fixing $e_0$, it restricts to $O(7)$ on $\\text{Im}(\\mathbb{O}) \\cong \\mathbb{R}^7$."
     },
     {
-      "id": "derivation-submodule-magic-square",
-      "title": "§IV-c to V: Derivation Algebra as Submodule + Freudenthal-Tits Axioms",
-      "startLine": 558,
-      "endLine": 697,
-      "summary": "Defines OctonionDerSubmodule as a Submodule of End_ℝ(ℝ⁸) to give Der(𝕆) an inherited vector space structure. Proves G2_der_dimension (finrank = 14) via upper bound (injective evaluation map) and lower bound (14 linearly independent derivations); all 7 Fano upper-triangular residuals (F43, F53, F63, F65, F73, F75, F76) in derEval14_injective were closed by PR #13632 via explicit Fano-line Leibniz proofs. Proves derivation structural properties: der_maps_unit_to_zero, der_maps_real_part_to_zero, toLinearMap, mem_der_submodule. Then proves the Freudenthal-Tits magic square dimension theorems: freudenthal_tits_f4/e6/e7/e8 (dimension facts, 52/78/133/248, proved by rfl).",
-      "mathContext": "Der(𝕆) as a Submodule of $\\text{End}_\\mathbb{R}(\\mathbb{R}^8)$: the set of $\\mathbb{R}$-linear maps $D: \\mathbb{R}^8 \\to \\mathbb{R}^8$ satisfying the Leibniz rule $D(ab) = D(a)\\cdot b + a\\cdot D(b)$ for octonion multiplication. Theorem `G2_der_dimension`: $\\text{finrank}_\\mathbb{R}(\\text{Der}(\\mathbb{O})) = 14$ (the dimension of $\\mathfrak{g}_2$), proved (not axiomatized) via injective evaluation map upper bound and 14 linearly independent derivations lower bound. Tits construction: $\\mathfrak{L}(A,B) = \\mathfrak{der}(A) \\oplus (\\text{Im}A \\otimes \\text{Im}B) \\oplus \\mathfrak{der}(B)$ with $\\dim\\mathfrak{L}(\\mathbb{O},\\mathbb{O}) = 14 + 49 + 14 + \\text{extra} = 248$."
+      "id": "g2-aut",
+      "title": "PART IV: G₂ as the Automorphism Group of the Octonions",
+      "startLine": 362,
+      "endLine": 421,
+      "summary": "Frames $G_2 = \\text{Aut}(\\mathbb{O})$ as a compact 14-dimensional exceptional Lie group, with `ExceptionalType.dim` and `ExceptionalType.rank` recording the dimensions/ranks of G₂, F₄, E₆, E₇, E₈.",
+      "mathContext": "$G_2$ is the smallest exceptional Lie group, realized as the automorphism group of the octonions; its Lie algebra is the derivation algebra $\\text{Der}(\\mathbb{O})$, whose dimension 14 is established in PART IV-c.3."
     },
     {
-      "id": "physical-applications-summary",
-      "title": "§VII: Hurwitz-Exceptional Correspondence and Physical Applications",
-      "startLine": 750,
-      "endLine": 822,
-      "summary": "Docstring explaining why Hurwitz's 4 normed division algebras yield exactly 5 exceptional Lie algebras: G₂=Der(𝕆), F₄=𝔏(𝕆,ℝ), E₆=𝔏(𝕆,ℂ), E₇=𝔏(𝕆,ℍ), E₈=𝔏(𝕆,𝕆). Physical applications: E₈×E₈ heterotic string theory (anomaly cancellation, dim=496), M-theory compactification on G₂ manifolds, E₇(7) symmetry of N=8 supergravity. #check summary of all 30 public declarations.",
-      "mathContext": "E₈×E₈ heterotic string theory: the unique anomaly-free 10D string theory requires $\\text{dim}(G) = 496$ — satisfied by $E_8 \\times E_8$ with $2 \\times 248 = 496$ and $\\text{SO}(32)$ with $\\frac{32\\cdot 31}{2} = 496$. G₂ holonomy: a Riemannian 7-manifold $(M^7, g)$ with holonomy $G_2$ (i.e., the holonomy group $\\subseteq G_2 \\subset \\text{SO}(7)$) admits a parallel spinor, giving $N=1$ supersymmetry in 4D M-theory compactification. These physical applications arise precisely because $G_2 = \\text{Aut}(\\mathbb{O}) \\subseteq \\text{O}(7)$, proved in this file."
+      "id": "derivation-algebra",
+      "title": "PART IV-b: Derivation Algebra of the Octonions",
+      "startLine": 422,
+      "endLine": 558,
+      "summary": "The `OctonionDer` structure (linear maps satisfying the Leibniz rule) with its vector-space operations `zeroDer`/`addDer`/`smulDer`, the bilinearity/subtraction lemmas for `eightMul`, the commutator bracket `commDer`, and the Lie-algebra laws `commDer_self_eq_zero`, `commDer_antisymm`, `commDer_jacobi`.",
+      "mathContext": "A derivation $D$ satisfies $D(ab) = D(a)b + aD(b)$. The derivations form a Lie algebra under the commutator bracket — this is $\\mathfrak{g}_2 = \\text{Der}(\\mathbb{O})$, the Lie algebra of $G_2$."
+    },
+    {
+      "id": "der-submodule",
+      "title": "PART IV-c: Der(𝕆) as a Vector Subspace (Submodule)",
+      "startLine": 559,
+      "endLine": 586,
+      "summary": "`OctonionDerSubmodule`: Der(𝕆) realized as a `Submodule ℝ` of End_ℝ(ℝ⁸), giving it an inherited finite-dimensional structure so `FiniteDimensional.finrank` can measure its dimension.",
+      "mathContext": "To compute $\\dim \\text{Der}(\\mathbb{O})$ with Mathlib's `finrank`, the derivations are packaged as a submodule of the (finite-dimensional) endomorphism space $\\text{End}_\\mathbb{R}(\\mathbb{R}^8)$. The dimension is proved (not axiomatized) in PART IV-c.3."
+    },
+    {
+      "id": "baez-derivations",
+      "title": "PART IV-c.2: 14 Explicit Derivations — Baez Construction",
+      "startLine": 587,
+      "endLine": 719,
+      "summary": "The 14 explicit basis derivations `d12, d13, …, d47` from Baez's formula $D_{ij}(x) = [[e_i, e_j], x] - 3\\,\\text{assoc}(e_i, e_j, x)$, each verified to lie in `OctonionDerSubmodule` via the `simp_der_mem` tactic (`d12_mem` … `d47_mem`).",
+      "mathContext": "Of the 21 maps $D_{ij}$ (Baez, *The Octonions* §4.1), the 14 pairs $(i,j) \\in \\{(1,2),\\dots,(4,7)\\}$ form a basis for $\\text{Der}(\\mathbb{O})$. Each is checked to satisfy the Leibniz rule, providing the lower bound $\\dim \\ge 14$."
+    },
+    {
+      "id": "dimension-14",
+      "title": "PART IV-c.3: Der(𝕆) has Dimension 14",
+      "startLine": 720,
+      "endLine": 1416,
+      "summary": "The full dimension computation: `derEval14_injective` and `derBasis14_linearIndependent` (the 14 Baez derivations are independent), the structural lemmas constraining any derivation (kills the unit, diagonal, real part; antisymmetry), and the main theorem `G2_der_dimension : finrank ℝ OctonionDerSubmodule = 14`.",
+      "mathContext": "Combining the explicit 14 independent derivations (lower bound) with the structural constraints forcing every derivation into a 14-dimensional space (upper bound) gives $\\dim_\\mathbb{R} \\text{Der}(\\mathbb{O}) = 14 = \\dim G_2$, the file's central computation."
+    },
+    {
+      "id": "der-structural",
+      "title": "PART IV-d: Structural Properties of Derivations",
+      "startLine": 1417,
+      "endLine": 1465,
+      "summary": "Derivation properties independent of the dimension result: `der_maps_unit_to_zero`, `der_maps_real_part_to_zero`, and the bridge `OctonionDer.toLinearMap`/`mem_der_submodule`/`toSubmoduleMem` between the structure and the submodule.",
+      "mathContext": "Any derivation annihilates the unit and the real part ($D(e_0) = 0$), reflecting that derivations are infinitesimal automorphisms; these facts connect the `OctonionDer` structure to the submodule formulation used for the dimension count."
+    },
+    {
+      "id": "magic-square",
+      "title": "PART V: The Freudenthal–Tits Magic Square",
+      "startLine": 1466,
+      "endLine": 1517,
+      "summary": "The proved dimension theorems `freudenthal_tits_f4`/`_e6`/`_e7`/`_e8` recording the dimensions of the exceptional Lie algebras F₄ (52), E₆ (78), E₇ (133), E₈ (248).",
+      "mathContext": "The Freudenthal–Tits magic square constructs the exceptional Lie algebras from pairs of normed division algebras; the octonion row yields G₂, F₄, E₆, E₇, E₈. Here their dimensions are recorded as theorems (not axioms)."
+    },
+    {
+      "id": "structural-consequences",
+      "title": "PART VI: Structural Consequences (Proved)",
+      "startLine": 1518,
+      "endLine": 1566,
+      "summary": "Order and uniqueness results: `exceptional_dims_strict_mono`, `G2_unique_low_rank`, `E8_is_largest`, `magic_square_corners_distinct`, and `exceptional_chain`.",
+      "mathContext": "The five exceptional types form a strictly increasing dimension chain $G_2 < F_4 < E_6 < E_7 < E_8$ with distinct, well-separated invariants — structural consequences of the magic-square data."
+    },
+    {
+      "id": "hurwitz-correspondence",
+      "title": "PART VII: The Hurwitz–Exceptional Correspondence",
+      "startLine": 1567,
+      "endLine": 1646,
+      "summary": "Ties the octonion structure to the exceptional groups (the Hurwitz–exceptional correspondence) and a closing summary of the file's results.",
+      "mathContext": "Hurwitz's classification of normed division algebras (ℝ, ℂ, ℍ, 𝕆) underlies the exceptional Lie groups: the octonions, the largest such algebra, generate the entire exceptional series via automorphisms and the magic square."
     }
   ],
   "conclusion": {

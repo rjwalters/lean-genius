@@ -18,8 +18,8 @@
     "proofRepoPath": "Proofs/Hilbert20OQ01OQ03.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 8,
-    "theoremCount": 9,
+    "axiomCount": 5,
+    "theoremCount": 10,
     "mathlibDependencies": [
       {
         "theorem": "Complex.ofReal",
@@ -37,19 +37,18 @@
       "Involutivity of adjoint: (P*)* = P",
       "Dencker sufficiency theorem assembled from weight->estimate->solvability chain",
       "Adjoint preserves principal type property",
-      "Proved real-symbol solvability and self-adjoint solvability as corollaries of Dencker sufficiency"
+      "Proved real-symbol solvability and self-adjoint solvability as corollaries of Dencker sufficiency",
+      "Concretized BicharacteristicCurve (axiom Type -> structure with vanishing-symbol field) and imSymbolAlongCurve (axiom -> concrete def), proving imSymbolAlongCurve_spec by rfl — eliminates 3 axioms (8 -> 5)"
     ],
-    "lineCount": 334,
+    "lineCount": 355,
     "assumptions": [
       "HasAPrioriEstimate: Sobolev a priori estimates (needs Sobolev spaces)",
       "IsLocallySolvable: local solvability (needs distribution theory)",
       "hormander_duality: solvability <=> adjoint estimates",
-      "BicharacteristicCurve/imSymbolAlongCurve: Hamilton flow",
-      "imSymbolAlongCurve_spec: bridge axiom — bicharacteristic Im equals principalSymbol Im at some point",
       "dencker_weight_exists: Dencker weight construction (2006)",
       "weight_implies_estimate: weight => a priori estimates"
     ],
-    "definitionCount": 9,
+    "definitionCount": 11,
     "additionalFiles": [
       "Proofs/Hilbert20OQ01OQ03Aristotle.lean"
     ]
@@ -65,7 +64,7 @@
       "The proof's logical structure is surprisingly simple — a three-step chain $(\\Psi) \\to \\text{weight} \\to \\text{estimates} \\to \\text{solvability}$ — but each link involves deep analysis (microlocal calculus, energy estimates, distribution theory)",
       "The principal symbol relation $p^*_m(x,\\xi) = \\overline{p_m(x,\\xi)}$ for the formal adjoint is the algebraic foundation: it explains why condition $(\\Psi)$ on $P$ translates to estimates on $P^*$ via Hörmander duality",
       "Dencker's key innovation was constructing weight functions $W$ with controlled Poisson brackets $\\{\\mathrm{Re}(p_m), W\\} \\geq 0$ near sign changes — this is where the actual hard analysis lives",
-      "The 7 axioms encode exactly the analytic infrastructure Mathlib currently lacks: Sobolev spaces, distribution theory, bicharacteristic flow, and microlocal energy estimates",
+      "The 5 remaining axioms encode exactly the analytic infrastructure Mathlib currently lacks: Sobolev spaces, distribution theory, and microlocal energy estimates (bicharacteristic curves are now concretized as a structure)",
       "Real-symbol operators (e.g., the Laplacian) are automatically solvable because condition $(\\Psi)$ is vacuously true when $\\mathrm{Im}(p_m) \\equiv 0$ — there are no sign changes to constrain"
     ]
   },
@@ -115,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the structural architecture of Dencker's 2006 proof resolving the Nirenberg-Treves conjecture. The algebraic core — adjoint symbol relation, involutivity, principal type preservation — is fully proved from Mathlib's complex number API. The analytic core (Sobolev estimates, bicharacteristic flow, Dencker weights) is precisely axiomatized, clearly delineating what Mathlib provides and what remains for future development.",
-    "implications": "The formalization demonstrates that the logical structure of major PDE theorems can be captured in Lean even when the full analytic machinery is not yet available. The 7 axioms serve as a precise specification for what Mathlib needs to add (Sobolev spaces, distribution theory, microlocal analysis) to make the proof fully formal.",
+    "implications": "The formalization demonstrates that the logical structure of major PDE theorems can be captured in Lean even when the full analytic machinery is not yet available. The 5 remaining axioms serve as a precise specification for what Mathlib needs to add (Sobolev spaces, distribution theory, microlocal analysis) to make the proof fully formal.",
     "openQuestions": [
       "Can Mathlib's Sobolev space development (currently in progress) provide enough infrastructure to eliminate the HasAPrioriEstimate and IsLocallySolvable axioms?",
       "Can the bicharacteristic flow be formalized using Mathlib's ODE theory (Picard-Lindelöf) applied to the Hamiltonian system?",
@@ -131,10 +130,10 @@
   ],
   "leanFile": {
     "namespace": "Hilbert20OQ01OQ03",
-    "lineCount": 334,
-    "axiomCount": 8,
-    "theoremCount": 9,
-    "definitionCount": 9,
+    "lineCount": 355,
+    "axiomCount": 5,
+    "theoremCount": 10,
+    "definitionCount": 11,
     "path": "Proofs/Hilbert20OQ01OQ03.lean",
     "sorries": 0,
     "additionalFiles": [

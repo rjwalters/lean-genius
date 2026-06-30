@@ -46,46 +46,52 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "startLine": 15,
-      "endLine": 21,
-      "summary": "Finset, Rat, Filter, Tactic imports; opens Finset namespace."
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "States Erdős Problem #301: $f(N)$ is the max size of $A\\subseteq\\{1,\\dots,N\\}$ with no solution to $1/a=1/b_1+\\cdots+1/b_k$ among distinct elements. Does $f(N)=(1/2+o(1))N$? Lower bound $f(N)\\geq N/2$ via $(N/2,N]$; upper bound $f(N)\\leq(25/28+o(1))N$ (Van Doorn). Imports `Finset`/`Rat`/tactics.",
+      "mathContext": "$f(N)=\\max|A\\subseteq[1,N]|$ Egyptian-fraction-free; conjecture $f(N)=(1/2+o(1))N$."
     },
     {
       "id": "avoidance",
       "title": "Egyptian Fraction Avoidance",
-      "startLine": 22,
-      "endLine": 38,
-      "summary": "Defines HasEgyptianDecomp (forbidden pattern $\\frac{1}{a} = \\sum \\frac{1}{b_i}$), EgyptFractionFree, and the extremal function maxEgyptFree."
+      "startLine": 24,
+      "endLine": 40,
+      "summary": "Defines `HasEgyptianDecomp A a` ($\\exists$ distinct $B\\subseteq A\\setminus\\{a\\}$ with $\\sum_{b\\in B}1/b=1/a$), `EgyptFractionFree A` (no element has such a decomposition), and `maxEgyptFree N` $=f(N)$.",
+      "mathContext": "$\\text{EgyptFractionFree}(A)$: no $a\\in A$ with $1/a=\\sum_{b\\in B}1/b$, $B\\subseteq A\\setminus\\{a\\}$."
     },
     {
-      "id": "conjecture",
+      "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 39,
-      "endLine": 46,
-      "summary": "States ErdosProblem301: $f(N) = (\\frac{1}{2}+o(1))N$ via two-sided $\\varepsilon$-$\\delta$ formulation."
+      "startLine": 41,
+      "endLine": 48,
+      "summary": "Defines `ErdosProblem301`: $f(N)=(1/2+o(1))N$ (i.e. $(1/2-\\varepsilon)N\\leq f(N)\\leq(1/2+\\varepsilon)N$ eventually).",
+      "mathContext": "Conjecture: $(1/2-\\varepsilon)N\\leq f(N)\\leq(1/2+\\varepsilon)N$ for large $N$."
     },
     {
-      "id": "lower",
+      "id": "lower-bound",
       "title": "Lower Bound",
-      "startLine": 47,
-      "endLine": 56,
-      "summary": "Half-interval $(N/2, N]$ is EgyptFractionFree, giving $f(N) \\geq N/2$. Both axiomatized."
+      "startLine": 49,
+      "endLine": 114,
+      "summary": "PROVES `halfInterval_egyptFree` (the interval $(N/2,N]$ is Egyptian-fraction-free: $k=1$ forces $b=a$; $k\\geq2$ gives sum $\\geq2/N>1/a$) and `maxEgyptFree_lower` ($f(N)\\geq N/2$).",
+      "mathContext": "$(N/2,N]$ is EgyptFractionFree, so $f(N)\\geq N/2$."
     },
     {
-      "id": "upper",
-      "title": "Upper Bound (Van Doorn)",
-      "startLine": 57,
-      "endLine": 62,
-      "summary": "Van Doorn's bound $f(N) \\leq (\\frac{25}{28}+o(1))N$ via divisibility covering arguments."
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "startLine": 115,
+      "endLine": 136,
+      "summary": "PROVES `maxEgyptFree_le` ($f(N)\\leq N$, trivially) and `vanDoorn_upper` ($f(N)\\leq(25/28+1)N$, the formalized weakening of Van Doorn's $(25/28+o(1))N$ bound).",
+      "mathContext": "$f(N)\\leq N$; Van Doorn $f(N)\\leq(25/28+o(1))N$."
     },
     {
-      "id": "basic",
+      "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 63,
-      "endLine": 76,
-      "summary": "Proves egyptFractionFree_empty and egyptFractionFree_subset (hereditary property). Axiomatizes singleton case."
+      "startLine": 137,
+      "endLine": 158,
+      "summary": "PROVES closure properties: `egyptFractionFree_empty`, `egyptFractionFree_singleton`, and `egyptFractionFree_subset` (subsets of Egyptian-fraction-free sets are Egyptian-fraction-free).",
+      "mathContext": "$\\emptyset$, singletons, and subsets of EgyptFractionFree sets are EgyptFractionFree."
     }
   ],
   "conclusion": {

@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 4,
+      "endLine": 60
+    },
+    "type": "context",
+    "title": "Fibre Sizes of the Power Map Are Constant",
+    "content": "Answers the parent's second open question: does the fibre-size multiset of x ↦ xⁿ become more informative on a product of cyclic groups than on a single cyclic group? It does not. Because x ↦ xⁿ is a group endomorphism, every non-empty fibre is a coset of the n-torsion subgroup, so all fibres share the size #{x | xⁿ = 1} on ANY finite abelian group. The multiset is one repeated number. On a product ∏ᵢ Gᵢ of cyclics that number factors as ∏ᵢ gcd(n, mᵢ), recovering the product of per-factor kernel sizes but no residue of n.",
+    "mathContext": "$$\\#\\{x: x^n=b\\}=\\#\\{x: x^n=1\\}=|\\ker(x\\mapsto x^n)|,\\qquad \\#\\{x\\in\\textstyle\\prod_i G_i: x^n=1\\}=\\prod_i\\gcd(n,m_i).$$",
+    "significance": "Identifies the structural reason the open question's premise fails — endomorphisms have equinumerous fibres — and generalises the parent's cyclic-only counts to all finite abelian groups.",
+    "relatedConcepts": [
+      "power map endomorphism",
+      "equinumerous fibres",
+      "n-torsion subgroup",
+      "product of cyclic groups",
+      "invariant factors"
+    ],
+    "prerequisites": [
+      "finite abelian groups",
+      "group homomorphisms and kernels",
+      "cosets",
+      "gcd"
+    ]
+  },
+  {
+    "id": "ann-constant-fibres",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 106
+    },
+    "type": "key-step",
+    "title": "Constant Fibres on Any Finite Abelian Group",
+    "content": "card_fiber_pow_eq_card_torsion proves every non-empty fibre {x | xⁿ = b} is equinumerous with the torsion set {x | xⁿ = 1}: choosing a with aⁿ = b, the translation x ↦ a⁻¹·x is a bijection between them because (a⁻¹x)ⁿ = (aⁿ)⁻¹·xⁿ = b⁻¹·b = 1, packaged by Finset.card_bij'. Only mul_pow is used — no cyclicity — so this holds for every finite abelian group. card_torsion_eq_card_ker identifies the common value with the order of the kernel of powMonoidHom n.",
+    "mathContext": "$$x\\mapsto a^{-1}x:\\;\\{x:x^n=b\\}\\xrightarrow{\\sim}\\{x:x^n=1\\},\\qquad \\#\\{x:x^n=1\\}=|\\ker(\\mathrm{powMonoidHom}\\,n)|.$$",
+    "significance": "The crux: fibres of an endomorphism are cosets of the kernel, hence all the same size, so the fibre-size multiset is a single repeated value regardless of how the group factors.",
+    "relatedConcepts": [
+      "translation bijection",
+      "kernel cosets",
+      "Finset.card_bij'",
+      "n-torsion subgroup"
+    ],
+    "prerequisites": [
+      "group endomorphisms",
+      "cosets and Lagrange's theorem",
+      "bijective counting"
+    ]
+  },
+  {
+    "id": "ann-partition-identity",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 108,
+      "endLine": 133
+    },
+    "type": "key-step",
+    "title": "The Partition Identity for Any Finite Abelian Group",
+    "content": "card_image_pow_mul_torsion counts the group through its fibres: Finset.card_eq_sum_card_image writes |G| as the sum over the image of the fibre cardinalities, the uniformity lemma collapses each summand to #{xⁿ=1}, and summing a constant gives #(n-th powers)·#{xⁿ=1} = |G|. This is the parent's cyclic identity #(n-th powers)·gcd(n, m) = m with gcd(n, m) replaced by the general torsion count, now valid for every finite abelian group.",
+    "mathContext": "$$\\#\\{x\\mapsto x^n\\ \\text{image}\\}\\cdot\\#\\{x:x^n=1\\}=|G|.$$",
+    "significance": "The first-isomorphism bookkeeping for the power map, freed from the cyclic hypothesis: kernel size times image size equals group order.",
+    "relatedConcepts": [
+      "first isomorphism theorem",
+      "fibrewise counting",
+      "image of the power map"
+    ],
+    "prerequisites": [
+      "Finset.card_eq_sum_card_image",
+      "sum of a constant",
+      "image and kernel cardinalities"
+    ]
+  },
+  {
+    "id": "ann-product-of-cyclics",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 135,
+      "endLine": 201
+    },
+    "type": "key-step",
+    "title": "The Single Fibre Value on a Product of Cyclic Groups",
+    "content": "card_torsion_pi splits the torsion count of ∏ᵢ Gᵢ: xⁿ = 1 holds coordinatewise (funext_iff with Pi.pow_apply, Pi.one_apply), so Equiv.subtypeEquivRight ∘ Equiv.subtypePiEquivPi exhibits the torsion subtype as ∏ᵢ (per-factor torsion subtype), and Fintype.card_pi multiplies the cardinalities. card_torsion_cyclic reads each factor as gcd(n, mᵢ) from the parent's card_fiber_pow at b = 1, giving #{xⁿ=1} = ∏ᵢ gcd(n, mᵢ). card_fiber_pow_pi_cyclic transports this constant to every fibre and card_image_pow_pi_cyclic divides the partition identity to count n-th powers as ∏ᵢ mᵢ/gcd(n, mᵢ).",
+    "mathContext": "$$\\#\\{x:x^n=1\\}=\\prod_i\\gcd(n,m_i),\\qquad \\#\\{n\\text{-th powers}\\}=\\frac{\\prod_i m_i}{\\prod_i\\gcd(n,m_i)}=\\prod_i\\frac{m_i}{\\gcd(n,m_i)}.$$",
+    "significance": "Pins the single fibre value on a product to ∏ᵢ gcd(n, mᵢ): the multiset is the constant product of per-factor kernel sizes, which recovers that product but not the per-factor tuple and not residues of n.",
+    "relatedConcepts": [
+      "Equiv.subtypePiEquivPi",
+      "Fintype.card_pi",
+      "coordinatewise torsion",
+      "invariant factors",
+      "multiplicativity of gcd over factors"
+    ],
+    "prerequisites": [
+      "products of groups",
+      "subtype equivalences",
+      "Fintype cardinality of a product"
+    ]
+  }
+]

@@ -62,6 +62,26 @@
       "targetId": "erdos-1009",
       "relationship": "extends",
       "description": "The parent problem: edge-disjoint triangles (K₃) beyond Turán threshold ⌊n²/4⌋, SOLVED by Györi 1988. This OQ asks for the K₄ analog."
+    },
+    {
+      "targetId": "erdos-1009-oq-01",
+      "relationship": "sibling",
+      "description": "Same Erdős #1009 family from the quantitative side: the optimal constant g(c) in Györi's K₃ edge-disjoint-triangle bound. This entry asks the structural K₄ analog of the very bound that one sharpens."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory and Turán theory are the twin pillars of extremal graph theory: both force unavoidable cliques once a graph is large or dense enough. The K₄ packing question lives squarely in this Turán-side tradition."
+    },
+    {
+      "targetId": "ramsey-r4k",
+      "relationship": "thematic",
+      "description": "A quantitative clique-existence result in the same extremal-combinatorics neighborhood, studying how clique structure (here K₄) is forced and bounded in graphs of controlled size or density."
+    },
+    {
+      "targetId": "erdos-65",
+      "relationship": "thematic",
+      "description": "Another Erdős extremal result on dense graphs — there, large average degree forcing many distinct cycle lengths; here, edge count beyond the Turán threshold forcing edge-disjoint K₄ copies. Both quantify substructure forced by density."
     }
   ],
   "overview": {

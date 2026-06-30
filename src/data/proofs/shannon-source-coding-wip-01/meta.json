@@ -1,0 +1,128 @@
+{
+  "id": "shannon-source-coding-wip-01",
+  "title": "Entropy is Additive for Independent Sources: H(pX ⊗ pY) = H(pX) + H(pY)",
+  "slug": "shannon-source-coding-wip-01",
+  "description": "Proves the equality case of entropy subadditivity: for an independent (product) source pXY(x,y) = pX(x)·pY(y), the Shannon entropy is exactly additive, H(pX ⊗ pY) = H(pX) + H(pY). This complements the gallery's subadditivity inequality H(X,Y) ≤ H(X)+H(Y) and is the source-coding fact that n i.i.d. symbols carry n·H bits. Engine: Mathlib's negMulLog_mul linearizes the product symbol-by-symbol; ∑ pX = ∑ pY = 1 collapses the cross terms. 2 theorems, 1 definition, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "researcher-1",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ShannonSourceCodingWIP01.lean",
+    "tags": [
+      "information-theory",
+      "shannon-entropy",
+      "source-coding",
+      "independence",
+      "product-distribution",
+      "additivity",
+      "negMulLog"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 72,
+    "theoremCount": 2,
+    "definitionCount": 1,
+    "assumptions": "None. All 2 theorems proved, 0 axioms. Verified axiom-free: #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.negMulLog_mul",
+        "description": "negMulLog(x·y) = y·negMulLog x + x·negMulLog y — linearizes the entropy of a product symbol",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.NegMulLog"
+      },
+      {
+        "theorem": "Fintype.sum_prod_type",
+        "description": "∑ over α × β factors as a double sum, separating the two sources",
+        "module": "Mathlib.Algebra.BigOperators.Pi"
+      },
+      {
+        "theorem": "Finset.mul_sum / Finset.sum_mul",
+        "description": "pull constants through finite sums to collapse marginals using ∑ pX = ∑ pY = 1",
+        "module": "Mathlib.Algebra.BigOperators.Ring"
+      }
+    ],
+    "dateAdded": "2026-06-24"
+  },
+  "overview": {
+    "historicalContext": "Shannon's entropy H(p) = -∑ p log p is subadditive: the joint entropy of two random variables never exceeds the sum of their marginal entropies, H(X,Y) ≤ H(X) + H(Y). The inequality is saturated exactly when X and Y are independent. This equality case is the quantitative form of 'independent sources add their information content', and is what makes the entropy of a block of n i.i.d. symbols equal to n·H — the rate that Shannon's source coding theorem identifies as the compression limit. The gallery's ShannonEntropy file formalizes subadditivity; this entry supplies the matching equality for product distributions.",
+    "problemStatement": "Prove that for a product (independent) distribution pXY(x,y) = pX(x)·pY(y) with ∑ pX = ∑ pY = 1, the Shannon entropy is additive: H(pX ⊗ pY) = H(pX) + H(pY).",
+    "proofStrategy": "Write entropy in negMulLog form H(p) = ∑ₓ negMulLog(p x) (agreeing with -∑ p log p, proved as entropy_eq_neg_sum). Factor the sum over α × β into a double sum (Fintype.sum_prod_type). Apply Real.negMulLog_mul to each product symbol: negMulLog(pX x · pY y) = pY y · negMulLog(pX x) + pX x · negMulLog(pY y). The inner sum over y splits: ∑_y pY y · negMulLog(pX x) = negMulLog(pX x) (using ∑ pY = 1) and ∑_y pX x · negMulLog(pY y) = pX x · H(pY). Summing over x and using ∑ pX = 1 collapses the second term to H(pY), leaving H(pX) + H(pY).",
+    "keyInsights": [
+      "**negMulLog_mul is the linearization engine.** The identity negMulLog(x·y) = y·negMulLog x + x·negMulLog y turns the entropy of a product symbol into a weighted sum of the two single-source entropies — no case analysis on zeros needed, since negMulLog already encodes 0·log 0 = 0.",
+      "**Normalization collapses the cross terms.** Each linearized term carries one full marginal (∑ pX = 1 or ∑ pY = 1) as a factor; summing it out is exactly where independence makes subadditivity an equality.",
+      "**This is the n·H foundation.** Iterating additivity over n independent copies gives H of a block = n·H, the entropy rate underlying the AEP and Shannon's source coding theorem.",
+      "**Exact boundary of subadditivity.** The gallery's H(X,Y) ≤ H(X)+H(Y) becomes equality precisely for product distributions; this entry pins that boundary."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Entropy in negMulLog form and agreement with the standard definition",
+      "startLine": 39,
+      "endLine": 49,
+      "summary": "entropy p := ∑ₓ negMulLog (p x). entropy_eq_neg_sum: entropy p = -∑ₓ p x · log (p x), agreeing with the standard Shannon entropy (valid for all p).",
+      "mathContext": "$H(p) = \\sum_x \\mathrm{negMulLog}(p_x) = -\\sum_x p_x \\log p_x$."
+    },
+    {
+      "id": "additivity",
+      "title": "Additivity for independent (product) sources",
+      "startLine": 50,
+      "endLine": 72,
+      "summary": "entropy_prod: H(pX ⊗ pY) = H(pX) + H(pY) for ∑ pX = ∑ pY = 1, via Fintype.sum_prod_type + Real.negMulLog_mul + marginal collapse.",
+      "mathContext": "$H(p_X \\otimes p_Y) = H(p_X) + H(p_Y)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Entropy is exactly additive for independent (product) sources, H(pX ⊗ pY) = H(pX) + H(pY) — the equality case of subadditivity, foundational for the n·H entropy rate. 2 theorems, 1 definition, 0 sorries, 0 axioms.",
+    "implications": "Complements the gallery's subadditivity inequality with its sharp boundary, and supplies the additive backbone (n i.i.d. symbols ⟹ n·H) behind the AEP and Shannon's source coding theorem.",
+    "openQuestions": [
+      "Iterate to the n-fold product: H of n i.i.d. copies = n·H, by induction on the product additivity.",
+      "Prove the converse — additivity holds only for product (independent) distributions — by combining with the gallery's chain rule and the equality case of conditioning-reduces-entropy."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "ShannonSourceCodingWIP01",
+    "lineCount": 72,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 1,
+    "path": "Proofs/ShannonSourceCodingWIP01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "extends",
+      "description": "Parent source-coding entry; this file supplies the n·H entropy-rate backbone via product additivity"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "complements",
+      "description": "ShannonEntropy proves subadditivity H(X,Y) ≤ H(X)+H(Y); this file proves the equality case for independent (product) distributions"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "entropy_prod",
+      "type": "core",
+      "statement": "∑ pX = 1 → ∑ pY = 1 → entropy (fun (x,y) => pX x · pY y) = entropy pX + entropy pY",
+      "description": "Shannon entropy is additive for independent (product) sources.",
+      "significance": "The equality case of subadditivity; foundation of the n·H entropy rate"
+    },
+    {
+      "name": "entropy_eq_neg_sum",
+      "type": "lemma",
+      "statement": "entropy p = -∑ₓ p x · log (p x)",
+      "description": "The negMulLog-form entropy agrees with the standard Shannon entropy.",
+      "significance": "Bridges to the gallery's definition; lets negMulLog_mul drive the proof"
+    }
+  ],
+  "sorries": 0
+}

@@ -35,7 +35,22 @@
     {
       "targetId": "bezout-identity-oq-03",
       "relationship": "extends",
-      "description": "Efficient CRT implementation"
+      "description": "Parent: CRT via Bézout's identity for integers. This entry sharpens it into a modular-reduction-free, efficiency-analyzed algorithm."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "The root identity sm + tn = gcd(m,n) that the entire direct-Bézout CRT formula x = b·s·m + a·t·n is built on; without coprimality (gcd = 1) the cancellation t·n − 1 = −s·m would not hold."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "A constructive proof of the same Chinese Remainder Theorem. Where that entry establishes the CRT isomorphism, this one gives an explicit efficient solution formula and proves its correctness and uniqueness."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "complementary",
+      "description": "Handles the case this entry excludes: CRT with non-coprime moduli, where gcd(m,n) ≠ 1 and a consistency condition replaces the clean Bézout cancellation used here."
     }
   ],
   "overview": {

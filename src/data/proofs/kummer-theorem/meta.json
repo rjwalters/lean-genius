@@ -176,6 +176,21 @@
       "targetId": "wilsons-theorem",
       "relationship": "related",
       "description": "Both concern modular arithmetic with primes. Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ connects Wilson's factorial congruence to Kummer's carry-counting"
+    },
+    {
+      "targetId": "kummer-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends Kummer's carry-counting from binomial to multinomial coefficients: $v_p\\binom{n}{k_1,\\dots,k_m}$ equals the total number of carries when adding the parts $k_1,\\dots,k_m$ in base $p$, derived by iterating the binomial case"
+    },
+    {
+      "targetId": "kummer-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "A $q$-analog: the $q$-binomial $\\binom{n}{k}_q$ factors as $\\prod_d \\Phi_d^{e_d}$ with $e_d = \\lfloor n/d\\rfloor - \\lfloor k/d\\rfloor - \\lfloor (n-k)/d\\rfloor$ counting carries in base $d$, generalizing Kummer from primes to all integers $d \\ge 2$"
+    },
+    {
+      "targetId": "kummer-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Refines Kummer into divisibility characterizations modulo $p^m$: $\\binom{n}{k} \\equiv 0 \\pmod{p^m}$ iff base-$p$ addition of $k$ and $n-k$ produces at least $m$ carries, with the $p^n$-row vanishing as a special case"
     }
   ],
   "leanFile": {

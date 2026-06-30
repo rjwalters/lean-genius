@@ -61,48 +61,48 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Problem statement: do orbits of $h(n) = n + \\tau(n)$ all eventually merge? Module docstring describes the iteration $n \\to n + \\tau(n)$, OEIS A064491, and the single-orbit conjecture. Imports Mathlib for natural number basics, divisor counting, and Finset.",
-      "mathContext": "$h : \\mathbb{N} \\to \\mathbb{N}$, $h(n) = n + \\tau(n)$ where $\\tau(n) = \\sum_{d \\mid n} 1$. The iteration produces orbits $n, h(n), h^2(n), \\ldots$ conjectured to all merge into a single trajectory."
+      "summary": "States Erdős Problem #414: with $h(n)=n+\\tau(n)$ ($\\tau$ = number of divisors) and $h_k$ the $k$-fold iterate, do the orbits of any $m,n>0$ eventually merge ($\\exists i,j,\\ h_i(m)=h_j(n)$)? Erdős–Graham believed YES. Notes the orbit is strictly increasing (since $\\tau\\geq1$) and OEIS A064491. Imports `Nat.Divisors` and tactics.",
+      "mathContext": "$h(n)=n+\\tau(n)$; $h_0(n)=n$, $h_{k+1}=h\\circ h_k$. Conjecture: all orbits merge."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 35,
-      "summary": "Defines **h(n) = n + τ(n)** using `Nat.divisors.card` and the orbit sequence **hOrbit(n, k) = h^k(n)** by recursion. These form the basic objects of the dynamical system on ℕ.",
-      "mathContext": "$h(n) = n + \\tau(n)$ where $\\tau(n) = |\\{d : d \\mid n\\}|$. Orbit: $h^0(n) = n$, $h^{k+1}(n) = h(h^k(n))$."
+      "summary": "Defines `h n = n + n.divisors.card` and the orbit `hOrbit n k` $=h^k(n)$ by recursion ($k=0\\mapsto n$, $k+1\\mapsto h(\\text{hOrbit}\\,n\\,k)$). These are the two definitions of the file.",
+      "mathContext": "$h(n)=n+|\\text{divisors}(n)|$; $\\text{hOrbit}(n,k)=h^k(n)$."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties of h",
       "startLine": 36,
-      "endLine": 97,
-      "summary": "**h_strictly_increasing**: h(n) > n since τ(n) ≥ 1. **h_upper**: h(n) ≤ 2n. **h_prime**: h(p) = p + 2 for primes. Concrete values: h(1) = 2, h(2) = 4, h(3) = 5. These establish that orbits are strictly increasing, eliminating cycles and fixed points.",
-      "mathContext": "$h(n) > n$ (since $\\tau(n) \\geq 1$), $h(n) \\leq 2n$ (since $\\tau(n) \\leq n$), $h(p) = p + 2$ for primes $p$ (since $\\tau(p) = 2$). No fixed points or cycles."
+      "endLine": 114,
+      "summary": "Foundational lemmas (all proved): `divisors_card_pos` ($\\tau(n)\\geq1$), `h_strictly_increasing` ($h(n)>n$), `hOrbit_pos`, `orbit_strictly_increasing`, `h_upper` ($h(n)\\leq2n$), `h_prime` ($h(p)=p+2$), `h_lower_bound_ge2` ($h(n)\\geq n+2$ for $n\\geq2$), and concrete values $h(1)=2,h(2)=4,h(3)=5,h(4)=7,h(5)=7$ (note $4,5$ both map to $7$).",
+      "mathContext": "$n<h(n)\\leq2n$; $h(p)=p+2$; $h(4)=h(5)=7$ (first collision)."
     },
     {
       "id": "main-conjecture",
       "title": "The Merging Conjecture (OPEN)",
-      "startLine": 98,
-      "endLine": 112,
-      "summary": "**erdos_414_conjecture** (sole axiom): ∀ m, n ≥ 1, ∃ i, j with h^i(m) = h^j(n). **single_eventual_orbit** and **orbits_get_close** are proved as consequences. **hOrbit_continuation**: once orbits meet, they stay merged forever (key lemma, fully proved by induction).",
-      "mathContext": "$\\forall m, n \\geq 1, \\exists i, j \\in \\mathbb{N}: h^i(m) = h^j(n)$. Equivalently, the directed graph $n \\to h(n)$ has a single connected component."
+      "startLine": 115,
+      "endLine": 145,
+      "summary": "States the sole AXIOM `erdos_414_conjecture` ($\\forall m,n\\geq1,\\exists i,j,\\ h^i(m)=h^j(n)$). PROVES `hOrbit_continuation` (once two orbits meet they stay merged: $h^{i+d}(a)=h^{j+d}(b)$) and `single_eventual_orbit` (all positive integers eventually land on the orbit of $1$, derived from the conjecture via continuation).",
+      "mathContext": "Axiom: $\\forall m,n\\geq1,\\exists i,j,\\ h^i(m)=h^j(n)$. Orbits, once merged, stay merged."
     },
     {
       "id": "orbit-examples",
       "title": "Orbit Computations and Merging",
-      "startLine": 113,
-      "endLine": 126,
-      "summary": "**orbit_1_start**: 1 → 2 → 4 → 7 → 9 → ... (OEIS A064491). **orbit_3_merges_with_1**: h²(3) = h³(1) = 7, the simplest non-trivial merge. The collision occurs because h(4) = h(5) = 7 — different inputs producing the same output.",
-      "mathContext": "Orbit from 1: $1 \\to 2 \\to 4 \\to 7 \\to 9 \\to 12 \\to 18 \\to 24 \\to \\ldots$ (OEIS A064491). Orbit from 3: $3 \\to 5 \\to 7 \\to \\ldots$ Merge at step 2/3: $h^2(3) = h(5) = 7 = h(4) = h^3(1)$. The collision $h(4) = h(5) = 7$ is a 'collision point' — two inputs mapping to the same output because $\\tau(4) = 3$ and $\\tau(5) = 2$ compensate."
+      "startLine": 146,
+      "endLine": 159,
+      "summary": "Concrete orbits. `orbit_1_start`: $1\\to2\\to4\\to7\\to9$ (OEIS A064491). `orbit_3_merges_with_1`: $h^2(3)=h^3(1)=7$, the simplest non-trivial merge (because $h(4)=h(5)=7$). Verified by `native_decide`.",
+      "mathContext": "Orbit of $1$: $1,2,4,7,9,\\dots$; orbit of $3$ merges at $7$."
     },
     {
       "id": "growth-rate",
-      "title": "Growth Rate and Heuristic Analysis",
-      "startLine": 127,
-      "endLine": 155,
-      "summary": "**divisors_card_le_two_sqrt**: τ(n) ≤ 2√n (fully proved via small/large divisor splitting). **h_upper_sqrt**: h(n) ≤ n + 2√n. **orbit_linear_lower**: h^k(n) ≥ n + k. **orbit_linear_lower_ge2**: h^k(n) ≥ n + 2k for n ≥ 2. **orbits_get_close**: proved from the conjecture — once orbits meet, distance is 0. Extended merge computations for orbits 2–10.",
-      "mathContext": "Dirichlet: $\\sum_{k \\leq n} \\tau(k) \\sim n \\log n$. Hence $h^k(n) \\approx n + k \\log n$ on average. Collision probability per step $\\sim 1/(\\log V)^2$; $\\sum 1/(\\log V)^2 = \\infty$."
+      "title": "Growth Rate Analysis",
+      "startLine": 160,
+      "endLine": 301,
+      "summary": "Growth bounds and a battery of computed merges. `divisors_card_le_two_sqrt` ($\\tau(n)\\leq2\\sqrt n$, fully proved via the small/large divisor split with the $d\\mapsto n/d$ injection), `h_upper_sqrt` ($h(n)\\leq n+2\\sqrt n$), `orbit_linear_lower` ($h^k(n)\\geq n+k$) and `orbit_linear_lower_ge2` ($\\geq n+2k$ for $n\\geq2$). Then concrete $h(6)\\dots h(10)$ and the merges `orbit_{2,4,5,6,7,8,9,10}_merges_with_1`. Finally `orbits_get_close`: orbit distance can be made $\\leq D$ for any $D$ — PROVED from the conjecture (previously a second axiom with a soundness bug at $D=0$; axiom count reduced 2→1).",
+      "mathContext": "$\\tau(n)\\leq2\\sqrt n\\Rightarrow h(n)\\leq n+2\\sqrt n$; $n+k\\leq h^k(n)$. Orbits-get-close proved (axiom 2→1)."
     }
   ],
   "overview": {

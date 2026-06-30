@@ -7,7 +7,7 @@
     "author": "Erdős-Sauer (question), Janzer-Sudakov (2023), Pyber-Rödl-Szemerédi (1995)",
     "sourceUrl": "https://erdosproblems.com/182",
     "date": "1975",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos182Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "regular-graphs",
       "solved"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 182,
     "erdosUrl": "https://erdosproblems.com/182",
@@ -52,12 +52,10 @@
     ],
     "originalContributions": [
       "Definition of IsRegular for k-regular graphs using neighbor set cardinality",
-      "Definition of HasKRegularSubgraph for subgraph containment",
-      "Formalization of Janzer-Sudakov theorem (2023) as axiom",
-      "Formalization of Pyber-Rödl-Szemerédi lower bound (1995)",
-      "Definition of extremal function f(n,k)",
-      "Connected regular subgraph variant (Erdős 1975)",
-      "Probabilistic density results for regular subgraphs"
+      "Definition of IsSubgraphOf for edge-wise subgraph containment",
+      "Definition of HasKRegularSubgraph and HasKRegularInducedSubgraph",
+      "Definition of the extremal function f(n,k) (placeholder upper bound n choose 2)",
+      "Definition of HasConnectedKRegularSubgraph for the connected variant (Erdős 1975)"
     ],
     "axiomCount": 0,
     "lineCount": 148,
@@ -86,7 +84,7 @@
         "description": "Original posing of the regular subgraph problem and the connected variant"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "This file formalizes definitions only (k-regular subgraphs, the extremal function, the connected variant). The Janzer-Sudakov upper bound (2023), the Pyber-Rödl-Szemerédi lower bound (1995), and the connected-variant bound are stated in documentation but are NOT formalized as Lean theorems or axioms. The file contains 0 axioms, 0 theorems, and 0 sorries — nothing about Problem #182 is machine-verified beyond the well-formedness of the definitions.",
     "theoremCount": 0,
     "definitionCount": 6
   },
@@ -94,7 +92,7 @@
     "historicalContext": "**Erdős and Sauer** posed this problem in 1975, asking about the maximum edge density that avoids k-regular subgraphs.\n\n**Timeline**:\n- **1975**: Erdős poses the problem in 'Some recent progress on extremal problems in graph theory'\n- **1995**: **Pyber, Rödl, and Szemerédi** construct graphs with Ω(n log log n) edges and no 3-regular subgraph, establishing the lower bound\n- **2023**: **Janzer and Sudakov** prove the matching upper bound in 'Resolution of the Erdős-Sauer problem on regular subgraphs', completing the solution\n\n**Key insight**: The log log n factor arises from an iterative argument where each step reduces the graph while preserving structure. The iteration depth is O(log log n).",
     "problemStatement": "**Erdős Problem #182**: Let k >= 3. What is the maximum number of edges that a graph on n vertices can contain if it does not have a k-regular subgraph? Is it << n^{1+o(1)}?\n\n**Answer**: The maximum is **Θ(n log log n)**.\n\n- **Upper bound** (Janzer-Sudakov 2023): Any graph with >= C·n·log(log n) edges contains a k-regular subgraph\n- **Lower bound** (Pyber-Rödl-Szemerédi 1995): There exist graphs with Ω(n log log n) edges and no k-regular subgraph\n\n**Variant**: For connected k-regular subgraphs, Erdős proved F(n,3) << n^{5/3}.",
     "text": "For k >= 3, what is the maximum number of edges a graph on n vertices can have if it contains no k-regular subgraph? Resolved by Janzer-Sudakov (2023): the answer is Θ(n log log n).",
-    "proofStrategy": "We formalize this problem by:\n\n1. **Graph definitions**: IsRegular (k-regular), HasKRegularSubgraph (subgraph containment)\n\n2. **Main theorems**: Janzer-Sudakov upper bound and Pyber-Rödl-Szemerédi lower bound as axioms\n\n3. **Extremal function**: Definition of f(n,k) as maximum edges without k-regular subgraph\n\n4. **Special cases**: k=2 (forests), k=1 (matchings), connected variants\n\n5. **Probabilistic aspects**: Dense graphs almost surely contain regular subgraphs",
+    "proofStrategy": "This file provides definitional scaffolding for the problem; the resolving theorems are documented but not formalized:\n\n1. **Graph definitions** (formalized): IsRegular (k-regular), IsSubgraphOf, HasKRegularSubgraph / HasKRegularInducedSubgraph (subgraph containment)\n\n2. **Main theorems** (documented, NOT formalized): the Janzer-Sudakov upper bound and the Pyber-Rödl-Szemerédi lower bound appear only as doc-comments — they are neither proved nor axiomatized in Lean\n\n3. **Extremal function** (formalized as placeholder): f(n,k) is defined returning n choose 2 as a trivial upper bound, not the true Θ(n log log n) value\n\n4. **Special cases** (documented): k=2 (forests), k=1 (matchings), and the connected variant are discussed in prose\n\n5. **Probabilistic aspects** (documented): the density heuristic is described, not formalized",
     "keyInsights": [
       "**Θ(n log log n) bound**: Both upper and lower bounds match, fully resolving the problem.",
       "**Iterative argument**: The log log n factor comes from O(log log n) reduction steps, each preserving enough structure.",
@@ -114,44 +112,52 @@
       "title": "Core Definitions",
       "startLine": 38,
       "endLine": 63,
-      "summary": "IsRegular, IsSubgraphOf, HasKRegularSubgraph, extremalFunction.",
-      "mathContext": "Mathematical content: IsRegular, IsSubgraphOf, HasKRegularSubgraph, extremalFunction."
-    },
-    {
-      "id": "basic-properties",
-      "title": "Basic Properties",
-      "startLine": 64,
-      "endLine": 83,
-      "summary": "Zero-regular graphs, edge counting, parity, complete graphs.",
-      "mathContext": "Mathematical content: Zero-regular graphs, edge counting, parity, complete graphs."
+      "summary": "IsRegular, IsSubgraphOf, HasKRegularSubgraph, HasKRegularInducedSubgraph, extremalFunction (placeholder n choose 2).",
+      "mathContext": "Mathematical content: IsRegular, IsSubgraphOf, HasKRegularSubgraph, HasKRegularInducedSubgraph, extremalFunction."
     },
     {
       "id": "janzer-sudakov",
       "title": "Janzer-Sudakov Theorem (2023)",
-      "startLine": 84,
-      "endLine": 108,
-      "summary": "Upper bound: graphs with >= C·n·log(log n) edges have k-regular subgraphs.",
-      "mathContext": "Upper bound: graphs with >= C·n·log($\\log n$) edges have k-regular subgraphs."
+      "startLine": 69,
+      "endLine": 79,
+      "summary": "Upper bound stated in documentation (NOT formalized): graphs with >= C·n·log(log n) edges have k-regular subgraphs.",
+      "mathContext": "Upper bound (documented only): graphs with >= C·n·log($\\log n$) edges have k-regular subgraphs."
     },
     {
       "id": "pyber-rodl-szemeredi",
       "title": "Pyber-Rödl-Szemerédi Lower Bound (1995)",
-      "startLine": 109,
-      "endLine": 132,
-      "summary": "Lower bound construction: Ω(n log log n) edges without 3-regular subgraph.",
-      "mathContext": "Lower bound construction: Ω(n log $\\log n$) edges without 3-regular subgraph."
+      "startLine": 81,
+      "endLine": 90,
+      "summary": "Lower bound construction stated in documentation (NOT formalized): Ω(n log log n) edges without a 3-regular subgraph.",
+      "mathContext": "Lower bound construction (documented only): Ω(n log $\\log n$) edges without 3-regular subgraph."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 133,
-      "endLine": 148,
-      "summary": "k=2 (forests), k=1 (matchings), cycle avoidance.",
-      "mathContext": "Mathematical content: k=2 (forests), k=1 (matchings), cycle avoidance."
+      "startLine": 92,
+      "endLine": 100,
+      "summary": "Documentation of k=2 (forests) and k=1 (matchings); no theorems formalized.",
+      "mathContext": "Mathematical content (documented only): k=2 (forests), k=1 (matchings), cycle avoidance."
+    },
+    {
+      "id": "connected-variant",
+      "title": "Connected Variant",
+      "startLine": 102,
+      "endLine": 118,
+      "summary": "Definition of HasConnectedKRegularSubgraph; Erdős's O(n^{5/3}) bound for connected 3-regular subgraphs is documented (NOT formalized).",
+      "mathContext": "Mathematical content: HasConnectedKRegularSubgraph definition; connected 3-regular bound documented only."
+    },
+    {
+      "id": "density-history",
+      "title": "Density Aspects and Historical Context",
+      "startLine": 120,
+      "endLine": 146,
+      "summary": "Documentation of the probabilistic density heuristic, the 1975/1995/2023 timeline, and a prose summary that the answer is Θ(n log log n).",
+      "mathContext": "Mathematical content (documented only): density heuristic and historical timeline."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #182 about maximum edges avoiding k-regular subgraphs. The problem was posed by Erdős and Sauer in 1975 and fully resolved in 2023 by Janzer and Sudakov. The answer is Θ(n log log n): any graph with more than C·n·log(log n) edges must contain a k-regular subgraph, and Pyber-Rödl-Szemerédi showed this bound is tight.",
+    "summary": "We provide a definitional scaffold for Erdős Problem #182 about maximum edges avoiding k-regular subgraphs (k-regular subgraphs, the extremal function, and the connected variant). The problem was posed by Erdős and Sauer in 1975 and fully resolved in 2023 by Janzer and Sudakov, with answer Θ(n log log n): any graph with more than C·n·log(log n) edges must contain a k-regular subgraph, and Pyber-Rödl-Szemerédi showed this bound is tight. These resolving theorems are recorded in documentation here but are not yet formalized in Lean.",
     "implications": "**Theoretical Significance**: This resolves a fundamental question in extremal graph theory about the edge-density threshold for regular substructures.\n\nThe log log n factor is unusual and arises from an iterative reduction argument. The result connects to structural graph theory and has applications in understanding graph decomposition.",
     "openQuestions": [
       "Exact constants C(k) in the upper bound for specific k",

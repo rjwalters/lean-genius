@@ -17,7 +17,12 @@
       "maximum-degree",
       "Lovász Local Lemma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "graph coloring",
+      "asymptotic analysis",
+      "probabilistic method"
+    ]
   },
   {
     "id": "ann-e797-acyclic-coloring",
@@ -37,7 +42,12 @@
       "forest",
       "graph-homomorphism"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "discrete mathematics"
+    ]
   },
   {
     "id": "ann-e797-graph-params",
@@ -56,7 +66,12 @@
       "chromatic-number",
       "well-ordering"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "order theory",
+      "Mathlib library structure",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e797-f-axiom",
@@ -75,7 +90,12 @@
       "axiomatization",
       "universe-polymorphism"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "type theory",
+      "Lean 4 syntax",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e797-bounds",
@@ -95,7 +115,12 @@
       "sidon-sets",
       "greedy-algorithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "additive combinatorics",
+      "asymptotic analysis",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "ann-e797-theta",
@@ -114,7 +139,11 @@
       "big-theta",
       "extremal-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e797-b2",
@@ -134,7 +163,11 @@
       "B2-sequences",
       "bipartite-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "number theory",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e797-subquadratic",
@@ -153,7 +186,11 @@
       "asymptotic-analysis",
       "original-question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e797-summary",
@@ -172,6 +209,10 @@
       "extremal-graph-theory",
       "solved-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "extremal graph theory",
+      "Lean 4 tactic mode"
+    ]
   }
 ]

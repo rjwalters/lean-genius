@@ -93,46 +93,68 @@
   },
   "sections": [
     {
-      "id": "signed-ratios",
-      "title": "Signed Ratio Framework",
+      "id": "signed-ratio-framework",
+      "title": "Signed Ratio Framework for Menelaus",
       "startLine": 45,
-      "endLine": 107,
-      "summary": "SignedRatioConfig structure, signedProduct definition, cevaCondition and menelausCondition predicates."
+      "endLine": 66,
+      "summary": "Defines `SignedRatioConfig`, a transversal/cevian configuration carrying three nonzero signed ratios r₁, r₂, r₃ (allowing one negative ratio for an external division point), together with their `signedProduct = r₁·r₂·r₃`.",
+      "mathContext": "For Menelaus exactly one division point lies outside the triangle, giving a negative signed ratio; the signed product of the three ratios is $-1$, versus $+1$ for Ceva concurrency."
+    },
+    {
+      "id": "menelaus-generalized",
+      "title": "Menelaus's Theorem (Generalized)",
+      "startLine": 67,
+      "endLine": 106,
+      "summary": "States the abstract Menelaus and Ceva conditions as predicates on `SignedRatioConfig` (`menelausCondition` = signed product −1, `cevaCondition` = +1) and proves the two characterization lemmas that unfold each predicate to the raw product equality.",
+      "mathContext": "Menelaus: $r_1 r_2 r_3 = -1$; Ceva: $r_1 r_2 r_3 = 1$. `menelaus_product_characterization` and `ceva_product_characterization` are `Iff.rfl` after unfolding `signedProduct`."
     },
     {
       "id": "ceva-menelaus-duality",
-      "title": "Ceva-Menelaus Duality",
-      "startLine": 110,
+      "title": "Ceva–Menelaus Duality",
+      "startLine": 107,
       "endLine": 167,
-      "summary": "ceva_to_menelaus_by_negation, menelaus_to_ceva_by_negation, ceva_menelaus_exclusive. Algebraic duality between product = 1 and product = -1."
+      "summary": "Establishes the algebraic duality between concurrency and collinearity: negating exactly one ratio sends a Ceva configuration to a Menelaus one and back (`ceva_to_menelaus_by_negation`, `menelaus_to_ceva_by_negation`), the two conditions are mutually exclusive (`ceva_menelaus_exclusive`), and the dichotomy is governed by the sign of the product (`ceva_menelaus_sign_duality`).",
+      "mathContext": "If $r_1 r_2 r_3 = 1$ then $(-r_1) r_2 r_3 = -1$, and conversely; since $1 \\neq -1$ no configuration is simultaneously Ceva and Menelaus. All four lemmas close by `linarith`/`Iff.rfl` on `signedProduct`."
     },
     {
-      "id": "measure-menelaus",
-      "title": "Generalized Menelaus with Measure Functions",
-      "startLine": 170,
-      "endLine": 274,
-      "summary": "MenelausConfig, generalized_menelaus, spherical_menelaus (sin-ratios), hyperbolic_menelaus (sinh-ratios). sinh_pos_of_pos' helper lemma."
+      "id": "non-euclidean-menelaus-measure",
+      "title": "Non-Euclidean Menelaus with Measure Functions",
+      "startLine": 168,
+      "endLine": 273,
+      "summary": "Introduces `MenelausConfig` with positive raw measures and the unsigned product, then proves the generalized Menelaus theorem plus its spherical (sin) and hyperbolic (sinh) instantiations, reducing each to the same unsigned magnitude equality. Includes the helper `sinh_pos_of_pos'`.",
+      "mathContext": "`generalized_menelaus`: $\\frac{bd}{dc}\\frac{ce}{ea}\\frac{af}{fb}=1 \\iff bd\\cdot ce\\cdot af = dc\\cdot ea\\cdot fb$. `spherical_menelaus` uses $\\sin$ on arcs in $(0,\\pi)$; `hyperbolic_menelaus` uses $\\sinh$ on positive distances. Each closes via `div_mul_div_comm` and `div_eq_one_iff_eq`."
     },
     {
-      "id": "spherical-excess",
+      "id": "spherical-excess-hyperbolic-defect",
       "title": "Spherical Excess and Hyperbolic Defect",
-      "startLine": 275,
-      "endLine": 360,
-      "summary": "sphericalExcess = α+β+γ-π, hyperbolicDefect = π-(α+β+γ). Positivity theorems and Euclidean limit (excess/defect = 0)."
+      "startLine": 274,
+      "endLine": 347,
+      "summary": "Defines the spherical excess `E = α+β+γ−π` (Girard area on the unit sphere) and the hyperbolic defect, and proves each is positive for a valid triangle, distinguishing the two curved geometries from the Euclidean angle-sum equality.",
+      "mathContext": "Spherical: angle sum $> \\pi$, $E = \\alpha+\\beta+\\gamma-\\pi > 0$. Hyperbolic: angle sum $< \\pi$, defect $= \\pi-(\\alpha+\\beta+\\gamma) > 0$. Positivity follows by `linarith` from the angle-range hypotheses."
     },
     {
-      "id": "gauss-bonnet",
-      "title": "Gauss-Bonnet Formula",
-      "startLine": 350,
-      "endLine": 460,
-      "summary": "gaussBonnetTriangle: angle_sum = π + κ·area. Spherical (κ=1), hyperbolic (κ=-1), Euclidean (κ=0) specializations. Sign consistency theorem."
+      "id": "gauss-bonnet-constant-curvature",
+      "title": "Gauss–Bonnet for Constant Curvature Surfaces",
+      "startLine": 348,
+      "endLine": 395,
+      "summary": "Carries the constant-curvature Gauss–Bonnet relation `α+β+γ = π + κ·area` as a predicate `gaussBonnetTriangle` and specializes it to the spherical (κ=1, excess = area), hyperbolic (κ=−1, defect = area), and Euclidean (κ=0, angle sum = π) cases.",
+      "mathContext": "$\\alpha+\\beta+\\gamma = \\pi + \\kappa\\,A$. The three specializations (`gauss_bonnet_spherical/hyperbolic/euclidean`) recover excess/defect/equality by `linarith` after unfolding. The κ·area relation is a carried hypothesis, since the full proof needs Riemannian-geometry infrastructure."
     },
     {
       "id": "unified-picture",
-      "title": "Unified Ceva-Menelaus-Gauss-Bonnet Picture",
-      "startLine": 400,
+      "title": "Unified Ceva–Menelaus–Gauss–Bonnet Picture",
+      "startLine": 396,
+      "endLine": 460,
+      "summary": "Packages the three pillars into curvature-parametrized statements: `ceva_menelaus_dichotomy` shows that for any positive measure function ρ the ρ-ratio product = 1 captures the magnitude condition and excludes the Menelaus value, and `gauss_bonnet_sign_consistency` ties the sign of the curvature to whether the angle sum exceeds, equals, or falls short of π.",
+      "mathContext": "With $\\rho = \\mathrm{id}/\\sin/\\sinh$ for $\\kappa = 0/{>}0/{<}0$, the ρ-product being $\\pm 1$ selects concurrence vs. collinearity; and $\\operatorname{sign}(\\kappa) = \\operatorname{sign}(\\alpha+\\beta+\\gamma-\\pi)$ via `nlinarith`."
+    },
+    {
+      "id": "numerical-verifications",
+      "title": "Numerical Verifications",
+      "startLine": 461,
       "endLine": 501,
-      "summary": "ceva_menelaus_dichotomy for arbitrary measure ρ. gauss_bonnet_sign_consistency. Numerical examples: equilateral spherical (excess=π/2), ideal hyperbolic (defect=π)."
+      "summary": "Concrete sanity checks closing the file: the equilateral spherical octant (excess π/2), a sample hyperbolic triangle (defect π/3), and the ideal hyperbolic triangle with all angles 0 (defect/area π), followed by `#check` exports of the main results.",
+      "mathContext": "$\\text{excess}(\\tfrac{\\pi}{2},\\tfrac{\\pi}{2},\\tfrac{\\pi}{2}) = \\tfrac{\\pi}{2}$; $\\text{defect}(\\tfrac{\\pi}{4},\\tfrac{\\pi}{4},\\tfrac{\\pi}{6}) = \\tfrac{\\pi}{3}$; $\\text{defect}(0,0,0) = \\pi$. All by `ring`."
     }
   ],
   "conclusion": {

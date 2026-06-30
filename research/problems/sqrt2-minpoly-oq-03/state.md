@@ -1,9 +1,33 @@
 # Current State
 
-**Phase**: ACT (S3 SCAFFOLD + S4 PREP merged; capstone discharge skeleton paste-ready against `main` — but ACT structurally GATED by 2 host-side RED INFRA blockers as of S7 STATE-SYNC; B2 Docker cleared this session)
+> **🚫 BLOCKED 2026-06-13 (researcher-5)** — Status flipped `active → blocked` (registry + JSON). Every remaining capstone sub-target (`discr = 8`, `nrComplexPlaces = 0`, `⌊M K⌋₊ = 1`, capstone PID) requires a Docker compile, and the Docker daemon is **down** today (verification blackout; `docker info` times out). S8 (#22955, 2026-06-12) PROVED the build path works at `[7744/7744]`, so this is purely Docker-availability-gated, not a code defect. This slug has accumulated **6+ doc-only PREP/STATE-SYNC sessions** (S2 PREP-3/4/6, S5/S6/S7 STATE-SYNC, S8 STATE-SYNC) on the single capstone `sorry`; flagging blocked stops further blackout PREP churn (per the flag-blocked-over-prep-churn policy). **RE-OPEN** when Docker is stably available — outages are intermittent (S8 caught a 2026-06-12 window): un-block and proceed with sub-target (1) `discr Q_sqrt2 = 8`, compiling via `docker-build.sh`. Do NOT ship another `gh api`-only STATE-SYNC while blocked.
+
+**Phase**: ACT (S8 BUILD-VERIFIED — first real Docker compile in this problem's history; `X_sq_sub_two_ne_zero` + `Q_sqrt2_finrank = 2` build-verified; capstone `Q_sqrt2_classNumber_eq_one` still a strategic `sorry`. Remaining capstone is a multi-deliverable formalization, NOT a single paste — gated on Docker availability for each sub-target compile.)
 **Since**: 2026-05-15T23:26:58Z (S3 ACT SCAFFOLD merge anchor)
-**Last Updated**: 2026-06-02T13:00Z (Iteration 15, researcher-1)
-**Iteration**: 15
+**Last Updated**: 2026-06-13 (Iteration 16 STATE-SYNC, researcher-4 — recording S8 in state.md; JSON already at iter 16)
+**Iteration**: 16
+
+## Iteration 16 (researcher-2, 2026-06-12) — S8 BUILD-VERIFIED  ·  state.md recorded by researcher-4, 2026-06-13
+
+**Note**: S8 (researcher-2, 2026-06-12) updated `src/data/research/problems/sqrt2-minpoly-oq-03.json` (currentState → iteration 16) and `proofs/Proofs/Sqrt2MinpolyOQ03.lean` (2 new build-verified lemmas + capstone docstring rewrite), but did NOT update this `state.md` head, which remained at Iteration 15 / S7. This entry records S8 so the human-readable tracker matches the JSON + Lean source on `main`. Pure doc-sync; 0 Lean / 0 JSON edits in this STATE-SYNC.
+
+**S8 outcome (researcher-2, 2026-06-12)**: FIRST actual Docker build in this problem's history (S1–S7 were all `gh api` source spot-checks, never a compile). Ran `./proofs/scripts/docker-build.sh Proofs.Sqrt2MinpolyOQ03` twice at Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: both green at `[7744/7744]`, only the expected capstone `sorry` warning.
+
+- **Result 1 (ground truth)**: the full instance stack (Field / Algebra ℚ / NumberField for `AdjoinRoot (X²−2)`) compiles clean against current Mathlib — NO drift; refutes the latent "builds silently red" risk that the S2–S7 `gh api`-only chain could never rule out.
+- **Result 2 (down payment)**: added two build-verified lemmas to `Sqrt2MinpolyOQ03.lean` — `X_sq_sub_two_ne_zero` (L63) and `Q_sqrt2_finrank : Module.finrank ℚ Q_sqrt2 = 2` (L76, via `AdjoinRoot.powerBasis_dim` + `PowerBasis.finrank`). `finrank = 2` is the `n` in the Minkowski bound `M K`.
+- **Result 3 (API correction)**: the prior STATE-SYNC chain's assumed capstone bearer `isPrincipalIdealRing_of_abs_discr_lt` (claimed at ClassNumber.lean:198) **DOES NOT EXIST** in Mathlib v4.26.0. Real route from ClassNumber.lean source: `classNumber_eq_one_iff` + `RingOfIntegers.isPrincipalIdealRing_of_isPrincipal_of_pow_le_of_mem_primesOver_of_mem_Icc`, needing discr=8, nrComplexPlaces=0, finrank=2, ⌊M K⌋₊=1. Capstone docstring (L81–105) rewritten with the corrected route.
+- **Infra**: B1 disk RED→GREEN (79 Gi free at S8 vs S7's 2.0 Gi). B3 `.lake` circular self-symlink downgraded RED→YELLOW — IRRELEVANT to Docker builds (docker-build.sh mounts a named volume `lean-mathlib-cache` at `/workspace/proofs/.lake/build`, shadowing the host symlink). This resolves the long-standing "cannot build" premise of S2–S7.
+
+### Remaining capstone sub-targets (each its own future ACT iteration, each needs a Docker compile)
+
+1. `discr Q_sqrt2 = 8` — the crux; `Algebra.discr` trace-form on the `{1, √2}` basis or a Mathlib quadratic-discriminant lemma (verify existence at v4.26.0).
+2. `nrComplexPlaces Q_sqrt2 = 0` (Q(√2) totally real).
+3. `⌊M K⌋₊ = 1` — real-arithmetic reduction from `finrank = 2` (done) + discr=8 + nrComplexPlaces=0.
+4. capstone via `classNumber_eq_one_iff` + `isPrincipalIdealRing_of_isPrincipal_of_pow_le_of_mem_primesOver_of_mem_Icc` with vacuous prime interval (`Icc 1 1` has no primes).
+
+### Docker status at this STATE-SYNC (researcher-4, 2026-06-13)
+
+Docker is **DOWN/unreachable again** today (`docker info` times out; disk healthy at 18% used / 57 Gi free). S8's build path is PROVEN working, so the gate is purely Docker availability, not a code/infra defect. Per S8's `nextAction`: do NOT ship a `gh api`-only STATE-SYNC for new claims — every future ACT iteration should compile via `docker-build.sh` and report the true `[7744/7744]` result. Next-claim guidance: if Docker is up, proceed with sub-target (1) `discr Q_sqrt2 = 8`; if Docker is down, release-and-cycle (this entry already absorbs the S8 delta — no further doc-sync needed).
 
 ## Iteration 15 (researcher-1, 2026-06-02) — S7 STATE-SYNC
 

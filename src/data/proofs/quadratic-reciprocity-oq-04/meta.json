@@ -1,0 +1,150 @@
+{
+  "id": "quadratic-reciprocity-oq-04",
+  "title": "Jacobi Symbol: Reciprocity Generalizes, Residue-Detection Does Not",
+  "slug": "quadratic-reciprocity-oq-04",
+  "description": "The Jacobi symbol extends the Legendre symbol to odd composite moduli and satisfies the same quadratic reciprocity law, which is what makes it computable without factoring. But the generalization loses residue-detection: for composite b, J(a | b) = 1 does NOT imply that a is a square mod b. This entry makes that failure explicit and machine-checked with the smallest witness a = 2, b = 15 (an 'Euler liar'), while noting the one-way direction J(a | b) = -1 ⟹ non-square that survives for all b.",
+  "meta": {
+    "author": "Lean formalization (research leaf: quadratic-reciprocity-oq-04, Jacobi symbol generalization)",
+    "sourceUrl": "https://erdosproblems.com",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/QuadraticReciprocityOQ04.lean",
+    "tags": [
+      "quadratic-reciprocity",
+      "jacobi-symbol",
+      "legendre-symbol",
+      "quadratic-residue",
+      "number-theory",
+      "primality-testing"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "jacobiSym",
+        "description": "The Jacobi symbol J(a | b), multiplicative over the factorization of b",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.mul_right",
+        "description": "J(a | b₁·b₂) = J(a | b₁)·J(a | b₂) — the defining multiplicativity",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "ZMod.nonsquare_of_jacobiSym_eq_neg_one",
+        "description": "J(a | b) = -1 ⟹ a is not a square mod b (valid for all b)",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "Mathlib.Tactic.NormNum.LegendreSymbol",
+        "description": "norm_num extension provably evaluating Jacobi/Legendre symbols via reciprocity",
+        "module": "Mathlib.Tactic.NormNum.LegendreSymbol"
+      }
+    ],
+    "originalContributions": [
+      "jacobi_one_not_isSquare_of_composite: an explicit, machine-checked counterexample showing Mathlib's prime-only ZMod.isSquare_of_jacobiSym_eq_one cannot be relaxed to composite moduli — J(2 | 15) = 1 yet 2 is not a square mod 15 (the smallest 'Euler liar')",
+      "jacobiSym_two_fifteen: J(2 | 15) = 1 (evaluated via the reciprocity norm_num extension, axiom-clean)",
+      "jacobiSym_two_fifteen_factor: the multiplicative decomposition J(2 | 15) = J(2 | 3)·J(2 | 5) = (-1)·(-1) exhibiting exactly how two Legendre non-residues combine to a Jacobi value of +1",
+      "two_nonsquare_mod_fifteen: 2 is not a square in ℤ/15 (squares mod 15 are {0,1,4,6,9,10}), by kernel decide",
+      "jacobiSym_neg_one_imp_nonsquare: a framed re-export of the one-way direction that survives for all b, pinning down precisely what the Jacobi symbol can and cannot detect"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations, 0 sorries. All 5 theorems are fully machine-checked and depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms on the headline counterexample and the symbol evaluations; no sorryAx, no Lean.ofReduceBool — the Jacobi values are produced by Mathlib's reciprocity-based norm_num extension and by kernel decide, not native_decide). Builds clean against pinned Mathlib v4.26.",
+    "lineCount": 86,
+    "theoremCount": 5,
+    "prerequisites": [
+      "Legendre and Jacobi symbols",
+      "Quadratic reciprocity for the Jacobi symbol",
+      "Quadratic residues modulo composite numbers",
+      "Solovay–Strassen primality test and Euler liars"
+    ],
+    "definitionCount": 0,
+    "lastUpdated": "2026-06-24"
+  },
+  "overview": {
+    "historicalContext": "The Legendre symbol (a | p) for a prime p detects quadratic residues exactly: it is +1 for nonzero squares and -1 for non-squares. Jacobi extended the symbol to all odd b by multiplicativity over the prime factorization, preserving the quadratic reciprocity law — and crucially preserving efficient computability, since reciprocity lets one evaluate J(a | b) without factoring b. The price of this generalization is that residue-detection breaks: a Jacobi value of +1 can arise from an even number of Legendre -1 factors, so it no longer certifies a square. This is precisely the phenomenon exploited (and worked around) by the Solovay–Strassen primality test, where composite n can have 'Euler liars' a with J(a | n) consistent with a^((n-1)/2).",
+    "problemStatement": "The Jacobi symbol generalizes quadratic reciprocity to composite moduli. Does it also generalize the Legendre symbol's residue-detection? Specifically, does J(a | b) = 1 imply that a is a square mod b for composite b?",
+    "text": "No: J(2 | 15) = 1 (because (2|3) = (2|5) = -1 multiply to +1) yet 2 is not a square mod 15. Reciprocity generalizes; residue-detection does not.",
+    "proofStrategy": "Evaluate J(2 | 15) = 1 with Mathlib's reciprocity-based norm_num extension, and exhibit the decomposition J(2 | 15) = J(2 | 3)·J(2 | 5) via multiplicativity to show the +1 arises from two -1 Legendre factors. Separately decide that 2 is not a square in ℤ/15. Packaging these gives an odd composite b and an a with J(a | b) = 1 but a not a square mod b, so Mathlib's prime-only isSquare_of_jacobiSym_eq_one is sharp. Finally re-export the surviving one-way test J(a | b) = -1 ⟹ non-square to frame exactly what detection remains.",
+    "keyInsights": [
+      "The Jacobi symbol is +1 whenever an EVEN number of its Legendre factors are -1, regardless of whether a is actually a square — this is the mechanism of the failure",
+      "J(2 | 15) = J(2 | 3)·J(2 | 5) = (-1)(-1) = 1 is the minimal instance",
+      "What survives for composite b is only the one-way implication J = -1 ⟹ non-square; the J = 1 direction is exactly the set of Euler liars used to define the Solovay–Strassen test",
+      "Reciprocity (hence fast computation) is fully retained — it is residue-detection, not reciprocity, that the generalization sacrifices"
+    ],
+    "prerequisites": [
+      "Legendre symbol and Euler's criterion",
+      "Jacobi symbol multiplicativity and reciprocity",
+      "Quadratic residues mod composite numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Docstring framing the Jacobi generalization, what is retained (reciprocity, computability) and what is lost (residue-detection); imports Mathlib; namespace QuadraticReciprocityJacobi",
+      "mathContext": "J(a | b) extends (a | p) multiplicatively; reciprocity holds for all odd b, but J(a|b)=1 ⇏ square for composite b."
+    },
+    {
+      "id": "evaluation",
+      "title": "Evaluating J(2 | 15) and Its Factorization",
+      "startLine": 49,
+      "endLine": 64,
+      "summary": "jacobiSym_two_fifteen (= 1, via the norm_num extension) and jacobiSym_two_fifteen_factor (= J(2|3)·J(2|5)), exhibiting the (-1)(-1) = 1 mechanism",
+      "mathContext": "$J(2|15) = 1 = J(2|3)\\,J(2|5) = (-1)(-1)$."
+    },
+    {
+      "id": "nonsquare",
+      "title": "2 Is Not a Square mod 15",
+      "startLine": 65,
+      "endLine": 68,
+      "summary": "two_nonsquare_mod_fifteen by kernel decide (squares mod 15 are {0,1,4,6,9,10})",
+      "mathContext": "$2 \\notin \\{x^2 : x \\in \\mathbb{Z}/15\\} = \\{0,1,4,6,9,10\\}$."
+    },
+    {
+      "id": "counterexample",
+      "title": "Failure of the Converse and the Surviving Direction",
+      "startLine": 69,
+      "endLine": 86,
+      "summary": "jacobi_one_not_isSquare_of_composite (J = 1 but non-square for composite b) and jacobiSym_neg_one_imp_nonsquare (J = -1 ⟹ non-square, all b)",
+      "mathContext": "$\\exists a,b:\\ \\neg\\,\\mathrm{Prime}\\,b \\wedge \\mathrm{Odd}\\,b \\wedge J(a|b)=1 \\wedge \\neg\\,\\mathrm{IsSquare}\\,(a:\\mathbb{Z}/b)$; and $J(a|b)=-1 \\Rightarrow \\neg\\,\\mathrm{IsSquare}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Jacobi symbol generalizes the Legendre symbol's quadratic reciprocity to odd composite moduli, keeping the symbol efficiently computable, but it loses residue-detection: J(2 | 15) = 1 while 2 is not a square mod 15. The only detection that survives for composite b is the one-way test J(a | b) = -1 ⟹ a is a non-square.",
+    "implications": "This is the precise gap that the Solovay–Strassen primality test must contend with: a Jacobi value of +1 does not certify a square, and the offending a are the 'Euler liars'. The result also shows Mathlib's prime-only isSquare_of_jacobiSym_eq_one is sharp.",
+    "openQuestions": [
+      "Can one formalize that every odd composite n admits an a with J(a | n) = 1 and a a non-residue (so Euler liars always exist), and bound their number?",
+      "Can the Solovay–Strassen Euler-witness condition be formalized on top of this, including the ≤ 1/2 density of liars for composite n?",
+      "Does an analogous detection-failure hold for higher-power residue symbols (cubic/quartic) and their reciprocity laws?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "QuadraticReciprocityJacobi",
+    "lineCount": 86,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/QuadraticReciprocityOQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "extends",
+      "description": "Studies the Jacobi-symbol generalization of the quadratic reciprocity law and the detection property it sacrifices."
+    },
+    {
+      "targetId": "quadratic-reciprocity-oq-03",
+      "relationship": "related",
+      "description": "Sibling open-question leaf in the quadratic reciprocity family."
+    }
+  ],
+  "sorries": 0
+}

@@ -19,9 +19,9 @@
     "phase": "COMPLETED",
     "since": "2026-04-25T13:30:37+02:00",
     "iteration": 2,
-    "focus": "Gallery entry CayleyHamiltonCyclicVectorAllFields.lean V2 (axiom-free): 0 axioms, 1 sorry (monic_factored_form, routine ~50-line Mathlib UFM API). Eliminated RCF similarity axiom by routing through WIP04 primary decomposition (PR #13041, 2026-04-27).",
+    "focus": "Gallery entry CayleyHamiltonCyclicVectorAllFields.lean V2: 0 axioms, 0 sorries (gallery status=verified). monic_factored_form is now a fully-proved theorem (via monic_irreducible_multiset_factorization + finset_factorization_from_multiset), no longer a sorry. Eliminated RCF similarity axiom by routing through WIP04 primary decomposition (PR #13041, 2026-04-27).",
     "blockers": [],
-    "nextAction": "Submit monic_factored_form (routine UFM/normalizedFactors API) to Aristotle to reach 0 sorries / 0 axioms.",
+    "nextAction": "None — proof is complete (0 sorries / 0 axioms, gallery status=verified). Maintenance only.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -76,7 +76,13 @@
   ],
   "relatedProofs": [
     "cayley-hamilton",
-    "cayley-hamilton-cyclic-vector-all-fields"
+    "cayley-hamilton-cyclic-vector-all-fields",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-02",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-01",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-03"
   ],
   "references": {
     "papers": [],
@@ -90,11 +96,11 @@
     {
       "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
       "filename": "CayleyHamiltonCyclicVectorAllFields.lean",
-      "lineCount": 269,
+      "lineCount": 267,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 8,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFields.lean"
     },
@@ -108,6 +114,94 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsAristotle.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01.lean",
+      "lineCount": 137,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
+      "lineCount": 689,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01.lean",
+      "lineCount": 331,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ03.lean",
+      "lineCount": 313,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean",
+      "lineCount": 134,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean",
+      "lineCount": 111,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean",
+      "lineCount": 166,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean"
     }
   ]
 }

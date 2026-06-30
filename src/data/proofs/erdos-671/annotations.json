@@ -12,10 +12,15 @@
       "Lebesgue function",
       "Approximation theory"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Lagrange interpolation operator L^n f",
+      "Lebesgue function lambda_n(x)",
+      "limsup and divergence to infinity",
+      "uniform vs pointwise convergence of polynomials"
+    ],
     "range": {
-      "startLine": 34,
-      "endLine": 75
+      "startLine": 1,
+      "endLine": 23
     }
   },
   {
@@ -30,10 +35,15 @@
       "Interpolation",
       "Chebyshev nodes"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Lean structure declaration syntax",
+      "Fin n indexing type",
+      "Set.Icc closed interval membership",
+      "distinctness of a finite indexed family"
+    ],
     "range": {
-      "startLine": 37,
-      "endLine": 42
+      "startLine": 34,
+      "endLine": 37
     }
   },
   {
@@ -48,10 +58,15 @@
       "formal definition",
       "polynomial theory"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "InterpolationPoints structure (prior annotation)",
+      "Polynomial R and Polynomial.C / Polynomial.X",
+      "Finset.prod over univ.filter",
+      "Kronecker delta interpolation property p_i(a_j)=delta_ij"
+    ],
     "range": {
-      "startLine": 46,
-      "endLine": 50
+      "startLine": 43,
+      "endLine": 46
     }
   },
   {
@@ -66,10 +81,15 @@
       "formal definition",
       "polynomial theory"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "lagrangeBasis definition (prior annotation)",
+      "Finset.sum over Fin n",
+      "uniqueness of interpolating polynomial of degree < n",
+      "polynomial degree bound natDegree <= n-1"
+    ],
     "range": {
-      "startLine": 63,
-      "endLine": 66
+      "startLine": 73,
+      "endLine": 75
     }
   },
   {
@@ -84,10 +104,15 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "lagrangeBasis polynomials p_i^n (prior annotation)",
+      "absolute value and Finset.sum of |p_i(x)|",
+      "best polynomial approximation error E_n(f)",
+      "operator norm / error amplification bound"
+    ],
     "range": {
-      "startLine": 80,
-      "endLine": 83
+      "startLine": 118,
+      "endLine": 119
     }
   },
   {
@@ -102,10 +127,15 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "lebesgueFunction lambda_n(x) (prior annotation)",
+      "supremum/maximum over compact interval [-1,1]",
+      "Chebyshev nodes and equidistant nodes",
+      "asymptotic growth notation (~ log n, ~ 2^n/n)"
+    ],
     "range": {
-      "startLine": 89,
-      "endLine": 99
+      "startLine": 183,
+      "endLine": 184
     }
   },
   {
@@ -120,10 +150,15 @@
       "Divergence",
       "Pointwise vs uniform convergence"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "lebesgueFunction lambda_n (prior annotation)",
+      "limsup_{n->infinity} = infinity",
+      "existential quantification over x in [-1,1]",
+      "uniform convergence for all continuous functions"
+    ],
     "range": {
-      "startLine": 100,
-      "endLine": 105
+      "startLine": 198,
+      "endLine": 200
     }
   },
   {
@@ -138,10 +173,15 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "lagrangeInterp operator L^n f (prior annotation)",
+      "continuous function f on [-1,1]",
+      "almost-everywhere convergence (Lebesgue measure)",
+      "divergence |L^n f(x)| -> infinity"
+    ],
     "range": {
-      "startLine": 115,
-      "endLine": 125
+      "startLine": 216,
+      "endLine": 220
     }
   },
   {
@@ -156,10 +196,15 @@
       "formal definition",
       "convergence"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "lebesgueFunction lambda_n and limsup = infinity",
+      "lagrangeInterp convergence L^n f(x) -> f(x)",
+      "point sequence (PointSequence) of nodes",
+      "quantifier alternation: exists sequence, forall f, exists x"
+    ],
     "range": {
-      "startLine": 126,
-      "endLine": 132
+      "startLine": 227,
+      "endLine": 231
     }
   },
   {
@@ -174,10 +219,15 @@
       "formal definition",
       "convergence"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Question1 formalization (prior annotation)",
+      "universal Lebesgue divergence: lambda_n(x) -> infinity for all x",
+      "pointwise convergence L^n f(x) -> f(x)",
+      "logical implication Q2 => Q1"
+    ],
     "range": {
-      "startLine": 126,
-      "endLine": 132
+      "startLine": 239,
+      "endLine": 244
     }
   },
   {
@@ -192,10 +242,15 @@
       "formal definition",
       "polynomial theory"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "InterpolationPoints / node families",
+      "Chebyshev polynomial T_n and its zeros",
+      "cosine function cos((2k-1)pi/2n)",
+      "Lebesgue constant Lambda_n and its (2/pi) log n minimum"
+    ],
     "range": {
-      "startLine": 156,
-      "endLine": 161
+      "startLine": 259,
+      "endLine": 261
     }
   },
   {
@@ -209,10 +264,15 @@
     "relatedConcepts": [
       "Runge phenomenon"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "InterpolationPoints / node families",
+      "equally-spaced node formula x_k = -1 + 2k/(n-1)",
+      "Lebesgue constant Lambda_n growth",
+      "Runge phenomenon and exponential 2^n/n divergence"
+    ],
     "range": {
-      "startLine": 162,
-      "endLine": 167
+      "startLine": 289,
+      "endLine": 290
     }
   },
   {
@@ -227,10 +287,15 @@
       "proof technique",
       "convergence"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "lagrangeInterp operator L^n f",
+      "uniform convergence to f for all continuous f",
+      "Bernstein's theorem (prior annotation)",
+      "existence of a divergent continuous function for any nodes"
+    ],
     "range": {
-      "startLine": 184,
-      "endLine": 194
+      "startLine": 331,
+      "endLine": 334
     }
   },
   {
@@ -245,10 +310,15 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "lagrangeInterp divergence |L^n f(x)| -> infinity",
+      "Lebesgue measure of a subset of [-1,1]",
+      "positive measure vs almost-everywhere",
+      "Erdos-Vertesi theorem (prior annotation)"
+    ],
     "range": {
-      "startLine": 195,
-      "endLine": 201
+      "startLine": 342,
+      "endLine": 345
     }
   },
   {
@@ -263,10 +333,15 @@
       "formal definition",
       "convergence"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Question1 formalization (prior annotation)",
+      "Question2 formalization (prior annotation)",
+      "logical equivalence (iff) of two Props",
+      "q2_implies_q1 (Q2 trivially implies Q1)"
+    ],
     "range": {
-      "startLine": 212,
-      "endLine": 215
+      "startLine": 358,
+      "endLine": 359
     }
   }
 ]

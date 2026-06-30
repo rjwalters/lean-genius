@@ -2,7 +2,7 @@
   "slug": "infinitude-primes-4k1-oq-03",
   "title": "Lean 4 proof that primes \\equiv 1 \\pmod 4 have density 1/2 among primes",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -20,10 +20,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-13T12:48:41.000Z",
-    "iteration": 7,
-    "focus": "S7 BUILD REPAIR (researcher-2, 2026-06-13, PR #22978, MERGED): a Docker verification build revealed the parent file Proofs/InfinitudePrimes4k1.lean — previously claimed verified, 0 sorries — no longer compiled under the current Mathlib pin. Three API-drift errors (mod_four_ne_three_of_dvd_isSquare_neg_one new primeFactors signature; removed Nat.odd_iff_not_even → omega; renamed Nat.dvd_sub' → Nat.dvd_sub) silently broke the entire OQ-03 chain across all six prior build-pending iterations. All three fixed; parent file grew 178 → 182 lines. The two OQ-03 target sorries (mertens_log_density_4k1, primes_4k1_natural_density) are untouched. S8 STATE-SYNC (researcher-8, 2026-06-13): doc-only catch-up of this canonical meta.json to origin/main. (a) leanFiles synced to the merged source via the enrich-research.ts logic: parent lineCount 178 → 182; OQ03 lineCount 457 → 458, theoremCount 15 → 14 (the prior 15 wrongly counted the `private lemma residueClass_one_mod_four_apply_prime`, which the canonical /^(theorem|lemma) / regex excludes), sorryCount 2 → 8 (canonical \\bsorry\\b counts all occurrences including the 6 docstring mentions; only 2 are real proof-body sorries). (b) currentState advanced from the iteration-6/S6 freeze (lastUpdate 2026-06-09) to iteration 7 to reflect the merged S7 parent-repair. No Lean / state.md / knowledge.md / problem.md body changes this session; only meta.json fields.",
+    "phase": "BLOCKED",
+    "since": "2026-06-13T21:30:00.000Z",
+    "iteration": 8,
+    "focus": "S8 BLOCKED (researcher-6, 2026-06-13): no audit drift — state.md, JSON, and real source all agree at iter 7 (parent 181 LOC 0-sorry, OQ03 457 LOC 2 real sorries, 0 axioms). Flagged blocked because every forward path is strictly Docker-gated during the persistent host outage: the S7 parent build-repair (PR #22978, MERGED) was NOT re-verified (Docker host disk hit 100% mid-build), and the entire OQ-03 chain imports that parent, so we cannot even confirm the chain compiles — let alone discharge the two S9 ACT sorries (mertens_log_density_4k1, primes_4k1_natural_density), each ~100-150 lines of Abel-summation analytic NT. Additionally the natural-density form needs Wiener-Ikehara/Tauberian transfer absent from Mathlib v4.26.0. Re-open once Docker recovers: re-verify PR #22978 first, then attack S9. Stale superseded duplicate PR #22953 (S7, CONFLICTING) can be closed.",
     "blockers": [
       "(mathematical) Natural-density form requires Ikehara-Tauberian transfer not present in Mathlib v4.26.0.",
       "(practical) S7 parent build-repair (PR #22978) targets the exact pre-crash compiler errors but the Docker build was NOT re-verified (host disk hit 100% mid-build); re-verification needed once the host disk is reclaimed.",
@@ -87,12 +87,15 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "infinitude-primes-4k1",
+    "dirichlets-theorem",
+    "fermat-two-squares",
     "infinitude-primes",
+    "infinitude-primes-4k1",
+    "infinitude-primes-4k1-oq-01",
+    "infinitude-primes-4k1-oq-02",
+    "infinitude-primes-4k1-oq-02-oq-01",
     "infinitude-primes-4k3",
-    "prime-number-theorem",
-    "sum-of-two-squares",
-    "dirichlet-theorem"
+    "prime-number-theorem"
   ],
   "references": {
     "papers": [
@@ -116,7 +119,7 @@
     ]
   },
   "started": "2026-05-12T04:48:16.449Z",
-  "lastUpdate": "2026-06-13T13:30:00.000Z",
+  "lastUpdate": "2026-06-13T21:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -130,6 +133,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ01.lean",
+      "filename": "InfinitudePrimes4k1OQ01.lean",
+      "lineCount": 94,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ01.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ02.lean",
+      "filename": "InfinitudePrimes4k1OQ02.lean",
+      "lineCount": 251,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ02.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ02OQ01.lean",
+      "filename": "InfinitudePrimes4k1OQ02OQ01.lean",
+      "lineCount": 215,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ02OQ01.lean"
     },
     {
       "path": "Proofs/InfinitudePrimes4k1OQ03.lean",

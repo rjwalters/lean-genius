@@ -22,9 +22,13 @@
   particular no infinite-dim extension that bounds the excess count by a fixed
   finite number — can hold.
 
-  Status: S2-A ACT-1 scaffold. Three named results, all proofs `sorry`-stubbed,
-  pending Lake build verification. See README in `research/problems/...` for the
-  proof skeleton (S3 PREP §3.1 helper, S3 PREP §4 coordinate-eval route).
+  Status: built out across S2–S20. The Approach-C result is fully assembled —
+  `no_universal_shapley_folkman_bound` (capstone), `exists_tight_decomposition`,
+  `tight_excess_count`/`tight_excess_eq_finrank`, plus the `Decomposition.map`
+  transport core — with **no `sorry`** remaining in any proof body. Build
+  verification is pending a Docker `lake` build (Docker daemon down per the
+  2026-06-13 blackout); see `research/problems/...` state.md for the per-session
+  bearer-pinning and fallback registers.
 -/
 
 import Mathlib.Analysis.Normed.Module.Convex

@@ -48,45 +48,45 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Mathlib Imports",
-      "startLine": 17,
-      "endLine": 21,
-      "summary": "Imports Nat.Basic, Finset, Rat.Basic, and tactics."
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring states the Erdős–Hajnal–Szemerédi question (a graph of chromatic number ℵ₁ whose large finite subgraphs all have independent sets of size > n^{1−ε}, a $1000 prize problem). Imports Nat.Basic, Finset, Rat.Defs, and tactics; opens the Erdos75 namespace under open Classical."
     },
     {
       "id": "graph-infrastructure",
       "title": "Graph Infrastructure",
-      "startLine": 23,
-      "endLine": 57,
-      "summary": "Defines UGraph structure (symmetric, loopless adjacency), bundled Graph, Colorable predicate, chromaticNum definition, and proves monotonicity. Replaces 4 axioms with concrete definitions."
+      "startLine": 27,
+      "endLine": 64,
+      "summary": "Defines UGraph (symmetric, loopless adjacency), bundled Graph, the Colorable predicate, chromaticNum, and HasUncountableChromaticNum, and proves chromaticNum_mono. Uses concrete Lean 4 structures and proved theorems rather than axioms."
     },
     {
       "id": "finite-subgraphs",
       "title": "Finite Subgraphs and Independence",
-      "startLine": 59,
-      "endLine": 86,
-      "summary": "Defines FiniteSubgraph (injective embedding from Fin n), IsIndepSet, indepNumber via Finset.sup, and proves indepNumber ≤ n. Replaces 3 axioms with definitions and proved theorems."
+      "startLine": 65,
+      "endLine": 100,
+      "summary": "Defines FiniteSubgraph (injective embedding from Fin n), IsIndepSet, and indepNumber via Finset.sup; proves empty_IsIndepSet and indepNumber_le (α(H) ≤ n). All definitions and proved theorems, no axioms."
     },
     {
       "id": "known-context",
       "title": "Known Context",
-      "startLine": 88,
-      "endLine": 99,
-      "summary": "Axiomatizes the pigeonhole-based chromatic-independence bound. Placeholder for Erdős-Hajnal connection."
+      "startLine": 101,
+      "endLine": 172,
+      "summary": "Proves indepNumber_ge_of_exists (an independent set of size m witnesses indepNumber ≥ m) and finite_chromatic_independence: for a k-colorable graph, every n-vertex subgraph satisfies indepNumber·k ≥ n, proved by partitioning into color classes, bounding each, and summing. Includes a docstring noting the related Erdős–Hajnal conjecture. Proved theorems, not axioms."
     },
     {
       "id": "independence-properties",
-      "title": "Independence Ratio Properties",
-      "startLine": 101,
-      "endLine": 117,
-      "summary": "Defines HasLargeIndepSets (n^{1-ε} approximation) and HasLinearIndepSets (c·n) properties."
+      "title": "The Independence Ratio Property",
+      "startLine": 173,
+      "endLine": 191,
+      "summary": "Defines HasLargeIndepSets (the n^{1−ε} property, approximated as positive independence number) and HasLinearIndepSets (independence number ≥ c·n) as Lean propositions."
     },
     {
       "id": "conjectures",
       "title": "The Erdős Problem",
-      "startLine": 119,
-      "endLine": 140,
-      "summary": "Proves linear → large implication, states both forms of Problem 75 as axioms."
+      "startLine": 192,
+      "endLine": 214,
+      "summary": "Proves linear_implies_large (the linear property implies the basic property) and strong_implies_basic (the strong conjecture implies the basic conjecture). Both forms of Problem 75 are stated as docstrings rather than axioms; the file contains no axiom declarations. Closes the Erdos75 namespace."
     }
   ],
   "conclusion": {

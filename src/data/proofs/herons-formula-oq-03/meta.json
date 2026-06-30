@@ -77,49 +77,57 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 34,
-      "endLine": 57,
+      "endLine": 70,
       "summary": "Defines heron_product s(s-a)(s-b)(s-c), kahan_product (a+(b+c))·(c-(a-b))·(c+(a-b))·(a+(b-c)), kahan_area = sqrt(kahan_product)/4, and triangle_area = sqrt(heron_product).",
       "mathContext": "Four noncomputable definitions over ℝ: the classical and Kahan products, and the two area formulas."
     },
     {
       "id": "algebraic",
       "title": "Algebraic Equivalence",
-      "startLine": 60,
-      "endLine": 90,
+      "startLine": 71,
+      "endLine": 104,
       "summary": "Proves kahan_product = 16·heron_product by ring, and the symmetric expansion. Proves symmetry under permutations of (a,b,c).",
       "mathContext": "$T = (a+b+c)(b+c-a)(a+c-b)(a+b-c) = 16 s(s-a)(s-b)(s-c)$, proved by `ring`."
     },
     {
       "id": "nonnegativity",
       "title": "Non-negativity from Triangle Inequality",
-      "startLine": 93,
-      "endLine": 120,
+      "startLine": 105,
+      "endLine": 140,
       "summary": "Proves kahan_product ≥ 0 from triangle inequality (no ordering needed). Derives heron_product ≥ 0 as a corollary.",
       "mathContext": "Each factor in $(a+b+c)(b+c-a)(a+c-b)(a+b-c)$ is non-negative by one triangle inequality."
     },
     {
       "id": "equivalence",
       "title": "Equivalence of Area Formulas",
-      "startLine": 123,
-      "endLine": 151,
+      "startLine": 141,
+      "endLine": 165,
       "summary": "Proves sqrt(16x) = 4*sqrt(x) via Real.sqrt_mul and Real.sqrt_sq. Then proves kahan_area = triangle_area for valid triangles.",
       "mathContext": "Main theorem: $\\frac{1}{4}\\sqrt{T} = \\sqrt{s(s-a)(s-b)(s-c)}$ for valid triangles."
     },
     {
       "id": "stability",
       "title": "Numerical Stability Structure",
-      "startLine": 153,
-      "endLine": 190,
+      "startLine": 166,
+      "endLine": 218,
       "summary": "Proves that with ordering a≥b≥c, each factor is individually non-negative. Proves the degenerate case where the critical factor vanishes.",
       "mathContext": "Ordering $a \\geq b \\geq c$ ensures each factor non-negative individually; degenerate case $a = b + c$ gives factor 0."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
-      "startLine": 193,
-      "endLine": 240,
+      "startLine": 219,
+      "endLine": 289,
       "summary": "Verifies kahan_product(3,4,5) = 576 and kahan_area = 6. Verifies kahan_product(13,12,5) = 14400 and area = 30. Shows kahan_product(10,10,1) = 399 illustrating the 10:1 aspect ratio case.",
       "mathContext": "Numerical verifications using norm_num and sqrt_sq."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 290,
+      "endLine": 300,
+      "summary": "Re-exports the headline results via #check: kahan_eq_sixteen_heron (the ring identity kahan = 16·heron), kahan_product_nonneg (non-negativity from the triangle inequality), kahan_area_eq_triangle_area (Kahan area = Heron area), and kahan_factors_nonneg_ordered (factor-wise non-negativity under the ordering a≥b≥c). Closes the KahanHeron namespace.",
+      "mathContext": "Documentation-only `#check` exports of the four headline theorems; no new mathematical content."
     }
   ],
   "crossReferences": [

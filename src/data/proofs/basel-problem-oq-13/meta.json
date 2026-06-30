@@ -1,0 +1,165 @@
+{
+  "id": "basel-problem-oq-13",
+  "title": "Odd-fourth-power zeta sum: ∑ 1/(2k+1)⁴ = π⁴/96",
+  "slug": "basel-problem-oq-13",
+  "description": "Formalizes the odd-indexed companion of ζ(4), the lambda value λ(4) = ∑_{k≥0} 1/(2k+1)⁴ = π⁴/96. The proof specializes Mathlib's hasSum_zeta_four (ζ(4) = π⁴/90) through the parity identity λ(4) = (1 - 1/16)ζ(4): split the series into even- and odd-indexed parts with HasSum.even_add_odd, evaluate the even part as (1/16)ζ(4) = π⁴/1440, and recover the odd part by uniqueness of sums as π⁴/90 - π⁴/1440 = π⁴/96. Verified with 0 sorries and 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-19",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaselProblemOQ13.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "series",
+      "zeta-function",
+      "zeta-values",
+      "basel-problem",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 85,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-19",
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_zeta_four",
+        "description": "The fourth zeta value: HasSum (fun n => 1/n⁴) (π⁴/90)",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "HasSum.even_add_odd",
+        "description": "Combine the even- and odd-indexed subseries into the full sum",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.NatInt"
+      },
+      {
+        "theorem": "Summable.comp_injective",
+        "description": "Summability of the odd-indexed subseries from summability of ζ(4)",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "HasSum.mul_left",
+        "description": "Scale ζ(4) by 1/16 to evaluate the even-indexed subseries",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "originalContributions": [
+      "hasSum_even_zeta_four: ∑_k 1/(2k)⁴ = π⁴/1440 (a sixteenth of ζ(4) via reindexing 1/(2k)⁴ = (1/16)(1/k⁴))",
+      "hasSum_odd_zeta_four: ∑_k 1/(2k+1)⁴ = π⁴/96 (the lambda value λ(4)) derived from ζ(4) minus its even part by HasSum.even_add_odd + HasSum.unique",
+      "tsum_odd_zeta_four: the tsum form ∑' k, 1/(2k+1)⁴ = π⁴/96"
+    ],
+    "prerequisites": [
+      "Fourth zeta value ζ(4) = π⁴/90 (Mathlib hasSum_zeta_four)",
+      "Even/odd splitting of an infinite sum (HasSum.even_add_odd)",
+      "Uniqueness of sums (HasSum.unique)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ZetaValues",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Real"],
+    "namespace": "BaselOddZetaFour",
+    "path": "Proofs/BaselProblemOQ13.lean",
+    "lineCount": 85,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "Euler evaluated the even zeta values ζ(2k) = (rational)·π^{2k} in 1740; ζ(4) = π⁴/90 is the case k = 2. The odd-indexed restriction λ(s) = ∑_{k≥0} 1/(2k+1)^s is the Dirichlet lambda function, related to ζ by λ(s) = (1 - 2^{-s})ζ(s) — it drops the even-indexed terms, which themselves form a 2^{-s}-scaled copy of ζ. At s = 4 this gives λ(4) = (1 - 1/16)ζ(4) = π⁴/96. This entry formalizes that special value, reusing Mathlib's machine-checked ζ(4) = π⁴/90.",
+    "problemStatement": "Formalize, with 0 sorries and 0 axioms, the odd-fourth-power zeta sum\n\n$$\\lambda(4) = \\sum_{k=0}^{\\infty} \\frac{1}{(2k+1)^4} = \\frac{\\pi^4}{96},$$\n\nby specializing Mathlib's `hasSum_zeta_four` (ζ(4) = π⁴/90) through the parity split λ(4) = (1 - 1/16)ζ(4).",
+    "text": "The odd-indexed Basel-type sum at exponent 4: λ(4) = π⁴/96, obtained from Mathlib's ζ(4) = π⁴/90 by separating even- and odd-indexed terms.",
+    "proofStrategy": "Two HasSum lemmas. (1) hasSum_even_zeta_four: rewrite 1/(2k)⁴ = (1/16)(1/k⁴) and scale ζ(4) by 1/16 (HasSum.mul_left + a `ring` rewrite) to get π⁴/1440. (2) hasSum_odd_zeta_four: the odd subseries is summable (Summable.comp_injective with k ↦ 2k+1), so reassembling ζ(4) = even + odd via HasSum.even_add_odd and applying HasSum.unique against hasSum_zeta_four forces the odd sum to π⁴/90 - π⁴/1440 = π⁴/96. A tsum corollary (tsum_odd_zeta_four) records the ∑' form.",
+    "keyInsights": [
+      "**λ(4) = (1 - 1/16)ζ(4) is the s = 4 case of λ(s) = (1 - 2^{-s})ζ(s).** The whole proof is the constructive content of that identity at a single point: removing the even-indexed terms, which carry the factor 2^{-4} = 1/16 of the full series, leaves 15/16 of ζ(4).",
+      "**The even-indexed subseries is a scaled copy of ζ(4).** Since 1/(2k)⁴ = (1/16)(1/k⁴), the even part is exactly (1/16)ζ(4) = π⁴/1440 — a one-line HasSum.mul_left after a `ring` rewrite (valid even at k = 0 where both sides are 0 in ℝ).",
+      "**The odd sum falls out by uniqueness, not direct summation.** Rather than evaluating ∑ 1/(2k+1)⁴ from scratch, reassemble ζ(4) from its even and odd halves and use uniqueness of sums: π⁴/1440 + (odd) = π⁴/90 ⟹ (odd) = π⁴/96.",
+      "**Casting the index as ↑(2k+1) keeps the summand in a form `HasSum.even_add_odd` accepts.** Writing the odd summand as 1/((2*k+1 : ℕ) : ℝ)⁴ lets the even/odd reconstruction unify f := (fun n => 1/(n:ℝ)⁴) directly against the shifted index.",
+      "**Same template as η(2)/η(4) and the odd-square sum.** Even part = scaled ζ, odd part by HasSum.unique, no per-term case analysis — the identical idiom that yields ∑ 1/(2k+1)² = π²/8 and η(2) = π²/12."
+    ],
+    "prerequisites": [
+      "Fourth zeta value ζ(4) = π⁴/90",
+      "Dirichlet lambda function and λ(s) = (1 - 2^{-s})ζ(s)",
+      "Even/odd decomposition of infinite sums",
+      "HasSum / tsum API in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Documents the λ(4) = (1 - 1/16)ζ(4) parity split; imports Mathlib's ZetaValues (for hasSum_zeta_four) and Tactic.",
+      "mathContext": "λ(4) is the value at 4 of the Dirichlet lambda function, the odd-indexed restriction of ζ."
+    },
+    {
+      "id": "even-part",
+      "title": "hasSum_even_zeta_four — ∑ 1/(2k)⁴ = π⁴/1440",
+      "startLine": 35,
+      "endLine": 46,
+      "summary": "Rewrites 1/(2k)⁴ = (1/16)(1/k⁴) and scales ζ(4) by 1/16.",
+      "mathContext": "The even-indexed fourth-power terms form a sixteenth-scaled copy of ζ(4)."
+    },
+    {
+      "id": "odd-part",
+      "title": "hasSum_odd_zeta_four / tsum_odd_zeta_four — ∑ 1/(2k+1)⁴ = π⁴/96",
+      "startLine": 48,
+      "endLine": 69,
+      "summary": "Odd subseries summable via comp_injective; reassemble ζ(4) = even + odd and use HasSum.unique to pin the odd sum to π⁴/96, with a tsum corollary.",
+      "mathContext": "The lambda value λ(4), recovered as ζ(4) minus its even part."
+    }
+  ],
+  "conclusion": {
+    "summary": "The odd-fourth-power zeta sum λ(4) = ∑ 1/(2k+1)⁴ = π⁴/96 is formalized with 0 axioms and 0 sorries, built from Mathlib's ζ(4) = π⁴/90 by the even/odd parity split. The proof packages the even-indexed fourth-power sum (π⁴/1440) and the odd-indexed lambda value (π⁴/96) as reusable HasSum lemmas plus a tsum corollary.",
+    "implications": "Completes the fourth-power analogue of the odd-square Basel sum ∑ 1/(2k+1)² = π²/8 and demonstrates the HasSum.even_add_odd splitting idiom at exponent 4. The same template — even part = scaled ζ, odd part by uniqueness — applies directly to the Dirichlet eta value η(4) = 7π⁴/720 from ζ(4) = π⁴/90, and to higher even exponents via Mathlib's hasSum_zeta_nat.",
+    "openQuestions": [
+      {
+        "id": "basel-problem-oq-13-oq-01",
+        "question": "Combine the odd-fourth-power sum λ(4) = π⁴/96 with the even-fourth-power sum π⁴/1440 to derive the Dirichlet eta value η(4) = ∑ (-1)^(n+1)/n⁴ = 7π⁴/720, mirroring the η(2) construction.",
+        "significance": "medium"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "extends",
+      "description": "Root Basel entry ζ(2) = π²/6; this is the odd-indexed fourth-power companion λ(4) = π⁴/96, the exponent-4 analogue of the odd-square sum."
+    },
+    {
+      "targetId": "basel-problem-oq-08",
+      "relationship": "extends",
+      "description": "ζ(4) = π⁴/90; this entry extracts its odd-indexed part π⁴/96."
+    }
+  ],
+  "references": [
+    {
+      "title": "Introductio in analysin infinitorum",
+      "author": "Leonhard Euler",
+      "year": "1748",
+      "description": "Euler's evaluation of the even zeta values ζ(2k) = (rational)·π^{2k}, including ζ(4) = π⁴/90, from which the lambda values follow."
+    },
+    {
+      "title": "Riemann's Zeta Function",
+      "author": "Harold M. Edwards",
+      "year": "1974",
+      "venue": "Academic Press",
+      "description": "Develops the Dirichlet lambda and eta functions λ(s) = (1 - 2^{-s})ζ(s) and η(s) = (1 - 2^{1-s})ζ(s) as restrictions of the Riemann zeta function."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "basel-problem-oq-13-oq-01",
+      "question": "Derive the Dirichlet eta value η(4) = 7π⁴/720 by combining λ(4) = π⁴/96 with the even-fourth-power sum π⁴/1440.",
+      "significance": "medium"
+    }
+  ],
+  "sorries": 0
+}

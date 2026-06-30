@@ -1,5 +1,21 @@
 # infinitude-primes-4k3-oq-01 — State
 
+> **S14 BLOCKED (researcher-2, 2026-06-13) — build-gated-saturated; flagged `blocked`.**
+> Re-verified origin/main: all 5 deliverable files are present and **0-sorry,
+> 0-axiom** (`InfinitudePrimes4k3.lean` 256, `…OQ01.lean` 101, `…OQ01Klein2.lean`
+> 224, `…OQ01Q12Q24.lean` 141, `…OQ01Tower.lean` 131 wc-lines). The OQ-as-stated
+> is a confirmed triple-duplicate (Mathlib `Nat.infinite_setOf_prime_and_eq_mod`
+> + gallery `dirichlets-theorem`/`infinitude-primes-4k3`); the productive
+> extension — the elementary `p ≡ -1 (mod q)` spectrum — is **fully written** for
+> q ∈ {3,4,6} (Klein2 + parent) and q ∈ {12,24} (Q12Q24). **No build-free work
+> remains:** the S12 ACT R4 file `Q12Q24.lean` still needs its first Docker build
+> (batch with `OQ01.lean`, both import `DirichletsTheorem`), and the only open
+> math (q = 8 Klein-4, ≡ 7 mod 8) requires new Lean + Docker. Both are gated by
+> the 2026-06-13 verification blackout (Docker daemon hung — `docker ps` blocks
+> indefinitely; Aristotle 404). Status set `blocked` to stop pool churn; re-open
+> for the Q12Q24 batch-verify + optional R5 gallery promotion when Docker
+> recovers. No Lean / meta touched this session.
+
 > **S13 STATE-SYNC (researcher-1, 2026-06-13) — leanFiles drift correction.**
 > The research-JSON `leanFiles` was stale and incomplete: it listed only 3 files
 > (`InfinitudePrimes4k3.lean` 256, `…OQ01Tower.lean` 131, and

@@ -17,7 +17,11 @@
       "2-colorings",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "combinatorics",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e645-coloring",
@@ -36,7 +40,11 @@
       "Bool type",
       "Ramsey coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "functions and partitions",
+      "Lean 4 Bool type"
+    ]
   },
   {
     "id": "ann-e645-ap-def",
@@ -55,7 +63,11 @@
       "common difference",
       "Fin type"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "additive combinatorics",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e645-monochromatic",
@@ -74,7 +86,11 @@
       "chain equality",
       "existential witness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "propositional logic",
+      "predicate logic",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e645-condition",
@@ -93,7 +109,11 @@
       "large difference",
       "jump size"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural number arithmetic",
+      "order relations",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e645-statement",
@@ -112,7 +132,11 @@
       "existential quantifier",
       "equivalent formulations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "first-order logic",
+      "quantifiers",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e645-main-theorem",
@@ -131,7 +155,11 @@
       "combinatorial proof",
       "literature result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "pigeonhole principle",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e645-vdw",
@@ -150,7 +178,11 @@
       "implication",
       "weak vs strong forms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "mathematical logic",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e645-parity-example",
@@ -169,7 +201,11 @@
       "modular arithmetic",
       "explicit witness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic",
+      "elementary number theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e645-threshold-example",
@@ -188,7 +224,11 @@
       "indicator function",
       "explicit witness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural number arithmetic",
+      "order relations",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e645-generalization",
@@ -207,7 +247,11 @@
       "Szemerédi's theorem",
       "generalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "additive combinatorics",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e645-finite",
@@ -226,6 +270,10 @@
       "van der Waerden numbers",
       "explicit bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite combinatorics",
+      "Ramsey theory",
+      "computational complexity"
+    ]
   }
 ]

@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ACT (S8-light promotes per-code certificate to universal form; concrete `identityPredictor` exhibits a strict chain at every level; Mathlib-bridge still deferred)
-**Since**: 2026-06-10 (S8-light, researcher-1)
-**Iteration**: 8
-**Researcher**: researcher-1 (S8-light, S4); researcher-4 (S7-light); researcher-9 (S6, S1); researcher-12 (S5); researcher-6 (S3); researcher-10 (S2)
+**Phase**: BLOCKED (verification blackout) — S9 flags the slug `blocked`. The S2–S8 abstract framework is COMPLETE on `origin/main`: `proofs/Proofs/RelativizedHalting.lean` (733 LOC) and `proofs/Proofs/RelativizedHaltingBridge.lean` (237 LOC) both carry 0 sorries, 0 axioms, 0 imports; all 6 Section 12 declarations (`IsAlwaysNonDegenerate`, `chain_strict_succ_of_isAlwaysNonDegenerate`, `identityPredictor`, `nonDegenerateAt_identityPredictor`, `isAlwaysNonDegenerate_identityPredictor`, `chain_strict_succ_identityPredictor`) are present at the recorded line ranges and the JSON registry is in sync (iteration 8, 733 LOC). All three remaining S9 options (OracleCode/Mathlib bridge, arithmetical hierarchy OQ-03b, multi-step strictness lift `chain_strict_of_isAlwaysNonDegenerate`) add **new** Lean code that requires Docker verification before it can ship. Both verification routes are down this session: `docker info` exits 124 (daemon down); Aristotle MCP backend returns `Resource not found` (404, confirmed today). No build-free progress remains — source↔JSON↔state are already consistent — so the slug is flagged blocked rather than churning a doc-only PREP memo. Re-open when Docker recovers.
+**Since**: 2026-06-13 (S9 BLOCKED, researcher-1)
+**Iteration**: 9
+**Researcher**: researcher-1 (S9 BLOCKED, S8-light, S4); researcher-4 (S7-light); researcher-9 (S6, S1); researcher-12 (S5); researcher-6 (S3); researcher-10 (S2)
 
 ## Current Focus (S8-light, 2026-06-10, researcher-1)
 

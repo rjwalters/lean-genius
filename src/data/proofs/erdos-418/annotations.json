@@ -17,7 +17,11 @@
       "cototient",
       "non-cototient"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler totient function",
+      "elementary number theory",
+      "image of an arithmetic function"
+    ]
   },
   {
     "id": "ann-e418-cototient-def",
@@ -36,7 +40,11 @@
       "coprime",
       "complement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler totient function phi(n)",
+      "coprimality and gcd",
+      "counting integers sharing a common factor"
+    ]
   },
   {
     "id": "ann-e418-cototient-value",
@@ -55,7 +63,11 @@
       "existence",
       "preimage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cototient function n - phi(n)",
+      "range/image of a function",
+      "existential quantification"
+    ]
   },
   {
     "id": "ann-e418-non-cototient-def",
@@ -74,7 +86,11 @@
       "non-existence",
       "OEIS-A005278"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cototient values (image of n - phi(n))",
+      "set complement and non-membership",
+      "negation of existence"
+    ]
   },
   {
     "id": "ann-e418-cototient-one",
@@ -92,7 +108,11 @@
       "base-case",
       "totient-one"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler totient convention phi(1) = 1",
+      "cototient function definition",
+      "base-case evaluation"
+    ]
   },
   {
     "id": "ann-e418-cototient-two",
@@ -110,7 +130,11 @@
       "computation",
       "native-decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cototient function definition",
+      "totient of small integers",
+      "native_decide kernel computation in Lean 4"
+    ]
   },
   {
     "id": "ann-e418-cototient-prime",
@@ -129,7 +153,11 @@
       "totient-prime",
       "omega"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "totient of a prime phi(p) = p - 1",
+      "Nat.totient_prime in Mathlib",
+      "omega arithmetic tactic"
+    ]
   },
   {
     "id": "ann-e418-small-cototients",
@@ -148,7 +176,11 @@
       "witnesses",
       "native-decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cototient values and explicit witnesses",
+      "totient of prime powers",
+      "native_decide verification"
+    ]
   },
   {
     "id": "ann-e418-ten-non-cototient",
@@ -167,7 +199,11 @@
       "exhaustive-search",
       "OEIS"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-cototient definition",
+      "exhaustive/finite search over candidate n",
+      "OEIS A005278 sequence"
+    ]
   },
   {
     "id": "ann-e418-browkin-schinzel-base",
@@ -186,7 +222,11 @@
       "covering-systems",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-cototient construction",
+      "covering systems and modular arithmetic",
+      "Browkin-Schinzel 1995 result"
+    ]
   },
   {
     "id": "ann-e418-witness-seq",
@@ -205,7 +245,11 @@
       "infinite-family",
       "powers-of-two"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Browkin-Schinzel base 509203",
+      "powers of two as a multiplier",
+      "indexed infinite family of witnesses"
+    ]
   },
   {
     "id": "ann-e418-main-theorem",
@@ -224,7 +268,11 @@
       "infinitely-many",
       "solved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite sets (Set.Infinite)",
+      "Browkin-Schinzel witness sequence",
+      "injective infinite family proving infinitude"
+    ]
   },
   {
     "id": "ann-e418-goldbach",
@@ -243,7 +291,11 @@
       "conjecture",
       "distinct-primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Goldbach conjecture",
+      "sum of two distinct primes",
+      "even numbers and prime decomposition"
+    ]
   },
   {
     "id": "ann-e418-odd-conditional",
@@ -262,7 +314,11 @@
       "odd-numbers",
       "product-of-primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strengthened Goldbach hypothesis",
+      "totient of a product of distinct primes phi(pq) = (p-1)(q-1)",
+      "cototient identity cototient(pq) = p + q - 1"
+    ]
   },
   {
     "id": "ann-e418-small-odd",
@@ -281,7 +337,11 @@
       "verification",
       "small-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cototient of prime powers",
+      "case analysis on base cases",
+      "conditional Goldbach argument structure"
+    ]
   },
   {
     "id": "ann-e418-density",
@@ -300,7 +360,11 @@
       "open-problem",
       "positive-lower-density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density of integer sets",
+      "non-cototients and sparse sequences",
+      "open problems in number theory"
+    ]
   },
   {
     "id": "ann-e418-nonaliquot",
@@ -319,6 +383,10 @@
       "positive-density",
       "contrast"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sum-of-divisors function sigma(n)",
+      "aliquot sum sigma(n) - n",
+      "positive density (Erdos 1973)"
+    ]
   }
 ]

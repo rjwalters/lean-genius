@@ -2,10 +2,10 @@
   "id": "erdos-1054-oq-02",
   "title": "Erdős #1054 OQ-02: Representability via Prime Product Witnesses",
   "slug": "erdos-1054-oq-02",
-  "description": "Proves structural representability results for Erdős #1054 using prime products qp. The divisors of qp (distinct primes q < p) are {1,q,p,qp}, so 1+q+p is representable. Proves Goldbach connection: every even n ≥ 4 representable if Goldbach holds. Concrete witnesses for n ∈ [6,20]. 17 theorems, 0 sorries, 0 axioms.",
+  "description": "Proves structural representability results for Erdős #1054 using prime products qp. The divisors of qp (distinct primes q < p) are {1,q,p,qp}, so 1+q+p is representable. Proves Goldbach connection: every even n ≥ 4 representable if Goldbach holds. Concrete witnesses for n ∈ [6,20]. 17 theorems, 0 sorries; the concrete witness theorems are discharged by native_decide (relies on Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius Erdos1054OQ02",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1054OQ02.lean",
     "tags": [
       "number-theory",
@@ -15,12 +15,12 @@
       "prime-products",
       "representability"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 307,
     "theoremCount": 17,
-    "assumptions": "None. All 17 theorems proved (including conditional Goldbach result).",
+    "assumptions": "Lean.ofReduceBool. The concrete witness deliverables — goldbach_witness_6..19 and the witnesses_6_to_20 table (advertised as 'concrete witnesses for n ∈ [6,20]') — are discharged by native_decide, which trusts compiler kernel reduction and so depends on the Lean.ofReduceBool axiom (#print axioms lists it). No literal `axiom` declarations exist, so leanFile.axiomCount stays 0; the abstract results (divisor classification, goldbach_implies_representable) are native_decide-free. The conditional Goldbach result itself is proved (modulo Goldbach's conjecture as a hypothesis, not an axiom).",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -87,7 +87,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős #1054 OQ-02 prime product construction: 17 theorems, 0 sorries, 0 axioms. Goldbach connection proved, concrete witnesses for n ≤ 20.",
+    "summary": "Erdős #1054 OQ-02 prime product construction: 17 theorems, 0 sorries. Goldbach connection proved; concrete witnesses for n ≤ 20 are verified by native_decide (relies on Lean.ofReduceBool).",
     "implications": "The Goldbach bridge (if Goldbach's conjecture holds, Erdős #1054 is solved for all odd n ≥ 7) is now formally established. Combined with OQ-01 (even n covered by prime+1) and Construction D (n = 1+p+p²), the representability problem is nearly completely resolved conditionally.",
     "openQuestions": [
       "Can Goldbach's conjecture be proved in Lean 4? (Currently open for all n)",

@@ -1,0 +1,101 @@
+{
+  "id": "erdos-83-oq-01",
+  "title": "Erdős #83 OQ-01: Sharpness of the Complete Intersection Bound (Achievability)",
+  "slug": "erdos-83-oq-01",
+  "description": "The Ahlswede–Khachatrian Complete Intersection Theorem (Erdős #83, $500 prize) states that a family F of 2n-subsets of [4n] with |A ∩ B| ≥ 2 for all A, B ∈ F satisfies |F| ≤ ½(C(4n,2n) − C(2n,n)²). The deep upper bound (proved by Ahlswede–Khachatrian's 'pushing–pulling' method) is correctly axiomatized in the parent entry. This entry supplies the elementary, fully machine-checked LOWER bound — that the inequality is SHARP — by exhibiting a valid family that attains it exactly. The witness is the majority family: fix a 2n-element core C ⊆ [4n] and take all 2n-subsets meeting C in ≥ n+1 elements. Two such sets share ≥ (n+1)+(n+1)−2n = 2 core elements (pigeonhole), so the family is 2-intersecting; and the complement involution S ↦ Sᶜ pairs the majority sets with the minority sets, leaving the C(2n,n)² 'balanced' sets in the middle, whence the count is exactly ½(C(4n,2n) − C(2n,n)²). Verified with 0 sorries and no axioms beyond Lean's foundational triple (no native_decide / Lean.ofReduceBool).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos83LowerBound.lean",
+    "tags": [
+      "combinatorics",
+      "extremal-set-theory",
+      "intersecting-families",
+      "erdos",
+      "ahlswede-khachatrian",
+      "vandermonde",
+      "extensions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None beyond Lean/Mathlib's foundational axioms. The three headline results (two_mul_le_card_inter_add_core, card_filter_inter_card_eq, erdos83_lower_bound) depend only on [propext, Classical.choice, Quot.sound], confirmed by #print axioms. The proof uses no native_decide and therefore does NOT depend on Lean.ofReduceBool. Only the LOWER bound (achievability) is proved here; the matching upper bound is the deep Ahlswede–Khachatrian theorem, which is axiomatized in the parent entry erdos-83.",
+    "lineCount": 261,
+    "theoremCount": 3,
+    "definitionCount": 4,
+    "originalContributions": [
+      "Machine-checked proof that the Ahlswede–Khachatrian bound for Erdős #83 is SHARP: erdos83_lower_bound exhibits a valid 2-intersecting family of 2n-subsets of [4n] of cardinality exactly ½(C(4n,2n) − C(2n,n)²), the elementary companion to the axiomatized upper bound",
+      "A reusable split-count lemma card_filter_inter_card_eq: among the k-subsets of a ground set G, exactly C(|C|,j)·C(|G∖C|,k−j) of them meet a fixed C ⊆ G in j points, proved by the bijection S ↦ (S ∩ C, S ∖ C)",
+      "A general core-pigeonhole lemma two_mul_le_card_inter_add_core: if A and B each meet C in ≥ s points then 2s ≤ |A ∩ B| + |C|, the inclusion–exclusion reason the majority family is 2-intersecting",
+      "A clean counting argument via the complement involution S ↦ Sᶜ: it pairs the 'majority' (≥ n+1 in core) and 'minority' (< n in core) families, so |majority| = (|powersetCard| − |balanced|)/2 = (C(4n,2n) − C(2n,n)²)/2 — avoiding any explicit Vandermonde sum manipulation",
+      "0-axiom, native_decide-free formalization establishing the achievability half of a $500 Erdős problem"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős, Ko and Rado (1961) determined the largest 1-intersecting family of k-subsets of [n] for n ≥ 2k. They conjectured the analogue for t-intersecting families and, for the specific case (m,k,t) = (4n,2n,2), the bound ½(C(4n,2n) − C(2n,n)²) — the '4m conjecture'. The general Complete Intersection Theorem was finally proved by Ahlswede and Khachatrian (1997), earning the $500 Erdős prize; its extremal families are the 'r-th frankl families' A(r) of all k-subsets containing ≥ t+r elements of a fixed (t+2r)-set. For Erdős #83 the optimal family is the r = n−1 case: 2n-subsets of [4n] meeting a fixed 2n-set in ≥ n+1 points. The upper bound is genuinely deep, but the matching lower bound (that this family is valid and has the claimed size) is elementary — and is what this entry verifies.",
+    "problemStatement": "Show that the Ahlswede–Khachatrian bound for Erdős #83 is attained: construct a family F of 2n-subsets of [4n] with |A ∩ B| ≥ 2 for all A, B ∈ F and |F| = ½(C(4n,2n) − C(2n,n)²).",
+    "proofStrategy": "Fix a core C ⊆ [4n] with |C| = 2n (obtained from exists_subset_card_eq) and let F be the majority family — the 2n-subsets S with |S ∩ C| ≥ n+1. Validity splits in two: F is 2n-uniform by construction (membership in powersetCard 2n), and 2-intersecting by two_mul_le_card_inter_add_core, an inclusion–exclusion pigeonhole giving |A ∩ B| ≥ 2(n+1) − |C| = 2. For the count, partition the 2n-subsets P = powersetCard 2n [4n] into the majority family F (|S∩C| ≥ n+1), the balanced family M (|S∩C| = n) and the minority family L (|S∩C| < n). The complement involution S ↦ Sᶜ maps P to itself (|Sᶜ| = 4n−2n = 2n) and sends |S∩C| to |Sᶜ∩C| = |C| − |S∩C| = 2n − |S∩C|, so it is a bijection F ≃ L; hence |F| = |L|. The split-count lemma card_filter_inter_card_eq gives |M| = C(2n,n)·C(2n,n) = C(2n,n)². Since |P| = C(4n,2n) = |F| + |M| + |L| = 2|F| + C(2n,n)², we get |F| = (C(4n,2n) − C(2n,n)²)/2 = erdos83Bound n.",
+    "keyInsights": [
+      "The bound's two terms have a combinatorial meaning: C(4n,2n) counts all 2n-subsets, C(2n,n)² counts the 'balanced' ones (exactly n in the core), and the factor ½ comes from the complement symmetry between 'majority' and 'minority' subsets.",
+      "2-intersecting-ness is pure pigeonhole within the core: two sets each with ≥ n+1 of the core's 2n elements overlap in ≥ 2 of them, since (n+1)+(n+1) exceeds 2n by 2.",
+      "The complement involution S ↦ Sᶜ turns the counting identity into a one-line bijection, replacing the usual Vandermonde sum ∑ C(2n,j)² = C(4n,2n) with a symmetry argument.",
+      "The split-count lemma (k-subsets meeting C in j points number C(|C|,j)·C(|G∖C|,k−j)) is the finite-combinatorics workhorse here and is stated and proved in full generality via the bijection S ↦ (S ∩ C, S ∖ C).",
+      "This is the achievability (lower-bound) half of Erdős #83 only; the matching upper bound is the deep Ahlswede–Khachatrian theorem and remains axiomatized."
+    ],
+    "prerequisites": [
+      "Finite set families: Finset.powersetCard, mem_powersetCard, card_powersetCard (the C(n,k) formula)",
+      "Cardinality identities: card_union_add_card_inter (inclusion–exclusion), card_inter_add_card_sdiff, card_sdiff, card_compl, card_univ_diff",
+      "Bijective counting: Finset.card_nbij' and product cardinality card_product",
+      "Filter partitions: filter_card_add_filter_neg_card_eq_card, filter_filter, filter_congr"
+    ]
+  },
+  "conclusion": {
+    "summary": "Three theorems establish that the Ahlswede–Khachatrian bound for Erdős #83 is sharp: a core-pigeonhole lemma (two_mul_le_card_inter_add_core) showing the majority family is 2-intersecting, a general split-count lemma (card_filter_inter_card_eq), and the main result (erdos83_lower_bound) constructing a valid 2-intersecting family of 2n-subsets of [4n] with cardinality exactly ½(C(4n,2n) − C(2n,n)²).",
+    "implications": "Together with the axiomatized upper bound in the parent entry erdos-83, this pins the extremal number for Erdős #83 from below: the deep inequality is not merely an upper estimate but is attained, by an explicit and elementary family. The split-count and pigeonhole lemmas are reusable for other extremal-set-theory formalizations.",
+    "openQuestions": [
+      "Formalize the matching upper bound — the full Ahlswede–Khachatrian Complete Intersection Theorem — replacing the axiom in the parent entry; this is a major undertaking requiring the 'pushing–pulling' generalization of Frankl's shifting.",
+      "Generalize the verified lower bound to arbitrary (m,k,t): show the Frankl family A(r) of k-subsets meeting a fixed (t+2r)-set in ≥ t+r points is t-intersecting and compute its cardinality, giving the achievability half of the Complete Intersection Theorem for all parameters."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-erdos83oq01-pigeonhole",
+      "title": "Part I: Core Pigeonhole (2-Intersecting)",
+      "startLine": 62,
+      "endLine": 78,
+      "summary": "two_mul_le_card_inter_add_core: if A and B each meet C in ≥ s points then 2s ≤ |A ∩ B| + |C|. Proof is inclusion–exclusion inside C — (A∩C) and (B∩C) are subsets of C, so their union has ≤ |C| elements, and their intersection (A∩B∩C) is contained in A∩B. Specializing s = n+1, |C| = 2n gives |A ∩ B| ≥ 2, the reason the majority family is 2-intersecting."
+    },
+    {
+      "id": "sec-erdos83oq01-splitcount",
+      "title": "Part II: Split Count by Core Intersection",
+      "startLine": 86,
+      "endLine": 158,
+      "summary": "card_filter_inter_card_eq: among the k-subsets of a ground set G, exactly C(|C|,j)·C(|G∖C|,k−j) meet a fixed C ⊆ G in j points. Proved with Finset.card_nbij' via the bijection S ↦ (S ∩ C, S ∖ C) (inverse (A,B) ↦ A ∪ B), checking it lands in the product of powersetCard's and that the two maps are mutually inverse."
+    },
+    {
+      "id": "sec-erdos83oq01-main",
+      "title": "Part III: The Bound Is Sharp",
+      "startLine": 167,
+      "endLine": 261,
+      "summary": "erdos83_lower_bound: fixing a 2n-core C, the majority family F = {S ∈ powersetCard 2n : |S ∩ C| ≥ n+1} is valid (2n-uniform + 2-intersecting) and has |F| = erdos83Bound n. The count partitions powersetCard 2n into F (majority), M (balanced, |M| = C(2n,n)² by the split count) and L (minority); the complement involution S ↦ Sᶜ gives |F| = |L|, so |F| = (C(4n,2n) − C(2n,n)²)/2."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-83",
+      "relationship": "extends",
+      "description": "Supplies the elementary, fully verified lower bound (achievability) for Erdős #83, complementing the axiomatized Ahlswede–Khachatrian upper bound in the parent entry"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 261,
+    "path": "Proofs/Erdos83LowerBound.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 4,
+    "theoremCount": 3
+  },
+  "sorries": 0
+}

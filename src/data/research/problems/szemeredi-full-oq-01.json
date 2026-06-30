@@ -1,8 +1,8 @@
 {
   "slug": "szemeredi-full-oq-01",
   "title": "Szemerédi Theorem: Furstenberg Ergodic-Theoretic Proof Formalization",
-  "phase": "OBSERVE",
-  "status": "in-progress",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -16,14 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "BLOCKED",
     "since": "2026-04-22T13:03:46.383Z",
-    "iteration": 11,
+    "iteration": 12,
     "focus": "S11 OBSERVE-BUILD-REGRESSION (researcher-5, this PR, 2026-06-09T17:55Z): Docker baseline build at HEAD 162265bae2c returns 'Build failed exit 1' at job 7743/7743 elaboration of Proofs.FurstenbergCorrespondenceOQ01. S10's 'ACT-ready' claim is falsified. Mathlib pin unchanged from S9/S10 (2df2f0150c v4.26.0); breakage is in the file itself. 28 hard errors + 45 warnings: 5 surface/parse cascade (expected token at L336/L434/L508/L532/L551), 12 type/instance synthesis (L101 IsClopen ctor, L139/L206/L211/L219/L220/L324/L431 etc., L669 Tendsto site), 9 tactic-level (L146/L153 split_ifs, L181/L222 unsolved goals, L214 ext, L246 function expected, L484 invalid notation, L485 omega, L507 calc), 1 Mathlib rename (L674 Filter.eventually_of_forall -> Filter.Eventually.of_forall), 1 cast (L329 mod_cast). S9's 5-lemma audit remains valid but was insufficient: lemma existence at proof-site does not imply file builds. Full inventory in sessions/2026-06-09-s11-observe-build-regression.md. S11 author did NOT attempt Lean edits; 60-line proof draft remains banked for S13 ACT (post-Mechanic repair). Docker symlink-blocker claim from S9/S10 is falsified: docker-build.sh works from isolation worktrees (recent #22680 'Docker-verified' PR + this S11 run both confirm). Real blocker is the file's own breakage.",
     "blockers": [
       "BUILD REGRESSION: Proofs.FurstenbergCorrespondenceOQ01 elaboration fails at HEAD 162265bae2c with 28 hard errors. Mechanic repair required before any Researcher ACT can proceed."
     ],
-    "nextAction": "S12 MECHANIC (Lean repair, isolation-worktree OK): (1) one-liner fixes first to test cascade collapse - L101 IsClopen ctor (likely needs IsClopen.mk or order swap) + L674 Filter.eventually_of_forall -> Filter.Eventually.of_forall rename; (2) re-build, watch 5 'expected token' parse cascades collapse; (3) address residual 12 instance synthesis failures one-by-one; (4) tactic-level (L146/L153 split_ifs - likely use simp only or by_cases; L214 ext - new lemma name; L485 omega - hypothesis context; L507 calc); (5) verify ./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01 returns clean; (6) ship Mechanic PR. S13 ACT (Researcher, banked): once main HEAD compiles, paste 60-line limit_invariant_on_cylinder proof at L779 (S9-audited template in state.md S10 Next Action L178-219). Pool transition (advisory): BLOCKED until S12 ships; S11 author does not invoke the transition, recommends an operator do so.",
+    "nextAction": "S13 BLOCKED-PROPAGATION (researcher-5, 2026-06-14): the S12 BLOCKED decision (state.md, researcher-1) was applied to the pool only and got reverted by a sync from this JSON, which still read status=in-progress/phase=OBSERVE — so claim-random kept re-serving the slug (6th+ landing on the same unrepaired surface) during the Docker blackout. Set status=blocked/phase=BLOCKED here so the block sticks across pool re-syncs, and re-set the pool. Build-regression confirmed unrepaired at HEAD: L674 still `Filter.eventually_of_forall` (renamed to Filter.Eventually.of_forall in v4.26.0), L101 IsClopen-ctor site present, no repair commit on FurstenbergCorrespondenceOQ01.lean since 2026-06-09, 3 sorries remain. This is Mechanic-domain Lean repair (28 hard errors), Docker-gated, NOT Researcher work — un-actionable under the blackout. Operator/Mechanic clears to available after repair. PRIOR S12 MECHANIC (Lean repair, isolation-worktree OK): (1) one-liner fixes first to test cascade collapse - L101 IsClopen ctor (likely needs IsClopen.mk or order swap) + L674 Filter.eventually_of_forall -> Filter.Eventually.of_forall rename; (2) re-build, watch 5 'expected token' parse cascades collapse; (3) address residual 12 instance synthesis failures one-by-one; (4) tactic-level (L146/L153 split_ifs - likely use simp only or by_cases; L214 ext - new lemma name; L485 omega - hypothesis context; L507 calc); (5) verify ./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01 returns clean; (6) ship Mechanic PR. S13 ACT (Researcher, banked): once main HEAD compiles, paste 60-line limit_invariant_on_cylinder proof at L779 (S9-audited template in state.md S10 Next Action L178-219). Pool transition (advisory): BLOCKED until S12 ships; S11 author does not invoke the transition, recommends an operator do so.",
     "attemptCounts": {
       "total": 9,
       "currentApproach": 1,

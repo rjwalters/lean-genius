@@ -98,44 +98,100 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "KFamily and Covering Definitions",
-      "startLine": 31,
-      "endLine": 75,
-      "summary": "Defines k-element set families (KFamily), pairwise intersection predicates, the r-wise pair property, covering sets (a set S covering all pairs in all sets), and the function f(k,r) = min size of a covering set.",
-      "mathContext": "KFamily α k = Finset (Finset α) where every member has exactly k elements. The covering number $f(k,r)$ = minimum $|S|$ such that every pair from any $k$-set intersects $S$ in $r$ elements."
+      "id": "basic-definitions",
+      "title": "Part I: Basic Definitions",
+      "summary": "Sets up the combinatorial framework: the `KFamily` structure (a family of $k$-element finite sets), the predicates `PairIntersects`/`PairIntersectsAll` (a pair $\\{x,y\\}$ meeting given sets), the $r$-wise pair property `HasRWisePairProperty` (every $r$ sets share a common intersecting pair), and the covering-set predicates `IsCoveringSet`/`IsCoveringSetInf`.",
+      "startLine": 37,
+      "endLine": 64,
+      "mathContext": null
     },
     {
-      "id": "covering-values",
-      "title": "Exact Values of f(k,r)",
-      "startLine": 73,
-      "endLine": 110,
-      "summary": "Axiomatizes exact values: f(k,3) = 2k, f(k,4) = ⌊3k/2⌋, f(k,5) = ⌊5k/4⌋, f(k,6) = k. Proves the upper bound f(k,r) ≤ kr (trivial) and the decreasing pattern in r.",
-      "mathContext": "$f(k,3) = 2k$ (Erdős-Ko-Rado style), $f(k,4) = \\lfloor 3k/2 \\rfloor$, $f(k,5) = \\lfloor 5k/4 \\rfloor$, $f(k,6) = k$. For $r > 6$: $f(k,r) < k$? Coefficients $2, 3/2, 5/4, 1$ suggest convergence to $k$ as $r \\to 6$."
+      "id": "function-f",
+      "title": "Part II: The Function f(k,r)",
+      "summary": "Defines $f(k,r)$ (`f`) as the minimum size of a set covering every member of a $k$-uniform family with the $r$-wise pair property, and states `f_finite`: $f(k,r) \\le kr$ (the trivial upper bound), as a theorem with a sorry placeholder.",
+      "startLine": 65,
+      "endLine": 75,
+      "mathContext": null
+    },
+    {
+      "id": "known-values",
+      "title": "Part III: Known Values (EFKT92)",
+      "summary": "States the four exact values established by Erdős–Fon-Der-Flaass–Kostochka–Tuza (1992) as theorems with sorry placeholders: $f(k,3) = 2k$, $f(k,4) = \\lfloor 3k/2 \\rfloor$, $f(k,5) = \\lfloor 5k/4 \\rfloor$, and $f(k,6) = k$.",
+      "startLine": 76,
+      "endLine": 93,
+      "mathContext": null
+    },
+    {
+      "id": "pattern",
+      "title": "Part IV: Pattern in Known Values",
+      "summary": "Records the coefficient sequence $c_r$ (`coefficientSequence`: $2, 3/2, 5/4, 1$ for $r = 3,4,5,6$) and proves `coefficients_decreasing` and `coefficient_pattern` — the known coefficients strictly decrease and match the EFKT92 values (both discharged by `simp`/`norm_num`).",
+      "startLine": 94,
+      "endLine": 119,
+      "mathContext": null
+    },
+    {
+      "id": "question1",
+      "title": "Part V: Question 1 — The Case r = 7",
+      "summary": "Formalizes the first open question as `Question1` ($f(k,7) = (3/4 + o(1))k$), recorded as the axiom `question1_open`, together with the partial bounds `f_k_7_lower` and `f_k_7_upper` (theorems with sorry placeholders).",
+      "startLine": 120,
+      "endLine": 137,
+      "mathContext": null
+    },
+    {
+      "id": "question2",
+      "title": "Part VI: Question 2 — General Asymptotics",
+      "summary": "Formalizes the second open question as `Question2` (for every $r \\ge 3$, $f(k,r) = (c_r + o(1))k$ for some constant $c_r$), recorded as the axiom `question2_open`, and proves `q2_implies_bounded`: under Question 2 each $c_r$ lies in $(0, 2]$ (theorem with sorry).",
+      "startLine": 138,
+      "endLine": 153,
+      "mathContext": null
+    },
+    {
+      "id": "extremal",
+      "title": "Part VII: Extremal Constructions",
+      "summary": "Gives explicit extremal families: `extremalFamily3` and `extremalFamily6` (disjoint blocks of $k$ consecutive integers), with `extremalFamily3_lower` asserting the $r=3$ construction forces a covering set of size $\\ge 2k$, matching $f(k,3) = 2k$ (theorem with sorry).",
+      "startLine": 154,
+      "endLine": 171,
+      "mathContext": null
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity and Asymptotic Analysis",
-      "startLine": 105,
-      "endLine": 160,
-      "summary": "Proves coefficients_decreasing: the ratio f(k,r)/k decreases as r increases. Studies the limit behavior and the question of whether f(k,r) = k for all r ≥ 6.",
-      "mathContext": "Coefficients: $r=3 \\to 2$, $r=4 \\to 3/2$, $r=5 \\to 5/4$, $r=6 \\to 1$. The pattern $c_r = (r-1)!!/r!!$ (double factorial) approximates the coefficients. Conjecture: $f(k,r)/k \\to 1$ for large $r$."
+      "title": "Part VIII: Monotonicity Properties",
+      "summary": "Proves the structural monotonicity of $f$ (as theorems with sorry placeholders): `f_mono_r` ($f(k,r)$ is non-increasing in $r$), `f_mono_k` (non-decreasing in $k$), and `f_le_k` ($f(k,r) \\le k$ for $r \\ge 6$, following from $f(k,6) = k$).",
+      "startLine": 172,
+      "endLine": 185,
+      "mathContext": null
     },
     {
-      "id": "erdos-ko-rado",
-      "title": "Connection to Erdős-Ko-Rado",
-      "startLine": 160,
-      "endLine": 220,
-      "summary": "Connects the covering number f(k,r) to the Erdős-Ko-Rado theorem on intersecting families. The case r=2 corresponds to the EKR bound on the maximum intersecting family size.",
-      "mathContext": "Erdős-Ko-Rado (1961): the maximum family of $k$-subsets of $[n]$ with pairwise intersection ≥ 1 has size $\\binom{n-1}{k-1}$ for $n \\geq 2k$. The covering number $f(k,r)$ generalizes this to the covering perspective."
+      "id": "sunflower",
+      "title": "Part IX: Sunflower Connection",
+      "summary": "Introduces the `Sunflower` structure (a core plus pairwise-disjoint petals) and states `sunflower_connection`: a family with the $r$-wise pair property admits no sunflower of $r$ family-members with a core of size $< 2$ (theorem with sorry), linking the problem to the sunflower lemma.",
+      "startLine": 186,
+      "endLine": 200,
+      "mathContext": null
     },
     {
-      "id": "open-questions",
-      "title": "Open Questions and Conjectures",
-      "startLine": 220,
+      "id": "hypergraph",
+      "title": "Part X: Hypergraph Formulation",
+      "summary": "Recasts the problem in hypergraph language via `HypergraphCovering` and states `hypergraph_equiv`, asserting that the $k$-uniform hypergraph covering formulation is equivalent to the set-family one (theorem with sorry).",
+      "startLine": 201,
+      "endLine": 213,
+      "mathContext": null
+    },
+    {
+      "id": "special-cases",
+      "title": "Part XI: Special Cases",
+      "summary": "Collects boundary behavior: `f_k_2` ($f(k,2) = 2$ since any two sets share a pair), `f_limit_behavior` ($f(k,r) \\le k$ for $r \\ge 6$), and the `EventualStabilization` predicate asking whether $f(k,r)$ stabilizes for large $r$ (theorems with sorry).",
+      "startLine": 214,
+      "endLine": 228,
+      "mathContext": null
+    },
+    {
+      "id": "main-conjectures",
+      "title": "Part XII: Main Conjectures",
+      "summary": "Combines both open questions into `MainConjecture` ($\\text{Question1} \\wedge \\text{Question2}$), recorded as the axiom `main_conjecture_open`, and proves `known_summary`, which assembles the four EFKT92 exact values into a single statement. Closes with a prose summary of known results and open questions.",
+      "startLine": 229,
       "endLine": 277,
-      "summary": "States the open conjecture on f(k,r) for r ≥ 7 and summarizes the connection to Bollobás set-pairs inequality. The determination of all exact values of f(k,r) remains an active research area.",
-      "mathContext": "Open: exact values of $f(k,r)$ for $r \\geq 7$. The Bollobás set-pairs inequality gives $|\\mathcal{F}| \\leq \\binom{a+b}{a}$ for cross-intersecting families, providing tools for the covering problem."
+      "mathContext": null
     }
   ],
   "conclusion": {

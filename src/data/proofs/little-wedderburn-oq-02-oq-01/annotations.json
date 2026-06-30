@@ -1,0 +1,116 @@
+[
+  {
+    "id": "ann-lw0201-embeds-iff-dvd",
+    "proofId": "little-wedderburn-oq-02-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 62
+    },
+    "type": "theorem",
+    "title": "Embedding Criterion: GF(p^m) ↪ GF(p^n) ⟺ m ∣ n",
+    "content": "embeds_iff_dvd states that a ZMod p-algebra embedding GaloisField p m → GaloisField p n exists iff m ∣ n. The proof rewrites Mathlib's FiniteField.nonempty_algHom_iff_finrank_dvd (an F-algebra hom between finite extensions exists iff the degrees divide) using GaloisField.finrank p, which evaluates [GaloisField p k : ZMod p] = k, turning finrank divisibility into m ∣ n. nonempty_algHom_of_dvd packages the constructive direction.",
+    "mathContext": "$\\mathrm{Hom}_{\\mathbb{Z}/p\\text{-alg}}(\\mathrm{GF}(p^m), \\mathrm{GF}(p^n)) \\neq \\varnothing \\iff m \\mid n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite fields",
+      "field embedding",
+      "finrank",
+      "divisibility"
+    ],
+    "prerequisites": [
+      "Galois theory of finite fields",
+      "FiniteField.nonempty_algHom_iff_finrank_dvd"
+    ]
+  },
+  {
+    "id": "ann-lw0201-subfieldfix",
+    "proofId": "little-wedderburn-oq-02-oq-01",
+    "range": {
+      "startLine": 72,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "The Frobenius-Fixed Subfield",
+    "content": "subfieldFix p m is the subfield of fixed points of the m-fold Frobenius x ↦ x^(p^m), realised as the equaliser locus (iterateFrobenius K p m).eqLocusField (RingHom.id K) — the set where the iterated Frobenius agrees with the identity, packaged by RingHom.eqLocusField as a genuine Subfield K. mem_subfieldFix records that x ∈ subfieldFix p m ↔ x^(p^m) = x holds definitionally, since iterateFrobenius K p m x = x^(p^m) by iterateFrobenius_def.",
+    "mathContext": "$\\mathrm{subfieldFix}\\,m = \\{x \\in K : x^{p^m} = x\\}$, the fixed field of $\\varphi^m$ where $\\varphi$ is Frobenius.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Frobenius endomorphism",
+      "fixed field",
+      "subfield",
+      "equaliser locus"
+    ],
+    "prerequisites": [
+      "iterated Frobenius ring map",
+      "RingHom.eqLocusField"
+    ]
+  },
+  {
+    "id": "ann-lw0201-mono",
+    "proofId": "little-wedderburn-oq-02-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "The Subfield Lattice is Ordered by Divisibility",
+    "content": "subfieldFix_mono proves a ∣ b ⟹ subfieldFix p a ≤ subfieldFix p b. The single ingredient is dvd_pow_pow_sub_self_of_dvd: in any commutative ring a ∣ b gives r^(p^a) - r ∣ r^(p^b) - r. Applied with r = x, a fixed point x^(p^a) = x makes x^(p^a) - x = 0, which then forces x^(p^b) - x = 0, i.e. x^(p^b) = x — no Galois machinery required.",
+    "mathContext": "$a \\mid b \\Rightarrow \\{x : x^{p^a} = x\\} \\subseteq \\{x : x^{p^b} = x\\}$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "subfield lattice",
+      "divisibility",
+      "Frobenius",
+      "fixed points"
+    ],
+    "prerequisites": [
+      "dvd_pow_pow_sub_self_of_dvd"
+    ]
+  },
+  {
+    "id": "ann-lw0201-card",
+    "proofId": "little-wedderburn-oq-02-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "Cardinality: a Subfield of Order p^m for Each Divisor m ∣ n",
+    "content": "card_subfieldFix proves Nat.card (subfieldFix p m) = p^m for every m ∣ n in a finite field K of order p^n — i.e. GF(p^n) contains a subfield of order p^m for each m ∣ n. This is the new content beyond Mathlib's abstract algHom existence. The fixed points are exactly the roots of f = X^(p^m) - X, which is separable (galois_poly_separable, as p ∣ p^m) and divides X^(p^n) - X = X^|K| - X because m ∣ n (dvd_pow_pow_sub_self_of_dvd). The big polynomial splits in K with all |K| elements as simple roots (roots_X_pow_card_sub_X), so f splits too and card_rootSet_eq_natDegree gives exactly deg f = p^m distinct roots; transporting along the equaliser-locus/root-set equivalence yields the count.",
+    "mathContext": "$\\#\\{x \\in K : x^{p^m} = x\\} = p^m$ for every $m \\mid n$, where $|K| = p^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subfield order",
+      "separable polynomial",
+      "splitting field",
+      "root counting",
+      "Frobenius"
+    ],
+    "prerequisites": [
+      "FiniteField.galois_poly_separable",
+      "FiniteField.roots_X_pow_card_sub_X",
+      "Polynomial.card_rootSet_eq_natDegree"
+    ]
+  },
+  {
+    "id": "ann-lw0201-instances",
+    "proofId": "little-wedderburn-oq-02-oq-01",
+    "range": {
+      "startLine": 130,
+      "endLine": 141
+    },
+    "type": "example",
+    "title": "GF(4) ↪ GF(64) but GF(4) ⋪ GF(8)",
+    "content": "gf4_embeds_gf64 exhibits an embedding GF(2^2) → GF(2^6) because 2 ∣ 6, while gf4_not_embeds_gf8 shows there is no embedding GF(2^2) → GF(2^3) because 2 ∤ 3 (closed by decide after embeds_iff_dvd). Together they make the divisor obstruction concrete: GF(4) sits inside GF(64) but not inside the larger-by-cardinality-incompatible GF(8).",
+    "mathContext": "$\\mathrm{GF}(4) \\hookrightarrow \\mathrm{GF}(64)$, $\\mathrm{GF}(4) \\not\\hookrightarrow \\mathrm{GF}(8)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite fields",
+      "field embedding",
+      "divisibility"
+    ],
+    "prerequisites": [
+      "embeds_iff_dvd"
+    ]
+  }
+]
