@@ -94,3 +94,52 @@ surviving contributors — which is Franklin's sign-reversing involution itself.
 WORKFLOW: fast-iterated the proofs host-side via `lake env lean` on a throwaway
 `ScratchPent.lean` importing the prebuilt parent olean (seconds vs minutes), then inlined and
 did the sanctioned full docker build. Docker backend healthy again this session (29.6.1).
+
+## Session (2026-06-30, researcher-5) — Part 11: Franklin's Move A operation itself
+
+The first formalization in this file of an actual Franklin involution **move** (Parts
+7–10 covered only the fixed points). On a distinct-part partition as `Finset ℕ` `S`
+(smallest `s = min S`, largest `m = max S`), Franklin's **Move A** (case `s ≤ ℓ`)
+removes `s` and adds 1 to the top `s` parts `{m-s+1,…,m}`; after cancelling the overlap
+this is the closed form
+
+    `franklinMoveA S s m = insert (m+1) ((S.erase s).erase (m-s+1))`.
+
+Added to `PentagonalNumberTheoremOQ01.lean` (now ~1160 lines, +7 theorems/1 def,
+**0 sorry / 0 axiom / no native_decide**, docker-build-VERIFIED `[7743/7743]`, PR #31615):
+
+- `franklinMoveA_sum`  — `∑(Move A) = ∑S` (weight-preserving; stays in partitions of n).
+  Proof: `Finset.add_sum_erase` twice + `Finset.sum_insert`, then `omega` over the three
+  equations (omega handles the `m-s+1` truncated subtraction given `s ≤ m`).
+- `franklinMoveA_card` — `card(Move A) = card S - 1` (two distinct parts removed, one
+  added). `Finset.card_erase_of_mem` ×2 + `card_insert_of_notMem`; `card ≥ 2` from the
+  pair `{s, m-s+1} ⊆ S`.
+- `franklinMoveA_sign` — `(-1)^{card(Move A)} = -(-1)^{card S}`: **the sign cancellation**.
+  `obtain j, card = j+1` then `pow_succ; ring`.
+- `franklinMoveA_pos` — image is positive distinct parts (validity).
+- `franklinMoveA_top_mem` — `s ≤ ℓ` (as `Icc (m-s+1) m ⊆ S`) ⟹ run bottom `m-s+1 ∈ S`.
+- `franklinMoveA_headline` — all four packaged for a non-fixed `S` (`hnf : s ≠ m-s+1`)
+  with `s ≤ ℓ`, reading `s`/`m` off `min'`/`max'`.
+
+The boundary `s = m-s+1` ⟺ `m = 2s-1` ⟺ `S` is the positive staircase `{s,…,2s-1}` of
+Parts 7–10 — exactly where Move A degenerates (the fixed point), excluded by `hnf`.
+
+**STILL OPEN** (unchanged): the companion "Move B" (case `s > ℓ`: peel the top run down
+and create a new smallest part `ℓ`), the proof that Move A and Move B are mutually
+inverse on the non-fixed partitions, and hence the full involution
+`∑_{distincts n}(-1)^{#parts} = pentSeriesCoeff n`.
+
+GOTCHA: a concurrent rebase onto `origin/main` discarded the uncommitted edit mid-session
+(the worktree's `feature/researcher-5` branch was rebased by a sibling/cleanup). Re-applied
+from context and committed IMMEDIATELY before re-verifying — commit early on hot worktrees.
+Also hit transient `ENFILE: file table overflow` right after `docker kill`-ing builds; clears
+after `pkill -f leantar/lake/curl`.
+
+### Next Steps
+- Part 12: formalize **Move B** (`s > ℓ`): `franklinMoveB S ℓ m = insert ℓ (image of top
+  run shifted down)`, with the same sum/card/sign lemmas (card +1, sign flips the other way).
+- Part 13: prove `franklinMoveB (franklinMoveA S …) … = S` and vice versa on the non-fixed
+  domain — the mutual-inverse property — then assemble the sign-reversing involution and
+  close `∑_{distincts n}(-1)^{#parts} = pentSeriesCoeff n` via cancellation.
+- A staircase-length `ℓ` def (`S.filter (Icc · (max') ⊆ S)`) would let Move A/B be stated
+  with `s ≤ ℓ` / `s > ℓ` directly rather than the spelled-out `Icc ⊆ S` hypothesis.
