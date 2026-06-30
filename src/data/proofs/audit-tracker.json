@@ -25767,14 +25767,18 @@
     "erdos-1002-oq-04": {
       "auditCount": 1,
       "lastAudited": "2026-06-28T18:46:29Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Orphan-from-Proofs.lean finding (2026-06-28) obsolete: PR #31501 (f4b5b2e3b26) migrated proofs/ to Lake glob discovery (lakefile.toml globs=[\"Proofs\",\"Proofs.*\"]); module is in the aggregate build. Per-file integrity clean: 0 sorry, 0 axiom, counts match meta.json."
+      ]
     },
     "erdos-1003-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-06-28T18:46:29Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Orphan-from-Proofs.lean finding (2026-06-28) obsolete: PR #31501 (f4b5b2e3b26) migrated proofs/ to Lake glob discovery (lakefile.toml globs=[\"Proofs\",\"Proofs.*\"]); module is in the aggregate build. Per-file integrity clean: 0 sorry, 0 axiom, counts match meta.json."
+      ]
     },
     "erdos-1018-oq-04-incomplete-01-oq-01": {
       "auditCount": 1,
@@ -25785,8 +25789,10 @@
     "erdos-1100-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-06-28T18:46:29Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Orphan-from-Proofs.lean finding (2026-06-28) obsolete: PR #31501 (f4b5b2e3b26) migrated proofs/ to Lake glob discovery (lakefile.toml globs=[\"Proofs\",\"Proofs.*\"]); module is in the aggregate build. Per-file integrity clean: 0 sorry, 0 axiom, counts match meta.json."
+      ]
     },
     "picks-theorem-oq-04": {
       "auditCount": 1,
@@ -25797,8 +25803,10 @@
     "property-b-first-moment-oq-03-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-06-28T18:46:29Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Orphan-from-Proofs.lean finding (2026-06-28) obsolete: PR #31501 (f4b5b2e3b26) migrated proofs/ to Lake glob discovery (lakefile.toml globs=[\"Proofs\",\"Proofs.*\"]); module is in the aggregate build. Per-file integrity clean: 0 sorry, 0 axiom, counts match meta.json."
+      ]
     },
     "factor-remainder-hasse-derivative-fq": {
       "auditCount": 1,
