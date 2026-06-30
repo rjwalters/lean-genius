@@ -24,6 +24,11 @@
     * `tower_one_lt_tower_two`  : `1 ≤ n → tower 1 n < tower 2 n`
       — the *singly*-exponential known lower bound is strictly below the
         *doubly*-exponential conjectured one: the exact gap Erdős #564 asks to close.
+    * `ehr_lower_lt_tower_two`  : `5 ≤ n → 2^{n²} < tower 2 n` — the same gap in its
+        *faithful quadratic form*: the real EHR lower bound `2^{cn²}` has a quadratic
+        exponent (not linear), yet `2^{n²}` is still a whole tower level below the
+        conjectured `2^{2^n}`, because `n² < 2^n` (`nsq_lt_two_pow_self`, `n ≥ 5`).
+    * `tower_lt_of_height_lt`   : `j < k → tower j n < tower k n` (general height gap).
 
   Nothing here resolves the open conjecture; this is the combinatorial scaffolding
   that makes its statement ("can R₃ reach tower height 2?") precise.
@@ -95,6 +100,40 @@ theorem tower_one_lt_tower_two (n : ℕ) : tower 1 n < tower 2 n := by
   rw [h1, h2]
   -- 2 ^ n < 2 ^ (2 ^ n) since n < 2 ^ n for every n
   exact Nat.pow_lt_pow_right (by norm_num) Nat.lt_two_pow_self
+
+/-- **General height gap.**  Any lower tower height is strictly dominated by any
+higher one (for the same base): `tower j n < tower k n` whenever `j < k`.  This is
+the height-monotonicity `tower_strictMono_height` named as a gap lemma;
+`tower_one_lt_tower_two` is the case `j = 1, k = 2`. -/
+theorem tower_lt_of_height_lt {j k n : ℕ} (h : j < k) : tower j n < tower k n :=
+  tower_strictMono_height n h
+
+/-- `n² < 2ⁿ` for every `n ≥ 5` (tight: `4² = 16 = 2⁴`).  Proved by induction from
+the base `5² = 25 < 32 = 2⁵`; the successor step uses `2m+1 ≤ m²` (valid for `m ≥ 5`)
+together with the inductive `m² < 2ᵐ` to clear `(m+1)² = m²+2m+1 < 2ᵐ + 2ᵐ = 2^{m+1}`. -/
+theorem nsq_lt_two_pow_self : ∀ {n : ℕ}, 5 ≤ n → n ^ 2 < 2 ^ n := by
+  intro n hn
+  induction n, hn using Nat.le_induction with
+  | base => decide
+  | succ m hm ih =>
+      have hb : 2 * m + 1 ≤ m ^ 2 := by nlinarith [hm]
+      have hsplit : 2 ^ (m + 1) = 2 ^ m + 2 ^ m := by rw [pow_succ]; ring
+      rw [hsplit]
+      nlinarith [ih, hb]
+
+/-- **The crux of Erdős #564 in its faithful quadratic form.**  The genuine
+Erdős–Hajnal–Rado *lower* bound is `2^{cn²}` — singly exponential with a **quadratic**
+argument — while the conjectured lower bound is the doubly-exponential `2^{2^{cn}}`
+(tower height `2`).  Stripping the constant `c` to its cleanest instance, the height-1
+quadratic bound `2^{n²}` sits strictly below the height-2 bound `tower 2 n = 2^{2^n}`
+for every `n ≥ 5`:
+    `2^{n²} < tower 2 n`.
+This is the more faithful statement of the gap `tower_one_lt_tower_two` gestures at:
+the known lower bound's exponent is quadratic (`n²`), not linear (`n`), yet it is still
+a whole tower level below the conjecture — `n²` is dwarfed by `2^n`. -/
+theorem ehr_lower_lt_tower_two {n : ℕ} (hn : 5 ≤ n) : 2 ^ (n ^ 2) < tower 2 n := by
+  rw [tower_two_eq]
+  exact Nat.pow_lt_pow_right (by norm_num) (nsq_lt_two_pow_self hn)
 
 /-! ### Concrete sanity checks -/
 

@@ -229,4 +229,56 @@ theorem crossover_r4k2 (n : ℕ) :
     have h8 : construction1 4 2 ≤ construction2 8 4 2 := by decide
     exact construction2_dominant_up 8 n 4 2 (by norm_num) (by norm_num) (by norm_num) h h8
 
+/-! ### 7. Closed form: `construction2` as a sum of `k − 1` consecutive binomials.
+
+Telescoping Pascal turns the *difference* `C(n, r) − C(n−k+1, r)` into a *sum*:
+each summand `C(j, r−1)` is the Pascal increment `C(j+1, r) − C(j, r)`, so over
+the window `j ∈ [n−k+1, n)` the sum telescopes to `construction2 n r k`. The
+window has exactly `k − 1` integers, so
+
+  `construction2 n r k = Σ_{j = n−k+1}^{n−1} C(j, r−1)`,
+
+a sum of `k − 1` consecutive binomial coefficients. This is the structural
+source of everything in Section 1: monotonicity in `n` is now transparent
+(each summand `C(j, r−1)` is itself nondecreasing as the window slides up),
+and the exact one-step increment of Section 5 is just the difference of the
+two endpoint summands. Combinatorially it stratifies the edges meeting a fixed
+`(k−1)`-set by the largest "free" coordinate they use.
+
+We prove the subtraction-free telescoping identity first (so the argument
+stays inside `ℕ`), then read off both the closed form and the window size. -/
+
+/-- Telescoping Pascal in additive form: for `a ≤ b` and `r ≥ 1`,
+    `C(a, r) + Σ_{j ∈ [a, b)} C(j, r−1) = C(b, r)`. -/
+theorem choose_add_sum_Ico (a b r : ℕ) (hab : a ≤ b) (hr : r ≥ 1) :
+    Nat.choose a r + ∑ j ∈ Finset.Ico a b, Nat.choose j (r - 1) = Nat.choose b r := by
+  induction b, hab using Nat.le_induction with
+  | base => simp
+  | succ b hab ih =>
+    rw [Finset.sum_Ico_succ_top hab]
+    -- Pascal at `b`: `C(b+1, r) = C(b, r−1) + C(b, r)` (uses `r ≥ 1`).
+    have hpascal : Nat.choose (b + 1) r = Nat.choose b (r - 1) + Nat.choose b r := by
+      have h := Nat.choose_succ_succ b (r - 1)
+      simp only [Nat.succ_eq_add_one] at h
+      rw [Nat.sub_add_cancel hr] at h
+      omega
+    omega
+
+/-- Closed form: `construction2 n r k = Σ_{j = n−k+1}^{n−1} C(j, r−1)`, a sum of
+    exactly `k − 1` consecutive binomial coefficients (see `construction2_sum_card`).
+    Telescoping Pascal collapses the difference of two binomials into this sum. -/
+theorem construction2_eq_sum (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 1) (hn : n ≥ k) :
+    construction2 n r k = ∑ j ∈ Finset.Ico (n - k + 1) n, Nat.choose j (r - 1) := by
+  unfold construction2
+  have hab : n - k + 1 ≤ n := by omega
+  have h := choose_add_sum_Ico (n - k + 1) n r hab hr
+  omega
+
+/-- The summation window `[n−k+1, n)` has exactly `k − 1` integers: the closed
+    form `construction2_eq_sum` is a sum of `k − 1` consecutive binomials. -/
+theorem construction2_sum_card (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ k) :
+    (Finset.Ico (n - k + 1) n).card = k - 1 := by
+  rw [Nat.card_Ico]
+  omega
+
 end Erdos1020OQ02

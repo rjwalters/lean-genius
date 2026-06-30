@@ -2,7 +2,7 @@
   {
     "id": "dini-oq0102-ann-overview",
     "proofId": "dini-theorem-oq-01-oq-02",
-    "range": { "startLine": 3, "endLine": 42 },
+    "range": { "startLine": 1, "endLine": 50 },
     "type": "concept",
     "title": "The Sharp Modulus Question",
     "content": "The header frames OQ-02. The parent (dini-theorem-oq-01) uses xⁿ on the non-compact [0,1) as a witness that Dini's compactness hypothesis is necessary: xⁿ is continuous, antitone in n, and converges pointwise to the continuous function 0, yet not uniformly. The parent's non-uniformity bound was the non-sharp 1/2 (a value attained via the intermediate value theorem). This file asks for the exact modulus: the uniform error sup_x |xⁿ| on [0,1), and proves it equals exactly 1.",
@@ -14,61 +14,49 @@
   {
     "id": "dini-oq0102-ann-lub",
     "proofId": "dini-theorem-oq-01-oq-02",
-    "range": { "startLine": 52, "endLine": 89 },
+    "range": { "startLine": 52, "endLine": 94 },
     "type": "theorem",
-    "title": "The Least Upper Bound of xⁿ over [0,1) is 1",
-    "content": "pow_image_Ico_isLUB proves IsLUB { xⁿ : x ∈ [0,1) } 1 for n ≥ 1. Upper bound: x ∈ [0,1) ⟹ xⁿ ≤ 1 (pow_le_one₀). Least: for any upper bound b, the explicit sequence xₖ = 1 − 1/(k+1) lies in [0,1) and tends to 1 (since 1/(k+1) → 0 via tendsto_one_div_add_atTop_nhds_zero_nat), so xₖⁿ → 1ⁿ = 1; each xₖⁿ ≤ b, and le_of_tendsto' passes to the limit to give 1 ≤ b. The accompanying pow_image_Ico_nonempty notes the image contains 0ⁿ = 0, supplying the nonemptiness needed to turn the LUB into an sSup. Crucially the supremum is never attained — every xⁿ < 1 — which is the analytic signature of the missing compactness.",
-    "mathContext": "$\\operatorname{IsLUB}\\{x^n : x\\in[0,1)\\}\\,1$; approached along $x_k=1-\\tfrac{1}{k+1}\\to 1$, never attained.",
+    "title": "The Supremum of xⁿ over [0,1) is Exactly 1",
+    "content": "pow_image_Ico_isLUB proves IsLUB { xⁿ : x ∈ [0,1) } 1 for n ≥ 1. Upper bound: x ∈ [0,1) ⟹ xⁿ ≤ 1 (pow_le_one₀). Least: for any upper bound b, the explicit sequence xₖ = 1 − 1/(k+1) lies in [0,1) and tends to 1 (since 1/(k+1) → 0 via tendsto_one_div_add_atTop_nhds_zero_nat), so xₖⁿ → 1ⁿ = 1; each xₖⁿ ≤ b, and le_of_tendsto' passes to the limit to give 1 ≤ b. The trivial pow_image_Ico_nonempty (0ⁿ = 0 is in the image) then lets pow_sSup_Ico conclude sSup = 1 via IsLUB.csSup_eq. Crucially the supremum is never attained — every xⁿ < 1 — which is the analytic signature of the missing compactness.",
+    "mathContext": "$\\operatorname{IsLUB}\\{x^n : x\\in[0,1)\\}\\,1$, hence $\\operatorname{sSup} = 1$; approached along $x_k=1-\\tfrac{1}{k+1}\\to 1$, never attained.",
     "significance": "critical",
-    "relatedConcepts": ["least upper bound", "passing to the limit (le_of_tendsto')", "approximating sequence", "pow_le_one₀"],
-    "prerequisites": ["limits of sequences", "IsLUB", "monotone power functions"]
-  },
-  {
-    "id": "dini-oq0102-ann-ssup",
-    "proofId": "dini-theorem-oq-01-oq-02",
-    "range": { "startLine": 91, "endLine": 94 },
-    "type": "theorem",
-    "title": "From LUB to Supremum: sSup = 1",
-    "content": "pow_sSup_Ico turns the least-upper-bound statement into the supremum value sSup { xⁿ : x ∈ [0,1) } = 1, applying IsLUB.csSup_eq to the LUB witness and the nonemptiness from pow_image_Ico_nonempty. This is the only place the conditionally-complete-lattice structure of ℝ is used; everything else is the explicit limit computation. It is the form of the result that feeds directly into the uniform-error supremum.",
-    "mathContext": "$\\sSup\\{x^n : x\\in[0,1)\\} = 1$ via $\\operatorname{IsLUB}\\Rightarrow\\sSup$ on a nonempty set.",
-    "significance": "key",
-    "relatedConcepts": ["IsLUB.csSup_eq", "conditionally complete lattice", "supremum"],
-    "prerequisites": ["sSup in ℝ", "nonempty bounded sets"]
+    "relatedConcepts": ["least upper bound", "passing to the limit (le_of_tendsto')", "approximating sequence", "IsLUB.csSup_eq"],
+    "prerequisites": ["limits of sequences", "monotone power functions", "conditionally complete order sSup"]
   },
   {
     "id": "dini-oq0102-ann-modulus",
     "proofId": "dini-theorem-oq-01-oq-02",
-    "range": { "startLine": 100, "endLine": 117 },
+    "range": { "startLine": 96, "endLine": 117 },
     "type": "theorem",
     "title": "The Sharp Modulus: sup |xⁿ − 0| = 1",
-    "content": "pow_uniform_error_Ico reads off the headline. Since |xⁿ − 0| = xⁿ on [0,1) (sub_zero then abs_of_nonneg of pow_nonneg), Set.image_congr shows the error-image coincides with { xⁿ : x ∈ [0,1) }, whose supremum is 1 by pow_sSup_Ico. So the uniform error of xⁿ against its pointwise limit 0 is exactly 1 for every n ≥ 1 — the exact modulus of non-uniform convergence, sharpening the parent's 1/2.",
-    "mathContext": "$\\sup_{x\\in[0,1)}|x^n-0| = \\sup_{x\\in[0,1)} x^n = 1$ since $|x^n-0| = x^n$ on $[0,1)$.",
+    "content": "pow_uniform_error_Ico is the headline result answering OQ-02. On [0,1) the error |xⁿ − 0| equals xⁿ itself, because xⁿ ≥ 0 there (abs_of_nonneg after sub_zero); `Set.image_congr` rewrites the error-image to the plain power-image, so its supremum is the xⁿ-supremum from pow_sSup_Ico, namely 1. This is the exact modulus of non-uniform convergence — the supremal pointwise error over the whole domain — and it sharpens the parent's lower bound of 1/2 to the optimal value 1, which cannot be improved (no value > 1 is even an upper bound, and no value < 1 bounds the image).",
+    "mathContext": "$\\sup_{x\\in[0,1)}|x^n-0| = \\sup_{x\\in[0,1)} x^n = 1$ for $n\\ge 1$, since $|x^n-0| = x^n$ on $[0,1)$.",
     "significance": "critical",
-    "relatedConcepts": ["modulus of convergence", "Set.image_congr", "abs_of_nonneg", "uniform error"],
-    "prerequisites": ["supremum of an image", "absolute value of nonnegatives"]
+    "relatedConcepts": ["modulus of convergence", "supremum norm", "Set.image_congr", "sharpness"],
+    "prerequisites": ["the supremum of xⁿ equals 1", "abs_of_nonneg on a nonnegative power"]
   },
   {
     "id": "dini-oq0102-ann-exists-gt",
     "proofId": "dini-theorem-oq-01-oq-02",
     "range": { "startLine": 119, "endLine": 130 },
-    "type": "lemma",
-    "title": "The LUB Unpacked: every c < 1 is Exceeded",
-    "content": "pow_exists_gt_of_lt_one extracts the operational content of 'least' upper bound: if no x ∈ [0,1) had xⁿ > c, then c would be an upper bound of the image, and the LUB property (pow_image_Ico_isLUB).2 would force 1 ≤ c, contradicting c < 1. So for any c < 1 and n ≥ 1 there is an explicit point with xⁿ > c. This by_contra/push_neg unpacking is the bridge from the abstract supremum to the concrete witness needed for the non-uniformity criterion.",
-    "mathContext": "For all $c<1$, $\\exists x\\in[0,1):\\ x^n>c$ — else $c$ is an upper bound and $1\\le c$.",
+    "type": "theorem",
+    "title": "The LUB Unpacked: Any c < 1 is Exceeded",
+    "content": "pow_exists_gt_of_lt_one converts the abstract least-upper-bound fact into a concrete witness: for any c < 1 and n ≥ 1, some x ∈ [0,1) has xⁿ > c. The proof is by contradiction — if no such x existed, then c would itself be an upper bound of { xⁿ : x ∈ [0,1) }, and since 1 is the LEAST upper bound (pow_image_Ico_isLUB.2) this forces 1 ≤ c, contradicting c < 1. This is the workhorse lemma that turns 'sup = 1, not attained' into the explicit threshold-exceeding statement needed for the non-uniformity argument.",
+    "mathContext": "For $c<1$, $n\\ge 1$: $\\exists\\,x\\in[0,1),\\ x^n > c$ — because $c$ being an upper bound would force $1\\le c$ by leastness of the LUB.",
     "significance": "key",
-    "relatedConcepts": ["upperBounds", "least upper bound property", "proof by contradiction"],
-    "prerequisites": ["upper bounds", "IsLUB.2 (least property)"]
+    "relatedConcepts": ["least upper bound", "upperBounds", "proof by contradiction", "non-attained supremum"],
+    "prerequisites": ["the IsLUB result for xⁿ", "definition of upperBounds"]
   },
   {
     "id": "dini-oq0102-ann-nonuniform",
     "proofId": "dini-theorem-oq-01-oq-02",
-    "range": { "startLine": 132, "endLine": 149 },
+    "range": { "startLine": 132, "endLine": 172 },
     "type": "theorem",
-    "title": "Sharpened Non-Uniformity for Any Threshold c ∈ (0,1)",
-    "content": "pow_not_tendstoUniformlyOn_Ico_sharp negates uniform convergence via Metric.tendstoUniformlyOn_iff. After push_neg the goal is: there is a threshold c such that frequently in n some x ∈ [0,1) has dist 0 (xⁿ) ≥ c. Supplying the given c ∈ (0,1) and, for each N, the index N+1 with the witness from pow_exists_gt_of_lt_one gives a point whose error exceeds c. Hence the convergence fails to be uniform with ANY threshold c ∈ (0,1), not merely the parent's 1/2; letting c ↑ 1 recovers the sharp modulus.",
-    "mathContext": "$\\forall c\\in(0,1),\\ \\forall N,\\ \\exists n\\ge N,\\ \\exists x\\in[0,1):\\ |x^n-0|>c$.",
-    "significance": "critical",
-    "relatedConcepts": ["Metric.tendstoUniformlyOn_iff", "Filter.frequently_atTop", "negation of uniform convergence", "sharpness"],
-    "prerequisites": ["ε-N definition of uniform convergence", "frequently along a filter"]
+    "title": "Sharpened Non-Uniformity at Any Threshold c ∈ (0,1)",
+    "content": "pow_not_tendstoUniformlyOn_Ico_sharp shows the convergence xⁿ → 0 on [0,1) fails to be uniform with ANY threshold c ∈ (0,1), not merely the parent's 1/2. After unfolding the negated ε-criterion (Metric.tendstoUniformlyOn_iff + push_neg), it must produce, for every N, some n ≥ N and x ∈ [0,1) with error ≥ c. It picks n = N+1 and feeds c into pow_exists_gt_of_lt_one to get x with xⁿ > c; rewriting dist 0 (xⁿ) = xⁿ (Real.dist_eq, abs_neg, abs_of_nonneg) and `linarith` finishes. Letting c ↑ 1 recovers the sharp modulus: the uniform error is bounded below by every c < 1, hence equals 1.",
+    "mathContext": "For all $c\\in(0,1)$ and $N$, $\\exists\\,n\\ge N,\\ x\\in[0,1):\\ |x^n-0|>c$; so $\\neg\\,\\text{TendstoUniformlyOn}$, and $c\\uparrow 1$ gives the sharp modulus $1$.",
+    "significance": "key",
+    "relatedConcepts": ["ε-N uniform convergence criterion", "Metric.tendstoUniformlyOn_iff", "Filter.frequently_atTop", "sharpness"],
+    "prerequisites": ["ε-N definition of uniform convergence", "the threshold-exceeding existence lemma"]
   }
 ]

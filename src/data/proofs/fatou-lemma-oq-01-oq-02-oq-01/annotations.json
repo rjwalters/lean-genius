@@ -1,5 +1,29 @@
 [
   {
+    "id": "framing-not-circular",
+    "proofId": "fatou-lemma-oq-01-oq-02-oq-01",
+    "range": { "startLine": 5, "endLine": 57 },
+    "type": "context",
+    "title": "Why the g ± fₙ Route Is Genuinely 'via Fatou' and Not Circular",
+    "content": "The module docstring frames the entry's two claims to non-triviality. First, the derivation is genuinely a Fatou ⇒ DCT route: the nonnegative shifts g ± fₙ are handled by Mathlib's tendsto_lintegral_of_dominated_convergence, whose proof is literally tendsto_of_le_liminf_of_limsup_le applied to forward Fatou (lintegral_liminf_le) and reverse Fatou (limsup_lintegral_le) — the two Fatou inequalities squeezing the nonnegative integrals. Second, it is not circular: it never invokes Mathlib's Bochner DCT (tendsto_integral_of_dominated_convergence), which is proved separately through abstract setToFun/L1 machinery. The integrable majorant g earns its keep precisely by making the reverse-Fatou bracket of g ± fₙ finite. This is the positive answer to the follow-up question oq-01 left open by the sibling fatou-lemma-oq-01-oq-02, which handled the obstruction side (the parent's escaping mass has no integrable majorant, so DCT cannot apply there).",
+    "mathContext": "Nonnegative DCT $=$ forward Fatou $\\int^-\\liminf \\le \\liminf\\int^-$ $+$ reverse Fatou $\\limsup\\int^- \\le \\int^-\\limsup$, squeezed on $g \\pm f_n$.",
+    "significance": "context",
+    "relatedConcepts": ["Fatou's lemma", "dominated convergence theorem", "circularity avoidance", "monotone/Fatou/DCT hierarchy", "integrable majorant"],
+    "prerequisites": ["liminf/limsup of integrals", "the nonnegative dominated convergence theorem", "logical dependencies among Lebesgue convergence theorems"]
+  },
+  {
+    "id": "setup-meas-integ",
+    "proofId": "fatou-lemma-oq-01-oq-02-oq-01",
+    "range": { "startLine": 83, "endLine": 100 },
+    "type": "technique",
+    "title": "Promoting the Hypotheses: Measurability, Bound, and Integrability of F",
+    "content": "Before any Fatou bracket can be applied, the limit F and the shifts must be shown integrable. From the per-term data the proof derives: g ≥ 0 pointwise (since 0 ≤ |f₀| ≤ g); F measurable as the pointwise limit of the measurable fₙ (measurable_of_tendsto_metrizable together with tendsto_pi_nhds); the bound |F| ≤ g by passing the inequalities |fₙ| ≤ g to the limit (le_of_tendsto applied to |fₙ| → |F|); and finally integrability of each fₙ and of F by domination against the integrable g (Integrable.mono', converting |·| ≤ g to the norm bound via Real.norm_eq_abs). The pointwise nonnegativity 0 ≤ g + fₙ and 0 ≤ g + F then follows from −g ≤ −|fₙ| ≤ fₙ. These are the standing facts that make every subsequent integral well-defined and finite.",
+    "mathContext": "$0 \\le |f_n| \\le g \\Rightarrow$ $F$ measurable, $|F| \\le g$, $f_n, F$ integrable, and $g + f_n \\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["measurable_of_tendsto_metrizable", "le_of_tendsto", "Integrable.mono'", "domination by an integrable majorant"],
+    "prerequisites": ["pointwise limits of measurable functions", "passing inequalities to limits", "integrability via domination"]
+  },
+  {
     "id": "dct-add-bracket",
     "proofId": "fatou-lemma-oq-01-oq-02-oq-01",
     "range": { "startLine": 77, "endLine": 139 },

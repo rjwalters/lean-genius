@@ -1,26 +1,25 @@
 [
   {
-    "id": "ann-overview",
+    "id": "ann-header-orientation",
     "proofId": "denumerability-rationals-oq-07",
     "range": {
       "startLine": 3,
       "endLine": 32
     },
     "type": "concept",
-    "title": "Cantor's Two-Stage Argument, Made Explicit",
-    "content": "The docstring lays out Cantor's 1874 countability argument as a concrete construction. Every algebraic real x is a root of some p ∈ ℚ[X]; each p has only finitely many roots; and there are only ℵ₀-many polynomials (OQ-06). This yields an injection {x : ℝ // IsAlgebraic ℚ x} ↪ Σ p : ℚ[X], p.rootSet ℝ via x ↦ (minpoly ℚ x, x). The point of the entry is to expose this Σ-over-ℚ[X]/finite-fiber mechanism, which the gallery previously hid behind the one-line black box Algebraic.cardinalMk_of_countable_of_charZero.",
-    "mathContext": "$\\{x:\\mathbb{R}\\mid\\text{alg}\\} \\hookrightarrow \\Sigma_{p\\in\\mathbb{Q}[X]}\\,\\mathrm{rootSet}(p)$, a countable union of finite fibers.",
+    "title": "Cantor's two-stage argument, made into an explicit Σ",
+    "content": "The docstring frames the whole file. Cantor's 1874 countability argument has two stages — there are only ℵ₀-many polynomials over ℚ (OQ-06: #(ℚ[X]) = ℵ₀), and each polynomial has only finitely many roots. The gallery previously recorded #{x : ℝ // IsAlgebraic ℚ x} = ℵ₀ only through Mathlib's black-box one-liner Algebraic.cardinalMk_of_countable_of_charZero; this entry lays the structure bare as a single injection x ↦ (minpoly ℚ x, x) into Σ p : ℚ[X], p.rootSet ℝ — a countable union (over the ℵ₀ index ℚ[X]) of finite root fibers. Nothing uses the order or completeness of ℝ, only that the target is a characteristic-zero field, so the complex count ℂ follows from the identical argument.",
+    "mathContext": "$\\{x : \\mathbb{R} \\mid \\text{alg}\\} \\hookrightarrow \\Sigma_{p \\in \\mathbb{Q}[X]} \\mathrm{rootSet}(p)$, a countable union of finite sets.",
     "significance": "supporting",
     "relatedConcepts": [
-      "countability of algebraic numbers",
-      "minimal polynomial",
+      "Cantor's countability of algebraic numbers",
       "countable union of finite sets",
-      "sigma types"
+      "minimal polynomial as a canonical witness",
+      "characteristic-zero fields"
     ],
     "prerequisites": [
-      "cardinality",
-      "ℵ₀",
-      "algebraic numbers"
+      "cardinal numbers and ℵ₀",
+      "algebraic numbers and minimal polynomials"
     ]
   },
   {
@@ -50,7 +49,7 @@
     "id": "ann-sigma-bound",
     "proofId": "denumerability-rationals-oq-07",
     "range": {
-      "startLine": 43,
+      "startLine": 47,
       "endLine": 59
     },
     "type": "theorem",
@@ -72,7 +71,7 @@
     ]
   },
   {
-    "id": "ann-injection",
+    "id": "ann-injection-and-count",
     "proofId": "denumerability-rationals-oq-07",
     "range": {
       "startLine": 61,
@@ -80,8 +79,8 @@
     },
     "type": "theorem",
     "title": "The Injection x ↦ (minpoly ℚ x, x)",
-    "content": "algebraicReal_inject_sigma maps each algebraic real x to the pair (minpoly ℚ x, x). The membership obligation x ∈ (minpoly ℚ x).rootSet ℝ is discharged from isAlgebraic_iff_isIntegral (an algebraic element over a field is integral, so its minimal polynomial exists and is nonzero by minpoly.ne_zero) together with minpoly.aeval (the minimal polynomial annihilates x), packaged through Polynomial.mem_rootSet. Injectivity is immediate: the second coordinate of the Σ-pair is literally x, so equal pairs force equal values (Subtype.ext). cardinalMk_algebraic_reals_le_sigma then turns this injection into the cardinal bound #{x : ℝ // IsAlgebraic ℚ x} ≤ #(Σ …) via mk_le_of_injective.",
-    "mathContext": "$x \\mapsto (\\mathrm{minpoly}_\\mathbb{Q} x, x)$ with $x \\in \\mathrm{rootSet}(\\mathrm{minpoly}_\\mathbb{Q} x)$ since $\\mathrm{minpoly}\\neq 0$ and $\\mathrm{aeval}_x(\\mathrm{minpoly})=0$.",
+    "content": "algebraicReal_inject_sigma maps each algebraic real x to the pair (minpoly ℚ x, x): membership x ∈ (minpoly ℚ x).rootSet ℝ follows from isAlgebraic_iff_isIntegral (giving IsIntegral, hence a nonzero minimal polynomial via minpoly.ne_zero) together with minpoly.aeval, packaged by mem_rootSet; injectivity is immediate because the second coordinate is literally x. Composing this injection's cardinal bound (mk_le_of_injective) with cardinalMk_sigma_rootSet_le gives cardinalMk_algebraic_reals_le : #{x : ℝ // IsAlgebraic ℚ x} ≤ ℵ₀. The minimal polynomial is doing the real work: an algebraic number has no canonical name, but minpoly ℚ x is a canonical witness that pins x to a specific ℚ[X]-fiber.",
+    "mathContext": "$x \\mapsto (\\mathrm{minpoly}_\\mathbb{Q} x, x)$ injects the algebraic reals into the $\\Sigma$, so $\\#\\{x:\\mathbb{R}\\mid \\text{alg}\\} \\le \\aleph_0$.",
     "significance": "critical",
     "relatedConcepts": [
       "minpoly.aeval",
@@ -92,54 +91,32 @@
     ],
     "prerequisites": [
       "minimal polynomials",
-      "integral elements",
       "injections and cardinal comparison"
     ]
   },
   {
-    "id": "ann-lower-bound",
+    "id": "ann-lower-bound-and-equality",
     "proofId": "denumerability-rationals-oq-07",
     "range": {
       "startLine": 82,
-      "endLine": 94
-    },
-    "type": "lemma",
-    "title": "The Char-Zero Lower Bound: ℵ₀ ≤ #(algebraic elements)",
-    "content": "aleph0_le_cardinalMk_algebraic supplies the reverse inequality for any characteristic-zero field K, self-contained rather than via a Mathlib black box. Every natural number is algebraic (isAlgebraic_nat: n is a root of X − n), so n ↦ ⟨(n : K), isAlgebraic_nat n⟩ maps ℕ into the algebraic elements; in characteristic zero Nat.cast is injective (exact_mod_cast), so mk_le_of_injective gives ℵ₀ = #ℕ ≤ #{x : K // IsAlgebraic ℚ x}. This is exactly the ingredient needed to upgrade the ≤ ℵ₀ bound to an equality by antisymmetry.",
-    "mathContext": "$\\mathbb{N} \\hookrightarrow \\{x:K\\mid\\text{alg}\\}$ via $n\\mapsto (n:K)$ (injective in char 0), so $\\aleph_0 \\le \\#\\{x:K\\mid\\text{alg}\\}$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "isAlgebraic_nat",
-      "CharZero",
-      "Nat.cast injectivity",
-      "Cardinal.mk_le_of_injective"
-    ],
-    "prerequisites": [
-      "characteristic zero",
-      "cardinality of ℕ"
-    ]
-  },
-  {
-    "id": "ann-counts",
-    "proofId": "denumerability-rationals-oq-07",
-    "range": {
-      "startLine": 96,
-      "endLine": 126
+      "endLine": 125
     },
     "type": "theorem",
-    "title": "The ℵ₀ Counts for ℝ and ℂ",
-    "content": "cardinalMk_algebraic_reals_le composes the injection bound with the Σ bound to give #{x : ℝ // IsAlgebraic ℚ x} ≤ ℵ₀, and cardinalMk_algebraic_reals closes the equality by le_antisymm against aleph0_le_cardinalMk_algebraic ℝ. The complex case (cardinalMk_algebraic_complex_le, cardinalMk_algebraic_complex) reuses the identical decomposition — the same x ↦ (minpoly ℚ x, x) injection into the complex root fibers and the same finite-fiber count — because nothing in the argument uses the order or completeness of ℝ, only that the target is a char-zero field.",
-    "mathContext": "$\\#\\{x:\\mathbb{R}\\mid\\text{alg}\\} = \\aleph_0$ and $\\#\\{x:\\mathbb{C}\\mid\\text{alg}\\} = \\aleph_0$ by $\\le\\aleph_0$ (Σ bound) and $\\ge\\aleph_0$ (char-zero).",
-    "significance": "key",
+    "title": "The char-zero lower bound and the ℵ₀ equality (ℝ and ℂ)",
+    "content": "The upper bound ≤ ℵ₀ is only half the equality; aleph0_le_cardinalMk_algebraic supplies the reverse ℵ₀ ≤ #{x : K // IsAlgebraic ℚ x} for any characteristic-zero field K, built explicitly with no black-box lemma: ℕ injects into the algebraic elements via n ↦ (n : K) (every natural is algebraic, isAlgebraic_nat), and Nat.cast is injective in characteristic zero, so ℵ₀ = #ℕ ≤ #(algebraic elements). cardinalMk_algebraic_reals then closes #{x : ℝ // IsAlgebraic ℚ x} = ℵ₀ by le_antisymm of the Σ upper bound against this lower bound. Because the decomposition never used any special property of ℝ beyond char-zero-field, cardinalMk_algebraic_complex_le and cardinalMk_algebraic_complex repeat the identical injection-and-fiber argument for ℂ.",
+    "mathContext": "$\\aleph_0 = \\#\\mathbb{N} \\le \\#\\{x : K \\mid \\text{alg}\\}$ via $n \\mapsto (n:K)$; with the $\\Sigma$ bound, $\\#\\{x:\\mathbb{R}\\mid\\text{alg}\\} = \\#\\{x:\\mathbb{C}\\mid\\text{alg}\\} = \\aleph_0$.",
+    "significance": "critical",
     "relatedConcepts": [
-      "le_antisymm",
-      "Cardinal.trans",
-      "char-zero fields",
-      "field-genericity of the argument"
+      "isAlgebraic_nat",
+      "CharZero and Nat.cast injectivity",
+      "Cardinal.mk_le_of_injective",
+      "le_antisymm on cardinals",
+      "ℝ/ℂ interchangeability"
     ],
     "prerequisites": [
       "antisymmetry of ≤ on cardinals",
-      "transitivity of cardinal ≤"
+      "injections and cardinal comparison",
+      "characteristic-zero fields"
     ]
   }
 ]

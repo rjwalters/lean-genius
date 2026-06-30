@@ -114,9 +114,76 @@ theorem ex35_step : ((-3 : ℤ) = 2 + (-1) * 5) ∧ ((2 : ℤ) = -1 - (-1) * 3) 
 theorem ex35_family (k : ℤ) : (3 : ℤ) * (2 + k * 5) + 5 * (-1 - k * 3) = 1 := by
   ring
 
+-- ============================================================
+-- SECTION VI: General (non-coprime) classification
+-- ============================================================
+
+/-
+The sections above settle the *coprime* case (`g = gcd a b = 1`), where the lattice is
+`ℤ·(b, −a)`.  The file's headline claim, however, is the full classification: for general
+`a, b` the solution set of `a·x + b·y = c` is one coset of `ℤ·(b/g, −a/g)`.  This section
+discharges that general statement.
+
+We parametrize by the reduced pair: write `a = g·a'`, `b = g·b'` with `a', b'` coprime
+(so `a' = a/g`, `b' = b/g`) and `g ≠ 0`.  The canonical instance is `g = gcd a b`, but the
+results hold for *any* such common-factor decomposition.  Each general theorem reduces to
+its coprime counterpart by cancelling the common factor `g` (legitimate since `g ≠ 0`).
+-/
+
+/-- **General homogeneous solutions.**  With `a = g·a'`, `b = g·b'`, `a', b'` coprime,
+`g ≠ 0`, `b' ≠ 0`, every solution of `a·u + b·v = 0` is a lattice multiple of
+`(b', −a') = (b/g, −a/g)`.  Reduces to `coprime_homogeneous` after cancelling `g`. -/
+theorem general_homogeneous {g a' b' u v : ℤ} (hab : IsCoprime a' b') (hg : g ≠ 0)
+    (hb' : b' ≠ 0) (h : (g * a') * u + (g * b') * v = 0) :
+    ∃ k : ℤ, u = k * b' ∧ v = -(k * a') := by
+  have hcancel : g * (a' * u + b' * v) = 0 := by linear_combination h
+  have h' : a' * u + b' * v = 0 := (mul_eq_zero.mp hcancel).resolve_left hg
+  exact coprime_homogeneous hab hb' h'
+
+/-- **General uniqueness.**  For `a = g·a'`, `b = g·b'` with `a', b'` coprime, `g ≠ 0`,
+`b' ≠ 0`, any two solutions of `a·x + b·y = c` differ by one lattice step
+`(k·(b/g), −k·(a/g))`. -/
+theorem general_bezout_unique {g a' b' x₁ y₁ x₂ y₂ : ℤ} (hab : IsCoprime a' b')
+    (hg : g ≠ 0) (hb' : b' ≠ 0)
+    (h : (g * a') * x₁ + (g * b') * y₁ = (g * a') * x₂ + (g * b') * y₂) :
+    ∃ k : ℤ, x₂ - x₁ = k * b' ∧ y₂ - y₁ = -(k * a') := by
+  have h0 : (g * a') * (x₂ - x₁) + (g * b') * (y₂ - y₁) = 0 := by linear_combination -h
+  exact general_homogeneous hab hg hb' h0
+
+/-- **General parametrization (converse).**  Every lattice step `(k·(b/g), −k·(a/g))` from
+a solution is again a solution, for any `a = g·a'`, `b = g·b'`. -/
+theorem general_bezout_param (g a' b' x y k : ℤ) :
+    (g * a') * (x + k * b') + (g * b') * (y - k * a') = (g * a') * x + (g * b') * y := by
+  ring
+
+/-- **General solvability (existence).**  If `g ∣ c` (write `c = g·c'`) then with
+`a = g·a'`, `b = g·b'` and `a', b'` coprime the equation `a·x + b·y = c` has a solution,
+namely `(c'·s, c'·t)` for a coprime Bézout pair `a'·s + b'·t = 1`.  Together with
+`general_bezout_unique` this is the complete classification: solvable iff `g ∣ c`, and the
+solution set is exactly one coset of `ℤ·(b/g, −a/g)`. -/
+theorem general_solvable {g a' b' c c' : ℤ} (hab : IsCoprime a' b') (hc : c = g * c') :
+    ∃ x y : ℤ, (g * a') * x + (g * b') * y = c := by
+  obtain ⟨s, t, hst⟩ := hab
+  exact ⟨c' * s, c' * t, by subst hc; linear_combination (g * c') * hst⟩
+
+-- General worked instance: a = 6, b = 9, g = 3, a' = 2, b' = 3, equation 6x + 9y = 3.
+
+/-- `(−1, 1)` solves `6x + 9y = 3`. -/
+theorem ex69_a : (6 : ℤ) * (-1) + 9 * 1 = 3 := by norm_num
+
+/-- One lattice step `k = 1` (lattice `(b/g, −a/g) = (3, −2)`) gives another solution. -/
+theorem ex69_step : (6 : ℤ) * (-1 + 1 * 3) + 9 * (1 - 1 * 2) = 3 := by norm_num
+
+/-- The whole one-parameter family for `6x + 9y = 3`: every `k` gives a solution. -/
+theorem ex69_family (k : ℤ) : (6 : ℤ) * (-1 + k * 3) + 9 * (1 - k * 2) = 3 := by ring
+
 #check @coprime_homogeneous
 #check @coprime_bezout_unique
 #check @coprime_bezout_param
 #check @gcdA_gcdB_unique
+#check @general_homogeneous
+#check @general_bezout_unique
+#check @general_bezout_param
+#check @general_solvable
 
 end BezoutExtGcdUnique

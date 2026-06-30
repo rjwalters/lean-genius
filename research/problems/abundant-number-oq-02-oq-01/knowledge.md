@@ -205,3 +205,75 @@ contributes, and it is *complete* (both directions), unlike the still-open gener
 - Squarefree case CLOSED exactly. General non-squarefree exact minimality toward 5391411025
   remains open: needs a per-prime-power refinement of the Euler bound bounding exponents,
   combined with the size constraint — not reachable from the prime set alone.
+
+## Session 2026-06-28 (researcher-1, S2) — general (non-squarefree) bound ×5: n ≥ 185910725
+
+**Mode**: REVISIT (RICH; radical bound `n ≥ 37182145` and squarefree case both closed) ·
+**Outcome**: progress. New file `Proofs/AbundantNumberOQ02OQ01GeneralBound.lean` (173 LOC,
+0 sorries, 0 axioms). Docker build green (`docker-build.sh
+Proofs.AbundantNumberOQ02OQ01GeneralBound`, 7747 jobs); `#print axioms
+odd_abundant_coprime_three_ge_185M` = `[propext, Classical.choice, Quot.sound]` (no
+`sorryAx`, no `Lean.ofReduceBool`, no `native_decide`).
+
+### What I did
+Lifted the **general** numeric lower bound from `37182145` to
+`odd_abundant_coprime_three_ge_185M : Odd n → ¬3∣n → Abundant n → 185910725 ≤ n`
+(`= 5 · 37182145`), a clean factor of 5, via a squarefreeness dichotomy:
+- **Squarefree** ⇒ `n ≥ 33426748355` (reuse `squarefree_odd_abundant_coprime_three_ge`),
+  already `> 185910725`.
+- **Non-squarefree** ⇒ some prime `p ≥ 5` has `p² ∣ n`; then `p · radical ∣ n`, so
+  `n ≥ p · radical ≥ 5 · 37182145`.
+
+### Key technique (what worked)
+- `Nat.squarefree_iff_prime_squarefree` + `push_neg` extracts `p` with `p*p ∣ n`.
+  **Gotcha**: that lemma sits in `namespace Nat`, so its `Prime` is `Nat.Prime` — the
+  obtained hypothesis is already `p.Prime`, *no* `Nat.prime_iff` conversion (that cast
+  was my one build error).
+- `p · radical ∣ n` without touching exponents beyond the one square: write
+  `radical = p · ∏_{q∈S.erase p} q` (`Finset.mul_prod_erase`), so
+  `p·radical = (p*p)·∏_{q≠p}q`; the two factors `p*p ∣ n` and `∏_{q≠p}q ∣ n` are coprime
+  (`Nat.Coprime.prod_right`, each `q≠p` prime ⇒ `Nat.coprime_primes`), then
+  `Nat.Coprime.mul_dvd_of_dvd_of_dvd`. `Nat.le_of_dvd` closes it.
+- Extracted the radical-domination core of `LowerBound.odd_abundant_coprime_three_ge` as a
+  reusable lemma `radical_ge : … → 37182145 ≤ ∏ p ∈ n.primeFactors, p` (the original
+  theorem only exposed `n ≥ 37182145`, but the ×5 step needs the radical itself).
+
+### Why this is the right increment / honest status
+The true minimum `5391411025 = 5²·7·11·13·17·19·23·29` is non-squarefree; the `5²` is
+exactly the repeated prime this bound now *sees* (one factor of the smallest prime). It is
+still a **partial** bound (~29× below the truth): we capture only one extra factor of 5,
+not the 8th prime (29) nor any further exponent. Closing the rest needs per-prime-power
+Euler refinement bounding both the exponent multiset and ω≥8 simultaneously — unchanged
+open direction.
+
+### Files modified
+- proofs/Proofs/AbundantNumberOQ02OQ01GeneralBound.lean (new)
+- research/problems/abundant-number-oq-02-oq-01/knowledge.md (this entry)
+- src/data/research/problems/abundant-number-oq-02-oq-01.json (leanFiles)
+
+### Next steps
+- Push past 5·radical: in the non-squarefree ω=7 case the abundancy envelope (max 2.038
+  for {5,7,11,13,17,19,23}) forces large exponents on small primes — a finite but real
+  per-prime-power bound could raise the ω=7 floor well above 185910725; combine with an
+  ω≥8 branch (radical ≥ 1078282205) to approach 5391411025.
+
+## Session 2026-06-28 (researcher-2) — health re-check, no high-value tractable work
+
+Re-examined the full AbundantNumberOQ02OQ01* file set (main + GeneralBound, LowerBound,
+Minimality, Squarefree, Unconditional). ALL are sorry-free and 0-axiom (the earlier
+"sorry=2/3" grep counts were false matches on `sorryAx` audit comments and `native_decide`
+mentions; no real sorries, no native_decide in proofs). Squarefree case CLOSED exactly
+(least element 33426748355, ω≥9); unconditional ω≥7 bound proven via the `dom` gap-list
+engine on the canonical list [5,7,11,13,17,19].
+
+Assessed the two open nextSteps:
+- **General non-squarefree exact minimality toward 5391411025** — genuinely HARD/open
+  (needs per-prime-power exponent bounding combining Euler bound + size constraint); not a
+  single-session target.
+- **"Optional" coprime-to-15 ω-bound extension** — mechanically a parametric copy of the
+  Unconditional file (same `dom` engine, new gap list [7,11,…,61], ~14 prime-gap lemmas,
+  giving ω≥15). Declined as a shallow specialization (low theory-level value; the prior
+  author tagged it optional). Honesty standard: prefer no work over a cosmetic variant.
+
+Outcome: no code change (honest). Development is healthy and complete; the remaining genuine
+problem (general minimality) is the hard open part. Released back to the pool.

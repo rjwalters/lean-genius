@@ -1909,4 +1909,203 @@ theorem continuant_head_mono {k k' : ℤ} {ks : List ℤ}
   have hpos : 0 < Continuant ks := continuant_pos ks h
   nlinarith [mul_nonneg (sub_nonneg.mpr hkk) (le_of_lt hpos)]
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 21: The balanced extreme — all-ones continuant is period-6 and bounded
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+§ 17 exhibited the two regimes of the continuant.  In the **large-quotient**
+regime (every entry `≥ 2`) it is strictly positive and grows at least linearly
+(`continuant_ge_length`, sharp via the all-`2` ladder `continuant_replicate_two`).
+The opposite, **balanced** extreme is the all-`1` list, where §17 recorded only
+the two witnesses `continuant_ones_two` (`K[1,1] = 0`) and `continuant_ones_three`
+(`K[1,1,1] = −1`), noting they sit on the period-6 orbit `1,1,0,−1,−1,0,…` of the
+rotation matrix `[[1,−1],[1,0]]` but proving only those two points.
+
+This section promotes the witnesses to the full statement.  Writing
+`aₙ = K(1ⁿ)`, `sₙ = secondCont(1ⁿ)`, the §14 single-step recurrence
+`continuant_cons` specialises (every quotient `= 1`) to the coupled linear system
+`aₙ₊₁ = aₙ − sₙ`, `sₙ₊₁ = aₙ`, i.e. `aₙ₊₁ = aₙ − aₙ₋₁`.  Its companion matrix is
+the order-6 rotation, whose sixth power is the identity, so the pair is
+**6-periodic**; the continuant therefore takes only the three values `−1, 0, 1`
+and, unlike the all-`2` ladder, never grows.  This is the exact quantitative form
+of the §15/§17 dichotomy: a long run of small quotients keeps the continuant
+bounded, whereas a regime of large quotients forces linear growth — the structural
+reason the open `1/12`–`1/4` optimisation must trade the two regimes against the
+order-`n` denominator cap (a similarly ordered run cannot be both long and
+metrically cheap at once).
+-/
+
+/-- All-ones trailing continuant: `secondCont(1ⁿ⁺¹) = K(1ⁿ)`.  Immediate from the
+`secondCont (_ :: ks) = Continuant ks` convention. -/
+theorem secondCont_replicate_one (m : ℕ) :
+    secondCont (List.replicate (m + 1) 1) = Continuant (List.replicate m 1) := by
+  rw [List.replicate_succ]; rfl
+
+/-- All-ones continuant single-step recurrence `aₙ₊₁ = aₙ − sₙ`: every quotient
+being `1`, the §14 `continuant_cons` loses its leading factor. -/
+theorem continuant_replicate_one_succ (m : ℕ) :
+    Continuant (List.replicate (m + 1) 1)
+      = Continuant (List.replicate m 1) - secondCont (List.replicate m 1) := by
+  rw [List.replicate_succ, continuant_cons]; ring
+
+/-- **The all-ones continuant is period-6 (joint headline).**  Both the continuant
+`aₙ = K(1ⁿ)` and its trailing companion `sₙ = secondCont(1ⁿ)` satisfy
+`a₍ₙ₊₆₎ = aₙ` and `s₍ₙ₊₆₎ = sₙ`.  The coupled recurrence `aₙ₊₁ = aₙ − sₙ`,
+`sₙ₊₁ = aₙ` is the order-6 rotation `[[1,−1],[1,0]]`, whose sixth power is the
+identity; unfolding six steps reduces the claim to linear integer arithmetic that
+`omega` discharges. -/
+theorem continuant_secondCont_replicate_one (n : ℕ) :
+    Continuant (List.replicate (n + 6) 1) = Continuant (List.replicate n 1)
+      ∧ secondCont (List.replicate (n + 6) 1) = secondCont (List.replicate n 1) := by
+  have c1 : Continuant (List.replicate (n + 1) 1)
+      = Continuant (List.replicate n 1) - secondCont (List.replicate n 1) :=
+    continuant_replicate_one_succ n
+  have s1 : secondCont (List.replicate (n + 1) 1) = Continuant (List.replicate n 1) :=
+    secondCont_replicate_one n
+  have c2 : Continuant (List.replicate (n + 2) 1)
+      = Continuant (List.replicate (n + 1) 1) - secondCont (List.replicate (n + 1) 1) :=
+    continuant_replicate_one_succ (n + 1)
+  have s2 : secondCont (List.replicate (n + 2) 1) = Continuant (List.replicate (n + 1) 1) :=
+    secondCont_replicate_one (n + 1)
+  have c3 : Continuant (List.replicate (n + 3) 1)
+      = Continuant (List.replicate (n + 2) 1) - secondCont (List.replicate (n + 2) 1) :=
+    continuant_replicate_one_succ (n + 2)
+  have s3 : secondCont (List.replicate (n + 3) 1) = Continuant (List.replicate (n + 2) 1) :=
+    secondCont_replicate_one (n + 2)
+  have c4 : Continuant (List.replicate (n + 4) 1)
+      = Continuant (List.replicate (n + 3) 1) - secondCont (List.replicate (n + 3) 1) :=
+    continuant_replicate_one_succ (n + 3)
+  have s4 : secondCont (List.replicate (n + 4) 1) = Continuant (List.replicate (n + 3) 1) :=
+    secondCont_replicate_one (n + 3)
+  have c5 : Continuant (List.replicate (n + 5) 1)
+      = Continuant (List.replicate (n + 4) 1) - secondCont (List.replicate (n + 4) 1) :=
+    continuant_replicate_one_succ (n + 4)
+  have s5 : secondCont (List.replicate (n + 5) 1) = Continuant (List.replicate (n + 4) 1) :=
+    secondCont_replicate_one (n + 4)
+  have c6 : Continuant (List.replicate (n + 6) 1)
+      = Continuant (List.replicate (n + 5) 1) - secondCont (List.replicate (n + 5) 1) :=
+    continuant_replicate_one_succ (n + 5)
+  have s6 : secondCont (List.replicate (n + 6) 1) = Continuant (List.replicate (n + 5) 1) :=
+    secondCont_replicate_one (n + 5)
+  constructor <;> omega
+
+/-- The all-ones continuant alone is period-6: `K(1ⁿ⁺⁶) = K(1ⁿ)`. -/
+theorem continuant_replicate_one_period (n : ℕ) :
+    Continuant (List.replicate (n + 6) 1) = Continuant (List.replicate n 1) :=
+  (continuant_secondCont_replicate_one n).1
+
+/-- Period-6 across any multiple of `6`: `K(1^(6q+r)) = K(1ʳ)`, by induction on the
+number of full turns `q` of the rotation orbit. -/
+theorem continuant_replicate_one_six_mul (q r : ℕ) :
+    Continuant (List.replicate (6 * q + r) 1) = Continuant (List.replicate r 1) := by
+  induction q with
+  | zero => simp
+  | succ q ih =>
+    have hidx : 6 * (q + 1) + r = (6 * q + r) + 6 := by ring
+    rw [hidx, continuant_replicate_one_period, ih]
+
+/-- **Closed form via residue mod 6.**  `K(1ⁿ)` depends only on `n % 6`, so the
+period-6 orbit `1,1,0,−1,−1,0` (for `n % 6 = 0,…,5`) determines every value. -/
+theorem continuant_replicate_one_mod (n : ℕ) :
+    Continuant (List.replicate n 1) = Continuant (List.replicate (n % 6) 1) := by
+  conv_lhs => rw [← Nat.div_add_mod n 6]
+  exact continuant_replicate_one_six_mul (n / 6) (n % 6)
+
+/-- **The balanced extreme stays bounded.**  For *every* length `n`,
+`K(1ⁿ) ∈ {1, 0, −1}` — the all-ones continuant never grows.  This is the sharp
+contrast with the all-`2` ladder `continuant_replicate_two` (`K = n + 1`, linear
+growth): the §17 dichotomy made fully quantitative on its two extremes. -/
+theorem continuant_replicate_one_bounded (n : ℕ) :
+    Continuant (List.replicate n 1) = 1 ∨ Continuant (List.replicate n 1) = 0
+      ∨ Continuant (List.replicate n 1) = -1 := by
+  rw [continuant_replicate_one_mod n]
+  have h6 : n % 6 < 6 := by omega
+  set r := n % 6 with hr
+  clear_value r
+  interval_cases r <;> decide
+
+/-- `|K(1ⁿ)| ≤ 1` for all `n` — the bound packaged as an absolute value, the
+order-side statement that the balanced extreme is metrically flat. -/
+theorem continuant_replicate_one_abs_le_one (n : ℕ) :
+    |Continuant (List.replicate n 1)| ≤ 1 := by
+  rcases continuant_replicate_one_bounded n with h | h | h <;> rw [h] <;> decide
+
+/-! ## §22: The boundary of the positive cone — leading `1`s in a large-quotient run
+
+§20/§21 nailed the two pure extremes (all-`2` linear `K = n + 1`, all-`1` period-6 with
+`|K| ≤ 1`).  This section characterises the **boundary** between them: starting from a
+large-quotient (all-`≥ 2`) tail — where §17 `continuant_pos` gives `0 < K` — how many
+leading quotients may drop to `1` before positivity is lost?
+
+The answer is **exactly one**.  Two closed-form identities collapse a leading-`1` prefix
+onto the tail's two continuants:
+
+* `K(1 :: ks) = K(ks) − secondCont ks`   (one leading `1`),
+* `K(1 :: 1 :: ks) = − secondCont ks`     (two leading `1`s).
+
+The §17 core invariant `0 ≤ secondCont ks < Continuant ks` (`secondCont_lt_continuant`)
+then reads off the sign immediately: with a single leading `1` the continuant stays
+`> 0` (the strict domination `secondCont < K`), but a *second* consecutive `1` flips it to
+`− secondCont ks ≤ 0` — strictly negative as soon as the tail is nonempty.  This is the
+precise crossing point from §17's positive cone into the §21 period-6 orbit; the
+empty-tail edge `K(1 :: 1 :: []) = 0` recovers the §21 witness `continuant_ones_two`.
+
+Depends only on the §14 recurrence `continuant_cons` and the §17 invariant
+`secondCont_lt_continuant` / `secondCont_nonneg` / `continuant_pos`. -/
+
+/-- **One leading `1` (closed form).**  Prepending a single `1` subtracts the trailing
+continuant: `K(1 :: ks) = K(ks) − secondCont ks`.  A pure instance of `continuant_cons`
+with `k = 1`. -/
+theorem continuant_one_cons (ks : List ℤ) :
+    Continuant (1 :: ks) = Continuant ks - secondCont ks := by
+  rw [continuant_cons]; ring
+
+/-- **Two leading `1`s (closed form).**  A second consecutive `1` cancels the leading
+continuant entirely: `K(1 :: 1 :: ks) = − secondCont ks`.  Indeed
+`K(1::1::ks) = K(1::ks) − secondCont (1::ks) = (K(ks) − secondCont ks) − K(ks)`, using
+`secondCont (1 :: ks) = Continuant ks`. -/
+theorem continuant_one_one_cons (ks : List ℤ) :
+    Continuant (1 :: 1 :: ks) = - secondCont ks := by
+  rw [continuant_one_cons (1 :: ks), continuant_one_cons ks]
+  simp only [secondCont]
+  ring
+
+/-- **A single leading `1` preserves positivity.**  On a large-quotient tail
+(`∀ k ∈ ks, 2 ≤ k`, so §17 gives `secondCont ks < Continuant ks`), one leading `1`
+keeps the continuant strictly positive: `0 < K(1 :: ks)`.  By `continuant_one_cons`,
+`K(1::ks) = K(ks) − secondCont ks > 0` by the strict domination. -/
+theorem continuant_one_cons_pos (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    0 < Continuant (1 :: ks) := by
+  rw [continuant_one_cons]
+  have hd := secondCont_lt_continuant ks h
+  linarith [hd.2]
+
+/-- **A second consecutive `1` destroys positivity.**  On the same large-quotient tail,
+`K(1 :: 1 :: ks) = − secondCont ks ≤ 0` (`continuant_one_one_cons` plus
+`secondCont_nonneg`).  So at most one leading quotient may drop to `1` while staying in
+§17's positive cone — the sharp boundary into the §21 period-6 orbit. -/
+theorem continuant_one_one_cons_nonpos (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant (1 :: 1 :: ks) ≤ 0 := by
+  rw [continuant_one_one_cons]
+  have := secondCont_nonneg ks h
+  linarith
+
+/-- **Strict crossing (nonempty tail).**  When the large-quotient tail is nonempty the
+second leading `1` makes the continuant *strictly* negative: `K(1 :: 1 :: ks) < 0`.  The
+trailing continuant of a nonempty all-`≥ 2` list is positive
+(`secondCont (k :: rest) = Continuant rest > 0` by `continuant_pos`), so
+`− secondCont ks < 0`.  The empty-tail edge `K([1,1]) = 0` (§21 `continuant_ones_two`) is
+thus the *only* place the two-leading-`1` value touches zero; any large-quotient tail
+pushes it strictly below. -/
+theorem continuant_one_one_cons_neg (ks : List ℤ) (hne : ks ≠ [])
+    (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant (1 :: 1 :: ks) < 0 := by
+  rw [continuant_one_one_cons]
+  obtain ⟨k, rest, rfl⟩ := List.exists_cons_of_ne_nil hne
+  simp only [secondCont]
+  have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+  have := continuant_pos rest hrest
+  linarith
+
 end Erdos1005OQ02

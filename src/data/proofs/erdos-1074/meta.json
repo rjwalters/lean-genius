@@ -67,12 +67,16 @@
       "Theorem prime_dvd_pred_factorial_add_one: Wilson connection p | (p-1)! + 1 for all primes p",
       "Theorem wilson_witness_excluded: the canonical witness m=p-1 gives p|(p-1)!+1 but also p≡1 [MOD p-1], so it is always excluded — this is exactly why EHS/Pillai are nontrivial",
       "Theorem mem_pillai_iff: EHS/Pillai duality — the Pillai primes are exactly the primes witnessing some EHS number",
+      "Theorem witness_lt_of_dvd_factorial_add_one: any witness m of p | m!+1 (p prime) satisfies m < p — if p ≤ m then p | m!, forcing p | 1",
+      "Theorem witness_ne_pred / witness_add_two_le: combining m < p with the Wilson-witness exclusion m ≠ p-1 confines every Pillai-prime witness to the finite window 1 ≤ m ≤ p-2 (m+2 ≤ p)",
+      "Theorem pillai_bounded_witness: membership in PillaiPrimes is witnessed by a bounded m, making per-prime membership a finite search",
+      "Theorem three_le_of_mem_pillai: every Pillai prime is ≥ 3 (structural lower bound from the witness window; the true minimum 23 needs computation)",
       "Open density conjectures documented (not asserted)"
     ],
     "axiomCount": 1,
-    "lineCount": 206,
+    "lineCount": 259,
     "assumptions": "0 axiom declarations and 0 sorries in the Lean source. The verified numeric examples (23 is a Pillai prime; 8, 9 are EHS numbers) are discharged by `native_decide`, so they depend on `Lean.ofReduceBool` (and `Lean.trustCompiler`); meta.axiomCount=1 records this per the project's axiom-integrity policy (leanFile.axiomCount remains 0 as there are no literal `axiom` declarations). The newly added structural theorems (Wilson connection, Wilson-witness exclusion, and the EHS/Pillai duality `mem_pillai_iff`) are fully proved and use only the foundational propext/Classical.choice/Quot.sound. The 'axiomatized' status reflects that the headline density questions remain OPEN and are not formalized as theorems.",
-    "theoremCount": 10,
+    "theoremCount": 15,
     "definitionCount": 2
   },
   "overview": {
@@ -88,7 +92,8 @@
       "**Chowla's Example:** 14! + 1 = 87,178,291,201 has factor 23, and 23 ≢ 1 (mod 14)",
       "**Density Mystery:** Why would EHS numbers have density 1? The condition seems restrictive",
       "**EHS/Pillai duality:** Pillai primes are exactly the primes that witness EHS numbers (mem_pillai_iff)",
-      "**Definition pitfall:** dropping `m ≥ 1` lets m=0 (modulus 0 ≡ equality) spuriously admit 2; the corrected definition matches OEIS A063980"
+      "**Definition pitfall:** dropping `m ≥ 1` lets m=0 (modulus 0 ≡ equality) spuriously admit 2; the corrected definition matches OEIS A063980",
+      "**Effective witness window:** p | m!+1 with p prime forces m < p (else p | m!), and the non-congruence rules out m = p-1, so any Pillai-prime witness lies in 1 ≤ m ≤ p-2 — a finite per-prime search and the source of the structural bound p ≥ 3"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -136,6 +141,14 @@
       "startLine": 117,
       "endLine": 146,
       "mathContext": "Do the asymptotic densities exist?"
+    },
+    {
+      "id": "effective-bounds",
+      "title": "Effective Witness Bounds",
+      "summary": "Witness window 1 ≤ m ≤ p-2 and the lower bound p ≥ 3 for Pillai primes",
+      "startLine": 158,
+      "endLine": 209,
+      "mathContext": "p | m!+1 forces m < p; excluding the Wilson witness m=p-1 gives 1 ≤ m ≤ p-2, hence every Pillai prime is ≥ 3"
     }
   ],
   "conclusion": {

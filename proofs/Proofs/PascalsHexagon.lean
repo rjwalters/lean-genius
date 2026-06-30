@@ -1307,6 +1307,45 @@ private lemma diag_pm_one_congr_stdConic (w : Fin 3 → ℝ)
   · -- (-,-,-): definite, excluded by indefiniteness
     exfalso; obtain ⟨i, j, hij⟩ := hindef; fin_cases i <;> fin_cases j <;> simp_all
 
+/-- **Polarization: pointwise-equal quadratic forms ⟹ equal symmetric conics
+    (Sylvester step 2.3, proved, 0-axiom).**
+    Two symmetric `3×3` real conics whose quadratic forms agree at every point are
+    the same matrix.  Evaluating at the basis vectors `eᵢ` pins the diagonal
+    (`C i i = conicQuadraticForm C eᵢ`), and at the sums `eᵢ + eⱼ` pins the
+    off-diagonal via symmetry (`conicQuadraticForm C (eᵢ+eⱼ) = C i i + C j j + 2·C i j`).
+
+    This discharges the final algebraic step of the matrix-congruence extraction in
+    `exists_scaledCongr_stdConic_of_isotropic` (step 2.3 of its plan): once the
+    `IsometryEquiv` from Sylvester's law gives the *pointwise* identity
+    `∀ p, conicQuadraticForm C p = conicQuadraticForm (Lᵀ · diagonal w · L) p`
+    (with both matrices symmetric), this lemma upgrades it to the matrix equality
+    `C = Lᵀ · diagonal w · L`.  The remaining gap is then only steps 2.1–2.2 (the
+    `Fin (finrank ℝ (Fin 3 → ℝ)) ↔ Fin 3` cast and isometry→pointwise bridge). -/
+private lemma conic_eq_of_qf_eq_of_symmetric (C D : Conic)
+    (hC : C.symmetric) (hD : D.symmetric)
+    (h : ∀ p : ProjPoint, conicQuadraticForm C p = conicQuadraticForm D p) : C = D := by
+  have d0 := h ![1, 0, 0]
+  have d1 := h ![0, 1, 0]
+  have d2 := h ![0, 0, 1]
+  have o01 := h ![1, 1, 0]
+  have o02 := h ![1, 0, 1]
+  have o12 := h ![0, 1, 1]
+  simp only [conicQuadraticForm, Fin.sum_univ_three, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+    at d0 d1 d2 o01 o02 o12
+  ring_nf at d0 d1 d2 o01 o02 o12
+  have c00 : C 0 0 = D 0 0 := d0
+  have c11 : C 1 1 = D 1 1 := d1
+  have c22 : C 2 2 = D 2 2 := d2
+  have c01 : C 0 1 = D 0 1 := by linarith [o01, d0, d1, hC 1 0, hD 1 0]
+  have c02 : C 0 2 = D 0 2 := by linarith [o02, d0, d2, hC 2 0, hD 2 0]
+  have c12 : C 1 2 = D 1 2 := by linarith [o12, d1, d2, hC 2 1, hD 2 1]
+  have c10 : C 1 0 = D 1 0 := by linarith [c01, hC 1 0, hD 1 0]
+  have c20 : C 2 0 = D 2 0 := by linarith [c02, hC 2 0, hD 2 0]
+  have c21 : C 2 1 = D 2 1 := by linarith [c12, hC 2 1, hD 2 1]
+  ext i j
+  fin_cases i <;> fin_cases j <;> assumption
+
 /-- **The linear-algebra core of the Sylvester reduction (remaining gap).**
     A non-degenerate symmetric real conic `C` carrying a real point is *congruent to a
     nonzero scalar multiple of* `stdConic = diag(1,1,-1)`: there is an invertible `M` and
@@ -1333,7 +1372,37 @@ private lemma diag_pm_one_congr_stdConic (w : Fin 3 → ℝ)
        **Step 4 is now discharged by `diag_pm_one_congr_stdConic` (proved above, 0-axiom).**
        The sole remaining obstacle is step 2: extracting the matrix congruence
        `C = Lᵀ * diagonal w * L` from the abstract `IsometryEquiv` across the
-       `Fin (finrank ℝ (Fin 3 → ℝ)) ↔ Fin 3` cast. -/
+       `Fin (finrank ℝ (Fin 3 → ℝ)) ↔ Fin 3` cast.
+
+    CONCRETE SKELETON for step 2 (researcher-3, 2026-06-28 — the central bridge lemma
+    `QuadraticMap.toMatrix'_comp` was not previously identified; it removes the need to
+    reason about the abstract isometry directly):
+
+      Let `φ : (toQuadraticMap' C).IsometryEquiv (weightedSumSquares ℝ w)` from step 1.
+      a. `IsometryEquiv.map_app φ : ∀ x, weightedSumSquares ℝ w (φ x) = toQuadraticMap' C x`,
+         i.e. `toQuadraticMap' C = (weightedSumSquares ℝ w).comp φ.toLinearEquiv.toLinearMap`
+         (by `QuadraticMap.ext`).
+      b. Apply `QuadraticMap.toMatrix'` to both sides and rewrite the RHS with
+         `QuadraticMap.toMatrix'_comp` :
+           `(toQuadraticMap' C).toMatrix' = (LinearMap.toMatrix' φ)ᵀ
+                                              * (weightedSumSquares ℝ w).toMatrix'
+                                              * (LinearMap.toMatrix' φ)`.
+      c. Two round-trip rewrites collapse the endpoints to plain matrices:
+           - `(toQuadraticMap' C).toMatrix' = C`  — because `mathlibQF_separatingLeft`'s
+             internal computation already shows `associated (toQuadraticMap' C)
+             = toLinearMap₂' C`, and `toMatrix' Q = toMatrix₂' (associated Q)`, so this is
+             the `toMatrix₂'`/`toLinearMap₂'` round trip on the symmetric `C`.
+           - `(weightedSumSquares ℝ w).toMatrix' = Matrix.diagonal w`  — prove a standalone
+             helper from `weightedSumSquares_apply` + `QuadraticMap.associated`'s diagonal
+             form (the off-diagonal mixed terms vanish).
+      d. The ONLY genuinely type-dependent step is making `L := LinearMap.toMatrix' φ`
+         **square**: its column index is `Fin 3` but its row index is `Fin (finrank …)`.
+         Reindex via `e := finCongr Module.finrank_fin_fun : Fin (finrank ℝ (Fin 3 → ℝ)) ≃ Fin 3`
+         (so `diagonal w` becomes `diagonal (w ∘ e.symm)` and `L` becomes `L.submatrix e id`),
+         after which `L'.det ≠ 0` follows from `LinearMap.toMatrix'` of the equiv `φ` being a
+         unit (`Matrix.isUnit_iff_isUnit_det`, `LinearEquiv.toMatrix'`-style). Then step 3
+         gives indefiniteness of `w ∘ e.symm` and step 4 (`diag_pm_one_congr_stdConic`)
+         finishes. This is the right Aristotle target once the service is reachable. -/
 private lemma exists_scaledCongr_stdConic_of_isotropic (C : Conic)
     (hC_sym : C.symmetric) (hC_nd : Conic.nondegenerate C)
     (p₀ : ProjPoint) (hp₀v : ProjPoint.valid p₀) (hp₀ : pointOnConic p₀ C) :

@@ -334,3 +334,34 @@ continuant grows at least linearly with run length there.
   cap (`stepSeq b d ks = K·d − secondCont·b ≤ n`) to bound the run length of a
   large-quotient run by `O(n / d)` — the first genuine run-length *upper* bound in the
   all-`≥2` regime, a sanity check against the `n/4 + 5` global upper bound.
+
+## Iteration 17 addition (verified, 0-axiom — researcher-6, docker-build.sh)
+
+Added **§21 (the balanced extreme — all-ones continuant is period-6 and bounded)**,
+0-sorry / 0-axiom (`docker-build.sh Proofs.Erdos1005ProblemOQ02` clean; `#print
+axioms` = propext / Classical.choice / Quot.sound only on all 8 new theorems —
+`decide`, not `native_decide`, so NO `Lean.ofReduceBool`). Delivers §17's named
+Next Action "All-ones period-6 closed form": the two §17 witnesses
+`continuant_ones_two` (K[1,1]=0), `continuant_ones_three` (K[1,1,1]=−1) promoted
+to the complete closed form.
+
+- `secondCont_replicate_one`, `continuant_replicate_one_succ` — all-`1`
+  specialisation of `continuant_cons`: `aₙ₊₁=aₙ−sₙ`, `sₙ₊₁=aₙ` (order-6 rotation).
+- `continuant_secondCont_replicate_one` (headline) — joint period-6; 6 unfolded steps + omega.
+- `continuant_replicate_one_period` / `_six_mul` / `_mod` — `K(1ⁿ)=K(1^(n%6))`.
+- `continuant_replicate_one_bounded` (`K(1ⁿ)∈{1,0,−1}`), `_abs_le_one` (`|K(1ⁿ)|≤1`).
+
+File: 1912 → 2034 lines, 82 → 90 theorems (file-internal count).
+
+**Quantitative dichotomy, both extremes closed.** all-`2`: K=n+1 (linear); all-`1`:
+|K|≤1 (bounded, period 6). Mixed regime (open 1/12–1/4 constant) remains open.
+
+## Next Action (after §21)
+
+- **Mixed regime.** Characterise via `continuant_cons` which mixed quotient lists keep
+  `Continuant ks ≥ 1` (boundary between the large-quotient positive cone and the
+  balanced period-6 orbit) — e.g. a threshold on accumulated quotient mass between
+  consecutive `1`s.
+- **Density aggregation.** Combine `continuant_ge_length` (all-`≥2`) with the order-`n`
+  cap `stepSeq b d ks = K·d − sc·b ≤ n` to bound large-quotient run length by `O(n/d)`
+  — first genuine run-length upper bound, sanity check vs `n/4+5`.

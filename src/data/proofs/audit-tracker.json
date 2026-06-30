@@ -3580,10 +3580,10 @@
       "result": "clean"
     },
     "erdos-1066-oq-04": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-04T04:08:24Z",
-      "result": "clean"
+      "lastAudited": "2026-06-28T19:20:24Z",
+      "result": "issues-fixed"
     },
     "erdos-1067": {
       "auditCount": 4,
@@ -4925,9 +4925,9 @@
       "result": "clean"
     },
     "erdos-156": {
-      "auditCount": 8,
+      "auditCount": 10,
       "issues": [],
-      "lastAudited": "2026-06-28T12:01:27Z",
+      "lastAudited": "2026-06-28T17:38:16Z",
       "result": "clean"
     },
     "erdos-157": {
@@ -25171,8 +25171,8 @@
       "issues": []
     },
     "erdos-57-oq-04": {
-      "auditCount": 5,
-      "lastAudited": "2026-06-28T12:01:27Z",
+      "auditCount": 7,
+      "lastAudited": "2026-06-28T17:38:16Z",
       "result": "clean",
       "issues": []
     },
@@ -25647,6 +25647,180 @@
     "fibonacci-identities-oq-04-oq-01-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-06-28T12:20:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "chebyshev-pnt-bridge-oq-06-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T13:50:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "de-moivre-oq-01-oq-03-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T13:50:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "de-moivre-oq-02-oq-03-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T13:50:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1026-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T13:50:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "markov-equation-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T13:50:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cassini-identity-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:15Z",
+      "result": "clean",
+      "issues": []
+    },
+    "de-moivre-oq-01-oq-03-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:15Z",
+      "result": "clean",
+      "issues": []
+    },
+    "de-moivre-oq-01-oq-03-oq-01-oq-01-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:15Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-100-oq-05": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:15Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1110-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:15Z",
+      "result": "clean",
+      "issues": []
+    },
+    "hilbert-17-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:15Z",
+      "result": "clean",
+      "issues": []
+    },
+    "lhopital-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:15Z",
+      "result": "clean",
+      "issues": []
+    },
+    "property-b-first-moment-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:15Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cramers-rule-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:16Z",
+      "result": "clean",
+      "issues": []
+    },
+    "hermite-sawtooth-identity-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:16Z",
+      "result": "clean",
+      "issues": []
+    },
+    "stars-and-bars-weak-compositions-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T17:38:16Z",
+      "result": "clean",
+      "issues": []
+    },
+    "area-of-circle-oq-03-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "brouwer-fixed-point-oq-01-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "fibonacci-identities-oq-02-oq-01-oq-01-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1002-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "erdos-1003-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "erdos-1018-oq-04-incomplete-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "erdos-1100-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "picks-theorem-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "property-b-first-moment-oq-03-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "factor-remainder-hasse-derivative-fq": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:21:35Z",
+      "result": "clean",
+      "issues": []
+    },
+    "godel-second-incompleteness-oq02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:23:24Z",
+      "result": "clean",
+      "issues": []
+    },
+    "lucas-sequence-degree2-identities": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:24:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "pythagorean-theorem-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:24:43Z",
       "result": "clean",
       "issues": []
     }

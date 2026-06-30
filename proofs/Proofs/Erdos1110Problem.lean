@@ -545,6 +545,30 @@ lemma representable_summands_ge_q {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
   have hs2 : 2 ≤ s := by omega
   exact isPowerForm_ge_q_of_ge_two hp hq (hpf s hs) hs2
 
+/-- **Every power form is representable** (unconditional, 0-axiom). A power form
+`n = p^k q^l` is represented by the singleton antichain `{n}`: a one-element set is
+vacuously an antichain (`NoOneDividesAnother`), its sole element is a power form, and it
+sums to `n`. This is the base fact underlying the backward direction of the window
+characterisation, and generalises `example_1_representable` (the `{3,2}` unit) to every
+pair and every power form. -/
+theorem isRepresentable_of_isPowerForm {p q n : ℕ} (h : IsPowerForm p q n) :
+    IsRepresentable p q n :=
+  ⟨{n}, Finset.singleton_nonempty n, by simpa using h,
+    by intro a ha b hb hab; simp only [Finset.mem_singleton] at ha hb
+       exact absurd (ha.trans hb.symm) hab,
+    by simp⟩
+
+/-- **The unit `1` is representable for every pair** — it is the power form `p^0 q^0`.
+Generalises `example_1_representable` from `{3,2}` to all `p, q`. -/
+theorem isRepresentable_one {p q : ℕ} : IsRepresentable p q 1 :=
+  isRepresentable_of_isPowerForm ⟨0, 0, by simp⟩
+
+/-- **Every power form `p^a q^b` is representable.** The representable set contains the
+whole multiplicative monoid of power forms — immediate from `isRepresentable_of_isPowerForm`. -/
+theorem isRepresentable_powerForm {p q : ℕ} (a b : ℕ) :
+    IsRepresentable p q (p ^ a * q ^ b) :=
+  isRepresentable_of_isPowerForm ⟨a, b, rfl⟩
+
 /-- **Representability window characterization (unconditional, 0-axiom).**
 For `q ≤ n < 2q`, the number `n` is representable iff it is itself a single power
 form `p^k q^l`. Forward: every summand is `≥ q` (`representable_summands_ge_q`),
@@ -579,10 +603,7 @@ theorem isRepresentable_iff_isPowerForm_window {p q n : ℕ} (hp : p > q) (hq : 
     rw [← hsum]
     exact hpf x (Finset.mem_singleton_self x)
   · intro h
-    exact ⟨{n}, Finset.singleton_nonempty n, by simpa using h,
-      by intro a ha b hb hab; simp only [Finset.mem_singleton] at ha hb
-         exact absurd (ha.trans hb.symm) hab,
-      by simp⟩
+    exact isRepresentable_of_isPowerForm h
 
 /-- **Non-power-forms in the window `[q, 2q)` are non-representable
 (unconditional, 0-axiom).** Contrapositive of the window characterization. This
@@ -596,6 +617,194 @@ theorem nonRepresentable_of_window {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
   rw [NonRepresentable, Set.mem_setOf_eq,
     isRepresentable_iff_isPowerForm_window hp hq hlo hhi]
   exact hnp
+
+/-- **Sharp criterion for the canonical candidate `q + 1` (unconditional, 0-axiom).**
+For every pair `p > q ≥ 2` the number `q + 1` always lies in the window `[q, 2q)`,
+so by the window characterization it is non-representable *exactly* when it is not
+a power of `p`:
+
+    `q + 1 ∈ NonRepresentable p q  ↔  ¬ ∃ k, q + 1 = p ^ k`.
+
+The only power form `q + 1` could be is a pure power of `p`: a factor `q ^ l` with
+`l ≥ 1` would force `q ∣ q + 1`, hence `q ∣ 1`, impossible for `q ≥ 2`. For `q = 2`
+this says `q + 1 = 3` is non-representable unless `3 = p ^ k`, i.e. unless `p = 3` —
+pinpointing the excluded `{2,3}` pair as the *unique* `q = 2` exception, the case
+where the canonical witness `3` happens to be the power form `3 = 3 ^ 1`. -/
+theorem add_one_nonRepresentable_iff {p q : ℕ} (hp : p > q) (hq : q ≥ 2) :
+    (q + 1) ∈ NonRepresentable p q ↔ ¬ ∃ k : ℕ, q + 1 = p ^ k := by
+  rw [NonRepresentable, Set.mem_setOf_eq,
+    isRepresentable_iff_isPowerForm_window hp hq (by omega) (by omega)]
+  simp only [IsPowerForm]
+  refine not_congr ⟨?_, ?_⟩
+  · rintro ⟨k, l, hkl⟩
+    refine ⟨k, ?_⟩
+    rcases Nat.eq_zero_or_pos l with hl | hl
+    · subst hl; simpa using hkl
+    · exfalso
+      have hqdvd : q ∣ q + 1 := by
+        rw [hkl]; exact (dvd_pow_self q hl.ne').mul_left (p ^ k)
+      have h1 : q ∣ 1 := (Nat.dvd_add_right (dvd_refl q)).mp hqdvd
+      have := Nat.le_of_dvd one_pos h1
+      omega
+  · rintro ⟨k, hk⟩
+    exact ⟨k, 0, by simpa using hk⟩
+
+/-- **Easy sufficient condition: `q + 1` is non-representable whenever `p > q + 1`
+(unconditional, 0-axiom).** If `p` overshoots `q + 1` then `q + 1` cannot be any
+power `p ^ k` (`p ^ 0 = 1 < q + 1` and `p ^ k ≥ p > q + 1` for `k ≥ 1`), so the
+criterion `add_one_nonRepresentable_iff` fires. This hands every pair with
+`p ≥ q + 2` an explicit, trivially checkable non-representable number. -/
+theorem add_one_nonRepresentable_of_lt {p q : ℕ} (hq : q ≥ 2) (hp : q + 1 < p) :
+    (q + 1) ∈ NonRepresentable p q := by
+  rw [add_one_nonRepresentable_iff (by omega) hq]
+  rintro ⟨k, hk⟩
+  rcases Nat.eq_zero_or_pos k with hk0 | hk0
+  · subst hk0; simp at hk; omega
+  · have hple : p ≤ p ^ k := Nat.le_self_pow hk0.ne' p
+    omega
+
+/-- The pair `(5, 2)`: `3 = q + 1` is non-representable (3 is not a power of 5). -/
+example : (3 : ℕ) ∈ NonRepresentable 5 2 :=
+  add_one_nonRepresentable_of_lt (by norm_num) (by norm_num)
+
+/-
+## Part IIe: Multiplicative Closure of Representability (unconditional, 0-axiom)
+
+The `{2,3}` induction (`case_2_3_all_representable`) rested on a *doubling* step:
+multiplying a representing antichain by `2` keeps it a representing antichain
+(`isPowerForm_mul_two`, `noOneDividesAnother_image_mul_two`, …). That doubling is
+the `c = 2` instance of a single structural fact valid for **either base**: scaling
+a representation by `p` (or `q`) is again a representation. We record the general
+statement here.
+
+The key algebraic point is that the antichain ("no element divides another")
+relation is *invariant under scaling by a fixed positive constant*: `c·a ∣ c·b ↔
+a ∣ b`. Combined with the fact that `c · p^k q^l` is still a power form (with the
+exponent of the relevant base raised by one), this yields:
+
+* `IsRepresentable p q n ⟹ IsRepresentable p q (p·n)` and `(q·n)`;
+* by iteration, `IsRepresentable p q n ⟹ IsRepresentable p q (p^a q^b · n)` — the
+  set of representable numbers is closed under multiplication by every power form;
+* contrapositively, **non-representability propagates to power-form divisors**: if
+  `p^a q^b · n` is non-representable, then so is `n`.
+
+This is genuine structural theory (a `ℕ`-action of the multiplicative monoid of
+power forms on the representable set), 0-axiom, and it subsumes the ad-hoc doubling
+machinery. It does **not** resolve the open infinitude direction: the propagation
+goes *downward* (to divisors), so it cannot manufacture infinitely many
+non-representables from a single witness — the deep axiom `erdos_lewin_infinite`
+remains untouched.
+-/
+
+/-- Multiplying a power form by `p` stays a power form: `p · p^k q^l = p^{k+1} q^l`. -/
+lemma isPowerForm_mul_base_left {p q s : ℕ} (h : IsPowerForm p q s) :
+    IsPowerForm p q (s * p) := by
+  obtain ⟨k, l, rfl⟩ := h
+  exact ⟨k + 1, l, by ring⟩
+
+/-- Multiplying a power form by `q` stays a power form: `q · p^k q^l = p^k q^{l+1}`. -/
+lemma isPowerForm_mul_base_right {p q s : ℕ} (h : IsPowerForm p q s) :
+    IsPowerForm p q (s * q) := by
+  obtain ⟨k, l, rfl⟩ := h
+  exact ⟨k, l + 1, by ring⟩
+
+/-- Scaling every element of an antichain by a fixed positive `c` preserves the
+antichain property, since `c·a ∣ c·b ↔ a ∣ b`. (Generalises
+`noOneDividesAnother_image_mul_two`, the `c = 2` case.) -/
+lemma noOneDividesAnother_image_mul_const {S : Finset ℕ} {c : ℕ} (hc : 0 < c)
+    (hS : NoOneDividesAnother S) :
+    NoOneDividesAnother (S.image (· * c)) := by
+  intro a ha b hb hab
+  rw [Finset.mem_image] at ha hb
+  obtain ⟨a', ha', rfl⟩ := ha
+  obtain ⟨b', hb', rfl⟩ := hb
+  have hne : a' ≠ b' := by intro heq; subst heq; exact hab rfl
+  intro hdvd
+  exact hS a' ha' b' hb' hne ((Nat.mul_dvd_mul_iff_right hc).mp hdvd)
+
+/-- Multiplication by a positive constant is injective on a `Finset` of naturals. -/
+lemma mul_const_injOn (S : Finset ℕ) {c : ℕ} (hc : 0 < c) :
+    Set.InjOn (· * c) (↑S) := by
+  intro a _ b _ h
+  exact Nat.eq_of_mul_eq_mul_right hc h
+
+/-- Scaling the antichain by `c` scales its sum by `c`. -/
+lemma sum_image_mul_const {S : Finset ℕ} {c : ℕ} (hinj : Set.InjOn (· * c) (↑S)) :
+    (S.image (· * c)).sum id = c * S.sum id := by
+  rw [Finset.sum_image (fun a ha b hb => hinj ha hb)]
+  simp [Finset.mul_sum, mul_comm]
+
+/-- **Representability is closed under multiplication by `p`** (unconditional,
+0-axiom). Scale a representing antichain of `n` by `p`: each summand `p^k q^l`
+becomes `p^{k+1} q^l` (still a power form), the antichain property is preserved
+(`noOneDividesAnother_image_mul_const`), and the sum scales to `p·n`. -/
+theorem isRepresentable_mul_base_left {p q n : ℕ} (hp : 0 < p)
+    (h : IsRepresentable p q n) : IsRepresentable p q (p * n) := by
+  obtain ⟨S, hne, hpf, hac, hsum⟩ := h
+  refine ⟨S.image (· * p), Finset.Nonempty.image hne _, ?_, ?_, ?_⟩
+  · intro s hs
+    rw [Finset.mem_image] at hs
+    obtain ⟨a, ha, rfl⟩ := hs
+    exact isPowerForm_mul_base_left (hpf a ha)
+  · exact noOneDividesAnother_image_mul_const hp hac
+  · rw [sum_image_mul_const (mul_const_injOn S hp), hsum]
+
+/-- **Representability is closed under multiplication by `q`** (unconditional,
+0-axiom). Same argument scaling by `q`; each summand `p^k q^l` becomes
+`p^k q^{l+1}`. -/
+theorem isRepresentable_mul_base_right {p q n : ℕ} (hq : 0 < q)
+    (h : IsRepresentable p q n) : IsRepresentable p q (q * n) := by
+  obtain ⟨S, hne, hpf, hac, hsum⟩ := h
+  refine ⟨S.image (· * q), Finset.Nonempty.image hne _, ?_, ?_, ?_⟩
+  · intro s hs
+    rw [Finset.mem_image] at hs
+    obtain ⟨a, ha, rfl⟩ := hs
+    exact isPowerForm_mul_base_right (hpf a ha)
+  · exact noOneDividesAnother_image_mul_const hq hac
+  · rw [sum_image_mul_const (mul_const_injOn S hq), hsum]
+
+/-- Closure under multiplication by `p^a` (iterating `isRepresentable_mul_base_left`). -/
+theorem isRepresentable_mul_pow_left {p q n : ℕ} (hp : 0 < p) (a : ℕ)
+    (h : IsRepresentable p q n) : IsRepresentable p q (p ^ a * n) := by
+  induction a with
+  | zero => simpa using h
+  | succ k ih =>
+    have h2 := isRepresentable_mul_base_left hp ih
+    have heq : p ^ (k + 1) * n = p * (p ^ k * n) := by ring
+    rwa [heq]
+
+/-- Closure under multiplication by `q^b` (iterating `isRepresentable_mul_base_right`). -/
+theorem isRepresentable_mul_pow_right {p q n : ℕ} (hq : 0 < q) (b : ℕ)
+    (h : IsRepresentable p q n) : IsRepresentable p q (q ^ b * n) := by
+  induction b with
+  | zero => simpa using h
+  | succ k ih =>
+    have h2 := isRepresentable_mul_base_right hq ih
+    have heq : q ^ (k + 1) * n = q * (q ^ k * n) := by ring
+    rwa [heq]
+
+/-- **Representability is closed under multiplication by every power form**
+(unconditional, 0-axiom). If `n` is representable then so is `p^a q^b · n`: the
+representable set is invariant under the multiplicative monoid action of the power
+forms. This is the full structural generalisation of the `{2,3}` doubling step. -/
+theorem isRepresentable_mul_powerForm {p q n : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (a b : ℕ) (h : IsRepresentable p q n) :
+    IsRepresentable p q (p ^ a * q ^ b * n) := by
+  have h1 := isRepresentable_mul_pow_left hp a h
+  have h2 := isRepresentable_mul_pow_right hq b h1
+  have heq : p ^ a * q ^ b * n = q ^ b * (p ^ a * n) := by ring
+  rwa [heq]
+
+/-- **Non-representability propagates to power-form divisors** (unconditional,
+0-axiom). Contrapositive of `isRepresentable_mul_powerForm`: if `p^a q^b · n` is
+non-representable, then `n` itself is non-representable. (The implication runs
+*downward* to smaller divisors, so it does not generate new non-representables —
+the open infinitude direction is unaffected.) -/
+theorem nonRepresentable_of_mul_powerForm {p q n a b : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (h : (p ^ a * q ^ b * n) ∈ NonRepresentable p q) :
+    n ∈ NonRepresentable p q := by
+  rw [NonRepresentable, Set.mem_setOf_eq] at h ⊢
+  exact fun hrep => h (isRepresentable_mul_powerForm hp hq a b hrep)
 
 /-
 ## Part III: General Case (p,q) ≠ (2,3)
@@ -832,21 +1041,7 @@ The lower bound improves to f(n) ≫ n / log n.
 **Example: 1 = 2^0 · 3^0:**
 The number 1 is trivially representable (single summand).
 -/
-theorem example_1_representable : IsRepresentable 3 2 1 := by
-  use {1}
-  constructor
-  · simp
-  constructor
-  · intro s hs
-    simp at hs
-    subst hs
-    use 0, 0
-    simp
-  constructor
-  · intro a ha b hb hab
-    simp at ha hb
-    omega
-  · simp
+theorem example_1_representable : IsRepresentable 3 2 1 := isRepresentable_one
 
 /-
 **Example: Small cases for {3,2}:**

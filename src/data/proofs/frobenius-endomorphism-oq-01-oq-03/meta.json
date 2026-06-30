@@ -79,6 +79,40 @@
       "ZMod p as a finite field for prime p; CharP / ExpChar instances"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring framing the monomorphism/automorphism dichotomy: the Frobenius x ↦ x^p is injective on any integral domain (because a domain is reduced) and additionally surjective on a finite field (because finite + injective ⇒ bijective). Notes the failure over non-reduced ZMod 4. Imports Mathlib and opens the namespace.",
+      "mathContext": "Frobenius is always a monomorphism on a reduced ring; surjectivity is the special property of perfect fields, of which finite fields are the prototype."
+    },
+    {
+      "id": "domain-monomorphism",
+      "title": "Frobenius is a Monomorphism on an Integral Domain",
+      "startLine": 29,
+      "endLine": 54,
+      "summary": "frobenius_injective (= Mathlib's frobenius_inj) records that x ↦ x^p is injective over a domain of characteristic p; pow_p_left_inj spells this out as the cancellation law x^p = y^p ↔ x = y, and pow_p_eq_zero_iff as the trivial-kernel law x^p = 0 ↔ x = 0 (specializing y = 0 with zero_pow).",
+      "mathContext": "A domain is reduced, so x^p = y^p ⇒ (x−y)^p = 0 ⇒ x − y = 0. The only obstruction to injectivity is nonzero nilpotents."
+    },
+    {
+      "id": "finite-field-automorphism",
+      "title": "Frobenius is an Automorphism on a Finite Field",
+      "startLine": 56,
+      "endLine": 85,
+      "summary": "A finite field is a finite domain, so Finite.injective_iff_bijective upgrades injectivity to bijectivity (frobenius_bijective). exists_pow_p restates surjectivity as 'every element is a p-th power'; frobeniusEquiv packages the map as a ring equivalence K ≃+* K via RingEquiv.ofBijective, with frobeniusEquiv_apply / coe_frobeniusEquiv (both rfl) identifying it with x ↦ x^p.",
+      "mathContext": "Finiteness collapses an injective self-map to a bijective one (pigeonhole); the resulting automorphism K ≃+* K generates Gal(K / 𝔽_p)."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete Checks over ZMod 5 and ZMod 7",
+      "startLine": 87,
+      "endLine": 102,
+      "summary": "After supplying Fact (Nat.Prime 5) and Fact (Nat.Prime 7), frobenius_bijective_zmod_five and exists_pow_seven_zmod_seven instantiate the general theorems over the concrete finite fields ZMod 5 and ZMod 7 (where the maps are in fact the identity by Fermat's little theorem).",
+      "mathContext": "ZMod p is a finite field for prime p; ExpChar resolves from CharP plus the prime fact, so the abstract results specialize directly."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "frobenius-endomorphism-oq-01",
