@@ -3,7 +3,7 @@
     "id": "erdos435npp-ann-lucas-setup",
     "proofId": "erdos-435-oq-01-oq-01",
     "range": { "startLine": 42, "endLine": 49 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Specializing Lucas' theorem to k = pᵃ",
     "content": "The core lemma not_dvd_choose_ordProj sets a = v_p(n) and instantiates Mathlib's Lucas theorem (choose_modEq_choose_mul_prod_range_choose) at k = pᵃ. The genius of the index choice: the base-p digits of pᵃ are a single 1 in position a and 0 everywhere else, so Lucas' digit-product collapses to one nontrivial factor. The congruence is then cast from Int.ModEq into ZMod p (a field, since p is prime) via ZMod.intCast_eq_intCast_iff so the rest is an equation, not a congruence.",
     "mathContext": "Lucas: $\\binom{n}{k} \\equiv \\prod_i \\binom{n_i}{k_i} \\pmod p$ over base-$p$ digits. With $k = p^a$, only digit $a$ of $k$ is nonzero, isolating a single block.",

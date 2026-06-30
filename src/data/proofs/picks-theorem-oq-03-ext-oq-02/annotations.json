@@ -76,7 +76,7 @@
       "startLine": 99,
       "endLine": 121
     },
-    "type": "example",
+    "type": "concept",
     "title": "Recovering the Octahedron (1,3,3,1) as a Corollary",
     "content": "To confirm the abstraction is faithful to the parent's example, the octahedron h*-vector (1,3,3,1) is defined as octaH : N -> Q and shown palindromic by octaH_palindromic via interval_cases over i <= 3. The companion octaH_self_reciprocal then obtains the polynomial identity reflect 3 (hStarPoly 3 octaH) = hStarPoly 3 octaH directly from palindromy through the general equivalence reflect_eq_iff_palindromic -- exercising the criterion in the mpr direction. octaH_normalization records h_0 = h_3 = 1. Thus the parent's stand-alone decide-based octahedron palindromy is reproduced here as an instance of the general theorem, with the self-reciprocity of its h*-polynomial as a free consequence.",
     "mathContext": "Octahedron (3D cross-polytope) is reflexive with $h^* = (1,3,3,1)$, sum $8 = 3! \\cdot 4/3$. Here $(1,3,3,1)$ is palindromic, so $\\mathrm{reflect}_3 H = H$ and $h_0 = h_3 = 1$.",

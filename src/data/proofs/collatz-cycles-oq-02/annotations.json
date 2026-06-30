@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 35
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header and Honest Scope",
     "content": "The Collatz map sends $n \\mapsto n/2$ when $n$ is even and $n \\mapsto 3n+1$ when $n$ is odd. A non-trivial cycle (other than $1 \\to 4 \\to 2 \\to 1$) with $J$ odd (tripling) steps and $M$ even (halving) steps must satisfy the halving constraint $3^J < 2^M$, established in `CollatzCycles.lean` and generalized in `collatz-cycles-oq-04`. This file upgrades the *specific* minimal-halving ladder (proved only for $J = 1,2,3,4$) into a *uniform* logarithmic bound valid for all $J$. The docstring is explicit about scope: this is the elementary logarithmic core, NOT Eliahou's full numerical bound (length $\\geq 17{,}087{,}915$), which additionally requires the continued-fraction expansion of $\\log_2 3$.",
     "mathContext": "Halving constraint: $3^J < 2^M$ for any non-trivial cycle with $J$ odd steps, $M$ even steps; total length $L = M + J$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Collatz conjecture", "3x+1 problem", "cycle length", "Eliahou's theorem", "dynamical systems"],
     "prerequisites": ["the Collatz map", "the notion of a periodic cycle"]
   },
@@ -66,7 +66,7 @@
       "startLine": 77,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Elementary Log-Free Corollaries",
     "content": "Two weaker but fully elementary bounds avoid logarithms entirely. `halvings_gt_odd_steps` proves $M > J$ from $2^J \\leq 3^J < 2^M$ using monotonicity of $n \\mapsto 2^n$ (`Nat.pow_lt_pow_iff_right`) — there are strictly more halvings than triplings. `cycle_length_ge_two_mul` then gives $L = M + J \\geq 2J + 1$ by `omega`: a non-trivial cycle is more than twice as long as its number of odd steps. These trade the sharp slope $\\log_2 6 \\approx 2.585$ for the cruder slope $2$, but require no real-analysis — useful when only integer reasoning is available.",
     "mathContext": "$2^J \\le 3^J < 2^M \\implies J < M \\implies L = M + J \\ge 2J + 1$ (slope 2 vs. sharp $\\log_2 6$).",

@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 59
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mertens' First Theorem via the von Mangoldt Weight",
     "content": "Mertens' first theorem Σ_{p≤x} (log p)/p = log x + O(1) (1874) is the elementary heart of the prime sums — provable from Chebyshev-strength bounds and Stirling, well below the analytic threshold of the Prime Number Theorem. The classical route runs through the von Mangoldt function Λ, the prime-power weight with Σ_{d∣n} Λ(d) = log n: summing this divisor identity over n ≤ N and swapping the order of summation converts the sum of logarithms into the floor sum Σ_d Λ(d)⌊N/d⌋. This file builds that backbone exactly — Steps A (floor identity), B (decomposition), C (remainder sandwich) are axiom-free — then conditions on Chebyshev's ψ = O(N) and Stirling to land the Λ-weighted estimate Σ_{d≤N} Λ(d)/d = log N + O(1).",
     "mathContext": "$\\sum_{d\\mid n}\\Lambda(d)=\\log n$ linearizes $\\sum_{n\\le N}\\log n$ into the floor sum $\\sum_d \\Lambda(d)\\lfloor N/d\\rfloor$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Mertens' theorems", "von Mangoldt function", "Chebyshev function ψ", "Dirichlet hyperbola method"],
     "prerequisites": ["the identity Σ_{d∣n} Λ(d) = log n", "Chebyshev's bound ψ(x) = O(x)", "Stirling's approximation"]
   },

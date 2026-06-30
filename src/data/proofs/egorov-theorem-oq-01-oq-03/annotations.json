@@ -6,11 +6,11 @@
       "startLine": 5,
       "endLine": 53
     },
-    "type": "context",
+    "type": "concept",
     "title": "Sharpness of Egorov: Finiteness is Essential",
     "content": "The docstring frames the goal: Egorov's theorem upgrades a.e. convergence to uniform convergence off a small set ONLY when the ambient measure is finite. This file proves that hypothesis is sharp on (ℝ, Lebesgue) using the marching indicators fₙ = 𝟙_[n,n+1]. It contrasts with the parent entry egorov-theorem-oq-01, which proves the orthogonal sharpness (the removed null set cannot be omitted on the finite-measure example xⁿ on [0,1]). Fully verified: 0 sorries, 0 axioms, no native_decide.",
     "mathContext": "On an infinite-measure space Egorov fails: a sequence can converge to 0 everywhere yet never uniformly off any finite-measure set.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Egorov's theorem",
       "essential hypotheses",
@@ -35,7 +35,7 @@
     "title": "The Marching Indicators 𝟙_[n,n+1]",
     "content": "marching n = (Set.Icc n (n+1)).indicator 1 is the unit bump supported on [n, n+1]. As n grows the bump marches off to +∞, never settling on any bounded region. This escape to infinity is exactly what makes finiteness of the ambient measure necessary: to suppress the bump uniformly past some index you must absorb the entire infinite tail [N, ∞) into the exceptional set.",
     "mathContext": "fₙ(x) = 1 if x ∈ [n, n+1], else 0. The canonical textbook counterexample to Egorov on infinite measure.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "indicator function",
       "bump functions",
@@ -79,7 +79,7 @@
     "title": "No Finite-Measure Exceptional Set",
     "content": "marching_not_tendstoUniformlyOn_of_volume_lt_top is the headline result: for any s with vol s < ∞, fₙ does not converge uniformly to 0 on sᶜ. Assume it does; Metric.tendstoUniformlyOn_iff at ε = 1/2 gives an index N past which dist(0, fₙ x) < 1/2 for all x ∈ sᶜ. Since fₙ takes only values 0 and 1, this forces fₙ x = 0 on sᶜ, i.e. [n,n+1] ⊆ s for all n ≥ N. For any real x ≥ N the floor index ⌊x⌋ ≥ N gives x ∈ [⌊x⌋, ⌊x⌋+1] ⊆ s, so [N,∞) ⊆ s and vol s ≥ vol[N,∞) = ∞ (Real.volume_Ici) — contradicting finiteness. Only monotonicity of measure is used, so s need not be measurable. Packaged as volume_finite_hypothesis_essential and specialized to s = ∅ in marching_not_tendstoUniformlyOn_univ.",
     "mathContext": "Uniform 1/2-control off s past index N ⇒ the infinite-measure tail [N,∞) ⊆ s ⇒ vol s = ∞, contradicting vol s < ∞.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "uniform convergence",
       "proof by contradiction",

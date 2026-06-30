@@ -7,7 +7,7 @@
     "title": "OQ-04: the exact lower density of S₁ is open — what is and is not formalized",
     "content": "Erdős Problem #10 asks for a finite k with every large integer a prime plus at most k powers of 2. The k = 1 set is S₁ = {p} ∪ {p + 2ᵃ}. The fourth open question asks for the exact lower density d̲(S₁). This is genuinely unknown: Romanoff (1934) proved d̲(S₁) > 0 and Erdős (1950, covering congruences) gave d̲(S₁) < 1, but neither the exact value nor the sharpest explicit bounds are known. This file deliberately does NOT claim the open question. It supplies the verified, 0-axiom scaffolding the parent file was missing entirely (the parent has definitions and zero theorems): a clean membership characterization, monotonicity of the family Sₖ, and the order/analytic facts about lower density.",
     "mathContext": "S₁ = { n : n = p or n = p + 2ᵃ, p prime }. Known: 0 < d̲(S₁) < 1. Open: the exact value of d̲(S₁).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős problem #10", "Romanoff's theorem", "covering congruences", "lower asymptotic density", "scope of a formalization"],
     "prerequisites": ["asymptotic density of a set of integers", "powers of 2 and prime sums", "what an open question is vs a proved scaffold"]
   },

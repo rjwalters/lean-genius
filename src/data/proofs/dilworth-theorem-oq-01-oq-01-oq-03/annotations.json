@@ -3,11 +3,11 @@
     "id": "dilworth-es-header",
     "proofId": "dilworth-theorem-oq-01-oq-01-oq-03",
     "range": { "startLine": 1, "endLine": 38 },
-    "type": "context",
+    "type": "concept",
     "title": "A common min–max framework from Mirsky to Erdős–Szekeres",
     "content": "The companion files supply the two halves of the Dilworth/Mirsky picture: the easy directions (a chain meets an antichain in ≤ 1 point) and Mirsky's hard direction (the height decomposition covers the poset by maxChainLen antichains). This file ties them together through a single counting inequality card α ≤ maxChainLen · maxAntichainLen, whose contrapositive is the Erdős–Szekeres dichotomy, and specialises it to sequence positions to recover the classical Erdős–Szekeres theorem.",
     "mathContext": "$|\\alpha| \\le \\mathrm{maxChainLen}\\cdot\\mathrm{maxAntichainLen}$; contrapositive $\\Rightarrow$ a long chain or a long antichain.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Mirsky's theorem", "Dilworth's theorem", "Erdős–Szekeres theorem", "min–max duality", "poset height and width"],
     "prerequisites": ["partial orders", "chains and antichains"]
   },

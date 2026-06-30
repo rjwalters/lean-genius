@@ -7,7 +7,7 @@
     "title": "Setup and the Shallow-Diagonal Total D(n)",
     "content": "The parent entry combinations-formula-oq-08 proved that Fibonacci numbers are the sums along the shallow diagonals of Pascal's triangle: fib(n+1) = ∑_{k} C(n−k, k). This file takes the genuinely combinatorial next step — deriving the Fibonacci recurrence F(n+2) = F(n+1) + F(n) directly from those diagonal sums via Pascal's rule, with no appeal to Nat.fib_add_two, generating functions, or matrix powers. The definition `D n := ∑ k ∈ range (n+1), C(n−k, k)` names the n-th shallow-diagonal total, e.g. D(6) = C(6,0)+C(5,1)+C(4,2)+C(3,3) = 1+5+6+1 = 13. Everything downstream is phrased in terms of D, so the combinatorial recurrence and the Fibonacci recurrence are cleanly separated.",
     "mathContext": "$D(n) = \\sum_{k=0}^{n} \\binom{n-k}{k}$, the sum along the $n$-th shallow diagonal of Pascal's triangle.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Fibonacci numbers", "Pascal's triangle", "shallow diagonals", "binomial coefficients"],
     "prerequisites": ["binomial coefficients C(n,k)", "finite sums over Finset.range", "the parent shallow-diagonal identity"]
   },
@@ -39,7 +39,7 @@
     "id": "ann-cf0801-peeling",
     "proofId": "combinations-formula-oq-08-oq-01",
     "range": { "startLine": 91, "endLine": 123 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Index-Shift Normal Forms: Peeling the k = 0 Term",
     "content": "Two lemmas put D(n+2) and D(n+1) into a common shape so the Pascal step can be applied term-by-term. `D_add_two_peel` uses `Finset.sum_range_succ'` to peel the k = 0 term of D(n+2) (a constant C(n+2,0) = 1), then `Finset.sum_range_succ` to split off and discard the vanishing top term C(0, n+2) = 0 (via `Nat.choose_eq_zero_of_lt`), leaving D(n+2) = (∑_{k<n+1} C(n+1−k, k+1)) + 1; the term-by-term index match n+2−(k+1) = n+1−k is closed by `omega`. `D_add_one_peel` does the same for D(n+1), giving (∑_{k<n+1} C(n−k, k+1)) + 1. Both sums now range over range(n+1) with shifted upper binomial argument k+1, ready for choose_shift_succ.",
     "mathContext": "$D(n{+}2) = \\big(\\sum_{k<n+1}\\binom{n+1-k}{k+1}\\big) + 1$ and $D(n{+}1) = \\big(\\sum_{k<n+1}\\binom{n-k}{k+1}\\big) + 1$.",
@@ -75,11 +75,11 @@
     "id": "ann-cf0801-verification",
     "proofId": "combinations-formula-oq-08-oq-01",
     "range": { "startLine": 196, "endLine": 204 },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Verifications by decide",
     "content": "Three kernel-`decide` sanity checks ground the abstractions in concrete numbers: D(6) = 13 = fib 7 (from C(6,0)+C(5,1)+C(4,2)+C(3,3) = 1+5+6+1); the recurrence instance D(6) = D(5) + D(4), i.e. 13 = 8 + 5; and the partial-sum instance D(0)+D(1)+D(2)+D(3) = 7 = fib 6 − 1, i.e. 1+1+2+3. These are `decide` (kernel reduction), not native_decide, so they add no Lean.ofReduceBool axiom — the file remains axiom-free.",
     "mathContext": "$D(6) = 13$, $D(6) = D(5)+D(4)$, $\\sum_{i<4} D(i) = 7$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["kernel decide", "concrete verification", "axiom integrity"],
     "prerequisites": ["evaluating D on small numerals", "decidable equality of naturals"]
   }

@@ -47,7 +47,7 @@
     "id": "ann-e307oq0201-identity",
     "proofId": "erdos-307-oq-02-oq-01",
     "range": { "startLine": 64, "endLine": 92 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Clearing Denominators to the Integer Identity NP·NQ = DP·DQ",
     "content": "Two lemmas turn the rational hypothesis into an integer one. reciprocalSum_mul_denom proves (Σ 1/p)·(∏ p) = Σ_p ∏_{q≠p} q over ℚ: after push_cast and Finset.sum_mul, each term 1/p · ∏_{q∈P} q collapses to ∏_{q≠p} q via Finset.mul_prod_erase and inv_mul_cancel_left₀ (valid since each prime p ≠ 0). primeNumer_mul_eq then multiplies the two factors of (Σ1/P)(Σ1/Q) = 1 by DP·DQ: the rational identity (NP)(NQ) = (Σ1/P · Σ1/Q)(DP·DQ) = 1·(DP·DQ) follows by ring and the hypothesis, and exact_mod_cast transports it to the natural-number identity NP·NQ = DP·DQ via Nat.cast injectivity.",
     "summary": "Proves NP·NQ = DP·DQ in ℕ by clearing denominators from the product-equals-1 hypothesis.",

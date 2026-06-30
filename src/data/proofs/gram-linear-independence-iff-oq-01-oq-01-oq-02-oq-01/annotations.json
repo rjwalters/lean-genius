@@ -15,7 +15,7 @@
     "id": "column-form-platform",
     "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02-oq-01",
     "range": { "startLine": 61, "endLine": 91 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Column Form, Reproved Self-Containedly",
     "content": "norm_col_sq evaluates ‖col A j‖² = ∑ i, ‖A i j‖² (EuclideanSpace.norm_sq_eq). matrix_hadamard_sq feeds gram_col_det and norm_col_sq into the grandparent's hadamard_inequality_euclidean and descends the 𝕜-valued bound to ℝ via RCLike.ofReal_le_ofReal, giving ‖det A‖² ≤ ∏ j, ∑ i, ‖A i j‖². matrix_hadamard_inequality rewrites ∏ j, ∑ i, ‖A i j‖² = (∏ j √(∑ i ‖A i j‖²))² (Real.sq_sqrt, Finset.prod_pow) and takes square roots (Real.sqrt_le_sqrt, Real.sqrt_sq) for the column bound. Reproving it here keeps the row and uniform extensions dependent only on the grandparent entry.",
     "mathContext": "$\\lVert\\det A\\rVert \\le \\prod_j \\sqrt{\\textstyle\\sum_i \\lVert A_{ij}\\rVert^2}$.",

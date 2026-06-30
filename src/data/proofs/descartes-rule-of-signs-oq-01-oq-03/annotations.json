@@ -31,7 +31,7 @@
       "startLine": 64,
       "endLine": 85
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "upper_bound_core and parity_core: the omega-closed arithmetic heart",
     "content": "These two natural-number lemmas carry the entire logical content of 'exact count ⟹ bound + parity'. Read pos as the positive-root count, hi = σ(0), lo = σ(B), bound = V(p). upper_bound_core: from pos = hi − lo, lo ≤ hi, and hi ≤ bound, conclude pos ≤ bound — closed by omega. parity_core: additionally assuming (bound − hi) % 2 = 0 and lo % 2 = 0, conclude (bound − pos) % 2 = 0, again by omega. The key algebraic identity omega exploits is that, modulo 2, bound − pos = (bound − hi) + lo, so an even gap and even tail force an even defect.",
     "mathContext": "Both lemmas are stated over ℕ with truncated subtraction, which is exactly why the antitonicity hypothesis lo ≤ hi is needed: it guarantees hi − lo is the genuine count. Isolating the argument at this level makes it reusable for any exact-count-as-variation-drop scheme, not just Sturm/Descartes.",
@@ -77,7 +77,7 @@
       "startLine": 115,
       "endLine": 138
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Deriving Descartes' bound, parity, and combined form from the bridge",
     "content": "descartes_upper_bound_via_sturm applies upper_bound_core directly to the structure fields (pos_eq, sturm_le, bridge_bound) to get countPositiveRoots p ≤ signChangesInCoeffs p. descartes_parity_via_sturm rewrites with Nat.even_iff, extracts the % 2 = 0 forms of bridge_parity and tail_even, and applies parity_core to conclude Even(V(p) − countPositiveRoots p). descartes_rule_via_sturm combines the two: from the bound and the even defect ⟨m, hm⟩ it produces ∃ k, countPositiveRoots p + 2*k = signChangesInCoeffs p, closed by omega.",
     "mathContext": "This is the precise sense in which Descartes is a consequence of Sturm: granting the bridge, Descartes' two laws are simultaneous outputs of the same exact-count hypothesis, with the inequality and the parity falling out of upper_bound_core and parity_core respectively.",
@@ -99,7 +99,7 @@
       "startLine": 147,
       "endLine": 169
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "linear_positiveRoots and linear_sturm_count: discharging the Sturm half, axiom-free",
     "content": "For p = X − c with c > 0, linear_positiveRoots computes countPositiveRoots (X − C c) = 1: the polynomial is nonzero (monic_X_sub_C), so countPositiveRoots unfolds via roots_X_sub_C to the singleton {c} filtered by 0 < ·, which simp resolves using hc. linear_sturm_count then verifies the Sturm exact-count identity countPositiveRoots (X − C c) = σ(0) − σ(c+1): with the right endpoint B = c + 1 beyond the root, sturm_linear_left gives σ(0) = 1 and sturm_linear_right gives σ(c+1) = 0, and omega closes 1 = 1 − 0.",
     "mathContext": "Both sturm_linear_left and sturm_linear_right are proved axiom-free in the parent Sturm entry, so this validation of the Sturm half on linear polynomials introduces no axioms. It demonstrates the exact-count identity on the simplest non-trivial family before the general bridge is invoked.",

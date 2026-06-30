@@ -3,11 +3,11 @@
     "id": "cantoroq0701-header",
     "proofId": "cantor-diagonalization-oq-07-oq-01",
     "range": { "startLine": 1, "endLine": 29 },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: n-Fold and Countable Continuum Powers",
     "content": "The parent (cantor-diagonalization-oq-07) proves #(ℝ × ℝ) = #ℝ, i.e. the n = 2 case of the continuum's stability under powers. This file generalises in two directions: to every finite dimension (#(ℝⁿ) = #ℝ for n ≥ 1) and to countably-infinite dimension (#(ℕ → ℝ) = 𝔠, the space of real sequences). Both are absorption laws for infinite cardinals — 𝔠 ^ n = 𝔠 and 𝔠 ^ ℵ₀ = 𝔠 — and each unpacks, via Cardinal.eq, to an honest (non-constructive) bijection with the line.",
     "mathContext": "$\\#(\\mathbb{R}^n) = \\#\\mathbb{R}$ for $n \\ge 1$, and $\\#(\\mathbb{N}\\to\\mathbb{R}) = \\mathfrak{c}$. Cantor 1878: finite dimension does not change cardinality.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["cardinality of the continuum 𝔠", "cardinal exponentiation", "absorption laws", "Cantor 1878 dimension result"],
     "prerequisites": ["cardinal arithmetic", "the parent #(ℝ×ℝ)=#ℝ"]
   },

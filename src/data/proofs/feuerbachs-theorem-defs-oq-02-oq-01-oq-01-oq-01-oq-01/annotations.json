@@ -27,7 +27,7 @@
       "startLine": 96,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Circumcenter Equidistance from the Vertices",
     "content": "The circumcenter lies on the perpendicular bisectors of the sides (pb_AB, pb_AC), hence equidist_B and equidist_C give |B−O|² = |C−O|² = |A−O|² = R². These are reproved locally because the parent declares them private. They supply the R² = |X−O|² facts that the weighted-norm master identity consumes, and feed the pairwise dot products ⟨X−O, Y−O⟩ = R² − (opposite side)²/2.",
     "mathContext": "$|A-O|^2 = |B-O|^2 = |C-O|^2 = R^2$; the circumcenter is on each perpendicular bisector.",
@@ -49,7 +49,7 @@
       "startLine": 214,
       "endLine": 308
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Strict Triangle Inequalities and Denominator Positivity",
     "content": "strict_tri_ineq_a/b/c (a < b+c, cyclically) and pa_pos/pb_pos/pc_pos establish that the excenter denominators −a+b+c, a−b+c, a+b−c are positive. Proved via the law of cosines a² = b²+c²+2P and the Lagrange identity b²c² − P² = D² with D the non-degeneracy determinant (D ≠ 0 ⟹ P < bc ⟹ a < b+c). These guarantee the common factor (pₐp_s)² is nonzero, which is exactly what licenses the final cancellation step.",
     "mathContext": "$a < b+c$ etc.; $p_a = -a+b+c > 0$, so $(p_a p_s)^2 \\ne 0$ for mul_right_cancel₀.",

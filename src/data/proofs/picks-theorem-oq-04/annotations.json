@@ -144,7 +144,7 @@
     "id": "ann-picks-oq04-concrete",
     "proofId": "picks-theorem-oq-04",
     "range": { "startLine": 274, "endLine": 307 },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Verification: Triangle, Square, L-Shaped Hexagon",
     "content": "decide-checked evaluations matching the Python verification battery in research/problems/picks-theorem-oq-04/. The shoelace sum is computed for the unit triangle (= 1), the right triangle (0,0),(3,0),(0,3) (= 9), the 3x4 rectangle (= 24), and an L-shaped non-convex hexagon (= 24). Three further examples confirm the Pick agreement twiceArea = 2i + b - 2 with independently computed lattice-point counts: the unit triangle (i=0, b=3), the square (i=6, b=14), and the L-shape (i=5, b=16). These make the abstract bridge concrete and double as regression tests on the definitions.",
     "mathContext": "Unit triangle $S=1$; $3\\times4$ rectangle $S=24=2\\cdot6+14-2$; L-hexagon $S=24=2\\cdot5+16-2$ — exact lattice-point Pick agreement.",

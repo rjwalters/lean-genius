@@ -10,7 +10,7 @@
     "title": "Making the Class-Number / Siegel-Zero Equivalence Tight: Strategy",
     "content": "The parent's open question asks whether the Goldfeld-Gross-Zagier class-number / Siegel-zero equivalence can be made tight, yielding an unconditional polynomial-log lower bound on h(-D). The genuinely open content is supplying that unconditional bound. This file formalizes the structural skeleton honestly: Dirichlet's class number formula h(-D) = κ√D·L(1,χ) is carried as an explicit hypothesis (not a global axiom), and we prove that class-number lower bounds, L-value lower bounds, and Siegel-zero depth bounds are all equivalent with explicit, matching constants. The file is 0-axiom and 0-sorry; it claims the equivalence, not the resolution.",
     "mathContext": "$h(-D) = (w/2\\pi)\\sqrt{D}\\,L(1,\\chi_{-D})$; a Siegel zero $\\beta \\to 1$ makes $L(1,\\chi)$ small, hence $h(-D)/\\sqrt D$ small.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Dirichlet class number formula", "Siegel zero", "Goldfeld-Gross-Zagier theorem", "L(1,χ) for a quadratic character", "hypothesis vs global axiom"],
     "prerequisites": ["imaginary quadratic class number h(-D)", "Dirichlet L-functions and Siegel zeros", "the class number formula h = κ√D·L(1,χ)"]
   },

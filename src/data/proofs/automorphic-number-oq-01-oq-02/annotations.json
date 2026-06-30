@@ -10,7 +10,7 @@
     "title": "From counting to structure: the four residues as two complementary pairs",
     "content": "The parent entry proves ZMod (10^k) has exactly four automorphic residues e²≡e (its four idempotents), and the first follow-up explains the count as 2^ω(n). This entry asks what those four residues ARE, not how many. The answer: they organize into two orthogonal complementary pairs. In any commutative ring the complement 1-e of an idempotent is again idempotent, and the two are orthogonal — e+(1-e)=1 and e·(1-e)=0. For 10^k the trivial pair is {0,1} and the nontrivial pair is the classic {…5,…6}: 5+6=1, 5·6=0 mod 10; 25+76=1, 25·76=0 mod 100; 376+625=1, 376·625=0 mod 1000. A second theorem shows each residue is pinned down by its last digit, so the four have four distinct final digits.",
     "mathContext": "The idempotents of a commutative ring form a Boolean algebra; for $\\mathbb{Z}/10^k$ it is the four-element algebra with atoms the $\\dots5$ and $\\dots6$ automorphic numbers, paired by complementation $e\\mapsto 1-e$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "automorphic numbers",
       "idempotents",
@@ -102,7 +102,7 @@
       "startLine": 124,
       "endLine": 212
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Assembling the complementary pair and concrete examples",
     "content": "automorphic_complementary_pair extracts the full structure from the parent's count. Since the idempotent set S has card 4 (automorphic_idempotent_count) but {0,1} has card 2, card_le_card forces an idempotent a ∉ {0,1} to exist; a is nontrivial (a≠0, a≠1). Its complement 1-a is the other nontrivial idempotent (compl_idem, with 1-a≠0,1 from a≠1,0), orthogonal to a (mul_compl), summing to 1 (add_compl), and distinct from a — for a=1-a would give 1=2a and then a=a·1=a·2a=2a²=2a=1, contradicting a≠1. The four distinct idempotents 0,1,a,1-a then fill the 4-element set, so eq_of_subset_of_card_le upgrades {0,1,a,1-a} ⊆ S to S = {0,1,a,1-a}. The closing decide examples exhibit the smallest nontrivial pairs 5/6, 25/76, 376/625, each satisfying a+b=1 and ab=0 exactly as predicted.",
     "mathContext": "The four idempotents are $\\{0,1,a,1-a\\}$; the nontrivial pair $a,1-a$ are the $\\dots5/\\dots6$ automorphic numbers with $a+(1-a)=1$, $a(1-a)=0$ — e.g. $5+6=1$, $5\\cdot 6=0\\pmod{10}$.",

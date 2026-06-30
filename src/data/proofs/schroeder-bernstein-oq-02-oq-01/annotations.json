@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "schroeder-bernstein-oq-02-oq-01",
     "range": { "startLine": 1, "endLine": 50 },
-    "type": "context",
+    "type": "concept",
     "title": "Least vs. Greatest Fixed Point",
     "content": "The Knaster–Tarski proof of Schroeder–Bernstein (parent entry) builds the bijection from the LEAST fixed point of T(S) = (range g)ᶜ ∪ g''(f''S). The open question asks whether the GREATEST fixed point is equally useful and what gfp ∖ lfp is geometrically. The answer: every fixed point of T works (the parent's lemmas never used minimality), and gfp ∖ lfp is exactly the set on which g∘f acts bijectively — the bi-infinite chains.",
     "mathContext": "For monotone $T$ on a complete lattice, Knaster–Tarski gives both $\\mathrm{lfp}(T)$ and $\\mathrm{gfp}(T)$; both partition $\\alpha$ for Schroeder–Bernstein.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Knaster–Tarski theorem", "least fixed point", "greatest fixed point", "Schroeder–Bernstein theorem"],
     "prerequisites": ["complete lattices", "monotone maps", "fixed points"]
   },
@@ -19,7 +19,7 @@
     "title": "The CBS Operator",
     "content": "cbsOp f g S = (range g)ᶜ ∪ g''(f''S), monotone (cbsOp_mono), bundled as the OrderHom cbsHom. Monotonicity is exactly what Knaster–Tarski needs to produce BOTH a least and a greatest fixed point.",
     "mathContext": "$T(S) = (\\mathrm{range}\\,g)^c \\cup g(f(S))$ on the complete lattice $\\mathrm{Set}\\,\\alpha$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["monotone operator", "order homomorphism", "complete lattice"],
     "prerequisites": ["set image", "set complement", "monotonicity"]
   },

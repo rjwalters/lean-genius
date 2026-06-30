@@ -30,7 +30,7 @@
       "startLine": 41,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "A Summability-Free Alternating-Series Error Bound",
     "content": "`alternating_error_bound_of_tendsto` is the reusable engine. For any antitone, non-negative f whose ordered alternating partial sums tend to a limit l, it proves |l − ∑_{i<n} (-1)^i f i| ≤ f n. The proof mirrors Mathlib's `alternating_series_error_bound` but replaces the tsum-derived limit with the supplied `Tendsto`, so summability is never needed. It splits on the parity of n and uses the two Mathlib sandwich lemmas `Antitone.alternating_series_le_tendsto` (even partial sums ≤ l) and `Antitone.tendsto_le_alternating_series` (l ≤ odd partial sums). For even n = 2m: P_{2m} ≤ l ≤ P_{2m+1} = P_{2m} + f(2m); for odd n = 2m+1: P_{2m+2} ≤ l ≤ P_{2m+1}. Either way the limit is trapped within f(n) of P_n, and `abs_sub_le_iff` finishes.",
     "mathContext": "$P_n \\le l \\le P_{n+1}=P_n+f(n)$ (or its mirror), so $|l-P_n|\\le f(n)$ — the error is bounded by the first omitted term.",
@@ -74,7 +74,7 @@
       "startLine": 90,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bridging to Mathlib's Leibniz Limit",
     "content": "`leibniz_partialSum_tendsto` supplies the `Tendsto` hypothesis with l = π/4. The alternating partial sums ∑_{i<n} (-1)^i · leibTerm i equal Mathlib's Leibniz partial sums ∑_{i<n} (-1)^i/(2i+1) termwise — a `Finset.sum_congr` plus `ring` rewrites (-1)^i·(1/(2i+1)) into (-1)^i/(2i+1) — so they inherit convergence to π/4 from `tendsto_sum_pi_div_four`.",
     "mathContext": "$\\sum_{i<n}(-1)^i\\,\\tfrac1{2i+1}=\\sum_{i<n}\\tfrac{(-1)^i}{2i+1}\\to\\tfrac\\pi4$.",

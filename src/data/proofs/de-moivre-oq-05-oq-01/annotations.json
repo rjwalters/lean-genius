@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "From a Single Vanishing Sum to Full Orthogonality",
     "content": "The docstring frames the generalization: the parent (de-moivre-oq-05) proved $\\sum_{k<n}\\zeta^k = 0$, which is exactly the $j=1$ slice of the full orthogonality relation underlying the discrete Fourier transform. For a primitive root $\\zeta$ and any frequency $j$, $\\sum_{k<n}\\zeta^{jk} = n$ if $n\\mid j$ (all phases coincide) and $0$ otherwise (geometric cancellation). This is the DFT-inversion identity: the columns of the DFT matrix are pairwise orthogonal, and a full period of any non-trivial sampling character sums to zero. Mathlib records only the $j=1$ geometric vanishing; this file supplies the full frequency-indexed dichotomy, its signed-frequency form, and the character orthonormality.",
     "mathContext": "$\\sum_{k=0}^{n-1}\\zeta^{jk} = \\begin{cases} n & n\\mid j\\\\ 0 & n\\nmid j\\end{cases}$ — the orthogonality relation for the characters of $\\mathbb{Z}/n\\mathbb{Z}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "discrete Fourier transform",
       "character orthogonality",
@@ -76,7 +76,7 @@
       "startLine": 117,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Signed Frequencies (Negative Modes)",
     "content": "sum_complex_zpow_eq_ite extends orthogonality to signed frequencies $j\\in\\mathbb{Z}$, covering negative Fourier modes via the integer power $\\zeta^{jk}$. The proof is the same geometric collapse, now using the integer divisibility criterion zpow_eq_one_iff_dvd ($\\zeta^j = 1 \\iff (n:\\mathbb{Z})\\mid j$) and the zpow arithmetic to establish $(\\zeta^j)^n = 1$. This signed form is exactly what feeds the orthonormality of the Fourier characters, where the inner product produces the negative-mode $\\zeta^{(a-b)k}$.",
     "mathContext": "$\\sum_{k<n}(\\zeta^j)^k = n\\,[(n:\\mathbb{Z})\\mid j]$ for $j\\in\\mathbb{Z}$, via zpow_eq_one_iff_dvd.",

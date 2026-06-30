@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 23
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Pythagorean Means inside the Power-Mean Family",
     "content": "The opening docstring frames the whole file: the three classical 'Pythagorean means' — harmonic, geometric and arithmetic — are not three unrelated objects but the values of a single one-parameter power mean M_r at the exponents r = -1, 0, 1. Once that identification is made, the ancient chain HM ≤ GM ≤ AM becomes nothing more than two adjacent rungs of the power-mean monotonicity ladder M_r ≤ M_s (r ≤ s). The actual inequalities are imported wholesale from Mathlib's weighted mean lemmas; the original contribution is the bridge that names HM/GM/AM as M₋₁/M₀/M₁ in the same power-mean object the parent entry uses to study the r → ±∞ limits.",
     "mathContext": "$M_{-1}(x) \\le M_0(x) \\le M_1(x) \\;\\Longleftrightarrow\\; \\frac{n}{\\sum_i x_i^{-1}} \\le \\Big(\\prod_i x_i\\Big)^{1/n} \\le \\frac{\\sum_i x_i}{n}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Pythagorean means",
       "power mean",
@@ -75,7 +75,7 @@
       "startLine": 57,
       "endLine": 66
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "M₁ = AM and M₀ = GM: the Two Easy Identifications",
     "content": "The exponent-1 case is the simplest link: unfolding M₁ and applying Real.rpow_one (z^1 = z) collapses the outer 1/r = 1 exponent and div_one cleans up, leaving exactly (Σ xᵢ)/n = AM. The exponent-0 case is even simpler — powerMean takes its r = 0 branch by if_pos rfl and the result is geomMean definitionally (rfl), since both are (∏ xᵢ)^{1/n}. Note these two lemmas carry omit [Nonempty ι]: they hold for any Fintype because they need no nonzero-cardinality side condition.",
     "mathContext": "$M_1(x) = \\Big(\\tfrac{1}{n}\\sum_i x_i^{1}\\Big)^{1/1} = \\tfrac{1}{n}\\sum_i x_i = \\mathrm{AM},\\qquad M_0(x) = \\Big(\\prod_i x_i\\Big)^{1/n} = \\mathrm{GM}$",
@@ -97,7 +97,7 @@
       "startLine": 68,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "M₋₁ = HM: the Only Nontrivial rpow Computation",
     "content": "Identifying M₋₁ with the harmonic mean is the one identity that takes real work, because the exponent -1 appears twice. First, inside the sum, Real.rpow_neg_one rewrites each xᵢ^(-1) (an rpow) into the ordinary inverse xᵢ⁻¹, so the inner sum becomes Σ xᵢ⁻¹. Then the outer exponent is 1/(-1) = -1, and Real.rpow_neg (valid because the nonnegative base is checked by hbase) turns ((Σ xᵢ⁻¹)/n)^(-1) into the reciprocal of ((Σ xᵢ⁻¹)/n)^1; rpow_one and inv_div finish, giving n/(Σ xᵢ⁻¹) = HM. The hypothesis 0 < xᵢ is what makes the inverses and the nonnegative base legitimate.",
     "mathContext": "$M_{-1}(x) = \\Big(\\tfrac{1}{n}\\sum_i x_i^{-1}\\Big)^{1/(-1)} = \\Big(\\tfrac{1}{n}\\sum_i x_i^{-1}\\Big)^{-1} = \\frac{n}{\\sum_i x_i^{-1}} = \\mathrm{HM}$",

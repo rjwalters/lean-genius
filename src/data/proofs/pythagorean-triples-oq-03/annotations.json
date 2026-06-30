@@ -167,7 +167,7 @@
     "id": "ann-pt-oq03-instances",
     "proofId": "pythagorean-triples-oq-03",
     "range": { "startLine": 214, "endLine": 233 },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Rational Points",
     "content": "Worked instances anchor the abstractions. base_5 and base_13 exhibit integer base points (2,1) on x²+y²=5 and (3,2) on x²+y²=13. rational_point_5 and rational_point_5_coords then run the parametrization from (2,1) at slope t=2 to produce the genuinely NON-integer rational point (2/5, −11/5) on x²+y²=5 — concrete evidence that the rational points strictly extend the integer points.",
     "summary": "Base points (2,1) on x²+y²=5 and (3,2) on x²+y²=13, and the non-integer rational point (2/5,−11/5) on x²+y²=5.",

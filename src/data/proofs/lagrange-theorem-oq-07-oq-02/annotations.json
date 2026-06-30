@@ -73,7 +73,7 @@
       "startLine": 123,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Structural Bridge: the Additive Theorem IS the Parent's",
     "content": "Part IV makes the open question's 'same argument' claim literal. card_nsmul_eq_zero_via_multiplicative reproves Part I without re-invoking Lagrange — it transports the parent's pow_card_eq_one read on the type tag Multiplicative G. Via Fintype.card_multiplicative and ←ofAdd_nsmul, the multiplicative identity (ofAdd g)^|G| = 1 becomes ofAdd(|G|·g) = ofAdd 0; injectivity of Multiplicative.ofAdd then gives |G|·g = 0. This exhibits the additive and multiplicative theorems as one statement under to_additive / Multiplicative.",
     "mathContext": "$(\\mathrm{ofAdd}\\,g)^{|G|} = 1 \\Rightarrow \\mathrm{ofAdd}(|G|\\cdot g) = \\mathrm{ofAdd}\\,0 \\Rightarrow |G|\\cdot g = 0$.",
@@ -96,11 +96,11 @@
       "startLine": 146,
       "endLine": 156
     },
-    "type": "context",
+    "type": "concept",
     "title": "The End-to-End Chain",
     "content": "Part V bundles the whole story in one statement, paralleling the parent's chain_lagrange_to_euler. chain_lagrange_to_zmod ties the foundation (additive Lagrange addOrderOf x ∣ |ZMod n|) to the apex (the concrete recovery n·x = 0), making the logical descent from Lagrange to the order-n annihilation a single citable result.",
     "mathContext": "$(\\mathrm{addOrderOf}\\,x \\mid |\\mathbb{Z}/n|) \\wedge n\\cdot x = 0$ — foundation to apex in one statement.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "proof chain",
       "Lagrange to annihilation"

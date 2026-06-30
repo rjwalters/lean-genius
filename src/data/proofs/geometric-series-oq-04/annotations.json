@@ -10,7 +10,7 @@
     "title": "Quantum integers: scope and Mathlib gap",
     "content": "The file imports only the geometric-sum lemmas (geom_sum_mul, geom_sum_eq) and Mathlib.Tactic. Mathlib formalizes the geometric sum ∑_{i<n} q^i but has no named quantum integer [n]_q, q-factorial, or Gaussian binomial. This entry supplies the q-integer layer over an arbitrary commutative ring and proves the four laws that characterize it, all with 0 axioms.",
     "mathContext": "The quantum (or $q$-)integer is $[n]_q = \\sum_{i=0}^{n-1} q^i = \\dfrac{q^n - 1}{q - 1}$, a one-parameter deformation of $n$ with $[n]_1 = n$. It is the additive backbone of $q$-calculus: the $q$-factorial $[n]_q! = \\prod_{k=1}^n [k]_q$ and the Gaussian binomial $\\binom{n}{k}_q = \\frac{[n]_q!}{[k]_q!\\,[n-k]_q!}$ are built from it.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "q-analog",
       "geometric series",
@@ -52,7 +52,7 @@
       "startLine": 71,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The driving recurrence",
     "content": "qNat_succ: [n+1]_q = [n]_q + q^n, a one-line consequence of Finset.sum_range_succ. Every later induction (additive and multiplicative laws) is powered by this single rewrite.",
     "mathContext": "$[n+1]_q = [n]_q + q^n$: appending the top term $q^n$ to the sum. This is the $q$-analog of $n+1 = n + 1$, and the single rewrite that drives every subsequent induction (`Finset.sum_range_succ` peels off the last summand).",
@@ -75,7 +75,7 @@
       "startLine": 75,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Geometric closed form in any ring",
     "content": "qNat_mul_qSub: [n]_q·(q-1) = q^n - 1. This is Mathlib's geom_sum_mul applied to the definition — valid in any commutative ring, with no division and no q ≠ 1 hypothesis.",
     "mathContext": "$[n]_q \\cdot (q - 1) = q^n - 1$, the *multiplicative* (division-free) closed form. It is the telescoping identity $(q-1)\\sum_{i<n} q^i = q^n - 1$ (Mathlib's `geom_sum_mul`), holding in every commutative ring; the field quotient $[n]_q = \\frac{q^n-1}{q-1}$ is only its specialization once $q-1$ is invertible.",
@@ -166,7 +166,7 @@
       "startLine": 114,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Field quotient form",
     "content": "qNat_eq_div: over a field with q ≠ 1, [n]_q = (q^n-1)/(q-1) — the familiar division formula, supplied by Mathlib's geom_sum_eq once division is available.",
     "mathContext": "Over a field $K$ with $q \\ne 1$: $[n]_q = \\dfrac{q^n - 1}{q - 1}$ (Mathlib's `geom_sum_eq`). This is the textbook closed form, but it is *strictly weaker* than the ring identity `qNat_mul_qSub`: it needs $q - 1$ invertible. Stating both makes explicit that the division form is a corollary of the division-free one, not the primary definition.",

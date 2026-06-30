@@ -29,7 +29,7 @@
       "startLine": 49,
       "endLine": 57
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Löb's Theorem (Derived Rule)",
     "content": "The hard direction: if GL proves the reflection principle $\\Box A \\to A$, then GL proves $A$. Derivation in four constructor steps — necessitate the hypothesis to get $\\Box(\\Box A \\to A)$ (`nec`); apply Löb's axiom $\\Box(\\Box A \\to A) \\to \\Box A$ (`lob`); modus ponens gives $\\Box A$; a final modus ponens with the hypothesis $\\Box A \\to A$ gives $A$. No modal fixed-point construction is needed — diagonalization is already absorbed into Löb's axiom.",
     "mathContext": "$\\vdash \\Box A \\to A \\;\\Rightarrow\\; \\vdash \\Box(\\Box A\\to A) \\;\\Rightarrow\\; \\vdash \\Box A \\;\\Rightarrow\\; \\vdash A$",

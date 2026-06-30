@@ -19,7 +19,7 @@
     "title": "Menelaus Configuration: Transversal Division Points",
     "content": "MenelausConfig bundles a triangle A,B,C with parameters t,u,v locating the transversal points X=(1-t)B+tC on BC, Y=(1-u)C+uA on CA, Z=(1-v)A+vB on AB. Each parameter must avoid 1 so the signed ratio t/(1-t) is defined, and the triangle must be non-degenerate (collinearDet A B C ≠ 0). The signed-ratio product menelausProduct = (t/(1-t))·(u/(1-u))·(v/(1-v)) is the quantity Menelaus's theorem characterises.",
     "mathContext": "\\frac{BX}{XC}=\\frac{t}{1-t},\\quad \\frac{CY}{YA}=\\frac{u}{1-u},\\quad \\frac{AZ}{ZB}=\\frac{v}{1-v}",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["affine combination", "signed ratio", "non-degenerate triangle"],
     "prerequisites": ["collinearDet"]
   },
@@ -51,7 +51,7 @@
     "id": "ann-menelaus01-example",
     "proofId": "menelaus-theorem-oq-01",
     "range": { "startLine": 130, "endLine": 139 },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Witness: t=u=2, v=-1/3",
     "content": "menelaus_example exhibits a non-vacuous instance on the reference triangle (0,0),(1,0),(0,1): with t=u=2 (X, Y external to their segments) and v=-1/3, the signed-ratio product is (-2)·(-2)·(-1/4) = -1, so the main theorem certifies that the three division points are collinear. This demonstrates the external-segment parity characteristic of Menelaus configurations (an odd number of points lie outside their side segments).",
     "mathContext": "\\frac{2}{1-2}\\cdot\\frac{2}{1-2}\\cdot\\frac{-1/3}{1+1/3} = (-2)(-2)\\left(-\\tfrac14\\right) = -1",

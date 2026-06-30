@@ -3,11 +3,11 @@
     "id": "tan-narg-header",
     "proofId": "tangent-addition-formula-oq-01-oq-01-oq-01",
     "range": { "startLine": 5, "endLine": 43 },
-    "type": "context",
+    "type": "concept",
     "title": "The general n-argument tangent addition law",
     "content": "The header states the parent's first open question and how this entry answers it. The parent established the three-argument law tan(x+y+z) = (e₁−e₃)/(1−e₂) in the elementary symmetric polynomials of the tangents; here the genuinely general statement is proved for an arbitrary finite family of angles (none a right angle, sum not a right angle): tan(∑xⱼ) = (e₁−e₃+e₅−…)/(e₀−e₂+e₄−…). Neither statement nor proof is in Mathlib. The method avoids induction on the two-argument formula: instead it uses the complex exponential, factoring ∏(cos xⱼ + sin xⱼ·I) = exp((∑xⱼ)·I), pulling out the cosines to reach ∏(1 + tan xⱼ·I), and expanding that product by Vieta's formulas into ∑ₖ Iᵏ eₖ whose real/imaginary parts are the alternating elementary symmetric sums.",
     "mathContext": "$\\tan\\!\\Big(\\sum_j x_j\\Big) = \\frac{e_1 - e_3 + e_5 - \\cdots}{e_0 - e_2 + e_4 - \\cdots}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["tangent addition", "elementary symmetric polynomials", "Vieta's formulas", "complex exponential", "trigonometric identities"],
     "prerequisites": ["complex exponential exp(θI) = cosθ + sinθI", "the parent three-argument law"]
   },

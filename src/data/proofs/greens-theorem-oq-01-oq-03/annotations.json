@@ -3,11 +3,11 @@
     "id": "greensoq0103-header",
     "proofId": "greens-theorem-oq-01-oq-03",
     "range": { "startLine": 4, "endLine": 63 },
-    "type": "context",
+    "type": "concept",
     "title": "Open Question and Tiling Strategy",
     "content": "The parent `greens_theorem_concrete` (greens-theorem-oq-01) proves Green's theorem on a *single* rectangle. The standard route from one rectangle to a general region is to **tile** the region with rectangles and add the cell-wise identities — relying on the fact that contributions along shared interior edges cancel because each interior edge is traversed once in each direction. This file isolates and proves exactly that cancellation for the concrete `rectLineIntegral` / `rectDoubleIntegral` formulation, with no ordering hypothesis ($a \\le e \\le b$ is never assumed).",
     "mathContext": "$\\oint_{\\partial R} = \\oint_{\\partial R_1} + \\oint_{\\partial R_2}$ when $R = R_1 \\cup R_2$, the shared edge cancelling",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["region tiling", "orientation", "staircase approximation", "interior edge cancellation"],
     "prerequisites": ["Green's theorem on a rectangle", "boundary orientation conventions"]
   },
@@ -75,11 +75,11 @@
     "id": "greensoq0103-sanity",
     "proofId": "greens-theorem-oq-01-oq-03",
     "range": { "startLine": 204, "endLine": 211 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Concrete Sanity Check: Splitting the Unit Square",
     "content": "`area_vsplit_unit_square` is a fully concrete instance: the area of $[0,1]^2$, computed as $\\iint 1$, splits at $x=\\tfrac12$ into two half-rectangles of area $\\tfrac12$ each. It closes by `area_double_integral` (from the parent) plus `ring`, confirming the abstract additivity lemmas reduce correctly on a numeric example.",
     "mathContext": "$\\tfrac12 + \\tfrac12 = 1$, i.e. $\\iint_{[0,\\frac12]\\times[0,1]} 1 + \\iint_{[\\frac12,1]\\times[0,1]} 1 = \\iint_{[0,1]^2} 1$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["sanity check", "area as double integral"],
     "prerequisites": ["area_double_integral from greens-theorem-oq-01"]
   }

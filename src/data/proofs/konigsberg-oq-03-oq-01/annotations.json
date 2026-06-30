@@ -40,7 +40,7 @@
     "title": "Every Edge Is Traversed at a Unique Step",
     "content": "IsEulerWalk.existsUnique_step proves ∃! n, stepPair n = (u,v) ∨ stepPair n = (v,u) for each edge {u,v}. Existence comes from the covering condition; uniqueness from edge-injectivity. The crux is a four-way case analysis: each of the two steps lies in one of the two orientations {(u,v),(v,u)}, and in every combination the two indices are sameEdge, so injectivity forces them equal. This is the precise meaning of 'exactly once'.",
     "mathContext": "Combining 'at least once' and 'at most once' yields 'exactly once' as a genuine ∃!-statement, recovering the quantifier that the definitions deliberately avoided.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["exists-unique", "covering condition", "edge-injectivity", "orientation"]
   },
   {
@@ -51,7 +51,7 @@
     "title": "The Ray's Euler-Path Parity Profile",
     "content": "rayGraphN is the ray 0—1—2—3—… on ℕ. It is locally finite (every neighbour set sits inside {v+1, v-1}). Its endpoint has degree 0 = 1 because the candidate neighbour 0 = u+1 is impossible in ℕ, leaving only {1}; every interior vertex v+1 has neighbour set {v, v+2}, so degree 2. rayGraphN_degree_parity packages this as: exactly one odd-degree vertex, all others even — the classical Euler-PATH signature.",
     "mathContext": "A finite graph has an Euler path (open trail) iff it has exactly two odd-degree vertices; the one-way infinite ray is the infinite analogue with a single odd-degree endpoint and a single 'end at infinity'.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["infinite ray", "odd-degree vertex", "Euler path", "Set.ncard_pair"]
   },
   {
@@ -62,7 +62,7 @@
     "title": "EGW Conclusion for the Ray",
     "content": "rayEulerWalk is the identity walk vertex n = n; rayGraphN_hasEulerPath proves it is an Euler walk. Covering: an adjacent pair satisfies u = v+1 or v = u+1, traversed (backwards or forwards) at an explicit step. Edge-injectivity: sameEdge m n unfolds to a small arithmetic disjunction closed by omega (the reversal case n+1+1 = n is impossible in ℕ). No compactness is needed because the witness is explicit.",
     "mathContext": "This is a fully verified instance of the EGW conclusion: a locally finite graph with the Euler-path degree profile that genuinely admits a one-way infinite Euler path.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["identity walk", "explicit witness", "omega", "one-way Euler path"]
   },
   {
@@ -73,7 +73,7 @@
     "title": "The Bi-Infinite Line and Its Euler Circuit Profile",
     "content": "lineGraphZ is the line …—(-1)—0—1—… on ℤ. lineGraphZ_neighbors computes every neighbour set as the pair {v-1, v+1}, giving local finiteness and degree v = 2 — so every vertex is even (lineGraphZ_degree_even), the classical Euler-CIRCUIT signature. lineEulerWalk (vertex n = n on ℤ) is then proven a bi-infinite Euler walk by the same covering + no-repeat argument, with omega discharging the ℤ arithmetic.",
     "mathContext": "On ℤ there is no odd-degree vertex and no endpoint; the Euler object is bi-infinite rather than one-way, matching the all-even-degree case of EGW.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["bi-infinite line", "even degree", "Euler circuit", "ℤ-indexed walk"]
   },
   {

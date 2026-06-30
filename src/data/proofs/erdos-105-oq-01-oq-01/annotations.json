@@ -43,11 +43,11 @@
       "startLine": 72,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "A Nonempty Initial Segment, For Free",
     "content": "Downward closure (avoidSet_downwardClosed) needs no construction: the definition quantifies over |B| ≤ m, so any witness for m is automatically a witness for every m' ≤ m. Nonemptiness (zero_mem_avoidSet, avoidSet_nonempty) holds because for n ≥ 3 a rich line exists (many_rich_lines_exist) and trivially avoids the empty obstacle set. Both are axiom-free.",
     "mathContext": "$m\\in\\textsf{avoidSet}(n),\\,m'\\le m\\Rightarrow m'\\in\\textsf{avoidSet}(n)$; and $0\\in\\textsf{avoidSet}(n)$ for $n\\ge 3$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "downward closed",
       "initial segment",
@@ -61,7 +61,7 @@
       "startLine": 98,
       "endLine": 121
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "f is a Sharp Threshold: avoidSet n = Set.Iic (f n)",
     "content": "When avoidSet n is bounded above, the supremum of a nonempty bounded set of naturals is attained (Nat.sSup_mem), so the threshold value f(n) is itself always avoidable (threshold_mem_avoidSet). Combined with downward closure this gives m ∈ avoidSet n ↔ m ≤ f(n) (mem_avoidSet_iff_le_threshold), i.e. avoidSet n = Set.Iic (f n) exactly (avoidSet_eq_Iic). This is what justifies calling f a genuine sharp threshold. Axiom-free; boundedness is an explicit hypothesis.",
     "mathContext": "$\\textsf{avoidSet}(n) = [0, f(n)] = \\textsf{Set.Iic}(f(n))$ whenever $\\textsf{avoidSet}(n)$ is bounded above.",
@@ -80,7 +80,7 @@
       "startLine": 123,
       "endLine": 156
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Open n-4 Question, Pinned to f(n) = n-4",
     "content": "The open question is bridged to set membership: openProblem_n_minus_4 ↔ ∀ n ≥ 5, (n-4) ∈ avoidSet n (openProblem_iff_mem) — forward via the parent's n_minus_4_avoidable_set, reverse by specialising |B| ≤ n-4 to |B| = n-4. Under boundedness this becomes openProblem_n_minus_4 ↔ ∀ n ≥ 5, f(n) ≥ n-4 (openProblem_iff_threshold_ge). With the known upper bound f(n) ≤ n-4, the entire open problem reduces to the single equation f(n) = n-4. Axiom-free.",
     "mathContext": "$\\textsf{openProblem\\_n\\_minus\\_4}\\iff\\forall n\\ge5,(n-4)\\in\\textsf{avoidSet}(n)\\iff\\forall n\\ge5,f(n)\\ge n-4$.",
@@ -102,7 +102,7 @@
     "title": "Summary: Threshold Structure of the Open Boundary",
     "content": "erdos_105_oq01oq01_summary packages the four pillars — nonemptiness, downward closure, the Set.Iic characterization under boundedness, and the open-boundary equivalence — into one axiom-free statement, recording that the avoidability set is a nonempty initial segment equal to [0, f(n)] and that the open question is exactly membership of n-4.",
     "mathContext": "All four structural facts hold simultaneously and axiom-free over the parent's definitions.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "summary",
       "threshold function",

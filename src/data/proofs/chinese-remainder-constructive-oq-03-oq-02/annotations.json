@@ -52,7 +52,7 @@
       "startLine": 117,
       "endLine": 131
     },
-    "type": "computation",
+    "type": "tactic",
     "title": "Exact Dynamic Range: 2^(3n) − 2ⁿ",
     "content": "`dynamicRange_formula n : (2ⁿ−1)·2ⁿ·(2ⁿ+1) = 2^(3n) − 2ⁿ` is the polynomial identity `a(a−1)(a+1) = a³−a` with `a = 2ⁿ`, where `2^(3n) = (2ⁿ)³` (via `pow_mul`). The obstacle is natural-number subtraction (`2ⁿ−1` truncates if mishandled). The proof sidesteps it by writing `2ⁿ = k+1` (legal since `1 ≤ 2ⁿ`), reducing the goal to `k·(k+1)·(k+2) = (k+1)³ − (k+1)`, then proves the truncation-free `key : k·(k+1)·(k+2) + (k+1) = (k+1)³` with `ring` and converts via `Nat.eq_sub_of_add_eq`.",
     "mathContext": "The dynamic range $M = \\prod m_i = (2^n-1)\\,2^n\\,(2^n+1) = 2^{3n} - 2^n$ is exactly one $2^n$ short of a full $3n$-bit word $2^{3n}$. So three $n$-bit channels deliver just under $3n$ bits of representable range — the quantitative efficiency statement for the base.",
@@ -102,7 +102,7 @@
     "title": "Balance and the Two-Modulus CRT Reduction Step",
     "content": "`threeModuli_balanced n (hn : 2 ≤ n) : 2ⁿ+1 ≤ 2·(2ⁿ−1)` shows the widest channel is below twice the narrowest (closed by `omega` from `4 ≤ 2ⁿ`) — the balance property that minimizes critical-path channel width per unit of dynamic range. `threeModuli_crt_step n (hn : 1 ≤ n) : Nat.Coprime ((2ⁿ−1)·2ⁿ) (2ⁿ+1)` packages the low–high and mid–high facts with `Nat.Coprime.mul_left`, giving precisely the coprimality needed to fold the first two residues into one modulo `(2ⁿ−1)·2ⁿ` and then reconstruct against `2ⁿ+1` by two-modulus CRT (the kernel of Garner's iterated algorithm).",
     "mathContext": "Hardware RNS reconstruction proceeds pair-by-pair: combine channels 1 and 2 (coprime, so $\\gcd = 1$ and CRT applies) into a single residue mod $(2^n-1)2^n$, then combine with channel 3. The required hypothesis is $\\gcd((2^n-1)2^n,\\,2^n+1) = 1$, which `Nat.Coprime.mul_left` derives from the two underlying pair coprimalities. Balance ensures every such step has comparable channel widths, keeping the carry/critical path short.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.Coprime.mul",
       "Garner's algorithm",
@@ -121,7 +121,7 @@
       "startLine": 216,
       "endLine": 241
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Instances: {3,4,5}, {7,8,9}, {15,16,17}",
     "content": "The abstract base is pinned to concrete numbers for n = 2, 3, 4. `threeModuliBase_two_eq` evaluates `(threeModuliBase 2 _).moduli = [3,4,5]` by `decide`. For each n the moduli list is confirmed pairwise coprime by `decide` ([3,4,5], [7,8,9], [15,16,17]) and the product is checked against the formula by `norm_num`: range 60 = 2⁶−2², 504 = 2⁹−2³, 4080 = 2¹²−2⁴. These ground the general theorems in checkable arithmetic.",
     "mathContext": "The n = 4 base $\\{15, 16, 17\\}$ is a standard textbook RNS example: 16 = 2⁴ is a pure bit-mask channel, 15 = 2⁴−1 a Mersenne-wrap channel, and 17 = 2⁴+1 a Fermat-style channel, together giving dynamic range 4080, just short of the 4096 = 2¹² full 12-bit word.",

@@ -3,11 +3,11 @@
     "id": "ann-intro",
     "proofId": "hilbert-10-oq-04-oq-03-oq-01-oq-01",
     "range": { "startLine": 1, "endLine": 36 },
-    "type": "context",
+    "type": "concept",
     "title": "Two Vocabularies for the Same gcd",
     "content": "The parent entry built an *explicit, computable* solver for the linear Diophantine equation $a_0x_0 + \\dots + a_{n-1}x_{n-1} = c$, whose solvability test is a hand-rolled fold `vecGcd n a = Int.gcd (a 0) (Int.gcd (a 1) (…))`, defined by structural recursion so the extended-Euclidean witness peels off one coordinate at a time. Mathlib instead packages the gcd of a family abstractly as `Finset.gcd`, the normalized gcd over a `NormalizedGCDMonoid` — the object of the structural theory of finitely generated ideals and invariant factors. This file **bridges** the two: it proves the bespoke fold equals the abstract `Finset.gcd`, then deduces that solvability is equivalent to the abstract gcd-divisibility criterion. Constructive content and structural content turn out to be one predicate.",
     "mathContext": "$\\mathrm{vecGcd}\\,n\\,a = \\mathrm{Finset.univ.gcd}\\,a$, hence $(\\exists x,\\ \\sum_i a_i x_i = c) \\iff \\mathrm{Finset.univ.gcd}\\,a \\mid c$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Hilbert's 10th problem",
       "linear Diophantine equations",

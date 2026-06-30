@@ -7,7 +7,7 @@
     "title": "Completing the Degree-2 Fibonacci–Lucas Trio",
     "content": "The parent proved the sign-carrying difference Lₙ² − 5Fₙ² = 4(−1)ⁿ. This entry adds its two companions — the sum-of-squares identity Lₙ² + 5Fₙ² = 2L₂ₙ and the cross identity Lₙ·Fₙ = F₂ₙ — to complete the classical trio of quadratic relations between the Fibonacci and Lucas sequences. The three are the P = 1, Q = −1, D = 5 case of the general Lucas-sequence relations Vₙ² − D·Uₙ² = 4Qⁿ. Mathlib has no Lucas sequence, so the parent defines `lucas` from scratch and this file works over ℤ throughout.",
     "mathContext": "$L_n^2 + 5F_n^2 = 2L_{2n}$ and $L_n F_n = F_{2n}$, completing the trio alongside the parent's $L_n^2 - 5F_n^2 = 4(-1)^n$; the $P{=}1, Q{=}{-}1, D{=}5$ case of $V_n^2 - D\\,U_n^2 = 4Q^n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Lucas sequences", "Fibonacci numbers", "Lucas numbers", "quadratic identities", "Pell-type relations"],
     "prerequisites": ["Fibonacci and Lucas sequences", "elementary number theory"]
   },
@@ -15,7 +15,7 @@
     "id": "fib-lucas-deg2-doubling-cast",
     "proofId": "fibonacci-identities-oq-02-oq-01-oq-01-oq-02",
     "range": { "startLine": 53, "endLine": 62 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Lifting Truncated ℕ Subtraction to ℤ",
     "content": "Mathlib's Nat.fib_two_mul reads F₂ₙ = Fₙ·(2Fₙ₊₁ − Fₙ), but its subtraction is truncated ℕ subtraction. To use it inside an integer ring computation, fib_two_mul_int discharges the side condition Fₙ ≤ 2Fₙ₊₁ — itself from Fₙ ≤ Fₙ₊₁ (fib_mono) — and applies `zify [hle]` so the subtraction becomes honest integer subtraction. This cast is the only non-algebraic step in the whole file.",
     "mathContext": "$F_{2n} = F_n(2F_{n+1} - F_n)$ over $\\mathbb{Z}$; valid because $F_n \\le 2F_{n+1}$, so the truncated $\\mathbb{N}$ subtraction agrees with $\\mathbb{Z}$ subtraction under `zify`.",

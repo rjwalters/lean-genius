@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 2
     },
-    "type": "context",
+    "type": "concept",
     "title": "Where the analytic work actually lives",
     "content": "The entire dependency footprint is two imports. `Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral` supplies `integral_gaussian`, and `Mathlib.Tactic` supplies the tactic toolbox (`simpa`, `rw`). Crucially, the hard analysis is hidden inside that first import: Mathlib's own proof of `integral_gaussian` is *not* a specialization — it runs the classical Laplace–Poisson argument internally, squaring the integral to a 2-D Gaussian over ℝ² and evaluating it by Fubini together with a polar-coordinate change of variables. So this entry inherits the squaring-and-polar evaluation wholesale; the single import is precisely the boundary between 'reproved here' and 'trusted from Mathlib'.",
     "mathContext": "Mathlib derives $\\int_{\\mathbb R} e^{-bx^2}\\,dx = \\sqrt{\\pi/b}$ from $\\bigl(\\int_{\\mathbb R} e^{-bx^2}\\,dx\\bigr)^2 = \\int_{\\mathbb R^2} e^{-b(x^2+y^2)}\\,dx\\,dy = \\int_0^{2\\pi}\\!\\!\\int_0^\\infty e^{-br^2} r\\,dr\\,d\\theta = \\pi/b$, the same polar Jacobian $r$ as the parent entry.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "dependency footprint",
       "integral_gaussian",
@@ -53,7 +53,7 @@
       "startLine": 31,
       "endLine": 35
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Specializing integral_gaussian at b = 1",
     "content": "The whole proof is two lines. `have h := integral_gaussian 1` instantiates Mathlib's lemma to `∫ x, exp (-1 * x ^ 2) = √(π / 1)`. The goal differs only cosmetically: its integrand is `exp (-x ^ 2)` and its value is `√π`. `simpa only [neg_one_mul, div_one] using h` closes the gap — `neg_one_mul` rewrites `-1 * x ^ 2` to `-(x ^ 2)` (definitionally `-x ^ 2`, since `^` binds tighter than unary `-`), and `div_one` rewrites `π / 1` to `π`. No measure-theoretic reasoning is reproduced here; it is inherited wholesale from `integral_gaussian`.",
     "mathContext": "Specialization of a parametrized result is the cheapest possible kind of formal proof, but it is only valid when the syntactic match is exact. The only real obligations are the coefficient `1 *` in the exponent and the `/ 1` in the value — both discharged by `simp` normal-form lemmas.",
@@ -76,7 +76,7 @@
       "startLine": 37,
       "endLine": 41
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Squared Identity (∫ e^{-x²})² = π",
     "content": "`gaussian_integral_sq` records the value that the classical polar-coordinate computation actually produces: the *square* of the integral is exactly `π`. It follows immediately from the main theorem by `rw [gaussian_integral_eq_sqrt_pi, Real.sq_sqrt Real.pi_nonneg]`, since `√π ^ 2 = π` whenever `π ≥ 0`. This is the algebraic heart of the squaring argument — the step where, in the from-scratch derivation, the two-dimensional integral over ℝ² in polar coordinates evaluates to `π` via the `r dr dθ` Jacobian of the parent `area-of-circle` entry.",
     "mathContext": "Squaring is the natural object: $I^2$ is a genuine planar integral that polar coordinates evaluate cleanly, whereas $I$ itself has no elementary antiderivative. Stating the squared identity separately makes the connection to the parent's circle-area Jacobian explicit and isolates the one place a factor of $\\pi$ is created.",

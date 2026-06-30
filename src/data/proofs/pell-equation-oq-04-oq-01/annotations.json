@@ -3,7 +3,7 @@
     "id": "ann-orbit-machinery",
     "proofId": "pell-equation-oq-04-oq-01",
     "range": { "startLine": 40, "endLine": 122 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Self-Contained Norm Form, Composition, and Orbit",
     "content": "To keep the file importing only Mathlib, the parent's infrastructure is re-derived locally: `normForm D x y = x²−Dy²`, `comp` (multiplication in ℤ[√D]), `normForm_comp` (Brahmagupta multiplicativity), and the orbit machinery `orbit`/`orbit_sol`/`orbit_pos`/`orbit_fst_strictMono`/`infinite_solutions`. The orbit of a seed under repeated composition with a unit (u≥2) has a strictly increasing first coordinate, so it injects ℕ into the solution set — the engine for the infinite branch of the classification.",
     "mathContext": "$\\mathrm{orbit}_k=(a,b)\\cdot(u,v)^k,\\ u\\ge 2 \\Rightarrow \\text{fst}\\uparrow\\ \\Rightarrow\\ S_N\\text{ infinite}$",
@@ -51,11 +51,11 @@
     "id": "ann-instances",
     "proofId": "pell-equation-oq-04-oq-01",
     "range": { "startLine": 262, "endLine": 276 },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Instances over ℤ[√2]",
     "content": "The file closes with concrete instances illustrating all three branches of the trichotomy for D = 2 (¬IsSquare 2 via `Prime.not_isSquare` and `Int.prime_two`): x²−2y²=0 has only (0,0) (the single-point case), x²−2y²=7 is infinite (nonempty via the seed (3,1), nonzero N), and x²−2y²=2 is infinite (seed (2,1)). These ground the abstract classification in computable examples and double as regression checks that the headline theorems fire on real data.",
     "mathContext": "$x^2-2y^2=0:\\{(0,0)\\};\\quad x^2-2y^2=7,\\ x^2-2y^2=2:\\ \\text{infinite}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "Prime.not_isSquare", "ℤ[√2]", "regression check"],
     "prerequisites": ["the trichotomy theorem"]
   }

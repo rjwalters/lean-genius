@@ -7,7 +7,7 @@
     "title": "Module Header: The Lagrange Interpolant as the Realizer",
     "content": "The companion entry proves **uniqueness** of the degree-$<n$ interpolant through $n$ distinct nodes $v$. This file supplies the matching **existence** half: the explicit **Lagrange interpolant** $\\mathrm{interp}\\,v\\,r = \\sum_i r_i\\,\\ell_i$ (with $\\ell_i$ the $i$-th Lagrange basis polynomial, $\\ell_i(v_j) = \\delta_{ij}$) takes the value $r_j$ at each node and has degree $<n$, so the interpolation problem is **well-posed** — a unique solution exists, and it is exactly this formula. Mathlib's `Lagrange.*` API supplies the engine; the work is recasting it in the $\\mathrm{Fin}\\,n$ / `Polynomial.eval` / `natDegree` idiom and exposing existence-and-uniqueness as $\\exists!$.",
     "mathContext": "$\\mathrm{interp}\\,v\\,r = \\sum_{i=0}^{n-1} r_i\\,\\ell_i(X)$, where $\\ell_i(X) = \\prod_{j\\ne i}\\dfrac{X - v_j}{v_i - v_j}$ and $\\ell_i(v_j) = \\delta_{ij}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Lagrange interpolation", "existence vs uniqueness", "Vandermonde determinant", "well-posed problem"],
     "prerequisites": ["polynomials over a field", "the companion uniqueness proof"]
   },

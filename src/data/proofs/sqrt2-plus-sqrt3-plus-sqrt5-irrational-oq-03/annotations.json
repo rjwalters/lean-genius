@@ -31,7 +31,7 @@
       "startLine": 77,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Sign-Independent Isolate-and-Square Computation",
     "content": "`conjugates_are_roots` is the heart of the file. It takes arbitrary reals a, b, c with a²=2, b²=3, c²=5 and proves p(a+b+c)=0. The chain: set t=bc (so t²=15 by `mul_pow`); prove the isolating identity (a+b+c)²−6−2t = 2a(a+b+c) by `linear_combination -ha + hb + hc`; square it to get ((a+b+c)²−6−2t)² = 8(a+b+c)² (the √2 is now squared away); finally a single `linear_combination` with explicit polynomial multipliers of this relation and of t²=15 collapses the degree-8 goal to 0. The decisive point is that NO step references the signs of a, b, c — only their squares — so the very same proof certifies every one of the eight conjugates ε₁√2+ε₂√3+ε₃√5 (take a∈{±√2}, etc.). This is the computational realization of the Galois-conjugate product.",
     "mathContext": "Isolate √2: $(a+b+c)^2-2a(a+b+c)=b^2+c^2-a^2+2bc=6+2\\sqrt{15}$. Square: $((a+b+c)^2-6-2\\sqrt{15})^2=8(a+b+c)^2$. Eliminating $\\sqrt{15}$ via $t^2=15$ yields $p(a+b+c)=0$, where $p=X^8-40X^6+352X^4-960X^2+576$.",

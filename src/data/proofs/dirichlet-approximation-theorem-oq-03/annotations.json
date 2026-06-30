@@ -9,31 +9,31 @@
     "mathContext": "$K(\\alpha,N) = \\{v : |v_0| \\le N,\\ |\\alpha v_0 - v_1| \\le 1/N\\} \\subseteq \\mathbb{R}^2$.",
     "prerequisites": ["Lattices in ℝ²", "Diophantine approximation"],
     "relatedConcepts": ["geometry of numbers", "symmetric convex body", "lattice point"],
-    "significance": "Reframes a number-theoretic existence statement as a single geometric one, the move that makes Minkowski's theorem directly applicable."
+    "significance": "supporting"
   },
   {
     "id": "ann-slab-intersection",
     "proofId": "dirichlet-approximation-theorem-oq-03",
     "range": { "startLine": 74, "endLine": 100 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Convexity and Closedness from a Single Slab-Intersection Rewrite",
     "content": "Rather than reasoning about the slanted parallelogram directly, K is rewritten once as the intersection of two slabs: proj₀⁻¹(Icc −N N) ∩ (α·proj₀ − proj₁)⁻¹(Icc −1/N 1/N), each the preimage of a closed interval under a linear functional. From this single presentation both required properties are one-liners: convexity is (convex_Icc).linear_preimage on each factor intersected, and closedness is isClosed_Icc.preimage of maps that are continuous because every linear map on a finite-dimensional space is (LinearMap.continuous_of_finiteDimensional). No bespoke parallelogram geometry is needed.",
     "mathContext": "$K = \\mathrm{proj}_0^{-1}[-N,N] \\cap (\\alpha\\,\\mathrm{proj}_0 - \\mathrm{proj}_1)^{-1}[-1/N,1/N]$.",
     "prerequisites": ["Convex sets", "Preimages under linear maps", "Finite-dimensional continuity"],
     "relatedConcepts": ["Convex.linear_preimage", "IsClosed.preimage", "linear functionals"],
-    "significance": "A reusable pattern: presenting a convex body as a slab intersection collapses several geometric obligations into interval-preimage lemmas."
+    "significance": "supporting"
   },
   {
     "id": "ann-shear-volume",
     "proofId": "dirichlet-approximation-theorem-oq-03",
     "range": { "startLine": 184, "endLine": 256 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Computing the Area by a Determinant-(−1) Shear",
     "content": "The area of the slanted body K is computed without integrating over it. The shear T(x, y) = (x, αx − y) — the linear map Matrix.toLin' !![1,0; α,−1], an involution of determinant −1 — carries the axis-aligned box [−N,N]×[−1/N,1/N] exactly onto K (body_eq_image). Since the box has Lebesgue volume (2N)·(2/N) = 4 (volume_pi_pi, Real.volume_Icc) and a linear map scales volume by |det| (Measure.addHaar_image_linearMap), volume(K) = |−1|·4 = 4. The whole measure computation thus reduces to a product of interval lengths and a 2×2 determinant (Matrix.det_fin_two_of).",
     "mathContext": "$\\mathrm{volume}(K) = |\\det T|\\cdot\\mathrm{volume}(\\mathrm{box}) = 1\\cdot 4 = 4$.",
     "prerequisites": ["Haar measure under linear maps", "Determinants of 2×2 matrices", "Product measures"],
     "relatedConcepts": ["addHaar_image_linearMap", "shear transformation", "volume of a parallelogram"],
-    "significance": "Turns the area of a non-axis-aligned region into a determinant times a trivial box volume — the standard device behind Minkowski's linear-forms theorem."
+    "significance": "supporting"
   },
   {
     "id": "ann-arithmetic-bridge",
@@ -45,7 +45,7 @@
     "mathContext": "$q_0 = 0 \\Rightarrow |p_0| \\le 1/N < 1 \\Rightarrow p_0 = 0$; excluded by $N \\ge 2$.",
     "prerequisites": ["Integer absolute value (natAbs)", "Case analysis on sign"],
     "relatedConcepts": ["boundary lattice points", "sign normalisation", "Int.natAbs"],
-    "significance": "Documents where the informal proof's hidden hypothesis (N ≥ 2, non-strict bound) actually bites, a recurring honesty point in geometry-of-numbers formalizations."
+    "significance": "supporting"
   },
   {
     "id": "ann-minkowski-capstone",
@@ -57,6 +57,6 @@
     "mathContext": "$1\\cdot 2^2 = 4 \\le 4 = \\mathrm{volume}(K) \\Rightarrow \\exists$ nonzero lattice point.",
     "prerequisites": ["Minkowski's convex-body theorem", "ZLattice fundamental domains", "Basis representation over ℤ"],
     "relatedConcepts": ["exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure", "covolume", "finrank"],
-    "significance": "Completes the geometry-of-numbers proof of Dirichlet's theorem, the alternative route to the parent's pigeonhole argument."
+    "significance": "supporting"
   }
 ]

@@ -27,7 +27,7 @@
     "id": "ann-erdos131-dav-prefix-sum",
     "proofId": "erdos-131-oq-01-oq-01-oq-01",
     "range": { "startLine": 82, "endLine": 127 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Prefix-Sum Pigeonhole: The Block Between Colliding Indices",
     "content": "The core of the home-grown Davenport bound. Order s as a sorted (hence nodup) list L. The splitting identity key_eq expresses (L.take n).sum = (L.take m).sum + ((L.take n).drop m).sum for m ≤ n. The key lemma then takes two prefix indices p < q with equal prefix-sum mod a and extracts the block (L.take q).drop p: its sum is ≡ 0 (mod a) (via ZMod.natCast_eq_zero_iff and a linear_combination), it is a nodup sublist of L (so its toFinset has the same sum), and it is nonempty because its length is q − p ≥ 1. That toFinset is the desired zero-sum subset of s.",
     "mathContext": "If $\\overline{\\sum L_{<p}} = \\overline{\\sum L_{<q}}$ in $\\mathbb{Z}/a\\mathbb{Z}$ with $p<q$, then $a \\mid \\sum_{p\\le i<q} L_i$ and that block is a nonempty sub-multiset of $s$.",

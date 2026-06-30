@@ -10,7 +10,7 @@
     "title": "Deriving Maclaurin's Chain from Newton: Strategy",
     "content": "Newton's inequality is the log-concavity ēₖ² ≥ ēₖ₋₁·ēₖ₊₁ of the elementary symmetric means; Maclaurin's inequality is the resulting chain ē₁ ≥ ē₂^{1/2} ≥ ... ≥ ēₙ^{1/n}. The parent file proved Newton only for k = 1 (the general k ≥ 2 case is still an open sorry). Rather than build on that sorry, this file proves the REDUCTION: for any abstract positive sequence a with a₀ = 1, log-concavity implies the Maclaurin chain. The whole development is 0-axiom and 0-sorry; Newton's inequalities are an explicit hypothesis, so instantiating a := ēₖ gives the full chain once the parent's Newton case is completed.",
     "mathContext": "Log-concavity ⟹ non-increasing ratios ⟹ non-increasing running geometric mean ēₖ^{1/k}.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Newton's inequalities", "Maclaurin's inequality", "log-concave sequences", "elementary symmetric means", "reduction proof avoiding a parent sorry"],
     "prerequisites": ["elementary symmetric means ēₖ", "log-concavity ēₖ² ≥ ēₖ₋₁ēₖ₊₁", "the AM-GM / Maclaurin chain"]
   },

@@ -42,11 +42,11 @@
     "id": "ann-nrtprime-oq05-base-recovery",
     "proofId": "cube-root-2-irrational-oq-05",
     "range": { "startLine": 61, "endLine": 70 },
-    "type": "context",
+    "type": "concept",
     "title": "∛2 and ∛3 Recovered as Instances",
     "content": "irrational_cbrt_two and irrational_cbrt_three plug p = 2 and p = 3 into irrational_cbrt_prime (primality by norm_num, then simpa to normalise the numeral). irrational_cbrt_two is exactly the base gallery entry, now recovered as a single instance of the general family — demonstrating that the two-parameter theorem genuinely subsumes the original ∛2 result rather than merely resembling it.",
     "mathContext": "$$\\sqrt[3]{2},\\ \\sqrt[3]{3} \\notin \\mathbb{Q}, \\quad \\text{instances of } \\mathrm{irrational\\_cbrt\\_prime}.$$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "base entry recovery",
       "concrete instances"

@@ -3,11 +3,11 @@
     "id": "ann-amgm-header",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-01",
     "range": { "startLine": 4, "endLine": 27 },
-    "type": "context",
+    "type": "concept",
     "title": "Newton–Girard: Power Sums from Elementary Symmetric Polynomials",
     "content": "Newton's identities (Girard 1629, Newton 1666) relate the two canonical bases of the symmetric polynomials: the power sums pₖ = Σᵢ xᵢᵏ and the elementary symmetric polynomials eₖ. They are the computational core of the roots↔coefficients dictionary, letting one compute Σ(roots)ᵏ directly from a polynomial's coefficients without finding the roots. This entry formalizes the recurrence over MvPolynomial σ R for an arbitrary finite variable set and arbitrary commutative ring, superseding the by-hand cubic case in the sibling entry.",
     "mathContext": "$p_k = \\sum_i x_i^k$, $e_k = \\sum_{i_1<\\cdots<i_k} x_{i_1}\\cdots x_{i_k}$; Newton's identities express each $p_k$ via $e_1,\\ldots,e_k$ and lower power sums.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Newton's identities", "symmetric polynomials", "power sums", "roots and coefficients"],
     "prerequisites": ["symmetric polynomials", "MvPolynomial"]
   },

@@ -81,7 +81,7 @@
       "startLine": 137,
       "endLine": 143
     },
-    "type": "context",
+    "type": "concept",
     "title": "k = 1 recovers the parent's expected-fixed-points result",
     "content": "Specializing the main theorem at k = 1 and rewriting with `Nat.descFactorial_one` (X.descFactorial 1 = X) gives ∑_σ |Fix(σ)| = n!, exactly the parent entry's first-moment result E[X] = 1. The higher-moment theorem thus strictly generalizes the parent: the same Burnside argument, run on 1-tuples (= points) rather than k-tuples, is the parent's proof.",
     "mathContext": "$(X)_1 = X$, so $\\sum_\\sigma |\\mathrm{Fix}(\\sigma)| = n!$ and $E[X]=1$ — the expected number of fixed points of a uniform random permutation is exactly 1, independent of n.",
@@ -127,7 +127,7 @@
       "startLine": 169,
       "endLine": 181
     },
-    "type": "context",
+    "type": "concept",
     "title": "Sharp threshold: the moment sum vanishes for k > n",
     "content": "`sum_descFactorial_fixedPoints_eq_zero` records the complementary regime: when k > n, every summand is 0 because no permutation of Fin n can have more than n fixed points, and m.descFactorial k = 0 whenever m < k (`Nat.descFactorial_eq_zero_iff_lt`). The bound |Fix(σ)| ≤ n is the trivial `Finset.card_filter_le`. So the factorial-moment sum is a sharp step function: n! for k ≤ n and 0 for k > n — the finite-n cutoff of the Poisson(1) moment sequence, which only equals 1 in the limit.",
     "mathContext": "For $k>n$: $|\\mathrm{Fix}(\\sigma)|\\le n<k\\Rightarrow (X(\\sigma))_k=0$, so $\\sum_\\sigma (X(\\sigma))_k=0$. The exact moment $E[(X)_k]=1$ holds only for $k\\le n$; beyond $n$ the falling factorial truncates the sequence to 0.",

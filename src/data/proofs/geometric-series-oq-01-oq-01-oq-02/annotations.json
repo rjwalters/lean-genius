@@ -3,11 +3,11 @@
     "id": "ann-gs-header",
     "proofId": "geometric-series-oq-01-oq-01-oq-02",
     "range": { "startLine": 3, "endLine": 26 },
-    "type": "context",
+    "type": "concept",
     "title": "Euler's Divergent Series and Abel Summation",
     "content": "Euler's series 1 − 2 + 3 − 4 + ⋯ is the term-by-term derivative of Grandi's series 1 − 1 + 1 − 1 + ⋯ (the parent entry). Both diverge in the ordinary sense; Euler assigned this one the value 1/4 by setting x = 1 in ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)². Abel's method makes that rigorous via the radial boundary limit. The value 1/4 = η(−1), tied to ζ(−1) = −1/12 through η(s) = (1 − 2¹⁻ˢ)ζ(s).",
     "mathContext": "$1 - 2 + 3 - 4 + \\cdots$ diverges, yet its Abel sum is $\\lim_{x\\to 1^-} \\sum_n (-1)^n (n+1) x^n = \\tfrac14 = \\eta(-1)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Grandi's series", "Abel summation", "Dirichlet eta function", "divergent series", "ζ(−1)"],
     "prerequisites": ["power series", "divergent-series summation methods"]
   },
@@ -55,7 +55,7 @@
     "title": "Packaging and the η(−1) Connection",
     "content": "abel_value_quarter packages the conclusion: 1 − 2 + 3 − 4 + ⋯ is Abel summable to 1/4. The closing remarks situate 1/4 = η(−1) within the analytic continuation of the Dirichlet eta function, η(s) = (1 − 2¹⁻ˢ)ζ(s), connecting this elementary, fully-verified real-analysis computation to the celebrated ζ(−1) = −1/12. Everything stays inside elementary summability — no native_decide, no axioms.",
     "mathContext": "$1 - 2 + 3 - 4 + \\cdots \\overset{A}{=} \\tfrac14 = \\eta(-1)$, with $\\eta(s) = (1 - 2^{1-s})\\zeta(s)$ giving $\\zeta(-1) = -\\tfrac{1}{12}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Dirichlet eta function", "analytic continuation", "ζ(−1) = −1/12", "Abel summability"],
     "prerequisites": ["Abel summation conclusion"]
   }

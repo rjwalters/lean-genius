@@ -7,7 +7,7 @@
     "title": "Predicate, Root Identity, and the Coprimality Idea",
     "content": "The docstring states the rational-radicand criterion answering the parent's first open question: for q > 0 and n ≥ 1, q^(1/n) is rational iff both q.num and q.den (in lowest terms) are perfect n-th powers. The strategy hinges on one number-theoretic fact — if s = c/d is in lowest terms then sⁿ = cⁿ/dⁿ is too, because coprimality is preserved by powers — so the single condition q = sⁿ splits coordinatewise. Mathlib packages exactly this as Rat.num_pow / Rat.den_pow. The section also defines IsPerfectNthPow m n := ∃ k, kⁿ = m and proves the foundational root identity rat_rpow_inv_pow: (q^(1/n))ⁿ = q for q ≥ 0, n ≥ 1, by collapsing q^(n⁻¹·n) = q via Real.rpow_natCast and Real.rpow_mul (the latter needing the nonnegativity hypothesis).",
     "mathContext": "$(q^{1/n})^n = q^{n^{-1}\\cdot n} = q$ for $q\\ge 0$; and $c/d$ coprime $\\Rightarrow c^n/d^n$ coprime.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["perfect n-th power", "rpow", "coprimality", "reduced fraction", "irrationality of roots"],
     "prerequisites": ["rational numbers", "real powers", "number theory"]
   },
@@ -51,7 +51,7 @@
     "id": "ann-integer-special-case",
     "proofId": "cube-root-2-irrational-oq-05-oq-01-oq-01",
     "range": { "startLine": 129, "endLine": 144 },
-    "type": "context",
+    "type": "concept",
     "title": "Recovering the Parent's Integer Criterion",
     "content": "rational_rpow_inv_iff_natCast specialises to an integer radicand q = (m : ℚ), where q.den = 1 (Rat.den_natCast) and q.num.toNat = m (Rat.num_natCast). The denominator condition IsPerfectNthPow 1 n is automatic (1 = 1ⁿ), so the conjunction collapses to the single condition 'm is a perfect n-th power' — exactly the parent entry's natural-number criterion. This makes the rational-radicand result a strict generalization that subsumes the parent rather than merely paralleling it.",
     "mathContext": "$q.\\mathrm{den}=1 \\Rightarrow$ criterion reduces to $m^{1/n}\\in\\mathbb{Q} \\iff \\exists k,\\ k^n = m$ (the parent).",

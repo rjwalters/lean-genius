@@ -3,11 +3,11 @@
     "id": "ann-lteoq02-1",
     "proofId": "lifting-the-exponent-oq-02",
     "range": { "startLine": 5, "endLine": 42 },
-    "type": "context",
+    "type": "concept",
     "title": "The p = 2 Lifting-the-Exponent Lemma, in Integer v₂ Form",
     "content": "**Module framing.** The odd-prime LTE computes $v_p(x^n - y^n) = v_p(x-y) + v_p(n)$. The even prime $p=2$ is famously *different*: for **even** $n$ an extra $v_2(x+y)$ term appears and the count shifts by one, $v_2(x^n - y^n) + 1 = v_2(x+y) + v_2(x-y) + v_2(n)$. Mathlib proves the `emultiplicity` ($\\mathbb{N}_\\infty$-valued) version over ℤ (`Int.two_pow_sub_pow`) and a `padicValNat` version over ℕ, but **not** the `padicValInt` (finite integer $v_2$) form — the natural shape for the lemma's usual ℤ applications. This entry fills that gap by descending from the extended valuation to the finite integer form, manufacturing the finiteness facts en route.",
     "mathContext": "$v_2(x^n - y^n) + 1 = v_2(x+y) + v_2(x-y) + v_2(n)$ for $2 \\mid x-y$, $2 \\nmid x$, $n$ even.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lifting the Exponent (LTE)",
       "2-adic valuation",

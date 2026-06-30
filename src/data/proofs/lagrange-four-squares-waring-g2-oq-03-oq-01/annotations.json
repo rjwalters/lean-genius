@@ -3,11 +3,11 @@
     "id": "ann-gauss-eureka-oq0301-header",
     "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-01",
     "range": { "startLine": 1, "endLine": 41 },
-    "type": "context",
+    "type": "concept",
     "title": "Gauss's Eureka Theorem as a Slice of Legendre",
     "content": "The docstring sets the strategy. The parent file Proofs.ThreeSquares formalizes Legendre's three-square theorem: it proves NECESSITY axiom-free (numbers of the form 4^a(8b+7) are never sums of three squares) and isolates SUFFICIENCY as a single axiom. This file adds a famous classical consequence of sufficiency — Gauss's Eureka theorem (1796): every natural number is a sum of three triangular numbers T(k)=k(k+1)/2. The reduction is elementary and proved axiom-free: it rests on the equivalence eight_mul_add_three_iff and the fact that 8n+3 is never of the excluded form, so three-square sufficiency need only be invoked on the single progression 8n+3. Crucially the equivalence shows the two statements are LOGICALLY EQUIVALENT — Eureka for n ⇔ three-square representability of 8n+3.",
     "mathContext": "Legendre: $n = x^2+y^2+z^2 \\iff n \\ne 4^a(8b+7)$. Eureka is the $n \\mapsto 8n+3$ slice, since $8n+3$ is always representable and forces three odd squares.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Gauss Eureka theorem", "Legendre three-square theorem", "triangular numbers", "polygonal number theorem", "reduction"],
     "prerequisites": ["sums of squares", "modular arithmetic", "the parent ThreeSquares formalization"]
   },

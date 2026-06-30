@@ -81,7 +81,7 @@
     "title": "iteratedDeriv_exp and taylorPolynomial_exp",
     "content": "iteratedDeriv n Real.exp = Real.exp: convert iteratedDeriv to the n-fold iterate of deriv (iteratedDeriv_eq_iterate) and apply Real.iter_deriv_exp (deriv^[n] exp = exp). As a consequence taylorPolynomial Real.exp 0 n x simplifies (simp with iteratedDeriv_exp, Real.exp_zero, sub_zero, then ring on each term) to the exponential partial sum ∑_{k≤n} xᵏ/k!, since every coefficient iteratedDeriv k exp 0 / k! = exp 0 / k! = 1/k! and (x − 0)ᵏ = xᵏ.",
     "mathContext": "$\\frac{d^n}{dx^n}e^x = e^x$, so $T_n^{\\exp,0}(x) = \\sum_{k=0}^{n} \\frac{x^k}{k!}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "iterated derivatives of exp",
       "Taylor polynomial of exp",

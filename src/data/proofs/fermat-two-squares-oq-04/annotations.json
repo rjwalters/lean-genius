@@ -21,11 +21,11 @@
       "startLine": 73,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Unfolding the Convolution to a Divisor Sum",
     "content": "`jacobiSum_apply` (via `coe_zeta_mul_apply`) is the key identity (ζ * f) n = ∑_{d∣n} f d: convolution with ζ is precisely the divisor sum. The auxiliary `toArithmeticFunction` wrapper sends 0 ↦ 0 and otherwise applies χ₄; on the nonzero divisors d of n it equals χ₄(d), so `simp` with the divisor positivity `Nat.pos_of_mem_divisors` collapses it to δ(n) = ∑_{d∣n} χ₄(d).",
     "mathContext": "$(\\zeta * f)(n) = \\sum_{d \\mid n} f(d)$; specialized to $f = \\chi_4$ this gives $\\delta(n) = \\sum_{d \\mid n} \\chi_4(d)$ for $n \\neq 0$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Dirichlet convolution", "divisor sum", "arithmetic function evaluation"],
     "prerequisites": ["Dirichlet convolution", "divisors in Lean 4/Mathlib"]
   },
@@ -36,7 +36,7 @@
       "startLine": 86,
       "endLine": 91
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Prime Powers Give a Geometric Series",
     "content": "On a prime power the divisors are 1, p, p², …, pᵏ, so `Nat.sum_divisors_prime_pow` rewrites the divisor sum as ∑_{i=0}^{k} χ₄(pⁱ). Because χ₄ is multiplicative, χ₄(pⁱ) = χ₄(p)ⁱ (via `Nat.cast_pow` and `map_pow`), exposing the geometric series ∑_{i≤k} χ₄(p)ⁱ. The entire prime-power behaviour of δ is now governed by the single value χ₄(p) ∈ {0, 1, -1}.",
     "mathContext": "$\\delta(p^k) = \\sum_{i=0}^{k} \\chi_4(p^i) = \\sum_{i=0}^{k} \\chi_4(p)^i$ — a geometric series whose ratio $\\chi_4(p) \\in \\{0, 1, -1\\}$.",
@@ -51,7 +51,7 @@
       "startLine": 103,
       "endLine": 144
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Prime-Power Positivity Dichotomy",
     "content": "Splitting on χ₄(p) via `χ₄_nat_eq_if_mod_four` gives three regimes: for p = 2 the series collapses to the single term 1 (δ(2ᵏ) = 1); for p ≡ 1 (mod 4) every term is 1, so δ(pᵏ) = k+1; for p ≡ 3 (mod 4) the series alternates, and `neg_one_geom_sum` evaluates ∑_{i≤k} (-1)ⁱ = [k even]. Combining, 0 < δ(pᵏ) ⇔ (p ≡ 3 mod 4 → k even). This single inequality is the atom from which the global representability criterion is reassembled. The `omega` calls discharge the residue bookkeeping (e.g. p % 2 = 0 forces p % 4 ≠ 3).",
     "mathContext": "$\\delta(p^k) = 1$ if $p = 2$; $= k+1$ if $p \\equiv 1$; $= \\tfrac{1+(-1)^k}{2} = [k\\text{ even}]$ if $p \\equiv 3 \\pmod 4$. Hence $\\delta(p^k) > 0 \\iff \\big(p \\equiv 3 \\Rightarrow k\\text{ even}\\big)$.",

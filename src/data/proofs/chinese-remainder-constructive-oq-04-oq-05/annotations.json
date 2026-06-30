@@ -30,7 +30,7 @@
       "startLine": 36,
       "endLine": 46
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "sys_pairwise_on_snd: List.pairwise_map as Hypothesis Glue",
     "content": "Mathlib's combinator wants `sys.Pairwise (Coprime on Prod.snd)`, while the project carries `(moduli sys).Pairwise Coprime` where `moduli sys = sys.map Prod.snd`. The two are connected by `List.pairwise_map : (l.map f).Pairwise R ↔ l.Pairwise (R on f)`. The instance is supplied with explicit `R := Nat.Coprime` and `f := Prod.snd`; without them the unifier defaults `f` to the identity and the rewrite fails to typecheck.",
     "mathContext": "$(\\,l.\\text{map } f).\\text{Pairwise } R \\iff l.\\text{Pairwise } (R \\text{ on } f)$, here $f = \\text{Prod.snd}$, $R = \\text{Coprime}$.",
@@ -97,7 +97,7 @@
       "startLine": 115,
       "endLine": 129
     },
-    "type": "example",
+    "type": "concept",
     "title": "Sunzi Verified by decide: x = 23, Axiom-Free",
     "content": "The classic Sunzi system x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7) is solved as 23 by routing through `crtCanonical_eq_min`: 23 < 105 and 23 satisfies the system, both discharged with `decide`. Using `decide` instead of `native_decide` keeps `#print axioms` at the foundational three — the entry is fully verified, unlike the `native_decide`-based sibling OQ-04-OQ-04.",
     "mathContext": "$\\text{crtCanonical}\\,[(2,3),(3,5),(2,7)] = 23 \\in [0, 105)$.",

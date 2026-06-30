@@ -26,11 +26,11 @@
       "startLine": 60,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reproving the Parent Identity Self-Contained",
     "content": "The argument differentiates the parent Gaussian Fourier identity F(t) = ∫ e^{itx} e^{-x²/2} dx = e^{-t²/2}√(2π), so the file reproves it (gaussian_fourier_real) rather than importing it — keeping the entry self-contained. The proof is the classical complete-the-square (integrand_complete_square: i t x − x²/2 = −½(x−it)² − t²/2, closed by linear_combination over Complex.I_sq), followed by Mathlib's vertical-strip contour integral GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I at b=1/2, c=−t, with cpow_half_eq_sqrt_two_pi converting the contour constant (π/(1/2))^{1/2} to √(2π).",
     "mathContext": "F(t) = e^{-t²/2}√(2π) is the function whose frequency-derivative produces the first Hermite integral.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "completing the square",
       "Gaussian Fourier transform",
@@ -44,7 +44,7 @@
       "startLine": 97,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "A Frequency-Independent Dominating Function",
     "content": "Differentiation under the integral sign needs a single integrable function that dominates the t-derivative of the integrand uniformly over a ball of frequencies. The key observation (norm_integrand): the t-derivative i x e^{itx} e^{-x²/2} has modulus exactly |x|·e^{-x²/2} for EVERY t, because the phase e^{itx} has modulus one (the real part of i t x is 0). So the t-independent dominator |x|·e^{-x²/2} = ‖x·e^{-(1/2)x²}‖ works for all frequencies at once; it is integrable by integrable_mul_exp_neg_mul_sq (integrable_bound). The pointwise derivative itself (hasDerivAt_integrand) is assembled from HasDerivAt.cexp on the linear phase and HasDerivAt.comp_ofReal to pass from the complex to the real variable.",
     "mathContext": "The four hypotheses of hasDerivAt_integral_of_dominated_loc_of_deriv_le, all anchored on the modulus-one phase.",
@@ -86,7 +86,7 @@
     "title": "Reading Off the Eigenvalue and the Vanishing First Moment",
     "content": "Reassociating the headline identity (first_hermite_fourier_eigenfunction) puts it in eigenfunction form ∫ e^{itx} ψ₁(x) dx = (i·√(2π))·ψ₁(t): ψ₁ is mapped to a fixed constant times itself, eigenvalue i·√(2π). Dividing by √(2π) (first_hermite_fourier_normalized) gives the unitary eigenvalue exactly i — one factor of i above the Gaussian's eigenvalue 1, the n=1 rung of the ladder iⁿ. Specialising t=0 (first_moment_gaussian_zero) recovers the elementary odd-integrand fact ∫ x·e^{-x²/2} dx = 0: the Gaussian's first moment vanishes, consistent with the eigenvalue identity collapsing to 0 at t=0.",
     "mathContext": "The eigenvalue i·√(2π) (normalized i) and the t=0 shadow, the first excited rung above the Gaussian ground state.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "eigenvalue",
       "first moment",

@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "zeckendorf-representation-oq-01",
     "range": { "startLine": 1, "endLine": 29 },
-    "type": "context",
+    "type": "concept",
     "title": "Zeckendorf's Theorem: Unique Non-Consecutive Fibonacci Sums",
     "content": "Zeckendorf's theorem (1972): every natural number has a unique representation as a sum of non-consecutive Fibonacci numbers — indices strictly decreasing with gaps ≥ 2. Mathlib supplies the greedy algorithm `Nat.zeckendorf` (repeatedly subtract the largest Fibonacci ≤ n), the validity predicate `List.IsZeckendorfRep`, the round-trip lemmas, and the equivalence `Nat.zeckendorfEquiv`. This entry surfaces the two consumer statements — existence and uniqueness — and records the bijection.",
     "mathContext": "Every $n = \\sum_i F_{a_i}$ uniquely, with $a_1 > a_2 > \\cdots$ and $a_i - a_{i+1} \\ge 2$ (no two consecutive Fibonacci numbers).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Zeckendorf's theorem", "Fibonacci numbers", "greedy algorithm", "non-consecutive representation"],
     "prerequisites": ["Fibonacci sequence", "number representations"]
   },
@@ -63,11 +63,11 @@
     "id": "ann-concrete",
     "proofId": "zeckendorf-representation-oq-01",
     "range": { "startLine": 66, "endLine": 72 },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Example: 100 = 89 + 8 + 3",
     "content": "A concrete witness: the index list [11, 6, 4] is strictly decreasing with gaps ≥ 2 (11−6 = 5, 6−4 = 2), so it is a valid Zeckendorf representation, and fib 11 + fib 6 + fib 4 = 89 + 8 + 3 = 100. Both facts are checked by kernel `decide`. This illustrates the non-consecutiveness constraint in action.",
     "mathContext": "$100 = F_{11} + F_6 + F_4 = 89 + 8 + 3$; gaps $11-6=5 \\ge 2$, $6-4=2 \\ge 2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked example", "Fibonacci numbers", "non-consecutive gaps", "kernel decide"],
     "prerequisites": ["Fibonacci values", "the gap-≥2 condition"]
   }

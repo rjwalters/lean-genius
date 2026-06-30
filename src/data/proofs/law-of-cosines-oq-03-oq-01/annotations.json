@@ -19,7 +19,7 @@
     "title": "Geodesic-polar points lie on the hyperboloid",
     "content": "geo_onHyp shows ⟨geo r θ, geo r θ⟩ = −1 and u_t = cosh r > 0. The inner product is sinh²r(cos²θ + sin²θ) − cosh²r = sinh²r − cosh²r = −1, discharged by a single linear_combination of cosh²−sinh²=1 (cosh_sq_sub_sinh_sq) and cos²+sin²=1 (sin_sq_add_cos_sq). This certifies geo is a genuine parametrization of points of H.",
     "mathContext": "$$\\langle \\mathrm{geo}\\,r\\,\\theta, \\mathrm{geo}\\,r\\,\\theta\\rangle = \\sinh^2 r\\,(\\cos^2\\theta + \\sin^2\\theta) - \\cosh^2 r = \\sinh^2 r - \\cosh^2 r = -1$$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["hyperboloid", "Pythagorean trig identity", "hyperbolic identity"],
     "prerequisites": ["linear_combination tactic"]
   },
@@ -43,7 +43,7 @@
     "title": "Hyperbolic Pythagorean theorem and side lengths",
     "content": "hdist_apex_geo confirms the two adjacent sides really have lengths a and b: d(apex, geo a θ) = arcosh(cosh a) = a. hyperbolic_pythagoras is the C = π/2 specialization: cos(π/2) = 0 collapses the law of cosines to cosh c = cosh a cosh b, the hyperbolic analogue of the Pythagorean theorem.",
     "mathContext": "$$C = \\tfrac{\\pi}{2} \\implies \\cosh c = \\cosh a\\,\\cosh b$$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["hyperbolic Pythagorean theorem", "right triangle", "specialization"],
     "prerequisites": ["cos_pi_div_two", "arcosh_cosh"]
   },

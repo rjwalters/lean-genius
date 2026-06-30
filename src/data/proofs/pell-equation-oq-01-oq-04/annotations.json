@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "pell-equation-oq-01-oq-04",
     "range": { "startLine": 3, "endLine": 37 },
-    "type": "context",
+    "type": "concept",
     "title": "Why the regulator is the right invariant",
     "content": "The docstring explains the gap this file fills: the parent defines the Pell norm x+y√d and regulator log(x+y√d) and bounds them, but leaves open how they interact with the group law on Pell.Solution₁ d. This file proves the norm is a multiplicative homomorphism (Brahmagupta), making the regulator additive and linear on powers — the structural reason a fundamental solution of regulator R(D) generates a tower with regulators R(D), 2R(D), 3R(D), ….",
     "mathContext": "$\\text{Solution}_1\\,d = \\{(x,y) : x^2 - dy^2 = 1\\}$, a group; $\\;\\mathrm{pellNorm} = x + y\\sqrt d$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Pell's equation", "norm form", "regulator", "fundamental solution", "geometry of numbers"],
     "prerequisites": ["Pell equation", "logarithms", "group theory"]
   },

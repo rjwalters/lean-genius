@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 56
     },
-    "type": "context",
+    "type": "concept",
     "title": "Orthocenter–Vertex Distances: AH² = 4R² − a²",
     "content": "This file measures the squared distances from the orthocenter $H$ to the three vertices of a triangle, the metric companions of Euler's circumcenter–orthocenter distance $OH^2 = 9R^2 - (a^2+b^2+c^2)$ proved in the sibling entry. The headline $AH^2 = 4R^2 - a^2$ is the squared, coordinate-free form of the textbook relation $AH = 2R\\cos A$: since $a = 2R\\sin A$, one has $4R^2 - a^2 = 4R^2\\cos^2 A = (2R\\cos A)^2$. Note the *opposite* side $a = BC$ controls the distance to $A$. Everything is done in O-centred coordinates and reduces to a single `linear_combination` over two circumcenter-equidistance relations.",
     "mathContext": "$AH^2 = 4R^2 - a^2$, $BH^2 = 4R^2 - b^2$, $CH^2 = 4R^2 - c^2$. Equivalent to $AH = 2R\\cos A$ via $a = 2R\\sin A$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "orthocenter",
       "circumradius",
@@ -30,7 +30,7 @@
       "startLine": 77,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Perpendicular-Bisector Identities (Linear in O)",
     "content": "`perp_bisector_AB` and `perp_bisector_AC` are the algebraic engine: they state that the circumcenter $O$ lies on the perpendicular bisectors of $AB$ and $AC$, written as $(B-A)\\cdot(B+A-2O) = 0$ and the analogue for $C$. Crucially this identity is *linear* in $O$, so substituting the closed-form circumcenter fraction and clearing the denominator $d = 2\\det(\\ldots) \\neq 0$ (`circumcenter_denom_ne_zero`) reduces it to a polynomial `ring` identity. A raised `maxHeartbeats` accommodates the large rational expansion. The parent file declares its equidistance facts `private`, so they are reproved locally here for an independent build.",
     "mathContext": "$(B-A)\\cdot\\big((B+A) - 2O\\big) = 0$ — the midpoint $\\tfrac{A+B}{2}$ to $O$ direction is perpendicular to $B-A$. Linear in $O$.",
@@ -78,7 +78,7 @@
       "startLine": 128,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The sq_dist2 Bridge: Keeping Algebra Polynomial",
     "content": "`sq_dist2` proves $(\\operatorname{dist2} P Q)^2 = \\operatorname{dist2\\_sq} P Q$, where `dist2` is the metric (square-root) distance and `dist2_sq` its polynomial square. Because `dist2_sq` is manifestly nonnegative, `Real.sq_sqrt` recovers it on squaring. This one lemma is the *only* place `Real.sqrt` is touched: all the heavy vertex-distance algebra is carried out in the polynomial `dist2_sq`, and the conversion to the metric circumradius $R^2$ and side lengths $a^2$ is isolated here. This separation of concerns is what keeps `linear_combination`/`ring` applicable throughout.",
     "mathContext": "$\\operatorname{dist2} P Q = \\sqrt{\\operatorname{dist2\\_sq} P Q}$ with $\\operatorname{dist2\\_sq} \\ge 0$, so $(\\sqrt{\\cdot})^2 = \\operatorname{dist2\\_sq}$ via `Real.sq_sqrt`.",
@@ -195,7 +195,7 @@
       "startLine": 245,
       "endLine": 270
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Example: the 3-4-5 Right Triangle",
     "content": "The 3-4-5 right triangle instantiates the abstract identities numerically. Its right angle sits at vertex $A = (0,0)$, which for a right triangle *is* the orthocenter — so $AH^2 = 0$, the correct (if degenerate-looking) instance of $4R^2 - a^2 = 4\\cdot\\tfrac{25}{4} - 25 = 0$ (the hypotenuse $a = 5$ equals the diameter $2R$). `triangle_345_AH_sq`, `triangle_345_vertex_A_metric`, and `triangle_345_vertex_sum` discharge these by rewriting the parent's `triangle_345_orthocenter = (0,0)`, circumradius and side values, then `norm_num`. The full vertex sum is $0 + 9 + 16 = 25 = 12R^2 - (a^2+b^2+c^2)$.",
     "mathContext": "$R = \\tfrac{5}{2}$, $a=5,b=4,c=3$: $AH^2 = 0 = 25-25$, $BH^2 = 9$, $CH^2 = 16$; sum $25 = 12\\cdot\\tfrac{25}{4} - (25+16+9)$.",

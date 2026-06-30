@@ -29,7 +29,7 @@
       "startLine": 88,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The v ↦ −v Trick: Antiparallel from the Parallel CS Equality Case",
     "content": "Mathlib's Cauchy-Schwarz equality case inner_eq_norm_mul_iff_real states ⟪x,y⟫ = ‖x‖‖y‖ ↔ ‖y‖•x = ‖x‖•y — the PARALLEL (nonnegative-multiple) case. We need the antiparallel condition ⟪u,v⟫ = −‖u‖‖v‖. Feeding the lemma the pair (u,−v) and simplifying (inner_neg_right, norm_neg, smul_neg) gives −⟪u,v⟫ = ‖u‖‖v‖ ↔ ‖v‖•u = −(‖u‖•v); neg_eq_iff_eq_neg flips the left side to ⟪u,v⟫ = −(‖u‖‖v‖). No bespoke 'negative CS equality' lemma is needed — the substitution turns the lower-bound saturation into the upper-bound one.",
     "mathContext": "$$\\langle u,v\\rangle = -\\|u\\|\\|v\\| \\iff \\|v\\|\\cdot u = -(\\|u\\|\\cdot v)$$",

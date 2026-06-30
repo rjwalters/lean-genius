@@ -29,7 +29,7 @@
       "startLine": 54,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Importing ζ(2) = π²/6 from Mathlib",
     "content": "basel_f restates Mathlib's hasSum_zeta_two for the local summand f, and summable_f extracts summability from it. No new analysis is done here — the entire analytic content (the value π²/6, due to Euler in 1734 and formalized in Mathlib's NumberTheory.ZetaValues) is imported wholesale. Everything that follows is elementary algebra and reindexing on top of this single deep input, which is what makes the entry an honest `mathlib`-badge corollary rather than an independent evaluation.",
     "mathContext": "$\\displaystyle\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$ (Euler, 1734).",
@@ -75,7 +75,7 @@
       "startLine": 93,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Summability of the Odd Subseries by Injective Reindexing",
     "content": "Before the odd value can be named, its series must be known to converge. Rather than invoking a comparison or p-series test, summability is *transported* from ζ(2): the map k ↦ 2k+1 is injective (a one-line `omega`), so Summable.comp_injective turns summability of f into summability of `fun k ↦ f (2k+1)`. This is purely structural — a subsequence of an absolutely convergent series of nonnegative terms is summable — and avoids any fresh analytic estimate.",
     "mathContext": "$k \\mapsto 2k+1$ is injective, so $\\sum_k f(2k+1)$ inherits summability from $\\sum_n f(n)$ via $\\texttt{Summable.comp\\_injective}$.",
@@ -98,7 +98,7 @@
       "startLine": 101,
       "endLine": 106
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Recombine and Solve: even_add_odd + HasSum.unique",
     "content": "This is the crux. heven.even_add_odd hodd reassembles the even and odd subseries into a HasSum for the full f, but with value π²/24 + (∑ odd). Mathlib already knows f sums to π²/6 (basel_f), and a sum is unique, so HasSum.unique equates π²/24 + (∑ odd) = π²/6. The odd value is then pure arithmetic: a single `linarith` over the atom π² yields ∑ odd = π²/6 − π²/24 = π²/8. Notably the odd value is obtained by *subtraction*, never by summing the odd series directly — uniqueness does the work an explicit evaluation would otherwise require.",
     "mathContext": "$\\frac{\\pi^2}{24} + \\Big(\\textstyle\\sum_k \\tfrac{1}{(2k+1)^2}\\Big) = \\frac{\\pi^2}{6} \\;\\Longrightarrow\\; \\sum_k \\frac{1}{(2k+1)^2} = \\frac{\\pi^2}{8}.$",
@@ -121,11 +121,11 @@
       "startLine": 107,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bridging f(2k+1) Back to the Clean Statement",
     "content": "The proof works internally with the f-shaped summand `fun k ↦ f (2k+1)` so that even_add_odd unifies, but the public theorem is stated in the reader-facing form `fun k ↦ 1/(2k+1)²`. A `funext`/`push_cast`/`ring` bridge proves these two functions are equal, after which the established HasSum is rewritten into the clean shape. This separation — internal form chosen for the tactic, external form chosen for legibility — is a recurring idiom when a Mathlib combinator constrains the summand pattern.",
     "mathContext": "$f(2k+1) = \\dfrac{1}{(2k+1)^2}$ after $\\texttt{push\\_cast}$ normalizes the ℕ→ℝ coercions.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "funext",
       "push_cast",
@@ -167,11 +167,11 @@
       "startLine": 126,
       "endLine": 146
     },
-    "type": "observation",
+    "type": "concept",
     "title": "The Decomposition Identity and Mass Distribution",
     "content": "basel_even_odd_decomposition records the arithmetic skeleton π²/6 = π²/24 + π²/8 (closed by `ring`), and odd_part_gt_even_part observes π²/24 < π²/8 — the even indices carry one quarter of the Basel mass and the odd indices carry three quarters. The two `example` sanity checks confirm the first two odd terms are 1/1² = 1 and 1/3² = 1/9, grounding the abstract HasSum statement in concrete arithmetic. These are anonymous examples, so they contribute no axioms and do not appear in the named theorem count.",
     "mathContext": "$\\frac{\\pi^2}{6} = \\underbrace{\\frac{\\pi^2}{24}}_{\\text{even, }1/4} + \\underbrace{\\frac{\\pi^2}{8}}_{\\text{odd, }3/4}$; first odd terms $1, \\tfrac19, \\tfrac1{25}, \\dots$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "mass distribution",
       "sanity check",

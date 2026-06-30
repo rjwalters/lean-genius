@@ -33,7 +33,7 @@
     "title": "Surjectivity onto Coprime Pairs",
     "content": "`reach_root` specializes the engine to the tree root: every coprime `(p,q)` with `p,q ≥ 1` is the `(numerator, denominator)` of some Stern-Brocot node. The root state `init = ⟨0,1,1,0⟩` makes the target coordinates simply `(q,p)`, and `pathNum`/`pathDen` read off exactly `p` and `q`. This is the combinatorial core of 'every reduced positive fraction appears in the tree'.",
     "mathContext": "$\\text{reach\\_aux}(q+p,\\,q,\\,p,\\,init)$ yields a path with $\\text{pathNum}=q\\cdot0+p\\cdot1=p$ and $\\text{pathDen}=q\\cdot1+p\\cdot0=q$.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": ["lowest terms", "Farey sequences"],
     "prerequisites": ["Nat.Coprime.symm"],
     "importance": "high"
@@ -59,7 +59,7 @@
     "title": "BST Bounds: Left Below, Right Above the Mediant",
     "content": "`left_lt_mediant` and `mediant_lt_right` distill the parent's `value_between_ancestors` into two clean ℕ cross-multiplied facts: a node in `s`'s left subtree has value strictly below `s`'s mediant (`num·(lb+rb) < (la+ra)·den`), and a node in the right subtree strictly above it. Working over ℕ (rather than the parent's ℤ form) lets the injectivity contradictions be discharged by `omega`-driven substitution with no cast bookkeeping.",
     "mathContext": "Left: $\\frac{num}{den}<\\frac{la+ra}{lb+rb}$. Right: $\\frac{la+ra}{lb+rb}<\\frac{num}{den}$, both cross-multiplied to avoid division.",
-    "significance": "medium",
+    "significance": "supporting",
     "relatedConcepts": ["binary search tree ordering", "cross-multiplication"],
     "prerequisites": ["value_between_ancestors (parent)"],
     "importance": "medium"
@@ -94,11 +94,11 @@
     "id": "ann-sbsurj-witnesses",
     "proofId": "denumerability-rationals-oq-03-oq-02",
     "range": { "startLine": 309, "endLine": 324 },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Surjectivity Witnesses",
     "content": "Three existence checks instantiate `reach_root`: the paths encoding `2/3`, `3/2`, and the larger coprime pair `22/7` all exist, with coprimality discharged by `decide`. These confirm the engine on small inputs (matching the parent's level-2 examples) and on a value whose path is long enough to exhibit the continued-fraction structure.",
     "mathContext": "$2/3\\to[L,R]$, $3/2\\to[R,L]$; $22/7=[3;7]$ is reached by $R^3L^7$-style descent.",
-    "significance": "low",
+    "significance": "supporting",
     "relatedConcepts": ["continued fractions", "decide"],
     "prerequisites": ["Nat.Coprime via decide"],
     "importance": "low"

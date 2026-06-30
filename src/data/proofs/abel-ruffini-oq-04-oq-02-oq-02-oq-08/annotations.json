@@ -35,7 +35,7 @@
       "startLine": 70,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Two Directions of the Sign Extension",
     "content": "`sym_solvable_of_alternating_solvable` (the substantive half) applies `solvable_of_ker_le_range` to the pair $(\\,A_\\alpha.\\mathrm{subtype} : A_\\alpha \\to S_\\alpha,\\ \\mathrm{sign} : S_\\alpha \\to \\mathbb{Z}^\\times\\,)$. The side goal $\\ker(\\mathrm{sign}) \\leq \\mathrm{range}(\\mathrm{subtype})$ is discharged by taking $x$ with $\\mathrm{sign}\\,x = 1$ and exhibiting the witness $\\langle x, \\mathrm{mem\\_alternatingGroup.mpr}\\,hx\\rangle$, since membership in the alternating group is *by definition* $\\mathrm{sign}\\,x = 1$. `alternating_solvable_of_sym_solvable` (the easy half) just registers the hypothesis as an instance and lets `subgroup_solvable_of_solvable` fire via type-class resolution — `A_\\alpha` being a `Subgroup (Perm \\alpha)`.\n\nBoth lemmas are stated for a general `[DecidableEq \\alpha] [Fintype \\alpha]`, the exact hypotheses `Perm.sign` and `alternatingGroup` require — no `Fin n` anywhere.",
     "mathContext": "`solvable_of_ker_le_range (f : G' →* G) (g : G →* G'')` proves `IsSolvable G` from `IsSolvable G'`, `IsSolvable G''` and `g.ker ≤ f.range`. Here $G' = A_\\alpha$, $G = S_\\alpha$, $G'' = \\mathbb{Z}^\\times$; `IsSolvable G''` holds because $\\mathbb{Z}^\\times$ is commutative. The kernel inclusion is an equality in disguise: `alternatingGroup α = (Perm.sign).ker`, so $\\ker(\\mathrm{sign})$ is exactly the range of the subgroup inclusion. The reverse direction uses the instance `subgroup_solvable_of_solvable (H : Subgroup G) [IsSolvable G] : IsSolvable H`, itself `solvable_of_solvable_injective H.subtype_injective`.",
@@ -84,7 +84,7 @@
       "startLine": 115,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Forcing the Threshold Agreement on Fin n",
     "content": "Specialising the bridge to $\\alpha = \\mathrm{Fin}\\,n$ gives `alternating_fin_solvable_iff_sym_fin_solvable`. Composing it with the parent's `alternating_solvable_iff` yields `sym_solvable_iff : IsSolvable (Perm (Fin n)) \\iff n \\leq 4` as a *single rewrite* — recovering the sibling entry `AbelRuffiniOQ04OQ02`'s `solvable_iff_le_four`, but now *derived* from the alternating classification through the bridge rather than proved independently. `solvability_trichotomy` exhibits the full chain $S_n$ solvable $\\iff A_n$ solvable $\\iff n \\leq 4$ in one statement.",
     "mathContext": "The rewrite `rw [← alternating_fin_solvable_iff_sym_fin_solvable, alternating_solvable_iff]` turns the goal `IsSolvable (Perm (Fin n)) ↔ n ≤ 4` first into `IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4` (using the bridge backwards) and then closes it with the parent theorem. This makes explicit that the two classical thresholds are not two facts but one fact seen on either side of the sign sequence.",

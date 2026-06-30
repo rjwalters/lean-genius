@@ -3,11 +3,11 @@
     "id": "shapiro4-header",
     "proofId": "nesbitt-inequality-oq-01-oq-01",
     "range": { "startLine": 3, "endLine": 41 },
-    "type": "context",
+    "type": "concept",
     "title": "Shapiro's cyclic inequality and the n = 4 case",
     "content": "The header frames the entry: Nesbitt's inequality is the n = 3 instance of Shapiro's cyclic inequality Σ aᵢ/(aᵢ₊₁ + aᵢ₊₂) ≥ n/2. Shapiro's inequality is famously subtle — true for n ≤ 12 (even) and n ≤ 23 (odd), and false beyond, with explicit counterexamples at n = 14 and n = 25 (Lighthill, Rankin, and others). This file settles the next case past Nesbitt, n = 4: a/(b+c) + b/(c+d) + c/(d+a) + d/(a+b) ≥ 2. The qualitative novelty is the equality structure — for n = 3 the minimum is the single ray a = b = c, whereas for n = 4 it is the two-parameter family a = c, b = d, so the minimiser set becomes positive-dimensional.",
     "mathContext": "$\\sum_{i} \\frac{a_i}{a_{i+1}+a_{i+2}} \\ge \\frac{n}{2}, \\qquad n=4:\\ \\frac{a}{b+c}+\\frac{b}{c+d}+\\frac{c}{d+a}+\\frac{d}{a+b} \\ge 2$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Shapiro cyclic inequality", "Nesbitt's inequality", "equality locus", "sum-of-squares certificate"],
     "prerequisites": ["cyclic sums", "ordered fields", "real fractions"]
   },

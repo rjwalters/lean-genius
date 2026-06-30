@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 69
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Asymmetric Obstruction p ≤ n",
     "content": "The docstring frames the rectangular generalization. The sibling (OQ-07-OQ-04-OQ-01-OQ-02) computed the raw power moment of the *squared* Pascal row, $\\sum k^p C(n,k)^2 = \\sum_r S(p,r)(n)_r C(2n-r,n-r)$, unconditionally in $p$. This file asks whether the same Stirling bridge applies to a product of two *different* rows $C(m,k)C(n,k)$. The answer is yes, but with a genuinely new side condition $p \\le n$. The lesson: the symmetric case's unconditionality was an accident of the self-annihilating coefficient $(n)_r$ (which vanishes for $r>n$); the rectangular leading coefficient $(m)_r$ survives on the window $n < r \\le m$, where the inner moment is 0 but the closed form is not — so the two part company unless $p \\le n$.",
     "mathContext": "$\\sum_{k=0}^{n} k^p\\,C(m,k)C(n,k) = \\sum_{r=0}^{p} S(p,r)\\,(m)_r\\,C(m+n-r,\\,n-r)$ for $p\\le n$, where $S(p,r) = $ stirlingSecond. By $m\\leftrightarrow n$ symmetry a mirror form holds for $p\\le m$, together covering $p \\le \\max(m,n)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Stirling numbers of the second kind",
       "Vandermonde convolution",
@@ -139,11 +139,11 @@
       "startLine": 180,
       "endLine": 197
     },
-    "type": "context",
+    "type": "concept",
     "title": "Kernel-decide Sanity Checks (incl. the Vanishing Window)",
     "content": "Three numeric examples certify the formulas by kernel `decide` (not native_decide, so no Lean.ofReduceBool). The asymmetric power moment is checked at $(p,m,n) = (2,3,4)$; the one-sided cross moment at $(r,m,n) = (2,3,5)$ giving $(3)_2\\cdot C(6,3) = 6\\cdot 20 = 120$; and — most tellingly — the asymmetric vanishing window at $(r,m,n) = (4,2,5)$, where both sides are 0 because $(2)_4 = 0$ (the leading factor) and every survivor $k\\ge 4 > 2$ kills $C(2,k)$. This last check directly exercises the $m<r\\le n$ branch that motivates the $p\\le n$ bound.",
     "mathContext": "$(r,m,n)=(2,3,5)$: $\\sum (k)_2 C(3,k)C(5,k) = (3)_2 C(6,3) = 120$. $(r,m,n)=(4,2,5)$: both sides $0$ since $(2)_4 = 0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "numerical verification",
       "kernel decide",

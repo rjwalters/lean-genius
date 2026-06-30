@@ -3,11 +3,11 @@
     "id": "pythag-oq09-header",
     "proofId": "pythagorean-triples-oq-09",
     "range": { "startLine": 1, "endLine": 33 },
-    "type": "context",
+    "type": "concept",
     "title": "The inscribed circle of an integer right triangle has integer radius",
     "content": "The header states the geometric integrality phenomenon: a right triangle whose legs x, y and hypotenuse z form a Pythagorean triple (x²+y²=z²) has inradius r = (x+y−z)/2, a non-negative integer (e.g. (3,4,5)→1, (5,12,13)→2, (8,15,17)→3). Three ingredients: **parity** 2∣(x+y−z) for ANY triple (a ZMod 2 computation using a²=a — cleaner than oq-07's mod-4 split, no coprimality); **positivity** z ≤ x+y for non-negative legs; and the **area identity** (x+y−z)(x+y+z) = 2xy, which with x+y−z = 2r gives r·s = Area, the classical Heron relation. It is a structural invariant of integer right triangles alongside the parity dichotomy of oq-07.",
     "mathContext": "$r = \\frac{x+y-z}{2} \\in \\mathbb{Z}_{\\ge 0},\\quad r \\cdot s = \\text{Area}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Pythagorean triples", "inradius", "Area = r·s", "Heron"],
     "prerequisites": ["Pythagorean triples", "inradius and semiperimeter", "modular arithmetic"]
   },

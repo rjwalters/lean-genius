@@ -21,7 +21,7 @@
       "startLine": 31,
       "endLine": 32
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Membership Reduces to Equal Parity",
     "content": "crossing4_iff records that crossing4 x y ↔ x.val % 2 = y.val % 2, and the proof is literally Iff.rfl: because crossing4 is a kernel Setoid, its relation unfolds definitionally to equality of the parity values. This definitional transparency is what lets every downstream fact be discharged by decide — no rewriting or unfolding lemmas are needed, the relation already IS the decidable proposition x.val % 2 = y.val % 2.",
     "mathContext": "$x \\sim y \\iff x \\bmod 2 = y \\bmod 2$",

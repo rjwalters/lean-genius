@@ -27,7 +27,7 @@
     "id": "ann-erdos131-rank2-mono",
     "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
     "range": { "startLine": 65, "endLine": 77 },
-    "type": "technique",
+    "type": "tactic",
     "title": "davenport_set_mono: Upward Closure Turns One Witness Into a Bound on All Shorter Lengths",
     "content": "If m ∈ DavenportSet G and m ≤ m', then m' ∈ DavenportSet G. The proof restricts a length-m' sequence f to its first m entries via Fin.castLE (giving fun i => f (Fin.castLE h i)), obtains a zero-sum subset s : Finset (Fin m) from the hypothesis, and re-embeds it into Fin m' with the order embedding Fin.castLEEmb; Finset.sum_map keeps the sum unchanged. This monotonicity is the lever that converts a single fixed-length zero-sum-free witness into the statement that NO length ≤ a+b−2 is a Davenport length.",
     "mathContext": "$m\\le m'$, $m\\in\\mathrm{DavenportSet}\\Rightarrow m'\\in\\mathrm{DavenportSet}$. Restrict via $\\mathrm{Fin.castLE}$, re-embed the subset via $\\mathrm{Fin.castLEEmb}$ (sum preserved by $\\mathrm{Finset.sum\\_map}$).",

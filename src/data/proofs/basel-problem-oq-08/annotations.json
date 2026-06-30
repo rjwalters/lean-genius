@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 22
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header and Problem Setup",
     "content": "The open question asks for $\\sum_{n=1}^\\infty 1/n^4 = \\pi^4/90$, the degree-4 analogue of the Basel problem $\\sum 1/n^2 = \\pi^2/6$. Euler's 1740 even-argument formula $\\zeta(2k) = (-1)^{k+1} B_{2k}(2\\pi)^{2k}/(2(2k)!)$ gives this at $k=2$ (using the Bernoulli number $B_4 = -1/30$). Mathlib formalizes the underlying Bernoulli/Hurwitz-zeta computation as hasSum_zeta_four, so the entry's job is to specialise and repackage it: the tsum value, the riemannZeta value over ℂ, and the dimensionless Euler ratio.",
     "mathContext": "$\\zeta(2k) = (-1)^{k+1}\\dfrac{B_{2k}(2\\pi)^{2k}}{2(2k)!}$; at $k=2$, $B_4=-\\tfrac{1}{30}$ gives $\\zeta(4)=\\tfrac{\\pi^4}{90}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Basel problem",
       "Riemann zeta function",

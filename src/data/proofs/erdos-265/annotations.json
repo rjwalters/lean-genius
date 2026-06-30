@@ -260,7 +260,7 @@
       "startLine": 146,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "definition",
     "title": "Valid Sequence Set and Maximum Growth Rate",
     "content": "Defines `validSequences` as the set $\\{a \\mid \\text{IsPositiveIntSeq}(a) \\land \\text{IsStrictlyIncreasing}(a) \\land \\text{hasBothRationalSums}(a)\\}$ and `maxGrowthRate` as the supremum of $\\limsup a_n^{1/n}$ over all valid $a$. The supremum uses Mathlib's `⨆` (indexed supremum). The Kovač-Tao result shows $\\text{maxGrowthRate} = +\\infty$ (since $a_n^{1/n} \\to \\infty$ is achievable).",
     "mathContext": "$\\mathcal{V} = \\{a : \\mathbb{N} \\to \\mathbb{N} \\mid a_n \\geq 1,\\; a_n < a_{n+1},\\; \\sum 1/a_n \\in \\mathbb{Q},\\; \\sum 1/(a_n-1) \\in \\mathbb{Q}\\}$. By Kovač-Tao, $\\sup_{a \\in \\mathcal{V}} \\limsup a_n^{1/n} = +\\infty$.",

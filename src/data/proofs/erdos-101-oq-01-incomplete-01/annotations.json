@@ -7,7 +7,7 @@
     "title": "Pinpointing the Frontier of a $100 Open Problem",
     "content": "The docstring states Erdős Problem #101 OQ-01 (OPEN, $100 prize): for a planar point set P with no five collinear, is fourPointLineCount P (the number of lines through exactly four points) o(n²)? The trivial double-counting bound is O(n²); no o(n²) is known, and the Solymosi–Stojaković (2013) lower bound n^{2−o(1)} shows the gap lives entirely in a slowly-varying o(1) factor. This file does NOT attack the open part. Instead it asks the sharp delineating question — for which ε is the conjecture already an unconditional theorem? — and answers it: every ε > 1/12. The whole point is to certify exactly where the elementary method stops, isolating 0 < ε ≤ 1/12 as the open content.",
     "mathContext": "OQ-01: $\\forall\\varepsilon>0\\ \\exists N\\ \\forall P\\,(|P|\\ge N,\\text{no 5 collinear}),\\ \\mathrm{fourPointLineCount}(P) < \\varepsilon n^2$. This file settles all $\\varepsilon > 1/12$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős problems", "incidence geometry", "four-point lines", "little-oh", "Solymosi–Stojaković bound"],
     "prerequisites": ["extremal combinatorics", "asymptotic notation"]
   },

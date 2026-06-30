@@ -29,7 +29,7 @@
       "startLine": 42,
       "endLine": 47
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Two Textbook Factor Forms Coincide",
     "content": "wallis_factor records that the Wallis factor's two standard presentations are literally the same number: 4k²/(4k²−1) = (2k)²/((2k−1)(2k+1)). The proof rewrites the denominator via the difference of squares 4k² − 1 = (2k−1)(2k+1) and closes with ring. Notably the identity is unconditional — no nonzero hypotheses on the denominators — because after factoring, the numerator (4k² = (2k)²) and denominator match as rational functions, so ring proves the equality formally even at the poles.",
     "mathContext": "$\\frac{4k^2}{4k^2-1} = \\frac{(2k)^2}{(2k-1)(2k+1)}$ since $4k^2 - 1 = (2k-1)(2k+1)$ and $4k^2 = (2k)^2$.",
@@ -51,7 +51,7 @@
       "startLine": 52,
       "endLine": 66
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Reindexing onto Mathlib's Shifted Product",
     "content": "wallisProduct_eq is the technical bridge: it shows our classical product equals, term by term, Mathlib's index-from-zero Wallis product (2i+2)/(2i+1)·(2i+2)/(2i+3). After Finset.prod_congr reduces to a single factor, the substitution k = i+1 makes 4(i+1)²/(4(i+1)²−1) equal (2i+2)²/((2i+1)(2i+3)) = (2i+2)/(2i+1)·(2i+2)/(2i+3). The equality is closed by field_simp + ring, using that the denominators 2i+1, 2i+3, and 4(i+1)²−1 = (2i+1)(2i+3) are all nonzero (each shown by positivity).",
     "mathContext": "With $k = i+1$: $2k = 2i+2$, $2k-1 = 2i+1$, $2k+1 = 2i+3$, so the classical factor matches Mathlib's shifted factor exactly.",

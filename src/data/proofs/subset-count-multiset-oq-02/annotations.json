@@ -29,7 +29,7 @@
     "title": "The Signed Submultiset Count",
     "content": "signedSubMultisetCount s sums (-1)^|t| over the distinct submultisets t of s (the finset distinctSubMultisets s from the parent, where each submultiset is counted once). The value lives in ℤ so the alternating signs can cancel. Splitting by the parity of |t|, this is #{even-size submultisets} − #{odd-size submultisets}, the quantity whose vanishing yields the parity headline.",
     "mathContext": "$\\text{signedSubMultisetCount}\\,s = \\sum_{t \\in \\text{distinctSubMultisets}\\,s} (-1)^{|t|} \\in \\mathbb{Z}$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["distinctSubMultisets", "alternating sum", "integer-valued count"],
     "prerequisites": ["Finset.sum", "integer powers of -1"]
   },
@@ -53,7 +53,7 @@
     "title": "Factoring the Signed Sum into a Product of Alternating Sums",
     "content": "The heart of the proof. signedSubMultisetCount_eq_prod transports the signed sum along dsmEquivPi (Fintype.sum_equiv): under the bijection (-1)^|t| becomes ∏_a (-1)^{t.count a} (using card_eq_sum_count_toFinset and Finset.prod_pow_eq_pow_sum). The signed sum is then a sum over the product type ∀a, Fin(count a+1) of products, which the sum-of-products identity Finset.prod_univ_sum (combined with Fintype.piFinset_univ and Fin.sum_univ_eq_sum_range) collapses back into ∏ a ∈ s.toFinset, ∑_{j<count a+1} (-1)^j. The companion signedSubMultisetCount_eq_prod_ite then evaluates each factor with neg_one_geom_sum to if Even (count a) then 1 else 0.",
     "mathContext": "$\\sum_{t} (-1)^{|t|} = \\sum_{f : \\prod_a \\text{Fin}(m_a+1)} \\prod_a (-1)^{f(a)} = \\prod_a \\sum_{j=0}^{m_a} (-1)^j$, and $\\sum_{j=0}^{m} (-1)^j = [m \\text{ even}]$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["Fintype.sum_equiv", "Finset.prod_univ_sum", "Finset.prod_pow_eq_pow_sum", "neg_one_geom_sum"],
     "prerequisites": ["Reindexing sums by equivalences", "sum-of-products = product-of-sums", "finite geometric sums"]
   },
@@ -65,7 +65,7 @@
     "title": "Vanishing, Even–Odd Parity, and the All-Even Converse",
     "content": "The payoff. signedSubMultisetCount_eq_zero_of_odd: a single odd multiplicity makes a factor [m even] = 0, so the whole product (Finset.prod_eq_zero) vanishes. signedSubMultisetCount_eq_even_sub_odd rewrites the signed count as the integer #{even-size} − #{odd-size} via Even.neg_one_pow / Odd.neg_one_pow on the parity-filtered sums. Combining the two gives the headline even_card_eq_odd_card_of_odd_multiplicity: if some element has odd multiplicity then #{even-size submultisets} = #{odd-size submultisets} (closed by omega on the cast difference). The converse signedSubMultisetCount_eq_one_of_all_even shows that if every multiplicity is even, every factor is 1, so the signed count is 1.",
     "mathContext": "$\\exists a,\\ \\text{Odd}(m_a) \\Rightarrow \\#\\{|t| \\text{ even}\\} = \\#\\{|t| \\text{ odd}\\}$; $(\\forall a,\\ \\text{Even}(m_a)) \\Rightarrow \\sum_t (-1)^{|t|} = 1$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["Finset.prod_eq_zero", "Even.neg_one_pow", "Odd.neg_one_pow", "parity dichotomy"],
     "prerequisites": ["filtering finsets by a predicate", "integer casts of cardinalities"]
   },
@@ -77,7 +77,7 @@
     "title": "Concrete Instances",
     "content": "Two grounding examples discharged by the proved theorems (with decide, so the file stays free of native_decide and the Lean.ofReduceBool axiom). For s = {1,1,2}, element 2 has odd multiplicity, so the even-size and odd-size submultisets are equinumerous. For s = {1,1}, every multiplicity is even, so the signed count is 1.",
     "mathContext": "$\\{1,1,2\\}$: $\\text{count}\\,2 = 1$ odd $\\Rightarrow$ #even $=$ #odd; $\\{1,1\\}$: all even $\\Rightarrow \\sum (-1)^{|t|} = 1$.",
-    "significance": "illustrative",
+    "significance": "supporting",
     "relatedConcepts": ["even_card_eq_odd_card_of_odd_multiplicity", "signedSubMultisetCount_eq_one_of_all_even"],
     "prerequisites": ["decide on concrete multisets"]
   }

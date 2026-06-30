@@ -10,7 +10,7 @@
     "title": "Module Header: Prime Powers and the Deficiency Classification",
     "content": "A positive integer $n$ is **deficient** when $\\sigma(n) < 2n$, equivalently when its proper divisors sum to strictly less than $n$. This classification (deficient / perfect / abundant) goes back to Nicomachus of Gerasa (c. 100 AD).\n\nPrime powers are the simplest infinite family of deficient numbers. The divisors of $p^k$ are exactly $1, p, p^2, \\dots, p^k$, so\n$$\\sigma(p^k) = 1 + p + \\cdots + p^k = \\frac{p^{k+1}-1}{p-1},$$\nwhich is always *just short* of $2p^k$. The deficiency is the elementary geometric fact that the lower tail $1 + p + \\cdots + p^{k-1}$ is strictly smaller than the single top term $p^k$ (for $p \\ge 2$):\n$$\\sigma(p^k) = \\underbrace{(1 + p + \\cdots + p^{k-1})}_{< \\,p^k} + p^k < p^k + p^k = 2p^k.$$\n\n**What was missing.** The existing gallery family had only the $k=1$ case (`prime_is_deficient`), the closed-form sum (`sigma_prime_pow`), and a few *specific* deficient numbers proved by `native_decide` (which trusts the compiler, `Lean.ofReduceBool`). This file supplies the **general, all-$k$ theorem** with a uniform geometric-series proof, fully kernel-checked with **0 axioms**.",
     "mathContext": "$\\sigma(p^k) = \\dfrac{p^{k+1}-1}{p-1} < 2p^k$ for every prime $p$ and every $k \\ge 0$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["deficient number", "sum-of-divisors function σ", "prime power", "Nicomachus classification"],
     "prerequisites": ["divisor function", "geometric series", "number theory"]
   },

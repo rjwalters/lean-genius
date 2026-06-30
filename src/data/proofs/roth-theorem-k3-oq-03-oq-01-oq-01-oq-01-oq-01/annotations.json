@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 54
     },
-    "type": "context",
+    "type": "concept",
     "title": "Affine Covariance: Completing the Symmetry Group of the AP-Counting Average",
     "content": "The header places this file at the bottom of a four-generation lineage that builds the normalized k-AP counting operator\n\n  Λ_k(f₀,…,f_{k-1}) = E_{x,d ∈ ZMod N} ∏_{i<k} fᵢ(x + i·d)\n\nand studies its structure: the great-grandparent defines Λ_k and its degenerate identities, the grandparent proves multilinearity, and the parent records two symmetries — translation invariance and the order-reversing reflection i↦k−1−i. Those cover the *additive* part of the symmetry group of an arithmetic progression. What was missing is the *multiplicative* part: the count is also unchanged when the whole configuration is dilated by an invertible scalar.\n\nThis file supplies it. The headline `kAPCount_affine` proves the full **affine covariance**: for any unit `a ∈ (ZMod N)ˣ` and any translate `t`, replacing every fᵢ by `y ↦ fᵢ(a·y + t)` leaves Λ_k fixed. Geometrically, the affine map φ(y) = a·y + t carries the progression {x, x+d, …, x+(k−1)d} to the progression with base point a·x+t and common difference a·d — still an arithmetic progression — and the substitution (x,d) ↦ (a·x+t, a·d) is a *bijection* of (ZMod N)² precisely because a is invertible. Bijectivity preserves the averaging measure, so the count is fixed.\n\nThis exhibits the one-dimensional affine group GA(1, ZMod N) = (ZMod N)ˣ ⋉ ZMod N acting on Λ_k by symmetries; two corollaries (`kAPCount_dilate`, `kAPCount_translate_of_affine`) isolate the multiplicative and additive pieces. All 0-axiom. The references are Gowers' 2001 proof of Szemerédi's theorem and Tao's higher-order Fourier analysis.",
     "mathContext": "An invertible affine substitution $\\varphi(y) = a y + t$, $a \\in (\\mathbb{Z}_N)^\\times$, $t \\in \\mathbb{Z}_N$, maps the AP $\\{x + i d\\}_{i<k}$ to $\\{\\varphi(x) + i(ad)\\}_{i<k}$. The induced map $(x,d) \\mapsto (ax+t,\\,ad)$ on $\\mathbb{Z}_N^2$ is a bijection $\\iff a$ is a unit, so $\\Lambda_k(f_0\\circ\\varphi,\\ldots) = \\Lambda_k(f_0,\\ldots)$. The symmetry group is $\\mathrm{GA}(1,\\mathbb{Z}_N) = (\\mathbb{Z}_N)^\\times \\ltimes \\mathbb{Z}_N$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "affine group GA(1, ZMod N)",
       "dilation invariance",
@@ -31,11 +31,11 @@
       "startLine": 55,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Importing the Lineage and Fixing ZMod N",
     "content": "`import Proofs.RothTheoremOQ03OQ01OQ01OQ01` pulls in the parent's symmetry results, and transitively the grandparent's multilinearity and the great-grandparent's definition of `kAPCount` and `gowersNorm` — so `kAPCount` is in scope without redefinition. `open Finset BigOperators` brings the `∑`/`∏` big-operator notation and the `Finset`/`Fintype` lemma namespaces into scope.\n\n`variable {N : ℕ} [NeZero N]` fixes the finite cyclic group `ZMod N` as the ambient space, with `[NeZero N]` ensuring `N ≠ 0` so that `ZMod N` is genuinely finite (order N) and the normalized averages `E_{x,d}` over `(ZMod N)²` are well-defined. The same `[NeZero N]` finiteness is what makes `Fintype.sum_equiv` — reindexing a finite sum along a bijection — applicable later.",
     "mathContext": "$\\mathbb{Z}_N = \\mathbb{Z}/N\\mathbb{Z}$ with $N \\ge 1$ (from `[NeZero N]`), a finite ring of order $N$. The double average $\\mathbb{E}_{x,d} = \\frac{1}{N^2}\\sum_{x,d \\in \\mathbb{Z}_N}$ requires this finiteness.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "ZMod N",
       "NeZero typeclass",
@@ -132,7 +132,7 @@
       "startLine": 124,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "kAPCount_translate_of_affine: Recovering the Parent's Translation Invariance",
     "content": "The `a = 1` specialization recovers translation invariance: `Λ_k(f₀(·+t),…) = Λ_k(f₀,…)`. The proof is `have h := kAPCount_affine k f 1 t; simpa using h` — instantiate affine covariance at the identity unit `1 : (ZMod N)ˣ`, and `simpa` reduces `↑(1:(ZMod N)ˣ)·y` to `y`.\n\nThe point of recording this corollary is *consistency*, not novelty: it confirms that the new affine covariance result genuinely **subsumes** the parent's `kAPCount_translate` — the additive symmetry is exactly the multiplicative-identity slice of the affine action. Together, `kAPCount_dilate` (t=0, a free) and `kAPCount_translate_of_affine` (a=1, t free) decompose the full GA(1, ZMod N) = (ZMod N)ˣ ⋉ ZMod N action into its multiplicative and additive generators, completing the symmetry picture the lineage set out to describe.",
     "mathContext": "Set $a = 1$ in affine covariance: $\\Lambda_k(f_0(\\cdot + t),\\ldots) = \\Lambda_k(f_0,\\ldots)$, the translation $x \\mapsto x + t$ — the parent's `kAPCount_translate`. The semidirect product $(\\mathbb{Z}_N)^\\times \\ltimes \\mathbb{Z}_N$ is generated by the dilations ($t=0$) and translations ($a=1$).",

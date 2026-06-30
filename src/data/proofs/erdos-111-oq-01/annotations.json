@@ -33,7 +33,7 @@
     "title": "The Binary-Expansion (Product) Coloring",
     "content": "`BipartiteCover.coloring` is the heart of the file: from a bipartite cover it builds a genuine `SimpleGraph.Coloring` of `G` with color set `ι → Bool`, sending each vertex `v` to the tuple of its bits `i ↦ part i v`. Validity is immediate — if `u` and `v` are adjacent, the covering condition gives a coordinate `i` with `part i u ≠ part i v`, so the two tuples differ at `i` (`congrFun`). Crucially this works for an *arbitrary* index type `ι`, finite or infinite; the finiteness only enters later when we count colors.",
     "mathContext": "The map $v \\mapsto (c_i(v))_{i \\in \\iota} \\in \\{0,1\\}^{\\iota}$ is a proper coloring of $G$: adjacent vertices are separated in some coordinate, hence receive different tuples.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "proper coloring",
       "product coloring",
@@ -56,7 +56,7 @@
     "title": "Finite Cover ⇒ χ(G) ≤ 2^|ι|",
     "content": "For a finite index type `ι`, the product coloring lands in `ι → Bool`, a type of cardinality `2 ^ |ι|`. Composing `BipartiteCover.coloring` with Mathlib's `Coloring.colorable` and rewriting `Fintype.card (ι → Bool) = Fintype.card Bool ^ Fintype.card ι = 2 ^ Fintype.card ι` yields `G.Colorable (2 ^ Fintype.card ι)`. This is the easy direction of the cover/chromatic equivalence.",
     "mathContext": "If $G$ has a bipartite cover by $k = |\\iota|$ graphs, then $\\chi(G) \\le 2^k$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "chromatic number",
       "Colorable",
@@ -78,7 +78,7 @@
     "title": "Sharp Equivalence: Colorable (2^k) ↔ k-Bipartite Cover",
     "content": "The two directions combine into a sharp iff. Forward (`Colorable (2^k) → cover`): a coloring into `Fin (2^k)` is transported across the explicit equivalence `finPowEquiv : Fin (2^k) ≃ (Fin k → Bool)` via `recolorOfEquiv`, then `bipartiteCoverOfColoring` reads off the `k` bit-coordinates as bipartitions. Backward: the finite bound above. Together they show the bipartite-cover number of `G` is exactly `⌈log₂ χ(G)⌉` — the classical, fully verified statement of the entry.",
     "mathContext": "The edges of $G$ are coverable by $k$ bipartite graphs $\\iff \\chi(G) \\le 2^k$. Equivalently, the minimum number of bipartite graphs covering $G$ equals $\\lceil \\log_2 \\chi(G) \\rceil$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "recolorOfEquiv",
       "finFunctionFinEquiv",
@@ -101,7 +101,7 @@
     "title": "ℵ₁-Chromatic Graphs Need Infinitely Many Bipartite Covers",
     "content": "The corollary `not_nonempty_bipartiteCover_of_chromaticNumber_top` is the payoff for Erdős #111. Since `2^k` is finite for finite `k`, a finite bipartite cover forces a finite chromatic number; contrapositively, if `G.chromaticNumber = ⊤` (not finitely colorable) then no finite bipartite cover exists. Every graph with uncountable chromatic number — in particular the `χ(G) = ℵ₁` graphs of #111 — satisfies `chromaticNumber = ⊤`, so it requires infinitely many bipartite graphs to cover its edges. The proof is a one-line contradiction from the finite chromatic bound and `WithTop.coe_lt_top`.",
     "mathContext": "If $\\chi(G) = \\aleph_1$ (so $G$ is not finitely colorable), then $G$ has no finite bipartite cover: covering its edges by bipartite graphs requires infinitely many. Mathlib's $\\mathbb{N}_\\infty$-valued chromatic number represents this as $\\chi(G) = \\top$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "uncountable chromatic number",
       "aleph-one",

@@ -26,11 +26,11 @@
       "startLine": 72,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Completing the Square in the Integration Variable",
     "content": "The whole computation hinges on one algebraic identity (complete_the_square): y²/(2σ₁²)+(x−y)²/(2σ₂²) = A(y−m)² + B with s=σ₁²+σ₂², A=s/(2σ₁²σ₂²), m=σ₁²x/s, B=x²/(2s). Completing the square in y (not x) turns the two-factor integrand into a single shifted Gaussian times a y-free constant. The added-variance law lives entirely in the constant term B=x²/(2s); the curvature A and centre m are scaffolding that integrate away. Two scalar collapses are pre-computed here: prefactor_collapse (using √(2π)·√(2π)=2π) and sqrt_pi_div_A (the closed form √(π/A)=σ₁σ₂√(2π)/√s). All discharged by field_simp; ring and the Real.sqrt algebra lemmas.",
     "mathContext": "Completing the square reduces a product of two Gaussians to one Gaussian; the residual integral is a translate of ∫ e^{-Au²}.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "completing the square",
       "Gaussian integral",
@@ -48,7 +48,7 @@
     "title": "Translation-Invariance Removes the Shift; integral_gaussian Finishes",
     "content": "After factoring the integrand as (C·e^{−B})·e^{−A(y−m)²}, the constant pulls out (integral_const_mul), translation-invariance of Lebesgue measure (integral_sub_right_eq_self) erases the centre m with no Jacobian, and Mathlib's integral_gaussian evaluates ∫ e^{−Au²} du = √(π/A). The prefactors then collapse to 1/(√s·√(2π)) and e^{−B}=e^{−x²/(2s)} matches φ_{√s} once (√s)²=s is applied — yielding exactly φ_{√(σ₁²+σ₂²)}(x).",
     "mathContext": "The shifted Gaussian integral equals the centred one by translation-invariance; its value √(π/A) drives the variance-addition.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "translation invariance",
       "Bochner integral",

@@ -7,7 +7,7 @@
     "title": "The Even and Odd Telescoping Products",
     "content": "Re-declares (verbatim from the parent) the crossing factor αₙ by its two-step recurrence, and introduces the two telescoping products E_m = ∏_{j<m} (2j+2)/(2j+3) (even, `evenProd`) and O_m = ∏_{j<m} (2j+3)/(2j+4) (odd, `oddProd`). The successor lemmas `evenProd_succ`/`oddProd_succ` peel one factor (by `Finset.prod_range_succ`), and positivity is immediate since every factor is positive. The closed forms `crossingFactor_even` (αₙ for n=2m+2 equals (2/π)·E_m) and `crossingFactor_odd` (αₙ for n=2m+3 equals (1/2)·O_m) are re-proved by induction, recasting the crossing factor entirely in terms of the products that the asymptotic analysis acts on.",
     "mathContext": "$\\alpha_{2m+2}=\\tfrac{2}{\\pi}E_m,\\quad \\alpha_{2m+3}=\\tfrac12 O_m,\\quad E_m=\\prod_{j<m}\\tfrac{2j+2}{2j+3},\\ O_m=\\prod_{j<m}\\tfrac{2j+3}{2j+4}.$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["telescoping product", "Wallis-type product", "spherical average", "Buffon noodle"],
     "prerequisites": ["finite products", "recursively defined functions"]
   },

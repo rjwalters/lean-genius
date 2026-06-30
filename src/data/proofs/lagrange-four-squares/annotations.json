@@ -61,7 +61,7 @@
       "startLine": 50,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The ring Tactic",
     "content": "The `ring` tactic is Lean's automated prover for polynomial ring identities. It expands both sides and verifies they're equal.\n\nThis 8-term polynomial identity would be tedious to prove by hand, but `ring` handles it instantly by normalizing both sides to a canonical form.",
     "mathContext": "Ring arithmetic in any commutative ring R.",
@@ -97,7 +97,7 @@
       "startLine": 50,
       "endLine": 70
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Notorious Seven",
     "content": "7 is the smallest number that requires all four squares:\n$$7 = 1^2 + 1^2 + 1^2 + 2^2 = 1 + 1 + 1 + 4$$\n\nYou can verify: there's no way to write 7 = a² + b² + c² with integers.",
     "mathContext": "7 = 4⁰(8·0 + 7) fits Legendre's obstruction.",

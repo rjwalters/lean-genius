@@ -87,7 +87,7 @@
     "id": "fsd-oq05-ann-perm-counts",
     "proofId": "four-square-distribution-oq-05",
     "range": { "startLine": 148, "endLine": 189 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Multinomial Permutation Counts for Low-Nonzero Types",
     "content": "With the zero pattern fixed, the permutation count is computed explicitly as the multinomial coefficient 4!/(∏ multiplicities!). `permutations_one_nonzero` shows `(0,0,0,a₄)` has exactly `4 = 4!/3!` distinct orderings (three equal zeros). `two_dvd_permutations_two_nonzero` shows `(0,0,a₃,a₄)` has an *even* count — `6 = 4!/(2!·2!)` when a₃ = a₄ and `12 = 4!/2!` when a₃ ≠ a₄ — by casing on `he : a₃ = a₄`. Both unfold `RepType.permutations`, normalize the underlying multiset via `List.dedup`/`List.count` rewrites, and finish with `decide`. The evenness (not the exact value) is all that is needed downstream.",
     "mathContext": "$\\binom{4}{3,1}=4,\\quad \\binom{4}{2,2}=6,\\quad \\binom{4}{2,1,1}=12; \\qquad 2 \\mid \\mathrm{permutations}(t)\\ \\text{when}\\ \\mathrm{nonzeroCount}(t)=2.$",

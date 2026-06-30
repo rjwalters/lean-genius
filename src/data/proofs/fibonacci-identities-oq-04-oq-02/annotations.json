@@ -3,11 +3,11 @@
     "id": "ann-fiboq0402-1",
     "proofId": "fibonacci-identities-oq-04-oq-02",
     "range": { "startLine": 3, "endLine": 36 },
-    "type": "context",
+    "type": "concept",
     "title": "The Fibonacci Q-Matrix and the Determinant Route",
     "content": "**Module framing.** The matrix $Q = \\begin{pmatrix}1&1\\\\1&0\\end{pmatrix}$ encodes the Fibonacci numbers: $Q^n = \\begin{pmatrix}F_{n+1}&F_n\\\\F_n&F_{n-1}\\end{pmatrix}$. Because $\\det$ is multiplicative, $\\det(Q^n) = (\\det Q)^n = (-1)^n$, and expanding the left side is exactly Cassini's identity. This entry answers the **second open question** of `fibonacci-identities-oq-04` — to formalize $\\det([[1,1],[1,0]]^n) = (-1)^n$ and deduce Vajda from determinant multiplicativity. The Q-matrix and this determinant identity are **absent from Mathlib** (which records only `Nat.fib_add`).",
     "mathContext": "$Q = \\begin{pmatrix}1&1\\\\1&0\\end{pmatrix}$, $\\det(Q^n) = (-1)^n$, the source of every alternating sign in the Fibonacci product family.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Fibonacci Q-matrix",
       "Multiplicativity of determinants",

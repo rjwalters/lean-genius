@@ -6,7 +6,7 @@
       "startLine": 59,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Realizing the Cubic as a Polynomial",
     "content": "To apply Mathlib's intrinsic resultant and discriminant, the cubic must be an honest element of ℂ[X]: cubicPoly a b c d = C a·X³ + C b·X² + C c·X + C d. Its coefficients (a, b, c, d at degrees 3, 2, 1, 0) fall out of simp with coeff_X_pow. The degree facts use compute_degree!, which proves natDegree = 3 and degree = 3 once the leading coefficient a is known nonzero. The leading coefficient is then coeff 3 = a, and the derivative is 3a·X² + 2b·X + c (combining the C-factors with C_mul before ring).",
     "mathContext": "$f(X) = aX^3 + bX^2 + cX + d \\in \\mathbb{C}[X]$, $a\\neq 0$; $\\deg f = 3$, leading coeff $a$, and $f'(X) = 3aX^2 + 2bX + c$.",
@@ -51,7 +51,7 @@
       "startLine": 145,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Resultant as an Eliminant",
     "content": "Because a ≠ 0, the factor −a in Res(f, f′) = −a·Δ never vanishes, so cubic_resultant_eq_zero_iff gives Res(f, f′) = 0 ⟺ Δ = 0 (mul_eq_zero plus neg_eq_zero discard the −a branch). Chaining the parent's repeated_root_iff then yields cubic_resultant_eq_zero_iff_repeated_root: for a cubic given by Vieta data on roots x₁, x₂, x₃, the resultant of f with f′ vanishes iff two of the roots coincide — the classical statement that the discriminant is the eliminant of f and its derivative.",
     "mathContext": "$\\operatorname{Res}(f,f') = 0 \\iff \\Delta = 0 \\iff x_1=x_2 \\lor x_1=x_3 \\lor x_2=x_3$ (a repeated root), since $a\\neq 0$.",

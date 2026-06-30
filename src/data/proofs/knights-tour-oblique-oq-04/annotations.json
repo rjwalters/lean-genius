@@ -34,7 +34,7 @@
     "title": "The antipode is the reversal (dot product -5)",
     "content": "neg_neg proves neg is an involution (neg (neg i) = i); vec_neg proves vec (neg i) = -vec i, so neg i genuinely points the opposite way; and dot_neg proves dot i (neg i) = -5 — the unique most-negative dot product among the seven non-trivial values. The antipodal turn is therefore the reversal: going to the antipode means the next move undoes the previous one, returning to the square just left, which is impossible in a Hamiltonian tour (the base file proves exactly this as no_turn_angle_4_all). Identifying the antipode with the dot=-5 reversal is what lets the next sections separate the always-forbidden oblique successor from the two that a tour may actually use. All three are `decide` checks over the 8 directions.",
     "mathContext": "$\\mathrm{vec}(\\mathrm{neg}\\,i) = -\\mathrm{vec}\\,i$ and $\\mathrm{dot}\\,i\\,(\\mathrm{neg}\\,i) = -5$: the antipodal turn is the forbidden reversal.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "antipodal direction",
       "reversal turn",
@@ -58,7 +58,7 @@
     "title": "Per-turn refinement on legal moves: oblique ⇔ dot ∈ {-3,-4}",
     "content": "oblique_iff_dot proves that for a legal (non-reversal) turn — j ≠ neg i — the turn is oblique iff its dot product is exactly -3 or -4. The base file's oblique_iff_large_turn classifies oblique turns by turn angle ∈ {3,4,5} (dot ∈ {-3,-4,-5}); here the reversal value -5 (the antipode) is deleted, because the reversal never occurs in a tour. dot_legal_spectrum records the companion fact that the full legal dot-product spectrum is {-4,-3,0,3,4,5} rather than the unconstrained {-5,-4,-3,0,3,4,5}. Both are 64-case decide computations over Fin 8 × Fin 8: with i and j ranging over all directions, the dot product and inequality reduce to closed integer arithmetic, and the hypothesis j ≠ neg i discharges the single antipodal case.",
     "mathContext": "On legal turns the oblique dot values are exactly $\\{-3,-4\\}$; the antipodal value $-5$ is excluded, matching $\\mathrm{no\\_turn\\_angle\\_4\\_all}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "dot product spectrum",
       "turn angle in ℤ/8",
@@ -106,7 +106,7 @@
     "title": "Global oblique densities 3/8 and 2/7",
     "content": "oblique_pairs_card and legal_oblique_pairs_card give the exact global oblique densities by deciding over all ordered pairs of directions: 24 of the 64 pairs are oblique (3/8), and 16 of the 56 legal (non-reversal) pairs are oblique (2/7). These are the global shadow of the per-direction 2-regularity: 8 directions × 3 oblique successors = 24, and 8 × 2 legal oblique successors = 16. The densities quantify how 'often' an unconstrained or legality-constrained turn is oblique, the local statistic against which the (open) global maximum over actual tours must be compared. The entry stops here: it does not claim any tour-level bound beyond the trivial 64 turns, and flags the global tour constraints (closure, simplicity, board geometry) as the missing ingredient for the true maximum.",
     "mathContext": "$24/64 = 3/8$ over all pairs, $16/56 = 2/7$ over legal pairs — the global form of 2-regularity.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "global oblique density",
       "Finset.card over a product Fintype",

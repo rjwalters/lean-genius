@@ -7,7 +7,7 @@
     "title": "S: The Power Sum S(p,n) = ∑_{k=0}^{n-1} kᵖ",
     "content": "The definition `S p n = ∑ k ∈ range n, (k : ℚ)^p` is the power sum over the half-open range {0, …, n-1}, taken over ℚ. Using Mathlib's `Finset.range n` (rather than `Ico 1 (n+1)`) is deliberate: the telescoping argument in Section III evaluates ∑_{k<n}(f(k+1) − f(k)) = f(n) − f(0) via `Finset.sum_range_sub`, which is stated exactly for `range n`. For p ≥ 1 the k=0 term vanishes, so S p n agrees with the classical ∑_{k=1}^{n-1} kᵖ. The `@[simp] lemma S_def` exposes the underlying sum so later rewrites (e.g. Finset.mul_sum) can fire.",
     "mathContext": "$S_p(n) = \\sum_{k=0}^{n-1} k^p \\in \\mathbb{Q}$. The choice of the half-open range matches the telescoping lemma; the closed forms are the standard Faulhaber polynomials with $n$ shifted by the half-open convention ($S_1(n) = n(n-1)/2$ rather than $n(n+1)/2$).",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "Finset.range n as the index set {0,…,n-1}",
       "ℚ-valued finite sums (Finset.sum)"
@@ -90,7 +90,7 @@
     "title": "S_zero / S_one / S_two: The Recurrence Generating the Faulhaber Polynomials",
     "content": "These corollaries run the descent for p = 0, 1, 2 and recover the classical closed forms with NO separate induction — each follows from `power_sum_solved` and the previous case by `linarith`. S_zero: S_0(n) = n (n terms equal to 1, by simp). S_one: feeding p=1 into the descent gives 2·S_1 = n² − C(2,0)·S_0 = n² − n, hence S_1 = (n²−n)/2 = n(n−1)/2 (the triangular number). S_two: p=2 gives 3·S_2 = n³ − [C(3,0)·S_0 + C(3,1)·S_1] = n³ − [n + 3·(n²−n)/2], hence S_2 = (2n³−3n²+n)/6 = n(n−1)(2n−1)/6. S_two_leading records 3·S_2 − n³ = (−3n²+n)/2, exhibiting the cubic with leading coefficient 1/3. Together they demonstrate that the recurrence is a self-contained generator of the Faulhaber family — the uniform answer to the parent's 'is there a pattern?'.",
     "mathContext": "$S_0 = n$, $S_1 = \\tfrac{n(n-1)}{2}$, $S_2 = \\tfrac{n(n-1)(2n-1)}{6}$. These are the first three Faulhaber polynomials, produced mechanically by the descent rather than guessed and verified per exponent.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "power_sum_solved (the descent recurrence)",
       "Finset.sum_range_succ / Finset.sum_range_one to expand the lower-power sum",

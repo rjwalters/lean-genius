@@ -29,7 +29,7 @@
       "startLine": 51,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Convergence with No Trigonometry",
     "content": "Each defining series converges absolutely, proved with no trigonometric input. The norm of the k-th cosine term is exactly ‖z‖^{2k}/(2k)!, a subseries of the exponential series Σ ‖z‖ⁿ/n! (Real.summable_pow_div_factorial). The subseries is reached by composing with the injective reindexing k ↦ 2k (resp. k ↦ 2k+1) via Summable.comp_injective, and the comparison is closed by Summable.of_norm_bounded. So summability of cos/sin is a fact about the exponential alone.",
     "mathContext": "$\\big\\|(-1)^k z^{2k}/(2k)!\\big\\| = \\|z\\|^{2k}/(2k)!$, a subseries of $\\sum_n \\|z\\|^n/n!$ — absolute convergence by comparison with $\\exp$, reindexed via $k \\mapsto 2k$.",
@@ -75,7 +75,7 @@
       "startLine": 94,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reading Off Euler's Formula by Uniqueness of Sums",
     "content": "Because the two series converge (Section II), each has a HasSum to its own tsum (cosSeries z, sinSeries z). Their combination cosTerm k + i·sinTerm k therefore has sum cosSeries z + i·sinSeries z. But hasSum_euler shows the same interleaved series sums to e^{iz}. Uniqueness of sums (HasSum.unique) forces e^{iz} = cosSeries z + i·sinSeries z — no property of Complex.cos is invoked anywhere in the derivation.",
     "mathContext": "The interleaved series $\\sum_k (\\cos_k + i\\,\\sin_k)$ sums both to $\\cos z + i\\,\\sin z$ and to $e^{iz}$; `HasSum.unique` forces $e^{iz} = \\cos z + i\\,\\sin z$.",

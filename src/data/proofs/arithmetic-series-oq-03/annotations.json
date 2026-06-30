@@ -29,11 +29,11 @@
       "startLine": 75,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The One Lemma Behind Every Value",
     "content": "The headline ζ(-1) = -1/12 is obtained by specializing Mathlib's `riemannZeta_neg_nat_eq_bernoulli` to k = 1, giving ζ(-1) = (-1)^1 · B₂ / 2. After rewriting the cast ((1:ℕ):ℂ) = 1, the tactic `norm_num [bernoulli_two]` substitutes B₂ = 1/6 and computes -(1/6)/2 = -1/12. The same lemma drives ζ(-3) = 1/120 (with B₄ = -1/30) and the rationality theorem; only the Bernoulli arithmetic and cast bookkeeping differ.",
     "mathContext": "$$\\zeta(-k) = \\frac{(-1)^k B_{k+1}}{k+1}, \\qquad \\zeta(-1) = \\frac{-B_2}{2} = \\frac{-1/6}{2} = -\\frac{1}{12}.$$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "Bernoulli numbers",
       "functional equation",
@@ -51,7 +51,7 @@
       "startLine": 63,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Two Bernoulli Conventions",
     "content": "Mathlib ships `bernoulli'_four : B'₄ = -1/30` (the +1/2 convention) but the zeta value formula uses `bernoulli` (the -1/2 convention). The helper `bernoulli_four` transports the value via `bernoulli_eq_bernoulli'_of_ne_one`, which states the signed and unsigned Bernoulli numbers agree for every index n ≠ 1. Since 4 ≠ 1, B₄ = B'₄ = -1/30. The two conventions differ only at index 1 (B₁ = -1/2 vs B'₁ = +1/2), corresponding to summing over k ∈ {0,…,n-1} vs {1,…,n}.",
     "mathContext": "$$B_n = B'_n \\text{ for } n \\ne 1, \\qquad B_1 = -\\tfrac12,\\ B'_1 = +\\tfrac12.$$",

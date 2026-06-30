@@ -29,7 +29,7 @@
       "startLine": 44,
       "endLine": 52
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Sign-Transfer Lemma",
     "content": "sign_persist_aux is the algebraic heart of the proof. Given p*q <= 0 (the running sign change between the endpoints) and 0 < p*m (the midpoint m shares the LEFT endpoint's sign), it concludes m*q <= 0 (the sign change has moved to the right pair). The trick is the polynomial identity (p*m)*(m*q) = (p*q)*m^2: the right side is <= 0 (nonpositive times a square), so the left side is <= 0; since p*m > 0, the factor m*q must be <= 0. nlinarith discharges it with the hint mul_nonpos_of_nonpos_of_nonneg hpq (sq_nonneg m).",
     "mathContext": "(p*m)*(m*q) = (p*q)*m^2 <= 0 and p*m > 0 imply m*q <= 0.",
@@ -51,7 +51,7 @@
       "startLine": 56,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "One Bisection Step Preserves the Sign Change",
     "content": "bisectStep_sign_persist case-splits on the bisection step's if-condition (simp only [bisectStep] then split_ifs). In the 'then' branch the algorithm kept the left half precisely because f a * f mid <= 0, which IS the goal — no work needed. In the 'else' branch f a * f mid > 0 (push_neg), meaning the midpoint shares the left endpoint's sign, so sign_persist_aux transfers the sign change to the right pair f mid * f b. Only the 'else' branch requires the lemma.",
     "mathContext": "if f a * f mid <= 0 then keep (a, mid) [sign change immediate]; else keep (mid, b) [sign change via sign_persist_aux].",
@@ -72,7 +72,7 @@
       "startLine": 72,
       "endLine": 86
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Sign Persistence for All n",
     "content": "bisect_sign_persist is the headline result and the answer to the parent's open question: f(a_n) * f(b_n) <= 0 for every n. The proof is induction on n. The base case n = 0 is the initial hypothesis (the endpoints are a and b). The successor case feeds the inductive hypothesis into bisectStep_sign_persist, since the (n+1)st interval is one bisection step applied to the nth. This is the loop invariant that makes the bisection method correct.",
     "mathContext": "Base: f(a_0)*f(b_0) = f(a)*f(b) <= 0. Step: bisectStep_sign_persist carries the invariant from n to n+1.",
@@ -93,7 +93,7 @@
       "startLine": 90,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Intervals Stay Ordered",
     "content": "bisect_le shows a_n <= b_n for every n, needed so that the intervals are genuine (non-empty) closed intervals on which the IVT applies. It reads off the parent entry's width law bisect_width (bisectRight - bisectLeft = (b-a)/2^n): since b - a >= 0 and 2^n > 0, the width is nonnegative, hence bisectLeft <= bisectRight.",
     "mathContext": "bisectRight - bisectLeft = (b-a)/2^n >= 0, so bisectLeft <= bisectRight.",
@@ -113,7 +113,7 @@
       "startLine": 104,
       "endLine": 124
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "From Sign Change to Root (IVT)",
     "content": "sign_change_root packages the intermediate value theorem for root finding: a continuous f with f a * f b <= 0 has a root in [a,b]. mul_nonpos_iff splits the product condition into the two orderings (0 <= f a and f b <= 0, or f a <= 0 and 0 <= f b); each feeds the descending intermediate_value_Icc' or the ascending intermediate_value_Icc respectively, yielding 0 in the image f '' (Icc a b), i.e. a point c with f c = 0.",
     "mathContext": "f a * f b <= 0 and ContinuousOn f (Icc a b) imply exists c in Icc a b with f c = 0.",

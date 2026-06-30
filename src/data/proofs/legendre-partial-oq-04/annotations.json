@@ -10,7 +10,7 @@
     "title": "From Legendre to Oppermann: a prime in both halves of the square-gap",
     "content": "The base entry legendre-partial verifies Legendre's conjecture — a prime in (n², (n+1)²) — for n = 1..20. This open question formalizes Oppermann's conjecture (1882), the natural strengthening: split (n², (n+1)²) at the composite midpoint n²+n = n·(n+1) and demand a prime in BOTH halves. The case n = 1 is excluded because the lower half (1, 2) is empty, which is exactly why Oppermann is classically stated for n > 1.",
     "mathContext": "Oppermann: for $n \\ge 2$, $\\exists p$ prime with $n^2 < p < n^2+n$ and $\\exists q$ prime with $n^2+n < q < (n+1)^2$. In the hierarchy Cramér $\\Rightarrow$ Oppermann $\\Rightarrow$ Legendre $\\Leftrightarrow$ Andrica $\\Rightarrow$ Bertrand, Oppermann sits one rung above Legendre.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Oppermann's conjecture",
       "Legendre's conjecture",
@@ -144,7 +144,7 @@
     "title": "The open conjecture and its Legendre consequence",
     "content": "oppermann_conjecture states the general Oppermann conjecture as an axiom (it is open since 1882). legendre_of_oppermann then derives Legendre for all n ≥ 2 from it — its #print axioms correctly lists oppermann_conjecture as the source assumption, isolating exactly where unproven content enters.",
     "mathContext": "Oppermann remains unproven, strictly between the proved Bertrand postulate and the conjectural Cramér bound. The axiom marks an assumption, distinct from sorry which marks an incomplete proof.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "axiom vs sorry",
       "open conjecture",

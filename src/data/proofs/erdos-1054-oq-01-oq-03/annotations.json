@@ -6,11 +6,11 @@
       "startLine": 8,
       "endLine": 55
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Goal: Discharge the Parent's Axiom with the Harmonic Series",
     "content": "The docstring states the entry's purpose: the parent (erdos-1054-oq-01) axiomatized the analytic input σ(m)/m → ∞, citing Gronwall (1913) and Mertens — neither in Mathlib — and asked whether that machinery must be added. This file answers no: the elementary identity σ(m)/m = ∑_{d∣m} 1/d, applied to mₙ = lcm(1,…,n), makes the abundancy ratio dominate the harmonic partial sum Hₙ, which already diverges in Mathlib. The file defines σ(m) = ∑_{d∣m} d (matching the parent) and the witness sequence lcmUpTo n = lcm{1,…,n}.",
     "mathContext": "$\\dfrac{\\sigma(m)}{m} = \\sum_{d\\mid m}\\dfrac1d \\ge \\sum_{k=1}^{n}\\dfrac1k = H_n \\xrightarrow{n\\to\\infty} \\infty$, using only that $k \\le n \\Rightarrow k \\mid \\mathrm{lcm}(1,\\dots,n)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős problem #1054", "sum-of-divisors σ", "abundancy index", "harmonic series", "axiom elimination"],
     "prerequisites": ["sum-of-divisors function", "least common multiple", "limits at infinity (Tendsto atTop)"]
   },

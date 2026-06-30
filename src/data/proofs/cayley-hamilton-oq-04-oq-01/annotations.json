@@ -74,7 +74,7 @@
       "startLine": 74,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Proof: Entrywise Fin 3 Expansion Closed by ring",
     "content": "The proof reduces the matrix equation to nine scalar polynomial identities. It first rewrites A³ = A·A·A (`pow_succ`/`pow_one`) and A² = A·A (`pow_two`), then `ext i j` followed by `fin_cases i <;> fin_cases j` splits into the nine entries of Fin 3 × Fin 3. Each entry is expanded with `Matrix.mul_apply`, `Fin.sum_univ_three`, `Matrix.trace_fin_three`, `Matrix.det_fin_three`, `c2`, and the smul/add/sub/zero entry lemmas, then closed by `ring` — every entry equation is a degree-3 polynomial identity in the nine matrix entries, exactly the kind `ring` decides. The whole theorem is therefore self-contained down to `ring`, depending on no high-level Cayley–Hamilton lemma.",
     "mathContext": "Entry $(i,j)$ of $A^3$ is $\\sum_{k,l}a_{ik}a_{kl}a_{lj}$; subtracting $(\\operatorname{tr}A)(A^2)_{ij}$, adding $c_2 a_{ij}$, and subtracting $(\\det A)\\delta_{ij}$ gives $0$ as a polynomial identity in the nine entries.",

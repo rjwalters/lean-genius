@@ -6,11 +6,11 @@
       "startLine": 4,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Lyapunov's Inequality: Log-Convexity of the Moment Function",
     "content": "For strictly positive families $w, x : \\iota \\to \\mathbb{R}$ on a finite index, the weighted moment function is $A(t) = \\sum_i w_i\\, x_i^t$. This file proves $t \\mapsto \\log A(t)$ is **convex** — log-convexity of moments, the classical Lyapunov inequality. This is a second-order refinement of power-mean monotonicity (which only says $M_r$ increases in $r$): log-convexity pins the *shape* of the moment curve and implies the power-mean inequality by interpolation. The entire result is one application of the two-function discrete Hölder inequality from the parent file, and underlies the interpolation theory of $L^p$ spaces. Mathlib has log-convexity for specific objects (the Gamma function) but not for the general discrete moment function.",
     "mathContext": "$A(t) = \\sum_i w_i x_i^t$; $t \\mapsto \\log A(t)$ convex $\\iff A(ap+br) \\le A(p)^a A(r)^b$ ($a+b=1$) $\\iff A(q)^{r-p} \\le A(p)^{r-q} A(r)^{q-p}$ for $p<q<r$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lyapunov inequality",
       "log-convexity",
@@ -53,7 +53,7 @@
       "startLine": 55,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Pointwise Interpolation Identity",
     "content": "`rpow_interp` is the only `rpow` bookkeeping the whole proof needs: $(w x^p)^a (w x^r)^b = w^{a+b}\\, x^{ap+br}$ for $w, x > 0$. It splits each factor with `Real.mul_rpow` and `Real.rpow_mul`, then recombines exponents via `Real.rpow_add`. When $a + b = 1$ the weight collapses to $w^1 = w$, so the summand $(w x^p)^a (w x^r)^b$ is exactly $w\\, x^{ap+br}$ — the integrand of $A(ap+br)$. This identity is what lets Hölder's inequality be applied termwise.",
     "mathContext": "$(w x^p)^a (w x^r)^b = w^{a+b} x^{ap+br}$; with $a+b=1$ this is $w\\, x^{ap+br}$.",
@@ -76,7 +76,7 @@
       "startLine": 66,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Nonnegativity and Strict Positivity of Moments",
     "content": "`moment_nonneg` and `moment_pos` record that $A(t) \\ge 0$ for nonnegative data and $A(t) > 0$ for strictly positive data on a nonempty index. Each summand $w_i x_i^t$ is nonnegative (`Real.rpow_nonneg`) resp. positive (`Real.rpow_pos_of_pos`), and the sum inherits it via `Finset.sum_nonneg` / `Finset.sum_pos`. Strict positivity is essential downstream: it licenses taking $\\log A(t)$ and dividing in the log-convexity step (`Real.log_le_log` and `Real.log_rpow` both require a positive argument).",
     "mathContext": "$w_i, x_i \\ge 0 \\Rightarrow A(t) \\ge 0$; $w_i, x_i > 0$ and $\\iota$ nonempty $\\Rightarrow A(t) > 0$.",

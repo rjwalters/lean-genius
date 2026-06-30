@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "From a fixed band to an n-dependent band",
     "content": "The docstring states the parent's first open question: generalize the bounded-power trap from the fixed band [−1, 1] to a magnitude-≤ B base, whose powers live in the n-dependent band [−Bⁿ, Bⁿ], and characterize which lines escape it. The answer is a sharp dichotomy at the critical value B = 1 — shrinking/critical band (B ≤ 1) lines escape, growing band (B > 1) every line is captured.",
     "mathContext": "For $|x| \\le B$ the powers satisfy $x^n \\in [-B^n, B^n]$. The question: for which affine maps $n \\mapsto b + ns$ does the line eventually leave this band? Answer governed by $B \\gtrless 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Bernoulli inequality", "geometric vs arithmetic growth", "phase transition", "Archimedean property"],
     "prerequisites": ["real analysis", "powers and exponentials", "limits of sequences"]
   },
@@ -21,7 +21,7 @@
       "startLine": 56,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The generalized trap",
     "content": "abs_pow_le proves |xⁿ| ≤ Bⁿ from |x| ≤ B using abs_pow (|xⁿ| = |x|ⁿ) and pow_le_pow_left₀ (monotonicity of powers). abs_le then splits this into the two walls −Bⁿ ≤ xⁿ (neg_pow_le_pow) and xⁿ ≤ Bⁿ (pow_le_pow_band). This is the verbatim generalization of the parent's [−1, 1] band.",
     "mathContext": "$|x| \\le B \\Rightarrow |x^n| = |x|^n \\le B^n$, equivalently $-B^n \\le x^n \\le B^n$. Uses monotonicity $0 \\le a \\le b \\Rightarrow a^n \\le b^n$ (pow_le_pow_left₀).",
@@ -36,7 +36,7 @@
       "startLine": 70,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The escape engine (any B)",
     "content": "Two transitivity one-liners: lt_pow_of_lt_neg_pow says anything below the lower wall (c < −Bⁿ) is beaten by every power (c < xⁿ); pow_lt_of_pow_lt is the mirror above the upper wall. Both are B-agnostic — they need nothing about the sign or size of B.",
     "mathContext": "$c < -B^n \\le x^n \\Rightarrow c < x^n$, and dually $x^n \\le B^n < c \\Rightarrow x^n < c$. Pure transitivity through the band walls; independent of $B$.",
@@ -66,7 +66,7 @@
       "startLine": 136,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Exponential dominates linear",
     "content": "tendsto_linear_div_pow proves (|b| + |s|·n)/Bⁿ → 0 for B > 1 by writing it as |b|·(1/Bⁿ) + |s|·(n/Bⁿ) and sending both terms to 0 with tendsto_pow_const_div_const_pow_of_one_lt (k = 0 and k = 1). This is the quantitative engine that lets the exponential wall absorb any line.",
     "mathContext": "For $B > 1$: $\\dfrac{|b| + |s|n}{B^n} = |b|\\dfrac{1}{B^n} + |s|\\dfrac{n}{B^n} \\to 0$, since $\\dfrac{n^k}{B^n} \\to 0$ for every fixed $k$ (exponential beats any polynomial).",

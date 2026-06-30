@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 41
     },
-    "type": "context",
+    "type": "concept",
     "title": "Brahmagupta–Fibonacci Identity and Non-Uniqueness",
     "content": "The Brahmagupta–Fibonacci identity writes a product of two sums of squares as a sum of squares in *two* ways, by flipping the sign of one cross term. Mathlib records only one form (`sq_add_sq_mul`) and says nothing about whether the two forms differ. This entry's mathematical content is the **non-uniqueness** phenomenon: when $x \\neq y$ and $u \\neq v$ (all positive) the two forms are genuinely distinct even as unordered pairs of squares. This is the structural reason a product of two distinct primes $\\equiv 1 \\pmod 4$ has at least two representations as a sum of two squares — the smallest being $65 = 5\\cdot 13 = 1^2 + 8^2 = 4^2 + 7^2$. Form 1 is also re-derived from multiplicativity of the Gaussian-integer norm $N(a+bi) = a^2 + b^2$.",
     "mathContext": "$(x^2+y^2)(u^2+v^2) = (xu-yv)^2 + (xv+yu)^2 = (xu+yv)^2 + (xv-yu)^2$. Example: $65 = 1^2+8^2 = 4^2+7^2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Brahmagupta–Fibonacci identity",
       "Gaussian integers ℤ[i]",
@@ -77,7 +77,7 @@
       "startLine": 91,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Second-Form Closure Lemma",
     "content": "`sq_add_sq_mul'` records that the set of sums of two squares is closed under multiplication, using the *second* Brahmagupta form — complementing Mathlib's `sq_add_sq_mul`, which only provides the first form. Stated over any `CommRing R` as an existence statement $\\exists r, s,\\ ab = r^2 + s^2$, it supplies the witness $(xu+yv,\\ xv-yu)$. Having both forms available as existence lemmas is what lets the application produce two genuinely different representations rather than just one.",
     "mathContext": "If $a = x^2+y^2$, $b = u^2+v^2$ then $ab = (xu+yv)^2 + (xv-yu)^2$ (second form).",
@@ -124,7 +124,7 @@
       "startLine": 149,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Prime Representation with Positive, Distinct Coordinates",
     "content": "`prime_rep_pos_ne` refines Fermat's two-square theorem (`Nat.Prime.sq_add_sq`) to give, for an odd prime $p$ with $p \\not\\equiv 3 \\pmod 4$, a representation $p = x^2 + y^2$ with $x, y > 0$ and $x \\neq y$ — exactly the hypotheses `two_distinct_representations` needs. A zero coordinate is ruled out because it would make $p$ a perfect square (impossible for a prime), and $x = y$ is ruled out because it would make $p = 2x^2$ even, contradicting oddness. This bridges the existence theorem to the non-uniqueness machinery.",
     "mathContext": "$p \\equiv 1 \\pmod 4$ odd prime $\\Rightarrow p = x^2+y^2$ with $x,y>0$, $x\\neq y$. (A square coordinate $\\Rightarrow p$ square; $x=y \\Rightarrow p = 2x^2$ even.)",
@@ -172,7 +172,7 @@
       "startLine": 199,
       "endLine": 207
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Witness: 65 = 1² + 8² = 4² + 7²",
     "content": "`sixtyfive_two_ways` exhibits the smallest product of two distinct primes $\\equiv 1 \\pmod 4$, namely $65 = 5 \\cdot 13$, as a sum of two squares in two essentially different ways: $65 = 1^2 + 8^2 = 4^2 + 7^2$, with $\\{1, 64\\} \\neq \\{16, 49\\}$. Both equalities and the multiset distinctness are discharged by `norm_num`. This is the canonical illustration of the abstract non-uniqueness theorem, and the classic textbook example for why unique factorization in $\\mathbb{Z}[i]$ does not translate into unique sum-of-squares representation for composite numbers.",
     "mathContext": "$65 = 5 \\cdot 13$: from $5 = 1^2+2^2$, $13 = 2^2+3^2$ the two forms give $1^2+8^2$ and $4^2+7^2$.",

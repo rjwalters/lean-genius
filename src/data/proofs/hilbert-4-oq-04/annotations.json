@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "hilbert-4-oq-04",
     "range": { "startLine": 1, "endLine": 55 },
-    "type": "context",
+    "type": "concept",
     "title": "Hilbert Metric, Birkhoff Contraction, Perron–Frobenius",
     "content": "Birkhoff's theorem: a positive matrix strictly contracts the Hilbert projective metric, so its normalized power iteration converges geometrically to the Perron (dominant positive) eigenvector. We formalize the 2×2 case, where the cone is one-dimensional: A = !![a,b;c,d] acts on the projective coordinate t = x/y ∈ (0,∞) by the Möbius map φ(t) = (a·t+b)/(c·t+d), and the Hilbert metric is d_H(t₁,t₂) = |log t₁ − log t₂|. Instead of the analytic tanh(Δ/4) estimate we use the exact cross-ratio multiplier ρ = λ₂/λ₁.",
     "mathContext": "$d_H(t_1,t_2) = |\\log t_1 - \\log t_2|$ on $(0,\\infty)$; $\\varphi(t) = \\frac{at+b}{ct+d}$ is the projective action of $A$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Hilbert projective metric", "Birkhoff contraction theorem", "Perron–Frobenius theorem", "power iteration", "Möbius transformation"],
     "prerequisites": ["positive matrices", "projective coordinates", "geometric convergence"]
   },
@@ -19,7 +19,7 @@
     "title": "The Projective-Dynamics Setup",
     "content": "mobius is φ. fpDisc is the discriminant Δ = (d−a)² + 4bc of the fixed-point quadratic c·t² + (d−a)·t − b. perronRatio (t⋆) and subRatio (t†) are its two roots — the eigenvector ratios. contractionRatio is the multiplier ρ = (a+d−√Δ)/(a+d+√Δ). cross is the cross-ratio coordinate g(t) = (t−t⋆)/(t−t†) in which φ will become exact multiplication by ρ.",
     "mathContext": "$t_\\star, t_\\dagger = \\frac{a-d\\pm\\sqrt{\\Delta}}{2c}$, $\\rho = \\frac{a+d-\\sqrt\\Delta}{a+d+\\sqrt\\Delta}$, $g(t) = \\frac{t-t_\\star}{t-t_\\dagger}$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["fixed points of a Möbius map", "cross-ratio", "eigenvector ratio", "Möbius multiplier"],
     "prerequisites": ["quadratic formula", "linear-fractional transformations"]
   },

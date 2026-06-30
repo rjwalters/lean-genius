@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "quadratic-gauss-sum-square-oq-03",
     "range": { "startLine": 1, "endLine": 45 },
-    "type": "context",
+    "type": "concept",
     "title": "Why p* Makes Reciprocity Sign-Free",
     "content": "The docstring states the programme: take the parent's identity g² = (−1)^((p−1)/2)·p, name the right-hand side p*, and combine it with a Gauss-sum proof of quadratic reciprocity to reach a self-contained, *sign-free* statement of the law. The classical reciprocity law (q/p) = (−1)^((p−1)(q−1)/4)·(p/q) carries an awkward parity sign; phrased through the starred prime p* = (−1)^((p−1)/2)·p, that sign is absorbed once and for all and the law becomes the perfectly symmetric (p*/q) = (q/p) for all odd primes p, q. This is exactly the form Gauss's own favourite proof — through the quadratic Gauss sum g — produces, and p* is not cosmetic: it is the fundamental discriminant of the quadratic field ℚ(√p*) = ℚ(g) inside the p-th cyclotomic field. The file makes three points: the bridge g² = p*, the congruence p* ≡ 1 (mod 4), and the sign-free law with its symmetric companion and square-test corollary.",
     "mathContext": "$(q/p) = (-1)^{(p-1)(q-1)/4}(p/q)$ becomes $\\left(\\tfrac{p^*}{q}\\right) = \\left(\\tfrac{q}{p}\\right)$ with $p^* = (-1)^{(p-1)/2}p$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["quadratic reciprocity", "quadratic Gauss sum", "starred prime / fundamental discriminant", "cyclotomic fields", "Legendre symbol"],
     "prerequisites": ["the Legendre symbol and quadratic residues", "the classical reciprocity law and its sign", "Gauss sums (background)"]
   },

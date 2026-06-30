@@ -48,7 +48,7 @@
     "title": "The norm and regulator as bundled homomorphisms",
     "content": "The new packaging layer. pellNormHom : Solution₁ d →* ℝ takes pellNorm_one and pellNorm_mul as its map_one'/map_mul' fields — the grandparent's bare lemmas ARE a monoid homomorphism. Because pellNorm_ne_zero holds, Units.mk0 lifts it to pellNormUnitsHom : Solution₁ d →* ℝˣ, landing in the multiplicative group of real units rather than just the monoid. Finally pellRegulatorHom : Solution₁ d →* Multiplicative ℝ views the additive regulator (R(1)=0, R(a·b)=R(a)+R(b)) as a homomorphism into the additive group (ℝ,+) presented multiplicatively via Multiplicative.ofAdd. Three @[simp] lemmas expose the underlying values.",
     "mathContext": "$N : \\mathrm{Solution}_1 d \\to^* \\mathbb{R}^\\times,\\qquad R : \\mathrm{Solution}_1 d \\to^* (\\mathbb{R}, +)$.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": [
       "MonoidHom structure (map_one', map_mul')",
       "Units.mk0 for a nonzero element of a field",
@@ -87,7 +87,7 @@
     "title": "The regulator as a minimal positive value (IsLeast)",
     "content": "The headline result. pellRegulator_fundamental_le: for any nontrivial positive solution a, Mathlib's IsFundamental.eq_pow_of_nonneg writes a = a₁ⁿ; the exponent satisfies n ≥ 1 (n = 0 would give a = 1, contradicting 1 < a.x), so R(a) = n·R(a₁) ≥ R(a₁) because R(a₁) > 0. pellRegulator_fundamental_lt sharpens this to strict inequality for a ≠ a₁ (then n ≥ 2), so a₁ is the unique minimiser. isLeast_pellRegulator assembles membership (a₁ is itself a nontrivial positive solution) and the lower-bound property into IsLeast {R(a) : 1 < a.x, 0 < a.y} (R(a₁)) — a faithful, machine-checked rendering of the textbook regulator as the smallest positive value of log‖a‖ on the solution group. isLeast_pellRegulator_pos records that this minimum is itself positive.",
     "mathContext": "$\\mathrm{IsLeast}\\,\\{\\,R(a) : 1 < a.x,\\, 0 < a.y\\,\\}\\;\\bigl(R(a_1)\\bigr),\\qquad R(a_1) > 0$.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": [
       "Pell.IsFundamental.eq_pow_of_nonneg (every nonnegative solution is a₁ⁿ)",
       "The scaling law R(aⁿ) = n·R(a)",

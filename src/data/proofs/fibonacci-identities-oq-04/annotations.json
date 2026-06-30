@@ -3,11 +3,11 @@
     "id": "ann-fiboq04-1",
     "proofId": "fibonacci-identities-oq-04",
     "range": { "startLine": 3, "endLine": 36 },
-    "type": "context",
+    "type": "concept",
     "title": "Vajda's Identity: the Master of the Product Hierarchy",
     "content": "**Module framing.** The Fibonacci *product* identities form a hierarchy: Cassini (1680, no free parameter), Catalan (one parameter), and at the top **Vajda's identity** with *two* free offsets $i, j$. Mathlib's integer-Fibonacci file (`Int.fib`, Monica Omar 2025) records Cassini and Catalan but stops short of Vajda — and lacks **d'Ocagne's identity** entirely. This entry supplies both, working over the two-sided `Int.fib` so every statement holds at negative indices, and re-derives Catalan and Cassini as corollaries — one proof yielding the whole classical family.",
     "mathContext": "$F_{x+i}F_{x+j} - F_x F_{x+i+j} = (-1)^{|x|} F_i F_j$ over $\\mathbb{Z}$; Catalan is $i=j$, Cassini $i=j=1$, d'Ocagne $j=1,\\,x=n,\\,i=m-n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Fibonacci product-identity hierarchy",
       "Cassini / Catalan / Vajda / d'Ocagne",

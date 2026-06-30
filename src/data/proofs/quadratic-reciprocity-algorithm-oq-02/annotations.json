@@ -35,7 +35,7 @@
     "title": "Multiplicativity in the Modulus",
     "content": "jacobi_mul_right states J(a | m·n) = J(a | m)·J(a | n), and jacobi_mul_right₃ iterates it to a three-factor product. This is the property that turns the prime-only Legendre symbol into a function of composite moduli: the Jacobi symbol of a over a product is the product of the symbols over the factors, which is precisely why the reciprocity algorithm never needs to factor the modulus to compute it.",
     "mathContext": "$J(a \\mid mn) = J(a \\mid m)\\,J(a \\mid n)$. Iterating, $J(a \\mid mnk) = J(a\\mid m)J(a\\mid n)J(a\\mid k)$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "jacobiSym.mul_right",
       "multiplicative functions",
@@ -102,7 +102,7 @@
     "title": "Why the Witness Exists: Cancellation Across Factors",
     "content": "jacobi_neg_one_factor exposes the mechanism: J(2 | 15) = 1 together with ¬IsSquare (2 : ZMod 3) and ¬IsSquare (2 : ZMod 5). The two −1 contributions from the prime factors 3 and 5 multiply to +1, so the global Jacobi symbol gives no alarm even though 2 is a nonsquare modulo each factor. This is the structural reason the J = 1 direction is lost, and the seed of the Solovay–Strassen 'Euler liar' phenomenon.",
     "mathContext": "$J(2\\mid 15) = 1$ while $\\neg\\mathrm{IsSquare}(2:\\mathbb{Z}/3)$ and $\\neg\\mathrm{IsSquare}(2:\\mathbb{Z}/5)$: $(-1)\\cdot(-1) = +1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "cancellation of nonresidue factors",
       "Chinese Remainder structure of squares",

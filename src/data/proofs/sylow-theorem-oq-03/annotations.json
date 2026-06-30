@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Schur–Zassenhaus as a Sylow Extension",
     "content": "The docstring states the parent's open question: can Schur–Zassenhaus (if $\\gcd(|H|, [G:H]) = 1$ then $H$ is complemented in $G$) be formalized as an extension of Sylow theory? This file answers it. Mathlib supplies the existence half (`Subgroup.exists_right_complement'_of_coprime`); the contribution is to package it in gallery form and derive the Sylow corollary: a **normal** Sylow $p$-subgroup is always complemented, with complement a Hall $p'$-subgroup. This is the bridge between Sylow theory and the theory of group extensions — whenever a Sylow subgroup is normal, the group splits as an internal semidirect product $G = P \\rtimes K$.",
     "mathContext": "$\\gcd(|N|, [G:N]) = 1 \\implies G = N \\rtimes K$; for a Sylow $p$-subgroup the coprimality is automatic (Hall property).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Schur–Zassenhaus theorem", "Sylow theory", "group extensions", "semidirect product", "Hall subgroups"],
     "prerequisites": ["normal subgroups", "Sylow p-subgroups", "subgroup index"]
   },

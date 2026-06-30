@@ -52,7 +52,7 @@
       "startLine": 66,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Forward: Pushing M into the Quotient",
     "content": "Assuming G ⧸ N is simple, to show N is maximal take a normal M ⊇ N and map it into the quotient via mk'. Its image map(mk' N) M is a normal subgroup of the simple group G ⧸ N, hence ⊥ or ⊤. Pulling back with comap and using comap_map_mk' (which gives comap(mk')(map(mk') M) = N ⊔ M = M, since N ≤ M) converts these to M = N (image ⊥, via ker_mk' = N) or M = ⊤ (image ⊤). So N admits no proper normal subgroup strictly above it.",
     "mathContext": "$\\mathrm{map}(\\pi)\\,M \\in \\{\\bot,\\top\\}$, and $\\mathrm{comap}(\\pi)(\\mathrm{map}(\\pi)\\,M) = N \\sqcup M = M \\Rightarrow M = N \\text{ or } M = G.$",
@@ -75,7 +75,7 @@
       "startLine": 85,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reverse: Injectivity of the Correspondence Map",
     "content": "Assuming N is maximal, to show G ⧸ N is simple take any normal H' ≤ G ⧸ N and pull it back to comap(mk') H', which contains N (le_comap_mk') and is normal, so by maximality equals N or ⊤. To turn this into a statement about H' itself, the proof invokes the fourth isomorphism theorem as an order isomorphism comapMk'OrderIso between subgroups of G ⧸ N and subgroups of G containing N. Since comap is injective on that range, matching comap H' with comap ⊥ = N (or comap ⊤ = ⊤) forces H' = ⊥ (or H' = ⊤). Nontriviality of G ⧸ N comes from N ≠ ⊤.",
     "mathContext": "Correspondence iso $\\{H' \\le G/N\\} \\cong \\{H : N \\le H \\le G\\}$; injectivity of $\\mathrm{comap}(\\pi)$ on this range sends $\\mathrm{comap}\\,H' \\in \\{N,\\top\\}$ back to $H' \\in \\{\\bot,\\top\\}.$",

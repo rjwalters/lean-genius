@@ -34,7 +34,7 @@
     "title": "deriv_exp_neg: first derivative of the reflected exponential",
     "content": "deriv (fun t => Real.exp (-t)) x = -Real.exp (-x). Proved by exhibiting a HasDerivAt: the inner map t ↦ -t has derivative -1 (hasDerivAt_id.neg), exp has derivative exp(-x) at -x (Real.hasDerivAt_exp), and HasDerivAt.comp multiplies them to exp(-x)·(-1) = -exp(-x); simpa normalizes the composite to the lambda form, and .deriv extracts the derivative value. This is the base step for the iterated-derivative computation.",
     "mathContext": "$\\frac{d}{dt}e^{-t} = -e^{-t}$ by the chain rule.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "chain rule",
       "HasDerivAt.comp",

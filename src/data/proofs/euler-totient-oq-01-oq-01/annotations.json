@@ -49,7 +49,7 @@
       "startLine": 56,
       "endLine": 60
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Splitting the Unit Group via CRT",
     "content": "unitsChineseRemainder builds the multiplicative isomorphism (Z/mnZ)* ≃* (Z/mZ)* × (Z/nZ)* for coprime m, n. It transports the Chinese Remainder ring isomorphism ZMod (m*n) ≃+* ZMod m × ZMod n to unit groups with Units.mapEquiv, then splits the units of a product ring with MulEquiv.prodUnits. This isomorphism is the geometric content of coprime multiplicativity — everything else is a property of exponents.",
     "mathContext": "(Z/mnZ)* ≃* (Z/mZ)* × (Z/nZ)* = Units.mapEquiv (ZMod.chineseRemainder h) followed by MulEquiv.prodUnits.",
@@ -72,7 +72,7 @@
       "startLine": 62,
       "endLine": 69
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Keystone: λ(m·n) = lcm(λ(m), λ(n))",
     "content": "carmichael_mul_coprime is the headline. After unfolding carmichael, three rewrites finish it: Monoid.exponent_eq_of_mulEquiv (unitsChineseRemainder h) transports the exponent across the CRT isomorphism to the product group; Monoid.exponent_prod rewrites the exponent of a product as the lattice-lcm of the factor exponents; lcm_eq_nat_lcm aligns that with Nat.lcm. The result is exactly λ(m·n) = lcm(λ(m), λ(n)). The proof is a three-line consequence of 'exponent is an isomorphism invariant' and 'exponent of a product is the lcm'.",
     "mathContext": "λ(m·n) = exp((Z/mnZ)*) = exp((Z/mZ)* × (Z/nZ)*) = lcm(exp(Z/mZ)*, exp(Z/nZ)*) = lcm(λ(m), λ(n)).",

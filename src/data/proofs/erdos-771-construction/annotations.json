@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "erdos-771-construction",
     "range": { "startLine": 1, "endLine": 29 },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős #771 and the Scope of This File",
     "content": "Erdős #771 asks for f(n), the largest k such that for every target m ≥ 1 there exists an m-avoiding set S ⊆ {1,…,n} with |S| = k (no nonempty subset of S sums to m). The full answer f(n) = (1/2 + o(1))·n/log n is known and deep: the Erdős–Graham lower bound and the matching Alon–Freiman upper bound (an LCM argument). This file deliberately does NOT touch the asymptotics. It isolates and fully verifies (0 axioms, 0 sorries) the elementary *construction* underlying the lower bound: take S = the multiples of a prime p in {1,…,n}; every subset sum of S is a multiple of p, so if p ∤ m then m cannot be a subset sum and S avoids m. The four verified results are the construction's size (⌊n/p⌋), its avoidance property, the existence of a suitable prime for every m, and the combined existence of an m-avoiding set. The companion Erdos771Problem.lean left these as sorries and no longer compiles under Mathlib 4.26.0 (stale import path, DecidablePred gaps, dangling doc-comments).",
     "mathContext": "$f(n) = (\\tfrac12 + o(1))\\,n/\\log n$; this file verifies the construction $S = \\{k \\le n : p \\mid k\\}$ with $p \\nmid m$, the engine of the Erdős–Graham *lower* bound only.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős problem 771", "subset-sum-avoiding sets", "Erdős–Graham lower bound", "Alon–Freiman upper bound", "additive combinatorics"],
     "prerequisites": ["subset sums of a finite set of integers", "divisibility", "the statement of the asymptotic f(n) (background)"]
   },

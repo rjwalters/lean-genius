@@ -6,7 +6,7 @@
       "startLine": 41,
       "endLine": 46
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Half-Map Is Injective on Odd Numbers",
     "content": "odd_recover establishes that for an odd o, the operation o ↦ (o−1)/2 loses no information: 2·((o−1)/2)+1 = o reconstructs o exactly. This injectivity is what lets the proof pigeonhole into Finset.range n via half-indices instead of computing the cardinality of the odd numbers in {1,…,2n}. The proof destructures Odd o as o = 2k+1 and simplifies, so the integer division is exact rather than truncating.",
     "mathContext": "For odd $o = 2k+1$: $\\frac{o-1}{2} = k$ and $2\\cdot\\frac{o-1}{2} + 1 = 2k+1 = o$. Hence $o \\mapsto \\frac{o-1}{2}$ is a bijection between odd numbers and $\\mathbb{N}$.",
@@ -75,7 +75,7 @@
       "startLine": 82,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Half-Index Lands in Finset.range n",
     "content": "The pigeons are S and the holes are Finset.range n. The map is f(m) = (ordCompl[2] m − 1)/2. Membership f(m) < n follows because the odd part o = ordCompl[2] m satisfies o ≤ m ≤ 2n (Nat.ordCompl_le), so (o−1)/2 < n by Nat.div_lt_iff_lt_mul and omega. Crucially the proof never counts the odd numbers — it encodes 'there are only n possible odd parts' geometrically by squeezing the half-index into range n.",
     "mathContext": "$o = \\mathrm{ordCompl}_2(m) \\le m \\le 2n \\Rightarrow \\frac{o-1}{2} < n$. So $f : S \\to \\{0,1,\\dots,n-1\\} = \\mathrm{range}\\,n$.",

@@ -3,11 +3,11 @@
     "id": "erb-oq01-ann-docstring",
     "proofId": "ramsey-r4k-extensions-oq-01",
     "range": { "startLine": 1, "endLine": 25 },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős's probabilistic method as exact counting",
     "content": "The module proves Erdős's 1947 lower bound R(k,k) > 2^⌊k/2⌋ — the first application of the probabilistic method — without any measure theory. The key reframing is that 'colour the edges of K_n at random and show the expected number of monochromatic k-cliques is below 1' is, in a finite space, exactly the counting statement '#(colourings with a monochromatic k-clique) < #(all colourings)'. Working with counts keeps the whole development axiom-free and de-axiomatizes the parent file's `axiom erdos_probabilistic_lower_bound`.",
     "mathContext": "Goal: for $k\\ge 3$ and $n\\le 2^{\\lfloor k/2\\rfloor}$, there is a 2-colouring of $K_n$ with no monochromatic $K_k$, hence $R(k,k)>2^{\\lfloor k/2\\rfloor}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "probabilistic method",
       "first moment method",

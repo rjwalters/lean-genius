@@ -52,7 +52,7 @@
     "title": "Multivariate Taylor with Lagrange Remainder",
     "content": "multivariate_taylor_lagrange applies Mathlib's one-dimensional taylor_mean_remainder_lagrange_iteratedDeriv to the restriction g on the interval [0,1]. After rewriting g(1) = f(a+v) and g(0) = f(a), this yields f(a+v) = T_n g(0) + g^{(n+1)}(θ)/(n+1)! for some θ ∈ (0,1). The remainder is carried by the iterated derivative of the restriction — the iterated directional derivative of f along v — which is the honest form proved here in place of the heavier symmetric-multilinear / multi-index packaging.",
     "mathContext": "$f(a+v) = T_n g(0) + \\dfrac{g^{(n+1)}(\\theta)}{(n+1)!}$ for some $\\theta \\in (0,1)$, where $g(t) = f(a+t\\,v)$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "Taylor's theorem",
       "Lagrange remainder",
@@ -73,7 +73,7 @@
     "title": "First-Order Case: the Multivariate Mean Value Theorem",
     "content": "multivariate_taylor_first_order specialises the Lagrange expansion to n = 0. The degree-0 Taylor polynomial of g is f(a) (taylor_within_zero_eval), the single remainder term is deriv g θ = Df(a+θ·v)(v) (restriction_deriv), and 1! = 1, giving f(a+v) = f(a) + Df(a+θ·v)(v) for some θ ∈ (0,1). This is the exact multivariate analogue of the mean value theorem f(b) - f(a) = f'(ξ)(b-a), with the interior point a+θ·v lying strictly on the open segment between a and a+v.",
     "mathContext": "$f(a+v) = f(a) + Df(a+\\theta\\,v)(v)$ for some $\\theta \\in (0,1)$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "mean value theorem",
       "Fréchet derivative",

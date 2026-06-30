@@ -3,11 +3,11 @@
     "id": "ann-setup-imports",
     "proofId": "chebyshev-bounds-oq-02-oq-01-oq-01",
     "range": { "startLine": 30, "endLine": 33 },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: Assembling θ Bounds from Two Project Files",
     "content": "The two non-Mathlib imports are the load-bearing ones and `open` brings them into scope. `ChebyshevBoundsOQ02OQ01` supplies the substantive lower estimate `chebyshevPsi_lower_linear` ($(\\log 2/3)m \\le \\psi(m)$, from the central binomial coefficient) that Mathlib lacks; `ChebyshevBoundsOQ02OQ02` supplies the closeness bridge `abs_psi_sub_theta_le` ($|\\psi - \\theta| \\le 2\\sqrt{m}\\log m$) and the identification `chebyshevTheta_eq_mathlib` that lets the file reuse Mathlib's upper bound. With both namespaces open the whole entry is pure assembly — no new analytic estimate is proved here; the only work is the linear bookkeeping of subtracting a lower-order term from the $\\psi$ bound.",
     "mathContext": "$\\theta(m) = \\psi(m) - (\\psi(m) - \\theta(m))$: a strong lower bound on $\\psi$ minus a small upper bound on the gap yields a lower bound on $\\theta$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["module imports", "Chebyshev psi function", "central binomial coefficient", "proof assembly"],
     "prerequisites": ["the project's ψ lower-bound file", "the ψ−θ closeness file"]
   },

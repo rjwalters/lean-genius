@@ -53,7 +53,7 @@
       "startLine": 111,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "PART II: The Bounded-Step Pigeonhole",
     "content": "`energy_ge_of_steps` proves by induction on `m` that if every state `0..N` is irregular and each irregular step boosts the energy by ≥δ, then `E m ≥ E 0 + m·δ` for all `m ≤ N+1`. `energy_increment_bounded_steps` is the headline of this part: assuming `E ∈ [0,1]` and a ≥δ boost at each irregular step, it shows a *regular* index exists within `⌈1/δ⌉₊` steps. The proof is by contradiction — if all of `0..⌈1/δ⌉` were irregular, the accumulation lemma forces `E (N+1) ≥ E 0 + (N+1)·δ`, and since `N = ⌈1/δ⌉₊ ≥ 1/δ` gives `N·δ ≥ 1`, this exceeds `1`, contradicting the upper bound. `Nat.le_ceil` supplies `1/δ ≤ ⌈1/δ⌉₊`.",
     "mathContext": "This is the abstract heart of every regularity lemma: a $[0,1]$-valued potential that increases by a fixed $\\delta$ at each bad step can have at most $\\lceil 1/\\delta \\rceil$ bad steps. Crucially the bound $\\lceil 1/\\delta \\rceil$ depends only on $\\delta$, never on the size of the vertex set — which is exactly why the regularity lemma's number of parts is bounded by a function of $\\varepsilon$ alone.",
@@ -77,7 +77,7 @@
       "startLine": 169,
       "endLine": 224
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "PART III: From Few Steps to Few Parts",
     "content": "`parts_le_pow` proves by induction that if each refinement multiplies the part count by at most `f`, then `parts n ≤ parts 0 * f^n`. `hypergraph_regularity_engine` assembles everything: feeding the regular index `n ≤ ⌈1/δ⌉₊` from PART II into the part bound yields a regular partition with at most `parts 0 * f^⌈1/δ⌉₊` parts. The exponent step `f^n ≤ f^⌈1/δ⌉₊` uses `Nat.pow_le_pow_right`, which genuinely requires the hypothesis `1 ≤ f` — without it (e.g. f=0) the claimed bound would be 0 while the partition has positive size.",
     "mathContext": "Each refinement of the partition (or the underlying complex) blows up the number of parts by a bounded factor $f = f(\\varepsilon)$. After $T \\le \\lceil 1/\\delta \\rceil$ refinements there are at most $|\\mathcal{P}_0| \\cdot f^{\\lceil 1/\\delta \\rceil}$ parts — a constant depending only on the starting partition, $\\delta(\\varepsilon)$ and $f(\\varepsilon)$. This is the 'bounded number of parts' in the regularity lemma; the wowzer tower in the true hypergraph case is hidden entirely in how small $\\delta$ and how large $f$ are.",

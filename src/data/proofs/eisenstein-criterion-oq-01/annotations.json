@@ -7,7 +7,7 @@
     "title": "Module Header: Eisenstein's Criterion",
     "content": "**Eisenstein's criterion** is the most-used elementary irreducibility test. Over an integral domain with a prime ideal $P$, a primitive polynomial $f$ of positive degree is irreducible whenever\n\n- its **leading** coefficient lies *outside* $P$,\n- all **lower** coefficients lie *inside* $P$,\n- its **constant** coefficient lies *outside* $P^2$.\n\nThe archetypal consequence over $\\mathbb{Z}$: $X^n - p$ is irreducible for every prime $p$ and $n \\ge 1$. Taking $P = (p)$, the coefficients $1, 0, \\dots, 0, -p$ satisfy the three conditions, so $\\sqrt[n]{p}$ has minimal polynomial of degree exactly $n$ — algebraic numbers of every degree, on demand.",
     "mathContext": "$f$ primitive, $\\deg f > 0$, $f_{\\deg}\\notin P$, $f_k\\in P\\ (k<\\deg)$, $f_0\\notin P^2\\Rightarrow f$ irreducible. Over $\\mathbb{Z}$ with $P=(p)$: $X^n-p$ irreducible.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["irreducibility criterion", "prime ideal", "minimal polynomial", "algebraic numbers of every degree"],
     "prerequisites": ["integral domains", "prime ideals", "primitive polynomials"]
   },
@@ -26,7 +26,7 @@
   {
     "id": "eisenstein-criterion-oq-01-xn-minus-p",
     "proofId": "eisenstein-criterion-oq-01",
-    "type": "technique",
+    "type": "tactic",
     "range": { "startLine": 55, "endLine": 78 },
     "title": "Xⁿ − p: setup and coefficient bookkeeping",
     "content": "`irreducible_X_pow_sub_C_prime`: the flagship family. Take $P = (p) = $ `Ideal.span {p}`, prime by `Ideal.span_singleton_prime`. $X^n - p$ is monic of degree $n$ (`monic_X_pow_sub_C`, `degree_X_pow_sub_C`). The coefficients are computed once via `coeff_sub`/`coeff_X_pow`/`coeff_C`: $\\mathrm{coeff}\\,k = [k=n] - [k=0]\\cdot p$. The five Eisenstein obligations then reduce to elementary facts: leading $1 \\notin (p)$ (else $p\\mid 1$); each lower coefficient ($0$ or $-p$) lies in $(p)$; degree $n > 0$; primitivity from `Monic.isPrimitive`.",
@@ -50,7 +50,7 @@
   {
     "id": "eisenstein-criterion-oq-01-instances",
     "proofId": "eisenstein-criterion-oq-01",
-    "type": "technique",
+    "type": "tactic",
     "range": { "startLine": 90, "endLine": 100 },
     "title": "Concrete Instances",
     "content": "Specializing the family gives `irreducible_X_sq_sub_two` ($X^2 - 2$, the minimal polynomial of $\\sqrt 2$), `irreducible_X_cube_sub_two` ($X^3 - 2$, for $\\sqrt[3]{2}$), and `irreducible_X_pow_five_sub_three` ($X^5 - 3$). Each is a one-line application of `irreducible_X_pow_sub_C_prime` to `Int.prime_two` or `Int.prime_three` with the relevant exponent — concrete witnesses that the criterion runs end-to-end and a direct certificate that $\\sqrt 2,\\ \\sqrt[3]{2},\\ \\sqrt[5]{3}$ are algebraic of degrees $2, 3, 5$.",

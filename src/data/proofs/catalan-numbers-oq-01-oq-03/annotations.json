@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "catalan-numbers-oq-01-oq-03",
     "range": { "startLine": 4, "endLine": 43 },
-    "type": "context",
+    "type": "concept",
     "title": "Positivity and Exponential Growth of the Large Schröder Numbers",
     "content": "Mathlib defines the large Schröder numbers via the quadratic (Segner-type convolution) recurrence L(n+1) = L n + ∑_{i≤n} L i·L(n−i) and records only that they are even. This entry adds two quantitative facts Mathlib omits — positivity and a growth rate (ratio ≥ 3, tending to 3+2√2 ≈ 5.83, the larger root of x²−6x+1) — using only natural-number arithmetic and the convolution recurrence. The deeper order-two holonomic recurrence (n+3)L(n+2)+nL n = 3(2n+3)L(n+1), needing generating-function machinery, is left to the Aristotle companion file.",
     "mathContext": "$L(n{+}1) = L_n + \\sum_{i\\le n} L_i L_{n-i}$; growth ratio $\\to 3+2\\sqrt2$, the larger root of $x^2-6x+1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["large Schröder numbers", "convolution recurrence", "Catalan numbers", "holonomic / P-recursive sequences", "generating functions"],
     "prerequisites": ["the Schröder convolution recurrence", "natural-number induction"]
   },

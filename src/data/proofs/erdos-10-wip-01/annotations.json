@@ -36,7 +36,7 @@
       "startLine": 77,
       "endLine": 85
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Popcount Is the Minimal Representation",
     "content": "Two lemmas convert between the popcount and the representation predicate. repWithAtMost_popcount instantiates the parent characterization at k = popcount n, certifying that n really is a sum of popcount(n) distinct powers — the binary representation realizes the bound. popcount_le_iff is the contrapositive packaging: popcount n ≤ k ↔ RepWithAtMost k n, expressing that popcount is the MINIMAL number of powers, so no representation can use fewer. Together they are the bridge that lets subadditivity of representation be read as subadditivity of popcount in the next theorem.",
     "mathContext": "$\\mathrm{RepWithAtMost}\\,(\\mathrm{popcount}\\,n)\\,n$ and $\\mathrm{popcount}\\,n \\le k \\iff \\mathrm{RepWithAtMost}\\,k\\,n$.",

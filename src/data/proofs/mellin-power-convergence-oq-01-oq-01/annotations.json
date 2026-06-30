@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "mellin-power-convergence-oq-01-oq-01",
     "range": { "startLine": 4, "endLine": 36 },
-    "type": "context",
+    "type": "concept",
     "title": "From a Single Base Pair to a Working Mellin Calculus",
     "content": "The parent entry computes only the base pair mellin 𝟙_{(0,1]} s = 1/s, its sharp strip Re s > 0, and the dilation law mellin 𝟙_{(0,a]} s = a^s/s, and asks (open question 1) for two extensions. This grandchild supplies both: the general half-open interval (a,b], whose transform is (b^s − a^s)/s, and the power-weighted unit indicator t^c · 𝟙_{(0,1]}, whose transform is 1/(s + c) on the shifted strip Re s > −c. Both reduce to the parent — the first by additivity of the transform over a set difference, the second by absorbing the monomial weight into the Mellin exponent — so they are genuinely new packagings rather than restatements of a single Mathlib lemma. No axioms.",
     "mathContext": "$\\mathrm{mellin}\\,\\mathbb{1}_{(a,b]}\\,s = (b^s - a^s)/s$; $\\mathrm{mellin}\\,(t^c\\,\\mathbb{1}_{(0,1]})\\,s = 1/(s+c)$ for $\\mathrm{Re}\\,s > -c$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Mellin transform", "fundamental strip", "Perron formula", "Dirichlet series", "Gamma function"],
     "prerequisites": ["complex analysis", "improper integrals", "indicator functions"]
   },

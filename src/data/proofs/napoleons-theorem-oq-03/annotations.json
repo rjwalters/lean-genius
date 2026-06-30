@@ -37,7 +37,7 @@
     "id": "napoleon-oq03-ann-disp-sq",
     "proofId": "napoleons-theorem-oq-03",
     "range": { "startLine": 89, "endLine": 103 },
-    "type": "technique",
+    "type": "tactic",
     "title": "One Fact: a² = -1/12",
     "content": "Every collapse in the file rests on a single non-ring identity: the displacement coefficient a = i√3/6 satisfies a² = i²(√3)²/36 = (-1)(3)/36 = -1/12 (disp_sq, from Complex.I_sq and sqrt3_sq). Once this is available, each composed-vertex goal is a pure polynomial identity in z₁,z₂,z₃ modulo this one relation, and closes by a single deterministic linear_combination — far more robust than the Complex.ext/nlinarith idiom used in the parent files, since it needs no numerical search and is immune to simp-normal-form drift.",
     "mathContext": "$a=i\\sqrt3/6$, $a^2=-1/12$. This is the sole ingredient beyond ring arithmetic.",

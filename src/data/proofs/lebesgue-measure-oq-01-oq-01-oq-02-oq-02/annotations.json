@@ -6,11 +6,11 @@
       "startLine": 4,
       "endLine": 53
     },
-    "type": "context",
+    "type": "concept",
     "title": "Thomae's Function and the Baire-Category Dual of 'ℚ is Small'",
     "content": "Thomae's (popcorn) function is continuous exactly at the irrationals and discontinuous exactly at the rationals. The measure-theoretic parent showed the discontinuity set ℚ is **null** (Lebesgue's criterion). This entry records the **Baire-category dual**: the continuity set (the irrationals) is a **dense Gδ**, hence comeagre/residual, while the discontinuity set ℚ is **meagre** and — sharply — **not** a Gδ. The punchline is an impossibility theorem: since the continuity set of *any* $f : \\mathbb{R} \\to \\mathbb{R}$ is a Gδ but ℚ is not, **no function is continuous exactly at the rationals**. Thomae's irrational-continuity therefore cannot be mirrored — the rational version is forbidden by topology itself.",
     "mathContext": "Continuity set $= \\{x : \\text{Irrational } x\\}$, a dense Gδ (residual). Discontinuity set $= \\mathbb{Q}$, meagre and not Gδ. No $f$ is continuous exactly on ℚ.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Thomae's function",
       "Baire category theorem",
@@ -30,7 +30,7 @@
       "startLine": 68,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Discontinuity at Every Rational via an Irrational Sequence",
     "content": "`thomae_discontinuous_at_rat` completes the sharp characterization by handling the rational direction the base module left open. The witness is the sequence $y_n = r + \\sqrt2/(n+1) \\to r$, which is irrational at every $n$ (sum of a rational and the irrational $\\sqrt2/(n+1)$). If Thomae were continuous at $r$, composing with $y_n$ would force $\\mathrm{thomae}(y_n) \\to \\mathrm{thomae}(r)$; but $\\mathrm{thomae}(y_n) = 0$ for all $n$ (Thomae vanishes on irrationals), so uniqueness of limits gives $\\mathrm{thomae}(r) = 0$, contradicting $\\mathrm{thomae}(r) = 1/r.\\mathrm{den} > 0$. The irrational approach sequence is the standard device for proving discontinuity at rationals.",
     "mathContext": "$y_n = r + \\sqrt2/(n+1) \\to r$, all irrational; $\\mathrm{thomae}(y_n)=0 \\not\\to 1/r.\\mathrm{den} = \\mathrm{thomae}(r) > 0$.",
@@ -76,7 +76,7 @@
       "startLine": 118,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Baire Infrastructure: Countable Sets Are Meagre",
     "content": "Three reusable lemmas establish that countable sets are meagre in a perfect $T_1$ space (like $\\mathbb{R}$). `isMeagre_of_isNowhereDense`: a single nowhere-dense set is meagre (cover it by the one-element family $\\{t\\}$). `isNowhereDense_singleton`: in a perfect $T_1$ space a singleton is nowhere dense — it is closed and has empty interior because no point is isolated (`PerfectSpace`). `countable_isMeagre`: a countable set is a countable union of such nowhere-dense singletons, hence meagre (`isMeagre_iUnion`). The `PerfectSpace` hypothesis is essential — it is what rules out isolated points and makes singletons nowhere dense.",
     "mathContext": "Perfect $T_1$ space: singletons are nowhere dense (closed, empty interior); a countable union of nowhere-dense sets is meagre.",

@@ -31,7 +31,7 @@
     "title": "Closed Form of the Partial Sums",
     "content": "gaussKuzmin_partial collapses the telescoping sum (Finset.sum_range_sub') to ∑_{n<N} P(n) = G(0) − G(N) = 1 − log₂((N+2)/(N+1)). G_zero computes G(0) = log₂(2) = 1; G_nonneg shows G(N) ≥ 0 (the ratio ≥ 1); and G_tendsto_zero proves G(N) → 0, since (n+2)/(n+1) = 1 + 1/(n+1) → 1 (tendsto_one_div_add_atTop_nhds_zero_nat) and log₂ is continuous at 1 (continuity of log at a nonzero point). The closed form even exhibits the rate of convergence to the total mass 1.",
     "mathContext": "$\\sum_{n<N} P(n) = 1 - \\log_2\\!\\tfrac{N+2}{N+1} \\to 1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["telescoping sum", "limit of a ratio", "continuity of log"],
     "prerequisites": ["partial sums", "limits of sequences"]
   },

@@ -27,7 +27,7 @@
     "id": "unit-mass",
     "proofId": "fatou-lemma-oq-01",
     "range": { "startLine": 92, "endLine": 98 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Each Bump Carries Unit Mass",
     "content": "escaping_lintegral computes ∫⁻ escaping n = 1 for every n, via lintegral_indicator_one (the integral of an indicator is the measure of the set) and Real.volume_Ico ([n,n+1) has length 1, so ENNReal.ofReal 1 = 1). This is the conserved quantity: every integral in the sequence equals 1, so liminfₙ ∫⁻ escaping n = 1. Mass is never created or destroyed — it merely escapes.",
     "mathContext": "$\\int^- \\mathrm{escaping}\\,n = \\mathrm{vol}[n,n+1) = 1$ for all $n$; the integrals form the constant sequence $1$.",

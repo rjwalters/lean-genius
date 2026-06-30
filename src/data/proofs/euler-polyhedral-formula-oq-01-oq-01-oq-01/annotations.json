@@ -55,7 +55,7 @@
     "title": "One Low-Degree Vertex (exists_low_degree')",
     "content": "Re-derives the parent's exists_low_degree directly from the discharging base: if every vertex had degree ≥ 6, every charge 6 − deg(v) would be ≤ 0, making the total ≤ 0 and contradicting the bound ≥ 12. So some vertex has degree ≤ 5.",
     "mathContext": "A sum of non-positive terms is non-positive (Finset.sum_nonpos); since the total charge is ≥ 12 > 0, some term must be positive, i.e. $\\deg v < 6$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "pigeonhole on charge",
       "minimum degree"
@@ -96,7 +96,7 @@
     "title": "No Minimum Degree 6 (no_min_degree_six)",
     "content": "An immediate corollary: a planar graph cannot have every vertex of degree ≥ 6, since exists_low_degree' always supplies a vertex of degree ≤ 5. In particular there is no 6-regular planar graph.",
     "mathContext": "Equivalently $\\delta(G) \\le 5$ for every planar graph $G$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "minimum degree",
       "regular graphs"
@@ -116,7 +116,7 @@
     "title": "Average Degree < 6 (sum_degrees_le / average_degree_lt_six)",
     "content": "From the same charge identity, ∑ deg ≤ 6V − 12, so for a nonempty planar graph the average degree is strictly less than 6. This is the global counterpart of the local low-degree statements.",
     "mathContext": "$\\frac{1}{|V|}\\sum_v \\deg v \\le 6 - \\frac{12}{|V|} < 6.$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "average degree",
       "sparsity of planar graphs"
@@ -137,7 +137,7 @@
     "title": "Sharpness — Triangulations (charge_eq_twelve_iff_triangulation)",
     "content": "The discharging base is tight: equality ∑(6 − deg v) = 12 holds exactly when E = 3V − 6, i.e. for edge-maximal planar graphs (triangulations). This records the equality case of the charge identity.",
     "mathContext": "$\\sum_v(6-\\deg v) = 12 \\iff |E| = 3|V| - 6$, the triangulation (maximal planar) case.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "triangulations",
       "maximal planar graphs",

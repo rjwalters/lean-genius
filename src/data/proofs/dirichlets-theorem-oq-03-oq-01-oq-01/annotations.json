@@ -27,7 +27,7 @@
     "id": "ann-critical-ge-one",
     "proofId": "dirichlets-theorem-oq-03-oq-01-oq-01",
     "range": { "startLine": 88, "endLine": 95 },
-    "type": "technique",
+    "type": "tactic",
     "title": "From Every Admissible Exponent to the Infimum",
     "content": "`criticalExponent_ge_one` lifts the per-exponent bound to the infimum: since 1 is a lower bound for the admissible set (every member is ≥ 1 by admissible_ge_one), and the set is nonempty, le_csInf concludes 1 ≤ sInf (admissible f b). The nonemptiness hypothesis hne is exactly where Linnik/Dirichlet existence would be needed — the file takes it as an explicit assumption rather than proving it, preserving the axiom-free status.",
     "mathContext": "$$(\\forall L \\in \\mathrm{admissible},\\ 1 \\le L)\\ \\wedge\\ \\mathrm{admissible} \\ne \\emptyset \\;\\Longrightarrow\\; 1 \\le \\inf \\mathrm{admissible}$$",

@@ -7,7 +7,7 @@
     "title": "Relaxing the Validity Constraint of Pair Functions",
     "content": "The docstring frames OQ-4 of Erdős #1025. The parent problem (Erdős–Hajnal 1958, Spencer 1972, Conlon–Fox–Sudakov 2016) studies valid pair functions — f sends each pair {x,y} to an element with f x y ∉ {x,y} — and asks for the largest independent set X (one with f x y ∉ X for x,y ∈ X), proving the guarantee g(n) = Θ(√n). OQ-4 asks what happens when the validity constraint is relaxed to allow degenerate values f x y ∈ {x,y}. The file gives two sharp elementary answers: unbounded degeneracy collapses the guarantee to a constant 1, while bounded degeneracy (≤ k degenerate pairs) recovers a genuinely valid sub-instance on ≥ n − 2k vertices — so the validity hypothesis is essential but robust to a sublinear violation budget.",
     "mathContext": "Valid: $f(x,y) \\notin \\{x,y\\}$; $g(n) = \\Theta(\\sqrt n)$. Relaxed: degenerate $f(x,y) \\in \\{x,y\\}$ allowed — collapse to 1 vs recovery on $\\ge n-2k$ vertices.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["pair functions", "set mappings", "Erdős–Hajnal", "independent sets", "extremal combinatorics"],
     "prerequisites": ["set-mapping problem", "Finset cardinality"]
   },

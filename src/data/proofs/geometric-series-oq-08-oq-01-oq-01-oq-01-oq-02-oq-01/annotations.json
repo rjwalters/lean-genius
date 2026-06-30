@@ -27,7 +27,7 @@
     "id": "ann-eq-of-infinite-eval",
     "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01",
     "range": { "startLine": 95, "endLine": 120 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Analytic-to-Algebraic Transfer via Polynomial Extensionality",
     "content": "The polynomial identity is proved without touching a single coefficient. `eq_of_infinite_eval_eq` says two polynomials over an integral domain that agree on an infinite set of points are equal; `Set.Ioo_infinite` supplies the infinite set (−1,1). At each r in that interval the proof rewrites every eval Eᵢ(r) as infMoment i r · (1−r)^{i+1} (the closed form, via div_mul_cancel₀), pulls the common factor (1−r)^{m+1} out of the binomial sum (matching degrees with show m + 1 = (i+1) + (m−i); pow_add; ring), and then reduces to the parent's analytic recurrence (★∞) via `linear_combination (1 − r)^{m+1} * hrec`. This converts an analysis fact about convergent series into an exact algebraic identity in ℝ[X] — a transfer principle worth recognising on its own.",
     "mathContext": "Agreement on the infinite set $(-1,1)$ forces equality in $\\mathbb{R}[X]$, an integral domain.",
@@ -51,11 +51,11 @@
     "id": "ann-honest-scope",
     "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01",
     "range": { "startLine": 44, "endLine": 56 },
-    "type": "context",
+    "type": "concept",
     "title": "Honest Scope: What Is Reused vs. New",
     "content": "The file is explicit about provenance, a good model for research-entry framing. The headline closed form is NOT re-derived from scratch by strong induction on (★∞); it reuses the gallery's analytic Eulerian identity hasSum_pow_mul_geometric_eulerPoly, which itself rests on Frobenius' identity and the Stirling moment formula. The genuinely new deliverables are (1) the polynomial recurrence eulerPoly_recurrence — an explicit relation among the Eulerian polynomials and binomial weights not in Mathlib — and (2) the explicit third-moment closed form. The remaining open question asks for the harder analysis-free route: prove eulerPoly_recurrence by induction on m from the differential recurrence and Pascal's rule alone, yielding a derivation of the Eulerian closed form directly from (★∞).",
     "mathContext": "New: $E_m$ satisfy (★∞) in $\\mathbb{R}[X]$, and $\\sum k^3 x^k$. Reused: the analytic Frobenius closed form.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["proof provenance", "Frobenius identity", "Stirling numbers", "axiom integrity", "research framing"],
     "prerequisites": ["mathematical exposition"]
   }

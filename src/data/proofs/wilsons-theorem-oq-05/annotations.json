@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "wilsons-theorem-oq-05",
     "range": { "startLine": 4, "endLine": 35 },
-    "type": "context",
+    "type": "concept",
     "title": "Wilson's Theorem in Classical, ZMod-Free Form",
     "content": "Mathlib and the parent entry state Wilson's theorem with the residue in ZMod n: ((n−1)! : ZMod n) = −1. That is algebraically convenient but not the classical elementary form. This file bridges to a congruence of naturals: (n−1)! ≡ n−1 (mod n), equivalently the bare remainder identity (n−1)! % n = n−1, where n−1 plays the role of −1 mod n. The result is a primality criterion phrased purely in ℕ, with no ZMod in any statement.",
     "mathContext": "Wilson: $n$ prime $\\iff (n-1)! \\equiv -1 \\pmod n$. Here $-1 \\bmod n = n-1$, giving $(n-1)! \\equiv n-1 \\pmod n$ and $(n-1)! \\bmod n = n-1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Wilson's theorem", "primality criterion", "congruence vs ZMod", "factorial mod n"],
     "prerequisites": ["Wilson's theorem", "modular congruence", "factorials"]
   },

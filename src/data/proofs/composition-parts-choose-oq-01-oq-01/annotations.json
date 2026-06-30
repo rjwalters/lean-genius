@@ -78,11 +78,11 @@
       "startLine": 203,
       "endLine": 205
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Totals: n = 2, 3, 4 Give 3, 8, 20",
     "content": "The examples specialise total_parts. The compositions of 2 are 2 (one part) and 1+1 (two parts), total 1 + 2 = 3 = 3·2^0. The compositions of 3 are 3, 1+2, 2+1, 1+1+1 with 1+2+2+3 = 8 = 4·2^1 parts. The compositions of 4 total 20 = 5·2^2 parts. Each matches (n+1)·2^(n−2); the residual closed Nat arithmetic is discharged by the kernel's decide, introducing no Lean.ofReduceBool.",
     "mathContext": "$(n+1)\\,2^{n-2} = 3, 8, 20$ for $n = 2, 3, 4$.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "The headline total_parts",
       "Kernel decision procedure decide on closed Nat arithmetic"

@@ -81,7 +81,7 @@
       "startLine": 141,
       "endLine": 153
     },
-    "type": "example",
+    "type": "concept",
     "title": "Numeric Checks",
     "content": "Two kernel-decide checks confirm the cleared identity: at n = 3, (2·3−1)·∑_k (2k−3)²·C(3,k)² = 5·36 = 180 = 9·20 = 3²·C(6,3); at n = 2, (2·2−1)·∑_k (2k−2)²·C(2,k)² = 3·8 = 24 = 4·6 = 2²·C(4,2). These use kernel `decide` (not native_decide), so they add no axioms beyond the foundational propext, Classical.choice, Quot.sound.",
     "mathContext": "$n=3$: $5\\cdot 36 = 180 = 3^2\\binom{6}{3}$. $n=2$: $3\\cdot 8 = 24 = 2^2\\binom{4}{2}$.",

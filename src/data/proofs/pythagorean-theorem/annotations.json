@@ -136,7 +136,7 @@
       "startLine": 86,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bilinearity of Inner Product",
     "content": "The inner product is **bilinear**, meaning it distributes over addition in both arguments:\n\n$$\\langle \\vec{u} + \\vec{v}, \\vec{w} \\rangle = \\langle \\vec{u}, \\vec{w} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle$$\n$$\\langle \\vec{u}, \\vec{v} + \\vec{w} \\rangle = \\langle \\vec{u}, \\vec{v} \\rangle + \\langle \\vec{u}, \\vec{w} \\rangle$$\n\nThis property is what makes the Pythagorean theorem work: when we expand $\\|\\vec{v} + \\vec{w}\\|^2$, the bilinearity gives us all four terms.\n\nThe theorem states: if $\\vec{v} \\perp \\vec{w}$, then\n\n$$\\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$$\n\nThe proof is a beautiful application of bilinearity:\n\n1. $\\|\\vec{v} + \\vec{w}\\|^2 = \\langle \\vec{v} + \\vec{w}, \\vec{v} + \\vec{w} \\rangle$ (by definition)\n2. $= \\langle \\vec{v}, \\vec{v} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle + \\langle \\vec{w}, \\vec{v} \\rangle + \\langle \\vec{w}, \\vec{w} \\rangle$ (bilinearity)\n3. $= \\|\\vec{v}\\|^2 + 0 + 0 + \\|\\vec{w}\\|^2$ (perpendicularity!)\n4. $= \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$\n\nThe cross terms vanish because the vectors are perpendicular.",
     "mathContext": "Bilinearity: linear in each argument",
@@ -253,7 +253,7 @@
       "startLine": 171,
       "endLine": 209
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Computational Verification",
     "content": "Lean can **compute** that these are valid Pythagorean triples using `native_decide`. This tactic evaluates the arithmetic and checks that both sides equal the same value.\n\nFor $(3, 4, 5)$:\n- Left side: $3^2 + 4^2 = 9 + 16 = 25$\n- Right side: $5^2 = 25$\n- Equal? Yes! Proof complete.\n\nThis is one of Lean's strengths: verifiable computation meets rigorous proof.\n\nThe **converse** of the Pythagorean theorem states:\n\n*If the sides of a triangle satisfy $a^2 + b^2 = c^2$, then the angle opposite $c$ is a right angle.*\n\nThis appears as Proposition 48 in Book I of Euclid's Elements. It means we can *test* whether an angle is 90° using only length measurements—no protractor needed!\n\nThe converse is crucial in surveying, construction, and navigation.\n\nThe Pythagorean theorem has an extraordinary history:\n\n**Ancient Origins:**\n- ~1800 BCE: Babylonian tablet Plimpton 322 lists Pythagorean triples\n- ~1100 BCE: Chinese mathematicians knew the $(3, 4, 5)$ triple\n- ~570 BCE: Pythagoras (or his school) gave a general proof\n\n**Mathematical Developments:**\n- ~300 BCE: Euclid's *Elements* includes the theorem (I.47) and converse (I.48)\n- 1876: James Garfield discovers a new proof (later becomes US President!)\n- 1940: Elisha Loomis catalogs 367 distinct proofs\n\n**Generalizations:**\n- **Law of Cosines:** $c^2 = a^2 + b^2 - 2ab\\cos(C)$\n- **Higher dimensions:** $\\|\\vec{v}\\|^2 = \\sum_i v_i^2$\n- **Non-Euclidean:** The theorem *fails* in hyperbolic/spherical geometry—it's a defining property of flat space!",
     "mathContext": "Lean's `native_decide` tactic evaluates decidable propositions by computation, e.g., $3^2 + 4^2 = 25 = 5^2$ is verified by reduction.",

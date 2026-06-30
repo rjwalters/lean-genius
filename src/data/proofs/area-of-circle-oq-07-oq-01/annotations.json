@@ -52,7 +52,7 @@
       "startLine": 32,
       "endLine": 38
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Restating integral_gaussian_complex",
     "content": "`gaussian_integral_complex` is a direct restatement of Mathlib's `integral_gaussian_complex`: under the hypothesis `0 < re b` it returns `∫ x : ℝ, exp (-b · x²) = (π/b)^{1/2}`. All analytic work — differentiating the Gaussian under the integral sign and the polar-coordinate evaluation — is inherited wholesale; the entry contributes the gallery framing and, in the companion theorem, the explicit recovery of the parent.",
     "mathContext": "Stating the lemma with `b : ℂ` rather than `b : ℝ` is what makes the result a generalization rather than a notation variant: the codomain value `(π/b)^{1/2}` is a `Complex.cpow`, and only on the positive real axis does it reduce to a real square root.",
@@ -73,7 +73,7 @@
       "startLine": 40,
       "endLine": 44
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Recovering √π as the b = 1 Case",
     "content": "`gaussian_integral_eq_sqrt_pi_via_complex` derives the parent's real value `∫_ℝ e^{-x²} dx = √π` from the complex result specialized at `b = 1` (the hypothesis `0 < re 1` discharged by `simp`). The recovery is not a syntactic substitution: the complex theorem speaks about a `ℂ`-valued integrand and a `Complex.cpow` value, while the parent is a statement about a real integral and a real `Real.sqrt`. Two genuine identifications bridge the gap, performed in the `hLcast` and `hRcast` steps.",
     "mathContext": "$\\int_{\\mathbb R} e^{-x^2}\\,dx = \\sqrt{\\pi}$ is the $b = 1$ slice of $\\int_{\\mathbb R} e^{-b x^2}\\,dx = (\\pi/b)^{1/2}$, reached by pushing the real integral through $\\mathbb C$ and reducing $(\\pi/1)^{1/2}$ to $(\\sqrt\\pi : \\mathbb C)$.",
@@ -94,7 +94,7 @@
       "startLine": 45,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Two Casting Steps",
     "content": "The proof's substance is two casts. `hLcast` identifies the real integral with its complex image: since the integrand is real-valued, `integral_complex_ofReal` moves the `ℂ`-coercion outside the integral, and pointwise `↑(e^{-x²}) = e^{-1·(↑x)²}` follows from `Complex.ofReal_exp` plus `push_cast; ring` on the exponent. `hRcast` collapses the principal power: `Real.sqrt_eq_rpow` writes `√π = π^{1/2}` (real rpow), then `Complex.ofReal_cpow π_nonneg` turns `↑(π^{1/2})` into `(↑π)^{(1/2 : ℂ)}`, matching `(π/1)^{1/2}`. Rewriting both sides of the specialized hypothesis and `exact_mod_cast` finishes — and these are exactly the places a careless 'just set b = 1' would silently go wrong.",
     "mathContext": "Coercion-pushing: $\\big(\\!\\int_{\\mathbb R} e^{-x^2}\\big)_{\\mathbb C} = \\int_{\\mathbb R}\\big(e^{-x^2}\\big)_{\\mathbb C}$ via `integral_complex_ofReal`. Power-collapse: $\\big(\\sqrt\\pi\\big)_{\\mathbb C} = (\\pi)^{1/2}_{\\mathbb C}$ via `Real.sqrt_eq_rpow` + `Complex.ofReal_cpow`.",

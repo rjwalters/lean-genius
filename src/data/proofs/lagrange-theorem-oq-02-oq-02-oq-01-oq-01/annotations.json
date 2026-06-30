@@ -3,11 +3,11 @@
     "id": "ann-lagrange-oq02020101-header",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01",
     "range": { "startLine": 6, "endLine": 54 },
-    "type": "context",
+    "type": "concept",
     "title": "Burnside off Fintype: the open question",
     "content": "The header poses the parent's OQ-02: Mathlib's Burnside / Cauchy–Frobenius lemma sum_card_fixedBy_eq_card_orbits_mul_card_group is stated with Fintype hypotheses; does it generalise to the merely Finite setting with no constructive Fintype instances? The answer is yes, and the proof lifts essentially unchanged — because the orbit-counting content lives in a finiteness-free bijection. The generalisation replaces Fintype.card by the total, instance-free Nat.card and the finite sum by finsum (∑ᶠ), the canonical 'sum over a Finite type' idiom.",
     "mathContext": "$\\sum^{f}_{g:G} \\#(\\operatorname{fixedBy} X\\,g) = \\#(X/G)\\cdot \\#G$ for $G,X$ merely $\\mathrm{Finite}$ (here $\\#$ is $\\mathrm{Nat.card}$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Burnside's lemma", "Cauchy–Frobenius", "Nat.card vs Fintype.card", "Mathlib hygiene"],
     "prerequisites": ["group actions", "orbit counting"]
   },

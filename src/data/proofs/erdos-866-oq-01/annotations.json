@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 47
     },
-    "type": "context",
+    "type": "concept",
     "title": "Promoting the Parity Obstruction to All k ≥ 3",
     "content": "Erdős #866 studies, for $k \\ge 3$, the minimal threshold $g_k(N)$ such that every $A \\subseteq \\{1,\\dots,2N\\}$ with $|A| \\ge N + g_k(N)$ contains all pairwise sums of some $k$-tuple. The basic lower bound $g_k(N) \\ge 1$ is witnessed by the $N$ odd numbers in $\\{1,\\dots,2N\\}$: no $k$ integers can have *all* pairwise sums odd. The companion file proved this obstruction only for $k = 3$; this entry promotes it to every $k \\ge 3$ and records elementary facts about the upper-bound exponent $1 - 2^{-k}$. The honest-scope note is explicit — the hard rates ($g_4$, $g_5 \\asymp \\log N$, $g_6 \\asymp \\sqrt N$, the true exponent $\\alpha_k$) are the untouched open frontier.",
     "mathContext": "$g_k(N) \\ge 1$ for all $k \\ge 3$; general upper bound $g_k(N) \\ll N^{1 - 2^{-k}}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Erdős problems",
       "pairwise sums",

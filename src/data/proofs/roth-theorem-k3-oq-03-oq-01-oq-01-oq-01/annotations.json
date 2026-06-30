@@ -3,11 +3,11 @@
     "id": "roth-oq03010101-header",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
     "range": { "startLine": 1, "endLine": 39 },
-    "type": "context",
+    "type": "concept",
     "title": "The geometric symmetries of the k-AP counting operator Λ_k",
     "content": "In the Gowers-norm approach to Roth/Szemerédi the central object is Λ_k(f₀,…,f_{k−1}) = E_{x,d ∈ ZMod N} ∏ᵢ fᵢ(x + i·d), the normalized k-term AP count. The grandparent defines it and proves normalization identities; the parent proves multilinearity. This file records the *geometric* symmetries of the underlying configuration {x, x+d, …, x+(k−1)d} — genuinely new facts, not consequences of multilinearity, arising from reindexing bijections of the averaging variables (x, d): **translation invariance** (a common shift of every function is absorbed by x ↦ x+t) and **reflection symmetry** (reversing the tuple equals reversing the progression via (x,d) ↦ (x+(k−1)d, −d)). These normalize AP counts and explain the symmetric role of the two endpoints in the van der Corput / generalized von Neumann estimates.",
     "mathContext": "$\\Lambda_k(f_0,\\dots,f_{k-1}) = \\mathbb{E}_{x,d}\\prod_i f_i(x + i\\cdot d)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Gowers norms", "arithmetic progressions", "Roth/Szemerédi", "additive combinatorics"],
     "prerequisites": ["the operator Λ_k", "multilinearity (parent)", "reindexing finite sums"]
   },

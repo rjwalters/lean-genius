@@ -6,11 +6,11 @@
       "startLine": 5,
       "endLine": 52
     },
-    "type": "context",
+    "type": "concept",
     "title": "Correcting the Naive Asymptotic of the Half-Integer Beta Diagonal",
     "content": "Establishes the large-n behaviour of the diagonal half-integer Euler Beta value: B(n+1/2,n+1/2) ~ √(π/n)·4^(-n). The parent entry's follow-up question conjectured the rate √(π/n); that is FALSE. The central binomial coefficient C(2n,n) grows only like 4^n, while the exact value B(n+1/2,n+1/2)=π·C(2n,n)/4^(2n) divides by 4^(2n); the surplus power leaves an exponentially decaying factor 4^(-n). So the Beta value vanishes geometrically, not at the polynomial rate n^(-1/2). The corrected rate matches the classical diagonal law B(x,x) ~ 2^(1-2x)·√(π/x) at x=n+1/2, where 2^(1-2x)=4^(-n).",
     "mathContext": "$B(n+\\tfrac12,n+\\tfrac12) \\sim \\sqrt{\\tfrac{\\pi}{n}}\\cdot 4^{-n}$, contradicting the naive $\\sqrt{\\pi/n}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euler Beta function diagonal",
       "central binomial coefficient C(2n,n)",
@@ -30,7 +30,7 @@
       "startLine": 59,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Real Closed Form and the Beta-Integral Bridge",
     "content": "betaDiag n := π·C(2n,n)/4^(2n) repackages the parent's complex closed form as a real sequence, the object whose asymptotic is studied. betaIntegral_eq_betaDiag proves the complex Euler Beta integral Complex.betaIntegral (n+1/2) (n+1/2) equals (betaDiag n : ℂ) by rewriting with the parent's betaIntegral_diag_half_centralBinom and a push_cast/ring cleanup, so the asymptotic describes the genuine Beta value rather than an abstract sequence. betaDiag_pos records strict positivity from Nat.centralBinom_pos.",
     "mathContext": "$\\mathrm{betaDiag}(n)=\\dfrac{\\pi\\binom{2n}{n}}{4^{2n}}$ and $B(n+\\tfrac12,n+\\tfrac12)=\\mathrm{betaDiag}(n)$.",
@@ -52,7 +52,7 @@
       "startLine": 81,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Normalized Limit as a Pure Field Identity",
     "content": "betaDiag_normalized_tendsto proves B(n+1/2,n+1/2)·4^n·√(πn)/π → 1 by transporting StirlingFormulaOQ03OQ02.centralBinom_asymptotic (C(2n,n)·√(πn)/4^n → 1) along Filter.Tendsto.congr. The required pointwise identity C(2n,n)·√(πn)/4^n = betaDiag n·4^n·√(πn)/π is PURE FIELD ALGEBRA: after unfolding betaDiag and rewriting 4^(2n)=4^n·4^n, the π's cancel and the common factor √(πn) survives untouched, so field_simp closes it with no square-root reasoning at all. The normalizing factor 4^n·√(πn)/π is deliberately the exact reciprocal of the equivalent √(π/n)·4^(-n).",
     "mathContext": "$B(n+\\tfrac12,n+\\tfrac12)\\cdot 4^{n}\\cdot\\dfrac{\\sqrt{\\pi n}}{\\pi}\\to 1$.",

@@ -10,7 +10,7 @@
     "title": "Modelling the n-Torus and Its Dual Lattice",
     "content": "The torus is modelled as Torus n = Fin n → AddCircle (1:ℝ), a finite product of unit circles ℝ/ℤ, and the index set as MultiIndex n = Fin n → ℤ, the dual lattice ℤⁿ. This product-type choice is the crux of OQ-04: it lets Mathlib's automatically-derived product measure serve as the Haar measure, and it makes every n-dimensional object a coordinatewise lift of a one-dimensional one. Pontryagin duality is visible already in the types — the character group of Tⁿ is exactly ℤⁿ, the index of the multi-indices k.",
     "mathContext": "$\\mathbb{T}^n = (\\mathbb{R}/\\mathbb{Z})^n$, with dual lattice $\\widehat{\\mathbb{T}^n} \\cong \\mathbb{Z}^n$ via $k \\mapsto (x \\mapsto e^{2\\pi i\\, k\\cdot x})$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["n-torus", "Pontryagin duality", "product measure", "character lattice"],
     "prerequisites": ["quotient groups ℝ/ℤ", "finite product types", "Haar measure on compact groups"]
   },
@@ -36,7 +36,7 @@
       "startLine": 61,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The One-Dimensional Building Block: Unimodularity",
     "content": "norm_fourier_apply proves ‖fourier n x‖ = 1 — each 1D character takes values on the unit circle. The proof unfolds fourier_apply (which exhibits the value as a Circle element coerced into ℂ) and applies Circle.norm_coe. This single lemma is the atom from which the n-dimensional unimodularity norm_torusChar is assembled: a product of unit-modulus factors has modulus 1. Working through the Circle type rather than computing e^{2πiθ} directly keeps the argument algebraic and avoids any analysis.",
     "mathContext": "$\\|e^{2\\pi i n x}\\| = 1$ for all $x$, since $e^{2\\pi i n x} \\in S^1 \\subset \\mathbb{C}$.",

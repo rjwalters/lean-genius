@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 42
     },
-    "type": "context",
+    "type": "concept",
     "title": "One Square Bound Climbs the Dyadic Ladder",
     "content": "The docstring states the file's thesis: the parent's weighted square bound $(\\sum w_i f_i)^2 \\le W\\sum w_i f_i^2$ is precisely the $p = 1 \\le 2$ rung of the power-mean ladder, and substituting $f_i = a_i^r$ then iterating climbs the dyadic exponents $1, 2, 4, 8, \\ldots$. The file deliberately isolates exactly what a single Cauchy–Schwarz bound yields: weighted $L^p$ monotonicity along powers of two. Full continuous monotonicity $M_p \\le M_q$ for all $p \\le q$ requires Hölder's inequality, which is intentionally out of scope — pinpointing the gap rather than papering over it.",
     "mathContext": "Power mean $M_r = \\Big(\\dfrac{\\sum w_i a_i^r}{\\sum w_i}\\Big)^{1/r}$ interpolates harmonic ($r{=}{-}1$), geometric ($r\\to 0$), arithmetic ($r{=}1$), quadratic ($r{=}2$). The square bound gives $M_r \\le M_{2r}$, hence $M_r \\le M_{2^k r}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "power mean",
       "Lᵖ monotonicity",
@@ -52,7 +52,7 @@
       "startLine": 80,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Real-Exponent Rung r ↦ 2r",
     "content": "rpow_sum_sq_le moves from natural to real exponents, the form needed for the power mean. Applying the parent square bound to $f_i = a_i^r$ (real rpow) gives $(\\sum w_i a_i^r)^2 \\le W\\sum w_i a_i^{2r}$. The only rewriting is $(a_i^r)^2 = a_i^{2r}$, which needs $a_i \\ge 0$ and goes through Real.rpow_natCast (to read the square as an rpow) and Real.rpow_mul (to multiply exponents). This single substitution IS the $r \\mapsto 2r$ rung — no new analytic content beyond the square bound.",
     "mathContext": "$\\Big(\\sum_i w_i a_i^r\\Big)^2 \\le \\Big(\\sum_i w_i\\Big)\\sum_i w_i a_i^{2r}$, using $(a_i^r)^2 = a_i^{r\\cdot 2} = a_i^{2r}$ for $a_i \\ge 0$.",
@@ -118,7 +118,7 @@
       "startLine": 134,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Iterating: M_r ≤ M_(2^k r)",
     "content": "weightedPowerMean_le_pow_two_mul climbs the whole dyadic ladder by induction on $k$. The base case $k = 0$ is reflexivity ($2^0 r = r$). The successor step chains the induction hypothesis $M_r \\le M_{2^n r}$ with one more doubling $M_{2^n r} \\le M_{2\\cdot 2^n r}$ (weightedPowerMean_le_double applied at order $2^n r > 0$), and rewrites $2\\cdot 2^n r = 2^{n+1} r$. The result spans every power-of-two exponent — the exact reach of repeated squaring.",
     "mathContext": "$M_r \\le M_{2^k r}$ for all $k \\in \\mathbb{N}$, by induction: $M_r \\le M_{2^n r} \\le M_{2\\cdot 2^n r} = M_{2^{n+1} r}$.",
@@ -140,11 +140,11 @@
       "startLine": 150,
       "endLine": 160
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Instance: M₁ ≤ M₂",
     "content": "A concrete dyadic comparison instantiating weightedPowerMean_le_double: for the data $a = (0,1,2)$ with weights $w = (1,2,3)$ over range 3, the weighted arithmetic mean $M_1$ is at most the weighted quadratic mean $M_2$. The hypotheses (nonnegativity of $a$ and $w$, positivity of the total weight $W = 6$) are discharged by positivity and norm_num, and the conclusion follows by simpa. This grounds the abstract ladder at its first, most familiar rung — the AM ≤ QM inequality.",
     "mathContext": "$M_1 = \\frac{\\sum w_i a_i}{6} \\le M_2 = \\Big(\\frac{\\sum w_i a_i^2}{6}\\Big)^{1/2}$ for $a=(0,1,2)$, $w=(1,2,3)$ — the weighted AM ≤ QM.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "AM-QM inequality",
       "worked example",

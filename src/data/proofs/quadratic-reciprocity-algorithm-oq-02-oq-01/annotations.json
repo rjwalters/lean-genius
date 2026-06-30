@@ -78,11 +78,11 @@
       "startLine": 99,
       "endLine": 117
     },
-    "type": "example",
+    "type": "concept",
     "title": "A Concrete Witness: a = 2 Certifies 15 Composite",
     "content": "two_pow_seven_fifteen computes 2^7 ≡ 8 (mod 15) by kernel decide (note 15/2 = 7). two_eulerWitness_fifteen then shows a = 2 is an Euler witness: J(2 | 15) = 1 (imported from the parent) but the right-hand side is 8, and 1 ≠ 8 in ZMod 15. fifteen_not_prime concludes ¬ Nat.Prime 15 from the single witness, without using the factorization 15 = 3·5. The same a = 2 that the parent showed the Jacobi symbol fails to certify as a nonsquare here succeeds at certifying 15 as composite.",
     "mathContext": "$J(2\\mid 15)=1$, $2^{7}=128\\equiv 8\\pmod{15}$, $1\\neq 8$, so $2$ is an Euler witness and $15$ is composite.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Euler witness",
       "kernel decide",

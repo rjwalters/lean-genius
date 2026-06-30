@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 27
     },
-    "type": "context",
+    "type": "concept",
     "title": "Completing the Parent's Decidability Promise",
     "content": "Erdős Problem #11 (open) asks whether every odd n > 1 is the sum of a squarefree number and a power of two. The parent file erdos-11-wip-01 built the bounded characterization isSquarefreePlusPow2_iff and called it 'decidable' but never registered the instance. This file closes that gap and records the two simplest structural consequences the characterization unlocks: an infinite sufficient family and the n = 1 boundary failure. Everything is machine-checked with 0 axioms — the trailing #print axioms commands confirm all three results depend only on the standard foundational axioms (propext, Classical.choice, Quot.sound), with no native_decide and no sorry, the conservative integrity reading for an entry attached to an open Erdős problem.",
     "mathContext": "Erdős #11: is every odd $n>1$ of the form $s + 2^k$ with $s$ squarefree? (Open.)",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős Problem #11", "squarefree numbers", "powers of two", "decidability", "additive number theory"],
     "prerequisites": ["squarefree integers", "the parent bounded characterization"]
   },
@@ -21,7 +21,7 @@
       "startLine": 35,
       "endLine": 41
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Decidability via the Bounded Characterization",
     "content": "decidableIsSquarefreePlusPow2 supplies the promised DecidablePred instance. The mechanism is decidable_of_iff applied to (isSquarefreePlusPow2_iff n).symm: an unbounded existential is in general undecidable, but the parent's equivalence rewrites it as a bounded search ∃ k ∈ range (n+1), 2^k ≤ n ∧ Squarefree (n − 2^k) — a finite Finset.bExists whose body is the decidable Nat predicate Squarefree, so decidability transports across with no new computation. Honest caveat: kernel decide stays impractical because Squarefree routes through Nat.minSqFac, which the kernel does not reduce; the instance is logically valid and usable nonetheless — a clean separation of 'decidable in principle' from 'kernel-reducible'.",
     "mathContext": "$\\text{IsSquarefreePlusPow2}\\,n \\iff \\exists k \\in [0,n],\\ 2^k \\le n \\wedge \\mathrm{Squarefree}(n - 2^k)$.",

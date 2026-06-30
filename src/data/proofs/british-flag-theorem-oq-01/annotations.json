@@ -34,7 +34,7 @@
     "title": "Squared Distance",
     "content": "`sqDist P Q` is the squared Euclidean distance (P.1 − Q.1)² + (P.2 − Q.2)² between two planar points. Working with squared distances rather than distances is what makes the proof a pure polynomial identity: no `Real.sqrt` appears, so the whole result is closed by ring arithmetic over ℝ.",
     "mathContext": "$\\operatorname{sqDist}(P,Q) = (P_1 - Q_1)^2 + (P_2 - Q_2)^2$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "squared distance",
       "Euclidean plane"

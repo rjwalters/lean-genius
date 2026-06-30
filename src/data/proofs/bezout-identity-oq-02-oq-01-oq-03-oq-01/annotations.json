@@ -51,7 +51,7 @@
     "id": "ann-examples-69",
     "proofId": "bezout-identity-oq-02-oq-01-oq-03-oq-01",
     "range": { "startLine": 145, "endLine": 178 },
-    "type": "example",
+    "type": "concept",
     "title": "(6, 9): The Primitive Step Is (3, −2), Not (9, −6)",
     "content": "For the NON-coprime pair `(6,9)`, `g = 3` and the primitive cofactors are `(a',b') = (2,3)`. The solutions `(2,0)` and `(−1,2)` of `6·x + 9·y = 12` differ by the single primitive step `k = −1` along `(b', −a') = (3, −2)` — `ex69_family` exhibits the whole family `6·(2 + k·3) + 9·(0 − k·2) = 12`. This is the crux of dropping coprimality: the naïve lattice `ℤ·(b, −a) = ℤ·(9, −6)` would skip two of every three solutions; the correct generator is the primitive `(3, −2)`. `ex69_unsolvable` shows `6·x + 9·y = 7` has no solution because `3 ∤ 7`.",
     "mathContext": "All integer solutions of $6x+9y=12$ are $(2+3k,\\,-2k)$, $k\\in\\mathbb{Z}$ — step $(3,-2)$, period one third of $(9,-6)$. And $6x+9y=7$ is unsolvable since $\\gcd(6,9)=3\\nmid 7$.",

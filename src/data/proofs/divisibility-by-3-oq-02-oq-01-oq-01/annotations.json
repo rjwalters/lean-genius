@@ -6,7 +6,7 @@
       "startLine": 60,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Casting ofDigits into any commutative ring",
     "content": "Two ring-level lemmas underpin the framework. `cast_ofDigits` shows the canonical map $\\mathbb N \\to R$ commutes with `ofDigits`: casting the number $\\mathrm{ofDigits}_b(L)$ into a commutative ring $R$ equals evaluating `ofDigits` with the base itself cast into $R$. This is what lets a number be pushed into $\\mathbb Z/m\\mathbb Z$ and read off as a weighted digit value with weights $(b:R)^i$. `ofDigits_cons_ring` is the general-ring Horner unfolding $d + c\\cdot(\\text{rest})$, giving digit $i$ the weight $c^i$.",
     "mathContext": "$(\\mathrm{ofDigits}_b\\,L : R) = \\mathrm{ofDigits}_{(b:R)}\\,L;\\quad \\mathrm{ofDigits}_c(d::t) = d + c\\cdot\\mathrm{ofDigits}_c\\,t.$",
@@ -134,11 +134,11 @@
       "startLine": 200,
       "endLine": 241
     },
-    "type": "context",
+    "type": "concept",
     "title": "Periodic weight tables and numerical checks",
     "content": "Part VI makes the periodicity explicit and machine-checked: $(10:\\mathbb Z/7\\mathbb Z)^6 = 1$ and $(10:\\mathbb Z/13\\mathbb Z)^6 = 1$ (period 6), while $(10:\\mathbb Z/4\\mathbb Z)^2 = 0$ and $(10:\\mathbb Z/8\\mathbb Z)^3 = 0$ are the algebraic reasons the last-digits rules work. Part VII sanity-checks concrete numbers ($1001 = 7\\cdot11\\cdot13$, $124$, $1000$, etc.). Notably all of these use kernel `decide`, **not** `native_decide`, so the entry stays fully verified/0-axiom with no `Lean.ofReduceBool` dependency.",
     "mathContext": "$(10:\\mathbb Z/7)^6 = 1,\\ (10:\\mathbb Z/4)^2 = 0;\\quad 1001 = 7\\cdot11\\cdot13.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "multiplicative order",
       "decide vs native_decide",

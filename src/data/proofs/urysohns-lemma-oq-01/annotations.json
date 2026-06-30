@@ -3,11 +3,11 @@
     "id": "ann-overview-urysohn",
     "proofId": "urysohns-lemma-oq-01",
     "range": { "startLine": 3, "endLine": 34 },
-    "type": "context",
+    "type": "concept",
     "title": "Urysohn's Lemma and Its Explicit Metric Witness",
     "content": "Urysohn's lemma (Urysohn 1925) is the cornerstone separation theorem of point-set topology: in a normal space, normality (a set-theoretic condition) is equivalent to separation of disjoint closed sets by continuous functions (an analytic condition). It is the linchpin of the Urysohn metrization and Tietze extension theorems. Mathlib proves the abstract statement via dyadic interpolation; this entry re-exports it (hence the mathlib badge) and contributes the explicit metric witness f(x) = d(x,s)/(d(x,s)+d(x,t)) — a closed form that bypasses the abstract construction, not named in Mathlib.",
     "mathContext": "Normal space $\\Leftrightarrow$ disjoint closed sets are functionally separated; metric witness $f=\\frac{d(\\cdot,s)}{d(\\cdot,s)+d(\\cdot,t)}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Urysohn's lemma", "normal space", "separation axioms", "functional separation"],
     "prerequisites": ["point-set topology", "metric spaces"]
   },
@@ -63,11 +63,11 @@
     "id": "ann-concrete",
     "proofId": "urysohns-lemma-oq-01",
     "range": { "startLine": 160, "endLine": 169 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Concrete Evaluation at the Midpoint",
     "content": "`urysohnFn_half_at_midpoint`: on ℝ, the explicit function separating {0} and {1} takes the value 1/2 at the midpoint 1/2, as symmetry demands. Computed via infDist_singleton (distance to a singleton is the point distance) and Real.dist_eq, finished by norm_num. A concrete anchor confirming the abstract construction behaves as expected.",
     "mathContext": "$f(\\tfrac12)=\\dfrac{|{\\tfrac12-0}|}{|{\\tfrac12-0}|+|{\\tfrac12-1}|}=\\dfrac{1/2}{1}=\\tfrac12$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["concrete instance", "infDist_singleton", "symmetry"],
     "prerequisites": ["arithmetic", "distance on ℝ"]
   }

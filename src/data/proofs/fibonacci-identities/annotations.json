@@ -3,11 +3,11 @@
     "id": "fibid-ann-header",
     "proofId": "fibonacci-identities",
     "range": { "startLine": 1, "endLine": 33 },
-    "type": "context",
+    "type": "concept",
     "title": "Summation Identities Missing from Mathlib's fib Library",
     "content": "The header explains the niche this entry fills: Mathlib's `Nat.fib` API is rich in *pointwise* identities — the recurrence `Nat.fib_add_two`, the addition formula `Nat.fib_add`, the doubling formulas, Cassini's identity, the gcd law `Nat.fib_gcd`, and the Pascal-diagonal sum — but it records none of the classical *summation* identities. This file supplies three: the sum of squares $\\sum F_i^2 = F_n F_{n+1}$, the odd-indexed sum $\\sum F_{2i-1} = F_{2n}$, and the even-indexed sum $\\sum F_{2i} + 1 = F_{2n+1}$. The strategy is uniform and minimal: every proof is a self-contained induction whose only Fibonacci input is the defining recurrence `Nat.fib_add_two`, the rest being `Finset.sum_range_succ` plus `ring`/`omega`. No axioms, no `native_decide`.",
     "mathContext": "$F_0 = 0,\\ F_1 = 1,\\ F_{n+2} = F_{n+1} + F_n$. The three sums proved here are the textbook telescoping/parity identities, here machine-checked over $\\mathbb{N}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Fibonacci numbers", "Nat.fib", "summation identities", "telescoping sums"],
     "prerequisites": ["Fibonacci recurrence", "finite sums over Finset.range"]
   },

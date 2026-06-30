@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 55
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports, Parent Series, and the Working Hypotheses",
     "content": "The file imports `Mathlib` together with `Proofs.UrysohnsLemmaOQ01OQ01OQ01`, the parent module that builds the Tietze extension by hand as the convergent Urysohn correction series `G = ∑' n, gₙ` in `BoundedContinuousFunction X ℝ` and proves the symmetric scalar bound `tietze_extension_via_tsum`. Everything below is a *black-box reduction* to that single lemma — no part of `Mathlib.Topology.TietzeExtension` is invoked, and the series limit is never re-run. The `namespace TietzeIntervalVector` groups the five new results, and the `variable {X : Type*} [TopologicalSpace X] [NormalSpace X] {s : Set X}` line fixes the standing hypotheses for the whole file: a normal ambient space `X` and a closed subset `s` on which the data lives. Normality is the sole topological input — it is what powers the parent's per-step Urysohn correction, and hence everything derived here.",
     "mathContext": "$\\text{parent: } f\\in C(s,\\mathbb R),\\ |f|\\le M \\ \\Rightarrow\\ \\exists\\,G,\\ G|_s=f \\ \\wedge\\ |G|\\le M,\\quad G=\\textstyle\\sum_{n}' g_n.$",

@@ -3,11 +3,11 @@
     "id": "ann-setup-imports-seam",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02",
     "range": { "startLine": 49, "endLine": 55 },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: Joining the Two Gallery Files Across a Deliberate Seam",
     "content": "The two imports are the load-bearing ones: `Proofs.CauchyInterlacingPoincare` supplies the abstract codimension-m separation inequality `poincare_separation` (which takes the compression and its Rayleigh-agreement hypothesis as inputs), and `Proofs.CauchyInterlacingCompression` supplies the explicit orthogonal compression `compress T H := P_H ∘ T ∘ ι_H` together with `isSymmetric_compress` and `rayleigh_compress_eq` (which discharge that hypothesis). Opening both namespaces brings every ingredient into scope so the join is a single application with no new spectral lemmas. The `variable` block fixes an arbitrary finite-dimensional inner product space `V` over `𝕜 : RCLike` (real or complex); the dimension split `finrank V = n + m` and `finrank H = n` is introduced per-theorem rather than globally, since the codimension `m` is what varies across the three results.",
     "mathContext": "Abstract Poincaré (compression abstracted away) + explicit compression (codimension abstracted away) ⟹ both the Rayleigh hypothesis and the codimension restriction vanish.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["module imports", "namespace composition", "RCLike inner product space", "abstraction boundary"],
     "prerequisites": ["finite-dimensional inner product spaces", "the abstract Poincaré separation file", "the orthogonal compression file"]
   },
@@ -31,7 +31,7 @@
     "title": "Recovering the Codimension-One Corollary (m = 1)",
     "content": "`cauchy_interlacing_compression_of_poincare` specialises the main theorem to `m = 1` and re-expresses the index bounds `⟨k+1⟩` and `⟨k⟩` as `k.succ` and `k.castSucc` via `Fin.ext`, reproducing the merged codimension-one compression corollary `λ_{k+1} ≤ μ_k ≤ λ_k`. This certifies that the arbitrary-codimension form is a faithful generalisation rather than a divergent statement.",
     "mathContext": "Cauchy interlacing for a hyperplane compression is exactly Poincaré separation at codimension m = 1.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["Cauchy interlacing", "Fin.succ", "Fin.castSucc", "proof irrelevance"],
     "prerequisites": ["the main separation theorem"]
   },
@@ -39,11 +39,11 @@
     "id": "ann-compression-span-frame",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02",
     "range": { "startLine": 134, "endLine": 147 },
-    "type": "construction",
+    "type": "definition",
     "title": "Compression onto the Span of an Orthonormal Frame",
     "content": "`poincare_separation_compression_span` replaces the explicit dimension hypothesis with an arbitrary orthonormal family `f : Fin n → V`, compressing onto `H = Submodule.span 𝕜 (Set.range f)`. The dimension `finrank H = n` is discharged inline by `finrank_span_eq_card hf.linearIndependent` composed with `Fintype.card_fin`. This is the literal 'eigenvalue interlacing under compression onto a k-dimensional subspace' phrasing, taking the subspace as the span of k orthonormal vectors.",
     "mathContext": "An orthonormal k-frame spans a k-dimensional subspace; compressing onto it gives μ with λ_{k+m} ≤ μ_k ≤ λ_k.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["orthonormal family", "span", "finrank_span_eq_card", "k-dimensional subspace"],
     "prerequisites": ["the main separation theorem", "linear independence of orthonormal families"]
   }

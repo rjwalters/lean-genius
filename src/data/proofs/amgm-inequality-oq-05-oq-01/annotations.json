@@ -7,7 +7,7 @@
     "title": "Module Header: Equality Case of Hölder's Inequality",
     "content": "Mathlib proves Hölder's inequality for finite sums ($\\sum f_i g_i \\le (\\sum f_i^p)^{1/p}(\\sum g_i^q)^{1/q}$) but does NOT characterize when equality holds. This file fills that gap: writing $F = \\sum f_i^p$, $G = \\sum g_i^q$, equality holds iff the power-vectors $(f_i^p)$ and $(g_i^q)$ are proportional, stated in cross-multiplied form $G\\,f_i^p = F\\,g_i^q$ so it degenerates gracefully when $F = 0$ or $G = 0$. The engine is the equality case of Young's inequality summed pointwise on unit-normalized vectors. All exponents are real, so `^` is `Real.rpow` throughout.",
     "mathContext": "$\\sum_i f_i g_i = F^{1/p}G^{1/q} \\iff \\forall i,\\ G f_i^p = F g_i^q$, with $F=\\sum f_i^p,\\ G=\\sum g_i^q$ and $p^{-1}+q^{-1}=1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Hölder's inequality", "Young's inequality", "equality cases", "Lᵖ/Lq duality", "Real.rpow"],
     "prerequisites": ["Hölder conjugate exponents", "finite sums", "real powers"]
   },

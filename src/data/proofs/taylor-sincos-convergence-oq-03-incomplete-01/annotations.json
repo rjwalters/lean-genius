@@ -39,7 +39,7 @@
     "id": "ann-summable-subseq",
     "proofId": "taylor-sincos-convergence-oq-03-incomplete-01",
     "range": { "startLine": 92, "endLine": 98 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Summability for Free as an Injective Subseries",
     "content": "cosTermAbs_summable and sinTermAbs_summable get summability without new analysis: each magnitude sequence is the composition of the known-summable `Real.summable_pow_div_factorial |x|` (i.e. Σ |x|^n/n! = e^{|x|}) with the injective index maps k ↦ 2k and k ↦ 2k+1. `Summable.comp_injective` then transfers summability along the injection — a subseries of a summable non-negative series is summable. The injectivity obligations are discharged by `omega`.",
     "mathContext": "$\\sum_k \\dfrac{|x|^{2k}}{(2k)!}$ and $\\sum_k \\dfrac{|x|^{2k+1}}{(2k+1)!}$ are subseries of the summable $\\sum_n \\dfrac{|x|^n}{n!} = e^{|x|}$, summable by injective reindexing.",

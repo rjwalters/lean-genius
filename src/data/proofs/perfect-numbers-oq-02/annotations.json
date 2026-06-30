@@ -3,11 +3,11 @@
     "id": "ann-context",
     "proofId": "perfect-numbers-oq-02",
     "range": { "startLine": 3, "endLine": 32 },
-    "type": "context",
+    "type": "concept",
     "title": "The Abundancy Index as a Convention-Free Perfectness Test",
     "content": "The docstring positions this file relative to the parent Euclid–Euler classification: rather than the asymmetric σ(n) = 2n (which double-counts n itself), it expresses perfectness through the abundancy index I(n) = σ(n)/n written as the sum of divisor reciprocals ∑_{d∣n} 1/d. This form is scale-free and generalizes verbatim: k-perfect (multiply perfect) numbers are exactly those with reciprocal-divisor sum k. The aesthetic payoff is that 'perfect' becomes the clean threshold ∑_{d∣n} 1/d = 2.",
     "mathContext": "$I(n) = \\dfrac{\\sigma(n)}{n} = \\sum_{d\\mid n} \\dfrac1d;\\quad n\\text{ perfect} \\iff I(n) = 2.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["perfect numbers", "Euclid–Euler theorem", "abundancy index", "multiply perfect numbers", "sum of divisors σ"],
     "prerequisites": ["divisors", "sum-of-divisors function", "definition of perfect number"]
   },

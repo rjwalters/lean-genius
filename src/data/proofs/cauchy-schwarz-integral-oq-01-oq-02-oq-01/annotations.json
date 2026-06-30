@@ -27,7 +27,7 @@
     "id": "ann-cs-hypothesis-translation",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02-oq-01",
     "range": { "startLine": 85, "endLine": 116 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Translating Hypotheses to Mathlib's verticalStrip API",
     "content": "The mathematical content lives in Mathlib; the work here is bridging conventions. The hand-rolled `closedStrip`/`openStrip` are identified with `verticalClosedStrip 0 1` / `verticalStrip 0 1` by `ext` + `simp`. The crucial topological fact `closure (verticalStrip 0 1) = verticalClosedStrip 0 1` (via `closure_preimage_re` and `closure_Ioo`) lets continuity-on-the-closed-strip plus holomorphy-on-the-open-strip assemble into Mathlib's `DiffContOnCl` (differentiable on a set, continuous on its closure — the hypothesis form of the maximum principle). The uniform bound becomes `BddAbove` of the norm image, and the two boundary bounds are rephrased in the `re ⁻¹' {0}` / `re ⁻¹' {1}` form Mathlib expects.",
     "mathContext": "$\\overline{\\{0<\\operatorname{Re}z<1\\}} = \\{0\\le\\operatorname{Re}z\\le1\\}$; $\\mathrm{DiffContOnCl} = $ holomorphic on the open strip $+$ continuous on its closure.",

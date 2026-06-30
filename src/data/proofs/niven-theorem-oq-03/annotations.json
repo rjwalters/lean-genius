@@ -3,11 +3,11 @@
     "id": "niven-oq03-header",
     "proofId": "niven-theorem-oq-03",
     "range": { "startLine": 6, "endLine": 49 },
-    "type": "context",
+    "type": "concept",
     "title": "Niven for tangent: only {0, ±1}, via the double-angle bridge",
     "content": "The header states the tangent companion to Niven's theorem: if θ is a rational multiple of π and tan θ is rational, then tan θ ∈ {0, 1, −1} — a strictly smaller set than the five values {0, ±1/2, ±1} of the sine/cosine case. The strategy reduces to cosine Niven via the rational double-angle map cos(2θ) = (1 − tan²θ)/(1 + tan²θ), valid when cos θ ≠ 0: a rational tangent t makes cos(2θ) rational at the rational-multiple-of-π angle 2θ, so cosine Niven gives cos(2θ) ∈ {0, ±1/2, ±1}; solving for t leaves only {0, ±1}, since the two ±1/2 branches force t² = 1/3 or 3, impossible over ℚ (√3 irrational). At cos θ = 0, Lean's tan = sin/cos convention makes tan θ = 0, already in the target set — no side condition needed. Tangent is unbounded, so routing through the bounded image cos(2θ) restores a finite Niven enumeration.",
     "mathContext": "$\\theta \\in \\mathbb{Q}\\pi,\\ \\tan\\theta \\in \\mathbb{Q} \\implies \\tan\\theta \\in \\{0, 1, -1\\}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Niven's theorem", "double-angle identity", "rational multiples of π", "irrationality of √3"],
     "prerequisites": ["Niven's cosine theorem", "tan = sin/cos", "the double-angle identity"]
   },

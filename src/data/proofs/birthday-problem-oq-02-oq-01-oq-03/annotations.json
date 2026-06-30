@@ -7,7 +7,7 @@
     "title": "All-Distinct and Collision Probabilities",
     "content": "Two definitions set the stage. `birthdayProduct k d` $= \\prod_{i<k}\\bigl(1 - \\tfrac{i}{d}\\bigr)$ is the probability that all $k$ birthdays are distinct among $d$ equally likely days — equivalently the falling factorial $d^{\\underline{k}}/d^k$, since the $(i{+}1)$-th person has $d-i$ unused days out of $d$. `collisionProb k d` $= 1 - \\text{birthdayProduct}\\,k\\,d$ is its complement, the probability that at least two people share a birthday. Both are `noncomputable` reals because the factors involve real division.",
     "mathContext": "$P(\\text{distinct}) = \\prod_{i<k}\\bigl(1 - \\tfrac{i}{d}\\bigr) = \\dfrac{d^{\\underline{k}}}{d^k}, \\quad \\text{collisionProb} = 1 - P(\\text{distinct}).$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Falling factorial", "Complementary event", "Uniform distribution"],
     "prerequisites": ["Finite products over Finset.range", "Probability of a complementary event"]
   },

@@ -30,7 +30,7 @@
       "startLine": 57,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Factorial as a Product Over [1,n]",
     "content": "Before logarithms enter, n! is reorganised as the product ∏_{m∈[1,n]} m by a one-line induction (prod_Icc_succ_top peels off the top factor, mul_comm matches Nat.factorial_succ). This product form is the hinge that lets Real.log_prod turn log(n!) into ∑_{m≤n} log m — the step both Legendre's identity and the ψ-bound start from.",
     "mathContext": "$\\prod_{m=1}^{n} m = n!$, proved by induction with $\\prod_{m=1}^{n+1} m = \\big(\\prod_{m=1}^{n} m\\big)\\cdot(n+1)$. Casting to $\\mathbb{R}$ and applying $\\log(\\prod a_i) = \\sum \\log a_i$ (valid as each $m \\ge 1 > 0$) gives $\\log(n!) = \\sum_{m=1}^{n} \\log m$.",

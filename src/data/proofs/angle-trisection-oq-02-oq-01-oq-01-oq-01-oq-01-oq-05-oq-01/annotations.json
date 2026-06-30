@@ -3,11 +3,11 @@
     "id": "normaut-ann-header",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01",
     "range": { "startLine": 1, "endLine": 55 },
-    "type": "context",
+    "type": "concept",
     "title": "When is the automorphism bound sharp?",
     "content": "The parent proved |Aut_F(K)| ≤ [K:F]_s via an injection toEmb of automorphisms into embeddings of K into its algebraic closure, and left two open questions: (1) is the bound an equality for normal K/F? (2) is toEmb then a bijection? This entry answers both at once by recognizing that Mathlib's Normal.algHomEquivAut already packages exactly the needed equivalence, with the parent's toEmb as its inverse. The key emphasis: the equality |Aut_F(K)| = [K:F]_s needs only NORMALITY, not separability — the automorphism group counts the separable degree, reaching the full degree [K:F] exactly in the separable (Galois) case.",
     "mathContext": "$|\\mathrm{Aut}_F(K)| \\le [K:F]_s \\le [K:F]$: first $=$ iff normal, second $=$ iff separable, both $=$ iff Galois.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["normal extension", "separable degree", "Galois case", "Normal.algHomEquivAut"],
     "prerequisites": ["the parent automorphism bound", "F-embeddings into the algebraic closure"]
   },

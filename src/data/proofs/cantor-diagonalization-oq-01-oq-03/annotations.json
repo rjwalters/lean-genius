@@ -7,7 +7,7 @@
     "title": "The Continuum 2^ℵ₀",
     "content": "`continuum` is defined as 2^ℵ₀, the cardinality of the real line (equivalently of 𝒫(ℕ)). The whole entry studies the one structural fact ZFC pins down about this cardinal's place in the aleph hierarchy: its cofinality. Cantor's diagonal argument gives ℵ₀ < 2^ℵ₀ but leaves the exact value open; König's theorem supplies the only nontrivial provable constraint.",
     "mathContext": "$\\mathfrak{c} = 2^{\\aleph_0} = |\\mathcal{P}(\\mathbb{N})| = |\\mathbb{R}|$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["cardinality of the continuum", "power set", "aleph hierarchy"],
     "prerequisites": ["cardinal arithmetic", "Cantor's theorem"]
   },
@@ -51,11 +51,11 @@
     "id": "ann-summary",
     "proofId": "cantor-diagonalization-oq-01-oq-03",
     "range": { "startLine": 150, "endLine": 173 },
-    "type": "context",
+    "type": "concept",
     "title": "Summary: The Diagonal Argument's Axiom-Free Reach",
     "content": "Part IV's `konig_constraint_summary` bundles the three facts the diagonal argument plus ZFC establish about the continuum's cofinality, all axiom-free: (1) ℵ₀ < 2^ℵ₀ (Cantor's diagonal argument, `Cardinal.cantor`); (2) ℵ₀ < cf(2^ℵ₀) (König); (3) 2^ℵ₀ ≠ ℵ_ω. Facts (2) and (3) were axioms in the parent CH entry and are here discharged as theorems. The result marks the precise boundary of what the diagonal method reaches: it proves a gap exists and that the gap has uncountable cofinality, but cannot decide CH or pin the continuum's exact place in the hierarchy.",
     "mathContext": "$\\aleph_0 < 2^{\\aleph_0}$ (Cantor) $\\wedge\\ \\aleph_0 < \\operatorname{cf}(2^{\\aleph_0})$ (König) $\\wedge\\ 2^{\\aleph_0} \\neq \\aleph_\\omega$ — all provable in ZFC, no extra axioms.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Continuum Hypothesis", "Cantor's theorem", "independence of CH", "limits of diagonalization"],
     "prerequisites": ["the Continuum Hypothesis", "cofinality"]
   }

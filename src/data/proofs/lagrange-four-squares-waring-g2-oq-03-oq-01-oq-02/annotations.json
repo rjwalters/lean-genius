@@ -55,7 +55,7 @@
     "title": "Exact Index Recovery and a Decidable Test",
     "content": "`eq_tri_of_eight_mul_add_one` reads the index off directly: 8n+1 = (2k+1)² forces n = T(k). Because 'is a perfect square' is decidable on ℕ, `decidable_of_iff` transports decidability across the equivalence, yielding a `DecidablePred IsTriangular` instance — a constant-cost triangular-number test. The worked examples confirm T₄=10, T₆=21 while 5 and 8 are not triangular (closed via the characterization and a finite square search, since `Nat.sqrt` does not reduce under kernel `decide`).",
     "mathContext": "Triangularity of $n$ reduces to the single decidable check $\\mathrm{IsSquare}(8n+1)$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["decidability", "index recovery", "computational test"],
     "prerequisites": ["the main characterization"]
   }

@@ -81,7 +81,7 @@
     "title": "Density Limit via Tannery, with k ≥ 2 as the Exact Convergence Range",
     "content": "coprime_tuple_density_limit assembles the result: lim_{N→∞} countCoprimeTuples(k,N)/Nᵏ = 1/ζ(k). The Möbius decomposition rewrites the normalized count as a tsum Σ_d μ(d)·(⌊N/d⌋/N)ᵏ (truncating to [1,N]); each term tends to μ(d)/dᵏ using the floor-ratio limit ⌊N/d⌋/N → 1/d; the family is dominated by 1/dᵏ via |μ(d)| ≤ 1 and ⌊N/d⌋/N ≤ 1/d; and tendsto_tsum_of_dominated_convergence (Tannery) passes the limit inside the sum to land on 1/ζ(k). The hypothesis k ≥ 2 is not incidental: the dominator 1/dᵏ is summable iff k > 1 (summable_one_div_nat_pow), so k ≥ 2 is precisely the range where the density limit exists.",
     "mathContext": "$\\lim_{N\\to\\infty}\\frac{|\\{a\\in[1,N]^k:\\gcd(a)=1\\}|}{N^k} = \\sum_{d\\ge 1}\\frac{\\mu(d)}{d^k} = \\frac{1}{\\zeta(k)},\\quad k\\ge 2.$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Tannery's theorem",
       "tendsto_tsum_of_dominated_convergence",

@@ -27,7 +27,7 @@
     "id": "chcv-oq02oq01-ann-frobenius",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-01",
     "range": { "startLine": 101, "endLine": 130 },
-    "type": "caveat",
+    "type": "warning",
     "title": "The Frobenius Bound dim C(M) ≥ n — the Single Isolated Axiom",
     "content": "finrank_centralizer_ge is the file's only assumption: the centralizer of any n×n matrix has K-dimension at least n. This is a classical theorem (Frobenius, 1878). Its standard proof views Kⁿ as a K[X]-module via M, identifies C(M) with the ring of K[X]-module endomorphisms End_{K[X]}(Kⁿ), decomposes Kⁿ into invariant factors K[X]/(f₁) ⊕ ⋯ ⊕ K[X]/(f_k) (rational canonical form), and notes the block-diagonal scalar multiplications already span a subspace of dimension Σ deg fᵢ = n (in fact dim C(M) = Σ_{i,j} deg gcd(fᵢ,fⱼ), equal to n iff nonderogatory). Mathlib v4.26.0 has the primary-decomposition structure theorem (Module.equiv_directSum_of_isTorsion) and the Module.AEval' K[X]-module structure, but neither the C(M) ≅ End_{K[X]}(Kⁿ) bridge nor the invariant-factor packaging — several hundred lines of infrastructure — so the bound is recorded as one transparently-disclosed axiom.",
     "mathContext": "$\\dim_K C(M) = \\sum_{i,j} \\deg\\gcd(f_i,f_j) \\ge \\sum_i \\deg f_i = n$, with equality iff $M$ is nonderogatory.",

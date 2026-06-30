@@ -6,11 +6,11 @@
       "startLine": 6,
       "endLine": 66
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Half-Integer Beta Diagonal in Closed Form",
     "content": "Closes the entire half-integer diagonal of the Euler Beta function: B(n+1/2,n+1/2) = π·(2n)!/(4^(2n)·(n!)²) = π·C(2n,n)/4^(2n), for every n. This is the transcendental mirror of the gallery's integer diagonal B(n+1,n+1) = 1/((2n+1)·C(2n,n)): the SAME central binomial coefficient governs both, but here it sits in the NUMERATOR scaled by π, rather than in the denominator of a rational value. The crossover between the rational and transcendental diagonals is the single Gauss value Γ(1/2)=√π. Mathlib has no half-integer Beta value and does not store the factorial form of Γ(n+1/2); both are produced here.",
     "mathContext": "$B(n+\\tfrac12,n+\\tfrac12) = \\dfrac{\\pi\\,(2n)!}{4^{2n}(n!)^2} = \\dfrac{\\pi\\binom{2n}{n}}{4^{2n}}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euler Beta function",
       "Beta–Gamma relation",
@@ -30,7 +30,7 @@
       "startLine": 73,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Factorial Closed Form of Γ(n+1/2) by Induction",
     "content": "gamma_nat_add_half_eq proves Γ(n+1/2) = √π·(2n)!/(4^n·n!) directly by induction, the analytic core of the entry. Base case: Γ(0+1/2) = Γ(1/2) = √π (Real.Gamma_one_half_eq). Inductive step: Real.Gamma_add_one gives Γ((k+1/2)+1) = (k+1/2)·Γ(k+1/2); expanding the successor factorials (2(k+1))! = (2k+2)(2k+1)(2k)! and (k+1)! = (k+1)·k! in ℕ and then casting, field_simp/ring verify the closed form propagates via (2k+2)(2k+1)/(4(k+1)) = (2k+1)/2 = k+1/2. Mathlib stores Γ(n+1/2) only in double-factorial form (2n-1)‼·√π/2^n; this factorial form — the one that meets factorials and central binomials — is reproved from scratch, never converted.",
     "mathContext": "$\\Gamma(n+\\tfrac12) = \\dfrac{\\sqrt\\pi\\,(2n)!}{4^n\\,n!}$, step multiplies by $(k+\\tfrac12)$.",
@@ -53,7 +53,7 @@
       "startLine": 105,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Assembling the Diagonal Beta Value",
     "content": "betaIntegral_diag_half applies the Beta–Gamma relation B(n+1/2,n+1/2) = Γ(n+1/2)²/Γ((n+1/2)+(n+1/2)) (both real parts n+1/2 > 0), rewrites the argument sum to (2n)+1 so the denominator collapses to Γ(2n+1) = (2n)! (Complex.Gamma_nat_eq_factorial), and transfers the two numerator Gamma factors onto the real line through Complex.Gamma_ofReal. There the closed form gamma_nat_add_half_eq applies, reducing the goal to the real identity Γ(n+1/2)²/(2n)! = π·(2n)!/(4^(2n)·(n!)²), closed using (√π)² = π and 4^(2n) = (4^n)². No integral is ever evaluated — the value is bought algebraically from Gamma.",
     "mathContext": "$B(n+\\tfrac12,n+\\tfrac12) = \\dfrac{\\Gamma(n+\\tfrac12)^2}{\\Gamma(2n+1)} = \\dfrac{\\pi(2n)!}{4^{2n}(n!)^2}$.",

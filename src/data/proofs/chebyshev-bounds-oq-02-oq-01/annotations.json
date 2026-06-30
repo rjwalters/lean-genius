@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 33
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Lower Bound: Filling a Mathlib TODO",
     "content": "The docstring situates the file relative to its parent. ChebyshevBoundsOQ02 developed the second Chebyshev function $\\psi(n) = \\sum_{m\\le n}\\Lambda(m)$ and proved Legendre's identity $\\log(n!) = \\sum_{d\\le n}\\Lambda(d)\\lfloor n/d\\rfloor$, but only obtained the weak estimate $\\psi(n)\\le\\log(n!) = O(n\\log n)$. This file proves the genuinely linear *lower* bound $c_1 n \\le \\psi(n)$ — the harder half of Chebyshev's 1852 theorem, and an explicit TODO ('Prove Chebyshev's lower bound') in Mathlib's own NumberTheory/Chebyshev.lean, which supplies only the upper bound. The strategy is the classical central-binomial argument, executed in four named steps culminating in a two-sided estimate with both constants explicit.",
     "mathContext": "Goal: $\\dfrac{\\log 2}{3}\\,m \\le \\psi(m) \\le (\\log 4 + 4)\\,m$ for $m \\ge 2$. Mathlib provides the right inequality; this file builds the left from scratch via $C(n) = \\binom{2n}{n}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Chebyshev function ψ",
       "Prime Number Theorem",
@@ -29,7 +29,7 @@
       "startLine": 41,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Floor Identity: ⌊2n/d⌋ ≤ 2⌊n/d⌋ + 1",
     "content": "two_mul_div_le is the arithmetic engine of the whole argument. In natural-number division, $\\lfloor 2n/d\\rfloor$ can exceed $2\\lfloor n/d\\rfloor$ by at most 1, so the Legendre coefficient $\\lfloor 2n/d\\rfloor - 2\\lfloor n/d\\rfloor$ is always 0 or 1. The proof splits on $d = 0$ (trivial) and $d > 0$, where writing $n = d\\lfloor n/d\\rfloor + (n \\bmod d)$ with $n\\bmod d < d$ gives $2n < d(2\\lfloor n/d\\rfloor + 2)$ by nlinarith, and Nat.div_lt_of_lt_mul plus omega finishes. This single fact replaces the usual prime-by-prime analysis of the exponents in $C(n)$.",
     "mathContext": "For $d \\ge 1$: $2n = d\\lfloor n/d\\rfloor\\cdot 2 + 2(n\\bmod d) < d(2\\lfloor n/d\\rfloor + 2)$, hence $\\lfloor 2n/d\\rfloor < 2\\lfloor n/d\\rfloor + 2$, i.e. $\\lfloor 2n/d\\rfloor - 2\\lfloor n/d\\rfloor \\in \\{0,1\\}$ (Legendre's classical exponent bound).",
@@ -98,7 +98,7 @@
       "startLine": 109,
       "endLine": 126
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Feeding in 4ⁿ ≤ 2n·C(n)",
     "content": "psi_two_mul_ge_sub_log converts the combinatorial bound into an analytic one using Mathlib's exponential lower bound on the central binomial coefficient, $4^n \\le 2n\\cdot C(n)$ (Nat.four_pow_le_two_mul_self_mul_centralBinom). Taking logs of both sides (monotone via Real.log_le_log_iff), expanding $\\log(4^n) = n\\log 4$ (Real.log_pow) and $\\log(2n\\cdot C(n)) = \\log(2n) + \\log C(n)$ (Real.log_mul), and chaining with the previous step $\\log C(n) \\le \\psi(2n)$, gives $n\\log 4 - \\log(2n) \\le \\psi(2n)$. A pile of positivity side-goals (positivity, exact_mod_cast) keeps the logs well-defined.",
     "mathContext": "$n\\log 4 = \\log(4^n) \\le \\log(2n\\cdot C(n)) = \\log(2n) + \\log C(n) \\le \\log(2n) + \\psi(2n)$, so $n\\log 4 - \\log(2n) \\le \\psi(2n)$.",
@@ -121,7 +121,7 @@
       "startLine": 128,
       "endLine": 159
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Absorbing the Logarithm via 2n ≤ 2ⁿ",
     "content": "The error term $\\log(2n)$ is removed by the elementary bound $2n \\le 2^n$ for $n \\ge 1$ (two_mul_le_two_pow, a clean induction). Monotonicity of log then gives $\\log(2n) \\le n\\log 2$ (log_two_mul_le). Combining with $n\\log 4 - \\log(2n) \\le \\psi(2n)$ and the identity $\\log 4 = 2\\log 2$, psi_two_mul_ge_linear obtains the clean linear bound $n\\log 2 \\le \\psi(2n)$ — no asymptotics, an explicit constant. This is the even case of Chebyshev's lower bound.",
     "mathContext": "$\\log(2n) \\le \\log(2^n) = n\\log 2$, and $n\\log 4 = 2(n\\log 2)$, so $n\\log 2 = n\\log 4 - n\\log 2 \\le n\\log 4 - \\log(2n) \\le \\psi(2n)$.",
@@ -165,7 +165,7 @@
       "startLine": 176,
       "endLine": 191
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bridging to Mathlib for the Upper Bound",
     "content": "Rather than re-prove the upper bound, the file imports Mathlib's. chebyshevPsi_eq_psi shows the parent's $\\psi$ (a Finset sum of $\\Lambda$ over $[1,n]$) equals Mathlib's Chebyshev.psi $(\\mathbb{R}\\to\\mathbb{R})$ at integer arguments, via Chebyshev.psi_eq_sum_Icc, Nat.floor_natCast, and a Finset.sum_subset that discards the single $d = 0$ term. chebyshevPsi_le_linear then transports Chebyshev.psi_le_const_mul_self across this bridge to get $\\psi(n) \\le (\\log 4 + 4)n$. This is the value of a definitional bridge: a one-line corollary replaces a substantial development.",
     "mathContext": "$\\text{chebyshevPsi}(n) = \\text{Chebyshev.psi}(n)$, so $\\psi(n) \\le (\\log 4 + 4)\\,n$ follows directly from Mathlib's psi_le_const_mul_self.",

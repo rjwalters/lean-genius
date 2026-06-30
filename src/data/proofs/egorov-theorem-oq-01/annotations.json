@@ -3,11 +3,11 @@
     "id": "ann-egorov-oq01-docstring",
     "proofId": "egorov-theorem-oq-01",
     "range": { "startLine": 7, "endLine": 56 },
-    "type": "context",
+    "type": "concept",
     "title": "Egorov: a.e. Convergence Is Almost Uniform",
     "content": "The docstring states Egorov's theorem (Egorov 1911, Severini 1910): on a set s of FINITE measure, a.e. convergence fₙ → g of strongly measurable functions upgrades to UNIFORM convergence once a set of arbitrarily small measure is thrown away. Mathlib has the abstract theorem (tendstoUniformlyOn_of_ae_tendsto); restated for sequences as egorov_uniform_off_small_set. The mathematical substance added here is the canonical worked example xⁿ on [0,1], its a.e.-convergence verification, and the matching sharpness result showing the exceptional set is genuinely necessary. Fully verified, 0 sorries, 0 axioms, no native_decide.",
     "mathContext": "Egorov is Littlewood's second principle: 'every a.e.-convergent sequence of measurable functions is nearly uniformly convergent.' The finiteness of $\\mu(s)$ is essential.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Egorov's theorem", "modes of convergence", "Littlewood's three principles", "uniform vs a.e. convergence", "Lusin's theorem"],
     "prerequisites": ["measure theory", "almost-everywhere convergence", "uniform convergence"]
   },

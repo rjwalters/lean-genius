@@ -71,7 +71,7 @@
       "startLine": 138,
       "endLine": 145
     },
-    "type": "caveat",
+    "type": "warning",
     "title": "Tao's Theorem Is Stated, Not Proved (and Why)",
     "content": "tao_2019 records Tao's 2019 result precisely: for every f → ∞, the orbit-minimum sublevel set {n : 0 < n ∧ Col_min(n) < f n} has logarithmic density one. It is an axiom, not a theorem, because the proof is genuinely analytic — Tao evolves tuned measures on the 3-adics and controls their concentration (a transport estimate) together with a Fourier-analytic input, machinery Mathlib does not yet have. So the answer to OQ-03 is: the STATEMENT formalizes cleanly as a Tendsto predicate, but the PROOF is BLOCKED (>> 1000 lines). Crucially, no other theorem in this file depends on this axiom.",
     "mathContext": "$$\\forall f \\to \\infty:\\quad \\mathrm{logdens}\\{n : \\mathrm{Col\\_min}(n) < f(n)\\} = 1.$$",

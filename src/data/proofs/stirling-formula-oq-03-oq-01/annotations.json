@@ -39,7 +39,7 @@
     "id": "ann-sfoq0301-abs",
     "proofId": "stirling-formula-oq-03-oq-01",
     "range": { "startLine": 92, "endLine": 96 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Absolute-value form of the rate",
     "content": "abs_W_sub_pi_div_two_le packages the one-sided facts into the symmetric statement |W k − π/2| ≤ π/(4(k+1)). Because the gap is nonnegative (wallis_gap_nonneg), abs_of_nonneg collapses the absolute value to π/2 − W k (after abs_sub_comm), which the explicit rate already bounds. This is the form a generic 'rate of convergence' consumer expects, and the form squeeze_zero will later use.",
     "mathContext": "$W_k \\le \\tfrac{\\pi}{2} \\;\\Rightarrow\\; |W_k - \\tfrac{\\pi}{2}| = \\tfrac{\\pi}{2} - W_k \\le \\tfrac{\\pi}{4(k+1)}$.",

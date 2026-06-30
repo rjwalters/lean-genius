@@ -31,7 +31,7 @@
     "title": "darboux_ivp_deriv: Darboux Stated for deriv f",
     "content": "The closed form restated directly in terms of deriv f, assuming only DifferentiableAt ℝ f x at each point of [a,b]. Bridges from DifferentiableAt to HasDerivWithinAt via (hf x hx).hasDerivAt.hasDerivWithinAt and reuses darboux_ivp. This is the form most convenient when working with Mathlib's deriv function rather than explicit HasDerivWithinAt witnesses.",
     "mathContext": "$m \\in [[\\operatorname{deriv} f\\,a,\\ \\operatorname{deriv} f\\,b]] \\Rightarrow \\exists c \\in [a,b],\\; \\operatorname{deriv} f\\,c = m$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["deriv", "DifferentiableAt", "HasDerivAt.hasDerivWithinAt"],
     "prerequisites": ["deriv", "DifferentiableAt"]
   },
@@ -43,7 +43,7 @@
     "title": "deriv_range_ordConnected / deriv_range_convex: No Jump Discontinuities",
     "content": "The structural form of Darboux's theorem: deriv f maps an order-connected set s to an order-connected set (wrapper of Set.OrdConnected.image_deriv), and the convex repackaging deriv_range_convex (wrapper of Convex.image_deriv). These say a derivative cannot skip values — its range over an interval is again an interval. On ℝ order-connected and convex coincide, so the two are equivalent.",
     "mathContext": "$s$ order-connected $\\Rightarrow \\operatorname{deriv} f\\,(s)$ order-connected; $s$ convex $\\Rightarrow \\operatorname{deriv} f\\,(s)$ convex.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Set.OrdConnected.image_deriv", "Convex.image_deriv", "Set.OrdConnected", "Convex"],
     "prerequisites": ["Set.OrdConnected", "Convex", "deriv"]
   },
@@ -55,7 +55,7 @@
     "title": "not_deriv_of_jump: Value-Skipping Functions Are Not Derivatives",
     "content": "The obstruction corollary, the contrapositive of darboux_ivp. If g takes its boundary values g(a), g(b) but skips some intermediate value m (g(x) ≠ m for all x ∈ [a,b]), then g cannot be the derivative of any function on [a,b]. The proof assumes the contrary, extracts a Darboux witness c with g(c) = m, and contradicts the gap hypothesis. This rules out step functions — the sign function, the floor function — as derivatives.",
     "mathContext": "$m \\in [[g(a),g(b)]]$ and $g$ omits $m$ on $[a,b]$ $\\Rightarrow$ $g$ is not the derivative of any $f$ on $[a,b]$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["contrapositive", "step function", "sign function", "HasDerivWithinAt"],
     "prerequisites": ["darboux_ivp"]
   },

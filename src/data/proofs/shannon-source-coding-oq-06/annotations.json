@@ -32,7 +32,7 @@
     "title": "Counting Strings of Length < L",
     "content": "There are exactly $2^L - 1$ binary strings of length strictly less than $L$, because $\\sum_{k=0}^{L-1} 2^k = 2^L - 1$ (there are $2^k$ strings of each length $k$). Proved by induction on $L$ using `pow_succ` and `omega`. This geometric-series count is the single combinatorial fact the whole incompressibility bound rests on.",
     "mathContext": "$\\sum_{k=0}^{L-1} 2^k = 2^L - 1$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "geometric series",
       "counting binary strings"

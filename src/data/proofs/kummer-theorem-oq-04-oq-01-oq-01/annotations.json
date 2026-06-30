@@ -21,7 +21,7 @@
       "startLine": 66,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Parity Descent: Popcount-2 Reduces to Popcount-1",
     "content": "The forward direction is strong induction on n peeling the lowest bit via s₂(n) = (n%2) + s₂(n/2). An even n inherits both bits from n/2 (recurse, doubling both exponents); an odd n spends one bit on 2^0 and the remaining digit sum 1 lands exactly on the parent's popcount-one lemma `sum_digits_two_eq_one_imp`. The popcount ladder climbs by feeding level k into level k-1.",
     "mathContext": "$s_2(n) = (n \\bmod 2) + s_2(\\lfloor n/2 \\rfloor)$ from `Nat.digits_def'`. Even $n$: low bit $0 \\Rightarrow s_2(n/2)=2$, IH gives $n/2 = 2^a+2^b$, so $n = 2^{a+1}+2^{b+1}$. Odd $n$: low bit $1 \\Rightarrow s_2(n/2)=1$, popcount-1 gives $n/2 = 2^k$, so $n = 2^{k+1}+2^0$.",
@@ -36,7 +36,7 @@
       "startLine": 97,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Converse by a Single Factorisation",
     "content": "`sum_digits_two_eq_two_of` factors 2^a + 2^b = 2^b·(2^(a-b)+1). Multiplying by a power of two only prepends zero digits (`sum_digits_two_pow_mul`), so the digit sum equals that of the odd part 2^m+1, whose binary string 1 0…0 1 has digit sum 2 (`sum_digits_two_pow_succ_add_one`).",
     "mathContext": "$2^a + 2^b = 2^b(2^{a-b}+1)$ with $a>b$. Doubling-invariance $s_2(2^c x) = s_2(x)$ strips the $2^b$, and $s_2(2^{m}+1) = 2$ for $m\\ge 1$ since the binary string is $1\\underbrace{0\\cdots0}_{m-1}1$.",

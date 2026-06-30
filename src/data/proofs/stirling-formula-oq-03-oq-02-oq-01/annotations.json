@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 45
     },
-    "type": "context",
+    "type": "concept",
     "title": "One Ratio Limit on Top of the Parent",
     "content": "The header lays out the whole strategy: the parent module StirlingFormulaOQ03OQ02 already proves the central binomial asymptotic C(2n,n)·√(πn)/4ⁿ → 1. Catalan numbers satisfy the exact Mathlib identity (n+1)·catalan n = C(2n,n), so catalan n = C(2n,n)/(n+1). Multiplying the parent limit by the elementary ratio n/(n+1) → 1 transfers the asymptotic to the Catalan numbers. The file `open`s the four parent lemmas it reuses (cb, cb_pos, cb_ne_zero, centralBinom_asymptotic), so the only genuinely new mathematics is the ratio limit and the cast bookkeeping. Mathlib has the Catalan↔central-binomial identity but not the Catalan asymptotic itself.",
     "mathContext": "$C_n = \\binom{2n}{n}/(n+1)$, and $\\binom{2n}{n} \\sim 4^n/\\sqrt{\\pi n}$ (parent) times $\\tfrac{n}{n+1}\\to 1$ gives $C_n \\sim 4^n/(\\sqrt\\pi\\, n^{3/2})$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Catalan numbers", "central binomial coefficient", "asymptotic equivalence", "module reuse"],
     "prerequisites": ["asymptotic notation ~", "Catalan closed form", "sequence limits"]
   },
@@ -36,7 +36,7 @@
       "startLine": 63,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Exact Bridge: catalan n = C(2n,n)/(n+1)",
     "content": "cat_eq casts Mathlib's natural-number identity (n+1)·catalan n = C(2n,n) (Nat.succ_mul_catalan_eq_centralBinom) into ℝ via congrArg + push_cast, then divides by the nonzero (n+1) using eq_div_iff and closes with linear_combination. This identity is exact for every n — there is no error term — which is precisely why the asymptotic transfers verbatim: an exact algebraic relation composed with a convergent ratio preserves the limit. The whole proof rests on turning this equality into the division catalan n = C(2n,n)/(n+1).",
     "mathContext": "$(n+1)\\,C_n = \\binom{2n}{n} \\;\\Longrightarrow\\; C_n = \\dfrac{\\binom{2n}{n}}{n+1}$.",

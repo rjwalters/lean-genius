@@ -21,7 +21,7 @@
       "startLine": 83,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Odd-Power Obstruction",
     "content": "`not_sum_two_squares_of_odd_padicValNat` is the necessity half phrased as an obstruction: if a single prime p ≡ 3 (mod 4) divides n to an *odd* power, n is not a sum of two squares. The proof assumes a representation, extracts `Even (padicValNat p n)` from the characterization, and contradicts it with `Nat.even_iff_not_odd`. Crucially there is no hypothesis on n modulo 4 — this is exactly what lifts the elementary mod-4 obstruction to composite numbers such as 21, which is ≡ 1 (mod 4).",
     "mathContext": "If $\\exists\\, p \\equiv 3 \\pmod 4$ with $v_p(n)$ odd, then $n \\ne a^2+b^2$ — an obstruction with no hypothesis on $n \\bmod 4$.",
@@ -51,7 +51,7 @@
       "startLine": 145,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Computing a p-adic Valuation by Hand",
     "content": "`padicValNat_three_twentyone` computes `padicValNat 3 21 = 1` without native_decide. Writing 21 = 3 · 7, `padicValNat.mul` splits the valuation additively (both factors nonzero), `padicValNat.self` evaluates `padicValNat 3 3 = 1`, and `padicValNat.eq_zero_of_not_dvd` gives `padicValNat 3 7 = 0` since 3 ∤ 7. The result 1 + 0 = 1 is the odd multiplicity that obstructs representability. The same recipe handles 147 = 3 · 49.",
     "mathContext": "$v_3(21) = v_3(3\\cdot 7) = v_3(3) + v_3(7) = 1 + 0 = 1$ (odd), via additivity of $v_p$ over products.",

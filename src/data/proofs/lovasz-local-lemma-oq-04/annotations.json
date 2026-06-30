@@ -28,7 +28,7 @@
       "startLine": 65,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Avoidance Positivity and the Per-Event Bound as One-Line Corollaries",
     "content": "The three consequences of `AsymLLL` reduce directly to the parent file's algebraic cores:\n\n```lean\ntheorem asymLLL_avoidance_pos (h : AsymLLL n prob x adj) :\n    0 < ∏ i, (1 - x i) := general_lll h.1\n\ntheorem asymLLL_prob_le (h : AsymLLL n prob x adj) :\n    ∀ i, prob i ≤ x i := lll_prob_bound h.1 h.2\n```\n\nThe avoidance product is positive because each factor $1 - x_i > 0$ (from $x_i < 1$); the per-event bound $\\Pr[A_i] \\le x_i$ follows because each neighbourhood product $\\prod_{j} (1 - x_j) \\le 1$. The punchline: **the asymmetric LLL needs no new algebra beyond the symmetric core** — only the per-event weights. `asymLLL_prob_lt_one` then chains $\\Pr[A_i] \\le x_i < 1$ by `linarith`.",
     "mathContext": "$0 < \\prod_i (1 - x_i)$ since $x_i \\in [0,1)$ makes every factor lie in $(0,1]$. The bound $\\Pr[A_i] \\le x_i \\prod_{j}(1-x_j) \\le x_i$ uses $\\prod_j (1 - x_j) \\le 1$, a product of factors in $(0,1]$.",
@@ -95,7 +95,7 @@
       "startLine": 133,
       "endLine": 173
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Degree Bound k·(D−1): From Local Incidence to Global Threshold",
     "content": "The maximum degree of the shared-variable graph is bounded by purely local data — how many variables an event reads ($k$) and how many events read a variable ($D$):\n\n```lean\ntheorem sharedDep_maxDegree (vars : Fin n → Finset V) (k D : ℕ)\n    (hk : ∀ i, (vars i).card ≤ k) (hD : ∀ v, (occ vars v).card ≤ D) :\n    HasMaxDegree n (sharedDep vars) (k * (D - 1))\n```\n\nThe argument: every neighbour $j$ of $i$ shares some variable $v \\in \\text{vars}(i)$, so the neighbourhood is covered by $\\bigcup_{v \\in \\text{vars}(i)} (\\text{occ}(v) \\setminus \\{i\\})$. By `Finset.card_biUnion_le` and `card_erase_of_mem`, $\\deg(i) \\le \\sum_{v \\in \\text{vars}(i)} (|\\text{occ}(v)| - 1) \\le k(D-1)$. This degree is exactly the parameter the symmetric threshold $T(d)$ — and the Moser–Tardos resampling bound — consume.",
     "mathContext": "$\\deg(i) = |\\Gamma(i)| \\le \\sum_{v \\in \\text{vars}(i)} (|\\text{occ}(v)| - 1) \\le |\\text{vars}(i)| \\cdot (D-1) \\le k(D-1)$. The $-1$ removes $i$ itself from each variable's occurrence set. Truncated natural subtraction makes $|\\text{occ}(v)| - 1 \\le D - 1$ hold even when a variable is used only once, with no positivity side-condition.",

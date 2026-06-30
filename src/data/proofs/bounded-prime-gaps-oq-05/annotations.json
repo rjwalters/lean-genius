@@ -33,7 +33,7 @@
     "title": "root_lt_iff: Root Form ⟺ Core Inequality",
     "content": "For positive reals a, b and n ≥ 1, root_lt_iff proves a^{1/(n+1)} < b^{1/n} ⟺ a^n < b^{n+1} (all real rpow). The proof raises both sides to the positive power n(n+1) via Real.rpow_lt_rpow_iff (strict monotonicity of x ↦ x^c for c > 0 on nonnegatives), then collapses the nested exponents with Real.rpow_mul: the left exponent 1/(n+1) · n(n+1) simplifies to n, the right 1/n · n(n+1) to n+1, each discharged by field_simp. The resulting iff is the core, taken symm.",
     "mathContext": "Because $x \\mapsto x^{n(n+1)}$ is strictly increasing on $[0,\\infty)$, applying it to both sides is an equivalence. $\\big(a^{1/(n+1)}\\big)^{n(n+1)} = a^{n}$ and $\\big(b^{1/n}\\big)^{n(n+1)} = b^{n+1}$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "real rpow",
       "strict monotonicity",
@@ -56,7 +56,7 @@
     "title": "rpow_lt_iff: Rpow Form ⟺ Core Inequality",
     "content": "For positive reals a, b and n ≥ 1, rpow_lt_iff proves a < b^{1+1/n} ⟺ a^n < b^{n+1} (real rpow). The proof raises both sides to the power n via Real.rpow_lt_rpow_iff; the right side b^{(1+1/n)·n} collapses to b^{n+1} by Real.rpow_mul and field_simp, while the left stays a^n. This is the gallery's RPOW form reduced to the same core as root_lt_iff.",
     "mathContext": "$x \\mapsto x^{n}$ is strictly increasing on $[0,\\infty)$, so $a < b^{1+1/n} \\iff a^{n} < \\big(b^{1+1/n}\\big)^{n} = b^{n+1}$ since $(1+1/n)\\cdot n = n+1$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "real rpow",
       "FireoozbakhtConjecture",
@@ -78,7 +78,7 @@
     "title": "core_real_iff_nat: Real Core ⟺ Natural-Number Inequality",
     "content": "core_real_iff_nat shows the real-rpow core (p:ℝ)^n < (q:ℝ)^{n+1} is equivalent to the natural-number inequality p^n < q^{n+1} for p, q : ℕ. Since both exponents are natural, Real.rpow_natCast turns the real powers into monoid powers, ← Nat.cast_pow pulls the casts outward, and Nat.cast_lt reflects the strict inequality from ℝ down to ℕ. This is the bridge that makes the integer-power form an honest ℕ-statement.",
     "mathContext": "For naturals, $(p:\\mathbb{R})^{(n:\\mathbb{R})} = ((p^n : \\mathbb{N}):\\mathbb{R})$ and the cast $\\mathbb{N} \\hookrightarrow \\mathbb{R}$ is a strict-order embedding, so the real and natural inequalities coincide.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "rpow_natCast",
       "Nat.cast_lt",
@@ -123,7 +123,7 @@
     "title": "The Three Formulations Are Equivalent (TFAE)",
     "content": "firoozbakht_root_iff_intPow and firoozbakht_rpow_iff_intPow chain the pointwise lemmas (root_lt_iff / rpow_lt_iff) with core_real_iff_nat, using nthPrime_pos for the positivity hypotheses; firoozbakht_root_iff_rpow follows by transitivity. firoozbakht_forms_tfae packages all three as a List.TFAE via tfae_have 1↔3, tfae_have 2↔3, tfae_finish. The result is unconditional: it states only that the three formulations coincide, not that any of them holds.",
     "mathContext": "Each prime formulation is the pointwise equivalence applied at $a = p_{n+1}$, $b = p_n$, composed with the real-to-nat bridge. $\\text{ROOT} \\iff \\text{INTPOW} \\iff \\text{RPOW}$, hence all three are equivalent.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "List.TFAE",
       "Firoozbakht's conjecture",

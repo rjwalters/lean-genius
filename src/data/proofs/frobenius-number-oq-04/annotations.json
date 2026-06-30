@@ -98,11 +98,11 @@
       "startLine": 103,
       "endLine": 121
     },
-    "type": "example",
+    "type": "concept",
     "title": "Chicken McNugget Instance g(3, 5) = 7",
     "content": "Instantiating m = 3, n = 5 gives the classic example: 7 = 3·5 − 3 − 5 is the canonical `FrobeniusNumber 7 {3, 5}`, 7 cannot be made from 3s and 5s (¬∃ a b, 3a + 5b = 7), and every amount above 7 can be (∀ k > 7, ∃ a b, 3a + 5b = k). Coprimality of 3 and 5 is discharged by `decide` (kernel reduction), keeping the entry axiom-free.",
     "mathContext": "$g(3,5)=7$: $7 \\notin \\langle 3,5\\rangle_{+}$ but $\\{8,9,10,\\dots\\} \\subseteq \\langle 3,5\\rangle_{+}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Chicken McNugget theorem",
       "coprimality",

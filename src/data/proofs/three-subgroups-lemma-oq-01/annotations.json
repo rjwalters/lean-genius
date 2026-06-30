@@ -21,7 +21,7 @@
       "quotient group transport",
       "commutator calculus"
     ],
-    "significance": "The classical ≤ N form of the three subgroups lemma, which Mathlib lacks. This is the version used inductively to prove ⁅γᵢ,γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₎ for the lower central series; obtaining it from the absolute case by a quotient argument is the original content of the entry."
+    "significance": "supporting"
   },
   {
     "id": "ann-cyclic-symmetry",
@@ -42,7 +42,7 @@
       "cyclic symmetry",
       "three subgroups lemma"
     ],
-    "significance": "Exposes the lemma's full symmetry so that it can be applied in whichever of the three orientations a downstream proof needs, without re-deriving the quotient argument."
+    "significance": "supporting"
   },
   {
     "id": "ann-symmetric-notation",
@@ -63,7 +63,7 @@
       "bracket notation conventions",
       "three subgroups lemma"
     ],
-    "significance": "Matches the form of the lemma found in standard group theory texts, making the result directly usable regardless of the bracket-nesting convention a reader or downstream proof adopts."
+    "significance": "supporting"
   },
   {
     "id": "ann-consistency-and-corollary",
@@ -86,6 +86,6 @@
       "lower central series",
       "consistency with Mathlib"
     ],
-    "significance": "Demonstrates the generalization recovers the known result, and exhibits its typical use: a normal subgroup that absorbs two pairwise commutators also absorbs the commutator with the derived bracket — the propagation step underlying nilpotency arguments."
+    "significance": "supporting"
   }
 ]

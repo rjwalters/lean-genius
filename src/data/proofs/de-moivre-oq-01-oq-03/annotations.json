@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "De Moivre Is Algebra, Not Analysis",
     "content": "The docstring states the thesis: the analytic De Moivre–Chebyshev identity $C_n(2\\cos\\theta) = 2\\cos(n\\theta)$ is the shadow of a purely algebraic identity needing no analysis, no $\\cos$, and no division by 2. Writing $x = z + z^{-1}$ (with $z$ playing the role of $e^{i\\theta}$), the Chebyshev polynomial of the third kind $C$ (normalized $C_0 = 2$, $C_1 = X$, $C_{n+2} = X\\,C_{n+1} - C_n$) satisfies $(C_R\\,n)(z+w) = z^n + w^n$ whenever $z\\cdot w = 1$. Because this lives over an arbitrary commutative ring, it specializes for free to finite fields $\\mathbb{F}_q$ (the cryptographic case), the p-adics $\\mathbb{Q}_p$, and $\\mathbb{C}$ — answering the parent's open questions OQ-02/OQ-03 uniformly.",
     "mathContext": "$(C_R\\,n)(z+w) = z^n + w^n$ for $z\\cdot w = 1$, over any commutative ring. On the 'unit circle' $zw=1$, the power map $z\\mapsto z^n$ is evaluation of one fixed integer polynomial.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "De Moivre's theorem",
       "Chebyshev polynomials",
@@ -53,7 +53,7 @@
       "startLine": 95,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "One Field Statement for ℝ, ℂ, 𝔽_q, ℚ_p",
     "content": "chebyshevC_eval_field specializes the ring identity to any field $F$ and any nonzero $z$, taking $w = z^{-1}$ and bridging $z\\cdot z^{-1} = 1$ via mul_inv_cancel₀. The single statement $(C_F\\,n)(z + z^{-1}) = z^n + (z^{-1})^n$ simultaneously covers finite fields, the p-adics, $\\mathbb{R}$ and $\\mathbb{C}$ — no per-field reproof. This is the payoff of stating the engine over an arbitrary commutative ring: the field machinery enters only to produce the inverse witnessing the unit-circle hypothesis.",
     "mathContext": "$(C_F\\,n)(z + z^{-1}) = z^n + (z^{-1})^n$ for $z\\ne 0$ in any field, via $z\\cdot z^{-1} = 1$ (mul_inv_cancel₀).",
@@ -121,11 +121,11 @@
       "startLine": 154,
       "endLine": 175
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Finite-Field Examples",
     "content": "Two worked instances give the identity cryptographic flavour. In $\\mathbb{F}_7$: $3$ is a unit with $3^{-1} = 5$, so $3 + 3^{-1} = 1$ and $C_2(1) = 1^2 - 2 = -1 = 6$, matching $3^2 + (3^{-1})^2 = 2 + 4 = 6$ — and a separate `decide` reduces both sides to the explicit $6\\in\\mathbb{F}_7$. A degree-3 instance over $\\mathbb{F}_{11}$ at $z=2$ exercises a different field. The nonzero-ness facts and primality instances are discharged by kernel `decide` / norm_num, so the examples are axiom-free (no native_decide).",
     "mathContext": "$\\mathbb{F}_7$: $3^{-1}=5$, $3+3^{-1}=1$, $C_2(1) = -1 = 6 = 2+4$. $\\mathbb{F}_{11}$: degree-3 at $z=2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked example",
       "kernel decide",

@@ -7,7 +7,7 @@
     "title": "Discharging the integrability hypothesis",
     "content": "The parent entry proves the Buffon–Barbier smooth-curve formula $E[\\text{crossings}] = 2L/(\\pi d)$ but packages the analytic regularity as hypotheses of `buffon_smooth_full`: differentiability of the coordinates (`hdx`, `hdy`) and interval-integrability of the inner angular integral (`hInnerInt`). The parent's fifth open question asks to prove the co-area formula to remove the Fubini hypothesis — which remains open in Mathlib. This file resolves the concrete Buffon-specific residue: it derives `hInnerInt` directly from continuity of the velocity field, leaving only the bare C¹ assumption.",
     "mathContext": "$E[\\text{crossings}] = \\dfrac{2L}{\\pi d}$ for a C¹ planar curve, with the integrability side condition removed.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Buffon–Barbier formula", "integral geometry", "co-area formula", "parametric integral"],
     "prerequisites": ["interval integrals", "continuity", "Buffon's needle problem"]
   },

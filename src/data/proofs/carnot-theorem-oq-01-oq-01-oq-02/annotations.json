@@ -7,7 +7,7 @@
     "title": "The Missing Sharp Extremum and the One Identity That Supplies It",
     "content": "The docstring frames what the sibling files leave open. CarnotTheoremOQ01OQ01 pins the cosine sum range (1, 3/2] and Euler's inequality r ≤ R/2; CarnotTheoremOQ01OQ02 gives the squared-sum identity cos²A + cos²B + cos²C = 1 − 2 cos A cos B cos C and the acute/right/obtuse trichotomy against 1. What none supplies is the sharp lower extremum of the squared cosine sum — its smallest possible value over all triangles, which is 3/4 at the equilateral triangle. Through the squared identity this is exactly the classical product bound cos A cos B cos C ≤ 1/8. The whole file is driven by a single sum-of-squares identity, made sign-agnostic by deriving it purely algebraically from A + B = π − C with no acute/obtuse case split.",
     "mathContext": "$\\cos A\\cos B\\cos C \\le \\tfrac18 \\iff \\cos^2 A + \\cos^2 B + \\cos^2 C \\ge \\tfrac34,\\quad\\text{equality}\\iff\\text{equilateral}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Carnot's theorem", "extremal triangle inequality", "equilateral triangle", "sum of squares", "sharp bound"],
     "prerequisites": ["triangle geometry", "trigonometry"]
   },
@@ -51,7 +51,7 @@
     "id": "ann-carnot-oq010102-product-equality",
     "proofId": "carnot-theorem-oq-01-oq-01-oq-02",
     "range": { "startLine": 102, "endLine": 148 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Equality Case: Product = 1/8 ⟺ Equilateral",
     "content": "cos_prod_eq_eighth_iff characterizes equality and is where positivity of the angles finally enters. Forward: equality makes the right-hand side of the core identity zero, so each square vanishes — sin(A−B) = 0 and 2 cos C = cos(A−B), extracted by nlinarith then pow_eq_zero_iff. With |A − B| < π (from A, B, C > 0 and the angle sum), Real.sin_eq_zero_iff_of_lt_of_lt forces A = B, hence cos(A−B) = 1 and cos C = 1/2. Injectivity of cosine on [0, π] (Real.injOn_cos) against cos(π/3) = 1/2 gives C = π/3, and the angle sum forces A = B = π/3. Backward is immediate from Real.cos_pi_div_three. This rigidity — two squares pinning two independent constraints — is what makes the equilateral triangle the unique extremizer.",
     "mathContext": "$\\sin(A-B)=0 \\Rightarrow A=B,\\quad 2\\cos C = \\cos(A-B) = 1 \\Rightarrow C = \\tfrac{\\pi}{3}.$",

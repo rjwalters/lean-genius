@@ -7,7 +7,7 @@
     "title": "From Fibonacci to an Arbitrary Lucas Sequence",
     "content": "The parent proved the degree-2 trio for the Fibonacci/Lucas pair: Lₙ² − 5Fₙ² = 4(−1)ⁿ, Lₙ² + 5Fₙ² = 2L₂ₙ, Lₙ·Fₙ = F₂ₙ. This entry answers its first open question by lifting all three to an arbitrary Lucas sequence. For integer parameters P, Q the first- and second-kind sequences Uₙ, Vₙ obey the same recurrence xₙ₊₂ = P·xₙ₊₁ − Q·xₙ (with U₀=0, U₁=1 and V₀=2, V₁=P), and with discriminant D = P² − 4Q one has uniformly Vₙ² − D·Uₙ² = 4Qⁿ, Vₙ² + D·Uₙ² = 2V₂ₙ, and Vₙ·Uₙ = U₂ₙ. The Fibonacci–Lucas relations are the D = 5 instance at (P, Q) = (1, −1).",
     "mathContext": "$V_n^2 - D\\,U_n^2 = 4Q^n$, $\\;V_n^2 + D\\,U_n^2 = 2V_{2n}$, $\\;V_nU_n = U_{2n}$, with $D = P^2 - 4Q$; the $P{=}1, Q{=}{-}1, D{=}5$ case recovers $L_n^2 - 5F_n^2 = 4(-1)^n$, $L_n^2 + 5F_n^2 = 2L_{2n}$, $L_nF_n = F_{2n}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Lucas sequences", "Pell numbers", "Jacobsthal numbers", "discriminant", "quadratic identities"],
     "prerequisites": ["linear recurrences", "Fibonacci and Lucas numbers", "elementary number theory"]
   },
@@ -39,7 +39,7 @@
     "id": "lucas-gen-addition",
     "proofId": "fibonacci-identities-oq-02-oq-01-oq-01-oq-02-oq-01",
     "range": { "startLine": 126, "endLine": 185 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Addition Laws and Their Diagonal Cases",
     "content": "The two addition laws 2·Uₘ₊ₙ = Uₘ·Vₙ + Vₘ·Uₙ and 2·Vₘ₊ₙ = Vₘ·Vₙ + D·Uₘ·Uₙ are two-step inductions in n, base cases n = 0, 1 supplied by the bridge, inductive step closed by `linear_combination P * ih2 − Q * ih1`. Setting m = n collapses them to the diagonal: lucas_sq_add (the sum of squares Vₙ² + D·Uₙ² = 2V₂ₙ) and lucas_mul (the cross identity Vₙ·Uₙ = U₂ₙ). Keeping the factor 2 throughout keeps every step inside ℤ with no division; it cancels exactly once, in the cross identity, via `mul_left_cancel₀ two_ne_zero`.",
     "mathContext": "$2U_{m+n} = U_mV_n + V_mU_n$ and $2V_{m+n} = V_mV_n + D\\,U_mU_n$; the diagonal $m = n$ gives $V_n^2 + D\\,U_n^2 = 2V_{2n}$ and $V_nU_n = U_{2n}$.",

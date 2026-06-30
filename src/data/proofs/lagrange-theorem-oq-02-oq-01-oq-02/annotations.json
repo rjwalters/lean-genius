@@ -3,11 +3,11 @@
     "id": "lagrange-oq020102-header",
     "proofId": "lagrange-theorem-oq-02-oq-01-oq-02",
     "range": { "startLine": 3, "endLine": 36 },
-    "type": "context",
+    "type": "concept",
     "title": "The point-side counting identity, without Burnside",
     "content": "The header frames the goal. For a finite group G acting on a finite set X, the incidence set {(g,x) : g·x = x} can be counted two ways: by group element, giving Σ_g |Fix(g)| (Burnside / Cauchy–Frobenius), or by point, giving Σ_x |Stab(x)|. Both equal |X/G|·|G|. The parent derives Burnside via the full double-counting chain; this child proves the point-side identity Σ_x |Stab(x)| = |X/G|·|G| *directly* from the orbit-stabilizer theorem, with no detour through Burnside. The mechanism: the disjoint union of stabilizers decomposes over orbits, and on each orbit it is orbit(rep) × Stab(rep) ≃ G, so summing the |X/G| orbits gives (X/G) × G.",
     "mathContext": "$\\sum_{x \\in X} |\\mathrm{Stab}(x)| = |X/G| \\cdot |G|$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Burnside's lemma", "orbit-stabilizer theorem", "double counting", "group actions"],
     "prerequisites": ["group actions", "orbits and stabilizers", "the orbit-stabilizer theorem"]
   },

@@ -43,7 +43,7 @@
     "title": "The pointwise derivative restated as a deriv value",
     "content": "Converts the `HasDerivAt` statement into the functional `deriv` form `deriv (fun y => (1+y)^α) x = α(1+x)^(α-1)` for x > -1, via `(hasDerivAt_one_add_rpow α x hx).deriv`. This `deriv`-level restatement is the bridge used by `fderiv_one_add_rpow_apply_one`: it is what `fderiv_deriv` rewrites the Fréchet derivative into.",
     "mathContext": "$\\operatorname{deriv}(\\lambda y.\\,(1+y)^\\alpha)(x) = \\alpha(1+x)^{\\alpha-1}$. `HasDerivAt f f' x` carries a uniqueness witness, so `deriv f x = f'` follows immediately.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["deriv vs HasDerivAt", "uniqueness of the derivative", "fderiv_deriv bridge"],
     "prerequisites": ["differential calculus", "Mathlib deriv/HasDerivAt API"]
   },

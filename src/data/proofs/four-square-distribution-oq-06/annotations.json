@@ -3,11 +3,11 @@
     "id": "fsd06-ann-header",
     "proofId": "four-square-distribution-oq-06",
     "range": { "startLine": 1, "endLine": 66 },
-    "type": "context",
+    "type": "concept",
     "title": "From a native_decide Table to Symbolic Closed Forms",
     "content": "The header states OQ-06: replace the parent family's case-by-case verification of Jacobi's prediction jacobiR4(n) = 8·σ*(n) — checked only at n = 1..10, each by `native_decide` — with symbolic closed forms valid for whole infinite families. Two definitions set the stage: `sigmaStar n = Σ_{d∣n, 4∤d} d` (Jacobi's modified divisor sum, restated from the parent so the file stands alone against Mathlib) and `jacobiR4 n = 8·σ*(n)`. The honest-scope note is important: jacobiR4 is *defined* as 8·σ*, so these theorems compute the arithmetic prediction symbolically; they do NOT prove the geometric count r₄(n) = #{(a,b,c,d) : a²+b²+c²+d² = n} equals it (that open problem needs the q-expansion of jacobiTheta⁴). Imports are `Mathlib.NumberTheory.Divisors` and `Mathlib.Tactic`.",
     "mathContext": "$\\sigma^*(n) = \\sum_{d \\mid n,\\ 4 \\nmid d} d$; Jacobi: $r_4(n) = 8\\sigma^*(n)$. The parent verified this at fixed $n$ via native_decide; here $\\sigma^*$ is computed as a function of a prime.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Jacobi four-square theorem", "sum of divisors", "modified divisor sum", "native_decide vs symbolic proof"],
     "prerequisites": ["divisor functions", "Jacobi's r₄ formula"]
   },

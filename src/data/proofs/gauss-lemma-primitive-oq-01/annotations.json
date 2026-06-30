@@ -51,7 +51,7 @@
       "startLine": 56,
       "endLine": 75
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "2X is Non-Primitive and Reducible over ℤ",
     "content": "two_mul_X_not_primitive: were 2X primitive, isPrimitive_iff_isUnit_of_C_dvd applied to the divisor C 2 ∣ 2X would force 2 to be a unit of ℤ, refuted by Int.isUnit_iff. two_mul_X_reducible_over_int: were 2X irreducible, Irreducible.isUnit_or_isUnit on the factorization 2X = (C 2)·X would make either C 2 a unit (impossible — 2 is not a unit of ℤ, via isUnit_C and Int.isUnit_iff) or X a unit (impossible — natDegree_eq_zero_of_isUnit would give natDegree X = 0, but natDegree X = 1). Both impossibilities are discharged mechanically.",
     "mathContext": "$2X = (C\\,2)\\cdot X$ with $C\\,2$ and $X$ both non-units, so $2X$ is reducible over $\\mathbb{Z}$ and has content $2$.",
@@ -74,7 +74,7 @@
       "startLine": 77,
       "endLine": 83
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Image 2X is Irreducible over ℚ",
     "content": "two_mul_X_irreducible_over_rat shows the ℚ-image is irreducible by reducing to a degree computation. Since ℤ ↪ ℚ is injective (RingHom.injective_int at Int.castRingHom ℚ), degree_map_eq_of_injective gives degree of the image = degree of 2X over ℤ; compute_degree! evaluates that to 1; and irreducible_of_degree_eq_one (degree-one polynomials over a field are irreducible) concludes. No genuinely rational reasoning is needed — degree is the only invariant that matters.",
     "mathContext": "$\\deg(2X) = 1$ over $\\mathbb{Q}$, and degree-one polynomials over a field are irreducible.",

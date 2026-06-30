@@ -15,7 +15,7 @@
     "id": "ann-brahmagupta",
     "proofId": "pell-equation-oq-01-oq-04-oq-02-oq-02",
     "range": { "startLine": 62, "endLine": 95 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Brahmagupta Multiplicativity and the Conjugate Inverse",
     "content": "pellNorm_mul is Brahmagupta's identity: the norm is multiplicative, ‖a·b‖ = ‖a‖·‖b‖, proved by linear_combination against √d² = d. pellNorm_mul_inv uses the defining relation x² − d·y² = 1 (a.prop) to show ‖a‖·‖a⁻¹‖ = 1, whence pellNorm_ne_zero and pellNorm_inv (‖a⁻¹‖ = ‖a‖⁻¹). Together these make g ↦ ‖g‖ a homomorphism from the Pell solution group into (ℝˣ, ·), the analytic engine for everything downstream.",
     "mathContext": "$\\lVert ab\\rVert = \\lVert a\\rVert\\,\\lVert b\\rVert$ (Brahmagupta), and from $x^2 - d y^2 = 1$, $\\lVert a\\rVert\\,\\lVert a^{-1}\\rVert = 1$ so $\\lVert a^{-1}\\rVert = \\lVert a\\rVert^{-1}$.",

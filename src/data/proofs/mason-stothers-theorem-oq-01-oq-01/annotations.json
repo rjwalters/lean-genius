@@ -3,7 +3,7 @@
     "id": "mason-oq0101-ann-header",
     "proofId": "mason-stothers-theorem-oq-01-oq-01",
     "range": { "startLine": 1, "endLine": 53 },
-    "type": "context",
+    "type": "concept",
     "title": "The Radical Degree as a Distinct-Root Count",
     "content": "The Mason–Stothers theorem bounds a coprime polynomial relation a + b = c by the degree of the radical of abc — the product of its distinct irreducible factors. Over an algebraically closed field every irreducible is a linear factor X − α, so deg(rad p) is simply the number of distinct roots of p. This file proves (radical p).natDegree = p.roots.toFinset.card and uses it to recast the parent's bound as deg c < #{distinct roots of a·b·c}, the form behind the polynomial Fermat theorem. The proof separates two field-agnostic facts (same root set, distinct roots) from the single step that needs algebraic closure (degree = root count).",
     "mathContext": "$\\deg(\\mathrm{rad}\\,p) = |\\{\\alpha \\in k : p(\\alpha) = 0\\}| = |p.\\mathrm{roots}.\\mathrm{toFinset}|$",

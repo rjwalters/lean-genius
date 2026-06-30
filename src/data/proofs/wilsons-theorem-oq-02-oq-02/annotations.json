@@ -36,7 +36,7 @@
     "title": "Reducing to the 2-Torsion",
     "content": "prod_eq_prod_two_torsion shows ∏_{x ∈ G} x = ∏_{x : x² = 1} x in any finite commutative group. The involution x ↦ x⁻¹ is fixed-point-free off the 2-torsion (x = x⁻¹ ⟺ x² = 1), and pairs each such element with its distinct inverse, whose product is 1; Mathlib's Finset.prod_involution collapses that part of the product to 1, leaving exactly the self-inverse elements. This is the classical first step of every Wilson-type proof and isolates the only part of the product that can be non-trivial.",
     "mathContext": "$\\prod_{x \\in G} x = \\prod_{x^2 = 1} x$: outside the 2-torsion, $x$ and $x^{-1}$ are distinct and cancel in pairs.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.prod_involution",
       "inverse involution",

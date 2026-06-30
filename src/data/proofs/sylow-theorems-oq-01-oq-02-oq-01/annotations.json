@@ -7,7 +7,7 @@
     "title": "The pq classification: the cyclic direction",
     "content": "Groups of order $pq$ ($p > q$ prime) split into two regimes by an arithmetic condition on the primes. When $q \\nmid (p-1)$ the only group is the cyclic $\\mathbb{Z}/pq$; when $q \\mid (p-1)$ there is in addition a unique nonabelian semidirect product $\\mathbb{Z}/p \\rtimes \\mathbb{Z}/q$. This file settles the **$q \\nmid (p-1)$ direction** — exactly one isomorphism class — leaving the $q \\mid (p-1)$ case (which needs an isomorphism classification of semidirect products, not yet in Mathlib) open. The method deliberately avoids constructing the group structure by hand: it routes through Z-group and nilpotency theory.",
     "mathContext": "$|G| = pq,\\ p>q\\ \\text{prime},\\ q \\nmid (p-1) \\implies G \\cong \\mathbb{Z}/pq.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Sylow theorems", "groups of order pq", "semidirect product", "classification of finite groups"],
     "prerequisites": ["Sylow theorems", "cyclic groups", "group order and Lagrange's theorem"]
   },

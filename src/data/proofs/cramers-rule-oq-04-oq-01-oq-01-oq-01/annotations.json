@@ -33,7 +33,7 @@
     "title": "The Textbook 2×2 Formula in Three Rewrites",
     "content": "cramer_two_zero proves x₀ = (b₀a₁₁ − a₀₁b₁)/(a₀₀a₁₁ − a₀₁a₁₀) by rw [cramer_solution A x b 0 hx hdet, det_updateCol_two_zero, det_fin_two]. The first rewrite imports the parent's general formula x₀ = det(A₀)/det A; the second expands the numerator via the helper; the third expands the denominator det A by det_fin_two. The goal then closes definitionally — no ring step — because det_fin_two fixes the monomial order on both sides.",
     "mathContext": "$x_0 = \\dfrac{b_0 a_{11} - a_{01} b_1}{a_{00} a_{11} - a_{01} a_{10}}$, $\\; x_1 = \\dfrac{a_{00} b_1 - b_0 a_{10}}{a_{00} a_{11} - a_{01} a_{10}}$.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "Cramer's rule",
       "cramer_solution (parent)",
@@ -55,7 +55,7 @@
     "title": "The Six Sarrus Terms, One Factor Replaced by b",
     "content": "For 3×3, det_updateCol_three_zero/one/two each expand det(A.updateCol i b) into the six-term Sarrus form of det_fin_three, with the entries in the replaced column i carried over from b. For column 0 this gives b₀a₁₁a₂₂ − b₀a₁₂a₂₁ − a₀₁b₁a₂₂ + a₀₁a₁₂b₂ + a₀₂b₁a₂₁ − a₀₂a₁₁b₂: every monomial has exactly one factor from b (the one whose row index labels the replaced column). The proof discharges the three Fin-3 index inequalities (1 ≠ 0, 2 ≠ 0) by decide and lets simp only place each entry.",
     "mathContext": "$\\det(A_0)$ is the Sarrus expansion with the first column $(a_{00},a_{10},a_{20})$ replaced by $(b_0,b_1,b_2)$.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "Sarrus' rule",
       "det_fin_three",
@@ -74,11 +74,11 @@
       "startLine": 121,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Why No `ring` Is Needed",
     "content": "Each cramer_three_* theorem closes by rewriting alone: rw [cramer_solution …, det_updateCol_three_i, det_fin_three]. The denominator is written in the statement exactly as det_fin_three expands det A, and the numerator helper produces exactly the order det_fin_three imposes after substitution. Because both sides share the determinant's fixed monomial order, the final goal is syntactic reflexivity and rw closes it. Reaching for ring or omega here would be unnecessary — and would in fact hide whether the stated closed form really matches the Mathlib determinant term-by-term.",
     "mathContext": "Matching the closed form to det_fin_three on the nose, rather than up to ring normalization.",
-    "significance": "medium",
+    "significance": "supporting",
     "relatedConcepts": [
       "rfl-closing rewrites",
       "monomial order of det_fin_three",

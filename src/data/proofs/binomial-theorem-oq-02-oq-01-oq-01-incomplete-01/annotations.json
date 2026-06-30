@@ -27,7 +27,7 @@
     "id": "ann-engine",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01-incomplete-01",
     "range": { "startLine": 74, "endLine": 85 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Vanishing Engine: Centered Partner Sum Collapses",
     "content": "`centered_partner_sum_zero` proves ∑ⱼ∈s (kⱼ−n·pⱼ)=0 for any composition k on the support. The proof splits the sum (`Finset.sum_sub_distrib`), turns ∑ⱼkⱼ into n by `Finset.mem_piAntidiag` + `Nat.cast_sum`, and turns ∑ⱼ n·pⱼ into n via `Finset.mul_sum` and the hypothesis ∑ⱼpⱼ=1; the result is n−n=0. This single collapse is the entire reason the covariance matrix is singular.",
     "mathContext": "∑ⱼ(kⱼ−n·pⱼ)=(∑ⱼkⱼ)−n(∑ⱼpⱼ)=n−n·1=0. The constraint ∑ⱼkⱼ=n is what makes the centered counts sum to zero.",

@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 39
     },
-    "type": "context",
+    "type": "concept",
     "title": "Making the Integer-Square-Root Density Reading Rigorous",
     "content": "The sibling OQ-06 bounds the prime-counting function by π(m) ≤ m·log 4 / log(Nat.sqrt m) + √m, with the INTEGER square root √m = Nat.sqrt m in the denominator. Reading off the density limsup π(x)·log x / x ≤ 2 log 4 informally replaces log(Nat.sqrt m) by ½ log m — but Nat.sqrt is the integer root, so that substitution carries an O(1) error in the logarithm. This entry pins the error down exactly with the bracket ½ log m − log 2 ≤ log(Nat.sqrt m) ≤ ½ log m (all m ≥ 4), then uses it to package both Chebyshev halves into one sandwich and to align the OQ-06 upper bound with the π(m)·log m scale of OQ-05. 0 axioms, 0 sorries.",
     "mathContext": "$\\tfrac12\\log m - \\log 2 \\le \\log(\\lfloor\\sqrt m\\rfloor) \\le \\tfrac12\\log m$ for $m \\ge 4$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "prime-counting function π",
       "Chebyshev's theorem",

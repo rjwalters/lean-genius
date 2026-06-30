@@ -19,7 +19,7 @@
       "continuous functional calculus",
       "positive semidefinite matrix"
     ],
-    "significance": "The existence/defining-property pillar: √A is genuinely a square root of A, obtained by specializing the C⋆-algebra functional calculus to matrices."
+    "significance": "supporting"
   },
   {
     "id": "ann-structure",
@@ -41,7 +41,7 @@
       "Hermitian matrix",
       "nonnegative functional calculus"
     ],
-    "significance": "The structure pillar: the square root maps matrices into the positive semidefinite (hence Hermitian) cone, so iterating or composing it stays well defined."
+    "significance": "supporting"
   },
   {
     "id": "ann-uniqueness",
@@ -63,7 +63,7 @@
       "positive semidefinite square root",
       "well-definedness"
     ],
-    "significance": "The non-trivial half of the theory: uniqueness licenses the notation √A and is the single fact every corollary specializes."
+    "significance": "supporting"
   },
   {
     "id": "ann-corollaries",
@@ -85,7 +85,7 @@
       "square root inverts squaring",
       "PSD cone"
     ],
-    "significance": "Demonstrates the leverage of uniqueness: the basic identities of the square root all fall out of one lemma applied to a candidate, with no spectral computation."
+    "significance": "supporting"
   },
   {
     "id": "ann-determinant-shadow",
@@ -107,7 +107,7 @@
       "nonnegativity of det for PSD",
       "multiplicativity of det"
     ],
-    "significance": "Connects the operator square root to the scalar determinant invariant, making det A ≥ 0 (real PSD) visible as a square."
+    "significance": "supporting"
   },
   {
     "id": "ann-concrete-instance",
@@ -116,7 +116,7 @@
       "startLine": 118,
       "endLine": 139
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Instance √diag(4,9) = diag(2,3) (diag_two_three_posSemidef, sqrt_diag_four_nine)",
     "content": "diag_two_three_posSemidef establishes that diag(2,3) is positive semidefinite via Matrix.PosSemidef.diagonal, whose hypothesis 0 ≤ ![2,3] is discharged entrywise (Pi.le_def, fin_cases, norm_num). sqrt_diag_four_nine then concludes by uniqueness: diag(2,3) is PSD and squares to diag(4,9), because diagonal_mul_diagonal turns diag(2,3) · diag(2,3) into diag(![2,3] * ![2,3]) and the entrywise products are 2·2 = 4, 3·3 = 9. Since CFC.sqrt is noncomputable and defined spectrally, the diagonal square root cannot be evaluated by reduction; uniqueness is what identifies the abstract √diag(4,9) with the elementary entrywise answer diag(2,3).",
     "mathContext": "$\\sqrt{\\operatorname{diag}(4,9)} = \\operatorname{diag}(2,3)$.",
@@ -130,6 +130,6 @@
       "entrywise square root",
       "worked example"
     ],
-    "significance": "Grounds the abstract functional-calculus square root in the simplest concrete case, confirming it agrees with √4 = 2, √9 = 3 on a diagonal matrix."
+    "significance": "supporting"
   }
 ]

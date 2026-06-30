@@ -7,7 +7,7 @@
     "title": "The Medial Reptiling and Erdős #634",
     "content": "Erdős Problem #634 asks to understand all triples (T, R, N) such that triangle T can be tiled by N congruent copies of triangle R. The constructive backbone is the square reptiling: subdividing each side of a triangle into k equal parts cuts it into k^2 congruent triangles, each a 1/k-scale copy. This entry formalizes the base case k = 2 — the medial subdivision — proving the four pieces are mutually congruent. We capture the congruence of the pieces (the combinatorial heart), not the covering/disjointness (the analytic part of #634).",
     "mathContext": "The medial points are $m_{AB} = \\tfrac{A+B}{2}$, $m_{BC} = \\tfrac{B+C}{2}$, $m_{CA} = \\tfrac{C+A}{2}$. The four medial triangles are the three corner triangles and the central one; all four are congruent and similar to $ABC$ at ratio $\\tfrac12$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["reptile", "rep-tile dissection", "self-similar tiling", "medial triangle", "Erdős problems"],
     "prerequisites": ["Euclidean geometry", "tilings and dissections"]
   },

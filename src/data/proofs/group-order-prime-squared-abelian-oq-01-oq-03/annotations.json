@@ -3,11 +3,11 @@
     "id": "grpcount-oq0103-header",
     "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
     "range": { "startLine": 1, "endLine": 56 },
-    "type": "context",
+    "type": "concept",
     "title": "The element-order census of a group of order p²",
     "content": "The header sets out the quantitative endpoint of the order-p² classification: the full element-order census. The only possible orders are 1, p, p² (the parent's trichotomy), and the count at each order depends only on the isomorphism type. Cyclic ℤ/p²: 1 element of order 1, p−1 of order p, p·(p−1)=φ(p²) of order p². Elementary abelian (ℤ/p)²: 1 of order 1, p²−1 of order p, none of order p². The cyclic column is read off Mathlib's IsCyclic.card_orderOf_eq_totient; the elementary-abelian column uses the parent's sharpening that every non-identity element has order exactly p. The file closes by showing the order-p count alone recovers the type.",
     "mathContext": "$\\mathbb{Z}/p^2:\\ (1,\\,p-1,\\,p(p-1));\\qquad (\\mathbb{Z}/p)^2:\\ (1,\\,p^2-1,\\,0)$ across orders $1,p,p^2$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["element order", "Euler totient", "p-groups", "elementary abelian group", "cyclic group", "complete invariant"],
     "prerequisites": ["the parent order-p² dichotomy", "the totient count of elements of order d in a cyclic group"]
   },
@@ -19,7 +19,7 @@
     "title": "card_orderOf_eq_one: a unique element of order 1",
     "content": "In any finite group exactly one element has order 1. Via Finset.card_eq_one it suffices to exhibit the order-1 set as a singleton; orderOf_eq_one_iff identifies it with {1}. This is the trivial column of the census and needs no cardinality hypothesis, so it is stated for an arbitrary finite group.",
     "mathContext": "$\\#\\{g : \\mathrm{ord}(g) = 1\\} = \\#\\{g : g = 1\\} = 1$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["orderOf_eq_one_iff", "Finset.card_eq_one", "singleton"],
     "prerequisites": ["order of an element", "finite-set cardinality"]
   },

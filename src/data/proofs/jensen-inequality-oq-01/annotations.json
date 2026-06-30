@@ -3,11 +3,11 @@
     "id": "ann-jensenoq01-1",
     "proofId": "jensen-inequality-oq-01",
     "range": { "startLine": 1, "endLine": 47 },
-    "type": "context",
+    "type": "concept",
     "title": "The Equality Case of Strict Jensen, Routed to AM–GM",
     "content": "**Module framing.** This entry isolates the **equality case** of finite weighted Jensen for a *strictly* convex $f$ and specializes it — through the strict convexity of $\\exp$ — to the sharp equality case of weighted AM–GM. The abstract input is Mathlib's `StrictConvexOn.map_sum_eq_iff`: with strictly positive weights summing to $1$, $f(\\sum w_i p_i) = \\sum w_i f(p_i)$ **iff** all $p_i$ equal their weighted mean. Setting $f = \\exp$, $p_i = \\log z_i$ turns Jensen into AM–GM and the equality case into 'geometric mean = arithmetic mean $\\iff$ all data equal' — the very route Mathlib uses for `geom_mean_eq_arith_mean_weighted_iff'`, made explicit here, plus a direct strict form and the two-variable instance.",
     "mathContext": "$f(\\sum_i w_i p_i) = \\sum_i w_i f(p_i) \\iff p_i \\equiv \\text{mean}$; with $f=\\exp,\\ p_i=\\log z_i$ this is weighted AM–GM.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Jensen's inequality (equality case)",
       "Strict convexity",

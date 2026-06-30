@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Prime 2 Gap in the Gauss–Wantzel Bridge",
     "content": "By Gauss–Wantzel, a regular n-gon is constructible with ruler and compass iff φ(n) is a power of 2, i.e. n = 2^a × (product of distinct Fermat primes). The parent file established the arithmetic bridge plus multiplicativity of TotientIsPow2 across COPRIME factors — but that says nothing about the prime 2, which is never coprime to an even number. This file fills exactly that gap, isolating how the prime 2 (classically: angle bisection, the most elementary ruler-and-compass operation) acts on the constructibility predicate. The headline is doubling invariance: the 2n-gon is constructible iff the n-gon is.",
     "mathContext": "Gauss–Wantzel: $n$-gon constructible $\\iff \\varphi(n)=2^k \\iff n = 2^a\\prod F_{i}$ (distinct Fermat primes).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Gauss–Wantzel theorem", "constructible polygon", "Euler totient", "Fermat primes", "angle bisection"],
     "prerequisites": ["ruler-and-compass constructibility", "Euler's totient function"]
   },
@@ -36,7 +36,7 @@
       "startLine": 50,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Section I — The Two Single-Step Totient Identities for p = 2",
     "content": "Everything is driven by how φ behaves when one factor of 2 is added. For even n, φ(2n) = 2·φ(n) (totient_two_mul_of_even, a thin wrapper over Nat.totient_mul_of_prime_of_dvd). For odd n, φ(2n) = φ(n) (totient_two_mul_of_odd, from Nat.totient_mul_of_prime_of_not_dvd since the prime-2 contribution is (2−1) = 1). The split on parity here is what propagates through the entire development.",
     "mathContext": "$2\\mid n \\Rightarrow \\varphi(2n)=2\\varphi(n)$;\\quad $2\\nmid n \\Rightarrow \\varphi(2n)=\\varphi(n)$.",

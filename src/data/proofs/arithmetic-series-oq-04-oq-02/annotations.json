@@ -7,7 +7,7 @@
     "title": "The Bernoulli Generating Function as a Formal Power Series",
     "content": "The open question asks to formalize ∑ Bₙxⁿ/n! = x/(eˣ−1). Analytically this is a statement about a meromorphic function with a removable singularity at 0; formally it is far cleaner. In the ring of formal power series ℚ⟦X⟧, eˣ−1 has zero constant term and so is NOT invertible, so one does not literally divide by it. Instead the identity is stated as a product: `bernoulliPowerSeries ℚ * (exp ℚ - 1) = X`. This is Mathlib's `bernoulliPowerSeries_mul_exp_sub_one`; we restate it as `bernoulli_egf` to record the direct answer to the open question.",
     "mathContext": "$$\\Big(\\sum_{n=0}^{\\infty} B_n \\frac{X^n}{n!}\\Big)\\,(e^X - 1) = X \\quad\\Longleftrightarrow\\quad \\sum_{n=0}^{\\infty} B_n \\frac{x^n}{n!} = \\frac{x}{e^x - 1}.$$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": ["Bernoulli numbers", "exponential generating function", "formal power series", "non-units in a power series ring"],
     "prerequisites": ["PowerSeries.exp", "bernoulliPowerSeries"]
   },
@@ -43,7 +43,7 @@
     "title": "The Faulhaber↔Bernoulli Bridge by Cancelling a Non-Unit",
     "content": "The headline original result: multiplying the power-sum generating function by X gives (eⁿˣ − 1) times the Bernoulli generating function. The proof is purely formal. We have two product identities sharing the factor (exp − 1): the Bernoulli one S_B·(exp−1) = X and the power-sum one S_n·(exp−1) = (E_n − 1). Substituting X = S_B·(exp−1) into S_n·X and reassociating gives S_n·X = (S_n·(exp−1))·S_B = (E_n − 1)·S_B. Crucially, although (exp − 1) is not invertible, the common factor cancels *as a product* in the commutative ring ℚ⟦X⟧, so a single `rw [← bernoulli_egf, ← powerSum_egf']; ring` closes it. This is the precise sense in which 'power sums are Bernoulli sums': ∑ₚ Sₚ(n)xᵖ/p! = (eⁿˣ − 1)·x/(eˣ − 1)·(1/x).",
     "mathContext": "$$\\Big(\\sum_p S_p(n)\\tfrac{x^p}{p!}\\Big)\\,x = (e^{nx}-1)\\sum_{m\\ge 0} B_m\\tfrac{x^m}{m!} = (e^{nx}-1)\\cdot\\frac{x}{e^x-1}.$$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": ["Faulhaber's formula", "Bernoulli numbers", "cancellation of non-units", "commutative power-series ring"],
     "prerequisites": ["bernoulli_egf", "powerSum_egf'", "ring tactic over ℚ⟦X⟧"]
   },

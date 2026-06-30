@@ -6,11 +6,11 @@
       "startLine": 4,
       "endLine": 32
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Open Question: ψ vs θ and the PNT Chain",
     "content": "The docstring frames the parent's open question — formalize the second Chebyshev function ψ(x) = Σ_{p^k ≤ x} log p and connect it to the prime-counting asymptotic. Mathlib already defines Chebyshev.psi (ψ) and Chebyshev.theta (θ) and proves the size estimate |ψ(x) − θ(x)| ≤ 2√x·log x. This file establishes the FIRST link of the PNT equivalence chain rigorously: ψ and θ are asymptotically equivalent (ψ/x → 1 ⟺ θ/x → 1), because ψ − θ collects only proper prime powers p^k (k ≥ 2), a set sparse enough that ψ − θ = o(x). The remaining link θ ∼ x ⟺ π ∼ x/log x is partial-summation work left to sibling bridge entries.",
     "mathContext": "$\\psi(x) = \\sum_{p^k \\le x} \\log p$, $\\theta(x) = \\sum_{p \\le x} \\log p$; $\\psi - \\theta$ counts only prime powers $p^k$, $k \\ge 2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "second Chebyshev function",
       "prime number theorem",

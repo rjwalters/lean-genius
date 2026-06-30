@@ -39,7 +39,7 @@
     "id": "ann-negpell-bridge",
     "proofId": "pell-equation-oq-04",
     "range": { "startLine": 160, "endLine": 167 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Negative-Pell Bridge and Conjugation Symmetries",
     "content": "`sol_neg_one_comp` is `sol_comp` specialised at M = N = −1: two solutions of the negative-Pell form x²−Dy²=−1 compose to a solution of the classical Pell form x²−Dy²=+1, since (−1)(−1)=1. This ties the gallery's negative-Pell siblings back into the same multiplicative structure — they are the order-2 elements relative to the Pell group. `normForm_neg_snd` and `normForm_neg_fst` record the conjugation symmetries: the form is invariant under flipping the sign of either coordinate, the reflection underlying the group inverse.",
     "mathContext": "$N(\\alpha)=N(\\beta)=-1 \\Rightarrow N(\\alpha\\beta)=1;\\quad \\mathrm{normForm}\\,D\\,x\\,(-y)=\\mathrm{normForm}\\,D\\,x\\,y$",

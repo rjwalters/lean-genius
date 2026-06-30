@@ -39,11 +39,11 @@
     "id": "numeric",
     "proofId": "bernoulli-inequality-oq-01",
     "range": { "startLine": 95, "endLine": 107 },
-    "type": "context",
+    "type": "concept",
     "title": "Numeric Witnesses",
     "content": "Three example instances ground the results: the positive case 1 + 5 = 6 < 32 = 2⁵; the negative-base strict case 1 + 4·(−1/2) = −1 < 1/16 = (1 − 1/2)⁴, which lies outside the gallery's a > 0 strict Bernoulli and demonstrates the full-domain extension (note the linear bound −1 is itself negative); and the n = 1 equality boundary via one_add_mul_eq_pow_iff. These verify the abstract classification on concrete values.",
     "mathContext": "$1 + 5 < 2^5$; $1 + 4(-\\tfrac12) = -1 < \\tfrac1{16} = (1-\\tfrac12)^4$; equality at $n = 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["negative base", "concrete instances", "norm_num", "boundary at n=1"],
     "prerequisites": ["the strict inequality", "the equality characterization"]
   }

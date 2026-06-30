@@ -6,11 +6,11 @@
       "startLine": 4,
       "endLine": 54
     },
-    "type": "context",
+    "type": "concept",
     "title": "gcd(n,m) Recovers the Power Map",
     "content": "The parent leaf showed each non-empty fibre of x ↦ xⁿ in a finite cyclic group of order m has exactly gcd(n, m) elements. This file makes precise the structural slogan that count suggests: the n-th power map IS, kernel-and-image, the gcd(n, m)-th power map. Three independent senses of 'same map' — same kernel (any finite group), same image (cyclic), uniform fibres — are proved and then assembled into the partition #(n-th powers)·gcd(n, m) = m. A single number gcd(n, m) controls the kernel, the image, and the fibre size simultaneously.",
     "mathContext": "$$\\ker(x\\mapsto x^n)=\\ker(x\\mapsto x^{\\gcd(n,m)}),\\quad \\operatorname{im}(x\\mapsto x^n)=\\operatorname{im}(x\\mapsto x^{\\gcd(n,m)}),\\quad \\#\\{n\\text{-th powers}\\}\\cdot\\gcd(n,m)=m.$$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "power map endomorphism",
       "gcd reduction of exponents",

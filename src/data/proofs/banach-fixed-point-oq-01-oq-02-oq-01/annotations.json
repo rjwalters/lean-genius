@@ -3,11 +3,11 @@
     "id": "banach-picard-oq010201-header",
     "proofId": "banach-fixed-point-oq-01-oq-02-oq-01",
     "range": { "startLine": 3, "endLine": 41 },
-    "type": "context",
+    "type": "concept",
     "title": "Making the inverse of id + g constructive and quantitative",
     "content": "The header explains the gap this entry fills. The parent oq-01-oq-02 proves that f x = x + g x (g k-Lipschitz, k < 1, E complete) is a homeomorphism with (1−k)⁻¹-Lipschitz inverse — but only existentially, via the contraction-mapping theorem, with no recipe for computing f⁻¹. Solving f x = y means solving the fixed-point equation x = y − g x for the Picard operator T_y x = y − g x, itself a k-contraction. The entry defines f⁻¹ y as the fixed point of T_y and turns Mathlib's generic ContractingWith error estimates into explicit, computable bounds: a priori, a posteriori, linear rate, and the seed-at-target specialisation. The contraction machinery is the Mathlib input; the new content is identifying the fixed point with the inverse of id + g and extracting geometric error bounds. Fully verified: 0 sorries, 0 axioms; the file re-introduces f = id + g locally rather than importing the parent.",
     "mathContext": "$f x = x + g x,\\ T_y x = y - g x;\\quad f^{-1}y = \\mathrm{fixedPoint}(T_y)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Banach fixed-point theorem", "Picard iteration", "contraction mapping", "Lipschitz perturbation of identity", "constructive inverse"],
     "prerequisites": ["complete normed groups", "Lipschitz maps", "the parent existential inverse"]
   },

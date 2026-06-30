@@ -27,7 +27,7 @@
     "id": "half-line-substitution",
     "proofId": "area-of-circle-oq-07-oq-03",
     "range": { "startLine": 49, "endLine": 57 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Half-Line Form: Image of u = x²",
     "content": "`gamma_one_half_eq_two_mul_gaussian_Ioi` records Γ(1/2) = 2·∫_{x>0} e^{−x²}. This is the faithful image of the substitution u = x² in Γ(1/2) = ∫₀^∞ u^{−1/2} e^{−u} du: with du = 2x dx and u^{−1/2} = x^{−1}, the integrand becomes 2 e^{−x²} on the positive half-line, and even symmetry then folds it onto the full line. The proof uses Mathlib's `integral_gaussian_Ioi` at b = 1 (value √π/2) and closes with `ring` to supply the factor 2 — surfacing the very change of variables that Mathlib performs internally to prove the special value.",
     "mathContext": "$\\Gamma(1/2) = 2\\int_0^\\infty e^{-x^2}\\,dx$; substitution $u=x^2$, $du=2x\\,dx$, $u^{-1/2}=x^{-1}$.",

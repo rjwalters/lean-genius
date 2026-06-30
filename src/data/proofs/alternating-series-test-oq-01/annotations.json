@@ -3,7 +3,7 @@
     "id": "partial-sum-recurrence",
     "proofId": "alternating-series-test-oq-01",
     "range": { "startLine": 29, "endLine": 34 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The One-Step Partial-Sum Recurrence",
     "content": "`partialSum_succ`: S_{n+1} = S_n + (-1)ⁿ f n, an immediate consequence of Finset.sum_range_succ. This trivial-looking recurrence is the hinge of the whole argument: it converts the gap between consecutive partial sums into a single signed term (-1)ⁿ f n, whose sign is governed entirely by the parity of n. That sign control is what lets the two one-directional Mathlib bracketing lemmas be combined into a symmetric bound.",
     "mathContext": "$S_{n+1} = S_n + (-1)^n f_n$, where $S_n = \\sum_{i<n}(-1)^i f_i$.",

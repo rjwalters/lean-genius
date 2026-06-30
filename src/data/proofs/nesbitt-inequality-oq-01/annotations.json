@@ -3,11 +3,11 @@
     "id": "nesbitt-oq01-header",
     "proofId": "nesbitt-inequality-oq-01",
     "range": { "startLine": 3, "endLine": 24 },
-    "type": "context",
+    "type": "concept",
     "title": "Nesbitt's inequality via a sum-of-squares certificate",
     "content": "The header states Nesbitt's inequality — for positive reals a, b, c, a/(b+c) + b/(c+a) + c/(a+b) ≥ 3/2 with equality iff a = b = c — and the proof's backbone: the sum-of-squares (SOS) identity Σ a/(b+c) − 3/2 = (a−b)²/(2(b+c)(c+a)) + (b−c)²/(2(c+a)(a+b)) + (c−a)²/(2(a+b)(b+c)). It is obtained by pairing each term with 1/2: a/(b+c) − 1/2 = ((a−b)+(a−c))/(2(b+c)). Each RHS summand is a nonnegative square over a positive denominator, so the defect is ≥ 0 (the bound) and vanishes exactly when all three squares vanish (the equality case). Nesbitt is the simplest nontrivial Shapiro cyclic sum and is absent from Mathlib as a named lemma.",
     "mathContext": "$\\frac{a}{b+c} + \\frac{b}{c+a} + \\frac{c}{a+b} \\ge \\frac32,\\quad \\text{equality} \\iff a=b=c$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Nesbitt's inequality", "sum of squares", "cyclic sum", "Shapiro inequality"],
     "prerequisites": ["real fractions", "SOS certificates", "ordered fields"]
   },

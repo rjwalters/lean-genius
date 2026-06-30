@@ -52,7 +52,7 @@
       "startLine": 75,
       "endLine": 96
     },
-    "type": "step",
+    "type": "insight",
     "title": "Reciprocal Form: 1/e ≤ (d/(d+1))^d",
     "content": "Since $\\frac{d}{d+1} = \\frac{1}{1 + 1/d}$, the key lemma flips to a lower bound on the avoidance factor:\n\n```lean\ntheorem inv_exp_one_le {d : ℕ} (hd : 1 ≤ d) :\n    1 / Real.exp 1 ≤ ((d : ℝ) / ((d : ℝ) + 1)) ^ d\n```\n\nThe proof rewrites $(d/(d+1))^d = 1/(1+1/d)^d$ and applies `one_div_le_one_div_of_le` to the key lemma. This is the precise inequality that places the sharp threshold below the algebraic one.",
     "mathContext": "$(1+1/d)^d \\le e \\iff 1/e \\le (d/(d+1))^d$.",
@@ -121,7 +121,7 @@
       "startLine": 155,
       "endLine": 163
     },
-    "type": "step",
+    "type": "insight",
     "title": "Capstone: The Sharp Symmetric LLL",
     "content": "```lean\ntheorem sharp_symmetric_lll {d : ℕ} (hd : 1 ≤ d) {p : ℝ} (hp : 0 ≤ p)\n    (hsharp : Real.exp 1 * p * ((d : ℝ) + 1) ≤ 1) (n : ℕ) :\n    p ≤ lllThresholdReal d ∧ 0 < ((d : ℝ) / ((d : ℝ) + 1)) ^ n\n```\n\nThe textbook statement, now formally tied to $e$: under the sharp criterion, $p$ meets the LLL threshold and the avoidance product $(d/(d+1))^n$ is strictly positive — the bad events can all be simultaneously avoided.",
     "mathContext": "$e p (d+1) \\le 1 \\Rightarrow p \\le T(d) \\text{ and } \\Pr[\\text{avoid all}] \\ge (d/(d+1))^n > 0$.",

@@ -29,7 +29,7 @@
       "startLine": 40,
       "endLine": 44
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Matrix vs Endomorphism Minimal Polynomial",
     "content": "minpoly_matrix_eq_mulVecLin records minpoly K M = minpoly K M.mulVecLin, bridging the matrix M and its associated linear map. It rewrites M.mulVecLin as Matrix.toLin' M and applies Matrix.minpoly_toLin'. This identification is what lets endomorphism-level Mathlib lemmas (which speak of minpoly of a Module.End) apply to the matrix M.",
     "mathContext": "minpoly K M = minpoly K (toLin' M) = minpoly K M.mulVecLin.",
@@ -49,7 +49,7 @@
       "startLine": 46,
       "endLine": 63
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Module Annihilator is span{minpoly}",
     "content": "kn_module_annihilator_eq_minpoly identifies the K[X]-annihilator of all of Kⁿ (as the AEval' module) with Ideal.span {minpoly K M}. After rewriting to the endomorphism minimal polynomial, it is a direct application of Mathlib's Polynomial.span_minpoly_eq_annihilator. Note K must be passed explicitly (it is an explicit variable in the Mathlib statement). This is the whole-space anchor for the per-vector theory that follows.",
     "mathContext": "Module.annihilator K[X] (AEval' M.mulVecLin) = span{minpoly K M}.",
@@ -110,7 +110,7 @@
       "startLine": 104,
       "endLine": 145
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Cyclic Vector ⟹ vecAnnIdeal = span{minpoly}",
     "content": "cyclic_vecAnnIdeal_eq_minpoly is the headline: for a cyclic vector with deg(minpoly) = n, the vector-annihilator ideal equals span{minpoly K M}. By antisymmetry, only ≤ needs work. Given f with f(M)·v = 0, reduce 'minpoly ∣ f' to 'f %ₘ minpoly = 0'. Write f = (f %ₘ minpoly) + minpoly · (f /ₘ minpoly); since minpoly(M) = 0 and f(M)·v = 0, the remainder satisfies (f %ₘ minpoly)(M)·v = 0. The remainder has degree < n (natDegree_modByMonic_lt with deg minpoly = n), so IsCyclicVector forces it to zero. Monicity of minpoly — required for the division — comes from integrality of M, witnessed by the characteristic polynomial via Cayley-Hamilton (aeval_self_charpoly).",
     "mathContext": "f(M)v = 0 ⟹ (f mod minpoly)(M)v = 0 with deg < n ⟹ f mod minpoly = 0 ⟹ minpoly ∣ f.",

@@ -32,7 +32,7 @@
       "startLine": 56,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Subtraction-Free Induction with a Composed Absorption",
     "content": "The clean form ∑_{k=0}^{j+2} (-1)^k k² C(n+3,k) = (n+3) (-1)^j ((n+2) C(n,j) + C(n+1,j+1)) is proved by induction on j, avoiding all natural-number subtraction. The crux is the helper lemma key, which rewrites the new term (j+3)² C(n+3,j+3) using the absorption identity twice: one factor of (j+3) is absorbed against row n+3 to give (n+3) C(n+2,j+2), and the residual (j+3) is split as (j+2)+1 so its (j+2) part absorbs against row n+2 to give (n+2) C(n+1,j+1). The net rewrite is (j+3)² C(n+3,j+3) = (n+3) ((n+2) C(n+1,j+1) + C(n+2,j+2)). Two Pascal steps then telescope both coefficients to row n.",
     "mathContext": "Inductive step: the running sum gains $(-1)^{j+3}(j+3)^2\\binom{n+3}{j+3}$. Absorption $\\binom{m+1}{k+1}(k+1) = (m+1)\\binom{m}{k}$ applied at $(m,k) = (n+2,j+2)$ and $(n+1,j+1)$ yields $\\texttt{key}$; Pascal $\\binom{m+1}{k+1} = \\binom{m}{k} + \\binom{m}{k+1}$ at $(n,j)$ and $(n+1,j+1)$ telescopes. All signed-power bookkeeping is handed to one `linear_combination` over `ring`.",
@@ -61,7 +61,7 @@
     "title": "The Literal Two-Coefficient Form",
     "content": "Writing n = m+3 turns the subtraction-free identity into the literal closed form ∑_{k=0}^{j+2} (-1)^k k² C(n,k) = (-1)^j n ((n-1) C(n-3,j) + C(n-2,j+1)) for n ≥ 3. The two binomials C(n-3,·) and C(n-2,·) are exactly the contributions of the two row shifts coming from k(k-1) and k respectively. The reduction is a single rw of the natural-number subtractions m+3-3 = m and m+3-2 = m+1 (both definitional), followed by push_cast and ring.",
     "mathContext": "$\\sum_{k=0}^{j+2} (-1)^k k^2 \\binom{n}{k} = (-1)^j\\,n\\bigl((n-1)\\binom{n-3}{j} + \\binom{n-2}{j+1}\\bigr)$ for $n \\ge 3$. The factor $n(n-1)$ in front of $\\binom{n-3}{\\cdot}$ is the falling factorial $(n)_2$ from the double absorption of $k(k-1)$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "natural-number subtraction",
       "definitional reduction",
@@ -84,7 +84,7 @@
     "title": "Stabilisation and the Classical Full-Row Vanishing",
     "content": "Once the cut-off j reaches the row length n, both binomials in the closed form vanish: C(n-3,j-2) = 0 and C(n-2,j-1) = 0 because j-2 ≥ n-2 > n-3. Hence the quadratically weighted partial sums are already 0 for j ≥ n. The special case j = n is the classical vanishing of the full quadratically weighted alternating row sum ∑_{k=0}^{n} (-1)^k k² C(n,k) = 0 (n ≥ 3) — recovered here as a corollary, with both surviving coefficients explicitly shown to be 0.",
     "mathContext": "For $j \\ge n$, $\\binom{n-3}{j-2} = 0$ since $j-2 > n-3$, and $\\binom{n-2}{j-1} = 0$ since $j-1 > n-2$. The degree-2 weight $k^2$ is annihilated by the $n$-fold alternating difference once $n > 2$, i.e. $n \\ge 3$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "finite differences",
       "Nat.choose_eq_zero_of_lt",

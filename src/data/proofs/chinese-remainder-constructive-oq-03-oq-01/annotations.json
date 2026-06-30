@@ -29,7 +29,7 @@
       "startLine": 106,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Pinning Small Prime Values 0-Axiom (No native_decide)",
     "content": "`kthPrime 0..5 = 2,3,5,7,11,13` are proved without native_decide, keeping the file free of `Lean.ofReduceBool`. The characterization `Nat.nth_count : p n → Nat.nth p (Nat.count p n) = n` says the `(count Prime n)`-th prime is `n`. For each concrete prime `n`, `Nat.count Nat.Prime n` (the number of primes below `n`) reduces under kernel `decide`, so e.g. `Nat.count Nat.Prime 7 = 3` gives `kthPrime 3 = 7`.",
     "mathContext": "`Nat.count p n` counts how many $m < n$ satisfy $p$, and for prime $n$ this count is exactly the index of $n$ in the prime enumeration. Using kernel `decide` (not `native_decide`) means the reductions are checked by the Lean kernel itself, so `#print axioms` reports only `propext, Classical.choice, Quot.sound` — the proof is genuinely axiom-free.",

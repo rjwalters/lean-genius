@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-01",
     "range": { "startLine": 1, "endLine": 70 },
-    "type": "context",
+    "type": "concept",
     "title": "Iterated Discrete Integration by Parts → Finite Taylor–Abel Expansion",
     "content": "Over any commutative ring R, with f : ℕ → R and a TOWER of antidifferences G : ℕ → ℕ → R linked by the single relation G(d+1)(k+1) − G(d+1)(k) = G(d)(k+1), iterating the parent's single-step discrete Abel transform D times yields the closed identity ∑_{k<n} f(k)·G(0)(k+1) = ∑_{d<D} (−1)ᵈ(Δᵈf(n)·G(d+1)(n) − Δᵈf(0)·G(d+1)(0)) + (−1)ᴰ ∑_{k<n} Δᴰf(k)·G(D)(k+1). This is the exact discrete mirror of repeated integration by parts producing Taylor-with-remainder: each layer trades one forward difference off f onto the next antidifference of G, paying an alternating boundary term, leaving a remainder one depth up. Answers the parent's first open question.",
     "mathContext": "$\\sum_{k<n} f(k)G_0(k+1) = \\sum_{d<D}(-1)^d[\\Delta^d f\\,G_{d+1}]_0^n + (-1)^D\\sum_{k<n}\\Delta^D f(k)\\,G_D(k+1)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["summation by parts", "Abel transform", "discrete Taylor", "finite differences", "integration by parts"],
     "prerequisites": ["finite sums", "telescoping", "commutative rings"]
   },

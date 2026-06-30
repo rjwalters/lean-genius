@@ -15,11 +15,11 @@
     "id": "ann-amgm-oq02-oq03-oq03-oq03-mathlib-todo",
     "proofId": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
     "range": { "startLine": 36, "endLine": 56 },
-    "type": "context",
+    "type": "concept",
     "title": "Filling a Mathlib TODO via the Jensen Convexity Engine",
     "content": "Mathlib.Analysis.MeanInequalities lists, verbatim in its TODO section, 'generalized mean inequality with any p ≤ q, including negative numbers'. So unweighted power-mean monotonicity is not presently a Mathlib theorem. What Mathlib DOES provide is the convexity engine NNReal.rpow_arith_mean_le_arith_mean_rpow — Jensen for t ↦ tʳ with r ≥ 1 and arbitrary weights summing to 1. This file specializes that engine to uniform weights 1/n, supplying the positive-exponent case (0 < p ≤ q) and leaving the negative-exponent case as future work, mirroring Mathlib's own TODO.",
     "mathContext": "Jensen for the convex $t \\mapsto t^r$, $r \\ge 1$, weights $w_i \\ge 0$ with $\\sum_i w_i = 1$: $\\left(\\sum_i w_i z_i\\right)^r \\le \\sum_i w_i z_i^r$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Jensen's inequality", "convexity", "Mathlib TODO", "weighted means"],
     "prerequisites": ["convex functions", "weighted averages"]
   },
@@ -91,7 +91,7 @@
     "title": "Corollary: Monotonicity-Style Restatement",
     "content": "powerMean_mono restates the main inequality with both 0 < p and 0 < q hypotheses listed explicitly (the second is logically redundant given 0 < p ≤ q). The point is API ergonomics: a downstream consumer reasoning about monotonicity of p ↦ Mₚ over the positive reals will naturally phrase the hypotheses this way. The body simply delegates to powerMean_le_powerMean, discarding the redundant _hq.",
     "mathContext": "For $0 < p \\le q$, the map $p \\mapsto M_p(x)$ is monotone nondecreasing on $(0,\\infty)$. The redundant $0 < q$ follows from $0 < p \\le q$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["monotonicity", "API design", "power means"],
     "prerequisites": ["monotone functions"]
   }

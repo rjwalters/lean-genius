@@ -6,11 +6,11 @@
       "startLine": 4,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Open Question: Doubly Exponential AGM Convergence",
     "content": "The docstring states the parent's open question: prove that the arithmetic–geometric mean iteration aₙ₊₁ = (aₙ+bₙ)/2, bₙ₊₁ = √(aₙbₙ) contracts the gap aₙ − bₙ DOUBLY exponentially (rate (·)^{2ⁿ}), not merely geometrically. The whole file rests on a single per-step algebraic identity expressing the new gap as proportional to the SQUARE of the old gap, plus an abstract lemma turning any such quadratic recursion into the (·)^{2ⁿ} rate. Imports are analysis-only (Real.sqrt and tactics); everything is proved with 0 axioms.",
     "mathContext": "$a_{n+1} = \\tfrac{a_n+b_n}{2}$, $b_{n+1} = \\sqrt{a_n b_n}$; goal: $a_n - b_n = O\\big(M(a,b)\\,(b/a)^{2^n}\\big)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "arithmetic-geometric mean",
       "quadratic convergence",

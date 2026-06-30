@@ -53,11 +53,11 @@
       "startLine": 95,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Submultiplicativity, Scaling, and Recovering the Classical Inequality",
     "content": "Three corollaries show the bound respects the algebra of operators. `operator_cs_comp` proves the bound is submultiplicative under composition: ‖⟪(S ∘L T) x, y⟫‖ ≤ ‖S‖·‖T‖·‖x‖·‖y‖, using ‖T x‖ ≤ ‖T‖·‖x‖ inside the S-estimate. `operator_cs_smul` scales by the field norm: ‖⟪(c • T) x, y⟫‖ ≤ ‖c‖·‖T‖·‖x‖·‖y‖, via `norm_smul`. `recovers_classical_cs` closes the loop by applying the operator bound to the *identity* operator and using ‖id‖ ≤ 1 (`norm_id_le`) to recover scalar Cauchy-Schwarz ‖⟪x, y⟫‖ ≤ ‖x‖·‖y‖ — confirming the refinement genuinely contains the classical inequality as the T = id case.",
     "mathContext": "$\\|\\langle STx,y\\rangle\\|\\le\\|S\\|\\|T\\|\\|x\\|\\|y\\|$, $\\;\\|\\langle (cT)x,y\\rangle\\|\\le\\|c\\|\\|T\\|\\|x\\|\\|y\\|$, and with $T=\\mathrm{id}$, $\\|\\mathrm{id}\\|\\le 1$ gives $\\|\\langle x,y\\rangle\\|\\le\\|x\\|\\|y\\|$.",
-    "significance": "useful",
+    "significance": "supporting",
     "relatedConcepts": [
       "submultiplicativity of operator norm",
       "scalar multiplication of operators",
@@ -81,7 +81,7 @@
     "title": "Adjoint Form: the Same Norm Controls the Adjoint Pairing",
     "content": "`operator_cs_adjoint` transports the bound across the adjoint. On complete inner product spaces the adjoint T† satisfies ⟪T† y, x⟫ = ⟪y, T x⟫ (`ContinuousLinearMap.adjoint_inner_left`), and since ‖T†‖ = ‖T‖ the *same* operator norm controls the adjoint pairing: ‖⟪T† y, x⟫‖ ≤ ‖T‖·‖y‖·‖x‖. The proof rewrites by the adjoint relation and then runs the standard scalar-Cauchy-Schwarz-then-le_opNorm chain on T. Completeness of both spaces is the only extra hypothesis, needed for the adjoint to exist.",
     "mathContext": "$\\langle T^\\dagger y, x\\rangle = \\langle y, Tx\\rangle \\Rightarrow \\|\\langle T^\\dagger y,x\\rangle\\| \\le \\|y\\|\\,\\|Tx\\| \\le \\|T\\|\\,\\|y\\|\\,\\|x\\|$, using $\\|T^\\dagger\\| = \\|T\\|$.",
-    "significance": "useful",
+    "significance": "supporting",
     "relatedConcepts": [
       "adjoint operator",
       "adjoint_inner_left",

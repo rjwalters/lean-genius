@@ -3,11 +3,11 @@
     "id": "ann-intro",
     "proofId": "banach-fixed-point-oq-01-oq-01",
     "range": { "startLine": 3, "endLine": 29 },
-    "type": "context",
+    "type": "concept",
     "title": "Picard–Lindelöf as a Fixed-Point Theorem",
     "content": "The Picard–Lindelöf (Cauchy–Lipschitz) theorem is the prototypical application of the **Banach contraction mapping principle**. The autonomous initial value problem $y'(t) = f(y(t))$, $y(t_0) = x_0$ is recast as the fixed-point equation $y = Py$ for the **Picard integral operator**\n$$(Py)(t) = x_0 + \\int_{t_0}^{t} f(y(s))\\,ds.$$\nWhen $f$ is Lipschitz, $P$ is a contraction on a complete space of continuous curves over a short time interval, so Banach's theorem produces a unique fixed point — the local solution. Mathlib performs this construction internally (`IsPicardLindelof`, the `FunSpace` contraction, `ODE_solution_unique` via Grönwall) but exposes no clean autonomous existence-and-uniqueness statement; this entry packages exactly that.",
     "mathContext": "$y = Py$, $(Py)(t) = x_0 + \\int_{t_0}^{t} f(y(s))\\,ds$ — a contraction whose unique fixed point solves $y' = f(y)$, $y(t_0)=x_0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Banach fixed-point theorem",
       "Picard iteration",

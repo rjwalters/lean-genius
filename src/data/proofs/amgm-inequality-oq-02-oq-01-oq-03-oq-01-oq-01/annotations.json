@@ -7,7 +7,7 @@
     "title": "Newton–Girard k=5: the fifth rung of the closed-form chain",
     "content": "The module docstring states the target identity p₅ = e₁⁵ − 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ − 5e₂e₃ − 5e₁e₄ + 5e₅ and situates it in a lineage (k=2 → recurrence → k=3 → k=4 → k=5). Newton's identities relate the power sums pₖ = Σxᵢᵏ to the elementary symmetric polynomials eₖ; this is the first rung where e₅ appears and where two distinct mixed monomials carry coefficient 5 (5e₁e₂² and 5e₂e₃). The file delivers two complementary forms — a universal MvPolynomial statement and a concrete Finset statement over an arbitrary CommRing — each 0-sorry, 0-axiom.",
     "mathContext": "$p_5 = e_1^5 - 5 e_1^3 e_2 + 5 e_1 e_2^2 + 5 e_1^2 e_3 - 5 e_2 e_3 - 5 e_1 e_4 + 5 e_5$",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": ["elementary symmetric polynomials", "power sums", "the lower closed forms p₁..p₄"],
     "relatedConcepts": ["Newton–Girard identities", "symmetric function theory", "Vieta's formulas"]
   },

@@ -142,7 +142,7 @@
       "startLine": 124,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Free Generators Don't Commute, Detected in S₃",
     "content": "`freeGroup_of_true_false_ne` proves a·b ≠ b·a for the two generators of FreeGroup Bool. Directly comparing reduced words is awkward, so the proof uses a homomorphic image with a *decidable* equality: map into S₃ = Perm (Fin 3), sending a ↦ swap 0 1 and b ↦ swap 1 2, two transpositions that famously fail to commute (their products are the two 3-cycles). If a·b = b·a held, applying the lift (via congrArg) would force swap(0 1)·swap(1 2) = swap(1 2)·swap(0 1) in S₃, refuted by `decide` on the finite group. This is the standard trick for proving non-relations in a free group: exhibit a quotient where the relation visibly fails.",
     "mathContext": "$a\\cdot b\\ne b\\cdot a$ in $F_2$ because $(0\\,1)(1\\,2)=(0\\,1\\,2)\\ne(0\\,2\\,1)=(1\\,2)(0\\,1)$ in $S_3$.",

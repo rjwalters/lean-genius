@@ -3,11 +3,11 @@
     "id": "ann-overview-moments",
     "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-03",
     "range": { "startLine": 1, "endLine": 42 },
-    "type": "context",
+    "type": "concept",
     "title": "Descent Moments as Derivatives of the Eulerian Polynomial",
     "content": "The Eulerian polynomial Eₘ(X) = ∑ₖ ⟨m,k−1⟩ Xᵏ is the descent generating function of Sₘ: the coefficient of Xᵏ counts permutations of {1,…,m} with k−1 descents. So the moments of the descent statistic are derivatives of Eₘ at X = 1: E'ₘ(1) = ∑ₖ k·⟨m,k−1⟩ is the first factorial moment of k = des+1, and E''ₘ(1) = ∑ₖ k(k−1)·⟨m,k−1⟩ the second. The whole file is the observation that the parent's analytic recurrence makes computing these a mechanical derivative-and-evaluate, because the factor X(1−X) vanishes at X = 1.",
     "mathContext": "$E_m(X)=\\sum_k \\langle m,k{-}1\\rangle X^k$; $E'_m(1)=\\sum_k k\\langle m,k{-}1\\rangle$, $E''_m(1)=\\sum_k k(k{-}1)\\langle m,k{-}1\\rangle$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Eulerian numbers", "descent statistic", "generating functions", "factorial moments"],
     "prerequisites": ["permutation statistics", "generating functions"]
   },

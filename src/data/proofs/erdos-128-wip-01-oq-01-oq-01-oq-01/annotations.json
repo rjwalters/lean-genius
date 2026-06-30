@@ -3,7 +3,7 @@
     "id": "erdos128-wip01oq01oq01oq01-ann-header",
     "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
     "range": { "startLine": 3, "endLine": 53 },
-    "type": "context",
+    "type": "concept",
     "title": "From cliques to arbitrary forbidden subgraphs",
     "content": "Erdős Problem #128 ($250, open) asks whether a uniform edge-density condition on all large induced subgraphs forces a triangle; the conjectured-optimal constant 1/50 is witnessed by blow-ups of C₅. The parent chain lifted the homomorphism-pullback principle from triangles to K_r-cliques of every order. This entry answers that parent's stated open question by generalizing once more — beyond cliques to arbitrary forbidden subgraphs F — and shows clique-freeness is exactly the F = K_r case.",
     "mathContext": "A homomorphic copy of $F$ in $G$ is a graph homomorphism $\\varphi : F \\to G$, with no injectivity required.",
@@ -43,7 +43,7 @@
     "title": "hasHomCopy_mono — monotone along homomorphisms",
     "content": "A homomorphism g : F' → F turns a homomorphic copy of F into one of F' by precomposition. This generalizes clique-order monotonicity (hasClique_mono): the inclusion K_m → K_r for m ≤ r is a homomorphism, so a copy of K_r restricts to a copy of K_m.",
     "mathContext": "$\\mathrm{IsHom}\\,F'\\,F\\,g$ and a copy $\\varphi$ of $F$ give the copy $\\varphi \\circ g$ of $F'$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["graph minor order", "homomorphism order", "monotonicity"],
     "prerequisites": ["graph homomorphism"]
   },

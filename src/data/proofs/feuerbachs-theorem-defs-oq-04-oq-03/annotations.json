@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "feuerbachs-theorem-defs-oq-04-oq-03",
     "range": { "startLine": 1, "endLine": 50 },
-    "type": "context",
+    "type": "concept",
     "title": "Coordinate-Free Nine-Point Circle: the Open Question and Strategy",
     "content": "Euler (1765) observed that nine special points of a triangle are concyclic — the three side midpoints, the three feet of the altitudes, and the three midpoints of the vertex-to-orthocenter segments; Feuerbach (1822) added the tangency to the incircle and excircles. The gallery already formalises the nine concyclic points in a fixed coordinate model (Point = ℝ × ℝ) and bridges one coordinate triangle to Mathlib's Metric.sphere. This file takes the open-question step OQ-04 → OQ-03: discard coordinates and prove the theorem for an arbitrary triangle in ANY real inner product space V, with the circumcenter O supplied as a hypothesis (dist O A = dist O B = dist O C = R). The result is genuinely more general than the gallery in three ways: no coordinates (V is any InnerProductSpace ℝ V — EuclideanSpace ℝ (Fin 2), ℝ³, an abstract Hilbert space), no nondegeneracy needed for six of the nine points (the midpoint-type points lie on the circle even for collinear A B C), and a free choice of circumcenter. Since Mathlib has no nine-point/Feuerbach circle, this is new, upstream-ready infrastructure (headline ninePoints_mem_sphere). The proof normalises O to the origin and reduces everything to vector identities in a = A−O, b = B−O, c = C−O with ‖a‖=‖b‖=‖c‖=R.",
     "mathContext": "All nine points lie on $\\mathrm{sphere}(N, R/2)$, $N = (A+B+C-O)/2$, given $\\mathrm{dist}\\,O\\,A = \\mathrm{dist}\\,O\\,B = \\mathrm{dist}\\,O\\,C = R$ in any real inner product space.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["nine-point circle", "Feuerbach's theorem", "Euler line", "InnerProductSpace ℝ V", "coordinate-free geometry", "Metric.sphere"],
     "prerequisites": ["the classical nine-point circle (background)", "real inner product spaces", "circumcenter / orthocenter of a triangle"]
   },

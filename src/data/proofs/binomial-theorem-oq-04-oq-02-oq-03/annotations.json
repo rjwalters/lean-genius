@@ -29,7 +29,7 @@
       "startLine": 39,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Collapse antidiagonal, then apply symmetry pointwise",
     "content": "The proof of `central_binomial_eq_sum_sq` chains three rewrites: `two_mul` to expose C(n+n,n); `Nat.add_choose_eq n n n` for Vandermonde's convolution over the antidiagonal; and `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` to switch to a range sum that exposes the index k explicitly. A `Finset.sum_congr` then reduces the goal to the per-term identity C(n,k)·C(n,n-k) = C(n,k)², discharged by `Nat.choose_symm` (using k ≤ n from `Finset.mem_range`) and `sq`.",
     "mathContext": "Switching from the antidiagonal $\\{(i,j) : i+j=n\\}$ to $\\mathrm{range}(n+1)$ is what makes the symmetry applicable termwise — on the antidiagonal one would have to reason about the pair $(k, n-k)$ throughout.",
@@ -56,7 +56,7 @@
     "title": "Restatement via Nat.centralBinom",
     "content": "`centralBinom_eq_sum_sq` transports the identity to Mathlib's `Nat.centralBinom n` notation by rewriting with `Nat.centralBinom_eq_two_mul_choose` and then the main theorem. This makes the sum-of-squares formula directly usable alongside Mathlib's existing `Nat.Choose.Central` API (positivity, divisibility, exponential bounds), which notably lacks this formula.",
     "mathContext": "$\\mathrm{centralBinom}\\,n = \\binom{2n}{n}$ by definition, so the restatement is a pure renaming with no new mathematical content.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.centralBinom",
       "central binomial coefficient"

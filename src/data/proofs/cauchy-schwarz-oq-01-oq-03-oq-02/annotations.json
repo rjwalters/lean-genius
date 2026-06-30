@@ -15,7 +15,7 @@
     "id": "ann-nonneg",
     "proofId": "cauchy-schwarz-oq-01-oq-03-oq-02",
     "range": { "startLine": 37, "endLine": 41 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Nonnegativity, Termwise",
     "content": "`shannonEntropy_nonneg` shows H(p) ≥ 0 whenever every entry lies in [0,1]. The proof is a one-liner: Finset.sum_nonneg reduces the goal to each summand, and Real.negMulLog_nonneg gives −t·log t ≥ 0 for t ∈ [0,1] (because log t ≤ 0 there). Note this is weaker than requiring a probability vector — it only needs entries bounded by 1, so it applies to sub-distributions too.",
     "mathContext": "$$0 \\le p_i \\le 1 \\implies \\operatorname{negMulLog}(p_i) = -p_i\\log p_i \\ge 0 \\implies H(p) \\ge 0$$",
@@ -51,11 +51,11 @@
     "id": "ann-blocker-context",
     "proofId": "cauchy-schwarz-oq-01-oq-03-oq-02",
     "range": { "startLine": 1, "endLine": 22 },
-    "type": "context",
+    "type": "concept",
     "title": "Scope: the Provable Half of Entropic Uncertainty",
     "content": "The module docstring scopes the entry honestly. The parent open question asks for the full Maassen–Uffink entropic uncertainty principle H(p) + H(q) ≥ −2 ln c. That sharp constant flows from the Hausdorff–Young inequality (a Riesz–Thorin interpolation / (2→∞) operator-norm argument), which Mathlib v4.26.0 does not provide — so the full theorem is genuinely BLOCKED, not merely unattempted. What IS provable now, and is built here, is the entropy ceiling H(p) ≤ log n that bounds either marginal; the hard, interpolation-gated content is the LOWER bound on the sum. Deutsch's interpolation-free precursor H(p)+H(q) ≥ −2 ln((1+c)/2) is flagged as the natural next target once this infrastructure exists. The `mathlib` badge reflects that the substance rides on Mathlib's negMulLog concavity and Jensen.",
     "mathContext": "$$\\text{Full: } H(p)+H(q) \\ge -2\\ln c \\;\\;(\\text{blocked});\\qquad \\text{Here: } H(p) \\le \\log n \\;\\;(\\text{proved})$$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Maassen–Uffink inequality", "Hausdorff–Young inequality", "Riesz–Thorin interpolation", "Deutsch's bound", "entropic uncertainty principle"],
     "prerequisites": ["the entropic uncertainty principle", "why interpolation gives the sharp constant"]
   }

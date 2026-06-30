@@ -6,7 +6,7 @@
       "startLine": 81,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Cayley–Hamilton for ℤ[√d]: every quadratic integer is a root of its characteristic polynomial",
     "content": "The whole entry rests on one coordinate-free identity: a² = (2·re a)·a − N(a), valid for EVERY a : ℤ√d with no hypothesis. The coefficients are the trace 2·re a = a + ā and the determinant N(a) = a·ā of the multiplication-by-a map — exactly the Cayley–Hamilton theorem for the 2×2 matrix of that map. The proof expands a² = a·a (pow_two), then Zsqrtd.ext splits into real and √d components, each closed by ring after rewriting with norm_def, re_mul/im_mul, re_sub/im_sub, and the intCast component lemmas. norm_def is the only nontrivial fact used.",
     "mathContext": "$a$ is a root of $t^2-(\\mathrm{tr}\\,a)\\,t+\\det a$ with $\\mathrm{tr}\\,a=a+\\bar a=2\\,\\mathrm{re}\\,a$ and $\\det a=a\\bar a=N(a)$: $a^2=(2\\,\\mathrm{re}\\,a)\\,a-N(a)$.",
@@ -66,7 +66,7 @@
       "startLine": 152,
       "endLine": 174
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Rigidity: recurrence plus two initial values determines the sequence",
     "content": "seq_unique proves by a two-step (paired) induction that any two integer sequences obeying uₙ₊₂ = c·uₙ₊₁ − uₙ and agreeing at n = 0, 1 agree everywhere — the induction carries the pair (f n = g n, f(n+1) = g(n+1)) so each step has both predecessors in hand. re_pell_unique then applies it with c = 2·re a: the recurrence together with re(a⁰) = 1 and re(a¹) = x₁ characterizes the Pell coordinate sequence completely. Additive and multiplicative descriptions carry the same information.",
     "mathContext": "An order-2 linear recurrence is a deterministic dynamical system on $\\mathbb{Z}^2$; the map $(u_n,u_{n+1})\\mapsto(u_{n+1},cu_{n+1}-u_n)$ fixes the entire orbit from one seed.",
@@ -81,11 +81,11 @@
       "startLine": 187,
       "endLine": 201
     },
-    "type": "context",
+    "type": "concept",
     "title": "The D = 2 instance: the coefficient 6 is just 2·re⟨3,2⟩",
     "content": "Instantiating a = ⟨3,2⟩ = 3 + 2√2 ∈ ℤ[√2] recovers the sibling pell-equation-oq-06-oq-03's recurrence xₙ₊₂ = 6 xₙ₊₁ − xₙ. norm_three_two checks N(⟨3,2⟩) = 3² − 2·2² = 1 (kernel decide), coeff_two checks 2·re⟨3,2⟩ = 6, and pell_two_recurrence specializes re_recurrence_pell. The point: the coefficient 6, computed case-by-case in the sibling, is simply twice the first coordinate of the fundamental unit — the general-D theorem reveals its source as the trace. The first coordinates run 1, 3, 17, 99, 577, … with 17 = 6·3 − 1, etc.",
     "mathContext": "$3+2\\sqrt2=\\langle3,2\\rangle$ is the norm-$+1$ fundamental unit of $\\mathbb{Z}[\\sqrt2]$, trace $6$; its powers give $1,3,17,99,577,\\dots$, $a_{n+2}=6a_{n+1}-a_n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Pell equation", "fundamental unit of ℤ[√2]", "trace", "Lucas sequence"],
     "prerequisites": ["Pell's equation", "quadratic units"]
   }

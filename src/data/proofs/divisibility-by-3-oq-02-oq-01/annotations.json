@@ -134,11 +134,11 @@
       "startLine": 168,
       "endLine": 182
     },
-    "type": "context",
+    "type": "concept",
     "title": "Numerical verifications",
     "content": "Concrete checks: $121 = 11^2$ (alt sum $1-2+1=0$), $132 = 11\\cdot12$, $123$ (not divisible, alt sum $2$), $9 = 1001_2 \\Rightarrow 3 \\mid 9$, $17 = 11_{16} \\Rightarrow 17 \\mid 17$. These use `native_decide` but appear only in `example`s, not in any substantive theorem — so the entry remains verified/0-axiom (the `Lean.ofReduceBool` dependency stays confined to throwaway sanity checks).",
     "mathContext": "$1-2+1=0 \\Rightarrow 11 \\mid 121;\\quad 1-0+0-1=0 \\Rightarrow 3 \\mid 9.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "native_decide",
       "sanity check",

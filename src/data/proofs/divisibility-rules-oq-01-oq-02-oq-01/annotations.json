@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 36
     },
-    "type": "context",
+    "type": "concept",
     "title": "Which Moduli Admit an Alternating-Digit-Sum Rule?",
     "content": "The familiar divisibility-by-11 test alternately adds and subtracts digits, because $10 \\equiv -1 \\pmod{11}$, so $10^i \\equiv (-1)^i$ and $n = \\sum d_i 10^i \\equiv d_0 - d_1 + d_2 - \\cdots$. The parent entry showed the *ordinary* digit-sum rule (driven by $10^k \\equiv 1$) exists for **every** modulus coprime to 10. This file resolves the parent's open question about the *alternating* analogue, which needs the sharper $10^k \\equiv -1 \\pmod d$ — i.e. $-1$ must lie in the cyclic group $\\langle 10\\rangle \\subseteq (\\mathbb{Z}/d)^\\times$. Such a group contains the order-two element $-1$ exactly when its order is even, so the rule is **not universal**: it exists for 11, 7, 13 but not 3 or 37.",
     "mathContext": "$10^k \\equiv -1 \\pmod d \\iff -1 \\in \\langle 10\\rangle$; a cyclic group has the order-2 element $-1$ iff its order is even.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "divisibility by 11",
       "alternating digit sum",
@@ -30,7 +30,7 @@
       "startLine": 51,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Base Condition (10 : ZMod d)^k = −1 and the Workhorse",
     "content": "`pow_zmod_eq_neg_one_iff` translates the clean algebraic condition $(10 : \\mathbb{Z}/d)^k = -1$ into the integer divisibility $d \\mid 10^k + 1$ via `ZMod.intCast_zmod_eq_zero_iff_dvd` (after `eq_neg_iff_add_eq_zero`). The workhorse `altRule_of_pow_neg_one` then derives the actual base-$10^k$ alternating digit-sum rule: it feeds $d \\mid 10^k - (-1)$ into Mathlib's `Nat.dvd_iff_dvd_ofDigits` (the general fact $d \\mid n \\iff d \\mid \\operatorname{ofDigits} b\\, n$ when $d \\mid b - r$) and rewrites $\\operatorname{ofDigits}(-1)$ as the alternating sum through `Nat.ofDigits_neg_one`. This is the sufficiency half — a working congruence yields a working rule.",
     "mathContext": "$(10:\\mathbb{Z}/d)^k = -1 \\iff d \\mid 10^k + 1$. Then $n = \\operatorname{ofDigits}(10^k) \\equiv \\operatorname{ofDigits}(-1) = \\sum (-1)^i d_i \\pmod d$.",
@@ -78,7 +78,7 @@
       "startLine": 123,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Order Positivity and 1 ≠ −1",
     "content": "Two supporting facts for the cyclic-group argument. `orderOf_ten_pos`: for $d \\ge 2$ coprime to 10, $\\operatorname{ord}_d(10) > 0$, because by Fermat–Euler $10^{\\varphi(d)} \\equiv 1$ so the order divides $\\varphi(d) > 0$ and cannot be 0. `one_ne_neg_one`: in $\\mathbb{Z}/d$ with $d > 2$, $1 \\neq -1$, since $1 = -1$ would give $2 \\equiv 0$, i.e. $d \\mid 2$, forcing $d \\le 2$. The latter is exactly why the characterization needs $d > 2$ — for $d = 2$ one has $1 = -1$ and the order-two distinction collapses.",
     "mathContext": "$\\operatorname{ord}_d(10) \\mid \\varphi(d)$ by Fermat–Euler; $1 = -1$ in $\\mathbb{Z}/d \\iff d \\mid 2 \\iff d \\le 2$.",
@@ -150,7 +150,7 @@
       "startLine": 240,
       "endLine": 256
     },
-    "type": "context",
+    "type": "concept",
     "title": "Positive Instances: 11, 7, 13",
     "content": "Three concrete moduli where the alternating rule exists, each obtained by applying the workhorse with the relevant congruence discharged by kernel `decide` (not `native_decide`, so no `Lean.ofReduceBool` dependency). `eleven_altRule` uses $k=1$ since $10 \\equiv -1 \\pmod{11}$ — the classic test. `seven_altRule` and `thirteen_altRule` use $k=3$ since $10^3 = 1000 \\equiv -1$ modulo both 7 and 13 (because $1001 = 7 \\cdot 11 \\cdot 13$, so $7, 13 \\mid 10^3 + 1$). These are the grouped-three-digit alternating rules for 7 and 13.",
     "mathContext": "$10 \\equiv -1 \\pmod{11}$; $10^3 \\equiv -1 \\pmod 7$ and $\\pmod{13}$ since $1001 = 7\\cdot 11\\cdot 13$.",
@@ -173,7 +173,7 @@
       "startLine": 258,
       "endLine": 274
     },
-    "type": "context",
+    "type": "concept",
     "title": "Negative Instances: 3 and 37 (Non-Universality)",
     "content": "Two moduli that admit **no** power-of-10 alternating rule, demonstrating the sharpness of the criterion. `three_no_altRule`: $10 \\equiv 1 \\pmod 3$, so every power of 10 is $1 \\neq -1$ (here $\\operatorname{ord}_3(10) = 1$ is odd). `thirtyseven_no_altRule`: $\\operatorname{ord}_{37}(10) = 3$ is odd; since $10^3 \\equiv 1$, every power reduces to $10^{k \\bmod 3} \\in \\{1, 10, 26\\}$, none of which equals $-1 = 36$ — closed by `interval_cases` over $k \\bmod 3$ then `decide`. These contrast with the digit-sum rule, which exists for *every* modulus coprime to 10.",
     "mathContext": "$\\operatorname{ord}_3(10)=1$ (odd): powers $=\\{1\\}$. $\\operatorname{ord}_{37}(10)=3$ (odd): powers $=\\{1,10,26\\} \\not\\ni 36 = -1$.",

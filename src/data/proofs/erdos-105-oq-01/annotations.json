@@ -26,7 +26,7 @@
       "startLine": 56,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Avoidability is Antitone, Blocking is Monotone",
     "content": "The structural engine. unblocked_antitone: avoiding a larger obstacle set implies avoiding any subset. avoidable_antitone lifts this to existence of a rich avoiding line: removing obstacles can only help. Dually, blocked_monotone: if every rich line of A already meets B, then it meets any superset B' ⊇ B — adding obstacles preserves a complete block. These are one-line consequences of the definitions and use no axioms.",
     "mathContext": "$B' \\subseteq B \\Rightarrow (\\text{avoid } B \\Rightarrow \\text{avoid } B')$; \\quad $B \\subseteq B' \\Rightarrow (\\text{block } B \\Rightarrow \\text{block } B')$.",
@@ -44,11 +44,11 @@
       "startLine": 91,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Fresh-Point Padding: The Plane is Infinite",
     "content": "To match exact cardinalities (n-3, n-2, n-4) we must enlarge obstacle sets while keeping them disjoint from A. exists_disjoint_superset does this by induction: at each step pick a point outside A ∪ B' (possible because ℝ² is infinite) and insert it. The Infinite Point instance is supplied explicitly via the injection t ↦ EuclideanSpace.single 0 t from ℝ, since the instance does not fire automatically through the WithLp/PiLp type synonym. Entirely axiom-free.",
     "mathContext": "$|\\mathbb{R}^2| = \\infty$, so for any finite $S$ there is $p \\notin S$; iterate to reach any target cardinality $m \\geq |B|$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Infinite types",
       "EuclideanSpace.single",
@@ -63,7 +63,7 @@
       "startLine": 121,
       "endLine": 165
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "Xichuan's Disproof Propagates Upward — Hickerson for Free",
     "content": "Combining monotonicity with padding: xichuan_blocks_at_all_counts shows the single n-3 counterexample (the parent's xichuan_counterexample axiom) forces a blocking configuration at EVERY count m ≥ n-3. hickerson_n_minus_2 is then just the m = n-2 instance — the historically separate Hickerson n-2 failure drops out as a corollary of the stronger n-3 disproof plus a one-line monotonicity argument. This is the only section that uses the inherited axiom.",
     "mathContext": "Failure at $n-3$ + monotone blocking + padding $\\Rightarrow$ failure at every $m \\geq n-3$, in particular $m = n-2$.",
@@ -82,7 +82,7 @@
       "startLine": 167,
       "endLine": 211
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "The Open Boundary Lies Strictly Below the Disproof",
     "content": "Monotonicity propagates the disproof only upward (m ≥ n-3) and says nothing about n-4 < n-3 — this is exactly why oq-01 stays open. The converse is equally sharp: openProblem_n_minus_4_strong shows a YES answer at exactly n-4 strengthens (by antitonicity, via padding) to avoidability at every count ≤ n-4. Hence n-4 lies in the threshold set (n_minus_4_avoidable_set) and f(n) ≥ n-4 (n_minus_4_threshold_lower). With the known upper bound f(n) ≤ n-4, this pins f(n) = n-4 — so oq-01 is precisely the question 'is f(n) = n-4?'. Axiom-free (conditional on the open hypothesis).",
     "mathContext": "$\\textsf{oq-01} \\Rightarrow (n-4) \\in \\{m : \\text{all size-}m\\text{ sets avoidable}\\} \\Rightarrow f(n) \\geq n-4$; with $f(n) \\leq n-4$, $f(n) = n-4$.",
@@ -105,7 +105,7 @@
     "title": "Monotonicity Localizes All Remaining Uncertainty to m = n-4",
     "content": "The summary packages both directions: the upward Hickerson re-derivation and the downward conditional n-4 sharpening. Together they sandwich the open region — failure for all m ≥ n-3, conditional avoidability for all m ≤ n-4 — so the entire unresolved part of Erdős #105 collapses to the single cardinality m = n-4.",
     "mathContext": "Open region $= \\{n-4\\}$: everything $\\geq n-3$ fails, everything $\\leq n-4$ would follow from the single n-4 case.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "synthesis",
       "open problem localization"

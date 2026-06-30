@@ -51,7 +51,7 @@
       "startLine": 122,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Local-to-Global Bridge for cos",
     "content": "norm_iteratedDerivWithin_cos_Icc_le transfers the global cycle bound to the derivative-within on Icc 0 x. iteratedDerivWithin_eq_iteratedDeriv converts iteratedDerivWithin (which only sees cos on the interval) into the global iteratedDeriv, under the two hypotheses uniqueDiffOn_Icc (the interval is a unique-differentiability set) and ContDiffAt (cos is smooth). This is the lone technical step, and it produces exactly the uniform hypothesis taylor_mean_remainder_bound consumes.",
     "mathContext": "On the UniqueDiffOn set $[0,x]$, $\\lVert\\operatorname{iteratedDerivWithin} k\\,\\cos\\,[0,x]\\,y\\rVert = |\\operatorname{iteratedDeriv} k\\,\\cos\\,y| \\le 1$.",

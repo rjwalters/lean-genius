@@ -99,11 +99,11 @@
     "id": "ann-iff-real",
     "proofId": "descartes-circle-theorem-oq-01-oq-02",
     "range": { "startLine": 111, "endLine": 116 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Cast Bridge to the Parent's Real Relation",
     "content": "A compatibility lemma: the integer relation `descartesRelZ a b c d` holds iff the parent's real-valued `descartesRel` holds for the casts $(a:\\mathbb{R}),\\dots$. Because both sides are polynomial equalities and the cast $\\mathbb{Z}\\hookrightarrow\\mathbb{R}$ is an injective ring homomorphism, `exact_mod_cast` discharges both directions. This is what lets the integer-side reflection theorem be reused to make a statement about *real* curvatures that happen to be integers.",
     "mathContext": "$\\mathrm{descartesRelZ}(a,b,c,d) \\iff \\mathrm{descartesRel}\\big((a{:}\\mathbb{R}),(b{:}\\mathbb{R}),(c{:}\\mathbb{R}),(d{:}\\mathbb{R})\\big).$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["ring homomorphism", "casting ℤ → ℝ", "exact_mod_cast", "push_cast"],
     "prerequisites": ["coercions", "ring homomorphisms"]
   },

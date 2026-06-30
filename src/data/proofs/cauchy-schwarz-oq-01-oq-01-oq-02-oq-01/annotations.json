@@ -54,7 +54,7 @@
       "startLine": 79,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Covariance = Real Part of the Centered Inner Product",
     "content": "`covarianceEV_eq_re` proves Cov(A,B) = Re⟪u,v⟫ for the centered vectors u = Aψ−⟨A⟩ψ, v = Bψ−⟨B⟩ψ. Since ⟪v,u⟫ = conj⟪u,v⟫, the symmetric sum ⟪u,v⟫ + ⟪v,u⟫ = 2·Re⟪u,v⟫ expands (reusing the parent's `inner_centered_eq`) to ⟨{A,B}⟩ − 2⟨A⟩⟨B⟩. Halving via `Complex.div_ofNat_re` matches covarianceEV exactly — the real part Robertson never uses.",
     "mathContext": "With $u = A\\psi - \\langle A\\rangle\\psi$, $v = B\\psi - \\langle B\\rangle\\psi$: $\\langle u,v\\rangle + \\langle v,u\\rangle = 2\\operatorname{Re}\\langle u,v\\rangle$ (since $\\langle v,u\\rangle = \\overline{\\langle u,v\\rangle}$) $= \\langle\\{A,B\\}\\rangle - 2\\langle A\\rangle\\langle B\\rangle$. Hence $\\operatorname{Cov}(A,B) = \\operatorname{Re}\\langle u,v\\rangle$.",

@@ -7,7 +7,7 @@
     "title": "Cardinality Is Not Structure — Recovering the Regular Representation",
     "content": "The docstring lays out the three-generation arc. The grandparent showed the orbit map σ ↦ σ·a is a bijection of sets H ≃ α; the parent transported cardinality across it to get #H = #α; but a bijection alone never says which representation H is. This entry supplies the missing structural datum: that orbit bijection is equivariant, e(σ*τ) = σ·(e τ), so it is an isomorphism of H-actions, not just of sets. Consequently, relabelling α by e turns the geometric action of every σ ∈ H into left multiplication by σ on H — the free transitive action literally IS the left-regular representation of H on itself, the sharpest form of the converse to Cayley, valid with no finiteness. A second theme: freeness is the subtle hypothesis throughout, and an abelian transitive subgroup acts freely automatically, making the whole machinery unconditional for abelian groups.",
     "mathContext": "Grandparent: $H\\simeq\\alpha$ (sets). Parent: $\\#H=\\#\\alpha$. Here: $e(\\sigma\\tau)=\\sigma\\cdot e(\\tau)$, an isomorphism of $H$-actions carrying the geometric action onto $L_\\sigma$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["regular representation", "equivariant map", "converse to Cayley", "isomorphism of group actions", "free transitive action"],
     "prerequisites": ["group actions", "permutation groups"]
   },
@@ -51,7 +51,7 @@
     "id": "ann-abelian-free",
     "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
     "range": { "startLine": 121, "endLine": 152 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Abelian + Transitive ⟹ Free",
     "content": "Freeness is the delicate hypothesis the whole chain rests on. actsFreely_of_abelian_transitive supplies a clean, checkable sufficient condition: if H acts transitively and its elements pairwise commute, the action is free. The proof is the classical three-line commutation argument — if σ fixes a and τ·a = b, then σ·b = σ(τa) = (στ)a = (τσ)a = τ(σa) = τa = b, so σ fixes every point and equals the identity. This is the textbook fact that a transitive abelian permutation group is regular (sharply transitive), and it needs no finiteness.",
     "mathContext": "$\\sigma a = a,\\ \\tau a = b \\Rightarrow \\sigma b = \\sigma(\\tau a) = (\\sigma\\tau)a = (\\tau\\sigma)a = \\tau(\\sigma a) = \\tau a = b$, so $\\sigma = 1$.",

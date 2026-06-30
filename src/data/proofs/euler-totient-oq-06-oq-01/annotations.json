@@ -79,7 +79,7 @@
     "title": "Recovering the Parent Parity Result",
     "content": "The parent entry's headline — φ(n) even for n > 2, i.e. v₂(φ(n)) ≥ 1 — is the qualitative shadow of the exact formula proved here. Stated via Mathlib's `Nat.totient_even` for the cleanest dependency, confirming consistency with euler-totient-oq-06.",
     "mathContext": "$2 < n \\implies \\mathrm{Even}\\,\\varphi(n)$, equivalently $v_2(\\varphi(n)) \\ge 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Euler's totient", "parity", "p-adic valuation"],
     "prerequisites": ["Euler's totient", "parity"]
   }

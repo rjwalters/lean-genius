@@ -36,7 +36,7 @@
       "startLine": 129,
       "endLine": 174
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Part II — sign-flipped Binet–Cauchy, Lagrange, and Gram algebra",
     "content": "The pseudo-Euclidean analogues of the classical identities, each closed by pure `ring` after destructuring the vectors. The Lorentzian **Binet–Cauchy** identity reads $\\langle a\\boxtimes b, c\\boxtimes d\\rangle = \\langle a,d\\rangle\\langle b,c\\rangle - \\langle a,c\\rangle\\langle b,d\\rangle$ (pairing swapped vs. Euclidean). The **Lagrange** identity $\\langle a\\boxtimes b, a\\boxtimes b\\rangle = \\langle a,b\\rangle^2 - \\langle a,a\\rangle\\langle b,b\\rangle$ has the sign *flipped* from the Euclidean $\\|a\\|^2\\|b\\|^2-\\langle a,b\\rangle^2$ — which is exactly what makes the edge normal $u\\boxtimes v$ **spacelike**. `triple_sq` records $[uvw]^2 = -\\mathrm{Gram}(u,v,w)$: the leading minus sign is $\\det\\eta = -1$, while the Gram polynomial itself is identical to the Euclidean one.",
     "mathContext": "$\\langle a\\boxtimes b, a\\boxtimes b\\rangle = \\langle a,b\\rangle^2 - \\langle a,a\\rangle\\langle b,b\\rangle, \\qquad [uvw]^2 = -\\mathrm{Gram}(u,v,w).$",

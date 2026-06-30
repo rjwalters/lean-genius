@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 31
     },
-    "type": "context",
+    "type": "concept",
     "title": "Cayley's Theorem in its Regular Form",
     "content": "**Module framing.** The parent built the finite Cayley homomorphism $\\mathrm{cayleyFinHom}\\,e : G \\to^* \\mathrm{Perm}(\\mathrm{Fin}\\,n)$ from a relabelling $e : G \\simeq \\mathrm{Fin}\\,n$ and proved it injective. This file studies its **image** $H = \\mathrm{range}(\\mathrm{cayleyFinHom}\\,e)$ and proves the three facts that characterise a *regular* permutation group:\n- **transitive** — some $\\sigma \\in H$ sends any $i$ to any $j$;\n- **free (semiregular)** — any $\\sigma \\in H$ fixing one point is the identity;\n- **sharply transitive** — combining these, a *unique* $\\sigma \\in H$ with $\\sigma i = j$.\n\nTogether with $|H| = n$, this identifies $H$ as the regular permutation group of degree $n$ — the concrete content of 'Cayley realises $G$ as a regular subgroup of $S_n$'.",
     "mathContext": "A permutation group is **regular** iff it is transitive and free, equivalently sharply transitive: the action $H \\curvearrowright \\{1,\\dots,n\\}$ is a torsor, so $|H| = n$ and $H$ is isomorphic (as an $H$-set) to its own left-multiplication action. This is exactly the image of the left-regular representation.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Left-regular representation",
       "Regular permutation group",
@@ -143,7 +143,7 @@
       "startLine": 118,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Order n and the Pretransitive Action Instance",
     "content": "**`regSubgroup_card`**: $|H| = n$. Since $\\mathrm{cayleyFinHom}\\,e$ is injective, $H \\cong G$ (`cayleyFinRangeEquiv`), and $e : G \\simeq \\mathrm{Fin}\\,n$ gives $|G| = n$ — a chain of `Nat.card_congr` rewrites ending at `Fintype.card_fin`.\n\nThe action packaging makes the results usable by Mathlib's group-action API:\n- **`regSubgroup_isPretransitive`** — a `MulAction.IsPretransitive` *instance* from `regSubgroup_transitive`;\n- **`regSubgroup_smul_free`** — freeness restated for the subgroup's own $\\bullet$ action via `Subtype.ext`.",
     "mathContext": "By the orbit–stabiliser theorem a transitive free action on $n$ points forces $|H| = n$; here it is obtained more directly from $H \\cong G \\cong \\mathrm{Fin}\\,n$. Exposing `IsPretransitive` lets downstream code invoke transitivity-driven lemmas automatically.",

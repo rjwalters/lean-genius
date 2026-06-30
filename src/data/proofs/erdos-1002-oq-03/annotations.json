@@ -10,7 +10,7 @@
     "title": "Deviation and Inner Sum",
     "content": "deviation(x) = 1/2 − {x} measures how far the fractional part of x sits below the midpoint 1/2; innerSum(α, n) = Σ_{k=0}^{n−1} deviation(α·(k+1)) accumulates these deviations along the orbit αk. These mirror the definitions in the parent Erdős #1002 entry, kept here so the file is self-contained.",
     "mathContext": "$S(\\alpha, n) = \\sum_{k=1}^{n} \\left(\\tfrac12 - \\{\\alpha k\\}\\right)$",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "fractional part",
       "equidistribution",

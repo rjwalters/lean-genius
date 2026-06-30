@@ -51,7 +51,7 @@
     "id": "numeric",
     "proofId": "bernoulli-inequality-oq-01-oq-01",
     "range": { "startLine": 123, "endLine": 134 },
-    "type": "example",
+    "type": "concept",
     "title": "Numeric Witnesses in the New Range",
     "content": "Concrete instances strictly inside the new negative tail, outside the parent's a > −1 domain: 1 + 3·(−3/2) = −7/2 < −1/8 = (1 − 3/2)³, the boundary value 1 + 3·(−2) = −5 < −1 = (1 − 2)³, and the n = 2 boundary 1 + 2·(−2) = −3 < 1 = (1 − 2)². Each is discharged by one_add_mul_lt_pow_full with norm_num side goals, demonstrating the inequality holds all the way to a = −2.",
     "mathContext": "Witnesses at $a=-3/2$ and the endpoint $a=-2$, both outside $a>-1$.",

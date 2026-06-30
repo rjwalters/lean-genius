@@ -52,7 +52,7 @@
       "startLine": 47,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Proof Technique: Translate to A, Expand, Cancel",
     "content": "The proof is a clean translate-and-expand. First `abel` rewrites the three composite points as differences from the single vector x = P−A: P−(A+u+v) = (P−A)−(u+v), P−(A+u) = (P−A)−u, P−(A+v) = (P−A)−v. Then each squared norm is expanded by `norm_sub_sq_real` and ‖u+v‖² by `norm_add_sq_real`, and ⟪P−A, u+v⟫ is split by `inner_add_right`. Because every inner product emerges in the canonical orientation ⟪x,y⟫ (no symmetry juggling needed), `ring` finishes: the ‖x‖², ⟪x,u⟫, ⟪x,v⟫, ‖u‖² and ‖v‖² contributions all cancel in pairs, leaving exactly 2⟪u,v⟫.",
     "mathContext": "With x = P − A: ‖x‖² + ‖x−u−v‖² − ‖x−u‖² − ‖x−v‖². The cross terms −2⟪x,u+v⟫ and +2⟪x,u⟫+2⟪x,v⟫ cancel; ‖u+v‖² = ‖u‖²+2⟪u,v⟫+‖v‖² leaves the +‖u‖²,+‖v‖² to cancel against −‖u‖²,−‖v‖², yielding 2⟪u,v⟫.",

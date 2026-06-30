@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 59
     },
-    "type": "context",
+    "type": "concept",
     "title": "From the Wilson Trichotomy to a Primality Certificate and Kempner's Bound",
     "content": "The docstring sets up the three threads this file weaves together. The parent entry classified the classical Wilson remainder (n-1)! mod n; here that classification is (1) sharpened — the composite divisibility n ∣ (n-1)! is shown to already hold at (n-2)! — and (2) repackaged as two decidable, ZMod-free primality tests and as the Kempner–Smarandache threshold S(n) < n. The n = 4 = 2² exception recurs in every result: it is the single composite modulus where the two factors of the minimal-factor split first fail to fit below n-2, so it must be carved out by hand (kernel `decide`, never `native_decide`, keeping the file axiom-free).",
     "mathContext": "$(n-2)!\\bmod n = \\begin{cases}1 & n\\text{ prime}\\\\ 2 & n=4\\\\ 0 & n\\text{ composite},\\,n\\ne4\\end{cases}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Wilson's theorem",
       "Kempner–Smarandache function S(n)",
@@ -29,7 +29,7 @@
       "startLine": 68,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Divisibility Engine: Two Distinct Factors Multiply into m!",
     "content": "mul_dvd_factorial is the reusable workhorse inherited from the parent: if 0 < a < b ≤ m then a·b ∣ m!. The proof is short and structural — write b! = b·(b-1)!, observe a ∣ (b-1)! because a ≤ b-1 (Nat.dvd_factorial), so a·b ∣ b!, and finally b! ∣ m! by factorial monotonicity since b ≤ m. The strict inequality a < b is what guarantees a and b are *distinct* contributors to the product m!, which is exactly what makes a·b (not just max(a,b)) divide m!.",
     "mathContext": "$0 < a < b \\le m \\;\\Longrightarrow\\; a\\cdot b \\mid m! \\qquad(\\text{since } a\\mid(b-1)!,\\; a\\cdot b\\mid b\\cdot(b-1)!=b!\\mid m!)$",
@@ -122,7 +122,7 @@
       "startLine": 166,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Re-deriving the Classical Wilson Residue (n-1)! ≡ n-1",
     "content": "The parent's prime branch — (n-1)! % n = n-1 for prime n — is recovered directly from ZMod.wilsons_lemma. Casting (n-1 : ℕ) to -1 in ZMod n, the lemma's (n-1)! = -1 becomes the congruence (n-1)! ≡ n-1 [MOD n], which Nat.mod_eq_of_lt converts to the remainder statement since n-1 < n. This is the residue n-1 ≡ -1 in its natural-number guise, kept alongside the companion residue so both Wilson factorials are documented in one place.",
     "mathContext": "$(n-1)! \\equiv -1 \\equiv n-1 \\pmod n,\\quad n-1 < n \\;\\Rightarrow\\; (n-1)!\\bmod n = n-1$",

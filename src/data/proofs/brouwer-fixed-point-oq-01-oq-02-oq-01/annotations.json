@@ -7,7 +7,7 @@
     "title": "Replacing homology with analysis: Milnor's measure-theoretic route",
     "content": "The companion file proves No-Retraction via singular homology with three homology axioms. This file pursues Milnor's 1978 argument, which never mentions homology: a smooth retraction r : B^n → S^{n-1} would map the positive-volume ball onto the measure-zero sphere, while a Jacobian/degree computation forces it to preserve volume — a contradiction. The header lays out exactly which ingredients Mathlib already supports and which single analytic fact remains, then commits to honesty: the file proves the scaffolding and the reduction, not no-retraction itself.",
     "mathContext": "A retraction $r : B^n \\to S^{n-1}$ would give $\\operatorname{vol}(r(B^n)) = \\operatorname{vol}(S^{n-1}) = 0$ yet (smoothly) $\\operatorname{vol}(r(B^n)) = \\operatorname{vol}(B^n) > 0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["No-Retraction Theorem", "Brouwer fixed-point theorem", "singular homology vs measure theory", "Milnor analytic proof"],
     "prerequisites": ["Lebesgue measure", "retractions", "basic algebraic topology vocabulary"]
   },
@@ -27,11 +27,11 @@
     "id": "ann-nontrivial",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-01",
     "range": { "startLine": 120, "endLine": 125 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Nontriviality from positive finrank",
     "content": "Measure.addHaar_sphere requires the ambient space to be Nontrivial. For n ≥ 1 this follows from finrank ℝ (EuclideanSpace ℝ (Fin n)) = n > 0 via Module.nontrivial_of_finrank_pos and finrank_euclideanSpace_fin — a clean way to discharge the typeclass without hand-constructing distinct points.",
     "mathContext": "$\\operatorname{finrank}_{\\mathbb{R}} \\mathbb{R}^n = n > 0 \\Rightarrow \\mathbb{R}^n$ is nontrivial (it contains $0 \\ne e_0$).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["finrank", "Nontrivial typeclass", "typeclass inference", "EuclideanSpace dimension"],
     "prerequisites": ["finite-dimensional vector spaces", "Lean typeclass resolution"]
   },

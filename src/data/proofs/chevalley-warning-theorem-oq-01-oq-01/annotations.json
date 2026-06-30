@@ -7,7 +7,7 @@
     "title": "Structural Consequences of p ∣ #solutions",
     "content": "The docstring frames this as a follow-up to the parent divisibility entry, extracting the structural facts the bare congruence p ∣ #solutions implies but that Mathlib never packages. As a constraint on a nonnegative count, divisibility by p means the count lives in {0, p, 2p, …}, so the first nonzero value is already p. From that single observation flow four results: the characteristic lower bound (count is 0 or ≥ p), the no-unique-solution law (count ≠ 1), the existence lower bound (one zero ⇒ at least p), and the second-solution theorem (any known zero forces a distinct one). The parent's origin corollary becomes the x₀ = 0 instance. The entry is careful to flag that this 0-or-≥-p bound is the elementary one, far weaker than Warning's second theorem (0 or ≥ qⁿ⁻ᵈ), which it does NOT claim.",
     "mathContext": "$p \\mid \\#S \\Rightarrow \\#S \\in \\{0, p, 2p, \\dots\\}$, so the first nonzero count is $p$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Chevalley–Warning divisibility", "Warning's second theorem", "finite fields", "solution counting"],
     "prerequisites": ["divisibility", "finite fields"]
   },
@@ -51,7 +51,7 @@
     "id": "ann-cw2-recover-parent",
     "proofId": "chevalley-warning-theorem-oq-01-oq-01",
     "range": { "startLine": 171, "endLine": 182 },
-    "type": "context",
+    "type": "concept",
     "title": "Recovering the Parent's Origin Corollary",
     "content": "nontrivial_of_origin is exists_second_common_zero applied at x₀ = 0: if every f i vanishes at the origin, a distinct (hence nonzero) common zero exists — exactly the parent's chevalley_warning_nontrivial. This makes precise that the parent corollary is a one-line specialization of the general second-solution theorem, with the origin merely the most common choice of the witnessing solution.",
     "mathContext": "$x_0 = 0$: origin-vanishing system $\\Rightarrow \\exists\\,x \\ne 0$ common zero (the parent corollary).",

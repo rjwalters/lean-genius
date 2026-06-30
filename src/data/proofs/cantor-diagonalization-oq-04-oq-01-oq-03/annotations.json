@@ -7,7 +7,7 @@
     "title": "Which setoid axiom does Lawvere's diagonal actually use?",
     "content": "The parent (`cantor-diagonalization-oq-04-oq-01`) generalized Lawvere's fixed-point theorem from strict Type equality to a `Setoid` equivalence relation, calling this the step toward a CCC/topos version where equality becomes coherence. This file asks the sharp follow-up: of the three setoid axioms — reflexivity, symmetry, transitivity — which does the diagonal argument *consume*? The answer is **none**. Stated in the retraction's own orientation `r p (f p)`, Lawvere's theorem holds for an arbitrary binary relation with no axioms whatsoever; symmetry is needed only to flip the conclusion to the conventional `r (f p) p`.",
     "mathContext": "Lawvere (1969) is the categorical heart of every diagonal argument. Pinning the exact hypotheses shows the theorem is an absolute combinatorial principle about self-applicative codings, independent of the equality discipline. This widens its reach to tolerance relations (approximate equality) and directed orders, and clarifies that a future CartesianClosed proof needs only a coherence relation respected by evaluation, not an equivalence.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Lawvere fixed-point theorem", "diagonal argument", "setoid axioms (refl/symm/trans)", "cartesian closed category / topos", "coherence vs equality"],
     "prerequisites": ["Lawvere's fixed-point theorem", "equivalence relations and setoids", "the categorical reading of diagonal arguments"]
   },

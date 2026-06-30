@@ -51,7 +51,7 @@
       "startLine": 40,
       "endLine": 50
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "Main Theorem: Division-Free Identity by Induction",
     "content": "sq_geom_sum proves (1−r)³·Σ_{k<n} k²·rᵏ = num r n. The zero case is closed by simp (empty sum = 0, and num r 0 = 0). The successor case rewrites Finset.sum_range_succ to peel the top term m²·rᵐ, distributes with mul_add, applies the inductive hypothesis, unfolds num at both m and m+1, and uses pow_succ for rᵐ⁺¹ = rᵐ·r; after push_cast the goal is a true polynomial identity in r and the atom rᵐ, closed by ring. No field arithmetic is ever invoked.",
     "mathContext": "The step identity is $\\mathrm{num}(r,m) + (1-r)^3 m^2 r^m = \\mathrm{num}(r,m+1)$. Treating $r^m$ as an opaque atom and substituting $r^{m+1}=r^m\\cdot r$ makes both sides equal polynomials, so `ring` suffices.",
@@ -96,11 +96,11 @@
       "startLine": 61,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Sanity Checks Against Direct Evaluation",
     "content": "Two `example` lemmas (lines 61-65) pin the formula to the concrete case r = 2, n = 4, where Σ_{k<4} k²·2ᵏ = 0 + 2 + 16 + 72 = 90. The first evaluates the sum directly with Finset.sum_range_succ + norm_num; the second checks the division-free identity by `simpa using sq_geom_sum 2 4`, confirming num 2 4 = (1−2)³·90 = −90. Such checks guard against sign errors or off-by-one slips in the numerator polynomial — cheap, machine-verified regression tests embedded in the source.",
     "mathContext": "$\\sum_{k<4} k^2 2^k = 90$ and $(1-2)^3\\cdot90 = -90 = \\mathrm{num}(2,4)$, a direct numerical confirmation of the symbolic identity.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.sum_range_succ",
       "norm_num evaluation",

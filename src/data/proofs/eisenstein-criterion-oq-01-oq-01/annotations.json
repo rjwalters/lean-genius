@@ -10,7 +10,7 @@
     "title": "Module Header: Φ_p Irreducible via Eisenstein at X + 1",
     "content": "Realizes the classical Gauss/Eisenstein proof that the $p$-th cyclotomic polynomial $\\Phi_p = 1 + X + \\cdots + X^{p-1}$ is irreducible. The plan, stated in the docstring: from the geometric-sum identity $\\Phi_p\\cdot(X-1) = X^p-1$, the substitution $X \\mapsto X+1$ yields $\\Phi_p(X+1)\\cdot X = (X+1)^p-1$, so the coefficients of $\\Phi_p(X+1)$ are the binomials $\\binom{p}{j+1}$ — an Eisenstein polynomial at $p$. Imports `Mathlib` and the parent `EisensteinCriterionOQ01` (whose `irreducible_of_eisenstein` is the engine).",
     "mathContext": "$\\Phi_p(X+1) = \\sum_{j=0}^{p-1} \\binom{p}{j+1} X^j;\\quad \\binom{p}{p}=1,\\ p \\mid \\binom{p}{k}\\ (0<k<p),\\ \\binom{p}{1}=p.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["cyclotomic polynomial", "Eisenstein's criterion", "irreducibility", "open question"],
     "prerequisites": ["polynomial rings", "binomial coefficients", "prime divisibility"]
   },

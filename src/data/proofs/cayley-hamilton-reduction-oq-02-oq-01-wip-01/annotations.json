@@ -31,7 +31,7 @@
     "title": "Blockwise Annihilation by the Product p·q",
     "content": "The block-diagonal companion form is killed by the product of its block polynomials. Using `aeval_fromBlocks_diag` and the ring-homomorphism property of `aeval`, `(p·q)(C(p) ⊕ C(q))` splits as `(p·q)(C(p)) ⊕ (p·q)(C(q))`; since `p` kills `C(p)` and `q` kills `C(q)`, both blocks vanish.",
     "mathContext": "$(p\\cdot q)(C(p) \\oplus C(q)) = \\big(p(C(p))\\,q(C(p))\\big) \\oplus \\big(p(C(q))\\,q(C(q))\\big) = (0\\cdot\\ast) \\oplus (\\ast\\cdot 0) = 0$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Cayley-Hamilton theorem", "annihilating polynomial", "ring homomorphism"],
     "prerequisites": ["aeval_companionMatrix", "aeval_fromBlocks_diag"]
   },

@@ -15,7 +15,7 @@
     "id": "erdos835-inc01-ann-baseset-card",
     "proofId": "erdos-835-incomplete-01",
     "range": { "startLine": 73, "endLine": 76 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Base-Set Count |{1,…,n}| = n",
     "content": "baseSet_card proves the elementary count |baseSet n| = n that the scaffold omitted. Since baseSet n is the range {0,…,n−1} mapped by the injective (· + 1), its cardinality is preserved (Finset.card_map) and equals card_range n = n. Trivial as it is, this count is load-bearing: it is exactly what lets the surjectivity proof exhibit a (k+1)-subset inside the 2k-element ground set when k+1 ≤ 2k.",
     "mathContext": "$|\\mathrm{baseSet}(n)| = |\\mathrm{range}(n)| = n$ (card preserved under the injective $\\cdot+1$).",
@@ -51,11 +51,11 @@
     "id": "erdos835-inc01-ann-significance",
     "proofId": "erdos-835-incomplete-01",
     "range": { "startLine": 108, "endLine": 125 },
-    "type": "context",
+    "type": "concept",
     "title": "Why surjectivity is the 'lower side' of the equivalence",
     "content": "The closing docstring frames the result against the full problem. The surjectivity consequence pins the lower side of the equivalence property ⇔ χ(J(2k,k)) = k+1: a valid colouring cannot waste any of the k+1 colours, since a single (k+1)-window already forces all of them. This is why the obstruction (χ > k+1 for k ≥ 3) is genuinely about packing all colours rainbow-style on every window, not mere properness. The open combinatorial heart — the existence (k=2) and non-existence (3 ≤ k ≤ 8) of such colourings — is exactly what the scaffold's two sorries stand in for.",
     "mathContext": "$\\text{property} \\implies \\text{all } k+1 \\text{ colours used}$; obstruction is rainbow-packing, not properness.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["chromatic number equivalence", "rainbow colouring", "open problem framing"],
     "prerequisites": ["graph colouring", "chromatic number"]
   }

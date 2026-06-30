@@ -39,7 +39,7 @@
     "id": "subtraction-doubling",
     "proofId": "arsinh-log-formula-oq-01",
     "range": { "startLine": 73, "endLine": 88 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Subtraction and Doubling Corollaries",
     "content": "arsinh_sub derives the subtraction law arsinh x − arsinh y = arsinh(x·√(1+y²) − y·√(1+x²)) from the addition law and oddness (sub_eq_add_neg + arsinh_neg, with neg_sq absorbing the (−y)² in the surd). two_arsinh is the diagonal doubling law 2·arsinh x = arsinh(2x·√(1+x²)) from arsinh_add with y = x. Together they complete the elementary calculus of arsinh, mirroring the standard add/sub/double identities of the circular and inverse-circular functions.",
     "mathContext": "$\\operatorname{arsinh} x - \\operatorname{arsinh} y = \\operatorname{arsinh}(x\\sqrt{1+y^2} - y\\sqrt{1+x^2})$; $2\\operatorname{arsinh} x = \\operatorname{arsinh}(2x\\sqrt{1+x^2})$.",
@@ -51,11 +51,11 @@
     "id": "concrete-values",
     "proofId": "arsinh-log-formula-oq-01",
     "range": { "startLine": 90, "endLine": 106 },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Closed-Form Values",
     "content": "arsinh_three_quarters (arsinh(3/4) = log 2) and arsinh_four_thirds (arsinh(4/3) = log 3) exhibit the closed form on rational arguments coming from Pythagorean triples: √(1+(3/4)²) = 5/4 so 3/4 + 5/4 = 2, and √(1+(4/3)²) = 5/3 so 4/3 + 5/3 = 3. Each reduces via arsinh_eq_log + Real.sqrt_sq + norm_num to a clean logarithm — concrete evidence that the logarithmic form turns special-function values into elementary arithmetic.",
     "mathContext": "$\\operatorname{arsinh}(3/4) = \\log 2$, $\\operatorname{arsinh}(4/3) = \\log 3$, from the $(3,4,5)$ Pythagorean triple.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Pythagorean triples", "logarithmic values", "Real.sqrt_sq", "norm_num"],
     "prerequisites": ["the closed logarithmic form"]
   }

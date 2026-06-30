@@ -39,7 +39,7 @@
     "id": "ann-multiplicative-survivor",
     "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
     "range": { "startLine": 85, "endLine": 118 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The unique multiplicative survivor, forced factor-by-factor",
     "content": "`perm_prod_nontrivial_solvable_iff` faces the **nonlinear** cap $|\\alpha|\\cdot|\\beta|\\le 4$, which `omega` cannot read directly. The cap is forced one factor at a time: if either factor reached $3$ then `Nat.mul_le_mul` gives $3\\cdot 2 = 6 > 4$ (resp. $2\\cdot 3$), contradicting the bound, so each factor is $\\le 2$; combined with $\\ge 2$ both equal $2$. The survivor is again $(2,2)$ — the same pair as the additive case, even though the obstruction it dodges sits at $6$, not $5$.",
     "mathContext": "$|\\alpha|,|\\beta|\\ge 2 \\wedge |\\alpha|\\cdot|\\beta|\\le 4 \\iff |\\alpha|=|\\beta|=2$; a factor $\\ge 3$ forces the product $\\ge 6$ via $\\mathrm{Nat.mul\\_le\\_mul}$.",

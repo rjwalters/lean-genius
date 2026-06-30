@@ -7,7 +7,7 @@
     "title": "Why Nat.card Hides the Infinite Content",
     "content": "The docstring motivates the whole file: the parent entry proved the finite converse to Cayley — a subgroup H ≤ Sym(α) = Equiv.Perm α acting freely and transitively on a finite nonempty α is regular of order n = |α| — through the orbit bijection regularEquiv : H ≃ α. Crucially that bijection used no finiteness; only the order statement, phrased with Nat.card, became the vacuous 0 = 0 for infinite α, because Nat.card returns 0 on infinite types. The correct invariant in the infinite regime is the cardinal #H = #α (Cardinal.mk), which is non-vacuous and still specialises back to the finite count. The file therefore adds no new mathematics: it transports the parent's existing equivalence across the right cardinality functor. It re-imports the parent and reuses its ActsTransitively / ActsFreely / IsRegular predicates and regularEquiv unchanged.",
     "mathContext": "Parent: $H \\simeq \\alpha$ with no finiteness, but $\\mathrm{Nat.card}\\,H = \\mathrm{Nat.card}\\,\\alpha$ is $0 = 0$ for infinite $\\alpha$. Fix: state $\\#H = \\#\\alpha$ as cardinals.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["converse to Cayley", "regular representation", "Nat.card vs Cardinal.mk", "free transitive action", "cardinality"],
     "prerequisites": ["group actions", "cardinal arithmetic"]
   },

@@ -15,7 +15,7 @@
     "id": "ann-simplicial",
     "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
     "range": { "startLine": 41, "endLine": 66 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Simplicial numbers and the hockey-stick identity",
     "content": "The combinatorial scaffolding. `simplicial k n = C(n+k, k)` are the simplicial (figurate) numbers — the coefficients of the negative-binomial series. `simplicial_succ` is their Pascal recurrence `S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1)`, reduced to `Nat.choose_succ_succ` after aligning the index arithmetic. `hockey_stick` proves `∑_{i≤n} S_k(i) = S_{k+1}(n)` — the hockey-stick identity — by a one-line induction (`sum_range_succ` + the Pascal recurrence). This identity is exactly what makes the Cauchy product of `geom` with `negBin k` collapse to `negBin (k+1)`, so it is the engine behind the coefficient computation in Part I.",
     "mathContext": "$\\sum_{i=0}^{n} \\binom{i+k}{k} = \\binom{n+k+1}{k+1}$ (hockey stick); Pascal: $\\binom{n+k+2}{k+1} = \\binom{n+k+1}{k+1} + \\binom{n+k+1}{k}$.",
@@ -63,11 +63,11 @@
     "id": "ann-concrete",
     "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
     "range": { "startLine": 186, "endLine": 210 },
-    "type": "context",
+    "type": "concept",
     "title": "The Fin (r+1) packaging and a concrete three-factor check",
     "content": "`multivariate_vandermonde_fin` specializes to the full index set `Fin (r+1)`, which is automatically nonempty (`univ_nonempty`): `r = 1` is the two-factor identity, `r = 2` the genuinely new three-factor convolution. `threefold_const_zero` instantiates all exponents to `0`, collapsing the three-factor sum to `C(n+2, 2)` — the number of ways to write `n = i+j+k` in nonnegative integers (stars and bars). `check_threefold_count` verifies the concrete instance `n = 2` gives `C(4,2) = 6`, discharged by kernel `decide` (not `native_decide`, so the entry stays fully 0-axiom). These specializations confirm the abstract identity reproduces the expected concrete counts.",
     "mathContext": "$\\sum_{i+j+k=n} 1 = \\binom{n+2}{2}$; for $n=2$, $\\binom{4}{2}=6$ (compositions of 2 into 3 nonnegative parts).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["stars and bars", "compositions", "Fin (r+1)", "kernel decide", "concrete verification"],
     "prerequisites": ["combinatorial counting", "stars and bars"]
   }

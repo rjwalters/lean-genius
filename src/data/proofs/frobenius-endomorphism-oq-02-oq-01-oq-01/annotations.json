@@ -6,7 +6,7 @@
       "startLine": 61,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The d-fold Frobenius is the p^d-power map (frob_pow_apply)",
     "content": "frob_pow_apply is the mechanical bridge of the entry: the abstract Galois power frob^d, an opaque element of the automorphism group, is the honest map x ↦ x^(p^d). The proof is an induction on d generalizing x: the base case is the identity automorphism (simp); the step rewrites frob^(d+1) = frob^d · frob (pow_succ), evaluates the composite with AlgEquiv.mul_apply and the parent's frob_apply to (frob^d)(x^p), applies the inductive hypothesis at x^p to get (x^p)^(p^d), and finishes the exponent arithmetic (x^p)^(p^d) = x^(p·p^d) = x^(p^(d+1)) with pow_mul and pow_succ'. Generalizing x is essential — the hypothesis must be reapplied at x^p, not the original x. With this identity in hand, every later statement about the abstract fixed field of ⟨frob^d⟩ becomes a statement about the concrete solution set of x^(p^d) = x.",
     "mathContext": "$(\\mathrm{frob}^d)\\,x = x^{p^d}$, by induction with $\\mathrm{frob}^{d+1} = \\mathrm{frob}^d\\cdot\\mathrm{frob}$ and $(x^p)^{p^d} = x^{p^{d+1}}$.",

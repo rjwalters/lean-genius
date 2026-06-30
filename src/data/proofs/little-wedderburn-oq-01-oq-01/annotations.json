@@ -39,11 +39,11 @@
     "id": "concrete-corollaries",
     "proofId": "little-wedderburn-oq-01-oq-01",
     "range": { "startLine": 102, "endLine": 110 },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Corollaries: Prime Fields",
     "content": "nonempty_ringEquiv_zmod is the n = 1 specialization: a finite field of prime order p is ring-isomorphic to ZMod p, the standard model of the prime field 𝔽_p (proved via ringEquivOfCardEq with ZMod.card). zmod_two_not_ringEquiv_zmod_three reads a concrete non-isomorphism straight off the classification iff: ZMod 2 and ZMod 3 are not isomorphic because 2 ≠ 3, settled by decide after rewriting both cardinalities. These ground the abstract classification in the most familiar finite fields.",
     "mathContext": "$|K| = p \\Rightarrow K \\cong \\mathbb{Z}/p\\mathbb{Z}$; and $\\mathbb{Z}/2\\mathbb{Z} \\not\\cong \\mathbb{Z}/3\\mathbb{Z}$ since $2 \\neq 3$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["ZMod p", "prime field", "𝔽_p", "non-isomorphism"],
     "prerequisites": ["modular arithmetic", "finite fields"]
   }

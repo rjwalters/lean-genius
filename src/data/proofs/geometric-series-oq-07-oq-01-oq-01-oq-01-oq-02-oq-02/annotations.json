@@ -3,11 +3,11 @@
     "id": "eul-palin-context",
     "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-02",
     "range": { "startLine": 4, "endLine": 47 },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: palindromy as a finite-difference phenomenon",
     "content": "The docstring situates the entry as the analytic settlement of the parent's open question oq-02. The parent (geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02) established the explicit inclusion–exclusion formula ⟨n,k⟩ = eulerianExplicit n k = ∑_{i=0}^{k}(-1)ⁱ·C(n+1,i)·(k+1-i)ⁿ; this entry derives the palindromic symmetry ⟨n,k⟩ = ⟨n,n-1-k⟩ directly from that finite sum by the reindexing i ↦ n+1-i, rather than by coefficient extraction on the generating polynomial (the route taken by sibling oq-05). The two opens (Finset, and the parent namespaces) bring eulerianExplicit, eulerian, and eulerian_eq_explicit into scope. The single conceptual key: the explicit formula is a truncated finite difference, and extending it to full length exposes a reflection symmetry that the truncation hides.",
     "mathContext": "The Eulerian numbers satisfy $\\langle n,k\\rangle = \\langle n, n-1-k\\rangle$, equivalently the generating-polynomial functional equation $A_n(t) = t^{n-1}A_n(1/t)$. Here this is obtained from the closed form $\\text{eulerianExplicit}\\,n\\,k = \\sum_{i=0}^{k}(-1)^i\\binom{n+1}{i}(k+1-i)^n$ by an index reflection on the finite sum.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Eulerian numbers",
       "descent statistic",

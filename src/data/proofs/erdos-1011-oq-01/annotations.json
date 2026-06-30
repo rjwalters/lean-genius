@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 49
     },
-    "type": "context",
+    "type": "concept",
     "title": "Discharging the Parent's Turán Axiom for the Triangle Case",
     "content": "This file is an open-question descendant of Erdos1011Problem.lean, which studies f_r(n) — the minimal edge count forcing a triangle in an n-vertex graph of chromatic number ≥ r — and axiomatizes the known small cases, including the triangle base case as `axiom turan_theorem`. That base case is Mantel's theorem (1907), the r = 2 instance of Turán. Because Mathlib 4.26.0 now contains the full Turán machinery (Combinatorics.SimpleGraph.Extremal.Turan), this file converts that one axiom into a 0-axiom, 0-sorry theorem, derived from CliqueFree.card_edgeFinset_le and card_edgeFinset_turanGraph. The docstring is honest about scope: the hard work (Turán itself) lives in Mathlib; the contribution is to connect it to the exact triangle statement the Erdős #1011 development needs — specializing to r = 2, simplifying the modular correction terms, and exhibiting the matching extremal graph.",
     "mathContext": "Parent axiom: the extremal edge count for triangle-free graphs. Here proved as the $r=2$ Turán case: $K_3$-free $\\Rightarrow \\#E \\le \\lfloor n^2/4 \\rfloor$, sharp via the Turán graph $\\mathrm{turanGraph}\\,n\\,2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Turán's theorem",
       "Mantel's theorem",
@@ -54,7 +54,7 @@
       "startLine": 62,
       "endLine": 71
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Simplifying the Integer Correction Terms",
     "content": "Mathlib states the Turán bound with exact integer-arithmetic correction terms: `#edges ≤ (n² − (n%r)²)·(r−1)/(2r) + (n%r).choose 2`. At `r = 2` this is `(n² − (n%2)²)/4 + (n%2).choose 2`. Two clean-ups recover the textbook `⌊n²/4⌋`: (1) the binomial term vanishes — `n % 2 ≤ 1 < 2`, so `Nat.choose_eq_zero_of_lt` gives `(n%2).choose 2 = 0`; (2) the subtraction only shrinks the numerator, so `(n² − (n%2)²)/4 ≤ n²/4` by `Nat.div_le_div_right` over `Nat.sub_le`. The `omega` calls discharge the modular side conditions (`n % 2 ≤ 1`).",
     "mathContext": "For $n$ even, $n \\bmod 2 = 0$ and the bound is exactly $n^2/4$; for $n$ odd, $n \\bmod 2 = 1$ and $(n^2 - 1)/4 = \\lfloor n^2/4 \\rfloor$. The floor is captured by Lean's `Nat` division.",
@@ -77,7 +77,7 @@
       "startLine": 72,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Cleared-Denominator Form 4·#edges ≤ n²",
     "content": "four_mul_card_edgeFinset_le restates Mantel's bound without the floor division: 4·#edges ≤ n². It follows from the floored bound #edges ≤ n²/4 by multiplying through by 4 (Nat.mul_le_mul_left) and using Nat.mul_div_le (4·(n²/4) ≤ n²) to absorb the truncation. This integer-clean form is the shape downstream arithmetic in the Erdős #1011 development prefers — it avoids reasoning about ⌊·⌋ and lets later steps compare edge counts by a single multiplication.",
     "mathContext": "$\\#E \\le \\lfloor n^2/4 \\rfloor \\Rightarrow 4\\,\\#E \\le 4\\lfloor n^2/4 \\rfloor \\le n^2$; the second inequality is $\\mathtt{Nat.mul\\_div\\_le}$, exact when $4 \\mid n^2$ (i.e. $n$ even).",

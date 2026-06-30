@@ -10,7 +10,7 @@
     "title": "Module Header: General Eisenstein Polynomials over ℤ and ℚ",
     "content": "Answers the third open question of `eisenstein-criterion-oq-01`. The parent restated the abstract criterion and handled the single family $X^n - p$ over $\\mathbb{Z}$. This file does three new things: (1) a **concrete divisibility-form** criterion over $\\mathbb{Z}$ — monic $f$, $p \\mid f_k$ for all $k$ below the degree, $p^2 \\nmid f_0$ $\\Rightarrow$ irreducible; (2) the **general family** $X^n + p\\,g$ for arbitrary $g$ with $\\deg g < n$ and $p \\nmid g(0)$ — the genuine 'arbitrary lower coefficients' case; (3) **irreducibility over $\\mathbb{Q}$** via Gauss's lemma, the form in which Eisenstein is actually used.",
     "mathContext": "$f = X^n + \\sum_{k<n} a_k X^k,\\quad p \\mid a_k\\ (k<n),\\ p^2 \\nmid a_0 \\;\\Rightarrow\\; f \\text{ irreducible}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Eisenstein's criterion", "irreducibility", "Gauss's lemma", "open question"],
     "prerequisites": ["polynomial rings", "prime divisibility"]
   },
@@ -77,7 +77,7 @@
   {
     "id": "eisenstein-criterion-oq-01-oq-03-instances",
     "proofId": "eisenstein-criterion-oq-01-oq-03",
-    "type": "example",
+    "type": "concept",
     "range": {
       "startLine": 177,
       "endLine": 214

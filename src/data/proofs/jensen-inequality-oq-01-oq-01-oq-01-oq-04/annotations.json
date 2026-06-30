@@ -3,11 +3,11 @@
     "id": "powermean-oq04-header",
     "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-04",
     "range": { "startLine": 3, "endLine": 49 },
-    "type": "context",
+    "type": "concept",
     "title": "The power-mean inequality and the Jensen substitution",
     "content": "The header states the classical power-mean inequality, a gap in Mathlib: the weighted power mean M_p(x) = (∑ wᵢxᵢ^p)^{1/p} is monotone non-decreasing in the exponent p > 0, so 0 < p ≤ q ⟹ M_p ≤ M_q. This single statement subsumes the comparison of the arithmetic mean M_1 with every higher power mean — in particular QM–AM (root-mean-square). It is the canonical consequence of Jensen's inequality for the convex map t ↦ t^r (r ≥ 1). Mathlib provides only the single-exponent Jensen building block `Real.rpow_arith_mean_le_arith_mean_rpow`; this file supplies the closed-form mean and its monotonicity. The strategy: to compare M_p, M_q, set r = q/p ≥ 1 and apply Jensen to the powered data xᵢ^p.",
     "mathContext": "$0 < p \\le q \\implies \\left(\\sum_i w_i x_i^p\\right)^{1/p} \\le \\left(\\sum_i w_i x_i^q\\right)^{1/q}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["power-mean inequality", "Jensen's inequality", "convexity of t↦t^r", "QM–AM", "mean hierarchy"],
     "prerequisites": ["weighted means", "convexity", "Jensen's inequality"]
   },

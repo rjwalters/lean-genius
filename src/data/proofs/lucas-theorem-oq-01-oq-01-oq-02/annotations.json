@@ -145,7 +145,7 @@
     "id": "lucas-oq010102-ann-examples",
     "proofId": "lucas-theorem-oq-01-oq-01-oq-02",
     "range": { "startLine": 195, "endLine": 211 },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Examples at p = 2 (kernel decide, no native_decide)",
     "content": "Four concrete instantiations ground the abstract chain, all discharged by kernel `decide` so the file stays axiom-free (no Lean.ofReduceBool from native_decide). 2 ∣ C(4,1) = 4: with 4 = 100₂ and 1 = 001₂, the digit 1 > 0 at position 0 forces divisibility. 2 ∤ C(4,0) = 1: column 0 is always digit-dominated, so it always survives. ν₂(C(6,3)) = 2: with 3 = 11₂, adding 3 + 3 in binary carries at both bits, so the 2-adic valuation is 2 (C(6,3) = 20 = 2²·5). |fineRow 2 5| = 4: row 5 = 101₂ has surviving columns {0,1,4,5}, matching Fine's digit product (1+1)(0+1)(1+1) = 4.",
     "mathContext": "$2 \\mid \\tbinom{4}{1},\\quad 2 \\nmid \\tbinom{4}{0},\\quad \\nu_2\\!\\left(\\tbinom{6}{3}\\right)=2,\\quad |\\mathrm{fineRow}(2,5)| = 4.$",

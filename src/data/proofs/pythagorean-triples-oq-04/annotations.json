@@ -6,7 +6,7 @@
       "startLine": 37,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Elementary Mod-4 Obstruction",
     "content": "sq_mod_four shows a perfect square is 0 or 1 modulo 4: rewriting n² % 4 as (n % 4)² % 4 via Nat.pow_mod reduces the claim to the four residues, dispatched by interval_cases. From this, sum_two_squares_mod_four_ne_three follows by casing on the two possible square residues and closing with omega — a sum of two squares lands in {0,1,2} mod 4, never 3. This is the 'only if' half of Fermat's theorem and is entirely elementary, requiring no Gaussian integers.",
     "mathContext": "$n^2 \\bmod 4 \\in \\{0,1\\}$ (via $n^2 \\equiv (n\\bmod4)^2$ and interval_cases), hence $a^2+b^2 \\bmod 4 \\in \\{0,1,2\\}$ — never $3$. The elementary \"only if\" half of Fermat.",
@@ -75,7 +75,7 @@
       "startLine": 103,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Brahmagupta–Fibonacci Multiplicativity",
     "content": "mul_sum_two_squares packages Nat.sq_add_sq_mul: the product of two sums of two squares is again a sum of two squares, via (x²+y²)(u²+v²) = (xu−yv)² + (xv+yu)². This multiplicativity, discovered by Brahmagupta and rediscovered by Fibonacci, reflects the norm map on ℤ[i] being multiplicative. Together with the prime case it characterizes all sums of two squares through prime factorization.",
     "mathContext": "$(x^2+y^2)(u^2+v^2) = (xu-yv)^2 + (xv+yu)^2$ — sums of two squares closed under product; the multiplicativity of the norm on $\\mathbb{Z}[i]$.",
@@ -102,7 +102,7 @@
     "title": "Summary and the Full Characterization",
     "content": "The closing table situates the prime biconditional within the complete characterization of sums of two squares (Mathlib's Nat.eq_sq_add_sq_iff): a positive integer is a sum of two squares iff every prime ≡ 3 (mod 4) in its factorization occurs to an even power. The prime case proved here plus Brahmagupta–Fibonacci multiplicativity are exactly the ingredients that assemble into that global statement.",
     "mathContext": "Full characterization (Nat.eq_sq_add_sq_iff): $n$ is a sum of two squares $\\iff$ every prime $\\equiv 3 \\pmod 4$ divides $n$ to an even power — assembled from the prime case + Brahmagupta–Fibonacci.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.eq_sq_add_sq_iff",
       "prime factorization",

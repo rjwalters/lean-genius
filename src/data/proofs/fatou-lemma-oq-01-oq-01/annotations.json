@@ -27,7 +27,7 @@
     "id": "unit-integral",
     "proofId": "fatou-lemma-oq-01-oq-01",
     "range": { "startLine": 104, "endLine": 117 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Each Step Has Unit Integral",
     "content": "alt_lintegral computes ∫⁻ alt n = 1 for every n. By lintegral_fintype on (Fin 2, count) the integral is alt n 0 · count{0} + alt n 1 · count{1} = alt n 0 + alt n 1, and a parity case split (Nat.even_or_odd) shows exactly one of n, n+1 is even, so exactly one term is 1 and the other 0. This is the conserved quantity: every integral equals 1, so limsupₙ ∫⁻ alt n = 1. The mass is never created or destroyed — it merely oscillates.",
     "mathContext": "$\\int^- \\mathrm{alt}\\,n = \\mathrm{alt}\\,n\\,0 + \\mathrm{alt}\\,n\\,1 = 1$ for all $n$; the integrals form the constant sequence $1$.",

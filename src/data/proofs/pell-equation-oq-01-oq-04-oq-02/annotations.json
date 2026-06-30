@@ -30,7 +30,7 @@
       "startLine": 58,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Parent Norm Homomorphism and the zpow Law",
     "content": "This block restates the parent's multiplicative infrastructure. pellNorm_one (‖1‖ = 1), pellNorm_mul (Brahmagupta's identity: ‖a·b‖ = ‖a‖·‖b‖, proved by linear_combination against √d² = d), pellNorm_mul_inv (‖a‖·‖a⁻¹‖ = 1, using the Pell relation x² − d·y² = 1), pellNorm_ne_zero, and pellNorm_inv together make pellNorm a group homomorphism Solution₁ d → ℝˣ. pellNorm_zpow (‖aⁿ‖ = ‖a‖ⁿ for all n ∈ ℤ, by Int.induction_on) and pellRegulator_zpow (R(aⁿ) = n·R(a), by Real.log_zpow) are the punchline: the regulator is ℤ-linear along the cyclic subgroup ⟨a⟩. Everything downstream consumes only pellRegulator_zpow.",
     "mathContext": "$\\|a b\\| = \\|a\\|\\,\\|b\\|,\\quad \\|a^n\\| = \\|a\\|^n,\\quad R(a^n) = n\\,R(a)$.",

@@ -7,7 +7,7 @@
     "title": "Module Header: The Fixed Field of the Frobenius",
     "content": "The parent showed the Frobenius $x \\mapsto x^p$ is a ring homomorphism and is the identity on $\\mathbb{Z}/p$ (Fermat). This file answers: **which elements of a field $F$ of characteristic $p$ does the Frobenius fix?** The answer is the cleanest possible — the fixed points are *exactly* the prime subfield $\\mathbb{F}_p$:\n$$\\mathrm{frobenius}\\,F\\,p\\,x = x \\iff x \\in (\\bot : \\mathrm{Subfield}\\,F) \\iff \\exists a : \\mathbb{Z}/p,\\ \\iota(a) = x.$$\nGeometrically $x$ is fixed iff it is a root of $X^p - X$; this degree-$p$ polynomial has the $p$ elements of $\\mathbb{F}_p$ (Fermat) as $p$ distinct roots, so they exhaust the roots. On a **perfect** field (every finite field) the Frobenius is bijective — an automorphism.",
     "mathContext": "$\\mathrm{frobenius}\\,F\\,p\\,x = x \\iff x\\in(\\bot:\\mathrm{Subfield}\\,F) = \\mathbb{F}_p$; fixed points are the roots of $X^p - X$, exhausted by the $p$ Fermat-fixed elements.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["fixed field", "prime subfield", "X^p − X", "perfect field", "Galois group of finite fields"],
     "prerequisites": ["Frobenius endomorphism (parent)", "subfields", "characteristic p"]
   },

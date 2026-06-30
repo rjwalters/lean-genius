@@ -15,7 +15,7 @@
     "id": "ann-autToAlgHom-injective",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-02",
     "range": { "startLine": 66, "endLine": 71 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Injectivity from the injective inclusion",
     "content": "`autToAlgHom` is injective because post-composition with the injective inclusion `K ↪ L` cannot identify distinct automorphisms: if `K.val ∘ e₁ = K.val ∘ e₂` then `e₁ x` and `e₂ x` have equal images in `L` for every `x`, and since `K ↪ L` is injective they are equal in `K`, so `e₁ = e₂`. The Lean proof is a one-liner: `ext x`, then `DFunLike.congr_fun h x` pushes the function equality down to a pointwise equality which `simp` discharges. This injection is precisely the content the parent entry used to obtain the bound `|Aut_F(K)| ≤ [K:F]_s`.",
     "mathContext": "If $\\iota_K \\circ e_1 = \\iota_K \\circ e_2$ and $\\iota_K$ is injective, then $e_1 = e_2$. Equivalently, the cardinality bound $|\\mathrm{Aut}_F(K)| \\le |\\mathrm{Hom}_F(K,L)|$ follows from $\\mathrm{Nat.card\\_le\\_card\\_of\\_injective}$.",
@@ -75,11 +75,11 @@
     "id": "ann-capstone-example",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-02",
     "range": { "startLine": 131, "endLine": 147 },
-    "type": "context",
+    "type": "concept",
     "title": "Capstone: the clean form over an algebraic closure",
     "content": "The final `example` specialises the ambient field to `L = AlgebraicClosure F`, which is simultaneously normal and algebraically closed over `F`. With these instances in scope, every finite intermediate field `K` satisfies the clean, quotable biconditional `Nat.card (K ≃ₐ[F] K) = Field.finSepDegree F K ↔ Normal F K` — no auxiliary ambient field need be named. This is the form a textbook states: a finite extension is normal exactly when its automorphism group has order equal to its separable degree.",
     "mathContext": "Taking $L = \\overline{F}$: for any finite $K$ with $F \\le K \\le \\overline{F}$, $|\\mathrm{Aut}_F(K)| = [K:F]_s \\iff K/F \\text{ normal}$. This is the canonical sharpness statement decoupled from any choice of ambient normal field.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["algebraic closure", "normal extension", "separable degree", "splitting field"],
     "prerequisites": ["algebraic closure", "instance resolution in Lean"]
   }

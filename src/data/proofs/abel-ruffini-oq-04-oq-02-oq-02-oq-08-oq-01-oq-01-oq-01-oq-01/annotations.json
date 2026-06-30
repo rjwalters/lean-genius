@@ -15,7 +15,7 @@
     "id": "ann-sum-threshold",
     "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
     "range": { "startLine": 63, "endLine": 81 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Rewriting the threshold through a cardinality formula",
     "content": "`perm_sum_solvable_iff` is one `rw`: apply the intrinsic threshold `perm_solvable_iff_card` to $S_{\\alpha\\oplus\\beta}$, then `Fintype.card_sum` evaluates $|\\alpha\\oplus\\beta| = |\\alpha| + |\\beta|$. The result\n$$\\mathrm{IsSolvable}(S_{\\alpha\\oplus\\beta}) \\iff |\\alpha| + |\\beta| \\le 4$$\nis the disjoint-union threshold as an **additive** condition. `perm_prod_solvable_iff` is the same proof with `Fintype.card_prod`, yielding the **multiplicative** condition $|\\alpha|\\cdot|\\beta| \\le 4$. `alternating_sum_solvable_iff` repeats the rewrite against the alternating classification `alternating_solvable_iff_card`, so the *same* additive threshold $|\\alpha|+|\\beta| \\le 4$ governs $A_{\\alpha\\oplus\\beta}$ — the two intrinsic classifications $S_n$ and $A_n$ share the boundary $n \\le 4$, hence share its image under $\\oplus$.",
     "mathContext": "$\\mathrm{IsSolvable}(S_{\\alpha\\oplus\\beta}) \\iff |\\alpha|+|\\beta| \\le 4$, $\\mathrm{IsSolvable}(S_{\\alpha\\times\\beta}) \\iff |\\alpha|\\cdot|\\beta| \\le 4$, and $\\mathrm{IsSolvable}(A_{\\alpha\\oplus\\beta}) \\iff |\\alpha|+|\\beta| \\le 4$.",

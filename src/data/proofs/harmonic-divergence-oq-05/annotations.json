@@ -29,7 +29,7 @@
       "startLine": 56,
       "endLine": 85
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "The Dyadic Block Estimate: Each Block Sums to ≥ 1/2",
     "content": "block_ge_half is the quantitative heart of Oresme's argument. The block running over indices k ∈ Ico(2ⁿ, 2ⁿ⁺¹) has exactly 2ⁿ terms (Nat.card_Ico gives 2ⁿ⁺¹ − 2ⁿ = 2ⁿ). For each such k, since k+1 ≤ 2ⁿ⁺¹ we have 1/(k+1) ≥ 1/2ⁿ⁺¹ (one_div_le_one_div_of_le, antitonicity of reciprocal on the positives). Summing the constant lower bound 1/2ⁿ⁺¹ over the 2ⁿ terms gives 2ⁿ·(1/2ⁿ⁺¹) = 1/2, and Finset.sum_le_sum lifts the termwise bound to the block sum. The calc block then chains the constant sum (= 1/2) below the actual block sum.",
     "mathContext": "$\\sum_{k=2^n}^{2^{n+1}-1} \\frac{1}{k+1} \\ge \\sum_{k=2^n}^{2^{n+1}-1} \\frac{1}{2^{n+1}} = 2^n \\cdot \\frac{1}{2^{n+1}} = \\frac12$. The number of terms is $2^{n+1}-2^n = 2^n$, and every term is at least the smallest one $1/2^{n+1}$.",
@@ -53,7 +53,7 @@
       "startLine": 87,
       "endLine": 99
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "Splitting Off One Block: H_{2ⁿ⁺¹} = H_{2ⁿ} + block",
     "content": "H_two_pow_succ provides the algebraic backbone for the induction: it rewrites the partial sum at 2ⁿ⁺¹ as the partial sum at 2ⁿ plus a single dyadic block. The rewrite uses Finset.sum_range_add_sum_Ico with the hypothesis 2ⁿ ≤ 2ⁿ⁺¹ (Nat.pow_le_pow_right). This decomposition is exactly what lets the induction step in harmonic_two_pow_ge add one block's worth (≥ 1/2) at a time.",
     "mathContext": "$H_{2^{n+1}} = \\underbrace{\\sum_{k \\in \\text{range}(2^n)} \\tfrac{1}{k+1}}_{H_{2^n}} + \\sum_{k \\in \\text{Ico}(2^n,\\,2^{n+1})} \\tfrac{1}{k+1}$, by additivity of sums over a range partitioned at $2^n$.",
@@ -74,7 +74,7 @@
       "startLine": 101,
       "endLine": 116
     },
-    "type": "main_result",
+    "type": "theorem",
     "title": "Oresme's Explicit Lower Bound: H_{2ⁿ} ≥ 1 + n/2",
     "content": "harmonic_two_pow_ge is the headline result. It is proved by induction on n. The base case n=0 reduces to H_1 = 1 ≥ 1 + 0/2 (simp on the one-term sum). The successor case rewrites H_{2ⁿ⁺¹} via H_two_pow_succ, invokes the block estimate block_ge_half (≥ 1/2), and uses the inductive hypothesis (≥ 1 + n/2); add_le_add then combines them, after the algebraic identity 1 + (n+1)/2 = (1 + n/2) + 1/2. This is precisely Oresme's grouping argument upgraded from a qualitative 'each group exceeds 1/2' to the exact closed inequality. Mathlib has no such bound — only the existence-form Real.tendsto_sum_range_one_div_nat_succ_atTop — so the result is original to this gallery.",
     "mathContext": "$H_{2^n} \\ge 1 + n/2$. Since $H_N \\sim \\ln N + \\gamma$, this is the elementary, constant-free shadow of the logarithmic growth: $H_{2^n} \\ge 1 + n/2$ corresponds to $H_N \\gtrsim 1 + \\tfrac12\\log_2 N$.",

@@ -30,7 +30,7 @@
       "startLine": 48,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Per-Term Collapse 1 − 1/k² = (k−1)(k+1)/k²",
     "content": "factor_eq records the single algebraic identity that drives the whole proof. After establishing (k:ℚ) ≠ 0 from k ≥ 2, field_simp clears the denominators and ring verifies the resulting polynomial identity. This is the only place difference-of-squares is used; the rest of the proof is endpoint bookkeeping handled automatically by the induction.",
     "mathContext": "The factorisation $1 - \\frac{1}{k^2} = \\frac{k^2 - 1}{k^2} = \\frac{(k-1)(k+1)}{k^2}$ is the multiplicative seed of the telescope: the numerator factor $k-1$ matches the denominator of the term two steps below, and $k+1$ matches the term two steps above.",
@@ -52,7 +52,7 @@
       "startLine": 65,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Induction by Peeling the Top Factor",
     "content": "telescoping_product is proved by Nat.le_induction starting at n = 1. The base case is the empty product over Finset.Icc 2 1 = ∅, which equals 1 = 2/2. The inductive step uses Finset.prod_Icc_succ_top (valid because 2 ≤ m+1) to split off the top factor 1 − 1/(m+1)², rewrites the remaining product to (m+1)/(2m) via the induction hypothesis, and discharges the rational identity (m+1)/(2m)·(1 − 1/(m+1)²) = (m+2)/(2(m+1)) with field_simp and ring.",
     "mathContext": "The step verifies $\\frac{m+1}{2m}\\left(1-\\frac{1}{(m+1)^2}\\right) = \\frac{m+1}{2m}\\cdot\\frac{m(m+2)}{(m+1)^2} = \\frac{m+2}{2(m+1)}$, which is the closed form at $n=m+1$. Basing the induction at $n=1$ (the empty product) keeps $(n+1)/(2n)$ valid at the boundary.",

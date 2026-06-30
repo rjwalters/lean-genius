@@ -119,7 +119,7 @@
       "startLine": 130,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Kernel-Checked Jacobi Evaluation via norm_num (0 axioms)",
     "content": "The values $J(2|15)=1$, $J(7|15)=-1$, $J(3|15)=0$ are discharged by `norm_num`. Mathlib's `norm_num` extension for the Jacobi symbol runs the reciprocity descent at elaboration time and emits an *ordinary* proof term that the kernel rechecks — unlike `native_decide`, it does **not** introduce `Lean.ofReduceBool`. `#print axioms` confirms only `[propext, Classical.choice, Quot.sound]`, so these computations are genuinely 0-axiom. (Plain `decide` cannot evaluate `jacobiSym` because its definition recurses through `Nat.primeFactorsList`, a well-founded recursion that the kernel does not reduce.)",
     "mathContext": "The norm_num route is the right tool here: it gives certified evaluation of the Jacobi symbol with a kernel-checkable witness, matching the project's axiom-integrity policy where native_decide would count as an assumption.",

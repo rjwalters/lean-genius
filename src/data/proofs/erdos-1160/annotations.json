@@ -184,7 +184,7 @@
       "startLine": 108,
       "endLine": 114
     },
-    "type": "axiom",
+    "type": "definition",
     "title": "Stronger Conjecture Implies Original",
     "content": "The proof that the BNV stronger conjecture implies the original uses `Finset.single_le_sum`: if all summands are nonneg and $n$ is in the range, then $g(n) \\leq \\sum_{i < 2^m} g(i) \\leq g(2^m)$. This is a clean application of summation monotonicity, and illustrates how aggregate dominance (the sum is small) implies pointwise dominance (each term is small).",
     "mathContext": "$g(n) \\leq \\sum_{i < 2^m} g(i) \\leq g(2^m)$ via $\\texttt{Finset.single\\_le\\_sum}$ and the BNV hypothesis",

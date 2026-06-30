@@ -6,11 +6,11 @@
       "startLine": 6,
       "endLine": 44
     },
-    "type": "caveat",
+    "type": "warning",
     "title": "Scope: Lower Bound for Sₙ; Non-Membership Over the Elementary Family",
     "content": "This entry proves the SHARPNESS (lower bound β(Sₙ) ≥ n) for the symmetric group Sₙ, complementing the parent's upper bound β(Sₙ) ≤ n. The non-membership eₙ ∉ R[e₁,…,e_{n-1}] is stated for the lower ELEMENTARY symmetric family. A fully general 'no generating set in degrees < n exists' statement, quantified over ALL invariants of degree < n, would additionally require that every symmetric polynomial of degree < n is a polynomial in e₁,…,e_{n-1} (true, recorded as the entry's open question). 0 axioms, 0 sorries; #print axioms reports only propext, Classical.choice, Quot.sound.",
     "mathContext": "$\\beta(S_n) = n$: the parent gives $\\beta(S_n) \\le n$ (generation by $e_1,\\dots,e_n$), this entry gives $\\beta(S_n) \\ge n$ via $e_n \\notin R[e_1,\\dots,e_{n-1}]$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["optimal degree bound β(G)", "invariant ring", "Fundamental Theorem of Symmetric Polynomials", "axiom integrity"],
     "prerequisites": ["invariant theory", "symmetric polynomials"]
   },

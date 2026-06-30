@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 63
     },
-    "type": "context",
+    "type": "concept",
     "title": "Weighting the Palindromic Squared Row from Both Ends",
     "content": "The docstring frames the two-sided generalization. The parent (OQ-07-OQ-04-OQ-01) weighted the squared Pascal row by a single falling factorial $(k)_r$ anchored at the left end $k=0$, giving $\\sum (k)_r C(n,k)^2 = (n)_r C(2n-r, n-r)$. But the squared row is a palindrome ($C(n,k)^2 = C(n,n-k)^2$), so the right end $k=n$ is on equal footing. The honest general object is the two-sided moment, weighted by $(k)_r(n-k)_s$ from both ends at once. The headline reveals that the two orders combine additively in the off-centre shift: a left order $r$ and right order $s$ push the Vandermonde entry from the centre $C(2n,n)$ out to $C(2n-r-s, n-r-s)$, seeing only the sum $r+s$.",
     "mathContext": "$\\sum_{k=0}^{n} (k)_r\\,(n-k)_s\\,C(n,k)^2 = (n)_r\\,(n)_s\\,C(2n-r-s,\\ n-r-s)$ for $r+s\\le n$, where $(x)_r = $ Nat.descFactorial $x\\,r$. Faces: $s{=}0$ → parent; $r{=}0$ → mirror; $r{=}s{=}1$ → symmetric first moment.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "binomial coefficients",
       "falling factorial",
@@ -139,11 +139,11 @@
       "startLine": 185,
       "endLine": 197
     },
-    "type": "context",
+    "type": "concept",
     "title": "Kernel-decide Sanity Checks",
     "content": "Two numeric examples certify the closed form at concrete orders. At $(r,s,n) = (1,1,3)$: $\\sum_k k(3-k)C(3,k)^2 = 0 + 18 + 18 + 0 = 36 = 3^2\\cdot C(4,1)$. At $(r,s,n) = (2,1,4)$: $\\sum_k (k)_2(4-k)C(4,k)^2 = (4)_2\\cdot 4\\cdot C(5,1) = 12\\cdot 4\\cdot 5 = 240$. Both are discharged by kernel `decide` (not native_decide), so they introduce no extra trust assumptions — the proof stays clean of Lean.ofReduceBool.",
     "mathContext": "$(1,1,3)$: $18+18 = 36 = 9\\cdot 4$. $(2,1,4)$: $12\\cdot 4\\cdot 5 = 240$. Both verified by kernel reduction via `decide`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "numerical verification",
       "kernel decide",

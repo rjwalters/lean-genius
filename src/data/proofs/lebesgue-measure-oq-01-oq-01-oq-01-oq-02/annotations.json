@@ -15,7 +15,7 @@
     "id": "ann-finite-rationals",
     "proofId": "lebesgue-measure-oq-01-oq-01-oq-01-oq-02",
     "range": { "startLine": 86, "endLine": 127 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Counting Bounded-Denominator Rationals",
     "content": "`finite_rat_bounded`: the set of rationals q with |q − x| ≤ 1 and q.den ≤ N is finite. The argument is integer counting: for a fixed denominator d, a fraction n/d within distance 1 of x has its numerator pinned between ⌊(x−1)d⌋ and ⌈(x+1)d⌉ (from `q.num = q·q.den` and `Int.floor_le` / `Int.le_ceil`), so the candidates form a finite `Finset.Icc`; taking a `biUnion` over d ≤ N gives a finite covering set. `pos_min_dist` then shows that a finite set of rationals, none of which casts to x, lies a positive distance δ from x (Finset induction taking minima). Together these turn the analytic 'exceptional points are isolated' into pure arithmetic of fractions.",
     "mathContext": "$|n/d-x|\\le 1\\Rightarrow \\lfloor(x-1)d\\rfloor\\le n\\le\\lceil(x+1)d\\rceil$; finitely many $n/d$ for $d\\le N$, all at distance $\\ge\\delta>0$ from $x$.",

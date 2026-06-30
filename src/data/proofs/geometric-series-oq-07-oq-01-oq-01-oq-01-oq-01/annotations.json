@@ -3,7 +3,7 @@
     "id": "row-sum-succ",
     "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
     "range": { "startLine": 49, "endLine": 59 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Row Sum via Evaluating the Coefficient Identity at X = 1",
     "content": "The engine behind Worpitzky's identity. The parent's coefficient identity E_{m+1}(X) = ∑ⱼ ⟨m+1,j⟩·X^{j+1} is evaluated at X = 1 via `congrArg (eval 1)`, which collapses every power X^{j+1} to 1, turning the polynomial identity into the bare sum ∑ⱼ ⟨m+1,j⟩. The grandparent's analytic value E_m(1) = m! (`eval_eulerPoly_one`) then supplies the right-hand side. `simp` with `eval_finset_sum`, `eval_mul`, `eval_C`, `eval_pow`, `eval_X` distributes the evaluation over the Finset sum; `exact_mod_cast` bridges ℤ and ℕ. This is the standard 'set the variable to 1 to read off the sum of coefficients' trick made rigorous.",
     "mathContext": "$E_{m+1}(1)=\\sum_j \\langle m+1,j\\rangle\\cdot 1^{j+1}=\\sum_j\\langle m+1,j\\rangle$, and $E_m(1)=m!$ gives $\\sum_j\\langle m+1,j\\rangle=(m+1)!$.",

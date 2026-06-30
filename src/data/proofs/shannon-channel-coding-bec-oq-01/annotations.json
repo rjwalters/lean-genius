@@ -140,7 +140,7 @@
       "startLine": 261,
       "endLine": 276
     },
-    "type": "corollary",
+    "type": "theorem",
     "title": "The Binary Erasure Channel as q = 2",
     "content": "Shows the parent binary erasure channel is literally the q = 2 instance. qec_eq_bec proves the QEC kernel over Bool equals the bec kernel on the nose (funext, then cases on the output, each closed by rfl). qec_capacity_bool specializes the capacity to (1 − p) · log 2 using Fintype.card_bool, and qec_capacity_bool_bits divides by log 2 to recover the clean C = 1 − p bits, matching the parent's bec_capacity_bits. So the entire BEC entry is a corollary of the q-ary result.",
     "mathContext": "$(\\mathrm{QEC}_{\\mathrm{Bool}})_W = \\mathrm{bec}_W,\\qquad C = (1-p)\\log 2 = 1-p\\ \\text{bits}$",

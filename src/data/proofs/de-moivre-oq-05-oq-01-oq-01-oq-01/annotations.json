@@ -7,7 +7,7 @@
     "title": "Normalising the DFT into a Genuine Unitary",
     "content": "The docstring frames the final normalisation step requested by the parent's first open question. The parent proved Plancherel/Parseval for the unnormalised transform x̂(j) = ∑ₖ x(k)e^{2πijk/n}, giving ∑ⱼ|x̂(j)|² = n·∑ₖ|x(k)|² — so the bare DFT is √n times a unitary. This file divides by √n to obtain the normalised transform (Ux)(j) = x̂(j)/√n with kernel U(j,k) = e^{2πijk/n}/√n, proves it preserves Euclidean energy exactly (no scale factor), and — the operator-theoretic payoff — exhibits the n×n matrix U as a genuine element of Matrix.unitaryGroup (Fin n) ℂ via U·Uᴴ = 1. No new analysis: energy preservation is Parseval ÷ n, and unitarity is the parent's character orthonormality ÷ n; the whole content beyond the parent is the cancellation √n·√n = n.",
     "mathContext": "$(Ux)(j) = \\hat x(j)/\\sqrt n$, $U(j,k) = e^{2\\pi i jk/n}/\\sqrt n$; $\\sum_j|(Ux)(j)|^2 = \\sum_k|x(k)|^2$ and $UU^{\\mathsf H} = 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["discrete Fourier transform", "Plancherel/Parseval", "unitary group", "isometry", "FFT"],
     "prerequisites": ["complex inner product spaces", "discrete Fourier transform"]
   },

@@ -33,11 +33,11 @@
       "startLine": 138,
       "endLine": 164
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "ℕ Specialization via ascPochhammer_nat_eq_ascFactorial",
     "content": "ascFactorial_add_vandermonde recovers the multiset / Chu–Vandermonde identity for Nat.ascFactorial — (a+b).ascFactorial k = Σ a.ascFactorial m · b.ascFactorial (k-m) · C(k,m) — as the S=ℕ, x=a, y=b instance of the headline. The bridge is a one-line simpa: ascPochhammer_nat_eq_ascFactorial rewrites every (ascPochhammer ℕ j).eval n into n.ascFactorial j, and Nat.cast_id erases the ℕ→ℕ cast on the binomial coefficient. ascFactorial_add_vandermonde_prod then expands each ascFactorial into its explicit rising product ∏ i ∈ range j, (n+i) by Nat.ascFactorial_eq_prod_range under a Finset.sum_congr. Because the headline is stated over a CommSemiring and uses no subtraction in S, the ℕ instance is immediate rather than requiring a separate integer detour.",
     "mathContext": "$(a+b)^{\\overline{k}} = \\sum_{m=0}^{k}\\binom{k}{m}a^{\\overline{m}}\\,b^{\\overline{k-m}}$, the rising-factorial Chu–Vandermonde identity over $\\mathbb{N}$. This is precisely open question #2 of the parent entry, and #3 (relate to `ascPochhammer` over a commutative ring, recover the $\\mathbb{N}$ identity as a specialization) is the route taken.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.ascFactorial",
       "ascPochhammer_nat_eq_ascFactorial",
@@ -79,7 +79,7 @@
       "startLine": 184,
       "endLine": 222
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Concrete Verification with decide (no native_decide)",
     "content": "Three numeric instances confirm the identity by kernel computation: a=b=1,k=2 gives (2)^{(2)}=2·3=6 with RHS 2+2+2=6; a=2,b=1,k=2 gives (3)^{(2)}=3·4=12; a=1,b=2,k=3 gives (3)^{(3)}=3·4·5=60. All three use `decide` (ordinary kernel reduction over Finset.range, Nat.ascFactorial and Nat.choose), not `native_decide`, so they introduce no Lean.ofReduceBool dependency and the file stays axiom-free.",
     "mathContext": "Small evaluations of $(a+b)^{\\overline{k}}=\\sum_m\\binom{k}{m}a^{\\overline{m}}b^{\\overline{k-m}}$ that exhibit the Pascal-weighted split of a consecutive-integer product.",

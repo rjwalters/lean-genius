@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "burnside-counting-oq-05",
     "range": { "startLine": 3, "endLine": 31 },
-    "type": "context",
+    "type": "concept",
     "title": "Colorings of an Odd Cycle Fixed by a Reflection",
     "content": "For the dihedral group Dₙ acting on an n-cycle, this file counts the k-colorings fixed by a reflection, modeled as negation i ↦ −i on ZMod n. A coloring is fixed iff it is constant on each reflection orbit {i, −i}. For odd n = 2m+1 the only fixed point is 0, so the orbits are {0} plus m pairs — m+1 = (n+1)/2 orbits — giving the count k^((n+1)/2). This is the reflection counterpart to the rotation count k^gcd(n,r); both feed Burnside's lemma for the full dihedral necklace count.",
     "mathContext": "Reflection-fixed $k$-colorings of an odd $n$-cycle: $k^{(n+1)/2}$ (one free color per reflection orbit; $(n+1)/2$ orbits).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Burnside's lemma", "dihedral group", "necklace counting", "reflection orbits", "fixed colorings"],
     "prerequisites": ["group actions", "ZMod n", "orbit counting"]
   },

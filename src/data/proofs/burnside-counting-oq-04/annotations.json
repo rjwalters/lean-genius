@@ -6,11 +6,11 @@
       "startLine": 6,
       "endLine": 50
     },
-    "type": "context",
+    "type": "concept",
     "title": "From Necklaces to Bracelets via an Index-2 Subgroup",
     "content": "The module docstring frames the whole file: necklace counting is Burnside applied to the cyclic rotation group ℤ/nℤ, while bracelet counting is Burnside applied to the larger dihedral group D_n, which adjoins the n reflections. Because the rotations sit inside D_n as a subgroup of index 2 (|D_n| = 2n), 'adding reflections to Burnside' is, abstractly, nothing more than splitting the Burnside sum along that index-2 subgroup. The scope is stated honestly: the headline theorem is fully general and axiom-free, while the numeric length-4 instance takes the classical necklace count (6) and reflection total (24) as hypotheses rather than recomputing them.",
     "mathContext": "$|D_n| = 2n = 2\\cdot|\\mathbb{Z}/n\\mathbb{Z}|$; bracelets $= \\tfrac{1}{2}\\bigl(\\text{necklaces} + \\tfrac{1}{n}\\sum_{\\text{reflections}}|\\mathrm{Fix}|\\bigr)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Burnside's lemma", "dihedral group", "necklaces", "bracelets", "index-2 subgroup"],
     "prerequisites": ["group actions", "orbit-counting lemma"]
   },
@@ -36,7 +36,7 @@
       "startLine": 77,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Burnside on the Full Group",
     "content": "The proof opens by invoking Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group on G: the sum of fixed-point counts over all of G equals the number of orbits times |G|. This is the Cauchy–Frobenius (Burnside) lemma in its un-averaged form, and it is the engine applied twice — once to G, once to H — whose difference yields the folding identity.",
     "mathContext": "$\\sum_{g \\in G} |\\mathrm{Fix}(g)| = |X/G|\\cdot|G|$.",
@@ -51,11 +51,11 @@
       "startLine": 81,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reconciling the Restricted-Action Fintype Instances",
     "content": "The only real subtlety: a point is fixed by h viewed in G iff it is fixed by h acting through the restricted H-action, so fixedBy X (h : G) and fixedBy X h are definitionally the SAME set — they merely carry different Fintype instances. Fintype.card_congr (Equiv.refl _) absorbs this mismatch term by term, after which Burnside's lemma for H lines up exactly. This is a characteristic Lean bookkeeping step with no mathematical content but essential for the formalization to typecheck.",
     "mathContext": "$\\mathrm{Fix}_G(h) = \\mathrm{Fix}_H(h)$ as sets $\\Rightarrow$ $|\\mathrm{Fix}_G(h)| = |\\mathrm{Fix}_H(h)|$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["restricted action", "Fintype instances", "definitional equality"],
     "prerequisites": ["subgroup actions", "cardinality of finite types"]
   },
@@ -66,7 +66,7 @@
       "startLine": 91,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Splitting the Sum and Re-Indexing Over H",
     "content": "The Burnside sum over G is split by membership in H via Finset.sum_filter_add_sum_filter_not, and the H-part is re-indexed as a sum over the subgroup via Finset.sum_subtype, identifying it with the subgroup Burnside sum. The final rewrite chain (← hG, ← hsplit, hrot, hH) leaves exactly the complement sum Σ_{g ∉ H} |Fix(g)| — the reflection contribution in the dihedral instance.",
     "mathContext": "$\\sum_{g \\in G} = \\sum_{g \\in H} + \\sum_{g \\notin H}$, with $\\sum_{g \\in H}|\\mathrm{Fix}(g)| = |X/H|\\cdot|H|$.",
@@ -96,11 +96,11 @@
       "startLine": 123,
       "endLine": 127
     },
-    "type": "context",
+    "type": "concept",
     "title": "|DihedralGroup n| = 2n Anchors the Instance",
     "content": "dihedralGroup_card re-exports Mathlib's DihedralGroup.card to record |D_n| = 2n explicitly. This is the order relation that places the rotation group ℤ/nℤ at index 2 inside D_n, supplying the |G| = 2|H| hypothesis of the doubling form for the dihedral specialisation.",
     "mathContext": "$|\\mathrm{DihedralGroup}\\, n| = 2n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["dihedral group", "group order", "index-2 subgroup"],
     "prerequisites": ["dihedral groups", "finite group cardinality"]
   },
@@ -111,11 +111,11 @@
       "startLine": 129,
       "endLine": 141
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Classical Length-4 Binary Data",
     "content": "For the square (D_4, order 8) the four reflections fix 8, 8, 4, 4 colourings respectively — two axes through opposite vertices, two through opposite edge midpoints — for a reflection total of 24, while the parent establishes 6 binary necklaces. These two numbers are taken as hypotheses; the file derives the bracelet count from them algebraically rather than recomputing the concrete orbit quotients (which the parent itself only closes with native_decide).",
     "mathContext": "Reflection fixed points $= 8+8+4+4 = 24$; necklaces $= 6$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["dihedral group D_4", "reflections", "fixed points", "binary colourings"],
     "prerequisites": ["dihedral symmetry of the square", "necklace counting"]
   },

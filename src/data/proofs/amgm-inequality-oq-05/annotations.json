@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 32
     },
-    "type": "context",
+    "type": "concept",
     "title": "Young's Inequality as Weighted AM-GM, and the Gap This Fills",
     "content": "Young's inequality for products, a·b ≤ aᵖ/p + b^q/q for Hölder-conjugate exponents (p⁻¹ + q⁻¹ = 1), is the conjugate-exponent root of Hölder's inequality and, at p = q = 2, of Cauchy–Schwarz. Conceptually it is weighted AM-GM with weights (1/p, 1/q): the weighted geometric mean a·b = (aᵖ)^{1/p}(b^q)^{1/q} is at most the weighted arithmetic mean aᵖ/p + b^q/q. Mathlib carries the inequality (Real.young_inequality_of_nonneg, used to bootstrap Hölder) but not the sharp equality case. This file supplies it: for a, b > 0, equality holds iff aᵖ = b^q. The whole file works over Real.rpow (all exponents real), and the proof's engine is the strict — not merely the ordinary — convexity of exp.",
     "mathContext": "Weighted AM-GM form: $a^{1/p\\cdot p}b^{1/q\\cdot q}$-style $(a^p)^{1/p}(b^q)^{1/q} \\le \\tfrac1p a^p + \\tfrac1q b^q$, equality iff the two interpolated points coincide ($a^p = b^q$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "weighted AM-GM",
       "Hölder's inequality",

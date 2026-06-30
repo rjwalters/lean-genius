@@ -30,7 +30,7 @@
       "startLine": 82,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Cauchy-Schwarz Against the Reflected Vector",
     "content": "`buzano_inner_bound` pairs x against R(y) = 2⟪e, y⟫·e − y. Sesquilinearity (`inner_reflection_eq`) gives ⟪x, R(y)⟫ = 2⟪x, e⟫⟪e, y⟫ − ⟪x, y⟫, so scalar Cauchy-Schwarz ‖⟪x, R(y)⟫‖ ≤ ‖x‖·‖R(y)‖ together with the isometry ‖R(y)‖ = ‖y‖ yields the clean bound ‖2⟪x, e⟫⟪e, y⟫ − ⟪x, y⟫‖ ≤ ‖x‖·‖y‖. This is the step where the reflection earns its keep: applying Cauchy-Schwarz to a reflected (rather than the original) vector is what produces the combination 2⟪x, e⟫⟪e, y⟫.",
     "mathContext": "$\\|2\\langle x,e\\rangle\\langle e,y\\rangle - \\langle x,y\\rangle\\| = \\|\\langle x, R(y)\\rangle\\| \\le \\|x\\|\\,\\|R(y)\\| = \\|x\\|\\,\\|y\\|.$",
@@ -79,7 +79,7 @@
     "title": "Buzano Strictly Generalizes Cauchy-Schwarz",
     "content": "`buzano_recovers_cauchy_schwarz` proves Buzano is not merely implied by Cauchy-Schwarz but implies it: instantiate the unit vector as e = ‖x‖⁻¹·x (for x ≠ 0). Then ⟪x, e⟫ = ‖x‖ and ⟪e, y⟫ = ‖x‖⁻¹·⟪x, y⟫, so the left side becomes 2‖x‖·(‖x‖⁻¹·‖⟪x, y⟫‖) = 2‖⟪x, y⟫‖, and Buzano reads 2‖⟪x, y⟫‖ ≤ ‖x‖·‖y‖ + ‖⟪x, y⟫‖, i.e. ‖⟪x, y⟫‖ ≤ ‖x‖·‖y‖. The scalar bookkeeping (coercions ↑‖x‖⁻¹, conj of a real, ‖↑r‖ = |r|) is handled with RCLike.conj_ofReal, RCLike.norm_ofReal, and inner_self_eq_norm_sq_to_K.",
     "mathContext": "With $e = x/\\|x\\|$: $\\langle x,e\\rangle = \\|x\\|$, $\\langle e,y\\rangle = \\langle x,y\\rangle/\\|x\\|$, so Buzano gives $2\\|\\langle x,y\\rangle\\| \\le \\|x\\|\\|y\\| + \\|\\langle x,y\\rangle\\|$, hence $\\|\\langle x,y\\rangle\\| \\le \\|x\\|\\|y\\|$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "strict generalization",
       "normalized vector",

@@ -15,7 +15,7 @@
     "id": "det-nonneg",
     "proofId": "gram-linear-independence-iff-oq-01",
     "range": { "startLine": 63, "endLine": 68 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Gramian Is Always Nonnegative",
     "content": "gram_det_nonneg: det(gram 𝕜 v) ≥ 0 for every family, being the determinant of a positive semidefinite matrix (PosSemidef.det_nonneg). This is the determinant shadow of positive semidefiniteness and the starting point of the numerical test: the Gramian can never be negative, so the only question is whether it is strictly positive (independent) or zero (dependent). The 2×2 case det = ‖v₀‖²‖v₁‖² − |⟪v₀,v₁⟫|² ≥ 0 is precisely the Cauchy–Schwarz inequality.",
     "mathContext": "$\\det \\mathrm{Gram}(v) \\ge 0$; for two vectors this is $\\|u\\|^2\\|w\\|^2 - |\\langle u,w\\rangle|^2 \\ge 0$ (Cauchy–Schwarz).",

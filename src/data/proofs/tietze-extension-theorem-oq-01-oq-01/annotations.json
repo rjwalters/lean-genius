@@ -84,7 +84,7 @@
     "title": "The T1 Statement and the Full Equivalence",
     "content": "`t1Space_normalSpace_of_hasTietzeExtensionProperty` restates the result under the classical T1 hypothesis used in textbook phrasings of 'normal ⟺ Tietze'; the hypothesis is not used by the proof, so the entry is explicit that the bare extension property already forces normality. `normalSpace_iff_hasTietzeExtensionProperty` then pairs the converse with the forward direction into a true biconditional: a space is normal if and only if it has the Tietze extension property. This is the arrow absent from Mathlib, completing the loop 'normal ⟺ Tietze ⟺ Urysohn' opened by the parent entry.",
     "mathContext": "$\\mathrm{T1}+\\mathrm{TietzeProp}\\Rightarrow\\mathrm{Normal}$; and $\\mathrm{Normal}\\iff\\mathrm{TietzeProp}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "T1 space",
       "normal space characterization",

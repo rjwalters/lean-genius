@@ -54,7 +54,7 @@
       "startLine": 63,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Width, sign invariant, and nested brackets",
     "content": "Three guarantees, each by induction on n. bisect_width: the width is exactly (b−a)/2^n — each step halves the interval (b − m = m − a = (b−a)/2), and ring closes the inductive step using 2^(n+1) = 2·2^n. bisect_sign: the sign-change invariant f a' ≤ 0 ≤ f b' is preserved — in the then-branch the test gives f m ≤ 0 directly; in the else-branch ¬(f m ≤ 0) yields 0 < f m, so 0 ≤ f m. bisect_mem: the brackets nest, a ≤ a' ≤ b' ≤ b, using a ≤ (a+b)/2 ≤ b (linarith) and transitivity. None of these depend on continuity of f — they are purely structural facts about the algorithm.",
     "mathContext": "$\\mathrm{width}=(b-a)/2^n$; invariant $f(a')\\le 0\\le f(b')$; nesting $a\\le a'\\le b'\\le b$.",
@@ -78,7 +78,7 @@
       "startLine": 107,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Convergence below any ε by Archimedean search",
     "content": "bisect_width_lt shows that for any ε > 0 there is a step count n with width (b−a)/2^n < ε. The proof picks n with (b−a)/ε < 2^n via pow_unbounded_of_one_lt (the Archimedean property: powers of 2 are unbounded) and rearranges with div_lt_iff₀. This is a constructive search — given ε it produces the n — and is deliberately distinct from the classical completeness step (extracting the actual limit/root of the midpoint sequence), which the parent entry identified as the one genuinely non-constructive ingredient and which is not used here.",
     "mathContext": "$\\forall\\varepsilon>0,\\ \\exists n,\\ (b-a)/2^n<\\varepsilon$ — from $\\exists n,\\ (b-a)/\\varepsilon<2^n$ (Archimedean).",
@@ -101,7 +101,7 @@
       "startLine": 116,
       "endLine": 138
     },
-    "type": "example",
+    "type": "concept",
     "title": "The algorithm actually running over ℚ",
     "content": "The payoff of computability: a worked example evaluates bisect on f(x) = x² − 2 starting from [1,2]. Two steps give the exact rational bracket [5/4, 3/2] for √2 (the midpoint 3/2 has f = 1/4 > 0 so the algorithm moves right to [1,3/2], then 5/4 has f = −7/16 < 0 so it keeps [5/4,3/2]). Companion examples derive the 10-step width 1/1024 directly from bisect_width and confirm via bisect_sign that the 10-step bracket still straddles a sign change. Because ℚ has a decidable order, these are genuine computations, not merely existence statements.",
     "mathContext": "$\\mathrm{bisect}\\,(x^2-2)\\,2\\,1\\,2 = (5/4,\\,3/2)$; 10-step width $=1/1024$; bracket straddles $\\sqrt2$.",

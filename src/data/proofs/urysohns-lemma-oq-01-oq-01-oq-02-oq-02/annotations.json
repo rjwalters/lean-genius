@@ -15,7 +15,7 @@
     "id": "ann-geo-tail",
     "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-02",
     "range": { "startLine": 55, "endLine": 72 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The shifted geometric majorant sums to (2/3)ⁿ·M",
     "content": "`summable_geo_shift` records that shifting the index of a summable series leaves it summable (`summable_nat_add_iff`), and `tsum_geo_tail` evaluates the shifted tail in closed form: `∑' i (2/3)^{i+n}·(M/3) = (2/3)ⁿ·M`. The mechanism is to factor the common power `(2/3)ⁿ` out of every term (`pow_add` then `ring`), reducing the shifted sum to `(2/3)ⁿ` times the *full* geometric sum `∑' i (2/3)ⁱ·(M/3)`. The full sum evaluates via `tsum_geometric_of_lt_one` with `(1 − 2/3)⁻¹ = 3`, which exactly cancels the `M/3` to leave `M`. This closed form is the engine that converts the crude majorant into an explicit, computable error bound.",
     "mathContext": "$\\sum_{i\\ge0} (2/3)^{i+n}\\tfrac{M}{3} = (2/3)^n\\sum_{i\\ge0}(2/3)^i\\tfrac{M}{3} = (2/3)^n\\cdot\\tfrac{M}{3}\\cdot\\tfrac{1}{1-2/3} = (2/3)^n\\cdot M.$",

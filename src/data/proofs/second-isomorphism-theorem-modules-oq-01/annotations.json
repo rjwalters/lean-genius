@@ -51,7 +51,7 @@
       "startLine": 73,
       "endLine": 88
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Re-reading the Quotient Denominators as Honest Submodules",
     "content": "The equivalence's quotient denominators are comaps into the ambient submodules — comap p.subtype (p ⊓ p') sits inside ↥p, not in M. finrank_comap_inf and finrank_comap_sup use Submodule.comapSubtypeEquivOfLe (which, for p ≤ q, gives comap q.subtype p ≃ₗ p) to certify these comaps have the same finrank as p ⊓ p' and p' respectively. Without this bridge, rank–nullity would speak about the comaps rather than the dimensions finrank(p ⊓ p') and finrank p' that appear in the modular law. The omit clause drops the unused [FiniteDimensional K V] instance from these two lemmas, since each follows from a plain linear equivalence.",
     "mathContext": "For $p \\le q$, $\\mathrm{comap}\\,q.\\mathrm{subtype}\\,p \\simeq_\\ell p$, so $\\operatorname{finrank}$ is preserved; applied with $p \\sqcap p' \\le p$ and $p' \\le p \\sqcup p'$.",
@@ -73,7 +73,7 @@
       "startLine": 90,
       "endLine": 112
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "From Equal Quotient Dimensions to the Modular Law",
     "content": "finrank_modular_law is the heart of the entry. The single quantitative fact taken from the diamond equivalence is that its two sides have equal finrank ((secondIso p p').finrank_eq). Rank–nullity in quotient form (Submodule.finrank_quotient_add_finrank) gives two additive identities: finrank(↥p ⧸ ...) + finrank(p ⊓ p') = finrank p and finrank(↥(p ⊔ p') ⧸ ...) + finrank p' = finrank(p ⊔ p'), each after rewriting the denominator dimension via the comap lemmas. omega then combines the isomorphism equality with these two identities — never forming a difference explicitly, so the proof stays in ℕ — to conclude finrank(p ⊔ p') + finrank(p ⊓ p') = finrank p + finrank p'.",
     "mathContext": "$\\dim Q_L = \\dim Q_R$, $\\dim Q_L = \\dim p - \\dim(p\\cap p')$, $\\dim Q_R = \\dim(p+p') - \\dim p'$ $\\Rightarrow$ $\\dim(p+p') + \\dim(p\\cap p') = \\dim p + \\dim p'$.",
@@ -96,7 +96,7 @@
       "startLine": 114,
       "endLine": 127
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Direct-Sum and Co-Dimension Corollaries",
     "content": "Two boundary cases of the modular law. finrank_sup_of_inf_bot: when p ⊓ p' = ⊥, finrank_bot rewrites finrank(p ⊓ p') to 0 and the law becomes finrank(p ⊔ p') = finrank p + finrank p' — dimensions add for independent submodules, the dimension count behind internal direct sums. finrank_inf_of_sup_top: when p ⊔ p' = ⊤, finrank_top rewrites finrank(p ⊔ p') to finrank V, giving finrank(p ⊓ p') + finrank V = finrank p + finrank p' — for two spanning submodules, the intersection carries exactly the excess of their dimensions over the whole space.",
     "mathContext": "$p \\cap p' = 0 \\Rightarrow \\dim(p+p') = \\dim p + \\dim p'$; $\\ p + p' = V \\Rightarrow \\dim(p \\cap p') + \\dim V = \\dim p + \\dim p'$.",

@@ -6,7 +6,7 @@
       "startLine": 40,
       "endLine": 43
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The One Algebraic Fact: a + b ∣ aᵈ + bᵈ for Odd d",
     "content": "Everything rests on a single classical divisibility: for an odd exponent d, x + y divides x^d + y^d (Mathlib's `Odd.nat_add_dvd_pow_add_pow`). Specialising x = 2^k and y = 1 and rewriting 1^d = 1 and (2^k)^d = 2^(k·d) gives `two_pow_add_one_dvd : 2^k + 1 ∣ 2^(k·d) + 1`. This is the factor that obstructs primality whenever the exponent carries an odd multiplier.",
     "mathContext": "x + y ∣ x^d + y^d for odd d (e.g. x³ + 1 = (x+1)(x²−x+1)). With x = 2^k: 2^(k·d) + 1 = (2^k)^d + 1, divisible by 2^k + 1.",
@@ -54,7 +54,7 @@
       "startLine": 83,
       "endLine": 94
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Fermat-Prime Exponent Law",
     "content": "The exponent law `isPowerOfTwo_of_prime` falls out of the obstruction. Factor m = 2^k · d with d odd (`Nat.exists_eq_two_pow_mul_odd`). Two cases: if d < 2 then d = 1 (odd and positive) and m = 2^k; if d ≥ 2 then d > 1 is an odd factor of m, so the Part II obstruction makes 2^m + 1 composite — contradicting the hypothesis. This derivation is independent of Mathlib's `pow_of_pow_add_prime`. It completes the Gauss–Wantzel link: for primes p, p − 1 is a power of 2 iff p is a Fermat prime.",
     "mathContext": "2^m + 1 prime (m ≠ 0) ⟹ ∃ k, m = 2^k. The only candidate exponents are 1, 2, 4, 8, 16, …, giving the Fermat-prime form p = 2^(2^k) + 1.",

@@ -7,7 +7,7 @@
     "title": "Module Header: The Rational Root Theorem",
     "content": "If $r = a/b$ (lowest terms) is a rational root of an integer polynomial $p$, then $a \\mid p(0)$ (numerator divides the constant term) and $b \\mid$ leading coefficient. So a **monic** integer polynomial has only **integer** rational roots — exactly the integral closedness of $\\mathbb{Z}$ in $\\mathbb{Q}$. This drives the classic irrationality proofs: $\\sqrt 2$ is irrational because it would be an integer root of the monic $X^2 - 2$, and no integer squares to $2$. The file specializes Mathlib's integrally-closed-domain results to $\\mathbb{Z} \\subset \\mathbb{Q}$ and derives the $\\sqrt 2$ application.",
     "mathContext": "$r = a/b$ a root of $p\\in\\mathbb{Z}[X]\\Rightarrow a\\mid p(0),\\ b\\mid p_{\\deg}$; monic $\\Rightarrow b\\mid 1\\Rightarrow r\\in\\mathbb{Z}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["rational root theorem", "integrally closed domain", "irrationality proofs", "Z is integrally closed in Q"],
     "prerequisites": ["integer polynomials", "fractions in lowest terms", "divisibility"]
   },
@@ -38,7 +38,7 @@
   {
     "id": "integral-root-theorem-oq-01-no-int-sq",
     "proofId": "integral-root-theorem-oq-01",
-    "type": "technique",
+    "type": "tactic",
     "range": { "startLine": 58, "endLine": 63 },
     "title": "No integer squares to 2",
     "content": "`no_int_sq_eq_two`: $\\forall z : \\mathbb{Z},\\ z^2 \\neq 2$. The proof bounds the candidate range by $-2 < z < 2$ — each bound from `nlinarith` fed the hint `sq_nonneg (z \\mp 2)$ (since $(z\\pm2)^2 \\ge 0$ expands to a linear consequence once $z^2 = 2$ is assumed) — then `interval_cases z` enumerates $z \\in \\{-1,0,1\\}$ and `simp_all` refutes each. This is the arithmetic obstruction that the rational-root machinery reduces $\\sqrt2$-irrationality to.",

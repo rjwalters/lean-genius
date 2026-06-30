@@ -33,7 +33,7 @@
     "content": "The crux is that completeness removes any obstruction: ANY t-subset of a monochromatic vertex set is automatically an edge. So once pigeonhole guarantees a color class of size ≥ t, `Finset.exists_subset_card_eq` produces a t-subset inside it, which `mem_completeUnif` certifies as an edge and which is monochromatic by construction. No probabilistic counting is needed for this direction.",
     "proofId": "erdos-1022-oq-04",
     "range": { "startLine": 99, "endLine": 121 },
-    "type": "proof_technique"
+    "type": "tactic"
   },
   {
     "id": "ann-success",
@@ -45,7 +45,7 @@
     "content": "A monochromatic edge under this coloring would lie entirely in one class; but each class has at most $t-1 < t$ vertices, contradicting $|A| = t$. The bound $|T^c| = n - \\lfloor n/2 \\rfloor \\leq t - 1$ is exactly the ceiling estimate $\\lceil n/2 \\rceil \\leq t-1$ for $n \\leq 2t-2$, discharged by `omega` (which handles division by the literal 2). The hypothesis $t \\geq 1$ is used here: without it, $t = 0$ would make $\\{∅\\}$ wrongly '2-colorable'.",
     "proofId": "erdos-1022-oq-04",
     "range": { "startLine": 123, "endLine": 159 },
-    "type": "proof_technique"
+    "type": "tactic"
   },
   {
     "id": "ann-threshold",

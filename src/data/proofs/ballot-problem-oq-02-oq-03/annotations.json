@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "ballot-problem-oq-02-oq-03",
     "range": { "startLine": 3, "endLine": 62 },
-    "type": "context",
+    "type": "concept",
     "title": "Scope: Closing the Density↔CDF Gap of the Arcsine Law",
     "content": "The docstring states Lévy's Arcsine Law and explains the precise purpose of this entry. The graduated sibling ballot-problem-oq-02-oq-04 proved the static analytic facts about the arcsine CDF F(x)=(2/π)·arcsin(√x) and density f(x)=1/(π√(x(1−x))) — endpoints, median, monotonicity, reflection symmetry, U-shape — but introduced F and f as separate objects and left their connection (that f is the derivative of F, hence integrates to 1) as an explicit open question. This file supplies that link, axiom-free, using only Mathlib's existing derivative and interval-integral machinery. The fully probabilistic statement still needs Brownian local-time theory absent from Mathlib v4.26.0; this entry adds no axioms.",
     "mathContext": "$F(x) = \\tfrac{2}{\\pi}\\arcsin\\sqrt{x}$, $f(x) = \\dfrac{1}{\\pi\\sqrt{x(1-x)}}$; goal: $F' = f$ on $(0,1)$ and $\\int_0^1 f = 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Lévy's arcsine law", "probability density vs CDF", "fundamental theorem of calculus", "improper integral", "ballot problem"],
     "prerequisites": ["the statement of the arcsine law", "the relationship between a density and its CDF"]
   },

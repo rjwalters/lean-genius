@@ -125,11 +125,11 @@
     "id": "markov-oq0301-ann-small",
     "proofId": "markov-equation-oq-03-oq-01",
     "range": { "startLine": 194, "endLine": 208 },
-    "type": "context",
+    "type": "concept",
     "title": "Small a = 1 Solutions as Images of Markov Triples",
     "content": "The file closes with concrete witnesses that exhibit the bijection on the leading entries of the tree: (3,3,3), (3,3,6), (3,6,15) are the a = 1 images of the Markov triples (1,1,1), (1,1,2), (1,2,5). They make the abstract scaling tangible — the smallest a = 1 solutions are precisely 3× the smallest Markov triples — and serve as machine-checked sanity checks on the classification.",
     "mathContext": "$(1,1,1)\\mapsto(3,3,3),\\ (1,1,2)\\mapsto(3,3,6),\\ (1,2,5)\\mapsto(3,6,15).$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "concrete witnesses",
       "Markov triples",

@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "cantor-diagonalization-oq-05",
     "range": { "startLine": 1, "endLine": 27 },
-    "type": "context",
+    "type": "concept",
     "title": "The Continuum Is Stable Under Countable Powers: #(ℕ→ℝ) = #ℝ",
     "content": "This is the countable-power strengthening of OQ-07 (which showed #(ℝ×ℝ)=𝔠). Here passing from ℝ to the full sequence space ℕ→ℝ still does not raise cardinality: 𝔠^ℵ₀ = 𝔠. `Cardinal.mk_arrow` expands #(ℕ→ℝ) to #ℝ^#ℕ, rewritten to 𝔠^ℵ₀ and collapsed by `continuum_power_aleph0`. The same engine yields Baire space #(ℕ→ℕ)=𝔠 and, generally, #(ℕ→α)=𝔠 for 2 ≤ #α ≤ 𝔠.",
     "mathContext": "$\\mathfrak{c}^{\\aleph_0} = (2^{\\aleph_0})^{\\aleph_0} = 2^{\\aleph_0\\cdot\\aleph_0} = 2^{\\aleph_0} = \\mathfrak{c}$, so $\\#(\\mathbb{N}\\to\\mathbb{R}) = \\mathfrak{c} = \\#\\mathbb{R}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["cardinal arithmetic", "continuum", "cardinal exponentiation", "Cantor diagonalization"],
     "prerequisites": ["cardinal numbers", "cardinal exponentiation", "ℵ₀ and 𝔠"]
   },

@@ -19,7 +19,7 @@
     "title": "A₃ Solvable (Prime Order ⟹ Cyclic)",
     "content": "The alternating group $A_3$ has order $|A_3| = 3!/2 = 3$ (`nat_card_alternatingGroup`). Since $3$ is prime, the group is cyclic (`isCyclic_of_prime_card`), hence commutative (`IsCyclic.commutative`), hence solvable (`isSolvable_of_comm`). No permutation-specific reasoning is needed once the order is computed — arithmetic alone forces solvability.",
     "mathContext": "$|A_3| = 3$ prime $\\Rightarrow A_3$ cyclic $\\Rightarrow$ abelian $\\Rightarrow$ solvable.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Cyclic group", "Prime order group", "Alternating group A₃"],
     "prerequisites": ["a group of prime order is cyclic", "cyclic ⟹ abelian", "card of alternating group"]
   },

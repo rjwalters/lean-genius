@@ -7,7 +7,7 @@
     "title": "The Representation Count F(N)",
     "content": "A self-contained mirror of the parent file's definitions, needed because the parent no longer builds against Mathlib 4.26.0 (removed/relocated imports). `unitFraction n` is 1/n (and 0 at n = 0); `denominatorRange N` is {1,…,N} as range(N+1) \\ {0}; `harmonicNumber N` is the sum of unit fractions over that range; `IsRepresentable N k` says k = ∑_{d∈S} 1/d for some S ⊆ {1,…,N}; and `countRepresentable N` = F(N) counts the representable integers in {0,…,N}. The search is confined to {0,…,N} because, as proved below, every representable integer is bounded by H_N < N.",
     "mathContext": "$H_N=\\sum_{d=1}^N \\tfrac1d$; $k$ representable $\\iff k=\\sum_{d\\in S}\\tfrac1d,\\ S\\subseteq\\{1,\\dots,N\\}$; $F(N)=|\\{k\\le N:\\ k\\text{ representable}\\}|$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Egyptian fractions", "unit fractions", "harmonic number", "Erdős problems"],
     "prerequisites": ["finite sums", "rational numbers", "Finset cardinality"]
   },
@@ -27,7 +27,7 @@
     "id": "ann-bridge",
     "proofId": "erdos-309-incomplete-01",
     "range": { "startLine": 102, "endLine": 112 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bridging to Mathlib's harmonic",
     "content": "`harmonicNumber_eq_harmonic`: the file's custom `harmonicNumber N` equals Mathlib's `harmonic N`. The proof rewrites Mathlib's harmonic via `harmonic_eq_sum_Icc` (H_N = ∑_{d∈Icc 1 N} 1/d), identifies `denominatorRange N = Finset.Icc 1 N`, and checks termwise that `unitFraction d = 1/d` on that set. This bridge is the crux of the formalization: once the custom harmonic number is identified with the library's, all of Mathlib's analytic estimates — crucially `harmonic_le_one_add_log` — become available without re-deriving them.",
     "mathContext": "$\\texttt{harmonicNumber}\\,N=\\texttt{harmonic}\\,N$, via $\\texttt{denominatorRange}\\,N=\\mathrm{Icc}\\,1\\,N$ and $\\texttt{unitFraction}\\,d=1/d$ there.",

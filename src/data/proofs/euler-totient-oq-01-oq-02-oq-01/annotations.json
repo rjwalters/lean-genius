@@ -6,7 +6,7 @@
       "startLine": 5,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "What This Sibling Adds Over the Parent",
     "content": "The parent entry euler-totient-oq-01-oq-02 records the Carmichael function λ on prime powers, but for odd primes it stops at the coincidence λ(pᵏ) = φ(pᵏ) — leaving the value implicit. This file supplies what that coincidence hides: the explicit closed form λ(pᵏ) = pᵏ⁻¹(p − 1), the structural reason (the unit group is cyclic, so its exponent equals its order), and a constructive primitive root (a unit of that exact order). The whole chain — (ℤ/pᵏℤ)ˣ cyclic ⟹ exponent = order ⟹ λ = φ = pᵏ⁻¹(p − 1) — is made explicit, and contrasted sharply with the 2-power case where the group is NOT cyclic and λ = φ/2.",
     "mathContext": "$(\\mathbb{Z}/p^k\\mathbb{Z})^\\times \\text{ cyclic} \\Rightarrow \\exp = |\\cdot| \\Rightarrow \\lambda(p^k) = \\varphi(p^k) = p^{k-1}(p-1)$",
@@ -66,7 +66,7 @@
       "startLine": 92,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Concrete Values Across Two Odd Primes",
     "content": "The five evaluations instantiate the closed form: λ(9) = 3¹·2 = 6, λ(27) = 3²·2 = 18, λ(25) = 5¹·4 = 20, λ(7) = 7 − 1 = 6, λ(49) = 7¹·6 = 42. In each case λ(pᵏ) = φ(pᵏ) (full totient), the visible numerical signature of the cyclic regime — contrast λ(8) = 2 = φ(8)/2 in the parent. All follow from carmichael_odd_prime_pow by reducing the power with norm_num (no native_decide), so they stay kernel-checked and axiom-free.",
     "mathContext": "$\\lambda(9)=3\\cdot 2=6,\\ \\lambda(27)=3^2\\cdot 2=18,\\ \\lambda(25)=5\\cdot 4=20,\\ \\lambda(7)=6,\\ \\lambda(49)=7\\cdot 6=42$",

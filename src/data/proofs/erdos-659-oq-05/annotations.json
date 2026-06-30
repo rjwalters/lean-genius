@@ -43,7 +43,7 @@
     "title": "Base Cases and Nonnegativity",
     "content": "isRepresented_zero/one/two record that 0, 1, 2 are represented (Q 0 0, Q 1 0, Q 0 1), each by `decide`. isRepresented_one is the monoid identity needed for the submonoid below. isRepresented_nonneg shows every represented integer is ≥ 0 (a sum of squares, closed by `positivity`) — essential because these integers stand for squared distances, which cannot be negative.",
     "mathContext": "$Q(1,0)=1,\\ Q(0,1)=2;\\qquad \\mathrm{IsRepresented}(n) \\Rightarrow n \\ge 0$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["sum of squares", "nonnegativity", "positivity tactic", "decide"],
     "prerequisites": ["nonnegativity of squares"]
   },

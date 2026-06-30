@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 73
     },
-    "type": "context",
+    "type": "concept",
     "title": "Two Independent Notions of Largeness on ℝ",
     "content": "The docstring sets up the measure-theoretic counterpart to the parent's Baire-category result. A subset of $\\mathbb{R}$ can be 'large' in two independent senses: *comeagre* (residual — complement is meagre) is topological largeness; *conull* (complement is Lebesgue-null) is measure largeness. For the algebraic/transcendental split the two agree (algebraic = small, transcendental = large in both senses), but they diverge for the Liouville numbers: comeagre yet null. The honesty note is explicit — every ingredient is already in Mathlib; the contribution is the machine-checked *synthesis* of the measure/category contrast the parent records only in prose.",
     "mathContext": "Comeagre (residual): complement meagre. Conull: complement Lebesgue-null. These are distinct $\\sigma$-ideals/filters on $\\mathbb{R}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Baire category",
       "Lebesgue measure",

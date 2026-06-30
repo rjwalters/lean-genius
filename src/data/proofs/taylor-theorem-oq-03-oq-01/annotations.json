@@ -15,7 +15,7 @@
     "id": "ann-ttoq0301-local-to-global",
     "proofId": "taylor-theorem-oq-03-oq-01",
     "range": { "startLine": 67, "endLine": 72 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Local-to-Global Bridge (heart of the proof)",
     "content": "iteratedDerivWithin_exp_Icc shows that for x > 0 the local derivative-within iteratedDerivWithin k exp (Icc 0 x) 0 equals 1. This is the genuinely technical step: iteratedDerivWithin_eq_iteratedDeriv converts the local derivative (which only sees exp on the interval) into the global iteratedDeriv, but only under two hypotheses — uniqueDiffOn_Icc (the interval is a unique-differentiability set) and ContDiffAt (exp is smooth at the basepoint). Then iteratedDeriv_exp and exp_zero finish. The template applies verbatim to any entire function.",
     "mathContext": "On a UniqueDiffOn set containing $0$, $\\operatorname{iteratedDerivWithin} k\\,\\exp\\,[0,x]\\,0 = \\operatorname{iteratedDeriv} k\\,\\exp\\,0 = e^0 = 1$.",

@@ -3,11 +3,11 @@
     "id": "ann-fiboq020101-1",
     "proofId": "fibonacci-identities-oq-02-oq-01-oq-01",
     "range": { "startLine": 3, "endLine": 48 },
-    "type": "context",
+    "type": "concept",
     "title": "The Quadratic Companion of the Product Identity",
     "content": "**Module framing.** The parent entry isolated the *product* identity $F_{2n}=F_n\\cdot L_n$ as the engine of Lucas divisibility. This module supplies the *quadratic* companion as a universally quantified theorem over $\\mathbb{Z}$: $L_n^2-5F_n^2=4(-1)^n$. The two are the fundamental degree-2 relations between the companion sequences. The quadratic identity is the integer residue of Binet's formulas $F_n=(\\varphi^n-\\psi^n)/\\sqrt5$, $L_n=\\varphi^n+\\psi^n$: since $\\varphi\\psi=-1$, eliminating $\\varphi,\\psi$ makes $\\sqrt5$ vanish and leaves $L_n^2-5F_n^2=4(\\varphi\\psi)^n=4(-1)^n$. Two consequences are drawn: $L_n^2=5F_n^2\\pm4$ (sign by parity) and $\\gcd(F_n,L_n)\\mid 2$.",
     "mathContext": "$L_n^2-5F_n^2=4(-1)^n$; $\\varphi+\\psi=1,\\ \\varphi\\psi=-1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Binet's formulas",
       "Lucas sequences Uₙ, Vₙ",
@@ -68,7 +68,7 @@
     "title": "The Quadratic Identity and Its Parity Specialisations",
     "content": "Substituting the bridge $L_n=2F_{n+1}-F_n$ into $L_n^2-5F_n^2$ and expanding shows it equals $4\\,(F_{n+1}^2-F_{n+1}F_n-F_n^2)$, which is $4(-1)^n$ by the core lemma — a single `linear_combination 4 * fib_sq_sub n` (`lucas_sq_sub_five_fib_sq`). Rearranging gives $L_n^2=5F_n^2+4(-1)^n$ (`lucas_sq_eq`); collapsing $(-1)^n$ with `Even/Odd.neg_one_pow` gives the clean parity forms $L_{2k}^2=5F_{2k}^2+4$ and $L_{2k+1}^2=5F_{2k+1}^2-4$. So $L_n$ is the nearest integer to $\\sqrt5\\,F_n$, with the parity of $n$ choosing the side.",
     "mathContext": "$L_n^2=5F_n^2+4(-1)^n$; $L_{2k}^2=5F_{2k}^2+4$, $L_{2k+1}^2=5F_{2k+1}^2-4$.",
-    "significance": "primary",
+    "significance": "key",
     "relatedConcepts": [
       "Quadratic Fibonacci–Lucas identity",
       "Binet √5-elimination",
@@ -88,7 +88,7 @@
     "title": "Same-Index Coprimality: gcd(Fₙ, Lₙ) ∈ {1, 2}",
     "content": "A structural payoff: $\\gcd(F_n,L_n)\\mid 2$ (`gcd_fib_lucas_dvd_two`). Any common divisor $d$ of $F_n$ and $L_n$ divides $L_n+F_n=2F_{n+1}$; since consecutive Fibonacci numbers are coprime (`Nat.fib_coprime_fib_succ`), $d$ is coprime to $F_{n+1}$ and therefore divides $2$. With $2$ prime, `Nat.dvd_prime` yields $\\gcd(F_n,L_n)\\in\\{1,2\\}$ (`gcd_fib_lucas_eq_one_or_two`). Both values occur: $\\gcd(F_5,L_5)=\\gcd(5,11)=1$ and $\\gcd(F_6,L_6)=\\gcd(8,18)=2$. This is the single-index counterpart of the parent's cross-index link $L_n\\mid F_{2n}$: at a fixed index the companion sequences barely share factors.",
     "mathContext": "$d\\mid F_n,\\ d\\mid L_n\\Rightarrow d\\mid 2F_{n+1}$ and $\\gcd(d,F_{n+1})=1\\Rightarrow d\\mid 2$.",
-    "significance": "primary",
+    "significance": "key",
     "relatedConcepts": [
       "Coprimality of consecutive Fibonacci numbers",
       "gcd and Bézout-style descent",

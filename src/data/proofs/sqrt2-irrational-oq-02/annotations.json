@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 23
     },
-    "type": "context",
+    "type": "concept",
     "title": "From algebraic irrationals to transcendence",
     "content": "The parent entry proves √n irrational for non-square n — but each such number is ALGEBRAIC, a root of x² − n. The natural follow-up: are there irrationals that are roots of NO polynomial? This file answers yes, concretely and axiom-free, via Mathlib's Liouville theory. Liouville's constant ∑_k 2^{-k!} is transcendental over ℤ — not a root of any nonzero integer polynomial — and in particular irrational, an irrational lying strictly beyond the algebraic numbers of the parent.",
     "mathContext": "Algebraic: a root of some nonzero $p\\in\\mathbb{Z}[x]$. Transcendental $=\\neg$ algebraic. $\\sqrt n$ is irrational but algebraic; transcendence is strictly stronger.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["algebraic number", "transcendental number", "irrationality", "Liouville number"],
     "prerequisites": ["polynomials over ℤ", "irrational numbers"]
   },
@@ -36,7 +36,7 @@
       "startLine": 38,
       "endLine": 45
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Irrational, Then Transcendental",
     "content": "Two facts are read off the Liouville property. liouvilleConst_irrational uses `Liouville.irrational` — any Liouville number is irrational, because a rational would violate the super-approximability. liouvilleConst_transcendental uses `transcendental_liouvilleNumber`: Liouville's inequality says an algebraic irrational of degree d cannot be approximated to order better than d, so a number approximable to *every* order is transcendental over ℤ. The logical chain is Liouville number ⟹ irrational ⟹ (strictly more) transcendental.",
     "mathContext": "Liouville's inequality: for $\\alpha$ algebraic of degree $d\\ge 2$ there is $c>0$ with $|\\alpha - p/q| > c\\,q^{-d}$ for all $p/q$. A number beating $q^{-n}$ for every $n$ violates this for every $d$, hence is transcendental.",

@@ -31,7 +31,7 @@
       "startLine": 41,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Three-Regime Addition Law",
     "content": "arctan_add_lt, arctan_add_gt_pos, and arctan_add_gt_neg are thin wrappers over Mathlib's Real.arctan_add, Real.arctan_add_eq_add_pi, and Real.arctan_add_eq_sub_pi. Presenting all three together makes the branch structure explicit: the same algebraic argument (x+y)/(1-xy) appears in every regime, but the value of arctan x + arctan y differs by 0, +pi, or -pi according to the sign of 1 - xy and of x. The sibling two-term Machin derivation only ever uses the first branch (all its products stay below 1); recording the other two completes the API.",
     "mathContext": "arctan x + arctan y = arctan((x+y)/(1-xy)) + {0 if xy<1; pi if xy>1, x>0; -pi if xy>1, x<0}.",
@@ -54,7 +54,7 @@
       "startLine": 60,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Subtraction and Doubling Laws",
     "content": "arctan_sub is not a separate Mathlib lemma: it is the principal branch applied to x and -y, with arctan(-y) rewritten to -arctan(y) via Real.arctan_neg and the result regrouped by ring, yielding arctan x - arctan y = arctan((x-y)/(1+xy)) under -(xy) < 1. two_arctan restates Real.two_mul_arctan, the doubling law 2*arctan x = arctan(2x/(1-x^2)) for -1 < x < 1. Together with the three-regime addition law these form a small, reusable arctangent calculus.",
     "mathContext": "arctan x - arctan y = arctan((x-y)/(1+xy)); 2 arctan x = arctan(2x/(1-x^2)).",
@@ -95,7 +95,7 @@
       "startLine": 95,
       "endLine": 106
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Dase's Three-Term Formula",
     "content": "dase_three_term is the headline: pi/4 = arctan(1/2) + arctan(1/5) + arctan(1/8). The proof chains two principal-branch additions. First arctan(1/2) + arctan(1/5) = arctan(7/9), since xy = 1/10 < 1 and (1/2+1/5)/(1-1/10) = (7/10)/(9/10) = 7/9. Then arctan(7/9) + arctan(1/8) = arctan(1), since xy = 7/72 < 1 and the argument (7/9+1/8)/(1-7/72) = (65/72)/(65/72) = 1 — the three-term analogue of Machin's 28561/28441 coincidence. arctan_one finishes. Both `congr 1; norm_num` calls reduce an arctan equality to pure rational arithmetic. This formula appears in neither Mathlib nor the sibling entry.",
     "mathContext": "arctan(1/2)+arctan(1/5) = arctan(7/9); arctan(7/9)+arctan(1/8) = arctan((65/72)/(65/72)) = arctan 1 = pi/4.",

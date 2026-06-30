@@ -56,7 +56,7 @@
     "title": "The Transfer into the Abelianization: G → P/[P,P]",
     "content": "transferAb H is the transfer along the canonical projection Abelianization.of : H → H/[H,H]. When H = P is a Sylow p-subgroup this is the classical transfer map G → P/[P,P] that opens focal-subgroup theory. Its codomain Abelianization H is the universal abelian quotient of H, which is what makes it universal among abelian transfers.",
     "mathContext": "transferAb H := transfer (Abelianization.of : H →* Abelianization H) : G →* Abelianization H. The abelianization H/[H,H] receives a canonical map from every homomorphism H → A into an abelian group A.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Abelianization",
       "Abelianization.of",
@@ -79,7 +79,7 @@
     "title": "Universal Property: Every Abelian Transfer Factors Through G → P/[P,P]",
     "content": "Because the target A is abelian, every coefficient map ϕ : H → A factors uniquely as ϕ = (Abelianization.lift ϕ) ∘ Abelianization.of. Feeding this into the naturality lemma transfer_comp yields transfer ϕ = (Abelianization.lift ϕ) ∘ transferAb H. Thus transferAb is the initial object among abelian transfers of H: every transfer is a postcomposition of the single universal map. The Lean proof is three lines (unfold; rw [← transfer_comp]; congr 1).",
     "mathContext": "ϕ = ϕ̂ ∘ of with ϕ̂ = Abelianization.lift ϕ. Then transfer ϕ = transfer (ϕ̂ ∘ of) = ϕ̂ ∘ transfer (of) = ϕ̂ ∘ transferAb H. Uniqueness of ϕ̂ is the universal property of the abelianization.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Abelianization.lift",
       "universal property",

@@ -15,7 +15,7 @@
     "id": "ann-3sl0101-three-subgroups",
     "proofId": "three-subgroups-lemma-oq-01-oq-01",
     "range": { "startLine": 65, "endLine": 80 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The three subgroups lemma (normal-subgroup form)",
     "content": "`commutator_le_of_rotate` is the parent entry's relative three subgroups lemma, reproduced as a private lemma so the file is self-contained: for normal `N`, if `⁅⁅H,K⁆,L⁆ ≤ N` and `⁅⁅K,L⁆,H⁆ ≤ N` then `⁅⁅L,H⁆,K⁆ ≤ N`. The proof projects to the quotient `G ⧸ N`: `X ≤ N ↔ X.map (mk' N) = ⊥` (since `N = ker (mk' N)`), and `map` distributes over the commutator bracket, reducing the relative statement to Mathlib's `= ⊥` Hall–Witt lemma `Subgroup.commutator_commutator_eq_bot_of_rotate`. `commutator_le_of_rotate₂` is a cyclic relabelling used directly in the induction.",
     "mathContext": "For $N \\trianglelefteq G$: $\\lbrack\\lbrack H,K\\rbrack,L\\rbrack \\le N \\wedge \\lbrack\\lbrack K,L\\rbrack,H\\rbrack \\le N \\Rightarrow \\lbrack\\lbrack L,H\\rbrack,K\\rbrack \\le N$. Transport: $X \\le N \\iff X^{\\,G/N} = \\bot$, and $(\\lbrack A,B\\rbrack)^{G/N} = \\lbrack A^{G/N}, B^{G/N}\\rbrack$.",
@@ -79,7 +79,7 @@
     "title": "Cross-check: recovering Mathlib's linear bound",
     "content": "`derivedSeries_le_lowerCentralSeries` confirms the sharp bound is genuinely a strengthening by recovering Mathlib's `derived_le_lower_central` from it: since `n < 2ⁿ` (`Nat.lt_two_pow_self`), we have `n ≤ 2ⁿ − 1`, and the lower central series is antitone (`lowerCentralSeries_antitone`), so `γ₍2ⁿ−1₎ ≤ γₙ`. Composing gives `derivedSeries G n ≤ γₙ`. This is a consistency check rather than new content — but it makes precise that index `2ⁿ−1` dominates index `n`, so nothing is lost relative to Mathlib.",
     "mathContext": "$n < 2^n \\Rightarrow n \\le 2^n - 1 \\Rightarrow \\gamma_{2^n-1} \\le \\gamma_n$ (antitone), hence $\\mathrm{derivedSeries}\\,G\\,n \\le \\gamma_n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["antitonicity", "Nat.lt_two_pow_self", "consistency check", "monotone refinement"],
     "prerequisites": ["antitone sequences", "n < 2ⁿ"]
   }

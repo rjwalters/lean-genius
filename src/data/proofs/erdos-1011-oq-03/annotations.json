@@ -3,7 +3,7 @@
     "id": "ann-erdos1011oq03-header",
     "proofId": "erdos-1011-oq-03",
     "range": { "startLine": 1, "endLine": 47 },
-    "type": "context",
+    "type": "concept",
     "title": "What is open, and what this file actually proves",
     "content": "OQ-03 of Erdős #1011 asks to compute f_5(n): the least number of edges forcing a triangle in an n-vertex graph of chromatic number ≥ 5. This is genuinely open — f_4(n) was only settled in 2024. The file is deliberately honest about that: it does NOT compute f_5(n). It proves the unconditional scaffolding (antitonicity of f, the shift pattern) with zero axioms, and records the open value as a Prop. The honesty note in the header makes the boundary explicit."
   },
@@ -11,7 +11,7 @@
     "id": "ann-erdos1011oq03-forces",
     "proofId": "erdos-1011-oq-03",
     "range": { "startLine": 56, "endLine": 76 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Factoring the sInf and proving nonemptiness",
     "content": "f r n is sInf of the set of edge counts that force a triangle. To reason about it cleanly, the membership predicate is named `Forces r n m`. The defining set is nonempty because any m greater than C(n,2) is unreachable — a simple graph on n vertices has at most C(n,2) edges (Mathlib's `card_edgeFinset_le_card_choose_two`), so `edgeCount G ≥ m` is false and the implication holds vacuously. Nonemptiness is what guarantees the infimum is actually attained."
   },
@@ -19,7 +19,7 @@
     "id": "ann-erdos1011oq03-antitone",
     "proofId": "erdos-1011-oq-03",
     "range": { "startLine": 89, "endLine": 107 },
-    "type": "key-step",
+    "type": "insight",
     "title": "Antitonicity: the one real theorem",
     "content": "The crux. For r ≤ r', the defining set for r sits inside that for r', because χ ≥ r' implies χ ≥ r — so every graph constrained at level r' is already covered by the level-r forcing property at the SAME threshold f r n. Hence f r n itself forces triangles for the r'-constrained graphs, giving f r' n ≤ f r n by `f_le_of_forces`. No extremal graph theory is used; it is pure monotonicity of sInf over nested sets, with the chromatic weakening `le_trans h hchrom` doing the work."
   },
@@ -43,7 +43,7 @@
     "id": "ann-erdos1011oq03-conjecture",
     "proofId": "erdos-1011-oq-03",
     "range": { "startLine": 154, "endLine": 174 },
-    "type": "context",
+    "type": "concept",
     "title": "Recording the open question precisely",
     "content": "`shiftConjecture` (general r) and `f5Conjecture` (the r=5 specialization) are stated as Props and left unproved — the formalization is explicit that these are conjectures, not theorems. `shiftConjecture_imp_f5` shows the general statement specializes to the concrete f₅ question, so any future proof of the pattern immediately resolves this entry's open goal."
   }

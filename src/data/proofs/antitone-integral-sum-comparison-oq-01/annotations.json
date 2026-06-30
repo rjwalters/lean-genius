@@ -19,7 +19,7 @@
     "title": "Harmonic Numbers",
     "content": "harmonic n = ∑_{i<n} 1/(i+1) is the n-th harmonic number Hₙ = 1 + 1/2 + ⋯ + 1/n as a real number. This is the left Riemann sum of 1/x on [1, 1+n], which is exactly why the integral test pins it against log(n+1).",
     "mathContext": "H_n = \\sum_{i=0}^{n-1} \\frac{1}{i+1} = 1 + \\tfrac12 + \\cdots + \\tfrac1n",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["harmonic series", "partial sums"],
     "prerequisites": []
   },

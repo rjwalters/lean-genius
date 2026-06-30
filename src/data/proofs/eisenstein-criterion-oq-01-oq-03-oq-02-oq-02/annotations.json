@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why irreducibility of Φ_p is the load-bearing input",
     "content": "Irreducibility of the cyclotomic polynomial Φ_p over ℚ is not an end in itself — its purpose is to fix the degree of the cyclotomic field. For a primitive p-th root of unity ζ, the minimal polynomial minpoly ℚ ζ is a priori only SOME monic divisor of Φ_p (every primitive root is a root of Φ_p, so its minimal polynomial divides Φ_p). Irreducibility collapses that divisor to Φ_p itself, whence minpoly ℚ ζ = Φ_p and [ℚ(ζ):ℚ] = deg Φ_p = φ(p) = p − 1. The irreducibility consumed here is the parent entry's ELEMENTARY result, re-derived from Eisenstein's criterion applied to Φ_p(X + 1), not Mathlib's general cyclotomic.irreducible_rat.",
     "mathContext": "$\\zeta$ a primitive $p$-th root of unity $\\Rightarrow \\Phi_p(\\zeta)=0 \\Rightarrow \\operatorname{minpoly}_{\\mathbb{Q}}\\zeta \\mid \\Phi_p$; irreducibility of $\\Phi_p$ forces $\\operatorname{minpoly}_{\\mathbb{Q}}\\zeta=\\Phi_p$, so $[\\mathbb{Q}(\\zeta):\\mathbb{Q}]=\\deg\\Phi_p=\\varphi(p)=p-1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["cyclotomic polynomial", "irreducibility", "minimal polynomial", "Eisenstein's criterion", "field extension degree"],
     "prerequisites": ["cyclotomic polynomials", "minimal polynomials", "field extensions"]
   },
@@ -51,7 +51,7 @@
       "startLine": 54,
       "endLine": 57
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "minpoly_natDegree: reading off degree p − 1",
     "content": "Rewriting minpoly ℚ ζ as cyclotomic p ℚ (the previous theorem), natDegree_cyclotomic gives (cyclotomic p ℚ).natDegree = totient p, and Nat.totient_prime collapses totient p to p − 1 for prime p. This three-step rewrite is the degree computation that bridges the minimal-polynomial identity and the field-degree result.",
     "mathContext": "$\\deg\\Phi_p=\\varphi(p)=p-1$ since $\\varphi(p)=p-1$ for prime $p$ (every residue $1,\\dots,p-1$ is coprime to $p$).",

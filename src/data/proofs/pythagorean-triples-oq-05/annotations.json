@@ -10,7 +10,7 @@
     "title": "Module Header and Problem Setup",
     "content": "The open question asks for the two-squares identity $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$ over a commutative ring, and the derivation that being a sum of two squares is closed under multiplication. The identity is exactly the multiplicativity of the Gaussian-integer norm $N(a+bi) = a^2+b^2$, and is the algebraic heart of the classification of integers that are sums of two squares. The development is parameterized over `variable {R : Type*} [CommRing R]`, so every result holds uniformly over $\\mathbb{Z}$, $\\mathbb{R}$, $\\mathbb{C}$, polynomial rings, and finite rings.",
     "mathContext": "$N : \\mathbb{Z}[i] \\to \\mathbb{Z},\\ N(a+bi) = a^2+b^2 = (a+bi)(a-bi)$; the identity is the statement $N(zw) = N(z)\\,N(w)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Gaussian integers", "multiplicative norm", "commutative ring", "sum of two squares"],
     "prerequisites": ["commutative rings", "complex numbers", "the ring norm concept"]
   },
@@ -66,7 +66,7 @@
       "startLine": 68,
       "endLine": 75
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Witness over ℤ",
     "content": "A worked instance over $\\mathbb{Z}$: $(1^2+2^2)(1^2+1^2) = 5 \\cdot 2 = 10 = 1^2 + 3^2$, exhibiting $10$ as a sum of two squares directly through the identity with $(a,b,c,d) = (1,2,1,1)$. Computing the witnesses: $ac-bd = 1\\cdot1 - 2\\cdot1 = -1$ and $ad+bc = 1\\cdot1 + 2\\cdot1 = 3$, giving $(-1)^2 + 3^2 = 1 + 9 = 10$. The proof rewrites with the general identity and closes by `norm_num`, demonstrating that the abstract `CommRing` lemma specializes correctly to a concrete numerical fact.",
     "mathContext": "$(1^2+2^2)(1^2+1^2) = (1\\cdot1-2\\cdot1)^2 + (1\\cdot1+2\\cdot1)^2 = (-1)^2 + 3^2 = 10$.",

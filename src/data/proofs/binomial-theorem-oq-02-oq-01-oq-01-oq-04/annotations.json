@@ -15,7 +15,7 @@
     "id": "ann-absorb",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-04",
     "range": { "startLine": 63, "endLine": 148 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The absorption engine (re-derived locally)",
     "content": "absorb is the combinatorial identity kᵢ·multinomial(s,k) = n·multinomial(s, update k i (kᵢ-1)): lowering the i-th count by one absorbs the factor kᵢ into n. absorb_weighted carries the probability weight, turning kᵢ·multinomial(s,k)·∏pⱼ^kⱼ into n·pᵢ·multinomial(s,k')·∏pⱼ^k'ⱼ. Both are proved from Nat.multinomial_spec and the factorial identity k·(k-1)! = k!. The parent file's copies are `private`, so they are re-derived here.",
     "mathContext": "$k_i \\binom{n}{k} = n \\binom{n-1}{k - e_i}$ in multinomial form: $k_i \\cdot \\frac{n!}{\\prod_j k_j!} = n \\cdot \\frac{(n-1)!}{(k_i-1)!\\prod_{j\\ne i} k_j!}$.",

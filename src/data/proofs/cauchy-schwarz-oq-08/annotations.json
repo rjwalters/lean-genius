@@ -10,7 +10,7 @@
     "title": "Module Header and Problem Setup",
     "content": "The open question asks for the polarization identity $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$ in a real inner-product space. The bare identity already appears in cauchy-schwarz-oq-07; this entry pushes it to its structural payoff — the inner product is uniquely determined by the norm, so any map preserving the norm must preserve the inner product. Two real inner-product spaces $F, F'$ are fixed via `[NormedAddCommGroup F] [InnerProductSpace ℝ F]`.",
     "mathContext": "Polarization $\\langle x,y\\rangle=\\tfrac14(\\|x+y\\|^2-\\|x-y\\|^2)$ exhibits $\\langle\\cdot,\\cdot\\rangle$ as a function of $\\|\\cdot\\|$ alone — the source of all rigidity results in the file.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["polarization identity", "norm rigidity", "real inner-product space", "isometries"],
     "prerequisites": ["inner-product spaces", "norms"]
   },

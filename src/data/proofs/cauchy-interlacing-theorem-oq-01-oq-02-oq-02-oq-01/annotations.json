@@ -40,7 +40,7 @@
     "title": "Basis Independence of the Trace",
     "content": "`schur_trace_eq` is the equality (k=n) case of majorization, needing no convexity: `∑ᵢ re ⟪T (e i), e i⟫ = ∑ⱼ λⱼ`. It follows from `diag_decomp` summed over `i`, a swap (`Finset.sum_comm`, `Finset.mul_sum`), and the column sums `∑ᵢ D i j = 1` (`dsWeight_col_sum`, `mul_one`).",
     "mathContext": "The trace of a Hermitian operator equals the sum of its eigenvalues regardless of the orthonormal basis — the equality constraint that distinguishes majorization from weak majorization.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["trace", "majorization equality case", "basis independence"]
   },
   {

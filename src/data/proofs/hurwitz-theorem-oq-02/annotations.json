@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 67
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Open Question and the Division-Algebra Dictionary",
     "content": "The module docstring frames a genuine coincidence in mathematical physics: Hurwitz's theorem (1898) gives exactly four normed division algebras over ℝ (ℝ, ℂ, ℍ, 𝕆, of dimensions 1, 2, 4, 8), and physics recognises exactly four fundamental interactions (gravity, electromagnetism, weak, strong). A research programme spanning Günaydin–Gürsey, Dixon, Baez–Huerta, and Furey builds a canonical dictionary matching each force's internal gauge group to one of the algebras. The docstring is explicit about scope: only the numerical and group-theoretic skeleton is machine-checked, while the physical interpretation — which algebra 'is' which force and why — lives entirely in commentary. This honesty matters: the file does not claim to derive physics from algebra, only to make the well-known 'four ↔ four' correspondence mathematically well-posed.",
     "mathContext": "The dictionary table pairs each algebra $A$ with a force whose gauge group has dimension equal to either $\\dim_{\\mathbb{R}} \\mathrm{Im}(A)$ (for $\\mathbb{R}, \\mathbb{C}, \\mathbb{H}$) or $\\dim_{\\mathbb{R}} A$ (for $\\mathbb{O}$): $U(1)=1=\\dim \\mathrm{Im}\\,\\mathbb{C}$, $SU(2)=3=\\dim \\mathrm{Im}\\,\\mathbb{H}$, $SU(3)=8=\\dim \\mathbb{O}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Hurwitz's theorem",
       "normed division algebras",
@@ -102,7 +102,7 @@
       "startLine": 163,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Weak Force: The Unit Quaternions as a Subgroup of ℍˣ",
     "content": "The genuinely group-theoretic core, and the cleanest algebra↔force link. The weak gauge group $SU(2)$ is isomorphic to $Sp(1)$, the unit quaternions $\\{q \\in \\mathbb{H} : |q| = 1\\}$. The file proves these form a subgroup of the units $\\mathbb{H}^\\times$ by establishing three closure facts directly from multiplicativity of the quaternion norm: `unitQuat_mul_closed` (via `map_mul`: $|pq| = |p||q| = 1$), `unitQuat_one` (via `map_one`), and `unitQuat_inv_closed` (via `map_inv₀`). The bundled `unitQuaternions : Subgroup (Quaternion ℝ)ˣ` carries these as its `mul_mem'`, `one_mem'`, `inv_mem'` fields. The inversion step is subtle: working in the unit group $\\mathbb{H}^\\times$ rather than $\\mathbb{H}$, it derives $|a^{-1}| = 1$ from $a \\cdot a^{-1} = 1$ (`Units.mul_inv`) and applying `normSq` to both sides. The key mathlib fact is that `Quaternion.normSq` is a `MonoidWithZeroHom`, i.e. multiplicative — which is precisely the composition-algebra property $N(xy) = N(x)N(y)$ that makes ℍ a *normed* division algebra in the first place.",
     "mathContext": "$\\mathrm{normSq}: \\mathbb{H} \\to \\mathbb{R}$ is a monoid-with-zero homomorphism, so $N(pq) = N(p)N(q)$, $N(1) = 1$, $N(p^{-1}) = N(p)^{-1}$. The norm-one set $Sp(1) = N^{-1}(1)$ is therefore closed under product, identity, and inverse — a subgroup of $\\mathbb{H}^\\times$, isomorphic to $SU(2)$. Concretely $Sp(1) \\cong S^3$, the unit 3-sphere.",
@@ -128,7 +128,7 @@
       "startLine": 200,
       "endLine": 212
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Electromagnetism: The Unit Complex Numbers U(1)",
     "content": "The electromagnetic gauge group $U(1)$ is literally the unit circle in ℂ — Mathlib's `Circle`. `unitComplex_mul_closed` proves the unit complex numbers are closed under multiplication by exactly the same argument as the quaternion case: `Complex.normSq` is multiplicative (`map_mul`), so $|zw| = |z||w| = 1$ when $|z| = |w| = 1$. `unitComplex_one` records that $1$ lies on the circle. That the same one-line `map_mul` proof works for both ℂ and ℍ exposes the unifying theme: closure of the norm-one elements is a *composition-algebra* phenomenon, not special to either algebra. The difference from the quaternion case is only that $U(1)$ is abelian (ℂ is commutative) whereas $SU(2) \\cong Sp(1)$ is not (ℍ is non-commutative) — mirroring that electromagnetism is an abelian gauge theory and the weak force is not.",
     "mathContext": "$U(1) = \\{z \\in \\mathbb{C} : |z| = 1\\} = S^1$, the unit circle. Multiplicativity $\\mathrm{normSq}(zw) = \\mathrm{normSq}(z)\\,\\mathrm{normSq}(w)$ gives closure. Unlike $Sp(1)$, $U(1)$ is abelian since $\\mathbb{C}$ is commutative.",

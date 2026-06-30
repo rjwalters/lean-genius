@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 42
     },
-    "type": "context",
+    "type": "concept",
     "title": "Dyck ⊆ Schröder, Recurrence by Recurrence",
     "content": "Every Dyck path is a Schröder path — Schröder paths simply allow extra horizontal (2,0) steps — so combinatorially catalan(n) ≤ largeSchroder(n). The parent entry's second open question asked for a proof of this dominance by comparing the two recurrences rather than building a path bijection. Mathlib presents both sequences with the same Cauchy-product body over Fin(n+1): catalan(n+1) = ∑ᵢ catalan(i)·catalan(n−i) and largeSchroder(n+1) = largeSchroder(n) + ∑ᵢ L(i)·L(n−i). The Schröder recurrence is the Catalan recurrence plus the single extra non-negative term largeSchroder(n) — that lone term is the entire content of the inequality.",
     "mathContext": "$\\operatorname{catalan}(n+1) = \\sum_i \\operatorname{catalan}(i)\\operatorname{catalan}(n-i)$ and $L(n+1) = L(n) + \\sum_i L(i)L(n-i)$ — the Schröder recurrence is the Catalan recurrence plus the single non-negative term $L(n)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Catalan numbers",
       "large Schröder numbers",
@@ -29,7 +29,7 @@
       "startLine": 44,
       "endLine": 51
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Positivity from the Recurrence",
     "content": "largeSchroder_pos records 0 < largeSchroder(n). The induction is immediate: L(0) = 1 > 0, and unfolding the recurrence gives L(n+1) = L(n) + (a sum of products), which is at least L(n) by Nat.le_add_right, hence positive by the inductive hypothesis. This positivity is exactly what later promotes the non-strict domination to a strict one for n ≥ 1.",
     "mathContext": "$0 < L(n)$: $L(0)=1$ and $L(n+1) = L(n) + (\\text{non-negative sum}) \\ge L(n)$ by $\\texttt{Nat.le\\_add\\_right}$.",
@@ -52,7 +52,7 @@
       "startLine": 53,
       "endLine": 74
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Termwise Domination by Strong Induction",
     "content": "catalan_le_largeSchroder is the main result. The Cauchy product couples each index i with its complement n−i, so ordinary induction is too weak — strong induction (Nat.strong_induction_on) is required. After rewriting the Catalan side by catalan_succ and the Schröder side by its defining equation, the extra largeSchroder(m) term is discarded with Nat.le_add_left, and Finset.sum_le_sum reduces the goal to a single pointwise inequality catalan(i)·catalan(m−i) ≤ L(i)·L(m−i). Both i and m−i are < m+1 (the key omega facts via i.isLt), so the strong hypothesis applies to each factor and Nat.mul_le_mul finishes. No reindexing is needed because both sums live over the identical type Fin(m+1).",
     "mathContext": "$\\operatorname{catalan}(n) \\le L(n)$ by strong induction: discard the extra $L(m)$ ($\\texttt{Nat.le\\_add\\_left}$), then $\\sum_i \\operatorname{catalan}(i)\\operatorname{catalan}(m-i) \\le \\sum_i L(i)L(m-i)$ since each factor dominates ($i,\\,m-i < m+1$).",
@@ -98,7 +98,7 @@
       "startLine": 92,
       "endLine": 105
     },
-    "type": "context",
+    "type": "concept",
     "title": "Equality Exactly at n = 0",
     "content": "catalan_eq_largeSchroder_iff turns the strict bound into a clean characterization: catalan(n) = largeSchroder(n) iff n = 0. If n ≥ 1 then strict domination forbids equality; at n = 0 both sequences are seeded at 1. The closing example, catalan 3 = 5 ≤ 22 = largeSchroder 3, is a concrete instance of the dominance.",
     "mathContext": "$\\operatorname{catalan}(n) = L(n) \\iff n = 0$: strict domination rules out equality for $n \\ge 1$, and both are seeded at $1$ when $n=0$. Concretely $\\operatorname{catalan}(3) = 5 \\le 22 = L(3)$.",

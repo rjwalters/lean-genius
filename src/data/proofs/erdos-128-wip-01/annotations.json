@@ -3,7 +3,7 @@
     "id": "erdos128-wip01-ann-header",
     "proofId": "erdos-128-wip-01",
     "range": { "startLine": 3, "endLine": 40 },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős #128: A Ramsey–Turán Density Question",
     "content": "Erdős Problem #128 ($250, open) asks whether a uniform edge-density condition on all large induced subgraphs forces a triangle: if every induced subgraph on ≥ ⌊n/2⌋ vertices has more than n²/50 edges, must G contain a triangle? The constant 1/50 is conjectured optimal, witnessed by blow-ups of C₅ (triangle-free, yet induced-subgraph density ≈ 1/5). The scaffold Erdos128Problem.lean only sets up objects and prose and fails to build; this file re-declares the objects (with classical decidability) and proves the first structural theorems.",
     "mathContext": "Every induced subgraph on $\\ge \\lfloor n/2\\rfloor$ vertices with $> n^2/50$ edges $\\stackrel{?}{\\Rightarrow}$ a triangle; conjectured optimal constant $1/50$.",

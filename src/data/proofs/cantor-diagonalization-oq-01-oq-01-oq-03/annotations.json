@@ -7,7 +7,7 @@
     "title": "Easton's Three Constraints on the Continuum Function",
     "content": "The parent entry formalized CH and stated König's constraint and Easton's theorem only at 2^{ℵ₀}, leaving open which patterns of the generalized continuum function α ↦ 2^{ℵ_α} are consistent with ZFC. Easton's theorem (1970) answers this for regular cardinals: the only ZFC constraints are monotonicity, Cantor's strict inequality ℵ_α < 2^{ℵ_α}, and König's cf(2^{ℵ_α}) > ℵ_α; subject to these any pattern is consistent. This file proves all three unconditionally and axiom-free from Mathlib's cardinal/cofinality API. contFn α := 2 ^ ℵ_α is the continuum function, and the helper two_ne_zero_card supplies (2 : Cardinal) ≠ 0 for the power-monotonicity lemma.",
     "mathContext": "$\\mathrm{contFn}(\\alpha) = 2^{\\aleph_\\alpha}$; Easton constraints: monotone, $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$, $\\operatorname{cf}(2^{\\aleph_\\alpha}) > \\aleph_\\alpha$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "generalized continuum hypothesis",
       "Easton's theorem",
@@ -63,7 +63,7 @@
     "id": "cantordiag010103-ann-konig",
     "proofId": "cantor-diagonalization-oq-01-oq-01-oq-03",
     "range": { "startLine": 55, "endLine": 65 },
-    "type": "key-step",
+    "type": "insight",
     "title": "König's Constraint, Discharged from Mathlib",
     "content": "aleph_lt_cof_contFn is the heart of the entry: cf(2^{ℵ_α}) > ℵ_α for all α, the consequence of König's theorem (1905) that — with monotonicity and Cantor — exhausts the ZFC constraints. Where the parent only STATED this as a Prop, here it is PROVED in one line from Cardinal.lt_cof_power (with base 2 > 1 and ℵ₀ ≤ ℵ_α). The classical case aleph0_lt_cof_continuum (cf(2^{ℵ₀}) > ℵ₀) follows by specializing α = 0 and rewriting ℵ_0 = ℵ₀, ruling out e.g. 2^{ℵ₀} = ℵ_ω (which has countable cofinality).",
     "mathContext": "$\\operatorname{cf}(2^{\\aleph_\\alpha}) > \\aleph_\\alpha$; in particular $\\operatorname{cf}(2^{\\aleph_0}) > \\aleph_0$, so $2^{\\aleph_0} \\ne \\aleph_\\omega$.",

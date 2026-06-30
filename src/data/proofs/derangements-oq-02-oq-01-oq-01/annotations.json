@@ -10,7 +10,7 @@
     "title": "From an Exact Count to a Poisson Law",
     "content": "This file extracts the **asymptotic** content of the partial derangement count proved in the parent entry `derangements-oq-02-oq-01`: $S(n,k) = \\binom{n}{k} D(n-k)$ counts permutations of $n$ letters with exactly $k$ fixed points.\n\nDividing by $n!$ turns these counts into a probability distribution $\\mathrm{prob}(n,k)$ on $\\{0,\\dots,n\\}$. The headline result is that, for each fixed $k$, $\\mathrm{prob}(n,k) \\to e^{-1}/k!$ as $n \\to \\infty$ — the point masses of a **Poisson distribution of mean 1**.\n\nThe proof imports the parent count and Mathlib's scalar derangement limit `numDerangements_tendsto_inv_e` ($D(m)/m! \\to e^{-1}$), and opens `Filter`, `Topology`, `Finset` and the `Nat` factorial notation.",
     "mathContext": "\\mathrm{prob}(n,k) = S(n,k)/n! \\xrightarrow{n\\to\\infty} e^{-1}/k!",
-    "significance": "concept",
+    "significance": "supporting",
     "prerequisites": [
       "derangements-oq-02-oq-01 (exact partial-derangement count)",
       "numDerangements_tendsto_inv_e (D(m)/m! → 1/e)",
@@ -51,7 +51,7 @@
       "startLine": 70,
       "endLine": 85
     },
-    "type": "proof",
+    "type": "insight",
     "title": "The Binomial Coefficient Cancels",
     "content": "**Theorem** `kfixed_prob_eq`: for `k ≤ n`,\n```\nprob n k = (1 / k!) * (numDerangements (n - k) / (n - k)!)\n```\n\nThis is the crux. Substituting `kFixedCount_eq` gives $\\mathrm{prob}(n,k) = \\binom{n}{k} D(n-k)/n!$. The factorial identity\n$$n! = \\binom{n}{k}\\,k!\\,(n-k)! \\qquad (\\texttt{Nat.choose\\_mul\\_factorial\\_mul\\_factorial})$$\ncancels the binomial coefficient, leaving $\\frac{1}{k!}\\cdot\\frac{D(n-k)}{(n-k)!}$. After `push_cast` and substituting the factorial identity, `field_simp` discharges the cast arithmetic (positivity of `choose`, `k!`, `(n-k)!` supplied as hypotheses).",
     "mathContext": "\\mathrm{prob}(n,k) = \\frac{1}{k!}\\cdot\\frac{D(n-k)}{(n-k)!}",
@@ -73,7 +73,7 @@
       "startLine": 87,
       "endLine": 101
     },
-    "type": "proof",
+    "type": "insight",
     "title": "These Are Genuine Probability Distributions",
     "content": "**Theorem** `kfixed_prob_sum`: for every `n`,\n```\n∑ k ∈ range (n+1), prob n k = 1\n```\n\nThe parent's `sum_kfixed_eq_factorial` gives $\\sum_k S(n,k) = n!$ (the partial-derangement counts partition $S_n$ by fixed-point number). Casting to $\\mathbb{R}$, pulling the common denominator $n!$ out of the sum (`Finset.sum_div`), and `div_self` finish: $\\frac{\\sum_k S(n,k)}{n!} = \\frac{n!}{n!} = 1$.\n\nThis confirms the pre-limit objects are honest probability distributions, matching the total mass $\\sum_k e^{-1}/k! = e^{-1}\\cdot e = 1$ of the Poisson(1) limit.",
     "mathContext": "\\sum_{k=0}^{n} \\mathrm{prob}(n,k) = n!/n! = 1",
@@ -94,7 +94,7 @@
       "startLine": 103,
       "endLine": 131
     },
-    "type": "proof",
+    "type": "insight",
     "title": "The Poisson(1) Limit",
     "content": "**Theorem** `kfixed_prob_tendsto`:\n```\nTendsto (fun n => prob n k) atTop (𝓝 (Real.exp (-1) / k!))\n```\n\nThree moves:\n1. **Cofinal shift** — `n ↦ n - k` tends to `∞` for fixed `k` (proved directly via `tendsto_atTop_atTop` and `omega`).\n2. **Reindex the known limit** — composing Mathlib's `numDerangements_tendsto_inv_e` with that shift gives $D(n-k)/(n-k)! \\to e^{-1}$.\n3. **Scale and align** — multiplying by the constant $1/k!$ yields the limit $e^{-1}/k!$; `Tendsto.congr'` replaces the scaled sequence by `prob n k` using `kfixed_prob_eq`, valid eventually (once `k ≤ n`).\n\nThe number of fixed points of a uniformly random permutation thus converges in distribution to a Poisson(1) random variable.",
     "mathContext": "\\mathrm{prob}(n,k) \\xrightarrow{n\\to\\infty} \\frac{e^{-1}}{k!}",

@@ -6,7 +6,7 @@
       "startLine": 70,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Lawvere Diagonal Engine",
     "content": "The self-contained Level-1 engine: a fixed-point-free `g : β → β` obstructs surjectivity of any `f : α → (α → β)`. If `f` were surjective it would hit the diagonal `fun x => g (f x x)`; evaluating the witnessing equality at its own index gives `f a a = g (f a a)`, a fixed point of `g`, contradiction. Every higher-order result in the file ultimately discharges through this one theorem by supplying a specially constructed fixed-point-free map.",
     "mathContext": "Surjectivity of $f$ applied to the diagonal $d(x) = g(f(x)(x))$ yields $a$ with $f(a)(a) = g(f(a)(a))$, contradicting $\\forall b,\\ g(b) \\neq b$.",
@@ -118,7 +118,7 @@
       "startLine": 174,
       "endLine": 195
     },
-    "type": "example",
+    "type": "concept",
     "title": "Second-Order Cantor Instances",
     "content": "Concrete witnesses that the theorem is non-vacuous: over `(ℕ → Bool) → Bool` Boolean negation `!` is the fixed-point-free output map, and over `(ℕ → Prop) → Prop` logical negation `¬` is. In both cases the function domain is inhabited by constant functions, so no `f : ι → (ι → (codomain))` is surjective — a genuine 'second-order' non-enumerability statement about a function space of function spaces.",
     "mathContext": "$g = (\\lnot\\cdot)$ on Bool and $g = \\lnot$ on Prop are fixed-point-free; $\\mathbb{N} \\to \\text{Bool}$ and $\\mathbb{N} \\to \\text{Prop}$ are inhabited by constants.",

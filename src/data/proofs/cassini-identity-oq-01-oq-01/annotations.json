@@ -46,7 +46,7 @@
     "title": "Reindexing to the classical signed statement",
     "content": "`catalan` recovers the textbook form $F_n^2 - F_{n-r}F_{n+r} = (-1)^{n-r}F_r^2$ for $r \\le n$ by instantiating `catalan_aux` at $m = n - r$. The two rewrites `Nat.sub_add_cancel` (turning $(n-r)+r$ into $n$) and an `omega`-proved $ (n-r)+2r = n+r$ convert the subtraction-free identity back to the one with $n-r$, where $r \\le n$ guarantees the natural-number subtraction behaves.",
     "mathContext": "$F_n^2 - F_{n-r}F_{n+r} = (-1)^{n-r}F_r^2$ for $r \\le n$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Natural-number subtraction",
       "Reindexing",
@@ -60,7 +60,7 @@
       "startLine": 94,
       "endLine": 114
     },
-    "type": "remark",
+    "type": "warning",
     "title": "Cassini specialization and concrete instances",
     "content": "`catalan_one` is the $r = 1$ case, which is Cassini's identity $F_n^2 - F_{n-1}F_{n+1} = (-1)^{n-1}$ (here $F_1^2 = 1$). The numeric checks `catalan_5_2` ($F_5^2 - F_3 F_7 = 25 - 26 = -1 = (-1)^3 F_2^2$) and `catalan_6_2` ($F_6^2 - F_4 F_8 = 64 - 63 = 1 = (-1)^4 F_2^2$) confirm the general theorem against hand computation off the diagonal $r = 1$.",
     "mathContext": "$F_5^2 - F_3 F_7 = -1$, $F_6^2 - F_4 F_8 = 1$.",

@@ -19,7 +19,7 @@
     "title": "Matrix Entries Are Basis Inner Products",
     "content": "`inner_single_toEuclideanLin_single`: `⟪e_a, (toEuclideanLin A) e_b⟫ = A a b`. `EuclideanSpace.inner_single_left` reads off coordinate `a` of the image, `Matrix.toEuclideanLin_apply` says the operator is matrix-vector multiplication, and `Matrix.mulVec_single_one` extracts the `b`-th column when the input is the standard basis vector `e_b`. The abstract operator identity becomes a one-line column lookup.",
     "mathContext": "⟪e_a, A e_b⟫ = (A·e_b)_a = (column b of A)_a = A_{a b}.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["standard basis", "matrix-vector multiplication", "toEuclideanLin"],
     "prerequisites": ["EuclideanSpace coordinates", "column of a matrix"]
   },

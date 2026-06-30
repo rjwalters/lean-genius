@@ -15,7 +15,7 @@
     "id": "brianchon-oq0102-identities",
     "proofId": "brianchon-theorem-oq-01-oq-02",
     "range": { "startLine": 107, "endLine": 137 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Two Driving Polynomial Identities",
     "content": "crossProduct_mulMatrix is the cofactor / Binet–Cauchy identity relating the cross product of mapped vectors to the adjugate; det_threeVectorMatrix_mulMatrix says applying a fixed matrix M to all three rows scales the triple determinant by det M: det(Mu, Mv, Mw) = det M · det(u, v, w). The latter is exactly the transport lemma that injects the (det C)^4 factor into the scalar identity once M = det C • C.",
     "mathContext": "$\\det(Mu, Mv, Mw) = \\det M \\cdot \\det(u,v,w)$ — the determinant-transport identity; with $M = \\det C\\cdot C$ it produces the $(\\det C)^4$ factor.",
