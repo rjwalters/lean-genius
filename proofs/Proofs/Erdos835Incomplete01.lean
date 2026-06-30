@@ -30,13 +30,22 @@ it actually uses all `k+1` colours.
    `(k+1)`-subset `A` of `{1,…,2k}` (one exists since `k+1 ≤ 2k`); the property
    exhibits, for every colour `c`, a `k`-subset of `A` coloured `c`.
 
-3. `erdosRosenfeld_uses_all_colors` — equivalently the image of the colouring is
+3. `erdosRosenfeld_range_univ` — equivalently the image of the colouring is
    all of `Fin (k+1)`, so exactly `k+1` colours are used.
 
 4. `erdosRosenfeldQuestion_surjective` — hence a positive answer to the
    question yields a surjective `(k+1)`-colouring. This is the "rainbow ⇒ all
    colours present" half that any analysis of the question relies on, made
    precise without the chromatic-number machinery.
+
+5. `erdosRosenfeld_window_injective` — within any `(k+1)`-subset `A`, the `k+1`
+   `k`-subsets of `A` get the `k+1` *distinct* colours (a surjection between
+   equal-size sets is a bijection).
+
+6. `erdosRosenfeld_proper` — consequently adjacent `k`-subsets in `J(2k,k)`
+   (those meeting in `k-1` elements) get different colours: the property is a
+   genuine proper `(k+1)`-colouring of the Johnson graph (the *upper* half of
+   `property ⇔ χ(J(2k,k)) = k+1`).
 
 ## Summary: 0 sorries, 0 axioms, no `native_decide`.
 Self-contained: the scaffold `Erdos835Problem.lean` currently fails to parse on
@@ -105,6 +114,75 @@ theorem erdosRosenfeldQuestion_surjective (k : ℕ) (hk : 1 ≤ k)
   obtain ⟨χ, hχ⟩ := h
   exact ⟨χ, erdosRosenfeld_surjective k hk χ hχ⟩
 
+/-- **Rainbow within a window.** For `k ≥ 1`, if `χ` has the Erdős–Rosenfeld
+    property then its restriction to the `k`-subsets of any `(k+1)`-subset `A` of
+    `{1,…,2k}` is *injective*: the `k+1` distinct `k`-subsets of `A` receive the
+    `k+1` distinct colours. There are exactly `k+1` such subsets (one per omitted
+    element), and the property already forces all `k+1` colours to appear among
+    them, so the surjection between equal-size sets is in fact a bijection. -/
+theorem erdosRosenfeld_window_injective (k : ℕ) (hk : 1 ≤ k)
+    (χ : kSubsets (2 * k) k → Fin (k + 1)) (h : hasErdosRosenfeldProperty k χ)
+    (A : Finset ℕ) (hA : A ⊆ baseSet (2 * k)) (hAcard : A.card = k + 1)
+    (S T : kSubsets (2 * k) k) (hS : S.val ⊆ A) (hT : T.val ⊆ A)
+    (hcol : χ S = χ T) : S.val = T.val := by
+  classical
+  -- Lift the colouring to a total function with a junk default off the `k`-subsets.
+  let φ : Finset ℕ → Fin (k + 1) :=
+    fun s => if hs : s ⊆ baseSet (2 * k) ∧ s.card = k then χ ⟨s, hs⟩ else 0
+  have key : ∀ U : kSubsets (2 * k) k, φ U.val = χ U := by
+    intro U
+    show (if hs : U.val ⊆ baseSet (2 * k) ∧ U.val.card = k then χ ⟨U.val, hs⟩ else 0) = χ U
+    exact dif_pos ⟨U.2.1, U.2.2⟩
+  -- `φ` maps the `k`-subsets of `A` *onto* all `k+1` colours (the property).
+  have hmaps : Set.MapsTo φ (↑(A.powersetCard k))
+      (↑(Finset.univ : Finset (Fin (k + 1)))) := fun s _ => by simp
+  have hsurj : Set.SurjOn φ (↑(A.powersetCard k))
+      (↑(Finset.univ : Finset (Fin (k + 1)))) := by
+    intro c _
+    obtain ⟨S', hS'sub, hS'c⟩ := h A hA hAcard c
+    rw [Set.mem_image]
+    refine ⟨S'.val, ?_, ?_⟩
+    · simp only [Finset.mem_coe, Finset.mem_powersetCard]
+      exact ⟨hS'sub, S'.2.2⟩
+    · rw [key S']; exact hS'c
+  -- Both the domain window and the colour set have exactly `k+1` elements.
+  have hcard : (A.powersetCard k).card ≤ (Finset.univ : Finset (Fin (k + 1))).card := by
+    have heq : (A.powersetCard k).card = (Finset.univ : Finset (Fin (k + 1))).card := by
+      rw [Finset.card_powersetCard, hAcard, Nat.choose_succ_self_right,
+          Finset.card_univ, Fintype.card_fin]
+    exact heq.le
+  -- A surjection between equal-size finite sets is injective.
+  have hinj : Set.InjOn φ (↑(A.powersetCard k)) :=
+    Finset.injOn_of_surjOn_of_card_le φ hmaps hsurj hcard
+  have hSmem : (S.val : Finset ℕ) ∈ (↑(A.powersetCard k) : Set (Finset ℕ)) := by
+    simp only [Finset.mem_coe, Finset.mem_powersetCard]; exact ⟨hS, S.2.2⟩
+  have hTmem : (T.val : Finset ℕ) ∈ (↑(A.powersetCard k) : Set (Finset ℕ)) := by
+    simp only [Finset.mem_coe, Finset.mem_powersetCard]; exact ⟨hT, T.2.2⟩
+  exact hinj hSmem hTmem (by rw [key S, key T, hcol])
+
+/-- **The Erdős–Rosenfeld property is a proper colouring of the Johnson graph.**
+    For `k ≥ 1`, two distinct `k`-subsets `S, T` of `{1,…,2k}` that are *adjacent*
+    in `J(2k,k)` — i.e. `|S ∩ T| = k − 1`, equivalently `|S ∪ T| = k + 1` — receive
+    different colours. Their union `A = S ∪ T` is a `(k+1)`-subset and both `S, T`
+    are `k`-subsets of it, so the rainbow property of the window
+    (`erdosRosenfeld_window_injective`) separates them. This is the *upper* half of
+    `property ⇔ χ(J(2k,k)) = k+1`: an Erdős–Rosenfeld colouring is a genuine proper
+    `(k+1)`-colouring of the Johnson graph, complementing the surjectivity (lower)
+    half above. -/
+theorem erdosRosenfeld_proper (k : ℕ) (hk : 1 ≤ k)
+    (χ : kSubsets (2 * k) k → Fin (k + 1)) (h : hasErdosRosenfeldProperty k χ)
+    (S T : kSubsets (2 * k) k) (hne : S.val ≠ T.val)
+    (hadj : (S.val ∩ T.val).card = k - 1) : χ S ≠ χ T := by
+  intro hcol
+  apply hne
+  have hA : S.val ∪ T.val ⊆ baseSet (2 * k) := Finset.union_subset S.2.1 T.2.1
+  have hAcard : (S.val ∪ T.val).card = k + 1 := by
+    have hu := Finset.card_union_add_card_inter S.val T.val
+    rw [S.2.2, T.2.2, hadj] at hu
+    omega
+  exact erdosRosenfeld_window_injective k hk χ h (S.val ∪ T.val) hA hAcard S T
+    Finset.subset_union_left Finset.subset_union_right hcol
+
 /-
 ## Significance
 
@@ -113,13 +191,15 @@ that is "rainbow" on every `(k+1)`-subset — equivalently whether the Johnson g
 `J(2k,k)` has chromatic number `k+1`. The scaffold sets up the property but leaves
 the chromatic-number definition and the `k=2` construction as `sorry`s.
 
-This entry extracts the unconditional structural content of the property: any
-colouring satisfying it is surjective — it genuinely uses all `k+1` colours
-(`erdosRosenfeld_surjective`, `erdosRosenfeld_uses_all_colors`). This is the
-elementary "rainbow ⇒ all colours present" direction, and it holds with no
-appeal to the chromatic number or to any explicit colouring. It is the half of
-the equivalence "`property ⇔ χ(J(2k,k)) = k+1`" that pins the *lower* side: a
-valid colouring cannot waste a colour. The remaining (open-in-this-formalization)
+This entry extracts the unconditional structural content of the property. The
+*lower* side (`erdosRosenfeld_surjective`, `erdosRosenfeld_range_univ`): any
+colouring satisfying the property is surjective — it genuinely uses all `k+1`
+colours, so it cannot waste a colour. The *upper* side
+(`erdosRosenfeld_window_injective`, `erdosRosenfeld_proper`): the property is
+also a genuine proper colouring of the Johnson graph `J(2k,k)` — adjacent
+`k`-subsets receive distinct colours. Together they pin both inequalities of the
+equivalence "`property ⇔ χ(J(2k,k)) = k+1`", with no appeal to the chromatic
+number or to any explicit colouring. The remaining (open-in-this-formalization)
 content is the existence/non-existence of such colourings, which is exactly the
 combinatorial heart the scaffold's `sorry`s stand in for.
 -/
