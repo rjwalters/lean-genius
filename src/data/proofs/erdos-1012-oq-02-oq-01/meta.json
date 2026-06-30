@@ -21,14 +21,17 @@
     "dateAdded": "2026-06-27",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-checked; the listed theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms).",
-    "lineCount": 203,
-    "theoremCount": 5,
+    "lineCount": 279,
+    "theoremCount": 9,
     "definitionCount": 5,
     "originalContributions": [
       "completeBipartite_no_triangle: a complete bipartite graph has no three pairwise-adjacent vertices (same-side pigeonhole)",
       "completeBipartite_no_3cycle: no vertex lies on a 3-cycle (a closed walk of length 3 is forced to be a triangle, via getVert adjacencies)",
       "completeBipartite_not_pancyclic / completeBipartite_not_vertexPancyclic: failure of (vertex-)pancyclicity once the length window reaches 3",
-      "completeBipartite_realizes_bondy_exception: the complete bipartite graph realizes exactly the exception predicate of the parent's bondy_vertex_pancyclic axiom"
+      "completeBipartite_realizes_bondy_exception: the complete bipartite graph realizes exactly the exception predicate of the parent's bondy_vertex_pancyclic axiom",
+      "completeBipartite_degree_inl / _inr: every left vertex has degree |W| and every right vertex degree |V| (neighbour finset is the image of the opposite side under Sum.inr / Sum.inl)",
+      "completeBipartite_card_edgeFinset: exact edge count |E(K_{V,W})| = |V|·|W|, proved from the degree-sum (handshake) formula",
+      "completeBipartite_balanced_card_edgeFinset: balanced K_{m,m} on n=2m vertices has exactly m² = ⌊n²/4⌋ edges — one below Bondy’s n²/4+1 threshold, making the extremal example quantitatively sharp"
     ]
   },
   "overview": {
@@ -58,9 +61,9 @@
   },
   "leanFile": {
     "namespace": "Erdos1012OQ02OQ01",
-    "lineCount": 203,
+    "lineCount": 279,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 5,
     "path": "Proofs/Erdos1012OQ02OQ01.lean",
     "sorries": 0

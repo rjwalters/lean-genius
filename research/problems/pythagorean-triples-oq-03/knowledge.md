@@ -59,3 +59,26 @@ For a prime p, study the conic C_p : x² + y² = p over ℚ:
 - Docker (containerd) backend was down this session; verification used `lean`
   directly with a hand-assembled LEAN_PATH over the prebuilt olean cache
   (build dirs now nest under `.lake/build/lib/lean/`).
+
+## Session 2026-06-28 (Session 2) — GALLERY INTEGRATION
+
+**Mode:** FOLLOW-UP (proof already merged via #30916)
+**Outcome:** added missing gallery entry
+
+### What I Did
+- The verified proof shipped in #30916 but had NO gallery directory
+  (`src/data/proofs/pythagorean-triples-oq-03/` was absent), so it never
+  surfaced in the web gallery. Created it:
+  - `meta.json` — full overview/sections/conclusion/crossReferences, 13 theorems,
+    2 defs, 255 lines, badge `mathlib`, 0 sorries / 0 axioms.
+  - `annotations.json` — 9 annotations (header, param def, param-on-circle,
+    completeness, easy existence, mod-p obstruction, descent, rational
+    obstruction + iff, instances), ranges verified within the 255-line file.
+- Validated: `pnpm gallery:check-size` EXIT 0 ("all 4124 entries within caps").
+  `pnpm annotations:validate` scans all 4124 proofs and times out (~200s, perf
+  limit, not a schema error); both files are valid JSON matching the live
+  erdos-307-oq-02-oq-01 schema field-for-field.
+
+### Files Modified
+- `src/data/proofs/pythagorean-triples-oq-03/meta.json` (new)
+- `src/data/proofs/pythagorean-triples-oq-03/annotations.json` (new)

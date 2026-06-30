@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: The Carmichael Function as the Smallest Universal Exponent",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Imports and module docstring. States the parent chain's open question (prove λ(2ᵏ) = 2ᵏ⁻² for k ≥ 3 and related Carmichael identities) and explains what λ is: the exponent of the unit group (ℤ/nℤ)ˣ — the SMALLEST k with aᵏ ≡ 1 (mod n) for every unit a, characterized by λ(n) ∣ k. The key structural fact: for n = 2ᵏ (k ≥ 3) the unit group is ℤ/2 × ℤ/2ᵏ⁻² (NOT cyclic), so λ(2ᵏ) = 2ᵏ⁻² = φ(2ᵏ)/2 is strictly below φ; for odd prime powers the group is cyclic so λ(pᵏ) = φ(pᵏ). Lists the main results, all packaged from Mathlib's ArithmeticFunction.Carmichael.",
+      "mathContext": "$\\lambda(n) = \\exp((\\mathbb{Z}/n\\mathbb{Z})^\\times)$, the least $k$ with $a^k \\equiv 1\\ (\\mathrm{mod}\\ n)$ for all units; $\\lambda(2^k) = 2^{k-2} = \\varphi(2^k)/2$ ($k\\ge3$), $\\lambda(p^k)=\\varphi(p^k)$ for odd $p$."
+    },
+    {
       "id": "two-powers",
       "title": "Section I: Powers of Two",
       "startLine": 31,

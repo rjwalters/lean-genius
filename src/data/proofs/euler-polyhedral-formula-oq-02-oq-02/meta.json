@@ -70,6 +70,80 @@
       "Connect to the Atiyah-Singer index theorem, of which Chern-Gauss-Bonnet is the special case for the de Rham / Euler operator, situating this entry in the broader index-theory landscape."
     ]
   },
+  "sections": [
+    {
+      "id": "part-i-sphere-euler",
+      "title": "Part I: Euler Characteristics of Spheres",
+      "startLine": 53,
+      "endLine": 92,
+      "summary": "sphereEulerChar m = 1 + (-1)^m, with the even/odd dichotomy (2 in even dimension, 0 in odd) proved several ways: closed cases S^0,…,S^4, the general sphereEulerChar_even/odd, and the unified sphereEulerChar_eq_ite. Verified, 0-axiom.",
+      "mathContext": "$\\chi(S^m) = 1 + (-1)^m$ — equal to $2$ for even $m$, $0$ for odd $m$."
+    },
+    {
+      "id": "part-ii-normalization",
+      "title": "Part II: The Chern Normalization Constant (2π)ⁿ",
+      "startLine": 94,
+      "endLine": 118,
+      "summary": "cgbConst n = (2π)^n, with positivity (cgbConst_pos), nonvanishing, the base values cgbConst 0 = 1 and cgbConst 1 = 2π, and multiplicativity cgbConst(m+n) = cgbConst m · cgbConst n. Verified, 0-axiom.",
+      "mathContext": "$(2\\pi)^n$ converts the unnormalized Pfaffian integral $\\int_M \\mathrm{Pf}(\\Omega)$ into $\\chi(M)$; it is positive and multiplicative."
+    },
+    {
+      "id": "part-iii-pfaffian",
+      "title": "Part III: The 2×2 Pfaffian and Pf² = det",
+      "startLine": 120,
+      "endLine": 144,
+      "summary": "pf2 and det2 for the antisymmetric matrix [[0,a],[-a,0]], with the identity pf2_sq_eq_det2 (Pf² = det), det2_eq (= a²), and pf2_eq. The algebraic core of the n = 1 reduction. Verified, 0-axiom.",
+      "mathContext": "For $\\begin{psmallmatrix}0&a\\\\-a&0\\end{psmallmatrix}$: $\\mathrm{Pf} = a$, $\\det = a^2$, so $\\mathrm{Pf}^2 = \\det$."
+    },
+    {
+      "id": "part-iv-cgbmanifold",
+      "title": "Part IV: The Chern-Gauss-Bonnet Manifold (Structure-Encoded)",
+      "startLine": 146,
+      "endLine": 210,
+      "summary": "CGBManifold bundles halfDim, χ, total Pfaffian, and the chern_gauss_bonnet identity as a field — the structure-encoded assumption that makes this entry 'axiomatized'. Downstream: dim_even, normalized (∫Pf/(2π)ⁿ = χ), totalPfaffian_eq, the χ=0 ⇔ ∫Pf=0 equivalences, and the sign correspondence totalPfaffian_pos_iff.",
+      "mathContext": "$\\int_M \\mathrm{Pf}(\\Omega) = (2\\pi)^n\\,\\chi(M)$, encoded as a structure field (Mathlib lacks the geometry to derive it)."
+    },
+    {
+      "id": "part-v-two-dim",
+      "title": "Part V: Recovery of 2-Dimensional Gauss-Bonnet (n = 1)",
+      "startLine": 212,
+      "endLine": 229,
+      "summary": "two_dim_gauss_bonnet: at halfDim = 1 the identity becomes ∫_M Pf(Ω) = 2π·χ(M) — exactly the classical Gauss-Bonnet of the parent entries. zero_dim_counts_points: at halfDim = 0, ∫Pf = χ (counting measure).",
+      "mathContext": "$n = 1 \\Rightarrow \\int_M \\mathrm{Pf}(\\Omega) = 2\\pi\\,\\chi(M)$, the classical Gauss-Bonnet."
+    },
+    {
+      "id": "part-vi-spheres",
+      "title": "Part VI: Sphere Manifolds S^{2n}",
+      "startLine": 231,
+      "endLine": 259,
+      "summary": "sphereCGB n realizes S^{2n} with χ = 2 and ∫Pf = 2·(2π)ⁿ. Lemmas confirm its dimension (2n), agreement of its χ field with the Part I combinatorial value (sphereCGB_chi_eq), its total Pfaffian, and the concrete ∫_{S²}Pf = 4π.",
+      "mathContext": "$S^{2n}$: $\\chi = 2$, $\\int \\mathrm{Pf}(\\Omega) = 2(2\\pi)^n$; for $n=1$, $\\int_{S^2} K\\,dA = 4\\pi$."
+    },
+    {
+      "id": "part-vii-products",
+      "title": "Part VII: Products of Manifolds (χ Multiplicative)",
+      "startLine": 261,
+      "endLine": 292,
+      "summary": "prodCGB M N: dimension adds, χ multiplies (χ(M×N) = χ(M)·χ(N)), and the total Pfaffian multiplies — consistent with Chern-Gauss-Bonnet because (2π)^{m+n} factors (cgbConst_add). Worked example S²×S²: χ = 4.",
+      "mathContext": "$\\chi(M\\times N) = \\chi(M)\\,\\chi(N)$; total Pfaffian multiplies via $(2\\pi)^{m+n} = (2\\pi)^m(2\\pi)^n$."
+    },
+    {
+      "id": "part-viii-vanishing",
+      "title": "Part VIII: Vanishing Euler Characteristic — Tori and Odd Dimensions",
+      "startLine": 294,
+      "endLine": 332,
+      "summary": "torusCGB n: the flat torus T^{2n} with χ = 0 and ∫Pf = 0. ClosedOddManifold structure-encodes Poincaré duality (χ = 0 in odd dimension); oddSphere_chi_zero confirms S^{2k+1} realizes it, matching Part I.",
+      "mathContext": "Flat tori and closed odd-dimensional manifolds have $\\chi = 0$, hence $\\int \\mathrm{Pf}(\\Omega) = 0$."
+    },
+    {
+      "id": "part-ix-euler-number",
+      "title": "Part IX: The Euler Number Is an Integer",
+      "startLine": 334,
+      "endLine": 353,
+      "summary": "euler_number_integral: the curvature integral ∫_M Pf(Ω/2π) is always an integer (it equals χ ∈ ℤ) — the deep content of Chern-Gauss-Bonnet. chi_determined: same dimension and total Pfaffian ⇒ same χ, so the integral determines the Euler characteristic.",
+      "mathContext": "$\\int_M \\mathrm{Pf}(\\Omega/2\\pi) = \\chi(M) \\in \\mathbb{Z}$: a transcendental integral lands on a topological integer."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

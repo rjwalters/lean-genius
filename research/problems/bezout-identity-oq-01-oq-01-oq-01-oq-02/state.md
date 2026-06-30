@@ -1,15 +1,20 @@
 # Research State: bezout-identity-oq-01-oq-01-oq-01-oq-02
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-06-13T00:00:00-07:00
-**Iteration**: 2
+**Since**: 2026-06-14T00:00:00-07:00
+**Iteration**: 3
 
 ## Current Focus
-OBSERVE→ORIENT survey complete (build-free, 2026-06-13 verification blackout).
-Decomposed the HGCD complexity OQ into a tractable matrix-invariant core (MS1/MS2)
-versus a cost-model-gated asymptotic remainder (MS3). See knowledge.md.
+MS1 implemented in `BezoutIdentityOQ01OQ01OQ01OQ02.lean` — the HGCD matrix
+invariant (OQ part (a)), fully proved (no sorries). Shipped as a build-pending
+DRAFT PR: 2026-06-14 verification blackout persists (Docker daemon DOWN, Aristotle
+backend 404 re-confirmed this session), so no `docker-build.sh` / Aristotle
+typecheck was possible. Proofs are hand-verified against standard Mathlib matrix
+API (`Matrix.det_fin_two_of`, `Matrix.det_mul`, `Matrix.mulVec_mulVec`,
+`Matrix.one_mulVec`); pure linear algebra, deterministic, no Master-theorem
+dependency. MS2/MS3 remain future work.
 
 ## Active Approach
 Schönhage HGCD via 2×2 integer quotient matrices `Q(q) = !![0,1; 1,-q]` over ℤ.
@@ -19,9 +24,9 @@ continuant/convergent recurrence. This is the OQ's part (a), and the clean first
 compile, independent of the Master theorem.
 
 ## Attempt Count
-- Total attempts: 0 (no Lean committed — blackout)
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1 (MS1 committed as build-pending draft)
+- Current approach attempts: 1
+- Approaches tried: 1 (direct `Matrix (Fin 2) (Fin 2) ℤ` route, per DE2)
 
 ## Blockers
 - **Docker daemon DOWN** (`docker info` exit 124) → no `docker-build.sh` verification.
@@ -31,9 +36,12 @@ compile, independent of the Master theorem.
   MS1/MS2 are NOT blocked by this.
 
 ## Next Action
-When Docker returns: implement **MS1** in a new `BezoutIdentityOQ01OQ01OQ01OQ02.lean`
-— define `Q`, the product `R_k`, and prove the two invariant lemmas
-(`mulVec` correctness + `det R_k = (-1)^k`) using `Matrix.det_fin_two`/`Matrix.det_mul`.
-~40–80 LOC, zero Master-theorem dependency. Then **MS2** (computable HGCD + `Nat`
-op-count recurrence). Document **MS3** as the axiomatized/bounded asymptotic, mirroring
-the parent's Part 2. Do NOT route through Mathlib `GenContFract` (DE2).
+When Docker/Aristotle return: build-verify the MS1 draft
+(`./proofs/scripts/docker-build.sh Proofs.BezoutIdentityOQ01OQ01OQ01OQ02`), then
+`gh pr ready` it. Likely-fragile spots to watch if it fails: the `Matrix.mulVec_mulVec`
+rewrite direction in `Rprod_mulVec` and the matrix `cons_val` simp set in `Q_mulVec`.
+Then implement **MS2** (computable HGCD returning `(R, opCount)` + the `Nat` recurrence
+`hgcdOps n ≤ 2·hgcdOps (n/2) + c·stepBitOps n`, reusing the parent's `stepBitOps`).
+Document **MS3** as the axiomatized/bounded `O(M(n) log n)` asymptotic (Master-theorem
+critical case, absent from Mathlib), mirroring the parent's Part 2.
+Do NOT route through Mathlib `GenContFract` (DE2).

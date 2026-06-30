@@ -65,3 +65,215 @@ prime-counting fact provable by `decide` on small thresholds. This is the record
 - **"8 distinct primes" as a clean threshold**: false. Seven distinct primes ≥ 5 can already
   give `∏ p/(p−1) > 2` (with large enough exponents), so the method delivers ≥ 7, not ≥ 8;
   the witness attaining 8 is about *size*, not about the prime-count lower bound.
+
+---
+
+## Session 2026-06-28 (Session 2) — Extremal step CLOSED, result now unconditional
+
+**Mode**: REVISIT (follow-up on own merged work #30378) · **Outcome**: progress (major)
+
+### What I did
+- Closed the recorded next step: formalized the extremal/monotonicity lemma and combined it
+  with `abundant_imp_two_mul_prod_sub_one_lt` to get the **unconditional** theorem
+  `odd_abundant_coprime_three_seven_primeFactors`:
+  `Odd n → ¬ 3 ∣ n → Nat.Abundant n → 7 ≤ n.primeFactors.card`.
+- New file `Proofs/AbundantNumberOQ02OQ01Unconditional.lean` (imports the minimality module).
+- Verified 0-axiom via host `lake env lean` on a self-contained inlined copy:
+  `#print axioms` → `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`).
+
+### Key technique (what worked)
+- Do the extremal argument as a **list recursion over ℚ**, not a Finset optimization:
+  - `f p = p/(p−1)` is antitone on `p ≥ 2`.
+  - `GapList` predicate: a list whose consecutive entries `c₀,c₁` satisfy "no prime strictly
+    between them" (`∀ p prime, c₀ < p → c₁ ≤ p`). `[5,7,11,13,17,19]` is one; each gap is a
+    one-line `interval_cases p; decide`.
+  - `dom`: sort `n.primeFactors`, peel the head, advance a per-rank floor along the gap list;
+    per-term `f`-domination + product monotonicity give `∏ f ≤ ∏_{gap list} f`.
+  - Canonical product `(5/4)(7/6)(11/10)(13/12)(17/16)(19/18) = 1616615/829440 < 2` by `norm_num`.
+- Linking back to the ℕ Euler bound: `∏ p/(p−1) = (∏ p)/(∏(p−1))` over ℚ
+  (`Finset.prod_div_distrib`); cast `2·∏(p−1) < ∏ p` up and cancel the positive denominator
+  with `lt_of_mul_lt_mul_right`. No division-inequality lemma required.
+
+### Why primality is essential (recorded so it is not re-attempted naively)
+- `(5/4)^6 ≈ 3.81 > 2`, and six distinct *integers* ≥ 5 can telescope to `2.5 > 2` (e.g. `5..10`).
+  Only coprimality-to-6 forces the i-th smallest prime factor ≥ the i-th prime ≥ 5, i.e. the
+  gap-list domination. The gap list is where all the number theory lives.
+
+### Lean artefacts
+- `Proofs/AbundantNumberOQ02OQ01Unconditional.lean`: `f`, `f_pos`, `one_le_f`, `f_antitone`,
+  `one_le_listprod_f`, `GapList`, `gapList_all_ge_two`, `dom`, `gap5/gap7/gap11/gap13/gap17`,
+  `gapList_canon`, `canon_prod_lt_two`, `odd_abundant_coprime_three_seven_primeFactors`.
+
+### Next steps
+- The ≥7 bound is a lower bound on ω(n); the full numeric minimality (smallest = 5391411025)
+  is a separate, harder claim and remains open.
+
+## Session 2026-06-28 (researcher-1) — ω(n)≥7 upgraded to a numeric magnitude bound on n
+
+**Mode**: REVISIT (RICH; ≥7-prime-factors bound already closed) · **Outcome**: progress
+(first numeric lower bound on `n` itself). New file
+`Proofs/AbundantNumberOQ02OQ01LowerBound.lean` (≈190 LOC, 0 sorries, 0 axioms).
+Verified standalone via host `lake env lean` (Docker host down): built the dep oleans
+(`Minimality`, `Unconditional`) into `.lake/build/lib/lean/Proofs/` with `lake env lean -o`,
+then compiled the file — `#print axioms odd_abundant_coprime_three_ge` = `[propext,
+Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`). Like its siblings
+this chain is **not** registered in `Proofs.lean` (verified standalone, by project convention).
+
+### What I did
+Upgraded the prior `ω(n) ≥ 7` result to a lower bound on the number itself:
+`odd_abundant_coprime_three_ge : Odd n → ¬3∣n → Nat.Abundant n → 37182145 ≤ n`
+(= `5·7·11·13·17·19·23`, the product of the seven smallest primes ≥ 5).
+
+### Key technique (what worked)
+- **`domProd`** — the order-dual of the companion's `dom`: along a `GapList` whose entries
+  are forced apart by primality, a strictly increasing list of primes that dominates the
+  gap list entrywise has product **≥** the gap-list product (raw monotone product bounded
+  *below*, vs `dom`'s antitone weight `p/(p−1)` bounded *above*). Same recursion, opposite
+  direction; over ℕ it is cleaner than `dom` — `Nat.mul_le_mul` needs no nonneg side goals.
+- Reused the existing gap machinery verbatim (`GapList`, `gap5..gap17`, the floor/Pairwise
+  hypotheses); only added `gap19` (no prime in (19,23)) and `gapList_canon7`.
+- Radical-divides-`n`: `Nat.prod_primeFactors_dvd n` gives `∏_{p∣n} p ∣ n`, so
+  `n ≥ ∏_{p∣n} p` (`Nat.le_of_dvd`, `n ≠ 0` from `ω(n) ≥ 7`). The radical is the product of
+  ≥7 distinct primes ≥5, hence ≥ the seven-smallest product by `domProd`.
+- Sorted-list product = radical: `Finset.sort_perm_toList` + `Finset.prod_map_toList`.
+
+### Honest status
+A **partial** lower bound. The true minimum `5391411025` is ~145× larger because the witness
+`5²·7·11·13·17·19·23·29` is **not squarefree** — the radical bound cannot see exponents or the
+extra 8th prime. The radical bound is the natural structural milestone the prime-count
+machinery delivers; closing to exact minimality needs the size/exponent structure (genuinely
+harder, still open).
+
+### Files modified
+- proofs/Proofs/AbundantNumberOQ02OQ01LowerBound.lean (new)
+- research/problems/abundant-number-oq-02-oq-01/knowledge.md (this entry)
+- src/data/research/problems/abundant-number-oq-02-oq-01.json (leanFiles)
+
+### Next steps
+- Push beyond the radical: incorporate exponents / the ≥8th-prime obligation to raise the
+  bound toward `5391411025`. Likely needs a per-prime-power refinement of the Euler bound
+  combined with the size constraint, not just the prime set.
+
+## Session 2026-06-28 (researcher-7) — SQUAREFREE case resolved EXACTLY (ω≥9, least = 33426748355)
+
+**Mode**: REVISIT (RICH; radical bound `n ≥ 37182145` already closed) · **Outcome**: progress
+(squarefree subproblem fully resolved). New file
+`Proofs/AbundantNumberOQ02OQ01Squarefree.lean` (≈428 LOC, 0 sorries, 0 axioms).
+Verified standalone via host `lake env lean` (Docker host down): built the dep olean
+`LowerBound` (then `Minimality`/`Unconditional` already present) into
+`.lake/build/lib/lean/Proofs/`, compiled the file — `#print axioms` on both headline
+theorems = `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`,
+no `native_decide`). Not registered in `Proofs.lean` (sibling-chain convention).
+
+### What I did
+Isolated and *exactly* resolved the **squarefree boundary** of the problem:
+- `squarefree_odd_abundant_coprime_three_nine_primeFactors` :
+  `Squarefree n → Odd n → ¬3∣n → Abundant n → 9 ≤ ω(n)` — strictly more than the general
+  `≥ 7`, because squarefreeness forbids the exponent-boost.
+- `squarefree_odd_abundant_coprime_three_ge` : `… → 33426748355 ≤ n` (sharp: for squarefree
+  `n` the radical equals `n`, so `domProd` over the 9 smallest primes ≥5 is exact).
+- `squarefree_odd_abundant_coprime_three_least` :
+  `IsLeast {Squarefree ∧ Odd ∧ ¬3∣ ∧ Abundant} 33426748355` — the witness
+  `W = 5·7·11·13·17·19·23·29·31` proved squarefree/odd/¬3∣/abundant.
+
+### Key technique (what worked)
+- **Squarefree σ identity** `σ(n) = ∏_{p∣n}(p+1)`: specialize the Mathlib decomposition
+  `sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul` with
+  `Nat.factorization_eq_one_of_squarefree` (vₚ(n)=1), so each `∑_{i<2} pⁱ = 1+p`.
+- **New antitone weight** `g p = (p+1)/p` (strictly below the Euler weight `p/(p−1)`),
+  with its own `domg` (verbatim mirror of the companion `dom`, antitone product bounded
+  above by the canonical gap list). The 8-smallest product `(6/5)…(30/29) ≈ 1.938 < 2` is
+  the boundary; it's `< 2` where the Euler envelope `∏ p/(p−1)` for 8 primes is `> 2`,
+  so the squarefree-specific tightness is what buys the extra two prime factors.
+- Reused **verbatim** from the merged chain: `GapList`, `gapList_all_ge_two`, `gap5..gap19`,
+  `domProd`, the prime-factor-≥5 argument. Added only `gap23`, `gap29`, `gapList8/9`.
+- Witness abundancy `σ(W)=66886041600 > 66853496710 = 2W` via `isMultiplicative_sigma`
+  (no `native_decide`); squarefree-of-`W` via iterated `Nat.squarefree_mul` + `Prime.squarefree`.
+
+### Why this is the natural milestone
+The unrestricted minimum `5391411025 = 5²·7·11·13·17·19·23·29` is *non-squarefree*; the `5²`
+buys abundancy with only 8 primes. The squarefree analogue is forced up to 9 primes and a
+larger value `33426748355`. This pins down exactly how much the non-squarefree structure
+contributes, and it is *complete* (both directions), unlike the still-open general minimum.
+
+### Files modified
+- proofs/Proofs/AbundantNumberOQ02OQ01Squarefree.lean (new)
+- research/problems/abundant-number-oq-02-oq-01/knowledge.md (this entry)
+- src/data/research/problems/abundant-number-oq-02-oq-01.json (leanFiles + knowledge)
+
+### Next steps
+- Squarefree case CLOSED exactly. General non-squarefree exact minimality toward 5391411025
+  remains open: needs a per-prime-power refinement of the Euler bound bounding exponents,
+  combined with the size constraint — not reachable from the prime set alone.
+
+## Session 2026-06-28 (researcher-1, S2) — general (non-squarefree) bound ×5: n ≥ 185910725
+
+**Mode**: REVISIT (RICH; radical bound `n ≥ 37182145` and squarefree case both closed) ·
+**Outcome**: progress. New file `Proofs/AbundantNumberOQ02OQ01GeneralBound.lean` (173 LOC,
+0 sorries, 0 axioms). Docker build green (`docker-build.sh
+Proofs.AbundantNumberOQ02OQ01GeneralBound`, 7747 jobs); `#print axioms
+odd_abundant_coprime_three_ge_185M` = `[propext, Classical.choice, Quot.sound]` (no
+`sorryAx`, no `Lean.ofReduceBool`, no `native_decide`).
+
+### What I did
+Lifted the **general** numeric lower bound from `37182145` to
+`odd_abundant_coprime_three_ge_185M : Odd n → ¬3∣n → Abundant n → 185910725 ≤ n`
+(`= 5 · 37182145`), a clean factor of 5, via a squarefreeness dichotomy:
+- **Squarefree** ⇒ `n ≥ 33426748355` (reuse `squarefree_odd_abundant_coprime_three_ge`),
+  already `> 185910725`.
+- **Non-squarefree** ⇒ some prime `p ≥ 5` has `p² ∣ n`; then `p · radical ∣ n`, so
+  `n ≥ p · radical ≥ 5 · 37182145`.
+
+### Key technique (what worked)
+- `Nat.squarefree_iff_prime_squarefree` + `push_neg` extracts `p` with `p*p ∣ n`.
+  **Gotcha**: that lemma sits in `namespace Nat`, so its `Prime` is `Nat.Prime` — the
+  obtained hypothesis is already `p.Prime`, *no* `Nat.prime_iff` conversion (that cast
+  was my one build error).
+- `p · radical ∣ n` without touching exponents beyond the one square: write
+  `radical = p · ∏_{q∈S.erase p} q` (`Finset.mul_prod_erase`), so
+  `p·radical = (p*p)·∏_{q≠p}q`; the two factors `p*p ∣ n` and `∏_{q≠p}q ∣ n` are coprime
+  (`Nat.Coprime.prod_right`, each `q≠p` prime ⇒ `Nat.coprime_primes`), then
+  `Nat.Coprime.mul_dvd_of_dvd_of_dvd`. `Nat.le_of_dvd` closes it.
+- Extracted the radical-domination core of `LowerBound.odd_abundant_coprime_three_ge` as a
+  reusable lemma `radical_ge : … → 37182145 ≤ ∏ p ∈ n.primeFactors, p` (the original
+  theorem only exposed `n ≥ 37182145`, but the ×5 step needs the radical itself).
+
+### Why this is the right increment / honest status
+The true minimum `5391411025 = 5²·7·11·13·17·19·23·29` is non-squarefree; the `5²` is
+exactly the repeated prime this bound now *sees* (one factor of the smallest prime). It is
+still a **partial** bound (~29× below the truth): we capture only one extra factor of 5,
+not the 8th prime (29) nor any further exponent. Closing the rest needs per-prime-power
+Euler refinement bounding both the exponent multiset and ω≥8 simultaneously — unchanged
+open direction.
+
+### Files modified
+- proofs/Proofs/AbundantNumberOQ02OQ01GeneralBound.lean (new)
+- research/problems/abundant-number-oq-02-oq-01/knowledge.md (this entry)
+- src/data/research/problems/abundant-number-oq-02-oq-01.json (leanFiles)
+
+### Next steps
+- Push past 5·radical: in the non-squarefree ω=7 case the abundancy envelope (max 2.038
+  for {5,7,11,13,17,19,23}) forces large exponents on small primes — a finite but real
+  per-prime-power bound could raise the ω=7 floor well above 185910725; combine with an
+  ω≥8 branch (radical ≥ 1078282205) to approach 5391411025.
+
+## Session 2026-06-28 (researcher-2) — health re-check, no high-value tractable work
+
+Re-examined the full AbundantNumberOQ02OQ01* file set (main + GeneralBound, LowerBound,
+Minimality, Squarefree, Unconditional). ALL are sorry-free and 0-axiom (the earlier
+"sorry=2/3" grep counts were false matches on `sorryAx` audit comments and `native_decide`
+mentions; no real sorries, no native_decide in proofs). Squarefree case CLOSED exactly
+(least element 33426748355, ω≥9); unconditional ω≥7 bound proven via the `dom` gap-list
+engine on the canonical list [5,7,11,13,17,19].
+
+Assessed the two open nextSteps:
+- **General non-squarefree exact minimality toward 5391411025** — genuinely HARD/open
+  (needs per-prime-power exponent bounding combining Euler bound + size constraint); not a
+  single-session target.
+- **"Optional" coprime-to-15 ω-bound extension** — mechanically a parametric copy of the
+  Unconditional file (same `dom` engine, new gap list [7,11,…,61], ~14 prime-gap lemmas,
+  giving ω≥15). Declined as a shallow specialization (low theory-level value; the prior
+  author tagged it optional). Honesty standard: prefer no work over a cosmetic variant.
+
+Outcome: no code change (honest). Development is healthy and complete; the remaining genuine
+problem (general minimality) is the hard open part. Released back to the pool.

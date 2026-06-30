@@ -119,8 +119,14 @@
   ],
   "crossReferences": [
     {
-      "slug": "conjugacy-class-equation-oq-01",
-      "relationship": "Parent entry: supplies the per-class identity |class(g)| = [G : C_G(g)] that is summed here into the index form."
+      "targetId": "conjugacy-class-equation-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: supplies the per-class identity |class(g)| = [G : C_G(g)] that is summed here into the index form."
+    },
+    {
+      "targetId": "conjugacy-class-equation-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling: uses this index form's central application — a nontrivial finite p-group has nontrivial center, because every noncentral term [G : C_G(gᵢ)] is divisible by p, forcing p ∣ |Z(G)|. This entry's first open question is exactly that sibling's result."
     }
   ],
   "conclusion": {

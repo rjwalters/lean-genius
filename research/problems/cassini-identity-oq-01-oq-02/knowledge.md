@@ -70,3 +70,72 @@ verified, badge original, axiomCount 0). meta/annotations JSON validated.
 - d'Ocagne `F_m F_{n+1} - F_{m+1}F_n = (-1)^n F_{m-n}` from off-diagonal entries of a
   product (needs `Q^{-n}` or a det-of-product argument).
 - Catalan identity via `det(Q^{n-r} Q^{2r})`.
+
+---
+
+## Session 2026-06-28 (researcher-2) — duplication formulas [VERIFIED, 0-axiom]
+
+**Outcome**: incremental polish on the already-solved OQ. Added the two **duplication
+(doubling) formulas** as immediate corollaries of the existing addition formulas at the
+diagonal `m = n` (the entries of the square `Q^{n+1}·Q^{n+1} = Q^{2n+2}`):
+- `fib_two_mul_add_one (n) : F(2n+1) = F(n+1)² + F(n)²` — `(2,2)` entry, `m = n` of
+  `fib_add_matrix`. Proof: `rw [show 2*n+1 = n+n+1 from by ring, sq, sq, fib_add_matrix n n]`.
+- `fib_two_mul_add_two (n) : F(2n+2) = F(n+2)F(n+1) + F(n+1)F(n)` — `(1,2)` entry, `m = n`
+  of `fib_add_offdiag`. Proof: `rw [show 2*n+2 = n+n+2 from by ring, fib_add_offdiag n n]`.
+
+No new induction, no new Mathlib lemmas — pure reindex + `rw` off the prior addition
+formulas. File 121→151 LOC, 5→7 theorems, still 0 axioms / 0 sorries; `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` for both. Single-file typecheck under
+`lean v4.26.0` + Mathlib oleans, EXIT 0. Gallery meta.json updated (theoremCount 7,
+lineCount 151, +duplication section).
+
+**Honest scope note**: the OQ was already resolved in the prior session; this only extends
+the corollary list. The substantive open items (d'Ocagne, Catalan, Vajda) remain — they
+involve index subtraction (`F_{m-n}`) needing either `Q^{-1}` (Q ∈ GL₂(ℤ), det = −1) or a
+2-step induction, neither attempted this session.
+
+---
+
+## Session 2026-06-28 (researcher-2, session 2) — d'Ocagne via the adjugate [VERIFIED, 0-axiom]
+
+**Outcome**: progress — closed the first of the three documented subtraction-type open
+items (**d'Ocagne**) within the existing Q-matrix framework, 0 sorry / 0 axiom.
+
+### The key idea (resolves the "needs `Q^{-1}`" blocker from the prior note)
+The prior session said the subtraction identities need `Q^{-1}` or a 2-step induction.
+Neither is necessary: over `ℤ` use the **adjugate**. `Matrix.mul_adjugate` gives
+`A · adjugate A = (det A) • 1`, so with `Q^{m+n+1} = Q^m · Q^{n+1}` (`pow_add`),
+```
+Q^{m+n+1} · adjugate (Q^{n+1}) = Q^m · (det (Q^{n+1}) • 1) = (−1)^{n+1} • Q^m.
+```
+No inverse, no `F_{−1}`. Reading the `(2,1)` entry (with `adjugate_fin_two_of`,
+`Q_pow_succ`, `Q_pow_succ_det`, and a new `Q_pow_entry_10 : (Q^m) 1 0 = F m` covering
+`m=0`) gives **d'Ocagne** in the index-`≥0` form
+`F(m+n+1)·F(n) − F(m+n)·F(n+1) = (−1)^{n+1}·F(m)` — the standard
+`F_a F_{b+1} − F_{a+1} F_b = (−1)^b F_{a−b}` at `a=m+n, b=n`, the difference `a−b=m`
+materialised as the bare exponent of `Q^m`.
+
+### What I added (4 theorems, all 0-axiom)
+- `Q_pow_entry_10 (m) : (Q^m) 1 0 = F m`  (covers `m=0`: `Q^0=1`, entry `0 = F 0`).
+- `Q_pow_succ_det (n) : det (Q^{n+1}) = (−1)^{n+1}`.
+- `Q_adj_factor (m n)` (private): the adjugate factorisation above.
+- `fib_dOcagne (m n)`: d'Ocagne, by `congrFun` on the `(2,1)` entry + `linear_combination`.
+
+### Verification
+Single-file `LAKE_UNSAFE=1 lake env lean Proofs/CassiniIdentityOQ01OQ02.lean` → **EXIT 0,
+0 warnings, 0 errors**. `#print axioms fib_dOcagne` = `[propext, Classical.choice,
+Quot.sound]` (no `sorryAx`, no `ofReduceBool`). File 151→221 LOC, 7→11 theorems.
+Gallery `meta.json` updated (theoremCount 11, lineCount 221, +d'Ocagne contribution,
++`Matrix.mul_adjugate`/`adjugate_fin_two_of` deps); `gallery:check-size` passes.
+
+### Rewrite-order gotcha (for next session)
+In `fib_dOcagne`, rewrite `Q_pow_succ_det` **before** `Q_pow_succ n` — otherwise
+`Q_pow_succ n` rewrites the `Q^{n+1}` *inside* `(Q^{n+1}).det` first and the det rewrite
+then finds no `(Q^{n+1}).det` pattern (the original error).
+
+### Still open (Catalan, Vajda)
+- **Catalan** `F_n² − F_{n−r}F_{n+r} = (−1)^{n−r}F_r²` and **Vajda**
+  `F_{n+i}F_{n+j} − F_n F_{n+i+j} = (−1)^n F_i F_j` are the natural next targets — both
+  should yield to the *same* adjugate trick (an entry or a 2×2 determinant of a product of
+  the form `Q^a · adjugate(Q^b)`), reindexed to keep indices `≥0`. Vajda generalises both
+  Catalan and d'Ocagne, so proving Vajda would subsume this. Recommended next session.

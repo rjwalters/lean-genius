@@ -162,4 +162,123 @@ example : conjecturedValue 8 4 2 = construction2 8 4 2 := by decide
 /-- Monotonicity of `conjecturedValue` across the crossover, concretely. -/
 example : conjecturedValue 7 4 2 ≤ conjecturedValue 8 4 2 := by decide
 
+/-! ### 5. The exact step difference, and a strict refinement.
+
+`construction2_mono_step` only records the *inequality* `≤`. The increment is
+in fact exactly `C(n, r−1) − C(n−k+1, r−1)`. We state this additively to keep
+everything in `ℕ` without truncated subtraction, then read off both the
+original monotonicity and a strict version. -/
+
+/-- Exact one-step increment of `construction2`:
+    `construction2 (n+1) − construction2 n = C(n, r−1) − C(n−k+1, r−1)`,
+    written additively. This is the precise identity behind
+    `construction2_mono_step`. -/
+theorem construction2_step_eq (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 1) (hn : n ≥ k) :
+    construction2 (n + 1) r k + Nat.choose (n - k + 1) (r - 1)
+      = construction2 n r k + Nat.choose n (r - 1) := by
+  unfold construction2
+  have hidx : n + 1 - k + 1 = n - k + 2 := by omega
+  rw [hidx]
+  have hr1 : r - 1 + 1 = r := Nat.sub_add_cancel hr
+  -- Pascal at the top: C(n+1, r) = C(n, r-1) + C(n, r).
+  have eq1 : Nat.choose (n + 1) r = Nat.choose n (r - 1) + Nat.choose n r := by
+    have h := Nat.choose_succ_succ n (r - 1)
+    simp only [Nat.succ_eq_add_one] at h
+    rw [hr1] at h
+    omega
+  -- Pascal at the shifted index: C(n-k+2, r) = C(n-k+1, r-1) + C(n-k+1, r).
+  have eq2 : Nat.choose (n - k + 2) r
+      = Nat.choose (n - k + 1) (r - 1) + Nat.choose (n - k + 1) r := by
+    have h := Nat.choose_succ_succ (n - k + 1) (r - 1)
+    simp only [Nat.succ_eq_add_one] at h
+    rw [hr1, show n - k + 1 + 1 = n - k + 2 from by omega] at h
+    omega
+  -- Both truncated subtractions in `construction2` are genuine (no underflow).
+  have hsub1 : Nat.choose (n - k + 2) r ≤ Nat.choose (n + 1) r :=
+    Nat.choose_le_choose r (by omega)
+  have hsub2 : Nat.choose (n - k + 1) r ≤ Nat.choose n r :=
+    Nat.choose_le_choose r (by omega)
+  omega
+
+/-- Strict one-step monotonicity: whenever the lower binomial is strictly
+    smaller, `construction2` strictly increases. (The hypothesis
+    `C(n−k+1, r−1) < C(n, r−1)` holds, e.g., once `k ≥ 2` and `r−1 ≤ n−k+1`.) -/
+theorem construction2_strict_mono_step (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 1)
+    (hn : n ≥ k) (hlt : Nat.choose (n - k + 1) (r - 1) < Nat.choose n (r - 1)) :
+    construction2 n r k < construction2 (n + 1) r k := by
+  have h := construction2_step_eq n r k hr hk hn
+  omega
+
+/-! ### 6. The exact crossover threshold for the worked instance `r = 4, k = 2`.
+
+Monotonicity turns the two boundary evaluations (`n = 7` below, `n = 8` at)
+into a *complete* characterization of the construction2-dominant region:
+it is exactly `{ n : 8 ≤ n }`. This pins the crossover threshold to the
+single value `n₀(4, 2) = 8`. -/
+
+/-- `construction2` overtakes `construction1` (for `r = 4, k = 2`) at exactly
+    `n = 8`: the regime boundary is the sharp threshold `n₀ = 8`. -/
+theorem crossover_r4k2 (n : ℕ) :
+    construction1 4 2 ≤ construction2 n 4 2 ↔ 8 ≤ n := by
+  constructor
+  · intro h
+    by_contra hlt
+    push_neg at hlt
+    interval_cases n <;> exact absurd h (by decide)
+  · intro h
+    have h8 : construction1 4 2 ≤ construction2 8 4 2 := by decide
+    exact construction2_dominant_up 8 n 4 2 (by norm_num) (by norm_num) (by norm_num) h h8
+
+/-! ### 7. Closed form: `construction2` as a sum of `k − 1` consecutive binomials.
+
+Telescoping Pascal turns the *difference* `C(n, r) − C(n−k+1, r)` into a *sum*:
+each summand `C(j, r−1)` is the Pascal increment `C(j+1, r) − C(j, r)`, so over
+the window `j ∈ [n−k+1, n)` the sum telescopes to `construction2 n r k`. The
+window has exactly `k − 1` integers, so
+
+  `construction2 n r k = Σ_{j = n−k+1}^{n−1} C(j, r−1)`,
+
+a sum of `k − 1` consecutive binomial coefficients. This is the structural
+source of everything in Section 1: monotonicity in `n` is now transparent
+(each summand `C(j, r−1)` is itself nondecreasing as the window slides up),
+and the exact one-step increment of Section 5 is just the difference of the
+two endpoint summands. Combinatorially it stratifies the edges meeting a fixed
+`(k−1)`-set by the largest "free" coordinate they use.
+
+We prove the subtraction-free telescoping identity first (so the argument
+stays inside `ℕ`), then read off both the closed form and the window size. -/
+
+/-- Telescoping Pascal in additive form: for `a ≤ b` and `r ≥ 1`,
+    `C(a, r) + Σ_{j ∈ [a, b)} C(j, r−1) = C(b, r)`. -/
+theorem choose_add_sum_Ico (a b r : ℕ) (hab : a ≤ b) (hr : r ≥ 1) :
+    Nat.choose a r + ∑ j ∈ Finset.Ico a b, Nat.choose j (r - 1) = Nat.choose b r := by
+  induction b, hab using Nat.le_induction with
+  | base => simp
+  | succ b hab ih =>
+    rw [Finset.sum_Ico_succ_top hab]
+    -- Pascal at `b`: `C(b+1, r) = C(b, r−1) + C(b, r)` (uses `r ≥ 1`).
+    have hpascal : Nat.choose (b + 1) r = Nat.choose b (r - 1) + Nat.choose b r := by
+      have h := Nat.choose_succ_succ b (r - 1)
+      simp only [Nat.succ_eq_add_one] at h
+      rw [Nat.sub_add_cancel hr] at h
+      omega
+    omega
+
+/-- Closed form: `construction2 n r k = Σ_{j = n−k+1}^{n−1} C(j, r−1)`, a sum of
+    exactly `k − 1` consecutive binomial coefficients (see `construction2_sum_card`).
+    Telescoping Pascal collapses the difference of two binomials into this sum. -/
+theorem construction2_eq_sum (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 1) (hn : n ≥ k) :
+    construction2 n r k = ∑ j ∈ Finset.Ico (n - k + 1) n, Nat.choose j (r - 1) := by
+  unfold construction2
+  have hab : n - k + 1 ≤ n := by omega
+  have h := choose_add_sum_Ico (n - k + 1) n r hab hr
+  omega
+
+/-- The summation window `[n−k+1, n)` has exactly `k − 1` integers: the closed
+    form `construction2_eq_sum` is a sum of `k − 1` consecutive binomials. -/
+theorem construction2_sum_card (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ k) :
+    (Finset.Ico (n - k + 1) n).card = k - 1 := by
+  rw [Nat.card_Ico]
+  omega
+
 end Erdos1020OQ02

@@ -3,8 +3,8 @@
     "id": "ann-overline-factor-def",
     "proofId": "partition-theorem-oq-03-oq-03",
     "range": {
-      "startLine": 49,
-      "endLine": 58
+      "startLine": 43,
+      "endLine": 51
     },
     "type": "definition",
     "title": "The Single-Part-Size Overline Factor",
@@ -23,11 +23,34 @@
     ]
   },
   {
+    "id": "ann-coeff-closed-form",
+    "proofId": "partition-theorem-oq-03-oq-03",
+    "range": {
+      "startLine": 53,
+      "endLine": 65
+    },
+    "type": "technique",
+    "title": "Closed-Form Coefficients: 1, 2, 2, 2, …",
+    "content": "Three lemmas pin down every coefficient. coeff_overlineFactor n = (if n = 0 then 1 else 2) is immediate from coeff_mk, since overlineFactor is built by PowerSeries.mk from exactly that function — the @[simp] tag then lets later proofs rewrite any coefficient automatically. The two specializations coeff_overlineFactor_zero (= 1) and coeff_overlineFactor_pos (= 2 for n ≠ 0) just discharge the if-branches, giving named hypotheses for the degree-0 and positive-degree cases. The combinatorial content is the constant 2 at every positive degree: for a single fixed part size, each multiplicity m ≥ 1 is realized in exactly two ways depending on whether the first copy is overlined.",
+    "mathContext": "$[X^n]\\,\\overline{\\mathrm{Factor}} = \\begin{cases}1 & n = 0\\\\ 2 & n \\ge 1\\end{cases}$, the generating-function encoding of \"one way to omit a part size, two ways for each positive multiplicity.\"",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "coefficient extraction",
+      "PowerSeries.coeff_mk",
+      "simp normal form",
+      "overpartition multiplicity count"
+    ],
+    "prerequisites": [
+      "PowerSeries.mk and coeff_mk",
+      "if-then-else case analysis in Lean"
+    ]
+  },
+  {
     "id": "ann-local-factor-identity",
     "proofId": "partition-theorem-oq-03-oq-03",
     "range": {
-      "startLine": 72,
-      "endLine": 87
+      "startLine": 67,
+      "endLine": 85
     },
     "type": "insight",
     "title": "Local Euler Factor Identity: (1−X)·overlineFactor = 1+X",
@@ -45,6 +68,29 @@
       "PowerSeries.coeff_zero_X_mul",
       "PowerSeries.coeff_one and coeff_X",
       "additivity of PowerSeries.coeff"
+    ]
+  },
+  {
+    "id": "ann-divisibility-corollary",
+    "proofId": "partition-theorem-oq-03-oq-03",
+    "range": {
+      "startLine": 87,
+      "endLine": 90
+    },
+    "type": "insight",
+    "title": "Reading the Identity as Divisibility in ℤ⟦X⟧",
+    "content": "oneSubX_dvd_onePlusX repackages the factor identity as a divisibility statement: (1−X) ∣ (1+X) in ℤ⟦X⟧, witnessed by the explicit quotient overlineFactor. The witness is just overline_local_factor read backwards — the Dvd instance asks for some g with 1+X = (1−X)·g, and g = overlineFactor is exactly that. This works because 1−X is a unit in the power-series ring (its constant term 1 is invertible), so it divides everything; the point of stating it is to expose (1+X)/(1−X) as a genuine ring-theoretic quotient rather than a mere formal series, mirroring how the Euler factor (1+qᵏ)/(1−qᵏ) is read as a rational function.",
+    "mathContext": "$(1-X)\\mid(1+X)$ in $\\mathbb{Z}\\llbracket X\\rrbracket$ with quotient $\\overline{\\mathrm{Factor}}=\\frac{1+X}{1-X}$; $1-X$ is a unit since $[X^0](1-X)=1\\in\\mathbb{Z}^\\times$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility in commutative rings",
+      "units in power-series rings",
+      "rational generating functions",
+      "Dvd witness"
+    ],
+    "prerequisites": [
+      "Dvd in a commutative ring",
+      "units of ℤ⟦X⟧ (invertible constant term)"
     ]
   },
   {

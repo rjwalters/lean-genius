@@ -2,12 +2,12 @@
   "id": "erdos-1090",
   "title": "Erdős Problem #1090: Monochromatic Collinear Points",
   "slug": "erdos-1090",
-  "description": "For k ≥ 3, does there exist a finite set A ⊂ ℝ² such that any 2-coloring has k monochromatic collinear points? SOLVED: YES. Graham-Selfridge proved k=3; Hunter used Hales-Jewett for general k.",
+  "description": "For k ≥ 3, does there exist a finite set A ⊂ ℝ² such that any 2-coloring has k monochromatic collinear points? SOLVED: YES. Fully formalized (0 axioms, 0 sorries): both the k=3 (Graham-Selfridge) and general-k (Hunter) cases are derived as honest theorems from Mathlib's Hales-Jewett theorem via an explicit linear 'generic projection' of the combinatorial cube [k]^ι into the plane.",
   "meta": {
     "author": "Graham-Selfridge (k=3), Hunter (general k via Hales-Jewett)",
     "sourceUrl": "https://erdosproblems.com/1090",
     "date": "1975",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1090Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "collinear-points",
       "solved"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 1090,
     "erdosUrl": "https://erdosproblems.com/1090",
@@ -25,6 +25,11 @@
     "dateAdded": "2026-01-18",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
+      {
+        "theorem": "Combinatorics.Line.exists_mono_in_high_dimension",
+        "description": "The Hales-Jewett theorem: any finite coloring of [k]^ι has a monochromatic combinatorial line. This is the engine of the construction.",
+        "module": "Mathlib.Combinatorics.HalesJewett"
+      },
       {
         "theorem": "EuclideanSpace",
         "description": "Euclidean space ℝ² as EuclideanSpace ℝ (Fin 2)",
@@ -47,26 +52,21 @@
       }
     ],
     "originalContributions": [
-      "Point abbrev for EuclideanSpace ℝ (Fin 2)",
-      "TwoColoring, Collinear, PointsOnLine definitions",
-      "Line structure with point, direction, nonzero fields",
-      "OnLine predicate via scalar parameterization",
-      "IsMonochromatic, IsKCollinear predicates",
-      "MonochromaticKCollinear combining collinearity and monochromaticity",
-      "HasRamseyProperty and Erdos1090Question formal statements",
-      "graham_selfridge axiom for k=3 case",
-      "CombinatorialLine structure with fixed/varying coordinates",
-      "hales_jewett axiom with monochromatic line guarantee",
-      "hunter_observation axiom: general k via projection",
-      "erdos_1090_affirmative: main theorem from hunter_observation",
-      "SylvesterGallai and HellyProperty related definitions",
-      "Erdos1090Generalized for r colors, Erdos1090HigherDim for d dimensions",
-      "erdos_1090_summary and erdos_1090 combining all results"
+      "erdos1090_construction: the central new theorem. For every k ≥ 3 it builds an explicit finite A ⊂ ℝ² with the Ramsey property, by linearly projecting the combinatorial cube [k]^ι (ι from Hales-Jewett) into the plane via φ p = ∑ j, (p j : ℝ) • v j with v j = !₂[1, w j].",
+      "Key geometric lemma: a combinatorial line maps to the affine line t ↦ φ(l 0) + t • dir, where the direction dir has first coordinate equal to the number of varying coordinates |V| ≥ 1, hence dir ≠ 0 — giving k genuinely distinct collinear points of one color.",
+      "Nonzeroness handled cleanly via WithLp.ofLp (the linear coordinate map), reducing to a positive Finset sum (single_le_sum on the proper-coordinate witness).",
+      "graham_selfridge: now an honest theorem, the k=3 instance of erdos1090_construction (formerly an axiom).",
+      "hunter_observation: now an honest theorem = erdos1090_construction (formerly an axiom).",
+      "Point abbrev, TwoColoring, Collinear, PointsOnLine, Line structure, OnLine predicate",
+      "IsMonochromatic, IsKCollinear, MonochromaticKCollinear, HasRamseyProperty, Erdos1090Question statements",
+      "erdos_1090_affirmative, erdos_1090, erdos_1090_summary: main results, now axiom-free",
+      "hasRamseyProperty_card_ge, ramsey_lower_bound: size lower bounds",
+      "SylvesterGallai, HellyProperty, Erdos1090Generalized, Erdos1090HigherDim: related/generalized statements"
     ],
-    "axiomCount": 2,
-    "lineCount": 333,
-    "assumptions": "2 axioms: graham_selfridge, hunter_observation. Structure fields are object definitions, not assumptions.",
-    "theoremCount": 5,
+    "axiomCount": 0,
+    "lineCount": 487,
+    "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
+    "theoremCount": 9,
     "definitionCount": 17
   },
   "overview": {
@@ -91,6 +91,8 @@
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Combinatorics.HalesJewett",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Set.Finite.Basic"
@@ -100,12 +102,12 @@
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 333,
-    "axiomCount": 2,
-    "theoremCount": 5,
+    "lineCount": 487,
+    "axiomCount": 0,
+    "theoremCount": 9,
     "definitionCount": 17,
     "path": "Proofs/Erdos1090Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -147,18 +149,18 @@
     {
       "id": "graham-selfridge",
       "title": "Graham-Selfridge (k=3)",
-      "summary": "Axiomatizes `graham_selfridge : ∃ A, HasRamseyProperty A 3`. Proves `k3_case : Erdos1090Question 3` by applying the axiom after `intro _`.",
-      "startLine": 127,
-      "endLine": 147,
-      "mathContext": "Verified: Axiomatizes `graham_selfridge : ∃ A, HasRamseyProperty A 3`. Proves `k3_case : Erdos1090Question 3` by applying the axiom after `intro _`."
+      "summary": "Proves `graham_selfridge : ∃ A, HasRamseyProperty A 3` as the k=3 instance of `erdos1090_construction` (formerly an axiom, now a theorem). Proves `k3_case : Erdos1090Question 3` by applying it after `intro _`.",
+      "startLine": 256,
+      "endLine": 282,
+      "mathContext": "Verified: `graham_selfridge : ∃ A, HasRamseyProperty A 3` is now a theorem, the k=3 instance of `erdos1090_construction`. `k3_case : Erdos1090Question 3` follows by applying it after `intro _`."
     },
     {
       "id": "hales-jewett",
       "title": "Hales-Jewett Approach",
-      "summary": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. documents in source comments `hales_jewett` (no Lean declaration exists) (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ → Point), and `hunter_observation` (combining both for HasRamseyProperty).",
-      "startLine": 148,
-      "endLine": 201,
-      "mathContext": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. documents in source comments `hales_jewett` (no Lean declaration exists) (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ → Point), and `hunter_observation` (combining both for HasRamseyProperty)."
+      "summary": "Proves `hunter_observation : ∀ k ≥ 3, ∃ A, HasRamseyProperty A k` (formerly an axiom) as `erdos1090_construction`. Also defines the documentary `CombinatorialLine k n` structure; the actual proof uses Mathlib's `Combinatorics.Line` and `exists_mono_in_high_dimension`.",
+      "startLine": 283,
+      "endLine": 322,
+      "mathContext": "Verified: `hunter_observation : ∀ k ≥ 3, ∃ A, HasRamseyProperty A k` is now a theorem (= `erdos1090_construction`), proved from Mathlib's Hales-Jewett theorem `Combinatorics.Line.exists_mono_in_high_dimension` rather than axiomatized."
     },
     {
       "id": "main-result",
@@ -171,18 +173,18 @@
     {
       "id": "constructions",
       "title": "Special Constructions",
-      "summary": "Axiomatizes three point set constructions: `regularNgonWithCenter` (vertices + center), `gridPoints` (m × m grid), and `projectivePlanePoints` (from finite projective planes over 𝔽_q).",
-      "startLine": 216,
-      "endLine": 239,
-      "mathContext": "Axiomatized: Axiomatizes three point set constructions: `regularNgonWithCenter` (vertices + center), `gridPoints` (m × m grid), and `projectivePlanePoints` (from finite projective planes over 𝔽_q)."
+      "summary": "Documentary block comments only (no Lean declarations) describing alternative point-set constructions: regular n-gon plus center, m × m grid, and finite projective plane points. The verified construction in `erdos1090_construction` is the Hales-Jewett projection, not these.",
+      "startLine": 332,
+      "endLine": 358,
+      "mathContext": "Documentary section: block comments sketching alternative constructions (regular n-gon + center, grid, projective plane). No axioms or declarations are introduced here."
     },
     {
       "id": "bounds",
       "title": "Size Bounds",
-      "summary": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). documents in source comments `r3_small` (no Lean declaration exists) (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A 3).",
-      "startLine": 240,
-      "endLine": 265,
-      "mathContext": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). documents in source comments `r3_small` (no Lean declaration exists) (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A 3)."
+      "summary": "Defines `ramseyNumber k` (minimum |A| with Ramsey property via sInf). Proves `hasRamseyProperty_card_ge` (any Ramsey set has ≥ k points) and `ramsey_lower_bound : ramseyNumber k ≥ k` — both fully proved, no sorry (the lower bound now uses the witnessing set from the construction).",
+      "startLine": 360,
+      "endLine": 398,
+      "mathContext": "Defines `ramseyNumber k` via `sInf`. `hasRamseyProperty_card_ge` and `ramsey_lower_bound : ramseyNumber k ≥ k` are both fully proved (0 sorries), using the constant coloring and the witnessing set supplied by `erdos1090_construction`."
     },
     {
       "id": "related",
@@ -210,7 +212,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1090 is completely solved. The formalization captures 10 axioms (Graham-Selfridge, Hales-Jewett, generic projection, Hunter's observation, and supporting results), 5 theorems (including the main result and summary), and 17 definitions across 358 lines. The core argument: Hales-Jewett guarantees monochromatic combinatorial lines in [k]ⁿ, and generic projection to ℝ² preserves collinearity. One sorry remains (ramsey_lower_bound).",
+    "summary": "Erdős Problem #1090 is completely solved AND fully verified in Lean: 0 axioms, 0 sorries. The 487-line formalization derives both the k=3 (Graham-Selfridge) and general-k (Hunter) cases as honest theorems from Mathlib's Hales-Jewett theorem (Combinatorics.Line.exists_mono_in_high_dimension). The core argument: Hales-Jewett supplies a finite index type ι so every 2-coloring of [k]^ι has a monochromatic combinatorial line; the explicit linear projection φ p = ∑ j (p j : ℝ) • v j (with v j = !₂[1, w j]) sends that combinatorial line to a genuine geometric line in ℝ² whose direction has first coordinate |V| ≥ 1 (hence nonzero), yielding k distinct collinear points of one color. #print axioms confirms dependence only on [propext, Classical.choice, Quot.sound].",
     "implications": "**Theoretical Significance**: **Connections to Combinatorics and Geometry**\n\n1. **Hales-Jewett Theorem:** The solution relies on this fundamental theorem about combinatorial lines in high-dimensional grids, demonstrating the power of combinatorial Ramsey theory in geometric settings.\n\n2. **Euclidean Ramsey Theory:** This is part of the broader program asking which geometric configurations are unavoidable under colorings — a deep connection between combinatorics and geometry.\n\n**3. Sylvester-Gallai:** The related classical result about ordinary lines provides structural constraints on point configurations that complement the Ramsey-theoretic approach.\n\n4. **Projective Geometry:** Finite projective planes provide candidate constructions for optimal sets, connecting the problem to algebraic combinatorics.\n\n5. **Transfer Principle:** The solution exemplifies projecting high-dimensional combinatorial structure to low-dimensional geometric structure, a technique with broad applicability.",
     "openQuestions": [
       "What is the minimum size of A for each k? (R(3) ≤ 9 is axiomatized)",

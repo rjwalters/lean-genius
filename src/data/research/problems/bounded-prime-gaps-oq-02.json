@@ -45,7 +45,9 @@
       "EHAtLevel_add / EHAtLevel_smul / EHAtLevel_nonneg_linear — EH-bound class is a convex cone (constants C₁+C₂ and c·C+1)",
       "EHAtLevel_discrepancySum_up: EHAtLevel(discrepancySum f) θ₁ + band EH-bound ⟹ EHAtLevel(discrepancySum f) θ₂ — quantitative ascent converse to the descent hierarchy",
       "psiAP/apDiscrepancy/vonMangoldtWeight + vonMangoldtDiscrepancySum(Clamped) in BoundedPrimeGapsOQ02.lean: genuine EH weight from ArithmeticFunction.vonMangoldt + Nat.totient; vonMangoldtWeight_nonneg via Finset.le_sup'+abs_nonneg",
-      "Capstones EHAtLevel_of_le_vonMangoldt, bombieriVinogradov_of_EH_vonMangoldt, bombieriVinogradov_of_EHAtLevel_vonMangoldt, vonMangoldtDiscrepancySum_mono_level, vonMangoldtDiscrepancySum_eq_add_band, EHAtLevel_vonMangoldt_up_split — full hierarchy/band/cone/ascent now applies to the genuine functional, 0-axiom"
+      "Capstones EHAtLevel_of_le_vonMangoldt, bombieriVinogradov_of_EH_vonMangoldt, bombieriVinogradov_of_EHAtLevel_vonMangoldt, vonMangoldtDiscrepancySum_mono_level, vonMangoldtDiscrepancySum_eq_add_band, EHAtLevel_vonMangoldt_up_split — full hierarchy/band/cone/ascent now applies to the genuine functional, 0-axiom",
+      "EHAtLevel_discrepancySum_up_chain / EHAtLevel_vonMangoldt_up_chain (2026-06-27): finite-chain ascent over a monotone level sequence L : ℕ → ℝ — arbitrarily-many-blocks dyadic decomposition, of which the two-band split is the n=2 case",
+      "EHAtLevel_discrepancySum_up_arith / EHAtLevel_vonMangoldt_up_arith (2026-06-28, researcher-3, 0-axiom): the explicit EQUIPARTITION instantiation of the chain at the arithmetic level sequence L k = θ₀ + k·δ (δ ≥ 0) — Monotone L discharged from δ ≥ 0; choosing δ = (θ-θ₀)/n reaches any target θ ≥ θ₀ in n equal modulus blocks. GOTCHA: hband's θ₀+(k+1)·δ elaborates to ↑k+1, chain's L(k+1) is ↑(k+1); bridge with simpa only [Nat.cast_succ]"
     ],
     "insights": [
       "EH is a conjecture, so formalize it as a logical skeleton over an abstract discrepancy functional D θ x — never axiomatize EH itself.",
@@ -99,7 +101,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.076Z",
-  "lastUpdate": "2026-04-22T12:51:58.076Z",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
   "significance": 8,
   "tractability": 3,
   "leanFiles": [

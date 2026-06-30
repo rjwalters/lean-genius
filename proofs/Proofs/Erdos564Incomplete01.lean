@@ -24,6 +24,11 @@
     * `tower_one_lt_tower_two`  : `1 ≤ n → tower 1 n < tower 2 n`
       — the *singly*-exponential known lower bound is strictly below the
         *doubly*-exponential conjectured one: the exact gap Erdős #564 asks to close.
+    * `ehr_lower_lt_tower_two`  : `5 ≤ n → 2^{n²} < tower 2 n` — the same gap in its
+        *faithful quadratic form*: the real EHR lower bound `2^{cn²}` has a quadratic
+        exponent (not linear), yet `2^{n²}` is still a whole tower level below the
+        conjectured `2^{2^n}`, because `n² < 2^n` (`nsq_lt_two_pow_self`, `n ≥ 5`).
+    * `tower_lt_of_height_lt`   : `j < k → tower j n < tower k n` (general height gap).
 
   Nothing here resolves the open conjecture; this is the combinatorial scaffolding
   that makes its statement ("can R₃ reach tower height 2?") precise.
@@ -96,6 +101,40 @@ theorem tower_one_lt_tower_two (n : ℕ) : tower 1 n < tower 2 n := by
   -- 2 ^ n < 2 ^ (2 ^ n) since n < 2 ^ n for every n
   exact Nat.pow_lt_pow_right (by norm_num) Nat.lt_two_pow_self
 
+/-- **General height gap.**  Any lower tower height is strictly dominated by any
+higher one (for the same base): `tower j n < tower k n` whenever `j < k`.  This is
+the height-monotonicity `tower_strictMono_height` named as a gap lemma;
+`tower_one_lt_tower_two` is the case `j = 1, k = 2`. -/
+theorem tower_lt_of_height_lt {j k n : ℕ} (h : j < k) : tower j n < tower k n :=
+  tower_strictMono_height n h
+
+/-- `n² < 2ⁿ` for every `n ≥ 5` (tight: `4² = 16 = 2⁴`).  Proved by induction from
+the base `5² = 25 < 32 = 2⁵`; the successor step uses `2m+1 ≤ m²` (valid for `m ≥ 5`)
+together with the inductive `m² < 2ᵐ` to clear `(m+1)² = m²+2m+1 < 2ᵐ + 2ᵐ = 2^{m+1}`. -/
+theorem nsq_lt_two_pow_self : ∀ {n : ℕ}, 5 ≤ n → n ^ 2 < 2 ^ n := by
+  intro n hn
+  induction n, hn using Nat.le_induction with
+  | base => decide
+  | succ m hm ih =>
+      have hb : 2 * m + 1 ≤ m ^ 2 := by nlinarith [hm]
+      have hsplit : 2 ^ (m + 1) = 2 ^ m + 2 ^ m := by rw [pow_succ]; ring
+      rw [hsplit]
+      nlinarith [ih, hb]
+
+/-- **The crux of Erdős #564 in its faithful quadratic form.**  The genuine
+Erdős–Hajnal–Rado *lower* bound is `2^{cn²}` — singly exponential with a **quadratic**
+argument — while the conjectured lower bound is the doubly-exponential `2^{2^{cn}}`
+(tower height `2`).  Stripping the constant `c` to its cleanest instance, the height-1
+quadratic bound `2^{n²}` sits strictly below the height-2 bound `tower 2 n = 2^{2^n}`
+for every `n ≥ 5`:
+    `2^{n²} < tower 2 n`.
+This is the more faithful statement of the gap `tower_one_lt_tower_two` gestures at:
+the known lower bound's exponent is quadratic (`n²`), not linear (`n`), yet it is still
+a whole tower level below the conjecture — `n²` is dwarfed by `2^n`. -/
+theorem ehr_lower_lt_tower_two {n : ℕ} (hn : 5 ≤ n) : 2 ^ (n ^ 2) < tower 2 n := by
+  rw [tower_two_eq]
+  exact Nat.pow_lt_pow_right (by norm_num) (nsq_lt_two_pow_self hn)
+
 /-! ### Concrete sanity checks -/
 
 /-- `tower 2 3 = 256`. -/
@@ -106,5 +145,48 @@ theorem tower_three_one : tower 3 1 = 16 := by decide
 
 /-- The base bound in action: `5 ≤ tower 4 5`. -/
 theorem self_le_tower_example : 5 ≤ tower 4 5 := self_le_tower 4 5
+
+/-! ## Monotonicity of the Ramsey property
+
+The parent axiomatizes the Ramsey number `R` but proves no theory of the underlying
+predicate `HasHypergraphRamseyProperty k m n` ("every 2-colouring of the k-subsets of
+`Fin m` has a monochromatic n-clique").  Two structural monotonicities hold for *any*
+such Ramsey-type property and are exactly the facts that make `R k n` well-behaved as a
+*threshold* (the least `m` with the property):
+
+* **more vertices preserve the property** (`…_mono`) — so the set of good `m` is upward
+  closed, which is what lets one speak of the *least* such `m`;
+* **a smaller target clique is easier** (`…_antitone_clique`) — so `R k ·` is monotone in
+  the clique size.
+
+Both are verified and **0-axiom** (they do not touch `R` or the EHR bounds). They are the
+first genuine theory of the property predicate itself, complementing the `tower`-growth
+theory above. -/
+
+/-- **Vertex monotonicity.**  If every 2-colouring on `m` vertices yields a monochromatic
+`n`-clique and `m ≤ m'`, the same holds on `m'` vertices: restrict a colouring of `Fin m'`
+along the embedding `Fin m ↪ Fin m'`, find the clique downstairs, and push it back up
+(`Finset.map` preserves cardinality and subset structure). -/
+theorem hasHypergraphRamseyProperty_mono {k m m' n : ℕ} (hmm : m ≤ m')
+    (h : HasHypergraphRamseyProperty k m n) : HasHypergraphRamseyProperty k m' n := by
+  intro c'
+  set f : Fin m ↪ Fin m' := Fin.castLEEmb hmm with hf
+  obtain ⟨S, colour, hScard, hSmono⟩ := h (fun e => c' (e.map f))
+  refine ⟨S.map f, colour, ?_, ?_⟩
+  · rw [Finset.card_map]; exact hScard
+  · intro e' he'sub he'card
+    obtain ⟨e, hesub, rfl⟩ := Finset.subset_map_iff.mp he'sub
+    rw [Finset.card_map] at he'card
+    simpa using hSmono e hesub he'card
+
+/-- **Clique-size antitonicity.**  A monochromatic `n`-clique contains a monochromatic
+`n'`-clique for every `n' ≤ n`: take any `n'`-element subset of the clique — its
+`k`-subsets are still `k`-subsets of the original clique, hence still monochromatic. -/
+theorem hasHypergraphRamseyProperty_antitone_clique {k m n n' : ℕ} (hnn : n' ≤ n)
+    (h : HasHypergraphRamseyProperty k m n) : HasHypergraphRamseyProperty k m n' := by
+  intro c
+  obtain ⟨S, colour, hScard, hSmono⟩ := h c
+  obtain ⟨T, hTsub, hTcard⟩ := Finset.le_card_iff_exists_subset_card.mp (hScard ▸ hnn)
+  exact ⟨T, colour, hTcard, fun e hesub hecard => hSmono e (hesub.trans hTsub) hecard⟩
 
 end Erdos564.Incomplete01

@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-setup",
+    "proofId": "chinese-remainder-constructive-oq-05-oq-02",
+    "range": { "startLine": 29, "endLine": 33 },
+    "type": "context",
+    "title": "Setup: Plain Mathlib, No Extra Project Imports",
+    "content": "Unlike the assembly-style siblings, this file imports only `Mathlib` — the generalisation is genuinely self-contained, needing nothing from the two/three-modulus entry it answers. `open Nat` brings the coprime/list-product API (`coprime_list_prod_right_iff`, `Coprime.mul_dvd_of_dvd_of_dvd`, `modEq_iff_dvd'`, `eq_zero_of_dvd_of_lt`) into scope. The whole entry rests on a single list induction over the moduli; the inputs are a `List ℕ` of moduli carrying a `List.Pairwise Nat.Coprime` hypothesis (pairwise, not setwise, coprimality), which the induction consumes one head-relation at a time.",
+    "mathContext": "Inputs: a list $ms : \\mathrm{List}\\,\\mathbb{N}$ with $\\mathrm{List.Pairwise\\ Nat.Coprime}\\ ms$; the goal is divisibility/uniqueness against $ms.\\mathrm{prod} = \\prod_{m \\in ms} m$.",
+    "significance": "context",
+    "relatedConcepts": ["List.Pairwise", "Nat.Coprime", "list induction", "Mathlib Nat namespace"],
+    "prerequisites": ["lists and List.prod", "pairwise relations", "coprimality in ℕ"]
+  },
+  {
     "id": "ann-engine",
     "proofId": "chinese-remainder-constructive-oq-05-oq-02",
     "range": { "startLine": 33, "endLine": 53 },

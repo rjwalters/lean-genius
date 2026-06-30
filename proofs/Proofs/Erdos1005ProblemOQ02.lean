@@ -1697,4 +1697,415 @@ all-`1` continuant turns *negative*: `K([1,1,1]) = 1 − 1 − 1 = −1`.  Toget
 balanced extreme, the regime where §17's positivity provably does not hold. -/
 theorem continuant_ones_three : Continuant [1, 1, 1] = -1 := by decide
 
+/-! ## §18: The bottom-right entry and the pure-continuant Cassini
+
+§16 identified three of the four entries of the step-matrix product `P(ks)` —
+`.a = Continuant ks`, `.c = secondCont ks`, `.b = −secondCont ks.reverse` — but left
+the bottom-right entry `.d`, the coefficient carrying the Cassini determinant, as an
+opaque matrix entry; the §16 note named "identify `(contMat ks).d` in closed
+continuant form" as the next direction.  This section closes that thread.
+
+Prepending a quotient shifts the matrix down-right, so `.d` of `P(k :: ks)` is just
+the *old* top-right entry `.b` of `P(ks)`: `(P(k::ks)).d = −secondCont ks.reverse`.
+With §16's `.a/.b/.c` this identifies **every** entry of the continuant matrix as a
+signed continuant of a sublist (`contMat_cons_eq`), and turns the §16 determinant
+Cassini into the classical three-term continuant Cassini
+
+`K(L.dropLast)·K(L.tail) − K(L)·K(L.tail.dropLast) = 1`   (`continuant_cassini_classical`)
+
+relating three consecutive continuants of a length-`≥ 2` quotient list `L` — the
+recognizable textbook form of the §16 `det P = 1` invariant, now fully expressed in
+the §14 continuant ladder with no residual matrix entry.
+
+This section is downstream of §16 only (the matrix entries and reversal symmetry);
+it adds no new axioms and introduces no `Continuant`/`secondCont` machinery beyond
+the §14 definitions and the §16 reversal bridge. -/
+
+/-- **The fourth entry.**  Prepending `k` shifts the bottom-right entry to the old
+top-right entry: `(P(k::ks)).d = (P ks).b = −secondCont ks.reverse`.  (Bottom-right
+of `M(k)·X` is `1·X.b + 0·X.d = X.b`, since `M(k) = [[k,−1],[1,0]]`.)  Together with
+§16's `contMat_a/_b/_c` this identifies all four entries of the continuant matrix. -/
+theorem contMat_d (k : ℤ) (ks : List ℤ) :
+    (contMat (k :: ks)).d = - secondCont ks.reverse := by
+  have e : (contMat (k :: ks)).d = (contMat ks).b := by
+    show (Mat2.mul (stepMat k) (contMat ks)).d = (contMat ks).b
+    simp only [Mat2.mul, stepMat]; ring
+  rw [e, contMat_b]
+
+/-- **Full continuant-matrix identification.**  Every entry of the step-matrix
+product is a signed continuant of a sublist:
+`P(k::ks) = [[K(k::ks), −secondCont (k::ks).reverse], [secondCont (k::ks), −secondCont ks.reverse]]`.
+The complete entry-level reading of §16's `contMat`, now including the bottom-right
+corner. -/
+theorem contMat_cons_eq (k : ℤ) (ks : List ℤ) :
+    contMat (k :: ks) =
+      ⟨Continuant (k :: ks), - secondCont (k :: ks).reverse,
+       secondCont (k :: ks), - secondCont ks.reverse⟩ := by
+  ext
+  · exact contMat_a _
+  · exact contMat_b _
+  · exact contMat_c _
+  · exact contMat_d k ks
+
+/-- **Pure-continuant Cassini (no residual matrix entry).**  Spelling out
+`det P(k::ks) = 1` with all four entries now in continuant form gives
+`secondCont (k::ks).reverse · secondCont (k::ks) − Continuant (k::ks) · secondCont ks.reverse = 1`.
+Unlike §16's `continuant_cassini`, every term here is a §14 continuant-ladder value;
+the opaque `(P ks).d` has been eliminated. -/
+theorem continuant_cassini_full (k : ℤ) (ks : List ℤ) :
+    secondCont (k :: ks).reverse * secondCont (k :: ks)
+      - Continuant (k :: ks) * secondCont ks.reverse = 1 := by
+  have h := det_contMat (k :: ks)
+  rw [Mat2.det, contMat_a, contMat_b, contMat_c, contMat_d k ks] at h
+  linear_combination h
+
+/-- `(l.dropLast).reverse = l.reverse.tail` — reversing then dropping the last is
+reversing the tail (a pure `List` rearrangement, via `List.dropLast_reverse`). -/
+theorem dropLast_reverse_eq (l : List ℤ) : (l.dropLast).reverse = l.reverse.tail := by
+  have h := @List.dropLast_reverse ℤ l.reverse
+  rw [List.reverse_reverse] at h
+  rw [h, List.reverse_reverse]
+
+/-- For a nonempty list `m`, `secondCont m = Continuant m.tail` (the defining
+recurrence `secondCont (x :: xs) = Continuant xs`, stated tail-first). -/
+theorem secondCont_eq_continuant_tail {m : List ℤ} (hm : m ≠ []) :
+    secondCont m = Continuant m.tail := by
+  cases m with
+  | nil => exact absurd rfl hm
+  | cons x xs => rfl
+
+/-- **Trailing-of-reverse is the leading continuant.**  For nonempty `l`,
+`secondCont l.reverse = Continuant l.dropLast`: the trailing continuant of the
+reversed list is the *leading* continuant of the original.  (`secondCont` reads the
+tail of the reverse, which is the reverse of the dropLast, and `Continuant` is
+reversal-invariant by §16.)  This is the bridge prose in §16 (`secondCont xs.reverse
+= K(xs.dropLast)`), now a lemma. -/
+theorem secondCont_reverse_eq {l : List ℤ} (hl : l ≠ []) :
+    secondCont l.reverse = Continuant l.dropLast := by
+  have hrev : l.reverse ≠ [] := by simpa using hl
+  rw [secondCont_eq_continuant_tail hrev, ← dropLast_reverse_eq, continuant_reverse]
+
+/-- **Continuant Cassini, classical three-term form (headline).**  For a quotient
+list `L = k :: j :: rest` of length `≥ 2`,
+`K(L.dropLast)·K(L.tail) − K(L)·K(L.tail.dropLast) = 1`.
+This is the textbook continuant Cassini identity — the determinant `det P(L) = 1` of
+§16 rewritten entirely in the §14 continuant ladder, relating the three consecutive
+continuants `K(L.dropLast)`, `K(L)`, `K(L.tail)` and the interior `K(L.tail.dropLast)`.
+It specializes `continuant_cassini_full` through `secondCont_reverse_eq`, completing
+the program of expressing the run-length windows' determinant invariant purely in
+continuants. -/
+theorem continuant_cassini_classical (k j : ℤ) (rest : List ℤ) :
+    Continuant (k :: j :: rest).dropLast * Continuant (k :: j :: rest).tail
+      - Continuant (k :: j :: rest) * Continuant (k :: j :: rest).tail.dropLast = 1 := by
+  have h := continuant_cassini_full k (j :: rest)
+  rw [secondCont_reverse_eq (l := k :: j :: rest) (by simp),
+      secondCont_reverse_eq (l := j :: rest) (by simp)] at h
+  -- `secondCont (k :: j :: rest) = Continuant (j :: rest) = Continuant (k::j::rest).tail`
+  -- and `(k::j::rest).tail.dropLast = (j::rest).dropLast`, both definitional.
+  simpa using h
+
+/-! ## §19: Coprimality of consecutive continuants (reduced Farey fractions)
+
+The Cassini determinant `det P(ks) = 1` of §16 is, read as a Bézout identity, exactly
+the statement that the continuant pair `(Continuant ks, secondCont ks)` is *coprime*:
+`Continuant ks · (P ks).d + secondCont ks.reverse · secondCont ks = 1` exhibits an
+integer combination of `Continuant ks` and `secondCont ks` equal to `1`.  Since the
+§9 Farey successor is the fraction with numerator/denominator continuants and
+`secondCont (k :: ks) = Continuant ks` (the trailing continuant is the leading
+continuant of the tail), this says **consecutive continuants are coprime** — the
+mediants along a Stern–Brocot / Farey path are automatically in lowest terms, with no
+common factor to cancel.  This is the arithmetic counterpart of §16's geometric
+`det = 1`: unimodularity ⇒ coprimality ⇒ reduced fractions.
+
+This section is a direct corollary of §16 `continuant_cassini`; it adds the Mathlib
+`IsCoprime` API connection and no new axioms. -/
+
+/-- **Consecutive continuants are coprime.**  `IsCoprime (Continuant ks) (secondCont ks)`:
+the §16 Cassini `Continuant ks · (P ks).d + secondCont ks.reverse · secondCont ks = 1`
+is precisely a Bézout witness for coprimality of the continuant pair. -/
+theorem continuant_isCoprime (ks : List ℤ) :
+    IsCoprime (Continuant ks) (secondCont ks) :=
+  ⟨(contMat ks).d, secondCont ks.reverse, by linear_combination continuant_cassini ks⟩
+
+/-- **Reduced Farey fraction (consecutive-continuant form).**  The leading and
+trailing continuants of a nonempty quotient list are coprime:
+`IsCoprime (Continuant (k :: ks)) (Continuant ks)`.  Because the §9 Farey successor
+of a consecutive pair has these two continuants as denominator and numerator, the
+mediant produced along any Stern–Brocot path is automatically in lowest terms. -/
+theorem continuant_tail_isCoprime (k : ℤ) (ks : List ℤ) :
+    IsCoprime (Continuant (k :: ks)) (Continuant ks) := by
+  have h := continuant_isCoprime (k :: ks)
+  rwa [show secondCont (k :: ks) = Continuant ks from rfl] at h
+
+/-- **Coprimality is reversal-symmetric.**  Pairing §16's `continuant_reverse` with
+coprimality: the continuant of a quotient list is coprime to the trailing continuant
+of the reversed list as well — `IsCoprime (Continuant ks) (secondCont ks.reverse)`.
+(The two Bézout cofactors swap roles relative to `continuant_isCoprime`.) -/
+theorem continuant_isCoprime_reverse (ks : List ℤ) :
+    IsCoprime (Continuant ks) (secondCont ks.reverse) :=
+  ⟨(contMat ks).d, secondCont ks, by linear_combination continuant_cassini ks⟩
+
+/-! ## §20: Sharpness of the §17 linear growth bound — the all-`2` minimum
+
+§17's `continuant_ge_length` shows a length-`m` quotient list with every entry `≥ 2`
+has `Continuant ≥ m + 1`.  This section shows that bound is **attained**, and so is
+sharp: the constant list `[2, 2, …, 2]` realises `Continuant = m + 1` exactly — the
+Pell ladder `1, 2, 3, 4, …` in which each large-quotient step adds *exactly* one — and
+raising any leading quotient only increases the continuant.  Hence the exponential
+growth of `continuant_strict_mono`'s larger-quotient neighbours is a phenomenon of
+strictly larger quotients: the metric "cheapest" long large-quotient run is the
+all-`2` ladder, the minimiser of the §17 regime.  This pins down which large-quotient
+runs are the binding constraint for the order-`n` Farey ceiling.
+
+Depends only on the §14 `continuant_cons` recurrence and §17 `continuant_pos`. -/
+
+/-- **Exact value on the all-`2` list (joint with trailing continuant).**  The
+constant quotient list `[2,…,2]` of length `n` has `Continuant = n + 1` and
+`secondCont = n`: the Pell ladder `1, 2, 3, 4, …` in which each step adds exactly `1`.
+Proved by induction threading both continuants through `continuant_cons`. -/
+theorem continuant_secondCont_replicate_two (n : ℕ) :
+    Continuant (List.replicate n 2) = (n : ℤ) + 1
+      ∧ secondCont (List.replicate n 2) = (n : ℤ) := by
+  induction n with
+  | zero => exact ⟨rfl, rfl⟩
+  | succ m ih =>
+    obtain ⟨hK, hs⟩ := ih
+    rw [List.replicate_succ]
+    refine ⟨?_, ?_⟩
+    · rw [continuant_cons, hK, hs]; push_cast; ring
+    · -- `secondCont (2 :: replicate m 2)` is defeq `Continuant (replicate m 2)`.
+      have hdef : secondCont (2 :: List.replicate m 2)
+          = Continuant (List.replicate m 2) := rfl
+      rw [hdef, hK]; push_cast; ring
+
+/-- `Continuant [2,…,2] = n + 1` — the §17 linear bound `continuant_ge_length` is
+**attained** by the constant all-`2` list. -/
+theorem continuant_replicate_two (n : ℕ) :
+    Continuant (List.replicate n 2) = (n : ℤ) + 1 :=
+  (continuant_secondCont_replicate_two n).1
+
+/-- **The §17 linear bound is sharp.**  There is a length-`n` quotient list with every
+entry `≥ 2` whose continuant equals exactly `n + 1` — the all-`2` list.  Hence
+`continuant_ge_length`'s `Continuant ≥ |ks| + 1` cannot be improved in the
+large-quotient regime. -/
+theorem continuant_ge_length_sharp (n : ℕ) :
+    ∃ ks : List ℤ, ks.length = n ∧ (∀ k ∈ ks, (2 : ℤ) ≤ k)
+      ∧ Continuant ks = (n : ℤ) + 1 := by
+  refine ⟨List.replicate n 2, by simp, ?_, continuant_replicate_two n⟩
+  intro k hk
+  have : k = 2 := List.eq_of_mem_replicate hk
+  omega
+
+/-- **Monotonicity in the leading quotient (large-quotient regime).**  Raising the
+first quotient cannot decrease the continuant: for a tail `ks` with every entry `≥ 2`
+and `k ≤ k'`, `Continuant (k :: ks) ≤ Continuant (k' :: ks)`.  The difference is
+`(k' − k)·Continuant ks ≥ 0` by §17 `continuant_pos`.  Together with
+`continuant_replicate_two` this exhibits the all-`2` list as the continuant-minimiser
+among large-quotient lists sharing a fixed all-`2` tail. -/
+theorem continuant_head_mono {k k' : ℤ} {ks : List ℤ}
+    (hkk : k ≤ k') (h : ∀ j ∈ ks, (2 : ℤ) ≤ j) :
+    Continuant (k :: ks) ≤ Continuant (k' :: ks) := by
+  rw [continuant_cons, continuant_cons]
+  have hpos : 0 < Continuant ks := continuant_pos ks h
+  nlinarith [mul_nonneg (sub_nonneg.mpr hkk) (le_of_lt hpos)]
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 21: The balanced extreme — all-ones continuant is period-6 and bounded
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+§ 17 exhibited the two regimes of the continuant.  In the **large-quotient**
+regime (every entry `≥ 2`) it is strictly positive and grows at least linearly
+(`continuant_ge_length`, sharp via the all-`2` ladder `continuant_replicate_two`).
+The opposite, **balanced** extreme is the all-`1` list, where §17 recorded only
+the two witnesses `continuant_ones_two` (`K[1,1] = 0`) and `continuant_ones_three`
+(`K[1,1,1] = −1`), noting they sit on the period-6 orbit `1,1,0,−1,−1,0,…` of the
+rotation matrix `[[1,−1],[1,0]]` but proving only those two points.
+
+This section promotes the witnesses to the full statement.  Writing
+`aₙ = K(1ⁿ)`, `sₙ = secondCont(1ⁿ)`, the §14 single-step recurrence
+`continuant_cons` specialises (every quotient `= 1`) to the coupled linear system
+`aₙ₊₁ = aₙ − sₙ`, `sₙ₊₁ = aₙ`, i.e. `aₙ₊₁ = aₙ − aₙ₋₁`.  Its companion matrix is
+the order-6 rotation, whose sixth power is the identity, so the pair is
+**6-periodic**; the continuant therefore takes only the three values `−1, 0, 1`
+and, unlike the all-`2` ladder, never grows.  This is the exact quantitative form
+of the §15/§17 dichotomy: a long run of small quotients keeps the continuant
+bounded, whereas a regime of large quotients forces linear growth — the structural
+reason the open `1/12`–`1/4` optimisation must trade the two regimes against the
+order-`n` denominator cap (a similarly ordered run cannot be both long and
+metrically cheap at once).
+-/
+
+/-- All-ones trailing continuant: `secondCont(1ⁿ⁺¹) = K(1ⁿ)`.  Immediate from the
+`secondCont (_ :: ks) = Continuant ks` convention. -/
+theorem secondCont_replicate_one (m : ℕ) :
+    secondCont (List.replicate (m + 1) 1) = Continuant (List.replicate m 1) := by
+  rw [List.replicate_succ]; rfl
+
+/-- All-ones continuant single-step recurrence `aₙ₊₁ = aₙ − sₙ`: every quotient
+being `1`, the §14 `continuant_cons` loses its leading factor. -/
+theorem continuant_replicate_one_succ (m : ℕ) :
+    Continuant (List.replicate (m + 1) 1)
+      = Continuant (List.replicate m 1) - secondCont (List.replicate m 1) := by
+  rw [List.replicate_succ, continuant_cons]; ring
+
+/-- **The all-ones continuant is period-6 (joint headline).**  Both the continuant
+`aₙ = K(1ⁿ)` and its trailing companion `sₙ = secondCont(1ⁿ)` satisfy
+`a₍ₙ₊₆₎ = aₙ` and `s₍ₙ₊₆₎ = sₙ`.  The coupled recurrence `aₙ₊₁ = aₙ − sₙ`,
+`sₙ₊₁ = aₙ` is the order-6 rotation `[[1,−1],[1,0]]`, whose sixth power is the
+identity; unfolding six steps reduces the claim to linear integer arithmetic that
+`omega` discharges. -/
+theorem continuant_secondCont_replicate_one (n : ℕ) :
+    Continuant (List.replicate (n + 6) 1) = Continuant (List.replicate n 1)
+      ∧ secondCont (List.replicate (n + 6) 1) = secondCont (List.replicate n 1) := by
+  have c1 : Continuant (List.replicate (n + 1) 1)
+      = Continuant (List.replicate n 1) - secondCont (List.replicate n 1) :=
+    continuant_replicate_one_succ n
+  have s1 : secondCont (List.replicate (n + 1) 1) = Continuant (List.replicate n 1) :=
+    secondCont_replicate_one n
+  have c2 : Continuant (List.replicate (n + 2) 1)
+      = Continuant (List.replicate (n + 1) 1) - secondCont (List.replicate (n + 1) 1) :=
+    continuant_replicate_one_succ (n + 1)
+  have s2 : secondCont (List.replicate (n + 2) 1) = Continuant (List.replicate (n + 1) 1) :=
+    secondCont_replicate_one (n + 1)
+  have c3 : Continuant (List.replicate (n + 3) 1)
+      = Continuant (List.replicate (n + 2) 1) - secondCont (List.replicate (n + 2) 1) :=
+    continuant_replicate_one_succ (n + 2)
+  have s3 : secondCont (List.replicate (n + 3) 1) = Continuant (List.replicate (n + 2) 1) :=
+    secondCont_replicate_one (n + 2)
+  have c4 : Continuant (List.replicate (n + 4) 1)
+      = Continuant (List.replicate (n + 3) 1) - secondCont (List.replicate (n + 3) 1) :=
+    continuant_replicate_one_succ (n + 3)
+  have s4 : secondCont (List.replicate (n + 4) 1) = Continuant (List.replicate (n + 3) 1) :=
+    secondCont_replicate_one (n + 3)
+  have c5 : Continuant (List.replicate (n + 5) 1)
+      = Continuant (List.replicate (n + 4) 1) - secondCont (List.replicate (n + 4) 1) :=
+    continuant_replicate_one_succ (n + 4)
+  have s5 : secondCont (List.replicate (n + 5) 1) = Continuant (List.replicate (n + 4) 1) :=
+    secondCont_replicate_one (n + 4)
+  have c6 : Continuant (List.replicate (n + 6) 1)
+      = Continuant (List.replicate (n + 5) 1) - secondCont (List.replicate (n + 5) 1) :=
+    continuant_replicate_one_succ (n + 5)
+  have s6 : secondCont (List.replicate (n + 6) 1) = Continuant (List.replicate (n + 5) 1) :=
+    secondCont_replicate_one (n + 5)
+  constructor <;> omega
+
+/-- The all-ones continuant alone is period-6: `K(1ⁿ⁺⁶) = K(1ⁿ)`. -/
+theorem continuant_replicate_one_period (n : ℕ) :
+    Continuant (List.replicate (n + 6) 1) = Continuant (List.replicate n 1) :=
+  (continuant_secondCont_replicate_one n).1
+
+/-- Period-6 across any multiple of `6`: `K(1^(6q+r)) = K(1ʳ)`, by induction on the
+number of full turns `q` of the rotation orbit. -/
+theorem continuant_replicate_one_six_mul (q r : ℕ) :
+    Continuant (List.replicate (6 * q + r) 1) = Continuant (List.replicate r 1) := by
+  induction q with
+  | zero => simp
+  | succ q ih =>
+    have hidx : 6 * (q + 1) + r = (6 * q + r) + 6 := by ring
+    rw [hidx, continuant_replicate_one_period, ih]
+
+/-- **Closed form via residue mod 6.**  `K(1ⁿ)` depends only on `n % 6`, so the
+period-6 orbit `1,1,0,−1,−1,0` (for `n % 6 = 0,…,5`) determines every value. -/
+theorem continuant_replicate_one_mod (n : ℕ) :
+    Continuant (List.replicate n 1) = Continuant (List.replicate (n % 6) 1) := by
+  conv_lhs => rw [← Nat.div_add_mod n 6]
+  exact continuant_replicate_one_six_mul (n / 6) (n % 6)
+
+/-- **The balanced extreme stays bounded.**  For *every* length `n`,
+`K(1ⁿ) ∈ {1, 0, −1}` — the all-ones continuant never grows.  This is the sharp
+contrast with the all-`2` ladder `continuant_replicate_two` (`K = n + 1`, linear
+growth): the §17 dichotomy made fully quantitative on its two extremes. -/
+theorem continuant_replicate_one_bounded (n : ℕ) :
+    Continuant (List.replicate n 1) = 1 ∨ Continuant (List.replicate n 1) = 0
+      ∨ Continuant (List.replicate n 1) = -1 := by
+  rw [continuant_replicate_one_mod n]
+  have h6 : n % 6 < 6 := by omega
+  set r := n % 6 with hr
+  clear_value r
+  interval_cases r <;> decide
+
+/-- `|K(1ⁿ)| ≤ 1` for all `n` — the bound packaged as an absolute value, the
+order-side statement that the balanced extreme is metrically flat. -/
+theorem continuant_replicate_one_abs_le_one (n : ℕ) :
+    |Continuant (List.replicate n 1)| ≤ 1 := by
+  rcases continuant_replicate_one_bounded n with h | h | h <;> rw [h] <;> decide
+
+/-! ## §22: The boundary of the positive cone — leading `1`s in a large-quotient run
+
+§20/§21 nailed the two pure extremes (all-`2` linear `K = n + 1`, all-`1` period-6 with
+`|K| ≤ 1`).  This section characterises the **boundary** between them: starting from a
+large-quotient (all-`≥ 2`) tail — where §17 `continuant_pos` gives `0 < K` — how many
+leading quotients may drop to `1` before positivity is lost?
+
+The answer is **exactly one**.  Two closed-form identities collapse a leading-`1` prefix
+onto the tail's two continuants:
+
+* `K(1 :: ks) = K(ks) − secondCont ks`   (one leading `1`),
+* `K(1 :: 1 :: ks) = − secondCont ks`     (two leading `1`s).
+
+The §17 core invariant `0 ≤ secondCont ks < Continuant ks` (`secondCont_lt_continuant`)
+then reads off the sign immediately: with a single leading `1` the continuant stays
+`> 0` (the strict domination `secondCont < K`), but a *second* consecutive `1` flips it to
+`− secondCont ks ≤ 0` — strictly negative as soon as the tail is nonempty.  This is the
+precise crossing point from §17's positive cone into the §21 period-6 orbit; the
+empty-tail edge `K(1 :: 1 :: []) = 0` recovers the §21 witness `continuant_ones_two`.
+
+Depends only on the §14 recurrence `continuant_cons` and the §17 invariant
+`secondCont_lt_continuant` / `secondCont_nonneg` / `continuant_pos`. -/
+
+/-- **One leading `1` (closed form).**  Prepending a single `1` subtracts the trailing
+continuant: `K(1 :: ks) = K(ks) − secondCont ks`.  A pure instance of `continuant_cons`
+with `k = 1`. -/
+theorem continuant_one_cons (ks : List ℤ) :
+    Continuant (1 :: ks) = Continuant ks - secondCont ks := by
+  rw [continuant_cons]; ring
+
+/-- **Two leading `1`s (closed form).**  A second consecutive `1` cancels the leading
+continuant entirely: `K(1 :: 1 :: ks) = − secondCont ks`.  Indeed
+`K(1::1::ks) = K(1::ks) − secondCont (1::ks) = (K(ks) − secondCont ks) − K(ks)`, using
+`secondCont (1 :: ks) = Continuant ks`. -/
+theorem continuant_one_one_cons (ks : List ℤ) :
+    Continuant (1 :: 1 :: ks) = - secondCont ks := by
+  rw [continuant_one_cons (1 :: ks), continuant_one_cons ks]
+  simp only [secondCont]
+  ring
+
+/-- **A single leading `1` preserves positivity.**  On a large-quotient tail
+(`∀ k ∈ ks, 2 ≤ k`, so §17 gives `secondCont ks < Continuant ks`), one leading `1`
+keeps the continuant strictly positive: `0 < K(1 :: ks)`.  By `continuant_one_cons`,
+`K(1::ks) = K(ks) − secondCont ks > 0` by the strict domination. -/
+theorem continuant_one_cons_pos (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    0 < Continuant (1 :: ks) := by
+  rw [continuant_one_cons]
+  have hd := secondCont_lt_continuant ks h
+  linarith [hd.2]
+
+/-- **A second consecutive `1` destroys positivity.**  On the same large-quotient tail,
+`K(1 :: 1 :: ks) = − secondCont ks ≤ 0` (`continuant_one_one_cons` plus
+`secondCont_nonneg`).  So at most one leading quotient may drop to `1` while staying in
+§17's positive cone — the sharp boundary into the §21 period-6 orbit. -/
+theorem continuant_one_one_cons_nonpos (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant (1 :: 1 :: ks) ≤ 0 := by
+  rw [continuant_one_one_cons]
+  have := secondCont_nonneg ks h
+  linarith
+
+/-- **Strict crossing (nonempty tail).**  When the large-quotient tail is nonempty the
+second leading `1` makes the continuant *strictly* negative: `K(1 :: 1 :: ks) < 0`.  The
+trailing continuant of a nonempty all-`≥ 2` list is positive
+(`secondCont (k :: rest) = Continuant rest > 0` by `continuant_pos`), so
+`− secondCont ks < 0`.  The empty-tail edge `K([1,1]) = 0` (§21 `continuant_ones_two`) is
+thus the *only* place the two-leading-`1` value touches zero; any large-quotient tail
+pushes it strictly below. -/
+theorem continuant_one_one_cons_neg (ks : List ℤ) (hne : ks ≠ [])
+    (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant (1 :: 1 :: ks) < 0 := by
+  rw [continuant_one_one_cons]
+  obtain ⟨k, rest, rfl⟩ := List.exists_cons_of_ne_nil hne
+  simp only [secondCont]
+  have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+  have := continuant_pos rest hrest
+  linarith
+
 end Erdos1005OQ02

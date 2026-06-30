@@ -199,6 +199,54 @@ theorem tower_boundary_odd (n : ℕ) : Odd (T.boundary (n + 1)) :=
 
 end TuckerTower
 
+/-! ## Realizing the tower from concrete door graphs
+
+The `step` field of `TuckerTower` is not genuinely an open input: for any level
+realized by an actual max-degree-≤2 door graph it is the *theorem*
+`odd_boundary_iff_odd_interior` proved above.  The constructor `ofGraphs` makes this
+precise — it assembles a `TuckerTower` from a family of door graphs `G n` with
+boundary predicates `B n`, discharging `step` automatically, so that **only `bridge`
+and `base` remain as caller inputs**.  Feeding the result through
+`tower_interior_odd` then yields, in fully concrete graph terms, a complementary
+interior simplex in *every* dimension — Tucker's existence conclusion with the
+abstract `step` bookkeeping eliminated. -/
+
+/-- Build a `TuckerTower` from a family of door graphs `G n` (each of max degree
+`≤ 2`) with boundary predicates `B n`.  The single-level `step` field is discharged
+by the engine `odd_boundary_iff_odd_interior`; only the geometric `bridge` and the
+1-D `base` are supplied by the caller — `step` is never an obligation once the levels
+are realized by concrete door graphs. -/
+def TuckerTower.ofGraphs
+    {V : ℕ → Type*} [∀ n, Fintype (V n)]
+    (G : ∀ n, SimpleGraph (V n)) [∀ n, DecidableRel (G n).Adj]
+    (B : ∀ n, V n → Prop) [∀ n, DecidablePred (B n)]
+    (hdeg : ∀ n v, (G n).degree v ≤ 2)
+    (bridge : ∀ n, Odd #(boundaryEndpoints (G (n + 1)) (B (n + 1)))
+                    ↔ Odd #(interiorEndpoints (G n) (B n)))
+    (base : Odd #(interiorEndpoints (G 0) (B 0))) : TuckerTower where
+  boundary := fun n => #(boundaryEndpoints (G n) (B n))
+  interior := fun n => #(interiorEndpoints (G n) (B n))
+  step := fun n => odd_boundary_iff_odd_interior (G n) (B n) (hdeg n)
+  bridge := bridge
+  base := base
+
+/-- **Tucker in every dimension, from concrete door graphs.**  Given a family of
+max-degree-`≤ 2` door graphs with the geometric boundary `bridge` and the verified
+1-D `base`, every level has a degree-1 *interior* (complementary) vertex — Tucker's
+existence conclusion in all dimensions, obtained through `TuckerTower.ofGraphs` with
+the abstract `step` obligation discharged by `odd_boundary_iff_odd_interior`. -/
+theorem exists_interior_of_graph_tower
+    {V : ℕ → Type*} [∀ n, Fintype (V n)]
+    (G : ∀ n, SimpleGraph (V n)) [∀ n, DecidableRel (G n).Adj]
+    (B : ∀ n, V n → Prop) [∀ n, DecidablePred (B n)]
+    (hdeg : ∀ n v, (G n).degree v ≤ 2)
+    (bridge : ∀ n, Odd #(boundaryEndpoints (G (n + 1)) (B (n + 1)))
+                    ↔ Odd #(interiorEndpoints (G n) (B n)))
+    (base : Odd #(interiorEndpoints (G 0) (B 0))) (n : ℕ) :
+    ∃ v, (G n).degree v = 1 ∧ ¬ B n v :=
+  exists_interior_of_odd (G n) (B n)
+    ((TuckerTower.ofGraphs G B hdeg bridge base).tower_interior_odd n)
+
 /-! ## Non-vacuity: an inhabited tower on which the recursion computes
 
 To witness that the structure is inhabited and the induction is not arguing about an

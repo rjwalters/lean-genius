@@ -206,3 +206,80 @@ the v4.26 build repair) is already shipped. The remaining work is the genuinely-
 session willing to *also* re-prove `erdos895_implies_schur_variant` with distinct
 vertices (or split the loose/strict predicates into two named defs and keep both
 lemmas). Recommend leaving the loose def + header warning as-is until then.
+
+---
+
+## Session 2026-06-28 (researcher-1) — ACT: counterexample upgraded to 0-axiom (native_decide → decide)
+
+**Mode**: REVISIT (axiom elimination) · **Outcome**: progress — the corrected Fin-18 counterexample
+is now **0-axiom verified**, not `axiomatized`.
+
+### Context
+The prior session (2026-06-25) documented that `Erdos895Problem.lean`'s `counterexample_17` is FALSE
+(Z3 UNSAT on Fin 17; two bugs: missing `a ≠ b`, and Fin n ↔ {1,…,n−1} off-by-one) and shipped the
+corrected witness `Erdos895CounterexampleFin18.lean` (`counterexample_fin18`) — but discharged the two
+exhaustive checks with `native_decide`, so it carried `Lean.ofReduceBool` (status `axiomatized`).
+
+### What I did
+Replaced both `native_decide` with plain kernel `decide` (`set_option maxRecDepth 10000 in`). The search
+is tiny — `18³ = 5832` triples over a 42-edge adjacency list — so the trusted kernel evaluates it directly
+(~few seconds). `#print axioms counterexample_fin18` now = `[propext, Quot.sound]` — **no
+`Lean.ofReduceBool`, no `sorryAx`**. Host-verified `lake env lean` exit 0 (Docker host down).
+- Updated the gallery meta `src/data/proofs/erdos-895-counterexample-fin18/meta.json`: it previously
+  OVERCLAIMED the now-absent axiom (`status: axiomatized`, `badge: axiom`, `axiomCount: 1`, ofReduceBool
+  in `assumptions`). Corrected to `status: verified`, `badge: verified`, `axiomCount: 0`, rewrote
+  `assumptions` and the native_decide prose. (`listings.json` regenerates from meta on `pnpm build`.)
+
+### Honest status
+This upgrades only the **counterexample** companion (one of the two directions). The positive direction
+`barber_theorem` (n ≥ 18 ⟹ a distinct-vertex independent additive triple always exists) is still a hard
+SAT-verified `sorry` in `Erdos895Problem.lean`, and that file is build-broken on Mathlib 4.26 (~9
+pre-existing API-drift errors in unrelated Turán/Mantel lemmas) — both remain open.
+
+### Files modified
+- proofs/Proofs/Erdos895CounterexampleFin18.lean (native_decide → decide; docstring + axiom audit)
+- src/data/proofs/erdos-895-counterexample-fin18/meta.json (verified, 0-axiom)
+- research/problems/erdos-895-incomplete-01/knowledge.md (this entry)
+
+### Next steps
+- Repair `Erdos895Problem.lean`'s 4.26 build breaks, then restate `barber_theorem` at n ≥ 19 (Fin) /
+  reconcile with the corrected distinct-vertex predicate + this proven witness.
+- `barber_theorem` positive direction: genuinely hard (Barber's SAT computation), not short-tactic.
+
+---
+
+## S6 (researcher-2, 2026-06-28) — CORRECTION: file builds clean + deprecation future-proofing
+
+**Mode:** REVISIT · **Outcome:** small maintenance progress; stale "build-broken" finding corrected.
+
+### Correction to the "build-broken" claim above
+The "Next steps → Repair `Erdos895Problem.lean`'s 4.26 build breaks" and the S2 finding of
+"~9 pre-existing compile errors" are **STALE**. `Erdos895Problem.lean` **builds cleanly today**
+on Mathlib v4.26.0. Host-verified:
+`LAKE_UNSAFE=1 lake env lean Proofs/Erdos895Problem.lean` → **exit 0, 0 errors**, only the 3
+expected `sorry` warnings (`barber_theorem` L129, `counterexample_17` L141,
+`erdos895_sat_verified` L495). The S3 (researcher-9) repair landed and holds — the build is
+**not** broken. Future sessions should NOT chase a build repair here; that work is done.
+
+### What I shipped
+Future-proofed two Mathlib-v4.26 **deprecations** the linter flags, which become hard errors
+when the old names are removed (pure renames, no statement/proof-structure change):
+- L264 `Finset.card_insert_of_not_mem` → `Finset.card_insert_of_notMem`
+- L448 `Finset.not_mem_empty` → `Finset.notMem_empty`
+
+Re-verified after the edit: `lake env lean` **exit 0, 0 deprecation warnings, 0 errors,
+3 sorries** (unchanged). No mathematical content touched; the 3 sorries and all proven
+auxiliary lemmas (Mantel, R(3,3), Schur S(2)=4, √n independence bounds) are intact.
+
+(Left the remaining *linter* warnings — one unused binder `hk` L208, four unused simp args —
+untouched: cosmetic only, no build-stability value, not worth the diff churn / re-verify cost.)
+
+### Honest status of the OQ (unchanged, still essentially mined out)
+- `barber_theorem` — BLOCKED/OPEN (hard Barber SAT computation; Aristotle still **down**: MCP
+  `prove` returns `Resource not found`, host smoke test 404s — re-confirmed this session).
+- `counterexample_17` — FALSE as stated under the loose def; sharp corrected witness already
+  shipped 0-axiom in companion `Erdos895CounterexampleFin18.lean` (`counterexample_fin18`).
+- `erdos895_sat_verified` — BLOCKED (depends on barber).
+- Statement reconciliation (add `a ≠ b`) still cascades through `erdos895_implies_schur_variant`
+  (see S4) — defer until a session re-proves that lemma with distinct vertices or splits the
+  loose/strict predicates.

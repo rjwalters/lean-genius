@@ -2,7 +2,7 @@
   "id": "chinese-remainder-constructive-oq-05-oq-02",
   "title": "An Inductive CRT Certificate for an Arbitrary List of Pairwise-Coprime Moduli",
   "slug": "chinese-remainder-constructive-oq-05-oq-02",
-  "description": "Answers the sibling entry's open question (chinese-remainder-constructive-oq-05-oq-01) by generalising its two- and three-modulus CRT uniqueness certificates (crt_pair_iff, crt_triple_iff) to an arbitrary list of pairwise-coprime moduli. The combination engine prod_dvd_of_forall_dvd shows that for a pairwise-coprime list ms, the product ms.prod divides any common multiple of its entries, by list induction (the head is coprime to the tail product via coprime_list_prod_right_iff, folded in by Nat.Coprime.mul_dvd_of_dvd_of_dvd). From it, crt_list_unique gives the n-modulus uniqueness certificate: any two values below ms.prod that agree modulo every m ∈ ms are equal — a residue system has at most one solution in [0, ms.prod). A worked instance over [3,4,5] (product 60) is included in the sibling's example style. Fully verified, 0 axioms, 0 sorries.",
+  "description": "Answers the sibling entry's open question (chinese-remainder-constructive-oq-05-oq-01) by generalising its two- and three-modulus CRT uniqueness certificates (crt_pair_iff, crt_triple_iff) to an arbitrary list of pairwise-coprime moduli. The combination engine prod_dvd_of_forall_dvd shows that for a pairwise-coprime list ms, the product ms.prod divides any common multiple of its entries, by list induction (the head is coprime to the tail product via coprime_list_prod_right_iff, folded in by Nat.Coprime.mul_dvd_of_dvd_of_dvd). From it, crt_list_unique gives the n-modulus uniqueness certificate: any two values below ms.prod that agree modulo every m ∈ ms are equal — a residue system has at most one solution in [0, ms.prod). A worked instance over [3,4,5] (product 60) is included in the sibling's example style. Fully verified, 0 axioms, 0 sorries. Now also includes the existence half (crt_list_exists): for any pairwise-coprime list and any target residues there is a simultaneous solution (inductive cons step via Nat.chineseRemainder + Nat.ModEq.of_dvd). Existence + uniqueness give the full n-modulus CRT (e.g. the bijection ℤ/60 ≃ ℤ/3 × ℤ/4 × ℤ/5).",
   "meta": {
     "author": "Chinese Remainder Theorem (classical); inductive list certificate formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem",
@@ -50,10 +50,10 @@
     ],
     "dateAdded": "2026-06-27",
     "axiomCount": 0,
-    "lineCount": 89,
+    "lineCount": 123,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Uses only structural Mathlib lemmas (Nat.coprime_list_prod_right_iff, Nat.Coprime.mul_dvd_of_dvd_of_dvd, Nat.modEq_iff_dvd', Nat.eq_zero_of_dvd_of_lt) with list induction, omega, and a decide on the concrete [3,4,5] example. No native_decide and no structure-encoded hypotheses; #print axioms reports only propext, Classical.choice, Quot.sound (prod_dvd_of_forall_dvd needs only propext, Quot.sound), none of which count as assumptions.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3,
+    "theoremCount": 5,
     "definitionCount": 0
   },
   "sections": [
@@ -70,6 +70,11 @@
       "startLine": 55,
       "endLine": 77,
       "summary": "crt_list_unique: any two values below ms.prod agreeing modulo every m ∈ ms are equal. Equal residues give m ∣ (difference) for all m, hence ms.prod ∣ (difference); but the difference is below ms.prod, so it vanishes."
+    },
+    {
+      "id": "existence",
+      "title": "The n-Modulus Existence Half",
+      "summary": "crt_list_exists: for pairwise-coprime ms and any residues r, ∃ x, ∀ m∈ms, x ≡ r m [MOD m]. List induction; the cons step combines the head (coprime to the tail product) with the tail solution via Nat.chineseRemainder, then restricts the tail-product congruence to each tail modulus by Nat.ModEq.of_dvd. With crt_list_unique this is the full CRT. crt_345_exists is the worked [3,4,5] instance."
     },
     {
       "id": "example",
@@ -97,7 +102,7 @@
     ]
   },
   "conclusion": {
-    "summary": "For a pairwise-coprime list of moduli, the product divides any common multiple of the entries (`prod_dvd_of_forall_dvd`), and consequently any two values below the product that share all residues are equal (`crt_list_unique`) — the n-modulus CRT uniqueness certificate, generalising the sibling's two- and three-modulus versions. A worked `[3,4,5]` instance is included. 0 axioms, 0 sorries.",
+    "summary": "For a pairwise-coprime list of moduli, the product divides any common multiple of the entries (`prod_dvd_of_forall_dvd`), and consequently any two values below the product that share all residues are equal (`crt_list_unique`) — the n-modulus CRT uniqueness certificate, generalising the sibling's two- and three-modulus versions. A worked `[3,4,5]` instance is included. 0 axioms, 0 sorries. The existence half (crt_list_exists) is now included, so the entry gives the complete n-modulus CRT — a simultaneous solution exists and is unique below the product.",
     "implications": [
       "Provides the inductive, arbitrary-arity CRT uniqueness certificate the sibling entry's open question requested.",
       "The combination engine prod_dvd_of_forall_dvd is reusable for any 'pairwise-coprime product divides a common multiple' argument.",
@@ -107,5 +112,50 @@
       "Pair this uniqueness certificate with an explicit inductive *construction* (folding Nat.chineseRemainder along the list) to obtain full existence-and-uniqueness over an arbitrary list.",
       "Generalise to a Finset or Multiset of moduli, and to the non-coprime case via the lcm in place of the product."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "The sibling whose open question this entry answers: it proves the two- and three-modulus uniqueness certificates (crt_pair_iff, crt_triple_iff); this entry generalises them by list induction to an arbitrary pairwise-coprime list (crt_list_unique)."
+    },
+    {
+      "targetId": "chinese-remainder-constructive-oq-04",
+      "relationship": "related-to",
+      "description": "The list thread the sibling's open question points to; the worked [3,4,5] instance here is included in that thread's example style."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "child-of",
+      "description": "The base constructive CRT entry: existence and uniqueness of a solution modulo the product of pairwise-coprime moduli, of which this is the n-modulus uniqueness half via an inductive certificate."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related-to",
+      "description": "Pursues this entry's second open question — the non-coprime generalisation, where the lcm of the moduli replaces the product."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Sunzi (孫子)",
+      "title": "Sunzi Suanjing (孫子算經, The Mathematical Classic of Sun Zi)",
+      "year": "c. 3rd–5th century CE",
+      "venue": "Chinese mathematical classic",
+      "note": "Earliest known statement of a simultaneous-congruence problem ('there are an unknown number of things; counted by threes, 2 remain…'), the origin of the theorem's name."
+    },
+    {
+      "authors": "Hardy, G. H. and Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed., §5.3–5.4",
+      "note": "The Chinese Remainder Theorem for pairwise-coprime moduli, existence and uniqueness modulo the product."
+    },
+    {
+      "authors": "Apostol, T. M.",
+      "title": "Introduction to Analytic Number Theory",
+      "year": "1976",
+      "venue": "Springer, Undergraduate Texts in Mathematics, §5.6",
+      "note": "CRT statement and proof, and the structure of residue systems modulo a product of coprime moduli."
+    }
+  ]
 }

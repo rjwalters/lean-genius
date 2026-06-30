@@ -1,195 +1,183 @@
 /-
-# OQ-01: Backward Collatz — Preimage Structure and Infinitude of the Basin of 1
+# Collatz Conjecture (Erdős-adjacent OQ-01): Reduction to Odd Inputs
 
-Parent: `collatz-structured` (CollatzStructured.lean) proves *forward* facts —
-powers of two reach 1, closure of "reaches 1" under doubling, and specific small
-values. This file studies the **backward** dynamics: the preimage (predecessor)
-structure of the Collatz map and what it implies about the set of numbers that
-reach 1 (the *basin* of 1).
+  Source problem: the Collatz ("3n+1") conjecture — every positive integer
+  reaches 1 under n ↦ n/2 (n even), n ↦ 3n+1 (n odd). This is OPEN and is
+  **not** proved here.
 
-We prove, with **no axioms and no `sorry`**:
+  The parent file `Proofs.CollatzStructured` proves the easy structured cases
+  (powers of two reach 1; the reaching set is closed under doubling) and
+  records the full conjecture as an axiom. The Collatz-cycle files handle the
+  no-short-cycle side. What none of them record is the elementary but genuinely
+  useful **structural reduction**: the conjecture for all n ≥ 1 is *equivalent*
+  to the conjecture restricted to odd n.
 
-1. **Exact preimage characterization.** For every `a m : ℕ`,
-   `collatz a = m ↔ a = 2 * m ∨ (a % 2 = 1 ∧ 3 * a + 1 = m)`.
-   Every predecessor of `m` is either the *even predecessor* `2m` or an
-   *odd predecessor* `a` with `3a + 1 = m`.
+  This file proves, with **0 axioms and 0 sorries** (it does NOT use the
+  parent's `collatz_conjecture` axiom):
 
-2. **Branching law.** An odd predecessor exists iff `m ≡ 4 (mod 6)`:
-   `(∃ a, a % 2 = 1 ∧ 3 * a + 1 = m) ↔ m % 6 = 4`.
-   Hence in the Collatz graph every vertex `m ≡ 4 (mod 6)` has two predecessors
-   and every other vertex has exactly one (the even predecessor `2m`).
+  1. **One-step invariance.** `ReachesOne (collatz n) ↔ ReachesOne n`: a number
+     reaches 1 iff its Collatz successor does. The reaching set is invariant
+     under the dynamics in both directions.
 
-3. **Backward closure of the basin.** If `collatz a = m` and `m` reaches 1, then
-   `a` reaches 1. The basin of 1 is closed under taking predecessors.
+  2. **Doubling invariance (both directions).** `ReachesOne (2 * n) ↔
+     ReachesOne n`, hence `ReachesOne (2 ^ m * n) ↔ ReachesOne n`. The parent
+     only had the forward implication; the reverse is what powers the reduction.
 
-4. **The basin of 1 is infinite** — it contains every power of two.
+  3. **Reduction to odd inputs (headline).**
+     `collatz_reduces_to_odd : (∀ n ≥ 1, ReachesOne n) ↔ (∀ m ≥ 1, m odd → ReachesOne m)`.
+     Every n ≥ 1 factors as `2 ^ v₂(n) · oddPart n` with `oddPart n` odd, and
+     reaching 1 is invariant under stripping the powers of two. So to settle
+     Collatz it suffices to settle it on odd numbers — and a minimal
+     counterexample, if one exists, may be taken odd (`collatz_counterexample_odd`).
 
-These are *unconditional* structural facts about the Collatz graph: they do not
-assume the Collatz conjecture, but describe the shape of the component containing
-1, independently of whether that component is all of `ℕ`.
+  Honesty note: the Collatz conjecture itself remains OPEN. The new content here
+  is the equivalence machinery (one-step / doubling / odd reduction), which is
+  standard folklore but was not formalized in the gallery. Nothing here brings
+  the open problem closer to resolution; it organizes the search space.
 
-Tags: number-theory, collatz, predecessor, preimage, dynamical-systems
+  Tags: number-theory, collatz, dynamical-systems, reduction, open-problem
 -/
 
-import Mathlib.Tactic
+import Mathlib
 import Proofs.CollatzStructured
 
-namespace CollatzBackward
-
-open Collatz
+namespace Collatz
 
 /-!
-## Part I: Exact Preimage Characterization
+## One-step invariance of the reaching set
 
-The Collatz map `collatz n = if n even then n/2 else 3n+1` is two-to-one onto its
-image in a controlled way. A predecessor `a` of `m` (i.e. `collatz a = m`) is
-either even — in which case `a/2 = m`, forcing `a = 2m` — or odd, in which case
-`3a + 1 = m`.
+`ReachesOne n` means some Collatz iterate of `n` equals `1`. We show membership
+is invariant under one step of the dynamics, in both directions.
 -/
 
-/-- **Exact preimage characterization.** `a` maps to `m` under the Collatz map iff
-`a` is the even predecessor `2m` or an odd number with `3a + 1 = m`. -/
-theorem collatz_eq_iff (a m : ℕ) :
-    collatz a = m ↔ a = 2 * m ∨ (a % 2 = 1 ∧ 3 * a + 1 = m) := by
-  unfold collatz
-  split_ifs with h
-  · -- a is even
-    constructor
-    · intro hm; exact Or.inl (by omega)
-    · rintro (rfl | ⟨h1, _⟩) <;> omega
-  · -- a is odd
-    have h1 : a % 2 = 1 := by omega
-    constructor
-    · intro hm; exact Or.inr ⟨h1, hm⟩
-    · rintro (rfl | ⟨_, h2⟩)
-      · omega
-      · exact h2
-
-/-- The preimage of `{m}` under the Collatz map, described explicitly. -/
-theorem preimage_collatz (m : ℕ) :
-    collatz ⁻¹' {m} = {a | a = 2 * m ∨ (a % 2 = 1 ∧ 3 * a + 1 = m)} := by
-  ext a
-  simp [Set.mem_preimage, collatz_eq_iff]
-
-/-- The **even predecessor**: `2m` always maps to `m`. -/
-theorem even_pred (m : ℕ) : collatz (2 * m) = m := collatz_two_mul m
-
-/-!
-## Part II: The Branching Law
-
-An *odd* predecessor of `m` exists exactly when `m ≡ 4 (mod 6)`. Combined with the
-always-present even predecessor `2m`, this says: vertices congruent to `4 mod 6`
-have in-degree 2 in the Collatz graph; all others have in-degree 1.
--/
-
-/-- **Branching law.** `m` has an odd predecessor iff `m ≡ 4 (mod 6)`. -/
-theorem odd_pred_exists_iff (m : ℕ) :
-    (∃ a, a % 2 = 1 ∧ 3 * a + 1 = m) ↔ m % 6 = 4 := by
-  constructor
-  · rintro ⟨a, ha, rfl⟩
-    omega
-  · intro hm
-    exact ⟨2 * (m / 6) + 1, by omega, by omega⟩
-
-/-- When `m ≡ 4 (mod 6)` there are (at least) two distinct predecessors: the even
-predecessor `2m` and a distinct odd predecessor. The Collatz graph branches here. -/
-theorem two_preds_of_mod {m : ℕ} (hm : m % 6 = 4) :
-    ∃ a b, a ≠ b ∧ collatz a = m ∧ collatz b = m := by
-  obtain ⟨c, hc, hcm⟩ := (odd_pred_exists_iff m).mpr hm
-  refine ⟨2 * m, c, ?_, even_pred m, ?_⟩
-  · omega
-  · rw [collatz_eq_iff]; exact Or.inr ⟨hc, hcm⟩
-
-/-- When `m % 6 ≠ 4`, the *only* predecessor of `m` is the even predecessor `2m`. -/
-theorem unique_pred_of_not_mod {m : ℕ} (hm : m % 6 ≠ 4) {a : ℕ}
-    (ha : collatz a = m) : a = 2 * m := by
-  rcases (collatz_eq_iff a m).mp ha with h | ⟨hodd, h3⟩
-  · exact h
-  · exact absurd ((odd_pred_exists_iff m).mp ⟨a, hodd, h3⟩) hm
-
-/-!
-## Part III: Backward Closure of the Basin
-
-If `a` maps to `m` in one step and `m` reaches 1, then `a` reaches 1 (in one more
-step). Thus the basin of 1 is closed under taking predecessors — its preimage
-under `collatz` is contained in itself.
--/
-
-/-- **Backward closure.** If `collatz a = m` and `m` reaches 1, then `a` reaches 1. -/
-theorem reaches_one_of_collatz {a m : ℕ} (h : collatz a = m) (hm : ReachesOne m) :
-    ReachesOne a := by
-  obtain ⟨k, hk⟩ := hm
+/-- **Backward step.** If the successor `collatz n` reaches 1, so does `n`
+    (prepend the first step). Unconditional. -/
+theorem reachesOne_of_reachesOne_collatz {n : ℕ} (h : ReachesOne (collatz n)) :
+    ReachesOne n := by
+  obtain ⟨k, hk⟩ := h
   refine ⟨k + 1, ?_⟩
   simp only [collatzIter] at hk ⊢
-  rw [Function.iterate_succ_apply, h]
+  rw [Function.iterate_succ_apply]
   exact hk
 
-/-- Backward closure via the odd predecessor: if `a` is odd and `3a + 1` reaches 1,
-then `a` reaches 1. -/
-theorem reaches_one_odd_pred {a : ℕ} (ha : a % 2 = 1) (h : ReachesOne (3 * a + 1)) :
-    ReachesOne a :=
-  reaches_one_of_collatz ((collatz_eq_iff a (3 * a + 1)).mpr (Or.inr ⟨ha, rfl⟩)) h
+/-- **Forward step.** If `n` reaches 1, so does its successor `collatz n`.
+    The only subtlety is the base case `n = 1` (where the witness is `0` steps):
+    there `collatz 1 = 4 = 2²` reaches 1 by the powers-of-two lemma. -/
+theorem reachesOne_collatz_of_reachesOne {n : ℕ} (h : ReachesOne n) :
+    ReachesOne (collatz n) := by
+  obtain ⟨k, hk⟩ := h
+  cases k with
+  | zero =>
+    simp only [collatzIter, Function.iterate_zero_apply] at hk
+    subst hk
+    rw [collatz_one]
+    have h4 : (4 : ℕ) = 2 ^ 2 := by norm_num
+    rw [h4]
+    exact pow_two_reaches_one 2 (by norm_num)
+  | succ j =>
+    refine ⟨j, ?_⟩
+    simp only [collatzIter] at hk ⊢
+    rwa [Function.iterate_succ_apply] at hk
 
-/-- The basin of 1 is closed under `collatz`-preimages: every predecessor of a
-basin element is again a basin element. -/
-theorem basin_closed_under_pred :
-    collatz ⁻¹' {n | ReachesOne n} ⊆ {n | ReachesOne n} := by
-  intro a ha
-  exact reaches_one_of_collatz (rfl : collatz a = collatz a) ha
-
-/-!
-## Part IV: The Basin of 1 is Infinite
-
-The set of numbers reaching 1 contains every power of two (parent file:
-`pow_two_reaches_one`), and `k ↦ 2^(k+1)` is an injection into it, so the basin is
-infinite. This is unconditional — it does not need the Collatz conjecture.
--/
-
-/-- **The basin of 1 is infinite.** -/
-theorem basin_infinite : {n : ℕ | ReachesOne n}.Infinite := by
-  apply Set.infinite_of_injective_forall_mem (f := fun k : ℕ => 2 ^ (k + 1))
-  · intro x y hxy
-    have hxy' : 2 ^ (x + 1) = 2 ^ (y + 1) := hxy
-    have : x + 1 = y + 1 := Nat.pow_right_injective (le_refl 2) hxy'
-    omega
-  · intro k
-    simp only [Set.mem_setOf_eq]
-    exact pow_two_reaches_one (k + 1) (by omega)
+/-- **One-step invariance.** `n` reaches 1 iff `collatz n` does. -/
+theorem reachesOne_collatz_iff (n : ℕ) : ReachesOne (collatz n) ↔ ReachesOne n :=
+  ⟨reachesOne_of_reachesOne_collatz, reachesOne_collatz_of_reachesOne⟩
 
 /-!
-## Part V: Computed Examples of the Branching Structure
+## Doubling invariance
 
-Concrete instances of the preimage law for small `m`.
+The parent file proves `ReachesOne n → ReachesOne (2 * n)` (closure under
+doubling). Using one-step invariance we get the reverse, hence an equivalence,
+and by induction the same for any power of two.
 -/
 
--- 16 ≡ 4 (mod 6): two predecessors, 32 (even) and 5 (odd, 3·5+1 = 16).
-example : collatz 32 = 16 := by decide
-example : collatz 5 = 16 := by decide
-example : (16 : ℕ) % 6 = 4 := by decide
+/-- **Doubling invariance.** `2 * n` reaches 1 iff `n` does. Forward direction
+    is `collatz (2 * n) = n` composed with one-step invariance; the reverse is
+    the parent's `reaches_one_double`. -/
+theorem reachesOne_two_mul_iff (n : ℕ) : ReachesOne (2 * n) ↔ ReachesOne n := by
+  constructor
+  · intro h
+    have h' : ReachesOne (collatz (2 * n)) := reachesOne_collatz_of_reachesOne h
+    rwa [collatz_two_mul] at h'
+  · exact reaches_one_double
 
--- 10 ≡ 4 (mod 6): two predecessors, 20 (even) and 3 (odd, 3·3+1 = 10).
-example : collatz 20 = 10 := by decide
-example : collatz 3 = 10 := by decide
-
--- 8 ≢ 4 (mod 6): only the even predecessor 16.
-example : (8 : ℕ) % 6 ≠ 4 := by decide
-example : collatz 16 = 8 := by decide
+/-- **Power-of-two invariance.** `2 ^ m * n` reaches 1 iff `n` does. -/
+theorem reachesOne_pow_two_mul_iff (m n : ℕ) :
+    ReachesOne (2 ^ m * n) ↔ ReachesOne n := by
+  induction m with
+  | zero => simp
+  | succ k ih =>
+    have h2 : 2 ^ (k + 1) * n = 2 * (2 ^ k * n) := by ring
+    rw [h2, reachesOne_two_mul_iff, ih]
 
 /-!
-## Summary
+## The odd part and the reduction to odd inputs
 
-**Proved (no axioms, no `sorry`)**:
-1. ✓ Exact preimage characterization `collatz_eq_iff`
-2. ✓ Branching law `odd_pred_exists_iff` (odd predecessor ⟺ `m ≡ 4 mod 6`)
-3. ✓ In-degree dichotomy: `two_preds_of_mod` / `unique_pred_of_not_mod`
-4. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
-5. ✓ The basin of 1 is infinite `basin_infinite`
-
-**Unconditional**: none of these assume the Collatz conjecture. They describe the
-backward dynamics (the Collatz graph) regardless of whether every `n` reaches 1.
-
-**What remains open**: whether the basin of 1 is *all* of `ℕ ≥ 1` — i.e. the
-Collatz conjecture itself (axiomatized in the parent file).
+`oddPart n = ordCompl[2] n = n / 2 ^ v₂(n)` is `n` with all factors of two
+removed. For `n ≥ 1` it is odd and positive, and `n = 2 ^ v₂(n) · oddPart n`.
 -/
 
-end CollatzBackward
+/-- The odd part of `n`: `n` with every factor of two stripped. -/
+def oddPart (n : ℕ) : ℕ := ordCompl[2] n
+
+/-- For `n ≥ 1`, the odd part is positive. -/
+theorem oddPart_pos {n : ℕ} (hn : n ≥ 1) : oddPart n ≥ 1 := by
+  unfold oddPart
+  have := Nat.ordCompl_pos (n := n) 2 (by omega)
+  omega
+
+/-- For `n ≥ 1`, the odd part is genuinely odd. -/
+theorem oddPart_odd {n : ℕ} (hn : n ≥ 1) : oddPart n % 2 = 1 := by
+  unfold oddPart
+  have h : ¬ (2 ∣ ordCompl[2] n) := Nat.not_dvd_ordCompl Nat.prime_two (by omega)
+  omega
+
+/-- The two-adic factorization: `n = 2 ^ v₂(n) · oddPart n`. -/
+theorem pow_factorization_mul_oddPart (n : ℕ) :
+    2 ^ (n.factorization 2) * oddPart n = n := by
+  unfold oddPart
+  exact Nat.ordProj_mul_ordCompl_eq_self n 2
+
+/-- `n` reaches 1 iff its odd part does (for `n ≥ 1`). -/
+theorem reachesOne_oddPart_iff {n : ℕ} (hn : n ≥ 1) :
+    ReachesOne (oddPart n) ↔ ReachesOne n := by
+  have hd := pow_factorization_mul_oddPart n
+  constructor
+  · intro h
+    rw [← hd]
+    exact (reachesOne_pow_two_mul_iff _ _).mpr h
+  · intro h
+    rw [← hd] at h
+    exact (reachesOne_pow_two_mul_iff _ _).mp h
+
+/-!
+## Headline: the conjecture reduces to the odd case
+-/
+
+/-- **The Collatz conjecture reduces to odd inputs.** Every positive integer
+    reaches 1 *iff* every odd positive integer does. Forward is immediate;
+    backward strips the powers of two via `reachesOne_oddPart_iff`. -/
+theorem collatz_reduces_to_odd :
+    (∀ n, n ≥ 1 → ReachesOne n) ↔ (∀ m, m ≥ 1 → m % 2 = 1 → ReachesOne m) := by
+  refine ⟨fun H m hm _ => H m hm, fun H n hn => ?_⟩
+  have hodd : ReachesOne (oddPart n) :=
+    H (oddPart n) (oddPart_pos hn) (oddPart_odd hn)
+  exact (reachesOne_oddPart_iff hn).mp hodd
+
+/-- **Minimal counterexamples may be taken odd.** If some `n ≥ 1` fails to reach
+    1, then some *odd* `m ≥ 1` also fails. Contrapositive of the reduction. -/
+theorem collatz_counterexample_odd
+    (h : ∃ n, n ≥ 1 ∧ ¬ ReachesOne n) :
+    ∃ m, m ≥ 1 ∧ m % 2 = 1 ∧ ¬ ReachesOne m := by
+  by_contra hc
+  push_neg at hc
+  -- hc : ∀ m, m ≥ 1 → m % 2 = 1 → ReachesOne m
+  obtain ⟨n, hn, hnot⟩ := h
+  exact hnot (collatz_reduces_to_odd.mpr (fun m hm hodd => hc m hm hodd) n hn)
+
+#check @collatz_reduces_to_odd
+#check @reachesOne_collatz_iff
+#print axioms collatz_reduces_to_odd
+#print axioms reachesOne_pow_two_mul_iff
+
+end Collatz

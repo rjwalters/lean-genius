@@ -276,6 +276,68 @@ theorem IsLowerEdge.interior_slopes {pts : List SupportPoint} {p q r : SupportPo
   have h2 : edgeSlope r q ≤ m := edgeSlope_le_of_supportingLine hqe hr hsupp hrq
   linarith
 
+/-! ### Well-definedness of edge slopes (uniqueness)
+
+Every result above is about *existence* (`exists_lowerVertex`,
+`exists_isLowerEdge_of_leftmost`, `exists_lowerHull`) or *ordering*
+(`edgeSlope_mono`, `edgeSlopes_pairwise_le`).  None pins down that the polygon's
+data is *unique*.  The two theorems here close that gap directly from the
+supporting-slope bounds: through a fixed vertex the slope of a lower edge is
+forced, even though the opposite endpoint may not be — several support points can
+be collinear on one edge, so the *endpoint* is ambiguous while the *slope* (and
+hence the root valuation read off it) is not.  This is the well-definedness
+counterpart to the existence theorems and the reason the edge-slope list
+`edgeSlopes` of a hull is a genuine invariant of the support set. -/
+
+/-- **Uniqueness of the leaving edge-slope.**  If both `(p, q)` and `(p, q')` are
+lower edges sharing the left endpoint `p`, they have equal slope.  The right
+endpoint itself can differ when support points are collinear on the edge, but the
+slope is determined: each edge's supporting line, being weakly below all points,
+gives the *least* slope leaving `p`, so the two slopes bound each other. -/
+theorem IsLowerEdge.leaving_slope_unique {pts : List SupportPoint}
+    {p q q' : SupportPoint} (h : IsLowerEdge pts p q) (h' : IsLowerEdge pts p q') :
+    edgeSlope p q = edgeSlope p q' := by
+  obtain ⟨_, hq, hpq, m, b, hpe, hqe, hsup⟩ := h
+  obtain ⟨_, hq', hpq', m', b', hpe', hqe', hsup'⟩ := h'
+  have e1 : m = edgeSlope p q := slope_eq_edgeSlope hpe hqe (ne_of_lt hpq)
+  have e2 : m' = edgeSlope p q' := slope_eq_edgeSlope hpe' hqe' (ne_of_lt hpq')
+  have hlt : (p.1 : ℚ) < q'.1 := by exact_mod_cast hpq'
+  have hlt' : (p.1 : ℚ) < q.1 := by exact_mod_cast hpq
+  have h1 : m ≤ edgeSlope p q' := edgeSlope_ge_of_supportingLine hpe hq' hsup hlt
+  have h2 : m' ≤ edgeSlope p q := edgeSlope_ge_of_supportingLine hpe' hq hsup' hlt'
+  rw [← e2] at h1
+  rw [← e1] at h2
+  rw [← e1, ← e2]
+  linarith
+
+/-- **Uniqueness of the arriving edge-slope.**  Symmetrically, if `(p, q)` and
+`(p', q)` are lower edges sharing the right endpoint `q`, they have equal slope;
+each line gives the *greatest* slope arriving at `q`. -/
+theorem IsLowerEdge.arriving_slope_unique {pts : List SupportPoint}
+    {p p' q : SupportPoint} (h : IsLowerEdge pts p q) (h' : IsLowerEdge pts p' q) :
+    edgeSlope p q = edgeSlope p' q := by
+  obtain ⟨hp, _, hpq, m, b, hpe, hqe, hsup⟩ := h
+  obtain ⟨hp', _, hpq', m', b', hpe', hqe', hsup'⟩ := h'
+  have e1 : m = edgeSlope p q := slope_eq_edgeSlope hpe hqe (ne_of_lt hpq)
+  have e2 : m' = edgeSlope p' q := slope_eq_edgeSlope hpe' hqe' (ne_of_lt hpq')
+  have hlt : (p'.1 : ℚ) < q.1 := by exact_mod_cast hpq'
+  have hlt' : (p.1 : ℚ) < q.1 := by exact_mod_cast hpq
+  have h1 : edgeSlope p' q ≤ m := edgeSlope_le_of_supportingLine hqe hp' hsup hlt
+  have h2 : edgeSlope p q ≤ m' := edgeSlope_le_of_supportingLine hqe' hp hsup' hlt'
+  rw [← e2] at h1
+  rw [← e1] at h2
+  rw [← e1, ← e2]
+  linarith
+
+/-- The **root valuation** (`= −edgeSlope`) read off any lower edge leaving a
+fixed vertex `p` is therefore unique — the Newton–Puiseux algorithm reads a
+well-defined valuation at each vertex regardless of how collinear support points
+are resolved. -/
+theorem IsLowerEdge.leaving_rootValuation_unique {pts : List SupportPoint}
+    {p q q' : SupportPoint} (h : IsLowerEdge pts p q) (h' : IsLowerEdge pts p q') :
+    -edgeSlope p q = -edgeSlope p q' :=
+  congrArg Neg.neg (h.leaving_slope_unique h')
+
 /-! ### Endpoints of the Newton polygon
 
 `exists_lowerVertex` produces *a* vertex — the point of minimum *valuation*.  The
@@ -680,5 +742,402 @@ theorem threeVertex_sum_slope_mul_width :
     (List.zipWith (· * ·) (edgeSlopes threeVertex) (edgeWidths threeVertex)).sum = -1 := by
   rw [threeVertex_edgeSlopes, threeVertex_edgeWidths]
   norm_num [List.zipWith_cons_cons]
+
+/-! ### Hull construction: splicing a dominant edge onto the right sub-hull
+
+The results so far identify vertices and edges and prove the polygon convex *given*
+a chain of lower edges, but they never *build* the chain.  `exists_isLowerEdge_of_leftmost`
+produces the dominant (least-slope) first edge `p → q` from the left endpoint; the
+Newton–Puiseux recursion then continues on the support to the right of `q`.
+
+The mathematical subtlety the recursion hides is this: a lower edge of the *right
+restriction* `pts.filter (q.1 ≤ ·.1)` need not be a lower edge of the *full* `pts`,
+because its supporting line — pinned only by the right points — could dip below a
+point left of `q`.  The **transfer lemma** `isLowerEdge_of_right` shows this never
+happens *provided the edge's slope is at least the dominant slope*: convexity forces
+the right edge's line to sit above the dominant line on the left half, where the
+dominant line already lies below every point.  This is the exact reason the
+divide-and-conquer hull recursion is correct, and it is the principal combinatorial
+input that was missing from this file.
+
+`chain_transfer` then propagates the bound along an entire right sub-hull (each edge
+slope dominates the previous one by `edgeSlope_mono`, so all of them clear the
+dominant slope), and `isLowerEdge_chain_extend` packages the whole step: prepend the
+dominant edge to a right sub-hull chain and obtain a genuine lower-edge chain of the
+full support — one peel of the Newton–Puiseux recursion, verified. -/
+
+/-- **Global-support transfer across a dominant split.**  Let `(m₀, b₀)` be the line
+of a *dominant* edge: it passes through the cut point `q` and lies weakly below every
+support point of `pts`.  If `a → c` is a lower edge of the right restriction
+`pts.filter (q.1 ≤ ·.1)` whose slope is at least the dominant slope `m₀`, then
+`a → c` is a lower edge of the *full* `pts`.
+
+The only nontrivial check is that the `a → c` line stays below the points left of the
+cut.  There its slope `m ≥ m₀` makes it sit below the dominant line (the two lines
+cross at the cut, where `a → c` is already below `q`), and the dominant line is below
+everything — so `a → c` clears the left points too. -/
+theorem isLowerEdge_of_right {pts : List SupportPoint} {q a c : SupportPoint}
+    {m₀ b₀ : ℚ} (hq_mem : q ∈ pts) (hq_line : q.2 = m₀ * (q.1 : ℚ) + b₀)
+    (hsupp0 : ∀ r ∈ pts, m₀ * (r.1 : ℚ) + b₀ ≤ r.2)
+    (hac : IsLowerEdge (pts.filter (fun r => decide (q.1 ≤ r.1))) a c)
+    (hslope : m₀ ≤ edgeSlope a c) :
+    IsLowerEdge pts a c := by
+  obtain ⟨ha_filt, hc_filt, hac_lt, m, b, ha_line, hc_line, hsupp_filt⟩ := hac
+  have ha_pts : a ∈ pts := (List.mem_filter.mp ha_filt).1
+  have hc_pts : c ∈ pts := (List.mem_filter.mp hc_filt).1
+  have hm : m = edgeSlope a c := slope_eq_edgeSlope ha_line hc_line (ne_of_lt hac_lt)
+  have hmge : m₀ ≤ m := by rw [hm]; exact hslope
+  -- the cut point `q` lies in the right restriction, so the `a → c` line is below it
+  have hq_filt : q ∈ pts.filter (fun r => decide (q.1 ≤ r.1)) :=
+    List.mem_filter.mpr ⟨hq_mem, by simp⟩
+  have hqcmp : m * (q.1 : ℚ) + b ≤ m₀ * (q.1 : ℚ) + b₀ := by
+    rw [← hq_line]; exact hsupp_filt q hq_filt
+  refine ⟨ha_pts, hc_pts, hac_lt, m, b, ha_line, hc_line, fun r hr => ?_⟩
+  by_cases hr_cut : q.1 ≤ r.1
+  · exact hsupp_filt r (List.mem_filter.mpr ⟨hr, by simpa using hr_cut⟩)
+  · push_neg at hr_cut
+    have hr_lt : (r.1 : ℚ) < (q.1 : ℚ) := by exact_mod_cast hr_cut
+    have hsupp0r : m₀ * (r.1 : ℚ) + b₀ ≤ r.2 := hsupp0 r hr
+    nlinarith [mul_nonneg (sub_nonneg.mpr hmge) (sub_nonneg.mpr (le_of_lt hr_lt)),
+      hqcmp, hsupp0r]
+
+/-- **Propagating the dominant bound along a right sub-hull.**  Given a dominant line
+`(m₀, b₀)` through the cut `q` lying below all of `pts`, any chain of lower edges of
+the right restriction whose first edge clears the dominant slope is, edge for edge, a
+chain of lower edges of the full `pts`.  Each successive edge slope dominates the
+previous one (`edgeSlope_mono`), so the bound carries to the whole chain and
+`isLowerEdge_of_right` upgrades every edge. -/
+theorem chain_transfer {pts : List SupportPoint} {q : SupportPoint} {m₀ b₀ : ℚ}
+    (hq_mem : q ∈ pts) (hq_line : q.2 = m₀ * (q.1 : ℚ) + b₀)
+    (hsupp0 : ∀ r ∈ pts, m₀ * (r.1 : ℚ) + b₀ ≤ r.2) :
+    ∀ (a : SupportPoint) (rest : List SupportPoint),
+      List.IsChain (IsLowerEdge (pts.filter (fun r => decide (q.1 ≤ r.1)))) (a :: rest) →
+      (∀ c, rest.head? = some c → m₀ ≤ edgeSlope a c) →
+      List.IsChain (IsLowerEdge pts) (a :: rest)
+  | _, [], _, _ => List.isChain_singleton _
+  | a, c :: rest', hchain, hbound => by
+      obtain ⟨hac, hchain'⟩ := List.isChain_cons_cons.mp hchain
+      have hac_slope : m₀ ≤ edgeSlope a c := hbound c rfl
+      have hi : IsLowerEdge pts a c :=
+        isLowerEdge_of_right hq_mem hq_line hsupp0 hac hac_slope
+      refine List.isChain_cons_cons.mpr ⟨hi, ?_⟩
+      refine chain_transfer hq_mem hq_line hsupp0 c rest' hchain' ?_
+      intro d hd
+      cases rest' with
+      | nil => simp at hd
+      | cons e rest'' =>
+        simp only [List.head?_cons, Option.some.injEq] at hd
+        subst hd
+        obtain ⟨hce, _⟩ := List.isChain_cons_cons.mp hchain'
+        exact le_trans hac_slope (edgeSlope_mono hac hce)
+
+/-- **One peel of the Newton–Puiseux recursion, verified.**  Prepend the dominant
+edge `p → q` (least-slope edge leaving the left endpoint, whose line `(m₀, b₀)`
+supports all of `pts`) to a chain of lower edges of the right restriction
+`pts.filter (q.1 ≤ ·.1)`, and obtain a genuine chain of lower edges of the full
+`pts`.  This is the inductive step of hull construction: the leftmost dominant edge
+followed by the recursively-built right sub-hull is the complete Newton polygon. -/
+theorem isLowerEdge_chain_extend {pts : List SupportPoint} {p q : SupportPoint}
+    {m₀ b₀ : ℚ} {rest : List SupportPoint}
+    (hp_mem : p ∈ pts) (hq_mem : q ∈ pts) (hpq_lt : p.1 < q.1)
+    (hp_line : p.2 = m₀ * (p.1 : ℚ) + b₀) (hq_line : q.2 = m₀ * (q.1 : ℚ) + b₀)
+    (hsupp0 : ∀ r ∈ pts, m₀ * (r.1 : ℚ) + b₀ ≤ r.2)
+    (hchain : List.IsChain (IsLowerEdge (pts.filter (fun r => decide (q.1 ≤ r.1))))
+      (q :: rest)) :
+    List.IsChain (IsLowerEdge pts) (p :: q :: rest) := by
+  refine List.isChain_cons_cons.mpr
+    ⟨⟨hp_mem, hq_mem, hpq_lt, m₀, b₀, hp_line, hq_line, hsupp0⟩, ?_⟩
+  refine chain_transfer hq_mem hq_line hsupp0 q rest hchain ?_
+  intro c hc
+  cases rest with
+  | nil => simp at hc
+  | cons d rest'' =>
+    simp only [List.head?_cons, Option.some.injEq] at hc
+    subst hc
+    obtain ⟨hqd, _⟩ := List.isChain_cons_cons.mp hchain
+    have hd_pts : d ∈ pts := (List.mem_filter.mp hqd.2.1).1
+    have hqd_lt : (q.1 : ℚ) < (d.1 : ℚ) := by exact_mod_cast hqd.2.2.1
+    exact edgeSlope_ge_of_supportingLine hq_line hd_pts hsupp0 hqd_lt
+
+/-! ### Worked example: building the two-edge polygon by splicing
+
+We rebuild `threeVertex_chain` — the chain `(0,2) → (1,0) → (3,1)` — *constructively*
+via `isLowerEdge_chain_extend`, supplying only the dominant edge `(0,2) → (1,0)` and
+the right sub-hull `(1,0) → (3,1)` over the restriction `{(1,0), (3,1)}`.  The transfer
+machinery promotes the right edge — whose hand-built supporting line ignores `(0,2)` —
+to a genuine lower edge of the full support. -/
+
+/-- The right restriction of `threeVertex` at the cut index `1` is `[(1,0), (3,1)]`. -/
+theorem threeVertex_filter :
+    threeVertex.filter (fun r => decide ((1 : ℕ) ≤ r.1)) = [((1, 0) : SupportPoint), (3, 1)] := by
+  decide
+
+/-- The right sub-hull is a single lower edge of the restriction. -/
+theorem threeVertex_rightHull :
+    List.IsChain (IsLowerEdge (threeVertex.filter (fun r => decide ((1 : ℕ) ≤ r.1))))
+      [((1, 0) : SupportPoint), (3, 1)] := by
+  rw [threeVertex_filter]
+  refine List.isChain_cons_cons.mpr ⟨?_, List.isChain_singleton _⟩
+  refine ⟨by simp, by simp, by norm_num, 1 / 2, -1 / 2, by norm_num, by norm_num, fun r hr => ?_⟩
+  fin_cases hr <;> norm_num
+
+/-- `threeVertex_chain` rebuilt by splicing the dominant edge onto the right sub-hull,
+exercising `isLowerEdge_chain_extend`.  The right edge `(1,0) → (3,1)` becomes a lower
+edge of the *full* `threeVertex` only because its slope `1/2` clears the dominant slope
+`-2` — exactly the transfer hypothesis. -/
+theorem threeVertex_chain_via_extend :
+    List.IsChain (IsLowerEdge threeVertex) threeVertex :=
+  isLowerEdge_chain_extend (p := (0, 2)) (q := (1, 0)) (m₀ := -2) (b₀ := 2)
+    (by simp [threeVertex]) (by simp [threeVertex]) (by norm_num)
+    (by norm_num) (by norm_num)
+    (fun r hr => by fin_cases hr <;> norm_num)
+    threeVertex_rightHull
+
+/-! ### The complete lower hull: a verified Newton–Puiseux peel-down
+
+Everything above builds *one* peel of the recursion (`isLowerEdge_chain_extend`) and
+proves a given chain convex.  The capstone is to run the recursion to completion: from
+the left endpoint, repeatedly splice the dominant edge onto the right sub-hull until the
+support is exhausted, and obtain a *single* chain of lower edges that starts at the
+leftmost vertex and ends at the rightmost.  This is the existence half of the Newton
+polygon construction — the object the Newton–Puiseux algorithm walks edge by edge.
+
+The recursion measure is `pts.length`: each peel removes the leftmost point from the
+right-restriction `pts.filter (q.1 ≤ ·.1)` (the dominant cut sits strictly to its right),
+so the restriction is strictly shorter and the fuelled strong induction below terminates.
+The only mathematical inputs are the existence of a dominant edge from the left endpoint
+(`exists_isLowerEdge_of_leftmost`) and the transfer step that promotes the recursively
+built right sub-hull to a chain of the full support (`isLowerEdge_chain_extend`). -/
+
+/-- **Fuelled strong-induction core of the hull construction.**  With `pts.length ≤ n`
+as the well-founded measure, a strictly-leftmost point `p` of a distinct-index support
+spawns a chain of lower edges `p :: vs` of `pts` ending at a vertex `w` of maximal index.
+Each recursion peels the dominant edge `p → q₀` and recurses on the right restriction,
+which is strictly shorter (so its length is `≤ n`). -/
+theorem exists_lowerHull_aux : ∀ (n : ℕ) (pts : List SupportPoint) (p : SupportPoint),
+    pts.length ≤ n → p ∈ pts →
+    (∀ a ∈ pts, ∀ b ∈ pts, a.1 = b.1 → a = b) →
+    (∀ q ∈ pts, q ≠ p → p.1 < q.1) →
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+      (p :: vs).getLast? = some w ∧ w ∈ pts ∧ ∀ r ∈ pts, r.1 ≤ w.1 := by
+  intro n
+  induction n with
+  | zero =>
+    intro pts p hlen hp _ _
+    rw [List.eq_nil_iff_length_eq_zero.mpr (Nat.le_zero.mp hlen)] at hp
+    simp at hp
+  | succ n ih =>
+    intro pts p hlen hp hdist hleft
+    by_cases hmax : ∀ r ∈ pts, r.1 ≤ p.1
+    · -- `p` is already the rightmost vertex: the hull is the single point `[p]`.
+      exact ⟨[], p, List.isChain_singleton _, rfl, hp, hmax⟩
+    · -- some support point lies strictly to the right of `p`; peel the dominant edge.
+      push_neg at hmax
+      obtain ⟨r₀, hr₀, hr₀lt⟩ := hmax
+      have hother : ∃ q ∈ pts, q ≠ p :=
+        ⟨r₀, hr₀, fun h => by rw [h] at hr₀lt; exact lt_irrefl _ hr₀lt⟩
+      obtain ⟨q₀, hedge⟩ := exists_isLowerEdge_of_leftmost hp hother hleft
+      obtain ⟨hp_mem, hq₀_mem, hpq_lt, m₀, b₀, hp_line, hq₀_line, hsupp0⟩ := hedge
+      -- the right restriction at the dominant cut `q₀`
+      have hq₀' : q₀ ∈ pts.filter (fun r => decide (q₀.1 ≤ r.1)) :=
+        List.mem_filter.mpr ⟨hq₀_mem, by simp⟩
+      -- the restriction is strictly shorter (it drops `p`), so its length is `≤ n`
+      have hlen' : (pts.filter (fun r => decide (q₀.1 ≤ r.1))).length ≤ n := by
+        have hle := List.length_filter_le (fun r => decide (q₀.1 ≤ r.1)) pts
+        rcases lt_or_eq_of_le hle with h | h
+        · omega
+        · exfalso
+          rw [List.length_filter_eq_length_iff] at h
+          have hpp := h p hp
+          simp only [decide_eq_true_eq] at hpp
+          omega
+      -- distinctness passes to the sublist
+      have hdist' : ∀ a ∈ pts.filter (fun r => decide (q₀.1 ≤ r.1)),
+          ∀ b ∈ pts.filter (fun r => decide (q₀.1 ≤ r.1)), a.1 = b.1 → a = b :=
+        fun a ha b hb hab =>
+          hdist a (List.mem_filter.mp ha).1 b (List.mem_filter.mp hb).1 hab
+      -- `q₀` is strictly leftmost in the restriction
+      have hleft' : ∀ q ∈ pts.filter (fun r => decide (q₀.1 ≤ r.1)), q ≠ q₀ → q₀.1 < q.1 := by
+        intro q hq hqne
+        obtain ⟨hq_pts, hq_dec⟩ := List.mem_filter.mp hq
+        have hge : q₀.1 ≤ q.1 := by simpa using hq_dec
+        rcases lt_or_eq_of_le hge with h | h
+        · exact h
+        · exact absurd (hdist q hq_pts q₀ hq₀_mem h.symm) hqne
+      -- recurse on the strictly shorter restriction
+      obtain ⟨vs', w, hchain', hlast', hw_pts', hwmax'⟩ :=
+        ih (pts.filter (fun r => decide (q₀.1 ≤ r.1))) q₀ hlen' hq₀' hdist' hleft'
+      refine ⟨q₀ :: vs', w, ?_, ?_, (List.mem_filter.mp hw_pts').1, ?_⟩
+      · -- splice the dominant edge onto the recursively built right sub-hull
+        exact isLowerEdge_chain_extend hp_mem hq₀_mem hpq_lt hp_line hq₀_line hsupp0 hchain'
+      · -- the last vertex is unchanged by prepending `p`
+        rw [show (p :: q₀ :: vs').getLast? = (q₀ :: vs').getLast? from rfl]; exact hlast'
+      · -- `w` has maximal index over all of `pts`, not just the restriction
+        intro r hr
+        by_cases hcut : q₀.1 ≤ r.1
+        · exact hwmax' r (List.mem_filter.mpr ⟨hr, by simpa using hcut⟩)
+        · push_neg at hcut
+          have hq₀w : q₀.1 ≤ w.1 := hwmax' q₀ hq₀'
+          omega
+
+/-- **Existence of the complete lower hull (Newton polygon chain).**  For any
+distinct-index support with a strictly-leftmost point `p`, there is a chain of lower
+edges `p :: vs` of `pts` whose final vertex `w` has the maximal index over the whole
+support.  Equivalently: the dominant edges from the left endpoint splice into one
+connected lower hull reaching the right endpoint.  This is the existence statement the
+Newton–Puiseux recursion realizes; combined with `edgeSlopes_pairwise_le` (global
+convexity) the resulting chain has sorted edge slopes — sorted root valuations. -/
+theorem exists_lowerHull {pts : List SupportPoint} (p : SupportPoint)
+    (hp : p ∈ pts)
+    (hdist : ∀ a ∈ pts, ∀ b ∈ pts, a.1 = b.1 → a = b)
+    (hleft : ∀ q ∈ pts, q ≠ p → p.1 < q.1) :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+      (p :: vs).getLast? = some w ∧ w ∈ pts ∧ ∀ r ∈ pts, r.1 ≤ w.1 :=
+  exists_lowerHull_aux pts.length pts p le_rfl hp hdist hleft
+
+/-- The worked example `Y² − x`: the complete lower hull from the leftmost vertex
+`(0,1)` is the single edge to `(2,0)`, and `(2,0)` has maximal index — the constructive
+end-to-end Newton polygon of the support `{(0,1), (2,0)}`. -/
+theorem ysqMinusX_lowerHull :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge YsqMinusX) ((0, 1) :: vs) ∧
+      ((0, 1) :: vs).getLast? = some w ∧ w ∈ YsqMinusX ∧ ∀ r ∈ YsqMinusX, r.1 ≤ w.1 :=
+  exists_lowerHull (0, 1) (by simp [YsqMinusX])
+    (by intro a ha b hb hab; fin_cases ha <;> fin_cases hb <;> simp_all)
+    (by intro q hq hne; fin_cases hq <;> simp_all)
+
+/-! ### Capstone: the complete Newton polygon, sorted and counted
+
+The prior sessions built three pieces that never quite met on the *same* object:
+
+* `exists_lowerHull` — the connected hull chain from the leftmost to the rightmost
+  vertex actually exists (the divide-and-conquer recursion runs to completion);
+* `edgeSlopes_pairwise_le` — the **valuation** half: any lower-edge chain has sorted
+  edge slopes (negated = root valuations, non-increasing);
+* `sum_edgeWidths` / `edgeWidths_pos` — the **multiplicity** half: the edge widths
+  are positive and telescope to the index span (the `Y`-degree when anchored at `0`).
+
+The first two were stated about an *abstract* chain hypothesis; the existence theorem
+produced a *concrete* chain but said nothing about its slopes or widths.  The two
+corollaries below close that gap by discharging the chain hypothesis with the very
+chain the recursion builds, so the bundled combinatorial Newton polygon is now a
+single existence statement. -/
+
+/-- **The hull the recursion builds has sorted edge slopes.**  This is the literal
+"single corollary" the construction was aiming for: compose `exists_lowerHull`
+(existence of the connected lower hull) with `edgeSlopes_pairwise_le` (global
+convexity) to obtain a hull chain from the leftmost to the rightmost vertex whose
+edge slopes are sorted — i.e. whose negated slopes are the root valuations in sorted
+(non-increasing) order, read off end to end. -/
+theorem exists_lowerHull_sorted {pts : List SupportPoint} (p : SupportPoint)
+    (hp : p ∈ pts)
+    (hdist : ∀ a ∈ pts, ∀ b ∈ pts, a.1 = b.1 → a = b)
+    (hleft : ∀ q ∈ pts, q ≠ p → p.1 < q.1) :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+      (p :: vs).getLast? = some w ∧ w ∈ pts ∧ (∀ r ∈ pts, r.1 ≤ w.1) ∧
+      (edgeSlopes (p :: vs)).Pairwise (· ≤ ·) := by
+  obtain ⟨vs, w, hchain, hlast, hw, hwmax⟩ := exists_lowerHull p hp hdist hleft
+  exact ⟨vs, w, hchain, hlast, hw, hwmax, edgeSlopes_pairwise_le hchain⟩
+
+/-- **The combinatorial Newton polygon, assembled end to end.**  For a distinct-index
+support with strictly-leftmost point `p`, the lower-hull chain produced by
+`exists_lowerHull` simultaneously satisfies every combinatorial property the
+Newton–Puiseux recursion needs:
+
+* it is a genuine chain of lower edges from `p` to a rightmost vertex `w`
+  (`w` has maximal index over all of `pts`);
+* its **edge slopes are sorted** (`Pairwise (· ≤ ·)`) — negated, the root valuations
+  in sorted (non-increasing) order;
+* its **edge widths are all positive** — every edge genuinely moves left-to-right;
+* its **widths sum to the index span** `w.1 − p.1` — all roots accounted for with
+  multiplicity (the `Y`-degree count when `p.1 = 0`).
+
+This single statement bundles the valuation half (`edgeSlopes_pairwise_le`), the
+multiplicity half (`sum_edgeWidths`, `edgeWidths_pos`), and the existence of the hull
+(`exists_lowerHull`) into the complete combinatorial content of the Newton polygon
+theorem.  Only the analytic bridge (slopes/widths ↔ actual roots of `P ∈ K((x))[Y]`)
+remains, blocked on a `K((x))[Y]` valuation API absent from Mathlib 4.26.0. -/
+theorem exists_lowerHull_newtonPolygon {pts : List SupportPoint} (p : SupportPoint)
+    (hp : p ∈ pts)
+    (hdist : ∀ a ∈ pts, ∀ b ∈ pts, a.1 = b.1 → a = b)
+    (hleft : ∀ q ∈ pts, q ≠ p → p.1 < q.1) :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+      (p :: vs).getLast? = some w ∧ w ∈ pts ∧ (∀ r ∈ pts, r.1 ≤ w.1) ∧
+      (edgeSlopes (p :: vs)).Pairwise (· ≤ ·) ∧
+      (∀ z ∈ edgeWidths (p :: vs), 0 < z) ∧
+      (edgeWidths (p :: vs)).sum = (w.1 : ℚ) - (p.1 : ℚ) := by
+  obtain ⟨vs, w, hchain, hlast, hw, hwmax⟩ := exists_lowerHull p hp hdist hleft
+  have hgl : (p :: vs).getLast (by simp) = w := by
+    obtain ⟨_, hwgl⟩ := List.mem_getLast?_eq_getLast hlast
+    exact hwgl.symm
+  refine ⟨vs, w, hchain, hlast, hw, hwmax,
+    edgeSlopes_pairwise_le hchain, edgeWidths_pos hchain, ?_⟩
+  rw [sum_edgeWidths, hgl]
+
+/-- The worked example `Y² − x`: the complete Newton polygon from the leftmost vertex
+`(0,1)` exists with sorted slopes, positive widths, and widths summing to the index
+span — the single combinatorial Newton polygon of the support `{(0,1), (2,0)}`. -/
+theorem ysqMinusX_newtonPolygon :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge YsqMinusX) ((0, 1) :: vs) ∧
+      ((0, 1) :: vs).getLast? = some w ∧ w ∈ YsqMinusX ∧ (∀ r ∈ YsqMinusX, r.1 ≤ w.1) ∧
+      (edgeSlopes ((0, 1) :: vs)).Pairwise (· ≤ ·) ∧
+      (∀ z ∈ edgeWidths ((0, 1) :: vs), 0 < z) ∧
+      (edgeWidths ((0, 1) :: vs)).sum = (w.1 : ℚ) - (0 : ℚ) :=
+  exists_lowerHull_newtonPolygon (0, 1) (by simp [YsqMinusX])
+    (by intro a ha b hb hab; fin_cases ha <;> fin_cases hb <;> simp_all)
+    (by intro q hq hne; fin_cases hq <;> simp_all)
+
+/-! ### The third invariant on the concrete hull: valuation of the root product
+
+The capstone `exists_lowerHull_newtonPolygon` bundles the *valuation* half (sorted edge
+slopes) and the *multiplicity* half (positive widths summing to the index span) on the
+recursion-built hull.  It omits the third Newton-polygon bookkeeping identity — the
+slope-weighted-by-width drop `Σ (valuationᵢ · multiplicityᵢ) = v(constant) − v(leading)`
+(`neg_sum_slope_mul_width`) — which until now lived only on an *abstract* chain
+hypothesis, never on the chain the algorithm actually walks.  The corollary below lands
+it on the concrete hull, so all three combinatorial invariants of the Newton polygon now
+hold of the same object. -/
+
+/-- **Valuation of the root product, on the concrete recursion-built hull.**  For a
+distinct-index support with strictly-leftmost vertex `p`, the hull chain produced by
+`exists_lowerHull` satisfies the third Newton-polygon invariant: the sum of root
+valuations counted with multiplicity equals the vertical drop between the leftmost and
+rightmost vertices, `−Σ (valuationᵢ · multiplicityᵢ) = p.2 − w.2 = v(constant) −
+v(leading)`.  Combined with `exists_lowerHull_newtonPolygon` (sorted slopes + total
+multiplicity) this puts *all three* combinatorial Newton-polygon invariants on one chain. -/
+theorem exists_lowerHull_valuationProduct {pts : List SupportPoint} (p : SupportPoint)
+    (hp : p ∈ pts)
+    (hdist : ∀ a ∈ pts, ∀ b ∈ pts, a.1 = b.1 → a = b)
+    (hleft : ∀ q ∈ pts, q ≠ p → p.1 < q.1) :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+      (p :: vs).getLast? = some w ∧ w ∈ pts ∧ (∀ r ∈ pts, r.1 ≤ w.1) ∧
+      -(List.zipWith (· * ·) (edgeSlopes (p :: vs)) (edgeWidths (p :: vs))).sum
+        = p.2 - w.2 := by
+  obtain ⟨vs, w, hchain, hlast, hw, hwmax⟩ := exists_lowerHull p hp hdist hleft
+  have hgl : (p :: vs).getLast (by simp) = w := by
+    obtain ⟨_, hwgl⟩ := List.mem_getLast?_eq_getLast hlast
+    exact hwgl.symm
+  refine ⟨vs, w, hchain, hlast, hw, hwmax, ?_⟩
+  rw [neg_sum_slope_mul_width hchain, hgl]
+
+/-- `Y² − x`: the valuation of the root product read straight off the hull endpoints.
+`−Σ (valuationᵢ · multiplicityᵢ) = 1 − 0 = 1` — the constant coefficient `(0,1)` sits one
+unit above the leading coefficient `(2,0)`, so the single root has valuation `½` with
+multiplicity `2`, total `1`. -/
+theorem ysqMinusX_valuationProduct :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge YsqMinusX) ((0, 1) :: vs) ∧
+      ((0, 1) :: vs).getLast? = some w ∧ w ∈ YsqMinusX ∧ (∀ r ∈ YsqMinusX, r.1 ≤ w.1) ∧
+      -(List.zipWith (· * ·) (edgeSlopes ((0, 1) :: vs)) (edgeWidths ((0, 1) :: vs))).sum
+        = (1 : ℚ) - w.2 :=
+  exists_lowerHull_valuationProduct (0, 1) (by simp [YsqMinusX])
+    (by intro a ha b hb hab; fin_cases ha <;> fin_cases hb <;> simp_all)
+    (by intro q hq hne; fin_cases hq <;> simp_all)
 
 end PuiseuxTheoremOQ03

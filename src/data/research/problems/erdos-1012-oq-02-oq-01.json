@@ -38,25 +38,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 5 theorems, 0 axioms, 0 sorries, 203 lines. Verified via lake env lean (docker unavailable: host disk full). #print axioms shows only propext/Classical.choice/Quot.sound.",
+    "progressSummary": "COMPLETED+EXTENDED: 9 theorems, 0 axioms, 0 sorries, 279 lines. Original 5 necessity theorems plus Part V quantitative sharpness: |E(K_{V,W})|=|V|·|W| and balanced K_{m,m} = m² = ⌊n²/4⌋ (one below Bondy threshold). Verified via lake env lean; #print axioms = propext/Classical.choice/Quot.sound only.",
     "builtItems": [
       "Created Proofs/Erdos1012OQ02OQ01.lean (203 lines, 5 theorems, 0 axioms)",
       "completeBipartite_no_triangle in Erdos1012OQ02OQ01.lean",
       "completeBipartite_no_3cycle in Erdos1012OQ02OQ01.lean",
-      "completeBipartite_realizes_bondy_exception in Erdos1012OQ02OQ01.lean"
+      "completeBipartite_realizes_bondy_exception in Erdos1012OQ02OQ01.lean",
+      "completeBipartite_card_edgeFinset: |E(K_{V,W})| = |V|·|W| via degree-sum formula (Erdos1012OQ02OQ01.lean)",
+      "completeBipartite_degree_inl/_inr: vertex degrees |W|/|V| (neighbour finset = image of opposite side)",
+      "completeBipartite_balanced_card_edgeFinset: balanced K_{m,m} has m² = ⌊(2m)²/4⌋ edges, 0 axioms"
     ],
     "insights": [
       "A complete bipartite graph is triangle-free: any 3 vertices have 2 on the same side, which are non-adjacent",
       "A closed walk of length 3 already forces a triangle; the IsCycle hypothesis is not needed for the obstruction",
       "Walk.getVert + adj_getVert_succ extract the cyclic adjacencies of a short closed walk without inductive destructuring",
-      "The parent Erdos1012OQ02.lean does NOT compile against pinned Mathlib v4.26.0 (renamed Finset.card_Icc, deprecated Set.ncard_coe_Finset) — gallery-integrity drift worth flagging to the mechanic"
+      "The parent Erdos1012OQ02.lean does NOT compile against pinned Mathlib v4.26.0 (renamed Finset.card_Icc, deprecated Set.ncard_coe_Finset) — gallery-integrity drift worth flagging to the mechanic",
+      "Edge count of completeBipartiteGraph: cleanest route is the degree-sum formula sum_degrees_eq_twice_card_edges + Fintype.sum_sum_type, not a Sym2 bijection. Degrees come from neighborFinset = univ.map ⟨Sum.inr,_⟩.",
+      "omega treats Fintype.card V * Fintype.card W as an opaque atom: after mul_comm makes both summands identical, t+t=2e ⊢ e=t closes by omega without nlinarith.",
+      "completeBipartiteGraph has no registered DecidableRel Adj instance; add one via rw [completeBipartiteGraph_adj]; infer_instance to get LocallyFinite + edgeFinset."
     ],
     "mathlibGaps": [
       "No edge-count lemma for completeBipartiteGraph (|E| = card V * card W)",
       "Mathlib Bipartite.lean lists 'bipartite iff no odd cycle' as a TODO"
     ],
     "nextSteps": [
-      "Prove |E(K_{m,m})| = m^2 = floor((2m)^2/4) to quantify threshold sharpness numerically"
+      "Threshold sharpness now fully quantified; no further open follow-up at this OQ depth (slug already at -oq- depth 2; extremal edge count closes the recorded next step)."
     ],
     "markdown": "See research/problems/erdos-1012-oq-02-oq-01/knowledge.md"
   },

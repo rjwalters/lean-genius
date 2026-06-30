@@ -1,12 +1,12 @@
 {
   "slug": "erdos-340-greedy-sidon-oq-05",
   "title": "Erdős #340 OQ-05: B_h sequences and the B_h upper bound",
-  "status": "in-progress",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "tier": "B",
   "tractability": "medium — the foundational B_h theory and the sharp B_h counting upper bound are now formalized and verified (0-axiom). The deep open direction (improving the greedy B_h lower bound toward the N^{1/h} ceiling) remains open, exactly as for the parent #340.",
   "started": "2026-06-27",
-  "lastUpdate": "2026-06-27T20:00:00.000Z",
+  "lastUpdate": "2026-06-28",
   "path": "research/problems/erdos-340-greedy-sidon-oq-05",
   "leanFiles": [
     {
@@ -19,6 +19,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidonOQ05.lean"
+    },
+    {
+      "path": "Proofs/Erdos340BhUpperBound.lean",
+      "filename": "Erdos340BhUpperBound.lean",
+      "lineCount": 137,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340BhUpperBound.lean"
     }
   ],
   "tags": [
@@ -55,7 +66,8 @@
       "Part 8 (explicit closed form): card_forbidden_poly bounds the forbidden set by 2*h*(|A|+1)^(2h-1) — an explicit degree-(2h-1) polynomial in |A|, the form the greedy lower bound consumes. Built on card_sym_le_pow (|A.sym n| <= |A|^n, a Finset.sym cardinality bound Mathlib lacks) and geom_sum_le_pow (sum_{i<=k} n^i <= (n+1)^k).",
       "End-to-end greedy lower bound inside {1,...,N} is now formalised: the only remaining gap is the real-analytic conversion of the degree-(2h-1) polynomial bound to a fractional power N^{1/(2h-1)}; no further B_h structure is needed.",
       "The bounded greedy step IsBh.exists_insert_le needs NO hypothesis A subset {1,...,N}: any m in {1,...,N} outside the blocked set A union {forbidden} automatically avoids A. Counting blocked < N suffices.",
-      "Key API: Finset.exists_mem_notMem_of_card_lt_card (s.card < t.card -> exists e in t, e notin s) cleanly extracts an available element; avoids card_sdiff which in this Mathlib is the unconditional intersection form #(t\\s)=#t-#(s cap t)."
+      "Key API: Finset.exists_mem_notMem_of_card_lt_card (s.card < t.card -> exists e in t, e notin s) cleanly extracts an available element; avoids card_sdiff which in this Mathlib is the unconditional intersection form #(t\\s)=#t-#(s cap t).",
+      "ANALYTIC UPPER BOUND (Erdos340BhUpperBound.lean, IsBh.card_le_rpow): the combinatorial counting bound is convertible to the matching fractional-power upper bound |A| <= C2 * N^{1/h} with explicit C2 = (h-1) + (h*h!)^{1/h}, mirroring the lower-bound analytic step. Engine: from IsBh.choose_card_le (C(k,h) <= h*N), Mathlib's Nat.pow_le_choose gives the reverse (k+1-h)^h / h! <= C(k,h), so (k+1-h)^h <= h!*h*N over R; take h-th roots via Real.pow_rpow_inv_natCast ((q^h)^{1/h}=q for q>=0) + Real.rpow_le_rpow monotonicity + Real.mul_rpow to split the constant, then absorb the additive defect using k <= (k+1-h)+(h-1) (omega, valid even when k<h) and N^{1/h} >= 1. 0-axiom. Paired with exists_isBh_rpow_lower this brackets sigma_h(N) in [C1*N^{1/(2h-1)}, C2*N^{1/h}]; the exponent gap is the open core of #340."
     ],
     "builtItems": [
       "Erdos340GreedySidonOQ05.lean: def IsBh (h-fold-sum-distinctness via multiset-sum InjOn on A.sym h); IsBh.subset; isBh_one (every set is B_1); IsBh.sum_injOn_powersetCard (distinct h-subset sums); IsBh.choose_card_le (MAIN: Nat.choose |A| h ≤ h·N for B_h A ⊆ [1,N]); IsBh.two_card_mul_pred_le (Sidon recovery |A|(|A|-1) ≤ 4N). 206 lines, 6 theorems, 1 def, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only).",
@@ -80,9 +92,14 @@
       "Finset.sym s n has no direct cardinality (multichoose) lemma in Mathlib — only the Fintype-level Sym.card_sym_eq_choose. This is why the counting bound is routed through h-subsets (powersetCard, which DOES have card_powersetCard) rather than the full multiset family."
     ],
     "nextSteps": [
-      "Real-analytic conversion: from exists_isBh_Icc_card_of_le, choose k ~ (N/(4h))^{1/(2h-1)} to get the explicit fractional-power lower bound |A| >= c*N^{1/(2h-1)} (needs Real.rpow / Nat.pow monotonicity, no further B_h structure).",
+      "Gallery integration COMPLETE (2026-06-28, researcher-5): src/data/proofs/erdos-340-greedy-sidon-oq-05/ with 8 annotations, validated 0-error against the 1225-line source.",
+      "Both analytic endpoints are now formalized (lower: exists_isBh_rpow_lower, |A| >= C1*N^{1/(2h-1)}; upper: IsBh.card_le_rpow, |A| <= C2*N^{1/h}). The remaining content is the genuinely OPEN #340 quantitative core: closing the exponent gap 1/(2h-1) vs 1/h (at h=2 the classical Sidon 1/3 vs 1/2). Not attackable by elementary counting.",
       "Optional: extract a clean corollary phrasing largest-element vs cardinality, mirroring the parent greedySidon gallery entry."
     ],
-    "progressSummary": "Foundational B_h theory + sharp upper bound (choose(|A|,h) <= h*N), Sidon bridge (IsBh 2 <-> IsSidon), affine invariance, greedy extension + explicit greedy family, the forbidden-set counting chain (card_forbidden_le/le_prime/poly: explicit 2h(|A|+1)^(2h-1), degree 2h-1), and NOW the end-to-end [1,N]-bounded greedy lower bound: exists_isBh_Icc_card_of_le shows k+2h(k+1)^(2h-1) <= N implies a B_h set subset {1,...,N} of card k exists. Remaining open: only the real-analytic step converting the polynomial bound to |A| = Omega(N^{1/(2h-1)})."
+    "progressSummary": "Foundational B_h theory + sharp counting upper bound (choose(|A|,h) <= h*N), Sidon bridge (IsBh 2 <-> IsSidon), affine invariance, greedy extension + explicit greedy family, the forbidden-set counting chain (card_forbidden_le/le_prime/poly: explicit 2h(|A|+1)^(2h-1), degree 2h-1), the end-to-end [1,N]-bounded greedy lower bound (exists_isBh_Icc_card_of_le), and BOTH analytic endpoints: the greedy lower bound exists_isBh_rpow_lower (|A| >= C1*N^{1/(2h-1)}) and the matching analytic upper bound IsBh.card_le_rpow (|A| <= C2*N^{1/h}, C2 = (h-1)+(h*h!)^{1/h}, in Erdos340BhUpperBound.lean). Together these bracket sigma_h(N) in [C1*N^{1/(2h-1)}, C2*N^{1/h}]. Remaining open: only the genuinely hard #340 quantitative core of closing the exponent gap."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "nextAction": "Done. Gallery entry src/data/proofs/erdos-340-greedy-sidon-oq-05/ added (meta.json + annotations.json). Both analytic endpoints formalized; the open #340 exponent gap 1/(2h-1) vs 1/h remains as a separate problem."
   }
 }

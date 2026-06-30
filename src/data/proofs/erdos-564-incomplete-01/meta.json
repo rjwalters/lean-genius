@@ -35,7 +35,7 @@
       "Parent fix: repaired six dangling /-- doc comments (lines 65, 66, 153, 154, 164, 186) in Erdos564Problem.lean that caused 'unexpected token /--; expected lemma' parse errors — the parent file did not compile at all on main"
     ],
     "dateAdded": "2026-06-27",
-    "lineCount": 110,
+    "lineCount": 192,
     "theoremCount": 11,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
@@ -158,9 +158,9 @@
       "Proofs.Erdos564Problem"
     ],
     "namespace": "Erdos564.Incomplete01",
-    "lineCount": 110,
+    "lineCount": 192,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 16,
     "definitionCount": 0,
     "path": "Proofs/Erdos564Incomplete01.lean",
     "sorries": 0
@@ -174,5 +174,8 @@
       "Develop monotonicity of the hypergraph Ramsey property (more vertices preserve it) toward a verified definition of R₃ replacing the axiom."
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "highlights": [
+    "Faithful quadratic crux (ehr_lower_lt_tower_two): the real EHR lower bound 2^{cn^2} has a QUADRATIC exponent, yet 2^{n^2} is still a whole tower level below the conjectured 2^{2^n} = tower 2 n for n>=5, because n^2 < 2^n (nsq_lt_two_pow_self, tight at n=4). Sharpens the prior linear-exponent crux tower_one_lt_tower_two. Plus general height gap tower_lt_of_height_lt (j<k => tower j n < tower k n). Axiom-free (propext/Classical.choice/Quot.sound)."
+  ]
 }

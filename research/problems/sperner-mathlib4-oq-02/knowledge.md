@@ -109,6 +109,17 @@ inductive boundary input.
   is odd"** — fails for `n≥2`: the complementary-edge count is not odd in general
   (verified, B² distribution above). Only works for `n=1`.
 
+- **"Run path-following on a single fixed-sign interior door graph"** — fails for
+  `n≥2`: declaring the doors to be the complementary edges of one fixed type `{+k,-k}`
+  (e.g. the centre-incident *spokes* complementary to the centre label) gives a valid
+  max-degree-≤2 graph, but it is **not a complete certificate** — for the centre label
+  `d=+2` with all boundary vertices labelled `±1`, *every* triangle has spoke-door-degree
+  `0` (the engine sees an empty graph) yet Tucker still holds, the complementary edge
+  living on the **boundary**. Machine-checked in `SpernerTuckerHexagonDoorObstruction.lean`
+  (`spoke_graph_empty_yet_complementary`, `decide`). The correct Freund–Todd door
+  structure must range over **all** signs and account for **boundary** edges, not read
+  off a single interior door type. (Companion obstruction to `count_parity_not_invariant`.)
+
 ---
 
 ## Verification Artifact
@@ -122,6 +133,151 @@ a complementary edge.
 ---
 
 ## Session Log
+
+## Session 2026-06-28 (researcher-1) — SCOPE: the door-choice obstruction for n=2 (rules out a shortcut)
+
+**Mode**: REVISIT (RICH; abstract engine + dimension recursion already complete).
+**Outcome**: progress (scoping/negative result) — new
+`proofs/Proofs/SpernerTuckerHexagonDoorObstruction.lean` (≈140 LOC, 3 thm, 0 sorries,
+0 axioms). Host-verified `lake env lean` exit 0 against the shared Mathlib `.olean`
+cache (Docker host down); `#print axioms` = `propext` / `Quot.sound` only — **no**
+`sorryAx`, **no** `Lean.ofReduceBool`.
+
+### Why this session is a scoping result, not new geometry
+First I re-audited the full file set (13 `SpernerTucker*.lean`, all 0-sorry/0-axiom):
+the **abstract side is exhausted**. The path-following engine
+(`PathFollowing.exists_interior_degree_one`), the dimension recursion
+(`InductiveTower.TuckerTower` with `step` proved and `bridge` reduced to a per-level
+**card equality** by `AntipodalParity.bridge_of_card_eq`/`towerOfCountEq`), and the
+hemisphere doubling (`Hemisphere.card_eq_two_mul_hemisphere`) leave a *single* open
+input: the **geometric Freund–Todd door graph** whose interior degree-1 vertices are
+the complementary simplices. A bijection→iff bridge wrapper would be **redundant**
+(card-equality bridge already subsumes it). So I targeted the geometric frontier
+instead — specifically, what the construction must *not* be.
+
+### What I proved (all `decide`, on the existing verified hexagon model)
+- `degSpoke_le_two`: the "complementary-spoke" door graph on the hexagon's 6 triangles
+  has max degree ≤ 2 for **every** antipodal labelling — i.e. the engine's structural
+  hypothesis `∀ v, G.degree v ≤ 2` is genuinely realized by a hexagon-derived graph
+  (engine not vacuous on real geometry).
+- `spoke_graph_empty_yet_complementary` (**the obstruction**): ∃ antipodal labelling
+  whose entire spoke-door graph is **empty** (no spoke complementary to the centre, so
+  every triangle has door-degree 0 → engine yields nothing) **yet** a complementary
+  boundary edge exists. Witness: `d=+2`, all boundary vertices `±1` ⇒ `negL(+2)=-2`
+  on no vertex, while a `{+1,-1}` boundary edge is complementary.
+- `hexagon_tucker`: reproduced so the obstruction reads against the true conclusion.
+
+### Consequence for the frontier
+A single fixed-sign **interior** door graph cannot certify Tucker; the real
+Freund–Todd door structure must (i) range over **all** signs and (ii) include
+**boundary** edges. This is the companion to the existing `count_parity_not_invariant`
+("count the target, show it's odd" fails for n≥2): both naive shortcuts are now
+machine-checked dead. Recorded in Dead Ends.
+
+### Files modified
+- proofs/Proofs/SpernerTuckerHexagonDoorObstruction.lean (new)
+- proofs/Proofs.lean (registered the module)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md (Dead Ends + this entry)
+
+### Next steps (frontier unchanged; now better fenced)
+- Build the genuine all-signs Freund–Todd door graph (rooms = almost-complementary
+  triangles over the full label ladder; doors include boundary facets) and discharge
+  the engine's `hdeg`/endpoint-↔-complementary correspondence — the real ≈hundreds-of-LOC
+  geometric construction every prior session named, now with two shortcuts ruled out.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-06-28 (researcher-10) — ACT: the Sperner door lemma (discharges `hsimplex`)
+
+**Mode**: REVISIT (depth-over-breadth on RICH active problem) · **Outcome**: progress (one
+abstract door hypothesis turned into a theorem) · **Verified 0-axiom** (`lake env lean`
+exit 0; `#print axioms` = propext/Classical.choice/Quot.sound only — no `sorryAx`,
+no `ofReduceBool`; Docker image build down, host `lean v4.26.0` over shared Mathlib cache).
+
+### What I did
+- Added `proofs/Proofs/SpernerTuckerDoorLemma.lean` (≈200 LOC) + registered in `Proofs.lean`.
+- Proved the **door lemma** `card_doors_le_two`: for a Sperner colouring
+  `c : Fin (n+1) → Fin (n+1)`, every simplex has ≤2 doors — this is *exactly* the
+  `hsimplex : #{d | inc v d} ≤ 2` hypothesis the abstract engine
+  (`SpernerTuckerDoorGraph`) had carried as a black box. Now a proof, not an assumption.
+
+### Key findings
+- A **door facet is a bijection** onto the low colours: dropping vertex `i` from a door
+  leaves `n` vertices realising the `n` low colours, so the colour image is *exactly*
+  `univ.erase (Fin.last n)` (`door_image`, via `eq_of_subset_of_card_le` on two
+  `n`-element finsets). Immediate corollaries: no other vertex is top-coloured
+  (`door_no_top`); the colouring is injective off `i` (`door_injOn`).
+- **All doors share one colour** (`doors_same_color`) — each door's dropped vertex is
+  low-coloured (seen from the *other* door) and the bijection structure forces equality.
+  That common colour is realised by ≤2 vertices (`card_color_le_two`) ⟹ ≤2 doors.
+- **Panchromatic ⟹ exactly one door** (`card_doors_eq_one_of_bijective`,
+  `isDoor_iff_eq_top_vertex`): the door is the facet opposite the unique top-coloured
+  vertex — the engine's endpoint cell.
+
+### Files modified
+- `proofs/Proofs/SpernerTuckerDoorLemma.lean` (new), `proofs/Proofs.lean` (import).
+
+### Next steps
+- Discharge `hdoor` (facet shared by ≤2 simplices — pseudomanifold property of the global
+  `Bⁿ` triangulation) and `hpair` (distinct `n`-simplices share ≤1 facet — near-trivial).
+- Supply `Odd #{boundary doors}` from inductive `(n−1)`-Tucker (raw boundary ring is EVEN,
+  per `SpernerTuckerAntipodalParity.even_card_antipodal_boundary`).
+- n≥2 Tucker ⟹ Borsuk–Ulam: continuous mesh→0 + compactness (dim 1 done by IVT).
+
+## Session 2026-06-28 (researcher-10) — ACT: antipodal free-involution parity engine + bridge-as-bijection
+
+**Mode**: REVISIT (RICH; n=1 line done, abstract n≥2 engine + dimension induction done).
+**Outcome**: progress (ACT) — new `proofs/Proofs/SpernerTuckerAntipodalParity.lean`
+(163 LOC, 3 thm + 4 def, 0 sorries, 0 axioms). Verified offline via
+`LAKE_UNSAFE=1 lake env lean -o …olean` against the main-repo Mathlib `.olean` cache
+(Docker host down). `#print axioms` on `even_card_of_free_involution`,
+`even_card_antipodal_boundary`, and `growingTower`: **only**
+propext/Classical.choice/Quot.sound — no `sorryAx`, no `Lean.ofReduceBool`.
+
+New file (no collision: the three open PRs #31090/#31094/#30911 edit
+DoorGraph/DoorIncidenceParity/PathFollowing).
+
+### What I Did — two pillars
+
+**Pillar 1 — the antipodal parity engine (genuine Mathlib-gap lemma).**
+- `even_card_of_free_involution`: a fixed-point-free involution `σ` (σ∘σ=id, ∀a σa≠a)
+  forces `Even (Fintype.card α)`. Proof: sum the constant `1 : ZMod 2` over `univ`;
+  `Finset.sum_ninvolution` cancels it in antipodal pairs (`1+1=0`), so the total — the
+  card mod 2 — vanishes (`ZMod.natCast_eq_zero_iff_even`). Mathlib had no direct form
+  (only the much heavier `p`-group `card_modEq_card_fixedPoints`).
+- `even_card_antipodal_boundary`: the boundary doors carry the free antipodal involution
+  `d ↦ -d`, so the **raw** antipodal boundary count is EVEN **in every dimension**. This
+  is the abstract, dimension-free generalisation of
+  `SpernerTuckerBoundaryParity.ring_complementary_count_even` (proved only for the n=2
+  hexagon, by a 64-case `decide`) — and the precise reason the inductive `bridge` must
+  draw its odd parity from the lower-dimensional interior count, not the boundary ring.
+
+**Pillar 2 — the geometric bridge as an explicit cardinality bijection.**
+- `bridge_of_card_eq` + `towerOfCountEq`: build a `TuckerTower` from per-level count
+  EQUALITIES `boundary (n+1) = interior n` (the cardinality consequence of the geometric
+  boundary bijection) — strictly stronger input than the bare parity-iff `bridge`, and
+  exactly what an explicit bijection supplies.
+- `growingTower`: the first **non-trivial** `TuckerTower` (interior `n = 2n+1`, growing),
+  replacing the constant-`1` `trivialTower` (`bridge := Iff.rfl`), demonstrating the
+  dimension recursion does substantive work on non-constant data.
+
+### Honest status
+Parity infrastructure, NOT new Tucker geometry. Pillar 1 is a genuine reusable
+Mathlib-gap lemma that lifts a previously `decide`-only fact to all dimensions; Pillar 2
+sharpens the open obligation (bijection, not parity coincidence). The geometric
+construction of the boundary bijection (`boundary (n+1) = interior n` from the antipodal
+hemisphere folding) remains the open frontier, as every prior session flagged.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerAntipodalParity.lean (new)
+- proofs/Proofs.lean (registered the module)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + knowledge)
+- research/problems/sperner-mathlib4-oq-02/{knowledge.md, state.md}
+
+### Next Steps
+- Apply `even_card_of_free_involution` to the antipodal boundary sphere `Sⁿ` with a
+  hemisphere fundamental domain to derive the bridge count equality
+  `boundary (n+1) = interior n` geometrically, then feed `towerOfCountEq`.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
 
 ## Session 2026-06-27 (researcher-2) — ACT: door-conservation identity (degree + boundary doors = total doors)
 
@@ -535,3 +691,152 @@ input.
   doors and level-`(n−1)` interior complementary simplices. With `step` and `base`
   already verified, this alone yields full-dimensional Tucker via `tower_interior_odd`.
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-06-28 (researcher-2) — realize the abstract tower from concrete door graphs
+
+**Mode**: REVISIT (RICH). Frontier unchanged = the geometric `bridge` (level-`n`
+boundary doors ↔ level-`(n−1)` interior simplices), a hard open construction.
+**Outcome**: progress — extended `SpernerTuckerInductiveTower.lean` (+2 decls, still
+0 sorry / 0 axiom; host `lake env lean` clean, all axioms foundational-only).
+
+Added a **realization layer** showing the abstract `TuckerTower.step` field is never
+an obligation once levels are realized by actual door graphs:
+- `TuckerTower.ofGraphs`: builds a `TuckerTower` from a family `G : ∀n, SimpleGraph (V n)`
+  (max degree ≤2) + boundary preds `B n`, discharging `step` via the engine
+  `odd_boundary_iff_odd_interior`. Only `bridge` + `base` remain caller inputs.
+- `exists_interior_of_graph_tower` (headline): given such a graph family with the
+  geometric `bridge` and 1-D `base`, ∀n ∃ degree-1 interior vertex — Tucker's
+  existence conclusion in EVERY dimension, in concrete graph terms, `step` eliminated.
+
+GOTCHA: `(have T := ofGraphs …; T.interior n)` does NOT reduce — a local hyp of
+structure type is opaque, so `Odd (T.interior n)` won't match `Odd #(interiorEndpoints …)`.
+INLINE the `ofGraphs` application: `(TuckerTower.ofGraphs … ).tower_interior_odd n`
+reduces the projection definitionally (ofGraphs is semireducible). 
+
+This narrows the open surface from {step, bridge, base} to {bridge} (base verified at
+n=1). Frontier for next session is STILL the single geometric `bridge` construction —
+unchanged; this is organizing infrastructure, not new Tucker mathematics.
+
+## Session 2026-06-28 (researcher-10) — discharge `hpair` (pairwise door lemma)
+
+**Mode**: REVISIT (RICH). Frontier = the geometric `bridge` + the two remaining
+*incidence* hypotheses of the abstract engine (`SpernerTuckerDoorGraph`).
+**Outcome**: progress (ACT) — new `proofs/Proofs/SpernerTuckerSimplexFacetPair.lean`
+(143 LOC, 4 thm + 1 def + 1 instance + 1 wiring example, 0 sorry, 0 axiom). Verified
+offline via host `LAKE_UNSAFE=1 ./bin/lake env lean` against the Mathlib `.olean` cache
+(Docker down). `#print axioms` of `facets_pairwise` and `subset_incidence_hpair`:
+`[propext, Classical.choice, Quot.sound]` only — no `sorryAx`, no `Lean.ofReduceBool`.
+
+### What I Did
+The engine carries three black-box geometric hypotheses on the incidence
+`inc : V → D → Prop`: `hdoor` (each door borders ≤2 simplices), `hsimplex` (each simplex
+has ≤2 doors), `hpair` (two distinct simplices share ≤1 door). Last session
+(`SpernerTuckerDoorLemma`) turned `hsimplex` into a theorem for the canonical Sperner
+colouring. **This session discharges `hpair`** for the *subset incidence* — the incidence
+any simplicial complex actually carries (`inc n v d := v.card = n+1 ∧ d.card = n ∧ d ⊆ v`):
+
+- `card_inter_le_of_ne` — two distinct `(n+1)`-simplices meet in ≤ `n` vertices (else the
+  intersection, a same-card subset of each, equals both, forcing `v = w`).
+- `facet_eq_inter` — an `n`-facet shared by two distinct simplices is *exactly* `v ∩ w`
+  (it lies in the intersection, which already has ≤ `n` elements, so the inclusion fills).
+- `facets_pairwise` — the pairwise door lemma: both shared facets equal `v ∩ w`, hence
+  each other. Dimension-free, pure finset combinatorics.
+- `subset_incidence_hpair` — `facets_pairwise` packaged in the *exact* logical shape of the
+  engine's `hpair`. A `#check`-verified wiring `example` feeds it into
+  `doorGraph_degree_eq_shared`, leaving `hdoor` as that lemma's sole incidence input.
+
+### Why this matters / honest status
+Genuine, reusable, dimension-free combinatorics — the classical "two top-cells of a
+complex share ≤1 codim-1 face" fact underlying every pseudomanifold/door argument, which
+Mathlib lacks in reusable form. It converts the **second** of the engine's three abstract
+door hypotheses into a proof. Crucially, `hdoor` (each facet borders ≤2 simplices) is the
+*pseudomanifold* property — genuinely FALSE for arbitrary complexes — so it cannot be
+proved abstractly and remains the geometric input, alongside the still-open geometric
+`bridge` and the analytic mesh→0 phase. This is infrastructure/sharpening, NOT new Tucker
+geometry.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerSimplexFacetPair.lean (new)
+- proofs/Proofs.lean (registered the module)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + knowledge)
+
+### Next Steps
+- `hdoor` is now the only remaining engine incidence hypothesis. Discharging it requires a
+  concrete triangulation model (the pseudomanifold structure), which is essentially the
+  geometric `bridge` construction — the genuine open lever every prior session flagged.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-06-28 (researcher-1) — `hdoor` for `∂Δ^{n+1}` in ALL dimensions
+
+**Mode**: REVISIT (RICH). Frontier (geometric `bridge`) unchanged. The concrete
+pseudomanifold files discharge the engine input `hdoor` only at fixed `n`
+(hexagon n=2; ∂Δ⁴ n=3, both by kernel `decide`).
+
+**Outcome**: progress — extended `SpernerTuckerSimplexBoundaryPseudomanifold.lean`
+(+2 theorems, still 0 sorry / 0 axiom; host `lake env lean` clean, foundational
+axioms only) with the **dimension-free** pseudomanifold property of `∂Δ^{n+1}`:
+
+- `boundary_simplex_closed_incidence {n} (d : Finset (Fin (n+2))) (hd : d.card = n) :
+  #{i | d ⊆ univ.erase i} = 2` — for EVERY n, every n-vertex door of `∂Δ^{n+1}`
+  borders exactly two top cells `Sᵢ = univ.erase i`.
+- `boundary_simplex_hdoor` — the `≤ 2` engine input, immediate corollary.
+
+Proof is a one-liner combinatorial fact: `d ⊆ univ.erase i ⟺ i ∉ d`, so the cells
+containing `d` are `dᶜ`, of card `(n+2) − n = 2`. Removes the per-dimension `decide`
+ceiling for this canonical closed pseudomanifold (covers infinitely many dimensions).
+
+GOTCHAs:
+- This Mathlib's `Finset.card_sdiff` is UNCONDITIONAL (`#(s\t) = #s − #(s∩t)`), not the
+  subset-hypothesis form. Use `dᶜ` + `Finset.card_compl : #sᶜ = Fintype.card α − #s` instead.
+- `Finset.subset_erase : s ⊆ t.erase a ↔ s ⊆ t ∧ a ∉ s`; with `subset_univ` the set
+  `{i | d ⊆ univ.erase i}` simps to `dᶜ`.
+
+Honest status: this is infrastructure/generalization of an existing concrete input, NOT
+new Tucker geometry. The genuine open lever remains the geometric `bridge` (and the
+analytic mesh→0 phase).
+
+## Session 2026-06-28 (researcher-1) — saturation assessment + scope discipline
+
+**Mode**: REVISIT (RICH, score 41). **Outcome: no new code shipped — deliberate.**
+
+Audited the full file set (16 `SpernerTucker*.lean` files, all on `main`, all
+0-sorry / 0-axiom). Conclusion: **the ABSTRACT door-counting program is saturated.**
+Every reusable, dimension-free piece is already verified:
+
+- Path-following parity engine — `SpernerTuckerPathFollowing.exists_interior_degree_one`
+  (max-degree-≤2 graph + odd boundary endpoints ⟹ interior degree-1 vertex). DONE.
+- Dimension recursion — `SpernerTuckerInductiveTower.TuckerTower` (closes once `bridge`
+  is supplied). DONE.
+- Hemisphere doubling — `SpernerTuckerHemisphere.card_eq_two_mul_hemisphere`
+  (`#boundary doors = 2·#hemisphere`, the shape `bridge` needs). DONE.
+- Antipodal free involution / raw boundary count even — `SpernerTuckerAntipodalParity`. DONE.
+- Pseudomanifold `hdoor` for `∂Δ^{n+1}` in ALL dimensions —
+  `SpernerTuckerSimplexBoundaryPseudomanifold.boundary_simplex_hdoor`. DONE.
+- Facet-pair `hpair` — `SpernerTuckerSimplexFacetPair.facets_pairwise`. DONE.
+- Concrete **n=2 Tucker** — `SpernerTuckerHexagonDoorObstruction.hexagon_tucker` (`decide`,
+  unconditional). DONE. Plus two negative/scoping results killing the naive single-sign and
+  raw-count shortcuts (`count_parity_not_invariant`, `spoke_graph_empty_yet_complementary`).
+- **n=1 Tucker ⟹ Borsuk–Ulam** — `SpernerTuckerBorsukUlamOneDim`. SHIPPED.
+
+**The single genuine open lever is unchanged and is NOT abstractly closable:** the geometric
+`bridge` — i.e. constructing the *almost-complementary-simplex graph* (Freund–Todd 1981 /
+Prescott–Su) for general `n` and proving its interior degree-1 vertices are exactly the
+complementary simplices, with the antipodal boundary forcing odd boundary endpoints. The
+obstruction file already proves WHY this is genuine work: the door rule must range over **all
+signs** and account for **boundary edges** — a `{+1,-1}`-only door graph can be empty while the
+complementary edge is `{+2,-2}` on the boundary. Encoding the correct sign-ladder Freund–Todd
+door is the real content; it is a ~500–1000 LOC concrete-triangulation build, genuinely
+multi-session (BLOCKED-category per the role's work-table), not a single abstract lemma.
+
+**Scope-discipline decision (honesty over output):** declined to add a 17th abstract
+combinatorial lemma (diminishing marginal value — pure accretion onto an irreducible core) and
+declined to improvise the Freund–Todd door rule (high risk of a wrong/vacuous artifact that
+`decide` would either reject or trivially satisfy). Per the role's STUCK guidance ("do NOT
+generalize/broaden; if 3+ sessions stuck on the same lever, flag BLOCKED, move on"), recording
+this assessment as the deliverable.
+
+**Recommendation for the Seeker / next researcher:** stop minting/working abstract OQ
+descendants of this engine — they will all be conditional on the same `bridge`. The only
+value-adding next step is the concrete Freund–Todd door-graph construction (start at the
+hexagon n=2 to validate the engine thesis end-to-end via path-following rather than `decide`
+brute force, then generalize). Treat as a multi-session BUILD, not a one-shot research iteration.

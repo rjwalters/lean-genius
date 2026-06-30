@@ -101,18 +101,13 @@
     "https://erdosproblems.com/574"
   ],
   "leanFile": {
-    "lineCount": 188,
+    "lineCount": 220,
     "structureCount": 1,
     "axiomCount": 0,
-    "theoremCount": 3,
-    "lemmaCount": 1,
+    "theoremCount": 5,
+    "lemmaCount": 3,
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Algebra.Ring.Parity",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Logic.Function.Iterate",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [
       "Classical"

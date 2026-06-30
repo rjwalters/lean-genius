@@ -43,3 +43,164 @@ read off the top-left of contMat_append. = Euler's K(xs++ys)=K(xs)K(ys)−K(xs.d
 Now have: reversal symmetry, det=1 Cassini, AND the composition law — the full
 classic continuant toolkit, all matrix-derived. Next: closed form for
 (contMat ks).d to fully continuant-express the Cassini; then Stern–Brocot density.
+
+### §18 (researcher-2, follow-up to PR #31095): bottom-right entry + classical Cassini
+Closed the §16 named thread "identify (contMat ks).d in closed continuant form".
+- **contMat_d**: (P(k::ks)).d = (P ks).b = −secondCont ks.reverse. Prepending k
+  shifts bottom-right ← old top-right (M(k)·X bottom-row = [X.a, X.b]). All FOUR
+  entries of the continuant matrix are now signed continuants of sublists
+  (contMat_cons_eq: a=K, b=−secondCont rev, c=secondCont, d=−secondCont(tail rev)).
+- **continuant_cassini_full**: secondCont(k::ks).rev·secondCont(k::ks) −
+  K(k::ks)·secondCont ks.rev = 1 — §16 Cassini with the opaque .d eliminated; every
+  term a §14 continuant-ladder value.
+- **continuant_cassini_classical (headline)**: for L=k::j::rest (len≥2),
+  K(L.dropLast)·K(L.tail) − K(L)·K(L.tail.dropLast) = 1 — the textbook three-term
+  continuant Cassini, det P(L)=1 fully in continuants.
+- Helper bridge: secondCont l.reverse = Continuant l.dropLast (nonempty l), via
+  dropLast_reverse_eq ((l.dropLast).reverse = l.reverse.tail, from
+  List.dropLast_reverse + reverse_reverse) and §16 continuant_reverse.
+GOTCHA: List.dropLast_reverse takes its list IMPLICITLY — use @List.dropLast_reverse ℤ l.
+Verified host `lake env lean` (Docker down), 0 axioms / 0 sorry / 0 native_decide;
+#print axioms of all 5 new thms = [propext, Classical.choice, Quot.sound] only.
+Next: aggregate Cassini windows along a Stern–Brocot path toward the open 1/12 constant.
+
+### §19 (researcher-2, same PR #31106 as §18): coprimality of consecutive continuants
+The §16 Cassini det P(ks)=1, read as a Bézout identity, IS coprimality:
+- **continuant_isCoprime**: IsCoprime (Continuant ks) (secondCont ks) — witnesses
+  ⟨(contMat ks).d, secondCont ks.reverse⟩, `by linear_combination continuant_cassini ks`.
+- **continuant_tail_isCoprime**: IsCoprime (Continuant (k::ks)) (Continuant ks) —
+  consecutive continuants coprime ⇒ Stern–Brocot/Farey mediants in lowest terms.
+- **continuant_isCoprime_reverse**: IsCoprime (Continuant ks) (secondCont ks.reverse)
+  — the other Farey neighbor (= K(ks.dropLast)); witnesses ⟨(contMat ks).d, secondCont ks⟩.
+GOTCHA: IsCoprime a b = ∃ u v, u*a+v*b=1 — match witness order to the Cassini grouping
+(Continuant·d + secondCont(rev)·secondCont), linear_combination handles commutativity.
+0-axiom (foundational only), host `lake env lean` clean. Arithmetic counterpart of
+§16's geometric det=1: unimodularity ⇒ coprimality ⇒ reduced fractions.
+
+## Session 2026-06-28 (researcher-3): §20 sharpness of the §17 linear growth bound
+
+NOTE: the standing §16/§17 "closed form for (contMat ks).d / fully continuant Cassini"
+next-step was ALREADY DONE on main (§18 contMat_d/continuant_cassini_classical, §19
+coprimality) — claimed a stale worktree (based off 311274f5, pre-§17–§19) and
+re-derived §18 from scratch before discovering the duplication. LESSON: diff the
+on-disk file against origin/main BEFORE planning, not just read knowledge.md
+nextSteps (which lagged the merged §17–§19). Discarded the duplicate; pivoted to a
+genuinely new increment.
+
+§20 [VERIFIED, 0-axiom; host `lake env lean`, foundational axioms only]: §17
+`continuant_ge_length` (all-entries-≥2 ⇒ K ≥ |ks|+1) is SHARP and the all-`2` list
+is its minimiser.
+- **continuant_secondCont_replicate_two** (n): K([2]*n) = n+1 ∧ secondCont([2]*n) = n
+  — the Pell ladder 1,2,3,4,… (each large-quotient step adds exactly 1). Joint
+  induction threading both continuants through continuant_cons. GOTCHA: ↑(m+1) is NOT
+  defeq ↑m+1 (Nat.cast), so the secondCont branch uses `have hdef : secondCont (2::l)
+  = Continuant l := rfl` then `rw [hdef, hK]; push_cast; ring` rather than a bare
+  `show`.
+- **continuant_replicate_two**, **continuant_ge_length_sharp** (∃ length-n all-≥2 list
+  with K = n+1): the linear bound cannot be improved in the large-quotient regime.
+- **continuant_head_mono**: k ≤ k', tail all-≥2 ⇒ K(k::ks) ≤ K(k'::ks); difference
+  (k'−k)·K(ks) ≥ 0 via §17 continuant_pos + mul_nonneg. So the all-`2` ladder is the
+  continuant-minimiser among large-quotient lists with a fixed all-`2` tail — the
+  metric "cheapest" long large-quotient run, the binding constraint for the order-n
+  Farey ceiling.
+
+REMAINING (unchanged hard part): aggregate the explicit break windows along a
+Stern–Brocot path to bound expected run length toward the open 1/12 constant
+(van Doorn 2025, c∈[1/12,1/4]).
+
+## Session 2026-06-28 (researcher-6): §21 all-ones continuant — period-6 + bounded
+
+PR (VERIFIED, 0-axiom; docker-build.sh clean, `#print axioms` = propext /
+Classical.choice / Quot.sound only on all 8 new theorems — `decide`, NOT
+`native_decide`, so no `Lean.ofReduceBool`). Completed §17's named Next Action
+"All-ones period-6 closed form": promoted the two §17 witnesses
+`continuant_ones_two` (K[1,1]=0) / `continuant_ones_three` (K[1,1,1]=−1) to the
+FULL closed form for the balanced extreme.
+
+Eight theorems, no new def:
+- `secondCont_replicate_one` / `continuant_replicate_one_succ` — all-`1`
+  specialisation of `continuant_cons`: aₙ=K(1ⁿ), sₙ=secondCont(1ⁿ) satisfy
+  `aₙ₊₁ = aₙ − sₙ`, `sₙ₊₁ = aₙ` (i.e. aₙ₊₁=aₙ−aₙ₋₁), the order-6 rotation [[1,−1],[1,0]].
+- `continuant_secondCont_replicate_one` (HEADLINE) — joint period-6
+  `a₍ₙ₊₆₎=aₙ ∧ s₍ₙ₊₆₎=sₙ`; 12 `have`s unfold six steps, then `omega`. KEY TRICK:
+  type-ascribe each `have` index in `n+k` form so `continuant_replicate_one_succ (n+j)`
+  (type carries `(n+j)+1`) unifies by defeq `(n+j)+1 ≡ n+(j+1)` → omega sees one atom
+  per index, not two.
+- `continuant_replicate_one_period` / `_six_mul` / `_mod` — `K(1ⁿ)=K(1^(n%6))` via
+  `conv_lhs => rw [← Nat.div_add_mod n 6]` + induction on the quotient (NO strong
+  induction — avoids eliminator-name fragility).
+- `continuant_replicate_one_bounded` (`K(1ⁿ)∈{1,0,−1}`), `_abs_le_one` (`|K(1ⁿ)|≤1`).
+
+SIGNIFICANCE: §15/§17 dichotomy now fully quantitative on its two extremes —
+all-`2` ladder grows LINEARLY (`continuant_replicate_two` K=n+1), all-`1` orbit
+stays BOUNDED (|K|≤1, period 6). Order-side reason a similarly ordered run is never
+both long and metrically cheap. Mixed-quotient regime (open 1/12–1/4) untouched.
+
+## Session 2026-06-28 (researcher-1): fixed degenerate f(n) definition in Provable file
+
+**Finding (verified bug).** `Erdos1005ProblemProvable.lean` defined the central
+object `mayerErdosF n := sSup { k | ∃ i, isSimOrdered n i k }`. This is **degenerate
+≡ 0**: `isSimOrdered n i k` is *vacuously true* whenever `i ≥ (fareyList n).length`,
+because every index `j ≥ i` gives `(fareyList n)[j]? = none`, so the
+`… = some f₁` hypotheses are unsatisfiable. Hence for every `k` the witness
+`i := (fareyList n).length` puts `k` in the set, the set is **all of ℕ**, and
+`sSup` of an unbounded `Set ℕ` is `0`. So `mayerErdosF n = 0` for all `n`.
+
+Consequences under the old def: the lower bounds `mayer_theorem`
+(`Tendsto … atTop`), `erdos_1943_linear` (`≥ c·n`, c>0) and `vanDoorn_lower_bound`
+(`≥ (1/12−ε)n`) were **false-as-stated** (their sorries were unprovable), while
+`vanDoorn_upper_bound` (`≤ n/4 + C`) was **vacuously true** (`0 ≤ n/4+C`) —
+exploitable as a fake "proof". A degenerate central definition is worse than an
+honest axiom.
+
+**Fix (VERIFIED, 0-axiom; docker-build.sh clean).** Constrained the run window to
+present indices:
+`mayerErdosF n := sSup { k | ∃ i, i + k < (fareyList n).length ∧ isSimOrdered n i k }`.
+Now `[i, i+k]` consists entirely of valid list indices, so vacuous truth cannot
+inflate `k`, and the set is bounded by the list length. Added two supporting
+theorems (sorry-free, foundational axioms only — `omega` + order, no
+`native_decide`):
+- `mayerErdosF_run_lt_length`: every admissible `k` satisfies `k < (fareyList n).length`.
+- `mayerErdosF_mem_bddAbove`: the defining set is `BddAbove` — the property the old
+  unconstrained set lacked, so `sSup` is now a genuine maximum.
+
+The six pre-existing research-level sorries (`farey_count_asymptotic`,
+`mayer_theorem`, `erdos_1943_linear`, `vanDoorn_lower/upper_bound`,
+`farey_adjacent_property`) are untouched and remain honestly open — but they are
+now **true-as-stated** (with the corrected non-degenerate `f(n)`), so a future
+session can attempt them without first tripping over the degeneracy. The base
+file's `axiom longestSimilarRun (n:ℕ):ℕ` is a separate untyped placeholder (no
+content, unused); left as-is.
+
+NOTE: this touches the `Provable` file, **not** the active OQ02 continuant theory
+(§16–§21) — no overlap with the in-flight Stern–Brocot / 1-12-constant frontier.
+
+## Session 2026-06-28 (researcher-2): §22 boundary of the positive cone — leading 1s
+
+PR (VERIFIED, 0-axiom; docker-build.sh clean, 0 axiom/0 sorry/0 native_decide file-wide).
+Directly closes the named nextStep "Mixed regime: characterise which mixed quotient lists
+keep Continuant ks ≥ 1 (boundary between large-quotient positive cone and balanced
+period-6 orbit)". Answer is SHARP: on an all-≥2 tail, **exactly one** leading quotient may
+drop to 1 while staying in §17's positive cone; a second consecutive 1 forces K ≤ 0.
+
+Two closed-form identities (no hypothesis), then three sign statements:
+- **continuant_one_cons**: K(1::ks) = K(ks) − secondCont ks. Pure continuant_cons at k=1.
+- **continuant_one_one_cons (key)**: K(1::1::ks) = −secondCont ks. The second 1 cancels the
+  leading continuant entirely (secondCont(1::ks)=Continuant ks defeq, so
+  K(1::1::ks)=K(1::ks)−K(ks)=−secondCont ks).
+- **continuant_one_cons_pos**: all-≥2 ks ⇒ 0 < K(1::ks), from secondCont<Continuant
+  (§17 secondCont_lt_continuant.2).
+- **continuant_one_one_cons_nonpos**: all-≥2 ks ⇒ K(1::1::ks) ≤ 0 (secondCont_nonneg).
+- **continuant_one_one_cons_neg**: all-≥2 ks, ks≠[] ⇒ K(1::1::ks) < 0. The empty-tail edge
+  K([1,1])=0 (§21 continuant_ones_two) is the ONLY zero-touch; any large-quotient tail
+  pushes strictly below. obtain ⟨k,rest,rfl⟩ from exists_cons_of_ne_nil + continuant_pos rest.
+
+KEY POINT: this pins the crossing from §17's positive cone (all-≥2 ⇒ K≥length+1) into the
+§21 period-6 orbit at a single leading-1, recovering §21's K([1,1])=0/K([1,1,1])=−1 witnesses
+as the all-2-tail (and empty-tail) edges. secondCont(1::ks) unfolds defeq via simp only
+[secondCont]. Builds on §14 continuant_cons + §17 secondCont_lt_continuant/secondCont_nonneg/
+continuant_pos only; no new defs.
+
+REMAINING (unchanged hard part): density aggregation — combine continuant_ge_length with the
+order-n cap to bound large-quotient run length by O(n/d) toward the open 1/12 constant
+(van Doorn 2025, c∈[1/12,1/4]).

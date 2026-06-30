@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-ptoq05-header",
+    "proofId": "ptolemys-theorem-oq-05",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "Why inversion, and what the plane proof cannot reach",
+    "content": "The gallery already proves Ptolemy's inequality in the plane (`PtolemysComplexProof.lean`) from the complex algebraic identity (z₁−z₃)(z₂−z₄) = (z₁−z₂)(z₃−z₄) + (z₁−z₄)(z₂−z₃) plus |z+w| ≤ |z|+|w|. That identity lives in the commutative ring ℂ and so is **intrinsically two-dimensional** — it has no analogue in ℝⁿ. Mathlib, separately, proves only the *equality* case for cospherical points. This file closes the gap: Ptolemy's inequality is really a metric statement, true for four arbitrary points of any real inner product space in any dimension. The dimension-free engine is the classical proof by **spherical inversion** x ↦ (‖x‖²)⁻¹•x, which scales the distance between u and w by exactly 1/(‖u‖‖w‖); the triangle inequality among three inverted points, after clearing denominators, becomes Ptolemy. The setup fixes a real inner product space V (`NormedAddCommGroup` + `InnerProductSpace ℝ V`) and opens `RealInnerProductSpace` for the ⟪·,·⟫ notation.",
+    "mathContext": "Inversion in the unit sphere at the origin, $x \\mapsto \\frac{x}{\\|x\\|^2}$, has the distance law $\\left\\|\\frac{u}{\\|u\\|^2}-\\frac{w}{\\|w\\|^2}\\right\\| = \\frac{\\|u-w\\|}{\\|u\\|\\,\\|w\\|}$. Triangle inequality for the three images $\\Rightarrow$ Ptolemy $\\|x-z\\|\\|y\\| \\le \\|x-y\\|\\|z\\| + \\|y-z\\|\\|x\\|$.",
+    "significance": "context",
+    "relatedConcepts": ["spherical inversion", "real inner product space", "dimension-free geometry", "triangle inequality", "complex-number proof (planar)"],
+    "prerequisites": ["inner product spaces", "the norm and distance on a normed space", "geometric inversion"]
+  },
+  {
     "id": "ann-inversion-dist",
     "proofId": "ptolemys-theorem-oq-05",
     "range": { "startLine": 57, "endLine": 87 },

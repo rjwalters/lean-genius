@@ -32,10 +32,13 @@
     Disjoint A B ∧ ∀ a ∈ A, ∀ b ∈ B, G.Adj a b`).
 
   Together these show branch (b) of Bondy's disjunction is genuinely inhabited by
-  a non-vertex-pancyclic graph, so the exception cannot be dropped.  (The balanced
-  graph `K_{m,m}` on `n = 2m` vertices has exactly `m² = ⌊n²/4⌋` edges — one short
-  of the `n²/4 + 1` threshold — which is why it survives as the extremal example;
-  that exact edge count is recorded as a follow-up direction, see the closing note.)
+  a non-vertex-pancyclic graph, so the exception cannot be dropped.
+
+  * `completeBipartite_card_edgeFinset` / `completeBipartite_balanced_card_edgeFinset`
+    pin down the threshold *quantitatively*: `|E(K_{V,W})| = |V|·|W|` (via the
+    degree-sum formula), so the balanced graph `K_{m,m}` on `n = 2m` vertices has
+    exactly `m² = ⌊n²/4⌋` edges — one short of the `n²/4 + 1` threshold — which is
+    why it survives as the extremal example.
 
   All results are 0-axiom, 0-sorry.
 
@@ -171,19 +174,93 @@ theorem completeBipartite_realizes_bondy_exception
     cases a <;> cases b <;> simp_all
 
 -- ============================================================================
--- Part V: Summary
+-- Part V: Exact extremal edge count  (threshold sharpness)
+-- ============================================================================
+
+/-- Adjacency in a complete bipartite graph is decidable (it is a boolean test on
+    which side each endpoint lies), so the graph is locally finite and its degrees
+    and edge set are computable cardinalities. -/
+instance instDecidableCompleteBipartiteAdj {V W : Type*} :
+    DecidableRel (completeBipartiteGraph V W).Adj := by
+  intro a b
+  rw [completeBipartiteGraph_adj]
+  infer_instance
+
+/-- Each **left** vertex of `K_{V,W}` has degree `|W|`: its neighbours are exactly
+    the right vertices.  The neighbour finset is the image of `univ : Finset W`
+    under `Sum.inr`. -/
+theorem completeBipartite_degree_inl {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W] (v : V) :
+    (completeBipartiteGraph V W).degree (Sum.inl v) = Fintype.card W := by
+  have h : (completeBipartiteGraph V W).neighborFinset (Sum.inl v)
+      = Finset.univ.map ⟨Sum.inr, Sum.inr_injective⟩ := by
+    ext y
+    cases y with
+    | inl a => simp [SimpleGraph.mem_neighborFinset]
+    | inr b => simp [SimpleGraph.mem_neighborFinset]
+  rw [← SimpleGraph.card_neighborFinset_eq_degree, h, Finset.card_map, Finset.card_univ]
+
+/-- Each **right** vertex of `K_{V,W}` has degree `|V|`, symmetrically. -/
+theorem completeBipartite_degree_inr {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W] (w : W) :
+    (completeBipartiteGraph V W).degree (Sum.inr w) = Fintype.card V := by
+  have h : (completeBipartiteGraph V W).neighborFinset (Sum.inr w)
+      = Finset.univ.map ⟨Sum.inl, Sum.inl_injective⟩ := by
+    ext y
+    cases y with
+    | inl a => simp [SimpleGraph.mem_neighborFinset]
+    | inr b => simp [SimpleGraph.mem_neighborFinset]
+  rw [← SimpleGraph.card_neighborFinset_eq_degree, h, Finset.card_map, Finset.card_univ]
+
+/-- **Exact edge count.** The complete bipartite graph `K_{V,W}` has exactly
+    `|V| · |W|` edges.
+
+    Proof by the degree-sum (handshake) formula: every left vertex contributes
+    degree `|W|` and every right vertex degree `|V|`, so
+    `∑ degrees = |V|·|W| + |W|·|V| = 2|V|·|W|`, which equals `2·|edges|`. -/
+theorem completeBipartite_card_edgeFinset {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W] :
+    (completeBipartiteGraph V W).edgeFinset.card = Fintype.card V * Fintype.card W := by
+  have hsum := (completeBipartiteGraph V W).sum_degrees_eq_twice_card_edges
+  rw [Fintype.sum_sum_type] at hsum
+  simp only [completeBipartite_degree_inl, completeBipartite_degree_inr,
+    Finset.sum_const, Finset.card_univ, smul_eq_mul] at hsum
+  rw [mul_comm (Fintype.card W) (Fintype.card V)] at hsum
+  omega
+
+/-- **Threshold sharpness, balanced case.** When the two sides have equal size
+    `m`, the graph `K_{m,m}` lives on `n = 2m` vertices and has exactly
+    `m² = ⌊n²/4⌋` edges — precisely **one below** the `n²/4 + 1` threshold of
+    Bondy's theorem.  So this non-vertex-pancyclic graph sits exactly at the
+    extremal edge count, confirming the threshold cannot be lowered. -/
+theorem completeBipartite_balanced_card_edgeFinset {V W : Type*}
+    [Fintype V] [Fintype W] [DecidableEq V] [DecidableEq W] {m : ℕ}
+    (hV : Fintype.card V = m) (hW : Fintype.card W = m) :
+    (completeBipartiteGraph V W).edgeFinset.card = m ^ 2
+      ∧ m ^ 2 = (2 * m) ^ 2 / 4 := by
+  refine ⟨?_, ?_⟩
+  · rw [completeBipartite_card_edgeFinset, hV, hW, sq]
+  · have h4 : (2 * m) ^ 2 = 4 * m ^ 2 := by ring
+    omega
+
+-- ============================================================================
+-- Part VI: Summary
 -- ============================================================================
 
 /-
 ## Results Status
 
-### PROVED (5 theorems, 0 axioms, 0 sorries):
+### PROVED (8 theorems, 0 axioms, 0 sorries):
 1. completeBipartite_no_triangle          — no three pairwise-adjacent vertices
 2. completeBipartite_no_3cycle            — no vertex on a 3-cycle
 3. completeBipartite_not_pancyclic        — not pancyclic for window ≥ 3
 4. completeBipartite_not_vertexPancyclic  — not vertex-pancyclic for window ≥ 3
 5. completeBipartite_realizes_bondy_exception
                                           — realizes Bondy's exception predicate
+6. completeBipartite_degree_inl / _inr    — vertex degrees are |W| / |V|
+7. completeBipartite_card_edgeFinset      — exact edge count |E| = |V|·|W|
+8. completeBipartite_balanced_card_edgeFinset
+                                          — balanced K_{m,m}: |E| = m² = ⌊(2m)²/4⌋
 
 ### Significance
 The parent `Erdos1012OQ02` proves vertex-pancyclicity *above* the edge
@@ -193,11 +270,10 @@ the exception predicate exactly and fails vertex-pancyclicity (indeed
 pancyclicity) because it is triangle-free.  So "≥ n²/4 + 1 edges" cannot be
 weakened to drop the exception.
 
-### Follow-up direction (not formalized here)
-The exact extremal count `|E(K_{m,m})| = m² = ⌊(2m)²/4⌋` (the balanced complete
-bipartite graph on `n = 2m` vertices sits one edge below the `n²/4 + 1`
-threshold) would quantify the sharpness numerically.  Proving it needs an
-`edgeFinset ≃ V × W` bijection / degree-sum argument, deferred.
+Part V makes the threshold sharpness *quantitative*: via the degree-sum formula
+the balanced graph `K_{m,m}` on `n = 2m` vertices is shown to have exactly
+`m² = ⌊n²/4⌋` edges — one below the `n²/4 + 1` threshold — so the extremal
+example sits precisely at the boundary, and the threshold cannot be lowered.
 -/
 
 end Erdos1012OQ02OQ01

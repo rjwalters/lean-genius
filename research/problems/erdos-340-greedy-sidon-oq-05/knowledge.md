@@ -468,3 +468,31 @@ Docker host down (`docker info` times out). Verified via host `v4.26.0`
 - The real-analytic step: from `exists_isBh_Icc_card_of_le`, pick
   `k ≈ (N/(4h))^{1/(2h-1)}` to obtain the explicit `|A| ≥ c·N^{1/(2h-1)}` bound.
   Pure `Real.rpow`/`Nat.pow` monotonicity — no further `B_h` work.
+
+### Session 2026-06-28 (researcher-2) — Part 10: the analytic Ω(N^{1/(2h-1)}) inversion (CLOSES the flagged gap)
+
+**Mode**: CONTINUE (RICH) · **Outcome**: progress (verified, 0 sorry / 0 axiom). Closes
+the "only remaining open piece" every prior session named: the real-analytic conversion
+from the greedy counting bound to the explicit fractional-power rate.
+
+- **exists_isBh_Icc_card_of_pow_le** (single-power achievability): `(2h+1)(k+1)^{2h-1} ≤ N`
+  ⟹ ∃ B_h set ⊆[1,N] of card k. Dominates the mixed room expr `k+2h(k+1)^{2h-1}` by one
+  power via `k ≤ (k+1)^{2h-1}` (`Nat.le_self_pow`); root-ready form.
+- **exists_isBh_rpow_lower** (HEADLINE): ∃ C>0, ∀ N ≥ (2h+1)·4^{2h-1}, ∃ B_h set ⊆[1,N]
+  with C·N^{1/(2h-1)} ≤ |A|. Constant C = (1/2)/(2h+1)^{1/(2h-1)}. Take k = ⌊r⌋₊−1 with
+  r = (N/(2h+1))^{1/(2h-1)}; achievability needs (2h+1)·⌊r⌋₊^{2h-1} ≤ N (from ⌊r⌋₊ ≤ r,
+  r^{2h-1}=N/(2h+1)), and |A|=⌊r⌋₊−1 ≥ r−2 ≥ r/2 = C·N^{1/(2h-1)} (threshold r≥4).
+
+GOTCHAS (Mathlib v4.26 rpow): `pow_le_pow_left` renamed → `pow_le_pow_left₀ (0≤a) (a≤b) n`.
+`Real.div_rpow (0≤x)(0≤y)` leaves z as ∀ — use it as a REWRITE, not as a term with z applied.
+`Real.rpow_inv_natCast_pow (0≤x)(n≠0) : (x^(n:ℝ)⁻¹)^n = x` and `Real.pow_rpow_inv_natCast`
+(its sibling) are THE key root lemmas; keep exponent as `((2*h-1:ℕ):ℝ)⁻¹` (not `1/(…)`) to
+match. `Nat.floor_le` / `Nat.lt_floor_add_one` / `Nat.le_floor` for the floor sandwich.
+Provide `(N := N)` explicitly to the achievability lemma — N won't infer from the by-block.
+
+Verified host `lake env lean` (Docker down, .ir churn in main repo): exit 0; #print axioms
+of both = [propext, Classical.choice, Quot.sound]. 1124 → 1225 lines, +2 theorems.
+
+**Frontier now**: the B_h greedy lower bound is fully formal end-to-end (combinatorics +
+analysis). Remaining open = the SHARP exponent (this gives the greedy/known exponent
+1/(2h-1); improving it is the genuinely open Erdős-#340-type conjecture, not attempted).

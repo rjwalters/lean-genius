@@ -23,10 +23,10 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 185,
-    "theoremCount": 7,
-    "assumptions": "None beyond the foundational propext / Classical.choice / Quot.sound. #print axioms on all three headline theorems (n_dvd_gal_card, totient_dvd_gal_card, gal_card_dvd_factorial) reports only those three. No native_decide.",
-    "buildStatus": "Verified via `lake env lean Proofs/InverseGaloisD4OQ02.lean` against pinned Mathlib v4.26.0 (LAKE_UNSAFE single-file elaboration; host docker image build was unavailable due to a transient disk I/O error). 0 errors. #print axioms confirms 0 non-foundational axioms.",
+    "lineCount": 240,
+    "theoremCount": 9,
+    "assumptions": "None beyond the foundational propext / Classical.choice / Quot.sound. All nine theorems are term-mode compositions of the three headline divisibilities; the two n=3, n=5 examples use kernel `decide` (for Nat.totient and Nat.Coprime), which relies only on the foundational axioms — no native_decide, no Lean.ofReduceBool.",
+    "buildStatus": "Verified via ./proofs/scripts/docker-build.sh Proofs.InverseGaloisD4OQ02 against pinned Mathlib v4.26.0. Build completed successfully (7745 jobs, 0 errors). No native_decide; foundational axioms only.",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.Gal.card_of_separable",
@@ -122,12 +122,19 @@
       "id": "part-iv-cyclotomic",
       "title": "Part IV — The cyclotomic factor φ(n) ∣ |Gal|",
       "startLine": 110,
-      "endLine": 185,
+      "endLine": 109,
       "summary": "The new metacyclic ingredient. A primitive n-th root of unity is built from the roots of Xⁿ−p themselves (the ratios β/α of the n roots are the n distinct n-th roots of unity), so ℚ(ζₙ) ⊆ splitting field with [ℚ(ζₙ):ℚ] = φ(n); the tower law forces φ(n) ∣ |Gal|. Witnesses the quotient Gal ↠ (ℤ/nℤ)ˣ."
+    },
+    {
+      "id": "part-v-lcm",
+      "title": "Part V — Combining the lower factors: lcm(n, φ(n)) ∣ |Gal|",
+      "startLine": 186,
+      "endLine": 240,
+      "summary": "Since n and φ(n) both divide |Gal| simultaneously, so does their lcm (lcm_dvd_gal_card). When gcd(n,φ(n))=1 this combines to the full generic metacyclic order n·φ(n) ∣ |Gal| (mul_totient_dvd_gal_card_of_coprime), which is exact for n=3 (6=|S₃|) and n=5 (20=|F₂₀|); the base n=4 is excluded since gcd(4,2)=2."
     }
   ],
   "conclusion": {
-    "summary": "Verified divisibility skeleton for Gal(Xⁿ−p/ℚ): n ∣ |Gal|, φ(n) ∣ |Gal|, and |Gal| ∣ n!, for every n ≥ 2 and prime p. 7 theorems, 0 sorries, 0 axioms. The cyclotomic factor φ(n) ∣ |Gal| (via a primitive n-th root of unity built from the roots of Xⁿ−p) is the new metacyclic ingredient beyond the parent D₄ entry.",
+    "summary": "Verified divisibility skeleton for Gal(Xⁿ−p/ℚ): n ∣ |Gal|, φ(n) ∣ |Gal|, and |Gal| ∣ n!, for every n ≥ 2 and prime p; combined into lcm(n,φ(n)) ∣ |Gal|, sharpening to n·φ(n) ∣ |Gal| when gcd(n,φ(n))=1 (exact for n=3: 6=|S₃|, n=5: 20=|F₂₀|). 9 theorems, 0 sorries, 0 axioms.",
     "implications": "Generalizes the parent's n=4 divisibility lemmas (four_dvd_x4_sub_2_gal_card, x4_sub_2_gal_card_dvd_24) to all degrees and supplies the cyclotomic-quotient factor, narrowing the order of Gal(Xⁿ−p/ℚ) to a multiple of lcm(n, φ(n)) dividing n!. This is the verified scaffold on which the exact metacyclic computation |Gal| = n·φ(n) can be assembled.",
     "openQuestions": [
       "Prove the exact metacyclic order |Gal(Xⁿ−p/ℚ)| = n·φ(n) under the genericity hypothesis ℚ(ⁿ√p) ∩ ℚ(ζₙ) = ℚ (equivalently, the upper bound |Gal| ≤ n·φ(n) via the tower SF = ℚ(ζₙ)(ⁿ√p)).",

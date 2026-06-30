@@ -165,6 +165,20 @@
       "significance": "Pairs the two faces of the Abel–Ruffini boundary {≤4} under the algebra of finite types. Where the range first BREAKS depends on the operation — additive degree 5, multiplicative degree 6 — but where it HOLDS does not: both ⊕ and × preserve solvability of nontrivial pieces only on the single pair (2,2), landing on the same degree 4 = S₄, the last solvable rung below the threshold."
     }
   ],
+  "conclusion": {
+    "summary": "For nontrivial solvable pieces (each with at least 2 points), both the disjoint union ⊕ and the Cartesian product × preserve solvability of the permutation composite in exactly one configuration — the single pair (2,2). The additive classification perm_sum_nontrivial_solvable_iff comes from the linear cap card α + card β ≤ 4, the multiplicative classification perm_prod_nontrivial_solvable_iff from the nonlinear cap card α · card β ≤ 4 forced factor-by-factor; both collapse to card α = card β = 2. Hence sum_prod_survival_coincide: the sum-composite is solvable iff the product-composite is, for all nontrivial solvable pieces. Because 2 + 2 = 4 = 2 · 2, both survivors realise the same group S₄ — the largest solvable symmetric group, one rung below the Abel–Ruffini threshold 5.",
+    "implications": [
+      "Preservation and escape are opposite faces of the same boundary {≤ 4} but behave oppositely: escape is operation-dependent (additive 5, multiplicative 6) while survival is operation-independent (the same pair (2,2) for both ⊕ and ×).",
+      "The whole classification is combinatorial packaging over Mathlib's Equiv.Perm.not_solvable: it imports the solvability content through the parent chain's intrinsic threshold IsSolvable (Perm α) ↔ card α ≤ 4 and adds only arithmetic, so it stays 0-axiom with no native_decide (badge: mathlib).",
+      "The coincidence is a numerical accident of the value 4: it is the unique number ≥ 4 expressible as both a + b and a · b with a, b ≥ 2 at the boundary, which is exactly why the additive and multiplicative survivors land on one degree rather than two."
+    ],
+    "openQuestions": [
+      "Does the survival coincidence persist for k-fold composites — is Perm (α₁ ⊕ ⋯ ⊕ α_k) solvable iff Perm (α₁ × ⋯ × α_k) is, for nontrivial solvable pieces, and is the only survivor again the all-2's tuple (forcing k ≤ 2 since 2³ = 8 > 4)?",
+      "Replace the full permutation group by a fixed solvable subgroup G ≤ Perm: for which G does the survival set of (α, β) still coincide between ⊕ and ×, and does the coincidence survive only because Perm is the maximal case?",
+      "Is there a monoidal operation on finite types other than ⊕ and × (e.g. a twisted or exponential construction) whose preservation survivor set differs from {(2,2)}, isolating what makes addition and multiplication agree?",
+      "What happens to the classification when the nontriviality bound card ≥ 2 is dropped — can the trivial 0/1-point pieces be folded into a single uniform statement, or do they genuinely require separate treatment?"
+    ]
+  },
   "sections": [
     {
       "id": "header",

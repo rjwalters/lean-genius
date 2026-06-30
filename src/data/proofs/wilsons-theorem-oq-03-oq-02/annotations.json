@@ -67,25 +67,49 @@
     ]
   },
   {
-    "id": "ann-wilson-converse-iff",
+    "id": "ann-wilson-prime-not-dvd",
     "proofId": "wilsons-theorem-oq-03-oq-02",
     "range": {
       "startLine": 99,
-      "endLine": 127
+      "endLine": 109
     },
-    "type": "concept",
-    "title": "Wilson converse and the full biconditional",
-    "content": "prime_not_dvd_factorial_pred closes the other direction: a prime cannot divide (n−1)!, because Wilson gives ((n−1)! : ZMod n) = −1 while n ∣ (n−1)! would give = 0; in the field ZMod n that forces 1 = 0, impossible. dvd_factorial_pred_iff then bundles everything into n ∣ (n−1)! ↔ ¬n.Prime ∧ n ≠ 4 for n ≥ 2, with the n = 4 obstruction discharged by decide (kernel reduction of 4 ∤ 3!), so no native_decide and no extra axioms.",
-    "mathContext": "$n \\ge 2:\\ n \\mid (n-1)! \\iff \\lnot\\,n\\text{ prime} \\wedge n \\neq 4$.",
+    "type": "technique",
+    "title": "A Prime Never Divides (n−1)! — the Converse Engine",
+    "content": "prime_not_dvd_factorial_pred supplies the forward direction of the characterisation: if n is prime then n ∤ (n−1)!. The argument is a one-line consequence of Wilson run through the finite field ZMod n. Wilson (Mathlib's Nat.prime_iff_fac_equiv_neg_one) gives ((n−1)! : ZMod n) = −1; assuming n ∣ (n−1)! gives ((n−1)! : ZMod n) = 0 (ZMod.natCast_eq_zero_iff); equating the two yields −1 = 0, i.e. 1 = 0, refuted by one_ne_zero after neg_eq_zero. The Fact.mk hp instance is what makes ZMod n a field so that −1 ≠ 0. This is the lemma that turns the composite result into a genuine iff rather than a one-way implication.",
+    "mathContext": "$n$ prime $\\Rightarrow ((n-1)!\\bmod n) = -1 \\neq 0$, so $n \\nmid (n-1)!$; the field structure of $\\mathbb{Z}/n\\mathbb{Z}$ ($n$ prime) is what forbids $-1 = 0$.",
     "significance": "key",
     "relatedConcepts": [
       "Wilson's theorem",
-      "ZMod",
-      "biconditional characterisation"
+      "ZMod n as a field",
+      "natCast_eq_zero_iff",
+      "Fact instance for primality"
     ],
     "prerequisites": [
-      "modular arithmetic",
-      "finite fields"
+      "Wilson's theorem in Mathlib",
+      "finite fields ZMod p"
+    ]
+  },
+  {
+    "id": "ann-wilson-full-iff",
+    "proofId": "wilsons-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 111,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "The Full Biconditional Characterisation",
+    "content": "dvd_factorial_pred_iff bundles both directions into n ∣ (n−1)! ↔ ¬n.Prime ∧ n ≠ 4 for n ≥ 2. The forward direction feeds a divisibility hypothesis through prime_not_dvd_factorial_pred (ruling out primality) and discharges the n = 4 obstruction by `decide` — kernel reduction of 4 ∤ 3! = 4 ∤ 6, so no native_decide and no Lean.ofReduceBool axiom. The reverse direction is exactly composite_dvd_factorial_pred. Together with Wilson this completely sorts (n−1)! mod n: −1 for primes, 2 for n = 4, and 0 for every other composite — the cleanest possible factorial-based primality criterion.",
+    "mathContext": "$n \\ge 2:\\ n \\mid (n-1)! \\iff \\lnot\\,n\\text{ prime} \\wedge n \\neq 4$; the residue $(n-1)!\\bmod n$ is $-1$ (prime), $2$ ($n=4$), $0$ (other composite).",
+    "significance": "key",
+    "relatedConcepts": [
+      "biconditional characterisation",
+      "decide vs native_decide",
+      "primality criterion",
+      "case n = 4"
+    ],
+    "prerequisites": [
+      "the two directional lemmas above",
+      "decidable propositions"
     ]
   }
 ]
