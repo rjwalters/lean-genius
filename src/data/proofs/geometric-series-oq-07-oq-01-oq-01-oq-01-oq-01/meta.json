@@ -128,5 +128,52 @@
       "Prove the general inclusion–exclusion formula ⟨n,k⟩ = ∑ᵢ (−1)ⁱ C(n+1,i)(k+1−i)ⁿ for all columns, via the alternating-sum recurrence W(n+1,k+1) = (k+2)·W n (k+1) + (n−k)·W n k.",
       "Bridge the polynomial palindromy Eₘ(X) = X^{m+1}Eₘ(1/X) to the combinatorial ⟨m,j⟩ = ⟨m,m−1−j⟩ so the low-column forms transfer to the columns below the right border."
     ]
-  }
+  },
+  "description": "Settles the parent's open question oq-01 — Worpitzky's row identity ∑ⱼ ⟨n,j⟩ = n! for the combinatorial Eulerian numbers — by evaluating the parent's coefficient identity at X = 1, and adds the explicit low-column closed forms ⟨n,1⟩ = 2ⁿ−n−1 (A000295) and ⟨n,2⟩ (A000460) plus both triangle borders. The first nontrivial cases of the general inclusion–exclusion formula for ⟨n,k⟩.",
+  "overview": {
+    "historicalContext": "The Eulerian numbers ⟨n,k⟩ count the permutations of {1,…,n} with exactly k descents; they go back to Leonhard Euler's 1755 study of the polynomials Aₙ(t) = ∑ₖ ⟨n,k⟩ tᵏ arising in the summation of series ∑ jⁿ xʲ. The row-sum identity ∑ₖ ⟨n,k⟩ = n! — that the descent statistic partitions all n! permutations — and the related expansion of xⁿ in the basis of binomial coefficients are together known as Worpitzky's identity, after Julius Worpitzky's 1883 paper. The explicit low-column values 2ⁿ−n−1 and 3ⁿ−(n+1)2ⁿ+C(n+1,2) are the first instances of the general inclusion–exclusion formula and appear as OEIS A000295 and A000460. The standard modern reference is Graham–Knuth–Patashnik's Concrete Mathematics, which develops the triangle recurrence, Worpitzky's identity, and the descent interpretation in one chapter. This entry is the third in a tower (Frobenius' identity → combinatorial Eulerian numbers → this row sum and closed forms) and reuses each ancestor's results verbatim.",
+    "problemStatement": "For the combinatorial Eulerian numbers ⟨n,k⟩ defined by the triangle recurrence ⟨n+1,k+1⟩ = (k+2)⟨n,k+1⟩ + (n−k)⟨n,k⟩ with ⟨n,0⟩ = 1, prove Worpitzky's row sum ∑_{j=0}^{n} ⟨n,j⟩ = n!, and establish the explicit closed forms for the boundary and low columns: ⟨n,0⟩ = 1, ⟨n+1,n⟩ = 1, ⟨n,1⟩ = 2ⁿ − n − 1, and ⟨n,2⟩ = 3ⁿ − (n+1)2ⁿ + C(n+1,2) (the last stated over ℤ as 2·⟨n,2⟩ to avoid division).",
+    "proofStrategy": "Two complementary techniques. (1) The ROW SUM is obtained analytically: evaluate the parent's coefficient identity E_{m+1}(X) = ∑ⱼ ⟨m+1,j⟩·X^{j+1} at X = 1 (the classic 'sum of coefficients = value at 1' trick), which by the grandparent's E_m(1) = m! yields ∑ⱼ ⟨m+1,j⟩ = (m+1)!; a case split peels off the diagonal zero ⟨n,n⟩ = 0 to align the combinatorial range with the polynomial's. (2) The CLOSED FORMS are each a short induction on n driven by the single-step Eulerian recurrence, specialised per column: ⟨n+1,1⟩ = 2⟨n,1⟩ + n for the second column, ⟨n+1,2⟩ = 3⟨n,2⟩ + (n−1)⟨n,1⟩ for the third (feeding in the previous column). All arithmetic is done over ℤ via push_cast/ring; the only subtlety is the truncated ℕ-subtraction (n−1), reconciled with (n−1 : ℤ) using ⟨0,1⟩ = 0. The borders use the parent's diagonal-vanishing lemma. Everything is 0-axiom.",
+    "keyInsights": [
+      "The 'set X = 1 to read off the sum of coefficients' trick turns an analytic fact (the Eulerian polynomial's value at 1 is n!) into a purely combinatorial one (the descent classes exhaust the n! permutations) — the two ancestor entries supply exactly the polynomial identity and its value at 1, so the row sum is a one-line transport.",
+      "The diagonal vanishing ⟨n,n⟩ = 0 is the hinge that makes the ranges match: the combinatorial sum runs over range(n+1) but the polynomial's coefficients stop at j = n−1, and peeling off the zero diagonal term reconciles them without changing the value.",
+      "Each low-column closed form is the k-th instance of the single inclusion–exclusion formula ⟨n,k⟩ = ∑ᵢ (−1)ⁱ C(n+1,i)(k+1−i)ⁿ; proving k = 0,1,2 both verifies that formula at the boundary and isolates the lone binomial recurrence (for the alternating sum W) needed to obtain every column.",
+      "Stating the third column as 2·⟨n,2⟩ over ℤ is a deliberate formalization choice: it clears the /2 hidden in C(n+1,2) so the entire identity lives over ℤ with no division, making push_cast/ring sufficient and avoiding rational reasoning.",
+      "The truncated natural-number subtraction (n−1 : ℕ) is a recurring Lean hazard, but here it is harmless precisely because the coefficient it multiplies, ⟨0,1⟩, vanishes at the only point (n = 0) where the truncation bites — a clean example of a 'corner case that cancels itself'."
+    ]
+  },
+  "sections": [
+    {
+      "id": "row-sum",
+      "title": "Worpitzky's Row Identity ∑ⱼ ⟨n,j⟩ = n!",
+      "startLine": 49,
+      "endLine": 70,
+      "summary": "Evaluates the parent's coefficient identity E_{m+1}(X) = ∑ⱼ ⟨m+1,j⟩·X^{j+1} at X = 1 and combines with the grandparent's E_m(1) = m! to get the helper eulerian_row_sum_succ, then peels off the diagonal zero ⟨n,n⟩ = 0 to obtain the main row sum eulerian_row_sum: ∑ⱼ ⟨n,j⟩ = n!.",
+      "mathContext": "$\\sum_{j=0}^{n}\\langle n,j\\rangle = n!$ via $E_n(1)=n!$."
+    },
+    {
+      "id": "borders",
+      "title": "The Borders of the Triangle",
+      "startLine": 72,
+      "endLine": 85,
+      "summary": "Proves the two edges: the left border eulerian_col_zero (⟨n,0⟩ = 1, essentially definitional) and the right border eulerian_top (⟨n+1,n⟩ = 1) by induction using the recurrence and the parent's diagonal-vanishing lemma.",
+      "mathContext": "$\\langle n,0\\rangle = 1$ and $\\langle n{+}1,n\\rangle = 1$."
+    },
+    {
+      "id": "second-col",
+      "title": "The Second Column ⟨n,1⟩ = 2ⁿ − n − 1",
+      "startLine": 87,
+      "endLine": 99,
+      "summary": "eulerian_col_one: induction on n from the specialised recurrence ⟨n+1,1⟩ = 2⟨n,1⟩ + n, cast to ℤ and closed by push_cast/ring. OEIS A000295; the k=1 inclusion–exclusion case.",
+      "mathContext": "$\\langle n,1\\rangle = 2^n - n - 1$."
+    },
+    {
+      "id": "third-col",
+      "title": "The Third Column ⟨n,2⟩ (A000460)",
+      "startLine": 101,
+      "endLine": 125,
+      "summary": "eulerian_col_two: induction from ⟨n+1,2⟩ = 3⟨n,2⟩ + (n−1)⟨n,1⟩, substituting the previous column, with the truncated ℕ-subtraction reconciled via ⟨0,1⟩ = 0. Stated as 2·⟨n,2⟩ over ℤ to avoid division. OEIS A000460; the k=2 case.",
+      "mathContext": "$2\\langle n,2\\rangle = 2\\cdot 3^n-(n{+}1)2^{n+1}+n(n{+}1)$."
+    }
+  ]
 }

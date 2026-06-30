@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ann-module-overview",
+    "proofId": "chinese-remainder-non-coprime-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 61
+    },
+    "type": "context",
+    "title": "Three non-coprime moduli: where distributivity enters",
+    "content": "The module extends the parent's two-modulus non-coprime CRT to three moduli over a PID. The headline crt3_iff says x ≡ aᵢ (mod mᵢ), i=1,2,3, is solvable iff the residues are pairwise compatible (gcd mᵢ mⱼ ∣ aᵢ − aⱼ), and crt3_unique gives uniqueness modulo lcm(m₁,m₂,m₃). The novelty over two moduli is that SUFFICIENCY no longer follows formally: necessity and uniqueness hold in any commutative ring, but 'pairwise compatible ⟹ globally solvable' requires the divisibility lattice to be distributive — true in PIDs/Bézout domains, false in general.",
+    "mathContext": "$\\{x \\equiv a_i \\pmod{m_i}\\}_{i=1}^3 \\text{ solvable} \\iff \\forall i,j:\\ \\gcd(m_i,m_j) \\mid (a_i - a_j)$",
+    "significance": "context",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "non-coprime moduli",
+      "distributive lattice",
+      "PID"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "GCD and LCM",
+      "ideal theory"
+    ]
+  },
+  {
+    "id": "ann-associates-distrib",
+    "proofId": "chinese-remainder-non-coprime-oq-02-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Distributivity of the Associates lattice via the factorization model",
+    "content": "associates_inf_sup_le proves (A ⊔ B) ⊓ C ≤ (A ⊓ C) ⊔ (B ⊓ C) in Associates R for a UFD. Rather than fight gcd/lcm algebra, the proof transports the inequality through Associates.factors — an order isomorphism onto FactorSet R = WithTop (Multiset _), the genuinely distributive multiset lattice — where the goal is exactly inf_sup_right. The two helper facts hsup/hinf say factors of a join/meet are the join/meet of factors (immediate from the definition of ⊔/⊓ on Associates plus prod_factors).",
+    "mathContext": "$(A \\sqcup B) \\sqcap C \\le (A \\sqcap C) \\sqcup (B \\sqcap C)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Associates",
+      "FactorSet",
+      "multiset lattice",
+      "distributive lattice",
+      "order isomorphism"
+    ],
+    "prerequisites": [
+      "unique factorization",
+      "lattice distributivity",
+      "Associates.factors"
+    ]
+  },
+  {
+    "id": "ann-mk-bridges",
+    "proofId": "chinese-remainder-non-coprime-oq-02-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 124
+    },
+    "type": "technique",
+    "title": "Bridging gcd/lcm to lattice meet/join",
+    "content": "mk_gcd_eq_inf and mk_lcm_eq_sup identify Associates.mk(gcd a b) with mk a ⊓ mk b and Associates.mk(lcm a b) with mk a ⊔ mk b. Each is an antisymmetry argument: one direction from the universal divisibility properties of gcd/lcm, the other by writing the lattice meet/join as mk e (via mk_surjective) and reflecting divisibility back through dvd_of_mk_le_mk. These bridges let the divisibility statement be read off the lattice statement.",
+    "mathContext": "$\\mathrm{mk}(\\gcd\\,a\\,b) = \\mathrm{mk}\\,a \\sqcap \\mathrm{mk}\\,b, \\qquad \\mathrm{mk}(\\mathrm{lcm}\\,a\\,b) = \\mathrm{mk}\\,a \\sqcup \\mathrm{mk}\\,b$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Associates.mk",
+      "gcd",
+      "lcm",
+      "antisymmetry"
+    ],
+    "prerequisites": [
+      "GCD monoid",
+      "Associates order"
+    ]
+  },
+  {
+    "id": "ann-gcd-lcm-distrib",
+    "proofId": "chinese-remainder-non-coprime-oq-02-oq-01",
+    "range": {
+      "startLine": 127,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "The distributive law of divisibility (★)",
+    "content": "gcd_lcm_distrib is the crux: gcd(lcm a b, c) ∣ lcm(gcd a c, gcd b c). After the bridges it is literally associates_inf_sup_le applied to mk a, mk b, mk c. The companion lcm_gcd_dvd records the reverse divisibility lcm(gcd a c, gcd b c) ∣ gcd(lcm a b, c), which holds in ANY GCD monoid — so the content is entirely in direction (★). The sibling entry oq-03-oq-01 proves the same law by a long elementary coprime-cofactor argument over Euclidean domains; the factorization route here is shorter and holds in any UFD.",
+    "mathContext": "$\\gcd(\\mathrm{lcm}(a,b),c) \\mid \\mathrm{lcm}(\\gcd(a,c),\\gcd(b,c))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "distributive lattice",
+      "Birkhoff",
+      "divisibility lattice",
+      "gcd",
+      "lcm"
+    ],
+    "prerequisites": [
+      "Associates lattice distributivity",
+      "gcd/lcm bridges"
+    ]
+  },
+  {
+    "id": "ann-crt2-bezout",
+    "proofId": "chinese-remainder-non-coprime-oq-02-oq-01",
+    "range": {
+      "startLine": 155,
+      "endLine": 183
+    },
+    "type": "technique",
+    "title": "Two-modulus base case via Bézout",
+    "content": "crt2_sufficient is the merge step reused twice in the three-modulus proof. From gcd m n ∣ a − b, Bézout's identity (gcd_dvd_iff_exists) gives a − b = m·s + n·t, and x = a − m·s solves both congruences: x − a = −m·s is divisible by m, while x − b = (a−b) − m·s = n·t is divisible by n. crt2_necessary and crt2_unique complete the binary characterization.",
+    "mathContext": "$x = a - m s,\\quad a - b = m s + n t \\ \\Rightarrow\\ m \\mid x - a,\\ n \\mid x - b$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bézout's identity",
+      "binary CRT",
+      "explicit construction"
+    ],
+    "prerequisites": [
+      "Bézout domain",
+      "gcd"
+    ]
+  },
+  {
+    "id": "ann-crt3-sufficient",
+    "proofId": "chinese-remainder-non-coprime-oq-02-oq-01",
+    "range": {
+      "startLine": 196,
+      "endLine": 221
+    },
+    "type": "technique",
+    "title": "Reducing three moduli to two with the distributive law",
+    "content": "crt3_sufficient is the main result. First solve m₁, m₂ to obtain y. Since gcd m₁ m₃ ∣ m₁ ∣ y − a₁ and gcd m₁ m₃ ∣ a₁ − a₃, we get gcd m₁ m₃ ∣ y − a₃ (similarly for m₂), hence lcm(gcd m₁ m₃, gcd m₂ m₃) ∣ y − a₃. The distributive law (★) then yields gcd(lcm m₁ m₂, m₃) ∣ y − a₃ — exactly the compatibility needed to merge y with a₃ over the modulus lcm m₁ m₂. A final binary solve produces x, and x ≡ aᵢ mod mᵢ follows because mᵢ ∣ lcm m₁ m₂ ∣ x − y and mᵢ ∣ y − aᵢ.",
+    "mathContext": "$\\gcd(\\mathrm{lcm}(m_1,m_2),m_3) \\mid y - a_3 \\ \\Leftarrow\\ \\mathrm{lcm}(\\gcd(m_1,m_3),\\gcd(m_2,m_3)) \\mid y - a_3$",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction step",
+      "distributive law",
+      "lcm modulus",
+      "CRT"
+    ],
+    "prerequisites": [
+      "gcd_lcm_distrib",
+      "two-modulus CRT"
+    ]
+  }
+]

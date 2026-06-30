@@ -1,0 +1,163 @@
+[
+  {
+    "id": "lucas-oq010102-ann-single-digit",
+    "proofId": "lucas-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 73, "endLine": 93 },
+    "type": "theorem",
+    "title": "Single-Digit Lucas Step: C(a,b) coprime to p ⟺ b ≤ a (for a < p)",
+    "content": "The atom of the whole argument: within the first p rows of Pascal's triangle there are no nontrivial multiples of p. For a row index a < p, the factorial identity C(a,b)·b!·(a−b)! = a! shows C(a,b) ∣ a!, while a < p forces p ∤ a! (Nat.Prime.dvd_factorial gives p ∣ a! ⟺ p ≤ a). Hence any prime dividing C(a,b) must come from the trivial vanishing C(a,b) = 0, i.e. b > a. The iff form not_dvd_choose_lt_iff then reads: a single base-p digit C(a,b) survives mod p exactly when the column digit b fits under the row digit a. This is the per-digit survival criterion that the Lucas congruence multiplies across all positions.",
+    "mathContext": "$a < p \\implies \\bigl(p \\nmid \\tbinom{a}{b} \\iff b \\le a\\bigr).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorial divisibility identity",
+      "prime not dividing a small factorial",
+      "single base-p digit",
+      "Pascal's triangle mod p"
+    ],
+    "prerequisites": [
+      "Nat.choose_mul_factorial_mul_factorial",
+      "Nat.Prime.dvd_factorial",
+      "Nat.choose_eq_zero_of_lt"
+    ]
+  },
+  {
+    "id": "lucas-oq010102-ann-dvd-criterion",
+    "proofId": "lucas-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 101, "endLine": 136 },
+    "type": "theorem",
+    "title": "Lucas' Divisibility Criterion: p ∣ C(n,k) ⟺ some digit kᵢ > nᵢ",
+    "content": "The headline original contribution. Pick a base exponent a with n, k < pᵃ so every digit beyond position a vanishes. Mathlib's Lucas congruence Choose.choose_modEq_prod_range_choose_nat gives C(n,k) ≡ ∏_{i<a} C(nᵢ,kᵢ) (mod p), so p ∣ C(n,k) iff p divides the digit product. Nat.Prime.dvd_finset_prod_iff reduces that to p ∣ C(nᵢ,kᵢ) for a single position i, and the single-digit step converts it to nᵢ < kᵢ. The reverse direction handles out-of-range positions i ≥ a by noting both digits are 0 there, so a strict digit inequality forces i < a. This precise WHICH-columns-die statement is not a named Mathlib lemma — only the congruence and the single-digit Nat.dvd_choose are provided upstream.",
+    "mathContext": "$p \\mid \\tbinom{n}{k} \\iff \\exists i,\\ \\Bigl\\lfloor \\tfrac{n}{p^i} \\Bigr\\rfloor \\bmod p \\ <\\ \\Bigl\\lfloor \\tfrac{k}{p^i} \\Bigr\\rfloor \\bmod p.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lucas' congruence",
+      "prime divides a product iff a factor",
+      "base-p digit extraction n/pⁱ mod p",
+      "finite product over digit positions"
+    ],
+    "prerequisites": [
+      "Nat.Choose.choose_modEq_prod_range_choose_nat",
+      "Nat.Prime.dvd_finset_prod_iff",
+      "modular arithmetic (Nat.ModEq)"
+    ]
+  },
+  {
+    "id": "lucas-oq010102-ann-digit-dominance",
+    "proofId": "lucas-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 138, "endLine": 144 },
+    "type": "theorem",
+    "title": "Digit-Dominance Form: survival ⟺ k digit-dominated by n",
+    "content": "The contrapositive of the divisibility criterion, packaged as the survival statement. De Morgan turns ∃ i, nᵢ < kᵢ into ∀ i, kᵢ ≤ nᵢ (not_exists then pointwise not_lt). The result reads: C(n,k) is NOT divisible by p exactly when every base-p digit of k is at most the corresponding digit of n — k is 'digit-dominated' by n, equivalently the subtraction n − k needs no borrow in base p. This is the clean, reusable form of Lucas' theorem describing precisely which entries of row n survive mod p, and the bridge to both Fine's count and Kummer's valuation.",
+    "mathContext": "$p \\nmid \\tbinom{n}{k} \\iff \\forall i,\\ \\Bigl\\lfloor \\tfrac{k}{p^i} \\Bigr\\rfloor \\bmod p \\ \\le\\ \\Bigl\\lfloor \\tfrac{n}{p^i} \\Bigr\\rfloor \\bmod p.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "digit dominance / borrow-free subtraction",
+      "Lucas' theorem (survival form)",
+      "De Morgan duality of the divisibility criterion"
+    ],
+    "prerequisites": [
+      "negation of existential / universal quantifiers",
+      "base-p digit comparison"
+    ]
+  },
+  {
+    "id": "lucas-oq010102-ann-kummer-carries",
+    "proofId": "lucas-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 152, "endLine": 161 },
+    "type": "definition",
+    "title": "Kummer's Carry Count: ν_p(C(n,k)) = number of base-p carries",
+    "content": "kummerCarries p n k counts the positions i ≥ 1 where the base-p addition of k and n − k overflows pⁱ, i.e. pⁱ ≤ (k mod pⁱ) + ((n−k) mod pⁱ). Kummer's theorem (1852) — the deepest of the three classical results — states this carry count IS the p-adic valuation ν_p(C(n,k)). The Lean proof factorization_choose_eq_carries is Mathlib's Nat.factorization_choose instantiated at the upper bound b = n+1, which is admissible since log_p n ≤ n. Where Lucas only sees the binary survives/dies dichotomy, Kummer resolves the full exponent of p, with each carry contributing one factor of p.",
+    "mathContext": "$\\nu_p\\!\\left(\\tbinom{n}{k}\\right) = \\#\\{\\,i \\ge 1 : p^i \\le (k \\bmod p^i) + ((n-k) \\bmod p^i)\\,\\}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kummer's theorem (1852)",
+      "p-adic valuation of binomial coefficients",
+      "carries in base-p addition",
+      "Legendre's formula for factorial valuation"
+    ],
+    "prerequisites": [
+      "Nat.factorization_choose",
+      "Nat.log and the bound log p n ≤ n",
+      "p-adic valuation / Nat.factorization"
+    ]
+  },
+  {
+    "id": "lucas-oq010102-ann-zero-carry-valuation",
+    "proofId": "lucas-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 163, "endLine": 169 },
+    "type": "theorem",
+    "title": "Zero-Carry Stratum (Valuation Form): survival ⟺ no carries",
+    "content": "For k ≤ n the binomial C(n,k) is nonzero, so divisibility by p is equivalent to its p-adic valuation being at least 1 (Nat.Prime.dvd_iff_one_le_factorization). Substituting Kummer's carry count for that valuation and closing with omega yields: ¬ p ∣ C(n,k) ⟺ kummerCarries p n k = 0. This is the valuation-level statement of the zero-carry stratum — an entry survives mod p exactly when the base-p addition k + (n−k) is entirely carry-free. It is the half of the keystone biconditional contributed by Kummer; the other half (carry-free ⟺ digit dominance) follows from Lucas' criterion.",
+    "mathContext": "$k \\le n \\implies \\bigl(p \\nmid \\tbinom{n}{k} \\iff \\text{kummerCarries}\\,p\\,n\\,k = 0\\bigr).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-adic valuation positivity",
+      "carry-free base-p addition",
+      "binomial positivity for k ≤ n"
+    ],
+    "prerequisites": [
+      "Nat.Prime.dvd_iff_one_le_factorization",
+      "Nat.choose_pos",
+      "omega"
+    ]
+  },
+  {
+    "id": "lucas-oq010102-ann-bridge",
+    "proofId": "lucas-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 171, "endLine": 177 },
+    "type": "insight",
+    "title": "The Keystone Bridge: no carries ⟺ digit dominance ⟺ survives mod p",
+    "content": "The central fusion of the entry. Chaining the valuation-form zero-carry statement (Kummer) with the digit-dominance criterion (Lucas) gives a single biconditional valid for k ≤ n: kummerCarries p n k = 0 ⟺ ∀ i, kᵢ ≤ nᵢ ⟺ ¬ p ∣ C(n,k). Read across the three sides this unifies Kummer 1852 (no carries), Lucas 1878 (digit dominance), and Fine 1947 (survival mod p) into one statement — the carry-free, borrow-free, and non-divisible columns are literally the same set. The base-p addition k + (n−k) carries nowhere exactly when the subtraction n − k borrows nowhere, the classic carry/borrow duality made precise.",
+    "mathContext": "$\\underbrace{\\text{kummerCarries}\\,p\\,n\\,k = 0}_{\\text{Kummer}} \\iff \\underbrace{\\forall i,\\ k_i \\le n_i}_{\\text{Lucas}} \\iff \\underbrace{p \\nmid \\tbinom{n}{k}}_{\\text{Fine}}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kummer–Lucas–Fine unification",
+      "carry/borrow duality in base p",
+      "Granville's synthesis of the three theorems"
+    ],
+    "prerequisites": [
+      "the zero-carry valuation form",
+      "Lucas' digit-dominance criterion"
+    ]
+  },
+  {
+    "id": "lucas-oq010102-ann-finerow",
+    "proofId": "lucas-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 186, "endLine": 193 },
+    "type": "theorem",
+    "title": "Recovering Fine's Count as the Zero-Carry Stratum",
+    "content": "Closes the loop back to the parent. The parent Fine entry defines fineRow p n = {k ≤ n : ¬ p ∣ C(n,k)} and proves its cardinality is the digit product ∏ᵢ(nᵢ+1), but never says which columns are counted. Here fineRow_eq_digitDominated rewrites that set, column by column via not_dvd_choose_iff_forall_digit_le, as exactly the digit-dominated columns {k ∈ range (n+1) | ∀ i, kᵢ ≤ nᵢ}. So Fine's count is literally the number of carry-free columns — the size of the zero-carry stratum — and the parent's mysterious surviving set acquires an explicit description. The proof is a single Finset.ext plus and_congr_right against the Lucas criterion.",
+    "mathContext": "$\\mathrm{fineRow}(p,n) = \\{k \\in [0,n] : \\forall i,\\ k_i \\le n_i\\}, \\quad |\\mathrm{fineRow}(p,n)| = \\prod_i (n_i + 1).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fine's theorem (row count)",
+      "Finset extensionality",
+      "digit product ∏(nᵢ+1)",
+      "cross-reference to parent entry"
+    ],
+    "prerequisites": [
+      "FineTheorem.fineRow (parent definition)",
+      "Finset.ext / Finset.mem_filter",
+      "and_congr_right"
+    ]
+  },
+  {
+    "id": "lucas-oq010102-ann-examples",
+    "proofId": "lucas-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 195, "endLine": 211 },
+    "type": "context",
+    "title": "Worked Examples at p = 2 (kernel decide, no native_decide)",
+    "content": "Four concrete instantiations ground the abstract chain, all discharged by kernel `decide` so the file stays axiom-free (no Lean.ofReduceBool from native_decide). 2 ∣ C(4,1) = 4: with 4 = 100₂ and 1 = 001₂, the digit 1 > 0 at position 0 forces divisibility. 2 ∤ C(4,0) = 1: column 0 is always digit-dominated, so it always survives. ν₂(C(6,3)) = 2: with 3 = 11₂, adding 3 + 3 in binary carries at both bits, so the 2-adic valuation is 2 (C(6,3) = 20 = 2²·5). |fineRow 2 5| = 4: row 5 = 101₂ has surviving columns {0,1,4,5}, matching Fine's digit product (1+1)(0+1)(1+1) = 4.",
+    "mathContext": "$2 \\mid \\tbinom{4}{1},\\quad 2 \\nmid \\tbinom{4}{0},\\quad \\nu_2\\!\\left(\\tbinom{6}{3}\\right)=2,\\quad |\\mathrm{fineRow}(2,5)| = 4.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "kernel decide vs native_decide",
+      "axiom integrity (no Lean.ofReduceBool)",
+      "binary digit reading of carries"
+    ],
+    "prerequisites": [
+      "Nat.choose evaluation",
+      "decidability of concrete arithmetic"
+    ]
+  }
+]

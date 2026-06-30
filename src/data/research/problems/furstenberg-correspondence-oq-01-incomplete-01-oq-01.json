@@ -9,11 +9,14 @@
   "started": "2026-06-21T00:00:00.000Z",
   "lastUpdate": "2026-06-21T00:00:00.000Z",
   "path": "Proofs/FurstenbergShiftTransitive.lean",
-  "leanFiles": ["Proofs/FurstenbergShiftTransitive.lean"],
+  "leanFiles": [
+    "Proofs/FurstenbergShiftTransitive.lean"
+  ],
   "relatedProofs": [
-    "furstenberg-correspondence-oq-01-incomplete-01",
+    "furstenberg-correspondence",
     "furstenberg-correspondence-oq-01",
-    "furstenberg-correspondence"
+    "furstenberg-correspondence-oq-01-incomplete-01",
+    "furstenberg-correspondence-oq-01-incomplete-01-oq-01"
   ],
   "tags": [
     "ergodic-theory",
@@ -41,7 +44,11 @@
     "focus": "Explicit transitive point constructed and packaged (exists_transitive_point).",
     "blockers": [],
     "nextAction": "Optional: topological entropy log 2; connect to topological multiple recurrence / van der Waerden.",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "COMPLETE: constructed an explicit Birkhoff transitive point z for the shift on Cantor space — the universal/disjunctive sequence obtained by concatenating all finite binary words. Proved z is disjunctive (every word is a factor) and that its forward orbit is dense (dense_orbit / exists_transitive_point). 0 axioms, 0 sorries (Proofs/FurstenbergShiftTransitive.lean, 192 lines, 15 theorems / 5 defs).",

@@ -71,10 +71,10 @@
       "erdos_83_summary: both directions (bound + tightness)",
       "erdos_83: final theorem statement"
     ],
-    "axiomCount": 7,
-    "lineCount": 308,
-    "assumptions": "7 axioms: erdos_ko_rado_bound, ekr_achieved, starLikeFamily_achieves, starLikeFamily_valid, ahlswede_khachatrian_theorem, erdos83_from_ak, erdos83_bound_asymptotic. 3 sorry(s).",
-    "theoremCount": 5,
+    "axiomCount": 6,
+    "lineCount": 343,
+    "assumptions": "6 axioms: erdos_ko_rado_bound, starLikeFamily_achieves, starLikeFamily_valid, ahlswede_khachatrian_theorem, erdos83_from_ak, erdos83_bound_asymptotic. 3 sorry(s). (ekr_achieved was previously an axiom; it is now a proved theorem — the counting identity that the star family of k-subsets containing a fixed element has size C(n-1,k-1), via the insert-x bijection with (k-1)-subsets of the remaining n-1 points.)",
+    "theoremCount": 6,
     "definitionCount": 12,
     "additionalFiles": [
       "Proofs/Stubs/Erdos83Aristotle.lean"
@@ -204,9 +204,9 @@
       "Nat"
     ],
     "namespace": "Erdos83",
-    "lineCount": 308,
-    "axiomCount": 7,
-    "theoremCount": 5,
+    "lineCount": 343,
+    "axiomCount": 6,
+    "theoremCount": 6,
     "definitionCount": 12,
     "path": "Proofs/Erdos83Problem.lean",
     "sorries": 3,

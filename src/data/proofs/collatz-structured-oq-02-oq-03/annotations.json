@@ -1,0 +1,90 @@
+[
+  {
+    "id": "collatz-two-mul",
+    "proofId": "collatz-structured-oq-02-oq-03",
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    },
+    "type": "insight",
+    "title": "The Single Dynamical Fact: collatz(2m) = m",
+    "content": "Because 2m is even, one Collatz step halves it: collatz (2*m) = (2*m)/2 = m. This one identity is the engine behind the dyadic collapse. Iterating it, a power of two is peeled one factor of 2 at a time until nothing but 1 remains, which is why collatz^[k] (2^k) = 1 falls out of a clean induction.",
+    "mathContext": "$$\\mathrm{collatz}(2m) = m.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Collatz map",
+      "even step",
+      "Nat.mul_mod_right"
+    ],
+    "prerequisites": [
+      "n / 2 for even n",
+      "Nat.mul_div_cancel_left"
+    ]
+  },
+  {
+    "id": "even-attains-below",
+    "proofId": "collatz-structured-oq-02-oq-03",
+    "range": {
+      "startLine": 82,
+      "endLine": 86
+    },
+    "type": "insight",
+    "title": "Half of All Starting Values Drop Immediately",
+    "content": "For any positive even n, a single Collatz step sends n to n/2 < n. So the entire arithmetic progression of even numbers — natural density 1/2 — satisfies the 'attains a value below itself' conclusion with no analysis whatsoever. The almost-all phenomenon is only interesting on the odd numbers; the even half is elementary.",
+    "mathContext": "$$n \\text{ even}, n \\ge 1 \\;\\Rightarrow\\; \\mathrm{collatz}(n) = n/2 < n.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "stopping time",
+      "Nat.div_lt_self",
+      "natural density"
+    ],
+    "prerequisites": [
+      "Collatz map on even inputs"
+    ]
+  },
+  {
+    "id": "pow-two-collapse",
+    "proofId": "collatz-structured-oq-02-oq-03",
+    "range": {
+      "startLine": 90,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "Powers of Two Collapse All the Way to 1",
+    "content": "collatz^[k] (2^k) = 1, by induction on k: the successor step writes 2^(k+1) = 2·2^k, applies collatz(2·m) = m to reach 2^k, and finishes by the inductive hypothesis. Hence every dyadic starting value not only drops below itself but reaches the global minimum 1 — a concrete witness that colMin(2^k) ≤ 1.",
+    "mathContext": "$$\\mathrm{collatz}^{[k]}(2^k) = 1.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Function.iterate_succ_apply",
+      "pow_succ'",
+      "orbit minimum"
+    ],
+    "prerequisites": [
+      "Function iteration",
+      "induction on ℕ"
+    ]
+  },
+  {
+    "id": "tao-statement",
+    "proofId": "collatz-structured-oq-02-oq-03",
+    "range": {
+      "startLine": 138,
+      "endLine": 145
+    },
+    "type": "caveat",
+    "title": "Tao's Theorem Is Stated, Not Proved (and Why)",
+    "content": "tao_2019 records Tao's 2019 result precisely: for every f → ∞, the orbit-minimum sublevel set {n : 0 < n ∧ Col_min(n) < f n} has logarithmic density one. It is an axiom, not a theorem, because the proof is genuinely analytic — Tao evolves tuned measures on the 3-adics and controls their concentration (a transport estimate) together with a Fourier-analytic input, machinery Mathlib does not yet have. So the answer to OQ-03 is: the STATEMENT formalizes cleanly as a Tendsto predicate, but the PROOF is BLOCKED (>> 1000 lines). Crucially, no other theorem in this file depends on this axiom.",
+    "mathContext": "$$\\forall f \\to \\infty:\\quad \\mathrm{logdens}\\{n : \\mathrm{Col\\_min}(n) < f(n)\\} = 1.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "logarithmic density",
+      "3-adic measures",
+      "concentration of measure",
+      "Tendsto"
+    ],
+    "prerequisites": [
+      "Filters and Tendsto",
+      "logarithmic vs natural density"
+    ]
+  }
+]

@@ -1,0 +1,164 @@
+{
+  "id": "fermat-two-squares-oq-07-oq-01",
+  "title": "Brahmagupta's Samasa Law: the Norm Form x² − N·y² and Composition of Pell Solutions",
+  "slug": "fermat-two-squares-oq-07-oq-01",
+  "description": "The real-quadratic samasa (composition) law (a²−N·b²)(c²−N·d²) = (ac+N·bd)² − N·(ad+bc)², the norm-multiplicativity of ℤ[√N] — the sibling of the parent's imaginary-quadratic +N identity. Yields closure of the Pell solution set {x²−N·y²=1} under composition (a commutative monoid with identity (1,0)), the general norm-k₁·k₂ multiplicative law, negative-Pell composition ((−1)·(−1)→1), and the explicit doubling formula (a,b)↦(a²+N·b², 2ab). Concrete N=2 witness: (3,2) solves x²−2y²=1 and its Brahmagupta square is exactly (17,12).",
+  "meta": {
+    "author": "Brahmagupta (628 AD) (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brahmagupta%27s_identity",
+    "date": "628",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "quadratic-forms",
+      "brahmagupta",
+      "pell-equation",
+      "norm-multiplicativity",
+      "samasa-law",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FermatTwoSquaresOQ07OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "brahmagupta_pell: the real-quadratic samasa law (a²−N·b²)(c²−N·d²) = (ac+N·bd)² − N·(ad+bc)² over an arbitrary commutative ring — norm-multiplicativity of ℤ[√N], the −N sibling of the parent's +N identity",
+      "brahmagupta_pell': the conjugate sign variant with coordinates (ac−N·bd, ad−bc)",
+      "normForm / normForm_mul: the form f_N(x,y)=x²−N·y² packaged as a function with explicit multiplicative composition law on arguments (the elementary, parameter-explicit form of Zsqrtd.norm_mul)",
+      "IsSolution / solution_mul: the general multiplicative law — a norm-k₁ and a norm-k₂ solution compose, via Brahmagupta's coordinates, to a norm-(k₁·k₂) solution",
+      "pell_sol_mul / pell_sol_one: closure of the Pell solution set {x²−N·y²=1} under composition, with identity solution (1,0), giving a commutative monoid — an elementary witness not unfolding Mathlib's Zsqrtd/Pell.Solution₁ machinery",
+      "neg_pell_compose: two solutions of x²−N·y²=−1 compose to a solution of =1 (sign multiplicativity of the norm, (−1)·(−1)=1)",
+      "pell_square / pell_square_coords: the explicit doubling formula (a,b)↦(a²+N·b², 2ab) squaring the norm (k↦k²), the diagonal of Brahmagupta's composition",
+      "three_two_square_is_seventeen_twelve / three_two_square_sol: concrete N=2 witness — (3,2) solves x²−2y²=1 and its Brahmagupta square is exactly (17,12), itself a solution, recovered from the composition machinery"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 159,
+    "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext and Quot.sound are used (verified via #print axioms — Classical.choice is not even invoked). All ring identities are closed by `ring`/`linear_combination`-style substitution; the concrete N=2 integer witnesses are closed by kernel `decide` (NOT native_decide, so no Lean.ofReduceBool dependency). No Mathlib number-theory lemmas are invoked — the file is self-contained over Mathlib.Tactic.",
+    "theoremCount": 13,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Brahmagupta, in his Brāhmasphuṭasiddhānta (628 AD), recorded the samasa (\"composition\") law for the form x² − N·y²: the product of two represented values is again represented, with an explicit composition law on the arguments. He used it to generate new solutions of Pell's equation x² − N·y² = 1 from old ones — the historical seed of the modern theory of units in real quadratic fields, descending through Fermat, Euler, Lagrange and Dirichlet. In modern language the law is the multiplicativity of the norm N(x + y√N) = x² − N·y² on the real-quadratic ring ℤ[√N].\n\nThe parent gallery entry (fermat-two-squares-oq-07) isolates the imaginary-quadratic counterpart x² + N·y² (the norm of ℤ[√−N], controlling sums of two squares). This entry formalizes its historical and mathematical sibling, the −N law Brahmagupta actually wrote down for Pell's equation.",
+    "problemStatement": "**Open question (fermat-two-squares-oq-07-oq-01)**: The parent entry develops Brahmagupta's identity for the imaginary-quadratic form x² + N·y². Formalize the real-quadratic samasa law for x² − N·y² as an explicit parameterized polynomial identity over an arbitrary commutative ring, and derive from it — elementarily, without unfolding Mathlib's Zsqrtd/Pell.Solution₁ machinery — the closure of the Pell solution set under composition, the general multiplicative norm law, negative-Pell composition, and the explicit doubling formula, with concrete integer witnesses.\n\n**Result**: A fully verified (0 sorries, 0 axioms) development: the samasa identity and its conjugate variant over any CommRing, the packaged norm form and its composition law, the general solution_mul law (norm k₁ · norm k₂ → norm k₁·k₂), Pell closure with identity solution (1,0), negative-Pell composition, the doubling formula (a,b)↦(a²+N·b², 2ab), and the explicit N=2 chain (3,2) → (17,12).",
+    "text": "Brahmagupta's samasa law (a²−N·b²)(c²−N·d²) = (ac+N·bd)² − N·(ad+bc)² is the multiplicativity of the norm on ℤ[√N]. It is the engine behind Pell's equation: the solutions of x²−N·y²=1 form a monoid under the explicit composition (a,b),(c,d)↦(ac+N·bd, ad+bc), so one solution generates infinitely many by repeated doubling (a,b)↦(a²+N·b², 2ab).",
+    "proofStrategy": "**Proof Strategy:**\n\n1. **The identity (general N, any commutative ring)**: Both samasa variants are polynomial identities, closed by `ring`. Stating them over an arbitrary `CommRing R` makes manifest that the result is purely formal — the multiplicativity of a norm — and applies to ℤ, ℚ, ℝ, polynomial rings, etc.\n\n2. **Packaging as a form**: `normForm N x y = x² − N·y²` and `normForm_mul` restate the identity as N(z₁)·N(z₂) = N(z₁ ⊙ z₂) with explicit composition ⊙(a,b,c,d) = (ac+N·bd, ad+bc) — the elementary, parameter-explicit shadow of `Zsqrtd.norm_mul`.\n\n3. **General multiplicative law**: `IsSolution N k a b := a²−N·b² = k`; `solution_mul` rewrites with the two hypotheses and closes by `ring`, proving that a norm-k₁ and a norm-k₂ solution compose to a norm-(k₁·k₂) solution.\n\n4. **Pell closure and structure**: `pell_sol_mul` is the k₁=k₂=1 case; `pell_sol_one` exhibits the identity solution (1,0), so the solution set is a commutative monoid. `neg_pell_compose` is the k₁=k₂=−1 case, landing in the =1 set since (−1)·(−1)=1.\n\n5. **Doubling and witnesses**: `pell_square` is the diagonal c=a, d=b, squaring the norm (k↦k²); `pell_square_coords` identifies the coordinates as (a²+N·b², 2ab). For N=2, `decide` confirms (3,2) solves x²−2y²=1, the doubling formula sends it to exactly (17,12), and that pair solves the equation — recovered purely from `pell_square`.",
+    "keyInsights": [
+      "**Multiplicativity is purely formal**: Both samasa variants hold over any commutative ring and are dispatched by `ring`. The entire theory of Pell composition (closure, monoid structure, doubling) is downstream of a single polynomial identity — the multiplicativity of the real-quadratic norm N(x+y√N) = x²−N·y².",
+      "**The +N and −N laws are mirror images**: The parent entry handles the imaginary-quadratic norm x²+N·y² (sums of two squares); this entry handles the real-quadratic norm x²−N·y² (Pell's equation). The two coordinate formulas differ only by the sign of N inside the cross-terms, but the −N law is the one Brahmagupta actually used to solve Pell's equation.",
+      "**Closure is the group structure on Pell solutions**: `pell_sol_mul` + `pell_sol_one` say the solutions of x²−N·y²=1 form a commutative monoid under the explicit Brahmagupta composition — the elementary heart of why a single fundamental solution generates infinitely many, and the shadow of the unit group of ℤ[√N]. The development never unfolds Mathlib's `Zsqrtd` or `Pell.Solution₁`.",
+      "**Sign multiplicativity gives negative-Pell composition for free**: Because the law tracks the norm value exactly (`solution_mul` proves norm k₁·k₂), two solutions of the negative Pell equation x²−N·y²=−1 compose to a solution of the positive one, since (−1)·(−1)=1 — `neg_pell_compose` with no extra work.",
+      "**The doubling formula is the diagonal of the composition**: Setting (c,d)=(a,b) collapses Brahmagupta's coordinates to (a²+N·b², 2ab) and squares the norm. Iterating it is exactly how (3,2) → (17,12) → … climbs the solution ladder of x²−2y²=1; the file verifies the first step concretely by `decide`."
+    ],
+    "prerequisites": [
+      "Polynomial (ring) identities",
+      "Real-quadratic rings ℤ[√N] and their norm forms",
+      "Pell's equation x² − N·y² = 1 and its fundamental solution"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring framing the real-quadratic samasa law as the norm-multiplicativity of ℤ[√N], the −N sibling of the parent's +N identity and the engine of Pell's equation. Imports Mathlib.Tactic; opens namespace FermatTwoSquaresOQ07OQ01.",
+      "mathContext": "The form x²−N·y² is the norm of x+y√N in the real-quadratic ring ℤ[√N]. Brahmagupta's samasa law is the multiplicativity of this norm, used historically to compose Pell solutions."
+    },
+    {
+      "id": "identity",
+      "title": "The Samasa (Composition) Identity",
+      "startLine": 46,
+      "endLine": 67,
+      "summary": "brahmagupta_pell and brahmagupta_pell': the two sign-variant identities (a²−N·b²)(c²−N·d²) = (ac±N·bd)² − N·(ad±bc)² over an arbitrary commutative ring, each closed by `ring`.",
+      "mathContext": "Both variants are polynomial identities valid in any commutative ring; the principal variant (ac+N·bd, ad+bc) is the one Brahmagupta used for Pell composition."
+    },
+    {
+      "id": "normform",
+      "title": "The Norm Form and Its Multiplicativity",
+      "startLine": 68,
+      "endLine": 82,
+      "summary": "normForm N x y = x²−N·y², and normForm_mul restating the identity as N(z₁)·N(z₂) = N(z₁ ⊙ z₂) with explicit composition ⊙(a,b,c,d) = (ac+N·bd, ad+bc).",
+      "mathContext": "Packaging the form as a function exposes the multiplicativity as a monoid composition, the elementary parameter-explicit form of Zsqrtd.norm_mul."
+    },
+    {
+      "id": "closure",
+      "title": "Closure of the Solution Set Under Composition",
+      "startLine": 83,
+      "endLine": 118,
+      "summary": "IsSolution N k a b := a²−N·b² = k; solution_mul proves norm-k₁ × norm-k₂ → norm-(k₁·k₂); pell_sol_mul and pell_sol_one give Pell closure and the identity solution (1,0); neg_pell_compose handles the (−1)·(−1)→1 negative-Pell case.",
+      "mathContext": "Closure of {x²−N·y²=1} under Brahmagupta composition, with identity (1,0), makes the Pell solution set a commutative monoid — the elementary core of the unit structure of ℤ[√N]."
+    },
+    {
+      "id": "doubling",
+      "title": "The Doubling Formula",
+      "startLine": 119,
+      "endLine": 134,
+      "summary": "pell_square: composing a solution with itself sends (a,b)↦(a²+N·b², 2ab) and squares the norm (k↦k²); pell_square_coords identifies the doubling coordinates as the diagonal of Brahmagupta's composition.",
+      "mathContext": "Iterating the doubling formula is how a single fundamental Pell solution generates infinitely many; squaring the norm keeps norm-1 solutions norm-1."
+    },
+    {
+      "id": "witnesses",
+      "title": "Concrete Witnesses over ℤ for N = 2",
+      "startLine": 135,
+      "endLine": 159,
+      "summary": "three_two_sol and seventeen_twelve_sol: (3,2) and (17,12) solve x²−2y²=1; three_two_square_is_seventeen_twelve: the doubling formula sends (3,2) to exactly (17,12); three_two_square_sol: that pair solves the equation, recovered purely from pell_square. All closed by kernel `decide`.",
+      "mathContext": "The fundamental solution (3,2) of x²−2y²=1 and its Brahmagupta square (17,12) — the first two rungs of the solution ladder generated by repeated doubling."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fermat-two-squares-oq-07",
+      "relationship": "extends",
+      "description": "The mirror sibling: the parent develops the imaginary-quadratic +N identity (a²+N·b²)(c²+N·d²) = (ac−N·bd)² + N·(ad+bc)² (norm of ℤ[√−N], sums of two squares); this entry develops the real-quadratic −N samasa law (norm of ℤ[√N], Pell's equation) the parent explicitly flags in its pell-equation cross-reference."
+    },
+    {
+      "targetId": "pell-equation",
+      "relationship": "foundational",
+      "description": "Provides the elementary algebraic engine — closure of {x²−N·y²=1} under composition and the explicit doubling formula — behind the existence and generation of Pell solutions, without invoking Mathlib's Zsqrtd/Pell.Solution₁ machinery."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "The −N (Pell) and +N (sums of two squares) samasa laws are the two faces of norm-multiplicativity on quadratic rings ℤ[√±N]; together they cover the real- and imaginary-quadratic cases of Brahmagupta's composition."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) formalization of Brahmagupta's real-quadratic samasa law (a²−N·b²)(c²−N·d²) = (ac+N·bd)² − N·(ad+bc)² over an arbitrary commutative ring — the norm-multiplicativity of ℤ[√N] — together with the conjugate variant, the packaged norm form and its composition law, the general multiplicative law solution_mul (norm k₁ × norm k₂ → norm k₁·k₂), closure of the Pell solution set with identity solution (1,0), negative-Pell composition, the explicit doubling formula (a,b)↦(a²+N·b², 2ab), and the concrete N=2 chain (3,2) → (17,12).",
+    "implications": "**Theoretical Significance**: Brahmagupta's samasa law is the algebraic engine of the entire theory of Pell's equation and of units in real quadratic fields: it is the multiplicativity of the norm on ℤ[√N], the reason the solution set is a group, and the historical seed of Lagrange's and Dirichlet's work. By formalizing the −N law as a self-contained ring identity with explicit composition coordinates and deriving Pell closure elementarily (no Zsqrtd/Solution₁ unfolding), this entry completes the +N/−N Brahmagupta pair begun by the parent and supplies the concrete composition formula a textbook actually writes down.",
+    "openQuestions": [
+      "Can one formalize, elementarily from solution_mul and pell_square, that for non-square N every solution of x²−N·y²=1 is an integer power of the fundamental solution — i.e. the cyclic-up-to-sign structure of the Pell solution group — without invoking Mathlib's Pell.Solution₁?",
+      "Does the negative-Pell equation x²−N·y²=−1 admit a solution exactly when the continued-fraction period of √N is odd, and can neg_pell_compose be extended to a parity criterion linking solvability of the −1 and +1 equations?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FermatTwoSquaresOQ07OQ01",
+    "lineCount": 159,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "path": "Proofs/FermatTwoSquaresOQ07OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Brahmagupta",
+      "title": "Brāhmasphuṭasiddhānta",
+      "year": "628",
+      "venue": "",
+      "note": "Original statement of the samasa (composition) law for x² − N·y², used to compose solutions of Pell's equation"
+    },
+    {
+      "authors": "André Weil",
+      "title": "Number Theory: An Approach Through History from Hammurapi to Legendre",
+      "year": "1984",
+      "venue": "Birkhäuser",
+      "note": "Historical account of Brahmagupta's composition and its descent to Fermat, Euler, and Lagrange"
+    }
+  ],
+  "sorries": 0
+}

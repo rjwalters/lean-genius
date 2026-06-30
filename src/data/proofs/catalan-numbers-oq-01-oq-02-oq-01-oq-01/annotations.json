@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-catalan-kummer-overview",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "Recasting the criterion in Kummer carry form",
+    "content": "The parent entry proved p ∤ Cₙ ⟺ (p−1)·v_p(n+1) + s_p(2n) = 2·s_p(n), a statement in raw base-p digit sums. By Kummer's theorem the quantity (2·s_p(n) − s_p(2n))/(p−1) is literally the number of carries when adding n + n in base p, and equals v_p of the central binomial coefficient. Defining carries p n := v_p(C(2n,n)) turns the parent's three-term digit-sum equation into the single comparison carries p n = v_p(n+1), the natural combinatorial form of the criterion.",
+    "mathContext": "Kummer: $v_p\\binom{2n}{n} = \\dfrac{2s_p(n)-s_p(2n)}{p-1}$ is the carry count of $n+n$ base $p$. Criterion: $p \\nmid C_n \\iff \\mathrm{carries}\\,p\\,n = v_p(n+1)$.",
+    "significance": "context",
+    "relatedConcepts": ["Kummer's theorem", "p-adic valuation", "carry count", "Catalan numbers", "central binomial coefficient"],
+    "prerequisites": ["p-adic valuation", "base-p digit representation", "binomial coefficients"]
+  },
+  {
+    "id": "ann-catalan-kummer-def",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 65 },
+    "type": "definition",
+    "title": "The Kummer carry count and its digit-sum formula",
+    "content": "carries p n := padicValNat p (Nat.centralBinom n) realises the number of carries in n + n (base p) as a p-adic valuation. sub_one_mul_carries restates the parent's central-binomial identity for this definition: (p−1)·carries p n + s_p(2n) = 2·s_p(n), i.e. (p−1)·carries p n = 2·s_p(n) − s_p(2n). This is a definitional reuse of the parent's analytic work.",
+    "mathContext": "$(p-1)\\,\\mathrm{carries}\\,p\\,n + s_p(2n) = 2 s_p(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["central binomial coefficient", "digit sum", "carry count"],
+    "prerequisites": ["p-adic valuation", "digit sums"]
+  },
+  {
+    "id": "ann-catalan-kummer-splitting",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 99 },
+    "type": "insight",
+    "title": "Valuation splitting and the difference formula",
+    "content": "Applying multiplicativity of padicValNat to (n+1)·catalan n = C(2n,n) gives v_p(Cₙ) + v_p(n+1) = carries p n in one line (padicValNat_catalan_add_succ_eq_carries). The nonzero side conditions n + 1 ≠ 0 and catalan n ≠ 0 (the parent's catalan_ne_zero) license the split. omega then yields the inequality v_p(n+1) ≤ carries p n and the clean difference formula v_p(Cₙ) = carries p n − v_p(n+1) — the arithmetic shadow of dividing the central binomial coefficient by n + 1.",
+    "mathContext": "$v_p(C_n) + v_p(n+1) = \\mathrm{carries}\\,p\\,n$, hence $v_p(C_n) = \\mathrm{carries}\\,p\\,n - v_p(n+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["valuation additivity", "padicValNat.mul", "central binomial coefficient", "omega tactic"],
+    "prerequisites": ["p-adic valuation", "multiplicativity of valuations"]
+  },
+  {
+    "id": "ann-catalan-kummer-criterion",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 101, "endLine": 119 },
+    "type": "insight",
+    "title": "Carry form of the divisibility criterion",
+    "content": "not_dvd_catalan_iff_carries proves p ∤ Cₙ ⟺ carries p n = v_p(n+1). The proof rewrites the goal with the parent's not_dvd_catalan_iff, so both the parent's digit-sum equation and the carry formula assert that their respective (p−1)-multiples equal 2·s_p(n) − s_p(2n). omega extracts (p−1)·carries p n = (p−1)·v_p(n+1), and Nat.eq_of_mul_eq_mul_left cancels the nonzero factor p − 1 (positive because p ≥ 2). No new arithmetic and no digit induction — the entire transport is cancellation of p − 1.",
+    "mathContext": "$p \\nmid C_n \\iff \\mathrm{carries}\\,p\\,n = v_p(n+1)$; cancel $p-1>0$ against $(p-1)\\,\\mathrm{carries}\\,p\\,n = (p-1) v_p(n+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["divisibility criterion", "left-cancellation", "Nat.eq_of_mul_eq_mul_left", "parity law"],
+    "prerequisites": ["divisibility", "natural-number cancellation"]
+  },
+  {
+    "id": "ann-catalan-kummer-p3",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 121, "endLine": 171 },
+    "type": "technique",
+    "title": "p = 3 specialisation and the first gap",
+    "content": "not_dvd_catalan_three_iff_carries instantiates the carry criterion at p = 3 (the first odd-prime analogue of the parity law). The five witnesses 3 ∤ C₄, 3 ∣ C₅, 3 ∣ C₆, 3 ∣ C₇, 3 ∤ C₈ exhibit the first gap of the non-divisible index set {0,…,4} | {5,6,7} | {8,…,13}. Because Nat.catalan's recursion does not reduce in the kernel, each Cₙ is read off (n+1)·Cₙ = C(2n,n) — with centralBinom = (2n).choose n evaluated by decide — and finished by a small divisibility decide, so the entry uses no native_decide.",
+    "mathContext": "Over $n \\le 30$: $3 \\nmid C_n$ exactly for $n \\in \\{0,\\dots,4\\}\\cup\\{8,\\dots,13\\}\\cup\\{26,\\dots,30\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["kernel decide", "centralBinom evaluation", "index sets", "parity law analogue"],
+    "prerequisites": ["divisibility", "decidability", "Catalan number recurrence"]
+  }
+]

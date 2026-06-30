@@ -9,7 +9,11 @@ Answer: YES. The key is the power inequality aₖ^{k+1} ≥ aₖ₊₁^k,
 proved by induction using log-concavity.
 
 This file ELIMINATES the `maclaurin_step` axiom from AmgmInequalityOQ02.lean
-by proving it from `newton_log_concavity`.
+by proving it from Newton's log-concavity. Newton's log-concavity itself is no
+longer assumed: `newton_lc` below delegates to the fully proved
+`NewtonLogConcavity.newton_log_concavity_proved` (axiom-free, 0-sorry) from
+AmgmInequalityOQ02OQ02.lean, so the entire Maclaurin chain in this file is
+axiom-free (it no longer depends on the `newton_log_concavity` axiom).
 
 Proof strategy:
   Let aₖ = eₖ/C(n,k). Newton's log-concavity gives aₖ² ≥ aₖ₋₁·aₖ₊₁.
@@ -25,6 +29,7 @@ References:
 
 import Proofs.AmgmInequalityOQ02Defs
 import Proofs.AmgmInequalityOQ02
+import Proofs.AmgmInequalityOQ02OQ02
 
 open Finset Real AmgmInequalityOQ02
 
@@ -79,11 +84,18 @@ private lemma normElemSymm_zero_succ (m : ℕ) (x : Fin n → ℝ)
         mul_zero]
 
 /-- Newton's log-concavity restated in terms of normElemSymm:
-    aₖ² ≥ aₖ₋₁ · aₖ₊₁ for 1 ≤ k and k+1 ≤ n. -/
+    aₖ² ≥ aₖ₋₁ · aₖ₊₁ for 1 ≤ k and k+1 ≤ n.
+
+    This now delegates to `NewtonLogConcavity.newton_log_concavity_proved`, the
+    fully proved (axiom-free, 0-sorry) version from `AmgmInequalityOQ02OQ02.lean`,
+    instead of the `newton_log_concavity` axiom in `AmgmInequalityOQ02.lean`.
+    The proved theorem has the identical statement, so this is a drop-in
+    replacement that removes the axiom dependency from the entire Maclaurin
+    chain derived below. -/
 theorem newton_lc (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
     (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
     normElemSymm k x ^ 2 ≥ normElemSymm (k - 1) x * normElemSymm (k + 1) x := by
-  exact newton_log_concavity k hk hkn x hx
+  exact NewtonLogConcavity.newton_log_concavity_proved k hk hkn x hx
 
 -- ============================================================
 -- Part I: The Power Inequality (Key Lemma)

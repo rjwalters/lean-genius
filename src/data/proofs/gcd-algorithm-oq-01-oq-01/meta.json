@@ -16,9 +16,10 @@
       "euclidean-algorithm",
       "lame-theorem"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "axiomCount": 0,
     "sorries": 0,
+    "assumptions": "None beyond Mathlib. 0 sorries, 0 axioms, no native_decide (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). The closed-form backbone is Mathlib's Real.coe_fib_eq (Binet's formula fib n = (φⁿ − ψⁿ)/√5); this entry's independent contribution is the closest-integer/rounding result on top of it (the <½ error bound and round(φⁿ/√5) = fib(n)). Badged mathlib accordingly.",
     "lineCount": 74,
     "theoremCount": 6,
     "definitionCount": 0,

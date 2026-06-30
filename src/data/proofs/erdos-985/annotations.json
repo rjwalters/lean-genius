@@ -166,12 +166,12 @@
     "id": "ann-e985-verified-cases",
     "proofId": "erdos-985",
     "range": {
-      "startLine": 87,
-      "endLine": 111
+      "startLine": 124,
+      "endLine": 149
     },
     "type": "concept",
     "title": "Verified Cases of Erdős 985",
-    "content": "**Computational Verification:**\n\nWe verify Erdős 985 for several small primes:\n\n| p | Prime primitive root q | Order |\n|---|------------------------|-------|\n| 3 | 2 | 2 |\n| 5 | 2 | 4 |\n| 7 | 3 | 6 |\n| 11 | 2 | 10 |\n| 13 | 2 | 12 |\n| 23 | 5 | 22 |\n\nIn each case, we find a prime q < p with ord_p(q) = p - 1.\n\nProved using `native_decide` for computational verification.",
+    "content": "**Computational Verification:**\n\nWe verify Erdős 985 for several small primes:\n\n| p | Prime primitive root q | Order |\n|---|------------------------|-------|\n| 3 | 2 | 2 |\n| 5 | 2 | 4 |\n| 7 | 3 | 6 |\n| 11 | 2 | 10 |\n| 13 | 2 | 12 |\n| 23 | 5 | 22 |\n\nIn each case we exhibit a prime q < p with ord_p(q) = p - 1.\n\n**Verification method:** the multiplicative order `orderOf` carries no executable code, so `native_decide` cannot evaluate it. We instead rewrite with `orderOf_eq_iff`, reducing `orderOf x = n` to the bounded decidable claim `x^n = 1 ∧ ∀ m < n, 0 < m → x^m ≠ 1`, which kernel `decide` closes — keeping these results free of `Lean.ofReduceBool`.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of verified cases of erdős 985",
     "relatedConcepts": [
@@ -301,21 +301,21 @@
     ]
   },
   {
-    "id": "ann-e985-artin-implies",
+    "id": "ann-e985-heathbrown-consequence",
     "proofId": "erdos-985",
     "range": {
-      "startLine": 185,
-      "endLine": 198
+      "startLine": 216,
+      "endLine": 264
     },
     "type": "concept",
-    "title": "Artin Implies Erdős 985",
-    "content": "**artin_implies_erdos_985:**\n\nIf Artin's conjecture holds for all primes, then Erdős 985 follows.\n\n**Argument:**\n- Each prime q is a primitive root for infinitely many primes (by Artin)\n- Given p, at least one of the primes 2, 3, 5, ..., q_k < p must be a primitive root mod p\n- By quantitative versions of Artin, this happens for large p\n\n**Note:** The actual implication requires quantitative bounds not just infinity.",
+    "title": "Honest Consequence of Heath-Brown (not a spurious Artin reduction)",
+    "content": "**Why there is no `artin_implies_erdos_985`:**\n\nIt is tempting to claim the qualitative Artin conjecture — each prime q is a primitive root for infinitely many primes p — implies Erdős 985. It does **not**: that each fixed q works for infinitely many p says nothing about whether some prime q < p works for a *given* p. Closing that gap needs an effective (Linnik-type) bound on the least such p, unavailable unconditionally. The earlier `artin_implies_erdos_985` theorem asserted this invalid implication behind a `sorry`; it has been removed.\n\n**What we prove instead (verified):**\n- `erdos985_of_heathBrown_witness`: for p > 5, if one of 2, 3, 5 is a primitive root mod p, that q is a prime primitive root < p — so Erdős 985 holds at p.\n- `infinitely_many_erdos985_primes`: since the Heath-Brown set is infinite, infinitely many primes satisfy Erdős 985 (the only assumption is the Heath-Brown axiom).",
     "significance": "key",
     "relatedConcepts": [
       "Artin's conjecture",
       "Quantitative number theory"
     ],
-    "mathContext": "See annotation content for formal details of artin implies erdős 985",
+    "mathContext": "Heath-Brown (1986): {2,3,5} contains a primitive root for infinitely many primes. Intersecting with p > 5 keeps the set infinite (Set.Infinite.diff) and supplies a prime witness < p.",
     "prerequisites": [
       "Artin's conjecture statement",
       "erdos_985_conjecture statement",

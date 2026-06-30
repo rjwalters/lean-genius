@@ -1,0 +1,186 @@
+{
+  "id": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+  "title": "Residual (a-posteriori) Eigenvalue Bound: ∃ k, |μ(k) − λ| ≤ ‖T x − λ·x‖",
+  "slug": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+  "description": "Proves the converse / a-posteriori stability companion to the Weyl perturbation bound of the parent entry cauchy-interlacing-theorem-oq-03-oq-01, answering its lead open question. Where Weyl stability certifies that the exact eigenvalues of two nearby operators are close, the residual bound goes the other way and certifies a computed eigenpair: for an operator T presented by an orthonormal eigenbasis b with real eigenvalues μ (T(b i) = μ i • b i), every unit vector x and every scalar λ satisfy ∃ k, |μ(k) − λ| ≤ ‖T x − λ·x‖. A small residual therefore guarantees a genuine eigenvalue nearby — the Bauer–Fike a-posteriori error estimate for the Hermitian/normal case used throughout numerical linear algebra to validate approximately computed eigenpairs. The proof expands x in the eigenbasis (x = ∑ⱼ cⱼ bⱼ, cⱼ = ⟪bⱼ,x⟫), uses linearity and orthonormality to get the coordinatewise identity ⟪bᵢ, T x − λ·x⟫ = (μᵢ − λ)·cᵢ, applies Parseval (b.repr is a linear isometry onto EuclideanSpace) to get ‖T x − λ·x‖² = ∑ᵢ (μᵢ − λ)²|cᵢ|² with ∑ᵢ|cᵢ|² = ‖x‖² = 1, then bounds below by the minimising index k: (μ(k) − λ)² = (μ(k) − λ)²·∑|cᵢ|² ≤ ∑(μᵢ − λ)²|cᵢ| = ‖T x − λ·x‖². No self-adjointness is used beyond the eigenbasis presentation — only linearity and orthonormality.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyInterlacingOQ030102Residual.lean",
+    "tags": [
+      "linear-algebra",
+      "spectral-theory",
+      "eigenvalues",
+      "perturbation",
+      "a-posteriori-bound",
+      "bauer-fike",
+      "residual",
+      "parseval",
+      "numerical-linear-algebra",
+      "cauchy-interlacing",
+      "inner-product-space"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 192,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "assumptions": "None beyond the spectral presentation taken as input, exactly as in the parent keystone: T is supplied as a continuous linear operator with an orthonormal eigenbasis b and a real eigenvalue function μ satisfying T(b i) = μ i • b i. Such a presentation always exists for a Hermitian (self-adjoint) operator on a finite-dimensional inner product space by the spectral theorem; taking it as input keeps the argument elementary (only linearity and orthonormality are used — no adjoint). x is required to be a unit vector (‖x‖ = 1). Verified 0 axioms, 0 sorries: #print axioms on dist_to_spectrum_le_residual, residual_eigenvalue_bound, and residual_gt_of_spectral_gap reports only [propext, Classical.choice, Quot.sound] (no sorryAx, no Lean.ofReduceBool / native_decide).",
+    "originalContributions": [
+      "dist_to_spectrum_le_residual: the sharp residual eigenvalue bound ∃ k, |μ(k) − λ| ≤ ‖T x − λ·x‖ for any unit vector x — the distance from λ to the spectrum is at most the residual norm. This is the converse direction of Weyl stability and the Hermitian Bauer–Fike a-posteriori estimate. Proved by a Parseval expansion in the eigenbasis followed by selection of the minimising index (Finset.exists_min_image) and a square-root step.",
+      "residual_eigenvalue_bound: the practical a-posteriori form. If the residual is known only up to a computed upper bound ε (‖T x − λ·x‖ ≤ ε), some eigenvalue still lies within ε of λ. An immediate corollary of dist_to_spectrum_le_residual by transitivity.",
+      "residual_gt_of_spectral_gap: the contrapositive spectral-gap lower bound. If λ is strictly more than ε away from every eigenvalue, then no unit vector can have residual ≤ ε — the residual is bounded below by the distance from λ to the spectrum. The exact statement a solver uses to reject a candidate eigenvalue.",
+      "inner_eigen: the eigen-coordinate identity ⟪bᵢ, T x⟫ = μᵢ·⟪bᵢ, x⟫ for an arbitrary vector x, obtained by expanding x in the eigenbasis (sum_repr') and collapsing the sum by orthonormality (orthonormal_iff_ite). The key structural fact that the eigenbasis presentation suffices: no adjoint or self-adjointness is invoked.",
+      "parseval: Parseval's identity ‖v‖² = ∑ᵢ ‖⟪bᵢ, v⟫‖² in the orthonormal eigenbasis, packaged from the linear isometry b.repr onto EuclideanSpace (LinearIsometryEquiv.norm_map, EuclideanSpace.norm_sq_eq, repr_apply_apply). Supplies both the normalisation ∑|cᵢ|² = 1 and the residual energy identity ∑(μᵢ−λ)²|cᵢ|² = ‖T x − λ·x‖²."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "OrthonormalBasis.sum_repr'",
+        "description": "x = ∑ⱼ ⟪bⱼ, x⟫ • bⱼ — the eigenbasis expansion that, pushed through the linear operator T and collapsed by orthonormality, yields the eigen-coordinate identity ⟪bᵢ, T x⟫ = μᵢ·⟪bᵢ, x⟫ without any adjoint",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "EuclideanSpace.norm_sq_eq",
+        "description": "‖x‖² = ∑ᵢ ‖x i‖² in EuclideanSpace — composed with the isometry b.repr (LinearIsometryEquiv.norm_map) and repr_apply_apply gives Parseval ‖v‖² = ∑ᵢ ‖⟪bᵢ, v⟫‖²",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "OrthonormalBasis.repr_apply_apply",
+        "description": "b.repr v i = ⟪bᵢ, v⟫ — identifies the coordinate functional of the orthonormal basis with the inner product against bᵢ, the bridge between Parseval in EuclideanSpace and the inner-product coordinates",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "orthonormal_iff_ite",
+        "description": "Orthonormal v ↔ ⟪vᵢ, vⱼ⟫ = if i = j then 1 else 0 — collapses the expanded sum ∑ⱼ ⟪bⱼ,x⟫·μⱼ·⟪bᵢ,bⱼ⟫ to the single i = j term in inner_eigen",
+        "module": "Mathlib.Analysis.InnerProductSpace.Orthonormal"
+      },
+      {
+        "theorem": "Finset.exists_min_image",
+        "description": "a nonempty finite set attains the minimum of a real-valued function — supplies the eigenvalue index k minimising (μᵢ − λ)², the index witnessing the residual bound",
+        "module": "Mathlib.Data.Finset.Lattice.Fold"
+      },
+      {
+        "theorem": "RCLike.norm_ofReal",
+        "description": "‖(↑r : 𝕜)‖ = |r| for a real scalar r — turns the 𝕜-norm of the real coordinate factor (μᵢ − λ) into |μᵢ − λ|, so ‖⟪bᵢ, T x − λ·x⟫‖² = (μᵢ − λ)²·|cᵢ|² (with sq_abs)",
+        "module": "Mathlib.Analysis.RCLike.Basic"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Every practical eigenvalue computation produces an approximate pair (λ, x) and must answer: how close is λ to a true eigenvalue? For Hermitian (and normal) operators the answer is the residual bound dist(λ, spectrum) ≤ ‖T x − λ x‖ / ‖x‖ — the symmetric special case of the Bauer–Fike theorem (1960). It is the a-posteriori counterpart of Weyl's a-priori perturbation bound |λ_k(A) − λ_k(B)| ≤ ‖A − B‖: rather than comparing two operators, it certifies a single computed eigenpair from data the solver already has in hand. The bound is sharp (an exact eigenvector gives residual 0) and underlies stopping criteria for Lanczos, Davidson, and inverse-iteration methods (Parlett, The Symmetric Eigenvalue Problem, §4; Trefethen–Bau, Lecture 26). The parent gallery entry oq-03-oq-01 proves Weyl's a-priori stability and lists this a-posteriori bound as its lead open question; this entry closes it.",
+    "problemStatement": "For an operator T presented by an orthonormal eigenbasis b with real eigenvalues μ (T(b i) = μ i • b i), prove that for every unit vector x and scalar λ some eigenvalue lies within the residual of λ: ∃ k, |μ(k) − λ| ≤ ‖T x − λ·x‖. Derive the practical ε-form (residual ≤ ε ⟹ some eigenvalue within ε) and the contrapositive spectral-gap lower bound on the residual.",
+    "text": "Expand x in the eigenbasis, x = ∑ⱼ cⱼ bⱼ with cⱼ = ⟪bⱼ, x⟫. Because T is linear and T bⱼ = μⱼ bⱼ, the bᵢ-coordinate of T x is μᵢ cᵢ, hence ⟪bᵢ, T x − λ·x⟫ = (μᵢ − λ) cᵢ (no adjoint or self-adjointness is needed — only the eigenbasis and orthonormality). Parseval, via the isometry b.repr onto EuclideanSpace, then gives ‖T x − λ·x‖² = ∑ᵢ (μᵢ − λ)² |cᵢ|² and ‖x‖² = ∑ᵢ |cᵢ|² = 1. Let k minimise (μᵢ − λ)². Then (μ(k) − λ)² = (μ(k) − λ)²·∑ᵢ |cᵢ|² = ∑ᵢ (μ(k) − λ)² |cᵢ|² ≤ ∑ᵢ (μᵢ − λ)² |cᵢ|² = ‖T x − λ·x‖², and taking square roots yields |μ(k) − λ| ≤ ‖T x − λ·x‖.",
+    "proofStrategy": "PARSEVAL (parseval): ‖v‖² = ∑ᵢ ‖⟪bᵢ,v⟫‖² from b.repr.norm_map + EuclideanSpace.norm_sq_eq + repr_apply_apply. EIGEN-COORDINATE (inner_eigen): ⟪bᵢ, T x⟫ = μᵢ·⟪bᵢ,x⟫ by rewriting x via sum_repr', pushing T through the sum (map_sum/map_smul/hbT), and collapsing with Finset.sum_eq_single + orthonormal_iff_ite. MAIN (dist_to_spectrum_le_residual): set ε = ‖T x − λ·x‖; coordinatewise ⟪bᵢ, T x − λ·x⟫ = ((μᵢ−λ:ℝ):𝕜)·⟪bᵢ,x⟫ (inner_sub_right + inner_eigen + inner_smul_right); square the norm (norm_mul/mul_pow/RCLike.norm_ofReal/sq_abs) to get ‖⟪bᵢ, residual⟫‖² = (μᵢ−λ)²·‖cᵢ‖²; Parseval gives ∑|cᵢ|² = 1 (from ‖x‖=1) and ∑(μᵢ−λ)²‖cᵢ‖² = ε²; Fin n is nonempty since x is a unit vector; pick the minimiser k (Finset.exists_min_image); bound (μ(k)−λ)² ≤ ∑(μᵢ−λ)²‖cᵢ‖² = ε² by Finset.sum_le_sum after factoring out the constant (Finset.mul_sum); finish with Real.sqrt monotonicity (sqrt_sq_eq_abs, sqrt_sq). COROLLARIES: residual_eigenvalue_bound by transitivity; residual_gt_of_spectral_gap by contraposition (by_contra + push_neg).",
+    "keyInsights": [
+      "**The eigenbasis presentation alone suffices — no adjoint.** The coordinate identity ⟪bᵢ, T x⟫ = μᵢ·⟪bᵢ, x⟫ is proved by expanding x in the eigenbasis and using orthonormality, not by moving T across the inner product. So the residual bound holds for any operator diagonalised by an orthonormal basis with real eigenvalues, which is exactly the spectral content of a Hermitian operator, taken as input.",
+      "**Parseval converts the residual into an energy sum.** Writing ‖T x − λ·x‖² = ∑ᵢ (μᵢ − λ)² |cᵢ|² turns the analytic residual into a convex combination of squared eigenvalue gaps (the weights |cᵢ|² sum to 1). The bound is then immediate: a weighted average of the (μᵢ − λ)² is at least their minimum.",
+      "**The minimiser, not a contradiction, gives the witness.** Selecting k to minimise (μᵢ − λ)² makes the proof constructive in the index and yields the sharp distance-to-spectrum form ∃ k, |μ(k) − λ| ≤ ‖T x − λ·x‖, from which the ε-version follows by one transitivity step.",
+      "**Converse to Weyl, and sharp.** This is the a-posteriori counterpart of the parent's a-priori bound: Weyl compares two operators' spectra, the residual bound certifies one computed pair. It is sharp — an exact eigenvector b j gives residual 0 and the bound reads |μ(j) − μ(j)| = 0 ≤ 0."
+    ],
+    "prerequisites": [
+      "The parent entry's Weyl stability bound (cauchy-interlacing-theorem-oq-03-oq-01) and the eigenbasis presentation T(b i) = μ i • b i",
+      "Parseval's identity / the fact that an orthonormal basis induces a linear isometry onto EuclideanSpace",
+      "The expansion of a vector in an orthonormal basis and orthonormality ⟪bᵢ, bⱼ⟫ = δᵢⱼ",
+      "Elementary real analysis: a weighted average dominates its minimum, and monotonicity of the square root"
+    ]
+  },
+  "sections": [
+    {
+      "id": "parseval",
+      "title": "Parseval's Identity in the Orthonormal Eigenbasis",
+      "startLine": 55,
+      "endLine": 64,
+      "summary": "parseval: ‖v‖² = ∑ᵢ ‖⟪bᵢ, v⟫‖². Packaged from the linear isometry b.repr onto EuclideanSpace (LinearIsometryEquiv.norm_map) together with EuclideanSpace.norm_sq_eq and the coordinate formula repr_apply_apply.",
+      "mathContext": "The energy identity: total norm-squared equals the sum of squared coordinate magnitudes, supplying both the normalisation and the residual decomposition."
+    },
+    {
+      "id": "eigen-coordinate",
+      "title": "The Eigen-Coordinate Identity",
+      "startLine": 66,
+      "endLine": 89,
+      "summary": "inner_eigen: ⟪bᵢ, T x⟫ = μᵢ·⟪bᵢ, x⟫ for arbitrary x. Proved by expanding x via sum_repr', pushing T through the sum, and collapsing by orthonormality (Finset.sum_eq_single + orthonormal_iff_ite). No adjoint or self-adjointness is invoked.",
+      "mathContext": "The bᵢ-coordinate of T x is μᵢ times the bᵢ-coordinate of x — the structural fact that the eigenbasis presentation is all that is needed."
+    },
+    {
+      "id": "residual-bound",
+      "title": "The Residual Eigenvalue Bound and Corollaries",
+      "startLine": 91,
+      "endLine": 181,
+      "summary": "dist_to_spectrum_le_residual: ∃ k, |μ(k) − λ| ≤ ‖T x − λ·x‖ via the Parseval energy sum and the minimising index. residual_eigenvalue_bound: the ε-form by transitivity. residual_gt_of_spectral_gap: the contrapositive spectral-gap lower bound.",
+      "mathContext": "The Hermitian Bauer–Fike a-posteriori estimate: a small residual certifies a nearby true eigenvalue; a large spectral gap forces a large residual."
+    }
+  ],
+  "conclusion": {
+    "summary": "A machine-checked Lean 4 proof of the residual (a-posteriori) eigenvalue bound ∃ k, |μ(k) − λ| ≤ ‖T x − λ·x‖ for a Hermitian operator presented by an orthonormal eigenbasis, together with its practical ε-form and the contrapositive spectral-gap lower bound on the residual. The file is 0-axiom, 0-sorry (#print axioms: propext, Classical.choice, Quot.sound only). It answers the lead open question of cauchy-interlacing-theorem-oq-03-oq-01.",
+    "implications": "Adds the a-posteriori counterpart to the Cauchy-interlacing family's eigenvalue-perturbation layer: alongside the parent's a-priori Weyl stability |λ_k(A) − λ_k(B)| ≤ ‖A − B‖, the residual bound certifies a single computed eigenpair from the residual alone — the Hermitian Bauer–Fike theorem and the basis of stopping criteria for iterative eigensolvers. The proof reuses only linearity and orthonormality, so it applies verbatim to any orthonormally diagonalisable operator with real spectrum.",
+    "openQuestions": [
+      "Upgrade the scalar residual bound to the subspace / Davis–Kahan sin Θ theorem: if a whole subspace has small residual ‖T X − X M‖, then it is close (in principal angles) to an invariant subspace of T, certifying computed eigenspaces rather than single eigenpairs.",
+      "Establish the matching lower bound making the estimate two-sided: dist(λ, spectrum) is itself attained as a residual by the corresponding spectral-projection of x, so ‖T x − λ·x‖ ≥ dist(λ, spectrum)·‖x‖ with equality characterised — pinning the residual exactly to the distance to the spectrum."
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "cauchy-interlacing-theorem-oq-03-oq-01",
+      "relation": "Parent entry — proves Weyl's a-priori operator-norm stability bound |μ(k) − ν(k)| ≤ ‖T − U‖ and lists this residual / a-posteriori bound (Bauer–Fike for the Hermitian case) as its lead open question. This entry closes that question with the converse, a-posteriori direction."
+    },
+    {
+      "slug": "cauchy-interlacing-theorem-oq-03",
+      "relation": "Grandparent entry — proves Weyl monotonicity (weyl_monotone) and the additive inequality from the Courant–Fischer keystone, on which the parent's stability bound rests."
+    },
+    {
+      "slug": "cauchy-interlacing-theorem",
+      "relation": "Root entry — proves the Courant–Fischer max–min keystone underlying the whole eigenvalue-perturbation family."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Bauer, F.L.",
+        "Fike, C.T."
+      ],
+      "title": "Norms and exclusion theorems",
+      "year": "1960",
+      "venue": "Numerische Mathematik 2, 137–141",
+      "note": "Original a-posteriori eigenvalue exclusion bound; the residual estimate dist(λ, spectrum) ≤ ‖T x − λ x‖/‖x‖ is its specialisation to the Hermitian/normal case"
+    },
+    {
+      "authors": [
+        "Parlett, B.N."
+      ],
+      "title": "The Symmetric Eigenvalue Problem",
+      "year": "1998",
+      "venue": "SIAM Classics in Applied Mathematics 20",
+      "note": "§4 (residual bounds and a-posteriori error estimates for computed eigenpairs of symmetric operators)"
+    },
+    {
+      "authors": [
+        "Trefethen, L.N.",
+        "Bau, D."
+      ],
+      "title": "Numerical Linear Algebra",
+      "year": "1997",
+      "venue": "SIAM",
+      "note": "Lecture 26 (eigenvalue algorithms and residual-based stopping criteria)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "InnerProductSpace"
+    ],
+    "namespace": "CauchyInterlacing.Residual",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyInterlacingOQ030102Residual.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

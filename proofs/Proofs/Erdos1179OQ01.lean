@@ -63,7 +63,7 @@ theorem reprCount_empty_nonzero {N : ℕ} [NeZero N]
 /-- Adding an element to A doesn't decrease reprCount for any g.
     Proof: every subset of A is also a subset of A ∪ {b}. -/
 theorem reprCount_insert_ge {N : ℕ} [NeZero N]
-    (A : Finset (ZMod N)) (b : ZMod N) (g : ZMod N) (hb : b ∉ A) :
+    (A : Finset (ZMod N)) (b : ZMod N) (g : ZMod N) (_hb : b ∉ A) :
     reprCount A g ≤ reprCount (insert b A) g := by
   simp only [reprCount]
   apply Finset.card_le_card
@@ -246,7 +246,7 @@ private lemma ψp_sum {p : ℕ} [NeZero p] {ι : Type*} (s : Finset ι) (f : ι 
 /-- Character orthogonality on ℤ/pℤ:
     ∑_j ψ(j·c) = p if c = 0, and 0 if c ≠ 0.
     The c≠0 case uses the geometric sum formula with ψ(c)^p = 1. -/
-private lemma character_orthogonality {p : ℕ} (hp : Nat.Prime p) (c : ZMod p) :
+private lemma character_orthogonality {p : ℕ} [NeZero p] (hp : Nat.Prime p) (c : ZMod p) :
     ∑ j : ZMod p, ψp (j * c) = if c = 0 then ↑p else 0 := by
   split
   · -- c = 0: each term is ψ(0) = 1, sum = p
@@ -261,7 +261,7 @@ private lemma character_orthogonality {p : ℕ} (hp : Nat.Prime p) (c : ZMod p) 
     have hψp_ne : ψp c ≠ 1 := by
       simp only [ψp, ωp, ← Complex.exp_nat_mul]
       have hval_pos : 0 < ZMod.val c :=
-        Nat.pos_of_ne_zero (fun h => hc (ZMod.val_eq_zero.mp h))
+        Nat.pos_of_ne_zero (fun h => hc ((ZMod.val_eq_zero c).mp h))
       have hval_lt : ZMod.val c < p := ZMod.val_lt c
       intro h
       rw [Complex.exp_eq_one_iff] at h
@@ -273,14 +273,14 @@ private lemma character_orthogonality {p : ℕ} (hp : Nat.Prime p) (c : ZMod p) 
       have hp_ne : (p : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr hp.ne_zero
       -- From hn: val(c)/p = n
       have heq : (↑(ZMod.val c) : ℂ) / ↑p = ↑n :=
-        mul_left_cancel₀ hpi_ne (by rw [hn]; ring)
+        mul_left_cancel₀ hpi_ne (by linear_combination hn)
       -- So val(c) = n * p as integers
       have heq_int : (ZMod.val c : ℤ) = n * ↑p := by
         have h := heq; rw [div_eq_iff hp_ne] at h; exact_mod_cast h
       -- But 0 < val(c) < p, contradiction
       have hp_pos : (0 : ℤ) < ↑p := Int.natCast_pos.mpr hp.pos
       have hvc_pos : (0 : ℤ) < ↑(ZMod.val c) := Int.natCast_pos.mpr hval_pos
-      have hvc_lt : (↑(ZMod.val c) : ℤ) < ↑p := Int.natCast_lt.mpr hval_lt
+      have hvc_lt : (↑(ZMod.val c) : ℤ) < ↑p := by exact_mod_cast hval_lt
       rcases le_or_gt n 0 with hn_le | hn_gt
       · linarith [mul_nonpos_of_nonpos_of_nonneg hn_le hp_pos.le]
       · linarith [mul_le_mul_of_nonneg_right (show 1 ≤ n by omega) hp_pos.le]
@@ -295,7 +295,7 @@ private lemma character_orthogonality {p : ℕ} (hp : Nat.Prime p) (c : ZMod p) 
       -- Reindex: sum over j of f(j+1) = sum over j of f(j)
       apply Finset.sum_equiv (Equiv.addRight (1 : ZMod p))
       · intro r; simp
-      · intro r _; ring_nf
+      · intro r _; simp only [Equiv.coe_addRight]
     -- Step 3: (ψp(c) - 1) · S = 0, and ψp(c) - 1 ≠ 0, so S = 0
     have h0 : (ψp c - 1) * S = 0 := by rw [sub_mul, one_mul, hshift, sub_self]
     exact (mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hψp_ne)
@@ -311,7 +311,7 @@ private lemma character_orthogonality {p : ℕ} (hp : Nat.Prime p) (c : ZMod p) 
     Infrastructure (ωp_pow_mod, ψp_add, ψp_sum) is proved above;
     the remaining steps need character orthogonality on ZMod p
     and the subset product identity (Finset.prod_add or by induction). -/
-private lemma reprCount_fourier_expansion {p : ℕ} (hp : Nat.Prime p)
+private lemma reprCount_fourier_expansion {p : ℕ} [NeZero p] (hp : Nat.Prime p)
     (A : Finset (ZMod p)) (g : ZMod p) :
     (reprCount A g : ℂ) =
       (1 / (p : ℂ)) * ∑ j : ZMod p,
@@ -327,13 +327,13 @@ private lemma reprCount_fourier_expansion {p : ℕ} (hp : Nat.Prime p)
       ∏ a ∈ A, ((1 : ℂ) + ψp (j * a)) =
       ∑ S ∈ A.powerset, ∏ a ∈ S, ψp (j * a) := by
     intro j
-    have h := Finset.prod_add A (fun _ => (1 : ℂ)) (fun a => ψp (j * a))
-    simp only [Finset.prod_const_one, one_mul] at h
-    exact h
+    have h := Finset.prod_add (fun a => ψp (j * a)) (fun _ => (1 : ℂ)) A
+    simp only [Finset.prod_const_one, mul_one] at h
+    rw [← h]
+    exact Finset.prod_congr rfl (fun a _ => by ring)
   -- Simplify RHS
   -- Step 1: Replace ω^{val(...)} with ψp
-  conv_rhs => arg 2; ext j; rw [hψp_eq (-j * g)]
-  conv_rhs => arg 2; ext j; arg 2; arg 2; ext a; rw [hψp_eq (j * a)]
+  simp only [hψp_eq]
   -- Step 2: Expand product
   simp_rw [hprod_expand]
   -- RHS = (1/p) * ∑_j ψp(-j*g) * ∑_{S⊆A} ∏_{a∈S} ψp(j*a)
@@ -345,28 +345,25 @@ private lemma reprCount_fourier_expansion {p : ℕ} (hp : Nat.Prime p)
     arg 2; ext j; arg 2; ext S
     rw [show ∏ a ∈ S, ψp (j * a) = ψp (S.sum (fun a => j * a)) from
       (ψp_sum S (fun a => j * a)).symm]
-    rw [show S.sum (fun a => j * a) = j * S.sum id from Finset.mul_sum.symm]
+    rw [show S.sum (fun a => j * a) = j * S.sum id from by simp [Finset.mul_sum]]
   -- RHS = (1/p) * ∑_j ∑_{S⊆A} ψp(-j*g) * ψp(j * S.sum id)
   -- Step 5: Combine ψp terms: ψp(-j*g) * ψp(j * S.sum id) = ψp(j * (S.sum id - g))
   conv_rhs =>
     arg 2; ext j; arg 2; ext S
     rw [← ψp_add, show -j * g + j * S.sum id = j * (S.sum id - g) from by ring]
-  -- RHS = (1/p) * ∑_j ∑_{S⊆A} ψp(j * (S.sum id - g))
-  -- Step 6: Swap sums
-  rw [show (1 / (p : ℂ)) * ∑ j : ZMod p, ∑ S ∈ A.powerset, ψp (j * (S.sum id - g)) =
-      (1 / (p : ℂ)) * ∑ S ∈ A.powerset, ∑ j : ZMod p, ψp (j * (S.sum id - g)) from by
-    congr 1; rw [Finset.sum_comm]]
-  -- RHS = (1/p) * ∑_{S⊆A} ∑_j ψp(j * (S.sum id - g))
-  -- Step 7: Apply character_orthogonality
-  simp_rw [character_orthogonality hp]
-  -- RHS = (1/p) * ∑_{S⊆A} (if S.sum id - g = 0 then ↑p else 0)
-  -- Step 8: Simplify
-  simp_rw [sub_eq_zero]
-  rw [Finset.mul_sum]
-  simp_rw [show ∀ S : Finset (ZMod p),
-      (1 / (p : ℂ)) * (if S.sum id = g then (↑p : ℂ) else 0) =
-      if S.sum id = g then 1 else 0 from by
-    intro S; split_ifs <;> simp [hp_ne]]
+  -- RHS = ∑_j ∑_{S⊆A} (1/p) · ψp(j * (S.sum id - g))   (1/p distributed inside)
+  -- Step 6: Swap sums so the inner sum is over j
+  rw [Finset.sum_comm]
+  -- RHS = ∑_{S⊆A} ∑_j (1/p) · ψp(j * (S.sum id - g))
+  -- Step 7: For each subset S, evaluate the inner character sum
+  have hinner : ∀ S : Finset (ZMod p),
+      ∑ j : ZMod p, (1 / (p : ℂ)) * ψp (j * (S.sum id - g)) =
+      if S.sum id = g then (1 : ℂ) else 0 := by
+    intro S
+    rw [← Finset.mul_sum, character_orthogonality hp]
+    simp only [sub_eq_zero]
+    split_ifs <;> simp [hp_ne]
+  simp_rw [hinner]
   -- RHS = ∑_{S⊆A} (if S.sum id = g then 1 else 0) = reprCount A g
   simp only [reprCount, Finset.card_filter]
   push_cast; rfl
@@ -378,15 +375,14 @@ private lemma fourier_j_zero_term {p : ℕ} [NeZero p]
       ∏ a ∈ A, (1 + (ωp p) ^ ZMod.val ((0 : ZMod p) * a)) =
     ↑(2 ^ A.card) := by
   simp only [zero_mul, neg_zero, ZMod.val_zero, pow_zero, one_mul]
-  rw [show (1 : ℂ) + 1 = 2 from by norm_num]
-  rw [Finset.prod_const, ← Nat.cast_ofNat, ← Nat.cast_pow]
-  simp [nsmul_eq_mul]
+  rw [show (1 : ℂ) + 1 = 2 from by norm_num, Finset.prod_const]
 
 /-- For nonzero j and nonzero a in ℤ/pℤ (p prime), val(j*a) ∈ {1,...,p-1}.
     This means ω^{val(j*a)} is a nontrivial root of unity. -/
 private lemma val_mul_nonzero {p : ℕ} (hp : Nat.Prime p)
     (j a : ZMod p) (hj : j ≠ 0) (ha : a ≠ 0) :
     ZMod.val (j * a) ≠ 0 := by
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
   intro h
   rw [ZMod.val_eq_zero] at h
   have := mul_eq_zero.mp h
@@ -416,7 +412,7 @@ private lemma norm_one_add_ωp_pow (p m : ℕ) [NeZero p] :
   -- LHS² = normSq(1+w) = (1+cos 2α)² + sin²(2α)
   have h_lhs : ‖(1 : ℂ) + w‖ ^ 2 =
       (1 + Real.cos (2 * α)) ^ 2 + Real.sin (2 * α) ^ 2 := by
-    rw [Complex.norm_eq_abs, Complex.sq_abs]
+    rw [Complex.sq_norm]
     simp only [Complex.normSq_apply, Complex.add_re, Complex.one_re,
       Complex.add_im, Complex.one_im, hw_re, hw_im]
     ring
@@ -447,7 +443,9 @@ private lemma abs_cos_mul_pi_div_le {p : ℕ} (hp : Nat.Prime p)
   have hx_le : x ≤ π - x₁ := by
     rw [hx_eq]
     have hm_le : (↑m : ℝ) ≤ ↑p - 1 := by
-      have := Nat.lt_iff_le_pred hp.pos |>.mp hm_lt; exact_mod_cast this
+      have hmp : m + 1 ≤ p := hm_lt
+      have : (↑(m + 1) : ℝ) ≤ ↑p := by exact_mod_cast hmp
+      push_cast at this; linarith
     have h_rw : π - x₁ = (↑p - 1) * x₁ := by simp only [hx₁_def]; field_simp
     rw [h_rw]; nlinarith [hx₁_pos]
   -- x ∈ [0, π]
@@ -482,7 +480,7 @@ private lemma fourier_product_bound {p : ℕ} (hp : Nat.Prime p)
   -- Split: ∏(2 * |cos|) = 2^k * ∏|cos|
   have h_split : ∏ a ∈ A, ((2 : ℝ) * |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)|) =
       (2 : ℝ) ^ k * ∏ a ∈ A, |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)| := by
-    rw [← Finset.prod_mul_distrib, Finset.prod_const, hAk]
+    rw [Finset.prod_mul_distrib, Finset.prod_const, hAk]
   rw [h_split]
   -- Suffices: ∏|cos(π·val(ja)/p)| ≤ |cos(π/p)|^{k-1}
   apply mul_le_mul_of_nonneg_left _ (pow_nonneg (by norm_num : (0:ℝ) ≤ 2) k)
@@ -597,9 +595,11 @@ theorem fourier_error_bound (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : 1 ≤ k
       (1 / (p : ℂ)) * ∑ j ∈ S, f j := by
     rw [hfourier, hsplit, mul_add, hf0, hAk]
     field_simp [hp_ne_c]
+    push_cast
+    ring
   -- |S| = p - 1
   have hS_card : S.card = p - 1 := by
-    rw [hS_def, Finset.card_erase_of_mem (Finset.mem_univ _), ZMod.card]
+    rw [hS_def, Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, ZMod.card]
   -- Helper: ‖∏ h(a)‖ = ∏ ‖h(a)‖ (norm is multiplicative in normed fields)
   have norm_finset_prod : ∀ (T : Finset (ZMod p)) (h : ZMod p → ℂ),
       ‖∏ a ∈ T, h a‖ = ∏ a ∈ T, ‖h a‖ := by
@@ -616,7 +616,7 @@ theorem fourier_error_bound (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : 1 ≤ k
     exact h_prod_bound j hj_ne
   -- ‖1/p‖ = 1/p
   have h1p : ‖(1 / (p : ℂ))‖ = 1 / (↑p : ℝ) := by
-    rw [norm_div, Complex.norm_one, Complex.norm_natCast]
+    rw [norm_div, norm_one, Complex.norm_natCast]
   -- Bridge ℂ → ℝ: real absolute value equals complex norm (both sides are real)
   have hbridge : |(reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p| =
       ‖(↑((reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p) : ℂ)‖ := by
@@ -624,7 +624,7 @@ theorem fourier_error_bound (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : 1 ≤ k
   have hcast : (↑((reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p) : ℂ) =
       (reprCount A g : ℂ) - ↑(2 ^ k : ℕ) / (p : ℂ) := by
     push_cast
-    rw [Nat.cast_pow, Nat.cast_ofNat]
+    ring
   -- Main calculation
   rw [hbridge, hcast, herror]
   calc ‖(1 / (p : ℂ)) * ∑ j ∈ S, f j‖
@@ -637,8 +637,8 @@ theorem fourier_error_bound (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : 1 ≤ k
         mul_le_mul_of_nonneg_left (Finset.sum_le_sum hf_bound)
           (div_nonneg zero_le_one (Nat.cast_nonneg p))
     _ = (↑p - 1) * |Real.cos (π / ↑p)| ^ (k - 1) * ((2 : ℝ) ^ k / ↑p) := by
-        rw [Finset.sum_const, hS_card, nsmul_eq_mul]
-        field_simp
+        rw [Finset.sum_const, hS_card, nsmul_eq_mul,
+          Nat.cast_sub hp.one_le, Nat.cast_one]
         ring
 
 /-- For k ≥ clog₂ p + C, the Fourier error decays to at most ε · 2^k/p.

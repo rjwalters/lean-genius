@@ -1,0 +1,135 @@
+{
+  "id": "sylow-theorems-oq-01-oq-02",
+  "slug": "sylow-theorems-oq-01-oq-02",
+  "title": "Classification of Groups of Squarefree Order",
+  "description": "Every finite group of squarefree order n = p₁p₂···pₖ is a semidirect product of two cyclic subgroups of coprime order, and is solvable, metacyclic, and has exponent equal to its order. This generalizes the parent entry's order-pq classification to an arbitrary number of prime factors, via Mathlib's Z-group theory (a Z-group is a finite group whose Sylow subgroups are all cyclic).",
+  "meta": {
+    "author": "Lean Genius (researcher-5)",
+    "sourceUrl": "https://erdosproblems.com",
+    "date": "2026",
+    "status": "verified",
+    "badge": "mathlib",
+    "proofRepoPath": "Proofs/SylowTheoremOQ01OQ02.lean",
+    "tags": [
+      "group-theory",
+      "sylow-theorems",
+      "z-groups",
+      "squarefree-order",
+      "semidirect-product",
+      "metacyclic-groups",
+      "solvable-groups"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "lineCount": 124,
+    "mathlib_version": "4.26.0",
+    "assumptions": "0 axioms, 0 sorries. Fully machine-checked; all results depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound).",
+    "originalContributions": [
+      "isZGroup_of_squarefree_order: squarefree order ⇒ every Sylow subgroup is cyclic (Z-group)",
+      "sylow_isCyclic: each Sylow subgroup of a squarefree-order group is cyclic",
+      "isSolvable_of_squarefree_order: groups of squarefree order are solvable",
+      "isCyclic_commutator / isCyclic_abelianization: cyclic commutator subgroup and cyclic abelianization",
+      "exponent_eq_card: the exponent equals the group order",
+      "metacyclic_of_squarefree_order: cyclic normal commutator subgroup with cyclic quotient (cyclic-by-cyclic extension)",
+      "semidirectProduct_of_squarefree_order: G ≃* N ⋊[φ] H with N, H cyclic of coprime order — the full semidirect-product-of-cyclic-groups classification the parent open question asked for",
+      "squarefree_card_of_pq: the order-pq case is the two-prime specialization"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The parent entry (sylow-theorems-oq-01, 'Classification of Groups of Order pq') classifies groups of order n = pq by hand using the Sylow counting arguments. Its second open question asks whether the full squarefree-order classification — every group of squarefree order is a semidirect product of cyclic groups — can be formalized for an arbitrary number of prime factors. This entry does so by routing through Mathlib's Z-group theory.",
+    "problemStatement": "Formalize that every finite group of squarefree order n = p₁p₂···pₖ is a semidirect product of cyclic groups, generalizing the order-pq case to multiple primes.",
+    "keyInsights": [
+      "Squarefree order forces every Sylow pᵢ-subgroup to have order exactly pᵢ, hence be cyclic — i.e. the group is a Z-group (IsZGroup.of_squarefree).",
+      "A finite Z-group is solvable, with cyclic commutator subgroup and cyclic abelianization.",
+      "isZGroup_iff_exists_mulEquiv states a finite Z-group is isomorphic to a semidirect product N ⋊ H of two cyclic subgroups of coprime order — exactly the requested structure.",
+      "Concretely N is the cyclic commutator subgroup and H a complement isomorphic to the cyclic abelianization; coprimality of orders lets Schur–Zassenhaus split the extension.",
+      "The exact count of isomorphism classes (determined by the divisibility relations among the pᵢ) is genuinely harder and remains open."
+    ],
+    "prerequisites": [
+      "Sylow theory and Z-groups (cyclic Sylow subgroups)",
+      "Semidirect products and Schur–Zassenhaus splitting",
+      "Commutator subgroups, solvability, group exponent"
+    ]
+  },
+  "sections": [
+    {
+      "id": "reduction",
+      "title": "Squarefree order ⇒ Z-group",
+      "summary": "isZGroup_of_squarefree_order and sylow_isCyclic: every Sylow subgroup is cyclic.",
+      "startLine": 42,
+      "endLine": 60
+    },
+    {
+      "id": "consequences",
+      "title": "Structural consequences",
+      "summary": "Solvable, cyclic commutator, cyclic abelianization, exponent = order.",
+      "startLine": 62,
+      "endLine": 90
+    },
+    {
+      "id": "metacyclic",
+      "title": "Metacyclic structure",
+      "summary": "metacyclic_of_squarefree_order: cyclic normal commutator subgroup with cyclic quotient.",
+      "startLine": 92,
+      "endLine": 100
+    },
+    {
+      "id": "classification",
+      "title": "Semidirect product of cyclic groups",
+      "summary": "semidirectProduct_of_squarefree_order: G ≃* N ⋊ H with N, H cyclic of coprime order.",
+      "startLine": 102,
+      "endLine": 113
+    },
+    {
+      "id": "pq-case",
+      "title": "Specialization to order pq",
+      "summary": "squarefree_card_of_pq: the parent's two-prime case is recovered.",
+      "startLine": 114,
+      "endLine": 124
+    }
+  ],
+  "conclusion": {
+    "summary": "Every finite group of squarefree order is a Z-group, hence solvable, metacyclic, of exponent equal to its order, and — crucially — isomorphic to a semidirect product of two cyclic subgroups of coprime order. This generalizes the parent entry's order-pq classification to arbitrarily many prime factors, as a fully verified (0-axiom) result.",
+    "openQuestions": [
+      "Count the isomorphism classes of groups of squarefree order n = p₁⋯pₖ explicitly in terms of the divisibility relations pᵢ ∣ (pⱼ - 1) (the number of conjugacy classes of homomorphisms determining the semidirect product).",
+      "Formalize the converse direction: a group with all Sylow subgroups cyclic need not have squarefree order, but exhibits the same semidirect structure — characterize when the two coincide."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorems-oq-01",
+      "relationship": "parent",
+      "description": "Parent entry: classification of groups of order pq. This entry answers its second open question — the general squarefree-order classification."
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "related",
+      "description": "Foundational Sylow theorems underlying the Z-group reduction."
+    }
+  ],
+  "references": [
+    {
+      "key": "Hall1959",
+      "authors": ["M. Hall"],
+      "title": "The Theory of Groups",
+      "venue": "Macmillan",
+      "year": "1959",
+      "note": "Classical treatment of Z-groups (groups with cyclic Sylow subgroups) and their metacyclic structure."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/SylowTheoremOQ01OQ02.lean",
+    "filePath": "Proofs/SylowTheoremOQ01OQ02.lean",
+    "imports": ["Mathlib"],
+    "opens": ["Classical"],
+    "namespace": "SquarefreeOrderClassification",
+    "lineCount": 124,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "sorries": 0
+}

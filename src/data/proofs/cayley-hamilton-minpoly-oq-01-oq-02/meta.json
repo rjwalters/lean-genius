@@ -17,11 +17,11 @@
       "nilpotent",
       "perfect-field"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-21",
     "axiomCount": 0,
-    "assumptions": "None. The results are fully machine-checked over an arbitrary perfect field K and a finite-dimensional K-vector space V; #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "assumptions": "None beyond Mathlib. The results are fully machine-checked over an arbitrary perfect field K and a finite-dimensional K-vector space V; #print axioms reports only propext, Classical.choice, Quot.sound. The existence half (the decomposition itself) is obtained via Mathlib's Newton-iteration theorem Module.End.exists_isNilpotent_isSemisimple, and uniqueness is assembled from Mathlib's IsSemisimple.sub_of_commute and eq_zero_of_isNilpotent_isSemisimple; this file contributes the explicit polynomial-in-f witnesses, the commutation lemmas, and the packaged ExistsUnique statement (which Mathlib leaves as a TODO).",
     "lineCount": 129,
     "theoremCount": 5,
     "definitionCount": 0,
@@ -41,7 +41,9 @@
     "keyInsights": [
       "Working inside the commutative subalgebra K[f] = adjoin K {f} makes both the commutation [s, n] = 0 and the 'polynomial in f' clause automatic.",
       "Uniqueness reduces to a single fact: an operator that is simultaneously semisimple and nilpotent is zero — applied to s₁ - s₂ = n₂ - n₁.",
-      "The perfect-field hypothesis is exactly what makes a difference of commuting semisimple operators semisimple (IsSemisimple.sub_of_commute), which is the new Mathlib ingredient enabling uniqueness."
+      "The perfect-field hypothesis is exactly what makes a difference of commuting semisimple operators semisimple (IsSemisimple.sub_of_commute), which is the new Mathlib ingredient enabling uniqueness.",
+      "Existence is genuinely constructive: Mathlib's proof runs a Newton/Hensel-type iteration (following Chambert-Loir) entirely inside K[f], so the semisimple and nilpotent parts emerge as honest polynomials in f rather than as abstract spectral projections.",
+      "The result is the basis-free refinement of the Jordan canonical form: rather than choosing a Jordan basis, one decomposes the operator itself — and unlike the parent entry's axiomatized Jordan-form/minpoly relationship, this additive splitting is reached with 0 axioms over any perfect field."
     ],
     "prerequisites": [
       "Semisimple and nilpotent linear operators",

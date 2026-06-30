@@ -1,0 +1,162 @@
+[
+  {
+    "id": "ann-diff-naturality",
+    "proofId": "sylow-theorems-oq-05",
+    "range": {
+      "startLine": 56,
+      "endLine": 60
+    },
+    "type": "insight",
+    "title": "The Transversal Difference Is a Product, Hence Natural",
+    "content": "Mathlib defines the transversal difference diff ϕ S T as a finite product ∏_{q ∈ G/H} ϕ⟨…⟩ of ϕ-values. Applying any homomorphism ψ : A →* B therefore commutes with it: ψ distributes over the product via map_prod, and ϕ⟨…⟩ followed by ψ is exactly (ψ.comp ϕ)⟨…⟩. The whole proof is unfold diff; rw [map_prod]; rfl.",
+    "mathContext": "diff ϕ S T = ∏_{q ∈ G/H} ϕ⟨(α q)⁻¹·(β q)⟩. Since ψ is a homomorphism, ψ(∏_q ϕ⟨…⟩) = ∏_q ψ(ϕ⟨…⟩) = ∏_q (ψ∘ϕ)⟨…⟩ = diff (ψ∘ϕ) S T. The index set G/H and the arguments are identical on both sides.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Subgroup.leftTransversals.diff",
+      "map_prod",
+      "left transversal",
+      "finite-index subgroup"
+    ],
+    "prerequisites": [
+      "left transversals of a finite-index subgroup",
+      "homomorphisms preserve finite products"
+    ]
+  },
+  {
+    "id": "ann-transfer-naturality",
+    "proofId": "sylow-theorems-oq-05",
+    "range": {
+      "startLine": 79,
+      "endLine": 83
+    },
+    "type": "insight",
+    "title": "Naturality of the Transfer Homomorphism",
+    "content": "The transfer is evaluated as transfer ϕ g = diff ϕ T (g • T) for the canonical default transversal T (Mathlib's transfer_def). Combining this with the naturality of diff gives transfer (ψ.comp ϕ) = ψ.comp (transfer ϕ) pointwise. This makes the transfer a natural transformation in its coefficient homomorphism — a functoriality statement not previously recorded in Mathlib, and the engine for the universal property below.",
+    "mathContext": "transfer (ψ∘ϕ) g = diff (ψ∘ϕ) T (g•T) = ψ(diff ϕ T (g•T)) = ψ(transfer ϕ g) = (ψ∘transfer ϕ) g, where T = default is the same transversal used in transfer ϕ and transfer (ψ∘ϕ).",
+    "significance": "key",
+    "relatedConcepts": [
+      "MonoidHom.transfer",
+      "transfer_def",
+      "natural transformation",
+      "functoriality"
+    ],
+    "prerequisites": [
+      "the transfer homomorphism",
+      "the default left transversal"
+    ]
+  },
+  {
+    "id": "ann-transferAb",
+    "proofId": "sylow-theorems-oq-05",
+    "range": {
+      "startLine": 89,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "The Transfer into the Abelianization: G → P/[P,P]",
+    "content": "transferAb H is the transfer along the canonical projection Abelianization.of : H → H/[H,H]. When H = P is a Sylow p-subgroup this is the classical transfer map G → P/[P,P] that opens focal-subgroup theory. Its codomain Abelianization H is the universal abelian quotient of H, which is what makes it universal among abelian transfers.",
+    "mathContext": "transferAb H := transfer (Abelianization.of : H →* Abelianization H) : G →* Abelianization H. The abelianization H/[H,H] receives a canonical map from every homomorphism H → A into an abelian group A.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Abelianization",
+      "Abelianization.of",
+      "transfer homomorphism",
+      "focal subgroup"
+    ],
+    "prerequisites": [
+      "abelianization as the universal abelian quotient",
+      "finite-index subgroup with FiniteIndex instance"
+    ]
+  },
+  {
+    "id": "ann-universal-property",
+    "proofId": "sylow-theorems-oq-05",
+    "range": {
+      "startLine": 102,
+      "endLine": 106
+    },
+    "type": "insight",
+    "title": "Universal Property: Every Abelian Transfer Factors Through G → P/[P,P]",
+    "content": "Because the target A is abelian, every coefficient map ϕ : H → A factors uniquely as ϕ = (Abelianization.lift ϕ) ∘ Abelianization.of. Feeding this into the naturality lemma transfer_comp yields transfer ϕ = (Abelianization.lift ϕ) ∘ transferAb H. Thus transferAb is the initial object among abelian transfers of H: every transfer is a postcomposition of the single universal map. The Lean proof is three lines (unfold; rw [← transfer_comp]; congr 1).",
+    "mathContext": "ϕ = ϕ̂ ∘ of with ϕ̂ = Abelianization.lift ϕ. Then transfer ϕ = transfer (ϕ̂ ∘ of) = ϕ̂ ∘ transfer (of) = ϕ̂ ∘ transferAb H. Uniqueness of ϕ̂ is the universal property of the abelianization.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Abelianization.lift",
+      "universal property",
+      "initial object",
+      "transfer_comp"
+    ],
+    "prerequisites": [
+      "Abelianization.lift and its uniqueness",
+      "naturality of the transfer"
+    ]
+  },
+  {
+    "id": "ann-kernel-universality",
+    "proofId": "sylow-theorems-oq-05",
+    "range": {
+      "startLine": 112,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "transferAb Has the Smallest Kernel Among Abelian Transfers",
+    "content": "The factorization transfer ϕ = ϕ̂ ∘ transferAb H means any g killed by transferAb is killed by every transfer ϕ: ker(transferAb H) ≤ ker(transfer ϕ). The abelianization transfer is therefore the finest abelian transfer of H — it detects the most about G. This kernel statement is the structural reason G → P/[P,P] is the correct home for focal-subgroup arguments.",
+    "mathContext": "If transferAb H g = 1 then transfer ϕ g = ϕ̂(transferAb H g) = ϕ̂(1) = 1, so ker(transferAb H) ⊆ ker(transfer ϕ) for every coefficient map ϕ : H → A.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MonoidHom.ker",
+      "kernel of a transfer",
+      "finest abelian transfer"
+    ],
+    "prerequisites": [
+      "kernel of a group homomorphism",
+      "the universal property above"
+    ]
+  },
+  {
+    "id": "ann-sylow-specialization",
+    "proofId": "sylow-theorems-oq-05",
+    "range": {
+      "startLine": 125,
+      "endLine": 136
+    },
+    "type": "definition",
+    "title": "The Sylow Transfer and Its Universal Property",
+    "content": "transferSylowAb P specializes transferAb to a Sylow p-subgroup P, producing the map G → P/[P,P] underlying the focal-subgroup theorem. The universal property transfers verbatim: every ϕ : P → A factors through transferSylowAb P. In particular Burnside's transferSylow (for an abelian Sylow subgroup) is such a factorization — though the explicit identification is obstructed by an instance diamond (see the center connection).",
+    "mathContext": "transferSylowAb P := transferAb ↥P : G →* Abelianization ↥P. For any ϕ : ↥P →* A with A abelian, transfer ϕ = (Abelianization.lift ϕ) ∘ transferSylowAb P.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow",
+      "transferSylow",
+      "focal-subgroup theorem",
+      "Burnside normal p-complement"
+    ],
+    "prerequisites": [
+      "Sylow p-subgroups",
+      "the universal property of transferAb"
+    ]
+  },
+  {
+    "id": "ann-center-connection",
+    "proofId": "sylow-theorems-oq-05",
+    "range": {
+      "startLine": 147,
+      "endLine": 155
+    },
+    "type": "insight",
+    "title": "Mathlib's Central Transfer as a Universal Factorization",
+    "content": "Mathlib's central transfer transferCenterPow G : g ↦ g^[G:Z(G)] is shown to equal (Abelianization.lift id) ∘ transferAb (center G). The center is already abelian, so its abelianization collapses and transfer (id) recovers the power map (Mathlib's transfer_center_eq_pow). This exhibits a named Mathlib Burnside-transfer map as one instance of the universal factorization — the cleanest concrete connection available, since the center carries a canonical CommGroup instance (unlike the ad hoc instance baked into transferSylow).",
+    "mathContext": "transferCenterPow G g = ⟨g^[G:Z(G)], …⟩ = transfer (id_{Z(G)}) g = (Abelianization.lift id ∘ transferAb (Z(G))) g. The collapse Abelianization(Z(G)) → Z(G) is Abelianization.lift id.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "transferCenterPow",
+      "transfer_center_eq_pow",
+      "center of a group",
+      "CommGroup instance"
+    ],
+    "prerequisites": [
+      "the center Z(G) and transferCenterPow",
+      "the universal property of transferAb"
+    ]
+  }
+]

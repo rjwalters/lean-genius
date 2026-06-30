@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-carnot-oq0101-overview",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 47 },
+    "type": "concept",
+    "title": "The Cosine-Sum Range and Euler's Inequality",
+    "content": "The docstring frames the goal: for an actual triangle (A, B, C > 0, A + B + C = π) the cosine sum cos A + cos B + cos C lies in the sharp range (1, 3/2], with the maximum attained only by the equilateral triangle. Through the parent Carnot angle identity cos A + cos B + cos C = 1 + r/R, this analytic range corresponds exactly to the geometric range (0, 1/2] of r/R, so the upper bound is precisely Euler's inequality r ≤ R/2. Everything follows from one completing-the-square decomposition.",
+    "mathContext": "$1 < \\cos A + \\cos B + \\cos C \\le \\tfrac{3}{2}, \\qquad \\tfrac{r}{R} = \\cos A + \\cos B + \\cos C - 1 \\in (0, \\tfrac12].$",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler's inequality", "Carnot's theorem", "circumradius", "inradius", "triangle inequality"],
+    "prerequisites": ["triangle geometry", "trigonometry"]
+  },
+  {
+    "id": "ann-carnot-oq0101-decomp",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 66 },
+    "type": "lemma",
+    "title": "Sum-to-Product Decomposition of the Cosine Sum",
+    "content": "The private lemma cos_sum_decomp is the analytic engine. Using Real.cos_add_cos, cos A + cos B = 2 cos((A+B)/2) cos((A-B)/2); the angle constraint gives (A+B)/2 = π/2 − C/2, so the leading factor becomes sin(C/2) via Real.cos_pi_div_two_sub. With cos C = 1 − 2 sin²(C/2), the whole sum collapses to 1 + 2 sin(C/2) cos((A-B)/2) − 2 sin²(C/2), closed by linear_combination. This couples all three angles into the two scalars sin(C/2) and cos((A-B)/2).",
+    "mathContext": "$\\cos A + \\cos B + \\cos C = 1 + 2\\sin\\tfrac{C}{2}\\cos\\tfrac{A-B}{2} - 2\\sin^2\\tfrac{C}{2}.$",
+    "significance": "key",
+    "relatedConcepts": ["sum-to-product", "double-angle formula", "complementary angle identity", "linear_combination"],
+    "prerequisites": ["trigonometric identities"]
+  },
+  {
+    "id": "ann-carnot-oq0101-upper",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 68, "endLine": 81 },
+    "type": "theorem",
+    "title": "Sharp Upper Bound via Completing the Square",
+    "content": "cos_sum_le bounds the cosine sum by 3/2. The decomposition rearranges to 3/2 − sum = 2(sin(C/2) − 1/2)² + 2 sin(C/2)(1 − cos((A-B)/2)). The first term is a square; the second is nonnegative because sin(C/2) ≥ 0 (the half-angle lies in [0, π]) and cos((A-B)/2) ≤ 1. With these two nonnegativity facts nlinarith closes the bound. The argument never splits on acute/obtuse.",
+    "mathContext": "$\\tfrac{3}{2} - (\\cos A + \\cos B + \\cos C) = 2\\big(\\sin\\tfrac{C}{2} - \\tfrac12\\big)^2 + 2\\sin\\tfrac{C}{2}\\big(1 - \\cos\\tfrac{A-B}{2}\\big) \\ge 0.$",
+    "significance": "key",
+    "relatedConcepts": ["completing the square", "Euler's inequality", "nlinarith", "sum of squares"],
+    "prerequisites": ["inequalities", "trigonometry"]
+  },
+  {
+    "id": "ann-carnot-oq0101-lower",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 83, "endLine": 97 },
+    "type": "theorem",
+    "title": "Strict Lower Bound from Positive Half-Angle Sines",
+    "content": "one_lt_cos_sum rewrites the cosine sum through the parent identity carnot_cos_sum into 1 + 4 sin(A/2) sin(B/2) sin(C/2). Each half-angle lies in (0, π/2), so each sine is strictly positive (Real.sin_pos_of_pos_of_lt_pi); their product is positive and the sum strictly exceeds 1. The bound is approached but never attained as the triangle degenerates.",
+    "mathContext": "$\\cos A + \\cos B + \\cos C = 1 + 4\\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}\\sin\\tfrac{C}{2} > 1.$",
+    "significance": "supporting",
+    "relatedConcepts": ["half-angle product", "positivity", "parent identity"],
+    "prerequisites": ["trigonometry"]
+  },
+  {
+    "id": "ann-carnot-oq0101-euler",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 109 },
+    "type": "theorem",
+    "title": "Euler's Inequality r ≤ R/2",
+    "content": "euler_inequality transports the upper bound through the parent identity. Since cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2) and the sum is ≤ 3/2, a one-line linarith gives 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2. As r/R = 4 sin(A/2) sin(B/2) sin(C/2), this is exactly Euler's classical inequality r ≤ R/2 — the geometric upper endpoint of the cosine-sum range.",
+    "mathContext": "$4\\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}\\sin\\tfrac{C}{2} = \\tfrac{r}{R} \\le \\tfrac12.$",
+    "significance": "key",
+    "relatedConcepts": ["Euler's inequality", "inradius", "circumradius", "linarith"],
+    "prerequisites": ["triangle geometry", "trigonometry"]
+  },
+  {
+    "id": "ann-carnot-oq0101-equality",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 111, "endLine": 164 },
+    "type": "theorem",
+    "title": "Equality Holds Only for the Equilateral Triangle",
+    "content": "cos_sum_eq_three_halves_iff characterizes the maximizer. Equality forces both nonnegative slack terms to vanish: (sin(C/2) − 1/2)² = 0 gives sin(C/2) = 1/2, hence C = π/3 by injectivity of sin on [−π/2, π/2] together with sin(π/6) = 1/2; and sin(C/2)(1 − cos((A-B)/2)) = 0 with sin(C/2) = 1/2 ≠ 0 forces cos((A-B)/2) = 1, hence A = B via cos x = 1 ⟺ x = 0 on (−2π, 2π). With A + B + C = π this yields A = B = C = π/3. The converse is the computation cos(π/3) = 1/2.",
+    "mathContext": "$\\cos A + \\cos B + \\cos C = \\tfrac{3}{2} \\iff A = B = C = \\tfrac{\\pi}{3}.$",
+    "significance": "key",
+    "relatedConcepts": ["equality case", "equilateral triangle", "injectivity of sine", "extremizer"],
+    "prerequisites": ["trigonometry", "real analysis"]
+  }
+]

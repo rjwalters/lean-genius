@@ -1,0 +1,113 @@
+[
+  {
+    "id": "ann-trunc-def",
+    "proofId": "derangements-oq-04",
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Truncated Exponential of e⁻¹",
+    "content": "**Definition** `truncExpNegOne 𝕜 n`:\n```\ntruncExpNegOne 𝕜 n = ∑ k ∈ range n, (-1)^k / k!\n```\n\nThe order-`n` truncation of the exponential series of $e^{-1} = \\sum_{k\\ge 0}(-1)^k/k!$, taken in a field `𝕜`. The `range n` (rather than `range (n+1)`) convention is chosen so that `truncExpNegOne 𝕜 (n+1)` is the partial sum through the `(-1)^n/n!` term, matching the closed form for `D(n)`.",
+    "mathContext": "\\sum_{k=0}^{n-1} \\frac{(-1)^k}{k!}",
+    "significance": "standard",
+    "relatedConcepts": [
+      "exponential series",
+      "partial sum",
+      "factorial"
+    ],
+    "prerequisites": [
+      "finite sums over Finset.range",
+      "the exponential series of e^x"
+    ]
+  },
+  {
+    "id": "ann-closed-form",
+    "proofId": "derangements-oq-04",
+    "range": {
+      "startLine": 56,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Closed Form: D(n) = n! · ∑(-1)^k/k! Over a Field",
+    "content": "**Theorem** `numDerangements_closed_form` (over any `[Field 𝕜] [CharZero 𝕜]`):\n```\n(numDerangements n : 𝕜) = (n! : 𝕜) * ∑ k ∈ range (n+1), (-1)^k / k!\n```\n\nProved by **ordinary induction** on `n` using Mathlib's clean integer recurrence `numDerangements_succ : (D(n+1) : ℤ) = (n+1)·D(n) - (-1)^n`.\n\n**Base case** (n=0): `D(0)=1` and `0!·∑_{k<1}(-1)^k/k! = 1·1 = 1`; closed by `simp`.\n\n**Inductive step**: cast the recurrence into `𝕜`; split the target sum with `Finset.sum_range_succ` into the order-n sum plus `(-1)^{n+1}/(n+1)!`; substitute the induction hypothesis `D(n) = n!·S_n` and rewrite `(n+1)! = (n+1)·n!`. The residual goal `(n+1)(n!·S) - (-1)^n = (n+1)!·S + (-1)^{n+1}` is closed by `field_simp; ring` — `field_simp` clears the (invertible, since char zero) factorial denominators, and `ring` uses `(-1)^{n+1} = -(-1)^n`.",
+    "mathContext": "(D_n : \\mathbb{K}) = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!}",
+    "significance": "key",
+    "relatedConcepts": [
+      "numDerangements_succ",
+      "Finset.sum_range_succ",
+      "Nat.factorial_succ",
+      "CharZero",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "the derangement count numDerangements and its integer recurrence D(n+1)=(n+1)D(n)-(-1)^n",
+      "induction over ℕ",
+      "invertibility of factorials in a characteristic-zero field"
+    ]
+  },
+  {
+    "id": "ann-charzero-role",
+    "proofId": "derangements-oq-04",
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    },
+    "type": "insight",
+    "title": "Why Characteristic Zero",
+    "content": "The hypothesis `CharZero 𝕜` is used in exactly one place: to know `(k! : 𝕜) ≠ 0` so that the factorial denominators can be cleared. The line\n```\nhave hne : ((n+1)! : 𝕜) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero (n+1)\n```\ntransports the ℕ-level fact `Nat.factorial_ne_zero` into `𝕜` via the characteristic-zero cast. Without char zero the statement can fail (e.g. in `𝔽_p` the factorials `k!` for `k ≥ p` vanish), so this is the sharp hypothesis for a field-level closed form.",
+    "mathContext": "\\operatorname{char}\\mathbb{K}=0 \\implies (k! : \\mathbb{K}) \\neq 0",
+    "significance": "key",
+    "relatedConcepts": [
+      "CharZero",
+      "Nat.factorial_ne_zero",
+      "exact_mod_cast"
+    ],
+    "prerequisites": [
+      "characteristic of a field",
+      "casting ℕ facts into a field"
+    ]
+  },
+  {
+    "id": "ann-div-form",
+    "proofId": "derangements-oq-04",
+    "range": {
+      "startLine": 102,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Division Form: D(n)/n! = ∑(-1)^k/k!",
+    "content": "**Theorem** `numDerangements_div_factorial`:\n```\n(numDerangements n : 𝕜) / n! = ∑ k ∈ range (n+1), (-1)^k / k!\n```\n\nDivides the closed form through by the nonzero `n!`: after `numDerangements_closed_form`, the proof rewrites `mul_comm`, `mul_div_assoc`, and `div_self hne` (with `hne : (n! : 𝕜) ≠ 0`) to cancel the factorial. This is precisely the **finite** identity underlying Mathlib's asymptotic `numDerangements_tendsto_inv_e` (D(n)/n! → 1/e): the left side is the probability that a random permutation is a derangement, the right side its exact alternating partial sum.",
+    "mathContext": "\\frac{D_n}{n!} = \\sum_{k=0}^n \\frac{(-1)^k}{k!}",
+    "significance": "key",
+    "relatedConcepts": [
+      "numDerangements_tendsto_inv_e",
+      "div_self",
+      "probability of a derangement"
+    ],
+    "prerequisites": [
+      "the closed form for D(n)",
+      "cancellation of a nonzero factor in a field"
+    ]
+  },
+  {
+    "id": "ann-sanity-d4",
+    "proofId": "derangements-oq-04",
+    "range": {
+      "startLine": 112,
+      "endLine": 116
+    },
+    "type": "example",
+    "title": "Sanity Check: D(4) = 9",
+    "content": "**Example**: the general closed form reproduces the small known value\n$$ D_4 = 9 = 4!\\left(1 - 1 + \\tfrac12 - \\tfrac16 + \\tfrac1{24}\\right) = 24\\cdot\\tfrac38. $$\nThe `example` instantiates `numDerangements_closed_form_rat 4`, confirming over ℚ that the abstract field theorem agrees with the concrete derangement count.",
+    "mathContext": "D_4 = 9 = 24\\cdot\\tfrac{3}{8}",
+    "significance": "standard",
+    "relatedConcepts": [
+      "numDerangements_closed_form_rat",
+      "small derangement values"
+    ],
+    "prerequisites": [
+      "evaluating the closed form at n=4"
+    ]
+  }
+]

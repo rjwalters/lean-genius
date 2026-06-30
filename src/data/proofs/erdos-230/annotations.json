@@ -159,13 +159,13 @@
     "id": "ann-trivial-bound",
     "proofId": "erdos-230",
     "range": {
-      "startLine": 93,
-      "endLine": 95
+      "startLine": 102,
+      "endLine": 104
     },
     "type": "concept",
     "title": "Trivial Lower Bound: sup ≥ √n",
     "content": "The sup norm always exceeds the $L^2$ norm: $\\|P\\|_\\infty \\geq \\sqrt{n}$ for any unimodular polynomial of degree $n \\geq 1$. This is the baseline lower bound that Erdős asked whether one can improve by a multiplicative constant $(1+c)$.",
-    "mathContext": "From the general inequality $\\|f\\|_\\infty \\geq \\|f\\|_2$ (for probability measures on compact spaces), we get $\\sup_{|z|=1} |P(z)| \\geq \\left(\\frac{1}{2\\pi}\\int_0^{2\\pi} |P(e^{i\\theta})|^2 d\\theta\\right)^{1/2} = \\sqrt{n}$. The proof is marked `sorry` as it requires the measure-theoretic inequality.",
+    "mathContext": "From the general inequality $\\|f\\|_\\infty \\geq \\|f\\|_2$ (for probability measures on compact spaces), we get $\\sup_{|z|=1} |P(z)| \\geq \\left(\\frac{1}{2\\pi}\\int_0^{2\\pi} |P(e^{i\\theta})|^2 d\\theta\\right)^{1/2} = \\sqrt{n}$. This measure-theoretic comparison is recorded as the explicit axiom `supNorm_ge_l2norm` (a full Lean proof would require Lebesgue integration over the circle); `sup_ge_l2` is derived from it.",
     "significance": "key",
     "relatedConcepts": [
       "Lp norm comparison",
@@ -181,8 +181,8 @@
     "id": "ann-false-conj",
     "proofId": "erdos-230",
     "range": {
-      "startLine": 108,
-      "endLine": 111
+      "startLine": 117,
+      "endLine": 120
     },
     "type": "definition",
     "title": "The False Erdős-Newman Conjecture",
@@ -204,12 +204,12 @@
     "id": "ann-conj-false",
     "proofId": "erdos-230",
     "range": {
-      "startLine": 116,
-      "endLine": 119
+      "startLine": 155,
+      "endLine": 188
     },
     "type": "concept",
     "title": "Conjecture Is False",
-    "content": "States that the Erdős-Newman conjecture is false ($\\neg \\texttt{ErdosNewmanConjecture}$). The proof sketch extracts a contradiction from Kahane's ultraflat theorem but is currently marked `sorry`.",
+    "content": "States that the Erdős-Newman conjecture is false ($\\neg \\texttt{ErdosNewmanConjecture}$). `kahane_disproves` gives the complete proof — extracting a contradiction from Kahane's ultraflat theorem — and `erdos_newman_false` is the same result under the historical name.",
     "mathContext": "The proof strategy: assume the conjecture holds with constant $c > 0$. Apply Kahane's theorem with $\\varepsilon = c/2$ to get an ultraflat $P$ with $\\|P\\|_\\infty \\leq (1 + c/2)\\sqrt{n} < (1+c)\\sqrt{n}$, contradicting the conjecture.",
     "significance": "key",
     "relatedConcepts": [

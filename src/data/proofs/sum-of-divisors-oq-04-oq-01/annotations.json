@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "sum-of-divisors-oq-04-oq-01",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "context",
+    "title": "Prime Powers Are Always Deficient — A Qualitative Classification",
+    "content": "Where OQ-04 gave the structural identity σ(pⁱ)(p−1) = pⁱ⁺¹−1 and the base entry classified specific numbers by native_decide, this entry proves the qualitative classification of every prime power, axiom-free and uniformly in p and k: prime powers are strictly deficient (never perfect or abundant); powers of two are 'almost perfect' (deficient by exactly 1); and the abundancy index σ(pᵏ)/pᵏ is bounded by p/(p−1) ≤ 2. Everything reduces to the integer identity scaled by the positive factor p−1.",
+    "mathContext": "$\\sigma(p^k) < 2p^k$ always; $\\sigma(2^k)+1 = 2\\cdot 2^k$; $\\dfrac{\\sigma(p^k)}{p^k} < \\dfrac{p}{p-1} \\le 2$.",
+    "significance": "context",
+    "relatedConcepts": ["deficient numbers", "perfect numbers", "abundancy index", "almost perfect numbers"],
+    "prerequisites": ["divisor-sum σ on prime powers", "perfect/deficient/abundant classification"]
+  },
+  {
+    "id": "ann-identity",
+    "proofId": "sum-of-divisors-oq-04-oq-01",
+    "range": { "startLine": 37, "endLine": 43 },
+    "type": "theorem",
+    "title": "The Engine Identity σ(pⁱ)(p−1) = pⁱ⁺¹−1",
+    "content": "Restates OQ-04's defining integer identity locally, the engine for every result below. Proved by `sigma_one_apply_prime_pow` (open geometric sum) + `geom_sum_mul` (collapse). Working with the multiplied form avoids division in ℕ and turns the downstream inequalities into elementary nonnegativity statements.",
+    "mathContext": "$\\sigma_1(p^i)(p-1) = p^{i+1}-1$ over $\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "divisor sum on prime powers", "geom_sum_mul"],
+    "prerequisites": ["σ on prime powers", "geometric sum collapse"]
+  },
+  {
+    "id": "ann-deficient",
+    "proofId": "sum-of-divisors-oq-04-oq-01",
+    "range": { "startLine": 45, "endLine": 63 },
+    "type": "theorem",
+    "title": "Every Prime Power Is Deficient: σ(pᵏ) < 2pᵏ",
+    "content": "The central inequality. Multiplying the deficiency gap 2pᵏ − σ(pᵏ) by the positive factor (p−1) turns it (via `linear_combination` with the engine identity) into pᵏ(p−2) + 1 ≥ 1 > 0 — elementary nonnegativity since p ≥ 2. `nlinarith` closes it. Consequence: no prime power is perfect or abundant; they are strictly deficient.",
+    "mathContext": "$(2p^k - \\sigma(p^k))(p-1) = p^k(p-2)+1 \\ge 1 > 0$, so $\\sigma(p^k) < 2p^k$.",
+    "significance": "key",
+    "relatedConcepts": ["deficiency", "abundancy", "nonnegativity argument", "linear_combination"],
+    "prerequisites": ["the engine identity", "nlinarith"]
+  },
+  {
+    "id": "ann-almost-perfect",
+    "proofId": "sum-of-divisors-oq-04-oq-01",
+    "range": { "startLine": 65, "endLine": 74 },
+    "type": "theorem",
+    "title": "Powers of Two Are Almost Perfect: σ(2ᵏ)+1 = 2·2ᵏ",
+    "content": "For p = 2 the deficiency gap collapses to exactly 1: σ(2ᵏ) = 2ᵏ⁺¹ − 1, one short of 2·2ᵏ. This is the classical 'almost perfect' property — powers of two are the least deficient prime powers, the boundary case of the general deficiency bound (where p − 2 = 0). It is also why even perfect numbers involve 2ᵏ⁻¹ via Euclid–Euler.",
+    "mathContext": "$\\sigma(2^k) = 2^{k+1}-1 = 2\\cdot 2^k - 1$, so $\\sigma(2^k) + 1 = 2\\cdot 2^k$ (minimal positive deficiency).",
+    "significance": "supporting",
+    "relatedConcepts": ["almost perfect numbers", "powers of two", "Euclid–Euler theorem", "minimal deficiency"],
+    "prerequisites": ["the engine identity at p=2"]
+  },
+  {
+    "id": "ann-not-perfect",
+    "proofId": "sum-of-divisors-oq-04-oq-01",
+    "range": { "startLine": 76, "endLine": 85 },
+    "type": "theorem",
+    "title": "No Prime Power Is Perfect",
+    "content": "Connects the deficiency bound to the base entry's `Nat.Perfect` predicate: perfection requires σ(n) = 2n, but σ(pᵏ) < 2pᵏ strictly, so the equality fails (`omega` closes the contradiction). A prime power can never be perfect — perfect numbers must have at least two distinct prime factors.",
+    "mathContext": "$\\mathrm{Perfect}(n) \\iff \\sigma(n)=2n$; since $\\sigma(p^k) < 2p^k$, $p^k$ is never perfect.",
+    "significance": "supporting",
+    "relatedConcepts": ["perfect numbers", "Nat.Perfect", "deficiency bound"],
+    "prerequisites": ["the deficiency theorem", "definition of perfect"]
+  },
+  {
+    "id": "ann-abundancy-bound",
+    "proofId": "sum-of-divisors-oq-04-oq-01",
+    "range": { "startLine": 87, "endLine": 104 },
+    "type": "theorem",
+    "title": "Sharp Abundancy Bound: σ(pᵏ)/pᵏ < p/(p−1)",
+    "content": "Over ℚ, the abundancy index of a prime power is strictly below p/(p−1). Via `div_lt_div_iff` and the engine identity read over ℚ, the goal reduces to pᵏ⁺¹ − 1 < pᵏ⁺¹, i.e. −1 < 0. The bound p/(p−1) is sharp: as k → ∞ the index increases to it (it equals the sum of the geometric series ∑ p⁻ʲ), so p/(p−1) is the supremum over the powers of p.",
+    "mathContext": "$\\dfrac{\\sigma(p^k)}{p^k} = \\dfrac{p^{k+1}-1}{p^k(p-1)} < \\dfrac{p}{p-1} = \\sum_{j\\ge 0} p^{-j}$ (supremum as $k\\to\\infty$).",
+    "significance": "key",
+    "relatedConcepts": ["abundancy index", "supremum", "geometric series sum", "div_lt_div_iff"],
+    "prerequisites": ["abundancy index σ(n)/n", "rational inequalities"]
+  },
+  {
+    "id": "ann-abundancy-lt-two",
+    "proofId": "sum-of-divisors-oq-04-oq-01",
+    "range": { "startLine": 106, "endLine": 115 },
+    "type": "theorem",
+    "title": "Abundancy of a Prime Power Is Below 2",
+    "content": "The deficiency bound over ℚ: since p ≥ 2, the supremum p/(p−1) is itself ≤ 2 (equality at p = 2), so σ(pᵏ)/pᵏ < 2 by transitivity. This is the rational restatement of 'prime powers are deficient', and shows the abundancy index of any prime power stays strictly under the perfect threshold 2.",
+    "mathContext": "$p \\ge 2 \\Rightarrow \\dfrac{p}{p-1} \\le 2$, so $\\dfrac{\\sigma(p^k)}{p^k} < 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["abundancy index", "perfect threshold 2", "transitivity of inequalities"],
+    "prerequisites": ["the sharp abundancy bound"]
+  },
+  {
+    "id": "ann-divisor-count",
+    "proofId": "sum-of-divisors-oq-04-oq-01",
+    "range": { "startLine": 117, "endLine": 121 },
+    "type": "theorem",
+    "title": "Bonus: Divisor Count τ(pᵏ) = k + 1",
+    "content": "A structural identity generalizing OQ-04's τ(p) = 2: a prime power pᵏ has exactly k + 1 divisors (1, p, p², …, pᵏ). Read directly off `sigma_zero_apply_prime_pow`. This is the σ₀ companion to the σ₁ deficiency results.",
+    "mathContext": "$\\tau(p^k) = \\sigma_0(p^k) = k+1$ (the divisors $p^0, p^1, \\dots, p^k$).",
+    "significance": "supporting",
+    "relatedConcepts": ["divisor-counting function τ", "σ₀", "prime power divisors"],
+    "prerequisites": ["σ₀ on prime powers"]
+  }
+]

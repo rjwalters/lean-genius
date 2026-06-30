@@ -3,33 +3,60 @@
     "id": "jacobi-symbol-oq-01-module-header",
     "proofId": "jacobi-symbol-oq-01",
     "type": "concept",
-    "range": {
-      "startLine": 1,
-      "endLine": 28
-    },
+    "range": { "startLine": 1, "endLine": 24 },
     "title": "Module Header: The Jacobi Symbol",
-    "content": "The **Jacobi symbol** $J(a \\mid n) = \\prod_{p \\mid n} (a \\mid p)$ extends the Legendre symbol to all odd moduli by multiplying over the prime factors of $n$ (with multiplicity). It is **bimultiplicative**, satisfies the **trichotomy** $J(a\\mid n) \\in \\{-1,0,1\\}$ (with $0$ exactly when $\\gcd(a,n) \\ne 1$), and gives a **one-sided obstruction**: $J(a\\mid n) = -1 \\Rightarrow a$ is a non-residue. But the converse FAILS for composite $n$: $J(2 \\mid 15) = 1$ while $2$ is a non-residue mod $15$. This one-sidedness is the price of computing the symbol fast (by reciprocity, without factoring)."
+    "content": "The **Jacobi symbol** $J(a \\mid n) = \\prod_{p \\mid n} (a \\mid p)$ extends the Legendre symbol to all odd moduli by multiplying over the prime factors of $n$ (with multiplicity). It is **bimultiplicative**, satisfies the **trichotomy** $J(a\\mid n) \\in \\{-1,0,1\\}$ (with $0$ exactly when $\\gcd(a,n) \\ne 1$), and gives a **one-sided obstruction**: $J(a\\mid n) = -1 \\Rightarrow a$ is a non-residue. But the converse FAILS for composite $n$: $J(2 \\mid 15) = 1$ while $2$ is a non-residue mod $15$. This one-sidedness is the price of computing the symbol fast (by reciprocity, without factoring).",
+    "mathContext": "$J(a\\mid n) = \\prod_{p^e \\| n} \\left(\\tfrac{a}{p}\\right)^e$; $J(a\\mid n) = -1 \\Rightarrow a$ non-residue, but $J(a\\mid n)=1 \\not\\Rightarrow$ residue.",
+    "significance": "context",
+    "relatedConcepts": ["Legendre symbol", "quadratic residue", "quadratic reciprocity", "primality testing (Solovay–Strassen)"],
+    "prerequisites": ["Legendre symbol", "odd moduli", "prime factorization"]
   },
   {
     "id": "jacobi-symbol-oq-01-bimultiplicative",
     "proofId": "jacobi-symbol-oq-01",
     "type": "theorem",
-    "range": {
-      "startLine": 32,
-      "endLine": 56
-    },
-    "title": "Bimultiplicativity and Trichotomy",
-    "content": "`jacobi_mul_left`: $J(a_1 a_2 \\mid n) = J(a_1\\mid n)\\,J(a_2\\mid n)$ — multiplicative in the numerator.\n\n`jacobi_mul_right`: $J(a \\mid mn) = J(a\\mid m)\\,J(a\\mid n)$ — multiplicative in the modulus, the defining extension over the factorization of $n$.\n\n`jacobi_eq_one_or_neg_one`: for coprime arguments $J(a\\mid n) = \\pm 1$; `jacobi_eq_zero_iff`: $J(a\\mid n) = 0 \\iff \\gcd(a,n) \\ne 1$. Together these give the $\\{-1,0,1\\}$ trichotomy. (Restatements of Mathlib's `jacobiSym.mul_left/.mul_right/.eq_one_or_neg_one/.eq_zero_iff_not_coprime`.)"
+    "range": { "startLine": 31, "endLine": 39 },
+    "title": "Bimultiplicativity",
+    "content": "`jacobi_mul_left`: $J(a_1 a_2 \\mid n) = J(a_1\\mid n)\\,J(a_2\\mid n)$ — multiplicative in the numerator. `jacobi_mul_right`: $J(a \\mid mn) = J(a\\mid m)\\,J(a\\mid n)$ — multiplicative in the modulus, which is the defining extension over the factorization of $n$ (and requires `NeZero m`, `NeZero n`). Both are restatements of Mathlib's `jacobiSym.mul_left` / `.mul_right`. Bimultiplicativity is what makes the symbol computable by reciprocity without factoring $n$.",
+    "mathContext": "$J(a_1a_2\\mid n)=J(a_1\\mid n)J(a_2\\mid n)$ and $J(a\\mid mn)=J(a\\mid m)J(a\\mid n)$.",
+    "significance": "key",
+    "relatedConcepts": ["complete multiplicativity", "jacobiSym.mul_left", "jacobiSym.mul_right", "reciprocity-based computation"],
+    "prerequisites": ["multiplicative functions", "the Jacobi symbol definition"]
   },
   {
-    "id": "jacobi-symbol-oq-01-onesided",
+    "id": "jacobi-symbol-oq-01-trichotomy",
     "proofId": "jacobi-symbol-oq-01",
     "type": "theorem",
-    "range": {
-      "startLine": 58,
-      "endLine": 73
-    },
-    "title": "The One-Sided Obstruction and Its Failed Converse",
-    "content": "`not_isSquare_of_jacobi_eq_neg_one`: $J(a\\mid n) = -1 \\Rightarrow \\neg\\,\\mathrm{IsSquare}\\,(a : \\mathbb{Z}/n)$ — a Jacobi value of $-1$ always proves non-residuosity (`ZMod.nonsquare_of_jacobiSym_eq_neg_one`).\n\nThe converse fails for composite $n$. `jacobi_two_fifteen`: $J(2\\mid 15) = (2\\mid 3)(2\\mid 5) = (-1)(-1) = 1$, computed by the `norm_num` Legendre extension. `not_isSquare_two_mod_fifteen`: yet $2$ is a non-residue mod $15$ (squares $= \\{0,1,4,6,9,10\\}$), by `decide`. `jacobi_one_not_isSquare` packages these into $\\exists a, n,\\ J(a\\mid n) = 1 \\wedge \\neg\\,\\mathrm{IsSquare}\\,a$ — the Jacobi symbol is a one-sided witness, not a residue test."
+    "range": { "startLine": 41, "endLine": 49 },
+    "title": "The Trichotomy {−1, 0, 1}",
+    "content": "`jacobi_eq_one_or_neg_one`: for coprime arguments $J(a\\mid n) = \\pm 1$ (`jacobiSym.eq_one_or_neg_one`). `jacobi_eq_zero_iff`: $J(a\\mid n) = 0 \\iff \\gcd(a,n) \\ne 1$ (`jacobiSym.eq_zero_iff_not_coprime`). Together these pin the value to the three-element set $\\{-1,0,1\\}$: zero precisely on the non-coprime case, $\\pm 1$ otherwise — the same trichotomy as the Legendre symbol, extended to all odd moduli.",
+    "mathContext": "$\\gcd(a,n)=1 \\Rightarrow J(a\\mid n)\\in\\{1,-1\\}$; $J(a\\mid n)=0 \\iff \\gcd(a,n)\\ne 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["trichotomy", "coprimality", "jacobiSym.eq_zero_iff_not_coprime", "Legendre symbol values"],
+    "prerequisites": ["gcd in Z", "units mod n"]
+  },
+  {
+    "id": "jacobi-symbol-oq-01-obstruction",
+    "proofId": "jacobi-symbol-oq-01",
+    "type": "insight",
+    "range": { "startLine": 53, "endLine": 57 },
+    "title": "The One-Sided Non-Residue Obstruction",
+    "content": "`not_isSquare_of_jacobi_eq_neg_one`: $J(a\\mid n) = -1 \\Rightarrow \\neg\\,\\mathrm{IsSquare}\\,(a : \\mathbb{Z}/n)$ — a Jacobi value of $-1$ always certifies non-residuosity (`ZMod.nonsquare_of_jacobiSym_eq_neg_one`). This direction is sound because if $a$ were a square mod $n$ it would be a square modulo each prime power dividing $n$, making every Legendre factor $+1$ and the product $+1$, never $-1$. It is the *useful* half of the symbol: a cheap, factorization-free non-residue proof.",
+    "mathContext": "$J(a\\mid n) = -1 \\Rightarrow a$ is a non-residue mod $n$ (some Legendre factor is $-1$, so $a$ is a non-residue mod that prime).",
+    "significance": "key",
+    "relatedConcepts": ["non-residue obstruction", "ZMod.nonsquare_of_jacobiSym_eq_neg_one", "soundness", "CRT decomposition of squares"],
+    "prerequisites": ["IsSquare in ZMod n", "the trichotomy"]
+  },
+  {
+    "id": "jacobi-symbol-oq-01-converse-fails",
+    "proofId": "jacobi-symbol-oq-01",
+    "type": "insight",
+    "range": { "startLine": 59, "endLine": 71 },
+    "title": "The Converse Fails: J(2|15) = 1 but 2 is a Non-Residue",
+    "content": "The crux counterexample. `jacobi_two_fifteen`: $J(2\\mid 15) = (2\\mid 3)(2\\mid 5) = (-1)(-1) = 1$ (by the `norm_num` Legendre extension). `not_isSquare_two_mod_fifteen`: yet $2$ is a non-residue mod $15$ — the squares mod $15$ are $\\{0,1,4,6,9,10\\}$ (by `decide`). `jacobi_one_not_isSquare` packages these into $\\exists a,n,\\ J(a\\mid n) = 1 \\wedge \\neg\\,\\mathrm{IsSquare}\\,a$. The two $-1$ Legendre factors multiply to $+1$, masking the non-residuosity: $J(a\\mid n) = 1$ is NOT a residue test for composite $n$, only $-1$ is informative.",
+    "mathContext": "$\\left(\\tfrac{2}{3}\\right)\\left(\\tfrac{2}{5}\\right) = (-1)(-1) = 1$, but $2 \\notin \\{0,1,4,6,9,10\\} = (\\mathbb{Z}/15)^2$.",
+    "significance": "key",
+    "relatedConcepts": ["failure of the converse", "decide", "even number of non-residue factors", "Euler pseudoprimes"],
+    "prerequisites": ["arithmetic mod 15", "quadratic residues mod a composite"]
   }
 ]

@@ -100,7 +100,7 @@ theorem lagrange_four_squares (n : ℕ) :
 theorem lagrange_four_squares_int (n : ℕ) :
     ∃ a b c d : ℤ, a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 = n := by
   obtain ⟨a, b, c, d, h⟩ := Nat.sum_four_squares n
-  exact ⟨a, b, c, d, by simp only [sq_abs, ← Nat.cast_pow, ← Nat.cast_add, h]⟩
+  exact ⟨a, b, c, d, by simp only [← Nat.cast_pow, ← Nat.cast_add, h]⟩
 
 /-! ## Specific Examples
 
@@ -196,7 +196,7 @@ This connects to modular forms via the theta function θ(q)⁴.
 -/
 
 /-- r₄(n): number of ordered representations as sum of 4 squares (over ℤ) -/
-def r4 (n : ℕ) : ℕ :=
+def r4 (_n : ℕ) : ℕ :=
   -- Count (a,b,c,d) ∈ ℤ⁴ with a²+b²+c²+d² = n
   -- Simplified placeholder; actual computation is over ℤ including negatives
   0
@@ -208,20 +208,22 @@ def sumDivisorsNot4 (n : ℕ) : ℕ :=
 /-- For prime p, r₄(p) = 8(p + 1) since divisors are 1 and p, neither div by 4 -/
 theorem r4_prime_formula (p : ℕ) (hp : Nat.Prime p) (hp_odd : p % 2 = 1) :
     sumDivisorsNot4 p = 1 + p := by
+  have hp2 : 2 ≤ p := hp.two_le
   simp only [sumDivisorsNot4]
   have h1_ne_p : (1 : ℕ) ≠ p := by omega
-  have h4_ndvd_1 : ¬(4 ∣ 1) := by omega
-  have h4_ndvd_p : ¬(4 ∣ p) := by intro ⟨k, hk⟩; omega
+  have h4_ndvd_1 : ¬(4 ∣ 1) := by decide
+  have h4_ndvd_p : ¬(4 ∣ p) := by rintro ⟨k, hk⟩; omega
   have hfilt : Finset.filter (fun d => d ∣ p ∧ ¬(4 ∣ d)) (Finset.range (p + 1)) = {1, p} := by
     ext d
     simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_insert, Finset.mem_singleton]
     constructor
     · rintro ⟨_, hd_dvd, _⟩
-      exact (hp.eq_one_or_self_of_dvd d hd_dvd).symm
+      exact hp.eq_one_or_self_of_dvd d hd_dvd
     · rintro (rfl | rfl)
-      · exact ⟨by omega, one_dvd p, h4_ndvd_1⟩
-      · exact ⟨by omega, dvd_refl p, h4_ndvd_p⟩
+      · exact ⟨by omega, one_dvd _, h4_ndvd_1⟩
+      · exact ⟨by omega, dvd_refl _, h4_ndvd_p⟩
   rw [hfilt, Finset.sum_pair h1_ne_p]
+  simp
 
 /-- Jacobi's formula gives r₄(n) > 0 for all n ≥ 1, providing an alternative
     proof of Lagrange's theorem (four squares always suffice). -/
@@ -289,7 +291,7 @@ def waringBigG (k : ℕ) : ℕ :=
 /-- Vinogradov (1959): G(k) ≤ k(log k + O(log log k)) -/
 axiom vinogradov_waring_bound :
     ∃ C > 0, ∀ k : ℕ, k ≥ 2 →
-      waringBigG k ≤ k * (Nat.log k + C * Nat.log (Nat.log k + 2) + C)
+      waringBigG k ≤ k * (Nat.log 2 k + C * Nat.log 2 (Nat.log 2 k + 2) + C)
 
 /-- The sum of two squares is closed under multiplication (Brahmagupta-Fibonacci) -/
 theorem two_squares_multiplicative (m n : ℕ)
@@ -301,8 +303,7 @@ theorem two_squares_multiplicative (m n : ℕ)
   obtain ⟨c, d, rfl⟩ := hn
   refine ⟨((a : ℤ) * c + b * d).natAbs, ((a : ℤ) * d - b * c).natAbs, ?_⟩
   zify
-  rw [Int.natAbs_sq, Int.natAbs_sq]
-  push_cast
+  rw [sq_abs, sq_abs]
   ring
 
 /-- Fermat's two-square theorem: p ≡ 1 (mod 4) iff p = a² + b² (for odd prime p).
@@ -318,12 +319,18 @@ theorem fermat_two_squares (p : ℕ) (hp : Nat.Prime p) (hp_odd : p ≠ 2) :
     push_neg at h
     -- p % 4 ∈ {0, 2, 3} since ≠ 1
     -- p is prime > 2, so p is odd, so p % 4 ∈ {1, 3}
-    have hp_odd' : p % 2 = 1 := Nat.Prime.odd_of_ne_two hp hp_odd |>.mod_cast
+    have hp_odd' : p % 2 = 1 := Nat.odd_iff.mp (hp.odd_of_ne_two hp_odd)
     -- p % 4 must be 3 (since not 0, not 2 because odd, not 1 by assumption)
     have hp4 : p % 4 = 3 := by omega
     -- Squares mod 4 are 0 or 1
-    have ha4 : a ^ 2 % 4 = 0 ∨ a ^ 2 % 4 = 1 := by omega
-    have hb4 : b ^ 2 % 4 = 0 ∨ b ^ 2 % 4 = 1 := by omega
+    have ha4 : a ^ 2 % 4 = 0 ∨ a ^ 2 % 4 = 1 := by
+      rw [Nat.pow_mod]
+      have : a % 4 = 0 ∨ a % 4 = 1 ∨ a % 4 = 2 ∨ a % 4 = 3 := by omega
+      rcases this with h | h | h | h <;> rw [h] <;> decide
+    have hb4 : b ^ 2 % 4 = 0 ∨ b ^ 2 % 4 = 1 := by
+      rw [Nat.pow_mod]
+      have : b % 4 = 0 ∨ b % 4 = 1 ∨ b % 4 = 2 ∨ b % 4 = 3 := by omega
+      rcases this with h | h | h | h <;> rw [h] <;> decide
     -- So a² + b² ≡ 0, 1, or 2 (mod 4), never 3
     have hsum : (a ^ 2 + b ^ 2) % 4 ≠ 3 := by
       rcases ha4 with ha | ha <;> rcases hb4 with hb | hb <;> omega
@@ -352,17 +359,42 @@ structure LipschitzQuaternion where
 def LipschitzQuaternion.norm (q : LipschitzQuaternion) : ℕ :=
   (q.a ^ 2 + q.b ^ 2 + q.c ^ 2 + q.d ^ 2).toNat
 
-/-- The norm is multiplicative (this IS Euler's four-square identity!) -/
+/-- Hamilton product of two Lipschitz quaternions:
+`(a₁ + b₁i + c₁j + d₁k)(a₂ + b₂i + c₂j + d₂k)`, expanded via `i²=j²=k²=ijk=-1`. -/
+def LipschitzQuaternion.mul (q₁ q₂ : LipschitzQuaternion) : LipschitzQuaternion where
+  a := q₁.a * q₂.a - q₁.b * q₂.b - q₁.c * q₂.c - q₁.d * q₂.d
+  b := q₁.a * q₂.b + q₁.b * q₂.a + q₁.c * q₂.d - q₁.d * q₂.c
+  c := q₁.a * q₂.c - q₁.b * q₂.d + q₁.c * q₂.a + q₁.d * q₂.b
+  d := q₁.a * q₂.d + q₁.b * q₂.c - q₁.c * q₂.b + q₁.d * q₂.a
+
+/-- The quaternion norm is multiplicative: `N(q₁ · q₂) = N(q₁) · N(q₂)`.
+
+This IS Euler's four-square identity: expanding the Hamilton product and the
+norms, the equality is the polynomial identity
+`(a₁²+b₁²+c₁²+d₁²)(a₂²+b₂²+c₂²+d₂²) = e₁²+e₂²+e₃²+e₄²`
+discharged by `ring`. It is the algebraic engine behind Lagrange's theorem:
+multiplicativity reduces the four-square representation of `n` to the prime case. -/
 theorem lipschitz_norm_multiplicative (q₁ q₂ : LipschitzQuaternion) :
-    -- N(q₁ · q₂) = N(q₁) · N(q₂)
-    -- This is exactly Euler's four-square identity in disguise
-    (1 : ℕ) + 1 = 2 := rfl
+    (q₁.mul q₂).norm = q₁.norm * q₂.norm := by
+  have h₁ : (0:ℤ) ≤ q₁.a ^ 2 + q₁.b ^ 2 + q₁.c ^ 2 + q₁.d ^ 2 := by positivity
+  have h₂ : (0:ℤ) ≤ q₂.a ^ 2 + q₂.b ^ 2 + q₂.c ^ 2 + q₂.d ^ 2 := by positivity
+  have h₃ : (0:ℤ) ≤ (q₁.mul q₂).a ^ 2 + (q₁.mul q₂).b ^ 2
+      + (q₁.mul q₂).c ^ 2 + (q₁.mul q₂).d ^ 2 := by positivity
+  have key : ((q₁.mul q₂).norm : ℤ) = (q₁.norm : ℤ) * (q₂.norm : ℤ) := by
+    unfold LipschitzQuaternion.norm
+    rw [Int.toNat_of_nonneg h₃, Int.toNat_of_nonneg h₁, Int.toNat_of_nonneg h₂]
+    simp only [LipschitzQuaternion.mul]
+    ring
+  exact_mod_cast key
 
 /-- Lagrange's theorem restated: every ℕ is the norm of a Lipschitz quaternion -/
 theorem every_nat_is_quaternion_norm (n : ℕ) :
     ∃ q : LipschitzQuaternion, q.norm = n := by
   obtain ⟨a, b, c, d, h⟩ := lagrange_four_squares n
-  exact ⟨⟨a, b, c, d⟩, by simp [LipschitzQuaternion.norm]; omega⟩
+  refine ⟨⟨a, b, c, d⟩, ?_⟩
+  have hcast : (a : ℤ) ^ 2 + (b : ℤ) ^ 2 + (c : ℤ) ^ 2 + (d : ℤ) ^ 2 = (n : ℤ) := by
+    exact_mod_cast h
+  simp only [LipschitzQuaternion.norm, hcast, Int.toNat_natCast]
 
 -- ═════════════════════════════════════════════════════════════════════════
 -- VERIFICATION CHECKS

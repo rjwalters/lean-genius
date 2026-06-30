@@ -100,15 +100,15 @@
       "id": "monotonicity-and-bound",
       "title": "Section I: Induced Monotonicity and the Bipartite Bound",
       "startLine": 41,
-      "endLine": 68,
-      "summary": "induce_chromaticNumber_le proves χ(G.induce s) ≤ χ(G) via the inclusion embedding; bipartite_chromaticNumber_le_two proves χ ≤ 2 for bipartite graphs; bipartite_induced_chromaticNumber_le_two specializes to induced subgraphs.",
+      "endLine": 51,
+      "summary": "induce_chromaticNumber_le proves χ(G.induce s) ≤ χ(G) via the inclusion embedding; bipartite_chromaticNumber_le_two proves χ ≤ 2 for bipartite graphs.",
       "mathContext": "The two structural facts — induced subgraphs don't raise χ, and bipartite graphs have χ ≤ 2 — are everything the refutation needs."
     },
     {
       "id": "failure",
       "title": "Section II: The Bipartite Case of #740 Fails",
       "startLine": 53,
-      "endLine": 62,
+      "endLine": 68,
       "summary": "no_bipartite_induced_realizes_chromatic: if χ(G) > 2 then no induced bipartite subgraph has χ = χ(G), because such a subgraph would force χ(G) ≤ 2.",
       "mathContext": "The honest, real-chromatic-number replacement for the placeholder file's open no_infinite_bipartite sorry."
     },

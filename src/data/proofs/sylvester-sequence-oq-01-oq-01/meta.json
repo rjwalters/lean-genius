@@ -1,0 +1,180 @@
+{
+  "id": "sylvester-sequence-oq-01-oq-01",
+  "slug": "sylvester-sequence-oq-01-oq-01",
+  "title": "Sylvester's Sequence, oq-01-oq-01: The Reciprocal Sum Converges to 1 (Formal Tendsto and the Egyptian-Fraction tsum)",
+  "description": "The parent entry sylvester-sequence-oq-01 proved the closed-form partial reciprocal sum ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1) for Sylvester's sequence (a₀=2, a_{n+1}=aₙ²-aₙ+1), and observed only informally that 'since a_{n+1}-1 → ∞' the infinite sum equals 1. This follow-up — the parent's first listed open question — discharges that analytic limit formally in ℝ: it proves the linear growth bound n+2 ≤ aₙ, deduces the vanishing tail 1/(a_{n+1}-1) → 0, and concludes the formal convergence Tendsto (fun n => ∑_{k≤n} 1/aₖ) atTop (𝓝 1). Because the terms are nonnegative, the partial-sum limit is upgraded to a genuine HasSum, giving the Egyptian-fraction identity ∑' k, 1/aₖ = 1. Fully machine-checked, 0 sorries, 0 axioms.",
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.SylvesterSequenceOQ01"],
+    "opens": ["SylvesterSequenceOQ01", "Filter", "Topology"],
+    "namespace": "SylvesterSequenceOQ01OQ01",
+    "lineCount": 127,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 5,
+    "trivialSpecializations": 1,
+    "definitionCount": 0,
+    "path": "Proofs/SylvesterSequenceOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "James Joseph Sylvester (1880); formalization extends sylvester-sequence-oq-01",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sylvester%27s_sequence",
+    "date": "1880",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylvesterSequenceOQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "egyptian-fractions",
+      "telescoping",
+      "convergence",
+      "tendsto",
+      "tsum",
+      "sylvester"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Builds on the parent's closed form syl_partial_sum and the bound two_le_syl; the analytic limit is proved from standard Mathlib filter/limit lemmas with no axioms and no structure-encoded hypotheses. #print axioms reports only [propext, Classical.choice, Quot.sound].",
+    "dateAdded": "2026-06-23",
+    "mathlibDependencies": [
+      "tendsto_inv_atTop_zero",
+      "tendsto_atTop_mono",
+      "tendsto_natCast_atTop_atTop",
+      "Tendsto.const_sub",
+      "hasSum_iff_tendsto_nat_of_nonneg",
+      "tendsto_add_atTop_iff_nat",
+      "HasSum.tsum_eq"
+    ],
+    "originalContributions": [
+      "syl_reciprocal_sum_tendsto: the formal Tendsto promotion of the parent's closed-form observation — Tendsto (fun n => ∑_{k≤n} 1/aₖ) atTop (𝓝 1) — which the parent stated only informally",
+      "add_two_le_syl: the linear growth bound n+2 ≤ aₙ, proved by induction from (aₙ-1)² ≥ 1, forcing a_{n+1}-1 → ∞",
+      "tendsto_syl_sub_one_atTop / tendsto_syl_recip_zero: the divergence of the denominators a_{n+1}-1 and the vanishing of the tail 1/(a_{n+1}-1) → 0",
+      "syl_hasSum_one and syl_tsum_one: the Egyptian-fraction identities HasSum (fun k => 1/aₖ) 1 and ∑' k, 1/aₖ = 1, obtained from the nonnegative-partial-sum criterion"
+    ],
+    "prerequisites": [
+      "Filters and Tendsto",
+      "Sequence growth by induction",
+      "tsum / HasSum for nonnegative series"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 127,
+    "relatedProblems": ["sylvester-sequence-oq-01"],
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Sylvester (1880) introduced the sequence a₀=2, a_{n+1}=aₙ²-aₙ+1 (2, 3, 7, 43, 1807, …; OEIS A000058) as the greedy Egyptian-fraction expansion of 1: at each stage subtract the largest unit fraction 1/aₙ keeping the running total below 1. The defining feature of this greedy expansion is that the leftover after n terms is exactly 1/(a_{n+1}-1), so the partial sums approach 1 doubly-exponentially fast. The parent entry captured this as an exact algebraic closed form; the present entry completes the picture by proving the convergence as a formal limit, the statement that makes 'Sylvester's reciprocals sum to 1' a theorem about series rather than a rearranged identity.",
+    "problemStatement": "Let a₀=2 and a_{n+1}=aₙ²-aₙ+1. The parent proved ∑_{k=0}^{n} 1/aₖ = 1 - 1/(a_{n+1}-1). Promote the resulting convergence to a formal statement: prove Tendsto (fun n => ∑_{k=0}^{n} 1/aₖ) atTop (𝓝 1) in ℝ, and package it as HasSum (fun k => 1/aₖ) 1 and ∑' k, 1/aₖ = 1.",
+    "proofStrategy": "The new ingredient the parent omitted is the analytic tail estimate. First prove linear growth n+2 ≤ aₙ by induction: the step a_{n+1} ≥ aₙ + 1 holds because a_{n+1} - aₙ = (aₙ-1)² ≥ 1, so the sequence increases by at least 1 from a₀=2 (this already forces a_{n+1}-1 → ∞, far weaker than the true doubly-exponential growth but all that is needed). From a_{n+1}-1 ≥ aₙ ≥ n+2 ≥ n, tendsto_atTop_mono against tendsto_natCast_atTop_atTop gives a_{n+1}-1 → ∞, and composing with tendsto_inv_atTop_zero gives the vanishing tail 1/(a_{n+1}-1) → 0. Casting the parent's ℚ closed form to ℝ (syl_partial_sum_real) and subtracting the vanishing tail from 1 (Tendsto.const_sub) yields the limit. Finally, since the terms are nonnegative, hasSum_iff_tendsto_nat_of_nonneg upgrades the range-(n+1) partial-sum limit (reindexed via tendsto_add_atTop_iff_nat) to a genuine HasSum, hence ∑' = 1.",
+    "keyInsights": [
+      "Promoting an exact closed form to a Tendsto needs only the crudest divergence of the error denominator: the linear bound a_{n+1}-1 ≥ n suffices, even though Sylvester's sequence actually grows doubly-exponentially.",
+      "The growth step is governed by a perfect square: a_{n+1} - aₙ = aₙ² - 2aₙ + 1 = (aₙ-1)² ≥ 1, so each term advances by at least 1 — a one-line reason the sequence diverges.",
+      "Nonnegativity of the terms is what turns a partial-sum limit into a HasSum: hasSum_iff_tendsto_nat_of_nonneg means no separate summability argument is required, and the Egyptian-fraction value ∑' 1/aₖ = 1 falls out directly.",
+      "The only bookkeeping subtlety is the index shift: the parent sums over range (n+1) while the HasSum criterion sums over range n, bridged by tendsto_add_atTop_iff_nat."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "syl_reciprocal_sum_tendsto",
+      "statement": "Tendsto (fun n => ∑ k ∈ Finset.range (n+1), 1/aₖ) atTop (𝓝 1)",
+      "description": "The formal convergence of Sylvester's reciprocal partial sums to 1 — the parent's informal observation, now a theorem. Proved by rewriting via the closed form and subtracting the vanishing tail 1/(a_{n+1}-1) → 0 from 1."
+    },
+    {
+      "name": "add_two_le_syl",
+      "statement": "n + 2 ≤ aₙ",
+      "description": "Linear lower bound: every term is at least n+2, because each step grows by at least 1 (a_{n+1} - aₙ = (aₙ-1)² ≥ 1). This forces a_{n+1}-1 → ∞."
+    },
+    {
+      "name": "tendsto_syl_recip_zero",
+      "statement": "Tendsto (fun n => 1/(a_{n+1}-1)) atTop (𝓝 0)",
+      "description": "The vanishing tail. From a_{n+1}-1 ≥ n the denominators diverge, and tendsto_inv_atTop_zero sends the reciprocal to 0."
+    },
+    {
+      "name": "syl_hasSum_one",
+      "statement": "HasSum (fun k => 1/aₖ) 1",
+      "description": "Egyptian-fraction identity in HasSum form: Sylvester's sequence is the greedy unit-fraction expansion of 1. Obtained from the partial-sum limit via the nonnegative-series criterion."
+    },
+    {
+      "name": "syl_tsum_one",
+      "statement": "∑' k, 1/aₖ = 1",
+      "description": "The unconditional series value ∑' k, 1/aₖ = 1, the tsum corollary of syl_hasSum_one."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports Mathlib and the parent Proofs.SylvesterSequenceOQ01, opens the parent namespace plus Filter and Topology, and documents the goal: promote the parent's closed-form reciprocal sum to a formal Tendsto/HasSum statement. The docstring names the two new ingredients — linear growth n+2 ≤ aₙ and the vanishing tail 1/(a_{n+1}-1) → 0.",
+      "mathContext": "$\\sum_{k\\le n} 1/a_k = 1 - 1/(a_{n+1}-1) \\xrightarrow{n\\to\\infty} 1$ promoted to a `Tendsto`."
+    },
+    {
+      "id": "growth",
+      "title": "Linear Growth of the Sequence",
+      "startLine": 54,
+      "endLine": 63,
+      "summary": "add_two_le_syl proves n+2 ≤ aₙ by induction. The step uses 2·aₖ ≤ aₖ² (from aₖ ≥ 2, via nlinarith) so that, after rewriting the recurrence, omega closes the truncated-subtraction goal a_{k+1} = aₖ²-aₖ+1 ≥ (k+1)+2.",
+      "mathContext": "$a_{n+1} - a_n = (a_n-1)^2 \\ge 1 \\implies a_n \\ge n + 2.$"
+    },
+    {
+      "id": "tail",
+      "title": "Real Closed Form and the Vanishing Tail",
+      "startLine": 65,
+      "endLine": 92,
+      "summary": "syl_partial_sum_real transports the parent's ℚ closed form to ℝ by applying the cast ring hom and push_cast. tendsto_syl_sub_one_atTop shows a_{n+1}-1 → ∞ by dominating the diagonal n (tendsto_atTop_mono with tendsto_natCast_atTop_atTop), and tendsto_syl_recip_zero composes with tendsto_inv_atTop_zero to send 1/(a_{n+1}-1) → 0.",
+      "mathContext": "$a_{n+1}-1 \\ge a_n \\ge n+2 \\ge n \\to \\infty \\implies 1/(a_{n+1}-1) \\to 0.$"
+    },
+    {
+      "id": "tendsto",
+      "title": "Convergence of the Reciprocal Sum",
+      "startLine": 94,
+      "endLine": 105,
+      "summary": "syl_reciprocal_sum_tendsto rewrites the partial sums as 1 - 1/(a_{n+1}-1) (funext of the real closed form) and applies Tendsto.const_sub to the vanishing tail, giving the limit 1 - 0 = 1.",
+      "mathContext": "$\\mathrm{Tendsto}\\,(n \\mapsto \\textstyle\\sum_{k\\le n} 1/a_k)\\ \\mathrm{atTop}\\ (\\mathcal N\\,1).$"
+    },
+    {
+      "id": "hassum",
+      "title": "Egyptian-Fraction Form: HasSum and tsum",
+      "startLine": 107,
+      "endLine": 127,
+      "summary": "syl_recip_nonneg (positivity) records nonnegativity. syl_hasSum_one applies hasSum_iff_tendsto_nat_of_nonneg, reindexing the range-(n+1) limit to range n via tendsto_add_atTop_iff_nat, to obtain HasSum (fun k => 1/aₖ) 1. syl_tsum_one is the immediate tsum corollary ∑' k, 1/aₖ = 1.",
+      "mathContext": "$\\sum_{k} 1/a_k = 1$ as a genuine `HasSum`, hence $\\sum'_k 1/a_k = 1.$"
+    }
+  ],
+  "references": [
+    {
+      "title": "Sylvester's sequence",
+      "url": "https://en.wikipedia.org/wiki/Sylvester%27s_sequence"
+    },
+    {
+      "title": "OEIS A000058 — Sylvester's sequence",
+      "url": "https://oeis.org/A000058"
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "sylvester-sequence-oq-01",
+      "relationship": "Promotes the parent's closed form to a formal limit",
+      "description": "The parent proved ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1) and noted the convergence only informally; this entry discharges that limit as a Tendsto and a HasSum, answering the parent's first listed open question."
+    },
+    {
+      "proofId": "harmonic-divergence",
+      "relationship": "Contrasting reciprocal-series behavior",
+      "description": "The harmonic series ∑ 1/n diverges, while Sylvester's reciprocals ∑ 1/aₖ converge to exactly 1 — here proved as a formal Tendsto — because the terms grow doubly-exponentially rather than linearly."
+    },
+    {
+      "proofId": "basel-problem",
+      "relationship": "Another exact reciprocal-series evaluation",
+      "description": "Both establish an exact closed value for a series of reciprocals as a genuine limit; here the value is the Egyptian-fraction unit 1 rather than the Basel value π²/6."
+    }
+  ],
+  "conclusion": {
+    "summary": "The parent's exact closed form ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1) is upgraded to a fully formal convergence statement: Tendsto (fun n => ∑_{k≤n} 1/aₖ) atTop (𝓝 1), with the Egyptian-fraction corollaries HasSum (fun k => 1/aₖ) 1 and ∑' k, 1/aₖ = 1. The only genuinely new content is the analytic tail estimate — a linear growth bound n+2 ≤ aₙ and the vanishing of 1/(a_{n+1}-1) — which the parent had left as an informal aside. Zero sorries, zero axioms.",
+    "implications": "This closes the gap between the algebraic closed form and the analytic claim that Sylvester's sequence is the greedy Egyptian-fraction expansion of 1: the convergence is now a theorem usable by downstream results (e.g. tsum manipulations) rather than a remark. It also illustrates a reusable pattern — promote an exact partial-sum formula to a Tendsto by bounding the error denominator below by the diagonal and invoking tendsto_inv_atTop_zero, then upgrade to HasSum via nonnegativity.",
+    "openQuestions": [
+      "Can the convergence rate be made quantitative — e.g. a formalized bound |1 - ∑_{k≤n} 1/aₖ| ≤ 1/(a_{n+1}-1) together with the doubly-exponential lower bound aₙ ≥ 2^(2ⁿ) — to certify the greedy expansion as the fastest-converging unit-fraction series for 1?",
+      "Does the same Tendsto-promotion pattern apply verbatim to other greedy/Engel expansions whose partial sums admit an exact telescoping closed form?"
+    ]
+  }
+}

@@ -83,6 +83,52 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "The Gram matrix and the Gram determinant are named for the Danish actuary and mathematician Jørgen Pedersen Gram, who introduced them in his 1883 Crelle paper 'Über die Entwickelung reeller Functionen in Reihen' on least-squares approximation and the expansion of functions in orthogonal series — the same circle of ideas that produced the Gram–Schmidt process. The Gramian det(⟪vᵢ, vⱼ⟫) is one of the most useful numerical invariants of a finite system of vectors: it is nonnegative, vanishes exactly when the vectors are linearly dependent, and its square root equals the k-dimensional volume of the parallelepiped they span. The 2×2 case is the Cauchy–Schwarz inequality (the Gramian ‖u‖²‖w‖² − |⟪u,w⟫|² ≥ 0), and the general nonnegativity is its multi-vector generalization. Gramians pervade least-squares theory, the theory of reproducing-kernel Hilbert spaces, numerical linear algebra (conditioning), and the geometry of lattices. Mathlib formalizes the positive-definiteness criterion (posDef_gram_iff_linearIndependent) but not the classical determinant test; this entry supplies it.",
+    "problemStatement": "For a finite family of vectors v : n → E in an inner product space over an RCLike field 𝕜, the Gram matrix gram 𝕜 v has entries ⟪v i, v j⟫. Re-export Mathlib's criterion that gram 𝕜 v is positive definite iff v is linearly independent, and derive the classical Gramian determinant test: det(gram 𝕜 v) ≥ 0 always; v is linearly independent iff det(gram 𝕜 v) > 0 (equivalently ≠ 0); and det(gram 𝕜 v) = 0 iff v is linearly dependent. The bridge is the kernel identity realizing a linear dependence as a null vector of the Gram matrix.",
+    "proofStrategy": "Three layers. (1) Re-export Mathlib's structural facts: gram 𝕜 v is Hermitian and positive semidefinite always, and positive definite iff v is independent. (2) The determinant shadows: gram_det_nonneg from PosSemidef.det_nonneg, and for the independent case PosDef.det_pos gives strict positivity. (3) The kernel identity gram_mulVec_eq_zero_of_dependent — the computation (gram 𝕜 v *ᵥ g) i = ⟪v i, ∑ j g j • v j⟫ via linearity of the inner product — turns a dependence ∑ g j • v j = 0 into a nonzero null vector of the Gram matrix, and Matrix.exists_mulVec_eq_zero_iff converts that into det = 0 (gram_det_eq_zero_of_not_linearIndependent). Assembling forward (PosDef.det_pos) and backward (contrapositive of singularity) gives the iff linearIndependent_iff_gram_det_pos, with the =0 and ≠0 phrasings as corollaries. Everything is over a general RCLike 𝕜.",
+    "keyInsights": [
+      "The Gramian converts a structural property (linear independence) into a single computable number: independence ⟺ det > 0, dependence ⟺ det = 0. It never takes a negative value, so the test is a clean trichotomy collapsed to a dichotomy.",
+      "The kernel identity is the whole engine and is elementary: a linear dependence among the vectors is LITERALLY a null vector of their Gram matrix, because (Gram·g)ᵢ = ⟪vᵢ, ∑ gⱼvⱼ⟫. No determinant theory is needed to see why dependence forces singularity — only linearity of the inner product.",
+      "Nonnegativity of the Gramian is exactly Cauchy–Schwarz generalized: the 2×2 Gramian is ‖u‖²‖w‖² − |⟪u,w⟫|², so the k-vector statement det ≥ 0 is the multi-vector Cauchy–Schwarz, and the open questions push this toward Hadamard's inequality and parallelepiped volume.",
+      "Stating everything over an arbitrary RCLike field 𝕜 makes the criterion uniform across real and complex inner product spaces — the Hermitian transpose handles the complex conjugation automatically, so no separate real/complex proofs are needed.",
+      "The 'mathlib' badge is honest: the spectral criterion (positive-definiteness ⟺ independence) is Mathlib's; the original content is the determinant reformulation plus the kernel identity that Mathlib does not record, packaging the textbook Gram determinant test in machine-checked form."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Gram Matrix and the Gramian Test",
+      "startLine": 3,
+      "endLine": 37,
+      "summary": "Introduces the Gram matrix gram 𝕜 v (entries ⟪v i, v j⟫), states Mathlib's positive-definiteness criterion and the always-true Hermitian/positive-semidefinite facts, and lays out the new content: the Gramian is ≥ 0, a dependence is a null vector of the Gram matrix (kernel identity), a dependent family is singular, and independence ⟺ Gramian > 0 (equivalently ≠ 0). Notes the uniform RCLike (real/complex) setting and full verification.",
+      "mathContext": "$\\mathrm{Gram}(v)_{ij} = \\langle v_i, v_j\\rangle$; $\\mathrm{Gram}(v) \\succ 0 \\iff v$ independent; $\\det \\ge 0$ always."
+    },
+    {
+      "id": "reexports",
+      "title": "Re-exported Mathlib Facts",
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "posDef_gram_iff_linearIndependent (the headline criterion), gram_isHermitian and gram_posSemidef re-export Mathlib's Gram-matrix API: a Gram matrix is Hermitian and positive semidefinite for any family, and positive definite exactly when the family is linearly independent.",
+      "mathContext": "$\\mathrm{Gram}(v)$ Hermitian and $\\succeq 0$ always; $\\succ 0 \\iff v$ linearly independent."
+    },
+    {
+      "id": "nonneg-and-kernel",
+      "title": "Nonnegativity and the Kernel Identity",
+      "startLine": 63,
+      "endLine": 87,
+      "summary": "gram_det_nonneg: det(gram 𝕜 v) ≥ 0 (determinant of a PSD matrix). gram_mulVec_eq_zero_of_dependent: a dependence ∑ g j • v j = 0 is a null vector gram 𝕜 v *ᵥ g = 0, via (gram *ᵥ g) i = ⟪v i, ∑ g j • v j⟫. gram_det_eq_zero_of_not_linearIndependent: hence a dependent family is singular (Matrix.exists_mulVec_eq_zero_iff).",
+      "mathContext": "$\\det \\mathrm{Gram}(v) \\ge 0$; $\\sum_j g_j v_j = 0 \\Rightarrow \\mathrm{Gram}(v)\\,g = 0 \\Rightarrow \\det = 0$."
+    },
+    {
+      "id": "criterion",
+      "title": "The Gramian Determinant Criterion",
+      "startLine": 89,
+      "endLine": 114,
+      "summary": "linearIndependent_iff_gram_det_pos: v is linearly independent iff det(gram 𝕜 v) > 0 (forward via PosDef.det_pos, backward by contrapositive). gram_det_eq_zero_iff_not_linearIndependent and linearIndependent_iff_gram_det_ne_zero give the =0 and ≠0 phrasings.",
+      "mathContext": "$v$ independent $\\iff \\det\\mathrm{Gram}(v) > 0 \\iff \\det\\mathrm{Gram}(v) \\ne 0$; dependent $\\iff \\det = 0$."
+    }
+  ],
   "openQuestions": [
     {
       "id": "gram-linear-independence-iff-oq-01-oq-01",
@@ -95,7 +141,13 @@
       "significance": "medium"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "generalizes",
+      "description": "The 2×2 Gramian nonnegativity det = ‖u‖²‖w‖² − |⟪u,w⟫|² ≥ 0 is exactly the Cauchy–Schwarz inequality. gram_det_nonneg (the Gramian is always ≥ 0) is its generalization to a finite family of vectors, and the determinant criterion makes the equality case (linear dependence) explicit."
+    }
+  ],
   "references": [
     {
       "title": "Mathlib4: Analysis.InnerProductSpace.GramMatrix",

@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-frob-pow-fixed",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 56
+    },
+    "type": "technique",
+    "title": "From the Generator to Every Power (frob_pow_fixed)",
+    "content": "frob_pow_fixed is the induction engine: if frob x = x then (frob^k) x = x for all k. The base case k = 0 is the identity automorphism (simp via AlgEquiv.one_apply); the step rewrites frob^(k+1) = frob^k · frob (pow_succ), evaluates the composite with AlgEquiv.mul_apply to (frob^k)(frob x), then collapses frob x = x by the hypothesis and (frob^k) x = x by the inductive hypothesis. This three-rewrite induction is what promotes 'fixed by the single generator' to 'fixed by the entire cyclic group ⟨frob⟩' — the step that makes a statement about one automorphism into a statement about the whole Galois group.",
+    "mathContext": "$\\mathrm{frob}\\,x = x \\Rightarrow (\\mathrm{frob}^k)\\,x = x$, by induction with $\\mathrm{frob}^{k+1} = \\mathrm{frob}^k\\cdot\\mathrm{frob}$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Powers of a group element and pow_succ",
+      "AlgEquiv.mul_apply: composition of algebra automorphisms",
+      "Induction over ℕ"
+    ],
+    "relatedConcepts": [
+      "cyclic group",
+      "generator of a group",
+      "Frobenius automorphism",
+      "fixed point of an automorphism"
+    ]
+  },
+  {
+    "id": "ann-frob-fixed-iff-forall",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 69
+    },
+    "type": "insight",
+    "title": "Fixed by Frobenius ⟺ Fixed by All of Gal (frob_fixed_iff_forall)",
+    "content": "frob_fixed_iff_forall is the genuinely new mathematical content of the entry: frob x = x ↔ ∀ g ∈ Gal(K/𝔽_p), g x = x. The backward direction just evaluates the universal statement at g = frob. The forward direction is where the generation theorem earns its keep: given frob x = x, any automorphism g is a power frob^k (the parent's exists_pow_frob), and frob_pow_fixed then gives g x = (frob^k) x = x. This reduction matters because Mathlib's Galois-correspondence lemma mem_bot_iff_fixed characterizes ⊥ as the elements fixed by EVERY automorphism — unusable for 'the Frobenius' on its own, since one would have to check all n automorphisms. Collapsing that universal quantifier to the single condition frob x = x is the bridge, not the Mathlib lemma.",
+    "mathContext": "$\\mathrm{frob}\\,x = x \\iff \\forall g \\in \\mathrm{Gal}(K/\\mathbb{F}_p),\\ g\\,x = x$, since every $g = \\mathrm{frob}^k$.",
+    "significance": "key",
+    "prerequisites": [
+      "frob_pow_fixed (fixed by frob ⟹ fixed by every power)",
+      "The parent's exists_pow_frob: every automorphism is a power of frob",
+      "The cyclic structure of Gal(K/𝔽_p)"
+    ],
+    "relatedConcepts": [
+      "Galois group of a finite field",
+      "single-generator reduction",
+      "universal quantifier collapse",
+      "cyclic Galois group"
+    ]
+  },
+  {
+    "id": "ann-frob-fixed-iff-mem-bot",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01",
+    "range": {
+      "startLine": 73,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "The Fixed Field of the Frobenius is 𝔽_p (frob_fixed_iff_mem_bot)",
+    "content": "frob_fixed_iff_mem_bot is the central theorem: frob x = x ↔ x ∈ (⊥ : IntermediateField (ZMod p) K), i.e. the elements fixed by the prime Frobenius are exactly the prime subfield 𝔽_p. It is a one-line composition — (frob_fixed_iff_forall p x).trans (IsGalois.mem_bot_iff_fixed x).symm — feeding the single-generator reduction into Mathlib's characterization of ⊥ as the joint fixed set of the Galois group. The IsGalois (ZMod p) K and FiniteDimensional instances are automatic for finite fields. This is the d = n base case of the Galois correspondence for finite fields: the fixed field of the whole group ⟨frob⟩ = Gal is the smallest subfield.",
+    "mathContext": "$\\mathrm{frob}\\,x = x \\iff x \\in (\\bot : \\mathrm{IntermediateField}\\,\\mathbb{F}_p\\,K) = \\mathbb{F}_p$.",
+    "significance": "key",
+    "prerequisites": [
+      "frob_fixed_iff_forall (the single-generator reduction)",
+      "IsGalois.mem_bot_iff_fixed: ⊥ is the joint fixed set of the Galois group",
+      "Automatic IsGalois and FiniteDimensional instances for finite fields"
+    ],
+    "relatedConcepts": [
+      "Galois correspondence",
+      "prime subfield",
+      "intermediate field ⊥",
+      "fixed field"
+    ]
+  },
+  {
+    "id": "ann-frob-fixed-iff-mem-range",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01",
+    "range": {
+      "startLine": 82,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "The Elementary Face: x^p = x Cuts Out 𝔽_p (frob_fixed_iff_mem_range)",
+    "content": "frob_fixed_iff_mem_range restates the central theorem without any Galois language: x^p = x ↔ x ∈ range(algebraMap (ZMod p) K). It is the same statement read through the parent's frob_apply (frob x = x^p): rewrite x^p = x to frob x = x, pass through frob_fixed_iff_forall, and apply Mathlib's mem_range_algebraMap_iff_fixed. This is the classical 'the roots of x^p − x are exactly 𝔽_p' — the historical seed of finite-field theory and the way 𝔽_p is recovered inside any extension. The Galois face (fixed field = base field) and this elementary face are literally the same theorem.",
+    "mathContext": "$x^p = x \\iff x \\in \\mathrm{range}(\\mathbb{F}_p \\to K)$; the roots of $x^p - x$ are exactly $\\mathbb{F}_p$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "The parent's frob_apply: frob x = x^p",
+      "frob_fixed_iff_forall and IsGalois.mem_range_algebraMap_iff_fixed",
+      "The prime subfield as the image of algebraMap (ZMod p) K"
+    ],
+    "relatedConcepts": [
+      "roots of x^p − x",
+      "prime subfield",
+      "characteristic p",
+      "separable polynomial"
+    ]
+  },
+  {
+    "id": "ann-card-frob-fixedpoints",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Exactly p Fixed Points (card_frob_fixedPoints)",
+    "content": "card_frob_fixedPoints pins the count: Fintype.card {x : K // frob x = x} = p. The proof builds the equivalence {x // frob x = x} ≃ ZMod p by composing Equiv.subtypeEquivRight (applied to frob_fixed_iff_mem_bot, which says the fixed-point predicate equals membership in ⊥) with the field isomorphism IntermediateField.botEquiv : ⊥ ≃ₐ[𝔽_p] ZMod p; then Fintype.card_congr and ZMod.card close at p. The count is forced by the field isomorphism ⊥ ≃ 𝔽_p — the very bijection that identifies the fixed set with the prime subfield also pins its cardinality at exactly p, no degree- or root-counting bound needed. A noncomputable Fintype instance (Fintype.ofFinite) on the subtype makes Fintype.card well-typed.",
+    "mathContext": "$\\#\\{x \\mid \\mathrm{frob}\\,x = x\\} = \\#(\\bot) = \\#(\\mathbb{Z}/p) = p$.",
+    "significance": "key",
+    "prerequisites": [
+      "frob_fixed_iff_mem_bot to rewrite the fixed-point predicate as membership in ⊥",
+      "IntermediateField.botEquiv : ⊥ ≃ₐ[F] F and ZMod.card",
+      "Equiv.subtypeEquivRight, Fintype.card_congr, and a Fintype instance on the subtype"
+    ],
+    "relatedConcepts": [
+      "counting fixed points",
+      "cardinality of a finite field",
+      "field isomorphism",
+      "prime subfield"
+    ]
+  },
+  {
+    "id": "ann-fixedfield-zpowers",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 115
+    },
+    "type": "insight",
+    "title": "Galois Packaging: fixedField ⟨frob⟩ = 𝔽_p (fixedField_zpowers_frob)",
+    "content": "fixedField_zpowers_frob packages the whole story in the language of the Galois correspondence: IntermediateField.fixedField (Subgroup.zpowers (frob p)) = ⊥. The proof is two rewrites — the parent's zpowers_frob_eq_top (⟨frob⟩ = ⊤) turns the cyclic subgroup into the full Galois group, and IsGalois.fixedField_top (fixedField ⊤ = ⊥) identifies its fixed field as the base field. This is true precisely because frob generates the whole group: the fixed field of the entire group is the smallest, ⊥ = 𝔽_p. It is the d = n endpoint of the divisor-lattice correspondence subfields 𝔽_{p^d} ↔ ⟨frob^d⟩; a proper power frob^d fixes the strictly larger solution set of x^{p^d} = x, while the full Frobenius fixes only 𝔽_p.",
+    "mathContext": "$\\mathrm{fixedField}\\,\\langle\\mathrm{frob}\\rangle = \\mathrm{fixedField}\\,\\top = (\\bot) = \\mathbb{F}_p$, since $\\langle\\mathrm{frob}\\rangle = \\top$.",
+    "significance": "key",
+    "prerequisites": [
+      "The parent's zpowers_frob_eq_top: frob generates ⊤",
+      "IsGalois.fixedField_top: the fixed field of the whole Galois group is ⊥",
+      "The fundamental theorem of Galois theory (subgroup ↔ intermediate field)"
+    ],
+    "relatedConcepts": [
+      "fundamental theorem of Galois theory",
+      "divisor lattice of subfields",
+      "fixed field of a subgroup",
+      "cyclic Galois group"
+    ]
+  }
+]

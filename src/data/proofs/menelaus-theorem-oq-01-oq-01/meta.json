@@ -100,7 +100,7 @@
       "title": "Overview and Imports",
       "startLine": 1,
       "endLine": 52,
-      "description": "Module docstring framing the two follow-up questions: reconcile the signed product -1 with the unsigned form |product| = 1, and make the external-segment parity dichotomy (Menelaus odd / Ceva even) precise. Imports the parent Proofs.MenelausTheorem.",
+      "summary": "Module docstring framing the two follow-up questions: reconcile the signed product -1 with the unsigned form |product| = 1, and make the external-segment parity dichotomy (Menelaus odd / Ceva even) precise. Imports the parent Proofs.MenelausTheorem.",
       "mathContext": "Signed criterion $\\frac{t}{1-t}\\frac{u}{1-u}\\frac{v}{1-v}=-1$; unsigned form $\\left|\\frac{t}{1-t}\\right|\\left|\\frac{u}{1-u}\\right|\\left|\\frac{v}{1-v}\\right|=1$."
     },
     {
@@ -108,7 +108,7 @@
       "title": "Signed Ratios and Product",
       "startLine": 53,
       "endLine": 71,
-      "description": "Defines the three signed side ratios rX = t/(1-t), rY = u/(1-u), rZ = v/(1-v) and proves product_eq : rX·rY·rZ = menelausProduct (definitional).",
+      "summary": "Defines the three signed side ratios rX = t/(1-t), rY = u/(1-u), rZ = v/(1-v) and proves product_eq : rX·rY·rZ = menelausProduct (definitional).",
       "mathContext": "$r_X r_Y r_Z = \\text{menelausProduct}$."
     },
     {
@@ -116,7 +116,7 @@
       "title": "Sign Detects External vs Internal Division",
       "startLine": 72,
       "endLine": 113,
-      "description": "ratio_neg_iff (s/(1-s) < 0 ↔ s < 0 ∨ 1 < s) and ratio_pos_iff (0 < s/(1-s) ↔ 0 < s ∧ s < 1), with per-point specialisations external_X_iff, external_Y_iff, external_Z_iff. A negative ratio means the division point lies outside its segment.",
+      "summary": "ratio_neg_iff (s/(1-s) < 0 ↔ s < 0 ∨ 1 < s) and ratio_pos_iff (0 < s/(1-s) ↔ 0 < s ∧ s < 1), with per-point specialisations external_X_iff, external_Y_iff, external_Z_iff. A negative ratio means the division point lies outside its segment.",
       "mathContext": "$\\frac{s}{1-s}<0 \\iff s<0 \\lor s>1$ (external); $0<\\frac{s}{1-s} \\iff 0<s<1$ (internal)."
     },
     {
@@ -124,7 +124,7 @@
       "title": "Signed −1 ⟹ Unsigned 1",
       "startLine": 114,
       "endLine": 130,
-      "description": "unsigned_product_eq_one: when menelausProduct = -1, the unsigned product |rX|·|rY|·|rZ| equals 1, via abs_mul and |-1| = 1. Reconciles the signed criterion with the classical unsigned statement.",
+      "summary": "unsigned_product_eq_one: when menelausProduct = -1, the unsigned product |rX|·|rY|·|rZ| equals 1, via abs_mul and |-1| = 1. Reconciles the signed criterion with the classical unsigned statement.",
       "mathContext": "$|r_X|\\,|r_Y|\\,|r_Z| = |r_X r_Y r_Z| = |-1| = 1$."
     },
     {
@@ -132,7 +132,7 @@
       "title": "External-Segment Parity Dichotomy",
       "startLine": 131,
       "endLine": 179,
-      "description": "external_parity_odd: product = -1 forces an odd number of external points (all three, or exactly one). external_parity_even: the Ceva value +1 forces an even number (none, or exactly two). Both by complete enumeration of the eight sign patterns, refuting the inconsistent ones with nlinarith on an explicit signed product.",
+      "summary": "external_parity_odd: product = -1 forces an odd number of external points (all three, or exactly one). external_parity_even: the Ceva value +1 forces an even number (none, or exactly two). Both by complete enumeration of the eight sign patterns, refuting the inconsistent ones with nlinarith on an explicit signed product.",
       "mathContext": "$\\operatorname{sign}(r_X r_Y r_Z) = (-1)^{\\#\\{\\text{external points}\\}}$: $-1$ ⟺ odd, $+1$ ⟺ even."
     },
     {
@@ -140,7 +140,7 @@
       "title": "Concrete All-External Witness",
       "startLine": 180,
       "endLine": 191,
-      "description": "example_all_external: the parent's collinear instance (triangle (0,0),(1,0),(0,1), t=u=2, v=-1/3) realises the all-three-external case, with all three signed ratios negative and unsigned product 1.",
+      "summary": "example_all_external: the parent's collinear instance (triangle (0,0),(1,0),(0,1), t=u=2, v=-1/3) realises the all-three-external case, with all three signed ratios negative and unsigned product 1.",
       "mathContext": "$r_X=r_Y=-2,\\ r_Z=-\\tfrac14$: all negative, $(-2)(-2)(-\\tfrac14)=-1$, $|{-2}||{-2}||{-\\tfrac14}|=1$."
     }
   ]

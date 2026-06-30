@@ -57,6 +57,23 @@
     "dateAdded": "2026-06-21",
     "mathlib_version": "4.26.0"
   },
+  "overview": {
+    "historicalContext": "Erdős Problem #220 asks for the order of magnitude of the sum of squared gaps between consecutive reduced residues modulo n. Writing 1 = a₁ < a₂ < ⋯ < a_{φ(n)} = n−1 for the integers in [1, n−1] coprime to n, the quantity of interest is ∑(a_{k+1} − a_k)². The distribution of reduced residues — how evenly the φ(n) totatives spread across [1, n] — is a classical theme going back to studies of Jacobsthal's function and the largest gap between consecutive totatives. Hooley, Erdős, and others investigated moments of these gaps; the second moment studied here is governed by the deep upper bound of Montgomery and Vaughan (1986), who showed ∑(a_{k+1} − a_k)² ≪ n²/φ(n). The parent gallery entry axiomatizes that hard analytic upper bound; this entry supplies the elementary matching lower bound, pinning the true order at n²/φ(n).",
+    "problemStatement": "For n ≥ 3 with reduced residues 1 = a₁ < ⋯ < a_{φ(n)} = n−1, prove the lower bound $\\sum_{k=1}^{\\varphi(n)-1}(a_{k+1}-a_k)^2 \\ge \\frac{(n-2)^2}{\\varphi(n)-1}$, and observe that since $(n-2)^2/(\\varphi(n)-1) \\asymp n^2/\\varphi(n)$ this matches the Montgomery–Vaughan upper bound in order of magnitude, establishing $\\sum (a_{k+1}-a_k)^2 \\asymp n^2/\\varphi(n)$.",
+    "proofStrategy": "Two elementary ingredients combine. (1) The φ(n)−1 consecutive gaps telescope: ∑(a_{k+1} − a_k) = a_{φ(n)} − a₁ = (n−1) − 1 = n − 2 (Finset.sum_range_sub, after identifying the endpoints min' = 1 and max' = n−1 of the reduced-residue set). (2) The Cauchy–Schwarz / Chebyshev inequality sq_sum_le_card_mul_sum_sq gives (∑ gap)² ≤ (φ(n)−1)·∑ gap². Substituting the telescoped total yields (n−2)² ≤ (φ(n)−1)·∑ gap², and dividing by φ(n)−1 (positive for n ≥ 3, since φ(n) ≥ 2 by Nat.totient_eq_one_iff) gives the bound. The reduced residues are enumerated in increasing order by Finset.orderEmbOfFin.",
+    "keyInsights": [
+      "**The lower bound is purely extremal — no analytic number theory.** Where the matching upper bound (Montgomery–Vaughan) is genuinely hard, the lower bound follows from just two facts: the gaps sum to n−2 (telescoping) and squares are convex (Cauchy–Schwarz). Equality in Cauchy–Schwarz is when all gaps are equal, the heuristic 'evenly spread residues' picture.",
+      "**Telescoping kills all interior structure.** The sum of the gaps depends only on the two endpoints a₁ = 1 and a_{φ(n)} = n−1, never on the irregular interior spacing — so ∑ gap = n−2 exactly, with no error term.",
+      "**Matching orders close the problem.** Because (n−2)²/(φ(n)−1) ≍ n²/φ(n), the elementary lower bound and the axiomatized MV upper bound together give ∑(a_{k+1}−a_k)² ≍ n²/φ(n), showing the MV bound is tight in order of magnitude — this is why erdosProblemStatus is 'solved'.",
+      "**A gallery gap fixed in passing.** card_reducedResidues (the reduced residues number exactly φ(n)) is proved here outright, whereas the parent entry had left the analogous statement as a sorry."
+    ],
+    "prerequisites": [
+      "Euler's totient φ(n) and reduced residue systems",
+      "Telescoping sums (Finset.sum_range_sub)",
+      "The Cauchy–Schwarz / Chebyshev sum inequality (∑ f)² ≤ #s · ∑ f²",
+      "Strictly monotone enumeration of a finite set (Finset.orderEmbOfFin)"
+    ]
+  },
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.GCD.Basic",
@@ -155,6 +172,22 @@
       "endLine": 212,
       "summary": "sq_le_card_mul_sumSq: Chebyshev (∑ gap)² ≤ (φ(n)−1)·∑ gap² with ∑ gap = n−2 gives (n−2)² ≤ (φ(n)−1)·∑ gap². sumSquaredGaps_lower_bound divides through, using φ(n) ≥ 2 (from totient_eq_one_iff) for n ≥ 3.",
       "mathContext": "Among φ(n)−1 nonnegative reals with fixed sum n−2, the sum of squares is minimized when all are equal, giving ∑ gap² ≥ (n−2)²/(φ(n)−1) ≍ n²/φ(n). This is the lower-bound companion to Montgomery–Vaughan."
+    }
+  ],
+  "conclusion": {
+    "summary": "For n ≥ 3, the squared-gap sum over the reduced residues mod n satisfies ∑_{k<φ(n)−1}(a_{k+1}−a_k)² ≥ (n−2)²/(φ(n)−1). The proof is fully elementary and axiom-free: the φ(n)−1 consecutive gaps telescope to n−2 (depending only on the endpoints 1 and n−1), and Cauchy–Schwarz/Chebyshev turns that fixed total into a lower bound on the sum of squares. All 13 theorems are machine-checked with 0 axioms and 0 sorries.",
+    "implications": "Since (n−2)²/(φ(n)−1) ≍ n²/φ(n), this elementary lower bound matches the order of the hard Montgomery–Vaughan upper bound (axiomatized in the parent entry), so together they establish ∑(a_{k+1}−a_k)² ≍ n²/φ(n) — the order of magnitude asked for by Erdős #220. The contribution is a clean separation of concerns: the deep analytic input is isolated in the upper bound, while the matching lower half costs only telescoping plus convexity. Along the way the entry also discharges card_reducedResidues = φ(n), which the parent had left as a sorry.",
+    "openQuestions": [
+      "Sharpen the constant: determine the best c with ∑(a_{k+1}−a_k)² ≥ (c+o(1))·n²/φ(n), beyond the Cauchy–Schwarz value, and compare with the Montgomery–Vaughan asymptotic constant.",
+      "Formalize the Montgomery–Vaughan upper bound ∑(a_{k+1}−a_k)² ≪ n²/φ(n) itself, replacing the parent entry's axiomatization and yielding the full asymptotic order unconditionally inside Mathlib.",
+      "Generalize to higher moments ∑(a_{k+1}−a_k)^s for s ≥ 3, where Cauchy–Schwarz is replaced by Hölder/power-mean inequalities."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-220",
+      "relationship": "extends",
+      "description": "Parent entry. That entry axiomatizes the hard Montgomery–Vaughan UPPER bound ∑(a_{k+1}−a_k)² ≪ n²/φ(n); this entry proves the elementary matching LOWER bound (n−2)²/(φ(n)−1) ≍ n²/φ(n), so the two together pin the order at n²/φ(n). It also proves card_reducedResidues = φ(n), which the parent left as a sorry."
     }
   ]
 }

@@ -44,9 +44,13 @@
   "relatedProofs": [
     "intermediate-value-theorem",
     "intermediate-value-theorem-oq-01",
+    "intermediate-value-theorem-oq-01-oq-01",
     "intermediate-value-theorem-oq-02",
+    "intermediate-value-theorem-oq-02-oq-01",
+    "intermediate-value-theorem-oq-02-oq-02",
     "intermediate-value-theorem-oq-02-oq-03",
-    "intermediate-value-theorem-oq-03"
+    "intermediate-value-theorem-oq-03",
+    "intermediate-value-theorem-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -79,6 +83,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ01.lean"
     },
     {
+      "path": "Proofs/IntermediateValueTheoremOQ01OQ01.lean",
+      "filename": "IntermediateValueTheoremOQ01OQ01.lean",
+      "lineCount": 156,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/IntermediateValueTheoremOQ02.lean",
       "filename": "IntermediateValueTheoremOQ02.lean",
       "lineCount": 244,
@@ -90,12 +105,34 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ02.lean"
     },
     {
+      "path": "Proofs/IntermediateValueTheoremOQ02OQ01.lean",
+      "filename": "IntermediateValueTheoremOQ02OQ01.lean",
+      "lineCount": 138,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/IntermediateValueTheoremOQ02OQ02.lean",
+      "filename": "IntermediateValueTheoremOQ02OQ02.lean",
+      "lineCount": 290,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ02OQ02.lean"
+    },
+    {
       "path": "Proofs/IntermediateValueTheoremOQ02OQ03.lean",
       "filename": "IntermediateValueTheoremOQ02OQ03.lean",
-      "lineCount": 309,
-      "theoremCount": 13,
+      "lineCount": 417,
+      "theoremCount": 18,
       "axiomCount": 0,
-      "defCount": 4,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ02OQ03.lean"
@@ -110,6 +147,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/IntermediateValueTheoremOQ03OQ01.lean",
+      "filename": "IntermediateValueTheoremOQ03OQ01.lean",
+      "lineCount": 203,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ03OQ01.lean"
     }
   ]
 }

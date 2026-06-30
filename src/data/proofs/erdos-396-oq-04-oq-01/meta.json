@@ -53,6 +53,40 @@
       "Does the same ratio-as-partial-fraction technique applied to (n+1)·C(2(n+1),n+1) = 2(2n+1)·C(2n,n) give the matching central-binomial growth law C(2n,n) ∼ 4^n/√(πn) at the recurrence level?"
     ]
   },
+  "sections": [
+    {
+      "id": "recurrence-self-contained",
+      "title": "The two-term Catalan recurrence (re-derived, self-contained)",
+      "startLine": 45,
+      "endLine": 73,
+      "summary": "centralBinom_succ_eq and catalan_recurrence re-derive the closed form C(2(n+1),n+1) = 2(2n+1)·catalan n and the recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan n directly from Mathlib, with no dependency on the parent build. catalan_pos supplies positivity of the Catalan numbers (which Mathlib lacks) from (n+1)·catalan n = C(2n,n) > 0.",
+      "mathContext": "$(n+2)\\,\\mathrm{catalan}(n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$"
+    },
+    {
+      "id": "recurrence-ratio",
+      "title": "The recurrence ratio",
+      "startLine": 74,
+      "endLine": 135,
+      "summary": "catalanRatio n = (4n+2)/(n+2) is the multiplicative step. ratio_eq_four_sub proves the partial-fraction identity r n = 4 − 6/(n+2); catalan_succ_eq_ratio_mul shows it is the genuine ratio of consecutive Catalan numbers. From the partial-fraction form: ratio_lt_four (r n < 4), ratio_pos (0 < r n), ratio_strictMono (strictly increasing), and ratio_tendsto_four (r n → 4).",
+      "mathContext": "$r(n) = \\dfrac{4n+2}{n+2} = 4 - \\dfrac{6}{n+2} \\to 4$"
+    },
+    {
+      "id": "growth-bounds",
+      "title": "Growth bounds from the recurrence",
+      "startLine": 137,
+      "endLine": 174,
+      "summary": "catalan_succ_lt_four_mul: catalan(n+1) < 4·catalan n (since 4n+2 < 4(n+2), cancelling n+2 via Nat.lt_of_mul_lt_mul_left). By induction, catalan_le_four_pow gives catalan n ≤ 4^n for all n, and catalan_lt_four_pow gives the strict bound catalan n < 4^n for n ≥ 1 — the standard upper bound with no Stirling estimate.",
+      "mathContext": "$\\mathrm{catalan}\\,n \\le 4^n$, strict for $n \\ge 1$"
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity checks",
+      "startLine": 176,
+      "endLine": 187,
+      "summary": "Numeric example checks: r 0 = 1 (catalan 1 = catalan 0), r 2 = 10/4 = 5/2 (catalan 3 = (5/2)·catalan 2, i.e. 5 = (5/2)·2), and the growth bound at n=3 (catalan 3 = 5 < 4³ = 64).",
+      "mathContext": "$r(2) = \\tfrac{10}{4} = \\tfrac52,\\ \\mathrm{catalan}\\,3 = 5 < 64$"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

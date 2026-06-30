@@ -1,0 +1,120 @@
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "szemeredi-hypergraph-core-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Preamble: Scope and the Honesty Boundary",
+    "content": "The module docstring is unusually explicit about what is and is NOT proved. The full Gowers (2007) / Rödl–Skokan (2004) hypergraph regularity lemma — a wowzer-bounded analytic theorem not in Mathlib — is out of reach of a self-contained file. Rather than overclaim, this file fully verifies only the *engine* that converts a local density/energy increment into the lemma's headline guarantee (a bounded number of parts): PART I bounds the energy potential, PART II runs the bounded-step iteration, PART III converts steps into a part-count bound, and PART IV documents the single deep analytic input left open. Single `import Mathlib`, namespace `Szemeredi.Hypergraph.OQ02`, `open Finset`.",
+    "mathContext": "Every Szemerédi-type regularity proof has the same two-layer shape: an *outer* energy-increment iteration (uniform across graphs and hypergraphs) and an *inner* Cauchy–Schwarz density-increment step (problem-specific and hard). This file verifies the outer layer in full and pins the inner layer to one named inequality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "energy increment method",
+      "hypergraph regularity lemma",
+      "Szemeredi.Hypergraph.OQ02 namespace",
+      "formalization boundary"
+    ],
+    "prerequisites": [
+      "SzemerediHypergraphCore.lean (UHypergraph, kPartiteDensity)",
+      "SzemerediHypergraphCoreOQ01.lean (SimplicialComplex, relativeDensity)"
+    ]
+  },
+  {
+    "id": "ann-partition-energy",
+    "proofId": "szemeredi-hypergraph-core-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "PART I: Partition Energy — the Bounded Potential",
+    "content": "`partitionEnergy s w d = ∑ i ∈ s, w i * (d i)^2` is the weighted mean-square of cell densities over a finite index `s` of cells, with weight `w i` (relative mass of cell i) and density `d i`. `partitionEnergy_nonneg` needs only `w ≥ 0` (each term `w i · (d i)² ≥ 0`). `partitionEnergy_le_one` assumes the weights form a probability distribution (`w ≥ 0`, `∑ w = 1`) and densities lie in `[-1,1]` (`|d i| ≤ 1`), then bounds the sum termwise by `∑ w i · 1 = 1` — the key step being `(d i)² ≤ 1`, obtained from `|d i| ≤ 1` via `nlinarith` on `-1 ≤ d i ≤ 1`.",
+    "mathContext": "This is Szemerédi's mean-square density index $q(\\mathcal{P}) = \\sum_i \\mu_i \\, d_i^2$, where $\\mu_i$ is the measure of cell $i$ and $d_i$ its density. By Jensen / Cauchy–Schwarz it lies in $[0,1]$ and is non-decreasing under refinement. The upper barrier $q \\le 1$ is precisely what makes the increment iteration terminate after boundedly many steps — the source of the finiteness of $M(\\varepsilon)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mean-square density index",
+      "energy of a partition",
+      "Cauchy–Schwarz",
+      "probability weights"
+    ],
+    "prerequisites": [
+      "Finset.sum_le_sum",
+      "Finset.sum_nonneg",
+      "sq_nonneg"
+    ]
+  },
+  {
+    "id": "ann-energy-increment",
+    "proofId": "szemeredi-hypergraph-core-oq-02",
+    "range": {
+      "startLine": 111,
+      "endLine": 167
+    },
+    "type": "technique",
+    "title": "PART II: The Bounded-Step Pigeonhole",
+    "content": "`energy_ge_of_steps` proves by induction on `m` that if every state `0..N` is irregular and each irregular step boosts the energy by ≥δ, then `E m ≥ E 0 + m·δ` for all `m ≤ N+1`. `energy_increment_bounded_steps` is the headline of this part: assuming `E ∈ [0,1]` and a ≥δ boost at each irregular step, it shows a *regular* index exists within `⌈1/δ⌉₊` steps. The proof is by contradiction — if all of `0..⌈1/δ⌉` were irregular, the accumulation lemma forces `E (N+1) ≥ E 0 + (N+1)·δ`, and since `N = ⌈1/δ⌉₊ ≥ 1/δ` gives `N·δ ≥ 1`, this exceeds `1`, contradicting the upper bound. `Nat.le_ceil` supplies `1/δ ≤ ⌈1/δ⌉₊`.",
+    "mathContext": "This is the abstract heart of every regularity lemma: a $[0,1]$-valued potential that increases by a fixed $\\delta$ at each bad step can have at most $\\lceil 1/\\delta \\rceil$ bad steps. Crucially the bound $\\lceil 1/\\delta \\rceil$ depends only on $\\delta$, never on the size of the vertex set — which is exactly why the regularity lemma's number of parts is bounded by a function of $\\varepsilon$ alone.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "energy increment method",
+      "pigeonhole / bounded monotone sequence",
+      "Nat.ceil",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "Nat.le_ceil",
+      "div_le_iff₀",
+      "induction on ℕ"
+    ]
+  },
+  {
+    "id": "ann-bounded-parts",
+    "proofId": "szemeredi-hypergraph-core-oq-02",
+    "range": {
+      "startLine": 169,
+      "endLine": 224
+    },
+    "type": "technique",
+    "title": "PART III: From Few Steps to Few Parts",
+    "content": "`parts_le_pow` proves by induction that if each refinement multiplies the part count by at most `f`, then `parts n ≤ parts 0 * f^n`. `hypergraph_regularity_engine` assembles everything: feeding the regular index `n ≤ ⌈1/δ⌉₊` from PART II into the part bound yields a regular partition with at most `parts 0 * f^⌈1/δ⌉₊` parts. The exponent step `f^n ≤ f^⌈1/δ⌉₊` uses `Nat.pow_le_pow_right`, which genuinely requires the hypothesis `1 ≤ f` — without it (e.g. f=0) the claimed bound would be 0 while the partition has positive size.",
+    "mathContext": "Each refinement of the partition (or the underlying complex) blows up the number of parts by a bounded factor $f = f(\\varepsilon)$. After $T \\le \\lceil 1/\\delta \\rceil$ refinements there are at most $|\\mathcal{P}_0| \\cdot f^{\\lceil 1/\\delta \\rceil}$ parts — a constant depending only on the starting partition, $\\delta(\\varepsilon)$ and $f(\\varepsilon)$. This is the 'bounded number of parts' in the regularity lemma; the wowzer tower in the true hypergraph case is hidden entirely in how small $\\delta$ and how large $f$ are.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "bounded number of parts",
+      "refinement blow-up factor",
+      "Nat.pow_le_pow_right",
+      "tower-type bounds"
+    ],
+    "prerequisites": [
+      "Nat.pow_le_pow_right",
+      "Nat.mul_le_mul_left",
+      "induction on ℕ"
+    ]
+  },
+  {
+    "id": "ann-remaining",
+    "proofId": "szemeredi-hypergraph-core-oq-02",
+    "range": {
+      "startLine": 226,
+      "endLine": 245
+    },
+    "type": "concept",
+    "title": "PART IV: The Remaining Analytic Input",
+    "content": "The engine is unconditional, but it consumes one deep hypothesis (`hstep` together with `hf`): that an irregular k-graph admits a refinement of its underlying complex multiplying parts by ≤f and boosting `partitionEnergy` by ≥δ. Supplying this for the relative `kPartiteDensity` of SzemerediHypergraphCoreOQ01.lean is exactly the Gowers / Rödl–Skokan hypergraph density-increment inequality — a Cauchy–Schwarz / martingale argument over the (k-1)-skeleton. It is not in Mathlib (even for the graph case in this `partitionEnergy` formulation) and is the genuinely open, still-unformalized core. Once proved, `hypergraph_regularity_engine` immediately yields the full regularity lemma.",
+    "mathContext": "The density-increment step is where all the hypergraph difficulty lives: showing that lack of $\\varepsilon$-regularity relative to a complex forces a measurable energy gain. Gowers (2007) and Rödl–Skokan (2004) prove it via an intricate Cauchy–Schwarz over the lower-order faces; the resulting $\\delta(\\varepsilon)$ is so small that iterating it produces a tower-of-towers bound, which Gowers showed is essentially necessary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density increment",
+      "Gowers / Rödl–Skokan",
+      "relativeDensity",
+      "Cauchy–Schwarz over the (k-1)-skeleton"
+    ],
+    "prerequisites": [
+      "SzemerediHypergraphCoreOQ01.lean (relativeDensity, IsGowersRegular)",
+      "Gowers (2007), Annals 166(3)"
+    ]
+  }
+]

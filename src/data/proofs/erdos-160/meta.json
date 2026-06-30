@@ -12,7 +12,7 @@
     "erdosUrl": "https://erdosproblems.com/160",
     "erdosProblemStatus": "open",
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -23,8 +23,8 @@
     ],
     "axiomCount": 3,
     "theoremCount": 16,
-    "lineCount": 256,
-    "assumptions": "3 axioms (upper_bound_two_thirds, upper_bound_hunter, lower_bound_exp \u2014 deep published results) and 2 sorries (h_sublinear, h_superlog). Former axioms h, h_achievable, h_minimal eliminated via constructive sInf definition.",
+    "lineCount": 298,
+    "assumptions": "3 axioms (upper_bound_two_thirds, upper_bound_hunter, lower_bound_exp \u2014 deep published results) (h_sublinear and h_superlog are now fully proved as consequences of the axioms; 0 sorries). Former axioms h, h_achievable, h_minimal eliminated via constructive sInf definition.",
     "mathlib_version": "4.26.0",
     "definitionCount": 6,
     "additionalFiles": [
@@ -62,7 +62,7 @@
       "title": "The Function h(N)",
       "startLine": 107,
       "endLine": 175,
-      "summary": "Defines $h(N)$ constructively via `sInf` (well-ordering of ℕ) as the minimum colors for 3-diverse coloring — not an axiom. Proves $h(N) \\ge 1$ for $N \\ge 4$, monotonicity, $h(0) = 0$, $h(N) \\le 1$ for $N \\le 3$, and $h(N) \\le N$ via the identity coloring.",
+      "summary": "Defines $h(N)$ constructively via `sInf` (well-ordering of \u2115) as the minimum colors for 3-diverse coloring \u2014 not an axiom. Proves $h(N) \\ge 1$ for $N \\ge 4$, monotonicity, $h(0) = 0$, $h(N) \\le 1$ for $N \\le 3$, and $h(N) \\le N$ via the identity coloring.",
       "mathContext": "Verified: $h(N)$ is a constructive `def` (via `sInf`), eliminating 3 former axioms. Proves $h(N) \\ge 1$ for $N \\ge 4$, monotonicity, $h(0) = 0$, $h(N) \\le 1$ for $N \\le 3$, and $h(N) \\le N$ via the identity coloring."
     },
     {
@@ -137,12 +137,12 @@
       "Finset"
     ],
     "namespace": "Erdos160",
-    "lineCount": 256,
+    "lineCount": 298,
     "axiomCount": 3,
     "theoremCount": 16,
     "definitionCount": 6,
     "path": "Proofs/Erdos160Problem.lean",
-    "sorries": 2,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos160Aristotle.lean",
       "Proofs/Erdos160ProblemAristotle.lean"
@@ -183,5 +183,5 @@
       "note": "Survey of rainbow-free colorings and anti-Ramsey problems in arithmetic settings"
     }
   ],
-  "sorries": 2
+  "sorries": 0
 }
