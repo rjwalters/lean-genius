@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 36 },
+    "type": "context",
+    "title": "Sharpening Tietze to the Norm-Preserving Form",
+    "content": "The parent entry builds the Tietze extension G of a bounded continuous f on a closed set s ⊆ X (X normal) as an explicit absolutely-convergent series of Urysohn corrections, proving only the sup-bound |G| ≤ M for any M ≥ |f|. The open question asks to sharpen this to ‖G‖ = ‖f‖ — the standard norm-preserving form of the Tietze theorem. This entry settles it in two elementary halves: an upper bound from instantiating the parent's free bound at the exact norm, and a construction-free universal lower bound valid for every extension. Together they also show G is norm-minimal.",
+    "mathContext": "Tietze (sharp): a bounded continuous $f$ on closed $s \\subseteq X$ extends to $G$ on $X$ with $\\|G\\| = \\|f\\|$.",
+    "significance": "context",
+    "relatedConcepts": ["Tietze extension theorem", "normal space", "sup-norm", "bounded continuous function"],
+    "prerequisites": ["Tietze/Urysohn extension", "the parent series construction"]
+  },
+  {
+    "id": "ann-norm-ge-of-extends",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 44, "endLine": 53 },
+    "type": "theorem",
+    "title": "norm_ge_of_extends: The Universal Lower Bound",
+    "content": "Any bounded continuous E : X →ᵇ ℝ restricting to f on s has ‖f‖ ≤ ‖E‖. The proof needs nothing about the construction or about normality: BoundedContinuousFunction.norm_le reduces ‖f‖ ≤ ‖E‖ to checking ‖f x‖ ≤ ‖E‖ for each x ∈ s, and the calc step ‖f x‖ = ‖E x‖ (by the extension hypothesis hE) ≤ ‖E‖ (by norm_coe_le_norm) closes it. Geometrically, the sup of |E| over all of X dominates its sup over the subset s, which is exactly ‖f‖ — so this lower bound holds for every extension whatsoever.",
+    "mathContext": "$\\|f\\| = \\sup_{x \\in s}\\|f x\\| = \\sup_{x \\in s}\\|E x\\| \\le \\sup_{X}\\|E\\| = \\|E\\|$.",
+    "significance": "key",
+    "relatedConcepts": ["BoundedContinuousFunction.norm_le", "norm_coe_le_norm", "supremum over a subset", "restriction"],
+    "prerequisites": ["sup-norm of bounded functions", "subset suprema"]
+  },
+  {
+    "id": "ann-tietze-norm-preserving",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 74 },
+    "type": "theorem",
+    "title": "tietze_norm_preserving: ‖G‖ = ‖f‖",
+    "content": "The main result. The upper bound is obtained for free: the parent's tietze_extension_via_tsum takes an arbitrary bound M with |f| ≤ M, so instantiating M at the exact sup-norm ‖f‖ — legal because |f x| = ‖f x‖ ≤ ‖f‖ (norm_coe_le_norm, with Real.norm_eq_abs) — yields an extension G with |G y| ≤ ‖f‖ everywhere, hence ‖G‖ ≤ ‖f‖. The lower bound is norm_ge_of_extends applied to G. le_antisymm combines them into the sharp equality ‖G‖ = ‖f‖. Only the upper bound (through the parent) uses normality of X; the lower bound is pure sup-norm bookkeeping.",
+    "mathContext": "Choose $M = \\|f\\|$ in $|G| \\le M$ to get $\\|G\\| \\le \\|f\\|$; with $\\|f\\| \\le \\|G\\|$, antisymmetry gives $\\|G\\| = \\|f\\|$.",
+    "significance": "key",
+    "relatedConcepts": ["tietze_extension_via_tsum", "le_antisymm", "normal space", "norm-preserving extension"],
+    "prerequisites": ["the parent series extension", "antisymmetry of ≤"]
+  },
+  {
+    "id": "ann-minimal-norm",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 76, "endLine": 86 },
+    "type": "insight",
+    "title": "exists_minimal_norm_extension: The Construction Is Optimal",
+    "content": "A direct corollary recasting the result as an extremal property: because the lower bound ‖f‖ ≤ ‖E‖ holds for every extension E, the norm-preserving G achieves the smallest sup-norm among all continuous extensions of f. The proof chains ‖G‖ = ‖f‖ (from tietze_norm_preserving) with norm_ge_of_extends f E for an arbitrary E to get ‖G‖ ≤ ‖E‖. Norm-minimality thus requires no extremal argument of its own — it falls out of the universality of the lower bound, showing the parent's explicit by-hand series is already optimal.",
+    "mathContext": "$\\|G\\| = \\|f\\| \\le \\|E\\|$ for every extension $E$, so $\\|G\\| = \\inf_E \\|E\\|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["extremal extension", "norm-minimality", "infimum of norms", "optimality"],
+    "prerequisites": ["the sharp equality", "the universal lower bound"]
+  }
+]

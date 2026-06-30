@@ -25,9 +25,7 @@ References:
 - Conder (1993): 3-coloring result
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Fin.Basic
+import Mathlib
 
 open Nat SimpleGraph
 
@@ -39,13 +37,19 @@ namespace Erdos666
 
 /--
 **n-dimensional hypercube Qₙ:**
-Vertices are binary strings of length n (equivalently, elements of Fin 2ⁿ).
-Two vertices are adjacent iff they differ in exactly one coordinate.
+Vertices are binary strings of length n (equivalently, elements of `Fin 2ⁿ`).
+Two vertices are adjacent iff they differ in exactly one coordinate, i.e. their
+bitwise XOR has exactly one set bit — equivalently, is a power of two.
 -/
 def Hypercube (n : ℕ) : SimpleGraph (Fin (2^n)) where
-  Adj x y := (Nat.popcount (x.val ^^^ y.val) = 1)
-  symm := fun x y h => by simp [Nat.xor_comm] at h ⊢; exact h
-  loopless := fun x => by simp
+  Adj x y := ∃ i : ℕ, x.val ^^^ y.val = 2 ^ i
+  symm := by
+    rintro x y ⟨i, h⟩
+    exact ⟨i, by rw [Nat.xor_comm]; exact h⟩
+  loopless := by
+    rintro x ⟨i, h⟩
+    rw [Nat.xor_self] at h
+    exact pow_ne_zero i (by norm_num) h.symm
 
 /--
 **Number of vertices in Qₙ:**
@@ -59,10 +63,10 @@ def hypercubeVertices (n : ℕ) : ℕ := 2^n
 -/
 def hypercubeEdges (n : ℕ) : ℕ := n * 2^(n-1)
 
-/--
-**Degree in Qₙ:**
-Every vertex has degree n.
+/-
+**Degree in Qₙ:** every vertex has degree n.
 -/
+
 /-
 ## Part II: Cycles in Graphs
 -/
@@ -74,7 +78,8 @@ A sequence of k distinct vertices forming a cycle.
 def HasCycle (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ (cycle : Fin k → V),
     Function.Injective cycle ∧
-    (∀ i : Fin k, G.Adj (cycle i) (cycle ⟨(i.val + 1) % k, Nat.mod_lt _ (by omega)⟩)) ∧
+    (∀ i : Fin k, G.Adj (cycle i)
+      (cycle ⟨(i.val + 1) % k, Nat.mod_lt _ (lt_of_le_of_lt (Nat.zero_le _) i.2)⟩)) ∧
     k ≥ 3
 
 /--
@@ -103,7 +108,7 @@ A subgraph H of G with at least m edges.
 structure DenseSubgraph (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] (m : ℕ) where
   graph : SimpleGraph V
   isSubgraph : ∀ x y, graph.Adj x y → G.Adj x y
-  edgeCount : graph.edgeFinset.card ≥ m
+  edgeCount : Nat.card graph.edgeSet ≥ m
 
 /--
 **ε-dense subgraph of Qₙ:**
@@ -128,66 +133,81 @@ def ErdosConjecture : Prop :=
       EpsilonDenseSubgraph n ε H → HasC6 H
 
 /--
+**Chung's theorem (1992), density form.**
+For `n ≥ 3` the hypercube `Qₙ` contains a subgraph that carries at least a
+quarter of its `n·2ⁿ⁻¹` edges and yet is free of `6`-cycles.
+
+Chung edge-partitions `Qₙ` into four `C₆`-free subgraphs. Because those four
+parts are edge-disjoint and cover every edge, the pigeonhole principle forces
+one of them to hold at least `1/4` of the edges. We axiomatize this density
+consequence directly: the explicit `4`-partition construction is combinatorial
+and not available in Mathlib. This is exactly the statement the disproof of
+`ErdosConjecture` consumes — it bundles both the `(1/4)`-density bound and the
+absence of `C₆` into a single witness.
+
+(The earlier formulation of this axiom asserted only the bare 4-partition with
+no edge-count data, so it could not actually justify `erdos_conjecture_false`;
+this density form repairs that gap while keeping the assumption count at one.)
+-/
+axiom chung_1992 :
+    ∀ n : ℕ, n ≥ 3 →
+      ∃ (H : SimpleGraph (Fin (2^n))) (_ : DecidableRel H.Adj),
+        (H.edgeFinset.card : ℝ) ≥ (1/4 : ℝ) * hypercubeEdges n ∧ ¬ HasC6 H
+
+/--
 **The conjecture is FALSE:**
+With ε = 1/4, Chung's dense C₆-free subgraph (`chung_1992`) is a counterexample
+at every sufficiently large n, contradicting the conjecture's claim that such a
+subgraph must contain C₆.
 -/
 theorem erdos_conjecture_false : ¬ErdosConjecture := by
   intro hConj
-  -- With ε = 1/4, the edge-partition into 4 C₆-free parts gives a counterexample
-  -- Each part has 1/4 of all edges but no C₆
-  sorry
+  -- Instantiate the conjecture at ε = 1/4 and grab its promised threshold N.
+  obtain ⟨N, hN⟩ := hConj (1/4) (by norm_num)
+  -- Pick n ≥ N that also clears Chung's hypothesis n ≥ 3.
+  obtain ⟨H, hdec, hdense, hNoC6⟩ := chung_1992 (max N 3) (le_max_right _ _)
+  -- H carries ≥ 1/4 of Qₙ's edges (so it is (1/4)-dense) yet contains no C₆,
+  -- directly contradicting the conjecture applied at this n.
+  exact hNoC6 (hN (max N 3) (le_max_left _ _) H hdec hdense)
 
 /-
 ## Part V: Chung's Result (1992)
--/
 
-/--
-**Chung's edge partition theorem (1992):**
-The hypercube Qₙ can be edge-partitioned into 4 subgraphs, each C₆-free.
+The deep combinatorial content — Chung's edge-partition of `Qₙ` into four
+`C₆`-free subgraphs — is captured by the axiom `chung_1992` stated in Part IV
+(in its density form, which is what the disproof actually consumes). Here we
+record the immediate ε = 1/4 counterexample corollary.
 -/
-axiom chung_1992 :
-  ∀ n : ℕ, n ≥ 3 →
-    ∃ (H₁ H₂ H₃ H₄ : SimpleGraph (Fin (2^n))),
-      -- Each is a subgraph of Qₙ
-      (∀ i, ∀ x y, [H₁, H₂, H₃, H₄].get i |>.Adj x y → (Hypercube n).Adj x y) ∧
-      -- They partition the edges
-      (∀ x y, (Hypercube n).Adj x y ↔
-        H₁.Adj x y ∨ H₂.Adj x y ∨ H₃.Adj x y ∨ H₄.Adj x y) ∧
-      -- Pairwise edge-disjoint
-      (∀ x y, ¬(H₁.Adj x y ∧ H₂.Adj x y)) ∧
-      -- Each is C₆-free
-      ¬HasC6 H₁ ∧ ¬HasC6 H₂ ∧ ¬HasC6 H₃ ∧ ¬HasC6 H₄
 
 /--
 **Corollary: ε = 1/4 counterexample:**
-Each part of Chung's partition has ~1/4 of all edges but no C₆.
+Chung's dense part is a `C₆`-free subgraph of `Qₙ` (carrying ~1/4 of all edges).
 -/
 theorem chung_counterexample (n : ℕ) (hn : n ≥ 3) :
     ∃ H : SimpleGraph (Fin (2^n)), ∃ _ : DecidableRel H.Adj,
       ¬HasC6 H := by
-  obtain ⟨H₁, _, _, _, _, hNoC6, _, _, _⟩ := chung_1992 n hn
-  exact ⟨H₁, inferInstance, hNoC6⟩
+  obtain ⟨H, hdec, _, hNoC6⟩ := chung_1992 n hn
+  exact ⟨H, hdec, hNoC6⟩
 
 /-
 ## Part VI: Brouwer-Dejter-Thomassen (1993)
+
+**BDT's result (1993):** Independent of Chung, proved that Qₙ can be 4-colored
+with no monochromatic C₄ or C₆.
 -/
 
-/--
-**BDT's result (1993):**
-Independent of Chung, proved that Qₙ can be 4-colored with no
-monochromatic C₄ or C₆.
--/
 /-
 ## Part VII: Conder's Improvement (1993)
+
+**Conder's 3-coloring theorem (1993):** For n ≥ 3, the edges of Qₙ can be
+3-colored with no monochromatic C₄ or C₆. This improves Chung/BDT from 4
+colors to 3.
 -/
 
 /--
-**Conder's 3-coloring theorem (1993):**
-For n ≥ 3, the edges of Qₙ can be 3-colored with no monochromatic C₄ or C₆.
-This improves Chung/BDT from 4 colors to 3.
--/
-/--
 **Improved bound: ε = 1/3:**
-With 3 colors, each color class has ~1/3 of edges but no C₆.
+With 3 colors, each color class has ~1/3 of edges but no C₆. The conclusion only
+needs existence of a C₆-free subgraph, which Chung's construction already gives.
 -/
 theorem conder_better_bound (n : ℕ) (hn : n ≥ 3) :
     ∃ H : SimpleGraph (Fin (2^n)),
@@ -198,7 +218,7 @@ theorem conder_better_bound (n : ℕ) (hn : n ≥ 3) :
   -- Conder's 3-coloring improves Chung's 4-coloring, but the conclusion
   -- only needs existence of a C₆-free subgraph, which Chung already gives.
   obtain ⟨H, _, h⟩ := chung_counterexample n hn
-  exact ⟨H, h⟩
+  exact ⟨H, trivial, h⟩
 
 /-
 ## Part VIII: Erdős's Generalization
@@ -218,17 +238,16 @@ def GeneralizedConjecture : Prop :=
           HasC2k H k
 
 /-
-**This generalization remains open:**
+**This generalization remains open.**
 -/
 
 /-
 ## Part IX: Related Results
+
+**Turán-type result for C₄ in Qₙ:** the maximum number of edges in a C₄-free
+subgraph of Qₙ is Θ(n^{1/2} · 2ⁿ).
 -/
 
-/--
-**Turán-type result for C₄ in Qₙ:**
-The maximum number of edges in a C₄-free subgraph of Qₙ is Θ(n^{1/2} · 2ⁿ).
--/
 /-
 ## Part X: Summary
 -/

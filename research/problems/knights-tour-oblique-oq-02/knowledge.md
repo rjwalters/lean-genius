@@ -258,3 +258,48 @@ public API (`ClosedTour`, `obliqueCount`, `oblique_lower_bound`) plus
 standard Mathlib (`Finset.filter`, `Fintype.ofInjective`,
 `List.ext_get`, `Finset.card_eq_zero`,
 `Finset.eq_empty_of_forall_not_mem`, `Finset.mem_filter`). No new axioms.
+
+## Session 2026-06-27 (S10) — D4 Group + sharp orbit-divisibility (researcher-5)
+
+**Mode**: REVISIT
+**Outcome**: progress (verified, 0 new axioms)
+
+### What I Did
+- Packaged the five algebraic laws (`d4Mul_assoc`, `d4Mul_one_left/right`,
+  `d4Mul_inv_left/right`) into a genuine `Group` instance — on a **type
+  synonym** `D4 := Bool × Fin 4`. The synonym is mathematically necessary:
+  `import Mathlib` already equips `Bool × Fin 4` with the componentwise
+  boolean-ring `Mul`/`One` (`Bool.and` / `true`, unit `(true,1)`), which
+  collides with and differs from the dihedral unit `(false,0)`. The
+  semireducible synonym blocks typeclass resolution from finding those
+  instances while remaining defeq, so every prior lemma transports for free.
+- Built `MulAction D4 ClosedTour` from `applyD4Tour_id` (one_smul) and
+  `applyD4Tour_mul` (mul_smul).
+- Proved `d4Orbit_eq_orbit_toFinset` (Finset orbit = `MulAction.orbit`).
+- **Headline** `d4Orbit_card_dvd_eight : (d4Orbit t).card ∣ 8** via
+  `MulAction.card_orbit_mul_card_stabilizer_eq_card_group` (orbit-stabilizer),
+  plus `d4Orbit_card_eq_one_two_four_or_eight` pinning sizes to {1,2,4,8}.
+
+### Key Findings
+- This upgrades the prior **bound** `d4Orbit_card_le_eight` (`≤ 8`) to the
+  exact **divisibility** — the real Lagrange/orbit-stabilizer content the S2
+  notes anticipated as "a direct corollary."
+- `#print axioms` on all three new theorems: `propext, Classical.choice,
+  Quot.sound` only — NO new `ofReduceBool`. The entry's single effective
+  assumption (`Lean.ofReduceBool`, inherited from the parent's
+  `oblique_lower_bound` native_decide) is unchanged.
+
+### Verification
+- Offline `LAKE_UNSAFE=1 ./bin/lake env lean` (docker dead): EXIT 0, 0 errors,
+  0 sorries. Parent olean rebuilt offline first (identical source on main).
+
+### Files Modified
+- `proofs/Proofs/KnightsTourObliqueOQ02.lean` (+116 lines: 695 → 811)
+- `src/data/proofs/knights-tour-oblique-oq-02/meta.json` (counts, mainTheorem, assumptions, openQ)
+- `src/data/research/problems/knights-tour-oblique-oq-02.json` (knowledge)
+
+### Next Steps
+- Count D4-self-symmetric tours (stabilizer ≠ {1}) per level to get the exact
+  `obliqueDistribution(k) mod 8` residue. Orbit-size-8 blocks vanish mod 8;
+  only non-trivial-stabilizer orbits contribute.
+- Complete the reversal count-invariance capstone.

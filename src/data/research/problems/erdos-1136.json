@@ -6,12 +6,12 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-      "formal": "Does there exist a set $A\\subseteq\\mathbb{N}$ with lower density greater than $1/3$ such that $a+b\\neq 2^k$ for every $a,b\\in A$ and every $k\\geq 0$?",
-      "plain": "Can a set of natural numbers have lower density greater than one third while avoiding all sums that are powers of two?",
-      "whyMatters": [
-        "The problem tests how dense an additive set can be while avoiding a very sparse but structured target sequence.",
-        "The Lean file proves the modular avoidance half of Muller's construction and isolates the remaining density/optimality input as axioms."
-      ]
+    "formal": "Does there exist a set $A\\subseteq\\mathbb{N}$ with lower density greater than $1/3$ such that $a+b\\neq 2^k$ for every $a,b\\in A$ and every $k\\geq 0$?",
+    "plain": "Can a set of natural numbers have lower density greater than one third while avoiding all sums that are powers of two?",
+    "whyMatters": [
+      "The problem tests how dense an additive set can be while avoiding a very sparse but structured target sequence.",
+      "The Lean file proves the modular avoidance half of Muller's construction and isolates the remaining density/optimality input as axioms."
+    ]
   },
   "knownResults": {
     "proven": [
@@ -74,8 +74,8 @@
     {
       "path": "Proofs/Erdos1136Problem.lean",
       "filename": "Erdos1136Problem.lean",
-      "lineCount": 318,
-      "theoremCount": 17,
+      "lineCount": 319,
+      "theoremCount": 13,
       "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,

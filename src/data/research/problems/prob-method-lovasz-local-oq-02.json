@@ -70,9 +70,10 @@
     "lovasz-local-lemma"
   ],
   "relatedProofs": [
-    "prob-method-lovasz-local",
     "lovasz-local-lemma-oq-02",
-    "prob-method-expectation"
+    "prob-method-expectation",
+    "prob-method-lovasz-local",
+    "prob-method-lovasz-local-oq-02"
   ],
   "references": {
     "papers": [
@@ -93,7 +94,7 @@
     {
       "path": "Proofs/ProbMethodLovaszLocalOQ02.lean",
       "filename": "ProbMethodLovaszLocalOQ02.lean",
-      "lineCount": 164,
+      "lineCount": 165,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,

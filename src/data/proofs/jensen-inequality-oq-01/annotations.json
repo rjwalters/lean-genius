@@ -1,0 +1,103 @@
+[
+  {
+    "id": "ann-jensenoq01-1",
+    "proofId": "jensen-inequality-oq-01",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "The Equality Case of Strict Jensen, Routed to AM–GM",
+    "content": "**Module framing.** This entry isolates the **equality case** of finite weighted Jensen for a *strictly* convex $f$ and specializes it — through the strict convexity of $\\exp$ — to the sharp equality case of weighted AM–GM. The abstract input is Mathlib's `StrictConvexOn.map_sum_eq_iff`: with strictly positive weights summing to $1$, $f(\\sum w_i p_i) = \\sum w_i f(p_i)$ **iff** all $p_i$ equal their weighted mean. Setting $f = \\exp$, $p_i = \\log z_i$ turns Jensen into AM–GM and the equality case into 'geometric mean = arithmetic mean $\\iff$ all data equal' — the very route Mathlib uses for `geom_mean_eq_arith_mean_weighted_iff'`, made explicit here, plus a direct strict form and the two-variable instance.",
+    "mathContext": "$f(\\sum_i w_i p_i) = \\sum_i w_i f(p_i) \\iff p_i \\equiv \\text{mean}$; with $f=\\exp,\\ p_i=\\log z_i$ this is weighted AM–GM.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Jensen's inequality (equality case)",
+      "Strict convexity",
+      "Weighted AM–GM",
+      "Bohr–Mollerup / convexity transfer"
+    ],
+    "prerequisites": [
+      "StrictConvexOn and map_sum",
+      "exp / log on the positives"
+    ],
+    "tags": ["module-header", "framing", "jensen"]
+  },
+  {
+    "id": "ann-jensenoq01-2",
+    "proofId": "jensen-inequality-oq-01",
+    "range": { "startLine": 38, "endLine": 51 },
+    "type": "concept",
+    "title": "The Abstract Equality Case (clean re-export)",
+    "content": "**`jensen_eq_iff`** records the foundation: for strictly convex $f$, strictly positive weights $\\omega$ summing to $1$, and points $p_i$ in the domain, Jensen is an *equality* exactly when every $p_j$ equals the weighted center of mass $\\sum_i \\omega_i p_i$ — i.e. the data are constant. It is a clean re-export of Mathlib's `StrictConvexOn.map_sum_eq_iff`, stated standalone so the AM–GM corollary below can cite it directly. The 'all points equal their mean' right-hand side is the canonical equality characterisation for strictly convex functions.",
+    "mathContext": "$f\\!\\left(\\sum_i \\omega_i p_i\\right) = \\sum_i \\omega_i f(p_i) \\iff \\forall j,\\ p_j = \\sum_i \\omega_i p_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "StrictConvexOn.map_sum_eq_iff",
+      "Center of mass",
+      "Equality characterisation"
+    ],
+    "prerequisites": [
+      "Strict convexity on a set"
+    ],
+    "tags": ["jensen", "equality-case", "re-export"]
+  },
+  {
+    "id": "ann-jensenoq01-3",
+    "proofId": "jensen-inequality-oq-01",
+    "range": { "startLine": 53, "endLine": 78 },
+    "type": "concept",
+    "title": "Weighted AM–GM and its Equality Case",
+    "content": "**`weighted_amgm_le`** is the inequality $\\prod_i z_i^{w_i} \\le \\sum_i w_i z_i$ (Mathlib's `geom_mean_le_arith_mean_weighted`). **`weighted_amgm_eq_iff`** is the equality case: with strictly positive weights, the means coincide **iff all $z_i$ are equal**. It restates Mathlib's `geom_mean_eq_arith_mean_weighted_iff'`, converting the asymmetric center-of-mass right side ($\\forall j,\\ z_j = \\sum w_i z_i$) into the symmetric pairwise form ($\\forall j\\,k,\\ z_j = z_k$) — the forward direction is immediate, the backward direction uses $\\sum_i w_i z_j = z_j$ (weights sum to $1$) and `sum_congr`.",
+    "mathContext": "$\\prod_i z_i^{w_i} = \\sum_i w_i z_i \\iff \\forall j,k,\\ z_j = z_k$; the center-of-mass form $z_j = \\sum w_i z_i$ becomes pairwise equality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weighted AM–GM",
+      "geom_mean_eq_arith_mean_weighted_iff'",
+      "Symmetric vs center-of-mass equality form"
+    ],
+    "prerequisites": [
+      "jensen_eq_iff",
+      "Finset.sum_congr / sum_mul"
+    ],
+    "tags": ["amgm", "equality-case", "main-theorem"]
+  },
+  {
+    "id": "ann-jensenoq01-4",
+    "proofId": "jensen-inequality-oq-01",
+    "range": { "startLine": 79, "endLine": 105 },
+    "type": "insight",
+    "title": "Strict AM–GM via the Explicit Jensen Bridge",
+    "content": "**`weighted_amgm_lt_of_ne`**: if two values differ, the geometric mean is *strictly* less than the arithmetic mean — proved **directly through strict Jensen** `strictConvexOn_exp.map_sum_lt`, making the Jensen → AM–GM bridge explicit rather than deriving strictness from the equality case. The mechanics: rewrite the geometric mean as $\\exp(\\sum w_i \\log z_i)$ (`hgeo`, via `exp_sum` + `rpow_def_of_pos`) and the arithmetic mean as $\\sum w_i \\exp(\\log z_i)$ (`harith`, via `exp_log`); non-constant data give non-constant logs (injectivity `log_injOn_pos`); strict convexity of $\\exp$ on the non-constant log family then yields the strict gap.",
+    "mathContext": "geometric mean $= \\exp(\\sum w_i \\log z_i)$, arithmetic mean $= \\sum w_i \\exp(\\log z_i)$; $\\exp$ strictly convex + non-constant logs $\\Rightarrow$ strict $<$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "StrictConvexOn.map_sum_lt",
+      "exp/log bridge",
+      "Real.log_injOn_pos",
+      "Real.exp_sum"
+    ],
+    "prerequisites": [
+      "Strict convexity of exp",
+      "rpow_def_of_pos, exp_log"
+    ],
+    "tags": ["strict-amgm", "jensen-bridge", "exp-log"]
+  },
+  {
+    "id": "ann-jensenoq01-5",
+    "proofId": "jensen-inequality-oq-01",
+    "range": { "startLine": 107, "endLine": 124 },
+    "type": "concept",
+    "title": "The Two-Variable Instance √(ab) = (a+b)/2 ⟺ a = b",
+    "content": "**`amgm_two_eq_iff`**: for nonnegative reals, $\\sqrt{ab} = \\frac{a+b}{2} \\iff a = b$ — the concrete, elementary face of the equality case. The forward direction is the classic completing-the-square argument: rewrite $\\sqrt{ab} = \\sqrt a\\sqrt b$ (`sqrt_mul`), then $(\\sqrt a - \\sqrt b)^2 = 0$ follows by `nlinarith` from $\\sqrt a^2 = a$, $\\sqrt b^2 = b$, and the hypothesis, forcing $\\sqrt a = \\sqrt b$ hence $a = b$. The reverse is a one-line `sqrt_mul_self`. This grounds the abstract n-ary equality case in the familiar $n=2$ picture.",
+    "mathContext": "$(\\sqrt a - \\sqrt b)^2 = a + b - 2\\sqrt{ab} = 0 \\iff a = b$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Two-variable AM–GM",
+      "Completing the square",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "Real.sqrt properties",
+      "The n-ary equality case"
+    ],
+    "tags": ["two-variable", "concrete-instance", "completing-the-square"]
+  }
+]

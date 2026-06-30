@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-sum-choose-mul-sq",
+    "proofId": "composition-parts-choose-oq-01-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 105 },
+    "type": "technique",
+    "title": "The Second-Moment Binomial Identity 4∑ k²C(m,k) = m(m+1)2ᵐ",
+    "content": "`sum_choose_mul_sq` is the arithmetic core. After peeling the k = 0 term with `Finset.sum_range_succ'`, the absorption rule (k+1)·C(m,k+1) = m·C(m−1,k) (`Nat.add_one_mul_choose_eq`) is applied once to drop a factor of (k+1), lowering the troublesome k² to (k+1) inside an (m−1)-binomial. The k²-sum thereby reduces to the parent's first-moment sum ∑_k C(m−1,k)·k = (m−1)·2^(m−2) (`sum_choose_mul`) plus the plain binomial sum ∑_k C(m−1,k) = 2^(m−1) (`Nat.sum_range_choose`), closed by `ring` after a case split. The statement is multiplied by 4 to stay in ℕ — the exact form m(m+1)2^(m−2) would truncate for small m.",
+    "mathContext": "$4\\sum_{k=0}^{m} k^2\\binom{m}{k} = m(m+1)2^m$, via the absorption $(k+1)\\binom{m}{k+1} = m\\binom{m-1}{k}$.",
+    "significance": "key",
+    "relatedConcepts": ["binomial coefficients", "absorption identity", "weighted binomial sums", "second moment"],
+    "prerequisites": ["binomial identities", "Finset sums in Lean", "induction over ℕ"]
+  },
+  {
+    "id": "ann-sum-finset-card-sq",
+    "proofId": "composition-parts-choose-oq-01-oq-01-oq-01",
+    "range": { "startLine": 107, "endLine": 116 },
+    "type": "technique",
+    "title": "Transport to the Subset-Size Second Moment ∑ |s|²",
+    "content": "`sum_finset_card_sq` lifts the binomial identity to the subset sum 4·∑_{s ⊆ Fin m} |s|² = m(m+1)2^m. The bridge is `Finset.sum_powerset_apply_card`, which groups the 2^m subsets of an m-element set by cardinality: there are C(m,k) subsets of size k, so ∑_s f(|s|) = ∑_k C(m,k)·f(k). Specialising f = (·)² turns the subset second moment into the binomial sum already proved.",
+    "mathContext": "$\\sum_{s \\subseteq \\mathrm{Fin}\\,m} \\#s^2 = \\sum_{k} \\binom{m}{k} k^2$, grouping subsets by size.",
+    "significance": "supporting",
+    "relatedConcepts": ["powerset", "grouping by cardinality", "subset sums"],
+    "prerequisites": ["powerset of a finite set", "Finset.sum_powerset_apply_card"]
+  },
+  {
+    "id": "ann-second-moment",
+    "proofId": "composition-parts-choose-oq-01-oq-01-oq-01",
+    "range": { "startLine": 118, "endLine": 159 },
+    "type": "concept",
+    "title": "The Second Moment of the Number of Parts",
+    "content": "`second_moment` proves 4·∑_{c : Composition n} (c.length)² = n(n+3)2^(n−1) for n ≥ 2. The proof transports the sum across the gap bijection `gapsEquiv : Composition n ≃ Finset (Fin (n−1))` using the bridge `length_eq_card_gaps` (length c = (gaps c).card + 1) and `Equiv.sum_comp`, reducing ∑_c c.length² to ∑_{s ⊆ Fin (n−1)} (|s|+1)². Expanding (|s|+1)² = |s|² + 2|s| + 1 splits it into the three subset sums: the new second moment `sum_finset_card_sq`, the parent's first moment `sum_finset_card` (∑|s| = m·2^(m−1)), and the count ∑1 = 2^(n−1) (`Fintype.card_finset`). Substituting n = M + 2 and `ring` produce the closed form.",
+    "mathContext": "$4\\sum_{c}(c.\\mathrm{length})^2 = n(n+3)2^{n-1}$ from $\\sum_{s \\subseteq \\mathrm{Fin}(n-1)} (\\#s + 1)^2 = \\sum \\#s^2 + 2\\sum \\#s + 2^{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["compositions", "gap bijection", "moment of a distribution", "reindexing along an equivalence"],
+    "prerequisites": ["Mathlib's Composition n", "Equiv.sum_comp", "the gap bijection from the parent entry"]
+  },
+  {
+    "id": "ann-variance",
+    "proofId": "composition-parts-choose-oq-01-oq-01-oq-01",
+    "range": { "startLine": 161, "endLine": 211 },
+    "type": "insight",
+    "title": "The Variance Is the Binomial(n−1, 1/2) Variance (n−1)/4",
+    "content": "`variance` computes (1/2^(n−1))·∑_c (c.length − (n+1)/2)² = (n−1)/4 over ℚ. It expands (X − μ)² = X² − 2μX + μ² with μ = (n+1)/2, then substitutes the second moment (divided by 4), the parent's first moment `total_parts`, and the count `composition_card` = 2^(n−1) (the denominator, shown nonzero via `positivity`). After reducing all exponents to a common base 2^M, `field_simp` and `ring` close the goal. The answer (n−1)/4 is exactly the variance of 1 + Binomial(n−1, 1/2): the part-count is one plus the number of cut gaps, and the n−1 gaps are cut independently — the combinatorics recovers the probabilistic statistic with no probability theory invoked.",
+    "mathContext": "$\\mathrm{Var}(X) = E[X^2] - \\mu^2 = \\frac{n-1}{4}$ with $\\mu = \\frac{n+1}{2}$; $X - 1 \\sim \\mathrm{Binomial}(n-1, \\tfrac12)$.",
+    "significance": "key",
+    "relatedConcepts": ["variance", "binomial distribution", "uniform distribution on compositions", "second moment vs variance"],
+    "prerequisites": ["Var(X) = E[X²] − (E[X])²", "rational arithmetic in Lean (field_simp)", "the first moment from the parent entry"]
+  }
+]

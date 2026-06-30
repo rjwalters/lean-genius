@@ -1,0 +1,110 @@
+{
+  "id": "sperner-ndim-oq-01-oq-01",
+  "title": "Freudenthal Door-Counting: Every Facet Bounds One or Two Simplices",
+  "slug": "sperner-ndim-oq-01-oq-01",
+  "description": "Completes the door-counting parity fact underlying the combinatorial proof of Sperner's lemma for the Freudenthal triangulation. A simplex is a maximal flag ∅ = V₀ ⊂ V₁ ⊂ ⋯ ⊂ Vₙ = Fin n; a facet drops one vertex Vₖ, and the number of simplices sharing it equals the number of k-element refills S with prefixSet l (k-1) ⊆ S ⊆ prefixSet l (k+1). The parent proved the interior case (0 < k < n → 2 simplices). This entry proves the two boundary cases — dropping V₀ = ∅ or Vₙ = Fin n leaves exactly 1 refill — and packages all three into a single unified theorem: the facet count is `if 0 < k ∧ k < n then 2 else 1`. Because ℕ-truncated subtraction gives 0 - 1 = 0, the boundary cases are literally the interior filter formula at k = 0 and k = n. Self-contained: the prefix-set infrastructure and the intermediate-set counting lemma are reproved from current Mathlib.",
+  "meta": {
+    "author": "Freudenthal (1942); formalization by researcher-5",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+    "date": "1942-2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SpernerNDimOQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "Freudenthal-triangulation",
+      "Sperner-lemma",
+      "door-counting",
+      "boundary",
+      "triangulation",
+      "simplex",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. All results are fully proved from Mathlib primitives; #print axioms reports only propext, Classical.choice, Quot.sound for every theorem.",
+    "originalContributions": [
+      "freudenthal_boundary_bottom: the facet dropping the apex vertex V₀ = ∅ (k = 0) bounds exactly 1 simplex — the only 0-element refill is ∅",
+      "freudenthal_boundary_top: the facet dropping the maximal vertex Vₙ = Fin n (k = n) bounds exactly 1 simplex — the only n-element refill is Finset.univ",
+      "freudenthal_door_count: the unified door-counting theorem — for every k ≤ n the facet count is (if 0 < k ∧ k < n then 2 else 1), covering interior and boundary uniformly via ℕ-truncated subtraction",
+      "freudenthal_boundary_unique_bottom / freudenthal_boundary_unique_top: ExistsUnique forms of the two boundary facts, mirroring the parent's existence corollary",
+      "Self-contained re-derivation of prefixSet, prefixSet_card, prefixSet_mono, prefixSet_skip_sdiff_card, intermediate_sets_card_eq_two, and freudenthal_adjacency_theorem from current Mathlib (the parent file SpernerNDimOQ01.lean had bit-rotted against a List-API rename and no longer compiled)"
+    ],
+    "lineCount": 283,
+    "theoremCount": 11,
+    "defCount": 1,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma (Emanuel Sperner, 1928) is the combinatorial heart of Brouwer's fixed-point theorem: any 'Sperner labeling' of the vertices of a triangulated simplex contains an odd number of fully-labeled ('rainbow') cells, hence at least one. The standard proof is a door-counting (or 'room-and-door') argument: regard each full-dimensional simplex as a room and each (n-1)-facet carrying a distinguished label pattern as a door. The argument turns on a parity fact about how facets sit between simplices — every interior facet is a door between exactly two rooms, while every boundary facet borders exactly one room and the outside. Summing incidences mod 2 then forces an odd number of rainbow rooms. Hans Freudenthal's 1942 triangulation of the n-cube, in which the n! simplices are indexed by permutations and the k-th vertex of permutation l is the prefix set {l[0],…,l[k-1]}, is the canonical setting for making this concrete. The parent entry formalized the interior half of the parity fact (each interior facet → 2 simplices). This entry supplies the boundary half (each boundary facet → 1 simplex) and unifies both into a single counting theorem, completing the parity input that Sperner's lemma consumes.",
+    "problemStatement": "In the Freudenthal triangulation, how many simplices share a given (n-1)-facet? An interior facet (dropping vertex Vₖ with 0 < k < n) is shared by exactly 2 simplices; a boundary facet (dropping V₀ = ∅ or Vₙ = Fin n) bounds exactly 1. Equivalently, for every k ≤ n the count of k-element refills S with prefixSet l (k-1) ⊆ S ⊆ prefixSet l (k+1) is 2 in the interior and 1 on the boundary.",
+    "text": "Representing the simplex l as a nodup list of all of Fin n, the vertices are the prefix Finsets Vₖ = (l.take k).toFinset = prefixSet l k, forming a maximal flag ∅ = V₀ ⊂ ⋯ ⊂ Vₙ = Fin n. Dropping vertex Vₖ yields a facet; refilling it with a k-element set S sandwiched between Vₖ₋₁ and Vₖ₊₁ recovers a complete flag, i.e. a simplex through the facet. The number of refills is the number of simplices on that facet. The interior count is 2 (parent); the boundary counts are 1 (this entry); the unified theorem states the count is `if 0 < k ∧ k < n then 2 else 1`.",
+    "proofStrategy": "The bottom boundary (k = 0): the only 0-element refill is ∅, so the filter equals {∅} and the count is 1 — no nondegeneracy hypothesis is needed, since a cardinality-0 Finset is forced to be empty. The top boundary (k = n): prefixSet l (n+1) is all of Fin n (card = min (n+1) n = n = card univ), and the only n-element subset of an n-element type is Finset.univ, so the filter equals {univ} and the count is 1. The unified door_count theorem case-splits on whether 0 < k ∧ k < n: the interior branch is the (reproved) Freudenthal Adjacency Theorem, and the complementary branch is k = 0 or k = n, dispatched to the two boundary lemmas. Crucially, because ℕ-truncated subtraction gives 0 - 1 = 0, the boundary cases are syntactically the same filter formula as the interior case at the endpoints, so a single uniform statement covers all k.",
+    "keyInsights": [
+      "The boundary facets are exactly the two endpoint positions k = 0 and k = n of the flag — the facets opposite the empty vertex and the full vertex — and each admits a unique refill (∅ and Finset.univ respectively), giving door-count 1",
+      "ℕ-truncated subtraction makes the unification free: the parent's interior filter `prefixSet l (k-1) ⊆ S ∧ S.card = k` reduces at k = 0 to `prefixSet l 0 ⊆ S ∧ S.card = 0` (forcing S = ∅) and at k = n to the top constraint (forcing S = univ), so one theorem freudenthal_door_count states the whole dichotomy",
+      "Door counting is a parity statement: interior facets contribute 2 (a door between two rooms) and boundary facets contribute 1 (a door to the outside); this 2-vs-1 dichotomy is exactly the input the room-and-door argument for Sperner's lemma sums modulo 2",
+      "The top boundary reduces to a pure cardinality fact: prefixSet l (n+1) = Finset.univ because a nodup list of length n exhausts Fin n, and Finset.eq_univ_of_card upgrades 'card = n' to 'equals univ'",
+      "The entry is self-contained: the parent SpernerNDimOQ01.lean had bit-rotted (it referenced List.get?_eq_get and List.take_succ, both renamed in later Mathlib), so the prefix infrastructure and the abstract intermediate-set counting lemma were reproved here against current Mathlib, using the unconditional Finset.card_sdiff together with inter_eq_left rather than the removed subset-hypothesis form"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Door-Counting Model",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Docstring explaining the Freudenthal flag model (simplex = maximal chain of prefix sets), the facet-refill correspondence, the four headline results, and the ℕ-subtraction trick that unifies interior and boundary. Imports Mathlib, namespace FreudenthalDoorCount.",
+      "mathContext": "Simplex l ↔ flag $\\emptyset = V_0 \\subset \\cdots \\subset V_n = \\mathrm{Fin}\\,n$, $V_k = \\mathrm{prefixSet}\\,l\\,k$. Facet drops $V_k$; refills $S$ with $V_{k-1}\\subseteq S\\subseteq V_{k+1}$, $|S|=k$ count simplices on the facet."
+    },
+    {
+      "id": "prefix-sets",
+      "title": "Prefix-Set Vertices (reproved infrastructure)",
+      "startLine": 61,
+      "endLine": 100,
+      "summary": "Defines prefixSet l k = (l.take k).toFinset and reproves prefixSet_card (card = min k l.length via a Sublist nodup argument), prefixSet_card_eq, prefixSet_mono (inclusion chain via take_take), and prefixSet_skip_sdiff_card (the 2-element gap, via the unconditional Finset.card_sdiff and inter_eq_left).",
+      "mathContext": "$\\mathrm{prefixSet}(l,k)=\\{l_0,\\ldots,l_{k-1}\\}$; for $0<k<|l|$, $|\\,\\mathrm{prefixSet}(l,k+1)\\setminus\\mathrm{prefixSet}(l,k-1)\\,| = (k+1)-(k-1)=2$."
+    },
+    {
+      "id": "counting-lemma",
+      "title": "intermediate_sets_card_eq_two: Abstract Counting Core",
+      "startLine": 101,
+      "endLine": 157,
+      "summary": "Proves: if |B \\ A| = 2 then exactly 2 sets S satisfy A ⊆ S ⊆ B and |S| = |A| + 1. The filter is shown equal to the explicit pair {A ∪ {a}, A ∪ {b}} where {a,b} = B \\ A, then counted by Finset.card_pair.",
+      "mathContext": "If $B\\setminus A=\\{a,b\\}$ with $a\\neq b$, the intermediate sets of size $|A|+1$ are exactly $A\\cup\\{a\\}$ and $A\\cup\\{b\\}$."
+    },
+    {
+      "id": "interior",
+      "title": "freudenthal_adjacency_theorem: Interior Facets → 2 Simplices",
+      "startLine": 158,
+      "endLine": 181,
+      "summary": "Reproves the parent result: for 0 < k < n, the count of k-element refills between prefixSet l (k-1) and prefixSet l (k+1) is exactly 2. Obtained by feeding the 2-element gap into intermediate_sets_card_eq_two and rewriting the exponent (prefixSet l (k-1)).card + 1 back to k.",
+      "mathContext": "Interior facet at position $k$ ($0<k<n$) is shared by the simplex $l$ and the one obtained by swapping $l[k-1]$ and $l[k]$ — exactly 2 simplices."
+    },
+    {
+      "id": "boundary",
+      "title": "Boundary Facets → 1 Simplex",
+      "startLine": 182,
+      "endLine": 228,
+      "summary": "freudenthal_boundary_bottom (k = 0): the filter equals {∅}, so count 1. freudenthal_boundary_top (k = n): prefixSet l (n+1) = univ and the only n-element subset is univ, so the filter equals {univ} and the count is 1.",
+      "mathContext": "Dropping $V_0=\\emptyset$ forces refill $\\emptyset$; dropping $V_n=\\mathrm{Fin}\\,n$ forces refill $\\mathrm{univ}$. Each boundary facet borders exactly one simplex."
+    },
+    {
+      "id": "unified",
+      "title": "freudenthal_door_count: The Unified Parity Theorem",
+      "startLine": 229,
+      "endLine": 252,
+      "summary": "For every k ≤ n the facet count equals (if 0 < k ∧ k < n then 2 else 1). Case-splits on interior vs. boundary, dispatching to the adjacency theorem or the two boundary lemmas. This is the door-counting parity fact that Sperner's lemma consumes.",
+      "mathContext": "$\\#\\{\\text{simplices on the }k\\text{-th facet}\\} = \\begin{cases}2 & 0<k<n\\\\ 1 & k\\in\\{0,n\\}\\end{cases}$."
+    },
+    {
+      "id": "unique",
+      "title": "ExistsUnique Boundary Forms",
+      "startLine": 253,
+      "endLine": 283,
+      "summary": "freudenthal_boundary_unique_bottom and freudenthal_boundary_unique_top: the unique completing vertex set of each boundary facet is ∅ and Finset.univ respectively, mirroring the parent's freudenthal_two_intermediate_sets.",
+      "mathContext": "$\\exists!\\,S$ refilling the bottom (resp. top) boundary facet, namely $S=\\emptyset$ (resp. $S=\\mathrm{univ}$)."
+    }
+  ]
+}

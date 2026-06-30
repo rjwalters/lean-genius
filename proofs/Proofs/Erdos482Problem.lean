@@ -25,11 +25,7 @@ References:
 Tags: number-theory, binary-digits, algebraic-numbers, recurrence, solved
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Data.Int.Floor
-import Mathlib.Data.Nat.Digits
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib
 
 open Real Int
 
@@ -43,7 +39,7 @@ noncomputable def grahamPollakSeq : ℕ → ℤ
   | 0 => 1
   | n + 1 => ⌊Real.sqrt 2 * (grahamPollakSeq n + 1/2)⌋
 
-/-- First few terms of the sequence.
+/- First few terms of the sequence.
 Axiomatized because computing floor(√2 · x) requires real arithmetic. -/
 /- ## Part 2: The Main Theorem
 -/
@@ -59,9 +55,9 @@ axiom graham_pollak_theorem :
 /- ## Part 3: Properties of the Recurrence
 -/
 
-/-- √2 ≈ 1.41421356...
+/- √2 ≈ 1.41421356...
 Axiomatized because Mathlib's norm_num cannot evaluate sqrt 2 directly. -/
-/-- The recurrence grows approximately by factor √2.
+/- The recurrence grows approximately by factor √2.
 Axiomatized because the convergence rate proof requires real analysis. -/
 /- ## Part 4: Generalization to √m
 -/
@@ -71,7 +67,7 @@ noncomputable def sqrtSeq (m : ℕ) : ℕ → ℤ
   | 0 => 1
   | n + 1 => ⌊Real.sqrt m * (sqrtSeq m n + 1/2)⌋
 
-/-- Stoll's generalization (2005): the digit-extraction method extends to
+/- Stoll's generalization (2005): the digit-extraction method extends to
 quadratic irrationals √m for square-free m.
 Axiomatized because the proof requires algebraic number theory. -/
 /-- Stoll (2005-2006): the method extends to all quadratic irrationals
@@ -85,7 +81,7 @@ axiom stoll_general :
 /- ## Part 5: Non-Periodicity
 -/
 
-/-- Non-periodicity of binary digits of √2.
+/- Non-periodicity of binary digits of √2.
 Since √2 is irrational, its binary expansion cannot be eventually periodic.
 Axiomatized because the proof requires irrationality of √2 combined with
 the characterization of eventually periodic binary expansions. -/

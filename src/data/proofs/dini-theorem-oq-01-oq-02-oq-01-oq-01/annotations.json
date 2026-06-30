@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-sufficiency-vs-optimality",
+    "proofId": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 54 },
+    "type": "context",
+    "title": "From Sufficiency to Optimality",
+    "content": "The parent proved a one-sided guarantee: n ≥ N(ε,δ) = ⌈log ε / log(1−δ)⌉₊ ⟹ (1−δ)ⁿ ≤ ε — the modulus is large ENOUGH. This entry answers OQ-01 by proving N is exactly OPTIMAL: the smallest n that works, with the predecessor (1−δ)^(N−1) > ε already failing. The whole upgrade comes from one extra direction of an equivalence — the parent had only ⟸ (exponentiate to verify), and the new ⟹ (take logs) is what supplies minimality. The lineage runs xⁿ from non-uniform convergence on [0,1) through recovery on the compact [0,1−δ] to this sharp modulus.",
+    "mathContext": "Parent: $n \\ge N \\Rightarrow (1-\\delta)^n \\le \\varepsilon$. Here: $N = \\min\\{n : (1-\\delta)^n \\le \\varepsilon\\}$ and $(1-\\delta)^{N-1} > \\varepsilon$.",
+    "significance": "context",
+    "relatedConcepts": ["Dini's theorem", "uniform convergence", "modulus of convergence", "optimality", "compactness hypothesis"],
+    "prerequisites": ["uniform convergence", "geometric decay", "ceiling function"]
+  },
+  {
+    "id": "ann-sharp-characterisation",
+    "proofId": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 92 },
+    "type": "insight",
+    "title": "The Sharp Characterisation — No Slack Either Way",
+    "content": "pow_le_iff_log_div proves the genuine biconditional (1−δ)ⁿ ≤ ε ⟺ log ε / log(1−δ) ≤ n, BOTH directions. Writing rⁿ = exp(n·log r) and ε = exp(log ε), the strict monotone bijection t ↦ exp t (Real.exp_le_exp) makes rⁿ ≤ ε ⟺ n·log r ≤ log ε with no loss. Then div_le_iff_of_neg — an IFF, not a one-way bound — divides by log r < 0 (Real.log_neg), reversing the order EXACTLY to give log ε / log r ≤ n. The ⟹ branch (take logs via Real.log_pow + Real.exp_log) is the new content; the ⟸ branch (exponentiate) is the parent's. Because no step loses information, the threshold is sharp.",
+    "mathContext": "$(1-\\delta)^n \\le \\varepsilon \\iff n\\log(1-\\delta) \\le \\log\\varepsilon \\iff \\dfrac{\\log\\varepsilon}{\\log(1-\\delta)} \\le n.$",
+    "significance": "key",
+    "relatedConcepts": ["exp/log order isomorphism", "Real.exp_le_exp", "div_le_iff_of_neg", "order reversal", "no-slack equivalence"],
+    "prerequisites": ["monotonicity of exp", "logarithm laws", "sign-aware division of inequalities"]
+  },
+  {
+    "id": "ann-ceil-form",
+    "proofId": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 94, "endLine": 103 },
+    "type": "technique",
+    "title": "Lifting to the Integer Modulus via Nat.ceil",
+    "content": "pow_le_iff_ceil_le rewrites the real characterisation through Nat.ceil_le (⌈a⌉₊ ≤ n ↔ a ≤ n) to obtain (1−δ)ⁿ ≤ ε ↔ ⌈log ε / log(1−δ)⌉₊ ≤ n. The right side is literally 'n reaches the modulus N(ε,δ)', so this single biconditional fuses the parent's sufficiency (⟸) with the new minimality (⟹). Crucially, because the ceiling is by definition the LEAST integer above the real threshold and the equivalence carries no slack, the integer modulus lands exactly on the least working exponent — there is no rounding waste in passing from ℝ to ℕ.",
+    "mathContext": "$(1-\\delta)^n \\le \\varepsilon \\iff \\lceil \\log\\varepsilon/\\log(1-\\delta)\\rceil_+ \\le n.$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.ceil_le", "ceiling function", "integer vs real threshold", "biconditional fusion"],
+    "prerequisites": ["ceiling/floor functions", "the sharp real characterisation"]
+  },
+  {
+    "id": "ann-isleast",
+    "proofId": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 109, "endLine": 130 },
+    "type": "insight",
+    "title": "Optimality as IsLeast",
+    "content": "isLeast_modulus is the headline: N = ⌈log ε / log(1−δ)⌉₊ is the least element of {n | (1−δ)ⁿ ≤ ε}. IsLeast packages both halves of optimality and each reduces to the one biconditional pow_le_iff_ceil_le — membership (N works) is the iff at n = N via le_refl; the lower-bound property (any working m has N ≤ m) is the iff's ⟹ at m. lt_pow_of_lt_modulus is the strict contrapositive: n < N ⟹ ε < (1−δ)ⁿ, every smaller exponent fails. This is the reusable template for proving optimality of any monotone geometric-decay modulus.",
+    "mathContext": "$\\mathrm{IsLeast}\\,\\{n : (1-\\delta)^n \\le \\varepsilon\\}\\ N;\\quad n < N \\Rightarrow \\varepsilon < (1-\\delta)^n.$",
+    "significance": "key",
+    "relatedConcepts": ["IsLeast", "least element of a set", "lower bound", "contrapositive", "strict minimality"],
+    "prerequisites": ["order theory (least elements)", "the biconditional above"]
+  },
+  {
+    "id": "ann-modulus-ge-one",
+    "proofId": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 136, "endLine": 144 },
+    "type": "technique",
+    "title": "N ≥ 1 by a Sign Computation",
+    "content": "one_le_modulus establishes N ≥ 1 for ε ∈ (0,1), which is what legitimizes the predecessor N−1. The argument is a sign check: for ε < 1 both log ε < 0 and log(1−δ) < 0 (Real.log_neg), so their ratio is strictly positive (div_pos_iff, the negative/negative case), and a positive real has ceiling ≥ 1 (Nat.ceil_pos), finished by omega. This quietly pins down the regime ε < 1 where the modulus is non-trivial — for ε ≥ 1 the inequality (1−δ)⁰ = 1 ≤ ε holds at n = 0 and the modulus is 0.",
+    "mathContext": "$\\varepsilon \\in (0,1) \\Rightarrow \\log\\varepsilon < 0,\\ \\log(1-\\delta) < 0 \\Rightarrow \\tfrac{\\log\\varepsilon}{\\log(1-\\delta)} > 0 \\Rightarrow N \\ge 1.$",
+    "significance": "supporting",
+    "relatedConcepts": ["sign of a quotient", "div_pos_iff", "Nat.ceil_pos", "Real.log_neg"],
+    "prerequisites": ["signs of logarithms", "ceiling positivity"]
+  },
+  {
+    "id": "ann-off-by-one",
+    "proofId": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 146, "endLine": 157 },
+    "type": "insight",
+    "title": "The Explicit Off-by-One (1−δ)^(N−1) > ε",
+    "content": "lt_pow_pred_modulus is the concrete face of minimality and the lower bound the parent left open: for ε ∈ (0,1), the predecessor already fails, (1−δ)^(N−1) > ε. It is lt_pow_of_lt_modulus applied at n = N−1, valid because N−1 < N once N ≥ 1 (one_le_modulus, then omega). Together with the parent's (1−δ)^N ≤ ε this sandwiches the crossing point exactly: N is the UNIQUE threshold at which (1−δ)ⁿ first drops to ≤ ε. There is no gap between 'works' and 'smallest that works'.",
+    "mathContext": "$(1-\\delta)^{N-1} > \\varepsilon \\ge (1-\\delta)^N$: $N$ is the exact first crossing.",
+    "significance": "key",
+    "relatedConcepts": ["off-by-one bound", "matching lower bound", "first crossing point", "sharp threshold"],
+    "prerequisites": ["strict minimality lemma", "N ≥ 1"]
+  }
+]

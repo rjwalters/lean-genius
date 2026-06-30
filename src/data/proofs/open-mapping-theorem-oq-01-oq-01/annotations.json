@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "open-mapping-theorem-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 37 },
+    "type": "context",
+    "title": "Why Completeness Matters",
+    "content": "The Hellinger–Toeplitz theorem is an automatic-continuity result: a symmetric operator defined on the *whole* Hilbert space is automatically bounded. The surprise is entirely in the word 'whole' — the unbounded symmetric operators of quantum mechanics (position, momentum) escape the theorem only by being densely, not everywhere, defined. The proof goes through the closed graph theorem, hence depends on completeness. This entry isolates that dependence and proves it is unavoidable: on an incomplete inner product space, an everywhere-defined symmetric operator can be unbounded.",
+    "mathContext": "Symmetric: $\\langle Tx, y\\rangle = \\langle x, Ty\\rangle$. Hellinger–Toeplitz: symmetric + everywhere-defined + complete $\\Rightarrow$ bounded.",
+    "significance": "context",
+    "relatedConcepts": ["Hellinger–Toeplitz theorem", "closed graph theorem", "automatic continuity", "unbounded operators", "completeness"],
+    "prerequisites": ["inner product spaces", "bounded linear operators", "Hilbert spaces"]
+  },
+  {
+    "id": "ann-inner-product",
+    "proofId": "open-mapping-theorem-oq-01-oq-01",
+    "range": { "startLine": 45, "endLine": 95 },
+    "type": "definition",
+    "title": "The ℓ² Inner Product as a Finite Sum",
+    "content": "On finitely supported sequences ℕ →₀ ℝ the ℓ² inner product ⟪x,y⟫ = ∑ᵢ xᵢyᵢ is a genuinely *finite* sum, so it needs no convergence theory — every identity is an elementary Finsupp.sum manipulation. The lemma ip_eq_sum_of_subset re-expresses it as a sum over any finset containing supp x (extra terms vanish), which is the uniform workhorse for the symmetry and basis-vector calculations. The five form axioms — symmetry (ip_comm), additivity and homogeneity in the first slot (ip_add_left via sum_add_index', ip_smul_left via sum_smul_index'), positivity (ip_self_nonneg, a sum of squares), and definiteness (ip_definite, ∑(xᵢ)² = 0 forces every xᵢ = 0) — are exactly the fields of an InnerProductSpace.Core.",
+    "mathContext": "$\\langle x, y\\rangle = \\sum_{i \\in \\mathrm{supp}\\,x} x_i y_i$, a positive-definite Hermitian form.",
+    "significance": "key",
+    "relatedConcepts": ["inner product", "Finsupp.sum", "positive definiteness", "bilinear form", "pre-Hilbert space"],
+    "prerequisites": ["finitely supported functions", "finite sums", "inner product axioms"]
+  },
+  {
+    "id": "ann-ips-structure",
+    "proofId": "open-mapping-theorem-oq-01-oq-01",
+    "range": { "startLine": 97, "endLine": 120 },
+    "type": "technique",
+    "title": "Building the Inner Product Space from a Core",
+    "content": "Mathlib has no inner product on Finsupp, so the space is built from scratch. With Inner ℝ (ℕ →₀ ℝ) := ⟨ip⟩ registered, InnerProductSpace.Core.toNormedAddCommGroup turns the positive-definite form into a NormedAddCommGroup (the norm ‖x‖ = √⟪x,x⟫), and InnerProductSpace.ofCore supplies the InnerProductSpace instance. This is the same ofCore route Mathlib uses for the quaternions. norm_single then computes ‖single k a‖ = a for a ≥ 0 from ‖x‖·‖x‖ = ⟪x,x⟫ = a², pinning down the unit basis vectors ‖eₖ‖ = 1.",
+    "mathContext": "$\\mathbb{N} \\to_0 \\mathbb{R}$ with $\\lVert x\\rVert = \\sqrt{\\langle x,x\\rangle}$ is a (necessarily incomplete) inner product space.",
+    "significance": "key",
+    "relatedConcepts": ["InnerProductSpace.Core", "ofCore", "norm from inner product", "NormedAddCommGroup", "type class instances"],
+    "prerequisites": ["inner product spaces", "norms", "Lean instances"]
+  },
+  {
+    "id": "ann-operator",
+    "proofId": "open-mapping-theorem-oq-01-oq-01",
+    "range": { "startLine": 122, "endLine": 152 },
+    "type": "definition",
+    "title": "The Diagonal Operator D x = (n ↦ n·xₙ)",
+    "content": "The witness operator multiplies the n-th coordinate by n. Its weighted sequence n ↦ n·xₙ has support inside that of x (diag_support_finite), so Finsupp.ofSupportFinite makes it a finitely supported function, and the bundled ℝ-linear map D has D_apply: (D x) i = i·xᵢ definitionally. The key computation D_single: D (single k 1) = single k k shows the basis vector eₖ is an eigenvector with eigenvalue k — the same real eigenvalues that will make D symmetric (real spectrum) and unbounded (spectrum → ∞).",
+    "mathContext": "$D e_k = k\\, e_k$; the diagonal weights are the eigenvalues $0, 1, 2, \\ldots$.",
+    "significance": "key",
+    "relatedConcepts": ["diagonal operator", "linear map", "Finsupp.ofSupportFinite", "eigenvalues", "standard basis"],
+    "prerequisites": ["linear maps", "finitely supported functions"]
+  },
+  {
+    "id": "ann-symmetry",
+    "proofId": "open-mapping-theorem-oq-01-oq-01",
+    "range": { "startLine": 154, "endLine": 172 },
+    "type": "concept",
+    "title": "Symmetry of the Diagonal Operator",
+    "content": "D_isSymmetric proves ⟪D x, y⟫ = ⟪x, D y⟫. Reducing both inner products over the common finset x.support ∪ y.support (via ip_eq_sum_of_subset), the left side is ∑ᵢ (i·xᵢ)·yᵢ and the right is ∑ᵢ (i·yᵢ)·xᵢ, equal termwise by commutativity. Real diagonal weights are automatically symmetric — this is the everywhere-defined symmetric operator that the Hellinger–Toeplitz theorem would, on a complete space, force to be bounded.",
+    "mathContext": "$\\langle Dx, y\\rangle = \\sum_i i\\,x_i y_i = \\langle x, Dy\\rangle$ — symmetric because the weights $i$ are real.",
+    "significance": "key",
+    "relatedConcepts": ["symmetric operator", "self-adjointness", "diagonal operator", "real spectrum"],
+    "prerequisites": ["inner products", "symmetric operators"]
+  },
+  {
+    "id": "ann-unbounded",
+    "proofId": "open-mapping-theorem-oq-01-oq-01",
+    "range": { "startLine": 174, "endLine": 185 },
+    "type": "concept",
+    "title": "Unboundedness via the Basis Vectors",
+    "content": "D_not_continuous is a proof by contradiction: a continuous linear map is bounded (SemilinearMapClass.bound_of_continuous gives ∃ C, ∀ x, ‖D x‖ ≤ C‖x‖). Testing the bound on eₖ = single k 1 for any k > C yields ‖D eₖ‖ = k ≤ C·‖eₖ‖ = C, impossible. The ratio ‖D eₖ‖/‖eₖ‖ = k is unbounded — the eigenvalues k → ∞ are exactly the obstruction. This is the everywhere-defined symmetric operator that is *not* bounded.",
+    "mathContext": "$\\lVert D e_k\\rVert / \\lVert e_k\\rVert = k \\to \\infty$: no finite operator norm exists.",
+    "significance": "key",
+    "relatedConcepts": ["bounded operator", "operator norm", "continuity of linear maps", "unbounded operator"],
+    "prerequisites": ["operator norms", "continuity", "proof by contradiction"]
+  },
+  {
+    "id": "ann-sharpness",
+    "proofId": "open-mapping-theorem-oq-01-oq-01",
+    "range": { "startLine": 187, "endLine": 204 },
+    "type": "concept",
+    "title": "Incompleteness as a Free Corollary",
+    "content": "not_completeSpace is the punchline. If ℕ →₀ ℝ were complete, the Hellinger–Toeplitz theorem (Mathlib's IsSymmetric.continuous) would make our symmetric D continuous — contradicting D_not_continuous. So the space is not complete. This delivers incompleteness without exhibiting any explicit non-convergent Cauchy sequence: the contrapositive of an automatic-continuity theorem turns one unbounded symmetric operator into a proof that the space is not Hilbert. It also certifies sharpness — the completeness hypothesis in Hellinger–Toeplitz cannot be removed.",
+    "mathContext": "$D$ symmetric + discontinuous $\\Rightarrow \\neg\\,\\mathrm{CompleteSpace}\\,(\\mathbb{N} \\to_0 \\mathbb{R})$.",
+    "significance": "key",
+    "relatedConcepts": ["completeness", "contrapositive", "sharpness", "Cauchy sequence", "dense subspace"],
+    "prerequisites": ["complete metric spaces", "Hellinger–Toeplitz theorem", "contrapositive reasoning"]
+  },
+  {
+    "id": "ann-forward",
+    "proofId": "open-mapping-theorem-oq-01-oq-01",
+    "range": { "startLine": 206, "endLine": 226 },
+    "type": "context",
+    "title": "The Forward Theorem and Self-Adjoint Bundling",
+    "content": "For contrast, hellinger_toeplitz wraps Mathlib's IsSymmetric.continuous: on a complete inner product space the symmetry hypothesis alone forces continuity. hellinger_toeplitz_selfAdjoint records the further upgrade — a symmetric operator on a complete space bundles into the bounded self-adjoint operators (IsSymmetric.toSelfAdjoint). These thin wrappers frame the original sharpness result: completeness is exactly what buys boundedness and self-adjointness, and the entry above shows what is lost without it. The closing examples confirm D moves vectors and grows linearly in the index.",
+    "mathContext": "Complete $\\Rightarrow$ (symmetric $\\Rightarrow$ continuous $\\Rightarrow$ bounded self-adjoint).",
+    "significance": "context",
+    "relatedConcepts": ["self-adjoint operator", "bounded operator", "IsSymmetric.toSelfAdjoint", "automatic continuity"],
+    "prerequisites": ["self-adjoint operators", "Hilbert spaces"]
+  }
+]

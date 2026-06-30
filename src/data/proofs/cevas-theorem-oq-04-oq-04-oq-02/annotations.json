@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-ravi-centres",
+    "proofId": "cevas-theorem-oq-04-oq-04-oq-02",
+    "range": { "startLine": 62, "endLine": 90 },
+    "type": "definition",
+    "title": "Triangle centres in tangent-length (Ravi) coordinates",
+    "content": "A triangle is encoded by its three positive tangent lengths x = s−a, y = s−b, z = s−c, so the sides are a = y+z, b = z+x, c = x+y and the semiperimeter is s = x+y+z. The condition x,y,z > 0 is exactly nondegeneracy (the triangle inequalities). In these coordinates the classical centre barycentrics become polynomials: incenter (y+z : z+x : x+y), A-excenter (−(y+z) : z+x : x+y) — note the NEGATIVE apex weight — Nagel point (x : y : z), Gergonne point (yz : zx : xy). Each is defined here as a normalized weighted sum of the vertices A, B, C in an arbitrary real vector space.",
+    "mathContext": "$$x=s-a,\\ y=s-b,\\ z=s-c>0;\\quad I=(y{+}z:z{+}x:x{+}y),\\ I_A=(-(y{+}z):z{+}x:x{+}y),\\ N=(x:y:z),\\ Ge=(yz:zx:xy)$$",
+    "significance": "key",
+    "relatedConcepts": ["barycentric coordinates", "Ravi substitution", "mass points", "triangle centers"],
+    "prerequisites": ["semiperimeter", "tangent lengths"]
+  },
+  {
+    "id": "ann-feet",
+    "proofId": "cevas-theorem-oq-04-oq-04-oq-02",
+    "range": { "startLine": 92, "endLine": 110 },
+    "type": "definition",
+    "title": "Cevian feet on side BC",
+    "content": "Each centre's A-cevian meets BC at the point obtained by dropping the apex (A) barycentric coordinate. footBisectorA = (0 : b : c) = (0 : z+x : x+y) is the internal A-bisector foot, shared by the incenter and the A-excenter. extouchA = (0 : y : z) is the A-extouch point (Nagel foot), dividing BC as BD:DC = z:y. contactA = (0 : z : y) is the incircle contact point (Gergonne foot), the midpoint-reflection of extouchA, dividing BC as BD:DC = y:z.",
+    "mathContext": "$$\\text{extouch }BD=s-c=z,\\quad \\text{contact }BD=s-b=y;\\quad \\text{the two feet are reflections in the midpoint of }BC$$",
+    "significance": "important",
+    "relatedConcepts": ["cevian foot", "extouch point", "contact triangle", "incircle"],
+    "prerequisites": ["barycentric restriction to a side"]
+  },
+  {
+    "id": "ann-nagel",
+    "proofId": "cevas-theorem-oq-04-oq-04-oq-02",
+    "range": { "startLine": 112, "endLine": 139 },
+    "type": "theorem",
+    "title": "The Nagel point on its cevian",
+    "content": "nagel_on_cevian_A writes the Nagel point N = (x:y:z) as the affine combination (x/(x+y+z))·A + ((y+z)/(x+y+z))·extouchA, with the two weights summing to 1 (nagel_weights_sum_one). nagel_lineMap_A gives the same as AffineMap.lineMap A extouchA at parameter (y+z)/(x+y+z) ∈ (0,1). The proofs reduce to scalar identities by match_scalars and are closed by field_simp after clearing the positive denominator x+y+z.",
+    "mathContext": "$$N = \\tfrac{x}{x+y+z}A + \\tfrac{y+z}{x+y+z}\\,T_A,\\qquad T_A = \\tfrac{y}{y+z}B + \\tfrac{z}{y+z}C$$",
+    "significance": "key",
+    "relatedConcepts": ["Nagel point", "extouch point", "affine combination", "AffineMap.lineMap"],
+    "prerequisites": ["match_scalars", "field_simp", "positivity"]
+  },
+  {
+    "id": "ann-gergonne",
+    "proofId": "cevas-theorem-oq-04-oq-04-oq-02",
+    "range": { "startLine": 141, "endLine": 160 },
+    "type": "theorem",
+    "title": "The Gergonne point on its cevian",
+    "content": "gergonne_on_cevian_A writes the Gergonne point Ge = (yz:zx:xy) as (yz/D)·A + ((zx+xy)/D)·contactA with D = yz+zx+xy, weights summing to 1 (gergonne_weights_sum_one). The key cancellation is zx+xy = x(y+z), which lets the contact-foot weight collapse cleanly. Proof: match_scalars + field_simp clearing the positive D and y+z.",
+    "mathContext": "$$Ge = \\tfrac{yz}{D}A + \\tfrac{zx+xy}{D}\\,G_A,\\quad D = yz+zx+xy,\\quad zx+xy = x(y+z)$$",
+    "significance": "key",
+    "relatedConcepts": ["Gergonne point", "incircle contact point", "affine combination"],
+    "prerequisites": ["match_scalars", "field_simp"]
+  },
+  {
+    "id": "ann-excenter-signed",
+    "proofId": "cevas-theorem-oq-04-oq-04-oq-02",
+    "range": { "startLine": 162, "endLine": 223 },
+    "type": "theorem",
+    "title": "Excenters via signed masses",
+    "content": "The substantive new content versus the incenter-only parent. excenterA_on_bisector_A proves the A-excenter — barycentric (−(y+z) : z+x : x+y), a NEGATIVE mass −a at the apex A — still lies on the INTERNAL A-bisector, sharing the foot footBisectorA with the incenter (incenter_on_bisector_A, given alongside for comparison). The two cevian weights (−(y+z)/2x and (2x+y+z)/2x) sum to 1 despite the negative apex weight (excenterA_weights_sum_one). excenterB_on_bisector_B gives the B-excenter on its own internal bisector by the identical signed-mass mechanism. This is the mass-point signature of an excentre: one signed apex weight, ordinary base weights, still concurrent on the internal bisector.",
+    "mathContext": "$$I_A = \\tfrac{-(y+z)}{2x}A + \\tfrac{2x+y+z}{2x}\\,F_A,\\qquad \\tfrac{-(y+z)}{2x} + \\tfrac{2x+y+z}{2x} = 1$$",
+    "significance": "key",
+    "relatedConcepts": ["excenter", "signed mass point", "external division", "internal bisector"],
+    "prerequisites": ["signed barycentric coordinates", "match_scalars", "positivity"]
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "cauchy-group-theorem-oq-01",
+    "range": { "startLine": 6, "endLine": 54 },
+    "type": "concept",
+    "title": "Overview: Cauchy's Theorem and the Corollaries Mathlib Omits",
+    "content": "The docstring frames the entry's contribution. Cauchy's theorem (1845) — a prime p dividing |G| forces an element of order exactly p — is the converse-in-the-prime-case of Lagrange's theorem and the base case of the Sylow theorems. Mathlib proves the bare existence statement (exists_prime_orderOf_dvd_card and variants) but records *none* of the classical packaged corollaries working mathematicians cite. This file restates the existence theorem as a baseline, then proves the consequences: the subgroup-of-order-p form (the Sylow seed), the even-order-implies-involution corollary (the p = 2 case), the contrapositive coprimality certificate, and explicit 0-axiom witnesses in ZMod 6.",
+    "mathContext": "Lagrange: $|H| \\mid |G|$ for $H \\le G$, but not every divisor of $|G|$ is a subgroup order. Cauchy is the prime-divisor converse: $p \\mid |G|$ (p prime) $\\Rightarrow$ $G$ has an element — hence a cyclic subgroup — of order $p$. Iterating Cauchy's subgroup form up the prime power is the route to the Sylow $p$-subgroup.",
+    "significance": "key",
+    "prerequisites": ["finite groups", "order of an element", "Lagrange's theorem"],
+    "relatedConcepts": ["Cauchy's theorem", "Sylow theorems", "Lagrange's theorem", "involutions", "Feit–Thompson"]
+  },
+  {
+    "id": "ann-three-forms",
+    "proofId": "cauchy-group-theorem-oq-01",
+    "range": { "startLine": 62, "endLine": 80 },
+    "type": "theorem",
+    "title": "Cauchy's Theorem in Three Forms",
+    "content": "`cauchy` (Fintype.card), `cauchy'` (Nat.card, for possibly non-Fintype finite groups), and `cauchy_add` (additive groups) re-export Mathlib's three existence statements verbatim as the baseline the rest of the file builds on. Each takes a prime p (as a `Fact p.Prime` instance) and a divisibility hypothesis p ∣ |G|, returning an element of order p. Keeping all three forms available matters because downstream results pick whichever matches their setting — the involution corollary uses the Fintype form, the subgroup form uses the Nat.card form, and the ZMod 6 witnesses use the additive form.",
+    "mathContext": "All three assert: $p$ prime, $p \\mid |G|$ $\\Rightarrow$ $\\exists x,\\ \\mathrm{ord}(x) = p$ (resp. $\\mathrm{addOrd}(x) = p$). The `[Fact p.Prime]` instance is Mathlib's idiom for carrying primality as a typeclass so it is found automatically.",
+    "significance": "supporting",
+    "prerequisites": ["orderOf / addOrderOf", "Fact typeclass", "Fintype.card vs Nat.card"],
+    "relatedConcepts": ["exists_prime_orderOf_dvd_card", "to_additive", "Nat.card", "Fact p.Prime"]
+  },
+  {
+    "id": "ann-subgroup",
+    "proofId": "cauchy-group-theorem-oq-01",
+    "range": { "startLine": 82, "endLine": 89 },
+    "type": "theorem",
+    "title": "Subgroup Form: an Element of Order p Is a Subgroup of Order p",
+    "content": "`cauchy_subgroup` upgrades the element form to the structural form Mathlib lacks: p ∣ |G| yields a *subgroup* H ≤ G with Nat.card H = p. The proof is two lines — obtain a Cauchy element x of order p (cauchy'), then take H = zpowers x (the cyclic subgroup it generates); Nat.card_zpowers gives Nat.card (zpowers x) = orderOf x = p. This is the form that actually seeds the Sylow construction: from a subgroup of order p one climbs to a full p-Sylow subgroup. The key conceptual point is that an element of order p and the cyclic group it generates are interchangeable data — the upgrade is free.",
+    "mathContext": "$\\langle x \\rangle = \\mathrm{zpowers}\\,x = \\{x^k : k \\in \\mathbb{Z}\\}$ is cyclic of order $\\mathrm{ord}(x)$, so $\\mathrm{Nat.card}(\\langle x\\rangle) = \\mathrm{ord}(x) = p$. This is the base case of Sylow's first theorem.",
+    "significance": "critical",
+    "prerequisites": ["cyclic subgroups (zpowers)", "Nat.card_zpowers"],
+    "relatedConcepts": ["Subgroup.zpowers", "Nat.card_zpowers", "Sylow's first theorem", "cyclic groups"]
+  },
+  {
+    "id": "ann-involution",
+    "proofId": "cauchy-group-theorem-oq-01",
+    "range": { "startLine": 91, "endLine": 104 },
+    "type": "theorem",
+    "title": "Even Order Implies an Involution (the p = 2 Case)",
+    "content": "`exists_involution_of_even_card` proves every finite group of even order contains a non-trivial involution x ≠ 1 with x·x = 1. It is exactly Cauchy at p = 2: from Even (Fintype.card G), `Even.two_dvd` gives 2 ∣ |G|, and `cauchy 2` produces x with orderOf x = 2. Then x ≠ 1 because orderOf 1 = 1 ≠ 2 (`orderOf_one`), and x·x = x² = x^(orderOf x) = 1 by `pow_orderOf_eq_one` and `pow_two`. This classical statement — the seed of the entire structure theory of groups of even order, from Brauer–Fowler to the Feit–Thompson odd-order theorem — is a one-line specialization of Cauchy that Mathlib does not record.",
+    "mathContext": "An element of order 2 is precisely a non-trivial self-inverse element: $x^2 = x^{\\mathrm{ord}(x)} = 1$ and $x \\ne 1$. Even order $\\Rightarrow$ such an $x$ exists. Contrapositively, a group with no involution has odd order — the framing of the odd-order theorem.",
+    "significance": "critical",
+    "prerequisites": ["Cauchy at p = 2", "pow_orderOf_eq_one", "even/odd order"],
+    "relatedConcepts": ["involution", "Even.two_dvd", "pow_orderOf_eq_one", "Feit–Thompson", "odd-order theorem"]
+  },
+  {
+    "id": "ann-contrapositive",
+    "proofId": "cauchy-group-theorem-oq-01",
+    "range": { "startLine": 106, "endLine": 111 },
+    "type": "theorem",
+    "title": "Contrapositive: No Order-p Element Certifies p ∤ |G|",
+    "content": "`not_dvd_card_of_no_orderOf_eq` is the literal contrapositive of Cauchy: if G has no element of order p (p prime), then p ∤ |G|. The proof is the one-liner `fun hdvd => h (cauchy p hdvd)` — assuming p ∣ |G| would, by Cauchy, produce the very element h says does not exist. This packages Cauchy as a *coprimality certificate*: checking the absence of order-p elements is a way to prove p is coprime to the group order, useful when reasoning about which primes can divide |G|.",
+    "mathContext": "Contrapositive of $p \\mid |G| \\Rightarrow \\exists x, \\mathrm{ord}(x) = p$: namely $(\\nexists x, \\mathrm{ord}(x) = p) \\Rightarrow p \\nmid |G|$. Logically trivial given Cauchy, but a convenient reusable form.",
+    "significance": "supporting",
+    "prerequisites": ["Cauchy's theorem", "contraposition"],
+    "relatedConcepts": ["contrapositive", "coprimality", "prime divisors of |G|"]
+  },
+  {
+    "id": "ann-zmod6",
+    "proofId": "cauchy-group-theorem-oq-01",
+    "range": { "startLine": 113, "endLine": 144 },
+    "type": "concept",
+    "title": "Explicit 0-Axiom Witnesses in ZMod 6",
+    "content": "ZMod 6 has order 6 = 2·3, so Cauchy guarantees elements of order 2 and 3, exhibited explicitly. `zmod6_involution`: 3 ≠ 0 and 3 + 3 = 0 by `decide` (the involution). `addOrderOf_three_zmod6` / `addOrderOf_two_zmod6`: the elements 3 and 2 have additive orders 2 and 3, certified via `addOrderOf_eq_prime` from the decidable facts p•x = 0 and x ≠ 0. `cauchy_zmod6_two` / `cauchy_zmod6_three`: fire the *general* theorem (cauchy_add) at both primes dividing 6. The subtle point flagged in the file: `addOrderOf` does not reduce under kernel computation, so the orders are NOT proved by deciding `addOrderOf x = p` directly — instead `addOrderOf_eq_prime` lifts the decidable p•x = 0 and x ≠ 0 facts. This keeps the proofs on kernel `decide`, avoiding `native_decide` and hence `Lean.ofReduceBool`, so the entry is genuinely 0-axiom.",
+    "mathContext": "In $(\\mathbb{Z}/6, +)$: $\\mathrm{addOrd}(3) = 2$ (since $3 + 3 = 0$, $3 \\ne 0$, 2 prime) and $\\mathrm{addOrd}(2) = 3$. $\\mathrm{addOrderOf\\_eq\\_prime}$: $p \\bullet x = 0 \\wedge x \\ne 0 \\Rightarrow \\mathrm{addOrd}(x) = p$ for prime $p$ — needed because `addOrderOf` is not kernel-reducible.",
+    "significance": "supporting",
+    "prerequisites": ["ZMod n as additive group", "addOrderOf", "kernel decide vs native_decide"],
+    "relatedConcepts": ["ZMod 6", "addOrderOf_eq_prime", "decide", "Lean.ofReduceBool", "0-axiom verification"]
+  }
+]

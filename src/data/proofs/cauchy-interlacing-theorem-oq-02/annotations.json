@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "cauchy-interlacing-theorem-oq-02",
+    "range": { "startLine": 4, "endLine": 52 },
+    "type": "context",
+    "title": "Poincaré Separation: Arbitrary-Codimension Cauchy Interlacing",
+    "content": "The parent entry proved codimension-one Cauchy interlacing (λ_{k+1} ≤ μ_k ≤ λ_k) for the orthogonal compression of a symmetric operator to a codimension-one subspace. This file answers the second open question: the general 'delete m rows/columns' interlacing — the Poincaré separation theorem λ_k ≤ μ_k ≤ λ_{k+m}. Crucially it needs no new spectral theory: the Courant–Fischer keystone is already parametrized by arbitrary subspace dimension, so only the dimension arithmetic (dim(S∩H) ≥ dim S − m) changes.",
+    "mathContext": "Codim-$m$ compression ($\\dim V = n+m$, $\\dim H = n$): $\\lambda_{k+m} \\le \\mu_k \\le \\lambda_k$ (descending), the $m=1$ case being Cauchy interlacing.",
+    "significance": "context",
+    "relatedConcepts": ["Poincaré separation theorem", "Cauchy interlacing", "Courant–Fischer min-max", "compression / principal submatrix", "eigenvalue interlacing"],
+    "prerequisites": ["symmetric operators", "eigenvalues and Rayleigh quotient", "subspace dimension counting"]
+  },
+  {
+    "id": "ann-statement",
+    "proofId": "cauchy-interlacing-theorem-oq-02",
+    "range": { "startLine": 59, "endLine": 90 },
+    "type": "theorem",
+    "title": "Poincaré Separation (Statement)",
+    "content": "For a symmetric T on (n+m)-dim V with descending eigenvalues λ, and its orthogonal compression TH to a codimension-m subspace H (Rayleigh quotients agreeing on H) with descending eigenvalues μ, the eigenvalues separate: λ⟨k+m⟩ ≤ μ_k ≤ λ⟨k⟩ for every k. The hypotheses encode 'TH is the compression of T to H' via the Rayleigh-agreement condition `hRayleigh`.",
+    "mathContext": "$\\lambda_{\\langle k+m\\rangle} \\le \\mu_k \\le \\lambda_{\\langle k\\rangle}$, given $R_{TH}(y) = R_T(y)$ for all $0\\ne y\\in H$.",
+    "significance": "key",
+    "relatedConcepts": ["compression of an operator", "Rayleigh quotient agreement", "descending eigenvalues", "orthonormal eigenbasis"],
+    "prerequisites": ["symmetric operators", "Rayleigh quotient", "the keystone Courant–Fischer lemmas"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "cauchy-interlacing-theorem-oq-02",
+    "range": { "startLine": 92, "endLine": 124 },
+    "type": "technique",
+    "title": "Lower Bound λ⟨k+m⟩ ≤ μ_k: the Codimension-m Dimension Count",
+    "content": "Take the keystone's optimal (k+m+1)-dim subspace S for T (lower half at index k+m). The codimension-m count gives dim(S∩H) ≥ (k+m+1)+n−(n+m) = k+1 — exactly enough for the index-set keystone half on TH to find a vector y ∈ S∩H with R_{TH} ≤ μ_k. Since y also lies in S, Rayleigh-agreement transfers λ⟨k+m⟩ ≤ R_T(y) = R_{TH}(y) ≤ μ_k. The codimension m enters only here, through the dimension arithmetic.",
+    "mathContext": "$\\dim(S\\cap H) \\ge (k{+}m{+}1) + n - (n{+}m) = k{+}1$, the codim-$m$ generalization of the codim-1 count.",
+    "significance": "key",
+    "relatedConcepts": ["dimension counting", "finrank_sup_add_finrank_inf", "min-max lower half", "Rayleigh transfer"],
+    "prerequisites": ["the keystone lower-half lemma", "subspace intersection dimension"]
+  },
+  {
+    "id": "ann-upper-bound",
+    "proofId": "cauchy-interlacing-theorem-oq-02",
+    "range": { "startLine": 125, "endLine": 140 },
+    "type": "technique",
+    "title": "Upper Bound μ_k ≤ λ⟨k⟩: Identical to the Codimension-One Case",
+    "content": "The optimal (k+1)-dim subspace SH ⊆ H for TH pushes (via H.subtype) into a (k+1)-dim subspace S ⊆ V, where the keystone's upper half finds a vector x = (y : V) with R_T ≤ λ⟨k⟩; Rayleigh-agreement transfers the ≥ μ_k bound. The codimension m never enters this half — it is verbatim the codimension-one argument.",
+    "mathContext": "$\\mu_k \\le R_{TH}(y) = R_T(y) \\le \\lambda_{\\langle k\\rangle}$, pushing the optimal $SH\\subseteq H$ into $V$.",
+    "significance": "supporting",
+    "relatedConcepts": ["min-max upper half", "subtype map of subspaces", "Rayleigh agreement", "codimension independence"],
+    "prerequisites": ["the keystone upper-half lemma", "Submodule.map"]
+  },
+  {
+    "id": "ann-codim-one",
+    "proofId": "cauchy-interlacing-theorem-oq-02",
+    "range": { "startLine": 142, "endLine": 170 },
+    "type": "theorem",
+    "title": "m = 1 Recovers Cauchy Interlacing",
+    "content": "Specializing Poincaré separation to m = 1 recovers the parent entry's codimension-one inequality λ(k.succ) ≤ μ_k ≤ λ(k.castSucc), after the Fin-index identifications k.succ = ⟨k+1⟩ and k.castSucc = ⟨k⟩. This confirms the general theorem is a faithful generalization, not a divergent statement.",
+    "mathContext": "$m=1$: $\\lambda_{k.\\mathrm{succ}} \\le \\mu_k \\le \\lambda_{k.\\mathrm{castSucc}}$, matching the codim-1 Cauchy interlacing.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "Cauchy interlacing", "Fin index coercions", "faithful generalization"],
+    "prerequisites": ["Poincaré separation", "Fin.succ / Fin.castSucc"]
+  }
+]

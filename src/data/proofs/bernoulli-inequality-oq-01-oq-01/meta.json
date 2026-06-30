@@ -1,0 +1,172 @@
+{
+  "id": "bernoulli-inequality-oq-01-oq-01",
+  "title": "Strict Bernoulli on Mathlib's Full Weak Domain −2 ≤ a",
+  "slug": "bernoulli-inequality-oq-01-oq-01",
+  "description": "Mathlib's weak Bernoulli inequality one_add_mul_le_pow holds on the full domain −2 ≤ a, but the strict form 1 + n·a < (1 + a)ⁿ has only ever been proved for a > −1 (the parent entry), where the elementary induction multiplies by the positive factor 1 + a. This entry extends the strict inequality across the sign change of 1 + a to the entire weak domain −2 ≤ a (a ≠ 0, n ≥ 2), the genuinely harder range −2 ≤ a ≤ −1, and supplies the two-sided strictness and equality characterizations there.",
+  "meta": {
+    "author": "Jacob Bernoulli (1689); strict extension to Mathlib's one_add_mul_le_pow domain",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bernoulli%27s_inequality",
+    "date": "1689",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BernoulliInequalityOQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "inequality",
+      "bernoulli-inequality",
+      "strict-inequality",
+      "equality-case",
+      "induction",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "one_add_mul_le_pow",
+        "description": "Weak Bernoulli inequality for ℕ-powers: −2 ≤ a ⟹ 1 + n·a ≤ (1+a)ⁿ. Fixes the full domain −2 ≤ a that this entry strengthens to a strict inequality.",
+        "module": "Mathlib.Algebra.Order.Ring.Pow"
+      },
+      {
+        "theorem": "pow_le_one₀",
+        "description": "0 ≤ x ≤ 1 ⟹ xⁿ ≤ 1. Applied to |1 + a| ≤ 1 on the new range to bound |(1 + a)ⁿ| ≤ 1, hence (1 + a)ⁿ ≥ −1.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Nat.le_induction",
+        "description": "Induction from a base value (here n = 2), used for the a > −1 sub-range.",
+        "module": "Mathlib.Order.Basic"
+      },
+      {
+        "theorem": "mul_lt_mul_of_pos_right",
+        "description": "Strict monotonicity of multiplication by a positive constant; the inductive step for a > −1 multiplies the hypothesis by 1 + a > 0.",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "one_add_mul_lt_pow_full: the strict inequality 1 + n·a < (1+a)ⁿ on Mathlib's ENTIRE weak domain −2 ≤ a (a ≠ 0, n ≥ 2), extending the parent's a > −1 result across the sign change of 1 + a — the absent integer strict Bernoulli on the negative tail −2 ≤ a ≤ −1",
+      "A non-inductive mechanism for the new range −2 ≤ a ≤ −1: since |1 + a| ≤ 1 the power satisfies (1+a)ⁿ ≥ −1, while a ≤ −1 forces 1 + n·a ≤ 1 − n < −1 for n ≥ 3, with the single case n = 2 being the unconditional identity (1+a)² − (1+2a) = a² > 0",
+      "one_add_mul_lt_pow_full_iff: the sharp two-sided characterization on −2 ≤ a — strictness 1 + n·a < (1+a)ⁿ holds iff a ≠ 0 ∧ 2 ≤ n",
+      "one_add_mul_eq_pow_full_iff: the equality characterization on −2 ≤ a — equality 1 + n·a = (1+a)ⁿ holds iff a = 0 ∨ n ≤ 1",
+      "Numeric witnesses strictly inside the new range, including the boundary a = −2: 1 + 3·(−2) = −5 < −1 = (1−2)³"
+    ],
+    "dateAdded": "2026-06-23",
+    "axioms": 0,
+    "axiomCount": 0,
+    "lineCount": 136,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext, Classical.choice, Quot.sound).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Bernoulli's inequality $1 + na \\le (1+a)^n$ is named for **Jacob Bernoulli** (1689). Mathlib's `one_add_mul_le_pow` proves the weak form on the comparatively large domain $-2 \\le a$, not merely $a \\ge -1$ — the extra slack to $-2$ comes from a sign-robust induction. The parent gallery entry sharpens it to the strict inequality, but only over $a > -1$, where the textbook induction multiplies by the positive factor $1 + a$. For $-2 \\le a \\le -1$ that factor is non-positive, so the induction collapses and a different argument is needed.",
+    "problemStatement": "**Open Question (OQ-01-OQ-01):** Mathlib's weak Bernoulli inequality holds for all $-2 \\le a$. Does the *strict* inequality $1 + na < (1+a)^n$ (for $a \\ne 0$, $n \\ge 2$) also extend to that full domain, across the sign change of $1 + a$ at $a = -1$, and can strictness and equality be characterized there?\n\n**Answer:** Yes. The strict inequality holds for every $-2 \\le a$ with $a \\ne 0$ and $n \\ge 2$; strictness holds iff $a \\ne 0 \\wedge n \\ge 2$, and equality holds iff $a = 0 \\vee n \\le 1$ — the same classification the parent gives on $a > -1$, now valid on the entire weak domain.",
+    "text": "Mathlib's weak Bernoulli inequality reaches down to a = −2, but the gallery's strict form stopped at a > −1 because its induction multiplies by 1 + a, which changes sign at a = −1. This entry closes that gap: on the negative tail −2 ≤ a ≤ −1 the bound |1 + a| ≤ 1 makes the power (1+a)ⁿ ≥ −1, while the line 1 + n·a drops below −1 for n ≥ 3, so the power overshoots the line outright; the lone case n = 2 is the identity a² > 0.",
+    "proofStrategy": "1. **Strict inequality** (`one_add_mul_lt_pow_full`): split on the sign of $1 + a$.\n   - For $a > -1$ (`one_add_mul_lt_pow_pos`): the standard `Nat.le_induction` from $n = 2$, multiplying the hypothesis by $1 + a > 0$ — exactly the parent's argument.\n   - For $-2 \\le a \\le -1$: the induction is unavailable. Split $n$ further. For $n = 2$ the goal is $(1+a)^2 - (1+2a) = a^2 > 0$, unconditional. For $n \\ge 3$: from $-2 \\le a \\le -1$ we get $|1+a| \\le 1$, hence $|(1+a)^n| \\le 1$ (via `pow_le_one₀` on $|1+a|$) and so $(1+a)^n \\ge -1$; meanwhile $a \\le -1$ gives $n\\,a \\le -n$, so $1 + n a \\le 1 - n \\le -2 < -1 \\le (1+a)^n$.\n2. **Strict iff** (`one_add_mul_lt_pow_full_iff`): the reverse direction supplies the witnesses where strictness fails — $a = 0$ collapses both sides to $1$, and $n \\le 1$ makes both sides equal.\n3. **Equality iff** (`one_add_mul_eq_pow_full_iff`): equality contradicts the strict inequality whenever $a \\ne 0$ and $n \\ge 2$; conversely $a = 0$ or $n \\le 1$ yield equality directly.",
+    "keyInsights": [
+      "**The sign change of $1 + a$ is the real obstruction, not the sign of $a$.** The parent's induction needs $1 + a > 0$; it has nothing to say once $a \\le -1$. The extension is therefore not a cosmetic widening — it requires a genuinely different argument on $-2 \\le a \\le -1$.",
+      "**On the negative tail the power is trapped in $[-1,1]$ while the line escapes.** Because $|1+a| \\le 1$, the power $(1+a)^n$ never leaves $[-1,1]$; but the linear lower bound $1 + na$ falls to $1 - n$, which is below $-1$ as soon as $n \\ge 3$. The inequality then holds for the blunt reason that the line has dropped beneath the entire range of the power.",
+      "**Only $n = 2$ resists the size argument, and it needs none.** At $n = 2$ the gap is exactly $a^2$, positive for every $a \\ne 0$ — so the boundary case is the most elementary one, valid even at $a = -2$.",
+      "**Matching Mathlib's reach.** The result now holds precisely on $-2 \\le a$, the domain of `one_add_mul_le_pow`, so the strict integer-power Bernoulli is available wherever the weak one is."
+    ],
+    "prerequisites": [
+      "The weak Bernoulli inequality one_add_mul_le_pow on −2 ≤ a",
+      "Induction starting from a base case (Nat.le_induction)",
+      "Monotonicity of multiplication by a positive constant",
+      "Power bounds for |x| ≤ 1 (pow_le_one₀, abs_pow)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "pos-range",
+      "title": "Positive-Factor Range a > −1",
+      "startLine": 45,
+      "endLine": 64,
+      "summary": "Re-proves the strict inequality for a > −1 by induction from n = 2, multiplying the hypothesis by 1 + a > 0 (the parent's mechanism), kept self-contained.",
+      "mathContext": "Strict 1 + n·a < (1+a)ⁿ for a > −1, a ≠ 0, n ≥ 2 via Nat.le_induction."
+    },
+    {
+      "id": "full-domain",
+      "title": "Strict Inequality on −2 ≤ a",
+      "startLine": 66,
+      "endLine": 92,
+      "summary": "Extends strictness to the full weak domain −2 ≤ a. The hard sub-range −2 ≤ a ≤ −1 uses (1+a)ⁿ ≥ −1 (from |1+a| ≤ 1) against 1 + n·a ≤ 1 − n < −1 for n ≥ 3, with n = 2 the identity a² > 0.",
+      "mathContext": "Strict 1 + n·a < (1+a)ⁿ for every −2 ≤ a with a ≠ 0 and n ≥ 2, including −2 ≤ a ≤ −1."
+    },
+    {
+      "id": "strict-iff",
+      "title": "Strictness Characterization",
+      "startLine": 94,
+      "endLine": 106,
+      "summary": "For −2 ≤ a, the inequality is strict iff a ≠ 0 and n ≥ 2.",
+      "mathContext": "For −2 ≤ a, strictness holds iff a ≠ 0 ∧ n ≥ 2."
+    },
+    {
+      "id": "eq-iff",
+      "title": "Equality Characterization",
+      "startLine": 108,
+      "endLine": 121,
+      "summary": "For −2 ≤ a, equality 1 + n·a = (1+a)ⁿ holds iff a = 0 or n ≤ 1.",
+      "mathContext": "For −2 ≤ a, equality holds iff a = 0 ∨ n ≤ 1."
+    },
+    {
+      "id": "numeric",
+      "title": "Numeric Witnesses",
+      "startLine": 123,
+      "endLine": 134,
+      "summary": "Concrete instances strictly inside the new range, including the boundary a = −2: 1 + 3·(−3/2) < (1 − 3/2)³, 1 + 3·(−2) < (1 − 2)³, and the n = 2 boundary 1 + 2·(−2) < (1 − 2)².",
+      "mathContext": "Witnesses in −2 ≤ a ≤ −1 outside the parent's a > −1 domain, including a = −2."
+    }
+  ],
+  "conclusion": {
+    "summary": "The strict integer-power Bernoulli inequality 1 + n·a < (1 + a)ⁿ (a ≠ 0, n ≥ 2) is established on Mathlib's entire weak domain −2 ≤ a, extending the parent's a > −1 result across the sign change of 1 + a; on the new range −2 ≤ a ≤ −1 the proof replaces the now-invalid induction with a size argument trapping (1+a)ⁿ in [−1,1] while 1 + n·a escapes below. Strictness holds iff a ≠ 0 ∧ n ≥ 2 and equality iff a = 0 ∨ n ≤ 1, on the full domain. Verified: 0 sorries, 0 axioms.",
+    "implications": "Mathlib provides the weak integer Bernoulli inequality on −2 ≤ a and a real-exponent strict form; the integer-power strict form is absent. The parent entry supplied it only for a > −1. This entry brings the strict form (and its two-sided characterizations) to the same domain −2 ≤ a as the weak one, removing the artificial a > −1 restriction and making the strict inequality a drop-in strengthening of one_add_mul_le_pow.",
+    "openQuestions": [
+      "Is −2 the true left endpoint of the strict inequality for fixed n, or does the admissible range depend on n (e.g. does some n admit a < −2)?",
+      "Can the size argument for −2 ≤ a ≤ −1 be packaged as a general 'line escapes a bounded power' lemma reusable for other truncated binomial bounds?"
+    ],
+    "crossReferences": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "bernoulli-inequality-oq-01",
+      "relationship": "extends",
+      "description": "The parent proves the strict inequality and its iff characterizations for a > −1; this entry extends them across the sign change of 1 + a to Mathlib's full weak domain −2 ≤ a"
+    },
+    {
+      "targetId": "binomial-theorem-oq-05",
+      "relationship": "extends",
+      "description": "binomial-theorem-oq-05 proves the strict Bernoulli inequality for a > 0; this entry reaches the opposite extreme, the negative tail −2 ≤ a ≤ −1"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "BernoulliInequalityOQ01OQ01",
+    "lineCount": 136,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/BernoulliInequalityOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Jacob Bernoulli",
+      "title": "Positiones Arithmeticae de Seriebus Infinitis",
+      "year": "1689",
+      "venue": "Basel",
+      "note": "Early use of the inequality 1 + nx ≤ (1+x)ⁿ in the study of infinite series"
+    },
+    {
+      "authors": "D. S. Mitrinović",
+      "title": "Analytic Inequalities",
+      "year": "1970",
+      "venue": "Springer-Verlag",
+      "note": "Standard reference on Bernoulli's inequality, its strict forms, and the admissible domains"
+    }
+  ],
+  "sorries": 0
+}

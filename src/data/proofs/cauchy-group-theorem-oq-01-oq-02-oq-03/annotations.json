@@ -1,0 +1,110 @@
+[
+  {
+    "id": "multiplicity-collapse",
+    "proofId": "cauchy-group-theorem-oq-01-oq-02-oq-03",
+    "range": { "startLine": 77, "endLine": 84 },
+    "type": "theorem",
+    "title": "Squarefree Order Kills Multiplicities",
+    "content": "`factorization_eq_one_of_squarefree_dvd`: if |G| is squarefree and a prime p divides it, then the p-adic valuation v_p(|G|) is exactly 1. This is a direct application of Mathlib's `Nat.factorization_eq_one_of_squarefree`. It is the single number-theoretic engine of the whole entry: a squarefree number has no repeated prime factor, so every multiplicity is at most one, and divisibility forces it to be exactly one. The Group/Finite instances are omitted here because the statement is purely about the natural number |G|.",
+    "mathContext": "$\\mathrm{Squarefree}\\,|G| \\wedge p \\mid |G| \\implies v_p(|G|) = 1$ — no prime appears above the first power.",
+    "significance": "critical",
+    "relatedConcepts": ["squarefree integer", "p-adic valuation", "prime factorization", "multiplicity"],
+    "prerequisites": ["elementary number theory", "prime factorization"]
+  },
+  {
+    "id": "sylow-prime-order",
+    "proofId": "cauchy-group-theorem-oq-01-oq-02-oq-03",
+    "range": { "startLine": 88, "endLine": 97 },
+    "type": "theorem",
+    "title": "Sylow Subgroups Have Prime Order",
+    "content": "`sylow_card_eq_prime_of_squarefree`: if |G| is squarefree and p ∣ |G|, then every Sylow p-subgroup P has order exactly p. The proof composes the parent entry's `Sylow.card_eq_multiplicity` (|P| = p^(v_p|G|)) with the multiplicity collapse v_p|G| = 1 and rewrites p¹ = p (`pow_one`). The 'merely large p-subgroup' of the general Sylow theory becomes a group of prime order — a single equality with no case analysis.",
+    "mathContext": "$\\mathrm{Squarefree}\\,|G| \\wedge p \\mid |G| \\implies |P| = p^{v_p(|G|)} = p^1 = p$.",
+    "significance": "critical",
+    "relatedConcepts": ["Sylow subgroup", "order of a group", "Sylow.card_eq_multiplicity", "prime order"],
+    "prerequisites": ["finite group theory", "Sylow theory", "p-adic valuation"]
+  },
+  {
+    "id": "cyclic-prime-order",
+    "proofId": "cauchy-group-theorem-oq-01-oq-02-oq-03",
+    "range": { "startLine": 99, "endLine": 106 },
+    "type": "theorem",
+    "title": "Cyclic of Prime Order",
+    "content": "`sylow_isCyclic_of_squarefree_dvd`: under squarefreeness, every Sylow p-subgroup with p ∣ |G| is cyclic. It has prime order p (previous lemma), and a finite group of prime order is cyclic (`isCyclic_of_prime_card`), so P ≅ ℤ/pℤ. This is the literal statement the parent entry's open question requested: |G| squarefree ⟹ every Sylow subgroup cyclic of prime order.",
+    "mathContext": "$|P| = p \\implies P \\cong \\mathbb{Z}/p\\mathbb{Z}$ — prime order forces cyclic.",
+    "significance": "critical",
+    "relatedConcepts": ["cyclic group", "group of prime order", "isCyclic_of_prime_card", "Sylow subgroup"],
+    "prerequisites": ["finite group theory", "cyclic groups"]
+  },
+  {
+    "id": "order-dichotomy",
+    "proofId": "cauchy-group-theorem-oq-01-oq-02-oq-03",
+    "range": { "startLine": 108, "endLine": 120 },
+    "type": "theorem",
+    "title": "The Sharp Order Dichotomy",
+    "content": "`sylow_card_eq_one_or_prime_of_squarefree`: under squarefreeness, a Sylow p-subgroup has order 1 (precisely when p ∤ |G|) or p (precisely when p ∣ |G|) — never a higher power. A case split on p ∣ |G| uses the prime-order lemma in one branch and `Nat.factorization_eq_zero_of_not_dvd` (giving |P| = p^0 = 1) in the other. This makes the parent's `sylow_nontrivial_iff_dvd` boundary razor sharp: the only nontrivial possibility is prime order.",
+    "mathContext": "$|P| \\in \\{1, p\\}$ for every prime $p$ — order 1 iff $p \\nmid |G|$, order $p$ iff $p \\mid |G|$.",
+    "significance": "high",
+    "relatedConcepts": ["Sylow subgroup", "order dichotomy", "trivial subgroup", "p-adic valuation"],
+    "prerequisites": ["finite group theory", "Sylow theory"]
+  },
+  {
+    "id": "all-cyclic",
+    "proofId": "cauchy-group-theorem-oq-01-oq-02-oq-03",
+    "range": { "startLine": 122, "endLine": 134 },
+    "type": "theorem",
+    "title": "Every Sylow Subgroup Is Cyclic",
+    "content": "`sylow_isCyclic_of_squarefree`: with no hypothesis on p, every Sylow p-subgroup of a squarefree-order group is cyclic. When p ∣ |G| it is cyclic of prime order (previous lemma); when p ∤ |G| it is trivial (order 1, a subsingleton) and hence cyclic by `isCyclic_of_subsingleton`. So the dichotomy 'order 1 or p' upgrades to the uniform statement that the whole Sylow data of a squarefree-order group consists of cyclic groups.",
+    "mathContext": "$\\mathrm{Squarefree}\\,|G| \\implies \\forall p,\\ P \\in \\mathrm{Syl}_p(G)$ is cyclic.",
+    "significance": "high",
+    "relatedConcepts": ["cyclic group", "subsingleton", "Z-group", "Sylow subgroup"],
+    "prerequisites": ["finite group theory", "cyclic groups"]
+  },
+  {
+    "id": "packaged-conclusion",
+    "proofId": "cauchy-group-theorem-oq-01-oq-02-oq-03",
+    "range": { "startLine": 136, "endLine": 144 },
+    "type": "theorem",
+    "title": "Packaged: Cyclic of Prime Order",
+    "content": "`sylow_cyclic_of_prime_order_of_squarefree`: the complete packaged answer — if |G| is squarefree and p ∣ |G|, then every Sylow p-subgroup is simultaneously of order exactly p and cyclic. This conjunction is the form a working group theorist cites, and it is the witness used by the S₃ specializations below.",
+    "mathContext": "$\\mathrm{Squarefree}\\,|G| \\wedge p \\mid |G| \\implies |P| = p \\wedge \\mathrm{IsCyclic}\\,P$.",
+    "significance": "high",
+    "relatedConcepts": ["Sylow subgroup", "cyclic of prime order", "packaging"],
+    "prerequisites": ["finite group theory", "Sylow theory", "cyclic groups"]
+  },
+  {
+    "id": "s3-squarefree",
+    "proofId": "cauchy-group-theorem-oq-01-oq-02-oq-03",
+    "range": { "startLine": 146, "endLine": 154 },
+    "type": "theorem",
+    "title": "|S₃| = 6 Is Squarefree",
+    "content": "`squarefree_card_perm_fin3`: the order of S₃ is 6 = 2·3, which is squarefree. Proved by rewriting via the parent's `card_perm_fin3`, factoring 6 = 2·3, and applying `Nat.squarefree_mul_iff` with the coprimality of 2 and 3 and `Prime.squarefree` for each factor. This unlocks the general theorem for the symmetric group on three letters. (Kernel `decide` does not reduce `Squarefree`, so the structural lemma is used instead, keeping the file 0-axiom.)",
+    "mathContext": "$\\mathrm{Squarefree}\\,6$ since $6 = 2 \\cdot 3$ with $2, 3$ distinct primes.",
+    "significance": "medium",
+    "relatedConcepts": ["squarefree integer", "symmetric group", "coprimality", "Nat.squarefree_mul_iff"],
+    "prerequisites": ["elementary number theory"]
+  },
+  {
+    "id": "s3-sylow2",
+    "proofId": "cauchy-group-theorem-oq-01-oq-02-oq-03",
+    "range": { "startLine": 156, "endLine": 164 },
+    "type": "theorem",
+    "title": "Sylow 2-Subgroup of S₃: Cyclic of Order 2",
+    "content": "`sylow2_perm_fin3_cyclic`: every Sylow 2-subgroup of S₃ is cyclic of order 2 — recovered as an instance of `sylow_cyclic_of_prime_order_of_squarefree` applied to |S₃| = 6 at p = 2. The parent entry's concrete number 2 is now a corollary of the uniform squarefree theorem rather than a standalone computation.",
+    "mathContext": "$P \\in \\mathrm{Syl}_2(S_3) \\implies |P| = 2 \\wedge \\mathrm{IsCyclic}\\,P$ — the order-2 subgroup generated by a transposition.",
+    "significance": "medium",
+    "relatedConcepts": ["symmetric group", "Sylow subgroup", "cyclic group", "transposition"],
+    "prerequisites": ["finite group theory", "Sylow theory"]
+  },
+  {
+    "id": "s3-sylow3",
+    "proofId": "cauchy-group-theorem-oq-01-oq-02-oq-03",
+    "range": { "startLine": 166, "endLine": 174 },
+    "type": "theorem",
+    "title": "Sylow 3-Subgroup of S₃: Cyclic of Order 3",
+    "content": "`sylow3_perm_fin3_cyclic`: every Sylow 3-subgroup of S₃ is cyclic of order 3 — the alternating group A₃ of 3-cycles — recovered as an instance of `sylow_cyclic_of_prime_order_of_squarefree` at p = 3. Together with the order-2 case this reproduces the parent's full S₃ Sylow picture as specializations of the general theorem, exactly as the open question requested.",
+    "mathContext": "$P \\in \\mathrm{Syl}_3(S_3) \\implies |P| = 3 \\wedge \\mathrm{IsCyclic}\\,P$ — the cyclic group A₃ of 3-cycles.",
+    "significance": "medium",
+    "relatedConcepts": ["symmetric group", "alternating group", "Sylow subgroup", "cyclic group"],
+    "prerequisites": ["finite group theory", "Sylow theory"]
+  }
+]

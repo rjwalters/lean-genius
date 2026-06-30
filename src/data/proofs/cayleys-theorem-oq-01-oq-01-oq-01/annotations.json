@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cayley-oq010101-ann-header",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "concept",
+    "title": "Sharpening the degree: from Sₙ to Sₖ via the coset action",
+    "content": "The parent embeds a group of order $n$ into $S_n$ by the left-regular representation. Here the degree is sharpened to $k = [G:H]$ for a subgroup $H$: $G$ acts on the $k$ left cosets $G/H$, giving a homomorphism into $\\mathrm{Sym}(G/H)$. The crux is that the kernel of this action is the *normal core* $\\mathrm{core}_G(H)$ — the largest normal subgroup of $G$ inside $H$ — so the action is faithful exactly when $H$ is core-free. Then $G \\hookrightarrow S_k$ with $k \\le n$, often far smaller; taking $H = \\bot$ recovers the parent.",
+    "mathContext": "$G \\hookrightarrow S_k$, \\; $k = [G:H] \\le n = |G|$.",
+    "significance": "key",
+    "relatedConcepts": ["coset action", "normal core", "core-free subgroup", "minimal-degree permutation representation"],
+    "prerequisites": ["group actions", "cosets and index"]
+  },
+  {
+    "id": "cayley-oq010101-ann-permcongr",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 64 },
+    "type": "definition",
+    "title": "permCongrMulEquiv — relabelling permutations multiplicatively",
+    "content": "Bundles conjugation by a fixed bijection $e : \\alpha \\simeq \\beta$ as a `MulEquiv` $\\mathrm{Perm}\\,\\alpha \\simeq^* \\mathrm{Perm}\\,\\beta$ (underlying `Equiv.permCongr`), with `map_mul'` discharged by `ext`+`simp`. This is the device that turns the abstract symmetric group $\\mathrm{Sym}(G/H)$ into the concrete standard $S_k = \\mathrm{Perm}(\\mathrm{Fin}\\,k)$ once the $k$ cosets are numbered.",
+    "mathContext": "$\\sigma \\mapsto e\\,\\sigma\\,e^{-1}$ is an isomorphism $\\mathrm{Sym}(\\alpha) \\cong \\mathrm{Sym}(\\beta)$.",
+    "significance": "standard",
+    "relatedConcepts": ["conjugation", "MulEquiv", "permutation relabelling"],
+    "prerequisites": ["Equiv.permCongr", "multiplicative isomorphisms"]
+  },
+  {
+    "id": "cayley-oq010101-ann-coset-action-ker",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 82 },
+    "type": "key-step",
+    "title": "The coset action and its kernel = normal core",
+    "content": "`cosetActionHom H := MulAction.toPermHom G (G ⧸ H)` is the permutation representation of $G$ on its left cosets, with `cosetActionHom H g q = g • q`. The central fact `cosetActionHom_ker` states $\\ker = H.\\mathrm{normalCore}$ — an element acts trivially on *every* coset iff it lies in every conjugate of $H$, i.e. in the normal core. This restates Mathlib's `Subgroup.normalCore_eq_ker` in kernel-first form and is the mathematical heart of the whole entry. Combined with `MonoidHom.ker_eq_bot_iff`, `cosetActionHom_injective_iff` gives the clean criterion: the coset action is faithful $\\iff$ $H$ is core-free.",
+    "mathContext": "$\\ker(g \\mapsto (xH \\mapsto gxH)) = \\bigcap_{g} gHg^{-1} = \\mathrm{core}_G(H)$.",
+    "significance": "critical",
+    "relatedConcepts": ["normal core", "kernel of an action", "core-free subgroup", "faithful action"],
+    "prerequisites": ["MulAction.toPermHom", "Subgroup.normalCore"]
+  },
+  {
+    "id": "cayley-oq010101-ann-faithful-rep",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 84, "endLine": 103 },
+    "type": "key-step",
+    "title": "Faithful embedding, and the quotient embedding for arbitrary H",
+    "content": "When $H$ is core-free, `exists_faithful_coset_rep` produces $G \\hookrightarrow \\mathrm{Sym}(G/H)$. For an *arbitrary* $H$, the first isomorphism theorem (`QuotientGroup.quotientKerEquivRange`) together with the kernel computation gives `cosetQuotientEquivRange : G ⧸ H.normalCore ≃* range`, hence `exists_quotient_faithful_rep`: the quotient $G/\\mathrm{core}_G(H)$ always embeds into $\\mathrm{Sym}(G/H)$. So the normal core is the exact obstruction to faithfulness — nothing else can collapse.",
+    "mathContext": "$G/\\mathrm{core}_G(H) \\;\\cong\\; \\mathrm{im} \\;\\le\\; \\mathrm{Sym}(G/H)$.",
+    "significance": "key",
+    "relatedConcepts": ["first isomorphism theorem", "faithful representation", "quotient group"],
+    "prerequisites": ["QuotientGroup.quotientKerEquivRange", "MonoidHom.range"]
+  },
+  {
+    "id": "cayley-oq010101-ann-concrete-sk",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 122 },
+    "type": "key-step",
+    "title": "Landing in the concrete Sₖ = Perm(Fin k)",
+    "content": "Numbering the $k$ cosets by `e : G ⧸ H ≃ Fin k` and conjugating with `permCongrMulEquiv` gives `cosetActionFinHom : G →* Equiv.Perm (Fin k)`, injective when $H$ is core-free (`cosetActionFinHom_injective`). Instantiating at `Fintype.equivFin` yields `exists_faithful_rep_on_fin`: a core-free subgroup of index $k$ produces a genuine embedding $G \\hookrightarrow S_k$, with $k = $ `Fintype.card (G ⧸ H)` $= [G:H]$.",
+    "mathContext": "$G \\hookrightarrow S_k = \\mathrm{Perm}(\\mathrm{Fin}\\,k)$, \\; $k = [G:H]$.",
+    "significance": "key",
+    "relatedConcepts": ["standard symmetric group", "Fintype.equivFin", "permutation relabelling"],
+    "prerequisites": ["Fintype.equivFin", "permCongrMulEquiv"]
+  },
+  {
+    "id": "cayley-oq010101-ann-degree",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 123, "endLine": 161 },
+    "type": "concept",
+    "title": "Degree analysis and the H = ⊥ special case",
+    "content": "`coset_degree_eq_index` identifies the degree with $[G:H]$; `index_le_card` (from `index_dvd_card`) gives $k \\le n$; `index_mul_card_eq` is Lagrange $k\\,|H| = n$; and `card_perm_coset` gives $|\\mathrm{Sym}(G/H)| = k!$. So the ambient symmetric group shrinks from order $n!$ to $k!$. Finally `bot_core_free` shows $\\bot$ is core-free of index $n$, exhibiting the parent's regular representation $G \\hookrightarrow S_n$ as exactly the $H = \\bot$ instance — this entry strictly generalizes it. The worked $S_3$ example notes a point-stabiliser of index $3$ gives $S_3 \\hookrightarrow S_3$ (degree $3$), far below the regular degree $|S_3| = 6$.",
+    "mathContext": "$k = [G:H] \\le n$, \\; ambient group $k! \\le n!$; \\; $H=\\bot \\Rightarrow k = n$.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange's theorem", "subgroup index", "factorial growth", "minimal degree"],
+    "prerequisites": ["Subgroup.index", "Fintype.card_perm"]
+  }
+]

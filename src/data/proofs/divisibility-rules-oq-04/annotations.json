@@ -27,7 +27,7 @@
     "title": "Block-Sum Rule from 100 ≡ 1",
     "content": "`eleven_dvd_iff_block_sum` is `Nat.dvd_iff_dvd_digits_sum 11 100 (by norm_num) n`. The lemma `dvd_iff_dvd_digits_sum b b' (h : b' % b = 1)` states `b ∣ n ↔ b ∣ (digits b' n).sum` whenever the base reduces to 1 modulo b. Here `100 % 11 = 1`, discharged by `norm_num`, so summing the base-100 digits (the two-decimal-digit blocks read from the right) detects divisibility by 11. This is a new specialization — the sibling entries only treat single digits.",
     "mathContext": "Because $100 \\equiv 1 \\pmod{11}$, all powers $100^k \\equiv 1$, so $n = \\sum c_k 100^k \\equiv \\sum c_k \\pmod{11}$ where the $c_k$ are the two-digit blocks. Hence $11 \\mid n$ iff $11$ divides their plain sum.",
-    "significance": "important",
+    "significance": "supporting",
     "relatedConcepts": ["dvd_iff_dvd_digits_sum", "base-100 digits", "100 ≡ 1 mod 11"],
     "prerequisites": ["Nat.dvd_iff_dvd_digits_sum", "norm_num on residues"]
   },
@@ -42,5 +42,29 @@
     "significance": "key",
     "relatedConcepts": ["dvd_iff_dvd_ofDigits", "ofDigits_neg_one", "1001 = 7·11·13", "alternating block sum"],
     "prerequisites": ["Nat.dvd_iff_dvd_ofDigits", "Nat.ofDigits_neg_one"]
+  },
+  {
+    "id": "ann-droq04-single-alt",
+    "proofId": "divisibility-rules-oq-04",
+    "range": { "startLine": 42, "endLine": 50 },
+    "type": "insight",
+    "title": "The Schoolbook Rule, Now Axiom-Free",
+    "content": "`eleven_dvd_iff_alternating` records the classical single-digit rule `11 ∣ n ↔ (11:ℤ) ∣ (d₀ - d₁ + d₂ - ⋯)` as a one-line application of Mathlib's `Nat.eleven_dvd_iff`. The point is not novelty of the statement but its *provenance*: the sibling `divisibility-rules-oq-01` proves only the weaker congruence form `11 ∣ n - altSum` and leans on `native_decide`, which depends on the `Lean.ofReduceBool` axiom. Here the full biconditional is obtained directly from the digit machinery with **no** axioms beyond the standard kernel triple — a strictly cleaner record of the same schoolbook fact.",
+    "mathContext": "$10 \\equiv -1 \\pmod{11}$, so $n = \\sum d_k 10^k \\equiv \\sum d_k(-1)^k = d_0 - d_1 + d_2 - \\cdots \\pmod{11}$; thus $11\\mid n \\iff 11 \\mid \\sum (-1)^k d_k$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.eleven_dvd_iff", "alternating digit sum", "native_decide vs axiom-free", "10 ≡ -1 mod 11"],
+    "prerequisites": ["alternating digit sum", "Lean.ofReduceBool / native_decide caveat"]
+  },
+  {
+    "id": "ann-droq04-congruence",
+    "proofId": "divisibility-rules-oq-04",
+    "range": { "startLine": 62, "endLine": 66 },
+    "type": "concept",
+    "title": "The Underlying Congruence",
+    "content": "`eleven_modEq_alternating` exposes the residue fact powering all three rules in its rawest form: `n ≡ (alternating digit sum) [ZMOD 11]`, via `Nat.modEq_eleven_digits_sum`. Every biconditional above is the divisibility shadow of this single congruence — the rules differ only in which base (10, 100, 1000) is used to group the digits before reducing mod 11. Stating the congruence separately makes explicit that the divisibility rules are not independent tricks but consequences of one modular identity.",
+    "mathContext": "$n \\equiv \\sum_k (-1)^k d_k \\pmod{11}$ as integers; divisibility ($11\\mid n$) is the special case where the residue is $0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.ModEq / ZMOD", "modEq_eleven_digits_sum", "congruence vs divisibility"],
+    "prerequisites": ["integer congruences", "modular arithmetic"]
   }
 ]

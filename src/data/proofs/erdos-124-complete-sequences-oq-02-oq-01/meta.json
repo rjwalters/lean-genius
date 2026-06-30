@@ -71,6 +71,43 @@
       "Is there a clean characterisation of the greedy sequences that attain Brown's bound infinitely often versus only finitely often?"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Background: the critical case",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring framing the entry as the tight-gap boundary of Brown's criterion: 2^n is the envelope, the tight gap forces the binary sequence, and representations on it are unique. Notes self-containment and the Nat.bitIndices backbone; the base d = 2 (reciprocal sum 1) realises the extremal sequence."
+    },
+    {
+      "id": "geomsum",
+      "title": "Geometric sum of powers of two",
+      "startLine": 43,
+      "endLine": 52,
+      "summary": "sum_range_two_pow: ∑_{i<n} 2^i = 2^n − 1, the quantitative engine of both the envelope bound and the rigidity step."
+    },
+    {
+      "id": "brown-bound",
+      "title": "The Brown bound and its critical case",
+      "startLine": 54,
+      "endLine": 89,
+      "summary": "brown_le_pow2 (2^n is the pointwise upper envelope of every Brown sequence with f 0 = 1) and critical_eq_pow2 (the tight gap forces f n = 2^n exactly) — both by strong induction over the gap and the geometric identity."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness of binary subset-sum representations",
+      "startLine": 91,
+      "endLine": 132,
+      "summary": "The Nat.bitIndices backbone: sum_eq_sortMap and bitIndices_sum_two_pow recover the sorted index set, giving sum_two_pow_injective; exists_sum_two_pow provides binary expansion; unique_representation combines them — every n has exactly one binary subset-sum representation."
+    },
+    {
+      "id": "characterization",
+      "title": "The critical sequence, characterised",
+      "startLine": 134,
+      "endLine": 151,
+      "summary": "critical_sequence_characterization packages rigidity (f = 2^n) with uniqueness; the closing example 1/(2−1) = 1 records that the single base d = 2 sits on the reciprocal-sum boundary and realises the extremal sequence."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-124-complete-sequences-oq-02",

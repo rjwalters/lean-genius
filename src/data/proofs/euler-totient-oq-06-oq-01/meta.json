@@ -1,0 +1,162 @@
+{
+  "id": "euler-totient-oq-06-oq-01",
+  "title": "The 2-adic Valuation of Euler's Totient: $v_2(\\varphi(n))$ from the Factorization of $n$",
+  "slug": "euler-totient-oq-06-oq-01",
+  "description": "Answers the lead open question of `euler-totient-oq-06` (parity of φ): quantify the parity refinement by computing the full 2-adic valuation v₂(φ(n)) from the prime factorization of n. Euler's product formula `Nat.totient_eq_prod_factorization` gives φ(n) = ∏_{p∣n} p^(kₚ−1)·(p−1). Since `Nat.factorization` is additive over products of positives, evaluating it at the prime 2 turns the product into a sum and yields the master formula `v2_totient_eq_sum`: v₂(φ(n)) = ∑_{p∣n} (kₚ−1)·v₂(p) + v₂(p−1). For odd primes v₂(p)=0, so the term is v₂(p−1); for p=2, v₂(2)=1 and v₂(1)=0, so the term is k₂−1. This gives the clean split `v2_totient_split`: when 2∣n, v₂(φ(n)) = (v₂(n)−1) + ∑_{p∣n, p odd} v₂(p−1). The two prime-power regimes are recorded explicitly (`v2_totient_two_pow`: v₂(φ(2^k))=k−1; `v2_totient_odd_prime_pow`: v₂(φ(p^k))=v₂(p−1) for odd p), and the parent parity result is recovered as the v₂≥1 corollary. A `padicValNat` restatement is included. Fully machine-checked: 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Euler (1763, product formula); 2-adic valuation refinement formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_totient_function",
+    "date": "1763",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ06OQ01.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "p-adic-valuation",
+      "factorization",
+      "valuation",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 158,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound` (confirmed via `#print axioms`); no `native_decide`, no `Lean.ofReduceBool`, no `sorryAx`. The proof rests on Mathlib's `Nat.totient_eq_prod_factorization` (Euler's product formula) and the additive-homomorphism lemmas for `Nat.factorization` (`factorization_mul`, `factorization_pow`, `factorization_prod`).",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_eq_prod_factorization",
+        "description": "Euler's product formula `φ n = n.factorization.prod (fun p k => p^(k−1)·(p−1))` for n ≠ 0. The structural engine: it expresses φ(n) as a product of the prime-power contributions, which the 2-adic valuation then turns into a sum.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime_pow",
+        "description": "`φ(p^k) = p^(k−1)·(p−1)` for prime p and k ≥ 1, the prime-power building block underlying `v2_totient_two_pow` and `v2_totient_odd_prime_pow`.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.factorization_prod",
+        "description": "`(∏ x∈S, g x).factorization = ∑ x∈S, (g x).factorization` for nonzero factors. This is what converts the product in Euler's formula into a sum of valuations.",
+        "module": "Mathlib.Data.Nat.Factorization.Defs"
+      },
+      {
+        "theorem": "Nat.factorization_mul / Nat.factorization_pow",
+        "description": "`(a·b).factorization = a.factorization + b.factorization` and `(a^k).factorization = k • a.factorization`. Additivity of `Nat.factorization`, applied at the prime 2 to split each summand p^(kₚ−1)·(p−1) into (kₚ−1)·v₂(p) + v₂(p−1).",
+        "module": "Mathlib.Data.Nat.Factorization.Defs"
+      },
+      {
+        "theorem": "Nat.factorization_def",
+        "description": "`n.factorization p = padicValNat p n` for prime p, used to translate the `Nat.factorization · 2` formula into a `padicValNat 2` restatement.",
+        "module": "Mathlib.Data.Nat.Factorization.Defs"
+      },
+      {
+        "theorem": "Nat.totient_even",
+        "description": "`2 < n → Even n.totient`, reused to recover the parent's parity result as a corollary (v₂(φ(n)) ≥ 1 for n > 2).",
+        "module": "Mathlib.Data.Nat.Totient"
+      }
+    ],
+    "originalContributions": [
+      "`v2_totient_eq_sum`: the master formula v₂(φ(n)) = ∑_{p∣n} (kₚ−1)·v₂(p) + v₂(p−1), a single uniform sum over the prime factors of n obtained by applying the additive homomorphism `Nat.factorization · 2` to Euler's product formula. Mathlib packages neither this nor any closed form for v₂(φ(n)).",
+      "`v2_totient_split`: the clean split form for even n, v₂(φ(n)) = (v₂(n)−1) + ∑_{p∣n, p odd} v₂(p−1), isolating the contribution of the prime 2 (which alone carries the (kₚ−1)·v₂(p) term) from the odd primes (each contributing v₂(p−1)).",
+      "`v2_totient_two_pow` and `v2_totient_odd_prime_pow`: the two prime-power regimes — v₂(φ(2^k)) = k−1 and v₂(φ(p^k)) = v₂(p−1) for odd primes — the building blocks of the general formula stated independently.",
+      "`padicValNat_two_totient_eq_sum`: the master formula restated in `padicValNat 2` language via `Nat.factorization_def`.",
+      "`summand_eq`: the case split showing each summand equals k₂−1 at p=2 and v₂(p−1) at odd p, the lemma that powers the passage from the uniform sum to the clean split."
+    ],
+    "prerequisites": [
+      "Euler's totient function φ and Euler's product formula φ(n) = ∏ p^(k−1)(p−1)",
+      "The p-adic valuation v_p / `padicValNat` and `Nat.factorization`",
+      "Additivity of valuations over products of nonzero integers",
+      "Prime factorization and `Nat.primeFactors`"
+    ],
+    "dateAdded": "2026-06-24",
+    "relatedProblems": [
+      {
+        "id": "euler-totient-oq-06",
+        "relationship": "Parent: oq-06 settles the parity of φ (even for n > 2). This entry answers its lead open question — quantify the parity refinement by computing the full 2-adic valuation v₂(φ(n)) from the factorization of n — and recovers the parent's evenness as the v₂ ≥ 1 corollary."
+      },
+      {
+        "id": "euler-totient",
+        "relationship": "Ancestor: the gallery family on Euler's totient and his generalization of Fermat's little theorem."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 158,
+    "path": "Proofs/EulerTotientOQ06OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 7
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Euler introduced the totient φ(n) in 1763 and proved it multiplicative, giving the product formula φ(n) = ∏_{p^k ∥ n} p^(k−1)(p−1). The parent entry euler-totient-oq-06 settled the coarsest consequence — the parity of φ, i.e. whether v₂(φ(n)) is 0 or positive: φ(n) is even for all n > 2 because the unit −1 ∈ (ℤ/nℤ)ˣ has order 2 (Lagrange). The natural quantitative refinement, flagged as that entry's lead open question, is to compute the exact 2-adic valuation v₂(φ(n)) — not merely whether it is positive but its precise value — from the factorization of n. Because the totient is multiplicative and the p-adic valuation is additive over products, the answer is a clean sum over the prime divisors of n: each odd prime p contributes v₂(p−1), and the prime 2 (to exponent k₂) contributes k₂−1.",
+    "problemStatement": "**Open Question (euler-totient-oq-06-oq-01, from oq-06):** determine the 2-adic valuation v₂(φ(n)) in terms of the factorization of n. Since φ(n) = ∏ p^(k−1)(p−1), v₂ should accumulate v₂(p−1) per odd prime divisor plus the contribution of the power of 2 dividing n.",
+    "text": "For n ≠ 0, v₂(φ(n)) = ∑_{p∣n} (kₚ−1)·v₂(p) + v₂(p−1) where kₚ = n.factorization p; equivalently, when 2∣n, v₂(φ(n)) = (v₂(n)−1) + ∑_{p∣n, p odd} v₂(p−1).",
+    "proofStrategy": "Start from Euler's product formula `Nat.totient_eq_prod_factorization`: φ(n) = ∏_{p∣n} p^(kₚ−1)·(p−1). Apply the additive homomorphism `Nat.factorization` and evaluate at the prime 2: `factorization_prod` turns the product into a sum (each factor is nonzero since p is prime and p−1 ≥ 1), and `factorization_mul`/`factorization_pow` split each summand into (kₚ−1)·v₂(p) + v₂(p−1). That is the master formula `v2_totient_eq_sum`. The split form follows from `summand_eq`: for odd primes 2∤p so v₂(p)=0 and the summand is v₂(p−1); for p=2, v₂(2)=1 and v₂(1)=0 so the summand is k₂−1. Isolating the singleton {2} from the prime factors via `Finset.sum_filter_add_sum_filter_not` gives `v2_totient_split`. The two prime-power lemmas are direct from `totient_prime_pow`.",
+    "keyInsights": [
+      "**Multiplicative function + additive valuation = a sum over primes.** φ is multiplicative and v₂ is additive over products, so v₂(φ(n)) decomposes with no interaction between distinct prime divisors — the whole computation reduces to the prime-power case.",
+      "**Only the prime 2 sees the exponent.** For an odd prime p the factor p^(kₚ−1) is odd, so its exponent kₚ is invisible to v₂; the prime contributes v₂(p−1) regardless of its multiplicity. Only the 2-part of n contributes through its exponent, as k₂−1.",
+      "**`Nat.factorization` as an additive hom is the clean tool.** Rather than juggle `padicValNat` product rules, evaluating the `ℕ →₀ ℕ`-valued `Nat.factorization` at 2 lets `factorization_prod`/`_mul`/`_pow` do the bookkeeping; `Nat.factorization_def` then exports the result to `padicValNat 2`.",
+      "**This sharpens the parent parity result quantitatively.** v₂(φ(n)) ≥ 1 for n > 2 (evenness) is now a corollary of an exact formula: e.g. v₂(φ(2^a·m)) for odd m > 1 is (a−1)⁺ plus one factor of 2 for every odd prime p∣m with p ≡ 3 (mod 4), and more when p ≡ 1 (mod 4)."
+    ],
+    "prerequisites": [
+      "Euler's totient φ and Euler's product formula",
+      "p-adic valuation v_p, `padicValNat`, and `Nat.factorization`",
+      "Additivity of valuations / `factorization_mul`, `factorization_pow`, `factorization_prod`",
+      "`Nat.primeFactors` and finite sums over prime factors"
+    ]
+  },
+  "conclusion": {
+    "summary": "The 2-adic valuation v₂(φ(n)) is computed exactly from the factorization of n: v₂(φ(n)) = ∑_{p∣n} (kₚ−1)·v₂(p) + v₂(p−1), which splits (for even n) into (v₂(n)−1) + ∑_{p∣n, p odd} v₂(p−1). 7 theorems, 158 lines, 0 sorries, 0 axioms. The engine is Euler's product formula together with the additivity of `Nat.factorization`; the parent's parity result is the v₂ ≥ 1 corollary.",
+    "implications": "An exact 2-adic valuation refines the qualitative 'φ(n) is even for n > 2'. It quantifies the 2-Sylow size of the unit group (ℤ/nℤ)ˣ and feeds questions like 'when is φ(n) ≡ 2 (mod 4)' (exactly one odd prime factor, that prime ≡ 3 mod 4 to the first power, and n's 2-part at most 2) and the structure of cyclotomic field degrees [ℚ(ζ_n):ℚ] = φ(n).",
+    "openQuestions": [
+      "Characterize n with v₂(φ(n)) = 1, i.e. φ(n) ≡ 2 (mod 4): exactly n ∈ {4, p^k, 2p^k} with p ≡ 3 (mod 4) prime — formalize this sharp classification from the split formula.",
+      "Compute v_q(φ(n)) for a general odd prime q, where the prime-power contribution v_q(φ(p^k)) = (k−1)·[p=q] + v_q(p−1) mixes the exponent term (only at p=q) with the v_q(p−1) terms — the same additive-homomorphism proof generalizes verbatim."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring deriving the master formula from Euler's product formula and the additivity of the p-adic valuation, with imports (`Mathlib.Data.Nat.Totient`, `Mathlib.Data.Nat.Factorization.Basic`, `Mathlib.NumberTheory.Padics.PadicVal.Basic`) and the namespace `EulerTotientOQ06OQ01` opening `Nat` and `Finset`."
+    },
+    {
+      "id": "prime-power-blocks",
+      "title": "Prime-Power Building Blocks",
+      "startLine": 53,
+      "endLine": 86,
+      "summary": "`v2_totient_two_pow` (v₂(φ(2^k)) = k−1, since φ(2^k) = 2^(k−1)) and `v2_totient_odd_prime_pow` (v₂(φ(p^k)) = v₂(p−1) for odd prime p, since the factor p^(k−1) is odd) — the two regimes that the general formula glues together."
+    },
+    {
+      "id": "master-formula",
+      "title": "Master Formula and padicValNat Restatement",
+      "startLine": 87,
+      "endLine": 127,
+      "summary": "`v2_totient_eq_sum`: v₂(φ(n)) = ∑_{p∣n} (kₚ−1)·v₂(p) + v₂(p−1), proved by applying `Nat.factorization · 2` to Euler's product formula and splitting each factor with `factorization_prod`/`_mul`/`_pow`; and `padicValNat_two_totient_eq_sum`, its `padicValNat 2` restatement via `Nat.factorization_def`."
+    },
+    {
+      "id": "clean-split",
+      "title": "Clean Split Isolating the Prime 2",
+      "startLine": 128,
+      "endLine": 158,
+      "summary": "`summand_eq` (each summand is k₂−1 at p=2 and v₂(p−1) at odd primes), `v2_totient_split` (for even n, v₂(φ(n)) = (v₂(n)−1) + ∑_{p∣n, p odd} v₂(p−1), by isolating the singleton {2} from the prime factors), and `totient_even_of_two_lt` recovering the parent's parity result."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient-oq-06",
+      "relationship": "parent",
+      "description": "oq-06 proves φ(n) is even for n > 2 (v₂(φ(n)) ≥ 1) and its lead open question asks for the exact 2-adic valuation. This entry answers it with the closed formula v₂(φ(n)) = ∑_{p∣n} (kₚ−1)·v₂(p) + v₂(p−1) and recovers the parity result as a corollary."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "The ancestor gallery family on Euler's totient and his generalization of Fermat's little theorem; this entry studies the fine arithmetic (2-adic valuation) of φ itself."
+    }
+  ]
+}
