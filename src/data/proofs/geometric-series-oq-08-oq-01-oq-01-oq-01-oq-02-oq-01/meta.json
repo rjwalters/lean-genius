@@ -20,6 +20,7 @@
     "sorries": 0
   },
   "title": "Solving the Infinite-Limit Recurrence (★∞) in Closed Form: infMoment m x = Eₘ(x)/(1 − x)^{m+1}",
+  "description": "Closes the loop between two gallery descriptions of the infinite geometric moments ∑'_{k} kᵐ·xᵏ: the parent's derivative-free binomial-convolution recurrence (★∞) and the sibling's differential Eulerian-polynomial closed form. Proves the headline identity infMoment m x = Eₘ(x)/(1 − x)^{m+1} for all m, a NEW polynomial recurrence showing the Eulerian polynomials themselves satisfy (★∞) over ℝ[X] (via polynomial extensionality on the infinite set (−1,1)), and the explicit third moment ∑ k³·xᵏ = (x + 4x² + x³)/(1 − x)⁴.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -74,6 +75,41 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "The rational closed forms ∑_{k≥0} kᵐ·xᵏ = Aₘ(x)/(1 − x)^{m+1} are classical: the numerators Aₘ are the Eulerian polynomials, whose coefficients ⟨m,j⟩ are the Eulerian numbers counting permutations of {1,…,m} with j descents. Leonhard Euler introduced these numbers in 1755 while summing exactly such series; Worpitzky's 1883 identity expands kᵐ in the binomial basis (k+j choose m) with Eulerian-number coefficients, the combinatorial root of the closed form. Two recurrences for the Eulerian polynomials coexist in the literature: a differential one, Aₘ₊₁ = x(1−x)A′ₘ + (1 + mx)Aₘ (here in the geometric normalisation Eₘ₊₁ = X(1−X)E′ₘ + (m+1)X·Eₘ), and a Pascal-style binomial-convolution one. This entry formalises the bridge between them inside Lean: the convolution recurrence (★∞), proved analytically for the tsum-defined moments, is shown to hold for the Eulerian polynomials themselves as an exact identity in ℝ[X].",
+    "problemStatement": "Let infMoment m x := $\\sum_{k=0}^{\\infty} k^m x^k$ for $|x| < 1$ (defined in the parent, where it is characterised only by the recurrence $(1-x)\\,\\mathrm{infMoment}\\,m\\,x = 0^m + x\\sum_{i<m}\\binom{m}{i}\\mathrm{infMoment}\\,i\\,x$, (★∞)). Solve (★∞) in closed form for all m, i.e. prove $\\mathrm{infMoment}\\,m\\,x = \\dfrac{E_m(x)}{(1-x)^{m+1}}$ with $E_m$ the Eulerian polynomial; show the $E_m$ satisfy (★∞) as a polynomial identity $(1-X)E_m = 0^m(1-X)^{m+1} + X\\sum_{i<m}\\binom{m}{i}E_i(1-X)^{m-i}$ in $\\mathbb{R}[X]$; and read off the explicit third moment.",
+    "proofStrategy": "Part 1 (infMoment_eq_eulerPoly) is a one-liner: the sibling file already proves the analytic Frobenius identity HasSum (kᵐ·rᵏ) (Eₘ(r)/(1−r)^{m+1}), and HasSum.tsum_eq converts it to the tsum value, identifying the two descriptions. Part 2 (eulerPoly_recurrence) is the genuinely new content and uses a polynomial-extensionality strategy: rather than manipulating polynomials directly, it shows both sides agree at every real r ∈ (−1,1) — there the closed form rewrites each eval Eᵢ(r) as infMoment i r · (1−r)^{i+1}, pulling a common (1−r)^{m+1} out of the binomial sum, after which the parent's analytic recurrence (★∞) closes the goal by linear_combination. Since (−1,1) is infinite (Set.Ioo_infinite) and ℝ[X] is over an integral domain, Polynomial.eq_of_infinite_eval_eq promotes pointwise equality to the polynomial identity. Part 3 specialises the headline closed form at m = 1, 2, 3 using the low-order Eulerian values, recovering x/(1−x)², (x+x²)/(1−x)³, and the new (x+4x²+x³)/(1−x)⁴.",
+    "keyInsights": [
+      "The same sequence of polynomials is pinned down by two structurally different recurrences — a differential one (defining eulerPoly in the sibling file) and a derivative-free binomial-convolution one (★∞) — and this entry proves they coincide. Establishing that two recurrences define the same object is exactly the kind of 'closing the loop' result that unifies a family.",
+      "The proof of the polynomial identity never touches a single polynomial coefficient: it evaluates both sides at infinitely many real points and invokes eq_of_infinite_eval_eq. This 'analytic-to-algebraic' transfer — agreement on an infinite set forces equality of polynomials over an integral domain — converts an analysis fact (the convergent series recurrence) into an exact algebraic one in ℝ[X].",
+      "Clearing the denominators (1 − x)^{i+1} from the closed form is what turns the analytic convolution recurrence (★∞) into a single homogeneous polynomial identity: each term contributes a power of (1 − X), and matching the total degree m + 1 across the sum is the algebraic heart of the rewrite (the show m + 1 = (i + 1) + (m − i); pow_add step).",
+      "The third moment ∑ k³·xᵏ = (x + 4x² + x³)/(1 − x)⁴ is obtained for free once the general closed form is in hand: it is just E₃ = X + 4X² + X³ over (1 − x)⁴, with the coefficients 1, 4, 1 being the Eulerian numbers ⟨3,0⟩, ⟨3,1⟩, ⟨3,2⟩ — no separate summation needed.",
+      "The entry is candid about scope: the headline closed form reuses the gallery's analytic Frobenius identity rather than re-deriving it by strong induction on (★∞). The genuinely original deliverables are the polynomial recurrence eulerPoly_recurrence (absent from Mathlib) and the explicit third-moment formula; the remaining open question asks for a purely algebraic, analysis-free derivation."
+    ]
+  },
+  "sections": [
+    {
+      "id": "headline-closed-form",
+      "title": "Part 1: The Headline Closed Form",
+      "startLine": 65,
+      "endLine": 73,
+      "summary": "infMoment_eq_eulerPoly states the closed-form solution of (★∞): for |x| < 1, infMoment m x = Eₘ(x)/(1 − x)^{m+1}. The one-line proof applies HasSum.tsum_eq to the sibling file's analytic Frobenius identity hasSum_pow_mul_geometric_eulerPoly, identifying the tsum-defined moment with the Eulerian closed form."
+    },
+    {
+      "id": "eulerpoly-recurrence",
+      "title": "Part 2: The Eulerian Polynomials Satisfy (★∞)",
+      "startLine": 75,
+      "endLine": 120,
+      "summary": "eulerPoly_recurrence is the new polynomial identity (1 − X)·Eₘ = 0ᵐ·(1 − X)^{m+1} + X·∑_{i<m} C(m,i)·Eᵢ·(1 − X)^{m−i} in ℝ[X]. Proved by eq_of_infinite_eval_eq: both sides agree at every r ∈ (−1,1) (rewriting each Eᵢ(r) via the closed form, factoring out (1−r)^{m+1}, and closing with the parent's analytic (★∞) via linear_combination), and (−1,1) is infinite, so the polynomials are equal."
+    },
+    {
+      "id": "low-order-moments",
+      "title": "Part 3: Low-Order Closed Forms and the Third Moment",
+      "startLine": 122,
+      "endLine": 145,
+      "summary": "infMoment_one and infMoment_two recover x/(1 − x)² and (x + x²)/(1 − x)³ from the general closed form (consistency with the parent), and infMoment_three gives the new explicit third moment ∑ k³·xᵏ = (x + 4x² + x³)/(1 − x)⁴, read off the Eulerian polynomial E₃ = X + 4X² + X³."
+    }
+  ],
   "openQuestions": [
     {
       "id": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",

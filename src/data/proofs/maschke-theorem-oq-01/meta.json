@@ -17,6 +17,7 @@
     "sorries": 0
   },
   "title": "Maschke's Theorem and Complete Reducibility of Group Representations",
+  "description": "Maschke's 1899 theorem and its complete-reducibility corollaries for a finite group G over a field k with char k ∤ |G| (encoded as NeZero (Fintype.card G : k), shown equivalent to (Fintype.card G : k) being a unit). The technical heart is the averaging projection (1/|G|)∑_g g·π·g⁻¹, which turns a k-linear splitting into a k[G]-equivariant one — the single place the order-invertibility hypothesis is consumed. From it: every k[G]-submodule is a direct summand (IsCompl and the explicit p ⊓ q = ⊥ ∧ p ⊔ q = ⊤), every representation is a semisimple k[G]-module, k[G] is a semisimple ring (the Artin–Wedderburn setup), every short exact sequence splits in both the surjective (projectivity) and injective (extension) directions, and every quotient representation is isomorphic to a subrepresentation. The gateway to character theory.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -75,6 +76,62 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Heinrich Maschke proved in 1898–99 that a finite-dimensional representation of a finite group G over a field k of characteristic not dividing |G| is completely reducible — it decomposes as a direct sum of irreducible subrepresentations. This is the foundational theorem of ordinary (characteristic-0 or coprime-characteristic) representation theory: it makes the group algebra k[G] semisimple, so by Artin–Wedderburn k[G] ≅ ∏ᵢ Mₙᵢ(Dᵢ) is a finite product of matrix algebras over division rings, which over an algebraically closed field of characteristic 0 yields the orthogonality of characters, the count of irreducibles = number of conjugacy classes, and ∑(dim Vᵢ)² = |G|. The proof's mechanism is averaging over the group: any k-linear projection onto a subrepresentation can be symmetrized to a G-equivariant one by averaging its conjugates, and the average requires dividing by |G| — the precise point where char k ∤ |G| is indispensable. When the characteristic does divide |G| (the modular case, studied by Brauer) the theorem fails: 𝔽_p[ℤ/p] is not semisimple. This entry packages the non-modular theorem from Mathlib's averaging primitive and records the modular boundary as framing.",
+    "problemStatement": "**Open Question (oq-01)**: assemble Maschke's theorem and the full complete-reducibility package over k[G] for char k ∤ |G| — the equivariant splitting of injections, the direct-summand property of every submodule, semisimplicity of representations and of k[G] itself, the splitting of short exact sequences in both directions, and the quotient-as-subrepresentation property — as a single gallery entry, with the hypothesis stated in the classical 'order is a unit' form.",
+    "proofStrategy": "Everything flows from one Mathlib primitive, MonoidAlgebra.exists_leftInverse_of_injective (the averaging projection). (1) card_isUnit bridges the hypothesis: over a field NeZero (card G : k) ⟺ (card G : k) is a unit, via isUnit_iff_ne_zero — this is the 'char k ∤ |G|' condition. (2) splitting exposes the averaging primitive directly: an injective k[G]-map has an equivariant left inverse. (3) exists_isCompl / exists_complement give the classical direct-summand statement (every submodule has a complement, both as IsCompl and unfolded to p ⊓ q = ⊥ ∧ p ⊔ q = ⊤). (4) isSemisimpleModule / isSemisimpleRing are inferInstance — Mathlib's instance graph already derives semisimplicity of V and of k[G] from the Maschke setup. (5) surjection_splits and injection_splits invoke IsSemisimpleModule.lifting_property and extension_property to split short exact sequences in both directions (the latter re-deriving splitting through the API). (6) quotient_iso_submodule uses exists_submodule_linearEquiv_quotient. The work is the curation: surfacing the heart, stating the hypothesis classically, and packaging the corollaries that no single Mathlib lemma collects.",
+    "keyInsights": [
+      "The entire theorem turns on one move — averaging a k-linear splitting over G to make it k[G]-equivariant — and the average (1/|G|)∑_g g·π·g⁻¹ exists precisely because |G| is invertible in k; this is the sole place char k ∤ |G| is used.",
+      "Complete reducibility has several equivalent faces, and the entry exhibits them all: direct summands (IsCompl), semisimple module, semisimple ring, splitting of every short exact sequence (both projectivity and injectivity), and quotients realized as subrepresentations — each a standard corollary, here derived through Mathlib's semisimplicity API.",
+      "Stating the hypothesis as '(card G : k) is a unit' (card_isUnit) rather than as a NeZero instance reconnects Mathlib's formalization to Maschke's classical 'characteristic does not divide the order' — the same condition, made legible.",
+      "Semisimplicity of k[G] is the entry point to Artin–Wedderburn: k[G] ≅ ∏ Mₙᵢ(Dᵢ), from which character theory (number of irreducibles = conjugacy classes, ∑ dim² = |G|) follows — the open questions point exactly here.",
+      "The hypothesis is sharp: in the modular case char k ∣ |G|, the augmentation sequence 0 → aug → 𝔽_p[ℤ/p] → 𝔽_p → 0 does not split, so 𝔽_p[ℤ/p] is not semisimple — recorded as framing and as the first open question."
+    ]
+  },
+  "sections": [
+    {
+      "id": "hypothesis",
+      "title": "The Hypothesis: |G| Is a Unit in k",
+      "startLine": 66,
+      "endLine": 72,
+      "summary": "card_isUnit bridges Mathlib's NeZero (Fintype.card G : k) instance to the classical condition that (Fintype.card G : k) is a unit — i.e. char k ∤ |G| — via isUnit_iff_ne_zero. This is exactly what permits dividing by |G| in the averaging step."
+    },
+    {
+      "id": "averaging",
+      "title": "The Heart: the Averaging Projection",
+      "startLine": 74,
+      "endLine": 81,
+      "summary": "splitting exposes the technical core: an injective k[G]-linear map admits a k[G]-equivariant left inverse, realized by averaging a k-linear splitting over G — (1/|G|)∑_g g·π·g⁻¹. This is MonoidAlgebra.exists_leftInverse_of_injective, the only place the order-invertibility hypothesis is consumed."
+    },
+    {
+      "id": "direct-summand",
+      "title": "Classical Maschke: Every Submodule Splits Off",
+      "startLine": 83,
+      "endLine": 94,
+      "summary": "exists_isCompl gives the classical statement — every k[G]-submodule has a complementary subrepresentation (IsCompl) — and exists_complement unfolds it to the explicit V = p ⊕ q decomposition p ⊓ q = ⊥ ∧ p ⊔ q = ⊤."
+    },
+    {
+      "id": "semisimple",
+      "title": "Semisimplicity of Representations and of k[G]",
+      "startLine": 96,
+      "endLine": 103,
+      "summary": "isSemisimpleModule (every representation is a semisimple k[G]-module — a direct sum of irreducibles) and isSemisimpleRing (k[G] is a semisimple ring) are obtained by inferInstance from Mathlib's Maschke instance graph — the Artin–Wedderburn backbone of representation theory."
+    },
+    {
+      "id": "ses-splits",
+      "title": "Splitting Short Exact Sequences (Both Directions)",
+      "startLine": 105,
+      "endLine": 118,
+      "summary": "surjection_splits (every surjective k[G]-map has a section — projectivity/lifting) and injection_splits (every injective k[G]-map has a retraction — extension), via IsSemisimpleModule.lifting_property and extension_property. The injective form re-derives splitting through the semisimplicity API."
+    },
+    {
+      "id": "quotient-sub",
+      "title": "Quotients Are Subrepresentations",
+      "startLine": 120,
+      "endLine": 125,
+      "summary": "quotient_iso_submodule: every quotient V ⧸ N is k[G]-linearly isomorphic to a subrepresentation of V (exists_submodule_linearEquiv_quotient) — a hallmark of complete reducibility, where quotients never produce anything not already inside V."
+    }
+  ],
   "openQuestions": [
     {
       "id": "maschke-theorem-oq-01-oq-01",

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-qgss-oq0401-context",
+    "proofId": "quadratic-gauss-sum-square-oq-04-oq-01",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "concept",
+    "title": "From quadratic field to fundamental discriminant",
+    "content": "The parent oq-04 shows g generates the quadratic field ℚ(√p*) (g² = p*, minpoly X² − p*); the sibling oq-01 settles the sign/reality of g. This entry settles the arithmetic type of p* itself: it is a fundamental discriminant. The first supplement to quadratic reciprocity gives p* = p for p ≡ 1 (mod 4) and p* = −p for p ≡ 3 (mod 4); the new point is that p* ≡ 1 (mod 4) in BOTH cases, and since |p*| = p is prime, p* is squarefree. Squarefree + ≡ 1 (mod 4) means p* is exactly the discriminant of ℚ(√p*) = ℚ(g), not merely a number whose square root lives there.",
+    "mathContext": "$p^* = (-1)^{(p-1)/2}p$ is a fundamental discriminant: squarefree and $p^*\\equiv 1\\pmod 4$, hence $\\operatorname{disc}\\mathbb{Q}(\\sqrt{p^*}) = p^*$ (conductor $p$, ramified only at $p$).",
+    "significance": "context",
+    "relatedConcepts": ["fundamental discriminant", "Gauss sum", "quadratic reciprocity", "first supplement", "conductor-discriminant"],
+    "prerequisites": ["discriminant of a quadratic field", "Gauss sums", "quadratic reciprocity"]
+  },
+  {
+    "id": "ann-qgss-oq0401-square",
+    "proofId": "quadratic-gauss-sum-square-oq-04-oq-01",
+    "range": { "startLine": 56, "endLine": 92 },
+    "type": "technique",
+    "title": "The character and the re-derived square formula",
+    "content": "chiC p is the ℂ-valued quadratic character (integer quadraticChar composed with ℤ → ℂ), with χ(−1) = (−1)^((p−1)/2) (chiC_neg_one). pstar p := (−1)^((p−1)/2)·p. gaussSum_sq_eq re-derives the parent's g² = (p* : ℂ) from Mathlib's gaussSum_sq, so the file is self-contained — everything from pstar_eq_self onward is the new content.",
+    "mathContext": "$g^2 = \\chi(-1)\\cdot|\\mathbb{Z}/p| = (-1)^{(p-1)/2}p = p^*$, re-derived in-file.",
+    "significance": "supporting",
+    "relatedConcepts": ["gaussSum_sq", "quadratic character", "self-contained re-derivation", "p-star"],
+    "prerequisites": ["Gauss sum square identity", "multiplicative characters"]
+  },
+  {
+    "id": "ann-qgss-oq0401-sign",
+    "proofId": "quadratic-gauss-sum-square-oq-04-oq-01",
+    "range": { "startLine": 96, "endLine": 140 },
+    "type": "technique",
+    "title": "The mod-4 split and the sign of p*",
+    "content": "mod_four_cases: an odd prime is 1 or 3 mod 4. The parity of the exponent (p−1)/2 reads off the sign: p ≡ 1 makes it even so p* = p (pstar_eq_self); p ≡ 3 makes it odd so p* = −p (pstar_eq_neg). From these, |p*| = p (pstar_natAbs), p* > 0 ⟺ p ≡ 1 (pstar_pos_iff), and p* < 0 ⟺ p ≡ 3 (pstar_neg_iff). The omit [Fact p.Prime] on the two branch lemmas notes they need only the congruence, not primality.",
+    "mathContext": "$p\\equiv 1\\Rightarrow p^* = p > 0$; $p\\equiv 3\\Rightarrow p^* = -p < 0$; $|p^*| = p$ in both.",
+    "significance": "key",
+    "relatedConcepts": ["first supplement to reciprocity", "mod-4 case split", "Even.neg_one_pow", "sign of p-star"],
+    "prerequisites": ["parity of (p−1)/2", "(−1)^k arithmetic"]
+  },
+  {
+    "id": "ann-qgss-oq0401-onemodfour",
+    "proofId": "quadratic-gauss-sum-square-oq-04-oq-01",
+    "range": { "startLine": 142, "endLine": 147 },
+    "type": "insight",
+    "title": "p* ≡ 1 (mod 4) uniformly — the arithmetic heart",
+    "content": "pstar_one_mod_four is the new arithmetic fact: p* ≡ 1 (mod 4) in BOTH residue classes. For p ≡ 1 the value p ≡ 1; for p ≡ 3 the value −p ≡ −3 ≡ 1. Each branch is closed by Int.modEq_iff_dvd and omega (4 ∣ p−1 resp. 4 ∣ p+1). The sign (−1)^((p−1)/2) is exactly engineered to land p* in 1 + 4ℤ regardless of p's class — the reason ℚ(√p*) is ramified only at p (conductor p, not 4p).",
+    "mathContext": "$p^*\\equiv 1\\pmod 4$ for every odd prime: $p\\equiv 1\\Rightarrow p\\equiv 1$; $p\\equiv 3\\Rightarrow -p\\equiv 1$.",
+    "significance": "key",
+    "relatedConcepts": ["congruence mod 4", "Int.modEq_iff_dvd", "conductor", "tame ramification"],
+    "prerequisites": ["integer congruences", "divisibility by 4"]
+  },
+  {
+    "id": "ann-qgss-oq0401-fundamental",
+    "proofId": "quadratic-gauss-sum-square-oq-04-oq-01",
+    "range": { "startLine": 149, "endLine": 160 },
+    "type": "concept",
+    "title": "Squarefree, hence a fundamental discriminant",
+    "content": "pstar_squarefree: p* is squarefree because |p*| = p is prime (Int.squarefree_natAbs + Nat.Prime.squarefree). pstar_isFundamentalDiscriminant bundles squarefree ∧ ≡ 1 (mod 4) — the definition of a fundamental discriminant of the first family. So p* is the genuine field discriminant of ℚ(√p*) = ℚ(g). The polynomial discriminant of X² − p* is 4p*, and the factor 4 = 2² is exactly the squared index [𝒪_K : ℤ[g]]² making ℤ[g] the index-2 non-maximal order in ℤ[(1+√p*)/2].",
+    "mathContext": "$p^*$ squarefree (since $|p^*|=p$ prime) and $\\equiv 1\\pmod 4$ $\\Rightarrow$ fundamental discriminant; $\\operatorname{disc}(X^2-p^*) = 4p^* = [\\mathcal O_K:\\mathbb{Z}[g]]^2\\cdot p^*$.",
+    "significance": "key",
+    "relatedConcepts": ["squarefree integer", "fundamental discriminant", "Int.squarefree_natAbs", "ring of integers", "non-maximal order"],
+    "prerequisites": ["squarefree integers", "fundamental discriminants", "orders in quadratic fields"]
+  },
+  {
+    "id": "ann-qgss-oq0401-capstone",
+    "proofId": "quadratic-gauss-sum-square-oq-04-oq-01",
+    "range": { "startLine": 162, "endLine": 171 },
+    "type": "concept",
+    "title": "Capstone: g² is a fundamental discriminant",
+    "content": "gaussSum_sq_isFundamentalDiscriminant packages everything as a single statement about the Gauss sum: there is an integer D = p* with g² = (D : ℂ), D squarefree, and D ≡ 1 (mod 4) — i.e. g² equals the fundamental discriminant that is exactly the discriminant of the field ℚ(g) = ℚ(√D). This is the discriminant-level refinement neither sibling reaches: oq-04 gives the minimal polynomial and degree, oq-01 the reality dichotomy, but only here is p* identified as a fundamental discriminant.",
+    "mathContext": "$\\exists D\\in\\mathbb{Z},\\ g^2 = D \\wedge \\text{Squarefree}(D)\\wedge D\\equiv 1\\pmod 4$, with $D = p^* = \\operatorname{disc}\\mathbb{Q}(g)$.",
+    "significance": "key",
+    "relatedConcepts": ["fundamental discriminant", "field discriminant", "capstone theorem", "Gauss sum"],
+    "prerequisites": ["existential packaging", "discriminant of a quadratic field"]
+  }
+]

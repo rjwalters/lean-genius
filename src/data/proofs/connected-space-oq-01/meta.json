@@ -82,6 +82,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Connectedness Is Stable Under Closure",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Imports and module docstring. States the topological fact that the closure of a (pre)connected set is (pre)connected, its sharper 'bark and tree' generalization (any set wedged between s and closure s is preconnected), and the corollary that a dense connected subset forces the whole space to be connected. Notes the core results live in Mathlib (IsPreconnected.closure, IsConnected.closure, IsPreconnected.subset_closure) and are packaged here in gallery form with the density corollary added. Sets up a topological space α and opens Set, Topology.",
+      "mathContext": "$s$ preconnected $\\Rightarrow \\overline{s}$ preconnected; more sharply $s \\subseteq t \\subseteq \\overline{s} \\Rightarrow t$ preconnected; and a dense connected subset $\\Rightarrow$ the space is connected."
+    },
+    {
       "id": "closure",
       "title": "Section I: Closure Preserves (Pre)connectedness",
       "startLine": 35,
@@ -133,7 +141,18 @@
     "path": "Proofs/ConnectedSpaceOQ01.lean",
     "sorries": 0
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "connected-space-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Sibling that probes the limits of this entry's closure-stability: path-connectedness is NOT closure-stable in general (the 'connected salvage' and path-component rigidity), exactly the open question flagged here."
+    },
+    {
+      "targetId": "connected-space-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The topologist's sine curve is the canonical example where this entry's theorem bites: a connected set whose closure is connected but not path-connected — concretely realizing 'closure preserves connectedness'."
+    }
+  ],
   "references": [
     {
       "key": "Munkres",

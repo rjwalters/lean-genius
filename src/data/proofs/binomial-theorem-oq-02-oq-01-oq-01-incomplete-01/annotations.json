@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-strategy",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 1, "endLine": 49 },
+    "type": "concept",
+    "title": "Why the Multinomial Covariance Matrix Is Singular",
+    "content": "The multinomial count vector X=(Xᵢ) satisfies the hard linear constraint ∑ᵢXᵢ=n (every draw lands in exactly one category), so X is confined to the hyperplane {x : ∑xᵢ=n}. A random vector trapped on a hyperplane has a degenerate (singular) covariance matrix: the normal direction of the hyperplane — here the all-ones vector 𝟙 — lies in the kernel. The file proves this directly at the level of the defining `piAntidiag` sums, with no appeal to the explicit entry values; the only input is ∑ᵢpᵢ=1.",
+    "mathContext": "X on {∑xᵢ=n} ⟹ 𝟙ᵀ(X−E X)=0 a.s. ⟹ Σ𝟙=0. Equivalently each row sums to zero: ∑ⱼCov(Xᵢ,Xⱼ)=Cov(Xᵢ,∑ⱼXⱼ)=Cov(Xᵢ,n)=0.",
+    "significance": "key",
+    "relatedConcepts": ["covariance matrix", "Finset.piAntidiag", "rank", "multinomial distribution"],
+    "prerequisites": ["multinomial distribution", "covariance"]
+  },
+  {
+    "id": "ann-defs",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 60, "endLine": 71 },
+    "type": "definition",
+    "title": "Mass Weight w and Covariance Entry covEntry",
+    "content": "`w s p k = (Nat.multinomial s k : ℝ) · ∏ₗ∈s pₗ^{kₗ}` is the multinomial mass at composition k. `covEntry s p n i j = ∑_{k∈s.piAntidiag n} (kᵢ−n·pᵢ)(kⱼ−n·pⱼ)·w s p k` is the (i,j) entry of the covariance matrix Σ written as an explicit expectation over compositions. When i=j the centered factors coincide and covEntry(i,i) is the variance Var(Xᵢ).",
+    "mathContext": "Cov(Xᵢ,Xⱼ)=E[(Xᵢ−EXᵢ)(Xⱼ−EXⱼ)]=∑_k (kᵢ−n pᵢ)(kⱼ−n pⱼ)·P(X=k), with EXᵢ=n pᵢ.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.multinomial", "Finset.piAntidiag", "covariance"],
+    "prerequisites": ["multinomial coefficient"]
+  },
+  {
+    "id": "ann-engine",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 74, "endLine": 85 },
+    "type": "technique",
+    "title": "The Vanishing Engine: Centered Partner Sum Collapses",
+    "content": "`centered_partner_sum_zero` proves ∑ⱼ∈s (kⱼ−n·pⱼ)=0 for any composition k on the support. The proof splits the sum (`Finset.sum_sub_distrib`), turns ∑ⱼkⱼ into n by `Finset.mem_piAntidiag` + `Nat.cast_sum`, and turns ∑ⱼ n·pⱼ into n via `Finset.mul_sum` and the hypothesis ∑ⱼpⱼ=1; the result is n−n=0. This single collapse is the entire reason the covariance matrix is singular.",
+    "mathContext": "∑ⱼ(kⱼ−n·pⱼ)=(∑ⱼkⱼ)−n(∑ⱼpⱼ)=n−n·1=0. The constraint ∑ⱼkⱼ=n is what makes the centered counts sum to zero.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.mem_piAntidiag", "Finset.sum_sub_distrib", "Nat.cast_sum"],
+    "prerequisites": ["Finset summation"]
+  },
+  {
+    "id": "ann-row-sum",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 87, "endLine": 100 },
+    "type": "theorem",
+    "title": "Rows of Σ Sum to Zero — Singularity",
+    "content": "`multinomial_cov_row_sum_zero`: for each i, ∑ⱼ∈s covEntry(i,j)=0. After `Finset.sum_comm` swaps the order of the double sum, each inner sum over j factors as ((kᵢ−n·pᵢ)·w(k))·∑ⱼ(kⱼ−n·pⱼ); the partner sum vanishes by the engine, so every term is zero. This is the formal statement that the all-ones vector lies in ker Σ, i.e. Σ is singular and rank Σ ≤ |s|−1.",
+    "mathContext": "Σ𝟙=0. Probabilistically, ∑ⱼCov(Xᵢ,Xⱼ)=Cov(Xᵢ,∑ⱼXⱼ)=Cov(Xᵢ,n)=0 because the total count is constant.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_comm", "Finset.mul_sum", "kernel", "rank"],
+    "prerequisites": ["covariance matrix"]
+  },
+  {
+    "id": "ann-total-diagonal",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 102, "endLine": 121 },
+    "type": "theorem",
+    "title": "Total Sum Zero and Diagonal Forced by Off-Diagonals",
+    "content": "Two corollaries of the zero row sums. `multinomial_cov_total_sum_zero`: ∑ᵢ∑ⱼ covEntry(i,j)=0, i.e. Var(∑ᵢXᵢ)=0 — the variance of the (constant) total count. `multinomial_var_eq_neg_offdiag`: splitting the zero row sum at j=i (`Finset.add_sum_erase`) gives covEntry(i,i)=−∑_{j≠i}covEntry(i,j), so the variance is determined by the off-diagonal covariances. This is a third, purely structural derivation of Var(Xᵢ)=n·pᵢ(1−pᵢ), independent of the MGF and binomial-marginal routes in the sibling files.",
+    "mathContext": "Var(∑ᵢXᵢ)=0 since ∑ᵢXᵢ≡n. Var(Xᵢ)=−∑_{j≠i}Cov(Xᵢ,Xⱼ)=∑_{j≠i}n·pᵢ·pⱼ=n·pᵢ(1−pᵢ).",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.add_sum_erase", "variance", "covariance"],
+    "prerequisites": ["covariance matrix"]
+  }
+]

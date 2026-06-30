@@ -18,6 +18,50 @@
     "path": "Proofs/QuadraticGaussSumSquareOQ02.lean",
     "sorries": 0
   },
+  "sections": [
+    {
+      "id": "overview-header",
+      "title": "Overview: the orthogonality side of Gauss sums",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring: from Mathlib's vanishing quadratic-character sum ∑ₐ χ(a) = 0 to the counting consequence that residues and non-residues are equinumerous, each (p−1)/2; logically independent of the parent's square identity g² = (−1)^((p−1)/2)·p."
+    },
+    {
+      "id": "orthogonality-sum",
+      "title": "The vanishing character sum",
+      "startLine": 30,
+      "endLine": 45,
+      "summary": "Opens the namespace with p prime; quadraticChar_sum_eq_zero specialises quadraticChar_sum_zero to ZMod p, discharging ringChar (ZMod p) ≠ 2 from p ≠ 2 via ZMod.ringChar_zmod_n."
+    },
+    {
+      "id": "filters",
+      "title": "The residue and non-residue filters",
+      "startLine": 47,
+      "endLine": 53,
+      "summary": "Defines residues p = {a | χ(a)=1} and nonresidues p = {a | χ(a)=−1} as Finset filters over univ — the two cardinalities the file compares."
+    },
+    {
+      "id": "sign-count",
+      "title": "The sum as a signed count",
+      "startLine": 55,
+      "endLine": 76,
+      "summary": "sum_eq_card_sub_card: ∑ₐ χ(a) = #residues − #nonresidues, by rewriting each χ(a) as [χ(a)=1] − [χ(a)=−1] (valid since quadraticChar_isQuadratic gives χ(a) ∈ {0,1,−1}) and applying Finset.sum_boole."
+    },
+    {
+      "id": "equidistribution-partition",
+      "title": "Equidistribution and the nonzero partition",
+      "startLine": 78,
+      "endLine": 116,
+      "summary": "card_residues_eq_card_nonresidues: the vanishing sum forces equal counts; card_residues_add_card_nonresidues: the two filters are disjoint and union to the p−1 nonzero elements (χ(a)=0 ⟺ a=0, ZMod.card, card_erase_of_mem)."
+    },
+    {
+      "id": "counts",
+      "title": "Each class has (p−1)/2 elements",
+      "startLine": 118,
+      "endLine": 132,
+      "summary": "card_residues_eq and card_nonresidues_eq: equal counts summing to p−1 give (p−1)/2 each (omega), recovering the classical 'exactly half the nonzero residues are squares' from orthogonality alone."
+    }
+  ],
   "description": "For an odd prime p, the quadratic (Legendre) character χ = quadraticChar (ZMod p) satisfies the orthogonality identity ∑ₐ χ(a) = 0 (Mathlib's quadraticChar_sum_zero). This entry draws the elementary counting consequence: the nonzero quadratic residues {a : χ(a) = 1} and the non-residues {a : χ(a) = -1} are equinumerous, each class containing exactly (p−1)/2 elements. Because χ is a quadratic character it takes only the values 0, 1, −1, so the character sum equals #{χ = 1} − #{χ = -1}; vanishing of the sum forces the two counts to agree, and χ(a) = 0 ⟺ a = 0 means they partition the p−1 nonzero elements. This is the orthogonality/equidistribution side of the Gauss-sum story, logically independent of the parent's algebraic square identity g² = (−1)^((p−1)/2)·p.",
   "meta": {
     "author": "Lean Genius",
@@ -75,6 +119,50 @@
       "proofId": "quadratic-reciprocity",
       "relationship": "related",
       "description": "Equidistribution of residues and non-residues is part of the elementary theory of the Legendre symbol that underlies quadratic reciprocity."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Equidistribution from Character Orthogonality",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Docstring framing the result: the quadratic character χ = quadraticChar (ZMod p) has vanishing total sum ∑ χ(a) = 0 (Mathlib's quadraticChar_sum_zero), and this file reads off the counting consequence that nonzero residues and non-residues are equinumerous with (p−1)/2 elements each. Notes the logical independence from the parent's square identity g² = (−1)^((p−1)/2)·p. Imports Mathlib, opens BigOperators/Finset, opens the namespace with a Fact p.Prime variable."
+    },
+    {
+      "id": "vanishing-sum",
+      "title": "The Vanishing Character Sum",
+      "startLine": 38,
+      "endLine": 45,
+      "summary": "quadraticChar_sum_eq_zero specialises Mathlib's quadraticChar_sum_zero to ZMod p, discharging the characteristic hypothesis ringChar ≠ 2 from p ≠ 2 via ZMod.ringChar_zmod_n. This is the orthogonality input the whole count rests on."
+    },
+    {
+      "id": "filters-split",
+      "title": "Splitting the Sum into Filter Cardinalities",
+      "startLine": 47,
+      "endLine": 76,
+      "summary": "Defines the residues filter {a : χ(a) = 1} and nonresidues filter {a : χ(a) = −1}. sum_eq_card_sub_card rewrites each summand χ(a) as the difference of Boolean indicators [χ(a)=1] − [χ(a)=−1] — valid because quadraticChar_isQuadratic says χ(a) ∈ {0,1,−1} — and applies Finset.sum_boole to turn the two indicator sums into the filter cardinalities, giving ∑ χ(a) = #residues − #nonresidues."
+    },
+    {
+      "id": "equidistribution",
+      "title": "Equidistribution: #residues = #nonresidues",
+      "startLine": 78,
+      "endLine": 85,
+      "summary": "card_residues_eq_card_nonresidues combines the two previous results: substituting ∑ χ(a) = 0 into ∑ χ(a) = #residues − #nonresidues forces the two counts to agree (via linarith and a ℤ cast). Equidistribution is a direct reading of orthogonality, not a separate theorem."
+    },
+    {
+      "id": "partition",
+      "title": "The Two Classes Exhaust the Nonzero Elements",
+      "startLine": 87,
+      "endLine": 116,
+      "summary": "card_residues_add_card_nonresidues: #residues + #nonresidues = p − 1. The filters are disjoint (χ(a) cannot be both 1 and −1) and their union is exactly the nonzero elements (using χ(a)=0 ⟺ a=0 via quadraticChar_eq_zero_iff), whose count is p−1 by rewriting to univ.erase 0 and ZMod.card."
+    },
+    {
+      "id": "counts",
+      "title": "Each Class Has Exactly (p−1)/2 Elements",
+      "startLine": 118,
+      "endLine": 134,
+      "summary": "card_residues_eq and card_nonresidues_eq: two equal halves summing to p−1 give (p−1)/2 each, discharged by omega. The headline counts of quadratic residues and non-residues mod an odd prime."
     }
   ]
 }

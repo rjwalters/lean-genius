@@ -1,0 +1,158 @@
+{
+  "id": "euler-totient-oq-10",
+  "title": "Menon's Identity: $\\sum_{\\gcd(k,n)=1}\\gcd(k-1,n)=\\varphi(n)\\,d(n)$",
+  "slug": "euler-totient-oq-10",
+  "description": "Formalizes Menon's identity (P. Kesava Menon, 1965), a classical arithmetic identity living over the unit group of ℤ/nℤ: summing gcd(k−1, n) over the residues k coprime to n yields φ(n)·d(n), where φ is Euler's totient and d(n) is the number of divisors of n. The proof is the slick counting argument, fully uniform in n with no factorization or multiplicativity bookkeeping. Indexing the sum by the units a ∈ (ℤ/nℤ)ˣ (so the summand is gcd((a−1).val, n)), three steps close it: (1) Divisor expansion — gcd(v, n) = ∑_{d∣n, d∣v} φ(d), obtained by applying Gauss's identity ∑_{e∣g} φ(e) = g to g = gcd(v,n), whose divisors are exactly the common divisors of v and n. (2) Swap of summation — Menon's sum becomes ∑_{d∣n} φ(d)·#{a ∈ (ℤ/nℤ)ˣ : d ∣ (a−1).val}. (3) Fibre count — the reduction homomorphism unitsMap : (ℤ/nℤ)ˣ → (ℤ/dℤ)ˣ is surjective (ZMod.unitsMap_surjective), and d ∣ (a−1).val ⟺ a ∈ ker(unitsMap); since for a surjective homomorphism of finite groups |G| = |H|·|ker| (Lagrange + first isomorphism theorem), each divisor d contributes φ(d)·|ker| = φ(n). Collapsing, ∑_{d∣n} φ(n) = φ(n)·d(n). This is genuinely new relative to Mathlib, which has Euler's totient and the unitsMap reduction but not Menon's identity. Fully machine-checked: 0 sorries, 0 axioms (only the foundational propext/Classical.choice/Quot.sound), no native_decide.",
+  "meta": {
+    "author": "P. Kesava Menon (1965); the counting proof formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Menon%27s_identity",
+    "date": "1965",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ10.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "menons-identity",
+      "arithmetic-functions",
+      "group-theory",
+      "units-of-zmod",
+      "gcd",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 153,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). The proof rests on Gauss's divisor-sum identity for the totient (`Nat.sum_totient`), the surjectivity of the unit-reduction homomorphism (`ZMod.unitsMap_surjective`), and Lagrange's theorem in the form `Subgroup.card_eq_card_quotient_mul_card_subgroup` combined with the first isomorphism theorem `QuotientGroup.quotientKerEquivOfSurjective`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.sum_totient",
+        "description": "Gauss's identity `∑_{d ∣ n} φ(d) = n`. Applied to `g = gcd(v, n)` it yields the divisor expansion `gcd(v, n) = ∑_{d ∣ n, d ∣ v} φ(d)`, the first step of the counting proof.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "ZMod.unitsMap_surjective",
+        "description": "For `d ∣ n`, the reduction homomorphism `unitsMap : (ZMod n)ˣ →* (ZMod d)ˣ` is surjective. Surjectivity makes every fibre of the map equinumerous to the kernel, which is what turns the per-divisor count into the constant `φ(n)`.",
+        "module": "Mathlib.Data.ZMod.Units"
+      },
+      {
+        "theorem": "Subgroup.card_eq_card_quotient_mul_card_subgroup",
+        "description": "Lagrange's theorem `Nat.card G = Nat.card (G ⧸ H) · Nat.card H`. Applied to `H = ker(unitsMap)` together with the first isomorphism theorem gives `φ(n) = φ(d)·|ker|`, the fibre count.",
+        "module": "Mathlib.GroupTheory.Coset.Card"
+      },
+      {
+        "theorem": "QuotientGroup.quotientKerEquivOfSurjective",
+        "description": "First isomorphism theorem `G ⧸ ker φ ≃* H` for a surjective homomorphism `φ`. Identifies the quotient `(ZMod n)ˣ ⧸ ker(unitsMap)` with `(ZMod d)ˣ`, so its cardinality is `φ(d)`.",
+        "module": "Mathlib.GroupTheory.QuotientGroup.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "`(a : ZMod b) = 0 ↔ b ∣ a`. Bridges the divisibility condition `d ∣ (a−1).val` to the algebraic condition `unitsMap a = 1` that identifies the counted set with the kernel.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "`menon_identity`: the headline theorem `∑_{a ∈ (ZMod n)ˣ} gcd((a − 1).val, n) = φ(n)·d(n)` for every n ≥ 1 — Menon's identity, which Mathlib does not contain.",
+      "`gcd_eq_sum_totient`: the divisor expansion `gcd(v, n) = ∑_{d ∣ n} (if d ∣ v then φ(d) else 0)`, derived by recognizing the divisors of `gcd(v, n)` as exactly the common divisors of `v` and `n` and applying Gauss's `Nat.sum_totient`.",
+      "`dvd_val_sub_one_iff`: the reduction-to-1 criterion `d ∣ (a − 1).val ⟺ unitsMap_{d∣n}(a) = 1`, which identifies the counted residue set with the kernel of the reduction homomorphism via the `castHom` ring map.",
+      "`totient_mul_fiber_card`: the fibre-count lemma `#{a ∈ (ZMod n)ˣ : d ∣ (a − 1).val}·φ(d) = φ(n)`, obtained by rewriting the counted set as the kernel of the surjective `unitsMap` and invoking Lagrange's theorem and the first isomorphism theorem."
+    ],
+    "prerequisites": [
+      "Euler's totient function φ(n) = |(ℤ/nℤ)ˣ| and the divisor-counting function d(n)",
+      "Gauss's identity ∑_{d∣n} φ(d) = n",
+      "The unit group (ℤ/nℤ)ˣ and the reduction homomorphism (ℤ/nℤ)ˣ → (ℤ/dℤ)ˣ for d ∣ n",
+      "Lagrange's theorem and the first isomorphism theorem for finite groups"
+    ],
+    "dateAdded": "2026-06-23",
+    "relatedProblems": [
+      {
+        "id": "euler-totient",
+        "relationship": "Ancestor: the gallery family on Euler's totient and his generalization of Fermat's little theorem. Menon's identity is a classical refinement summing a gcd over the unit group, with value φ(n)·d(n)."
+      },
+      {
+        "id": "euler-totient-oq-07",
+        "relationship": "Sibling: where oq-07 studies when two totient values are coprime, this entry establishes Menon's identity over the units of a single modulus."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 153,
+    "path": "Proofs/EulerTotientOQ10.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 4
+  },
+  "sorries": 0,
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Module Overview, Statement, and Imports",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Imports Mathlib's totient, ZMod units, and quotient-group infrastructure. States Menon's identity and lays out the three-step counting proof: divisor expansion of the gcd, a swap of summation, and a fibre count over the surjective reduction homomorphism."
+    },
+    {
+      "id": "gcd-expansion",
+      "title": "Divisor Expansion of the gcd",
+      "startLine": 56,
+      "endLine": 73,
+      "summary": "Proves gcd(v, n) = ∑_{d∣n} (if d∣v then φ(d) else 0). The divisors of gcd(v, n) are exactly the common divisors of v and n, so Gauss's identity ∑_{e∣g} φ(e) = g rewrites the gcd as a divisor-filtered totient sum."
+    },
+    {
+      "id": "fibre-count",
+      "title": "The Reduction-to-1 Criterion and the Fibre Count",
+      "startLine": 75,
+      "endLine": 120,
+      "summary": "Shows d ∣ (a − 1).val ⟺ unitsMap(a) = 1 (via the castHom ring map), identifying the counted residues with the kernel of the reduction homomorphism. Surjectivity of unitsMap plus Lagrange and the first isomorphism theorem give φ(d)·#{fibre} = φ(n)."
+    },
+    {
+      "id": "menon",
+      "title": "Menon's Identity and a Worked Example",
+      "startLine": 122,
+      "endLine": 153,
+      "summary": "Assembles the identity: expand each summand, swap the order of summation, apply the fibre count so each divisor contributes φ(n), and collapse the constant sum to φ(n)·d(n). A worked n = 6 example instantiates the theorem."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Menon's identity was published by the Indian mathematician P. Kesava Menon in 1965 (\"On the sum ∑(a−1, n) with (a, n) = 1\", Journal of the Indian Mathematical Society). It is a touchstone result in the theory of arithmetic functions over residue systems: it links the totient φ, the divisor-counting function d, and the structure of the unit group (ℤ/nℤ)ˣ in a single clean identity, and has since spawned a large literature of generalizations (to Dirichlet characters, to several variables, and to other number-theoretic gcd sums).",
+    "keyInsights": [
+      "Indexing Menon's sum by the units of ℤ/nℤ turns it into a sum of gcd((a−1).val, n) over a finite group, where the algebraic structure of the unit group can be brought to bear.",
+      "Gauss's identity ∑_{d∣m} φ(d) = m, applied to m = gcd(v, n), expands each gcd into a divisor sum and lets the two summations be exchanged.",
+      "The residues a with d ∣ (a − 1).val are precisely the kernel of the reduction homomorphism (ℤ/nℤ)ˣ → (ℤ/dℤ)ˣ; because that homomorphism is surjective, every fibre has the same size, so each divisor d contributes exactly φ(n) regardless of d.",
+      "No factorization or multiplicativity argument is needed: the counting proof is uniform in n and rests only on Gauss's identity and Lagrange's theorem."
+    ],
+    "prerequisites": [
+      "Euler's totient φ(n) = |(ℤ/nℤ)ˣ| and the number-of-divisors function d(n)",
+      "Gauss's divisor-sum identity ∑_{d∣n} φ(d) = n",
+      "The unit group (ℤ/nℤ)ˣ and the reduction map to (ℤ/dℤ)ˣ for d ∣ n",
+      "Lagrange's theorem and the first isomorphism theorem for finite groups"
+    ],
+    "problemStatement": "Prove Menon's identity: for every n ≥ 1, the sum of gcd(k − 1, n) over the residues k coprime to n equals φ(n)·d(n), where φ is Euler's totient and d(n) counts the divisors of n. Formally, ∑_{a ∈ (ℤ/nℤ)ˣ} gcd((a − 1).val, n) = φ(n)·d(n).",
+    "proofStrategy": "Work over the unit group (ℤ/nℤ)ˣ. First expand each gcd via Gauss's identity into ∑_{d∣n, d∣(a−1).val} φ(d). Swap the order of summation to collect, for each divisor d, the factor φ(d) times the number of units a with d ∣ (a − 1).val. Identify those units with the kernel of the surjective reduction homomorphism unitsMap : (ℤ/nℤ)ˣ → (ℤ/dℤ)ˣ; Lagrange's theorem and the first isomorphism theorem give φ(d)·|ker| = φ(n), so each divisor contributes φ(n). Summing over the d(n) divisors yields φ(n)·d(n).",
+    "text": "This entry formalizes Menon's identity by the counting proof. The Lean development is organized into four theorems: `gcd_eq_sum_totient` performs the divisor expansion of the gcd; `dvd_val_sub_one_iff` is the bridge identifying the divisibility condition with membership in the kernel of the reduction homomorphism; `totient_mul_fiber_card` is the group-theoretic fibre count delivering φ(n) per divisor; and `menon_identity` assembles these into the headline result. The argument avoids any appeal to multiplicativity of arithmetic functions, making it uniform in n, and is fully kernel-checked with no sorries and only the foundational axioms."
+  },
+  "conclusion": {
+    "implications": "Menon's identity is a clean closed form for a gcd sum over a reduced residue system, and the counting proof formalized here exposes exactly why the answer φ(n)·d(n) is independent of how n factors: each divisor of n contributes the constant φ(n) because the reduction map (ℤ/nℤ)ˣ → (ℤ/dℤ)ˣ is surjective with equinumerous fibres. The reusable pieces — the divisor expansion of the gcd and the surjective-fibre count over unitsMap — are the natural entry points for the many known generalizations of Menon's identity.",
+    "openQuestions": [
+      "Does the same fibre-counting template prove Menon's identity weighted by a Dirichlet character χ mod n, namely ∑_{gcd(k,n)=1} χ(k)·gcd(k−1, n) = φ(n)·d(n/cond χ) (the Sita Ramaiah / Nageswara Rao generalization)?",
+      "Can the two-variable form ∑_{gcd(k,n)=1} gcd(k − s, n) be evaluated by the same swap-and-count, and how does the answer depend on gcd(s, n)?"
+    ],
+    "summary": "A fully verified Lean 4 formalization of Menon's identity ∑_{gcd(k,n)=1} gcd(k − 1, n) = φ(n)·d(n) via the counting proof: divisor expansion of the gcd, a swap of summation, and a Lagrange-theorem fibre count over the surjective reduction homomorphism of unit groups. Mathlib does not contain Menon's identity. 4 theorems, 0 definitions, 0 sorries, 0 axioms beyond the foundational triple, no native_decide."
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "ancestor",
+      "description": "The gallery family on Euler's totient function. Menon's identity is a classical gcd sum over the unit group with value φ(n)·d(n), refining the basic theory of φ."
+    },
+    {
+      "targetId": "euler-totient-oq-07",
+      "relationship": "sibling",
+      "description": "oq-07 characterizes when two totient values φ(m), φ(n) are coprime; this entry establishes Menon's identity over the units of a single modulus n. Both sit under the euler-totient root."
+    }
+  ]
+}

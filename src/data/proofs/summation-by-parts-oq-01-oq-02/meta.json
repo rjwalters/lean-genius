@@ -1,0 +1,161 @@
+{
+  "id": "summation-by-parts-oq-01-oq-02",
+  "title": "Closed Form of the Finite Second-Moment Sum Σ k²·rᵏ",
+  "slug": "summation-by-parts-oq-01-oq-02",
+  "description": "Gives the closed form of the finite second-moment sum S(n) = Σ_{k=0}^{n-1} k²·rᵏ. The result is stated first in a division-free polynomial form (1−r)³·S(n) = r(r+1) + rⁿ·(−n²(r−1)² + 2n·r(r−1) − r(r+1)), valid for all real r (both sides vanish at r=1), proved by induction closing with ring; the standard divided closed form follows for r ≠ 1. This is the second-moment analogue of the parent arithmetico-geometric sum Σ k·rᵏ.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SummationByPartsOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "summation-by-parts",
+      "arithmetico-geometric",
+      "closed-form",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. Both theorems are fully machine-checked. The division-free identity is proved by induction on n with ring; the divided form divides by the nonzero (1−r)³. Only the foundational axioms propext, Classical.choice, Quot.sound are used.",
+    "dateAdded": "2026-06-24",
+    "lineCount": 67,
+    "theoremCount": 2,
+    "definitionCount": 1,
+    "originalContributions": [
+      "sq_geom_sum (PROVED, MAIN): division-free identity (1−r)³·Σ_{k<n} k²·rᵏ = r(r+1) + rⁿ·(−n²(r−1)² + 2n·r(r−1) − r(r+1)) for all real r",
+      "sq_geom_sum_div (PROVED): closed form Σ_{k<n} k²·rᵏ = (r(r+1) + rⁿ·(−n²(r−1)² + 2n·r(r−1) − r(r+1))) / (1−r)³ for r ≠ 1",
+      "num (definition): the numerator polynomial of the closed form, isolating the r- and rⁿ-dependence with n-polynomial coefficients"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "Σ_{k<n+1} f k = Σ_{k<n} f k + f n — the induction step that peels the top term n²·rⁿ",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "eq_div_iff",
+        "description": "b ≠ 0 → (a = c / b ↔ a * b = c) — converts the divided closed form to the division-free identity",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "pow_ne_zero",
+        "description": "a ≠ 0 → a^n ≠ 0 — establishes (1−r)³ ≠ 0 from r ≠ 1",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Finite arithmetico-geometric sums Σ k·rᵏ and their higher moments Σ kᵐ·rᵏ are classical; they arise in probability (moments of geometric and negative-binomial distributions), in the analysis of algorithms (expected costs of geometrically distributed runs), and in the evaluation of polylogarithm partial sums. The standard derivation is by Abel summation (discrete integration by parts): differentiating the geometric series Σ rᵏ once gives Σ k·rᵏ, and a second application of the r·d/dr operator gives Σ k²·rᵏ. The closed form has a cubic denominator (1−r)³, reflecting the two differentiations. This entry records the second-moment case as an exact finite identity, valid for every n and every r.",
+    "problemStatement": "**OQ-02 of summation-by-parts-oq-01**\n\nGive the closed form of the finite second-moment sum\n  S(n) = Σ_{k=0}^{n-1} k²·rᵏ,\nthe next moment after the parent's arithmetico-geometric sum Σ k·rᵏ.",
+    "text": "(1 − r)³ · Σ_{k<n} k²·rᵏ = r(r+1) + rⁿ·(−n²(r−1)² + 2n·r(r−1) − r(r+1)).",
+    "proofStrategy": "Multiply the target closed form through by (1−r)³ to obtain a polynomial identity in r and rⁿ (coefficients polynomial in n), avoiding all division. Induct on n: the base case n=0 has both sides 0 (`simp`); the step uses Finset.sum_range_succ to peel n²·rⁿ and pow_succ to expand rⁿ⁺¹ = rⁿ·r, after which the identity is a true polynomial equation closed by `ring`. The divided closed form for r ≠ 1 then follows from (1−r)³ ≠ 0 via eq_div_iff.",
+    "keyInsights": [
+      "Clearing the denominator first is the decisive move: the division-free identity (1−r)³·S(n) = polynomial is provable by a single induction whose step is pure `ring`, with no field_simp, no case split on r, and no rational-function reasoning.",
+      "The division-free form is strictly more general than the usual closed form: it holds even at r = 1 (where both sides are 0), so the r ≠ 1 hypothesis is needed only to recover the divided statement.",
+      "Isolating the numerator as a named polynomial `num r n` and unfolding it twice in the induction step lets `ring` see the n ↦ n+1 increment as a polynomial shift, keeping rⁿ as a single opaque atom (with rⁿ⁺¹ = rⁿ·r supplied by pow_succ).",
+      "The cubic denominator (1−r)³ is the signature of a second moment: each extra power of k in Σ kᵐ·rᵏ raises the denominator degree by one, mirroring the m-fold application of the r·d/dr operator to the geometric series.",
+      "The numerator factors as r(r+1) + rⁿ·[−n²(r−1)² + 2n·r(r−1) − r(r+1)], cleanly separating the n-independent 'limit' part r(r+1) (which gives Σ_{k≥0} k²rᵏ = r(r+1)/(1−r)³ for |r|<1 as n→∞) from the rⁿ boundary correction."
+    ],
+    "prerequisites": [
+      "Finite sums over Finset.range and Finset.sum_range_succ",
+      "Polynomial identities closed by ring; pow_succ for rⁿ⁺¹",
+      "Division in a field with nonzero denominator (eq_div_iff, pow_ne_zero)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Numerator Definition",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring stating both forms and the clear-the-denominator strategy. Imports Mathlib, namespace SummationByPartsOQ01OQ02, and defines the private numerator polynomial num r n = r(r+1) + rⁿ·(−n²(r−1)² + 2n·r(r−1) − r(r+1)).",
+      "mathContext": "The numerator `num r n` packages the closed form's polynomial so the main identity reads `(1−r)³·S(n) = num r n`."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Theorem: Division-Free Identity",
+      "startLine": 43,
+      "endLine": 52,
+      "summary": "sq_geom_sum: (1−r)³·Σ_{k<n} k²·rᵏ = num r n, by induction. zero case via simp; succ case rewrites Finset.sum_range_succ, mul_add, the inductive hypothesis, unfolds num twice and pow_succ, then push_cast + ring.",
+      "mathContext": "The induction step verifies the polynomial identity num r m + (1−r)³·m²·rᵐ = num r (m+1) with rᵐ⁺¹ = rᵐ·r — a true polynomial equation, hence ring."
+    },
+    {
+      "id": "sec-div",
+      "title": "Closed Form for r ≠ 1, and Sanity Checks",
+      "startLine": 54,
+      "endLine": 67,
+      "summary": "sq_geom_sum_div: divides by the nonzero (1−r)³ (pow_ne_zero + sub_ne_zero) using eq_div_iff and mul_comm to reduce to sq_geom_sum. Two examples check S(4) at r=2 against direct evaluation and against the identity.",
+      "mathContext": "For r ≠ 1, S(n) = num r n / (1−r)³. The r=2, n=4 check: 0 + 2 + 16 + 72 = 90."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "summation-by-parts-oq-01",
+      "relationship": "extends",
+      "description": "Parent: closed form of the first-moment arithmetico-geometric sum Σ k·rᵏ. This entry provides the second moment Σ k²·rᵏ, one further application of the r·d/dr operator (denominator (1−r)³ vs (1−r)²)."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "foundational",
+      "description": "The geometric series Σ rᵏ = (1−rⁿ)/(1−r) is the base case; differentiating it m times yields the moment sums Σ kᵐ·rᵏ, of which this is the m=2 instance."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified: the finite second-moment sum Σ_{k<n} k²·rᵏ has the closed form num r n / (1−r)³ for r ≠ 1, equivalently the all-r division-free identity (1−r)³·Σ = r(r+1) + rⁿ·(−n²(r−1)² + 2n·r(r−1) − r(r+1)). Zero sorries, zero extra axioms.",
+    "implications": "**Moment ladder**: combined with the parent's Σ k·rᵏ, this gives the first two moments of the geometric weight rᵏ in exact finite form; the n→∞ limits (|r|<1) are r/(1−r)² and r(r+1)/(1−r)³.\\n\\n**Proof pattern**: clearing the denominator to make the identity a polynomial that `ring` closes is a reusable template for any Σ kᵐ·rᵏ — the denominator becomes (1−r)^{m+1} and the numerator a polynomial in r, rⁿ, and n.",
+    "openQuestions": [
+      "Prove the third-moment sum Σ k³·rᵏ with denominator (1−r)⁴, and conjecture/verify the general Σ kᵐ·rᵏ closed form whose numerator involves the Eulerian polynomials Aₘ(r).",
+      "Derive the closed form intrinsically by iterated discrete summation-by-parts (Abel transform) rather than by guessing the numerator and inducting — connecting to the sibling Taylor–Abel expansion entries.",
+      "State the r = 1 specialization Σ_{k<n} k² = (n−1)n(2n−1)/6 as a corollary obtained by an L'Hôpital / limit argument from the division-free identity, unifying the geometric and power-sum regimes."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "sq_geom_sum",
+      "type": "core",
+      "description": "Division-free identity for the second-moment sum, valid for all real r.",
+      "leanType": "(r : ℝ) → (n : ℕ) → (1 - r)^3 * ∑ k ∈ Finset.range n, (k:ℝ)^2 * r^k = num r n"
+    },
+    {
+      "name": "sq_geom_sum_div",
+      "type": "core",
+      "description": "Closed form of the finite second-moment sum for r ≠ 1.",
+      "leanType": "(r : ℝ) → r ≠ 1 → (n : ℕ) → ∑ k ∈ Finset.range n, (k:ℝ)^2 * r^k = num r n / (1 - r)^3"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "SummationByPartsOQ01OQ02",
+    "lineCount": 67,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "substantiveTheoremCount": 2,
+    "duplicateTheorems": 0,
+    "definitionCount": 1,
+    "path": "Proofs/SummationByPartsOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Konrad Knopp",
+      "title": "Theory and Application of Infinite Series",
+      "year": "1951",
+      "venue": "Blackie & Son (2nd English ed.)",
+      "note": "Classical treatment of arithmetico-geometric and moment sums Σ kᵐ rᵏ via term-by-term differentiation of the geometric series."
+    },
+    {
+      "authors": "Graham, Knuth, Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "Addison-Wesley, 2nd edition, Chapter 2 (Sums)",
+      "note": "Finite calculus and summation by parts; the moment sums Σ kᵐ rᵏ are worked examples, with the denominator (1−r)^{m+1} and Eulerian-polynomial numerators."
+    }
+  ]
+}

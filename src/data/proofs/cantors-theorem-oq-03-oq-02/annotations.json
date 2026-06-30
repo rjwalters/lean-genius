@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ann-lawvere-engine",
+    "proofId": "cantors-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 70,
+      "endLine": 81
+    },
+    "type": "technique",
+    "title": "The Lawvere Diagonal Engine",
+    "content": "The self-contained Level-1 engine: a fixed-point-free `g : β → β` obstructs surjectivity of any `f : α → (α → β)`. If `f` were surjective it would hit the diagonal `fun x => g (f x x)`; evaluating the witnessing equality at its own index gives `f a a = g (f a a)`, a fixed point of `g`, contradiction. Every higher-order result in the file ultimately discharges through this one theorem by supplying a specially constructed fixed-point-free map.",
+    "mathContext": "Surjectivity of $f$ applied to the diagonal $d(x) = g(f(x)(x))$ yields $a$ with $f(a)(a) = g(f(a)(a))$, contradicting $\\forall b,\\ g(b) \\neq b$.",
+    "significance": "key",
+    "prerequisites": [
+      "Function.Surjective",
+      "congrFun"
+    ],
+    "relatedConcepts": [
+      "Lawvere fixed-point theorem",
+      "diagonal argument",
+      "self-application"
+    ]
+  },
+  {
+    "id": "ann-postcomp-def",
+    "proofId": "cantors-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 84,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "Post-Composition as a Higher-Order Lift",
+    "content": "`postcomp g h = g ∘ h` is the canonical way to turn an endomorphism of the output type `γ` into an endomorphism of the function type `X → γ`. This is the categorical mechanism by which Lawvere's fixed-point property propagates through exponential objects: rather than seeking a fixed-point-free map on the whole higher-order codomain, one dodges in the output and lifts.",
+    "mathContext": "$\\text{postcomp}\\,g : (X \\to \\gamma) \\to (X \\to \\gamma)$, $\\ h \\mapsto g \\circ h$.",
+    "significance": "key",
+    "prerequisites": [
+      "function composition"
+    ],
+    "relatedConcepts": [
+      "cartesian closed categories",
+      "exponential objects",
+      "post-composition"
+    ]
+  },
+  {
+    "id": "ann-postcomp-iff",
+    "proofId": "cantors-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 92,
+      "endLine": 127
+    },
+    "type": "theorem",
+    "title": "Core Characterization: When Post-Composition is Fixed-Point-Free",
+    "content": "The central result and the precise answer to the open question. `postcomp g` is fixed-point-free **iff** `Nonempty X ∧ (∀ c, g c ≠ c)`. The forward direction splits the single base-level condition into two parts: if `X` were empty the unique empty function would be a fixed point (forcing `Nonempty X`), and any fixed point `c` of `g` yields the constant fixed point `fun _ => c` (forcing `g` fixed-point-free). The backward direction evaluates `g ∘ h = h` at a witness point of `X`. The inhabitation clause is the genuinely new structural condition absent at the base level.",
+    "mathContext": "$(\\forall h : X \\to \\gamma,\\ g \\circ h \\neq h) \\iff \\text{Nonempty}\\,X \\wedge (\\forall c,\\ g(c) \\neq c)$.",
+    "significance": "critical",
+    "prerequisites": [
+      "not_nonempty_iff",
+      "isEmptyElim",
+      "funext",
+      "congrFun"
+    ],
+    "relatedConcepts": [
+      "fixed-point-free endomorphisms",
+      "inhabited types",
+      "empty function"
+    ]
+  },
+  {
+    "id": "ann-higher-order-cantor",
+    "proofId": "cantors-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 129,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "Higher-Order Cantor and Lawvere",
+    "content": "Specializing the domain to `X := (α → β)` and feeding the lifted fixed-point-free map into the engine gives the higher-order Cantor theorem: no `f : ι → (ι → ((α → β) → γ))` is surjective when `(α → β)` is inhabited and `g : γ → γ` is fixed-point-free. The positive dual `higher_order_lawvere` reads the same iff in the other direction: a surjection forces every `g : γ → γ` to have a fixed point.",
+    "mathContext": "Inhabited $(\\alpha \\to \\beta)$ and fixed-point-free $g$ ⟹ no surjection $\\iota \\to (\\iota \\to ((\\alpha \\to \\beta) \\to \\gamma))$.",
+    "significance": "key",
+    "prerequisites": [
+      "lawvere",
+      "postcomp_fixedPointFree_iff"
+    ],
+    "relatedConcepts": [
+      "Cantor's theorem",
+      "non-enumerability",
+      "higher-order types"
+    ]
+  },
+  {
+    "id": "ann-necessity",
+    "proofId": "cantors-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 150,
+      "endLine": 167
+    },
+    "type": "insight",
+    "title": "Necessity of the Inhabitation Hypothesis",
+    "content": "The new hypothesis is not a technicality. When `(α → β)` is empty, every two elements of `(α → β) → γ` agree (the codomain is a subsingleton), so an explicit constant `f` is surjective onto `ι → ((α → β) → γ)` whenever `ι` is inhabited. Thus the higher-order diagonal provably fails without inhabitation — pinning down exactly why the structural condition must be augmented.",
+    "mathContext": "$\\text{IsEmpty}(\\alpha \\to \\beta) \\Rightarrow (\\alpha \\to \\beta) \\to \\gamma$ is a subsingleton, and a constant map is surjective onto $\\iota \\to (\\text{singleton})$.",
+    "significance": "key",
+    "prerequisites": [
+      "Subsingleton",
+      "isEmptyElim",
+      "Subsingleton.elim"
+    ],
+    "relatedConcepts": [
+      "empty types",
+      "subsingletons",
+      "degenerate cases"
+    ]
+  },
+  {
+    "id": "ann-instances",
+    "proofId": "cantors-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 174,
+      "endLine": 195
+    },
+    "type": "example",
+    "title": "Second-Order Cantor Instances",
+    "content": "Concrete witnesses that the theorem is non-vacuous: over `(ℕ → Bool) → Bool` Boolean negation `!` is the fixed-point-free output map, and over `(ℕ → Prop) → Prop` logical negation `¬` is. In both cases the function domain is inhabited by constant functions, so no `f : ι → (ι → (codomain))` is surjective — a genuine 'second-order' non-enumerability statement about a function space of function spaces.",
+    "mathContext": "$g = (\\lnot\\cdot)$ on Bool and $g = \\lnot$ on Prop are fixed-point-free; $\\mathbb{N} \\to \\text{Bool}$ and $\\mathbb{N} \\to \\text{Prop}$ are inhabited by constants.",
+    "significance": "supporting",
+    "prerequisites": [
+      "higher_order_cantor",
+      "Bool negation",
+      "propositional negation"
+    ],
+    "relatedConcepts": [
+      "Cantor's theorem",
+      "powerset",
+      "self-reference"
+    ]
+  }
+]

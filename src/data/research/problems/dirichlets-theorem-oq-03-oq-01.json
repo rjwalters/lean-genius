@@ -1,7 +1,7 @@
 {
   "slug": "dirichlets-theorem-oq-03-oq-01",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "title": "The Linnik Constant as a Critical Exponent: Axiom-Free Ray Structure",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "VERIFIED (2026-06-27): new axiom-free file DirichletsTheoremOQ03OQ01.lean (namespace LinnikAdmissible, 11 theorems / 3 defs, 0 axioms / 0 sorries, machine-checked vs Mathlib v4.26.0). Isolates the structural skeleton of the Linnik constant: the admissible-exponent set is an upward-closed below-bounded ray, its infimum (criticalExponent) is non-negative and satisfies the sandwich Ioi(c) ⊆ admissible ⊆ Ici(c), and is monotone under pointwise domination of the growth function. Key separation: well-definedness of L* is elementary (rpow-monotonicity + conditional-infimum API); the deep number theory enters only via nonemptiness of the admissible set (Linnik's theorem), kept as an explicit hypothesis so the file is axiom-free.",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
@@ -44,6 +44,8 @@
   "relatedProofs": [
     "dirichlets-theorem",
     "dirichlets-theorem-oq-01",
+    "dirichlets-theorem-oq-01-oq-01",
+    "dirichlets-theorem-oq-01-oq-01-oq-04",
     "dirichlets-theorem-oq-02",
     "dirichlets-theorem-oq-02-oq-01",
     "dirichlets-theorem-oq-03"
@@ -79,6 +81,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ01OQ01.lean",
+      "filename": "DirichletsTheoremOQ01OQ01.lean",
+      "lineCount": 336,
+      "theoremCount": 20,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ01OQ01OQ04.lean",
+      "filename": "DirichletsTheoremOQ01OQ01OQ04.lean",
+      "lineCount": 182,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01OQ01OQ04.lean"
     },
     {
       "path": "Proofs/DirichletsTheoremOQ02.lean",

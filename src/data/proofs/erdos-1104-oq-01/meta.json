@@ -52,7 +52,9 @@
       "mycielskian_colorable_succ: the chromatic UPPER bound G.Colorable n → (M G).Colorable (n+1) via an explicit colouring (originals and shadows reuse the colour through Fin.castSucc, apex takes Fin.last n).",
       "mycielskian_colorable_of_succ: the chromatic LOWER bound (M G).Colorable (n+1) → G.Colorable n — Mycielski's recolouring argument (recolour an original by its shadow's colour when it wears the apex colour). Together with the upper bound this pins χ(M(G)) = χ(G)+1 exactly.",
       "mycielskianIter / mycielskianIter_colorable_iff: the k-fold iterate over a recursively-defined vertex type, with the exact colourability threshold (mycielskianIter G k).Colorable (m+k) ↔ G.Colorable m.",
-      "exists_triangleFree_colorable_not_colorable: the headline — instantiating the tower over K₂ yields, for every k, a triangle-free graph that is (2+k)-colourable but not (1+k)-colourable, i.e. of chromatic number exactly k+2: triangle-free graphs of arbitrarily large chromatic number, the constructive engine behind the lower-bound side of Erdős #1104."
+      "exists_triangleFree_colorable_not_colorable: the headline — instantiating the tower over K₂ yields, for every k, a triangle-free graph that is (2+k)-colourable but not (1+k)-colourable, i.e. of chromatic number exactly k+2: triangle-free graphs of arbitrarily large chromatic number, the constructive engine behind the lower-bound side of Erdős #1104.",
+      "fintypeMycVertexIter / card_mycVertexIter_add_one / card_mycVertexIter_fin_two: the SIZE of the witness tower. One Mycielski step doubles the vertex count (|M(G)| = 2|G|+1, card_mycVertex), so the k-fold tower over a c-vertex base has (c+1)·2^k − 1 vertices (subtraction-free: card + 1 = (c+1)·2^k), specialising over K₂ to 3·2^k − 1.",
+      "exists_triangleFree_chromatic_with_card: the QUANTIFIED headline — for every k there is a triangle-free graph on N vertices with N+1 = 3·2^k whose chromatic number is exactly k+2, so χ ≍ log₂ N. This makes explicit the exponential gap to the true f(n) = Θ(√(n/log n)): Mycielski's elementary tower is provably sub-optimal, the precise sense in which the optimal Erdős #1104 lower bound needs a non-Mycielski construction."
     ],
     "dateAdded": "2026-06-20",
     "relatedProblems": [
@@ -61,11 +63,11 @@
         "relationship": "Parent. The open Erdős problem posits a mycielski_construction axiom asserting triangle-free graphs of every chromatic number exist; this entry supplies the genuine construction and discharges that property with a machine-checked proof."
       }
     ],
-    "lineCount": 345,
+    "lineCount": 420,
     "assumptions": "0 axioms, 0 sorries. The Mycielskian and the full chromatic-increment theorem χ(M(G)) = χ(G)+1 are built from scratch over Mathlib's SimpleGraph API (fromRel, Colorable, CliqueFree). Badge is 'original' because Mathlib contains no Mycielskian construction and no chromatic-increment theorem; both inequalities and the iterated witness family are formalized here. The parent erdos-1104 entry remains 'axiomatized' (the asymptotic growth rate of f(n) is open); this entry is the verified constructive lower-bound engine, not the full asymptotic determination.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 21,
-    "definitionCount": 6
+    "theoremCount": 27,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "That triangle-free graphs can have arbitrarily large chromatic number is one of the foundational surprises of graph colouring — local sparsity (no triangle) does not bound the global colouring complexity. Mycielski (1955) gave the cleanest constructive proof: a transformation M(G) that keeps a graph triangle-free while raising its chromatic number by exactly one. Iterating from K₂ produces K₂ → C₅ → the Grötzsch graph → … , triangle-free graphs of chromatic number 2, 3, 4, …. This constructive family is the engine behind the lower-bound side of Erdős #1104, which asks for the growth rate f(n) = max χ(G) over triangle-free G on n vertices (known to be Θ(√(n/log n)); exact constant open, lower bound Hefty–Horn–King–Pfender 2025, upper bound Davies–Illingworth 2022). Mathlib does not contain the Mycielskian.",
@@ -141,14 +143,21 @@
       "startLine": 311,
       "endLine": 345,
       "summary": "K₂ = (⊤ : SimpleGraph (Fin 2)) is shown triangle-free, 2-colourable and not 1-colourable; exists_triangleFree_colorable_not_colorable then iterates M from K₂ to exhibit, for every k, a triangle-free graph of chromatic number exactly k+2."
+    },
+    {
+      "id": "tower-size",
+      "title": "Size of the Witness Tower",
+      "startLine": 346,
+      "endLine": 420,
+      "summary": "The colourability theorems pin the chromatic number but not the SIZE — yet size is the variable in Erdős #1104's f(n). fintypeMycVertexIter makes each iterate finite; card_mycVertex (|M(G)| = 2|G|+1) gives the doubling recurrence card_mycVertexIter_succ, whose subtraction-free closed form card_mycVertexIter_add_one states |tower_k| + 1 = (|V|+1)·2^k. Over K₂ (card_mycVertexIter_fin_two: |tower_k| + 1 = 3·2^k), exists_triangleFree_chromatic_with_card packages a triangle-free graph on N vertices with N+1 = 3·2^k of chromatic number exactly k+2 — so χ ≍ log₂ N, exponentially short of the true f(n) = Θ(√(n/log n)), quantifying why the optimal lower bound needs a non-Mycielski construction."
     }
   ],
   "conclusion": {
-    "summary": "The full Mycielski theorem is formalized with zero sorries and zero axioms: the Mycielskian M(G) (built from scratch, absent from Mathlib) preserves triangle-freeness and satisfies χ(M(G)) = χ(G)+1 — the upper bound by an explicit (n+1)-colouring and the lower bound by Mycielski's recolouring argument. The iterated witness family and exact colourability threshold (mycielskianIter_colorable_iff) yield the headline exists_triangleFree_colorable_not_colorable: for every k a triangle-free graph of chromatic number exactly k+2, the constructive lower-bound engine behind Erdős #1104.",
+    "summary": "The full Mycielski theorem is formalized with zero sorries and zero axioms: the Mycielskian M(G) (built from scratch, absent from Mathlib) preserves triangle-freeness and satisfies χ(M(G)) = χ(G)+1 — the upper bound by an explicit (n+1)-colouring and the lower bound by Mycielski's recolouring argument. The iterated witness family and exact colourability threshold (mycielskianIter_colorable_iff) yield the headline exists_triangleFree_colorable_not_colorable: for every k a triangle-free graph of chromatic number exactly k+2, the constructive lower-bound engine behind Erdős #1104. The tower's exact size is also formalized: each Mycielski step doubles the vertex count, so the k-fold tower over K₂ has 3·2^k − 1 vertices (card_mycVertexIter_add_one / card_mycVertexIter_fin_two), and exists_triangleFree_chromatic_with_card packages size with chromatic number to show χ = k+2 ≍ log₂ N — exponentially short of the true f(n) = Θ(√(n/log n)), the precise sense in which the elementary construction is sub-optimal.",
     "implications": "The result is a fully verified instance of one of graph theory's foundational surprises: local sparsity (no triangles, the densest possible local structure removed) places no bound at all on the global colouring complexity. Having the Mycielskian and the exact increment χ(M(G)) = χ(G)+1 machine-checked turns the qualitative 'arbitrarily large χ' folklore into a concrete, reusable Lean construction — the tower K₂ → C₅ → Grötzsch → … is now a certified object, not a picture. It is precisely the constructive lower-bound engine for the open Erdős #1104 (the growth rate of f(n) = max χ over triangle-free n-vertex graphs), and supplies the kind of explicit witness family that off-diagonal Ramsey theory needs for R(3,k) lower bounds. Because Mathlib has no Mycielskian, this is also new reusable colouring infrastructure: any future Lean development needing high-chromatic triangle-free graphs can instantiate the tower.",
     "openQuestions": [
       "Discharge the parent erdos-1104 mycielski_construction axiom against this verified construction, converting that entry from axiomatized to a fully grounded lower bound.",
-      "Quantify the construction's efficiency: the tower's vertex count roughly doubles each step (χ = k needs ~2^k vertices), so it gives only an exponentially weak lower bound on f(n); formalize the gap to the true f(n) = Θ(√(n/log n)) (lower bound Hefty–Horn–King–Pfender 2025, upper bound Davies–Illingworth 2022) and the sharper random/Kim R(3,k) constructions that achieve it.",
+      "PARTIALLY ADDRESSED (this session): the tower's exact vertex count is now formalized — card_mycVertexIter_add_one (|tower_k| + 1 = (|V|+1)·2^k) and card_mycVertexIter_fin_two over K₂ (|tower_k| + 1 = 3·2^k), packaged with the chromatic number in exists_triangleFree_chromatic_with_card to give χ = k+2 ≍ log₂ N. The remaining open part is the quantitative comparison to the true f(n) = Θ(√(n/log n)) (lower bound Hefty–Horn–King–Pfender 2025, upper bound Davies–Illingworth 2022): formalize the sharper random/Kim R(3,k) constructions that achieve the optimal exponent, which Mycielski's tower provably cannot.",
       "Determine the exact constant in f(n) = Θ(√(n/log n)) — the genuinely open quantitative core of Erdős #1104.",
       "Upstream the Mycielskian and the χ-increment theorem to Mathlib's Combinatorics/SimpleGraph hierarchy as general-purpose colouring infrastructure."
     ]
@@ -184,11 +193,11 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1104OQ01",
-    "lineCount": 345,
+    "lineCount": 420,
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 6,
-    "theoremCount": 21
+    "definitionCount": 7,
+    "theoremCount": 27
   },
   "sorries": []
 }

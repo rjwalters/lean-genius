@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-similar-def",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+    "range": { "startLine": 58, "endLine": 61 },
+    "type": "definition",
+    "title": "The Similarity Relation",
+    "content": "`Similar A B` asserts that `B = P·A·P⁻¹` for some invertible matrix `P`, packaged through the unit group `(Matrix n n K)ˣ` so that `P⁻¹` is a genuine two-sided inverse with the cancellation laws `Units.inv_mul`/`Units.mul_inv` available. Conjugation is exactly a change of basis: `A` and `B` are the same linear operator expressed in two coordinate systems related by `P`. This is the same definition used by the parent and companion entries, so the results compose verbatim.",
+    "mathContext": "$B = P A P^{-1}$ with $P \\in GL_n(K)$. Similarity is an equivalence relation; its invariants (rank, nullity, characteristic polynomial, eigenvalues) are precisely the basis-independent data of the operator.",
+    "significance": "supporting",
+    "relatedConcepts": ["change of basis", "conjugacy class", "general linear group", "similarity invariant"],
+    "prerequisites": ["invertible matrices", "unit group of a ring"]
+  },
+  {
+    "id": "ann-intertwine",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+    "range": { "startLine": 70, "endLine": 79 },
+    "type": "technique",
+    "title": "The Intertwining Identities",
+    "content": "From `B = P·A·P⁻¹` two intertwining identities are extracted by a single unit cancellation each: `A·P⁻¹ = P⁻¹·B` (`conj_intertwine_left`) and `B·P = P·A` (`conj_intertwine_right`). Conceptually they say `A` and `B` are the same operator read through `P`; algebraically each is one application of `Units.inv_mul`/`Units.mul_inv` after re-associating the triple product. They are the engine that turns the static equation `B = P·A·P⁻¹` into a transport of solution spaces.",
+    "mathContext": "$A P^{-1} = P^{-1} B$ and $B P = P A$. Equivalently $P^{-1} B P = A$: conjugation intertwines the two matrices, the defining relation of an intertwiner in representation theory.",
+    "significance": "key",
+    "relatedConcepts": ["intertwiner", "commuting diagram", "Units.inv_mul", "conjugation"],
+    "prerequisites": ["matrix multiplication associativity", "unit cancellation laws"]
+  },
+  {
+    "id": "ann-transport",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+    "range": { "startLine": 83, "endLine": 95 },
+    "type": "insight",
+    "title": "Kernel Transport",
+    "content": "`mapsTo_ker_left` shows `P⁻¹` carries `ker B` into `ker A`, and `mapsTo_ker_right` shows `P` carries `ker A` into `ker B`. Each proof is a four-step rewrite: push the product through the vector with `mulVec_mulVec`, apply the relevant intertwining identity, push back, and use the membership hypothesis `B ·ᵥ x = 0` to finish with `mulVec_zero`. This is where 'similar matrices have the same kernel size' becomes 'the change of basis literally moves one kernel onto the other.'",
+    "mathContext": "$x \\in \\ker B \\Rightarrow A(P^{-1}x) = (AP^{-1})x = (P^{-1}B)x = P^{-1}(Bx) = 0$, so $P^{-1}x \\in \\ker A$; symmetrically $P$ maps $\\ker A \\to \\ker B$.",
+    "significance": "key",
+    "relatedConcepts": ["invariant subspace", "Matrix.mulVec_mulVec", "kernel of a linear map", "maps-into"],
+    "prerequisites": ["kernels as submodules", "mulVecLin", "intertwining identities"]
+  },
+  {
+    "id": "ann-kerequiv",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+    "range": { "startLine": 99, "endLine": 116 },
+    "type": "definition",
+    "title": "The Explicit Kernel Isomorphism",
+    "content": "`kerEquiv` assembles the two transport maps into a linear equivalence `ker B.mulVecLin ≃ₗ[K] ker A.mulVecLin`. `LinearMap.restrict` cuts `P⁻¹.mulVecLin` and `P.mulVecLin` down to the kernels (using the maps-into proofs), and `LinearEquiv.ofLinear` glues them once both round trips are checked. The round-trip obligations collapse to `1 ·ᵥ v = v`: `mulVec_mulVec` turns `P⁻¹ ·ᵥ (P ·ᵥ v)` into `(P⁻¹·P) ·ᵥ v`, then `Units.inv_mul`/`Units.mul_inv` give the identity matrix and `one_mulVec` finishes.",
+    "mathContext": "$\\operatorname{kerEquiv} : \\ker B \\xrightarrow{\\,\\sim\\,} \\ker A,\\ x \\mapsto P^{-1}x$, with inverse $y \\mapsto Py$; well-defined because both maps land in the right kernel and $P^{-1}P = PP^{-1} = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["LinearEquiv.ofLinear", "LinearMap.restrict", "mutually inverse maps", "change of basis"],
+    "prerequisites": ["linear equivalences", "restriction to a submodule", "mulVec arithmetic"]
+  },
+  {
+    "id": "ann-kerequiv-apply",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+    "range": { "startLine": 119, "endLine": 124 },
+    "type": "insight",
+    "title": "The Isomorphism IS the Change of Basis",
+    "content": "`kerEquiv_apply` and `kerEquiv_symm_apply` state that the isomorphism acts as `x ↦ P⁻¹ ·ᵥ x` and its inverse as `y ↦ P ·ᵥ y` — and both hold by `rfl`. This is the crucial qualitative point distinguishing this entry from the parent: the map is not an abstract artefact of equal dimensions produced by choosing bases, it is definitionally the same `P` that conjugates `A` into `B`. The change of basis and the kernel isomorphism are one and the same object.",
+    "mathContext": "$\\operatorname{kerEquiv}(x) = P^{-1}x$, $\\operatorname{kerEquiv}^{-1}(y) = Py$ — true by definitional unfolding (`rfl`), not up to some chosen identification.",
+    "significance": "key",
+    "relatedConcepts": ["definitional equality", "naturality", "change of basis"],
+    "prerequisites": ["rfl / definitional unfolding", "coercion of subtype elements"]
+  },
+  {
+    "id": "ann-functoriality",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+    "range": { "startLine": 126, "endLine": 143 },
+    "type": "concept",
+    "title": "Functoriality: Identity and Composition",
+    "content": "Two laws upgrade 'isomorphic kernels' to 'the kernel is a functor.' `kerEquiv_refl`: the trivial conjugation by `P = 1` gives the identity isomorphism (since `1⁻¹ ·ᵥ x = x`). `kerEquiv_trans`: stacking `B = P·A·P⁻¹` and `C = Q·B·Q⁻¹` (so `C = (QP)·A·(QP)⁻¹`) makes the `A ← C` isomorphism the composite of `A ← B` after `B ← C`, because `(QP)⁻¹ = P⁻¹Q⁻¹` (`mul_inv_rev`) matches `P⁻¹ ·ᵥ (Q⁻¹ ·ᵥ x)` via `mulVec_mulVec`. These are exactly the functor axioms on the groupoid of matrices-under-conjugation.",
+    "mathContext": "$\\operatorname{kerEquiv}_{1} = \\mathrm{id}$ and $\\operatorname{kerEquiv}_{QP} = \\operatorname{kerEquiv}_{P} \\circ \\operatorname{kerEquiv}_{Q}$ — the $F(\\mathrm{id}) = \\mathrm{id}$ and $F(g\\circ f) = F(g)\\circ F(f)$ laws of a functor.",
+    "significance": "key",
+    "relatedConcepts": ["functor", "groupoid", "mul_inv_rev", "categorification"],
+    "prerequisites": ["functor axioms", "inverse of a product", "mulVec_mulVec"]
+  },
+  {
+    "id": "ann-nullity-recover",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+    "range": { "startLine": 145, "endLine": 151 },
+    "type": "insight",
+    "title": "Recovering the Numeric Invariant",
+    "content": "`nullity_eq_of_conj` recovers the parent entry's result — equality of kernel dimensions — in one line by applying `LinearEquiv.finrank_eq` to `kerEquiv`. This exhibits the dimension equality as the decategorification (the shadow on numbers) of the isomorphism, rather than an independently proved fact. The isomorphism strictly refines the invariant: any two finite-dimensional spaces related by a linear equivalence have equal `finrank`.",
+    "mathContext": "$\\dim \\ker B = \\dim \\ker A$, obtained as $\\operatorname{finrank}$ applied to $\\operatorname{kerEquiv} : \\ker B \\simeq \\ker A$.",
+    "significance": "supporting",
+    "relatedConcepts": ["nullity", "LinearEquiv.finrank_eq", "decategorification", "similarity invariant"],
+    "prerequisites": ["finrank", "isomorphism preserves dimension"]
+  },
+  {
+    "id": "ann-similar-existence",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+    "range": { "startLine": 153, "endLine": 162 },
+    "type": "context",
+    "title": "Basis-Free Existence Form",
+    "content": "`Similar.nonempty_kerEquiv` packages the construction for the bare `Similar A B` relation, which only asserts that *some* conjugator exists. Destructuring the witness `P` and feeding it to `kerEquiv` yields `Nonempty (ker B ≃ₗ[K] ker A)`. This is the form most useful downstream where one knows two matrices are similar but has no distinguished conjugator in hand.",
+    "mathContext": "$\\operatorname{Similar} A\\,B \\Rightarrow \\operatorname{Nonempty}(\\ker B \\simeq_{\\ell} \\ker A)$ — existence of an isomorphism from existence of a conjugator.",
+    "significance": "context",
+    "relatedConcepts": ["existential packaging", "Nonempty", "similarity relation"],
+    "prerequisites": ["existential elimination", "the Similar definition"]
+  }
+]

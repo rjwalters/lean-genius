@@ -1,0 +1,185 @@
+[
+  {
+    "id": "basel-summand",
+    "proofId": "basel-problem-oq-09",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "The Named Basel Summand f n = 1/n²",
+    "content": "f is the Basel summand n ↦ 1/n², introduced as a top-level (private) definition rather than an inline lambda. The naming is not cosmetic: HasSum.even_add_odd reconstructs a sum from the patterns `fun k ↦ f (2*k)` and `fun k ↦ f (2*k+1)`, and Lean's higher-order unifier can only recognize those as the even/odd subseries of the *same* function f if f is a head symbol it can match against. An inline `fun n => 1/n^2` would force the unifier to invent the abstraction itself, which fails. The whole even/odd split hinges on this one design choice.",
+    "mathContext": "$f(n) = \\dfrac{1}{n^2}$, so $\\sum_{n\\ge 1} f(n) = \\zeta(2) = \\dfrac{\\pi^2}{6}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemann zeta function",
+      "Basel problem",
+      "higher-order unification",
+      "infinite series"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "Lean definitions"
+    ]
+  },
+  {
+    "id": "basel-identity",
+    "proofId": "basel-problem-oq-09",
+    "range": {
+      "startLine": 54,
+      "endLine": 59
+    },
+    "type": "technique",
+    "title": "Importing ζ(2) = π²/6 from Mathlib",
+    "content": "basel_f restates Mathlib's hasSum_zeta_two for the local summand f, and summable_f extracts summability from it. No new analysis is done here — the entire analytic content (the value π²/6, due to Euler in 1734 and formalized in Mathlib's NumberTheory.ZetaValues) is imported wholesale. Everything that follows is elementary algebra and reindexing on top of this single deep input, which is what makes the entry an honest `mathlib`-badge corollary rather than an independent evaluation.",
+    "mathContext": "$\\displaystyle\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$ (Euler, 1734).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Basel problem",
+      "HasSum",
+      "Summable",
+      "zeta values"
+    ],
+    "prerequisites": [
+      "Basel problem",
+      "Mathlib HasSum API"
+    ]
+  },
+  {
+    "id": "even-part",
+    "proofId": "basel-problem-oq-09",
+    "range": {
+      "startLine": 63,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "The Even Part is a Quarter-Scaled ζ(2): ∑ 1/(2k)² = π²/24",
+    "content": "hasSum_even_squares evaluates the even-indexed subseries. The algebraic key is the pointwise identity 1/(2k)² = (1/4)·(1/k²), proved by `funext k; simp only [f]; ring` — valid uniformly in k, including k = 0 where both sides are 0 in ℝ (no division-by-zero issue because 1/0 = 0 by Lean's convention). Once the summand is rewritten as (1/4)·f k, the value follows from HasSum.mul_left applied to basel_f, scaling π²/6 by 1/4 to π²/24. tsum_even_squares records the corresponding tsum equation.",
+    "mathContext": "$\\displaystyle\\sum_{k\\ge 1} \\frac{1}{(2k)^2} = \\frac14 \\sum_{k\\ge 1} \\frac{1}{k^2} = \\frac14\\cdot\\frac{\\pi^2}{6} = \\frac{\\pi^2}{24}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasSum.mul_left",
+      "series rescaling",
+      "even-indexed subseries",
+      "Basel problem"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "scaling of convergent sums"
+    ]
+  },
+  {
+    "id": "odd-summability",
+    "proofId": "basel-problem-oq-09",
+    "range": {
+      "startLine": 93,
+      "endLine": 100
+    },
+    "type": "technique",
+    "title": "Summability of the Odd Subseries by Injective Reindexing",
+    "content": "Before the odd value can be named, its series must be known to converge. Rather than invoking a comparison or p-series test, summability is *transported* from ζ(2): the map k ↦ 2k+1 is injective (a one-line `omega`), so Summable.comp_injective turns summability of f into summability of `fun k ↦ f (2k+1)`. This is purely structural — a subsequence of an absolutely convergent series of nonnegative terms is summable — and avoids any fresh analytic estimate.",
+    "mathContext": "$k \\mapsto 2k+1$ is injective, so $\\sum_k f(2k+1)$ inherits summability from $\\sum_n f(n)$ via $\\texttt{Summable.comp\\_injective}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Summable.comp_injective",
+      "injective reindexing",
+      "absolute convergence",
+      "subseries"
+    ],
+    "prerequisites": [
+      "summability",
+      "injective functions"
+    ]
+  },
+  {
+    "id": "even-add-odd",
+    "proofId": "basel-problem-oq-09",
+    "range": {
+      "startLine": 101,
+      "endLine": 106
+    },
+    "type": "key-step",
+    "title": "Recombine and Solve: even_add_odd + HasSum.unique",
+    "content": "This is the crux. heven.even_add_odd hodd reassembles the even and odd subseries into a HasSum for the full f, but with value π²/24 + (∑ odd). Mathlib already knows f sums to π²/6 (basel_f), and a sum is unique, so HasSum.unique equates π²/24 + (∑ odd) = π²/6. The odd value is then pure arithmetic: a single `linarith` over the atom π² yields ∑ odd = π²/6 − π²/24 = π²/8. Notably the odd value is obtained by *subtraction*, never by summing the odd series directly — uniqueness does the work an explicit evaluation would otherwise require.",
+    "mathContext": "$\\frac{\\pi^2}{24} + \\Big(\\textstyle\\sum_k \\tfrac{1}{(2k+1)^2}\\Big) = \\frac{\\pi^2}{6} \\;\\Longrightarrow\\; \\sum_k \\frac{1}{(2k+1)^2} = \\frac{\\pi^2}{8}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasSum.even_add_odd",
+      "HasSum.unique",
+      "uniqueness of limits",
+      "even/odd decomposition"
+    ],
+    "prerequisites": [
+      "uniqueness of sums",
+      "rearrangement of convergent series"
+    ]
+  },
+  {
+    "id": "bridge-clean-statement",
+    "proofId": "basel-problem-oq-09",
+    "range": {
+      "startLine": 107,
+      "endLine": 113
+    },
+    "type": "technique",
+    "title": "Bridging f(2k+1) Back to the Clean Statement",
+    "content": "The proof works internally with the f-shaped summand `fun k ↦ f (2k+1)` so that even_add_odd unifies, but the public theorem is stated in the reader-facing form `fun k ↦ 1/(2k+1)²`. A `funext`/`push_cast`/`ring` bridge proves these two functions are equal, after which the established HasSum is rewritten into the clean shape. This separation — internal form chosen for the tactic, external form chosen for legibility — is a recurring idiom when a Mathlib combinator constrains the summand pattern.",
+    "mathContext": "$f(2k+1) = \\dfrac{1}{(2k+1)^2}$ after $\\texttt{push\\_cast}$ normalizes the ℕ→ℝ coercions.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "funext",
+      "push_cast",
+      "coercion handling",
+      "statement normalization"
+    ],
+    "prerequisites": [
+      "function extensionality",
+      "casts in Lean"
+    ]
+  },
+  {
+    "id": "main-result",
+    "proofId": "basel-problem-oq-09",
+    "range": {
+      "startLine": 82,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "The Odd-Square Series ∑ 1/(2k+1)² = π²/8",
+    "content": "hasSum_odd_squares is the headline result, assembled from the even part, odd summability, the even_add_odd recombination, and uniqueness. tsum_odd_squares and summable_odd_squares package it in tsum and Summable form for downstream reuse. The value π²/8 is exactly λ(2), the s = 2 case of the Dirichlet odd-index zeta λ(s) = ∑ 1/(2k+1)^s = (1 − 2^{−s})ζ(s); here (1 − 1/4)·π²/6 = (3/4)·π²/6 = π²/8.",
+    "mathContext": "$\\displaystyle\\sum_{k=0}^{\\infty} \\frac{1}{(2k+1)^2} = 1 + \\frac19 + \\frac1{25} + \\cdots = \\frac{\\pi^2}{8} = \\lambda(2).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet lambda function",
+      "odd-index zeta",
+      "Basel problem",
+      "HasSum"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "Basel problem"
+    ]
+  },
+  {
+    "id": "decomposition-checks",
+    "proofId": "basel-problem-oq-09",
+    "range": {
+      "startLine": 126,
+      "endLine": 146
+    },
+    "type": "observation",
+    "title": "The Decomposition Identity and Mass Distribution",
+    "content": "basel_even_odd_decomposition records the arithmetic skeleton π²/6 = π²/24 + π²/8 (closed by `ring`), and odd_part_gt_even_part observes π²/24 < π²/8 — the even indices carry one quarter of the Basel mass and the odd indices carry three quarters. The two `example` sanity checks confirm the first two odd terms are 1/1² = 1 and 1/3² = 1/9, grounding the abstract HasSum statement in concrete arithmetic. These are anonymous examples, so they contribute no axioms and do not appear in the named theorem count.",
+    "mathContext": "$\\frac{\\pi^2}{6} = \\underbrace{\\frac{\\pi^2}{24}}_{\\text{even, }1/4} + \\underbrace{\\frac{\\pi^2}{8}}_{\\text{odd, }3/4}$; first odd terms $1, \\tfrac19, \\tfrac1{25}, \\dots$",
+    "significance": "context",
+    "relatedConcepts": [
+      "mass distribution",
+      "sanity check",
+      "ring tactic",
+      "Basel problem"
+    ],
+    "prerequisites": [
+      "elementary arithmetic"
+    ]
+  }
+]

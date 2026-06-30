@@ -15,6 +15,63 @@
     "sorries": 0
   },
   "title": "The Multiplier–Quadratic-Residue Reduction for Three-Square Sufficiency",
+  "description": "In the classical Dirichlet/Minkowski route to Legendre's three-square theorem, the geometry-of-numbers step needs a multiplier d, a prime p = d·n − 1, and a quadratic-residue condition legendreSym p (−d) = 1. This entry proves that condition collapses to a condition on n alone: since d·n ≡ 1 (mod p), the values −d and −n are inverse mod p and hence simultaneously (non)squares, so legendreSym p (−d) = legendreSym p (−n). A reciprocity-free identity that eliminates the unbounded multiplier from the residue bookkeeping, plus a Dirichlet supply of such primes — 171 lines, 7 theorems, 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "Legendre stated the three-square theorem in his Essai sur la théorie des nombres (1798): a natural number n is a sum of three integer squares iff n is not of the form 4^a(8b+7). The necessity direction is an elementary mod-8 congruence argument, but sufficiency is genuinely deep. Gauss gave the first complete proof in Disquisitiones Arithmeticae (1801) via his theory of ternary quadratic forms and class numbers. Dirichlet (1850) supplied a cleaner route built on his own 1837 theorem on primes in arithmetic progressions: one selects an auxiliary prime in a prescribed residue class and runs a quadratic-form / geometry-of-numbers descent. Minkowski's geometry of numbers (1890s) later recast that descent as the existence of a short vector in a lattice cut out by congruence conditions. The friction in formalizing this route is the 'multiplier' d in the auxiliary prime p = d·n − 1: for the residue classes n mod 8 ∈ {1,2,5,6} no bounded d works, so the quadratic-residue side condition appears to track a moving target. This entry isolates and dissolves exactly that friction, leveraging the fact that Dirichlet's theorem is now available in Mathlib (Nat.forall_exists_prime_gt_and_modEq).",
+    "problemStatement": "Show that the quadratic-residue hypothesis $\\left(\\tfrac{-d}{p}\\right)=1$ consumed by the geometry-of-numbers lemma — for a multiplier prime $p = d\\cdot n - 1$ — is equivalent to the multiplier-free condition $\\left(\\tfrac{-n}{p}\\right)=1$, and that arbitrarily large primes of this multiplier shape exist for every $n \\geq 2$.",
+    "proofStrategy": "Three layers. (1) Residue identity: encode $p = d\\cdot n - 1$ as $d\\cdot n = p + 1$, cast to $\\mathbb{Z}/p\\mathbb{Z}$ where $p \\mapsto 0$, obtaining $\\bar d\\,\\bar n = 1$, so $d$ and $n$ — hence $-d$ and $-n$ — are mutually inverse units mod $p$. (2) Symbol reduction: $(-d)(-n) = d\\cdot n \\equiv 1$ is a square, so by multiplicativity $\\left(\\tfrac{-d}{p}\\right)\\left(\\tfrac{-n}{p}\\right) = 1$; since each factor is $\\pm 1$, equality of the two symbols follows — entirely without quadratic reciprocity. (3) Dirichlet supply: pick the residue class $p \\equiv n-1 \\equiv -1 \\pmod n$, coprime to $n$ because $\\gcd(n-1,n)=1$, and invoke Mathlib's Dirichlet theorem for arbitrarily large primes; repackage the quotient as a fresh variable to keep the divisibility arithmetic inside omega's linear fragment. Assembling (2) and (3) gives, for every bound, a multiplier prime whose QR side condition is governed solely by $-n$.",
+    "keyInsights": [
+      "The quadratic-residue condition on the multiplier d is not really about d at all: because (−d)(−n) ≡ 1 (mod p), the symbols legendreSym p (−d) and legendreSym p (−n) are forced equal. The unbounded multiplier vanishes from the residue bookkeeping.",
+      "The reduction is reciprocity-free. It needs only that a unit and its inverse are simultaneously squares — multiplicativity of the Legendre symbol plus its ±1 dichotomy — not the quadratic reciprocity law itself.",
+      "Eliminating d turns a moving-target selection into a fixed-target one: legendreSym p (−n) = 1 is controlled by p mod 4n, exactly the kind of congruence class Dirichlet's theorem delivers.",
+      "Mathlib's recent formalization of Dirichlet's theorem on primes in arithmetic progressions (Nat.forall_exists_prime_gt_and_modEq) is what makes the supply layer constructive here; the entry chooses the class p ≡ −1 (mod n) using the coprimality of consecutive integers.",
+      "Honest scope is built into the result: the selection layer is now complete and d-free, but the companion geometry lemma is proved only for d ∈ {1,2}. The remaining gap toward full sufficiency is isolated to a single d-uniform geometric construction, not a number-theoretic one."
+    ]
+  },
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background: the multiplier mechanism",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Imports and the file docstring: the Dirichlet/Minkowski route to three-square sufficiency, the geometry-of-numbers lemma's hypotheses (multiplier d, prime p = d·n − 1, QR condition legendreSym p (−d) = 1), and the unbounded-multiplier friction for n mod 8 ∈ {1,2,5,6} that this file removes."
+    },
+    {
+      "id": "residue-identity",
+      "title": "The key residue identity",
+      "startLine": 68,
+      "endLine": 78,
+      "summary": "Namespace ThreeSquaresMultiplierQR and the lemma natCast_mul_eq_one: from d·n = p + 1, casting into ZMod p gives (d̄)(n̄) = 1 — d and n are mutually inverse units mod p."
+    },
+    {
+      "id": "multiplier-reduction",
+      "title": "Multiplier–QR reduction",
+      "startLine": 80,
+      "endLine": 110,
+      "summary": "The headline theorem legendreSym_neg_multiplier_eq: legendreSym p (−d) = legendreSym p (−n), proved reciprocity-free from (−d)(−n) ≡ 1 via multiplicativity and the ±1 dichotomy of the Legendre symbol."
+    },
+    {
+      "id": "selection-criterion",
+      "title": "Selection criterion",
+      "startLine": 112,
+      "endLine": 124,
+      "summary": "Corollaries legendreSym_neg_d_eq_one_iff (biconditional) and legendreSym_neg_n_one_imp_neg_d_one (the direction consumed by dirichlet_key_lemma): the geometry's QR hypothesis is equivalent to a condition on n alone."
+    },
+    {
+      "id": "dirichlet-supply",
+      "title": "Dirichlet supply of multiplier primes",
+      "startLine": 126,
+      "endLine": 156,
+      "summary": "Helper coprime_pred_self (gcd(n−1,n)=1) and exists_multiplier_prime: for every n ≥ 2 and bound N, Mathlib's Dirichlet theorem yields a prime p > N with p ≡ −1 (mod n), repackaged as p = d·n − 1 with the quotient made an explicit variable for omega."
+    },
+    {
+      "id": "assembled",
+      "title": "Assembled selection layer",
+      "startLine": 158,
+      "endLine": 171,
+      "summary": "Capstone exists_multiplier_prime_qr_reduces: for every n ≥ 2 and bound N a multiplier prime p > N exists for which legendreSym p (−n) = 1 forces legendreSym p (−d) = 1 — the d-free, fixed-target number-theoretic input the harder residue classes need."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",

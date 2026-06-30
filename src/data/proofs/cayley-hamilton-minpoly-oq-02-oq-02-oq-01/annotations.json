@@ -1,0 +1,109 @@
+[
+  {
+    "id": "ann-forward",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "Forward: Intertwiner Induces a K[X]-Module Isomorphism",
+    "content": "`aeval_linearEquiv_of_conj` takes a $K$-linear automorphism $e$ with $e \\circ \\varphi = \\psi \\circ e$ and produces a $K[X]$-linear isomorphism $\\mathrm{AEval}'\\,\\varphi \\simeq \\mathrm{AEval}'\\,\\psi$. The underlying map is just $e$; the intertwining hypothesis is exactly what makes $e$ commute with the $X$-action ($X$ acts as $\\varphi$ on the source, $\\psi$ on the target), so `LinearEquiv.ofAEval` upgrades it to a $K[X]$-linear equivalence. This repackages the construction Mathlib uses internally in `LinearEquiv.isSemisimple_iff`.",
+    "mathContext": "If $e\\varphi = \\psi e$ then on $\\mathrm{AEval}'$ modules $e(X \\cdot m) = X \\cdot e(m)$, so $e$ is $K[X]$-linear.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial module (Module.AEval')",
+      "intertwining operator",
+      "LinearEquiv.ofAEval"
+    ],
+    "prerequisites": [
+      "K[X]-module from an endomorphism",
+      "linear equivalence"
+    ]
+  },
+  {
+    "id": "ann-converse",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "Converse: Module Isomorphism Recovers an Intertwiner",
+    "content": "`conj_of_aeval_linearEquiv` is the new content not present in Mathlib. Given a $K[X]$-linear isomorphism $E : \\mathrm{AEval}'\\,\\varphi \\simeq \\mathrm{AEval}'\\,\\psi$, it builds $e = (\\mathrm{of}\\,\\psi)^{-1} \\circ E \\circ (\\mathrm{of}\\,\\varphi) : M \\simeq_K M$ and proves the intertwining identity $e \\circ \\varphi = \\psi \\circ e$. The proof pulls $X$ through $E$: using $\\mathrm{of}\\,\\varphi(\\varphi m) = X \\cdot \\mathrm{of}\\,\\varphi(m)$, the $K[X]$-linearity of $E$, and $(\\mathrm{of}\\,\\psi)^{-1}(X \\cdot w) = \\psi((\\mathrm{of}\\,\\psi)^{-1} w)$.",
+    "mathContext": "$e(\\varphi m) = (\\mathrm{of}\\,\\psi)^{-1}(E(X \\cdot \\mathrm{of}\\,\\varphi\\, m)) = (\\mathrm{of}\\,\\psi)^{-1}(X \\cdot E(\\mathrm{of}\\,\\varphi\\, m)) = \\psi(e\\, m)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "restriction of scalars",
+      "of_symm_X_smul",
+      "module isomorphism"
+    ],
+    "prerequisites": [
+      "K[X]-linear maps are K-linear",
+      "the X-action encodes the operator"
+    ]
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 127,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "The Bridge: Similarity is Module Isomorphism",
+    "content": "`conj_iff_nonempty_aeval_linearEquiv` combines the two directions: operators $\\varphi, \\psi$ are similar (there exists an intertwining automorphism) **if and only if** the $K[X]$-modules $\\mathrm{AEval}'\\,\\varphi$ and $\\mathrm{AEval}'\\,\\psi$ are isomorphic. This is the structural reduction at the heart of the rational canonical form — the statement that turns a classification of operators up to similarity into a classification of modules up to isomorphism.",
+    "mathContext": "$\\varphi \\sim \\psi \\iff \\mathrm{AEval}'\\,\\varphi \\cong \\mathrm{AEval}'\\,\\psi$ as $K[X]$-modules.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix similarity",
+      "rational canonical form",
+      "invariant factors"
+    ],
+    "prerequisites": [
+      "the two directions above"
+    ]
+  },
+  {
+    "id": "ann-torsion",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 141,
+      "endLine": 157
+    },
+    "type": "theorem",
+    "title": "Torsion: Activating the PID Structure Theorem",
+    "content": "`aeval_isTorsion` shows that for finite-dimensional $M$, the module $\\mathrm{AEval}'\\,\\varphi$ is a torsion $K[X]$-module. The torsion witness is the characteristic polynomial of $\\varphi$: it is monic (hence a nonzero divisor in the domain $K[X]$) and annihilates the whole module by the Cayley-Hamilton theorem. This is precisely the hypothesis `Module.IsTorsion` required by `Module.equiv_directSum_of_isTorsion`, the PID structure theorem that produces the invariant-factor decomposition.",
+    "mathContext": "$\\chi_\\varphi$ is monic, so $\\chi_\\varphi \\in K[X]^{\\times 0}$, and $\\mathrm{aeval}\\,\\varphi\\,\\chi_\\varphi = 0$ kills every element.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cayley-Hamilton theorem",
+      "torsion module",
+      "PID structure theorem"
+    ],
+    "prerequisites": [
+      "characteristic polynomial is monic",
+      "nonzero divisors in K[X]"
+    ]
+  },
+  {
+    "id": "ann-matrix-corollary",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 159,
+      "endLine": 166
+    },
+    "type": "theorem",
+    "title": "Matrix-Level Corollary via toLin'",
+    "content": "`matrix_conj_iff_nonempty_aeval_linearEquiv` specializes the bridge to square matrices $A, B$ over $K$ through `Matrix.toLin'`, giving the classical statement: $A$ and $B$ are similar if and only if the $K[X]$-modules attached to $\\mathrm{toLin}'\\,A$ and $\\mathrm{toLin}'\\,B$ are isomorphic.",
+    "mathContext": "For $A, B \\in M_n(K)$: $A \\sim B \\iff \\mathrm{AEval}'(\\mathrm{toLin}'\\,A) \\cong \\mathrm{AEval}'(\\mathrm{toLin}'\\,B)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Matrix.toLin'",
+      "matrix similarity"
+    ],
+    "prerequisites": [
+      "matrices as linear maps"
+    ]
+  }
+]

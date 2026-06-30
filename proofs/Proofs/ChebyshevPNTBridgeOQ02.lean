@@ -108,9 +108,9 @@ lemma chebyshev_lower_pos (n : ℕ) (hn : 1 ≤ n) :
       induction n with
       | zero => omega
       | succ k ih =>
-        rcases Nat.eq_or_gt_of_le hn with rfl | hk
+        rcases Nat.eq_zero_or_pos k with rfl | hk
         · norm_num
-        · have hk1 : 1 ≤ k := by omega
+        · have hk1 : 1 ≤ k := hk
           have ihk := ih hk1
           calc 2 * (k + 1) + 1 = 2 * k + 3 := by ring
             _ < 4 * (2 * k + 1) := by omega

@@ -1,0 +1,209 @@
+{
+  "id": "infinitude-primes-oq-06",
+  "title": "Infinitude of Primes OQ-06: Euclid's Doubly-Exponential Bound pₙ ≤ 2^(2ⁿ)",
+  "slug": "infinitude-primes-oq-06",
+  "description": "The quantitative content of Euclid's proof: the n-th prime (Nat.nth Nat.Prime n, 0-indexed) satisfies pₙ ≤ 2^(2ⁿ). The engine is the Euclid recurrence p_{n+1} ≤ p₀⋯pₙ + 1, proved via the prime factor of the Euclid number lying outside the first n+1 primes, fed into a strong induction with the exponent telescoping ∏_{i<k} 2^(2ⁱ) = 2^(2ᵏ−1).",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InfinitudePrimesOQ06.lean",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "infinitude-of-primes",
+      "euclid",
+      "prime-counting",
+      "explicit-bounds"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth",
+        "description": "The n-th element satisfying a predicate; Nat.nth Nat.Prime enumerates the primes in increasing order",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "Nat.nth_count",
+        "description": "For a prime q, Nat.nth Nat.Prime (Nat.count Nat.Prime q) = q — every prime is recovered at its count index",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "Nat.nth_le_nth",
+        "description": "Monotonicity of nth on an infinite predicate: nth p k ≤ nth p m ↔ k ≤ m",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "Nat.nth_mem_of_infinite",
+        "description": "Each Nat.nth Nat.Prime n is prime, since the prime set is infinite",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "Nat.infinite_setOf_prime",
+        "description": "The set of primes {p | Nat.Prime p} is infinite",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Nat.exists_prime_and_dvd",
+        "description": "Every n ≠ 1 has a prime divisor — applied to the Euclid number",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Finset.dvd_prod_of_mem",
+        "description": "A factor in a finite product divides the product — each pᵢ divides p₀⋯pₙ",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Piecewise"
+      },
+      {
+        "theorem": "Finset.prod_le_prod'",
+        "description": "Termwise monotonicity of finite products in an ordered commutative monoid",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Formal proof that the n-th prime satisfies pₙ ≤ 2^(2ⁿ), the explicit (doubly-exponential) bound implicit in Euclid's argument",
+      "The Euclid recurrence p_{n+1} ≤ p₀·p₁⋯pₙ + 1 (theorem p_succ_le_prod), proved by showing the prime factor of the Euclid number lies outside the first n+1 primes via the Nat.nth / Nat.count enumeration API",
+      "Exponent telescoping lemma ∏_{i<k} 2^(2ⁱ) = 2^(2ᵏ − 1) (prod_two_pow_two_pow) driving the strong induction",
+      "Strong induction packaging pₙ ≤ 2^(2ⁿ) and the corollary exists_prime_doubly_exp_bound giving a prime > all earlier ones below the bound"
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 163,
+    "assumptions": "0 axioms, 0 sorries (only Lean's foundational propext / Classical.choice / Quot.sound). The Euclid recurrence, the exponent telescoping, and the strong-induction bound are original; the prime enumeration (Nat.nth/Nat.count) and 'every n≠1 has a prime divisor' come from Mathlib.",
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Euclid's proof that there are infinitely many primes is usually read qualitatively: given primes p₀,…,pₙ, the number p₀⋯pₙ + 1 has a prime factor different from all of them. But the same construction is quantitative — it bounds how far one must look for the next prime. Iterating p_{n+1} ≤ p₀⋯pₙ + 1 yields the explicit estimate pₙ ≤ 2^(2ⁿ) on the n-th prime, a doubly-exponential ceiling. This is the classical first effective bound on prime growth, vastly weaker than the prime number theorem's pₙ ∼ n ln n but completely elementary and a direct corollary of Euclid. It is the bound named (for the Goldbach/Fermat prime) in the sibling entry OQ-05; here it is proved for the actual n-th prime, which is sharper.",
+    "problemStatement": "**Open Question (OQ-06)**: Make Euclid's infinitude proof quantitative — bound the n-th prime pₙ explicitly.\n\n**Answer**: pₙ ≤ 2^(2ⁿ), where pₙ = Nat.nth Nat.Prime n is the n-th prime (p₀ = 2). The bound follows from the Euclid recurrence p_{n+1} ≤ p₀p₁⋯pₙ + 1 by strong induction.",
+    "text": "The n-th prime is at most 2^(2ⁿ): Euclid's construction, made quantitative.",
+    "proofStrategy": "Three movements:\n1. **Euclid recurrence** (p_succ_le_prod): the Euclid number N = ∏_{i≤n} pᵢ + 1 is ≥ 2, so it has a prime factor q (`exists_prime_and_dvd`). That q is none of p₀,…,pₙ — each pᵢ divides the product, so if q = pᵢ then q ∣ N − ∏ = 1, impossible. Because Nat.nth Nat.Prime enumerates all primes in order, a prime outside the first n+1 primes has Nat.count Nat.Prime q ≥ n+1; monotonicity (`nth_le_nth`) then gives p_{n+1} ≤ q ≤ N.\n2. **Exponent telescoping** (prod_two_pow_two_pow): ∏_{i<k} 2^(2ⁱ) = 2^(2ᵏ − 1), since ∑_{i<k} 2ⁱ = 2ᵏ − 1.\n3. **Strong induction** (nth_prime_le_double_exp): the base case p₀ = 2 = 2^(2⁰); the step bounds the product termwise by the inductive hypothesis to get p_{m+1} ≤ 2^(2^{m+1} − 1) + 1 ≤ 2^(2^{m+1}), using 2^A = 2·2^(A−1).",
+    "keyInsights": [
+      "Euclid's argument is not merely an existence proof — iterating p_{n+1} ≤ p₀⋯pₙ + 1 yields an explicit doubly-exponential ceiling on the n-th prime",
+      "The delicate step is purely order-theoretic: a prime factor of the Euclid number cannot be among the first n+1 primes, and since Nat.nth enumerates primes in increasing order, it must therefore be at least the (n+1)-th prime",
+      "Mathlib's Nat.nth / Nat.count API (nth_count, nth_le_nth, nth_mem_of_infinite) is exactly the bridge between 'q is a prime outside a finite initial segment' and 'p_{n+1} ≤ q'",
+      "The product of bounds collapses by exponent addition: ∏_{i<k} 2^(2ⁱ) = 2^(∑ 2ⁱ) = 2^(2ᵏ − 1), so the +1 in the Euclid number is absorbed by 2^(2ᵏ−1) + 1 ≤ 2^(2ᵏ)",
+      "The bound is sharp enough to be meaningful (it certifies pₙ is computable within a doubly-exponential search) yet elementary — no analysis, no sieve"
+    ],
+    "prerequisites": [
+      "Divisibility and prime factors in ℕ",
+      "The n-th prime as Nat.nth Nat.Prime and the counting function Nat.count",
+      "Finite products and strong induction"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: the doubly-exponential bound, the Euclid recurrence engine, and the telescoping identity",
+      "startLine": 1,
+      "endLine": 63,
+      "mathContext": "pₙ = Nat.nth Nat.Prime n; goal pₙ ≤ 2^(2ⁿ) via p_{n+1} ≤ ∏_{i≤n} pᵢ + 1."
+    },
+    {
+      "id": "definition",
+      "title": "The n-th Prime",
+      "summary": "primes_infinite (the prime set is infinite), p n = Nat.nth Nat.Prime n, p_prime (each p n is prime), p_zero (p 0 = 2)",
+      "startLine": 64,
+      "endLine": 75,
+      "mathContext": "p enumerates the primes in increasing order: p 0 = 2, p 1 = 3, p 2 = 5, …"
+    },
+    {
+      "id": "euclid-recurrence",
+      "title": "Part I: The Euclid Recurrence",
+      "summary": "p_succ_le_prod: p_{n+1} ≤ ∏_{i≤n} pᵢ + 1, via a prime factor of the Euclid number lying outside the first n+1 primes (count ≥ n+1 ⇒ p_{n+1} ≤ q)",
+      "startLine": 77,
+      "endLine": 113,
+      "mathContext": "The Euclid number's prime factor q satisfies q ∉ {p₀,…,pₙ}, count q ≥ n+1, and p_{n+1} ≤ q ≤ ∏+1."
+    },
+    {
+      "id": "telescoping",
+      "title": "Part II: Exponent Telescoping",
+      "summary": "prod_two_pow_two_pow: ∏_{i<n} 2^(2ⁱ) = 2^(2ⁿ − 1), by induction collapsing the exponent sum ∑ 2ⁱ = 2ⁿ − 1",
+      "startLine": 115,
+      "endLine": 125,
+      "mathContext": "∏_{i<n} 2^(2ⁱ) = 2^(∑_{i<n} 2ⁱ) = 2^(2ⁿ − 1)."
+    },
+    {
+      "id": "main-bound",
+      "title": "Part III: The Doubly-Exponential Bound",
+      "summary": "nth_prime_le_double_exp: strong induction gives pₙ ≤ 2^(2ⁿ); base p₀ = 2, step p_{m+1} ≤ 2^(2^{m+1}−1)+1 ≤ 2^(2^{m+1})",
+      "startLine": 127,
+      "endLine": 154,
+      "mathContext": "Strong induction: termwise-bound the Euclid product, then 2^(A−1)+1 ≤ 2^A = 2·2^(A−1)."
+    },
+    {
+      "id": "restatement",
+      "title": "Part IV: Prime-Existence Restatement",
+      "summary": "exists_prime_doubly_exp_bound: there is a prime q greater than all earlier primes pₖ (k < n) with q ≤ 2^(2ⁿ)",
+      "startLine": 156,
+      "endLine": 163,
+      "mathContext": "The bound packaged as the existence of a prime exceeding the first n primes yet below 2^(2ⁿ)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry makes Euclid's infinitude proof quantitative: the n-th prime satisfies pₙ ≤ 2^(2ⁿ). The Euclid recurrence p_{n+1} ≤ p₀⋯pₙ + 1 — proved by showing a prime factor of the Euclid number lies beyond the first n+1 primes — drives a strong induction whose product of bounds telescopes to 2^(2ⁿ). All results are verified with 0 sorries and 0 axioms beyond Lean's foundations.",
+    "implications": "Turns the classical existence proof into an effective bound: pₙ is found within a doubly-exponential search. It complements the gallery's Euclid (N!+1) and Goldbach/Fermat (OQ-05) infinitude entries — OQ-05 even names this doubly-exponential bound for the Fermat prime factor, while here it is established for the genuine n-th prime, which is sharper. The same Nat.nth / Nat.count technique adapts to any setting where one bounds the next element of an increasing enumeration by a finite product of earlier ones.",
+    "openQuestions": [
+      "Sharpen the bound: Bonse's inequality gives pₙ₊₁² < p₁⋯pₙ for n ≥ 4, yielding pₙ ≤ 2^(2^{n}/2^{c}) improvements — can the Bonse route be formalized?",
+      "Prove the matching lower bound pₙ ≥ n+1 (or pₙ ≥ the n-th term of any explicit increasing prime sequence) to bracket the n-th prime elementarily",
+      "Relate the recurrence p_{n+1} ≤ p₀⋯pₙ + 1 to the Euclid–Mullin sequence and its open questions"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "infinitude-primes",
+      "relationship": "Parent theorem: the infinitude of primes (Euclid's proof), here made quantitative"
+    },
+    {
+      "id": "infinitude-primes-oq-05",
+      "relationship": "Sibling: Goldbach's Fermat-number proof, whose openQuestions name this doubly-exponential bound"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Data.Nat.PrimeFin",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "InfinitudePrimesOQ06",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/InfinitudePrimesOQ06.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book IX, Proposition 20 (infinitude of primes)",
+      "year": "c. 300 BCE",
+      "venue": "Classical"
+    },
+    {
+      "authors": "Martin Aigner, Günter M. Ziegler",
+      "title": "Proofs from THE BOOK — Six proofs of the infinity of primes",
+      "year": "2018",
+      "venue": "Springer"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "extends",
+      "description": "Adds the explicit bound pₙ ≤ 2^(2ⁿ) to Euclid's qualitative infinitude theorem."
+    },
+    {
+      "targetId": "infinitude-primes-oq-05",
+      "relationship": "sibling",
+      "description": "OQ-05 (Goldbach/Fermat) names the doubly-exponential bound for the Fermat prime factor; this entry proves it for the actual n-th prime."
+    }
+  ],
+  "sorries": 0
+}

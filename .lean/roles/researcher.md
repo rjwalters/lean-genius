@@ -214,6 +214,24 @@ Generate 1-2 strong follow-up questions. Apply quality criteria:
 
 If no strong follow-up exists, generate 0 questions. This is preferable to weak proposals.
 
+**OQ-chain depth guard (MANDATORY).** Follow-up questions become child gallery
+entries via the Seeker (`<parent>-oq-NN`), which can recurse without bound. Before
+proposing any follow-up:
+
+```bash
+# Count -oq- segments already in the current problem's slug.
+OQ_DEPTH=$(echo "$SLUG" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
+```
+
+- **If the current problem is already at depth ≥ 3** (its slug already contains 3 or
+  more `-oq-` segments), generate **0** follow-up questions. A depth-4 child would
+  exceed the cap and the Seeker will refuse to spawn it anyway.
+- **Never** propose a follow-up that merely re-asks the same question the current
+  problem answers (this is what produces degenerate `-oq-01-oq-01-oq-01…` loops).
+  A follow-up must open a genuinely new direction, not recurse on the same index.
+- Keep chains shallow: prefer broadening back toward the original gallery entry
+  (new sibling questions) over drilling deeper into an already-deep OQ descendant.
+
 ### Work Categories
 
 | Decision | Criteria | Action |

@@ -67,7 +67,7 @@
       "sum_card_fixedBy_eq_card_orbits_mul_card_group_of_finite: the Finite generalisation of Mathlib's Burnside lemma, stated with `finsum` (∑ᶠ) and the instance-free `Nat.card` so that no constructive Fintype instances appear in the hypotheses. Proved by transporting cardinalities along the finiteness-free bijection sigmaFixedByEquivOrbitsProdGroup, rather than by re-deriving the orbit count.",
       "sum_card_fixedBy_eq_card_orbits_mul_card_group_recovered: recovers Mathlib's exact Fintype-form statement as a special case of the Finite generalisation, certifying that the generalised lemma genuinely subsumes the original (supplying the Fintype instances and unfolding Nat.card to Fintype.card returns the bundled Mathlib lemma)."
     ],
-    "assumptions": "0 sorries. 0 axiom declarations. 0 structure-encoded assumptions. The proof closes through the Mathlib API and uses `nonempty_fintype` (Classical.choice) only to extract a non-constructive Fintype witness; the dependency footprint is the standard Mathlib triple (Classical.choice, propext, Quot.sound), which does not count toward the axiom budget. BUILD STATUS: the local Docker Lean toolchain was unavailable at authoring time, so the file has been verified at the Mathlib-source level (every lemma name, signature, and instance path checked against the pinned .lake/packages/mathlib checkout) but not yet machine-compiled. The deployer/auditor build gate is the final verification step.",
+    "assumptions": "0 sorries. 0 axiom declarations. 0 structure-encoded assumptions. The proof closes through the Mathlib API and uses `nonempty_fintype` (Classical.choice) only to extract a non-constructive Fintype witness; the dependency footprint is the standard Mathlib triple (Classical.choice, propext, Quot.sound), which does not count toward the axiom budget. The file has been machine-compiled clean (`#print axioms` on both theorems = [propext, Classical.choice, Quot.sound]); the build was confirmed during the corollary-finiteness repair (PR #26972) that derives the `Finite X` instance inside the proof rather than assuming it.",
     "additionalFiles": []
   },
   "overview": {
@@ -90,6 +90,36 @@
       "**Finite vs Fintype** — `nonempty_fintype : Finite α → Nonempty (Fintype α)` and the `Subtype.finite` instance, which together let a `Finite` hypothesis discharge every `Fintype`/`Finite` obligation in the proof."
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Burnside off Fintype",
+      "startLine": 6,
+      "endLine": 54,
+      "summary": "Module docstring: poses the parent's OQ-02 (generalise Mathlib's Fintype-form Burnside lemma to Finite), states the finsum/Nat.card generalisation, and explains why the proof lifts unchanged — the orbit-counting content is the finiteness-free bijection sigmaFixedByEquivOrbitsProdGroup."
+    },
+    {
+      "id": "setup",
+      "title": "Setup",
+      "startLine": 56,
+      "endLine": 60,
+      "summary": "namespace BurnsideFinite, open MulAction, and an abstract group action G ↷ X with no finiteness on the variables (added per theorem)."
+    },
+    {
+      "id": "finite-form",
+      "title": "The Finite generalisation",
+      "startLine": 62,
+      "endLine": 82,
+      "summary": "sum_card_fixedBy_eq_card_orbits_mul_card_group_of_finite: ∑ᶠ g, Nat.card (fixedBy X g) = Nat.card (X/G) · Nat.card G, proved in four rewrites of the finiteness-free bijection (nonempty_fintype G, finsum_eq_sum_of_fintype, ← Nat.card_sigma, Nat.card_congr, Nat.card_prod)."
+    },
+    {
+      "id": "recovered",
+      "title": "Recovering the Fintype form",
+      "startLine": 84,
+      "endLine": 109,
+      "summary": "sum_card_fixedBy_eq_card_orbits_mul_card_group_recovered: recovers Mathlib's exact Fintype statement as a corollary (Finite X is derived via selfEquivSigmaOrbits, then Nat.card_eq_fintype_card converts), certifying the generalisation subsumes the original and is upstream-ready."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01.lean",
     "namespace": "BurnsideFinite",

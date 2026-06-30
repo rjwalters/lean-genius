@@ -340,8 +340,9 @@ classify_error() {
     # wrapper rotates instead of pinning to the dead account for 300s ticks:
     #   - "hit your limit"                              (legacy short form)
     #   - "You've hit your org's monthly usage limit"   (org cap; multi-word gap defeats `hit.your.limit`)
+    #   - "You've hit your weekly limit · resets …"     (weekly cap; same multi-word gap)
     #   - "You're out of extra usage · resets …"        (session/extra-usage cap)
-    if echo "$output" | grep -qi "hit your limit\|monthly usage limit\|out of extra usage"; then
+    if echo "$output" | grep -qi "hit your limit\|monthly usage limit\|weekly limit\|out of extra usage"; then
         echo "TOKEN_EXHAUSTED"
         return
     fi

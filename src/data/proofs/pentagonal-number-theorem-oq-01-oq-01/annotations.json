@@ -1,0 +1,86 @@
+[
+  {
+    "id": "pent-oq0101-header",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "concept",
+    "title": "The open question: from an injective index map to an ordered enumeration",
+    "content": "The parent entry built the ℤ-indexed index theory of the generalized pentagonal numbers g(k)=k(3k-1)/2 — the recognition criterion, injectivity of k ↦ g(k), nonnegativity, concrete values. What it does NOT record is the ORDER: the index map g : ℤ → ℤ is injective but neither monotone nor surjective onto an interval, so g(n) is not the n-th pentagonal number. The pentagonal numbers as a SET carry a canonical strictly-increasing enumeration 0,1,2,5,7,12,15,22,26,… (OEIS A001318) obtained by interleaving the two arms g(k) (k ≥ 1) and g(-k) (k ≥ 1) around g(0)=0. This file constructs that enumeration gpAt and proves it is a strictly-increasing bijection onto the pentagonal set — so gpAt n really is the n-th smallest generalized pentagonal number.",
+    "mathContext": "$g:\\mathbb{Z}\\to\\mathbb{Z}$ injective but not monotone; the set $\\{g(k)\\}$ enumerated in order is OEIS A001318.",
+    "significance": "key",
+    "relatedConcepts": ["generalized pentagonal numbers", "OEIS A001318", "strictly monotone enumeration", "order isomorphism", "interleaving of arms"],
+    "prerequisites": ["the parent index theory", "strict monotonicity on ℕ"]
+  },
+  {
+    "id": "pent-oq0101-imports",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-01",
+    "range": { "startLine": 41, "endLine": 48 },
+    "type": "context",
+    "title": "Imports and the parent namespace",
+    "content": "Brings in Mathlib and the parent file Proofs.PentagonalNumberTheoremOQ01, then opens the parent namespace PentagonalNumberTheoremOQ01 so its lemmas — genPent, IsGenPent, two_mul_genPent, genPent_neg, genPent_isGenPent, isGenPent_iff_isSquare — are available unqualified. The entire enumeration is a thin order-theoretic layer over the parent's already-proved algebraic facts; no new number theory is introduced.",
+    "mathContext": "Parent engine: $2\\,g(k) = k(3k-1)$ (two_mul_genPent) and $g(-k) = g(k)+k$ (genPent_neg).",
+    "significance": "context",
+    "relatedConcepts": ["namespace import", "dependency reuse", "Mathlib"],
+    "prerequisites": ["Lean 4 imports", "namespaces"]
+  },
+  {
+    "id": "pent-oq0101-gap-ordering",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 75 },
+    "type": "insight",
+    "title": "Three inequalities: the forward gap and the ±k pair",
+    "content": "The whole enumeration rests on three integer inequalities. genPent_succ_sub gives the exact forward gap g(k+1)-g(k)=3k+1 as a single linear_combination of the parent's two_mul_genPent at k and k+1. The parent's pairing genPent_neg (g(-k)=g(k)+k) then yields genPent_lt_genPent_neg: g(k) < g(-k) for k ≥ 1 (their difference is exactly k, so the ±k pair is ordered with the negative arm above the positive). Combining the pairing with the gap gives genPent_neg_lt_genPent_succ: g(-k) < g(k+1) for k ≥ 0 (difference 2k+1 ≥ 1, so the arms interleave). These two inequalities are precisely the consecutive-step facts the monotonicity proof consumes.",
+    "mathContext": "$g(-k)-g(k)=k$ (ordered pair); $g(k+1)-g(-k)=(3k+1)-k=2k+1$ (interleaving step).",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination", "forward difference", "±k pairing genPent_neg", "interleaving"],
+    "prerequisites": ["integer inequalities", "the doubling relation 2g(k)=k(3k-1)"]
+  },
+  {
+    "id": "pent-oq0101-gpat-strictmono",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-01",
+    "range": { "startLine": 77, "endLine": 124 },
+    "type": "insight",
+    "title": "The enumeration gpAt and the headline strict monotonicity",
+    "content": "gpAt encodes the interleaving by the parity of the index: even position 2j carries the negative arm g(-j), odd position 2j+1 carries the positive arm g(j+1) (so gpAt 0 = g(0)). The reduction lemmas gpAt_even and gpAt_odd discharge the ℕ↔ℤ cast and n%2/n/2 bookkeeping once. The headline gpAt_strictMono uses strictMono_nat_of_lt_succ to reduce monotonicity to gpAt n < gpAt (n+1), then Nat.even_or_odd splits: the even step 2j → 2j+1 is the interleaving inequality g(-j) < g(j+1), the odd step 2j+1 → 2j+2 is the ordered-pair inequality g(j+1) < g(-(j+1)). Strict monotonicity immediately gives gpAt_injective via StrictMono.injective, and gpAt_isGenPent confirms every enumerated value is a generalized pentagonal number.",
+    "mathContext": "even $2j\\mapsto g(-j)$, odd $2j+1\\mapsto g(j+1)$; consecutive steps dispatch to the two Part-1 inequalities.",
+    "significance": "key",
+    "relatedConcepts": ["strictMono_nat_of_lt_succ", "Nat.even_or_odd", "StrictMono.injective", "parity encoding"],
+    "prerequisites": ["strict monotonicity of ℕ-sequences", "even/odd case analysis"]
+  },
+  {
+    "id": "pent-oq0101-rank-surjectivity",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-01",
+    "range": { "startLine": 126, "endLine": 180 },
+    "type": "technique",
+    "title": "The inverse rank gpRank and surjectivity",
+    "content": "isGenPent_exists_index extracts from the parent's doubling relation that every generalized pentagonal number is g(k) for an explicit index k (cancelling the factor 2 via mul_left_cancel₀). gpRank then names the position of g(k) — positive indices land on odd positions 2(k-1)+1, nonpositive indices on even positions 2(-k) — and gpAt_gpRank proves gpAt (gpRank k) = g(k), so the rank genuinely inverts the enumeration on values (the Int.toNat_of_nonneg bookkeeping reconciles the ℕ-valued rank with the ℤ-index). Composing the two gives exists_gpAt_eq (surjectivity) and hence range_gpAt: Set.range gpAt = {m | IsGenPent m} — the enumeration hits exactly the parent's recognized set.",
+    "mathContext": "$\\mathrm{gpRank}(k) = 2(k-1)+1$ for $k\\ge 1$, $2(-k)$ for $k\\le 0$; $\\mathrm{gpAt}(\\mathrm{gpRank}\\,k)=g(k)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.toNat_of_nonneg", "mul_left_cancel₀", "left inverse on values", "surjectivity"],
+    "prerequisites": ["ℤ↔ℕ casts", "the parent's membership predicate IsGenPent"]
+  },
+  {
+    "id": "pent-oq0101-capstone",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-01",
+    "range": { "startLine": 181, "endLine": 198 },
+    "type": "insight",
+    "title": "Capstone: a strictly-increasing bijection, bridged to 24m+1=□",
+    "content": "gpAt_enumerates bundles StrictMono gpAt with Set.range gpAt = {m | IsGenPent m}: the generalized pentagonal numbers are precisely the values of a strictly-increasing sequence, so gpAt is an order isomorphism onto them and gpAt n is the n-th smallest. mem_range_gpAt_iff_isSquare then composes surjectivity with the parent's recognition criterion isGenPent_iff_isSquare, giving the directly-usable statement that a number occurs in the enumeration iff 24m+1 is a perfect square — uniting the order viewpoint of this entry with the square-discriminant viewpoint of the parent.",
+    "mathContext": "$\\mathrm{StrictMono}\\,\\mathrm{gpAt}\\ \\wedge\\ \\mathrm{range}\\,\\mathrm{gpAt}=\\{m\\mid \\mathrm{IsGenPent}\\,m\\}$; occurrence $\\iff 24m+1=s^2$.",
+    "significance": "key",
+    "relatedConcepts": ["order isomorphism", "bijection", "square-discriminant criterion", "n-th smallest"],
+    "prerequisites": ["range of a function", "the parent's isGenPent_iff_isSquare"]
+  },
+  {
+    "id": "pent-oq0101-values",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-01",
+    "range": { "startLine": 199, "endLine": 204 },
+    "type": "context",
+    "title": "OEIS A001318 sanity check and axiom status",
+    "content": "gpAt_values checks the first seven terms gpAt 0..6 = 0,1,2,5,7,12,15 against OEIS A001318 by kernel decide (not native_decide, so no Lean.ofReduceBool). The entry is honestly badged original / verified with axiomCount 0: 0 sorries, 0 axiom declarations, no structure-encoded hypotheses, and the headline theorems gpAt_strictMono, gpAt_enumerates, range_gpAt, mem_range_gpAt_iff_isSquare each #print axioms to only [propext, Classical.choice, Quot.sound]. The file compiles cleanly against Mathlib 4.26.0.",
+    "mathContext": "Axioms: $\\{\\text{propext},\\ \\text{Classical.choice},\\ \\text{Quot.sound}\\}$ only; kernel decide, no ofReduceBool.",
+    "significance": "context",
+    "relatedConcepts": ["OEIS A001318", "kernel decide vs native_decide", "axiom integrity", "#print axioms"],
+    "prerequisites": ["Lean decide tactic", "trusted kernel"]
+  }
+]
