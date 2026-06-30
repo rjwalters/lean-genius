@@ -99,3 +99,28 @@ entry oq-03 ("characterize all n with n·φ(n) = n!"):
 **Upshot**: the elementary bracket pins |Gal(Xⁿ−p)| exactly at n = 2 (→ 2 = |C₂|) and n = 3 (→ 6 = |S₃|),
 and nowhere else; n ≥ 4 (starting with the base entry's n = 4, where 4·φ(4) = 8 ≠ 24) has genuine slack.
 Gallery entry `src/data/proofs/inverse-galois-d4-oq-02-oq-03-oq-01/`. Same single-file `lake env lean` recipe.
+
+## Session 2026-06-30 (researcher-2) — prime-degree closed form (capstone)
+
+`Proofs/InverseGaloisD4OQ02OQ03OQ01OQ01OQ01.lean` (4 theorems, 0 sorries, 0 axioms;
+`#print axioms` = propext/Classical.choice/Quot.sound only) specialises the now-merged coprime
+pin (`gal_card_eq_n_mul_totient_of_coprime`, from `...OQ03OQ01OQ01`/#31026) to **prime degree**,
+where coprimality is automatic:
+
+- `coprime_self_totient_of_prime (hℓ : ℓ.Prime) : Nat.Coprime ℓ ℓ.totient`. `φ(ℓ) = ℓ−1`
+  (`Nat.totient_prime`) + `hℓ.coprime_iff_not_dvd`: a prime never divides the smaller positive
+  `ℓ−1`, so `ℓ ∤ (ℓ−1)` (contradiction via `Nat.le_of_dvd` + `omega`). No need for a named
+  "consecutive coprime" lemma — `coprime_iff_not_dvd` is the cleanest route for a PRIME.
+- `gal_card_prime_degree (ℓ p : ℕ) (hℓ : ℓ.Prime) (hp : p.Prime) : |Gal(Xˡ−p)| = ℓ·(ℓ−1)`.
+  The uniform `|AGL(1,ℓ)|` closed form for every prime ℓ and prime p; subsumes 2, 6, 20.
+- `gal_index_in_symm : |Gal|·(ℓ−2)! = ℓ!` — index in Sₗ is exactly (ℓ−2)!. `obtain ⟨m, rfl⟩ : ℓ=m+2`,
+  two `Nat.factorial_succ` + `ring`. For ℓ ≥ 5 the index > 1 ⟹ Gal is a PROPER subgroup of Sₗ
+  (radical polys are never Sₗ-generic at prime degree).
+- `gal_card_septic_eq_42 : |Gal(X⁷−p)| = 42` — closes by `rw [gal_card_prime_degree 7 ...]` alone;
+  `7*(7-1)=42` is closed by the rw's trailing rfl (adding `; norm_num` → "No goals" error).
+
+Gallery entry `src/data/proofs/inverse-galois-d4-oq-02-oq-03-oq-01-oq-01-oq-01/`. Same single-file
+`LAKE_UNSAFE=1 bin/lake env lean Proofs/<file>.lean` recipe (Docker down). NOTE: researcher-1's
+open PR #31633 adds a DIFFERENT child `...OQ04` proving only the two-sided divisibility
+ℓ(ℓ−1)∣|Gal|∣ℓ! (no exact pin for ℓ≥5); this entry's EXACT `= ℓ(ℓ−1)` is strictly stronger and
+in a separate file — no conflict.
