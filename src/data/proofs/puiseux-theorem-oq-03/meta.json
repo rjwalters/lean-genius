@@ -51,11 +51,14 @@
       "zipWith_edgeSlopes_edgeWidths: along a chain of lower edges the elementwise product of the edgeSlopes and edgeWidths lists equals the edgeDrops list — the list-level coupling of valuations and multiplicities",
       "sum_slope_mul_width: CAPSTONE bookkeeping identity — Σ (edgeSlopeᵢ · widthᵢ) telescopes to the total vertical drop (last).2 − (first).2 across the polygon",
       "neg_sum_slope_mul_width: Σ (root valuationᵢ · multiplicityᵢ) = v(constant) − v(leading) — the valuation of the product of all roots, read off the two endpoints; the multiplicative counterpart of sum_edgeWidths_eq_degree",
-      "Worked three-vertex example: zipWith products [-2,1] sum to -1 = drop from (0,2) to (3,1) (threeVertex_sum_slope_mul_width)"
+      "Worked three-vertex example: zipWith products [-2,1] sum to -1 = drop from (0,2) to (3,1) (threeVertex_sum_slope_mul_width)",
+      "Analytic-bridge layer (PuiseuxSeries K := HahnSeries ℚ K + addVal): puiseuxMonomial/puiseuxVal_monomial (v(x^q)=q), the Y²−x worked ramified root (ysqMinusX_root_valuation, v(x^{1/2})=½ matching the polygon edge slope), and puiseuxVal_not_integer (the ramification is real — ½ ∉ ℤ)",
+      "Full ramified-root family: puiseuxMonomial_pow ((x^q)^n = x^{n·q}) and puiseuxMonomial_mul (x^p·x^q = x^{p+q}, so q ↦ x^q embeds (ℚ,+)); nthRoot_x + nthRoot_valuation + exists_nthRoot_of_x — for EVERY n ≥ 1, x^{1/n} is an n-th root of x with valuation 1/n, generalizing the n=2 instance to every ramification index",
+      "puiseuxVal_surjective: the value group is all of ℚ — every rational q is the valuation of the monomial x^q; the precise sense in which HahnSeries ℚ K is fully ramified over the Laurent base K⸨x⸩ (value group ℤ)"
     ],
     "dateAdded": "2026-06-27",
-    "lineCount": 684,
-    "theoremCount": 39,
+    "lineCount": 1260,
+    "theoremCount": 66,
     "definitionCount": 8,
     "mathlib_version": "4.26.0"
   },
@@ -245,9 +248,9 @@
       "Mathlib.Data.List.Sort"
     ],
     "namespace": "PuiseuxTheoremOQ03",
-    "lineCount": 1207,
+    "lineCount": 1260,
     "axiomCount": 0,
-    "theoremCount": 60,
+    "theoremCount": 66,
     "definitionCount": 11,
     "path": "Proofs/PuiseuxTheoremOQ03.lean",
     "sorries": 0
