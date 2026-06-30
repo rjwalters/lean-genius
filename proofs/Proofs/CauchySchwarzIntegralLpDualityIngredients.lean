@@ -394,6 +394,33 @@ theorem lpDualNorm_eq_of_lintegral_ne_top {p q : ℝ} (hpq : p.HolderConjugate q
       (le_iSup_of_le (measurable_normalizedExtremizer hg).aemeasurable
         (le_iSup_of_le hf_norm.le (le_refl _)))
 
+/-- **Monotonicity of the dual norm in `g`.** If `g₁ ≤ g₂` pointwise then every dual
+    pairing `∫⁻ f·g₁` is dominated by `∫⁻ f·g₂` (same admissible `f`), so the supremum
+    is monotone: `lpDualNorm p g₁ ≤ lpDualNorm p g₂`. This is the tool that transports
+    the finite-seminorm dual-norm identity to lower truncations of an arbitrary `g`. -/
+theorem lpDualNorm_mono {p : ℝ} {g₁ g₂ : α → ℝ≥0∞} (h : ∀ x, g₁ x ≤ g₂ x) :
+    lpDualNorm p μ g₁ ≤ lpDualNorm p μ g₂ := by
+  refine iSup_le fun f => iSup_le fun hf => iSup_le fun hfp => ?_
+  refine le_trans (lintegral_mono fun x => mul_le_mul' (le_refl _) (h x)) ?_
+  exact le_iSup_of_le f (le_iSup_of_le hf (le_iSup_of_le hfp (le_refl _)))
+
+/-- **Lower bound on the dual norm from a finite-seminorm truncation.** For any
+    measurable `h ≤ g` with `∫⁻ hᵠ ≠ ∞`, the dual norm of `g` is at least the
+    Lᵠ-seminorm of `h`:
+
+      `(∫⁻ hᵠ)^{1/q} ≤ lpDualNorm p g`.
+
+    Combine `lpDualNorm_mono` (`h ≤ g`) with the finite-case identity
+    `lpDualNorm_eq_of_lintegral_ne_top` applied to `h`. This is the engine for the
+    `g ∉ Lᵠ` direction: as `h` ranges over truncations of `g` with `∫⁻ hᵠ ↑ ∫⁻ gᵠ`,
+    the right side is forced up to `(∫⁻ gᵠ)^{1/q}`. -/
+theorem lpDualNorm_ge_of_le {p q : ℝ} (hpq : p.HolderConjugate q)
+    {g h : α → ℝ≥0∞} (hh : Measurable h) (hle : ∀ x, h x ≤ g x)
+    (hhtop : (∫⁻ x, (h x) ^ q ∂μ) ≠ ∞) :
+    (∫⁻ x, (h x) ^ q ∂μ) ^ (1 / q) ≤ lpDualNorm p μ g := by
+  rw [← lpDualNorm_eq_of_lintegral_ne_top hpq hh hhtop]
+  exact lpDualNorm_mono hle
+
 end RieszLpDualityIngredients
 
 end
