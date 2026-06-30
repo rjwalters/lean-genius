@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: §24 suffix transfer of the §23 period-6 leading-1 law via the §16 reversal bridge; 1-run boundaries of a general quotient word now period-6 classified at both ends. Open 1/12 constant: interior junction aggregation still the hard step.",
+    "progressSummary": "PROGRESS: §29 pins the equality locus of §28 product ceiling — strict K < ∏kᵢ for length ≥ 2, equality ⟺ length ≤ 1, with a quantitative deficit ≥ trailing continuant. Sharp-boundary companion to §20. Open 1/12 constant still governed by the small-quotient (d=2) regime, untouched.",
     "builtItems": [
       "unimodular_iterate_left/right (Erdos1005ProblemOQ02.lean §6): k-fold one-sided mediant insertion stays unimodular, a/b<(k·a+c)/(k·b+d); proved by scale-invariance of bc=ad+1 (no induction)",
       "denom_ge_iterate_left/right (Erdos1005ProblemOQ02.lean §6): depth-k interior denominator bound q ≥ (k+1)·b+d, LINEAR in depth",
@@ -61,7 +61,11 @@
       "§23 continuant_replicate_one_append_period/_six_mul/_mod — period-6 corollaries, K(1ʲ++ks) depends only on j%6 for every tail",
       "§23 continuant_replicate_one_append_orbit — full if-then-else closed form by j%6 selecting [K,K−s,−s,−K,s−K,s]; generalises continuant_replicate_one_mod",
       "§23 continuant_replicate_one_append_pos_iff / _ne_zero — sign classification on nonempty all-≥2 tail: >0 iff j%6∈{0,1,5}, never 0. [verified, 0-axiom]",
-      "§24 continuant_append_replicate_one_orbit/_pos_iff/_ne_zero (Erdos1005ProblemOQ02.lean §24): trailing-1 period-6 law via §16 reversal bridge — K(ks++1ʲ)=K(1ʲ++ks.reverse), same j≡0,1,5(mod6) positivity residues as §23, reversal-invariant membership"
+      "§24 continuant_append_replicate_one_orbit/_pos_iff/_ne_zero (Erdos1005ProblemOQ02.lean §24): trailing-1 period-6 law via §16 reversal bridge — K(ks++1ʲ)=K(1ʲ++ks.reverse), same j≡0,1,5(mod6) positivity residues as §23, reversal-invariant membership",
+      "continuant_prod_deficit (Erdos1005ProblemOQ02.lean §29): secondCont rest ≤ (k::rest).prod − Continuant(k::rest) for all-≥2",
+      "continuant_lt_prod (§29): |ks|≥2 ∧ all-≥2 ⟹ Continuant ks < ks.prod (strict §28 ceiling)",
+      "continuant_eq_prod_iff (§29): all-≥2 ⟹ (Continuant ks = ks.prod ⟺ ks.length ≤ 1)",
+      "continuant_lt_prod_example (§29): K[3,3]=8 < 9, deficit 1 = secondCont[3]"
     ],
     "insights": [
       "CORRECTION: the roadmap heuristic that the order-n cap forces O(log n) refinement depth is FALSE for arbitrary mediant chains. The one-sided chain 0/1,1/2,1/3,…,1/n fits Θ(n) levels under q≤n with only LINEAR denominator growth (k+1)·b+d.",
@@ -82,7 +86,9 @@
       "§23 orbit closed form: K(1ʲ++ks) cycles through [K, K−s, −s, −K, s−K, s] (s=secondCont ks) by j%6. Substituting ks=[] (K=1,s=0) recovers §21 orbit 1,1,0,−1,−1,0 EXACTLY; j%6=1,2 recover the §22 closed forms — §21 and §22 are the two specialisations of one periodic law.",
       "§23 sign law (nonempty all-≥2 tail): the §17 invariant 0<secondCont ks<K(ks) fixes every orbit sign — K(1ʲ++ks)>0 iff j≡0,1,5 (mod 6), <0 iff j≡2,3,4, NEVER 0. §22 (at most one leading 1 stays positive) is the j≤2 window of this period-6 alternation; the empty-tail zeros of §21 are an artefact of ks=[].",
       "The period-6 leading-1 rotation (§23) brackets a large-quotient block on BOTH ends identically: trailing 1s reduce to leading 1s on the reversed tail via continuant_reverse, transferring the entire orbit and the IDENTICAL sign classification at zero arithmetic cost",
-      "Session 2026-06-30 (researcher-2): §26 quotient-weighted continuant growth. continuant_ge_length_weighted (d≥2, entries≥d): (d-1)|ks|+1 ≤ Continuant ks — sharpens §17's slope-1 bound to slope (d-1). Corollary continuant_run_length_le: a continuant ceiling N caps run length at |ks| ≤ (N-1)/(d-1), the targeted O(n/d) bound (first d-sensitive run-length cap). Integrality (secondCont+1 ≤ Continuant) is essential — equality is attained. 0-axiom docker-verified [3058/3058]. Still open: the order-n continuant ceiling + admissible-list count (the 1/12-1/4 density step)."
+      "Session 2026-06-30 (researcher-2): §26 quotient-weighted continuant growth. continuant_ge_length_weighted (d≥2, entries≥d): (d-1)|ks|+1 ≤ Continuant ks — sharpens §17's slope-1 bound to slope (d-1). Corollary continuant_run_length_le: a continuant ceiling N caps run length at |ks| ≤ (N-1)/(d-1), the targeted O(n/d) bound (first d-sensitive run-length cap). Integrality (secondCont+1 ≤ Continuant) is essential — equality is attained. 0-axiom docker-verified [3058/3058]. Still open: the order-n continuant ceiling + admissible-list count (the 1/12-1/4 density step).",
+      "§29: The §28 product ceiling K ≤ ∏kᵢ is tight ONLY at depths |ks| ≤ 1 (K[]=1=∏[], K[k]=k=∏[k]); strict for |ks| ≥ 2. Equality locus characterized: continuant_eq_prod_iff ⟺ length ≤ 1.",
+      "§29: Quantitative deficit — the product overshoots the continuant by AT LEAST the trailing continuant of the tail: secondCont rest ≤ (k::rest).prod − Continuant(k::rest), since residual k·(∏rest−K rest) ≥ 0 by §28 continuant_le_prod. The minus-continuant pays an accumulated-trailing-continuant loss vs the naive product."
     ],
     "mathlibGaps": [],
     "nextSteps": [
