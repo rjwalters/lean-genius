@@ -281,4 +281,69 @@ theorem construction2_sum_card (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ k) :
   rw [Nat.card_Ico]
   omega
 
+/-! ### 8. Window sandwich: `construction2` between `k − 1` copies of its endpoint summands.
+
+The §7 closed form writes `construction2 n r k` as a sum of exactly `k − 1`
+binomials `C(j, r−1)` with `j` ranging over the window `[n−k+1, n)`
+(`construction2_eq_sum`, `construction2_sum_card`). Because `C(·, r−1)` is monotone
+in its first argument, every summand lies between the two window endpoints
+`C(n−k+1, r−1)` (smallest) and `C(n−1, r−1)` (largest). Summing the `k − 1` terms
+gives a clean two-sided bound,
+
+  `(k−1)·C(n−k+1, r−1) ≤ construction2 n r k ≤ (k−1)·C(n−1, r−1)`,
+
+which sandwiches the difference-of-binomials between equal-width multiples of its
+endpoint binomials. For `k ≥ 2` the window is nonempty, so the top summand alone
+already gives `C(n−1, r−1) ≤ construction2 n r k` — the degree-`(r−1)` polynomial
+growth in `n` that eventually drives `construction2` past the constant
+`construction1` and produces the large-`n` regime. -/
+
+/-- Lower half of the window sandwich: every summand is at least the smallest
+    endpoint `C(n−k+1, r−1)`, and there are `k − 1` of them. -/
+theorem construction2_window_lb (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 1) (hn : n ≥ k) :
+    (k - 1) * Nat.choose (n - k + 1) (r - 1) ≤ construction2 n r k := by
+  rw [construction2_eq_sum n r k hr hk hn]
+  have hcard : (Finset.Ico (n - k + 1) n).card = k - 1 := construction2_sum_card n k hk hn
+  have hmin : ∀ j ∈ Finset.Ico (n - k + 1) n,
+      Nat.choose (n - k + 1) (r - 1) ≤ Nat.choose j (r - 1) := by
+    intro j hj
+    rw [Finset.mem_Ico] at hj
+    exact Nat.choose_le_choose (r - 1) hj.1
+  have h := Finset.card_nsmul_le_sum _ _ _ hmin
+  rw [hcard] at h
+  simpa using h
+
+/-- Upper half of the window sandwich: every summand is at most the largest
+    endpoint `C(n−1, r−1)`, and there are `k − 1` of them. -/
+theorem construction2_window_ub (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 1) (hn : n ≥ k) :
+    construction2 n r k ≤ (k - 1) * Nat.choose (n - 1) (r - 1) := by
+  rw [construction2_eq_sum n r k hr hk hn]
+  have hcard : (Finset.Ico (n - k + 1) n).card = k - 1 := construction2_sum_card n k hk hn
+  have hmax : ∀ j ∈ Finset.Ico (n - k + 1) n,
+      Nat.choose j (r - 1) ≤ Nat.choose (n - 1) (r - 1) := by
+    intro j hj
+    rw [Finset.mem_Ico] at hj
+    exact Nat.choose_le_choose (r - 1) (by omega)
+  have h := Finset.sum_le_card_nsmul _ _ _ hmax
+  rw [hcard] at h
+  simpa using h
+
+/-- For `k ≥ 2` the window `[n−k+1, n)` contains its top point `n − 1`, so the
+    largest summand `C(n−1, r−1)` alone is a lower bound for `construction2`.
+    This is the degree-`(r−1)` growth driving the large-`n` regime: a single
+    binomial of full degree already sits below the conjectured extremal value. -/
+theorem construction2_ge_top_summand (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 2) (hn : n ≥ k) :
+    Nat.choose (n - 1) (r - 1) ≤ construction2 n r k := by
+  rw [construction2_eq_sum n r k hr (by omega) hn]
+  refine Finset.single_le_sum (f := fun j => Nat.choose j (r - 1)) (fun i _ => Nat.zero_le _) ?_
+  rw [Finset.mem_Ico]; omega
+
+/-- Worked instance `r = 4, k = 2`: the window has a single point (`k − 1 = 1`),
+    so the sandwich is tight — both bounds equal `C(n−1, 3) = construction2 n 4 2`.
+    At `n = 8` this is `C(7, 3) = 35`, the crossover value `construction1 4 2`. -/
+example : construction2 8 4 2 = Nat.choose 7 3 := by decide
+
+/-- The top-summand bound, concretely at the crossover: `C(7, 3) = 35 ≤ construction2 8 4 2`. -/
+example : Nat.choose 7 3 ≤ construction2 8 4 2 := by decide
+
 end Erdos1020OQ02

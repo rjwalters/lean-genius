@@ -29,11 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED (0-axiom). Created gallery entry erdos-1020-oq-02 + Proofs/Erdos1020OQ02.lean. Did NOT resolve the open gap (Erdős Matching Conjecture, OPEN r≥4); instead formalized the unconditional structure of the small-n/large-n regime transition of the conjectured value max(construction1, construction2): construction2 monotone in n (Pascal telescoping), dominance region upward-closed (single threshold), conjecturedValue monotone, collapse on each side. Worked instance r=4,k=2 crossover at n=8 by kernel decide. [Session 2] Added 3 verified theorems sharpening the transition: construction2_step_eq (EXACT step difference = C(n,r-1)-C(n-k+1,r-1), the equality behind the old inequality), construction2_strict_mono_step (strict refinement), and crossover_r4k2 — the SHARP crossover threshold for r=4,k=2: construction1 4 2 ≤ construction2 n 4 2 ⇔ 8 ≤ n (n₀=8). All 0-axiom (decide, not native_decide). File now 232 lines, 9 theorems.",
+    "progressSummary": "VERIFIED (0-axiom). §8 window sandwich: construction2 n r k between (k−1) copies of its endpoint binomial summands — (k−1)·C(n−k+1,r−1) ≤ construction2 ≤ (k−1)·C(n−1,r−1) — plus construction2_ge_top_summand (k≥2 ⟹ C(n−1,r−1) ≤ construction2, the degree-(r−1) growth driving the large-n regime). Builds on §7 closed form. Still OPEN: the Erdős Matching Conjecture middle band (r≥4).",
     "builtItems": [
       "Proofs/Erdos1020OQ02.lean (165 lines, 0 axioms, 0 sorries, verified): construction2_mono_step, construction2_mono, construction2_dominant_up, conjecturedValue_mono, conjecturedValue_large, conjecturedValue_small + 5 kernel-decide crossover examples.",
       "Gallery entry src/data/proofs/erdos-1020-oq-02/ (meta.json + annotations.json).",
-      "Proofs/Erdos1020OQ02.lean extended to 232 lines / 9 theorems (was 165/6): construction2_step_eq, construction2_strict_mono_step, crossover_r4k2 (exact threshold iff for r=4,k=2)."
+      "Proofs/Erdos1020OQ02.lean extended to 232 lines / 9 theorems (was 165/6): construction2_step_eq, construction2_strict_mono_step, crossover_r4k2 (exact threshold iff for r=4,k=2).",
+      "construction2_window_lb (Erdos1020OQ02.lean §8): (k−1)·C(n−k+1,r−1) ≤ construction2 n r k — Finset.card_nsmul_le_sum on the §7 sum, smallest endpoint summand",
+      "construction2_window_ub (§8): construction2 n r k ≤ (k−1)·C(n−1,r−1) — Finset.sum_le_card_nsmul, largest endpoint summand",
+      "construction2_ge_top_summand (§8): k≥2 ⟹ C(n−1,r−1) ≤ construction2 n r k — top window point n−1 via Finset.single_le_sum; degree-(r−1) growth lower bound"
     ],
     "insights": [
       "construction1 r k = C(rk-1,r) is constant in n; construction2 n r k = C(n,r)-C(n-k+1,r) is monotone nondecreasing in n. The gap is the band around their crossover.",
@@ -41,7 +44,8 @@
       "Monotonicity ⇒ the construction2-dominant region is upward-closed: a SINGLE threshold separates small-n and large-n regimes (no interleaving).",
       "conjecturedValue = max(const, monotone) is monotone in n; collapses to construction1 below threshold, construction2 at/above (max_eq_left/right).",
       "OQ-02 framed: regime boundary is a well-defined single threshold; the open difficulty is whether f attains the conjectured value across the gap band kr+... < n < 3kr² for r≥4.",
-      "The crossover threshold IS characterizable exactly in a worked instance: monotonicity converts two boundary evaluations into a complete iff (construction1 4 2 ≤ construction2 n 4 2 ⇔ 8 ≤ n), giving n₀(4,2)=8 — partial progress on the 'characterize exact threshold' next step."
+      "The crossover threshold IS characterizable exactly in a worked instance: monotonicity converts two boundary evaluations into a complete iff (construction1 4 2 ≤ construction2 n 4 2 ⇔ 8 ≤ n), giving n₀(4,2)=8 — partial progress on the 'characterize exact threshold' next step.",
+      "§8: the §7 closed form construction2 = Σ_{j∈[n−k+1,n)} C(j,r−1) has k−1 monotone summands, so it is sandwiched between (k−1)·C(n−k+1,r−1) and (k−1)·C(n−1,r−1). For k≥2 the top summand C(n−1,r−1) alone lower-bounds it — a single binomial of full degree r−1 already sits below the conjectured extremal value, exposing the polynomial growth behind the large-n regime."
     ],
     "mathlibGaps": [],
     "nextSteps": [
