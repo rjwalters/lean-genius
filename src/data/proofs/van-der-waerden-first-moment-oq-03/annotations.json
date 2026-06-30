@@ -1,0 +1,50 @@
+[
+  {
+    "id": "vdw-oq03-ann-header",
+    "proofId": "van-der-waerden-first-moment-oq-03",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "concept",
+    "title": "Goal: Lift the Verified First-Moment Colouring into erdos-138's W",
+    "content": "erdos-138 defines W(k) as an sInf and axiomatizes its growth lower bounds; van-der-waerden-first-moment proves — axiom-free — that a small AP family forces a monochromatic-AP-free colouring of Fin n. This file bridges the two, turning the verified Fin n colouring into a machine-checked lower bound on erdos-138's own W. It exposes four W bounds (a loose and a sharpened pair) and is explicit that, even sharpened, the elementary bound is exponentially too weak to eliminate any erdos-138 axiom — it supplements them."
+  },
+  {
+    "id": "vdw-oq03-ann-transport",
+    "proofId": "van-der-waerden-first-moment-oq-03",
+    "range": { "startLine": 54, "endLine": 69 },
+    "type": "technique",
+    "title": "Colour Transport via the Index Shift v ↦ v-1",
+    "content": "boolToFin2 embeds the Bool colour alphabet into Fin 2 (injective, by decide). shiftColoring carries a colouring c : Fin N → Bool to a colouring of {1,…,N} by sending x to c(cast(x-1)). The cast ℕ → Fin N only exists for [NeZero N] — the instance shiftColoring now carries. The file as first committed lacked this and failed to compile ('failed to synthesize NatCast (Fin N)'); adding [NeZero N] and using the colouring only in the N > 0 branch repairs it."
+  },
+  {
+    "id": "vdw-oq03-ann-core",
+    "proofId": "van-der-waerden-first-moment-oq-03",
+    "range": { "startLine": 71, "endLine": 137 },
+    "type": "key-step",
+    "title": "The Reusable Bridge Core W_lower_of_no_mono",
+    "content": "W_pos handles the corner N = 0 (an empty-ground-set colouring cannot contain a length-k≥2 AP, which needs a base point ≥ 1). W_lower_of_no_mono is the engine: given ANY colouring c : Fin N → Bool (N > 0) with no monochromatic vdwAP, it shows N < W k. If N were in the guarantee set, contains_mono_ap_imp lifts a monochromatic AP of the shifted colouring to a function-form AP; shifted back by one this is a monochromatic vdwAP for c, contradicting the hypothesis. Crucially the core does not care WHY c avoids monochromatic APs — so every first-moment count can reuse it."
+  },
+  {
+    "id": "vdw-oq03-ann-bounds",
+    "proofId": "van-der-waerden-first-moment-oq-03",
+    "range": { "startLine": 139, "endLine": 169 },
+    "type": "key-step",
+    "title": "Verified and Sharpened Lower Bounds on W(k)",
+    "content": "firstMoment_W_lower_bound feeds the base entry's loose count (vdw_lower_bound, n² < 2^(k-1)) through the core: N² < 2^(k-1) → N < W k — the first VERIFIED lower bound on erdos-138's W. firstMoment_W_lower_bound_sharp feeds the sibling oq-01's sharpened count (vdw_lower_bound_sharp, 2(k-1)|family| ≤ n²) through the SAME core: N² < 2·(k-1)·2^(k-1) → N < W k, a √(2(k-1)) factor widening giving W(k) ≳ √(2(k-1))·2^((k-1)/2)."
+  },
+  {
+    "id": "vdw-oq03-ann-corollaries",
+    "proofId": "van-der-waerden-first-moment-oq-03",
+    "range": { "startLine": 171, "endLine": 210 },
+    "type": "observation",
+    "title": "Clean Power-of-Two Floors",
+    "content": "firstMoment_W_pow_lower instantiates the loose bound at N = 2^((k-2)/2): 2^((k-2)/2) < W k. firstMoment_W_pow_lower_sharp instantiates the sharpened bound at N = 2^((k-1)/2): since N² = 2^(2⌊(k-1)/2⌋) ≤ 2^(k-1) < 2(k-1)·2^(k-1), it gives 2^((k-1)/2) < W k — improving the exponent floor by half a power of two, a direct dividend of the sharpened AP count."
+  },
+  {
+    "id": "vdw-oq03-ann-negligible",
+    "proofId": "van-der-waerden-first-moment-oq-03",
+    "range": { "startLine": 212, "endLine": 234 },
+    "type": "concept",
+    "title": "Honest Strength Gap: Why No Axiom Is Eliminated",
+    "content": "firstMoment_bound_negligible proves the ratio 2^(k-1)/4^k → 0: the elementary first-moment magnitude (≈ 2^(k/2)) is asymptotically negligible against the axiomatized Kozik–Shabanov bound (≈ 2^k). The sharpening's √k gain is polynomial and leaves the 2^{k/2} vs 2^k exponential gap untouched. So this bridge supplements — but cannot eliminate — erdos-138's kozik_shabanov_lower_bound and berlekamp_lower_bound. Reaching 2^k needs the Lovász Local Lemma, not a tighter first-moment count."
+  }
+]

@@ -1,0 +1,145 @@
+{
+  "id": "van-der-waerden-first-moment-oq-03",
+  "title": "Bridging the Verified First-Moment Bound into erdos-138: a Machine-Checked (Sharpened) Lower Bound on W(k)",
+  "slug": "van-der-waerden-first-moment-oq-03",
+  "description": "The erdos-138 entry defines the van der Waerden number W(k) = sInf { N | every 2-colouring of {1,…,N} has a monochromatic k-AP } and axiomatizes ALL of its growth lower bounds (berlekamp_lower_bound, kozik_shabanov_lower_bound). Separately, the verified entry van-der-waerden-first-moment proves — axiom-free — the elementary first-moment bound vdw_lower_bound: if n² < 2^(k-1) then some 2-colouring of Fin n has no monochromatic length-k AP. This entry connects the two: it transports the verified Fin N colouring to a colouring of {1,…,N} (shiftColoring, via the index shift v ↦ v-1) and feeds it through erdos-138's own reduction lemmas (contains_mono_ap_imp, not_in_guarantee_lt_sInf) to obtain the first MACHINE-CHECKED (rather than axiomatized) lower bound on W(k) itself: firstMoment_W_lower_bound : N² < 2^(k-1) → N < W k. The whole pipeline is funnelled through a single reusable engine W_lower_of_no_mono — any monochromatic-AP-free Fin N colouring yields N < W k, independent of WHY the colouring exists. That reuse pays off immediately: feeding the SHARPENED AP count 2(k-1)·|family| ≤ n² from the sibling van-der-waerden-first-moment-oq-01 (vdw_lower_bound_sharp) through the same engine gives the strictly stronger firstMoment_W_lower_bound_sharp : N² < 2·(k-1)·2^(k-1) → N < W k, a √(2(k-1)) factor widening, and lifts the clean power-of-two floor from 2^((k-2)/2) (firstMoment_W_pow_lower) to 2^((k-1)/2) (firstMoment_W_pow_lower_sharp). HONESTY (central to this entry): even sharpened, the elementary bound only gives W(k) ≳ 2^(k/2 + o(k)), which is asymptotically NEGLIGIBLE against the axiomatized kozik_shabanov_lower_bound (W(k) ≳ c·2^k) — the √k gain is polynomial and leaves the 2^{k/2} vs 2^k EXPONENTIAL gap untouched. So this bridge does NOT eliminate any erdos-138 growth axiom (the original goal of the open question); it SUPPLEMENTS them with a proven bound for the elementary regime. The negligibility is itself recorded formally as firstMoment_bound_negligible (the ratio of the two magnitudes → 0). #print axioms reports [propext, Classical.choice, W_is_nonempty, Quot.sound]: the W lower bounds inherit erdos-138's axiom W_is_nonempty (which makes W well-defined as an sInf), introduced upstream not here; the underlying union-bound mathematics (vdw_lower_bound / vdw_lower_bound_sharp) is fully axiom-free.",
+  "meta": {
+    "author": "Lean Genius researcher-4",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos138FirstMomentBridge.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 234,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "assumptions": "0 sorries, 0 native_decide, and NO axiom declared in this file (leanFile.axiomCount = 0). The headline W lower bounds (firstMoment_W_lower_bound, firstMoment_W_lower_bound_sharp, firstMoment_W_pow_lower, firstMoment_W_pow_lower_sharp) nonetheless DEPEND on one inherited assumption — erdos-138's axiom W_is_nonempty, which asserts the monochromatic-AP guarantee set is nonempty and so makes W k well-defined as an sInf; it enters through the bridge lemma not_in_guarantee_lt_sInf. #print axioms reports exactly [propext, Classical.choice, W_is_nonempty, Quot.sound] for all four. Hence meta.axiomCount = 1 (the one substantive assumption W_is_nonempty; the foundational propext/Classical.choice/Quot.sound are not counted). The assumption is introduced UPSTREAM in erdos-138, not in this file, and the union-bound combinatorics it sits on top of — vdw_lower_bound (base entry) and vdw_lower_bound_sharp (oq-01) — are themselves 0-axiom. firstMoment_bound_negligible is pure analysis and is 0-axiom. Badged 'axiom' because the entry's central deliverable, a lower bound on the axiomatically-defined W, is conditional on W_is_nonempty.",
+    "tags": [
+      "combinatorics",
+      "probabilistic-method",
+      "first-moment-method",
+      "van-der-waerden",
+      "arithmetic-progressions",
+      "axiom-elimination",
+      "open-question"
+    ],
+    "dateAdded": "2026-06-30",
+    "originalContributions": [
+      "firstMoment_W_lower_bound: the first VERIFIED (rather than axiomatized) lower bound on the van der Waerden number W in the erdos-138 development — N² < 2^(k-1) → N < W k — obtained by transporting the base entry's axiom-free Fin N colouring through erdos-138's own reduction lemmas (the file was previously committed BUILD-UNVERIFIED and in fact failed to compile; this entry repairs the NatCast (Fin N) synthesis failure by giving shiftColoring a [NeZero N] instance and re-verifies it)",
+      "W_lower_of_no_mono: the reusable bridge core — ANY monochromatic-AP-free colouring c : Fin N → Bool (N > 0) certifies N < W k, independent of why the colouring has no monochromatic AP — which lets every first-moment count (loose or sharpened) drive a W lower bound through one shared engine",
+      "firstMoment_W_lower_bound_sharp: the SHARPENED W lower bound N² < 2·(k-1)·2^(k-1) → N < W k, feeding the sibling oq-01's count 2(k-1)·|family| ≤ n² through W_lower_of_no_mono; a √(2(k-1)) factor widening of the admissible N over firstMoment_W_lower_bound, giving W(k) ≳ √(2(k-1))·2^((k-1)/2)",
+      "firstMoment_W_pow_lower_sharp: the clean power-of-two corollary 2^((k-1)/2) < W k, improving the exponent floor of firstMoment_W_pow_lower from (k-2)/2 to (k-1)/2 — a direct dividend of the sharpened count",
+      "firstMoment_bound_negligible: a formal certificate that the elementary first-moment magnitude is asymptotically negligible against the axiomatized Kozik–Shabanov bound (the ratio 2^(k-1)/4^k → 0), making precise that this verified bridge SUPPLEMENTS rather than ELIMINATES the erdos-138 growth axioms"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Fin.instNatCast (NatCast (Fin n) for [NeZero n])",
+        "description": "the index shift v ↦ v-1 maps {1,…,N} to {0,…,N-1} = Fin N via Nat.cast; this instance only exists for NeZero N, which is why shiftColoring carries a [NeZero N] argument and the colouring is built only in the N > 0 branch.",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one / squeeze_zero",
+        "description": "drives firstMoment_bound_negligible: ((1/2)^k) → 0 squeezes the ratio 2^(k-1)/4^k to 0, certifying asymptotic negligibility of the elementary bound.",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "Nat.pow_le_pow_right / pow_mul",
+        "description": "the power corollaries: (2^((k-1)/2))² = 2^(2⌊(k-1)/2⌋) ≤ 2^(k-1), so N = 2^((k-1)/2) satisfies the sharpened smallness hypothesis.",
+        "module": "Mathlib.Algebra.GroupPower.Order"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/Erdos138FirstMomentBridge.lean",
+    "namespace": "Erdos138",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 234,
+    "theoremCount": 8,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The classical first-moment (union-bound) lower bound on van der Waerden numbers W(k) colours [n] uniformly at random; a fixed length-k AP is monochromatic with probability 2^(1-k), so if fewer than 2^(k-1) APs fit then some colouring avoids them all, witnessing W(k) > n. The gallery's erdos-138 entry defines W(k) as an sInf and axiomatizes its growth lower bounds; the verified van-der-waerden-first-moment entry proves the elementary first-moment colouring exists, and its open question oq-01 sharpens the AP count from the loose n² to 2(k-1)·|family| ≤ n². What was missing was the LIFT: turning the verified Fin n colouring into a statement about erdos-138's own W symbol. Open question oq-03 asks to make that bridge and, ambitiously, to use it to eliminate an erdos-138 growth axiom.",
+    "problemStatement": "Connect the axiom-free first-moment colouring (over Fin N) to erdos-138's axiomatically-defined van der Waerden number W (over {1,…,N}), producing a machine-checked lower bound on W k; and assess honestly whether the elementary bound is strong enough to discharge any of erdos-138's axiomatized growth lower bounds.",
+    "proofStrategy": "Transport and reduce. boolToFin2 embeds the Bool colour alphabet into Fin 2; shiftColoring (needing [NeZero N] for the Nat.cast : ℕ → Fin N) carries a Fin N colouring to a colouring of {1,…,N} by v ↦ v-1. The reusable core W_lower_of_no_mono takes any colouring c : Fin N → Bool with no monochromatic vdwAP and shows N < W k: if N were in the guarantee set, contains_mono_ap_imp would lift a monochromatic AP of the shifted colouring to a function-form AP, which shifted back by one is a monochromatic vdwAP for c — contradicting the hypothesis; then not_in_guarantee_lt_sInf gives N < W k. The N = 0 corner is isolated as W_pos (an empty-ground-set colouring cannot contain a length-k≥2 AP). firstMoment_W_lower_bound feeds the base entry's vdw_lower_bound (loose n² count) into the core; firstMoment_W_lower_bound_sharp feeds oq-01's vdw_lower_bound_sharp (2(k-1)|family| ≤ n²) into the SAME core, winning a √(2(k-1)) factor. The power corollaries instantiate N at a power of two. Finally firstMoment_bound_negligible squeezes 2^(k-1)/4^k → 0 to certify the elementary bound cannot match the axiomatized 2^k growth — so no axiom is eliminated.",
+    "keyInsights": [
+      "The bridge factors cleanly: W_lower_of_no_mono is agnostic to WHY a colouring avoids monochromatic APs, so the loose and sharpened first-moment counts drive W lower bounds through one shared engine — adding the sharpened bound costs only a one-line re-derivation, not a second copy of the transport argument.",
+      "The colour transport needs [NeZero N]: Nat.cast : ℕ → Fin N exists only for nonzero N. The file as first committed (BUILD-UNVERIFIED) lacked this and failed to compile with 'failed to synthesize NatCast (Fin N)'. Giving shiftColoring a [NeZero N] instance and confining its use to the N > 0 branch (with N = 0 handled by W_pos) repairs it.",
+      "Sharpening the AP count propagates verbatim through the bridge: 2(k-1)·|family| ≤ n² widens the admissible N from n² < 2^(k-1) to n² < 2(k-1)·2^(k-1) — a √(2(k-1)) factor — and lifts the clean exponent floor from 2^((k-2)/2) to 2^((k-1)/2).",
+      "Honest ceiling, stated formally: even the sharpened bridge gives only W(k) ≳ 2^(k/2+o(k)). The axiomatized Kozik–Shabanov bound is 2^k. The ratio 2^(k-1)/4^k → 0 (firstMoment_bound_negligible) proves the elementary method is exponentially short — so this bridge supplements, but cannot eliminate, the erdos-138 growth axioms.",
+      "The W lower bounds are not 0-axiom: they depend on erdos-138's W_is_nonempty (W well-defined as an sInf), inherited through not_in_guarantee_lt_sInf. No axiom is introduced here, and the union-bound combinatorics underneath are axiom-free — but the headline statements are honestly conditional on W_is_nonempty."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview and Scope",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "States the goal — lift the verified Fin n first-moment colouring to a lower bound on erdos-138's axiomatic W — lists the four W bounds, and is explicit about the honest strength gap and the inherited W_is_nonempty axiom."
+    },
+    {
+      "id": "transport",
+      "title": "Colour Transport Fin N → {1,…,N}",
+      "startLine": 54,
+      "endLine": 69,
+      "summary": "boolToFin2 embeds the Bool colours into Fin 2 (injective by decide); shiftColoring transports a Fin N colouring to {1,…,N} via the index shift v ↦ v-1, requiring [NeZero N] for the Nat.cast : ℕ → Fin N (the fix to the previously non-compiling file)."
+    },
+    {
+      "id": "core",
+      "title": "The Shared Bridge Core",
+      "startLine": 70,
+      "endLine": 137,
+      "summary": "W_pos: W k > 0 for k ≥ 2 (an empty-ground-set colouring has no length-k AP). W_lower_of_no_mono: the reusable engine — any monochromatic-AP-free colouring c : Fin N → Bool (N > 0) certifies N < W k, by lifting a hypothetical monochromatic AP through contains_mono_ap_imp and shifting it back to a vdwAP that contradicts the hypothesis."
+    },
+    {
+      "id": "bounds",
+      "title": "Verified and Sharpened W Lower Bounds",
+      "startLine": 139,
+      "endLine": 169,
+      "summary": "firstMoment_W_lower_bound: N² < 2^(k-1) → N < W k, feeding the base entry's loose count through the core. firstMoment_W_lower_bound_sharp: N² < 2·(k-1)·2^(k-1) → N < W k, feeding oq-01's sharpened count through the SAME core — a √(2(k-1)) factor widening, W(k) ≳ √(2(k-1))·2^((k-1)/2)."
+    },
+    {
+      "id": "corollaries",
+      "title": "Clean Power-of-Two Corollaries",
+      "startLine": 171,
+      "endLine": 210,
+      "summary": "firstMoment_W_pow_lower: 2^((k-2)/2) < W k. firstMoment_W_pow_lower_sharp: 2^((k-1)/2) < W k, improving the exponent floor by instantiating the sharpened bound at N = 2^((k-1)/2) (N² = 2^(2⌊(k-1)/2⌋) ≤ 2^(k-1) < 2(k-1)·2^(k-1))."
+    },
+    {
+      "id": "negligible",
+      "title": "Honest Strength Gap (Formal)",
+      "startLine": 212,
+      "endLine": 234,
+      "summary": "firstMoment_bound_negligible: the ratio 2^(k-1)/4^k → 0, certifying that the elementary first-moment magnitude (≈ 2^(k/2)) is asymptotically negligible against the axiomatized Kozik–Shabanov 2^k — so the bridge supplements but cannot eliminate the erdos-138 growth axioms."
+    }
+  ],
+  "conclusion": {
+    "summary": "8 theorems, 2 definitions, 0 sorries, no native_decide; the file (previously committed BUILD-UNVERIFIED and non-compiling) is repaired and re-verified on host. It delivers the first machine-checked lower bound on erdos-138's van der Waerden number W: firstMoment_W_lower_bound (N² < 2^(k-1) → N < W k) and, by routing the sibling oq-01's sharpened AP count through a shared bridge core, the strictly stronger firstMoment_W_lower_bound_sharp (N² < 2·(k-1)·2^(k-1) → N < W k) with the clean corollary 2^((k-1)/2) < W k. The W bounds depend on erdos-138's W_is_nonempty axiom (inherited, not introduced); the union-bound mathematics is axiom-free.",
+    "implications": "Demonstrates that the gallery's two verified van der Waerden artifacts — the first-moment colouring and erdos-138's axiomatic W — can be soundly connected inside Lean, yielding a proven (sharpened) lower bound on W rather than an axiomatized one. It also answers the harder half of the open question honestly and in the negative: firstMoment_bound_negligible proves the elementary bound is exponentially too weak to discharge kozik_shabanov_lower_bound or berlekamp_lower_bound, so axiom elimination via the first-moment method is not available — sharply scoping what a genuine elimination would require.",
+    "openQuestions": [
+      "Eliminating an erdos-138 growth axiom requires a verified bound of order 2^k (Lovász Local Lemma form W(k) ≳ 2^k/(ek)) or the Kozik–Shabanov 2^k·poly; the first-moment method cannot reach it, so a verified LLL with a bound on the AP-hypergraph overlap degree is the genuine next step.",
+      "State the exact threshold: vdwFilter_card_eq_sum (oq-01) is an equality, so the (N - (k-1)m)² remainder dropped in the telescoping bound could be tracked to pin the optimal first-moment constant in W k, not just the ≤ inequality.",
+      "Bridge the lower bound to the two-sided picture by combining with an upper-bound colouring-existence statement, narrowing the verified window around W k in the elementary regime."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "van-der-waerden-first-moment-oq-01",
+      "relationship": "engine — feeds its sharpened AP count vdw_lower_bound_sharp (2(k-1)·|family| ≤ n²) through this entry's bridge core W_lower_of_no_mono to obtain the sharpened W lower bound"
+    },
+    {
+      "targetId": "van-der-waerden-first-moment",
+      "relationship": "engine — the base entry's axiom-free vdw_lower_bound (loose n² count) is the input to firstMoment_W_lower_bound; its vdwAP/vdwFamily/Mono are reused throughout"
+    },
+    {
+      "targetId": "erdos-138",
+      "relationship": "parent — this entry lifts the verified first-moment colouring into erdos-138's W via its own reduction lemmas (contains_mono_ap_imp, not_in_guarantee_lt_sInf), inheriting the W_is_nonempty axiom; it supplements but does not eliminate the axiomatized growth bounds"
+    },
+    {
+      "targetId": "property-b-first-moment",
+      "relationship": "foundation — the probabilistic core (Erdős 1963 Property B via the first moment method) ultimately underlies the colourings consumed here, through the base van-der-waerden-first-moment entry"
+    }
+  ],
+  "sorries": 0
+}
