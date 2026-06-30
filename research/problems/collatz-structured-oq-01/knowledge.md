@@ -38,15 +38,37 @@ odd numbers (the standard textbook reduction) was not formalized.
 - `Function.iterate_succ_apply`, `Function.iterate_zero_apply`
 - parent: `pow_two_reaches_one`, `reaches_one_double`, `collatz_two_mul`, `collatz_one`
 
+## What was added (session 2, 2026-06-30 — Syracuse map, VERIFIED 0-axiom)
+
+Next-steps items #1/#2 (accelerated odd map) now done. New content in
+CollatzStructuredOQ01.lean (now 347 lines, 22 thm, 3 defs, still 0 axioms /
+0 sorries; `#print axioms collatz_iff_syracuse` = propext/Classical.choice/Quot.sound):
+
+- `syracuse n := oddPart (3*n+1)` (the accelerated odd map); `syracuse_odd`.
+- `collatz_iter_pow_two_mul_le q : ∀ i v, i ≤ v → collatz^[i] (2^v*q) = 2^(v-i)*q`
+  — halving lemma, induction on i generalizing v (key fix: rewrite the exponent
+  `v-1-j = v-(j+1)` rather than `congr+omega`, which can't equate `2^a = 2^b`).
+- `collatz_iter_eq_syracuse (hodd) : collatz^[(3n+1).factorization 2 + 1] n = syracuse n`
+  — the accelerated step is exactly v₂(3n+1)+1 ordinary steps. Used `set v := …`
+  to abstract the exponent so `← hfac` rewrites only the argument 3n+1.
+- `reachesOne_syracuse_iff` (per-step), `reachesOne_syracuseIter_iff` (iterated)
+  — biconditional equireachability for odd n.
+- `SyrReachesOne n := ∃ k, syracuse^[k] n = 1`; `reachesOne_of_syrReachesOne`
+  (forward, easy) and `syrReachesOne_of_reachesOne` (converse, strong induction
+  on collatz step count via `syrReaches_aux`: the odd trajectory cannot hit 1
+  before step v+1, giving s ≤ k, then recurse on k-(v+1) < k).
+- Headlines: `reachesOne_iff_syrReachesOne` (full equireachability) and
+  `collatz_iff_syracuse` (Collatz ⟺ Syracuse form).
+
 ## Honest status
 
 The Collatz conjecture is **not** solved. New content = the invariance/reduction
-machinery, which is folklore but was previously unformalized in the gallery.
-Verified, axiom-free. Build pending (Docker host down this session; all Mathlib
-lemmas de-risked by source grep).
+machinery + the Syracuse-map equivalence, folklore but previously unformalized.
+VERIFIED axiom-free (Docker build succeeded session 2).
 
 ## Next steps
 
-1. Reduce further to n ≡ 3 (mod 4) or to the Syracuse odd map.
-2. Prove equireachability for the accelerated map n ↦ (3n+1)/2^v₂(3n+1).
-3. Residue-class invariants compatible with the reduction.
+1. Reduce further to n ≡ 3 (mod 4) residue classes.
+2. Residue-class invariants compatible with the reduction.
+3. Quantitative: relate Syracuse step count to v₂(3n+1) sums (stopping-time link
+   to collatz-structured-oq-03).
