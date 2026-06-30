@@ -1,0 +1,223 @@
+{
+  "id": "cauchy-schwarz-oq-05",
+  "title": "Lagrange's Identity: the Exact Cauchy-Schwarz Defect",
+  "slug": "cauchy-schwarz-oq-05",
+  "description": "Lagrange's identity (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² = ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)² over an arbitrary Finset on a linearly ordered index type: the Cauchy-Schwarz defect equals a sum of squared 2×2 minors over strictly increasing index pairs. Yields Cauchy-Schwarz as an immediate corollary and the exact equality characterization (all minors vanish). Built on a general triangle-doubling lemma for symmetric kernels.",
+  "meta": {
+    "author": "Lagrange (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lagrange%27s_identity",
+    "date": "1773",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "algebra",
+      "cauchy-schwarz",
+      "lagrange-identity",
+      "finset",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarzOQ05.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_filter_add_sum_filter_not",
+        "description": "Splits a Finset sum by a decidable predicate into the matching and non-matching parts",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_nbij'",
+        "description": "Reindexes a Finset sum along a bijection given with an explicit inverse",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.diag_union_offDiag",
+        "description": "s ×ˢ s decomposes as the disjoint union of its diagonal and off-diagonal",
+        "module": "Mathlib.Data.Finset.Prod"
+      },
+      {
+        "theorem": "Finset.sum_diag",
+        "description": "A sum over the diagonal of s ×ˢ s reduces to a single sum over s",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_eq_zero_iff_of_nonneg",
+        "description": "A sum of nonnegative terms is zero iff every term is zero",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      }
+    ],
+    "originalContributions": [
+      "sum_offDiag_eq_two_mul_sum_filter_lt: general triangle-doubling lemma — a symmetric kernel summed over the off-diagonal equals twice its sum over strictly increasing pairs (swap involution + LinearOrder trichotomy)",
+      "lagrange_identity: the strict-upper-triangle Lagrange identity (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² = ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)² over an arbitrary Finset",
+      "cauchy_schwarz: the finite Cauchy-Schwarz inequality as an immediate corollary (defect is a sum of squares)",
+      "cauchy_schwarz_eq_iff: exact equality characterization — Cauchy-Schwarz is tight iff every 2×2 minor over a strictly increasing pair vanishes"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 128,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext / Classical.choice / Quot.sound).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Lagrange's identity appears in Joseph-Louis Lagrange's 1773 *Recherches d'arithmétique* on quadratic forms, decades before the inequality that now bears Cauchy's and Schwarz's names. Where Cauchy's 1821 *Cours d'Analyse* records the discrete inequality (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²), Lagrange's identity records the *exact gap*: the difference is a sum of squared 2×2 minors aᵢbⱼ − aⱼbᵢ. It is the algebraic precursor of the inequality and the special case n = 2 of the Binet–Cauchy identity for products of determinants. Geometrically it is the discrete shadow of ‖u‖²‖v‖² − ⟨u,v⟩² = ‖u ∧ v‖², the squared norm of the wedge product, so the minors are the components of u ∧ v in the standard basis. Mathlib carries `inner_mul_le_norm_mul_norm` and the Chebyshev/rearrangement sum inequalities but no named sum-form Lagrange identity.",
+    "problemStatement": "**Open Question (cauchy-schwarz-oq-05)**: For finite real sequences a, b, express the exact Cauchy-Schwarz defect as a sum over 2×2 minors.\n\n**Result**: Over an arbitrary `Finset` on a linearly ordered index type, (∑ᵢ aᵢ²)(∑ᵢ bᵢ²) − (∑ᵢ aᵢbᵢ)² = ∑_{i<j} (aᵢbⱼ − aⱼbᵢ)². The right-hand side is a sum over strictly increasing pairs (no factor of 2), exhibiting the defect directly as a sum of squared 2×2 minors. Cauchy-Schwarz follows immediately (RHS ≥ 0), and equality holds iff every minor vanishes.",
+    "text": "Lagrange's identity gives the exact Cauchy-Schwarz defect as a sum of squared 2×2 minors over strictly increasing index pairs, yielding the inequality and its equality case as corollaries.",
+    "proofStrategy": "**Proof Strategy: triangle-doubling of a symmetric kernel**\n\n1. **Doubled form.** Expand the symmetric double sum ∑ᵢ∑ⱼ (aᵢbⱼ − aⱼbᵢ)² over all ordered pairs and collect terms to get 2·[(∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)²] — the parent's 'doubled' Lagrange identity.\n2. **Triangle-doubling lemma.** For any symmetric kernel F (F i j = F j i), the off-diagonal sum ∑_{i≠j} F equals 2·∑_{i<j} F: the swap (i,j) ↦ (j,i) is a bijection from the strictly-decreasing pairs onto the strictly-increasing ones, and a `LinearOrder` supplies the trichotomy needed for membership.\n3. **Split the double sum.** Decompose s ×ˢ s = diag ⊎ offDiag. The kernel vanishes on the diagonal (aᵢbᵢ − aᵢbᵢ = 0), so ∑ᵢ∑ⱼ F = 2·∑_{i<j} F.\n4. **Cancel the 2.** Equating steps 1 and 3 gives 2·defect = 2·∑_{i<j} F; cancel to obtain the identity.\n5. **Corollaries.** The RHS is a sum of squares, so the defect is ≥ 0 (Cauchy-Schwarz); and the defect is 0 iff each squared minor is 0 iff each minor is 0 (`sum_eq_zero_iff_of_nonneg` + `pow_eq_zero_iff`)."
+    ,
+    "keyInsights": [
+      "**Strict-upper-triangle vs doubled form**: The parent records the symmetric double sum ∑ᵢ∑ⱼ(aᵢbⱼ − aⱼbᵢ)² = 2·defect. The canonical Lagrange identity drops the factor of 2 and sums over i < j only, exhibiting the defect as a sum over the *distinct* 2×2 minors — the textbook statement.",
+      "**One reusable combinatorial lemma**: The entire bridge is a single general fact, sum_offDiag_eq_two_mul_sum_filter_lt, about any symmetric kernel on a linearly ordered index set; the Lagrange identity is its specialization to F i j = (aᵢbⱼ − aⱼbᵢ)².",
+      "**The swap involution needs only a linear order**: Halving the off-diagonal sum uses the bijection (i,j) ↦ (j,i) between strictly-increasing and strictly-decreasing pairs; `LinearOrder` trichotomy (lt_of_le_of_ne) is exactly what certifies the membership conditions.",
+      "**Minors are wedge components**: aᵢbⱼ − aⱼbᵢ is the (i,j) component of u ∧ v, so the identity is the coordinate form of ‖u‖²‖v‖² − ⟨u,v⟩² = ‖u ∧ v‖²; the equality case 'all minors vanish' is exactly 'u ∧ v = 0', i.e. proportionality.",
+      "**Equality case for free**: Because the defect is now literally a sum of squares, the equality characterization is immediate — sum-of-nonnegatives-is-zero forces every minor to vanish, with no separate residual-norm argument."
+    ],
+    "prerequisites": [
+      "Finite sums over a `Finset` and the product `s ×ˢ s`",
+      "Diagonal / off-diagonal decomposition of a finite product",
+      "Reindexing sums along bijections (`Finset.sum_nbij'`)",
+      "Linear orders and trichotomy",
+      "Nonnegativity of squares"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring stating Lagrange's identity, its relation to the parent's doubled form, imports, the LagrangeIdentityCS namespace, `open Finset`, and the linearly ordered index variable.",
+      "mathContext": "Index type ι with `[LinearOrder ι]`; sequences a, b : ι → ℝ summed over a `Finset ι`. The strict-upper-triangle index set is `s.offDiag.filter (fun p => p.1 < p.2)`."
+    },
+    {
+      "id": "triangle-doubling",
+      "title": "Triangle-Doubling for Symmetric Kernels",
+      "startLine": 48,
+      "endLine": 69,
+      "summary": "sum_offDiag_eq_two_mul_sum_filter_lt: for a symmetric F, the off-diagonal sum equals twice the strictly-increasing-pair sum. Splits the off-diagonal by the predicate p.1 < p.2 and matches the two halves through the swap bijection (i,j) ↦ (j,i).",
+      "mathContext": "For F i j = F j i: ∑_{(i,j) ∈ offDiag} F i j = 2·∑_{i<j} F i j. The swap maps {j < i} bijectively onto {i < j}; `lt_of_le_of_ne` and `not_lt` discharge the membership side-conditions using the linear order."
+    },
+    {
+      "id": "lagrange-identity",
+      "title": "Lagrange's Identity",
+      "startLine": 71,
+      "endLine": 108,
+      "summary": "lagrange_identity: (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² = ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)². Expands the symmetric double sum to 2·defect, splits s ×ˢ s into diagonal (zero) and off-diagonal (twice the upper triangle), and cancels the factor of 2.",
+      "mathContext": "Doubled form: ∑ᵢ∑ⱼ(aᵢbⱼ − aⱼbᵢ)² = 2·[(∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)²] via `sum_mul`/`mul_sum` bookkeeping. Combined with the triangle-doubling lemma and the vanishing diagonal, `mul_left_cancel₀ two_ne_zero` yields the identity."
+    },
+    {
+      "id": "cauchy-schwarz",
+      "title": "Cauchy-Schwarz as a Corollary",
+      "startLine": 110,
+      "endLine": 118,
+      "summary": "cauchy_schwarz: (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²). The defect equals the upper-triangle sum of squares, which is nonnegative, so the inequality is one `linarith` step away.",
+      "mathContext": "Since (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² = ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)² ≥ 0 by `Finset.sum_nonneg` and `sq_nonneg`, the Cauchy-Schwarz inequality follows immediately."
+    },
+    {
+      "id": "equality",
+      "title": "Equality Characterization",
+      "startLine": 120,
+      "endLine": 128,
+      "summary": "cauchy_schwarz_eq_iff: Cauchy-Schwarz is tight iff every minor aᵢbⱼ − aⱼbᵢ over a strictly increasing pair vanishes. Rewrites the equality as defect = 0, identifies the defect with the sum of squares, and applies sum-of-nonnegatives-is-zero pointwise.",
+      "mathContext": "(∑aᵢbᵢ)² = (∑aᵢ²)(∑bᵢ²) ↔ ∀ i<j, aᵢbⱼ − aⱼbᵢ = 0, via `sub_eq_zero`, the Lagrange identity, `Finset.sum_eq_zero_iff_of_nonneg`, and `pow_eq_zero_iff`. The vanishing of all 2×2 minors is the proportionality (linear dependence) condition."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "Promotes the base finite Cauchy-Schwarz inequality to an exact identity: the defect is realized as an explicit sum of squared 2×2 minors, from which the inequality and its equality case both follow"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 pins the exact proportionality constant in the equality case via residual-norm decomposition; this entry derives the same equality condition (all minors vanish) directly from the sum-of-squares form of the defect"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 records the symmetric doubled identity ∑ᵢ∑ⱼ(aᵢbⱼ − aⱼbᵢ)² = 2·defect inside its Cauchy-Schwarz proof; this entry sharpens it to the strict-upper-triangle form over i<j with no factor of 2"
+    },
+    {
+      "targetId": "gram-linear-independence-iff",
+      "relationship": "related",
+      "description": "The vanishing of all 2×2 minors is the n = 2 Gram/Hadamard degeneracy condition; Lagrange's identity is the wedge-product computation ‖u‖²‖v‖² − ⟨u,v⟩² = ‖u ∧ v‖² underlying Gram determinant inequalities"
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) formalization of Lagrange's identity in its canonical strict-upper-triangle form over an arbitrary Finset: the Cauchy-Schwarz defect equals the sum of squared 2×2 minors aᵢbⱼ − aⱼbᵢ over strictly increasing index pairs. The Cauchy-Schwarz inequality and its exact equality characterization (all minors vanish) drop out as one-line corollaries.",
+    "implications": "The proof factors through a reusable general lemma — a symmetric kernel summed over the off-diagonal equals twice its strictly-increasing-pair sum — which applies to any symmetric bilinear-type double sum (Gram matrices, variance/covariance sums, pairwise-interaction energies). Exhibiting the defect as a literal sum of squares makes both the inequality and the proportionality equality case immediate, bypassing the residual-norm machinery used in the abstract inner-product setting.",
+    "openQuestions": [
+      "Does the identity extend to a weighted inner product ∑ wᵢ aᵢ bᵢ with weighted minors √(wᵢwⱼ)(aᵢbⱼ − aⱼbᵢ)?",
+      "Can the strict-upper-triangle form be derived as the n = 2 case of a formalized Binet–Cauchy identity for products of determinants?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Data.Finset.Prod",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "LagrangeIdentityCS",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzOQ05.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "sum_offDiag_eq_two_mul_sum_filter_lt",
+      "type": "supporting",
+      "description": "Triangle-doubling for a symmetric kernel: summing F over all distinct ordered pairs of s counts each unordered pair twice, so it equals twice the sum over strictly increasing pairs. The combinatorial engine of the file; proved by splitting the off-diagonal on the predicate p.1 < p.2 and matching the two halves through the swap involution (i,j) ↦ (j,i), with `LinearOrder` trichotomy certifying the membership conditions.",
+      "leanType": "∀ {ι : Type*} [inst : LinearOrder ι] (s : Finset ι) (F : ι → ι → ℝ), (∀ i j, F i j = F j i) → ∑ p ∈ s.offDiag, F p.1 p.2 = 2 * ∑ p ∈ s.offDiag.filter (fun p => p.1 < p.2), F p.1 p.2"
+    },
+    {
+      "name": "lagrange_identity",
+      "type": "core",
+      "description": "**The headline result.** Lagrange's identity over an arbitrary Finset: the Cauchy-Schwarz defect (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² equals the sum of squared 2×2 minors (aᵢbⱼ − aⱼbᵢ)² taken over strictly increasing index pairs i < j. Combines the doubled symmetric expansion with the triangle-doubling lemma and cancels the factor of 2.",
+      "leanType": "∀ {ι : Type*} [inst : LinearOrder ι] (s : Finset ι) (a b : ι → ℝ), (∑ i ∈ s, a i ^ 2) * (∑ i ∈ s, b i ^ 2) - (∑ i ∈ s, a i * b i) ^ 2 = ∑ p ∈ s.offDiag.filter (fun p => p.1 < p.2), (a p.1 * b p.2 - a p.2 * b p.1) ^ 2"
+    },
+    {
+      "name": "cauchy_schwarz",
+      "type": "core",
+      "description": "The finite Cauchy-Schwarz inequality (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²) as an immediate corollary of Lagrange's identity: the defect is exhibited as a sum of squares, hence nonnegative.",
+      "leanType": "∀ {ι : Type*} [inst : LinearOrder ι] (s : Finset ι) (a b : ι → ℝ), (∑ i ∈ s, a i * b i) ^ 2 ≤ (∑ i ∈ s, a i ^ 2) * (∑ i ∈ s, b i ^ 2)"
+    },
+    {
+      "name": "cauchy_schwarz_eq_iff",
+      "type": "core",
+      "description": "Exact equality characterization: Cauchy-Schwarz holds with equality iff every 2×2 minor aᵢbⱼ − aⱼbᵢ over a strictly increasing pair vanishes — the proportionality (linear dependence) condition. Reads straight off the sum-of-squares form of the defect.",
+      "leanType": "∀ {ι : Type*} [inst : LinearOrder ι] (s : Finset ι) (a b : ι → ℝ), (∑ i ∈ s, a i * b i) ^ 2 = (∑ i ∈ s, a i ^ 2) * (∑ i ∈ s, b i ^ 2) ↔ ∀ p ∈ s.offDiag.filter (fun p => p.1 < p.2), a p.1 * b p.2 - a p.2 * b p.1 = 0"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Recherches d'arithmétique",
+      "year": "1773",
+      "venue": "Nouveaux Mémoires de l'Académie royale des Sciences et Belles-Lettres de Berlin",
+      "note": "Contains the identity ∑(aᵢbⱼ − aⱼbᵢ)² = (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)², the algebraic precursor of the Cauchy-Schwarz inequality"
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Paris",
+      "note": "Original discrete inequality (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²), of which Lagrange's identity is the exact-defect refinement"
+    },
+    {
+      "authors": "Steele, J. Michael",
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press, MAA Problem Books Series",
+      "note": "Chapter 4 develops the Lagrange identity and the cross-term (minor) vanishing condition for equality used here"
+    }
+  ],
+  "sorries": 0
+}

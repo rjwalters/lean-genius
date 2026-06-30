@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ann-mod8-obstruction",
+    "proofId": "lagrange-four-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "The mod-8 Obstruction: Squares Live in {0, 1, 4}",
+    "content": "The single nontrivial input. `sq_mod_eight` proves a²%8 ∈ {0,1,4} by rewriting a²%8 = (a%8)²%8 (via `Nat.pow_mod`) and `interval_cases` over the eight residues of a mod 8, each closed by `decide`. `three_sq_not_seven_mod_eight` then proves (a²+b²+c²)%8 ≠ 7 by `rcases` on the three residue choices and `omega` over the resulting 27 combinations. Everything downstream — that 15 and 63 are not sums of three squares — is a one-line corollary of this fact, keeping the entry self-contained and axiom-free.",
+    "mathContext": "$a^2 \\bmod 8 \\in \\{0,1,4\\}$, so the possible values of $(a^2+b^2+c^2) \\bmod 8$ are $\\{0,1,2,3,4,5,6\\}$ — never $7$. Hence $n \\equiv 7 \\pmod 8 \\Rightarrow n \\neq x^2+y^2+z^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squares mod 8",
+      "local obstruction",
+      "Nat.pow_mod",
+      "interval_cases",
+      "omega"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "residues of squares"
+    ]
+  },
+  {
+    "id": "ann-non-closure",
+    "proofId": "lagrange-four-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 98,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Non-Closure: 3·5 = 15 Escapes the Three-Square Set",
+    "content": "The main result. 3 = 1²+1²+1² and 5 = 0²+1²+2² are each sums of three squares, but 3·5 = 15 ≡ 7 (mod 8) is obstructed, so it is not. `not_isSumOfThreeSquares_mul_closed` packages this as an existential witness; a second witness (3, 21) → 63 shows the failure is structural. The reusable predicate `MulClosed P := ∀ ⦃m n⦄, P m → P n → P (m*n)` lets us state the clean negative `¬ MulClosed IsSumOfThreeSquares`.",
+    "mathContext": "$\\exists m, n \\in S_3$ with $m\\,n \\notin S_3$: $(m,n) = (3,5)$, $m\\,n = 15$; and $(3,21)$, $m\\,n = 63$. Both products are $\\equiv 7 \\pmod 8$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative closure",
+      "counterexample",
+      "composition of quadratic forms",
+      "Hurwitz 1-2-4-8 theorem"
+    ],
+    "prerequisites": [
+      "the mod-8 obstruction",
+      "existential witnesses in Lean"
+    ]
+  },
+  {
+    "id": "ann-four-square-closure",
+    "proofId": "lagrange-four-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 136,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Contrast: Four Squares ARE Closed (Euler's Identity)",
+    "content": "The positive counterpart. Euler's four-square identity (`euler_four_squares`, a pure `ring` fact over any CommRing) expresses (a²+b²+c²+d²)(x²+y²+z²+w²) as a sum of four squares whose components carry subtractions. To land back in ℕ, the four integer components are passed through `Int.natAbs` using (↑|a|)² = a² (`natAbs_sq_cast`), giving `isSumOfFourSquares_mul` and hence `MulClosed IsSumOfFourSquares`. The very products 15 and 63 that fail for three squares are then exhibited as sums of four squares — representability recovered one dimension up.",
+    "mathContext": "Euler: $(a^2{+}b^2{+}c^2{+}d^2)(x^2{+}y^2{+}z^2{+}w^2) = (ax{-}by{-}cz{-}dw)^2 + (ay{+}bx{+}cw{-}dz)^2 + (az{-}bw{+}cx{+}dy)^2 + (aw{+}bz{-}cy{+}dx)^2$. Recovery: $15 = 1^2{+}1^2{+}2^2{+}3^2$, $63 = 1^2{+}1^2{+}5^2{+}6^2$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Euler four-square identity",
+      "quaternion norm multiplicativity",
+      "Int.natAbs",
+      "dimensional recovery ℝ³ → ℍ"
+    ],
+    "prerequisites": [
+      "Euler's four-square identity",
+      "integer absolute value and casting"
+    ]
+  }
+]

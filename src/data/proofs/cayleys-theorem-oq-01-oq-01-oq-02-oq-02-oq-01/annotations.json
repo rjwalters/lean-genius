@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-left-regular",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 54, "endLine": 67 },
+    "type": "definition",
+    "title": "The Left-Regular Representation L(G)",
+    "content": "leftReg packages left multiplication g ↦ (x ↦ g·x) as a group homomorphism into the symmetric group Sym(G) = Equiv.Perm G. The bundling is free: Equiv.mulLeft already exists in Mathlib, and the homomorphism laws are exactly Equiv.mulLeft_one and Equiv.mulLeft_mul. leftReg_injective re-proves Cayley's theorem itself — faithfulness of the regular representation — by evaluating L_a = L_b at the identity to recover a = b.",
+    "mathContext": "$L : G \\to \\mathrm{Sym}(G),\\quad L_g(x) = g \\cdot x,\\qquad L_{gh} = L_g L_h,\\ L_1 = \\mathrm{id}$. Injectivity: $L_a = L_b \\Rightarrow a = a\\cdot 1 = L_a(1) = L_b(1) = b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cayley's theorem", "regular representation", "group homomorphism", "symmetric group", "faithful action"],
+    "prerequisites": ["group theory", "permutation groups"]
+  },
+  {
+    "id": "ann-aut-perm-hom",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 69, "endLine": 91 },
+    "type": "definition",
+    "title": "Realising Aut(G) Inside Sym(G): autPermHom",
+    "content": "autPerm φ = φ.toEquiv forgets the multiplicative structure of an automorphism and keeps only the underlying bijection of the set G. autPermHom bundles this as a monoid homomorphism MulAut G →* Equiv.Perm G, so that composition of automorphisms matches composition of permutations. autPermHom_injective then gives the holomorph embedding Aut(G) ↪ Sym(G): distinct automorphisms induce distinct permutations because they already differ as functions.",
+    "mathContext": "$\\mathrm{autPerm} : \\mathrm{Aut}(G) \\to \\mathrm{Sym}(G)$ is a monoid hom: $\\mathrm{autPerm}(\\varphi\\psi) = \\mathrm{autPerm}(\\varphi)\\,\\mathrm{autPerm}(\\psi)$ and $\\mathrm{autPerm}(\\mathrm{id}) = \\mathrm{id}$. It is injective, giving $\\mathrm{Aut}(G) \\hookrightarrow \\mathrm{Sym}(G)$.",
+    "significance": "key",
+    "relatedConcepts": ["automorphism group", "holomorph", "monoid homomorphism", "group embedding", "MulAut"],
+    "prerequisites": ["group theory", "automorphisms", "Mathlib MulAut API"]
+  },
+  {
+    "id": "ann-equivariance",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 93, "endLine": 104 },
+    "type": "insight",
+    "title": "Equivariance: Automorphisms Intertwine the Regular Representation",
+    "content": "This is the conceptual engine of the entire file. The single line proof of autPerm_mul_leftReg is nothing more than the homomorphism law map_mul read off at a point: φ(g·y) = φ(g)·φ(y). Re-interpreted as an equation of permutations, it says φ∘L_g = L_{φg}∘φ — the automorphism φ carries the left-translation-by-g to left-translation-by-φ(g). Conjugating (autPerm_conj_leftReg) gives φ L_g φ⁻¹ = L_{φg}, exhibiting φ as permuting the generators {L_g} of L(G) among themselves.",
+    "mathContext": "$\\varphi \\circ L_g = L_{\\varphi g} \\circ \\varphi \\iff \\varphi(g\\cdot y) = \\varphi(g)\\cdot\\varphi(y)$. Conjugated: $\\varphi\\, L_g\\, \\varphi^{-1} = L_{\\varphi g}$.",
+    "significance": "key",
+    "relatedConcepts": ["equivariance", "intertwiner", "conjugation", "group action", "representation theory"],
+    "prerequisites": ["group homomorphisms", "conjugation in groups"]
+  },
+  {
+    "id": "ann-aut-normalizes",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 106, "endLine": 125 },
+    "type": "technique",
+    "title": "Automorphisms Normalize L(G)",
+    "content": "autPerm_mem_normalizer feeds the conjugation lemma into Mathlib's Subgroup.mem_normalizer_iff. To show φ ∈ N(L(G)) one checks h ∈ L(G) ⟺ φ h φ⁻¹ ∈ L(G) for all h. The forward direction is immediate from autPerm_conj_leftReg; the backward direction conjugates by the inverse automorphism φ.symm, using map_mul and MulEquiv.symm_apply_apply. Since φ is a bijection of generators, the whole image subgroup L(G) is preserved set-wise.",
+    "mathContext": "$\\varphi \\in N_{\\mathrm{Sym}(G)}(L(G)) \\iff \\forall h,\\ h \\in L(G) \\Leftrightarrow \\varphi h \\varphi^{-1} \\in L(G)$. Each direction is supplied by $\\varphi L_g \\varphi^{-1} = L_{\\varphi g}$ (resp. with $\\varphi^{-1}$).",
+    "significance": "supporting",
+    "relatedConcepts": ["normalizer", "subgroup membership", "conjugation", "automorphism action"],
+    "prerequisites": ["normalizers", "Subgroup.mem_normalizer_iff"]
+  },
+  {
+    "id": "ann-evaluate-at-one",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 127, "endLine": 156 },
+    "type": "insight",
+    "title": "Aut(G) is the Identity-Stabiliser: the 'Evaluate at 1' Argument",
+    "content": "mem_normalizer_and_fixes_one_iff is the crux: a permutation σ that normalizes L(G) AND fixes 1 is forced to be an automorphism. The proof is the classical 'evaluate at a point' device. Normalising gives σ L_a σ⁻¹ = L_c for some c; rewriting to the inverse-free form L_c σ = σ L_a and evaluating at the point 1 pins down c = σ(a) (using σ(1)=1). Evaluating the same equation at a general point b then yields σ(a·b) = σ(a)·σ(b) — multiplicativity. Bundling σ as a monoid hom and applying MulEquiv.ofBijective to its known bijectivity recovers an honest automorphism. So Aut(G) sits inside the normalizer exactly as the stabiliser of the identity.",
+    "mathContext": "From $\\sigma L_a \\sigma^{-1} = L_c$, i.e. $L_c \\sigma = \\sigma L_a$: at $1$, $c = c\\cdot\\sigma(1) = \\sigma(a\\cdot 1) = \\sigma(a)$; at $b$, $\\sigma(a)\\cdot\\sigma(b) = c\\cdot\\sigma(b) = \\sigma(a\\cdot b)$. Hence $\\sigma \\in \\mathrm{Aut}(G)$.",
+    "significance": "key",
+    "relatedConcepts": ["normalizer", "automorphism", "MulEquiv.ofBijective", "evaluate at a point", "stabiliser"],
+    "prerequisites": ["normalizers", "group homomorphisms", "bijections"]
+  },
+  {
+    "id": "ann-holomorph-decomposition",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 158, "endLine": 178 },
+    "type": "concept",
+    "title": "The Holomorph Decomposition N(L(G)) = L(G)·Aut(G)",
+    "content": "mem_normalizer_iff_exists assembles the pieces into the holomorph identity: every normalizing permutation factors as a left translation followed by an automorphism. The trick is normalisation: given σ ∈ N(L(G)), the permutation L_{σ1}⁻¹∘σ is still in N(L(G)) (the normalizer is a subgroup and L(G) ≤ N(L(G)) by Subgroup.le_normalizer) and now fixes 1, so by the previous theorem it equals autPerm φ for some automorphism φ. Re-multiplying gives σ = L_{σ1}·autPerm φ. This is the set-level shadow of the semidirect product structure Hol(G) = L(G) ⋊ Aut(G).",
+    "mathContext": "$\\sigma \\in N(L(G)) \\iff \\exists\\, g\\,\\varphi,\\ \\sigma = L_g \\cdot \\mathrm{autPerm}\\,\\varphi$, with $g = \\sigma(1)$. The reduction: $L_{\\sigma 1}^{-1}\\sigma$ fixes $1$ since $(L_{\\sigma 1}^{-1}\\sigma)(1) = \\sigma(1)^{-1}\\cdot\\sigma(1) = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["holomorph", "semidirect product", "normalizer", "regular representation", "group decomposition"],
+    "prerequisites": ["normalizers", "semidirect products", "cosets"]
+  },
+  {
+    "id": "ann-context-holomorph",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "context",
+    "title": "The Holomorph and Its Place in Group Theory",
+    "content": "The holomorph Hol(G) = N_{Sym(G)}(L(G)) is the largest permutation group in which G (as L(G)) is normal and acted on by its full automorphism group. It packages G and Aut(G) into a single permutation group G ⋊ Aut(G). This file is a self-generated follow-up to the parent entry, which proved the companion fact that the centralizer of L(G) is the right-regular image R(G). Centralizer = R(G) and normalizer = L(G)·Aut(G) together give the complete picture of the symmetries of the regular representation. For the cyclic group Z/n the holomorph is the affine group {x ↦ a·x + b : a ∈ (Z/n)*, b ∈ Z/n}.",
+    "mathContext": "$\\mathrm{Hol}(G) = N_{\\mathrm{Sym}(G)}(L(G)) \\cong G \\rtimes \\mathrm{Aut}(G)$, while $C_{\\mathrm{Sym}(G)}(L(G)) = R(G)$. For $G = \\mathbb{Z}/n$: $\\mathrm{Hol}(\\mathbb{Z}/n) \\cong (\\mathbb{Z}/n) \\rtimes (\\mathbb{Z}/n)^\\times$, the affine maps $x \\mapsto ax+b$.",
+    "significance": "context",
+    "relatedConcepts": ["holomorph", "automorphism group", "regular representation", "centralizer", "affine group", "Burnside", "Miller"],
+    "prerequisites": ["group theory", "semidirect products", "permutation groups"]
+  }
+]

@@ -131,7 +131,7 @@
     "title": "Sharp threshold: the moment sum vanishes for k > n",
     "content": "`sum_descFactorial_fixedPoints_eq_zero` records the complementary regime: when k > n, every summand is 0 because no permutation of Fin n can have more than n fixed points, and m.descFactorial k = 0 whenever m < k (`Nat.descFactorial_eq_zero_iff_lt`). The bound |Fix(σ)| ≤ n is the trivial `Finset.card_filter_le`. So the factorial-moment sum is a sharp step function: n! for k ≤ n and 0 for k > n — the finite-n cutoff of the Poisson(1) moment sequence, which only equals 1 in the limit.",
     "mathContext": "For $k>n$: $|\\mathrm{Fix}(\\sigma)|\\le n<k\\Rightarrow (X(\\sigma))_k=0$, so $\\sum_\\sigma (X(\\sigma))_k=0$. The exact moment $E[(X)_k]=1$ holds only for $k\\le n$; beyond $n$ the falling factorial truncates the sequence to 0.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.descFactorial_eq_zero_iff_lt",
       "Finset.card_filter_le",

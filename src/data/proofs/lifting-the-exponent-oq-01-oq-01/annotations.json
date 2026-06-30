@@ -1,0 +1,74 @@
+[
+  {
+    "id": "lte2-overview",
+    "proofId": "lifting-the-exponent-oq-01-oq-01",
+    "range": { "startLine": 5, "endLine": 51 },
+    "type": "concept",
+    "title": "The p = 2 exception to Lifting the Exponent",
+    "content": "The docstring sets up the two-adic exception. The parent entry proves the odd-prime LTE law v_p(xⁿ−yⁿ) = v_p(x−y) + v_p(n) and explicitly excludes p = 2. For p = 2 with even n the law genuinely differs: an extra term v_2(x+y) appears and the identity is offset by 1, giving v_2(xⁿ−yⁿ) + 1 = v_2(x−y) + v_2(x+y) + v_2(n). Mathlib has this only in the emultiplicity/ℕ∞ form (Int.two_pow_sub_pow); transporting it to an honest padicValInt equation requires discharging four finiteness side conditions, the subtle one being xⁿ ≠ yⁿ for even n (which needs x ≠ ±y, not just x ≠ y).",
+    "mathContext": "$v_2(x^n - y^n) + 1 = v_2(x-y) + v_2(x+y) + v_2(n)\\quad (x,y\\text{ odd},\\ n\\text{ even})$",
+    "significance": "key",
+    "relatedConcepts": ["Lifting the Exponent", "2-adic valuation", "padicValInt", "emultiplicity", "even-exponent exception"],
+    "prerequisites": ["p-adic valuation", "the odd-prime LTE law", "parity of integers"]
+  },
+  {
+    "id": "lte2-bridge",
+    "proofId": "lifting-the-exponent-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 65 },
+    "type": "theorem",
+    "title": "The finiteness bridge to emultiplicity",
+    "content": "`padicValInt_two_eq_emultiplicity`: for a nonzero integer z, the honest natural-number valuation `padicValInt 2 z`, cast to ℕ∞, equals `emultiplicity (2 : ℤ) z`. This is the key transport lemma: it composes the natural-number bridge `padicValNat_eq_emultiplicity` with `Int.emultiplicity_natAbs`, letting the proof move between Mathlib's ℕ∞-valued LTE statement and the honest integer equation. The z ≠ 0 hypothesis is what avoids the ⊤ value emultiplicity assigns to 0.",
+    "mathContext": "$z \\neq 0 \\Rightarrow (\\operatorname{padicValInt} 2\\, z : \\mathbb{N}_\\infty) = \\operatorname{emultiplicity}(2, z)$",
+    "significance": "key",
+    "relatedConcepts": ["emultiplicity", "padicValNat_eq_emultiplicity", "Int.emultiplicity_natAbs", "ℕ∞ coercion"],
+    "prerequisites": ["multiplicity / emultiplicity", "Int.natAbs"]
+  },
+  {
+    "id": "lte2-pow-ne",
+    "proofId": "lifting-the-exponent-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 79 },
+    "type": "theorem",
+    "title": "xⁿ ≠ yⁿ needs x ≠ ±y for even n",
+    "content": "`int_pow_ne_pow_of_ne`: for even positive n, xⁿ = yⁿ forces |x| = |y| (take natAbs, `Nat.pow_left_injective`), hence x = y or x = −y (`Int.natAbs_eq_natAbs_iff`). So distinctness of the powers genuinely requires x ≠ y AND x ≠ −y — the evenness subtlety the docstring flags, since x and −x share every even power. This supplies the crucial xⁿ − yⁿ ≠ 0 side condition for the bridge.",
+    "mathContext": "$n\\text{ even},\\ x \\neq y,\\ x \\neq -y \\Rightarrow x^n \\neq y^n$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.pow_left_injective", "Int.natAbs_eq_natAbs_iff", "even powers", "nonzero side condition"],
+    "prerequisites": ["natAbs of a power", "injectivity of n-th power"]
+  },
+  {
+    "id": "lte2-main",
+    "proofId": "lifting-the-exponent-oq-01-oq-01",
+    "range": { "startLine": 81, "endLine": 118 },
+    "type": "theorem",
+    "title": "The corrected 2-adic law (additive form)",
+    "content": "`padicValInt_two_pow_sub_pow` is the headline: for odd x, y, even n > 0, x ≠ y, x + y ≠ 0, v_2(xⁿ−yⁿ) + 1 = v_2(x−y) + v_2(x+y) + v_2(n). The proof discharges the four finiteness conditions (the powers, x−y, x+y, n all nonzero — using `int_pow_ne_pow_of_ne` for the powers), casts the target into ℕ∞, rewrites every padicValInt to emultiplicity via the bridge, applies Mathlib's `Int.two_pow_sub_pow`, and closes with `abel` before pulling back across the injective ℕ ↪ ℕ∞ cast. The extra v_2(x+y) and the +1 offset are exactly the p = 2 / even-n correction to the parent's odd-prime rule.",
+    "mathContext": "$v_2(x^n - y^n) + 1 = v_2(x-y) + v_2(x+y) + v_2(n)$",
+    "significance": "critical",
+    "relatedConcepts": ["Int.two_pow_sub_pow", "ℕ∞ cast injectivity", "finiteness side conditions", "abel"],
+    "prerequisites": ["the finiteness bridge", "Mathlib's ℕ∞ LTE law"]
+  },
+  {
+    "id": "lte2-truncated",
+    "proofId": "lifting-the-exponent-oq-01-oq-01",
+    "range": { "startLine": 120, "endLine": 130 },
+    "type": "theorem",
+    "title": "Truncated-subtraction form",
+    "content": "`padicValInt_two_pow_sub_pow'` repackages the law with natural-number (truncated) subtraction: v_2(xⁿ−yⁿ) = v_2(x−y) + v_2(x+y) + v_2(n) − 1. It follows from the additive form by a single `omega`, and is the form often quoted directly.",
+    "mathContext": "$v_2(x^n - y^n) = v_2(x-y) + v_2(x+y) + v_2(n) - 1$",
+    "significance": "supporting",
+    "relatedConcepts": ["truncated subtraction", "omega", "ℕ arithmetic"],
+    "prerequisites": ["the additive form"]
+  },
+  {
+    "id": "lte2-specialisation",
+    "proofId": "lifting-the-exponent-oq-01-oq-01",
+    "range": { "startLine": 132, "endLine": 146 },
+    "type": "theorem",
+    "title": "Specialisation to aⁿ − 1",
+    "content": "`padicValInt_two_pow_sub_one`: setting y = 1 gives, for odd a with a ≠ ±1 and even n > 0, v_2(aⁿ−1) + 1 = v_2(a−1) + v_2(a+1) + v_2(n). This is the form most often used for multiplicative orders mod 2^k and Mersenne-type valuations. It is the y = 1 instance of the main law (a + 1 ≠ 0 from a ≠ −1), closed by `simpa`.",
+    "mathContext": "$v_2(a^n - 1) + 1 = v_2(a-1) + v_2(a+1) + v_2(n)$",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicative order mod 2^k", "Mersenne numbers", "specialisation y = 1"],
+    "prerequisites": ["the main 2-adic law"]
+  }
+]

@@ -23,7 +23,7 @@
     "axiomCount": 1,
     "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The single enumeration `kaprekar_converges_all` — every non-repdigit `n < 10000` satisfies `T^[7] n = 6174` — is discharged by `native_decide` over `Finset.range 10000`. The other three results are native_decide-free: `kaprekar_fixed` (T(6174) = 6174) and `kaprekar_bound_sharp` (the witness 0014 still differs from 6174 after six steps) are kernel-checked by `decide`, and `kaprekar_unique_fixed` (6174 is the unique non-repdigit fixed point below 10000) is derived symbolically from `kaprekar_converges_all` via `Function.iterate_fixed` with no separate enumeration. Under the gallery convention (CLAUDE.md), the presented convergence result depends on `native_decide` and hence on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "lineCount": 120,
-    "theoremCount": 6,
+    "theoremCount": 5,
     "definitionCount": 3,
     "originalContributions": [
       "Arithmetic-only Kaprekar map: digits extracted by `/` and `%`, sorted by an explicit five-comparator sorting network (min/max only), and recombined as (z·1000+y·100+x·10+w) − (w·1000+x·100+y·10+z). Avoids `Nat.digits` and list `mergeSort`, keeping the map cheap to reduce.",
@@ -66,7 +66,7 @@
     "namespace": "KaprekarConstantOQ01",
     "lineCount": 120,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 5,
     "definitionCount": 3,
     "path": "Proofs/KaprekarConstantOQ01.lean",
     "sorries": 0

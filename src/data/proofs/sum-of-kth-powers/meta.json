@@ -149,6 +149,21 @@
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Euler's totient function connects to Bernoulli numbers via the von Staudt-Clausen theorem: the denominator of $B_{2k}$ is $\\prod_{p-1 \\mid 2k} p$, involving primes whose relationship to $\\phi$ governs the arithmetic of power sums"
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes the $k=1,\\dots,5$ closed forms here into the single Faulhaber formula $\\sum_{i=1}^{n} i^k = \\frac{1}{k+1}\\sum_{j=0}^{k}\\binom{k+1}{j}B_j\\,n^{k+1-j}$, formalized via Mathlib's Bernoulli infrastructure so each specific formula falls out by pure computation"
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-02",
+      "relationship": "extended-by",
+      "description": "Pushes power sums to real exponents through the $p$-series $\\zeta(s) = \\sum_n n^{-s}$, proving the convergence dichotomy ($\\zeta(s)$ converges iff $s > 1$) and recovering $\\zeta(2) = \\pi^2/6$ and $\\zeta(4) = \\pi^4/90$"
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-03",
+      "relationship": "extended-by",
+      "description": "Gives a second, structurally independent proof of Nicomachus's identity $\\sum_{i\\le n} i^3 = (\\sum_{i\\le n} i)^2$ by tiling consecutive odd numbers, complementing the parent's closed-form algebraic route"
     }
   ],
   "leanFile": {

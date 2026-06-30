@@ -1,0 +1,145 @@
+{
+  "id": "friendship-theorem-oq-01-oq-01",
+  "title": "Friendship Theorem: The SRG Integrality Dichotomy",
+  "slug": "friendship-theorem-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "FriendshipTheoremSRGIntegrality",
+    "lineCount": 239,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/FriendshipTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Answers the parent entry's open question on whether the friendship-graph 'characteristic polynomial + UFD' regularity step generalizes to strongly regular graphs (SRGs). A strongly regular graph with parameters (n, k, λ, μ) has adjacency matrix satisfying the quadratic A² = (k−μ)·I + μ·J + (λ−μ)·A, so its restricted eigenvalues r, s are the roots of x² − (λ−μ)x − (k−μ). From the dimension count f + g = n − 1 and the zero-trace relation k + f·r + g·s = 0 this file proves, with zero axioms, the classical Bose / Cameron–Van Lint integrality dichotomy: either the discriminant (λ−μ)² + 4(k−μ) is a perfect square (integer-eigenvalue case) or the multiplicities are equal and 2k + (n−1)(λ−μ) = 0 (conference-graph / half case). The friendship step k−1 = ⬚ is recovered as the λ = μ = 1 corollary, where the half case is impossible (it would need 2k = 0).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FriendshipTheoremOQ01OQ01.lean",
+    "tags": [
+      "graph-theory",
+      "spectral-theory",
+      "strongly-regular-graphs",
+      "friendship-theorem",
+      "number-theory",
+      "integrality",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 239,
+    "assumptions": "0 axioms, 0 sorries. Machine-checked against Lean v4.26.0 / Mathlib; `#print axioms` reports only the foundational `propext`, `Classical.choice`, `Quot.sound` for every declaration (no `sorryAx`, no `Lean.ofReduceBool`). Registered in Proofs.lean. The eigenvalue/multiplicity data — the Vieta relations r + s = λ − μ, r·s = −(k − μ), the dimension count f + g = n − 1, and the zero-trace relation k + f·r + g·s = 0 — is taken as explicit hypotheses of the theorem, NOT as `axiom` declarations: they are the standard output of the spectral theorem for the symmetric integer adjacency matrix, which Mathlib does not yet provide at this generality. The genuinely number-theoretic content the open question asks about — that this data forces the integrality dichotomy — is what is verified, and it carries no assumptions. Verified 2026-06-24 (researcher-10) via host `lake env lean` (Docker host down this cycle).",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "srg_integrality: the full Bose / Cameron–Van Lint dichotomy for a strongly regular graph (n, k, λ, μ) with restricted eigenvalues r, s of multiplicities f, g — either the discriminant (λ−μ)² + 4(k−μ) is a perfect square, or f = g and 2k + (n−1)(λ−μ) = 0. Proved over ℝ for the eigenvalue identity then pushed to ℤ for the square/zero dichotomy, with zero axioms.",
+      "isSquare_of_sq_mul: the core integrality engine — if m²·D = c² with m ≠ 0 over ℤ then D is a perfect square, via dvd_of_sq_dvd_sq (m² ∣ c² ⟹ m ∣ c) and cancellation. This is the integer-arithmetic heart shared by the friendship step and its SRG generalization.",
+      "friendship_discriminant_isSquare: recovers the original friendship-graph number-theoretic step k − 1 = ⬚ as the λ = μ = 1 special case — the half case collapses (it would need 2k = 0, impossible for k ≥ 1), so the discriminant 4(k−1), and hence k − 1, is a perfect square. Uses isSquare_of_four_mul to descend from 4(k−1) to k−1.",
+      "srg_conference_card_odd / srg_conference_param: in the conference-graph (half) case the equal multiplicities force n odd (n = 2f + 1) and the parameters satisfy 2k = (n−1)(μ−λ) — the standard structural constraints of conference graphs (e.g. Paley graphs).",
+      "Worked example: the Petersen graph srg(10, 3, 0, 1) instantiates the theorem on the integer-eigenvalue branch with discriminant (0−1)² + 4(3−1) = 9 = 3², eigenvalues r = 1 (mult 5), s = −2 (mult 4)."
+    ],
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The Friendship Theorem (Erdős–Rényi–Sós, 1966) states that a finite graph in which every two distinct vertices have exactly one common friend has a 'politician' vertex adjacent to all others. The classical spectral proof (formalized in the parent entry friendship-theorem-oq-01) reduces to a number-theoretic step: a k-regular friendship graph satisfies A² = (k−1)·I + J, and a characteristic-polynomial / UFD argument forces k − 1 to be a perfect square — which then pins k = 2. The parent entry's open question asks whether this 'polynomial + UFD' integrality argument generalizes beyond friendship graphs. The natural target is the class of strongly regular graphs (SRGs), introduced by R. C. Bose (1963), whose adjacency matrices satisfy a general quadratic A² = (k−μ)·I + μ·J + (λ−μ)·A. Bose, and later Cameron–Van Lint, showed that the integrality of the eigenvalue multiplicities forces a sharp dichotomy on the SRG parameters — the integrality (or 'rationality') condition — which is exactly the SRG analogue of the friendship step.",
+    "problemStatement": "A strongly regular graph with parameters (n, k, λ, μ) is k-regular, with every adjacent pair having λ common neighbours and every non-adjacent pair having μ. Off the all-ones eigenvector (eigenvalue k), the adjacency matrix has two restricted eigenvalues r, s — the roots of x² − (λ−μ)x − (k−μ) — with non-negative integer multiplicities f, g satisfying f + g = n − 1 (dimensions) and k + f·r + g·s = 0 (zero trace, the graph being loopless). Prove that this data forces the integrality dichotomy: either the discriminant (λ−μ)² + 4(k−μ) is a perfect square, or f = g and 2k + (n−1)(λ−μ) = 0.",
+    "text": "Forms the difference-of-multiplicities identity (f − g)(r − s) = −(2k + (n−1)(λ−μ)) over ℝ from the trace and dimension relations, squares it using (r − s)² = (λ−μ)² + 4(k−μ), pushes the resulting m²·D = c² identity down to ℤ, and splits on whether f − g vanishes.",
+    "proofStrategy": "1. dvd_of_sq_dvd_sq / isSquare_of_sq_mul: integer lemmas — m² ∣ c² ⟹ m ∣ c, hence m²·D = c² with m ≠ 0 forces D to be a perfect square. 2. srg_integrality, Step 1: combine the zero-trace relation, Vieta sum r + s = λ−μ, and dimension count f + g = n−1 by a linear_combination over ℝ to obtain (f − g)(r − s) = −c where c = 2k + (n−1)(λ−μ). 3. Step 2: square both sides; (r − s)² = (r + s)² − 4rs = (λ−μ)² + 4(k−μ) = discriminant, giving (f − g)²·discriminant = c² in ℝ, then exact_mod_cast to ℤ. 4. Step 3: if f − g = 0 then c² = 0 so c = 0 (the half case f = g, 2k + (n−1)(λ−μ) = 0); otherwise isSquare_of_sq_mul makes the discriminant a square. 5. friendship_discriminant_isSquare: instantiate λ = μ = 1; the half branch needs 2k = 0 (impossible for k ≥ 1), so the discriminant 4(k−1) is a square and isSquare_of_four_mul descends to k − 1.",
+    "keyInsights": [
+      "The whole dichotomy comes from a single real identity, (f − g)(r − s) = −(2k + (n−1)(λ−μ)), obtained by eliminating r·s and r + s from the trace and dimension equations — squaring it converts the irrational eigenvalue gap r − s into the rational discriminant.",
+      "Integrality is forced purely arithmetically: m²·D = c² over ℤ with m = f − g ≠ 0 makes D a perfect square because squares reflect divisibility (m² ∣ c² ⟹ m ∣ c). No spectral machinery is needed once the identity is in ℤ — exactly the 'elementary number theory' character the open question highlights.",
+      "The two branches are genuinely different graphs: a perfect-square discriminant gives integer eigenvalues (e.g. Petersen), while f − g = 0 is the conference-graph case (Paley-type), where equal multiplicities force n odd and 2k = (n−1)(μ−λ).",
+      "The friendship step is the degenerate λ = μ = 1 slice: the discriminant collapses to 4(k−1) and the conference branch is vacuous (2k = 0 is impossible for a friendship graph), so the dichotomy has only one surviving branch — recovering k − 1 = ⬚ from the general theorem.",
+      "Keeping the eigenvalue/multiplicity equations as hypotheses rather than axioms isolates the number-theoretic content: Mathlib lacks the spectral decomposition of a general symmetric integer matrix, but the integrality argument itself — the part the open question is about — needs none of it and is verified assumption-free."
+    ],
+    "prerequisites": [
+      "Strongly regular graphs and their parameters (n, k, λ, μ); the adjacency identity A² = (k−μ)I + μJ + (λ−μ)A",
+      "Eigenvalues and multiplicities of a symmetric matrix; Vieta's relations for a quadratic",
+      "Elementary divisibility in ℤ: squares reflecting divisibility, perfect squares, prime factorization of 2",
+      "Lean 4 / Mathlib: IsSquare, linear_combination, exact_mod_cast between ℝ and ℤ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "problem-statement",
+      "title": "Problem Statement: Generalizing the Friendship Integrality Step",
+      "startLine": 7,
+      "endLine": 65,
+      "summary": "License header, Mathlib import, and the module docstring framing the open question: does the friendship-graph 'polynomial + UFD' step (k − 1 = ⬚) generalize to strongly regular graphs? Sets up the SRG quadratic A² = (k−μ)I + μJ + (λ−μ)A, the restricted-eigenvalue roots r, s with Vieta relations, and the dimension/trace equations, then states the Bose / Cameron–Van Lint dichotomy to be proved. Explains why the eigenvalue data are hypotheses (the spectral decomposition gap in Mathlib) rather than axioms.",
+      "mathContext": "$A^2 = (k-\\mu)I + \\mu J + (\\lambda-\\mu)A$; restricted eigenvalues $r,s$ root $x^2-(\\lambda-\\mu)x-(k-\\mu)$ with $r+s=\\lambda-\\mu$, $rs=-(k-\\mu)$."
+    },
+    {
+      "id": "part1-integer-square",
+      "title": "Part I: Integer Square Helper Lemmas",
+      "startLine": 69,
+      "endLine": 102,
+      "summary": "dvd_of_sq_dvd_sq: over ℤ, m² ∣ c² ⟹ m ∣ c (squares reflect divisibility, via Int.pow_dvd_pow_iff). isSquare_of_sq_mul: the core engine — if m²·D = c² with m ≠ 0 then D is a perfect square. isSquare_of_four_mul: if 4x is a perfect square so is x (factoring out 2 using primality of 2), used to descend from the friendship discriminant 4(k−1) to k−1.",
+      "mathContext": "$m \\ne 0,\\ m^2 D = c^2 \\Rightarrow D = \\square$; and $4x = \\square \\Rightarrow x = \\square$."
+    },
+    {
+      "id": "part2-srg-dichotomy",
+      "title": "Part II: The SRG Integrality Dichotomy",
+      "startLine": 104,
+      "endLine": 175,
+      "summary": "srgDiscriminant and srgHalfQuantity define D = (λ−μ)² + 4(k−μ) and c = 2k + (n−1)(λ−μ). srg_integrality forms the real identity (f − g)(r − s) = −c (linear_combination of the trace, Vieta-sum, and dimension equations), squares it using (r − s)² = discriminant, casts m²·D = c² to ℤ, and splits on f − g: zero gives the half case (f = g, c = 0), non-zero gives the perfect-square discriminant via isSquare_of_sq_mul.",
+      "mathContext": "$(f-g)(r-s) = -c$, squared: $(f-g)^2\\,((\\lambda-\\mu)^2+4(k-\\mu)) = c^2$ in $\\mathbb{Z}$."
+    },
+    {
+      "id": "part3-friendship-corollary",
+      "title": "Part III: Recovering the Friendship Step (λ = μ = 1)",
+      "startLine": 177,
+      "endLine": 204,
+      "summary": "friendship_discriminant_isSquare instantiates the dichotomy at λ = μ = 1. The half branch would require 2k = 0, impossible for k ≥ 1, so only the perfect-square branch survives: the discriminant simplifies to 4(k−1), and isSquare_of_four_mul descends to make k − 1 itself a perfect square — exactly the number-theoretic heart of the spectral friendship proof, re-derived from the general SRG theorem.",
+      "mathContext": "$\\lambda=\\mu=1$: discriminant $=4(k-1)$, half case needs $2k=0$ (impossible), so $k-1 = \\square$."
+    },
+    {
+      "id": "part4-conference-case",
+      "title": "Part IV: The Conference-Graph Case",
+      "startLine": 206,
+      "endLine": 221,
+      "summary": "srg_conference_card_odd: in the half case f = g with f + g = n − 1 forces n = 2f + 1, so n is odd. srg_conference_param: the parameters satisfy 2k = (n−1)(μ−λ). These are the standard structural constraints on conference graphs (e.g. Paley graphs on q ≡ 1 mod 4 vertices).",
+      "mathContext": "Conference case: $n = 2f+1$ odd and $2k = (n-1)(\\mu-\\lambda)$."
+    },
+    {
+      "id": "part5-petersen-example",
+      "title": "Part V: Worked Example — the Petersen Graph srg(10, 3, 0, 1)",
+      "startLine": 223,
+      "endLine": 239,
+      "summary": "Instantiates srg_integrality on the Petersen graph: eigenvalues r = 1 (multiplicity 5), s = −2 (multiplicity 4), with r + s = −1 = λ − μ, r·s = −2 = −(k − μ), f + g = 9 = n − 1, and trace 3 + 5·1 + 4·(−2) = 0. The discriminant is (0−1)² + 4(3−1) = 9 = 3², landing on the integer-eigenvalue branch.",
+      "mathContext": "Petersen: discriminant $(0-1)^2 + 4(3-1) = 9 = 3^2$, a perfect square."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry answers the parent entry's open question affirmatively: the elementary 'integrality' argument behind the friendship-graph step k − 1 = ⬚ does generalize to all strongly regular graphs. The single real identity (f − g)(r − s) = −(2k + (n−1)(λ−μ)), once squared and cast to ℤ, becomes m²·D = c², from which the perfect-square / zero dichotomy follows by pure divisibility arithmetic — no spectral machinery beyond the eigenvalue/multiplicity bookkeeping that is taken as hypothesis. The result is the classical Bose / Cameron–Van Lint integrality dichotomy, with the friendship step recovered as the λ = μ = 1 degenerate slice where the conference branch is vacuous.",
+    "implications": "The formalization cleanly separates the spectral input (the existence of restricted eigenvalues with integer multiplicities, an instance of the spectral theorem for symmetric integer matrices not yet available at this generality in Mathlib) from the number-theoretic output (the integrality dichotomy), and verifies the latter assumption-free. This mirrors how the friendship proof sidesteps the missing spectral decomposition. The same m²·D = c² engine (isSquare_of_sq_mul) is reusable for any 'multiplicities are integers ⟹ a discriminant is a square' argument, including the broader feasibility conditions on SRG and association-scheme parameters.",
+    "openQuestions": [
+      "Can the eigenvalue/multiplicity hypotheses be discharged from a Mathlib spectral decomposition of the symmetric integer adjacency matrix, turning srg_integrality into an unconditional theorem about a concretely given strongly regular graph?",
+      "Does the dichotomy extend to the higher-class case (distance-regular graphs / association schemes), where the adjacency algebra has more than two restricted eigenvalues and integrality conditions on each multiplicity must hold simultaneously?",
+      "In the conference branch, can the additional Bose–Mesner constraints be formalized to recover the full feasibility conditions (e.g. the absolute bound and the Krein conditions) that further restrict admissible SRG parameter sets?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "friendship-theorem-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry gives the axiom-free spectral / characteristic-polynomial proof of the friendship regularity step, whose open question asks whether the 'polynomial + UFD' integrality argument generalizes to strongly regular graphs. This entry answers that question, proving the Bose / Cameron–Van Lint SRG integrality dichotomy and recovering the friendship step k − 1 = ⬚ as the λ = μ = 1 corollary."
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "related",
+      "description": "The root entry formalizes the finite Friendship Theorem (Erdős–Rényi–Sós 1966). The integrality dichotomy proved here is the number-theoretic core of its classical spectral proof, generalized to the full class of strongly regular graphs."
+    },
+    {
+      "targetId": "friendship-theorem-oq-04",
+      "relationship": "related",
+      "description": "A sibling open-question entry on the infinite Friendship Theorem; both isolate a single ingredient of the classical spectral proof (there the regularity/covering half, here the number-theoretic integrality half) and study how far it generalizes."
+    }
+  ]
+}

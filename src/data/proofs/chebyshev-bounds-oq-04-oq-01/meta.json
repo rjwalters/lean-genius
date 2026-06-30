@@ -1,162 +1,181 @@
 {
-    "id": "chebyshev-bounds-oq-04-oq-01",
-    "title": "Toward an Elementary PNT (Selberg-Erdős): Λ₂ Framework",
-    "slug": "chebyshev-bounds-oq-04-oq-01",
-    "description": "The OQ-04-OQ-01 follow-up question asks whether the axiom chebyshevPsi_asymptotic (ψ(n)/n → 1) of ChebyshevBoundsOQ04.lean can be discharged elementarily, in the spirit of Selberg's and Erdős's 1949 proofs of the Prime Number Theorem without complex analysis. Iteration 1 (2026-05-09) scaffolds the Selberg-Erdős strategy: defines the auxiliary function Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n), the partial sum S₂(N) = Σ_{n ≤ N} Λ₂(n), and proves routine non-negativity, base-value, and monotonicity lemmas. Iteration 2 (2026-05-11) adds the prime-value lemmas vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0) and selbergLambda2_prime (Λ₂(p) = (log p)²). Iteration 3 (2026-05-14) closes Selberg's dual identity Σ_{d|n} Λ₂(d) = (log n)² via three new theorems (bridge + convolution-in-sum + main identity). Iteration 4 (2026-05-16) closes the literal Möbius–log identity Λ₂(n) = Σ_{d|n} μ(d) · log²(n/d) via one application of ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq plus a divisorsAntidiagonal→divisors re-indexing (~8 LOC body). The Lean file remains axiom-free and sorry-free at 325 LOC / 16 theorems; the next analytic step is Selberg's symmetry formula S₂(N) = 2N · log N + O(N).",
-    "meta": {
-        "author": "Lean Genius",
-        "date": "2026-05-09",
-        "status": "formalized",
-        "proofRepoPath": "Proofs/ChebyshevBoundsOQ04OQ01.lean",
-        "tags": [
-            "number-theory",
-            "chebyshev-bounds",
-            "von-mangoldt",
-            "prime-number-theorem",
-            "elementary-proof",
-            "selberg-symmetry",
-            "erdos-selberg-1949",
-            "analytic-number-theory",
-            "scaffold",
-            "open-question"
-        ],
-        "badge": "wip",
-        "sorries": 0,
-        "dateAdded": "2026-05-09",
-        "axiomCount": 0,
-        "assumptions": "No new axioms. The parent file ChebyshevBoundsOQ04.lean contributes 2 axioms (chebyshevPsi_asymptotic, pnt_equivalence) inherited via import; this OQ-04-OQ-01 file adds none of its own. The ultimate goal is to discharge chebyshevPsi_asymptotic by proving Selberg's symmetry formula and the Erdős-Selberg combinatorial finishing argument.",
-        "lineCount": 375,
-        "theoremCount": 18,
-        "definitionCount": 4,
-        "additionalFiles": [],
-        "originalContributions": [
-            "Definition of Selberg's auxiliary function Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n) where Λ ∗ Λ is Dirichlet convolution expressed as an explicit divisor sum — chosen over the ArithmeticFunction.mul abstraction so subsequent identities can be manipulated without divisorsAntidiagonal indirection",
-            "Definition of the partial Selberg sum S₂(N) = Σ_{n ≤ N} Λ₂(n) using Mathlib's vonMangoldt and Finset.range",
-            "Routine base-value lemmas: vonMangoldtConv_zero (divisors 0 = ∅), vonMangoldtConv_one (only divisor is 1, Λ(1) = 0), selbergLambda2_zero, selbergLambda2_one — all axiom-free, sorry-free",
-            "Non-negativity lemmas: vonMangoldtConv_nonneg, selbergLambda2_nonneg, selbergSum2_nonneg via Finset.sum_nonneg + vonMangoldt_nonneg + Real.log_nonneg (with case-split on n = 0)",
-            "Partial-sum recurrence selbergSum2_succ and monotonicity selbergSum2_mono via Finset.sum_le_sum_of_subset_of_nonneg",
-            "Iteration 2 prime-value lemmas: vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 via Nat.divisors_prime and Finset.sum_pair) and selbergLambda2_prime (Λ₂(p) = (log p)² via vonMangoldt_apply_prime) — both axiom-free, sorry-free, completing the documented next-iteration deliverables #1 and #2",
-            "Iteration 3 lemmas: vonMangoldtConv_eq_mul (bridges the local divisor-sum definition to Mathlib's ArithmeticFunction.mul via Nat.map_div_right_divisors + Finset.sum_map + rfl), sum_divisors_vonMangoldtConv (Σ_{d|n} (Λ∗Λ)(d) = Σ_{d|n} Λ(d)·log(n/d) via (Λ∗Λ)∗ζ = Λ∗(Λ∗ζ) = Λ∗log), and sum_divisors_selbergLambda2_eq_log_sq (the Selberg dual identity Σ_{d|n} Λ₂(d) = (log n)², combining the bridge with vonMangoldt_sum and Real.log_mul on divisor pairs) — all axiom-free, sorry-free",
-            "Iteration 4 lemma: selbergLambda2_eq_moebius_log_sq (the literal Möbius–log identity Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0). Proof applies ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (Möbius inversion for functions to a ring) to Iter 3's dual identity, then re-indexes divisorsAntidiagonal → divisors via Nat.sum_divisorsAntidiagonal — ~8 LOC body, axiom-free, sorry-free. Closes the Möbius–log Mathlib gap originally identified in Iter 1.",
-            "Documented roadmap for the elementary PNT proof: Selberg symmetry formula (S₂(N) = 2N log N + O(N)) → Tauberian oscillation control → Erdős combinatorial finishing → ψ(n)/n → 1",
-            "Remaining Mathlib gaps (after Iter 4): (i) no Selberg symmetry formula in Mathlib, (ii) no Λ-weighted summation-by-parts framework (Iter 5–6 will need either a hand-rolled Abel-style derivation or a new Mathlib contribution). The Möbius–log identity gap (Iter 1) is now closed locally by selbergLambda2_eq_moebius_log_sq."
-        ]
-    },
-    "overview": {
-        "historicalContext": "From the time the Prime Number Theorem was first proved (Hadamard, de la Vallée Poussin 1896) until 1949, every known proof relied on complex analysis of the Riemann ζ-function — specifically, the non-vanishing of ζ(s) on Re(s) = 1. Hardy famously conjectured that no genuinely elementary proof was possible. Selberg's 1949 paper, building on his asymptotic formula Σ_{p ≤ x} log²p + Σ_{pq ≤ x} log p · log q = 2x log x + O(x), and Erdős's combinatorial refinements published the same year, finally produced an elementary proof — \"elementary\" in the technical sense of avoiding complex variables, not in the colloquial sense of being simple. The two papers, both in PNAS / Annals of Math 1949, sparked one of the most heated priority disputes in 20th-century mathematics.",
-        "problemStatement": "The parent entry chebyshev-bounds-oq-04 axiomatizes\n\n  chebyshevPsi_asymptotic : Tendsto (fun n ↦ ψ(n) / n) atTop (𝓝 1)\n\nThis OQ-04-OQ-01 follow-up asks: can this axiom be replaced by a Lean 4 proof using only elementary methods (no complex analysis, no Tauberian theorems requiring complex variables), in the style of Selberg-Erdős 1949?",
-        "proofStrategy": "The Selberg-Erdős approach factors into four stages:\n\n1. **Selberg's auxiliary function** (this iteration). Define Λ₂(n) := Λ(n)·log n + (Λ ∗ Λ)(n) and establish its routine algebraic properties: non-negativity, base values, identity Λ₂ = μ ∗ log² (next iteration).\n\n2. **Selberg's symmetry formula**: S₂(N) = Σ_{n ≤ N} Λ₂(n) = 2 N log N + O(N). The proof uses Möbius inversion on log² together with the standard estimate Σ_{n ≤ N} log²n = N log²N − 2 N log N + O(log² N), which is a direct consequence of integration by parts.\n\n3. **Tauberian step**: From the symmetry formula, derive the oscillation inequality\n\n    V(x) · log x ≤ (2/x) · Σ_{n ≤ x} V(x/n) · Λ(n) + O(1),    V(x) := |ψ(x) − x| / x.\n\nThis bounds the local oscillation of ψ(x)/x − 1 by an averaged self-reference.\n\n4. **Erdős's finishing argument**: a clever combinatorial / measure-theoretic argument shows that the inequality in step 3 forces lim sup V(x) = 0, hence ψ(x)/x → 1.\n\nThis iteration completes step 1 modulo the µ ∗ log² identity — establishing the framework, the partial-sum recurrence, and the non-negativity lemmas needed downstream.",
-        "keyInsights": [
-            "Selberg's identity Λ_2 = μ ∗ log² (where ∗ is Dirichlet convolution) reduces the entire elementary PNT proof to Möbius-function manipulations of log²: this is the crucial dimensional reduction that bypasses complex analysis",
-            "The non-negativity Λ_2(n) ≥ 0 — proved axiomatically here from Λ ≥ 0 and log n ≥ 0 for n ≥ 1 — is essential for the Tauberian step: it lets one apply L¹-type oscillation inequalities to ψ(x)/x − 1",
-            "Defining (Λ ∗ Λ)(n) as a literal divisor-sum, rather than via Mathlib's ArithmeticFunction.mul, simplifies subsequent algebraic manipulations: identities like Σ_{d|n} f(d) g(n/d) = Σ_{ab=n} f(a) g(b) become rewrites rather than reductions through divisorsAntidiagonal",
-            "The error term O(N) in Selberg's symmetry formula is much weaker than what PNT eventually delivers — the Tauberian step amplifies this O(N) error into an o(N) error term for ψ(N) − N, which is the substance of the elementary proof",
-            "Mathlib already provides ArithmeticFunction.vonMangoldt with vonMangoldt_apply_one (Λ(1) = 0), ArithmeticFunction.map_zero (Λ(0) = 0), vonMangoldt_apply_prime (Λ(p) = log p), and vonMangoldt_nonneg — sufficient for all base-value and non-negativity lemmas in this iteration"
-        ],
-        "prerequisites": [
-            "Number theory (von Mangoldt function, Möbius function, Dirichlet convolution)",
-            "Real analysis (logarithms, summation by parts, asymptotic notation)",
-            "Mathlib: ArithmeticFunction.vonMangoldt, ArithmeticFunction.moebius, Nat.divisors, Nat.divisorsAntidiagonal",
-            "Parent: chebyshev-bounds-oq-04 (definition of ψ, the axiom chebyshevPsi_asymptotic to be discharged)"
-        ]
-    },
-    "conclusion": {
-        "summary": "Iterations 1–4 establish the algebraic core of the Selberg-Erdős 1949 elementary PNT proof in this file. Iter 1 (2026-05-09, PR #17658) scaffolds the framework with Λ₂ + S₂ definitions and routine non-negativity / monotonicity lemmas. Iter 2 (2026-05-12, PR #17690) adds the prime-value lemmas vonMangoldtConv_prime and selbergLambda2_prime. Iter 3 (2026-05-14, PR #19092) closes Selberg's dual identity Σ_{d|n} Λ₂(d) = (log n)² via three new theorems (bridge + convolution-in-sum + main identity). Iter 4 (2026-05-16, this PR) closes the literal Möbius–log identity Λ₂(n) = Σ_{d|n} μ(d) · log²(n/d) — the form that Selberg's symmetry formula will sum over — via one application of ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq plus a divisorsAntidiagonal→divisors re-indexing. The file is 325 LOC / 16 theorems / 0 sorries / 0 axioms. The parent's chebyshevPsi_asymptotic axiom remains the open terminal target.",
-        "implications": "An elementary Lean formalization of PNT would be a milestone result: Mathlib currently has no PNT proof at all. The algebraic core of Selberg-Erdős is now in place; the next analytic step is Selberg's symmetry formula S₂(N) = 2N · log N + O(N), which uses Iter 4's literal Möbius–log identity as its starting point. After Iter 5–6 the Tauberian/Erdős finishing argument completes the program. Concurrent work in the gallery on chebyshev-pnt-bridge already provides ψ ↔ π equivalences that would chain with this work for the full PNT statement.",
-        "openQuestions": [
-            "Prove Selberg's symmetry formula S₂(N) = 2N·log N + O(N) — the central analytic step of the elementary proof, starting from Iter 4's literal Möbius–log identity via the standard order-swap (Möbius hyperbola) trick",
-            "Formalize the Tauberian inequality V(x) · log x ≤ (2/x) · Σ_{n ≤ x} V(x/n) · Λ(n) + O(1) where V(x) = |ψ(x) − x|/x",
-            "Formalize the Erdős combinatorial finishing argument (lim sup V(x) = 0 from the Tauberian inequality) — the longest portion of the elementary proof",
-            "Discharge the parent axiom chebyshevPsi_asymptotic by chaining the above results"
-        ]
-    },
-    "sections": [
-        {
-            "id": "sec-roadmap",
-            "title": "Roadmap (docstring)",
-            "startLine": 1,
-            "endLine": 67,
-            "summary": "Module-level docstring documenting the open question (discharging chebyshevPsi_asymptotic), the four-stage Selberg-Erdős strategy (auxiliary Λ₂ function → symmetry formula → Tauberian step → Erdős finishing), Mathlib gaps observed at v4.26.0, and references to Selberg 1949, Erdős 1949, Tenenbaum, and Iwaniec-Kowalski."
-        },
-        {
-            "id": "sec-conv",
-            "title": "Dirichlet convolution Λ ∗ Λ",
-            "startLine": 76,
-            "endLine": 86,
-            "summary": "Defines vonMangoldtConv n := Σ_{d ∣ n} Λ(d) · Λ(n/d) explicitly via Nat.divisors, deliberately avoiding the ArithmeticFunction.mul abstraction so that subsequent algebraic manipulations can be done as direct divisor-sum rewrites."
-        },
-        {
-            "id": "sec-lambda2-def",
-            "title": "Selberg's auxiliary function Λ₂",
-            "startLine": 88,
-            "endLine": 107,
-            "summary": "Defines selbergLambda2 n := Λ(n) · log n + vonMangoldtConv n and the partial sum selbergSum2 N := Σ_{n ∈ range (N+1)} Λ₂(n). Documents Selberg's identity Λ₂ = μ ∗ log² and the symmetry formula S₂(N) = 2N log N + O(N) as the next iteration's targets."
-        },
-        {
-            "id": "sec-base-values",
-            "title": "Base values and non-negativity",
-            "startLine": 109,
-            "endLine": 148,
-            "summary": "Proves vonMangoldtConv_zero, vonMangoldtConv_one, vonMangoldtConv_nonneg, selbergLambda2_zero, selbergLambda2_one, selbergLambda2_nonneg. Each uses only Mathlib's basic von Mangoldt API: ArithmeticFunction.map_zero (Λ(0) = 0), vonMangoldt_apply_one (Λ(1) = 0), vonMangoldt_nonneg, plus Real.log_nonneg with a case split at n = 0."
-        },
-        {
-            "id": "sec-partial-sums",
-            "title": "Partial sum properties",
-            "startLine": 150,
-            "endLine": 177,
-            "summary": "Proves selbergSum2_zero (= 0), selbergSum2_succ (recurrence), selbergSum2_nonneg (from Λ₂ ≥ 0), and selbergSum2_mono (Monotone selbergSum2) via Finset.sum_le_sum_of_subset_of_nonneg."
-        },
-        {
-            "id": "sec-prime-values",
-            "title": "Prime values",
-            "startLine": 179,
-            "endLine": 204,
-            "summary": "Iteration 2 lemmas: vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 via Nat.Prime.divisors and Finset.sum_pair, using Λ(1) = 0 on both endpoints of the {1, p} divisor set) and selbergLambda2_prime (Λ₂(p) = (log p)² from the convolution lemma plus vonMangoldt_apply_prime). These close items #1 and #2 from Iteration 1's documented Future Work."
-        },
-        {
-            "id": "sec-dual-identity",
-            "title": "Selberg's dual identity (Iter 3)",
-            "startLine": 206,
-            "endLine": 276,
-            "summary": "Iteration 3 lemmas: vonMangoldtConv_eq_mul (bridges the file's explicit divisor-sum definition vonMangoldtConv n = Σ_{d ∈ n.divisors} Λ(d)·Λ(n/d) to Mathlib's ArithmeticFunction.mul form via Nat.map_div_right_divisors + Finset.sum_map + rfl), sum_divisors_vonMangoldtConv (Σ_{d|n} (Λ∗Λ)(d) = Σ_{d|n} Λ(d)·log(n/d) via (Λ∗Λ)∗ζ = Λ∗(Λ∗ζ) = Λ∗log, using ArithmeticFunction.vonMangoldt_mul_zeta + coe_mul_zeta_apply + mul_assoc), and the main deliverable sum_divisors_selbergLambda2_eq_log_sq (Σ_{d|n} Λ₂(d) = (Real.log n)² for n > 0, combining the bridge with vonMangoldt_sum and Real.log_mul on divisor pairs)."
-        },
-        {
-            "id": "sec-moebius-log",
-            "title": "Möbius–log literal identity (Iter 4)",
-            "startLine": 278,
-            "endLine": 302,
-            "summary": "Iteration 4 lemma: selbergLambda2_eq_moebius_log_sq (the literal form Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0). Proof: lift Iter 3's dual identity to the ∀ m > 0 form (with explicit m : ℕ annotation to avoid Real.log coercion ambiguity), apply ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (.mp direction), then bridge antidiagonal → divisors via Nat.sum_divisorsAntidiagonal — ~8 LOC body. Closes the Möbius–log Mathlib gap originally identified in Iter 1's roadmap."
-        },
-        {
-            "id": "sec-mertens",
-            "title": "Mertens partial sum M(N) and trivial linear bound (Iter 5a-β-1)",
-            "startLine": 304,
-            "endLine": 348,
-            "summary": "Iteration 5a-β-1: defines mertensM (N) = Σ_{1 ≤ d ≤ N} (μ(d) : ℝ) and proves mertensM_zero (M(0) = 0 via Icc 1 0 = ∅) and the trivial linear bound mertensM_abs_le (|M(N)| ≤ N) by the triangle inequality |Σ| ≤ Σ|·|, |μ(d)| ≤ 1 (ArithmeticFunction.abs_moebius_le_one), and (Icc 1 N).card = N. This foundational bound feeds the Abel-summation assembly of the weak Mertens M1 estimate in Iter 5a-β."
-        },
-        {
-            "id": "sec-future-work",
-            "title": "Future Work (docstring)",
-            "startLine": 349,
-            "endLine": 373,
-            "summary": "Documents the remaining roadmap after iteration 5a-β-1: Selberg's symmetry formula S₂(N) = 2N log N + O(N) (Iter 5–6, the central analytic step starting from Iter 4's identity via the Möbius hyperbola order-swap trick, using the Iter 5a Mertens bound under Abel summation), then the Erdős-Selberg Tauberian step culminating in chebyshevPsi_asymptotic (Iter 7+)."
-        }
+  "id": "chebyshev-bounds-oq-04-oq-01",
+  "title": "Toward an Elementary PNT (Selberg-Erdős): Λ₂ Framework",
+  "slug": "chebyshev-bounds-oq-04-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ChebyshevBoundsOQ04"
     ],
-    "crossReferences": [
-        {
-            "proofId": "chebyshev-bounds-oq-04",
-            "relationship": "parent",
-            "description": "Parent entry: defines ψ(n) and axiomatizes chebyshevPsi_asymptotic (the axiom this entry aims to discharge)"
-        },
-        {
-            "proofId": "chebyshev-bounds",
-            "relationship": "related",
-            "description": "Grandparent: explicit Chebyshev bounds θ(n) ≤ n·log 4 and π(n) ≥ log₂ n, used as background for the Selberg-Erdős strategy"
-        },
-        {
-            "proofId": "chebyshev-pnt-bridge",
-            "relationship": "related",
-            "description": "Sibling: ψ ↔ π equivalence (the second leg of the PNT statement once ψ(n)/n → 1 is proved)"
-        }
+    "opens": [
+      "Nat",
+      "Finset",
+      "ArithmeticFunction",
+      "BigOperators"
+    ],
+    "namespace": "ChebyshevBoundsOQ04OQ01",
+    "lineCount": 375,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 4,
+    "path": "Proofs/ChebyshevBoundsOQ04OQ01.lean",
+    "sorries": 0
+  },
+  "description": "The OQ-04-OQ-01 follow-up question asks whether the axiom chebyshevPsi_asymptotic (ψ(n)/n → 1) of ChebyshevBoundsOQ04.lean can be discharged elementarily, in the spirit of Selberg's and Erdős's 1949 proofs of the Prime Number Theorem without complex analysis. Iteration 1 (2026-05-09) scaffolds the Selberg-Erdős strategy: defines the auxiliary function Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n), the partial sum S₂(N) = Σ_{n ≤ N} Λ₂(n), and proves routine non-negativity, base-value, and monotonicity lemmas. Iteration 2 (2026-05-11) adds the prime-value lemmas vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0) and selbergLambda2_prime (Λ₂(p) = (log p)²). Iteration 3 (2026-05-14) closes Selberg's dual identity Σ_{d|n} Λ₂(d) = (log n)² via three new theorems (bridge + convolution-in-sum + main identity). Iteration 4 (2026-05-16) closes the literal Möbius–log identity Λ₂(n) = Σ_{d|n} μ(d) · log²(n/d) via one application of ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq plus a divisorsAntidiagonal→divisors re-indexing (~8 LOC body). The Lean file remains axiom-free and sorry-free at 325 LOC / 16 theorems; the next analytic step is Selberg's symmetry formula S₂(N) = 2N · log N + O(N).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-09",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/ChebyshevBoundsOQ04OQ01.lean",
+    "tags": [
+      "number-theory",
+      "chebyshev-bounds",
+      "von-mangoldt",
+      "prime-number-theorem",
+      "elementary-proof",
+      "selberg-symmetry",
+      "erdos-selberg-1949",
+      "analytic-number-theory",
+      "scaffold",
+      "open-question"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "dateAdded": "2026-05-09",
+    "axiomCount": 0,
+    "assumptions": "No new axioms. The parent file ChebyshevBoundsOQ04.lean contributes 2 axioms (chebyshevPsi_asymptotic, pnt_equivalence) inherited via import; this OQ-04-OQ-01 file adds none of its own. The ultimate goal is to discharge chebyshevPsi_asymptotic by proving Selberg's symmetry formula and the Erdős-Selberg combinatorial finishing argument.",
+    "lineCount": 375,
+    "theoremCount": 18,
+    "definitionCount": 4,
+    "additionalFiles": [],
+    "originalContributions": [
+      "Definition of Selberg's auxiliary function Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n) where Λ ∗ Λ is Dirichlet convolution expressed as an explicit divisor sum — chosen over the ArithmeticFunction.mul abstraction so subsequent identities can be manipulated without divisorsAntidiagonal indirection",
+      "Definition of the partial Selberg sum S₂(N) = Σ_{n ≤ N} Λ₂(n) using Mathlib's vonMangoldt and Finset.range",
+      "Routine base-value lemmas: vonMangoldtConv_zero (divisors 0 = ∅), vonMangoldtConv_one (only divisor is 1, Λ(1) = 0), selbergLambda2_zero, selbergLambda2_one — all axiom-free, sorry-free",
+      "Non-negativity lemmas: vonMangoldtConv_nonneg, selbergLambda2_nonneg, selbergSum2_nonneg via Finset.sum_nonneg + vonMangoldt_nonneg + Real.log_nonneg (with case-split on n = 0)",
+      "Partial-sum recurrence selbergSum2_succ and monotonicity selbergSum2_mono via Finset.sum_le_sum_of_subset_of_nonneg",
+      "Iteration 2 prime-value lemmas: vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 via Nat.divisors_prime and Finset.sum_pair) and selbergLambda2_prime (Λ₂(p) = (log p)² via vonMangoldt_apply_prime) — both axiom-free, sorry-free, completing the documented next-iteration deliverables #1 and #2",
+      "Iteration 3 lemmas: vonMangoldtConv_eq_mul (bridges the local divisor-sum definition to Mathlib's ArithmeticFunction.mul via Nat.map_div_right_divisors + Finset.sum_map + rfl), sum_divisors_vonMangoldtConv (Σ_{d|n} (Λ∗Λ)(d) = Σ_{d|n} Λ(d)·log(n/d) via (Λ∗Λ)∗ζ = Λ∗(Λ∗ζ) = Λ∗log), and sum_divisors_selbergLambda2_eq_log_sq (the Selberg dual identity Σ_{d|n} Λ₂(d) = (log n)², combining the bridge with vonMangoldt_sum and Real.log_mul on divisor pairs) — all axiom-free, sorry-free",
+      "Iteration 4 lemma: selbergLambda2_eq_moebius_log_sq (the literal Möbius–log identity Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0). Proof applies ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (Möbius inversion for functions to a ring) to Iter 3's dual identity, then re-indexes divisorsAntidiagonal → divisors via Nat.sum_divisorsAntidiagonal — ~8 LOC body, axiom-free, sorry-free. Closes the Möbius–log Mathlib gap originally identified in Iter 1.",
+      "Documented roadmap for the elementary PNT proof: Selberg symmetry formula (S₂(N) = 2N log N + O(N)) → Tauberian oscillation control → Erdős combinatorial finishing → ψ(n)/n → 1",
+      "Remaining Mathlib gaps (after Iter 4): (i) no Selberg symmetry formula in Mathlib, (ii) no Λ-weighted summation-by-parts framework (Iter 5–6 will need either a hand-rolled Abel-style derivation or a new Mathlib contribution). The Möbius–log identity gap (Iter 1) is now closed locally by selbergLambda2_eq_moebius_log_sq."
     ]
+  },
+  "overview": {
+    "historicalContext": "From the time the Prime Number Theorem was first proved (Hadamard, de la Vallée Poussin 1896) until 1949, every known proof relied on complex analysis of the Riemann ζ-function — specifically, the non-vanishing of ζ(s) on Re(s) = 1. Hardy famously conjectured that no genuinely elementary proof was possible. Selberg's 1949 paper, building on his asymptotic formula Σ_{p ≤ x} log²p + Σ_{pq ≤ x} log p · log q = 2x log x + O(x), and Erdős's combinatorial refinements published the same year, finally produced an elementary proof — \"elementary\" in the technical sense of avoiding complex variables, not in the colloquial sense of being simple. The two papers, both in PNAS / Annals of Math 1949, sparked one of the most heated priority disputes in 20th-century mathematics.",
+    "problemStatement": "The parent entry chebyshev-bounds-oq-04 axiomatizes\n\n  chebyshevPsi_asymptotic : Tendsto (fun n ↦ ψ(n) / n) atTop (𝓝 1)\n\nThis OQ-04-OQ-01 follow-up asks: can this axiom be replaced by a Lean 4 proof using only elementary methods (no complex analysis, no Tauberian theorems requiring complex variables), in the style of Selberg-Erdős 1949?",
+    "proofStrategy": "The Selberg-Erdős approach factors into four stages:\n\n1. **Selberg's auxiliary function** (this iteration). Define Λ₂(n) := Λ(n)·log n + (Λ ∗ Λ)(n) and establish its routine algebraic properties: non-negativity, base values, identity Λ₂ = μ ∗ log² (next iteration).\n\n2. **Selberg's symmetry formula**: S₂(N) = Σ_{n ≤ N} Λ₂(n) = 2 N log N + O(N). The proof uses Möbius inversion on log² together with the standard estimate Σ_{n ≤ N} log²n = N log²N − 2 N log N + O(log² N), which is a direct consequence of integration by parts.\n\n3. **Tauberian step**: From the symmetry formula, derive the oscillation inequality\n\n    V(x) · log x ≤ (2/x) · Σ_{n ≤ x} V(x/n) · Λ(n) + O(1),    V(x) := |ψ(x) − x| / x.\n\nThis bounds the local oscillation of ψ(x)/x − 1 by an averaged self-reference.\n\n4. **Erdős's finishing argument**: a clever combinatorial / measure-theoretic argument shows that the inequality in step 3 forces lim sup V(x) = 0, hence ψ(x)/x → 1.\n\nThis iteration completes step 1 modulo the µ ∗ log² identity — establishing the framework, the partial-sum recurrence, and the non-negativity lemmas needed downstream.",
+    "keyInsights": [
+      "Selberg's identity Λ_2 = μ ∗ log² (where ∗ is Dirichlet convolution) reduces the entire elementary PNT proof to Möbius-function manipulations of log²: this is the crucial dimensional reduction that bypasses complex analysis",
+      "The non-negativity Λ_2(n) ≥ 0 — proved axiomatically here from Λ ≥ 0 and log n ≥ 0 for n ≥ 1 — is essential for the Tauberian step: it lets one apply L¹-type oscillation inequalities to ψ(x)/x − 1",
+      "Defining (Λ ∗ Λ)(n) as a literal divisor-sum, rather than via Mathlib's ArithmeticFunction.mul, simplifies subsequent algebraic manipulations: identities like Σ_{d|n} f(d) g(n/d) = Σ_{ab=n} f(a) g(b) become rewrites rather than reductions through divisorsAntidiagonal",
+      "The error term O(N) in Selberg's symmetry formula is much weaker than what PNT eventually delivers — the Tauberian step amplifies this O(N) error into an o(N) error term for ψ(N) − N, which is the substance of the elementary proof",
+      "Mathlib already provides ArithmeticFunction.vonMangoldt with vonMangoldt_apply_one (Λ(1) = 0), ArithmeticFunction.map_zero (Λ(0) = 0), vonMangoldt_apply_prime (Λ(p) = log p), and vonMangoldt_nonneg — sufficient for all base-value and non-negativity lemmas in this iteration"
+    ],
+    "prerequisites": [
+      "Number theory (von Mangoldt function, Möbius function, Dirichlet convolution)",
+      "Real analysis (logarithms, summation by parts, asymptotic notation)",
+      "Mathlib: ArithmeticFunction.vonMangoldt, ArithmeticFunction.moebius, Nat.divisors, Nat.divisorsAntidiagonal",
+      "Parent: chebyshev-bounds-oq-04 (definition of ψ, the axiom chebyshevPsi_asymptotic to be discharged)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Iterations 1–4 establish the algebraic core of the Selberg-Erdős 1949 elementary PNT proof in this file. Iter 1 (2026-05-09, PR #17658) scaffolds the framework with Λ₂ + S₂ definitions and routine non-negativity / monotonicity lemmas. Iter 2 (2026-05-12, PR #17690) adds the prime-value lemmas vonMangoldtConv_prime and selbergLambda2_prime. Iter 3 (2026-05-14, PR #19092) closes Selberg's dual identity Σ_{d|n} Λ₂(d) = (log n)² via three new theorems (bridge + convolution-in-sum + main identity). Iter 4 (2026-05-16, this PR) closes the literal Möbius–log identity Λ₂(n) = Σ_{d|n} μ(d) · log²(n/d) — the form that Selberg's symmetry formula will sum over — via one application of ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq plus a divisorsAntidiagonal→divisors re-indexing. The file is 325 LOC / 16 theorems / 0 sorries / 0 axioms. The parent's chebyshevPsi_asymptotic axiom remains the open terminal target.",
+    "implications": "An elementary Lean formalization of PNT would be a milestone result: Mathlib currently has no PNT proof at all. The algebraic core of Selberg-Erdős is now in place; the next analytic step is Selberg's symmetry formula S₂(N) = 2N · log N + O(N), which uses Iter 4's literal Möbius–log identity as its starting point. After Iter 5–6 the Tauberian/Erdős finishing argument completes the program. Concurrent work in the gallery on chebyshev-pnt-bridge already provides ψ ↔ π equivalences that would chain with this work for the full PNT statement.",
+    "openQuestions": [
+      "Prove Selberg's symmetry formula S₂(N) = 2N·log N + O(N) — the central analytic step of the elementary proof, starting from Iter 4's literal Möbius–log identity via the standard order-swap (Möbius hyperbola) trick",
+      "Formalize the Tauberian inequality V(x) · log x ≤ (2/x) · Σ_{n ≤ x} V(x/n) · Λ(n) + O(1) where V(x) = |ψ(x) − x|/x",
+      "Formalize the Erdős combinatorial finishing argument (lim sup V(x) = 0 from the Tauberian inequality) — the longest portion of the elementary proof",
+      "Discharge the parent axiom chebyshevPsi_asymptotic by chaining the above results"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-roadmap",
+      "title": "Roadmap (docstring)",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Module-level docstring documenting the open question (discharging chebyshevPsi_asymptotic), the four-stage Selberg-Erdős strategy (auxiliary Λ₂ function → symmetry formula → Tauberian step → Erdős finishing), Mathlib gaps observed at v4.26.0, and references to Selberg 1949, Erdős 1949, Tenenbaum, and Iwaniec-Kowalski."
+    },
+    {
+      "id": "sec-conv",
+      "title": "Dirichlet convolution Λ ∗ Λ",
+      "startLine": 76,
+      "endLine": 86,
+      "summary": "Defines vonMangoldtConv n := Σ_{d ∣ n} Λ(d) · Λ(n/d) explicitly via Nat.divisors, deliberately avoiding the ArithmeticFunction.mul abstraction so that subsequent algebraic manipulations can be done as direct divisor-sum rewrites."
+    },
+    {
+      "id": "sec-lambda2-def",
+      "title": "Selberg's auxiliary function Λ₂",
+      "startLine": 88,
+      "endLine": 107,
+      "summary": "Defines selbergLambda2 n := Λ(n) · log n + vonMangoldtConv n and the partial sum selbergSum2 N := Σ_{n ∈ range (N+1)} Λ₂(n). Documents Selberg's identity Λ₂ = μ ∗ log² and the symmetry formula S₂(N) = 2N log N + O(N) as the next iteration's targets."
+    },
+    {
+      "id": "sec-base-values",
+      "title": "Base values and non-negativity",
+      "startLine": 109,
+      "endLine": 148,
+      "summary": "Proves vonMangoldtConv_zero, vonMangoldtConv_one, vonMangoldtConv_nonneg, selbergLambda2_zero, selbergLambda2_one, selbergLambda2_nonneg. Each uses only Mathlib's basic von Mangoldt API: ArithmeticFunction.map_zero (Λ(0) = 0), vonMangoldt_apply_one (Λ(1) = 0), vonMangoldt_nonneg, plus Real.log_nonneg with a case split at n = 0."
+    },
+    {
+      "id": "sec-partial-sums",
+      "title": "Partial sum properties",
+      "startLine": 150,
+      "endLine": 177,
+      "summary": "Proves selbergSum2_zero (= 0), selbergSum2_succ (recurrence), selbergSum2_nonneg (from Λ₂ ≥ 0), and selbergSum2_mono (Monotone selbergSum2) via Finset.sum_le_sum_of_subset_of_nonneg."
+    },
+    {
+      "id": "sec-prime-values",
+      "title": "Prime values",
+      "startLine": 179,
+      "endLine": 204,
+      "summary": "Iteration 2 lemmas: vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 via Nat.Prime.divisors and Finset.sum_pair, using Λ(1) = 0 on both endpoints of the {1, p} divisor set) and selbergLambda2_prime (Λ₂(p) = (log p)² from the convolution lemma plus vonMangoldt_apply_prime). These close items #1 and #2 from Iteration 1's documented Future Work."
+    },
+    {
+      "id": "sec-dual-identity",
+      "title": "Selberg's dual identity (Iter 3)",
+      "startLine": 206,
+      "endLine": 276,
+      "summary": "Iteration 3 lemmas: vonMangoldtConv_eq_mul (bridges the file's explicit divisor-sum definition vonMangoldtConv n = Σ_{d ∈ n.divisors} Λ(d)·Λ(n/d) to Mathlib's ArithmeticFunction.mul form via Nat.map_div_right_divisors + Finset.sum_map + rfl), sum_divisors_vonMangoldtConv (Σ_{d|n} (Λ∗Λ)(d) = Σ_{d|n} Λ(d)·log(n/d) via (Λ∗Λ)∗ζ = Λ∗(Λ∗ζ) = Λ∗log, using ArithmeticFunction.vonMangoldt_mul_zeta + coe_mul_zeta_apply + mul_assoc), and the main deliverable sum_divisors_selbergLambda2_eq_log_sq (Σ_{d|n} Λ₂(d) = (Real.log n)² for n > 0, combining the bridge with vonMangoldt_sum and Real.log_mul on divisor pairs)."
+    },
+    {
+      "id": "sec-moebius-log",
+      "title": "Möbius–log literal identity (Iter 4)",
+      "startLine": 278,
+      "endLine": 302,
+      "summary": "Iteration 4 lemma: selbergLambda2_eq_moebius_log_sq (the literal form Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0). Proof: lift Iter 3's dual identity to the ∀ m > 0 form (with explicit m : ℕ annotation to avoid Real.log coercion ambiguity), apply ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (.mp direction), then bridge antidiagonal → divisors via Nat.sum_divisorsAntidiagonal — ~8 LOC body. Closes the Möbius–log Mathlib gap originally identified in Iter 1's roadmap."
+    },
+    {
+      "id": "sec-mertens",
+      "title": "Mertens partial sum M(N) and trivial linear bound (Iter 5a-β-1)",
+      "startLine": 304,
+      "endLine": 348,
+      "summary": "Iteration 5a-β-1: defines mertensM (N) = Σ_{1 ≤ d ≤ N} (μ(d) : ℝ) and proves mertensM_zero (M(0) = 0 via Icc 1 0 = ∅) and the trivial linear bound mertensM_abs_le (|M(N)| ≤ N) by the triangle inequality |Σ| ≤ Σ|·|, |μ(d)| ≤ 1 (ArithmeticFunction.abs_moebius_le_one), and (Icc 1 N).card = N. This foundational bound feeds the Abel-summation assembly of the weak Mertens M1 estimate in Iter 5a-β."
+    },
+    {
+      "id": "sec-future-work",
+      "title": "Future Work (docstring)",
+      "startLine": 349,
+      "endLine": 373,
+      "summary": "Documents the remaining roadmap after iteration 5a-β-1: Selberg's symmetry formula S₂(N) = 2N log N + O(N) (Iter 5–6, the central analytic step starting from Iter 4's identity via the Möbius hyperbola order-swap trick, using the Iter 5a Mertens bound under Abel summation), then the Erdős-Selberg Tauberian step culminating in chebyshevPsi_asymptotic (Iter 7+)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "chebyshev-bounds-oq-04",
+      "relationship": "parent",
+      "description": "Parent entry: defines ψ(n) and axiomatizes chebyshevPsi_asymptotic (the axiom this entry aims to discharge)"
+    },
+    {
+      "proofId": "chebyshev-bounds",
+      "relationship": "related",
+      "description": "Grandparent: explicit Chebyshev bounds θ(n) ≤ n·log 4 and π(n) ≥ log₂ n, used as background for the Selberg-Erdős strategy"
+    },
+    {
+      "proofId": "chebyshev-pnt-bridge",
+      "relationship": "related",
+      "description": "Sibling: ψ ↔ π equivalence (the second leg of the PNT statement once ψ(n)/n → 1 is proved)"
+    }
+  ]
 }

@@ -2,6 +2,21 @@
   "id": "law-of-cosines-oq-04-oq-01",
   "title": "Stewart's Theorem via Inner Products",
   "slug": "law-of-cosines-oq-04-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "RealInnerProductSpace"
+    ],
+    "namespace": "StewartsTheoremInner",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/LawOfCosinesOQ04OQ01.lean",
+    "sorries": 0
+  },
   "description": "Lifts Stewart's theorem from the scalar law-of-cosines derivation to genuine inner-product geometry: vertices are points in an arbitrary real inner product space, the cevian foot is an affine combination D = (1-s)·B + s·C, and all lengths are honest norms. The master identity holds in any dimension; the classical b²m + c²n = a(d² + mn) form, Apollonius' median theorem, and the internal angle-bisector length formula follow as specializations.",
   "meta": {
     "author": "Matthew Stewart (1746); inner-product formalization 2026",

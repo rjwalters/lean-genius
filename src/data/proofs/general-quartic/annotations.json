@@ -123,7 +123,7 @@
     },
     "type": "concept",
     "title": "Explicit Root Formulas",
-    "content": "**Ferrari's Four Roots**:\n\nWith $\\alpha = \\sqrt{2m + p}$, $\\beta = q/(2\\alpha)$:\n\n$$y_{1,2} = \\frac{-\\alpha \\pm \\sqrt{\\alpha^2 - 4(p/2 + m + \\beta)}}{2}$$\n$$y_{3,4} = \\frac{\\alpha \\pm \\sqrt{\\alpha^2 - 4(p/2 + m - \\beta)}}{2}$$\n\n**For general quartic**: Subtract $a/4$ from each $y_i$.\n\n**Lean Implementation**:\n```lean\ndef ferrariRoots (p q r m : ℂ) : ℂ × ℂ × ℂ × ℂ := ...\n```\n\nThe axiom `ferrari_roots_verify` ensures these satisfy the equation.",
+    "content": "**Ferrari's Four Roots**:\n\nWith $\\alpha = \\sqrt{2m + p}$, $\\beta = q/(2\\alpha)$:\n\n$$y_{1,2} = \\frac{-\\alpha \\pm \\sqrt{\\alpha^2 - 4(p/2 + m + \\beta)}}{2}$$\n$$y_{3,4} = \\frac{\\alpha \\pm \\sqrt{\\alpha^2 - 4(p/2 + m - \\beta)}}{2}$$\n\n**For general quartic**: Subtract $a/4$ from each $y_i$.\n\n**Lean Implementation**:\n```lean\ndef ferrariRoots (p q r m : ℂ) : ℂ × ℂ × ℂ × ℂ := ...\n```\n\nThe theorem `ferrari_roots_verify_ne` (proved, under the non-degeneracy hypothesis `2m + p ≠ 0`) ensures these satisfy the equation.",
     "mathContext": "explicit radical expressions",
     "significance": "key",
     "relatedConcepts": [

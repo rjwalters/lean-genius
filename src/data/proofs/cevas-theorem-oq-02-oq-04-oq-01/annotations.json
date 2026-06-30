@@ -1,0 +1,86 @@
+[
+  {
+    "id": "menelaus-ratio-definition",
+    "proofId": "cevas-theorem-oq-02-oq-04-oq-01",
+    "range": { "startLine": 69, "endLine": 69 },
+    "type": "definition",
+    "title": "menelausRatio: the signed division ratio of a transversal hyperplane",
+    "content": "For a hyperplane with nonzero vertex values a, menelausRatio a i j is defined as -a_i / a_j. This is the signed ratio in which the hyperplane divides the edge from vertex i to vertex j: the point (1-t)V_i + tV_j with ℓ = c sits at t = a_i/(a_i - a_j), so the signed division ratio t/(1-t) = -a_i/a_j. The single extra minus sign per edge (compared to the parent's positive edge ratio) is the entire difference between Menelaus and Ceva.",
+    "mathContext": "m(i,j) = -\\frac{a_i}{a_j}, \\qquad a_i \\ne 0",
+    "significance": "key",
+    "relatedConcepts": ["signed ratio", "transversal", "hyperplane", "simplex", "collinearity"],
+    "prerequisites": ["affine functionals", "division in a field"]
+  },
+  {
+    "id": "twisted-cocycle-law",
+    "proofId": "cevas-theorem-oq-02-oq-04-oq-01",
+    "range": { "startLine": 92, "endLine": 98 },
+    "type": "theorem",
+    "title": "menelausRatio_twisted_cocycle: the signed (twisted) cocycle law",
+    "content": "Chaining two signed ratios introduces exactly one sign: m(i,j)·m(j,k) = -m(i,k). This is the Menelaus analogue of the parent's Ceva cocycle r(i,j)·r(j,k) = r(i,k). The twist (the extra minus) is what turns 2-face products from +1 into -1, distinguishing a transversal hyperplane from a concurrency point.",
+    "mathContext": "m(i,j)\\,m(j,k) = \\frac{(-a_i)(-a_j)}{a_j a_k} = \\frac{a_i}{a_k} = -m(i,k)",
+    "significance": "critical",
+    "relatedConcepts": ["twisted cocycle", "coboundary", "sign", "Ceva duality"],
+    "prerequisites": ["field arithmetic"]
+  },
+  {
+    "id": "menelaus-2face-product",
+    "proofId": "cevas-theorem-oq-02-oq-04-oq-01",
+    "range": { "startLine": 110, "endLine": 116 },
+    "type": "theorem",
+    "title": "menelausRatio_triangle: the Menelaus product -1 on every 2-face",
+    "content": "Around any triangle i → j → k → i of the simplex the product of signed ratios is -1. For the planar triangle this is precisely the classical Menelaus criterion that the three division points are collinear (lie on a transversal line). This is the headline collinearity statement, holding on every triangular 2-face of an n-simplex.",
+    "mathContext": "m(i,j)\\,m(j,k)\\,m(k,i) = \\frac{(-a_i)(-a_j)(-a_k)}{a_j a_k a_i} = -1",
+    "significance": "critical",
+    "relatedConcepts": ["Menelaus's theorem", "collinearity", "transversal", "2-face"],
+    "prerequisites": ["field arithmetic"]
+  },
+  {
+    "id": "cycle-product-sign",
+    "proofId": "cevas-theorem-oq-02-oq-04-oq-01",
+    "range": { "startLine": 143, "endLine": 154 },
+    "type": "theorem",
+    "title": "menelausRatio_cycle_prod: closed-walk product equals (-1)^L",
+    "content": "For the signed ratios of a transversal hyperplane, the product around any closed walk v_0 → v_1 → ⋯ → v_L = v_0 equals (-1)^L. Writing m(i,j) = (-1)·(a_i/a_j) and telescoping the a-ratios to 1 leaves only the sign factor. Odd cycles (triangles, L = 3) give -1; even cycles return to +1 — the tetrahedron's 4-vertex loop is the simplest example.",
+    "mathContext": "\\prod_{t<L} m(v_t, v_{t+1}) = (-1)^L \\prod_{t<L} \\frac{a_{v_t}}{a_{v_{t+1}}} = (-1)^L",
+    "significance": "key",
+    "relatedConcepts": ["telescoping", "closed walk", "parity", "sign"],
+    "prerequisites": ["finite products", "induction"]
+  },
+  {
+    "id": "reconstruction",
+    "proofId": "cevas-theorem-oq-02-oq-04-oq-01",
+    "range": { "startLine": 176, "endLine": 187 },
+    "type": "theorem",
+    "title": "exists_values_of_twisted_cocycle: reconstructing the hyperplane",
+    "content": "The substantive converse: any nonzero signed assignment obeying the twisted cocycle law m(i,j)·m(j,k) = -m(i,k) comes from vertex values, with a_i = 1/m(b,i) for any base vertex b. The twisted cocycle m(b,i)·m(i,j) = -m(b,j) is exactly the statement m(i,j) = -a_i/a_j. So realizability by a transversal hyperplane is precisely the twisted-coboundary condition.",
+    "mathContext": "a_i = \\frac{1}{m(b,i)} \\;\\Rightarrow\\; m(i,j) = -\\frac{a_i}{a_j}",
+    "significance": "critical",
+    "relatedConcepts": ["coboundary", "reconstruction", "constructive existence"],
+    "prerequisites": ["field arithmetic", "twisted cocycle law"]
+  },
+  {
+    "id": "transversal-criterion",
+    "proofId": "cevas-theorem-oq-02-oq-04-oq-01",
+    "range": { "startLine": 204, "endLine": 245 },
+    "type": "theorem",
+    "title": "twisted_cocycle_iff_triangles / menelaus_criterion: the equivalence",
+    "content": "For nonzero m the twisted cocycle law is equivalent to the Menelaus product = -1 on every ordered triple, hence a transversal hyperplane realizing m exists iff the Menelaus equation holds on every triangular 2-face. The only nonlinear step is cube_eq_neg_one: over ℝ the cube relation m(i,i)³ = -1 forces m(i,i) = -1 (the factor x²-x+1 is positive), which then yields signed reciprocity and the twisted cocycle by cancellation.",
+    "mathContext": "(\\forall i j k,\\; m(i,j)m(j,k) = -m(i,k)) \\iff (\\forall i j k,\\; m(i,j)m(j,k)m(k,i) = -1)",
+    "significance": "critical",
+    "relatedConcepts": ["criterion", "2-face conditions", "cube root", "cancellation"],
+    "prerequisites": ["field arithmetic", "factoring over ℝ"]
+  },
+  {
+    "id": "ceva-menelaus-duality",
+    "proofId": "cevas-theorem-oq-02-oq-04-oq-01",
+    "range": { "startLine": 253, "endLine": 271 },
+    "type": "theorem",
+    "title": "menelausRatio_eq_neg_edgeRatio / menelaus_triangle_eq_neg_ceva: the sign signature",
+    "content": "The signed Menelaus ratio is literally the negated parent edge ratio with reversed orientation: m(i,j) = -r(j,i). Consequently the Menelaus 2-face product is the negation of the Ceva 2-face product — -1 for a transversal hyperplane versus +1 for a concurrency point. Collinearity and concurrency are one identity up to a single sign, the cleanest possible statement of Ceva–Menelaus duality.",
+    "mathContext": "m(i,j) = -\\,r(j,i), \\qquad \\prod_{\\text{face}} m = -\\!\\prod_{\\text{face}} r = -1",
+    "significance": "key",
+    "relatedConcepts": ["duality", "Ceva's theorem", "sign", "orientation"],
+    "prerequisites": ["parent edgeRatio definition"]
+  }
+]

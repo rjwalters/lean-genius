@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "banach-steinhaus-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "context",
+    "title": "The Uniform Boundedness Principle and Its Consequences",
+    "content": "The Banach–Steinhaus theorem is one of the three pillars of linear functional analysis (with the open mapping and Hahn–Banach theorems), all flowing from the Baire category theorem. Mathlib proves the core theorem but the gallery lacked a dedicated entry. This entry packages it with its two characteristic consequences — condensation of singularities (resonance) and closure under pointwise limits — in forms Mathlib does not state.",
+    "mathContext": "If $\\{g_i\\}$ are continuous linear maps from a Banach space and $\\sup_i\\|g_i x\\| < \\infty$ for each $x$, then $\\sup_i\\|g_i\\| < \\infty$. (Baire category.)",
+    "significance": "context",
+    "relatedConcepts": ["Banach–Steinhaus theorem", "uniform boundedness principle", "Baire category theorem", "functional analysis pillars"],
+    "prerequisites": ["Banach spaces", "continuous linear maps", "operator norm"]
+  },
+  {
+    "id": "ann-ubp",
+    "proofId": "banach-steinhaus-theorem-oq-01",
+    "range": { "startLine": 42, "endLine": 49 },
+    "type": "theorem",
+    "title": "Banach–Steinhaus: Pointwise Bounded ⟹ Uniformly Bounded",
+    "content": "The main theorem (re-exporting `banach_steinhaus`): a family of continuous linear maps out of a complete space that is pointwise bounded (∀x ∃C ∀i ‖gᵢx‖ ≤ C) is uniformly bounded in operator norm (∃C' ∀i ‖gᵢ‖ ≤ C'). Completeness of the domain is essential — it is what supplies the Baire category argument.",
+    "mathContext": "$(\\forall x,\\ \\exists C,\\ \\forall i,\\ \\|g_i x\\| \\le C) \\implies \\exists C',\\ \\forall i,\\ \\|g_i\\| \\le C'.$",
+    "significance": "key",
+    "relatedConcepts": ["uniform boundedness", "pointwise boundedness", "operator norm", "completeness"],
+    "prerequisites": ["continuous linear maps", "operator norm", "Banach space"]
+  },
+  {
+    "id": "ann-isup",
+    "proofId": "banach-steinhaus-theorem-oq-01",
+    "range": { "startLine": 51, "endLine": 56 },
+    "type": "theorem",
+    "title": "Supremum-of-Norms Form (ℝ≥0∞)",
+    "content": "The same principle phrased with extended nonnegative reals: if the pointwise suprema ⨆ᵢ ‖gᵢx‖₊ are all finite, so is the supremum of operator norms ⨆ᵢ ‖gᵢ‖₊. This `ENNReal`-valued form (via `banach_steinhaus_iSup_nnnorm`) is convenient when working with suprema that may a priori be infinite.",
+    "mathContext": "$(\\forall x,\\ \\sup_i \\|g_i x\\|_+ < \\infty) \\implies \\sup_i \\|g_i\\|_+ < \\infty$ in $\\mathbb{R}_{\\ge 0}^\\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": ["supremum of norms", "ENNReal", "nnnorm", "uniform boundedness"],
+    "prerequisites": ["extended nonnegative reals", "suprema"]
+  },
+  {
+    "id": "ann-resonance",
+    "proofId": "banach-steinhaus-theorem-oq-01",
+    "range": { "startLine": 58, "endLine": 70 },
+    "type": "theorem",
+    "title": "Condensation of Singularities (Resonance)",
+    "content": "The contrapositive: if the operator norms are unbounded, there is a single point x — a resonance point — at which ‖gᵢx‖ is unbounded. The proof is a clean `by_contra`: assuming no such x, pointwise boundedness holds everywhere, so uniform boundedness gives a bound C' contradicting the unboundedness hypothesis. Failure of uniform boundedness is always witnessed at one point.",
+    "mathContext": "$(\\forall C,\\ \\exists i,\\ \\|g_i\\| > C) \\implies \\exists x,\\ \\forall C,\\ \\exists i,\\ \\|g_i x\\| > C.$",
+    "significance": "key",
+    "relatedConcepts": ["condensation of singularities", "resonance point", "contrapositive", "uniform boundedness"],
+    "prerequisites": ["the uniform boundedness principle", "proof by contradiction"]
+  },
+  {
+    "id": "ann-pointwise-limit",
+    "proofId": "banach-steinhaus-theorem-oq-01",
+    "range": { "startLine": 72, "endLine": 83 },
+    "type": "theorem",
+    "title": "Pointwise Limits Stay Continuous Linear",
+    "content": "If a family of continuous linear maps out of a Banach space (indexed by any countably generated nontrivial filter, e.g. a sequence with atTop) converges pointwise to f, then f is itself a continuous linear map (`continuousLinearMapOfTendsto`). The standard corollary: pointwise boundedness of the convergent family gives equicontinuity, making the limit continuous. So the space of continuous linear maps is closed under pointwise limits.",
+    "mathContext": "$g_n \\to f$ pointwise (with $E$ Banach) $\\implies \\exists F' \\in E \\to_{SL} F,\\ \\forall x,\\ F'x = f x.$",
+    "significance": "key",
+    "relatedConcepts": ["pointwise limit", "equicontinuity", "closure of continuous linear maps", "countably generated filter"],
+    "prerequisites": ["continuous linear maps", "filter convergence", "the uniform boundedness principle"]
+  },
+  {
+    "id": "ann-additive",
+    "proofId": "banach-steinhaus-theorem-oq-01",
+    "range": { "startLine": 85, "endLine": 92 },
+    "type": "theorem",
+    "title": "Corollary: the Limit Map Is Additive",
+    "content": "A concrete consequence: the pointwise limit f of continuous linear maps satisfies f(x+y) = f(x) + f(y). Obtained by transporting additivity through the continuous-linear-map witness from the previous theorem (`map_add`). A sample of the structure the limit inherits.",
+    "mathContext": "$f(x+y) = f(x) + f(y)$ for the pointwise limit $f$ of continuous linear maps.",
+    "significance": "supporting",
+    "relatedConcepts": ["additivity", "linearity of the limit", "map_add"],
+    "prerequisites": ["pointwise limit is continuous linear"]
+  }
+]

@@ -1,0 +1,189 @@
+{
+  "id": "alternating-series-test-oq-01-oq-02",
+  "title": "Abel-Summation Error Bounds for Alternating Series with Bounded-Variation Coefficients",
+  "slug": "alternating-series-test-oq-01-oq-02",
+  "description": "Removes the monotonicity hypothesis from the alternating series error estimate. The parent entries bound the truncation error of S_N = ∑_{i<N} (-1)^i a_i by the first omitted term a_N — but only when the coefficients a are antitone. Via summation by parts (Abel's transformation, Finset.sum_range_by_parts) this entry proves a Cauchy-difference estimate valid for an ARBITRARY real coefficient sequence: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|, a boundary term plus the total variation of a on the block. This is the quantitative core of the Dirichlet test: the partial sums of the sign sequence (-1)^i are bounded by 1 (neg_one_geom_sum), so Abel summation trades the possibly non-monotone oscillation of a for its total variation. Two consequences are recorded: (1) for antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the bound back to the Leibniz value a_N — so the new estimate CONTAINS the classical one as the monotone special case; (2) passing M → ∞ for a convergent series bounds the genuine limit error |S_N − l| by a controlling tail value V, the bounded-variation analogue of the Leibniz remainder. The bounded-variation error bound is absent from Mathlib. This directly answers the parent entry's open question on extending the trapping to coefficients of bounded variation via Abel summation.",
+  "meta": {
+    "author": "Abel/Dirichlet (summation by parts); bounded-variation error bound formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlternatingSeriesTestOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "alternating-series",
+      "error-bound",
+      "summation-by-parts",
+      "abel-summation",
+      "dirichlet-test",
+      "bounded-variation",
+      "total-variation"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_by_parts",
+        "description": "Summation by parts (Abel transformation): the engine that rewrites ∑ (-1)^j a(N+j) as a boundary term minus a sum of coefficient-differences weighted by sign partial sums",
+        "module": "Mathlib.Algebra.BigOperators.Module"
+      },
+      {
+        "theorem": "neg_one_geom_sum",
+        "description": "∑_{i<n} (-1)^i = if Even n then 0 else 1 — bounds every sign partial sum by 1, the Dirichlet boundedness hypothesis",
+        "module": "Mathlib.Algebra.Ring.GeomSum"
+      },
+      {
+        "theorem": "Finset.sum_Ico_eq_sub",
+        "description": "∑_{i ∈ [N,M)} f i = (∑_{i<M} f i) − (∑_{i<N} f i): converts the block sum into the difference of partial sums S_M − S_N",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.sum_range_sub'",
+        "description": "Telescoping sum identity, used to collapse the total variation to a_N − a_(M−1) in the antitone special case",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.abs_sum_le_sum_abs",
+        "description": "Triangle inequality for finite sums |∑ f| ≤ ∑ |f|, applied to the variation term",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "le_of_tendsto",
+        "description": "Limits preserve ≤: passes the finite Cauchy-difference bound to the limit M → ∞ to bound the genuine remainder |S_N − l|",
+        "module": "Mathlib.Order.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "abs_alternating_Ico_le: the Abel/Dirichlet error bound |∑_{i ∈ [N,M)} (-1)^i a_i| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)| for an ARBITRARY real coefficient sequence — no monotonicity assumed; absent from Mathlib",
+      "abs_partialSum_diff_le: the same bound in partial-sum (Cauchy-difference) form, |S_M − S_N| ≤ |a(M−1)| + total variation on [N,M−1)",
+      "abs_partialSum_diff_le_of_antitone: the monotone special case where the variation telescopes and the boundary term cancels, recovering the classical Leibniz value a_N — establishing that the bounded-variation estimate CONTAINS the antitone one",
+      "abs_partialSum_sub_limit_le_tail_variation: the limit-error bound |S_N − l| ≤ V obtained by passing M → ∞, the bounded-variation analogue of the Leibniz remainder with the tail total variation V in place of a_N",
+      "abs_signSum_le: the Dirichlet boundedness lemma |∑_{i<n} (-1)^i| ≤ 1 that powers the whole estimate"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. #print axioms reports only the standard foundational axioms propext, Classical.choice, Quot.sound on all four headline theorems.",
+    "lineCount": 174,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Leibniz alternating series test (Rudin, Theorem 3.43) bounds the truncation error |S_N − l| ≤ a_N, but crucially requires the coefficients a to be antitone. The Dirichlet test generalises convergence to any series ∑ b_i a_i where the partial sums of b are bounded and a is of bounded variation tending to 0 — its proof is summation by parts (Abel's transformation). What is rarely packaged is the QUANTITATIVE form of this argument: an explicit error bound that survives the loss of monotonicity. Abel summation trades the oscillation of the coefficients for their total variation, and that is exactly the quantity that controls the truncation error when the coefficients are no longer monotone.",
+    "problemStatement": "The parent entry alternating-series-test-oq-01-oq-01 asks whether two-sided error bounds can be recovered for alternating series whose coefficients are of bounded variation (rather than antitone), via Abel summation. \n\n**Answer: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|** for an arbitrary real coefficient sequence. The right-hand side is a boundary term plus the total variation of a on the block. For antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the estimate back to the Leibniz value a_N; for a convergent series the M → ∞ limit bounds |S_N − l| by the tail total variation.",
+    "text": "Summation by parts converts the alternating block sum of an arbitrary coefficient sequence into a boundary term plus its total variation, giving a Leibniz-style error bound that no longer needs monotonicity and contains the classical estimate as the antitone special case.",
+    "proofStrategy": "Reindex the block [N,M) to range n (n = M − N), factoring out the constant sign (-1)^N. Apply Finset.sum_range_by_parts (Abel summation) to the reindexed sign × coefficient sum, producing a boundary term a(N+(n−1))·(∑ signs) minus a sum of coefficient-differences each weighted by a sign partial sum. Bound every sign partial sum by 1 (abs_signSum_le, from neg_one_geom_sum), then apply the triangle inequality to land on |a(M−1)| + ∑ |a(i+1) − a(i)|. Recast as a partial-sum difference via Finset.sum_Ico_eq_sub. For the antitone corollary, each |a(i+1) − a(i)| = a(i) − a(i+1), so the variation telescopes (Finset.sum_range_sub') to a_N − a(M−1) and the boundary |a(M−1)| = a(M−1) cancels, leaving a_N. For the limit form, the const_sub of the convergent partial-sum sequence is continuous in M, so le_of_tendsto pushes the finite bound through M → ∞.",
+    "keyInsights": [
+      "Summation by parts is the right tool once monotonicity is dropped: it expresses the alternating sum through the coefficient DIFFERENCES (total variation) rather than the coefficients themselves",
+      "The sign sequence (-1)^i has partial sums in {0,1}, so the Dirichlet boundedness constant is exactly 1 — this is what turns Abel summation into a clean one-line bound",
+      "The bounded-variation bound CONTAINS the Leibniz bound: for antitone coefficients the variation telescopes and the boundary term cancels, recovering a_N exactly",
+      "Passing to the limit replaces the first omitted term a_N by a controlling tail total variation V, giving a remainder estimate |S_N − l| ≤ V for non-monotone series"
+    ],
+    "prerequisites": [
+      "Convergence of sequences and series in ℝ",
+      "Summation by parts (Abel's transformation) and the Dirichlet test",
+      "Total variation of a sequence and the notion of bounded variation",
+      "The parent entries' Leibniz remainder bound |S_N − l| ≤ a_N for antitone coefficients"
+    ]
+  },
+  "sections": [
+    {
+      "id": "dirichlet-boundedness",
+      "title": "Dirichlet Boundedness of the Sign Sequence",
+      "startLine": 42,
+      "endLine": 52,
+      "summary": "abs_signSum_le: |∑_{i<n} (-1)^i| ≤ 1, since the geometric partial sum (neg_one_geom_sum) is 0 or 1; plus the elementary triangle helper |x − y| ≤ |x| + |y|.",
+      "mathContext": "$\\left|\\sum_{i<n}(-1)^i\\right| \\le 1$."
+    },
+    {
+      "id": "abel-error-bound",
+      "title": "The Abel-Summation Error Bound (Arbitrary Coefficients)",
+      "startLine": 54,
+      "endLine": 109,
+      "summary": "abs_alternating_Ico_le: |∑_{i ∈ [N,M)} (-1)^i a_i| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|. Reindex to range n, apply summation by parts, bound each sign partial sum by 1, triangle-inequality the rest.",
+      "mathContext": "$\\left|\\sum_{i=N}^{M-1}(-1)^i a_i\\right| \\le |a_{M-1}| + \\sum_{i=N}^{M-2}|a_{i+1}-a_i|$."
+    },
+    {
+      "id": "cauchy-difference-form",
+      "title": "Cauchy-Difference Form |S_M − S_N|",
+      "startLine": 111,
+      "endLine": 128,
+      "summary": "partialSum_diff_eq rewrites the block sum as S_M − S_N (Finset.sum_Ico_eq_sub); abs_partialSum_diff_le packages the Abel bound as a truncation-error estimate between two partial sums.",
+      "mathContext": "$|S_M - S_N| \\le |a_{M-1}| + \\sum_{i=N}^{M-2}|a_{i+1}-a_i|$."
+    },
+    {
+      "id": "antitone-recovers-leibniz",
+      "title": "Monotone Special Case Recovers Leibniz",
+      "startLine": 129,
+      "endLine": 156,
+      "summary": "abs_partialSum_diff_le_of_antitone: for antitone a ≥ 0 the total variation telescopes to a_N − a(M−1) and the boundary term cancels, collapsing the bound to the classical |S_M − S_N| ≤ a_N.",
+      "mathContext": "antitone $a \\ge 0 \\Rightarrow |S_M - S_N| \\le a_N$."
+    },
+    {
+      "id": "tail-variation-remainder",
+      "title": "Bounded-Variation Remainder at the Limit",
+      "startLine": 154,
+      "endLine": 174,
+      "summary": "abs_partialSum_sub_limit_le_tail_variation: if S_n → l and the boundary-plus-variation quantity is ≤ V for arbitrarily large M, then |S_N − l| ≤ V — the bounded-variation analogue of the Leibniz remainder.",
+      "mathContext": "$S_n \\to l,\\ |a_{M-1}| + \\sum_{i=N}^{M-2}|a_{i+1}-a_i| \\le V \\Rightarrow |S_N - l| \\le V$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Abel, N. H.",
+      "title": "Untersuchungen über die Reihe ...",
+      "year": "1826",
+      "note": "Summation by parts (Abel's transformation)"
+    },
+    {
+      "authors": "Dirichlet, P. G. L.",
+      "title": "Sur la convergence des séries trigonométriques",
+      "year": "1862",
+      "note": "The Dirichlet convergence test for ∑ b_i a_i with bounded partial sums of b and a of bounded variation → 0"
+    },
+    {
+      "authors": "Rudin, W.",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "note": "Summation by parts (Theorem 3.41), Dirichlet and Abel tests (Theorem 3.42), alternating series test (Theorem 3.43)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "alternating-series-test-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Sibling entry: proves the two-sided two-term trap for ANTITONE coefficients and asks whether such bounds survive for coefficients of bounded variation via Abel summation. This entry answers that question, replacing monotonicity by total variation and recovering the antitone case as a telescoping corollary."
+    },
+    {
+      "targetId": "alternating-series-test-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent entry: the Leibniz one-term remainder bound |S_N − l| ≤ a_N for antitone coefficients, which this entry generalises to bounded-variation coefficients."
+    }
+  ],
+  "conclusion": {
+    "summary": "Summation by parts gives a Leibniz-style truncation-error bound |S_M − S_N| ≤ |a(M−1)| + ∑ |a(i+1) − a(i)| valid for arbitrary real coefficients, proved with 0 axioms. The boundary-plus-total-variation right-hand side collapses to the classical a_N for antitone coefficients (the variation telescopes, the boundary cancels), and its M → ∞ limit bounds the genuine remainder |S_N − l| by a tail total variation.",
+    "implications": "Establishes the quantitative core of the Dirichlet test in the gallery: alternating-series error control no longer needs monotone coefficients, only bounded variation. The antitone Leibniz estimate is exhibited as the special case where total variation telescopes, unifying the monotone and bounded-variation regimes under one Abel-summation bound.",
+    "openQuestions": [
+      "Can the boundary term |a(M−1)| be absorbed to give a clean two-sided trap (both upper and lower bounds) for bounded-variation coefficients, mirroring the antitone two-term trap of the sibling entry?",
+      "Does the same Abel-summation bound extend from the sign sequence (-1)^i to a general Dirichlet weight b_i with uniformly bounded partial sums, recovering the full Dirichlet test with explicit constants?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "AlternatingSeriesTestOQ01OQ02",
+    "lineCount": 174,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/AlternatingSeriesTestOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

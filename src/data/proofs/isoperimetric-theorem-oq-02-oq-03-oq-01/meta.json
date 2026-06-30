@@ -1,0 +1,203 @@
+{
+  "id": "isoperimetric-theorem-oq-02-oq-03-oq-01",
+  "title": "Quantitative 1D Edge-Isoperimetric Stability: Boundary = 2·Runs",
+  "slug": "isoperimetric-theorem-oq-02-oq-03-oq-01",
+  "description": "The edge boundary of a finite S ⊆ ℤ has exactly 2·(number of maximal runs) crossing edges: edgeBoundaryCount S = 2·numRuns S. Hence |∂_edge S| = 2 + 2k iff S has exactly k+1 maximal runs, and S then differs from its spanning interval [min S, max S] in at least k points (a discrete Fuglede-type stability bound). This closes the quantitative-stability open question named by the parent rigidity entry (IsoperimetricTheoremOQ02OQ03), with the crucial correction that the clean 2·runs identity holds for the EDGE count, not the vertex boundary.",
+  "meta": {
+    "author": "Robb Walters (Lean Genius Researcher)",
+    "sourceUrl": "https://www.cs.ru.nl/~freek/100/",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/IsoperimetricTheoremOQ02OQ03OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "discrete-geometry",
+      "isoperimetric-inequality",
+      "stability",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_bij",
+        "description": "Cardinality equality from an explicit bijection; used to prove the has-predecessor and has-successor sets are equinumerous via the translation x ↦ x − 1",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.filter_card_add_filter_neg_card_eq_card",
+        "description": "|S.filter p| + |S.filter ¬p| = |S|; used to split S into its endpoints (run starts/ends) and its interior (has-neighbour) elements",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_image_of_injective",
+        "description": "Image under an injective map preserves cardinality; used to identify each edge-summand (S±1)\\S with the left/right endpoint set",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Finset.card_le_card_of_injOn",
+        "description": "An injection from A into B bounds |A| ≤ |B|; used to inject the non-minimal run starts into the missing points of the spanning interval for the Fuglede-type bound",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.min', Finset.max', Finset.min'_le, Finset.le_max', Finset.min'_mem",
+        "description": "Min/max of a nonempty finset and their order facts; used to span the interval [min S, max S] and to show the minimum is always a run start",
+        "module": "Mathlib.Order.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "edgeBoundaryCount_eq_two_mul_numRuns: the headline identity edgeBoundaryCount S = 2·numRuns S for every finite S ⊆ ℤ — the precise 'boundary = 2·runs' statement the parent rigidity entry flagged but did not prove",
+      "card_leftEnds_eq_card_rightEnds: left endpoints (run starts) and right endpoints (run ends) are equinumerous, proved with NO telescoping — via the translation bijection internalL ≃ internalR between the has-predecessor and has-successor sets",
+      "card_internalL_eq_card_internalR: the shift bijection x ↦ x − 1 carrying {x∈S : x−1∈S} onto {x∈S : x+1∈S}, the combinatorial heart that replaces a telescoping sum",
+      "edgeBoundaryCount_eq_iff_numRuns: the quantitative-stability equivalence edgeBoundaryCount S = 2 + 2k ↔ numRuns S = k + 1, exactly the parent's named open question (corrected to the edge count)",
+      "card_image_sub_one_sdiff / card_image_add_one_sdiff: the two edge summands (S−1)\\S and (S+1)\\S equal the left/right endpoint counts, identifying boundary edges with run endpoints",
+      "numRuns_sub_one_le_card_sdiff: discrete Fuglede-type stability — |S △ Icc(min S, max S)| ≥ numRuns S − 1, so edgeBoundaryCount = 2 + 2k forces at least k points of deviation from an interval",
+      "numRuns_Icc / edgeBoundaryCount_Icc / numRuns_eq_one_iff_edgeBoundaryCount_eq_two: the single-run (interval) case, recovering the parent's |∂_edge| = 2 ⟺ one run and connecting to the rigidity entry"
+    ],
+    "axiomCount": 0,
+    "lineCount": 266,
+    "assumptions": "0 axioms, 0 sorries — fully verified (depends only on propext, Classical.choice, Quot.sound).",
+    "theoremCount": 14,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "The parent rigidity entry (Discrete Isoperimetric Inequality 1D, OQ-02 → OQ-03) proved that a finite nonempty S ⊆ ℤ has vertex boundary |∂S| = 2 iff S is an interval, and explicitly posed a quantitative-stability follow-up: 'if |∂S| = 2 + 2k, show S has exactly k+1 maximal runs … and bound the symmetric difference |S △ Icc(min S, max S)| in terms of k — the discrete analogue of Fuglede-type quantitative isoperimetric stability.' That entry also warned that the cardinality of the VERTEX boundary is not 2·(runs) — e.g. S = {0,2} has |∂S| = 3 but two runs. This entry resolves the open question with the correct invariant: the EDGE boundary count (lattice edges crossing between S and its complement) equals 2·(number of maximal runs) exactly, so the '2 + 2k ⟺ k+1 runs' phenomenon is literally true for edges. Quantitative isoperimetric stability — measuring how far a near-extremal set is from the extremizer — is a central modern theme (Fuglede, Fusco–Maggi–Pratelli); this is its sharp discrete 1D base case.",
+    "problemStatement": "For a finite S ⊆ ℤ define numRuns S = |{x ∈ S : x − 1 ∉ S}| (maximal runs counted by their left endpoints) and the edge boundary count edgeBoundaryCount S = |(S−1) \\ S| + |(S+1) \\ S| (rising plus falling boundary edges). Prove edgeBoundaryCount S = 2·numRuns S; deduce edgeBoundaryCount S = 2 + 2k ⟺ numRuns S = k + 1; and bound |Icc(min S, max S) \\ S| ≥ numRuns S − 1.",
+    "text": "Edge boundary = 2·runs for finite subsets of ℤ; each extra run adds exactly two boundary edges, and more runs force greater deviation from an interval.",
+    "proofStrategy": "Count runs by left endpoints leftEnds = {x∈S : x−1∉S} and by right endpoints rightEnds = {x∈S : x+1∉S}. Within S, the run starts are the complement of the has-predecessor set internalL = {x∈S : x−1∈S}, and the run ends are the complement of the has-successor set internalR = {x∈S : x+1∈S}, so |leftEnds| = |S| − |internalL| and |rightEnds| = |S| − |internalR|. The translation x ↦ x − 1 is a bijection internalL ≃ internalR (if x and x−1 both lie in S then x−1 and (x−1)+1 = x both lie in S), giving |internalL| = |internalR| and hence |leftEnds| = |rightEnds| with NO telescoping sum. The two edge summands (S−1)\\S and (S+1)\\S are the injective images of leftEnds and rightEnds, so edgeBoundaryCount = |leftEnds| + |rightEnds| = 2·numRuns. The arithmetic corollary and the interval (single-run) case follow by omega. For the Fuglede-type bound, map each non-minimal run start x to its missing predecessor x − 1, an injection from leftEnds \\ {min S} into Icc(min S, max S) \\ S.",
+    "keyInsights": [
+      "The clean '2·runs' law is about the EDGE count, not the vertex boundary: the parent entry correctly noted |∂_vertex {0,2}| = 3 ≠ 4, so the right object is edgeBoundaryCount = |(S−1)\\S| + |(S+1)\\S|, which counts every crossing edge once and is exactly 2·runs.",
+      "Left endpoints and right endpoints are equinumerous because the has-predecessor and has-successor sets are related by a single translation x ↦ x − 1 — a clean bijection that completely replaces the telescoping/induction one might expect for a 'boundary counts components' statement.",
+      "Each maximal run contributes exactly two boundary edges: one rising edge at its left end and one falling edge at its right end. This makes 'each gap adds 2 boundary points' a precise theorem rather than a heuristic.",
+      "The single-run case numRuns = 1 ⟺ edgeBoundaryCount = 2 recovers and reinterprets the parent's interval rigidity in edge-count language, linking the two entries.",
+      "Stability is one-directional and sharp at the lower end: numRuns − 1 gaps force at least numRuns − 1 missing interior points, so edgeBoundaryCount = 2 + 2k ⟹ |S △ Icc(min S, max S)| ≥ k; the deviation can be arbitrarily large above this, matching the fact that runs can be far apart."
+    ],
+    "prerequisites": [
+      "Finset basics (filter, image, sdiff, card, min', max')",
+      "Bijection/injection cardinality lemmas (card_bij, card_image_of_injective, card_le_card_of_injOn)",
+      "Linear arithmetic over ℤ (omega)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Context: From Rigidity to Quantitative Stability",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring quotes the parent's quantitative-stability open question, states the edge-boundary = 2·runs identity and its consequences, and explains the telescoping-free shift-bijection proof. Imports Mathlib and defines the run/endpoint/edge-count vocabulary."
+    },
+    {
+      "id": "definitions",
+      "title": "Runs, Endpoints, and the Edge Count",
+      "startLine": 56,
+      "endLine": 79,
+      "summary": "Defines rightEnds/leftEnds (run ends/starts), internalR/internalL (has-successor/predecessor elements), numRuns = |leftEnds|, and edgeBoundaryCount = |(S−1)\\S| + |(S+1)\\S|."
+    },
+    {
+      "id": "shift-bijection",
+      "title": "Has-Neighbour Sets are Equinumerous",
+      "startLine": 80,
+      "endLine": 100,
+      "summary": "card_internalL_eq_card_internalR: the translation x ↦ x − 1 is a bijection from {x∈S : x−1∈S} onto {x∈S : x+1∈S}, the combinatorial heart of the argument."
+    },
+    {
+      "id": "left-eq-right",
+      "title": "Run Starts = Run Ends",
+      "startLine": 101,
+      "endLine": 130,
+      "summary": "Partition lemmas split S into endpoints plus interior, and card_leftEnds_eq_card_rightEnds concludes |leftEnds| = |rightEnds| from the shift bijection — no telescoping."
+    },
+    {
+      "id": "edge-summands",
+      "title": "Boundary Edges Count Endpoints",
+      "startLine": 131,
+      "endLine": 166,
+      "summary": "card_image_sub_one_sdiff and card_image_add_one_sdiff identify the rising-edge set (S−1)\\S and falling-edge set (S+1)\\S with the left/right endpoint sets via injective images."
+    },
+    {
+      "id": "main-identity",
+      "title": "Boundary = 2·Runs",
+      "startLine": 167,
+      "endLine": 184,
+      "summary": "edgeBoundaryCount_eq_two_mul_numRuns proves the headline identity, and edgeBoundaryCount_eq_iff_numRuns derives the quantitative equivalence boundary = 2 + 2k ⟺ k+1 runs."
+    },
+    {
+      "id": "interval-case",
+      "title": "Nonemptiness and the Single-Run (Interval) Case",
+      "startLine": 185,
+      "endLine": 225,
+      "summary": "min'_mem_leftEnds, one_le_numRuns, numRuns_eq_one_iff_edgeBoundaryCount_eq_two, numRuns_Icc and edgeBoundaryCount_Icc handle the interval case, recovering the parent's |∂_edge| = 2 ⟺ one run."
+    },
+    {
+      "id": "stability",
+      "title": "Fuglede-Type Lower Bound",
+      "startLine": 226,
+      "endLine": 266,
+      "summary": "numRuns_sub_one_le_card_sdiff: |Icc(min S, max S) \\ S| ≥ numRuns S − 1, injecting each non-minimal run start to its missing predecessor; combined with the main identity, edgeBoundaryCount = 2 + 2k forces ≥ k points of deviation from an interval."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 axioms, 0 sorries, 266 lines): for every finite S ⊆ ℤ the edge boundary count equals twice the number of maximal runs, edgeBoundaryCount S = 2·numRuns S. Consequently edgeBoundaryCount S = 2 + 2k ⟺ numRuns S = k + 1 (each gap adds exactly two boundary edges), and |S △ Icc(min S, max S)| ≥ numRuns S − 1 (a discrete Fuglede-type stability bound). This resolves the quantitative-stability open question named by the parent rigidity entry, supplying the correct invariant — the edge count rather than the vertex boundary — and a telescoping-free proof via a single translation bijection.",
+    "openQuestions": [
+      "Sharp two-sided stability: pair the lower bound |S △ Icc| ≥ k with the natural family achieving it (k+1 runs separated by single-point gaps) and characterize all S with edgeBoundaryCount = 2 + 2k and |S △ Icc| = k as exactly the 'k single gaps' configurations.",
+      "ℤ^d edge-isoperimetric stability: does an analogous 'boundary − minimum = 2·(defect)' counting identity control the deviation from a sub-cube in the Bollobás–Leader inequality, and which 1D ingredients (the shift bijection, run counting) survive coordinate-slicing?"
+    ],
+    "implications": "Turns the parent's qualitative rigidity (|∂_edge| = 2 ⟺ interval) into a quantitative law (|∂_edge| = 2·runs) with an attached stability estimate, the discrete base case of Fuglede-type isoperimetric stability. The exact edge-count identity and the shift-bijection technique are the kind of clean counting facts that feed compression and defect arguments for higher-dimensional grid isoperimetry."
+  },
+  "references": [
+    {
+      "authors": "Harper, L. H.",
+      "title": "Optimal Numberings and Isoperimetric Problems on Graphs",
+      "year": "1966",
+      "venue": "Journal of Combinatorial Theory 1(3), pp. 385–393",
+      "note": "Origin of compression for discrete isoperimetric problems; the 1D edge count = 2·runs is the base-case counting fact underlying that hierarchy."
+    },
+    {
+      "authors": "Bollobás, B. and Leader, I.",
+      "title": "Edge-Isoperimetric Inequalities in the Grid",
+      "year": "1991",
+      "venue": "Combinatorica 11(4), pp. 299–314",
+      "note": "The ℤ^d edge-isoperimetric inequality whose stability/defect version this 1D identity feeds into."
+    },
+    {
+      "authors": "Fusco, N., Maggi, F. and Pratelli, A.",
+      "title": "The Sharp Quantitative Isoperimetric Inequality",
+      "year": "2008",
+      "venue": "Annals of Mathematics 168(3), pp. 941–980",
+      "note": "Modern continuous quantitative isoperimetric stability (deviation from the ball controlled by the isoperimetric deficit); this entry is a sharp discrete 1D analogue for runs."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "DiscreteIsoperimetric1DRuns",
+    "lineCount": 266,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 6,
+    "path": "Proofs/IsoperimetricTheoremOQ02OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "isoperimetric-theorem-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Resolves the quantitative-stability open question posed in the parent's conclusion (|∂S| = 2 + 2k ⟹ k+1 runs, plus a symmetric-difference bound), correcting it to the edge boundary count, for which the clean 2·runs identity actually holds."
+    },
+    {
+      "targetId": "isoperimetric-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Quantitative refinement of the base discrete 1D isoperimetric inequality: where OQ-02 gave the lower bound |∂S| ≥ 2, this entry computes the exact edge boundary as 2·(number of maximal runs)."
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "discrete-analog-of",
+      "description": "Discrete analogue of quantitative (Fuglede-type) isoperimetric stability: just as deviation from the ball is controlled by the continuous isoperimetric deficit, deviation from an interval is controlled here by the discrete edge defect 2·(runs − 1)."
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ann-autonum-oq01oq03oq01-context",
+    "proofId": "automorphic-number-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Removing the special role of 10: the automorphic tower over an arbitrary base",
+    "content": "The parent entry proves, only for base 10, that the digit-dropping reduction red k : ZMod (10^(k+1)) → ZMod (10^k) is a bijection between the four-element idempotent sets, so each automorphic residue lifts uniquely by one digit. Its first open question asks whether this is special to 10. This file answers no: write red m k for the reduction over an ARBITRARY base m. The same two facts that drove base 10 — a nil reduction kernel, and equal idempotent counts at consecutive levels — both hold for every m, so the bijection and the unique digit-extension generalize verbatim. The only new ingredient is the level count, now 2^ω(m) (with ω the number of distinct prime factors), reused from the sibling general-count entry.",
+    "mathContext": "For any base $m=\\prod p_i^{a_i}$, the CRT splitting $\\mathbb{Z}/m^k \\cong \\prod_i \\mathbb{Z}/p_i^{a_i k}$ makes $\\mathbb{Z}/m^k$ a product of $\\omega(m)$ local rings, hence $2^{\\omega(m)}$ idempotents at every level $k\\ge 1$. The inverse limit is the $m$-adic ring $\\mathbb{Z}_m\\cong\\prod_{p\\mid m}\\mathbb{Z}_p$, with the same $2^{\\omega(m)}$ idempotents.",
+    "significance": "context",
+    "relatedConcepts": ["idempotent", "inverse limit", "p-adic integers", "automorphic number", "Chinese remainder theorem", "prime factorization"],
+    "prerequisites": ["modular arithmetic", "idempotents of a ring", "p-adic integers", "distinct prime factors ω(n)"]
+  },
+  {
+    "id": "ann-autonum-oq01oq03oq01-reduction",
+    "proofId": "automorphic-number-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "The reduction homomorphism over base m",
+    "content": "red m k := ZMod.castHom (m^k ∣ m^(k+1)) (ZMod (m^k)) is the canonical 'drop the leading base-m digit' map ZMod (m^(k+1)) →+* ZMod (m^k). The only general fact needed about it — that any ring homomorphism sends idempotents to idempotents (f e · f e = f(e·e) = f e) — is the parent's reusable lemma map_idem, so red m k carries the (k+1)-digit automorphic residues into the k-digit ones. This is the MapsTo half of the eventual bijection, before injectivity and cardinality finish the job.",
+    "mathContext": "The maps $\\mathbb{Z}/m^{k+1}\\to\\mathbb{Z}/m^{k}$ are the transition maps of the inverse system $\\{\\mathbb{Z}/m^k\\}_k$; idempotency is preserved along every one of them, for every base $m$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ring homomorphism", "ZMod.castHom", "idempotent", "MapsTo"],
+    "prerequisites": ["ring homomorphisms", "quotient rings ZMod"]
+  },
+  {
+    "id": "ann-autonum-oq01oq03oq01-levelcount",
+    "proofId": "automorphic-number-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 73
+    },
+    "type": "technique",
+    "title": "Every level has 2^ω(m) idempotents — and ω(m^k) = ω(m)",
+    "content": "idem_card establishes the count that makes a level-to-level bijection possible. The Finset count (univ.filter idempotent).card is first rewritten as a Nat.card subtype (Fintype.card_subtype, then Nat.card_eq_fintype_card), so the sibling's general result idempotent_count applies at n = m^k, giving 2^(m^k).primeFactors.card. The decisive step is Nat.primeFactors_pow: a prime power has the SAME set of prime divisors as its base, so ω(m^k) = ω(m). Hence both level k and level k+1 carry exactly 2^ω(m) idempotents — the count is constant up the tower, which is precisely the condition a bijection requires.",
+    "mathContext": "$\\omega(m^k)=\\omega(m)$ for $k\\ge 1$ because $(m^k).\\mathrm{primeFactors}=m.\\mathrm{primeFactors}$. The exponent in $2^{\\omega(m)}$ is the prime support of the base, never of $m^k$ — repeated prime factors and higher powers are invisible to the count.",
+    "significance": "critical",
+    "relatedConcepts": ["distinct prime factors", "Nat.primeFactors_pow", "Fintype.card_subtype", "idempotent count", "CRT"],
+    "prerequisites": ["prime factorization", "cardinality of finite subtypes", "the count 2^ω(n) of idempotents"]
+  },
+  {
+    "id": "ann-autonum-oq01oq03oq01-nilkernel",
+    "proofId": "automorphic-number-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 94
+    },
+    "type": "technique",
+    "title": "The kernel of reduction is nil, uniformly in m: (m^k)² = 0 in ZMod (m^(k+1))",
+    "content": "ker_red_nilpotent shows the kernel of red m k is a nil ideal, independent of the base. A kernel element x is lifted to a natural number c (ZMod.natCast_rightInverse); red m k (↑c) = 0 means m^k ∣ c (ZMod.natCast_eq_zero_iff), so c = m^k·t and x² = (m^k·t)² is a multiple of m^(2k). Because k+1 ≤ 2k for k ≥ 1, m^(k+1) ∣ m^(2k), so x² = 0 in ZMod (m^(k+1)). The vanishing depends only on the exponent inequality k+1 ≤ 2k, not on m.",
+    "mathContext": "The kernel of $\\mathbb{Z}/m^{k+1}\\to\\mathbb{Z}/m^{k}$ is the ideal $(m^k)$, and $(m^k)^2=m^{2k}\\equiv 0 \\pmod{m^{k+1}}$ for $k\\ge 1$. A surjection of rings with nil kernel lifts idempotents uniquely — the finite shadow of Hensel's lemma.",
+    "significance": "critical",
+    "relatedConcepts": ["nil ideal", "nilpotent", "IsNilpotent", "kernel of reduction", "Hensel's lemma"],
+    "prerequisites": ["ideals and kernels", "nilpotent elements", "divisibility of powers"]
+  },
+  {
+    "id": "ann-autonum-oq01oq03oq01-bijection",
+    "proofId": "automorphic-number-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 96,
+      "endLine": 128
+    },
+    "type": "technique",
+    "title": "Injective + equal count = bijective on idempotents",
+    "content": "red_injOn_idem: two idempotents e,f with red m k e = red m k f satisfy red m k (e−f) = 0, so e−f lies in the nil kernel and is nilpotent; the parent's idem_eq_of_sub_nilpotent forces e = f. red_image_idem: the injective image of the (k+1)-level idempotents is contained in the k-level idempotents (map_idem) and, by idem_card, both sets have the same size 2^ω(m); Finset.card_image_of_injOn and Finset.eq_of_subset_of_card_le then upgrade the inclusion to equality. So red m k is a bijection between the idempotent sets of consecutive levels.",
+    "mathContext": "An injective map between finite sets of equal cardinality is a bijection. Injectivity comes from the nil kernel; equal cardinality $2^{\\omega(m)}$ comes from the constant level count. No explicit lifting formula is needed.",
+    "significance": "major",
+    "relatedConcepts": ["injective on a set", "Finset.eq_of_subset_of_card_le", "Finset.card_image_of_injOn", "bijection", "idempotent lifting"],
+    "prerequisites": ["finite cardinality arguments", "images of finite sets", "idem_eq_of_sub_nilpotent"]
+  },
+  {
+    "id": "ann-autonum-oq01oq03oq01-unique",
+    "proofId": "automorphic-number-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 130,
+      "endLine": 148
+    },
+    "type": "key-step",
+    "title": "Main theorem: unique digit extension over every base",
+    "content": "unique_digit_extension: an idempotent ē of ZMod (m^k) lies in the lower idempotent set, which by red_image_idem equals the image of the reduction; so a lift e with red m k e = ē and e·e=e exists. Uniqueness is immediate from red_injOn_idem: any two lifts have the same reduction ē, hence coincide. This is the ∃! statement that makes each automorphic residue grow by exactly one digit, now for every base m ≥ 1 — the affirmative answer to the parent's first open question.",
+    "mathContext": "$\\exists!\\, e,\\ e\\cdot e=e \\wedge \\mathrm{red}\\,m\\,k\\,e=\\bar e$ for every idempotent $\\bar e$. The $2^{\\omega(m)}$ towers are the coherent threads converging to the $2^{\\omega(m)}$ idempotents of $\\mathbb{Z}_m\\cong\\prod_{p\\mid m}\\mathbb{Z}_p$.",
+    "significance": "critical",
+    "relatedConcepts": ["unique existence", "idempotent lifting", "inverse limit", "m-adic integers", "automorphic tower"],
+    "prerequisites": ["existential uniqueness ∃!", "bijections of idempotent sets"]
+  },
+  {
+    "id": "ann-autonum-oq01oq03oq01-concrete",
+    "proofId": "automorphic-number-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 150,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Concrete bases: 6 and 12 give four towers, 30 gives eight, primes give two",
+    "content": "Four corollaries read the number of towers off idem_card via primeFactors computations. towers_base_six: 6 = 2·3 has ω = 2, so 2² = 4 towers — like base 10. towers_base_twelve: 12 = 2²·3 has the SAME prime support {2,3}, so also 4 — the repeated factor of 2 adds no tower (Nat.primeFactors_prime_pow). towers_base_thirty: 30 = 2·3·5 has ω = 3, so 2³ = 8. towers_base_prime: a prime base p has ω = 1, so only 2 idempotents (0 and 1) at every level, matching the fact that ZMod (p^k) is local with no nontrivial automorphic numbers.",
+    "mathContext": "The number of automorphic threads over base $m$ is $2^{\\omega(m)}$, depending only on the set of primes dividing $m$. Squarefree or not, only the support matters: bases $6,10,12$ all give four, base $30$ gives eight, prime powers give two.",
+    "significance": "supporting",
+    "relatedConcepts": ["distinct prime factors", "Nat.primeFactors_mul", "Nat.primeFactors_prime_pow", "local ring", "squarefree support"],
+    "prerequisites": ["prime factorization", "computing primeFactors of small numbers"]
+  }
+]

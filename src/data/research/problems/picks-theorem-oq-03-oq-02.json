@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "Given a lattice polytope P, is its h*-vector (Ehrhart delta-vector) a function of the face lattice of P alone? I.e. do combinatorially isomorphic lattice polytopes always share the same h*-vector?",
-    "plain": "The h*-vector encodes how many lattice points a polytope and its integer dilates contain. This asks whether that data is purely combinatorial \u2014 recoverable from the face lattice (which vertices/edges/faces meet which) \u2014 or whether it genuinely depends on the lattice geometry.",
+    "plain": "The h*-vector encodes how many lattice points a polytope and its integer dilates contain. This asks whether that data is purely combinatorial — recoverable from the face lattice (which vertices/edges/faces meet which) — or whether it genuinely depends on the lattice geometry.",
     "whyMatters": [
       "Separates the combinatorial type of a polytope from its lattice-geometric invariants.",
       "Directly explains why Pick's theorem (the parent) has no naive 3D analogue.",
@@ -54,10 +54,10 @@
     ],
     "mathlibGaps": [
       "No Ehrhart theory in Mathlib (Ehrhart, hStarVector, latticePolytope+Ehrhart = 0 hits). The gallery Pick development is ad-hoc 2D area, not a general Ehrhart framework.",
-      "A faithful ACT needs lattice-point counting of dilates, Ehrhart polynomiality, and the h*-transform \u2014 all absent upstream."
+      "A faithful ACT needs lattice-point counting of dilates, Ehrhart polynomiality, and the h*-transform — all absent upstream."
     ],
     "nextSteps": [
-      "ACT (light, Docker-gated): formalize the concrete Reeve family refutation \u2014 L_{T_h} closed form via decide, h*(T_h)=(1,0,h-1,0), h*(T_1)!=h*(T_2) + a face-lattice iso. Avoids building general Ehrhart theory.",
+      "ACT (light, Docker-gated): formalize the concrete Reeve family refutation — L_{T_h} closed form via decide, h*(T_h)=(1,0,h-1,0), h*(T_1)!=h*(T_2) + a face-lattice iso. Avoids building general Ehrhart theory.",
       "Make explicit in the picks-theorem-oq-03 cluster that Reeve tetrahedra are the obstruction to a 3D Pick theorem."
     ],
     "markdown": "See research/problems/picks-theorem-oq-03-oq-02/knowledge.md"
@@ -72,9 +72,16 @@
     "research"
   ],
   "relatedProofs": [
-    "picks-theorem-oq-03",
     "picks-theorem",
-    "picks-theorem-oq-03-ext"
+    "picks-theorem-oq-01",
+    "picks-theorem-oq-01-oq-01",
+    "picks-theorem-oq-01-oq-01-oq-01",
+    "picks-theorem-oq-01-oq-02",
+    "picks-theorem-oq-02",
+    "picks-theorem-oq-03",
+    "picks-theorem-oq-03-cross-poly",
+    "picks-theorem-oq-03-ext",
+    "picks-theorem-oq-03-product"
   ],
   "references": {
     "papers": [
@@ -89,5 +96,117 @@
   "started": "2026-06-15T07:55:00.000Z",
   "lastUpdate": "2026-06-15T07:55:00.000Z",
   "significance": 6,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/PicksTheorem.lean",
+      "filename": "PicksTheorem.lean",
+      "lineCount": 504,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheorem.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01.lean",
+      "filename": "PicksTheoremOQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 1250,
+      "theoremCount": 62,
+      "axiomCount": 0,
+      "defCount": 27,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ02.lean",
+      "filename": "PicksTheoremOQ01OQ02.lean",
+      "lineCount": 325,
+      "theoremCount": 23,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ02.lean",
+      "filename": "PicksTheoremOQ02.lean",
+      "lineCount": 246,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03.lean",
+      "filename": "PicksTheoremOQ03.lean",
+      "lineCount": 438,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
+      "filename": "PicksTheoremOQ03CrossPoly.lean",
+      "lineCount": 696,
+      "theoremCount": 69,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03CrossPoly.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Ext.lean",
+      "filename": "PicksTheoremOQ03Ext.lean",
+      "lineCount": 289,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Ext.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Product.lean",
+      "filename": "PicksTheoremOQ03Product.lean",
+      "lineCount": 605,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Product.lean"
+    }
+  ]
 }

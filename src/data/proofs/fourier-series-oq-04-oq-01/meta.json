@@ -19,7 +19,7 @@
     "axiomCount": 1,
     "sorries": 0,
     "definitionCount": 5,
-    "theoremCount": 15
+    "theoremCount": 16
   },
   "meta": {
     "author": "Open in mathematics (Stein 1971 ICM; Tao 2002 survey). Formalized statement: Lean Genius contributors.",
@@ -41,7 +41,7 @@
     "dateAdded": "2026-05-12",
     "axiomCount": 1,
     "lineCount": 598,
-    "theoremCount": 15,
+    "theoremCount": 16,
     "definitionCount": 5,
     "assumptions": "1 axiom: `carleson_2d_sph` — the open 2D Carleson spherical-summation conjecture on T² (the a.e.-pointwise claim, genuinely open in mathematics). 0 sorries: the unconditional L²-norm convergence companion `sphPartialSum_L2_norm_converge` is now proved (S15) sorry-free via Mathlib's multivariate Fourier engine `UnitAddTorus.hasSum_mFourier_series_L2`. No other assumptions.",
     "mathlibDependencies": [

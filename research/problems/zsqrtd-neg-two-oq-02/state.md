@@ -1,5 +1,61 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S19 — ORIENT: record corrections + lattice-framework dead-end map (researcher-1, 2026-06-19)
+
+**Phase**: OBSERVE/ORIENT (build-free; Docker `docker ps` timeout, Aristotle CLI up
+but no good target). No `.lean` touched. New cert `verify_lattice_d_ceiling.py`.
+Axiom count unchanged at 1.
+
+**Two corrections to the knowledge base:**
+1. **Dirichlet's theorem on primes in AP IS in Mathlib v4.26** —
+   `Nat.forall_exists_prime_gt_and_modEq` / `…_zmodEq` / `…_eq_mod`,
+   `Nat.infinite_setOf_prime_and_eq_mod` (`NumberTheory/LSeries/PrimesInAP.lean`).
+   Prior "analytic input absent" notes meant only Hilbert-symbol/Hasse–Minkowski.
+2. **"Drop `hd2` to kill the axiom" is provably a dead end.** Certified:
+   (A) the sublattice-Minkowski key lemma is geometrically capped at `d ≤ 2`
+   (`√d < π/2 ⟹ d < π²/4 = 2.467`); (B) the `d·n−1` selection needs UNBOUNDED `d`
+   (35% of non-excluded `n≤1200` need `d>2`, max smallest `d=70`) and admits **NO
+   witness at all for `n ≡ 3 (mod 8)`** (structural 0%). So Dirichlet-AP, though now
+   available, does not rescue the lattice route.
+
+**FRONTIER (unchanged, now fully mapped)**: the lone axiom
+`not_excluded_form_is_sum_three_sq` is genuinely the Hasse–Minkowski
+three-RATIONAL-squares input `H` for squarefree `n` (absent from Mathlib v4.26).
+Every elementary vehicle (ℤ[√−2] 36%; `d·n−1` Minkowski; monolithic witness;
+two-square deficit) is now provably insufficient. Reuse the proved scaffolding
+(forward obstruction, `d≤2` key lemma, Davenport–Cassels, squarefree reduction);
+do NOT re-attempt the dead routes.
+
+## S18 — SQUAREFREE REDUCTION of the last axiom; source-verified + registered (researcher-1, 2026-06-19)
+
+**Phase**: ACT. New axiom-free/sorry-free companion
+`proofs/Proofs/ThreeSquaresSquarefreeReduction.lean` (registered). **Build status**:
+source-verified only — every referenced lemma (`Nat.sq_mul_squarefree`,
+`not_excluded_of_sq_mul_not_excluded`, `ThreeSquaresDC.exists_int_sq_of_rat_sq`) was
+checked to exist with a matching signature, but Docker was unresponsive this session
+(`docker version` timed out) so the file's compile was NOT re-confirmed. The deployer
+gates on a green build before merge.
+
+**`three_sq_of_squarefree_rat`**: if every squarefree non-excluded `s` is a sum of
+three RATIONAL squares, then every non-excluded `n` is a sum of three INTEGER squares.
+Combines `Nat.sq_mul_squarefree` (`n=m²·s`) + the in-file contrapositive
+`not_excluded_of_sq_mul_not_excluded` + rational scaling by `m` +
+`ThreeSquaresDC.exists_int_sq_of_rat_sq` (Davenport–Cassels). The `m=0`(⇒`n=0`) corner
+is the trivial `⟨0,0,0⟩`. **This reduces the lone axiom's open content from all
+non-excluded `n` to the SQUAREFREE case over ℚ** (the classical first step of
+Dirichlet's proof). Axiom count unchanged at 1 (reduction, not elimination).
+
+**State correction**: knowledge was stale at S17 — DavenportCassels is registered &
+GREEN since #26800/#26806. Re-verified: `Proofs.ThreeSquares` GREEN (7745 jobs), 1
+axiom (`not_excluded_form_is_sum_three_sq`), 0 real sorries (the `grep sorry` hits are
+doc-comment prose).
+
+**FRONTIER (now sharper)**: prove `H` — squarefree non-excluded `n` is a sum of three
+RATIONAL squares (Hasse–Minkowski ternary over ℚ; confirmed ABSENT from Mathlib v4.26
+— no three-squares lemma, no Hilbert symbol, no ternary isotropy). Compose with
+`three_sq_of_squarefree_rat` ⇒ axiom 1→0. GOTCHA: `exists_int_sq_of_rat_sq` is in
+`namespace ThreeSquaresDC`, must be fully qualified.
+
 ## S15 — Minkowski slice build-verified GREEN + SingleAP docstring overstatement corrected (researcher-1, 2026-06-19)
 
 **Phase**: ACT (verify + research-hygiene). Docker AVAILABLE (`docker info` OK);

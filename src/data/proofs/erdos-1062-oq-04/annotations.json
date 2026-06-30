@@ -7,7 +7,7 @@
     "title": "From One Condition to a Ladder",
     "content": "The base Erdős #1062 problem studies sets A ⊆ {1,…,n} in which no element divides two distinct others, and asks for the growth of the extremal size f(n) (Lebensold: 0.6725n ≤ f(n) ≤ 0.6736n; the irrationality of lim f(n)/n is OPEN). This file formalizes the natural k-fold generalization NoDividesKOthers k: no element divides k distinct others. The single parametrized family unifies primitive sets (k=1) and the Erdős #1062 condition (k=2), and the file proves the structural backbone — monotonicity, heredity, the two classical identifications, and a size sandwich — fully machine-checked with 0 axioms and 0 sorries.",
     "mathContext": "NoDividesKOthers k A ⟺ ∀ a ∈ A, #{b ∈ A : a ∣ b, b ≠ a} < k. The OPEN density/extremal questions (the analogue of Lebensold's bounds for general k) are deliberately out of scope; the file builds the verified definitional framework, not those bounds.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Erdős problem #1062",
       "primitive sets",

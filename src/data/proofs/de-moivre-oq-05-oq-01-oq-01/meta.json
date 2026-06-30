@@ -1,0 +1,214 @@
+{
+  "id": "de-moivre-oq-05-oq-01-oq-01",
+  "title": "De Moivre OQ-05-OQ-01-OQ-01: Plancherel / Parseval for the Discrete Fourier Transform",
+  "slug": "de-moivre-oq-05-oq-01-oq-01",
+  "description": "The energy-preservation law of the DFT, derived from the parent's character orthonormality: for the unnormalised transform x̂(j) = ∑_{k<n} x(k)·exp(2πi·jk/n), the Plancherel identity ∑_j x̂(j)·conj(ŷ(j)) = n·∑_k x(k)·conj(y(k)) and its diagonal Parseval form ∑_j |x̂(j)|² = n·∑_k |x(k)|² — so the DFT is √n times a unitary map.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ05OQ01OQ01.lean",
+    "tags": [
+      "complex-analysis",
+      "discrete-fourier",
+      "plancherel",
+      "parseval",
+      "orthogonality",
+      "character-sums",
+      "energy-conservation",
+      "de-moivre"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_mul_sum",
+        "description": "Product of two finite sums as a double sum, (∑ f)·(∑ g) = ∑∑ f·g; expands x̂(j)·conj(ŷ(j)) into a double time-sum",
+        "module": "Mathlib.Algebra.BigOperators.Ring"
+      },
+      {
+        "theorem": "Finset.sum_comm",
+        "description": "Interchange of the order of a double finite sum; reorders the time/frequency sums so the frequency index runs innermost",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.mul_sum",
+        "description": "Distributing a constant factor through a finite sum; pulls the time-only coefficient out of the frequency sum",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_eq_single",
+        "description": "A finite sum collapses to a single term when all others vanish; extracts the diagonal of the orthonormality dichotomy",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Complex.mul_conj",
+        "description": "z·conj z = ↑(normSq z); converts the Hermitian Plancherel form into the real Parseval energy identity",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.normSq_eq_norm_sq",
+        "description": "normSq z = ‖z‖² on ℂ; restates Parseval in terms of the Euclidean norm",
+        "module": "Mathlib.Analysis.Complex.Norm"
+      },
+      {
+        "theorem": "DeMoivreOQ05OQ01.sum_char_inner",
+        "description": "Parent result: orthonormality of the DFT characters ∑_{k<n} exp(2πi·ak/n)·conj(exp(2πi·bk/n)) = n·[a=b] for a,b<n — the sole nontrivial input to Plancherel",
+        "module": "Proofs.DeMoivreOQ05OQ01"
+      }
+    ],
+    "originalContributions": [
+      "dft_plancherel: the Plancherel identity ∑_{j<n} x̂(j)·conj(ŷ(j)) = n·∑_{k<n} x(k)·conj(y(k)) for the unnormalised DFT, built directly from the parent's character orthonormality — not in Mathlib in this elementary explicit-exponential form",
+      "dft_parseval: the diagonal energy form ∑_{j<n} |x̂(j)|² = n·∑_{k<n} |x(k)|² (with normSq), exhibiting the DFT as √n times an isometry",
+      "dft_parseval_norm: the same energy identity phrased with the complex norm ‖·‖ via normSq_eq_norm_sq",
+      "freq_orthonormal: orthonormality summed over the frequency index, ∑_{j<n} char(j,k)·conj(char(j,l)) = n·[k=l], obtained from the parent's time-indexed orthonormality by the kernel symmetry char(j,k)=char(k,j)",
+      "char_symm: symmetry of the DFT kernel exp(2πi·jk/n) in time and frequency — the bridge that lets the parent's orthonormality apply along the frequency axis",
+      "dft_add: linearity of the discrete Fourier transform"
+    ],
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 184,
+    "assumptions": "0 axioms, 0 sorries (proofs depend only on propext / Classical.choice / Quot.sound). The single nontrivial mathematical input is the parent's character orthonormality DeMoivreOQ05OQ01.sum_char_inner; the rest is finite-sum bookkeeping (sum_mul_sum, sum_comm, mul_sum, sum_eq_single) and the standard z·conj z = normSq = ‖z‖² identities.",
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Parseval's theorem (1799) and Plancherel's theorem (1910) express that a Fourier transform preserves energy: the total squared magnitude of a signal equals (up to normalisation) that of its spectrum. For the finite/discrete Fourier transform on $\\mathbb{Z}/n\\mathbb{Z}$ this is the unitarity of the (normalised) DFT matrix, the bedrock of digital signal processing, the FFT, and the analysis of error-correcting codes. It is a one-line consequence of the orthonormality of the discrete exponential characters established in the parent entry.",
+    "problemStatement": "**Open Question** (parent de-moivre-oq-05-oq-01): derive Plancherel / Parseval for the DFT, $\\sum_k |f(k)|^2 = \\tfrac1n\\sum_j |\\hat f(j)|^2$, as a consequence of the character orthonormality `sum_char_inner`.\n\n**Answer**: For the unnormalised transform $\\hat x(j) = \\sum_{k<n} x(k)\\,e^{2\\pi i jk/n}$ and any signals $x,y$, $\\sum_{j<n}\\hat x(j)\\overline{\\hat y(j)} = n\\sum_{k<n} x(k)\\overline{y(k)}$, and with $y=x$, $\\sum_{j<n}|\\hat x(j)|^2 = n\\sum_{k<n}|x(k)|^2$. Expanding both transforms and exchanging the order of summation, the orthonormality $\\sum_{j<n} e^{2\\pi i jk/n}\\overline{e^{2\\pi i jl/n}} = n\\,[k=l]$ collapses the double time-sum to its diagonal.",
+    "text": "The Plancherel and Parseval energy identities for the discrete Fourier transform, obtained from the parent entry's orthonormality of the discrete Fourier characters by a single summation interchange.",
+    "proofStrategy": "1. **Kernel symmetry** (`char_symm`): the DFT kernel $e^{2\\pi i jk/n}$ is symmetric in $j$ and $k$ because the exponent $jk$ is. This lets the parent's orthonormality — summed over the time index — be reused along the frequency index.\n2. **Frequency orthonormality** (`freq_orthonormal`): rewrite each summand with `char_symm` and apply the parent's `sum_char_inner` to get $\\sum_{j<n}\\chi_k(j)\\overline{\\chi_l(j)} = n\\,[k=l]$ for $k,l<n$.\n3. **Plancherel** (`dft_plancherel`): expand $\\hat x(j)\\overline{\\hat y(j)}$ into a double time-sum via `sum_mul_sum`; sum over $j$ and interchange (`sum_comm`) so $j$ runs innermost; pull the time-only coefficient out (`mul_sum`) and apply `freq_orthonormal`; the inner diagonal (`sum_eq_single`) collapses to $n\\sum_k x(k)\\overline{y(k)}$.\n4. **Parseval** (`dft_parseval`, `dft_parseval_norm`): set $y=x$ and use $z\\overline z = \\mathrm{normSq}\\,z = \\lVert z\\rVert^2$ (`mul_conj`, `normSq_eq_norm_sq`) to land in $\\mathbb{R}$.",
+    "keyInsights": [
+      "Parseval is not an independent analytic fact — it is the *diagonal* of the character orthonormality already proved in the parent; the entire content is one summation interchange",
+      "The kernel symmetry $e^{2\\pi i jk/n} = e^{2\\pi i kj/n}$ is the quiet workhorse: it converts orthonormality of the DFT rows (sum over time) into orthonormality of the DFT columns (sum over frequency), which is the form the energy computation needs",
+      "Using the *unnormalised* transform makes the scale factor explicit: $\\sum_j|\\hat x(j)|^2 = n\\sum_k|x(k)|^2$, i.e. the DFT is exactly $\\sqrt n$ times a unitary map",
+      "The complex Plancherel form $\\sum_j \\hat x(j)\\overline{\\hat y(j)} = n\\sum_k x(k)\\overline{y(k)}$ is strictly stronger than Parseval and is what makes the DFT an inner-product (Hermitian) isometry; Parseval is the $y=x$ specialisation",
+      "Passing from the $\\mathbb{C}$ identity to the real energy statement is pure casting: $z\\overline z = \\mathrm{normSq}\\,z$ is real-valued, so `exact_mod_cast` bridges the two"
+    ],
+    "prerequisites": [
+      "Orthonormality of the discrete Fourier characters (parent de-moivre-oq-05-oq-01)",
+      "The discrete Fourier transform and its inversion",
+      "Interchange of finite double sums",
+      "Complex modulus: z·conj z = normSq z = ‖z‖²"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: the Plancherel / Parseval identities, the role of the parent's character orthonormality, and the seven results proved",
+      "startLine": 1,
+      "endLine": 57,
+      "mathContext": "**Goal**: $\\sum_{j<n}\\hat x(j)\\overline{\\hat y(j)} = n\\sum_{k<n} x(k)\\overline{y(k)}$ and its energy form $\\sum_j|\\hat x(j)|^2 = n\\sum_k|x(k)|^2$."
+    },
+    {
+      "id": "definitions",
+      "title": "Part I: The DFT Kernel and Transform",
+      "summary": "char and dft: the sampled character exp(2πi·jk/n) and the unnormalised discrete Fourier transform x̂(j) = ∑_{k<n} x(k)·char(j,k)",
+      "startLine": 59,
+      "endLine": 67,
+      "mathContext": "$\\hat x(j) = \\sum_{k<n} x(k)\\,e^{2\\pi i jk/n}$, the length-$n$ unnormalised DFT."
+    },
+    {
+      "id": "orthonormality",
+      "title": "Part II: Kernel Symmetry and Frequency Orthonormality",
+      "summary": "char_symm and char_inner / freq_orthonormal: kernel symmetry in time/frequency and the orthonormality ∑_{j<n} char(j,k)·conj(char(j,l)) = n·[k=l]",
+      "startLine": 69,
+      "endLine": 101,
+      "mathContext": "$\\sum_{j<n} e^{2\\pi i jk/n}\\overline{e^{2\\pi i jl/n}} = n\\,[k=l]$ for $k,l<n$, from the parent's row orthonormality via $jk=kj$."
+    },
+    {
+      "id": "plancherel",
+      "title": "Part III: Linearity and the Plancherel Identity",
+      "summary": "dft_add and dft_plancherel: linearity of the DFT and the Hermitian Plancherel identity ∑_j x̂·conj(ŷ) = n·∑_k x·conj(y) by sum interchange + orthonormality collapse",
+      "startLine": 103,
+      "endLine": 159,
+      "mathContext": "$\\sum_{j<n}\\hat x(j)\\overline{\\hat y(j)} = n\\sum_{k<n} x(k)\\overline{y(k)}$ — the DFT is an inner-product isometry up to the factor $n$."
+    },
+    {
+      "id": "parseval",
+      "title": "Part IV: Parseval Energy Identities",
+      "summary": "dft_parseval and dft_parseval_norm: the y=x energy form ∑_j |x̂|² = n·∑_k |x|², in normSq and in the complex norm ‖·‖",
+      "startLine": 161,
+      "endLine": 184,
+      "mathContext": "$\\sum_{j<n}|\\hat x(j)|^2 = n\\sum_{k<n}|x(k)|^2$ — the DFT preserves $\\ell^2$-energy up to the scale $n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves the Plancherel and Parseval theorems for the discrete Fourier transform: for the unnormalised transform x̂(j) = ∑_{k<n} x(k)·exp(2πi·jk/n), the Hermitian identity ∑_{j<n} x̂(j)·conj(ŷ(j)) = n·∑_{k<n} x(k)·conj(y(k)) and its diagonal energy form ∑_{j<n} |x̂(j)|² = n·∑_{k<n} |x(k)|². It directly answers the parent entry's first open question, deriving energy preservation from the character orthonormality sum_char_inner by one summation interchange. All seven theorems are fully proved with zero sorries and zero axioms.",
+    "implications": "Completes the DFT-inversion package of the parent entry with its dual energy law: the discrete Fourier transform is √n times a unitary map, so it preserves ℓ²-energy exactly. This is the formal underpinning of Parseval-based spectral analysis, the L²-correctness of the FFT, and the weight/energy identities used for error-correcting codes and uncertainty principles on ℤ/nℤ.",
+    "openQuestions": [
+      "Normalised unitary DFT: package the transform U(j,k) = exp(2πi·jk/n)/√n and prove ‖Ux‖ = ‖x‖ exactly, exhibiting U as an element of the unitary group",
+      "DFT inversion as the adjoint: prove the explicit inverse x(k) = (1/n)∑_j x̂(j)·exp(-2πi·jk/n) and identify it with the Plancherel adjoint",
+      "Convolution theorem: (x ⋆ y)^(j) = x̂(j)·ŷ(j) for cyclic convolution, the multiplicative companion to this additive energy law"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre-oq-05-oq-01",
+      "relationship": "Parent: proves the orthonormality of the discrete Fourier characters (sum_char_inner); this entry answers its first open question by deriving Plancherel / Parseval from it"
+    },
+    {
+      "id": "de-moivre-oq-05",
+      "relationship": "Grandparent: the roots-of-unity vanishing sum ∑ ζ^k = 0, the j=1 seed of the orthogonality these energy identities rest on"
+    },
+    {
+      "id": "de-moivre",
+      "relationship": "Base theorem: integer-exponent De Moivre, the origin of the sampling characters exp(2πi·jk/n)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.DeMoivreOQ05OQ01"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "DeMoivreOQ05OQ01OQ01",
+    "lineCount": 184,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/DeMoivreOQ05OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Marc-Antoine Parseval",
+      "title": "Mémoire sur les séries et sur l'intégration complète d'une équation aux différences partielles linéaires du second ordre, à coefficients constants",
+      "year": "1799",
+      "venue": "Mémoires présentés à l'Institut des Sciences"
+    },
+    {
+      "authors": "Michel Plancherel",
+      "title": "Contribution à l'étude de la représentation d'une fonction arbitraire par des intégrales définies",
+      "year": "1910",
+      "venue": "Rendiconti del Circolo Matematico di Palermo"
+    },
+    {
+      "authors": "James W. Cooley and John W. Tukey",
+      "title": "An Algorithm for the Machine Calculation of Complex Fourier Series",
+      "year": "1965",
+      "venue": "Mathematics of Computation"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Parent formalization (character orthonormality sum_char_inner); this entry derives the dual energy law Plancherel / Parseval from it, answering its first open question."
+    },
+    {
+      "targetId": "de-moivre-oq-05",
+      "relationship": "foundational",
+      "description": "Grandparent roots-of-unity vanishing sum; the orthogonality these energy identities rest on is its frequency-indexed generalisation."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's formula identifies the sampling characters exp(2πi·jk/n) whose energy this entry shows the DFT preserves."
+    }
+  ],
+  "sorries": 0
+}

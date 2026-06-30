@@ -1,0 +1,253 @@
+{
+  "id": "de-moivre-oq-04",
+  "title": "De Moivre OQ-04: The n-th Roots of Unity as Powers of ω = cos(2π/n) + i·sin(2π/n)",
+  "slug": "de-moivre-oq-04",
+  "description": "Uses De Moivre's formula to prove ω = cos(2π/n) + i·sin(2π/n) is a primitive n-th root of unity whose powers ω⁰,…,ωⁿ⁻¹ are exactly the n distinct solutions of zⁿ = 1.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ04.lean",
+    "tags": [
+      "complex-analysis",
+      "trigonometry",
+      "de-moivre",
+      "roots-of-unity",
+      "primitive-roots",
+      "wiedijk-100"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.cos_add_sin_mul_I_pow",
+        "description": "De Moivre's formula: (cos z + sin z · i)ⁿ = cos(nz) + sin(nz) · i",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Complex.exp_mul_I",
+        "description": "Euler's formula: exp(z·i) = cos z + sin z · i",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Complex.isPrimitiveRoot_exp",
+        "description": "exp(2πi/n) is a primitive n-th root of unity for n ≠ 0",
+        "module": "Mathlib.RingTheory.RootsOfUnity.Complex"
+      },
+      {
+        "theorem": "IsPrimitiveRoot.pow_inj",
+        "description": "Distinct powers of a primitive n-th root: ζⁱ = ζʲ with i,j < n forces i = j",
+        "module": "Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots"
+      },
+      {
+        "theorem": "IsPrimitiveRoot.nthRoots_eq",
+        "description": "The n-th roots of a value are enumerated by the powers of a primitive root",
+        "module": "Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots"
+      },
+      {
+        "theorem": "Real.cos_two_pi",
+        "description": "cos(2π) = 1, the collapse that makes ωⁿ = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Direct De Moivre proof that ω = cos(2π/n) + i·sin(2π/n) satisfies ωⁿ = 1 via cos_add_sin_mul_I_pow and the collapse n·(2π/n) = 2π",
+      "Euler bridge identifying the trigonometric generator ω with the exponential exp(2πi/n)",
+      "Primitivity of ω transported from Mathlib's isPrimitiveRoot_exp",
+      "Pairwise distinctness of the powers ω⁰,…,ωⁿ⁻¹ and injectivity of k ↦ ωᵏ on range n",
+      "Full enumeration: the n-th roots of unity are exactly the powers of ω (nthRoots n 1 = map (ω ^ ·) (range n))",
+      "Verified small cases ω(1) = 1, ω(2) = -1, ω(4) = i"
+    ],
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 158,
+    "assumptions": "0 axioms, 0 sorries. ωⁿ = 1 proved directly from De Moivre's formula; primitivity, distinctness, and root enumeration transported from Mathlib's primitive-root API.",
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "De Moivre's theorem (1707) states that $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ for integer $n$. Abraham de Moivre, a French Huguenot mathematician exiled to England, published this in the *Philosophical Transactions* of the Royal Society. One of its most striking consequences, made explicit by Euler (1748) through $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$, is a complete description of the **roots of unity**: the solutions of $z^n = 1$ are the $n$ equally-spaced points $e^{2\\pi i k/n}$ on the unit circle. The single point $\\omega = \\cos(2\\pi/n) + i\\sin(2\\pi/n)$ generates all of them — it is a *primitive* root, and its successive powers march once around the circle in steps of $2\\pi/n$. This geometric picture, vertices of a regular $n$-gon inscribed in the unit circle, is the gateway from De Moivre's formula to Gauss's theory of cyclotomy and the constructibility of regular polygons.",
+    "problemStatement": "**Open Question**: Use De Moivre's formula to exhibit the $n$-th roots of unity as the powers of $\\omega = \\cos(2\\pi/n) + i\\sin(2\\pi/n)$.\n\n**Answer**: By De Moivre, $\\omega^n = \\cos(2\\pi) + i\\sin(2\\pi) = 1$, so $\\omega$ is an $n$-th root of unity; identifying $\\omega = e^{2\\pi i/n}$ shows it is *primitive*. Hence the powers $\\omega^0, \\omega^1, \\ldots, \\omega^{n-1}$ are pairwise distinct and constitute **all** $n$ solutions of $z^n = 1$.",
+    "text": "Uses De Moivre's formula to prove ω = cos(2π/n) + i·sin(2π/n) is a primitive n-th root of unity whose powers ω⁰,…,ωⁿ⁻¹ are exactly the n distinct solutions of zⁿ = 1.",
+    "proofStrategy": "The proof proceeds in stages:\n1. **De Moivre collapse**: Apply `cos_add_sin_mul_I_pow` to $\\omega^n$, giving $\\cos(n\\cdot 2\\pi/n) + i\\sin(n\\cdot 2\\pi/n)$. Since $n\\cdot(2\\pi/n) = 2\\pi$ (using $n \\neq 0$) and $\\cos(2\\pi) = 1$, $\\sin(2\\pi) = 0$, this is $1$.\n2. **Euler bridge**: Rewrite $\\omega = \\exp(2\\pi i/n)$ via `exp_mul_I`, identifying the trigonometric generator with Mathlib's exponential form.\n3. **Primitivity**: Transport `Complex.isPrimitiveRoot_exp` along the bridge to obtain `IsPrimitiveRoot (omega n) n`.\n4. **Roots**: Each power $\\omega^k$ satisfies $(\\omega^k)^n = (\\omega^n)^k = 1$.\n5. **Distinctness**: `IsPrimitiveRoot.pow_inj` gives $\\omega^i = \\omega^j \\Rightarrow i = j$ for $i, j < n$.\n6. **Enumeration**: `IsPrimitiveRoot.nthRoots_eq` shows the multiset of $n$-th roots equals $\\{\\omega^k : 0 \\le k < n\\}$, and the root finset has cardinality $n$.",
+    "keyInsights": [
+      "The whole result rests on a single **collapse**: $n\\cdot(2\\pi/n) = 2\\pi$, after which De Moivre's right-hand side $\\cos(n\\theta) + i\\sin(n\\theta)$ becomes $\\cos(2\\pi) + i\\sin(2\\pi) = 1$ — no induction or series needed",
+      "The **trigonometric form** $\\cos(2\\pi/n) + i\\sin(2\\pi/n)$ and the **exponential form** $e^{2\\pi i/n}$ are the same number (Euler), so the rich primitive-root API written for $\\exp$ applies verbatim to the geometric generator",
+      "**Primitivity** is exactly what upgrades 'a root' to 'the generator': it guarantees the powers do not repeat before the $n$-th, so they fill out all $n$ roots rather than a proper subgroup",
+      "Distinctness is a **pigeonhole** fact about the order of $\\omega$: $\\omega^i = \\omega^j$ with $0 \\le i,j < n$ forces $n \\mid (i-j)$, hence $i = j$",
+      "The $n$ powers form the vertices of a **regular $n$-gon** on the unit circle, the geometric heart of cyclotomy and Gauss's constructibility criterion"
+    ],
+    "prerequisites": [
+      "Complex numbers and the unit circle",
+      "Euler's formula and De Moivre's theorem",
+      "Roots of unity and cyclic groups"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: exhibit the n-th roots of unity as the powers of ω = cos(2π/n) + i·sin(2π/n), with references and the place of this entry in the De Moivre family",
+      "startLine": 1,
+      "endLine": 44,
+      "mathContext": "**Goal**: $\\omega = \\cos(2\\pi/n) + i\\sin(2\\pi/n)$ generates the solution set of $z^n = 1$, with $\\omega^n = 1$ following directly from De Moivre's formula."
+    },
+    {
+      "id": "definition",
+      "title": "The Generator ω",
+      "summary": "Defines omega n = cos(↑(2π/n)) + sin(↑(2π/n))·i, the candidate primitive n-th root of unity in trigonometric form",
+      "startLine": 45,
+      "endLine": 51,
+      "mathContext": "$\\omega(n) = \\cos(2\\pi/n) + i\\sin(2\\pi/n)$, the first vertex (after $1$) of the regular $n$-gon on the unit circle."
+    },
+    {
+      "id": "demoivre-collapse",
+      "title": "Part I: De Moivre Collapses ωⁿ to 1",
+      "summary": "Headline theorem omega_pow_n: ωⁿ = 1, proved by cos_add_sin_mul_I_pow and the collapse n·(2π/n) = 2π; plus the Euler bridge omega_eq_exp identifying ω with exp(2πi/n)",
+      "startLine": 52,
+      "endLine": 78,
+      "mathContext": "$\\omega^n = \\cos(n\\cdot 2\\pi/n) + i\\sin(n\\cdot 2\\pi/n) = \\cos(2\\pi) + i\\sin(2\\pi) = 1$. Euler bridge: $\\omega = e^{2\\pi i/n}$."
+    },
+    {
+      "id": "primitivity",
+      "title": "Part II: ω is a Primitive n-th Root of Unity",
+      "summary": "omega_isPrimitiveRoot: transports Mathlib's isPrimitiveRoot_exp along the Euler bridge to prove ω is primitive of order n",
+      "startLine": 79,
+      "endLine": 86,
+      "mathContext": "$\\omega = e^{2\\pi i/n}$ has order exactly $n$: it is a primitive $n$-th root of unity, the generator of the cyclic group $\\mu_n$."
+    },
+    {
+      "id": "powers-are-roots",
+      "title": "Part III: Every Power of ω is an n-th Root of Unity",
+      "summary": "omega_pow_pow_n: (ωᵏ)ⁿ = (ωⁿ)ᵏ = 1ᵏ = 1, so each power lands on the solution set of zⁿ = 1",
+      "startLine": 87,
+      "endLine": 92,
+      "mathContext": "$(\\omega^k)^n = (\\omega^n)^k = 1^k = 1$. The powers of $\\omega$ never leave the group $\\mu_n$ of $n$-th roots of unity."
+    },
+    {
+      "id": "distinctness",
+      "title": "Part IV: The Powers ω⁰,…,ωⁿ⁻¹ are Distinct",
+      "summary": "omega_pow_inj and omega_pow_injOn: ωⁱ = ωʲ with i,j < n forces i = j, so k ↦ ωᵏ is injective on {0,…,n-1}",
+      "startLine": 93,
+      "endLine": 104,
+      "mathContext": "Pigeonhole on the order of $\\omega$: $\\omega^i = \\omega^j,\\ 0 \\le i,j < n \\Rightarrow n \\mid (i-j) \\Rightarrow i = j$. The $n$ powers are pairwise distinct."
+    },
+    {
+      "id": "enumeration",
+      "title": "Part V: The Powers Enumerate All n-th Roots",
+      "summary": "nthRoots_eq_omega_powers and card_nthRootsFinset: nthRoots n 1 = map (ω^·) (range n), and there are exactly n distinct n-th roots of unity",
+      "startLine": 105,
+      "endLine": 118,
+      "mathContext": "$\\{z : z^n = 1\\} = \\{\\omega^0, \\omega^1, \\ldots, \\omega^{n-1}\\}$, a set of exactly $n$ points — the complete solution set of $z^n = 1$."
+    },
+    {
+      "id": "examples",
+      "title": "Part VI: Verified Small Cases",
+      "summary": "Concrete computations ω(1) = 1, ω(2) = -1 (via cos π = -1), and ω(4) = i (via cos(π/2) = 0, sin(π/2) = 1)",
+      "startLine": 119,
+      "endLine": 140,
+      "mathContext": "$\\omega(1) = 1$, $\\omega(2) = \\cos\\pi + i\\sin\\pi = -1$, $\\omega(4) = \\cos(\\pi/2) + i\\sin(\\pi/2) = i$ — the generators of $\\mu_1, \\mu_2, \\mu_4$."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary Theorem",
+      "summary": "demoivre_oq04_summary bundles the four main results: ωⁿ = 1, ω primitive, every ωᵏ a root, and exactly n distinct n-th roots",
+      "startLine": 141,
+      "endLine": 158,
+      "mathContext": "Four results in one: (1) $\\omega^n = 1$, (2) $\\omega$ primitive of order $n$, (3) $(\\omega^k)^n = 1$ for all $k$, (4) $\\#\\,\\mu_n = n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization uses De Moivre's formula to prove that ω = cos(2π/n) + i·sin(2π/n) is a primitive n-th root of unity, that all of its powers are n-th roots of unity, that ω⁰,…,ωⁿ⁻¹ are pairwise distinct, and that they enumerate the complete solution set of zⁿ = 1. All theorems are fully proved with zero sorries and zero axioms beyond Lean's foundations.",
+    "implications": "Complements the De Moivre series (OQ-01: Chebyshev extraction, OQ-02: Chebyshev properties, OQ-03: fractional exponents) with the trigonometric-form treatment of roots of unity. The single collapse n·(2π/n) = 2π is the bridge from the multiple-angle formula to the regular n-gon, the geometric foundation of cyclotomy.",
+    "openQuestions": [
+      "Characterize which powers ωᵏ are themselves primitive (gcd(k,n) = 1) and recover Euler's totient count",
+      "Connect the regular n-gon vertices to Gauss's criterion for constructible polygons",
+      "Develop the cyclotomic polynomial Φₙ as the minimal polynomial of ω over ℚ"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre",
+      "relationship": "Base theorem: integer exponent De Moivre"
+    },
+    {
+      "id": "de-moivre-oq-01",
+      "relationship": "OQ-01: Chebyshev polynomial extraction from De Moivre"
+    },
+    {
+      "id": "de-moivre-oq-03",
+      "relationship": "OQ-03: fractional exponents and root extraction"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": "DeMoivreOQ04",
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/DeMoivreOQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Abraham De Moivre",
+      "title": "Original theorem for integer exponents",
+      "year": "1707",
+      "venue": "Philosophical Transactions"
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Extension via exponential form",
+      "year": "1748",
+      "venue": "Introductio in analysin infinitorum"
+    },
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones Arithmeticae (cyclotomy and roots of unity)",
+      "year": "1801",
+      "venue": "Leipzig"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry specializes De Moivre's formula to θ = 2π/n to generate the roots of unity"
+    },
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: explicit multiple-angle formulas (Chebyshev) from De Moivre's theorem"
+    },
+    {
+      "targetId": "de-moivre-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling open question: fractional exponents and root extraction; oq-03 works in exponential form while oq-04 uses the trigonometric generator ω"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's formula e^(iθ) = cos θ + i sin θ is the bridge identifying ω = cos(2π/n) + i sin(2π/n) with exp(2πi/n); the case n = 2 gives e^(iπ) = -1."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "ω is a primitive n-th root of unity, the generator of the cyclic group μₙ. Its powers ω⁰,…,ωⁿ⁻¹ enumerate all n-th roots of unity, exactly the situation primitive-root theory describes."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "The polynomial zⁿ - 1 has exactly n roots in ℂ (FTA); this entry constructively exhibits them as the distinct powers of ω and proves the count is n."
+    }
+  ],
+  "sorries": 0
+}

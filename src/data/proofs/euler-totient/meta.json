@@ -177,6 +177,21 @@
       "targetId": "prime-number-theorem",
       "relationship": "related",
       "description": "The average order of $\\varphi(n)$ is $\\frac{6}{\\pi^2} n$ (a consequence of PNT and the Euler product $\\varphi(n)/n = \\prod(1-1/p)$). The connection $6/\\pi^2 = 1/\\zeta(2)$ links the totient function to the Basel problem and prime distribution"
+    },
+    {
+      "targetId": "euler-totient-oq-01",
+      "relationship": "extended-by",
+      "description": "Carmichael's function λ(n), the exponent of (ℤ/nℤ)*, sharpens Euler's theorem to a^λ(n) ≡ 1 (mod n) with λ(n) | φ(n); this verified child establishes the minimal universal exponent."
+    },
+    {
+      "targetId": "euler-totient-oq-03",
+      "relationship": "extended-by",
+      "description": "Verified compendium of structural properties of φ: parity (φ(n) even for n ≥ 3), the prime characterization φ(n) = n−1 ⇔ n prime, divisibility a | b ⇒ φ(a) | φ(b), and the Euler product formula."
+    },
+    {
+      "targetId": "euler-totient-oq-04",
+      "relationship": "extended-by",
+      "description": "Verified proof of the divisor-sum identity n = Σ_{d|n} φ(d) via an explicit partition of {0,…,n−1} into gcd-classes, each of size φ(n/d)."
     }
   ],
   "conclusion": {

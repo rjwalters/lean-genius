@@ -121,7 +121,9 @@
   "relatedProofs": [
     "ehrhart-cube-proven",
     "ehrhart-cube-proven-oq-01",
-    "ehrhart-cube-proven-oq-02"
+    "ehrhart-cube-proven-oq-02",
+    "ehrhart-cube-proven-oq-03",
+    "ehrhart-cube-proven-oq-04"
   ],
   "references": {
     "papers": [
@@ -158,15 +160,37 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProven.lean"
     },
     {
+      "path": "Proofs/EhrhartCubeProvenOQ03.lean",
+      "filename": "EhrhartCubeProvenOQ03.lean",
+      "lineCount": 211,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ03.lean"
+    },
+    {
       "path": "Proofs/EhrhartCubeProvenOQ04.lean",
       "filename": "EhrhartCubeProvenOQ04.lean",
-      "lineCount": 775,
+      "lineCount": 776,
       "theoremCount": 30,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 0,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ04.lean"
+    },
+    {
+      "path": "Proofs/EhrhartCubeProvenOQ05.lean",
+      "filename": "EhrhartCubeProvenOQ05.lean",
+      "lineCount": 163,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ05.lean"
     }
   ]
 }

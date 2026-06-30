@@ -122,6 +122,16 @@
       "targetId": "erdos-565",
       "relationship": "related",
       "description": "Both belong to extremal/Ramsey graph theory, where global graph parameters are controlled by local structural constraints. Mantel bounds the edge count of triangle-free graphs ($\\le \\lfloor n^2/4 \\rfloor$); Erdős #565 bounds the induced Ramsey number $R^*(G)$ of an $n$-vertex graph (shown to be $2^{O(n)}$). Both quantify how forbidding or forcing substructures constrains a graph's size."
+    },
+    {
+      "targetId": "mantel-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Stability extension: the Andrásfai–Erdős–Sós minimum-degree ingredient toward Erdős–Simonovits stability for triangle-free graphs."
+    },
+    {
+      "targetId": "mantel-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalization to Turán's theorem: the clean K_{r+1}-free edge bound 2r·e(G) ≤ (r−1)·n², recovering Mantel's triangle-free bound at r=2."
     }
   ],
   "leanFile": {

@@ -35,11 +35,17 @@
   direction we obtain `mirsky_min_antichain_cover`: this cover is minimal and has
   size exactly `maxChainLen`.
 
-  ## Status: research orphan (UNREGISTERED, build-pending).  0 axioms, 0 sorries.
+  ## Status: registered and verified.  0 axioms, 0 sorries.
 -/
 import Proofs.DilworthTheoremOQ01
 
 open Classical
+
+-- Register classical decidability as a local instance so that `Finset`
+-- operations over `Finset α` (notably `Fintype (Finset α)`, which needs
+-- `DecidableEq α`) resolve uniformly without threading decidability
+-- hypotheses through the statements.  Everything here is `noncomputable`.
+attribute [local instance] Classical.propDecidable
 
 namespace DilworthTheoremOQ01
 
@@ -91,7 +97,7 @@ theorem exists_chainsTo_card_eq_height (x : α) :
     Finset.exists_mem_eq_sup (chainsTo x) (chainsTo_nonempty x) Finset.card
   exact ⟨C, hC, hCard.symm⟩
 
-theorem height_le_maxChainLen (x : α) : height x ≤ maxChainLen := by
+theorem height_le_maxChainLen (x : α) : height x ≤ maxChainLen (α := α) := by
   unfold height maxChainLen
   apply Finset.sup_mono
   intro C hC
@@ -109,7 +115,7 @@ theorem mem_level {k : ℕ} {x : α} : x ∈ level k ↔ height x = k := by
   exact ⟨fun h => h.2, fun h => ⟨Finset.mem_univ _, h⟩⟩
 
 /-- **Key lemma.**  Each level set is an antichain. -/
-theorem level_isAntichain (k : ℕ) : IsAntichainOn (level k) := by
+theorem level_isAntichain (k : ℕ) : IsAntichainOn (level (α := α) k) := by
   intro x hx y hy hxy
   rw [mem_level] at hx hy
   by_contra hne
@@ -147,8 +153,8 @@ theorem mirsky_antichain_cover :
     ∃ 𝒜 : Finset (Finset α),
       (∀ A ∈ 𝒜, IsAntichainOn A) ∧
       (∀ x : α, ∃ A ∈ 𝒜, x ∈ A) ∧
-      𝒜.card ≤ maxChainLen := by
-  refine ⟨(Finset.univ.image height).image level, ?_, ?_, ?_⟩
+      𝒜.card ≤ maxChainLen (α := α) := by
+  refine ⟨((Finset.univ : Finset α).image height).image level, ?_, ?_, ?_⟩
   · intro A hA
     rw [Finset.mem_image] at hA
     obtain ⟨k, _, rfl⟩ := hA
@@ -158,20 +164,20 @@ theorem mirsky_antichain_cover :
     · rw [Finset.mem_image]
       exact ⟨height x, Finset.mem_image_of_mem height (Finset.mem_univ x), rfl⟩
     · exact mem_level.mpr rfl
-  · calc ((Finset.univ.image height).image level).card
-        ≤ (Finset.univ.image height).card := Finset.card_image_le
-      _ ≤ (Finset.Icc 1 maxChainLen).card := by
+  · calc (((Finset.univ : Finset α).image height).image level).card
+        ≤ ((Finset.univ : Finset α).image height).card := Finset.card_image_le
+      _ ≤ (Finset.Icc 1 (maxChainLen (α := α))).card := by
           apply Finset.card_le_card
           intro k hk
           rw [Finset.mem_image] at hk
           obtain ⟨x, _, rfl⟩ := hk
           rw [Finset.mem_Icc]
           exact ⟨one_le_height x, height_le_maxChainLen x⟩
-      _ = maxChainLen := by rw [Nat.card_Icc]; omega
+      _ = maxChainLen (α := α) := by rw [Nat.card_Icc]; omega
 
 /-- `maxChainLen` is attained by an actual chain. -/
 theorem exists_chain_card_eq_maxChainLen :
-    ∃ C : Finset α, IsChainOn C ∧ C.card = maxChainLen := by
+    ∃ C : Finset α, IsChainOn C ∧ C.card = maxChainLen (α := α) := by
   have hne : (allChains (α := α)).Nonempty := by
     refine ⟨∅, ?_⟩
     unfold allChains
@@ -188,8 +194,8 @@ theorem exists_chain_card_eq_maxChainLen :
     `maxChainLen` members. -/
 theorem maxChainLen_le_card_of_antichainCover {𝒜 : Finset (Finset α)}
     (hanti : ∀ A ∈ 𝒜, IsAntichainOn A) (hcover : ∀ x : α, ∃ A ∈ 𝒜, x ∈ A) :
-    maxChainLen ≤ 𝒜.card := by
-  obtain ⟨C, hC, hCard⟩ := exists_chain_card_eq_maxChainLen
+    maxChainLen (α := α) ≤ 𝒜.card := by
+  obtain ⟨C, hC, hCard⟩ := exists_chain_card_eq_maxChainLen (α := α)
   have hcoverC : ∀ c ∈ C, ∃ A ∈ 𝒜, c ∈ A := fun c _ => hcover c
   have h := chain_card_le_of_antichainCover hC hanti hcoverC
   rwa [hCard] at h
@@ -200,13 +206,13 @@ theorem mirsky_min_antichain_cover :
     ∃ 𝒜 : Finset (Finset α),
       (∀ A ∈ 𝒜, IsAntichainOn A) ∧
       (∀ x : α, ∃ A ∈ 𝒜, x ∈ A) ∧
-      𝒜.card = maxChainLen ∧
+      𝒜.card = maxChainLen (α := α) ∧
       (∀ ℬ : Finset (Finset α),
         (∀ A ∈ ℬ, IsAntichainOn A) → (∀ x : α, ∃ A ∈ ℬ, x ∈ A) →
         𝒜.card ≤ ℬ.card) := by
-  obtain ⟨𝒜, hanti, hcover, hle⟩ := mirsky_antichain_cover
+  obtain ⟨𝒜, hanti, hcover, hle⟩ := mirsky_antichain_cover (α := α)
   have hge := maxChainLen_le_card_of_antichainCover hanti hcover
-  have hcard : 𝒜.card = maxChainLen := le_antisymm hle hge
+  have hcard : 𝒜.card = maxChainLen (α := α) := le_antisymm hle hge
   refine ⟨𝒜, hanti, hcover, hcard, ?_⟩
   intro ℬ hℬanti hℬcover
   rw [hcard]

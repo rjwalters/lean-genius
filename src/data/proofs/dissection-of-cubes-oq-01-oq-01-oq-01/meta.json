@@ -1,0 +1,211 @@
+{
+  "id": "dissection-of-cubes-oq-01-oq-01-oq-01",
+  "title": "Genuine Coverage Kills the Minimal-Collision Witness",
+  "slug": "dissection-of-cubes-oq-01-oq-01-oq-01",
+  "description": "The gallery result `minimal_collision_achievable` (OQ-01-01) builds a CubeDissection with exactly 2 colliding cubes, but that structure carries `covers_unit_cube : True` as a placeholder — the cubes do not actually fill the unit cube. This entry replaces the placeholder with a genuine volumetric coverage predicate `∑ c.side³ = 1` (the necessary, and with disjointness measure-sufficient, tiling condition) in a new `GeoCubeDissection` structure. Two results: (1) the predicate is satisfiable — the single unit cube is a genuine dissection with 0 colliding cubes; (2) the published minimal-collision example {A,B,C} (sizes 1/4,1/4,1/3) has total volume 59/864 ≈ 0.068 ≠ 1, so NO GeoCubeDissection can have that cube set. The combinatorial 2-collision witness is therefore not geometric; whether any genuine tiling achieves exactly 2 collisions remains open. A new cardinality bound sharpens the target: two interior-disjoint cubes in [0,1]³ have side sum ≤ 1 and combined volume < 1, so no GeoCubeDissection can have exactly 2 cubes — hence any genuine minimal-collision dissection (if one exists) must contain at least 3 cubes, ruling out the colliding pair on its own.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
+    "date": "2026-06-20",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DissectionOfCubesOQ01OQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "combinatorics",
+      "construction",
+      "open-problem",
+      "cube-dissection",
+      "geometric-coverage",
+      "wiedijk-100"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_insert",
+        "description": "Peeling a term off a Finset sum over an insert",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_singleton",
+        "description": "Sum over a singleton Finset",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.mem_filter",
+        "description": "Membership in a filtered Finset",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card_eq_two",
+        "description": "A Finset has card 2 iff it is an unordered pair of distinct elements",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sum_pair",
+        "description": "Sum over a two-element Finset {a,b} with a ≠ b",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.filter_subset",
+        "description": "A filtered Finset is a subset of the original",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card_le_card",
+        "description": "Cardinality is monotone under subset",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "pow_le_one₀",
+        "description": "0 ≤ a ≤ 1 implies aⁿ ≤ 1 (used for (a+b)³ ≤ 1)",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "GeoCubeDissection: a cube-dissection structure whose coverage field is the genuine volumetric identity ∑ c.side³ = 1, replacing the `covers_unit_cube : True` placeholder",
+      "GeoCubeDissection.toCubeDissection: forgetful map enabling reuse of collidingCubes / HasMinimalCollision",
+      "unitGeoDissection: the single unit cube as a genuine volume-filling dissection (predicate is satisfiable)",
+      "unitGeo_no_collision: the unit-cube dissection has 0 colliding cubes",
+      "exampleCubes_volume_ne_one: the OQ-01-01 minimal-collision cube set has total volume 59/864 ≠ 1",
+      "no_geo_with_exampleCubes: no GeoCubeDissection can be built from the minimal-collision cube set",
+      "side_sum_le_one: two interior-disjoint cubes contained in [0,1]³ have total side length ≤ 1 (case analysis over the 6-way separating-axis disjunction)",
+      "two_disjoint_volume_lt_one: two interior-disjoint cubes in [0,1]³ have combined volume a³+b³ = (a+b)³−3ab(a+b) < 1, strictly, since the cross term is positive",
+      "geo_card_ne_two: no GeoCubeDissection has exactly 2 cubes — volumetric coverage ∑side³=1 is incompatible with two disjoint cubes filling under the whole volume",
+      "minimal_collision_needs_three: headline cardinality bound — any genuine (volume-filling) minimal-collision dissection must contain ≥ 3 cubes, so the colliding pair alone cannot tile"
+    ],
+    "dateAdded": "2026-06-20",
+    "assumptions": "The coverage predicate `volume_fills` is the volumetric (measure) coverage condition ∑ c.side³ = 1, not pointwise coverage of every boundary point. For axis-aligned, pairwise interior-disjoint cubes contained in [0,1]³ it is exactly the necessary condition for filling the unit cube and is measure-sufficient. Every result in this file is 0-axiom and 0-sorry. The ≥2 lower bound (DissectionOfCubesOQ01.at_least_two_colliding_cubes, which depends on the two geometric axioms in DissectionOfCubes.lean) is referenced only in prose, deliberately not re-exported as a theorem here, so this file imports no axioms.",
+    "axiomCount": 0,
+    "lineCount": 284,
+    "theoremCount": 11,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "DissectionOfCubesOQ01 proved every nonempty cube dissection has ≥ 2 colliding cubes; DissectionOfCubesOQ01OQ01 then proved the bound 2 is tight — but only within a formalization whose covering constraint is the placeholder `covers_unit_cube : True`. The achievability witness places three tiny cubes inside [0,1]³ that occupy under 7% of the volume. This sub-question asks the natural follow-up: does the witness survive once coverage is real?",
+    "problemStatement": "Replace `covers_unit_cube : True` with a genuine geometric coverage predicate using explicit tile coordinates, and determine whether the minimal-collision result (HasMinimalCollision) still holds.",
+    "text": "Introduces GeoCubeDissection with volumetric coverage ∑ c.side³ = 1. Shows the predicate is satisfiable (unit cube, 0 collisions) and that the published 2-collision witness fails it (volume 59/864), so the witness is not geometric. The deep question — whether any genuine tiling achieves exactly 2 collisions — stays open.",
+    "proofStrategy": "1. Define GeoCubeDissection: same containment + pairwise-disjointness as CubeDissection, with `volume_fills : ∑ c.side³ = 1` in place of the True placeholder. 2. A forgetful map toCubeDissection reuses collidingCubes/HasMinimalCollision. 3. unitGeoDissection witnesses satisfiability (sum over a singleton = 1³ = 1) and has empty collidingCubes (no second cube). 4. For the OQ-01-01 example, peel the 3-term Finset sum via Finset.sum_insert (using the existing distinctness lemmas) and norm_num to 2·(1/4)³+(1/3)³ = 59/864 ≠ 1; hence no GeoCubeDissection has that cube set. 5. (SECTION 5) For two interior-disjoint cubes in [0,1]³, rcases the 6-way separating-axis disjunction and linarith yields side sum ≤ 1; then a³+b³ = (a+b)³ − 3ab(a+b) with pow_le_one₀ and positivity gives combined volume < 1. So geo_card_ne_two (no 2-cube GeoCubeDissection via Finset.card_eq_two + Finset.sum_pair), and minimal_collision_needs_three (collidingCubes ⊆ cubes gives card ≥ 2, geo_card_ne_two rules out =2, omega gives ≥ 3).",
+    "keyInsights": [
+      "The `True` placeholder was masking a genuine obstruction: the minimal-collision witness covers under 7% of the unit cube",
+      "Volumetric coverage ∑ side³ = 1 is the right machine-checkable surrogate: necessary for any tiling and, with interior-disjointness, sufficient for full-measure coverage",
+      "Satisfiability matters: the single unit cube shows the predicate is not vacuous (and has 0 collisions, so it is not itself a minimal-collision example)",
+      "The combinatorial achievability and the geometric achievability are genuinely different problems — the former is proved, the latter remains open",
+      "A cardinality lower bound follows cheaply from coverage alone: two interior-disjoint cubes have side sum ≤ 1, so combined volume a³+b³ = (a+b)³−3ab(a+b) < 1; the colliding pair can never fill the unit cube, forcing any genuine minimal-collision dissection to use ≥ 3 cubes"
+    ],
+    "prerequisites": [
+      "Finset big operators (sum over insert / singleton)",
+      "Axis-aligned cube geometry (containment, interior disjointness)",
+      "DissectionOfCubesOQ01 (lower bound, HasMinimalCollision)",
+      "DissectionOfCubesOQ01OQ01 (the minimal-collision witness being tested)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "Docstring stating the question (does the witness survive genuine coverage?) and the answer (no), plus imports and opens."
+    },
+    {
+      "id": "geo-structure",
+      "title": "Genuine (Volumetric) Cube Dissection",
+      "startLine": 71,
+      "endLine": 100,
+      "summary": "GeoCubeDissection with `volume_fills : ∑ c.side³ = 1` and the forgetful map to CubeDissection."
+    },
+    {
+      "id": "satisfiable",
+      "title": "The Predicate is Satisfiable — the Unit Cube",
+      "startLine": 101,
+      "endLine": 150,
+      "summary": "unitCube, unitGeoDissection (a genuine dissection), unitGeo_no_collision (0 colliding cubes), unitGeo_not_minimal."
+    },
+    {
+      "id": "witness-fails",
+      "title": "The Minimal-Collision Example Fails Genuine Coverage",
+      "startLine": 151,
+      "endLine": 180,
+      "summary": "exampleCubes_volume_ne_one (volume 59/864 ≠ 1) and no_geo_with_exampleCubes (the headline obstruction)."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question, Restated",
+      "startLine": 181,
+      "endLine": 203,
+      "summary": "Restates the open geometric question and transports the ≥2 lower bound to GeoCubeDissection."
+    },
+    {
+      "id": "cardinality-bound",
+      "title": "SECTION 5 — The Colliding Pair Alone Cannot Fill (≥ 3 cubes)",
+      "startLine": 205,
+      "endLine": 284,
+      "summary": "side_sum_le_one (two disjoint cubes in [0,1]³ have side sum ≤ 1), two_disjoint_volume_lt_one (combined volume < 1 via a³+b³=(a+b)³−3ab(a+b)), geo_card_ne_two (no 2-cube GeoCubeDissection), and the headline minimal_collision_needs_three (any genuine minimal-collision dissection needs ≥ 3 cubes)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Replacing the `covers_unit_cube : True` placeholder with the genuine volumetric coverage predicate ∑ c.side³ = 1 destroys the published minimal-collision witness: the three-cube example occupies volume 59/864 ≈ 0.068, so no GeoCubeDissection can use it. The predicate is satisfiable (the unit cube fills it with 0 collisions), confirming it is a real, non-vacuous constraint.",
+    "implications": "This isolates exactly where the open problem lives. The combinatorial constraints (containment + disjointness) do not obstruct 2 colliding cubes — but the volume/coverage constraint does obstruct the specific known witness, and now also any 2-cube configuration. The new cardinality bound (minimal_collision_needs_three) takes the first step beyond 'the known witness fails': it rules out the smallest case unconditionally, showing a genuine minimal-collision dissection must spend at least three cubes — the colliding pair plus a third, distinct-sized cube. Whether some genuine tiling achieves exactly 2 collisions remains the open geometric question; Littlewood's cascade heuristic suggests the answer is no, but it is unproved.",
+    "openQuestions": [
+      "Does there exist a GeoCubeDissection (∑ side³ = 1) with exactly 2 colliding cubes? (Now known: it would need ≥ 3 cubes total.)",
+      "Can the cardinality bound be pushed beyond 3 — i.e. is there an explicit n with every genuine minimal-collision dissection having > n cubes, or a proof that none exists?",
+      "Does the volume constraint combined with disjointness force strictly more than 2 colliding cubes?",
+      "Can Littlewood's cascade be formalized into a quantitative lower bound on colliding cubes?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Proofs.DissectionOfCubesOQ01OQ01"
+    ],
+    "opens": [
+      "DissectionOfCubes",
+      "DissectionOfCubesOQ01",
+      "DissectionOfCubesOQ01OQ01"
+    ],
+    "namespace": "DissectionOfCubesOQ01OQ01OQ01",
+    "lineCount": 284,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 4,
+    "path": "Proofs/DissectionOfCubesOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Tests the minimal-collision witness of OQ-01-01 against genuine coverage and shows it fails"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01",
+      "relationship": "extends",
+      "description": "Transports the ≥2 colliding-cubes lower bound to genuine (volume-filling) dissections"
+    },
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "Builds on the Wiedijk #82 cube formalization (Cube, interiorDisjoint, inUnitCube)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "John Edensor Littlewood",
+      "title": "A Mathematician's Miscellany",
+      "year": "1953",
+      "venue": "Methuen",
+      "note": "Cascade argument suggesting genuine tilings force many size collisions"
+    },
+    {
+      "authors": "Freek Wiedijk",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "http://www.cs.ru.nl/~freek/100/",
+      "note": "Theorem #82: impossibility of perfect cube dissection"
+    }
+  ],
+  "sorries": 0
+}

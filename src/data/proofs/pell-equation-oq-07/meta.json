@@ -1,0 +1,129 @@
+{
+  "id": "pell-equation-oq-07",
+  "title": "The Cayley–Hamilton Linear Recurrence of Pell Solutions: uₙ₊₂ = 2x₁·uₙ₊₁ − uₙ",
+  "slug": "pell-equation-oq-07",
+  "description": "The root entry classifies the solutions of x² − Dy² = 1 multiplicatively — every solution is a power of the fundamental solution (x₁ + y₁√D) in ℤ[√D]. This entry extracts the additive shadow that classification leaves implicit: each coordinate of the power sequence satisfies a second-order linear recurrence, with coefficients fixed by the characteristic polynomial of the generating quadratic integer. Working in Mathlib's Zsqrtd d for arbitrary d, every a ∈ ℤ[√d] satisfies its Cayley–Hamilton relation a² = (2·re a)·a − N(a) — the trace 2·re a = a + ā and determinant N(a) = a·ā of multiplication by a. Multiplying by aⁿ yields aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ, and reading off the two coordinates gives uₙ₊₂ = (2·re a)·uₙ₊₁ − N(a)·uₙ for both x and y. For a Pell solution N(a) = 1, collapsing to uₙ₊₂ = (2·x₁)·uₙ₊₁ − uₙ: the coefficient is twice the first coordinate of the generator. This is the general-D explanation of the D = 2 coefficient 6 in pell-equation-oq-06-oq-03, since the norm-+1 generator there is 3 + 2√2 = ⟨3,2⟩ and 2·3 = 6.",
+  "leanFile": "Proofs/PellEquationOQ07.lean",
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius (Cayley–Hamilton recurrence in ℤ[√d]); Brahmagupta / Lagrange (classical Pell theory)",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PellEquationOQ07.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-equations",
+      "pell-equation",
+      "quadratic-integers",
+      "zsqrtd",
+      "linear-recurrence",
+      "cayley-hamilton",
+      "characteristic-polynomial",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-22",
+    "lineCount": 231,
+    "originalContributions": [
+      "Zsqrtd.sq_eq_trace_mul_sub_norm: the Cayley–Hamilton relation a² = (2·re a)·a − N(a) for EVERY a : ℤ√d (any d, no hypothesis), with the trace 2·re a = a + ā and determinant N(a) = a·ā of the multiplication-by-a map — proved by comparing real/√d components via Zsqrtd.re_mul, im_mul, re_sub, im_sub, re_intCast, im_intCast and norm_def",
+      "Zsqrtd.pow_recurrence: the whole power sequence obeys aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ in ℤ[√d], obtained by multiplying the characteristic relation through by aⁿ (aⁿ⁺² = a²·aⁿ) and one ring identity",
+      "Zsqrtd.re_recurrence / Zsqrtd.im_recurrence: BOTH coordinates obey the same recurrence (a^(n+2)).re = 2·re a·(a^(n+1)).re − N(a)·(a^n).re (and likewise .im), read off the ℤ[√d] recurrence by congrArg + simp",
+      "re_recurrence_pell / im_recurrence_pell: the Pell collapse — when N(a) = 1 the determinant term becomes −uₙ and the recurrence is the classical uₙ₊₂ = (2·x₁)·uₙ₊₁ − uₙ, whose only coefficient is twice the first coordinate of the generator",
+      "seq_unique: rigidity — any two integer sequences obeying uₙ₊₂ = c·uₙ₊₁ − uₙ that agree at n = 0,1 agree everywhere (two-step induction); with re_pell_unique this shows the recurrence + two initial coordinates CHARACTERIZE the Pell power sequence",
+      "norm_three_two / coeff_two / pell_two_recurrence: the D = 2 instance — N(⟨3,2⟩) = 1, the coefficient 2·re⟨3,2⟩ = 6, and the recurrence xₙ₊₂ = 6 xₙ₊₁ − xₙ recovered as the 2·re⟨3,2⟩ = 6 specialization, giving the general-D explanation of the coefficient 6 in sibling pell-equation-oq-06-oq-03"
+    ],
+    "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide (the three `decide` uses are kernel `decide`, not `native_decide`, so no Lean.ofReduceBool). Uses only Mathlib's Zsqrtd API (norm_def, re_mul, im_mul, re_sub, im_sub, re_intCast, im_intCast) and standard tactics (ring, simp, linarith, induction).",
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pell-equation",
+      "relationship": "extends",
+      "description": "The root entry classifies solutions of x² − Dy² = 1 multiplicatively as powers of the fundamental solution via IsFundamental.eq_zpow_or_neg_zpow. This entry extracts the additive shadow: the power sequence's coordinates satisfy a second-order linear recurrence whose coefficients (2·re a, N(a)) are the trace and determinant of the generator's characteristic polynomial."
+    },
+    {
+      "targetId": "pell-equation-oq-06-oq-03",
+      "relationship": "generalizes",
+      "description": "The sibling proves the D = 2 negative-Pell chain obeys uₙ₊₂ = 6 uₙ₊₁ − uₙ by an elementary ring identity, attributing the 6 to the trace of the transfer matrix [[3,4],[2,3]]. This entry derives that recurrence for general D from Cayley–Hamilton in ℤ[√d] and identifies the coefficient as 2·re a; the D = 2 norm-+1 generator 3 + 2√2 = ⟨3,2⟩ gives 2·3 = 6 (pell_two_recurrence)."
+    },
+    {
+      "targetId": "pell-equation-oq-06-oq-02",
+      "relationship": "related",
+      "description": "The sibling realizes the D = 2 chain as the odd powers of the fundamental unit 1 + √2 of ℤ[√2]. This entry works with the same Zsqrtd power sequences but in arbitrary degree d and reads off the linear recurrence each coordinate satisfies, rather than the norm dichotomy of the powers."
+    }
+  ],
+  "overview": {
+    "historicalContext": "That Pell solutions satisfy a linear recurrence is classical: writing (x₁ + y₁√D)ⁿ = xₙ + yₙ√D, the conjugate (x₁ − y₁√D)ⁿ = xₙ − yₙ√D gives xₙ and yₙ as symmetric functions of the two conjugate units, hence sequences with characteristic polynomial t² − (2x₁)t + 1 (since the product of the units is the norm 1). The coefficient 2x₁ is the trace of the unit, and the recurrence is the Cayley–Hamilton identity for the 2×2 companion / multiplication matrix. The phenomenon is the same one that makes (xₙ) a Lucas-type sequence and underlies the rational approximations xₙ/yₙ → √D. This entry formalizes the statement at the level of Mathlib's quadratic-integer ring ℤ[√d] for arbitrary d, where the trace 2·re a and determinant N(a) appear directly as the coefficients.",
+    "problemStatement": "The root entry describes the solutions of x² − Dy² = 1 as the powers of a fundamental solution — a multiplicative description. Does this force an additive recurrence on the coordinate sequences, and what are its coefficients? Concretely: for the power sequence aⁿ of a quadratic integer a ∈ ℤ[√d], do re(aⁿ) and im(aⁿ) satisfy a single second-order linear recurrence, and is its coefficient determined by a alone — explaining, in particular, why the D = 2 chain obeys uₙ₊₂ = 6 uₙ₊₁ − uₙ?",
+    "proofStrategy": "Work in Mathlib's ℤ√d = Zsqrtd d for arbitrary d. First prove the coordinate-free Cayley–Hamilton relation Zsqrtd.sq_eq_trace_mul_sub_norm: a² = (2·re a)·a − N(a), by Zsqrtd.ext and comparing components (re_mul/im_mul, re_sub/im_sub, re_intCast/im_intCast, norm_def) — both sides agree using only norm_def. Multiply by aⁿ (aⁿ⁺² = a²·aⁿ, one ring step) to get Zsqrtd.pow_recurrence. Apply congrArg Zsqrtd.re / Zsqrtd.im and simp to read off re_recurrence / im_recurrence. Specialize N(a) = 1 (rw + ring) for the Pell collapse re_recurrence_pell / im_recurrence_pell. Prove seq_unique by two-step induction and combine for re_pell_unique. Finally instantiate a = ⟨3,2⟩ ∈ ℤ[√2] (norm_three_two by decide, coeff_two = 6) to recover the D = 2 recurrence pell_two_recurrence.",
+    "keyInsights": [
+      "Every quadratic integer is a root of its own characteristic polynomial t² − (2·re a)t + N(a): the relation a² = (2·re a)·a − N(a) holds for ALL a ∈ ℤ[√d] with no hypothesis, because the trace a + ā = 2·re a and the norm a·ā = N(a) are exactly the coefficients (Cayley–Hamilton for the 2×2 multiplication matrix). This single identity drives the whole recurrence.",
+      "Multiplying the characteristic relation by aⁿ propagates it to the entire power sequence: aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ. Both ℤ-linear coordinate functionals re and im then inherit the SAME recurrence, so x and y obey one shared linear recurrence — the additive counterpart of the multiplicative power structure.",
+      "For a Pell solution the determinant collapses (N(a) = 1) and the recurrence becomes uₙ₊₂ = (2·x₁)·uₙ₊₁ − uₙ, whose single coefficient is twice the first coordinate of the generator. This pins down the recurrence from the generator alone and explains the appearance of 2x₁ across the Pell literature.",
+      "The D = 2 coefficient 6 of pell-equation-oq-06-oq-03 is not special: it is 2·re a for the norm-+1 generator 3 + 2√2 = ⟨3,2⟩, i.e. 2·3 = 6. The general-D theorem subsumes the sibling's elementary computation and reveals its source as the trace of the fundamental unit.",
+      "Rigidity (seq_unique): a second-order linear recurrence with two initial values has a unique solution, so the recurrence together with re(a⁰), re(a¹) characterizes the Pell coordinate sequence completely — the additive and multiplicative descriptions carry the same information."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Research Context",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Explains that the root entry's multiplicative classification leaves implicit an additive recurrence, states the Cayley–Hamilton relation a² = (2·re a)·a − N(a) and its consequence aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ, the Pell collapse to uₙ₊₂ = 2x₁·uₙ₊₁ − uₙ, and the D = 2 link to coefficient 6.",
+      "mathContext": "In $\\mathbb{Z}[\\sqrt d]$ the trace of $a$ is $a + \\bar a = 2\\,\\mathrm{re}\\,a$ and the determinant of multiplication by $a$ is the norm $N(a) = a\\bar a$; $a$ is a root of $t^2 - (2\\,\\mathrm{re}\\,a)t + N(a)$."
+    },
+    {
+      "id": "characteristic-relation",
+      "title": "The Characteristic Relation of a Quadratic Integer",
+      "startLine": 64,
+      "endLine": 89,
+      "summary": "Proves Zsqrtd.sq_eq_trace_mul_sub_norm: a² = (2·re a)·a − N(a) for every a : ℤ√d, by Zsqrtd.ext and matching real/√d components — the only fact used is norm_def.",
+      "mathContext": "Cayley–Hamilton for the $2\\times2$ matrix of multiplication by $a$: $a^2 - (\\mathrm{tr})a + \\det = 0$ with $\\mathrm{tr} = 2\\,\\mathrm{re}\\,a$, $\\det = N(a)$."
+    },
+    {
+      "id": "power-recurrence",
+      "title": "The Recurrence for the Power Sequence",
+      "startLine": 91,
+      "endLine": 118,
+      "summary": "Zsqrtd.pow_recurrence multiplies the characteristic relation by aⁿ to give aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ in ℤ[√d]; Zsqrtd.re_recurrence and Zsqrtd.im_recurrence read off the same recurrence in each coordinate via congrArg + simp.",
+      "mathContext": "Both coordinate functionals $\\mathrm{re}, \\mathrm{im} : \\mathbb{Z}[\\sqrt d] \\to \\mathbb{Z}$ are $\\mathbb{Z}$-linear, so each inherits the order-2 recurrence of the power sequence."
+    },
+    {
+      "id": "pell-collapse",
+      "title": "The Pell Collapse: Norm 1",
+      "startLine": 120,
+      "endLine": 139,
+      "summary": "re_recurrence_pell and im_recurrence_pell specialize N(a) = 1, collapsing the determinant term so each coordinate obeys uₙ₊₂ = (2·x₁)·uₙ₊₁ − uₙ, the classical Pell recurrence with coefficient twice the generator's first coordinate.",
+      "mathContext": "For $N(a)=1$ the determinant of the companion matrix is $1$, giving the characteristic polynomial $t^2 - (2x_1)t + 1$."
+    },
+    {
+      "id": "rigidity",
+      "title": "Rigidity: Recurrence + Two Initial Values Determine the Sequence",
+      "startLine": 141,
+      "endLine": 175,
+      "summary": "seq_unique proves by two-step induction that any two sequences obeying uₙ₊₂ = c·uₙ₊₁ − uₙ and agreeing at n = 0,1 agree everywhere; re_pell_unique applies it so the recurrence and re(a⁰), re(a¹) characterize the Pell coordinate sequence.",
+      "mathContext": "An order-2 linear recurrence is a deterministic dynamical system on $\\mathbb{Z}^2$; two prescribed initial terms fix the whole orbit."
+    },
+    {
+      "id": "d-two-instance",
+      "title": "The D = 2 Instance: Recovering uₙ₊₂ = 6uₙ₊₁ − uₙ",
+      "startLine": 177,
+      "endLine": 219,
+      "summary": "Instantiates a = ⟨3,2⟩ ∈ ℤ[√2]: norm_three_two (N = 1), coeff_two (2·re = 6), and pell_two_recurrence recover the sibling pell-equation-oq-06-oq-03's recurrence xₙ₊₂ = 6xₙ₊₁ − xₙ as the 2·re⟨3,2⟩ = 6 case, with sanity checks against the chain 1,3,17,99,577.",
+      "mathContext": "The norm-$+1$ fundamental unit of $\\mathbb{Z}[\\sqrt2]$ is $3+2\\sqrt2 = \\langle3,2\\rangle$, trace $6$; its powers give $1,3,17,99,577,\\dots$ with $a_{n+2}=6a_{n+1}-a_n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This fully verified 231-line file (0 sorries, 0 axioms, no native_decide) turns the root entry's multiplicative classification of Pell solutions into the additive second-order linear recurrence it implies. The engine is one coordinate-free fact — the Cayley–Hamilton relation a² = (2·re a)·a − N(a) holding for every a ∈ ℤ[√d] — which, multiplied by aⁿ, propagates to aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ and hence to both coordinate sequences. For Pell solutions (N(a) = 1) this is uₙ₊₂ = (2·x₁)·uₙ₊₁ − uₙ, and seq_unique shows the recurrence plus two initial coordinates determine the sequence. The D = 2 instance recovers the coefficient 6 of pell-equation-oq-06-oq-03 as 2·re⟨3,2⟩.",
+    "implications": "The contribution is the general-D explanation of a coefficient previously computed case-by-case: the recurrence coefficient of any norm-form power sequence is the trace 2·re a of the generator, and the determinant term is its norm N(a). The pattern — derive a coordinate recurrence by applying Cayley–Hamilton in ℤ[√d] and reading off components — applies to any quadratic-integer sequence (Lucas sequences, continued-fraction convergents, units of real quadratic fields), and complements Mathlib's Pell.Solution₁ API, which records the multiplicative structure but not the coordinate recurrence.",
+    "openQuestions": [
+      "Derive the closed-form (Binet) expressions xₙ = ((x₁+y₁√D)ⁿ + (x₁−y₁√D)ⁿ)/2 and the matrix-power form [[xₙ],[yₙ]] = [[x₁, D·y₁],[y₁, x₁]]ⁿ·[[1],[0]] from the recurrence, making the eigenvalue picture (roots of t² − 2x₁t + 1 being the conjugate units) explicit.",
+      "Prove the Cassini/Catalan-type identity xₙ₋₁xₙ₊₁ − xₙ² = constant for the general-D coordinate sequences, generalizing the D = 2 determinant identity of pell-equation-oq-06-oq-05 via the same Cayley–Hamilton companion matrix.",
+      "Connect re_pell_unique to Mathlib's Pell.Solution₁: show the coordinate maps n ↦ re(a^n), n ↦ im(a^n) for a fundamental Solution₁ generator are the unique solutions of the trace recurrence with the standard initial data, giving a recurrence-based reformulation of the power classification."
+    ]
+  }
+}

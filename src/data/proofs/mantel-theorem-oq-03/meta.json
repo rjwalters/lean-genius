@@ -1,0 +1,171 @@
+{
+  "id": "mantel-theorem-oq-03",
+  "title": "Minimum-Degree Corollary of Mantel: A Triangle-Free Graph Has a Vertex of Degree ≤ ⌊n/2⌋",
+  "slug": "mantel-theorem-oq-03",
+  "description": "A fully verified, axiom-free formalization of the local (minimum-degree) companion to Mantel's edge bound: every triangle-free (K₃-free) simple graph on n ≥ 1 vertices has a vertex of degree at most ⌊n/2⌋. The proof is the classical neighbourhood-disjointness argument and is independent of Mantel's ⌊n²/4⌋ edge count — for any edge u~v the neighbourhoods N(u) and N(v) are disjoint (a common neighbour would form a triangle), so deg u + deg v ≤ n; if every vertex had degree > n/2 the two endpoints of any edge would violate this. The contrapositive is a Turán-type forcing statement: minimum degree > n/2 guarantees a triangle.",
+  "meta": {
+    "author": "lean-genius researcher agents, formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Mantel%27s_theorem",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "extremal-graph-theory",
+      "triangle-free",
+      "mantel-theorem",
+      "degree-sequence",
+      "handshake-lemma"
+    ],
+    "proofRepoPath": "Proofs/MantelTheoremOQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.is3Clique_triple_iff",
+        "description": "A vertex triple {a,b,c} is a triangle (3-clique) iff its three pairs are all adjacent; used to derive a contradiction from a common neighbour of an edge",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.CliqueFree",
+        "description": "G.CliqueFree 3 is the triangle-free hypothesis: no finite vertex set forms a 3-clique",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.card_neighborFinset_eq_degree",
+        "description": "The cardinality of a vertex's neighbour finset equals its degree, converting the disjoint-union count into a degree-sum bound",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      },
+      {
+        "theorem": "Finset.card_union_of_disjoint",
+        "description": "Cardinality of a disjoint union is the sum of cardinalities, the counting step behind deg u + deg v = |N(u) ∪ N(v)|",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "neighborFinset_disjoint_of_adj: in a triangle-free graph the neighbourhoods of two adjacent vertices are disjoint — a common neighbour x of an edge u~v would complete the triangle {u,v,x}, contradicting CliqueFree 3 (proved via is3Clique_triple_iff)",
+      "degree_add_degree_le_card_of_adj: for every edge u~v of a triangle-free graph, deg u + deg v ≤ n, since the disjoint neighbourhoods N(u) ⊔ N(v) sit inside the n-vertex set (the load-bearing inequality)",
+      "exists_degree_two_mul_le_card: the headline minimum-degree corollary — a triangle-free graph on a nonempty vertex set has a vertex v with 2·deg v ≤ n; proved by contradiction, since all-degrees-> n/2 forces a positive-degree vertex, hence an edge whose endpoints break the degree-sum bound",
+      "exists_degree_le_card_div_two: the explicit floor restatement deg v ≤ ⌊n/2⌋, obtained from the doubling form by omega",
+      "exists_triangle_of_min_degree_large: the Turán-type contrapositive — if every vertex has degree strictly greater than n/2 the graph must contain a triangle (∃ s, G.IsNClique 3 s)"
+    ],
+    "dateAdded": "2026-06-20",
+    "axiomCountNote": "0 axiom declarations, 0 sorries, 0 structure-encoded assumptions, no native_decide. Every theorem is machine-checked from Mathlib's SimpleGraph clique/degree API; the only foundational dependencies are propext/Classical.choice/Quot.sound, which the project does not count."
+  },
+  "overview": {
+    "historicalContext": "Mantel's 1907 theorem — the founding result of extremal graph theory and the r = 2 base case of Turán's theorem — states that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, attained by the balanced complete bipartite graph (gallery entry mantel-theorem). Alongside the global edge bound sits a local statement about the degree sequence: a triangle-free graph cannot have all of its vertices be high-degree. Averaging the edge bound gives mean degree ≤ n/2, hence some vertex of degree ≤ n/2; but the sharper neighbourhood-disjointness argument proves this directly, without first establishing Mantel's edge count, and pins the bound at the exact floor ⌊n/2⌋.",
+    "problemStatement": "Formalize the minimum-degree corollary of Mantel's theorem: every triangle-free simple graph on n ≥ 1 vertices has a vertex of degree at most ⌊n/2⌋, and dually, a triangle-free graph in which every vertex has degree greater than n/2 cannot exist (equivalently, large minimum degree forces a triangle).",
+    "proofStrategy": "The argument is self-contained and avoids the ⌊n²/4⌋ edge bound entirely. (1) neighborFinset_disjoint_of_adj: for an edge u~v, the neighbourhoods N(u) and N(v) are disjoint, because a common neighbour x would make {u,v,x} a 3-clique (is3Clique_triple_iff), contradicting triangle-freeness. (2) degree_add_degree_le_card_of_adj: therefore deg u + deg v = |N(u) ∪ N(v)| ≤ |V| = n, using card_union_of_disjoint and card_neighborFinset_eq_degree. (3) exists_degree_two_mul_le_card: suppose for contradiction every vertex had 2·deg v > n. Since V is nonempty, n ≥ 1, so a chosen vertex has positive degree and hence a neighbour; the resulting edge's endpoints satisfy deg u + deg v ≤ n yet each has 2·deg > n, an arithmetic contradiction discharged by omega. (4) The floor form and the triangle-forcing contrapositive follow by omega and a short by_contra.",
+    "keyInsights": [
+      "The minimum-degree corollary is logically cheaper than Mantel's edge bound: it needs only that adjacent vertices have disjoint neighbourhoods, not the global counting of edges, so the proof never touches ⌊n²/4⌋.",
+      "Triangle-freeness is used exactly once, as disjointness of two neighbourhoods; encoding it through is3Clique_triple_iff turns the geometric 'no common neighbour' into a one-line clique contradiction.",
+      "The whole quantitative content collapses to a single linear fact — deg u + deg v ≤ n for any edge — after which omega closes every numeric goal (doubling form, floor form, and contrapositive).",
+      "The bound ⌊n/2⌋ is sharp: a balanced complete bipartite graph is triangle-free with every degree equal to ⌈n/2⌉ or ⌊n/2⌋, so its minimum degree is exactly ⌊n/2⌋ and the inequality cannot be lowered.",
+      "Read contrapositively the result is a Turán-type forcing principle — minimum degree > n/2 guarantees a triangle — which is the local analogue of 'too many edges force a triangle'."
+    ]
+  },
+  "conclusion": {
+    "summary": "A complete, axiom-free and sorry-free formalization of the minimum-degree corollary of Mantel's theorem: every triangle-free simple graph on a nonempty vertex set has a vertex of degree at most ⌊n/2⌋, together with the supporting neighbourhood-disjointness and degree-sum lemmas and the Turán-type contrapositive (large minimum degree forces a triangle).",
+    "implications": "Provides the reusable local ingredients — disjoint neighbourhoods of adjacent vertices and the deg u + deg v ≤ n edge inequality — that underlie inductive proofs of Mantel's theorem and several degree-cleaning arguments in extremal graph theory, all packaged independently of the global edge bound.",
+    "openQuestions": [
+      "Formalize sharpness: exhibit, for each n, a triangle-free graph (the balanced complete bipartite graph / turanGraph n 2) whose minimum degree is exactly ⌊n/2⌋, certifying that the bound in exists_degree_le_card_div_two cannot be improved.",
+      "Use the minimum-degree corollary to give an induction proof of Mantel's edge bound ⌊n²/4⌋ by repeatedly deleting a minimum-degree vertex, an alternative to the Turán specialization used in mantel-theorem.",
+      "Generalize to Kᵣ₊₁-free graphs: a Kᵣ₊₁-free graph has a vertex of degree at most (1 − 1/r)·n, the Turán-degree analogue of this corollary."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "License and Imports",
+      "startLine": 1,
+      "endLine": 5,
+      "summary": "Apache-2.0 license header and a single import Mathlib, which supplies the SimpleGraph clique and degree API (Clique, Finite) used throughout.",
+      "mathContext": "Relies on Mathlib.Combinatorics.SimpleGraph.Clique and .Finite."
+    },
+    {
+      "id": "docstring",
+      "title": "Statement and Approach",
+      "startLine": 7,
+      "endLine": 35,
+      "summary": "Module docstring locating the result as the local minimum-degree companion to Mantel's edge bound, outlining the neighbourhood-disjointness proof and noting both the contrapositive forcing form and the sharpness of ⌊n/2⌋ via balanced complete bipartite graphs.",
+      "mathContext": "Triangle-free on n ≥ 1 vertices ⇒ ∃ vertex of degree ≤ ⌊n/2⌋."
+    },
+    {
+      "id": "setup",
+      "title": "Ambient Setup",
+      "startLine": 37,
+      "endLine": 43,
+      "summary": "Opens Finset and SimpleGraph, enters namespace MantelMinDegree, and fixes a finite vertex type V with decidable equality and a graph G with decidable adjacency ([Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]) — the minimal context making neighbourhood finsets, their unions, and vertex triples well-defined.",
+      "mathContext": "deg v = |N(v)|, defined for finite V with decidable adjacency."
+    },
+    {
+      "id": "disjoint-neighborhoods",
+      "title": "Disjoint Neighbourhoods of an Edge",
+      "startLine": 45,
+      "endLine": 53,
+      "summary": "neighborFinset_disjoint_of_adj: in a triangle-free graph the neighbour finsets of two adjacent vertices u, v are disjoint. A common neighbour x yields adjacencies u~x and v~x which, with the edge u~v, build the 3-clique {u,v,x} via is3Clique_triple_iff, contradicting CliqueFree 3.",
+      "mathContext": "$u \\sim v,\\ G$ triangle-free $\\Rightarrow N(u) \\cap N(v) = \\varnothing$."
+    },
+    {
+      "id": "degree-sum-bound",
+      "title": "Degree-Sum Bound on an Edge",
+      "startLine": 55,
+      "endLine": 66,
+      "summary": "degree_add_degree_le_card_of_adj: for any edge u~v of a triangle-free graph, deg u + deg v ≤ n. The disjoint neighbourhoods give |N(u) ∪ N(v)| = deg u + deg v (card_union_of_disjoint, card_neighborFinset_eq_degree), and the union is a subset of the n-vertex universe, so omega closes the bound.",
+      "mathContext": "$u \\sim v,\\ G$ triangle-free $\\Rightarrow \\deg u + \\deg v \\le n$."
+    },
+    {
+      "id": "min-degree-corollary",
+      "title": "Minimum-Degree Corollary",
+      "startLine": 68,
+      "endLine": 93,
+      "summary": "exists_degree_two_mul_le_card proves ∃ v, 2·deg v ≤ n by contradiction: if every vertex had 2·deg > n then (n ≥ 1 from nonemptiness) a chosen vertex has positive degree and a neighbour, and that edge's endpoints violate the degree-sum bound (omega). exists_degree_le_card_div_two restates this as deg v ≤ ⌊n/2⌋.",
+      "mathContext": "$G$ triangle-free, $V \\ne \\varnothing \\Rightarrow \\exists v,\\ \\deg v \\le \\lfloor n/2 \\rfloor$."
+    },
+    {
+      "id": "forcing-contrapositive",
+      "title": "Turán-Type Forcing Contrapositive",
+      "startLine": 95,
+      "endLine": 104,
+      "summary": "exists_triangle_of_min_degree_large: if every vertex has degree strictly greater than n/2 (n < 2·deg v for all v) then the graph contains a triangle (∃ s, G.IsNClique 3 s). Proved by by_contra: the negation is exactly CliqueFree 3, which feeds the minimum-degree corollary to contradict the hypothesis (omega).",
+      "mathContext": "$\\forall v,\\ \\deg v > n/2 \\Rightarrow G$ contains a triangle."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "mantel-theorem",
+      "relationship": "extends",
+      "description": "mantel-theorem proves the global edge bound ⌊n²/4⌋; this entry proves the complementary local minimum-degree bound ⌊n/2⌋ directly, without using the edge count, and supplies the per-vertex ingredient behind inductive proofs of Mantel's theorem."
+    },
+    {
+      "targetId": "mantel-theorem-oq-01",
+      "relationship": "related",
+      "description": "Both isolate degree-based ingredients of triangle-free extremal theory; oq-01 packages the Andrásfai–Erdős–Sós min-degree → bipartite threshold (2n/5), while this entry proves the elementary minimum-degree upper bound (n/2)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph"
+    ],
+    "namespace": "MantelMinDegree",
+    "lineCount": 104,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/MantelTheoremOQ03.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    "neighborFinset_disjoint_of_adj",
+    "degree_add_degree_le_card_of_adj",
+    "exists_degree_two_mul_le_card",
+    "exists_degree_le_card_div_two",
+    "exists_triangle_of_min_degree_large"
+  ],
+  "sorries": 0
+}

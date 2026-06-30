@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ann-divr-oq01-oq01-oq02-header",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "concept",
+    "title": "File Context: OQ-02 — Generalizing the Base-10 Rule to Arbitrary Bases",
+    "content": "This file is a follow-up (OQ-02) to DivisibilityRulesOQ01OQ01, which proved the digit-sum divisibility rule for base 10. The parent's own conclusion listed the open question 'Can the rule be extended to bases other than 10?' — and answered it informally ('Yes: replace 10 with any base b'). This file makes that precise and machine-checked: for any base b ≥ 2 and any d > 1 coprime to b, a base-b^k digit-sum rule exists, with k = φ(d). The parent is recovered as the b = 10 corollary.",
+    "mathContext": "The reduction $d \\mid n \\iff d \\mid (\\text{Nat.digits}(b^k, n)).\\text{sum}$ holds iff $b^k \\equiv 1 \\pmod d$, by `Nat.modEq_digits_sum`. Since $\\gcd(d,b)=1$, $b$ is a unit in $(\\mathbb{Z}/d\\mathbb{Z})^\\times$ and $b^{\\varphi(d)} = 1$ by Euler's theorem, so $k = \\varphi(d)$ works for every base.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility-rules-oq-01-oq-01",
+      "Nat.modEq_digits_sum",
+      "Euler's theorem",
+      "multiplicative order",
+      "DivisibilityRulesOQ01OQ01OQ02 namespace"
+    ],
+    "prerequisites": [
+      "DivisibilityRulesOQ01OQ01 parent proof",
+      "Nat.digits representation",
+      "modular congruences"
+    ]
+  },
+  {
+    "id": "ann-divr-oq01-oq01-oq02-euler",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-02",
+    "range": { "startLine": 56, "endLine": 84 },
+    "type": "key-step",
+    "title": "Base-Agnostic Euler's Theorem: b^φ(d) ≡ 1 (mod d)",
+    "content": "pow_totient_mod_eq_one is the parent's ten_pow_totient_mod_eq_one with 10 replaced by a variable base b. It builds u = ZMod.unitOfCoprime b hcop.symm, applies ZMod.pow_totient to get u^φ(d) = 1, coerces through Units.val to (b : ZMod d)^φ(d) = 1, then casts back to ℕ via ZMod.natCast_eq_natCast_iff and simplifies 1 % d = 1 (using d > 1). The value of the base never enters — only its unit status does.",
+    "mathContext": "Euler's theorem: $(\\mathbb{Z}/d\\mathbb{Z})^\\times$ has order $\\varphi(d)$, so any unit $u$ satisfies $u^{\\varphi(d)} = 1$. With $u = b$ this is $b^{\\varphi(d)} \\equiv 1 \\pmod d$. The only base-specific fact, $(u : \\mathbb{Z}/d\\mathbb{Z}) = b$, holds for every $b$, so the lemma is fully general.",
+    "significance": "essential",
+    "relatedConcepts": ["ZMod.pow_totient", "ZMod.unitOfCoprime", "Euler's totient theorem"],
+    "prerequisites": ["ZMod units", "Euler's theorem"]
+  },
+  {
+    "id": "ann-divr-oq01-oq01-oq02-main",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-02",
+    "range": { "startLine": 86, "endLine": 101 },
+    "type": "key-step",
+    "title": "Main Theorem: General Base-b Existence",
+    "content": "general_base_divisibility_rule_exists takes k = φ(d) (positive by Nat.totient_pos since d > 1) and closes the inner equivalence d ∣ n ↔ d ∣ (digits(b^k, n)).sum by feeding the base-agnostic Euler lemma to Nat.modEq_digits_sum and then Nat.ModEq.dvd_iff. The hypothesis 2 ≤ b is carried as a domain precondition for 'base b' to be meaningful but is unused in the proof (hence underscored).",
+    "mathContext": "`Nat.modEq_digits_sum d (b^{\\varphi(d)}) hb n` gives $n \\equiv (\\text{digits}(b^{\\varphi(d)}, n)).\\text{sum} \\pmod d$ once $b^{\\varphi(d)} \\% d = 1$; `Nat.ModEq.dvd_iff` upgrades the congruence to the divisibility equivalence.",
+    "significance": "essential",
+    "relatedConcepts": ["Nat.modEq_digits_sum", "Nat.ModEq.dvd_iff", "Nat.totient_pos"],
+    "prerequisites": ["digit sum congruences", "Euler's theorem"]
+  },
+  {
+    "id": "ann-divr-oq01-oq01-oq02-corollary",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-02",
+    "range": { "startLine": 103, "endLine": 109 },
+    "type": "concept",
+    "title": "Recovering the Base-10 Parent as a Corollary",
+    "content": "general_divisibility_rule_base_ten instantiates the general theorem at b = 10 (with 2 ≤ 10 by norm_num), reproducing the parent's general_divisibility_rule_exists in one line. This certifies the generalization is faithful: it strictly contains the base-10 result.",
+    "mathContext": "Specialization $b := 10$ collapses the base-$b^k$ statement to the classical decimal digit-block rule. The generalization adds no axioms and loses no strength at $b = 10$.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisibility-rules-oq-01-oq-01", "specialization"],
+    "prerequisites": ["main existence theorem"]
+  },
+  {
+    "id": "ann-divr-oq01-oq01-oq02-witnesses",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-02",
+    "range": { "startLine": 111, "endLine": 128 },
+    "type": "example",
+    "title": "Cross-Base Witnesses: bases 2, 7, 16",
+    "content": "Three concrete non-decimal instances: base 2 mod 3 (k=2, since 4 ≡ 1 mod 3), base 7 mod 4 (k=2, since 49 ≡ 1 mod 4), and base 16 mod 5 (k=1, since 16 ≡ 1 mod 5 — the hexadecimal analogue of casting out nines). Each congruence b^k % d = 1 is discharged by kernel `decide` rather than `native_decide`, so the file introduces no Lean.ofReduceBool and remains genuinely 0-axiom.",
+    "mathContext": "The minimal k is the multiplicative order ord_d(b): ord_3(2) = 2, ord_4(7) = 2, ord_5(16) = 1. These illustrate that the universal witness k = φ(d) from the existence theorem is sufficient but generally not minimal.",
+    "significance": "illustrative",
+    "relatedConcepts": ["multiplicative order", "casting out nines", "kernel decide"],
+    "prerequisites": ["main existence theorem"]
+  }
+]

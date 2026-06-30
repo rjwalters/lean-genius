@@ -2177,7 +2177,7 @@
     },
     {
       "project_id": "ddd818e2-e934-4fd9-b389-15d56a22b49a",
-      "file": "proofs/Proofs/AbelRuffiniOQ07Order6Aristotle.lean",
+      "file": "proofs/Proofs/AbelRuffiniOQ07Order6.lean",
       "problem_id": "abel-ruffini-oq-07",
       "submitted": "2026-06-19T13:20:00Z",
       "sorries": [
@@ -2185,8 +2185,9 @@
         "gal_eq_top_of_five_dvd_and_order6 : 5∣|G| ∧ ∃ order-6 elem → G=⊤"
       ],
       "notes": "Generic S5 order-6→swap step. Consumes the now-PROVED Dedekind-Frobenius bridge (DedekindFrobeniusBridge.lean) output: bridge gives orderOf(arithFrobAt)=inertiaDegIn=6 at a prime over 2 of the splitting field, this turns it into the swap the verified reduction gal_eq_top_of_five_dvd_and_swap consumes. Self-contained Mathlib-only companion (NOT registered in Proofs.lean). CLI submit; v4.26 vs Aristotle v4.28 warning (Perm(Fin5) API stable).",
-      "status": "submitted",
-      "last_check": null
+      "status": "integrated",
+      "last_check": null,
+      "outcome": "Both lemmas (orderOf_eq_six_pow_three_isSwap, gal_eq_top_of_five_dvd_and_order6) proved 0-sorry/0-axiom; file promoted from *Aristotle.lean scratch to registered module AbelRuffiniOQ07Order6 (in Proofs.lean). Aristotle project expired (Resource not found)."
     },
     {
       "project_id": "f3b4620d-814e-430d-97a8-c40321b48abf",
@@ -2223,6 +2224,39 @@
       "notes": "RCF existence (invariant-factor chain): primary decomp via Module.equiv_directSum_of_isTorsion + regrouping. Never submitted before; HARD known classical result. [S4 2026-06-19: CONFIRMED RUNNING ~17% via CLI; status-script/MCP gave false NOT_FOUND.]",
       "status": "running",
       "last_check": "2026-06-19T17:00:00Z"
+    },
+    {
+      "project_id": "a1441c24-c444-4cb6-ba78-9c0357beffcf",
+      "task_id": "49f58f23-9f57-46e9-91ed-25937c688b89",
+      "file": "proofs/Proofs/Erdos107OQ01KleinUpperAristotle.lean",
+      "problem_id": "erdos-107-oq-01",
+      "submitted": "2026-06-19T07:00:00Z",
+      "sorries": [
+        "klein_upper_bound"
+      ],
+      "notes": "Klein 1931 upper bound 5 ∈ CardSet 4 (Happy Ending base case) — the lone remaining axiom of erdos-107-oq-01. Submitted via CLI by researcher-10.",
+      "status": "integrated",
+      "last_check": {
+        "timestamp": "2026-06-27T00:43:40Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "PROVED klein_upper_bound axiom-free (339-line proof: finite Krein-Milman extreme-point case analysis + 2D separating functional). Aristotle verified clean: #print axioms = propext/Classical.choice/Quot.sound only. Proved against Mathlib v4.28.0; repo pins v4.26.0 so integration PR is CI-gated on the toolchain port.",
+      "integrated": "2026-06-27T00:43:40Z",
+      "theorems_proven": [
+        "klein_upper_bound",
+        "extreme_not_in_hull_erase",
+        "subset_convexHull_extremePoints",
+        "hasConvexNGon_of_four_extreme",
+        "cross_eq_zero_iff_collinear",
+        "exists_line_functional",
+        "two_same_sign",
+        "not_mem_convexHull_triple_of_functional",
+        "collinear_convexHull_of_collinear",
+        "not_collinear_pts",
+        "hasConvexNGon_of_pair",
+        "hasConvexNGon_caseB"
+      ]
     }
   ]
 }

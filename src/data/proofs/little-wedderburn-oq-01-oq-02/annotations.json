@@ -1,0 +1,77 @@
+[
+  {
+    "id": "lw0102-docstring",
+    "proofId": "little-wedderburn-oq-01-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 38
+    },
+    "type": "context",
+    "title": "The Class-Equation Core of Wedderburn",
+    "content": "The docstring frames this entry as the center-and-dimension companion the parent left open — the structural backbone of Wedderburn's own proof. For a finite division ring $D$, one writes the multiplicative class equation against the center $Z = Z(D)$. The structural inputs are: $Z(D)$ is a field and $D$ is a $Z(D)$-vector space, hence $|D| = |Z(D)|^k$ with $k = \\dim_{Z(D)} D$ (the dimension identity); $Z(D)$ is a finite field so $|Z(D)| = p^m$; and combining gives $|D| = p^{mk}$, the prime-power order via the *center route*. The `mathlib` badge is honest: every step rests on a Mathlib lemma, and the contribution is the explicit assembly plus the named statement of the collapse $k = 1$.",
+    "mathContext": "For a finite division ring $D$: $Z(D)$ a field, $|D| = |Z(D)|^k$, $|Z(D)| = p^m$, so $|D| = p^{mk}$.",
+    "significance": "context",
+    "relatedConcepts": ["Wedderburn's little theorem", "class equation", "center of a division ring", "cyclotomic polynomials"],
+    "prerequisites": ["division rings", "the center of a ring", "vector spaces over a field"]
+  },
+  {
+    "id": "lw0102-center-field",
+    "proofId": "little-wedderburn-oq-01-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 57
+    },
+    "type": "theorem",
+    "title": "The Center is a Field",
+    "content": "`center_isField` exposes the fact that the center of any division ring is a field. Mathlib already equips `Subring.center D` with a `Field` instance (`Subring.instField`); the theorem repackages it as the structural predicate `IsField` via `Field.toIsField`, which is the form the class-equation argument consumes. A `Finite` instance on the center is registered too (it is a subset of the finite ring $D$, so `Subtype.finite` applies), making $Z(D)$ a genuine finite field. The `omit [Finite D]` on `center_isField` records that finiteness is not needed for the center to be a field — only the division-ring structure is.",
+    "mathContext": "$Z(D) = \\{x \\in D : \\forall y,\\ xy = yx\\}$ is a commutative division ring, i.e. a field.",
+    "significance": "supporting",
+    "relatedConcepts": ["center of a division ring", "field structure", "IsField predicate", "Subring.instField"],
+    "prerequisites": ["the center is a subring", "commutative division rings are fields"]
+  },
+  {
+    "id": "lw0102-dimension-identity",
+    "proofId": "little-wedderburn-oq-01-oq-02",
+    "range": {
+      "startLine": 59,
+      "endLine": 82
+    },
+    "type": "insight",
+    "title": "The Dimension Identity |D| = |Z(D)|^k",
+    "content": "`card_eq_center_pow_finrank` is the bookkeeping identity at the heart of the class-equation proof: viewing $D$ as a vector space over its center $Z(D)$, its cardinality is $|Z(D)|$ raised to the dimension $k = \\dim_{Z(D)} D$. The proof bridges `Nat.card` to `Fintype.card` on the finite types and applies Mathlib's `Module.card_eq_pow_finrank`. `exists_card_eq_center_pow` is the existence form, and `finrank_center_pos` records $k \\geq 1$ via `Module.finrank_pos` (since $D$ is a nontrivial finite module over its center) — the positivity that makes the subsequent prime-power recovery go through.",
+    "mathContext": "$|D| = |Z(D)|^{\\dim_{Z(D)} D}$ because a finite $K$-vector space of dimension $n$ has $|K|^n$ elements; here $\\dim_{Z(D)} D \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["dimension of a vector space", "Module.card_eq_pow_finrank", "finrank", "class equation"],
+    "prerequisites": ["finite vector spaces", "cardinality |K|^dim", "Nat.card vs Fintype.card"]
+  },
+  {
+    "id": "lw0102-prime-power",
+    "proofId": "little-wedderburn-oq-01-oq-02",
+    "range": {
+      "startLine": 83,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "Prime-Power Order via the Center Route",
+    "content": "`center_card_isPrimePow` shows $|Z(D)|$ is a prime power: $Z(D)$ is a finite field, so `FiniteField.isPrimePow_card` applies. `card_isPrimePow` then derives that $|D|$ is a prime power *through the center decomposition*: rewriting $|D| = |Z(D)|^k$ and using `IsPrimePow.pow` (a positive power of a prime power is a prime power, needing $k \\neq 0$ from `finrank_center_pos`). This is structurally different from the parent entry, which first upgrades $D$ to a field and quotes the field-level result — here the prime-power order is recovered *before* commutativity of $D$ is invoked, mirroring how Wedderburn's own proof reasons.",
+    "mathContext": "$|Z(D)| = p^m$ is a prime power; $|D| = |Z(D)|^k = p^{mk}$ with $k \\ge 1$ is therefore also a prime power.",
+    "significance": "key",
+    "relatedConcepts": ["prime power", "finite fields", "FiniteField.isPrimePow_card", "IsPrimePow.pow"],
+    "prerequisites": ["order of a finite field is a prime power", "powers of prime powers"]
+  },
+  {
+    "id": "lw0102-collapse",
+    "proofId": "little-wedderburn-oq-01-oq-02",
+    "range": {
+      "startLine": 99,
+      "endLine": 129
+    },
+    "type": "insight",
+    "title": "The Wedderburn Collapse: k = 1",
+    "content": "The refinement collapses once Wedderburn's theorem is invoked. `center_eq_top` is `Subring.center_eq_top` applied to the field $D$ supplied by Mathlib's `littleWedderburn` instance: $D$ is commutative, so $Z(D) = D$. `center_card_eq` transports cardinality across the ring equivalence $Z(D) \\cong D$ to get $|Z(D)| = |D|$. Finally `finrank_center_eq_one` combines the dimension identity $|D| = |Z(D)|^k$ with $|Z(D)| = |D|$ and $|D| \\geq 2$, yielding $|D| = |D|^k$; injectivity of $n \\mapsto |D|^n$ (`Nat.pow_right_injective`, valid since $|D| \\geq 2$) forces $k = 1$. So the central degree the class equation a priori permits is, in hindsight, always 1 — which is exactly the content of the theorem the class equation proves.",
+    "mathContext": "$Z(D) = D \\implies |Z(D)| = |D|$; then $|D| = |D|^k$ with $|D| \\ge 2$ forces $k = \\dim_{Z(D)} D = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["littleWedderburn", "center_eq_top", "Nat.pow_right_injective", "commutativity of finite division rings"],
+    "prerequisites": ["Wedderburn's little theorem", "injectivity of n ↦ a^n for a ≥ 2"]
+  }
+]

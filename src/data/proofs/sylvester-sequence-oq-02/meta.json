@@ -1,0 +1,191 @@
+{
+  "id": "sylvester-sequence-oq-02",
+  "slug": "sylvester-sequence-oq-02",
+  "title": "Sylvester's Sequence: The Reciprocals Sum Exactly to 1",
+  "description": "Sylvester's sequence a₀=2, a_{n+1}=aₙ²-aₙ+1 (2, 3, 7, 43, 1807, …) has reciprocals that sum to exactly 1. The base entry (oq-01) proves the closed-form partial sum ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1) and merely remarks that the infinite sum is 1; this entry formalizes that limit as a genuine convergent series. It proves the infinite-series identity ∑' k, 1/aₖ = 1 over ℝ (syl_tsum_reciprocal), its HasSum form (syl_reciprocal_hasSum), summability (syl_summable, partial sums bounded by 1), and the analytic engine: a linear lower bound aₙ ≥ n+2 forcing 1/(a_{n+1}-1) → 0. Fully machine-checked with 0 sorries and 0 axioms.",
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Filter", "Topology"],
+    "namespace": "SylvesterSequenceOQ02",
+    "lineCount": 157,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "substantiveTheoremCount": 6,
+    "trivialSpecializations": 1,
+    "definitionCount": 1,
+    "path": "Proofs/SylvesterSequenceOQ02.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "James Joseph Sylvester (1880)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sylvester%27s_sequence",
+    "date": "1880",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylvesterSequenceOQ02.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "infinite-series",
+      "egyptian-fractions",
+      "telescoping",
+      "convergence",
+      "sylvester"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. The sequence is defined directly in ℕ; all results are proved over ℝ from the recurrence using only Mathlib's analysis library, with no axioms and no structure-encoded hypotheses. #print axioms reports only the standard propext / Classical.choice / Quot.sound.",
+    "dateAdded": "2026-06-19",
+    "mathlibDependencies": [
+      "summable_of_sum_range_le",
+      "Summable.hasSum",
+      "HasSum.tendsto_sum_nat",
+      "squeeze_zero",
+      "tendsto_one_div_add_atTop_nhds_zero_nat",
+      "tendsto_nhds_unique",
+      "tendsto_add_atTop_nat"
+    ],
+    "originalContributions": [
+      "Infinite-series identity syl_tsum_reciprocal: ∑' k, 1/aₖ = 1 over ℝ — the limit the oq-01 entry states but does not prove",
+      "HasSum form syl_reciprocal_hasSum: HasSum (fun k => 1/aₖ) 1, the unconditional-convergence statement",
+      "Summability syl_summable: the reciprocal series is summable, via partial sums bounded above by 1",
+      "Linear lower bound syl_ge_add_two: n + 2 ≤ aₙ, the elementary growth fact that forces 1/(a_{n+1}-1) → 0 (a linear bound suffices even though the sequence grows doubly exponentially)",
+      "Convergence of the error term syl_recip_pred_tendsto_zero: 1/(a_{n+1}-1) → 0, by squeezing below 1/(n+1)",
+      "Partial-sum limit syl_partial_tendsto_one: ∑_{k≤n} 1/aₖ → 1"
+    ],
+    "prerequisites": [
+      "Infinite series, summability, and tsum in a normed field",
+      "Limits of sequences (Tendsto, squeeze theorem)",
+      "Telescoping sums and mathematical induction"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 157,
+    "relatedProblems": ["sylvester-sequence-oq-01"],
+    "theoremCount": 12,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Sylvester's sequence (OEIS A000058), studied by James Joseph Sylvester in 1880, is the greedy expansion of 1 as a sum of distinct unit fractions: at each step take the largest 1/m that keeps the running total below 1. Sylvester showed the denominators obey a₀ = 2, a_{n+1} = aₙ² - aₙ + 1, giving 2, 3, 7, 43, 1807, 3263443, …, a doubly-exponentially growing sequence (≈ ⌊E^{2^{n+1}}⌋ for Vardi's constant E ≈ 1.2640847). That the reciprocals sum to exactly 1 is the precise sense in which the greedy Egyptian-fraction expansion of unity converges — and converges as fast as any unit-fraction expansion possibly can.",
+    "problemStatement": "Let a₀ = 2 and a_{n+1} = aₙ² - aₙ + 1. The base entry proves the closed-form partial sum ∑_{k=0}^{n} 1/aₖ = 1 - 1/(a_{n+1} - 1). Promote this to a statement about the genuine infinite series: prove that ∑_{k} 1/aₖ converges and equals exactly 1, both as a tsum value (∑' k, 1/aₖ = 1) and as a HasSum statement, working over ℝ so that convergence is meaningful.",
+    "proofStrategy": "The series has nonnegative terms, so summability follows from the partial sums being bounded above: each equals 1 - 1/(a_{n+1}-1) ≤ 1 (summable_of_sum_range_le). To pin the value to 1, the partial sums are shown to converge to 1 by re-deriving the telescoping closed form over ℝ and taking n → ∞: the error term 1/(a_{n+1}-1) tends to 0. That last limit needs only that a_{n+1}-1 → ∞, which is supplied by the elementary linear lower bound aₙ ≥ n + 2 (each step gains at least one because a_{n+1} - aₙ = (aₙ-1)² ≥ 1); the error term is then squeezed below 1/(n+1) → 0. Finally tendsto_nhds_unique identifies the tsum value — reached along the range-(n+1) partial sums via HasSum.tendsto_sum_nat composed with a +1 index shift — with the limit 1.",
+    "keyInsights": [
+      "The oq-01 entry computes the exact partial sum 1 - 1/(a_{n+1}-1) but stops at a remark about the limit; the analytic content of 'the reciprocals sum to 1' is precisely the convergence statement formalized here.",
+      "Convergence is unconditional (nonnegative terms with bounded partial sums), so the value can be obtained two ways that must agree: the abstract tsum of the summable series, and the explicit limit of the telescoping partial sums — tendsto_nhds_unique forces them equal.",
+      "A crude linear bound aₙ ≥ n + 2 is all that is needed for convergence, even though Sylvester's sequence actually grows doubly exponentially; the proof deliberately avoids the harder growth estimate.",
+      "The error term 1/(a_{n+1}-1) is itself the n-th tail of the series, so the closed form exhibits the fastest-possible greedy convergence of an Egyptian-fraction expansion of unity.",
+      "Bridging ℕ (where the sequence lives) and ℝ (where the series converges) is handled by casting the recurrence and proving the telescoping identity afresh over ℝ with field_simp / ring, mirroring the ℚ argument of the base entry."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "syl_tsum_reciprocal",
+      "statement": "∑' k, (1 : ℝ) / aₖ = 1",
+      "description": "The infinite series of reciprocals of Sylvester's sequence converges to exactly 1 — the limit the base entry states but leaves unproved."
+    },
+    {
+      "name": "syl_reciprocal_hasSum",
+      "statement": "HasSum (fun k => (1 : ℝ) / aₖ) 1",
+      "description": "The HasSum form: the reciprocal series is unconditionally summable with sum 1."
+    },
+    {
+      "name": "syl_summable",
+      "statement": "Summable (fun k => (1 : ℝ) / aₖ)",
+      "description": "Summability of the reciprocal series, from nonnegative terms with partial sums bounded above by 1."
+    },
+    {
+      "name": "syl_ge_add_two",
+      "statement": "n + 2 ≤ aₙ",
+      "description": "A linear lower bound on the sequence; enough to force a_{n+1}-1 → ∞ and hence the error term to 0."
+    },
+    {
+      "name": "syl_partial_tendsto_one",
+      "statement": "(fun n => ∑ k ∈ Finset.range (n+1), 1/aₖ) → 1",
+      "description": "The partial sums converge to 1, obtained from the real telescoping closed form and 1/(a_{n+1}-1) → 0."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "`import Mathlib`, the module docstring, and `namespace SylvesterSequenceOQ02` opening Filter and Topology. The docstring explains that this entry closes the gap left open by oq-01 (which proves the partial sum but only remarks on the limit), states the infinite-series targets, and notes the file is self-contained: the sequence and the few elementary facts about it are re-derived so the analytic capstone depends only on Mathlib.",
+      "mathContext": "$a_0=2,\\ a_{n+1}=a_n^2-a_n+1$; goal $\\sum_k 1/a_k = 1$."
+    },
+    {
+      "id": "sequence-basics",
+      "title": "The Sequence and Elementary Facts",
+      "startLine": 45,
+      "endLine": 76,
+      "summary": "Defines syl by structural recursion, exposes the base case and recurrence as rewrite lemmas, proves two_le_syl (every term ≥ 2), and lifts the recurrence to ℤ via syl_cast_succ to avoid ℕ's truncated subtraction — the supporting facts carried over from the base entry.",
+      "mathContext": "$a_n \\ge 2$; the $\\mathbb{Z}$-lift removes $\\mathbb{N}$ truncated subtraction."
+    },
+    {
+      "id": "growth-bound",
+      "title": "Linear Lower Bound",
+      "startLine": 47,
+      "endLine": 60,
+      "summary": "Proves syl_ge_add_two: n + 2 ≤ aₙ, by induction. Each step gains at least one because a_{n+1} = aₙ² - aₙ + 1 ≥ aₙ + 1 once aₙ ≥ 2. This crude linear bound is all the convergence argument requires.",
+      "mathContext": "$a_{n+1}-a_n=(a_n-1)^2\\ge 1 \\Rightarrow a_n \\ge n+2$."
+    },
+    {
+      "id": "telescoping-real",
+      "title": "Real Telescoping Identity and Partial Sums",
+      "startLine": 78,
+      "endLine": 101,
+      "summary": "Re-derives over ℝ the telescoping per-term identity syl_real_recip_term (1/aₙ = 1/(aₙ-1) - 1/(a_{n+1}-1)) and the closed-form partial sum syl_real_partial_sum (∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1)), via field_simp/ring and induction — the ℝ analogues of the base entry's ℚ lemmas.",
+      "mathContext": "$\\sum_{k\\le n} 1/a_k = 1 - 1/(a_{n+1}-1)$ over $\\mathbb{R}$."
+    },
+    {
+      "id": "convergence",
+      "title": "Error Term to Zero and Partial-Sum Limit",
+      "startLine": 103,
+      "endLine": 129,
+      "summary": "Proves syl_recip_pred_tendsto_zero (1/(a_{n+1}-1) → 0) by squeezing the positive error term below 1/(n+1) → 0 using the linear bound, then syl_partial_tendsto_one (the partial sums → 1) by subtracting the vanishing error from the constant 1.",
+      "mathContext": "$1/(a_{n+1}-1) \\le 1/(n+1) \\to 0 \\Rightarrow \\sum_{k\\le n} 1/a_k \\to 1$."
+    },
+    {
+      "id": "series-value",
+      "title": "Summability and the Infinite Sum",
+      "startLine": 131,
+      "endLine": 157,
+      "summary": "Establishes syl_summable (partial sums bounded by 1, summable_of_sum_range_le), then syl_tsum_reciprocal (∑' k, 1/aₖ = 1) by matching the tsum's defining limit — the range-(n+1) partial sums via HasSum.tendsto_sum_nat and a +1 shift — against syl_partial_tendsto_one with tendsto_nhds_unique. Concludes with the HasSum form syl_reciprocal_hasSum.",
+      "mathContext": "$\\sum' 1/a_k = 1$, and $\\mathrm{HasSum}\\ (1/a_\\bullet)\\ 1$."
+    }
+  ],
+  "references": [
+    {
+      "title": "Sylvester's sequence",
+      "url": "https://en.wikipedia.org/wiki/Sylvester%27s_sequence"
+    },
+    {
+      "title": "OEIS A000058 — Sylvester's sequence",
+      "url": "https://oeis.org/A000058"
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "sylvester-sequence-oq-01",
+      "relationship": "Promotes the base entry's partial sum to a convergent series",
+      "description": "The base entry proves the closed-form partial sum ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1) and lists 'promote the convergence to a formal Tendsto statement' as its first open question; this entry answers it, formalizing ∑' 1/aₖ = 1 and the HasSum statement."
+    },
+    {
+      "proofId": "harmonic-divergence",
+      "relationship": "Contrasting reciprocal-series behavior",
+      "description": "Where the harmonic series ∑ 1/n diverges, Sylvester's reciprocals ∑ 1/aₖ converge to exactly 1 — here proved as a genuine summable series — because the terms grow at least linearly faster (in fact doubly exponentially)."
+    },
+    {
+      "proofId": "basel-problem",
+      "relationship": "Another exact reciprocal-series evaluation",
+      "description": "Both pin down the exact value of a convergent series of reciprocals; here the sum equals the Egyptian-fraction unit 1, rather than the Basel value π²/6."
+    }
+  ],
+  "conclusion": {
+    "summary": "The reciprocals of Sylvester's sequence are shown to form a convergent series summing to exactly 1, both as ∑' k, 1/aₖ = 1 and as HasSum (fun k => 1/aₖ) 1, fully machine-checked with zero sorries and zero axioms. This promotes the base entry's exact partial-sum formula 1 - 1/(a_{n+1}-1) to a genuine statement about the infinite series, the analytic content that 'the reciprocals sum to 1' actually asserts.",
+    "implications": "The convergence rests on two cheap ingredients: nonnegative terms with partial sums bounded by 1 (giving summability), and the elementary linear bound aₙ ≥ n + 2 (giving the error term 1/(a_{n+1}-1) → 0). The value is then forced by uniqueness of limits. The proof illustrates the standard discipline for turning an exact finite identity into a series statement — bound the partial sums, identify the limit, and reconcile the abstract tsum with the explicit telescoping limit.",
+    "openQuestions": [
+      "Can the doubly-exponential convergence rate be made quantitative in Lean — e.g. an explicit bound |1 - ∑_{k≤n} 1/aₖ| ≤ 1/(a_{n+1}-1) with a₁ₙ growth estimate showing the tail shrinks faster than any geometric rate?",
+      "Does the same summable-with-bounded-partial-sums template formalize the reciprocal sums of other Euclid-style sequences (e.g. ∑ 1/(2^{2^n}+1) for Fermat numbers, or general Znám systems)?"
+    ]
+  }
+}

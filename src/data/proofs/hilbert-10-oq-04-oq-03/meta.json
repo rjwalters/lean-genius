@@ -125,8 +125,8 @@
     {
       "id": "oq-01",
       "question": "Can the decision procedure be made to also return an explicit solution witness (the extended-Euclidean cofactors) rather than only a yes/no answer?",
-      "status": "feasible",
-      "notes": "Mathlib's Int.gcdA / Int.gcdB give 2-variable cofactors; folding them across the coefficient list yields a constructive Bézout witness, turning the Decidable instance into a solution-producing algorithm (~100 lines)."
+      "status": "resolved",
+      "notes": "Resolved in hilbert-10-oq-04-oq-03-oq-01: Int.gcdA / Int.gcdB give the 2-variable cofactors (bezoutX / bezoutY, scaled by c/gcd), folded across the coefficient vector by recursion on n (exists_vec_combo) to build an explicit, computable solution — answered as anticipated."
     },
     {
       "id": "oq-02",
@@ -145,6 +145,11 @@
       "targetId": "hilbert-10",
       "relationship": "ancestor",
       "description": "The undecidability of general H10 (via MRDP). This entry establishes the opposite, decidable, edge: degree-1 equations are decidable in every number of variables."
+    },
+    {
+      "targetId": "hilbert-10-oq-04-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers open question oq-01: upgrades this non-constructive decision procedure into a constructive Bézout solver that returns an explicit, computable witness via Int.gcdA / Int.gcdB."
     }
   ],
   "conclusion": {

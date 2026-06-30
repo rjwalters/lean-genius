@@ -67,7 +67,7 @@
     "axiomCount": 1,
     "lineCount": 439,
     "assumptions": "Relies on `Lean.ofReduceBool`: the concrete prime-factor-count deliverables (bigOmega_eight/twelve/eighteen/twenty/twentyfour/twentyseven/zero = Ω(8),Ω(12),Ω(18),Ω(20),Ω(24),Ω(27),Ω(0); k2_fails_small; k2_verified_range; example_interval_100; twelve_is_3smooth) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so depends on the `Lean.ofReduceBool` axiom rather than being fully kernel-checked. The remaining theorems are axiom-free. `leanFile.axiomCount` stays 0 since there are no literal `axiom` declarations; `meta.axiomCount` is 1 to disclose `Lean.ofReduceBool`.",
-    "theoremCount": 30,
+    "theoremCount": 35,
     "definitionCount": 11
   },
   "overview": {
@@ -212,7 +212,7 @@
     "namespace": "Erdos891",
     "lineCount": 439,
     "axiomCount": 0,
-    "theoremCount": 30,
+    "theoremCount": 35,
     "definitionCount": 11,
     "path": "Proofs/Erdos891Problem.lean",
     "sorries": 0

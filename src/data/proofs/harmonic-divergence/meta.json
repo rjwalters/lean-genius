@@ -186,6 +186,21 @@
       "targetId": "stirling-formula",
       "relationship": "related",
       "description": "Both $H_n = \\ln n + \\gamma + O(1/n)$ and $\\ln(n!) = n\\ln n - n + O(\\ln n)$ are logarithmic estimates proved by Euler-Maclaurin summation"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-01",
+      "relationship": "extended-by",
+      "description": "Studies the constant $\\gamma \\approx 0.5772$ measuring the gap $H_n - \\ln n$: convergence and monotonicity of the defining sequences, Theisinger's theorem that $H_n \\notin \\mathbb{Z}$ for $n \\ge 2$, and conditional irrationality consequences for the Euler-Mascheroni constant"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-02",
+      "relationship": "extended-by",
+      "description": "Sharpens the boundary of divergence: $\\sum 1/(n\\ln n)$ still diverges while $\\sum 1/(n(\\ln n)^2)$ converges, both decided by Cauchy condensation, which rescales the harmonic series and the Basel $p$-series respectively"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-04",
+      "relationship": "extended-by",
+      "description": "Abstracts Oresme's 14th-century grouping argument into the Cauchy condensation test, which fully characterizes convergence of monotone decreasing nonnegative series — the harmonic divergence is the prototypical instance"
     }
   ],
   "leanFile": {

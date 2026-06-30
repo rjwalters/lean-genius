@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-mft-oq01oq01-scope",
+    "proofId": "minkowski-fundamental-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 60
+    },
+    "type": "insight",
+    "title": "From Order Chain to Product Bracketing — Honest Scope",
+    "content": "The parent (minkowski-fundamental-theorem-oq-01) built the successive-minima framework and proved the order chain λ₀ ≤ λ₁ ≤ ⋯ ≤ λₙ₋₁, but left the second theorem's product bound λ₁⋯λₙ·vol(S) ≤ 2ⁿ·covolume(L) as an open Prop scaffold. This file turns the order chain into a quantitative statement about that product: the bracketing λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ. It stays honest: the bracketing and its single-minimum consequences are fully proved (0 axioms, 0 sorries), while the product bound itself is still only granted as a hypothesis — its proof remains the open analytic core.",
+    "mathContext": "Minkowski's second theorem: (2ⁿ/n!)·covol(L) ≤ λ₁⋯λₙ·vol(S) ≤ 2ⁿ·covol(L). The bracket squeezes the product ∏ᵢ λᵢ between λ₀ⁿ and λₙ₋₁ⁿ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "successive minima",
+      "Minkowski's second theorem",
+      "geometry of numbers"
+    ]
+  },
+  {
+    "id": "ann-mft-oq01oq01-attainment",
+    "proofId": "minkowski-fundamental-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 109
+    },
+    "type": "technique",
+    "title": "Attainment Only at the Top Index Propagates Everywhere",
+    "content": "The admissible-scaling sets are antitone in the index — a larger index demands more independent lattice points, so its set of admissible scalings is smaller (parent's `admissibleScalings_subset`). Hence the set for the *top* index n-1 is the smallest of all. Assuming just that one set is nonempty (`admissibleScalings_nonempty`), `Set.Nonempty.mono` propagates nonemptiness to every index, which discharges the nonemptiness hypothesis of the parent's monotonicity lemma and yields the full chain λ₀ ≤ λᵢ ≤ λₙ₋₁ in `firstMinimum_le` and `le_lastMinimum`.",
+    "mathContext": "Antitone family of sets S(n-1) ⊆ ⋯ ⊆ S(0); nonempty smallest ⟹ all nonempty. The attainment hypothesis is the geometric statement that the body, scaled enough, captures n independent lattice points.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "antitone families",
+      "infimum monotonicity",
+      "attainment of minima"
+    ]
+  },
+  {
+    "id": "ann-mft-oq01oq01-bracket",
+    "proofId": "minkowski-fundamental-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 110,
+      "endLine": 150
+    },
+    "type": "insight",
+    "title": "The Bracketing λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ",
+    "content": "With every factor of the product lying between λ₀ and λₙ₋₁ and all factors nonnegative, termwise comparison (`Finset.prod_le_prod`) against the constant products gives the bracket. The constant power λᵏⁿ is recognised as a product of n copies of λᵏ over `Fin n` (`Finset.prod_const`, `Finset.card_univ`, `Fintype.card_fin`). Stated in n-th power form rather than with geometric means, the bracket says exactly that the geometric mean of the successive minima lies between the smallest and the largest minimum — avoiding real n-th roots while capturing the same content.",
+    "mathContext": "For 0 ≤ λ₀ ≤ f i ≤ λₙ₋₁: ∏ᵢ λ₀ ≤ ∏ᵢ f i ≤ ∏ᵢ λₙ₋₁, i.e. λ₀ⁿ ≤ ∏ᵢ λᵢ ≤ λₙ₋₁ⁿ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "AM–GM style bracketing",
+      "monotone products",
+      "geometric mean"
+    ]
+  },
+  {
+    "id": "ann-mft-oq01oq01-collapse",
+    "proofId": "minkowski-fundamental-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 151,
+      "endLine": 195
+    },
+    "type": "insight",
+    "title": "Collapsing the Two-Sided Bound to Single Minima",
+    "content": "The payoff of the bracket: once the (open) product bound is granted, each side of Minkowski's second theorem reduces to a statement about a single extreme minimum. Multiplying the lower bracket λ₀ⁿ ≤ ∏ᵢ λᵢ by the positive volume and chaining with the upper bound gives λ₀ⁿ·vol(S) ≤ 2ⁿ·covolume(L) — a volume-quantitative sharpening of the parent's first-minimum bound λ₀ ≤ 1 (the first theorem). Symmetrically, the upper bracket and the lower product bound give (2ⁿ/n!)·covolume(L) ≤ λₙ₋₁ⁿ·vol(S). This cleanly separates the order-theoretic content (proved here) from the analytic core (the product bound, still open).",
+    "mathContext": "λ₀ⁿ·vol ≤ (∏ᵢ λᵢ)·vol ≤ 2ⁿ·covol and (2ⁿ/n!)·covol ≤ (∏ᵢ λᵢ)·vol ≤ λₙ₋₁ⁿ·vol, using vol(S) > 0 (HasVolume.volume_pos).",
+    "significance": "key",
+    "relatedConcepts": [
+      "single-minimum bounds",
+      "first theorem as i=0 case",
+      "transference"
+    ]
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "erdos-564-incomplete-01",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "Erdős #564 and the meaning of 'tower height'",
+    "content": "Erdős Problem #564 ($500, OPEN) concerns the 3-uniform hypergraph Ramsey number R₃(n). Erdős–Hajnal–Rado (1965) proved 2^{cn²} < R₃(n) < 2^{2^n} — a singly-exponential lower bound and a doubly-exponential upper bound, a gap of one full 'tower level'. The conjecture asks whether the lower bound can be raised to 2^{2^{cn}}, i.e. whether R₃ reaches tower height 2 from below. The parent file axiomatizes R and the bounds and defines tower(k,n) = 2↑↑k but proves no growth theory, so 'tower height' is only notation. This file supplies the verified, 0-axiom growth theory that makes the comparison rigorous; it does NOT touch the open conjecture or import the parent's axioms.",
+    "mathContext": "$2^{cn^2} < R_3(n) < 2^{2^n}$; conjecture: $R_3(n) \\ge 2^{2^{cn}}$ (tower height $2$).",
+    "significance": "context",
+    "relatedConcepts": ["Ramsey theory", "hypergraph Ramsey number", "tower function", "Knuth up-arrow", "Erdős problems"],
+    "prerequisites": ["combinatorics", "Ramsey theory", "iterated exponentials"]
+  },
+  {
+    "id": "ann-tower-succ",
+    "proofId": "erdos-564-incomplete-01",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "The tower recursion as a rewrite lemma",
+    "content": "tower_succ records the defining recursion tower (k+1) n = 2 ^ tower k n by rfl — definitional unfolding. Recording it as a named rewrite lemma is what lets every subsequent growth proof reduce one tower level to a single base-2 exponentiation, turning facts about iterated exponentials into facts about a single 2^(·).",
+    "mathContext": "$\\text{tower}(k+1, n) = 2^{\\text{tower}(k,n)}$",
+    "significance": "supporting",
+    "relatedConcepts": ["recursion", "definitional equality", "rewrite lemma"],
+    "prerequisites": ["recursive definitions", "Lean rfl"]
+  },
+  {
+    "id": "ann-height-growth",
+    "proofId": "erdos-564-incomplete-01",
+    "range": { "startLine": 45, "endLine": 63 },
+    "type": "insight",
+    "title": "Growth in height: each level strictly increases the tower",
+    "content": "tower_lt_succ_height proves tower k n < tower (k+1) n by rewriting the successor to 2 ^ tower k n and applying the elementary m < 2^m (Nat.lt_two_pow_self). Crucially this holds even at m = 0 (0 < 1), so no positivity hypothesis on the base n is needed — a clean strengthening over the parent's positivity-gated lemma. strictMono_nat_of_lt_succ then lifts the consecutive inequality to full strict monotonicity of k ↦ tower k n, and self_le_tower follows by applying that monotonicity to 0 ≤ k with tower 0 n = n.",
+    "mathContext": "$m < 2^m \\Rightarrow \\text{tower}(k,n) < \\text{tower}(k+1,n)$; hence $n = \\text{tower}(0,n) \\le \\text{tower}(k,n)$.",
+    "significance": "key",
+    "relatedConcepts": ["strict monotonicity", "m < 2^m", "strictMono_nat_of_lt_succ", "Nat.lt_two_pow_self"],
+    "prerequisites": ["monotone functions", "natural number induction"]
+  },
+  {
+    "id": "ann-base-growth",
+    "proofId": "erdos-564-incomplete-01",
+    "range": { "startLine": 65, "endLine": 79 },
+    "type": "technique",
+    "title": "Growth in base: strict monotonicity by induction on height",
+    "content": "tower_strictMono_base proves n ↦ tower k n is strictly monotone for each fixed height k, by induction on k. The base case (k = 0) is the identity tower 0 n = n. The successor step assumes the inductive strict inequality ih h : tower k a < tower k b and composes it with the strict monotonicity of base-2 exponentiation (Nat.pow_lt_pow_right) to get 2 ^ tower k a < 2 ^ tower k b = tower (k+1) ·. Together with height-monotonicity, the tower grows strictly in BOTH arguments. tower_mono_base is the non-strict corollary.",
+    "mathContext": "$a < b \\Rightarrow \\text{tower}(k,a) < \\text{tower}(k,b)$, by induction on $k$ via strict monotonicity of $2^{(\\cdot)}$.",
+    "significance": "key",
+    "relatedConcepts": ["strict monotonicity", "induction", "Nat.pow_lt_pow_right", "monotonicity in two arguments"],
+    "prerequisites": ["mathematical induction", "monotone functions"]
+  },
+  {
+    "id": "ann-crux",
+    "proofId": "erdos-564-incomplete-01",
+    "range": { "startLine": 81, "endLine": 97 },
+    "type": "insight",
+    "title": "The crux: tower height 1 is strictly below tower height 2",
+    "content": "This is the formal heart of Erdős #564. The known singly-exponential lower bound has tower height 1 (tower 1 n = 2^n); the conjectured doubly-exponential lower bound has tower height 2 (tower 2 n = 2^{2^n}, via tower_two_eq). tower_one_lt_tower_two shows 2^n < 2^{2^n} for every n, by applying strict monotonicity of 2^(·) to the elementary n < 2^n. This makes precise the statement 'the EHR lower bound is one full tower level below the upper bound' — the exact gap the open conjecture asks to close.",
+    "mathContext": "$\\text{tower}(1,n) = 2^n < 2^{2^n} = \\text{tower}(2,n)$, since $n < 2^n$.",
+    "significance": "key",
+    "relatedConcepts": ["singly vs doubly exponential", "tower height gap", "Erdős #564 conjecture", "Nat.pow_lt_pow_right"],
+    "prerequisites": ["exponential growth", "monotonicity"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "erdos-564-incomplete-01",
+    "range": { "startLine": 99, "endLine": 108 },
+    "type": "technique",
+    "title": "Concrete sanity checks via decide",
+    "content": "Three concrete evaluations anchor the definitions: tower 2 3 = 2^{2^3} = 2^8 = 256 and tower 3 1 = 2^{2^{2^1}} = 2^4 = 16, both discharged by kernel `decide` (note: not native_decide, so no Lean.ofReduceBool dependency). The third, 5 ≤ tower 4 5, instantiates self_le_tower, demonstrating the base lower bound at a height where the tower value is astronomically large.",
+    "mathContext": "$\\text{tower}(2,3)=2^{8}=256,\\ \\text{tower}(3,1)=2^{4}=16,\\ 5 \\le \\text{tower}(4,5)$",
+    "significance": "supporting",
+    "relatedConcepts": ["decidability", "kernel decide", "concrete evaluation"],
+    "prerequisites": ["Lean tactics", "natural number arithmetic"]
+  }
+]

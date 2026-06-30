@@ -7,7 +7,7 @@
     "title": "Erdős–Mordell: Statement, History, and Proof Architecture",
     "content": "Paul Erdős posed this inequality as Problem 3740 in the American Mathematical Monthly in 1935; Mordell and Barrow supplied the first proof in 1937. For a point P interior to triangle ABC, the sum of distances to the vertices is at least twice the sum of distances to the sides — PA + PB + PC ≥ 2(da + db + dc) — with equality exactly when ABC is equilateral and P is its center. The formalization deliberately factors the classical argument into two independent pieces: a purely algebraic AM–GM reduction (proved here, geometry-free) and three geometric 'key inequalities' a·PA ≥ b·dc + c·db (and cyclic) that carry all the planar-geometry content. This separation lets the reusable algebraic heart be verified completely while isolating the single hard step. The result is not yet in Mathlib.",
     "mathContext": "$PA + PB + PC \\ge 2(d_a + d_b + d_c)$, equality iff $ABC$ equilateral and $P$ its center.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Erdős–Mordell inequality",
       "pedal distances",

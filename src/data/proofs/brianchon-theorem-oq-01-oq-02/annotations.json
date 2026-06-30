@@ -1,0 +1,86 @@
+[
+  {
+    "id": "brianchon-oq0102-model",
+    "proofId": "brianchon-theorem-oq-01-oq-02",
+    "range": { "startLine": 66, "endLine": 105 },
+    "type": "definition",
+    "title": "The Self-Dual ℝ³ Projective Model",
+    "content": "Points (ProjPoint) and lines (ProjLine) are both Fin 3 → ℝ; lineThrough and lineIntersection are both the cross product (join of two points = meet of two lines in the self-dual model). collinear (of three points) and concurrent (of three lines) are the SAME predicate — vanishing of the 3×3 determinant threeVectorMatrix. This self-duality is what lets one scalar identity carry the Pascal⟺Brianchon correspondence. The geometry is re-ported from the parent so the file imports no Pascal axiom and stays axiom-free.",
+    "mathContext": "$\\mathrm{collinear}(p,q,r) :\\Leftrightarrow \\det[p\\,|\\,q\\,|\\,r] = 0$, identical in form to $\\mathrm{concurrent}(\\ell,m,n)$; join/meet are both $u \\times v$.",
+    "significance": "supporting",
+    "relatedConcepts": ["homogeneous coordinates", "projective duality", "cross product as join/meet", "vanishing determinant as incidence"],
+    "prerequisites": ["projective plane over ℝ", "the cross product in ℝ³"]
+  },
+  {
+    "id": "brianchon-oq0102-identities",
+    "proofId": "brianchon-theorem-oq-01-oq-02",
+    "range": { "startLine": 107, "endLine": 137 },
+    "type": "technique",
+    "title": "The Two Driving Polynomial Identities",
+    "content": "crossProduct_mulMatrix is the cofactor / Binet–Cauchy identity relating the cross product of mapped vectors to the adjugate; det_threeVectorMatrix_mulMatrix says applying a fixed matrix M to all three rows scales the triple determinant by det M: det(Mu, Mv, Mw) = det M · det(u, v, w). The latter is exactly the transport lemma that injects the (det C)^4 factor into the scalar identity once M = det C • C.",
+    "mathContext": "$\\det(Mu, Mv, Mw) = \\det M \\cdot \\det(u,v,w)$ — the determinant-transport identity; with $M = \\det C\\cdot C$ it produces the $(\\det C)^4$ factor.",
+    "significance": "key",
+    "relatedConcepts": ["Binet–Cauchy identity", "adjugate / cofactor matrix", "multiplicativity of determinant", "determinant transport"],
+    "prerequisites": ["cross product and adjugate", "det of a matrix product"]
+  },
+  {
+    "id": "brianchon-oq0102-dual",
+    "proofId": "brianchon-theorem-oq-01-oq-02",
+    "range": { "startLine": 138, "endLine": 180 },
+    "type": "theorem",
+    "title": "Symmetry Collapses the Double Polarity to det C • C; the diag_eq Reduction",
+    "content": "For a symmetric conic, transpose_of_symmetric and adjugate_symmetric let dual_matrix_eq collapse the iterated cofactor map (adjugate of adjugate) to det C • C via Matrix.adjugate_adjugate (adjugate² A = (det A)^(n-2) • A, here n = 3). diag_eq, ported from the parent, then states the key geometric reduction: each Brianchon diagonal is the single linear image (det C • C) applied to the corresponding Pascal point. This is the bridge between the diagonal determinant and the Pascal-point determinant.",
+    "mathContext": "$\\mathrm{adj}(\\mathrm{adj}\\,C) = (\\det C)^{n-2}\\,C = \\det C\\cdot C$ for $n = 3$; each diagonal $= (\\det C\\cdot C)\\,\\cdot\\,(\\text{Pascal point})$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.adjugate_adjugate", "pole–polar duality", "self-polarity of a symmetric conic", "circumscribed hexagon"],
+    "prerequisites": ["adjugate identities", "symmetric matrices", "the pole–polar map of a conic"]
+  },
+  {
+    "id": "brianchon-oq0102-scalar",
+    "proofId": "brianchon-theorem-oq-01-oq-02",
+    "range": { "startLine": 182, "endLine": 209 },
+    "type": "insight",
+    "title": "The Crux: det(diagonals) = (det C)^4 · det(Pascal points)",
+    "content": "brianchon_concurrency_det_eq is the exact scalar identity from which everything else drops out. Substituting diag_eq (each diagonal = (det C • C) applied to a Pascal point) into det_threeVectorMatrix_mulMatrix gives det(diagonals) = det(det C • C) · det(Pascal points), and Matrix.det_smul on a 3×3 matrix evaluates det(det C • C) = (det C)^(card Fin 3) · det C = (det C)^4. The fourth power records that the polarity is applied twice (point map then line map).",
+    "mathContext": "$\\det(\\mathrm{diag}_1,\\mathrm{diag}_2,\\mathrm{diag}_3) = (\\det C)^4 \\cdot \\det(p_1,p_2,p_3)$; the exponent $4 = 3 + 1$ from $\\det(c\\bullet C) = c^3\\det C$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.det_smul", "(det C)^4 factor", "scalar-identity technique", "Fintype.card (Fin 3) = 3"],
+    "prerequisites": ["the transport and reduction lemmas above", "det (c • A) = c^n det A"]
+  },
+  {
+    "id": "brianchon-oq0102-bridges",
+    "proofId": "brianchon-theorem-oq-01-oq-02",
+    "range": { "startLine": 211, "endLine": 264 },
+    "type": "theorem",
+    "title": "Forward and Converse Bridges from One Identity",
+    "content": "concurrent_brianchon_of_collinear_pascal (forward) needs no nondegeneracy: if det(Pascal points) = 0 then det(diagonals) = (det C)^4 · 0 = 0. The converse collinear_pascal_of_concurrent_brianchon is the new content: when det C ≠ 0, det_smul_self_ne_zero gives (det C)^4 ≠ 0, so det(diagonals) = 0 forces det(Pascal points) = 0 by dividing out the nonzero factor. The forward direction multiplies by (det C)^4; the converse divides by it — the converse is exactly the invertibility statement det C ≠ 0.",
+    "mathContext": "Forward: $\\det(\\text{Pascal}) = 0 \\Rightarrow \\det(\\text{diag}) = 0$. Converse ($\\det C \\ne 0$): $\\det(\\text{diag}) = 0 \\Rightarrow \\det(\\text{Pascal}) = 0$, since $(\\det C)^4 \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": ["nondegenerate conic", "invertibility = det ≠ 0", "Pascal ⟹ Brianchon and converse", "duality bridge"],
+    "prerequisites": ["the scalar identity", "an integral domain has no zero divisors"]
+  },
+  {
+    "id": "brianchon-oq0102-equivalence",
+    "proofId": "brianchon-theorem-oq-01-oq-02",
+    "range": { "startLine": 266, "endLine": 284 },
+    "type": "theorem",
+    "title": "The Full Equivalence",
+    "content": "pascal_collinear_iff_brianchon_concurrent packages the forward and converse bridges into a single iff: for a nondegenerate symmetric conic (det C ≠ 0), Pascal collinearity ⟺ Brianchon concurrency. This is the complete, machine-checked Pascal–Brianchon correspondence at the level of the determinant condition — the formal expression of the classical projective duality between the two hexagon theorems.",
+    "mathContext": "$\\det C \\ne 0 \\Rightarrow \\big(\\mathrm{collinear}(\\text{Pascal points}) \\iff \\mathrm{concurrent}(\\text{Brianchon diagonals})\\big)$.",
+    "significance": "key",
+    "relatedConcepts": ["Pascal–Brianchon duality", "if-and-only-if packaging", "incidence theorem equivalence"],
+    "prerequisites": ["both bridges above", "the nondegeneracy hypothesis"]
+  },
+  {
+    "id": "brianchon-oq0102-necessity",
+    "proofId": "brianchon-theorem-oq-01-oq-02",
+    "range": { "startLine": 286, "endLine": 323 },
+    "type": "concept",
+    "title": "Necessity of Nondegeneracy: the Zero-Conic Witness",
+    "content": "zero_conic_diag_eq_zero shows that under the degenerate (zero) conic every tangent line, and hence every diagonal, is the zero covector; zero_conic_concurrent then concludes Brianchon concurrency holds for ARBITRARY contact points. Since those points' Pascal determinant is generically nonzero, the converse fails without det C ≠ 0 — the nondegeneracy hypothesis is genuinely necessary, not a technical convenience.",
+    "mathContext": "For $C = 0$: all diagonals are the zero covector, so $\\det(\\text{diag}) = 0$ vacuously, while $\\det(\\text{Pascal})$ may be $\\ne 0$ — a counterexample to an unconditional converse.",
+    "significance": "supporting",
+    "relatedConcepts": ["degenerate conic", "necessity of a hypothesis", "counterexample witness", "vacuous concurrency"],
+    "prerequisites": ["the converse bridge", "the zero conic and its tangent lines"]
+  }
+]

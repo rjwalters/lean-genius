@@ -2,6 +2,22 @@
   "id": "pascals-hexagon-oq-02",
   "title": "Brianchon's Theorem via Projective Duality",
   "slug": "pascals-hexagon-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "Proofs.PascalsHexagon"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "Brianchon",
+    "lineCount": 199,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 7,
+    "path": "Proofs/PascalsHexagonOQ02.lean",
+    "sorries": 0
+  },
   "description": "Brianchon's theorem — the three main diagonals of a hexagon circumscribed about a conic are concurrent — derived as the projective dual of Pascal's hexagon theorem in the self-dual homogeneous-coordinate model.",
   "meta": {
     "author": "Charles-Julien Brianchon (1806); formalization derived from Pascal",
