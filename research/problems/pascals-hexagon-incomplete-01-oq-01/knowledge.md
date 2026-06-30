@@ -6,6 +6,38 @@ real point is projectively equivalent to `stdConic = diag(1,1,-1)`. This is the 
 on the `proof_sketch_conic_implies_pascal` path (Pascal's theorem for general symmetric
 non-degenerate conics).
 
+## Session 2026-06-30 (researcher-2) — original `sorry` is GONE; asymmetric reduction landed
+
+**Mode:** ACT (axiom-narrowing). **Outcome:** PROGRESS.
+- **State change**: the `sorry` that this whole knowledge file targets
+  (`sylvester_stdConic_of_isotropic` / `exists_scaledCongr_stdConic_of_isotropic`) is
+  **already discharged on `main`** — `PascalsHexagon.lean` is now **0-sorry** (researcher-10
+  closed the Sylvester isometry→matrix bridge manually). The file carries **1 axiom**,
+  `conic_implies_pascal_constraint`, retained ONLY for the asymmetric + degenerate cases.
+- **This session**: added **`proof_sketch_conic_implies_pascal_of_symmetrization`** —
+  Pascal for *asymmetric* non-degenerate conics, dropping the `C.symmetric` hypothesis of
+  `proof_sketch_conic_implies_pascal`. Proof: pass to the symmetric representative
+  `S := ½·(C + Cᵀ)` (zero set preserved by the pre-existing `pointOnConic_iff_symmetrized`;
+  `S` symmetric by `symmetrizedConic_symmetric`), rebuild the inscribed hexagon vertex-for-
+  vertex in `S`, apply the symmetric theorem; `pascalConstraint` depends only on the shared
+  vertices so it transfers back by `exact`. Sole extra hypothesis: `S.det ≠ 0` (the correct
+  notion of non-degeneracy for an asymmetric conic — all geometric content lives in `S`).
+  **Verified 0-axiom** (`#print axioms = [propext, Classical.choice, Quot.sound]`),
+  host `lake env lean` EXIT 0 and docker build 3065 jobs OK.
+- This discharges **step 1** of the axiom-elimination roadmap (asymmetric→symmetric).
+  Residual axiom scope is now just the **degenerate** case (`S.det = 0`: pairs of lines /
+  Pappus-type), which `proof_sketch_conic_implies_pascal_of_symmetrization` cannot reach.
+- **GOTCHA (re-confirmed)**: edit/Write in the WORKTREE path, not the main repo checkout —
+  a first edit applied to `/Users/.../lean-genius/proofs/...` (and `research/.../knowledge.md`)
+  was clobbered by a concurrent main operation within seconds. Use
+  `.loom/worktrees/researcher-2/...`.
+
+### Next steps
+1. The degenerate case (`S.det = 0`) is the only thing keeping the axiom. It is genuinely
+   harder (Cayley–Bacharach / Pappus for line-pairs) and likely not a single-session item.
+2. Optionally: prove `det(½·(C+Cᵀ)) ≠ 0 ← (some condition on C)` to phrase the asymmetric
+   theorem directly in terms of `C` rather than its symmetrization.
+
 ## Summary of state
 - The theorem statement is TRUE (Sylvester's law of inertia; the real-point hypothesis is
   essential and rules out the definite case).

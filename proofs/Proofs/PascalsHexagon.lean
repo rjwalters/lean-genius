@@ -1675,6 +1675,38 @@ theorem proof_sketch_conic_implies_pascal (C : Conic)
   -- Step F: Pull back via projective invariance
   exact (pascalConstraint_projTransform M hM_det hex.A hex.B hex.C' hex.D hex.E hex.F).mp hStd
 
+/-- **Pascal for asymmetric conics, via symmetrization (0-sorry).**
+
+    Strengthens `proof_sketch_conic_implies_pascal` by *dropping the `C.symmetric`
+    hypothesis*. Every conic `C` shares its zero set with its symmetrization
+    `S := ½·(C + Cᵀ)` (`pointOnConic_iff_symmetrized`), which is genuinely symmetric
+    (`symmetrizedConic_symmetric`). Thus an inscribed hexagon in `C` is, vertex for vertex,
+    an inscribed hexagon in `S`, and `pascalConstraint` depends only on those vertices —
+    so it transfers back verbatim. The sole extra hypothesis is that the symmetrization
+    remains non-degenerate (`S.det ≠ 0`); this is the natural notion of non-degeneracy for
+    a possibly-asymmetric conic, since the conic's entire geometric content lives in `S`.
+
+    This discharges **step 1** of the roadmap to eliminating the
+    `conic_implies_pascal_constraint` axiom (the asymmetric reduction), narrowing the
+    axiom's residual scope to the genuinely *degenerate* case (`S.det = 0`, pairs of
+    lines / Pappus). -/
+theorem proof_sketch_conic_implies_pascal_of_symmetrization
+    (C : Conic) (hS_nd : Conic.nondegenerate ((1 / 2 : ℝ) • (C + Cᵀ)))
+    (hex : InscribedHexagon C) :
+    pascalConstraint hex.A hex.B hex.C' hex.D hex.E hex.F := by
+  -- Re-view the same six vertices as inscribed in the symmetric representative `S`.
+  have conv : ∀ p, pointOnConic p C → pointOnConic p ((1 / 2 : ℝ) • (C + Cᵀ)) :=
+    fun p hp => (pointOnConic_iff_symmetrized C p).mp hp
+  let hexS : InscribedHexagon ((1 / 2 : ℝ) • (C + Cᵀ)) :=
+    { A := hex.A, B := hex.B, C' := hex.C', D := hex.D, E := hex.E, F := hex.F,
+      hA := conv _ hex.hA, hB := conv _ hex.hB, hC := conv _ hex.hC,
+      hD := conv _ hex.hD, hE := conv _ hex.hE, hF := conv _ hex.hF,
+      hAvalid := hex.hAvalid, hBvalid := hex.hBvalid, hCvalid := hex.hCvalid,
+      hDvalid := hex.hDvalid, hEvalid := hex.hEvalid, hFvalid := hex.hFvalid }
+  -- Pascal holds for `S` (symmetric + non-degenerate); the vertices coincide with `hex`'s.
+  exact proof_sketch_conic_implies_pascal _ (symmetrizedConic_symmetric C) hS_nd hexS
+
 #check @pascal_std_conic
 #check @pascal_std_conic_normalized
 #check @proof_sketch_conic_implies_pascal
+#check @proof_sketch_conic_implies_pascal_of_symmetrization
