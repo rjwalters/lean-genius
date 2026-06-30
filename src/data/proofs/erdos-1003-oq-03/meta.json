@@ -2,7 +2,7 @@
   "id": "erdos-1003-oq-03",
   "title": "The Density Layer of Erdős #1003: What an Answer to \"True Asymptotic Density\" Must Supply",
   "slug": "erdos-1003-oq-03",
-  "description": "Open question OQ-03 of Erdős #1003 asks for the true asymptotic density of the solution set {n | φ(n) = φ(n+1)}. The question is open: the set is conjectured infinite (#1003 itself, unproven even in the base case) and its density is conjectured to be 0 (the Erdős–Pomerance–Sárközy sparsity bound gives #{n ≤ x : φ(n)=φ(n+1)} ≤ x/exp((log x)^{1/3}) eventually). This entry formalizes the honest structural layer of the density question: it introduces the counting function and the natural-density predicate and proves the exact logical relationships that pin down what an eventual answer must supply. Three results carry the content: (1) the solution set is infinite iff the counting function is unbounded — the bridge between OQ-03's density view and the main conjecture's infinitude view; (2) any positive natural density would resolve #1003 affirmatively, so positivity cannot be exhibited without first settling the open infinitude conjecture; (3) finiteness forces density 0, so the conjectured answer (density 0) is exactly the value forced by finiteness and therefore carries strictly less information than infinitude. Verified, zero axioms, no native_decide.",
+  "description": "Open question OQ-03 of Erdős #1003 asks for the true asymptotic density of the solution set {n | φ(n) = φ(n+1)}. The question is open: the set is conjectured infinite (#1003 itself, unproven even in the base case) and its density is conjectured to be 0 (the Erdős–Pomerance–Sárközy sparsity bound gives #{n ≤ x : φ(n)=φ(n+1)} ≤ x/exp((log x)^{1/3}) eventually). This entry formalizes the honest structural layer of the density question: it introduces the counting function and the natural-density predicate and proves the exact logical relationships that pin down what an eventual answer must supply. Three results carry the content: (1) the solution set is infinite iff the counting function is unbounded — the bridge between OQ-03's density view and the main conjecture's infinitude view; (2) any positive natural density would resolve #1003 affirmatively, so positivity cannot be exhibited without first settling the open infinitude conjecture; (3) finiteness forces density 0, so the conjectured answer (density 0) is exactly the value forced by finiteness and therefore carries strictly less information than infinitude. A further admissibility layer pins the shape of any answer: the density, when it exists, is unique and lies in [0,1], and a positive value is equivalent to the counting function being unbounded (the open infinitude). Verified, zero axioms, no native_decide.",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "date": "2026",
@@ -20,8 +20,8 @@
     "badge": "verified",
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 177,
-    "theoremCount": 8,
+    "lineCount": 229,
+    "theoremCount": 14,
     "definitionCount": 3,
     "dateAdded": "2026-06-28",
     "assumptions": "0 sorries, 0 axioms (only propext / Classical.choice / Quot.sound, the foundational Lean axioms). Fully machine-verified; no native_decide. Does NOT resolve the open question — it formalizes the logical scaffolding of the density question and its exact relationship to the (open) infinitude conjecture.",
@@ -30,7 +30,11 @@
       "infinite_of_pos_density: a positive natural density resolves #1003. If HasNaturalDensity d with d > 0, then the set is infinite. Proof: a finite set has density 0 (next item), so uniqueness of limits would force d = 0, a contradiction. Hence one cannot demonstrate any positive density without first proving the open infinitude conjecture — locating the difficulty of OQ-03 precisely.",
       "hasNaturalDensity_zero_of_finite: finiteness forces density 0. If the solution set is finite, countConsecutiveEqual N is uniformly bounded by its total cardinality C, so the ratio count/(N+1) is squeezed between 0 and C/(N+1) → 0. Consequence: the conjectured answer (density 0) is exactly the value any finite solution set would have, so 'density 0' alone is strictly weaker information than the infinitude conjecture.",
       "countConsecutiveEqual_monotone and countConsecutiveEqual_le: the counting function is monotone and bounded by N+1, and density_ratio_nonneg / density_ratio_le_one confine the density ratio to [0,1] — the elementary well-definedness facts underpinning the density predicate.",
-      "mem_filter_iff: the counted finset over Finset.range (N+1) is exactly the set of solutions ≤ N, the bookkeeping lemma threading the membership ↔ (is-a-solution ∧ ≤ N) correspondence through every proof."
+      "mem_filter_iff: the counted finset over Finset.range (N+1) is exactly the set of solutions ≤ N, the bookkeeping lemma threading the membership ↔ (is-a-solution ∧ ≤ N) correspondence through every proof.",
+      "hasNaturalDensity_unique: the natural density, when it exists, is unique (limits in ℝ are unique; atTop is NeBot). So OQ-03 asks for a well-defined real number, not merely some limit point of the ratios.",
+      "hasNaturalDensity_nonneg / hasNaturalDensity_le_one / hasNaturalDensity_mem_Icc: any natural density lies in [0,1] — the density ratio is confined to [0,1] (density_ratio_nonneg / density_ratio_le_one), so its limit is, via ge_of_tendsto' / le_of_tendsto'. An admissible answer to OQ-03 must be a unit-interval real.",
+      "pos_density_count_unbounded: a positive density makes the counting function unbounded — threading the density view back to the counting/infinitude view by composing infinite_of_pos_density with infinite_iff_count_unbounded. Contrapositively, while #1003's infinitude is open, no positive density can be exhibited (the counting-function sharpening of infinite_of_pos_density).",
+      "oq03_answer_constraints: bundled summary — any answer d is unique, lies in [0,1], and is positive only if the counting function is unbounded (i.e. the solution set is infinite, the open #1003)."
     ],
     "mathlibDependencies": [
       {
@@ -50,8 +54,13 @@
       },
       {
         "theorem": "tendsto_nhds_unique",
-        "description": "Limits in a Hausdorff space are unique. Turns 'finite ⇒ density 0' into 'positive density ⇒ infinite' by contradiction.",
+        "description": "Limits in a Hausdorff space are unique. Turns 'finite ⇒ density 0' into 'positive density ⇒ infinite' by contradiction, and gives uniqueness of the natural density (hasNaturalDensity_unique).",
         "module": "Mathlib.Topology.Separation.Hausdorff"
+      },
+      {
+        "theorem": "le_of_tendsto' / ge_of_tendsto'",
+        "description": "A limit of a sequence that is pointwise ≤ b (resp. ≥ b) is itself ≤ b (resp. ≥ b), for a NeBot filter. With the [0,1]-confined density ratio these give hasNaturalDensity_le_one / hasNaturalDensity_nonneg, hence hasNaturalDensity_mem_Icc.",
+        "module": "Mathlib.Order.Topology.Basic"
       }
     ],
     "prerequisites": [
@@ -155,9 +164,9 @@
       "Topology"
     ],
     "namespace": "Erdos1003.OQ03",
-    "lineCount": 177,
+    "lineCount": 229,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 14,
     "definitionCount": 3,
     "path": "Proofs/Erdos1003OQ03.lean",
     "sorries": 0

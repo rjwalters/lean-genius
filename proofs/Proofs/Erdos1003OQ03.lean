@@ -174,4 +174,56 @@ theorem infinite_of_pos_density {d : ℝ} (hd : 0 < d)
   have : d = 0 := tendsto_nhds_unique h h0
   exact absurd this (ne_of_gt hd)
 
+/-! ## What an answer to OQ-03 must supply: uniqueness and range
+
+The previous section shows the density object is the right one (it sees infinitude)
+and that a *positive* value is as hard as #1003. This section pins down the shape of
+any admissible answer: it is a **unique** real number lying in **`[0, 1]`**, and a
+positive value is equivalent (via the bridge) to the counting function being
+unbounded. -/
+
+/-- **Natural density, when it exists, is unique.** Two density values for the
+solution set coincide, since limits in `ℝ` are unique (`atTop` is `NeBot`). So OQ-03
+asks for a well-defined real number — not merely *some* limit point of the ratios. -/
+theorem hasNaturalDensity_unique {d₁ d₂ : ℝ}
+    (h₁ : HasNaturalDensity d₁) (h₂ : HasNaturalDensity d₂) : d₁ = d₂ :=
+  tendsto_nhds_unique h₁ h₂
+
+/-- **Any natural density is `≥ 0`.** The density ratio is nonnegative, so its limit
+is nonnegative. -/
+theorem hasNaturalDensity_nonneg {d : ℝ} (h : HasNaturalDensity d) : 0 ≤ d :=
+  ge_of_tendsto' h density_ratio_nonneg
+
+/-- **Any natural density is `≤ 1`.** The density ratio never exceeds `1`, so neither
+does its limit. -/
+theorem hasNaturalDensity_le_one {d : ℝ} (h : HasNaturalDensity d) : d ≤ 1 :=
+  le_of_tendsto' h density_ratio_le_one
+
+/-- **Any natural density lies in `[0, 1]`.** Combining the two bounds: an answer to
+OQ-03, if it exists, must be a real number in the unit interval. -/
+theorem hasNaturalDensity_mem_Icc {d : ℝ} (h : HasNaturalDensity d) :
+    d ∈ Set.Icc (0 : ℝ) 1 :=
+  ⟨hasNaturalDensity_nonneg h, hasNaturalDensity_le_one h⟩
+
+/-- **A positive density makes the counting function unbounded.** Threading the
+density view of OQ-03 back to the counting/infinitude view: if the density exists and
+is positive, the count `#{n ≤ N : φ n = φ(n+1)}` is unbounded (equivalently, the set
+is infinite). Contrapositively, while #1003's infinitude is open, no positive density
+can be exhibited — sharpening `infinite_of_pos_density` to the counting function. -/
+theorem pos_density_count_unbounded {d : ℝ} (hd : 0 < d)
+    (h : HasNaturalDensity d) : ∀ M, ∃ N, M ≤ countConsecutiveEqual N :=
+  infinite_iff_count_unbounded.mp (infinite_of_pos_density hd h)
+
+/-- **Summary of the admissibility constraints (0 axioms, 0 sorries).** Any answer
+`d` to OQ-03 is unique, lies in `[0, 1]`, and is positive only if the counting
+function is unbounded (i.e. the solution set is infinite — the open #1003). -/
+theorem oq03_answer_constraints :
+    (∀ d₁ d₂ : ℝ, HasNaturalDensity d₁ → HasNaturalDensity d₂ → d₁ = d₂) ∧
+    (∀ d : ℝ, HasNaturalDensity d → d ∈ Set.Icc (0 : ℝ) 1) ∧
+    (∀ d : ℝ, 0 < d → HasNaturalDensity d →
+      ∀ M, ∃ N, M ≤ countConsecutiveEqual N) :=
+  ⟨fun _ _ => hasNaturalDensity_unique,
+   fun _ => hasNaturalDensity_mem_Icc,
+   fun _ => pos_density_count_unbounded⟩
+
 end Erdos1003.OQ03
