@@ -19,7 +19,7 @@
       "classic"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Mathlib.LinearAlgebra.CrossProduct",
@@ -46,8 +46,8 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
-    "lineCount": 1278,
-    "assumptions": "1 axiom (conic_implies_pascal_constraint). 1 sorry in proof_sketch_conic_implies_pascal (pending Sylvester's law for the standard conic reduction).",
+    "lineCount": 1633,
+    "assumptions": "1 axiom (conic_implies_pascal_constraint), retained only for the asymmetric/degenerate conic case. The Sylvester's-law reduction for the standard conic is now fully proved (0 sorries).",
     "mathlib_version": "4.26.0",
     "theoremCount": 46,
     "definitionCount": 28
@@ -252,8 +252,8 @@
       "title": "PART 20a: Mathlib QuadraticForm Bridge (for Sylvester's Law)",
       "startLine": 1105,
       "endLine": 1278,
-      "summary": "Bridge lemmas linking `conicQuadraticForm` to Mathlib's `Matrix.toQuadraticMap'` (`conicQF_eq_dotProduct`, `mathlibQF_eq_dotProduct`, `conicQF_eq_mathlibQF`, `mathlibQF_separatingLeft`, `projTransform_valid_of_det_ne_zero`) and `proof_sketch_conic_implies_pascal`, whose lone remaining `sorry` (line 1245) is the matrix-extraction step of the general diagonalization.",
-      "mathContext": "Connects the ad-hoc quadratic form to Mathlib's `QuadraticForm` API so Sylvester's law applies; the open step is extracting an explicit diagonalizing transformation from an `IsometryEquiv`, flagged in-file as the hard 6-case weight analysis."
+      "summary": "Bridge lemmas linking `conicQuadraticForm` to Mathlib's `Matrix.toQuadraticMap'` (`conicQF_eq_dotProduct`, `mathlibQF_eq_dotProduct`, `conicQF_eq_mathlibQF`, `mathlibQF_separatingLeft`, `projTransform_valid_of_det_ne_zero`) and `proof_sketch_conic_implies_pascal`, which is now fully proved (0 sorries): the matrix-extraction step of the diagonalization is supplied by `sylvester_stdConic_of_isotropic`.",
+      "mathContext": "Connects the ad-hoc quadratic form to Mathlib's `QuadraticForm` API so Sylvester's law applies; the diagonalizing transformation is extracted from an `IsometryEquiv` using the inscribed hexagon's isotropic witness, completing the standard-conic reduction."
     }
   ],
   "conclusion": {
@@ -314,9 +314,9 @@
   ],
   "leanFile": {
     "path": "Proofs/PascalsHexagon.lean",
-    "lineCount": 1278,
+    "lineCount": 1633,
     "axiomCount": 1,
-    "sorries": 1,
+    "sorries": 0,
     "theoremCount": 46,
     "definitionCount": 28,
     "imports": [
@@ -347,5 +347,5 @@
       "leanType": "inscribed_in_conic hexagon -> collinear (opposite_intersections hexagon)"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
