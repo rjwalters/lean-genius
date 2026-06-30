@@ -31,6 +31,21 @@
     * `univariate_psd_two_sos_degree_exact` — strengthens the parent existence
       theorem: the witnesses can be taken with `2·max(deg u, deg v) = deg p`.
 
+  Finally, the representation can be put into an **asymmetric normal form**.  The
+  sharpness result only says the *larger* square hits `½·deg p`; it leaves open
+  whether the *other* square can always be pushed strictly below.  It can:
+
+    * `two_sos_rotate_normalize` — a constant orthogonal rotation
+      `(u, v) ↦ (αu+βv, -βu+αv)` with `α²+β²=1` preserves `u²+v²` (it is the
+      polynomial avatar of multiplying the Gaussian factor by a unit complex
+      number).  Aligning the rotation with the top coefficients kills the leading
+      term of the second component, giving `u'² + v'²` with `deg u' = n` and
+      `deg v' < n` (`n = max(deg u, deg v)`).  No complex factorization is used —
+      just a `2×2` rotation of the coefficient pair.
+    * `univariate_psd_two_sos_normalized` — consequently every PSD `p` of degree
+      `≥ 2` is `u² + v²` with `2·deg u = deg p` and `2·deg v < deg p`: one square
+      of degree *exactly* `½·deg p`, the other *strictly* smaller.
+
   Fully elementary and 0-axiom, like the parent.
 -/
 import Mathlib
@@ -112,5 +127,99 @@ theorem univariate_psd_two_sos_degree_exact (p : ℝ[X]) (hp : p ≠ 0) (h : IsP
     ∃ u v : ℝ[X], p = u ^ 2 + v ^ 2 ∧ 2 * max u.natDegree v.natDegree = p.natDegree := by
   obtain ⟨u, v, huv, _, _⟩ := Hilbert17OQ01OQ01.univariate_psd_is_two_sos_deg p h
   exact ⟨u, v, huv, two_sos_max_degree_eq hp huv⟩
+
+/-- **Constant orthogonal rotation of a two-squares pair (asymmetric normal form).**
+
+The pair `(u, v)` and the rotated pair `(αu+βv, -βu+αv)` produce the *same* sum of
+two squares whenever `α² + β² = 1` — this is the polynomial avatar of multiplying
+the complex factor `u + iv` by a unit `α - iβ`.  Choosing the rotation that aligns
+with the top coefficients `(a, b) = (uₙ, vₙ)`, namely `α = a/s`, `β = b/s` with
+`s = √(a²+b²)`, sends the leading coefficient of the second component to
+`-βa + αb = 0` while that of the first becomes `αa + βb = s ≠ 0`.
+
+Hence any two-squares pair whose larger degree `n = max(deg u, deg v)` is positive
+can be normalized to `u'² + v'² = u² + v²` with `deg u' = n` and `deg v' < n`. -/
+theorem two_sos_rotate_normalize (u v : ℝ[X])
+    (hn : 1 ≤ max u.natDegree v.natDegree) :
+    ∃ u' v' : ℝ[X], u' ^ 2 + v' ^ 2 = u ^ 2 + v ^ 2 ∧
+      u'.natDegree = max u.natDegree v.natDegree ∧
+      v'.natDegree < max u.natDegree v.natDegree := by
+  set n := max u.natDegree v.natDegree with hn_def
+  set a := u.coeff n with ha_def
+  set b := v.coeff n with hb_def
+  -- the top coefficient achieving the max is nonzero, so `a² + b² > 0`
+  have habpos : 0 < a ^ 2 + b ^ 2 := by
+    rcases max_choice u.natDegree v.natDegree with hmx | hmx
+    · have hun : u.natDegree = n := by rw [hn_def, hmx]
+      have hu0 : u ≠ 0 := by intro h0; rw [h0, natDegree_zero] at hun; omega
+      have ha0 : a ≠ 0 := by
+        rw [ha_def, ← hun]; exact leadingCoeff_ne_zero.mpr hu0
+      nlinarith [sq_nonneg b, pow_two_pos_of_ne_zero ha0]
+    · have hvn : v.natDegree = n := by rw [hn_def, hmx]
+      have hv0 : v ≠ 0 := by intro h0; rw [h0, natDegree_zero] at hvn; omega
+      have hb0 : b ≠ 0 := by
+        rw [hb_def, ← hvn]; exact leadingCoeff_ne_zero.mpr hv0
+      nlinarith [sq_nonneg a, pow_two_pos_of_ne_zero hb0]
+  set s := Real.sqrt (a ^ 2 + b ^ 2) with hs_def
+  have hspos : 0 < s := Real.sqrt_pos.mpr habpos
+  have hs2 : s ^ 2 = a ^ 2 + b ^ 2 := Real.sq_sqrt habpos.le
+  set α := a / s with hα_def
+  set β := b / s with hβ_def
+  have habs : α ^ 2 + β ^ 2 = 1 := by
+    rw [hα_def, hβ_def, div_pow, div_pow, ← add_div, ← hs2,
+      div_self (pow_ne_zero 2 hspos.ne')]
+  refine ⟨C α * u + C β * v, C (-β) * u + C α * v, ?_, ?_, ?_⟩
+  · -- rotation preserves the sum of two squares
+    have key : (C α * u + C β * v) ^ 2 + (C (-β) * u + C α * v) ^ 2
+        = ((C α) ^ 2 + (C β) ^ 2) * (u ^ 2 + v ^ 2) := by
+      simp only [map_neg]; ring
+    have hone : (C α) ^ 2 + (C β) ^ 2 = 1 := by
+      rw [← C_pow, ← C_pow, ← C_add, habs, C_1]
+    rw [key, hone, one_mul]
+  · -- first component has degree exactly `n`: its `n`-th coefficient is `s ≠ 0`
+    have hule : (C α * u + C β * v).natDegree ≤ n := by
+      refine le_trans (natDegree_add_le _ _) (max_le ?_ ?_)
+      · exact le_trans (natDegree_C_mul_le α u) (le_max_left _ _)
+      · exact le_trans (natDegree_C_mul_le β v) (le_max_right _ _)
+    have hcoeff : (C α * u + C β * v).coeff n = s := by
+      rw [coeff_add, coeff_C_mul, coeff_C_mul, ← ha_def, ← hb_def, hα_def, hβ_def]
+      field_simp
+      nlinarith [hs2]
+    exact le_antisymm hule (le_natDegree_of_ne_zero (by rw [hcoeff]; exact hspos.ne'))
+  · -- second component has degree `< n`: its `n`-th coefficient vanishes
+    have hvle : (C (-β) * u + C α * v).natDegree ≤ n := by
+      refine le_trans (natDegree_add_le _ _) (max_le ?_ ?_)
+      · exact le_trans (natDegree_C_mul_le (-β) u) (le_max_left _ _)
+      · exact le_trans (natDegree_C_mul_le α v) (le_max_right _ _)
+    have hcoeff : (C (-β) * u + C α * v).coeff n = 0 := by
+      rw [coeff_add, coeff_C_mul, coeff_C_mul, ← ha_def, ← hb_def, hα_def, hβ_def]
+      field_simp
+      ring
+    rcases eq_or_lt_of_le hvle with heq | hlt
+    · exfalso
+      have hlc : (C (-β) * u + C α * v).leadingCoeff = 0 := by
+        rw [leadingCoeff, heq, hcoeff]
+      rw [leadingCoeff_eq_zero.mp hlc, natDegree_zero] at heq
+      omega
+    · exact hlt
+
+/-- **Asymmetric Fejér–Riesz normal form.**  Every PSD univariate polynomial of
+degree at least `2` is a sum of two squares `u² + v²` in which one square has
+degree *exactly* `½·deg p` and the other has degree *strictly* less.  (For the
+larger square the bound is forced by `two_sos_max_degree_eq`; the strict gap on
+the smaller square is achieved by the rotation `two_sos_rotate_normalize`.) -/
+theorem univariate_psd_two_sos_normalized (p : ℝ[X]) (hp : 2 ≤ p.natDegree)
+    (h : IsPSD p) :
+    ∃ u v : ℝ[X], p = u ^ 2 + v ^ 2 ∧
+      2 * u.natDegree = p.natDegree ∧ 2 * v.natDegree < p.natDegree := by
+  have hp0 : p ≠ 0 := by intro h0; rw [h0, natDegree_zero] at hp; omega
+  obtain ⟨u, v, huv, _, _⟩ := Hilbert17OQ01OQ01.univariate_psd_is_two_sos_deg p h
+  have hmax : 2 * max u.natDegree v.natDegree = p.natDegree := two_sos_max_degree_eq hp0 huv
+  have hn : 1 ≤ max u.natDegree v.natDegree := by omega
+  obtain ⟨u', v', hpres, hu'deg, hv'deg⟩ := two_sos_rotate_normalize u v hn
+  refine ⟨u', v', ?_, ?_, ?_⟩
+  · rw [huv, ← hpres]
+  · rw [hu'deg]; exact hmax
+  · omega
 
 end Hilbert17OQ01OQ01OQ01

@@ -3,8 +3,8 @@
     "id": "ann-h17-oq010101-noncancel",
     "proofId": "hilbert-17-oq-01-oq-01-oq-01",
     "range": {
-      "startLine": 42,
-      "endLine": 86
+      "startLine": 65,
+      "endLine": 101
     },
     "type": "concept",
     "title": "Leading-term non-cancellation for real sums of two squares",
@@ -14,8 +14,8 @@
     "id": "ann-h17-oq010101-sharpness",
     "proofId": "hilbert-17-oq-01-oq-01-oq-01",
     "range": {
-      "startLine": 88,
-      "endLine": 107
+      "startLine": 103,
+      "endLine": 121
     },
     "type": "concept",
     "title": "Sharpness and evenness corollaries",
@@ -25,11 +25,22 @@
     "id": "ann-h17-oq010101-exact-existence",
     "proofId": "hilbert-17-oq-01-oq-01-oq-01",
     "range": {
-      "startLine": 109,
-      "endLine": 115
+      "startLine": 122,
+      "endLine": 130
     },
     "type": "concept",
     "title": "Degree-exact strengthening of the existence theorem",
     "content": "univariate_psd_two_sos_degree_exact composes the parent's degree-sharp witnesses (univariate_psd_is_two_sos_deg) with the sharpness theorem two_sos_max_degree_eq. The parent guarantees a representation with both summands of degree ≤ ½·deg p; sharpness then pins the larger summand's degree to exactly ½·deg p. The net effect is to upgrade the parent existence theorem from an upper degree bound to an exact one for nonzero PSD polynomials, answering the parent entry's first open question for the larger summand. Because the sharpness engine is self-contained (only natDegree/leadingCoeff arithmetic), the result needs no extra analytic input beyond what the parent already supplies."
+  },
+  {
+    "id": "ann-h17-oq010101-normal-form",
+    "proofId": "hilbert-17-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 131,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Asymmetric normal form via a constant orthogonal rotation",
+    "content": "Sharpness pins the LARGER square's degree but says nothing about the smaller one — both could a priori sit at degree n = max(deg u, deg v). two_sos_rotate_normalize shows the smaller one can always be pushed strictly below n, by rotating the coefficient pair. The key algebraic identity is that for any α, β the pair (αu+βv, -βu+αv) satisfies (αu+βv)² + (-βu+αv)² = (α²+β²)(u²+v²); with α²+β²=1 this is just u²+v² (proved by ring after turning (C α)²+(C β)² into C(α²+β²)=C 1=1). This is the polynomial avatar of |e^{-iθ}(u+iv)|² = |u+iv|²: rotating the Gaussian factor by a unit complex number leaves the sum of squares unchanged. To NORMALIZE, pick the rotation aligned with the top coefficients a = uₙ, b = vₙ: take s = √(a²+b²) (positive because the degree-n component is the leadingCoeff of whichever polynomial achieves the max, hence nonzero), α = a/s, β = b/s. Then the n-th coefficient of the first component is αa+βb = (a²+b²)/s = s ≠ 0 (so deg u' = n, the ≤ n side coming from natDegree_C_mul_le and natDegree_add_le), while that of the second is -βa+αb = 0. A vanishing top coefficient at the maximal possible degree forces a strict drop: if deg v' were still n its leading coefficient would be its n-th coefficient, which is 0 — impossible for a nonzero polynomial, and v' = 0 is excluded since n ≥ 1. Hence deg v' < n. Feeding the parent's witnesses through two_sos_max_degree_eq (larger summand = ½·deg p) and then this rotation, univariate_psd_two_sos_normalized gives, for any PSD p of degree ≥ 2, a representation u² + v² with 2·deg u = deg p and 2·deg v < deg p — the asymmetric Fejér–Riesz form, with no complex factorization machinery anywhere in the proof."
   }
 ]
