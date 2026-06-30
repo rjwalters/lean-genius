@@ -18,7 +18,11 @@
       "consecutive products"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Bertrand's postulate on primes between k and 2k",
+      "the Chinese Remainder Theorem",
+      "asymptotic growth rates: polynomial vs exponential"
+    ]
   },
   {
     "id": "erdos-451-descending-product",
@@ -37,7 +41,11 @@
       "prime factorization"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "products of consecutive integers",
+      "prime factorization of integers",
+      "the count of multiples of a prime in an interval"
+    ]
   },
   {
     "id": "erdos-451-avoidance",
@@ -57,7 +65,11 @@
       "modular arithmetic"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "prime divisibility of a product",
+      "residue classes modulo a prime",
+      "Bertrand-range primes in the interval (k, 2k)"
+    ]
   },
   {
     "id": "erdos-451-nk",
@@ -76,7 +88,11 @@
       "well-ordering principle"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "the well-ordering principle and minimality",
+      "axiomatization of a defined function",
+      "exhaustive search over residue systems"
+    ]
   },
   {
     "id": "erdos-451-crt",
@@ -96,7 +112,11 @@
       "pigeonhole principle"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "the Chinese Remainder Theorem",
+      "prime divisibility of differences of integers",
+      "counting safe residue classes modulo a prime"
+    ]
   },
   {
     "id": "erdos-451-lower",
@@ -116,7 +136,11 @@
       "prime number theorem"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "sieve methods and density of safe integers",
+      "the prime number theorem",
+      "superlinear growth bounds"
+    ]
   },
   {
     "id": "erdos-451-upper",
@@ -136,7 +160,11 @@
       "exponential bounds"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "the Chinese Remainder Theorem",
+      "the primorial and Chebyshev's theorem on prime products",
+      "the prime number theorem for sums of log p"
+    ]
   },
   {
     "id": "erdos-451-trivial-lower",
@@ -154,7 +182,10 @@
     ],
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of trivial lower bound (proved)",
-    "prerequisites": []
+    "prerequisites": [
+      "coercion from natural numbers to rationals",
+      "deriving inequalities from an axiom"
+    ]
   },
   {
     "id": "erdos-451-conjecture",
@@ -174,6 +205,10 @@
       "intermediate asymptotics"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "superpolynomial and sub-exponential growth rates",
+      "the hierarchy of asymptotic growth classes",
+      "intermediate growth in combinatorial number theory"
+    ]
   }
 ]

@@ -59,7 +59,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-uniform hyperedges",
+      "the union of vertices over a set of edges"
+    ]
   },
   {
     "id": "ann-716-3",
@@ -77,7 +80,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "hyperedges and their spanned vertices",
+      "e edges spanning at most v vertices"
+    ]
   },
   {
     "id": "ann-716-4",
@@ -95,7 +101,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "(v,e)-configurations",
+      "3 edges spanning at most 6 vertices"
+    ]
   },
   {
     "id": "ann-716-5",
@@ -113,7 +122,10 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the (6,3)-configuration",
+      "avoiding a forbidden configuration"
+    ]
   },
   {
     "id": "ann-716-6",
@@ -132,7 +144,10 @@
       "Hypergraph regularity"
     ],
     "mathContext": "Formal statement of extremal number as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "(6,3)-free hypergraphs",
+      "the maximum edge count (extremal function)"
+    ]
   },
   {
     "id": "ann-716-7",
@@ -150,7 +165,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the extremal number f^(3)(n; v, e)",
+      "the (6,3) specialization",
+      "o(n²) growth"
+    ]
   },
   {
     "id": "ann-716-8",
@@ -168,7 +187,10 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "triangles in a graph",
+      "an edge with exactly one common neighbor"
+    ]
   },
   {
     "id": "ann-716-9",
@@ -187,7 +209,11 @@
       "Property testing"
     ],
     "mathContext": "Formal statement of rs graph as described in the annotation content",
-    "prerequisites": []
+    "prerequisites": [
+      "the unique-triangle property",
+      "every edge lying in exactly one triangle",
+      "induced triangle matchings"
+    ]
   },
   {
     "id": "ann-716-10",
@@ -205,7 +231,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic ratios f(n)/g(n)",
+      "limits tending to 0"
+    ]
   },
   {
     "id": "ann-716-11",
@@ -224,7 +253,12 @@
       "Szemerédi regularity lemma",
       "extremal hypergraph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the extremal function ex63(n)",
+      "o(n²) growth",
+      "the triangle removal lemma",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-716-12",
@@ -242,7 +276,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the extremal function ex63(n)",
+      "the bound n²·e^{−c√(log n)}",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-716-13",
@@ -260,7 +298,12 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Behrend's construction",
+      "3-AP-free sets",
+      "the bound n²·e^{−c'√(log n)}",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-716-14",
@@ -279,7 +322,11 @@
       "Graph removal lemmas",
       "Property testing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "triangle counts (≤ δn³)",
+      "removing ≤ εn² edges",
+      "the regularity / removal method"
+    ]
   },
   {
     "id": "ann-716-15",
@@ -297,7 +344,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-term arithmetic progressions",
+      "sets avoiding 3-APs",
+      "Behrend's construction"
+    ]
   },
   {
     "id": "ann-716-16",
@@ -316,6 +367,11 @@
       "Szemerédi's theorem",
       "Additive number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-AP-free sets",
+      "the bound r₃(n) = o(n)",
+      "Roth's 1953 theorem",
+      "the RS ⇒ Roth implication"
+    ]
   }
 ]

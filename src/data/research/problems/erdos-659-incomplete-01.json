@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "COMPLETION: dangling sorry resolved (file now 0-sorry, 1-axiom, compiles clean after fixing 5 floating doc-comments). Added verified positive-definiteness lemmas for x²+2y². Main result erdos_659 remains axiomatized on moreeOsburnWorks (Landau theorem, not in Mathlib).",
+    "builtItems": [
+      "latticeDistSq_symm / latticeDistSq_nonneg / latticeDistSq_eq_zero_iff in Erdos659Problem.lean (positive-definiteness of x²+2y²)",
+      "Verified fourPointProperty_from_avoiding_configs (0 sorries) with explicit lower-bound hypothesis"
+    ],
+    "insights": [
+      "The original fourPointProperty_from_avoiding_configs was false under the product/Chebyshev metric on ℝ×ℝ: unit-square corners (0,0),(1,0),(0,1),(1,1) are mutually equidistant (sup-distance 1), so distinctDistances=1 while avoiding every named 2-distance config. A geometric lower bound (2 ≤ distinctDistances on 4-subsets) is required and now explicit.",
+      "The defining form x²+2y² is positive-definite over ℤ (latticeDistSq_eq_zero_iff), so distinct lattice points have positive squared distance — verified independently of the deep axiom."
+    ],
+    "mathlibGaps": [
+      "Landau (1908) asymptotic count of integers representable as x²+2y² (~N/√log N) — not in Mathlib 4.26; blocks eliminating moreeOsburnWorks"
+    ],
+    "nextSteps": [
+      "Formalize Landau count for x²+2y² to discharge moreeOsburnWorks (major analytic NT project)",
+      "Replace the three True placeholders in isConfiguration (isoTrap1/isoTrap2/kite) with genuine Euclidean characterizations and prove the 2-distance classification"
+    ]
   },
   "tags": [
     "erdos",

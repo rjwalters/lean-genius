@@ -1,0 +1,198 @@
+{
+  "id": "infinitude-primes-4k1-oq-02",
+  "title": "Uniqueness of the Two-Squares Representation of a Prime",
+  "slug": "infinitude-primes-4k1-oq-02",
+  "description": "A prime that is a sum of two squares is so in exactly one way, up to order: if p = a² + b² = c² + d² with p prime, then {a, b} = {c, d} as unordered pairs. This is the uniqueness companion to the OQ-01 entry's existence theorem (an odd prime is a sum of two squares iff p ≡ 1 mod 4). The proof is fully elementary — Euler's argument via the two Brahmagupta–Fibonacci identities and Euclid's lemma — and uses no Gaussian-integer machinery. Mathlib supplies the existence half (Nat.Prime.sq_add_sq) but packages no uniqueness statement at the level of ℕ representations, so this fills a genuine gap. Verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Leonhard Euler (uniqueness via Brahmagupta–Fibonacci / Euclid), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fermat%27s_theorem_on_sums_of_two_squares",
+    "date": "1758",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InfinitudePrimes4k1OQ02.lean",
+    "tags": [
+      "number-theory",
+      "sums-of-two-squares",
+      "primes",
+      "uniqueness",
+      "brahmagupta-fibonacci",
+      "euclids-lemma",
+      "fermat"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.prime_iff_prime_int",
+        "description": "p.Prime ↔ Prime (↑p : ℤ). Transports the natural-number primality hypothesis to ℤ so that Euclid's lemma (Prime.dvd_mul) can be applied to the integer factorization (ad − bc)(ad + bc).",
+        "module": "Mathlib.Data.Nat.Prime.Int"
+      },
+      {
+        "theorem": "Prime.dvd_mul",
+        "description": "For p prime, p ∣ x*y ↔ p ∣ x ∨ p ∣ y. This is Euclid's lemma, the single arithmetic input that forces p to divide one of the two Brahmagupta cofactors ad − bc, ad + bc.",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "le_of_mul_le_mul_left",
+        "description": "a*b ≤ a*c with 0 < a gives b ≤ c. Used to cancel the positive factor p (or p²) in the bounding steps k² ≤ 1 and k ≤ 1.",
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
+      }
+    ],
+    "originalContributions": [
+      "A self-contained, Gaussian-integer-free Lean proof of the uniqueness of the two-squares representation of a prime: two_squares_unique shows p = a²+b² = c²+d² (p prime) forces (a=c ∧ b=d) ∨ (a=d ∧ b=c). Mathlib has the existence theorem Nat.Prime.sq_add_sq but no uniqueness statement at the ℕ level, so this is a genuine gap-filler complementing sibling OQ-01's existence biconditional",
+      "Encodes Euler's classical argument in Lean: the two Brahmagupta–Fibonacci identities (brahmagupta_diff, brahmagupta_sum) expressing p² = (a²+b²)(c²+d²) as a sum of two squares in two ways, the divisibility identity (ad)²−(bc)² = p(d²−b²) (cross_factor_dvd), and Euclid's lemma to force one cofactor to vanish",
+      "A clean proportionality cancellation lemma pair_eq_of_cross: equal norms a²+b² = x²+y² together with the cross relation a·y = b·x force (a,b) = (x,y), proved by the identity a²(a²+b²) = x²(a²+b²) and cancellation — this is the step that upgrades a vanishing Brahmagupta cofactor to equality of the unordered pairs",
+      "An elementary positivity lemma pos_of_prime_eq_sq_add_sq (a prime is never a perfect square, so both legs are strictly positive), which is exactly what rules out the degenerate ±p branch where a Brahmagupta cofactor equals ±p",
+      "Corollaries packaging the result for the gallery: a Multiset-equality restatement (representation_unique_up_to_order) and the concrete fact that 2 = 1²+1² is the unique two-squares representation of 2 (two_repr_unique)"
+    ],
+    "dateAdded": "2026-06-22",
+    "relatedProblems": [
+      {
+        "id": "infinitude-primes-4k1-oq-01",
+        "relationship": "Existence sibling. OQ-01 proves an odd prime is a sum of two squares iff p ≡ 1 (mod 4); this OQ-02 entry proves that representation is unique. Together they give: every prime p ≡ 1 (mod 4) is a sum of two squares in exactly one way (up to order), every prime p ≡ 3 (mod 4) in no way, and 2 = 1²+1² uniquely."
+      },
+      {
+        "id": "infinitude-primes-4k1",
+        "relationship": "Grandparent gallery entry. The infinitude of primes ≡ 1 (mod 4) is driven by each such prime contributing a Gaussian splitting p = (a+bi)(a−bi); uniqueness of the two-squares representation is the arithmetic shadow of that splitting being unique up to units."
+      },
+      {
+        "id": "fermat-two-squares",
+        "relationship": "Related. The full Fermat two-squares classification of which integers are sums of two squares. This entry isolates and proves, elementarily, the prime-level uniqueness that the classification's well-definedness implicitly relies on."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 250,
+    "assumptions": "0 axioms, 0 sorries. The only hypothesis is that p is prime, supplied as an input to the statement rather than as a standing assumption. The entire argument is elementary (ring identities, omega, linarith/nlinarith over the square-atoms, and Euclid's lemma); it relies on no Gaussian-integer or analytic infrastructure. Axiom check reports only the foundational propext, Classical.choice, Quot.sound — no sorryAx, no Lean.ofReduceBool.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Fermat (1640) stated that an odd prime is a sum of two squares precisely when it is ≡ 1 (mod 4), and Euler (1749) supplied the first complete proof of existence by infinite descent. The companion fact — that the representation is essentially unique — is equally classical and also due to Euler (around 1758, in his work on factorization via sums of two squares): a number with two genuinely different two-squares representations is necessarily composite, a principle Euler turned into a primality/factoring test. In modern language uniqueness is the statement that a prime p ≡ 1 (mod 4) factors in the Gaussian integers ℤ[i] as p = π·π̄ with π a Gaussian prime that is unique up to the four units ±1, ±i; the four unit multiples and complex conjugation account for exactly the sign and order ambiguity in (a, b). Mathlib formalizes the existence half (Nat.Prime.sq_add_sq) and the Gaussian-integer apparatus (ℤ[i] is a Euclidean domain, the prime-vs-mod-4 dichotomy), but does not record the elementary ℕ-level uniqueness statement; this entry proves it directly, the way Euler did, without invoking unique factorization in ℤ[i].",
+    "problemStatement": "Let $p$ be prime and suppose $p = a^2 + b^2 = c^2 + d^2$ with $a,b,c,d \\in \\mathbb{N}$. Then the two representations agree up to order:\n\n$$(a = c \\wedge b = d) \\ \\vee\\ (a = d \\wedge b = c).$$",
+    "text": "If a prime is a sum of two squares at all, it is so in only one way, apart from swapping the two squares. The proof multiplies the two representations together using the Brahmagupta–Fibonacci identity, which writes p² as a sum of two squares in two ways; a divisibility argument and Euclid's lemma then force one of the two 'cross terms' ad − bc, ad + bc to vanish, and the vanishing cross term pins down the two pairs as equal.",
+    "proofStrategy": "Work over ℤ after recording that all four legs are positive (pos_of_prime_eq_sq_add_sq: a prime is never a perfect square). The two Brahmagupta–Fibonacci identities give\n\n  (ac + bd)² + (ad − bc)² = (a²+b²)(c²+d²) = p²,\n  (ac − bd)² + (ad + bc)² = (a²+b²)(c²+d²) = p².\n\nThe divisibility identity (ad − bc)(ad + bc) = (ad)² − (bc)² = d²(a²+b²) − b²(c²+d²) = p·(d²−b²) shows p ∣ (ad − bc)(ad + bc); Euclid's lemma (via Nat.prime_iff_prime_int and Prime.dvd_mul) splits into p ∣ (ad − bc) or p ∣ (ad + bc). The first identity bounds (ad − bc)² ≤ p² and the second bounds (ad + bc)² ≤ p², so a cofactor divisible by p must be 0 or ±p.\n\n• If p ∣ (ad − bc): writing ad − bc = p·k, the bound forces k² ≤ 1, hence k ∈ {−1, 0, 1}. The cases k = ±1 give (ad − bc)² = p², hence the companion square (ac + bd)² = 0; but ac + bd > 0 since all legs are positive — contradiction. So ad − bc = 0, i.e. a·d = b·c, and the proportionality lemma pair_eq_of_cross (equal norms + cross relation ⇒ equal pairs) yields (a, b) = (c, d).\n\n• If p ∣ (ad + bc): here 0 < ad + bc ≤ p forces ad + bc = p exactly, so the companion square (ac − bd)² = 0, giving a·c = b·d; pair_eq_of_cross (applied with the roles of c, d swapped) yields (a, b) = (d, c).\n\nThe heavy algebra is confined to ring-checked identities; the divisibility and bounding steps are linear over the square-atoms (linarith) or low-degree (nlinarith), kept within the heartbeat budget by avoiding nlinarith on the degree-4 product.",
+    "keyInsights": [
+      "**Multiply the two representations**: the Brahmagupta–Fibonacci identity turns 'p = a²+b² = c²+d²' into 'p² is a sum of two squares in two ways', and the difference of those two ways is governed by the cross terms ad ± bc — this is the engine of the whole proof",
+      "**Euclid's lemma localizes the obstruction**: p ∣ (ad − bc)(ad + bc) because the product equals p(d²−b²); primality forces p into a single cofactor, and the square bounds (each cofactor² ≤ p²) then pin that cofactor to 0 or ±p",
+      "**Positivity kills the degenerate branch**: a prime is never a perfect square, so all four legs are strictly positive; that is exactly what makes ac + bd > 0 and ad + bc > 0, ruling out the ±p case where a companion square would have to vanish against positive entries",
+      "**Equal norm + cross relation ⇒ equal pairs**: the cancellation a²(a²+b²) = a²x² + (ay)² = a²x² + (bx)² = x²(a²+b²) shows a²=x², the cleanest way to upgrade a vanishing cross term (ad = bc or ac = bd) into genuine equality of the unordered pairs",
+      "**Uniqueness is the ℕ-shadow of unit-ambiguity in ℤ[i]**: the eightfold ambiguity (±a ±b and swap) is precisely the four units ±1, ±i times conjugation acting on the Gaussian prime π with π·π̄ = p; proving it elementarily avoids importing unique factorization in ℤ[i] entirely"
+    ],
+    "prerequisites": [
+      "The Brahmagupta–Fibonacci two-squares identity (a²+b²)(c²+d²) = (ac∓bd)² + (ad±bc)²",
+      "Euclid's lemma: a prime dividing a product divides one of the factors",
+      "Basic ℤ/ℕ casting and the fact that a prime is never a perfect square",
+      "Elementary inequality reasoning: a square is ≤ p² iff its base is ≤ p in absolute value"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 59,
+      "mathContext": "$p\\ \\text{prime},\\ p = a^2+b^2 = c^2+d^2 \\Rightarrow \\{a,b\\} = \\{c,d\\}$",
+      "summary": "Imports (Nat.Prime.Basic, Nat.Prime.Int, Tactic) and the module docstring laying out Euler's Brahmagupta–Fibonacci + Euclid argument and recording the status (0 sorries, 0 axioms) and Mathlib dependencies. The namespace opens Nat."
+    },
+    {
+      "id": "sq-inj",
+      "title": "Squaring Is Injective on ℕ",
+      "startLine": 64,
+      "endLine": 75,
+      "mathContext": "$a^2 = x^2 \\Rightarrow a = x$ for $a, x \\in \\mathbb{N}$.",
+      "summary": "The private helper nat_sq_inj: a trichotomy on a vs x, with the strict cases closed by nlinarith (a < x ⇒ a² < x²) and omega against the hypothesis a² = x². Used to turn the equal-squares conclusions a² = x², b² = y² into a = x, b = y."
+    },
+    {
+      "id": "positivity",
+      "title": "A Prime Is Never a Perfect Square",
+      "startLine": 76,
+      "endLine": 88,
+      "mathContext": "$p\\ \\text{prime},\\ p = a^2 + b^2 \\Rightarrow 0 < a \\wedge 0 < b.$",
+      "summary": "pos_of_prime_eq_sq_add_sq: an auxiliary not_sq shows p ≠ n² for all n (a divisor n of p = n² is 1 or p, both giving p = 1, contradicting primality, via Nat.Prime.eq_one_or_self_of_dvd and dvd_pow_self). If a = 0 then p = b² and if b = 0 then p = a², each contradicting not_sq; hence both legs are positive."
+    },
+    {
+      "id": "proportionality",
+      "title": "Equal Norm + Cross Relation ⇒ Equal Pairs",
+      "startLine": 90,
+      "endLine": 115,
+      "mathContext": "$a y = b x,\\ a^2 + b^2 = x^2 + y^2 \\Rightarrow a = x \\wedge b = y.$",
+      "summary": "pair_eq_of_cross: the cancellation a²(a²+b²) = a²x² + (a·y)² = a²x² + (b·x)² = x²(a²+b²) (a calc chain closed by ring and the cross hypothesis) gives a² = x² by Nat.eq_of_mul_eq_mul_right; omega then yields b² = y², and nat_sq_inj finishes a = x, b = y. This lemma converts a vanishing Brahmagupta cofactor into equality of the unordered pairs."
+    },
+    {
+      "id": "brahmagupta",
+      "title": "The Brahmagupta–Fibonacci Identities",
+      "startLine": 117,
+      "endLine": 126,
+      "mathContext": "$(ac \\pm bd)^2 + (ad \\mp bc)^2 = (a^2+b^2)(c^2+d^2).$",
+      "summary": "brahmagupta_diff and brahmagupta_sum: the two sign variants of the two-squares multiplication identity, each proved by ring over ℤ. They express p² as a sum of two squares in two ways and supply both the square bounds and the vanishing-companion-square steps."
+    },
+    {
+      "id": "divisibility",
+      "title": "The Divisibility Identity",
+      "startLine": 127,
+      "endLine": 134,
+      "mathContext": "$(ad - bc)(ad + bc) = p\\,(d^2 - b^2).$",
+      "summary": "cross_factor_dvd: (ad − bc)(ad + bc) = d²(a²+b²) − b²(c²+d²) (by ring) and then, substituting p = a²+b² = c²+d², equals p(d²−b²). This exhibits p as a divisor of the product of the two cross terms, the hook for Euclid's lemma."
+    },
+    {
+      "id": "main",
+      "title": "Main Theorem: Uniqueness",
+      "startLine": 136,
+      "endLine": 235,
+      "mathContext": "$p\\ \\text{prime},\\ p = a^2+b^2 = c^2+d^2 \\Rightarrow (a=c \\wedge b=d) \\vee (a=d \\wedge b=c).$",
+      "summary": "two_squares_unique (under maxHeartbeats 400000): positivity of all legs, transport to ℤ, the divisibility fact and Euclid's lemma (Prime.dvd_mul) split into p ∣ (ad − bc) or p ∣ (ad + bc). Square bounds (each cofactor² ≤ p², proved by linarith over the Brahmagupta atoms) force the divisible cofactor to vanish (the ±p sub-cases contradict positivity via a vanishing companion square), and pair_eq_of_cross converts ad = bc (resp. ac = bd) into (a,b) = (c,d) (resp. (a,b) = (d,c))."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries: Multiset Form and the Prime 2",
+      "startLine": 243,
+      "endLine": 260,
+      "mathContext": "$\\{a,b\\} = \\{c,d\\}\\ \\text{as multisets};\\quad 2 = a^2+b^2 \\Rightarrow a = b = 1.$",
+      "summary": "representation_unique_up_to_order restates uniqueness as the Multiset equality {a,b} = {c,d} (using Multiset.pair_comm in the swapped case). two_repr_unique specializes to p = 2, concluding that 2 = 1²+1² is the only two-squares representation of 2."
+    }
+  ],
+  "conclusion": {
+    "summary": "The uniqueness of the two-squares representation of a prime is formalized in Lean 4 with zero sorries and zero axioms: if p is prime and p = a²+b² = c²+d², then {a,b} = {c,d}. The proof is Euler's elementary argument — the Brahmagupta–Fibonacci identities, the divisibility identity (ad−bc)(ad+bc) = p(d²−b²), Euclid's lemma, and a proportionality cancellation — with no recourse to Gaussian integers.",
+    "implications": "Together with the OQ-01 existence biconditional, this completes the prime-level theory of sums of two squares over ℕ: every prime p ≡ 1 (mod 4) has exactly one representation p = a²+b² (up to order and signs), every prime p ≡ 3 (mod 4) has none, and 2 = 1²+1² uniquely. Uniqueness is the arithmetic counterpart of the Gaussian prime above a rational prime p ≡ 1 (mod 4) being unique up to units; historically it underlies Euler's factorization method, in which a second essentially different two-squares representation of n certifies that n is composite.",
+    "openQuestions": [
+      "Can the uniqueness statement be lifted from primes to the multiplicative structure: counting the number of essentially distinct two-squares representations of a general n in terms of its prime factorization (the r₂(n) / sum-of-two-squares-function story), and proving it elementarily in the same Brahmagupta–Fibonacci style?",
+      "Does the same multiply-and-descend argument give uniqueness (up to the relevant unit group) for the forms a² + 2b² and a² + 3b², where the ambient rings ℤ[√−2] and ℤ[ω] are still Euclidean?",
+      "Can the elementary proof be reconciled with Mathlib's Gaussian-integer development to produce a short bridge lemma 'two ℕ-representations of a prime ⇒ associated Gaussian factorizations', making the unit-ambiguity picture formal?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes-4k1-oq-01",
+      "relationship": "extends",
+      "description": "OQ-01 proves existence (an odd prime is a sum of two squares iff p ≡ 1 mod 4); this OQ-02 entry proves the matching uniqueness, so the two together pin down the representation completely."
+    },
+    {
+      "targetId": "infinitude-primes-4k1",
+      "relationship": "related",
+      "description": "Grandparent entry on the infinitude of primes ≡ 1 (mod 4). Uniqueness of the two-squares representation is the arithmetic shadow of the unique Gaussian splitting p = (a+bi)(a−bi) attached to each such prime."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "The full Fermat two-squares classification of integers. This entry isolates and proves elementarily the prime-level uniqueness implicit in that classification."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/InfinitudePrimes4k1OQ02.lean",
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Int",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "InfinitudePrimes4k1OQ02",
+    "lineCount": 250,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 9
+  },
+  "sorries": 0
+}

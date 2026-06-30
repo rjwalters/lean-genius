@@ -23,7 +23,11 @@
       "phase-transition",
       "analytic-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "reciprocal sums Σ 1/n",
+      "sieving integers by divisibility",
+      "density of the sieved (surviving) integers"
+    ]
   },
   {
     "id": "erdos-784-reciprocal-sum",
@@ -48,7 +52,10 @@
       "divisibility",
       "finite-sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sets of integers",
+      "the sum of reciprocals Σ_{n∈A} 1/n"
+    ]
   },
   {
     "id": "erdos-784-sieved-set",
@@ -72,7 +79,10 @@
       "inclusion-exclusion",
       "coprimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility of integers",
+      "integers in [1,x] divisible by no element of A"
+    ]
   },
   {
     "id": "erdos-784-h-function",
@@ -97,7 +107,10 @@
       "extremal-combinatorics",
       "minimax"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieved set",
+      "minimizing over sets A with reciprocal sum ≤ C"
+    ]
   },
   {
     "id": "erdos-784-question",
@@ -121,7 +134,10 @@
       "polynomial-bounds",
       "sieve-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieving function H_C(x)",
+      "polynomial-logarithmic growth x/(log x)^c"
+    ]
   },
   {
     "id": "erdos-784-ruzsa-lower",
@@ -146,7 +162,11 @@
       "ruzsa",
       "critical-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieving function H_C(x)",
+      "lower bounds of order x/log x",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "erdos-784-saias-upper",
@@ -171,7 +191,11 @@
       "saias",
       "asymptotic-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieving function H_C(x)",
+      "upper bounds of order x/log x",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "erdos-784-h-one-asymptotic",
@@ -194,7 +218,11 @@
       "asymptotic-equivalence",
       "ruzsa-saias"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Ruzsa 1982 lower bound",
+      "the Saias 1998 upper bound",
+      "matching order of magnitude (≍)"
+    ]
   },
   {
     "id": "erdos-784-union-bound",
@@ -219,7 +247,11 @@
       "linear-bounds",
       "small-C"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the union (Boole) bound",
+      "counting multiples Σ x/a",
+      "the regime C < 1"
+    ]
   },
   {
     "id": "erdos-784-alpha",
@@ -244,7 +276,10 @@
       "critical-exponent",
       "large-C"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the real exponential function",
+      "the critical exponent α = e^{1−C}"
+    ]
   },
   {
     "id": "erdos-784-ruzsa-negative",
@@ -269,7 +304,11 @@
       "phase-transition",
       "ruzsa"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieving function H_C(x)",
+      "the critical exponent α = e^{1−C}",
+      "x^{α+o(1)} power-law growth"
+    ]
   },
   {
     "id": "erdos-784-weingartner",
@@ -294,7 +333,10 @@
       "weingartner",
       "modern-results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the critical exponent α = e^{1−C}",
+      "precise asymptotics x^α/log x"
+    ]
   },
   {
     "id": "erdos-784-negative-answer",
@@ -318,7 +360,10 @@
       "growth-rates",
       "negative-answer"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the polynomial-log bound HasPolynomialLogBound",
+      "power-law growth x^α with α < 1"
+    ]
   },
   {
     "id": "erdos-784-schinzel-szekeres",
@@ -343,7 +388,11 @@
       "schinzel-szekeres",
       "tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "reciprocal sum C = 1",
+      "explicit sieving constructions",
+      "beating any fixed power of log"
+    ]
   },
   {
     "id": "erdos-784-trivial",
@@ -366,7 +415,10 @@
       "well-posedness",
       "trivial-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility by 1",
+      "the sieved set being empty"
+    ]
   },
   {
     "id": "erdos-784-complete-answer",
@@ -391,7 +443,11 @@
       "phase-transition",
       "solved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the C ≤ 1 (YES) regime",
+      "the C > 1 (NO) regime",
+      "HasPolynomialLogBound"
+    ]
   },
   {
     "id": "erdos-784-main-statement",
@@ -414,6 +470,10 @@
       "complete-formalization",
       "sieve-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Ruzsa–Saias C = 1 asymptotic",
+      "the C > 1 power-law (Ruzsa / Weingartner)",
+      "combining the two regimes into one statement"
+    ]
   }
 ]

@@ -87,12 +87,15 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "infinitude-primes-4k1",
-    "infinitude-primes",
-    "infinitude-primes-4k3",
-    "prime-number-theorem",
+    "dirichlets-theorem",
     "fermat-two-squares",
-    "dirichlets-theorem"
+    "infinitude-primes",
+    "infinitude-primes-4k1",
+    "infinitude-primes-4k1-oq-01",
+    "infinitude-primes-4k1-oq-02",
+    "infinitude-primes-4k1-oq-02-oq-01",
+    "infinitude-primes-4k3",
+    "prime-number-theorem"
   ],
   "references": {
     "papers": [
@@ -130,6 +133,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ01.lean",
+      "filename": "InfinitudePrimes4k1OQ01.lean",
+      "lineCount": 94,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ01.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ02.lean",
+      "filename": "InfinitudePrimes4k1OQ02.lean",
+      "lineCount": 251,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ02.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ02OQ01.lean",
+      "filename": "InfinitudePrimes4k1OQ02OQ01.lean",
+      "lineCount": 215,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ02OQ01.lean"
     },
     {
       "path": "Proofs/InfinitudePrimes4k1OQ03.lean",

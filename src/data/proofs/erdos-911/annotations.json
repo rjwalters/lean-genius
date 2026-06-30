@@ -16,7 +16,11 @@
       "graph-density",
       "ramsey-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the size Ramsey number R̂(G)",
+      "graph density (edges per vertex, e ≥ Cn)",
+      "superlinear growth f(x)/x → ∞"
+    ]
   },
   {
     "id": "ann-911-simplegraph",
@@ -34,7 +38,10 @@
       "adjacency",
       "undirected-graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binary symmetric relations on a vertex type",
+      "undirected graphs without loops"
+    ]
   },
   {
     "id": "ann-911-edgecount",
@@ -52,7 +59,10 @@
       "edge-set",
       "degree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting edges via ordered pairs a < b to avoid double counting",
+      "average degree identity 2e(G)/n"
+    ]
   },
   {
     "id": "ann-911-dense",
@@ -70,7 +80,10 @@
       "edge-density",
       "average-degree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "edge count e(G) and vertex count n",
+      "the density inequality e(G) ≥ Cn"
+    ]
   },
   {
     "id": "ann-911-coloring",
@@ -88,7 +101,11 @@
       "ramsey-property",
       "coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2-edge-colorings of a graph",
+      "subgraph copies of G inside a host graph H",
+      "the Ramsey (unavoidable monochromatic copy) property"
+    ]
   },
   {
     "id": "ann-911-sizeramsey",
@@ -106,7 +123,11 @@
       "ramsey-number",
       "edge-minimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Ramsey property isRamseyFor(H, G)",
+      "minimizing edge count over all Ramsey host graphs H",
+      "Erdős–Faudree–Rousseau–Schelp size Ramsey definition (1978)"
+    ]
   },
   {
     "id": "ann-911-superlinear",
@@ -124,7 +145,10 @@
       "growth-rate",
       "asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits and the ∀M ∃x₀ ∀x>x₀ quantifier form of divergence",
+      "superlinear versus linear growth (f(x)/x → ∞)"
+    ]
   },
   {
     "id": "ann-911-conjecture",
@@ -142,7 +166,11 @@
       "erdos-conjecture",
       "density-ramsey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "superlinear growth of f",
+      "C-dense graphs (e ≥ Cn)",
+      "the size Ramsey number R̂(G)"
+    ]
   },
   {
     "id": "ann-911-beck",
@@ -160,7 +188,11 @@
       "paths",
       "linear-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "paths Pₙ and their edge count n−1",
+      "probabilistic / random embedding methods",
+      "the size Ramsey number R̂(G)"
+    ]
   },
   {
     "id": "ann-911-rodl",
@@ -178,7 +210,11 @@
       "complete-graphs",
       "tight-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete graphs Kₙ and the edge count n(n−1)/2",
+      "Θ (tight asymptotic) notation",
+      "the size Ramsey number R̂(G)"
+    ]
   },
   {
     "id": "ann-911-krss",
@@ -196,7 +232,11 @@
       "bounded-degree",
       "linear-ramsey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "maximum degree Δ of a graph",
+      "bounded-degree graph families",
+      "linear (in n) size Ramsey bounds"
+    ]
   },
   {
     "id": "ann-911-lowerbound",
@@ -214,7 +254,10 @@
       "lower-bound",
       "subgraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "G embeds as a subgraph of any Ramsey host H",
+      "edge count e(G) as a lower bound on e(H)"
+    ]
   },
   {
     "id": "ann-911-denseedges",
@@ -232,7 +275,10 @@
       "density-edges",
       "linear-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the density condition e(G) ≥ Cn",
+      "the trivial bound R̂(G) ≥ e(G)"
+    ]
   },
   {
     "id": "ann-911-status",
@@ -250,7 +296,9 @@
       "open-problem",
       "unknown"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the distinction between an open conjecture and a missing formalization"
+    ]
   },
   {
     "id": "ann-911-alternative",
@@ -268,7 +316,10 @@
       "polynomial-growth",
       "epsilon"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial growth rates C^(1+ε)",
+      "reformulating superlinearity as a polynomial gain over e(G)"
+    ]
   },
   {
     "id": "ann-911-vertexramsey",
@@ -286,7 +337,11 @@
       "vertex-ramsey",
       "complete-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the classical (vertex) Ramsey number R(G)",
+      "edge count of K_{R(G)}",
+      "size versus vertex Ramsey comparison"
+    ]
   },
   {
     "id": "ann-911-summary",
@@ -304,6 +359,10 @@
       "status",
       "summary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the trivial bound R̂(G) ≥ e(G)",
+      "the Beck, Rödl–Szemerédi, and KRSS partial results",
+      "the open question of whether density alone forces superlinear R̂"
+    ]
   }
 ]

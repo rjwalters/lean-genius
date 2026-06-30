@@ -17,7 +17,11 @@
       "Harmonic series",
       "Subset counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Harmonic Series",
+      "Exponential Growth Rates"
+    ]
   },
   {
     "id": "ann-e297-harmonicsum",
@@ -36,7 +40,11 @@
       "Unit fractions",
       "Rational arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Finite Sums",
+      "Rational Arithmetic"
+    ]
   },
   {
     "id": "ann-e297-egyptian-repr",
@@ -54,7 +62,11 @@
       "Partition theory"
     ],
     "mathContext": "See annotation content for formal details of egyptian representation",
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Unit Fractions",
+      "Set Membership"
+    ]
   },
   {
     "id": "ann-e297-egyptiancount",
@@ -72,7 +84,11 @@
       "Subset counting",
       "Exponential growth rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Power Set Counting",
+      "Subsets Of Integers",
+      "Asymptotic Growth"
+    ]
   },
   {
     "id": "ann-e297-examples",
@@ -90,7 +106,11 @@
       "Computational verification"
     ],
     "mathContext": "See annotation content for formal details of verified examples",
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Finset Sums",
+      "Rational Equalities"
+    ]
   },
   {
     "id": "ann-e297-bounds",
@@ -108,7 +128,11 @@
       "Counting bounds"
     ],
     "mathContext": "See annotation content for formal details of elementary bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "Power Set Cardinality",
+      "Counting Bounds",
+      "Exponential Functions"
+    ]
   },
   {
     "id": "ann-e297-question",
@@ -126,7 +150,11 @@
       "Asymptotic analysis"
     ],
     "mathContext": "See annotation content for formal details of the central question",
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Growth Rates",
+      "Asymptotic Notation",
+      "Upper Bounds"
+    ]
   },
   {
     "id": "ann-e297-steinerberger",
@@ -144,7 +172,11 @@
       "Upper bounds",
       "Exponential growth rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Bounds",
+      "Combinatorial Counting",
+      "Analytic Number Theory"
+    ]
   },
   {
     "id": "ann-e297-liusawhney-constant",
@@ -162,7 +194,11 @@
       "Integral equations",
       "Logarithmic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integral Equations",
+      "Logarithmic Density",
+      "Optimization Problems"
+    ]
   },
   {
     "id": "ann-e297-liusawhney-asymptotic",
@@ -180,7 +216,11 @@
       "Asymptotic analysis",
       "Matching bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Notation",
+      "Matching Bounds",
+      "Lower Bound Constructions"
+    ]
   },
   {
     "id": "ann-e297-conlon",
@@ -199,7 +239,11 @@
       "Rational targets",
       "Independent discovery"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Analysis",
+      "Rational Targets",
+      "Subexponential Growth"
+    ]
   },
   {
     "id": "ann-e297-mathoverflow",
@@ -217,7 +261,11 @@
       "Partial sums"
     ],
     "mathContext": "See annotation content for formal details of mathoverflow precedent (2017)",
-    "prerequisites": []
+    "prerequisites": [
+      "Partial Sums",
+      "Asymptotic Growth",
+      "Unit Fractions"
+    ]
   },
   {
     "id": "ann-e297-intuition",
@@ -236,6 +284,10 @@
       "Expected value",
       "Probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Expected Value",
+      "Harmonic Series Divergence"
+    ]
   }
 ]

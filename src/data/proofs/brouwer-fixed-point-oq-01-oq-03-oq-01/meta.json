@@ -2,6 +2,29 @@
   "id": "brouwer-fixed-point-oq-01-oq-03-oq-01",
   "title": "De-Axiomatizing the Ham Sandwich Theorem: Topological Core from Borsuk-Ulam",
   "slug": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Tactic",
+      "Proofs.BorsukUlam",
+      "Proofs.BrouwerFixedPoint",
+      "Proofs.BrouwerFixedPointOQ01OQ03"
+    ],
+    "opens": [
+      "BorsukUlam",
+      "BrouwerFixedPointOQ01OQ03",
+      "MeasureTheory"
+    ],
+    "namespace": "BrouwerFixedPointOQ01OQ03OQ01",
+    "lineCount": 698,
+    "axiomCount": 1,
+    "theoremCount": 20,
+    "definitionCount": 3,
+    "path": "Proofs/BrouwerFixedPointOQ01OQ03OQ01.lean",
+    "sorries": 0
+  },
   "description": "Separates the parent's axiomatized Ham Sandwich theorem into its topological core (proved here from the n-dimensional Borsuk-Ulam antipodal collapse) and its single genuine analytic input (Lebesgue continuity of the bisecting half-volume map). The abstract reduction (a continuous odd map S^n -> R^n with a 'zero implies bisected' bridge yields a bisecting point), the oddness of the half-volume discrepancy, and 'discrepancy zero implies equal volumes' are all proved. The residual continuity input is then sharpened: the vector-assembly step is discharged so that only continuity of each individual SCALAR slice-volume is needed — the atomic measure-theoretic fact — with the continuous discrepancy vector constructed via EuclideanSpace.equiv. 9 theorems, 3 definitions, 0 own axioms; rests on the inherited Borsuk-Ulam axiom (no_continuous_odd_nonzero_on_sphere) plus the stated scalar continuity hypothesis.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",

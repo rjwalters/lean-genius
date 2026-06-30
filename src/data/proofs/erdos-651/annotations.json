@@ -17,7 +17,11 @@
       "Erdős-Szekeres",
       "General position"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Discrete geometry",
+      "Ramsey theory",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-651-2",
@@ -36,7 +40,11 @@
       "Hyperplanes",
       "Non-degeneracy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear algebra",
+      "Affine geometry",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-651-3",
@@ -55,7 +63,11 @@
       "Extreme points",
       "Convex polytopes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Convex geometry",
+      "Real analysis",
+      "Set theory"
+    ]
   },
   {
     "id": "ann-651-4",
@@ -74,7 +86,11 @@
       "Extremal functions",
       "Minimax"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal combinatorics",
+      "Ramsey theory",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-651-5",
@@ -93,7 +109,11 @@
       "Convex polygons",
       "Suk's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics",
+      "Plane geometry",
+      "History of mathematics"
+    ]
   },
   {
     "id": "ann-651-6",
@@ -112,7 +132,11 @@
       "Lower bounds",
       "Dimension dependence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Quantifier logic",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-651-7",
@@ -131,7 +155,11 @@
       "Inductive constructions",
       "Dimension 3"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic notation",
+      "Inductive constructions",
+      "Discrete geometry"
+    ]
   },
   {
     "id": "ann-651-8",
@@ -150,6 +178,10 @@
       "Disproof",
       "Counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof by contradiction",
+      "Lean 4 tactic mode",
+      "Real arithmetic"
+    ]
   }
 ]

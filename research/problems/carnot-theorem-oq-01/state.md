@@ -1,20 +1,25 @@
 # Research State: carnot-theorem-oq-01
 
 ## Current State
-**Phase**: COMPLETED
+**Phase**: OBSERVE
 **Path**: full
+**Since**: 2026-06-16T07:01:46-07:00
 **Iteration**: 1
 
 ## Current Focus
-Angle form of Carnot's theorem formalized and build-verified.
+Initial problem understanding. Read problem.md and gather context.
 
 ## Active Approach
-Half-angle linearization → polynomial identity → `linear_combination` modulo
-Pythagorean identities. See knowledge.md.
+None yet.
 
-## Deliverable
-`proofs/Proofs/CarnotTheorem.lean` — `CarnotTheorem.carnot_cos_sum` and
-`CarnotTheorem.carnot_cos_sq_sum`, 0 axioms, 0 sorries.
+## Attempt Count
+- Total attempts: 0
+- Current approach attempts: 0
+- Approaches tried: 0
 
 ## Blockers
-None for the angle form. Metric (signed-distance) form left as a follow-up.
+None.
+
+## Next Action
+Read problem.md thoroughly and acquire full context.
+Then move to ORIENT phase to explore literature and related proofs.

@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "assumptions": "None (purely algebraic). The theorem four_oblique_corners is complete: it exhibits 4 distinct tour positions where the turn is oblique. The proof does not depend on native_decide or computational enumeration, unlike the 8×8 case.",
     "dateAdded": "2026-03-30",
-    "lineCount": 512,
+    "lineCount": 561,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -147,7 +147,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 512,
+    "lineCount": 561,
     "path": "Proofs/KnightsTourObliqueOQ01.lean",
     "axiomCount": 0,
     "sorries": 0,

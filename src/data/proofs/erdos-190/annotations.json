@@ -16,7 +16,11 @@
       "arithmetic progressions",
       "van der Waerden numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Arithmetic Progressions",
+      "Graph Coloring"
+    ]
   },
   {
     "id": "erdos-190-ap-def",
@@ -35,7 +39,11 @@
       "Finset.image",
       "common difference"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Common Difference",
+      "Finset Operations",
+      "Indexed Sequences"
+    ]
   },
   {
     "id": "erdos-190-coloring",
@@ -54,7 +62,11 @@
       "Finset.image",
       "injective coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset Cardinality",
+      "Injective Functions",
+      "Image Of A Finset"
+    ]
   },
   {
     "id": "erdos-190-canonical",
@@ -73,7 +85,11 @@
       "Ramsey property",
       "pattern forcing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Canonical Ramsey Theorem",
+      "Monochromatic Sets",
+      "Rainbow Sets"
+    ]
   },
   {
     "id": "erdos-190-h-function",
@@ -92,7 +108,11 @@
       "Szemerédi's theorem",
       "Ramsey number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.find",
+      "Szemeredi's Theorem",
+      "Well-Ordering Principle"
+    ]
   },
   {
     "id": "erdos-190-van-der-waerden",
@@ -111,7 +131,11 @@
       "2-colorings",
       "Ramsey comparison"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Van Der Waerden's Theorem",
+      "Two-Colorings",
+      "Monochromatic Progressions"
+    ]
   },
   {
     "id": "erdos-190-asymptotics",
@@ -130,7 +154,11 @@
       "k-th root",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Growth Rates",
+      "Limits To Infinity",
+      "Super-Exponential Functions"
+    ]
   },
   {
     "id": "erdos-190-small-cases",
@@ -149,7 +177,11 @@
       "small Ramsey numbers",
       "computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Small Ramsey Numbers",
+      "Explicit Bounds",
+      "Computational Verification"
+    ]
   },
   {
     "id": "erdos-190-connections",
@@ -168,7 +200,11 @@
       "pigeonhole principle",
       "density arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Szemeredi's Theorem",
+      "Pigeonhole Principle",
+      "Density Arguments"
+    ]
   },
   {
     "id": "erdos-190-summary",
@@ -187,7 +223,11 @@
       "open problem",
       "summary theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Numbers",
+      "Conjunction Of Claims",
+      "Open Problems"
+    ]
   },
   {
     "id": "erdos-190-positivity",
@@ -206,6 +246,10 @@
       "positive Ramsey number",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Positive Integers",
+      "Ramsey Number Existence",
+      "Base Case Reasoning"
+    ]
   }
 ]

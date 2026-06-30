@@ -1,0 +1,62 @@
+[
+  {
+    "id": "burnside-oq040202-ann-symm",
+    "proofId": "burnside-counting-oq-04-oq-02-oq-02",
+    "range": { "startLine": 52, "endLine": 88 },
+    "type": "technique",
+    "title": "Fixed-by-reflection is a symmetry condition",
+    "content": "reflection_smul_apply unfolds the parent's dihedral colouring action at a reflection: since the position permutation ρ(sr i) = Equiv.subLeft (-i) is the involution p ↦ -i - p, the action reads (sr i • c) p = c (-i - p). fixed_iff_symm then recasts the fixed-point equation sr i • c = c as the symmetry ∀ p, c (-i - p) = c p. This is the bridge that turns a question about a group action into an involution-orbit count: a fixed colouring is one that is constant on the orbits of refl i : p ↦ -i - p (recorded as the involution refl_involutive).",
+    "mathContext": "$(sr_i \\bullet c)(p) = c(-i - p)$, so $sr_i \\bullet c = c \\iff \\forall p,\\; c(-i-p) = c(p)$, i.e. $c$ is constant on the orbits of the involution $p \\mapsto -i-p$.",
+    "significance": "key",
+    "relatedConcepts": ["fixed points of a group action", "Equiv.subLeft", "involution", "reflection symmetry"],
+    "prerequisites": ["group actions", "permutations of ZMod n"]
+  },
+  {
+    "id": "burnside-oq040202-ann-involution-count",
+    "proofId": "burnside-counting-oq-04-oq-02-oq-02",
+    "range": { "startLine": 89, "endLine": 206 },
+    "type": "insight",
+    "title": "Counting invariant 2-colourings of any involution, elementarily",
+    "content": "card_invariant_colorings_involutive is the structural heart: for ANY involution σ on a finite type α, the 2-colourings constant on σ-orbits number 2^{(|α| + |Fix σ|)/2}. The proof deliberately avoids group actions, Burnside, and orbit-quotient Fintype instances. Instead it indexes α through ℕ by f a = (Fintype.equivFin α a).val (injective), and chooses for each orbit {a, σ a} the smaller-indexed element as representative, rep a = if f a ≤ f (σ a) then a else σ a. Invariant colourings biject with arbitrary functions on the representative set R = {a : f a ≤ f (σ a)} (forward: restrict; backward: pull back along rep, well-defined because rep is σ-invariant and constant on R). The count |R| = (|α| + |Fix σ|)/2 follows by pure finite arithmetic: R = L ∪ Fix is disjoint (L = {f a < f (σ a)}), R.card + G.card = |α| (G = {f (σ a) < f a} is the complement of R), and |L| = |G| because σ is a bijection swapping L and G; omega closes it.",
+    "mathContext": "An involution's orbits are fixed points (singletons) and transposed pairs, so the number of orbits is $(|\\alpha| + |\\mathrm{Fix}\\,\\sigma|)/2$ and the invariant 2-colourings number $2^{(|\\alpha| + |\\mathrm{Fix}\\,\\sigma|)/2}$.",
+    "significance": "central",
+    "relatedConcepts": ["involution orbit structure", "Fintype.equivFin", "orbit representatives", "Finset.card_nbij'", "double counting"],
+    "prerequisites": ["finite cardinality arithmetic", "explicit bijections between Fintypes"]
+  },
+  {
+    "id": "burnside-oq040202-ann-perreflection",
+    "proofId": "burnside-counting-oq-04-oq-02-oq-02",
+    "range": { "startLine": 207, "endLine": 224 },
+    "type": "technique",
+    "title": "The per-reflection count reduces to a doubling-map fiber",
+    "content": "card_fixedBy_reflection specialises the involution count to refl i, giving |Fix(sr i)| = 2^{(n + reflFix i)/2}, where reflFix i = #{p : refl i p = p} = #{p : 2p = -i} is the number of fixed beads. The reduction is an Equiv.subtypeEquivRight from the fixed set of sr i to the invariant colourings of refl i (via fixed_iff_symm), followed by card_invariant_colorings_involutive and ZMod.card. Everything about the parity of n is now isolated in the single arithmetic quantity reflFix i — the size of the fiber of the doubling map p ↦ 2p over -i.",
+    "mathContext": "$|\\mathrm{Fix}(sr_i)| = 2^{(n + f_i)/2}$ with $f_i = \\#\\{p : 2p = -i\\}$, the fiber of doubling over $-i$.",
+    "significance": "key",
+    "relatedConcepts": ["Equiv.subtypeEquivRight", "fibers of the doubling map", "ZMod.card"],
+    "prerequisites": ["the involution count", "ZMod n arithmetic"]
+  },
+  {
+    "id": "burnside-oq040202-ann-parity",
+    "proofId": "burnside-counting-oq-04-oq-02-oq-02",
+    "range": { "startLine": 225, "endLine": 366 },
+    "type": "insight",
+    "title": "Parity of n controls the fixed-bead count",
+    "content": "The fiber count reflFix i = #{p : 2p = -i} depends entirely on the doubling map p ↦ 2p on ZMod n. For ODD n, 2 is a unit (ZMod.isUnit_iff_coprime with Nat.coprime_two_left), so doubling is a bijection (Units.mulLeft_bijective) and 2p = -i has a unique solution: reflFix_odd gives reflFix i = 1 for every axis. For EVEN n = 2m, two_mul_eq_zero_iff pins the doubling kernel to exactly {0, m}, so the solution set of 2p = -i is empty or a coset of {0, n/2}: reflFix_even gives reflFix i ∈ {0, 2}. The even case never needs to identify which axes have a fixed pair pointwise — it only needs the count.",
+    "mathContext": "Odd $n$: $2 \\in (\\mathbb{Z}/n)^\\times$, so $f_i = 1$. Even $n = 2m$: $\\ker(\\cdot 2) = \\{0, m\\}$, so $f_i \\in \\{0, 2\\}$.",
+    "significance": "central",
+    "relatedConcepts": ["units in ZMod n", "doubling kernel", "coset of a kernel", "coprimality with 2"],
+    "prerequisites": ["units and bijections", "ZMod.natCast_eq_zero_iff"]
+  },
+  {
+    "id": "burnside-oq040202-ann-doublecount",
+    "proofId": "burnside-counting-oq-04-oq-02-oq-02",
+    "range": { "startLine": 367, "endLine": 428 },
+    "type": "technique",
+    "title": "A fiberwise double-count fixes the even-n split",
+    "content": "The even reflection sum needs to know how many of the n reflections have a fixed pair. reflFix_sum proves Σ_{i∈ZMod n} reflFix i = n for EVERY n by a fiberwise double-count: writing reflFix i = Σ_p [refl i p = p] and swapping sums (Finset.sum_comm) gives Σ_p Σ_i [2p = -i] = Σ_p 1 = n, because for each bead p exactly one axis i = -2p has it as fixed point. With reflFix i ∈ {0, 2} (reflFix_even) this forces exactly n/2 reflections with reflFix i = 2 (card_even_reflections, by omega from 2·#{i} = n). reflection_sum_even then writes each term additively as 2^{n/2} + (if reflFix i = 2 then 2^{n/2} else 0) — using only the positive filter, avoiding the negated filter from Finset.sum_ite — and sums to 3·(n/2)·2^{n/2}.",
+    "mathContext": "$\\sum_i f_i = \\#\\{(i,p) : 2p = -i\\} = \\sum_p 1 = n$, and $f_i \\in \\{0,2\\}$ force $\\#\\{i : f_i = 2\\} = n/2$, giving $\\sum_i 2^{(n+f_i)/2} = 3\\,(n/2)\\,2^{n/2}$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_comm", "fiberwise counting", "Finset.sum_filter", "omega"],
+    "prerequisites": ["double counting over a Finset", "filter cardinalities"]
+  }
+]

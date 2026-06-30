@@ -17,7 +17,11 @@
       "Combinatorial game theory",
       "Divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility",
+      "Combinatorial game theory",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-e872-antichain-def",
@@ -37,7 +41,11 @@
       "Antichains",
       "Multiplicative number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Partial orders",
+      "Divisibility relation",
+      "Antichains"
+    ]
   },
   {
     "id": "ann-e872-equivalence",
@@ -56,7 +64,10 @@
       "Logical equivalence",
       "Constructive proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Propositional logic",
+      "Contrapositive reasoning"
+    ]
   },
   {
     "id": "ann-e872-game-board",
@@ -74,7 +85,10 @@
       "Set comprehension",
       "Natural number constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set-builder notation",
+      "Natural numbers"
+    ]
   },
   {
     "id": "ann-e872-legal-move",
@@ -93,7 +107,10 @@
       "Antichain extension",
       "Local vs global properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Antichains",
+      "Divisibility relation"
+    ]
   },
   {
     "id": "ann-e872-maximal",
@@ -112,7 +129,11 @@
       "Saturation",
       "Terminal game states"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Maximal elements",
+      "Antichains",
+      "Partial orders"
+    ]
   },
   {
     "id": "ann-e872-upper-bound",
@@ -131,7 +152,11 @@
       "Chain decomposition",
       "Antichain bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dilworth's theorem",
+      "Chain decomposition",
+      "Antichains"
+    ]
   },
   {
     "id": "ann-e872-prime-bound",
@@ -150,7 +175,11 @@
       "Prime counting function",
       "Bertrand's postulate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "Prime counting function",
+      "Bertrand's postulate"
+    ]
   },
   {
     "id": "ann-e872-question-1",
@@ -169,7 +198,11 @@
       "Game duration",
       "Minimax theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic notation",
+      "Minimax principle",
+      "Combinatorial game theory"
+    ]
   },
   {
     "id": "ann-e872-question-2",
@@ -188,7 +221,11 @@
       "Universal quantifier",
       "Game-theoretic optimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic notation",
+      "Quantifiers",
+      "Combinatorial game theory"
+    ]
   },
   {
     "id": "ann-e872-open-status",
@@ -207,7 +244,10 @@
       "Epistemic axioms",
       "Current mathematical knowledge"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open problems",
+      "Mathematical logic"
+    ]
   },
   {
     "id": "ann-e872-furedi-seress",
@@ -226,7 +266,11 @@
       "Ramsey theory",
       "Hajnal's game"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory",
+      "Triangle-free graphs",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e872-biro-horn",
@@ -245,7 +289,10 @@
       "Upper bounds",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory",
+      "Extremal graph theory"
+    ]
   },
   {
     "id": "ann-e872-primes-antichain",
@@ -264,7 +311,10 @@
       "Fundamental theorem of arithmetic",
       "Constructive proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "Fundamental theorem of arithmetic"
+    ]
   },
   {
     "id": "ann-e872-upper-half",
@@ -283,7 +333,10 @@
       "Tight bounds",
       "Integer arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility",
+      "Integer arithmetic"
+    ]
   },
   {
     "id": "ann-e872-first-player",
@@ -302,7 +355,10 @@
       "Game asymmetry",
       "Maximal structures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorial game theory",
+      "Antichains"
+    ]
   },
   {
     "id": "ann-e872-game-value",
@@ -321,7 +377,10 @@
       "Game value",
       "Computational complexity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Minimax theorem",
+      "Computational complexity"
+    ]
   },
   {
     "id": "ann-e872-conjecture",
@@ -340,7 +399,10 @@
       "Linear vs sublinear growth",
       "Open conjectures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Open conjectures"
+    ]
   },
   {
     "id": "ann-e872-summary",
@@ -359,6 +421,9 @@
       "Conjunction",
       "Known results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical logic",
+      "Combinatorial game theory"
+    ]
   }
 ]

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 6, "endLine": 54 },
+    "type": "context",
+    "title": "Geometry of numbers vs. pigeonhole",
+    "content": "The docstring frames the contribution: Mathlib already proves Dirichlet's theorem by the pigeonhole principle, but this file gives the geometry-of-numbers proof, deriving it from the gallery's integer-lattice Minkowski theorem. The region R = {|x| ≤ N+½, |αx−y| ≤ 1/N} has area 4+2/N > 4, so the strict form of Minkowski applies with no boundary/compactness case. Honesty notes: the Minkowski-route bound is 1/N (not the sharper pigeonhole 1/(N+1)), and N=1 is trivial.",
+    "mathContext": "$R = \\{(x,y) : |x| \\le N+\\tfrac12,\\ |\\alpha x - y| \\le \\tfrac1N\\}$, $\\;\\text{area} = 4 + \\tfrac2N > 4$.",
+    "significance": "context",
+    "relatedConcepts": ["geometry of numbers", "Minkowski's theorem", "Dirichlet approximation", "pigeonhole principle"],
+    "prerequisites": ["lattices", "convex bodies", "Diophantine approximation"]
+  },
+  {
+    "id": "ann-shear",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 56, "endLine": 78 },
+    "type": "definition",
+    "title": "The area-preserving shear (det = 1)",
+    "content": "Defines the shear (x,t) ↦ (x, αx+t) as Matrix.toLin' of the 2×2 matrix [[1,0],[α,1]], with simp lemmas computing its two output coordinates, and proves shear_det = 1 via LinearMap.det_toLin' and Matrix.det_fin_two_of. Determinant 1 is precisely what makes the linear change of variables area-preserving, so the sheared region inherits the box's area with no Jacobian correction beyond the factor |det| = 1.",
+    "mathContext": "$S = \\begin{pmatrix}1&0\\\\\\alpha&1\\end{pmatrix}$, $\\;S(x,t) = (x, \\alpha x + t)$, $\\;\\det S = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["shear transformation", "determinant", "linear map", "area preservation", "Matrix.toLin'"],
+    "prerequisites": ["linear algebra", "2×2 determinants"]
+  },
+  {
+    "id": "ann-box",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 80, "endLine": 107 },
+    "type": "definition",
+    "title": "The inflated axis-aligned box and its volume",
+    "content": "Builds the box [−(N+½),N+½]×[−1/N,1/N] as a product of intervals (box, with half-lengths boxR), and proves it is convex and centrally symmetric. box_volume computes its Lebesgue measure (2(N+½))·(2/N) via volume_pi_pi and Real.volume_Icc. Inflating the x-half-width to N+½ (rather than N) is what pushes the area strictly above 4 so the strict Minkowski theorem applies.",
+    "mathContext": "$\\text{vol}(\\text{box}) = \\big(2(N+\\tfrac12)\\big)\\cdot\\big(2\\cdot\\tfrac1N\\big) = (2N+1)\\tfrac2N$.",
+    "significance": "supporting",
+    "relatedConcepts": ["product measure", "interval volume", "central symmetry", "convexity"],
+    "prerequisites": ["Lebesgue measure", "product sets"]
+  },
+  {
+    "id": "ann-region-volume",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 108, "endLine": 137 },
+    "type": "theorem",
+    "title": "The region has area 4 + 2/N > 4",
+    "content": "Defines region = shear '' box and transports convexity and central symmetry through the linear map. region_volume_gt is the quantitative heart: by Measure.addHaar_image_linearMap the area is |det shear|·(box area) = 1·(4+2/N), which exceeds 2² = 4 for N > 0. This is the precise hypothesis Minkowski's strict theorem consumes.",
+    "mathContext": "$\\text{vol}(\\text{region}) = |\\det S|\\cdot\\text{vol}(\\text{box}) = 4 + \\tfrac2N > 4 = 2^2$.",
+    "significance": "critical",
+    "relatedConcepts": ["change of variables", "addHaar_image_linearMap", "Minkowski hypothesis", "volume of linear image"],
+    "prerequisites": ["Haar measure", "linear image volume formula"]
+  },
+  {
+    "id": "ann-lattice-coords",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 139, "endLine": 150 },
+    "type": "theorem",
+    "title": "Integer coordinates of a lattice point",
+    "content": "stdLattice_coord_int shows that a point of the standard integer lattice ℤ² has integer coordinates, using Module.Basis.mem_span_iff_repr_mem on the standard basis. This is the single bridge converting the abstract lattice point Minkowski returns (a member of the ℤ-span of the standard basis) into the concrete integers p, q of the approximation.",
+    "mathContext": "$v \\in \\text{span}_{\\mathbb{Z}}(\\text{stdBasis}) \\Rightarrow \\forall i,\\ \\exists k \\in \\mathbb{Z},\\ v_i = k$.",
+    "significance": "key",
+    "relatedConcepts": ["integer lattice", "ℤ-span", "basis representation", "Module.Basis.mem_span_iff_repr_mem"],
+    "prerequisites": ["modules over ℤ", "bases and coordinates"]
+  },
+  {
+    "id": "ann-dirichlet-approx",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 152, "endLine": 245 },
+    "type": "theorem",
+    "title": "Dirichlet's approximation theorem (main result)",
+    "content": "dirichlet_approx: for every α and N ≥ 1 there are integers 0 < q ≤ N, p with |qα−p| ≤ 1/N. N=1 is the rounding bound abs_sub_round. For N ≥ 2, Minkowski yields a nonzero lattice point in region; unpacking it as a sheared box point gives |q₀| ≤ N+½ (so |q₀| ≤ N by integrality) and |αq₀−p₀| ≤ 1/N. Crucially q₀ ≠ 0 — else |p₀| ≤ 1/N < 1 forces p₀ = 0 and the whole point to vanish, contradicting nonzeroness — and a sign flip arranges q > 0.",
+    "mathContext": "$\\exists\\, q,p \\in \\mathbb{Z}:\\ 0 < q \\le N \\;\\wedge\\; |q\\alpha - p| \\le \\tfrac1N$.",
+    "significance": "critical",
+    "relatedConcepts": ["Dirichlet's theorem", "lattice point extraction", "sign normalisation", "nonzero point argument"],
+    "prerequisites": ["Minkowski's theorem", "integer rounding", "case analysis"]
+  },
+  {
+    "id": "ann-dirichlet-sq",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 246, "endLine": 269 },
+    "type": "theorem",
+    "title": "Corollary: the 1/q² bound",
+    "content": "dirichlet_sq_bound divides the main inequality by q to recover the classical form |α − p/q| ≤ 1/(qN) ≤ 1/q². The step uses q ≤ N to bound 1/(qN) ≤ 1/q² (one_div_le_one_div_of_le with q² ≤ qN), gcongr, and field manipulation. This is the consequence that seeds continued-fraction and Hurwitz-type results.",
+    "mathContext": "$|\\alpha - p/q| \\le \\dfrac{1}{qN} \\le \\dfrac{1}{q^2}$, using $q \\le N$.",
+    "significance": "key",
+    "relatedConcepts": ["rational approximation", "1/q² bound", "continued fractions", "Hurwitz's theorem"],
+    "prerequisites": ["inequality manipulation", "division of reals"]
+  }
+]

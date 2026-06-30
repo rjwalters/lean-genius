@@ -53,6 +53,11 @@ namespace CubeRoot3IrrationalOQ04
 
 open CubeRoot3Irrational
 
+-- The two deepest-quotient proofs propagate the largest convergent sandwiches
+-- (numerators/denominators ≈ 10⁶) through eleven/twelve nested CF reciprocals;
+-- the resulting `linarith` goals exceed the default 200000-heartbeat budget.
+set_option maxHeartbeats 1600000
+
 /-- **Thirteenth partial quotient `a₁₂ = 8`.**  The next term of the simple
 continued fraction of `∛3` (OEIS A002945, 0-indexed prefix
 `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, …]`).  Extends `cbrt3_a11` by one
@@ -191,18 +196,23 @@ theorem cbrt3_a12 :
   have hx12_gt : (3/25 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5 := by linarith
   have hx12_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5 < (1/8 : ℝ) := by linarith
   have hpos12 : (0 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5 := by linarith
+  -- Abbreviate the 12-deep tail `x₁₂` so the floor reasoning below operates on a
+  -- single opaque variable rather than re-normalising the giant nested-reciprocal
+  -- term (which otherwise blows the heartbeat budget). All three bounds above are
+  -- already stated in terms of this expression, so `set` folds them automatically.
+  set x12 := 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5 with hx12def
   -- Floor antisymmetry on `1/x₁₂ ∈ (8, 25/3) ⊂ (8, 9)`.
   apply le_antisymm
   · -- `⌊1/x₁₂⌋ ≤ 8`: from `1/x₁₂ < 9`.
-    have hlt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) < (9 : ℝ) := by
+    have hlt : 1 / x12 < (9 : ℝ) := by
       rw [div_lt_iff₀ hpos12]
       linarith [hx12_gt]
-    have hflt : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5)⌋ < (9 : ℤ) := by
+    have hflt : ⌊1 / x12⌋ < (9 : ℤ) := by
       rw [Int.floor_lt]
       exact_mod_cast hlt
     omega
   · -- `8 ≤ ⌊1/x₁₂⌋`: from `8 ≤ 1/x₁₂`.
-    have hge : (8 : ℝ) ≤ 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) := by
+    have hge : (8 : ℝ) ≤ 1 / x12 := by
       rw [le_div_iff₀ hpos12]
       linarith [hx12_lt]
     rw [Int.le_floor]
@@ -355,16 +365,21 @@ theorem cbrt3_a13 :
   have hx13_gt : (3/10 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) - 8 := by linarith
   have hx13_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) - 8 < (1/3 : ℝ) := by linarith
   have hpos13 : (0 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) - 8 := by linarith
+  -- Abbreviate the 13-deep tail `x₁₃` so the floor reasoning below operates on a
+  -- single opaque variable rather than re-normalising the giant nested-reciprocal
+  -- term (which otherwise blows the heartbeat budget). All three bounds above are
+  -- already stated in terms of this expression, so `set` folds them automatically.
+  set x13 := 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) - 8 with hx13def
   -- Floor antisymmetry on `1/x₁₃ ∈ (3, 10/3) ⊂ (3, 4)`.
   apply le_antisymm
-  · have hlt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) - 8) < (4 : ℝ) := by
+  · have hlt : 1 / x13 < (4 : ℝ) := by
       rw [div_lt_iff₀ hpos13]
       linarith [hx13_gt]
-    have hflt : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) - 8)⌋ < (4 : ℤ) := by
+    have hflt : ⌊1 / x13⌋ < (4 : ℤ) := by
       rw [Int.floor_lt]
       exact_mod_cast hlt
     omega
-  · have hge : (3 : ℝ) ≤ 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) - 8) := by
+  · have hge : (3 : ℝ) ≤ 1 / x13 := by
       rw [le_div_iff₀ hpos13]
       linarith [hx13_lt]
     rw [Int.le_floor]

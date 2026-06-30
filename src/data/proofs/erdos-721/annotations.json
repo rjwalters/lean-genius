@@ -16,7 +16,12 @@
       "Ramsey theory",
       "arithmetic progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "van der Waerden's theorem (existence of W(r,k))",
+      "2-colorings of {1,...,n}",
+      "arithmetic progression (AP) definition",
+      "off-diagonal Ramsey-type numbers"
+    ]
   },
   {
     "id": "ann-e721-W-def",
@@ -35,7 +40,12 @@
       "monotonicity",
       "Ramsey numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiom declarations in Lean 4",
+      "functions ℕ → ℕ",
+      "monotonicity of integer functions",
+      "k-term arithmetic progression"
+    ]
   },
   {
     "id": "ann-e721-known-values",
@@ -53,7 +63,12 @@
       "exhaustive search",
       "computational Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "definition of W(3,k)",
+      "2-coloring exhaustive search",
+      "ann-e721-W-def (axiomatized W function)",
+      "computational intractability"
+    ]
   },
   {
     "id": "ann-e721-graham",
@@ -72,7 +87,12 @@
       "disproved conjecture",
       "Green's result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial growth bound O(k²)",
+      "existential quantifier over constant C",
+      "negation of a statement (¬)",
+      "ann-e721-green (Green's superpolynomial lower bound)"
+    ]
   },
   {
     "id": "ann-e721-green",
@@ -91,7 +111,12 @@
       "dense model theorem",
       "regularity methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real.exp and Real.log (Mathlib)",
+      "logarithm and iterated logarithm asymptotics",
+      "dense model theorems",
+      "Szemerédi regularity / additive combinatorics methods"
+    ]
   },
   {
     "id": "ann-e721-hunter",
@@ -110,7 +135,12 @@
       "density increment",
       "conjectured truth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e721-green (Green's 4/3-exponent bound)",
+      "density increment argument",
+      "logarithmic exponent in exp((log k)^a)",
+      "Real.exp, Real.log"
+    ]
   },
   {
     "id": "ann-e721-superpolynomial",
@@ -129,7 +159,12 @@
       "asymptotic comparison",
       "growth rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e721-hunter (Hunter's lower bound)",
+      "asymptotic comparison exp(...) vs k^d",
+      "eventually-for-all-large-k (∀ k ≥ N)",
+      "growth rate of iterated logarithm"
+    ]
   },
   {
     "id": "ann-e721-schoen",
@@ -148,7 +183,12 @@
       "Erdős's challenge",
       "3-AP free sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subexponential vs exponential growth",
+      "Real.rpow (fractional powers k^c)",
+      "3-AP-free sets",
+      "Erdős's second challenge W(3,k) < exp(k^c)"
+    ]
   },
   {
     "id": "ann-e721-bloom-sisask",
@@ -167,7 +207,12 @@
       "Kelley-Meka",
       "logarithmic exponent"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e721-schoen (Schoen's exp(k^c) bound)",
+      "ann-e721-kelley-meka (3-AP-free density bound)",
+      "logarithmic exponent (log k)^9",
+      "Real.exp, Real.log"
+    ]
   },
   {
     "id": "ann-e721-roth",
@@ -186,7 +231,12 @@
       "3-AP density",
       "coloring-density duality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Roth's theorem on 3-APs",
+      "r₃(n): max size of 3-AP-free subset",
+      "density of a subset S ⊆ {1,...,n}",
+      "coloring-density duality (red set bounded ⇒ blue set large)"
+    ]
   },
   {
     "id": "ann-e721-behrend",
@@ -205,7 +255,12 @@
       "sphere construction",
       "r₃(n) lower bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e721-roth (r₃(n) and 3-AP-free sets)",
+      "Behrend's high-dimensional sphere construction",
+      "n·exp(-c√(log n)) bound",
+      "lower bounds on r₃(n)"
+    ]
   },
   {
     "id": "ann-e721-kelley-meka",
@@ -224,7 +279,12 @@
       "almost-periodicity",
       "Bogolyubov's method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e721-roth (Roth density connection)",
+      "almost-periodicity in additive combinatorics",
+      "Bogolyubov's method",
+      "density bound exp(-c(log n)^{1/12})"
+    ]
   },
   {
     "id": "ann-e721-growth",
@@ -243,7 +303,12 @@
       "o(1) notation",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e721-hunter (lower bound exponent 2)",
+      "ann-e721-bloom-sisask (upper bound exponent 9)",
+      "o(1) (little-o) asymptotic notation",
+      "definition with ∀ ε > 0 quantifier"
+    ]
   },
   {
     "id": "ann-e721-gap",
@@ -262,7 +327,12 @@
       "logarithmic exponents",
       "open direction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e721-hunter (lower bound exp(c(log k)²/log log k))",
+      "ann-e721-bloom-sisask (upper bound exp(C(log k)^9))",
+      "ann-e721-kelley-meka (density bound)",
+      "logarithmic exponents comparison"
+    ]
   },
   {
     "id": "ann-e721-szemeredi",
@@ -281,6 +351,11 @@
       "density regularity",
       "k-term APs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e721-roth (Roth's theorem, k=3 case)",
+      "Szemerédi's theorem (k-term APs at positive density)",
+      "density δn of a subset",
+      "existence of van der Waerden numbers"
+    ]
   }
 ]

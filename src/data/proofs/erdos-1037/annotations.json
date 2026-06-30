@@ -354,7 +354,11 @@
       "optimal constant",
       "3/4 threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "degree multiplicity",
+      "distinct degree count",
+      "graphic degree sequences"
+    ]
   },
   {
     "id": "ann-1037-exceedshalf",
@@ -436,7 +440,11 @@
       "Erdős 1947",
       "probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "clique number and independence number",
+      "Ramsey's theorem",
+      "first moment method"
+    ]
   },
   {
     "id": "ann-1037-nohelp",
@@ -559,7 +567,11 @@
       "optimal bound",
       "extremal degree sequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limited multiplicity constraint",
+      "handshaking lemma parity",
+      "asymptotic optimality"
+    ]
   },
   {
     "id": "ann-1037-maxdistinct",
@@ -639,7 +651,11 @@
       "general bound conjecture",
       "multiplicity-degree tradeoff"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pigeonhole principle",
+      "k-bounded multiplicity",
+      "degree sequence realizability"
+    ]
   },
   {
     "id": "ann-1037-genconj",

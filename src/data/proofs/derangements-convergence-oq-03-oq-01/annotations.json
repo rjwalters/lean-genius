@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "derangements-convergence-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "context",
+    "title": "Three Equivalent Rounding Forms of D(n)",
+    "content": "The docstring frames the packaging goal. The parent ($\\texttt{derangements-convergence-oq-03}$) established the nearest-integer identity $D(n) = \\mathrm{round}(n!/e)$ for $n \\ge 2$; this entry repackages it as the three equivalent integer-rounding forms found in the literature — round, floor $\\lfloor n!/e + 1/2 \\rfloor$, and ceiling $\\lceil n!/e - 1/2 \\rceil$ — all derived from a single strict two-sided bound. It is candidly described as a routine packaging corollary (citability, not novelty), and is deliberately self-contained, depending only on the base $\\texttt{DerangementsConvergence}$ entry.",
+    "mathContext": "$D(n) = \\mathrm{round}(n!/e) = \\lfloor n!/e + \\tfrac12 \\rfloor = \\lceil n!/e - \\tfrac12 \\rceil$ for $n \\ge 2$.",
+    "significance": "context",
+    "relatedConcepts": ["derangements", "rounding functions", "subfactorial", "Euler's number"],
+    "prerequisites": ["floor and ceiling functions", "derangements"]
+  },
+  {
+    "id": "ann-strict-bound",
+    "proofId": "derangements-convergence-oq-03-oq-01",
+    "range": { "startLine": 47, "endLine": 71 },
+    "type": "technique",
+    "title": "The Engine: the Strict Two-Sided Bound |D(n) − n!/e| < 1/2",
+    "content": "`abs_derangements_sub_lt_half` is the single fact every rounding form rests on. It is extracted from the base entry's `derangements_convergence_rate` ($|D/n! - e^{-1}| \\le 1/(n+1)!$): multiplying through by $n!$ converts the relative error into the absolute error $|D - n!/e| \\le n!/(n+1)! = 1/(n+1)$, and $1/(n+1) < 1/2$ for $n \\ge 2$ gives the strict bound. The Lean proof manages the division carefully — `abs_div` with `abs_of_pos` on the positive factorial, then a `calc` chain telescoping $1/(n+1)! \\cdot n! = 1/(n+1) < 1/2$.",
+    "mathContext": "$|D(n) - n!/e| \\le \\dfrac{n!}{(n+1)!} = \\dfrac{1}{n+1} < \\dfrac12$ for $n \\ge 2$.",
+    "significance": "key",
+    "relatedConcepts": ["convergence rate", "absolute vs relative error", "factorial telescoping"],
+    "prerequisites": ["error bounds", "factorial arithmetic"]
+  },
+  {
+    "id": "ann-floor",
+    "proofId": "derangements-convergence-oq-03-oq-01",
+    "range": { "startLine": 73, "endLine": 86 },
+    "type": "theorem",
+    "title": "Floor Form via Int.floor_eq_iff",
+    "content": "`derangements_eq_floor`: $D(n) = \\lfloor n!/e + 1/2 \\rfloor$. Writing $x = n!/e$ and $D = D(n)$, the strict bound $|D - x| < 1/2$ unpacks (via `abs_lt`) into $-1/2 < D - x < 1/2$, which is exactly the pair of inequalities `Int.floor_eq_iff` demands: $D \\le x + 1/2$ (from $D - x < 1/2$... here $D - x \\le 1/2$) and $x + 1/2 < D + 1$ (from $-1/2 < D - x$). Both side conditions close by `push_cast` + `linarith`.",
+    "mathContext": "$\\lfloor x + \\tfrac12 \\rfloor = D \\iff D \\le x + \\tfrac12 < D + 1$, supplied by $|D - x| < \\tfrac12$.",
+    "significance": "key",
+    "relatedConcepts": ["Int.floor_eq_iff", "floor function", "linarith"],
+    "prerequisites": ["floor characterization"]
+  },
+  {
+    "id": "ann-ceil",
+    "proofId": "derangements-convergence-oq-03-oq-01",
+    "range": { "startLine": 88, "endLine": 100 },
+    "type": "theorem",
+    "title": "Ceiling Form via Int.ceil_eq_iff",
+    "content": "`derangements_eq_ceil`: $D(n) = \\lceil n!/e - 1/2 \\rceil$, the dual of the floor form. The same strict bound yields the two `Int.ceil_eq_iff` conditions: $D - 1 < x - 1/2$ (from $D - x < 1/2$) and $x - 1/2 \\le D$ (from $-1/2 < D - x$, i.e. $x - 1/2 < D + 1/2$... giving $x - 1/2 \\le D$). Again `push_cast` + `linarith`. Floor-up-from-$x{-}1/2$ and floor-down-to-$x{+}1/2$ landing on the same $D$ reflects that $n!/e$ is never a half-integer.",
+    "mathContext": "$\\lceil x - \\tfrac12 \\rceil = D \\iff D - 1 < x - \\tfrac12 \\le D$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.ceil_eq_iff", "ceiling function", "irrationality of e"],
+    "prerequisites": ["ceiling characterization"]
+  },
+  {
+    "id": "ann-round-agree",
+    "proofId": "derangements-convergence-oq-03-oq-01",
+    "range": { "startLine": 102, "endLine": 117 },
+    "type": "concept",
+    "title": "Round Form and Floor/Ceiling Agreement",
+    "content": "`derangements_eq_round` re-derives the parent identity $D(n) = \\mathrm{round}(n!/e)$ self-containedly: `round_eq` rewrites $\\mathrm{round}\\,x = \\lfloor x + 1/2 \\rfloor$, then the floor form finishes. `floor_eq_ceil_forms` records that the floor and ceiling expressions coincide (both equal $D(n)$) — the concrete manifestation of $n!/e$ never being a half-integer (since $e$ is irrational), so rounding is unambiguous in this range.",
+    "mathContext": "$\\mathrm{round}\\,x = \\lfloor x + \\tfrac12 \\rfloor$, and $\\lfloor x + \\tfrac12 \\rfloor = \\lceil x - \\tfrac12 \\rceil = D(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["round_eq", "nearest-integer function", "half-integer", "irrationality of e"],
+    "prerequisites": ["round function identity"]
+  }
+]

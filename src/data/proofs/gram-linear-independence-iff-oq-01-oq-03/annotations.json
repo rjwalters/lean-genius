@@ -1,0 +1,159 @@
+[
+  {
+    "id": "gram-oq010103-ann-coeff",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-03",
+    "range": { "startLine": 58, "endLine": 66 },
+    "type": "definition",
+    "title": "Change-of-Basis Coefficients (coeff, Cmat)",
+    "content": "The whole proof hinges on expressing the original vectors in their Gram–Schmidt orthogonalization gⱼ = gramSchmidt ℝ v j. `coeff v i j` is the coefficient of gⱼ in vᵢ: it is 1 on the diagonal (j = i), the Gram–Schmidt projection coefficient ⟪gⱼ, vᵢ⟫/‖gⱼ‖² strictly below (j < i), and 0 strictly above (j > i). `Cmat v` packages these into the matrix C, which by construction is lower-unitriangular. This is the Gram–Schmidt analogue of the unit-lower-triangular factor in an LU/Cholesky decomposition.",
+    "mathContext": "$C_{ij} = \\begin{cases} 1 & j = i \\\\ \\langle g_j, v_i\\rangle/\\lVert g_j\\rVert^2 & j < i \\\\ 0 & j > i \\end{cases}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gram–Schmidt orthogonalization",
+      "change of basis",
+      "lower-unitriangular matrix",
+      "LU / Cholesky factorization"
+    ],
+    "prerequisites": [
+      "InnerProductSpace.gramSchmidt",
+      "orthogonal projection coefficient"
+    ]
+  },
+  {
+    "id": "gram-oq010103-ann-triangular-structure",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-03",
+    "range": { "startLine": 68, "endLine": 78 },
+    "type": "definition",
+    "title": "The Diagonal Matrix D and the Triangular Structure of C",
+    "content": "`Dmat v` is the diagonal matrix D = diagonal(‖gⱼ‖²) holding the squared Gram–Schmidt heights — the only data that survives in the determinant. The two helper lemmas pin down C's shape: `coeff_self` gives the unit diagonal Cᵢᵢ = 1, and `coeff_eq_zero_of_lt` gives the vanishing above the diagonal (i < j ⟹ Cᵢⱼ = 0). Together these make C lower-unitriangular, which is what forces det C = 1 later and lets the whole Gram determinant reduce to det D.",
+    "mathContext": "$D = \\operatorname{diag}\\!\\bigl(\\lVert g_0\\rVert^2, \\ldots, \\lVert g_{n-1}\\rVert^2\\bigr), \\quad C_{ii}=1,\\ C_{ij}=0\\ (i<j).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "diagonal matrix",
+      "unit lower-triangular matrix",
+      "squared norms as diagonal entries"
+    ],
+    "prerequisites": [
+      "Matrix.diagonal",
+      "case analysis on the if-then-else definition"
+    ]
+  },
+  {
+    "id": "gram-oq010103-ann-v-eq-sum",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-03",
+    "range": { "startLine": 80, "endLine": 96 },
+    "type": "theorem",
+    "title": "Each Vector as a Combination of the Orthogonal Family",
+    "content": "`v_eq_sum_coeff` proves the defining property of C: vᵢ = ∑ⱼ Cᵢⱼ • gⱼ. The proof rewrites the left side with Mathlib's explicit Gram–Schmidt projection formula gramSchmidt_def'' (vᵢ = gᵢ + ∑_{j<i} (⟪gⱼ,vᵢ⟫/‖gⱼ‖²)•gⱼ), then matches it against the universal sum ∑ⱼ Cᵢⱼ•gⱼ by restricting that sum to its support Iic i (Finset.sum_subset): terms with j > i drop out by coeff_eq_zero_of_lt, the diagonal term j = i contributes the leading gᵢ (coeff_self gives 1), and the j < i terms are exactly the projection coefficients.",
+    "mathContext": "$v_i = \\sum_{j} C_{ij}\\, g_j = g_i + \\sum_{j<i} \\frac{\\langle g_j, v_i\\rangle}{\\lVert g_j\\rVert^2}\\, g_j.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gram–Schmidt projection expansion",
+      "support of a finitely-supported sum",
+      "Finset.sum_subset"
+    ],
+    "prerequisites": [
+      "InnerProductSpace.gramSchmidt_def''",
+      "Finset.sum_insert / Finset.sum_congr"
+    ]
+  },
+  {
+    "id": "gram-oq010103-ann-factorization",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-03",
+    "range": { "startLine": 98, "endLine": 118 },
+    "type": "theorem",
+    "title": "The Factorization gram v = C · D · Cᵀ",
+    "content": "The analytic heart: `gram_eq_cmat_dmat` shows the Gram matrix factors as C·D·Cᵀ. Substituting vᵢ = ∑ⱼ Cᵢⱼgⱼ and vₖ = ∑ₗ Cₖₗgₗ into the entry ⟪vᵢ, vₖ⟫ and expanding by bilinearity (sum_inner, real_inner_smul_left/right, inner_sum) gives a double sum over (j, l). Pairwise orthogonality of the Gram–Schmidt family (gramSchmidt_orthogonal: ⟪gⱼ, gₗ⟫ = 0 for j ≠ l) collapses the inner sum onto l = j, leaving ⟪vᵢ, vₖ⟫ = ∑ⱼ Cᵢⱼ Cₖⱼ ‖gⱼ‖² — exactly the (i,k) entry of C·D·Cᵀ. Orthogonality is the only analytic input; everything else is bookkeeping.",
+    "mathContext": "$\\langle v_i, v_k\\rangle = \\sum_j C_{ij} C_{kj} \\lVert g_j\\rVert^2 \\implies \\mathrm{Gram}(v) = C\\,D\\,C^{\\mathsf T}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "bilinearity of the inner product",
+      "orthogonality collapsing a double sum",
+      "matrix product C D Cᵀ (congruence)"
+    ],
+    "prerequisites": [
+      "InnerProductSpace.gramSchmidt_orthogonal",
+      "sum_inner / inner_sum / real_inner_smul",
+      "Matrix.mul_apply / Matrix.mul_diagonal"
+    ]
+  },
+  {
+    "id": "gram-oq010103-ann-det-identity",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-03",
+    "range": { "startLine": 120, "endLine": 140 },
+    "type": "theorem",
+    "title": "Gram–Schmidt Factorization of the Gramian: det = ∏ ‖gᵢ‖²",
+    "content": "The headline identity. `det_Cmat` proves det C = 1 because C is BlockTriangular for OrderDual.toDual (zero strictly above the diagonal), so Matrix.det_of_lowerTriangular makes its determinant the product of the unit diagonal. `det_Dmat` gives det D = ∏ ‖gᵢ‖² via Matrix.det_diagonal. Taking determinants of gram v = C·D·Cᵀ with det_mul and det_transpose yields det(gram v) = (det C)² · det D = 1 · ∏ ‖gramSchmidt v i‖². Crucially there is NO hypothesis relating n to finrank ℝ F — this is the genuinely k-dimensional content identity, absent from Mathlib.",
+    "mathContext": "$\\det\\mathrm{Gram}(v) = (\\det C)^2 \\det D = \\prod_i \\lVert \\mathrm{gramSchmidt}\\,v\\,i\\rVert^2.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangular determinant = product of diagonal",
+      "det(AB) = det A · det B, det Aᵀ = det A",
+      "congruence preserving the determinant up to a square"
+    ],
+    "prerequisites": [
+      "Matrix.det_of_lowerTriangular / BlockTriangular OrderDual.toDual",
+      "Matrix.det_diagonal, Matrix.det_mul, Matrix.det_transpose"
+    ]
+  },
+  {
+    "id": "gram-oq010103-ann-gramian-criterion",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-03",
+    "range": { "startLine": 147, "endLine": 170 },
+    "type": "theorem",
+    "title": "The Gramian Criterion, Re-derived Locally",
+    "content": "To keep the file self-contained (depending only on Mathlib, not the grandparent entry), the Gramian sign criterion is reproved inline. `gram_det_nonneg` is immediate from positive semidefiniteness of the Gram matrix (Matrix.posSemidef_gram, then PosSemidef.det_nonneg). `linearIndependent_iff_gram_det_pos` proves LinearIndependent ℝ v ↔ 0 < det(gram v): the forward direction uses posDef_gram_iff_linearIndependent then PosDef.det_pos; the reverse contrapositive builds an explicit kernel vector g from a dependence relation, shows gram v *ᵥ g = 0 (each component is ⟪vⱼ, ∑ gₗvₗ⟫ = ⟪vⱼ, 0⟫ = 0), hence det = 0, contradicting positivity.",
+    "mathContext": "$0 \\le \\det\\mathrm{Gram}(v), \\qquad \\text{LinearIndependent}\\,v \\iff 0 < \\det\\mathrm{Gram}(v).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positive semidefinite / positive definite Gram matrix",
+      "determinant sign and linear independence",
+      "explicit kernel vector from a dependence relation"
+    ],
+    "prerequisites": [
+      "Matrix.posSemidef_gram / Matrix.posDef_gram_iff_linearIndependent",
+      "Matrix.exists_mulVec_eq_zero_iff",
+      "PosSemidef.det_nonneg / PosDef.det_pos"
+    ]
+  },
+  {
+    "id": "gram-oq010103-ann-content",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-03",
+    "range": { "startLine": 174, "endLine": 188 },
+    "type": "insight",
+    "title": "The Content as a Product of Heights",
+    "content": "The geometric payoff. The k-dimensional content (volume) is defined as content v = √(det gram v). Feeding the determinant identity into the square root, `content_eq_prod_gramSchmidt_norm` gives content v = ∏ ‖gramSchmidt v i‖: each factor ‖gᵢ‖ is the perpendicular height of vᵢ above the span of the earlier vectors, so the content is the textbook iterated base × height × … volume of the parallelepiped — valid in any ambient dimension with no spanning hypothesis. The square (det = ∏ ‖gᵢ‖²) then square root (∏ ‖gᵢ‖ via Real.sqrt_sq, all norms ≥ 0) automatically yields the unsigned content with no orientation needed.",
+    "mathContext": "$\\mathrm{content}(v) = \\sqrt{\\det\\mathrm{Gram}(v)} = \\prod_i \\lVert \\mathrm{gramSchmidt}\\,v\\,i\\rVert.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "k-dimensional content / parallelepiped volume",
+      "base × height recursion",
+      "perpendicular height = Gram–Schmidt norm",
+      "orthogonalization / exterior-power picture"
+    ],
+    "prerequisites": [
+      "Real.sqrt_sq, Real.sq_sqrt",
+      "Finset.prod_pow, Finset.prod_nonneg"
+    ]
+  },
+  {
+    "id": "gram-oq010103-ann-independence-test",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-03",
+    "range": { "startLine": 190, "endLine": 205 },
+    "type": "theorem",
+    "title": "Geometric Independence Test: content > 0 ⟺ independent",
+    "content": "The content carries the independence information geometrically. `content_pos_iff_linearIndependent` proves 0 < content v ↔ LinearIndependent ℝ v by combining Real.sqrt_pos with the locally re-derived Gramian criterion: a positive-volume box has independent edges. `content_eq_zero_iff` dualizes this to content v = 0 ↔ ¬ LinearIndependent ℝ v — a degenerate (flat, zero-volume) box exactly when the vectors are dependent. This is the k-dimensional generalization of the classical fact that the parallelepiped collapses precisely when its edges are linearly dependent.",
+    "mathContext": "$0 < \\mathrm{content}(v) \\iff \\text{LinearIndependent}\\,v, \\qquad \\mathrm{content}(v) = 0 \\iff \\neg\\,\\text{LinearIndependent}\\,v.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "volume positivity and linear independence",
+      "degenerate parallelepiped",
+      "geometric reading of the Gramian criterion"
+    ],
+    "prerequisites": [
+      "Real.sqrt_pos",
+      "linearIndependent_iff_gram_det_pos",
+      "trichotomy / lt_or_eq on nonnegative reals"
+    ]
+  }
+]

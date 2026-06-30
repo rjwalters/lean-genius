@@ -2,6 +2,19 @@
   "id": "happy-number-oq-01",
   "title": "Happy Numbers — Dichotomy of the Digit-Square Map",
   "slug": "happy-number-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "HappyNumberOQ01",
+    "lineCount": 175,
+    "axiomCount": 1,
+    "theoremCount": 10,
+    "definitionCount": 3,
+    "path": "Proofs/HappyNumberOQ01.lean",
+    "sorries": 0
+  },
   "description": "Iterating the digit-square-sum map S(n) = sum of squares of the decimal digits of n from any starting value n >= 1 terminates in exactly one of two ways: it reaches the fixed point 1 (n is happy) or it lands on the 8-cycle 4 -> 16 -> 37 -> 58 -> 89 -> 145 -> 42 -> 20 -> 4 (n is unhappy). The proof turns an a-priori infinite dynamical claim into a finite check via the descent lemma S(n) < n for n >= 1000, with the finite window [1, 999] discharged by native_decide.",
   "meta": {
     "author": "Classical (Reg Allenby; folklore)",

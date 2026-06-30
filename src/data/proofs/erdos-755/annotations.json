@@ -16,7 +16,11 @@
       "Point configurations",
       "Equilateral triangles"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "discrete geometry",
+      "asymptotic analysis",
+      "Euclidean geometry"
+    ]
   },
   {
     "id": "ann-e755-equilateral",
@@ -34,7 +38,11 @@
       "Euclidean distance",
       "Regular polygons"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "metric spaces",
+      "Euclidean geometry",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e755-counting",
@@ -52,7 +60,11 @@
       "Counting problems"
     ],
     "mathContext": "See annotation content for formal details of counting functions",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "supremum and least upper bounds",
+      "Euclidean geometry"
+    ]
   },
   {
     "id": "ann-e755-lenz",
@@ -71,7 +83,11 @@
       "Inscribed squares",
       "Construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "linear algebra",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e755-conjecture",
@@ -89,7 +105,11 @@
       "Extremal problems"
     ],
     "mathContext": "See annotation content for formal details of erdős's conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "extremal combinatorics",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e755-cdl",
@@ -107,7 +127,11 @@
       "Clemen-Dumitrescu-Liu",
       "2025 breakthrough"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e755-corollaries",
@@ -125,7 +149,11 @@
       "Bound transfer"
     ],
     "mathContext": "See annotation content for formal details of corollaries",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "inequalities",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-e755-general",
@@ -143,7 +171,11 @@
       "Asymptotic constants"
     ],
     "mathContext": "See annotation content for formal details of higher dimensions",
-    "prerequisites": []
+    "prerequisites": [
+      "discrete geometry",
+      "asymptotic analysis",
+      "linear algebra"
+    ]
   },
   {
     "id": "ann-e755-why27",
@@ -161,7 +193,11 @@
       "Combinatorial counting"
     ],
     "mathContext": "See annotation content for formal details of why 1/27?",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "optimization",
+      "Euclidean geometry"
+    ]
   },
   {
     "id": "ann-e755-dimensions",
@@ -179,7 +215,11 @@
       "Growth rates"
     ],
     "mathContext": "See annotation content for formal details of dimension behavior",
-    "prerequisites": []
+    "prerequisites": [
+      "discrete geometry",
+      "asymptotic notation",
+      "dimension theory"
+    ]
   },
   {
     "id": "ann-e755-summary",
@@ -198,6 +238,10 @@
       "Discrete geometry"
     ],
     "mathContext": "See annotation content for formal details of problem summary",
-    "prerequisites": []
+    "prerequisites": [
+      "discrete geometry",
+      "extremal combinatorics",
+      "asymptotic analysis"
+    ]
   }
 ]

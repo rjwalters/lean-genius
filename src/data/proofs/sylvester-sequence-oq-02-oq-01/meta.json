@@ -1,0 +1,168 @@
+{
+  "id": "sylvester-sequence-oq-02-oq-01",
+  "slug": "sylvester-sequence-oq-02-oq-01",
+  "title": "Sylvester's Sequence: The Exact Tail of the Reciprocal Series",
+  "description": "Sylvester's sequence a₀=2, a_{n+1}=aₙ²-aₙ+1 (2, 3, 7, 43, 1807, …) has reciprocals summing to exactly 1 (parent oq-02). This entry makes the convergence quantitative: it proves the EXACT tail identity ∑'_m 1/a_{m+(n+1)} = 1/(a_{n+1}-1) — the entire infinite remainder after the first n+1 terms equals exactly 1/(a_{n+1}-1), not merely a bound. It is derived (syl_tail_hasSum, syl_tsum_tail) by peeling the leading n+1 terms off the convergent series via hasSum_nat_add_iff and identifying the block with the parent's partial-sum closed form. The remainder-equals-tail statement (syl_remainder_eq_tail) confirms 1 − ∑_{k≤n} 1/aₖ equals this tail. The underlying product structure ∏_{k≤n} aₖ = a_{n+1}-1 (syl_prod_eq_pred_int, equivalently a_{n+1}=1+∏_{k≤n} aₖ) is proved by a one-line induction on a_{n+1}-1=aₙ(aₙ-1), giving the reciprocal-product form ∑'_m 1/a_{m+(n+1)} = 1/∏_{k≤n} aₖ (syl_tsum_tail_eq_inv_prod): the tail is the reciprocal of the product of all preceding terms. Fully machine-checked with 0 sorries and 0 axioms.",
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.SylvesterSequenceOQ02"],
+    "opens": ["SylvesterSequenceOQ02"],
+    "namespace": "SylvesterSequenceOQ02OQ01",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 5,
+    "trivialSpecializations": 1,
+    "definitionCount": 0,
+    "path": "Proofs/SylvesterSequenceOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "James Joseph Sylvester (1880)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sylvester%27s_sequence",
+    "date": "1880",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylvesterSequenceOQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "infinite-series",
+      "egyptian-fractions",
+      "telescoping",
+      "convergence",
+      "tail-estimate",
+      "sylvester"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. The sequence is defined in ℕ in the parent module; all results here are proved over ℤ and ℝ from the recurrence, reusing the parent's partial-sum closed form and HasSum statement together with Mathlib's hasSum_nat_add_iff. No axioms and no structure-encoded hypotheses. #print axioms reports only the standard propext / Classical.choice / Quot.sound.",
+    "dateAdded": "2026-06-24",
+    "mathlibDependencies": [
+      "hasSum_nat_add_iff",
+      "HasSum.tsum_eq",
+      "Finset.prod_range_succ",
+      "Finset.prod_range_one"
+    ],
+    "originalContributions": [
+      "Exact tail identity syl_tsum_tail: ∑'_m 1/a_{m+(n+1)} = 1/(a_{n+1}-1) — the infinite remainder after the first n+1 terms, given exactly rather than bounded",
+      "HasSum form syl_tail_hasSum: HasSum (fun m => 1/a_{m+(n+1)}) (1/(a_{n+1}-1)), obtained by peeling the leading n+1 terms off the convergent series with hasSum_nat_add_iff",
+      "Remainder-equals-tail syl_remainder_eq_tail: 1 − ∑_{k≤n} 1/aₖ = ∑'_m 1/a_{m+(n+1)}, identifying the partial-sum error with the genuine infinite tail",
+      "Product identity syl_prod_eq_pred_int: ∏_{k≤n} aₖ = a_{n+1}-1, the Euclid/Sylvester recurrence a_{n+1}-1 = aₙ(aₙ-1) integrated by induction",
+      "ℕ phrasing syl_succ_eq_prod_add_one: a_{n+1} = 1 + ∏_{k≤n} aₖ, the defining greedy-growth property",
+      "Reciprocal-product tail form syl_tsum_tail_eq_inv_prod: ∑'_m 1/a_{m+(n+1)} = 1/∏_{k≤n} aₖ, exhibiting the doubly-exponential convergence speed"
+    ],
+    "prerequisites": [
+      "Infinite series, summability, tsum and HasSum in a normed field",
+      "Peeling finitely many leading terms off a convergent series (hasSum_nat_add_iff)",
+      "Finite products and mathematical induction"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 130,
+    "relatedProblems": ["sylvester-sequence-oq-02", "sylvester-sequence-oq-01"],
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Sylvester's sequence (OEIS A000058), studied by James Joseph Sylvester in 1880, is the greedy expansion of 1 as a sum of distinct unit fractions: at each step take the largest 1/m keeping the running total below 1. The denominators obey a₀ = 2, a_{n+1} = aₙ² - aₙ + 1, giving 2, 3, 7, 43, 1807, …, a doubly-exponentially growing sequence. A classical structural fact, going back to Euclid's construction of coprime integers, is that a_{n+1} = 1 + a₀a₁···aₙ: each term is one more than the product of all its predecessors. This is exactly what makes the greedy expansion converge as fast as any unit-fraction expansion possibly can.",
+    "problemStatement": "The parent entry (oq-02) proves the reciprocals sum to exactly 1 and that the error term 1/(a_{n+1}-1) tends to 0, leaving as its first open question whether the convergence can be made quantitative — an exact formula for the remainder after n+1 terms. Make it exact: prove that the infinite tail ∑_{k≥n+1} 1/aₖ equals precisely 1/(a_{n+1}-1), both as a HasSum statement and as a tsum value, and connect it to the product structure a_{n+1}-1 = ∏_{k≤n} aₖ so the tail reads as the reciprocal of the product of all preceding terms.",
+    "proofStrategy": "Two ingredients combine. (1) The exact tail: applying hasSum_nat_add_iff with k = n+1 to the convergent series ∑ 1/aₖ (parent syl_reciprocal_hasSum, value 1) shows HasSum (fun m => 1/a_{m+(n+1)}) a is equivalent to HasSum (1/a_•) (a + ∑_{i≤n} 1/aᵢ); substituting the parent's partial-sum closed form ∑_{i≤n} 1/aᵢ = 1 - 1/(a_{n+1}-1) and solving a + (1 - 1/(a_{n+1}-1)) = 1 forces a = 1/(a_{n+1}-1). The tsum value follows by HasSum.tsum_eq, and 1 − partial = tail by a one-line rewrite. (2) The product structure: ∏_{k≤n} aₖ = a_{n+1}-1 is proved by induction over ℤ from Finset.prod_range_succ and the recurrence a_{n+2}-1 = a_{n+1}(a_{n+1}-1) = a_{n+1}·(∏_{k≤n} aₖ); casting to ℝ and substituting rewrites the tail as 1/∏_{k≤n} aₖ.",
+    "keyInsights": [
+      "The error term 1/(a_{n+1}-1) the parent only bounds is in fact the EXACT value of the infinite tail — convergence is quantitative, not merely asymptotic.",
+      "hasSum_nat_add_iff turns 'sum of the tail' into 'total minus the leading block', so the tail value is read off directly from the already-known total (1) and partial sum (1 - 1/(a_{n+1}-1)).",
+      "The Euclid/Sylvester identity a_{n+1}-1 = ∏_{k≤n} aₖ follows from a single algebraic step a_{n+1}-1 = aₙ(aₙ-1): multiplying the running product by aₙ advances the predecessor of the next term.",
+      "Writing the tail as 1/∏_{k≤n} aₖ exposes the doubly-exponential convergence speed: the entire infinite remainder past aₙ is no larger than the reciprocal of the product of every preceding term.",
+      "Working the product identity over ℤ avoids ℕ's truncated subtraction; a clean push_cast transports it to ℝ where the series lives."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "syl_tsum_tail",
+      "statement": "∑' m, (1 : ℝ) / a_{m+(n+1)} = 1 / (a_{n+1} - 1)",
+      "description": "The exact tail: the infinite remainder of the reciprocal series after the first n+1 terms equals precisely 1/(a_{n+1}-1)."
+    },
+    {
+      "name": "syl_tail_hasSum",
+      "statement": "HasSum (fun m => (1 : ℝ) / a_{m+(n+1)}) (1 / (a_{n+1} - 1))",
+      "description": "The HasSum form of the tail identity, peeling the first n+1 terms off the convergent full series via hasSum_nat_add_iff."
+    },
+    {
+      "name": "syl_remainder_eq_tail",
+      "statement": "1 - ∑ k ∈ range (n+1), 1/aₖ = ∑' m, 1/a_{m+(n+1)}",
+      "description": "Remainder equals tail: the gap between 1 and the (n+1)-term partial sum is exactly the genuine infinite tail."
+    },
+    {
+      "name": "syl_prod_eq_pred_int",
+      "statement": "∏ k ∈ range (n+1), (aₖ : ℤ) = a_{n+1} - 1",
+      "description": "The Euclid/Sylvester product identity: the predecessor of the next term is the product of all terms so far."
+    },
+    {
+      "name": "syl_tsum_tail_eq_inv_prod",
+      "statement": "∑' m, (1 : ℝ) / a_{m+(n+1)} = 1 / ∏ k ∈ range (n+1), aₖ",
+      "description": "The tail as a reciprocal product, exhibiting the doubly-exponential convergence speed."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Imports Mathlib and the parent module Proofs.SylvesterSequenceOQ02, opens its namespace, and states the goal: promote the parent's 'error term → 0' to an EXACT tail formula. The docstring lists the three tail statements and the two product-structure statements the file establishes, all with 0 axioms and 0 sorries.",
+      "mathContext": "Goal: $\\sum_{k\\ge n+1} 1/a_k = 1/(a_{n+1}-1) = 1/\\prod_{k\\le n} a_k$."
+    },
+    {
+      "id": "product-structure",
+      "title": "The Product Structure a_{n+1}-1 = ∏ aₖ",
+      "startLine": 43,
+      "endLine": 76,
+      "summary": "syl_prod_eq_pred_int proves ∏_{k≤n} aₖ = a_{n+1}-1 over ℤ by induction (Finset.prod_range_succ plus the recurrence a_{n+2}-1 = a_{n+1}(a_{n+1}-1)); syl_prod_eq_pred_real transports it to ℝ via push_cast; syl_succ_eq_prod_add_one restates it in ℕ as a_{n+1} = 1 + ∏_{k≤n} aₖ.",
+      "mathContext": "$a_{n+1}-1 = a_n(a_n-1) \\Rightarrow \\prod_{k\\le n} a_k = a_{n+1}-1$."
+    },
+    {
+      "id": "exact-tail",
+      "title": "The Exact Tail of the Reciprocal Series",
+      "startLine": 77,
+      "endLine": 123,
+      "summary": "syl_tail_hasSum peels the first n+1 terms off the convergent series with hasSum_nat_add_iff and pins the tail value to 1/(a_{n+1}-1) using the parent partial-sum closed form; syl_tsum_tail is its tsum form; syl_remainder_eq_tail identifies 1 − partial with the tail; syl_tsum_tail_eq_inv_prod rewrites the tail as 1/∏_{k≤n} aₖ.",
+      "mathContext": "$\\sum_{m} 1/a_{m+(n+1)} = 1/(a_{n+1}-1) = 1/\\prod_{k\\le n} a_k$."
+    },
+    {
+      "id": "sanity",
+      "title": "Numerical Sanity Check",
+      "startLine": 124,
+      "endLine": 130,
+      "summary": "An example confirming the n = 0 tail: ∑'_m 1/a_{m+1} = 1/(a₁-1) = 1/2, matching 1 - 1/a₀ = 1 - 1/2.",
+      "mathContext": "$\\sum_{m} 1/a_{m+1} = 1/(3-1) = 1/2$."
+    }
+  ],
+  "references": [
+    {
+      "title": "Sylvester's sequence",
+      "url": "https://en.wikipedia.org/wiki/Sylvester%27s_sequence"
+    },
+    {
+      "title": "OEIS A000058 — Sylvester's sequence",
+      "url": "https://oeis.org/A000058"
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "sylvester-sequence-oq-02",
+      "relationship": "Answers the parent's first open question",
+      "description": "The parent proves ∑' 1/aₖ = 1 and 1/(a_{n+1}-1) → 0, asking whether the convergence can be made quantitative with an exact remainder formula. This entry supplies it: the tail after n+1 terms is exactly 1/(a_{n+1}-1) = 1/∏_{k≤n} aₖ."
+    },
+    {
+      "proofId": "sylvester-sequence-oq-01",
+      "relationship": "Builds on the partial-sum closed form",
+      "description": "The closed-form partial sum ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1) introduced in the base entry is exactly what identifies the leading block when the tail is peeled off the convergent series."
+    }
+  ],
+  "conclusion": {
+    "summary": "The reciprocal tail of Sylvester's sequence after the first n+1 terms is shown to equal exactly 1/(a_{n+1}-1), both as HasSum (fun m => 1/a_{m+(n+1)}) (1/(a_{n+1}-1)) and as the tsum value, with the remainder 1 − ∑_{k≤n} 1/aₖ identified with this genuine infinite tail. The classical product structure ∏_{k≤n} aₖ = a_{n+1}-1 then recasts the tail as 1/∏_{k≤n} aₖ. Fully machine-checked with zero sorries and zero axioms.",
+    "implications": "This turns the parent's asymptotic statement (error term → 0) into an exact one: the convergence of Sylvester's greedy Egyptian-fraction expansion of unity is quantified term-by-term, and the tail's reciprocal-product form shows it shrinks doubly exponentially. The proof illustrates the standard move of extracting an exact tail value from a convergent series by peeling finitely many leading terms (hasSum_nat_add_iff) and reading the remainder off the known total and partial sum.",
+    "openQuestions": [
+      "Does the reciprocal-product tail identity ∑_{k≥n+1} 1/aₖ = 1/∏_{k≤n} aₖ generalize to arbitrary Euclid/Sylvester-style sequences defined by a_{n+1} = 1 + ∏_{k≤n} aₖ from any admissible seed, characterizing exactly which seeds give a telescoping unit-fraction expansion?",
+      "Can the same hasSum_nat_add_iff tail-extraction template produce exact tail formulas for related rapidly-converging series, e.g. ∑ 1/(2^{2^n}+1) for Fermat numbers or general Znám systems?"
+    ]
+  }
+}

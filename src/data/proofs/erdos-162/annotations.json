@@ -16,7 +16,11 @@
       "discrepancy theory",
       "probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Discrepancy Theory",
+      "Asymptotic Growth"
+    ]
   },
   {
     "id": "ann-e162-imports",
@@ -34,7 +38,11 @@
       "binomial coefficients"
     ],
     "mathContext": "See annotation content for formal details of imports and setup",
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Lean 4 Tactics",
+      "Mathlib Namespaces"
+    ]
   },
   {
     "id": "ann-e162-colouring",
@@ -53,7 +61,11 @@
       "edge colouring",
       "Finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Graph",
+      "Edge Colouring",
+      "Finset Filtering"
+    ]
   },
   {
     "id": "ann-e162-edge-total",
@@ -72,7 +84,11 @@
       "binomial coefficient",
       "double counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Partition",
+      "Double Counting",
+      "Disjoint Union Cardinality"
+    ]
   },
   {
     "id": "ann-e162-balanced",
@@ -91,7 +107,11 @@
       "Ramsey theory",
       "graph colouring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Discrepancy",
+      "Induced Subgraph",
+      "Edge Density"
+    ]
   },
   {
     "id": "ann-e162-function-f",
@@ -110,7 +130,11 @@
       "axiom",
       "computability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Combinatorics",
+      "Axiomatization",
+      "Monotonicity"
+    ]
   },
   {
     "id": "ann-e162-bounds",
@@ -129,7 +153,11 @@
       "Chernoff bound",
       "Ramsey numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Chernoff Bound",
+      "Union Bound"
+    ]
   },
   {
     "id": "ann-e162-theta",
@@ -148,7 +176,11 @@
       "extremal values",
       "monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-Theta Notation",
+      "Monotonicity",
+      "Asymptotic Bounds"
+    ]
   },
   {
     "id": "ann-e162-conjecture",
@@ -167,7 +199,11 @@
       "convergence",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit Convergence",
+      "Asymptotic Analysis",
+      "Logarithmic Growth"
+    ]
   },
   {
     "id": "ann-e162-examples",
@@ -186,7 +222,11 @@
       "binomial coefficient",
       "complete graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Native Decide",
+      "Complete Graph Edges"
+    ]
   },
   {
     "id": "ann-e162-summary",
@@ -205,6 +245,10 @@
       "discrepancy theory",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Discrepancy Theory",
+      "Open Problems"
+    ]
   }
 ]

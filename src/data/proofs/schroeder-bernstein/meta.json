@@ -231,6 +231,21 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "related",
       "description": "SB establishes $|\\mathbb{C}| = |\\mathbb{R}|$: $\\mathbb{R} \\hookrightarrow \\mathbb{C}$ (inclusion) and $\\mathbb{C} \\hookrightarrow \\mathbb{R}^2 \\cong \\mathbb{R}$ (real/imaginary parts + pairing)."
+    },
+    {
+      "targetId": "schroeder-bernstein-oq-02",
+      "relationship": "specializes",
+      "description": "An alternative proof of this theorem via the Knaster–Tarski fixed-point theorem: the monotone operator $T(S) = (\\mathrm{range}\\,g)^c \\cup g''(f''S)$ on $\\mathrm{Set}\\,\\alpha$ has a least fixed point $S^*$ whose induced partition gives the bijection directly, replacing the usual back-and-forth orbit analysis with a single fixed-point argument."
+    },
+    {
+      "targetId": "schroeder-bernstein-oq-01",
+      "relationship": "specializes",
+      "description": "Lifts the question to category theory: the Schroeder–Bernstein *property* (mutual monomorphisms imply isomorphism) holds in Type but fails in general, with a six-theorem positive/negative corpus locating exactly which categorical hypotheses force it."
+    },
+    {
+      "targetId": "schroeder-bernstein-oq-04",
+      "relationship": "specializes",
+      "description": "A constructive refinement: for finite types with decidable equality the orbit classification underlying Cantor–Bernstein–Schroeder becomes decidable, yielding a fully computable bijection from mutual injections — the effective content of the classically nonconstructive theorem."
     }
   ],
   "leanFile": {

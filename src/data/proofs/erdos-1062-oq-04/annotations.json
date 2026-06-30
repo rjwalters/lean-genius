@@ -1,0 +1,155 @@
+[
+  {
+    "id": "ann-1062-oq04-header",
+    "proofId": "erdos-1062-oq-04",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "From One Condition to a Ladder",
+    "content": "The base Erdős #1062 problem studies sets A ⊆ {1,…,n} in which no element divides two distinct others, and asks for the growth of the extremal size f(n) (Lebensold: 0.6725n ≤ f(n) ≤ 0.6736n; the irrationality of lim f(n)/n is OPEN). This file formalizes the natural k-fold generalization NoDividesKOthers k: no element divides k distinct others. The single parametrized family unifies primitive sets (k=1) and the Erdős #1062 condition (k=2), and the file proves the structural backbone — monotonicity, heredity, the two classical identifications, and a size sandwich — fully machine-checked with 0 axioms and 0 sorries.",
+    "mathContext": "NoDividesKOthers k A ⟺ ∀ a ∈ A, #{b ∈ A : a ∣ b, b ≠ a} < k. The OPEN density/extremal questions (the analogue of Lebensold's bounds for general k) are deliberately out of scope; the file builds the verified definitional framework, not those bounds.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős problem #1062",
+      "primitive sets",
+      "extremal set theory",
+      "divisibility ladder"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-1062-oq04-classical-predicates",
+    "proofId": "erdos-1062-oq-04",
+    "range": { "startLine": 49, "endLine": 58 },
+    "type": "definition",
+    "title": "The Two Classical Predicates (Reproduced Verbatim)",
+    "content": "NoDividesTwoOthers A is the Erdős #1062 condition: there are no a,b,c ∈ A with a ∣ b, a ∣ c and a,b,c pairwise distinct. IsPrimitiveFinset A is primitivity: a ∤ b for any two distinct a,b ∈ A. Both are copied verbatim from the gallery's Erdős #1062 base entry so that the k=1 and k=2 identifications in Section III are stated against their exact definitions, keeping the file self-contained (Mathlib only).",
+    "mathContext": "Primitivity (IsPrimitiveFinset) forbids any divisibility between distinct elements; the NDTO condition (NoDividesTwoOthers) is weaker, forbidding only an element that divides two distinct others.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primitive set",
+      "no-dividing-two-others",
+      "self-contained formalization"
+    ],
+    "prerequisites": ["divisibility in ℕ", "Finset membership"]
+  },
+  {
+    "id": "ann-1062-oq04-properMultiples",
+    "proofId": "erdos-1062-oq-04",
+    "range": { "startLine": 60, "endLine": 70 },
+    "type": "definition",
+    "title": "Proper Multiples and the k-Fold Condition",
+    "content": "properMultiples a A = A.filter (fun b => a ∣ b ∧ a ≠ b) is the Finset of elements of A that a properly divides; its cardinality counts how many other elements a divides. NoDividesKOthers k A then requires (properMultiples a A).card < k for every a ∈ A — equivalently every element has at most k-1 proper multiples in A. This is the central definition: k=2 recovers the Erdős #1062 condition.",
+    "mathContext": "Writing the count as a decidable Finset filter makes NoDividesKOthers k A and the extremal function below computable, so concrete instances can be settled by decide rather than by hand.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "proper multiple",
+      "decidability",
+      "cardinality bound"
+    ],
+    "prerequisites": ["Finset.filter", "Finset.card", "divisibility in ℕ"]
+  },
+  {
+    "id": "ann-1062-oq04-maxNDKOSize",
+    "proofId": "erdos-1062-oq-04",
+    "range": { "startLine": 72, "endLine": 80 },
+    "type": "definition",
+    "title": "The Extremal Function maxNDKOSize",
+    "content": "maxNDKOSize k n is the maximum card over all NoDividesKOthers k subsets of {1,…,n}, computed as Finset.sup of card over the filtered powerset of Finset.Icc 1 n. The filter predicate is written in its unfolded bounded-∀ form (definitionally NoDividesKOthers k A) so that Lean synthesizes decidability directly, keeping the whole function computable.",
+    "mathContext": "maxNDKOSize 2 n is exactly the base entry's extremal function f(n) whose Lebensold bounds 0.6725n ≤ f(n) ≤ 0.6736n are classical; this entry studies the family for all k at once.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "Finset.sup",
+      "Finset.powerset",
+      "Finset.Icc"
+    ],
+    "prerequisites": ["Finset.sup", "Finset.powerset", "decidability"]
+  },
+  {
+    "id": "ann-1062-oq04-structural",
+    "proofId": "erdos-1062-oq-04",
+    "range": { "startLine": 86, "endLine": 119 },
+    "type": "theorem",
+    "title": "Vacuity, the k=0 Degeneracy, Monotonicity, and Heredity",
+    "content": "Four elementary structural facts: the empty set vacuously qualifies for every k; k=0 is degenerate (NoDividesKOthers 0 A ⟺ A = ∅, since no element can divide fewer than 0 others); the predicate is monotone in k (noDividesKOthers_mono_k — a smaller bound implies every larger one via lt_of_lt_of_le); and it is hereditary (noDividesKOthers_subset — subsets inherit the property because passing to a subset only shrinks each proper-multiple set).",
+    "mathContext": "Heredity rests on Finset.filter_subset_filter: B ⊆ A gives properMultiples a B ⊆ properMultiples a A, hence (properMultiples a B).card ≤ (properMultiples a A).card < k.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "heredity",
+      "Finset.filter_subset_filter",
+      "Finset.card_le_card"
+    ],
+    "prerequisites": ["Finset.filter_subset_filter", "Finset.card_le_card"]
+  },
+  {
+    "id": "ann-1062-oq04-k1-primitive",
+    "proofId": "erdos-1062-oq-04",
+    "range": { "startLine": 125, "endLine": 144 },
+    "type": "theorem",
+    "title": "k = 1 ⟺ Primitivity",
+    "content": "noDividesKOthers_one_iff_primitive: NoDividesKOthers 1 A ↔ IsPrimitiveFinset A. The bound card < 1 forces every proper-multiple set to be empty (via Nat.lt_one_iff and Finset.card_eq_zero), which is exactly the statement that no element divides any distinct other. The proof translates the empty-set condition into the divisibility quantifier in both directions.",
+    "mathContext": "card < 1 ⟺ card = 0 ⟺ the Finset is empty; so the k=1 bound says properMultiples a A = ∅ for all a, i.e. a divides no other element of A — precisely primitivity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive set",
+      "Nat.lt_one_iff",
+      "Finset.card_eq_zero",
+      "iff characterization"
+    ],
+    "prerequisites": ["Nat.lt_one_iff", "Finset.card_eq_zero"]
+  },
+  {
+    "id": "ann-1062-oq04-k2-ndto",
+    "proofId": "erdos-1062-oq-04",
+    "range": { "startLine": 146, "endLine": 175 },
+    "type": "theorem",
+    "title": "k = 2 ⟺ the Erdős #1062 Condition",
+    "content": "noDividesKOthers_two_iff: NoDividesKOthers 2 A ↔ NoDividesTwoOthers A. Forward, two distinct proper multiples b,c of a give a two-element subset {b,c} ⊆ properMultiples a A, so card ≥ 2 (via Finset.card_pair), contradicting the bound. Backward, if some a had card ≥ 2 then Finset.one_lt_card extracts two distinct proper multiples, exhibiting the forbidden NDTO triple. This is the headline identification: the family's k=2 case is exactly Erdős #1062.",
+    "mathContext": "Finset.one_lt_card: 1 < s.card ↔ ∃ a ∈ s, ∃ b ∈ s, a ≠ b. The bridge between 'card < 2' and the triple quantifier (a,b,c distinct with a ∣ b, a ∣ c) runs through a size-2 pair of proper multiples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "no-dividing-two-others",
+      "Finset.one_lt_card",
+      "Finset.card_pair",
+      "Erdős problem #1062"
+    ],
+    "prerequisites": ["Finset.one_lt_card", "Finset.card_pair"]
+  },
+  {
+    "id": "ann-1062-oq04-strict-ladder",
+    "proofId": "erdos-1062-oq-04",
+    "range": { "startLine": 181, "endLine": 193 },
+    "type": "theorem",
+    "title": "The Ladder Is Strict",
+    "content": "ndko_three_not_two_example: {1,2,3} is NoDividesKOthers 3 but not NoDividesKOthers 2, because 1 divides the two distinct others 2 and 3 (so it has 2 proper multiples, allowed when k=3 but not when k=2). This concrete witness shows larger k is genuinely more permissive: the inclusions NoDividesKOthers k ⊊ NoDividesKOthers (k+1) are strict, so the extremal function strictly climbs.",
+    "mathContext": "Both halves are settled by decide after fin_cases — decidability of the filter predicate (established at definition time) lets the witness be checked entirely by computation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strict inclusion",
+      "decide tactic",
+      "fin_cases",
+      "separating example"
+    ],
+    "prerequisites": ["decidability", "fin_cases"]
+  },
+  {
+    "id": "ann-1062-oq04-extremal-bounds",
+    "proofId": "erdos-1062-oq-04",
+    "range": { "startLine": 199, "endLine": 278 },
+    "type": "theorem",
+    "title": "The Size Sandwich n − ⌊n/2⌋ ≤ maxNDKOSize k n ≤ n",
+    "content": "Section V develops maxNDKOSize: the trivial upper bound ≤ n (any subset of {1,…,n} via Nat.card_Icc); monotonicity in n and in k (lifting the predicate monotonicity through Finset.le_sup); and the lower bound n − ⌊n/2⌋ (maxNDKOSize_ge_half). The lower bound is witnessed by the upper-half interval {⌊n/2⌋+1,…,n}: the private lemma noDivides_upper_half shows it is primitive — the smallest proper multiple 2a of any element a already exceeds n — hence NoDividesKOthers k for every k ≥ 1. Together these sandwich the extremal function between ⌈n/2⌉ and n.",
+    "mathContext": "For a ≥ ⌊n/2⌋+1 the smallest proper multiple is 2a ≥ (⌊n/2⌋+1)·2 > n, so properMultiples a = ∅; the interval is primitive and thus valid for all k ≥ 1, giving a uniform floor before any k-specific construction. card(Icc (⌊n/2⌋+1) n) = n − ⌊n/2⌋ via Nat.card_Icc.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal bounds",
+      "upper-half interval",
+      "Finset.le_sup",
+      "Nat.card_Icc",
+      "primitive set"
+    ],
+    "prerequisites": ["Finset.le_sup", "Nat.card_Icc", "Finset.sup_le"]
+  }
+]

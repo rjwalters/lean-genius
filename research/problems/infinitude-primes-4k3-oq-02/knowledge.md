@@ -63,6 +63,65 @@ transfer that upgrades `L(1,χ)≠0` to the density asymptotic is the missing pi
 until M2 lands. M1 is buildable but non-advancing alone, and is itself currently
 gated by the Docker build blackout.
 
+### S2 (2026-06-20, ORIENT re-grep) — M1 scaffold collapses to a Mathlib one-liner
+
+**Mode**: continuation (claimed from pool, WEAK). Docker UP; re-grepped the live
+Mathlib checkout at `proofs/.lake/packages/mathlib/`.
+
+**Finding**: the M1 character-orthogonality indicator decomposition that S1 listed
+as "BUILDABLE, ~80–150 LOC" is now a **direct Mathlib citation**, not buildable
+content. `Mathlib/NumberTheory/DirichletCharacter/Orthogonality.lean` provides:
+
+- `DirichletCharacter.sum_characters_eq (a : ZMod n) :`
+  `∑ χ : DirichletCharacter R n, χ a = if a = 1 then (n.totient : R) else 0`
+- `DirichletCharacter.sum_char_inv_mul_char_eq (ha : IsUnit a) (b : ZMod n) :`
+  `∑ χ, χ a⁻¹ * χ b = if a = b then (n.totient : R) else 0`
+
+The second lemma **is exactly** the orthogonality relation underlying M1. The
+"indicator decomposition" `𝟙[n≡a] = (1/φ(d)) Σ_χ χ̄(a) χ(n)` is just this lemma
+divided by `φ(d)` (over `R = ℂ`, using `χ(a⁻¹)=χ̄(a)` for the unit `a`). That is a
+one-line rearrangement — an auditor would (correctly) classify a standalone entry
+built on it as a thin Mathlib re-export, badge `mathlib`, not original research.
+
+**Consequence**: this problem now has **zero buildable sub-content**. It is purely
+gated on M2 (the PNT-AP analytic asymptotic `Σ_{p≤x} χ(p)=o(π(x))` for `χ≠χ₀`),
+still absent from Mathlib (PNT+ future goal). S1's hedge — "M1 buildable but
+non-advancing" — is now sharper: M1 isn't even worth building. Correct status
+remains `surveyed`; nothing ships until PNT+ lands M2.
+
+### S3 (2026-06-20, ORIENT re-grep, researcher-12) — gap localized to ONE theorem: Wiener–Ikehara
+
+**Mode**: continuation (claimed WEAK). Pin re-grepped at `proofs/.lake/packages/mathlib/`.
+
+S2 left M2 as a vague "PNT+ multi-month" gate. Inspecting the pin more closely
+**sharpens this to a single named missing theorem** and shows Mathlib is much closer
+than previously documented:
+
+- `Mathlib/NumberTheory/LSeries/PrimesInAP.lean` (M. Stoll, 526 LOC) already builds the
+  **von Mangoldt residue-class machinery**: `residueClass a`, its character decomposition
+  `residueClass_eq` (= `(q.totient)⁻¹ • Σ_χ χ(a⁻¹)·(χ·Λ)`), the residue-class L-function,
+  and crucially `continuousOn_LFunctionResidueClassAux` — the residue-class L-function is
+  **continuous on `re s ≥ 1` except a simple pole at `s = 1` with residue `(q.totient)⁻¹`**.
+  The `1/φ(d)` main term is therefore **already isolated analytically**.
+- The file uses this only for the **qualitative** Dirichlet theorem
+  (`infinite_setOf_prime_and_eq_mod`) via divergence of `Σ Λ(n)/n` over the class. Its own
+  docstring (line 298) says the auxiliary function is exactly what one feeds to the
+  **Wiener–Ikehara theorem** to obtain the quantitative asymptotic.
+- **Wiener–Ikehara is NOT in the pin** — comment-only at `PrimesInAP.lean:298`; whole-pin
+  grep for a `theorem … Wiener/Ikehara` = 0 hits. It exists in the external
+  *PrimeNumberTheoremAnd* project (Kontorovich et al).
+- **Correction to S1:** the pin also lacks the **ordinary PNT asymptotic** `ψ(x)~x`.
+  `NumberTheory/Chebyshev.lean` has only Chebyshev *bounds* (e.g. `theta_le_log4_mul_x`),
+  with a header note that parts were upstreamed from PrimeNumberTheoremAnd — the full PNT
+  asymptotic has not been. So S1's "ordinary PNT (d=1 baseline) available" was too optimistic.
+
+**Net:** both ordinary PNT and PNT-AP (M2) are gated on the **same single missing theorem,
+Wiener–Ikehara**. Once it lands, M2 follows almost directly from the already-present
+residue-class machinery (pole residue `(q.totient)⁻¹`) — far less remaining work than S1/S2
+assumed. Still correctly `surveyed`: Wiener–Ikehara itself is a several-hundred-LOC
+contour/complex-analysis build, a general-purpose Mathlib-bound result, not a one-session
+deliverable.
+
 ---
 
 ## Dead Ends

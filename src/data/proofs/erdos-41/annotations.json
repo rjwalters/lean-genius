@@ -16,7 +16,11 @@
       "sidon-sets",
       "additive-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdos problems collection",
+      "sums of subsets of integers",
+      "asymptotic density of integer sequences"
+    ]
   },
   {
     "id": "ann-e41-bh-def",
@@ -35,7 +39,11 @@
       "distinct-sums",
       "finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite subsets of a set",
+      "summation over a finite set",
+      "injectivity of a map"
+    ]
   },
   {
     "id": "ann-e41-counting",
@@ -54,7 +62,11 @@
       "counting-function",
       "ncard"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinality of a set",
+      "real-valued exponents and roots",
+      "intersection of sets"
+    ]
   },
   {
     "id": "ann-e41-conjecture",
@@ -73,7 +85,11 @@
       "density",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limit inferior of a sequence",
+      "infinite sets of natural numbers",
+      "growth rate comparisons"
+    ]
   },
   {
     "id": "ann-e41-erdos-theorem",
@@ -92,7 +108,11 @@
       "sidon-sets",
       "solved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pairwise sums of a set",
+      "square-root growth scale",
+      "limit inferior"
+    ]
   },
   {
     "id": "ann-e41-nash-theorem",
@@ -111,7 +131,11 @@
       "fourier-analysis",
       "solved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fourier transform on integers",
+      "exponential sums",
+      "additive number theory"
+    ]
   },
   {
     "id": "ann-e41-chen-theorem",
@@ -130,7 +154,11 @@
       "even-h",
       "fourier-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "even versus odd integers",
+      "Fourier-analytic estimates",
+      "universal quantification over parameters"
+    ]
   },
   {
     "id": "ann-e41-open-case",
@@ -149,7 +177,11 @@
       "prize",
       "triple-sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open mathematical problems",
+      "law of excluded middle",
+      "cube-root growth scale"
+    ]
   },
   {
     "id": "ann-e41-sidon-connection",
@@ -168,7 +200,11 @@
       "b2",
       "erdos-30"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "definitional equality",
+      "pairwise sum sets",
+      "specialization of a general definition"
+    ]
   },
   {
     "id": "ann-e41-examples",
@@ -187,7 +223,11 @@
       "verification",
       "powers-of-two"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vacuous truth",
+      "binary representation of integers",
+      "uniqueness of representations"
+    ]
   },
   {
     "id": "ann-e41-summary",
@@ -206,6 +246,10 @@
       "status",
       "open-problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "case analysis by parameter",
+      "solved versus open status",
+      "summary tables of results"
+    ]
   }
 ]

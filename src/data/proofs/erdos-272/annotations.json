@@ -16,7 +16,11 @@
       "arithmetic progressions",
       "intersection properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Set Theory",
+      "Arithmetic Progressions",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e272-definitions",
@@ -35,7 +39,11 @@
       "singleton",
       "constructive proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Lean Structures",
+      "interval_cases Tactic"
+    ]
   },
   {
     "id": "ann-e272-intersection",
@@ -54,7 +62,11 @@
       "extremal function",
       "Finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Intersection",
+      "Finset Families",
+      "Axiomatized Definitions"
+    ]
   },
   {
     "id": "ann-e272-bounds",
@@ -73,7 +85,11 @@
       "quadratic growth",
       "extremal bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-O Notation",
+      "Counting Arguments",
+      "Extremal Bounds"
+    ]
   },
   {
     "id": "ann-e272-disproved",
@@ -92,7 +108,11 @@
       "counterexample",
       "small sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counterexample Construction",
+      "Erdos-Graham Conjecture",
+      "Asymptotic Comparison"
+    ]
   },
   {
     "id": "ann-e272-construction",
@@ -112,7 +132,11 @@
       "binomial coefficient",
       "singleton AP"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Powerset Filtering",
+      "Singleton Intersections"
+    ]
   },
   {
     "id": "ann-e272-szabo",
@@ -132,6 +156,10 @@
       "nhds",
       "error term"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Analysis",
+      "Error Term Estimates",
+      "Limit of Sequences"
+    ]
   }
 ]

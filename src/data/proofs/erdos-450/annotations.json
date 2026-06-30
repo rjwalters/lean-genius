@@ -16,7 +16,11 @@
       "divisibility",
       "natural number arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 type universes and namespaces",
+      "Mathlib import structure",
+      "decidable predicates over Finset"
+    ]
   },
   {
     "id": "ann-450-divisor",

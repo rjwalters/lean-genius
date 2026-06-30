@@ -779,3 +779,52 @@ build of the *complete* Step-3 orphan
 into the registered file (signatures match) to take the frontier from 4 sorries
 → 3 (Steps 1/4 + main remain). **Next session: check the sentinel before
 relaunching** (don't start a second concurrent build).
+
+## S20 (researcher-2, 2026-06-19) — registered file is down to ONE sorry; squeeze plan for it
+
+**Frontier correction.** The registered file
+`AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean` (656 LOC) now has exactly
+**ONE** real `sorry`: line 471, `normalizer_iso_AGL1Z` (Step 4). All other
+`sorry`-mentions in the file are prose in docstrings — `sylow_p_unique`,
+`sylow_p_normal`, `sylow_p_is_pcycle`, `H_le_normalizer`,
+`primitive_solvable_subgroup_embeds_AGL1Z`, the centralizer lemmas are all
+`sorry`-free now. So the whole Galois-direction embedding reduces to the single
+Step-4 isomorphism `N_{S_p}(⟨σ⟩) ≅ AGL(1,p)`.
+
+**Backends still down:** Aristotle MCP 404 (unbroken since S4); Docker host
+OOM-saturated (~14 containers, ~1 GiB headroom on the 7.65 GiB VM) — a blind
+tactic discharge of a ~100 LOC group-iso into the *auto-merged, no-CI* registered
+file is unsafe (the file's own line-504 docstring says so). No Lean shipped to the
+registered file this session.
+
+**NEW — cardinality-SQUEEZE discharge plan (avoids the hard surjectivity).**
+The numerically-certified S11 plan proves φ surjective by showing *every*
+automorphism of ⟨σ⟩ is realised by conjugation — the genuinely hard ~100 LOC
+direction. It can be replaced by a finite-cardinality squeeze using pieces that
+ALREADY EXIST:
+
+  Let `A := (AGL1Z.toPerm p).range ≤ Equiv.Perm (ZMod p)` (the affine subgroup).
+  1. `|A| = p(p-1)`: `AGL1Z.toPerm_injective` ⇒ `A ≃* AGL1Z p`, and parent
+     `AGL1Z.nat_card_eq : Nat.card (AGL1Z p) = p*(p-1)` (proved, OQ06.lean:157).
+  2. `A ≤ (zpowers σ).normalizer` (EASY direction): each affine map `x ↦ a+u·x`
+     conjugates `σ : x↦x+1` to `x ↦ x+u = σ^u ∈ ⟨σ⟩`, so it normalises ⟨σ⟩.
+     (This is the inclusion the S7 step-5 script already certified numerically.)
+  3. `|N| ≤ p(p-1)` (the bound that makes the squeeze close): the conjugation
+     action gives `N/C(σ) ↪ Aut(⟨σ⟩)`, and `|Aut(⟨σ⟩)| = |Aut(ℤ/p)| = p-1`
+     (cyclic of prime order); `C(σ) = ⟨σ⟩` with `|C| = p` is ALREADY proved here
+     (`centralizer_pcycle_eq_zpowers` + `centralizer_pcycle_card`). So
+     `|N| = |C|·[N:C] = p·[N:C] ≤ p·(p-1)`.
+  4. SQUEEZE: `p(p-1) = |A| ≤ |N| ≤ p(p-1)` ⇒ `|N| = p(p-1)` and `A = N`
+     (`Subgroup.eq_of_le_of_card_ge`, already used at line 446). Then
+     `N = A ≃* AGL1Z p` gives φ **both injective and surjective for free** — no
+     separate surjectivity proof needed.
+
+  Net: the only non-trivial new Mathlib wiring is step 3's `N/C ↪ Aut` bound and
+  `|Aut(ℤ/p)| = p-1` (cyclic-automorphism count). Steps 1,2,4 are short and lean
+  entirely on already-proved lemmas (`AGL1Z.nat_card_eq`, `toPerm_injective`,
+  `centralizer_pcycle_eq_zpowers`, `eq_of_le_of_card_ge`).
+
+**Status: BLOCKED on backends** (lone hard sorry, ~19 sessions, no Aristotle, no
+safe build window). Next backend-up session: implement the squeeze (steps 1–4
+above) and build-verify, OR submit `normalizer_iso_AGL1Z` to Aristotle once the
+404 clears. Moving on per the 3+-sessions-stuck rule.

@@ -1,0 +1,260 @@
+{
+  "id": "abel-ruffini-oq-07-discriminant",
+  "title": "Discriminant/Jordan Route to S₅ for X⁵ − X − 1",
+  "slug": "abel-ruffini-oq-07-discriminant",
+  "description": "A machine-verified discriminant-route assembler for Gal(X⁵−X−1/ℚ) ≅ S₅, complementing the sibling transposition-route reduction (abel-ruffini-oq-07). The classical Selmer/Galois argument identifies the Galois group from its discriminant: Δ(X⁵−X−1) = 2869 = 19·151 is not a perfect square, so Gal ⊄ A₅ (it contains some odd permutation, not necessarily a transposition). Combined with a transitive prime-degree action (from irreducibility) and a 3-cycle (from 3 ∣ |Gal|), Jordan's theorem forces Gal = S₅. The central theorem gal_eq_top_of_transitive_threeCycle_odd proves, with 0 sorries and 0 axioms, that any transitive G ≤ S₅ containing a 3-cycle and an odd permutation equals ⊤ — strictly more robust than the swap-based assembler, since it accepts ANY odd element. The discriminant non-squareness (disc_not_square) is formalized via the quadratic non-residue 6 ≡ 2869 (mod 7). The two number-theoretic inputs are exposed as explicit hypotheses (no axioms), as the bridges supplying them — Dedekind–Frobenius cycle types and 'disc square ⟺ Gal ⊆ A_n' — are absent from Mathlib v4.26.0.",
+  "meta": {
+    "author": "Selmer (1956); Jordan (1873); Dedekind / Frobenius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Galois_group",
+    "date": "1956",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ07Discriminant.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "galois-theory",
+      "symmetric-group",
+      "alternating-group",
+      "abel-ruffini",
+      "discriminant",
+      "jordan-theorem",
+      "quintic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "This file proves the DISCRIMINANT-ROUTE group-theoretic reduction of Gal(X⁵−X−1) ≅ S₅. The assembler gal_eq_top_of_transitive_threeCycle_odd takes three hypotheses: (i) the Galois action is transitive on the 5 roots (from irreducibility, Selmer 1956); (ii) Gal contains a 3-cycle (from 3 ∣ |Gal|); (iii) Gal contains an odd permutation (from Δ = 2869 not being a square, formalized as disc_not_square). It concludes Gal = ⊤ = S₅ via Mathlib's Jordan theorem (alternatingGroup_le_of_isPreprimitive_of_isThreeCycle_mem) plus the index-2 maximality of the alternating group. All three inputs are explicit HYPOTHESES, not axioms: the bridges that produce them in full generality — the Dedekind–Frobenius cycle-type theorem and the discriminant criterion 'Gal ⊆ A_n ⟺ disc is a square' — are not present in Mathlib v4.26.0. Every theorem in this file is fully machine-checked with 0 sorries and 0 axioms (only propext, Classical.choice, Quot.sound; disc_not_square uses decide, NOT native_decide, so no Lean.ofReduceBool).",
+    "dateAdded": "2026-06-19",
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.Perm.alternatingGroup_le_of_isPreprimitive_of_isThreeCycle_mem",
+        "description": "Jordan's theorem: a primitive subgroup of Perm α containing a 3-cycle contains the alternating group",
+        "module": "Mathlib.GroupTheory.GroupAction.Jordan"
+      },
+      {
+        "theorem": "MulAction.IsPreprimitive.of_prime_card",
+        "description": "A pretransitive action on a set of prime cardinality is preprimitive",
+        "module": "Mathlib.GroupTheory.GroupAction.Primitive"
+      },
+      {
+        "theorem": "Equiv.Perm.eq_alternatingGroup_of_index_eq_two",
+        "description": "A subgroup of Perm α of index 2 equals the alternating group",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
+      },
+      {
+        "theorem": "Equiv.Perm.alternatingGroup.index_eq_two",
+        "description": "The alternating group has index 2 in the symmetric group",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
+      },
+      {
+        "theorem": "Subgroup.index_dvd_of_le",
+        "description": "If H ≤ K then K.index divides H.index",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "IsSquare.map",
+        "description": "A ring/monoid homomorphism sends squares to squares (used to reduce mod 7)",
+        "module": "Mathlib.Algebra.Group.Even"
+      }
+    ],
+    "originalContributions": [
+      "gal_eq_top_of_transitive_threeCycle_odd: a clean, reusable discriminant-route assembler for S₅ — transitive + 3-cycle + any odd permutation ⟹ ⊤ — proven via Jordan's theorem and index-2 maximality of A₅, 0 sorry / 0 axiom.",
+      "disc_not_square: a self-contained proof that the discriminant 2869 of X⁵−X−1 is not a perfect square, via the quadratic non-residue 6 ≡ 2869 (mod 7), giving the formal content 'Gal ⊄ A₅'.",
+      "Demonstrates the discriminant route is strictly more robust than the sibling transposition route: it consumes any odd element rather than a specific swap, matching what a non-square discriminant naturally supplies."
+    ],
+    "prerequisites": [
+      "Symmetric and alternating groups; the sign homomorphism and index-2 maximality of A_n",
+      "Primitive permutation groups; Jordan's theorem (primitive + 3-cycle ⟹ ⊇ alternating)",
+      "Discriminant of a polynomial and the criterion Gal ⊆ A_n ⟺ disc is a square",
+      "Quadratic residues mod p",
+      "Lean 4 and Mathlib permutation/group-action API"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 115,
+    "relatedProblems": [
+      "abel-ruffini-oq-07",
+      "abel-ruffini-oq-04-oq-01",
+      "abel-ruffini"
+    ],
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Abel (1824) and Ruffini (1799) showed there is no general radical formula for the quintic, and Galois (1831) recast solvability by radicals as solvability of the equation's permutation group. A concrete unsolvable quintic therefore needs a Galois group that is non-solvable — the smallest such transitive subgroups of S₅ being A₅ and S₅. Selmer (1956) proved the trinomials Xⁿ − X − 1 irreducible over ℚ, making X⁵ − X − 1 a natural witness. Two classical tools pin down its Galois group: the discriminant (Gal ⊆ A_n exactly when disc(f) is a square) and Jordan's 1873 theorem (a primitive permutation group containing a 3-cycle contains the alternating group). This entry formalizes the assembly these two tools drive.",
+    "problemStatement": "Prove that the Galois group of f = X⁵ − X − 1 over ℚ is the full symmetric group S₅, using the discriminant rather than a single distinguished transposition.",
+    "text": "This entry formalizes the discriminant-route reduction for Gal(X⁵−X−1) ≅ S₅. It verifies, with 0 sorries and 0 axioms, that (a) any transitive subgroup G ≤ S₅ containing a 3-cycle and an odd permutation equals all of S₅ (gal_eq_top_of_transitive_threeCycle_odd), and (b) the discriminant Δ = 2869 = 19·151 is not a perfect square (disc_not_square), the formal statement that Gal ⊄ A₅. The three number-theoretic inputs the assembler consumes — transitivity (from irreducibility), a 3-cycle (from 3 ∣ |Gal|), and an odd permutation (from the non-square discriminant) — are exposed as explicit hypotheses rather than axioms.",
+    "proofStrategy": "Work concretely in S₅ = Equiv.Perm (Fin 5). (1) Record that the degree 5 is prime (card_fin5_prime). (2) Upgrade transitivity to primitivity via IsPreprimitive.of_prime_card (prime degree). (3) Apply Jordan's theorem (alternatingGroup_le_of_isPreprimitive_of_isThreeCycle_mem) to a 3-cycle in G, obtaining A₅ ≤ G. (4) Since A₅ has index 2, G.index divides 2; the odd permutation rules out G.index = 2 (which would force G = A₅), leaving G.index = 1, i.e. G = ⊤. (5) Independently certify the discriminant input: Δ(X⁵−X−1) = 256·(−1) + 3125 = 2869, factor as 19·151, and prove ¬ IsSquare 2869 by reduction mod 7 (2869 ≡ 6, a non-residue).",
+    "keyInsights": [
+      "The discriminant route needs only that SOME element of Gal is odd — never a specific transposition. This matches exactly what a non-square discriminant supplies, making the assembler more robust than the swap-based one in the sibling entry.",
+      "Jordan's theorem replaces the ad-hoc 'transitive + transposition ⟹ S_p' step with 'primitive + 3-cycle ⟹ ⊇ A_n', and prime degree turns transitivity into primitivity for free.",
+      "Once A₅ ≤ G, the only obstruction to G = S₅ is the index-2 gap; a single odd permutation closes it, since the alternating group is the unique index-2 subgroup.",
+      "Δ = 2869 is squarefree (19·151); the cheapest certificate of non-squareness is a single quadratic non-residue: 2869 ≡ 6 (mod 7), and 6 is not a square mod 7.",
+      "The 3-cycle input (3 ∣ |Gal|) is what excludes the Frobenius group F₂₀ (order 20, no element of order 3) from the {F₂₀, S₅} pair that a non-square discriminant alone leaves open."
+    ],
+    "prerequisites": [
+      "Symmetric and alternating groups; the sign homomorphism",
+      "Primitive permutation groups and Jordan's theorem",
+      "Galois groups of polynomials and the discriminant criterion",
+      "Quadratic residues",
+      "Lean 4 and Mathlib group-action API"
+    ],
+    "relatedConcepts": [
+      "Abel-Ruffini theorem",
+      "Galois group of a quintic",
+      "Jordan's theorem on primitive groups",
+      "discriminant criterion (Gal ⊆ A_n iff disc is a square)",
+      "quadratic residues"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement and the Discriminant Route",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Documents the goal Gal(X⁵−X−1) = S₅ and contrasts the discriminant route with the sibling transposition route: the discriminant Δ = 2869 = 19·151 is not a square (Gal ⊄ A₅), irreducibility gives a primitive prime-degree action, and 3 ∣ |Gal| gives a 3-cycle; Jordan's theorem then forces S₅. Explains that this is more robust because it consumes any odd element, not a specific swap.",
+      "mathContext": "Δ(X⁵−X−1) = 2869 = 19·151 (not a square); transitive subgroups of S₅ with an odd element are {F₂₀, S₅}; a 3-cycle excludes F₂₀.",
+      "relatedConcepts": [
+        "Abel-Ruffini theorem",
+        "discriminant criterion",
+        "Jordan's theorem"
+      ]
+    },
+    {
+      "id": "setup",
+      "title": "Setup: S₅ and the Prime Degree",
+      "startLine": 48,
+      "endLine": 63,
+      "summary": "Imports Jordan, alternating-group, cycle-type and ZMod machinery, opens MulAction/Equiv/Perm, abbreviates S5 := Equiv.Perm (Fin 5), and proves card_fin5_prime: the degree 5 is prime — the structural hypothesis that turns transitivity into primitivity.",
+      "mathContext": "S₅ = Sym({0,…,4}), |S₅| = 120; 5 prime ⟹ a pretransitive action is preprimitive.",
+      "relatedConcepts": [
+        "symmetric group",
+        "prime degree",
+        "primitive action"
+      ]
+    },
+    {
+      "id": "assembler",
+      "title": "The Discriminant-Route Assembler",
+      "startLine": 64,
+      "endLine": 99,
+      "summary": "gal_eq_top_of_transitive_threeCycle_odd: a transitive subgroup G ≤ S₅ containing a 3-cycle and an odd permutation equals ⊤. Prime degree gives primitivity (of_prime_card); Jordan's theorem gives A₅ ≤ G; the odd element plus index-2 maximality of A₅ gives G = ⊤. The three inputs are explicit hypotheses, not axioms.",
+      "mathContext": "Primitive + 3-cycle ⟹ ⊇ A_n (Jordan); A₅ has index 2, so G.index ∣ 2, and an odd element forces G.index = 1.",
+      "relatedConcepts": [
+        "Jordan's theorem",
+        "primitive permutation group",
+        "index-2 subgroup"
+      ]
+    },
+    {
+      "id": "discriminant",
+      "title": "The Discriminant 2869 and Its Non-Squareness",
+      "startLine": 100,
+      "endLine": 115,
+      "summary": "disc_value computes Δ(X⁵−X−1) = 256·(−1)⁵ + 3125·(−1)⁴ = 2869; disc_factorization records 2869 = 19·151; disc_not_square proves ¬ IsSquare (2869 : ℤ) by mapping to ZMod 7 (2869 ≡ 6, a quadratic non-residue). This is the formal content 'Gal ⊄ A₅', the odd-permutation input to the assembler.",
+      "mathContext": "Trinomial discriminant of X⁵ + aX + b is 4⁴a⁵ + 5⁵b⁴; for a = b = −1 this is 2869 ≡ 6 (mod 7), a non-residue.",
+      "relatedConcepts": [
+        "polynomial discriminant",
+        "quadratic non-residue",
+        "IsSquare"
+      ]
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "gal_eq_top_of_transitive_threeCycle_odd",
+      "type": "core",
+      "description": "The discriminant-route assembler: a transitive subgroup G ≤ S₅ containing a 3-cycle and an odd permutation equals all of S₅. Proven via prime-degree primitivity, Jordan's theorem, and the index-2 maximality of the alternating group; its three number-theoretic inputs are explicit hypotheses, not axioms. More robust than the swap-based assembler — it accepts any odd element."
+    },
+    {
+      "name": "disc_not_square",
+      "type": "proved",
+      "description": "The discriminant 2869 = Δ(X⁵−X−1) is not a perfect square, proven by reduction mod 7 (2869 ≡ 6, a quadratic non-residue). The formal statement that Gal ⊄ A₅ — the odd-permutation input consumed by the assembler."
+    },
+    {
+      "name": "disc_value",
+      "type": "proved",
+      "description": "The discriminant of X⁵ − X − 1 equals 256·(−1)⁵ + 3125·(−1)⁴ = 2869, the trinomial discriminant 4⁴a⁵ + 5⁵b⁴ at a = b = −1."
+    },
+    {
+      "name": "disc_factorization",
+      "type": "proved",
+      "description": "2869 = 19·151, exhibiting the discriminant as squarefree."
+    },
+    {
+      "name": "card_fin5_prime",
+      "type": "proved",
+      "description": "The degree Nat.card (Fin 5) = 5 is prime — the structural hypothesis that upgrades the transitive Galois action to a primitive one, enabling Jordan's theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry machine-verifies the discriminant route to Gal(X⁵−X−1/ℚ) = S₅. With 0 sorries and 0 axioms it proves: the assembler (a transitive G ≤ S₅ with a 3-cycle and an odd permutation equals S₅), via Jordan's theorem and the index-2 maximality of A₅; and the discriminant fact Δ = 2869 = 19·151 is not a square, the formal content Gal ⊄ A₅. The three modular inputs — transitivity from irreducibility, a 3-cycle from 3 ∣ |Gal|, and an odd permutation from the non-square discriminant — are exposed as explicit hypotheses, keeping the file axiom-free while marking the open dependencies.",
+    "implications": "1. Complementary proof route: this is a genuinely distinct second formalization of the same OQ, using the discriminant rather than a distinguished transposition. It is more robust — the assembler consumes any odd element, exactly what a non-square discriminant naturally provides — and routes through Jordan's theorem instead of the ad-hoc prime-degree-swap lemma.\n\n2. Reusable assembler: gal_eq_top_of_transitive_threeCycle_odd packages 'transitive + 3-cycle + odd ⟹ S₅' as a clean theorem; any quintic for which one can produce these three facts gets S₅ immediately.\n\n3. Discriminant formalized: disc_not_square supplies the (ii) input that the sibling entry left only as a single-element remark, computing Δ = 2869 and certifying non-squareness via a quadratic non-residue.\n\n4. Honest axiom accounting: leaving the three inputs as hypotheses rather than axioms isolates the genuinely missing Mathlib machinery — the Dedekind–Frobenius bridge and the general discriminant criterion 'Gal ⊆ A_n ⟺ disc is a square'.",
+    "openQuestions": [
+      "Formalize the general discriminant criterion in Mathlib: Gal(f) ⊆ A_n if and only if disc(f) is a square in the base field. This would discharge the odd-permutation hypothesis directly from disc_not_square.",
+      "Formalize the Dedekind–Frobenius bridge (factor type mod an unramified prime ⟹ matching cycle type in Gal), which would supply both the transitivity/5-cycle and the 3-cycle inputs unconditionally.",
+      "Connect disc_value to Mathlib's Polynomial.discriminant for the concrete polynomial X⁵ − X − 1, replacing the trinomial-formula value by a computed discriminant.",
+      "Can a Mathlib tactic decide a quintic's Galois group by combining the discriminant criterion with a bounded search over modular factorizations?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-07",
+      "relationship": "complementary",
+      "description": "The sibling entry reduces Gal(X⁵−X−1) ≅ S₅ via a distinguished transposition (the cube of the order-6 Frobenius at p=2). This entry gives the discriminant route: any odd permutation (from Δ not a square) plus a 3-cycle and primitivity, via Jordan's theorem — more robust because it needs no specific swap."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "related",
+      "description": "That entry proves Gal(x⁵−4x+2) = S₅ via complex conjugation as a transposition (3 real roots). X⁵−X−1 has only ONE real root, so this discriminant/Jordan route is the appropriate substitute."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "A second concrete Abel–Ruffini witness quintic, X⁵−X−1, unsolvable by radicals because (modulo the modular inputs) its Galois group is S₅."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.GroupAction.Jordan",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.GroupTheory.Perm.Cycle.Type",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MulAction",
+      "Equiv",
+      "Equiv.Perm"
+    ],
+    "namespace": "",
+    "lineCount": 115,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "sorries": 0,
+    "path": "Proofs/AbelRuffiniOQ07Discriminant.lean"
+  },
+  "references": [
+    {
+      "key": "Selmer56",
+      "citation": "Selmer, E. S. (1956). 'On the irreducibility of certain trinomials.' Mathematica Scandinavica 4, 287-302. Proves Xⁿ − X − 1 irreducible over ℚ for all n.",
+      "type": "article"
+    },
+    {
+      "key": "Jordan1873",
+      "citation": "Jordan, C. (1873). Sur la limite de transitivité des groupes non alternés. Establishes that a primitive permutation group containing a 3-cycle contains the alternating group.",
+      "type": "article"
+    },
+    {
+      "key": "DummitFoote",
+      "citation": "Dummit, D. S. and Foote, R. M., Abstract Algebra (3rd ed.), Wiley (2004). Section 14.6–14.8: discriminant criterion and Galois groups of quintics.",
+      "type": "book"
+    },
+    {
+      "key": "Cox",
+      "citation": "Cox, D. A., Galois Theory (2nd ed.), Wiley (2012). Treats the discriminant criterion Gal ⊆ A_n ⟺ disc a square and resolvent methods for quintics.",
+      "type": "book"
+    }
+  ]
+}

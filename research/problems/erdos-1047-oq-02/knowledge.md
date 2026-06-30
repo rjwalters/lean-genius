@@ -1204,3 +1204,84 @@ a different geometry absent in the cubic.
 - The genuinely-open analytic items remain: closed-form onset for the general
   non-collinear / higher-degree configuration, and the full OQ-02 characterization
   (open in the literature). No Lean axiom/build debt remains.
+
+## Session 2026-06-19 (researcher-1) — the symmetric-quartic onset t* = √2−1 is a SADDLE ARTIFACT (REFUTED), not a convexity neck
+
+**Mode**: REVISIT (RICH; build-free — flagship Goodman discharge already verified
+0-sorry on `main`, OQ-02 open in the literature, no Lean delta warranted). This
+session closes the item r3 explicitly flagged: *"re-examine whether r2/r9's
+quartic 'necks' near c_merge are partly the same saddle artifact vs. genuine
+off-axis necks ... worth an off-axis re-confirmation with the cone filter."*
+New artifact: `quartic_offaxis_reconfirm.py` (numpy-only).
+
+### Headline result
+On the symmetric simple-root quartic `f_t(z) = (z²−1)(z²−t²)`, roots `{−1,−t,t,1}`,
+**r2's "necking onset" t* = √2−1 is NOT a convexity onset** — it is the *same*
+saddle-divergence artifact r3 identified for the cubic. The interior component
+(around `z=t`) is **CONVEX for every `c < c_merge`, for all `0<t<1`**. The
+symmetric simple-root quartic therefore joins the OQ-02 **all-convex class**,
+alongside r3's three-collinear-simple cubic.
+
+### Why r3's own cone filter is also unreliable (methodological upgrade)
+r3 recovered cubic convexity by excluding an angular **cone** around the on-axis
+saddle direction. But a cone of *any fixed half-angle* still admits boundary
+points arbitrarily close to the saddle as `c→c_merge` (the first-crossing radius
+in a near-axis direction lands ever nearer the saddle). Empirically, narrowing
+the cone on the quartic drives the "off-axis" min **negative**, worst point
+hugging the saddle (dist ~0.03). So the cone verdict is cone-width dependent —
+not a diagnostic. (Confirmed: cone 18°→2° at ratio 0.99999 takes t* from +0.34 to
+−1.06.)
+
+### The rigorous diagnostic (stable-minimum / distance-to-saddle)
+At every `c` strictly below `c_merge` the component boundary is **smooth** (no
+saddle on it). So per fixed `c`, take the boundary-min of `Re(u′)` over the `z=t`
+component **and** the Euclidean distance of the worst point to the nearest real
+saddle; then drive `c→c_merge` and watch both:
+- **genuine convex** → min `→` strictly POSITIVE limit at a STABLE saddle distance;
+- **genuine neck** → min `→` NEGATIVE limit at a worst point BOUNDED AWAY from saddle;
+- **saddle artifact** → min goes negative ONLY as worst point MIGRATES INTO the
+  saddle (dist→0), value merely tracking the `−1/dist²` divergence.
+
+### Decisive data (`1−ratio` = `(c_merge−c)/c_merge`, four decades)
+| family | min Re(u′) trend | worst-pt dist→saddle | verdict |
+|---|---|---|---|
+| cubic t=2.0 (control) | +0.8637 **stable** | 0.8819 **stable** | convex ✓ |
+| quartic t=0.35 (`<t*`, central merge) | ~+0.60 **stable** | →0.10 (central, value stays +) | convex ✓ |
+| quartic t=√2−1 (r2 onset, outer merge) | +0.26 → −3.09 | 0.069 → **0.0067** | **artifact** |
+| quartic t=0.50 (r2/r9 "NECKS", outer merge) | +0.37 → −2.33 | 0.064 → **0.0063** | **artifact** |
+
+The cubic min and its saddle distance are stable to 4 sig figs across `1−ratio` =
+1e−3…1e−6 — a real geometric feature. The quartic min goes negative *only* while
+the worst point chases the outer saddle `s=√((1+t²)/2)`, value `~ −1/dist²`. No
+stable off-saddle concave arc exists at any `c<c_merge`.
+
+### What t* = √2−1 actually marks (corrected interpretation)
+It is the crossover of **which merge happens first**: central-symmetric (with the
+mirror `−t`, barrier `t²`) for `t<t*`, vs. outer-asymmetric (with `+1`, barrier
+`(1−t²)²/4`) for `t>t*`. This changes the *limiting* saddle geometry — symmetric
+merges have **finite positive** limiting curvature (t=0.35: value stays +0.60 as
+its worst point approaches `z=0`), asymmetric merges have **divergent** curvature
+— but neither is a neck at `c<c_merge`. r2's bisection locked onto the `t²
+= (1−t²)²/4` barrier-crossover (real), then *mislabelled* the post-crossover
+saddle divergence as "necking."
+
+### Consistency with the verified counterexamples (no contradiction)
+Goodman `(z²+1)(z−2)²` (off-line conjugate pair `±i` + double root) and
+Pommerenke `zᵏ(z−a)` (high-multiplicity root) are genuinely non-convex — the
+flagship 0-sorry discharge stands. Real non-convexity needs a **repeated root or
+an off-line root**; four *distinct simple collinear real* roots do not neck. This
+sharpens the emerging structural picture toward a candidate OQ-02 sub-criterion:
+*distinct simple collinear real roots ⇒ all-convex* (now verified for the cubic
+and the symmetric quartic; the general non-symmetric collinear case remains the
+open frontier).
+
+### Remaining work (updated)
+- Test the **general (non-symmetric) collinear simple quartic** with the
+  stable-minimum/distance-to-saddle diagnostic (the asymmetric `s` could in
+  principle host a genuine bounded-away concave arc — not seen in the symmetric
+  family, worth confirming on `z(z−a)(z−b)(z−1)`).
+- Retire `gap_threshold_scan.py`'s "NECKS" labels in any downstream summary: the
+  symmetric quartic does not neck. (The script's *barrier-crossover* math is
+  correct; only its convexity verdict was a saddle artifact.)
+- The full OQ-02 characterization remains open in the literature. No Lean
+  axiom/build debt remains.

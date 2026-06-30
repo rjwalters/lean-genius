@@ -1,7 +1,7 @@
 {
   "slug": "collatz-structured-oq-01",
   "title": "Collatz Conjecture: Does Every Positive Integer Reach 1",
-  "phase": "NEW",
+  "phase": "BLOCKED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "BLOCKED",
     "since": "2026-04-22T12:51:58.077Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 3,
+    "focus": "Unconditional backward-structural program complete; core open part is the Collatz conjecture.",
+    "blockers": [
+      "Core remaining question is the Collatz conjecture itself (open mathematics, parent axiom) -- not a missing-Mathlib gap.",
+      "All tractable unconditional follow-ups already covered by open PRs #31378 (<=2^d), #31410 (matching lower bound + arbitrary-root infinitude), #31416 (basin counting log bound), #30390 (odd reduction)."
+    ],
+    "nextAction": "Park; merge the pending open PRs. No further marginal backward theorems (would be redundant).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +32,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "S5 (researcher-6, 2026-06-28, VERIFIED 0-axiom): added Part VI — basin_count_lower, a logarithmic lower bound #{n≤N : ReachesOne n} ≥ Nat.log 2 N + 1, making basin_infinite quantitative (PR #31416). Note: the first nextStep (geometric ≤2^d tree bound) was already done in a prior session (backward_tree_ncard_le). | S4 (researcher-3, 2026-06-28, VERIFIED 0-axiom): added the uniform in-degree structure — indegree_finite (predecessor set always finite: singleton or pair), indegree_eq_one_or_two (unconditional 1-or-2 dichotomy, uniform over residues), indegree_le_two, indegree_pos (the 1 ≤ in-degree ≤ 2 bracket). These supply the finiteness + uniform bound that unblock geometric ≤ 2^d backward-tree node counting. File now ~346 lines, 0 axioms/0 sorries. | S3 (researcher-10, 2026-06-28, VERIFIED 0-axiom): added Part II¾ — a verified DENSITY result for the Collatz graph. indegree_eq_two_iff bridges in-degree to arithmetic (in-degree exactly 2 ⟺ m≡4 mod6); branch_vertices_eq identifies branch vertices with the progression {6j+4}; branch_count proves exactly k branch vertices lie below 6k (density exactly 1/6) via injective j↦6j+4 + Finset.card_image_of_injective; branch_vertices_infinite. 249→317 lines, 15→21 theorems, still 0 axioms/0 sorries. Prior: S1 (researcher-12, PR #30960) created the file (backward dynamics, preimage characterization, branching law, in-degree dichotomy, backward closure, basin infinite); S2 (researcher-3) sharpened in-degree to exact predecessor sets.",
+    "builtItems": [
+      "odd_pred_eq / preimage_collatz_eq_pair / preimage_collatz_eq_singleton / indegree_eq_two / indegree_eq_one (S2, 0-axiom): exact predecessor sets and numeric in-degree (2 on residue 4 mod 6, else 1) — sharpens the qualitative dichotomy",
+      "collatz_eq_iff: exact Collatz preimage characterization, proved by parity split + omega",
+      "odd_pred_exists_iff: mod-6 branching law with explicit witness 2*(m/6)+1",
+      "two_preds_of_mod / unique_pred_of_not_mod: in-degree dichotomy of the Collatz graph",
+      "reaches_one_of_collatz / basin_closed_under_pred: backward closure of the basin of 1",
+      "basin_infinite: unconditional proof the basin of 1 is infinite via k ↦ 2^(k+1)",
+      "indegree_eq_two_iff / branch_vertices_eq / branch_count / branch_vertices_infinite (S3, 0-axiom): verified density — in-degree 2 ⟺ m≡4 mod6, branch vertices = {6j+4}, exactly k below 6k (density 1/6), set infinite. Via injective j↦6j+4 + Finset.card_image_of_injective.",
+      "basin_count_lower (S5, 0-axiom): #{n≤N : ReachesOne n} ≥ Nat.log 2 N + 1 — logarithmic lower bound on the basin counting function via powers-of-two injection; pow_two_reaches_one (all k incl. 0) and basin_below_finite supporting. CollatzStructuredOQ01.lean Part VI."
+    ],
+    "insights": [
+      "The Collatz preimage is cleanly two-valued: splitting on the parity of a predecessor a gives a = 2m (even) or 3a+1 = m (odd); stating oddness as a % 2 = 1 keeps the whole proof inside omega.",
+      "Odd predecessors are governed by a single residue: an odd a = 2t+1 gives 3a+1 = 6t+4, so odd predecessors of m exist exactly when m ≡ 4 (mod 6), and the unique odd predecessor is 2*(m/6)+1.",
+      "In-degree dichotomy: every m has the even predecessor 2m, so vertices with m ≡ 4 (mod 6) have in-degree 2 and all others in-degree 1 — one residue in six branches.",
+      "Backward closure (collatz a = m, m reaches 1 ⟹ a reaches 1) makes the basin of 1 exactly the set generated from 1 by the set-valued predecessor map — the Collatz tree rooted at 1.",
+      "Infinitude of the basin is unconditional and elementary (powers of two), far weaker than the conjecture; it cleanly separates a provable sub-statement from the open problem.",
+      "The in-degree-2 (branching) vertices of the Collatz graph are exactly the arithmetic progression 6j+4; enumerating them injectively gives an EXACT count — precisely k below 6k — so branch vertices have density exactly 1/6. This realizes the nextStep 'verified density result' in clean closed form, unconditionally.",
+      "omega does not beta-reduce a Set.range/Finset.image enumeration lambda left in the goal or hypothesis (↑((fun j => 6*j+4) x) stays opaque); coerce with show / a typed have (h : 6*a+4 = 6*b+4 := hab) before calling omega. Finset.mem_image-introduced existentials ARE beta-reduced by simp, but Set.mem_range ones are not.",
+      "The basin counting function #{n≤N : ReachesOne n} admits an unconditional logarithmic LOWER bound (≥ log2 N + 1) from the powers-of-two family; the matching nontrivial UPPER bound (< N+1) is equivalent to exhibiting a non-reaching n, i.e. the open Collatz question itself — so only the lower half of nextStep 4 is achievable."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Describe the 2-step predecessor structure (preimage of preimage) in closed residue-class form by iterating collatz_eq_iff — count of 2-step predecessors ranges 1..4 by mod-cases (sharpening backward_tree_ncard_le 2 ≤ 4 to exact counts).",
+      "Connect backward closure + cycle-exclusion (collatz-cycles family) toward a verified acyclicity statement for the basin minus the {1,4,2} cycle.",
+      "Lower bound the d-step backward-tree size below by the number of branch (6j+4) vertices reachable, complementing ancestors_card_le (≤2^d) with a nontrivial ≥ bound."
+    ]
   },
   "tags": [
     "number-theory",
@@ -44,6 +69,8 @@
   "relatedProofs": [
     "collatz-structured",
     "collatz-structured-oq-02-oq-01",
+    "collatz-structured-oq-02-oq-02",
+    "collatz-structured-oq-02-oq-03",
     "collatz-structured-oq-03"
   ],
   "references": {
@@ -52,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.077Z",
-  "lastUpdate": "2026-04-22T12:51:58.077Z",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [
@@ -77,6 +104,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CollatzStructuredOQ02OQ02.lean",
+      "filename": "CollatzStructuredOQ02OQ02.lean",
+      "lineCount": 233,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CollatzStructuredOQ02OQ03.lean",
+      "filename": "CollatzStructuredOQ02OQ03.lean",
+      "lineCount": 146,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ02OQ03.lean"
     },
     {
       "path": "Proofs/CollatzStructuredOQ03.lean",

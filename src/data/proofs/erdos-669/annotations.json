@@ -16,7 +16,11 @@
       "Orchard problem",
       "Point-line configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "discrete geometry",
+      "projective geometry"
+    ]
   },
   {
     "id": "ann-e669-point-line",
@@ -34,7 +38,11 @@
       "Point-line incidence"
     ],
     "mathContext": "See annotation content for formal details of point and line definitions",
-    "prerequisites": []
+    "prerequisites": [
+      "analytic geometry",
+      "linear algebra",
+      "Lean 4 structure definitions"
+    ]
   },
   {
     "id": "ann-e669-counting-functions",
@@ -52,7 +60,11 @@
       "Supremum"
     ],
     "mathContext": "See annotation content for formal details of counting functions f_k and f_k",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "real analysis",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e669-orchard",
@@ -70,7 +82,11 @@
       "Asymptotic analysis",
       "Orchard problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "asymptotic analysis",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e669-upper-bound",
@@ -88,7 +104,11 @@
       "Double counting",
       "Pigeonhole principle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "binomial coefficients",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e669-conjecture",
@@ -106,7 +126,11 @@
       "Asymptotic tightness"
     ],
     "mathContext": "See annotation content for formal details of the general conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e669-configs",
@@ -124,6 +148,10 @@
       "Projective planes",
       "Extremal constructions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite geometry",
+      "combinatorics",
+      "number theory"
+    ]
   }
 ]

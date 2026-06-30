@@ -178,7 +178,11 @@
     "relatedConcepts": [
       "denominator sign analysis"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Powers of Two",
+      "Integer Subtraction",
+      "Sign of an Integer"
+    ],
     "range": {
       "startLine": 146,
       "endLine": 148
@@ -196,7 +200,11 @@
       "telescoping",
       "exact cancellation"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Powers of Two",
+      "Reciprocal of an Integer",
+      "Additive Cancellation"
+    ],
     "range": {
       "startLine": 149,
       "endLine": 151
@@ -213,7 +221,11 @@
     "relatedConcepts": [
       "monotone decreasing terms"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Powers of Two",
+      "Monotone Decreasing Sequence",
+      "Positive Series Terms"
+    ],
     "range": {
       "startLine": 152,
       "endLine": 154
@@ -442,7 +454,11 @@
     "relatedConcepts": [
       "open problems in transcendence theory"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Irrationality vs Transcendence",
+      "Open Conjectures",
+      "Axiomatized Statements"
+    ],
     "range": {
       "startLine": 354,
       "endLine": 364
@@ -606,7 +622,11 @@
       "Mersenne numbers",
       "shifted exponential sequences"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Mersenne Numbers",
+      "Integer Sequences",
+      "Exponential Sequences"
+    ],
     "range": {
       "startLine": 423,
       "endLine": 427

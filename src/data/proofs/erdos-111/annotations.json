@@ -17,7 +17,11 @@
       "Infinite combinatorics",
       "Cardinal arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the chromatic number of a graph",
+      "bipartite graphs",
+      "infinite combinatorics and cardinal arithmetic"
+    ]
   },
   {
     "id": "ann-e111-bipartite",
@@ -36,7 +40,11 @@
       "Odd cycles",
       "König's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph 2-coloring",
+      "odd cycles and their obstruction to bipartiteness",
+      "König's theorem"
+    ]
   },
   {
     "id": "ann-e111-edge-deletion",
@@ -55,7 +63,11 @@
       "Max-cut",
       "Edge deletion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subgraphs and edge sets",
+      "deleting edges to achieve a property",
+      "the max-cut viewpoint"
+    ]
   },
   {
     "id": "ann-e111-coloring",
@@ -74,7 +86,11 @@
       "Four color theorem",
       "NP-completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proper graph colorings",
+      "the chromatic number",
+      "NP-completeness of coloring"
+    ]
   },
   {
     "id": "ann-e111-chromatic-number",
@@ -93,7 +109,11 @@
       "Greedy algorithm",
       "NP-completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proper colorings and χ(G)",
+      "the greedy coloring algorithm",
+      "computational hardness of χ"
+    ]
   },
   {
     "id": "ann-e111-cardinal-chromatic",
@@ -113,7 +133,11 @@
       "Uncountable sets",
       "Set theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinal numbers and ℵ₁",
+      "uncountable graphs",
+      "set-theoretic chromatic numbers"
+    ]
   },
   {
     "id": "ann-e111-odd-cycles",
@@ -132,7 +156,11 @@
       "BFS",
       "Graph traversal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cycles in a graph",
+      "odd cycles and bipartiteness",
+      "graph traversal (BFS) for cycle detection"
+    ]
   },
   {
     "id": "ann-e111-vertex-disjoint",
@@ -151,7 +179,11 @@
       "Ramsey theory",
       "Graph packing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vertex-disjoint subgraphs",
+      "compactness arguments",
+      "Ramsey-type packing of odd cycles"
+    ]
   },
   {
     "id": "ann-e111-h-linear",
@@ -169,7 +201,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the edge-deletion function h(G)",
+      "lower-bound arguments",
+      "Lean formalization of graph quantities"
+    ]
   },
   {
     "id": "ann-e111-upper-bound",
@@ -188,7 +224,11 @@
       "Probabilistic method",
       "Graph constructions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "shift graphs",
+      "the probabilistic method",
+      "the Erdős–Hajnal–Szemerédi upper-bound construction"
+    ]
   },
   {
     "id": "ann-e111-erdos-conjecture",
@@ -207,7 +247,11 @@
       "Growth rates",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic growth rates",
+      "Erdős's open conjecture statement"
+    ]
   },
   {
     "id": "ann-e111-main-question",
@@ -226,7 +270,11 @@
       "Growth rates",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the edge-deletion-to-bipartite quantity",
+      "limit/growth behavior",
+      "the central open question"
+    ]
   },
   {
     "id": "ann-e111-related",
@@ -245,7 +293,11 @@
       "Finite combinatorics",
       "Bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite analogues and Problem #74",
+      "finite extremal combinatorics",
+      "bipartite-edge-deletion in finite graphs"
+    ]
   },
   {
     "id": "ann-e111-summary",
@@ -264,6 +316,10 @@
       "graph theory",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the chromatic/bipartite edge-deletion problem",
+      "the proof technique",
+      "what is known vs open"
+    ]
   }
 ]

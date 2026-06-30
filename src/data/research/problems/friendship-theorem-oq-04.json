@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-06-14T22:54:16-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "S14 (researcher-2): amalgamation STEP lemma scaffolded in proofs/Proofs/FriendshipTheoremOQ04Amalgam.lean (BUILD-PENDING, 3 sorry, unregistered) — the finitary inductive core of the C5 free-amalgamation counterexample, isolated out of the multi-session colimit. amalgam (one Option V splice), amalgam_new_common, amalgam_new_common_unique, amalgam_linear (step preserves the friendship upper bound). Authored under closed build gate (load ~24) + Aristotle 404. NEXT: gate open or Aristotle up -> register + docker-build.sh Proofs.FriendshipTheoremOQ04Amalgam (or prove_file), mark verified, then attack the omega-colimit (fairness lower bound + no-universal-vertex persistence). Full hand proof in knowledge.md S14.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -80,7 +80,9 @@
   "relatedProofs": [
     "friendship-theorem",
     "friendship-theorem-oq-01",
-    "friendship-theorem-oq-03"
+    "friendship-theorem-oq-01-oq-01",
+    "friendship-theorem-oq-03",
+    "friendship-theorem-oq-04"
   ],
   "references": {
     "papers": [],
@@ -114,6 +116,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ01.lean"
     },
     {
+      "path": "Proofs/FriendshipTheoremOQ01OQ01.lean",
+      "filename": "FriendshipTheoremOQ01OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/FriendshipTheoremOQ02.lean",
       "filename": "FriendshipTheoremOQ02.lean",
       "lineCount": 378,
@@ -134,6 +147,40 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ04.lean",
+      "filename": "FriendshipTheoremOQ04.lean",
+      "lineCount": 628,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ04Amalgam.lean",
+      "filename": "FriendshipTheoremOQ04Amalgam.lean",
+      "lineCount": 122,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ04Amalgam.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ04Universal.lean",
+      "filename": "FriendshipTheoremOQ04Universal.lean",
+      "lineCount": 129,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ04Universal.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-06-19T12:40:00.000Z"
 }

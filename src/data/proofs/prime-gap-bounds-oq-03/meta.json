@@ -1,0 +1,178 @@
+{
+  "id": "prime-gap-bounds-oq-03",
+  "title": "The Exponential Prime Bound Meets the Chebyshev Functions θ and ψ",
+  "slug": "prime-gap-bounds-oq-03",
+  "description": "Connects the parent entry's elementary exponential bound p_n ≤ 2^(n+1) to Mathlib's Chebyshev prime-power summatory functions θ and ψ. Feeding the prime bound into θ-monotonicity and the Chebyshev upper bounds θ(x) ≤ x·log 4, ψ(x) ≤ (log 4 + 4)·x yields two-sided control at the n-th prime: (n+1)·log 2 ≤ θ(p_n) ≤ ψ(p_n) ≤ (log 4 + 4)·2^(n+1) and 2^(n+1) ≤ primorial p_n ≤ 4^(2^(n+1)). The lower bounds use the exact prime count #{p ≤ p_n} = n+1, read off from Nat.primeCounting'_nth_eq and Nat.count_succ. 0 axioms, no native_decide.",
+  "meta": {
+    "author": "research (Chebyshev connection); θ/ψ machinery: Mathlib.NumberTheory.Chebyshev",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_function",
+    "date": "classical (Chebyshev, 1852)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PrimeGapBoundsOQ03.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "chebyshev-function",
+      "primorial",
+      "prime-counting",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Chebyshev.theta_mono",
+        "description": "θ is monotone; transports the exponential prime bound p_n ≤ 2^(n+1) to θ(p_n) ≤ θ(2^(n+1))",
+        "module": "Mathlib.NumberTheory.Chebyshev"
+      },
+      {
+        "theorem": "Chebyshev.theta_le_log4_mul_x",
+        "description": "θ(x) ≤ (log 4)·x, the elementary Chebyshev upper bound; evaluated at 2^(n+1)",
+        "module": "Mathlib.NumberTheory.Chebyshev"
+      },
+      {
+        "theorem": "Chebyshev.theta_eq_log_primorial",
+        "description": "θ(x) = log (primorial ⌊x⌋₊); the bridge that turns the primorial lower bound into a θ lower bound",
+        "module": "Mathlib.NumberTheory.Chebyshev"
+      },
+      {
+        "theorem": "Chebyshev.psi_le_const_mul_self",
+        "description": "ψ(x) ≤ (log 4 + 4)·x; the explicit-constant Chebyshev bound used at x = p_n",
+        "module": "Mathlib.NumberTheory.Chebyshev"
+      },
+      {
+        "theorem": "Chebyshev.theta_le_psi",
+        "description": "θ(x) ≤ ψ(x): the prime-power sum dominates the prime sum",
+        "module": "Mathlib.NumberTheory.Chebyshev"
+      },
+      {
+        "theorem": "primorial_le_4_pow",
+        "description": "primorial n ≤ 4^n; combined with p_n ≤ 2^(n+1) gives the doubly-exponential bound primorial p_n ≤ 4^(2^(n+1))",
+        "module": "Mathlib.NumberTheory.Primorial"
+      },
+      {
+        "theorem": "Finset.pow_card_le_prod",
+        "description": "a^(s.card) ≤ ∏ x in s, f x when a ≤ f x on s; gives 2^(n+1) ≤ primorial p_n from each prime being ≥ 2",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.primeCounting'_nth_eq",
+        "description": "π'(p_n) = n (there are exactly n primes strictly below the n-th prime); with Nat.count_succ gives #{p ≤ p_n} = n+1",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "PrimeGapBounds.nth_prime_le_two_pow_succ",
+        "description": "The parent entry's exponential bound p_n ≤ 2^(n+1), proved by elementary induction from Bertrand's postulate",
+        "module": "Proofs.PrimeGapBounds"
+      }
+    ],
+    "originalContributions": [
+      "Connects the parent's purely combinatorial exponential prime bound p_n ≤ 2^(n+1) to the analytic Chebyshev functions θ and ψ, evaluating both at the n-th prime",
+      "Two-sided Chebyshev sandwich at the n-th prime: (n+1)·log 2 ≤ θ(p_n) ≤ ψ(p_n) ≤ (log 4 + 4)·2^(n+1), combining a counting lower bound with Mathlib's elementary upper bounds",
+      "Doubly-exponential primorial sandwich 2^(n+1) ≤ primorial p_n ≤ 4^(2^(n+1)): the lower bound from each of the n+1 primes ≤ p_n being ≥ 2, the upper from primorial_le_4_pow and the exponential prime bound",
+      "Exact prime count #{p ≤ p_n : p prime} = n+1 derived from Nat.primeCounting'_nth_eq and Nat.count_succ, the combinatorial input feeding both lower bounds",
+      "θ lower bound obtained without any θ/ψ lower bound from Mathlib (which only ships upper bounds): it is routed through the primorial via θ(x) = log(primorial ⌊x⌋₊)"
+    ],
+    "axiomCount": 0,
+    "lineCount": 152,
+    "assumptions": "None — fully verified from Mathlib with 0 axioms (only propext / Classical.choice / Quot.sound) and 0 sorries; no native_decide. Depends on the parent entry PrimeGapBounds, itself verified at 0 axioms.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Chebyshev (1852) introduced the prime-power summatory functions ψ(x) = Σ_{p^k ≤ x} log p and θ(x) = Σ_{p ≤ x} log p as the analytic carriers of the distribution of primes; they satisfy ψ(x), θ(x) ≍ x and underlie the Prime Number Theorem. The parent entry instead proves, by entirely elementary means from Bertrand's postulate, the much weaker exponential bound p_n ≤ 2^(n+1) on the n-th prime. This entry ties the two pictures together: it shows precisely what the elementary prime bound says about the Chebyshev functions, and conversely how the prime count pins down their size at the n-th prime.",
+    "problemStatement": "Connect the parent entry's exponential bound p_n ≤ 2^(n+1) to the Chebyshev functions θ(x) and ψ(x).",
+    "text": "A two-sided control of θ, ψ, and the primorial at the n-th prime, obtained by feeding the elementary exponential prime bound into Mathlib's Chebyshev machinery.",
+    "proofStrategy": "Upper bounds: θ is monotone, so p_n ≤ 2^(n+1) gives θ(p_n) ≤ θ(2^(n+1)) ≤ (log 4)·2^(n+1) by Chebyshev.theta_le_log4_mul_x; ψ(p_n) ≤ (log 4 + 4)·p_n ≤ (log 4 + 4)·2^(n+1) by Chebyshev.psi_le_const_mul_self; primorial p_n ≤ 4^(p_n) ≤ 4^(2^(n+1)) by primorial_le_4_pow and monotonicity of k ↦ 4^k. Lower bounds: the primorial of p_n is the product of the n+1 primes ≤ p_n, each ≥ 2, so 2^(n+1) ≤ primorial p_n via Finset.pow_card_le_prod, where the cardinality n+1 is the exact prime count #{p ≤ p_n} obtained from Nat.primeCounting'_nth_eq and Nat.count_succ; applying θ(x) = log(primorial ⌊x⌋₊) and monotonicity of log turns this into (n+1)·log 2 ≤ θ(p_n). Finally θ(p_n) ≤ ψ(p_n) by Chebyshev.theta_le_psi.",
+    "keyInsights": [
+      "The elementary prime bound p_n ≤ 2^(n+1) and θ-monotonicity already give a Chebyshev upper bound at the n-th prime — no analysis needed beyond Mathlib's θ(x) ≤ x·log 4",
+      "Mathlib ships only upper bounds for θ and ψ; the θ lower bound here is obtained for free by routing through the primorial identity θ(x) = log(primorial ⌊x⌋₊) and a product lower bound",
+      "The whole lower-bound story rests on one exact count: there are exactly n+1 primes ≤ p_n, namely p_0, …, p_n, which Nat.count_succ peels off the (n)-prime count π'(p_n) = n",
+      "primorial p_n is squeezed doubly-exponentially: 2^(n+1) ≤ primorial p_n ≤ 4^(2^(n+1)), the lower bound from each prime exceeding 2 and the upper from primorial_le_4_pow at the exponential prime bound",
+      "θ(p_n) ≤ ψ(p_n) completes a clean chain (n+1)·log 2 ≤ θ(p_n) ≤ ψ(p_n) ≤ (log 4 + 4)·2^(n+1) linking both Chebyshev functions to the exponential bound"
+    ],
+    "prerequisites": [
+      "Exponential prime bound p_n ≤ 2^(n+1) (parent entry)",
+      "Chebyshev functions θ and ψ",
+      "Primorial and the prime-counting function"
+    ]
+  },
+  "sections": [
+    {
+      "id": "theta-upper",
+      "title": "Chebyshev Upper Bound for θ at the n-th Prime",
+      "startLine": 54,
+      "endLine": 60,
+      "summary": "θ(p_n) ≤ (log 4)·2^(n+1), by θ-monotonicity against p_n ≤ 2^(n+1) followed by Chebyshev.theta_le_log4_mul_x.",
+      "mathContext": "θ(x) = Σ_{p ≤ x} log p; Mathlib's elementary bound θ(x) ≤ x·log 4."
+    },
+    {
+      "id": "prime-count",
+      "title": "Exact Prime Count and Primorial Lower Bound",
+      "startLine": 64,
+      "endLine": 86,
+      "summary": "There are exactly n+1 primes ≤ p_n (from Nat.primeCounting'_nth_eq and Nat.count_succ), so 2^(n+1) ≤ primorial p_n via Finset.pow_card_le_prod, each prime being ≥ 2.",
+      "mathContext": "primorial m = ∏_{p ≤ m, p prime} p; π'(p_n) = n."
+    },
+    {
+      "id": "primorial-sandwich",
+      "title": "Doubly-Exponential Primorial Sandwich",
+      "startLine": 88,
+      "endLine": 103,
+      "summary": "2^(n+1) ≤ primorial p_n ≤ 4^(2^(n+1)): the upper bound from primorial_le_4_pow and the exponential prime bound, the lower from the previous section.",
+      "mathContext": "primorial_le_4_pow: primorial m ≤ 4^m."
+    },
+    {
+      "id": "theta-lower",
+      "title": "θ Lower Bound via the Primorial",
+      "startLine": 105,
+      "endLine": 122,
+      "summary": "(n+1)·log 2 ≤ θ(p_n), obtained from 2^(n+1) ≤ primorial p_n through the identity θ(x) = log(primorial ⌊x⌋₊) and monotonicity of log — Mathlib has no θ lower bound of its own.",
+      "mathContext": "θ(p_n) = log(primorial p_n) ≥ log(2^(n+1)) = (n+1)·log 2."
+    },
+    {
+      "id": "psi-and-chain",
+      "title": "ψ Upper Bound and the Full Chain",
+      "startLine": 124,
+      "endLine": 150,
+      "summary": "ψ(p_n) ≤ (log 4 + 4)·2^(n+1) by Chebyshev.psi_le_const_mul_self, and θ(p_n) ≤ ψ(p_n) by Chebyshev.theta_le_psi, assembling (n+1)·log 2 ≤ θ(p_n) ≤ ψ(p_n) ≤ (log 4 + 4)·2^(n+1).",
+      "mathContext": "ψ(x) = Σ_{p^k ≤ x} log p ≥ θ(x); explicit-constant bound ψ(x) ≤ (log 4 + 4)·x."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 axioms, 0 sorries, no native_decide) connection of the parent's exponential bound p_n ≤ 2^(n+1) to the Chebyshev functions: (n+1)·log 2 ≤ θ(p_n) ≤ ψ(p_n) ≤ (log 4 + 4)·2^(n+1) and the doubly-exponential primorial sandwich 2^(n+1) ≤ primorial p_n ≤ 4^(2^(n+1)).",
+    "implications": "The elementary prime bound and the analytic Chebyshev functions are made to talk to each other in Lean: the same exponential bound that controls the n-th prime controls θ and ψ at the n-th prime, while the exact prime count π'(p_n) = n supplies matching lower bounds. The gap between the (n+1)·log 2 lower bound and the 2^(n+1)·log 4 upper bound on θ(p_n) is exactly the gap between the trivial and the exponential prime bounds — a quantitative reminder that elementary methods are far from the PNT-sharp θ(p_n) ≍ p_n ≍ n log n.",
+    "openQuestions": [
+      "Sharpen the θ(p_n) lower bound from (n+1)·log 2 toward c·p_n using a Chebyshev-strength ψ lower bound (the single ingredient Mathlib still lacks).",
+      "Derive an explicit lower bound on the prime-counting function π(x) by combining θ(x) ≤ π(x)·log x with the θ lower bound at the n-th prime.",
+      "Replace the exponential bound p_n ≤ 2^(n+1) with a Dusart-type bound p_n ≤ n(log n + log log n) and recompute the Chebyshev sandwich."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "prime-gap-bounds",
+      "relationship": "parent",
+      "description": "Parent entry proving the exponential bound p_n ≤ 2^(n+1) from Bertrand's postulate by elementary induction; this entry connects that bound to the Chebyshev functions θ and ψ as requested by its open question #3"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.PrimeGapBounds"
+    ],
+    "opens": [
+      "Nat",
+      "Chebyshev",
+      "Finset"
+    ],
+    "namespace": "PrimeGapBoundsOQ03",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/PrimeGapBoundsOQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,78 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 35 },
+    "type": "context",
+    "title": "The Beta Integral on Its Diagonal",
+    "content": "The parent entry established the integer closed form of the Euler Beta integral, B(m+1, n+1) = m!·n!/(m+n+1)!. This file specializes to the diagonal m = n, where the value collapses to a single Wallis-type quantity governed by the central binomial coefficient: B(n+1, n+1) = (n!)²/(2n+1)! = 1/((2n+1)·C(2n,n)). This is precisely the normalization constant of the symmetric Beta(n+1,n+1) density xⁿ(1−x)ⁿ/B(n+1,n+1) on [0,1]: the density integrates to 1, so the total mass B(n+1,n+1) is the reciprocal of the integer (2n+1)·C(2n,n). All analytic content is inherited from the parent; the only new ingredient is an elementary factorial identity.",
+    "mathContext": "$B(n{+}1,n{+}1) = \\dfrac{(n!)^2}{(2n+1)!} = \\dfrac{1}{(2n+1)\\binom{2n}{n}}.$",
+    "significance": "context",
+    "relatedConcepts": [
+      "Euler Beta integral",
+      "central binomial coefficient",
+      "Beta distribution normalization",
+      "Wallis integrals"
+    ],
+    "prerequisites": [
+      "the parent integer Beta closed form (betaIntegral_nat_nat)",
+      "factorials and binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-factorization",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01",
+    "range": { "startLine": 40, "endLine": 54 },
+    "type": "technique",
+    "title": "The Factorial Factorization Bridge",
+    "content": "factorial_two_mul_succ is the one new fact: (2n+1)! = (2n+1)·C(2n,n)·(n!·n!). It is the multiplicative bridge that turns the factorial form (n!)²/(2n+1)! into the central-binomial form 1/((2n+1)·C(2n,n)). The proof specializes Mathlib's Nat.choose_mul_factorial_mul_factorial — which gives C(2n,n)·n!·(2n−n)! = (2n)!, simplified to C(2n,n)·n!·n! = (2n)! after rewriting 2n−n = n — and then peels one factor with Nat.factorial_succ, since (2n+1)! = (2n+1)·(2n)!.",
+    "mathContext": "$(2n+1)! = (2n+1)\\,\\binom{2n}{n}\\,(n!)^2,$ from $\\binom{2n}{n}(n!)^2 = (2n)!$ and $(2n+1)! = (2n+1)(2n)!$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorial recurrence",
+      "binomial coefficient factorization",
+      "Nat.choose_mul_factorial_mul_factorial"
+    ],
+    "prerequisites": [
+      "factorials",
+      "Nat.factorial_succ"
+    ]
+  },
+  {
+    "id": "ann-diagonal",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 82 },
+    "type": "insight",
+    "title": "The Central Binomial Reciprocal",
+    "content": "betaIntegral_diag_central_binom is the headline: B(n+1, n+1) = 1/((2n+1)·C(2n,n)). It rewrites the parent's diagonal value betaIntegral_nat_nat n n = (n!)²/(2n+1)! and clears denominators with div_eq_div_iff, using the factorization key: n!·n!·((2n+1)·C(2n,n)) = (2n+1)!. The nonvanishing side conditions come from factorial positivity and Nat.choose_pos. The companion betaIntegral_diag_centralBinom restates the same value with Mathlib's Nat.centralBinom n = C(2n,n) — a definitional rfl rewrite — connecting the result to the library's named central binomial coefficient.",
+    "mathContext": "$B(n{+}1,n{+}1) = \\dfrac{1}{(2n+1)\\binom{2n}{n}} = \\dfrac{1}{(2n+1)\\,\\mathrm{centralBinom}\\,n}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Beta integral closed form",
+      "Nat.centralBinom",
+      "clearing denominators (div_eq_div_iff)",
+      "casting ℕ to ℂ"
+    ],
+    "prerequisites": [
+      "the factorial factorization",
+      "the parent betaIntegral_nat_nat"
+    ]
+  },
+  {
+    "id": "ann-instances",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01",
+    "range": { "startLine": 84, "endLine": 98 },
+    "type": "context",
+    "title": "Numerical Instances",
+    "content": "Two checks specialize the formula. betaIntegral_one_one_central: B(1,1) = 1 at n = 0, since (2·0+1)·C(0,0) = 1. betaIntegral_two_two: B(2,2) = 1/6 at n = 1, since (2·1+1)·C(2,1) = 3·2 = 6. Both are obtained by instantiating betaIntegral_diag_central_binom and simplifying with norm_num, confirming the general formula against directly computable small cases.",
+    "mathContext": "$B(1,1) = 1,\\qquad B(2,2) = \\dfrac{1}{6}.$",
+    "significance": "context",
+    "relatedConcepts": [
+      "sanity check",
+      "specialization"
+    ],
+    "prerequisites": [
+      "the central binomial reciprocal formula"
+    ]
+  }
+]

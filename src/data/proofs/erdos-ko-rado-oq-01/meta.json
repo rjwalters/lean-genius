@@ -1,0 +1,203 @@
+{
+  "id": "erdos-ko-rado-oq-01",
+  "title": "Katona's Cyclic-Interval Lemma, De-Axiomatized",
+  "slug": "erdos-ko-rado-oq-01",
+  "description": "Proves the combinatorial heart of Katona's proof of Erdős–Ko–Rado — that in any cyclic order of n ≥ 2k points, at most k of the n cyclic intervals (arcs) of length k can be pairwise intersecting — which the parent gallery entry leaves as the axiom 'at_most_k_intersecting_cyclic_intervals' and the sibling OQ-02 explicitly recorded as 'released unsolved' because its modular bookkeeping resisted Lean. This entry proves that exact statement with zero axioms and no native_decide, via Katona's collapse-pairing injection: every arc meeting the anchor has circular offset in [0,k) ∪ (n−k,n); collapsing each disjoint pair {s, s+(n−k)} to one representative injects the family into range k, capping it at k.",
+  "meta": {
+    "author": "Katona (1972); formalized in Lean 4",
+    "date": "1972",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ErdosKoRadoOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "erdos",
+      "extremal-set-theory",
+      "intersecting-families",
+      "katona",
+      "cyclic-intervals",
+      "erdos-ko-rado"
+    ],
+    "badge": "verified",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 244,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "originalContributions": [
+      "at_most_k_intersecting_cyclic_intervals: the parent's axiomatized cyclic-interval lemma, now a ZERO-axiom theorem — in any cyclic order of n ≥ 2k points (k > 0), at most k of the n length-k arcs are pairwise intersecting. This is the combinatorial core of Katona's proof and the sibling OQ-02 documented it as released unsolved because the modular bookkeeping resisted formalization.",
+      "offset_range: if arc A_j meets the anchor arc A_{i₀}, the circular offset r(j) = (j + (n−i₀)) mod n is forced into the lower block [0,k) or the upper block (n−k,n) — the constraint that makes the collapse map land in range k.",
+      "not_intersect_mixed: the disjointness lemma at the heart of the pairing — if two arcs have offsets r(p)=c (lower) and r(q)=c+(n−k) (upper), their starts differ by exactly k, so (as n ≥ 2k) they are disjoint and cannot both lie in a pairwise-intersecting family.",
+      "offset_inj: the offset map x ↦ (x + (n−i₀)) mod n is injective on positions < n, handling the within-block injectivity of the collapse map.",
+      "mem_cyclicInterval / inter_nonempty_iff: a usable membership and intersection calculus for the parent's bespoke 'cyclicInterval' definition — x ∈ A_i iff x ≡ i+a (mod n) for some a < k, and A_i ∩ A_j ≠ ∅ iff some offsets a,b < k coincide mod n."
+    ],
+    "prerequisites": [
+      "Katona's cyclic-permutation proof of Erdős–Ko–Rado and its key lemma on pairwise-intersecting arcs",
+      "Modular arithmetic on ℕ via Nat.ModEq (cancellation, add_right/left_cancel')",
+      "Finset cardinality bounds through injections (Finset.card_le_card_of_injOn)",
+      "The condition n ≥ 2k: it makes two arcs whose starts differ by exactly k genuinely disjoint"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_le_card_of_injOn",
+        "description": "If f maps s into t and is injective on s, then |s| ≤ |t| — the engine turning the collapse injection into the cardinality bound |I| ≤ |range k| = k.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.ModEq.add_right_cancel'",
+        "description": "Cancellation a + c ≡ b + c [MOD n] → a ≡ b [MOD n] — used to strip the anchor offset (n−i₀) and to derive the exact-k offset difference between collapsed arcs.",
+        "module": "Mathlib.Data.Nat.ModCast"
+      },
+      {
+        "theorem": "Nat.mod_add_mod",
+        "description": "(a % n + b) % n = (a + b) % n — folds the inner reduction when relating r(j) = (j+(n−i₀)) mod n to the intersection equation.",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Katona's 1972 proof of Erdős–Ko–Rado, featured in 'Proofs from THE BOOK', is celebrated for its brevity: arrange the n points on a circle and double-count pairs (S, σ) of a family member S and a cyclic order σ in which S appears as an arc. The whole argument hinges on one finite combinatorial fact — in a single cyclic order, among the n arcs of length k, at most k can pairwise intersect. On paper this is a one-paragraph pairing argument; in Lean it requires careful modular arithmetic on arc starting positions, and the parent gallery entry consequently left it as an axiom. The sibling open question OQ-02, which discharged the EKR upper bound by the unrelated Kruskal–Katona route, explicitly noted that this cyclic-interval lemma had been 'released unsolved' because its modular bookkeeping resisted formalization. This entry supplies that missing proof.",
+    "problemStatement": "**Open Question (parent erdos-ko-rado, OQ-01)**: prove at_most_k_intersecting_cyclic_intervals — in any cyclic order of n ≥ 2k points (k > 0), at most k of the n cyclic intervals of length k can be pairwise intersecting — which the parent entry axiomatizes as the core of Katona's double count.\n\n**This entry**: proves that exact statement (same signature) with zero axioms and no native_decide.",
+    "text": "A 244-line, fully verified file (0 sorries, 0 axioms, no native_decide) importing only Mathlib. It reproduces the parent's 'cyclicInterval' definition verbatim (the parent is axiomatized, so importing it would import its nine axioms), builds a membership/intersection calculus for arcs, and proves the lemma by Katona's collapse-pairing injection into range k.",
+    "proofStrategy": "Fix any arc A_{i₀} in the family (the family is nonempty or the bound is trivial). For each member j, intersection with A_{i₀} forces the circular offset r(j) = (j + (n−i₀)) mod n into the lower block [0,k) or the upper block (n−k,n) — this is offset_range, proved by turning the intersection equation (i₀+a) ≡ (j+b) [MOD n] into r(j) ≡ a−b and case-splitting on whether r(j)+b overflows n. Define the collapse map g(j) = r(j) on the lower block and g(j) = r(j) − (n−k) on the upper block, sending the family into range k. Injectivity of g splits into three cases: within a single block it reduces to injectivity of the offset map (offset_inj); across blocks, a lower value c and an upper value c+(n−k) would index two arcs whose starts differ by exactly k, which not_intersect_mixed shows are disjoint (k + a ≡ b [MOD n] with a,b < k and k+a < n ≤ forces k+a = b, impossible) — contradicting the pairwise-intersecting hypothesis. Finset.card_le_card_of_injOn then gives |I| ≤ |range k| = k.",
+    "keyInsights": [
+      "The whole lemma is an injection into a k-element set: collapse each disjoint pair of offsets {s, s+(n−k)} (s = 1,…,k−1) to one representative, leaving the lower block [0,k) as the target.",
+      "'Pairwise intersecting' enters in exactly one place — the across-block case of injectivity — where it rules out two arcs whose starts differ by precisely k. This is the only step that needs n ≥ 2k.",
+      "The modular bookkeeping that 'resisted formalization' is tamed by working with one fixed offset r(j) = (j + (n−i₀)) mod n and reducing every claim to Nat.ModEq cancellation plus an omega case-split on whether a sum overflows n.",
+      "Two arcs with starts differing by k are disjoint because an overlap would give k + a ≡ b (mod n) with offsets a, b < k, yet k + a < 2k ≤ n forces the literal equation k + a = b — contradicting b < k.",
+      "Restating the parent's bespoke 'cyclicInterval' as a clean membership/intersection iff (mem_cyclicInterval, inter_nonempty_iff) is what makes the modular arguments tractable."
+    ]
+  },
+  "sections": [
+    {
+      "id": "arc-calculus",
+      "title": "A Membership Calculus for Arcs",
+      "startLine": 47,
+      "endLine": 90,
+      "summary": "mem_cyclicInterval and inter_nonempty_iff give x ∈ A_i ⇔ x ≡ i+a (mod n) for some a < k, and A_i ∩ A_j ≠ ∅ ⇔ some offsets a,b < k coincide mod n.",
+      "mathContext": "Turning the parent's image-based arc definition into a modular-equation calculus."
+    },
+    {
+      "id": "offset-range",
+      "title": "Offsets of Intersecting Arcs",
+      "startLine": 92,
+      "endLine": 117,
+      "summary": "offset_range: meeting the anchor forces the circular offset r(j) into the lower block [0,k) or upper block (n−k,n).",
+      "mathContext": "The constraint that makes the collapse map land in range k."
+    },
+    {
+      "id": "disjointness",
+      "title": "Collapsed Pairs Are Disjoint",
+      "startLine": 119,
+      "endLine": 154,
+      "summary": "offset_inj (offset map injective) and not_intersect_mixed (arcs with starts differing by exactly k are disjoint) supply the two halves of injectivity.",
+      "mathContext": "Where 'pairwise intersecting' and n ≥ 2k are used."
+    },
+    {
+      "id": "main",
+      "title": "The Collapse-Pairing Injection",
+      "startLine": 156,
+      "endLine": 244,
+      "summary": "at_most_k_intersecting_cyclic_intervals: the collapse map injects the family into range k, so |I| ≤ k; singleton_family_bound records nonvacuousness.",
+      "mathContext": "Katona's pairing as an explicit injection, capping the family at k."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry proves at_most_k_intersecting_cyclic_intervals — the cyclic-interval lemma at the heart of Katona's proof of Erdős–Ko–Rado, axiomatized in the parent and explicitly 'released unsolved' by the sibling OQ-02 — as a zero-axiom theorem with no native_decide, via Katona's collapse-pairing injection into range k.",
+    "implications": "Together with the sibling OQ-02 (which discharged the EKR upper bound via Kruskal–Katona), the two combinatorial axioms at the core of the parent's Katona formalization are now both proved by independent routes: OQ-01 supplies Katona's own cyclic-interval lemma directly, OQ-02 the resulting bound. The piece that 'resisted formalization' is now machine-checked.",
+    "openQuestions": [
+      "Complete Katona's double count (double_counting_bound) in the parent by combining this cyclic-interval lemma with set-appearance counting, giving a fully native Lean rendering of Katona's argument (rather than routing through Kruskal–Katona as OQ-02 does).",
+      "Characterize the extremal cyclic families: which pairwise-intersecting arc families attain exactly k members (the cyclic analogue of the star)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-ko-rado",
+      "relationship": "extends",
+      "description": "Parent entry: formalizes EKR via Katona's cyclic proof but axiomatizes the cyclic-interval lemma (at_most_k_intersecting_cyclic_intervals). This entry discharges that axiom with zero axioms."
+    },
+    {
+      "targetId": "erdos-ko-rado-oq-02",
+      "relationship": "complements",
+      "description": "Sibling entry: discharged the EKR upper bound (double_counting_bound) via Kruskal–Katona and recorded this cyclic-interval lemma as released unsolved. This entry supplies the missing lemma directly."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "ErdosKoRadoOQ01",
+    "lineCount": 244,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "mainTheorems": [
+      {
+        "name": "at_most_k_intersecting_cyclic_intervals",
+        "type": "core",
+        "description": "Katona's cyclic-interval lemma: in any cyclic order of n ≥ 2k points (k > 0), at most k of the n length-k arcs are pairwise intersecting. Zero axioms, no native_decide — the parent's axiom, now proved.",
+        "leanType": "(n k : ℕ) → n ≥ 2 * k → 0 < k → ∀ (I : Finset ℕ), (∀ i ∈ I, i < n) → (∀ i j, i ∈ I → j ∈ I → (cyclicInterval n k i ∩ cyclicInterval n k j).Nonempty) → I.card ≤ k"
+      },
+      {
+        "name": "not_intersect_mixed",
+        "type": "key",
+        "description": "Two arcs whose starting offsets are c (lower block) and c+(n−k) (upper block) have starts differing by exactly k, hence are disjoint when n ≥ 2k.",
+        "leanType": "{n k i₀ p q c : ℕ} → n ≥ 2 * k → 0 < k → c < k → (p + (n - i₀)) % n = c → (q + (n - i₀)) % n = c + (n - k) → ¬ (∃ a < k, ∃ b < k, (p + a) % n = (q + b) % n)"
+      },
+      {
+        "name": "offset_range",
+        "type": "key",
+        "description": "If arc A_j meets the anchor A_{i₀}, its circular offset lies in the lower block [0,k) or the upper block (n−k,n).",
+        "leanType": "{n k i₀ j : ℕ} → n ≥ 2 * k → 0 < k → i₀ < n → (∃ a < k, ∃ b < k, (i₀ + a) % n = (j + b) % n) → (j + (n - i₀)) % n < k ∨ n - k < (j + (n - i₀)) % n"
+      }
+    ],
+    "path": "Proofs/ErdosKoRadoOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "at_most_k_intersecting_cyclic_intervals",
+      "type": "core",
+      "description": "Zero-axiom proof of Katona's cyclic-interval lemma (the parent's axiom): at most k of the n length-k arcs in an n ≥ 2k cycle are pairwise intersecting.",
+      "leanType": "(n k : ℕ) → n ≥ 2 * k → 0 < k → ∀ (I : Finset ℕ), (∀ i ∈ I, i < n) → (∀ i j, i ∈ I → j ∈ I → (cyclicInterval n k i ∩ cyclicInterval n k j).Nonempty) → I.card ≤ k"
+    },
+    {
+      "name": "offset_range",
+      "type": "key",
+      "description": "Meeting the anchor arc forces the circular offset into the lower or upper block.",
+      "leanType": "{n k i₀ j : ℕ} → n ≥ 2 * k → 0 < k → i₀ < n → (∃ a < k, ∃ b < k, (i₀ + a) % n = (j + b) % n) → (j + (n - i₀)) % n < k ∨ n - k < (j + (n - i₀)) % n"
+    },
+    {
+      "name": "not_intersect_mixed",
+      "type": "key",
+      "description": "Arcs whose offsets differ by exactly n−k (starts differing by k) are disjoint when n ≥ 2k.",
+      "leanType": "{n k i₀ p q c : ℕ} → n ≥ 2 * k → 0 < k → c < k → (p + (n - i₀)) % n = c → (q + (n - i₀)) % n = c + (n - k) → ¬ (∃ a < k, ∃ b < k, (p + a) % n = (q + b) % n)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Katona, Gyula O. H.",
+      "title": "A simple proof of the Erdős–Chao Ko–Rado theorem",
+      "year": "1972",
+      "venue": "Journal of Combinatorial Theory, Series B 13(2), 183–184",
+      "note": "The cyclic-permutation proof; this entry formalizes its key cyclic-interval lemma"
+    },
+    {
+      "authors": "Erdős, Paul; Ko, Chao; Rado, Richard",
+      "title": "Intersection theorems for systems of finite sets",
+      "year": "1961",
+      "venue": "Quarterly Journal of Mathematics 12(1), 313–320",
+      "note": "The original Erdős–Ko–Rado theorem"
+    },
+    {
+      "authors": "Aigner, Martin; Ziegler, Günter M.",
+      "title": "Proofs from THE BOOK",
+      "year": "2018",
+      "venue": "Springer (6th ed.)",
+      "note": "Presents Katona's cyclic proof, including the pairing argument formalized here"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,11 +1,21 @@
 # Research State: shannon-channel-coding-oq-01
 
 ## Current State
-**Phase**: ACT — BSC done & galleried; BEC merged-but-unregistered (build-pending, single low-cost compile); AWGN open
+**Phase**: DONE — all three named channels (BSC, BEC, AWGN) computed; BOTH AWGN operational layers (chain-rule + KL-divergence) machine-checked.
 **Path**: full
-**Since**: 2026-06-16 (state-sync: prior file was a never-updated March OBSERVE/0-attempt stub
-that did not reflect the substantial merged work — see knowledge.md for the real status)
-**Iteration**: 3
+**Since**: 2026-06-19 (researcher-12: KL-form mutual information build-verified)
+**Iteration**: 6
+
+## 2026-06-19 (researcher-12): KL-form operational layer VERIFIED — problem complete
+`additive_kl_eq_entropy_difference` (in `ShannonChannelCodingOQ01OQ01.lean`) proves the KL-divergence
+definition of mutual information `I(X;Y)=D(f_XY‖f_X⊗f_Y)=h(Y)-h(Z)` for the additive channel `Y=X+Z`,
+**build-verified 0-sorry / 0-axiom** (`docker-build.sh Proofs.ShannonChannelCodingOQ01OQ01`, 7744 jobs green).
+The Fubini-assembly crux left open by the scaffold (PR #26169) — blocked last session by the Aristotle
+404 outage — was hand-proved at the product-measure level (`integral_prod` flatten → `integral_sub`
+split → translation-invariance + marginalisation collapses → `ring`). This closes the family's last
+genuinely-open analytic piece. The stale BSC/BEC/AWGN status notes below are retained for history.
+
+---
 
 ## Problem
 Can specific named-channel capacities (BSC, BEC, AWGN) be computed formally, beyond the

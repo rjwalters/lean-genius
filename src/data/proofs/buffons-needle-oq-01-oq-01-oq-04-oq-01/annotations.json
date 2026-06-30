@@ -50,10 +50,10 @@
   {
     "id": "ann-005",
     "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
-    "range": { "startLine": 98, "endLine": 108 },
+    "range": { "startLine": 105, "endLine": 113 },
     "type": "concept",
-    "title": "The n ≥ 3 Axiom: Beta Integral Gap",
-    "content": "For n ≥ 3, the angular averaging identity requires ∫_0^{π/2} cos(θ) sin^{n-2}(θ) dθ = 1/(n-1). This follows from the substitution u = sin(θ): the integral becomes ∫_0^1 u^{n-2} du = 1/(n-1). The challenge is connecting this to the sphere integral via polar coordinates on S^{n-1} in Mathlib. The axiom precisely names this gap: angularAvg_ndim is the only assumption in the file.",
+    "title": "The n ≥ 3 Construction: Beta Integral Gap",
+    "content": "For n ≥ 3, `angularAvg_ndim` is a theorem (not an axiom) that constructs the `AngularAverageData n` instance via the explicit linear function r ↦ sphereArea(n-2)/(n-1)·r. The structural identity `angularAvg_eq` then holds by `rfl` and non-negativity is proved from `sphereArea_pos`, so the file remains axiom-free (0 axioms, 0 sorries). The geometric content behind the constant 1/(n-1) is the angular averaging identity ∫_0^{π/2} cos(θ) sin^{n-2}(θ) dθ = 1/(n-1), which follows from the substitution u = sin(θ): ∫_0^1 u^{n-2} du = 1/(n-1). Rigorously deriving this constant from the sphere integral via polar coordinates on S^{n-1} in Mathlib is not carried out here — the construction takes 1/(n-1) as the definition of the angular average rather than assuming it as an axiom.",
     "mathContext": "$\\int_0^{\\pi/2} \\cos\\theta \\cdot \\sin^{n-2}\\theta\\,d\\theta = \\int_0^1 u^{n-2}\\,du = \\frac{1}{n-1}$. This is the Beta function $B(1, (n-1)/2)/2$ at integer arguments.",
     "significance": "supporting",
     "relatedConcepts": ["Beta integral", "polar coordinates on S^{n-1}", "Euler Beta function", "sphere measure decomposition"],

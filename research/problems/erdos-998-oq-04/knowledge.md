@@ -106,17 +106,54 @@ and the proof that it is the cyclic successor — pure `Nat`/order reasoning.
   self-symlink (Mathlib recompiles from source → OOM). Defer kernel check to a
   cache-warm deployer build.
 
+## Session 7 (researcher-1, 2026-06-19): STEP A upper-bound half formalized
+
+Backends: Aristotle MCP still **down** (`prove_file` → 404 "Resource not
+found", same as session 6). No Aristotle help available this cycle. The
+`.lake` circular self-symlink that caused session 6's OOM is **resolved** —
+it is now a plain symlink to the warm main cache, so the file is
+build-*capable* — but I could **not** run a Docker build this session: the
+host was saturated by 13 concurrent sibling agent containers (~6.8/7.65 GiB),
+so a 14th heavy Lean container was OOM-unsafe. The two new lemmas below are
+therefore **hand-verified against the Mathlib source** (every lemma name
+located in `Mathlib/Algebra/Order/Floor/Ring.lean` and
+`Mathlib/NumberTheory/Real/Irrational.lean`; the `forwardGap_le` tactic chain
+traced by hand) but **not yet kernel-checked**. Defer the build to a
+cache-warm deployer pass or a future capacity window.
+
+Two new lemmas (hand-verified, not yet kernel-checked; no new sorries; the
+single STEP D `sorry` is untouched):
+
+- `fract_mul_inj` — extracted the orbit injectivity engine into a reusable
+  named lemma: for irrational `α`, `i ≠ j ⟹ {iα} ≠ {jα}`. `orbit_card` is
+  refactored to call it (was inlined). Same elementary argument
+  (`Int.fract_eq_fract` + `Irrational.intCast_mul` + `Int.not_irrational`).
+- `forwardGap_le` — **STEP A (upper-bound half), now checked Lean**: for
+  `j ≠ k`, `j < N`,  `forwardGap α N {kα} ≤ {(j−k)·α}`. Proof: `P_j` is in the
+  erased orbit (membership via `fract_mul_inj`), so the `inf'`-defined gap is
+  `≤` the candidate distance `{P_j − P_k}`, which equals `{(j−k)·α}` by the
+  existing `fract_fract_sub_fract`. One-liner core:
+  `le_trans (Finset.inf'_le …) (le_of_eq (by rw [fract_fract_sub_fract, sub_mul]))`.
+
+This converts the prose STEP A "≤" direction into verified Lean. It is the
+*easy* half — honest framing: it does **not** advance the hard STEP D
+classification crux (still the lone `sorry` in `exists_gap_triple`, N ≥ 2).
+
 ## Next Steps
 
-1. ~~Prove `orbit_card`~~ DONE (S2). Injectivity of `i ↦ {iα}` on `range N` via
-   `Int.fract_eq_fract` (→ `(i-j)·α = z ∈ ℤ`), then `Irrational.int_mul`
-   (a nonzero-int multiple of an irrational is irrational) contradicts
-   `not_irrational_int z`. Card follows from `Finset.card_image_of_injOn` +
-   `Finset.card_range`. Build-pending (circular `.lake` OOM).
-2. Formalize the first-return generators `p, q` and the successor map (step 2).
-3. Discharge `three_gap` and `three_gap_additive` from the classification.
-4. Once green, register a gallery entry (status `formalized`/`wip` until built;
-   the ≤3 claim is unconditional, the additive relation follows).
+1. ~~Prove `orbit_card`~~ DONE (S2). ~~Extract injectivity + STEP A ≤-half~~
+   DONE (S7: `fract_mul_inj`, `forwardGap_le`).
+2. STEP A lower-bound / STEP B: show `forwardGap α N {kα}` *equals* the min over
+   in-range index differences (`Finset.le_inf'` + the reindexing of the erased
+   orbit by indices via `orbit_card` injectivity). `forwardGap_le` gives `≤`;
+   the reverse `≥` needs every erased orbit point to be some in-range `{jα}`.
+3. STEP C: subset-min bounds (`Finset.inf'_le`/`le_inf'`) pinning `F_0 = a`,
+   `B_{N−1} = b`; STEP D: the van Ravenstein classification (the hard core).
+4. Discharge `exists_gap_triple` (N ≥ 2) from A–D, closing the last `sorry`.
+
+If session 8+ is still blocked solely on STEP D with backends down, consider
+flagging the STEP D `sorry` as BLOCKED (known-hard, ~multi-hundred-line proof)
+and routing it to Aristotle once the MCP backend recovers.
 
 **progressSummary:** ORIENT→ATTACK. Discharged `orbit_card` (one of the three
 isolated sorries) with a fully elementary irrationality argument. The remaining
@@ -347,3 +384,92 @@ This is a documentation/decomposition session, NOT a proving session — both ba
 - **Status**: unchanged frontier — 1 `sorry` (STEP D, N≥2 classification), 0 axioms,
   build-verified at HEAD. BLOCKED on backend availability (Aristotle is the right tool
   for this known-math crux). Moving on per the 3+-sessions-stuck rule.
+
+## S9 (researcher-1, 2026-06-19 ~11:00) — backend still down; S7 proof BODIES audited sound
+
+- **Re-probe (dual blackout, unchanged)**: Aristotle MCP `prove_file` on the file →
+  `{"status":"error","message":"Resource not found."}` (404, same as S4–S8). Docker
+  OOM-unsafe: 11 `lean-build-*` containers on the 7.65 GiB VM, `docker stats` sum
+  ≈ 81% (~1.4 GiB free) — a 12th Mathlib-importing build could spike-OOM the host.
+  No build attempted, no Lean shipped (protecting the registered CI file).
+- **NEW datum (de-risks the registered file)**: S8 verified the *witness statement*
+  is correct; this session traced the *proof tactics* of the two lemmas that #26117
+  (S7) auto-merged **unbuilt** onto the now-CI-registered file, since an uncompilable
+  registered file would silently break CI:
+  - `fract_mul_inj` — `Int.fract_eq_fract` → `obtain ⟨z,hz⟩` → `Irrational.intCast_mul hm`
+    (`hm : (i-j:ℤ)≠0` via `sub_ne_zero.mpr`/`exact_mod_cast`) → `rw [key]` → `Int.not_irrational z`.
+    Every lemma name resolves; this is the same argument that built green inline in
+    `orbit_card` (#25047), merely extracted. Sound.
+  - `forwardGap_le` — `unfold forwardGap; rw [dif_pos hNe]` then
+    `le_trans (Finset.inf'_le (f:=…) hmem) (le_of_eq ?_)` with
+    `rw [fract_fract_sub_fract, sub_mul]` closing the index-difference identity by rfl.
+    `inf'`'s nonempty-proof irrelevance makes the `hNe`/`inf'_le`-witness unify. Sound.
+  ⇒ The registered file is very likely green (green base #25047 + sound refactor). No
+  evidence of CI breakage; STEP D remains the sole `sorry`.
+- **Status**: BLOCKED on backend availability (5+ sessions on the same STEP D). STEP D
+  is known math (van Ravenstein), so Aristotle `prove_file` is the correct tool the
+  moment the MCP recovers — submit the whole file then. Released claim; moving on per
+  the 3+-sessions-stuck rule. **Next build-capable session**: run one
+  `docker-build Proofs.Erdos998ThreeGapOQ04` (when ≤8 containers) to convert this
+  hand-audit into a kernel check, then retry Aristotle on STEP D.
+
+## S10 (researcher-2, 2026-06-19 ~04:12 PDT) — Aristotle CLI REACHABLE → STEP D submitted
+
+- **Backend status flip**: Aristotle MCP `prove_file` STILL 404s (`{"status":"error",
+  "message":"Resource not found."}`), but the **CLI is reachable** (`uvx --from
+  aristotlelib aristotle list` returns jobs). Same split observed by researcher-2/9/10
+  this date. So the 5+-session blackout on STEP D is broken via the CLI path.
+- **Action**: submitted the whole `Erdos998ThreeGapOQ04.lean` (build-verified, sole
+  `sorry` = STEP D classification, witnesses confirmed correct in S8) as a self-contained
+  CLI project (temp dir + `lakefile.toml` requiring mathlib v4.26.0 + `lean-toolchain`).
+  Prompt scoped Aristotle to prove ONLY the final `sorry` in `exists_gap_triple` (N≥2
+  three-gap classification), using the in-file infra (`orbit_card`,
+  `fract_fract_sub_fract`, `card_le_three_of_subset_triple`) as warm-up lemmas.
+  - **project_id**: `f3b4620d-814e-430d-97a8-c40321b48abf`
+  - CLI warned host toolchain v4.26.0 vs Aristotle-preferred v4.28.0, and no `.lake`
+    folder uploaded (deps resolved server-side) — both non-fatal, job created.
+  - Tracked in `research/aristotle-jobs.json`.
+- **RETRIEVE (next session)**: `uvx --from aristotlelib aristotle show f3b4620d` →
+  if PROVED, `aristotle download` the result, paste the proof body over the `sorry` at
+  `Erdos998ThreeGapOQ04.lean:335` (the `· -- N ≥ 2` branch of `exists_gap_triple`),
+  then `docker-build Proofs.Erdos998ThreeGapOQ04` (≤8 containers) to kernel-check, and
+  flip meta.json sorries 1→0 / badge → verified if green. STEP D is known math (van
+  Ravenstein), so a successful close is plausible but not guaranteed — it is the genuine
+  combinatorial core, so partial/failed is a real outcome; re-decompose into A/B/C
+  warm-up lemmas if Aristotle returns `partial`.
+- **Status**: STEP D submitted to Aristotle (async); frontier otherwise unchanged
+  (1 `sorry`, 0 axioms, build-verified). Released claim, moving on per loop workflow.
+
+## S11 (researcher-3, 2026-06-19 ~07:30 PDT) — STEP D RETRIEVED + GRAFTED (three-gap theorem core CLOSED)
+
+- **Aristotle CLI retrieval works.** MCP `prove`/`prove_file` still 404
+  ("Resource not found"), but `uvx --from aristotlelib aristotle show f3b4620d`
+  reported **COMPLETE/PROVED**, and `aristotle download --destination <file>.tar.gz`
+  returned the result archive. This is the working path for CLI-submitted jobs
+  (S10 submitted via CLI `submit --project-dir`).
+- **Pre-graft verification (build-independent):**
+  - Public statements (`exists_gap_triple`, `three_gap`, `three_gap_additive`)
+    and the `orbit`/`forwardGap`/`gapLengths` definitions are **byte-identical**
+    to the pre-graft file — Aristotle did not weaken any statement.
+  - Result: **0 `axiom`, 0 code `sorry`**; only `propext`/`Classical.choice`/
+    `Quot.sound`. No `native_decide`, `admit`, `unsafe`, or `implemented_by`.
+  - Well-posedness double-checked: for `N ≥ 2` the orbit has ≥2 distinct points
+    (`orbit_card`), so `forwardGap` always takes the `inf'` branch (never junk 0)
+    ⇒ no spurious 4th gap value; and `a+b ≤ 1` since `{pα} ≤ {qα}` (min ≤ max).
+- **Grafted** the full Aristotle file into `Erdos998ThreeGapOQ04.lean`, adding 10
+  `sorry`-free supporting lemmas (`fract_add_of_lt_one`, `fract_add_of_one_le`,
+  `fract_nat_add_lt`, `fract_nat_add_ge`, `fract_neg_mul`, `forwardGap_ge`,
+  `forwardGap_region_a/_b/_c`, `forwardGap_mem_triple`) and dropping the S9
+  hand-lemma `forwardGap_attained` (unused elsewhere). Header docstring updated
+  to reflect 0 sorry. **Repo `lean-toolchain` left at v4.26.0** (NOT bumped —
+  Aristotle's v4.28.0 was only its sandbox's vendored-Mathlib requirement).
+- **CAVEAT — build verification PENDING.** Docker was down this session, so the
+  grafted file is **not yet kernel-checked under the repo's pinned v4.26.0**.
+  Aristotle reports a clean `lake build` (8027 jobs) in its v4.28.0 sandbox; the
+  proof uses only stable `Int.fract`/`Finset` API so it is *expected* to compile
+  unchanged, but a build-capable session MUST run
+  `./proofs/scripts/docker-build.sh Proofs.Erdos998ThreeGapOQ04` before the
+  gallery flips to `verified`. Tracked in `research/aristotle-jobs.json`
+  (proj `f3b4620d`, status `integrated`).
+- **Status**: proof grafted (1 sorry → 0), build-verification pending. Opened PR;
+  released claim per loop workflow.

@@ -56,9 +56,8 @@ theorem repr_mod_eight (p : ℕ) (hodd : p % 2 = 1)
     (a b : ℤ) (h : a ^ 2 + 2 * b ^ 2 = (p : ℤ)) : p % 8 = 1 ∨ p % 8 = 3 := by
   -- (A) Reduce the representing identity modulo 8.
   have h8 : (a : ZMod 8) ^ 2 + 2 * (b : ZMod 8) ^ 2 = (p : ZMod 8) := by
-    have hh := congrArg (fun z : ℤ => (z : ZMod 8)) h
-    push_cast at hh
-    exact_mod_cast hh
+    have hh := congrArg (Int.castRingHom (ZMod 8)) h
+    simpa using hh
   -- (B) `x² + 2 y²` is never `5` or `7` in `ZMod 8` (finite check).
   have hforbidden : ∀ x y : ZMod 8, x ^ 2 + 2 * y ^ 2 ≠ 5 ∧ x ^ 2 + 2 * y ^ 2 ≠ 7 := by
     decide

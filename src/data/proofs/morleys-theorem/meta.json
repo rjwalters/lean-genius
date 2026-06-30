@@ -196,6 +196,16 @@
         "triangle-side-length"
       ],
       "targetId": "law-of-cosines"
+    },
+    {
+      "targetId": "morleys-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Conway's backward (ear-construction) proof approach to Morley's theorem, with all supporting angle-identity and side-length lemmas formalized."
+    },
+    {
+      "targetId": "morleys-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Extremal refinement: among triangles of fixed circumradius R, the equilateral uniquely maximizes the Morley triangle's side length, s = 8R·sin(α/3)sin(β/3)sin(γ/3) ≤ 8R·sin³(π/9)."
     }
   ],
   "references": [

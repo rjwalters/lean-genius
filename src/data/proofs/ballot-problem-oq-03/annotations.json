@@ -156,7 +156,7 @@
     },
     "type": "concept",
     "title": "The 2x2 LGV Lemma",
-    "content": "States and proves (modulo one axiomatized bijection) that the count of non-intersecting path pairs equals the LGV determinant: niPairCount = C(m+n1,m)*C(m+n2,m) - C(m+n1',m)*C(m+n2',m). The proof handles degenerate cases (same start or same end give 0) directly, then uses complement counting: NI = total - intersecting. The Lindstrom involution theorem (axiomatized as a sorry) provides the key equality |intersecting identity pairs| = |all crossing pairs|. The proof assembles these via natural number and integer arithmetic.",
+    "content": "States and proves that the count of non-intersecting path pairs equals the LGV determinant: niPairCount = C(m+n1,m)*C(m+n2,m) - C(m+n1',m)*C(m+n2',m). The proof handles degenerate cases (same start or same end give 0) directly, then uses complement counting: NI = total - intersecting. The Lindström involution theorem (lindstrom_involution, fully proved via Nat.le_antisymm on two injective maps lindstromForward_injective / lindstromBackward_injective — no axiom, no sorry) provides the key equality |intersecting identity pairs| = |all crossing pairs|. The proof assembles these via natural number and integer arithmetic.",
     "mathContext": "The 2x2 LGV determinant is $\\det \\begin{pmatrix} \\binom{m+b_1-a_1}{m} & \\binom{m+b_2-a_1}{m} \\\\ \\binom{m+b_1-a_2}{m} & \\binom{m+b_2-a_2}{m} \\end{pmatrix}$. Under proper ordering $a_1 \\leq a_2 \\leq b_1 \\leq b_2$, this equals the non-intersecting path pair count.",
     "significance": "key",
     "relatedConcepts": [
@@ -277,7 +277,7 @@
     },
     "type": "concept",
     "title": "Lindstrom Involution Infrastructure",
-    "content": "Develops the machinery needed to eliminate the axiomatized Lindstrom involution. The approach tracks step-by-step lattice positions via posAfter, defines visitedPoints as the Finset of all lattice points a path visits, and proves that intersecting paths share a lattice point (sharedPoints_nonempty_of_not_ni). The computable swapAtPoint function splits two paths at a shared point and swaps their suffixes. Key preservation theorems (East step count, North step count, involutivity) are proved. Three lemmas remain as sorry: the swapped paths visit the shared point and are themselves intersecting.",
+    "content": "Develops the machinery that proves the Lindström involution directly, eliminating the earlier axiomatization. The approach tracks step-by-step lattice positions via posAfter, defines visitedPoints as the Finset of all lattice points a path visits, and proves that intersecting paths share a lattice point (sharedPoints_nonempty_of_not_ni). The computable swapAtPoint function splits two paths at a shared point and swaps their suffixes. Key preservation theorems (East step count, North step count, involutivity) are proved. The remaining facts — that the swapped paths visit the shared point and are themselves intersecting — are also fully proved, so lindstrom_involution is established with no remaining sorry.",
     "mathContext": "The Lindstrom involution maps intersecting identity pairs $(P_1: A_1 \\to B_1,\\, P_2: A_2 \\to B_2)$ to crossing pairs $(P_1': A_1 \\to B_2,\\, P_2': A_2 \\to B_1)$ by swapping suffixes at the first shared lattice point. This bijection proves $|\\text{intersecting identity}| = |\\text{all crossing}|$, completing the LGV determinant formula.",
     "significance": "key",
     "relatedConcepts": [

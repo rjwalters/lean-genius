@@ -1,0 +1,143 @@
+{
+  "id": "erdos-858-oq-03",
+  "title": "Erdős #858, OQ-03: A Primitive Interval with Reciprocal Sum Bounded Below — the o(1) Decay Comes Only from the log N Normalization",
+  "slug": "erdos-858-oq-03",
+  "description": "Toward the open question on the structure of extremal sets for Erdős #858, this entry exhibits the explicit \"top half\" interval A = (⌊N/2⌋, N] = Finset.Ioc (N/2) N and proves it is primitive (no element divides another), hence satisfies #858's multiplicative condition (no a·t = b with a,b ∈ A and smallest prime factor of t exceeding a), lies in {1,…,N}, and — crucially — has bare reciprocal sum Σ_{n∈A} 1/n ≥ 1/2 for every N ≥ 1. Since Alexander's theorem makes the weighted sum (1/log N)·Σ 1/n decay to o(1), this constant lower bound shows the decay is forced entirely by the 1/log N normalization, not by any shrinkage of the reciprocal sum of a valid set. Also corrects a latent bug in the parent's primitive_satisfies_condition (false for 0 ∈ A) by adding the necessary positivity hypothesis.",
+  "meta": {
+    "author": "Robb Walters (researcher-3) (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/858",
+    "date": "2026-06-24",
+    "status": "verified",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primitive-sets",
+      "multiplicative-structure",
+      "density",
+      "reciprocal-sum",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/Erdos858OQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "topHalf / topHalf_primitive: the explicit top-half interval A = (⌊N/2⌋, N] = Finset.Ioc (N/2) N is primitive — if a ∣ b with a < b both in A then b ≥ 2a > N, contradicting b ≤ N",
+      "topHalf_satisfies: A satisfies Erdős #858's multiplicative condition (being primitive and positive), exhibiting a concrete valid family toward OQ-03 (structure of extremal sets)",
+      "topHalf_in_range: A ⊆ {1,…,N}",
+      "reciprocalSum_topHalf_ge_half: the bare reciprocal sum Σ_{n∈A} 1/n ≥ 1/2 for every N ≥ 1 (the interval has ⌈N/2⌉ elements each ≤ N, so each reciprocal is ≥ 1/N and the sum is ≥ ⌈N/2⌉/N ≥ 1/2)",
+      "topHalf_valid_with_large_reciprocal_sum: the packaged headline — A is condition-satisfying, in-range, and has reciprocal sum ≥ 1/2; hence the o(1) decay of the weighted sum (Alexander 1966) is forced entirely by the 1/log N normalization, not by decay of the reciprocal sum of a valid set",
+      "primitive_satisfies_condition (corrected): the parent's lemma is false when 0 ∈ A (the singleton {0} is primitive yet fails the condition, since 0·t = 0 would need smallestPrimeFactor t ≤ 0); this entry adds the missing positivity hypothesis ∀ a ∈ A, 0 < a"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 186,
+    "assumptions": "0 axioms, 0 sorries. Only Lean's foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms — no Lean.ofReduceBool, no native_decide). The parent's deep o(1) estimate (Alexander 1966) is NOT used or imported: this leaf is self-contained over Mathlib and proves a purely elementary, fully constructive lower bound. The parent file Erdos858Problem.lean does not compile against the pinned Mathlib v4.26 (it imports the now-split module Mathlib.Algebra.BigOperators.Group.Finset), so the parent's definitions are restated here verbatim.",
+    "theoremCount": 6,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #858 concerns sets A ⊆ {1,…,N} avoiding the multiplicative relation a·t = b with a,b ∈ A and the smallest prime factor of t exceeding a — a weakening of the primitive-set condition. Alexander (1966), and independently Erdős–Sárközi–Szemerédi (1968), proved the normalized reciprocal sum (1/log N)·Σ_{n∈A} 1/n is o(1) as N → ∞. The parent gallery entry (erdos-858) axiomatizes Alexander's deep estimate and develops the surrounding structural definitions, but leaves three open questions, including OQ-03: what is the structure of extremal sets achieving near-maximum sums? A natural first step is to pin down concrete valid families and quantify how large their (un-normalized) reciprocal sums can be — which is what this entry does, using the classical observation that the top half of an interval is primitive.",
+    "problemStatement": "**Open question (erdos-858-oq-03)**: What is the structure of extremal sets achieving near-maximum sums for Erdős #858? **This contribution**: exhibit an explicit family of sets satisfying #858's multiplicative condition, and quantify their reciprocal sums, to locate where the o(1) decay of the weighted sum comes from. **Result**: the top-half interval A = (⌊N/2⌋, N] is primitive (hence condition-satisfying), lies in {1,…,N}, and has reciprocal sum Σ_{n∈A} 1/n ≥ 1/2 for every N ≥ 1 — a constant lower bound, so the o(1) decay is attributable entirely to the 1/log N normalization.",
+    "text": "The top-half interval A = (⌊N/2⌋, N] is primitive: if a ∣ b with a < b in A, then b ≥ 2a > N, impossible. So A satisfies Erdős #858's multiplicative condition. It has ⌈N/2⌉ elements, each ≤ N, so its reciprocal sum Σ 1/n ≥ ⌈N/2⌉/N ≥ 1/2 — independent of N. Because Alexander's theorem forces the weighted sum (1/log N)·Σ 1/n to be o(1), the decay must come entirely from the logarithmic denominator: the reciprocal sum of a valid set need not shrink.",
+    "proofStrategy": "**Proof Strategy:**\n\n1. **Primitivity (topHalf_primitive)**: For a ∣ b with a, b ∈ Ioc (N/2) N, write b = a·k. If k < 2 then k ∈ {0,1}; k = 0 contradicts b > N/2 ≥ 0, and k = 1 gives a = b. If k ≥ 2 then b = a·k ≥ 2a, but a > N/2 forces 2a > N ≥ b, a contradiction. Both branches close by `omega` (with one `nlinarith` step to get 2a ≤ b).\n\n2. **Condition (topHalf_satisfies)**: A primitive set of positive integers satisfies #858's multiplicative condition. Positivity is supplied from membership (n > N/2 ≥ 0 ⇒ n ≥ 1). The general lemma primitive_satisfies_condition is stated with the positivity hypothesis the parent omitted (without it the lemma is false at 0 ∈ A).\n\n3. **Range (topHalf_in_range)**: membership in Ioc (N/2) N gives N/2 < n ≤ N, hence 1 ≤ n ≤ N by `omega`.\n\n4. **Reciprocal-sum bound (reciprocalSum_topHalf_ge_half)**: every element is positive, so the filter (· > 0) is the identity on A. The cardinality of Ioc (N/2) N is N − N/2 = ⌈N/2⌉ (Nat.card_Ioc). Bounding each term 1/n ≥ 1/N (one_div_le_one_div_of_le) gives Σ 1/n ≥ ⌈N/2⌉·(1/N) = ⌈N/2⌉/N, and 2·⌈N/2⌉ ≥ N (by `omega`) yields the bound ≥ 1/2.\n\n5. **Packaging (topHalf_valid_with_large_reciprocal_sum)**: the conjunction of the three facts, the formal statement that the o(1) decay is localized to the normalization.",
+    "keyInsights": [
+      "**The top half of an interval is primitive — the cleanest valid family.** Any two elements of (⌊N/2⌋, N] are too close for one to divide the other (a proper multiple would already exceed N), so the set is primitive and therefore satisfies #858's (weaker) multiplicative condition. This sidesteps the parent's `Nat.sqrt`-based example, whose condition-satisfaction is delicate.",
+      "**The o(1) decay is entirely a normalization effect.** Alexander's theorem says (1/log N)·Σ 1/n → 0, but this entry shows the bare reciprocal sum of a valid set can stay ≥ 1/2 for all N. So the vanishing of the weighted sum is forced by the 1/log N factor, not by the reciprocal sum shrinking — a concrete, quantitative localization of where #858's smallness lives.",
+      "**A constant lower bound, proved elementarily.** The bound Σ_{n∈A} 1/n ≥ 1/2 is uniform in N and uses only counting (⌈N/2⌉ elements) and the trivial per-term bound 1/n ≥ 1/N — no analytic number theory, no use of Alexander's axiomatized estimate.",
+      "**The parent's primitivity lemma is false at 0 and is corrected here.** {0} is primitive yet fails the condition (0·t = 0 ∈ A would require smallestPrimeFactor t ≤ 0, impossible for t > 1). The corrected lemma carries the positivity hypothesis ∀ a ∈ A, 0 < a, which holds automatically for the top-half interval."
+    ],
+    "prerequisites": [
+      "Primitive sets (no element divides another) and divisibility in ℕ",
+      "Finset intervals: Finset.Ioc, Nat.card_Ioc, Finset.sum_le_sum",
+      "Erdős Problem #858 and its multiplicative condition (see parent entry erdos-858)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring stating the OQ-03 contribution: the top-half interval (⌊N/2⌋, N] is a primitive, condition-satisfying, in-range set with reciprocal sum ≥ 1/2, localizing #858's o(1) decay to the 1/log N normalization. Imports Mathlib and opens Nat/Real/Finset/BigOperators; notes the parent does not compile against pinned Mathlib v4.26 so its definitions are restated here.",
+      "mathContext": "The leaf is self-contained and does not depend on the parent's axiomatized Alexander estimate."
+    },
+    {
+      "id": "restated-definitions",
+      "title": "Restated Parent Definitions",
+      "startLine": 48,
+      "endLine": 91,
+      "summary": "Restates smallestPrimeFactor, SatisfiesCondition, IsPrimitive, InRange, and reciprocalSum from the parent (whose file does not compile against pinned Mathlib). The corrected primitive_satisfies_condition adds the positivity hypothesis ∀ a ∈ A, 0 < a — necessary because the parent's version is false at 0 ∈ A (the singleton {0} is primitive but fails the condition).",
+      "mathContext": "A primitive set of positive integers satisfies #858's multiplicative condition: a ∣ b forces a = b, so a·t = b with t > 1 is impossible once a > 0."
+    },
+    {
+      "id": "top-half-family",
+      "title": "The Top-Half Interval Family",
+      "startLine": 93,
+      "endLine": 134,
+      "summary": "Defines topHalf N = Finset.Ioc (N/2) N and proves topHalf_primitive (a ∣ b in the interval forces a = b, since a proper multiple b ≥ 2a > N), topHalf_satisfies (primitive + positive ⇒ condition), and topHalf_in_range (Ioc membership ⇒ 1 ≤ n ≤ N).",
+      "mathContext": "Two elements of (⌊N/2⌋, N] are within a factor < 2 of each other, so neither can be a proper multiple of the other — the classical reason the top half of an interval is primitive."
+    },
+    {
+      "id": "reciprocal-sum-bound",
+      "title": "Reciprocal-Sum Lower Bound",
+      "startLine": 136,
+      "endLine": 170,
+      "summary": "Proves reciprocalSum_topHalf_ge_half: Σ_{n∈A} 1/n ≥ 1/2 for N ≥ 1. The filter (· > 0) is the identity (all elements positive); the interval has N − N/2 = ⌈N/2⌉ elements (Nat.card_Ioc); bounding each 1/n ≥ 1/N and using 2·⌈N/2⌉ ≥ N gives the constant bound.",
+      "mathContext": "⌈N/2⌉/N ≥ 1/2 is a counting bound independent of N; no analytic input is used."
+    },
+    {
+      "id": "summary",
+      "title": "Summary (OQ-03 Contribution)",
+      "startLine": 172,
+      "endLine": 186,
+      "summary": "topHalf_valid_with_large_reciprocal_sum bundles the three facts (condition, range, reciprocal sum ≥ 1/2) into one statement, formalizing that the o(1) decay of the weighted sum is forced entirely by the 1/log N normalization.",
+      "mathContext": "Locates a concrete valid family with non-vanishing reciprocal sum, a structural data point toward OQ-03."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-858",
+      "relationship": "extends",
+      "description": "Parent entry: axiomatizes Alexander's (1966) o(1) estimate for the weighted reciprocal sum and poses OQ-03 (structure of extremal sets). This leaf contributes a concrete valid family and shows the o(1) decay is localized to the 1/log N normalization, and corrects the parent's primitive_satisfies_condition (false at 0 ∈ A)."
+    },
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "The primitive-set problem #858 weakens. The top-half interval is primitive, so it is simultaneously a valid set for #143 and a fortiori for #858."
+    }
+  ],
+  "conclusion": {
+    "summary": "The explicit top-half interval A = (⌊N/2⌋, N] is, for every N ≥ 1, primitive (hence satisfies Erdős #858's multiplicative condition), contained in {1,…,N}, and has reciprocal sum Σ_{n∈A} 1/n ≥ 1/2. This is a concrete valid family toward OQ-03, and it shows the o(1) decay of the weighted sum (1/log N)·Σ 1/n is forced entirely by the logarithmic normalization, not by any decay of the reciprocal sum of a valid set.",
+    "implications": "Any quantitative refinement of Alexander's o(1) bound for #858 must extract its smallness from the 1/log N factor: the reciprocal sum alone can remain bounded below by a constant on valid sets. The corrected positivity hypothesis on primitive_satisfies_condition removes a latent falsehood in the parent formalization.",
+    "openQuestions": [
+      "What is the precise rate of decay of the maximum weighted sum (OQ-01)?",
+      "Can the gap between this o(1) bound and Behrend's O(1/√(log log N)) be characterized (OQ-02)?",
+      "Can the constant 1/2 lower bound be pushed toward the true supremum of reciprocal sums of valid sets, and what is the extremal structure (OQ-03)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos858OQ03",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos858OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Alexander (1966): Density and multiplicative structure of sets of integers, Acta Arithmetica",
+    "Erdős–Sárközi–Szemerédi (1968): J. London Math. Soc.",
+    "Behrend (1935): On sequences of numbers not divisible by another"
+  ],
+  "sorries": 0
+}

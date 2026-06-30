@@ -36,12 +36,17 @@ rather than redefining them.
 
 ## Status
 
-OPEN, axiomatized: 2 axioms.
+OPEN, axiomatized: 1 axiom declared in this file.
   1. `koenigsmann_2016_universal` — Π₂-definability of ℤ in ℚ (PROVED in
      Koenigsmann, Annals 2016; axiomatized here pending model-theoretic
      formalization).
-  2. `mazur_conjecture_implies_not_diophantine_over_Q` — Mazur ⟹ ¬Σ₁
-     (a topological argument; restated against this file's predicate).
+
+The Mazur direction (Mazur ⟹ ¬Σ₁) is NOT a new axiom here: it is stated
+*conditionally* as the theorem
+  `mazur_implies_not_sigma1_definable : MazurConjecture → ¬IntegersAreDiophantineOverQ`,
+which carries the `MazurConjecture` hypothesis explicitly and reuses the
+imported parent's conditional axiom `mazur_implies_not_diophantine`
+(`Hilbert10OQ01.lean`) rather than asserting a fresh one.
 
 The Σ₁ question itself is left as a `Prop`-valued statement, NOT axiomatized
 either way: we encode it as `IntegersDiophantineOverQ` (already in OQ-01) and
@@ -85,6 +90,11 @@ import Mathlib.Tactic.Ring
 -- Iter 17 (Path B): `Finset.toList` and `Finset.mem_toList` for Finset
 -- transports of the iter 10 / iter 14 / iter 15 list closures.
 import Mathlib.Data.Finset.Basic
+-- Iter 29 (Path B): `linear_combination` to discharge the affine-inverse
+-- identity `a·(a⁻¹·q − a⁻¹·b) + b = q` (needs `a ≠ 0`) in the affine-pullback
+-- invariance of the OPEN Σ₁ question. `mul_inv_cancel₀` comes transitively via
+-- `Mathlib.Algebra.GroupWithZero.Basic` (already imported above).
+import Mathlib.Tactic.LinearCombination
 
 namespace Hilbert10Rationals
 
@@ -2916,6 +2926,205 @@ theorem mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers :
              mazur_implies_not_codiophantine_complement hM⟩
 
 -- ============================================================
+-- Part VIII.29 (iter 28): the third Boolean operation —
+--   relative complement (set difference) closure across all four classes
+-- ============================================================
+
+/-
+The Boolean closure grid built in iters 9–25 covers the two *positive*
+Boolean operations — binary union (`∪`) and binary intersection (`∩`) — at
+every level (Σ₁, Π₁, Σ₂, Π₂). The remaining Boolean operation is the
+**relative complement** (set difference)
+
+    S \ T  :=  fun q => S q ∧ ¬ T q.
+
+It is NOT closed *within* a single class: `S \ T = S ∩ Tᶜ`, and a class is
+closed under complement only by passing to its dual (`Σ₁ᶜ = Π₁`, `Σ₂ᶜ = Π₂`).
+So set difference is governed by the *mixed* rule "subtract from a class the
+dual of that class": removing a `Π₁` set from a `Σ₁` set lands back in `Σ₁`,
+and symmetrically at every level. Each proof is pure glue: rewrite `Tᶜ` into
+the subtracting class's dual via the iter-5 / iter-7 complement equivalences,
+then apply the matching binary-intersection closure (iters 12 / 9 / 20 / 24a).
+No new axioms; the four lemmas finish the Boolean algebra of each definability
+level. -/
+
+/-- **Iter 28 (Σ₁ set difference)**: `Σ₁ \ Π₁ ⊆ Σ₁`.
+
+    If `S` is Diophantine (Σ₁) and `T` is co-Diophantine (Π₁), then the
+    relative complement `S \ T = {q | S q ∧ ¬ T q}` is Diophantine. The
+    subtracted `T` being Π₁ makes its complement `¬ T` Σ₁
+    (`codiophantine_iff_diophantine_complement`), and `Σ₁ ∩ Σ₁ ⊆ Σ₁`
+    (`intersection_isDiophantineDefinition`) finishes. -/
+theorem sdiff_diophantine_codiophantine_isDiophantineDefinition
+    {S T : RatSubset}
+    (hS : IsDiophantineDefinition S) (hT : IsCoDiophantineDefinition T) :
+    IsDiophantineDefinition (fun q => S q ∧ ¬ T q) :=
+  intersection_isDiophantineDefinition hS
+    ((codiophantine_iff_diophantine_complement T).mp hT)
+
+/-- **Iter 28 (Π₁ set difference)**: `Π₁ \ Σ₁ ⊆ Π₁`.
+
+    Dual of `sdiff_diophantine_codiophantine_isDiophantineDefinition`. If `S`
+    is Π₁ and `T` is Σ₁, then `¬ T` is Π₁
+    (`diophantine_iff_codiophantine_complement`) and
+    `Π₁ ∩ Π₁ ⊆ Π₁` (`intersection_isCoDiophantineDefinition`) gives
+    `S \ T` ∈ Π₁. -/
+theorem sdiff_codiophantine_diophantine_isCoDiophantineDefinition
+    {S T : RatSubset}
+    (hS : IsCoDiophantineDefinition S) (hT : IsDiophantineDefinition T) :
+    IsCoDiophantineDefinition (fun q => S q ∧ ¬ T q) :=
+  intersection_isCoDiophantineDefinition hS
+    ((diophantine_iff_codiophantine_complement T).mp hT)
+
+/-- **Iter 28 (Σ₂ set difference)**: `Σ₂ \ Π₂ ⊆ Σ₂`.
+
+    Level-2 analog. If `S` is Σ₂ and the subtracted `T` is Π₂, then `¬ T` is
+    Σ₂ (`universalExistential_iff_existentialUniversal_complement`) and
+    `Σ₂ ∩ Σ₂ ⊆ Σ₂` (`sigma2_intersection_isExistentialUniversalDefinition`)
+    lands `S \ T` back in Σ₂. -/
+theorem sdiff_sigma2_pi2_isExistentialUniversalDefinition
+    {S T : RatSubset}
+    (hS : IsExistentialUniversalDefinition S)
+    (hT : IsUniversalExistentialDefinition T) :
+    IsExistentialUniversalDefinition (fun q => S q ∧ ¬ T q) :=
+  sigma2_intersection_isExistentialUniversalDefinition hS
+    ((universalExistential_iff_existentialUniversal_complement T).mp hT)
+
+/-- **Iter 28 (Π₂ set difference)**: `Π₂ \ Σ₂ ⊆ Π₂`.
+
+    Dual of `sdiff_sigma2_pi2_isExistentialUniversalDefinition`, and the
+    level-2 analog of the Π₁ case. If `S` is Π₂ and `T` is Σ₂, then `¬ T` is
+    Π₂ (`existentialUniversal_iff_universalExistential_complement`) and
+    `Π₂ ∩ Π₂ ⊆ Π₂` (`pi2_intersection_isUniversalExistentialDefinition`)
+    completes the Boolean algebra of all four levels. -/
+theorem sdiff_pi2_sigma2_isUniversalExistentialDefinition
+    {S T : RatSubset}
+    (hS : IsUniversalExistentialDefinition S)
+    (hT : IsExistentialUniversalDefinition T) :
+    IsUniversalExistentialDefinition (fun q => S q ∧ ¬ T q) :=
+  pi2_intersection_isUniversalExistentialDefinition hS
+    ((existentialUniversal_iff_universalExistential_complement T).mp hT)
+
+-- ============================================================
+-- Part VIII.33 (iter 29, Path B): closure of all four classes
+--   under affine pullback  q ↦ a·q + b
+-- ============================================================
+
+/-- The **affine pullback** of a subset `S ⊆ ℚ` along the map `q ↦ a·q + b`
+    (for fixed rationals `a b`):
+
+        `affinePullback a b S = { q : ℚ  |  a·q + b ∈ S }`.
+
+    This is the rational analogue of pulling a Diophantine set back along a
+    polynomial change of variables. The special cases are translation
+    (`a = 1`, `affinePullback 1 b S = { q | q + b ∈ S }`) and dilation
+    (`b = 0`, `affinePullback a 0 S = { q | a·q ∈ S }`). For `a ≠ 0` the map
+    `q ↦ a·q + b` is a bijection of `ℚ`, so the pullback is a genuine
+    affine reparametrization; for `a = 0` it is the constant predicate
+    `fun _ => S b`. -/
+def affinePullback (a b : Rat) (S : RatSubset) : RatSubset :=
+  fun q => S (a * q + b)
+
+/-- Iter 29, Path B: **Σ₁ (Diophantine) is closed under affine pullback**.
+
+    If `S` is Diophantine with parametric witness `P`, then
+    `affinePullback a b S` is Diophantine with witness
+    `Q q = P (a·q + b)`: substituting the parameter `q ↦ a·q + b` into a
+    polynomial leaves it polynomial, and
+        `q ∈ affinePullback a b S ⟺ a·q+b ∈ S ⟺ ∃ x, P (a·q+b) x = 0`.
+
+    Path A (zero new Mathlib): the witness is a pure substitution; no lemma
+    beyond the existing field structure of `ℚ` is needed. -/
+theorem affinePullback_isDiophantineDefinition (a b : Rat) {S : RatSubset}
+    (h : IsDiophantineDefinition S) :
+    IsDiophantineDefinition (affinePullback a b S) := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q => P (a * q + b), fun q => ?_⟩
+  simpa only [affinePullback] using hP (a * q + b)
+
+/-- Iter 29, Path B: **Π₁ (co-Diophantine) is closed under affine pullback**.
+
+    Same substitution witness `Q q = P (a·q + b)` as the Σ₁ case; the
+    universal "no rational solution" reading is preserved pointwise. -/
+theorem affinePullback_isCoDiophantineDefinition (a b : Rat) {S : RatSubset}
+    (h : IsCoDiophantineDefinition S) :
+    IsCoDiophantineDefinition (affinePullback a b S) := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q => P (a * q + b), fun q => ?_⟩
+  simpa only [affinePullback] using hP (a * q + b)
+
+/-- Iter 29, Path B: **Σ₂ (existential-universal) is closed under affine
+    pullback**.
+
+    Witness `Q q y = P (a·q + b) y`: the substitution acts only on the
+    parameter slot and commutes with the `∃ y, ¬ hasRationalSolution`
+    quantifier block. -/
+theorem affinePullback_isExistentialUniversalDefinition (a b : Rat)
+    {S : RatSubset} (h : IsExistentialUniversalDefinition S) :
+    IsExistentialUniversalDefinition (affinePullback a b S) := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q y => P (a * q + b) y, fun q => ?_⟩
+  simpa only [affinePullback] using hP (a * q + b)
+
+/-- Iter 29, Path B: **Π₂ (universal-existential) is closed under affine
+    pullback**.
+
+    Witness `Q q y = P (a·q + b) y`, dual to the Σ₂ case; the substitution
+    commutes with the `∀ y, hasRationalSolution` block. -/
+theorem affinePullback_isUniversalExistentialDefinition (a b : Rat)
+    {S : RatSubset} (h : IsUniversalExistentialDefinition S) :
+    IsUniversalExistentialDefinition (affinePullback a b S) := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q y => P (a * q + b) y, fun q => ?_⟩
+  simpa only [affinePullback] using hP (a * q + b)
+
+/-- **Affine pullback of ℤ is Π₂-definable** (corollary of Koenigsmann).
+
+    For any fixed `a b : ℚ`, the set `{ q : ℚ | a·q + b ∈ ℤ }` is
+    Π₂-definable in ℚ. Specializing: `{ q | a·q ∈ ℤ }` (a scaled copy of the
+    integer lattice, `b = 0`) and `{ q | q + b ∈ ℤ }` (a translate of ℤ,
+    `a = 1`) are both Π₂-definable. This is the affine-invariance of the
+    settled (Π₂) level of the ℤ ⊂ ℚ definability question. -/
+theorem affinePullback_int_isUniversalExistentialDefinition (a b : Rat) :
+    IsUniversalExistentialDefinition (affinePullback a b IntSubset) :=
+  affinePullback_isUniversalExistentialDefinition a b koenigsmann_2016_universal
+
+/-- **Affine pullback of ℚ \ ℤ is Σ₂-definable** (corollary of Koenigsmann
+    via the Σ₂/Π₂ duality).
+
+    Dual to `affinePullback_int_isUniversalExistentialDefinition`: for any
+    `a b : ℚ`, `{ q : ℚ | a·q + b ∉ ℤ }` is Σ₂-definable in ℚ. -/
+theorem affinePullback_notInt_isExistentialUniversalDefinition (a b : Rat) :
+    IsExistentialUniversalDefinition (affinePullback a b NotIntSubset) :=
+  affinePullback_isExistentialUniversalDefinition a b
+    koenigsmann_implies_complement_existentialUniversal
+
+/-- **Affine invariance of the OPEN question.** For `a ≠ 0`, the map
+    `q ↦ a·q + b` is a bijection of `ℚ`, so ℤ is Σ₁-definable over ℚ iff its
+    affine pullback `{ q | a·q + b ∈ ℤ }` is. (The forward direction is the
+    closure theorem `affinePullback_isDiophantineDefinition`; the converse
+    pulls back along the inverse map `q ↦ a⁻¹·q − a⁻¹·b`.) This records that
+    the Σ₁-definability question for ℤ ⊂ ℚ is invariant under affine
+    reparametrization — a structural sanity check on the open problem. -/
+theorem int_diophantine_iff_affinePullback_diophantine
+    (a b : Rat) (ha : a ≠ 0) :
+    IsDiophantineDefinition IntSubset ↔
+      IsDiophantineDefinition (affinePullback a b IntSubset) := by
+  constructor
+  · intro h
+    exact affinePullback_isDiophantineDefinition a b h
+  · intro h
+    -- pull the pullback back along the inverse map `q ↦ a⁻¹·q − a⁻¹·b`
+    have hback := affinePullback_isDiophantineDefinition a⁻¹ (-(a⁻¹ * b)) h
+    obtain ⟨P, hP⟩ := hback
+    refine ⟨P, fun q => ?_⟩
+    have hinv : a * a⁻¹ = 1 := mul_inv_cancel₀ ha
+    have hq : a * (a⁻¹ * q + -(a⁻¹ * b)) + b = q := by
+      linear_combination (q - b) * hinv
+    have hpq := hP q
+    simpa only [affinePullback, hq] using hpq
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -3139,6 +3348,10 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `mazur_implies_pi2_strict_above_sigma1_at_integers` (Mazur + Koenigsmann ⟹ Π₂(ℤ) ∧ ¬Σ₁(ℤ) — Σ₁ ⊊ Π₂ non-trivial at ℤ under Mazur, iter 27a-δ)
   - `h10_decidable_implies_pi2_strict_above_sigma1_at_integers` (H10/ℚ decidable + Koenigsmann ⟹ Π₂(ℤ) ∧ ¬Σ₁(ℤ) — same Σ₁ ⊊ Π₂ non-collapse from a different conditional antecedent, iter 27a-δ)
   - `mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers` (Mazur + Koenigsmann/duality ⟹ Σ₂(ℚ\ℤ) ∧ ¬Π₁(ℚ\ℤ) — Π₁ ⊊ Σ₂ non-trivial at ℚ\ℤ under Mazur, iter 27a-δ)
+  - `sdiff_diophantine_codiophantine_isDiophantineDefinition` (Σ₁ \ Π₁ ⊆ Σ₁ — relative complement, the third Boolean operation, iter 28)
+  - `sdiff_codiophantine_diophantine_isCoDiophantineDefinition` (Π₁ \ Σ₁ ⊆ Π₁, dual at level 1, iter 28)
+  - `sdiff_sigma2_pi2_isExistentialUniversalDefinition` (Σ₂ \ Π₂ ⊆ Σ₂, level-2 analog, iter 28)
+  - `sdiff_pi2_sigma2_isUniversalExistentialDefinition` (Π₂ \ Σ₂ ⊆ Π₂, level-2 dual — Boolean algebra of all four levels complete, iter 28)
 -/
 
 #check @IsDiophantineDefinition
@@ -3224,5 +3437,9 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @mazur_implies_pi2_strict_above_sigma1_at_integers
 #check @h10_decidable_implies_pi2_strict_above_sigma1_at_integers
 #check @mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers
+#check @sdiff_diophantine_codiophantine_isDiophantineDefinition
+#check @sdiff_codiophantine_diophantine_isCoDiophantineDefinition
+#check @sdiff_sigma2_pi2_isExistentialUniversalDefinition
+#check @sdiff_pi2_sigma2_isUniversalExistentialDefinition
 
 end Hilbert10Rationals

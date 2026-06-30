@@ -1,0 +1,175 @@
+{
+  "id": "gcd-algorithm-oq-05",
+  "title": "The Gauss–Kuzmin Distribution is a Probability Distribution",
+  "slug": "gcd-algorithm-oq-05",
+  "description": "Toward the parent's OQ-05 (are Euclidean-algorithm quotients qᵢ = ⌊r_{i-1}/rᵢ⌋ Gauss–Kuzmin distributed?), this formalizes the foundational prerequisite: the Gauss–Kuzmin weights P(k) = log₂(1 + 1/(k(k+2))) form a genuine probability distribution. Every P(k) > 0 and ∑_{k≥1} P(k) = 1, via the telescoping identity P(k) = G(k) − G(k+1) with G(k) = log₂((k+2)/(k+1)). Verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GCDAlgorithmOQ05.lean",
+    "tags": [
+      "number-theory",
+      "continued-fractions",
+      "gauss-kuzmin",
+      "euclidean-algorithm",
+      "probability",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 167,
+    "assumptions": "None. Fully machine-verified: lake env lean of Proofs/GCDAlgorithmOQ05.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for gaussKuzmin_tsum and gaussKuzmin_pos. The file imports only Mathlib and is self-contained. Scope note: this proves the Gauss–Kuzmin weights are a normalized probability distribution; the full Gauss–Kuzmin–Lévy theorem (that the Euclidean/continued-fraction quotients are asymptotically Gauss–Kuzmin distributed) additionally requires the ergodicity of the Gauss map and invariance of the Gauss measure, which are not yet in Mathlib.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.logb_pos",
+        "description": "0 < logb b x for 1 < b and 1 < x — positivity of each weight",
+        "module": "Mathlib.Analysis.SpecialFunctions.Logb"
+      },
+      {
+        "theorem": "Real.logb_div",
+        "description": "logb b (x/y) = logb b x − logb b y — assembles the telescoping identity",
+        "module": "Mathlib.Analysis.SpecialFunctions.Logb"
+      },
+      {
+        "theorem": "Finset.sum_range_sub'",
+        "description": "∑_{i<n} (f i − f (i+1)) = f 0 − f n — the telescoping sum",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "tendsto_one_div_add_atTop_nhds_zero_nat",
+        "description": "1/(n+1) → 0 — drives (n+2)/(n+1) → 1 and hence G(n) → 0",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "summable_of_sum_range_le",
+        "description": "nonneg terms with bounded partial sums are summable",
+        "module": "Mathlib.Analysis.PSeries"
+      }
+    ],
+    "originalContributions": [
+      "Identifies the closed-form normalization of the Gauss–Kuzmin distribution as the tractable, Mathlib-formalizable core of the parent's OQ-05, and states honestly what the full Gauss–Kuzmin–Lévy theorem additionally requires",
+      "gaussKuzmin_eq_sub: the telescoping identity P(k) = G(k) − G(k+1) from 1 + 1/((k+1)(k+3)) = (k+2)²/((k+1)(k+3))",
+      "gaussKuzmin_partial: closed-form partial sums ∑_{n<N} P(n) = 1 − log₂((N+2)/(N+1))",
+      "gaussKuzmin_partial_tendsto_one / gaussKuzmin_tsum: the weights sum to exactly 1 (probability normalization)",
+      "gaussKuzmin_pos / gaussKuzmin_summable: positivity and summability"
+    ],
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The Euclidean algorithm's quotient sequence qᵢ = ⌊r_{i-1}/rᵢ⌋ is precisely the continued-fraction expansion of r₀/r₁. Gauss observed (1812, in a letter to Laplace) and Kuzmin (1928) and Lévy (1929) proved that for a 'random' real number the partial quotients follow the limiting law P(k) = log₂(1 + 1/(k(k+2))) — the Gauss–Kuzmin distribution. The parent gallery entry's open question OQ-05 (echoing the Knuth–Yao–Dixon analysis of the Euclidean algorithm) asks whether the algorithm's quotients are Gauss–Kuzmin distributed and what a formal proof would require. This entry supplies the foundational prerequisite and a concrete first answer.",
+    "problemStatement": "The Knuth–Yao–Dixon analysis gives the distribution of quotients qᵢ = ⌊r_{i-1}/rᵢ⌋ — are these Gauss–Kuzmin distributed? What does a formal proof require?",
+    "text": "Proves that the Gauss–Kuzmin weights P(k) = log₂(1 + 1/(k(k+2))) are positive and sum to 1, hence form a genuine probability distribution — the normalization the asymptotic-distribution question presupposes.",
+    "proofStrategy": "Index the weights by n : ℕ with quotient value k = n+1, so gaussKuzmin n = log₂(1 + 1/((n+1)(n+3))). The algebraic identity 1 + 1/((n+1)(n+3)) = (n+2)²/((n+1)(n+3)) rewrites each weight as a difference P(n) = G(n) − G(n+1) of the telescoping antiderivative G(n) = log₂((n+2)/(n+1)) (using logb_div). Finset.sum_range_sub' collapses the partial sums to ∑_{n<N} P(n) = G(0) − G(N) = 1 − log₂((N+2)/(N+1)). Since (n+2)/(n+1) = 1 + 1/(n+1) → 1 and log₂ is continuous at 1, G(N) → 0, so the partial sums converge to 1. Positivity of the weights (logb_pos) plus the bound 1 − G(N) ≤ 1 gives summability, and uniqueness of limits identifies the tsum as 1.",
+    "keyInsights": [
+      "The deceptively transcendental-looking weights log₂(1 + 1/(k(k+2))) telescope exactly: 1 + 1/(k(k+2)) = (k+1)²/(k(k+2)), so log₂ of it is a second difference of log₂(k), and the series collapses.",
+      "The closed-form partial sum 1 − log₂((N+2)/(N+1)) makes the normalization ∑ P(k) = 1 manifest and even gives the rate of convergence to 1.",
+      "This is exactly the foundational fact the OQ-05 question presupposes: before asking whether the Euclidean quotients ARE Gauss–Kuzmin distributed, one needs the Gauss–Kuzmin weights to be a bona fide probability distribution.",
+      "The honest scope boundary: the asymptotic distribution theorem (Gauss–Kuzmin–Lévy) needs the ergodicity of the Gauss map x ↦ {1/x} and invariance of the Gauss measure dx/((1+x)ln2), which Mathlib does not yet have — so a full formal proof requires building that ergodic-theory infrastructure first.",
+      "Continuity of log₂ at 1 (from continuity of log at any nonzero point) is the only analytic ingredient beyond the telescoping algebra."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-defs",
+      "title": "Problem Statement and Definitions",
+      "summary": "Module docstring framing OQ-05 and the Gauss–Kuzmin distribution, the honest scope boundary (normalization here vs. full Gauss–Kuzmin–Lévy), and the definitions gaussKuzmin and the telescoping antiderivative G",
+      "startLine": 1,
+      "endLine": 60
+    },
+    {
+      "id": "positivity-and-telescoping",
+      "title": "Positivity and the Telescoping Identity",
+      "summary": "gaussKuzmin_pos (each weight > 0) and gaussKuzmin_eq_sub (P(n) = G(n) − G(n+1) via 1 + 1/((n+1)(n+3)) = (n+2)²/((n+1)(n+3)) and logb_div)",
+      "startLine": 61,
+      "endLine": 81
+    },
+    {
+      "id": "partial-sums",
+      "title": "Closed Form of the Partial Sums",
+      "summary": "gaussKuzmin_partial (∑_{n<N} P(n) = G(0) − G(N)), G_zero (G(0) = 1), G_nonneg, and G_tendsto_zero (G(N) → 0 via (n+2)/(n+1) → 1 and continuity of log₂ at 1)",
+      "startLine": 82,
+      "endLine": 121
+    },
+    {
+      "id": "normalization",
+      "title": "Convergence, Summability, and Normalization",
+      "summary": "gaussKuzmin_partial_tendsto_one (partial sums → 1), gaussKuzmin_summable (bounded partial sums), and gaussKuzmin_tsum (∑' P(k) = 1)",
+      "startLine": 122,
+      "endLine": 167
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; self-contained, imports only Mathlib): the Gauss–Kuzmin weights P(k) = log₂(1 + 1/(k(k+2))) are strictly positive and sum to exactly 1, hence form a genuine probability distribution. The proof rests on the telescoping identity P(k) = G(k) − G(k+1) with G(k) = log₂((k+2)/(k+1)), giving the closed-form partial sum 1 − log₂((N+2)/(N+1)) → 1.",
+    "implications": "This supplies the normalization prerequisite behind the parent's OQ-05: any statement that the Euclidean-algorithm quotients are Gauss–Kuzmin distributed presupposes that the Gauss–Kuzmin weights are a probability distribution, which is now machine-verified. It also pins down the honest scope of a full formal proof — the asymptotic-distribution claim (Gauss–Kuzmin–Lévy) additionally needs the ergodicity of the Gauss map and invariance of the Gauss measure, currently absent from Mathlib.",
+    "openQuestions": [
+      "Formalize the Gauss map x ↦ {1/x} and prove invariance of the Gauss measure dx/((1+x)ln2), the measure-theoretic core of Gauss–Kuzmin–Lévy.",
+      "Establish ergodicity of the Gauss map and the resulting convergence of the digit distribution to the Gauss–Kuzmin law, then connect it to the Euclidean-algorithm quotient sequence.",
+      "Prove the entropy/rate refinement (Lévy's constant, the exponential rate of convergence in Gauss–Kuzmin–Lévy) once the invariant-measure infrastructure exists."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "parent-problem",
+      "description": "Parent: the GCD / Euclidean algorithm, whose quotient sequence qᵢ = ⌊r_{i-1}/rᵢ⌋ is the object of OQ-05's Gauss–Kuzmin question"
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question of the same parent (Euclidean-algorithm analysis)"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "R. O. Kuzmin"
+      ],
+      "title": "On a problem of Gauss",
+      "year": "1928",
+      "venue": "Atti del Congresso Internazionale dei Matematici",
+      "note": "First proof of the Gauss–Kuzmin distribution"
+    },
+    {
+      "authors": [
+        "Paul Lévy"
+      ],
+      "title": "Sur les lois de probabilité dont dépendent les quotients complets et incomplets d'une fraction continue",
+      "year": "1929",
+      "venue": "Bulletin de la Société Mathématique de France",
+      "note": "Rate of convergence (Gauss–Kuzmin–Lévy)"
+    },
+    {
+      "authors": [
+        "Donald E. Knuth"
+      ],
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley",
+      "note": "Analysis of the Euclidean algorithm and continued-fraction quotient distribution"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Topology",
+      "Finset"
+    ],
+    "namespace": "GCDAlgorithmOQ05",
+    "lineCount": 167,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/GCDAlgorithmOQ05.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

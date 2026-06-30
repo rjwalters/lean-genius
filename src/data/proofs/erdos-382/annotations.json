@@ -17,7 +17,11 @@
       "Cramér's conjecture",
       "Ramachandra's bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Prime gaps",
+      "Factorials"
+    ]
   },
   {
     "id": "ann-e382-prodinterval",
@@ -37,7 +41,11 @@
       "Finset.prod",
       "BigOperators"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorials",
+      "Finite products",
+      "Intervals of integers"
+    ]
   },
   {
     "id": "ann-e382-prodinterval-props",
@@ -56,7 +64,10 @@
       "Nat.factorial",
       "simp tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Factorials",
+      "Finite products"
+    ]
   },
   {
     "id": "ann-e382-largest-prime",
@@ -75,7 +86,10 @@
       "List.maximum?",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Lists"
+    ]
   },
   {
     "id": "ann-e382-largest-prime-axioms",
@@ -94,7 +108,10 @@
       "prime maximality",
       "primeFactorsList properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility",
+      "Prime factorization"
+    ]
   },
   {
     "id": "ann-e382-exponent",
@@ -113,7 +130,10 @@
       "Nat.factorization",
       "Finsupp"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation",
+      "Prime factorization"
+    ]
   },
   {
     "id": "ann-e382-exponent-sum",
@@ -132,7 +152,10 @@
       "Nat.factorization_prod",
       "completely multiplicative"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation",
+      "Additive functions"
+    ]
   },
   {
     "id": "ann-e382-condition",
@@ -151,7 +174,10 @@
       "interval product",
       "exponent condition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime powers",
+      "Divisibility"
+    ]
   },
   {
     "id": "ann-e382-structural",
@@ -170,7 +196,10 @@
       "interval containment",
       "exponent bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime powers",
+      "p-adic valuation"
+    ]
   },
   {
     "id": "ann-e382-q1",
@@ -189,7 +218,11 @@
       "o(1) notation",
       "Cramér's conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic notation",
+      "Prime gaps",
+      "Cramér's conjecture"
+    ]
   },
   {
     "id": "ann-e382-q2",
@@ -208,7 +241,10 @@
       "prime squares",
       "heuristic arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime gaps",
+      "Heuristic arguments"
+    ]
   },
   {
     "id": "ann-e382-ramachandra",
@@ -227,7 +263,11 @@
       "prime distribution",
       "analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Analytic number theory",
+      "Short intervals",
+      "Prime distribution"
+    ]
   },
   {
     "id": "ann-e382-cramer-def",
@@ -246,7 +286,10 @@
       "Cramér's conjecture",
       "Nat.nth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime gaps",
+      "Cramér's conjecture"
+    ]
   },
   {
     "id": "ann-e382-cramer-implies",
@@ -265,7 +308,11 @@
       "prime-free intervals",
       "logarithmic bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime gaps",
+      "Logarithms",
+      "Conditional proofs"
+    ]
   },
   {
     "id": "ann-e382-example",
@@ -284,7 +331,10 @@
       "computational verification",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Decidable computation",
+      "Prime powers"
+    ]
   },
   {
     "id": "ann-e382-no-prime-upper",
@@ -303,7 +353,10 @@
       "contrapositive",
       "prime-free intervals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer square root",
+      "Contrapositive reasoning"
+    ]
   },
   {
     "id": "ann-e382-primefree",
@@ -322,7 +375,10 @@
       "equivalent formulations",
       "Nat.sqrt"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime-free intervals",
+      "Integer square root"
+    ]
   },
   {
     "id": "ann-e382-summary",
@@ -341,7 +397,10 @@
       "anonymous constructor",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open problems",
+      "Number theory"
+    ]
   },
   {
     "id": "ann-e382-consistent",
@@ -360,6 +419,9 @@
       "open problem",
       "Ramachandra's bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open problems",
+      "Ramachandra's bound"
+    ]
   }
 ]

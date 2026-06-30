@@ -17,7 +17,11 @@
       "LCM",
       "Diophantine approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unit fractions and signed sums of reciprocals",
+      "lcm(1,...,n) and its e^n growth via the Prime Number Theorem",
+      "open problems in Diophantine approximation"
+    ]
   },
   {
     "id": "ann-e317-definitions",
@@ -37,7 +41,11 @@
       "Rational arithmetic",
       "Noncomputable definitions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fin n indexing and Finset.sum",
+      "exact rational arithmetic in ℚ with casts to ℝ",
+      "noncomputable definitions and classical choice in Lean/Mathlib"
+    ]
   },
   {
     "id": "ann-e317-q1",
@@ -56,7 +64,11 @@
       "Uniform constants",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nested existential and universal quantifier statements",
+      "exponential bounds of the form c/2^n",
+      "uniform constants holding for all n"
+    ]
   },
   {
     "id": "ann-e317-q2",
@@ -76,7 +88,11 @@
       "atTop",
       "Prime Number Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.lcm over Finset.range",
+      "Filter.Eventually (∀ᶠ) and the atTop filter",
+      "asymptotics of lcm(1,...,n) via the Prime Number Theorem"
+    ]
   },
   {
     "id": "ann-e317-known",
@@ -95,7 +111,11 @@
       "Clearing denominators",
       "Counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "clearing denominators to bound a nonzero integer numerator",
+      "denominator divisibility by lcm(1,...,n)",
+      "explicit small-n computation 1/2 - 1/3 - 1/4 = -1/12"
+    ]
   },
   {
     "id": "ann-e317-kovac",
@@ -114,7 +134,11 @@
       "Asymptotic analysis",
       "Kovac-van Doorn"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sub-exponential asymptotic bounds and o(1) notation",
+      "comparing 2^{-n·(log log log n)/log n} against 2^{-cn}",
+      "existence of nonzero signed unit-fraction sums"
+    ]
   },
   {
     "id": "ann-e317-summary",
@@ -133,6 +157,10 @@
       "State of knowledge",
       "Proved vs open"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the weak inequality |sum| ≥ 1/lcm",
+      "the n = 4 equality counterexample",
+      "combining lemmas via an anonymous constructor ⟨_, _⟩"
+    ]
   }
 ]

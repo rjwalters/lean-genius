@@ -1,0 +1,176 @@
+{
+  "id": "dini-theorem-oq-01-oq-02-oq-01",
+  "title": "The Explicit Modulus of Uniform Convergence of xⁿ on the Compact Subinterval [0, 1−δ]",
+  "slug": "dini-theorem-oq-01-oq-02-oq-01",
+  "description": "Answers the parent's open question: on the compact subinterval [0,1−δ] (δ ∈ (0,1]) the supremum of xⁿ is ATTAINED at the right endpoint, sup_{x∈[0,1−δ]} xⁿ = (1−δ)ⁿ — contrasting the parent's never-attained supremum 1 on [0,1). Since (1−δ)ⁿ → 0 geometrically, convergence is uniform (Dini's conclusion recovered once compactness is restored), with the explicit modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉. Verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DiniTheoremOQ01OQ02OQ01.lean",
+    "tags": [
+      "analysis",
+      "dini",
+      "uniform-convergence",
+      "supremum",
+      "modulus",
+      "geometric-decay",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 194,
+    "assumptions": "None. Fully machine-verified: lake env lean of Proofs/DiniTheoremOQ01OQ02OQ01.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for isGreatest_pow_image_Icc, pow_sSup_Icc, pow_uniform_error_Icc, pow_tendstoUniformlyOn_Icc, and pow_lt_of_ceil_modulus. The file imports only Mathlib and is self-contained.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "pow_le_pow_left₀",
+        "description": "0 ≤ a, a ≤ b ⟹ aⁿ ≤ bⁿ — the endpoint x = 1−δ dominates every x ∈ [0,1−δ]",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "IsGreatest.csSup_eq",
+        "description": "the greatest element of a set equals its sSup — turns the attained maximum (1−δ)ⁿ into the supremum",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one",
+        "description": "0 ≤ r < 1 ⟹ rⁿ → 0 — geometric decay of the endpoint value (1−δ)ⁿ",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "Metric.tendstoUniformlyOn_iff",
+        "description": "ε-characterization of uniform convergence on a set — used positively to recover uniform convergence on [0,1−δ]",
+        "module": "Mathlib.Topology.UniformSpace.UniformConvergence"
+      },
+      {
+        "theorem": "Real.log_pow",
+        "description": "log(rⁿ) = n · log r — converts the geometric bound into the linear log-threshold of the explicit modulus",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "div_le_iff_of_neg",
+        "description": "dividing by the negative quantity log(1−δ) reverses the inequality, producing the threshold n ≥ log ε / log(1−δ)",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "isGreatest_pow_image_Icc: (1−δ)ⁿ is the GREATEST element of { xⁿ : x ∈ [0,1−δ] } (for δ ≤ 1) — the supremum is attained at the right endpoint, the sharp contrast with the parent's never-attained 1 on [0,1)",
+      "pow_sSup_Icc / pow_uniform_error_Icc: sup_{x∈[0,1−δ]} xⁿ = (1−δ)ⁿ and the uniform error sup_{x∈[0,1−δ]} |xⁿ − 0| = (1−δ)ⁿ",
+      "pow_tendstoUniformlyOn_Icc: xⁿ ⇉ 0 UNIFORMLY on [0,1−δ] — Dini's conclusion recovered the moment compactness is restored, the positive counterpart to the parent's pow_not_tendstoUniformlyOn_Ico_sharp",
+      "pow_lt_of_log_modulus: the explicit modulus (real threshold) — log ε / log(1−δ) ≤ n forces (1−δ)ⁿ ≤ ε",
+      "pow_lt_of_ceil_modulus: the packaged natural-number modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉"
+    ],
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dini's theorem says a monotone sequence of continuous functions converging pointwise to a continuous limit on a COMPACT set converges uniformly. The grandparent entry (dini-theorem-oq-01) probes the necessity of compactness with the textbook witness fₙ(x) = xⁿ; the parent (dini-theorem-oq-01-oq-02) showed that on the non-compact [0,1) the uniform error sup_{x∈[0,1)} |xⁿ| equals exactly 1 for every n, an unattained supremum approached along x = 1 − 1/(k+1) → 1. This entry (OQ-01) restores compactness by passing to [0,1−δ] and quantifies exactly how the failure is repaired.",
+    "problemStatement": "Quantify how fast sup_{x∈[0,1−δ]} xⁿ → 0 as the domain is shrunk to a compact subinterval [0,1−δ], recovering uniform convergence with an explicit modulus in δ and n.",
+    "text": "Proves that on [0,1−δ] the supremum of xⁿ is the attained endpoint value (1−δ)ⁿ, that (1−δ)ⁿ → 0 geometrically, that xⁿ → 0 uniformly on [0,1−δ], and that (1−δ)ⁿ ≤ ε once n ≥ ⌈log ε / log(1−δ)⌉.",
+    "proofStrategy": "The whole picture flows from one monotonicity fact, pow_le_endpoint: for x ∈ [0,1−δ], xⁿ ≤ (1−δ)ⁿ (pow_le_pow_left₀). Hence (1−δ)ⁿ, which lies in the image (take x = 1−δ, valid since δ ≤ 1 ⟹ 0 ≤ 1−δ), is the greatest element (isGreatest_pow_image_Icc), so it equals the supremum (IsGreatest.csSup_eq) — attained, unlike the parent's least-upper-bound 1. Geometric decay (1−δ)ⁿ → 0 follows from 0 ≤ 1−δ < 1 (tendsto_pow_atTop_nhds_zero_of_lt_one). Uniform convergence is then the ε-criterion (Metric.tendstoUniformlyOn_iff): xⁿ ≤ (1−δ)ⁿ uniformly in x and (1−δ)ⁿ eventually < ε. The explicit modulus comes from taking logs: (1−δ)ⁿ ≤ ε ⟺ n·log(1−δ) ≤ log ε, and since log(1−δ) < 0 (Real.log_neg) dividing reverses the inequality (div_le_iff_of_neg) to give the threshold n ≥ log ε / log(1−δ), packaged via Nat.le_ceil as ⌈log ε / log(1−δ)⌉.",
+    "keyInsights": [
+      "Restoring compactness turns the parent's unattained supremum into an attained maximum: on [0,1−δ] the right endpoint x = 1−δ is included, so sup xⁿ = (1−δ)ⁿ is realized — the structural reason Dini's hypothesis works.",
+      "The single inequality xⁿ ≤ (1−δ)ⁿ (the endpoint dominates) drives everything: the maximum, the supremum, the uniform error, and the uniform-convergence estimate are all immediate corollaries.",
+      "Uniform convergence on [0,1−δ] is the exact positive counterpart to the parent's pow_not_tendstoUniformlyOn_Ico_sharp on [0,1): the same witness sequence, opposite verdict, separated only by whether the boundary point 1 is approached.",
+      "The modulus is genuinely explicit and δ-dependent: as δ → 0 the threshold ⌈log ε / log(1−δ)⌉ blows up (log(1−δ) → 0⁻), recovering the parent's non-uniformity in the limit — the modulus encodes the full transition from uniform to non-uniform.",
+      "Taking logarithms is the natural linearization: geometric decay (1−δ)ⁿ becomes the linear condition n·log(1−δ) ≤ log ε, and the sign of log(1−δ) is exactly what flips the inequality into a lower bound on n."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-setup",
+      "title": "Problem Statement and Setup",
+      "summary": "Module docstring framing OQ-01 (uniform convergence recovered on the compact [0,1−δ] vs the parent's non-uniformity on [0,1)), the witness xⁿ, and the namespace/imports (Mathlib; open Set Filter Topology)",
+      "startLine": 1,
+      "endLine": 56
+    },
+    {
+      "id": "supremum-attained",
+      "title": "The Supremum over [0,1−δ] is Attained, Equal to (1−δ)ⁿ",
+      "summary": "pow_le_endpoint (the endpoint dominates), isGreatest_pow_image_Icc (the maximum is attained at x = 1−δ), pow_sSup_Icc (sSup = (1−δ)ⁿ), and pow_uniform_error_Icc (uniform error = (1−δ)ⁿ)",
+      "startLine": 57,
+      "endLine": 97
+    },
+    {
+      "id": "uniform-convergence",
+      "title": "Geometric Decay and the Recovery of Uniform Convergence",
+      "summary": "pow_tendsto_zero (geometric decay (1−δ)ⁿ → 0) and pow_tendstoUniformlyOn_Icc (xⁿ ⇉ 0 uniformly on [0,1−δ], the headline recovery of Dini's conclusion)",
+      "startLine": 98,
+      "endLine": 133
+    },
+    {
+      "id": "explicit-modulus",
+      "title": "The Explicit Modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉",
+      "summary": "pow_lt_of_log_modulus (real-threshold modulus via logarithms and div_le_iff_of_neg) and pow_lt_of_ceil_modulus (packaged natural-number modulus via Nat.le_ceil)",
+      "startLine": 134,
+      "endLine": 194
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; self-contained, imports only Mathlib): on the compact subinterval [0,1−δ] (δ ∈ (0,1]) the supremum sup_{x∈[0,1−δ]} xⁿ = (1−δ)ⁿ is ATTAINED at the right endpoint, decays geometrically to 0, so xⁿ → 0 uniformly on [0,1−δ] — recovering Dini's conclusion — with the explicit modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉.",
+    "implications": "This pins the exact rate at which uniform convergence is repaired as the domain retreats from the boundary point 1, and shows the transition is governed by the single quantity (1−δ)ⁿ. The endpoint-dominates → IsGreatest.csSup_eq → tendsto_pow → ε-criterion → log-threshold pipeline is a reusable recipe for explicit moduli of geometric decay. Together with the parent (never-attained supremum 1 on [0,1)) it gives a complete attained/unattained dichotomy for the witness xⁿ.",
+    "openQuestions": [
+      "Optimality of the modulus: is ⌈log ε / log(1−δ)⌉ the smallest N with (1−δ)ᴺ ≤ ε for every ε, δ, or only the smallest under the log-threshold derivation, and can the off-by-one from Nat.le_ceil be pinned down exactly?",
+      "Uniform-in-δ rate: characterize the joint modulus N(ε,δ) as a function of both arguments and identify the δ → 0 blow-up rate that interpolates to the parent's non-uniformity on [0,1).",
+      "General antitone families: for a continuous antitone-in-n family converging pointwise to 0 on [0,1), is the uniform error on [0,1−δ] always the boundary-restricted value f_n(1−δ), with an analogous explicit modulus?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dini-theorem-oq-01-oq-02",
+      "relationship": "parent-problem",
+      "description": "Parent: the sharp modulus of NON-uniform convergence of xⁿ on the non-compact [0,1) (unattained supremum 1); this entry answers its OQ[0] by quantifying the compact-subinterval case"
+    },
+    {
+      "targetId": "dini-theorem-oq-01",
+      "relationship": "related",
+      "description": "Grandparent: Dini's theorem and the sharpness of its compactness hypothesis via the witness xⁿ"
+    },
+    {
+      "targetId": "dini-theorem",
+      "relationship": "related",
+      "description": "The base Dini's theorem (uniform convergence of monotone sequences on compact sets) whose conclusion this entry recovers on the compact [0,1−δ]"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Ulisse Dini"
+      ],
+      "title": "Fondamenti per la teorica delle funzioni di variabili reali",
+      "year": "1878",
+      "venue": "Pisa",
+      "note": "Origin of Dini's theorem"
+    },
+    {
+      "authors": [
+        "Walter Rudin"
+      ],
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "note": "Theorem 7.13 (Dini) and the xⁿ counterexample; uniform convergence on compact subintervals"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "DiniTheoremOQ01OQ02OQ01",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/DiniTheoremOQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

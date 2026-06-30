@@ -1,0 +1,143 @@
+{
+  "id": "erdos-1040-oq-03-oq-01",
+  "title": "The Pure-Power Lemniscate: a Sharp π-Area Witness at Every Degree",
+  "slug": "erdos-1040-oq-03-oq-01",
+  "description": "Follow-up oq-01 to the elementary area-bounds companion of Erdős Problem #1040 (oq-03). The parent proved the unconditional upper bound area{|f|<1} ≤ degree·π for a monic polynomial f(z) = ∏ᵢ(z - rootᵢ). This entry supplies the matching lower-side witness, pinning down how far that bound is from sharp. For the PURE POWER f(z) = (z - c)^n all n roots collapse to the single point c, and the lemniscate is exactly the open unit disc about c: {z : |(z - c)^n| < 1} = {z : |z - c| < 1} = B(c, 1), because |(z - c)^n| = |z - c|^n and t^n < 1 ⟺ t < 1 for nonnegative real t. Hence the lemniscate has area exactly π for every positive degree n. Two structural consequences: (1) the value π is attained as a lemniscate area by a monic polynomial of every degree, so the single-point infimum satisfies μ({c}) ≤ π; (2) since the pure-power area is π while the unconditional bound is degree·π, for every n ≥ 2 the inequality area < degree·π is STRICT — the elementary bound is sharp only at degree one. Axiom-free, self-contained, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1040OQ03OQ01.lean",
+    "tags": [
+      "complex-analysis",
+      "potential-theory",
+      "polynomials",
+      "lemniscates",
+      "measure-theory",
+      "geometry",
+      "erdos",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 137,
+    "assumptions": "None. All nine theorems are axiom-free and self-contained: the RootedPoly/eval/lem framing of the parent is re-declared locally so nothing depends on the parent entry's open transfinite-diameter question. No native_decide is used (so no Lean.ofReduceBool). Build NOT kernel-verified this session (Docker daemon unavailable, as in prior sessions); all Mathlib signatures (Complex.volume_ball, Fin.prod_const, norm_pow, pow_lt_one_iff_of_nonneg, norm_nonneg, ENNReal.ofReal_coe_nnreal, NNReal.coe_real_pi, NNReal.pi_ne_zero, ENNReal.coe_ne_zero, ENNReal.coe_ne_top, ENNReal.mul_lt_mul_right, dist_eq_norm, Metric.mem_ball) were checked against Mathlib v4.26.0 source. The deployer build-gate is the final check before merge.",
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "purePower: the monic polynomial f(z) = (z - c)^n modelled as a RootedPoly whose n roots all coincide at c, with eval_purePower computing eval = (z - c)^n via Fin.prod_const",
+      "lem_purePower_eq_ball: the CENTRAL identity — for positive degree the pure-power lemniscate equals the open unit disc B(c,1) exactly, from |(z - c)^n| = |z - c|^n and pow_lt_one_iff_of_nonneg (t^n < 1 ⟺ t < 1 for t ≥ 0)",
+      "lem_purePower_zero: in degree 0 the empty product is f ≡ 1 so the lemniscate is empty — pinning the necessity of the positivity hypothesis",
+      "volume_lem_purePower / volume_lem_purePower': the pure-power lemniscate has area EXACTLY π for every positive degree (Complex.volume_ball at radius 1), in both NNReal.pi and ENNReal.ofReal Real.pi form",
+      "area_pi_attained_each_degree: ATTAINMENT — the area value π is realised by a monic polynomial of every positive degree, so the single-point infimum μ({c}) ≤ π",
+      "volume_lem_purePower_lt_degree_bound: NON-SHARPNESS — for every degree n ≥ 2 the pure-power area π is STRICTLY below the parent's unconditional bound degree·π (ENNReal.mul_lt_mul_right), so that bound is attained only at degree one",
+      "purePower_sharp_witness: capstone packaging the exact-disc identity, the exact area π, and the strict gap below degree·π"
+    ],
+    "theoremCount": 9,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1040 concerns the area of polynomial lemniscates. For a closed infinite set F ⊆ ℂ one studies μ(F) = inf of the area |{z : |f(z)| < 1}| over monic polynomials f with roots in F, and asks whether μ(F) is governed by the transfinite diameter of F. The sharp single-polynomial bound is Pólya's inequality, area{|f| ≤ 1} ≤ π for any monic degree-n f. The parent companion (oq-03) proved the elementary metric upper bounds area ≤ degree·π and (roots in the unit disc) area ≤ 4π. The natural question those bounds leave open is how tight they are — which monic polynomials, if any, achieve small lemniscate area, and whether the degree·π bound is ever attained beyond degree one.",
+    "problemStatement": "Follow-up oq-01: is the unconditional area bound area{|f|<1} ≤ degree·π sharp, and is the value π actually attained by monic polynomials of every degree? This entry answers both via the pure power f(z) = (z - c)^n.",
+    "proofStrategy": "Collapse all roots to one point. For f(z) = (z - c)^n, eval_purePower gives f(z) = (z - c)^n (a product of n identical factors, Fin.prod_const). Then |f(z)| < 1 ⟺ |z - c|^n < 1 ⟺ |z - c| < 1 (norm_pow and pow_lt_one_iff_of_nonneg, valid because |z - c| ≥ 0 and n > 0), so the lemniscate is exactly B(c,1). Complex.volume_ball at radius 1 gives area exactly π, independent of n. Attainment is then immediate, and strict non-sharpness below degree·π follows from π < n·π for n ≥ 2 (ENNReal.mul_lt_mul_right, since π is a positive finite constant).",
+    "keyInsights": [
+      "Coalescing all roots of a monic polynomial at a single point c turns the lemniscate into a perfect disc: |(z - c)^n| < 1 is, factor for factor, the single condition |z - c| < 1, so the n-fold multiplicity is invisible to the sublevel set.",
+      "The pure-power lemniscate area is π for EVERY degree — the area does not grow with n at all. This shows the parent's unconditional bound degree·π overshoots by the full factor degree and is attained only when n = 1.",
+      "Attainment of π at every degree gives an exact upper envelope μ({c}) ≤ π for the single-point infimum; combined with Pólya's lower bound area ≥ π one gets μ({c}) = π, of which the elementary upper half is formalized here.",
+      "The whole phenomenon is metric and multiplicity-driven: nothing beyond the norm being multiplicative on powers and the area of a unit disc is needed, so the witness is fully axiom-free."
+    ],
+    "prerequisites": [
+      "Lebesgue measure on ℂ: Complex.volume_ball (area of a metric ball is .ofReal r² · π)",
+      "Multiplicativity of the norm on powers (norm_pow) and the order fact t^n < 1 ⟺ t < 1 for t ≥ 0, n ≠ 0 (pow_lt_one_iff_of_nonneg)",
+      "Products of a constant over Fin n (Fin.prod_const)",
+      "ENNReal arithmetic and strict monotonicity of multiplication by a positive finite constant (ENNReal.mul_lt_mul_right)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "§I: The Pure-Power Polynomial",
+      "startLine": 46,
+      "endLine": 70,
+      "summary": "Re-introduces the self-contained RootedPoly/eval/lem framing and defines purePower c n — the monic polynomial with all n roots equal to c — proving its evaluation is (z - c)^n.",
+      "mathContext": "$f(z) = (z - c)^n = \\prod_{i<n}(z - c)$, evaluated via $\\texttt{Fin.prod\\_const}$."
+    },
+    {
+      "id": "disc-identity",
+      "title": "§II: Lemniscate = Unit Disc",
+      "startLine": 72,
+      "endLine": 87,
+      "summary": "The central identity: for n > 0 the pure-power lemniscate equals the open unit disc B(c,1) exactly; the degree-0 case is empty, pinning the positivity hypothesis.",
+      "mathContext": "$\\{z : |(z-c)^n|<1\\} = \\{z : |z-c|<1\\} = B(c,1)$, since $|z-c|^n < 1 \\iff |z-c| < 1$."
+    },
+    {
+      "id": "exact-area",
+      "title": "§III: Exact Area π and Attainment",
+      "startLine": 89,
+      "endLine": 106,
+      "summary": "Area of the pure-power lemniscate is exactly π for every positive degree (Complex.volume_ball), so the value π is attained as a lemniscate area at every degree: μ({c}) ≤ π.",
+      "mathContext": "$|\\{|(z-c)^n|<1\\}| = |B(c,1)| = \\pi$ for all $n \\geq 1$."
+    },
+    {
+      "id": "nonsharp",
+      "title": "§IV: Non-Sharpness of degree·π and Capstone",
+      "startLine": 108,
+      "endLine": 137,
+      "summary": "For every n ≥ 2 the pure-power area π is strictly below the parent's unconditional bound degree·π, so that bound is sharp only at degree one; the capstone packages the disc identity, exact area, and strict gap.",
+      "mathContext": "$\\pi < n\\pi$ for $n \\geq 2$, hence $|\\{|f|<1\\}| < \\deg(f)\\cdot\\pi$ strictly."
+    }
+  ],
+  "conclusion": {
+    "summary": "For the pure power f(z) = (z - c)^n the lemniscate {z : |f(z)| < 1} is exactly the open unit disc B(c,1), with area exactly π at every positive degree. This realises the value π as a lemniscate area at every degree (so μ({c}) ≤ π, sharp from above) and shows the parent's unconditional bound area ≤ degree·π is strict for all n ≥ 2 — attained only at degree one. Axiom-free, self-contained, 0 sorries.",
+    "openQuestions": [
+      "Can Pólya's matching lower bound area{|f| ≤ 1} ≥ π be formalized so that the single-point identity μ({c}) = π becomes fully verified rather than only bounded above?",
+      "For two or more distinct prescribed roots, what is the exact minimal lemniscate area, and does it interpolate between the single-point value π and the metric envelope degree·π?"
+    ],
+    "implications": "Calibrates the parent's elementary area bounds against an exact extremal family: the pure power shows the lemniscate area can stay fixed at π across all degrees, so the degree·π bound is far from sharp, while exhibiting the precise upper value of the single-point area infimum that Erdős #1040 studies."
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1040-oq-03",
+      "relationship": "parent-problem",
+      "description": "Elementary area bounds area ≤ degree·π and area ≤ 4π for polynomial lemniscates — the upper bounds this entry shows are non-sharp"
+    },
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related-problem",
+      "description": "Erdős Problem #1040: transfinite diameter and the area infimum μ(F) of polynomial lemniscates"
+    },
+    {
+      "targetId": "erdos-1042-oq-03",
+      "relationship": "related-problem",
+      "description": "Polynomial lemniscates are confined to unit balls about their roots — the confinement mechanism behind the parent's area bounds"
+    }
+  ],
+  "references": [
+    {
+      "author": "Pólya, G.",
+      "title": "Beitrag zur Verallgemeinerung des Verzerrungssatzes auf mehrfach zusammenhängende Gebiete",
+      "year": 1928,
+      "note": "Sharp inequality: the area of {z : |f(z)| ≤ 1} for monic degree-n f is at most π — the matching lower bound for the single-point identity μ({c}) = π"
+    },
+    {
+      "author": "Erdős, P., Herzog, F. and Piranian, G.",
+      "title": "Metric properties of polynomials",
+      "year": 1958,
+      "note": "Foundational study of lemniscate geometry"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "Erdos1040OQ03OQ01",
+    "lineCount": 137,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1040OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

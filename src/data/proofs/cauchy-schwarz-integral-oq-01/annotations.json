@@ -42,7 +42,11 @@
       "NNReal",
       "nlinarith"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "AM-GM Inequality",
+      "Nonnegative Reals",
+      "Completing The Square"
+    ]
   },
   {
     "id": "ann-holder-lintegral",
@@ -62,7 +66,11 @@
       "lintegral",
       "conjugate exponents"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hölder's Inequality",
+      "Conjugate Exponents",
+      "Lower Lebesgue Integral"
+    ]
   },
   {
     "id": "ann-holder-conj-2-2",
@@ -81,7 +89,11 @@
       "conjExponent",
       "conjugate exponents"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Conjugate Exponents",
+      "Hölder Conjugate Pair",
+      "Real Conjugate Exponent"
+    ]
   },
   {
     "id": "ann-cauchy-schwarz-from-holder",
@@ -101,7 +113,11 @@
       "L2 norm",
       "symmetric conjugate pair"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cauchy-Schwarz Inequality",
+      "Hölder's Inequality",
+      "L2 Norm"
+    ]
   },
   {
     "id": "ann-holder-real",
@@ -121,7 +137,11 @@
       "nnnorm_mul",
       "NormedField"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nonnegative Norm",
+      "Multiplicative Norm",
+      "Normed Field"
+    ]
   },
   {
     "id": "ann-minkowski",
@@ -141,6 +161,10 @@
       "NormedAddCommGroup",
       "triangle inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Minkowski's Inequality",
+      "Triangle Inequality",
+      "Normed Vector Space"
+    ]
   }
 ]

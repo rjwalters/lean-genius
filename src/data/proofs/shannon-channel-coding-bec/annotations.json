@@ -16,7 +16,11 @@
       "erasure channel",
       "packet loss"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability distributions",
+      "discrete memoryless channels",
+      "conditional probability"
+    ]
   },
   {
     "id": "ann-bec-marginals",
@@ -35,7 +39,11 @@
       "joint distribution",
       "erasure channel"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "marginal distributions",
+      "joint distributions",
+      "summation over finite types"
+    ]
   },
   {
     "id": "ann-bec-erasure-identity",
@@ -74,7 +82,11 @@
       "mutual information",
       "chain rule"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mutual information",
+      "Shannon entropy",
+      "chain rule of entropy"
+    ]
   },
   {
     "id": "ann-bec-converse",
@@ -92,7 +104,11 @@
       "entropy bound",
       "channel converse"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mutual information",
+      "maximum-entropy bound (H ≤ log|X|)",
+      "logarithms"
+    ]
   },
   {
     "id": "ann-bec-capacity",
@@ -131,7 +147,11 @@
       "channel capacity",
       "bits vs nats"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "channel capacity",
+      "units of information (bits vs nats)",
+      "logarithms"
+    ]
   },
   {
     "id": "ann-bec-corollaries",
@@ -150,6 +170,10 @@
       "noiseless limit",
       "capacity bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real inequalities",
+      "positivity of logarithms",
+      "channel capacity"
+    ]
   }
 ]

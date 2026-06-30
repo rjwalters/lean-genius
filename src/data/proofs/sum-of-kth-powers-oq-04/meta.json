@@ -114,6 +114,16 @@
       "targetId": "sum-of-kth-powers",
       "relationship": "extends",
       "description": "Extends the power sum formulas with asymptotic analysis"
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-01",
+      "relationship": "related",
+      "description": "Shares the Bernoulli infrastructure: OQ-01 derives the exact Faulhaber closed form for ∑_{i<n} i^k from Bernoulli numbers, whose leading term n^{k+1}/(k+1) is precisely the 1/(k+1) limit this entry extracts asymptotically. The exact polynomial of OQ-01 and the asymptotic ratio here describe the same sum at different resolutions."
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-02",
+      "relationship": "related",
+      "description": "The Euler–Maclaurin machinery underlying this entry is the classical bridge from power sums to the Riemann zeta function; OQ-02 pushes the parent's power sums to non-integer exponents and analytic continuation, the regime where these same asymptotics govern the partial sums of ζ."
     }
   ],
   "conclusion": {

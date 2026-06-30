@@ -17,7 +17,11 @@
       "behrend-sets",
       "disproved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sequences of integers and their multiples",
+      "natural density of a set",
+      "Behrend's work on sets of multiples"
+    ]
   },
   {
     "id": "ann-e26-imports",
@@ -35,7 +39,11 @@
       "mathlib",
       "imports"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib number-theory imports",
+      "Lean namespaces",
+      "density infrastructure"
+    ]
   },
   {
     "id": "ann-e26-density-defs",
@@ -54,7 +62,11 @@
       "limits",
       "liminf"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural (asymptotic) density",
+      "limits, liminf and limsup",
+      "counting in intervals [1,n]"
+    ]
   },
   {
     "id": "ann-e26-isthick",
@@ -73,7 +85,11 @@
       "summability",
       "primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sequences of integers",
+      "summability of reciprocals \u03a31/a\u1d62",
+      "the primes as a reference sequence"
+    ]
   },
   {
     "id": "ann-e26-multiplesof",
@@ -91,7 +107,11 @@
       "multiples",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility",
+      "the set of multiples of a sequence",
+      "union of arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e26-isbehrend",
@@ -110,7 +130,11 @@
       "density",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density and logarithmic density",
+      "sets of multiples",
+      "Behrend (full coverage) vs weakly Behrend"
+    ]
   },
   {
     "id": "ann-e26-thick-props",
@@ -129,7 +153,11 @@
       "convergence",
       "geometric-series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "thick sequences",
+      "convergence of series",
+      "geometric-series comparison"
+    ]
   },
   {
     "id": "ann-e26-davenport-erdos",
@@ -147,7 +175,11 @@
       "davenport-erdos",
       "behrend-implies-thick"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Behrend and thick sequences",
+      "the Davenport\u2013Erd\u0151s theorem",
+      "Behrend \u21d2 thick"
+    ]
   },
   {
     "id": "ann-e26-conjecture",
@@ -166,7 +198,11 @@
       "shift",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "thick and Behrend sequences",
+      "shifts of a set of multiples",
+      "the Erd\u0151s coverage conjecture"
+    ]
   },
   {
     "id": "ann-e26-ruzsa",
@@ -185,7 +221,11 @@
       "chinese-remainder-theorem",
       "primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Chinese Remainder Theorem",
+      "sequences built from primes",
+      "Ruzsa's counterexample"
+    ]
   },
   {
     "id": "ann-e26-van-doorn",
@@ -204,7 +244,11 @@
       "thick-sequences",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "thick sequences",
+      "constructing a counterexample",
+      "Van Doorn's disproof"
+    ]
   },
   {
     "id": "ann-e26-disproof",
@@ -223,7 +267,11 @@
       "contradiction",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by contradiction",
+      "the counterexample sequences",
+      "disproving the conjecture"
+    ]
   },
   {
     "id": "ann-e26-tenenbaum",
@@ -242,7 +290,11 @@
       "tenenbaum",
       "weak-behrend"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "weakly Behrend sets",
+      "weakened forms of the conjecture",
+      "Tenenbaum's open variant"
+    ]
   },
   {
     "id": "ann-e26-supporting",
@@ -260,7 +312,11 @@
       "auxiliary",
       "edge-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "density and summability lemmas",
+      "edge cases",
+      "auxiliary results"
+    ]
   },
   {
     "id": "ann-e26-summary",
@@ -279,6 +335,10 @@
       "references",
       "open-questions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "thick sequences and Behrend sets",
+      "the disproof and its references",
+      "remaining open questions"
+    ]
   }
 ]

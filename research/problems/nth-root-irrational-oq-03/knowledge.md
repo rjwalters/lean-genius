@@ -230,87 +230,36 @@ See `sessions/2026-06-05-s8-act-lindemann-theorem-axiom-discharge-via-hermite-li
 
 ---
 
-## Session 2026-06-15 (Session 12) — S12 ACT — CF-independent reduction for `μ(e) ≤ 2`
+## Session 2026-06-15 (Session 13b, researcher-3) — Mathlib CF API audit + axiom factoring
 
-**Mode**: REVISIT (RICH, 25 items; dual blackout: Docker `docker info` hangs, Aristotle `prove` → 404 "Resource not found" — both verified live this session)
-**Outcome**: progress (architecture) — isolated the analytic heart of the sole open axiom; no axiom-count reduction yet (build-pending, unregistered)
-
-### What I Did
-- Re-confirmed the sole open item is `axiom e_not_liouvilleWith_gt_two (p) (hp : p > 2) : ¬LiouvilleWith p (exp 1)` (ETranscendentalOQ03.lean:247), 0 sorries elsewhere.
-- Web scout: no new Mathlib4 CF-of-e or irrationality-measure infrastructure (confirms S5d/S6); regular continued fraction of `e` still absent.
-- **Key observation**: the monolithic axiom bundles two independent ingredients — (1) `LiouvilleWith` filter/Diophantine bookkeeping (general, not e-specific) and (2) the deep CF-of-e bad-approximability bound. Every prior session treated it as one indivisible CF axiom.
-- Wrote `proofs/Proofs/ETranscendentalOQ03Reduction.lean` (UNREGISTERED, build-pending) discharging ingredient (1) once and for all:
-  - `not_liouvilleWith_of_diophantine_bound (x p) (hp : 2 < p) (c) (hc : 0 < c) (hlb : ∀ n≥1 ∀ m, c/n^((p+2)/2) ≤ |x − m/n|) : ¬ LiouvilleWith p x`
-  - `e_not_liouvilleWith_gt_two_of_bound` — the e-specialization, the precise remaining obligation.
-- Proof engine: write `a := (p+2)/2`, `d := (p−2)/2`; then `a+d=p`, `d>0`, `2<a<p`. From `LiouvilleWith` extract `C` and `∃ᶠ n, |e−m/n| < C/n^p`; since `c·n^d → ∞` (`Real.tendsto_rpow_atTop`), eventually `C ≤ c·n^d`; `Frequently.and_eventually` + `.exists` picks one such `n`; chaining `c/n^a ≤ |e−m/n| < C/n^p`, splitting `n^p=n^a·n^d` and cancelling `n^a` gives `c·n^d < C`, contradiction.
-- Verified non-vacuity numerically: `min_{n≤4000,m} |e−m/n|·n^2.5 = 0.282 > 0` (Python, exact-`round`), so the reduced hypothesis is genuinely satisfiable for e at p=3.
-
-### Key Findings
-- The reduction converts the open axiom from an analysis-AND-number-theory statement into a **pure Diophantine lower bound** — the future Docker/CF session needs zero `LiouvilleWith` manipulation.
-- Lemma names cross-checked against building sibling files (no Docker): `div_lt_div_iff_of_pos_right` (4.26 rename of `div_lt_div_right`, used identically in LiouvilleTheoremOQ04.lean:1123), `(Real.tendsto_rpow_atTop _).comp tendsto_natCast_atTop_atTop` (Erdos1155OQ02.lean:138), `lt_div_iff₀`, `Tendsto.const_mul_atTop`, `Frequently.and_eventually`, `Tendsto.eventually_ge_atTop`.
-- Per Axiom Integrity Policy: this does NOT reduce the assumption count (the CF bound remains axiomatic when wired in). It is a proof-architecture refactor that makes the remaining obligation self-contained.
-
-### Files Modified
-- `proofs/Proofs/ETranscendentalOQ03Reduction.lean` (NEW, unregistered, build-pending)
-- `research/problems/nth-root-irrational-oq-03/knowledge.md` (this entry)
-- `src/data/research/problems/nth-root-irrational-oq-03.json` (S12 knowledge updates, iteration bump)
-
-### Next Steps
-- When a build host returns: compile `ETranscendentalOQ03Reduction.lean`; repair any rpow-rewrite step if needed (the `hCsplit`/cancel chain is the only moderate-risk part).
-- Then the e-axiom discharge reduces to proving the single Diophantine bound `∃ c>0, ∀ n≥1 ∀ m, c/n^((p+2)/2) ≤ |e−m/n|` — i.e. begin S5d.A (Euler CF expansion of e, `[2;1,2k,1]`), still the dominant 280–480 LOC cost.
-- Marquee `axiom hermite_lindemann` remains gated on Mathlib PR #28013 (passive watch, grace ~2026-06-26).
-
-## Session 2026-06-15 (Session 14, researcher-1) — S14 VERIFY — authoritative lemma audit of the merged reduction file
-
-**Mode**: REVISIT (RICH, 25 items; dual blackout: `docker info` times out → DOCKER_DOWN;
-Aristotle MCP `prove` returns `{"status":"error","message":"Resource not found."}` 404 —
-both verified live this session). **Outcome**: verification/de-risk, no proof advance
-(the sole open item is genuinely build- and infrastructure-gated).
+**Mode**: REVISIT (RICH; dual blackout — `docker info` times out >15s, Aristotle `prove` returns 404 "Resource not found", both re-tested live this session)
+**Outcome**: progress (structural) — factored the sole open axiom into 3 named targets; corrected the LOC/feasibility estimate
 
 ### What I did
-- Confirmed state: `ETranscendentalOQ03.lean` still has the **single** open axiom
-  `e_not_liouvilleWith_gt_two` (line 247), 0 sorries. S12's `ETranscendentalOQ03Reduction.lean`
-  is now **merged to `origin/main`** (PR #24390) but, like all Lean here, is build-pending
-  (the deployer compiles only the website, not Lean).
-- **Authoritative audit:** re-verified every non-trivial lemma in `ETranscendentalOQ03Reduction.lean`
-  against the current real Mathlib checkout (`~/GitHub/mathlib4`) — not just sibling *proof* files
-  as S12 did. **12/12 signatures confirmed to match the usage exactly:**
-  - `LiouvilleWith p x := ∃ C, ∃ᶠ n in atTop, ∃ m:ℤ, x ≠ m/n ∧ |x − m/n| < C/n^p`
-    (LiouvilleWith.lean:51) — the `rintro ⟨C, hC⟩` + `obtain ⟨n, ⟨m, _hne, happrox⟩, hn1, hCle⟩`
-    destructuring is correct (`Frequently.and_eventually` then `.exists`).
-  - `div_lt_div_iff_of_pos_right (hc:0<c) : a/c < b/c ↔ a < b` (GroupWithZero/Unbundled/Basic:1116) ✓
-  - `lt_div_iff₀ (hc:0<c) : a < b/c ↔ a*c < b` (GroupWithZero/Unbundled/Basic:1106) ✓
-    — `.mp hkey` yields `c * n^d < C` as needed.
-  - `Tendsto.const_mul_atTop (hr:0<r) (hf) : Tendsto (fun x => r*f x) l atTop`
-    (AtTopBot/Field:72) — the **unprimed** field version, distinct from `const_mul_atTop'` ✓
-  - `Real.tendsto_rpow_atTop (hy:0<y)` (Pow/Asymptotics:36), `tendsto_natCast_atTop_atTop`
-    (Archimedean:39), `Tendsto.eventually_ge_atTop` (Tendsto:40), `Frequently.and_eventually`
-    (Filter/Basic:781), `Real.rpow_add (hx:0<x)` (Pow/Real:201), `Real.rpow_pos_of_pos`,
-    `div_div`, `eventually_ge_atTop` — all present, signatures match.
-- Confirmed (again, authoritative) Mathlib still has **no** irrationality-measure /
-  CF-of-`e` infrastructure: no `irrationalityMeasure`, no `LiouvilleWith` fact for `exp`/`e`.
-  `DiophantineApproximation/ContinuedFractions.lean` is generic CF theory only.
+- **Enumerated Mathlib v4.26.0's continued-fraction API** against the `e_not_liouvilleWith_gt_two` discharge (the CF route every prior session deferred). Sibling checkout at `/Users/rwalters/GitHub/mathlib4` (v4.26.0, matches the project pin).
+- Created **`proofs/Proofs/ETranscendentalOQ03CF.lean`** (UNREGISTERED, build-pending): factors the monolithic axiom `μ(e) ≤ 2` into three named sub-targets (G1/G2/G3) + an assembly theorem `e_not_liouvilleWith_gt_two'` showing the factoring is logically complete. Statements pin exact Mathlib identifiers; bodies are `sorry` (NOT machine-checked — blackout).
 
-### Key finding
-The merged reduction (`not_liouvilleWith_of_diophantine_bound` /
-`e_not_liouvilleWith_gt_two_of_bound`) is **build-safe to a high confidence**: every lemma it
-names exists in current Mathlib with the exact signature used. The only residual risks are minor
-elaboration details (the `(Real.tendsto_rpow_atTop _).comp tendsto_natCast_atTop_atTop` defeq to
-`fun n => (↑n)^d`, and the `set/rw` in `hadp`), both standard idioms used elsewhere in the repo.
-When a build host returns, this file should compile essentially as-is.
+### Key findings (corrects prior "absent, 280–480 LOC" estimate)
+Mathlib v4.26.0 **HAS** substantial CF infrastructure under `Mathlib/Algebra/ContinuedFractions/`:
+- `GenContFract.abs_sub_convs_le` (Approximations.lean:393): convergent error **upper** bound `|v − pₙ/qₙ| ≤ 1/(qₙ qₙ₊₁)`.
+- `GenContFract.sub_convs_eq` (:328): the **exact** error `v − convs n = (−1)ⁿ/(B·(fr⁻¹·B + pB))`.
+- `succ_nth_stream_b_le_nth_stream_fr_inv` (:111), `of_den_mono` (:299), `succ_nth_fib_le_of_nth_den` (:249), full continuant recurrence.
 
-### Status: effectively BLOCKED (3+ sessions at the same wall)
-The sole open axiom now reduces (via the merged, audited reduction) to **one** pure Diophantine
-lower bound: `∃ c>0, ∀ n≥1 ∀ m, c/n^s ≤ |e − m/n|` for each `s>2` (i.e. `μ(e) ≤ 2`). This
-genuinely requires Euler's regular CF `e = [2;1,2,1,1,4,…]` (the simple series/factorial route was
-ruled out in S13/#24371), which is **absent from Mathlib** and scoped 280–480 LOC — and is
-**Docker-gated** to develop. No build-free forward proof step remains. S11, S12, S14 all confirm this.
+Mathlib **LACKS** (grepped the whole CF tree): any best-approximation theorem (`best_approx*` — none), any convergent-error **lower** bound, and the **CF of e** (no mention of `exp`).
 
-### Files Modified
+**The three remaining gaps, re-scoped:**
+- **G2 (convergent error LOWER bound)** — *CHEAP, newly identified as derivable.* From `sub_convs_eq`: taking abs, `|v−convs n| = 1/(B·(fr⁻¹·B + pB))`; since `b_{n+1} ≤ fr⁻¹ < b_{n+1}+1`, the denominator lies in `(qₙ qₙ₊₁, qₙ(qₙ₊₁+qₙ))`, giving the two-sided bound `1/(qₙ(qₙ₊₁+qₙ)) ≤ |v−pₙ/qₙ| ≤ 1/(qₙ qₙ₊₁)`. Prior notes treated the lower bound as a missing/hard piece; it is ~40–60 LOC off existing Mathlib. Stated as `convs_sub_lower_bound`.
+- **G3 (best-approximation reduction)** — MEDIUM, ~100–200 LOC, absent. Convergents are best approximations ⟹ arbitrary `m/n` is no better ⟹ `|x−m/n| ≥ c/n^{2+ε}`. Stated as `not_liouvilleWith_of_partDen_subexp`.
+- **G1 (CF of e itself)** — **THE TRUE BOTTLENECK.** Euler's `e=[2;1,2,1,1,4,…]`, ~hundreds of LOC, absent. Stated as `exp_one_partDen_linear`.
+
+**Strategic recommendation:** the **Hermite–Padé integral route** (`∫₀¹ xⁿ(1−x)ⁿeˣ dx / n!`) constructs the good approximations *and their lower bounds directly*, sidestepping BOTH G1 (never names the CF) and G3 (gets the all-`m/n` bound from the integral size). It is the recommended path if formalizing Euler's CF-of-e (G1) proves too costly. Either way, the series route remains ruled out (S13).
+
+### Files modified
+- `proofs/Proofs/ETranscendentalOQ03CF.lean` (NEW, unregistered, build-pending; 4 sorries)
 - `research/problems/nth-root-irrational-oq-03/knowledge.md` (this entry)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (insights + progressSummary)
 
-### Next Steps (unchanged, gated)
-- When a build host returns: compile `ETranscendentalOQ03Reduction.lean` (now high-confidence
-  per this audit), then begin S5d.A (Euler CF of `e`) — the dominant remaining cost.
-- Marquee `axiom hermite_lindemann` (HermiteLindemann.lean) remains gated on Mathlib PR #28013
-  (passive watch, grace ~2026-06-26).
+### Next steps
+1. When Docker returns: build `ETranscendentalOQ03CF.lean`; discharge **G2** first (cheapest, off `sub_convs_eq`) to validate the API hooks.
+2. Decide G1-CF vs Hermite–Padé for the analytic core; the Padé route avoids the two largest gaps.
+3. PR #28013 (marquee `hermite_lindemann`, separate axiom) watch unchanged — orthogonal to this axiom.

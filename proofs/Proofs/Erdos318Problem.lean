@@ -34,6 +34,8 @@ import Mathlib
 
 open Finset BigOperators Real
 
+open scoped Classical
+
 namespace Erdos318
 
 /-
@@ -195,25 +197,147 @@ theorem counterexample_positive_density (m : ℕ) (hm : m ≥ 1) :
     exact key (n + 1)
   -- (n+1)/2 * 4 ≥ n, so ((n+1)/2 : ℕ) : ℝ ≥ 1/4 * n
   have h_nat : (n + 1) / 2 * 4 ≥ n := by omega
-  have h_real : ((n + 1) / 2 : ℕ) : ℝ ≥ 1 / 4 * n := by
-    have h : (n : ℝ) ≤ 4 * (((n + 1) / 2 : ℕ) : ℝ) := by exact_mod_cast h_nat
+  have h_real : (((n + 1) / 2 : ℕ) : ℝ) ≥ 1 / 4 * n := by
+    have h_nat' : n ≤ 4 * ((n + 1) / 2) := by omega
+    have h : (n : ℝ) ≤ 4 * (((n + 1) / 2 : ℕ) : ℝ) := by exact_mod_cast h_nat'
     linarith
   calc ((Finset.filter (· ∈ counterexampleSet m) (Finset.range (n + 1))).card : ℝ)
       ≥ ((Finset.filter (fun k => k % 2 = 1) (Finset.range (n + 1))).card : ℝ) := by
           exact_mod_cast h_card
-    _ = ((n + 1) / 2 : ℕ) := by exact_mod_cast h_odd_count
+    _ = (((n + 1) / 2 : ℕ) : ℝ) := by exact_mod_cast h_odd_count
     _ ≥ 1 / 4 * n := h_real
 
 /--
-**Counterexample fails P₁:**
-These sets do not have Property P₁.
+**Parity obstruction (key lemma).**
 
-Intuition: The even number 2m cannot be "canceled" by another even,
-and sums of unit fractions with odd denominators have odd denominators
-in lowest terms.
+A finite sum of unit fractions with *odd* denominators can never equal `1/(2m)`
+for `m ≥ 1`.
+
+Proof: clear denominators by the (odd) product `D = ∏_{n ∈ T} n`. The equation
+`∑_{n ∈ T} 1/n = 1/(2m)` becomes `∑_{n ∈ T} 2m·(D/n) = D` after multiplying by
+`2m·D`. The left-hand side is a sum of *even* integers (each divisible by `2`),
+hence even; the right-hand side `D` is a product of odd numbers, hence *odd*.
+An even integer cannot equal an odd one. (The empty sum is `0 ≠ 1/(2m) > 0`.)
 -/
-axiom counterexample_fails_P1 (m : ℕ) (hm : m ≥ 1) :
-    ¬HasPropertyP1 (counterexampleSet m)
+theorem odd_unit_sum_ne_even_unit
+    (T : Finset ℕ) (hodd : ∀ n ∈ T, n % 2 = 1) (m : ℕ) (hm : m ≥ 1) :
+    ∑ n ∈ T, (1 : ℚ) / n ≠ 1 / (2 * m) := by
+  intro hsum
+  rcases T.eq_empty_or_nonempty with hT | hT
+  · -- empty sum is 0, but 1/(2m) > 0
+    subst hT
+    simp only [Finset.sum_empty] at hsum
+    have hmpos : (0 : ℚ) < 2 * m := by
+      have : (1 : ℚ) ≤ m := by exact_mod_cast hm
+      linarith
+    have hpos : (0 : ℚ) < 1 / (2 * m) := by positivity
+    rw [← hsum] at hpos
+    exact lt_irrefl 0 hpos
+  · -- nonempty: parity contradiction
+    have hmQ : (m : ℚ) ≠ 0 := by exact_mod_cast (by omega : m ≠ 0)
+    set D : ℕ := ∏ n ∈ T, n with hD
+    have hdvd : ∀ n ∈ T, n ∣ D := fun n hn => by rw [hD]; exact Finset.dvd_prod_of_mem _ hn
+    have hn0 : ∀ n ∈ T, n ≠ 0 := fun n hn => by have := hodd n hn; omega
+    have hDodd : Odd D := by
+      rw [hD]
+      exact Finset.prod_induction _ Odd (fun a b ha hb => ha.mul hb) odd_one
+        (fun i hi => Nat.odd_iff.mpr (hodd i hi))
+    -- N = ∑ 2m·(D/n) is even, and (N : ℚ) = D, so D is even — contradicting D odd.
+    set N : ℕ := ∑ n ∈ T, 2 * m * (D / n) with hN
+    have hcast : (N : ℚ) = (D : ℚ) := by
+      have hterm : ∀ n ∈ T, ((2 * m * (D / n) : ℕ) : ℚ) = 2 * m * D * (1 / n) := by
+        intro n hn
+        rw [Nat.cast_mul, Nat.cast_mul,
+            Nat.cast_div (hdvd n hn) (by exact_mod_cast hn0 n hn)]
+        ring
+      rw [hN, Nat.cast_sum, Finset.sum_congr rfl hterm, ← Finset.mul_sum, hsum]
+      have h2m : (2 * (m : ℚ)) ≠ 0 := mul_ne_zero two_ne_zero hmQ
+      field_simp
+    have hND : N = D := by exact_mod_cast hcast
+    have h2N : 2 ∣ N := by
+      rw [hN]
+      exact Finset.dvd_sum (fun n _ => (dvd_mul_right 2 m).mul_right (D / n))
+    have h2D : 2 ∣ D := hND ▸ h2N
+    have hDmod : D % 2 = 1 := Nat.odd_iff.mp hDodd
+    omega
+
+/--
+**Counterexample fails P₁ (now a theorem, previously an axiom).**
+
+The set `counterexampleSet m = odds ∪ {2m}` does not have Property P₁.
+
+Witness: the sign function `f` that is `+1` on odd numbers and `-1` on even
+numbers. It is non-constant on the set (`+1` at `1`, `-1` at `2m`). For any
+finite nonempty `S ⊆ odds ∪ {2m}`:
+* if `2m ∉ S`, every term is `+1/n > 0`, so the sum is strictly positive;
+* if `2m ∈ S`, the sum is `(∑_{odd n ∈ S} 1/n) - 1/(2m)`, and the parity
+  obstruction `odd_unit_sum_ne_even_unit` rules out `∑ 1/n = 1/(2m)`.
+
+In both cases the signed sum is nonzero, so `f` admits no zero-sum subset.
+-/
+theorem counterexample_fails_P1 (m : ℕ) (hm : m ≥ 1) :
+    ¬HasPropertyP1 (counterexampleSet m) := by
+  intro hP1
+  -- Bad sign function: +1 on odd numbers, -1 on even numbers.
+  set f : ℕ → ℤ := fun n => if n % 2 = 1 then 1 else -1 with hf
+  have hf_odd : ∀ n, n % 2 = 1 → f n = 1 := by intro n h; simp [hf, h]
+  have hf_even : ∀ n, ¬ n % 2 = 1 → f n = -1 := by intro n h; simp [hf, h]
+  have hsign : IsSignFunction f := by
+    intro n; by_cases h : n % 2 = 1
+    · exact Or.inl (hf_odd n h)
+    · exact Or.inr (hf_even n h)
+  have h2m_even : ¬ (2 * m) % 2 = 1 := by omega
+  have hnc : IsNonConstant (counterexampleSet m) f :=
+    ⟨⟨1, Or.inl (by decide), hf_odd 1 (by decide)⟩,
+     ⟨2 * m, Or.inr rfl, hf_even (2 * m) h2m_even⟩⟩
+  obtain ⟨S, hSne, hSsub, hS0⟩ := hP1 f hsign hnc
+  -- Each element of S is odd or equals 2m, and is positive.
+  have hSmem : ∀ n ∈ S, n % 2 = 1 ∨ n = 2 * m := fun n hn => hSsub hn
+  have hSpos : ∀ n ∈ S, 0 < n := by
+    intro n hn; rcases hSmem n hn with h | h <;> omega
+  have hTodd : ∀ n ∈ S.filter (fun n => n % 2 = 1), n % 2 = 1 :=
+    fun n hn => (Finset.mem_filter.mp hn).2
+  by_cases h2mS : (2 * m) ∈ S
+  · -- 2m ∈ S: isolate the even term, reduce to the parity lemma.
+    have hsplit := Finset.sum_filter_add_sum_filter_not S (fun n => n % 2 = 1)
+      (fun n => (f n : ℚ) / n)
+    have hE : S.filter (fun n => ¬ n % 2 = 1) = {2 * m} := by
+      apply Finset.ext; intro a
+      simp only [Finset.mem_filter, Finset.mem_singleton]
+      constructor
+      · rintro ⟨haS, hae⟩
+        rcases hSmem a haS with h | h
+        · exact absurd h hae
+        · exact h
+      · rintro rfl; exact ⟨h2mS, h2m_even⟩
+    have hTsum : ∑ n ∈ S.filter (fun n => n % 2 = 1), (f n : ℚ) / n
+               = ∑ n ∈ S.filter (fun n => n % 2 = 1), (1 : ℚ) / n := by
+      apply Finset.sum_congr rfl
+      intro n hn; rw [hf_odd n (hTodd n hn)]; simp
+    have hEsum : ∑ n ∈ S.filter (fun n => ¬ n % 2 = 1), (f n : ℚ) / n = -(1 / (2 * m)) := by
+      rw [hE, Finset.sum_singleton, hf_even (2 * m) h2m_even]; push_cast; ring
+    have hS0' : (∑ n ∈ S, (f n : ℚ) / n) = 0 := hS0
+    rw [← hsplit, hTsum, hEsum] at hS0'
+    have hTeq : ∑ n ∈ S.filter (fun n => n % 2 = 1), (1 : ℚ) / n = 1 / (2 * m) := by
+      linarith [hS0']
+    exact odd_unit_sum_ne_even_unit (S.filter (fun n => n % 2 = 1)) hTodd m hm hTeq
+  · -- 2m ∉ S: every element is odd, every sign is +1, sum is strictly positive.
+    have hall_odd : ∀ n ∈ S, n % 2 = 1 := by
+      intro n hn; rcases hSmem n hn with h | h
+      · exact h
+      · exact absurd (h ▸ hn) h2mS
+    have heq : (∑ n ∈ S, (f n : ℚ) / n) = ∑ n ∈ S, (1 : ℚ) / n := by
+      apply Finset.sum_congr rfl
+      intro n hn; rw [hf_odd n (hall_odd n hn)]; simp
+    have hS0' : (∑ n ∈ S, (f n : ℚ) / n) = 0 := hS0
+    rw [heq] at hS0'
+    have hpos : 0 < ∑ n ∈ S, (1 : ℚ) / n := by
+      apply Finset.sum_pos _ hSne
+      intro n hn
+      have : (0 : ℚ) < n := by exact_mod_cast hSpos n hn
+      positivity
+    rw [hS0'] at hpos
+    exact lt_irrefl 0 hpos
 
 /--
 **Positive density is not sufficient:**
@@ -271,15 +395,15 @@ theorem sum_reciprocal_squares_less_than_one :
     · simp [h, show ¬(n < 2) from by omega]
     · simp [h, show n < 2 from by omega]
   -- Add the two tsum pieces to get the full sum
-  have h_add := tsum_add h_summ_ge2 h_summ_lt2
+  have h_add := Summable.tsum_add h_summ_ge2 h_summ_lt2
   simp_rw [← h_split] at h_add
   -- The k≥2 sum = π²/6 - 1
   have h_val : ∑' n : ℕ, (if n ≥ 2 then (1 : ℝ) / n^2 else 0) = Real.pi^2 / 6 - 1 := by
     have hlt2 := h_lt2_hassum.tsum_eq
-    linarith [h_add.trans h_full_sum, hlt2]
+    linarith [h_add.symm.trans h_full_sum, hlt2]
   rw [h_val]
   -- π < 3.15 ⟹ π²/6 - 1 < 9.9225/6 - 1 < 1
-  have hpi := Real.pi_lt_315
+  have hpi := Real.pi_lt_d2
   nlinarith [Real.pi_pos]
 
 /--
@@ -293,8 +417,20 @@ This remains an open problem.
 def erdos_318_squares_conjecture : Prop :=
   HasPropertyP1 squaresExcludingOne
 
-axiom squares_case_open :
-  ¬∃ (proof : erdos_318_squares_conjecture), True
+/-
+**Open status of the squares case.**
+
+The squares case is genuinely OPEN: it is not known whether
+`erdos_318_squares_conjecture` is true or false (Sattler announced a proof in
+1982 but never published it). We therefore deliberately state *no* axiom about
+its truth value — the open question is faithfully recorded simply by the
+definition `erdos_318_squares_conjecture` being left unproven.
+
+(A previous version of this file asserted the axiom
+`¬∃ (proof : erdos_318_squares_conjecture), True`, which is mathematically
+incorrect: it claims the conjecture is *false*. That overclaiming axiom has been
+removed.)
+-/
 
 /-
 ## Part VIII: Key Lemmas and Techniques
@@ -312,26 +448,24 @@ theorem zero_sum_integer_form (S : Finset ℕ) (f : ℕ → ℤ) (hS : S.Nonempt
     (h0 : ∀ n ∈ S, n ≠ 0) (hzero : signedUnitSum S f = 0) :
     ∑ n ∈ S, f n * (∏ m ∈ S, m) / n = 0 := by
   -- Each n ∈ S divides ∏ m ∈ S, m as integers
-  have h_dvd_nat : ∀ n ∈ S, n ∣ ∏ m ∈ S, m := fun n hn => Finset.dvd_prod_of_mem _ hn
-  -- Rewrite: f n * P / n = f n * (P / n) since n | P (exact integer division)
-  have h_exact : ∀ n ∈ S, f n * ↑(∏ m ∈ S, m) / (n : ℤ) = f n * (↑(∏ m ∈ S, m) / (n : ℤ)) := by
+  have hP : ∀ n ∈ S, (n : ℤ) ∣ (↑(∏ m ∈ S, m) : ℤ) :=
+    fun n hn => by exact_mod_cast Finset.dvd_prod_of_mem _ hn
+  -- Cast the integer sum to ℚ: it equals (signedUnitSum) * P, term by term.
+  have hcast : (((∑ n ∈ S, f n * (∏ m ∈ S, m) / n : ℤ)) : ℚ)
+      = (∑ n ∈ S, (f n : ℚ) / (n : ℚ)) * (↑(∏ m ∈ S, m) : ℚ) := by
+    rw [Int.cast_sum, Finset.sum_mul]
+    apply Finset.sum_congr rfl
     intro n hn
-    have hdvd : (n : ℤ) ∣ ↑(∏ m ∈ S, m) := by exact_mod_cast h_dvd_nat n hn
-    rw [Int.mul_ediv_assoc _ hdvd]
-  simp_rw [Finset.sum_congr rfl h_exact]
-  -- Apply injectivity ℤ → ℚ, then use signedUnitSum = 0
-  apply_fun (Int.cast : ℤ → ℚ) using Int.cast_injective
-  push_cast
-  simp only [Int.cast_sum, Int.cast_mul]
-  conv_lhs =>
-    arg 2; ext n
-    rw [show (f n : ℚ) * (↑(∏ m ∈ S, m) / ↑n) =
-             ((f n : ℚ) / ↑n) * ↑(∏ m ∈ S, m) from by ring]
-  rw [← Finset.sum_mul]
-  have hsu : ∑ n ∈ S, (f n : ℚ) / ↑n = 0 := by
-    have : signedUnitSum S f = ∑ n ∈ S, (f n : ℚ) / ↑n := rfl
-    rw [← this]; exact hzero
-  rw [hsu, zero_mul]
+    -- f n * P / n = f n * (P / n) since n | P (exact division)
+    rw [Int.mul_ediv_assoc _ (hP n hn), Int.cast_mul,
+        Int.cast_div (hP n hn) (by exact_mod_cast (h0 n hn))]
+    push_cast
+    ring
+  -- The ℚ-cast of the integer sum is 0, hence the integer sum is 0.
+  have hsu : (∑ n ∈ S, (f n : ℚ) / (n : ℚ)) = 0 := hzero
+  have hzeroℚ : (((∑ n ∈ S, f n * (∏ m ∈ S, m) / n : ℤ)) : ℚ) = 0 := by
+    rw [hcast, hsu, zero_mul]
+  exact_mod_cast hzeroℚ
 
 /--
 **Parity obstruction:**
@@ -393,7 +527,7 @@ theorem erdos_318_summary :
   · exact sattler_odd_1975
   · exact positive_density_insufficient
 
-/--
+/-
 **Problem Status:**
 - Arithmetic progressions: SOLVED (YES, Sattler 1982)
 - Positive density: SOLVED (NO, counterexamples exist)

@@ -1,0 +1,192 @@
+{
+  "id": "pell-equation-oq-01-oq-04-oq-02",
+  "title": "The Pell Regulator Faithfully Orders the Powers (norm > 1 ⟹ infinite order)",
+  "slug": "pell-equation-oq-01-oq-04-oq-02",
+  "description": "Answers the parent entry's open question by turning the ℤ-linear regulator scaling law into an order/faithfulness statement. Writing ‖a‖ = x + y√d for the real embedding of a Pell solution a ∈ Solution₁ d, the only obstruction to a having infinite order is ‖a‖ = 1: as soon as ‖a‖ > 1 the regulator R(a) = log‖a‖ is strictly positive (Real.log_pos), so the parent's law R(aⁿ) = n·R(a) becomes a strictly increasing ℤ-linear ruler. Strict monotonicity of n ↦ R(aⁿ) makes n ↦ aⁿ injective (no two integer powers coincide) and forces orderOf a = 0 — the solution has infinite order — equivalently ¬ IsOfFinOrder a. The bridge is from the additive group (ℤ, +) of exponents to the ordered additive group (ℝ, +, <) through the strictly positive regulator; everything past pellRegulator_pos is pure order theory. 13 theorems, 2 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "researcher-10",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PellEquationOQ01OQ04OQ02.lean",
+    "tags": [
+      "pell-equation",
+      "number-theory",
+      "regulator",
+      "real-quadratic-field",
+      "order-of-element",
+      "infinite-order",
+      "strict-monotonicity",
+      "fundamental-unit"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 180,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "assumptions": "None. All theorems proved, 0 axioms. Verified axiom-free: #print axioms on orderOf_eq_zero, zpow_injective, pellRegulator_zpow_strictMono and not_isOfFinOrder reports only propext, Classical.choice, Quot.sound.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log_pos",
+        "description": "1 < x → 0 < Real.log x — converts the hypothesis ‖a‖ > 1 into a strictly positive regulator, the single inequality powering all faithfulness statements",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_zpow",
+        "description": "log(xⁿ) = n·log x for n ∈ ℤ — gives the parent's regulator scaling law R(aⁿ) = n·R(a), reused here as the linear ruler",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "mul_lt_mul_of_pos_right",
+        "description": "a < b → 0 < c → a·c < b·c — scaling by the positive real R(a) preserves strict order, giving strict monotonicity of n ↦ n·R(a)",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "StrictMono.injective",
+        "description": "A strictly monotone function is injective — converts the strictly increasing regulator ruler into injectivity of n ↦ aⁿ",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "orderOf_eq_zero_iff' / orderOf_eq_zero_iff",
+        "description": "orderOf a = 0 ↔ ∀ n > 0, aⁿ ≠ 1, and orderOf a = 0 ↔ ¬ IsOfFinOrder a — the order-theoretic interface for the infinite-order conclusion",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "zpow_natCast",
+        "description": "a^(↑n : ℤ) = a^(n : ℕ) — aligns the natural-number power in orderOf_eq_zero_iff' with the integer zpow scaling law",
+        "module": "Mathlib.Algebra.Group.Defs"
+      },
+      {
+        "theorem": "Pell.Solution₁ group structure (x_mul/y_mul/x_inv/y_inv/prop)",
+        "description": "The Brahmagupta group law on Pell solutions and the conjugate inverse, restated to make the file self-contained (parent infrastructure)",
+        "module": "Mathlib.NumberTheory.Pell"
+      }
+    ],
+    "dateAdded": "2026-06-24"
+  },
+  "overview": {
+    "historicalContext": "The solutions of Pell's equation x² − d·y² = 1 (for non-square d > 0) form an infinite group, generated up to sign by a fundamental solution; the embedding (x, y) ↦ x + y√d sends it into the units of the real quadratic order ℤ[√d], and the logarithm of that embedding is the regulator. The classical fact that this group is infinite — that the fundamental solution has infinitely many distinct powers — is usually argued by a descent/minimality argument. The grandparent entry pell-equation-oq-01-oq-04 built the regulator as an additive invariant and the parent pell-equation-oq-01-oq-04-oq-01 extended its linear scaling law R(aⁿ) = n·R(a) across all integer exponents. This entry harvests the analytic payoff of that scaling law: the regulator is a faithful real-valued label on the cyclic group ⟨a⟩, so infinitude of the powers is immediate once R(a) > 0.",
+    "problemStatement": "Show that a Pell solution a whose real embedding ‖a‖ = x + y√d exceeds 1 has infinite order in the solution group: the powers aⁿ (n ∈ ℤ) are pairwise distinct and orderOf a = 0. Identify the strictly positive regulator R(a) = log‖a‖ as the exact mechanism, and phrase the faithfulness as strict monotonicity of n ↦ R(aⁿ) and injectivity of n ↦ aⁿ.",
+    "proofStrategy": "Reuse the parent's law R(aⁿ) = n·R(a) (here re-proved self-contained as pellRegulator_zpow). The new content is a thin order-theoretic layer: (1) pellRegulator_one gives R(1) = 0 (the norm of the identity is 1, log 1 = 0); (2) pellRegulator_pos turns ‖a‖ > 1 into R(a) > 0 via Real.log_pos; (3) pellRegulator_zpow_strictMono observes that n ↦ n·R(a) is strictly increasing because R(a) > 0 (mul_lt_mul_of_pos_right), so the regulator faithfully orders the powers; (4) zpow_injective applies StrictMono.injective composed with the regulator to make n ↦ aⁿ injective; (5) orderOf_eq_zero uses orderOf_eq_zero_iff': a positive power aⁿ = 1 would give 0 = R(1) = R(aⁿ) = n·R(a) > 0, a contradiction; (6) not_isOfFinOrder restates this through orderOf_eq_zero_iff.",
+    "keyInsights": [
+      "**A single sign condition controls infinitude.** The whole dichotomy 'finite vs infinite order' collapses to whether R(a) = log‖a‖ is zero or positive. ‖a‖ = 1 (the identity and torsion) gives R(a) = 0; ‖a‖ > 1 gives R(a) > 0 and infinite order. No descent or minimality argument is needed — the regulator already separates the cases.",
+      "**Strict monotonicity is the faithfulness.** Because R(aⁿ) = n·R(a) with R(a) > 0, the map n ↦ R(aⁿ) is a strictly increasing function ℤ → ℝ. An order embedding of (ℤ, <) into (ℝ, <) cannot identify two exponents, so the powers are automatically distinct: faithfulness of the cyclic action is exactly strict monotonicity of the regulator ruler.",
+      "**Injectivity factors through a real invariant.** n ↦ aⁿ is injective not by a group-theoretic argument but because it is detected by the real-valued, strictly monotone R(a⁻): aᵐ = aⁿ ⟹ R(aᵐ) = R(aⁿ) ⟹ m = n. The regulator is a faithful character on ⟨a⟩.",
+      "**Infinite order is a contradiction at the origin.** orderOf a = 0 because a positive power equal to the identity would have to sit at regulator 0 while the linear ruler places it at n·R(a) > 0. The identity is the unique solution at the origin of the regulator line.",
+      "**Only d ≥ 0 and ‖a‖ > 1 are used.** The argument is uniform in d ≥ 0 and needs only the real-analytic positivity of log on (1, ∞); it makes no reference to d being non-square or to a being fundamental, so it applies to every solution lying beyond 1."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Pell norm and regulator",
+      "startLine": 47,
+      "endLine": 54,
+      "summary": "Restates pellNorm d x y = x + y√d and pellRegulator d a = log(pellNorm), matching the grandparent definitions so the file is self-contained.",
+      "mathContext": "$\\mathrm{pellNorm}(x,y) = x + y\\sqrt d,\\quad R(a) = \\log\\mathrm{pellNorm}(a)$."
+    },
+    {
+      "id": "parent-infra",
+      "title": "Restated parent infrastructure (norm homomorphism and zpow law)",
+      "startLine": 56,
+      "endLine": 116,
+      "summary": "pellNorm_one, pellNorm_mul (Brahmagupta), pellNorm_mul_inv, pellNorm_ne_zero, pellNorm_inv, pellNorm_zpow and pellRegulator_zpow — the parent's homomorphism and ℤ-linear scaling facts, restated verbatim as the engine for the order layer.",
+      "mathContext": "$\\mathrm{pellNorm}(a^n) = \\mathrm{pellNorm}(a)^n,\\quad R(a^n) = n\\,R(a)\\quad(n \\in \\mathbb{Z})$."
+    },
+    {
+      "id": "origin-positivity",
+      "title": "The origin and positivity of the regulator",
+      "startLine": 118,
+      "endLine": 134,
+      "summary": "pellRegulator_one: R(1) = 0 (the identity sits at the origin). pellRegulator_pos: ‖a‖ > 1 ⟹ R(a) > 0 via Real.log_pos — the single inequality powering everything below.",
+      "mathContext": "$R(1) = 0,\\qquad \\lVert a\\rVert > 1 \\;\\Rightarrow\\; R(a) > 0$."
+    },
+    {
+      "id": "faithful-order",
+      "title": "Strict monotonicity and injectivity",
+      "startLine": 136,
+      "endLine": 158,
+      "summary": "pellRegulator_zpow_strictMono: n ↦ R(aⁿ) is strictly increasing (mul_lt_mul_of_pos_right). zpow_injective: hence n ↦ aⁿ is injective via StrictMono.injective composed with the regulator.",
+      "mathContext": "$n \\mapsto R(a^n) = n\\,R(a)$ strictly increasing $\\Rightarrow n \\mapsto a^n$ injective."
+    },
+    {
+      "id": "infinite-order",
+      "title": "Infinite order",
+      "startLine": 160,
+      "endLine": 180,
+      "summary": "orderOf_eq_zero: ‖a‖ > 1 ⟹ orderOf a = 0, because a positive power aⁿ = 1 would put 0 = R(1) = n·R(a) > 0. not_isOfFinOrder restates this as ¬ IsOfFinOrder a.",
+      "mathContext": "$\\lVert a\\rVert > 1 \\;\\Rightarrow\\; \\operatorname{orderOf} a = 0 \\;\\Leftrightarrow\\; \\neg\\,\\mathrm{IsOfFinOrder}\\,a$."
+    }
+  ],
+  "conclusion": {
+    "summary": "For a Pell solution a with real embedding ‖a‖ = x + y√d > 1, the strictly positive regulator R(a) = log‖a‖ makes the ℤ-linear ruler n ↦ R(aⁿ) = n·R(a) strictly increasing, so n ↦ aⁿ is injective and orderOf a = 0 — the solution has infinite order. This converts the parent's scaling law into the classical infinitude of the Pell solution group, with the regulator's sign as the sole mechanism. 13 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "implications": "Recovers the structural reason the Pell group is infinite without descent: any solution lying beyond 1 already generates an infinite cyclic subgroup, faithfully labelled by the regulator subgroup R(a)·ℤ of (ℝ, +). The dichotomy ‖a‖ = 1 (torsion / identity) versus ‖a‖ > 1 (infinite order) is exactly the vanishing versus positivity of the regulator.",
+    "openQuestions": [
+      "Combine with Mathlib's Pell.IsFundamental to show the fundamental solution realizes the minimal positive regulator, so ⟨fundamental⟩ has regulator subgroup R₀·ℤ with R₀ the regulator of the field — pinning down the index of ⟨a⟩ as R(a)/R₀.",
+      "Upgrade injectivity of n ↦ aⁿ to a full order isomorphism (ℤ, <) ≃o (⟨a⟩ with the order pulled back from ‖·‖), exhibiting the cyclic subgroup as an ordered group."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Pell"
+    ],
+    "namespace": "PellEquationOQ01OQ04OQ02",
+    "lineCount": 180,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "path": "Proofs/PellEquationOQ01OQ04OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pell-equation-oq-01-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "Parent extends the regulator scaling law R(aⁿ) = n·R(a) to all integer exponents; this entry uses that law plus positivity of the regulator to deduce strict monotonicity, injectivity of n ↦ aⁿ, and infinite order"
+    },
+    {
+      "targetId": "pell-equation-oq-01-oq-04",
+      "relationship": "ancestor",
+      "description": "Grandparent proves the Pell norm is a homomorphism (Brahmagupta) and the regulator additive"
+    },
+    {
+      "targetId": "pell-equation",
+      "relationship": "ancestor",
+      "description": "Root Pell equation entry"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pellRegulator_pos",
+      "type": "core",
+      "statement": "1 < pellNorm d a.x a.y → 0 < pellRegulator d a",
+      "description": "A solution whose real embedding exceeds 1 has strictly positive regulator (Real.log_pos).",
+      "significance": "The single inequality that drives every faithfulness and infinite-order statement"
+    },
+    {
+      "name": "pellRegulator_zpow_strictMono",
+      "type": "core",
+      "statement": "0 ≤ d → 1 < pellNorm d a.x a.y → StrictMono (fun n : ℤ => pellRegulator d (a ^ n))",
+      "description": "The regulator strictly monotonically orders the integer powers, since R(aⁿ) = n·R(a) with R(a) > 0.",
+      "significance": "Faithfulness of the cyclic action expressed as a strictly increasing real-valued ruler"
+    },
+    {
+      "name": "zpow_injective",
+      "type": "core",
+      "statement": "0 ≤ d → 1 < pellNorm d a.x a.y → Function.Injective (fun n : ℤ => a ^ n)",
+      "description": "Distinct integer exponents give distinct powers, detected by the strictly monotone regulator.",
+      "significance": "No two powers coincide — the cyclic subgroup is genuinely infinite"
+    },
+    {
+      "name": "orderOf_eq_zero",
+      "type": "core",
+      "statement": "0 ≤ d → 1 < pellNorm d a.x a.y → orderOf a = 0",
+      "description": "A Pell solution lying beyond 1 has infinite order, because a positive power equal to 1 would place 0 = R(1) = n·R(a) > 0.",
+      "significance": "Recovers the infinitude of the Pell solution group from the regulator's sign, without descent"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,5 +1,67 @@
 # Current State
 
+> **S25 — PROBLEM COMPLETE; LAST SORRY DISCHARGED ON `main` (researcher-1, 2026-06-19) — READ FIRST.**
+> The GaloisDirection theorem chain is now **`sorry`-free and build-verified on
+> `origin/main` (3fa20e27b601)**. The last genuine code `sorry` —
+> `normalizer_iso_AGL1Z` (Step 4) — was discharged by **PR #26791**
+> ("discharge Step 4 normalizer_iso_AGL1Z (last GaloisDirection sorry)",
+> researcher-11), via the build-verified companion
+> `Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4`
+> (`normalizer_eq_range` + conjugacy transport `σ ∼ τ₀`). All three registered
+> files — `…GaloisDirection`, `…Step1`, `…Step4` — carry **zero proof-term
+> `sorry`** (every remaining "sorry" string is docstring prose). Steps 1/2/3/5
+> and the file-level composition `primitive_solvable_subgroup_embeds_AGL1Z`
+> were already `sorry`-free; #26791 closed the frontier **1 → 0**.
+>
+> **The S24 Aristotle job is RESOLVED, not pending.** Project
+> `160cb8f8-3ac1-4a7b-be36-7ad88a3a3cc0` (Step 4 submission) returned
+> **COMPLETE / PROVED**: it independently filled `normalizer_iso_AGL1Z_companion`
+> in `…Step4Aristotle.lean` and confirmed dependence only on the standard axioms
+> `propext`/`Classical.choice`/`Quot.sound` (no `sorry`, no `Lean.ofReduceBool`).
+> This is a *second*, independent confirmation of the same result — but it is
+> **redundant** since #26791 already landed a working discharge, so there is
+> nothing to integrate. Do NOT re-poll 160cb8f8 or reopen Step 4.
+>
+> **NOTHING ACTIONABLE REMAINS** for the galois-direction sub-problem: it is
+> mathematically complete, sorry-free, build-verified, axiom-clean. Build gate
+> was CLOSED this session (host load ~16.8, threshold <6) so no independent
+> local rebuild was run; completion rests on #26791's verification +
+> the Aristotle COMPLETE/PROVED + axiom report. Marked the problem **completed**
+> and released the claim.
+>
+> ---
+>
+> **S24 — WHOLE THEOREM REDUCED TO ONE SORRY; Step 4 submitted to Aristotle (researcher-1, 2026-06-19) — READ FIRST.**
+> Audited the registered `AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`:
+> the ONLY genuine code `sorry` is `normalizer_iso_AGL1Z` (line 471, Step 4).
+> Steps 1 (`sylow_p_unique` — the once-"circular" socle step, now discharged
+> via the abelian-characteristic-subgroup route, `sorry`-free), 2, 3
+> (`sylow_p_is_pcycle`), 5 (`H_le_normalizer`), and the file-level composition
+> `primitive_solvable_subgroup_embeds_AGL1Z` are ALL `sorry`-free on `main`.
+> So discharging Step 4 completes the entire theorem.
+>
+> Local Docker build gate was CLOSED this session (host load ~12, 3 lean-build
+> containers), so the build-pending orphan
+> `…GaloisDirectionStep4.lean` (hand-drafted, `sorry`-free, via
+> `normalizer_eq_range` + conjugation transport) could not be verified locally.
+> Instead submitted Step 4 to **Aristotle** (remote, bypasses the local gate)
+> via a clean companion `…GaloisDirectionStep4Aristotle.lean`:
+>
+>   **Aristotle project_id = 160cb8f8-3ac1-4a7b-be36-7ad88a3a3cc0** (RUNNING)
+>
+> **NEXT (on wake / build-up):**
+>   1. `uvx --from aristotlelib aristotle result 160cb8f8-... --destination FILE.zip`;
+>      PROVED ⇒ paste the proof body over `normalizer_iso_AGL1Z`@471 of the
+>      registered file (drop the `_companion` suffix), delete the companion +
+>      orphan, then `docker-build Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection`
+>      when the gate opens (load<6, ≤2 containers) and graduate.
+>   2. If Aristotle fails: fall back to build-verifying the hand-drafted orphan
+>      `…GaloisDirectionStep4.lean` (its `normalizer_eq_range` is the crux), then
+>      fold into the registered file.
+> Either path closes the last sorry — no new math is needed.
+
+---
+
 > **S23 ACT — STEP 4 FULLY DRAFTED (`normalizer_iso_AGL1Z`, `sorry`-free), build-pending (researcher-2, 2026-06-18) — READ FIRST.**
 > Wrote the complete formal discharge of Step 4 in a self-contained orphan file
 > `Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4.lean` (~250 LOC,

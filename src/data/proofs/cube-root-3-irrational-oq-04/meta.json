@@ -1,8 +1,8 @@
 {
   "id": "cube-root-3-irrational-oq-04",
-  "title": "Continued Fraction Prefix of ∛3: First Twelve Partial Quotients",
+  "title": "Continued Fraction Prefix of ∛3: First Fourteen Partial Quotients",
   "slug": "cube-root-3-irrational-oq-04",
-  "description": "Computes and machine-verifies the first twelve partial quotients of the simple continued fraction of ∛3, confirming the prefix [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5] of OEIS A002945. Each partial quotient aₙ = ⌊xₙ⌋ is pinned by a two-sided rational sandwich obtained from successive convergents; the irrational xₙ is compared to its rational bounds by cubing both sides and substituting (∛3)³ = 3, reducing every step to linear arithmetic. Because ∛3 has degree 3 over ℚ, Lagrange's theorem forbids the continued fraction from being eventually periodic, so no closed form exists and a finite formalization can only certify a fixed-length prefix one quotient at a time.",
+  "description": "Computes and machine-verifies the first fourteen partial quotients of the simple continued fraction of ∛3, confirming the prefix [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3] of OEIS A002945. Each partial quotient aₙ = ⌊xₙ⌋ is pinned by a two-sided rational sandwich obtained from successive convergents; the irrational xₙ is compared to its rational bounds by cubing both sides and substituting (∛3)³ = 3, reducing every step to linear arithmetic. Because ∛3 has degree 3 over ℚ, Lagrange's theorem forbids the continued fraction from being eventually periodic, so no closed form exists and a finite formalization can only certify a fixed-length prefix one quotient at a time.",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "date": "2026-05-13",
@@ -31,13 +31,15 @@
       "Verification that the prefix matches OEIS A002945 through a₁₁, with the cubing gap shrinking to ≈10⁻⁵ at the sixth and seventh convergents",
       "CubeRoot3IrrationalOQ04Stream.lean: a bridge connecting the ad-hoc nested-floor lemmas cbrt3_a0…cbrt3_a11 to Mathlib's canonical continued-fraction machinery, proving (IntFractPair.stream cbrt3 n).map IntFractPair.b = some aₙ for every n = 0…11 via a reusable one-reciprocation step lemma cbrt3_stream_succ. This is concrete progress on open question #1 (relate the certified prefix to the canonical CF API).",
       "CubeRoot3IrrationalOQ04NotQuadratic.lean: a machine-verified proof that ∛3 is NOT a quadratic irrational — the structural reason Lagrange's theorem forbids its continued fraction from being eventually periodic. The core lemma cubic_lin_indep_of_irrational shows that for any irrational t with t³ = 3, the family {1, t, t²} is linearly independent over ℚ (a·t² + b·t + c = 0 forces a = b = c = 0), via a finite elimination (multiply by t, reduce t³ = 3, eliminate t²) using only linear_combination, plus a positive quadratic-factor identity to rule out a rational cube root — NO minpoly / NumberField / irreducibility machinery. Instantiated at cbrt3 as cbrt3_not_quadratic, with the contrapositive packaging cbrt3_no_nontrivial_quadratic_relation. This formalizes the Lagrange obstruction that the main file's prefix grind works around. 0 axioms, 0 sorries.",
-      "CubeRoot3IrrationalOQ04StreamCanonical.lean: completes open question #1 in its strongest form by lifting the certified prefix from the lower-level IntFractPair.stream to Mathlib's top-level canonical object GenContFract.of cbrt3. Using the translation lemmas of_h_eq_floor and get?_of_eq_some_of_succ_get?_intFractPair_stream, it proves (of cbrt3).h = 1 (a₀) and (of cbrt3).s.get? k = some ⟨1, a_{k+1}⟩ for k = 0…10, so the prefix [1; 2,3,1,4,1,5,1,1,6,2,5] reads directly off the canonical continued-fraction structure (all partial numerators 1). Each of the 13 theorems is a mechanical clone of the build-verified cbrt3_stream_b_* lemmas. 0 axioms, 0 sorries."
+      "CubeRoot3IrrationalOQ04StreamCanonical.lean: completes open question #1 in its strongest form by lifting the certified prefix from the lower-level IntFractPair.stream to Mathlib's top-level canonical object GenContFract.of cbrt3. Using the translation lemmas of_h_eq_floor and get?_of_eq_some_of_succ_get?_intFractPair_stream, it proves (of cbrt3).h = 1 (a₀) and (of cbrt3).s.get? k = some ⟨1, a_{k+1}⟩ for k = 0…10, so the prefix [1; 2,3,1,4,1,5,1,1,6,2,5] reads directly off the canonical continued-fraction structure (all partial numerators 1). Each of the 13 theorems is a mechanical clone of the build-verified cbrt3_stream_b_* lemmas. 0 axioms, 0 sorries.",
+      "CubeRoot3IrrationalOQ04A12.lean: extends the certified prefix by two further partial quotients, cbrt3_a12 = 8 and cbrt3_a13 = 3, giving the full prefix [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3] of OEIS A002945 through a₁₃. Each new quotient starts from the tighter pair of consecutive CF convergents bracketing ∛3 (597449/414248 < ∛3 < 1865358/1293367 for a₁₂; 6193523/4294349 < ∛3 < 1865358/1293367 for a₁₃, all proved axiom-free in the helpers file) and propagates the rational interval through the CF maps x ↦ 1/(x − aᵢ): x₁₂ ∈ (3/25, 1/8) ⟹ 1/x₁₂ ∈ (8, 25/3) ⊂ (8, 9) ⟹ ⌊1/x₁₂⌋ = 8, and x₁₃ ∈ (3/10, 1/3) ⟹ 1/x₁₃ ∈ (3, 10/3) ⊂ (3, 4) ⟹ ⌊1/x₁₃⌋ = 3. Every step discharges by linarith using the same cubing-sandwich template as cbrt3_a11 — no new tactic or API surface. 0 axioms, 0 sorries."
     ],
     "additionalFiles": [
       "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
       "Proofs/CubeRoot3IrrationalOQ04Stream.lean",
       "Proofs/CubeRoot3IrrationalOQ04NotQuadratic.lean",
-      "Proofs/CubeRoot3IrrationalOQ04StreamCanonical.lean"
+      "Proofs/CubeRoot3IrrationalOQ04StreamCanonical.lean",
+      "Proofs/CubeRoot3IrrationalOQ04A12.lean"
     ]
   },
   "overview": {
@@ -147,7 +149,8 @@
       "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
       "Proofs/CubeRoot3IrrationalOQ04Stream.lean",
       "Proofs/CubeRoot3IrrationalOQ04NotQuadratic.lean",
-      "Proofs/CubeRoot3IrrationalOQ04StreamCanonical.lean"
+      "Proofs/CubeRoot3IrrationalOQ04StreamCanonical.lean",
+      "Proofs/CubeRoot3IrrationalOQ04A12.lean"
     ]
   },
   "references": [

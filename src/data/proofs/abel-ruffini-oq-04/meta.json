@@ -107,7 +107,7 @@
     {
       "targetId": "angle-trisection-oq-02",
       "relationship": "related",
-      "description": "Formalizes the constructibility criterion via Galois 2-groups, illustrating the strict containment constructible ⊊ solvable by radicals: every 2-group is solvable (composition factors ℤ/2ℤ are abelian), so constructibility is a stronger condition than radical solvability, with A₅'s non-solvability marking the threshold where the broader class fails"
+      "description": "Formalizes the constructibility criterion via Galois 2-groups, illustrating the strict containment constructible ⊊ solvable by radicals: every …"
     },
     {
       "targetId": "inverse-galois-oq-01",
@@ -117,62 +117,47 @@
     {
       "targetId": "abel-ruffini-oq-04-oq-02",
       "relationship": "extended-by",
-      "description": "Completes the solvable side of the classification: explicitly proves $S_2, S_3, S_4$ solvable via derived series ($\\{e\\} \\triangleleft S_2$, $\\{e\\} \\triangleleft A_3 \\triangleleft S_3$, $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$) and the bidirectional theorem $S_n$ solvable $\\iff n \\leq 4$"
+      "description": "Completes the solvable side of the classification: explicitly proves $S_2, S_3, S_4$ solvable via derived series ($\\{e\\} \\triangleleft S_2$, $\\{e\\} …"
     },
     {
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "extended-by",
-      "description": "Formalizes the Galois bridge (Step 4 of the proof chain): a polynomial is solvable by radicals iff its Galois group is solvable. Forward direction proved via Mathlib; reverse direction axiomatized pending Kummer theory"
+      "description": "Formalizes the Galois bridge (Step 4 of the proof chain): a polynomial is solvable by radicals iff its Galois group is solvable."
     },
     {
       "targetId": "abel-ruffini-galois-extensions",
       "relationship": "related",
-      "description": "Sister file providing the complete solvability classification of symmetric groups ($S_0$–$S_4$ solvable, $S_n$ solvable $\\iff n \\leq 4$), plus non-commutativity witnesses for $S_3, S_4, S_5, A_4, A_5$ and group order verifications"
+      "description": "Sister file providing the complete solvability classification of symmetric groups ($S_0$–$S_4$ solvable, $S_n$ solvable $\\iff n \\leq 4$), plus …"
     },
     {
       "targetId": "abel-ruffini-galois-extensions-oq-04",
       "relationship": "complementary",
-      "description": "Instantiates Mathlib's `JordanHolderLattice` typeclass for `Subgroup G`, proving the Jordan-Hölder uniqueness theorem for groups: any two composition series of a finite group have the same multiset of composition factors. Applied to $S_5$, this certifies that the composition series $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ analyzed in this entry is the *unique* one — Jordan-Hölder guarantees no alternative decomposition can avoid the non-abelian $A_5$ factor. This uniqueness is what makes the degree-5 impossibility absolute: the non-solvability of the derived series (Step 2 in this entry's proof chain) is not an artifact of one particular analysis but a structural necessity enforced by Jordan-Hölder. Together, this entry exposes *why* the derived series fails for $S_5$; the Jordan-Hölder entry proves the uniqueness that makes that failure irrefutable."
+      "description": "Instantiates Mathlib's `JordanHolderLattice` typeclass for `Subgroup G`, proving the Jordan-Hölder uniqueness theorem for groups: any two composition …"
     },
     {
       "targetId": "abel-ruffini-oq-04-oq-07",
       "relationship": "extended-by",
-      "description": "Formalizes the Bring-Jerrard reduction (Tschirnhaus substitution eliminating the $x^4$ term) and the Bring radical $\\text{BR}(t)$ — the unique real root of $x^5 + x + t = 0$, proved via IVT and strict monotonicity. Addresses the open question (listed below) about formalizing 'beyond-radicals' solutions: while Abel-Ruffini rules out the four basic radical operations, $\\text{BR}(t)$ provides a closed-form expression using a transcendental function that is not a radical"
+      "description": "Formalizes the Bring-Jerrard reduction (Tschirnhaus substitution eliminating the $x^4$ term) and the Bring radical $\\text{BR}(t)$ — the unique real …"
     },
     {
       "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
       "relationship": "extended-by",
-      "description": "Proves the alternating-group analogue: $A_n$ is solvable $\\iff n \\leq 4$. Together with `abel-ruffini-oq-04-oq-02` (the symmetric-group classification), this gives the complete bidirectional solvability classification for both families with the same threshold at $n = 5$. The symmetric-group threshold ($S_n$ solvable $\\iff n \\leq 4$) is driven precisely by $A_5$ being the smallest non-abelian simple group — the fact this entry's `a5_is_simple` extracts from Mathlib"
+      "description": "Proves the alternating-group analogue: $A_n$ is solvable $\\iff n \\leq 4$."
     },
     {
       "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
       "relationship": "complementary",
-      "description": "Explains why $|A_5| = 60$ is the precise solvability threshold: every finite group of order $< 60$ is solvable. Formalizes the building blocks (p-group $\\to$ nilpotent $\\to$ solvable for prime powers; Burnside's $p^a q^b$ theorem for two-prime orders; direct arguments for orders 30 and 42). The companion proof that $S_5$ is not solvable matches this entry's `s5_not_solvable`. Together they establish that 60 is the *minimal* order at which non-solvability first appears, sharpening the qualitative 'A₅ is smallest non-abelian simple' statement into a quantitative threshold"
+      "description": "Explains why $|A_5| = 60$ is the precise solvability threshold: every finite group of order $< 60$ is solvable."
     },
     {
       "targetId": "inverse-galois-oq-06",
       "relationship": "complementary",
-      "description": "Provides a concrete witness on the inverse-Galois side: $A_5$ is realizable as $\\text{Gal}(q/\\mathbb{Q})$ for $q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ (irreducible by Eisenstein at $p = 5$, Galois group identified via Sylow theory). This entry shows $A_5$'s simplicity *blocks* radical solvability of the generic quintic; the inverse-Galois entry shows the same group is *attainable* as a Galois group over $\\mathbb{Q}$. The two entries together exhibit $A_5$'s dual role: the first non-abelian simple group is both the obstruction to radical formulas (this entry, Step 3) and a realizable Galois group with an explicit polynomial witness"
+      "description": "Provides a concrete witness on the inverse-Galois side: $A_5$ is realizable as $\\text{Gal}(q/\\mathbb{Q})$ for $q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x …"
     },
     {
       "targetId": "platonic-solids",
       "relationship": "complementary",
-      "description": "Enumeration of the five Platonic solids (Wiedijk #65) — the geometric carrier of the $A_5$ obstruction that drives this entry's proof chain. KeyInsight #8 makes the connection explicit: $A_5$ is isomorphic to the rotation group $I$ of the regular icosahedron (and equivalently its dual the dodecahedron), with $|I| = 60 = |A_5|$ orientation-preserving symmetries. The Platonic-solids classification thus *visually exhibits* this entry's threshold dichotomy: among the five regular convex polyhedra, the tetrahedron has rotation group $A_4$ (solvable), the cube and octahedron share rotation group $S_4$ (solvable), and the icosahedron/dodecahedron pair has rotation group $A_5$ — the unique non-abelian simple group among Platonic-solid symmetries and precisely the obstruction this entry's `symmetric_not_solvable` theorem chains to non-solvability of $S_n$ for $n \\geq 5$. Felix Klein's 1884 *Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade* systematized the algebra-geometry bridge: every quintic with Galois group $A_5$ admits a Tschirnhaus reduction to the *icosahedral form*, with roots expressible as ratios of icosahedral modular functions — the transcendental escape from radicals that this entry's negative result (no radical formula) leaves open. Together: this entry establishes the algebraic chain *$A_5$ simple $\\Rightarrow S_n$ non-solvable*, and `platonic-solids` exhibits the geometric realization of $A_5$ as the icosahedral rotation group, anchoring the abstract obstruction to a visually concrete object (the icosahedron, fifth and most symmetric Platonic solid)."
-    },
-    {
-      "targetId": "abel-ruffini-galois-extensions-oq-05",
-      "relationship": "complementary",
-      "description": "**Shafarevich's theorem (1954) — the positive counterpart to this entry's negative proof chain.** Where this entry traces *$A_5$ simple $\\Rightarrow$ derived series stuck $\\Rightarrow S_n$ ($n \\geq 5$) non-solvable $\\Rightarrow$ no radical formula*, the companion entry axiomatizes Shafarevich's theorem: every finite *solvable* group $G$ is realizable as $\\text{Gal}(L/\\mathbb{Q})$ for some Galois extension $L/\\mathbb{Q}$. The two results pin the complete classification of Galois groups over $\\mathbb{Q}$ on opposite sides of the solvability threshold this entry's Step 2 (`symmetric_not_solvable`) establishes: (a) **solvable side** ($n \\leq 4$): every $S_n$ and $A_n$ is realizable over $\\mathbb{Q}$ (via Shafarevich + Hilbert irreducibility applied to generic polynomials), *and* solvable Galois groups always admit radical formulas (this entry's Step 4 — the Galois bridge); (b) **non-solvable side** ($n \\geq 5$): $S_n$ and $A_n$ are still realizable but only via *ad hoc* constructions (e.g., Eisenstein-based concrete quintics like $x^5 - 4x + 2$ in `abel-ruffini-oq-04-oq-01`), and no radical formula exists. The Shafarevich axiomatization derives 7 corollaries including the observation that $S_5$ is *the first non-realizable-by-Shafarevich case* — exactly because $A_5$, the smallest non-abelian simple group whose simplicity this entry's `a5_is_simple` extracts, is the obstruction Shafarevich's solvable-group hypothesis explicitly excludes. Together: this entry exhibits why radical formulas fail at $n = 5$; the Shafarevich entry shows the corresponding inverse-Galois question is settled for solvable groups but *open beyond* — both sides of the threshold pinned to the same group-theoretic content ($A_5$'s non-solvability). The companion `abel-ruffini-galois-extensions-oq-05-oq-01` provides axiom-free Lean constructions for cyclic groups (Dirichlet + Galois fixed fields) and coprime products (CRT), quantifying the remaining gap to full Shafarevich at $\\sim 500$ lines of linear-disjointness machinery."
-    },
-    {
-      "targetId": "sylow-theorem-oq-04",
-      "relationship": "foundational",
-      "description": "**The Sylow-counting proof of A₅'s simplicity — the explicit machinery behind this entry's `a5_is_simple`.** This entry's Step 1 (`a5_is_simple : IsSimpleGroup (alternatingGroup (Fin 5))`) is a one-line alias for Mathlib's `alternatingGroup.isSimpleGroup_five`, treating the simplicity of $A_5$ as a foundational fact. The companion entry exposes the *structural derivation* of that fact: a complete Sylow-theoretic argument computing the exact Sylow numbers $n_2 = 5, n_3 = 10, n_5 = 6$ for $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ by exhaustive enumeration (each $n_p$ satisfies $n_p \\equiv 1 \\pmod p$ and $n_p \\mid |A_5|/p^{v_p(|A_5|)}$), showing no Sylow subgroup is normal, and verifying the conjugacy-class arithmetic $\\{1, 12, 12, 15, 20\\}$ that prevents any intermediate normal subgroup (no sub-sum starting with 1 — other than $\\{1\\}$ and the full 60 — divides 60). The explicit Lean derivation supplies the *machine-verifiable structural content* behind `a5_is_simple`, converting Step 1 of this entry's proof chain from a Mathlib black box into a transparent Sylow-counting argument. Together with sibling entries `sylow-theorem-oq-02` (the orbit-enumeration formula $n_p = [G : N_G(P)]$ that powers both Sylow II/III applications) and `sylow-theorems-oq-04` (parallel Sylow proof along the alternative gallery line), this trio supplies the complete machine-verified A₅-simplicity package whose conclusion is the keystone Step 1 of this entry's chain and ultimately drives `not_solvable_by_rad_of_not_solvable_gal` via `symmetric_not_solvable`. The Sylow path is the *explicit constructive complement* to this entry's *abstract pedagogical* exposition: where this entry treats $A_5$'s simplicity as a fact and traces its consequences, the Sylow entries unpack *why* $A_5$ is simple at the level of subgroup-counting arithmetic, anchoring the chain in concrete group-theoretic invariants rather than typeclass aliasing."
-    },
-    {
-      "targetId": "hilbert-13",
-      "relationship": "related",
-      "description": "**The function-composition analog of this entry's algebraic threshold — Hilbert's 13th problem and Kolmogorov-Arnold superposition.** Hilbert (1900, *Mathematische Probleme*) conjectured that the roots of the generic degree-7 polynomial $x^7 + ax^3 + bx^2 + cx + 1 = 0$ — the form after Tschirnhaus reduction — cannot be expressed as a superposition of continuous functions of 2 variables. This is the *function-composition* analog of this entry's *radical-composition* impossibility: where this entry asks 'is the root expressible by $\\{+, -, \\times, \\div, \\sqrt[k]{\\,}\\}$?' Hilbert's 13th asks 'is the root expressible by superposition of $C^0$ functions of fewer variables?'. The conjecture was *disproved* by **Kolmogorov-Arnold (1956-57)**: every continuous function of $n$ variables on $[0,1]^n$ admits a representation as a superposition of $2n+1$ continuous functions of *one* variable — the threshold $2n+1$ is sharp (Sternfeld 1985, cross-reference `hilbert-13-oq-04`), structurally parallel to this entry's sharp threshold $n \\leq 4$ vs $n \\geq 5$. **The methodological convergence**: V. I. Arnold is the namesake of *both* the 1963 topological proof of Abel-Ruffini (via monodromy of the discriminant complement — cross-reference `abel-ruffini` keyInsight #15) and the 1957 Kolmogorov-Arnold superposition theorem — the same mathematical instinct (pinning *algebraic* expressibility obstructions to *topological* invariants) drives both results. **The unresolved algebraic Hilbert 13th**: whether the *algebraic* roots of the generic degree-7 polynomial are expressible by *algebraic* functions of fewer variables remains open (the *algebraic Hilbert 13th*, Arnold-Shimura 1976, Khovanskii 2004). Kolmogorov-Arnold positively resolves only the continuous-function class; the radical-tower / Tschirnhaus / Bring-Jerrard machinery (cross-reference `abel-ruffini-oq-04-oq-07` for the Bring radical formalization) shows the generic quintic admits a 1-variable Bring radical representation, but the analogous reductions for degrees 6 and 7 remain open. The structural parallel between Abel-Ruffini (this entry) and Hilbert-13 is thus *complete on the positive side* (radical $\\to$ Bring reduction, continuous $\\to$ Kolmogorov-Arnold superposition) and *partially open on the negative side* (Abel-Ruffini's negative content for $n \\geq 5$ fully proved; Hilbert-13's negative content in the algebraic regime is unresolved)."
+      "description": "Enumeration of the five Platonic solids (Wiedijk #65) — the geometric carrier of the $A_5$ obstruction that drives this entry's proof chain."
     }
   ],
   "overview": {
@@ -189,8 +174,8 @@
       "The proof chain reveals a hierarchy of mathematical eras: Cardano/Ferrari solved cubics/quartics (1540s) by clever substitutions, but Ruffini/Abel (1799-1824) needed permutation group theory, and Galois (1832) needed a wholly new framework — the difficulty of the problem drove fundamental advances in algebra",
       "The formalization exposes a subtle gap between non-existence and non-computability: Abel-Ruffini proves no uniform radical formula exists for generic quintics, but Galois theory provides an effective decision procedure for any specific polynomial — compute its Galois group, check solvability, and if solvable, construct the radical tower. The theorem is an impossibility result about uniform formulas, not about individual decidability, which is always algorithmically tractable via Galois group computation",
       "Klein's 1884 Icosahedron monograph reveals a geometric counterpart: A₅ is isomorphic to the rotation group of the regular icosahedron (60 rotational symmetries matching |A₅| = 60), and the general quintic can be solved by reducing it to the 'icosahedral equation' via Tschirnhaus transformations — a connection between the algebraic impossibility (no radical formula) and the geometry of Platonic solids. This gives a concrete geometric visualization of why degree 5 is special: the icosahedron is the most symmetric Platonic solid with a non-abelian symmetry group, and its 60-element rotation group is exactly A₅",
-      "Hilbert's irreducibility theorem (1892) bridges the gap between the *generic* quintic (over the function field $\\mathbb{Q}(a_1,\\ldots,a_5)$) and *specific* quintics over $\\mathbb{Q}$: if $f(t,x) \\in \\mathbb{Q}(t)[x]$ is irreducible with Galois group $G$, then for *almost all* $t_0 \\in \\mathbb{Q}$ (a thin set in the Hilbertian sense), the specialization $f(t_0,x) \\in \\mathbb{Q}[x]$ remains irreducible with Galois group still equal to $G$. Applied to the generic quintic, this says specific rational specializations almost always preserve Galois group $S_5$, giving a probabilistic 'most quintics are unsolvable' principle. The theorem also justifies why the generic computation suffices to establish unsolvability of *almost every* concrete quintic — Abel-Ruffini is not a statement about the generic case alone, but a near-universal statement about specific quintics, with Hilbert irreducibility providing the formal density argument",
-      "Shafarevich's theorem (1954) provides the inverse direction: every finite *solvable* group occurs as a Galois group over $\\mathbb{Q}$. This makes Abel-Ruffini's threshold sharp from both sides — for $n \\leq 4$, $S_n$ is solvable (this file) and Shafarevich guarantees realizability over $\\mathbb{Q}$ (giving radical formulas); for $n \\geq 5$, $S_n$ contains $A_n$ which is non-solvable, so radical formulas fail. The inverse Galois problem (does every finite group occur as $\\text{Gal}(K/\\mathbb{Q})$ for some Galois extension $K/\\mathbb{Q}$?) remains open for general groups but is settled for solvable groups. The contrast crystallizes: the *constructive* side of the radical-solvable theory (Shafarevich) is complete, while the *destructive* side (Abel-Ruffini) shows where it must end"
+      "Hilbert's irreducibility theorem (1892) bridges the gap between the *generic* quintic (over the function field $\\mathbb{Q}(a_1,\\ldots,a_5)$) and *specific* quintics over $\\mathbb{Q}$: if $f(t,x) \\in \\mathbb{Q}(t)[x]$ is irreducible with Galois group $G$, then for *almost all* $t_0 \\in \\mathbb{Q}$ (a thin set in the Hilbertian sense), the specialization $f(t_0,x) \\in \\mathbb{Q}[x]$ remains irreducible with Galois group still equal to $G$.",
+      "Shafarevich's theorem (1954) provides the inverse direction: every finite *solvable* group occurs as a Galois group over $\\mathbb{Q}$. This makes Abel-Ruffini's threshold sharp from both sides — for $n \\leq 4$, $S_n$ is solvable (this file) and Shafarevich guarantees realizability over $\\mathbb{Q}$ (giving radical formulas); for $n \\geq 5$, $S_n$ contains $A_n$ which is non-solvable, so radical formulas fail."
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -205,61 +190,54 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 31,
-      "summary": "Imports three Mathlib modules (GroupTheory.Solvable, SpecificGroups.Alternating, Tactic) and documents the 4-step proof chain architecture. Part of Wiedijk's 100 Theorems (#16, Insolvability of General Higher Degree Equations). References sibling files AbelRuffini.lean and AbelRuffiniGaloisExtensions.lean.",
-      "mathContext": "Dependencies: `IsSolvable`, `alternatingGroup`, `isSimpleGroup_five`, `Equiv.Perm.not_solvable` from Mathlib's group theory library."
+      "summary": "Imports three Mathlib modules (GroupTheory.Solvable, SpecificGroups.Alternating, Tactic) and documents the 4-step proof chain architecture. Part of Wiedijk's 100 Theorems (#16, Insolvability of General Higher Degree Equations). References sibling files AbelRuffini.lean and AbelRuffiniGaloisExtensions.lean."
     },
     {
       "id": "simple",
       "title": "A₅ Is Simple",
       "startLine": 32,
       "endLine": 40,
-      "summary": "Extracts A₅ simplicity from Mathlib's alternatingGroup.isSimpleGroup_five as a named theorem. A₅ is the smallest non-abelian simple group (order 60, no proper non-trivial normal subgroups).",
-      "mathContext": "$A_5$ is simple: its only normal subgroups are $\\{e\\}$ and $A_5$. $|A_5| = 60 = 5!/2$."
+      "summary": "Extracts A₅ simplicity from Mathlib's alternatingGroup.isSimpleGroup_five as a named theorem. A₅ is the smallest non-abelian simple group (order 60, no proper non-trivial normal subgroups)."
     },
     {
       "id": "not-solvable",
       "title": "Sₙ Not Solvable for n ≥ 5",
       "startLine": 41,
       "endLine": 66,
-      "summary": "Part II: Proves symmetric_not_solvable — Sₙ is not solvable for n ≥ 5. Converts natural number bound to cardinal bound via exact_mod_cast, then applies Mathlib's Equiv.Perm.not_solvable. Instantiates for S₅, S₆, S₇ using le_rfl and omega.",
-      "mathContext": "$\\forall n \\geq 5,\\ \\neg\\text{IsSolvable}(S_n)$. Proof: $5 \\leq |\\text{Fin}\\, n|$ via `exact_mod_cast`, then `Equiv.Perm.not_solvable`."
+      "summary": "Part II: Proves symmetric_not_solvable — Sₙ is not solvable for n ≥ 5. Converts natural number bound to cardinal bound via exact_mod_cast, then applies Mathlib's Equiv.Perm.not_solvable. Instantiates for S₅, S₆, S₇ using le_rfl and omega."
     },
     {
       "id": "small",
       "title": "Small Symmetric Groups Are Solvable",
       "startLine": 67,
       "endLine": 76,
-      "summary": "Shows S₀ and S₁ are solvable via Lean's typeclass inference (inferInstance). These trivial cases contrast with the non-solvable S₅ and above. The full solvable range S₀–S₄ is established by Lean's typeclass system, which finds proofs automatically from Mathlib's library of group-theoretic instances.",
-      "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ are trivially solvable. Full picture: $S_n$ solvable $\\iff n \\leq 4$. Derived series for each: $S_2$: $\\{e\\} \\triangleleft S_2$; $S_3$: $\\{e\\} \\triangleleft A_3 \\triangleleft S_3$; $S_4$: $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$."
+      "summary": "Shows S₀ and S₁ are solvable via Lean's typeclass inference (inferInstance). These trivial cases contrast with the non-solvable S₅ and above. The full solvable range S₀–S₄ is established by Lean's typeclass system, which finds proofs automatically from Mathlib's library of group-theoretic instances."
     },
     {
       "id": "threshold",
       "title": "The Solvability Threshold",
       "startLine": 77,
       "endLine": 87,
-      "summary": "Packages the sharp dichotomy: S₁ solvable ∧ S₅ not solvable. Witnesses the exact transition point at n = 5 where radical solvability breaks. The conjunction of both facts in a single theorem makes the threshold quotable and independently verifiable — a formalization of the historical observation that the quintic is the smallest degree where radical formulas fail.",
-      "mathContext": "$\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$: the transition is sharp at $n = 5$. Equivalently: $S_n$ solvable $\\iff n \\leq 4$, since $A_n$ is simple for $n \\geq 5$ while $A_4 \\supset V_4 \\cong (\\mathbb{Z}/2)^2$ has a proper normal subgroup."
+      "summary": "Packages the sharp dichotomy: S₁ solvable ∧ S₅ not solvable. Witnesses the exact transition point at n = 5 where radical solvability breaks."
     },
     {
       "id": "chain",
       "title": "The Complete Proof Chain (Documentation)",
       "startLine": 88,
       "endLine": 153,
-      "summary": "Comprehensive documentation of the 5-step proof chain (A₅ simple → non-solvable → Sₙ not solvable → Galois bridge → generic quintic). Includes 'Why Exactly 5?' table (derived series for S₁ through S₅) and 'Crucial Asymmetry' table (degree-by-degree radical solvability with historical formula discoverers).",
-      "mathContext": "$A_5$ simple $\\Rightarrow$ $[A_5, A_5] = A_5$ $\\Rightarrow$ $S_n$ not solvable $\\Rightarrow$ $\\text{Gal}(x^5 + \\cdots) \\cong S_5$ not solvable $\\Rightarrow$ no radical formula."
+      "summary": "Comprehensive documentation of the 5-step proof chain (A₅ simple → non-solvable → Sₙ not solvable → Galois bridge → generic quintic). Includes 'Why Exactly 5?' table (derived series for S₁ through S₅) and 'Crucial Asymmetry' table (degree-by-degree radical solvability with historical formula discoverers)."
     },
     {
       "id": "verification",
       "title": "Verification",
       "startLine": 154,
       "endLine": 163,
-      "summary": "Type-checks all four main theorems: a5_is_simple, s5_not_solvable, symmetric_not_solvable, five_is_the_threshold.",
-      "mathContext": "All four theorems verified: `IsSimpleGroup(A_5)`, $\\neg\\text{IsSolvable}(S_5)$, $\\forall n \\geq 5, \\neg\\text{IsSolvable}(S_n)$, threshold witness."
+      "summary": "Type-checks all four main theorems: a5_is_simple, s5_not_solvable, symmetric_not_solvable, five_is_the_threshold."
     }
   ],
   "conclusion": {
     "summary": "Fully verified (0 sorries, 0 axioms) pedagogical exposition in 163 lines with 8 named theorems: 1 substantive bridge (symmetric_not_solvable, converting cardinal to natural number bound), 1 Mathlib alias (a5_is_simple), 3 one-line specializations (s5/s6/s7_not_solvable), 2 typeclass inferences (s0/s1_solvable), and 1 conjunction (five_is_the_threshold). The mathematical depth resides in the structured documentation of the 5-step proof chain rather than in the ~4 lines of original Lean code.",
-    "implications": "**Theoretical Significance**: This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups.\n\nMore broadly, the chain illustrates a general pattern in Galois theory: structural properties of groups (simplicity, solvability) translate into concrete impossibility results about algebraic equations. This paradigm extends to other areas — for example, the impossibility of angle trisection and cube doubling by compass and straightedge follow from analogous Galois-theoretic arguments about field extension degrees. The formalization also connects to modern computational algebra: algorithms for computing Galois groups over ℚ (Stauduhar 1973 — based on transitive subgroup invariants; van der Waerden's resolvent method; modern p-adic methods of Geißler-Klüners 2000s, implemented in Magma and PARI/GP for degrees up to 23 and beyond) can decide radical solvability of any specific polynomial, transforming Abel-Ruffini's negative result into a positive algorithmic criterion via its contrapositive. The Hilbert irreducibility theorem (1892) underwrites a probabilistic strengthening: almost every rational specialization of the generic quintic preserves Galois group $S_5$, so 'most' concrete quintics in $\\mathbb{Q}[x]$ are unsolvable by radicals — Abel-Ruffini extends from a generic statement to a near-universal one. Conversely, Shafarevich's theorem (1954) shows every finite solvable group is realizable as $\\text{Gal}(K/\\mathbb{Q})$, completing the constructive side of the theory: solvable Galois groups always exist as targets, so the radical formulas for $n \\leq 4$ are not accidents but instances of a general realizability result. The same group-theoretic paradigm extends to differential Galois theory (Picard-Vessiot theory): a linear ODE is 'solvable by quadratures' iff its differential Galois group has solvable identity component, with Kovacic's algorithm (1986) making this decidable for second-order equations — a direct analogue of how Galois group computation decides radical solvability for polynomials.",
+    "implications": "**Theoretical Significance**: This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups.",
     "openQuestions": [
       "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴ + ··· + a₅ / ℚ(a₁,...,a₅)) = S₅",
       "Formalized in abel-ruffini-oq-04-oq-02: S₂, S₃, S₄ are now proved solvable with explicit derived series and the full bidirectional theorem $S_n$ solvable $\\iff n \\leq 4$. Remaining: exhibit the same derived series argument using quotient group API (e.g., $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$) for a fully algebraic presentation",
@@ -267,10 +245,10 @@
       "Exhibit specific solvable quintics (e.g., x⁵ - 1 with cyclic Galois group) to illustrate the generic/specific distinction — note that the companion entry abel-ruffini-oq-04-oq-01 already provides a concrete *unsolvable* quintic (x⁵ - 4x + 2 with Gal = S₅), so the solvable counterpart would complete the picture",
       "Formalize the effective decision procedure: given a polynomial f ∈ ℚ[x], compute Gal(f/ℚ) as a transitive subgroup of Sₙ and check its solvability — connecting Abel-Ruffini's impossibility to a constructive algorithm",
       "Formalize the Jordan-Hölder theorem applied to Sₙ: show that the composition factors of S₅ are {ℤ/2ℤ, A₅} and prove that a group is solvable iff all its composition factors are cyclic of prime order — giving an alternative proof path for Abel-Ruffini",
-      "**[Formalized in `abel-ruffini-oq-04-oq-07`]** Every quintic can be transformed to the form x⁵ + px + q by Tschirnhaus transformations (Bring-Jerrard reduction), and while this normal form is not solvable by the four basic radicals (Abel-Ruffini), it IS solvable using the Bring radical BR(a) (the unique real root of x⁵ + x + a) — showing that the impossibility is specifically about the four arithmetic radicals, not about closed-form solutions in general. The gallery entry `abel-ruffini-oq-04-oq-07` formalizes the linear Tschirnhaus substitution as a polynomial identity (proved via `linear_combination`) and proves the Bring radical exists and is strictly anti-monotone via IVT and `Odd.strictMono_pow`. Remaining: the full elliptic modular solution (Hermite 1858, Klein 1884) connecting BR(t) to $j(\\tau)$ via hypergeometric functions",
-      "Formalize Hilbert's irreducibility theorem (1892) and use it to upgrade Abel-Ruffini from a generic statement to a near-universal one over $\\mathbb{Q}$: for $f(t,x) \\in \\mathbb{Q}(t)[x]$ with $\\text{Gal}(f/\\mathbb{Q}(t)) = S_5$, the set of specializations $t_0 \\in \\mathbb{Q}$ for which $\\text{Gal}(f(t_0,x)/\\mathbb{Q}) \\neq S_5$ is thin in the Hilbertian sense (density zero in any natural counting). This would let one assert that 'almost every' rational quintic is unsolvable by radicals — a strengthening that requires combining the formalized Galois group computation with a measure-theoretic notion of Hilbertian thin sets (formalized in Mathlib via `Polynomial.Galois` plus density arguments)",
-      "Formalize Shafarevich's theorem (Shafarevich 1954, with corrections by Iwasawa): every finite solvable group $G$ is realizable as $\\text{Gal}(K/\\mathbb{Q})$ for some Galois extension $K/\\mathbb{Q}$. This would close the constructive side of the radical-solvability classification: combined with the Galois bridge (Step 4) and this entry's threshold theorem, it gives a complete picture — for $n \\leq 4$, every finite group of order dividing $n!$ that is solvable is realizable, so radical formulas exist as instances of a general realizability result; for $n \\geq 5$, the obstruction is exactly the appearance of non-solvable composition factors. The full inverse Galois problem (does every finite group occur as $\\text{Gal}(K/\\mathbb{Q})$?) remains open and would be a major Mathlib project, but Shafarevich's solvable case is tractable",
-      "Implement and verify in Lean a computational Galois group algorithm (Stauduhar 1973, refined by Geißler-Klüners and modern p-adic methods) that takes a polynomial $f \\in \\mathbb{Q}[x]$ of degree $\\leq 7$ and returns its Galois group as a transitive subgroup of $S_n$. The algorithm proceeds by computing resolvent polynomials whose factorization patterns distinguish transitive subgroups, then verifying via p-adic factorization. A formalized version would convert Abel-Ruffini's negative result into a positive decision procedure: 'compute Gal, check solvability, output radical tower or proof of non-existence'. Mathlib has the abstract `Polynomial.Galois` machinery; what remains is the concrete combinatorial classification of transitive subgroups and the resolvent computation"
+      "**[Formalized in `abel-ruffini-oq-04-oq-07`]** Every quintic can be transformed to the form x⁵ + px + q by Tschirnhaus transformations (Bring-Jerrard reduction), and while this normal form is not solvable by the four basic radicals (Abel-Ruffini), it IS solvable using the Bring radical BR(a) (the unique real root of x⁵ + x + a) — showing that the …",
+      "Formalize Hilbert's irreducibility theorem (1892) and use it to upgrade Abel-Ruffini from a generic statement to a near-universal one over $\\mathbb{Q}$: for $f(t,x) \\in \\mathbb{Q}(t)[x]$ with $\\text{Gal}(f/\\mathbb{Q}(t)) = S_5$, the set of specializations $t_0 \\in \\mathbb{Q}$ for which $\\text{Gal}(f(t_0,x)/\\mathbb{Q}) \\neq S_5$ is thin in the Hilbertian …",
+      "Formalize Shafarevich's theorem (Shafarevich 1954, with corrections by Iwasawa): every finite solvable group $G$ is realizable as $\\text{Gal}(K/\\mathbb{Q})$ for some Galois extension $K/\\mathbb{Q}$.",
+      "Implement and verify in Lean a computational Galois group algorithm (Stauduhar 1973, refined by Geißler-Klüners and modern p-adic methods) that takes a polynomial $f \\in \\mathbb{Q}[x]$ of degree $\\leq 7$ and returns its Galois group as a transitive subgroup of $S_n$."
     ]
   },
   "leanFile": {
@@ -440,21 +418,6 @@
     {
       "key": "Hi92",
       "citation": "Hilbert, D., Über die Irreduzibilität ganzer rationaler Functionen mit ganzzahligen Coefficienten, Journal für die reine und angewandte Mathematik 110 (1892), 104–129. Original statement and proof of the Hilbert irreducibility theorem.",
-      "type": "paper"
-    },
-    {
-      "key": "Sh54",
-      "citation": "Shafarevich, I.R., Construction of fields of algebraic numbers with given solvable Galois group, Izvestiya Akademii Nauk SSSR, Seriya Matematicheskaya 18 (1954), 525–578. Proves every finite solvable group is realizable as a Galois group over ℚ.",
-      "type": "paper"
-    },
-    {
-      "key": "St73",
-      "citation": "Stauduhar, R.P., The determination of Galois groups, Mathematics of Computation 27 (1973), 981–996. First systematic algorithm for computing Galois groups of polynomials over ℚ, based on resolvent polynomials and transitive subgroup invariants.",
-      "type": "paper"
-    },
-    {
-      "key": "GK00",
-      "citation": "Geißler, K. and Klüners, J., Galois group computation for rational polynomials, Journal of Symbolic Computation 30 (2000), 653–674. Modern p-adic method for computing Galois groups, implemented in Magma and PARI/GP, extending Stauduhar's approach to higher degrees.",
       "type": "paper"
     }
   ],

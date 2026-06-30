@@ -1,0 +1,180 @@
+{
+  "id": "compactness-finite-subcover-oq-01",
+  "slug": "compactness-finite-subcover-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "",
+    "lineCount": 123,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/CompactnessFiniteSubcover.lean",
+    "sorries": 0
+  },
+  "title": "Compactness via Finite Subcovers: the Heine–Borel Characterization",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CompactnessFiniteSubcover.lean",
+    "tags": [
+      "topology",
+      "compactness",
+      "heine-borel",
+      "finite-subcover",
+      "open-cover",
+      "general-topology",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 123,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "isCompact_union_of_finite_subcover: a binary union of compact sets is compact, RE-DERIVED directly from the finite-subcover characterization rather than citing Mathlib's IsCompact.union. Given an open cover of s ∪ t, the proof extracts a finite subcover of s and a finite subcover of t (via IsCompact.elim_finite_subcover) and returns the union of the two finite index Finsets — the genuine content of the entry, running the Heine–Borel definition by hand.",
+      "isCompact_finset_biUnion: a finite indexed union ⋃ i ∈ a, f i of compact sets is compact, by induction on the Finset a using ONLY the re-derived binary union above (Finset.set_biUnion_insert + the empty case), so the whole finite-union result is bootstrapped from the subcover characterization.",
+      "isCompact_finset_coe: every finite set ↑s (s : Finset X) is compact in an arbitrary topological space, as a corollary — ↑s = ⋃ x ∈ s, {x} and singletons are compact, fed through isCompact_finset_biUnion.",
+      "isCompact_image_union_of_continuous: the continuous image f '' (s ∪ t) of a union of two compact sets is compact, combining the re-derived union theorem with continuous-image preservation (IsCompact.image).",
+      "isCompact_two_intervals: a concrete instance over ℝ — the union [0,1] ∪ [2,3] of two disjoint closed intervals is compact, obtained from isCompact_union_of_finite_subcover and isCompact_Icc, a worked cross-check of the abstract machinery.",
+      "compact_iff_finite_subcover / finite_subcover_of_isCompact: the headline Heine–Borel characterization (re-export of isCompact_iff_finite_subcover) and its forward elimination form, packaged as the gallery statement."
+    ],
+    "prerequisites": [
+      "isCompact_iff_finite_subcover: Mathlib's equivalence between compactness and the finite-subcover property",
+      "IsCompact.elim_finite_subcover: extraction of a finite subcover from a compact set and an open cover",
+      "isCompact_of_finite_subcover: the converse — finite-subcover property implies compactness",
+      "Finset.set_biUnion_insert: ⋃ x ∈ insert a s, f x = f a ∪ ⋃ x ∈ s, f x, the inductive step for the finite union",
+      "isCompact_singleton and isCompact_Icc: singletons are compact, and closed real intervals are compact"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "isCompact_iff_finite_subcover",
+        "description": "A set s is compact iff every open cover of s admits a finite subcover. The Heine–Borel characterization, re-exported as compact_iff_finite_subcover.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "IsCompact.elim_finite_subcover",
+        "description": "From a compact set and an open cover, extract a finite index Finset whose corresponding subfamily still covers. The workhorse driving the re-derived binary union.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "isCompact_of_finite_subcover",
+        "description": "If every open cover of s has a finite subcover then s is compact. Used to conclude isCompact_union_of_finite_subcover from the constructed subcover.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "IsCompact.image",
+        "description": "The continuous image of a compact set is compact. Supplies the continuous-image cross-check isCompact_image_union_of_continuous.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "Finset.set_biUnion_insert",
+        "description": "⋃ x ∈ insert a s, f x = f a ∪ ⋃ x ∈ s, f x. The inductive step turning the binary union into the finite-family union.",
+        "module": "Mathlib.Order.CompleteLattice.Finset"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The open-cover definition of compactness — every open cover has a finite subcover — is the modern abstraction of the Heine–Borel theorem (Eduard Heine 1872, Émile Borel 1895), which originally asserted that a closed bounded subset of ℝ (or ℝⁿ) is covered by finitely many of any given family of open intervals. Pavel Alexandrov and Pavel Urysohn elevated this 'finite subcover' property to the definition of compactness for general topological spaces in the 1920s, decoupling it from metric notions of boundedness; the equivalence with sequential compactness then holds only in metric (or more generally first-countable) spaces. The finite-subcover formulation is the engine behind the central theorems of analysis and topology — the extreme value theorem, uniform continuity on compacts (Heine–Cantor), the tube lemma and Tychonoff's theorem, and the preservation of compactness under continuous images. Mathlib carries the equivalence isCompact_iff_finite_subcover and ready-made consequences like IsCompact.union; this entry re-derives the structural consequences by running the subcover definition by hand, exhibiting the mechanism rather than citing the conclusion.",
+    "problemStatement": "Re-export the Heine–Borel characterization (s is compact iff every open cover of s has a finite subcover) and use it DIRECTLY — not via Mathlib's IsCompact.union — to build the standard ways compactness propagates: a binary union of compact sets is compact (extract a finite subcover of each piece and union the index sets); finite indexed unions of compacts are compact (induction); every finite set is compact in any space; continuous images of (unions of) compacts are compact; and the concrete instance [0,1] ∪ [2,3] ⊆ ℝ is compact.",
+    "proofStrategy": "The headline compact_iff_finite_subcover and its forward form finite_subcover_of_isCompact are re-exports. The substance is isCompact_union_of_finite_subcover: applying isCompact_of_finite_subcover, an arbitrary open cover of s ∪ t restricts to covers of s and t; IsCompact.elim_finite_subcover yields finite index Finsets a (covering s) and b (covering t); their union a ∪ b is a finite subcover of s ∪ t, with membership handled by Finset.mem_union_left/right and Set.mem_iUnion₂. isCompact_finset_biUnion lifts this to finite families by Finset.induction_on (empty trivial; insert via Finset.set_biUnion_insert + the binary union). isCompact_finset_coe follows from ↑s = ⋃ x ∈ s, {x} and isCompact_singleton. isCompact_image_union_of_continuous composes the re-derived union with IsCompact.image, and isCompact_two_intervals instantiates on two real closed intervals via isCompact_Icc.",
+    "keyInsights": [
+      "Compactness is a finiteness principle: 'every open cover has a finite subcover' is the precise sense in which a compact set behaves like a finite set for covering purposes. The entry makes this literal — every honestly finite set is compact (isCompact_finset_coe), with no separation axioms needed.",
+      "Re-deriving the binary union by hand, rather than citing IsCompact.union, is the pedagogical point: it shows finiteness propagates because the UNION of two finite index sets is finite. The whole edifice (finite families, finite sets, continuous images) bootstraps from this one Finset-union step.",
+      "The open-cover definition is the 'right' one for general topology precisely because it survives where sequential compactness fails: it is preserved by continuous images and arbitrary products (Tychonoff) without any countability hypothesis, unlike the sequential notion.",
+      "Continuous-image preservation is the abstract content of the extreme value theorem: a continuous real function on a compact set has compact (hence closed and bounded) image, so it attains its sup and inf. The entry isolates exactly the compactness half of that argument.",
+      "The 'mathlib' badge is honest: the iff-characterization is Mathlib's, but the propagation results are produced by running the definition directly — the from-scratch union, its induction, the finite-set corollary, and the ℝ instance are the formalized substance, with the open questions (tube lemma, FIP/Cantor intersection) flagged as the natural next by-hand derivations."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Compactness via Finite Subcovers",
+      "startLine": 3,
+      "endLine": 42,
+      "summary": "States the Heine–Borel characterization (compact iff every open cover has a finite subcover), names Mathlib's isCompact_iff_finite_subcover, and explains the file's stance: use the characterization BY HAND to re-derive the binary union (without IsCompact.union), then bootstrap finite-family unions, the finite-set corollary, continuous-image preservation, and a concrete ℝ instance. Flags this as a 'non-wrapper' whose substance is the by-hand subcover manipulation.",
+      "mathContext": "$s$ compact $\\iff$ every open cover of $s$ admits a finite subcover (the open-cover / Heine–Borel definition)."
+    },
+    {
+      "id": "characterization",
+      "title": "The Characterization and Its Forward Form",
+      "startLine": 50,
+      "endLine": 63,
+      "summary": "compact_iff_finite_subcover re-exports the Heine–Borel equivalence; finite_subcover_of_isCompact is the forward elimination form (IsCompact.elim_finite_subcover) producing an explicit finite index Finset from a compact set and an open cover.",
+      "mathContext": "$s$ compact $\\iff \\forall$ open cover $\\exists$ finite $r,\\ s \\subseteq \\bigcup_{i\\in r} U_i$."
+    },
+    {
+      "id": "binary-union",
+      "title": "Binary Union, Re-Derived by Hand",
+      "startLine": 65,
+      "endLine": 83,
+      "summary": "isCompact_union_of_finite_subcover: s ∪ t is compact, proved directly from the subcover definition (never IsCompact.union). A cover of s ∪ t is restricted to s and t, finite subcovers a and b are extracted, and a ∪ b is the finite subcover of s ∪ t.",
+      "mathContext": "Finite subcover of $s$ ($a$) plus finite subcover of $t$ ($b$) gives finite subcover $a \\cup b$ of $s \\cup t$."
+    },
+    {
+      "id": "finite-unions",
+      "title": "Finite Unions and the Finite-Set Corollary",
+      "startLine": 85,
+      "endLine": 104,
+      "summary": "isCompact_finset_biUnion: finite indexed unions of compacts are compact, by Finset.induction_on using only the binary union (Finset.set_biUnion_insert step). isCompact_finset_coe: every finite set is compact, since ↑s = ⋃ x ∈ s, {x} and singletons are compact.",
+      "mathContext": "Induction on the index Finset; $\\uparrow s = \\bigcup_{x\\in s}\\{x\\}$ with each singleton compact."
+    },
+    {
+      "id": "continuous-image-instance",
+      "title": "Continuous Images and a Concrete ℝ Instance",
+      "startLine": 106,
+      "endLine": 123,
+      "summary": "isCompact_image_of_continuous (IsCompact.image) and isCompact_image_union_of_continuous combine the re-derived union with continuous-image preservation. isCompact_two_intervals: [0,1] ∪ [2,3] ⊆ ℝ is compact, via the union theorem and isCompact_Icc.",
+      "mathContext": "$f$ continuous $\\Rightarrow f(s)$ compact; $[0,1]\\cup[2,3]$ compact in $\\mathbb{R}$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "compactness-finite-subcover-oq-01-oq-01",
+      "question": "Re-derive the tube lemma (if K is compact and N is open with K × {y} ⊆ N, then some open tube K × V ⊆ N) directly from the finite-subcover characterization, by covering K × {y} with basic open boxes and extracting a finite subcover, mirroring the by-hand subcover style used here for the union.",
+      "significance": "high"
+    },
+    {
+      "id": "compactness-finite-subcover-oq-01-oq-02",
+      "question": "Prove the finite-intersection-property dual (a space is compact iff every family of closed sets with the FIP has nonempty intersection) and connect it to isCompact_iff_finite_subfamily_closed, then derive that a nested sequence of nonempty compact sets has nonempty intersection (Cantor's intersection theorem).",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "egorov-theorem-oq-01",
+      "relationship": "related",
+      "description": "Egorov's theorem uses finite-measure compactness-style covering arguments; this entry isolates the open-cover characterization of compactness that underlies such finite-extraction proofs."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.Compactness.Compact",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of isCompact_iff_finite_subcover, IsCompact.elim_finite_subcover, isCompact_of_finite_subcover, and IsCompact.image."
+    },
+    {
+      "title": "Topology",
+      "author": "Munkres",
+      "year": "2000",
+      "venue": "Prentice Hall",
+      "description": "Standard reference for the open-cover definition of compactness, the finite-union and continuous-image preservation theorems, and the tube lemma."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "A set s in a topological space is compact iff every open cover of s admits a finite subcover (the Heine–Borel characterization, Mathlib's isCompact_iff_finite_subcover, re-exported as compact_iff_finite_subcover). The entry's substance is using that characterization BY HAND rather than citing the ready-made lemmas: isCompact_union_of_finite_subcover proves a binary union of compacts is compact by extracting finite subcovers of each piece and unioning the two index Finsets (never invoking IsCompact.union); isCompact_finset_biUnion lifts this to finite indexed unions by induction; isCompact_finset_coe deduces that every finite set is compact; isCompact_image_union_of_continuous adds the continuous-image cross-check; and isCompact_two_intervals gives the concrete ℝ instance [0,1] ∪ [2,3]. 123 lines, 8 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The iff-characterization itself is delegated to Mathlib (hence the mathlib badge), but the finite-union results are produced by running the subcover definition directly — the from-scratch binary union, its finite-family induction, the finite-set corollary, and the concrete instance are the formalized content, demonstrating the standard ways compactness propagates (finite unions, continuous images) from first principles.",
+    "openQuestions": [
+      "Re-derive the tube lemma directly from the finite-subcover characterization.",
+      "Prove the finite-intersection-property dual and Cantor's intersection theorem for nested compacts."
+    ]
+  }
+}

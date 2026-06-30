@@ -2,6 +2,27 @@
   "id": "minkowski-theorem-oq-03",
   "title": "Minkowski Bound on Ideal Norms: A Class-Number Estimate",
   "slug": "minkowski-theorem-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "nonZeroDivisors",
+      "Real",
+      "NumberField",
+      "Module",
+      "InfinitePlace",
+      "Ideal",
+      "Nat"
+    ],
+    "namespace": "MinkowskiIdealBound",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/MinkowskiTheoremOQ03.lean",
+    "sorries": 0
+  },
   "description": "Makes the geometry-of-numbers ⟹ ideal-norm bound connection explicit and draws new quantitative consequences. Packages the Minkowski bound M_K = (4/π)^{r₂}·(n!/nⁿ)·√|d_K| (only a local notation in Mathlib) as a reusable definition, restates that every ideal class contains an integral ideal of norm ≤ M_K, and proves the new estimate classNumber K ≤ #{ ideals : absNorm ≤ ⌊M_K⌋ } — an explicit, computable head-count refining the bare finiteness of the class group. Derives from that head-count a PID criterion: if M_K < 2 then classNumber K = 1 (equivalently 𝓞 K is a principal ideal ring), recovered directly from the count rather than via the discriminant route. Machine-verified via Docker (0 sorries, 0 axioms); proofs reduce entirely to Mathlib lemmas at rev 2df2f0150c.",
   "meta": {
     "status": "verified",

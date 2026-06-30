@@ -22,7 +22,12 @@
       "open-problem",
       "growth-rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Prime (primality predicate)",
+      "modular congruence p_{i+1} ≡ 1 (mod p_i)",
+      "limit superior / k-th root growth rate p_k^{1/k}",
+      "little-o asymptotic notation o(1)"
+    ]
   },
   {
     "id": "ann-695-primechain",
@@ -47,7 +52,12 @@
       "modular-arithmetic",
       "monotone-sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "StrictMono (strictly monotone sequence)",
+      "Nat.Prime predicate",
+      "Nat modular arithmetic (% operator)",
+      "logical conjunction of sequence predicates"
+    ]
   },
   {
     "id": "ann-695-divisibility",
@@ -70,7 +80,11 @@
       "modular-arithmetic",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility relation a | b in ℕ",
+      "congruence p_{i+1} ≡ 1 (mod p_i)",
+      "equivalence p_i | (p_{i+1} - 1) ↔ p_{i+1} % p_i = 1"
+    ]
   },
   {
     "id": "ann-695-kthroot",
@@ -93,7 +107,11 @@
       "real-analysis",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real.rpow / n-th root p_k^{1/k}",
+      "exponential growth rate c^k",
+      "sequence-to-real coercion (Nat → Real)"
+    ]
   },
   {
     "id": "ann-695-question1",
@@ -117,7 +135,12 @@
       "filter-theory",
       "growth-rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto atTop atTop",
+      "IsPrimeChain definition",
+      "kthRoot definition p_k^{1/k}",
+      "super-exponential vs exponential growth"
+    ]
   },
   {
     "id": "ann-695-question2",
@@ -141,7 +164,12 @@
       "upper-bounds",
       "growth-rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real.exp and Real.log",
+      "little-o notation o(1)",
+      "IsPrimeChain definition",
+      "doubly-exponential bound exp(exp(Ck)) from greedy algorithm"
+    ]
   },
   {
     "id": "ann-695-linnik",
@@ -165,7 +193,12 @@
       "linnik-theorem",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primes in arithmetic progressions (Dirichlet's theorem)",
+      "congruence p ≡ 1 (mod q)",
+      "Linnik's constant L (least prime in AP)",
+      "polynomial bound q^L"
+    ]
   },
   {
     "id": "ann-695-greedy",
@@ -188,7 +221,12 @@
       "upper-bounds",
       "doubly-exponential"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linnik's theorem (p_{k+1} ≤ p_k^L)",
+      "iterating bound: log p_k ≤ L^k · log p_0",
+      "doubly-exponential growth exp(exp(O(k)))",
+      "Real.log monotonicity"
+    ]
   },
   {
     "id": "ann-695-conjecture",
@@ -212,7 +250,12 @@
       "polynomial-bounds",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "least prime ≡ 1 (mod p) bound",
+      "Real.log and polynomial factor (log p)^C",
+      "Question2 definition",
+      "small_prime_conjecture axiom"
+    ]
   },
   {
     "id": "ann-695-cunningham",
@@ -235,7 +278,12 @@
       "sophie-germain-primes",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Prime predicate",
+      "Cunningham chain recurrence p_{i+1} = 2p_i + 1",
+      "2p+1 ≡ 1 (mod p)",
+      "Sophie Germain primes"
+    ]
   },
   {
     "id": "ann-695-fkl",
@@ -259,7 +307,11 @@
       "lower-bounds",
       "analytic-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsPrimeChain definition",
+      "prime chain length and growth lower bounds",
+      "analytic number theory background"
+    ]
   },
   {
     "id": "ann-695-lower",
@@ -282,7 +334,12 @@
       "exponential-growth",
       "prime-chains"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chain_step_ge theorem (q ≡ 1 mod p ⟹ q ≥ 2p+1)",
+      "IsPrimeChain definition",
+      "exponential lower bound c^k",
+      "induction p_{i+1} ≥ 2p_i"
+    ]
   },
   {
     "id": "ann-695-status",
@@ -305,7 +362,12 @@
       "growth-rates",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Question1 definition",
+      "Question2 definition",
+      "exponential lower bound c^k",
+      "doubly-exponential upper bound exp(exp(Ck))"
+    ]
   },
   {
     "id": "ann-695-main",
@@ -329,7 +391,12 @@
       "limits",
       "prime-chains"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto (Mathlib limit formulation)",
+      "IsPrimeChain definition",
+      "kthRoot definition p_k^{1/k}",
+      "Question1 definition"
+    ]
   },
   {
     "id": "ann-695-variant",
@@ -353,6 +420,11 @@
       "upper-bounds",
       "prime-chains"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotics.IsLittleO (Mathlib little-o)",
+      "Real.exp and Real.log",
+      "IsPrimeChain definition",
+      "Question2 definition"
+    ]
   }
 ]

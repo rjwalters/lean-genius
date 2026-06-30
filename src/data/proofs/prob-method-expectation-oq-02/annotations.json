@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-edges-colorings",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": { "startLine": 41, "endLine": 49 },
+    "type": "definition",
+    "title": "The Sample Space: Edge 2-Colorings of K_n",
+    "content": "`Edges n` is the set of 2-element subsets of Fin n — the edges of the complete graph K_n — and `Coloring n := Edges n → Bool` assigns each edge one of two colors. `card_Edges` proves there are exactly C(n,2) edges (via Finset.card_powersetCard), so the sample space has 2^(C(n,2)) colorings. Modeling colorings as honest functions on the 2-subsets, rather than an abstract placeholder, is what lets the first-moment count be carried out concretely over ℕ.",
+    "mathContext": "$\\#\\,\\text{Edges}(n) = \\binom{n}{2}$, so there are $2^{\\binom{n}{2}}$ colorings.",
+    "significance": "context",
+    "relatedConcepts": ["complete graph", "edge coloring", "powersetCard", "sample space"],
+    "prerequisites": ["finite graphs", "binomial coefficients", "Finset"]
+  },
+  {
+    "id": "ann-induced-edges",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": { "startLine": 51, "endLine": 84 },
+    "type": "definition",
+    "title": "Induced Clique Edges and Monochromatic Cliques",
+    "content": "`EdgesIn n K` collects the edges contained in a vertex set K. `card_EdgesIn` proves these biject with the 2-subsets of K — the image under the coercion to Finset (Fin n) equals K.powersetCard 2 — so a k-clique has exactly C(k,2) induced edges. `Mono c K` is the event that all of K's induced edges share one color (with a Decidable instance, used for the concrete n=6 case). These are the cliques the union bound will count over.",
+    "mathContext": "$\\#\\,\\text{EdgesIn}(K) = \\binom{|K|}{2}$; $\\text{Mono}(c,K) \\iff \\forall e,f \\in \\text{EdgesIn}(K),\\ c(e) = c(f)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["clique", "induced subgraph", "monochromatic", "bijection", "card_image_of_injective"],
+    "prerequisites": ["subsets", "binomial coefficients", "decidability"]
+  },
+  {
+    "id": "ann-crux-count",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": { "startLine": 86, "endLine": 128 },
+    "type": "technique",
+    "title": "The Crux Count via an Explicit Injection",
+    "content": "`card_mono_le` is the heart of the first-moment estimate: the colorings monochromatic on a fixed clique K (with at least one edge) number at most 2·2^(C(n,2) − |EdgesIn K|). The proof builds an explicit injection ψ from such colorings into Bool × (off-clique edges → Bool): a monochromatic coloring is fully recovered from its single common color on the clique (read at any edge e₀) together with its values on every edge OUTSIDE the clique. Injectivity is checked edge-by-edge (on-clique edges all equal the common color; off-clique edges agree directly), and Fintype.card_le_of_injective plus the product/function cardinalities give the bound. This 'constant on a sub-family of coordinates ⟹ ≤ 2·2^(N−|family|)' lemma is a reusable union-bound tool.",
+    "mathContext": "$\\#\\{c : \\text{Mono}(c,K)\\} \\le 2 \\cdot 2^{\\binom{n}{2} - \\binom{k}{2}}$, via $c \\mapsto (c(e_0),\\ c|_{\\text{off-clique}})$.",
+    "significance": "key",
+    "relatedConcepts": ["union bound", "injection", "Fintype.card_le_of_injective", "counting", "first moment method"],
+    "prerequisites": ["injective functions", "Fintype cardinality", "product types"]
+  },
+  {
+    "id": "ann-first-moment",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": { "startLine": 130, "endLine": 196 },
+    "type": "insight",
+    "title": "The Union Bound: Bad Colorings Cannot Exhaust the Space",
+    "content": "`first_moment_ramsey` assembles the bound. The 'bad' colorings (monochromatic on SOME k-clique) form a biUnion over the C(n,k) cliques; `Finset.card_biUnion_le` plus card_mono_le bounds |Bad| by C(n,k)·2·2^(C(n,2)−C(k,2)) = (2·C(n,k))·2^(C(n,2)−C(k,2)). Splitting the total 2^(C(n,2)) = 2^(C(k,2))·2^(C(n,2)−C(k,2)) (using C(k,2) ≤ C(n,2) from Nat.choose_le_choose) and applying the hypothesis 2·C(n,k) < 2^(C(k,2)) shows |Bad| < total. Hence some coloring is not bad — and it has no monochromatic K_k. This is Erdős's 'expected count < 1 ⟹ a beating-the-average object exists', rendered as pure ℕ counting with no measure.",
+    "mathContext": "$|\\text{Bad}| \\le (2\\binom{n}{k})\\,2^{\\binom{n}{2}-\\binom{k}{2}} < 2^{\\binom{k}{2}}\\,2^{\\binom{n}{2}-\\binom{k}{2}} = 2^{\\binom{n}{2}}$.",
+    "significance": "key",
+    "relatedConcepts": ["union bound", "card_biUnion_le", "probabilistic method", "pigeonhole", "existence proof"],
+    "prerequisites": ["union bound", "exponent arithmetic", "nonconstructive existence"]
+  },
+  {
+    "id": "ann-ramsey-witness",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": { "startLine": 198, "endLine": 219 },
+    "type": "concept",
+    "title": "R(k,k) > n and the Concrete Witness R(4,4) > 6",
+    "content": "`ramsey_number_gt` restates the bound in the standard Ramsey form — there is a coloring in which every k-clique contains two differently-colored edges (no monochromatic K_k), so the diagonal Ramsey number satisfies R(k,k) > n. `ramsey_four_gt_six` instantiates k=4, n=6: 2·C(6,4) = 30 < 64 = 2^(C(4,2)) is checked by decide, giving R(4,4) > 6 (a 2-coloring of K_6 with no monochromatic K_4). This confirms the hypothesis is satisfiable and the bound non-vacuous — while remaining axiom-free, since decide uses kernel reduction (not native_decide).",
+    "mathContext": "$R(k,k) > n$ whenever $2\\binom{n}{k} < 2^{\\binom{k}{2}}$; instance $R(4,4) > 6$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ramsey number", "diagonal Ramsey", "decide", "axiom-free", "witness"],
+    "prerequisites": ["Ramsey theory", "decidable propositions"]
+  }
+]

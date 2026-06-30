@@ -17,7 +17,11 @@
       "Wirsing theorem",
       "Halasz theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multiplicative functions",
+      "mean values",
+      "analytic number theory"
+    ]
   },
   {
     "id": "ann-239-ismult",
@@ -35,7 +39,11 @@
       "Coprimality",
       "Arithmetic functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multiplicative functions",
+      "coprimality",
+      "arithmetic functions"
+    ]
   },
   {
     "id": "ann-239-pm1",
@@ -53,7 +61,11 @@
       "Unit circle"
     ],
     "mathContext": "See annotation content for formal details of isplusminusone",
-    "prerequisites": []
+    "prerequisites": [
+      "real-valued functions",
+      "sign functions",
+      "unit circle"
+    ]
   },
   {
     "id": "ann-239-multpm",
@@ -71,7 +83,11 @@
       "Character functions"
     ],
     "mathContext": "See annotation content for formal details of multplusminusone",
-    "prerequisites": []
+    "prerequisites": [
+      "multiplicative functions",
+      "Liouville function",
+      "Dirichlet characters"
+    ]
   },
   {
     "id": "ann-239-partialsum",
@@ -89,7 +105,11 @@
       "Finite sums"
     ],
     "mathContext": "See annotation content for formal details of partialsum",
-    "prerequisites": []
+    "prerequisites": [
+      "summation",
+      "finite sums",
+      "arithmetic functions"
+    ]
   },
   {
     "id": "ann-239-meanvalue",
@@ -107,7 +127,11 @@
       "Asymptotic average"
     ],
     "mathContext": "See annotation content for formal details of meanvalue",
-    "prerequisites": []
+    "prerequisites": [
+      "Cesàro mean",
+      "asymptotic averages",
+      "limits"
+    ]
   },
   {
     "id": "ann-239-hasconvmean",
@@ -126,7 +150,11 @@
       "Epsilon-delta"
     ],
     "mathContext": "See annotation content for formal details of hasconvergentmean",
-    "prerequisites": []
+    "prerequisites": [
+      "limits",
+      "epsilon-delta convergence",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-239-liouville",
@@ -145,7 +173,11 @@
       "Completely multiplicative",
       "Prime Number Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Liouville function",
+      "prime factorization",
+      "prime number theorem"
+    ]
   },
   {
     "id": "ann-239-compmult",
@@ -163,7 +195,11 @@
       "Dirichlet characters"
     ],
     "mathContext": "See annotation content for formal details of iscompletelymultiplicative",
-    "prerequisites": []
+    "prerequisites": [
+      "completely multiplicative functions",
+      "Dirichlet characters",
+      "multiplicativity"
+    ]
   },
   {
     "id": "ann-239-poweri",
@@ -182,7 +218,11 @@
       "Unit circle",
       "Counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex exponential",
+      "unit circle",
+      "multiplicative functions"
+    ]
   },
   {
     "id": "ann-239-wintner",
@@ -200,7 +240,11 @@
       "Oscillation",
       "Divergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "oscillation",
+      "divergence",
+      "complex analysis"
+    ]
   },
   {
     "id": "ann-239-wirsing",
@@ -219,14 +263,18 @@
       "Prime sums",
       "Analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dirichlet series",
+      "prime sums",
+      "analytic number theory"
+    ]
   },
   {
     "id": "ann-239-erdos239",
     "proofId": "erdos-239",
     "range": {
-      "startLine": 161,
-      "endLine": 165
+      "startLine": 154,
+      "endLine": 159
     },
     "type": "concept",
     "title": "Erdos Problem #239: SOLVED",
@@ -237,7 +285,11 @@
       "Main theorem"
     ],
     "mathContext": "See annotation content for formal details of erdos problem #239: solved",
-    "prerequisites": []
+    "prerequisites": [
+      "Wirsing's theorem",
+      "multiplicative functions",
+      "convergence"
+    ]
   },
   {
     "id": "ann-239-halasz",
@@ -256,7 +308,11 @@
       "Mean zero",
       "Pretentious functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Halász's theorem",
+      "prime sums",
+      "pretentious number theory"
+    ]
   },
   {
     "id": "ann-239-constone",
@@ -274,7 +330,11 @@
       "Constant function"
     ],
     "mathContext": "See annotation content for formal details of constant one function",
-    "prerequisites": []
+    "prerequisites": [
+      "constant functions",
+      "completely multiplicative functions",
+      "trivial cases"
+    ]
   },
   {
     "id": "ann-239-lioumean",
@@ -292,7 +352,11 @@
       "Prime Number Theorem",
       "Riemann zeta function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Liouville function",
+      "prime number theorem",
+      "Riemann zeta function"
+    ]
   },
   {
     "id": "ann-239-pnt",
@@ -311,7 +375,11 @@
       "Riemann Hypothesis",
       "Error terms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime number theorem",
+      "Riemann hypothesis",
+      "error terms"
+    ]
   },
   {
     "id": "ann-239-summary",
@@ -329,6 +397,10 @@
       "Examples"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "multiplicative functions",
+      "Liouville function",
+      "theorem composition"
+    ]
   }
 ]

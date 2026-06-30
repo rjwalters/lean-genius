@@ -16,7 +16,11 @@
       "Vertex cuts",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Vertex Connectivity",
+      "Exponential Growth Rate"
+    ]
   },
   {
     "id": "ann-e150-vertex-cut",
@@ -35,7 +39,11 @@
       "Induced subgraph",
       "Cut vertex"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Connectivity",
+      "Induced Subgraph",
+      "Vertex Separator"
+    ]
   },
   {
     "id": "ann-e150-minimal-cut",
@@ -54,7 +62,11 @@
       "Vertex separator",
       "Menger's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Cut",
+      "Inclusion-Minimal Sets",
+      "Subset Ordering"
+    ]
   },
   {
     "id": "ann-e150-max-minimal-cuts",
@@ -72,7 +84,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Cuts",
+      "Supremum",
+      "Finite Graphs"
+    ]
   },
   {
     "id": "ann-e150-seymour",
@@ -91,7 +107,11 @@
       "Independent paths",
       "Menger's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Independent Paths",
+      "Vertex Cuts",
+      "Menger's Theorem"
+    ]
   },
   {
     "id": "ann-e150-seymour-lower",
@@ -109,7 +129,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nth Roots",
+      "Limits Of Sequences",
+      "Asymptotic Estimates"
+    ]
   },
   {
     "id": "ann-e150-binary-entropy",
@@ -128,7 +152,11 @@
       "Information theory",
       "Counting bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Shannon Entropy",
+      "Logarithms Base Two",
+      "Information Theory"
+    ]
   },
   {
     "id": "ann-e150-limit-exists",
@@ -146,7 +174,11 @@
       "limits",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sequence Limits",
+      "Subadditivity",
+      "Filter.Tendsto"
+    ]
   },
   {
     "id": "ann-e150-bradac-upper",
@@ -164,7 +196,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binary Entropy Function",
+      "Counting Bounds",
+      "Limit Of Sequence"
+    ]
   },
   {
     "id": "ann-e150-alpha-lt-2",
@@ -182,7 +218,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binary Entropy Bound",
+      "Monotonicity Of Exponentials",
+      "Numerical Inequality"
+    ]
   },
   {
     "id": "ann-e150-main-theorem",
@@ -200,7 +240,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Convergent Sequences",
+      "Filter.Tendsto",
+      "Existential Quantifiers"
+    ]
   },
   {
     "id": "ann-e150-bounds",
@@ -218,7 +262,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower And Upper Bounds",
+      "Seymour Construction",
+      "Binary Entropy"
+    ]
   },
   {
     "id": "ann-e150-conjecture",
@@ -236,7 +284,11 @@
       "Extremal graphs",
       "Construction optimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Optimality",
+      "Cube Root Of Three",
+      "Tight Bounds"
+    ]
   },
   {
     "id": "ann-e150-examples",
@@ -254,7 +306,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Seymour Construction",
+      "Powers Of Three",
+      "Path Counting"
+    ]
   },
   {
     "id": "ann-e150-summary",
@@ -273,6 +329,10 @@
       "ring theory",
       "convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit Existence",
+      "Bounds On Alpha",
+      "Sequence Convergence"
+    ]
   }
 ]

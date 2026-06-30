@@ -16,7 +16,11 @@
       "Discrepancy theory",
       "Fekete points"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "point configurations on the sphere S²",
+      "spherical cap discrepancy",
+      "logarithmic energy minimization"
+    ]
   },
   {
     "id": "ann-e991-unit-sphere",
@@ -34,7 +38,11 @@
       "Manifolds"
     ],
     "mathContext": "See annotation content for formal details of unit sphere",
-    "prerequisites": []
+    "prerequisites": [
+      "the unit sphere S² ⊂ ℝ³",
+      "the Euclidean norm",
+      "set definitions in Lean"
+    ]
   },
   {
     "id": "ann-e991-sphere-dist",
@@ -52,7 +60,11 @@
       "Geodesic distance"
     ],
     "mathContext": "See annotation content for formal details of chordal distance",
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean (chordal) distance",
+      "points on the sphere",
+      "inner product / norm in ℝ³"
+    ]
   },
   {
     "id": "ann-e991-log-energy",
@@ -71,7 +83,11 @@
       "Electrostatics",
       "Riesz energy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logarithmic energy ∑ log(1/|xᵢ−xⱼ|)",
+      "potential theory",
+      "pairwise interaction sums"
+    ]
   },
   {
     "id": "ann-e991-optimal-config",
@@ -89,7 +105,11 @@
       "Approximation theory"
     ],
     "mathContext": "See annotation content for formal details of optimal configurations",
-    "prerequisites": []
+    "prerequisites": [
+      "energy minimization over n-point sets",
+      "Fekete points",
+      "existence of minimizers"
+    ]
   },
   {
     "id": "ann-e991-spherical-cap",
@@ -107,7 +127,11 @@
       "Geodesic balls"
     ],
     "mathContext": "See annotation content for formal details of spherical caps",
-    "prerequisites": []
+    "prerequisites": [
+      "spherical caps",
+      "latitude / cosine thresholds",
+      "subsets of S²"
+    ]
   },
   {
     "id": "ann-e991-cap-area",
@@ -125,7 +149,11 @@
       "Solid angle"
     ],
     "mathContext": "See annotation content for formal details of normalized cap area",
-    "prerequisites": []
+    "prerequisites": [
+      "normalized surface-area measure",
+      "the spherical-cap area formula",
+      "probability measures on S²"
+    ]
   },
   {
     "id": "ann-e991-cap-count",
@@ -143,7 +171,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting points in a region",
+      "spherical caps",
+      "the empirical measure of a configuration"
+    ]
   },
   {
     "id": "ann-e991-small-discrepancy",
@@ -161,7 +193,11 @@
       "Uniform distribution"
     ],
     "mathContext": "See annotation content for formal details of small discrepancy property",
-    "prerequisites": []
+    "prerequisites": [
+      "discrepancy (deviation from uniform)",
+      "sublinear o(n) growth",
+      "uniform distribution on S²"
+    ]
   },
   {
     "id": "ann-e991-brauchart",
@@ -179,7 +215,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Brauchart's 2008 bound O(n^{3/4})",
+      "cap discrepancy of energy points",
+      "axiomatized results"
+    ]
   },
   {
     "id": "ann-e991-marzo-mas",
@@ -197,7 +237,11 @@
       "limits",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Marzo–Mas 2021 bound O(n^{2/3})",
+      "improved discrepancy estimates",
+      "asymptotic rate exponents"
+    ]
   },
   {
     "id": "ann-e991-main-theorem",
@@ -215,7 +259,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "o(n) discrepancy",
+      "Fekete / optimal points",
+      "little-o asymptotic notation"
+    ]
   },
   {
     "id": "ann-e991-fekete",
@@ -233,7 +281,11 @@
       "Quadrature"
     ],
     "mathContext": "See annotation content for formal details of fekete points",
-    "prerequisites": []
+    "prerequisites": [
+      "Fekete points (energy minimizers)",
+      "optimal n-point configurations",
+      "the set of minimizers"
+    ]
   },
   {
     "id": "ann-e991-riesz",
@@ -251,7 +303,11 @@
       "Coulomb energy",
       "Potential theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Riesz s-energy",
+      "the s → 0 logarithmic limit",
+      "generalized potential energy"
+    ]
   },
   {
     "id": "ann-e991-equidistribution",
@@ -269,7 +325,11 @@
       "limits",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "weak-* convergence of empirical measures",
+      "potential theory",
+      "Fekete points in the n → ∞ limit"
+    ]
   },
   {
     "id": "ann-e991-hemisphere",
@@ -287,7 +347,11 @@
       "proof technique",
       "metric spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "hemisphere caps (cosAngle = 0)",
+      "balanced point splitting",
+      "symmetry of S²"
+    ]
   },
   {
     "id": "ann-e991-improvement",
@@ -305,6 +369,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "comparing rate exponents n^{3/4} vs n^{2/3}",
+      "the n^{1/12} improvement factor",
+      "asymptotic ratios"
+    ]
   }
 ]

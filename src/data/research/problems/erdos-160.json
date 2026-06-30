@@ -54,7 +54,8 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-16",
-    "erdos-160"
+    "erdos-160",
+    "erdos-160-incomplete-01"
   ],
   "references": {
     "papers": [],
@@ -78,13 +79,24 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos160Aristotle.lean"
     },
     {
+      "path": "Proofs/Erdos160Incomplete01.lean",
+      "filename": "Erdos160Incomplete01.lean",
+      "lineCount": 82,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos160Incomplete01.lean"
+    },
+    {
       "path": "Proofs/Erdos160Problem.lean",
       "filename": "Erdos160Problem.lean",
-      "lineCount": 257,
+      "lineCount": 299,
       "theoremCount": 16,
       "axiomCount": 3,
       "defCount": 6,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos160Problem.lean"
     },

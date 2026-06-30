@@ -16,7 +16,11 @@
       "consecutive integers",
       "infinite sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "definition of Euler totient function",
+      "infinitude of integer sequences",
+      "open conjectures in number theory"
+    ]
   },
   {
     "id": "ann-e1003-imports",
@@ -35,7 +39,11 @@
       "asymptotic analysis"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib module organization",
+      "filter-based asymptotics"
+    ]
   },
   {
     "id": "ann-e1003-totient-bg",
@@ -54,7 +62,11 @@
       "prime factorization",
       "coprimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multiplicative arithmetic functions",
+      "prime power factorization",
+      "coprimality and gcd"
+    ]
   },
   {
     "id": "ann-e1003-when-equal",
@@ -73,7 +85,11 @@
       "totient computation",
       "numerical coincidences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "totient of products of distinct primes",
+      "powers of two",
+      "integer factorization arithmetic"
+    ]
   },
   {
     "id": "ann-e1003-solution-set",
@@ -92,7 +108,11 @@
       "decidability",
       "totient function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-builder notation in Lean",
+      "decidable predicates",
+      "Nat namespace conventions"
+    ]
   },
   {
     "id": "ann-e1003-conjecture",
@@ -111,7 +131,11 @@
       "asymptotic behavior"
     ],
     "mathContext": "See annotation content for formal details of the main conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Infinite predicate",
+      "propositions as types",
+      "formalizing open conjectures"
+    ]
   },
   {
     "id": "ann-e1003-verified-examples",
@@ -130,7 +154,11 @@
       "computational verification",
       "OEIS A001274"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide tactic",
+      "kernel computation of totient",
+      "OEIS sequence A001274"
+    ]
   },
   {
     "id": "ann-e1003-k-consecutive",
@@ -149,7 +177,11 @@
       "consecutive values",
       "uniform bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bounded universal quantifiers",
+      "parametrized set definitions",
+      "consecutive-value generalizations"
+    ]
   },
   {
     "id": "ann-e1003-eps-bound",
@@ -168,7 +200,11 @@
       "upper bound",
       "Erdős-Pomerance-Sárközy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic density estimates",
+      "exp and log growth rates",
+      "counting-function upper bounds"
+    ]
   },
   {
     "id": "ann-e1003-oeis",
@@ -187,7 +223,11 @@
       "consecutive members"
     ],
     "mathContext": "See annotation content for formal details of oeis a001274",
-    "prerequisites": []
+    "prerequisites": [
+      "integer sequence databases",
+      "consecutive sequence members",
+      "computational number theory"
+    ]
   },
   {
     "id": "ann-e1003-carmichael",
@@ -206,7 +246,11 @@
       "totient valence",
       "open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "range and valence of arithmetic functions",
+      "Carmichael totient conjecture",
+      "logical implication between conjectures"
+    ]
   },
   {
     "id": "ann-e1003-understanding-15-16",
@@ -225,7 +269,11 @@
       "totient formula",
       "numerical patterns"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "totient formula for prime powers",
+      "Mersenne numbers 2^k - 1",
+      "products of (p-1) terms"
+    ]
   },
   {
     "id": "ann-e1003-understanding-104-105",
@@ -244,7 +292,11 @@
       "numerical coincidences"
     ],
     "mathContext": "See annotation content for formal details of why φ(104) = φ(105)",
-    "prerequisites": []
+    "prerequisites": [
+      "totient of semiprimes and prime powers",
+      "prime factorization of consecutive integers",
+      "manual totient computation"
+    ]
   },
   {
     "id": "ann-e1003-triple",
@@ -263,7 +315,11 @@
       "rare coincidences",
       "stronger conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive equal totient triples",
+      "axiomatization of large-number facts",
+      "factorization of four-digit integers"
+    ]
   },
   {
     "id": "ann-e1003-flp-bound",
@@ -282,6 +338,10 @@
       "Ford-Luca-Pomerance",
       "asymptotic growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lower bounds on counting functions",
+      "eventually filter (atTop)",
+      "epsilon power-law growth"
+    ]
   }
 ]

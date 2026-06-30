@@ -17,7 +17,11 @@
       "Unit vectors",
       "Anticoncentration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Littlewood-Offord problem on anticoncentration of signed sums",
+      "random sign vectors and probability of small magnitude sums",
+      "unit complex vectors"
+    ]
   },
   {
     "id": "ann-395-definitions",
@@ -36,7 +40,11 @@
       "Random walk"
     ],
     "mathContext": "See annotation content for formal details of core definitions: unit vectors, signs, and sums",
-    "prerequisites": []
+    "prerequisites": [
+      "complex numbers on the unit circle",
+      "Rademacher random signs in {-1, 1}",
+      "absolute value (magnitude) of a complex sum"
+    ]
   },
   {
     "id": "ann-395-probability",
@@ -55,7 +63,11 @@
       "Counting"
     ],
     "mathContext": "See annotation content for formal details of probability of small sums",
-    "prerequisites": []
+    "prerequisites": [
+      "counting sign vectors among 2ⁿ possibilities",
+      "uniform probability over random signs",
+      "the threshold √2 for small signed sums"
+    ]
   },
   {
     "id": "ann-395-counterexample",
@@ -74,7 +86,11 @@
       "Complex geometry",
       "Threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "splitting a complex sum into real and imaginary parts",
+      "the lower bound √(1² + 1²) = √2 for the example z₁=1, zₖ=i",
+      "disproving a claim by an explicit counterexample"
+    ]
   },
   {
     "id": "ann-395-hjns",
@@ -93,7 +109,11 @@
       "Fourier analysis",
       "Concentration inequalities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fourier analysis on the Boolean hypercube {-1,1}ⁿ",
+      "concentration inequalities for signed sums",
+      "axiomatizing the He-Juškevičius-Narayanan-Spiro 2024 result as a lower bound c/n"
+    ]
   },
   {
     "id": "ann-395-optimality",
@@ -112,7 +132,11 @@
       "Central Limit Theorem",
       "Tight bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the central limit theorem giving each coordinate approximately N(0, n/2)",
+      "Gaussian probability of landing in an O(1) ball scaling as 1/√n per part",
+      "matching c/n and C/n bounds establishing a tight rate"
+    ]
   },
   {
     "id": "ann-395-summary",
@@ -131,6 +155,10 @@
       "Sharp threshold"
     ],
     "mathContext": "See annotation content for formal details of complete resolution of erdős #395",
-    "prerequisites": []
+    "prerequisites": [
+      "combining the false threshold-1 direction with the true threshold-√2 direction",
+      "conjunction of both results into the main theorem",
+      "the sharp threshold √2 with optimal rate 1/n"
+    ]
   }
 ]

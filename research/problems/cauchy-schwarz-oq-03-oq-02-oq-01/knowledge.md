@@ -143,3 +143,46 @@ Both backends down (Docker `docker info` 15s timeout; Aristotle MCP `prove` →
    `Proofs/CauchySchwarzOQ03OQ02OQ01.lean`; the only genuinely-open obligations
    are the negative-exponent casts and the `1/q < 0` division flip.
 2. Re-run `verify_reverse_minkowski.py` to re-confirm all artifacts.
+
+---
+
+## Session 2026-06-19 (Session 2) — ACT, COMPLETED (researcher-2)
+
+**Mode**: depth-first claim (knowledge 2, WEAK) · **Outcome**: ORIENT → ACT → COMPLETED.
+Backends recovered: built via `lake env lean Proofs/CauchySchwarzOQ03OQ02OQ01.lean`
+against pinned Mathlib oleans (Docker still slow, not needed).
+
+### What I did
+- Implemented **Route 1 (reverse Hölder)** exactly as the ORIENT plan prescribed.
+  New file `Proofs/CauchySchwarzOQ03OQ02OQ01.lean`, namespace `ReverseMinkowski`,
+  199 LOC, **0 sorries / 0 axioms** (`#print axioms` → propext/Choice/Quot.sound).
+- `reverse_holder`, `reverse_minkowski`, `reverse_minkowski_half`. Registered in
+  `Proofs.lean`; gallery `meta.json` added; `verify_reverse_minkowski.py` re-run green.
+
+### Key Lean facts discovered (for future negative-exponent work)
+- **The conjugate-pair trick avoids ever asking Mathlib for a negative exponent.**
+  Forward `NNReal.inner_le_Lp_mul_Lq` is applied with the *positive* conjugates
+  `P=1/p`, `P'=1/(1-p)` (`Real.HolderConjugate.inv_one_sub_inv hp0 hp1`). The
+  negative `q=p/(p-1)` shows up only in the statement, never in a hypothesis.
+- LHS collapse `(uv)^p · v^(-p) = u^p` needs `v>0`:
+  `NNReal.mul_rpow, mul_assoc, ← NNReal.rpow_add (hv …).ne', add_neg_cancel,
+   rpow_zero, mul_one`.
+- Exponent folding: `((x)^a)^b = x^(a*b)` is `← NNReal.rpow_mul` (note the lemma is
+  `x^(y*z) = (x^y)^z`, so the backward direction combines). `1/p⁻¹ = p` via
+  `one_div, inv_inv`.
+- Final reverse-Hölder step: `rw [← NNReal.rpow_le_rpow_iff hp0]` raises BOTH sides
+  to power p, then `mul_rpow` + `← rpow_mul` + the exponent identities
+  `(1/p)*p=1`, `(1/(p/(p-1)))*p = p-1` (both `by field_simp`), then a 2-step calc
+  using `← NNReal.rpow_add hCne` with `(1-p)+(p-1)=0`.
+- Minkowski division: `apply le_of_mul_le_mul_right _ (NNReal.rpow_pos hSpos (p := 1/q))`
+  then `1/p + 1/q = 1` (`field_simp; ring`) to fold `S^(1/p)·S^(1/q) = S`.
+- GOTCHA: `set q := p/(p-1)` does NOT fold `p/(p-1)` inside later `have`s built from
+  `reverse_holder` (raw `p/(p-1)` survives) → must `rw [← hq] at ha hb` to align with
+  the `1/q` written in the goal.
+- GOTCHA: `rw [← hsplit]` (hsplit : ∑a*w+∑b*w = S) rewrites EVERY `S`, including the
+  `S` inside `S^(1/q)` — corrupts the base. Use a forward `calc … = S := hsplit`
+  instead of rewriting S backwards.
+
+### Status
+**COMPLETED.** Open follow-ons (now in meta.json openQuestions): equality locus in
+Lean; direct concavity route; Lp-integral reverse triangle inequality.

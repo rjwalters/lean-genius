@@ -364,18 +364,19 @@ theorem sidon_upper_bound_weak (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
     simp only [Finset.not_nonempty_iff_eq_empty] at hempty
     simp [hempty]
 
-/-- **Axiom: Erdős-Turán upper bound**: A Sidon subset of {1,...,N} has ≤ √N + O(N^{1/4}) elements.
+/- **Erdős–Turán upper bound (no longer an axiom).**
 
-This uses counting sums (not differences) and is the optimal bound up to lower order terms.
-The proof requires showing |A + A| ≤ 2N and |A + A| ≥ n(n+1)/2, giving n ≲ √(4N) = 2√N.
-The actual bound √N + O(N^{1/4}) comes from a more careful analysis.
+This file previously carried a single axiom
+`sidon_upper_bound : |A| ≤ √N + ⁴√N + 1` (the sharp Lindström additive constant).
+That axiom has been **retired**: the verified, axiom-free Erdős–Turán bound
+`Erdos340.sidon_card_le_sqrt : |A| ≤ √N + ⁴√N + 2` (proved in
+`Erdos340SidonErdosTuran.lean` by optimising the master window inequality
+`sidon_window_key`) supersedes it for every downstream use.  The only consumer was
+`Erdos28AdditiveBases.sidon_not_basis`, which now routes through the `+2` theorem
+(its contradiction has ample slack, so the `+1` vs `+2` constant is immaterial).
 
-**Proof status**: HARD (known result, needs formalization ~100 lines)
-
-Note: The weaker bound √(2N) + 1 is proved above as `sidon_upper_bound_weak`.
-This tighter bound requires additional counting machinery. -/
-axiom sidon_upper_bound (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
-    (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1
+The weaker elementary difference bound `√(2N) + 1` remains available above as
+`sidon_upper_bound_weak`. -/
 
 /- ## Part 3: Greedy Sidon Sequence Construction (explicit, axiom-free)
 
@@ -386,8 +387,9 @@ lemma `sidon_exists_extension`, proved here with the explicit witness `2·(sup A
 discharges what were previously three opaque `greedySidonSeq*` *existence axioms*: the
 sequence is now a genuine recursive `def` and its monotonicity / Sidon-ness are theorems.
 
-(The open growth conjecture `|A ∩ [1,N]| ≫ N^{1/2−ε}` is untouched, and the Erdős–Turán
-upper bound `sidon_upper_bound` above remains the file's only axiom.) -/
+(The open growth conjecture `|A ∩ [1,N]| ≫ N^{1/2−ε}` is untouched; with the Erdős–Turán
+upper bound retired in favour of the verified `sidon_card_le_sqrt`, this file is now
+entirely axiom-free.) -/
 
 /-- Check if adding n to A preserves the Sidon property (Prop version). -/
 def CanAddProp (A : Finset ℕ) (n : ℕ) : Prop :=

@@ -1,0 +1,93 @@
+[
+  {
+    "id": "ann-euclidsteps-step",
+    "proofId": "gcd-algorithm-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 64
+    },
+    "type": "lemma",
+    "title": "One-Step Euclidean Recursion",
+    "content": "For 0 < b < a, one Euclidean step rewrites euclidSteps a b as 1 + euclidSteps b (a % b). The euclidSteps definition branches on b ≤ a-1 (i.e. b < a); the hypothesis selects exactly that branch, so this lemma exposes the recursion cleanly without unfolding the well-founded definition each time.",
+    "mathContext": "$0 < b < a \\implies \\operatorname{euclidSteps}(a,b) = 1 + \\operatorname{euclidSteps}(b,\\, a \\bmod b)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean algorithm",
+      "well-founded recursion",
+      "equation lemmas"
+    ],
+    "prerequisites": [
+      "Nat modulo",
+      "match equation lemmas"
+    ]
+  },
+  {
+    "id": "ann-fib-mod",
+    "proofId": "gcd-algorithm-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 87
+    },
+    "type": "lemma",
+    "title": "Fibonacci Reduction Identity",
+    "content": "The heart of the worst case: fib(n+2) mod fib(n+1) = fib n for n ≥ 2. Because fib(n+2) = fib(n+1) + fib n and 0 ≤ fib n < fib(n+1), the Euclidean reduction of a Fibonacci pair lands on the previous Fibonacci pair. This is what makes the Fibonacci sequence the slowest possible Euclidean descent: each step removes exactly one quotient of 1.",
+    "mathContext": "$F_{n+2} \\bmod F_{n+1} = F_n$ since $F_{n+2} = F_{n+1} + F_n$ with $0 \\le F_n < F_{n+1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fibonacci recurrence",
+      "strict monotonicity",
+      "quotient one"
+    ],
+    "prerequisites": [
+      "Nat.fib_add_two",
+      "Nat.fib_lt_fib_succ",
+      "Nat.mod_eq_of_lt"
+    ]
+  },
+  {
+    "id": "ann-euclidsteps-fib",
+    "proofId": "gcd-algorithm-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 117
+    },
+    "type": "theorem",
+    "title": "Exact Worst-Case Count (Lamé Sharpness)",
+    "content": "The main theorem: euclidSteps(fib(n+2), fib(n+1)) = n for n ≥ 1. Reindexing m = n+1 gives euclidSteps(F_{m+1}, F_m) = m-1, which is exactly open question #1 of the parent entry. The proof is induction from the base (fib 3, fib 2) = (2, 1) using the one-step recursion and the Fibonacci mod identity, so each Fibonacci step contributes exactly one Euclidean step.",
+    "mathContext": "$\\operatorname{euclidSteps}(F_{n+2}, F_{n+1}) = n$ for $n \\ge 1$; equivalently $\\operatorname{euclidSteps}(F_{m+1}, F_m) = m-1$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Lamé's theorem",
+      "worst-case complexity",
+      "Euclidean algorithm",
+      "induction"
+    ],
+    "prerequisites": [
+      "Nat.le_induction",
+      "Fibonacci reduction identity"
+    ]
+  },
+  {
+    "id": "ann-minimality",
+    "proofId": "gcd-algorithm-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 131,
+      "endLine": 176
+    },
+    "type": "theorem",
+    "title": "Minimality of Fibonacci Worst Cases",
+    "content": "Sharpness in the strong sense: any pair 0 < b < a with euclidSteps a b = n satisfies fib(n+1) ≤ b and fib(n+2) ≤ a. So no smaller pair achieves n steps — the Fibonacci pair is the minimal n-step input. Proved by strong induction on a: one Euclidean step reduces to (b, a mod b), the inductive hypothesis bounds that smaller pair, and a ≥ b + (a mod b) (quotient ≥ 1) lifts the bound through fib(n+2) = fib(n+1) + fib n.",
+    "mathContext": "$0 < b < a \\wedge \\operatorname{euclidSteps}(a,b)=n \\implies F_{n+1} \\le b \\wedge F_{n+2} \\le a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimal worst case",
+      "strong induction",
+      "Fibonacci recurrence",
+      "Euclidean division"
+    ],
+    "prerequisites": [
+      "Nat.strong_induction_on",
+      "Nat.div_add_mod"
+    ]
+  }
+]

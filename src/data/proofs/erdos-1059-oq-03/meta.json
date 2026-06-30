@@ -101,6 +101,21 @@
       "targetId": "erdos-1059",
       "relationship": "extends",
       "description": "Computational extension of the main Erdős 1059 formalization — this file finds the first prime after 211 that fails the property, complementing the main file's verification that 211 satisfies it"
+    },
+    {
+      "targetId": "erdos-1059-oq-05",
+      "relationship": "supporting",
+      "description": "Decidable Factorial Compositeness Verification — the **decision-procedure infrastructure** this entry's result is built on. This entry certifies that $p = 223$ fails the Erdős 1059 property (because $223 - 4! = 199$ is prime), 'fully verified by decision procedure with 0 sorries'; the supporting entry supplies exactly that machinery — a `Decidable` instance for `AllFactorialSubtractionsComposite` that lets any concrete prime be checked by `decide` without hand-written per-prime factorial-bound lemmas. The general instance there is what makes pointwise verdicts like the one here ($p=223$) routine and axiom-free."
+    },
+    {
+      "targetId": "erdos-1059-oq-01",
+      "relationship": "related",
+      "description": "Density of Factorial-Avoiding Primes — the **statistical question** that individual verdicts like this one feed into. This entry pins a single boundary fact (the smallest prime above 211 that *fails* the all-$p-k!$-composite property is 223); the related entry asks what *fraction* of primes satisfy the property, formalizing the natural-density formulation of Erdős #1059. Concrete failures such as $p=223$ (via $223-4!=199$, prime) are exactly the events the density count must track, so this computational data point is a sample from that distribution."
+    },
+    {
+      "targetId": "erdos-1059-oq-04",
+      "relationship": "related",
+      "description": "Density Conjecture Implies Infinite Witnesses — the **structural payoff** of the density program these checks probe. That entry proves the conditional implication `density_one_conjecture` $\\Rightarrow$ there are infinitely many primes $p$ with every $p - k!$ composite (the full Erdős #1059 statement). This entry contributes a concrete *non*-witness ($p=223$), delimiting where the property fails; together they frame the problem from both ends — the conditional infinitude of witnesses above, and explicit small counterexamples below."
     }
   ],
   "leanFile": {
