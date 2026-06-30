@@ -58,5 +58,27 @@
       "Induction, casting ℕ → ℤ, and the linear_combination tactic"
     ],
     "tags": ["weighted-sum", "first-moment", "linear_combination", "zify"]
+  },
+  {
+    "id": "ann-fiboq06-4",
+    "proofId": "fibonacci-identities-oq-06",
+    "range": { "startLine": 33, "endLine": 68 },
+    "type": "insight",
+    "title": "Two Rungs of the Fibonacci Moment Ladder",
+    "content": "**Synthesis.** Read together, `fib_sum` and `fib_weighted_sum` are the $k=0$ and $k=1$ rungs of the *moment ladder* $S_k(n) = \\sum_{i\\le n} i^k F_i$. The zeroth moment is a single Fibonacci value ($F_{n+2}-1$); the first moment is a Fibonacci value scaled by $n$ minus a higher-index correction ($n F_{n+2} - F_{n+3} + 2$). The pattern continues: each higher moment $S_k$ has a closed form that is a $\\mathbb{Z}[n]$-combination of $O(k)$ shifted Fibonacci numbers, and — crucially — every rung is provable by the *same* two-ingredient recipe used here: peel the last term with `Finset.sum_range_succ`, reduce all shifted $F_{n+j}$ to the atoms $F_{n+1}, F_{n+2}$ via `Nat.fib_add_two`, then close by `omega` (when the summand is linear in the $F$'s, as for $k=0$) or `zify` + `linear_combination` (when an index coefficient introduces a nonlinear cross term, as for $k=1$). This is why the open second-moment $\\sum i^2 F_i$ is expected to be mechanically reachable rather than to require new ideas — it is the next rung of the same ladder, and connects to differentiating the generating function $x/(1-x-x^2)$ twice.",
+    "mathContext": "$S_k(n) = \\sum_{i\\le n} i^k F_i$: $S_0 = F_{n+2}-1$, $S_1 = n F_{n+2} - F_{n+3} + 2$; each $S_k \\in \\mathbb{Z}[n]\\langle F_{n+1}, F_{n+2}\\rangle$ via the same induction recipe.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "moments of a sequence ∑ iᵏ Fᵢ",
+      "Fibonacci generating function x/(1−x−x²)",
+      "uniform proof recipe (sum_range_succ + fib_add_two)",
+      "second-moment open question"
+    ],
+    "prerequisites": [
+      "the two identities above",
+      "the notion of higher moments of a sequence",
+      "generating functions (for the heuristic)"
+    ],
+    "tags": ["synthesis", "moment-ladder", "fibonacci", "open-question"]
   }
 ]
