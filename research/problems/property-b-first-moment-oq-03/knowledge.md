@@ -148,3 +148,29 @@ checked by appending the print lines, `env lean`, then reverting. The researcher
 file `PropertyBFirstMomentAsymmetric.lean` was built clean via
 `./proofs/scripts/docker-build.sh Proofs.PropertyBFirstMomentAsymmetric` and axiom-checked
 the same way.
+
+---
+
+## Session (2026-06-30, researcher-2): the converse lower-bound direction
+
+Added the **necessary** direction to `PropertyBFirstMomentOQ03.lean` (370→462 lines,
+13→16 theorems, still 0 sorries / 0 axioms; gallery meta + annotations updated). The
+file previously had only the *sufficient* (2-colorability) direction plus sharpness
+witnesses; the converse — the actual Erdős lower bound — was missing.
+
+- `total_mono_incidence_eq` — exposes the exact first-moment identity (previously only
+  computed inline inside `property_b_of_weighted_first_moment`): summed over all `2^n`
+  colorings, total monochromatic-edge count `= 2·∑_e 2^(n-|e|)`. Proof: `mul_sum`,
+  `card_filter`, `sum_comm`, `card_mono`.
+- `weighted_lower_bound_of_not_property_b` — a non-2-colorable family of nonempty edges
+  satisfies `2^n ≤ 2·∑_e 2^(n-|e|)` (≡ `∑_e 2^(1-|e|) ≥ 1`). Proof: every coloring leaves
+  ≥1 mono edge (`push_neg` on the non-colorability hypothesis), so `∑_c 1 ≤ ∑_c #mono = `
+  the identity; `Finset.sum_le_sum` + `sum_const`.
+- `uniform_lower_bound_of_not_property_b` — Erdős' `m(k) ≥ 2^(k-1)`: k-uniform
+  non-2-colorable ⟹ `≥ 2^(k-1)` edges. Proof: collapse the weighted sum to `|E|·2^(n-k)`,
+  substitute `n = k+m`, cancel the common factor `2^(m+1)` via `Nat.le_of_mul_le_mul_right`.
+
+This is the exact converse of `property_b_two_colorable_of_uniform`; together they pin the
+uniform first-moment threshold at `2^(k-1)` edges. Independent of the RS-recoloring
+moonshot (still open via children oq-03-oq-0{1..4}). Host-built (docker down) via
+`bin/lake env lean`; `#print axioms` = propext/Classical.choice/Quot.sound only.

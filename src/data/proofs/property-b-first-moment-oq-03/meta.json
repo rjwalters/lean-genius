@@ -49,7 +49,8 @@
       "Quantitative first moment (averaging principle): exists_le_of_sum_le_card_mul (nonstrict min ≤ mean over ℕ) and exists_coloring_few_mono — some 2-coloring leaves at most t monochromatic edges whenever the incidence ∑_e 2·2^(n-|e|) ≤ 2^n·t. This stays informative in the regime where the strict criterion FAILS (incidence ≥ 2^n) yet the family admits a coloring with a controlled number t ≥ 1 of defects, with exists_coloring_few_mono_uniform (k-uniform, |E| ≤ 2^(k-1)·t ⟹ ≤ t defects) and triangle_few_mono (K₃ over Fin 3: incidence 12 ≤ 16 ⟹ ≤ 2 mono edges, nontrivial control where the criterion is silent).",
       "Deletion (alteration) method: exists_two_colorable_subfamily — every finite family of nonempty edges has a 2-colorable subfamily after deleting at most t edges whenever the incidence ∑_e 2·2^(n-|e|) ≤ 2^n·t (take the few-mono coloring and delete exactly its monochromatic edges; the same coloring properly 2-colors the remainder). exists_two_colorable_subfamily_uniform gives the standard deletion-method consequence (k-uniform: retain a 2-colorable subfamily of ≥ |E| − ⌈|E|/2^(k-1)⌉ edges), and k4_bipartite_subfamily is a finite Max-Cut-flavored instance (K₄ over Fin 4: delete ≤ 3 of 6 edges to expose a bipartite subgraph). This is the elementary integer sibling of the Radhakrishnan–Srinivasan recoloring repair: RS flips vertices to gain the √(k/log k) factor; deletion simply discards the bad edges.",
       "Sharpness of the strict threshold: weighted_criterion_sharp (with helper mono_singleton and concrete witness boundary_singleton_fin1) proves the strict inequality 2·∑ 2^(n-|e|) < 2^n in property_b_of_weighted_first_moment cannot be relaxed to ≤. A single singleton edge {v} is monochromatic under EVERY coloring (a one-element set is trivially monochromatic), so the family {{v}} has no proper 2-coloring — yet its incidence total is exactly 2·2^(n-1) = 2^n, sitting precisely on the boundary ∑ 2^(1-|e|) = 1. Hence the threshold ∑ 2^(1-|e|) < 1 is best possible: no ≤ 1 criterion can hold. This turns the 'sharp at ∑ 2^(1-|e|) < 1' framing into a theorem rather than an assertion.",
-      "An honest scoping of open question oq-03: the single-round first moment is sharp at ∑ 2^(1-|e|) < 1 (now witnessed by weighted_criterion_sharp) and the deletion method gains nothing asymptotically; reaching the Radhakrishnan–Srinivasan m(k) = Ω(2^k·√(k/log k)) bound requires the random RECOLORING repair (not deletion), a genuinely different second-round alteration model — recorded as the remaining moonshot."
+      "An honest scoping of open question oq-03: the single-round first moment is sharp at ∑ 2^(1-|e|) < 1 (now witnessed by weighted_criterion_sharp) and the deletion method gains nothing asymptotically; reaching the Radhakrishnan–Srinivasan m(k) = Ω(2^k·√(k/log k)) bound requires the random RECOLORING repair (not deletion), a genuinely different second-round alteration model — recorded as the remaining moonshot.",
+      "The CONVERSE direction (necessary condition / lower bound), previously absent: total_mono_incidence_eq exposes the exact first-moment identity ∑_c #mono(c) = 2·∑_e 2^(n-|e|); weighted_lower_bound_of_not_property_b shows a non-2-colorable family of nonempty edges satisfies 2^n ≤ 2·∑_e 2^(n-|e|) (i.e. ∑_e 2^(1-|e|) ≥ 1); and uniform_lower_bound_of_not_property_b derives Erdős' m(k) ≥ 2^(k-1) (a k-uniform non-2-colorable family has ≥ 2^(k-1) edges) — the exact converse of property_b_two_colorable_of_uniform"
     ],
     "dateAdded": "2026-06-28",
     "relatedProblems": [
@@ -59,10 +60,10 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 370,
+    "lineCount": 462,
     "assumptions": "0 axioms, 0 sorries, no native_decide (the worked examples use decide, which depends only on the foundational kernel, not Lean.ofReduceBool). The hypotheses (edges nonempty; weighted-sum / incidence bounds) are inputs to the statements, not standing assumptions; V is an arbitrary Fintype with DecidableEq and n = Fintype.card V. #print axioms reports only propext, Classical.choice, Quot.sound for every theorem (criterion, averaging, and deletion families — checked for property_b_of_weighted_first_moment, exists_coloring_few_mono, exists_two_colorable_subfamily, exists_two_colorable_subfamily_uniform, k4_bipartite_subfamily, weighted_criterion_sharp, etc.) — no sorryAx, no Lean.ofReduceBool. This is the single-round FIRST-MOMENT bound plus its quantitative (few-bad-edges) and deletion (alteration) corollaries; the Radhakrishnan–Srinivasan √(k/log k) improvement, which needs random RECOLORING rather than deletion, is NOT formalized and is left open.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13,
+    "theoremCount": 16,
     "definitionCount": 0
   },
   "overview": {
@@ -122,6 +123,14 @@
       "endLine": 311,
       "mathContext": "$\\sum_{e} 2\\cdot 2^{\\,n-|e|} \\le 2^{n} t \\;\\Rightarrow\\; \\exists D\\subseteq E,\\ |D|\\le t,\\ E\\setminus D \\text{ is 2-colorable}$",
       "summary": "subfamily_of_few_mono turns the few-mono coloring into a 2-colorable subfamily by deleting exactly its monochromatic edges D = {e : Mono e c}; the same c properly 2-colors E \\ D. exists_two_colorable_subfamily (general) and exists_two_colorable_subfamily_uniform (k-uniform: retain ≥ |E| − ⌈|E|/2^(k-1)⌉ edges) formalize the standard deletion method, the elementary integer sibling of RS recoloring. k4_bipartite_subfamily is a finite Max-Cut-flavored instance: K₄ over Fin 4 (incidence 48 = 2⁴·3) yields a bipartite subgraph after deleting ≤ 3 of 6 edges."
+    },
+    {
+      "id": "converse-lower-bound",
+      "title": "Converse: the Erdős Lower Bound m(k) ≥ 2^(k-1)",
+      "summary": "Exposes the exact first-moment identity total_mono_incidence_eq (∑ over all 2^n colorings of the monochromatic-edge count equals 2·∑_e 2^(n-|e|)) and uses it for the necessary direction: weighted_lower_bound_of_not_property_b (a non-2-colorable family saturates 2^n ≤ 2·∑_e 2^(n-|e|)) and uniform_lower_bound_of_not_property_b (k-uniform non-2-colorable ⟹ ≥ 2^(k-1) edges).",
+      "startLine": 372,
+      "endLine": 461,
+      "mathContext": "Contrapositive of the sufficient criterion: if every one of the 2^n colorings leaves ≥1 monochromatic edge then the total incidence is ≥ 2^n, and by the exact identity that forces 2·∑_e 2^(n-|e|) ≥ 2^n. For uniform edges this is exactly Erdős' m(k) ≥ 2^(k-1)."
     }
   ],
   "conclusion": {
@@ -149,11 +158,11 @@
       "BigOperators"
     ],
     "namespace": "ProbMethod.PropertyB",
-    "lineCount": 370,
+    "lineCount": 462,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 13
+    "theoremCount": 16
   },
   "references": [
     {
@@ -202,8 +211,18 @@
       "type": "core",
       "description": "Deletion (alteration) method: every finite family of nonempty edges has a 2-colorable subfamily after deleting at most t edges whenever the incidence ∑_e 2·2^(n-|e|) ≤ 2^n·t. The elementary integer sibling of the Radhakrishnan–Srinivasan recoloring repair.",
       "leanType": "(∀ e ∈ E, e.Nonempty) → (∑ e ∈ E, 2 * 2^(Fintype.card V - e.card)) ≤ 2^(Fintype.card V) * t → ∃ D ⊆ E, D.card ≤ t ∧ ∃ c : V → Bool, ∀ e ∈ E \\ D, ¬ Mono e c"
+    },
+    {
+      "name": "uniform_lower_bound_of_not_property_b",
+      "statement": "(k ≤ n) → (∀ e ∈ E, e.card = k) → (∀ e ∈ E, e.Nonempty) → ¬(∃ c, ∀ e ∈ E, ¬ Mono e c) → 2^(k-1) ≤ E.card",
+      "description": "Erdős' lower bound m(k) ≥ 2^(k-1): a k-uniform family with no proper 2-coloring has at least 2^(k-1) edges — the exact converse of the uniform sufficiency theorem."
+    },
+    {
+      "name": "total_mono_incidence_eq",
+      "statement": "∑ (c : V → Bool), (E.filter (fun e => Mono e c)).card = 2 * ∑ e ∈ E, 2^(Fintype.card V - e.card)",
+      "description": "The exact first-moment identity underlying every Property B first-moment bound (both the sufficient criterion and the lower bound are read off it)."
     }
   ],
   "sorries": 0,
-  "theoremCount": 13
+  "theoremCount": 16
 }
