@@ -1,229 +1,172 @@
 {
   "id": "collatz-structured-oq-01",
-  "title": "Backward Collatz: Preimage Structure and Infinitude of the Basin of 1",
+  "title": "Collatz Conjecture: Reduction to Odd Inputs",
   "slug": "collatz-structured-oq-01",
-  "description": "Studies the backward dynamics of the Collatz map. Proves the exact preimage characterization (every predecessor of m is either the even predecessor 2m or an odd a with 3a+1=m), the mod-6 branching law (an odd predecessor exists iff m ≡ 4 mod 6), the resulting in-degree dichotomy (2 if m ≡ 4 mod 6, else 1), backward closure of the basin of 1 under predecessors, and that the basin of 1 is infinite. All results are unconditional (independent of the Collatz conjecture) and fully verified with 0 axioms and 0 sorries.",
+  "description": "Proves, axiom-free, the structural reduction of the Collatz conjecture to odd numbers: every n ≥ 1 reaches 1 iff every odd n ≥ 1 does. Built on one-step invariance of the reaching set (ReachesOne (collatz n) ↔ ReachesOne n) and doubling invariance (ReachesOne (2^m·n) ↔ ReachesOne n). The conjecture itself remains open; this organizes the search space.",
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/CollatzStructuredOQ01.lean",
+    "additionalFiles": [
+      "Proofs/CollatzStructured.lean"
+    ],
     "tags": [
       "number-theory",
       "collatz",
-      "predecessor",
-      "preimage",
       "dynamical-systems",
-      "graph-theory",
-      "research",
-      "verified"
+      "reduction",
+      "2-adic",
+      "invariance",
+      "open-problem"
     ],
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 317,
-    "theoremCount": 21,
-    "definitionCount": 0,
-    "assumptions": "None. All theorems depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound); none use sorry, native_decide, or any added axiom. The results are unconditional — they do not assume the Collatz conjecture.",
-    "dateAdded": "2026-06-27",
+    "lineCount": 183,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "assumptions": "None. 0 axioms, 0 sorries. The file imports Proofs.CollatzStructured (which declares the conjecture as an axiom) but no theorem here uses that axiom — every result is proved from the sInf-free dynamical definitions and Mathlib's 2-adic factorization API (ordCompl/ordProj). #print axioms collatz_reduces_to_odd reports only propext / Classical.choice / Quot.sound. The Collatz conjecture itself is NOT proved; the reduction is an equivalence between two open statements.",
+    "dateAdded": "2026-06-26",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Collatz_conjecture",
-    "date": "Classical backward-Collatz folklore; formalized 2026",
+    "date": "folklore reduction; formalized 2026",
     "mathlibDependencies": [
       {
-        "theorem": "Set.infinite_of_injective_forall_mem",
-        "description": "A set is infinite if there is an injection from an infinite type into it — used to prove the basin of 1 is infinite via k ↦ 2^(k+1).",
-        "module": "Mathlib.Data.Set.Finite"
+        "theorem": "Nat.ordProj_mul_ordCompl_eq_self",
+        "description": "The 2-adic factorization n = 2^v₂(n) · oddPart n — the algebraic core of the odd reduction",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
       },
       {
-        "theorem": "Nat.pow_right_injective",
-        "description": "For base ≥ 2, the exponential map is injective — used to show k ↦ 2^(k+1) is injective.",
-        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+        "theorem": "Nat.not_dvd_ordCompl",
+        "description": "The odd part ordCompl[2] n is not divisible by 2 — establishes oddPart_odd",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.ordCompl_pos",
+        "description": "The odd part is positive for n ≠ 0 — establishes oddPart_pos",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
       },
       {
         "theorem": "Function.iterate_succ_apply",
-        "description": "f^[k+1] a = f^[k] (f a) — used in the backward-closure step to peel one Collatz iteration.",
+        "description": "f^[n+1] x = f^[n] (f x) — the one-step shift underlying one-step invariance of the reaching set",
         "module": "Mathlib.Logic.Function.Iterate"
-      },
-      {
-        "theorem": "Set.ncard_pair",
-        "description": "For a ≠ b, the two-element set {a,b} has ncard 2 — used to read off the exact in-degree 2 of a branching vertex from its predecessor set {2m, (m-1)/3}.",
-        "module": "Mathlib.Data.Set.Card"
-      },
-      {
-        "theorem": "Finset.card_image_of_injective",
-        "description": "The image of a finset under an injective map has the same cardinality — used to count branch vertices below 6k by identifying them with the image of range k under j ↦ 6j+4.",
-        "module": "Mathlib.Data.Finset.Card"
       }
     ],
     "originalContributions": [
-      "collatz_eq_iff: an exact characterization of the Collatz preimage — collatz a = m ↔ a = 2m ∨ (a odd ∧ 3a+1 = m) — proved by parity case split and omega, with no division artifacts.",
-      "odd_pred_exists_iff: the mod-6 branching law — m has an odd predecessor iff m ≡ 4 (mod 6) — with an explicit witness 2·(m/6)+1.",
-      "two_preds_of_mod / unique_pred_of_not_mod: the in-degree dichotomy of the Collatz graph (in-degree 2 exactly on residue 4 mod 6, otherwise 1).",
-      "odd_pred_eq / preimage_collatz_eq_pair / preimage_collatz_eq_singleton / indegree_eq_two / indegree_eq_one: the EXACT predecessor sets and precise in-degree — the odd predecessor of m ≡ 4 (mod 6) is exactly (m-1)/3, so the full Collatz preimage is {2m, (m-1)/3} (in-degree exactly 2 via Set.ncard_pair) and otherwise {2m} (in-degree exactly 1). Sharpens the qualitative 'at least two'/'unique' dichotomy to exact set equalities and a numeric in-degree.",
-      "reaches_one_of_collatz: backward closure of the basin of 1 — predecessors of basin elements are basin elements — and the set-level corollary basin_closed_under_pred.",
-      "basin_infinite: an unconditional proof that the set of numbers reaching 1 is infinite, via the injection k ↦ 2^(k+1).",
-      "indegree_eq_two_iff / branch_vertices_eq / branch_count / branch_vertices_infinite: a verified DENSITY result for the Collatz graph. Bridges in-degree to arithmetic (a vertex has in-degree exactly 2 iff m ≡ 4 mod 6), identifies the branch vertices with the progression {6j+4}, and counts them exactly: precisely k branch vertices lie below 6k, so in-degree-2 vertices have density exactly 1/6. Unconditional (independent of the Collatz conjecture), proved via an injective enumeration j ↦ 6j+4 and Finset.card_image_of_injective."
+      "reachesOne_collatz_iff: one-step invariance of the reaching set — n reaches 1 iff collatz n does (both directions, the forward base case n=1 handled via collatz 1 = 4 = 2²)",
+      "reachesOne_two_mul_iff / reachesOne_pow_two_mul_iff: doubling invariance as an equivalence (the parent file had only the forward closure direction)",
+      "oddPart and its lemmas: oddPart n = ordCompl[2] n is odd and positive for n ≥ 1, with the factorization 2^v₂(n)·oddPart n = n",
+      "collatz_reduces_to_odd: the headline equivalence — the Collatz conjecture for all n ≥ 1 holds iff it holds for all odd n ≥ 1",
+      "collatz_counterexample_odd: contrapositive — any Collatz counterexample implies an odd counterexample"
     ]
   },
   "overview": {
-    "historicalContext": "The Collatz conjecture asks whether every positive integer reaches 1 under the map $n \\mapsto n/2$ ($n$ even) or $n \\mapsto 3n+1$ ($n$ odd). The conjecture concerns the *forward* orbit of each starting value. A complementary viewpoint studies the *backward* orbit: the Collatz graph, whose vertices are the positive integers and whose edges point from $n$ to $\\mathrm{collatz}(n)$. Reading these edges backwards turns the conjecture into a reachability statement — the conjecture holds iff every vertex lies in the *basin* of 1, the set of vertices from which 1 is reachable. The backward map is set-valued: a vertex $m$ has the always-present even predecessor $2m$ and, conditionally, an odd predecessor. Terras's 1976 density argument and the classical 'Collatz tree' both exploit this backward branching structure. This entry isolates and fully verifies the elementary combinatorial core of that structure.",
-    "problemStatement": "Describe the backward dynamics of the Collatz map: (1) characterize exactly the preimage $\\{a : \\mathrm{collatz}(a) = m\\}$ of each $m$; (2) determine when $m$ has more than one predecessor (the branching of the Collatz graph); (3) show the basin of 1 is closed under taking predecessors; and (4) show the basin of 1 is infinite — all unconditionally, without assuming the Collatz conjecture.",
-    "proofStrategy": "Reuse the parent file's `collatz`, `collatzIter`, and `ReachesOne` definitions. The preimage characterization is a parity case split on $a$ closed by `omega` (which handles the `/2` and `%2` reasoning natively). The branching law reduces, via the characterization, to the arithmetic fact that $\\{3a+1 : a\\text{ odd}\\} = \\{m : m \\equiv 4 \\pmod 6\\}$, again discharged by `omega` with an explicit witness. Backward closure peels one Collatz step with `Function.iterate_succ_apply`. Infinitude uses `Set.infinite_of_injective_forall_mem` with the injection $k \\mapsto 2^{k+1}$, whose image lies in the basin by the parent's `pow_two_reaches_one`.",
+    "historicalContext": "The Collatz conjecture (1937, Lothar Collatz) asks whether iterating n ↦ n/2 (n even), n ↦ 3n+1 (n odd) always reaches 1. It is unsolved. A standard first observation in the literature is that the problem only needs to be settled for odd inputs: an even number simply halves until an odd number is reached, so its fate is determined by that odd number. This entry formalizes that reduction rigorously in Lean 4. The gallery's other Collatz entries cover powers of two (parent collatz-structured), cycle exclusion (collatz-cycles family), and stopping-time asymptotics (collatz-structured-oq-03); the odd reduction — equivalence of the conjecture with its odd restriction — was not previously formalized.",
+    "problemStatement": "Let ReachesOne(n) mean some Collatz iterate of n equals 1. Show that (∀ n ≥ 1, ReachesOne n) is equivalent to (∀ odd m ≥ 1, ReachesOne m), so the Collatz conjecture reduces to the odd case. The conjecture itself is left open.",
+    "proofStrategy": "The reaching set S = {n | ReachesOne n} is invariant under one step of the dynamics in both directions: forward (drop the first iterate, with the n=1 base case using collatz 1 = 4 = 2²) and backward (prepend a step). This gives reachesOne_collatz_iff. Specializing to even inputs, collatz(2n) = n yields ReachesOne (2n) ↔ ReachesOne n, and induction lifts this to ReachesOne (2^m · n) ↔ ReachesOne n. Finally, writing n = 2^v₂(n) · oddPart n via Mathlib's ordProj/ordCompl factorization, with oddPart n odd and positive, the equivalence ReachesOne n ↔ ReachesOne (oddPart n) follows, and the headline reduction collatz_reduces_to_odd is immediate.",
     "prerequisites": [
-      "Collatz map and iteration",
-      "Modular arithmetic (residues mod 6)",
-      "Preimages and set-valued inverse maps",
-      "Lean 4 omega tactic and Set.Infinite API"
+      "Collatz conjecture and iteration",
+      "Order/dynamics: invariant sets under iteration",
+      "2-adic valuation and the factorization n = 2^v₂(n) · (odd part)",
+      "Lean 4 / Mathlib Nat.factorization (ordProj/ordCompl) API"
     ],
     "keyInsights": [
-      "The Collatz preimage is cleanly two-valued. Splitting on the parity of a predecessor $a$: if $a$ is even then $\\mathrm{collatz}(a) = a/2 = m$ forces $a = 2m$; if $a$ is odd then $\\mathrm{collatz}(a) = 3a+1 = m$. There are no other cases, giving the exact characterization `collatz a = m ↔ a = 2m ∨ (a odd ∧ 3a+1 = m)`. Stating it with `a % 2 = 1` rather than `Odd a` keeps the whole proof inside `omega`.",
-      "The odd predecessor is governed entirely by a residue. Writing an odd $a = 2t+1$ gives $3a+1 = 6t+4$, so the odd predecessors of $m$ exist iff $m \\equiv 4 \\pmod 6$, and then the unique odd predecessor is $(m-1)/3 = 2(m/6)+1$. This is the precise branching rule of the Collatz tree.",
-      "In-degree dichotomy: every vertex has the even predecessor $2m$, so vertices with $m \\equiv 4 \\pmod 6$ have in-degree (at least) 2 and all others have in-degree exactly 1. The branching is sparse and completely explicit — one in every six residues branches.",
-      "Backward closure is the engine behind 'building the Collatz tree from 1 outward'. If $\\mathrm{collatz}(a) = m$ and $m$ reaches 1 in $k$ steps, then $a$ reaches 1 in $k+1$ steps: $\\mathrm{collatz}^{[k+1]}(a) = \\mathrm{collatz}^{[k]}(\\mathrm{collatz}(a)) = \\mathrm{collatz}^{[k]}(m) = 1$. Hence the basin of 1 is exactly the set generated from 1 by repeatedly applying the (set-valued) predecessor map.",
-      "Infinitude of the basin is unconditional and elementary: $2, 4, 8, 16, \\dots$ all reach 1, and $k \\mapsto 2^{k+1}$ is an injection into the basin. This needs nothing about whether *every* integer reaches 1 — it only asserts the component of 1 is infinite, which is a far weaker (and provable) statement than the Collatz conjecture.",
-      "These results frame the Collatz conjecture as a single clean question about the structure already proved here: the basin of 1 is an explicitly branching, backward-closed, infinite set — the conjecture is exactly the assertion that this set is *all* of $\\mathbb{N}_{\\geq 1}$."
+      "The reaching set is invariant under the Collatz map in BOTH directions: ReachesOne (collatz n) ↔ ReachesOne n. Backward is a free prepend; forward needs only the n=1 base case, where collatz 1 = 4 = 2² reaches 1 by the powers-of-two lemma.",
+      "Doubling invariance is an equivalence, not just closure: the parent file proved ReachesOne n → ReachesOne (2n); the reverse follows from forward one-step invariance plus collatz(2n) = n, completing ReachesOne (2n) ↔ ReachesOne n.",
+      "Stripping all factors of two preserves reachability: ReachesOne (2^m · n) ↔ ReachesOne n by induction on m. Hence n and its odd part oddPart n = ordCompl[2] n are equireachable.",
+      "The reduction is exact: the full conjecture is logically equivalent to its restriction to odd inputs, so a minimal counterexample (if any) may be taken odd. This halves the search space conceptually but does not bring the open problem closer to resolution.",
+      "The file is genuinely axiom-free: it imports the parent (which axiomatizes the conjecture) but no theorem here uses that axiom — a contrast with the axiom-bearing sibling entries (Terras density, Eliahou bound)."
     ]
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header",
-      "startLine": 1,
-      "endLine": 39,
-      "summary": "Docstring stating the four verified results (preimage characterization, branching law, backward closure, infinitude of the basin), the imports (Mathlib.Tactic and the parent CollatzStructured), the namespace CollatzBackward, and `open Collatz` to reuse the parent's collatz / collatzIter / ReachesOne definitions.",
-      "mathContext": "Sets up the backward-dynamics viewpoint: the Collatz graph with edges n → collatz(n), read in reverse. All results are unconditional structural facts about the component of 1."
+      "id": "one-step",
+      "title": "One-step invariance of the reaching set",
+      "summary": "ReachesOne (collatz n) ↔ ReachesOne n, via backward (prepend) and forward (drop, n=1 base case) directions",
+      "startLine": 55,
+      "endLine": 98,
+      "mathContext": "The set of numbers reaching 1 is invariant under the Collatz map in both directions. The forward base case n=1 uses collatz 1 = 4 = 2²."
     },
     {
-      "id": "part-i-preimage",
-      "title": "Part I: Exact Preimage Characterization",
-      "startLine": 41,
-      "endLine": 75,
-      "summary": "`collatz_eq_iff`: collatz a = m ↔ a = 2m ∨ (a%2=1 ∧ 3a+1=m), proved by `split_ifs` on the parity of a and `omega`. `preimage_collatz` re-expresses this as the explicit set collatz⁻¹'{m}. `even_pred` records that 2m always maps to m.",
-      "mathContext": "A predecessor a of m is even (then a = 2m) or odd (then 3a+1 = m). These two cases are exhaustive and mutually exclusive, giving the complete fiber of the Collatz map over m."
+      "id": "doubling",
+      "title": "Doubling and power-of-two invariance",
+      "summary": "ReachesOne (2·n) ↔ ReachesOne n and ReachesOne (2^m·n) ↔ ReachesOne n",
+      "startLine": 100,
+      "endLine": 130,
+      "mathContext": "collatz(2n) = n composed with one-step invariance gives the reverse of the parent's doubling closure; induction lifts to arbitrary powers of two."
     },
     {
-      "id": "part-ii-branching",
-      "title": "Part II: The Branching Law",
-      "startLine": 77,
-      "endLine": 108,
-      "summary": "`odd_pred_exists_iff`: m has an odd predecessor iff m ≡ 4 (mod 6), with explicit witness 2·(m/6)+1. `two_preds_of_mod`: when m ≡ 4 (mod 6) there are two distinct predecessors (even 2m and the odd one). `unique_pred_of_not_mod`: otherwise 2m is the only predecessor.",
-      "mathContext": "The Collatz graph branches exactly at residue 4 mod 6: in-degree 2 there, in-degree 1 elsewhere. This is the precise combinatorial shape of the backward Collatz tree."
+      "id": "odd-part",
+      "title": "The odd part and equireachability",
+      "summary": "oddPart n = ordCompl[2] n is odd and positive; n = 2^v₂(n)·oddPart n; ReachesOne (oddPart n) ↔ ReachesOne n",
+      "startLine": 132,
+      "endLine": 168,
+      "mathContext": "Mathlib's 2-adic factorization splits n into its 2-power part and odd part; reachability is invariant under removing the 2-power part."
     },
     {
-      "id": "part-iii-closure",
-      "title": "Part III: Backward Closure of the Basin",
-      "startLine": 110,
-      "endLine": 138,
-      "summary": "`reaches_one_of_collatz`: if collatz a = m and m reaches 1, so does a (one extra step via Function.iterate_succ_apply). `reaches_one_odd_pred`: the odd-predecessor specialization. `basin_closed_under_pred`: collatz⁻¹'(basin) ⊆ basin.",
-      "mathContext": "The basin of 1 is closed under taking predecessors, so it is exactly the set generated from 1 by the set-valued backward map — the Collatz tree rooted at 1."
-    },
-    {
-      "id": "part-iv-infinite",
-      "title": "Part IV: The Basin of 1 is Infinite",
-      "startLine": 140,
-      "endLine": 157,
-      "summary": "`basin_infinite`: {n | ReachesOne n}.Infinite, via Set.infinite_of_injective_forall_mem with the injection k ↦ 2^(k+1) (injective by Nat.pow_right_injective; image in the basin by the parent's pow_two_reaches_one).",
-      "mathContext": "The component of 1 is infinite unconditionally: all powers of two reach 1. This is a provable lower bound on the basin, far weaker than the (open) claim that the basin is all of ℕ≥1."
-    },
-    {
-      "id": "part-v-examples",
-      "title": "Part V: Computed Examples",
-      "startLine": 159,
-      "endLine": 176,
-      "summary": "Small concrete instances verified by `decide`: predecessors of 16 (32 and 5, since 16 ≡ 4 mod 6), of 10 (20 and 3), and the single predecessor 16 of 8 (8 ≢ 4 mod 6).",
-      "mathContext": "Illustrates the branching law on small numbers: 16 and 10 branch (two predecessors each), 8 does not (only its even predecessor)."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 178,
-      "endLine": 195,
-      "summary": "Recapitulates the five proved results, emphasizes their unconditional nature, and frames the open Collatz conjecture as the single remaining question of whether the basin of 1 is all of ℕ≥1.",
-      "mathContext": "The entry reduces the conjecture to a statement about the explicitly-described basin: branching, backward-closed, infinite — is it everything?"
+      "id": "reduction",
+      "title": "Reduction to the odd case",
+      "summary": "collatz_reduces_to_odd and collatz_counterexample_odd",
+      "startLine": 170,
+      "endLine": 183,
+      "mathContext": "The conjecture for all n ≥ 1 is equivalent to the conjecture for odd n ≥ 1; counterexamples may be taken odd."
     }
   ],
   "conclusion": {
-    "summary": "The file gives a complete, axiom-free description of the backward Collatz dynamics: the exact preimage of each m (even predecessor 2m plus an odd predecessor iff m ≡ 4 mod 6), the in-degree dichotomy of the Collatz graph, backward closure of the basin of 1, and infinitude of that basin. Every theorem is verified with 0 axioms and 0 sorries and is independent of the Collatz conjecture.",
-    "implications": "**1. Reformulation of the conjecture.** Together the results describe the basin of 1 as an explicitly branching (in-degree 2 exactly on residue 4 mod 6), backward-closed, infinite subset of ℕ. The Collatz conjecture is precisely the assertion that this subset equals ℕ≥1 — a single set-equality question about a fully characterized object.\n\n**2. The Collatz tree, made precise.** `reaches_one_of_collatz` plus the preimage law give the standard 'grow the tree from 1' construction a verified foundation: starting from 1, repeatedly adjoin the even predecessor 2m of every node and, when m ≡ 4 mod 6, the odd predecessor too. Every node so produced provably reaches 1.\n\n**3. Density beachhead.** The branching law is the elementary input to Terras-style density arguments (cf. the sibling entry collatz-structured-oq-03): one residue class in six branches, so the backward tree grows, and counting tree nodes up to N lower-bounds the density of the basin. This entry supplies the exact branching rule those arguments rely on.\n\n**4. Unconditional infinitude.** `basin_infinite` is a clean example of separating a provable sub-statement (the component of 1 is infinite) from the full open problem (the component is everything). It needs only powers of two.",
+    "summary": "With zero axioms, this entry reduces the Collatz conjecture to its restriction to odd inputs: (∀ n ≥ 1, ReachesOne n) ↔ (∀ odd m ≥ 1, ReachesOne m). The machinery is the two-directional invariance of the reaching set under the Collatz map and under multiplication by powers of two. The conjecture itself remains open.",
+    "implications": "The reduction is the standard first simplification of the Collatz problem and is now formalized. It shows the reaching set is a dynamically invariant set closed under the 2-adic structure, so any attack on Collatz may restrict to odd numbers without loss. The one-step and doubling equivalences are reusable building blocks for further structural work (e.g. the Syracuse/accelerated map on odd numbers). None of this lowers the difficulty of the open conjecture; it organizes the state space.",
     "openQuestions": [
-      "Can one prove an unconditional lower bound on |{n ≤ N : ReachesOne n}| by counting nodes of the backward Collatz tree using the mod-6 branching law? This would be a verified density result strictly weaker than the conjecture.",
-      "Is the basin of 1 closed under any *forward* operation beyond the trivial ones — e.g. can the preimage characterization be iterated to describe the 2-step predecessor structure (preimage of preimage) in closed residue-class form?",
-      "Does the in-degree dichotomy extend to a verified description of the Collatz graph as a tree (acyclicity of the basin minus the {1,4,2} cycle), connecting this entry to the cycle-exclusion results in the collatz-cycles family?"
+      "The Collatz conjecture itself: does every odd n ≥ 1 reach 1?",
+      "Can the reduction be pushed further (e.g. to n ≡ 3 mod 4, or to the Syracuse map) with a comparably clean Lean formalization?",
+      "Is there a Lean-formalizable invariant that distinguishes odd numbers by residue class and interacts well with this reduction?"
     ]
   },
   "mainTheorems": [
     {
-      "name": "collatz_eq_iff",
-      "type": "core",
-      "description": "Exact Collatz preimage: a maps to m iff a is the even predecessor 2m or an odd number with 3a+1 = m.",
-      "leanType": "∀ a m : ℕ, collatz a = m ↔ a = 2 * m ∨ (a % 2 = 1 ∧ 3 * a + 1 = m)"
-    },
-    {
-      "name": "odd_pred_exists_iff",
-      "type": "core",
-      "description": "Branching law: m has an odd predecessor iff m ≡ 4 (mod 6).",
-      "leanType": "∀ m : ℕ, (∃ a, a % 2 = 1 ∧ 3 * a + 1 = m) ↔ m % 6 = 4"
-    },
-    {
-      "name": "two_preds_of_mod",
-      "type": "core",
-      "description": "When m ≡ 4 (mod 6), m has two distinct predecessors (the even 2m and an odd one).",
-      "leanType": "m % 6 = 4 → ∃ a b, a ≠ b ∧ collatz a = m ∧ collatz b = m"
-    },
-    {
-      "name": "unique_pred_of_not_mod",
+      "name": "reachesOne_collatz_iff",
       "type": "supporting",
-      "description": "When m ≢ 4 (mod 6), the only predecessor of m is the even predecessor 2m.",
-      "leanType": "m % 6 ≠ 4 → collatz a = m → a = 2 * m"
+      "description": "One-step invariance: n reaches 1 iff its Collatz successor does",
+      "leanType": "∀ n, ReachesOne (collatz n) ↔ ReachesOne n"
     },
     {
-      "name": "reaches_one_of_collatz",
-      "type": "core",
-      "description": "Backward closure: if collatz a = m and m reaches 1, then a reaches 1.",
-      "leanType": "collatz a = m → ReachesOne m → ReachesOne a"
-    },
-    {
-      "name": "basin_closed_under_pred",
+      "name": "reachesOne_pow_two_mul_iff",
       "type": "supporting",
-      "description": "The basin of 1 is closed under taking collatz-preimages.",
-      "leanType": "collatz ⁻¹' {n | ReachesOne n} ⊆ {n | ReachesOne n}"
+      "description": "Power-of-two invariance: 2^m·n reaches 1 iff n does",
+      "leanType": "∀ m n, ReachesOne (2 ^ m * n) ↔ ReachesOne n"
     },
     {
-      "name": "basin_infinite",
+      "name": "collatz_reduces_to_odd",
       "type": "core",
-      "description": "The set of numbers reaching 1 is infinite (contains every power of two).",
-      "leanType": "{n : ℕ | ReachesOne n}.Infinite"
+      "description": "The Collatz conjecture reduces to odd inputs: all n ≥ 1 reach 1 iff all odd n ≥ 1 do",
+      "leanType": "(∀ n, n ≥ 1 → ReachesOne n) ↔ (∀ m, m ≥ 1 → m % 2 = 1 → ReachesOne m)"
+    },
+    {
+      "name": "collatz_counterexample_odd",
+      "type": "core",
+      "description": "Any Collatz counterexample implies an odd counterexample",
+      "leanType": "(∃ n, n ≥ 1 ∧ ¬ ReachesOne n) → ∃ m, m ≥ 1 ∧ m % 2 = 1 ∧ ¬ ReachesOne m"
     }
   ],
   "crossReferences": [
     {
       "targetId": "collatz-structured",
       "relationship": "extends",
-      "description": "Parent proof establishes the forward Collatz facts (powers of two reach 1, closure under doubling) and the definitions collatz / collatzIter / ReachesOne reused here. This entry develops the complementary backward (preimage) structure."
+      "description": "The parent file defines the Collatz map, ReachesOne, the powers-of-two lemma, and doubling closure; this entry strengthens doubling closure to an equivalence and derives the odd reduction."
     },
     {
       "targetId": "collatz-structured-oq-03",
       "relationship": "related",
-      "description": "Studies the average stopping time and Terras's density-1 result. The mod-6 branching law proved here is the elementary combinatorial input to counting backward-tree nodes that underlies such density arguments."
+      "description": "Both study structural reductions of the Collatz problem; the stopping-time entry uses the 2-adic valuation for asymptotics, this entry uses it (via ordCompl) for the odd reduction."
     },
     {
       "targetId": "collatz-cycles",
       "relationship": "related",
-      "description": "Proves structural constraints on Collatz cycles (no fixed points, unique cycle {1,4,2}). The backward-closure and preimage structure here describe the acyclic tree part of the Collatz graph that complements the cycle analysis."
-    },
-    {
-      "targetId": "collatz-structured-oq-02",
-      "relationship": "related",
-      "description": "Derives algebraic constraints on cycle length via the halving inequality 2^M > 3^j. Both entries dissect the elementary arithmetic of the 3n+1 step from complementary angles (cycles vs. preimages)."
+      "description": "Cycle-exclusion results constrain periodic orbits; the odd reduction constrains where a counterexample could live (odd numbers), a complementary structural narrowing."
     }
   ],
   "references": [
     {
-      "text": "Lagarias, J. C. (1985). The 3x+1 problem and its generalizations. American Mathematical Monthly, 92(1), 3-23.",
+      "text": "Lagarias, J. C. (1985). The 3x+1 problem and its generalizations. American Mathematical Monthly, 92(1), 3-23. (States the standard reduction to odd inputs.)",
       "url": "https://en.wikipedia.org/wiki/Collatz_conjecture"
-    },
-    {
-      "text": "Terras, R. (1976). A stopping time problem on the positive integers. Acta Arithmetica, 30(3), 241-252.",
-      "url": "https://en.wikipedia.org/wiki/Collatz_conjecture#Stopping_time"
     },
     {
       "text": "Lagarias, J. C. (ed.) (2010). The Ultimate Challenge: The 3x+1 Problem. American Mathematical Society.",
@@ -233,18 +176,19 @@
   "leanFile": {
     "path": "Proofs/CollatzStructuredOQ01.lean",
     "imports": [
-      "Mathlib.Tactic",
+      "Mathlib",
       "Proofs.CollatzStructured"
     ],
-    "opens": [
-      "Collatz"
-    ],
-    "namespace": "CollatzBackward",
-    "lineCount": 452,
+    "opens": [],
+    "namespace": "Collatz",
+    "lineCount": 183,
     "axiomCount": 0,
-    "theoremCount": 33,
-    "definitionCount": 2,
-    "sorries": 0
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/CollatzStructured.lean"
+    ]
   },
   "sorries": 0
 }
