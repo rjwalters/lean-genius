@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-gcd-bezout",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
+    "range": { "startLine": 66, "endLine": 90 },
+    "type": "insight",
+    "title": "gcd(p,μ) Annihilates v via Bézout",
+    "content": "gcd_aeval_mulVec_eq_zero is the one piece of machinery used. By Bézout in K[X], gcd(p,μ) = a·p + b·μ. Applying aeval M and acting on v: gcd(M)·v = a(M)·(p(M)v) + b(M)·(μ(M)v). Since p(M)v = 0 (hypothesis) and μ(M) = 0 (minpoly.aeval), both terms vanish. The proof is a calc chain distributing aeval over +,· (map_add, map_mul) and converting matrix products into iterated mulVec (Matrix.mulVec_mulVec). Reproved here in current Mathlib syntax because the parent file no longer compiles.",
+    "mathContext": "$$\\gcd(p,\\mu) = a p + b \\mu \\implies \\gcd(M)v = a(M)\\,p(M)v + b(M)\\,\\mu(M)v = 0$$",
+    "significance": "key",
+    "relatedConcepts": ["Bézout", "EuclideanDomain.gcd_eq_gcd_ab", "minpoly.aeval", "Matrix.mulVec_mulVec"],
+    "prerequisites": ["Bézout for Euclidean domains", "aeval ring homomorphism"]
+  },
+  {
+    "id": "ann-gcd-unit",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
+    "range": { "startLine": 104, "endLine": 119 },
+    "type": "insight",
+    "title": "Irreducibility Forces gcd(p,μ) to be a Unit",
+    "content": "The crux: μ irreducible and μ∤p make d=gcd(p,μ) a unit. Since d∣μ, write μ=d·e; Irreducible.isUnit_or_isUnit gives IsUnit d or IsUnit e. If e is a unit, then d and μ are Associated, so μ∣d; combined with d∣p this yields μ∣p, contradicting μ∤p (which holds because deg p < deg μ = n and p≠0, via natDegree_le_of_dvd). Hence d is a unit. This is exactly the step that, in the general case, would instead require the irreducible-factor union-avoidance argument blocked by the parent's import conflict.",
+    "mathContext": "$$d \\mid \\mu\\ \\text{irreducible},\\ \\mu \\nmid p \\implies \\mathrm{IsUnit}\\,d$$",
+    "significance": "key",
+    "relatedConcepts": ["Irreducible.isUnit_or_isUnit", "Associated", "natDegree_le_of_dvd"],
+    "prerequisites": ["irreducible elements", "associated elements and divisibility"]
+  },
+  {
+    "id": "ann-invertible",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
+    "range": { "startLine": 120, "endLine": 130 },
+    "type": "insight",
+    "title": "A Unit Polynomial Gives an Invertible Matrix, Forcing v = 0",
+    "content": "Since d is a unit in K[X] and aeval M is a ring homomorphism, aeval M d is a unit of the matrix ring (IsUnit.map) — an invertible matrix u. From d(M)v = 0 we get v = (u⁻¹·u)·v = u⁻¹·(u·v) = u⁻¹·(d(M)v) = u⁻¹·0 = 0, contradicting v ≠ 0. The coercion of the unit is handled via Units.val to avoid the ↑u⁻¹ parsing ambiguity. Therefore no nonzero p of degree < n annihilates v, i.e. v is cyclic.",
+    "mathContext": "$$\\mathrm{IsUnit}\\,d \\Rightarrow \\mathrm{IsUnit}\\,(d(M)) \\Rightarrow d(M)v=0 \\Rightarrow v = u^{-1}(u v) = 0$$",
+    "significance": "key",
+    "relatedConcepts": ["IsUnit.map", "invertible matrix", "Units.val", "Matrix.one_mulVec"],
+    "prerequisites": ["ring homomorphisms preserve units", "matrix units act injectively"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
+    "range": { "startLine": 132, "endLine": 153 },
+    "type": "insight",
+    "title": "Nonderogatory Phrasing and Existence",
+    "content": "nonderogatory_irreducible_cyclic removes the explicit degree hypothesis: IsNonderogatory M means minpoly K M = M.charpoly, and charpoly_natDegree_eq_dim gives deg charpoly = card (Fin n) = n, so deg minpoly = n. exists_cyclic_of_nonderogatory_irreducible then produces a cyclic vector for n>0 by choosing any v ≠ 0 (Fin n → K is nontrivial via Function.nontrivial). Together these remove the parent's cyclic-vector axiom for every nonderogatory matrix with irreducible minimal polynomial.",
+    "mathContext": "$$\\text{nonderogatory} \\Rightarrow \\deg\\mu = n;\\quad n>0 \\Rightarrow \\exists v\\neq 0,\\ \\text{cyclic}$$",
+    "significance": "supporting",
+    "relatedConcepts": ["charpoly_natDegree_eq_dim", "Function.nontrivial", "exists_ne"],
+    "prerequisites": ["characteristic polynomial degree", "nontriviality of function spaces"]
+  }
+]

@@ -56,13 +56,29 @@ variable {G : SimpleGraph V}
 def GraphOrientation.isAcyclic (O : GraphOrientation G) : Prop :=
   ∃ (rank : V → ℕ), ∀ u v, O.arc u v → rank u < rank v
 
-/-- An arc (u,v) is dependent if for every ranking consistent with the
-    remaining arcs, we must have rank v ≤ rank u. This means reversing
-    the arc creates a directed cycle. -/
+/-- An arc (u,v) is dependent if reversing it creates a directed cycle.
+    Equivalently, there is already a directed path from `u` to `v` that uses
+    only the *other* arcs (the arc (u,v) itself is excluded). Reversing the
+    arc to (v,u) then closes a directed cycle `v → u ⇝ v`.
+
+    This reachability formulation is faithful to the intended meaning
+    ("reversing the arc creates a cycle"): an arc whose endpoints are already
+    connected by an alternate directed path is redundant and cannot be reversed
+    while preserving acyclicity. For finite acyclic orientations it is
+    equivalent to the rank formulation — the other arcs force `rank u < rank v`
+    for every consistent ranking iff such an alternate path exists.
+
+    Note: an earlier version of this file used the (backwards) condition
+    "every consistent ranking has `rank v ≤ rank u`", which is *vacuously false*
+    for every acyclic orientation (the global acyclic rank already witnesses
+    `rank u < rank v`). That collapsed `isRobustlyAcyclic` to `isAcyclic`,
+    making `admitsRobustAcyclicOrientation` trivially true for all finite
+    graphs and rendering the `cover_graph_characterization` and
+    `nesetril_rodl_counterexample` axioms unsound. The reachability definition
+    below fixes that. -/
 def GraphOrientation.hasDependentArc (O : GraphOrientation G) : Prop :=
   ∃ u v, O.arc u v ∧
-    ∀ (rank : V → ℕ), (∀ a b, O.arc a b → (a, b) ≠ (u, v) → rank a < rank b) →
-      rank v ≤ rank u
+    Relation.TransGen (fun a b => O.arc a b ∧ (a, b) ≠ (u, v)) u v
 
 /-- An orientation is robustly acyclic if it is acyclic and has no dependent arcs.
     Equivalently, every edge can be reversed without creating a directed cycle. -/
@@ -87,7 +103,9 @@ def emptyOrientation : GraphOrientation (⊥ : SimpleGraph V) where
 theorem empty_graph_robust : admitsRobustAcyclicOrientation (⊥ : SimpleGraph V) := by
   refine ⟨emptyOrientation, ?_, ?_⟩
   · exact ⟨fun _ => 0, fun _ _ h => absurd h id⟩
-  · intro ⟨_, _, h, _⟩; exact absurd h id
+  · -- No dependent arcs: there are no arcs at all (the existential's arc is `False`).
+    rintro ⟨_, _, h, _⟩
+    exact absurd h id
 
 /-
 ## Orientation from Linear Order
@@ -160,11 +178,23 @@ theorem cover_graph_admits_robust [PartialOrder V] [DecidableEq V] [Fintype V] [
   refine ⟨coverOrientation G hcover, ?_, ?_⟩
   · -- Acyclicity: the rank function is a witness
     exact ⟨posetRank, fun u v huv => posetRank_strictMono huv.lt⟩
-  · -- No dependent arcs: for every arc u ⋖ v, the rank function witnesses rank u < rank v
-    -- even when considering all other arcs
-    intro ⟨u, v, huv, hdep⟩
-    have hrank := hdep posetRank (fun a b hab _ => posetRank_strictMono hab.lt)
-    exact absurd (posetRank_strictMono huv.lt) (not_lt.mpr hrank)
+  · -- No dependent arcs: an alternate directed path `u ⇝ v` through the other
+    -- cover arcs would force an intermediate `w` with `u < w < v`, contradicting
+    -- that `v` covers `u`.
+    rintro ⟨u, v, huv, hpath⟩
+    -- Any path in the (sub-)cover relation strictly increases the order.
+    have lt_of : ∀ b, Relation.TransGen
+        (fun a b => (coverOrientation G hcover).arc a b ∧ (a, b) ≠ (u, v)) u b → u < b := by
+      intro b h
+      induction h with
+      | single hr => exact hr.1.lt
+      | tail _ hr ih => exact lt_trans ih hr.1.lt
+    cases hpath with
+    | single hr => exact hr.2 rfl
+    | tail h hr =>
+        rename_i w
+        -- `u < w` (path prefix) and `w < v` (last cover arc) contradict `u ⋖ v`.
+        exact huv.2 (lt_of w h) hr.1.lt
 
 /-
 ## Sufficient Condition: Bipartite Graphs
@@ -210,18 +240,26 @@ theorem bipartiteOrientation_acyclic (side : V → Bool)
 theorem bipartiteOrientation_robust (side : V → Bool)
     (hpart : ∀ u v, G.Adj u v → side u ≠ side v) :
     (bipartiteOrientation G side hpart).isRobustlyAcyclic := by
-  constructor
-  · exact bipartiteOrientation_acyclic side hpart
-  · intro ⟨u, v, ⟨_, hu, hv⟩, hdep⟩
-    -- hdep says: for ALL rankings consistent with other arcs, rank v ≤ rank u
-    -- We provide a ranking: false-side → 0, true-side → 1
-    -- All other arcs (a,b) have side a = false, side b = true, so rank a = 0 < 1 = rank b
-    -- But side u = false ⟹ rank u = 0, side v = true ⟹ rank v = 1
-    -- So hdep gives 1 ≤ 0, contradiction
-    have := hdep (fun w => if side w = false then 0 else 1) (by
-      intro a b ⟨_, ha, hb⟩ _
-      simp [ha, hb])
-    simp [hu, hv] at this
+  refine ⟨bipartiteOrientation_acyclic side hpart, ?_⟩
+  -- Every arc a → b has `side a = false` and `side b = true`. The head of any
+  -- directed path therefore lands on the true side; a path of length ≥ 2 would
+  -- need a middle vertex that is both true (as a head) and false (as a tail) — a
+  -- contradiction. A path of length 1 is the excluded arc itself.
+  rintro ⟨u, v, _harc, hpath⟩
+  have key : ∀ b, Relation.TransGen
+      (fun a b => (bipartiteOrientation G side hpart).arc a b ∧ (a, b) ≠ (u, v)) u b →
+      side b = true := by
+    intro b h
+    induction h with
+    | single hr => exact hr.1.2.2
+    | tail _ hr _ => exact hr.1.2.2
+  cases hpath with
+  | single hr => exact hr.2 rfl
+  | tail h hr =>
+      rename_i b
+      have h1 : side b = true := key b h
+      have h2 : side b = false := hr.1.2.1
+      simp [h1] at h2
 
 /-- Every bipartite graph admits a robustly acyclic orientation -/
 theorem bipartite_admits_robust (hbip : isBipartite' G) :
@@ -237,11 +275,161 @@ theorem bipartite_admits_robust (hbip : isBipartite' G) :
 def isCoverGraph (G : SimpleGraph V) : Prop :=
   ∃ (_ : PartialOrder V), isCoverGraphOf G
 
-/-- Pretzel-Brightwell Characterization (1985):
+/-
+## Pretzel-Brightwell Characterization (de-axiomatized)
+
+We now prove `cover_graph_characterization` directly. The key construction is the
+**reachability order** `reachOrder`: the reflexive-transitive closure of the arc
+relation of a robustly acyclic orientation `O`. Acyclicity makes this a partial
+order, and the "no dependent arc" condition makes `G` exactly the cover graph
+(Hasse diagram) of that order. The reverse implication (cover graph → robust) is
+`cover_graph_admits_robust`.
+-/
+
+/-- Along a directed path (`ReflTransGen` of the arcs), the acyclic rank is weakly
+    monotone. -/
+private theorem rank_le_of_rtg {O : GraphOrientation G} {rank : V → ℕ}
+    (hrank : ∀ a b, O.arc a b → rank a < rank b) {a b : V}
+    (h : Relation.ReflTransGen O.arc a b) : rank a ≤ rank b := by
+  induction h with
+  | refl => exact le_rfl
+  | tail _ hs ih => exact le_trans ih (le_of_lt (hrank _ _ hs))
+
+/-- Along a nonempty directed path (`TransGen` of the arcs), the acyclic rank is
+    strictly monotone. In particular such a path cannot be a cycle. -/
+private theorem rank_lt_of_tg {O : GraphOrientation G} {rank : V → ℕ}
+    (hrank : ∀ a b, O.arc a b → rank a < rank b) {a b : V}
+    (h : Relation.TransGen O.arc a b) : rank a < rank b := by
+  induction h with
+  | single hs => exact hrank _ _ hs
+  | tail _ hs ih => exact lt_trans ih (hrank _ _ hs)
+
+/-- A directed path whose endpoint has rank below `rank v` never uses the arc
+    `(u, v)`, so it lifts to a path in the relation with `(u, v)` excluded. -/
+private theorem lift_below {O : GraphOrientation G} {rank : V → ℕ}
+    (hrank : ∀ a b, O.arc a b → rank a < rank b) (u v : V) {a b : V}
+    (h : Relation.TransGen O.arc a b) :
+    rank b < rank v →
+      Relation.TransGen (fun x y => O.arc x y ∧ (x, y) ≠ (u, v)) a b := by
+  induction h with
+  | single hab =>
+      intro hb
+      refine Relation.TransGen.single ⟨hab, fun hc => ?_⟩
+      rw [Prod.mk.injEq] at hc
+      exact absurd (hc.2 ▸ hb) (lt_irrefl _)
+  | @tail c d hp hs ih =>
+      intro hb
+      have hcd : rank c < rank d := hrank _ _ hs
+      refine Relation.TransGen.tail (ih (lt_trans hcd hb)) ⟨hs, fun hc => ?_⟩
+      rw [Prod.mk.injEq] at hc
+      exact absurd (hc.2 ▸ hb) (lt_irrefl _)
+
+/-- A directed path whose start has rank above `rank u` never uses the arc
+    `(u, v)`, so it lifts to a path in the relation with `(u, v)` excluded. -/
+private theorem lift_above {O : GraphOrientation G} {rank : V → ℕ}
+    (hrank : ∀ a b, O.arc a b → rank a < rank b) (u v : V) {a b : V}
+    (h : Relation.TransGen O.arc a b) :
+    rank u < rank a →
+      Relation.TransGen (fun x y => O.arc x y ∧ (x, y) ≠ (u, v)) a b := by
+  induction h with
+  | single hab =>
+      intro ha
+      refine Relation.TransGen.single ⟨hab, fun hc => ?_⟩
+      rw [Prod.mk.injEq] at hc
+      exact absurd (hc.1 ▸ ha) (lt_irrefl _)
+  | @tail c d hp hs ih =>
+      intro ha
+      have hac : rank a < rank c := rank_lt_of_tg hrank hp
+      refine Relation.TransGen.tail (ih ha) ⟨hs, fun hc => ?_⟩
+      rw [Prod.mk.injEq] at hc
+      exact absurd (hc.1 ▸ (lt_trans ha hac)) (lt_irrefl _)
+
+/-- The **reachability order** of an acyclic orientation: `a ≤ b` iff there is a
+    directed path from `a` to `b`. Acyclicity gives antisymmetry. -/
+def reachOrder (O : GraphOrientation G) (hO : O.isAcyclic) : PartialOrder V where
+  le := Relation.ReflTransGen O.arc
+  le_refl _ := Relation.ReflTransGen.refl
+  le_trans _ _ _ hab hbc := Relation.ReflTransGen.trans hab hbc
+  le_antisymm a b hab hba := by
+    obtain ⟨rank, hrank⟩ := hO
+    by_contra hne
+    rcases Relation.reflTransGen_iff_eq_or_transGen.mp hab with h | h
+    · exact hne h.symm
+    · rcases Relation.reflTransGen_iff_eq_or_transGen.mp hba with h2 | h2
+      · exact hne h2
+      · exact absurd (lt_trans (rank_lt_of_tg hrank h) (rank_lt_of_tg hrank h2))
+          (lt_irrefl _)
+
+/-- **Pretzel-Brightwell Characterization (1985)**, now proved (no axiom):
     A finite graph admits a robustly acyclic orientation if and only if
-    it is a cover graph of some poset. -/
-axiom cover_graph_characterization [Fintype V] :
-  admitsRobustAcyclicOrientation G ↔ isCoverGraph G
+    it is a cover graph of some poset.
+
+    Forward: the reachability order `reachOrder` of a robust orientation makes `G`
+    its cover graph — each arc is a covering pair precisely because there is no
+    alternate directed path (no dependent arc).
+    Reverse: `cover_graph_admits_robust`. -/
+theorem cover_graph_characterization [Fintype V] :
+    admitsRobustAcyclicOrientation G ↔ isCoverGraph G := by
+  constructor
+  · -- Robust orientation ⟹ cover graph.
+    rintro ⟨O, hAcyc, hNoDep⟩
+    obtain ⟨rank, hrank⟩ := hAcyc
+    letI P : PartialOrder V := reachOrder O ⟨rank, hrank⟩
+    refine ⟨P, ?_⟩
+    have le_iff : ∀ a b : V, (a ≤ b) ↔ Relation.ReflTransGen O.arc a b :=
+      fun _ _ => Iff.rfl
+    have lt_iff : ∀ a b : V, (a < b) ↔ Relation.TransGen O.arc a b := by
+      intro a b
+      constructor
+      · intro hab
+        rcases Relation.reflTransGen_iff_eq_or_transGen.mp ((le_iff a b).mp hab.le)
+          with h | h
+        · exact absurd h.symm hab.ne
+        · exact h
+      · intro hab
+        refine lt_of_le_not_ge ((le_iff a b).mpr hab.to_reflTransGen) ?_
+        intro hba
+        exact absurd (lt_of_lt_of_le (rank_lt_of_tg hrank hab)
+          (rank_le_of_rtg hrank ((le_iff b a).mp hba))) (lt_irrefl _)
+    intro u v
+    constructor
+    · -- Edge ⟹ covering pair (in one direction or the other).
+      intro hadj
+      rcases O.covers u v hadj with harc | harc
+      · refine Or.inl ⟨(lt_iff u v).mpr (Relation.TransGen.single harc), ?_⟩
+        intro c hc hcv
+        have tuc : Relation.TransGen O.arc u c := (lt_iff u c).mp hc
+        have tcv : Relation.TransGen O.arc c v := (lt_iff c v).mp hcv
+        have p1 := lift_below hrank u v tuc (rank_lt_of_tg hrank tcv)
+        have p2 := lift_above hrank u v tcv (rank_lt_of_tg hrank tuc)
+        exact hNoDep ⟨u, v, harc, Relation.TransGen.trans p1 p2⟩
+      · refine Or.inr ⟨(lt_iff v u).mpr (Relation.TransGen.single harc), ?_⟩
+        intro c hc hcu
+        have tvc : Relation.TransGen O.arc v c := (lt_iff v c).mp hc
+        have tcu : Relation.TransGen O.arc c u := (lt_iff c u).mp hcu
+        have p1 := lift_below hrank v u tvc (rank_lt_of_tg hrank tcu)
+        have p2 := lift_above hrank v u tcu (rank_lt_of_tg hrank tvc)
+        exact hNoDep ⟨v, u, harc, Relation.TransGen.trans p1 p2⟩
+    · -- Covering pair ⟹ edge.
+      rintro (hcov | hcov)
+      · cases (lt_iff u v).mp hcov.1 with
+        | single h => exact O.respects u v h
+        | tail h hs =>
+            rename_i c
+            exact absurd ((lt_iff c v).mpr (Relation.TransGen.single hs))
+              (hcov.2 ((lt_iff u c).mpr h))
+      · cases (lt_iff v u).mp hcov.1 with
+        | single h => exact (O.respects v u h).symm
+        | tail h hs =>
+            rename_i c
+            exact absurd ((lt_iff c u).mpr (Relation.TransGen.single hs))
+              (hcov.2 ((lt_iff v c).mpr h))
+  · -- Cover graph ⟹ robust orientation.
+    rintro ⟨P, hP⟩
+    letI := P
+    letI : DecidableEq V := Classical.decEq V
+    letI : DecidableLT V := fun a b => Classical.propDecidable _
+    exact cover_graph_admits_robust hP
 
 /-- Fisher-Fraughnaugh-Langley-West (1997): If the chromatic number of G
     is less than its girth, then G admits a robustly acyclic orientation. -/
@@ -269,9 +457,11 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
 4. `bipartite_admits_robust` - Bipartite graphs admit robust orientations
 5. `posetRank_strictMono` - Rank function is strictly monotone on partial orders
 6. `cover_graph_admits_robust` - Cover graphs admit robust orientations
+7. `cover_graph_characterization` - Robust orientation ↔ cover graph
+   (de-axiomatized: forward via the reachability order `reachOrder`,
+    reverse via `cover_graph_admits_robust`)
 
 ### Axiomatized (deep results):
-6. `cover_graph_characterization` - Robust orientation ↔ cover graph
-7. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
-8. `nesetril_rodl_counterexample` - Counterexamples for all girths ≥ 3
+8. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
+9. `nesetril_rodl_counterexample` - Counterexamples for all girths ≥ 3
 -/

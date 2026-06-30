@@ -111,40 +111,40 @@
       "id": "fourier-mode-bounds",
       "title": "Fourier Mode Bounds",
       "startLine": 38,
-      "endLine": 64,
+      "endLine": 68,
       "summary": "Proved: unit norm, trivial bound <=2, zero mode is constant",
       "mathContext": "fourier n x lies on the unit circle, so differences are bounded by 2"
     },
     {
       "id": "interpolation",
       "title": "Real Analysis Interpolation",
-      "startLine": 66,
-      "endLine": 96,
+      "startLine": 69,
+      "endLine": 100,
       "summary": "Proved: rpow_interpolation via a = a^{1-t} * a^t and monotonicity",
       "mathContext": "Key analytic tool for deriving Holder bounds from trivial + Lipschitz bounds"
     },
     {
       "id": "summability",
       "title": "Weighted Coefficient Summability",
-      "startLine": 98,
-      "endLine": 120,
-      "summary": "Sorry: coefficient norms summable when beta > 1 (needs Z p-series)",
+      "startLine": 101,
+      "endLine": 140,
+      "summary": "Proved: summable_norm_fourierCoeff_of_decay — the coefficient norms are summable when β > 1, via the ℤ→ℕ decomposition and Real.summable_nat_rpow_inv (p-series).",
       "mathContext": "Reduces to Real.summable_nat_rpow_inv via Z -> N decomposition"
     },
     {
       "id": "holder-bound",
       "title": "Fourier Mode Holder Bound",
-      "startLine": 122,
-      "endLine": 158,
-      "summary": "Sorry: Lipschitz bound for Fourier modes; interpolation to Holder",
+      "startLine": 141,
+      "endLine": 231,
+      "summary": "Proved: fourier_lipschitz_bound (each fourier n is Lipschitz with constant 2π|n|/T) and fourier_holder_bound (interpolated to an α-Hölder bound via rpow_interpolation).",
       "mathContext": "Each fourier n is Lipschitz with constant 2pi|n|/T"
     },
     {
       "id": "main-theorem",
       "title": "Decay Implies Regularity",
-      "startLine": 160,
-      "endLine": 210,
-      "summary": "Sorry: main theorem assembling all ingredients via Fourier inversion",
+      "startLine": 232,
+      "endLine": 422,
+      "summary": "Proved: holderWith_of_dist_bound and the main decay_implies_regularity' — O(1/|n|^β) decay with β > α+1 implies the sum is α-Hölder, assembled via Fourier inversion (has_pointwise_sum_fourier_series_of_summable).",
       "mathContext": "The partial converse: O(1/|n|^beta) decay with beta > alpha+1 implies alpha-Holder"
     }
   ],

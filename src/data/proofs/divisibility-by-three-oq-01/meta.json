@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DivisibilityByThreeOQ01.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "modular-arithmetic",
       "three"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 1,
+    "assumptions": "Relies on Lean.ofReduceBool via native_decide. Numerous named deliverables — the multi-digit grouping rules (thirtyseven_dvd_base1000, ninetynine_dvd_base100, nineninenine_dvd_base1000, twentyseven_dvd_base1000), alternate-base rules (seven_dvd_octal, three_dvd_hex, five_dvd_hex, fifteen_dvd_hex, three_dvd_base7, six_dvd_base7), casting out nines/threes (casting_out_nines, casting_out_threes), the coprime composite-divisor rules (six/twelve/fifteen/eighteen/thirtysix/fortyfive/sixty/ninety_dvd_iff), and divisibility_rules_summary — discharge their base congruences via native_decide, which trusts the Lean compiler (Lean.ofReduceBool axiom). The general theorems (digitSum_dvd_iff, coprime_mul_dvd_iff, dvd_iff_dvd_mod, etc.) are axiom-free; only the concrete instances depend on ofReduceBool.",
     "lineCount": 550,
     "theoremCount": 56,
     "definitionCount": 1,

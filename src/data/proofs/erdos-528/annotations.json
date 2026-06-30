@@ -17,7 +17,11 @@
       "function type"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "integer lattices",
+      "type theory",
+      "Lean 4 function types"
+    ]
   },
   {
     "id": "ann-e528-neighbors",
@@ -37,7 +41,12 @@
       "lattice adjacency"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "integer lattices",
+      "metric geometry",
+      "absolute value on integers",
+      "Lean 4 predicates"
+    ]
   },
   {
     "id": "ann-e528-walk",
@@ -56,7 +65,11 @@
       "LatticePoint"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "sequences and finite indexing",
+      "Lean 4 function types",
+      "discrete walks"
+    ]
   },
   {
     "id": "ann-e528-saw",
@@ -76,7 +89,12 @@
       "polymer model"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "statistical mechanics",
+      "Lean 4 logical connectives"
+    ]
   },
   {
     "id": "ann-e528-sawcount",
@@ -96,7 +114,12 @@
       "exponential growth"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "enumerative combinatorics",
+      "computational complexity",
+      "decidability",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e528-submult",
@@ -116,7 +139,11 @@
       "Nat.le"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "inequalities",
+      "subadditive sequences"
+    ]
   },
   {
     "id": "ann-e528-limitexists",
@@ -137,7 +164,12 @@
       "Fekete's lemma"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "sequence limits",
+      "subadditive sequences",
+      "filters in Mathlib"
+    ]
   },
   {
     "id": "ann-e528-connective",
@@ -157,7 +189,11 @@
       "notation"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "classical logic",
+      "noncomputable definitions in Lean"
+    ]
   },
   {
     "id": "ann-e528-trivialbounds",
@@ -176,7 +212,11 @@
       "And.intro"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "real inequalities",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e528-kesten",
@@ -196,7 +236,11 @@
       "Real.div"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "probability theory",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e528-2dbounds",
@@ -216,7 +260,11 @@
       "two_d_bounds"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "generating functions",
+      "numerical analysis"
+    ]
   },
   {
     "id": "ann-e528-largek",
@@ -236,7 +284,11 @@
       "kesten_asymptotic"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "filters in Mathlib"
+    ]
   },
   {
     "id": "ann-e528-honeycomb",
@@ -256,6 +308,11 @@
       "parafermionic observables"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "complex analysis",
+      "conformal field theory",
+      "real square roots"
+    ]
   }
 ]

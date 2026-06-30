@@ -16,14 +16,18 @@
       "sumsets",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subsets of the natural numbers",
+      "sumsets A+B",
+      "asymptotic density of a set"
+    ]
   },
   {
     "id": "ann-e109-counting-fn",
     "proofId": "erdos-109",
     "range": {
-      "startLine": 48,
-      "endLine": 50
+      "startLine": 50,
+      "endLine": 53
     },
     "type": "definition",
     "title": "Counting Function",
@@ -35,13 +39,17 @@
       "density",
       "intervals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the counting function |A ∩ [1,n]|",
+      "cardinality of finite sets",
+      "density via counting in intervals"
+    ]
   },
   {
     "id": "ann-e109-upper-density",
     "proofId": "erdos-109",
     "range": {
-      "startLine": 52,
+      "startLine": 54,
       "endLine": 66
     },
     "type": "definition",
@@ -54,13 +62,17 @@
       "liminf",
       "asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limsup and liminf of a sequence",
+      "the ratio |A∩[1,n]|/n",
+      "upper and lower asymptotic density"
+    ]
   },
   {
     "id": "ann-e109-density-ordering",
     "proofId": "erdos-109",
     "range": {
-      "startLine": 68,
+      "startLine": 70,
       "endLine": 108
     },
     "type": "concept",
@@ -73,13 +85,17 @@
       "bounded sequences",
       "filters"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "liminf ≤ limsup for bounded sequences",
+      "filters / eventual behavior",
+      "comparing lower and upper density"
+    ]
   },
   {
     "id": "ann-e109-sumset",
     "proofId": "erdos-109",
     "range": {
-      "startLine": 112,
+      "startLine": 114,
       "endLine": 131
     },
     "type": "definition",
@@ -92,14 +108,18 @@
       "additive combinatorics",
       "pointwise operations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sumset A+B = {a+b}",
+      "additive combinatorics basics",
+      "pointwise set operations"
+    ]
   },
   {
     "id": "ann-e109-conjecture",
     "proofId": "erdos-109",
     "range": {
-      "startLine": 135,
-      "endLine": 158
+      "startLine": 145,
+      "endLine": 147
     },
     "type": "definition",
     "title": "The Erdős Sumset Conjecture",
@@ -111,14 +131,18 @@
       "density",
       "infinite sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sets of positive upper density",
+      "infinite sumsets B+C",
+      "the Erdős sumset conjecture statement"
+    ]
   },
   {
     "id": "ann-e109-axiom",
     "proofId": "erdos-109",
     "range": {
-      "startLine": 148,
-      "endLine": 158
+      "startLine": 156,
+      "endLine": 159
     },
     "type": "concept",
     "title": "Moreira-Richter-Robertson Theorem",
@@ -130,13 +154,17 @@
       "Furstenberg correspondence",
       "IP-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ergodic theory and measure-preserving systems",
+      "the Furstenberg correspondence principle",
+      "IP-sets (the Moreira–Richter–Robertson theorem)"
+    ]
   },
   {
     "id": "ann-e109-infinite-consequence",
     "proofId": "erdos-109",
     "range": {
-      "startLine": 162,
+      "startLine": 164,
       "endLine": 197
     },
     "type": "concept",
@@ -149,13 +177,17 @@
       "injection",
       "corollaries"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite sets and injections",
+      "the sumset conjecture",
+      "drawing corollaries from an existence theorem"
+    ]
   },
   {
     "id": "ann-e109-naturals-density",
     "proofId": "erdos-109",
     "range": {
-      "startLine": 226,
+      "startLine": 229,
       "endLine": 261
     },
     "type": "concept",
@@ -168,13 +200,17 @@
       "verification",
       "limsup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic density",
+      "the density of ℕ being 1",
+      "limsup of a constant-ish ratio"
+    ]
   },
   {
     "id": "ann-e109-even-example",
     "proofId": "erdos-109",
     "range": {
-      "startLine": 263,
+      "startLine": 265,
       "endLine": 298
     },
     "type": "concept",
@@ -187,6 +223,10 @@
       "examples",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the set of even numbers",
+      "computing its density (1/2)",
+      "worked density examples"
+    ]
   }
 ]

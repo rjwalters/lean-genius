@@ -54,7 +54,7 @@
       "startLine": 67,
       "endLine": 100
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Turán Numbers, Free Graph Counts, and Asymptotic Bound Definitions",
     "content": "**turanNumber** $\\text{ex}(n; k)$: maximum edges in an $n$-vertex graph avoiding all $k$-vertex forbidden subgraphs. Axiomatized.\n\n**countFreeGraphs** $(n, k)$: number of labeled $H$-free graphs on $n$ vertices where $|V(H)| = k$. Axiomatized.\n\n**HasOptimalBound** $f \\leq 2^{(1+o(1))g}$: $\\forall \\varepsilon > 0, \\exists N_0, \\forall n \\geq N_0: f(n) \\leq 2^{(1+\\varepsilon)g(n)}$.\n\n**ExceedsOptimalBound**: $\\exists c > 0$ with $f(n) \\geq 2^{(1+c)g(n)}$ for infinitely many $n$.\n\n**HasPolynomialBound** $f = 2^{O(g)}$: $\\exists C > 0, N_0$ with $f(n) \\leq 2^{C \\cdot g(n)}$ for $n \\geq N_0$.",
     "mathContext": "The conjecture $|\\{H\\text{-free graphs on } n \\text{ vertices}\\}| \\leq 2^{(1+o(1))\\text{ex}(n;H)}$ says the count is essentially $2^{\\text{ex}(n;H)}$. The trivial upper bound is $2^{\\binom{n}{2}}$ (all labeled graphs). For non-bipartite $H$: $\\text{ex}(n; H) = \\Theta(n^2)$, so $2^{\\text{ex}} = 2^{\\Theta(n^2)}$ — the bound says most of the $2^{\\binom{n}{2}}$ graphs are $H$-free. For bipartite $H$: $\\text{ex}(n; H) = O(n^{2-\\varepsilon})$ is subquadratic, so the bound would say far fewer graphs are $H$-free — and this is where it fails.",

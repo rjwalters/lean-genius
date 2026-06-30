@@ -1,0 +1,95 @@
+[
+  {
+    "id": "betahalf2-ann-header",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02",
+    "range": {
+      "startLine": 5,
+      "endLine": 51
+    },
+    "type": "context",
+    "title": "Half-Integer Beta Values from the Beta–Gamma Relation",
+    "content": "The π-driven companion to the parent's integer factorial closed form B(m,n) = (m−1)!(n−1)!/(m+n−1)!. Here the headline is the half-integer value B(1/2,1/2) = π, plus the next value B(3/2,3/2) = π/8. Mathlib provides the ingredients SEPARATELY — the Beta–Gamma relation B(u,v) = Γ(u)Γ(v)/Γ(u+v), the Gauss value Γ(1/2) = π^(1/2), the functional equation Γ(s+1) = s·Γ(s), and Γ(n+1) = n! — but never assembles them into these evaluations. The strategy is cpow recombination: multiply the two half-powers π^(1/2)·π^(1/2) back to π.",
+    "mathContext": "$B(u,v) = \\dfrac{\\Gamma(u)\\Gamma(v)}{\\Gamma(u+v)}$; goal $B(\\tfrac12,\\tfrac12)=\\pi$, $B(\\tfrac32,\\tfrac32)=\\tfrac{\\pi}{8}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Euler Beta function",
+      "Beta–Gamma relation",
+      "Gauss value Γ(1/2)=√π",
+      "Gamma functional equation",
+      "cpow recombination"
+    ],
+    "prerequisites": [
+      "the Beta and Gamma functions",
+      "complex powers (cpow)"
+    ]
+  },
+  {
+    "id": "betahalf2-ann-gausssq",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02",
+    "range": {
+      "startLine": 54,
+      "endLine": 68
+    },
+    "type": "technique",
+    "title": "The Squared Gauss Value Γ(1/2)² = π",
+    "content": "Builds the key recombination. piC_ne_zero records (π:ℂ) ≠ 0 (the base nonvanishing needed to combine cpow powers), and piC_half_sq proves π^(1/2)·π^(1/2) = π via Complex.cpow_add and cpow_one (½+½ = 1). gamma_half_sq then substitutes the Gauss value Γ(1/2) = π^(1/2) into Γ(1/2)·Γ(1/2) and recombines the two half-powers to π. This squared value is exactly what the Beta–Gamma relation needs at u = v = 1/2.",
+    "mathContext": "$\\pi^{1/2}\\cdot\\pi^{1/2} = \\pi^{1/2+1/2} = \\pi$, so $\\Gamma(\\tfrac12)^2 = \\pi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.cpow_add",
+      "Gauss value",
+      "nonvanishing base",
+      "half-power recombination"
+    ],
+    "prerequisites": [
+      "cpow arithmetic",
+      "Γ(1/2)=π^(1/2)"
+    ]
+  },
+  {
+    "id": "betahalf2-ann-headline",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02",
+    "range": {
+      "startLine": 69,
+      "endLine": 75
+    },
+    "type": "insight",
+    "title": "The Headline Value B(1/2,1/2) = π",
+    "content": "betaIntegral_half_half applies the Beta–Gamma relation at u = v = 1/2: B(1/2,1/2) = Γ(1/2)Γ(1/2)/Γ(1). It rewrites 1/2 + 1/2 = 1, collapses Γ(1) = 1, and closes with the squared Gauss value gamma_half_sq, giving B(1/2,1/2) = π. This is the central half-integer Beta value, the same π that appears as the area of the arcsine density (compare area-of-circle-oq-07-oq-03-oq-02).",
+    "mathContext": "$B(\\tfrac12,\\tfrac12) = \\dfrac{\\Gamma(\\tfrac12)^2}{\\Gamma(1)} = \\dfrac{\\pi}{1} = \\pi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Beta–Gamma relation",
+      "Γ(1)=1",
+      "squared Gauss value",
+      "central Beta value"
+    ],
+    "prerequisites": [
+      "the Beta–Gamma relation",
+      "the squared Gauss value"
+    ]
+  },
+  {
+    "id": "betahalf2-ann-recurrence",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02",
+    "range": {
+      "startLine": 76,
+      "endLine": 99
+    },
+    "type": "insight",
+    "title": "One Recurrence Step: B(3/2,3/2) = π/8",
+    "content": "Shows the half-integer ladder climbing by one step of the functional equation. gamma_three_half computes Γ(3/2) = (1/2)·Γ(1/2) from Gamma_add_one. betaIntegral_three_half_three_half then applies the Beta–Gamma split at u = v = 3/2: B(3/2,3/2) = Γ(3/2)²/Γ(3), with Γ(3) = 2! = 2, substitutes Γ(3/2) = ½·π^(1/2), recombines the half-powers as before, and finishes with ring arithmetic: (½·√π)²/2 = (π/4)/2 = π/8.",
+    "mathContext": "$\\Gamma(\\tfrac32) = \\tfrac12\\Gamma(\\tfrac12)$, so $B(\\tfrac32,\\tfrac32) = \\dfrac{\\Gamma(\\tfrac32)^2}{\\Gamma(3)} = \\dfrac{(\\tfrac12)^2\\pi}{2} = \\dfrac{\\pi}{8}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gamma functional equation Γ(s+1)=s·Γ(s)",
+      "Γ(3)=2!",
+      "half-integer ladder",
+      "ring arithmetic"
+    ],
+    "prerequisites": [
+      "the squared Gauss value",
+      "Gamma_add_one"
+    ]
+  }
+]

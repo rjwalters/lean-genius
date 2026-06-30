@@ -2,11 +2,11 @@
   "id": "divisibility-rules-oq-01",
   "title": "Divisibility Rules OQ-01: Extensions with Truncation, Grouping, and Casting Out Nines",
   "slug": "divisibility-rules-oq-01",
-  "description": "A self-contained extension of the divisibility rules gallery adding: the divisibility-by-11 alternating digit sum rule (fully proved), the divisibility-by-13 truncation method (add 4 times the last digit), multi-digit grouping rules for 37, 27, 99, 101, and 999 (sum of consecutive k-digit blocks), a general last-k-digit framework unifying all power-of-2 and power-of-5 rules, divisibility by 16 and 32 via last 4 and 5 decimal digits, casting out nines for both addition and multiplication, and an error-detection theorem. All results are fully machine-verified.",
+  "description": "A self-contained extension of the divisibility rules gallery adding: the divisibility-by-11 alternating digit sum rule (fully proved), the divisibility-by-13 truncation method (add 4 times the last digit), multi-digit grouping rules for 37, 27, 99, 101, and 999 (sum of consecutive k-digit blocks), a general last-k-digit framework unifying all power-of-2 and power-of-5 rules, divisibility by 16 and 32 via last 4 and 5 decimal digits, casting out nines for both addition and multiplication, and an error-detection theorem. All results are machine-checked; the rules discharge their base-side conditions via native_decide, so the proof depends on Lean.ofReduceBool.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DivisibilityRulesOQ01.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "elementary-number-theory",
       "extensions"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 1,
+    "assumptions": "Depends on Lean.ofReduceBool: the headline divisibility rules (three_dvd_iff, nine_dvd_iff, thirtyseven_dvd_iff, twentyseven_dvd_iff, nineninenine_dvd_iff, ninetynine_dvd_iff, onehundredone_dvd_iff, the cross-base hex/octal rules, etc.) and the oq01_rules_verification summary discharge their base-coprimality/modulus side conditions via `by native_decide`, which trusts the compiler's kernel reduction (#print axioms lists Lean.ofReduceBool). No literal axiom declarations and no structure-encoded assumptions (leanFile.axiomCount remains 0).",
     "lineCount": 412,
     "theoremCount": 42,
     "definitionCount": 2,

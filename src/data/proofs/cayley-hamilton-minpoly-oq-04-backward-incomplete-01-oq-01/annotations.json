@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-cyc-oq0401-zero",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-01",
+    "range": { "startLine": 40, "endLine": 48 },
+    "type": "concept",
+    "title": "The zero vector is never cyclic",
+    "content": "The one new obstruction needed to close the characterization: for $n > 0$, the zero vector $0$ is not a cyclic vector for $M$. A cyclic vector $v$ requires that no nonzero polynomial of degree $< n$ annihilate $v$; but the constant polynomial $1$ is nonzero, has degree $0 < n$, and trivially annihilates $0$ (since $(\\mathrm{aeval}\\,M\\,1)\\cdot 0 = 0$). So $1$ witnesses the failure of the cyclic condition at $v = 0$.",
+    "mathContext": "$\\deg 1 = 0 < n$ and $(\\mathrm{aeval}\\,M\\,1)\\cdot 0 = 0 \\Rightarrow \\neg\\,\\mathrm{IsCyclicVector}\\,M\\,0$",
+    "significance": "key",
+    "relatedConcepts": ["cyclic vector", "annihilating polynomial", "minimal polynomial", "constant polynomial"],
+    "prerequisites": ["IsCyclicVector", "aeval of matrices", "natDegree_one"]
+  },
+  {
+    "id": "ann-cyc-oq0401-iff",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-01",
+    "range": { "startLine": 50, "endLine": 60 },
+    "type": "insight",
+    "title": "Full characterization: cyclic iff nonzero",
+    "content": "The headline sharpening: when $\\mathrm{minpoly}\\,K\\,M$ is irreducible of full degree $n$, a vector is cyclic for $M$ iff it is nonzero. The forward direction is the contrapositive of zero_not_cyclic; the backward direction is the parent's one-directional theorem cyclic_of_irreducible_minpoly (every nonzero vector is cyclic). Combining them turns a one-way implication into an exact iff — the matrix is 'uniformly cyclic', with the cyclic locus as large as it could possibly be.",
+    "mathContext": "$\\mathrm{minpoly}\\,K\\,M$ irreducible, $\\deg = n > 0 \\Rightarrow (\\mathrm{IsCyclicVector}\\,M\\,v \\iff v \\ne 0)$",
+    "significance": "key",
+    "relatedConcepts": ["cyclic vector characterization", "irreducible minimal polynomial", "uniformly cyclic operator", "companion matrix"],
+    "prerequisites": ["cyclic_of_irreducible_minpoly (parent)", "zero_not_cyclic"]
+  },
+  {
+    "id": "ann-cyc-oq0401-set",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-01",
+    "range": { "startLine": 62, "endLine": 68 },
+    "type": "concept",
+    "title": "The cyclic locus is the punctured space",
+    "content": "Repackaging the iff at the level of sets: the set of cyclic vectors equals $\\{0\\}^c$, the complement of the origin — the punctured space $K^n \\setminus \\{0\\}$. The proof is a pointwise $\\mathrm{ext}$ reducing membership to cyclic_iff_ne_zero. This is the geometric statement of 'uniform cyclicity': the cyclic locus is everything except the unavoidable single excluded point.",
+    "mathContext": "$\\{v : \\mathrm{IsCyclicVector}\\,M\\,v\\} = \\{0\\}^c = K^n \\setminus \\{0\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["punctured affine space", "set complement", "Zariski-open locus"],
+    "prerequisites": ["cyclic_iff_ne_zero", "Set.ext"]
+  },
+  {
+    "id": "ann-cyc-oq0401-count",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-01",
+    "range": { "startLine": 70, "endLine": 80 },
+    "type": "insight",
+    "title": "Exact count over a finite field: qⁿ − 1",
+    "content": "The enumerative payoff: over a finite field $K$ with $q = |K|$, a matrix with irreducible minimal polynomial of full degree $n$ has exactly $q^n - 1$ cyclic vectors — every one of the $q^n$ vectors except the origin. The count follows by rewriting the cyclic set as $\\{0\\}^c$ and computing $|K^n| - |\\{0\\}| = q^n - 1$ via Fintype.card_fun and card_compl. This is the sharp form: the cyclic-vector count attains its maximum possible value.",
+    "mathContext": "$|\\{v : \\mathrm{IsCyclicVector}\\,M\\,v\\}| = |K|^n - 1 = q^n - 1$",
+    "significance": "key",
+    "relatedConcepts": ["finite field enumeration", "counting cyclic vectors", "Set.ncard", "Fintype.card_fun"],
+    "prerequisites": ["setOf_cyclic_eq_compl_zero", "Fintype.card_fun", "Set.ncard_eq_toFinset_card'"]
+  }
+]

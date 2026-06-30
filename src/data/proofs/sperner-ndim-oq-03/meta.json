@@ -135,7 +135,10 @@
     "summary": "This formalization provides the complete bridge from n-dimensional Sperner lemma to Brouwer fixed point theorem via displacement coloring. All results are fully verified with 0 axioms and 0 sorries. The approximate fixed point theorem uses UC + Sperner + displacement transfer, and Brouwer follows by compact minimization.",
     "implications": "Combined with the completion of sperner_ndim (1 sorry remaining), this gives an entirely combinatorial path to Brouwer's FPT that avoids the 2 axioms in BrouwerFixedPoint.lean (no-retraction and retraction-construction). The displacement coloring approach is more elementary and computational than the algebraic topology route.",
     "openQuestions": [
-      "Prove sperner_ndim in SpernerNDim.lean (1 sorry) to complete the full Sperner-to-Brouwer pipeline"
+      "Prove sperner_ndim in SpernerNDim.lean (1 sorry) to complete the full Sperner-to-Brouwer pipeline, discharging the lone hypothesis parameter that this file currently takes as a given.",
+      "Can the displacement-coloring bridge be pushed beyond the simplex to derive Brouwer's theorem for an arbitrary compact convex body, by composing brouwer_simplex with a homeomorphism onto the standard simplex (or a retraction argument)? This is the standard textbook extension but requires formalizing the convex-body-to-simplex transfer.",
+      "Does the same construction yield a constructive/computational fixed-point approximation algorithm (a Lean-executable version of the Scarf / Kuhn simplicial-subdivision pivoting method), turning the existence proof into an explicit ε-approximate fixed-point finder?",
+      "Can the compactness step in brouwer_simplex (Bolzano–Weierstrass extraction of a convergent subsequence) be replaced by an explicit modulus-of-continuity bound, removing the only non-constructive ingredient and yielding a fully constructive proof in the sense of Bishop?"
     ]
   },
   "crossReferences": [

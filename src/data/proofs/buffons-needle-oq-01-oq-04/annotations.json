@@ -75,7 +75,7 @@
       "startLine": 86,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Where Convexity Enters: the Factor of Two",
     "content": "A grid line that cuts a convex body meets its boundary in exactly two points, so the number of lines cutting K is half the number of boundary crossings. This 0-or-2 dichotomy is the sole imprint of convexity in the whole development. Because Mathlib v4.26.0 has no Convex.line_intersection_card_le_two bearer, and concreteSmoothExpectedCrossings is an integral model rather than a literal point count, the honest formalization encodes the halving definitionally: expectedLineCuts := crossings/2. buffon_coin_lineCuts then rewrites with the boundary-crossing formula and finishes by ring, yielding E[cutting lines] = perimeter/(πd). The nonnegativity lemma follows from div_nonneg.",
     "mathContext": "$\\operatorname{expectedLineCuts} = \\dfrac{\\text{crossings}}{2} = \\dfrac{\\operatorname{perimeter}(K)}{\\pi d}$ (each cutting line meets the convex boundary in exactly 2 points).",

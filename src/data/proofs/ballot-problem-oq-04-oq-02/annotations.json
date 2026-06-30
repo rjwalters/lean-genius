@@ -1,0 +1,81 @@
+[
+  {
+    "id": "ballot-oq0402-ann-header",
+    "proofId": "ballot-problem-oq-04-oq-02",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "context",
+    "title": "Why the Setoid Model Can't Be Counted",
+    "content": "The parent entry modelled a non-crossing partition of Fin n as its 'same block' equivalence relation, a Setoid (Fin n). That is fine for stating structural theory but fatal for counting: a Setoid is a Prop-valued relation, so the type of all setoids on Fin n is NOT a Fintype, and Fintype.card {s // IsNonCrossing s} is ill-typed. This entry ports non-crossing partitions to Mathlib's Finpartition (univ : Finset (Fin n)), which IS a Fintype, and proves the two presentations agree — making the Catalan-counting statement well-formed for the first time.",
+    "mathContext": "Setoid $(\\mathrm{Fin}\\,n)$ is not a Fintype; $\\mathrm{Finpartition}\\,(\\mathrm{univ})$ is. The bridge is $\\mathrm{Finpartition.ofSetoid}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "non-crossing partitions",
+      "Setoid vs Finpartition models",
+      "Fintype and cardinality",
+      "Catalan numbers",
+      "Bell numbers"
+    ],
+    "prerequisites": [
+      "equivalence relations as partitions",
+      "Fintype cardinality"
+    ]
+  },
+  {
+    "id": "ballot-oq0402-ann-model",
+    "proofId": "ballot-problem-oq-04-oq-02",
+    "range": { "startLine": 53, "endLine": 80 },
+    "type": "definition",
+    "title": "Non-Crossing on a Finpartition via the Same-Part Relation",
+    "content": "IsNonCrossingFp P phrases the parent's condition on a Finpartition P by replacing the setoid relation s x y with same-part membership y ∈ P.part x: whenever a < b < c < d with c ∈ P.part a (so a, c share a part) and d ∈ P.part b (so b, d share a part), the indices a, b must already share a part. Because all four quantifiers range over the Fintype Fin n and Finset membership is decidable, Lean infers Decidable (IsNonCrossingFp P) automatically, which is exactly what turns the subtype of non-crossing partitions into a Fintype.",
+    "mathContext": "$\\mathrm{IsNonCrossingFp}\\,P := \\forall a{<}b{<}c{<}d,\\ c\\in P.\\mathrm{part}\\,a \\to d\\in P.\\mathrm{part}\\,b \\to b\\in P.\\mathrm{part}\\,a$",
+    "significance": "Provides the decidable, Fintype-compatible model of non-crossing partitions that the bare setoid presentation lacked.",
+    "relatedConcepts": [
+      "Finpartition.part",
+      "decidable predicates",
+      "subtype Fintype"
+    ],
+    "prerequisites": [
+      "Finpartition and its parts",
+      "decidable finite quantifiers"
+    ]
+  },
+  {
+    "id": "ballot-oq0402-ann-agreement",
+    "proofId": "ballot-problem-oq-04-oq-02",
+    "range": { "startLine": 81, "endLine": 100 },
+    "type": "theorem",
+    "title": "The Two Models Agree (Two-Line Proof)",
+    "content": "isNonCrossingFp_ofSetoid_iff proves IsNonCrossingFp (Finpartition.ofSetoid s) ↔ IsNonCrossing s. Mathlib's mem_part_ofSetoid_iff_rel says b ∈ (ofSetoid s).part a ↔ s a b, i.e. the Finpartition same-part relation IS the setoid relation. Unfolding both non-crossing predicates and rewriting by this single lemma collapses them to the identical quantified formula — no combinatorial re-derivation. This is the faithfulness guarantee that the Finpartition port describes the same objects as the parent's setoid model.",
+    "mathContext": "$\\mathrm{IsNonCrossingFp}(\\mathrm{ofSetoid}\\,s) \\leftrightarrow \\mathrm{IsNonCrossing}\\,s$, via $b \\in (\\mathrm{ofSetoid}\\,s).\\mathrm{part}\\,a \\leftrightarrow s\\,a\\,b$",
+    "significance": "Certifies the Finpartition model is a faithful port of the parent's setoid model, so the count refers to genuine non-crossing partitions.",
+    "relatedConcepts": [
+      "Finpartition.ofSetoid",
+      "mem_part_ofSetoid_iff_rel",
+      "model equivalence"
+    ],
+    "prerequisites": [
+      "Finpartition.ofSetoid",
+      "rewriting under quantifiers"
+    ]
+  },
+  {
+    "id": "ballot-oq0402-ann-discriminator",
+    "proofId": "ballot-problem-oq-04-oq-02",
+    "range": { "startLine": 101, "endLine": 152 },
+    "type": "theorem",
+    "title": "n = 4: the First Crossing, as a Cardinality Drop",
+    "content": "For n ≤ 3 a crossing's four strictly increasing indices a < b < c < d cannot fit, so every partition is non-crossing and nonCrossingCount n = Fintype.card (Finpartition univ) (via Equiv.subtypeUnivEquiv). At n = 4 the families first diverge: crossing4 = Setoid.ker (·%2) is the parity partition {{0,2},{1,3}}, which crosses at 0 < 1 < 2 < 3 (0~2, 1~3, ¬0~1). By the agreement theorem its Finpartition fails IsNonCrossingFp, and Fintype.card_subtype_lt turns this single witness into the strict drop nonCrossingCount 4 < Fintype.card (Finpartition univ). This is the textbook catalan 4 = 14 < 15 = Bell 4 fact, now a verified theorem with an explicit crossing witness.",
+    "mathContext": "$\\mathrm{nonCrossingCount}\\,4 < \\#(\\mathrm{Finpartition}\\,\\mathrm{univ}) = \\mathrm{Bell}\\,4 = 15;\\ \\mathrm{catalan}\\,4 = 14$",
+    "significance": "Pins the catalan-vs-Bell divergence to an explicit, verified crossing partition rather than a numerical coincidence, locating the first nontrivial n for the non-crossing count.",
+    "relatedConcepts": [
+      "Setoid.ker",
+      "Fintype.card_subtype_lt",
+      "Catalan vs Bell numbers",
+      "crossing partition witness"
+    ],
+    "prerequisites": [
+      "Setoid.ker and parity classes",
+      "strict subtype cardinality"
+    ]
+  }
+]

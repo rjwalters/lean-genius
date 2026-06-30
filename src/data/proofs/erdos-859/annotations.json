@@ -302,7 +302,7 @@
       "startLine": 143,
       "endLine": 155
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Open Question",
     "content": "**Problem #859**: Is $d_t \\sim c_1/(\\log t)^{c_2}$ for constants $c_1, c_2 > 0$? This asks for a *precise* asymptotic—not just that $d_t$ is trapped between two powers of $\\log t$, but that the ratio $d_t \\cdot (\\log t)^{c_2} / c_1 \\to 1$. The formalization uses Mathlib's `IsEquivalent` (the `~[atTop]` notation) for asymptotic equivalence.",
     "mathContext": "$\\exists c_1, c_2 > 0 : d_t \\sim \\frac{c_1}{(\\log t)^{c_2}}$ as $t \\to \\infty$. Equivalently, $\\lim_{t \\to \\infty} \\frac{d_t \\cdot (\\log t)^{c_2}}{c_1} = 1$. This is encoded via $f \\sim_{\\mathrm{atTop}} g \\iff f - g = o(g)$.",
@@ -344,7 +344,7 @@
       "startLine": 160,
       "endLine": 164
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Sum of Divisors σ(n)",
     "content": "$\\sigma(n) = \\sum_{d \\mid n} d$ is the sum of all divisors of $n$. This is the maximum possible value representable as a divisor subset sum of $n$ (using all divisors). For $n = 12$: $\\sigma(12) = 1+2+3+4+6+12 = 28$. The function $\\sigma$ is multiplicative: $\\sigma(mn) = \\sigma(m)\\sigma(n)$ when $\\gcd(m,n) = 1$.",
     "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. For $n = p_1^{a_1} \\cdots p_k^{a_k}$: $\\sigma(n) = \\prod_{i=1}^k \\frac{p_i^{a_i+1} - 1}{p_i - 1}$. The condition $t \\le \\sigma(n)$ is necessary (but not sufficient) for $n \\in D_t$.",

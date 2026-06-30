@@ -34,7 +34,7 @@
     "title": "Namespace Setup and Real-Valued Term Non-Negativity",
     "content": "The namespace `BesselInequality` and the variable block fix `F` as a real `InnerProductSpace` so every theorem gets a uniform signature. The lemma `bessel_term_nonneg` states a one-line fact, $0 \\le \\langle v_i, x \\rangle^2$, but it does real work: every step downstream — summability, monotone partial sums, the bound on the tsum — depends on the term-wise non-negativity of the real squared coefficient. Over $\\mathbb{C}$ one would use $|\\langle v_i, x \\rangle|^2$ and `sq_abs`; over $\\mathbb{R}$ the value is already $\\ge 0$ via `sq_nonneg`. This term-wise non-negativity is also what justifies the move from `‖⟪v i, x⟫‖^2` (Mathlib's normalized form) to `⟪v i, x⟫^2` via `Real.norm_eq_abs` + `sq_abs`, a rewrite that recurs in `bessel_finite`, `bessel_summable`, and `bessel_inequality`.",
     "mathContext": "For a real orthonormal family $v$ in $F$ and any $x \\in F$, each Fourier coefficient $\\langle v_i, x \\rangle \\in \\mathbb{R}$, and so $\\langle v_i, x \\rangle^2 \\ge 0$. Bridge to Mathlib's normalized form: $\\|\\langle v_i, x \\rangle\\|^2 = |\\langle v_i, x \\rangle|^2 = \\langle v_i, x \\rangle^2$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Real.norm_eq_abs",
       "sq_abs",
@@ -54,7 +54,7 @@
       "startLine": 60,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Finite Bessel via the Pythagorean Residual",
     "content": "`bessel_finite` proves $\\sum_{i \\in s} \\langle v_i, x \\rangle^2 \\le \\|x\\|^2$ for any finite index set $s$. Conceptually the proof is the Pythagorean residual identity: setting $p_s = \\sum_{i \\in s} \\langle v_i, x \\rangle v_i$ (the orthogonal projection of $x$ onto the span of $\\{v_i\\}_{i \\in s}$), expanding $\\|x - p_s\\|^2 = \\|x\\|^2 - 2 \\langle x, p_s \\rangle + \\|p_s\\|^2$ and using orthonormality of $v$ collapses $\\langle x, p_s \\rangle = \\sum_{i \\in s} \\langle v_i, x \\rangle^2 = \\|p_s\\|^2$, leaving $\\|x - p_s\\|^2 = \\|x\\|^2 - \\sum_{i \\in s} \\langle v_i, x \\rangle^2$. Non-negativity of $\\|x - p_s\\|^2$ rearranges to Bessel. In Lean this is delegated to `Orthonormal.sum_inner_products_le`, which states the Mathlib normalized form $\\sum \\|\\langle v_i, x \\rangle\\|^2 \\le \\|x\\|^2$; the file rewrites `Real.norm_eq_abs` then `sq_abs` to drop the norm. The companion `bessel_partial_sums_mono` says the partial sums are monotone in $s \\subseteq t$, which combined with the bound supplies the hypothesis for monotone convergence in the next section.",
     "mathContext": "Pythagorean residual: $\\|x - \\sum_{i \\in s} \\langle v_i, x \\rangle v_i\\|^2 = \\|x\\|^2 - \\sum_{i \\in s} \\langle v_i, x \\rangle^2$. Non-negativity of the residual yields $\\sum_{i \\in s} \\langle v_i, x \\rangle^2 \\le \\|x\\|^2$. Equality holds iff $x$ lies in $\\mathrm{span}\\{v_i : i \\in s\\}$.",
@@ -78,7 +78,7 @@
       "startLine": 83,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Summability via Monotone Convergence",
     "content": "`bessel_summable` shows the unindexed Bessel series converges. The strategy is a textbook application of the monotone convergence principle for non-negative series: each term $\\langle v_i, x \\rangle^2 \\ge 0$, partial sums are monotone in the index set (`bessel_partial_sums_mono`), and they are uniformly bounded above by $\\|x\\|^2$ (`bessel_finite`). This is enough to invoke `Orthonormal.inner_products_summable` from Mathlib, which packages exactly this argument. `bessel_hasSum` is then a one-line corollary saying the series HasSum to its tsum, which downstream callers can chain into `HasSum.le_of_sum_le` style arguments without re-proving summability. The infinite Bessel inequality `bessel_inequality` immediately follows by passing to the tsum: a non-negative summable series whose finite truncations are bounded by $\\|x\\|^2$ has tsum at most $\\|x\\|^2$.",
     "mathContext": "Monotone convergence for series: if $a_i \\ge 0$ and $\\sum_{i \\in s} a_i \\le M$ for all finite $s$, then $\\sum_i a_i$ is summable and $\\sum_i^{\\infty} a_i \\le M$. Applied with $a_i = \\langle v_i, x \\rangle^2$ and $M = \\|x\\|^2$ this yields both summability and the infinite Bessel inequality.",
@@ -152,11 +152,11 @@
       "startLine": 135,
       "endLine": 161
     },
-    "type": "context",
+    "type": "concept",
     "title": "Cauchy–Schwarz as the One-Vector Bessel Inequality",
     "content": "The closing example explicitly demonstrates that classical Cauchy-Schwarz, $\\langle v, x \\rangle^2 \\le \\|v\\|^2 \\|x\\|^2$, is the singleton case of Bessel. For a unit vector $v$ ($\\|v\\| = 1$), the family $\\{v\\}$ indexed by `Fin 1` is orthonormal, and the finite Bessel sum collapses to a single term $\\langle v, x \\rangle^2 \\le \\|x\\|^2$. The orthonormality witness is built inline: the diagonal condition is $\\|v\\| = 1$, and the off-diagonal condition is vacuous on `Fin 1` since `Subsingleton.elim` shows any two indices in `Fin 1` are equal. This collapse — from a singleton orthonormal system to a single inner product bound — is the precise reason Bessel is often called the 'general Cauchy-Schwarz' in functional analysis: it bounds the orthogonal projection on each axis of an arbitrary orthonormal frame, not just one. The trailing `#check` lines pin down the exported theorem signatures so that any downstream importer can re-use these results without re-typing the type variable triple `{F} [NormedAddCommGroup F] [InnerProductSpace ℝ F]`.",
     "mathContext": "Cauchy-Schwarz: $|\\langle v, x \\rangle|^2 \\le \\|v\\|^2 \\|x\\|^2$. Specializing to $\\|v\\| = 1$: $\\langle v, x \\rangle^2 \\le \\|x\\|^2$. From Bessel with $|s|=1$: $\\sum_{i \\in \\{*\\}} \\langle v_i, x \\rangle^2 = \\langle v, x \\rangle^2 \\le \\|x\\|^2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Cauchy-Schwarz inequality",
       "single-vector projection",

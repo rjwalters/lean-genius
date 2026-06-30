@@ -158,6 +158,16 @@
       "targetId": "borsuk-ulam-oq-03",
       "relationship": "related",
       "description": "The Borsuk-Ulam theorem implies Brouwer FPT, and the Sperner lemma approach provides an independent combinatorial proof route"
+    },
+    {
+      "targetId": "sperner-ndim-oq-01",
+      "relationship": "extended-by",
+      "description": "Supplies the geometric backbone this abstract triangulation assumes: the Freudenthal Adjacency Theorem, which proves the Freudenthal subdivision of [0,1]^n into n! permutation-indexed simplices has every interior (n−1)-facet shared by exactly 2 simplices — the door-counting invariant that makes the parity argument work concretely."
+    },
+    {
+      "targetId": "sperner-ndim-oq-03",
+      "relationship": "extended-by",
+      "description": "Completes the application loop: it builds the displacement (barycentric) coloring from a continuous self-map, verifies it satisfies the Sperner boundary condition in arbitrary dimension, and uses this n-dimensional Sperner's lemma to derive the Brouwer fixed point theorem."
     }
   ],
   "references": [

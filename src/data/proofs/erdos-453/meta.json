@@ -128,72 +128,80 @@
     {
       "id": "primes",
       "title": "The Prime Sequence",
-      "startLine": 42,
-      "endLine": 69,
+      "startLine": 43,
+      "endLine": 94,
       "summary": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (proved), and proves primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$.",
       "mathContext": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (proved), and proves primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$."
     },
     {
       "id": "conjectures",
       "title": "The Conjectures",
-      "startLine": 70,
-      "endLine": 102,
+      "startLine": 95,
+      "endLine": 127,
       "summary": "Formalizes `ErdosStrausConjecture` ($\\exists N,\\ \\forall n \\geq N,\\ \\exists i < n : p_n^2 < p_{n+i} p_{n-i}$) and `SelfridgeConjecture` ($\\forall N,\\ \\exists n \\geq N,\\ \\forall i < n : p_n^2 > p_{n+i} p_{n-i}$). Proves mutual exclusivity in Lean using `omega` on $\\mathbb{Z}$ inequalities.",
       "mathContext": "Formalizes `ErdosStrausConjecture` ($\\exists N,\\ \\forall n \\geq N,\\ \\exists i < n : p_n^2 < p_{n+i} p_{n-i}$) and `SelfridgeConjecture` ($\\forall N,\\ \\exists n \\geq N,\\ \\forall i < n : p_n^2 > p_{n+i} p_{n-i}$). Proves mutual exclusivity in Lean using `omega` on $\\mathbb{Z}$ inequalities."
     },
     {
       "id": "convexity",
       "title": "Log-Prime Convexity Machinery",
-      "startLine": 103,
-      "endLine": 137,
+      "startLine": 128,
+      "endLine": 162,
       "summary": "Introduces `logPrime n = log p_n`, axiomatizes $\\log p_n / n \\to 0$ (follows from PNT: $p_n \\sim n \\log n$), defines `IsConvexHullVertex` via the discrete concavity condition $2a_n > a_{n-i} + a_{n+i}$, and axiomatizes Pomerance's lemma: $a_n = o(n) \\Rightarrow$ infinitely many convex hull vertices.",
       "mathContext": "Introduces `logPrime n = log p_n`, axiomatizes $\\log p_n / n \\to 0$ (follows from PNT: $p_n \\sim n \\log n$), defines `IsConvexHullVertex` via the discrete concavity condition $2a_n > a_{n-i} + a_{n+i}$, and axiomatizes Pomerance's lemma: $a_n = o(n) \\Rightarrow$ infinitely many convex hull vertices."
     },
     {
       "id": "pomerance",
       "title": "Pomerance's Theorem (1979)",
-      "startLine": 138,
-      "endLine": 172,
-      "summary": "Proves `convexity_implies_product_bound` (convex hull vertex $\\Rightarrow p_n^2 > p_{n+i} p_{n-i}$, sorry for real analysis step), axiomatizes `pomerance_1979` (infinitely many such $n$ exist), and derives `selfridge_correct` and `erdos_straus_wrong` as term-mode and tactic proofs.",
-      "mathContext": "Proves `convexity_implies_product_bound` (convex hull vertex $\\Rightarrow p_n^2 > p_{n+i} p_{n-i}$, sorry for real analysis step), axiomatizes `pomerance_1979` (infinitely many such $n$ exist), and derives `selfridge_correct` and `erdos_straus_wrong` as term-mode and tactic proofs."
+      "startLine": 163,
+      "endLine": 205,
+      "summary": "Proves `convexity_implies_product_bound` (convex hull vertex $\\Rightarrow p_n^2 > p_{n+i} p_{n-i}$, fully proved via `log_to_product`), derives `pomerance_1979` as a theorem from the axiom `pomerance_convex_hull_lemma` (infinitely many such $n$ exist), and proves `selfridge_correct` and `erdos_straus_wrong`.",
+      "mathContext": "Proves `convexity_implies_product_bound` (convex hull vertex $\\Rightarrow p_n^2 > p_{n+i} p_{n-i}$, fully proved via `log_to_product`), derives `pomerance_1979` as a theorem from the axiom `pomerance_convex_hull_lemma` (infinitely many such $n$ exist), and proves `selfridge_correct` and `erdos_straus_wrong`."
     },
     {
       "id": "solution",
       "title": "Problem #453 Solution",
-      "startLine": 173,
-      "endLine": 198,
+      "startLine": 206,
+      "endLine": 231,
       "summary": "States `erdos_453_solution : ¬ErdosStrausConjecture` and `erdos_453_negative_answer` (positive form: $\\forall N,\\ \\exists n \\geq N,\\ \\forall i : p_n^2 > p_{n+i} p_{n-i}$). Both proved as one-line term applications of `pomerance_1979`.",
       "mathContext": "States `erdos_453_solution : ¬ErdosStrausConjecture` and `erdos_453_negative_answer` (positive form: $\\forall N,\\ \\exists n \\geq N,\\ \\forall i : p_n^2 > p_{n+i} p_{n-i}$)."
     },
     {
       "id": "prime-graph",
       "title": "The Prime Number Graph",
-      "startLine": 199,
-      "endLine": 246,
-      "summary": "Defines `primeGraph n = (n, log p_n) ∈ ℝ × ℝ` and `geometric_interpretation` (vertex $\\Rightarrow$ product inequality). Introduces `LogConvexityProperty` ($2 \\log p_n > \\log p_{n+i} + \\log p_{n-i}$), proves `log_convexity_iff_vertex` by `rfl` (definitional equality), and axiomatizes the log-to-product bridge.",
-      "mathContext": "Defines `primeGraph n = (n, log p_n) ∈ ℝ × ℝ` and `geometric_interpretation` (vertex $\\Rightarrow$ product inequality). Introduces `LogConvexityProperty` ($2 \\log p_n > \\log p_{n+i} + \\log p_{n-i}$), proves `log_convexity_iff_vertex` by `rfl` (definitional equality), and axiomatizes the log-to-product bridge."
+      "startLine": 232,
+      "endLine": 253,
+      "summary": "Defines `primeGraph n = (n, log p_n) ∈ ℝ × ℝ` and `geometric_interpretation` (convex hull vertex $\\Rightarrow$ product inequality $p_n^2 > p_{n+i} p_{n-i}$), recasting Problem #453 as a statement about the discrete graph $\\{(n, \\log p_n)\\}$.",
+      "mathContext": "Defines `primeGraph n = (n, log p_n) ∈ ℝ × ℝ` and `geometric_interpretation` (convex hull vertex $\\Rightarrow$ product inequality $p_n^2 > p_{n+i} p_{n-i}$), recasting Problem #453 as a statement about the discrete graph $\\{(n, \\log p_n)\\}$."
+    },
+    {
+      "id": "related-properties",
+      "title": "Related Properties",
+      "startLine": 254,
+      "endLine": 306,
+      "summary": "Introduces `LogConvexityProperty` ($2 \\log p_n > \\log p_{n-i} + \\log p_{n+i}$), proves `log_convexity_iff_vertex` by `rfl` (definitionally equal to `IsConvexHullVertex logPrime`), and proves `log_to_product` — the real-analysis bridge from the log inequality to $p_n^2 > p_{n+i} p_{n-i}$ via `Real.log_mul`, `Real.log_pow`, and strict monotonicity of $\\log$ (fully proved, no sorry).",
+      "mathContext": "Introduces `LogConvexityProperty` ($2 \\log p_n > \\log p_{n-i} + \\log p_{n+i}$), proves `log_convexity_iff_vertex` by `rfl` (definitionally equal to `IsConvexHullVertex logPrime`), and proves `log_to_product` — the real-analysis bridge from the log inequality to $p_n^2 > p_{n+i} p_{n-i}$ via `Real.log_mul`, `Real.log_pow`, and strict monotonicity of $\\log$ (fully proved, no sorry)."
     },
     {
       "id": "density",
       "title": "Density of Counterexamples",
-      "startLine": 247,
-      "endLine": 262,
+      "startLine": 307,
+      "endLine": 322,
       "summary": "Proves `counterexample_set_infinite` (fully, no sorry) using `Set.infinite_iff_nat_lt` and `pomerance_1979`. The counterexample set $\\{n \\mid \\forall i < n : p_n^2 > p_{n+i} p_{n-i}\\}$ is cofinal in $\\mathbb{N}$.",
       "mathContext": "Proves `counterexample_set_infinite` (fully, no sorry) using `Set.infinite_iff_nat_lt` and `pomerance_1979`. The counterexample set $\\{n \\mid \\forall i < n : p_n^2 > p_{n+i} p_{n-i}\\}$ is cofinal in $\\mathbb{N}$."
     },
     {
       "id": "guy-connection",
       "title": "Connection to Guy's Collection",
-      "startLine": 263,
-      "endLine": 276,
+      "startLine": 323,
+      "endLine": 336,
       "summary": "States `guy_problem_A14 : ¬ErdosStrausConjecture` as an alias linking to Problem A14 in R.K. Guy's 'Unsolved Problems in Number Theory' (Springer, 2004).",
       "mathContext": "Mathematical content: States `guy_problem_A14 : ¬ErdosStrausConjecture` as an alias linking to Problem A14 in R.K. Guy's 'Unsolved Problems in Number Theory' (Springer, 2004)."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 277,
-      "endLine": 304,
+      "startLine": 337,
+      "endLine": 364,
       "summary": "Packages the complete resolution: `erdos_453_summary : ¬ErdosStrausConjecture ∧ SelfridgeConjecture`, proved by `⟨erdos_straus_wrong, selfridge_correct⟩`. Erdős-Straus false, Selfridge true, Pomerance 1979 is the key reference.",
       "mathContext": "Packages the complete resolution: `erdos_453_summary : ¬ErdosStrausConjecture ∧ SelfridgeConjecture`, proved by `⟨erdos_straus_wrong, selfridge_correct⟩`. Erdős-Straus false, Selfridge true, Pomerance 1979 is the key reference."
     }

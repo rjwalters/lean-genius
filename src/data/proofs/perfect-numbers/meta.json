@@ -7,7 +7,7 @@
     "author": "Euclid (300 BCE), Euler (1747)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Perfect_number",
     "date": "300 BCE / 1747",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "perfect-numbers",
@@ -18,7 +18,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/PerfectNumbers.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -50,9 +50,9 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 70,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 202,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Relies on `Lean.ofReduceBool`: the four concrete examples (`six_is_perfect`, `twentyeight_is_perfect`, `fourhundredninetysix_is_perfect`, `eightthousandonetwentyeight_is_perfect`) discharge the Mersenne-prime primality checks via `native_decide`, which trusts the Lean compiler's kernel reduction. The Euclid-Euler characterization theorems themselves delegate to Mathlib's verified results. 0 sorries, 0 literal `axiom` declarations.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 0
@@ -134,7 +134,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Perfect Number Theorem is now fully verified using Mathlib's number theory infrastructure. We provide both directions of the Euclid-Euler characterization along with pedagogical examples demonstrating the first four perfect numbers.",
+    "summary": "The Perfect Number Theorem is formalized using Mathlib's number theory infrastructure. We provide both directions of the Euclid-Euler characterization (delegating to Mathlib's verified theorems) along with pedagogical examples demonstrating the first four perfect numbers; those concrete examples verify Mersenne-prime primality via `native_decide` and therefore depend on the `Lean.ofReduceBool` axiom.",
     "implications": "The theorem has profound implications:\n\n**1. Perfect Number Generation**\nGiven a Mersenne prime, we can immediately compute the corresponding perfect number.\n\n**2. Rarity of Perfection**\nOnly 51 perfect numbers are known (as of 2024), corresponding to the 51 known Mersenne primes.\n\n**3. Connection to GIMPS**\nThe Great Internet Mersenne Prime Search discovers new Mersenne primes, each yielding a new perfect number.\n\n**4. Open Problems**\nThe existence of odd perfect numbers remains unsolved after 2000+ years. If one exists, it must satisfy incredibly restrictive conditions.\n\n**5. Multiplicative Functions**\nThe proof showcases the power of multiplicative arithmetic functions in number theory.",
     "openQuestions": [
       "Do odd perfect numbers exist? This is one of the oldest open problems in mathematics.",

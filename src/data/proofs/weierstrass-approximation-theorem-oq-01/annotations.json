@@ -1,0 +1,67 @@
+[
+  {
+    "id": "ann-epsilon-and-density",
+    "proofId": "weierstrass-approximation-theorem-oq-01",
+    "range": { "startLine": 67, "endLine": 79 },
+    "type": "theorem",
+    "title": "Epsilon and Density Forms (weierstrass_epsilon, weierstrass_density)",
+    "content": "weierstrass_epsilon restates Mathlib's exists_polynomial_near_of_continuousOn: for f continuous on [a,b] and every ε>0 there is a polynomial p with |p(x)−f(x)| < ε for all x ∈ [a,b] — uniform approximation to any accuracy. weierstrass_density restates polynomialFunctions_closure_eq_top: the subalgebra of polynomial functions has topological closure ⊤ in C([a,b],ℝ), i.e. it is dense in the sup norm. The two are logically equivalent statements of Weierstrass's theorem; the density form is the one that generalizes to the Stone–Weierstrass theorem.",
+    "mathContext": "$\\forall \\varepsilon>0,\\ \\exists p,\\ \\sup_{x\\in[a,b]}|p(x)-f(x)|<\\varepsilon$; equivalently $\\overline{\\mathrm{poly}([a,b])}=\\top$.",
+    "prerequisites": [
+      "exists_polynomial_near_of_continuousOn (Mathlib's unbundled ε-form)",
+      "polynomialFunctions_closure_eq_top (Mathlib's density form)",
+      "The sup norm on C([a,b],ℝ) and topological closure of a subalgebra"
+    ],
+    "relatedConcepts": ["uniform approximation", "density", "subalgebra closure", "Stone–Weierstrass"],
+    "significance": "The two equivalent faces of the theorem: the analyst's ε-form one actually applies, and the algebraist's density form that generalizes to Stone–Weierstrass."
+  },
+  {
+    "id": "ann-sequence-form",
+    "proofId": "weierstrass-approximation-theorem-oq-01",
+    "range": { "startLine": 82, "endLine": 113 },
+    "type": "theorem",
+    "title": "The Uniformly Convergent Polynomial Sequence (exists_polynomial_seq_tendstoUniformlyOn) — centerpiece",
+    "content": "This is the genuine contribution beyond Mathlib: the literal textbook statement that f is the uniform limit of a single sequence of polynomials. Construction: the `choose` tactic extracts, for each n, a polynomial pₙ within 1/(n+1) of f on [a,b] (applying weierstrass_epsilon at ε = 1/(n+1)). To prove TendstoUniformlyOn (fun n x => (pₙ).eval x) f atTop [a,b], rewrite with Metric.tendstoUniformlyOn_iff and fix ε>0; exists_nat_gt (1/ε) yields an index N, and for n ≥ N one has 1/(n+1) ≤ ε (proved with div_le_iff₀, div_lt_iff₀, and nlinarith from the chain 1/ε < N ≤ n ≤ n+1). Then abs_sub_comm reconciles dist(f x, pₙ x) with the chosen bound |pₙ(x)−f(x)| < 1/(n+1) ≤ ε. Mathlib has the ε-form and the density form but not this sequence form.",
+    "mathContext": "$\\exists (p_n)\\subset\\mathbb{R}[X],\\ p_n \\to f \\text{ uniformly on } [a,b]$.",
+    "prerequisites": [
+      "weierstrass_epsilon (this file) and the `choose` tactic",
+      "Metric.tendstoUniformlyOn_iff (uniform convergence via dist)",
+      "exists_nat_gt (Archimedean property) and div_le_iff₀ / div_lt_iff₀",
+      "abs_sub_comm, nlinarith"
+    ],
+    "relatedConcepts": ["uniform convergence", "TendstoUniformlyOn", "Archimedean estimate", "axiom of choice (choose)"],
+    "significance": "The centerpiece: it turns Mathlib's per-ε existence into the single uniformly convergent sequence of polynomials that is the standard statement of Weierstrass's theorem."
+  },
+  {
+    "id": "ann-bernstein",
+    "proofId": "weierstrass-approximation-theorem-oq-01",
+    "range": { "startLine": 115, "endLine": 122 },
+    "type": "theorem",
+    "title": "The Constructive Bernstein Form (bernstein_tendstoUniformly)",
+    "content": "bernstein_tendstoUniformly restates bernsteinApproximation_uniform: for a continuous f on the unit interval I = [0,1], the explicit Bernstein approximants bernsteinApproximation n f = ∑ₖ bernstein n k · f(k/n) = ∑ₖ f(k/n)·C(n,k)·xᵏ·(1−x)^(n−k) converge uniformly to f as n → ∞. Unlike the ε- and sequence-forms, which only assert existence, this gives an effective approximating sequence computed directly from the sampled values f(k/n) — no choice or existential is invoked. Bernstein's 1912 proof connects the theorem to the law of large numbers via the binomial distribution.",
+    "mathContext": "$\\sum_{k=0}^{n} f\\!\\left(\\tfrac{k}{n}\\right)\\binom{n}{k}x^k(1-x)^{n-k} \\to f$ uniformly on $[0,1]$.",
+    "prerequisites": [
+      "bernsteinApproximation and bernsteinApproximation_uniform (Mathlib)",
+      "The unit interval I = unitInterval and C(I,ℝ) with its sup norm",
+      "Convergence in 𝓝 f within the space of continuous maps"
+    ],
+    "relatedConcepts": ["Bernstein polynomials", "constructive approximation", "law of large numbers", "binomial distribution"],
+    "significance": "The effective form: an explicit, computable sequence of approximating polynomials, in contrast to the existence-only ε- and sequence-forms."
+  },
+  {
+    "id": "ann-abs-witness",
+    "proofId": "weierstrass-approximation-theorem-oq-01",
+    "range": { "startLine": 124, "endLine": 140 },
+    "type": "theorem",
+    "title": "Weierstrass's Witness |x| (exists_polynomial_near_abs, exists_polynomial_seq_abs)",
+    "content": "The two corollaries specialize the ε-form and the sequence form to f = |·| on [−1,1], using _root_.continuous_abs.continuousOn to supply continuity. exists_polynomial_near_abs gives, for every ε>0, a polynomial within ε of |x| on [−1,1]; exists_polynomial_seq_abs gives a single sequence of polynomials converging uniformly to |x| there. The absolute value is Weierstrass's own touchstone — continuous everywhere but non-differentiable at 0 — so that an infinitely smooth polynomial can nonetheless hug a function with a corner to within any ε makes the surprise of the theorem concrete.",
+    "mathContext": "$\\forall \\varepsilon>0,\\ \\exists p,\\ \\sup_{x\\in[-1,1]}|p(x)-|x||<\\varepsilon$, and $\\exists (p_n),\\ p_n\\to |\\cdot|$ uniformly on $[-1,1]$.",
+    "prerequisites": [
+      "weierstrass_epsilon and exists_polynomial_seq_tendstoUniformlyOn (this file)",
+      "_root_.continuous_abs and ContinuousOn from a global Continuous",
+      "Set.Icc (-1) 1"
+    ],
+    "relatedConcepts": ["absolute value", "non-differentiable function", "concrete instance", "uniform approximation"],
+    "significance": "The concrete payoff: Weierstrass's own non-smooth example, shown uniformly approximable by polynomials in both the ε-form and as a convergent sequence."
+  }
+]

@@ -1,25 +1,26 @@
 [
   {
-    "id": "erdos-324-degree-bounds-and-examples",
+    "id": "erdos-324-constant-and-quadratic-families",
     "proofId": "erdos-324",
-    "type": "concept",
+    "type": "insight",
     "range": {
-      "startLine": 114,
-      "endLine": 245
+      "startLine": 150,
+      "endLine": 195
     },
-    "title": "Degree Bounds, Concrete Cases, and Counting Theorem",
-    "content": "The second half of the file: axiomatizes `min_degree_for_distinct` (degree $\\geq 5$ needed), then proves concrete cases. `constant_not_distinct`: constant polynomials fail (all pair sums equal $2c$). `linear_not_distinct`: linear $f(x) = ax + b$ fails (proved via explicit collision). `quadratic_not_distinct`: quadratic fails (axiomatized). `cubic_quartic_not_distinct`: degree 3-4 fail (axiomatized). `distinctPairSumCount_eq`: for a polynomial with distinct pair sums, the number of distinct pair sums on $\\{0, \\ldots, N\\}$ equals $\\binom{N+1}{2}$ (proved via `Finset.card_image_of_injOn`). The `card_strict_pairs` helper computes $|\\{(a,b) : a < b \\leq N\\}| = \\binom{N+1}{2}$.",
-    "mathContext": "For $f$ with distinct pair sums: $|\\{f(a)+f(b) : 0 \\leq a < b \\leq N\\}| = \\binom{N+1}{2}$. Degree bounds: $\\deg f \\leq 1$ proved by explicit collision; $\\deg f \\leq 4$ axiomatized (related to Lander-Parkin-Selfridge conjecture).",
+    "title": "Constant and Quadratic Impossibility Families",
+    "content": "Sections V.b and V.c prove — not axiomatize — three further impossibility results. `constant_not_distinct`: a constant $f = C\\,c$ collides because every pair sum is $2c$, so $f(0)+f(1) = f(0)+f(2)$. `quadratic_no_linear_not_distinct`: any $ax^2 + c$ with $a \\neq 0$ inherits the square collision $1^2+8^2 = 4^2+7^2$ scaled by $a$. `monic_neg_linear_quad_not_distinct`: the monic family $x^2 - (n+2)x + c$ collides for *every* $n$ via the parametrized identity $f(0)+f(1) = f(n+1)+f(n+2)$, an infinite family of explicit witnesses verified with `push_cast; ring` and an `omega` distinctness check.",
+    "mathContext": "$f \\equiv c \\Rightarrow f(a)+f(b)=2c$. $ax^2+c$: collision from $1^2+8^2=4^2+7^2$ for any $a \\neq 0$. Monic $x^2-(n+2)x+c$: $f(0)+f(1)=f(n+1)+f(n+2)$ for all $n$ — one parametrized witness kills a whole pencil.",
     "significance": "key",
     "relatedConcepts": [
       "polynomial pair sums",
-      "Finset.card_image_of_injOn",
-      "Lander-Parkin-Selfridge conjecture"
+      "parametrized counterexample",
+      "quadratic forms",
+      "infinite families of witnesses"
     ],
     "prerequisites": [
       "HasDistinctPairSums",
       "Polynomial.eval",
-      "Finset.card_image_of_injOn"
+      "Polynomial.C"
     ]
   },
   {
@@ -72,11 +73,11 @@
     "proofId": "erdos-324",
     "type": "definition",
     "range": {
-      "startLine": 29,
-      "endLine": 40
+      "startLine": 24,
+      "endLine": 35
     },
     "title": "Pair Sum Function",
-    "content": "pairSumFn f maps a pair (a, b) to f.eval(a) + f.eval(b). This is the fundamental function whose injectivity on ordered pairs defines the problem.",
+    "content": "Section I defines the core machinery: pairSumFn f maps a pair (a, b) to f.eval(a) + f.eval(b), orderedPairs is {(a,b) : a < b}, and HasDistinctPairSums f is Set.InjOn (pairSumFn f) orderedPairs. The injectivity of pairSumFn on ordered pairs is exactly the distinct-pair-sums property.",
     "significance": "key",
     "mathContext": "Given f ∈ ℤ[X], the pair sum function S_f : ℕ × ℕ → ℤ is defined by S_f(a,b) = f(a) + f(b). The problem asks whether S_f can be injective on {(a,b) : a < b}. For f(x) = x^n, this becomes the question of whether a^n + b^n = c^n + d^n with a < b, c < d implies (a,b) = (c,d).",
     "relatedConcepts": [
@@ -95,8 +96,8 @@
     "proofId": "erdos-324",
     "type": "definition",
     "range": {
-      "startLine": 42,
-      "endLine": 49
+      "startLine": 41,
+      "endLine": 44
     },
     "title": "Erdős Problem #324",
     "content": "ErdosProblem324 asks whether there exists f ∈ ℤ[X] with HasDistinctPairSums f. Described by Erdős and Graham (1980) as 'very annoying.'",
@@ -117,8 +118,8 @@
     "proofId": "erdos-324",
     "type": "definition",
     "range": {
-      "startLine": 51,
-      "endLine": 58
+      "startLine": 50,
+      "endLine": 53
     },
     "title": "Quintic Conjecture",
     "content": "QuinticConjecture states HasDistinctPairSums (X ^ 5 : ℤ[X]): the polynomial f(x) = x⁵ has all pair sums a⁵ + b⁵ distinct for a < b.",
@@ -140,8 +141,8 @@
     "proofId": "erdos-324",
     "type": "concept",
     "range": {
-      "startLine": 60,
-      "endLine": 67
+      "startLine": 55,
+      "endLine": 57
     },
     "title": "Quintic Implies Main Problem",
     "content": "quintic_implies_324 proves QuinticConjecture → ErdosProblem324 by exhibiting X^5 as the witness. This is fully proved (no sorry).",
@@ -162,8 +163,8 @@
     "proofId": "erdos-324",
     "type": "definition",
     "range": {
-      "startLine": 70,
-      "endLine": 71
+      "startLine": 63,
+      "endLine": 66
     },
     "title": "Power Pair Sum Distinct",
     "content": "PowerPairSumDistinct n asks whether f(x) = x^n has distinct pair sums, generalizing the quintic conjecture to arbitrary exponents.",
@@ -183,11 +184,11 @@
     "proofId": "erdos-324",
     "type": "concept",
     "range": {
-      "startLine": 75,
-      "endLine": 76
+      "startLine": 68,
+      "endLine": 72
     },
     "title": "LPS Implies Problem Solved",
-    "content": "lps_implies_power_distinct axiomatizes that if PowerPairSumDistinct n for all n ≥ 5, then ErdosProblem324 holds. This connects to the Lander-Parkin-Selfridge conjecture.",
+    "content": "lps_implies_power_distinct is a proved theorem: taking the LPS hypothesis `∀ n ≥ 5, PowerPairSumDistinct n` as input, it produces a witness for ErdosProblem324 by instantiating n = 5. The deep content lives in the LPS hypothesis itself (the Lander-Parkin-Selfridge conjecture); the reduction is trivial once it is assumed.",
     "significance": "key",
     "mathContext": "The Lander-Parkin-Selfridge (LPS) conjecture (1967) states: if x₁^n + ... + x_k^n = y₁^n + ... + y_k^n with all positive integers, then 2k ≥ n. For k = 2 this means a^n + b^n = c^n + d^n has no nontrivial solutions for n ≥ 5. LPS is a vast generalization of Fermat's Last Theorem (k = 1 case).",
     "relatedConcepts": [
@@ -205,11 +206,11 @@
     "proofId": "erdos-324",
     "type": "concept",
     "range": {
-      "startLine": 79,
-      "endLine": 79
+      "startLine": 74,
+      "endLine": 81
     },
     "title": "Squares Fail",
-    "content": "squares_not_distinct axiomatizes ¬PowerPairSumDistinct 2: there exist a < b and c < d with a² + b² = c² + d² (e.g., 1² + 8² = 4² + 7² = 65).",
+    "content": "squares_not_distinct proves ¬PowerPairSumDistinct 2 by exhibiting the explicit collision 1² + 8² = 4² + 7² = 65 and discharging the resulting equality with `decide`. No axiom: the two ordered pairs (1,8), (4,7) are shown distinct and equi-summed directly.",
     "significance": "supporting",
     "mathContext": "Numbers expressible as sums of two squares in multiple ways are well-studied. Fermat showed n = a² + b² iff all prime factors p ≡ 3 (mod 4) appear to even power. 65 = 5 × 13 has two such representations because both 5 and 13 are sums of two squares. The number of representations grows with the number of prime factors ≡ 1 (mod 4).",
     "relatedConcepts": [
@@ -227,10 +228,10 @@
     "type": "concept",
     "range": {
       "startLine": 83,
-      "endLine": 83
+      "endLine": 91
     },
     "title": "Cubes Fail: Taxicab Number 1729",
-    "content": "cubes_not_distinct axiomatizes ¬PowerPairSumDistinct 3: 1³ + 12³ = 9³ + 10³ = 1729, the Hardy-Ramanujan taxicab number.",
+    "content": "cubes_not_distinct proves ¬PowerPairSumDistinct 3 using the collision 1³ + 12³ = 9³ + 10³ = 1729, the Hardy-Ramanujan taxicab number, again closed by `decide`.",
     "significance": "supporting",
     "mathContext": "1729 is the smallest taxicab number Ta(2): the smallest integer expressible as two distinct sums of two cubes. Hardy visited Ramanujan in hospital (1919) and mentioned riding in taxi 1729, calling it dull. Ramanujan immediately recognized it as 1³ + 12³ = 9³ + 10³. The general taxicab numbers Ta(n) (smallest number expressible as n sums of two cubes) grow rapidly.",
     "relatedConcepts": [
@@ -248,11 +249,11 @@
     "proofId": "erdos-324",
     "type": "concept",
     "range": {
-      "startLine": 87,
-      "endLine": 87
+      "startLine": 93,
+      "endLine": 101
     },
     "title": "Fourth Powers Fail",
-    "content": "quartics_not_distinct axiomatizes ¬PowerPairSumDistinct 4: Euler (1772) found equal sums of two fourth powers.",
+    "content": "quartics_not_distinct proves ¬PowerPairSumDistinct 4 from Euler's (1772) collision 59⁴ + 158⁴ = 133⁴ + 134⁴ = 635318657, discharged by `decide`. The same Section IV then bundles n = 0,1,2,3,4 into `power_below_five_not_distinct` via `interval_cases`.",
     "significance": "supporting",
     "mathContext": "Euler discovered 59⁴ + 158⁴ = 133⁴ + 134⁴ = 635,318,657, disproving that fourth powers have distinct pair sums. More recently, Elkies (1988) found infinitely many solutions to a⁴ + b⁴ = c⁴ + d⁴, using elliptic curve methods. The smallest is 2,682,440⁴ + 15,365,639⁴ = 18,796,760⁴ + ... (Euler's example is smaller but not the standard Elkies form).",
     "relatedConcepts": [
@@ -269,11 +270,11 @@
     "proofId": "erdos-324",
     "type": "concept",
     "range": {
-      "startLine": 94,
-      "endLine": 95
+      "startLine": 135,
+      "endLine": 148
     },
     "title": "Linear Polynomials Fail",
-    "content": "linear_not_distinct axiomatizes that no linear polynomial ax + b with a ≠ 0 has distinct pair sums.",
+    "content": "linear_not_distinct is a proved theorem: no linear polynomial ax + b with a ≠ 0 has distinct pair sums, because f(0)+f(3) = f(1)+f(2) = 3a + 2b. The adjacent axiom min_degree_for_distinct supplies the sharp converse deg(f) ≥ 5.",
     "significance": "supporting",
     "mathContext": "For f(x) = ax + b, we have f(a₁) + f(b₁) = a(a₁ + b₁) + 2b. So distinct pair sums requires a₁ + b₁ ≠ c₁ + d₁ for all ordered pairs. But among (0,3), (1,2), both sum to 3, giving a collision. In general, linear pair sums depend only on a + b, not on the individual values, so collisions are inevitable.",
     "relatedConcepts": [
@@ -292,11 +293,11 @@
     "proofId": "erdos-324",
     "type": "concept",
     "range": {
-      "startLine": 98,
-      "endLine": 99
+      "startLine": 146,
+      "endLine": 148
     },
     "title": "Minimum Degree at Least 5",
-    "content": "min_degree_for_distinct axiomatizes that any polynomial with distinct pair sums has natDegree ≥ 5, combining the failures for degrees 1-4.",
+    "content": "min_degree_for_distinct is the sole remaining axiom: any polynomial with distinct pair sums has natDegree ≥ 5. While the file proves every monomial and low-degree family up to degree 4 fails individually, this axiom asserts the sharp converse for *all* polynomials at once — a statement not yet formalized for arbitrary (non-monomial) degree-2,3,4 polynomials.",
     "significance": "key",
     "mathContext": "This is the sharp lower bound: degrees 1 (linear_not_distinct), 2 (squares), 3 (cubes), and 4 (quartics) all fail. Degree 0 (constant) trivially fails. So the first possible degree is 5, explaining why x⁵ is the natural candidate. The degree-5 threshold marks a phase transition in the arithmetic structure of power sums.",
     "relatedConcepts": [
@@ -314,11 +315,11 @@
     "proofId": "erdos-324",
     "type": "concept",
     "range": {
-      "startLine": 106,
-      "endLine": 109
+      "startLine": 200,
+      "endLine": 204
     },
     "title": "Distinct Pair Sum Count",
-    "content": "distinctPairSumCount f N counts the number of distinct values of f(a) + f(b) for a < b ≤ N using Finset.filter and Finset.image.",
+    "content": "distinctPairSumCount f N counts the number of distinct values of f(a) + f(b) for a < b ≤ N using Finset.filter and Finset.image over Finset.range (N+1) ×ˢ Finset.range (N+1).",
     "significance": "supporting",
     "mathContext": "For N + 1 values {0, ..., N}, there are C(N+1, 2) ordered pairs with a < b. The count of distinct pair sums is at most C(N+1, 2). Equality holds exactly when HasDistinctPairSums restricted to [0, N]. This connects to additive combinatorics: maximizing |A + A| subject to constraints on A.",
     "relatedConcepts": [
@@ -338,13 +339,13 @@
     "proofId": "erdos-324",
     "type": "concept",
     "range": {
-      "startLine": 112,
-      "endLine": 113
+      "startLine": 206,
+      "endLine": 303
     },
-    "title": "Distinct Count Equals Binomial",
-    "content": "distinct_count_eq_binomial axiomatizes that for f with distinct pair sums, distinctPairSumCount f N = C(N+1, 2) for all N.",
-    "significance": "supporting",
-    "mathContext": "This is the maximal sumset property: if all pair sums are distinct, then the image of ordered pairs under the pair sum function has maximum cardinality C(N+1,2) = N(N+1)/2. Contrast with the Cauchy-Davenport theorem which gives lower bounds on |A + B| in ℤ/pℤ. Here we achieve the exact maximum, which is the strongest possible statement.",
+    "title": "Distinct Count Equals Binomial (Proved)",
+    "content": "distinct_count_eq_binomial is fully proved (no axiom): for f with distinct pair sums, distinctPairSumCount f N = C(N+1, 2) for all N. The proof applies `Finset.card_image_of_injOn` (distinctness = injectivity on the ordered-pair set) and then the self-contained lemma `card_strict_pairs`, which counts |{a < b ≤ N}| = C(N+1,2) by partitioning S × S into {a<b}, {b<a}, {a=b}, using a swap bijection to equate the first two and a diagonal bijection for the third, closed by the induction identity 2·C(n,2) + n = n².",
+    "significance": "key",
+    "mathContext": "This is the maximal sumset property: if all pair sums are distinct, the image of ordered pairs under the pair sum function has maximum cardinality C(N+1,2) = N(N+1)/2. Contrast with the Cauchy-Davenport theorem which gives lower bounds on |A + B| in ℤ/pℤ. Here we achieve the exact maximum unconditionally, the strongest possible statement. Counting identity: 2·C(n,2) + n = n².",
     "relatedConcepts": [
       "binomial coefficient",
       "Cauchy-Davenport theorem",

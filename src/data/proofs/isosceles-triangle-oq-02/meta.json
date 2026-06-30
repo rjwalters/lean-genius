@@ -1,0 +1,163 @@
+{
+  "id": "isosceles-triangle-oq-02",
+  "title": "Pons Asinorum in Hyperbolic and Spherical Geometry",
+  "slug": "isosceles-triangle-oq-02",
+  "description": "The parent (isosceles-triangle) proves Euclid I.5 (Pons Asinorum: equal sides ⟹ equal base angles) using Mathlib's inner-product-space geometry. This entry answers its OQ-02: prove the isosceles triangle theorem in hyperbolic and spherical geometry, where no inner product space is available. Working purely from the non-Euclidean laws of cosines (solving for cos A as a symmetric function of the adjacent sides) and the injectivity of cos on [0,π], we prove equal legs imply equal base angles in both geometries, plus the equilateral ⟹ equiangular corollaries. All 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pons_asinorum",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/IsoscelesTriangleOQ02.lean",
+    "tags": [
+      "geometry",
+      "non-euclidean",
+      "hyperbolic",
+      "spherical",
+      "pons-asinorum",
+      "law-of-cosines",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.injOn_cos",
+        "description": "cos is injective on [0, π], so equal cosines give equal angles",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos / Real.sin / Real.cosh / Real.sinh",
+        "description": "The trigonometric and hyperbolic functions appearing in the laws of cosines",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sphCosA / hypCosA: cos of the angle opposite a side, solved from the spherical and hyperbolic laws of cosines — symmetric in the two adjacent sides",
+      "sph_isosceles_cos / hyp_isosceles_cos: the algebraic core — equal legs a = b force the two base-angle cosines to coincide",
+      "spherical_isosceles / hyperbolic_isosceles: Pons Asinorum (equal sides ⟹ equal base angles) in spherical and hyperbolic geometry, with NO inner product space — only the law of cosines and cos injectivity on [0,π]",
+      "spherical_equilateral / hyperbolic_equilateral: equilateral ⟹ equiangular in both geometries"
+    ],
+    "axiomCount": 0,
+    "lineCount": 89,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound]. The triangles are modelled by their side/angle data satisfying the appropriate law of cosines as hypotheses; no inner product space, metric model, or coordinate system is assumed.",
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "prerequisites": [
+      "The isosceles triangle theorem (Pons Asinorum, Euclid I.5)",
+      "Spherical and hyperbolic laws of cosines",
+      "Injectivity of cos on [0, π]",
+      "Basic trigonometric and hyperbolic function algebra"
+    ],
+    "relatedProblems": [
+      {
+        "id": "isosceles-triangle",
+        "relationship": "Parent: Pons Asinorum in Euclidean geometry via inner product spaces. This entry answers OQ-02 by proving it in spherical and hyperbolic geometry without inner products."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The isosceles triangle theorem — Euclid's Proposition I.5, nicknamed the Pons Asinorum ('bridge of asses') — states that the base angles of a triangle with two equal sides are equal. In Euclidean geometry it follows from triangle congruence or, in a coordinate model, from the inner product structure (the parent gallery entry uses Mathlib's inner-product-space triangle API). In the non-Euclidean geometries of constant curvature — the sphere and the hyperbolic plane — there is no ambient inner product space of the same kind, and the relationship between sides and angles is governed instead by the laws of cosines:\n\n  spherical:  cos a = cos b·cos c + sin b·sin c·cos A,\n  hyperbolic: cosh a = cosh b·cosh c − sinh b·sinh c·cos A,\n\nwhere A is the angle opposite side a and b, c are the two adjacent sides. Solving each for cos A yields an expression that is symmetric in the adjacent sides; the isosceles hypothesis a = b makes the two base-angle cosines identical, and the injectivity of cos on [0, π] (where triangle angles live) upgrades equal cosines to equal angles. This entry formalizes exactly that argument, answering the parent's OQ-02 with no inner product space.",
+    "problemStatement": "Prove the isosceles triangle theorem (equal sides ⟹ equal base angles) in spherical and hyperbolic geometry without using an inner product space: model a triangle by its sides a, b, c and angles satisfying the appropriate law of cosines, and show a = b ⟹ A = B (with A, B ∈ [0, π]). Derive the equilateral ⟹ equiangular corollaries.",
+    "proofStrategy": "Solve each law of cosines for the cosine of the angle opposite side a: sphCosA a b c = (cos a − cos b·cos c)/(sin b·sin c) and hypCosA a b c = (cosh b·cosh c − cosh a)/(sinh b·sinh c). The base angle B opposite side b is governed by the same formula with a and b swapped. When a = b, substituting collapses the two expressions to the same value (sph_isosceles_cos / hyp_isosceles_cos, proved by subst + rfl), so cos A = cos B. Since triangle angles lie in [0, π] and cos is injective there (Real.injOn_cos), A = B. The equilateral corollaries apply the equal-cosines step twice.",
+    "keyInsights": [
+      "The non-Euclidean Pons Asinorum needs no inner product space — only the law of cosines, which encodes the side–angle relationship of the geometry, and the injectivity of cos on [0, π].",
+      "Solving the law of cosines for cos A produces an expression symmetric in the two adjacent sides; the isosceles hypothesis a = b makes the base-angle cosines literally identical (subst + rfl).",
+      "The spherical and hyperbolic cases are the same algebra with cos/sin replaced by cosh/sinh — one structural argument, two geometries.",
+      "Triangle angles live in [0, π], exactly the interval on which cos is injective, so equal cosines reliably give equal angles — the only analytic input.",
+      "Modelling triangles by their side/angle data plus the law of cosines (rather than by points in a metric space) is what frees the proof from the inner product structure the parent relied on."
+    ],
+    "prerequisites": [
+      "Spherical and hyperbolic laws of cosines",
+      "Injectivity of cos on [0, π]",
+      "Trigonometric and hyperbolic function algebra",
+      "The classical (Euclidean) isosceles triangle theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cos-angle",
+      "title": "Section I: cos of an Angle from the Law of Cosines",
+      "startLine": 38,
+      "endLine": 53,
+      "summary": "sphCosA and hypCosA give cos of the angle opposite a side, solved from the spherical and hyperbolic laws of cosines; sph_isosceles_cos / hyp_isosceles_cos prove equal legs force equal base-angle cosines (subst + rfl).",
+      "mathContext": "The cosine of a base angle is a symmetric function of the two adjacent sides — the algebraic heart of the isosceles theorem."
+    },
+    {
+      "id": "pons-asinorum",
+      "title": "Section II: Pons Asinorum in Both Geometries",
+      "startLine": 55,
+      "endLine": 68,
+      "summary": "spherical_isosceles and hyperbolic_isosceles: equal legs a = b imply equal base angles A = B, via the equal-cosines step and Real.injOn_cos on [0, π]. No inner product space.",
+      "mathContext": "The isosceles triangle theorem in spherical and hyperbolic geometry, the parent's OQ-02."
+    },
+    {
+      "id": "equilateral",
+      "title": "Section III: Equilateral ⟹ Equiangular",
+      "startLine": 70,
+      "endLine": 87,
+      "summary": "spherical_equilateral and hyperbolic_equilateral: all sides equal ⟹ all angles equal, applying the equal-cosines step twice.",
+      "mathContext": "The natural corollary: a regular (equilateral) non-Euclidean triangle is equiangular."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) proof, in 89 lines with 6 theorems and 2 definitions, of the isosceles triangle theorem (Pons Asinorum) in spherical and hyperbolic geometry, with no inner product space. Solving the non-Euclidean laws of cosines for the base-angle cosine makes it symmetric in the adjacent sides, so equal legs give equal cosines, and injectivity of cos on [0, π] gives equal angles; equilateral ⟹ equiangular follows.",
+    "implications": "This answers the parent's OQ-02: the isosceles triangle theorem holds in spherical and hyperbolic geometry, proved from the law of cosines alone rather than the inner-product-space machinery the Euclidean case used. The side/angle-with-law-of-cosines modelling is a reusable, coordinate-free way to formalize constant-curvature triangle geometry, and the sphCosA/hypCosA definitions and the equal-cosines lemmas are building blocks for further non-Euclidean triangle results (e.g. the converse, or the law-of-sines).",
+    "openQuestions": [
+      "Prove the converse (equal base angles ⟹ equal opposite sides) in spherical and hyperbolic geometry, using the dual law of cosines that expresses sides in terms of angles.",
+      "Derive the spherical and hyperbolic laws of sines in the same coordinate-free framework and combine them with these results toward a full non-Euclidean triangle-congruence toolkit."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "Set"
+    ],
+    "namespace": "IsoscelesTriangleOQ02",
+    "lineCount": 89,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/IsoscelesTriangleOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "isosceles-triangle",
+      "relationship": "extends",
+      "description": "Parent: Pons Asinorum in Euclidean geometry via inner product spaces. This entry answers its OQ-02 by proving the same theorem in spherical and hyperbolic geometry without any inner product space, using only the laws of cosines and injectivity of cos on [0, π]."
+    },
+    {
+      "targetId": "cevas-theorem-non-euclidean",
+      "relationship": "related",
+      "description": "Both formalize classical triangle theorems in non-Euclidean (spherical/hyperbolic) geometry through the appropriate distance/angle laws rather than coordinates."
+    }
+  ],
+  "references": [
+    {
+      "key": "Euclid",
+      "citation": "Euclid, Elements, Book I, Proposition 5 (c. 300 BCE).",
+      "type": "book"
+    },
+    {
+      "key": "Gre93",
+      "citation": "Greenberg, M.J., Euclidean and Non-Euclidean Geometries: Development and History, 3rd ed., W. H. Freeman (1993).",
+      "type": "book"
+    },
+    {
+      "key": "Ber87",
+      "citation": "Berger, M., Geometry I and II, Springer (1987).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

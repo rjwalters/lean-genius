@@ -96,36 +96,57 @@
       "id": "infrastructure",
       "title": "Mathlib-Based Prime Infrastructure",
       "startLine": 40,
-      "endLine": 112,
-      "summary": "Defines `nthPrime(n) = \\mathrm{Nat.nth}\\,\\mathrm{Prime}\\,n$ and `primeGap(n) = p_{n+1} - p_n$`. Proves 9 structural theorems: `nthPrime_prime`, `nthPrime_strictMono`, `primeGap_pos`, `primeGap_zero` ($d_0 = 1$), `primeGap_even` ($2 \\mid d_n$ for $n \\ge 1$), `primeGap_ge_two`, `nthPrime_zero` ($p_0 = 2$), `nthPrime_one` ($p_1 = 3$), `nthPrime_mono`."
+      "endLine": 136,
+      "summary": "Defines nthPrime(n) = Nat.nth Prime n (0-indexed: p₀=2, p₁=3, p₂=5) and primeGap(n) = pₙ₊₁ − pₙ. Proves the structural lemmas: nthPrime_prime, nthPrime_strictMono/_mono, primeGap_pos, nthPrime_zero/_one/_two, primeGap_zero (d₀=1), primeGap_one (d₁=2), primeGap_even (2∣dₙ for n≥1), primeGap_ge_two.",
+      "mathContext": "$d_n=p_{n+1}-p_n$. All gaps $d_n$ for $n\\ge 1$ are even (consecutive primes $>2$ are odd), so the problem restricts to even gap sizes."
     },
     {
       "id": "gap-set",
-      "title": "Gap Set and r(x)",
-      "startLine": 113,
-      "endLine": 158,
-      "summary": "Defines $G(x) = \\{d_n : n \\ge 1, p_n \\le x\\}$. Proves `gapSet_mono` ($G(x) \\subseteq G(y)$), `gapSet_even`, `gapSet_pos`, `gapSet_ge_two`. Axiomatizes $r(x)$ with `r_even_pos`, `r_not_gap`, `r_minimal`."
+      "title": "The Gap Set and r(x)",
+      "startLine": 137,
+      "endLine": 169,
+      "summary": "Defines the gap set G(x) = {dₙ : n≥1, pₙ ≤ x}. Proves gapSet_mono (G(x) ⊆ G(y)), gapSet_even, gapSet_pos, gapSet_ge_two, and two_mem_gapSet (2 ∈ G(x) for x≥3).",
+      "mathContext": "$G(x)=\\{d_n : n\\ge 1,\\ p_n\\le x\\}$ — the set of gap sizes occurring below $x$. Every element is even and $\\ge 2$."
     },
     {
-      "id": "monotonicity",
+      "id": "r-definition",
+      "title": "Defining r(x) via Nat.find",
+      "startLine": 170,
+      "endLine": 232,
+      "summary": "Constructs r(x) — the smallest even t≥2 NOT in G(x) — via Nat.find (not axiomatized). Supporting: nthPrime_ge, gapSet_finite, exists_even_not_in_gapSet (an even non-gap exists). Then r def, r_even_pos (r(x)≥2 and even), r_not_gap (r(x)∉G(x)), r_minimal.",
+      "mathContext": "$r(x)=\\min\\{t : t\\text{ even},\\ t\\ge 2,\\ t\\notin G(x)\\}$, well-defined because $G(x)$ is finite. Computable via `Nat.find` on the decidable non-membership predicate."
+    },
+    {
+      "id": "r-properties",
       "title": "Proved Properties of r(x)",
-      "startLine": 159,
-      "endLine": 174,
-      "summary": "Proves `r_monotone` ($x \\le y \\Rightarrow r(x) \\le r(y)$) by contradiction using `r_minimal` and `gapSet_mono`. Axiomatizes trivial upper bound $r(x) \\le x$."
+      "startLine": 233,
+      "endLine": 440,
+      "summary": "Proves r_monotone (x≤y ⇒ r(x)≤r(y)) and the upper bound r(x) ≤ x for x≥4 (r_upper_bound, fully proved — not axiomatized), via gap_lt_prime, gapSet_lt, r_upper_bound_even, and nthPrime_succ_le_of_prime_gt. Also r_ge_four (r(x)≥4 for x≥3).",
+      "mathContext": "$r$ is monotone and $4\\le r(x)\\le x$ for $x\\ge 4$ — concrete bounds bracketing the smallest missing even gap, all machine-checked."
     },
     {
       "id": "main-conjectures",
-      "title": "Main Conjectures",
-      "startLine": 175,
-      "endLine": 204,
-      "summary": "States `erdos_853_weak` ($r(x) \\to \\infty$) and `erdos_853_strong` ($r(x)/\\log x \\to \\infty$). Proves `weak_implies_all_even_gaps`: the weak conjecture implies every even $t \\ge 2$ eventually enters $G(x)$."
+      "title": "Main Conjectures (OPEN)",
+      "startLine": 441,
+      "endLine": 454,
+      "summary": "States the two open conjectures as axioms: erdos_853_weak (r(x) → ∞) and erdos_853_strong (r(x)/log x → ∞).",
+      "mathContext": "Weak: $r(x)\\to\\infty$. Strong: $r(x)/\\log x\\to\\infty$. Both open; stated as axioms since they are unproven."
+    },
+    {
+      "id": "weak-consequences",
+      "title": "Consequences of the Weak Conjecture",
+      "startLine": 455,
+      "endLine": 470,
+      "summary": "Proves weak_implies_all_even_gaps: if erdos_853_weak holds, then every even t≥2 eventually enters G(x) (every even number is a prime gap for large enough x).",
+      "mathContext": "$r(x)\\to\\infty$ ⟹ for each even $t$, eventually $t<r(x)$ so $t\\in G(x)$ — i.e. every even gap size is eventually realized."
     },
     {
       "id": "related-results",
-      "title": "Related Results",
-      "startLine": 205,
-      "endLine": 237,
-      "summary": "Axiomatizes `maynard_tao_bounded_gaps` ($\\exists\\, t \\le 246$ even with $d_n = t$ infinitely often) and `cramer_conjecture_bound` ($r(x) \\le C(\\log x)^2$ conditionally)."
+      "title": "Related Results (Deep Number Theory)",
+      "startLine": 471,
+      "endLine": 523,
+      "summary": "States deep results as axioms with proved consequences: maynard_tao_bounded_gaps (some even t≤246 occurs infinitely often), maynard_tao_gap_persistent (that gap persists in G(x) for all large x), and cramer_conjecture_bound (r(x) ≤ C(log x)² conditionally).",
+      "mathContext": "Maynard–Tao (2014): infinitely many gaps $\\le 246$. Cramér: largest gap below $x$ is $O((\\log x)^2)$, bounding $r(x)$ from above conditionally."
     }
   ],
   "conclusion": {

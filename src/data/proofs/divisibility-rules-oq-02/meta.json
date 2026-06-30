@@ -6,7 +6,7 @@
   "meta": {
     "author": "Classical number theory, formalized in Lean 4",
     "date": "",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "modular-arithmetic",
@@ -14,9 +14,9 @@
       "algorithms"
     ],
     "proofRepoPath": "Proofs/DivisibilityRulesOQ02.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 142,
     "originalContributions": [
       "dvd_iff_dvd_altDigitSum: general alternating block divisibility rule",
@@ -25,7 +25,7 @@
       "eleven_dvd_iff_altDigitSum: classical div-by-11 as instance of general rule",
       "hundredone_dvd_iff_altDigitSum: div-by-101 via 2-digit blocks"
     ],
-    "assumptions": "0 axiom(s) and 0 sorry(s). Fully verified.",
+    "assumptions": "Depends on Lean.ofReduceBool. The key modular congruences (thousand_mod_seven, thousand_mod_thirteen) and the side conditions of the named divisibility tests (eleven_dvd_iff_altDigitSum, hundredone_dvd_iff_altDigitSum) are discharged by native_decide, which trusts the Lean compiler's kernel reduction. The general theorem dvd_iff_dvd_altDigitSum is itself native_decide-free; only its concrete instantiations rely on ofReduceBool. 0 literal axiom declarations, 0 sorry(s).",
     "dateAdded": "2026-04-12",
     "theoremCount": 9,
     "definitionCount": 0

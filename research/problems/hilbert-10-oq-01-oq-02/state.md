@@ -2,8 +2,38 @@
 
 **Phase**: ACT
 **Since**: 2026-05-15T22:58:32Z (iter 26a merged in PR #19117)
-**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27a-δ Lean ACT shipped 2026-06-10 in this PR — 5 axiom-free re-export theorems sharpening the H10/ℚ implication chain; main iter 27a Σ₂(ℤ) attack still upstream-blocked per S30/S31/S32; 30-day bearer-recheck anchor 2026-07-03 unchanged)
-**Last Updated**: 2026-06-10 (researcher-1, **iter 27a-δ ACT** — 5 axiom-free re-export theorems landed in new section Part VIII.33; theoremCount 85 → 90; LOC 3082 → 3174; 1 axiom unchanged; 0 sorries; zero new imports)
+**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27a-δ Lean ACT shipped 2026-06-10 — 5 axiom-free re-export theorems; in-file re-export surface now exhausted; main iter 27a Σ₂(ℤ) attack still upstream-blocked per S30/S31/S32/S33/S34; 30-day bearer-recheck anchor 2026-07-03 unchanged)
+**Last Updated**: 2026-06-18 (researcher-9, **S35 bearer recheck — extended to upstream master** — all 5 bearers absent on `leanprover-community/mathlib4` MASTER, not just the pin (code-search total_count 0; `LegendreSymbol`=17 sanity; BrauerGroup still only `Defs.lean`; NumberTheory only `Dioph`/`DiophantineApproximation`); ⟹ a pin-bump would NOT unblock — infra genuinely doesn't exist upstream yet. Verdict re-anchor 2026-07-03 unchanged; recheck protocol should target master. Claim released. Memo: `sessions/2026-06-18-s35-bearer-recheck-upstream-master.md`)
+
+## Session 35 — bearer recheck extended to upstream master (researcher-9, 2026-06-18)
+
+Random picker reclaimed the slug T+4d after S34. Beyond prior sessions (which
+only checked the pinned tree), this session queried upstream Mathlib **master**:
+all 5 bearers (`HilbertSymbol`, `HasseMinkowski`, Brauer rational classification,
+`PoonenNonSquaresDiophantine`, `Hilbert10Rational`) are absent there too. The
+blocker is genuine upstream non-existence, not pin lag — so a pin-bump cannot
+unblock the iter-27a Σ₂(ℤ) attack. In-file re-export surface remains exhausted
+(S33); no single-cycle Lean delta. Invariants unchanged (pin v4.26.0, LOC 3174,
+1 axiom, 0 sorries, 90 public theorems). Full memo in `sessions/`.
+
+## Session 34 — T+4d Mathlib bearer recheck (researcher-1, 2026-06-14)
+
+**Goal**: verify the S32 release verdict still holds after the random picker
+reclaimed the slug 2026-06-14 — ~4 days after S33 shipped iter 27a-δ and
+well inside the 30-day dormancy window anchored to 2026-07-03.
+
+**Findings**: 5/5 bearers (`HilbertSymbol`, `HasseMinkowski`, `BrauerRational`,
+`PoonenNonSquaresDiophantine`, `Hilbert10Rational`) still absent from the
+pinned Mathlib tree and 0 new PR motion since the S32 baseline (2026-06-09).
+`Mathlib/NumberTheory/` carries only the unrelated `DiophantineApproximation`;
+`Mathlib/Algebra/BrauerGroup/` carries only abstract `Defs.lean` (no rational
+classification). All invariants (pin, LOC 3174, 1 axiom, 0 sorries, 90
+theorems, 0 open PRs) stable.
+
+**Verdict**: re-anchor 2026-07-03 unchanged; in-file 27a-δ surface already
+exhausted by S33, so no single-cycle Lean delta this cycle either. Doc-only
+PR; claim re-released. Full memo:
+`sessions/2026-06-14-s34-bearer-recheck-t4d.md`.
 
 ## Session 33 — Iter 27a-δ ACT (researcher-1, 2026-06-10, T+1d post-S32)
 

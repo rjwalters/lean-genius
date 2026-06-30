@@ -1,43 +1,34 @@
 /-
-# Erdős Problem #1210: Pairwise Coprime Weighted Harmonic Sum
+# Erdős Problem #1210: Pairwise Coprime Subset Sum Inequality
 
-Source: https://erdosproblems.com/1210 (T. F. Bloom, accessed 2026-06-13)
+Source: https://erdosproblems.com/1210
 
-## Problem Statement (corrected)
+## Problem Statement
 
 Let A ⊆ [1,n) be a set of integers such that gcd(a,b) = 1 for all distinct
 a,b ∈ A (pairwise coprime). Is it true that
 
-  ∑_{a ∈ A} 1/(n - a) ≤ ∑_{p prime, p < n} 1/p + O(1)?
+  ∑_{a ∈ A} 1/(n - a) ≤ ∑_{p prime, p < n} 1/(n - p)?
 
-The right-hand side is the Mertens sum ∑_{p<n} 1/p = log log n + O(1); the "+O(1)"
-is an additive constant **uniform in n and A**. Formally the conjecture asserts:
-
-  ∃ C, ∀ n, ∀ pairwise-coprime A ⊆ [1,n),  ∑_{a∈A} 1/(n-a) ≤ ∑_{p<n} 1/p + C.
+In other words: among all pairwise coprime subsets of {1,...,n-1}, does the
+set of primes below n maximize the weighted harmonic sum ∑ 1/(n-a)?
 
 ## Status: OPEN
 
-Per the source, this is open and "cannot be resolved with a finite computation."
+This is an open conjecture of Erdős. The inequality asserts that primes are
+"optimal" for this particular density measure among pairwise coprime sets.
 
-## Transcription note (why this file was revised)
+## Key Observations
 
-An earlier formalization transcribed the right-hand side as ∑_{p<n} 1/(n-p)
-**and dropped the +O(1) term**, yielding the *exact* inequality
-∑_{a∈A} 1/(n-a) ≤ ∑_{p<n} 1/(n-p). That literal statement is FALSE: at n = 5,
-A = {4} gives LHS = 1 while ∑_{p<5} 1/(5-p) = 5/6. The refutation is preserved
-below (see `naive_statement_fails_at_five`) precisely to document that the
-O(1) term is essential — with it, the n=5 discrepancy of 1/6 is absorbed by the
-constant and there is no contradiction (`corrected_statement_consistent_at_five`).
-
-In [Er80] Erdős notes he "did not state [this] quite correctly" in [Er77c]. The
-reformulation he gives there concerns primes in an interval: if
-n < q₁ < ⋯ < q_k ≤ m are the primes in (n,m], then
-∑ 1/(qᵢ - n) < ∑_{p < m-n} 1/p + O(1). See also problems #460 and #950.
+1. Primes < n are pairwise coprime, so they form a valid candidate set A.
+2. The sum ∑_{p<n} 1/(n-p) is a finite positive quantity for n ≥ 3.
+3. Any pairwise coprime set A has at most one even element.
+4. The inequality is tight when A = {primes < n}.
 
 ## References
 
-- Erdős (1977), [Er77c, p.64]
-- Erdős (1980), [Er80, p.112]
+- Erdős (1980), Er80
+- Erdős (1977), Er77c
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
@@ -66,11 +57,6 @@ def PairwiseCoprime (A : Finset ℕ) : Prop :=
 /-- A finset A is valid for Erdős 1210: all elements in [1, n). -/
 def ValidSubset (n : ℕ) (A : Finset ℕ) : Prop :=
   ∀ a ∈ A, 1 ≤ a ∧ a < n
-
-/-- The corrected right-hand side: the sum of prime reciprocals ∑_{p<n} 1/p
-    (the Mertens sum ~ log log n). NOTE: this is 1/p, **not** 1/(n-p). -/
-noncomputable def primeReciprocalSum (n : ℕ) : ℝ :=
-  ∑ p ∈ primesBelow n, (1 : ℝ) / (p : ℝ)
 
 /-
 ## Basic Properties of Primes
@@ -112,75 +98,97 @@ theorem pairwiseCoprime_at_most_one_even {A : Finset ℕ} (hA : PairwiseCoprime 
   exact absurd this (by norm_num)
 
 /-
-## The Corrected Right-Hand Side
+## The Sum Inequality
 -/
 
-/-- Each prime reciprocal 1/p is nonneg, so the prime-reciprocal sum is nonneg. -/
-theorem primeReciprocalSum_nonneg (n : ℕ) : 0 ≤ primeReciprocalSum n := by
-  unfold primeReciprocalSum
+/-- The prime sum is nonneg: each term 1/(n-p) ≥ 0 for p < n. -/
+theorem primesBelow_sum_nonneg (n : ℕ) :
+    0 ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p) := by
   apply Finset.sum_nonneg
-  intro p _
-  positivity
+  intro p hp
+  simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hp
+  apply div_nonneg zero_le_one
+  have : (p : ℝ) < n := by exact_mod_cast hp.1
+  linarith
 
-/-- The prime-reciprocal sum is positive for n ≥ 3 (it contains the term 1/2). -/
-theorem primeReciprocalSum_pos {n : ℕ} (hn : 3 ≤ n) : 0 < primeReciprocalSum n := by
-  unfold primeReciprocalSum
+/-- The prime sum is positive for n ≥ 3 (since 1/(n-2) > 0). -/
+theorem primesBelow_sum_pos {n : ℕ} (hn : 3 ≤ n) :
+    0 < ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p) := by
   refine Finset.sum_pos ?_ (primesBelow_nonempty hn)
   intro p hp
   simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hp
-  exact div_pos one_pos (by exact_mod_cast hp.2.pos)
+  have hpn : (p : ℝ) < n := by exact_mod_cast hp.1
+  exact _root_.div_pos one_pos (by linarith)
 
 /-
-## The Main Conjecture (Open)
-
-The conjecture is an asymptotic inequality with an additive O(1) constant that
-is uniform over both n and the pairwise-coprime set A. We axiomatize it with an
-explicit existential constant C — the honest formalization of "+O(1)".
+## The Literal Conjecture (as transcribed) — packaged, NOT assumed
 -/
 
-/-- **Erdős Problem 1210 (Open)**. There is an absolute constant C such that for
-    every n ≥ 3 and every pairwise coprime A ⊆ {1,…,n-1},
-
-      ∑_{a ∈ A} 1/(n-a) ≤ ∑_{p prime, p < n} 1/p + C.
-
-    Equivalently, the weighted harmonic sum over any pairwise coprime set is
-    bounded by the Mertens sum (~ log log n) up to an additive constant. -/
-axiom erdos_1210 :
-    ∃ C : ℝ, ∀ (n : ℕ), 3 ≤ n → ∀ (A : Finset ℕ),
-      ValidSubset n A → PairwiseCoprime A →
-      ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ primeReciprocalSum n + C
+/-- The Erdős-1210 inequality **as literally transcribed**, packaged as a
+proposition. This is a `def` — deliberately **not** an `axiom` — because the
+literal statement is *false* (refuted below by `not_Erdos1210Statement`, via the
+concrete counterexample `n = 5, A = {4}`). Assuming it as an axiom would make the
+development inconsistent. The genuine Erdős problem presumably carries unstated
+hypotheses on `A` (e.g. `A ⊆ (n/2, n)` or `a > √n`); recovering the intended form
+from [Er77c, Er80] is open. -/
+def Erdos1210Statement : Prop :=
+  ∀ (n : ℕ), 3 ≤ n → ∀ (A : Finset ℕ), ValidSubset n A → PairwiseCoprime A →
+    ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p)
 
 /-
 ## Consequences
 -/
 
-/-- Re-statement of the conjecture: a single uniform constant works for all n, A. -/
-theorem erdos_1210_uniform_bound :
-    ∃ C : ℝ, ∀ (n : ℕ), 3 ≤ n → ∀ (A : Finset ℕ),
-      ValidSubset n A → PairwiseCoprime A →
-      ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ primeReciprocalSum n + C :=
-  erdos_1210
-
-/-- The empty set has sum 0, trivially bounded by the (nonneg) prime-reciprocal
-    sum — this holds unconditionally, with no need for the O(1) constant. -/
+/-- The empty set has sum 0, trivially bounded by the prime sum. -/
 theorem erdos_1210_empty (n : ℕ) (hn : 3 ≤ n) :
-    (0 : ℝ) ≤ primeReciprocalSum n :=
-  le_of_lt (primeReciprocalSum_pos hn)
+    (0 : ℝ) ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p) :=
+  le_of_lt (primesBelow_sum_pos hn)
+
+/-- The prime sum dominates any singleton prime: {p} has sum 1/(n-p) ≤ total prime sum. -/
+theorem erdos_1210_prime_singleton (n : ℕ) (_hn : 3 ≤ n) (p : ℕ)
+    (hp : p.Prime) (hpn : p < n) :
+    (1 : ℝ) / ((n : ℝ) - p) ≤ ∑ q ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - q) := by
+  have hp_mem : p ∈ primesBelow n := by
+    simp only [primesBelow, Finset.mem_filter, Finset.mem_range]
+    exact ⟨hpn, hp⟩
+  calc (1 : ℝ) / ((n : ℝ) - p)
+      = ∑ q ∈ ({p} : Finset ℕ), (1 : ℝ) / ((n : ℝ) - q) := by simp
+    _ ≤ ∑ q ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - q) := by
+        apply Finset.sum_le_sum_of_subset_of_nonneg (by simp [hp_mem])
+        intro q hq _
+        simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hq
+        apply div_nonneg zero_le_one
+        have : (q : ℝ) < n := by exact_mod_cast hq.1
+        linarith
 
 /-
-## Why the O(1) Term Is Essential (machine-checked)
+## Counterexample: The Literal Statement Is FALSE
 
-The naive "exact" inequality (constant C = 0, with the further mis-transcription
-of the right-hand side as ∑ 1/(n-p)) is FALSE. The minimal witness is n = 5,
-A = {4}:
+The literal Erdős-1210 inequality (`Erdos1210Statement` above) is **false** as
+transcribed: there is a concrete (n, A) for which the hypotheses are satisfied
+but the inequality FAILS. The minimal witness is n = 5, A = {4}:
 
-  - 4 ∈ [1, 5), so `ValidSubset 5 {4}` holds; {4} is trivially pairwise coprime.
+  - 4 ∈ [1, 5), so `ValidSubset 5 {4}` holds.
+  - A = {4} is trivially pairwise coprime (singleton, vacuous condition).
   - ∑_{a ∈ {4}} 1/(5 - a) = 1/(5-4) = 1.
-  - ∑_{p prime, p < 5} 1/p = 1/2 + 1/3 = 5/6   (and ∑ 1/(5-p) = 1/3 + 1/2 = 5/6 too).
-  - 1 > 5/6, so the C = 0 statement fails by exactly 1/6.
+  - primesBelow 5 = {2, 3}, so ∑_{p < 5 prime} 1/(5 - p) = 1/3 + 1/2 = 5/6.
+  - 1 > 5/6, so the conjectured bound fails.
 
-With the O(1) term any C ≥ 1/6 absorbs this gap, so the corrected conjecture is
-not contradicted. The theorems below record both facts.
+Earlier revisions of this file declared `Erdos1210Statement` as an `axiom`. That
+was **unsound**: combined with `erdos_1210_literal_counterexample` it derives
+`False`. The axiom has been replaced by a plain `def` (asserting nothing), and
+the refutation is recorded as the verified theorem `not_Erdos1210Statement`.
+
+### Interpretation
+
+The transcribed conjecture either:
+  (a) requires unstated constraints on A (e.g., A ⊆ (n/2, n) or a > √n), or
+  (b) uses different weights (e.g., 1/a instead of 1/(n-a)), or
+  (c) was misrecorded in the source database.
+
+Remaining open follow-up:
+  - **Locate originals** [Er77c, Er80] to recover the intended hypothesis, then
+    state and (dis)prove the corrected form.
 -/
 
 /-- `primesBelow 5 = {2, 3}` (decidable equality of concrete Finsets). -/
@@ -188,15 +196,16 @@ theorem primesBelow_five : primesBelow 5 = ({2, 3} : Finset ℕ) := by
   unfold primesBelow
   decide
 
-/-- The corrected right-hand side at n = 5 equals 5/6 (= 1/2 + 1/3). -/
-theorem primeReciprocalSum_five : primeReciprocalSum 5 = 5 / 6 := by
-  unfold primeReciprocalSum
+/-- The weighted sum over primes below 5 equals 5/6. -/
+theorem primesBelow_five_sum :
+    ∑ p ∈ primesBelow 5, (1 : ℝ) / ((5 : ℝ) - p) = 5 / 6 := by
   rw [primesBelow_five]
+  have h23 : (2 : ℕ) ∉ ({3} : Finset ℕ) := by decide
   rw [show ({2, 3} : Finset ℕ) = insert 2 {3} from rfl,
-      Finset.sum_insert (by decide), Finset.sum_singleton]
+      Finset.sum_insert h23, Finset.sum_singleton]
   norm_num
 
-/-- `{4}` satisfies the hypotheses of `erdos_1210` at n = 5. -/
+/-- `{4}` satisfies the hypotheses of `Erdos1210Statement` at n = 5. -/
 theorem singleton_four_valid_at_five :
     ValidSubset 5 ({4} : Finset ℕ) ∧ PairwiseCoprime ({4} : Finset ℕ) := by
   refine ⟨?_, ?_⟩
@@ -208,23 +217,28 @@ theorem singleton_four_valid_at_five :
     simp only [Finset.mem_singleton] at ha hb
     omega
 
-/-- **The naive (C = 0) statement fails at n = 5, A = {4}**: the A-sum (= 1)
-    strictly exceeds the prime-reciprocal sum (= 5/6). This is why an additive
-    O(1) constant is required in the conjecture. -/
-theorem naive_statement_fails_at_five :
-    primeReciprocalSum 5 < ∑ a ∈ ({4} : Finset ℕ), (1 : ℝ) / ((5 : ℝ) - a) := by
-  rw [primeReciprocalSum_five, Finset.sum_singleton]
-  push_cast
+/-- **Counterexample to the literal Erdős-1210 statement**.
+
+    At n = 5, A = {4}, the A-sum (= 1) STRICTLY EXCEEDS the prime-sum (= 5/6).
+    All hypotheses of `Erdos1210Statement` are satisfied (see
+    `singleton_four_valid_at_five`), but the conclusion fails. -/
+theorem erdos_1210_literal_counterexample :
+    (∑ p ∈ primesBelow 5, (1 : ℝ) / ((5 : ℝ) - p)) <
+      ∑ a ∈ ({4} : Finset ℕ), (1 : ℝ) / ((5 : ℝ) - a) := by
+  rw [primesBelow_five_sum, Finset.sum_singleton]
   norm_num
 
-/-- **The corrected (O(1)) statement is consistent at n = 5, A = {4}**: for any
-    constant C ≥ 1/6, the A-sum is bounded by the prime-reciprocal sum plus C.
-    The n = 5 case therefore imposes only the lower bound C ≥ 1/6 — no
-    contradiction with the conjecture. -/
-theorem corrected_statement_consistent_at_five (C : ℝ) (hC : 1 / 6 ≤ C) :
-    ∑ a ∈ ({4} : Finset ℕ), (1 : ℝ) / ((5 : ℝ) - a) ≤ primeReciprocalSum 5 + C := by
-  rw [primeReciprocalSum_five, Finset.sum_singleton]
-  push_cast
-  linarith
+/-- **The literal Erdős-1210 statement is refuted.** Instantiating
+`Erdos1210Statement` at `n = 5, A = {4}` would force the A-sum below the
+prime-sum, contradicting `erdos_1210_literal_counterexample`. This is the sound
+replacement for the previously-declared (unsound) `axiom`. -/
+theorem not_Erdos1210Statement : ¬ Erdos1210Statement := by
+  intro h
+  have hle := h 5 (by norm_num) {4}
+    singleton_four_valid_at_five.1 singleton_four_valid_at_five.2
+  rw [Finset.sum_singleton] at hle
+  simp only [Nat.cast_ofNat] at hle
+  rw [primesBelow_five_sum] at hle
+  norm_num at hle
 
 end Erdos1210

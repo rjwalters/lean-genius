@@ -1,0 +1,144 @@
+[
+  {
+    "id": "imports",
+    "proofId": "infinitude-primes-4k3-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 3
+    },
+    "type": "concept",
+    "title": "Imports: Reusing the Repository's Dirichlet Theorem",
+    "content": "The file imports Proofs.DirichletsTheorem — the gallery's machine-checked Dirichlet theorem — together with Mathlib.Data.ZMod.Basic (for the ZMod ↔ mod cast bridge) and Mathlib.Tactic. All of the infinitude content comes from the imported dirichlet_modEq; this file adds only the per-modulus specializations and the ZMod cast lemmas. Because the entire import closure is sorry-free and axiom-free, the two infinitude theorems are genuinely verified, not conditional.",
+    "mathContext": "Dependency chain: this file → Proofs.DirichletsTheorem.dirichlet_modEq → Mathlib's Nat.infinite_setOf_prime_and_modEq. ZMod.Basic supplies ZMod.natCast_eq_natCast_iff for the cast bridges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet's theorem",
+      "module composition",
+      "Mathlib.NumberTheory.Dirichlet",
+      "ZMod cast"
+    ],
+    "prerequisites": [
+      "Proofs.DirichletsTheorem",
+      "Lean 4 import system"
+    ]
+  },
+  {
+    "id": "oq-and-spectrum",
+    "proofId": "infinitude-primes-4k3-oq-01",
+    "range": {
+      "startLine": 5,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "OQ-01 and the p ≡ -1 (mod q) Spectrum",
+    "content": "The module docstring states the OQ-01 deliverable and presents the spectrum-coverage table for the family of residue classes p ≡ -1 (mod q). For q ∈ {3, 4, 6} the class admits a genuinely elementary, L-function-free Euclid-style proof (handled in this slug's sibling files); q = 8 is the conjectured elementary frontier; and q ∈ {12, 24} — the moduli of this file — are settled instead by specializing the full Dirichlet theorem, because their unit groups (Klein-4 for 12, (ℤ/2ℤ)³ for 24) make a single-construction Euclid argument awkward. In every (ZMod q)ˣ the residue -1 is the distinguished involution, which is why p ≡ -1 (mod q) is the canonical 'easy' class across all q.",
+    "mathContext": "(ZMod 12)ˣ ≅ Klein-4 = {1, 5, 7, 11}, with 11 ≡ -1 the unique order-2 unit; (ZMod 24)ˣ ≅ (ℤ/2ℤ)³ = {1,5,7,11,13,17,19,23}, with 23 ≡ -1 simultaneously -1 mod 8 and -1 mod 3 under CRT 24 = 8·3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primes in arithmetic progressions",
+      "unit group of ZMod q",
+      "Klein four-group",
+      "CRT decomposition",
+      "Euclid-style infinitude proofs"
+    ],
+    "prerequisites": [
+      "Dirichlet's theorem statement",
+      "modular arithmetic",
+      "structure of (ZMod q)ˣ"
+    ]
+  },
+  {
+    "id": "zmod-bridges",
+    "proofId": "infinitude-primes-4k3-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "ZMod ↔ mod Bridge Lemmas",
+    "content": "zmod_12_eq_eleven_iff and zmod_24_eq_twentythree_iff each prove (p : ZMod q) = a ↔ p % q = a. The proof recasts the literal a as a Nat-cast so that ZMod.natCast_eq_natCast_iff applies, turning the ZMod equality into a Nat.ModEq, which unfold + omega then settle. These bridges are what let the file present every result in both the elementary % q = a form and the ZMod-cast form without re-proving the infinitude.",
+    "mathContext": "$(p : \\mathbb{Z}/q\\mathbb{Z}) = a \\iff p \\bmod q = a$. Via $\\mathrm{ZMod.natCast\\_eq\\_natCast\\_iff} : (a : \\mathbb{Z}/c\\mathbb{Z}) = (b : \\mathbb{Z}/c\\mathbb{Z}) \\iff a \\equiv b\\ [\\mathrm{MOD}\\ c]$, then $\\mathrm{unfold\\ Nat.ModEq};\\ \\mathrm{omega}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ZMod.natCast_eq_natCast_iff",
+      "Nat.ModEq",
+      "omega tactic",
+      "norm_cast"
+    ],
+    "prerequisites": [
+      "ZMod arithmetic",
+      "Nat.ModEq definition"
+    ]
+  },
+  {
+    "id": "primes-11-mod-12",
+    "proofId": "infinitude-primes-4k3-oq-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "infinitely_many_primes_11_mod_12",
+    "content": "The q = 12 case of OQ-01: the set of primes p with p % 12 = 11 is infinite. The proof establishes Nat.Coprime 11 12 by decide, instantiates the imported dirichlet_modEq at (a, q) = (11, 12), then converts the resulting set {p | p ≡ 11 [MOD 12]} to {p | p % 12 = 11} — the two differ only by unfolding Nat.ModEq, discharged by ext and simp [Set.mem_setOf_eq, Nat.ModEq].",
+    "mathContext": "$\\mathrm{Set.Infinite}\\,\\{p \\mid \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 12 = 11\\}$, from $\\mathrm{dirichlet\\_modEq}\\,(12 \\neq 0)\\,(11 \\perp 12)$. 11 is the unique order-2 element of the Klein-4 group $(\\mathbb{Z}/12\\mathbb{Z})^\\times$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet's theorem",
+      "Set.Infinite",
+      "Nat.Coprime",
+      "decide tactic",
+      "convert tactic"
+    ],
+    "prerequisites": [
+      "Dirichlet's theorem (modEq form)",
+      "Nat.ModEq",
+      "coprimality"
+    ]
+  },
+  {
+    "id": "primes-23-mod-24",
+    "proofId": "infinitude-primes-4k3-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "infinitely_many_primes_23_mod_24",
+    "content": "The q = 24 case of OQ-01: the set of primes p with p % 24 = 23 is infinite. Structurally identical to the q = 12 theorem, instantiated at (a, q) = (23, 24) with coprimality 23 ⊥ 24 by decide. Under the CRT splitting 24 = 8·3, the residue 23 is the unique unit that is simultaneously -1 (mod 8) and -1 (mod 3) in (ZMod 24)ˣ ≅ (ℤ/2ℤ)³.",
+    "mathContext": "$\\mathrm{Set.Infinite}\\,\\{p \\mid \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 24 = 23\\}$, from $\\mathrm{dirichlet\\_modEq}\\,(24 \\neq 0)\\,(23 \\perp 24)$. CRT: $23 \\equiv -1 \\pmod 8$ and $23 \\equiv -1 \\pmod 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet's theorem",
+      "Chinese Remainder Theorem",
+      "Set.Infinite",
+      "elementary abelian 2-group"
+    ],
+    "prerequisites": [
+      "Dirichlet's theorem (modEq form)",
+      "CRT decomposition of ZMod 24"
+    ]
+  },
+  {
+    "id": "zmod-form-theorems",
+    "proofId": "infinitude-primes-4k3-oq-01",
+    "range": {
+      "startLine": 117,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "ZMod-Cast Forms of Both Results",
+    "content": "primes_11_mod_12_zmod_form and primes_23_mod_24_zmod_form restate the two infinitude results with the predicate (p : ZMod q) = a instead of p % q = a — the formulation that character-sum and L-function arguments consume. Each proof rewrites the set using the corresponding bridge lemma (zmod_12_eq_eleven_iff / zmod_24_eq_twentythree_iff) to reduce to the elementary theorem, then applies it directly.",
+    "mathContext": "$\\mathrm{Set.Infinite}\\,\\{p \\mid \\mathrm{Nat.Prime}\\,p \\wedge (p : \\mathbb{Z}/q\\mathbb{Z}) = a\\}$ for $(a, q) \\in \\{(11, 12), (23, 24)\\}$, reduced via the bridge lemmas to the $\\% q = a$ theorems.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ZMod cast",
+      "Set equality rewriting",
+      "character sums",
+      "Dirichlet L-functions"
+    ],
+    "prerequisites": [
+      "ZMod ↔ mod bridge lemmas",
+      "Set.Infinite"
+    ]
+  }
+]

@@ -92,15 +92,15 @@
       "id": "cube-root-unity",
       "title": "Section I: Cube Root of Unity",
       "startLine": 1,
-      "endLine": 80,
+      "endLine": 82,
       "summary": "Defines $\\omega = e^{2\\pi i/3}$ and proves the fundamental identities: $\\omega^3 = 1$, $\\omega \\neq 1$, $1 + \\omega + \\omega^2 = 0$, $\\omega^2 + \\omega = -1$, and $\\omega^4 = \\omega$",
       "mathContext": "Defines $\\omega = e^{2\\pi i/3}$ and proves the fundamental identities: $\\omega^3 = 1$, $\\omega \\neq 1$, $1 + \\omega + \\omega^2 = 0$, $\\omega^2 + \\omega = -1$, and $\\omega^4 = \\omega$"
     },
     {
       "id": "cardano-roots",
       "title": "Section II: The Three Cardano Roots",
-      "startLine": 81,
-      "endLine": 96,
+      "startLine": 84,
+      "endLine": 95,
       "summary": "Defines the three roots: $x_1 = u + v$, $x_2 = \\omega u + \\omega^2 v$, $x_3 = \\omega^2 u + \\omega v$",
       "mathContext": "The choice of pairing (root $k$ uses $\\omega^k u + \\omega^{2k} v$) ensures $uv = -p/3$ is preserved for all three root pairs, which is essential for Vieta II."
     },
@@ -108,23 +108,23 @@
       "id": "vieta-sum",
       "title": "Section III: Vieta I — Sum of Roots",
       "startLine": 97,
-      "endLine": 110,
+      "endLine": 108,
       "summary": "$x_1 + x_2 + x_3 = (1+\\omega+\\omega^2)(u+v) = 0$. Proved via linear_combination with omega_sum",
       "mathContext": "For a monic polynomial $x^n + a_{n-1}x^{n-1} + \\cdots$, the sum of roots equals $-a_{n-1}$. Here $a_{n-1} = 0$ (no $x^2$ term)."
     },
     {
       "id": "vieta-pairs",
       "title": "Section IV: Vieta II — Sum of Pairwise Products",
-      "startLine": 111,
-      "endLine": 135,
+      "startLine": 110,
+      "endLine": 132,
       "summary": "After expanding, the $u^2$ and $v^2$ coefficients are $(1+\\omega+\\omega^2) = 0$, and the $uv$ coefficient reduces to $-3$ via $\\omega^3 = 1$ and $\\omega^4 = \\omega$. With $uv = -p/3$, this gives $p$",
       "mathContext": "The second elementary symmetric polynomial $\\sigma_2 = \\sum_{i<j} x_i x_j$ equals the coefficient of $x$ in the monic depressed cubic."
     },
     {
       "id": "vieta-product",
       "title": "Section V: Vieta III — Product of All Roots",
-      "startLine": 136,
-      "endLine": 153,
+      "startLine": 134,
+      "endLine": 152,
       "summary": "The triple product expands with cross-terms ($u^2 v$, $uv^2$) that vanish by $1+\\omega+\\omega^2 = 0$, leaving $\\omega^3(u^3+v^3) = u^3 + v^3 = -q$",
       "mathContext": "The third elementary symmetric polynomial $\\sigma_3 = x_1 x_2 x_3$ equals $(-1)^3$ times the constant term, giving $-q$."
     },
@@ -132,15 +132,15 @@
       "id": "factorization",
       "title": "Section VI: Polynomial Factorization",
       "startLine": 154,
-      "endLine": 172,
+      "endLine": 174,
       "summary": "Combines all three Vieta formulas with the expansion $(x-r_1)(x-r_2)(x-r_3) = x^3 - \\sigma_1 x^2 + \\sigma_2 x - \\sigma_3$ to prove $x^3 + px + q = (x - x_1)(x - x_2)(x - x_3)$",
       "mathContext": "This is the fundamental theorem of algebra applied to degree 3: every cubic over $\\mathbb{C}$ splits into linear factors."
     },
     {
       "id": "roots-satisfy",
       "title": "Section VII: Root Verification",
-      "startLine": 173,
-      "endLine": 187,
+      "startLine": 176,
+      "endLine": 185,
       "summary": "As a corollary of the factorization, all three Cardano roots satisfy $x_i^3 + px_i + q = 0$",
       "mathContext": "Each root is a zero of the polynomial because the factorization puts $(x - x_i)$ as a factor."
     }

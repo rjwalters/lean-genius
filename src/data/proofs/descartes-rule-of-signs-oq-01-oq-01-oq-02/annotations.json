@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-bf-leadingcoeff",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-02",
+    "range": { "startLine": 64, "endLine": 92 },
+    "type": "insight",
+    "title": "Leading Coefficient of the k-th Derivative",
+    "content": "The algebraic engine of both endpoint counts. From Mathlib's `Polynomial.coeff_iterate_derivative`, the coefficient of `derivative^[k] p` at index n−k is `(n.descFactorial k) · leadingCoeff p` (`coeff_iterate_derivative_natDegree_sub`). Since the descending factorial is positive for k ≤ n, that coefficient is nonzero, so combined with Mathlib's degree *upper* bound it pins the exact degree n−k (`natDegree_iterate_derivative_eq`, a clean `le_antisymm`), and hence the leading coefficient is exactly `(n.descFactorial k) · leadingCoeff p` (`leadingCoeff_iterate_derivative`). Every derivative in the Fourier sequence shares the sign of `leadingCoeff p`.",
+    "mathContext": "$\\deg p^{(k)} = n-k$ and $\\operatorname{lc}(p^{(k)}) = n^{\\underline{k}}\\cdot\\operatorname{lc}(p)$, where $n^{\\underline{k}} = n(n-1)\\cdots(n-k+1) > 0$ for $k \\le n$.",
+    "significance": "key",
+    "relatedConcepts": ["iterated derivative", "descending factorial", "Polynomial.coeff_iterate_derivative", "leading coefficient"],
+    "prerequisites": ["Nat.descFactorial_pos", "le_natDegree_of_ne_zero", "le_antisymm"]
+  },
+  {
+    "id": "ann-bf-mulsuccpos",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-02",
+    "range": { "startLine": 94, "endLine": 111 },
+    "type": "technique",
+    "title": "Consecutive Leading Coefficients Have Positive Product",
+    "content": "`leadingCoeff_mul_succ_pos`: consecutive members of the Fourier sequence have leading coefficients with positive product. Both equal `(positive descFactorial) · leadingCoeff p`, so their product is `(positive)·leadingCoeff p²`, and `leadingCoeff p² > 0` since `leadingCoeff p ≠ 0`. This is exactly the statement that all leading coefficients share one sign — the fact that makes V(+∞) = 0.",
+    "mathContext": "$\\operatorname{lc}(p^{(k)})\\cdot\\operatorname{lc}(p^{(k+1)}) = n^{\\underline{k}}\\,n^{\\underline{k+1}}\\cdot\\operatorname{lc}(p)^2 > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sign of leading coefficient", "mul_self_pos", "positivity"],
+    "prerequisites": ["leadingCoeff_iterate_derivative", "mul_pos"]
+  },
+  {
+    "id": "ann-bf-signseq-counter",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-02",
+    "range": { "startLine": 113, "endLine": 146 },
+    "type": "definition",
+    "title": "Endpoint Sign Sequences and the Variation Counter",
+    "content": "`topSign p k` is the +∞ sign of the k-th derivative (its leading coefficient); `botSign p k` is the −∞ sign (leading coefficient times (−1)^deg, since a degree-d polynomial behaves like c·x^d, whose −∞ sign is c·(−1)^d). `sv f m` is a 5-line primitive-recursive counter of strict sign changes in f(0),…,f(m). The two one-line inductions `sv_eq_zero` (no changes → 0) and `sv_eq_self` (all changes → m) reduce the endpoint counts to sign-product facts.",
+    "mathContext": "$V(x)$ counts strict sign variations of $(p, p', \\dots, p^{(n)})$ at $x$; $\\operatorname{topSign} = \\operatorname{lc}$, $\\operatorname{botSign} = \\operatorname{lc}\\cdot(-1)^{\\deg}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sign variation", "Fourier sequence", "primitive recursion", "behavior at infinity"],
+    "prerequisites": ["recursive definitions in Lean", "induction on ℕ"]
+  },
+  {
+    "id": "ann-bf-endpoint-counts",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-02",
+    "range": { "startLine": 147, "endLine": 182 },
+    "type": "insight",
+    "title": "V(+∞) = 0 and V(−∞) = n",
+    "content": "`signVarTop_eq_zero`: at +∞ every consecutive product is positive (`leadingCoeff_mul_succ_pos`), so `sv_eq_zero` gives V(+∞) = 0. `signVarBot_eq_natDegree`: at −∞ consecutive products are *negative* (`botSign_mul_succ_neg`), so `sv_eq_self` gives V(−∞) = n. The negativity hinges on the (−1)-exponent (n−k)+(n−k−1) being odd (`omega` + `Odd.neg_one_pow`): the degree drops by one at each differentiation, so consecutive −∞ signs strictly alternate.",
+    "mathContext": "At $+\\infty$ all signs agree $\\Rightarrow V(+\\infty)=0$; at $-\\infty$ the factor $(-1)^{\\deg}$ flips at each step (exponent sum odd) $\\Rightarrow$ strict alternation $\\Rightarrow V(-\\infty)=n$.",
+    "significance": "key",
+    "relatedConcepts": ["alternating signs", "Odd.neg_one_pow", "parity of exponents", "sign variation count"],
+    "prerequisites": ["leadingCoeff_mul_succ_pos", "Nat.odd_iff", "omega"]
+  },
+  {
+    "id": "ann-bf-whole-line",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-02",
+    "range": { "startLine": 184, "endLine": 192 },
+    "type": "concept",
+    "title": "The Whole-Line Budan–Fourier Identity",
+    "content": "`budan_fourier_whole_line`: V(−∞) − V(+∞) = deg p, just n − 0. Taking the Budan–Fourier interval to be all of ℝ, the sign-variation drop equals the degree. This both bounds the real-root count by deg p and — since the Budan–Fourier defect is always even — recovers the parent file's parity statement (real-root count ≡ deg p mod 2), complementing its complex-conjugate-pairing proof of the same fact.",
+    "mathContext": "$V(-\\infty) - V(+\\infty) = n - 0 = \\deg p$; Descartes/parity is the $(-\\infty, +\\infty)$ endpoint case of Budan–Fourier.",
+    "significance": "key",
+    "relatedConcepts": ["Budan–Fourier theorem", "Descartes' rule of signs", "real-root parity", "endpoint case"],
+    "prerequisites": ["signVarTop_eq_zero", "signVarBot_eq_natDegree"]
+  },
+  {
+    "id": "ann-bf-anchoring",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-02",
+    "range": { "startLine": 194, "endLine": 221 },
+    "type": "technique",
+    "title": "Analytic Anchoring of the +∞ Sign",
+    "content": "`eval_mul_leadingCoeff_eventually_pos` confirms `topSign` is not just a formal definition but the genuine sign of p(x) at +∞: for nonzero q, q(x)·leadingCoeff q is eventually positive as x → +∞. The proof case-splits on degree zero (constant: q(x) = coeff 0 = leadingCoeff, product is a square) versus positive degree, where Mathlib's polynomial asymptotics `tendsto_atTop_of_leadingCoeff_nonneg` / `tendsto_atBot_of_leadingCoeff_nonpos` give the sign of q(x), matched against the sign of leadingCoeff via `filter_upwards`.",
+    "mathContext": "$\\forall^{\\infty} x,\\ q(x)\\cdot\\operatorname{lc}(q) > 0$ — i.e. $q(x)$ eventually has the sign of its leading coefficient, grounding $\\operatorname{topSign}$ in real analysis.",
+    "significance": "supporting",
+    "relatedConcepts": ["polynomial asymptotics", "Filter.atTop", "eventually", "leading-coefficient sign"],
+    "prerequisites": ["tendsto_atTop_of_leadingCoeff_nonneg", "filter_upwards", "eq_C_of_natDegree_le_zero"]
+  },
+  {
+    "id": "ann-bf-remaining",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-02",
+    "range": { "startLine": 223, "endLine": 245 },
+    "type": "context",
+    "title": "What Remains for the Full Interval Theorem",
+    "content": "Honest scoping. The whole-line case is proved; the finite-interval bound #{roots in (a,b]} ≤ V(a) − V(b) needs two more ingredients: (1) interior sign-change bookkeeping — V(x) drops by an odd amount exactly when x passes a root of p — via continuity of `eval` and a Rolle-type interleaving of roots of p⁽ʲ⁾ and p⁽ʲ⁺¹⁾; (2) counting with multiplicity through `Polynomial.rootMultiplicity`. The leading-coefficient theory, the `sv` counter, and the `topSign`/`botSign` identifications built here are the reusable backbone for both.",
+    "mathContext": "Full Budan–Fourier: $\\#\\{\\text{roots of } p \\text{ in } (a,b]\\} \\le V(a) - V(b)$ with even defect — the next step from the endpoint backbone.",
+    "significance": "context",
+    "relatedConcepts": ["Rolle's theorem", "root multiplicity", "Sturm sequences", "interval root counting"],
+    "prerequisites": ["Polynomial.rootMultiplicity", "continuity of polynomial evaluation"]
+  }
+]

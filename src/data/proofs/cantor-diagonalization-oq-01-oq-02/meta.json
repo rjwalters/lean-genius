@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "module-header-setup",
+      "title": "Module Header and Setup",
+      "summary": "File header framing the open question — is the Continuum Hypothesis decided by large cardinal axioms? — with the partial answer: standard large cardinals (inaccessible, measurable, supercompact) do NOT decide CH (Lévy-Solovay), whereas forcing axioms (MA, PFA, MM) imply ¬CH, and Woodin's Ultimate-L program seeks a canonical resolution. Imports Mathlib cardinal/cofinality theory and the sibling `Proofs.ContinuumHypothesis`, sets linters, and opens the `CantorDiagOQ01OQ02` namespace. References: Lévy-Solovay (1967), Foreman-Magidor-Shelah (1988), Woodin (2001), Kanamori (2003).",
+      "startLine": 1,
+      "endLine": 57,
+      "mathContext": "Independence backdrop: CH is independent of ZFC (Gödel, Cohen); the question here is whether adding large cardinal axioms or forcing axioms settles it. Lévy-Solovay (1967): small forcing preserves large cardinals, so they cannot decide CH."
+    },
+    {
       "id": "large-cardinals",
       "title": "Large Cardinal Hierarchy",
       "startLine": 58,

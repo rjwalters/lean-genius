@@ -636,4 +636,86 @@ theorem prodFactors_natDegree_ge_firstFactor_natDegree_mul
     nat_list_sum_ge_length_mul_of_all_ge _ _ h_bound
   rwa [List.length_map] at h_sum
 
+
+/-! ## Part 8: S15 endpoint divisibility helpers — `firstFactor ∣ lastFactor`
+       and the two `endpoint ∣ prodFactors` corollaries.
+
+These three short lemmas extend the S4/S13 endpoint structural facts
+(`firstFactor`/`lastFactor` membership + degree extremality) with the
+corresponding divisibility statements. They are pure structural facts
+on `InvariantFactorChain F`, sorry-free, conditional only on
+`c.factors ≠ []`. None of them depends on the OQ-03-OQ-01/02 module
+infrastructure or on the regrouping bookkeeping; they live entirely
+inside the abstract chain data structure.
+
+* `lastFactor_dvd_prodFactors` — `c.lastFactor ∣ c.prodFactors`. The
+  abstract counterpart of the parent gallery entry's headline theorem
+  `minpoly M ∣ charpoly M` (in `MinpolyCharpoly.lean`): once the chain
+  is instantiated by a matrix `M`, `lastFactor` will equal `minpoly M`
+  and `prodFactors` will equal `charpoly M`, recovering exactly that
+  divisibility. Direct from `factor_dvd_prodFactors` + `lastFactor_mem`.
+
+* `firstFactor_dvd_prodFactors` — `c.firstFactor ∣ c.prodFactors`.
+  Symmetric one-liner via `factor_dvd_prodFactors` + `firstFactor_mem`.
+  Counterpart to the matrix-level "leading invariant divisor divides
+  charpoly" fact.
+
+* `firstFactor_dvd_lastFactor` — `c.firstFactor ∣ c.lastFactor`. The
+  strongest single-divisibility on the chain endpoints: `firstFactor`
+  divides every later factor (via the `chain` field on `i = 0`,
+  `j = length - 1`), so it divides `lastFactor`. The abstract
+  counterpart of "the leading invariant divisor `d₁` divides
+  `minpoly M`".
+
+The three lemmas together (combined with Parts 5–7's degree bounds)
+fully characterize the structural endpoint behaviour of an
+`InvariantFactorChain` — `firstFactor` is a divisor of everything in
+the chain, `lastFactor` is a multiple of everything in the chain.
+Useful when reasoning about either endpoint without unpacking the
+full divisibility chain. -/
+
+/-- The last invariant factor divides the product of the chain.
+    Direct one-liner combining `factor_dvd_prodFactors` (S2) with
+    `lastFactor_mem` (S4). The abstract counterpart of the parent
+    gallery entry's `minpoly M ∣ charpoly M` (the headline theorem of
+    `MinpolyCharpoly.lean`): once a chain `c` is produced from `M` via
+    the eventual OQ-03 matrix instantiation, `c.lastFactor = M.minpoly`
+    and `c.prodFactors = M.charpoly`, so this divisibility specialises
+    to the classical `minpoly ∣ charpoly`. -/
+theorem lastFactor_dvd_prodFactors
+    (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.lastFactor ∣ c.prodFactors :=
+  factor_dvd_prodFactors c (lastFactor_mem c h)
+
+/-- The first invariant factor divides the product of the chain.
+    Symmetric mirror of `lastFactor_dvd_prodFactors`: one-liner via
+    `factor_dvd_prodFactors` (S2) + `firstFactor_mem` (S13). The
+    abstract counterpart of "the leading invariant divisor divides
+    `charpoly M`" in the eventual RCF correspondence. -/
+theorem firstFactor_dvd_prodFactors
+    (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.firstFactor ∣ c.prodFactors :=
+  factor_dvd_prodFactors c (firstFactor_mem c h)
+
+/-- The first invariant factor divides the last invariant factor.
+    Direct application of the chain's `chain` field with `i = 0` and
+    `j = length - 1`, rewritten through the `firstFactor`/`lastFactor`
+    bridging lemmas (`firstFactor_eq_getElem_zero`,
+    `lastFactor_eq_getElem_pred`). The strongest single-divisibility on
+    the chain endpoints: combined with `factor_dvd_prodFactors`, every
+    factor (and the entire chain product) sits divisibility-between
+    `firstFactor` and `lastFactor`. -/
+theorem firstFactor_dvd_lastFactor
+    (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.firstFactor ∣ c.lastFactor := by
+  have hpos : 0 < c.factors.length := length_pos_of_ne_nil h
+  let i : Fin c.factors.length := ⟨0, hpos⟩
+  let j : Fin c.factors.length := ⟨c.factors.length - 1, by omega⟩
+  have hij : i.val ≤ j.val := by
+    show 0 ≤ c.factors.length - 1
+    exact Nat.zero_le _
+  have hdvd : c.factors[i] ∣ c.factors[j] := c.chain i j hij
+  rw [firstFactor_eq_getElem_zero c h, lastFactor_eq_getElem_pred c h]
+  exact hdvd
+
 end MinpolyCharpolyOQ03

@@ -87,82 +87,74 @@
     {
       "id": "unit-distances",
       "title": "Unit Distances in the Plane",
-      "summary": "isUnitPair, unitDistanceEdges definitions",
       "startLine": 36,
       "endLine": 56,
-      "mathContext": "Formal definition: isUnitPair, unitDistanceEdges definitions"
+      "summary": "Defines isUnitPair (dist = 1), unitDistancePairs (ordered unit-distance pairs of a Finset), and unitDistanceCount (number of unordered unit-distance pairs).",
+      "mathContext": "For points in $\\mathbb{R}^2$, $p,q$ form a unit pair iff $\\lVert p-q\\rVert = 1$; $\\text{unitDistanceCount}(S)$ counts unit pairs among the points of $S$."
     },
     {
-      "id": "counting",
-      "title": "Counting Unit Distances",
-      "summary": "unitDistanceCount, u(n) maximum definition",
+      "id": "max-and-extremal",
+      "title": "Maximum Count and Extremal Configurations",
       "startLine": 57,
-      "endLine": 79,
-      "mathContext": "Formal definition: unitDistanceCount, u(n) maximum definition"
-    },
-    {
-      "id": "extremal",
-      "title": "Extremal Configurations",
-      "summary": "isExtremal, extremalConfigs set",
-      "startLine": 80,
-      "endLine": 101,
-      "mathContext": "Mathematical content: isExtremal, extremalConfigs set"
+      "endLine": 68,
+      "summary": "Defines u(n) (maximum unit distances among n points), isExtremal (achieves u(|S|)), and extremalConfigs n (the set of n-point extremal configurations).",
+      "mathContext": "$u(n) = \\max_{|S|=n}\\#\\{\\text{unit pairs in }S\\}$ (Erdős #90); $S$ is extremal iff it attains $u(|S|)$."
     },
     {
       "id": "congruence",
       "title": "Congruence of Point Sets",
-      "summary": "isRigidMotion, areCongruent, equivalence relation",
-      "startLine": 102,
-      "endLine": 141,
-      "mathContext": "Mathematical content: isRigidMotion, areCongruent, equivalence relation"
+      "startLine": 69,
+      "endLine": 144,
+      "summary": "areCongruent (some isometry maps one set onto the other) is an equivalence relation (refl/symm/trans); isometries map unit pairs to unit pairs, so congruence preserves unitDistanceCount and extremality.",
+      "mathContext": "$S \\cong T$ iff $\\exists\\,\\varphi$ isometry with $\\varphi(S)=T$. Congruence preserves unit-distance counts and the extremal property — the equivalence under which configurations are counted."
     },
     {
-      "id": "f-function",
-      "title": "The Counting Function f(n)",
-      "summary": "f(n) definition counting incongruent extremals",
-      "startLine": 142,
-      "endLine": 166,
-      "mathContext": "Formal definition: f(n) definition counting incongruent extremals"
-    },
-    {
-      "id": "n-four",
-      "title": "The n=4 Case",
-      "summary": "f(4)=1, unique double-triangle, u(4)=5",
-      "startLine": 167,
-      "endLine": 189,
-      "mathContext": "Mathematical content: f(4)=1, unique double-triangle, u(4)=5"
-    },
-    {
-      "id": "computational",
-      "title": "Computational Evidence",
-      "summary": "Evidence for f(n)=1 for 5<=n<=21",
-      "startLine": 189,
-      "endLine": 189,
-      "mathContext": "Mathematical content: Evidence for f(n)=1 for 5<=n<=21"
+      "id": "counting-function-f",
+      "title": "The Counting Function f(n) and the n=4 Case",
+      "startLine": 145,
+      "endLine": 171,
+      "summary": "congruenceSetoid and f(n) = number of congruence classes of n-point extremal configurations; axioms f(4)=1 and four_config_unique (the unique 4-point extremal set is two equilateral triangles sharing an edge).",
+      "mathContext": "$f(n)$ counts incongruent extremal $n$-point configurations. Known: $f(4)=1$ (double-triangle, $u(4)=5$). The problem asks whether $f(n)\\to\\infty$ and whether $f(n)>1$ for $n>3$."
     },
     {
       "id": "open-questions",
       "title": "The Open Questions",
-      "summary": "question_one and question_two formalization",
-      "startLine": 189,
-      "endLine": 189,
-      "mathContext": "Mathematical content: question_one and question_two formalization"
+      "startLine": 172,
+      "endLine": 191,
+      "summary": "Formalizes question_one (f(n)→∞?), question_two (f(n)>1 for all n>3?), question_two_modified (f(n)>1 for large n?), and proves question_two_false (it fails since f(4)=1).",
+      "mathContext": "Original Q2 ($f(n)>1$ for all $n>3$) is false because $f(4)=1$; the live questions are $f(n)\\to\\infty$ and the modified $f(n)>1$ eventually."
     },
     {
-      "id": "problem-90",
-      "title": "Connection to Problem #90",
-      "summary": "Relationship to u(n), bounds on unit distances",
-      "startLine": 189,
-      "endLine": 189,
-      "mathContext": "Bound: Relationship to u(n), bounds on unit distances"
+      "id": "boundedness-infrastructure",
+      "title": "Boundedness and Existence Infrastructure",
+      "startLine": 192,
+      "endLine": 236,
+      "summary": "Plane is Infinite; unitDistancePairs ⊆ S×S; unitDistanceCount ≤ card²; the set of achievable counts is bounded above (so u(n) is well-defined); and an n-element Finset of points exists.",
+      "mathContext": "$\\#\\text{unit pairs}(S) \\leq |S|^2$, and achievable counts are bounded, making $u(n)=\\sup$ well-defined; $\\mathbb{R}^2$ supplies arbitrarily large finite point sets."
     },
     {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_668_summary theorem",
-      "startLine": 189,
-      "endLine": 189,
-      "mathContext": "Verified: erdos_668_summary theorem"
+      "id": "existence-extremal",
+      "title": "Existence of Extremal Configurations",
+      "startLine": 237,
+      "endLine": 266,
+      "summary": "extremalConfigs_nonempty: for every n ≥ 1 an n-point extremal configuration exists (a max over a bounded nonempty set is attained); erdos_668_summary records f(4)=1 with the unique double-triangle configuration.",
+      "mathContext": "Since achievable counts are bounded and nonempty, the maximum $u(n)$ is attained, so $\\text{extremalConfigs}(n)\\neq\\emptyset$ for $n\\geq 1$."
+    },
+    {
+      "id": "finiteness-positivity",
+      "title": "Finiteness and Positivity of f(n)",
+      "startLine": 267,
+      "endLine": 296,
+      "summary": "Axiom extremalQuotient_finite (finitely many congruence classes of n-point extremals); f_pos: f(n) ≥ 1 for n ≥ 1 (from existence); axioms f(1)=f(2)=f(3)=1.",
+      "mathContext": "Finitely many incongruent extremal configurations make $f(n)$ a genuine count; existence gives $f(n)\\geq 1$. Small cases $f(1)=f(2)=f(3)=1$ are axiomatized."
+    },
+    {
+      "id": "small-cases-invariants",
+      "title": "Small Cases and Congruence Invariants",
+      "startLine": 297,
+      "endLine": 334,
+      "summary": "f_le_four_eq_one (f(1)=f(2)=f(3)=f(4)=1); areCongruent_card_eq (congruent sets have equal cardinality); congruent_extremal_same_u (congruent extremals achieve the same max count); question_one_implies_question_two_modified.",
+      "mathContext": "$f(n)=1$ for $n\\leq 4$. Congruence invariants (equal cardinality, equal unit-distance count) justify counting configurations up to congruence; $f(n)\\to\\infty \\Rightarrow f(n)>1$ eventually."
     }
   ],
   "crossReferences": [

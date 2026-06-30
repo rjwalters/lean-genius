@@ -140,6 +140,14 @@
       "endLine": 226,
       "summary": "Block-comment analysis documenting why volume.restrict (Icc a b) = volume.restrict (Ioo a b) is not in Mathlib, the contribution path to Mathlib.MeasureTheory.Measure.Lebesgue.Basic as a @[simp] lemma, and a summary table of all six theorems proved in this file.",
       "mathContext": "Mathlib's interval-measure infrastructure canonically uses Ioc (left-open right-closed) because Ioc forms a π-system on $\\mathbb{R}$, which is the right combinatorial input for Carathéodory-style measure construction. The Icc↔Ioo equivalence under any atomless measure is mathematically trivial but absent as a standalone lemma — exactly the kind of gap a gallery proof can highlight for upstream contribution."
+    },
+    {
+      "id": "atomless-generalization",
+      "title": "§ VII. Atomless Measure Generalization",
+      "startLine": 228,
+      "endLine": 292,
+      "summary": "Generalizes the Lebesgue-specific restriction equality away from volume to any measure with null endpoints. Proves restrict_Icc_eq_Ioo_of_null_endpoints (endpoint-null hypothesis form), derives restrict_Icc_eq_Ioo_of_noAtoms (NoAtoms typeclass form) as a corollary via measure_singleton, and records an example showing the original Lebesgue volume_restrict_Icc_eq_Ioo now factors as a one-line corollary.",
+      "mathContext": "The boundary-null argument never uses sigma-finiteness or any Lebesgue-specific structure — only that the two endpoints carry zero mass, i.e. $\\mu\\{a\\} = \\mu\\{b\\} = 0$. This isolates the genuine hypothesis (no atoms at the boundary) and packages it both as an explicit endpoint condition and via Mathlib's MeasureTheory.NoAtoms typeclass, answering the conclusion's open question on generalizing to arbitrary atomless Borel measures."
     }
   ],
   "conclusion": {

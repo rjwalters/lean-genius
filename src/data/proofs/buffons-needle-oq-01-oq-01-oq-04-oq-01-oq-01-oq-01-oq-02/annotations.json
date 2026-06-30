@@ -1,0 +1,80 @@
+[
+  {
+    "id": "ann-swap-overview",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 54 },
+    "type": "concept",
+    "title": "From a Single-Power Reflection to a Reusable Exponent-Swap Lemma",
+    "content": "The module docstring states the open question inherited from the parent (BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01): the parent proved only the single-power instance ∫_0^{π/2} sin θ · cosᵐ θ = ∫_0^{π/2} cos θ · sinᵐ θ and asked whether the reflection argument packages into one clean lemma. The answer is the two-parameter statement ∫_0^{π/2} sinᵃθ cosᵇθ = ∫_0^{π/2} sinᵇθ cosᵃθ. Its entire content is the reflection θ ↦ π/2 − θ, an involution of [0, π/2] that interchanges sin and cos. Crucially the argument touches only the bases of the powers, so it is indifferent to whether a, b are natural numbers or arbitrary reals — and it needs no positivity, integrability, or antiderivative.",
+    "mathContext": "$\\int_0^{\\pi/2}\\sin^{a}\\theta\\,\\cos^{b}\\theta\\,d\\theta = \\int_0^{\\pi/2}\\sin^{b}\\theta\\,\\cos^{a}\\theta\\,d\\theta$, via $\\theta\\mapsto \\tfrac{\\pi}{2}-\\theta$ with $\\sin(\\tfrac{\\pi}{2}-\\theta)=\\cos\\theta$, $\\cos(\\tfrac{\\pi}{2}-\\theta)=\\sin\\theta$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "reflection symmetry",
+      "change of variables",
+      "Beta function",
+      "complementary angle identities",
+      "trigonometric integrals"
+    ],
+    "prerequisites": ["interval integrals", "trigonometric identities"]
+  },
+  {
+    "id": "ann-nat-swap",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 56, "endLine": 73 },
+    "type": "technique",
+    "title": "The Headline Lemma: Exponent Swap for Natural-Number Powers",
+    "content": "integral_sin_pow_mul_cos_pow_swap is the three-line core. intervalIntegral.integral_comp_sub_left (fun θ => sinᵃθ cosᵇθ) (π/2) produces an equality whose left side is the integral of the reflected integrand sinᵃ(π/2−θ)cosᵇ(π/2−θ) over [π/2−π/2, π/2−0] = [0, π/2]. The simp set {Real.sin_pi_div_two_sub, Real.cos_pi_div_two_sub, sub_zero, sub_self} rewrites the bases to cosᵃθ sinᵇθ and normalizes the endpoints. The hypothesis h then reads ∫ cosᵃθ sinᵇθ = ∫ sinᵃθ cosᵇθ; `rw [← h]` turns the goal's left side into ∫ cosᵃθ sinᵇθ, and a single intervalIntegral.integral_congr with mul_comm transposes the two factors onto the swapped target sinᵇθ cosᵃθ.",
+    "mathContext": "After the reflection, $\\sin^{a}(\\tfrac{\\pi}{2}-\\theta)\\cos^{b}(\\tfrac{\\pi}{2}-\\theta)=\\cos^{a}\\theta\\,\\sin^{b}\\theta$; the only remaining step is the commutation $\\cos^{a}\\theta\\,\\sin^{b}\\theta=\\sin^{b}\\theta\\,\\cos^{a}\\theta$.",
+    "significance": "central",
+    "relatedConcepts": ["integral_comp_sub_left", "integral_congr", "mul_comm"],
+    "prerequisites": ["interval integrals"]
+  },
+  {
+    "id": "ann-rpow-swap",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 75, "endLine": 96 },
+    "type": "key-step",
+    "title": "Same Proof, Real Exponents: Reaching the Beta Function",
+    "content": "integral_sin_rpow_mul_cos_rpow_swap is the strictly more general statement with a, b : ℝ, where the powers are Real.rpow. The proof script is byte-for-byte the same as the natural-number version: integral_comp_sub_left, the same simp set, rw [← h], integral_congr with mul_comm. This works because the complementary-angle identities rewrite the bases sin(π/2−θ), cos(π/2−θ) regardless of how those bases are subsequently raised to a power, and mul_comm is exponent-agnostic. The real-exponent form is the one that meets the trigonometric Beta integral, where the exponents are 2x−1 and 2y−1.",
+    "mathContext": "For $a,b\\in\\mathbb{R}$, $\\int_0^{\\pi/2}\\sin^{a}\\theta\\cos^{b}\\theta\\,d\\theta=\\int_0^{\\pi/2}\\sin^{b}\\theta\\cos^{a}\\theta\\,d\\theta$ with $\\sin^{a}\\theta:=\\mathrm{rpow}(\\sin\\theta,a)$.",
+    "significance": "central",
+    "relatedConcepts": ["Real.rpow", "Beta function", "complementary angle identities"],
+    "prerequisites": ["real power function"]
+  },
+  {
+    "id": "ann-beta-symm",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 98, "endLine": 110 },
+    "type": "concept",
+    "title": "Euler Beta Symmetry Without the Gamma Function",
+    "content": "integral_beta_trig_symm instantiates the real-exponent lemma at exponents 2x−1 and 2y−1. In the classical trigonometric representation B(x,y) = 2∫_0^{π/2} sin^{2x−1}θ cos^{2y−1}θ dθ, this is precisely Euler's Beta symmetry B(x,y) = B(y,x). The standard route to that symmetry goes through B(x,y) = Γ(x)Γ(y)/Γ(x+y), where symmetry is visible from the commutativity of multiplication in the numerator; here the symmetry is obtained directly from the reflection, isolating it from the (harder, Gamma-dependent) evaluation of the Beta function.",
+    "mathContext": "$\\tfrac12 B(x,y)=\\int_0^{\\pi/2}\\sin^{2x-1}\\theta\\cos^{2y-1}\\theta\\,d\\theta$; the swap gives $B(x,y)=B(y,x)$ with no use of $\\Gamma$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler Beta function", "Gamma function", "Beta symmetry"],
+    "prerequisites": ["Beta function"]
+  },
+  {
+    "id": "ann-parent-recovery",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 112, "endLine": 126 },
+    "type": "concept",
+    "title": "The Parent's Identity as the a = 1 Corollary",
+    "content": "integral_sin_mul_cos_pow_eq_reflect re-proves the parent's single-power reflection identity ∫ sin θ · cosᵐ θ = ∫ cos θ · sinᵐ θ as the special case a = 1, b = m of the headline lemma (with sin θ ^ 1 = sin θ, cos θ ^ 1 = cos θ via pow_one, then one mul_comm). This confirms the new two-parameter statement is a genuine generalization of the parent rather than a cosmetic restatement, and that the bespoke reflection the parent performed by hand is subsumed by the reusable lemma the open question requested.",
+    "mathContext": "Setting $a=1$: $\\int_0^{\\pi/2}\\sin\\theta\\,\\cos^{m}\\theta\\,d\\theta=\\int_0^{\\pi/2}\\sin^{m}\\theta\\,\\cos\\theta\\,d\\theta=\\int_0^{\\pi/2}\\cos\\theta\\,\\sin^{m}\\theta\\,d\\theta$.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "pow_one"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-scope-boundary",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 37, "endLine": 47 },
+    "type": "caveat",
+    "title": "Scope: Symmetry, Not Evaluation",
+    "content": "This file proves only the symmetry of the trigonometric power integral, not its value. The evaluation of ∫ sin^{2x−1}θ cos^{2y−1}θ as Γ(x)Γ(y)/(2Γ(x+y)), and the bridge from this trigonometric form to Mathlib's Real.betaIntegral (∫_0^1 t^{x−1}(1−t)^{y−1} dt) via the half-angle substitution t = sin²θ, require the Gamma recurrence and lie outside the elementary reflection method. The open questions record connecting to Real.betaIntegral and deriving the Wallis recurrence as the natural next steps.",
+    "mathContext": "Symmetry is elementary (a reflection); evaluation needs $\\Gamma$ and the substitution $t=\\sin^2\\theta$ to reach $\\int_0^1 t^{x-1}(1-t)^{y-1}\\,dt$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.betaIntegral", "Gamma function", "Wallis recurrence"],
+    "prerequisites": []
+  }
+]

@@ -74,44 +74,52 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Definitions",
-      "startLine": 50,
+      "id": "part-i-definitions",
+      "title": "Part I: Definitions",
+      "startLine": 1,
       "endLine": 60,
-      "summary": "Core definitions: termCount (polynomial support cardinality) and f(k) (minimum squared term count).",
-      "mathContext": "For $P \\in \\mathbb{Q}[x]$, $\\text{termCount}(P) = |\\text{supp}(P)|$ counts nonzero monomials. $f(k) = \\min\\{\\text{termCount}(P^2) : \\text{termCount}(P) = k\\}$."
+      "summary": "Module docstring, imports; termCount, f (max term count of p^2 over k-term polynomials)",
+      "mathContext": "Mathematical content: Module docstring, imports; termCount, f (max term count of p^2 over k-term polynomials)"
     },
     {
-      "id": "bounds",
-      "title": "Known Asymptotic Bounds",
+      "id": "part-ii-basic-properties",
+      "title": "Part II: Basic Properties of f",
+      "startLine": 61,
+      "endLine": 79,
+      "summary": "f_zero",
+      "mathContext": "Mathematical content: f_zero"
+    },
+    {
+      "id": "part-iii-open-question",
+      "title": "Part III: The Open Question — Exact Growth Rate",
       "startLine": 80,
-      "endLine": 120,
-      "summary": "Axiomatized bounds: f(k) ≥ c·log k (Schinzel-Zannier) and f(k) < k^(1-c) (Erdős).",
-      "mathContext": "The Schinzel-Zannier bound uses height theory on algebraic varieties. The Erdős bound uses explicit constructions of polynomials with efficient squaring."
+      "endLine": 126,
+      "summary": "schinzel_zannier_lower (axiom), erdos_upper (axiom), f_diverges (axiom), growth_at_least_log, growth_at_most_sublinear",
+      "mathContext": "Mathematical content: schinzel_zannier_lower (axiom), erdos_upper (axiom), f_diverges (axiom), growth_at_least_log, growth_at_most_sublinear"
     },
     {
-      "id": "structure",
-      "title": "Structural Observations",
-      "startLine": 122,
-      "endLine": 170,
-      "summary": "Positive coefficients prevent cancellation. Lacunary polynomials have many-term squares.",
-      "mathContext": "If all $a_i \\geq 0$, then $(\\sum a_i x^{e_i})^2$ has all positive coefficients — no cancellation. The interesting behavior requires mixed signs."
+      "id": "part-iv-structural",
+      "title": "Part IV: Structural Observations",
+      "startLine": 127,
+      "endLine": 256,
+      "summary": "positive_coeffs_no_cancel, binomial_square_three_terms, lacunary_positive_lower_bound",
+      "mathContext": "Mathematical content: positive_coeffs_no_cancel, binomial_square_three_terms, lacunary_positive_lower_bound"
     },
     {
-      "id": "small-cases",
-      "title": "Small Cases and Examples",
-      "startLine": 172,
-      "endLine": 200,
-      "summary": "Verified: f(1) = 1. Stated: f(2) = 3.",
-      "mathContext": "A monomial $cx^d$ squares to $c^2 x^{2d}$ (1 term). A binomial $(a + bx^n)^2 = a^2 + 2abx^n + b^2x^{2n}$ has 3 terms."
+      "id": "part-v-small-cases",
+      "title": "Part V: Small Cases and Examples",
+      "startLine": 257,
+      "endLine": 414,
+      "summary": "f_one_eq, two_term_sq_ge_three, f_two_eq",
+      "mathContext": "Mathematical content: f_one_eq, two_term_sq_ge_three, f_two_eq"
     },
     {
-      "id": "hardness",
-      "title": "Why the Problem Is Hard",
-      "startLine": 202,
-      "endLine": 233,
-      "summary": "Survey of why the exact growth rate is difficult: cancellation complexity, additive combinatorics, height theory.",
-      "mathContext": "The problem sits at the intersection of algebraic geometry (height bounds), additive combinatorics (sumset theory with cancellation), and sparse polynomial theory."
+      "id": "part-vi-why-hard",
+      "title": "Part VI: Why the Problem Is Hard",
+      "startLine": 415,
+      "endLine": 451,
+      "summary": "Discussion of the obstructions to determining the exact growth rate (narrative)",
+      "mathContext": "Mathematical content: Discussion of the obstructions to determining the exact growth rate (narrative)"
     }
   ],
   "conclusion": {

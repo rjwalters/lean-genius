@@ -16,7 +16,11 @@
       "asymptotic analysis",
       "natural density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "divisor function",
+      "asymptotic density"
+    ]
   },
   {
     "id": "ann-e1054-imports",
@@ -35,7 +39,11 @@
       "finite sets"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "basic divisibility in Lean"
+    ]
   },
   {
     "id": "ann-e1054-background",
@@ -54,7 +62,11 @@
       "partial sums",
       "prime factors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "divisors and divisibility",
+      "prime factorization"
+    ]
   },
   {
     "id": "ann-e1054-representable",
@@ -73,7 +85,11 @@
       "axiomatization",
       "exceptional values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "predicate logic",
+      "Lean 4 axiom declarations",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e1054-f-axiom",
@@ -92,7 +108,11 @@
       "junk values",
       "minimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "partial functions",
+      "Lean 4 axiom declarations",
+      "well-ordering / minimization"
+    ]
   },
   {
     "id": "ann-e1054-why-2-impossible",
@@ -111,7 +131,11 @@
       "gap analysis",
       "unreachable values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "prime factors",
+      "inequality reasoning"
+    ]
   },
   {
     "id": "ann-e1054-why-5-impossible",
@@ -130,7 +154,11 @@
       "contradiction",
       "case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility theory",
+      "proof by contradiction",
+      "case analysis"
+    ]
   },
   {
     "id": "ann-e1054-f-undefined-theorems",
@@ -148,7 +176,11 @@
       "axiom application"
     ],
     "mathContext": "See annotation content for formal details of f(2) = 0 and f(5) = 0",
-    "prerequisites": []
+    "prerequisites": [
+      "propositional logic",
+      "Lean 4 tactic mode",
+      "modus ponens"
+    ]
   },
   {
     "id": "ann-e1054-examples",
@@ -166,7 +198,11 @@
       "verification"
     ],
     "mathContext": "See annotation content for formal details of concrete examples",
-    "prerequisites": []
+    "prerequisites": [
+      "divisor enumeration",
+      "elementary arithmetic",
+      "Lean 4 example declarations"
+    ]
   },
   {
     "id": "ann-e1054-part-i",
@@ -185,7 +221,11 @@
       "asymptotics",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "little-o notation",
+      "epsilon-N limit definitions"
+    ]
   },
   {
     "id": "ann-e1054-part-ii",
@@ -204,7 +244,11 @@
       "almost all",
       "exceptional sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density",
+      "asymptotic analysis",
+      "measure-zero / exceptional sets"
+    ]
   },
   {
     "id": "ann-e1054-part-iii",
@@ -223,7 +267,11 @@
       "unboundedness"
     ],
     "mathContext": "See annotation content for formal details of open question iii: limsup = ∞?",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limsup of sequences",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e1054-tao",
@@ -242,7 +290,11 @@
       "Tao",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "upper density bounds",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e1054-understanding",
@@ -261,7 +313,11 @@
       "divisor structure",
       "Goldbach conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "divisor structure",
+      "Goldbach conjecture"
+    ]
   },
   {
     "id": "ann-e1054-divisor-table",
@@ -279,6 +335,10 @@
       "pattern recognition"
     ],
     "mathContext": "See annotation content for formal details of divisor sum table",
-    "prerequisites": []
+    "prerequisites": [
+      "divisor enumeration",
+      "elementary arithmetic",
+      "pattern recognition"
+    ]
   }
 ]

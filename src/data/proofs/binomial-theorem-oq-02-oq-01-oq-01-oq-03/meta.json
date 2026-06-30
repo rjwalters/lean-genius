@@ -42,7 +42,7 @@
       "binomialCDF_tendsto_one_atTop (Session 8): Filter.Tendsto (binomialCDF n p) Filter.atTop (nhds 1) under 0 ≤ p ≤ 1 — eventually-constant wrapper around `binomialCDF_eq_one` via `Filter.eventually_ge_atTop (n : ℝ)` and `Tendsto.congr'`. Binomial-side companion to the Φ tail-limit lemmas added in parallel S8 PR #17233",
       "binomialCDF_tendsto_zero_atBot (Session 8): Filter.Tendsto (binomialCDF n p) Filter.atBot (nhds 0) — eventually-constant wrapper around `binomialCDF_neg` via `Filter.eventually_lt_atBot (0 : ℝ)`. Left-tail saturation; no constraint on p needed since `binomialCDF_neg` holds for arbitrary p"
     ],
-    "theoremCount": 16,
+    "theoremCount": 18,
     "substantiveTheoremCount": 12,
     "definitionCount": 3
   },
@@ -66,7 +66,7 @@
     "namespace": "BinomialTheoremOQ02OQ01OQ01OQ03",
     "lineCount": 712,
     "axiomCount": 1,
-    "theoremCount": 16,
+    "theoremCount": 18,
     "substantiveTheoremCount": 12,
     "duplicateTheorems": 0,
     "definitionCount": 3,
@@ -89,46 +89,54 @@
   ],
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Multinomial Marginal CLT (Statement, Strategy, Honest Reporting)",
+      "startLine": 1,
+      "endLine": 140,
+      "summary": "File docstring (problem statement, status, what the file provides, mathematical content, honest reporting, why the CDF formulation, dependencies), imports, and namespace. The open question asks whether each standardized multinomial coordinate (X_i - np_i)/√(np_i(1-p_i)) converges to N(0,1). The file reduces the multinomial marginal CLT to the classical de Moivre-Laplace binomial CLT — taken as the single axiom binomial_clt_pointwise, since no i.i.d. CLT symbol exists in the lake-pinned Mathlib v4.26.0 — composed with the proved marginal-PMF identity from the parent file BinomialTheoremOQ02OQ01OQ02.",
+      "mathContext": "$(X_{i_0}-np_{i_0})/\\sqrt{np_{i_0}(1-p_{i_0})} \\Rightarrow \\mathcal{N}(0,1)$ for each coordinate $i_0$; reduced to $F_{n,p_{i_0}} \\to \\Phi$ (de Moivre-Laplace) via the exact equality $F_{X_{i_0}} = F_{n,p_{i_0}}$."
+    },
+    {
       "id": "sec-cdf-defs",
       "title": "CDF Definitions: Binomial and Multinomial Marginal",
       "range": null,
-      "startLine": 95,
-      "endLine": 115
+      "startLine": 141,
+      "endLine": 162
     },
     {
       "id": "sec-stdnormal",
       "title": "Standard Normal CDF (concrete def + structural lemmas, incl. continuity)",
       "range": null,
-      "startLine": 117,
-      "endLine": 232
+      "startLine": 163,
+      "endLine": 364
     },
     {
       "id": "sec-binomial-clt-axiom",
       "title": "Axiom: Classical de Moivre-Laplace (Binomial CLT)",
       "range": null,
-      "startLine": 234,
-      "endLine": 251
+      "startLine": 365,
+      "endLine": 385
     },
     {
       "id": "sec-reduction",
       "title": "Reduction Lemma: Multinomial Marginal CDF = Binomial CDF",
       "range": null,
-      "startLine": 253,
-      "endLine": 325
+      "startLine": 386,
+      "endLine": 467
     },
     {
       "id": "sec-structural",
       "title": "Structural Properties of binomialCDF (Phase-4 prep)",
       "range": null,
-      "startLine": 327,
-      "endLine": 416
+      "startLine": 468,
+      "endLine": 680
     },
     {
       "id": "sec-main",
       "title": "Main Theorem: Multinomial Marginal CLT (Derived)",
       "range": null,
-      "startLine": 418,
-      "endLine": 444
+      "startLine": 681,
+      "endLine": 712
     }
   ],
   "overview": {

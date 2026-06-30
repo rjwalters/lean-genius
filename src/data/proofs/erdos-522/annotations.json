@@ -17,7 +17,12 @@
       "almost sure convergence",
       "Kac polynomials"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "random polynomial f(z) = Σε_k z^k",
+      "almost sure vs in-probability convergence",
+      "roots in the closed unit disk {z : |z| ≤ 1}",
+      "Erdős-Offord and Yakir results"
+    ]
   },
   {
     "id": "ann-e522-imports",
@@ -36,7 +41,12 @@
       "imports",
       "namespace"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib.Data.Complex.Basic (ℂ)",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib MetricSpace (closedBall)",
+      "BigOperators / Finset.sum"
+    ]
   },
   {
     "id": "ann-e522-littlewood",
@@ -55,7 +65,12 @@
       "Littlewood",
       "coefficient constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial.coeff",
+      "ℂ[X] notation for Polynomial ℂ",
+      "Set membership ∈ ({-1,0,1} : Set ℂ)",
+      "Prop-valued definitions in Lean"
+    ]
   },
   {
     "id": "ann-e522-rademacher",
@@ -74,7 +89,12 @@
       "random signs",
       "polynomial degree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial.coeff",
+      "Polynomial.natDegree",
+      "Set membership ∈ ({-1,1} : Set ℂ)",
+      "ann-e522-littlewood (Littlewood polynomials)"
+    ]
   },
   {
     "id": "ann-e522-unit-disk",
@@ -94,7 +114,12 @@
       "sphere",
       "absolute value"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Metric.closedBall 0 1",
+      "Metric.sphere 0 1",
+      "Complex.abs / norm ‖a+bi‖ = √(a²+b²)",
+      "Set-builder notation in ℂ"
+    ]
   },
   {
     "id": "ann-e522-circle-membership",
@@ -113,7 +138,12 @@
       "complex norm",
       "fourth roots"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e522-unit-disk (unitDisk, unitCircle definitions)",
+      "Complex.I and Complex.norm lemmas",
+      "fourth roots of unity {1,-1,i,-i}",
+      "simp with norm/abs lemmas"
+    ]
   },
   {
     "id": "ann-e522-kac-structure",
@@ -132,7 +162,12 @@
       "coefficients",
       "polynomial conversion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean structure declaration",
+      "Fin (n+1) → ℂ (indexed coefficients)",
+      "Polynomial.C and Σ C(coeff_i) * X^i",
+      "axiom declarations in Lean"
+    ]
   },
   {
     "id": "ann-e522-root-counting",
@@ -151,7 +186,12 @@
       "fundamental theorem of algebra",
       "counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiomatized (uninterpreted) functions in Lean",
+      "fundamental theorem of algebra",
+      "splitting fields over ℂ",
+      "root multiplicity"
+    ]
   },
   {
     "id": "ann-e522-main-results",
@@ -170,7 +210,12 @@
       "convergence in probability",
       "almost sure convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convergence in probability vs almost sure convergence",
+      "Erdős-Offord (2/π) log n real roots",
+      "Yakir tail bound P(|R_n − n/2| ≥ n^{9/10}) → 0",
+      "doc comments vs axiom declarations"
+    ]
   },
   {
     "id": "ann-e522-heuristic",
@@ -189,7 +234,12 @@
       "involution",
       "root pairing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "involution z ↦ 1/z̄",
+      "complex conjugate root pairs for real-coefficient polynomials",
+      "inside/outside unit disk symmetry",
+      "ann-e522-main-results (Yakir's theorem)"
+    ]
   },
   {
     "id": "ann-e522-geometric",
@@ -208,7 +258,12 @@
       "roots of unity",
       "extreme case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "geometric series 1+X+...+Xⁿ = (X^{n+1}−1)/(X−1)",
+      "(n+1)-th roots of unity e^{2πik/(n+1)}",
+      "ann-e522-littlewood (Littlewood polynomial)",
+      "ann-e522-unit-disk (unit circle)"
+    ]
   },
   {
     "id": "ann-e522-salem",
@@ -227,7 +282,12 @@
       "algebraic integers",
       "Lehmer problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "algebraic integers and minimal polynomials",
+      "conjugates with |conjugate| ≤ 1",
+      "Lehmer's problem",
+      "ann-e522-littlewood (Littlewood polynomial)"
+    ]
   },
   {
     "id": "ann-e522-mahler",
@@ -246,7 +306,12 @@
       "Jensen formula",
       "height theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mahler measure M(p) = |aₙ| ∏_{|αᵢ|>1} |αᵢ|",
+      "Jensen's formula",
+      "polynomial factorization p(z) = aₙ∏(z−αᵢ)",
+      "Lehmer's conjecture / height theory"
+    ]
   },
   {
     "id": "ann-e522-examples",
@@ -265,7 +330,12 @@
       "factorization",
       "examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial.eval",
+      "factorization z²+1 = (z−i)(z+i)",
+      "ann-e522-unit-disk (unit circle)",
+      "ann-e522-littlewood (Littlewood polynomials)"
+    ]
   },
   {
     "id": "ann-e522-summary",
@@ -284,6 +354,11 @@
       "open problem",
       "convergence modes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e522-circle-membership (1,-1,i,-i on unitCircle)",
+      "ann-e522-main-results (Erdős-Offord, Yakir)",
+      "almost sure vs in-probability convergence",
+      "open problem status"
+    ]
   }
 ]

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Hilbert15OQ02.lean",
     "tags": [
       "algebraic-geometry",
@@ -16,11 +16,11 @@
       "schubert-calculus",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 3,
     "lineCount": 533,
-    "assumptions": "Three complexity-theoretic theorems (lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete) prove `True` as explicit placeholders — the complexity theory formalism is not available in Lean/Mathlib. The 2-row LR coefficient computation (lrCoeff2) and full Gr(2,4) multiplication table are fully verified via native_decide.",
+    "assumptions": "axiomCount = 3 reflects three complexity-theoretic theorems (lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete) that assert `True` as explicit placeholders rather than proving their named statements — the complexity theory formalism is not available in Lean/Mathlib, so these are unproven assumptions (no `axiom` declarations appear in the source, but per the Axiom Integrity Policy these placeholder assertions are counted as assumptions). The 2-row LR coefficient computation (lrCoeff2) and full Gr(2,4) multiplication table are fully verified via native_decide; the entry is not status `verified` because the headline complexity results are not formally proved.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0",
     "theoremCount": 27,

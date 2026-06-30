@@ -76,71 +76,71 @@
     {
       "id": "labelings",
       "title": "Tucker Labeling Definitions",
-      "startLine": 32,
-      "endLine": 66,
+      "startLine": 33,
+      "endLine": 67,
       "summary": "Defines TuckerLabeling (label function with {±1, ±2} range proof) and AntipodalTuckerLabeling (adds involution σ with σ² = id and λ(σ(v)) = -λ(v)). Defines isComplementary predicate with decidability, symmetry, and the key theorem that v and σ(v) are always complementary.",
       "mathContext": "Defines TuckerLabeling (label function with {±1, ±2} range proof) and AntipodalTuckerLabeling (adds involution σ with σ² = id and λ(σ(v)) = -λ(v)). Defines isComplementary predicate with decidability, symmetry, and the key theorem that v and σ(v) are always complementary."
     },
     {
       "id": "pairs",
       "title": "Complementary Pair Classification",
-      "startLine": 67,
-      "endLine": 82,
+      "startLine": 68,
+      "endLine": 83,
       "summary": "Proves by exhaustive case analysis (4×4 = 16 cases) that the only complementary pairs are (1,-1), (-1,1), (2,-2), (-2,2). This structural result constrains later combinatorial arguments.",
       "mathContext": "Verified: Proves by exhaustive case analysis (4×4 = 16 cases) that the only complementary pairs are (1,-1), (-1,1), (2,-2), (-2,2). This structural result constrains later combinatorial arguments."
     },
     {
       "id": "complex",
       "title": "Triangulated 2-Complex",
-      "startLine": 83,
-      "endLine": 107,
+      "startLine": 84,
+      "endLine": 108,
       "summary": "Defines TriangulatedComplex with vertex assignment (T → Fin 3 → V) and symmetric, irreflexive adjacency. Defines hasComplementaryEdge for triangles (exists i ≠ j with complementary vertices) with decidability.",
       "mathContext": "Defines TriangulatedComplex with vertex assignment (T → Fin 3 → V) and symmetric, irreflexive adjacency. Defines hasComplementaryEdge for triangles (exists i ≠ j with complementary vertices) with decidability."
     },
     {
       "id": "boundary",
       "title": "Boundary Classification",
-      "startLine": 108,
-      "endLine": 118,
+      "startLine": 109,
+      "endLine": 119,
       "summary": "Introduces HasBoundary typeclass abstracting the boundary/interior distinction for triangles. The decidability instance enables filtering and counting in finite computations.",
       "mathContext": "Bound: Introduces HasBoundary typeclass abstracting the boundary/interior distinction for triangles. The decidability instance enables filtering and counting in finite computations."
     },
     {
       "id": "parity",
       "title": "The Parity Principle",
-      "startLine": 119,
-      "endLine": 163,
+      "startLine": 120,
+      "endLine": 225,
       "summary": "States tucker_parity_principle: odd boundary complementary edge count implies existence of interior complementary triangle. Documents the double-counting argument (2×interior + 1×boundary = total). The parity principle is fully proved; edge-sharing properties are established in the proof.",
-      "mathContext": "States tucker_parity_principle: odd boundary complementary edge count implies existence of interior complementary triangle. Documents the double-counting argument (2×interior + 1×boundary = total). The sorry remains — requires formal edge-sharing properties."
+      "mathContext": "States tucker_parity_principle: odd boundary complementary edge count implies existence of interior complementary triangle. Documents the double-counting argument (2×interior + 1×boundary = total), fully proved (no sorry) with the edge-sharing properties supplied as the hypothesis h_interior_deg."
     },
     {
       "id": "tucker-2d",
       "title": "Tucker 2D from Parity + 1D Tucker",
-      "startLine": 164,
-      "endLine": 187,
+      "startLine": 226,
+      "endLine": 253,
       "summary": "Combines parity principle with 1D Tucker boundary result to obtain the full 2D Tucker lemma. The proof destructs the existential and packages vertices with their complementary label property.",
       "mathContext": "Verified: Combines parity principle with 1D Tucker boundary result to obtain the full 2D Tucker lemma. The proof destructs the existential and packages vertices with their complementary label property."
     },
     {
       "id": "algorithm",
       "title": "Path-Following Algorithm (Documentation)",
-      "startLine": 188,
-      "endLine": 214,
+      "startLine": 254,
+      "endLine": 280,
       "summary": "Documents the constructive path-following algorithm: start at boundary complementary edge, trace through adjacent triangles (max degree 2 in Tucker graph), terminate at interior dead-end. Describes the key invariant: no revisits since each triangle has at most 2 complementary edges.",
       "mathContext": "Documents the constructive path-following algorithm: start at boundary complementary edge, trace through adjacent triangles (max degree 2 in Tucker graph), terminate at interior dead-end. Describes the key invariant: no revisits since each triangle has at most 2 complementary edges."
     },
     {
       "id": "example",
       "title": "Concrete Worked Example",
-      "startLine": 215,
-      "endLine": 249,
+      "startLine": 281,
+      "endLine": 304,
       "summary": "Provides a minimal 5-vertex, 3-triangle example illustrating complementary edge counting. Shows that non-antipodal triangulations can have even boundary count, emphasizing the necessity of the antipodal structure for the parity argument.",
       "mathContext": "Provides a minimal 5-vertex, 3-triangle example illustrating complementary edge counting. Shows that non-antipodal triangulations can have even boundary count, emphasizing the necessity of the antipodal structure for the parity argument."
     },
     {
       "id": "handshaking",
       "title": "SimpleGraph Handshaking → Even Odd-Degree Count",
-      "startLine": 306,
+      "startLine": 305,
       "endLine": 434,
       "summary": "Proves even_card_odd_degree_vertices: any finite SimpleGraph has an even number of odd-degree vertices. Uses Finset induction + omega for modular arithmetic. Derives from Mathlib handshaking lemma (sum_degrees_eq_twice_card_edges). Then proves tucker_parity_from_graph: a strengthened Tucker parity principle that eliminates the handshaking hypothesis — only 2 hypotheses needed (interior degree correspondence + boundary oddness) instead of 3.",
       "mathContext": "Proves even_card_odd_degree_vertices: any finite SimpleGraph has an even number of odd-degree vertices. Uses Finset induction + omega for modular arithmetic. Derives from Mathlib handshaking lemma (sum_degrees_eq_twice_card_edges)."

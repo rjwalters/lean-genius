@@ -88,44 +88,60 @@
   },
   "sections": [
     {
-      "id": "section-header",
+      "id": "header-docs",
       "title": "Header, Imports, and File-Level Documentation",
+      "summary": "File-level documentation for OQ-03: does the identity $dV/dr=A$ (volume's derivative equals surface area) extend from Euclidean space to Riemannian manifolds via the co-area formula? The literal Riemannian version is gated by four Mathlib gaps, so this file delivers the R1 vector-space partial answer at $n=2,3$ plus a polymorphic Bridge 1 over abstract inner-product spaces. Imports Mathlib volume-of-balls / calculus and the parent `OQ01`; opens the namespace. Status: 0 sorries, 0 axioms.",
       "startLine": 1,
-      "endLine": 45,
-      "summary": "Docstring framing the Open Question (literal Riemannian-manifold version is gated by four Mathlib gaps), declares the R1 vector-space partial deliverable scope (n = 2, 3 only), lists the five theorems with one-line summaries, three imports (VolumeOfBalls, Trigonometric.Basic, Deriv.Pow), and opens the namespaces `Real`, `MeasureTheory`, `ENNReal`, `Metric`.",
-      "mathContext": "File-level setup. Declares the namespace `CircumferenceViaDifferentiationOQ03`. The Mathlib bearer `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three` lives in `Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls`."
+      "endLine": 61,
+      "mathContext": "$dV/dr=A$ for balls. Full Riemannian target gated on missing Mathlib co-area / `injectivityRadius`; this file proves the Euclidean (R1) case."
     },
     {
-      "id": "section-bridge-two",
+      "id": "bridge1-n2-area",
       "title": "Bridge 1, n = 2: Closed-Ball Area in the Plane",
-      "startLine": 47,
-      "endLine": 55,
-      "summary": "`riemannianVolumeBall_fin_two`: for `p : EuclideanSpace ℝ (Fin 2)` and `r ≥ 0`, `(vol (Metric.closedBall p r)).toReal = π * r²`. Proof: rewrite via `EuclideanSpace.volume_closedBall_fin_two p r`, then push `.toReal` through `(ENNReal.ofReal r)² * ENNReal.ofReal π` using `ENNReal.toReal_mul`, `ENNReal.toReal_pow`, and `ENNReal.toReal_ofReal` (twice — once for `r`, once for `π`). Closing `ring` reorders.",
-      "mathContext": "Lebesgue volume of the planar closed disk equals the classical area formula πr². Bridge between Mathlib's `volume : Measure (EuclideanSpace ℝ (Fin 2))` (ENNReal-valued) and the Real polynomial."
+      "summary": "`riemannianVolumeBall_fin_two`: the closed-ball volume in $\\mathbb{R}^2$ equals $\\pi r^2$, via Mathlib's `EuclideanSpace.volume_closedBall_fin_two` and `ENNReal.toReal` arithmetic.",
+      "startLine": 62,
+      "endLine": 71,
+      "mathContext": "$\\mathrm{vol}(\\overline{B}(p,r))=\\pi r^2$ in the Euclidean plane."
     },
     {
-      "id": "section-bridge-three",
+      "id": "bridge1-n3-volume",
       "title": "Bridge 1, n = 3: Closed-Ball Volume in Euclidean 3-Space",
-      "startLine": 57,
-      "endLine": 65,
-      "summary": "`riemannianVolumeBall_fin_three`: for `p : EuclideanSpace ℝ (Fin 3)` and `r ≥ 0`, `(vol (Metric.closedBall p r)).toReal = (4π/3) · r³`. Proof structure parallels n = 2: rewrite via `EuclideanSpace.volume_closedBall_fin_three p r`, then push `.toReal` through `(ENNReal.ofReal r)³ * ENNReal.ofReal (π * 4 / 3)`. The constant nonnegativity uses `positivity` since `π * 4 / 3 > 0`.",
-      "mathContext": "Lebesgue volume of the 3D closed ball equals the classical volume formula (4π/3) r³. Same bridge technique as n = 2 but with a slightly more involved constant."
+      "summary": "`riemannianVolumeBall_fin_three`: the closed-ball volume in $\\mathbb{R}^3$ equals $\\tfrac{4\\pi}{3} r^3$, via `EuclideanSpace.volume_closedBall_fin_three`.",
+      "startLine": 72,
+      "endLine": 81,
+      "mathContext": "$\\mathrm{vol}(\\overline{B}(p,r))=\\tfrac{4\\pi}{3} r^3$ in Euclidean 3-space."
     },
     {
-      "id": "section-main-two",
+      "id": "main-n2-circumference",
       "title": "Main S5, n = 2: dV/dr = 2π r (Circumference)",
-      "startLine": 67,
-      "endLine": 78,
-      "summary": "`riemannianVolumeBall_hasDerivWithinAt_fin_two`: at `r ≥ 0`, the Lebesgue volume function `s ↦ vol(closedBall p s).toReal` has within-derivative `2 π r` over `Set.Ici 0`. Proof: build the polynomial-side derivative via `(hasDerivAt_pow 2 r).const_mul π` (giving `HasDerivAt (s ↦ π s²) (2 π r) r`), upgrade to `HasDerivWithinAt`, then `HasDerivWithinAt.congr` with Bridge 1 applied pointwise (`s ∈ Set.Ici 0`) and at `r`.",
-      "mathContext": "The derivative of the planar disk's area with respect to radius equals its circumference: $\\frac{d}{dr}(\\pi r^2) = 2\\pi r$. Stated as a within-derivative on `[0, ∞)` to sidestep the `r = 0` boundary anomaly where `closedBall p 0` collapses to a singleton."
+      "summary": "`riemannianVolumeBall_hasDerivWithinAt_fin_two`: differentiating the $n=2$ volume on $[0,\\infty)$ gives $dV/dr=2\\pi r$, the circle's circumference — composing $\\tfrac{d}{dr}(\\pi r^2)=2\\pi r$ with the Bridge-1 equation via `HasDerivWithinAt.congr`.",
+      "startLine": 82,
+      "endLine": 94,
+      "mathContext": "$\\frac{d}{dr}(\\pi r^2)=2\\pi r$ — the surface measure (circumference) of the disk."
     },
     {
-      "id": "section-main-three",
+      "id": "main-n3-surface",
       "title": "Main S5, n = 3: dV/dr = 4π r² (Sphere Surface Area)",
-      "startLine": 80,
-      "endLine": 92,
-      "summary": "`riemannianVolumeBall_hasDerivWithinAt_fin_three`: at `r ≥ 0`, the Lebesgue volume function `s ↦ vol(closedBall p s).toReal` has within-derivative `4 π r²` over `Set.Ici 0`. Same proof shape as n = 2: polynomial-side derivative `(hasDerivAt_pow 3 r).const_mul (4 π / 3)` (`HasDerivAt (s ↦ (4π/3) s³) (4 π r²) r`), then `HasDerivWithinAt.congr` with Bridge 1 for n = 3.",
-      "mathContext": "The derivative of the 3D ball volume with respect to radius equals the surface area of the bounding 2-sphere: $\\frac{d}{dr}((4\\pi/3) r^3) = 4\\pi r^2$. This is the classical Archimedes shell-decomposition identity."
+      "summary": "`riemannianVolumeBall_hasDerivWithinAt_fin_three`: differentiating the $n=3$ volume gives $dV/dr=4\\pi r^2$, the surface area of the 2-sphere.",
+      "startLine": 95,
+      "endLine": 107,
+      "mathContext": "$\\frac{d}{dr}(\\tfrac{4\\pi}{3} r^3)=4\\pi r^2$ — the surface area of the sphere."
+    },
+    {
+      "id": "bridge1-polymorphic",
+      "title": "Bridge 1 (Polymorphic): Closed-Ball Volume = nBallVolumeFn",
+      "summary": "`riemannianVolumeBall_eq_nBallVolumeFn`: in any finite-dimensional real inner-product space $E$ (with the canonical measure/Borel instances and $E$ nontrivial), the closed-ball volume equals the parent OQ-01 polynomial `nBallVolumeFn (finrank ℝ E) r`, via `InnerProductSpace.volume_closedBall` and $\\sqrt{\\pi}^n=\\pi^{n/2}$.",
+      "startLine": 108,
+      "endLine": 153,
+      "mathContext": "$\\mathrm{vol}(\\overline{B}(p,r))=\\mathrm{nBallVolumeFn}(\\dim E, r)$ for abstract finite-dim inner-product spaces."
+    },
+    {
+      "id": "polymorphic-main",
+      "title": "Polymorphic Main: dV/dr = A at every finrank ≥ 1",
+      "summary": "`riemannianVolumeBall_hasDerivWithinAt`: the abstract counterpart — for any finite-dimensional inner-product space, $dV/dr$ on $[0,\\infty)$ equals the OQ-01 surface polynomial `nSphereSurfaceFn (finrank ℝ E) r`, composing the parent polynomial's derivative with the polymorphic Bridge 1. Completes the R1 vector-space ACT roadmap; the genuinely Riemannian R2 path remains a Mathlib gap.",
+      "startLine": 154,
+      "endLine": 194,
+      "mathContext": "$dV/dr=\\mathrm{nSphereSurfaceFn}(\\dim E, r)$ at every $\\dim E\\ge 1$ — the polymorphic $dV/dr=A$."
     }
   ],
   "conclusion": {

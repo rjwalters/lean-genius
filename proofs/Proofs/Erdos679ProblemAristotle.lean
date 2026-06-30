@@ -71,10 +71,26 @@ It holds because the r-th prime is strictly larger than all primes in primorial 
 (which are the 0th through (r-1)-th primes).
 -/
 
-/-- The r-th prime is coprime with primorial r. -/
+/-- The r-th prime is coprime with primorial r.
+
+    Proof: `Nat.nth Nat.Prime r` is prime, so coprimality reduces to non-divisibility
+    of the product `∏ i < r, Nat.nth Nat.Prime i`. If it divided the product it would
+    divide some factor `Nat.nth Nat.Prime i` with `i < r`; two primes dividing one
+    another are equal, forcing `r = i` by injectivity of `Nat.nth Nat.Prime`,
+    contradicting `i < r`. Mirrors the coprimality step inside `omega_primorial`. -/
 theorem nth_prime_coprime_primorial_ari (r : ℕ) :
     Nat.Coprime (Nat.nth Nat.Prime r) (primorial r) := by
-  sorry
+  have hp : (Nat.nth Nat.Prime r).Prime := nth_prime_is_prime_ari r
+  rw [hp.coprime_iff_not_dvd]
+  intro hdvd
+  simp only [primorial] at hdvd
+  obtain ⟨i, hi, hdvd_i⟩ := hp.prime.exists_mem_finset_dvd hdvd
+  have hpi : (Nat.nth Nat.Prime i).Prime := nth_prime_is_prime_ari i
+  have heq : Nat.nth Nat.Prime r = Nat.nth Nat.Prime i :=
+    (Nat.prime_dvd_prime_iff_eq hp hpi).mp hdvd_i
+  have hni : r = i := Nat.nth_injective Nat.infinite_setOf_prime heq
+  rw [Finset.mem_range] at hi
+  omega
 
 /-
 ## Section 4: The omega_primorial Inductive Proof

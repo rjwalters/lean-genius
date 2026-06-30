@@ -28,6 +28,11 @@
       "targetId": "four-color-theorem",
       "relationship": "extends",
       "description": "Open question about the minimum size of unavoidable reducible configuration sets for the Four Color Theorem"
+    },
+    {
+      "targetId": "four-color-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "The complementary sub-question. This entry quantifies the computer-checked case analysis — the unavoidable set of reducible configurations and its minimum size; the sibling entry asks whether that case analysis can be dispensed with entirely. The Kempe-chain obstruction studied in oq-01 is precisely why a finite configuration set is needed: Kempe's elementary chain argument fails for four colors, so reducibility must instead be verified configuration-by-configuration, and the size of the set measured here is the cost of that failure."
     }
   ],
   "overview": {

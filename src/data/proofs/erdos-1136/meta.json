@@ -139,46 +139,84 @@
   },
   "sections": [
     {
-      "id": "docstring",
-      "title": "Module Docstring",
+      "id": "module-header",
+      "title": "Module Header",
+      "summary": "File header for Erdős #1136: does there exist $A\\subset\\mathbb{N}$ of lower density $>1/3$ with $a+b\\ne 2^k$ for all $a,b\\in A$, $k\\ge0$? Answer YES — Müller (2011) achieved the optimal density $1/2$ via $A=\\{n: n\\equiv 3\\cdot2^i \\pmod{2^{i+2}}\\text{ for some }i\\}$. Imports Mathlib, opens `Finset`/`Filter`, enters the `Erdos1136` namespace.",
       "startLine": 1,
-      "endLine": 28,
-      "summary": "Problem statement, history (Erdős 1987 DMV conference, Müller 2011), construction description $n \\equiv 3 \\cdot 2^i \\pmod{2^{i+2}}$, and reference."
+      "endLine": 34,
+      "mathContext": "Sum-free-of-powers-of-2: $a+b\\ne 2^k$. Trivial density $1/3$ (multiples of 3); Müller's optimal density $1/2$."
     },
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "startLine": 29,
-      "endLine": 37,
-      "summary": "Imports `Nat.Basic`, `Real.Basic`, `Finset.Basic`, and `Filter.Basic` from Mathlib. Opens `Finset` namespace."
-    },
-    {
-      "id": "definitions",
+      "id": "part1-core-definitions",
       "title": "Part I: Core Definitions",
-      "startLine": 38,
-      "endLine": 50,
-      "summary": "Defines `AvoidsPowerOfTwoSums(A)` as $\\forall a, b \\in A, \\forall k, a + b \\neq 2^k$ and `lowerDensity(A) = \\inf_{N > 0} |A \\cap [0,N)| / N$."
+      "summary": "Defines `AvoidsPowerOfTwoSums A` ($a+b\\ne 2^k$ for all $a,b\\in A$) and `lowerDensity A` (the lower asymptotic density), the two notions the problem trades off.",
+      "startLine": 35,
+      "endLine": 45,
+      "mathContext": "`AvoidsPowerOfTwoSums A` and `lowerDensity A`: maximize density subject to avoiding power-of-2 sums."
     },
     {
-      "id": "trivial-bound",
-      "title": "Part II: Trivial Bound via Multiples of 3",
-      "startLine": 51,
-      "endLine": 72,
-      "summary": "Verified proof that $3\\mathbb{N}$ avoids power-of-two sums (since $3 \\mid (a+b)$ but $3 \\nmid 2^k$), plus axiomatized density $\\underline{d}(3\\mathbb{N}) = 1/3$."
+      "id": "part2-avoidance-properties",
+      "title": "Part II: Properties of the Avoidance Condition",
+      "summary": "Basic structural facts: `avoids_empty`, `avoids_mono` (avoidance is inherited by subsets), and `not_three_dvd_two_pow` ($3\\nmid 2^k$ by coprimality), the arithmetic seed of the trivial construction.",
+      "startLine": 46,
+      "endLine": 64,
+      "mathContext": "Avoidance is monotone under $\\subseteq$; $3\\nmid 2^k$ for all $k$."
     },
     {
-      "id": "muller-construction",
-      "title": "Part III: Müller's Binary Construction",
-      "startLine": 73,
-      "endLine": 93,
-      "summary": "Defines `MullerSet` via $n \\bmod 2^{i+2} = 3 \\cdot 2^i$. Axiomatizes avoidance + density $1/2$ (`muller_construction`) and the upper bound $\\underline{d}(A) \\leq 1/2$ (`muller_optimality`)."
+      "id": "part3-trivial-bound",
+      "title": "Part III: Trivial Bound (Multiples of 3)",
+      "summary": "The density-$1/3$ baseline: `multiples_of_3_avoid` and `multiples_of_3_set_avoids` (the set $\\{n:3\\mid n\\}$ avoids power-of-2 sums, since $3\\mid a+b$ but $3\\nmid 2^k$), with axiom `multiples_of_3_density` giving its density $1/3$.",
+      "startLine": 65,
+      "endLine": 81,
+      "mathContext": "$\\{n:3\\mid n\\}$ avoids power-of-2 sums and has density $1/3$ — the easy lower bound Erdős noted."
     },
     {
-      "id": "main-result",
-      "title": "Part IV: Main Theorems",
-      "startLine": 94,
-      "endLine": 213,
-      "summary": "Verified `erdos_1136` (existence with $\\underline{d}(A) > 1/3$ via `linarith` on $1/2 > 1/3$) and `erdos_1136_optimal` (exact optimum $1/2$, combining both axioms)."
+      "id": "part4-muller-construction",
+      "title": "Part IV: Müller's Construction",
+      "summary": "Defines `MullerSet` $=\\{n: n\\equiv 3\\cdot2^i\\pmod{2^{i+2}}\\text{ for some }i\\}$ and verifies membership basics (`zero_not_mem_muller`, `three_mem_muller`).",
+      "startLine": 82,
+      "endLine": 98,
+      "mathContext": "$\\text{MullerSet}=\\{n: \\exists i,\\ n\\equiv 3\\cdot2^i \\pmod{2^{i+2}}\\}$, the density-$1/2$ extremal set."
+    },
+    {
+      "id": "part4a-avoidance-proof",
+      "title": "Part IV-A: Proof that Müller's Set Avoids Power-of-Two Sums",
+      "summary": "The modular-arithmetic core (now fully PROVED, replacing the old bundled axiom): helper lemmas `b_mod_eq_pow_i`, `muller_mod_down`, `muller_mod_zero`, and `muller_avoids_ordered` combine into `muller_avoids` — no two elements of `MullerSet` sum to a power of two.",
+      "startLine": 99,
+      "endLine": 222,
+      "mathContext": "If $a+b=2^k$ with $a,b\\in\\text{MullerSet}$, base-2 residue analysis forces a contradiction; hence avoidance holds."
+    },
+    {
+      "id": "part4b-density-axioms",
+      "title": "Part IV-B: Density Axioms",
+      "summary": "The two remaining analytic assumptions: axiom `muller_density` ($\\text{lowerDensity}(\\text{MullerSet})=1/2$) and axiom `muller_optimality` (no avoiding set exceeds density $1/2$, the deep combinatorial half).",
+      "startLine": 223,
+      "endLine": 234,
+      "mathContext": "Axiomatized: $\\text{density}(\\text{MullerSet})=1/2$ and optimality (no avoiding set has density $>1/2$)."
+    },
+    {
+      "id": "part5-main-result",
+      "title": "Part V: Main Result",
+      "summary": "Assembles the answer: `erdos_1136` (a set of density $>1/3$ avoiding power-of-2 sums exists) and `erdos_1136_optimal` (the optimal such density is exactly $1/2$).",
+      "startLine": 235,
+      "endLine": 253,
+      "mathContext": "Erdős #1136 SOLVED: density $>1/3$ achievable; optimal density $=1/2$."
+    },
+    {
+      "id": "part6-consequences",
+      "title": "Part VI: Consequences",
+      "summary": "Corollaries: `muller_beats_trivial` ($\\text{MullerSet}$ beats multiples of 3), `density_gap` (the improvement is exactly $1/6$), and `odd_prime_multiples_avoid` (multiples of any odd prime $p$ avoid power-of-2 sums, since $p\\nmid 2^k$).",
+      "startLine": 254,
+      "endLine": 280,
+      "mathContext": "Density gap $1/2-1/3=1/6$; any odd prime's multiples avoid power-of-2 sums."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Recaps the SOLVED status (Müller 2011, optimal density $1/2$), lists the proved theorems and the 3 remaining axioms, and notes the key change: the old `muller_construction` axiom bundled avoidance + density, but avoidance is now PROVED via modular arithmetic, leaving only density and optimality axiomatized. Closes the namespace.",
+      "startLine": 281,
+      "endLine": 318,
+      "mathContext": "Status SOLVED; avoidance proved, density/optimality axiomatized (deep density analysis pending Mathlib support)."
     }
   ],
   "conclusion": {

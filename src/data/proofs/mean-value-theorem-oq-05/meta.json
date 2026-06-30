@@ -1,0 +1,162 @@
+{
+  "id": "mean-value-theorem-oq-05",
+  "title": "Darboux's Theorem — the Intermediate Value Property of Derivatives",
+  "slug": "mean-value-theorem-oq-05",
+  "description": "Darboux's theorem: a derivative satisfies the intermediate value property even when it is not continuous. If f is differentiable on [a,b], then f' attains every value between f'(a) and f'(b) on [a,b] (closed form), and every value strictly between them in the open interval (a,b) (strict form). Equivalently, the image of an order-connected set under a derivative is order-connected — derivatives have no jump discontinuities. A consequence: a function that skips a value between two of its attained values (such as a step function) cannot be a derivative.",
+  "meta": {
+    "status": "verified",
+    "proofRepoPath": "Proofs/MeanValueTheoremOQ05.lean",
+    "badge": "original",
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "lineCount": 120,
+    "imports": [
+      "Mathlib"
+    ],
+    "tags": [
+      "calculus",
+      "mean-value-theorem",
+      "darboux",
+      "intermediate-value-theorem",
+      "derivatives",
+      "analysis"
+    ],
+    "assumptions": [],
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header: Darboux's Theorem and the Shape of f'",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring introducing Darboux's theorem — the intermediate value property of derivatives — and contrasting it with the Mean Value Theorem and FTC: it constrains the range of f' without assuming f' is continuous. Lists the 7 headline results and opens the `Set` namespace.",
+      "mathContext": "A derivative $f'$ need not be continuous, yet it cannot have jump discontinuities: if $m$ lies between $f'(a)$ and $f'(b)$ then $f'(c)=m$ for some $c\\in[a,b]$. Equivalently, $f'$ maps order-connected sets to order-connected sets."
+    },
+    {
+      "id": "darboux-core",
+      "title": "Darboux's Theorem: Closed and Strict Forms",
+      "startLine": 47,
+      "endLine": 78,
+      "summary": "darboux_ivp: closed form — for m in the closed interval [[f'(a), f'(b)]] there is c ∈ [a,b] with f'(c)=m, proved by observing that the image f'(Icc a b) is order-connected (Set.OrdConnected.image_hasDerivWithinAt) and contains both endpoints, hence contains their uIcc. darboux_ivp_open: strict form — for m strictly between f'(a) and f'(b) the value is attained in the open interval (a,b), via exists_hasDerivWithinAt_eq_of_gt_of_lt / _lt_of_gt with a min/max case split. darboux_ivp_deriv: the closed form restated for deriv f given differentiability at each point.",
+      "mathContext": "Mathlib's `Set.OrdConnected.image_hasDerivWithinAt` states $f'(\\,[a,b]\\,)$ is order-connected. Since $f'(a),f'(b)$ are in the image, $[[f'(a),f'(b)]]\\subseteq f'([a,b])$ by `OrdConnected.uIcc_subset`. The strict form uses the open-interval witnesses $f'(c)=m\\in(a,b)$."
+    },
+    {
+      "id": "no-jumps",
+      "title": "No Jump Discontinuities: the Range of a Derivative",
+      "startLine": 80,
+      "endLine": 92,
+      "summary": "deriv_range_ordConnected: the image of an order-connected set under deriv f is order-connected (wrapper of Set.OrdConnected.image_deriv). deriv_range_convex: the convex repackaging — the image of a convex set under deriv f is convex. These are the structural statements of Darboux's theorem: a derivative cannot skip values.",
+      "mathContext": "Order-connectedness of $\\{f'(x) : x\\in s\\}$ for order-connected $s$. On $\\mathbb{R}$, order-connected and convex coincide, so the range of $f'$ over an interval is an interval."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and a Concrete Witness",
+      "startLine": 94,
+      "endLine": 119,
+      "summary": "not_deriv_of_jump: contrapositive form — a function g that takes values g(a) and g(b) but skips some m strictly between them on [a,b] cannot be the derivative of any function (rules out step functions like sgn as derivatives). darboux_sq_example: a concrete instance — deriv(x²) ranges over [0,4] on [0,2], so it must hit 1, witnessed by deriv(x²)(1/2)=1.",
+      "mathContext": "Classic corollary: $\\operatorname{sgn}$ is not a derivative, because it omits values in $(-1,1)$ that lie between its attained values $\\pm1$. The square example exhibits $f'(x)=2x$ hitting the intermediate value $1$ at $x=1/2$."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Jean-Gaston Darboux proved this theorem in his 1875 memoir 'Mémoire sur les fonctions discontinues'. It is striking because derivatives need not be continuous — Volterra and others constructed differentiable functions whose derivatives are discontinuous on dense sets — yet Darboux showed that every derivative still has the intermediate value property, the defining feature of continuous functions in the IVT. The theorem implies that the discontinuities of a derivative can never be simple jumps; they must be essential (oscillatory) discontinuities, like that of x²·sin(1/x) at 0. A standard corollary is that no step function (for instance the sign function) can be a derivative. The result sharpens the classical Mean Value Theorem chain (Rolle 1691, Lagrange 1797, Cauchy 1823) by describing not just the existence of a single mean-value point but the entire range of f'.",
+    "problemStatement": "Prove Darboux's theorem and its structural consequences: (1) closed form — if f is differentiable on [a,b] with derivative f', then for every m in the closed interval between f'(a) and f'(b) there exists c ∈ [a,b] with f'(c)=m, without assuming f' continuous; (2) strict form — if m lies strictly between f'(a) and f'(b), the witness c can be taken in the open interval (a,b); (3) the range of deriv f over an order-connected (resp. convex) set is order-connected (resp. convex); (4) a function that skips an intermediate value cannot be a derivative; (5) exhibit a concrete witness.",
+    "proofStrategy": "All results build on Mathlib's `Mathlib.Analysis.Calculus.Darboux`. The closed form is obtained cleanly from the order-connectedness of the image: `Set.OrdConnected.image_hasDerivWithinAt` gives that f'(Icc a b) is order-connected, both endpoints f'(a), f'(b) lie in it, and `Set.OrdConnected.uIcc_subset` then places the whole interval [[f'(a),f'(b)]] inside the image. The strict form dispatches the two orientations of f'(a) vs f'(b) via `exists_hasDerivWithinAt_eq_of_gt_of_lt` and `exists_hasDerivWithinAt_eq_of_lt_of_gt`, which return witnesses in the open interval Ioo a b. The no-jump corollaries are direct wrappers of `Set.OrdConnected.image_deriv` and `Convex.image_deriv`. The 'not a derivative' consequence is the contrapositive of the closed form, and the concrete witness applies the closed form to f(x)=x² using `hasDerivAt_pow`.",
+    "keyInsights": [
+      "Darboux's theorem decouples the intermediate value property from continuity. The IVT is usually taught as a property of continuous functions, but derivatives — which can be wildly discontinuous — satisfy it too. The reason is not continuity of f' but the fact that f' is a derivative: it arises as a pointwise limit of the order-preserving difference quotients of f.",
+      "The cleanest route to the closed (uIcc) form is through order-connectedness rather than a direct case split. Mathlib packages Darboux as 'f' maps order-connected sets to order-connected sets' (Set.OrdConnected.image_hasDerivWithinAt). Once the image of [a,b] is known order-connected and to contain both endpoints, OrdConnected.uIcc_subset delivers every intermediate value in one line — handling both orientations of f'(a) vs f'(b) automatically.",
+      "The strict form genuinely lives in the open interval. Mathlib's exists_hasDerivWithinAt_eq_of_gt_of_lt returns membership in f'(Ioo a b), proved by extremizing the auxiliary function g(x)=f(x)-m·x on the compact [a,b] and showing the extremum is interior. This is the substantive analytic core; the closed form is its order-connected packaging.",
+      "Darboux's theorem is an obstruction theorem: it tells you which functions are NOT derivatives. Any function with a jump discontinuity (a step function, the sign function, the floor function) fails the intermediate value property and is therefore not the derivative of anything. not_deriv_of_jump makes this precise as the contrapositive.",
+      "On ℝ the notions of order-connected set and convex set coincide, so 'the range of f' is order-connected' and 'the range of f' is convex' say the same thing — both assert that the range is an interval. Mathlib distinguishes them because order-connectedness is the order-theoretic primitive while convexity is the linear-algebraic one; Darboux.lean proves the order version and derives the convex one."
+    ]
+  },
+  "conclusion": {
+    "summary": "Seven machine-checked theorems establishing Darboux's theorem — the intermediate value property of derivatives — in closed and strict forms, its structural restatement that derivatives map order-connected (and convex) sets to order-connected (convex) sets, the obstruction corollary that value-skipping functions are not derivatives, and a concrete witness. All verified against Mathlib's Analysis.Calculus.Darboux with zero axioms and zero sorries.",
+    "implications": "Darboux's theorem is the reason the classification of derivatives is subtle: it forbids the easy discontinuities. It underlies the theory of which functions admit antiderivatives (a Riemann-integrable function with a jump cannot be a derivative even where its integral is differentiable), informs the construction of pathological examples in real analysis, and is the prototype for 'IVP without continuity' phenomena that recur for connected-graph functions and for the derivatives of convex functions. The order-connected formulation also connects to the topological fact that continuous images of connected sets are connected.",
+    "openQuestions": [
+      "Can the Volterra-type construction of a differentiable function whose derivative is discontinuous on a set of positive measure be formalized, exhibiting a concrete derivative that fails to be Riemann integrable while still satisfying Darboux's property?",
+      "Does Mathlib support the converse-flavoured characterization of Baire class one for derivatives — every derivative is of Baire class 1 — and can Darboux's theorem be combined with it to characterize the discontinuity sets of derivatives?",
+      "Can the Darboux property be stated and proved for derivatives valued in a general ordered or normed setting (e.g. the components of a vector-valued derivative), and where does the order-connected packaging break down?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "mean-value-theorem",
+      "relationship": "extends",
+      "description": "Complements the base Mean Value Theorem: where the MVT asserts the existence of a single point with a prescribed derivative value, Darboux's theorem describes the entire range of the derivative."
+    },
+    {
+      "proofId": "mean-value-theorem-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 derives monotonicity from the sign of the derivative; Darboux's theorem complements it by constraining the range of the derivative itself, independently of continuity."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/MeanValueTheoremOQ05.lean",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "imports": [
+      "import Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "MeanValueTheoremOQ05"
+  },
+  "mainTheorems": [
+    {
+      "name": "darboux_ivp",
+      "type": "core",
+      "statement": "$a\\le b$, $f$ differentiable on $[a,b]$ with derivative $f'$, $m\\in[[f'(a),f'(b)]] \\Rightarrow \\exists c\\in[a,b],\\; f'(c)=m$",
+      "significance": "Darboux's theorem in closed form. Proved through order-connectedness: `ordConnected_Icc.image_hasDerivWithinAt hf` shows f'(Icc a b) is order-connected, both endpoints f'(a), f'(b) belong to it, and `OrdConnected.uIcc_subset` places the whole closed interval [[f'(a),f'(b)]] inside the image. No continuity of f' is assumed — this is the defining feature of the theorem.",
+      "description": "A derivative attains every value between f'(a) and f'(b), with no continuity hypothesis."
+    },
+    {
+      "name": "darboux_ivp_open",
+      "type": "core",
+      "statement": "$a\\le b$, $m\\in(\\min(f'(a),f'(b)),\\,\\max(f'(a),f'(b))) \\Rightarrow \\exists c\\in(a,b),\\; f'(c)=m$",
+      "significance": "The strict form: when m is strictly between the endpoint derivatives, the witness lies in the open interval. Dispatches the two orientations via `exists_hasDerivWithinAt_eq_of_gt_of_lt` and `exists_hasDerivWithinAt_eq_of_lt_of_gt`, whose proofs extremize g(x)=f(x)-m·x on the compact interval and locate the extremum in the interior — the analytic heart of Darboux's theorem.",
+      "description": "The strict intermediate value is attained in the open interval (a,b)."
+    },
+    {
+      "name": "deriv_range_ordConnected",
+      "type": "core",
+      "statement": "$s$ order-connected, $f$ differentiable on $s \\Rightarrow$ $\\operatorname{deriv} f\\,(s)$ is order-connected",
+      "significance": "The structural form of Darboux's theorem: derivatives have no jump discontinuities because they map order-connected sets to order-connected sets. Wrapper of `Set.OrdConnected.image_deriv`. On ℝ this says the range of f' over an interval is an interval.",
+      "description": "The image of an order-connected set under a derivative is order-connected."
+    },
+    {
+      "name": "not_deriv_of_jump",
+      "type": "supporting",
+      "statement": "$a\\le b$, $m\\in[[g(a),g(b)]]$, $\\forall x\\in[a,b],\\,g(x)\\ne m \\Rightarrow \\neg\\,(\\forall x\\in[a,b],\\,\\mathrm{HasDerivWithinAt}\\,f\\,(g\\,x)\\,[a,b]\\,x)$",
+      "significance": "The obstruction corollary, the contrapositive of darboux_ivp. A function that takes the boundary values g(a), g(b) but skips some intermediate value m cannot be the derivative of any function on [a,b]. This rules out step functions — the sign function, the floor function — as derivatives, a standard application of Darboux's theorem.",
+      "description": "A function that skips an intermediate value cannot be a derivative."
+    },
+    {
+      "name": "darboux_sq_example",
+      "type": "supporting",
+      "statement": "$\\exists c\\in[0,2],\\; 2c = 1$ as a witness of Darboux applied to $f(x)=x^2$",
+      "significance": "A concrete instance: the derivative of x² is 2x, which runs from 0 to 4 on [0,2], so Darboux forces it to hit the intermediate value 1, realized at c=1/2. Built from `hasDerivAt_pow` and the closed form darboux_ivp, demonstrating the theorem on an explicit function.",
+      "description": "A concrete witness: deriv(x²) attains the intermediate value 1 on [0,2]."
+    }
+  ],
+  "references": [
+    {
+      "text": "Darboux, G. (1875). Mémoire sur les fonctions discontinues. Annales scientifiques de l'École Normale Supérieure, 2e série, 4, 57–112. The original source of the intermediate value property of derivatives.",
+      "url": "https://en.wikipedia.org/wiki/Darboux%27s_theorem_(analysis)"
+    },
+    {
+      "text": "Rudin, W. (1976). Principles of Mathematical Analysis (3rd ed.). McGraw-Hill. Theorem 5.12 states and proves Darboux's theorem as a corollary of the existence of interior extrema.",
+      "url": "https://en.wikipedia.org/wiki/Darboux%27s_theorem_(analysis)"
+    },
+    {
+      "text": "Mathlib4: Mathlib.Analysis.Calculus.Darboux — exists_hasDerivWithinAt_eq_of_gt_of_lt, Set.OrdConnected.image_hasDerivWithinAt, Set.OrdConnected.image_deriv, Convex.image_deriv.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Calculus/Darboux.html"
+    }
+  ],
+  "sorries": 0
+}

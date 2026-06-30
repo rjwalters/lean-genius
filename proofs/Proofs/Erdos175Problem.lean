@@ -51,10 +51,76 @@ noncomputable def maxPrimePowerExp (n : ℕ) : ℕ :=
 4 | C(2n, n) unless n is a power of 2.
 -/
 
+/-- The base-2 digit sum of a positive number is positive (the leading digit is nonzero). -/
+theorem digitSum_two_pos {n : ℕ} (hn : n ≠ 0) : 0 < (Nat.digits 2 n).sum := by
+  have hnil : Nat.digits 2 n ≠ [] := Nat.digits_ne_nil_iff_ne_zero.mpr hn
+  have hlast : (Nat.digits 2 n).getLast hnil ≠ 0 := Nat.getLast_digit_ne_zero 2 hn
+  have hmem : (Nat.digits 2 n).getLast hnil ∈ Nat.digits 2 n := List.getLast_mem hnil
+  have hle := List.single_le_sum (fun x _ => Nat.zero_le x) _ hmem
+  omega
+
+/-- **Kummer/Legendre for `p = 2`.** The 2-adic valuation of the central binomial coefficient
+`C(2n, n)` equals the number of one-bits of `n`, i.e. its base-2 digit sum.
+
+Indeed `v₂(C(2n,n)) = s₂(n) + s₂(n) − s₂(2n)` by Kummer's theorem, and `s₂(2n) = s₂(n)` since
+doubling only prepends a zero bit. -/
+theorem padicValNat_two_centralBinom (n : ℕ) :
+    padicValNat 2 (centralBinom n) = (Nat.digits 2 n).sum := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have hcb : centralBinom n = Nat.choose (n + n) n := by rw [centralBinom, two_mul]
+  rcases Nat.eq_zero_or_pos n with hn | hn
+  · subst hn; simp [centralBinom]
+  -- doubling preserves the base-2 digit sum: `digits 2 (n+n) = 0 :: digits 2 n`
+  have hdd : (Nat.digits 2 (n + n)).sum = (Nat.digits 2 n).sum := by
+    have h2 : n + n = 2 ^ 1 * n := by ring
+    rw [h2, Nat.digits_base_pow_mul (by norm_num) hn]
+    simp
+  have key := sub_one_mul_padicValNat_choose_eq_sub_sum_digits' (p := 2) (k := n) (n := n)
+  rw [hcb]
+  rw [hdd] at key
+  simp only [show (2 : ℕ) - 1 = 1 from rfl, one_mul] at key
+  omega
+
+/-- For a positive `n`, the base-2 digit sum is `1` exactly when `n` is a power of two. -/
+theorem digitSum_two_eq_one_iff {n : ℕ} (hn : 0 < n) :
+    (Nat.digits 2 n).sum = 1 ↔ ∃ k, n = 2 ^ k := by
+  constructor
+  · intro hs
+    obtain ⟨k, m, hm, rfl⟩ := Nat.exists_eq_two_pow_mul_odd hn.ne'
+    have hmpos : 0 < m := Nat.pos_of_ne_zero (by rintro rfl; simp at hn)
+    rw [Nat.digits_base_pow_mul (by norm_num) hmpos] at hs
+    simp only [List.sum_append, List.sum_replicate, smul_eq_mul, Nat.mul_zero, zero_add] at hs
+    have hmod : m % 2 = 1 := Nat.odd_iff.mp hm
+    rw [Nat.digits_of_two_le_of_pos (by norm_num) hmpos, hmod, List.sum_cons] at hs
+    have hzero : (Nat.digits 2 (m / 2)).sum = 0 := by omega
+    have hm2 : m / 2 = 0 := by
+      by_contra h
+      exact absurd hzero (digitSum_two_pos h).ne'
+    have hm1 : m = 1 := by omega
+    exact ⟨k, by rw [hm1, mul_one]⟩
+  · rintro ⟨k, rfl⟩
+    rw [show (2 : ℕ) ^ k = 2 ^ k * 1 from (mul_one _).symm,
+        Nat.digits_base_pow_mul (by norm_num) one_pos,
+        Nat.digits_of_two_le_of_pos (by norm_num) one_pos]
+    simp
+
 /-- 4 | C(2n, n) iff n is not a power of 2 -/
 theorem four_divides_iff (n : ℕ) (hn : n ≥ 2) :
     4 ∣ centralBinom n ↔ ¬∃ k : ℕ, n = 2 ^ k := by
-  sorry
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have hpos : 0 < n := by omega
+  have hcb0 : centralBinom n ≠ 0 := by
+    rw [centralBinom]; exact (Nat.choose_pos (by omega)).ne'
+  -- `4 ∣ C(2n,n)` ↔ `v₂(C(2n,n)) ≥ 2`, and `v₂ = s₂(n)`
+  have hdvd : 4 ∣ centralBinom n ↔ 2 ≤ padicValNat 2 (centralBinom n) := by
+    rw [show (4 : ℕ) = 2 ^ 2 by norm_num]
+    exact padicValNat_dvd_iff_le hcb0
+  rw [hdvd, padicValNat_two_centralBinom]
+  -- `s₂(n) ≥ 2` ↔ `n` is not a power of two (since `s₂(n) ≥ 1` for `n ≥ 1`)
+  have hs1 : 0 < (Nat.digits 2 n).sum := digitSum_two_pos hpos.ne'
+  rw [show (¬∃ k, n = 2 ^ k) ↔ (Nat.digits 2 n).sum ≠ 1 from
+        (digitSum_two_eq_one_iff hpos).not.symm]
+  omega
 
 /-
 ## Part 3: The Main Theorem

@@ -1,0 +1,164 @@
+{
+  "id": "harmonic-divergence-oq-05",
+  "title": "Oresme's Explicit Lower Bound: H_{2ⁿ} ≥ 1 + n/2",
+  "slug": "harmonic-divergence-oq-05",
+  "description": "Sharpens Oresme's grouping argument into an explicit closed lower bound on the partial sums of the harmonic series: the 2ⁿ-th partial sum H_{2ⁿ} = ∑_{j=1}^{2ⁿ} 1/j is at least 1 + n/2. Quantifies the logarithmic divergence rate, beyond the qualitative not-summable / tendsto-atTop entries.",
+  "meta": {
+    "author": "Oresme (~1350); formalization original to this gallery",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HarmonicDivergenceOQ05.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "divergence",
+      "harmonic-series",
+      "explicit-bound",
+      "dyadic-blocks",
+      "induction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_add_sum_Ico",
+        "description": "Splits a range sum into a head range and a tail Ico interval",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.sum_le_sum",
+        "description": "Termwise comparison of finite sums",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "one_div_le_one_div_of_le",
+        "description": "Antitonicity of x ↦ 1/x on the positives",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "Finset.sum_le_sum_of_subset_of_nonneg",
+        "description": "Monotonicity of sums under index-set inclusion for nonneg terms",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "harmonic_two_pow_ge: the explicit bound H_{2ⁿ} ≥ 1 + n/2 (sharp Oresme inequality), proved by induction on n — not present in Mathlib, which only offers the existence-form Real.tendsto_sum_range_one_div_nat_succ_atTop",
+      "block_ge_half: self-contained dyadic-block estimate ∑_{k=2ⁿ}^{2ⁿ⁺¹-1} 1/(k+1) ≥ 1/2 in the Mathlib range/Ico indexing",
+      "H_two_pow_succ: clean range→range+Ico split feeding the induction step",
+      "exceeds_at_two_pow: explicit term count making the slowness of divergence quantitative (H exceeds any M once n > 2(M−1))",
+      "tendsto_atTop: re-derivation of divergence to +∞ from the explicit bound alone (plus monotonicity), independent of Mathlib's tendsto lemma"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "lineCount": 145,
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Nicole Oresme (~1350), in 'Quaestiones super geometriam Euclidis', gave the first proof that the harmonic series diverges by grouping consecutive terms into dyadic blocks: 1/3+1/4 ≥ 1/2, 1/5+…+1/8 ≥ 1/2, and in general the 2ᵏ terms from index 2ᵏ+1 to 2ᵏ⁺¹ each exceed 1/2ᵏ⁺¹ and so sum to at least 1/2. The usual modern statement keeps only the qualitative conclusion (the sum is unbounded). But Oresme's argument actually delivers a precise quantitative inequality, and that is what this entry formalizes: assembling the blocks gives the closed lower bound H_{2ⁿ} ≥ 1 + n/2. Since H_N ≈ ln N + γ, this bound is the elementary, constant-free witness of the logarithmic divergence rate — to double the partial sum you must square the number of terms.",
+    "problemStatement": "Beyond knowing the harmonic series diverges, can one give an explicit, elementary lower bound on its partial sums that exhibits the divergence rate?\n\n**Answer: Yes.** H_{2ⁿ} ≥ 1 + n/2, recovering Oresme's blocks as a sharp inequality.",
+    "text": "An explicit closed-form lower bound for the harmonic partial sums, sharpening Oresme's classical grouping argument and quantifying the logarithmic divergence rate.",
+    "proofStrategy": "1. block_ge_half: each dyadic block ∑_{k∈Ico(2ⁿ,2ⁿ⁺¹)} 1/(k+1) has 2ⁿ terms each ≥ 1/2ⁿ⁺¹, so sums to ≥ 1/2 (Finset.sum_le_sum against the constant 1/2ⁿ⁺¹, then sum_const · card).\n2. H_two_pow_succ: split the range sum H_{2ⁿ⁺¹} as H_{2ⁿ} plus one block via Finset.sum_range_add_sum_Ico.\n3. harmonic_two_pow_ge: induct on n. Base n=0 gives H_1 = 1 = 1 + 0/2. Step adds the block's 1/2 to the inductive 1 + n/2, yielding 1 + (n+1)/2.\n4. Corollaries: exceeds_at_two_pow chooses n > 2(M−1) to clear any target M; tendsto_atTop combines the bound with monotonicity of H.",
+    "keyInsights": [
+      "**Sharp, not just qualitative**: Oresme's grouping is usually quoted only for the conclusion 'diverges'. The same blocks give the exact inequality H_{2ⁿ} ≥ 1 + n/2 — a constant-free, fully elementary lower bound.",
+      "**Not a Mathlib lemma**: Mathlib provides Real.tendsto_sum_range_one_div_nat_succ_atTop (existence-form) but no closed lower bound on the partial sums. The headline inequality is original to this gallery.",
+      "**Rate made explicit**: H_{2ⁿ} ≥ 1 + n/2 means roughly H_N ≳ 1 + (log₂ N)/2, the elementary shadow of H_N ~ ln N. To gain 1/2 in the sum you need to double the index — the famous slowness, quantified.",
+      "**Induction over dyadic blocks**: the proof's spine is a single induction that peels off one block of 2ⁿ terms per step, each contributing exactly the 1/2 isolated in block_ge_half.",
+      "**Self-contained divergence**: tendsto_atTop re-proves divergence to +∞ from the bound plus monotonicity, without invoking Mathlib's tendsto lemma — the explicit estimate is logically sufficient on its own."
+    ],
+    "prerequisites": [
+      "Real analysis (partial sums, series divergence)",
+      "Finite sums over Finset (range/Ico splitting)",
+      "Induction on the natural numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-namespace",
+      "title": "Imports, Indexing Convention, and the Partial Sum H",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Imports Mathlib.Analysis.PSeries and InfiniteSum.Basic. Defines H N = ∑_{k∈range N} 1/(k+1), the partial sum 1 + 1/2 + … + 1/N, indexed exactly as in Mathlib's tendsto_sum_range_one_div_nat_succ_atTop.",
+      "mathContext": "H N = ∑_{j=1}^{N} 1/j with the range/(k+1) convention so that the head/tail split aligns with Finset.sum_range_add_sum_Ico."
+    },
+    {
+      "id": "block-ge-half",
+      "title": "The Dyadic Block Estimate",
+      "startLine": 56,
+      "endLine": 85,
+      "summary": "block_ge_half: the block of 2ⁿ terms from index 2ⁿ to 2ⁿ⁺¹−1 sums to at least 1/2. Each term 1/(k+1) ≥ 1/2ⁿ⁺¹ (since k+1 ≤ 2ⁿ⁺¹), and there are 2ⁿ⁺¹−2ⁿ = 2ⁿ of them, with 2ⁿ·(1/2ⁿ⁺¹) = 1/2.",
+      "mathContext": "$\\sum_{k=2^n}^{2^{n+1}-1} \\frac{1}{k+1} \\ge 2^n \\cdot \\frac{1}{2^{n+1}} = \\frac12$ via termwise comparison (one_div_le_one_div_of_le) and Finset.sum_const."
+    },
+    {
+      "id": "split-lemma",
+      "title": "Splitting Off One Block",
+      "startLine": 87,
+      "endLine": 99,
+      "summary": "H_two_pow_succ rewrites H_{2ⁿ⁺¹} as H_{2ⁿ} + (the block from 2ⁿ to 2ⁿ⁺¹), using Finset.sum_range_add_sum_Ico with 2ⁿ ≤ 2ⁿ⁺¹.",
+      "mathContext": "$H_{2^{n+1}} = H_{2^n} + \\sum_{k=2^n}^{2^{n+1}-1} \\frac{1}{k+1}$, the algebraic backbone of the induction step."
+    },
+    {
+      "id": "main-bound",
+      "title": "Oresme's Explicit Lower Bound",
+      "startLine": 101,
+      "endLine": 116,
+      "summary": "harmonic_two_pow_ge: 1 + n/2 ≤ H_{2ⁿ}, by induction on n. Base case H_1 = 1. Step combines the inductive bound 1 + n/2 with the block's 1/2 to reach 1 + (n+1)/2.",
+      "mathContext": "$H_{2^n} \\ge 1 + n/2$. Inductive step: $(1 + n/2) + 1/2 = 1 + (n+1)/2$, with the added 1/2 supplied by block_ge_half."
+    },
+    {
+      "id": "corollaries",
+      "title": "Quantitative Slowness and Divergence",
+      "startLine": 118,
+      "endLine": 145,
+      "summary": "exceeds_at_two_pow: for any M there is n with H_{2ⁿ} > M (take n > 2(M−1)), making the divergence rate explicit. tendsto_atTop: H tends to +∞, re-derived from the bound plus monotonicity of H, independent of Mathlib's tendsto lemma.",
+      "mathContext": "To exceed M it suffices that $1 + n/2 > M$, i.e. $n > 2(M-1)$; only about $2^{2M}$ terms are needed. Monotonicity of H then upgrades the subsequence bound to a genuine limit."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Oresme, Nicole",
+      "title": "Quaestiones super geometriam Euclidis",
+      "year": "~1350",
+      "note": "First proof of harmonic divergence; the dyadic grouping argument sharpened here into an explicit bound"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "sharpens",
+      "description": "Upgrades the base entry's per-block estimate group_sum_ge_half and existence-form unboundedness into the explicit closed bound H_{2ⁿ} ≥ 1 + n/2"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-04",
+      "relationship": "sibling",
+      "description": "OQ-04 generalizes Oresme's grouping to the Cauchy condensation test (qualitative); OQ-05 keeps the harmonic case but extracts the sharp quantitative bound"
+    }
+  ],
+  "conclusion": {
+    "summary": "Oresme's 14th-century grouping argument yields more than divergence: it gives the explicit lower bound H_{2ⁿ} ≥ 1 + n/2. The formalization proves this by a dyadic-block induction (each block ≥ 1/2), then reads off an explicit exceedance count and a self-contained proof of divergence to +∞.",
+    "implications": "The bound exhibits the logarithmic divergence rate with elementary, constant-free means: H_N ≳ 1 + (log₂ N)/2. It also bounds how many terms are needed to reach a target sum (≈ 2^{2M} for target M).",
+    "openQuestions": [
+      "Can a matching elementary upper bound H_{2ⁿ} ≤ 1 + n be formalized to sandwich the partial sums?",
+      "Does the same dyadic induction give explicit bounds for the p-series partial sums when p is near 1?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "HarmonicDivergenceOQ05",
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/HarmonicDivergenceOQ05.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

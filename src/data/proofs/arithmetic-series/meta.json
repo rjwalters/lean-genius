@@ -7,7 +7,7 @@
     "author": "Carl Friedrich Gauss (formalized via Mathlib)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/BigOperators/Intervals.html",
     "date": "~1785",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ArithmeticSeries.lean",
     "tags": [
       "number-theory",
@@ -17,7 +17,7 @@
       "classic",
       "gauss"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -40,7 +40,7 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 68,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 180,
     "relatedProblems": [
       {
@@ -52,7 +52,7 @@
         "relationship": "Further extensions of simplicial number theory"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The general Gauss/arithmetic-series formulas are kernel-checked, but the presented concrete corollary `gauss_100` (∑_{i<101} i = 5050) is discharged by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust). Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "mathlib_version": "4.26.0",
     "theoremCount": 11,
     "definitionCount": 1

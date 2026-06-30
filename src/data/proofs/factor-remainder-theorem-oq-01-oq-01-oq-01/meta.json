@@ -1,0 +1,158 @@
+{
+  "id": "factor-remainder-theorem-oq-01-oq-01-oq-01",
+  "title": "The Sharp Positive-Characteristic Discrepancy: Ordinary vs Hasse/Taylor Multiplicity over 𝔽ₚ",
+  "slug": "factor-remainder-theorem-oq-01-oq-01-oq-01",
+  "description": "Answers the parent Taylor-coefficient file's first open question by making the characteristic-p discrepancy explicit. For the witness Xᵖ over 𝔽ₚ = ZMod p: the ordinary-derivative multiplicity test collapses (derivative(Xᵖ)=0 identically, so every derivative condition holds vacuously and would falsely certify Xᵏ ∣ Xᵖ for all k), while the characteristic-free coefficient/Taylor test stays sharp (Xᵏ ∣ Xᵖ ↔ k ≤ p). The Hasse derivative survives where the ordinary one dies (hasseDeriv p Xᵖ ≠ 0), and the bridge derivative^[p] f = p!·hasseDeriv p f shows the obstruction is exactly the factorial p! ≡ 0 (mod p) — pinpointing where the parent's characteristic-zero hypothesis k! ≠ 0 is needed. 7 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "researcher-1",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FactorRemainderTheoremOQ01OQ01OQ01.lean",
+    "tags": [
+      "factor-remainder-theorem",
+      "polynomial",
+      "multiplicity",
+      "hasse-derivative",
+      "taylor-coefficient",
+      "positive-characteristic",
+      "finite-field",
+      "counterexample"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 126,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "assumptions": "None. All 7 theorems proved, 0 axioms. Verified axiom-free: #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.derivative_X_pow",
+        "description": "derivative (X^n) = C(n)·X^(n-1); with n = p over ZMod p the coefficient C(p) = 0",
+        "module": "Mathlib.Algebra.Polynomial.Derivative"
+      },
+      {
+        "theorem": "ZMod.natCast_self",
+        "description": "(p : ZMod p) = 0 — the source of the ordinary-derivative collapse",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Polynomial.X_pow_dvd_iff",
+        "description": "X^n ∣ f ↔ ∀ d < n, f.coeff d = 0 — the characteristic-free (Taylor-at-0) coefficient criterion",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      },
+      {
+        "theorem": "Polynomial.hasseDeriv_coeff",
+        "description": "(hasseDeriv k f).coeff n = (n+k).choose k · f.coeff (n+k); gives (hasseDeriv p Xᵖ).coeff 0 = C(p,p) = 1 ≠ 0",
+        "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+      },
+      {
+        "theorem": "Polynomial.factorial_smul_hasseDeriv",
+        "description": "k! • hasseDeriv k = derivative^[k]; the quantitative bridge whose factorial factor is the obstruction in characteristic p",
+        "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+      }
+    ],
+    "dateAdded": "2026-06-24"
+  },
+  "overview": {
+    "historicalContext": "Over a characteristic-zero field, the multiplicity of a root a of a polynomial p is detected by ordinary derivatives: (X−a)^k ∣ p iff p(a)=p′(a)=⋯=p^{(k−1)}(a)=0. In positive characteristic this fails dramatically: ordinary derivatives of order ≥ p vanish identically on pure p-th powers, losing all information. Hasse derivatives — the divided-derivative operators hasseDeriv k whose coefficients are the binomial coefficients rather than the factorial-laden ones — repair this, and equal the Taylor coefficients, which is why the Taylor-coefficient multiplicity test is characteristic-free. The parent entry formalized that characteristic-free test and asked, as its first open question, to make the discrepancy explicit over 𝔽ₚ.",
+    "problemStatement": "Exhibit a polynomial over 𝔽ₚ for which the ordinary-derivative multiplicity criterion fails but the Hasse/Taylor criterion succeeds, and quantify exactly where the characteristic-zero hypothesis is needed.",
+    "proofStrategy": "Take f = Xᵖ over 𝔽ₚ = ZMod p (p prime). (1) Collapse: derivative(Xᵖ) = C(p)·X^(p−1) = 0 since (p : ZMod p) = 0 (derivative_X_pow + ZMod.natCast_self); hence every iterated derivative of positive order is 0, and every derivative condition (derivative^[j] f).eval 0 = 0 holds (j = 0 because Xᵖ vanishes at 0, j ≥ 1 because the derivative is 0). (2) Sharpness: the coefficient criterion X_pow_dvd_iff is characteristic-free, so Xᵏ ∣ Xᵖ ↔ k ≤ p via coeff_X_pow; the true multiplicity p is detected and X^(p+1) ∤ Xᵖ. (3) Quantify: hasseDeriv p (Xᵖ) ≠ 0 (its constant coefficient is C(p,p)=1), yet derivative^[p](Xᵖ)=0; the identity factorial_smul_hasseDeriv (p!·hasseDeriv p = derivative^[p]) shows p! • hasseDeriv p (Xᵖ) = 0, so the factorial p! ≡ 0 (mod p) is precisely the obstruction.",
+    "keyInsights": [
+      "**The ordinary-derivative test is not merely weaker — it is vacuous.** Over 𝔽ₚ, derivative(Xᵖ) = 0 identically, so every derivative condition holds and the test certifies no finite multiplicity at all; it would assert Xᵏ ∣ Xᵖ for every k, which is false.",
+      "**The coefficient/Taylor test is characteristic-free.** X_pow_dvd_iff (X^k ∣ f ↔ first k coefficients vanish) is exactly the a = 0 Taylor-coefficient criterion and needs no division, so it detects the true multiplicity p in every characteristic.",
+      "**The factorial is the precise obstruction.** The bridge derivative^[p] f = p!·hasseDeriv p f makes the discrepancy quantitative: the Hasse derivative is nonzero but the factorial scaling annihilates it because p! ≡ 0 (mod p). This is exactly the input (k! ≠ 0) that the characteristic-zero ordinary-derivative test relies on and the Hasse/Taylor test does not.",
+      "**Xᵖ is the minimal witness.** A pure p-th power is where ordinary and Hasse derivatives first diverge maximally — every ordinary derivative dies while the p-th Hasse derivative is a nonzero unit."
+    ]
+  },
+  "sections": [
+    {
+      "id": "collapse",
+      "title": "The ordinary-derivative test collapses over 𝔽ₚ",
+      "startLine": 51,
+      "endLine": 75,
+      "summary": "derivative_X_pow_eq_zero: derivative(Xᵖ)=0 (C(p)=0 in ZMod p). iterate_derivative_X_pow_eq_zero: every positive-order iterated derivative is 0. ordinary_criterion_vacuous: every condition (derivative^[j] Xᵖ).eval 0 = 0 holds.",
+      "mathContext": "$\\mathrm{d}/\\mathrm{d}X(X^p) = pX^{p-1} = 0$ in $\\mathbb{F}_p$; all higher derivatives vanish, so the criterion is uninformative."
+    },
+    {
+      "id": "sharp",
+      "title": "The coefficient / Taylor test stays sharp",
+      "startLine": 76,
+      "endLine": 101,
+      "summary": "coeff_criterion_correct: Xᵏ ∣ Xᵖ ↔ k ≤ p (X_pow_dvd_iff + coeff_X_pow). multiplicity_eq_p: Xᵖ ∣ Xᵖ but X^(p+1) ∤ Xᵖ — the true multiplicity is exactly p.",
+      "mathContext": "$X^k \\mid X^p \\iff k \\leq p$, characteristic-free; the multiplicity $p$ is detected exactly."
+    },
+    {
+      "id": "obstruction",
+      "title": "The Hasse derivative survives — and the factorial is the obstruction",
+      "startLine": 102,
+      "endLine": 126,
+      "summary": "hasseDeriv_ne_zero: hasseDeriv p (Xᵖ) ≠ 0 (constant coeff C(p,p)=1). factorial_annihilates_hasseDeriv: p! • hasseDeriv p (Xᵖ) = derivative^[p](Xᵖ) = 0, so the factorial p! ≡ 0 (mod p) is exactly where char 0 is needed.",
+      "mathContext": "$\\partial^{[p]} = p!\\cdot \\mathrm{hasse}_p$; $\\mathrm{hasse}_p(X^p)\\neq 0$ but $p!\\equiv 0$, so $\\partial^{[p]}(X^p)=0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The positive-characteristic discrepancy of the multiplicity test is made explicit and quantitative over 𝔽ₚ via the witness Xᵖ: the ordinary-derivative criterion is vacuous, the coefficient/Taylor criterion is sharp, and the factorial p! ≡ 0 is exactly the obstruction relating the two. 7 theorems, 0 sorries, 0 axioms.",
+    "implications": "Confirms the parent's claim that the Taylor-coefficient test is strictly more general than the ordinary-derivative test, by an explicit characteristic-p example, and identifies the single arithmetic fact (k! invertible) on which the characteristic-zero equivalence rests.",
+    "openQuestions": [
+      "Generalize the witness to f = X^(p^e) and to arbitrary 𝔽_q, giving the full failure profile of the ordinary-derivative test as a function of multiplicity vs characteristic.",
+      "Formalize the divided-difference / Newton-form route to the same multiplicity test (the parent's second open question) and compare with the Hasse-derivative form in characteristic p."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "FactorRemainderTheoremOQ01OQ01OQ01",
+    "lineCount": 126,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/FactorRemainderTheoremOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "factor-remainder-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent formalized the characteristic-free Taylor-coefficient multiplicity test and asked, as its first open question, to make the characteristic-p discrepancy with the ordinary-derivative test explicit; this file does so with Xᵖ over 𝔽ₚ"
+    },
+    {
+      "targetId": "factor-remainder-theorem-oq-01",
+      "relationship": "ancestor",
+      "description": "OQ-01 gave the ordinary-derivative multiplicity test over a characteristic-zero field, the criterion shown here to fail in characteristic p"
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "ancestor",
+      "description": "Root Factor Theorem (X − a) ∣ p ↔ p(a) = 0"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "coeff_criterion_correct",
+      "type": "core",
+      "statement": "Xᵏ ∣ Xᵖ ↔ k ≤ p  (over ZMod p)",
+      "description": "The characteristic-free coefficient/Taylor criterion detects the true multiplicity p.",
+      "significance": "Shows the Hasse/Taylor test succeeds where the ordinary-derivative test fails"
+    },
+    {
+      "name": "ordinary_criterion_vacuous",
+      "type": "core",
+      "statement": "∀ j, (derivative^[j] (Xᵖ)).eval 0 = 0",
+      "description": "Every ordinary-derivative condition holds, so the criterion certifies no finite multiplicity.",
+      "significance": "The explicit failure of the ordinary-derivative multiplicity test in characteristic p"
+    },
+    {
+      "name": "factorial_annihilates_hasseDeriv",
+      "type": "core",
+      "statement": "p! • hasseDeriv p (Xᵖ) = 0, with hasseDeriv p (Xᵖ) ≠ 0",
+      "description": "The factorial p! ≡ 0 (mod p) annihilates the nonzero Hasse derivative — the exact obstruction.",
+      "significance": "Quantifies where the characteristic-zero hypothesis k! ≠ 0 is needed"
+    }
+  ],
+  "sorries": 0
+}

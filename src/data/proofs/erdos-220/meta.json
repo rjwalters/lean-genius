@@ -91,43 +91,83 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Reduced Residues and Setup",
-      "startLine": 41,
-      "endLine": 70,
-      "summary": "Defines reducedResidues(n) as {k ≤ n : gcd(k,n)=1} (the group of reduced residues), proves card_reducedResidues = φ(n) via Nat.card_units_zmod_lt_eq_totient, and sets up the squared gap problem.",
-      "mathContext": "Reduced residues mod $n$: $\\mathbb{Z}_n^\\times = \\{k : 1 \\leq k \\leq n, \\gcd(k,n)=1\\}$, with $|\\mathbb{Z}_n^\\times| = \\varphi(n)$ (Euler's totient). The problem studies gaps $g_{i+1}^2 - g_i^2$ between consecutive reduced residues $g_i < g_{i+1}$."
+      "title": "Header, Imports & Part I: Reduced Residues",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "File header stating Erdős #220 (squared gaps between reduced residues, solved by Montgomery-Vaughan 1986, $500 prize), imports, and Part I. Defines reducedResidues n = {1 ≤ m < n : gcd(m,n)=1}, card_reducedResidues (= φ(n), sorry), sortedResidues n (residues sorted increasingly), and a n k (the k-th reduced residue).",
+      "mathContext": "Reduced residues mod $n$: $\\{1 \\le m < n : \\gcd(m,n)=1\\}$, of which there are $\\varphi(n)$. They are listed increasingly as $a_1 < a_2 < \\cdots < a_{\\varphi(n)}$."
+    },
+    {
+      "id": "gaps",
+      "title": "Part II: Gaps Between Consecutive Reduced Residues",
+      "startLine": 67,
+      "endLine": 78,
+      "summary": "Defines gap n k = a(n, k+1) − a(n, k), the gap between consecutive reduced residues, and gapList n collecting all φ(n)−1 gaps.",
+      "mathContext": "The gaps $a_{k+1}-a_k$ partition $[a_1, a_{\\varphi(n)}]$; their average size is $n/\\varphi(n)$."
+    },
+    {
+      "id": "sum-powers",
+      "title": "Part III: Sum of Powers of Gaps",
+      "startLine": 79,
+      "endLine": 90,
+      "summary": "Defines sumGapPowers n γ = ∑ gap^γ and the specialization sumSquaredGaps n = sumGapPowers n 2, the quantity Erdős #220 bounds.",
+      "mathContext": "$\\sum_k (a_{k+1}-a_k)^\\gamma$ for a general power $\\gamma$; the $\\gamma = 2$ case is the squared-gap sum."
     },
     {
       "id": "conjecture",
-      "title": "Erdős #220 Conjecture: Squared Gaps",
+      "title": "Part IV: The Erdős Conjecture",
       "startLine": 91,
-      "endLine": 130,
-      "summary": "Defines erdos_220_conjecture: ∑ᵢ (gᵢ₊₁² - gᵢ²) = O(n log n · φ(n)/n) = O(φ(n)log n), and the generalization erdos_220_general for γ-th power gaps.",
-      "mathContext": "Conjecture: $\\sum_i (g_{i+1}^\\gamma - g_i^\\gamma) = O(n^\\gamma / \\varphi(n))$ for $\\gamma \\geq 1$. For $\\gamma=2$: $\\sum (g_{i+1}^2 - g_i^2) = O(n^2/\\varphi(n))$. Since $\\varphi(n) \\sim n/\\log\\log n$ on average, this is $O(n \\log\\log n)$."
+      "endLine": 110,
+      "summary": "Defines boundedSquaredGaps n = n²/φ(n) and erdos_220_conjecture (∃ C>0, sumSquaredGaps n ≤ C·n²/φ(n) for all n ≥ 1), plus the general-power versions boundedGamaPowers n γ and erdos_220_general.",
+      "mathContext": "Conjecture: $\\sum (a_{k+1}-a_k)^2 \\ll n^2/\\varphi(n)$, generalized to $\\sum (a_{k+1}-a_k)^\\gamma \\ll n^\\gamma/\\varphi(n)^{\\gamma-1}$ for $\\gamma \\ge 1$."
     },
     {
       "id": "montgomery-vaughan",
-      "title": "Montgomery-Vaughan Bounds (Axioms)",
-      "startLine": 121,
-      "endLine": 160,
-      "summary": "Axiomatizes montgomery_vaughan_squared: the squared-gap sum is O(n log n), proved by Montgomery-Vaughan (1980). Axiomatizes the γ-power generalization.",
-      "mathContext": "Montgomery-Vaughan (1980): $\\sum_i (g_{i+1}^2 - g_i^2) = O(n \\log n)$. This is proved via sieve methods and the large sieve inequality. The conjecture O(n) remains open."
+      "title": "Part V: Montgomery-Vaughan Theorem (1986)",
+      "startLine": 111,
+      "endLine": 132,
+      "summary": "Axiomatizes the resolution: montgomery_vaughan_squared (the squared-gap bound holds) and montgomery_vaughan_general (the γ-th power bound for any γ ≥ 1), proved by Montgomery and Vaughan (1986).",
+      "mathContext": "Montgomery–Vaughan (1986) proved $\\sum (a_{k+1}-a_k)^\\gamma \\ll n^\\gamma/\\varphi(n)^{\\gamma-1}$ via sieve and large-sieve methods beyond current Mathlib, hence stated as axioms."
     },
     {
-      "id": "applications",
-      "title": "Arithmetic Consequences and Spacing Bounds",
-      "startLine": 160,
-      "endLine": 201,
-      "summary": "Derives consequences: the average squared gap is O(n log n / φ(n)), individual gaps satisfy gᵢ₊₁ - gᵢ = O(n^(1/2+ε)). gap_concentration axiom: squared sum ≤ C·φ(n)·(n/φ(n))² = O(n²/φ(n)).",
-      "mathContext": "Average squared gap: $O(n \\log n / \\varphi(n))$. A key consequence: the maximal gap between consecutive reduced residues satisfies $\\max_i (g_{i+1} - g_i) = O(n^{1/2+\\varepsilon})$ (conditionally on GRH)."
+      "id": "average-gap",
+      "title": "Part VI: Average Gap Analysis",
+      "startLine": 133,
+      "endLine": 153,
+      "summary": "Defines averageGap n = n/φ(n), states sum_gaps_bound (∑ gaps ≤ n, sorry), and records observations: gaps all equal to the average give exactly n²/φ(n), and large gaps must be rare by pigeonhole.",
+      "mathContext": "If every gap equalled the average $n/\\varphi(n)$, the squared sum would be exactly $\\varphi(n)\\cdot(n/\\varphi(n))^2 = n^2/\\varphi(n)$ — motivating the conjectured bound."
     },
     {
-      "id": "open-questions",
-      "title": "Open Questions and Current State",
-      "startLine": 201,
+      "id": "special-cases",
+      "title": "Part VII: Special Cases",
+      "startLine": 154,
+      "endLine": 167,
+      "summary": "Worked special cases: n prime (all gaps 1, ∑ gap² = p−2), n = 2^k (all gaps 2, ∑ gap² = 2^{k+1}, bound tight), and n primorial (large prime-gap effects controlled by Montgomery-Vaughan).",
+      "mathContext": "For $n = 2^k$ the bound is tight: all gaps equal $2$, so $\\sum (a_{k+1}-a_k)^2 = 2^{k+1} = n^2/\\varphi(n)$."
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Part VIII: Relation to Prime Gaps",
+      "startLine": 168,
+      "endLine": 184,
+      "summary": "Defines jacobsthal n (the maximum gap) and axiomatizes maximum_gap_bound (max gap ≤ C·(n/φ(n))·(log n)²), relating gap sizes to prime-gap behaviour after sieving.",
+      "mathContext": "Jacobsthal's function $g(n)$ is the largest gap; the squared-gap sum depends on how many gaps of each size occur — few large gaps plus many small gaps keeps the sum manageable."
+    },
+    {
+      "id": "gap-distribution",
+      "title": "Part IX: The Distribution of Gaps",
+      "startLine": 185,
+      "endLine": 198,
+      "summary": "Defines countGapsOfSize n g and axiomatizes gap_concentration: sumSquaredGaps n ≤ C·φ(n)·(averageGap n)² = O(n²/φ(n)), expressing that gaps concentrate near the average.",
+      "mathContext": "Concentration of gaps near $n/\\varphi(n)$ yields $\\sum (a_{k+1}-a_k)^2 = O(\\varphi(n)\\cdot (n/\\varphi(n))^2) = O(n^2/\\varphi(n))$."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 199,
       "endLine": 227,
-      "summary": "Summarizes the factor-of-log gap between O(n log n) and the conjectured O(n), and states related open problems about prime gaps and multiplicative character sums.",
-      "mathContext": "The gap between $O(n \\log n)$ (known) and $O(n)$ (conjectured) corresponds to improving the large sieve inequality for character sums. The problem is closely related to the distribution of reduced residues in short intervals."
+      "summary": "Summary of the resolved problem and the proved theorem erdos_220_summary (= montgomery_vaughan_squared), with the key ideas: average gap n/φ(n), rare large gaps, a controlled gap distribution, and tightness for n = 2^k.",
+      "mathContext": "Erdős #220 is SOLVED: $\\sum (a_{k+1}-a_k)^2 \\ll n^2/\\varphi(n)$, with the generalization for all $\\gamma \\ge 1$."
     }
   ],
   "conclusion": {

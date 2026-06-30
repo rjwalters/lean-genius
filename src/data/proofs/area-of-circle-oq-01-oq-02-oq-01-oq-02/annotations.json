@@ -1,0 +1,166 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Open Question: Formalizing the Isoperimetric Inequality",
+    "content": "This proof addresses the parent's second open question. The full isoperimetric inequality $S^n \\ge (n^n\\omega_n)V^{n-1}$ (equality iff ball) is a deep theorem of geometric measure theory. What is fully formalizable from the monomial definitions is the *equality case* (the ball saturates the bound) and the *scale invariance* of the dimensionless isoperimetric quotient — together these pin the optimal constant $n^n\\omega_n$.",
+    "mathContext": "The optimal constant in $S^n \\ge c_n V^{n-1}$ is $c_n = n^n\\omega_n$, attained exactly on balls. Specializes to $4\\pi$ in the plane ($L^2 \\ge 4\\pi A$) and $36\\pi$ in space ($A^3 \\ge 36\\pi V^2$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "isoperimetric inequality",
+      "n-ball volume",
+      "surface area",
+      "geometric measure theory"
+    ],
+    "prerequisites": [
+      "Gamma function theory",
+      "n-dimensional geometry"
+    ]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 56,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Volume, Surface Area, Isoperimetric Constant and Quotient",
+    "content": "Defines $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ (unit ball volume), $V_n(r) = \\omega_n r^n$, $S_n(r) = n\\omega_n r^{n-1}$, the isoperimetric constant $c_n = n^n\\omega_n$, and the dimensionless quotient $Q_n(r) = S_n(r)^n/V_n(r)^{n-1}$. Definitions match the parent file for self-containment.",
+    "mathContext": "$Q_n(r)$ is dimensionless: scaling $r \\mapsto \\lambda r$ multiplies $S_n^n$ and $V_n^{n-1}$ by the same power $\\lambda^{n(n-1)}$, so $Q_n$ is radius-independent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit ball volume",
+      "isoperimetric constant",
+      "dimensionless quotient"
+    ]
+  },
+  {
+    "id": "ann-positivity",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 79,
+      "endLine": 92
+    },
+    "type": "technique",
+    "title": "Positivity of ω_n, the Constant, and V_n(r)",
+    "content": "Proves $\\omega_n > 0$ (positive numerator $\\pi^{n/2}$ over positive $\\Gamma(n/2+1)$), $c_n > 0$ for $n \\ge 1$, and $V_n(r) > 0$ for $r > 0$. The last is what lets us divide by $V_n(r)^{n-1}$ to form the quotient.",
+    "mathContext": "$\\Gamma(x) > 0$ for $x > 0$ via `Gamma_pos_of_pos`; $\\pi^{n/2} > 0$ via `rpow_pos_of_pos`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity",
+      "Gamma function"
+    ]
+  },
+  {
+    "id": "ann-saturation",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 102,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "Main Theorem: The n-Ball Saturates the Isoperimetric Bound",
+    "content": "Proves $S_n(r)^n = (n^n\\omega_n)\\cdot V_n(r)^{n-1}$ for every radius $r$. The proof substitutes $n = m+1$ to clear the natural-number subtraction $n-1$, after which both sides are monomials $n^n\\omega_n^n r^{n(n-1)}$ and close by `ring`.",
+    "mathContext": "$S_n(r)^n = (n\\omega_n r^{n-1})^n = n^n\\omega_n^n r^{n(n-1)}$; $(n^n\\omega_n)V_n(r)^{n-1} = n^n\\omega_n\\cdot\\omega_n^{n-1}r^{n(n-1)}$. The powers of $r$ are identical.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "isoperimetric equality",
+      "ball saturation",
+      "monomial identity"
+    ]
+  },
+  {
+    "id": "ann-deficit-zero",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 110,
+      "endLine": 117
+    },
+    "type": "theorem",
+    "title": "Isoperimetric Deficit of a Ball is Zero",
+    "content": "Immediate corollaries of saturation: the isoperimetric deficit $S_n(r)^n - c_n V_n(r)^{n-1}$ is identically $0$, and the ball meets the lower bound $c_n V_n(r)^{n-1} \\le S_n(r)^n$ with equality.",
+    "mathContext": "The deficit measures how far a body is from being a ball; for the ball itself it vanishes.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "isoperimetric deficit",
+      "extremal body"
+    ]
+  },
+  {
+    "id": "ann-scale-invariance",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 124,
+      "endLine": 136
+    },
+    "type": "theorem",
+    "title": "Scale Invariance of the Isoperimetric Quotient",
+    "content": "Proves $Q_n(r) = n^n\\omega_n$ for $r > 0$ (via `div_eq_iff` and the saturation equality), hence $Q_n(r_1) = Q_n(r_2)$ for any two positive radii. The quotient is a genuine dimensionless invariant of the ball.",
+    "mathContext": "Because $S_n^n$ and $V_n^{n-1}$ scale identically in $r$, the quotient is constant — the structural reason the isoperimetric problem is scale-free.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "scale invariance",
+      "dimensional analysis",
+      "isoperimetric constant"
+    ]
+  },
+  {
+    "id": "ann-low-dim-volumes",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 141,
+      "endLine": 178
+    },
+    "type": "technique",
+    "title": "Evaluating ω_1, ω_2, ω_3 via the Gamma Function",
+    "content": "Computes $\\omega_1 = 2$, $\\omega_2 = \\pi$, $\\omega_3 = 4\\pi/3$ from the Gamma recurrence $\\Gamma(z+1) = z\\Gamma(z)$ and $\\Gamma(1/2) = \\sqrt{\\pi}$. These feed the low-dimensional isoperimetric constants.",
+    "mathContext": "$\\Gamma(3/2) = \\sqrt{\\pi}/2$, $\\Gamma(5/2) = 3\\sqrt{\\pi}/4$, $\\Gamma(2) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gamma function",
+      "half-integer values"
+    ]
+  },
+  {
+    "id": "ann-classical-constants",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 180,
+      "endLine": 196
+    },
+    "type": "theorem",
+    "title": "Recovering the Classical Constants 4π and 36π",
+    "content": "Proves $c_1 = 2$, $c_2 = 4\\pi$, $c_3 = 36\\pi$. The values $4\\pi$ and $36\\pi$ are exactly the optimal constants in the textbook planar inequality $L^2 \\ge 4\\pi A$ and spatial inequality $A^3 \\ge 36\\pi V^2$ — a strong correctness check on the general formula $c_n = n^n\\omega_n$.",
+    "mathContext": "$c_2 = 2^2\\cdot\\pi = 4\\pi$; $c_3 = 3^3\\cdot(4\\pi/3) = 36\\pi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "planar isoperimetric inequality",
+      "spatial isoperimetric inequality",
+      "optimal constant"
+    ]
+  },
+  {
+    "id": "ann-worked-equalities",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 202,
+      "endLine": 216
+    },
+    "type": "theorem",
+    "title": "Worked Equality Cases: Disk and Ball",
+    "content": "Specializes the saturation identity to dimensions 2 and 3: the disk satisfies $(2\\pi r)^2 = 4\\pi(\\pi r^2)$ and the ball satisfies $(4\\pi r^2)^3 = 36\\pi(4\\pi r^3/3)^2$ — the classical isoperimetric equalities for circle and sphere.",
+    "mathContext": "These are circumference² = 4π·area and surface area³ = 36π·volume² for the extremal bodies.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "circle",
+      "sphere",
+      "equality case"
+    ]
+  }
+]

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/InclusionExclusionOQ01.lean",
     "tags": [
       "combinatorics",
@@ -15,11 +15,11 @@
       "derangements",
       "euler-totient"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified using Mathlib's Nat.totient and Finset.card lemmas.",
+    "axiomCount": 1,
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. Credited theorems include computational/numerical checks discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. Formula-level results use Mathlib's Nat.totient and Finset.card lemmas.",
     "lineCount": 382,
     "theoremCount": 41,
     "definitionCount": 5,

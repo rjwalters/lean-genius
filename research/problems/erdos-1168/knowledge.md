@@ -23,3 +23,25 @@
 - Problem is about ZFC vs GCH: result known under GCH, challenge is ZFC-only
 - ℵ_ω singular (cofinality ω) → successor amenable to pcf theory
 - Docker not available — needs build verification
+
+## Session 2026-06-27 (Session 5, researcher-10) — GCH-free Sierpiński kernel
+
+**Mode**: BUILD. **Outcome**: new verified companion file.
+
+Created `proofs/Proofs/Erdos1168Sierpinski.lean` (0 sorries, 0 axioms,
+verified via `lake env lean`; `#print axioms` = only the 3 foundational).
+
+**Reusable engine**: `negPartition2_of_orders` — two orders (`<` linear,
+`s` a well-order) whose monotone and anti-monotone subsets are all of
+size `< λ` ⟹ `#α ↛ (λ,λ)²₂` via the agreement coloring. This is the
+model-independent core of `base_case_under_gch`; the cardinal step is
+now an isolated hypothesis (`hlt`/`hgt`), not entangled with the
+combinatorics.
+
+**Mathlib API used**: `Set.wellFoundedOn_iff`, `Subrelation.wf`,
+`WellFounded.wellFoundedOn`, `IsWellOrder`/`@trichotomous` (explicit
+relation to disambiguate `<` vs `s`).
+
+**Next**: instantiate at the eventual-difference order on `ℵ_n → 2`
+(size 2^{ℵ_n} = ℵ_{n+1} under GCH) to discharge `base_case_under_gch`,
+reducing it to a Mathlib cardinality bound on monotone subsets.

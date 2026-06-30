@@ -17,7 +17,11 @@
       "Extremal combinatorics",
       "Turán theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic notation (big-Theta)",
+      "bipartite subgraphs of triangle-free graphs"
+    ]
   },
   {
     "id": "ann-e581-triangle-free",
@@ -37,7 +41,11 @@
     ],
     "significance": "key",
     "mathContext": "See annotation content for formal details of triangle-free graph",
-    "prerequisites": []
+    "prerequisites": [
+      "simple graph adjacency relation",
+      "complete graph K₃",
+      "forbidden subgraph conditions"
+    ]
   },
   {
     "id": "ann-e581-bipartite",
@@ -57,7 +65,11 @@
     ],
     "significance": "key",
     "mathContext": "See annotation content for formal details of bipartite graph",
-    "prerequisites": []
+    "prerequisites": [
+      "vertex set partitions",
+      "graph 2-colorability",
+      "edges between independent sets"
+    ]
   },
   {
     "id": "ann-e581-f-axioms",
@@ -77,7 +89,11 @@
       "supremum of bipartite subgraphs"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "infimum and supremum over a family",
+      "Classical.choose and choice principles in Lean 4",
+      "extremal functions over graph classes"
+    ]
   },
   {
     "id": "ann-e581-half",
@@ -97,7 +113,11 @@
     ],
     "significance": "key",
     "mathContext": "See annotation content for formal details of trivial lower bound",
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "expected value of bichromatic edges",
+      "random 2-coloring argument"
+    ]
   },
   {
     "id": "ann-e581-upper",
@@ -117,7 +137,11 @@
     ],
     "significance": "key",
     "mathContext": "See annotation content for formal details of alon's upper bound",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph constructions",
+      "real power function m^{4/5}",
+      "Classical.choose constant extraction"
+    ]
   },
   {
     "id": "ann-e581-lower",
@@ -137,7 +161,11 @@
     ],
     "significance": "key",
     "mathContext": "See annotation content for formal details of alon's lower bound",
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic and algebraic constructions",
+      "lower bounds on bipartite subgraph size",
+      "real power function m^{4/5}"
+    ]
   },
   {
     "id": "ann-e581-theta",
@@ -157,7 +185,11 @@
       "Alon's theorem"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "big-Theta asymptotic notation",
+      "two-sided constant bounds",
+      "linarith tactic"
+    ]
   },
   {
     "id": "ann-e581-related",
@@ -177,7 +209,11 @@
     ],
     "significance": "key",
     "mathContext": "See annotation content for formal details of related classical results",
-    "prerequisites": []
+    "prerequisites": [
+      "Mantel's theorem (n²/4 edge bound)",
+      "Kővári-Sós-Turán theorem",
+      "Turán-type extremal problems"
+    ]
   },
   {
     "id": "ann-e581-summary",
@@ -197,6 +233,10 @@
       "solved Erdős problems"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "conjunction of upper and lower bounds",
+      "positivity of extracted constants",
+      "asymptotic equivalence f(m) = m/2 + Θ(m^{4/5})"
+    ]
   }
 ]

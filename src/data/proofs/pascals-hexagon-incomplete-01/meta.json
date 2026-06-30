@@ -1,0 +1,182 @@
+{
+  "id": "pascals-hexagon-incomplete-01",
+  "title": "Pascal's Hexagon: The Real-Point Hypothesis Is Essential",
+  "slug": "pascals-hexagon-incomplete-01",
+  "description": "The Pascal's Hexagon formalization reduces to a single remaining sorry (the Sylvester reduction of a non-degenerate symmetric real conic carrying a real point to the standard conic diag(1,1,-1)), whose docstring claims the real-point hypothesis is 'essential and not removable' but never proves it. This entry proves that necessity: the positive-definite identity conic diag(1,1,1) has only the trivial zero (x₀²+x₁²+x₂²=0 ⟺ x=0), so no invertible projective transformation can make it equivalent to the standard conic — which carries the nonzero point (1,0,1). Hence the Sylvester reduction genuinely requires a real point on the conic. Self-contained: the conic definitions mirror the parent's, reproduced locally because the parent file is currently bit-rotted.",
+  "meta": {
+    "author": "Blaise Pascal (1639, hexagon theorem); James Joseph Sylvester (law of inertia); formalized in Lean 4",
+    "date": "1639",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PascalsHexagonIncomplete01.lean",
+    "tags": [
+      "projective-geometry",
+      "conics",
+      "pascal-theorem",
+      "quadratic-forms",
+      "linear-algebra",
+      "sylvester"
+    ],
+    "badge": "verified",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 152,
+    "theoremCount": 5,
+    "definitionCount": 7,
+    "originalContributions": [
+      "pointOnConic_one_iff: the identity conic diag(1,1,1) has only the trivial zero — a point lies on it iff it is the zero vector (sum of three real squares vanishes iff all are zero).",
+      "isotropicPoint_on_stdConic / isotropicPoint_ne_zero: the standard conic carries the nonzero point (1,0,1).",
+      "real_point_hypothesis_essential: no invertible matrix M makes the identity conic projectively equivalent to the standard conic — rigorously establishing the parent's informal 'essential hypothesis' claim for sylvester_stdConic_of_isotropic."
+    ],
+    "prerequisites": [
+      "Conics as symmetric matrices and the associated quadratic form",
+      "Projective transformations as invertible matrix-vector maps",
+      "Definite vs indefinite quadratic forms (Sylvester's law of inertia, conceptually)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.mul_nonsing_inv",
+        "description": "M * M⁻¹ = 1 for M with IsUnit det — recovers the preimage of the standard-conic point",
+        "module": "Mathlib.LinearAlgebra.Matrix.NonsingularInverse"
+      },
+      {
+        "theorem": "Matrix.mulVec_mulVec",
+        "description": "associativity of matrix-vector multiplication, used to show M·(M⁻¹·q) = q",
+        "module": "Mathlib.Data.Matrix.Mul"
+      },
+      {
+        "theorem": "Finset.sum_eq_zero_iff_of_nonneg",
+        "description": "a sum of nonnegatives is zero iff each term is, giving that a sum of squares vanishes iff all coordinates vanish",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Pascal's hexagon theorem (1639): if a hexagon is inscribed in a conic, the three intersection points of opposite sides are collinear. A standard modern proof reduces an arbitrary non-degenerate conic to a single normal form via Sylvester's law of inertia, then verifies the collinearity for that fixed conic. The gallery's PascalsHexagon.lean follows this route and isolates the reduction in one lemma, sylvester_stdConic_of_isotropic: a symmetric non-degenerate real conic carrying a real point is projectively equivalent to stdConic = diag(1,1,-1).\n\nThe lemma's real-point hypothesis is not cosmetic. A non-degenerate ternary real quadratic form has, up to projective equivalence, one of two shapes: definite (signature (3,0) or (0,3)), whose only real zero is the origin, or indefinite (signature (2,1)), projectively the standard conic, with a whole cone of real zeros. Definite and indefinite forms are not projectively equivalent — there is no linear bijection between a single point and a cone. The inscribed hexagon supplies a real point, ruling out the definite case. This entry makes that obstruction precise.",
+    "problemStatement": "**Task (pascals-hexagon-incomplete-01)**: complete / justify the remaining gap in the Pascal's Hexagon formalization. The sole sorry, sylvester_stdConic_of_isotropic, is the deep Sylvester reduction; its docstring also asserts — without proof — that its real-point hypothesis is essential.\n\n**Result**: the essentiality claim is proved. The positive-definite identity conic has only the zero point and so cannot be projectively equivalent to the standard conic.",
+    "text": "A 152-line, fully verified (0 sorries, 0 axioms, no native_decide) self-contained file. It reproduces the parent's minimal conic API (ProjPoint, Conic, conicQuadraticForm, pointOnConic, stdConic, projTransform), then proves conicQuadraticForm_one (the identity conic's form is ∑ pᵢ²), pointOnConic_one_iff (only the zero point lies on it), the nonzero standard-conic point (1,0,1), and the headline real_point_hypothesis_essential.",
+    "proofStrategy": "conicQuadraticForm_one collapses the double sum ∑ᵢⱼ (1)ᵢⱼ pᵢ pⱼ to ∑ᵢ pᵢ² using Matrix.one_apply_eq / one_apply_ne'. pointOnConic_one_iff then uses Finset.sum_eq_zero_iff_of_nonneg (squares are nonnegative) and mul_self_eq_zero to conclude every coordinate is zero. For real_point_hypothesis_essential, suppose an invertible M with the claimed equivalence. The standard conic's nonzero point q = (1,0,1) has preimage p = M⁻¹·q, and M·p = (M·M⁻¹)·q = q (Matrix.mul_nonsing_inv, Matrix.mulVec_mulVec, Matrix.one_mulVec); so p lies on the identity conic, forcing p = 0 by pointOnConic_one_iff; but then q = M·0 = 0, contradicting q ≠ 0.",
+    "keyInsights": [
+      "A positive-definite ternary real quadratic form (the identity conic) has exactly one real zero — the origin — because a sum of real squares vanishes only when every term does.",
+      "The standard conic, being indefinite, has nonzero real points such as (1,0,1); a single point and a cone cannot be matched by an invertible linear map.",
+      "An invertible projective transformation is a bijection on ℝ³, so it preserves 'has a nonzero zero': it cannot relate a conic with only the trivial zero to one with a nontrivial zero.",
+      "The contradiction is engineered by pulling the nonzero standard-conic point back through M⁻¹ and showing its image must be both on the identity conic (hence zero) and nonzero.",
+      "This is precisely why sylvester_stdConic_of_isotropic must assume a real point on the conic; the inscribed hexagon provides exactly that witness."
+    ]
+  },
+  "sections": [
+    {
+      "id": "api",
+      "title": "Minimal Conic API",
+      "startLine": 47,
+      "endLine": 69,
+      "summary": "ProjPoint, Conic, conicQuadraticForm, pointOnConic, stdConic, projTransform — mirroring the (bit-rotted) parent.",
+      "mathContext": "Conics as symmetric matrices and their quadratic forms."
+    },
+    {
+      "id": "identity-conic",
+      "title": "The Identity Conic Has Only the Trivial Zero",
+      "startLine": 71,
+      "endLine": 94,
+      "summary": "conicQuadraticForm_one (∑ pᵢ²) and pointOnConic_one_iff (point on diag(1,1,1) ⟺ zero vector).",
+      "mathContext": "Positive-definite forms are anisotropic over ℝ."
+    },
+    {
+      "id": "std-point",
+      "title": "A Nonzero Point on the Standard Conic",
+      "startLine": 96,
+      "endLine": 108,
+      "summary": "isotropicPoint = (1,0,1), on stdConic and nonzero.",
+      "mathContext": "Indefinite forms carry nontrivial real zeros."
+    },
+    {
+      "id": "essential",
+      "title": "The Real-Point Hypothesis Is Essential",
+      "startLine": 110,
+      "endLine": 134,
+      "summary": "real_point_hypothesis_essential: no invertible M makes the identity conic equivalent to stdConic.",
+      "mathContext": "Definite and indefinite non-degenerate conics are not projectively equivalent."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry proves the essentiality of the real-point hypothesis in the Pascal's Hexagon Sylvester reduction: the positive-definite identity conic has only the trivial zero and therefore cannot be projectively equivalent to the standard conic, which carries the nonzero point (1,0,1). So sylvester_stdConic_of_isotropic genuinely needs the real-point assumption that the inscribed hexagon supplies.",
+    "implications": "The result completes the file's informal justification of its hypotheses, separating the two halves of the Sylvester dichotomy: the definite case (no real point, no equivalence — proved here) and the indefinite case (a real point exists, equivalence holds — the remaining sorry). It is a clean instance of the general principle that an invertible linear map cannot relate an anisotropic quadratic form to an isotropic one.",
+    "openQuestions": [
+      "Discharge the remaining sorry sylvester_stdConic_of_isotropic for the indefinite case via Sylvester's law of inertia (extracting an explicit invertible matrix from Mathlib's IsometryEquiv).",
+      "Repair the bit-rotted parent PascalsHexagon.lean under the 4.26.0 toolchain so this necessity result can be wired directly into it.",
+      "Generalize the necessity argument: any positive-definite symmetric conic (not just the identity) fails to be equivalent to stdConic."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "extends",
+      "description": "Parent: Pascal's Hexagon Theorem, whose sole remaining sorry is the Sylvester reduction. This entry proves the necessity of that lemma's real-point hypothesis."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "PascalsHexagonIncomplete01",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 7,
+    "mainTheorems": [
+      {
+        "name": "real_point_hypothesis_essential",
+        "type": "core",
+        "description": "No invertible M makes the identity conic projectively equivalent to stdConic",
+        "leanType": "¬ ∃ M : Matrix (Fin 3) (Fin 3) ℝ, M.det ≠ 0 ∧ ∀ p, pointOnConic p (1 : Conic) ↔ pointOnConic (projTransform M p) stdConic"
+      },
+      {
+        "name": "pointOnConic_one_iff",
+        "type": "key",
+        "description": "The identity conic has only the trivial zero",
+        "leanType": "(p : ProjPoint) → (pointOnConic p (1 : Conic) ↔ p = 0)"
+      }
+    ],
+    "path": "Proofs/PascalsHexagonIncomplete01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "real_point_hypothesis_essential",
+      "type": "core",
+      "description": "The real-point hypothesis of the Sylvester reduction is essential: the definite identity conic is not projectively equivalent to stdConic",
+      "leanType": "¬ ∃ M : Matrix (Fin 3) (Fin 3) ℝ, M.det ≠ 0 ∧ ∀ p, pointOnConic p (1 : Conic) ↔ pointOnConic (projTransform M p) stdConic"
+    },
+    {
+      "name": "pointOnConic_one_iff",
+      "type": "key",
+      "description": "The positive-definite identity conic has only the trivial zero",
+      "leanType": "(p : ProjPoint) → (pointOnConic p (1 : Conic) ↔ p = 0)"
+    },
+    {
+      "name": "conicQuadraticForm_one",
+      "type": "supporting",
+      "description": "The identity conic's quadratic form is the sum of squares",
+      "leanType": "(p : ProjPoint) → conicQuadraticForm (1 : Conic) p = ∑ i, p i * p i"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Pascal, Blaise",
+      "title": "Essai pour les coniques",
+      "year": "1640",
+      "venue": "Paris",
+      "note": "The hexagon (mystic hexagram) theorem"
+    },
+    {
+      "authors": "Sylvester, James Joseph",
+      "title": "A demonstration of the theorem that every homogeneous quadratic polynomial is reducible by real orthogonal substitutions to the form of a sum of positive and negative squares",
+      "year": "1852",
+      "venue": "Philosophical Magazine 4(23), 138–142",
+      "note": "Sylvester's law of inertia — the classification of real quadratic forms by signature underlying the Sylvester reduction"
+    }
+  ],
+  "sorries": 0
+}

@@ -137,31 +137,31 @@
       "id": "part-v-smooth",
       "title": "Part V: The Isoperimetric Inequality for Smooth Curves",
       "startLine": 732,
-      "endLine": 1235,
+      "endLine": 1695,
       "summary": "Mean subtraction infrastructure (preserves circumference and area, achieves zero mean). Arc-length reparametrization (exists_arclength_reparam, proved). Wirtinger sum-of-squares bound. Integral Cauchy-Schwarz on [0,2π]. Area bound from constant speed. isoperimetric_inequality_smooth: the main theorem — fully proved via reparametrization + Wirtinger bounds + arithmetic kernel.",
       "mathContext": "**Main theorem** `isoperimetric_inequality_smooth`: $4\\pi A \\leq C^2$ for any SmoothClosedCurve. Proved by: (1) reparametrize to constant speed + zero mean, (2) apply Wirtinger bounds, (3) apply arithmetic kernel."
     },
     {
       "id": "part-vi-equality",
       "title": "Part VI: Equality Characterization",
-      "startLine": 1235,
-      "endLine": 1274,
+      "startLine": 1696,
+      "endLine": 1734,
       "summary": "circle_satisfies_isoperimetric: circles achieve equality C²=4πA. equality_implies_circle: proved (was axiom) — if 4πA=C², set r=C/(2π), then C=circleCirc r and A=circleArea r (purely algebraic).",
       "mathContext": "circle\\_satisfies\\_isoperimetric: circles achieve equality. equality\\_implies\\_circle: if $4\\pi A = C^2$, set $r = C/(2\\pi)$, then $C = 2\\pi r$ and $A = \\pi r^2$ by field\\_simp + linarith."
     },
     {
       "id": "part-vii-corollaries",
       "title": "Part VII: Algebraic Corollaries of the Isoperimetric Inequality",
-      "startLine": 1274,
-      "endLine": 1422,
+      "startLine": 1735,
+      "endLine": 1882,
       "summary": "isoperimetric_area_bound: A ≤ C²/(4π). minimum_circumference_for_area: C ≥ 2√(πA). isoperimetric_ratio_scale_invariant: ratio unchanged by scaling. circle_maximizes_area: circle is optimal for fixed circumference. non_circle_area_lt_circle: non-circles have strictly less area.",
       "mathContext": "Corollaries: $A \\leq C^2/(4\\pi)$, $C \\geq 2\\sqrt{\\pi A}$, scale invariance, circle maximizes area for fixed perimeter."
     },
     {
       "id": "part-viii-triangle",
       "title": "Part VIII: Equilateral Triangle — A Concrete Example",
-      "startLine": 1422,
-      "endLine": 1478,
+      "startLine": 1883,
+      "endLine": 1937,
       "summary": "equiTriCirc, equiTriArea definitions. equi_tri_isoperimetric_ratio = π√3/9. equi_tri_ratio_lt_one: π√3/9 < 1 (strict inequality). equi_tri_strict_inequality: 4πA < C² for equilateral triangles.",
       "mathContext": "Equilateral triangle with side $a$: $C = 3a$, $A = \\sqrt{3}a^2/4$, ratio $= \\pi\\sqrt{3}/9 \\approx 0.605 < 1$."
     }

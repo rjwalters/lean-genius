@@ -1,0 +1,188 @@
+{
+  "id": "divisibility-truncation-general-oq-01-oq-01",
+  "title": "Combined Divisibility Test for Any Divisor",
+  "slug": "divisibility-truncation-general-oq-01-oq-01",
+  "description": "Answers the open question from the Unified Osculator Theorem: divisors that share factors with 10 (such as 6, 12, 14, 35) are tested by combining the last-k-digits rule with the osculator rule. Writing d = s*m with s | 10^k and m coprime to 10, divisibility by d splits via CRT into a last-k-digits test on s and an osculator test on m, giving a single parametric test valid for every positive divisor.",
+  "meta": {
+    "author": "Extension of the Unified Osculator Theorem",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_rule",
+    "date": "2026-06-15",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "unification",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/DivisibilityTruncationGeneralOQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+        "description": "If gcd(a,b)=1, a | n and b | n then a*b | n",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.div_add_mod",
+        "description": "b * (n / b) + n % b = n",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Nat.dvd_sub'",
+        "description": "If k | m and k | n then k | m - n (over the naturals)",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Int.isCoprime_iff_gcd_eq_one",
+        "description": "IsCoprime m n iff Int.gcd m n = 1, used to discharge the coprime-to-10 side conditions",
+        "module": "Mathlib.RingTheory.Int.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Combined Divisibility Theorem: for d = s*m with s | 10^k and m coprime to 10 (osculator c), d | n iff (s | n%10^k) and (m | n/10 + c*(n%10)) -- a single parametric test for every positive divisor",
+      "Last-k-digits rule in general form: s | n iff s | n%10^k whenever s | 10^k (generalises the gallery's fixed cases 4, 8, 25, 125)",
+      "New concrete rules for divisors sharing factors with 10: 14 = 2*7 and 35 = 5*7 combine a last-digit test with an osculator test",
+      "Subsumes the gallery's ad-hoc composite rules (6, 12, 15, 18, 30) by reducing them to an explicit last-k-digits-plus-osculator computation rather than a recursive divisibility split"
+    ],
+    "dateAdded": "2026-06-15",
+    "axiomCount": 0,
+    "relatedProblems": [
+      {
+        "id": "divisibility-truncation-general-oq-01",
+        "relationship": "Parent: the Unified Osculator Theorem, whose open question 'can this be extended to divisors sharing factors with 10?' this proof answers"
+      }
+    ],
+    "lineCount": 148,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Osculator divisibility tests (V. Ramaswami Aiyar 1907, popularised by Martin Gardner) give a single-step rule d | n iff d | (floor(n/10) + c*(n mod 10)) whenever gcd(d, 10) = 1, where the osculator c is the multiplicative inverse of 10 modulo d. The Unified Osculator Theorem (parent entry) reduced the positive and negative variants to one signed rule, but it still required d to be coprime to 10 -- so it could not test divisibility by 6, 12, 14, 15, and so on. The classical workaround for the 2 and 5 factors is the 'last-k-digits' rule (a number is divisible by 4 iff its last two digits are, by 8 iff its last three are), reflecting that 2^a and 5^b divide 10^k for k large enough. This entry shows the two frameworks are complementary halves of one test: every divisor factors as (a divisor of a power of ten) times (a number coprime to ten), and the Chinese Remainder Theorem glues the last-k-digits test and the osculator test into a single criterion.",
+    "problemStatement": "Can the Unified Osculator Theorem be extended to divisors that share factors with 10 (e.g. 6, 12, 14, 35) by combining it with the last-k-digits framework?\n\n**Answer: YES.** Write d = s*m where s | 10^k (the part built from 2's and 5's) and m is coprime to 10 with osculator c (so m | 10c - 1), and gcd(s, m) = 1. Then\n\n  d | n  <->  (s | n%10^k)  and  (m | floor(n/10) + c*(n mod 10)).\n\nThe first conjunct is the last-k-digits rule; the second is the osculator rule. The two classical frameworks combine into a single test for every positive divisor.",
+    "text": "A 148-line, 0-axiom, 0-sorry proof that the osculator and last-k-digits divisibility frameworks compose into one parametric test. The `dvd_iff_dvd_last_k` lemma proves the general last-k-digits rule (s | n iff s | n%10^k when s | 10^k), and `combined_divisibility` glues it to the parent's `unified_osculator` via the coprime factorization d = s*m and the CRT split `coprime_mul_dvd_iff`. Four corollaries instantiate the test, including the genuinely new rules for 14 = 2*7 and 35 = 5*7 (which the coprime-only osculator theorem cannot reach), and 12 = 4*3 (which needs the last-two-digits rule for its 2-part).",
+    "proofStrategy": "By the Chinese Remainder Theorem (`coprime_mul_dvd_iff`), for coprime s and m we have s*m | n iff s | n and m | n. The s-part is handled by the last-k-digits rule: since s | 10^k and n = 10^k*(n/10^k) + n%10^k with s dividing the first summand, s | n iff s | n%10^k. The m-part is handled by the parent's Unified Osculator Theorem after casting m | n to the integers. Combining the two equivalences with `and_congr` yields the parametric test. The side conditions (s | 10^k, coprimality, m | 10c - 1) are discharged by norm_num and decide in each concrete corollary.",
+    "keyInsights": [
+      "Every positive divisor factors uniquely as d = s*m with s = 2^a*5^b (sharing all factors with 10) and m coprime to 10; the two factors are automatically coprime.",
+      "The 2-and-5 part is tested by the last-k-digits rule because s | 10^k; the coprime part is tested by the osculator rule. CRT glues them.",
+      "The general last-k-digits rule s | n iff s | n%10^k follows from s | 10^k and the division identity, with no case analysis on s.",
+      "This recovers the gallery's composite rules (6, 12, 15, 18, 30) as instances and adds new ones (14, 35) the osculator theorem alone could not state.",
+      "k must be at least max(a, b) where s = 2^a*5^b, so that s | 10^k; for the 2-part of 12 (= 4) this means the last *two* digits."
+    ],
+    "prerequisites": [
+      "The Unified Osculator Theorem (parent entry): d | n iff d | (floor(n/10) + c*(n mod 10)) for d coprime to 10",
+      "The Chinese Remainder Theorem for divisibility: coprime s, m give s*m | n iff s | n and m | n",
+      "Last-k-digits divisibility: a divisor of 10^k tests only the last k digits",
+      "Coprimality over the integers and natural-to-integer cast of divisibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Framework Reuse",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports the parent Unified Osculator Theorem and the DivisibilityRules CRT split, and documents the d = s*m decomposition that the file formalises.",
+      "mathContext": "Reuses `UnifiedOsculator.unified_osculator` (osculator part) and `DivisibilityRules.coprime_mul_dvd_iff` (CRT split d = s*m, gcd(s,m)=1)."
+    },
+    {
+      "id": "last-k-digits",
+      "title": "The Last-k-Digits Rule (General Form)",
+      "startLine": 38,
+      "endLine": 61,
+      "summary": "Proves s | n iff s | n%10^k whenever s | 10^k, generalising the fixed cases (4, 8, 25, 125) to an arbitrary divisor of a power of ten.",
+      "mathContext": "If s | 10^k then, writing n = 10^k*(n/10^k) + n%10^k with s | 10^k*(n/10^k), we get s | n iff s | n%10^k. Proof via `Nat.div_add_mod`, `Nat.dvd_sub'` and `dvd_add`."
+    },
+    {
+      "id": "combined-theorem",
+      "title": "The Combined Divisibility Theorem",
+      "startLine": 63,
+      "endLine": 93,
+      "summary": "Main result: for d = s*m with s | 10^k, gcd(s,m)=1, m coprime to 10, and m | 10c - 1, divisibility by d splits into the last-k-digits test on s and the osculator test on m.",
+      "mathContext": "s*m | n <-> (s | n%10^k) and (m | floor(n/10) + c*(n mod 10)). CRT splits s*m | n into s | n and m | n; `dvd_iff_dvd_last_k` rewrites the first and `unified_osculator` the second (after a nat-to-int cast bridge)."
+    },
+    {
+      "id": "concrete-cases",
+      "title": "New Rules for Divisors Sharing Factors with 10",
+      "startLine": 95,
+      "endLine": 130,
+      "summary": "Corollaries 6 = 2*3, 12 = 4*3, 14 = 2*7, 35 = 5*7. The 14 and 35 rules are new; 12 uses the last-two-digits rule for its 2-part.",
+      "mathContext": "6: s=2,m=3,c=1,k=1. 12: s=4,m=3,c=1,k=2. 14: s=2,m=7,c=5,k=1 (7 | 10*5-1=49). 35: s=5,m=7,c=5,k=1. Side conditions by norm_num and decide."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity Checks",
+      "startLine": 132,
+      "endLine": 148,
+      "summary": "native_decide examples confirming the combined rules agree with direct divisibility.",
+      "mathContext": "Examples: 6 | 144, 14 | 154, 35 | 245, 12 | 1452, and non-divisibility counterexamples."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-truncation-general-oq-01",
+      "relationship": "extends",
+      "description": "Directly answers the parent's open question by combining its Unified Osculator Theorem with the last-k-digits framework to cover divisors sharing factors with 10"
+    },
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "foundational",
+      "description": "Reuses the CRT divisibility split `coprime_mul_dvd_iff` and generalises the fixed last-k-digits rules (4, 8, 25, 125) to an arbitrary divisor of a power of ten"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem underlies the factorization d = s*m: since gcd(s, m) = 1, divisibility by d is equivalent to simultaneous divisibility by s and by m"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Unique factorization guarantees every divisor splits as (a divisor of a power of ten) times (a number coprime to ten), the decomposition that makes the combined test possible"
+    }
+  ],
+  "conclusion": {
+    "summary": "The osculator framework (for divisors coprime to 10) and the last-k-digits framework (for divisors of powers of 10) are the two complementary halves of a single divisibility test. Factoring d = s*m with s | 10^k and m coprime to 10, the Chinese Remainder Theorem reduces d | n to a last-k-digits test on s and an osculator test on m. This gives one parametric criterion covering every positive divisor, recovering the gallery's composite rules and adding new ones such as 14 = 2*7 and 35 = 5*7.",
+    "implications": "This completion:\n- **Answers the parent open question**: divisors sharing factors with 10 are handled by composing, not replacing, the osculator rule\n- **Unifies the gallery's divisibility rules**: digit-sum, osculator, and last-k-digits rules are all instances of one CRT-based test\n- **Generates new rules**: any d = 2^a*5^b*m with m coprime to 10 now has an explicit one-line test\n- **Separates concerns cleanly**: the 2/5 part is positional (last digits), the coprime part is an osculator congruence",
+    "openQuestions": [
+      "Does the same s*m split, with the osculator chosen per coprime prime power, give the minimal number of digit operations to test divisibility by d?",
+      "Can the combined test be iterated (osculator applied repeatedly to the coprime part) to bound the number of steps in terms of log d?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Tactic",
+      "Proofs.DivisibilityRules",
+      "Proofs.DivisibilityTruncationGeneralOQ01"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "CombinedDivisibility",
+    "lineCount": 148,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/DivisibilityTruncationGeneralOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Ramaswami Aiyar, V.",
+      "title": "The Osculator",
+      "year": "1907",
+      "venue": "The Journal of the Indian Mathematical Club, vol. 1",
+      "note": "Early systematic treatment of osculator divisibility rules via modular multiplicative inverses"
+    },
+    {
+      "authors": "Gardner, Martin",
+      "title": "Mathematical Games: Tests for divisibility",
+      "year": "1962",
+      "venue": "Scientific American",
+      "note": "Popular exposition of osculator and digit-based divisibility tests"
+    }
+  ]
+}

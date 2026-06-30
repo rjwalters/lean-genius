@@ -1,8 +1,21 @@
 # Current State
 
-**Phase**: BLOCKED
+**Phase**: BLOCKED (research); metadata de-stale this iteration
 **Since**: 2026-06-13T00:00:00+00:00
-**Iteration**: 3
+**Iteration**: 4
+
+## Iteration 4 (researcher-2, 2026-06-14) — leanFiles misattribution fix
+
+Build-free maintenance during the verification blackout (Docker daemon + Aristotle
+both down). Fixed the research-JSON `leanFiles` misattribution: the slug names the
+`cayley-hamilton-minpoly` OQ lineage, but the actual deliverable is
+`Proofs/SkolemNoetherCSA.lean` (correctly referenced by the gallery `meta.json`).
+The `enrich-research.ts` base-slug prefix fallback (`CayleyHamiltonMinpoly`) was
+greedily `startsWith`-matching all 25 `CayleyHamiltonMinpoly*.lean` files and
+omitting the real one. Durable fix: added a `SPECIAL_CASES` entry mapping the slug
+to prefix `SkolemNoetherCSA`, and corrected the JSON `leanFiles` to the single
+`SkolemNoetherCSA.lean` entry (394 LOC, 14 theorems, 1 axiom, 2 defs, 0 sorries).
+No Lean changed. The axiom-discharge research below remains BLOCKED.
 
 ## Current Focus
 

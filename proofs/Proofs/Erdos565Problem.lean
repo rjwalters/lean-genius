@@ -35,6 +35,16 @@ References:
 - Kohayakawa-Prömel-Rödl. "Induced Ramsey numbers." Combinatorica (1998)
 
 Tags: ramsey-theory, graph-theory, extremal-combinatorics
+
+Formalization status: 0 sorries, 3 axioms (the deep upper/lower bounds of
+Aragão et al. and the existence theorem of Deuber/EHP/Rödl, all legitimately
+axiomatized). The comparison `induced_ramsey_ge_ordinary` (R*(G) ≥ R(G)) is now
+proved from the definitions. The `EdgeColoring` definition was corrected to
+index over `G.edgeSet` (so `c ⟨s(a,b), h⟩` typechecks via `mem_edgeSet`, which
+is `Iff.rfl`); the previous `Sym2.out`-based predicate did not match the
+`Adj`-typed witnesses at the application sites. Build-pending: the local olean
+cache is unavailable (circular `proofs/.lake` symlink), so this is verified by
+name-check against Mathlib v4.26.0 and gated by the deployer build.
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
@@ -102,7 +112,7 @@ deriving DecidableEq
 **Edge coloring of a graph:**
 -/
 def EdgeColoring {V : Type*} [Fintype V] [DecidableEq V] (G : Graph V) :=
-  { e : Sym2 V // G.Adj e.out.1 e.out.2 } → EdgeColor
+  { e : Sym2 V // e ∈ G.edgeSet } → EdgeColor
 
 /--
 **Monochromatic induced subgraph:**
@@ -220,8 +230,35 @@ Induced Ramsey numbers are at least as large as ordinary Ramsey numbers.
 -/
 theorem induced_ramsey_ge_ordinary (n : ℕ) (G : Graph (Fin n)) :
     inducedRamseyNumber n G ≥ ordinaryRamseyNumber n G := by
-  -- Every monochromatic induced copy is also a monochromatic copy
-  sorry
+  -- The set of orders realizing the induced Ramsey property is contained in the
+  -- set realizing the ordinary one, so `sInf` monotonicity gives the inequality.
+  -- Concretely: the induced Ramsey number `M = inducedRamseyNumber n G` is realized
+  -- by some host graph `H` on `Fin M`; since `H ≤ ⊤ = completeGraph`, every
+  -- monochromatic induced copy of `G` in `H` is a (not necessarily induced)
+  -- monochromatic copy of `G` in `K_M`, so `K_M` realizes the ordinary property.
+  rw [ge_iff_le]
+  unfold ordinaryRamseyNumber
+  apply Nat.sInf_le
+  -- `M` is realized by a host graph `H`.
+  have hne : { m : ℕ | ∃ H : Graph (Fin m), HasInducedRamseyProperty H G }.Nonempty := by
+    obtain ⟨m, H, hH⟩ := induced_ramsey_exists n G
+    exact ⟨m, H, hH⟩
+  have hmem : inducedRamseyNumber n G ∈
+      { m : ℕ | ∃ H : Graph (Fin m), HasInducedRamseyProperty H G } := Nat.sInf_mem hne
+  obtain ⟨H, hH⟩ := hmem
+  -- Show `K_M` has the ordinary Ramsey property.
+  simp only [Set.mem_setOf_eq]
+  intro c
+  -- Restrict the complete-graph coloring to `H` (`H ≤ ⊤ = completeGraph`).
+  have hsub : H.edgeSet ⊆ (completeGraph (Fin (inducedRamseyNumber n G))).edgeSet :=
+    SimpleGraph.edgeSet_subset_edgeSet.mpr le_top
+  obtain ⟨color, f, _hiso, hmono⟩ := hH (fun e => c ⟨e.1, hsub e.2⟩)
+  refine ⟨color, f, ?_⟩
+  intro u v huv
+  obtain ⟨heH, hcol⟩ := hmono u v huv
+  -- `H.Adj (f u) (f v)` forces `f u ≠ f v`, hence adjacency in the complete graph;
+  -- the colour values agree by proof irrelevance of the edge-membership witness.
+  exact ⟨heH.ne, hcol⟩
 
 /--
 **Gap can be large:**

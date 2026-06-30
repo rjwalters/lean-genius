@@ -96,12 +96,20 @@
       "mathContext": "AP-free $A$ $\\implies$ every triangle is $(x, x+a, x+2a)$ for unique $a \\in A$, $x \\in \\mathbb{Z}/N\\mathbb{Z}$. Each edge in exactly one triangle."
     },
     {
-      "id": "roth-via-trl",
-      "title": "Part IV: Roth's Theorem via Triangle Removal",
+      "id": "counting-lower-bound",
+      "title": "Part IV: Triangle Counting and Edge-Removal Lower Bound",
       "startLine": 341,
+      "endLine": 430,
+      "summary": "Proves rsVertex_card (|RSVertex N| = 3N). Contains the 2 sorry'd private helpers rs_tc_ap_free_le (triangle count upper bound ≤ 6|A|N) and rs_removal_lb (edge removal lower bound |R| ≥ |A|N in the finite triangleCount/removeEdges setting). Proves ap_free_min_removal (0 sorries): using ap_free_triangle_exists and edge-disjointness, any edge set R making the graph triangle-free must hit each of the |A|·N triangles, so |R| ≥ |A|·N.",
+      "mathContext": "$|\\text{RSVertex}(N)| = 3N$. Edge-disjoint triangles $\\implies$ $|R| \\geq |A| \\cdot N$ to destroy all triangles. Open: $\\text{triangleCount} \\leq 6|A|N$ and the finite-setting removal bound."
+    },
+    {
+      "id": "roth-via-trl",
+      "title": "Part V: Roth's Theorem and Proof Equivalence",
+      "startLine": 431,
       "endLine": 534,
-      "summary": "Proves rsVertex_card (|RSVertex N| = 3N). Contains the 2 sorry'd private helpers rs_tc_ap_free_le (triangle count upper bound ≤ 6|A|N) and rs_removal_lb (edge removal lower bound |R| ≥ |A|N in finite setting). Proves ap_free_min_removal (0 sorries, uses ap_free_triangle_exists). Proves roth_via_triangle_removal: full Roth theorem via TRL through the 12-step density-vs-removal contradiction (0 sorries in the theorem itself, but calls the 2 sorry'd helpers). Proves roth_proofs_agree: the Fourier proof implies the TRL proof.",
-      "mathContext": "Edge-disjoint triangles $\\implies$ $|R| \\geq |A| \\cdot N$. Triangle removal lemma: $|R| \\leq \\delta' \\cdot 9N^2$. Contradiction for $|A| \\geq \\delta N$."
+      "summary": "Proves roth_via_triangle_removal: the full Roth theorem (restricted to odd N) via the triangle removal lemma, assembling the density-vs-removal contradiction in a multi-step argument (0 sorries in the theorem body, but it calls the 2 sorry'd counting helpers). Proves roth_proofs_agree: the Fourier-analytic proof (RothTheorem.lean) implies this TRL version, certifying that the gallery's two proofs of Roth's theorem are logically consistent within the same formal system.",
+      "mathContext": "$|A| \\geq \\delta N$ (AP-free) $\\Rightarrow |R| \\geq \\delta N^2$, but TRL gives $|R| \\leq \\delta' \\cdot 9N^2$ — contradiction for $\\delta' < \\delta/9$. $\\text{Roth}_{\\text{Fourier}} \\Rightarrow \\text{Roth}_{\\text{TRL}}$."
     }
   ],
   "crossReferences": [

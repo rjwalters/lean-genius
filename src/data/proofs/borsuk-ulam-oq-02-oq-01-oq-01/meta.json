@@ -34,7 +34,8 @@
       "The upper bound (buDim ≤ formula) is the substantive open direction: it requires showing composite group structure never exceeds prime subgroup structure",
       "For prime powers p^k, Smith theory implies buDim(p^k, d) = buDim(p, d), confirming the formula. This gives buDim(4,d) = buDim(2,d) and buDim(9,d) = buDim(3,d)",
       "For Z/6 = Z/2 × Z/3: both Z/2 and Z/3 give the same bound (2n-1 for even d), so the maximum over prime factors equals each individual prime factor bound",
-      "Nat.primeFactors is computable in Mathlib 4, so specific values (primeFactors 4 = {2}, primeFactors 6 = {2,3}, primeFactors 9 = {3}) can be verified by native_decide"
+      "Nat.primeFactors is computable in Mathlib 4, so specific values (primeFactors 4 = {2}, primeFactors 6 = {2,3}, primeFactors 9 = {3}) can be verified by native_decide",
+      "The conjecture is the index-theoretic shadow of a detection-at-primes principle. The cohomology of a cyclic group splits p-locally as the cohomology of its Z/p^{a_p} factor (the cohomological Chinese Remainder Theorem: H*(BZ/n) ≅ ⊗_p H*(BZ/p^{a_p})), so the Fadell-Husseini index — which lives in that ring — ought to be controlled prime-by-prime. buDim(n,d) = max_{p|n} buDim(p,d) is exactly what this prime-local decomposition predicts, mirroring how group cohomology is detected on Sylow subgroups via the transfer"
     ],
     "prerequisites": [
       "Classical Borsuk-Ulam theorem (Z/2 case)",
@@ -104,6 +105,21 @@
       "targetId": "borsuk-ulam-oq-02-oq-01-oq-04",
       "relationship": "related",
       "description": "The Fadell-Husseini index theory provides the main theoretical tool for proving the open conjecture axiomatized here"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "The classical Borsuk-Ulam theorem is the Z/2 (antipodal) base case of this equivariant hierarchy: buDim with the prime p=2 recovers the statement that every f: Sⁿ → ℝⁿ has an antipodal coincidence. The composite-n formula generalizes it to arbitrary cyclic group actions"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "A kindred topological-obstruction theorem: Borsuk-Ulam classically implies the Brouwer fixed-point theorem, and both are instances of degree/index arguments showing certain continuous maps cannot avoid a forced coincidence or fixed point"
+    },
+    {
+      "targetId": "sperner-ndim",
+      "relationship": "related",
+      "description": "Sperner's lemma is the combinatorial backbone of fixed-point and Borsuk-Ulam-type results; its n-dimensional form gives a constructive, discrete route to the same topological obstructions that the Fadell-Husseini index measures cohomologically here"
     }
   ],
   "references": [

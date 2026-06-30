@@ -35,7 +35,11 @@
       "combinatorics",
       "set-functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "set theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e624-subset-image",
@@ -54,7 +58,11 @@
       "function-image",
       "finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e624-covering-function",
@@ -73,7 +81,11 @@
       "surjectivity",
       "universal quantification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "predicate logic",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e624-covering-number",
@@ -92,7 +104,11 @@
       "optimization",
       "growth-rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "order theory",
+      "real analysis",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e624-basic-properties",
@@ -111,7 +127,11 @@
       "powerset",
       "image bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e624-lower-bound",
@@ -130,7 +150,11 @@
       "logarithm",
       "lower-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "real analysis",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e624-upper-bound",
@@ -149,7 +173,11 @@
       "upper-bound",
       "probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "asymptotic analysis",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e624-main-conjecture",
@@ -168,7 +196,11 @@
       "asymptotic",
       "divergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "predicate logic",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e624-weaker",
@@ -187,7 +219,11 @@
       "powers-of-two",
       "gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic analysis",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e624-alon-upper",
@@ -206,7 +242,11 @@
       "constant gap",
       "Alon"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "extremal combinatorics",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e624-alon-lower",
@@ -225,7 +265,11 @@
       "lower-bound",
       "probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "extremal combinatorics",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e624-summary",
@@ -244,6 +288,10 @@
       "open-questions",
       "bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic analysis",
+      "set theory"
+    ]
   }
 ]

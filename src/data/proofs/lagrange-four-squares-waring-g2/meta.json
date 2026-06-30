@@ -5,7 +5,7 @@
   "description": "Every natural number is a sum of at most 4 perfect squares (Lagrange 1770), and 7 is not a sum of 3 squares — hence g(2) = 4. Includes the general exclusion theorem (4^a(8b+7) is never a sum of 3 squares), computable classification, and infinitely many numbers requiring exactly 4 squares.",
   "meta": {
     "author": "Lagrange (1770), Legendre (1798)",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LagrangeFourSquaresWaringG2.lean",
     "tags": [
       "number-theory",
@@ -15,12 +15,12 @@
       "combinatorics",
       "modular-arithmetic"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 442,
     "theoremCount": 69,
-    "assumptions": "None. All 69 theorems proved. Upper bound uses Mathlib's Nat.sq_add_sq (Lagrange); lower bound is self-contained via mod 8 analysis.",
+    "assumptions": "Relies on Lean.ofReduceBool: 40 named theorems are discharged by native_decide (the computable classification numSq_0..numSq_31, the excluded_*/not_excluded_* family, all_at_most_four_100, first_needing_four, excluded_matches_four_100, count_*sq_50, needingFour_list_50, and max_four_200), which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom rather than producing a kernel-checked proof term. The mathematical upper bound uses Mathlib's Nat.sq_add_sq (Lagrange); the lower bound is self-contained via mod 8 analysis. (leanFile.axiomCount remains 0 since there are no literal axiom declarations.)",
     "mathlibDependencies": [
       {
         "theorem": "Nat.sq_add_sq",
@@ -133,11 +133,11 @@
       "title": "Summary",
       "startLine": 413,
       "endLine": 442,
-      "summary": "Tabulated recap of all proved results (0 axioms, 0 sorries) and key insights: g(2) = 4 is tight, mod-8 lower bound, descent principle, excluded-form characterization, and G(2) = g(2) = 4."
+      "summary": "Tabulated recap of all proved results (0 sorries; native_decide classification/batch-verification results carry the Lean.ofReduceBool axiom) and key insights: g(2) = 4 is tight, mod-8 lower bound, descent principle, excluded-form characterization, and G(2) = g(2) = 4."
     }
   ],
   "conclusion": {
-    "summary": "Waring's problem for squares is completely resolved: $g(2) = 4$. Upper bound from Mathlib (Lagrange 1770), lower bound self-contained via mod 8 analysis (Legendre 1798). 69 theorems, 0 sorries, 0 axioms.",
+    "summary": "Waring's problem for squares is completely resolved: $g(2) = 4$. Upper bound from Mathlib (Lagrange 1770), lower bound self-contained via mod 8 analysis (Legendre 1798). 69 theorems, 0 sorries; the computable classification and batch-verification results are discharged by native_decide (Lean.ofReduceBool axiom).",
     "implications": "The result is fully formal: both the classical Lagrange upper bound and Legendre's characterization of 3-square-free numbers are proved. The computable `numSquaresNeeded` function and batch verification provide computational evidence alongside the mathematical proofs.",
     "openQuestions": [
       "What is $g(k)$ for $k \\geq 3$? (Waring: $g(3) = 9$, $g(4) = 19$, all known)",
@@ -217,6 +217,15 @@
         "sorries": 0,
         "theoremCount": 1,
         "definitionCount": 1
+      },
+      {
+        "path": "Proofs/LagrangeFourSquaresWaringG2OQ01General.lean",
+        "description": "Waring's Problem OQ-01, parametric general-k lower bound: a single statement waring_lower_general subsuming the five fixed-k instances above. For every k ≥ 1 the witness n_k = ⌊(3/2)^k⌋·2^k − 1 is not a sum of 2^k + ⌊(3/2)^k⌋ − 3 perfect k-th powers, hence g(k) ≥ 2^k + ⌊(3/2)^k⌋ − 2 (OEIS A002804). Defines the parametric IsSumOfKthPowers; the uniform proof rests on the fact that the only k-th powers ≤ n_k are 0, 1, 2^k (since n_k < 3^k), collapsing every representation to a 2-equation linear system whose ℕ-infeasibility is closed by a deterministic linear_combination certificate for the product witness (M−1)(Q−1−c₂), then linarith. Mathlib-only, sorry-free, axiom-free, no native_decide.",
+        "lineCount": 208,
+        "axiomCount": 0,
+        "sorries": 0,
+        "theoremCount": 1,
+        "definitionCount": 1
       }
     ]
   },
@@ -224,7 +233,42 @@
     {
       "targetId": "lagrange-four-squares",
       "relationship": "extends",
-      "description": "Extends the Lagrange four-square theorem to the full Waring problem: g(2) = 4"
+      "description": "Extends the Lagrange four-square theorem to the full Waring problem: g(2) = 4. That entry supplies the upper bound $g(2) \\le 4$ (every $n$ is a sum of four squares, $\\texttt{Nat.sum\\_four\\_squares}$); this entry adds the matching lower bound $g(2) \\ge 4$ and the asymptotic statement $G(2) = 4$."
+    },
+    {
+      "targetId": "lagrange-four-squares-oq-04",
+      "relationship": "complementary",
+      "description": "Legendre–Gauss three-square theorem (necessity direction): $4^a(8b+7)$ is never a sum of three squares. This is exactly the obstruction that forces $g(2) \\ge 4$ here — the $\\texttt{excluded\\_form\\_needs\\_four}$ family in this entry is the same arithmetic content. The companion entry isolates and studies that characterization on its own."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "The two-square analogue: a prime $p$ is a sum of two squares iff $p = 2$ or $p \\equiv 1 \\pmod 4$. Both results classify which integers are representable by a fixed number of squares via congruence obstructions — mod 4 for two squares, mod 8 for three. Together they trace the descending chain $r_2, r_3, r_4$ that culminates in Lagrange's unconditional four-square theorem."
+    },
+    {
+      "targetId": "four-square-distribution",
+      "relationship": "related",
+      "description": "Where this entry asks how *many* squares are needed, the distribution entry asks how many *ways* $n = a^2+b^2+c^2+d^2$ can be written ($r_4(n)$) and how those representations split across ordering types. Complementary existence-vs-counting views of the same four-square representation problem."
+    },
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "related",
+      "description": "Jacobi's exact four-square formula $r_4(n) = 8\\sum_{d \\mid n,\\, 4 \\nmid d} d$. This quantifies Lagrange's qualitative theorem: since the divisor sum is always positive, $r_4(n) > 0$ for every $n$ — an alternative, formula-driven route to the upper bound $g(2) \\le 4$ established here."
+    },
+    {
+      "targetId": "lagrange-four-squares-oq-01",
+      "relationship": "related",
+      "description": "Computational complexity of *finding* a four-square representation, complementing this entry's computable $\\texttt{numSquaresNeeded}$ classifier. Knowing $g(2) = 4$ guarantees a representation exists; that entry studies how efficiently one can be produced."
+    },
+    {
+      "targetId": "lagrange-four-squares-oq-02",
+      "relationship": "related",
+      "description": "Classifies how the representations $n = a^2+b^2+c^2+d^2$ distribute among orderings (trivial, all-equal, three-equal, etc.). A finer structural study of the four-square representations whose mere existence is the upper bound proved here."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "The lower bound rests on the set of quadratic residues mod 8 ($\\{0,1,4\\}$) and mod 4 ($\\{0,1\\}$). Quadratic reciprocity is the deep theory governing quadratic residues across all moduli; the elementary mod-8 census used here is the simplest instance of that residue analysis underpinning representation by quadratic forms."
     }
   ],
   "mainTheorems": [

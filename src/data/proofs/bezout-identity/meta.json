@@ -7,7 +7,7 @@
     "author": "Bezout (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity",
     "date": "~1770",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "algorithms",
@@ -16,7 +16,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/BezoutIdentity.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -72,7 +72,7 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 60,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 237,
     "relatedProblems": [
       {
@@ -88,7 +88,7 @@
         "relationship": "Further extensions"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Depends on Lean.ofReduceBool. Of the advertised originalContribution 'Six worked examples verified with native_decide and norm_num', three concrete gcd examples are discharged solely by native_decide (Nat.gcd 12 8 = 4, Nat.gcd 35 15 = 5, Nat.gcd 17 5 = 1, lines 196-202), which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom rather than producing an axiom-free kernel proof. The symbolic Bézout deliverables are axiom-free Mathlib wrappers. No literal axiom declarations and 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
     "definitionCount": 0

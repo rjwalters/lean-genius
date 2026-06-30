@@ -1,8 +1,8 @@
 {
   "slug": "fodor-pressing-down-oq-04",
   "title": "Solovay splitting: every stationary subset of a regular uncountable κ admits a partition into κ pairwise-disjoint stationary subsets",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -30,12 +30,12 @@
     "goal": "Reach a build-verified Lean 4 proof of Solovay splitting in the FodorPressingDown.lean framework. Decompose into three milestones: limit-reduction lemma (S2-α, DONE), binary splitting (S2-β/S3), full κ-splitting (S2-γ/S4+)."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-06-12T00:00:00Z",
     "iteration": 11,
     "focus": "S2-β-γ ACT (researcher-2, 2026-06-12): binary-split packaging shipped in new §Part X (+73 LOC, 654→727; 0 sorries, 0 axioms; Docker 3062 jobs CLEAN). Two reducers from S3b §4.4: (1) `stationary_splits_of_fiber_compl` — a stationary fiber {α ∈ S | P α} plus a stationary complement {α ∈ S | ¬ P α} yield two disjoint stationary subsets of S (the canonical consumer of a fodor_anti_constant two-conjunct output); (2) `stationary_splits_of_two_fibers` — two stationary fibers of one f at distinct values c₁ ≠ c₂ yield two disjoint stationary subsets (the two-Fodor route packaging). Both proved from Set.disjoint_left / inter_subset_left / mem_preimage / mem_singleton_iff. Scope honesty: these PACKAGE a split once two complementary/distinct-value stationary pieces exist; they do NOT produce them. The production step (fodor_anti_constant, index-of-first-disagreement) remains open and was under-specified in the S3b design (h_pair_distinct carried a True placeholder). Current FodorPressingDown.lean counts (post oq-01 S4 trim #22948, which moved the club/stationary infra to Proofs.Club.Basic): 653 LOC, 14 theorems, 1 noncomputable def (cofHead), 0 sorries, 0 axioms — §Part X intact. The 727/22/4 figures in the §Part X delta above describe the file at the moment Part X landed, before the trim.",
     "blockers": [],
-    "nextAction": "PREP first, then ACT. Before attempting fodor_anti_constant, pin down the correct h_pair_distinct hypothesis: the canonical Solovay choice fixes, per limit α, an increasing cofinal fundamental sequence, and uses that two distinct limits' sequences diverge after their first common term (index-of-first-disagreement). The S3b §4.3 placeholder (True /- additional structural hypothesis -/) is not provable as written. Candidate route: build a second-term regressive cofSecond (Classical.choose at index 1, needs 1 < α.cof.ord via the cofHead_lt aleph0_le_cof bridge) and cofHead_lt_cofSecond strict ordering, then feed a co-stationary disagreement set to stationary_splits_of_fiber_compl (shipped this session). All bearers pin-verified at lake SHA 2df2f0150c (unchanged).",
+    "nextAction": "S2-β-δ PREP (researcher-1, 2026-06-14) resolved the cofSecond bearer uncertainty: IsFundamentalSequence.strict_mono EXISTS at the pin (Mathlib/SetTheory/Cardinal/Cofinality.lean) and applies between the 0-th and 1-st terms of the same chosen fundamental sequence, so cofSecond + one_lt_cof_ord + cofSecond_lt + cofHead_lt_cofSecond are all provable at the pin (ready-to-build code, ~20 LOC, in sessions/2026-06-14-s2b-delta-prep-cofsecond-bearer-confirm.md §3). The 1 < alpha.cof.ord gate is a one-token edit of the existing cofHead_lt 0 < alpha.cof.ord derivation. STILL BLOCKED: (1) Docker verification blackout — shipping unverified set-theory Lean is premature; (2) cofSecond is necessary-but-not-sufficient — the binary split still needs the index-of-first-disagreement counting argument showing a co-stationary complement is stationary (two regressive functions each constant on a stationary subset do NOT give two disjoint stationary pieces). FIRST DOCKER-UP MOVE: ship the §3 4-tuple as a verified Part IX extension (independently useful, low-risk, unblocks any future two-index design); defer fodor_anti_constant / stationary_splits_binary until the counting argument is pinned down or an upstream Mathlib Solovay-splitting bearer lands. All bearers pin-verified at lake SHA 2df2f0150c (unchanged).",
     "attemptCounts": {
       "total": 10,
       "currentApproach": 1,
@@ -92,8 +92,8 @@
     "solovay-splitting"
   ],
   "relatedProofs": [
-    "fodor-pressing-down",
-    "cantor-diagonalization"
+    "cantor-diagonalization",
+    "fodor-pressing-down"
   ],
   "references": {
     "papers": [
@@ -114,7 +114,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.231Z",
-  "lastUpdate": "2026-06-13T00:00:00Z",
+  "lastUpdate": "2026-06-14T19:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

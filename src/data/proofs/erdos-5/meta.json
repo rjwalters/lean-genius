@@ -49,68 +49,124 @@
   },
   "sections": [
     {
-      "id": "definitions",
+      "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 46,
       "endLine": 59,
-      "summary": "nthPrime via Nat.nth, primeGap = p_{n+1} - p_n, normalizedGap = gap/log(n)",
-      "mathContext": "Mathematical content: nthPrime via Nat.nth, primeGap = p_{n+1} - p_n, normalizedGap = gap/log(n)"
+      "summary": "nthPrime, primeGap, normalizedGap",
+      "mathContext": "Mathematical content: nthPrime, primeGap, normalizedGap"
     },
     {
-      "id": "limit-points",
+      "id": "limit-points-set",
       "title": "Part II: The Set of Limit Points",
       "startLine": 60,
       "endLine": 73,
-      "summary": "IsLimitPoint via subsequential convergence, limitPointSet, InfinityIsLimitPoint",
-      "mathContext": "Mathematical content: IsLimitPoint via subsequential convergence, limitPointSet, InfinityIsLimitPoint"
+      "summary": "IsLimitPoint, limitPointSet, InfinityIsLimitPoint",
+      "mathContext": "Mathematical content: IsLimitPoint, limitPointSet, InfinityIsLimitPoint"
     },
     {
-      "id": "conjecture",
+      "id": "main-conjecture",
       "title": "Part III: The Main Conjecture",
       "startLine": 74,
       "endLine": 82,
-      "summary": "erdos_5: every C ≥ 0 is a limit point ∧ ∞ is a limit point",
-      "mathContext": "erdos_5: every C $\\geq$ 0 is a limit point ∧ ∞ is a limit point"
+      "summary": "erdos_5 (Erdős Problem #5 statement)",
+      "mathContext": "Mathematical content: erdos_5 (Erdős Problem #5 statement)"
     },
     {
       "id": "known-results",
-      "title": "Part IV: Known Results (Axioms)",
+      "title": "Part IV: Known Results",
       "startLine": 83,
-      "endLine": 105,
-      "summary": "Westzynthius (∞ ∈ S), Erdős-Ricci (positive measure, noted), Merikoski (bounded gaps in S)",
-      "mathContext": "Bound: Westzynthius (∞ ∈ S), Erdős-Ricci (positive measure, noted), Merikoski (bounded gaps in S)"
+      "endLine": 100,
+      "summary": "westzynthius_large_gaps (axiom): prime gaps can be arbitrarily large",
+      "mathContext": "Mathematical content: westzynthius_large_gaps (axiom): prime gaps can be arbitrarily large"
     },
     {
       "id": "basic-properties",
       "title": "Part V: Basic Properties",
-      "startLine": 106,
-      "endLine": 166,
-      "summary": "nthPrime values, primeGap positivity, strict monotonicity, growth bounds",
-      "mathContext": "Bound: nthPrime values, primeGap positivity, strict monotonicity, growth bounds"
+      "startLine": 101,
+      "endLine": 161,
+      "summary": "nthPrime_zero/one/two, primeGap_pos/zero/one, nthPrime_prime, nthPrime_ge_two, nthPrime_strictMono, nthPrime_ge",
+      "mathContext": "Mathematical content: nthPrime_zero/one/two, primeGap_pos/zero/one, nthPrime_prime, nthPrime_ge_two, nthPrime_strictMono, nthPrime_ge"
     },
     {
       "id": "gap-distribution",
       "title": "Part VI: Gap Distribution",
-      "startLine": 167,
-      "endLine": 177,
-      "summary": "averageGap, Cramér's conjecture definition",
-      "mathContext": "Formal definition: averageGap, Cramér's conjecture definition"
+      "startLine": 162,
+      "endLine": 172,
+      "summary": "averageGap, cramer_conjecture",
+      "mathContext": "Mathematical content: averageGap, cramer_conjecture"
     },
     {
       "id": "connections",
       "title": "Part VII: Connections",
-      "startLine": 178,
-      "endLine": 340,
-      "summary": "strictly_increasing_from_frequently, twin_prime_implies_zero_limit, zhang_implies_zero_limit, GPY derived from Zhang",
-      "mathContext": "Mathematical content: strictly_increasing_from_frequently, twin_prime_implies_zero_limit, zhang_implies_zero_limit, GPY derived from Zhang"
+      "startLine": 173,
+      "endLine": 337,
+      "summary": "strictly_increasing_from_frequently, twin_prime_implies_zero_limit, zhang_bounded_gaps (axiom), zhang_implies_zero_limit, goldston_pintz_yildirim_small_gaps",
+      "mathContext": "Mathematical content: strictly_increasing_from_frequently, twin_prime_implies_zero_limit, zhang_bounded_gaps (axiom), zhang_implies_zero_limit, goldston_pintz_yildirim_small_gaps"
     },
     {
-      "id": "structural",
-      "title": "Part VIII: Structural Results",
-      "startLine": 341,
-      "endLine": 380,
-      "summary": "westzynthius_implies_frequently_large, limitPointSet_nonempty, limitPointSet_unbounded, erdos5_from_full, erdos5_known_partial",
-      "mathContext": "Bound: westzynthius_implies_frequently_large, limitPointSet_nonempty, limitPointSet_unbounded, erdos5_from_full, erdos5_known_partial"
+      "id": "structural-properties",
+      "title": "Part VIII: Structural Properties of S",
+      "startLine": 338,
+      "endLine": 396,
+      "summary": "normalizedGap_nonneg, westzynthius_implies_frequently_large, normalizedGap_pos, limitPoint_nonneg, limitPointSet_subset_nonneg, zero_mem_limitPointSet, limitPointSet_nonempty",
+      "mathContext": "Mathematical content: normalizedGap_nonneg, westzynthius_implies_frequently_large, normalizedGap_pos, limitPoint_nonneg, limitPointSet_subset_nonneg, zero_mem_limitPointSet, limitPointSet_nonempty"
+    },
+    {
+      "id": "large-limit-points",
+      "title": "Part IX: Hildebrand-Maier and Large Limit Points",
+      "startLine": 397,
+      "endLine": 414,
+      "summary": "hildebrand_maier_large_limit_points (axiom), limitPointSet_unbounded_above",
+      "mathContext": "Mathematical content: hildebrand_maier_large_limit_points (axiom), limitPointSet_unbounded_above"
+    },
+    {
+      "id": "closedness",
+      "title": "Part X: Closedness of S",
+      "startLine": 415,
+      "endLine": 487,
+      "summary": "limitPointSet_isClosed: S is a closed subset of ℝ",
+      "mathContext": "Mathematical content: limitPointSet_isClosed: S is a closed subset of ℝ"
+    },
+    {
+      "id": "set-equality",
+      "title": "Part XI: The Conjecture as Set Equality",
+      "startLine": 488,
+      "endLine": 519,
+      "summary": "erdos_5_implies_set_eq, set_eq_implies_erdos_5, erdos_5_iff, known_properties_of_S",
+      "mathContext": "Mathematical content: erdos_5_implies_set_eq, set_eq_implies_erdos_5, erdos_5_iff, known_properties_of_S"
+    },
+    {
+      "id": "reduction-dense",
+      "title": "Part XII: Reduction to Dense Values",
+      "startLine": 520,
+      "endLine": 571,
+      "summary": "isLimitPoint_of_frequently_near, erdos_5_from_dense_values",
+      "mathContext": "Mathematical content: isLimitPoint_of_frequently_near, erdos_5_from_dense_values"
+    },
+    {
+      "id": "forward-density",
+      "title": "Part XIII: Forward Density Direction",
+      "startLine": 572,
+      "endLine": 614,
+      "summary": "frequently_near_of_isLimitPoint, erdos_5_iff_dense_at_every_point",
+      "mathContext": "Mathematical content: frequently_near_of_isLimitPoint, erdos_5_iff_dense_at_every_point"
+    },
+    {
+      "id": "unconditional-oscillation",
+      "title": "Part XIV: Unconditional Oscillation",
+      "startLine": 615,
+      "endLine": 656,
+      "summary": "frequently_normalizedGap_lt, frequently_normalizedGap_gt",
+      "mathContext": "Mathematical content: frequently_normalizedGap_lt, frequently_normalizedGap_gt"
+    },
+    {
+      "id": "liminf-limsup",
+      "title": "Part XV: Liminf / Limsup Corollaries",
+      "startLine": 657,
+      "endLine": 707,
+      "summary": "normalizedGap_oscillates, not_eventually_normalizedGap_le, not_eventually_le_normalizedGap",
+      "mathContext": "Mathematical content: normalizedGap_oscillates, not_eventually_normalizedGap_le, not_eventually_le_normalizedGap"
     }
   ],
   "conclusion": {

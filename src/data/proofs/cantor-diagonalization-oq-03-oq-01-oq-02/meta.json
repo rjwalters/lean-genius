@@ -62,38 +62,45 @@
   "sections": [
     {
       "id": "section-eval-framework",
-      "title": "Section I: Evaluation Structure Framework",
-      "startLine": 59,
-      "endLine": 74,
-      "summary": "Defines EvalStructure (Ob, Val, eval triple), IsPointSurjective (universal representation), and proves lawvere_fpt: in a point-surjective structure, every endomorphism has a fixed point (the abstract diagonal argument)."
+      "title": "Module Header and Evaluation Structure Framework",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Module docstring framing Rice's theorem as a Lawvere fixed-point instance, namespace setup, and the SECTION I framework: defines EvalStructure (Ob, Val, eval triple), IsPointSurjective (universal representation), and proves lawvere_fpt: in a point-surjective structure, every endomorphism has a fixed point (the abstract diagonal argument)."
     },
     {
       "id": "section-abstract-rice",
       "title": "Section II: Abstract Rice Theorem",
-      "startLine": 91,
-      "endLine": 120,
+      "startLine": 76,
+      "endLine": 121,
       "summary": "abstract_rice: no Bool evaluation is point-surjective (Bool.not has no fixed point). rice_induced_obstruction: even a universal V-computation cannot be Bool-universal. rice_undecidable_witness: for any eval, an undecidable Boolean function exists."
     },
     {
       "id": "section-semantic-flip",
       "title": "Section III: Semantic Properties and Flip Programs",
-      "startLine": 130,
-      "endLine": 164,
+      "startLine": 122,
+      "endLine": 165,
       "summary": "SemanticProperty (P depends only on behavior) and HasFlipProgram (transformer that flips P). semantic_rice_flip: semantics-preserving flip + semantic property → direct contradiction, no Lawvere needed."
     },
     {
       "id": "section-halting",
       "title": "Section IV: Halting Problem as a Rice Instance",
-      "startLine": 173,
-      "endLine": 188,
+      "startLine": 166,
+      "endLine": 189,
       "summary": "HaltingModel (Prog, halts, evaluate, universal). no_halting_model: a decidable universal halting predicate is a Bool point-surjective structure — forbidden by abstract_rice. Turing's undecidability in one line."
     },
     {
       "id": "section-classical-rice",
       "title": "Section V: Classical Rice Theorem via Kleene Recursion",
-      "startLine": 210,
-      "endLine": 262,
+      "startLine": 190,
+      "endLine": 263,
       "summary": "ClassicalRiceModel axiomatizes Kleene's recursion theorem. classical_rice_abstract proves: semantic + non-trivial P leads to contradiction via the flipper code transformer and Kleene's semantic fixed point."
+    },
+    {
+      "id": "section-summary-checks",
+      "title": "Section VI: Summary Checks",
+      "startLine": 264,
+      "endLine": 275,
+      "summary": "Closing #check commands confirming the type signatures of the six main results (abstract_rice, rice_induced_obstruction, rice_undecidable_witness, semantic_rice_flip, no_halting_model, classical_rice_abstract) and the namespace end."
     }
   ],
   "crossReferences": [

@@ -64,10 +64,18 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, Imports, and Axiomatization Note",
+      "summary": "Module docstring stating the smooth Gauss-Bonnet theorem ∫_M K dA = 2π·χ(M) and listing the five consequence themes proved. Because Mathlib v4.26.0 has no Riemannian metrics, Gaussian curvature, or manifold integration, the core geometric structures are axiomatized (encoded as structure fields) and substantive consequences are proved on top. Imports Mathlib, opens Real, and opens the SmoothGaussBonnet namespace under noncomputable section.",
+      "startLine": 1,
+      "endLine": 35,
+      "mathContext": "The Gauss-Bonnet theorem links the total Gaussian curvature of a compact orientable Riemannian 2-manifold without boundary to its Euler characteristic: ∫_M K dA = 2π·χ(M). The nine assumption-carrying structure fields (counted in axiomCount=9) stand in for Mathlib-absent differential geometry; every downstream result is a 0-sorry theorem deriving topological/geometric consequences from these axiomatized relations."
+    },
+    {
       "id": "riemannian-surface",
       "title": "Compact Riemannian Surface",
       "summary": "Axiomatic structure `CompactRiemannianSurface` encoding $\\chi(M)$, total curvature $\\int_M K\\,dA$, area $\\int_M dA > 0$, and the Gauss-Bonnet axiom $\\int_M K\\,dA = 2\\pi\\chi(M)$. This minimal axiomatization substitutes for Mathlib's missing Riemannian geometry.",
-      "startLine": 45,
+      "startLine": 36,
       "endLine": 57,
       "mathContext": "Axiomatic structure `CompactRiemannianSurface` encoding $\\chi(M)$, total curvature $\\int_M K\\,dA$, area $\\int_M dA > 0$, and the Gauss-Bonnet axiom $\\int_M K\\,dA = 2\\pi\\chi(M)$. This minimal axiomatization substitutes for Mathlib's missing Riemannian geometry."
     },
@@ -124,8 +132,16 @@
       "title": "Pointwise Curvature Constraints",
       "summary": "Restatement of genus determination in pointwise curvature language: $K > 0$ everywhere $\\Rightarrow$ sphere, $K < 0$ everywhere $\\Rightarrow$ genus $\\geq 2$, $K = 0$ everywhere $\\Rightarrow$ torus. Plus the Bonnet-type area bound $\\text{Area} \\leq 4\\pi/K_{\\min}$ for positively curved spheres.",
       "startLine": 236,
-      "endLine": 278,
+      "endLine": 255,
       "mathContext": "Restatement of genus determination in pointwise curvature language: $K > 0$ everywhere $\\Rightarrow$ sphere, $K < 0$ everywhere $\\Rightarrow$ genus $\\geq 2$, $K = 0$ everywhere $\\Rightarrow$ torus. Plus the Bonnet-type area bound $\\text{Area} \\leq 4\\pi/K_{\\min}$ for positively curved spheres."
+    },
+    {
+      "id": "cohn-vossen-area-bound",
+      "title": "Curvature and Area Bound (Cohn-Vossen)",
+      "summary": "Part IX: the Cohn-Vossen-style area bound relating total curvature to surface area for positively curved compact surfaces, derived from the Gauss-Bonnet identity and the average-curvature formula.",
+      "startLine": 256,
+      "endLine": 278,
+      "mathContext": "Cohn-Vossen (1935): for a complete surface the integral of Gaussian curvature is bounded by 2π·χ. In the compact closed case treated here it is an equality (Gauss-Bonnet), so a positive curvature lower bound forces an upper bound on area — the quantitative form of \"positively curved closed surfaces are spheres of bounded size\"."
     },
     {
       "id": "discrete-connection",
@@ -164,39 +180,39 @@
       "title": "Gauss-Bonnet with Boundary",
       "summary": "Extends to compact surfaces with boundary via the generalized formula $\\int_M K\\,dA + \\int_{\\partial M} \\kappa_g\\,ds = 2\\pi\\chi(M)$. Defines `CompactSurfaceWithBoundary`, geodesic polygons, and constant-curvature polygons. Proves the interior angle sum formula $\\sum\\theta_{\\text{int}} = (n-2)\\pi + K \\cdot \\text{Area}$.",
       "startLine": 434,
-      "endLine": 521,
+      "endLine": 511,
       "mathContext": "Extends to compact surfaces with boundary via the generalized formula $\\int_M K\\,dA + \\int_{\\partial M} \\kappa_g\\,ds = 2\\pi\\chi(M)$. Defines `CompactSurfaceWithBoundary`, geodesic polygons, and constant-curvature polygons. Proves the interior angle sum formula $\\sum\\theta_{\\text{int}} = (n-2)\\pi + K \\cdot \\text{Area}$."
     },
     {
       "id": "girard-formula",
       "title": "Girard's Formula (Spherical Triangles)",
       "summary": "Formalizes Girard's 1629 formula: on a surface of constant curvature $K$, a geodesic triangle has $\\text{Area} = (\\alpha + \\beta + \\gamma - \\pi) / K$. Proves the complete trichotomy: $K > 0$ gives angular excess, $K = 0$ gives angle sum $\\pi$, $K < 0$ gives angular deficit.",
-      "startLine": 522,
-      "endLine": 583,
+      "startLine": 512,
+      "endLine": 585,
       "mathContext": "Girard: $\\text{Area} = (\\alpha + \\beta + \\gamma - \\pi)/K$. Sphere ($K>0$): angle sum $> \\pi$. Flat ($K=0$): $= \\pi$. Hyperbolic ($K<0$): $< \\pi$."
     },
     {
       "id": "hyperbolic-triangles",
       "title": "Hyperbolic Triangle Area",
       "summary": "On the hyperbolic plane ($K = -1$): $\\text{Area} = \\pi - (\\alpha + \\beta + \\gamma)$, bounded above by $\\pi$ (ideal triangle limit). Proves the area bound and the ideal triangle limit formula.",
-      "startLine": 584,
-      "endLine": 611,
+      "startLine": 586,
+      "endLine": 612,
       "mathContext": "On the hyperbolic plane ($K = -1$): $\\text{Area} = \\$\\pi$ - (\\$\\alpha$ + \\$\\beta$ + \\$\\gamma$)$, bounded above by $\\$\\pi$$ (ideal triangle limit). Proves the area bound and the ideal triangle limit formula."
     },
     {
       "id": "poincare-hopf",
       "title": "Poincaré-Hopf Index Theorem",
       "summary": "Axiomatizes the Poincaré-Hopf theorem ($\\sum \\text{index}(V, p_i) = \\chi(M)$) and derives the **hairy ball theorem**: no nowhere-vanishing vector field on $S^2$ ($\\chi = 2 \\neq 0$). Complete classification: only $\\chi = 0$ surfaces (torus) support non-vanishing fields.",
-      "startLine": 612,
-      "endLine": 681,
+      "startLine": 613,
+      "endLine": 710,
       "mathContext": "Poincaré-Hopf: $\\sum_i \\text{ind}(V, p_i) = \\chi(M)$. Hairy ball: $\\chi(S^2) = 2 \\neq 0$, so every vector field on $S^2$ vanishes somewhere."
     },
     {
       "id": "morse-theory",
       "title": "Morse Theory Connection",
       "summary": "Formalizes the Morse relation $\\chi(M) = \\#\\text{min} - \\#\\text{saddles} + \\#\\text{max}$ and derives critical point lower bounds: sphere needs $\\geq 2$ extrema, torus needs $\\geq 2$ saddles, genus-$g$ satisfies $\\#\\text{min} + \\#\\text{max} - \\#\\text{saddles} = 2 - 2g$.",
-      "startLine": 682,
-      "endLine": 786,
+      "startLine": 711,
+      "endLine": 810,
       "mathContext": "Weak Morse: $\\chi(M) = m_0 - m_1 + m_2$ where $m_i$ counts index-$i$ critical points. Sphere: $m_0 + m_2 \\geq 2$."
     }
   ],
@@ -239,10 +255,10 @@
       "Real"
     ],
     "namespace": "SmoothGaussBonnet",
-    "lineCount": 786,
+    "lineCount": 810,
     "axiomCount": 0,
-    "theoremCount": 60,
-    "definitionCount": 13,
+    "theoremCount": 61,
+    "definitionCount": 15,
     "path": "Proofs/EulerPolyhedralOQ02OQ01.lean",
     "sorries": 0
   },

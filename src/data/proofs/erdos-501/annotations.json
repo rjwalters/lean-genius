@@ -26,8 +26,8 @@
     "id": "ann-501-setfamily",
     "proofId": "erdos-501",
     "range": {
-      "startLine": 38,
-      "endLine": 39
+      "startLine": 40,
+      "endLine": 40
     },
     "type": "definition",
     "title": "Set Family",
@@ -223,8 +223,8 @@
     "id": "ann-501-ch",
     "proofId": "erdos-501",
     "range": {
-      "startLine": 92,
-      "endLine": 92
+      "startLine": 133,
+      "endLine": 136
     },
     "type": "concept",
     "title": "Continuum Hypothesis",
@@ -246,8 +246,8 @@
     "id": "ann-501-hechler",
     "proofId": "erdos-501",
     "range": {
-      "startLine": 94,
-      "endLine": 96
+      "startLine": 138,
+      "endLine": 140
     },
     "type": "concept",
     "title": "Hechler's Theorem (1972)",
@@ -266,33 +266,11 @@
     ]
   },
   {
-    "id": "ann-501-gladysz",
-    "proofId": "erdos-501",
-    "range": {
-      "startLine": 101,
-      "endLine": 103
-    },
-    "type": "concept",
-    "title": "Gladysz's Theorem (1962)",
-    "content": "For closed measure families, size-2 independent sets always exist. Closedness provides the topological structure the general case lacks.",
-    "mathContext": "Gladysz: If $A_x$ is closed, $\\mu(A_x) < 1$ $\\forall x$, then $\\exists x \\neq y$ with $x \\notin A_y \\land y \\notin A_x$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "closed sets in ℝ",
-      "topological regularity",
-      "Baire property"
-    ],
-    "prerequisites": [
-      "ClosedMeasureFamily",
-      "IsIndependentOfSize"
-    ]
-  },
-  {
     "id": "ann-501-nps",
     "proofId": "erdos-501",
     "range": {
-      "startLine": 107,
-      "endLine": 109
+      "startLine": 144,
+      "endLine": 148
     },
     "type": "concept",
     "title": "NPS Theorem (1987)",
@@ -310,11 +288,33 @@
     ]
   },
   {
+    "id": "ann-501-gladysz",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 150,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Gladysz's Theorem (1962)",
+    "content": "For closed measure families, size-2 independent sets always exist. Closedness provides the topological structure the general case lacks.",
+    "mathContext": "Gladysz: If $A_x$ is closed, $\\mu(A_x) < 1$ $\\forall x$, then $\\exists x \\neq y$ with $x \\notin A_y \\land y \\notin A_x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "closed sets in ℝ",
+      "topological regularity",
+      "Baire property"
+    ],
+    "prerequisites": [
+      "ClosedMeasureFamily",
+      "IsIndependentOfSize"
+    ]
+  },
+  {
     "id": "ann-501-q1",
     "proofId": "erdos-501",
     "range": {
-      "startLine": 121,
-      "endLine": 122
+      "startLine": 172,
+      "endLine": 181
     },
     "type": "definition",
     "title": "Question 1: Infinite Independence",
@@ -335,8 +335,8 @@
     "id": "ann-501-zfc",
     "proofId": "erdos-501",
     "range": {
-      "startLine": 132,
-      "endLine": 139
+      "startLine": 190,
+      "endLine": 198
     },
     "type": "concept",
     "title": "ZFC Independence of Question 1",
@@ -358,8 +358,8 @@
     "id": "ann-501-hereditary",
     "proofId": "erdos-501",
     "range": {
-      "startLine": 144,
-      "endLine": 147
+      "startLine": 202,
+      "endLine": 206
     },
     "type": "concept",
     "title": "Hereditary Property",
@@ -380,8 +380,8 @@
     "id": "ann-501-insert",
     "proofId": "erdos-501",
     "range": {
-      "startLine": 150,
-      "endLine": 161
+      "startLine": 208,
+      "endLine": 220
     },
     "type": "concept",
     "title": "Insertion Lemma",

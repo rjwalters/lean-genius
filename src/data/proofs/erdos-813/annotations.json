@@ -17,7 +17,11 @@
       "Local density",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Number R(3,3)",
+      "Clique Number",
+      "Extremal Graph Theory"
+    ]
   },
   {
     "id": "ann-e813-defs",
@@ -37,7 +41,11 @@
       "Local density",
       "SimpleGraph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple Graphs",
+      "Triangle (K₃)",
+      "Vertex Adjacency"
+    ]
   },
   {
     "id": "ann-e813-cliques",
@@ -56,7 +64,11 @@
       "Extremal function",
       "Min-max"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Subgraph",
+      "Extremal Function",
+      "Min-Max Optimization"
+    ]
   },
   {
     "id": "ann-e813-bounds",
@@ -76,7 +88,11 @@
       "Turán theory",
       "Probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Notation",
+      "Probabilistic Method",
+      "Turán-Type Bounds"
+    ]
   },
   {
     "id": "ann-e813-bucic",
@@ -95,7 +111,11 @@
       "Improved bounds",
       "Recent progress"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial Exponent Bounds",
+      "Algebraic Graph Constructions",
+      "Asymptotic Lower Bounds"
+    ]
   },
   {
     "id": "ann-e813-conjecture",
@@ -114,7 +134,11 @@
       "Exponent improvement",
       "Tight bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial Growth Rates",
+      "Upper And Lower Bounds",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e813-summary",
@@ -133,6 +157,10 @@
       "Current state",
       "Open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Hajnal Bounds",
+      "Asymptotic Growth Rate",
+      "Existential Quantifiers"
+    ]
   }
 ]

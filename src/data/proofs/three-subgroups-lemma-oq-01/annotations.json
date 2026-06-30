@@ -1,0 +1,91 @@
+[
+  {
+    "id": "ann-normal-form",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 57,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "The Normal-Subgroup Three Subgroups Lemma (commutator_le_of_rotate)",
+    "content": "The headline result: for N normal, ⁅⁅H,K⁆,L⁆ ≤ N and ⁅⁅K,L⁆,H⁆ ≤ N imply ⁅⁅L,H⁆,K⁆ ≤ N. The proof is a quotient transport. First rewrite each `_ ≤ N` as `_ ≤ (QuotientGroup.mk' N).ker` using QuotientGroup.ker_mk' (the kernel of the canonical projection is exactly N), then as `(QuotientGroup.mk' N).map _ = ⊥` using Subgroup.map_eq_bot_iff. The simp lemma Subgroup.map_commutator distributes the projection through both nested brackets, turning each hypothesis and the goal into a statement about the images ⁅⁅map f H, map f K⁆, map f L⁆ in G ⧸ N. Mathlib's bottom-case lemma Subgroup.commutator_commutator_eq_bot_of_rotate then closes the goal verbatim in the quotient group.",
+    "mathContext": "$\\lbrack\\lbrack H,K\\rbrack,L\\rbrack \\le N \\;\\wedge\\; \\lbrack\\lbrack K,L\\rbrack,H\\rbrack \\le N \\;\\Rightarrow\\; \\lbrack\\lbrack L,H\\rbrack,K\\rbrack \\le N$, for $N \\trianglelefteq G$.",
+    "prerequisites": [
+      "QuotientGroup.mk' N and QuotientGroup.ker_mk' (kernel of the projection equals N)",
+      "Subgroup.map_eq_bot_iff (X.map f = ⊥ ⟺ X ≤ f.ker) and Subgroup.map_commutator (map distributes over the bracket)",
+      "Mathlib's Subgroup.commutator_commutator_eq_bot_of_rotate (the N = ⊥ Hall–Witt case)"
+    ],
+    "relatedConcepts": [
+      "three subgroups lemma",
+      "Hall–Witt identity",
+      "quotient group transport",
+      "commutator calculus"
+    ],
+    "significance": "The classical ≤ N form of the three subgroups lemma, which Mathlib lacks. This is the version used inductively to prove ⁅γᵢ,γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₎ for the lower central series; obtaining it from the absolute case by a quotient argument is the original content of the entry."
+  },
+  {
+    "id": "ann-cyclic-symmetry",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "Full Cyclic Symmetry (commutator_le_of_rotate₂, commutator_le_of_rotate₃)",
+    "content": "The statement is invariant under the cyclic relabelling (H,K,L) ↦ (K,L,H), so the single lemma supplies all three implications among ⁅⁅H,K⁆,L⁆, ⁅⁅K,L⁆,H⁆, ⁅⁅L,H⁆,K⁆: any two lying in N force the third. commutator_le_of_rotate₂ derives ⁅⁅H,K⁆,L⁆ ≤ N from the other two, and commutator_le_of_rotate₃ derives ⁅⁅K,L⁆,H⁆ ≤ N; each is the main lemma with arguments permuted.",
+    "mathContext": "Any two of $\\lbrack\\lbrack H,K\\rbrack,L\\rbrack, \\lbrack\\lbrack K,L\\rbrack,H\\rbrack, \\lbrack\\lbrack L,H\\rbrack,K\\rbrack$ contained in $N$ force the third.",
+    "prerequisites": [
+      "commutator_le_of_rotate (the main lemma)",
+      "The cyclic invariance of the iterated-commutator triple"
+    ],
+    "relatedConcepts": [
+      "cyclic symmetry",
+      "three subgroups lemma"
+    ],
+    "significance": "Exposes the lemma's full symmetry so that it can be applied in whichever of the three orientations a downstream proof needs, without re-deriving the quotient argument."
+  },
+  {
+    "id": "ann-symmetric-notation",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 97
+    },
+    "type": "theorem",
+    "title": "Inner-Commutator-First Formulation (commutator_le_of_rotate_symm)",
+    "content": "The textbook bracket notation usually writes the iterated commutator with the inner bracket first, ⁅H,⁅K,L⁆⁆. Since the commutator of subgroups is symmetric (Subgroup.commutator_comm : ⁅A,B⁆ = ⁅B,A⁆), rewriting each commutator with commutator_comm turns the symmetric-notation statement into the main lemma: from ⁅L,⁅H,K⁆⁆ ≤ N and ⁅H,⁅K,L⁆⁆ ≤ N conclude ⁅K,⁅L,H⁆⁆ ≤ N.",
+    "mathContext": "$\\lbrack L,\\lbrack H,K\\rbrack\\rbrack \\le N \\;\\wedge\\; \\lbrack H,\\lbrack K,L\\rbrack\\rbrack \\le N \\;\\Rightarrow\\; \\lbrack K,\\lbrack L,H\\rbrack\\rbrack \\le N$.",
+    "prerequisites": [
+      "Subgroup.commutator_comm (symmetry of the bracket on subgroups)",
+      "commutator_le_of_rotate"
+    ],
+    "relatedConcepts": [
+      "bracket notation conventions",
+      "three subgroups lemma"
+    ],
+    "significance": "Matches the form of the lemma found in standard group theory texts, making the result directly usable regardless of the bracket-nesting convention a reader or downstream proof adopts."
+  },
+  {
+    "id": "ann-consistency-and-corollary",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Bottom Case and Centralizing Corollary (commutator_eq_bot_of_rotate, commutator_commutator_le_of_both)",
+    "content": "commutator_eq_bot_of_rotate specialises N = ⊥: since ≤ ⊥ collapses to = ⊥ (le_bot_iff), the normal-form lemma reproduces Mathlib's Subgroup.commutator_commutator_eq_bot_of_rotate exactly, confirming the generalization is faithful. commutator_commutator_le_of_both is the standard corollary: if H commutes with both K and L modulo the normal N (i.e. ⁅H,K⁆ ≤ N and ⁅H,L⁆ ≤ N), then H commutes with ⁅K,L⁆ modulo N. The proof forces two of the three iterated commutators into N — ⁅⁅H,K⁆,L⁆ ≤ ⁅N,L⁆ ≤ N and ⁅⁅L,H⁆,K⁆ ≤ ⁅N,K⁆ ≤ N, using Subgroup.commutator_mono and Subgroup.commutator_le_left (⁅N,·⁆ ≤ N for normal N) — and invokes the lemma to obtain the third, ⁅⁅K,L⁆,H⁆ = ⁅H,⁅K,L⁆⁆ ≤ N.",
+    "mathContext": "$N=\\bot$ recovers Mathlib's lemma; and $\\lbrack H,K\\rbrack \\le N \\wedge \\lbrack H,L\\rbrack \\le N \\Rightarrow \\lbrack H,\\lbrack K,L\\rbrack\\rbrack \\le N$.",
+    "prerequisites": [
+      "le_bot_iff for the N = ⊥ collapse",
+      "Subgroup.commutator_mono (monotonicity of the bracket) and Subgroup.commutator_le_left (⁅N,K⁆ ≤ N for normal N)",
+      "Subgroup.commutator_comm and the cyclic lemma commutator_le_of_rotate₃"
+    ],
+    "relatedConcepts": [
+      "centralizer modulo a normal subgroup",
+      "lower central series",
+      "consistency with Mathlib"
+    ],
+    "significance": "Demonstrates the generalization recovers the known result, and exhibits its typical use: a normal subgroup that absorbs two pairwise commutators also absorbs the commutator with the derived bracket — the propagation step underlying nilpotency arguments."
+  }
+]

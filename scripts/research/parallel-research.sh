@@ -35,6 +35,10 @@ LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 CLAIM_SCRIPT="$REPO_ROOT/scripts/research/claim-problem.sh"
 
+# Shared worktree reclaim helper (remove_own_worktree, guards 1-5).
+# shellcheck source=lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -353,6 +357,17 @@ signal_graceful_stop() {
     fi
 }
 
+# Reclaim each researcher-N worktree using the shared safety guards. A dirty,
+# unpushed/unbacked, locked, busy, or current-checkout worktree is preserved.
+# Idempotent and quiet when there is nothing to remove.
+reclaim_worktrees() {
+    for worktree in "$WORKTREES_DIR"/researcher-*; do
+        [[ -d "$worktree" ]] || continue
+        remove_own_worktree "$worktree"
+    done
+    git worktree prune 2>/dev/null || true
+}
+
 # Force stop all agents
 force_stop() {
     print_info "Force stopping all research agents..."
@@ -368,22 +383,20 @@ force_stop() {
 
     # Clean up stale claims
     "$CLAIM_SCRIPT" cleanup 2>/dev/null || true
+
+    # Reclaim the now-idle worktrees. The sessions are killed above, so each
+    # researcher-N worktree is idle; the shared guards preserve any that are
+    # dirty / unpushed-or-unbacked / locked / current-checkout. Previously only
+    # the explicit --cleanup path removed worktrees, leaking them on --stop.
+    reclaim_worktrees
 }
 
 # Cleanup everything
 cleanup_all() {
     force_stop
 
-    print_info "Removing researcher worktrees..."
-    for worktree in "$WORKTREES_DIR"/researcher-*; do
-        if [[ -d "$worktree" ]]; then
-            git worktree remove "$worktree" --force 2>/dev/null && \
-                print_success "Removed $worktree" || \
-                print_warning "Could not remove $worktree"
-        fi
-    done
-
-    git worktree prune 2>/dev/null || true
+    print_info "Reclaiming researcher worktrees..."
+    reclaim_worktrees
     print_success "Cleanup complete"
 }
 

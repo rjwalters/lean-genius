@@ -136,11 +136,11 @@
       "startLine": 196,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "insight",
     "title": "One Theorem, Two Proofs: algebraic_reals_countable_via_strata as a Methodological Exhibit",
     "content": "The four lines of `algebraic_reals_countable_via_strata` are not new mathematics — the theorem statement is **identical** to `algebraic_reals_countable` proved in §1. What is new is the *route*. The original (§1) is a one-line delegation to `Algebraic.countable ℚ ℝ`, treating Mathlib's general theorem as a black box. This alternative re-derives the same result from the degree stratification:\n\n```lean\ntheorem algebraic_reals_countable_via_strata :\n    Set.Countable {x : ℝ | IsAlgebraic ℚ x} := by\n  rw [algebraic_reals_eq_iUnion_degree]\n  exact Set.countable_iUnion algebraicRealsOfDegree_countable\n```\n\nThe pedagogical lesson: in formal mathematics, having *two independent proofs* of the same theorem is itself a result. It exposes the internal structure of the algebraic numbers (a countable union of countable strata indexed by degree), and it confirms that Mathlib's abstract `Algebraic.countable` is consistent with the constructive degree-by-degree count that Cantor used in 1874. Removing either proof would lose information: §1 gives the shortest road to a usable lemma; §4 gives the route a student or another formalization could re-walk from first principles.\n\nNote: `algebraic_reals_countable_via_strata` is technically redundant in the formal sense — its conclusion equals an already-proved theorem — but every formalization library values such redundant proofs for exactly this exposition-of-structure reason. Mathlib itself ships many `_via_*` lemmas for the same purpose.",
     "mathContext": "The two proofs realise the dichotomy between **set-theoretic** (\\S 1: ${\\rm Alg}(\\mathbb{R}) = \\{x \\mid \\text{IsAlgebraic } \\mathbb{Q}\\ x\\}$ is countable by Mathlib's general statement) and **combinatorial** (\\S 4: ${\\rm Alg}(\\mathbb{R}) = \\bigcup_{d \\in \\mathbb{N}} \\text{alg}_d$, a countable union of countable strata). The latter is exactly Cantor's 1874 argument unpacked: enumerate by degree, then by polynomial within each degree. Both proofs ultimately rely on the same Mathlib fact $|\\mathbb{Q}[X]| = \\aleph_0$, but \\S 4 surfaces this dependence through the degree filtration whereas \\S 1 hides it inside $\\texttt{Algebraic.countable}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "alternative-proof",
       "Set.countable_iUnion",

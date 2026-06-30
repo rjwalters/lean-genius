@@ -96,74 +96,172 @@
   ],
   "sections": [
     {
-      "id": "mathlib-rh-definition",
-      "title": "Mathlib's RiemannHypothesis Definition",
+      "id": "rh-definition",
+      "title": "Recap: RiemannHypothesis in Mathlib",
       "startLine": 38,
-      "endLine": 61,
-      "summary": "Documents that RiemannHypothesis is already in Mathlib (NumberTheory.LSeries.RiemannZeta) as: ∀ non-trivial zero s of ζ, Re(s) = 1/2."
+      "endLine": 52,
+      "summary": "Recalls Mathlib's formal RiemannHypothesis predicate (all nontrivial zeros of ζ have real part 1/2), the anchor for every conditional statement in the file.",
+      "mathContext": "Recalls Mathlib's formal RiemannHypothesis predicate (all nontrivial zeros of ζ have real part 1/2), the anchor for every conditional statement in the file."
     },
     {
-      "id": "mertens-function",
-      "title": "Mertens Function and Möbius Properties",
-      "startLine": 62,
-      "endLine": 149,
-      "summary": "Defines M(n) = Σ_{k≤n} μ(k) via ArithmeticFunction.moebius. Computes M(0) through M(30) by native_decide. Proves Möbius properties: μ(1)=1, μ(p)=-1, μ(squarefree)=±1, μ(non-squarefree)=0."
+      "id": "mertens-chebyshev-mobius",
+      "title": "Mertens Function, Chebyshev Theta, and the Fundamental Möbius Identity",
+      "startLine": 53,
+      "endLine": 140,
+      "summary": "Defines the Mertens function M(x) = Σ μ(n), the Chebyshev theta function, and proves the fundamental Möbius identity Σ_{d|n} μ(d) = [n=1] together with basic summatory properties used throughout.",
+      "mathContext": "Defines the Mertens function M(x) = Σ μ(n), the Chebyshev theta function, and proves the fundamental Möbius identity Σ_{d|n} μ(d) = [n=1] together with basic summatory properties used throughout."
     },
     {
-      "id": "main-rh-axioms",
-      "title": "Main RH Consequences (Axioms)",
-      "startLine": 150,
+      "id": "rh-consequences-statements",
+      "title": "RH Consequences: Formal Statements, Unconditional and Trivial Results",
+      "startLine": 141,
       "endLine": 203,
-      "summary": "States rh_implies_mertens_bound as an axiom. Proves trivial consequences: zeros on critical line (directly from definition), trivial zeros off critical line (real part = -2n < 0)."
+      "summary": "States the principal RH consequences as formal Lean propositions, separates the unconditionally provable facts from the RH-conditional ones, and records the trivial implications that hold regardless of RH.",
+      "mathContext": "States the principal RH consequences as formal Lean propositions, separates the unconditionally provable facts from the RH-conditional ones, and records the trivial implications that hold regardless of RH."
     },
     {
-      "id": "chebyshev-functions",
-      "title": "Chebyshev Theta and Psi Functions",
-      "startLine": 114,
-      "endLine": 230,
-      "summary": "Defines θ(n) = Σ_{p≤n prime} log p and ψ(n) = Σ_{pᵏ≤n} log p (von Mangoldt). Proves θ ≤ ψ, both computable."
+      "id": "mertens-rh-equivalence",
+      "title": "The Mertens-RH Equivalence and Chebyshev Psi / Von Mangoldt",
+      "startLine": 204,
+      "endLine": 303,
+      "summary": "Develops the Mertens-RH equivalence (RH ⟺ M(x) = O(x^{1/2+ε})), extends the Mertens computations, and introduces the Chebyshev psi function and von Mangoldt Λ, linking ψ(x) to RH.",
+      "mathContext": "Develops the Mertens-RH equivalence (RH ⟺ M(x) = O(x^{1/2+ε})), extends the Mertens computations, and introduces the Chebyshev psi function and von Mangoldt Λ, linking ψ(x) to RH."
     },
     {
-      "id": "lis-criterion",
-      "title": "Li's Criterion: RH ⟺ λₙ ≥ 0",
-      "startLine": 531,
-      "endLine": 551,
-      "summary": "States Li's criterion (1997, Bombieri-Lagarias 1999): RH iff all Li constants λₙ ≥ 0. The liConstant function is opaque since it requires the zero set of ζ(s)."
+      "id": "mathlib-zeta",
+      "title": "Part 9: Mathlib Zeta Function Theorems",
+      "startLine": 304,
+      "endLine": 429,
+      "summary": "Imports and packages the available Mathlib zeta function theorems (functional equation, special values, analytic continuation) as the analytic backbone for the conditional results.",
+      "mathContext": "Imports and packages the available Mathlib zeta function theorems (functional equation, special values, analytic continuation) as the analytic backbone for the conditional results."
+    },
+    {
+      "id": "zeta-values-xi",
+      "title": "Parts 10-11: Computational Zeta Values and the Completed Zeta (Xi) Function",
+      "startLine": 430,
+      "endLine": 511,
+      "summary": "Computes concrete zeta values and constructs the completed zeta (Xi) function, whose symmetric functional equation under s ↦ 1-s underlies the zero-symmetry arguments.",
+      "mathContext": "Computes concrete zeta values and constructs the completed zeta (Xi) function, whose symmetric functional equation under s ↦ 1-s underlies the zero-symmetry arguments."
+    },
+    {
+      "id": "li-criterion",
+      "title": "Part 12: Li's Criterion (RH ⟺ λₙ ≥ 0)",
+      "startLine": 512,
+      "endLine": 552,
+      "summary": "Formalizes Li's criterion: RH is equivalent to nonnegativity of the Li coefficients λₙ, giving a positivity reformulation of the hypothesis.",
+      "mathContext": "Formalizes Li's criterion: RH is equivalent to nonnegativity of the Li coefficients λₙ, giving a positivity reformulation of the hypothesis."
     },
     {
       "id": "zero-counting",
-      "title": "Zero Counting and Riemann-von Mangoldt Formula",
-      "startLine": 565,
-      "endLine": 603,
-      "summary": "States the Riemann-von Mangoldt formula: N(T) = (T/2π)log(T/2πe) + O(log T). Notes computational verifications: 10^13 zeros verified on critical line by Gourdon (2004)."
+      "title": "Parts 13-14: Zero Counting, the Riemann-von Mangoldt Formula, and More Zeta Values",
+      "startLine": 553,
+      "endLine": 627,
+      "summary": "States the zero-counting function N(T) and the Riemann-von Mangoldt asymptotic for the number of zeros up to height T, with additional zeta value computations.",
+      "mathContext": "States the zero-counting function N(T) and the Riemann-von Mangoldt asymptotic for the number of zeros up to height T, with additional zeta value computations."
+    },
+    {
+      "id": "summary-pathforward",
+      "title": "Summary and Path Forward (PrimeNumberTheoremAnd Project)",
+      "startLine": 628,
+      "endLine": 667,
+      "summary": "Interim summary of results so far and the path forward, pointing to the PrimeNumberTheoremAnd project as the route to discharging several analytic axioms.",
+      "mathContext": "Interim summary of results so far and the path forward, pointing to the PrimeNumberTheoremAnd project as the route to discharging several analytic axioms."
+    },
+    {
+      "id": "zero-density-selberg-clt",
+      "title": "Parts 15-16: Zero-Density Estimates and Selberg's Central Limit Theorem for Zeros",
+      "startLine": 668,
+      "endLine": 794,
+      "summary": "Records zero-density estimates bounding the number of zeros off the critical line and Selberg's central limit theorem describing the Gaussian fluctuations of log|ζ| on the critical line.",
+      "mathContext": "Records zero-density estimates bounding the number of zeros off the critical line and Selberg's central limit theorem describing the Gaussian fluctuations of log|ζ| on the critical line."
+    },
+    {
+      "id": "arithmetic-structure",
+      "title": "Parts 17-18: Structural Properties and Connections Between Equivalent Formulations",
+      "startLine": 795,
+      "endLine": 856,
+      "summary": "Establishes structural properties of the arithmetic functions involved and maps the web of connections between the equivalent RH formulations, with an updated running summary.",
+      "mathContext": "Establishes structural properties of the arithmetic functions involved and maps the web of connections between the equivalent RH formulations, with an updated running summary."
+    },
+    {
+      "id": "axiom-budget",
+      "title": "Axiom Budget and What Can Be Upgraded",
+      "startLine": 857,
+      "endLine": 880,
+      "summary": "Itemizes the axiom budget (which analytic inputs are assumed) and identifies which axioms can plausibly be upgraded to theorems as Mathlib's analytic number theory matures.",
+      "mathContext": "Itemizes the axiom budget (which analytic inputs are assumed) and identifies which axioms can plausibly be upgraded to theorems as Mathlib's analytic number theory matures."
+    },
+    {
+      "id": "extended-mertens-divisor",
+      "title": "Parts 19-21: Extended Mertens, Divisor Sum, and Von Mangoldt Extended",
+      "startLine": 881,
+      "endLine": 1012,
+      "summary": "Extends the Mertens function analysis, develops the divisor sum function σ and its summatory behavior, and proves further von Mangoldt identities supporting the conditional bounds.",
+      "mathContext": "Extends the Mertens function analysis, develops the divisor sum function σ and its summatory behavior, and proves further von Mangoldt identities supporting the conditional bounds."
     },
     {
       "id": "cross-equivalences",
-      "title": "RH Triple Equivalence",
-      "startLine": 1020,
-      "endLine": 1027,
-      "summary": "Packages RH ⟹ Mertens bound, RH ⟺ Li's criterion, and RH ⟹ Density Hypothesis into a single theorem."
+      "title": "Part 22: Cross-Equivalences",
+      "startLine": 1013,
+      "endLine": 1028,
+      "summary": "Collects cross-equivalences linking the several RH-equivalent statements (Mertens growth, Li positivity, prime counting error) into a single network of implications.",
+      "mathContext": "Collects cross-equivalences linking the several RH-equivalent statements (Mertens growth, Li positivity, prime counting error) into a single network of implications."
     },
     {
-      "id": "chebyshev-bounds",
-      "title": "Chebyshev Bounds: von Koch's ψ(x) = x + O(√x log²x)",
-      "startLine": 1053,
-      "endLine": 1132,
-      "summary": "States von Koch's (1901) bound ψ(x) = x + O(√x log²x) conditional on RH. Derives θ upper bound from ψ≥θ. Proves various RH-conditional Chebyshev inequalities."
+      "id": "chebyshev-prime-gaps",
+      "title": "Parts 23-24: RH-Conditional Chebyshev Bounds and Prime Gap Bounds",
+      "startLine": 1029,
+      "endLine": 1153,
+      "summary": "Derives the RH-conditional Chebyshev bound ψ(x) = x + O(√x log²x) (von Koch) and the resulting RH-conditional bounds on prime gaps.",
+      "mathContext": "Derives the RH-conditional Chebyshev bound ψ(x) = x + O(√x log²x) (von Koch) and the resulting RH-conditional bounds on prime gaps."
     },
     {
-      "id": "redheffer-matrix",
-      "title": "Redheffer Matrix and Mertens Connection",
-      "startLine": 1174,
-      "endLine": 1200,
-      "summary": "Defines Redheffer matrix R(i,j) = 1 if j=1 or j|i. Notes the remarkable connection: det(R_n) = M(n), so RH ⟺ |det(R_n)| = O(n^{1/2+ε})."
+      "id": "redheffer-explicit",
+      "title": "Parts 25-26: The Redheffer Matrix Equivalence and the Explicit Formula",
+      "startLine": 1154,
+      "endLine": 1264,
+      "summary": "Formalizes the Redheffer matrix equivalence connecting its determinant to the Mertens function and states the Riemann explicit formula relating prime sums to zeros of ζ.",
+      "mathContext": "Formalizes the Redheffer matrix equivalence connecting its determinant to the Mertens function and states the Riemann explicit formula relating prime sums to zeros of ζ."
     },
     {
-      "id": "hadamard-product",
-      "title": "Hadamard Product Theory",
-      "startLine": 1463,
-      "endLine": 1533,
-      "summary": "States the Hadamard product representation of ξ(s) over non-trivial zeros. Connects to prime counting through explicit formula. All statements axiomatized due to missing complex analysis infrastructure."
+      "id": "mertens-growth-summary",
+      "title": "Part 27: Unconditional Mertens Growth, with Updated Summary and Axiom Budget",
+      "startLine": 1265,
+      "endLine": 1316,
+      "summary": "Proves unconditional results on Mertens function growth and refreshes the summary and axiom budget to account for Parts 23-27.",
+      "mathContext": "Proves unconditional results on Mertens function growth and refreshes the summary and axiom budget to account for Parts 23-27."
+    },
+    {
+      "id": "selberg-class-explicit",
+      "title": "Parts 28-29: The Selberg Class and Von Mangoldt's Explicit Formula",
+      "startLine": 1317,
+      "endLine": 1445,
+      "summary": "Introduces the Selberg class of L-functions and its axioms, then formalizes von Mangoldt's explicit formula for ψ(x) as a sum over the nontrivial zeros.",
+      "mathContext": "Introduces the Selberg class of L-functions and its axioms, then formalizes von Mangoldt's explicit formula for ψ(x) as a sum over the nontrivial zeros."
+    },
+    {
+      "id": "hadamard-functionfield",
+      "title": "Parts 30-31: Hadamard Product, Zero Structure, and the Function Field Analogue",
+      "startLine": 1446,
+      "endLine": 1557,
+      "summary": "Develops the Hadamard product representation encoding the zero structure of ζ and records the function field analogue (Weil's theorem), where the Riemann Hypothesis is a proved theorem.",
+      "mathContext": "Develops the Hadamard product representation encoding the zero structure of ζ and records the function field analogue (Weil's theorem), where the Riemann Hypothesis is a proved theorem."
+    },
+    {
+      "id": "random-matrix-identities",
+      "title": "Parts 32-34: Keating-Snaith Moments, Unconditional Arithmetic Identities, and Li Criterion Extensions",
+      "startLine": 1558,
+      "endLine": 1701,
+      "summary": "Records the Keating-Snaith random matrix moment conjectures for ζ, proves a family of unconditional arithmetic function identities, and extends the Li criterion properties.",
+      "mathContext": "Records the Keating-Snaith random matrix moment conjectures for ζ, proves a family of unconditional arithmetic function identities, and extends the Li criterion properties."
+    },
+    {
+      "id": "final-summary",
+      "title": "Part 35: Summary of All Results",
+      "startLine": 1702,
+      "endLine": 1736,
+      "summary": "Final consolidated summary of all formal statements, distinguishing the unconditionally proved theorems from the RH-conditional results and the remaining analytic axioms.",
+      "mathContext": "Final consolidated summary of all formal statements, distinguishing the unconditionally proved theorems from the RH-conditional results and the remaining analytic axioms."
     }
   ],
   "sorries": 0

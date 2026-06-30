@@ -1,6 +1,6 @@
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fin.Basic
-import Mathlib.Algebra.BigOperators.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Tactic
 
 /-
@@ -100,8 +100,7 @@ lemma MassPoint.sum_erase_eq_total_sub (i : Fin (n + 1)) :
 lemma MassPoint.ratio_eq_one_sub (i : Fin (n + 1)) :
     mp.ratio i = 1 - mp.mass i / mp.total := by
   unfold MassPoint.ratio
-  rw [mp.sum_erase_eq_total_sub i, sub_div]
-  field_simp
+  rw [mp.sum_erase_eq_total_sub i, sub_div, div_self mp.total_ne_zero]
 
 /-- Each complement-fraction is strictly less than 1
     (regardless of n; the only requirement is that `mass i > 0`). -/
@@ -125,8 +124,7 @@ lemma MassPoint.ratio_pos (i : Fin (n + 1)) (hn : 0 < n) : 0 < mp.ratio i := by
 /-- Auxiliary: the mass fractions `mass i / total` sum to one. -/
 lemma MassPoint.sum_mass_div_total : (∑ i, mp.mass i / mp.total) = 1 := by
   rw [← Finset.sum_div]
-  show (∑ i, mp.mass i) / mp.total = 1
-  rw [div_self mp.total_ne_zero]
+  exact div_self mp.total_ne_zero
 
 /-- **N-dim Mass-Point Ceva Identity**: the complement fractions sum to `n`.
 
@@ -183,6 +181,7 @@ lemma uniform_ratio (n : ℕ) (i : Fin (n + 1)) :
   show 1 - (1 : ℝ) / (n + 1) = (n : ℝ) / (n + 1)
   have hn1 : (n + 1 : ℝ) ≠ 0 := by positivity
   field_simp
+  ring
 
 end NDimMassPoint
 

@@ -1,0 +1,136 @@
+{
+  "id": "unit-distance-independence-oq-01",
+  "title": "A Machine-Checked Lower Bound χ(ℝ²) ≥ 4 via the Moser Spindle",
+  "slug": "unit-distance-independence-oq-01",
+  "description": "Open question OQ-01 of unit-distance-independence. Supplies the strongest fully verified (0-axiom) lower bound for the Hadwiger-Nelson problem: no 3-coloring of the plane avoids monochromatic unit-distance pairs, i.e. χ(ℝ²) ≥ 4. The bound is the classical Moser (1961) result, obtained by an explicit unit-distance embedding of the 7-vertex Moser spindle and a kernel-checked proof that the spindle graph is not 3-colorable. Together with the parent's verified upper bound χ(ℝ²) ≤ 7, this gives the machine-checked window 4 ≤ χ(ℝ²) ≤ 7, with the sharper de Grey bound χ(ℝ²) ≥ 5 remaining the one axiomatized input. 23 theorems, 6 definitions, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius (researcher-2)",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/UnitDistanceIndependenceOQ01.lean",
+    "tags": [
+      "combinatorial-geometry",
+      "unit-distance-graphs",
+      "hadwiger-nelson",
+      "moser-spindle",
+      "chromatic-number",
+      "graph-coloring"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None. The result depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). No `axiom` declarations, no structure-encoded assumptions, and crucially no `native_decide` — the spindle's non-3-colorability is proved by an elementary rhombus argument reduced to a 3⁴-case Fin 3 lemma (kernel `decide`), not by brute force over the 3⁷ colourings, and not by the compiler-trusting `Lean.ofReduceBool`.",
+    "lineCount": 300,
+    "theoremCount": 23,
+    "definitionCount": 6,
+    "originalContributions": [
+      "chromatic_plane_ge_four: fully machine-checked χ(ℝ²) ≥ 4 — for every c : Plane → Fin 3 there exist points p, q at distance 1 with c p = c q (0 axioms)",
+      "no_proper_3coloring_of_plane: the verified companion to the parent's axiomatized de Grey bound — no proper 3-coloring of the unit-distance graph on ℝ² exists",
+      "Explicit unit-distance embedding of the Moser spindle: 7 points (pt) with all 11 edges proved to have Euclidean length exactly 1",
+      "rot / rot_isometry: the spindle rotation by θ (cos θ = 5/6, sin θ = √11/6) and a proof it is an isometry, so five of the six second-rhombus edges reduce to first-rhombus distances without re-computation",
+      "dist36: the one direct √3/√11 coordinate computation (the bridging edge D—D'); the √33 cross term cancels and linear_combination closes it",
+      "spindle_not_3colorable: an elementary, brute-force-free proof that the Moser spindle is not 3-colorable, via fin3_third (the two far tips of each rhombus must share a colour)",
+      "dist_mk_sq / dist_eq_one_of: reusable helpers turning a sum-of-squared-coordinate-differences identity into a Euclidean unit-distance fact"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Hadwiger-Nelson problem (1950) asks for the chromatic number χ(ℝ²) of the plane, where two points are adjacent iff they are exactly unit distance apart. The first nontrivial lower bound, χ(ℝ²) ≥ 4, was established by William and Leo Moser in 1961 via the **Moser spindle**: a 7-vertex, 11-edge unit-distance graph with chromatic number 4. The spindle is built from two rhombi — each a pair of unit equilateral triangles — that share a vertex, with the second rhombus rotated so that the two far tips land exactly one unit apart. This 4 ≤ χ(ℝ²) ≤ 7 window stood for 57 years until Aubrey de Grey's 2018 construction of a 1581-vertex unit-distance graph with chromatic number 5 raised the lower bound to 5. The exact value remains open: χ(ℝ²) ∈ {5, 6, 7}.",
+    "problemStatement": "The parent formalization records 5 ≤ χ(ℝ²) ≤ 7 with the upper bound proved (hexagonal 7-coloring) but the lower bound 5 ≤ χ(ℝ²) axiomatized (de Grey's hard construction). OQ-01 asks: can we supply a fully verified, axiom-free lower bound? The answer is the Moser bound χ(ℝ²) ≥ 4 — the strongest lower bound provable by elementary means.",
+    "proofStrategy": "Three ingredients. (1) Combinatorics: the abstract spindle graph on Fin 7 is not properly 3-colorable. Rather than enumerate all 3⁷ colourings, we use the classical rhombus argument: in each rhombus the two triangles use all three colours, forcing the two far tips to receive the same colour; the two rhombi then force f 3 = f 6, contradicting the bridging edge 3—6. The only finite check is fin3_third, an 81-case Fin 3 lemma. (2) Geometry: the 7 vertices are realized in ℝ² with every spindle edge of length exactly 1. The second rhombus is the rotation of the first by θ with cos θ = 5/6, sin θ = √11/6; rot is proved an isometry fixing the origin, so all but one second-rhombus edge reduce to first-rhombus distances. The lone bridging edge D—D' is computed directly — the √33 cross term cancels. (3) Bridge: any unit-distance-avoiding colouring of the plane restricts to a proper 3-colouring of the spindle, which is impossible.",
+    "keyInsights": [
+      "Two far tips of a 'double-triangle' rhombus must share a colour in any 3-coloring — the combinatorial crux, captured by fin3_third over Fin 3",
+      "The Moser spindle's irrationality is intrinsic: the rotation needs sin θ = √11/6, so √11 cannot be avoided in any unit-distance embedding",
+      "Using rot as an isometry collapses five edge computations to one — only the bridging edge D—D' requires direct √3/√11 coordinate algebra",
+      "The √33 = √3·√11 cross terms in the bridging-edge squared distance cancel exactly, leaving a rational identity that linear_combination discharges from s3² = 3 and s11² = 11",
+      "Avoiding native_decide keeps the result genuinely axiom-free: #print axioms shows only propext, Classical.choice, Quot.sound",
+      "This is the verified counterpart to the axiomatized de Grey bound: 4 ≤ χ(ℝ²) ≤ 7 is now fully machine-checked, while 5 ≤ χ(ℝ²) remains the single axiomatized input"
+    ],
+    "prerequisites": [
+      "Euclidean distance in EuclideanSpace ℝ (Fin 2)",
+      "Graph coloring: proper colorings and chromatic number",
+      "Elementary plane geometry: rotations, equilateral triangles, rhombi",
+      "Real square roots and the cancellation of cross terms in squared distances"
+    ],
+    "text": "The Moser spindle gives the elementary lower bound for the chromatic number of the plane. We embed its 7 vertices explicitly: vertices 0–3 form the first rhombus (origin and two unit equilateral triangles), vertices 4–6 are the rotation of 1–3 by the angle θ with cos θ = 5/6 and sin θ = √11/6. All 11 edges are proved to be unit distances — five second-rhombus edges for free via the isometry rot, the bridging edge D—D' by a direct computation where the √33 cross term vanishes. Combinatorially, each rhombus forces its far tips to share a colour in any 3-coloring, so a proper 3-coloring would give f 3 = f 6 while 3 and 6 are adjacent. Hence no 3-coloring of the plane can avoid monochromatic unit-distance pairs: χ(ℝ²) ≥ 4, fully verified."
+  },
+  "sections": [
+    {
+      "id": "sec-udioq01-setup",
+      "title": "Coordinates, the rotation, and distance helpers",
+      "startLine": 46,
+      "endLine": 131,
+      "description": "The plane as EuclideanSpace ℝ (Fin 2); point constructor mk and coordinate read-back lemmas; the spindle rotation rot (cos θ = 5/6, sin θ = √11/6); the squared-distance helper dist_mk_sq and the unit-distance helper dist_eq_one_of; rot_isometry (rot preserves distance) and rot_origin (the origin is fixed).",
+      "mathContext": "$\\mathrm{rot}$ is the rotation with $\\cos\\theta = 5/6,\\ \\sin\\theta = \\sqrt{11}/6$; $\\mathrm{rot}$ is an isometry fixing the origin."
+    },
+    {
+      "id": "sec-udioq01-vertices",
+      "title": "The seven vertices of the Moser spindle",
+      "startLine": 133,
+      "endLine": 147,
+      "description": "The seven spindle vertices pt : Fin 7 → Plane. Vertices 0–3 are the first rhombus; vertices 4–6 are the rotations of 1–3.",
+      "mathContext": "First rhombus: $(0,0),(1,0),(\\tfrac12,\\tfrac{\\sqrt3}{2}),(\\tfrac32,\\tfrac{\\sqrt3}{2})$. Second rhombus: their images under $\\mathrm{rot}$."
+    },
+    {
+      "id": "sec-udioq01-edges",
+      "title": "The eleven edges have unit length",
+      "startLine": 148,
+      "endLine": 205,
+      "description": "All 11 spindle edges are proved to be Euclidean unit distances. First-rhombus edges use only √3; second-rhombus edges (dist04, dist05, dist45, dist46, dist56) reduce to first-rhombus distances via rot_isometry; the bridging edge dist36 (D—D') is the one direct √3/√11 computation, where the √33 cross term cancels.",
+      "mathContext": "Each edge $\\{i,j\\}$: $\\operatorname{dist}(\\mathrm{pt}\\,i,\\mathrm{pt}\\,j) = 1$."
+    },
+    {
+      "id": "sec-udioq01-obstruction",
+      "title": "The spindle graph and its chromatic obstruction",
+      "startLine": 207,
+      "endLine": 270,
+      "description": "isEdge encodes the 11 edges; fin3_third is the 3⁴-case Fin 3 lemma that a vertex's colour is fixed by the two it must avoid; spindle_not_3colorable proves the spindle is not 3-colorable by the rhombus argument (far tips share a colour, contradicting edge 3—6); edge_unit packages the 11 distance facts.",
+      "mathContext": "No $f:\\mathrm{Fin}\\,7\\to\\mathrm{Fin}\\,3$ makes every edge bichromatic."
+    },
+    {
+      "id": "sec-udioq01-main",
+      "title": "Main result: χ(ℝ²) ≥ 4",
+      "startLine": 272,
+      "endLine": 300,
+      "description": "chromatic_plane_ge_four: for every c : Plane → Fin 3 there exist p, q at distance 1 with c p = c q. no_proper_3coloring_of_plane restates this as the nonexistence of a proper 3-coloring of the plane's unit-distance graph — the verified companion to the parent's axiomatized de Grey bound.",
+      "mathContext": "$\\forall c:\\mathbb{R}^2\\to\\{0,1,2\\},\\ \\exists p,q:\\ \\|p-q\\|=1 \\wedge c(p)=c(q)$, i.e. $\\chi(\\mathbb{R}^2)\\ge 4$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Moser spindle is realized as an explicit unit-distance graph in ℝ² and proved non-3-colorable by an elementary, brute-force-free argument, yielding a fully machine-checked χ(ℝ²) ≥ 4. 23 theorems, 6 definitions, 300 lines, 0 axioms, 0 sorries (only propext / Classical.choice / Quot.sound).",
+    "implications": "Combined with the parent file's verified upper bound χ(ℝ²) ≤ 7, the window 4 ≤ χ(ℝ²) ≤ 7 is now entirely machine-checked. The sharper de Grey lower bound χ(ℝ²) ≥ 5 remains the single axiomatized input; this entry makes precise how much of the Hadwiger-Nelson bound is unconditionally verified versus assumed.",
+    "openQuestions": [
+      "Formalize de Grey's 2018 construction to replace the axiomatized χ(ℝ²) ≥ 5 with a verified proof",
+      "Prove the chromatic number of the rational plane χ(ℚ²) = 4 (Woodall 1973), highlighting why irrational coordinates are essential for the de Grey leap",
+      "Formalize a smaller 5-chromatic unit-distance graph (post-2018 reductions below 553 vertices) toward a tractable verified χ(ℝ²) ≥ 5",
+      "Prove the fractional chromatic number bound χ_f(ℝ²) ≥ 3.5 (Frankl-Wilson 1981)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "unit-distance-independence",
+      "relationship": "parent",
+      "description": "The parent formalization records the Hadwiger-Nelson bounds 5 ≤ χ(ℝ²) ≤ 7 with the lower bound axiomatized (de Grey). This entry supplies the verified, axiom-free lower bound χ(ℝ²) ≥ 4 via the Moser spindle, the strongest lower bound provable by elementary means."
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both concern chromatic numbers of geometric/combinatorial structures. The four-color theorem bounds χ(planar graphs) ≤ 4; here the Moser spindle gives a lower bound χ(ℝ²) ≥ 4 for the plane's unit-distance graph."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are coloring problems on combinatorial structures; the Moser-spindle obstruction is a finite-gadget argument analogous in spirit to Ramsey-type forced-monochromatic configurations."
+    }
+  ],
+  "leanFile": {
+    "namespace": "UnitDistanceIndependenceOQ01",
+    "lineCount": 300,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 6,
+    "path": "Proofs/UnitDistanceIndependenceOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

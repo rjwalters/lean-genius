@@ -64,78 +64,85 @@
       "id": "sec-imports-namespace",
       "title": "Imports and Namespace",
       "startLine": 1,
-      "endLine": 19,
+      "endLine": 22,
       "summary": "Module header with historical references (Helfgott 2013, Vinogradov 1937), Mathlib imports for prime number theory and tactics, and namespace declaration."
     },
     {
       "id": "sec-core-definitions",
       "title": "Core Definitions",
-      "startLine": 21,
-      "endLine": 37,
+      "startLine": 23,
+      "endLine": 40,
       "summary": "Four foundational predicates: IsSumOfThreePrimes, WeakGoldbachConjecture, IsSumOfTwoPrimes, BinaryGoldbachConjecture — the formal language for all Goldbach problems."
     },
     {
-      "id": "sec-small-cases",
-      "title": "Explicit Small-Case Verification",
-      "startLine": 39,
-      "endLine": 69,
-      "summary": "Five theorems verifying the ternary Goldbach property for n = 7, 9, 11, 21, 101 via explicit prime witnesses, using rfl and decide for primality."
+      "id": "sec-prime-counting-helper",
+      "title": "Helper: Trivial Cardinality Bound on Prime Counting",
+      "startLine": 41,
+      "endLine": 60,
+      "summary": "Packages the only prime-counting fact needed downstream: the trivial bound `primeCounting_le_succ` ($\\pi(N) \\leq N + 1$), proved by bounding the `Nat.Prime`-filtered `Finset.range (N+1)` by the unfiltered range. Kept as a self-contained local helper so the Part II upgrades avoid depending on `BertrandsPostulate` or density results."
+    },
+    {
+      "id": "sec-example-verifications",
+      "title": "Example Verifications",
+      "startLine": 61,
+      "endLine": 92,
+      "summary": "Five theorems verifying the ternary Goldbach property via explicit prime witnesses — `goldbach_7` ($7=2+2+3$), `goldbach_9`, `goldbach_11`, `goldbach_21`, `goldbach_101` — discharged by `decide`/`rfl` on the witness primes. Demonstrates the explicit-witness approach before the decidable instances automate it."
     },
     {
       "id": "sec-decidable-three",
       "title": "Decidable Instance for Three-Prime Sums",
-      "startLine": 71,
-      "endLine": 125,
+      "startLine": 93,
+      "endLine": 148,
       "summary": "A verified brute-force decision procedure for IsSumOfThreePrimes: soundness and completeness proofs plus the Decidable instance enabling `decide` to certify any concrete case."
     },
     {
       "id": "sec-decidable-two",
       "title": "Decidable Instance for Two-Prime Sums",
-      "startLine": 127,
-      "endLine": 172,
+      "startLine": 149,
+      "endLine": 195,
       "summary": "Analogous verified decision procedure for IsSumOfTwoPrimes (binary Goldbach), with soundness, completeness, and Decidable instance."
     },
     {
       "id": "sec-decide-demos",
       "title": "Decision Procedure Demonstrations",
-      "startLine": 174,
-      "endLine": 197,
+      "startLine": 196,
+      "endLine": 220,
       "summary": "Examples using `decide` to verify positive cases (IsSumOfThreePrimes 7, 13, 15; IsSumOfTwoPrimes 4, 10, 20) and negative cases (¬IsSumOfThreePrimes 0, 1, 5)."
     },
     {
       "id": "sec-binary-implies-ternary",
       "title": "Structural Reduction: Binary → Ternary Goldbach",
-      "startLine": 199,
-      "endLine": 231,
+      "startLine": 221,
+      "endLine": 254,
       "summary": "The key structural result: binary Goldbach implies ternary, proved via the parity decomposition n = 3 + (n−3) for odd n > 5. Three supporting lemmas build up the main theorem binary_implies_weak."
     },
     {
       "id": "sec-axiomatized-core",
       "title": "Axiomatized Core Results",
-      "startLine": 233,
-      "endLine": 245,
+      "startLine": 255,
+      "endLine": 281,
       "summary": "Two axioms capturing Vinogradov (1937) and Helfgott (2013), plus the theorem weak_goldbach applying Helfgott's axiom to yield the main result."
     },
     {
       "id": "sec-circle-method",
       "title": "Part II: Vinogradov's Circle Method",
-      "startLine": 247,
-      "endLine": 317,
+      "startLine": 282,
+      "endLine": 366,
       "summary": "Infrastructure for the Hardy-Littlewood-Vinogradov circle method: exponential sum over primes S(α), representation count r₃(n), singular series positivity, minor arc bounds (trivially stated), and the axiomatized asymptotic formula."
     },
     {
       "id": "sec-schnirelmann",
       "title": "Part III: Schnirelmann Density and Additive Bases",
-      "startLine": 319,
-      "endLine": 367,
+      "startLine": 367,
+      "endLine": 521,
       "summary": "Schnirelmann density definition, IsAdditiveBasis predicate, Schnirelmann's basis theorem (axiomatized), and the cascade of improvements: Ramaré (≤6 primes), Tao (≤5 primes), Helfgott_improves_tao (exactly 3 primes)."
     },
     {
       "id": "sec-strong-goldbach",
-      "title": "Part IV: Strong Goldbach, Chen's Theorem, and Open Problems",
-      "startLine": 368,
-      "endLine": 480,
-      "summary": "Binary Goldbach implication, Chen's theorem and IsP2 predicate, Goldbach comet and twin prime constant, Hardy-Littlewood asymptotic for binary representations, Lévy's conjecture formalization and verification for n=7,9,11."
+      "title": "Part IV: Connections to Strong Goldbach and Open Problems",
+      "startLine": 522,
+      "endLine": 680,
+      "summary": "Relates the weak conjecture to the still-open strong (binary) Goldbach and known partial results. Covers `binary_stronger_than_ternary`, Chen's theorem with the `IsP2` (almost-prime) predicate, the Goldbach comet and `twinPrimeConstant`, the Hardy–Littlewood asymptotic `linnik_goldbach_representations`, Helfgott's explicit bound, and the formalization of Lévy's conjecture (`LevyConjecture`, `levy_implies_weak_goldbach`) verified for $n=7,9,11$."
     }
   ],
   "conclusion": {

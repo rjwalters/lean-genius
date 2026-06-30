@@ -17,13 +17,17 @@
       "complex analysis",
       "operator theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lp Spaces",
+      "Bounded Linear Operators",
+      "Complex Analysis"
+    ]
   },
   {
     "id": "ann-rt-interp-recip",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02",
     "range": {
-      "startLine": 60,
+      "startLine": 61,
       "endLine": 99
     },
     "type": "definition",
@@ -36,13 +40,17 @@
       "convex combination",
       "Lebesgue exponents"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue Exponents",
+      "Convex Combination",
+      "Reciprocal Exponent"
+    ]
   },
   {
     "id": "ann-rt-conjugate-preservation",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02",
     "range": {
-      "startLine": 101,
+      "startLine": 115,
       "endLine": 125
     },
     "type": "concept",
@@ -63,7 +71,7 @@
     "id": "ann-rt-lplq-bounded",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02",
     "range": {
-      "startLine": 127,
+      "startLine": 150,
       "endLine": 160
     },
     "type": "definition",
@@ -77,13 +85,17 @@
       "AEStronglyMeasurable",
       "Mathlib measure theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Operator Norm",
+      "Lp Seminorm",
+      "Strong Measurability"
+    ]
   },
   {
     "id": "ann-rt-log-convexity",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02",
     "range": {
-      "startLine": 162,
+      "startLine": 176,
       "endLine": 246
     },
     "type": "concept",
@@ -98,13 +110,17 @@
       "Real.rpow",
       "submultiplicativity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Weighted Geometric Mean",
+      "AM-GM Inequality",
+      "Real Power Function"
+    ]
   },
   {
     "id": "ann-rt-three-lines",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02",
     "range": {
-      "startLine": 248,
+      "startLine": 269,
       "endLine": 315
     },
     "type": "insight",
@@ -126,7 +142,7 @@
     "id": "ann-rt-riesz-thorin-axiom",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02",
     "range": {
-      "startLine": 317,
+      "startLine": 347,
       "endLine": 357
     },
     "type": "concept",
@@ -148,7 +164,7 @@
     "id": "ann-rt-holder-endpoint",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02",
     "range": {
-      "startLine": 359,
+      "startLine": 388,
       "endLine": 398
     },
     "type": "concept",
@@ -170,7 +186,7 @@
     "id": "ann-rt-hausdorff-young",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02",
     "range": {
-      "startLine": 400,
+      "startLine": 435,
       "endLine": 450
     },
     "type": "insight",
@@ -191,7 +207,7 @@
     "id": "ann-rt-young-convolution",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02",
     "range": {
-      "startLine": 452,
+      "startLine": 473,
       "endLine": 510
     },
     "type": "concept",

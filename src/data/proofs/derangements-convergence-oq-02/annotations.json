@@ -1,0 +1,79 @@
+[
+  {
+    "id": "ann-dcoq02-header",
+    "proofId": "derangements-convergence-oq-02",
+    "range": { "startLine": 1, "endLine": 57 },
+    "type": "concept",
+    "title": "Module Overview: Sign of the Error and Two-Sided Bracketing of 1/e",
+    "content": "The parent file proves only the magnitude of the approximation error, |D(n)/n! - e⁻¹| ≤ 1/(n+1)!. This module determines the error's sign. Writing a(n) = D(n)/n! = ∑_{k≤n}(-1)^k/k!, the alternating structure forces even partial sums strictly above e⁻¹ and odd ones strictly below, so consecutive derangement ratios bracket 1/e. The headline is the unified sign law (-1)^n·(D(n)/n! - e⁻¹) > 0 and the bracket D(2k+1)/(2k+1)! < e⁻¹ < D(2k)/(2k)!.",
+    "mathContext": "For an alternating series $\\sum (-1)^k c_k$ with $c_k$ strictly decreasing to $0$, the partial sums oscillate around the limit: even-indexed from above, odd-indexed from below. Here $c_k = 1/k!$ and the limit is $e^{-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["numDerangements", "altFactPartialSum", "alternating series", "e-constant"]
+  },
+  {
+    "id": "ann-dcoq02-signs",
+    "proofId": "derangements-convergence-oq-02",
+    "range": { "startLine": 58, "endLine": 70 },
+    "type": "technique",
+    "title": "Parity Determines the Sign of Each Taylor Term",
+    "content": "altFactTerm_of_even and altFactTerm_of_odd compute the k-th term (-1)^k/k! as +1/k! or -(1/k!) using Even.neg_one_pow and Odd.neg_one_pow. Producing the odd term as -(1/k!) rather than (-1)/k! is deliberate: it lets later linarith calls relate it to the positive quantity 1/k!.",
+    "mathContext": "$(-1)^k = 1$ when $k$ is even and $-1$ when $k$ is odd, so the $k$-th Taylor coefficient of $e^{-1}$ has sign $(-1)^k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Even.neg_one_pow", "Odd.neg_one_pow"]
+  },
+  {
+    "id": "ann-dcoq02-monotone",
+    "proofId": "derangements-convergence-oq-02",
+    "range": { "startLine": 71, "endLine": 114 },
+    "type": "technique",
+    "title": "Pairing Two Steps Makes the Even/Odd Subsequences Strictly Monotone",
+    "content": "aSeq_add_two expresses a(n+2) - a(n) as the sum of two consecutive alternating terms. At an even index this sum is 1/(2k+2)! - 1/(2k+1)! < 0 (even ratios decrease); at an odd index it is 1/(2k+2)! - 1/(2k+3)! > 0 (odd ratios increase). The strictness comes from Nat.factorial_lt. strictAnti_nat_of_succ_lt / strictMono_nat_of_lt_succ then upgrade the one-step facts to monotonicity of the whole subsequence.",
+    "mathContext": "Within an alternating series of strictly decreasing terms, $S_{n+2} - S_n = (-1)^{n+1}c_{n+1} + (-1)^{n+2}c_{n+2}$ has the sign of $(-1)^{n+1}$ because $c_{n+1} > c_{n+2}$.",
+    "significance": "key",
+    "relatedConcepts": ["strictAnti_nat_of_succ_lt", "strictMono_nat_of_lt_succ", "Nat.factorial_lt"]
+  },
+  {
+    "id": "ann-dcoq02-converge",
+    "proofId": "derangements-convergence-oq-02",
+    "range": { "startLine": 115, "endLine": 138 },
+    "type": "technique",
+    "title": "Both Subsequences Inherit the Limit 1/e",
+    "content": "aSeq_tendsto restates the parent's limit D(n)/n! → e⁻¹ for the partial-sum function. Composing with k ↦ 2k and k ↦ 2k+1 (which tend to infinity) gives that the even- and odd-indexed subsequences both converge to e⁻¹.",
+    "mathContext": "Every subsequence of a convergent sequence converges to the same limit; here both $a(2k)$ and $a(2k+1)$ tend to $e^{-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Filter.Tendsto.comp", "derangements_tendsto_inv_e"]
+  },
+  {
+    "id": "ann-dcoq02-onesided",
+    "proofId": "derangements-convergence-oq-02",
+    "range": { "startLine": 139, "endLine": 154 },
+    "type": "technique",
+    "title": "A Strictly Monotone Convergent Sequence Never Reaches Its Limit",
+    "content": "lt_of_strictAnti_tendsto and gt_of_strictMono_tendsto are the crux: a strictly decreasing sequence converging to L has every term strictly above L (its successor is already ≥ L by le_of_tendsto, and the term is strictly larger than its successor). This yields strictness in the bracket for free, avoiding any tail estimate.",
+    "mathContext": "If $x$ is strictly antitone and $x_n \\to L$, then $L \\le x_{n+1} < x_n$, hence $x_n > L$. Symmetrically for strictly monotone sequences.",
+    "significance": "key",
+    "relatedConcepts": ["le_of_tendsto", "ge_of_tendsto", "StrictAnti", "StrictMono"]
+  },
+  {
+    "id": "ann-dcoq02-main",
+    "proofId": "derangements-convergence-oq-02",
+    "range": { "startLine": 155, "endLine": 213 },
+    "type": "key_step",
+    "title": "Two-Sided Bracketing, Unified Sign Law, and Exact Nesting Width",
+    "content": "Combining monotonicity with the shared limit gives e⁻¹ < a(2k) and a(2k+1) < e⁻¹ (ratio_even_gt, ratio_odd_lt), hence the bracket numDerangements_bracket. Casing on the parity of n yields the unified sign law numDerangements_error_sign: (-1)^n·(D(n)/n! - e⁻¹) > 0, and the opposite-sign product consecutive_error_opposite. nested_interval_width pins the bracket width to exactly 1/(2k+1)!.",
+    "mathContext": "$D(2k+1)/(2k+1)! < e^{-1} < D(2k)/(2k)!$ with gap $a(2k) - a(2k+1) = 1/(2k+1)!$: a nested-interval construction of $e^{-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["numDerangements_bracket", "nested intervals", "alternating series estimation"]
+  },
+  {
+    "id": "ann-dcoq02-integer",
+    "proofId": "derangements-convergence-oq-02",
+    "range": { "startLine": 214, "endLine": 239 },
+    "type": "concept",
+    "title": "Integer-Side Corollaries: Each D(n) Sits Strictly on One Side of n!/e",
+    "content": "Clearing the positive denominator n! from the ratio bounds gives numDerangements_gt_of_even (D(n) > n!·e⁻¹ for even n) and numDerangements_lt_of_odd (D(n) < n!·e⁻¹ for odd n) — the signed refinement of the sibling's |D(n) - n!/e| < 1/2 rounding bound.",
+    "mathContext": "Multiplying $D(n)/n! \\gtrless e^{-1}$ by $n! > 0$ locates $D(n)$ above (even $n$) or below (odd $n$) $n!/e$.",
+    "significance": "supporting",
+    "relatedConcepts": ["lt_div_iff₀", "div_lt_iff₀", "n!/e rounding"]
+  }
+]

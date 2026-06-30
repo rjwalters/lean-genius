@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-bern-oq010201-header",
+    "proofId": "bernoulli-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 4, "endLine": 38 },
+    "type": "context",
+    "title": "The parent's open question, posed and answered",
+    "content": "The docstring states the parent's first listed open question verbatim: does the degree-k truncation ∑_{i≤k} C(n,i)aⁱ ≤ (1+a)ⁿ hold for all a ≥ 0 with equality iff a = 0 ∨ n ≤ k? This file answers it for every k at once. The key reframing is that the proof needs no Pascal induction (the parent's tool) at all — the truncation is literally a sub-sum of the binomial expansion, so the bound, its strictness, and its equality case all follow from nonnegativity of the discarded terms.",
+    "mathContext": "$\\sum_{i=0}^{k} \\binom{n}{i} a^i \\le (1+a)^n$ for all $a \\ge 0$, every $k$, with equality iff $a = 0 \\vee n \\le k$.",
+    "significance": "context",
+    "relatedConcepts": ["Bernoulli's inequality", "binomial theorem", "truncation", "open question"],
+    "prerequisites": ["the parent second-order Bernoulli entry", "binomial expansion"]
+  },
+  {
+    "id": "ann-bern-oq010201-expansion",
+    "proofId": "bernoulli-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 46, "endLine": 59 },
+    "type": "technique",
+    "title": "Orienting the binomial theorem to match the truncation",
+    "content": "term n i a := C(n,i)·aⁱ packages the summand and term_nonneg gives its nonnegativity for a ≥ 0. full_expansion rewrites (1+a)ⁿ with add_pow then normalizes each summand (add_comm puts a first so the 1^{n-i} factor disappears) into ∑_{i ∈ range (n+1)} term n i a — exactly the orientation in which the truncation ∑_{i ∈ range (k+1)} is a literal initial segment.",
+    "mathContext": "$(1+a)^n = \\sum_{i=0}^{n} \\binom{n}{i} a^i$, summand $\\binom{n}{i} a^i \\ge 0$.",
+    "significance": "standard",
+    "relatedConcepts": ["add_pow", "Finset.range", "sum_congr"],
+    "prerequisites": ["the binomial theorem", "Finset sums"]
+  },
+  {
+    "id": "ann-bern-oq010201-padding",
+    "proofId": "bernoulli-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 61, "endLine": 85 },
+    "type": "key",
+    "title": "Padding to a common range, then one subset-sum comparison",
+    "content": "binom_trunc_le sets N = max k n and pads BOTH the truncation range (k+1) and the expansion range (n+1) into range (N+1). Padding the expansion is harmless: the extra coefficients vanish by Nat.choose_eq_zero_of_lt (i > n ⟹ C(n,i) = 0), proved through Finset.sum_subset. With both sums over the same superset range, Finset.sum_le_sum_of_subset_of_nonneg compares them in a single step using termwise nonnegativity — no induction on k, and no relation between k and n.",
+    "mathContext": "$N = \\max(k,n)$; $\\sum_{\\mathrm{range}(k+1)} \\le \\sum_{\\mathrm{range}(N+1)} = (1+a)^n$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_le_sum_of_subset_of_nonneg", "Finset.range_subset_range", "Nat.choose_eq_zero_of_lt", "Finset.sum_subset"],
+    "prerequisites": ["subset-monotonicity of sums of nonnegative terms", "vanishing binomial coefficients"]
+  },
+  {
+    "id": "ann-bern-oq010201-strict",
+    "proofId": "bernoulli-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 87, "endLine": 104 },
+    "type": "key",
+    "title": "Strictness is the first dropped term",
+    "content": "binom_trunc_strict assumes k < n. Then k+1 ∈ range (n+1) but k+1 ∉ range (k+1), so it is a genuinely omitted index; its term C(n,k+1)a^{k+1} is strictly positive (Nat.choose_pos since k+1 ≤ n, times pow_pos for a > 0). Finset.sum_lt_sum_of_subset converts one strictly positive omitted term plus nonnegativity of the rest into a strict inequality against the full expansion.",
+    "mathContext": "$0 < \\binom{n}{k+1} a^{k+1}$ for $a > 0,\\ k < n \\Rightarrow \\sum_{i=0}^{k} \\binom{n}{i} a^i < (1+a)^n$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_lt_sum_of_subset", "Nat.choose_pos", "pow_pos"],
+    "prerequisites": ["strict subset-sum comparison", "positivity of powers"]
+  },
+  {
+    "id": "ann-bern-oq010201-eqiff",
+    "proofId": "bernoulli-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 106, "endLine": 133 },
+    "type": "concept",
+    "title": "The equality threshold: a = 0 or the truncation already captures everything",
+    "content": "binom_trunc_eq_iff proves equality ↔ a = 0 ∨ n ≤ k. Forward is the contrapositive of strictness: a ≠ 0 with a ≥ 0 gives a > 0, and ¬(n ≤ k) gives k < n, so binom_trunc_strict rules out equality. Reverse splits: a = 0 collapses every i ≥ 1 summand (zero_pow) leaving the constant C(n,0) = 1; n ≤ k makes range (n+1) ⊆ range (k+1) with the extra terms vanishing, so the truncation already equals the full expansion. The threshold n ≤ k is exactly 'range (k+1) contains range (n+1)'.",
+    "mathContext": "For $a \\ge 0$: $\\sum_{i=0}^{k} \\binom{n}{i} a^i = (1+a)^n \\iff a = 0 \\vee n \\le k$.",
+    "significance": "key",
+    "relatedConcepts": ["contrapositive", "Finset.sum_eq_single_of_mem", "zero_pow", "Finset.sum_subset"],
+    "prerequisites": ["the strict bound", "collapsing a sum to one term"]
+  },
+  {
+    "id": "ann-bern-oq010201-special",
+    "proofId": "bernoulli-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 135, "endLine": 146 },
+    "type": "context",
+    "title": "Recovering the classical and second-order Bernoulli inequalities",
+    "content": "bernoulli_first_order (k = 1) and bernoulli_second_order (k = 2) instantiate the general bound and unfold the short truncated sum with Finset.sum_range_succ and Nat.choose_one_right, recovering 1 + n·a ≤ (1+a)ⁿ and the parent's 1 + n·a + C(n,2)·a² ≤ (1+a)ⁿ as one-line corollaries — confirming the family genuinely subsumes the earlier entries.",
+    "mathContext": "$k=1$: $1 + na \\le (1+a)^n$;\\quad $k=2$: $1 + na + \\binom{n}{2}a^2 \\le (1+a)^n$.",
+    "significance": "standard",
+    "relatedConcepts": ["Finset.sum_range_succ", "Nat.choose_one_right", "specialization"],
+    "prerequisites": ["the general truncation bound"]
+  }
+]

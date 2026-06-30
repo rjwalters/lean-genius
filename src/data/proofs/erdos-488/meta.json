@@ -49,66 +49,61 @@
       "id": "header-and-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 24,
-      "summary": "Module docstring stating Erdős Problem 488 on the density doubling inequality for multiples of finite sets. Imports `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Rat.Basic`, and `Tactic`."
+      "endLine": 20,
+      "summary": "Module docstring stating Erdős Problem 488 — the density doubling inequality $|B \\cap [1,m]|/m < 2 \\cdot |B \\cap [1,n]|/n$ for multiples of finite sets — its history (Erdős 1961, corrected to $a \\mid n$ in 1966), and the optimality of the constant 2. Imports all of Mathlib via `import Mathlib`."
     },
     {
       "id": "multiples-set",
       "title": "Multiples Set Definition",
-      "startLine": 27,
-      "endLine": 30,
+      "startLine": 21,
+      "endLine": 27,
       "summary": "Defines `multiplesSet A` as the set $B(A) = \\{n \\geq 1 : \\exists a \\in A,\\; a \\mid n\\}$ — the positive integers divisible by some element of $A$."
     },
     {
       "id": "counting-function",
       "title": "Counting Function and Density Ratio",
-      "startLine": 34,
-      "endLine": 40,
-      "summary": "Defines `multiplesCount A N` as $|B(A) \\cap [1, N]|$ using `Finset.filter` and `multiplesRatio A N` as the rational quotient $|B(A) \\cap [1,N]| / N$."
+      "startLine": 28,
+      "endLine": 37,
+      "summary": "Defines `multiplesCount A N` as $|B(A) \\cap [1, N]|$ using `Finset.filter`, and `multiplesRatio A N` as the rational quotient $|B(A) \\cap [1,N]| / N$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 44,
-      "endLine": 54,
-      "summary": "States `ErdosProblem488`: for all finite $A$ with elements $\\geq 2$ and $m > n \\geq \\max(A)$, the density ratio satisfies $\\frac{|B \\cap [1,m]|}{m} < 2 \\cdot \\frac{|B \\cap [1,n]|}{n}$."
+      "startLine": 38,
+      "endLine": 50,
+      "summary": "States `ErdosProblem488`: for every finite $A$ with elements $\\geq 2$ and all $m > n \\geq \\max(A)$, the density ratio satisfies $\\frac{|B \\cap [1,m]|}{m} < 2 \\cdot \\frac{|B \\cap [1,n]|}{n}$."
+    },
+    {
+      "id": "inclusion-exclusion",
+      "title": "Inclusion–Exclusion for Multiples",
+      "startLine": 51,
+      "endLine": 119,
+      "summary": "Three proved counting theorems: `singleton_multiplesCount` ($|B(\\{a\\}) \\cap [1,N]| = \\lfloor N/a \\rfloor$ via an explicit bijection $k \\mapsto (k+1)\\cdot a$), `multiplesCount_mono` (the count is monotone in $N$), and `multiplesCount_subset` (adding elements to $A$ only increases the count).",
+      "mathContext": "The singleton bijection: the multiples of $a$ in $[1,N]$ are $a, 2a, \\ldots, \\lfloor N/a \\rfloor \\cdot a$, giving exactly $\\lfloor N/a \\rfloor$ elements."
     },
     {
       "id": "optimality",
       "title": "Optimality of Constant 2",
-      "startLine": 58,
-      "endLine": 68,
-      "summary": "Proved theorem `constant_2_optimal`: for any $\\varepsilon > 0$, there exists $a \\geq 2$ such that with $A = \\{a\\}$, $n = 2a - 1$, $m = 2a$, the ratio of density ratios exceeds $2 - \\varepsilon$. Fully machine-checked via Archimedean argument (0 axioms, 0 sorries)."
+      "startLine": 120,
+      "endLine": 173,
+      "summary": "Proved theorem `constant_2_optimal`: for any $\\varepsilon > 0$ there exists $a \\geq 2$ such that with $A = \\{a\\}$, $n = 2a-1$, $m = 2a$, the ratio of density ratios exceeds $2 - \\varepsilon$, so the constant 2 in the conjecture cannot be improved. Fully machine-checked via an Archimedean argument.",
+      "mathContext": "With $A=\\{a\\}$: $B$ has one element ($a$) in $[1, 2a-1]$ and two ($a, 2a$) in $[1,2a]$, so $\\frac{2/2a}{1/(2a-1)} = \\frac{2a-1}{a} \\to 2$ as $a \\to \\infty$."
     },
     {
-      "id": "inclusion-exclusion",
-      "title": "Inclusion-Exclusion for Multiples",
-      "startLine": 72,
-      "endLine": 82,
-      "summary": "Three proved theorems (formerly axioms): the singleton count formula $|B(\\{a\\}) \\cap [1,N]| = \\lfloor N/a \\rfloor$ via bijection, monotonicity of `multiplesCount` in $N$, and monotonicity in $A$ (adding elements increases the count)."
-    },
-    {
-      "id": "counting-bijection",
-      "title": "Counting Multiples: Bijection and Cardinality",
-      "startLine": 56,
-      "endLine": 101,
-      "summary": "Proves `singleton_multiplesCount`: $|\\{n \\in [1,N] : a \\mid n\\}| = \\lfloor N/a \\rfloor$ via an explicit bijection $k \\mapsto (k+1) \\cdot a$ between `Finset.range (N/a)` and the filtered set.",
-      "mathContext": "The bijection: multiples of $a$ in $[1,N]$ are $a, 2a, \\ldots, \\lfloor N/a \\rfloor \\cdot a$, giving exactly $\\lfloor N/a \\rfloor$ elements."
-    },
-    {
-      "id": "monotonicity-subset",
-      "title": "Monotonicity and Subset Properties",
-      "startLine": 102,
-      "endLine": 119,
-      "summary": "Two structural lemmas: `multiplesCount_mono` (increasing $N$ only increases the count) and `multiplesCount_subset` (adding elements to $A$ only increases the multiples count)."
+      "id": "davenport-lemmas",
+      "title": "Davenport's Density: Periodicity and Decomposition Lemmas",
+      "startLine": 174,
+      "endLine": 247,
+      "summary": "Supporting machinery for the density theorem: `dvd_add_period_iff` and `inB_periodic` (membership in $B(A)$ is periodic with period $P = \\operatorname{lcm}(A)$), `lcm_pos_of_pos`, the step recurrence `multiplesCount_succ'`, the periodicity `multiplesCount_add_period`, the division decomposition `multiplesCount_div_mod` ($\\text{count}(qP+r) = q\\cdot\\text{count}(P) + \\text{count}(r)$), and the bound `multiplesCount_le`.",
+      "mathContext": "Divisibility by any $a \\mid P$ is invariant under shifts by $P$, so $B(A)$ membership has period $P = \\operatorname{lcm}(A)$, turning the counting function into an arithmetic-progression-like count."
     },
     {
       "id": "davenport-density",
       "title": "Davenport's Density Theorem (Proved)",
-      "startLine": 174,
+      "startLine": 248,
       "endLine": 322,
-      "summary": "Fully proves `multiplesSet_density_exists`: the asymptotic density $\\delta(B(A)) = |B(A) \\cap [1,P]| / P$ exists (where $P = \\text{lcm}(A)$) via a periodicity argument. The proof shows $B(A)$ membership is periodic with period $P$, derives the counting function decomposition $|B(A) \\cap [1,N]| = \\lfloor N/P \\rfloor \\cdot c + |B(A) \\cap [1, N \\bmod P]|$, and bounds the convergence error by $O(P/N)$.",
-      "mathContext": "Davenport's theorem (1933): the asymptotic density of the set of multiples of a finite set $A$ exists. The proof here uses the periodicity of divisibility modulo $\\text{lcm}(A)$ rather than Davenport's original inclusion-exclusion approach."
+      "summary": "Fully proves `multiplesSet_density_exists`: the asymptotic density of $B(A)$ exists and equals $|B(A) \\cap [1,P]| / P$ with $P = \\operatorname{lcm}(A)$. Combining the periodic decomposition with the $O(P/N)$ remainder bound gives convergence of $|B(A) \\cap [1,N]|/N$.",
+      "mathContext": "Davenport's theorem (1933): the asymptotic density of the multiples of a finite set exists. This proof uses periodicity modulo $\\operatorname{lcm}(A)$ rather than Davenport's original inclusion–exclusion approach."
     }
   ],
   "conclusion": {
