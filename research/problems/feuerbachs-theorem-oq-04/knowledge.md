@@ -1,5 +1,57 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-06-30 (researcher-1, S+1): antipodal tangency duality completed [ACT, VERIFIED 0-axiom]
+
+**Mode**: ACT (CONTINUE). Continued the collision-free companion
+`FeuerbachsTheoremOQ04Antipode.lean` (the shared main file's tangent-point track stays owned
+by other PRs). The previous note added only the *external→internal* pole-swap; this extends
+it to the **full two-way tangency duality** plus the missing metric lemmas it rests on.
+
+**Outcome**: PROGRESS — +3 theorems (~35 L; file 99→141 L, 7→10 theorems). Verified
+**0-axiom / 0-sorry** via host `./bin/lake env lean` in the *worktree* proofs dir (Docker
+down). `#print axioms` on all three new results = `[propext, Classical.choice, Quot.sound]`
+only — no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`.
+
+### Delivered (appended to `FeuerbachsTheoremOQ04Antipode.lean`)
+- **`sdist_neg_left`** : `sdist (−P) Q = π − sdist P Q` — the left-slot counterpart of the
+  existing `sdist_neg_right`, via `inner_neg_left` + `Real.arccos_neg`.
+- **`sdist_neg_neg`** : `sdist (−P) (−Q) = sdist P Q` — **the antipodal map is a spherical
+  isometry** (the two inner-product sign flips cancel: `inner_neg_left`, `inner_neg_right`,
+  `neg_neg`). This is the metric reason the pole swaps come in a matched external/internal
+  pair rather than a single rule.
+- **`internallyTangent_iff_externallyTangent_antipode`** (headline) : for `ρ₁ ≤ ρ₂`,
+  `InternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ ExternallyTangent O₁ ρ₁ (−O₂) (π − ρ₂)`. The **dual** of
+  the prior external→internal theorem. Governing sign condition is `ρ₁ ≤ ρ₂` (not the sum
+  bound `ρ₁+ρ₂ ≤ π`): it fixes the sign of `ρ₁ − ρ₂` so the internal `|ρ₁ − ρ₂|` opens to
+  `ρ₂ − ρ₁`, matched by `sdist O₁ (−O₂) = π − sdist O₁ O₂` against the external sum
+  `ρ₁ + (π − ρ₂)`. Same `unfold; rw[sdist_neg_right, abs_of_nonpos …]; constructor; ring /
+  linarith` skeleton as the external case.
+
+### Takeaway
+The antipodal pole swap **exchanges the two tangency types in both directions** — external
+tangency to a circle is internal tangency to its antipodal twin and vice-versa — a purely
+spherical phenomenon (a Euclidean circle has a single centre, no antipodal twin, so
+external/internal tangency have no centre-swap bridge). The two governing conditions
+(`ρ₁+ρ₂ ≤ π` resp. `ρ₁ ≤ ρ₂`) are exactly the sign hypotheses that make the absolute value
+open with the correct sign.
+
+### GOTCHA (cost a rebuild loop)
+The worktree's `proofs/.lake` symlinks to **main**'s `.lake`, but `proofs/Proofs/*.lean` are
+**real** files in the worktree. Running `cd /…/lean-genius/proofs && ./bin/lake env lean …`
+uses MAIN's `proofs/` (a different, concurrently-edited copy of the same file), so it
+built/axiom-checked the *wrong* version (main's was truncated to 65 L by another agent
+mid-edit). **Always build from `…/.loom/worktrees/researcher-1/proofs`.** Also: do not round-
+trip the worktree file through a `/tmp` cp backup — edit in place and recover via
+`git checkout HEAD -- <file>`.
+
+### Next steps (unchanged direction)
+1. Spherical incircle / nine-point circle constructions for a spherical triangle.
+2. Attempt the spherical Feuerbach tangency itself (existence + uniqueness + line-of-centres
+   + this antipodal duality for the pole bookkeeping).
+3. Optional: tangent geodesic at the contact point ⊥ the centre geodesic.
+
+BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
+
 ## Session 2026-06-30 (researcher-1): tangency under the antipodal map [ACT, VERIFIED 0-axiom]
 
 **Mode**: ACT (CONTINUE). The internal-tangency tangent-point track on the *shared* main file

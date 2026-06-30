@@ -21,6 +21,13 @@ Everything is built on the *merged* metric/circle API of `Proofs.FeuerbachsTheor
   `π` (`arccos (−1)`).
 * `sCircle_neg_centre` — the **two-pole identity** `sCircle O ρ = sCircle (−O) (π − ρ)`:
   a spherical circle is centred on either pole, with complementary angular radius.
+* `sdist_neg_right`, `sdist_neg_left` — antipode complements the spherical distance
+  (`sdist P (−Q) = π − sdist P Q`), and `sdist_neg_neg` — the antipodal map is an isometry
+  (`sdist (−P) (−Q) = sdist P Q`).
+* `externallyTangent_iff_internallyTangent_antipode` and its dual
+  `internallyTangent_iff_externallyTangent_antipode` — the antipodal pole swap **exchanges
+  the two tangency types in both directions**, a purely spherical effect with no Euclidean
+  analogue.
 -/
 import Mathlib
 import Proofs.FeuerbachsTheoremOQ04
@@ -92,6 +99,41 @@ theorem externallyTangent_iff_internallyTangent_antipode
     ExternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ InternallyTangent O₁ ρ₁ (-O₂) (Real.pi - ρ₂) := by
   unfold ExternallyTangent InternallyTangent
   rw [sdist_neg_right, abs_of_nonpos (by linarith : ρ₁ - (Real.pi - ρ₂) ≤ 0)]
+  constructor
+  · intro h; rw [h]; ring
+  · intro h; linarith
+
+/-- **Spherical distance under antipode of the first point.**  The left-slot counterpart of
+`sdist_neg_right`: `sdist (−P) Q = π − sdist P Q`, again via `arccos (−x) = π − arccos x`. -/
+theorem sdist_neg_left (P Q : E) : sdist (-P) Q = Real.pi - sdist P Q := by
+  unfold sdist
+  rw [inner_neg_left, Real.arccos_neg]
+
+/-- **The antipodal map is a spherical isometry.**  Negating *both* points leaves the
+spherical distance unchanged (`sdist (−P) (−Q) = sdist P Q`): the two sign flips of the
+inner product cancel.  This is why the antipodal map sends configurations to congruent
+configurations, and is the metric reason the two single-circle pole swaps come in a matched
+external/internal pair rather than a single rule. -/
+theorem sdist_neg_neg (P Q : E) : sdist (-P) (-Q) = sdist P Q := by
+  unfold sdist
+  rw [inner_neg_left, inner_neg_right, neg_neg]
+
+/-- **Internal tangency is external tangency to the antipodal twin** — the dual of
+`externallyTangent_iff_internallyTangent_antipode`.  Replacing the second circle by its
+antipodal description `(−O₂, π − ρ₂)` (the same circle, by `sCircle_neg_centre`) turns an
+*internal* tangency into an *external* one.  Here the governing sign condition is `ρ₁ ≤ ρ₂`
+(rather than the sum bound `ρ₁ + ρ₂ ≤ π` of the external case): it fixes the sign of
+`ρ₁ − ρ₂` so the internal `|ρ₁ − ρ₂|` opens to `ρ₂ − ρ₁`, which the distance complement
+`sdist O₁ (−O₂) = π − sdist O₁ O₂` matches against the external sum `ρ₁ + (π − ρ₂)`.
+
+Together with the external→internal direction this shows the antipodal pole swap *exchanges*
+the two tangency types in both directions — a purely spherical effect with no Euclidean
+analogue (a plane circle has a single centre and no antipodal twin). -/
+theorem internallyTangent_iff_externallyTangent_antipode
+    (O₁ O₂ : E) {ρ₁ ρ₂ : ℝ} (hle : ρ₁ ≤ ρ₂) :
+    InternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ ExternallyTangent O₁ ρ₁ (-O₂) (Real.pi - ρ₂) := by
+  unfold InternallyTangent ExternallyTangent
+  rw [sdist_neg_right, abs_of_nonpos (by linarith : ρ₁ - ρ₂ ≤ 0)]
   constructor
   · intro h; rw [h]; ring
   · intro h; linarith
