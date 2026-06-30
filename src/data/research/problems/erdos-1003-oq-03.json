@@ -1,0 +1,116 @@
+{
+  "slug": "erdos-1003-oq-03",
+  "title": "What is the true asymptotic density of solutions",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "What is the true asymptotic density of solutions? | Open question (extension) from gallery proof 'erdos-1003'.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-06-28T00:58:16.003Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS (VERIFIED 0-axiom): added the upper-density (limsup) layer — the unconditional carrier of OQ-03, since the natural-density limit is not known to exist. Key strengthening infinite_of_pos_upperDensity (positive limsup ⇒ infinite) + density uniqueness/[0,1] range. OQ itself still open (needs EPS sparsity bound).",
+    "builtItems": [
+      "Erdos1003OQ03.lean: infinite_iff_count_unbounded, infinite_of_pos_density, hasNaturalDensity_zero_of_finite, count monotone/le, density ratio bounds, mem_filter_iff, def HasNaturalDensity — 177 lines, 8 thms, 3 defs, 0 sorry/0 axiom VERIFIED.",
+      "Gallery entry src/data/proofs/erdos-1003-oq-03 (meta + 5 annotations).",
+      "Erdos1003OQ03.lean (now 256 lines, 17 thm, 4 def, 0 sorry/0 axiom VERIFIED): added upperDensity (limsup) def + isBoundedUnder_ratio/isCoboundedUnder_ratio, upperDensity_nonneg, upperDensity_le_one, upperDensity_eq_of_hasNaturalDensity (=h.limsup_eq), upperDensity_zero_of_finite, infinite_of_pos_upperDensity, plus hasNaturalDensity_unique and hasNaturalDensity_mem_Icc."
+    ],
+    "insights": [
+      "OQ-03 (true asymptotic density of {n | φ(n)=φ(n+1)}) is open: set conjectured infinite (#1003, open even base case), density conjectured 0 (EPS bound x/exp((log x)^{1/3})).",
+      "Bridge: solution set infinite IFF counting function count(N)=#{n≤N: φ(n)=φ(n+1)} unbounded — connects density view to infinitude view of #1003/OQ-02.",
+      "Positive natural density ⇒ infinite (uniqueness of limits vs finite-set density-0), so OQ-03 positive regime is at least as hard as #1003.",
+      "Finiteness ⇒ density 0 (squeeze 0 ≤ count/(N+1) ≤ C/(N+1) → 0); conjectured value 0 is the finiteness baseline, strictly weaker than infinitude.",
+      "Upper density (limsup of count(N)/(N+1)) is the correct UNCONDITIONAL object for OQ-03: the natural-density LIMIT is not known to exist, but the limsup always exists for the bounded ratio sequence. This sharpens infinite_of_pos_density to infinite_of_pos_upperDensity — positive limsup forces infinitude without assuming convergence."
+    ],
+    "mathlibGaps": [
+      "EPS upper bound #{n≤x: φ(n)=φ(n+1)} ≤ x/exp((log x)^{1/3}) absent from Mathlib; cited as external input, not formalized."
+    ],
+    "nextSteps": [
+      "Formalize EPS sparsity bound for unconditional limsup density 0.",
+      "Formalize upper-density (limsup) vs limit; density existence is itself open.",
+      "Relate upperDensity = 0 to o(N) growth of countConsecutiveEqual (limsup characterisation), the unconditional restatement of the conjectured density-0 answer; EPS sparsity bound would then give upperDensity = 0 unconditionally — still the sole hard external input."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "totient-function",
+    "consecutive-values",
+    "asymptotic-density",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1003",
+    "erdos-1003-oq-02",
+    "erdos-1003-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-28T00:58:16.003Z",
+  "lastUpdate": "2026-06-28",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1003OQ02.lean",
+      "filename": "Erdos1003OQ02.lean",
+      "lineCount": 159,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1003OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1003OQ03.lean",
+      "filename": "Erdos1003OQ03.lean",
+      "lineCount": 178,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1003OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1003Problem.lean",
+      "filename": "Erdos1003Problem.lean",
+      "lineCount": 262,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1003Problem.lean"
+    }
+  ]
+}

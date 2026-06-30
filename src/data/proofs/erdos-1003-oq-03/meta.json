@@ -20,9 +20,9 @@
     "badge": "verified",
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 177,
-    "theoremCount": 8,
-    "definitionCount": 3,
+    "lineCount": 256,
+    "theoremCount": 17,
+    "definitionCount": 4,
     "dateAdded": "2026-06-28",
     "assumptions": "0 sorries, 0 axioms (only propext / Classical.choice / Quot.sound, the foundational Lean axioms). Fully machine-verified; no native_decide. Does NOT resolve the open question — it formalizes the logical scaffolding of the density question and its exact relationship to the (open) infinitude conjecture.",
     "originalContributions": [
@@ -30,7 +30,8 @@
       "infinite_of_pos_density: a positive natural density resolves #1003. If HasNaturalDensity d with d > 0, then the set is infinite. Proof: a finite set has density 0 (next item), so uniqueness of limits would force d = 0, a contradiction. Hence one cannot demonstrate any positive density without first proving the open infinitude conjecture — locating the difficulty of OQ-03 precisely.",
       "hasNaturalDensity_zero_of_finite: finiteness forces density 0. If the solution set is finite, countConsecutiveEqual N is uniformly bounded by its total cardinality C, so the ratio count/(N+1) is squeezed between 0 and C/(N+1) → 0. Consequence: the conjectured answer (density 0) is exactly the value any finite solution set would have, so 'density 0' alone is strictly weaker information than the infinitude conjecture.",
       "countConsecutiveEqual_monotone and countConsecutiveEqual_le: the counting function is monotone and bounded by N+1, and density_ratio_nonneg / density_ratio_le_one confine the density ratio to [0,1] — the elementary well-definedness facts underpinning the density predicate.",
-      "mem_filter_iff: the counted finset over Finset.range (N+1) is exactly the set of solutions ≤ N, the bookkeeping lemma threading the membership ↔ (is-a-solution ∧ ≤ N) correspondence through every proof."
+      "mem_filter_iff: the counted finset over Finset.range (N+1) is exactly the set of solutions ≤ N, the bookkeeping lemma threading the membership ↔ (is-a-solution ∧ ≤ N) correspondence through every proof.",
+      "infinite_of_pos_upperDensity (with upperDensity := limsup count(N)/(N+1)): a strengthening of infinite_of_pos_density. Since the natural-density LIMIT may fail to exist (its existence is itself part of the open question), the upper density (limsup) is the right unconditional carrier — it always exists for the bounded ratio sequence. We prove it lies in [0,1] (upperDensity_nonneg, upperDensity_le_one via the bounded/cobounded ratio lemmas), coincides with the natural density when the latter exists (upperDensity_eq_of_hasNaturalDensity, the limsup of a convergent sequence), and vanishes on finite solution sets (upperDensity_zero_of_finite). Hence a positive UPPER density already forces infinitude, with no need to assume the limit exists. Also hasNaturalDensity_unique (limit uniqueness) and hasNaturalDensity_mem_Icc (the density, when it exists, lies in [0,1])."
     ],
     "mathlibDependencies": [
       {
@@ -146,7 +147,8 @@
     "imports": [
       "Mathlib.Data.Nat.Totient",
       "Mathlib.Data.Set.Finite.Basic",
-      "Mathlib.Analysis.SpecificLimits.Basic"
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup"
     ],
     "opens": [
       "Nat",
@@ -155,10 +157,10 @@
       "Topology"
     ],
     "namespace": "Erdos1003.OQ03",
-    "lineCount": 177,
+    "lineCount": 256,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 3,
+    "theoremCount": 17,
+    "definitionCount": 4,
     "path": "Proofs/Erdos1003OQ03.lean",
     "sorries": 0
   },
