@@ -27,5 +27,224 @@
       "Transport the free group's paradoxical decomposition along the embedding to a paradoxical decomposition of S² minus a countable set (the full Hausdorff paradox)."
     ],
     "progressSummary": "COMPLETE: Hausdorff's free subgroup of SO(3) realised internally to the isometry group ℝ³ ≃ₗᵢ[ℝ] ℝ³ — forgetful bridge toLinearEquivHom, injective free embedding FreeGroup Bool →* O(3), isomorphic subgroup FreeGroup Bool ≃* S, and explicit non-commuting rotations. 6 theorems / 1 def, verified 0 sorries / 0 axioms (only propext/Classical.choice/Quot.sound; no result depends on the parent's banach_tarski axiom). Verified offline via lake env lean against the parent's axiom-stubbed lemma with explicit Mathlib imports (EXIT 0, #print axioms clean); docker down so full import build deferred to CI. PR opened."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/LebesgueMeasure.lean",
+      "filename": "LebesgueMeasure.lean",
+      "lineCount": 418,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasure.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01.lean",
+      "filename": "LebesgueMeasureOQ01.lean",
+      "lineCount": 198,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01.lean",
+      "filename": "LebesgueMeasureOQ01OQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01OQ01.lean",
+      "filename": "LebesgueMeasureOQ01OQ01OQ01.lean",
+      "lineCount": 230,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01OQ01OQ02.lean",
+      "filename": "LebesgueMeasureOQ01OQ01OQ01OQ02.lean",
+      "lineCount": 317,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02.lean",
+      "filename": "LebesgueMeasureOQ01OQ01OQ02.lean",
+      "lineCount": 241,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02OQ02.lean",
+      "filename": "LebesgueMeasureOQ01OQ01OQ02OQ02.lean",
+      "lineCount": 217,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02OQ02OQ02.lean",
+      "filename": "LebesgueMeasureOQ01OQ01OQ02OQ02OQ02.lean",
+      "lineCount": 183,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01OQ02OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02Riemann.lean",
+      "filename": "LebesgueMeasureOQ01OQ01OQ02Riemann.lean",
+      "lineCount": 69,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01OQ02Riemann.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ03.lean",
+      "filename": "LebesgueMeasureOQ01OQ03.lean",
+      "lineCount": 245,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ02.lean",
+      "filename": "LebesgueMeasureOQ02.lean",
+      "lineCount": 225,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ03.lean",
+      "filename": "LebesgueMeasureOQ03.lean",
+      "lineCount": 137,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ03.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ03OQ01.lean",
+      "filename": "LebesgueMeasureOQ03OQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ04.lean",
+      "filename": "LebesgueMeasureOQ04.lean",
+      "lineCount": 140,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ04.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ05.lean",
+      "filename": "LebesgueMeasureOQ05.lean",
+      "lineCount": 229,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ05.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ06.lean",
+      "filename": "LebesgueMeasureOQ06.lean",
+      "lineCount": 1518,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ06Aristotle.lean",
+      "filename": "LebesgueMeasureOQ06Aristotle.lean",
+      "lineCount": 76,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ06OQ01.lean",
+      "filename": "LebesgueMeasureOQ06OQ01.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "lebesgue-measure",
+    "lebesgue-measure-oq-01",
+    "lebesgue-measure-oq-01-oq-01",
+    "lebesgue-measure-oq-01-oq-01-oq-01",
+    "lebesgue-measure-oq-01-oq-01-oq-01-oq-02",
+    "lebesgue-measure-oq-01-oq-01-oq-02",
+    "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+    "lebesgue-measure-oq-01-oq-01-oq-02-oq-02",
+    "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "lebesgue-measure-oq-01-oq-03",
+    "lebesgue-measure-oq-02",
+    "lebesgue-measure-oq-03",
+    "lebesgue-measure-oq-03-oq-01",
+    "lebesgue-measure-oq-04",
+    "lebesgue-measure-oq-05",
+    "lebesgue-measure-oq-06",
+    "lebesgue-measure-oq-06-oq-01"
+  ]
 }

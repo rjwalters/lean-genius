@@ -33,6 +33,22 @@
   },
   "sections": [
     {
+      "id": "module-framing",
+      "title": "Overview and Honest Scope",
+      "startLine": 4,
+      "endLine": 48,
+      "summary": "Module docstring. Both results reduce to the parent's scalar series tietze_extension_via_tsum without re-running the limit: the interval form by an affine shift, the vector form componentwise against a common ℓ∞ bound. The scope note is explicit — the scalar Urysohn step does not reach a general infinite-dimensional Banach codomain, only closed intervals and finite products ι → ℝ under ℓ∞.",
+      "mathContext": "$f:s\\to[a,b]\\rightsquigarrow G:X\\to[a,b];\\quad \\|f x\\|_\\infty\\le M\\rightsquigarrow\\|G y\\|_\\infty\\le M.$"
+    },
+    {
+      "id": "setup-variables",
+      "title": "Ambient Setup",
+      "startLine": 50,
+      "endLine": 55,
+      "summary": "The TietzeIntervalVector namespace opens Set and fixes a normal space X with a closed set s ⊆ X — the minimal hypotheses for Urysohn's lemma and the parent series. Each theorem adds only the data f and its target constraint.",
+      "mathContext": "$X$ normal, $s \\subseteq X$ closed."
+    },
+    {
       "id": "interval-constrained",
       "title": "Tietze into an Arbitrary Closed Interval",
       "startLine": 56,

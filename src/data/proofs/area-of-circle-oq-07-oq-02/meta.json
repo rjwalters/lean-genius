@@ -63,6 +63,45 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "The Gaussian integral ∫_ℝ e^{-x²} dx = √π is one of the most celebrated definite integrals in analysis. It has no elementary antiderivative (the function e^{-x²} is not integrable in closed form), and the value √π is classically obtained by Poisson's trick: squaring the integral and evaluating the resulting 2D integral over the plane in polar coordinates, where the Jacobian r dr dθ produces the factor of π — the same circle-area Jacobian that gives this problem family its 'area-of-circle' lineage. The constant underlies the normalization of the normal distribution in probability and the heat kernel in PDE. This entry studies the integral over the positive half-line (0, ∞) rather than all of ℝ, the natural domain of the half-normal distribution.",
+    "problemStatement": "What is the value of the Gaussian integral taken over the positive half-line (0, ∞) instead of all of ℝ? Concretely, evaluate $\\int_0^\\infty e^{-b x^2}\\,dx$ and relate it back to the parent's full-line value.",
+    "proofStrategy": "Three short steps on top of Mathlib. (1) half_gaussian_integral records the half-line value ∫_{(0,∞)} e^{-b x²} = √(π/b)/2 directly from Mathlib's integral_gaussian_Ioi. (2) gaussian_full_eq_two_mul_half proves the even-symmetry bridge ∫_ℝ e^{-x²} = 2·∫_{(0,∞)} e^{-x²}: rewrite the integrand as f(|x|) with f y = e^{-y²} (legal because |x|² = x², via sq_abs) and apply integral_comp_abs, the even-function reflection identity. (3) gaussian_integral_eq_sqrt_pi composes the bridge with the b = 1 half-line value √π/2 to re-derive the parent's √π — an independent route through Set.Ioi 0 and reflection rather than through the parametrized full-line integral_gaussian.",
+    "keyInsights": [
+      "**The half-line carries exactly half the mass.** Because e^{-b x²} is even, ∫_{(0,∞)} = √(π/b)/2 is precisely half of the full-line √(π/b) — the entry turns the informal remark 'the Gaussian is symmetric' into the explicit machine-checked identity.",
+      "**The even-symmetry bridge is the real content.** gaussian_full_eq_two_mul_half (∫_ℝ = 2·∫_{(0,∞)}) is what makes this a genuine extension rather than a notational variant; it is obtained from integral_comp_abs by recognizing e^{-x²} = e^{-|x|²} through sq_abs.",
+      "**An independent route to √π.** Recovering ∫_ℝ e^{-x²} = √π from the half-line value (rather than from the parent's parametrized integral_gaussian at b = 1) gives a genuinely different proof path to the same normalization constant.",
+      "**Degeneracy at b ≤ 0 is handled silently.** Like Mathlib's full-line version, integral_gaussian_Ioi evaluates to 0 for b ≤ 0 (where e^{-b x²} is not integrable), so half_gaussian_integral holds for every real b without a positivity hypothesis."
+    ],
+    "prerequisites": [
+      "Lebesgue integration over ℝ and over Set.Ioi 0 (MeasureTheory)",
+      "Even functions and the reflection identity ∫ f(|x|) = 2∫_{(0,∞)} f",
+      "The Gaussian integral and Real.sqrt / Real.pi API"
+    ]
+  },
+  "sections": [
+    {
+      "id": "half-line-value",
+      "title": "The half-line Gaussian value",
+      "startLine": 34,
+      "endLine": 38,
+      "summary": "half_gaussian_integral: ∫_{(0,∞)} e^{-b x²} = √(π/b)/2 for every real b, stated directly from Mathlib's integral_gaussian_Ioi (which also returns 0 for b ≤ 0, where the integrand is not integrable)."
+    },
+    {
+      "id": "symmetry-bridge",
+      "title": "The even-symmetry bridge",
+      "startLine": 40,
+      "endLine": 49,
+      "summary": "gaussian_full_eq_two_mul_half: ∫_ℝ e^{-x²} = 2·∫_{(0,∞)} e^{-x²}. The integrand is rewritten as f(|x|) with f y = e^{-y²} (using sq_abs: |x|² = x²) and integral_comp_abs supplies the reflection identity — making 'half the mass on each side' an explicit theorem."
+    },
+    {
+      "id": "recover-sqrt-pi",
+      "title": "Recovering the parent's √π",
+      "startLine": 51,
+      "endLine": 64,
+      "summary": "half_gaussian_integral_one specializes the half-line value to b = 1 (√π/2); gaussian_integral_eq_sqrt_pi then composes it with the symmetry bridge to re-derive ∫_ℝ e^{-x²} = √π along an independent route through Set.Ioi 0, closing with ring."
+    }
+  ],
   "openQuestions": [
     {
       "id": "area-of-circle-oq-07-oq-02-oq-01",

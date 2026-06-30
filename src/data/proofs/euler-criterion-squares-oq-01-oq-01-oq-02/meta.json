@@ -143,6 +143,14 @@
       "type": "book"
     }
   ],
-  "conclusion": "The nonzero quadratic residues modulo a prime p > 3 sum to zero in ZMod p. The proof is the additive counterpart of the parent's count: the residues are closed under multiplication, so scaling by a fixed nonzero square (the explicit 4 = 2²) permutes them and fixes their sum S, giving (4−1)·S = 3·S = 0; since 3 ≠ 0 in the field for p > 3, S = 0. The argument is the prototypical 'a nontrivial multiplicative scaling fixes a sum, so a field forces the sum to zero' template, and is genuinely distinct from Mathlib's character-value sum quadraticChar_sum_zero. Fully machine-checked: 12 theorems, 1 definition, 0 sorries, 0 axioms, no native_decide.",
+  "conclusion": {
+    "summary": "The nonzero quadratic residues modulo a prime p > 3 sum to zero in ZMod p. The proof is the additive counterpart of the parent's count: the residues are closed under multiplication, so scaling by a fixed nonzero square (the explicit 4 = 2²) permutes them and fixes their sum S, giving (4−1)·S = 3·S = 0; since 3 ≠ 0 in the field for p > 3, S = 0. Fully machine-checked: 12 theorems, 1 definition, 0 sorries, 0 axioms, no native_decide.",
+    "implications": "The argument is the prototypical 'a nontrivial multiplicative scaling fixes a sum, so a field forces the sum to zero' template, which recurs throughout number theory (vanishing character sums, Gaussian periods, Gauss-sum magnitudes). It is genuinely distinct from Mathlib's character-value sum quadraticChar_sum_zero: that result sums the ±1 character values over all of ZMod p, whereas here the residue elements themselves are added over the residue subset — a different object with no existing Mathlib lemma. The sharp threshold p > 3 (rather than merely p odd) is also exposed: at p = 3 the witness t = 4 = 1 and the cancellation factor 3 = 0 collapse, and the lone residue sum is genuinely nonzero.",
+    "openQuestions": [
+      "Does the same scaling-bijection mechanism compute the sum of the k-th power residues (the cosets of the index-k subgroup of (ℤ/pℤ)ˣ), and when does that sum vanish?",
+      "Can the argument be abstracted to any nontrivial finite multiplicative subgroup of an arbitrary field, yielding a single lemma that subsumes the residue case?",
+      "What is the additive companion result for the nonzero quadratic non-residues, and does scaling invariance pin down their sum directly?"
+    ]
+  },
   "sorries": []
 }

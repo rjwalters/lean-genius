@@ -1,39 +1,65 @@
 {
   "slug": "cramers-rule-oq-02-oq-01",
-  "title": "cramers-rule-oq-02-oq-01",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Exact Gaussian-elimination cost: tightening n³ to (n³ − n)/3",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Forward Gaussian elimination of an n×n system costs gaussExactOps n = ∑_{j<n}(j²+j) multiplications+divisions, with 3·gaussExactOps n + n = n³, i.e. gaussExactOps n = (n³ − n)/3.",
+    "plain": "The parent Cramer-vs-Gauss entry bounds Gaussian elimination by the loose n³ multiplication model. This entry proves the exact leading count is (n³ − n)/3 — the classic 'n³/3 flops' — tightening the model by a factor of ~3 while keeping every comparison conclusion.",
+    "whyMatters": [
+      "Pins down the exact leading constant (1/3) behind the textbook flop count for Gaussian elimination / LU factorization.",
+      "Upgrades the parent's loose, axiomatized n³ model to a fully kernel-checked exact closed form (no native_decide, axiom-free)."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "gaussExactOps n = ∑_{j<n}(j²+j) — exact per-step model (j divisions + j² multiplications at the step with j rows below the pivot).",
+      "gaussExactOps_closed: 3·gaussExactOps n + n = n³ (subtraction-free closed form, induction + ring in the ℕ semiring).",
+      "gaussExactOps_eq_div: gaussExactOps n = (n³ − n)/3 (textbook n³/3 flop count).",
+      "gaussExactOps_le_cube and gaussExactOps_lt_cube: ≤ n³ always, strict for n ≥ 2 (the factor-3 tightening is genuine).",
+      "gaussExact_beats_cramer: the tighter model still beats Cramer's rule for n ≥ 4, a fortiori from the parent gauss_beats_cramer."
+    ],
+    "open": [
+      "Separately counting additions/subtractions (~n³/3 each) and the right-hand-side back-substitution cost for the full ~2n³/3 flop total.",
+      "Generalizing to block / Strassen-style elimination where the leading constant changes."
+    ],
+    "goal": "Replace the loose n³ Gaussian-elimination model with the exact (n³ − n)/3 count and confirm the Cramer-vs-Gauss verdict is preserved."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-30T11:35:18-07:00",
+    "phase": "COMPLETE",
+    "since": "2026-06-26",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Exact (n³ − n)/3 operation count formalized and proved axiom-free.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — deliverable complete (CramersRuleOQ02OQ01.lean, gallery entry added).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "ACT (researcher-9, 2026-06-26): Created Proofs/CramersRuleOQ02OQ01.lean (133 LOC, axiom-free, 0 sorry, no native_decide) tightening the parent CramersRuleOQ02 Gaussian-elimination model from the loose gaussMuls n = n³ to the exact gaussExactOps n = ∑_{j<n}(j²+j) = (n³ − n)/3. Closed form 3·gaussExactOps n + n = n³ proved by induction with a subtraction-free ℕ-semiring calc (Finset.sum_range_succ + ring); division form via Nat.mul_div_cancel_left; ≤/< n³ bounds and the preserved Cramer comparison (n ≥ 4) via omega + parent gauss_beats_cramer. Docker build clean. Gallery entry src/data/proofs/cramers-rule-oq-02-oq-01 added (status verified, badge original).",
+    "builtItems": [
+      "Proofs/CramersRuleOQ02OQ01.lean — 1 def (gaussExactOps), 8 theorems/lemmas, axiom-free, 0 sorry, no native_decide.",
+      "gaussExactOps_closed: 3·gaussExactOps n + n = n³ (subtraction-free induction, ring in ℕ semiring).",
+      "gaussExactOps_eq_div: gaussExactOps n = (n³ − n)/3 — exact n³/3 flop count.",
+      "gaussExactOps_lt_cube: strict tightening below n³ for n ≥ 2; gaussExact_beats_cramer: comparison preserved for n ≥ 4.",
+      "Gallery entry src/data/proofs/cramers-rule-oq-02-oq-01 (meta.json) documenting the exact model."
+    ],
+    "insights": [
+      "Stating the closed form subtraction-free as 3·ops + n = n³ keeps the induction in the ℕ semiring so plain `ring` closes the successor step; the (n³ − n)/3 division form is then a one-line corollary. linear_combination would not work here because ℕ is not a ring.",
+      "A tighter cost for the comparison winner can never overturn the comparison: gaussExactOps n ≤ n³ = gaussMuls n lets gaussExact_beats_cramer inherit the parent's n ≥ 4 verdict for free.",
+      "omega abstracts n³ and the Finset sum as opaque non-negative atoms linked only by the linear closed-form hypothesis, which suffices for both the ≤ and strict-< bounds without any cubic reasoning.",
+      "Deriving the concrete small-n counts (2,8,20,40) from the closed form via omega instead of native_decide keeps the file free of Lean.ofReduceBool — verified/original rather than the parent's axiomatized status."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Count additions/subtractions (~n³/3 each) and back-substitution for the full ~2n³/3 flop total.",
+      "Relate to Mathlib's LU / Matrix infrastructure if an algorithmic operation-count API is added."
+    ],
     "markdown": "# Knowledge Base: cramers-rule-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -50,6 +76,8 @@
     "cramers-rule-oq-03",
     "cramers-rule-oq-04",
     "cramers-rule-oq-04-oq-01",
+    "cramers-rule-oq-04-oq-01-oq-01",
+    "cramers-rule-oq-04-oq-01-oq-01-oq-01",
     "cramers-rule-oq-05"
   ],
   "references": {
@@ -107,11 +135,11 @@
     {
       "path": "Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean",
       "filename": "CramersRuleOQ01OQ02OQ01OQ01.lean",
-      "lineCount": 378,
-      "theoremCount": 10,
+      "lineCount": 520,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 8,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean"
     },
@@ -202,6 +230,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ04OQ01OQ01.lean",
+      "filename": "CramersRuleOQ04OQ01OQ01.lean",
+      "lineCount": 110,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ04OQ01OQ01OQ01.lean",
+      "filename": "CramersRuleOQ04OQ01OQ01OQ01.lean",
+      "lineCount": 159,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/CramersRuleOQ05.lean",

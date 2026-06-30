@@ -133,4 +133,64 @@ theorem intermediateField_eq_bot_or_top (K : IntermediateField ℝ ℂ) :
     rw [e.map_bot]
     exact OrderDual.toDual.injective (by simpa using h)
 
+/-! ## Part 6: naming the generator — complex conjugation
+
+Parts 2–3 establish that `Gal(ℂ/ℝ)` is *abstractly* cyclic of order 2, but the
+`isCyclic_of_prime_card` route never exhibits a generator: it only knows such a
+group is `≅ ℤ/2ℤ`. Here we make the identification concrete. The nontrivial
+element is **complex conjugation** `conjAe : ℂ ≃ₐ[ℝ] ℂ`, and we prove the three
+facts that pin the group down completely:
+
+* `conjAe ≠ 1` (it sends `i ↦ -i`);
+* every Galois automorphism is `1` or `conjAe` — i.e. `Gal(ℂ/ℝ) = {id, conj}`;
+* `conjAe` generates the whole group, with order exactly `2`.
+
+The enumeration uses Mathlib's `Complex.real_algHom_eq_id_or_conj`, which says the
+only `ℝ`-algebra *homomorphisms* `ℂ → ℂ` are the identity and conjugation; lifting
+this to `≃ₐ` gives the full structure of the Galois group. -/
+
+/-- **Complex conjugation is the nontrivial automorphism.** `conjAe ≠ 1` because it
+    sends `i` to `-i`, whereas the identity fixes `i`. -/
+theorem conjAe_ne_one : (conjAe : ℂ ≃ₐ[ℝ] ℂ) ≠ 1 := by
+  intro h
+  have hI : conjAe I = I := by rw [h, AlgEquiv.one_apply]
+  rw [conjAe_coe, conj_I] at hI
+  exact I_ne_zero (by linear_combination (-1/2 : ℂ) * hI)
+
+/-- **`Gal(ℂ/ℝ) = {id, conj}`.** Every `ℝ`-algebra automorphism of ℂ is either the
+    identity or complex conjugation. This upgrades the abstract `IsCyclic` of Part 2
+    to a concrete enumeration: the two elements are `1` and `conjAe`. -/
+theorem galoisGroup_eq_one_or_conj (σ : ℂ ≃ₐ[ℝ] ℂ) :
+    σ = 1 ∨ σ = conjAe := by
+  rcases Complex.real_algHom_eq_id_or_conj σ.toAlgHom with h | h
+  · left
+    apply AlgEquiv.ext
+    intro x
+    have hx := DFunLike.congr_fun h x
+    simpa using hx
+  · right
+    apply AlgEquiv.ext
+    intro x
+    have hx := DFunLike.congr_fun h x
+    simpa using hx
+
+/-- **Complex conjugation generates `Gal(ℂ/ℝ)`.** The cyclic subgroup it generates
+    is the whole group: it is not `⊥` (since `conjAe ≠ 1`), so by Part 4 it is `⊤`. -/
+theorem zpowers_conjAe_eq_top :
+    Subgroup.zpowers (conjAe : ℂ ≃ₐ[ℝ] ℂ) = ⊤ := by
+  rcases subgroup_eq_bot_or_top (Subgroup.zpowers (conjAe : ℂ ≃ₐ[ℝ] ℂ)) with h | h
+  · exfalso
+    have hmem : (conjAe : ℂ ≃ₐ[ℝ] ℂ) ∈ Subgroup.zpowers (conjAe : ℂ ≃ₐ[ℝ] ℂ) :=
+      Subgroup.mem_zpowers _
+    rw [h, Subgroup.mem_bot] at hmem
+    exact conjAe_ne_one hmem
+  · exact h
+
+/-- **`conjAe` has order 2.** Equivalently, `conjAe² = 1` and `conjAe ≠ 1`: the order
+    of the generator equals the cardinality of the group it generates, which is the
+    whole order-2 Galois group. -/
+theorem orderOf_conjAe : orderOf (conjAe : ℂ ≃ₐ[ℝ] ℂ) = 2 := by
+  rw [← Nat.card_zpowers, zpowers_conjAe_eq_top, Subgroup.card_top,
+    card_galoisGroup_eq_two]
+
 end FTAGaloisCorrespondence

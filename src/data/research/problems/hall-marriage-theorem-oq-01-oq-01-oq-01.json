@@ -31,7 +31,11 @@
     "focus": "Solved: deficiency Finset-sup + IsGreatest closed form, verified 0-axiom.",
     "blockers": [],
     "nextAction": "PR opened; entry complete.",
-    "attemptCounts": { "total": 0, "currentApproach": 0, "approachesTried": 0 }
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
     "progressSummary": "COMPLETE: closed-form maximum partial transversal = #ι − δ proved via the parent defect theorem, δ packaged as a Finset.sup, verified 0-axiom (PR research/hall-deficiency-maxtransversal-oq01010101). Recovers Hall's full SDR at δ = 0.",
@@ -68,24 +72,75 @@
   ],
   "relatedProofs": [
     "hall-marriage-theorem-oq-01",
-    "hall-marriage-theorem-oq-01-oq-01"
+    "hall-marriage-theorem-oq-01-oq-01",
+    "hall-marriage-theorem-oq-01-oq-01-oq-01",
+    "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "hall-marriage-theorem-oq-01-oq-02"
   ],
-  "references": { "papers": [], "urls": [], "mathlib": [] },
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
   "started": "2026-06-24T17:20:00.000Z",
   "lastUpdate": "2026-06-24T17:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/HallMarriageTheoremOQ01.lean",
+      "filename": "HallMarriageTheoremOQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HallMarriageTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/HallMarriageTheoremOQ01OQ01.lean",
+      "filename": "HallMarriageTheoremOQ01OQ01.lean",
+      "lineCount": 214,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HallMarriageTheoremOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/HallMarriageTheoremOQ01OQ01OQ01.lean",
       "filename": "HallMarriageTheoremOQ01OQ01OQ01.lean",
-      "lineCount": 131,
+      "lineCount": 132,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HallMarriageTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/HallMarriageTheoremOQ01OQ01OQ01OQ01.lean",
+      "filename": "HallMarriageTheoremOQ01OQ01OQ01OQ01.lean",
+      "lineCount": 128,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HallMarriageTheoremOQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/HallMarriageTheoremOQ01OQ02.lean",
+      "filename": "HallMarriageTheoremOQ01OQ02.lean",
+      "lineCount": 187,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HallMarriageTheoremOQ01OQ02.lean"
     }
   ]
 }

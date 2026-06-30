@@ -54,7 +54,8 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-12",
-    "erdos-120"
+    "erdos-120",
+    "erdos-1209"
   ],
   "references": {
     "papers": [],
@@ -64,5 +65,18 @@
   "started": "2026-04-16T17:10:06.887Z",
   "lastUpdate": "2026-04-21T11:09:40.249Z",
   "significance": 6,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1209Problem.lean",
+      "filename": "Erdos1209Problem.lean",
+      "lineCount": 208,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1209Problem.lean"
+    }
+  ]
 }

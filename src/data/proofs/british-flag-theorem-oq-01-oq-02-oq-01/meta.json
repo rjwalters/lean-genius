@@ -33,7 +33,9 @@
       "parallelepiped_defect_two_orthogonal (PROVED): orthogonal edges (⟪u₀,u₁⟫ = 0) in n = 2 force the defect to vanish — the classical British Flag Theorem recovered as a corollary, explicitly closing the loop with the parent orthotope entry",
       "alt_sum_eq_zero_of_indep (PROVED, structural heart): if g t does not change when a coordinate k is inserted into a k-free set, the signed powerset sum ∑_t (−1)^{|t|}·g t = 0; proved by pairing each subset s ⊆ univ∖{k} with insert k s (equal g-value, opposite sign). This is the finite-difference annihilation lemma that kills every coordinate-independent monomial",
       "sqDist_expand (PROVED, support): the explicit degree-≤2 inner-product expansion ‖X − vertex t‖² = ‖X−c‖² − 2∑_{i∈t}⟪X−c,uᵢ⟫ + ∑_{i∈t}∑_{j∈t}⟪uᵢ,uⱼ⟫, exhibiting the squared distance as a quadratic in the membership indicators",
-      "const_term_zero / linear_term_zero / quadratic_term_zero (PROVED): the constant, linear, and quadratic pieces of the expansion have vanishing alternating sum for n ≥ 1, n ≥ 2, n ≥ 3 respectively — each reduced to alt_sum_eq_zero_of_indep by exhibiting an unused coordinate, the degree-vs-dimension threshold that makes n ≥ 3 the exact hypothesis for total vanishing"
+      "const_term_zero / linear_term_zero / quadratic_term_zero (PROVED): the constant, linear, and quadratic pieces of the expansion have vanishing alternating sum for n ≥ 1, n ≥ 2, n ≥ 3 respectively — each reduced to alt_sum_eq_zero_of_indep by exhibiting an unused coordinate, the degree-vs-dimension threshold that makes n ≥ 3 the exact hypothesis for total vanishing",
+      "fourth_moment_defect_eq_zero (PROVED, FOLLOW-UP — Proofs/BritishFlagFourthMomentOQ010201.lean): the parent's first open question (higher moments) settled for the fourth moment. defect_4 = signed powerset sum of ||X - vertex t||^4 is identically 0 for n >= 5, any observer X, base c, and arbitrary skew edges u. Mechanism: ||.||^4 = (||.||^2)^2 is degree-4 in the indicators, expanded into six pieces of degrees 0,1,2,2,3,4 (via sqDist_expand and ring), each annihilated by the signed powerset sum; the binding piece is degree 4, requiring n >= 5. Verified, 0-axiom, 0-sorry",
+      "monomial_term_zero (PROVED, FOLLOW-UP — the finite-difference principle abstracted): for any proper subset S != univ, signed powerset sum of [S subseteq t] = 0 — a ~12-line consequence of alt_sum_eq_zero_of_indep (pick a coordinate k notin S; the indicator [S subseteq .] is k-independent). S = empty, {i}, {i,j} recover the parent's const/linear/quadratic pieces; |S| = 3, 4 give the new cubic_term_zero (n >= 4) and quartic_term_zero (n >= 5) that drive the fourth-moment vanishing"
     ],
     "mathlibDependencies": [
       {
@@ -158,7 +160,7 @@
     "summary": "Machine-verified in an arbitrary real inner product space: the British Flag defect of a general parallelepiped is the n-th finite difference of the degree-2 squared-distance polynomial, hence identically zero for n ≥ 3 (independent of observer, base, and edges) and equal to 2⟪u₀,u₁⟫ for n = 2. The orthotope of the parent and the parallelogram defect of the sibling are unified as the two slices of one formula; orthogonal n = 2 edges recover the classical theorem. Zero sorries, zero extra axioms.",
     "implications": "**General defect formula proved**: the parent's first open question is settled in full generality — for n ≥ 3 the alternating vertex sum vanishes for every parallelepiped, skew or not, answering 'prove the general defect formula' affirmatively with the cleanest possible answer (it is zero).\\n\\n**Sharp dimension threshold**: n ≥ 3 is exactly the regime of unconditional vanishing because the squared distance has degree exactly 2; n = 2 is the boundary where the top monomial survives as 2⟪u₀,u₁⟫ and n = 1 is observer-dependent.\\n\\n**Finite differences as the organizing principle**: recasting the metric defect as an iterated finite difference on the Boolean cube explains both the vanishing and the surviving defect in one stroke, and generalizes to any vertex functional that is polynomial of bounded degree in the indicators.",
     "openQuestions": [
-      "Higher moments: replace ‖X − vertex‖² by ‖X − vertex‖^{2k}. This is a degree-2k polynomial in the indicators, so the defect should vanish for n ≥ 2k+1 and have an explicit top-degree defect at the threshold n = 2k — determine that defect (a sum over perfect matchings / pairings of the 2k edge slots) and the sharp dimension boundary.",
+      "Higher moments (FOURTH MOMENT NOW PROVED — Proofs/BritishFlagFourthMomentOQ010201.lean): replacing ||X - vertex||^2 by ||X - vertex||^(2k) gives a degree-2k polynomial in the indicators, so the defect vanishes for n >= 2k+1. The k = 2 case is settled: fourth_moment_defect_eq_zero proves defect_4 = 0 for n >= 5, organized around the abstracted finite-difference lemma monomial_term_zero (signed powerset sum of [S subseteq t] = 0 for S != univ). STILL OPEN: (a) the explicit top-degree defect at the threshold n = 2k (for k = 2, n = 4, it is 8*(<u0,u1><u2,u3> + <u0,u2><u1,u3> + <u0,u3><u1,u2>), a sum over perfect matchings of the 2k edge slots — computed on paper, not yet formalized); (b) the general 2k-th moment for all k via a single variadic finite-difference lemma.",
       "Exact n = 2 defect in terms of signed area: ⟪u₀,u₁⟫ = ‖u₀‖‖u₁‖cos θ; relate the defect 2⟪u₀,u₁⟫ to the deviation of the parallelogram from a rectangle and to the discrete Laplacian / mixed second difference of the squared-distance field over the cube."
     ]
   },
@@ -192,6 +194,18 @@
       "type": "supporting",
       "description": "Degree-≤2 inner-product expansion of the squared distance to a parallelepiped vertex.",
       "leanType": "(X c : V) → (u : Fin n → V) → (t : Finset (Fin n)) → sqDist X c u t = ‖X − c‖² − 2 * (∑ i ∈ t, ⟪X − c, u i⟫) + ∑ i ∈ t, ∑ j ∈ t, ⟪u i, u j⟫"
+    },
+    {
+      "name": "fourth_moment_defect_eq_zero",
+      "type": "core",
+      "description": "Follow-up (Proofs/BritishFlagFourthMomentOQ010201.lean): the fourth-moment defect (alternating sum of ||X - vertex t||^4) is identically zero for n >= 5, for any observer X, base c, and arbitrary skew edges u — the first higher-moment case of the parent's open question.",
+      "leanType": "(hn : 5 <= n) -> (X c : V) -> (u : Fin n -> V) -> defect4 X c u = 0"
+    },
+    {
+      "name": "monomial_term_zero",
+      "type": "supporting",
+      "description": "Follow-up (Proofs/BritishFlagFourthMomentOQ010201.lean): the finite-difference principle abstracted — for any proper subset S != univ, the signed powerset sum of the indicator [S subseteq t] vanishes. Recovers the parent's const/linear/quadratic pieces (S = empty, {i}, {i,j}) and drives cubic_term_zero / quartic_term_zero.",
+      "leanType": "(S : Finset (Fin n)) -> S != univ -> (a : R) -> signed powerset sum of (if S subseteq t then a else 0) = 0"
     }
   ],
   "sorries": 0,
@@ -227,6 +241,19 @@
       "year": "2011",
       "venue": "Cambridge University Press",
       "note": "Inclusion–exclusion and alternating subset sums; here read as iterated finite differences on the Boolean cube, the mechanism behind the degree-vs-dimension vanishing."
+    }
+  ],
+  "additionalFiles": [
+    {
+      "path": "Proofs/BritishFlagFourthMomentOQ010201.lean",
+      "namespace": "BritishFlagFourthMomentOQ010201",
+      "lineCount": 379,
+      "axiomCount": 0,
+      "theoremCount": 7,
+      "definitionCount": 2,
+      "sorries": 0,
+      "description": "Fourth-moment follow-up. Imports the primary file and reuses alt_sum_eq_zero_of_indep, sqDist_expand, and the parent's const/linear/quadratic term lemmas. Adds monomial_term_zero (finite-difference principle), cubic_term_zero (n >= 4), quartic_term_zero (n >= 5), sqDist4/defect4, and the headline fourth_moment_defect_eq_zero (defect_4 = 0 for n >= 5). Verified, 0-axiom, 0-sorry.",
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BritishFlagFourthMomentOQ010201.lean"
     }
   ]
 }

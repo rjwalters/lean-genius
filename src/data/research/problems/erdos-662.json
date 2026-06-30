@@ -21,7 +21,7 @@
     "iteration": 3,
     "focus": "Gallery already at max potential: 0 sorries, 1 axiom (erdos_662_lattice_optimal — main open conjecture, unprovable). All supporting work (kissing_number_2d, contact_number_3n, etc.) is fully proved. Pool entry marked completed 2026-04-27 by researcher-4.",
     "blockers": [],
-    "nextAction": "Problem at maximum formalization potential — only axiom is the open conjecture.",
+    "nextAction": "Open content remains thresholds t>1 (e.g. t=√3: need ≤12 bound — kissing argument fails for distances up to √3 since equilateral configs at distance √3 are allowed).",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A appropriate (erdos_662_lattice_optimal open conjecture), 9T proved, 0S.",
+    "progressSummary": "COMPLETE+: t=1 case now a THEOREM (erdos_662_unit_case, unconditional). 11T proved (was 9), 1 open axiom (general t), native_decide count facts disclosed. File bitrot-repaired to compile on pinned mathlib v4.26.0.",
     "builtItems": [
       {
         "name": "triLatticeNorm",
@@ -67,7 +67,9 @@
       "The argmax-to-hexagon-vertex approach FAILS: two vectors close to same vertex can have angle up to 2π/3, giving dot product as low as -1/2",
       "Algebraic (Gram matrix) approaches fail: Tr(G²) ≥ n²/2 gives Σ(v·w)² ≥ n(n-2)/4 = 35/4 for n=7, but constraint v·w ≤ 1/2 doesn't bound |v·w| ≤ 1/2 (antipodal pairs have dot=-1), so Σ(v·w)² can reach C(7,2)=21, no contradiction",
       "Verified: algebraic approach with Cauchy-Schwarz on eigenvalues also fails — rank-2 PSD matrix with diagonal 1 and off-diagonal ≤ 1/2 exists for n=7 when negative entries are allowed",
-      "Bin definition challenge: 6 half-open sectors [kπ/3, (k+1)π/3) need algebraic characterization. Using y > √3/2, y < -√3/2, and x vs ±1/2 comparisons works but boundary handling at the 6 hexagonal directions (1/2, √3/2) etc. is fiddly"
+      "Bin definition challenge: 6 half-open sectors [kπ/3, (k+1)π/3) need algebraic characterization. Using y > √3/2, y < -√3/2, and x vs ±1/2 comparisons works but boundary handling at the 6 hexagonal directions (1/2, √3/2) etc. is fiddly",
+      "t=1 case SETTLED unconditionally (erdos_662_unit_case): for every 1-separated finite set, pairsWithinDist pts 1 ≤ pts.card·triangularLatticeCount 1/2 = 3n. Because triangularLatticeCount 1 = 6 and contact_number_3n already gives ≤3n. Strictly stronger than the conjecture's threshold form — no 'large n' needed (witness N=0 in erdos_662_unit_case_threshold). Open content lies entirely in thresholds t>1.",
+      "BITROT FIX (mathlib 2df2f015 / v4.26.0): the file had stopped compiling against the pinned mathlib. Fixed Complex.norm_eq_abs→Complex.norm_def; div_lt_iff→div_lt_iff₀; le_or_lt→le_or_gt; and rewrote abs_sub_lt_of_floor_eq to scale via div_lt_one/abs_div instead of nlinarith-on-division. File now compiles green (offline lake env lean, 0 errors)."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -87,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T18:22:04.304Z",
-  "lastUpdate": "2026-03-26T18:00:00Z",
+  "lastUpdate": "2026-06-27T00:00:00Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [

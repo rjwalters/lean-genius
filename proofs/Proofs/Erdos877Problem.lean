@@ -255,6 +255,26 @@ The constant C_n depends on n mod 4, reflecting the structure of
 maximal sum-free sets in each residue class.
 -/
 
+/--
+**BLST Sharp Upper Bound (2015/2018):**
+There is a constant C > 0 with f_m(n) ≤ C · 2^{n/4} for all n ≥ 4.
+
+This is the upper-bound half of the BLST sharp asymptotics
+f_m(n) = (C_n + o(1))·2^{n/4}; it is the genuinely deep input (proved via the
+hypergraph container method) and is not available from Mathlib. Together with
+`cameron_erdos_lower_bound` it pins f_m(n) down to Θ(2^{n/4}).
+
+The exponent `n / 4` is `Nat` floor division, so `2^{n/4} ≥ 2^{n/4 (real)}/2`;
+absorbing the factor of 2 into C, this floor form is equivalent to the
+literature statement with the real exponent.
+
+Note: the weaker `luczak_schoen_theorem` (f_m(n) < 2^{cn}, c < 1/2) only suffices
+to answer the original o(2^{n/2}) question; it does NOT give the 2^{n/4} upper
+bound, which is why this separate BLST axiom is required to close `erdos_877`.
+-/
+axiom blst_upper_bound :
+    ∃ C : ℚ, C > 0 ∧ ∀ n : ℕ, n ≥ 4 → (f_m n : ℚ) ≤ C * 2 ^ (n / 4)
+
 /-
 ## Part VII: Structure of Maximal Sum-Free Sets
 -/
@@ -292,15 +312,25 @@ Cameron-Erdős conjectured f(n) = Θ(2^{n/2}).
 -/
 
 /--
-**Comparison:**
-- f(n) = Θ(2^{n/2}): All sum-free sets
-- f_m(n) = Θ(2^{n/4}): Maximal sum-free sets
-The ratio f_m(n)/f(n) → 0 as n → ∞.
+**Comparison (maximal vs all):**
+For n ≥ 4, the count of maximal sum-free subsets is sandwiched:
+`2^{n/4} ≤ f_m(n) ≤ f(n)`. The lower bound is Cameron-Erdős; the upper bound
+is the trivial inclusion (every maximal sum-free set is sum-free).
+
+The strict exponential *separation* f_m(n) ≪ f(n) — i.e. f_m(n)/f(n) → 0 — is
+the asymptotic content: it follows from `erdos_877` (f_m(n) = Θ(2^{n/4})) and
+the f(n) = Θ(2^{n/2}) bound of Erdős #748, not from a pointwise inequality.
+
+(The previous statement claimed the *pointwise* bound `f_m(n) < 2^{n/2}` for all
+n ≥ 4; that does not follow from the axiomatized bounds — `luczak_schoen_theorem`
+only gives the real-exponent inequality `f_m(n) < 2^{cn}`, which can exceed the
+floor power `2^{⌊n/2⌋}` for small n — and the o(2^{n/2}) content is already
+recorded in `main_question_resolved`.)
 -/
 theorem maximal_vs_all :
-    ∃ c : ℚ, c > 0 ∧
-      ∀ n : ℕ, n ≥ 4 → 2 ^ (n / 4) ≤ f_m n ∧ f_m n < 2 ^ (n / 2) := by
-  sorry
+    ∀ n : ℕ, n ≥ 4 → 2 ^ (n / 4) ≤ f_m n ∧ f_m n ≤ f n := by
+  intro n hn
+  exact ⟨le_of_lt (cameron_erdos_lower_bound n hn), f_m_le_f n⟩
 
 /-
 ## Part IX: Summary
@@ -336,6 +366,14 @@ theorem erdos_877 : ∃ c₁ c₂ : ℚ,
     c₁ > 0 ∧ c₂ > 0 ∧
     ∀ n : ℕ, n ≥ 4 →
       c₁ * 2 ^ (n / 4) ≤ (f_m n : ℚ) ∧ (f_m n : ℚ) ≤ c₂ * 2 ^ (n / 4) := by
-  sorry
+  -- Lower bound: Cameron-Erdős, with c₁ = 1.  Upper bound: BLST, with c₂ = C.
+  obtain ⟨C, hCpos, hCbound⟩ := blst_upper_bound
+  refine ⟨1, C, one_pos, hCpos, fun n hn => ⟨?_, hCbound n hn⟩⟩
+  -- 1 · 2^{n/4} = 2^{n/4} ≤ f_m n, from f_m n > 2^{n/4} over ℕ cast into ℚ.
+  have hlb : (2 : ℕ) ^ (n / 4) < f_m n := cameron_erdos_lower_bound n hn
+  have hq : ((2 : ℚ)) ^ (n / 4) ≤ (f_m n : ℚ) := by
+    have : (((2 : ℕ) ^ (n / 4) : ℕ) : ℚ) ≤ (f_m n : ℚ) := by exact_mod_cast hlb.le
+    simpa using this
+  simpa using hq
 
 end Erdos877

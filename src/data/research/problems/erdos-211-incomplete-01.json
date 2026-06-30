@@ -34,7 +34,11 @@
     "focus": "Shipped a self-contained 0-axiom gallery entry proving 3·(#lines) = C(n,2) for Steiner triple systems.",
     "blockers": [],
     "nextAction": "None — entry complete and verified.",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "Created a new, self-contained, 0-axiom gallery entry Erdos211SteinerLineCount.lean (176 lines, 7 theorems, 1 definition) proving that any Steiner triple system S(2,3,n) — the 3-uniform extremal configuration of Erdős #211 — has exactly n(n-1)/6 lines, by a two-way incidence count. All main theorems depend only on the foundational axioms [propext, Classical.choice, Quot.sound]. Chose NOT to touch the parent Erdos211Problem.lean: its 10 axioms are deep incidence-geometry theorems (Beck, Szemerédi–Trotter, crossing-number inequality) not session-provable from Mathlib; instead extracted and proved the honest combinatorial heart of the 1/6 constant.",
@@ -71,6 +75,8 @@
     "design-theory"
   ],
   "relatedProofs": [
+    "erdos-2",
+    "erdos-21",
     "erdos-211",
     "erdos-211-incomplete-01"
   ],

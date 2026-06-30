@@ -169,6 +169,14 @@
       "description": "The parent proves the topological (Baire-category) smallness of the algebraic reals; this entry shows category-smallness and measure-smallness are logically independent, so the parent's meagreness and the measure-zero fact are genuinely distinct theorems."
     }
   ],
-  "conclusion": "Measure-smallness and category-smallness are independent on ℝ. Dual to oq-02's comeagre null set, the complement of the Liouville numbers is a meagre set of full Lebesgue measure, and the two combine into the Oxtoby decomposition ℝ = A ⊔ B with A meagre and B null. So neither notion of smallness implies the other, and the algebraic reals being both meagre and Lebesgue-null is a conjunction of two genuinely separate facts — all formalized with zero axioms on top of the verified Liouville infrastructure.",
+  "conclusion": {
+    "summary": "Dual to oq-02's comeagre null set, this entry formalizes (0 sorries, 0 axioms, on top of the verified Liouville infrastructure) that the complement of the Liouville numbers is a meagre set of full Lebesgue measure. The abstract engine meagre_conull_compl_of_residual_null shows any residual null set has a meagre complement of full measure using only countable subadditivity of the outer measure, and instantiating it at the Liouville numbers yields the explicitly requested meagre conull witness together with the Oxtoby decomposition ℝ = A ⊔ B with A = (Liouville)ᶜ meagre and B = Liouville null.",
+    "implications": "Measure-smallness and category-smallness are genuinely independent on ℝ: neither notion of smallness implies the other (meagre_not_imp_null and null_not_imp_meagre give the two dual non-implications), and the decomposition partitions the entire line into a topologically small and a measure-theoretically small piece. Consequently the algebraic reals being both meagre and Lebesgue-null is a conjunction of two genuinely separate facts, each requiring its own proof rather than following from any general implication.",
+    "openQuestions": [
+      "Does an analogous orthogonal decomposition hold on ℝⁿ or on a general Polish group with Haar measure, and can the meagre conull witness still be taken to have an explicit number-theoretic description?",
+      "Beyond the σ-ideals of meagre and null sets, how do other notions of smallness (for example σ-porous sets or Haar-null sets) relate to this decomposition — are they comparable to either ideal, or mutually orthogonal as well?",
+      "Can the Liouville-based witness be replaced by a constructively or computably described meagre conull set, avoiding any reliance on classical comeagreness arguments?"
+    ]
+  },
   "sorries": []
 }

@@ -49,7 +49,8 @@
     "schauder-fixed-point",
     "schauder-fixed-point-oq-01",
     "schauder-fixed-point-oq-03",
-    "schauder-fixed-point-oq-03-oq-01"
+    "schauder-fixed-point-oq-03-oq-01",
+    "schauder-fixed-point-oq-04"
   ],
   "started": "2026-04-12T21:30:00Z",
   "lastUpdate": "2026-04-12T21:45:00Z",
@@ -99,6 +100,17 @@
       "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/SchauderFixedPointOQ04.lean",
+      "filename": "SchauderFixedPointOQ04.lean",
+      "lineCount": 79,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ04.lean"
     }
   ]
 }

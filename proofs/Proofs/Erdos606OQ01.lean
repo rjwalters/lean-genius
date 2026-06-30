@@ -201,4 +201,55 @@ theorem forbidden_line_counts (n : ℕ) (hn : 4 ≤ n) :
 theorem exactly_two_gaps : ({1, 3} : Set ℕ).ncard = 2 := by
   rw [Set.ncard_pair (by norm_num)]
 
+/-! ## Part IV: Robustness — larger collinear groups don't change the gap set
+
+    Parts I–III used only collinear triples (deficit `2`) and quadruples
+    (deficit `5`). One might worry that allowing richer collinear groups —
+    quintuples (`lineDeficit 5 = 9`), sextuples (`lineDeficit 6 = 14`), … —
+    could fill in one of the two gaps `1` or `3`, or create achievable deficits
+    outside `⟨2,5⟩`. It cannot: every `lineDeficit k` for `k ≥ 3` is already a
+    non-negative combination of `2` and `5`, and representable deficits are
+    closed under addition. So the achievable deficit set — and hence the
+    forbidden line counts — is unchanged by allowing groups of any size. The two
+    generators `2, 5` are therefore not merely sufficient but *canonical*. -/
+
+/-- **Closure.** The representable deficits form a numerical semigroup: a sum of
+    two representable deficits is representable. -/
+theorem representable_add {m n : ℕ} (hm : Representable m) (hn : Representable n) :
+    Representable (m + n) := by
+  obtain ⟨a, b, rfl⟩ := hm
+  obtain ⟨c, d, rfl⟩ := hn
+  exact ⟨a + c, b + d, by ring⟩
+
+/-- **Every collinear group's deficit lies in ⟨2,5⟩.** For any group size
+    `k ≥ 3`, `lineDeficit k = C(k,2) - 1` is representable. (`k = 3` gives the
+    generator `2`; every `k ≥ 4` has `C(k,2) ≥ 6`, hence deficit `≥ 5`, which is
+    representable since the only gaps are `1` and `3`.) Larger collinear groups
+    thus add no new achievable deficits beyond those from triples and
+    quadruples. -/
+theorem lineDeficit_representable (k : ℕ) (hk : 3 ≤ k) :
+    Representable (lineDeficit k) := by
+  rw [representable_iff]
+  rcases Nat.lt_or_ge k 4 with hlt | hge
+  · -- 3 ≤ k < 4, so k = 3 and lineDeficit 3 = 2
+    interval_cases k
+    decide
+  · -- k ≥ 4 ⇒ C(k,2) ≥ 6 ⇒ lineDeficit k ≥ 5
+    have h : 4 * 3 / 2 ≤ k * (k - 1) / 2 := by
+      apply Nat.div_le_div_right
+      calc 4 * 3 ≤ k * 3 := by exact Nat.mul_le_mul_right 3 hge
+        _ ≤ k * (k - 1) := by exact Nat.mul_le_mul_left k (by omega)
+    unfold lineDeficit
+    omega
+
+/-- **Gap set is robust under richer collinear groups.** Augmenting an achievable
+    configuration (deficit `d` representable) with any collinear group of size
+    `k ≥ 3` keeps the induced deficit `d + lineDeficit k` representable. The
+    achievable deficit set is closed under *all* group deficits, not only those
+    of triples and quadruples — so the only non-representable deficits remain
+    `1` and `3`. -/
+theorem deficit_closed_under_group {d k : ℕ} (hd : Representable d) (hk : 3 ≤ k) :
+    Representable (d + lineDeficit k) :=
+  representable_add hd (lineDeficit_representable k hk)
+
 end Erdos606OQ01

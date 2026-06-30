@@ -261,7 +261,7 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
       · intro u hu
         simp only [Finset.mem_insert] at hu
         exact hu.elim (fun h => h ▸ hv) (fun h => (Finset.mem_sdiff.mp (hI_sub h)).1)
-      · rw [Finset.card_insert_of_not_mem hv_notin_I]
+      · rw [Finset.card_insert_of_notMem hv_notin_I]
         calc S.card ≤ S'.card + k := hS'_card
           _ ≤ I.card * k + k := Nat.add_le_add_right hI_card k
           _ = (I.card + 1) * k := by ring
@@ -445,7 +445,7 @@ theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n) [Decid
   -- Strategy: find max-degree vertex v; its neighborhood is independent (triangle-free),
   -- and deg(v) ≥ 2*|E|/n ≥ 2*(n²/5)/n ≥ n/3.
   by_cases hn : n = 0
-  · exact ⟨∅, by simp [hn], fun _ _ ha _ _ _ => absurd ha (Finset.not_mem_empty _)⟩
+  · exact ⟨∅, by simp [hn], fun _ _ ha _ _ _ => absurd ha (Finset.notMem_empty _)⟩
   have hpos : 0 < n := Nat.pos_of_ne_zero hn
   -- Get the max-degree vertex
   have hne : (Finset.univ : Finset (Fin n)).Nonempty := ⟨⟨0, hpos⟩, Finset.mem_univ _⟩

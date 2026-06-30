@@ -34,6 +34,13 @@
   },
   "sections": [
     {
+      "id": "open-question-context",
+      "title": "Open Question & Analytic-Continuation Context",
+      "startLine": 4,
+      "endLine": 28,
+      "summary": "The module docstring states the open question — extend the real Gaussian ∫_ℝ e^{-x²} = √π (the b = 1 parent) to complex b with 0 < re b — and answers YES via Mathlib's integral_gaussian_complex. It frames the move to complex b as the analytic continuation into the right half-plane {re b > 0} underlying the Fresnel oscillatory integrals, and notes the value is now a principal (1/2)-power rather than a real square root."
+    },
+    {
       "id": "complex-gaussian",
       "title": "The Complex Gaussian Integral",
       "startLine": 32,
@@ -141,7 +148,9 @@
     "summary": "The Gaussian integral extends from the real line to the complex right half-plane: for every b : ℂ with 0 < re b, ∫_ℝ e^{-b x²} dx = (π/b)^{1/2}. This is Mathlib's integral_gaussian_complex, restated as gaussian_integral_complex. The parent's real value ∫_ℝ e^{-x²} dx = √π is recovered as the b = 1 specialization in gaussian_integral_eq_sqrt_pi_via_complex: the integrand is real-valued, so the real integral pushes through ℂ via integral_complex_ofReal, and the complex principal power (π/1)^{1/2} collapses to (√π : ℂ) via Complex.ofReal_cpow and Real.sqrt_eq_rpow. 60 lines, 2 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "The genuine content is the move to complex b: the value (π/b)^{1/2} is a complex principal power, not a real square root, and it is the analytic continuation that connects the (absolutely convergent) Gaussian regime re b > 0 to the conditionally convergent Fresnel oscillatory integrals on the boundary re b = 0. The bridge theorem shows this complex result strictly subsumes the parent, with the real √π emerging as the on-axis b = 1 value. The hard analytic work — differentiating under the integral and the polar-coordinate evaluation — lives inside Mathlib's integral_gaussian_complex; this entry's contribution is the explicit parent-recovery cast, which is the non-trivial part of connecting the complex statement to the real one.",
     "openQuestions": [
-      "Take re b → 0⁺ along b = a + i t to recover the Fresnel integrals ∫ cos(t x²), ∫ sin(t x²) from gaussian_integral_complex."
+      "Take re b → 0⁺ along b = a + i t to recover the Fresnel integrals ∫ cos(t x²), ∫ sin(t x²) from gaussian_integral_complex.",
+      "Generalize to the shifted (completing-the-square) Gaussian ∫_ℝ e^{-b x² + c x} dx = (π/b)^{1/2} e^{c²/(4b)} for b, c : ℂ with 0 < re b, and identify it with the relevant Mathlib lemma — this is the form that directly yields the Fourier transform of the Gaussian.",
+      "Specialize c = -2π i ξ in the shifted Gaussian to formalize that the Gaussian e^{-π x²} is its own Fourier transform (the eigenfunction property), connecting this entry to the Fourier-analytic side of the gallery."
     ]
   }
 }

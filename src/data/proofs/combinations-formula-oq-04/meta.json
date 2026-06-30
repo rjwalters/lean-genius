@@ -57,7 +57,19 @@
   "overview": {
     "historicalContext": "Log-concavity of the binomial coefficients — C(n,k)² ≥ C(n,k−1)·C(n,k+1) — is the prototypical example of a log-concave combinatorial sequence and the binomial instance of Newton's inequalities on the elementary symmetric functions. It is the structural reason each Pascal row first increases then decreases (unimodality). The gallery's large combinations-formula family develops binomial identities exhaustively but contains no inequality; Mathlib provides the unimodal maximum Nat.choose_le_middle but not the log-concavity that underlies it.",
     "problemStatement": "Show that each row of Pascal's triangle is log-concave: for all n and k, C(n,k)·C(n,k+2) ≤ C(n,k+1)², strictly in the interior of the row.",
-    "text": "Writing a = C(n,k), b = C(n,k+1), c = C(n,k+2) and substituting n = k+2+t to remove truncated subtraction, Mathlib's adjacent-ratio relation choose_succ_right_eq gives a·(t+2) = b·(k+1) and c·(k+2) = b·(t+1). Multiplying, a·c·(t+2)(k+2) = b²·(k+1)(t+1). Since (k+1)(t+1) < (t+2)(k+2) — their difference is t+k+3 > 0 — cancelling the positive factor (t+2)(k+2) yields a·c ≤ b², strictly when b > 0 (i.e. k+2 ≤ n). Outside the row C(n,k+2) = 0 and the bound is immediate."
+    "text": "Writing a = C(n,k), b = C(n,k+1), c = C(n,k+2) and substituting n = k+2+t to remove truncated subtraction, Mathlib's adjacent-ratio relation choose_succ_right_eq gives a·(t+2) = b·(k+1) and c·(k+2) = b·(t+1). Multiplying, a·c·(t+2)(k+2) = b²·(k+1)(t+1). Since (k+1)(t+1) < (t+2)(k+2) — their difference is t+k+3 > 0 — cancelling the positive factor (t+2)(k+2) yields a·c ≤ b², strictly when b > 0 (i.e. k+2 ≤ n). Outside the row C(n,k+2) = 0 and the bound is immediate.",
+    "keyInsights": [
+      "**Stay in ℕ — never divide.** The textbook proof divides factorials; here the adjacent-ratio relation C(n,k+1)·(k+1) = C(n,k)·(n−k) clears all denominators, so the entire argument lives in the naturals with no rationals and no positivity-of-denominator side-conditions.",
+      "**One substitution kills truncated subtraction.** Over ℕ the factor n−k silently truncates to 0 when k > n, derailing the algebra. Writing n = k+2+t in the in-range branch makes every difference manifestly a genuine subtraction, after which the two ratio relations multiply cleanly to a·c·(t+2)(k+2) = b²·(k+1)(t+1).",
+      "**The whole inequality collapses to a single positivity fact.** After cancelling the common factor, log-concavity is exactly (k+1)(t+1) ≤ (t+2)(k+2), whose difference is the obviously-positive t+k+3. Strictness is then free: it needs only b = C(n,k+1) > 0, which holds throughout the interior (k+2 ≤ n).",
+      "**This is the structural fact beneath unimodality, which Mathlib lacks.** Mathlib records only the unimodal maximum (Nat.choose_le_middle); log-concavity is the stronger property that *implies* unimodality and no internal zeros, and is the binomial case of Newton's inequalities on elementary symmetric functions."
+    ],
+    "prerequisites": [
+      "Binomial coefficients and Mathlib's Nat.choose",
+      "The adjacent-coefficient ratio relation Nat.choose_succ_right_eq",
+      "Natural-number arithmetic and the pitfalls of truncated subtraction",
+      "Log-concavity, unimodality, and Newton's inequalities (conceptual background)"
+    ]
   },
   "sections": [
     {

@@ -8,7 +8,9 @@
   "problemStatement": {
     "formal": "\\text{Squarefree}(|G|) \\implies G \\cong N \\rtimes H,\\ N,H \\text{ cyclic},\\ \\gcd(|N|,|H|)=1",
     "plain": "Every finite group of squarefree order is a semidirect product of two cyclic groups of coprime order; it is solvable, metacyclic, and has exponent equal to its order. Generalizes the parent order-pq classification to any number of prime factors.",
-    "whyMatters": ["Answers open question 2 of sylow-theorems-oq-01 (squarefree-order classification beyond the pq case)."]
+    "whyMatters": [
+      "Answers open question 2 of sylow-theorems-oq-01 (squarefree-order classification beyond the pq case)."
+    ]
   },
   "knownResults": {
     "proven": [
@@ -19,7 +21,9 @@
       "metacyclic (cyclic-by-cyclic)",
       "semidirect product of cyclic groups of coprime order"
     ],
-    "open": ["explicit count of isomorphism classes via divisibility among the primes"],
+    "open": [
+      "explicit count of isomorphism classes via divisibility among the primes"
+    ],
     "goal": "Formalize the squarefree-order classification as a semidirect product of cyclic groups."
   },
   "knowledge": {
@@ -48,8 +52,41 @@
     ],
     "markdown": ""
   },
-  "tags": ["group-theory", "sylow-theorems", "z-groups", "semidirect-product"],
-  "relatedProofs": ["sylow-theorems-oq-01", "sylow-theorems"],
-  "references": {"papers": [], "urls": [], "mathlib": ["IsZGroup.of_squarefree", "isZGroup_iff_exists_mulEquiv", "IsZGroup.isCyclic_commutator"]},
-  "lastUpdate": "2026-06-25T00:00:00.000Z"
+  "tags": [
+    "group-theory",
+    "sylow-theorems",
+    "z-groups",
+    "semidirect-product"
+  ],
+  "relatedProofs": [
+    "sylow-theorem",
+    "sylow-theorems",
+    "sylow-theorems-oq-01",
+    "sylow-theorems-oq-01-oq-02",
+    "sylow-theorems-oq-01-oq-02-oq-01",
+    "sylow-theorems-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "IsZGroup.of_squarefree",
+      "isZGroup_iff_exists_mulEquiv",
+      "IsZGroup.isCyclic_commutator"
+    ]
+  },
+  "lastUpdate": "2026-06-25T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/SylowTheoremsOQ05.lean",
+      "filename": "SylowTheoremsOQ05.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremsOQ05.lean"
+    }
+  ]
 }
