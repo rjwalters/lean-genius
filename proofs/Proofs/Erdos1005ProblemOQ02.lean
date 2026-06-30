@@ -2387,4 +2387,162 @@ theorem continuant_append_replicate_one_ne_zero (j : ℕ) (ks : List ℤ)
   · intro k hk
     exact h k (List.mem_reverse.mp hk)
 
+/-! ## §25: Interior `1`-runs — the period-6 law at a Stern–Brocot junction
+
+§23 (leading `1`s) and §24 (trailing `1`s) handled a small-quotient run at either
+*end* of a quotient list.  The configuration the density count toward `1/12` actually
+sums over is the **interior junction**: a `1`-run of length `j` wedged between two
+arbitrary blocks, `as ++ 1ʲ ++ bs`.  This section shows the continuant of such a list
+is **period-6 in `j` unconditionally** — for *every* pair of blocks `as`, `bs`, with no
+large-quotient hypothesis whatsoever.
+
+The engine is Euler's composition law `continuant_append` (§16): peeling the leading
+block,
+  `K(as ++ 1ʲ ++ bs) = K(as)·K(1ʲ ++ bs) − secondCont(as.reverse)·secondCont(1ʲ ++ bs)`.
+Both `K(1ʲ ++ bs)` and `secondCont(1ʲ ++ bs)` are period-6 in `j` (§23's joint
+`continuant_secondCont_replicate_one_append`), and `K(as)`, `secondCont(as.reverse)` are
+constant in `j`; so their fixed linear combination is again period-6.  Moreover the §23
+pair satisfies the *half-turn* law `(aⱼ₊₃, sⱼ₊₃) = (−aⱼ, −sⱼ)` (three steps of the
+order-6 rotation `[[1,−1],[1,0]]`), which passes straight through the linear combination:
+the interior continuant negates every three insertions.
+
+Consequently the whole orbit collapses to its first three values and their negatives:
+  `K(as ++ 1ʲ ++ bs)` runs through `v₀, v₁, v₂, −v₀, −v₁, −v₂` with `vᵢ = K(as ++ 1ⁱ ++ bs)`,
+selected by `j % 6`, where `v₀ = K(as ++ bs)` is the *direct* junction (no inserted `1`s).
+So an interior small-quotient run changes the §14 run-length window only through `j mod 6`
+and a sign that flips every three insertions — it can neither grow the continuant nor
+break its sign pattern aperiodically.
+
+**Honest boundary (unchanged).**  This is a structural reduction of the *interior* `1`-run
+degree of freedom to a finite (period-6, three-magnitude) set; it does **not** bound the
+density of admissible quotient lists keeping every non-adjacent window nonnegative — the
+open `1/12`–`1/4` constant.  What §25 buys: in any density count, an interior `1`-run may
+be taken of length `≤ 5` (indeed `≤ 2` up to sign) without changing the continuant's sign,
+so the junctions to enumerate are finitely many per pair of surrounding blocks. -/
+
+/-- **Joint leading-`1` half-turn.**  Three steps of the §23 order-6 rotation negate the
+pair: `K(1ʲ⁺³ ++ ks) = −K(1ʲ ++ ks)` and `secondCont(1ʲ⁺³ ++ ks) = −secondCont(1ʲ ++ ks)`.
+The half-turn `[[1,−1],[1,0]]³ = −I` of the rotation, unfolded three times and closed by
+`omega`.  Specialising `ks = []` gives the §21 half-period `K(1ʲ⁺³) = −K(1ʲ)`. -/
+theorem continuant_secondCont_replicate_one_append_half (j : ℕ) (ks : List ℤ) :
+    Continuant (List.replicate (j + 3) 1 ++ ks)
+        = - Continuant (List.replicate j 1 ++ ks)
+      ∧ secondCont (List.replicate (j + 3) 1 ++ ks)
+        = - secondCont (List.replicate j 1 ++ ks) := by
+  have c1 : Continuant (List.replicate (j + 1) 1 ++ ks)
+      = Continuant (List.replicate j 1 ++ ks) - secondCont (List.replicate j 1 ++ ks) :=
+    continuant_replicate_one_succ_append j ks
+  have s1 : secondCont (List.replicate (j + 1) 1 ++ ks)
+      = Continuant (List.replicate j 1 ++ ks) :=
+    secondCont_replicate_one_append j ks
+  have c2 : Continuant (List.replicate (j + 2) 1 ++ ks)
+      = Continuant (List.replicate (j + 1) 1 ++ ks)
+        - secondCont (List.replicate (j + 1) 1 ++ ks) :=
+    continuant_replicate_one_succ_append (j + 1) ks
+  have s2 : secondCont (List.replicate (j + 2) 1 ++ ks)
+      = Continuant (List.replicate (j + 1) 1 ++ ks) :=
+    secondCont_replicate_one_append (j + 1) ks
+  have c3 : Continuant (List.replicate (j + 3) 1 ++ ks)
+      = Continuant (List.replicate (j + 2) 1 ++ ks)
+        - secondCont (List.replicate (j + 2) 1 ++ ks) :=
+    continuant_replicate_one_succ_append (j + 2) ks
+  have s3 : secondCont (List.replicate (j + 3) 1 ++ ks)
+      = Continuant (List.replicate (j + 2) 1 ++ ks) :=
+    secondCont_replicate_one_append (j + 2) ks
+  constructor <;> omega
+
+/-- **Interior `1`-run period-6 (headline).**  For *every* pair of blocks `as`, `bs`,
+inserting six extra `1`s in the interior leaves the continuant unchanged:
+`K(as ++ 1ʲ⁺⁶ ++ bs) = K(as ++ 1ʲ ++ bs)`.  Unconditional — no large-quotient hypothesis.
+Proof: Euler composition `continuant_append` peels `as`, then the §23 joint period-6 of
+the pair `(K, secondCont)(1ʲ ++ bs)` propagates through the fixed linear combination. -/
+theorem continuant_interior_replicate_one_period (j : ℕ) (as bs : List ℤ) :
+    Continuant (as ++ List.replicate (j + 6) 1 ++ bs)
+      = Continuant (as ++ List.replicate j 1 ++ bs) := by
+  rw [List.append_assoc as (List.replicate (j + 6) 1) bs,
+      List.append_assoc as (List.replicate j 1) bs,
+      continuant_append as (List.replicate (j + 6) 1 ++ bs),
+      continuant_append as (List.replicate j 1 ++ bs),
+      continuant_replicate_one_append_period j bs,
+      (continuant_secondCont_replicate_one_append j bs).2]
+
+/-- Period-6 across any multiple of `6`: `K(as ++ 1^(6q+r) ++ bs) = K(as ++ 1ʳ ++ bs)`. -/
+theorem continuant_interior_replicate_one_six_mul (q r : ℕ) (as bs : List ℤ) :
+    Continuant (as ++ List.replicate (6 * q + r) 1 ++ bs)
+      = Continuant (as ++ List.replicate r 1 ++ bs) := by
+  induction q with
+  | zero => simp
+  | succ q ih =>
+    have hidx : 6 * (q + 1) + r = (6 * q + r) + 6 := by ring
+    rw [hidx, continuant_interior_replicate_one_period, ih]
+
+/-- **Closed form via residue mod 6.**  An interior `1`-run affects the continuant only
+through its length mod 6: `K(as ++ 1ʲ ++ bs) = K(as ++ 1^(j%6) ++ bs)`. -/
+theorem continuant_interior_replicate_one_mod (j : ℕ) (as bs : List ℤ) :
+    Continuant (as ++ List.replicate j 1 ++ bs)
+      = Continuant (as ++ List.replicate (j % 6) 1 ++ bs) := by
+  conv_lhs => rw [← Nat.div_add_mod j 6]
+  exact continuant_interior_replicate_one_six_mul (j / 6) (j % 6) as bs
+
+/-- **Interior half-turn.**  Three interior `1`s negate the continuant:
+`K(as ++ 1ʲ⁺³ ++ bs) = −K(as ++ 1ʲ ++ bs)`.  The §23 leading half-turn passed through the
+Euler composition `continuant_append`. -/
+theorem continuant_interior_replicate_one_half (j : ℕ) (as bs : List ℤ) :
+    Continuant (as ++ List.replicate (j + 3) 1 ++ bs)
+      = - Continuant (as ++ List.replicate j 1 ++ bs) := by
+  rw [List.append_assoc as (List.replicate (j + 3) 1) bs,
+      List.append_assoc as (List.replicate j 1) bs,
+      continuant_append as (List.replicate (j + 3) 1 ++ bs),
+      continuant_append as (List.replicate j 1 ++ bs),
+      (continuant_secondCont_replicate_one_append_half j bs).1,
+      (continuant_secondCont_replicate_one_append_half j bs).2]
+  ring
+
+/-- **The interior orbit (closed form).**  `K(as ++ 1ʲ ++ bs)` runs through the six values
+`v₀, v₁, v₂, −v₀, −v₁, −v₂` with `vᵢ = K(as ++ 1ⁱ ++ bs)`, selected by `j % 6`.  `v₀` is the
+*direct* junction `K(as ++ bs)` (no inserted `1`s); `v₁, v₂` are one and two inserted `1`s;
+the residues `3, 4, 5` are their negations (the §25 half-turn).  Everything an interior
+`1`-run can do to the continuant is captured by these three magnitudes and a sign. -/
+theorem continuant_interior_replicate_one_orbit (j : ℕ) (as bs : List ℤ) :
+    Continuant (as ++ List.replicate j 1 ++ bs)
+      = (if j % 6 = 0 then Continuant (as ++ bs)
+         else if j % 6 = 1 then Continuant (as ++ [1] ++ bs)
+         else if j % 6 = 2 then Continuant (as ++ [1, 1] ++ bs)
+         else if j % 6 = 3 then - Continuant (as ++ bs)
+         else if j % 6 = 4 then - Continuant (as ++ [1] ++ bs)
+         else - Continuant (as ++ [1, 1] ++ bs)) := by
+  rw [continuant_interior_replicate_one_mod j as bs]
+  have h6 : j % 6 < 6 := Nat.mod_lt _ (by norm_num)
+  set r := j % 6 with hr
+  clear_value r
+  interval_cases r
+  · simp
+  · simp [List.replicate_succ]
+  · simp [List.replicate_succ]
+  · simpa [List.replicate_succ] using continuant_interior_replicate_one_half 0 as bs
+  · simpa [List.replicate_succ] using continuant_interior_replicate_one_half 1 as bs
+  · simpa [List.replicate_succ] using continuant_interior_replicate_one_half 2 as bs
+
+/-- **Interior junction never vanishes from the run length alone.**  If the three base
+junctions `K(as ++ bs)`, `K(as ++ [1] ++ bs)`, `K(as ++ [1,1] ++ bs)` are all nonzero,
+then `K(as ++ 1ʲ ++ bs) ≠ 0` for *every* interior run length `j`: by the §25 orbit it is
+`±` one of the three, so a vanishing window can never be created purely by lengthening an
+interior `1`-run. -/
+theorem continuant_interior_replicate_one_ne_zero (j : ℕ) (as bs : List ℤ)
+    (h0 : Continuant (as ++ bs) ≠ 0)
+    (h1 : Continuant (as ++ [1] ++ bs) ≠ 0)
+    (h2 : Continuant (as ++ [1, 1] ++ bs) ≠ 0) :
+    Continuant (as ++ List.replicate j 1 ++ bs) ≠ 0 := by
+  rw [continuant_interior_replicate_one_orbit]
+  have h6 : j % 6 < 6 := Nat.mod_lt _ (by norm_num)
+  set r := j % 6 with hr
+  clear_value r
+  interval_cases r
+  · simpa using h0
+  · simpa using h1
+  · simpa using h2
+  · simpa [neg_ne_zero] using h0
+  · simpa [neg_ne_zero] using h1
+  · simpa [neg_ne_zero] using h2
+
 end Erdos1005OQ02
