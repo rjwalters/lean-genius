@@ -81,7 +81,8 @@
       "§23: prepending j leading 1s to an ARBITRARY tail ks is the order-6 rotation [[1,−1],[1,0]] acting on the pair (aⱼ,sⱼ)=(K(1ʲ++ks),secondCont(1ʲ++ks)): aⱼ₊₁=aⱼ−sⱼ, sⱼ₊₁=aⱼ — the all-1 §21 coupled system but seeded at (K(ks),secondCont ks) instead of (1,0). Hence K(1ʲ++ks) is PERIOD-6 in j for every tail, not just ks=[].",
       "§23 orbit closed form: K(1ʲ++ks) cycles through [K, K−s, −s, −K, s−K, s] (s=secondCont ks) by j%6. Substituting ks=[] (K=1,s=0) recovers §21 orbit 1,1,0,−1,−1,0 EXACTLY; j%6=1,2 recover the §22 closed forms — §21 and §22 are the two specialisations of one periodic law.",
       "§23 sign law (nonempty all-≥2 tail): the §17 invariant 0<secondCont ks<K(ks) fixes every orbit sign — K(1ʲ++ks)>0 iff j≡0,1,5 (mod 6), <0 iff j≡2,3,4, NEVER 0. §22 (at most one leading 1 stays positive) is the j≤2 window of this period-6 alternation; the empty-tail zeros of §21 are an artefact of ks=[].",
-      "The period-6 leading-1 rotation (§23) brackets a large-quotient block on BOTH ends identically: trailing 1s reduce to leading 1s on the reversed tail via continuant_reverse, transferring the entire orbit and the IDENTICAL sign classification at zero arithmetic cost"
+      "The period-6 leading-1 rotation (§23) brackets a large-quotient block on BOTH ends identically: trailing 1s reduce to leading 1s on the reversed tail via continuant_reverse, transferring the entire orbit and the IDENTICAL sign classification at zero arithmetic cost",
+      "Session 2026-06-30 (researcher-2): §26 quotient-weighted continuant growth. continuant_ge_length_weighted (d≥2, entries≥d): (d-1)|ks|+1 ≤ Continuant ks — sharpens §17's slope-1 bound to slope (d-1). Corollary continuant_run_length_le: a continuant ceiling N caps run length at |ks| ≤ (N-1)/(d-1), the targeted O(n/d) bound (first d-sensitive run-length cap). Integrality (secondCont+1 ≤ Continuant) is essential — equality is attained. 0-axiom docker-verified [3058/3058]. Still open: the order-n continuant ceiling + admissible-list count (the 1/12-1/4 density step)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -128,13 +129,14 @@
     {
       "path": "Proofs/Erdos1005ProblemOQ02.lean",
       "filename": "Erdos1005ProblemOQ02.lean",
-      "lineCount": 1391,
-      "theoremCount": 76,
+      "lineCount": 2402,
+      "theoremCount": 145,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1005ProblemOQ02.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1005ProblemOQ02.lean",
+      "definitionCount": 14
     },
     {
       "path": "Proofs/Erdos1005ProblemOQ03.lean",

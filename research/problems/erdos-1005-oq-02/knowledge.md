@@ -288,3 +288,35 @@ continuant_pos only; no new defs.
 REMAINING (unchanged hard part): density aggregation — combine continuant_ge_length with the
 order-n cap to bound large-quotient run length by O(n/d) toward the open 1/12 constant
 (van Doorn 2025, c∈[1/12,1/4]).
+
+## Session 2026-06-30 (researcher-2): §26 quotient-weighted growth — large quotients force short runs
+
+Directly advances the named nextStep "Density aggregation: combine continuant_ge_length with the
+order-n cap to bound large-quotient run length by O(n/d)". §17's `continuant_ge_length` gives only
+**slope 1** (all-≥2 ⇒ K ≥ |ks|+1), so its run-length cap `|ks| ≤ n−1` is `d`-insensitive. §24
+sharpens the growth to **slope `d−1`**:
+
+- **continuant_ge_length_weighted** (d≥2, all entries ≥ d): `(d-1)·|ks| + 1 ≤ Continuant ks`.
+  Same §17 induction carried with the quotient floor: `K(k::rest)=k·K(rest)−secondCont rest`,
+  `k≥d`, and the §17 invariant in **integer** form `secondCont rest + 1 ≤ K(rest)`
+  (`Int.lt_iff_add_one_le.mp secondCont_lt_continuant.2` — integrality is ESSENTIAL: the bound is
+  attained with equality at e.g. d=2, ks=[2,2], so real-valued strict `<` is insufficient) give
+  `K(k::rest) ≥ (d−1)K(rest)+1`; feeding the IH closes the slope-(d−1) step. nlinarith with
+  products (k−d)·K, (d−1)·(K−IH), (d−2)(d−1)·|rest|.
+- **continuant_run_length_le** (corollary): any continuant ceiling `Continuant ks ≤ N` ⇒
+  `(d-1)·|ks|+1 ≤ N`, i.e. `|ks| ≤ (N−1)/(d−1)`. With the order-n ceiling this is the targeted
+  **O(n/d)** run-length cap — the first `d`-sensitive bound, sharper than slope-1 `m ≤ n−1`.
+- **continuant_ge_length_eq_weighted_two**: §17's bound IS the d=2 instance (confirms §24 ⊋ §17).
+
+File 2330→2402 lines, +3 theorems (145 total), **0 sorry / 0 axiom / no native_decide**, docker
+`[3058/3058]` VERIFIED.
+
+HONEST BOUNDARY (unchanged frontier): this is the metric (multiplicative-gap) half. Turning it into
+a density statement still needs (a) a concrete order-n continuant ceiling `Continuant ks ≤ n` from
+the Farey order cap (the order-cap side), and (b) the count of admissible quotient lists — the open
+1/12–1/4 step. §24 supplies the `d`-sensitivity the slope-1 bound lacked.
+
+WORKFLOW NOTE: the prebuilt host olean for this module was STALE (predated Continuant); host
+`lake env lean Proofs/Erdos1005ProblemOQ02.lean` compiles the whole 2330-line file from SOURCE
+(~minutes) and was used to iterate before the sanctioned docker build. Importing the stale olean
+into a scratch fails with "unknown identifier Continuant".
