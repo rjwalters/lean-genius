@@ -57,9 +57,14 @@ f_r(n) is minimal such that chromatic number ≥ r and ≥ f_r(n) edges implies 
 def hasChromatic (G : SimpleGraph V) (r : ℕ) : Prop :=
   chromaticNumber G ≥ r
 
-/-- The threshold function f_r(n) -/
+/-- The threshold function f_r(n). The vertex type is quantified over `Type`
+    (rather than `Type*`): since the predicate constrains `Fintype.card V = n`,
+    every finite vertex set is equivalent to one in `Type 0`, so the value is
+    unchanged while `f` stays universe-monomorphic — this prevents a free
+    universe parameter from leaking into the `Prop`-valued conjectures that
+    mention `f` (e.g. in `Proofs.Erdos1011OQ03`). -/
 noncomputable def f (r n : ℕ) : ℕ :=
-  sInf {m : ℕ | ∀ (V : Type*) [Fintype V] [DecidableEq V],
+  sInf {m : ℕ | ∀ (V : Type) [Fintype V] [DecidableEq V],
     Fintype.card V = n →
     ∀ G : SimpleGraph V, [DecidableRel G.Adj] →
     hasChromatic G r → edgeCount G ≥ m → HasTriangle G}
@@ -105,18 +110,24 @@ def f4Threshold (n : ℕ) : ℕ := (n - 3)^2 / 4 + 6
 f_r(n) = n²/4 - g(r)·n/2 + O(1)
 -/
 
-/-- g(r): vertices to remove from χ ≥ r triangle-free graph to make bipartite -/
+/-- g(r): vertices to remove from χ ≥ r triangle-free graph to make bipartite.
+    Existential type binders are written with anonymous instance hypotheses
+    `(_ : Fintype V)` (instance brackets `[…]` are not valid inside `∃`), and the
+    witness type is fixed to `Type` so `g` is universe-monomorphic — otherwise the
+    free universe parameter leaks into the `Prop`-valued conjectures below. `g`
+    only feeds the asymptotic axioms/conjectures; no verified theorem depends on
+    its precise value. -/
 noncomputable def g (r : ℕ) : ℕ :=
-  sSup {k : ℕ | ∃ (V : Type*) [Fintype V] [DecidableEq V],
-    ∃ G : SimpleGraph V, [DecidableRel G.Adj] →
+  sSup {k : ℕ | ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V)
+      (G : SimpleGraph V),
     ¬HasTriangle G ∧ hasChromatic G r ∧
-    ∀ S : Finset V, S.card < k → ¬∃ (W : Type*) [Fintype W],
-      ∃ H : SimpleGraph W, chromaticNumber H ≤ 2}
+    ∀ S : Finset V, S.card < k → ¬ ∃ (W : Type) (_ : Fintype W)
+      (H : SimpleGraph W), chromaticNumber H ≤ 2}
 
 /-- Simonovits asymptotic formula -/
 axiom simonovits_asymptotic :
   ∀ r ≥ 2, ∃ C : ℕ, ∀ n ≥ r,
-    |((f r n : ℤ) - n^2/4 + (g r : ℤ) * n / 2)| ≤ C
+    |((f r n : ℤ) - (n : ℤ) ^ 2 / 4 + (g r : ℤ) * (n : ℤ) / 2)| ≤ (C : ℤ)
 
 /-
 ## Bounds on g(r)

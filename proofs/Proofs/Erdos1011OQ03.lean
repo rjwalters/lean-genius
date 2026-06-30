@@ -23,6 +23,15 @@
      `f_five_le_f_four : f 5 n ≤ f 4 n` — the open value f_5(n) is bounded above
      by the now-known f_4(n).
 
+  1b. `forces_iff_f_le` — a complete characterization of the threshold:
+     `Forces r n m ↔ f r n ≤ m`. The forcing predicate is an up-set in the edge
+     bound (`forces_mono`), so `f r n` is exactly its least element.
+
+  1c. `f_eq_zero_of_lt` — the left boundary of the table: once `r` exceeds the
+     vertex count `n`, no `n`-vertex graph attains `χ ≥ r` (every such graph is
+     `n`-colourable, `chromaticNumber_le_card`), so the forcing condition is
+     vacuous and `f r n = 0`. The antitone-in-`r` value has bottomed out.
+
   2. The **vertex-shift pattern**. The shifts in the formulas above are
      0, 1, 3 for r = 2, 3, 4 — exactly C(r-1, 2). The pattern predicts a shift
      of C(4,2) = 6 for r = 5, i.e. a conjectured leading term ⌊(n-6)²/4⌋.
@@ -56,7 +65,7 @@ clean facts (`f_mem`, `f_le_of_forces`).
 /-- The predicate defining membership in the set `{m | … }` whose `sInf` is
     `f r n`. -/
 def Forces (r n m : ℕ) : Prop :=
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
+  ∀ (V : Type) [Fintype V] [DecidableEq V],
     Fintype.card V = n →
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       hasChromatic G r → edgeCount G ≥ m → HasTriangle G
@@ -67,7 +76,6 @@ def Forces (r n m : ℕ) : Prop :=
 theorem forces_nonempty (n r : ℕ) : {m | Forces r n m}.Nonempty := by
   refine ⟨n.choose 2 + 1, ?_⟩
   intro V instF instD hcard G instA _ hedge
-  haveI := instF; haveI := instD; haveI := instA
   exfalso
   have hb : edgeCount G ≤ n.choose 2 := by
     have h := G.card_edgeFinset_le_card_choose_two
@@ -86,6 +94,22 @@ theorem f_le_of_forces {n r m : ℕ} (hm : Forces r n m) : f r n ≤ m := by
   unfold f
   exact Nat.sInf_le hm
 
+/-- The forcing predicate is monotone (an up-set) in the edge bound: if `m`
+    edges force a triangle, so does any larger bound `m'`, because the
+    hypothesis `edgeCount G ≥ m'` is stronger than `edgeCount G ≥ m`. -/
+theorem forces_mono {r n m m' : ℕ} (hm : Forces r n m) (hmm : m ≤ m') :
+    Forces r n m' := by
+  intro V instF instD hcard G instA hchrom hedge
+  exact hm V hcard G hchrom (le_trans hmm hedge)
+
+/-- **Complete characterization of the threshold.** `m` forces a triangle iff
+    `m` is at least the threshold `f r n`. The forward direction is
+    `f_le_of_forces`; the reverse uses that `f r n` itself forces (`f_forces`)
+    together with up-set monotonicity (`forces_mono`). This pins down `f r n`
+    as exactly the least `m` in the up-set `{m | Forces r n m}`. -/
+theorem forces_iff_f_le {r n m : ℕ} : Forces r n m ↔ f r n ≤ m :=
+  ⟨f_le_of_forces, fun h => forces_mono (f_forces n r) h⟩
+
 /-
 ## Main structural theorem: antitonicity in the chromatic parameter
 
@@ -102,7 +126,6 @@ theorem f_antitone_in_chromatic {n r r' : ℕ} (h : r ≤ r') :
     f r' n ≤ f r n := by
   apply f_le_of_forces
   intro V instF instD hcard G instA hchrom hedge
-  haveI := instF; haveI := instD; haveI := instA
   have hchrom' : hasChromatic G r := le_trans h hchrom
   exact f_forces n r V hcard G hchrom' hedge
 
@@ -117,6 +140,36 @@ theorem f_chain (n : ℕ) : f 5 n ≤ f 4 n ∧ f 4 n ≤ f 3 n ∧ f 3 n ≤ f 
   ⟨f_antitone_in_chromatic (by norm_num),
    f_antitone_in_chromatic (by norm_num),
    f_antitone_in_chromatic (by norm_num)⟩
+
+/-
+## The degenerate regime: r > n forces the threshold to 0
+
+A graph on `n` vertices can be properly coloured with `n` colours (the identity
+colouring `V ≃ Fin n` is proper), so `χ(G) ≤ n`. Hence once `r > n` the
+hypothesis `χ(G) ≥ r` is unsatisfiable and the forcing implication holds
+vacuously for *every* edge bound — including `m = 0`. So `f r n = 0` there.
+This is the exact left boundary of the table: the antitone-in-`r` value
+`f r n` has already bottomed out at 0 by the time `r` exceeds the vertex count.
+-/
+
+/-- Any `n`-vertex graph is `n`-colourable, hence `χ(G) ≤ n`. The identity
+    bijection `V ≃ Fin (card V)` is a proper colouring because adjacent vertices
+    are distinct and the bijection is injective. -/
+theorem chromaticNumber_le_card {W : Type*} [Fintype W] [DecidableEq W]
+    (G : SimpleGraph W) : chromaticNumber G ≤ Fintype.card W :=
+  Nat.sInf_le ⟨Fintype.equivFin W, fun _ _ hadj heq =>
+    G.ne_of_adj hadj ((Fintype.equivFin W).injective heq)⟩
+
+/-- **Boundary value.** If the required chromatic number exceeds the vertex
+    count (`n < r`) then `f r n = 0`: no `n`-vertex graph attains `χ ≥ r`, so the
+    forcing condition is vacuous at every edge bound. -/
+theorem f_eq_zero_of_lt {r n : ℕ} (h : n < r) : f r n = 0 := by
+  refine Nat.le_antisymm (f_le_of_forces ?_) (Nat.zero_le _)
+  intro V instF instD hcard G instA hchrom _
+  exfalso
+  unfold hasChromatic at hchrom
+  have hle : chromaticNumber G ≤ n := hcard ▸ chromaticNumber_le_card G
+  omega
 
 /-
 ## The vertex-shift pattern
@@ -146,10 +199,7 @@ theorem chromaticShift_eq (r : ℕ) : chromaticShift r = (r - 1) * (r - 2) / 2 :
 theorem chromaticShift_mono : Monotone chromaticShift := by
   intro a b hab
   unfold chromaticShift
-  first
-    | exact Nat.choose_le_choose 2 (by omega)
-    | (gcongr; omega)
-    | exact Nat.choose_mono 2 (by omega)
+  exact Nat.choose_le_choose 2 (by omega)
 
 /-
 ## The open statements
@@ -175,6 +225,10 @@ theorem shiftConjecture_imp_f5 (h : shiftConjecture) : f5Conjecture := by
 
 #check f_antitone_in_chromatic
 #check f_five_le_f_four
+#check forces_iff_f_le
+#check f_eq_zero_of_lt
 #check chromaticShift_known
 #print axioms f_antitone_in_chromatic
+#print axioms forces_iff_f_le
+#print axioms f_eq_zero_of_lt
 #print axioms chromaticShift_known
