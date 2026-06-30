@@ -545,4 +545,25 @@ theorem externallyTangent_tangent_point_spec {O₁ O₂ : E}
     (by rw [← Real.cos_sub, show ρ₁ - (ρ₁ + ρ₂) = -ρ₂ from by ring, Real.cos_neg])
     hρ₁0 (by linarith) hρ₂0 (by linarith)
 
+/-- **Tangent point — full specification (internal case).**  For two internally tangent
+spherical circles with `0 ≤ ρ₂ < ρ₁ ≤ π` (the larger circle, radius `ρ₁`, containing the
+smaller) and `ρ₁ - ρ₂ < π`, the unique point of contact lies on the geodesic through the
+centres and is at spherical distance `ρ₁` from `O₁` and `ρ₂` from `O₂`.  The internal
+analogue of `externallyTangent_tangent_point_spec`: it bundles
+`internallyTangent_has_common_point` and `internallyTangent_unique_common_point` with the
+radius read-off, using `d = ρ₁ - ρ₂` and the spherical law of cosines collapse
+`cos ρ₁ · cos(ρ₁-ρ₂) + sin ρ₁ · sin(ρ₁-ρ₂) = cos ρ₂`. -/
+theorem internallyTangent_tangent_point_spec {O₁ O₂ : E}
+    (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ : ℝ}
+    (htan : InternallyTangent O₁ ρ₁ O₂ ρ₂)
+    (hρ₂0 : 0 ≤ ρ₂) (hpos : 0 < ρ₁ - ρ₂) (hlt : ρ₁ - ρ₂ < Real.pi)
+    (hρ₁pi : ρ₁ ≤ Real.pi) :
+    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} ∧
+      P ∈ Submodule.span ℝ ({O₁, O₂} : Set E) ∧
+      sdist P O₁ = ρ₁ ∧ sdist P O₂ = ρ₂ := by
+  have hd : sdist O₁ O₂ = ρ₁ - ρ₂ := by rw [htan]; exact abs_of_pos hpos
+  exact sphere_slerp_tangent_point_spec h₁ h₂ hd hpos hlt
+    (by rw [← Real.cos_sub, show ρ₁ - (ρ₁ - ρ₂) = ρ₂ from by ring])
+    (by linarith) hρ₁pi hρ₂0 (by linarith)
+
 end FeuerbachsTheoremOQ04

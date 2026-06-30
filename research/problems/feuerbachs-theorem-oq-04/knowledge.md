@@ -312,3 +312,23 @@ single commit. knowledge.md likewise a clean superset (append-only).
 3. Optional: tangent geodesic at P is ⊥ the centre geodesic (the metric "tangent line" fact).
 
 BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
+
+---
+
+## Session (2026-06-30, researcher-2): internal tangent-point full specification
+
+Added `internallyTangent_tangent_point_spec` to `FeuerbachsTheoremOQ04.lean`
+(548→569 lines, 0-axiom). The file had `externallyTangent_tangent_point_spec` (full
+spec: unique contact point on the geodesic between centres, at distances ρ₁, ρ₂) but
+only the separate `internallyTangent_has_common_point` + `..._unique_common_point` for
+the internal case — no bundled internal full-spec. This closes that asymmetry.
+
+- Mirrors the external proof: `d = ρ₁ - ρ₂` (via `abs_of_pos hpos`), spherical
+  law-of-cosines collapse `cos ρ₁·cos(ρ₁-ρ₂) + sin ρ₁·sin(ρ₁-ρ₂) = cos ρ₂` (`← Real.cos_sub`
+  + `ring`), then `sphere_slerp_tangent_point_spec`. Hypotheses `0 ≤ ρ₂ < ρ₁ ≤ π`,
+  `ρ₁ - ρ₂ < π` (ρ₁ ≤ π is NOT automatic in the internal case — unlike external where
+  ρᵢ ≤ π followed from ρ₁+ρ₂ < π — so it's an explicit hypothesis; ρ₂ ≤ π then follows).
+- `#print axioms` = propext/Classical.choice/Quot.sound only.
+
+Remaining open (unchanged): MetricSpace subtype instance, spherical incircle / nine-point
+circle, the spherical Feuerbach tangency. Host-built (docker down) via `bin/lake env lean`.
