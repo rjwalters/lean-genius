@@ -81,13 +81,17 @@
       "EHAtLevel_of_le_discrepancySumClamped: the level hierarchy instantiated at the concrete nonzero model",
       "discrepancyBand_self: the empty band — from a level to itself there are no new moduli, so the band discrepancy vanishes (base case for subdivision)",
       "discrepancyBand_add_consecutive: the additive cocycle (Chasles) identity for the band — for θ₁≤θ₂≤θ₃ on x≥1, discrepancyBand θ₁ θ₃ = discrepancyBand θ₁ θ₂ + discrepancyBand θ₂ θ₃, subdividing the new-moduli band at any intermediate level",
-      "EHAtLevel_discrepancySum_up_split: subdivided ascent — raising the level from θ₁ to θ₃ needs only EH-type bounds on each consecutive sub-band, recombined via the convex-cone closure; the formal statement that the modulus range may be attacked dyadically"
+      "EHAtLevel_discrepancySum_up_split: subdivided ascent — raising the level from θ₁ to θ₃ needs only EH-type bounds on each consecutive sub-band, recombined via the convex-cone closure; the formal statement that the modulus range may be attacked dyadically",
+      "EHAtLevel_discrepancySum_up_chain: finite-chain ascent — for a monotone level sequence L : ℕ → ℝ, EH at base level L 0 plus an EH-type bound on every consecutive band L k → L (k+1) lifts EH to every level L n (induction iterating the single-band ascent); the arbitrarily-many-blocks form of dyadic decomposition of the modulus range, of which EHAtLevel_discrepancySum_up_split is the n=2 case",
+      "EHAtLevel_vonMangoldt_up_chain: the finite-chain dyadic ascent specialized to the genuine von-Mangoldt EH weight — raising the genuine level of distribution to any L n by bounding the real worst-case discrepancy on each consecutive sub-band",
+      "EHAtLevel_discrepancySum_up_arith: the explicit EQUIPARTITION instantiation of the finite-chain ascent at the arithmetic level sequence L k = θ₀ + k·δ (δ ≥ 0) — EH at base θ₀ plus an EH-type bound on each equal step lifts EH to θ₀ + n·δ; choosing δ = (θ-θ₀)/n reaches any target θ ≥ θ₀ in n equal modulus blocks, with Monotone L discharged from δ ≥ 0",
+      "EHAtLevel_vonMangoldt_up_arith: the equipartition ascent for the genuine von-Mangoldt sum — bounding the real worst-case discrepancy on each equal step θ₀ + k·δ → θ₀ + (k+1)·δ raises the genuine level of distribution to θ₀ + n·δ, the concrete equipartition form of the dyadic attack on Elliott–Halberstam"
     ],
-    "lineCount": 414,
+    "lineCount": 623,
     "erdosUrl": null,
     "dateAdded": "2026-06-27",
-    "theoremCount": 23,
-    "definitionCount": 7
+    "theoremCount": 36,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "The Elliott–Halberstam conjecture (1968) strengthens the Bombieri–Vinogradov theorem (1965), which established that primes equidistribute in arithmetic progressions on average over moduli up to √x — a 'Riemann Hypothesis quality' result obtained unconditionally. EH conjectures the same averaged equidistribution up to x^θ for every θ < 1. It is the analytic input that sharpens the Maynard–Tao bounded-gap bound: H ≤ 12 under EH versus H ≤ 246 unconditionally. EH remains open.",
@@ -199,10 +203,10 @@
       "Real"
     ],
     "namespace": "BoundedPrimeGapsOQ02",
-    "lineCount": 414,
+    "lineCount": 623,
     "axiomCount": 0,
-    "theoremCount": 23,
-    "definitionCount": 7,
+    "theoremCount": 36,
+    "definitionCount": 12,
     "path": "Proofs/BoundedPrimeGapsOQ02.lean",
     "sorries": 0
   },

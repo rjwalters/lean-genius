@@ -1,7 +1,7 @@
 {
   "slug": "pythagorean-triples-oq-03",
   "title": "Rational Circle Parametrization for x² + y² = p (primes p ≡ 1 mod 4)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -11,17 +11,22 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "param_recovers: stereographic parametrization is surjective onto rational points with x≠a (exact algebraic identity)",
+      "prime_dvd_of_dvd_sq_add_sq: p≡3 mod 4, p∣X²+Y² ⟹ p∣X ∧ p∣Y (ZMod field argument)",
+      "no_int_sol_of_three_mod_four: infinite descent — X²+Y²=pW² has no integer solution with W≠0 when p≡3 mod 4",
+      "no_rational_point_three_mod_four: p≡3 mod 4 ⟹ circle x²+y²=p has no rational point (rational two-square obstruction)"
+    ],
     "open": [],
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-06-14T22:54:16-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Both remaining sorries discharged: param_recovers (surjectivity) and no_rational_point_three_mod_four (descent obstruction). File VERIFIED 0-sorry 0-axiom.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional gallery integration; possible follow-up to other conics x²+2y²=p.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +34,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "VERIFIED (0 sorries, 0 axioms): full rational-point existence characterization for x²+y²=p assembled. param_recovers (parametrization surjectivity) proved by linear_combination; no_rational_point_three_mod_four proved by clearing denominators + infinite descent on |W| using a ZMod(p) field obstruction. Both depend only on propext/Classical.choice/Quot.sound.",
+    "builtItems": [
+      "param_recovers in PythagoreanTriplesOQ03.lean — chord-slope completeness of the stereographic map",
+      "prime_dvd_of_dvd_sq_add_sq in PythagoreanTriplesOQ03.lean — mod-p obstruction via ZMod.exists_sq_eq_neg_one_iff",
+      "no_int_sol_of_three_mod_four in PythagoreanTriplesOQ03.lean — Nat.strongRecOn infinite descent on |W|",
+      "no_rational_point_three_mod_four in PythagoreanTriplesOQ03.lean — rational obstruction via denominator clearing"
+    ],
+    "insights": [
+      "The rational obstruction (p≡3 ⟹ not a sum of two RATIONAL squares) needs no separate descent lemma beyond the integer one: clearing denominators reduces it to X²+Y²=pW², and the integer infinite descent on |W| closes it.",
+      "ZMod.exists_sq_eq_neg_one_iff (IsSquare(-1:ZMod p) ↔ p%4≠3) plus the field structure of ZMod p (from Fact p.Prime) gives p∣X²+Y² ⟹ p∣X∧p∣Y in ~10 lines — no Gaussian integers needed.",
+      "param_recovers (surjectivity) coefficients: px residual = (a-x)·circle, py residual = (b-y)·circle; found by symbolic division of goal_diff by the circle relation."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Optional: gallery integration (create src/data/proofs/pythagorean-triples-oq-03/).",
+      "Follow-up: extend the rational-parametrization + descent toolkit to x²+2y²=p (p≡1,3 mod 8) and x²+3y²=p."
+    ],
     "markdown": "# Knowledge Base: pythagorean-triples-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [

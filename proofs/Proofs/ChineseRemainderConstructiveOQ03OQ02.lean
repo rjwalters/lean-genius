@@ -42,6 +42,27 @@
     then reconstruct against the third (iterated two-modulus CRT).
   * Concrete cross-checks for n = 2,3,4: {3,4,5}, {7,8,9}, {15,16,17}.
 
+  ## Four-moduli extension and the parity dichotomy (Section VI)
+
+  Hardware designs frequently extend the three-moduli set to four channels by
+  appending one more `(n+1)`-bit modulus. There are two natural candidates,
+  `2^(n+1) + 1` and `2^(n+1) - 1`, and a clean *parity dichotomy* governs which
+  one is admissible:
+
+  * For ODD n, `{2^n-1, 2^n, 2^n+1, 2^(n+1)+1}` is pairwise coprime
+    (`fourModuli_pairwise_coprime_odd`, packaged as `fourModuliBaseOdd`), but the
+    other candidate `2^(n+1)-1` FAILS — it shares the factor 3 with `2^n+1`
+    (`not_coprime_high_extMersenne_odd`).
+  * For EVEN n, `{2^n-1, 2^n, 2^n+1, 2^(n+1)-1}` is pairwise coprime
+    (`fourModuli_pairwise_coprime_even`, packaged as `fourModuliBaseEven`), but
+    `2^(n+1)+1` FAILS — it shares the factor 3 with `2^n-1`
+    (`not_coprime_lowMersenne_extHigh_even`).
+
+  The obstruction is exactly divisibility by 3, controlled by `2^n mod 3`
+  (= 2 for odd n, = 1 for even n; `two_pow_mod_three_of_odd/even`). The capstone
+  `fourModuli_base_exists` shows every n ≥ 2 admits SOME valid four-channel
+  extension — you just pick the modulus matching the parity of n.
+
   This is a constructive, fully machine-checked characterization of the
   three-moduli set; it does not claim global optimality over all bases (that
   remains the open parent question) — it formalizes why this specific, widely
@@ -233,9 +254,287 @@ theorem example_n4_coprime : [15, 16, 17].Pairwise Nat.Coprime := by decide
 theorem example_n4_range : ([15, 16, 17] : List ℕ).prod = 4080 := by norm_num
 theorem example_n4_range_formula : 2 ^ (3 * 4) - 2 ^ 4 = 4080 := by norm_num
 
+-- ============================================================
+-- SECTION VI: Four-moduli extensions and the parity dichotomy
+-- ============================================================
+
+/-- `2^n mod 3 = 2` when n is odd: `2 ≡ -1 (mod 3)`, so odd powers are `≡ -1`. -/
+theorem two_pow_mod_three_of_odd {n : ℕ} (hn : Odd n) : 2 ^ n % 3 = 2 := by
+  obtain ⟨m, rfl⟩ := hn
+  have hb : ((2 : ℕ) ^ 2) ≡ 1 [MOD 3] := by decide
+  have h4 : ((2 : ℕ) ^ 2) ^ m % 3 = 1 := by
+    have := hb.pow m; simpa [Nat.ModEq] using this
+  calc 2 ^ (2 * m + 1) % 3
+      = ((2 : ℕ) ^ 2) ^ m * 2 % 3 := by rw [pow_succ, pow_mul]
+    _ = (((2 : ℕ) ^ 2) ^ m % 3) * (2 % 3) % 3 := by rw [Nat.mul_mod]
+    _ = 2 := by rw [h4]
+
+/-- `2^n mod 3 = 1` when n is even: `2 ≡ -1 (mod 3)`, so even powers are `≡ 1`. -/
+theorem two_pow_mod_three_of_even {n : ℕ} (hn : Even n) : 2 ^ n % 3 = 1 := by
+  obtain ⟨m, rfl⟩ := hn
+  have hb : ((2 : ℕ) ^ 2) ≡ 1 [MOD 3] := by decide
+  have h4 : ((2 : ℕ) ^ 2) ^ m % 3 = 1 := by
+    have := hb.pow m; simpa [Nat.ModEq] using this
+  calc 2 ^ (m + m) % 3
+      = ((2 : ℕ) ^ 2) ^ m % 3 := by rw [show m + m = 2 * m from by ring, pow_mul]
+    _ = 1 := h4
+
+/-- Any common divisor of `2^n - 1` and `2^(n+1) + 1` divides 3:
+    `(2^(n+1)+1) - 2·(2^n-1) = 3`. -/
+theorem gcd_lowMersenne_extHigh_dvd_three (n : ℕ) :
+    Nat.gcd (2 ^ n - 1) (2 ^ (n + 1) + 1) ∣ 3 := by
+  have hpow : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+  have ha1 : 1 ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+  have hdl := Nat.gcd_dvd_left (2 ^ n - 1) (2 ^ (n + 1) + 1)
+  have hdr := Nat.gcd_dvd_right (2 ^ n - 1) (2 ^ (n + 1) + 1)
+  have h2 : Nat.gcd (2 ^ n - 1) (2 ^ (n + 1) + 1) ∣ 2 * (2 ^ n - 1) := hdl.mul_left 2
+  have he : 2 ^ (n + 1) + 1 - 2 * (2 ^ n - 1) = 3 := by rw [hpow]; omega
+  have hsub := Nat.dvd_sub hdr h2
+  rwa [he] at hsub
+
+/-- Any common divisor of `2^n + 1` and `2^(n+1) - 1` divides 3:
+    `2·(2^n+1) - (2^(n+1)-1) = 3`. -/
+theorem gcd_high_extMersenne_dvd_three (n : ℕ) :
+    Nat.gcd (2 ^ n + 1) (2 ^ (n + 1) - 1) ∣ 3 := by
+  have hpow : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+  have ha1 : 1 ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+  have hdl := Nat.gcd_dvd_left (2 ^ n + 1) (2 ^ (n + 1) - 1)
+  have hdr := Nat.gcd_dvd_right (2 ^ n + 1) (2 ^ (n + 1) - 1)
+  have h2 : Nat.gcd (2 ^ n + 1) (2 ^ (n + 1) - 1) ∣ 2 * (2 ^ n + 1) := hdl.mul_left 2
+  have he : 2 * (2 ^ n + 1) - (2 ^ (n + 1) - 1) = 3 := by rw [hpow]; omega
+  have hsub := Nat.dvd_sub h2 hdr
+  rwa [he] at hsub
+
+/-- ODD n: the extended-high modulus `2^(n+1)+1` is coprime to `2^n - 1`.
+    The gcd divides 3, but `3 ∤ 2^n-1` for odd n (`2^n ≡ 2 mod 3`). -/
+theorem coprime_lowMersenne_extHigh_odd (n : ℕ) (hn : Odd n) :
+    Nat.Coprime (2 ^ n - 1) (2 ^ (n + 1) + 1) := by
+  have hd3 := gcd_lowMersenne_extHigh_dvd_three n
+  have hmod : 2 ^ n % 3 = 2 := two_pow_mod_three_of_odd hn
+  have hge : 1 ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+  have hnot3 : ¬ Nat.gcd (2 ^ n - 1) (2 ^ (n + 1) + 1) = 3 := by
+    intro hg
+    have h3 : (3 : ℕ) ∣ 2 ^ n - 1 := by rw [← hg]; exact Nat.gcd_dvd_left _ _
+    omega
+  rcases (Nat.dvd_prime (by norm_num)).mp hd3 with h1 | h3
+  · exact h1
+  · exact absurd h3 hnot3
+
+/-- `2^(n+1)+1` is coprime to the mid channel `2^n` (consecutive-to-double). -/
+theorem coprime_mid_extHigh (n : ℕ) : Nat.Coprime (2 ^ n) (2 ^ (n + 1) + 1) := by
+  have hpow : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+  have hdl := Nat.gcd_dvd_left (2 ^ n) (2 ^ (n + 1) + 1)
+  have hdr := Nat.gcd_dvd_right (2 ^ n) (2 ^ (n + 1) + 1)
+  have h2 : Nat.gcd (2 ^ n) (2 ^ (n + 1) + 1) ∣ 2 ^ (n + 1) := by
+    have := hdl.mul_left 2; rwa [← hpow] at this
+  have he : 2 ^ (n + 1) + 1 - 2 ^ (n + 1) = 1 := by omega
+  have hsub := Nat.dvd_sub hdr h2
+  rw [he] at hsub
+  exact Nat.dvd_one.mp hsub
+
+/-- `2^(n+1)+1` is coprime to the high channel `2^n + 1`:
+    `2·(2^n+1) - (2^(n+1)+1) = 1`. -/
+theorem coprime_high_extHigh (n : ℕ) : Nat.Coprime (2 ^ n + 1) (2 ^ (n + 1) + 1) := by
+  have hpow : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+  have hdl := Nat.gcd_dvd_left (2 ^ n + 1) (2 ^ (n + 1) + 1)
+  have hdr := Nat.gcd_dvd_right (2 ^ n + 1) (2 ^ (n + 1) + 1)
+  have h2 : Nat.gcd (2 ^ n + 1) (2 ^ (n + 1) + 1) ∣ 2 * (2 ^ n + 1) := hdl.mul_left 2
+  have he : 2 * (2 ^ n + 1) - (2 ^ (n + 1) + 1) = 1 := by rw [hpow]; omega
+  have hsub := Nat.dvd_sub h2 hdr
+  rw [he] at hsub
+  exact Nat.dvd_one.mp hsub
+
+/-- `2^(n+1)-1` is coprime to the low channel `2^n - 1` (for all n):
+    `(2^(n+1)-1) - 2·(2^n-1) = 1`. -/
+theorem coprime_lowMersenne_extMersenne (n : ℕ) :
+    Nat.Coprime (2 ^ n - 1) (2 ^ (n + 1) - 1) := by
+  have hpow : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+  have ha1 : 1 ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+  have hdl := Nat.gcd_dvd_left (2 ^ n - 1) (2 ^ (n + 1) - 1)
+  have hdr := Nat.gcd_dvd_right (2 ^ n - 1) (2 ^ (n + 1) - 1)
+  have h2 : Nat.gcd (2 ^ n - 1) (2 ^ (n + 1) - 1) ∣ 2 * (2 ^ n - 1) := hdl.mul_left 2
+  have he : 2 ^ (n + 1) - 1 - 2 * (2 ^ n - 1) = 1 := by rw [hpow]; omega
+  have hsub := Nat.dvd_sub hdr h2
+  rw [he] at hsub
+  exact Nat.dvd_one.mp hsub
+
+/-- `2^(n+1)-1` is coprime to the mid channel `2^n` (for all n):
+    `2^(n+1) - (2^(n+1)-1) = 1`. -/
+theorem coprime_mid_extMersenne (n : ℕ) : Nat.Coprime (2 ^ n) (2 ^ (n + 1) - 1) := by
+  have hpow : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+  have ha1 : 1 ≤ 2 ^ (n + 1) := Nat.one_le_pow _ _ (by norm_num)
+  have hdl := Nat.gcd_dvd_left (2 ^ n) (2 ^ (n + 1) - 1)
+  have hdr := Nat.gcd_dvd_right (2 ^ n) (2 ^ (n + 1) - 1)
+  have h2 : Nat.gcd (2 ^ n) (2 ^ (n + 1) - 1) ∣ 2 ^ (n + 1) := by
+    have := hdl.mul_left 2; rwa [← hpow] at this
+  have he : 2 ^ (n + 1) - (2 ^ (n + 1) - 1) = 1 := by omega
+  have hsub := Nat.dvd_sub h2 hdr
+  rw [he] at hsub
+  exact Nat.dvd_one.mp hsub
+
+/-- EVEN n: the extended-Mersenne modulus `2^(n+1)-1` is coprime to `2^n + 1`.
+    The gcd divides 3, but `3 ∤ 2^n+1` for even n (`2^n ≡ 1 mod 3`). -/
+theorem coprime_high_extMersenne_even (n : ℕ) (hn : Even n) :
+    Nat.Coprime (2 ^ n + 1) (2 ^ (n + 1) - 1) := by
+  have hd3 := gcd_high_extMersenne_dvd_three n
+  have hmod : 2 ^ n % 3 = 1 := two_pow_mod_three_of_even hn
+  have hnot3 : ¬ Nat.gcd (2 ^ n + 1) (2 ^ (n + 1) - 1) = 3 := by
+    intro hg
+    have h3 : (3 : ℕ) ∣ 2 ^ n + 1 := by rw [← hg]; exact Nat.gcd_dvd_left _ _
+    omega
+  rcases (Nat.dvd_prime (by norm_num)).mp hd3 with h1 | h3
+  · exact h1
+  · exact absurd h3 hnot3
+
+/-- Sharp boundary (odd ↛ Mersenne): for ODD n, `2^(n+1)-1` is NOT coprime to
+    `2^n+1` — both are divisible by 3 — so this extension fails at odd n. -/
+theorem not_coprime_high_extMersenne_odd (n : ℕ) (hn : Odd n) :
+    ¬ Nat.Coprime (2 ^ n + 1) (2 ^ (n + 1) - 1) := by
+  have hmodO : 2 ^ n % 3 = 2 := two_pow_mod_three_of_odd hn
+  have h1 : (3 : ℕ) ∣ 2 ^ n + 1 := by omega
+  have hmodE : 2 ^ (n + 1) % 3 = 1 := two_pow_mod_three_of_even (Odd.add_one hn)
+  have hge : 1 ≤ 2 ^ (n + 1) := Nat.one_le_pow _ _ (by norm_num)
+  have h2 : (3 : ℕ) ∣ 2 ^ (n + 1) - 1 := by omega
+  intro hco
+  have hco' : Nat.gcd (2 ^ n + 1) (2 ^ (n + 1) - 1) = 1 := hco
+  have hg : (3 : ℕ) ∣ Nat.gcd (2 ^ n + 1) (2 ^ (n + 1) - 1) := Nat.dvd_gcd h1 h2
+  rw [hco'] at hg
+  exact absurd hg (by norm_num)
+
+/-- Sharp boundary (even ↛ extended-high): for EVEN n, `2^(n+1)+1` is NOT coprime
+    to `2^n-1` — both are divisible by 3 — so this extension fails at even n. -/
+theorem not_coprime_lowMersenne_extHigh_even (n : ℕ) (hn : Even n) :
+    ¬ Nat.Coprime (2 ^ n - 1) (2 ^ (n + 1) + 1) := by
+  have hmodE : 2 ^ n % 3 = 1 := two_pow_mod_three_of_even hn
+  have hge : 1 ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+  have h1 : (3 : ℕ) ∣ 2 ^ n - 1 := by omega
+  have hmodO : 2 ^ (n + 1) % 3 = 2 := two_pow_mod_three_of_odd (Even.add_one hn)
+  have h2 : (3 : ℕ) ∣ 2 ^ (n + 1) + 1 := by omega
+  intro hco
+  have hco' : Nat.gcd (2 ^ n - 1) (2 ^ (n + 1) + 1) = 1 := hco
+  have hg : (3 : ℕ) ∣ Nat.gcd (2 ^ n - 1) (2 ^ (n + 1) + 1) := Nat.dvd_gcd h1 h2
+  rw [hco'] at hg
+  exact absurd hg (by norm_num)
+
+/-- ODD n: the four-moduli set `{2^n-1, 2^n, 2^n+1, 2^(n+1)+1}` is pairwise coprime. -/
+theorem fourModuli_pairwise_coprime_odd (n : ℕ) (hn : Odd n) :
+    [2 ^ n - 1, 2 ^ n, 2 ^ n + 1, 2 ^ (n + 1) + 1].Pairwise Nat.Coprime := by
+  have hpos : 1 ≤ n := by obtain ⟨k, hk⟩ := hn; omega
+  refine List.Pairwise.cons ?_ (List.Pairwise.cons ?_
+    (List.Pairwise.cons ?_ (List.Pairwise.cons ?_ List.Pairwise.nil)))
+  · intro a ha
+    rcases List.mem_cons.mp ha with rfl | ha1
+    · exact coprime_low_mid n
+    · rcases List.mem_cons.mp ha1 with rfl | ha2
+      · exact coprime_low_high n hpos
+      · rcases List.mem_singleton.mp ha2 with rfl
+        exact coprime_lowMersenne_extHigh_odd n hn
+  · intro a ha
+    rcases List.mem_cons.mp ha with rfl | ha1
+    · exact coprime_mid_high n
+    · rcases List.mem_singleton.mp ha1 with rfl
+      exact coprime_mid_extHigh n
+  · intro a ha
+    rcases List.mem_singleton.mp ha with rfl
+    exact coprime_high_extHigh n
+  · intro a ha
+    simp at ha
+
+/-- EVEN n: the four-moduli set `{2^n-1, 2^n, 2^n+1, 2^(n+1)-1}` is pairwise coprime. -/
+theorem fourModuli_pairwise_coprime_even (n : ℕ) (hn : Even n) (hpos : 1 ≤ n) :
+    [2 ^ n - 1, 2 ^ n, 2 ^ n + 1, 2 ^ (n + 1) - 1].Pairwise Nat.Coprime := by
+  refine List.Pairwise.cons ?_ (List.Pairwise.cons ?_
+    (List.Pairwise.cons ?_ (List.Pairwise.cons ?_ List.Pairwise.nil)))
+  · intro a ha
+    rcases List.mem_cons.mp ha with rfl | ha1
+    · exact coprime_low_mid n
+    · rcases List.mem_cons.mp ha1 with rfl | ha2
+      · exact coprime_low_high n hpos
+      · rcases List.mem_singleton.mp ha2 with rfl
+        exact coprime_lowMersenne_extMersenne n
+  · intro a ha
+    rcases List.mem_cons.mp ha with rfl | ha1
+    · exact coprime_mid_high n
+    · rcases List.mem_singleton.mp ha1 with rfl
+      exact coprime_mid_extMersenne n
+  · intro a ha
+    rcases List.mem_singleton.mp ha with rfl
+    exact coprime_high_extMersenne_even n hn
+  · intro a ha
+    simp at ha
+
+/-- The ODD-n four-moduli RNS base `{2^n-1, 2^n, 2^n+1, 2^(n+1)+1}` (n ≥ 2). -/
+def fourModuliBaseOdd (n : ℕ) (hn : Odd n) (hn2 : 2 ≤ n) : RNSBase where
+  moduli := [2 ^ n - 1, 2 ^ n, 2 ^ n + 1, 2 ^ (n + 1) + 1]
+  coprime := fourModuli_pairwise_coprime_odd n hn
+  ge_two := by
+    have hpow : 4 ≤ 2 ^ n := by
+      have : (2 : ℕ) ^ 2 ≤ 2 ^ n := Nat.pow_le_pow_right (by norm_num) hn2
+      simpa using this
+    intro m hm
+    rcases List.mem_cons.mp hm with rfl | hm'
+    · omega
+    · rcases List.mem_cons.mp hm' with rfl | hm''
+      · omega
+      · rcases List.mem_cons.mp hm'' with rfl | hm'''
+        · omega
+        · rcases List.mem_singleton.mp hm''' with rfl
+          have h1 : 1 ≤ 2 ^ (n + 1) := Nat.one_le_pow _ _ (by norm_num)
+          omega
+
+/-- The EVEN-n four-moduli RNS base `{2^n-1, 2^n, 2^n+1, 2^(n+1)-1}` (n ≥ 2). -/
+def fourModuliBaseEven (n : ℕ) (hn : Even n) (hn2 : 2 ≤ n) : RNSBase where
+  moduli := [2 ^ n - 1, 2 ^ n, 2 ^ n + 1, 2 ^ (n + 1) - 1]
+  coprime := fourModuli_pairwise_coprime_even n hn (by omega)
+  ge_two := by
+    have hpow : 4 ≤ 2 ^ n := by
+      have : (2 : ℕ) ^ 2 ≤ 2 ^ n := Nat.pow_le_pow_right (by norm_num) hn2
+      simpa using this
+    intro m hm
+    rcases List.mem_cons.mp hm with rfl | hm'
+    · omega
+    · rcases List.mem_cons.mp hm' with rfl | hm''
+      · omega
+      · rcases List.mem_cons.mp hm'' with rfl | hm'''
+        · omega
+        · rcases List.mem_singleton.mp hm''' with rfl
+          have h1 : 4 ≤ 2 ^ (n + 1) := by
+            have : (2 : ℕ) ^ 2 ≤ 2 ^ (n + 1) := Nat.pow_le_pow_right (by norm_num) (by omega)
+            simpa using this
+          omega
+
+theorem fourModuliBaseOdd_channels (n : ℕ) (hn : Odd n) (hn2 : 2 ≤ n) :
+    (fourModuliBaseOdd n hn hn2).channels = 4 := rfl
+
+theorem fourModuliBaseEven_channels (n : ℕ) (hn : Even n) (hn2 : 2 ≤ n) :
+    (fourModuliBaseEven n hn hn2).channels = 4 := rfl
+
+/-- Parity dichotomy capstone: every n ≥ 2 admits SOME valid four-channel RNS
+    extension of the three-moduli set — use `2^(n+1)+1` when n is odd and
+    `2^(n+1)-1` when n is even. -/
+theorem fourModuli_base_exists (n : ℕ) (hn2 : 2 ≤ n) :
+    ∃ b : RNSBase, b.channels = 4 := by
+  rcases Nat.even_or_odd n with he | ho
+  · exact ⟨fourModuliBaseEven n he hn2, fourModuliBaseEven_channels n he hn2⟩
+  · exact ⟨fourModuliBaseOdd n ho hn2, fourModuliBaseOdd_channels n ho hn2⟩
+
+-- Concrete cross-checks for the parity dichotomy.
+-- n = 3 (odd): {7,8,9,17} works; {7,8,9,15} fails (gcd(9,15) = 3).
+theorem example_n3_four_odd : [7, 8, 9, 17].Pairwise Nat.Coprime := by decide
+theorem example_n3_bad_mersenne_choice : ¬ [7, 8, 9, 15].Pairwise Nat.Coprime := by decide
+-- n = 2 (even): {3,4,5,7} works; {3,4,5,9} fails (gcd(3,9) = 3).
+theorem example_n2_four_even : [3, 4, 5, 7].Pairwise Nat.Coprime := by decide
+theorem example_n2_bad_high_choice : ¬ [3, 4, 5, 9].Pairwise Nat.Coprime := by decide
+-- n = 4 (even): {15,16,17,31} works.
+theorem example_n4_four_even : [15, 16, 17, 31].Pairwise Nat.Coprime := by decide
+
 #check @threeModuli_pairwise_coprime
 #check @dynamicRange_formula
 #check @threeModuliBase_dynamicRange
 #check @threeModuli_crt_step
+#check @fourModuli_pairwise_coprime_odd
+#check @fourModuli_pairwise_coprime_even
+#check @fourModuli_base_exists
+#check @two_pow_mod_three_of_odd
 
 end RNSThreeModuli

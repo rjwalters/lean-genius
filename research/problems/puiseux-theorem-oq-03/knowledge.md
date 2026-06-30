@@ -118,3 +118,295 @@ valuations for free.
 Verification recipe unchanged: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
 Proofs/PuiseuxTheoremOQ03.lean` exits 0 (worktree `.lake` symlinks the main
 repo's prebuilt oleans; the wrapper blocks even `env lean` without LAKE_UNSAFE=1).
+
+---
+
+## Session 4 (2026-06-27, researcher-6): global convexity (sorted slopes)
+
+Extended 421→509 lines, +6 theorems, +2 defs (all 0 sorries / 0 axioms;
+`#print axioms` = propext/Classical.choice/Quot.sound only).
+
+Lifted the *pairwise* convexity `edgeSlope_mono` to the **whole polygon**:
+
+* `edgeSlopes : List SupportPoint → List ℚ` — edge-slope list of a vertex chain
+  (two-step structural recursion).
+* `chain_edgeSlopes` — `IsChain (IsLowerEdge pts) vs → IsChain (· ≤ ·) (edgeSlopes vs)`
+  by structural induction (head = `edgeSlope_mono`, tail = IH).
+* `edgeSlopes_pairwise_le` — `(edgeSlopes vs).Pairwise (· ≤ ·)`: every slope ≤
+  every *later* slope (`isChain_iff_pairwise`, ≤ on ℚ transitive). The full
+  "lower hull is convex" statement.
+* `rootValuations_pairwise_ge` — negated slopes `Pairwise (· ≥ ·)`: whole-polygon
+  sorted root valuations (global analogue of `rootValuation_antitone`).
+* Three-vertex worked example `(0,2)→(1,0)→(3,1)`, slopes `[-2, 1/2]`.
+
+### GOTCHA: Mathlib drift past v4.26.0 (List order API refactor)
+
+The local olean cache is newer than the pinned toolchain string suggests:
+* `List.Chain'` → `List.IsChain` (Chain' = deprecated alias).
+* **`List.Sorted` REMOVED** — replaced by `SortedLE`/`SortedGE` (`Monotone l.get`).
+  Use `List.Pairwise (· ≤ ·)` directly; it *is* sortedness and is stable.
+* `chain'_cons`/`chain'_singleton`/`chain'_iff_pairwise` →
+  `isChain_cons_cons`/`isChain_singleton`/`isChain_iff_pairwise`
+  (`isChain_iff_pairwise` needs `[Trans R R R]`).
+* New imports needed: `Mathlib.Data.List.Chain`, `Mathlib.Data.List.Sort`.
+
+Find current names by grepping `.lake/packages/mathlib/Mathlib/Data/List/`.
+Pre-existing argmin/mem_filter code was unaffected.
+
+Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/PuiseuxTheoremOQ03.lean` exits 0 (Docker host back up, but single-file
+env-lean against prebuilt oleans remains the fast channel).
+
+---
+
+## Session 5 (2026-06-27, researcher-9): degree counting (edge widths)
+
+Extended 509→589 lines, +6 theorems, +1 def (all 0 sorries / 0 axioms;
+`#print axioms` on the new results = propext/Classical.choice/Quot.sound only).
+
+Added the **multiplicity** half of the Newton polygon, complementing the
+slope-sorting (`edgeSlopes_pairwise_le`) which is the *valuation* half. Where
+slopes give root valuations, edge **widths** `q.1 − p.1` give root
+multiplicities, and the polygon distributes exactly `(width)` roots of valuation
+`−slope` to each edge.
+
+* `edgeWidths : List SupportPoint → List ℚ` — horizontal projections of a vertex
+  chain (two-step structural recursion, mirrors `edgeSlopes`).
+* **`sum_edgeWidths`** — telescoping identity: `(edgeWidths (v::vs)).sum =
+  (getLast).1 − v.1`, the total horizontal extent of the polygon. Proof: induct
+  on the tail; head width + tail span collapses (`List.getLast_cons (by simp)`
+  for the getLast step, then `ring`).
+* `edgeWidths_pos` — along a chain of lower edges every width is `> 0` (each edge
+  has `p.1 < q.1`); structural induction mirroring `chain_edgeSlopes`.
+* **`sum_edgeWidths_eq_degree`** — capstone corollary: a chain from index `0` to
+  index `d` has widths summing to `d`. This is "all `d` roots accounted for, with
+  multiplicity" — the combinatorial reason `Σ (edge widths) = deg P`.
+* Worked example: `edgeWidths threeVertex = [1,2]`, sum `= 3` (span `(0,2)→(3,1)`),
+  all positive.
+
+**Why this matters.** Together with the slope-sorting results the polygon now
+reads roots off both *in sorted valuation order* AND *with correct total
+multiplicity*. The pair (`edgeSlopes_pairwise_le`, `sum_edgeWidths_eq_degree`) is
+the full combinatorial content of the Newton polygon theorem's bookkeeping; only
+the analytic bridge (slopes/widths ↔ actual roots of `P ∈ K((x))[Y]`) remains,
+still blocked on a valuation API for `K((x))[Y]` in Mathlib.
+
+### GOTCHA: `getLast` telescoping
+`List.getLast_cons` is `@[simp]` and rewrites `(a :: l).getLast _ = l.getLast _`
+across the proof-irrelevant nonempty hypothesis; supplying both via `(by simp)`
+keeps the atoms syntactically equal so `ring` closes the telescope. Base case
+`edgeWidths [v] = []` falls through the catch-all `_ => []` pattern (single-cons
+does not match `p :: q :: rest`).
+
+---
+
+## Session 6 (2026-06-27, researcher-1): slope × width = drop (coupling the two halves)
+
+Extended 589→684 lines, +6 theorems, +1 def (all 0 sorries / 0 axioms;
+`#print axioms` on all 6 new results = propext/Classical.choice/Quot.sound only).
+
+Prior sessions built two *parallel but disjoint* halves: `edgeSlopes_pairwise_le`
+(the **valuation** half — sorted root valuations) and `sum_edgeWidths_eq_degree`
+(the **multiplicity** half — widths sum to the degree). They never met. This
+session **couples** them via the slope×width=drop identity.
+
+* `edgeSlope_mul_width` — per-edge: `edgeSlope p q * ((q.1)−(p.1)) = q.2 − p.2`.
+  The slope's denominator *is* the width, so the product recovers the vertical
+  drop. One line: `rw [edgeSlope, div_mul_cancel₀ _ hd]` with `hd` the nonzero
+  index gap from `sub_ne_zero.mpr (Nat.cast_injective ...)`.
+* `edgeDrops` + **`sum_edgeDrops`** — vertical-drop list of a chain and its
+  telescoping sum to `(getLast).2 − v.2`; exact `.2`-analogue of `sum_edgeWidths`
+  (same `List.getLast_cons (by simp)` + `ring` telescope).
+* **`zipWith_edgeSlopes_edgeWidths`** — along a chain of lower edges the
+  elementwise product `zipWith (·*·) (edgeSlopes vs) (edgeWidths vs) = edgeDrops vs`.
+  Structural induction mirroring `chain_edgeSlopes`/`edgeWidths_pos`; head step is
+  `edgeSlope_mul_width`, tail is the IH. `List.zipWith_cons_cons` lines the two
+  recursions up.
+* **`sum_slope_mul_width`** (capstone) — `Σ (edgeSlopeᵢ · widthᵢ) = (last).2 − v.2`,
+  i.e. the slope-weighted-by-width sum telescopes to the total vertical drop.
+  Two-line proof composing the list coupling with `sum_edgeDrops`.
+* **`neg_sum_slope_mul_width`** — `Σ (valuationᵢ · multiplicityᵢ) = v.2 − (last).2
+  = v(constant) − v(leading)`: the valuation of the product of all roots, read off
+  the two endpoints. The *multiplicative* counterpart of `sum_edgeWidths_eq_degree`
+  (which is the *additive* root count).
+* Worked example: `zipWith` products `[-2, 1]`, sum `-1` = drop `(0,2)→(3,1)`.
+
+**Why this matters.** The polygon now reads off, from the same vertex chain:
+(1) the root valuations *in sorted order* (`edgeSlopes_pairwise_le`),
+(2) the total *multiplicity* (`sum_edgeWidths_eq_degree`), and
+(3) the *sum of valuations with multiplicity* = valuation of the root product
+(`neg_sum_slope_mul_width`). That triple is the complete combinatorial bookkeeping
+of the Newton polygon theorem. Only the analytic bridge (slopes/widths ↔ actual
+roots of `P ∈ K((x))[Y]`) remains, still blocked on a valuation API for `K((x))[Y]`
+in Mathlib (S2-A's harder half).
+
+### GOTCHA: concurrent `git reset --hard` on the assigned worktree
+The `.loom/worktrees/researcher-1` worktree was being `reset --hard`'d to HEAD by a
+concurrent process every ~30s (reflog: "reset: moving to HEAD"), wiping every
+uncommitted edit before commit — and HEAD was *behind* origin/main (509-line
+session-4 file, missing session 5's edgeWidths). Fix: created a *separate* worktree
+`researcher-1-puiseux-oq03` off `origin/main` (the up-to-date 589-line base),
+symlinked its `proofs/.lake` → main repo `.lake` for prebuilt oleans, edited +
+committed there. Verify recipe unchanged otherwise:
+`cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PuiseuxTheoremOQ03.lean`.
+
+## Session (2026-06-28, researcher-4): complete lower hull — recursion runs to completion
+
+Closed the capstone the previous sessions were building toward. Added
+`exists_lowerHull` (+ fuelled core `exists_lowerHull_aux` and worked example
+`ysqMinusX_lowerHull`). File 834→949 lines, 47→48 theorems, all still
+**0 sorries / 0 axioms** (`#print axioms` on all three new results lists only
+`propext`/`Classical.choice`/`Quot.sound`).
+
+**Statement.** For a distinct-index support `pts` with a strictly-leftmost point
+`p`, there is a chain of lower edges `p :: vs` of `pts` whose final vertex `w` has
+maximal index over all of `pts`:
+
+```
+∃ vs w, List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+        (p :: vs).getLast? = some w ∧ w ∈ pts ∧ ∀ r ∈ pts, r.1 ≤ w.1
+```
+
+This is the **existence half of the Newton polygon construction** — the object the
+Newton–Puiseux algorithm walks edge by edge. Prior sessions proved one peel
+(`isLowerEdge_chain_extend`) and convexity of a *given* chain; this runs the
+recursion to exhaustion.
+
+**Proof architecture.** Fuelled strong induction on `pts.length` (an explicit
+`∀ n, pts.length ≤ n → …` so no `termination_by` gymnastics):
+* If `p` is already rightmost (`∀ r ∈ pts, r.1 ≤ p.1`) return the singleton `[p]`.
+* Otherwise peel the dominant edge `p → q₀` (`exists_isLowerEdge_of_leftmost`),
+  recurse on the right restriction `pts.filter (q₀.1 ≤ ·.1)`, and splice with
+  `isLowerEdge_chain_extend`.
+
+**Termination key.** The restriction strictly shrinks because the leftmost `p` is
+dropped (`p.1 < q₀.1` so `decide (q₀.1 ≤ p.1) = false`):
+`List.length_filter_eq_length_iff` + `List.length_filter_le` give
+`(filter).length < pts.length`, hence `≤ n`.
+
+**Three bookkeeping facts that make the recursion close cleanly:**
+* `q₀` is *strictly* leftmost of the restriction — distinct indices turn
+  `q₀.1 ≤ r.1` into `q₀.1 < r.1` for `r ≠ q₀` (`hdist`).
+* The recursion's last vertex `w` (max index in the restriction) is also max over
+  all of `pts`: points left of the cut have index `< q₀.1 ≤ w.1`.
+* `(p :: q₀ :: vs').getLast? = (q₀ :: vs').getLast?` is `rfl`, so the last vertex
+  is preserved by prepending the dominant edge.
+
+**Next.** The cleanest follow-on is a *single* corollary composing `exists_lowerHull`
+with `edgeSlopes_pairwise_le` (global convexity, already in-file) to get a hull whose
+edge slopes are sorted — sorted root valuations, end to end. The analytic Newton
+polygon theorem (slopes = root valuations) stays blocked on a `K((x))[Y]` valuation
+API absent from Mathlib 4.26.0.
+
+Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/PuiseuxTheoremOQ03.lean` exits 0 (~26s, host toolchain, single-file against
+prebuilt Mathlib oleans).
+
+---
+
+## Session (2026-06-28, researcher-9): capstone — Newton polygon assembled end to end
+
+Closed the follow-on the previous session flagged as "the cleanest next step":
+compose `exists_lowerHull` with the convexity/multiplicity infrastructure so the
+combinatorial Newton polygon is a *single* existence statement about the chain the
+recursion actually builds. File 949→1033 lines, 48→51 theorems, all still
+**0 sorries / 0 axioms** (`#print axioms` on all three new results lists only
+`propext`/`Classical.choice`/`Quot.sound`).
+
+**The gap this closes.** Prior sessions proved the valuation half
+(`edgeSlopes_pairwise_le`) and the multiplicity half (`sum_edgeWidths`,
+`edgeWidths_pos`) about an *abstract* `IsChain (IsLowerEdge pts)` hypothesis, while
+`exists_lowerHull` produced a *concrete* hull chain but asserted nothing about its
+slopes or widths. The two never met on the same object. This session discharges the
+abstract chain hypothesis with the recursion-built chain.
+
+* `exists_lowerHull_sorted` (PuiseuxTheoremOQ03.lean:972) — the literal "single
+  corollary": the hull chain from leftmost to rightmost vertex has
+  `(edgeSlopes (p :: vs)).Pairwise (· ≤ ·)`. Two lines: destructure
+  `exists_lowerHull`, apply `edgeSlopes_pairwise_le` to the produced chain.
+* **`exists_lowerHull_newtonPolygon`** (PuiseuxTheoremOQ03.lean:1001) — the capstone
+  bundling *all* combinatorial Newton-polygon data on one chain: it reaches a
+  maximal-index vertex `w`, its edge slopes are sorted (sorted root valuations),
+  its edge widths are all positive, and the widths sum to the index span
+  `w.1 − p.1` (the `Y`-degree when `p.1 = 0`). First statement uniting the
+  valuation and multiplicity halves.
+* `ysqMinusX_newtonPolygon` (PuiseuxTheoremOQ03.lean:1022) — the `Y²−x` worked
+  example of the bundle.
+
+**Why this matters.** The combinatorial content of the Newton polygon theorem is now
+a single theorem about the object the Newton–Puiseux algorithm walks: existence +
+sorted valuations + correct total multiplicity, end to end, on the concrete hull.
+Only the analytic bridge (slopes/widths ↔ actual roots of `P ∈ K((x))[Y]`) remains,
+still blocked on a `K((x))[Y]` valuation API absent from Mathlib 4.26.0.
+
+### GOTCHA: `getLast?` → `getLast` bridge for the width-sum field
+`sum_edgeWidths` is stated with `getLast (by simp)`, but `exists_lowerHull` returns
+`(p :: vs).getLast? = some w`. Convert via `List.mem_getLast?_eq_getLast hlast`
+(`x ∈ l.getLast? → ∃ h, x = getLast l h`); the proof argument of `getLast` is
+proof-irrelevant, so `hwgl.symm` closes `getLast (by simp) = w` and
+`rw [sum_edgeWidths, hgl]` telescopes the sum to `w.1 − p.1`. Importing the module to
+`#print axioms` segfaults (no olean built); append the `#print axioms` lines into the
+file itself, `env lean`, then revert.
+
+Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/PuiseuxTheoremOQ03.lean` exits 0 (host toolchain, single-file against
+prebuilt Mathlib oleans).
+
+---
+
+## Session (2026-06-28, researcher-1): third invariant on the concrete hull
+
+The capstone `exists_lowerHull_newtonPolygon` bundled two of the three Newton-polygon
+invariants onto the recursion-built hull (sorted edge slopes = valuation half; positive
+widths summing to the index span = multiplicity half), but the **third** invariant — the
+slope-weighted-by-width drop `−Σ (valuationᵢ · multiplicityᵢ) = v(constant) − v(leading)`
+(`neg_sum_slope_mul_width`, session 6) — still floated on an *abstract* `IsChain` hypothesis
+and had never been discharged on the concrete chain the algorithm walks. This session lands
+it. File 1033→1081 lines, 51→53 theorems, still **0 sorries / 0 axioms** (`#print axioms`
+on both new results = propext/Classical.choice/Quot.sound only).
+
+* `exists_lowerHull_valuationProduct` (PuiseuxTheoremOQ03.lean) — for a distinct-index
+  support with strictly-leftmost vertex `p`, the hull chain from `exists_lowerHull`
+  satisfies `−(zipWith (·*·) (edgeSlopes (p::vs)) (edgeWidths (p::vs))).sum = p.2 − w.2`,
+  i.e. the sum of root valuations counted with multiplicity equals the vertical drop
+  between leftmost and rightmost vertices. Two lines: destructure `exists_lowerHull`, the
+  same `getLast? → getLast` bridge as the capstone (`List.mem_getLast?_eq_getLast`), then
+  `rw [neg_sum_slope_mul_width hchain, hgl]`.
+* `ysqMinusX_valuationProduct` — the `Y²−x` worked instance: `−Σ = 1 − 0 = 1` (single root,
+  valuation ½, multiplicity 2).
+
+**Why this matters.** With this, *all three* combinatorial Newton-polygon invariants
+(sorted valuations, total multiplicity, valuation-of-root-product) now hold of the **same
+concrete hull** the Newton–Puiseux recursion produces — the capstone bundle plus this
+corollary close the gap where the third invariant lived only abstractly. Only the analytic
+bridge (slopes/widths ↔ actual roots of `P ∈ K((x))[Y]`) remains, still blocked on a
+`K((x))[Y]` valuation API absent from Mathlib 4.26.0.
+
+Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PuiseuxTheoremOQ03.lean`
+exits 0 (~34s, host toolchain, single-file against prebuilt Mathlib oleans). `#print axioms`
+checked by appending the print lines, `env lean`, then reverting (importing the module to a
+fresh file to print axioms segfaults with no built olean).
+
+---
+
+## Session (2026-06-28, researcher-5, S05): blocker refined — base valuation present, Puiseux ℚ-valuation absent
+
+Doc-only ORIENT. Re-checked the standing "analytic bridge blocked, no Mathlib bearer"
+verdict against the drifted Mathlib cache. Refined it to a **precise** statement:
+
+- **PRESENT** (new since 4.26.0): `Valued.v : Valuation K⸨X⸩ ℤᵐ⁰` on Laurent series
+  (`Mathlib/RingTheory/LaurentSeries.lean`), with monomial API `valuation_X_pow`,
+  `valuation_single_zpow`, `coeff_zero_of_lt_valuation`, etc. The base field `K⸨x⸩` is
+  now a valued field upstream — *more* than prior sessions assumed.
+- **ABSENT**: no `PuiseuxSeries`, no ℚ-valued / rational-exponent (`HahnSeries ℚ K`)
+  valuation. The polygon slopes / root valuations are **ℚ-valued** (roots live in the
+  ramified `K⸨x^{1/n}⸩`, e.g. a root of `Y²−x` has valuation ½); the available valuation
+  is **ℤᵐ⁰-valued** on the *unramified* base. The codomains (ℚ vs ℤ) don't match, so the
+  correspondence `edgeSlope = −v(root)` is not even *statable* without first building the
+  ramified Puiseux extension and its ℚ-valued valuation.
+
+**Verdict: BLOCKED** (combinatorially complete, analytically blocked). The missing
+primitive is a valued Puiseux field (`PuiseuxSeries K` / `HahnSeries ℚ K` + ℚ-valuation +
+ramified embedding of `K⸨x⸩`), foundational >1000-line infra not upstream. Next ACT step
+is to *construct that field*, not to add combinatorial lemmas (the polygon side is done).
+See `sessions/2026-06-28-s05-valuation-api-drift-blocker-refine.md`.

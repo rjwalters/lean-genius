@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://erdosproblems.com/57",
     "date": "2026-06-27",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "graph-theory",
@@ -18,9 +18,9 @@
       "mathlib-gap"
     ],
     "proofRepoPath": "Proofs/Erdos57Problem.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 343,
     "dateAdded": "06/27/26",
     "mathlibDependencies": [
@@ -92,6 +92,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "problem-setup",
+      "title": "Problem setup: odd cycle lengths, the Erdős–Hajnal axiom, and bipartite framing",
+      "startLine": 33,
+      "endLine": 159,
+      "summary": "Defines cycleLengths / oddCycleLengths (via Walk.IsCycle), IsColorable / HasInfiniteChromaticNumber, and the ENNReal harmonic sum ∑ 1/aᵢ. Records the Erdős–Hajnal theorem (Liu–Montgomery 2020) as axiom erdos_57 and derives infinite_odd_cycle_lengths from it. Also states the open upper-density conjectures and the noOddCycles_of_boolColoring lemma that opens the bipartite characterization.",
+      "mathContext": "The OQ-04 crux is purely combinatorial; the only deep input is the axiomatized Erdős–Hajnal divergence ∑ 1/aᵢ = ∞ for χ(G) = ∞."
+    },
     {
       "id": "aux-rotate",
       "title": "aux_length_rotate — rotation preserves walk length",

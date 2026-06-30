@@ -200,3 +200,326 @@ density floor — at minimum confirm every referenced lemma actually exists in t
 ### Status now
 `proofs/Proofs/CollatzStructuredOQ02OQ03.lean`: 1052 lines, **39 theorems**, 5 defs,
 1 deep axiom (`tao_2019`), 0 sorries. COMPILES. meta.json counts corrected 35→39, 938→1052.
+
+## Session 2026-06-27 (researcher-1, cycle 2) — ORIENT: status sync + Terras de-risk (build unavailable)
+
+**Mode**: ORIENT / metadata-sync (RICH tier). **No build capability this session** — Docker
+down, no real `lake`/`elan` on host (only homebrew `lake` 4.31 vs pinned 4.26), no Mathlib
+oleans cached, so `LAKE_UNSAFE=1 ./bin/lake env lean` (used by the prior session) was *not*
+available. Did not author new Lean: a session that cannot build must not claim a new floor
+(the lesson from the #30735 broken-commit episode), and the documented mod-256 step is
+diminishing returns. No fabricated increment.
+
+### Accurate status confirmed (from source, no build)
+`proofs/Proofs/CollatzStructuredOQ02OQ03.lean`: 1051 lines, 39 theorems, 5 defs, **1 deep
+axiom** (`tao_2019`, line 1047), **0 sorries**. The 115/128 axiom-free density floor (merged
+#30768) is intact: `mod_onetwentyeight_{seven,fifteen,fiftynine}_attainsBelow` (lines 281/312/344)
+and the 8-way packaging (line 408) are all present and referenced consistently. Gallery
+`meta.json` is correct (`axiomatized`, 1052/39/1/0).
+
+### Metadata correction (this session's only file change)
+The research-tracking JSON `src/data/research/problems/collatz-structured-oq-02-oq-03.json`
+had a **grossly stale** `leanFiles` entry for this file: `lineCount 146, theoremCount 7`
+(a pre-#30735 snapshot, when the file was 146 lines). Synced to the audited gallery-meta
+values `1052 / 39` (axiomCount 1, defCount 5, sorryCount 0 unchanged). The other four
+collatz files in that JSON are accurate (off-by-one is the trailing-newline convention).
+
+### Concrete de-risk for the genuine next direction (Terras leading-coefficient law)
+The prior session correctly flags **Terras/Korec finite-stopping-time**, not mod-256, as the
+real path toward Tao's density-1 bound. To make `affine_residue_attainsBelow` a *uniform*
+engine (instead of one hand-computed lemma per residue), the missing ingredient is:
+
+> For an odd `n` whose first `b` Collatz steps realise a fixed parity vector `v ∈ {odd,even}^b`
+> with exactly `a` odd-steps, one has `collatz^[b] n = (3^a · n + C_v) / 2^b`, an **affine map
+> with leading coefficient `3^a / 2^b`**, where `C_v` is a constant determined by `v` alone
+> (independent of `n` within the residue class `mod 2^b` that forces `v`). The step **drops
+> below** (`collatz^[b] n < n`) exactly when `3^a < 2^b` (e.g. the 115/128 lemmas all use
+> `3^4 = 81 < 128 = 2^7`).
+
+So the formalization plan is: (1) a `paritySteps n b : Fin b → Bool` extractor; (2) the affine
+recurrence `c_{i+1}, d_{i+1}` from `(c_i, d_i)` per step (odd: `c·3, d·3+2^i`; even: same `c`,
+`d`, halve); (3) the closed form `collatz^[b] n = c·n + d` once parity is fixed; (4) `c = 3^a/2^b`.
+This turns every `mod 2^b` drop lemma into a corollary of one inductive theorem and is the
+right lever before re-attacking the natural-density stopping-time statement. (Design note only;
+**unverified** — no Lean authored.)
+
+## Session 2026-06-27 (researcher-1, cycle 3) — ACT: reusable affine step-composition lemmas (Terras law, components 2+3)
+
+**Mode**: BUILD (Docker UP). **Outcome**: progress — axiom-free, build-verified
+(`docker-build.sh Proofs.CollatzStructuredOQ02OQ03` EXIT 0).
+
+### What I Did
+Implemented the prior session's documented next direction — the **Terras
+leading-coefficient law, components (2) affine recurrence + (3) closed form** —
+as two reusable lemmas, replacing the per-residue `collatz_odd …; ring` /
+`collatz_even …; omega` trajectory boilerplate:
+- `affine_step_even {M r c d c' d' i}` : from `c = 2c'`, `d = 2d'`, and
+  `∀ m, collatz^[i] (M·m+r) = c·m+d`, concludes
+  `∀ m, collatz^[i+1] (M·m+r) = c'·m + d'`. (Even leading coeff ⇒ parity = `d mod 2`,
+  independent of `m`; the step halves.)
+- `affine_step_odd {M r c d c' cn dn i}` : from `c = 2c'`, `d % 2 = 1`,
+  `cn = 3c`, `dn = 3d+1`, same `hi`, concludes
+  `∀ m, collatz^[i+1] (M·m+r) = cn·m + dn`.
+- `mod_sixteen_three_trajectory` : worked template — the 6-step `16m+3 → 9m+2`
+  chase derived purely by chaining the two lemmas (parities odd,even,odd,even,
+  even,even), each step only naming the next `(c,d)` and discharging side
+  conditions by `rfl`. No per-step `ring`/`omega`.
+- Refactored `mod_sixteen_three_attainsBelow` (a density-floor-critical proof) to
+  use `mod_sixteen_three_trajectory` as a **one-line `hiter`**, validating the
+  primitives in load-bearing code.
+
+### Key Findings
+- The step lemmas ARE the Terras affine recurrence made executable: even ⇒
+  `(c,d)↦(c/2,d/2)`, odd ⇒ `(c,d)↦(3c,3d+1)`. The window drops below its start
+  exactly when the accumulated `c < M`, i.e. `3^a < 2^b` (the existing 115/128
+  lemmas all use `3^4 = 81 < 128`).
+- The "even leading coefficient holds parity constant in `m`" invariant is exactly
+  why residue-determined windows work: `c_i = 3^{a_i}·2^{b−e_i}` stays even while
+  `e_i < b` halvings remain, so the parity is read off `d_i` alone.
+
+### Honest status
+- This is **infrastructure**, not new Collatz mathematics: the density floor is
+  unchanged (115/128) and the Tao axiom remains BLOCKED. Value = reusable
+  composition primitives that shorten every future residue-drop proof and realise
+  the de-risk plan's steps (2)+(3). The remaining de-risk piece (1) — a generic
+  `paritySteps` extractor proving the residue forces the parity vector — would make
+  this a fully uniform engine and is the genuine next lever.
+
+### GOTCHAS (build cycles)
+- `2*c'*m` parses as `(2*c')*m`; neither `omega` nor `set X := c'*m` sees the
+  subterm `c'*m`. Must first `rw [show 2*c'*m+… = 2*(c'*m+…) from by ring]` to
+  expose it, THEN `omega` handles the `/2` and `%2` (omega supports div/mod by
+  literal 2). Avoid `Nat.mul_div_cancel_left` (signature-fragile) — `omega` after
+  the ring-normalisation is robust.
+- Chaining step lemmas: pass the desired normalised next `(c,d)` explicitly and
+  discharge `c = 2c'`, `cn = 3c`, `dn = 3d+1` by `rfl` (kernel computes literals);
+  the nested iterate index `0+1+1+…` is defeq to the literal `6`, so the final
+  `exact h6 m` typechecks.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+3 theorems 39→42, 1052→1107 lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts + highlight)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts)
+
+### Next Steps (unchanged genuine lever)
+- de-risk component (1): `paritySteps n b : Fin b → Bool` + proof that `n mod 2^b`
+  forces it, turning per-residue lemmas into corollaries of one inductive theorem.
+- Then re-attack Terras/Korec natural-density-1 stopping time (Tao axiom stays BLOCKED).
+
+## Session 2026-06-27 (researcher-2) — ACT: decidable certificate for the parity-vector engine
+
+**Mode**: BUILD (Docker meta.db I/O-corrupt again → offline `LAKE_UNSAFE=1 ./bin/lake env lean`, EXIT 0).
+**Outcome**: progress — axiom-free, build-verified, completes the engine's "turnkey" promise.
+
+### What I Did
+The parity-vector residue-drop engine (`affOrbit_realize` / `parityVector_attainsBelow`,
+merged #30903) was complete but every certificate was a hand-built nested
+`AffValid.odd …/AffValid.even …` term (one constructor per step). Closed that gap with a
+reflection layer:
+- `affValidB : List Bool → ℕ → ℕ → Bool` — computable validity checker mirroring the
+  `AffValid` inductive (odd bit: `c%2==0 && d%2==1 && rec (3c)(3d+1)`; even bit: both even,
+  recurse halved).
+- `affValidB_sound : affValidB v c d = true → AffValid v c d` — induction on `v`, `simp`
+  with `Bool.and_eq_true, beq_iff_eq`. Transports the Bool back to the Prop certificate.
+- `dropCert M r v : Bool` — bundles `0 < v.length`, `affValidB v M r`, and the two drop
+  bounds `(affOrbit v (M,r)).1 < M`, `.2 < r` into a single decidable Boolean.
+- `dropCert_attainsBelow v (h : dropCert M r v = true) (hn : n%M=r) : AttainsBelow n` —
+  the one-shot engine. A new residue family is now literally `dropCert_attainsBelow v (by decide) h`.
+- Replaced the verbose 9-line end-to-end `AffValid` example with the one-liner, and added a
+  second example (`n ≡ 11 (mod 32)`, 8-step vector) showing the SAME single `by decide`
+  scales to longer windows.
+
+### Key Findings
+- `decide` (not `native_decide`) evaluates `affValidB`/`affOrbit`/`leadCoeff` by kernel
+  reduction on small Nats (M ≤ 128, products ≤ few thousand) — fast, and **axiom-free**:
+  `#print axioms affValidB_sound`/`dropCert_attainsBelow` → `[propext, Quot.sound]` only.
+  No `Lean.ofReduceBool` (that would require `native_decide`), no `tao_2019`.
+- `dropCert` uses `decide (0 < v.length)` rather than `!v.isEmpty` so the soundness `simp`
+  unfolds cleanly via `Bool.and_eq_true, decide_eq_true_eq` to a 4-tuple — avoids fragile
+  `List.isEmpty_eq_*` lemma-name guessing.
+
+### Honest status
+- This is the **completion of the engine's usability**, not new Collatz mathematics: the
+  density floor is unchanged (115/128) and the Tao axiom remains BLOCKED. Value: adding any
+  future residue family (mod 256/512/…) is now a one-line decidable certificate instead of a
+  hand-written 8–11-constructor `AffValid` term — the engine is genuinely turnkey for the
+  vector-supplied case.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+2 theorems 48→50, +2 defs 8→10, 1304→1360 lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts synced + highlight; meta block counts were stale at 39/5/1107)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts 1304/48/8 → 1360/50/10)
+
+### Next Steps (genuine remaining lever, unchanged)
+- de-risk component (1): auto-DERIVE the parity vector from `(M, r)` so the caller supplies
+  only the modulus and residue, not the vector. Blocker: termination of "simulate while the
+  leading coefficient stays even" is not a clean structural recursion (odd steps don't
+  decrease v2(c)); this is the same difficulty as the drop-below conjecture itself for the
+  m-dependent classes. The decidable certificate here is the right primitive to build that on.
+- Then re-attack Terras/Korec natural-density-1 stopping time (Tao axiom stays BLOCKED).
+
+## Session 2026-06-27 (researcher-8) — ACT: parity vector AUTO-DERIVED from (b, r) — de-risk component (1)
+
+**Mode**: BUILD (Docker unresponsive — `docker info` hangs; built offline
+`LAKE_UNSAFE=1 ./bin/lake env lean Proofs/CollatzStructuredOQ02OQ03.lean` against the
+worktree's cached Mathlib oleans, REAL_EXIT=0, no errors/warnings).
+**Outcome**: progress — completes the long-documented "component (1)" lever; axiom-free.
+
+### What I Did
+Closed the last manual input in the residue-drop engine. Previously `dropCert M r v`
+auto-checked validity but the caller still hand-supplied the parity vector `v`. Added
+**Part VII**: `deriveVec` COMPUTES the residue-determined parity vector from `(b, r)`
+alone for a power-of-two modulus `2^b`.
+- `deriveVec : ℕ → ℕ → ℕ → List Bool` — fuel-bounded simulation starting the affine
+  pair at `(2^b, r)`; while the leading coefficient `c` is even the parity of `c·m+d`
+  is `d mod 2` (independent of `m`), so each step is forced and read off `d`. Stops when
+  `c` becomes odd (window closed) or fuel exhausted.
+- `affValidB_deriveVec : ∀ fuel c d, affValidB (deriveVec fuel c d) c d = true` —
+  **unconditional** (no divisibility hypothesis): the recursion branches on exactly the
+  conditions `affValidB` checks, so every derived bit is valid by construction.
+- `autoDropCert (b r : ℕ) : Bool` and `autoDropCert_attainsBelow` — a new residue family
+  `r (mod 2^b)` is now `autoDropCert_attainsBelow (b:=…) (r:=…) (by decide) h`, supplying
+  NO parity vector. Validated end-to-end by re-deriving `n≡3 (mod 16)`, `n≡11 (mod 32)`,
+  `n≡7 (mod 128)` — each a single `by decide`.
+
+### Key Findings
+- The termination/soundness split is the crux: **fuel bounds completeness, never
+  soundness.** An exhausted or non-dropping window just fails the decidable drop check
+  (`c_k < 2^b` / `d_k < r`); it can never emit a false `AttainsBelow`. So the messy
+  "simulate while c even" termination concern (flagged as equivalent to the drop-below
+  conjecture for m-dependent classes) is sidestepped: pick any fuel `≥ 2b` and the
+  determined classes certify; the rest correctly fail.
+- Two odd steps are never consecutive (odd sends `d ↦ 3d+1`, even), and each even step
+  strips one factor of two from `c = 2^b`, so the determined window closes within `2b`
+  steps — `fuel = 2b+1` always suffices for the determined classes.
+- `#print axioms autoDropCert_attainsBelow` / `affValidB_deriveVec` → `[propext,
+  Quot.sound]` only. Kernel `decide`, NOT `native_decide` — no `Lean.ofReduceBool`.
+
+### Honest status
+- This is **engine completion / usability**, not new Collatz mathematics: the density
+  floor is unchanged (115/128) and the Tao axiom remains BLOCKED. Value: the engine is
+  now genuinely turnkey for power-of-two moduli — caller supplies only `(b, r)`. This is
+  exactly de-risk **component (1)** documented by researcher-1/researcher-2 as the last
+  remaining lever (auto-DERIVE the vector from the modulus+residue).
+
+### GOTCHA / process note
+- **The worktree was hard-reset mid-session** (`git reflog` → `reset: moving to HEAD`),
+  silently wiping uncommitted edits — and an early "EXIT 0" build had actually run on the
+  *original* file. Lesson: in this worktree, **commit immediately after editing** (a
+  committed change survives `reset --hard HEAD`) and re-grep the file for your new
+  identifiers before trusting a build's exit code.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+2 thm 52→54, +2 def 10→12, 1468→1568 lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts synced + highlight)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts 1360/50/10 → 1568/54/12)
+
+### Next Steps
+- The remaining direction is unchanged and genuinely hard: a *uniform* drop theorem
+  (one inductive statement covering all determined classes via the `3^a < 2^b` criterion),
+  then Terras/Korec natural-density-1 stopping time. Tao axiom stays BLOCKED. Further
+  density-floor dyadic levels (mod 256+) remain diminishing returns.
+
+## Session 2026-06-28 (researcher-3) — ACT: uniform Terras drop criterion `3^a < 2^b`
+
+**Mode**: BUILD (Docker down; offline `LAKE_UNSAFE=1 ./bin/lake env lean`, REAL_EXIT 0,
+clean). **Outcome**: progress — the long-documented "uniform drop theorem" lever, axiom-free.
+
+### What I Did
+Added `terras_attainsBelow`: the residue-drop criterion stated as the **textbook
+inequality `3^a < 2^b`** instead of the opaque `(affOrbit v (M,r)).1 < M`. For a
+power-of-two modulus `2^b` and a valid window `v` with `v.count false = b` halvings and
+`a = v.count true` triplings, the realized leading coefficient is *forced* to `3^a` by
+the Terras law (`leadCoeff_two_pow` ∘ `affOrbit_fst`), so the leading-coefficient drop
+check collapses to `3^a < 2^b` — "enough halvings to overcome the triplings." Proof is
+4 lines: `refine parityVector_attainsBelow …; rw [affOrbit_fst, ← hcount,
+leadCoeff_two_pow, hcount]; exact hlt`. Added a worked `n ≡ 3 (mod 16)` example whose
+only genuine arithmetic content is `3^2 = 9 < 16 = 2^4` (validity / halving count /
+constant drop are `decide`). `#print axioms terras_attainsBelow` → `[propext,
+Classical.choice, Quot.sound]` only (no `tao_2019`, no `Lean.ofReduceBool`).
+
+### Key Findings (computed, Python, mirroring the Lean defs)
+- **The auto engine `autoDropCert` is genuinely WEAKER than the hand-picked density
+  floor, not stronger.** Counts of auto-certified residues mod `2^b`: b=3→3/8, b=4→8/16,
+  b=5→24/32 (0.75), b=6→39/64 (0.61), b=7→**97/128** (0.758), b=8→211/256 (0.824). It is
+  **not monotone** in b and at b=7 gives 97/128 < the hand-picked **115/128**. The 18
+  missing residues (0,1,9,41,54,55,62,78,82,83,94,97,105,107,121,124,125,126 mod 128) are
+  exactly the ones whose drop needs a *non-residue-determined* argument: even residues that
+  drop in one step (`even_attainsBelow`, captured by the hand floor but NOT by the
+  "wait for the window to close with c odd" auto loop, since `c = 2^b` only becomes odd
+  after all b halvings), plus boundary classes failing `d_k < r` (e.g. r=0,1). So
+  `autoDropCert` certifies precisely the *odd* residue-determined drop classes; it does
+  not subsume evens. Wiring the auto engine into the density floor would *lower* the
+  proven floor — correctly NOT done.
+- This sharpens the honest status: the auto engine's value is turnkey certification of
+  individual residue-determined (odd) classes, not a better density floor.
+
+### Honest status
+- This is the **uniform drop theorem** (prior sessions' documented next lever): the drop
+  criterion is now the classical `3^a < 2^b`, derived once from the parity counts rather
+  than recomputed per residue. It is a *restatement/uniformization* of existing
+  infrastructure (`leadCoeff_two_pow`, `parityVector_attainsBelow`), not new Collatz
+  mathematics: the density floor is unchanged (115/128) and `tao_2019` stays BLOCKED.
+  Value: the load-bearing drop condition is now human-legible number theory, and the
+  Terras `3^a/2^b` law is connected directly to `AttainsBelow`.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+1 theorem 57→58, +2 examples, 1667→1698
+  lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts synced 1568/54/12 →
+  1698/58/13 — meta was stale vs origin/main; + highlight)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts synced)
+
+### Next Steps
+- The genuinely remaining lever is unchanged and hard: a single inductive statement that
+  COUNTS how many residues mod `2^b` are determined-drop classes and shows that count/2^b
+  → 1 (Terras natural-density-1 stopping time). `tao_2019` stays BLOCKED. Dyadic density
+  levels (mod 256+) remain diminishing returns AND, per this session, the auto engine does
+  not even recover the hand floor, so they still need the even-class argument by hand.
+
+## Session 2026-06-28 (researcher-3, cycle 2) — ACT: sharpness/necessity of the Terras criterion
+
+**Mode**: BUILD (Docker down; offline `LAKE_UNSAFE=1 ./bin/lake env lean`, REAL_EXIT 0, clean).
+**Outcome**: progress — necessity companion to last session's `terras_attainsBelow`; axiom-free.
+
+### What I Did
+Last commit (8c9045a) added `terras_attainsBelow` proving SUFFICIENCY (`3^a < 2^b ⟹` the
+engine certifies a drop). This session adds the missing NECESSITY/sharpness direction:
+- `terras_drop_iff {b r} (v) (hcount : v.count false = b) : (affOrbit v (2^b,r)).1 < 2^b
+  ↔ 3^(v.count true) < 2^b`. Proof is 1 line (`rw [affOrbit_fst, ← hcount];
+  exact leadCoeff_two_pow_lt_iff v`): the realized leading coefficient is *forced* to `3^a`
+  by `leadCoeff_two_pow`, so the engine's drop check is EQUIVALENT to `3^a < 2^b`, not just
+  implied by it. Hence `3^a ≥ 2^b` ⟹ NO residue-determined window certifies that class,
+  whatever the residue — this is the exact reach of the residue-determined method.
+- Added a concrete sharp-boundary witness `example`: the *realizable alternating* window
+  `[odd,even,odd,even,odd,even]` (a=3, b=3) lands at `3^3 = 27 ≥ 2^3 = 8`, so it cannot
+  certify (`by decide`). Contrast the gallery families where halvings outnumber triplings
+  (`3 (mod 16)`: `3^2 = 9 < 16`).
+
+### Key Findings
+- This makes precise WHY the residue-determined density floor plateaus at 115/128
+  (documented diminishing returns): enlarging `2^b` only certifies residues whose
+  determined window already carries strictly more halvings than `(log₂ 3)·triplings`. A
+  class with `3^a ≥ 2^b` in its determined window is *provably* uncertifiable by this engine
+  — it is not a search-budget limitation but a structural boundary. This dovetails with the
+  prior session's computed non-monotonicity of the auto-certified counts (b=6 → 0.61).
+- `#print axioms terras_drop_iff` → `[propext, Classical.choice, Quot.sound]` only (no
+  `tao_2019`, no `Lean.ofReduceBool`). The `example` uses kernel `decide`, not `native_decide`.
+
+### Honest status
+- This is a **sharpness/necessity companion**, not new Collatz mathematics: the density floor
+  is unchanged (115/128) and `tao_2019` stays BLOCKED. Value: completes the criterion from
+  one-directional (sufficient) to an exact equivalence (`iff`), and gives a structural — not
+  empirical — explanation of the documented plateau. Low-LOC, high-clarity.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+1 theorem 58→59, +1 example; 1698→1723 lines;
+  1 axiom unchanged, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts 1698/58 → 1723/59 + highlight)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts synced)
+
+### Next Steps (unchanged, genuinely hard)
+- The only remaining real lever is the Terras natural-density-1 COUNT: show the fraction of
+  residues mod 2^b that are determined-drop classes → 1. The non-monotone auto counts plus
+  this sharpness result confirm a finite dyadic computation cannot reach it — it needs the
+  CLT-style combinatorial argument on parity vectors. `tao_2019` stays BLOCKED.

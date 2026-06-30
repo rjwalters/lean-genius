@@ -190,6 +190,73 @@ theorem affine_residue_attainsBelow {M r k c d : ℕ}
   have hcm : c * m ≤ M * m := Nat.mul_le_mul_right m hc.le
   omega
 
+/-! ### Reusable affine step-composition lemmas (Terras leading-coefficient law)
+
+The per-residue trajectory chases above all share the same skeleton: track the
+orbit of a residue class `M·m + r` as an **affine function** `c·m + d`, and at
+each Collatz step read the parity off the *constant* coefficient `d` because the
+leading coefficient `c` is held **even** (so the parity of `c·m + d` is `d mod 2`,
+independent of `m`).  The two lemmas below package one such step each, turning the
+hand-written `collatz_odd …; ring` / `collatz_even …; omega` boilerplate into a
+reusable composition primitive.
+
+This is exactly the affine recurrence of the Terras parity-vector law
+(`collatz^[b] n = (3^a · n + C_v)/2^b` with leading coefficient `3^a/2^b`): an
+even step halves `(c, d) ↦ (c/2, d/2)`, an odd step maps `(c, d) ↦ (3c, 3d+1)`,
+and the window drops below its start exactly when the accumulated `c < M`, i.e.
+`3^a < 2^b`.  Both lemmas are axiom-free. -/
+
+/-- **Affine even step.**  If after `i` Collatz steps the residue class `M·m + r`
+has reached the affine form `c·m + d` with `c = 2c'` and `d = 2d'` both even, then
+`c·m + d` is even for every `m`, so the next step halves it to `c'·m + d'`. -/
+theorem affine_step_even {M r c d c' d' i : ℕ}
+    (hc : c = 2 * c') (hd : d = 2 * d')
+    (hi : ∀ m : ℕ, collatz^[i] (M * m + r) = c * m + d) :
+    ∀ m : ℕ, collatz^[i + 1] (M * m + r) = c' * m + d' := by
+  subst hc hd
+  intro m
+  rw [Function.iterate_succ_apply', hi m]
+  have he : (2 * c' * m + 2 * d') % 2 = 0 := by
+    rw [show 2 * c' * m + 2 * d' = 2 * (c' * m + d') from by ring]; omega
+  rw [collatz_even he, show 2 * c' * m + 2 * d' = 2 * (c' * m + d') from by ring]
+  omega
+
+/-- **Affine odd step.**  If after `i` Collatz steps the residue class `M·m + r`
+has reached the affine form `c·m + d` with `c = 2c'` even and `d` odd, then
+`c·m + d` is odd for every `m`, so the next step maps it to `(3c)·m + (3d+1)`.
+The caller supplies the normalised next coefficients `cn = 3c`, `dn = 3d + 1`. -/
+theorem affine_step_odd {M r c d c' cn dn i : ℕ}
+    (hc : c = 2 * c') (hd : d % 2 = 1) (hcn : cn = 3 * c) (hdn : dn = 3 * d + 1)
+    (hi : ∀ m : ℕ, collatz^[i] (M * m + r) = c * m + d) :
+    ∀ m : ℕ, collatz^[i + 1] (M * m + r) = cn * m + dn := by
+  subst hc hcn hdn
+  intro m
+  rw [Function.iterate_succ_apply', hi m]
+  have ho : (2 * c' * m + d) % 2 = 1 := by
+    rw [show 2 * c' * m + d = 2 * (c' * m) + d from by ring]; omega
+  rw [collatz_odd ho]
+  ring
+
+/-- **Worked template / validation** for the affine step-composition lemmas: the
+`n ≡ 3 (mod 16)` trajectory `16m+3 ↦ 48m+10 ↦ 24m+5 ↦ 72m+16 ↦ 36m+8 ↦ 18m+4 ↦
+9m+2` derived purely by chaining `affine_step_odd`/`affine_step_even` (parities
+odd, even, odd, even, even, even), with no per-step `ring`/`omega` bookkeeping —
+each step only names the next `(c, d)` and discharges the arithmetic side
+conditions by `rfl`.  Used below to give `mod_sixteen_three_attainsBelow` a
+one-line `hiter`. -/
+theorem mod_sixteen_three_trajectory (m : ℕ) :
+    collatz^[6] (16 * m + 3) = 9 * m + 2 := by
+  have h0 : ∀ m : ℕ, collatz^[0] (16 * m + 3) = 16 * m + 3 := fun _ => rfl
+  have h1 := affine_step_odd  (c := 16) (c' := 8)  (cn := 48) (dn := 10) (d := 3)
+              rfl rfl rfl rfl h0
+  have h2 := affine_step_even (c := 48) (c' := 24) (d := 10) (d' := 5)  rfl rfl h1
+  have h3 := affine_step_odd  (c := 24) (c' := 12) (cn := 72) (dn := 16) (d := 5)
+              rfl rfl rfl rfl h2
+  have h4 := affine_step_even (c := 72) (c' := 36) (d := 16) (d' := 8) rfl rfl h3
+  have h5 := affine_step_even (c := 36) (c' := 18) (d := 8)  (d' := 4) rfl rfl h4
+  have h6 := affine_step_even (c := 18) (c' := 9)  (d := 4)  (d' := 2) rfl rfl h5
+  exact h6 m
+
 /-- Every `n ≡ 3 (mod 16)` drops below itself in exactly six steps:
 `16m+3 ↦ 48m+10 ↦ 24m+5 ↦ 72m+16 ↦ 36m+8 ↦ 18m+4 ↦ 9m+2`, and `9m+2 < 16m+3` for
 every `m ≥ 0`.  All six parities are forced by the residue `mod 16` alone (independent
@@ -204,18 +271,7 @@ theorem mod_sixteen_three_attainsBelow {n : ℕ} (h : n % 16 = 3) : AttainsBelow
   -- and `c = 9 = 3^2 < 16` is `3^2 < 2^4`.
   affine_residue_attainsBelow (M := 16) (r := 3) (k := 6) (c := 9) (d := 2)
     (by norm_num) (by norm_num) (by norm_num)
-    (fun m => by
-      have s1 : collatz (16 * m + 3) = 48 * m + 10 := by rw [collatz_odd (by omega)]; ring
-      have s2 : collatz (48 * m + 10) = 24 * m + 5 := by rw [collatz_even (by omega)]; omega
-      have s3 : collatz (24 * m + 5) = 72 * m + 16 := by rw [collatz_odd (by omega)]; ring
-      have s4 : collatz (72 * m + 16) = 36 * m + 8 := by rw [collatz_even (by omega)]; omega
-      have s5 : collatz (36 * m + 8) = 18 * m + 4 := by rw [collatz_even (by omega)]; omega
-      have s6 : collatz (18 * m + 4) = 9 * m + 2 := by rw [collatz_even (by omega)]; omega
-      rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
-          Function.iterate_succ_apply', Function.iterate_succ_apply',
-          Function.iterate_succ_apply', Function.iterate_succ_apply',
-          Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6])
-    h
+    mod_sixteen_three_trajectory h
 
 /-- Every `n ≡ 11 (mod 32)` drops below itself in exactly eight residue-determined steps:
 `32m+11 ↦ 96m+34 ↦ 48m+17 ↦ 144m+52 ↦ 72m+26 ↦ 36m+13 ↦ 108m+40 ↦ 54m+20 ↦ 27m+10`,
@@ -1047,5 +1103,621 @@ time"; the strength of the theorem is that `f` may grow arbitrarily slowly.
 axiom tao_2019 :
     ∀ f : ℕ → ℝ, Tendsto f atTop atTop →
       HasLogDensityOne {n : ℕ | 0 < n ∧ (colMin n : ℝ) < f n}
+
+/-! ## Part V: The Terras leading-coefficient law — a general residue-drop engine
+
+Every per-residue trajectory chase of Part II instantiates one structural law.  A
+*parity vector* `v : List Bool` records the parity forced at each step of a
+residue-determined window (`true` = odd, `false` = even).  Reading the orbit of the
+affine class `c·m + d` along `v` keeps it affine: an odd step sends
+`(c, d) ↦ (3c, 3d+1)` and an even step sends `(c, d) ↦ (c/2, d/2)` (`affStep` /
+`affOrbit`).  Three facts assemble these into an engine:
+
+* `affOrbit_realize` discharges the orbit identity `collatz^[k] (c·m+d) = c_k·m + d_k`
+  from a step-by-step parity *certificate* `AffValid` — so a new residue family needs
+  only that certificate, no bespoke `iterate_succ_apply'` bookkeeping;
+* `affOrbit_fst` shows the leading coefficient evolves independently of `d`, equal to
+  the pure `leadCoeff` fold;
+* `leadCoeff_two_pow` is the **Terras `3^a/2^b` law**: from a power-of-two modulus
+  `M = 2^b` whose `b` halvings are spread through `v`, the window ends at exactly
+  `3^a` where `a = #odd steps`.  The drop criterion `c < M` is then literally
+  `3^a < 2^b`.
+
+`parityVector_attainsBelow` packages all three with `affine_residue_attainsBelow`:
+a residue class drops below itself as soon as one exhibits a valid parity-vector
+certificate with `c_k < M` and `d_k < r`.  Everything here is axiom-free. -/
+
+/-- The leading-coefficient fold of a parity vector: an odd step triples the leading
+coefficient, an even step halves it.  This is the `c`-component of the affine orbit
+(`affOrbit_fst`), tracked on its own. -/
+def leadCoeff : List Bool → ℕ → ℕ
+  | [],          c => c
+  | true  :: v,  c => leadCoeff v (3 * c)
+  | false :: v,  c => leadCoeff v (c / 2)
+
+/-- **Terras leading-coefficient law (general multiplicative form).**  Folding the
+leading coefficient along `v` from a value `3^p · 2^q` carrying enough powers of two
+to absorb every halving (`#even steps ≤ q`) yields `3^(p + #odd) · 2^(q - #even)`. -/
+theorem leadCoeff_mul (v : List Bool) :
+    ∀ p q : ℕ, v.count false ≤ q →
+      leadCoeff v (3 ^ p * 2 ^ q)
+        = 3 ^ (p + v.count true) * 2 ^ (q - v.count false) := by
+  induction v with
+  | nil => intro p q _; simp [leadCoeff]
+  | cons b v ih =>
+    intro p q hq
+    cases b with
+    | true =>
+      have cf : (true :: v).count false = v.count false := by simp
+      have ct : (true :: v).count true = v.count true + 1 := by simp
+      rw [cf] at hq
+      show leadCoeff v (3 * (3 ^ p * 2 ^ q))
+          = 3 ^ (p + (true :: v).count true) * 2 ^ (q - (true :: v).count false)
+      rw [show 3 * (3 ^ p * 2 ^ q) = 3 ^ (p + 1) * 2 ^ q from by rw [pow_succ]; ring,
+          ih (p + 1) q hq, cf, ct,
+          show p + 1 + v.count true = p + (v.count true + 1) from by omega]
+    | false =>
+      have cf : (false :: v).count false = v.count false + 1 := by simp
+      have ct : (false :: v).count true = v.count true := by simp
+      rw [cf] at hq
+      have h2 : 3 ^ p * 2 ^ q / 2 = 3 ^ p * 2 ^ (q - 1) := by
+        have e : 2 ^ q = 2 ^ (q - 1) * 2 := by
+          conv_lhs => rw [show q = (q - 1) + 1 from by omega]
+          rw [pow_succ]
+        rw [e, ← mul_assoc, Nat.mul_div_cancel _ (by norm_num : 0 < 2)]
+      show leadCoeff v (3 ^ p * 2 ^ q / 2)
+          = 3 ^ (p + (false :: v).count true) * 2 ^ (q - (false :: v).count false)
+      rw [h2, ih p (q - 1) (by omega), cf, ct,
+          show q - 1 - v.count false = q - (v.count false + 1) from by omega]
+
+/-- The Terras law specialised to the residue-determined case `M = 2^b`: a parity
+vector whose `b` halvings exactly match the modulus exponent ends with leading
+coefficient `3^a`, `a = #odd steps`.  (Take `p = 0`, `q = #even steps` in
+`leadCoeff_mul`.) -/
+theorem leadCoeff_two_pow (v : List Bool) :
+    leadCoeff v (2 ^ v.count false) = 3 ^ v.count true := by
+  have := leadCoeff_mul v 0 (v.count false) (le_refl _)
+  simpa using this
+
+/-- The drop criterion `c < M` for a power-of-two modulus is exactly the classical
+`3^a < 2^b`: enough halvings to overcome the triplings. -/
+theorem leadCoeff_two_pow_lt_iff (v : List Bool) :
+    leadCoeff v (2 ^ v.count false) < 2 ^ v.count false
+      ↔ 3 ^ v.count true < 2 ^ v.count false := by
+  rw [leadCoeff_two_pow]
+
+/-- One affine step on the full coefficient pair `(c, d)`, driven by a parity bit. -/
+def affStep : Bool → ℕ × ℕ → ℕ × ℕ
+  | true,  p => (3 * p.1, 3 * p.2 + 1)
+  | false, p => (p.1 / 2, p.2 / 2)
+
+/-- Fold the affine coefficient pair `(c, d)` along a parity vector. -/
+def affOrbit : List Bool → ℕ × ℕ → ℕ × ℕ
+  | [],     p => p
+  | b :: v, p => affOrbit v (affStep b p)
+
+/-- The leading coefficient of the affine orbit is exactly `leadCoeff` — it evolves
+independently of the constant `d`. -/
+theorem affOrbit_fst (v : List Bool) :
+    ∀ c d : ℕ, (affOrbit v (c, d)).1 = leadCoeff v c := by
+  induction v with
+  | nil => intro c d; rfl
+  | cons b v ih =>
+    intro c d
+    cases b with
+    | true => exact ih (3 * c) (3 * d + 1)
+    | false => exact ih (c / 2) (d / 2)
+
+/-- A parity vector is *valid* for the affine class `c·m + d` when each recorded
+parity actually matches the value's parity along the whole orbit: at an odd step the
+leading coefficient is even and the constant is odd (so `c·m+d` is odd for every `m`),
+at an even step both are even.  This is the certificate that makes the trajectory
+residue-determined — independent of `m`. -/
+inductive AffValid : List Bool → ℕ → ℕ → Prop
+  | nil  {c d} : AffValid [] c d
+  | odd  {v c d} : c % 2 = 0 → d % 2 = 1 → AffValid v (3 * c) (3 * d + 1) →
+      AffValid (true :: v) c d
+  | even {v c d} : c % 2 = 0 → d % 2 = 0 → AffValid v (c / 2) (d / 2) →
+      AffValid (false :: v) c d
+
+/-- **General orbit-realization (the residue-drop engine).**  If the parity vector `v`
+is valid for the affine class `c·m + d`, then the `v.length`-step Collatz iterate of
+every member of that class is the affine value read off `affOrbit`:
+`collatz^[k] (c·m + d) = c_k·m + d_k`.  This replaces the per-residue trajectory chase
+with one structural induction on the certificate. -/
+theorem affOrbit_realize : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    ∀ m : ℕ, collatz^[v.length] (c * m + d)
+      = (affOrbit v (c, d)).1 * m + (affOrbit v (c, d)).2 := by
+  intro v c d hv
+  induction hv with
+  | nil => intro m; rfl
+  | @odd v c d hc hd _ ih =>
+    obtain ⟨c', rfl⟩ : ∃ c', c = 2 * c' := ⟨c / 2, by omega⟩
+    intro m
+    have hcm : 2 * c' * m = 2 * (c' * m) := by ring
+    have hodd : (2 * c' * m + d) % 2 = 1 := by omega
+    have hstep : collatz (2 * c' * m + d) = (3 * (2 * c')) * m + (3 * d + 1) := by
+      rw [collatz_odd hodd]; ring
+    show collatz^[v.length + 1] (2 * c' * m + d) = _
+    rw [Function.iterate_succ_apply, hstep]
+    exact ih m
+  | @even v c d hc hd _ ih =>
+    obtain ⟨c', rfl⟩ : ∃ c', c = 2 * c' := ⟨c / 2, by omega⟩
+    obtain ⟨d', rfl⟩ : ∃ d', d = 2 * d' := ⟨d / 2, by omega⟩
+    intro m
+    have hcm : 2 * c' * m = 2 * (c' * m) := by ring
+    have hstep : collatz (2 * c' * m + 2 * d') = c' * m + d' := by
+      have he : (2 * c' * m + 2 * d') % 2 = 0 := by omega
+      rw [collatz_even he]; omega
+    show collatz^[v.length + 1] (2 * c' * m + 2 * d') = _
+    rw [Function.iterate_succ_apply, hstep]
+    have e1 : (2 * c') / 2 = c' := by omega
+    have e2 : (2 * d') / 2 = d' := by omega
+    have key := ih m
+    rw [e1, e2] at key
+    show collatz^[v.length] (c' * m + d')
+        = (affOrbit v ((2 * c') / 2, (2 * d') / 2)).1 * m
+          + (affOrbit v ((2 * c') / 2, (2 * d') / 2)).2
+    rw [e1, e2]
+    exact key
+
+/-- **Parity-vector residue-drop engine.**  If some residue class `n ≡ r (mod M)`
+admits a non-empty valid parity vector `v` whose realized affine iterate `(c_k, d_k)`
+has leading coefficient `c_k < M` and constant `d_k < r`, then every member of the
+class drops below itself.  This makes a new residue family a pure certificate check:
+supply `v` and discharge the (decidable) side conditions. -/
+theorem parityVector_attainsBelow {M r : ℕ} (v : List Bool)
+    (hk : 0 < v.length) (hval : AffValid v M r)
+    (hc : (affOrbit v (M, r)).1 < M) (hd : (affOrbit v (M, r)).2 < r)
+    {n : ℕ} (hn : n % M = r) : AttainsBelow n :=
+  affine_residue_attainsBelow hk hc hd (fun m => affOrbit_realize hval m) hn
+
+/-- **Terras drop criterion as the textbook inequality `3^a < 2^b`.**  For a
+power-of-two modulus `2^b` whose residue-determined window `v` performs exactly its
+`b` halvings (`v.count false = b`, with `a := v.count true` triplings), the realized
+leading coefficient is *automatically* `3^a` (the Terras law `leadCoeff_two_pow`), so
+the drop condition `c_k < M` collapses to the classical Collatz inequality
+`3^a < 2^b` — "enough halvings to overcome the triplings."  This is the uniform drop
+theorem: a residue class drops below itself as soon as one exhibits a valid window
+with `a` odd steps, `b` even steps, `3^a < 2^b`, and a constant that lands below `r`.
+No `affOrbit.1` computation is needed — the leading coefficient is forced by the
+parity counts alone. -/
+theorem terras_attainsBelow {b r : ℕ} (v : List Bool) (hk : 0 < v.length)
+    (hcount : v.count false = b) (hval : AffValid v (2 ^ b) r)
+    (hlt : 3 ^ v.count true < 2 ^ b)
+    (hd : (affOrbit v (2 ^ b, r)).2 < r)
+    {n : ℕ} (hn : n % 2 ^ b = r) : AttainsBelow n := by
+  refine parityVector_attainsBelow v hk hval ?_ hd hn
+  rw [affOrbit_fst, ← hcount, leadCoeff_two_pow, hcount]
+  exact hlt
+
+/-- **Sharpness of the Terras criterion.**  For a power-of-two modulus `2^b` whose
+window performs exactly its `b` halvings (`v.count false = b`), the engine's
+leading-coefficient drop check `c_k < M` is *equivalent* to `3^a < 2^b` — not merely
+implied by it.  The realized leading coefficient is *forced* to `3^a` (`leadCoeff_two_pow`),
+so `3^a < 2^b` is the **exact** reach of the residue-determined method: a window with
+`3^a ≥ 2^b` (too many triplings for its halvings) can never satisfy the coefficient drop
+condition, whatever the residue `r`.  This is the necessity companion to
+`terras_attainsBelow`, and it pins down why the residue-determined density floor
+plateaus — enlarging the dyadic modulus `2^b` only ever certifies residues whose
+determined window already carries strictly more halvings than `(log₂ 3)·(triplings)`,
+so no purely residue-determined window certifies a class once `3^a ≥ 2^b`. -/
+theorem terras_drop_iff {b r : ℕ} (v : List Bool) (hcount : v.count false = b) :
+    (affOrbit v (2 ^ b, r)).1 < 2 ^ b ↔ 3 ^ v.count true < 2 ^ b := by
+  rw [affOrbit_fst, ← hcount]; exact leadCoeff_two_pow_lt_iff v
+
+/-- Concrete witness of the sharp boundary: the *realizable alternating* window
+`[odd, even, odd, even, odd, even]` (three triplings, three halvings) lands at leading
+coefficient `3^3 = 27`, which is **not** below its modulus `2^3 = 8`.  Three triplings
+need at least `⌈3·log₂ 3⌉ = 5` halvings to drop; three halvings are not enough, so this
+window — however its residue is chosen — cannot certify a drop.  (Contrast the gallery
+families, where the halvings always outnumber the triplings: e.g. `3 (mod 16)` uses
+`3^2 = 9 < 16 = 2^4`.) -/
+example : ¬ (leadCoeff [true, false, true, false, true, false] (2 ^ 3) < 2 ^ 3) := by
+  decide
+
+/-! ### Decidable certificates: the engine as a one-shot `by decide`
+
+`AffValid` is a `Prop`-valued inductive, so supplying a certificate still means writing
+a nested `AffValid.odd …/AffValid.even …` term by hand (one constructor per step).  The
+validity condition is, however, a finite computation on the residue data alone, so it
+reflects into a `Bool`.  `affValidB` is that decision procedure and `affValidB_sound`
+transports a `true` result back to the `Prop`.  Bundling it with the two drop
+inequalities and non-emptiness gives `dropCert`, a single `Bool` whose truth — checked by
+`decide` — certifies that a whole residue class drops below itself.  Adding a new
+residue family is then literally one `by decide`, with no trajectory chase and no
+hand-built certificate term. -/
+
+/-- Computable Boolean validity checker mirroring `AffValid`: an odd bit needs the
+leading coefficient even and the constant odd (then recurse on the tripled pair); an
+even bit needs both even (then recurse on the halved pair). -/
+def affValidB : List Bool → ℕ → ℕ → Bool
+  | [],          _, _ => true
+  | true  :: v,  c, d => (c % 2 == 0) && (d % 2 == 1) && affValidB v (3 * c) (3 * d + 1)
+  | false :: v,  c, d => (c % 2 == 0) && (d % 2 == 0) && affValidB v (c / 2) (d / 2)
+
+/-- The Boolean checker is sound for the `Prop`-valued certificate: a `true` evaluation
+of `affValidB` produces an `AffValid` derivation.  This is what lets `decide` discharge a
+parity certificate. -/
+theorem affValidB_sound : ∀ {v : List Bool} {c d : ℕ},
+    affValidB v c d = true → AffValid v c d := by
+  intro v
+  induction v with
+  | nil => intro c d _; exact AffValid.nil
+  | cons b v ih =>
+    intro c d h
+    cases b with
+    | true =>
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq] at h
+      exact AffValid.odd h.1.1 h.1.2 (ih h.2)
+    | false =>
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq] at h
+      exact AffValid.even h.1.1 h.1.2 (ih h.2)
+
+/-- A single Boolean drop-certificate for the residue class `r (mod M)` along the parity
+vector `v`: non-empty, valid for `(M, r)`, and the realized affine iterate `(c_k, d_k)`
+satisfies the drop conditions `c_k < M` and `d_k < r`.  Each conjunct is a finite
+computation, so `dropCert M r v` evaluates by `decide`. -/
+def dropCert (M r : ℕ) (v : List Bool) : Bool :=
+  decide (0 < v.length) && affValidB v M r &&
+    decide ((affOrbit v (M, r)).1 < M) && decide ((affOrbit v (M, r)).2 < r)
+
+/-- **One-shot residue-drop engine.**  A `true` drop-certificate for `(M, r, v)` makes
+every `n ≡ r (mod M)` attain a value below itself.  Combined with `decide` this reduces a
+new residue family to a single line: `dropCert_attainsBelow v (by decide) h`. -/
+theorem dropCert_attainsBelow {M r : ℕ} (v : List Bool)
+    (h : dropCert M r v = true) {n : ℕ} (hn : n % M = r) : AttainsBelow n := by
+  simp only [dropCert, Bool.and_eq_true, decide_eq_true_eq] at h
+  obtain ⟨⟨⟨hk, hval⟩, hc⟩, hd⟩ := h
+  exact parityVector_attainsBelow v hk (affValidB_sound hval) hc hd hn
+
+/-! ### Validation: the engine reproduces the gallery families
+
+The abstract law recovers the concrete leading coefficients of Part II, and the engine
+re-derives a residue drop end-to-end from a parity certificate alone. -/
+
+/-- The Terras law reproduces the `n ≡ 3 (mod 16)` leading coefficient `9 = 3^2` from
+its parity vector `[odd, even, odd, even, even, even]` (two `3n+1` steps, four
+halvings). -/
+example : leadCoeff [true, false, true, false, false, false] (2 ^ 4) = 9 := by decide
+
+/-- The Terras law reproduces the `n ≡ 11 (mod 32)` leading coefficient `27 = 3^3`
+(three `3n+1` steps, five halvings). -/
+example :
+    leadCoeff [true, false, true, false, false, true, false, false] (2 ^ 5) = 27 := by
+  decide
+
+/-- End-to-end engine demonstration: re-derive the `n ≡ 3 (mod 16)` drop using only the
+parity certificate `[odd, even, odd, even, even, even]` and a single `by decide` — no
+manual trajectory chase and no hand-built `AffValid` term.  The whole drop-certificate
+(validity, `9 < 16`, `2 < 3`, non-emptiness) collapses to one decidable check. -/
+example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  dropCert_attainsBelow [true, false, true, false, false, false] (by decide) h
+
+/-- Worked instance of the uniform Terras criterion `terras_attainsBelow`: `n ≡ 3
+(mod 16)` drops because its six-step window has `a = 2` triplings and `b = 4`
+halvings with `3^2 = 9 < 16 = 2^4`.  The only genuine arithmetic content is that
+single inequality `3^a < 2^b`; the validity, halving count `b`, and constant drop are
+kernel computations.  This is the textbook "enough halvings beat the triplings"
+made into a one-line drop certificate. -/
+example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  terras_attainsBelow (b := 4) [true, false, true, false, false, false]
+    (by decide) (by decide) (affValidB_sound (by decide))
+    (by decide) (by decide)
+    (show n % 2 ^ 4 = 3 by rw [show (2 : ℕ) ^ 4 = 16 from by norm_num]; exact h)
+
+/-- The one-shot certificate scales to longer windows with no extra proof effort: the
+`n ≡ 11 (mod 32)` drop (eight steps, parity vector `[odd,even,odd,even,even,odd,even,even]`,
+final affine coefficient `27 = 3^3 < 32`) is the *same* single `by decide`. -/
+example {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
+  dropCert_attainsBelow
+    [true, false, true, false, false, true, false, false] (by decide) h
+
+/-! ### Deriving the parity vector: the engine from `(M, r)` alone
+
+The decidable certificate above still requires the caller to *supply* the parity
+vector `v` by hand (e.g. `[true, false, true, false, false, false]` for `mod 16`).
+Hand-computing that vector is exactly the error-prone step that produced the broken
+mod-128 commit (#30735, a wrong trajectory that referenced theorems never written).
+
+`deriveVector b (M, r)` removes the hand step entirely: it simulates `b` affine
+steps starting from `(M, r)`, reading each parity bit off the constant component
+`d` (the value `M·m + r` has the same parity as `r` precisely while the leading
+coefficient stays even — the residue-determined window).  The headline fact
+`deriveVector_of_affValid` shows the derivation is *canonical*: it recovers **the**
+valid parity vector of any length whenever one exists, so it is a complete
+replacement for the hand-supplied vector — not a heuristic.  A residue family is then
+certified from `(M, r, b)` plus a single `by decide`, with no parity vector ever
+written or computed by the author. -/
+
+/-- Derive the parity vector of a residue class by simulating `b` affine steps from
+the coefficient pair `p = (c, d)`, reading each bit off the constant's parity
+(`d % 2 = 1` ⇒ odd step).  Structural recursion on the step budget `b`, so it always
+terminates; the budget plays the role the modulus exponent does for `M = 2^b`. -/
+def deriveVector : ℕ → ℕ × ℕ → List Bool
+  | 0,     _ => []
+  | b + 1, p => decide (p.2 % 2 = 1) :: deriveVector b (affStep (decide (p.2 % 2 = 1)) p)
+
+/-- The derived vector has exactly the requested length. -/
+theorem deriveVector_length : ∀ (b : ℕ) (p : ℕ × ℕ), (deriveVector b p).length = b := by
+  intro b
+  induction b with
+  | zero => intro p; rfl
+  | succ b ih => intro p; simp [deriveVector, ih]
+
+/-- **Canonicity of the derivation.**  Every valid parity vector is exactly the one
+the simulator derives: `deriveVector` reads bits off the constant `d`, and validity
+forces the chosen bit (odd step ⇒ `d` odd, even step ⇒ `d` even).  So the derivation
+is not a heuristic — it recovers *the* valid vector of any length whenever one
+exists, making `deriveVector b (M, r)` a complete stand-in for a hand-written
+certificate. -/
+theorem deriveVector_of_affValid : ∀ {v : List Bool} {c d : ℕ},
+    AffValid v c d → deriveVector v.length (c, d) = v := by
+  intro v c d hv
+  induction hv with
+  | nil => rfl
+  | @odd v c d _ hd _ ih =>
+    have hb : decide (d % 2 = 1) = true := by simp [hd]
+    show deriveVector (v.length + 1) (c, d) = true :: v
+    simp only [deriveVector, hb, affStep]
+    rw [ih]
+  | @even v c d _ hd _ ih =>
+    have hb : decide (d % 2 = 1) = false := by simp [hd]
+    show deriveVector (v.length + 1) (c, d) = false :: v
+    simp only [deriveVector, hb, affStep]
+    rw [ih]
+
+/-- **One-shot residue-drop engine with derived vector.**  The caller supplies only the
+modulus `M`, residue `r`, and step budget `b`; the parity vector is derived and the whole
+drop-certificate (validity, the two drop bounds, non-emptiness) is discharged by `decide`.
+A new residue family becomes `deriveDropCert_attainsBelow (b := …) (by decide) h` — no
+parity vector written or computed by hand. -/
+theorem deriveDropCert_attainsBelow {M r b : ℕ}
+    (h : dropCert M r (deriveVector b (M, r)) = true) {n : ℕ} (hn : n % M = r) :
+    AttainsBelow n :=
+  dropCert_attainsBelow (deriveVector b (M, r)) h hn
+
+/-! ### Validation: every gallery family re-derived from `(M, r, b)` only
+
+Each drop below is now certified by the modulus, residue, and a step budget — the
+parity vectors `[true, false, …]` of Part II are gone.  `decide` evaluates
+`deriveVector`, checks validity, and verifies `c_k < M`, `d_k < r` in one shot. -/
+
+/-- `n ≡ 3 (mod 16)`: derived 6-step window, no hand-written vector. -/
+example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 6) (by decide) h
+
+/-- `n ≡ 11 (mod 32)`: derived 8-step window. -/
+example {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 8) (by decide) h
+
+/-- `n ≡ 23 (mod 32)`: derived 8-step window. -/
+example {n : ℕ} (h : n % 32 = 23) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 8) (by decide) h
+
+/-- `n ≡ 7 (mod 128)`: derived 11-step window (`3^4 = 81 < 128`). -/
+example {n : ℕ} (h : n % 128 = 7) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 11) (by decide) h
+
+/-- `n ≡ 15 (mod 128)`: derived 11-step window. -/
+example {n : ℕ} (h : n % 128 = 15) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 11) (by decide) h
+
+/-- `n ≡ 59 (mod 128)`: derived 11-step window. -/
+example {n : ℕ} (h : n % 128 = 59) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 11) (by decide) h
+
+/-- The canonicity theorem in action: the derived `mod 16` vector is *literally* the
+hand-written one of Part II — `deriveVector` is a drop-in replacement, not an
+approximation. -/
+example : deriveVector 6 (16, 3) = [true, false, true, false, false, false] := by decide
+
+/-! ## Part VI: A general residue-class density floor
+
+The four explicit density bounds of Part II.5 (`attainsBelow_density_lower`,
+`_16`, `_32`, `_128`) all instantiate **one** counting pattern: pick a finite set
+of residues modulo `M`, check each is a drop-below class, and read off a lower
+density of `|residues| / M`.  Each of those four theorems re-derives the same
+pairwise-disjointness/injective-image bookkeeping by hand (the `_128` case alone
+runs to roughly two hundred lines of `Disjoint` witnesses).
+
+`attainsBelow_density_of_residues` proves that pattern once, for an **arbitrary**
+modulus `M` and an arbitrary certified residue set `R`.  The disjointness across
+classes is folded into a single injectivity statement: the map `(r, m) ↦ M·m + r`
+is injective on `R ×ˢ [1, N-1]` because `r < M` is exactly the remainder of
+`M·m + r` modulo `M`.  Every later density improvement — including any level the
+decidable engine `dropCert` certifies — is then a one-line corollary: supply `R`
+and a proof that each member drops, with the residue count discharged by `decide`.
+No new disjoint-union argument is ever needed again.  Axiom-free. -/
+
+open Classical in
+/-- **General residue-class density floor.**  Let `R` be a finite set of residues
+modulo `M` (`1 ≤ M`), each of which is a *drop-below class*: every member
+`M·m + r` with `m ≥ 1` attains a value below itself.  Then at least `|R|·(N-1)` of
+the integers in `[1, M·N]` attain a value below themselves.  Distinct residues
+yield disjoint classes (the residue `r < M` is the remainder of `M·m + r`), and
+each contributes the `N-1` in-range members `M·1+r, …, M·(N-1)+r`; so the witness
+set has exactly `|R|·(N-1)` elements.  Dividing by `M·N` and letting `N → ∞` gives
+lower natural density `≥ |R|/M`.  This single lemma subsumes the per-level
+disjoint-union bookkeeping of `attainsBelow_density_lower{,_16,_32,_128}`. -/
+theorem attainsBelow_density_of_residues {M : ℕ} (hM : 1 ≤ M) (R : Finset ℕ)
+    (hR : ∀ r ∈ R, r < M)
+    (hdrop : ∀ r ∈ R, ∀ m : ℕ, 1 ≤ m → AttainsBelow (M * m + r))
+    (N : ℕ) :
+    R.card * (N - 1) ≤
+      ((Finset.Icc 1 (M * N)).filter (fun n => AttainsBelow n)).card := by
+  classical
+  -- Witness set: all `M·m + r` for `r ∈ R` and `m ∈ [1, N-1]`, as one injective image.
+  set S : Finset ℕ :=
+    (R ×ˢ Finset.Icc 1 (N - 1)).image (fun p => M * p.2 + p.1) with hS
+  -- The parametrisation `(r, m) ↦ M·m + r` is injective: `r` is the remainder mod `M`.
+  have hinj : Set.InjOn (fun p : ℕ × ℕ => M * p.2 + p.1)
+      ↑(R ×ˢ Finset.Icc 1 (N - 1)) := by
+    intro p hp q hq hpq
+    rw [Finset.mem_coe, Finset.mem_product] at hp hq
+    have hp1 : p.1 < M := hR p.1 hp.1
+    have hq1 : q.1 < M := hR q.1 hq.1
+    have hpq2 : M * p.2 + p.1 = M * q.2 + q.1 := hpq
+    have e1 : (M * p.2 + p.1) % M = p.1 := by
+      rw [Nat.add_comm, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hp1]
+    have e2 : (M * q.2 + q.1) % M = q.1 := by
+      rw [Nat.add_comm, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hq1]
+    have hr_eq : p.1 = q.1 := by rw [← e1, hpq2, e2]
+    have hm_eq : p.2 = q.2 := by
+      have hMm : M * p.2 = M * q.2 := by omega
+      exact Nat.eq_of_mul_eq_mul_left hM hMm
+    exact Prod.ext_iff.mpr ⟨hr_eq, hm_eq⟩
+  have hScard : S.card = R.card * (N - 1) := by
+    rw [hS, Finset.card_image_of_injOn hinj, Finset.card_product, Nat.card_Icc,
+        Nat.add_sub_cancel]
+  -- Every witness is an in-range drop-below start.
+  have hsub : S ⊆ (Finset.Icc 1 (M * N)).filter (fun n => AttainsBelow n) := by
+    intro x hx
+    rw [hS, Finset.mem_image] at hx
+    obtain ⟨p, hp, rfl⟩ := hx
+    rw [Finset.mem_product, Finset.mem_Icc] at hp
+    obtain ⟨hpR, hm1, hm2⟩ := hp
+    rw [Finset.mem_filter, Finset.mem_Icc]
+    refine ⟨⟨?_, ?_⟩, hdrop p.1 hpR p.2 hm1⟩
+    · have hge : M * 1 ≤ M * p.2 := Nat.mul_le_mul (le_refl M) hm1
+      omega
+    · have hmle : M * p.2 ≤ M * (N - 1) := Nat.mul_le_mul (le_refl M) hm2
+      have hr : p.1 < M := hR p.1 hpR
+      have hNN : M * (N - 1) + M = M * N := by
+        rw [← Nat.mul_succ]; congr 1; omega
+      omega
+  calc R.card * (N - 1) = S.card := hScard.symm
+    _ ≤ ((Finset.Icc 1 (M * N)).filter (fun n => AttainsBelow n)).card :=
+        Finset.card_le_card hsub
+
+open Classical in
+/-- **The `13/16` density floor, re-derived from the general lemma.**  Instantiate
+`attainsBelow_density_of_residues` at `M = 16` with the thirteen residues that drop
+within their residue-determined window — the eight evens, the four `≡ 1 (mod 4)`
+(`1, 5, 9, 13`), and the one `≡ 3 (mod 16)` (`3`).  The residue count `13` is a
+single kernel `decide`; every drop hypothesis is one of the Part II residue lemmas
+selected by an `omega`-checked congruence.  No bespoke disjoint-union bookkeeping —
+the same call at `M = 128` with the predicate
+`r%2=0 ∨ r%4=1 ∨ r%16=3 ∨ r%32∈{11,23} ∨ r%128∈{7,15,59}` recovers the `115/128`
+floor of `attainsBelow_density_lower_128`. -/
+theorem attainsBelow_density_lower_16_general (N : ℕ) :
+    13 * (N - 1) ≤
+      ((Finset.Icc 1 (16 * N)).filter (fun n => AttainsBelow n)).card := by
+  have hcard :
+      ((Finset.range 16).filter
+        (fun r => r % 2 = 0 ∨ r % 4 = 1 ∨ r % 16 = 3)).card = 13 := by decide
+  have key := attainsBelow_density_of_residues (M := 16) (by norm_num)
+    ((Finset.range 16).filter (fun r => r % 2 = 0 ∨ r % 4 = 1 ∨ r % 16 = 3))
+    (by intro r hr; rw [Finset.mem_filter, Finset.mem_range] at hr; exact hr.1)
+    (by
+      intro r hr m hm
+      rw [Finset.mem_filter, Finset.mem_range] at hr
+      obtain ⟨_, hgood⟩ := hr
+      rcases hgood with h | h | h
+      · exact even_attainsBelow (by omega) (by omega)
+      · exact mod_four_one_attainsBelow (by omega) (by omega)
+      · exact mod_sixteen_three_attainsBelow (by omega))
+    N
+  rwa [hcard] at key
+
+/-! ## Part VII: Fully auto-derived certificates — supply only the modulus and residue
+
+The decidable certificate `dropCert` of Part V still asks the caller for the parity
+vector `v`; only the *validity check* is automatic.  But for a power-of-two modulus
+`M = 2^b` the parity vector is itself residue-determined and so can be **computed**
+from `(b, r)` alone: starting the affine pair at `(2^b, r)`, the leading coefficient
+`c` stays even until exactly `b` halvings have happened, and while `c` is even the
+parity of `c·m + d` is just `d mod 2` — independent of `m`.  So each step's parity is
+forced, and `deriveVec` reads it straight off the running constant.
+
+`deriveVec` terminates by a fuel argument: two odd steps can never be consecutive (an
+odd step sends `d ↦ 3d+1`, which is even), and each even step strips one factor of two
+from `c`, so the residue-determined window closes after at most `2b` steps once `c`
+becomes odd.  Crucially `affValidB (deriveVec fuel c d) c d = true` holds
+**unconditionally** — the recursion branches on exactly the validity conditions — so no
+divisibility hypothesis is needed and soundness never depends on the fuel being large
+enough (an exhausted or non-dropping window simply fails the decidable drop check, it
+never produces a false `AttainsBelow`).
+
+This closes the last gap to a turnkey engine: a new residue family `r (mod 2^b)` is now
+literally `autoDropCert_attainsBelow (b := …) (r := …) (by decide) h` — the caller
+supplies neither a trajectory chase nor a hand-built parity vector, only the modulus
+exponent and residue.  Axiom-free (`decide`, not `native_decide`). -/
+
+/-- Auto-derive the residue-determined parity vector of the affine class `c·m + d`,
+reading each forced parity off the constant `d` (valid while the leading coefficient
+`c` stays even).  Stops when `c` becomes odd — at which point the window is closed and
+the leading coefficient `c` is final — or when the `fuel` is exhausted.  For a
+power-of-two start `c = 2^b` the closure always happens within `2b` steps. -/
+def deriveVec : ℕ → ℕ → ℕ → List Bool
+  | 0,         _, _ => []
+  | fuel + 1,  c, d =>
+      if c % 2 = 1 then []
+      else if d % 2 = 1 then true  :: deriveVec fuel (3 * c) (3 * d + 1)
+      else false :: deriveVec fuel (c / 2) (d / 2)
+
+/-- The auto-derived parity vector is always a valid `AffValid` certificate for its
+own starting pair, **with no hypothesis on `c, d`**: `deriveVec` branches on exactly the
+parity conditions `affValidB` checks, so every recorded bit is sound by construction. -/
+theorem affValidB_deriveVec :
+    ∀ (fuel c d : ℕ), affValidB (deriveVec fuel c d) c d = true := by
+  intro fuel
+  induction fuel with
+  | zero => intro c d; rfl
+  | succ fuel ih =>
+    intro c d
+    rw [deriveVec]
+    split_ifs with hc hd
+    · rfl
+    · have hce : c % 2 = 0 := by omega
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq]
+      exact ⟨⟨hce, hd⟩, ih (3 * c) (3 * d + 1)⟩
+    · have hce : c % 2 = 0 := by omega
+      have hde : d % 2 = 0 := by omega
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq]
+      exact ⟨⟨hce, hde⟩, ih (c / 2) (d / 2)⟩
+
+/-- A single decidable certificate for the residue class `r (mod 2^b)` that derives its
+own parity vector: non-empty derived window whose realized affine iterate drops
+(`c_k < 2^b`, `d_k < r`).  Each conjunct is a finite computation, so this evaluates by
+`decide`.  Unlike `dropCert`, the caller supplies **no** parity vector. -/
+def autoDropCert (b r : ℕ) : Bool :=
+  decide (0 < (deriveVec (2 * b + 1) (2 ^ b) r).length) &&
+    decide ((affOrbit (deriveVec (2 * b + 1) (2 ^ b) r) (2 ^ b, r)).1 < 2 ^ b) &&
+    decide ((affOrbit (deriveVec (2 * b + 1) (2 ^ b) r) (2 ^ b, r)).2 < r)
+
+/-- **Fully auto-derived residue-drop engine.**  A `true` `autoDropCert b r` makes every
+`n ≡ r (mod 2^b)` attain a value below itself — the parity vector is derived internally
+from `(b, r)`, so a new residue family is one line:
+`autoDropCert_attainsBelow (b := …) (r := …) (by decide) h`. -/
+theorem autoDropCert_attainsBelow {b r : ℕ} (h : autoDropCert b r = true)
+    {n : ℕ} (hn : n % 2 ^ b = r) : AttainsBelow n := by
+  simp only [autoDropCert, Bool.and_eq_true, decide_eq_true_eq] at h
+  obtain ⟨⟨hk, hc⟩, hd⟩ := h
+  exact parityVector_attainsBelow _ hk
+    (affValidB_sound (affValidB_deriveVec _ _ _)) hc hd hn
+
+/-! ### Validation: the auto-derived engine reproduces the gallery families
+
+Each call below supplies only the modulus exponent `b` and the residue `r`; the parity
+vector that the Part II/V lemmas wrote out by hand is now computed by `deriveVec` and
+certified by a single `by decide`. -/
+
+/-- `n ≡ 3 (mod 16 = 2^4)` drops below itself — derived end-to-end from `(b, r) = (4, 3)`,
+no parity vector supplied. -/
+example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  autoDropCert_attainsBelow (b := 4) (r := 3) (by decide)
+    (by rw [show (2 : ℕ) ^ 4 = 16 by norm_num]; exact h)
+
+/-- `n ≡ 11 (mod 32 = 2^5)` drops below itself — derived from `(b, r) = (5, 11)`. -/
+example {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
+  autoDropCert_attainsBelow (b := 5) (r := 11) (by decide)
+    (by rw [show (2 : ℕ) ^ 5 = 32 by norm_num]; exact h)
+
+/-- `n ≡ 7 (mod 128 = 2^7)` drops below itself — derived from `(b, r) = (7, 7)`, an
+eleven-step residue-determined window, the *same* one `by decide`. -/
+example {n : ℕ} (h : n % 128 = 7) : AttainsBelow n :=
+  autoDropCert_attainsBelow (b := 7) (r := 7) (by decide)
+    (by rw [show (2 : ℕ) ^ 7 = 128 by norm_num]; exact h)
 
 end CollatzStructuredOQ02OQ03

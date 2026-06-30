@@ -1,5 +1,41 @@
 # Knowledge Base: Euler's Converse for Even Perfect Numbers
 
+## Status: S8 ACT — COMPLETE (0 sorries, 0 axioms, Docker build clean)
+
+## Session 2026-06-27 (S8) — Discharge both remaining sorries
+
+**Mode**: REVISIT (problem was status=blocked, phase=ACT).
+**Outcome**: COMPLETED. `SumOfDivisorsOQ02.lean` now builds with 0 sorries / 0 axioms.
+
+### What I did
+- Proved **Step 6** `cofactor_one_and_prime` (the genuine two-divisor heart):
+  `σ 1 m = (∑ properDivisors m) + m` ⟹ `∑ properDivisors m = c`; with `c ∣ m`,
+  `Nat.sum_properDivisors_dvd` forces the self-dividing proper-divisor sum to be
+  `1` or `m`. The `m` branch dies on `c < m`; the `1` branch yields `c = 1` and
+  primality via `Nat.sum_properDivisors_eq_one_iff_prime`. ~8 LOC.
+- Proved the capstone `euler_converse_self_contained` by chaining named
+  Steps 3–6 after the Archive 2-adic split `Theorems100.Nat.eq_two_pow_mul_odd`,
+  deriving the bounds Step 6 needs from first principles:
+  - `1 < m`: if `m = 1` then `σ 1 1 = 1` forces `c = 0`, hence `m = 0` (absurd).
+  - `k ≠ 0`: if `k = 0` then `n = m` is odd, contradicting `Even n`.
+  - `c < m`: `m = mersenne(k+1)·c` with `mersenne(k+1) > 1` (since `2^(k+1) ≥ 4`),
+    via `lt_mul_iff_one_lt_left`.
+
+### Key findings
+- Step 6 does **not** actually need the `1 < m` precondition — `c < m` alone
+  kills the bad branch. Kept `1 < m` in the signature (now `_hm_lt`) for the
+  natural statement of "proper divisor analysis".
+- The whole result is in Mathlib's Archive as one block; this file's value is the
+  *named six-step decomposition* with the heart + bound-chasing proved directly
+  (Archive used only for `eq_two_pow_mul_odd` and `σ(2^k) = mersenne(k+1)`).
+
+### Verification
+- `./proofs/scripts/docker-build.sh Proofs.SumOfDivisorsOQ02` → exit 0,
+  "Build completed successfully (3063 jobs)". `#print axioms`-clean (no `axiom`
+  decls, no `native_decide`, no `sorryAx`).
+
+---
+
 ## Status: S1 OBSERVE (survey + plan, no Lean changes yet)
 
 ## Mathlib API Inventory

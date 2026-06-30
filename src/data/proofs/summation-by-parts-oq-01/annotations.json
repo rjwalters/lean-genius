@@ -15,6 +15,21 @@
     "prerequisites": ["finite sums", "geometric series"]
   },
   {
+    "id": "ann-sbp-oq01-setup",
+    "proofId": "summation-by-parts-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Purely algebraic: any field, one hypothesis r ≠ 1",
+    "content": "The whole development lives over an arbitrary field K (variable {K : Type*} [Field K]) — no order, no norm, no notion of convergence. The single hypothesis r ≠ 1 enters the proof exactly once, as hr1 : r − 1 ≠ 0 (sub_ne_zero.mpr hr), which is what licenses dividing by (r − 1)². This is the structural reason the result is sharper than the familiar analytic ∑ k·rᵏ = r/(1−r)²: that limit needs ‖r‖ < 1 in a normed field, whereas the finite identity is an exact element of K(r) valid at every r except the removable singularity r = 1. The casts (n : K) are the only bridge from the index set ℕ into the field.",
+    "mathContext": "The identity is an equation in the field of fractions $K(r)$: both sides are rational functions of $r$ with the single pole at $r=1$. The hypothesis $r\\neq 1 \\iff r-1\\neq 0$ is precisely what makes $(r-1)^{-2}$ defined.",
+    "significance": "supporting",
+    "relatedConcepts": ["field (no analytic structure)", "removable singularity at r = 1", "natural number cast ℕ → K", "rational function identity"],
+    "prerequisites": ["fields", "division and nonzero denominators"]
+  },
+  {
     "id": "ann-sbp-oq01-closed-form",
     "proofId": "summation-by-parts-oq-01",
     "range": {

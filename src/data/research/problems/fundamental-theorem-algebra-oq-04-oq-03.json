@@ -24,23 +24,26 @@
     "goal": "Formalize the Galois correspondence and re-derive no-intermediate-fields from the subgroup lattice."
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: New verified/0-axiom/original entry FundamentalTheoremAlgebraOQ04OQ03.lean (5 thm, 1 def, 3 instances, 0 axioms, 136 lines). Establishes IsGalois R C, |Gal(C/R)|=2, cyclic (Z/2Z), the Galois correspondence order-iso, and intermediateField_eq_bot_or_top via Lagrange on the prime-order group.",
+    "progressSummary": "COMPLETED: verified/0-axiom/original entry FundamentalTheoremAlgebraOQ04OQ03.lean (9 thm, 1 def, 3 instances, 0 axioms, 196 lines). Establishes IsGalois R C, |Gal(C/R)|=2, cyclic (Z/2Z), the Galois correspondence order-iso, and intermediateField_eq_bot_or_top via Lagrange on the prime-order group. Session 2 added Part 6 (naming the generator): conjAe_ne_one, galoisGroup_eq_one_or_conj (Gal = {id, conj}), zpowers_conjAe_eq_top, orderOf_conjAe = 2 — upgrading the abstract IsCyclic to a concrete enumeration with complex conjugation as the named generator.",
     "builtItems": [
       "galois_complex_real : IsGalois R C",
       "card_galoisGroup_eq_two : Nat.card (C alg-equiv C) = 2",
       "galoisGroup_isCyclic : IsCyclic (C alg-equiv C)",
       "galoisCorrespondence : IntermediateField R C order-iso (Subgroup Gal)op",
-      "subgroup_eq_bot_or_top + intermediateField_eq_bot_or_top"
+      "subgroup_eq_bot_or_top + intermediateField_eq_bot_or_top",
+      "Part 6: conjAe_ne_one, galoisGroup_eq_one_or_conj (Gal = {id, conj}), zpowers_conjAe_eq_top, orderOf_conjAe = 2 — concrete generator"
     ],
     "insights": [
       "Normal R C is NOT a default instance; it comes from IsAlgClosure.normal once IsAlgClosure R C is in scope (parent declares it). Algebra.IsSeparable R C IS automatic in char 0.",
       "IsGalois.mk assembles IsGalois from [Algebra.IsSeparable] + [Normal]; IsGalois.card_aut_eq_finrank returns Nat.card (not Fintype.card).",
       "Counting subgroups of a prime-order group: avoid normality/CommGroup; use Lagrange (Subgroup.card_subgroup_dvd_card) + Nat.dvd_prime + Subgroup.eq_bot_of_card_eq / eq_top_of_card_eq.",
-      "The correspondence lands in (Subgroup G)op; OrderDual.ofDual/toDual are defeq, and OrderIso.map_top/map_bot flip top<->bot to recover K=top/bot."
+      "The correspondence lands in (Subgroup G)op; OrderDual.ofDual/toDual are defeq, and OrderIso.map_top/map_bot flip top<->bot to recover K=top/bot.",
+      "Complex.real_algHom_eq_id_or_conj enumerates the algebra HOMs (id or conjAe); lift to AlgEquiv via AlgEquiv.ext + DFunLike.congr_fun on sigma.toAlgHom to enumerate the Galois group.",
+      "conjAe != 1 from the image of I: conjAe I = conj I = -I, then I_ne_zero with linear_combination. orderOf generator = Nat.card_zpowers + zpowers = top + Subgroup.card_top."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Explicit MulEquiv Gal(C/R) = Multiplicative (ZMod 2) sending nontrivial elt to Complex.conjAe.",
+      "Package Part 6 into an explicit MulEquiv Gal(C/R) = Multiplicative (ZMod 2) sending conjAe to the nontrivial element (the generator is now named; only the bundled iso remains).",
       "Artin-Schreier generalization to any real-closed field."
     ],
     "markdown": ""
@@ -70,7 +73,7 @@
       "isCyclic_of_prime_card"
     ]
   },
-  "lastUpdate": "2026-06-25T00:00:00.000Z",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/FundamentalTheoremAlgebra.lean",
@@ -108,8 +111,8 @@
     {
       "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03.lean",
       "filename": "FundamentalTheoremAlgebraOQ04OQ03.lean",
-      "lineCount": 137,
-      "theoremCount": 5,
+      "lineCount": 196,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,

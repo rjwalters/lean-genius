@@ -21,7 +21,7 @@
     "badge": "infrastructure",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. All 13 theorems and 4 definitions are fully verified with 0 sorries and 0 axioms (only the foundational propext/Classical.choice/Quot.sound, confirmed via #print axioms). The Newton polygon theorem proper (edge slopes = root valuations), a Newton–Puiseux termination measure, and the quasi-linear complexity bound remain open — they need valuation API on K((x))[Y] and an arithmetic-complexity model, neither in Mathlib 4.26.0.",
+    "assumptions": "None. All 39 theorems and 8 definitions are fully verified with 0 sorries and 0 axioms (only the foundational propext/Classical.choice/Quot.sound, confirmed via #print axioms). The Newton polygon theorem proper (edge slopes = root valuations), a Newton–Puiseux termination measure, and the quasi-linear complexity bound remain open — they need valuation API on K((x))[Y] and an arithmetic-complexity model, neither in Mathlib 4.26.0.",
     "originalContributions": [
       "IsLowerVertex: supporting-line characterization of a lower-hull (Newton-polygon) vertex, algorithm-independent",
       "isLowerVertex_of_minimal: the minimum-valuation support point is always a lower vertex (horizontal supporting line)",
@@ -33,13 +33,30 @@
       "IsLowerEdge.isLowerVertex_left / _right: the endpoints of a lower edge are lower vertices (edge ↔ vertex bridge)",
       "edgeSlope_mono: CONVEXITY of the Newton polygon — adjacent lower edges sharing a vertex have non-decreasing slope (the one-line supporting-line argument)",
       "rootValuation_antitone: consequently the root valuations (negated edge slopes) are sorted across the polygon",
+      "edgeSlope_ge_of_supportingLine / edgeSlope_le_of_supportingLine: a vertex's supporting slope m bounds the slope to EVERY other support point (>= m to the right, <= m to the left) — the per-line convexity bounds complementing edgeSlope_mono",
+      "IsLowerEdge.interior_slopes: a lower edge is convex from below — for ANY interior support point r (vertex or not), edgeSlope r q <= edgeSlope p r, so the polygon never dips below an edge (sharper than the adjacent-edge edgeSlope_mono)",
       "Worked Y²−x example: both (0,1) and (2,0) are lower vertices, the segment is a genuine lower edge, edge slope = −1/2, leading exponent 1/2 = leadingExponentFromSlope 1 2",
-      "Parent fix: corrected a dangling /-- doc comment in PuiseuxTheorem.lean that made the file fail to parse"
+      "Parent fix: corrected a dangling /-- doc comment in PuiseuxTheorem.lean that made the file fail to parse",
+      "exists_isLowerEdge_of_leftmost: the leftmost support point spawns a genuine IsLowerEdge (the dominant least-slope edge) — first concrete hull-construction step, returning the right endpoint not just vertex-hood",
+      "ysqMinusX_exists_edge: worked Y^2-x edge existence derived via the new theorem (right endpoint not supplied by hand)",
+      "Maintenance: replaced 3 uses of List.not_mem_nil q (explicit-arg form, removed in current Mathlib cache) with simp — file no longer built against the updated Mathlib until this fix",
+      "edgeSlopes: reads the list of edge slopes off a chain of support points (the slope of each consecutive pair) via clean two-step structural recursion",
+      "chain_edgeSlopes: GLOBAL CONVEXITY (chain form) — along any List.IsChain of lower edges the edge slopes are non-decreasing between consecutive entries; structural induction whose only arithmetic input is edgeSlope_mono, lifting the adjacent-pair convexity to a whole polygon",
+      "edgeSlopes_pairwise_le: GLOBAL CONVEXITY (sorted form) — the edge slopes of a Newton polygon are Pairwise (· ≤ ·): every slope ≤ every LATER slope, not merely the next one (IsChain upgraded to Pairwise via transitivity of ≤ on ℚ)",
+      "rootValuations_pairwise_ge: consequently the negated edge slopes (the root valuations) of the whole polygon are Pairwise (· ≥ ·) — the sorted valuation list the Newton–Puiseux recursion consumes one dominant edge at a time (global analogue of the two-edge rootValuation_antitone)",
+      "Worked three-vertex example (0,2)→(1,0)→(3,1): a genuine two-edge convex chain (threeVertex_chain) with edgeSlopes = [-2, 1/2] (threeVertex_edgeSlopes) shown sorted by the global theorem (threeVertex_sorted)",
+      "Mathlib drift fix: migrated the new convexity layer to the current List order API — List.Chain' → List.IsChain, List.Sorted (removed) → List.Pairwise, chain'_cons/_singleton/_iff_pairwise → isChain_cons_cons/isChain_singleton/isChain_iff_pairwise; added imports Mathlib.Data.List.Chain and Mathlib.Data.List.Sort",
+      "edgeSlope_mul_width: per-edge identity edgeSlope·width = vertical drop (q.2−p.2) — the slope denominator IS the width, so their product recovers the rise; the bridge coupling the valuation half to the multiplicity half",
+      "edgeDrops + sum_edgeDrops: vertical-drop list of a vertex chain and its telescoping sum to (last).2 − (first).2 (the y-coordinate analogue of sum_edgeWidths)",
+      "zipWith_edgeSlopes_edgeWidths: along a chain of lower edges the elementwise product of the edgeSlopes and edgeWidths lists equals the edgeDrops list — the list-level coupling of valuations and multiplicities",
+      "sum_slope_mul_width: CAPSTONE bookkeeping identity — Σ (edgeSlopeᵢ · widthᵢ) telescopes to the total vertical drop (last).2 − (first).2 across the polygon",
+      "neg_sum_slope_mul_width: Σ (root valuationᵢ · multiplicityᵢ) = v(constant) − v(leading) — the valuation of the product of all roots, read off the two endpoints; the multiplicative counterpart of sum_edgeWidths_eq_degree",
+      "Worked three-vertex example: zipWith products [-2,1] sum to -1 = drop from (0,2) to (3,1) (threeVertex_sum_slope_mul_width)"
     ],
     "dateAdded": "2026-06-27",
-    "lineCount": 224,
-    "theoremCount": 13,
-    "definitionCount": 4,
+    "lineCount": 684,
+    "theoremCount": 39,
+    "definitionCount": 8,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -96,6 +113,14 @@
       "endLine": 145,
       "summary": "Support of Y²−x is {(0,1),(2,0)}; both endpoints are lower vertices via the shared edge line y = −½i + 1 (ysqMinusX_vertex_const / _lead, fin_cases + norm_num). edgeSlope = −1/2, and its negation 1/2 = leadingExponentFromSlope 1 2 recovers the parent's leading exponent of the root x^{1/2}.",
       "mathContext": "$-\\text{edgeSlope}((0,1),(2,0))=\\tfrac12=\\text{leadingExponentFromSlope}(1,2)$, the exponent of $x^{1/2}$."
+    },
+    {
+      "id": "global-convexity",
+      "title": "Global Convexity: the Whole Edge-Slope Sequence is Sorted",
+      "startLine": 423,
+      "endLine": 509,
+      "summary": "edgeSlopes reads the edge-slope list off a List.IsChain of lower edges. chain_edgeSlopes proves it IsChain (· ≤ ·) by two-step structural induction (head = edgeSlope_mono, tail = IH); edgeSlopes_pairwise_le upgrades to Pairwise (· ≤ ·) via transitivity, and rootValuations_pairwise_ge negates to Pairwise (· ≥ ·) for the root valuations. A genuine three-vertex convex chain (0,2)→(1,0)→(3,1) with edge slopes [-2, 1/2] exercises the theorems.",
+      "mathContext": "$\\text{IsChain}(\\text{IsLowerEdge})\\,vs \\Rightarrow (\\text{edgeSlopes}\\,vs)\\ \\text{sorted } \\le$; lifting adjacent-pair convexity $\\text{edgeSlope}(v_{i-1},v_i)\\le\\text{edgeSlope}(v_i,v_{i+1})$ to all pairs."
     }
   ],
   "mainTheorems": [
@@ -140,6 +165,13 @@
       "statement": "$\\text{IsLowerEdge}(\\text{pts}, p, q) \\wedge \\text{IsLowerEdge}(\\text{pts}, q, r) \\Rightarrow -\\text{edgeSlope}(q,r) \\le -\\text{edgeSlope}(p,q)$",
       "significance": "Root valuations are the negatives of edge slopes, so convexity says they are sorted (non-increasing left-to-right) across the Newton polygon — the structural fact behind reading off root valuations in order.",
       "description": "Immediate from edgeSlope_mono via neg_le_neg."
+    },
+    {
+      "name": "edgeSlopes_pairwise_le",
+      "type": "theorem",
+      "statement": "$\\text{IsChain}(\\text{IsLowerEdge}\\,\\text{pts})\\,vs \\Rightarrow (\\text{edgeSlopes}\\,vs).\\text{Pairwise}(\\le)$",
+      "significance": "GLOBAL convexity of the Newton polygon: along any chain of lower edges, EVERY edge slope is ≤ every later edge slope — not merely the adjacent one (edgeSlope_mono). This is the whole-polygon statement that the lower hull is convex, and it is what makes a polynomial's root valuations come out as a fully sorted list (rootValuations_pairwise_ge), the structural backbone of the Newton–Puiseux recursion processing dominant edges in order.",
+      "description": "chain_edgeSlopes proves the consecutive form (List.IsChain (· ≤ ·) on the edge-slope list) by a two-step structural induction whose head step is edgeSlope_mono and whose tail is the IH; List.isChain_iff_pairwise then upgrades it to Pairwise because ≤ on ℚ is transitive."
     },
     {
       "name": "ysqMinusX_isLowerEdge",
@@ -208,18 +240,20 @@
   "leanFile": {
     "imports": [
       "Proofs.PuiseuxTheorem",
-      "Mathlib.Data.List.MinMax"
+      "Mathlib.Data.List.MinMax",
+      "Mathlib.Data.List.Chain",
+      "Mathlib.Data.List.Sort"
     ],
     "namespace": "PuiseuxTheoremOQ03",
-    "lineCount": 224,
+    "lineCount": 1081,
     "axiomCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 4,
+    "theoremCount": 53,
+    "definitionCount": 8,
     "path": "Proofs/PuiseuxTheoremOQ03.lean",
     "sorries": 0
   },
   "conclusion": {
-    "summary": "Supplies the combinatorial Newton polygon Mathlib 4.26.0 lacks: the supporting-line vertex predicate IsLowerVertex, the seed lemma that the minimum-valuation point is a vertex, an existence lemma for nonempty supports, the lower-edge predicate IsLowerEdge with the edge↔vertex bridge and the slope-determination lemma slope_eq_edgeSlope, and — the combinatorial heart — convexity of the polygon (edgeSlope_mono) yielding sorted root valuations (rootValuation_antitone), all validated on the Y²−x example whose single segment is a genuine lower edge tying the slope to the parent's leadingExponentFromSlope. All 13 theorems and 4 definitions verify with 0 sorries and 0 axioms. Also repairs a parse error in the parent file.",
+    "summary": "Supplies the combinatorial Newton polygon Mathlib 4.26.0 lacks: the supporting-line vertex predicate IsLowerVertex, the seed lemma that the minimum-valuation point is a vertex, an existence lemma for nonempty supports, the lower-edge predicate IsLowerEdge with the edge↔vertex bridge and the slope-determination lemma slope_eq_edgeSlope, and — the combinatorial heart — convexity of the polygon (edgeSlope_mono) yielding sorted root valuations (rootValuation_antitone). The latest layer lifts convexity from adjacent pairs to the whole polygon: edgeSlopes reads off the edge-slope list of a chain of lower edges, and edgeSlopes_pairwise_le proves it Pairwise (· ≤ ·) — every slope ≤ every later one — so the root valuations of the entire polygon are sorted (rootValuations_pairwise_ge), demonstrated on a genuine three-vertex convex chain. All validated on the Y²−x example whose single segment is a genuine lower edge tying the slope to the parent's leadingExponentFromSlope. All 27 theorems and 7 definitions verify with 0 sorries and 0 axioms. Also repairs a parse error in the parent file.",
     "implications": "This is the algorithm-independent data layer on which Newton–Puiseux termination measures and the Poteaux–Weimann complexity bounds can later be phrased. With a valuation API on K((x))[Y], the Newton polygon theorem (slopes = root valuations) becomes the next provable target.",
     "openQuestions": [
       "Prove the Newton polygon theorem: the negatives of the lower-hull edge slopes equal the valuations of the roots in an algebraically closed valued extension (needs a valuation API on K((x))[Y]) — the edge layer and its convexity (edgeSlope_mono) are now in place, so the valuations would automatically come out sorted",

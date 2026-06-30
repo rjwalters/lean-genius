@@ -87,6 +87,34 @@ PART II: EMBEDDING SMOOTH CURVES AS LIPSCHITZ CURVES
 ══════════════════════════════════════════════════════════
 -/
 
+/-- A C¹ function on ℝ that is 2π-periodic is globally Lipschitz.
+
+    Proof: by Rademacher/MVT a function with a bounded derivative is Lipschitz with that
+    bound (`lipschitzWith_of_nnnorm_deriv_le`). The derivative is continuous (C¹) and
+    2π-periodic, so it attains a maximum on the compact period `[0, 2π]`; periodicity
+    (`Function.Periodic.exists_mem_Ico₀`) reduces any point to this period, giving a global
+    bound on `|f'|`. This makes the smooth→Lipschitz embedding fully rigorous with an
+    honest Lipschitz constant (the previous `|f'(0)|` witness was not in general valid). -/
+theorem contDiff_periodic_lipschitz {f : ℝ → ℝ} (hf : ContDiff ℝ 1 f)
+    (hper : ∀ t, f (t + 2 * π) = f t) : ∃ K : ℝ≥0, LipschitzWith K f := by
+  -- The derivative is continuous (from C¹) ...
+  have hdcont : Continuous (deriv f) := hf.continuous_deriv le_rfl
+  -- ... and 2π-periodic: deriv commutes with the input shift, and the shifted function is f.
+  have hdper : ∀ t, deriv f (t + 2 * π) = deriv f t := by
+    intro t
+    rw [← deriv_comp_add_const, show (fun x => f (x + 2 * π)) = f from funext hper]
+  -- Bound |f'| on the compact period [0, 2π].
+  obtain ⟨C, hC⟩ := (isCompact_Icc (a := (0 : ℝ)) (b := 2 * π)).exists_bound_of_continuousOn
+    hdcont.continuousOn
+  have hC0 : (0 : ℝ) ≤ C := le_trans (norm_nonneg _) (hC 0 ⟨le_refl 0, by positivity⟩)
+  -- A bounded derivative gives a Lipschitz bound.
+  refine ⟨⟨C, hC0⟩, lipschitzWith_of_nnnorm_deriv_le (hf.differentiable le_rfl) (fun x => ?_)⟩
+  -- Reduce the global bound at x to a point of the period via periodicity.
+  obtain ⟨y, hy, hxy⟩ := (show Function.Periodic (deriv f) (2 * π) from hdper).exists_mem_Ico₀
+    (by positivity) x
+  have hbound : ‖deriv f x‖ ≤ C := by rw [hxy]; exact hC y ⟨hy.1, hy.2.le⟩
+  rw [← NNReal.coe_le_coe]; simpa using hbound
+
 /-- Every SmoothClosedCurve is a LipschitzClosedCurve.
     C¹ functions on ℝ are Lipschitz when periodic (derivative is bounded by compactness). -/
 def SmoothClosedCurve.toLipschitz (γ : SmoothClosedCurve) : LipschitzClosedCurve where
@@ -94,10 +122,8 @@ def SmoothClosedCurve.toLipschitz (γ : SmoothClosedCurve) : LipschitzClosedCurv
   y := γ.y
   periodic_x := γ.periodic_x
   periodic_y := γ.periodic_y
-  lip_x := ⟨⟨|deriv γ.x 0|, abs_nonneg _⟩, fun a b => by
-    -- C¹ periodic → Lipschitz; MVT gives bound with max|γ.x'|. Sorry for technical step.
-    sorry⟩
-  lip_y := ⟨⟨|deriv γ.y 0|, abs_nonneg _⟩, fun a b => by sorry⟩
+  lip_x := contDiff_periodic_lipschitz γ.smooth_x γ.periodic_x
+  lip_y := contDiff_periodic_lipschitz γ.smooth_y γ.periodic_y
 
 /-- The embedding preserves circumference: the integral formula is the same. -/
 @[simp] theorem toLipschitz_circumference (γ : SmoothClosedCurve) :
@@ -533,20 +559,33 @@ PART VIII: SORRY INVENTORY AND SUMMARY
 2. `exists_lip_nice_reparam` — Arc-length reparametrization for Lipschitz curves
    - Standard: follows from inverse function theorem for monotone AC maps
 
-### Sorries (technical, not axiomatic):
-1. In `SmoothClosedCurve.toLipschitz` (lip_x, lip_y): MVT bound for periodic C¹ functions
-   - Fix: use `HasDerivAt` + MVT on compact interval; the Lipschitz constant is sup|f'| on [0, 2π+1]
-   - Not on critical path: only affects `smooth_case_follows_from_lipschitz` corollary
-2. In `wirtinger_sum_sq_bound_lip` (hdx_int, hdy_int): derivative integrability for Lipschitz functions
+### RESOLVED (previously sorries):
+- In `SmoothClosedCurve.toLipschitz` (lip_x, lip_y): now discharged by the genuine lemma
+  `contDiff_periodic_lipschitz` — a 2π-periodic C¹ function is globally Lipschitz with an
+  HONEST constant (sup|f'| on the compact period [0, 2π], reduced from any point by
+  periodicity), replacing the earlier invalid `|f'(0)|` witness. Axiom-free.
+
+### Sorries (technical, not axiomatic) — 4 remaining:
+1. In `wirtinger_sum_sq_bound_lip` (hdx_int, hdy_int): derivative integrability for Lipschitz functions
    - Fact: LipschitzWith K f → |deriv f t| ≤ K at differentiable points (= 0 elsewhere)
    - Fix: needs `LipschitzWith.norm_deriv_le` or Rademacher's theorem in Mathlib4
    - Not on critical path: Wirtinger bound itself uses these intermediately
+2. In `lipschitz_isoperimetric` (harea_zero): degenerate case area=0 when circumference=0
+   - Fact: ∫|γ'|=0 → |γ'|=0 a.e. → γ a.e. constant → encloses no area
+   - Fix: needs Mathlib's `integral_eq_zero_iff` for nonneg integrands
 3. In `lipschitz_isoperimetric` (hf_int in harea_bound): integrability of xy'-yx' for Lipschitz curves
    - Fact: x, y are continuous (Lipschitz); deriv x, deriv y are essentially bounded by K
    - Fix: needs measurability of deriv of Lipschitz function (ultimately Rademacher)
    - This is the last sorry blocking the main theorem `lipschitz_isoperimetric`
 
-### PROVED THIS SESSION (Session 2026-04-03):
+### PROVED THIS SESSION (Session 2026-06-27):
+- `contDiff_periodic_lipschitz`: NEW lemma — a 2π-periodic C¹ function is globally Lipschitz
+  with an honest constant (sup|deriv f| on the compact period [0, 2π], via
+  `lipschitzWith_of_nnnorm_deriv_le` + `Function.Periodic.exists_mem_Ico₀`). Axiom-free.
+- `SmoothClosedCurve.toLipschitz` (lip_x, lip_y): both sorries discharged via the new lemma
+  (6 → 4 sorries). The smooth→Lipschitz embedding is now fully rigorous.
+
+### PROVED IN PRIOR SESSION (Session 2026-04-03):
 - `hCS` integrability goals: √(x²+y²) and (√(x²+y²))² integrable from Lipschitz→continuous
 - `harea_bound` structure: full proof of 2A ≤ c·∫√(x²+y²) up to hf_int sorry
 - `hspeed_c` conversion: fixed type mismatch between hspeed' and wirtinger_sum_sq_bound_lip

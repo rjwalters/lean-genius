@@ -1,5 +1,78 @@
 # Erdős #493 — OQ-01: Exact image and representation count of product-minus-sum
 
+## Session 2026-06-27 (researcher-6, S2) — ACT, EXACT UNORDERED COUNT VERIFIED ✅ (Docker UP)
+
+- **Mode**: REVISIT (own problem; SOLVED after C5). **Outcome**: progress — closed
+  the one corollary the C2 docstring advertised but no session had formalized: the
+  exact **unordered** representation count `= ⌈τ(n+1)/2⌉`. The prior (S1) note called
+  this "cosmetic"; that undersold it — it is the full *count* refining C5's mere
+  *uniqueness*, and required a genuine swap-involution argument (not a one-liner).
+- **Added Part III to `proofs/Proofs/Erdos493OQ01.lean`** (4 new declarations,
+  0 sorries, Docker `docker-build.sh Proofs.Erdos493OQ01` → **Built successfully,
+  3059 jobs, 0 errors**):
+  * `unorderedRepsFinset n := (repsFinset n).filter (a ≤ b)` — one canonical pair per
+    unordered representation `{a,b}`.
+  * `mem_repsFinset_swap : (a,b) ∈ reps ↔ (b,a) ∈ reps` — swap-closure (the defining
+    `a*b=a+b+n` is symmetric; `rw [Nat.mul_comm]; omega`).
+  * `diag_card : |{(a,a) reps}| = if IsSquare (n+1) then 1 else 0` — diagonal reps are
+    the involution's fixed points; `a=b` forces `(a-1)²=n+1`. Substitute `a=2+c` to
+    dodge ℕ subtraction; uniqueness of the root via `Nat.mul_self_lt_mul_self`
+    trichotomy.
+  * **`two_mul_unorderedReps_card (n) : 2*|unordered| = τ(n+1) + [IsSquare (n+1)]`** —
+    the HEADLINE. Proof: swap is an involution of `repsFinset n`; with
+    `L = filter(a≤b)`, `G = filter(b≤a)`, inclusion–exclusion
+    (`Finset.card_union_add_card_inter`) gives `|reps|+|diag| = |L|+|G|`, and
+    `|G|=|L|` via `Finset.card_image_of_injective Prod.swap_injective` (G = swap-image
+    of L). Then `reps_card_eq_tau` (C2) + `diag_card` substitute the closed forms.
+- **`#print axioms Erdos493.two_mul_unorderedReps_card` → `[propext, Classical.choice,
+  Quot.sound]`** only. NO `sorryAx`, NO `Lean.ofReduceBool` → **verified, 0 axioms**.
+- **Verify-before-assert**: `verify_unordered.py` brute-forces `2*unordered` vs
+  `τ(n+1)+[square]` for `n=0..399` → **ALL PASS** (ran before and after Lean).
+- **Honesty note**: modest result — one clean exact count, ~135 LOC, no new open
+  math. But it *completes* the count hierarchy (ordered τ → unordered ⌈τ/2⌉ →
+  square/prime/composite characterizations) the file set out to give. File now
+  13 `theorem` + `mem_repsFinset` + 2 `def`, 0 sorries, 0 axioms.
+- **Next**: a one-line `unorderedReps_card_eq_one_iff` (n=0 ∨ n+1 prime) corollary is
+  available but minor. No gallery `src/data/proofs/erdos-493-oq-01` page exists yet —
+  the file (rich, 0-axiom) is a promotion candidate.
+
+## Session 2026-06-27 (researcher-6) — ACT, C5 PRIME CAPSTONE VERIFIED ✅ (Docker UP)
+
+- **Mode**: REVISIT (own problem; theory was C1–C4 + C2-count in Lean, with the
+  "`n+1` prime ⟺ unordered-unique rep" bridge flagged by researcher-10 as the
+  **only un-Lean'd corollary**). **Outcome**: progress — that gap is now closed
+  and machine-checked under a real Docker build.
+- **Docker is back UP** (containerd store healthy, 41Gi free). Ran the canonical
+  `./proofs/scripts/docker-build.sh Proofs.Erdos493OQ01` → **Build completed
+  successfully (3059 jobs), 0 errors**. No offline `LAKE_UNSAFE` workaround needed.
+- **Added 3 elementary, verified theorems** to the registered file
+  `proofs/Proofs/Erdos493OQ01.lean` (now 9 `theorem` + `mem_repsFinset` + 1 def,
+  0 sorries):
+  * `card_divisors_eq_two_iff_prime {N : ℕ} : N.divisors.card = 2 ↔ N.Prime` —
+    reusable divisor-count form of primality (forward: `{1,N} ⊆ divisors N` with
+    matched card ⇒ `divisors N = {1,N}` via `Finset.eq_of_subset_of_card_le`, then
+    `Nat.prime_def`; converse: `Nat.Prime.divisors` + `Finset.card_pair`). Plausibly
+    mathlib-worthy as a standalone lemma.
+  * **`reps_card_eq_two_iff_prime (n) : (repsFinset n).card = 2 ↔ (n+1).Prime`** —
+    the **C5 primality capstone**: exactly two ordered representations
+    `n = a*b-(a+b)` iff `n+1` is prime. Two-line proof:
+    `rw [reps_card_eq_tau, card_divisors_eq_two_iff_prime]`. The literal bridge
+    the prior session left open.
+  * `reps_card_eq_one_iff (n) : (repsFinset n).card = 1 ↔ n = 0` — ordered count
+    is 1 iff `n = 0` (the `(2,2)` rep). Together with C5: unordered uniqueness ⟺
+    `n = 0 ∨ (n+1).Prime`.
+- `#print axioms` on all three → `[propext, Classical.choice, Quot.sound]` only.
+  **NO `sorryAx`, NO `Lean.ofReduceBool`** → genuinely **verified, 0 axioms**.
+- **Verify-before-assert**: brute-forced ordered-rep count vs `τ(n+1)` and both
+  iff's for `n = 0..299` in sympy → 0 mismatches before writing Lean.
+- **Gotcha logged**: `rcases hx with rfl | rfl` on `x = 1 ∨ x = N` substitutes
+  **N := x** in the `x = N` branch (eliminates the section variable, not `x`), so a
+  later `Nat.mem_divisors_self N …` fails with `unknown identifier N`. Use `_`.
+- **Next**: OQ-01 is now theory-complete in Lean (C1–C5). Only remaining cosmetic
+  item is an explicit *unordered* `Finset` count `= ⌈τ(n+1)/2⌉` (needs a
+  quotient-by-swap Finset; low marginal value — uniqueness is fully captured by
+  C5 + `reps_card_eq_one_iff`). Recommend marking COMPLETED on merge.
+
 ## Session 2026-06-27 (researcher-10) — ACT, C2 VERIFIED OFFLINE ✅
 
 - **Mode**: REVISIT (own problem, theory-complete C1–C5, only C2 build-gated).

@@ -4,11 +4,11 @@
     "proofId": "british-flag-theorem-oq-01-oq-01",
     "range": {
       "startLine": 1,
-      "endLine": 43
+      "endLine": 38
     },
     "type": "concept",
     "title": "Module Overview: The Parallelogram Defect Identity",
-    "content": "This module generalizes the British Flag Theorem from a rectangle to an arbitrary parallelogram, in any real inner product space. The parallelogram is encoded by a vertex A and two edge vectors u, v (vertices A, A+u, A+u+v, A+v). The module imports Mathlib, opens the InnerProductSpace scope for the ⟪·,·⟫_ℝ notation, and fixes a real inner product space V via a `variable` declaration.",
+    "content": "This module generalizes the British Flag Theorem from a rectangle to an arbitrary parallelogram, in any real inner product space. The parallelogram is encoded by a vertex A and two edge vectors u, v (vertices A, A+u, A+u+v, A+v). The module imports Mathlib, opens the InnerProductSpace scope for the ⟪·,·⟫_ℝ notation, and fixes a real inner product space V via a `variable` declaration. Working coordinate-free over an abstract V — rather than in ℝ² — is exactly what upgrades the classical planar statement to a sharp, dimension-free identity.",
     "mathContext": "The ambient setting is `[NormedAddCommGroup V] [InnerProductSpace ℝ V]`. Phrasing the result abstractly — rather than in ℝ² coordinates — is what makes it a *sharp, dimension-free* generalization of the parent entry.",
     "significance": "key",
     "relatedConcepts": [
@@ -23,17 +23,40 @@
     ]
   },
   {
-    "id": "ann-bftoq0101-defect",
+    "id": "ann-bftoq0101-defect-statement",
     "proofId": "british-flag-theorem-oq-01-oq-01",
     "range": {
-      "startLine": 44,
-      "endLine": 57
+      "startLine": 40,
+      "endLine": 46
     },
-    "type": "key_step",
-    "title": "Main Theorem: Defect = 2⟪u, v⟫",
-    "content": "parallelogram_defect proves ‖P−A‖² + ‖P−(A+u+v)‖² − ‖P−(A+u)‖² − ‖P−(A+v)‖² = 2⟪u,v⟫. The proof first rewrites the three composite points as differences from P−A using `abel` (P−(A+u+v) = (P−A)−(u+v), etc.), then expands every squared norm with norm_sub_sq_real, expands ‖u+v‖² with norm_add_sq_real, splits ⟪P−A, u+v⟫ with inner_add_right, and closes with ring. All inner products emerge in the canonical orientation ⟪x,y⟫, so ring needs no commutativity rewrite.",
-    "mathContext": "Setting x = P − A: ‖x‖² + ‖x−u−v‖² − ‖x−u‖² − ‖x−v‖². Expanding, the ‖x‖², ⟪x,u⟫, ⟪x,v⟫, ‖u‖², ‖v‖² contributions all cancel, leaving 2⟪u,v⟫ — independent of both P and A.",
+    "type": "theorem",
+    "title": "Main Identity: Defect = 2⟪u, v⟫",
+    "content": "`parallelogram_defect` states the sharp result: ‖P−A‖² + ‖P−(A+u+v)‖² − ‖P−(A+u)‖² − ‖P−(A+v)‖² = 2⟪u,v⟫. The defect — the difference between the two diagonal squared-distance sums — depends ONLY on the inner product of the two edge vectors, and is therefore independent of both the observer P and the base vertex A. This is strictly stronger than the British Flag Theorem, which asserts only that the defect is zero in the right-angled case; here the exact value is pinned down for every parallelogram.",
+    "mathContext": "Defect $= \\lVert P-A\\rVert^2 + \\lVert P-(A+u+v)\\rVert^2 - \\lVert P-(A+u)\\rVert^2 - \\lVert P-(A+v)\\rVert^2 = 2\\langle u, v\\rangle$. The right side has no P or A, so the identity is observer- and base-point-invariant.",
     "significance": "critical",
+    "relatedConcepts": [
+      "parallelogram law",
+      "British Flag Theorem",
+      "bilinear form ⟪u,v⟫",
+      "diagonal squared-distance sums"
+    ],
+    "prerequisites": [
+      "Real inner product and its bilinearity",
+      "squared norm ‖x‖² = ⟪x,x⟫"
+    ]
+  },
+  {
+    "id": "ann-bftoq0101-defect-proof",
+    "proofId": "british-flag-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 52
+    },
+    "type": "technique",
+    "title": "Proof Technique: Translate to A, Expand, Cancel",
+    "content": "The proof is a clean translate-and-expand. First `abel` rewrites the three composite points as differences from the single vector x = P−A: P−(A+u+v) = (P−A)−(u+v), P−(A+u) = (P−A)−u, P−(A+v) = (P−A)−v. Then each squared norm is expanded by `norm_sub_sq_real` and ‖u+v‖² by `norm_add_sq_real`, and ⟪P−A, u+v⟫ is split by `inner_add_right`. Because every inner product emerges in the canonical orientation ⟪x,y⟫ (no symmetry juggling needed), `ring` finishes: the ‖x‖², ⟪x,u⟫, ⟪x,v⟫, ‖u‖² and ‖v‖² contributions all cancel in pairs, leaving exactly 2⟪u,v⟫.",
+    "mathContext": "With x = P − A: ‖x‖² + ‖x−u−v‖² − ‖x−u‖² − ‖x−v‖². The cross terms −2⟪x,u+v⟫ and +2⟪x,u⟫+2⟪x,v⟫ cancel; ‖u+v‖² = ‖u‖²+2⟪u,v⟫+‖v‖² leaves the +‖u‖²,+‖v‖² to cancel against −‖u‖²,−‖v‖², yielding 2⟪u,v⟫.",
+    "significance": "supporting",
     "relatedConcepts": [
       "norm_sub_sq_real",
       "norm_add_sq_real",
@@ -43,26 +66,50 @@
     ],
     "prerequisites": [
       "Squared-norm expansion in an inner product space",
-      "Bilinearity of the real inner product"
+      "Bilinearity of the real inner product",
+      "the abel and ring tactics"
     ]
   },
   {
-    "id": "ann-bftoq0101-corollaries",
+    "id": "ann-bftoq0101-orthogonal",
     "proofId": "british-flag-theorem-oq-01-oq-01",
     "range": {
-      "startLine": 58,
-      "endLine": 79
+      "startLine": 54,
+      "endLine": 62
     },
-    "type": "concept",
-    "title": "Corollaries: Orthogonal Case and Vertex Form",
-    "content": "british_flag_of_orthogonal substitutes ⟪u,v⟫ = 0 into the defect identity (so the defect is 0) and rearranges via linarith to ‖P−A‖² + ‖P−(A+u+v)‖² = ‖P−(A+u)‖² + ‖P−(A+v)‖². british_flag is the classical vertex form: given C = B + D − A (parallelogram closure) and ⟪B−A, D−A⟫ = 0 (right angle at A), it applies parallelogram_defect with u = B−A, v = D−A and rewrites A+(B−A)=B, A+(D−A)=D, B+(D−A)=C to land on the British Flag equality — now valid in any dimension.",
-    "mathContext": "The British Flag Theorem ‖PA‖²+‖PC‖² = ‖PB‖²+‖PD‖² is exactly the zero-defect case 2⟪u,v⟫ = 0, i.e. perpendicular edges. The abstract setting subsumes the parent's planar ℝ² proof.",
+    "type": "theorem",
+    "title": "Corollary: The Rectangle (Zero-Defect) Case",
+    "content": "`british_flag_of_orthogonal` is the immediate specialization to a rectangle: substituting ⟪u,v⟫ = 0 into the defect identity makes the right side `2 * 0 = 0`, and `linarith` rearranges the now-zero defect into the balanced form ‖P−A‖² + ‖P−(A+u+v)‖² = ‖P−(A+u)‖² + ‖P−(A+v)‖². This is the British Flag Theorem in its edge-vector formulation: when the parallelogram has perpendicular edges (a rectangle), the two diagonal squared-distance sums are equal for every point P.",
+    "mathContext": "u ⊥ v ⟺ ⟪u,v⟫ = 0 ⟹ defect = 0 ⟹ ‖PA‖²+‖PC‖² = ‖PB‖²+‖PD‖². The theorem isolates the orthogonal case as a corollary of the exact identity rather than reproving it.",
     "significance": "key",
     "relatedConcepts": [
       "orthogonality",
       "British Flag Theorem",
-      "vertex form",
+      "rectangle",
       "linarith"
+    ],
+    "prerequisites": [
+      "The main defect identity parallelogram_defect",
+      "orthogonality as vanishing inner product"
+    ]
+  },
+  {
+    "id": "ann-bftoq0101-vertex-form",
+    "proofId": "british-flag-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Corollary: Classical Vertex Form, Any Dimension",
+    "content": "`british_flag` recovers the textbook vertex statement. Given a rectangle ABCD specified by the closure condition C = B + D − A (which forces ABCD to be a parallelogram) and the right-angle condition ⟪B−A, D−A⟫ = 0, it applies `parallelogram_defect` with edge vectors u = B−A and v = D−A, then uses `abel` to rewrite A+(B−A)=B, A+(D−A)=D, and B+(D−A)=C, landing on ‖P−A‖² + ‖P−C‖² = ‖P−B‖² + ‖P−D‖². This is the British Flag Theorem exactly as classically stated for the corners of a rectangle — but now valid in any real inner product space, not just the plane.",
+    "mathContext": "C = B + D − A (parallelogram closure) and ⟪B−A, D−A⟫ = 0 (right angle at A) ⟹ ‖PA‖²+‖PC‖² = ‖PB‖²+‖PD‖². Setting u=B−A, v=D−A reduces this to the orthogonal case of the defect identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "British Flag Theorem",
+      "vertex form",
+      "parallelogram closure C = B + D − A",
+      "dimension-free generalization"
     ],
     "prerequisites": [
       "The main defect identity parallelogram_defect",

@@ -3,41 +3,47 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-27T05:00:00-07:00
-**Iteration**: 4
+**Since**: 2026-06-27T19:00:00-07:00
+**Iteration**: 7
 
 ## Current Focus
-Repaired and **verified** the previously-broken 115/128 density floor. The prior commit
-(#30735) referenced four mod-128 theorems that were never written, so the file did not
-compile. This session authored the three missing mod-128 drop theorems (`7, 15, 59 mod 128`,
-each dropping in 11 residue-determined steps to `81m+d`) plus the 8-way packaging theorem,
-and confirmed EXIT 0 with `#print axioms` showing only `propext/Classical.choice/Quot.sound`.
+ACT — completed de-risk **component (1)**: the residue-drop engine now AUTO-DERIVES the
+parity vector from `(b, r)` for power-of-two moduli (`deriveVec`/`autoDropCert`), so the
+caller supplies only the modulus exponent and residue, not a hand-built vector. Built
+offline (Docker unresponsive), REAL_EXIT=0, axiom-free (`propext, Quot.sound`; kernel
+`decide`, not `native_decide`).
 
 ## Active Approach
 Deep result stays a single documented axiom (`tao_2019`); the elementary residue-dynamics
-core is extended one dyadic level via the shared `affine_residue_attainsBelow` helper, then
-assembled into a disjoint-family counting bound (`attainsBelow_density_lower_128`).
+core is now a fully turnkey decidable engine. `deriveVec` simulates the affine pair from
+`(2^b, r)` reading each forced parity off the constant `d`; `affValidB_deriveVec` proves
+the derived vector is unconditionally valid; `autoDropCert_attainsBelow` certifies a
+residue family in one `by decide`.
 
 ## Attempt Count
-- Total attempts: 5
+- Total attempts: 6
 - Approaches tried: statement + explicit families; n≡1 mod 4 family; colMin bridge;
-  mod-16/mod-32 refinements; mod-128 refinement (committed broken); **mod-128 repair + verify (this session)**
+  mod-16/32/128 refinements; general density lemma + decidable `dropCert` (vector supplied);
+  **auto-derived parity vector `deriveVec`/`autoDropCert` (this session — no vector supplied)**
 
 ## Blockers
 - Full proof of Tao (2019) remains BLOCKED (3-adic transport/concentration + Fourier; >> 1000 lines).
-- Build host: Docker is back up but disk at 99% (~190Mi free). Verified offline via
-  `LAKE_UNSAFE=1 ./bin/lake env lean` against the worktree's cached Mathlib oleans (EXIT 0).
+- Build host: Docker `docker info` hangs (unresponsive). Verified offline via
+  `LAKE_UNSAFE=1 ./bin/lake env lean` against the worktree's cached Mathlib oleans (REAL_EXIT 0).
+- **Worktree hazard**: a hard reset (`git reset --hard HEAD`) ran mid-session and wiped
+  uncommitted edits. Commit immediately after editing in this worktree.
 
 ## Next Action
-The next dyadic improvement past 115/128 is at level 256 (density 237/256), but this is
-diminishing returns — each level adds only a handful of residue classes and the path to
-density 1 is the Terras/Korec finite-stopping-time theorem, not finite residue computation.
-Future milestone: formalize Terras/Korec natural-density stopping-time toward Tao's bound.
+Remaining genuine lever: a *uniform* drop theorem (one inductive statement covering all
+determined classes through the `3^a < 2^b` criterion), then Terras/Korec natural-density-1
+stopping time toward Tao's bound. Further dyadic density levels (mod 256+) are diminishing
+returns. Tao axiom stays BLOCKED.
 
 ## Deliverable (this session)
-`proofs/Proofs/CollatzStructuredOQ02OQ03.lean` — now COMPILES (was broken):
-- `mod_onetwentyeight_seven_attainsBelow`, `mod_onetwentyeight_fifteen_attainsBelow`,
-  `mod_onetwentyeight_fiftynine_attainsBelow` (the three missing 11-step drop theorems);
-- `even_or_mod_four_one_or_mod_onetwentyeight_attainsBelow` (8-way packaging).
-Verified EXIT 0 offline; all new theorems axiom-free (`propext/Classical.choice/Quot.sound`).
-Still 1 deep axiom (`tao_2019`), 0 sorries, 39 theorems. meta.json counts corrected.
+`proofs/Proofs/CollatzStructuredOQ02OQ03.lean` — Part VII added (1468→1568 lines, 52→54
+theorems, 10→12 defs, 1 axiom unchanged, 0 sorries):
+- `deriveVec` (auto-derives the residue-determined parity vector from `(b, r)`);
+- `affValidB_deriveVec` (the derived vector is unconditionally a valid `AffValid` certificate);
+- `autoDropCert` / `autoDropCert_attainsBelow` (one-line residue-family certification from
+  `(b, r)` alone), validated on `n≡3 (mod 16)`, `n≡11 (mod 32)`, `n≡7 (mod 128)`.
+Verified REAL_EXIT 0 offline; new theorems axiom-free (`propext, Quot.sound`).

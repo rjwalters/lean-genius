@@ -1,10 +1,56 @@
 # Current State
 
-**Phase**: SURVEY (obstruction scoped)
-**Since**: 2026-06-26T19:00:00Z
-**Iteration**: 4
+**Phase**: BUILD (GCH-free kernel formalized)
+**Since**: 2026-06-27T13:00:00Z
+**Iteration**: 5
 
-## Current Focus
+## Iteration 5 Findings (researcher-10, 2026-06-27)
+
+Acted on iteration 4's explicit recommendation: built the abstract,
+GCH-free combinatorial kernel as a **new, separate companion file**
+`proofs/Proofs/Erdos1168Sierpinski.lean` (190 L, **0 sorries, 0 axioms,
+VERIFIED** via `lake env lean`; `#print axioms` = only
+propext/Classical.choice/Quot.sound). The verified parent was left
+untouched, exactly as advised.
+
+**What the kernel proves (the model-independent half of the whole
+Sierpiński / Erdős–Rado family):**
+
+- `wellFoundedOn_of_le_on` — the transfer engine: if `r ≤ s` *on a set
+  `H`* (not globally, so `Set.WellFoundedOn.mono` does not apply) and
+  `s` is well-founded on `H`, then `r` is. Proved via
+  `wellFoundedOn_iff` + `Subrelation.wf`.
+- `agreeColor s` — the Sierpiński agreement 2-coloring: pair `{x,y}`
+  gets colour `0` iff `<` and the auxiliary order `s` agree
+  (`x<y ↔ s x y`), else `1`. Plus the two extraction iffs.
+- `wellFoundedOn_lt_of_homog_zero` — a `0`-homogeneous set is
+  well-founded under `<` (orders agree ⇒ `<` inherits WF of `s`).
+- `wellFoundedOn_gt_of_homog_one` — a `1`-homogeneous set is
+  well-founded under `>` (orders are reversed; trichotomy of `s`,
+  supplied by `IsWellOrder`, converts "disagree" into the exact
+  reversal `x>y → s x y`).
+- `negPartition2_of_orders` — **the payoff.** Given a `LinearOrder` and
+  a well-order `s` on `α` whose `<`-well-founded *and* `>`-well-founded
+  subsets are all of cardinality `< λ`, the agreement coloring
+  witnesses `#α ↛ (λ, λ)²₂` (`NegPartition2 (#α) λ`).
+
+**Why this matters for the parent sorries.** `negPartition2_of_orders`
+is precisely the GCH-free skeleton of `base_case_under_gch`: it
+discharges 100% of the *combinatorics* (the reduction to "homogeneous ⇒
+monotone subsequence"), leaving only the two cardinal hypotheses
+`hlt`/`hgt` — the genuinely model-dependent "no large (reverse-)well-
+ordered subset" facts — to be supplied per application. That is exactly
+the obstruction iteration 4 identified; it is now cleanly isolated as a
+hypothesis instead of being entangled with the combinatorics.
+
+**Next attack.** Instantiate `negPartition2_of_orders` at a concrete
+order witnessing the GCH base case: take a set of size ℵ_{n+1} = 2^{ℵ_n}
+(under GCH) carried by the eventual-difference / lexicographic order on
+`ℵ_n → 2`, whose well-ordered and reverse-well-ordered subsets have size
+≤ ℵ_n < ℵ_{n+1}. Supplying `hlt`/`hgt` there reduces `base_case_under_gch`
+to a Mathlib-checkable cardinality bound on monotone subsets of `2^{ℵ_n}`.
+
+## Earlier Focus
 
 Iteration 4 (researcher-4, 2026-06-26): scoped the tractability of the
 two remaining main-file sorries. **Conclusion: both are research-grade

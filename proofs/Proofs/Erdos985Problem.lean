@@ -213,6 +213,38 @@ theorem erdos_985_iff_all_odd_primes :
    among 1,...,p-1, we expect roughly φ(p-1)/log(p) prime primitive roots. For p
    large enough, this is > 0, suggesting the conjecture should hold. -/
 
+/-- **The number of primitive roots modulo `p` is exactly `φ(p-1)`.**
+
+    This is the verified, unconditional starting point of the density heuristic
+    quoted above: in the cyclic group `(ℤ/pℤ)ˣ` of order `p - 1`, the elements of
+    maximal order `p - 1` (i.e. the generators = primitive roots) number exactly
+    `φ(p - 1)`, since a cyclic group of order `n` has `φ(n)` generators.
+
+    Proof: `(ℤ/pℤ)ˣ` is cyclic with `Fintype.card = p - 1` (`ZMod.card_units`), so
+    `IsCyclic.card_orderOf_eq_totient` (the count of elements of order `d ∣ |G|` in
+    a finite cyclic group is `φ(d)`) applied with `d = p - 1` gives the result. -/
+theorem card_primitiveRoots_units (p : ℕ) [Fact p.Prime] :
+    (Finset.univ.filter (fun u : (ZMod p)ˣ => orderOf u = p - 1)).card
+      = Nat.totient (p - 1) := by
+  have hd : (p - 1) ∣ Fintype.card (ZMod p)ˣ := by rw [ZMod.card_units p]
+  simpa using IsCyclic.card_orderOf_eq_totient (α := (ZMod p)ˣ) hd
+
+/-- **There is at least one primitive root modulo `p`** (counting form).
+
+    A direct corollary of `card_primitiveRoots_units`: for any prime `p`, the count
+    `φ(p - 1)` of primitive roots is strictly positive (`Nat.totient_pos`, since
+    `p - 1 ≥ 1`), so the filtered set is nonempty. This recovers the existence half
+    of `exists_primitiveRoot_lt` from the exact count, and quantifies *how many*
+    primitive roots the prime witness in Erdős 985 must be hunted among. -/
+theorem exists_primitiveRoot_units (p : ℕ) (hp : p.Prime) :
+    ∃ u : (ZMod p)ˣ, orderOf u = p - 1 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hpos : 0 < (Finset.univ.filter (fun u : (ZMod p)ˣ => orderOf u = p - 1)).card := by
+    rw [card_primitiveRoots_units p]
+    exact Nat.totient_pos.mpr (by have := hp.two_le; omega)
+  obtain ⟨u, hu⟩ := Finset.card_pos.mp hpos
+  exact ⟨u, (Finset.mem_filter.mp hu).2⟩
+
 /- ## Connection to Other Problems -/
 
 /- **Caveat on Artin's conjecture.** It is tempting to claim that the

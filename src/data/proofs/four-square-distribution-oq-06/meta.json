@@ -60,7 +60,8 @@
       "σ*(n) is not an arbitrary arithmetic function on prime powers: on odd inputs it is exactly the ordinary sum-of-divisors σ, because the 'drop multiples of 4' filter never fires when every divisor is odd. This collapses the four-square σ* to a clean geometric series.",
       "The headline r₄(p²) = 8(1 + p + p²) is therefore the same arithmetic as σ(p²) = 1 + p + p², linking the four-square count to the divisor-sum theory of prime powers.",
       "The even prime is the opposite extreme: σ*(2ᵏ) saturates at 3 for all k ≥ 1 because only 1 and 2 avoid divisibility by 4. This is exactly why the parent's native_decide table shows the constant 24 at n = 2, 4, 8.",
-      "Replacing native_decide point-checks by symbolic closed forms removes the Lean.ofReduceBool dependency: every value here is proved for all p (or all k) at once, with only Lean's foundational axioms."
+      "Replacing native_decide point-checks by symbolic closed forms removes the Lean.ofReduceBool dependency: every value here is proved for all p (or all k) at once, with only Lean's foundational axioms.",
+      "The two families compose multiplicatively: σ* is a multiplicative arithmetic function (its summand depends only on the divisor, and divisors of coprime m, n pair up bijectively), so a general n = 2ᵏ·m with m odd satisfies σ*(n) = σ*(2ᵏ)·σ*(m) = 3·σ(m) for k ≥ 1. The odd-prime-power and power-of-2 closed forms here are thus the two local factors from which σ* at every n is assembled."
     ],
     "prerequisites": [
       "Jacobi's modified divisor sum σ*(n) = Σ_{d|n, 4∤d} d and the prediction jacobiR4 = 8·σ* (restated from the sibling OQ-01)",
@@ -128,7 +129,12 @@
   ],
   "conclusion": {
     "summary": "Machine-verified, native_decide-free closed forms for Jacobi's modified divisor sum on prime powers: σ*(pᵏ) = 1 + p + ⋯ + pᵏ for odd primes (hence jacobiR4(p²) = 8(1 + p + p²)), and σ*(2ᵏ) = 3, jacobiR4(2ᵏ) = 24 for k ≥ 1. The gallery's jacobiR4(9) = 104 is recovered as the p = 3 instance. Zero sorries, zero axioms beyond the foundational ones, no Lean.ofReduceBool.",
-    "implications": "Promotes the parent family's finite native_decide table to genuine symbolic theorems over all (odd) primes and all powers of 2, and exhibits σ* as the ordinary divisor sum σ on odd inputs. The full count identity r₄(n) = 8·σ*(n) (needing the q-expansion of jacobiTheta⁴) remains the open target of OQ-01 and is not claimed here."
+    "implications": "Promotes the parent family's finite native_decide table to genuine symbolic theorems over all (odd) primes and all powers of 2, and exhibits σ* as the ordinary divisor sum σ on odd inputs. The full count identity r₄(n) = 8·σ*(n) (needing the q-expansion of jacobiTheta⁴) remains the open target of OQ-01 and is not claimed here.",
+    "openQuestions": [
+      "Can the two local closed forms be assembled into a single proved formula for σ*(n) at every n? Writing n = 2ᵏ·m with m odd, multiplicativity of σ* should give σ*(n) = 3·σ(m) for k ≥ 1 and σ*(n) = σ(m) for k = 0; formalizing the multiplicativity of σ* (and hence of jacobiR4) would close the gap between these prime-power values and arbitrary n.",
+      "The genuinely open target inherited from OQ-01 is the geometric count itself: prove r₄(n) = #{(a,b,c,d) ∈ ℤ⁴ : a²+b²+c²+d² = n} equals 8·σ*(n) (Jacobi 1829), which requires the q-expansion of jacobiTheta⁴. The closed forms here compute only the right-hand arithmetic side.",
+      "Do the sibling sum-of-squares counts admit analogous native_decide-free closed forms on prime powers? Jacobi's r₂, r₆, r₈ and Liouville-style formulas are also expressed through (modified) divisor sums; the same divisors_prime_pow + parity strategy may yield symbolic prime-power values for those families."
+    ]
   },
   "mainTheorems": [
     {

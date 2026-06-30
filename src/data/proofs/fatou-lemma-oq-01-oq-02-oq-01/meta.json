@@ -2,6 +2,7 @@
   "id": "fatou-lemma-oq-01-oq-02-oq-01",
   "slug": "fatou-lemma-oq-01-oq-02-oq-01",
   "title": "The Elementary Fatou ⇒ Dominated Convergence Derivation via g ± fₙ",
+  "description": "Formalizes the classical textbook derivation of the dominated convergence theorem from Fatou's lemma for signed integrands. For real measurable fₙ with |fₙ| ≤ g (g integrable) and fₙ → F pointwise, the nonnegative shifts g + fₙ and g − fₙ are dominated by 2g, so the nonnegative Fatou bracket squeezes ∫(g ± fₙ) → ∫(g ± F); cancelling the constant ∫ g gives ∫ fₙ → ∫ F. Both brackets are exposed explicitly (dct_of_dominated, dct_of_dominated_sub), and the route uses only the nonnegative (lintegral) dominated convergence theorem — never the Bochner DCT — so it is not circular.",
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Integral.Lebesgue.DominatedConvergence",

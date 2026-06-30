@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-05-12T13:53:16-07:00",
     "iteration": 2,
-    "focus": "Shipped combinatorial Newton polygon (S2-A): IsLowerVertex predicate + structure lemmas + Y^2-x example, verified 0-sorry 0-axiom.",
-    "blockers": [],
-    "nextAction": "S2-A harder half: Newton polygon theorem (edge slopes = root valuations) once a valuation API on K((x))[Y] exists; then S2-B termination measure.",
+    "focus": "Combinatorial Newton-polygon theorem fully formalized (all 3 invariants on the concrete hull); analytic bridge (slopes/widths <-> root valuations of P in K((x))[Y]) is blocked on missing Mathlib infra.",
+    "blockers": [
+      "Analytic bridge needs a valued Puiseux field absent from Mathlib. PRESENT (drifted cache): Valuation K((x)) -> Z^m0 (LaurentSeries.lean) + monomial API. ABSENT: PuiseuxSeries / HahnSeries Q K and a Q-valued (rational-exponent) valuation. Polygon slopes are Q-valued (roots in ramified K((x^(1/n))), e.g. root of Y^2-x has valuation 1/2); available valuation is Z^m0-valued on the unramified base, so edgeSlope = -v(root) is not even statable. Building the valued Puiseux field is foundational >1000-line infra (BLOCKED)."
+    ],
+    "nextAction": "If revisited: construct the valued Puiseux field (PuiseuxSeries K + Q-valuation + ramified embedding of K((x))) as a separate large infrastructure PR. The combinatorial side is complete; do not add further combinatorial lemmas.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,18 +31,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Delivered the first Lean file Proofs/PuiseuxTheoremOQ03.lean (145 lines, 7 theorems, 3 defs, verified, 0 sorries, 0 axioms): a combinatorial Newton polygon via the supporting-line lower-vertex predicate IsLowerVertex, with the seed lemma (min-valuation point is a vertex), an existence lemma (List.argmin), and the worked Y^2-x example tying edge slope -1/2 to the parent leadingExponentFromSlope 1 2. Also fixed a parse error in the parent PuiseuxTheorem.lean (dangling /-- doc comment). PR #30757.",
+    "progressSummary": "BLOCKED (combinatorially complete, analytically blocked). 2026-06-28 researcher-5 S05: re-checked the standing \"no Mathlib valuation bearer\" verdict against the drifted cache and refined it. PRESENT now: Valued.v : Valuation K((x)) Z^m0 on Laurent series (LaurentSeries.lean) with monomial API (valuation_X_pow, valuation_single_zpow). ABSENT: PuiseuxSeries / HahnSeries Q K and any Q-valued valuation. Polygon slopes/root valuations are Q-valued (ramified K((x^(1/n)))) while the available valuation is Z^m0-valued on the unramified base -> the correspondence edgeSlope = -v(root) is not statable without first building the ramified Puiseux extension and its Q-valuation (foundational >1000-line infra, not upstream). The combinatorial Newton-polygon theorem itself (1081L, 53 thm, 0 sorries/0 axioms; all three invariants on the concrete exists_lowerHull chain) is COMPLETE. --- PRIOR: PROGRESS (2026-06-28, researcher-9): capstone closed. exists_lowerHull_newtonPolygon bundles existence + sorted slopes + positive widths + widths-sum-to-span on the single recursion-built hull chain — the first statement uniting the valuation and multiplicity halves on one concrete object. File 949->1033 lines, 48->51 theorems, verified 0-axiom (propext/Classical.choice/Quot.sound only). Analytic Newton polygon theorem (slopes = root valuations) remains the open frontier, blocked on a Mathlib K((x))[Y] valuation API.",
     "builtItems": [
       "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
       "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
       "exists_lowerVertex: every nonempty support set has a lower vertex (via List.argmin)",
       "edgeSlope + worked Y^2-x example: both support points are vertices, edge slope -1/2, leading exponent 1/2 = leadingExponentFromSlope 1 2",
-      "Parent fix: corrected dangling /-- doc comment in PuiseuxTheorem.lean (file did not parse on main)"
+      "Parent fix: corrected dangling /-- doc comment in PuiseuxTheorem.lean (file did not parse on main)",
+      "exists_isLowerEdge_of_leftmost (PuiseuxTheoremOQ03.lean): leftmost support point -> genuine IsLowerEdge via List.argmin(edgeSlope p); first hull-construction step toward S2-B",
+      "Maintenance: fixed 3 List.not_mem_nil q sites broken by Mathlib cache update (explicit arg removed)",
+      "edgeWidths/sum_edgeWidths/edgeWidths_pos/sum_edgeWidths_eq_degree in PuiseuxTheoremOQ03.lean (telescoping degree identity; widths sum to index span = degree; all 0-axiom)",
+      "edgeSlope_mul_width in PuiseuxTheoremOQ03.lean (per-edge slope×width=drop)",
+      "edgeDrops + sum_edgeDrops in PuiseuxTheoremOQ03.lean (vertical-drop list telescoping)",
+      "zipWith_edgeSlopes_edgeWidths in PuiseuxTheoremOQ03.lean (list-level coupling)",
+      "sum_slope_mul_width + neg_sum_slope_mul_width in PuiseuxTheoremOQ03.lean (capstone identities)",
+      "isLowerEdge_of_right (PuiseuxTheoremOQ03.lean): lower edge of right restriction with slope ≥ dominant slope ⇒ lower edge of full support",
+      "chain_transfer (PuiseuxTheoremOQ03.lean): propagates dominant-slope bound along a whole right sub-hull via edgeSlope_mono; upgrades every edge to full-support edge",
+      "isLowerEdge_chain_extend (PuiseuxTheoremOQ03.lean): one verified peel of Newton-Puiseux recursion — prepend dominant edge to right sub-hull chain ⇒ IsChain (IsLowerEdge pts) over full support",
+      "threeVertex_chain_via_extend + threeVertex_rightHull + threeVertex_filter: worked example rebuilt constructively through the splice combinator",
+      "exists_lowerHull_aux + exists_lowerHull in PuiseuxTheoremOQ03.lean: complete lower-hull existence (chain from leftmost vertex to max-index vertex) for distinct-index support; ysqMinusX_lowerHull worked example. 0 sorries / 0 axioms (#print axioms: propext/Classical.choice/Quot.sound only).",
+      "exists_lowerHull_sorted (PuiseuxTheoremOQ03.lean:972): the literal single corollary — exists_lowerHull composed with edgeSlopes_pairwise_le; the constructively-built hull chain has sorted edge slopes",
+      "exists_lowerHull_newtonPolygon (PuiseuxTheoremOQ03.lean:1001): capstone bundling existence + sorted slopes + positive widths + widths-sum-to-span on ONE concrete hull chain — first theorem uniting the valuation and multiplicity halves on the object the recursion builds",
+      "ysqMinusX_newtonPolygon (PuiseuxTheoremOQ03.lean:1022): Y^2-x worked example of the bundled Newton polygon capstone"
     ],
     "insights": [
       "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
       "List.argmin + argmin_mem/le_of_mem_argmin gives vertex existence for nonempty support lists in a few lines.",
-      "Model support points as Prod (N x Q), not a custom structure: fin_cases + norm_num then dispatch example goals cleanly."
+      "Model support points as Prod (N x Q), not a custom structure: fin_cases + norm_num then dispatch example goals cleanly.",
+      "Edge existence reuses isLowerVertex_of_leftmost machinery verbatim: the argmin-of-edgeSlope supporting line through the leftmost point already passes through its argmin partner, so it is an edge, not merely a vertex witness.",
+      "Mathlib drift hazard: gallery .lean files verified months ago can silently break against an updated local olean cache (List.not_mem_nil dropped its explicit argument); prefer simp over name-specific applications for List membership-in-nil contradictions.",
+      "Edge WIDTHS carry root multiplicities, complementing edge SLOPES (valuations): the polygon assigns (q.1-p.1) roots of valuation -edgeSlope p q to each edge. sum_edgeWidths + edgeSlopes_pairwise_le together are the full combinatorial bookkeeping of the Newton polygon theorem.",
+      "slope × width = vertical drop: edgeSlope p q · (q.1−p.1) = q.2−p.2 because the slope denominator IS the width — the per-edge bridge coupling valuations (slopes) to multiplicities (widths)",
+      "Capstone bookkeeping: Σ (slopeᵢ · widthᵢ) telescopes to the total vertical drop (last).2 − (first).2; equivalently Σ (root valuationᵢ · multiplicityᵢ) = v(constant) − v(leading), the valuation of the product of all roots",
+      "The polygon now reads off ALL combinatorial Newton-polygon data from one vertex chain: sorted valuations (edgeSlopes_pairwise_le), total multiplicity (sum_edgeWidths_eq_degree), AND sum-of-valuations-with-multiplicity (neg_sum_slope_mul_width)",
+      "S2-A hull correctness (researcher-5, 2026-06-28): the obstruction to the documented \"peel-and-recurse\" hull construction is that a lower edge of the right restriction pts.filter(q.1 ≤ ·.1) can dip below a left point. RESOLVED: isLowerEdge_of_right proves it cannot, provided the edge slope clears the dominant slope m₀ — convexity forces the right edge line above the dominant line on the left half. This is the precise reason divide-and-conquer Newton-polygon construction is sound.",
+      "exists_lowerHull (2026-06-28, researcher-4): the hull-construction recursion now runs to completion. Fuelled strong induction on pts.length (exists_lowerHull_aux) peels the dominant edge p→q₀ (exists_isLowerEdge_of_leftmost) and recurses on the right restriction pts.filter (q₀.1 ≤ ·.1), which strictly shrinks because the leftmost p is dropped (List.length_filter_eq_length_iff). isLowerEdge_chain_extend splices each peel. Result: a single chain of lower edges p::vs ending at a maximal-index vertex w — the existence half of the Newton polygon, VERIFIED 0-axiom.",
+      "Prior valuation-half (edgeSlopes_pairwise_le) and multiplicity-half (sum_edgeWidths/edgeWidths_pos) were stated about an ABSTRACT chain hypothesis; exists_lowerHull produced a CONCRETE chain but said nothing about slopes/widths. The capstone discharges the chain hypothesis with the recursion-built chain, uniting all three on one object.",
+      "getLast?->getLast bridge: from (p::vs).getLast? = some w use List.mem_getLast?_eq_getLast to get ∃ h, w = getLast (p::vs) h; proof-irrelevance makes getLast _ (by simp) defeq, so the .symm closes getLast (by simp) = w and rw [sum_edgeWidths, hgl] telescopes the width sum to w.1 - p.1.",
+      "Mathlib drift (2026-06-28): K((x)) is now a valued field upstream (Valuation K((x)) -> Z^m0, LaurentSeries.lean), but the Puiseux extension K((x^(1/n))) and its Q-valued valuation are still absent. The blocker is therefore a type-level mismatch (Q-valued polygon slopes vs Z-valued base valuation), not merely a missing lemma: the analytic correspondence cannot be stated until a ramified, Q-valued Puiseux field is constructed."
     ],
     "mathlibGaps": [
       "No Newton polygon API in Mathlib 4.26.0 (no Polynomial.newtonPolygon / lowerConvexHull as combinatorial vertex data).",
@@ -48,9 +76,9 @@
       "No arithmetic-complexity model (Bürgisser-Clausen-Shokrollahi style) to state the Poteaux-Weimann Õ(d·δ) bound."
     ],
     "nextSteps": [
-      "Prove the Newton polygon theorem: negatives of lower-hull edge slopes = root valuations in an alg-closed valued extension.",
-      "S2-B: termination measure for one Newton-Puiseux reduction step (Y-degree strictly decreases).",
-      "S2-C (moonshot): state and bound arithmetic complexity once an arithmetic-cost model exists."
+      "Analytic Newton polygon theorem (edge slopes = root valuations of P in K((x))[Y]): still blocked on a valuation API for K((x))[Y] absent from Mathlib 4.26.0 — the principal remaining gap.",
+      "Optional: a fully-reduced ysqMinusX_newtonPolygon stating the concrete witness vs=[] and w=(2,0) so the slopes/widths lists evaluate (edgeSlopes [(0,1),(2,0)] = [-1/2], edgeWidths = [2]).",
+      "S2-B termination measure and S2-C quasi-linear complexity bound remain open (S2-C blocked on lack of an arithmetic-complexity model in Mathlib)."
     ],
     "markdown": "# Knowledge Base: puiseux-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "archivedSessions": [
@@ -114,5 +142,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PuiseuxTheoremOQ02.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-06-28T13:30:00.000Z"
 }

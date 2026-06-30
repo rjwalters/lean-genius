@@ -12,6 +12,18 @@
     "prerequisites": ["orbit–stabilizer theorem", "per-class identity |class(g)| = [G : C_G(g)]"]
   },
   {
+    "id": "conjclass-oq0101-ann-conjact",
+    "proofId": "conjugacy-class-equation-oq-01-oq-01",
+    "range": { "startLine": 40, "endLine": 46 },
+    "type": "technique",
+    "title": "ConjAct: conjugation as a group action",
+    "content": "The per-class identity is proved by reading the conjugacy class as an orbit of a genuine group action. ConjAct G is a type synonym for G carrying the conjugation action g • x = g·x·g⁻¹; ConjAct.toConjAct transports elements into it. Two Mathlib bridges do the work: orbit_eq_carrier_conjClasses identifies the orbit of g with the carrier of its conjugacy class, and stabilizer_eq_centralizer identifies the stabilizer of g under conjugation with its centralizer. Orbit–stabilizer (MulAction.index_stabilizer) then gives |orbit| = [G : stabilizer], i.e. |class(g)| = [G : C_G(g)]. Encoding conjugation as a MulAction is exactly what lets the generic orbit–stabilizer machinery apply.",
+    "mathContext": "$g \\cdot x = gxg^{-1}$; $\\mathrm{orbit}(g) = \\mathrm{class}(g)$, $\\mathrm{stab}(g) = C_G(g)$, so $|\\mathrm{class}(g)| = [G : C_G(g)]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ConjAct", "MulAction", "stabilizer", "orbit–stabilizer theorem", "type synonym"],
+    "prerequisites": ["group actions", "centralizers"]
+  },
+  {
     "id": "conjclass-oq0101-ann-classrep",
     "proofId": "conjugacy-class-equation-oq-01-oq-01",
     "range": { "startLine": 48, "endLine": 68 },
@@ -34,5 +46,17 @@
     "significance": "key",
     "relatedConcepts": ["finsum_mem_congr", "class equation", "p-group center", "Sylow theory"],
     "prerequisites": ["finitary sums ∑ᶠ", "summed class equation"]
+  },
+  {
+    "id": "conjclass-oq0101-ann-pgroup",
+    "proofId": "conjugacy-class-equation-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 79 },
+    "type": "insight",
+    "title": "Why the index form: nontrivial center of a p-group",
+    "content": "The index form is the workhorse behind the classical theorem that a nontrivial finite p-group has nontrivial center. For each noncentral representative gᵢ the centralizer C_G(gᵢ) is a proper subgroup, so its index [G : C_G(gᵢ)] = |G|/|C_G(gᵢ)| is a power of p greater than 1, hence divisible by p. Reading |Z(G)| = |G| − Σ [G : C_G(gᵢ)] modulo p: |G| ≡ 0 and every summand ≡ 0, so |Z(G)| ≡ 0 (mod p) — and since the identity already lies in Z(G), |Z(G)| ≥ p > 1. The cardinality form |K| of the noncentral classes obscures this divisibility; the index form makes 'each noncentral term is a nontrivial power of p' immediate, which is precisely why the textbook class equation is written with centralizer indices.",
+    "mathContext": "For a $p$-group: $p \\mid [G : C_G(g_i)]$ and $p \\mid |G|$, so $p \\mid |Z(G)|$, forcing $|Z(G)| > 1$.",
+    "significance": "context",
+    "relatedConcepts": ["p-group", "nontrivial center", "Lagrange's theorem", "divisibility", "Sylow theory"],
+    "prerequisites": ["Lagrange's theorem", "p-groups"]
   }
 ]
