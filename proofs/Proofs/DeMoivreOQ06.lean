@@ -30,7 +30,10 @@ supplies them, together with the underlying complex closed form
 * `lagrange_sin_sum` — **Lagrange's sine identity** (the conjugate Dirichlet kernel).
 -/
 
-import Mathlib
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.Complex.Exponential
+import Mathlib.Algebra.Field.GeomSum
+import Mathlib.Tactic
 
 open Finset
 
@@ -81,15 +84,14 @@ theorem lagrange_cos_key (θ : ℝ) (n : ℕ) :
       = Real.sin (((n : ℝ) + 1 / 2) * θ) + Real.sin (θ / 2) := by
   induction n with
   | zero =>
-      simp only [Finset.sum_range_one, Nat.cast_zero, zero_mul, Real.cos_zero, mul_one]
-      rw [show ((0 : ℝ) + 1 / 2) * θ = θ / 2 by ring]
+      rw [Finset.sum_range_one, Nat.cast_zero, zero_mul, Real.cos_zero, mul_one,
+          show ((0 : ℝ) + 1 / 2) * θ = θ / 2 by ring]
       ring
   | succ n ih =>
       rw [Finset.sum_range_succ, mul_add, ih, two_sin_half_mul_cos]
       have e1 : ((↑(n + 1) : ℝ) + 1 / 2) * θ = ((n : ℝ) + 1 + 1 / 2) * θ := by push_cast; ring
       have e2 : ((↑(n + 1) : ℝ) - 1 / 2) * θ = ((n : ℝ) + 1 / 2) * θ := by push_cast; ring
       rw [e1, e2]
-      push_cast
       ring
 
 /-- Telescoped (denominator-cleared) Lagrange sine identity:
@@ -99,15 +101,14 @@ theorem lagrange_sin_key (θ : ℝ) (n : ℕ) :
       = Real.cos (θ / 2) - Real.cos (((n : ℝ) + 1 / 2) * θ) := by
   induction n with
   | zero =>
-      simp only [Finset.sum_range_one, Nat.cast_zero, zero_mul, Real.sin_zero, mul_zero]
-      rw [show ((0 : ℝ) + 1 / 2) * θ = θ / 2 by ring]
+      rw [Finset.sum_range_one, Nat.cast_zero, zero_mul, Real.sin_zero, mul_zero,
+          show ((0 : ℝ) + 1 / 2) * θ = θ / 2 by ring]
       ring
   | succ n ih =>
       rw [Finset.sum_range_succ, mul_add, ih, two_sin_half_mul_sin]
       have e1 : ((↑(n + 1) : ℝ) + 1 / 2) * θ = ((n : ℝ) + 1 + 1 / 2) * θ := by push_cast; ring
       have e2 : ((↑(n + 1) : ℝ) - 1 / 2) * θ = ((n : ℝ) + 1 / 2) * θ := by push_cast; ring
       rw [e1, e2]
-      push_cast
       ring
 
 /-- **Lagrange's cosine identity (Dirichlet kernel).**
