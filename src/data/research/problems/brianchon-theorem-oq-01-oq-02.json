@@ -44,11 +44,11 @@
     {
       "path": "Proofs/BrianchonTheorem.lean",
       "filename": "BrianchonTheorem.lean",
-      "lineCount": 373,
-      "theoremCount": 12,
-      "axiomCount": 1,
-      "defCount": 15,
-      "sorryCount": 4,
+      "lineCount": 202,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrianchonTheorem.lean"
     },
@@ -64,6 +64,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrianchonTheoremAristotle.lean"
     },
     {
+      "path": "Proofs/BrianchonTheoremOQ01OQ01.lean",
+      "filename": "BrianchonTheoremOQ01OQ01.lean",
+      "lineCount": 162,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrianchonTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrianchonTheoremOQ01OQ01OQ01.lean",
+      "filename": "BrianchonTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 204,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrianchonTheoremOQ01OQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/BrianchonTheoremOQ01OQ02.lean",
       "filename": "BrianchonTheoremOQ01OQ02.lean",
       "lineCount": 324,
@@ -77,6 +99,8 @@
   ],
   "relatedProofs": [
     "brianchon-theorem-oq-01",
+    "brianchon-theorem-oq-01-oq-01",
+    "brianchon-theorem-oq-01-oq-01-oq-01",
     "brianchon-theorem-oq-01-oq-02"
   ]
 }

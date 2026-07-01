@@ -70,9 +70,11 @@
     "frobenius-endomorphism-oq-01-oq-01",
     "frobenius-endomorphism-oq-01-oq-02",
     "frobenius-endomorphism-oq-01-oq-02-oq-02",
+    "frobenius-endomorphism-oq-01-oq-03",
     "frobenius-endomorphism-oq-02",
     "frobenius-endomorphism-oq-02-oq-01",
-    "frobenius-endomorphism-oq-02-oq-01-oq-01"
+    "frobenius-endomorphism-oq-02-oq-01-oq-01",
+    "frobenius-endomorphism-oq-02-oq-01-oq-01-oq-02"
   ],
   "references": {
     "papers": [],
@@ -127,6 +129,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ01OQ02OQ02.lean"
     },
     {
+      "path": "Proofs/FrobeniusEndomorphismOQ01OQ03.lean",
+      "filename": "FrobeniusEndomorphismOQ01OQ03.lean",
+      "lineCount": 103,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/FrobeniusEndomorphismOQ02.lean",
       "filename": "FrobeniusEndomorphismOQ02.lean",
       "lineCount": 124,
@@ -158,6 +171,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusEndomorphismOQ02OQ01OQ01OQ02.lean",
+      "filename": "FrobeniusEndomorphismOQ02OQ01OQ01OQ02.lean",
+      "lineCount": 151,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ02OQ01OQ01OQ02.lean"
     }
   ],
   "completed": true

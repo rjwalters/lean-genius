@@ -1,63 +1,151 @@
 {
-    "slug": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
-    "title": "Newton's Third Power Sum: tr(A³) = λ₁³ + λ₂³ + λ₃³ for 3×3 Matrices",
+  "slug": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+  "title": "Newton's Third Power Sum: tr(A³) = λ₁³ + λ₂³ + λ₃³ for 3×3 Matrices",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "**Open Question (spectral-trace-det-eigenvalues-oq-01-oq-01, openQuestions[1])**: Extend the 2×2 Newton identity to a uniform tr(A³) = e₁³ − 3e₁e₂ + 3e₃ in fixed small dimensions, expressing each trace power sum through the elementary symmetric functions of the spectrum.\n\n**Result**: trace_cube_fin_three establishes the matrix-side identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over any commutative ring; trace_cube_eq_sum_cube_eigenvalues upgrades it to the spectral statement tr(A³) = λ₁³ + λ₂³ + λ₃³ over an algebraically closed field, with e₂(A) identified as both the principal-minor sum and the X¹-coefficient of the characteristic polynomial.",
+    "plain": "Settles the open question posed by spectral-trace-det-eigenvalues-oq-01-oq-01: extend the 2×2 trace power sum tr(A²) = λ₁² + λ₂² to the next power sum and the next dimension, tr(A³) = e₁³ − 3e₁e₂ + 3e₃, read spectrally as tr(A³) = λ₁³ + λ₂³ + λ₃³ for 3×3 matrices. This is the first Newton power sum whose expansion involves the MIDDLE elementary symmetric function e₂ (the sum of the principal 2×2 minors, equivalently the X¹-coefficient of the characteristic polynomial), so it is qualitatively harder than the 2×2 case where only the determinant e₂ appears. Three results: (1) trace_cube_fin_three — the matrix-side Newton identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over ANY commutative ring, a polynomial identity in the nine entries closed by ring, with no field, no algebraic closure, and no eigenvalues; (2) charpoly_fin_three / charpoly_coeff_one_eq_e2 — the 3×3 characteristic polynomial in elementary-symmetric form X³ − (tr A)X² + e₂(A)X − det A, identifying e₂(A) as its X¹-coefficient; (3) trace_cube_eq_sum_cube_eigenvalues — the spectral form tr(A³) = Σλᵢ³ over an algebraically closed field, matching the matrix-side identity to the multiset identity a³+b³+c³ = (a+b+c)³ − 3(a+b+c)(ab+ac+bc) + 3abc via Vieta. A concrete rational 3×3 example reads tr(A³) off from trace, minor sum, and determinant without computing eigenvalues. Fully verified, 0 axioms, 0 sorries, no decide/native_decide.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "trace_cube_fin_three: the matrix-side Newton identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over ANY commutative ring — a polynomial identity in the nine entries closed by ring, needing no field, no algebraic closure, and no eigenvalues; the third power sum p₃ = e₁³ − 3e₁e₂ + 3e₃ at the matrix level",
+      "e2: the second elementary symmetric function of a 3×3 matrix as the sum of its three principal 2×2 minors, the first MIDDLE elementary symmetric function to appear (absent from the 2×2 case where e₂ = det)",
+      "charpoly_fin_three: the 3×3 characteristic polynomial in elementary-symmetric form X³ − (tr A)X² + e₂(A)X − det A, derived entrywise from charmatrix and det_fin_three",
+      "charpoly_coeff_one_eq_e2: e₂(A) is exactly the X¹-coefficient of the characteristic polynomial, the bridge that identifies the minor sum with the spectral symmetric function ab+ac+bc via Vieta",
+      "trace_cube_eq_sum_cube_eigenvalues: the spectral form tr(A³) = λ₁³ + λ₂³ + λ₃³ over an algebraically closed field — the genuine power-sum statement in the first dimension whose Newton expansion is not determined by trace and determinant alone, settling the sibling entry's open question",
+      "trace_cube_example: for the rational matrix !![1,2,0; 0,3,1; 4,0,2] the matrix-side identity recovers tr(A³) from tr A = 6, e₂(A), and det A without ever computing the (irrational/complex) eigenvalues"
+    ],
+    "open": [],
+    "goal": "**Open Question (spectral-trace-det-eigenvalues-oq-01-oq-01, openQuestions[1])**: Extend the 2×2 Newton identity to a uniform tr(A³) = e₁³ − 3e₁e₂ + 3e₃ in fixed small dimensions, expressing each trace power sum through the elementary symmetric functions of the spectrum.\n\n**Result**: trace_cube_fin_three establishes the matrix-side identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over any commutative ring; trace_cube_eq_sum_cube_eigenvalues upgrades it to the spectral statement tr(A³) = λ₁³ + λ₂³ + λ₃³ over an algebraically closed field, with e₂(A) identified as both the principal-minor sum and the X¹-coefficient of the characteristic polynomial."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "**Open Question (spectral-trace-det-eigenvalues-oq-01-oq-01, openQuestions[1])**: Extend the 2×2 Newton identity to a uniform tr(A³) = e₁³ − 3e₁e₂ + 3e₃ in fixed small dimensions, expressing each trace power sum through the elementary symmetric functions of the spectrum.\n\n**Result**: trace_cube_fin_three establishes the matrix-side identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over any commutative ring; trace_cube_eq_sum_cube_eigenvalues upgrades it to the spectral statement tr(A³) = λ₁³ + λ₂³ + λ₃³ over an algebraically closed field, with e₂(A) identified as both the principal-minor sum and the X¹-coefficient of the characteristic polynomial.",
-        "plain": "Settles the open question posed by spectral-trace-det-eigenvalues-oq-01-oq-01: extend the 2×2 trace power sum tr(A²) = λ₁² + λ₂² to the next power sum and the next dimension, tr(A³) = e₁³ − 3e₁e₂ + 3e₃, read spectrally as tr(A³) = λ₁³ + λ₂³ + λ₃³ for 3×3 matrices. This is the first Newton power sum whose expansion involves the MIDDLE elementary symmetric function e₂ (the sum of the principal 2×2 minors, equivalently the X¹-coefficient of the characteristic polynomial), so it is qualitatively harder than the 2×2 case where only the determinant e₂ appears. Three results: (1) trace_cube_fin_three — the matrix-side Newton identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over ANY commutative ring, a polynomial identity in the nine entries closed by ring, with no field, no algebraic closure, and no eigenvalues; (2) charpoly_fin_three / charpoly_coeff_one_eq_e2 — the 3×3 characteristic polynomial in elementary-symmetric form X³ − (tr A)X² + e₂(A)X − det A, identifying e₂(A) as its X¹-coefficient; (3) trace_cube_eq_sum_cube_eigenvalues — the spectral form tr(A³) = Σλᵢ³ over an algebraically closed field, matching the matrix-side identity to the multiset identity a³+b³+c³ = (a+b+c)³ − 3(a+b+c)(ab+ac+bc) + 3abc via Vieta. A concrete rational 3×3 example reads tr(A³) off from trace, minor sum, and determinant without computing eigenvalues. Fully verified, 0 axioms, 0 sorries, no decide/native_decide.",
-        "whyMatters": []
+    "since": "2026-06-24T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean and gallery entry spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (171 lines, 7 theorems, 0 sorries, axiomCount 0, badge 'original'). Settles the open question posed by spectral-trace-det-eigenvalues-oq-01-oq-01: extend the 2×2 trace power sum tr(A²) = λ₁² + λ₂² to the next power sum and the next dimension, tr(A³) = e₁³ − 3e₁e₂ + 3e₃, read spectrally as tr(A³) = λ₁³ + λ₂³ + λ₃³ for 3×3 matrices. This is the first Newton power sum whose expansion involves the MIDDLE elementary symmetric function e₂ (the sum of the principal 2×2 minors, equivalently the X¹-coefficient of the characteristic polynomial), so it is qualitatively harder than the 2×2 case where only the determinant e₂ appears. Three results: (1) trace_cube_fin_three — the matrix-side Newton identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over ANY commutative ring, a polynomial identity in the nine entries closed by ring, with no field, no algebraic closure, and no eigenvalues; (2) charpoly_fin_three / charpoly_coeff_one_eq_e2 — the 3×3 characteristic polynomial in elementary-symmetric form X³ − (tr A)X² + e₂(A)X − det A, identifying e₂(A) as its X¹-coefficient; (3) trace_cube_eq_sum_cube_eigenvalues — the spectral form tr(A³) = Σλᵢ³ over an algebraically closed field, matching the matrix-side identity to the multiset identity a³+b³+c³ = (a+b+c)³ − 3(a+b+c)(ab+ac+bc) + 3abc via Vieta. A concrete rational 3×3 example reads tr(A³) off from trace, minor sum, and determinant without computing eigenvalues. Fully verified, 0 axioms, 0 sorries, no decide/native_decide.",
+    "builtItems": [
+      "trace_cube_fin_three: the matrix-side Newton identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over ANY commutative ring — a polynomial identity in the nine entries closed by ring, needing no field, no algebraic closure, and no eigenvalues; the third power sum p₃ = e₁³ − 3e₁e₂ + 3e₃ at the matrix level",
+      "e2: the second elementary symmetric function of a 3×3 matrix as the sum of its three principal 2×2 minors, the first MIDDLE elementary symmetric function to appear (absent from the 2×2 case where e₂ = det)",
+      "charpoly_fin_three: the 3×3 characteristic polynomial in elementary-symmetric form X³ − (tr A)X² + e₂(A)X − det A, derived entrywise from charmatrix and det_fin_three",
+      "charpoly_coeff_one_eq_e2: e₂(A) is exactly the X¹-coefficient of the characteristic polynomial, the bridge that identifies the minor sum with the spectral symmetric function ab+ac+bc via Vieta",
+      "trace_cube_eq_sum_cube_eigenvalues: the spectral form tr(A³) = λ₁³ + λ₂³ + λ₃³ over an algebraically closed field — the genuine power-sum statement in the first dimension whose Newton expansion is not determined by trace and determinant alone, settling the sibling entry's open question",
+      "trace_cube_example: for the rational matrix !![1,2,0; 0,3,1; 4,0,2] the matrix-side identity recovers tr(A³) from tr A = 6, e₂(A), and det A without ever computing the (irrational/complex) eigenvalues",
+      "Gallery entry src/data/proofs/spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean."
+    ],
+    "insights": [
+      "**The cube is the first power sum that needs the middle symmetric function.** For 2×2 matrices Newton's p₂ = e₁² − 2e₂ uses only e₁ = trace and e₂ = determinant — the two extreme symmetric functions. At p₃ in dimension three the expansion e₁³ − 3e₁e₂ + 3e₃ involves e₂ = sum of principal 2×2 minors, a genuinely intermediate invariant that is neither trace nor determinant, making the cube qualitatively harder than the square.",
+      "**e₂ wears two hats: minor sum and charpoly coefficient.** The proof identifies e₂(A) — defined combinatorially as the sum of the three principal 2×2 minors — with the X¹-coefficient of the characteristic polynomial (charpoly_coeff_one_eq_e2). This is exactly the bridge that turns the matrix-side identity into a spectral one: by Vieta the X¹-coefficient is the second elementary symmetric function ab+ac+bc of the eigenvalues.",
+      "**The matrix-side identity is ring-universal; algebraic closure enters only for the spectral reading.** tr(A³) = (tr A)³ − 3(tr A)e₂ + 3 det A is a polynomial identity in the nine entries, true over ℤ, ℚ, any commutative ring — provable by ring with no eigenvalues in sight. A field and algebraic closure are needed only to factor the characteristic polynomial and rewrite the same quantity as λ₁³ + λ₂³ + λ₃³.",
+      "**A trace power sum of an unknowable spectrum is a rational invariant.** For !![1,2,0; 0,3,1; 4,0,2] the eigenvalues are not rational, yet tr(A³) is forced by tr A = 6, the minor sum e₂, and det A — read off without ever solving the cubic."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "linear-algebra",
+    "eigenvalues",
+    "characteristic-polynomial",
+    "trace",
+    "determinant",
+    "power-sums",
+    "newtons-identities",
+    "spectral-mapping",
+    "symmetric-functions",
+    "research"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01.lean",
+      "lineCount": 133,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01.lean"
     },
-    "knownResults": {
-        "proven": [
-            "trace_cube_fin_three: the matrix-side Newton identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over ANY commutative ring — a polynomial identity in the nine entries closed by ring, needing no field, no algebraic closure, and no eigenvalues; the third power sum p₃ = e₁³ − 3e₁e₂ + 3e₃ at the matrix level",
-            "e2: the second elementary symmetric function of a 3×3 matrix as the sum of its three principal 2×2 minors, the first MIDDLE elementary symmetric function to appear (absent from the 2×2 case where e₂ = det)",
-            "charpoly_fin_three: the 3×3 characteristic polynomial in elementary-symmetric form X³ − (tr A)X² + e₂(A)X − det A, derived entrywise from charmatrix and det_fin_three",
-            "charpoly_coeff_one_eq_e2: e₂(A) is exactly the X¹-coefficient of the characteristic polynomial, the bridge that identifies the minor sum with the spectral symmetric function ab+ac+bc via Vieta",
-            "trace_cube_eq_sum_cube_eigenvalues: the spectral form tr(A³) = λ₁³ + λ₂³ + λ₃³ over an algebraically closed field — the genuine power-sum statement in the first dimension whose Newton expansion is not determined by trace and determinant alone, settling the sibling entry's open question",
-            "trace_cube_example: for the rational matrix !![1,2,0; 0,3,1; 4,0,2] the matrix-side identity recovers tr(A³) from tr A = 6, e₂(A), and det A without ever computing the (irrational/complex) eigenvalues"
-        ],
-        "open": [],
-        "goal": "**Open Question (spectral-trace-det-eigenvalues-oq-01-oq-01, openQuestions[1])**: Extend the 2×2 Newton identity to a uniform tr(A³) = e₁³ − 3e₁e₂ + 3e₃ in fixed small dimensions, expressing each trace power sum through the elementary symmetric functions of the spectrum.\n\n**Result**: trace_cube_fin_three establishes the matrix-side identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over any commutative ring; trace_cube_eq_sum_cube_eigenvalues upgrades it to the spectral statement tr(A³) = λ₁³ + λ₂³ + λ₃³ over an algebraically closed field, with e₂(A) identified as both the principal-minor sum and the X¹-coefficient of the characteristic polynomial."
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+      "lineCount": 355,
+      "theoremCount": 28,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-24T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean and gallery entry spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02 (status verified)."
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean",
+      "lineCount": 172,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (171 lines, 7 theorems, 0 sorries, axiomCount 0, badge 'original'). Settles the open question posed by spectral-trace-det-eigenvalues-oq-01-oq-01: extend the 2×2 trace power sum tr(A²) = λ₁² + λ₂² to the next power sum and the next dimension, tr(A³) = e₁³ − 3e₁e₂ + 3e₃, read spectrally as tr(A³) = λ₁³ + λ₂³ + λ₃³ for 3×3 matrices. This is the first Newton power sum whose expansion involves the MIDDLE elementary symmetric function e₂ (the sum of the principal 2×2 minors, equivalently the X¹-coefficient of the characteristic polynomial), so it is qualitatively harder than the 2×2 case where only the determinant e₂ appears. Three results: (1) trace_cube_fin_three — the matrix-side Newton identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over ANY commutative ring, a polynomial identity in the nine entries closed by ring, with no field, no algebraic closure, and no eigenvalues; (2) charpoly_fin_three / charpoly_coeff_one_eq_e2 — the 3×3 characteristic polynomial in elementary-symmetric form X³ − (tr A)X² + e₂(A)X − det A, identifying e₂(A) as its X¹-coefficient; (3) trace_cube_eq_sum_cube_eigenvalues — the spectral form tr(A³) = Σλᵢ³ over an algebraically closed field, matching the matrix-side identity to the multiset identity a³+b³+c³ = (a+b+c)³ − 3(a+b+c)(ab+ac+bc) + 3abc via Vieta. A concrete rational 3×3 example reads tr(A³) off from trace, minor sum, and determinant without computing eigenvalues. Fully verified, 0 axioms, 0 sorries, no decide/native_decide.",
-        "builtItems": [
-            "trace_cube_fin_three: the matrix-side Newton identity tr(A³) = (tr A)³ − 3(tr A)·e₂(A) + 3·det A over ANY commutative ring — a polynomial identity in the nine entries closed by ring, needing no field, no algebraic closure, and no eigenvalues; the third power sum p₃ = e₁³ − 3e₁e₂ + 3e₃ at the matrix level",
-            "e2: the second elementary symmetric function of a 3×3 matrix as the sum of its three principal 2×2 minors, the first MIDDLE elementary symmetric function to appear (absent from the 2×2 case where e₂ = det)",
-            "charpoly_fin_three: the 3×3 characteristic polynomial in elementary-symmetric form X³ − (tr A)X² + e₂(A)X − det A, derived entrywise from charmatrix and det_fin_three",
-            "charpoly_coeff_one_eq_e2: e₂(A) is exactly the X¹-coefficient of the characteristic polynomial, the bridge that identifies the minor sum with the spectral symmetric function ab+ac+bc via Vieta",
-            "trace_cube_eq_sum_cube_eigenvalues: the spectral form tr(A³) = λ₁³ + λ₂³ + λ₃³ over an algebraically closed field — the genuine power-sum statement in the first dimension whose Newton expansion is not determined by trace and determinant alone, settling the sibling entry's open question",
-            "trace_cube_example: for the rational matrix !![1,2,0; 0,3,1; 4,0,2] the matrix-side identity recovers tr(A³) from tr A = 6, e₂(A), and det A without ever computing the (irrational/complex) eigenvalues",
-            "Gallery entry src/data/proofs/spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean."
-        ],
-        "insights": [
-            "**The cube is the first power sum that needs the middle symmetric function.** For 2×2 matrices Newton's p₂ = e₁² − 2e₂ uses only e₁ = trace and e₂ = determinant — the two extreme symmetric functions. At p₃ in dimension three the expansion e₁³ − 3e₁e₂ + 3e₃ involves e₂ = sum of principal 2×2 minors, a genuinely intermediate invariant that is neither trace nor determinant, making the cube qualitatively harder than the square.",
-            "**e₂ wears two hats: minor sum and charpoly coefficient.** The proof identifies e₂(A) — defined combinatorially as the sum of the three principal 2×2 minors — with the X¹-coefficient of the characteristic polynomial (charpoly_coeff_one_eq_e2). This is exactly the bridge that turns the matrix-side identity into a spectral one: by Vieta the X¹-coefficient is the second elementary symmetric function ab+ac+bc of the eigenvalues.",
-            "**The matrix-side identity is ring-universal; algebraic closure enters only for the spectral reading.** tr(A³) = (tr A)³ − 3(tr A)e₂ + 3 det A is a polynomial identity in the nine entries, true over ℤ, ℚ, any commutative ring — provable by ring with no eigenvalues in sight. A field and algebraic closure are needed only to factor the characteristic polynomial and rewrite the same quantity as λ₁³ + λ₂³ + λ₃³.",
-            "**A trace power sum of an unknowable spectrum is a rational invariant.** For !![1,2,0; 0,3,1; 4,0,2] the eigenvalues are not rational, yet tr(A³) is forced by tr A = 6, the minor sum e₂, and det A — read off without ever solving the cubic."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean"
     },
-    "tags": [
-        "linear-algebra",
-        "eigenvalues",
-        "characteristic-polynomial",
-        "trace",
-        "determinant",
-        "power-sums",
-        "newtons-identities",
-        "spectral-mapping",
-        "symmetric-functions",
-        "research"
-    ]
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean",
+      "lineCount": 178,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ02.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ02.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ02OQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ02OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ02OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "spectral-trace-det-eigenvalues-oq-01",
+    "spectral-trace-det-eigenvalues-oq-01-oq-01",
+    "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+    "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+    "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+    "spectral-trace-det-eigenvalues-oq-02",
+    "spectral-trace-det-eigenvalues-oq-02-oq-01"
+  ]
 }

@@ -1,60 +1,137 @@
 {
-    "slug": "isoperimetric-theorem-oq-01-oq-01",
-    "title": "The Fourier Method for the Isoperimetric Inequality (Hurwitz–Wirtinger)",
+  "slug": "isoperimetric-theorem-oq-01-oq-01",
+  "title": "The Fourier Method for the Isoperimetric Inequality (Hurwitz–Wirtinger)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "**Can the isoperimetric inequality be proved in Lean by the Fourier method, and does it characterize the circle?**\n\nThe parent (Isoperimetric Shapes on Other Surfaces) records the unified inequality L² ≥ 4πA − κA² and verifies the equality cases for geodesic caps and disks, but treats the inequality itself as a hypothesis. This file supplies the missing engine in the Euclidean base case κ = 0: the Fourier proof, with its sum-of-squares identity and equality characterization.\n\n**Answer**: YES — the deficit E − 2·Ar is an explicit nonnegative sum over Fourier modes, giving L² ≥ 4πA; saturation forces all modes n ≥ 2 to vanish, so equality holds exactly for the circle.",
+    "plain": "Formalizes the Fourier (Hurwitz–Wirtinger) proof of the classical isoperimetric inequality L² ≥ 4πA — the exact technique the open question asks to transport to spherical/hyperbolic surfaces. The algebraic heart is a per-mode sum-of-squares identity: n²(aₙ²+αₙ²+bₙ²+βₙ²) − 2n(aₙβₙ − αₙbₙ) = (n·aₙ−βₙ)² + (n·αₙ+bₙ)² + (n²−1)(βₙ²+bₙ²), nonnegative for every mode n ≥ 1. Summed, it is Wirtinger's inequality (2·Ar ≤ E); under arc-length normalization it is L² ≥ 4πA, with equality iff only the fundamental mode survives (a circle).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "The per-mode Hurwitz sum-of-squares identity n²(aₙ²+αₙ²+bₙ²+βₙ²) − 2n(aₙβₙ − αₙbₙ) = (n·aₙ−βₙ)² + (n·αₙ+bₙ)² + (n²−1)(βₙ²+bₙ²), proved by `ring`",
+      "Its summed form: the isoperimetric deficit E − 2·Ar equals the explicit nonnegative Finset sum of Hurwitz terms (hurwitz_deficit_identity)",
+      "Wirtinger's inequality in Fourier-coefficient form: 2·Ar ≤ E for any data supported on modes n ≥ 1",
+      "The isoperimetric inequality 4πA ≤ L² under arc-length normalization (isoperimetric_fourier)",
+      "Full equality characterization: saturation forces every mode n ≥ 2 to vanish, leaving only the fundamental mode — a circle (equality_implies_circle)",
+      "Non-vacuity: the unit circle (a₁ = β₁ = 1) realizes E = 2, Ar = 1, saturating the bound"
+    ],
+    "open": [],
+    "goal": "**Can the isoperimetric inequality be proved in Lean by the Fourier method, and does it characterize the circle?**\n\nThe parent (Isoperimetric Shapes on Other Surfaces) records the unified inequality L² ≥ 4πA − κA² and verifies the equality cases for geodesic caps and disks, but treats the inequality itself as a hypothesis. This file supplies the missing engine in the Euclidean base case κ = 0: the Fourier proof, with its sum-of-squares identity and equality characterization.\n\n**Answer**: YES — the deficit E − 2·Ar is an explicit nonnegative sum over Fourier modes, giving L² ≥ 4πA; saturation forces all modes n ≥ 2 to vanish, so equality holds exactly for the circle."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "**Can the isoperimetric inequality be proved in Lean by the Fourier method, and does it characterize the circle?**\n\nThe parent (Isoperimetric Shapes on Other Surfaces) records the unified inequality L² ≥ 4πA − κA² and verifies the equality cases for geodesic caps and disks, but treats the inequality itself as a hypothesis. This file supplies the missing engine in the Euclidean base case κ = 0: the Fourier proof, with its sum-of-squares identity and equality characterization.\n\n**Answer**: YES — the deficit E − 2·Ar is an explicit nonnegative sum over Fourier modes, giving L² ≥ 4πA; saturation forces all modes n ≥ 2 to vanish, so equality holds exactly for the circle.",
-        "plain": "Formalizes the Fourier (Hurwitz–Wirtinger) proof of the classical isoperimetric inequality L² ≥ 4πA — the exact technique the open question asks to transport to spherical/hyperbolic surfaces. The algebraic heart is a per-mode sum-of-squares identity: n²(aₙ²+αₙ²+bₙ²+βₙ²) − 2n(aₙβₙ − αₙbₙ) = (n·aₙ−βₙ)² + (n·αₙ+bₙ)² + (n²−1)(βₙ²+bₙ²), nonnegative for every mode n ≥ 1. Summed, it is Wirtinger's inequality (2·Ar ≤ E); under arc-length normalization it is L² ≥ 4πA, with equality iff only the fundamental mode survives (a circle).",
-        "whyMatters": []
+    "since": "2026-06-25T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/IsoperimetricFourierOQ0101.lean and gallery entry isoperimetric-theorem-oq-01-oq-01 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (221 lines, 7 theorems, 0 sorries, axiomCount 0, badge 'original'). Formalizes the Fourier (Hurwitz–Wirtinger) proof of the classical isoperimetric inequality L² ≥ 4πA — the exact technique the open question asks to transport to spherical/hyperbolic surfaces. The algebraic heart is a per-mode sum-of-squares identity: n²(aₙ²+αₙ²+bₙ²+βₙ²) − 2n(aₙβₙ − αₙbₙ) = (n·aₙ−βₙ)² + (n·αₙ+bₙ)² + (n²−1)(βₙ²+bₙ²), nonnegative for every mode n ≥ 1. Summed, it is Wirtinger's inequality (2·Ar ≤ E); under arc-length normalization it is L² ≥ 4πA, with equality iff only the fundamental mode survives (a circle).",
+    "builtItems": [
+      "The per-mode Hurwitz sum-of-squares identity n²(aₙ²+αₙ²+bₙ²+βₙ²) − 2n(aₙβₙ − αₙbₙ) = (n·aₙ−βₙ)² + (n·αₙ+bₙ)² + (n²−1)(βₙ²+bₙ²), proved by `ring`",
+      "Its summed form: the isoperimetric deficit E − 2·Ar equals the explicit nonnegative Finset sum of Hurwitz terms (hurwitz_deficit_identity)",
+      "Wirtinger's inequality in Fourier-coefficient form: 2·Ar ≤ E for any data supported on modes n ≥ 1",
+      "The isoperimetric inequality 4πA ≤ L² under arc-length normalization (isoperimetric_fourier)",
+      "Full equality characterization: saturation forces every mode n ≥ 2 to vanish, leaving only the fundamental mode — a circle (equality_implies_circle)",
+      "Non-vacuity: the unit circle (a₁ = β₁ = 1) realizes E = 2, Ar = 1, saturating the bound",
+      "Gallery entry src/data/proofs/isoperimetric-theorem-oq-01-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/IsoperimetricFourierOQ0101.lean."
+    ],
+    "insights": [
+      "The entire isoperimetric deficit is a *pointwise-in-n* identity: nothing analytic remains once the Fourier coefficients are in hand — `ring` closes the per-mode equation.",
+      "The weight (n²−1) is the whole story: it is ≥ 0 for every mode (Wirtinger), and strictly > 0 for n ≥ 2, which is exactly why only the fundamental mode n = 1 can survive at equality.",
+      "Wirtinger's inequality 2·Ar ≤ E and the isoperimetric inequality L² ≥ 4πA are the same statement, related only by the arc-length bookkeeping L = 2π, E = 2, A = π·Ar.",
+      "Equality ⇒ circle is a clean consequence of `Finset.sum_eq_zero_iff_of_nonneg`: a zero deficit forces every Hurwitz term to zero, and for n ≥ 2 that forces all four coefficients to vanish.",
+      "Working at the coefficient level sidesteps Mathlib's missing curve-integral isoperimetric API while keeping the mathematical content (the SOS identity) exact."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analysis",
+    "fourier-analysis",
+    "isoperimetric",
+    "wirtinger",
+    "hurwitz",
+    "sum-of-squares"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/IsoperimetricTheorem.lean",
+      "filename": "IsoperimetricTheorem.lean",
+      "lineCount": 448,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheorem.lean"
     },
-    "knownResults": {
-        "proven": [
-            "The per-mode Hurwitz sum-of-squares identity n²(aₙ²+αₙ²+bₙ²+βₙ²) − 2n(aₙβₙ − αₙbₙ) = (n·aₙ−βₙ)² + (n·αₙ+bₙ)² + (n²−1)(βₙ²+bₙ²), proved by `ring`",
-            "Its summed form: the isoperimetric deficit E − 2·Ar equals the explicit nonnegative Finset sum of Hurwitz terms (hurwitz_deficit_identity)",
-            "Wirtinger's inequality in Fourier-coefficient form: 2·Ar ≤ E for any data supported on modes n ≥ 1",
-            "The isoperimetric inequality 4πA ≤ L² under arc-length normalization (isoperimetric_fourier)",
-            "Full equality characterization: saturation forces every mode n ≥ 2 to vanish, leaving only the fundamental mode — a circle (equality_implies_circle)",
-            "Non-vacuity: the unit circle (a₁ = β₁ = 1) realizes E = 2, Ar = 1, saturating the bound"
-        ],
-        "open": [],
-        "goal": "**Can the isoperimetric inequality be proved in Lean by the Fourier method, and does it characterize the circle?**\n\nThe parent (Isoperimetric Shapes on Other Surfaces) records the unified inequality L² ≥ 4πA − κA² and verifies the equality cases for geodesic caps and disks, but treats the inequality itself as a hypothesis. This file supplies the missing engine in the Euclidean base case κ = 0: the Fourier proof, with its sum-of-squares identity and equality characterization.\n\n**Answer**: YES — the deficit E − 2·Ar is an explicit nonnegative sum over Fourier modes, giving L² ≥ 4πA; saturation forces all modes n ≥ 2 to vanish, so equality holds exactly for the circle."
+    {
+      "path": "Proofs/IsoperimetricTheoremOQ01.lean",
+      "filename": "IsoperimetricTheoremOQ01.lean",
+      "lineCount": 385,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheoremOQ01.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-25T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/IsoperimetricFourierOQ0101.lean and gallery entry isoperimetric-theorem-oq-01-oq-01 (status verified)."
+    {
+      "path": "Proofs/IsoperimetricTheoremOQ02.lean",
+      "filename": "IsoperimetricTheoremOQ02.lean",
+      "lineCount": 139,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheoremOQ02.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (221 lines, 7 theorems, 0 sorries, axiomCount 0, badge 'original'). Formalizes the Fourier (Hurwitz–Wirtinger) proof of the classical isoperimetric inequality L² ≥ 4πA — the exact technique the open question asks to transport to spherical/hyperbolic surfaces. The algebraic heart is a per-mode sum-of-squares identity: n²(aₙ²+αₙ²+bₙ²+βₙ²) − 2n(aₙβₙ − αₙbₙ) = (n·aₙ−βₙ)² + (n·αₙ+bₙ)² + (n²−1)(βₙ²+bₙ²), nonnegative for every mode n ≥ 1. Summed, it is Wirtinger's inequality (2·Ar ≤ E); under arc-length normalization it is L² ≥ 4πA, with equality iff only the fundamental mode survives (a circle).",
-        "builtItems": [
-            "The per-mode Hurwitz sum-of-squares identity n²(aₙ²+αₙ²+bₙ²+βₙ²) − 2n(aₙβₙ − αₙbₙ) = (n·aₙ−βₙ)² + (n·αₙ+bₙ)² + (n²−1)(βₙ²+bₙ²), proved by `ring`",
-            "Its summed form: the isoperimetric deficit E − 2·Ar equals the explicit nonnegative Finset sum of Hurwitz terms (hurwitz_deficit_identity)",
-            "Wirtinger's inequality in Fourier-coefficient form: 2·Ar ≤ E for any data supported on modes n ≥ 1",
-            "The isoperimetric inequality 4πA ≤ L² under arc-length normalization (isoperimetric_fourier)",
-            "Full equality characterization: saturation forces every mode n ≥ 2 to vanish, leaving only the fundamental mode — a circle (equality_implies_circle)",
-            "Non-vacuity: the unit circle (a₁ = β₁ = 1) realizes E = 2, Ar = 1, saturating the bound",
-            "Gallery entry src/data/proofs/isoperimetric-theorem-oq-01-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/IsoperimetricFourierOQ0101.lean."
-        ],
-        "insights": [
-            "The entire isoperimetric deficit is a *pointwise-in-n* identity: nothing analytic remains once the Fourier coefficients are in hand — `ring` closes the per-mode equation.",
-            "The weight (n²−1) is the whole story: it is ≥ 0 for every mode (Wirtinger), and strictly > 0 for n ≥ 2, which is exactly why only the fundamental mode n = 1 can survive at equality.",
-            "Wirtinger's inequality 2·Ar ≤ E and the isoperimetric inequality L² ≥ 4πA are the same statement, related only by the arc-length bookkeeping L = 2π, E = 2, A = π·Ar.",
-            "Equality ⇒ circle is a clean consequence of `Finset.sum_eq_zero_iff_of_nonneg`: a zero deficit forces every Hurwitz term to zero, and for n ≥ 2 that forces all four coefficients to vanish.",
-            "Working at the coefficient level sidesteps Mathlib's missing curve-integral isoperimetric API while keeping the mathematical content (the SOS identity) exact."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/IsoperimetricTheoremOQ02OQ03.lean",
+      "filename": "IsoperimetricTheoremOQ02OQ03.lean",
+      "lineCount": 213,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheoremOQ02OQ03.lean"
     },
-    "tags": [
-        "analysis",
-        "fourier-analysis",
-        "isoperimetric",
-        "wirtinger",
-        "hurwitz",
-        "sum-of-squares"
-    ]
+    {
+      "path": "Proofs/IsoperimetricTheoremOQ02OQ03OQ01.lean",
+      "filename": "IsoperimetricTheoremOQ02OQ03OQ01.lean",
+      "lineCount": 267,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheoremOQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/IsoperimetricTheoremOQ03.lean",
+      "filename": "IsoperimetricTheoremOQ03.lean",
+      "lineCount": 213,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheoremOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "isoperimetric-theorem",
+    "isoperimetric-theorem-oq-01",
+    "isoperimetric-theorem-oq-01-oq-01",
+    "isoperimetric-theorem-oq-02",
+    "isoperimetric-theorem-oq-02-oq-03",
+    "isoperimetric-theorem-oq-02-oq-03-oq-01",
+    "isoperimetric-theorem-oq-03"
+  ]
 }

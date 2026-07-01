@@ -83,6 +83,7 @@
     "erdos-212",
     "erdos-213",
     "erdos-214",
+    "erdos-214-incomplete-01-oq-01",
     "erdos-215",
     "erdos-216",
     "erdos-217",
@@ -383,13 +384,24 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos213Problem.lean"
     },
     {
+      "path": "Proofs/Erdos214Incomplete01OQ01.lean",
+      "filename": "Erdos214Incomplete01OQ01.lean",
+      "lineCount": 128,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos214Incomplete01OQ01.lean"
+    },
+    {
       "path": "Proofs/Erdos214Problem.lean",
       "filename": "Erdos214Problem.lean",
-      "lineCount": 198,
-      "theoremCount": 5,
+      "lineCount": 227,
+      "theoremCount": 7,
       "axiomCount": 2,
       "defCount": 12,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos214Problem.lean"
     },
@@ -645,6 +657,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos22Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos230LowerBound.lean",
+      "filename": "Erdos230LowerBound.lean",
+      "lineCount": 98,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos230LowerBound.lean"
+    },
+    {
+      "path": "Proofs/Erdos230Parseval.lean",
+      "filename": "Erdos230Parseval.lean",
+      "lineCount": 82,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos230Parseval.lean"
     },
     {
       "path": "Proofs/Erdos230Problem.lean",

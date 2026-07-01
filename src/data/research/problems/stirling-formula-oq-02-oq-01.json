@@ -67,9 +67,14 @@
     "log-convexity"
   ],
   "relatedProofs": [
-    "stirling-formula-oq-02",
     "stirling-formula",
-    "stirling-formula-oq-03-oq-01"
+    "stirling-formula-oq-01-oq-01",
+    "stirling-formula-oq-02",
+    "stirling-formula-oq-02-oq-01",
+    "stirling-formula-oq-03",
+    "stirling-formula-oq-03-oq-01",
+    "stirling-formula-oq-03-oq-02",
+    "stirling-formula-oq-03-oq-02-oq-01"
   ],
   "references": {
     "papers": [],
@@ -86,15 +91,92 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/StirlingFormula.lean",
+      "filename": "StirlingFormula.lean",
+      "lineCount": 641,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormula.lean"
+    },
+    {
+      "path": "Proofs/StirlingFormulaOQ01OQ01.lean",
+      "filename": "StirlingFormulaOQ01OQ01.lean",
+      "lineCount": 115,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormulaOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/StirlingFormulaOQ02.lean",
+      "filename": "StirlingFormulaOQ02.lean",
+      "lineCount": 602,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormulaOQ02.lean"
+    },
+    {
       "path": "Proofs/StirlingFormulaOQ02OQ01.lean",
       "filename": "StirlingFormulaOQ02OQ01.lean",
-      "lineCount": 394,
+      "lineCount": 395,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormulaOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/StirlingFormulaOQ03.lean",
+      "filename": "StirlingFormulaOQ03.lean",
+      "lineCount": 79,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormulaOQ03.lean"
+    },
+    {
+      "path": "Proofs/StirlingFormulaOQ03OQ01.lean",
+      "filename": "StirlingFormulaOQ03OQ01.lean",
+      "lineCount": 139,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormulaOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/StirlingFormulaOQ03OQ02.lean",
+      "filename": "StirlingFormulaOQ03OQ02.lean",
+      "lineCount": 129,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormulaOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/StirlingFormulaOQ03OQ02OQ01.lean",
+      "filename": "StirlingFormulaOQ03OQ02OQ01.lean",
+      "lineCount": 113,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormulaOQ03OQ02OQ01.lean"
     }
   ]
 }

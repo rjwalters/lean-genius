@@ -75,6 +75,7 @@
     "fibonacci-identities-oq-02-oq-01",
     "fibonacci-identities-oq-02-oq-01-oq-01",
     "fibonacci-identities-oq-02-oq-01-oq-01-oq-02",
+    "fibonacci-identities-oq-02-oq-01-oq-01-oq-02-oq-01",
     "fibonacci-identities-oq-03",
     "fibonacci-identities-oq-03-oq-01",
     "fibonacci-identities-oq-03-oq-02",
@@ -82,11 +83,14 @@
     "fibonacci-identities-oq-03-oq-03",
     "fibonacci-identities-oq-04",
     "fibonacci-identities-oq-04-oq-01",
+    "fibonacci-identities-oq-04-oq-01-oq-01",
+    "fibonacci-identities-oq-04-oq-01-oq-02",
     "fibonacci-identities-oq-04-oq-02",
     "fibonacci-identities-oq-04-oq-03",
     "fibonacci-identities-oq-05",
     "fibonacci-identities-oq-05-oq-01",
-    "fibonacci-identities-oq-05-oq-03"
+    "fibonacci-identities-oq-05-oq-03",
+    "fibonacci-identities-oq-06"
   ],
   "references": {
     "papers": [],
@@ -196,6 +200,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ02OQ01OQ01OQ02.lean"
     },
     {
+      "path": "Proofs/FibonacciIdentitiesOQ02OQ01OQ01OQ02OQ01.lean",
+      "filename": "FibonacciIdentitiesOQ02OQ01OQ01OQ02OQ01.lean",
+      "lineCount": 250,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ02OQ01OQ01OQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/FibonacciIdentitiesOQ03.lean",
       "filename": "FibonacciIdentitiesOQ03.lean",
       "lineCount": 77,
@@ -273,6 +288,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ04OQ01.lean"
     },
     {
+      "path": "Proofs/FibonacciIdentitiesOQ04OQ01OQ01.lean",
+      "filename": "FibonacciIdentitiesOQ04OQ01OQ01.lean",
+      "lineCount": 129,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ04OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ04OQ01OQ02.lean",
+      "filename": "FibonacciIdentitiesOQ04OQ01OQ02.lean",
+      "lineCount": 121,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ04OQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/FibonacciIdentitiesOQ04OQ02.lean",
       "filename": "FibonacciIdentitiesOQ04OQ02.lean",
       "lineCount": 139,
@@ -326,6 +363,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ05OQ03.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ06.lean",
+      "filename": "FibonacciIdentitiesOQ06.lean",
+      "lineCount": 71,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ06.lean"
     }
   ]
 }

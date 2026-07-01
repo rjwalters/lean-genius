@@ -1,57 +1,121 @@
 {
-    "slug": "schauder-fixed-point-oq-04",
-    "title": "The Topology of the Fixed-Point Set: Nonempty and Compact for Self-Maps of [a,b]",
+  "slug": "schauder-fixed-point-oq-04",
+  "title": "The Topology of the Fixed-Point Set: Nonempty and Compact for Self-Maps of [a,b]",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a continuous self-map $f$ of a closed interval $[a,b]$, describe the topology of the fixed-point set $\\{x \\mid f(x) = x\\}$: show it is closed in any Hausdorff space, hence compact when intersected with a compactum, and combine with the 1D Brouwer theorem to conclude the fixed-point set of $f:[a,b]\\to[a,b]$ is a nonempty compact set — all with $0$ axioms.",
+    "plain": "A fully elementary, axiom-free complement to the Schauder fixed-point lineage, whose existence theorems (Brouwer, Schauder, Kakutani) rest on deep axioms. Instead of existence, this entry studies the STRUCTURE of the fixed-point set itself. For a continuous map f, the fixed-point set {x | f x = x} is the equaliser of f and the identity, hence closed in any Hausdorff space (isClosed_fixedPoints); its intersection with a compact set is therefore compact (isCompact_fixedPoints_inter). For a continuous self-map of a closed interval [a,b], the one-dimensional Brouwer theorem (exists_fixedPoint_Icc) — proved from the intermediate value theorem applied to g(x) = f(x) − x, with g(a) ≥ 0 ≥ g(b) — gives nonemptiness. Combining, the fixed-point set of a continuous self-map of [a,b] is a nonempty compact set (fixedPoints_Icc_nonempty_isCompact). The base entry proves only existence; the closed/compact structure is new. 0 axioms, 0 sorries; imports only Mathlib.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "isClosed_fixedPoints: the fixed-point set {x | f x = x} of a continuous map into a Hausdorff space is closed, as the equaliser of f and the identity (isClosed_eq f id)",
+      "exists_fixedPoint_Icc: the one-dimensional Brouwer fixed-point theorem — a continuous self-map of [a,b] has a fixed point — proved directly from the intermediate value theorem on g(x) = f(x) − x, using g(a) ≥ 0 ≥ g(b) because f maps into [a,b]",
+      "fixedPoints_Icc_nonempty_isCompact: the fixed-point set of a continuous self-map of [a,b] is nonempty AND compact — combining 1D Brouwer (nonemptiness) with closedness-in-a-compact (compactness). The base Schauder entry proves only existence; the topological structure of the solution set is the new content",
+      "isCompact_fixedPoints_inter: a general lemma that the fixed-point set of a continuous map, intersected with any compact set, is compact"
+    ],
+    "open": [],
+    "goal": "For a continuous self-map $f$ of a closed interval $[a,b]$, describe the topology of the fixed-point set $\\{x \\mid f(x) = x\\}$: show it is closed in any Hausdorff space, hence compact when intersected with a compactum, and combine with the 1D Brouwer theorem to conclude the fixed-point set of $f:[a,b]\\to[a,b]$ is a nonempty compact set — all with $0$ axioms."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "For a continuous self-map $f$ of a closed interval $[a,b]$, describe the topology of the fixed-point set $\\{x \\mid f(x) = x\\}$: show it is closed in any Hausdorff space, hence compact when intersected with a compactum, and combine with the 1D Brouwer theorem to conclude the fixed-point set of $f:[a,b]\\to[a,b]$ is a nonempty compact set — all with $0$ axioms.",
-        "plain": "A fully elementary, axiom-free complement to the Schauder fixed-point lineage, whose existence theorems (Brouwer, Schauder, Kakutani) rest on deep axioms. Instead of existence, this entry studies the STRUCTURE of the fixed-point set itself. For a continuous map f, the fixed-point set {x | f x = x} is the equaliser of f and the identity, hence closed in any Hausdorff space (isClosed_fixedPoints); its intersection with a compact set is therefore compact (isCompact_fixedPoints_inter). For a continuous self-map of a closed interval [a,b], the one-dimensional Brouwer theorem (exists_fixedPoint_Icc) — proved from the intermediate value theorem applied to g(x) = f(x) − x, with g(a) ≥ 0 ≥ g(b) — gives nonemptiness. Combining, the fixed-point set of a continuous self-map of [a,b] is a nonempty compact set (fixedPoints_Icc_nonempty_isCompact). The base entry proves only existence; the closed/compact structure is new. 0 axioms, 0 sorries; imports only Mathlib.",
-        "whyMatters": []
+    "since": "2026-06-25T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/SchauderFixedPointOQ04.lean and gallery entry schauder-fixed-point-oq-04 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (80 lines, 5 theorems, 0 sorries, axiomCount 0, badge 'original'). A fully elementary, axiom-free complement to the Schauder fixed-point lineage, whose existence theorems (Brouwer, Schauder, Kakutani) rest on deep axioms. Instead of existence, this entry studies the STRUCTURE of the fixed-point set itself. For a continuous map f, the fixed-point set {x | f x = x} is the equaliser of f and the identity, hence closed in any Hausdorff space (isClosed_fixedPoints); its intersection with a compact set is therefore compact (isCompact_fixedPoints_inter). For a continuous self-map of a closed interval [a,b], the one-dimensional Brouwer theorem (exists_fixedPoint_Icc) — proved from the intermediate value theorem applied to g(x) = f(x) − x, with g(a) ≥ 0 ≥ g(b) — gives nonemptiness. Combining, the fixed-point set of a continuous self-map of [a,b] is a nonempty compact set (fixedPoints_Icc_nonempty_isCompact). The base entry proves only existence; the closed/compact structure is new. 0 axioms, 0 sorries; imports only Mathlib.",
+    "builtItems": [
+      "isClosed_fixedPoints: the fixed-point set {x | f x = x} of a continuous map into a Hausdorff space is closed, as the equaliser of f and the identity (isClosed_eq f id)",
+      "exists_fixedPoint_Icc: the one-dimensional Brouwer fixed-point theorem — a continuous self-map of [a,b] has a fixed point — proved directly from the intermediate value theorem on g(x) = f(x) − x, using g(a) ≥ 0 ≥ g(b) because f maps into [a,b]",
+      "fixedPoints_Icc_nonempty_isCompact: the fixed-point set of a continuous self-map of [a,b] is nonempty AND compact — combining 1D Brouwer (nonemptiness) with closedness-in-a-compact (compactness). The base Schauder entry proves only existence; the topological structure of the solution set is the new content",
+      "isCompact_fixedPoints_inter: a general lemma that the fixed-point set of a continuous map, intersected with any compact set, is compact",
+      "Gallery entry src/data/proofs/schauder-fixed-point-oq-04 (meta.json + annotations.json); Lean source proofs/Proofs/SchauderFixedPointOQ04.lean."
+    ],
+    "insights": [
+      "Fixed-point *sets* are equalisers: $\\{x \\mid f(x)=x\\} = \\{x \\mid f(x) = \\mathrm{id}(x)\\}$, so all of point-set topology's equaliser machinery applies for free — closedness in Hausdorff spaces is immediate and needs no analysis.",
+      "The structural question is orthogonal to the existence question: closedness/compactness hold for *any* continuous self-map on *any* Hausdorff space, with no axioms, whereas existence (Brouwer/Schauder/Kakutani) is where the deep, axiom-bearing content lives.",
+      "In dimension one Brouwer collapses to the IVT: the substitution $g = f - \\mathrm{id}$ turns 'has a fixed point' into 'a sign-changing continuous function has a zero', the cleanest possible proof and entirely constructive in spirit.",
+      "Nonempty + compact is strictly more than nonempty: a nonempty compact subset of ℝ has a least and a greatest element, so the theorem secretly yields a smallest and largest fixed point — useful for monotone-iteration and order-theoretic refinements.",
+      "The entry is deliberately import-disciplined: it imports only Mathlib and pointedly NOT the axiom-bearing base file SchauderFixedPoint.lean, so #print axioms stays at the foundational propext/Classical.choice/Quot.sound and the 0-axiom claim is honest."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "topology",
+    "fixed-point-theory",
+    "brouwer",
+    "intermediate-value-theorem",
+    "compactness",
+    "real-analysis",
+    "research"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/SchauderFixedPoint.lean",
+      "filename": "SchauderFixedPoint.lean",
+      "lineCount": 602,
+      "theoremCount": 9,
+      "axiomCount": 5,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPoint.lean"
     },
-    "knownResults": {
-        "proven": [
-            "isClosed_fixedPoints: the fixed-point set {x | f x = x} of a continuous map into a Hausdorff space is closed, as the equaliser of f and the identity (isClosed_eq f id)",
-            "exists_fixedPoint_Icc: the one-dimensional Brouwer fixed-point theorem — a continuous self-map of [a,b] has a fixed point — proved directly from the intermediate value theorem on g(x) = f(x) − x, using g(a) ≥ 0 ≥ g(b) because f maps into [a,b]",
-            "fixedPoints_Icc_nonempty_isCompact: the fixed-point set of a continuous self-map of [a,b] is nonempty AND compact — combining 1D Brouwer (nonemptiness) with closedness-in-a-compact (compactness). The base Schauder entry proves only existence; the topological structure of the solution set is the new content",
-            "isCompact_fixedPoints_inter: a general lemma that the fixed-point set of a continuous map, intersected with any compact set, is compact"
-        ],
-        "open": [],
-        "goal": "For a continuous self-map $f$ of a closed interval $[a,b]$, describe the topology of the fixed-point set $\\{x \\mid f(x) = x\\}$: show it is closed in any Hausdorff space, hence compact when intersected with a compactum, and combine with the 1D Brouwer theorem to conclude the fixed-point set of $f:[a,b]\\to[a,b]$ is a nonempty compact set — all with $0$ axioms."
+    {
+      "path": "Proofs/SchauderFixedPointOQ01.lean",
+      "filename": "SchauderFixedPointOQ01.lean",
+      "lineCount": 316,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ01.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-25T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/SchauderFixedPointOQ04.lean and gallery entry schauder-fixed-point-oq-04 (status verified)."
+    {
+      "path": "Proofs/SchauderFixedPointOQ03.lean",
+      "filename": "SchauderFixedPointOQ03.lean",
+      "lineCount": 169,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ03.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (80 lines, 5 theorems, 0 sorries, axiomCount 0, badge 'original'). A fully elementary, axiom-free complement to the Schauder fixed-point lineage, whose existence theorems (Brouwer, Schauder, Kakutani) rest on deep axioms. Instead of existence, this entry studies the STRUCTURE of the fixed-point set itself. For a continuous map f, the fixed-point set {x | f x = x} is the equaliser of f and the identity, hence closed in any Hausdorff space (isClosed_fixedPoints); its intersection with a compact set is therefore compact (isCompact_fixedPoints_inter). For a continuous self-map of a closed interval [a,b], the one-dimensional Brouwer theorem (exists_fixedPoint_Icc) — proved from the intermediate value theorem applied to g(x) = f(x) − x, with g(a) ≥ 0 ≥ g(b) — gives nonemptiness. Combining, the fixed-point set of a continuous self-map of [a,b] is a nonempty compact set (fixedPoints_Icc_nonempty_isCompact). The base entry proves only existence; the closed/compact structure is new. 0 axioms, 0 sorries; imports only Mathlib.",
-        "builtItems": [
-            "isClosed_fixedPoints: the fixed-point set {x | f x = x} of a continuous map into a Hausdorff space is closed, as the equaliser of f and the identity (isClosed_eq f id)",
-            "exists_fixedPoint_Icc: the one-dimensional Brouwer fixed-point theorem — a continuous self-map of [a,b] has a fixed point — proved directly from the intermediate value theorem on g(x) = f(x) − x, using g(a) ≥ 0 ≥ g(b) because f maps into [a,b]",
-            "fixedPoints_Icc_nonempty_isCompact: the fixed-point set of a continuous self-map of [a,b] is nonempty AND compact — combining 1D Brouwer (nonemptiness) with closedness-in-a-compact (compactness). The base Schauder entry proves only existence; the topological structure of the solution set is the new content",
-            "isCompact_fixedPoints_inter: a general lemma that the fixed-point set of a continuous map, intersected with any compact set, is compact",
-            "Gallery entry src/data/proofs/schauder-fixed-point-oq-04 (meta.json + annotations.json); Lean source proofs/Proofs/SchauderFixedPointOQ04.lean."
-        ],
-        "insights": [
-            "Fixed-point *sets* are equalisers: $\\{x \\mid f(x)=x\\} = \\{x \\mid f(x) = \\mathrm{id}(x)\\}$, so all of point-set topology's equaliser machinery applies for free — closedness in Hausdorff spaces is immediate and needs no analysis.",
-            "The structural question is orthogonal to the existence question: closedness/compactness hold for *any* continuous self-map on *any* Hausdorff space, with no axioms, whereas existence (Brouwer/Schauder/Kakutani) is where the deep, axiom-bearing content lives.",
-            "In dimension one Brouwer collapses to the IVT: the substitution $g = f - \\mathrm{id}$ turns 'has a fixed point' into 'a sign-changing continuous function has a zero', the cleanest possible proof and entirely constructive in spirit.",
-            "Nonempty + compact is strictly more than nonempty: a nonempty compact subset of ℝ has a least and a greatest element, so the theorem secretly yields a smallest and largest fixed point — useful for monotone-iteration and order-theoretic refinements.",
-            "The entry is deliberately import-disciplined: it imports only Mathlib and pointedly NOT the axiom-bearing base file SchauderFixedPoint.lean, so #print axioms stays at the foundational propext/Classical.choice/Quot.sound and the 0-axiom claim is honest."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/SchauderFixedPointOQ03OQ01.lean",
+      "filename": "SchauderFixedPointOQ03OQ01.lean",
+      "lineCount": 1532,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ03OQ01.lean"
     },
-    "tags": [
-        "topology",
-        "fixed-point-theory",
-        "brouwer",
-        "intermediate-value-theorem",
-        "compactness",
-        "real-analysis",
-        "research"
-    ]
+    {
+      "path": "Proofs/SchauderFixedPointOQ04.lean",
+      "filename": "SchauderFixedPointOQ04.lean",
+      "lineCount": 79,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ04.lean"
+    }
+  ],
+  "relatedProofs": [
+    "schauder-fixed-point",
+    "schauder-fixed-point-oq-01",
+    "schauder-fixed-point-oq-03",
+    "schauder-fixed-point-oq-03-oq-01",
+    "schauder-fixed-point-oq-04"
+  ]
 }

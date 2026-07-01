@@ -1,63 +1,70 @@
 {
-    "slug": "chebyshev-sum-inequality-oq-01-oq-01",
-    "title": "Weighted Chebyshev Sum Inequality from a Monovariance Hypothesis",
+  "slug": "chebyshev-sum-inequality-oq-01-oq-01",
+  "title": "Weighted Chebyshev Sum Inequality from a Monovariance Hypothesis",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $s$ be a finite index set, $w : \\iota \\to \\mathbb{R}$ with $w_i \\ge 0$ for $i \\in s$, and write $W = \\sum_{i\\in s} w_i$. If $f, g$ monovary on $s$ (e.g. both monotone) then\n\n$$\\Big(\\sum_{i\\in s} w_i f_i\\Big)\\Big(\\sum_{i\\in s} w_i g_i\\Big) \\;\\le\\; W \\sum_{i\\in s} w_i f_i g_i,$$\n\nwith the inequality reversing when $f, g$ antivary. Specialise to monotone sequences, derive the weighted square bound $(\\sum_i w_i f_i)^2 \\le W \\sum_i w_i f_i^2$, and recover Mathlib's $\\#s$ form at $w \\equiv 1$.",
+    "plain": "Mathlib's Chebyshev sum inequality (MonovaryOn.sum_mul_sum_le_card_mul_sum) has no weighted analogue: it only multiplies the sum of products by the cardinality #s. We prove the weighted version. For nonnegative weights w with total mass W = ∑ wᵢ and functions f, g that monovary on s, (∑ wᵢfᵢ)(∑ wᵢgᵢ) ≤ W·∑ wᵢfᵢgᵢ, together with the reverse inequality for antivarying f, g, the monotone-sequence corollaries, a weighted Cauchy–Schwarz square bound (∑ wᵢfᵢ)² ≤ W·∑ wᵢfᵢ², and a w ≡ 1 recovery of the Mathlib #s form. The engine is the weighted monovariance identity 2(W·∑ wᵢfᵢgᵢ − (∑ wᵢfᵢ)(∑ wᵢgᵢ)) = ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ − fⱼ)(gᵢ − gⱼ), whose right side is a sum of products of like-signed factors, hence nonnegative.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "two_mul_chebyshev_defect_eq: the weighted monovariance identity ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ−fⱼ)(gᵢ−gⱼ) = 2(W·∑ wfg − (∑ wf)(∑ wg)), valid for arbitrary real data with no sign hypothesis — the algebraic heart absent from Mathlib",
+      "sub_mul_sub_nonneg_of_monovaryOn / sub_mul_sub_nonpos_of_antivaryOn: each cross difference (fᵢ−fⱼ)(gᵢ−gⱼ) is ≥ 0 under monovariance and ≤ 0 under antivariance, by trichotomy on g",
+      "weighted_sum_mul_sum_le: the weighted Chebyshev sum inequality (∑ wf)(∑ wg) ≤ W·∑ wfg for nonnegative weights and monovarying f, g — the result Mathlib lacks",
+      "weighted_antivary_le_sum_mul_sum: the reverse weighted inequality for antivarying f, g",
+      "weighted_chebyshev_monotoneOn / weighted_chebyshev_antitoneOn: the monotone-sequence forms named in the open question, via the monotone ⇒ monovary bridges",
+      "weighted_sq_sum_le: the weighted Cauchy–Schwarz / power-mean corollary (∑ wf)² ≤ W·∑ wf², the self-monovarying case",
+      "unweighted_recovery: with w ≡ 1 the bound collapses to Mathlib's classical #s form, confirming the generalization"
+    ],
+    "open": [],
+    "goal": "Let $s$ be a finite index set, $w : \\iota \\to \\mathbb{R}$ with $w_i \\ge 0$ for $i \\in s$, and write $W = \\sum_{i\\in s} w_i$. If $f, g$ monovary on $s$ (e.g. both monotone) then\n\n$$\\Big(\\sum_{i\\in s} w_i f_i\\Big)\\Big(\\sum_{i\\in s} w_i g_i\\Big) \\;\\le\\; W \\sum_{i\\in s} w_i f_i g_i,$$\n\nwith the inequality reversing when $f, g$ antivary. Specialise to monotone sequences, derive the weighted square bound $(\\sum_i w_i f_i)^2 \\le W \\sum_i w_i f_i^2$, and recover Mathlib's $\\#s$ form at $w \\equiv 1$."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Let $s$ be a finite index set, $w : \\iota \\to \\mathbb{R}$ with $w_i \\ge 0$ for $i \\in s$, and write $W = \\sum_{i\\in s} w_i$. If $f, g$ monovary on $s$ (e.g. both monotone) then\n\n$$\\Big(\\sum_{i\\in s} w_i f_i\\Big)\\Big(\\sum_{i\\in s} w_i g_i\\Big) \\;\\le\\; W \\sum_{i\\in s} w_i f_i g_i,$$\n\nwith the inequality reversing when $f, g$ antivary. Specialise to monotone sequences, derive the weighted square bound $(\\sum_i w_i f_i)^2 \\le W \\sum_i w_i f_i^2$, and recover Mathlib's $\\#s$ form at $w \\equiv 1$.",
-        "plain": "Mathlib's Chebyshev sum inequality (MonovaryOn.sum_mul_sum_le_card_mul_sum) has no weighted analogue: it only multiplies the sum of products by the cardinality #s. We prove the weighted version. For nonnegative weights w with total mass W = ∑ wᵢ and functions f, g that monovary on s, (∑ wᵢfᵢ)(∑ wᵢgᵢ) ≤ W·∑ wᵢfᵢgᵢ, together with the reverse inequality for antivarying f, g, the monotone-sequence corollaries, a weighted Cauchy–Schwarz square bound (∑ wᵢfᵢ)² ≤ W·∑ wᵢfᵢ², and a w ≡ 1 recovery of the Mathlib #s form. The engine is the weighted monovariance identity 2(W·∑ wᵢfᵢgᵢ − (∑ wᵢfᵢ)(∑ wᵢgᵢ)) = ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ − fⱼ)(gᵢ − gⱼ), whose right side is a sum of products of like-signed factors, hence nonnegative.",
-        "whyMatters": []
-    },
-    "knownResults": {
-        "proven": [
-            "two_mul_chebyshev_defect_eq: the weighted monovariance identity ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ−fⱼ)(gᵢ−gⱼ) = 2(W·∑ wfg − (∑ wf)(∑ wg)), valid for arbitrary real data with no sign hypothesis — the algebraic heart absent from Mathlib",
-            "sub_mul_sub_nonneg_of_monovaryOn / sub_mul_sub_nonpos_of_antivaryOn: each cross difference (fᵢ−fⱼ)(gᵢ−gⱼ) is ≥ 0 under monovariance and ≤ 0 under antivariance, by trichotomy on g",
-            "weighted_sum_mul_sum_le: the weighted Chebyshev sum inequality (∑ wf)(∑ wg) ≤ W·∑ wfg for nonnegative weights and monovarying f, g — the result Mathlib lacks",
-            "weighted_antivary_le_sum_mul_sum: the reverse weighted inequality for antivarying f, g",
-            "weighted_chebyshev_monotoneOn / weighted_chebyshev_antitoneOn: the monotone-sequence forms named in the open question, via the monotone ⇒ monovary bridges",
-            "weighted_sq_sum_le: the weighted Cauchy–Schwarz / power-mean corollary (∑ wf)² ≤ W·∑ wf², the self-monovarying case",
-            "unweighted_recovery: with w ≡ 1 the bound collapses to Mathlib's classical #s form, confirming the generalization"
-        ],
-        "open": [],
-        "goal": "Let $s$ be a finite index set, $w : \\iota \\to \\mathbb{R}$ with $w_i \\ge 0$ for $i \\in s$, and write $W = \\sum_{i\\in s} w_i$. If $f, g$ monovary on $s$ (e.g. both monotone) then\n\n$$\\Big(\\sum_{i\\in s} w_i f_i\\Big)\\Big(\\sum_{i\\in s} w_i g_i\\Big) \\;\\le\\; W \\sum_{i\\in s} w_i f_i g_i,$$\n\nwith the inequality reversing when $f, g$ antivary. Specialise to monotone sequences, derive the weighted square bound $(\\sum_i w_i f_i)^2 \\le W \\sum_i w_i f_i^2$, and recover Mathlib's $\\#s$ form at $w \\equiv 1$."
-    },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-23T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/ChebyshevSumWeightedOQ01OQ01.lean and gallery entry chebyshev-sum-inequality-oq-01-oq-01 (status verified)."
-    },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (211 lines, 9 theorems, 0 sorries, axiomCount 0, badge 'original'). Mathlib's Chebyshev sum inequality (MonovaryOn.sum_mul_sum_le_card_mul_sum) has no weighted analogue: it only multiplies the sum of products by the cardinality #s. We prove the weighted version. For nonnegative weights w with total mass W = ∑ wᵢ and functions f, g that monovary on s, (∑ wᵢfᵢ)(∑ wᵢgᵢ) ≤ W·∑ wᵢfᵢgᵢ, together with the reverse inequality for antivarying f, g, the monotone-sequence corollaries, a weighted Cauchy–Schwarz square bound (∑ wᵢfᵢ)² ≤ W·∑ wᵢfᵢ², and a w ≡ 1 recovery of the Mathlib #s form. The engine is the weighted monovariance identity 2(W·∑ wᵢfᵢgᵢ − (∑ wᵢfᵢ)(∑ wᵢgᵢ)) = ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ − fⱼ)(gᵢ − gⱼ), whose right side is a sum of products of like-signed factors, hence nonnegative.",
-        "builtItems": [
-            "two_mul_chebyshev_defect_eq: the weighted monovariance identity ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ−fⱼ)(gᵢ−gⱼ) = 2(W·∑ wfg − (∑ wf)(∑ wg)), valid for arbitrary real data with no sign hypothesis — the algebraic heart absent from Mathlib",
-            "sub_mul_sub_nonneg_of_monovaryOn / sub_mul_sub_nonpos_of_antivaryOn: each cross difference (fᵢ−fⱼ)(gᵢ−gⱼ) is ≥ 0 under monovariance and ≤ 0 under antivariance, by trichotomy on g",
-            "weighted_sum_mul_sum_le: the weighted Chebyshev sum inequality (∑ wf)(∑ wg) ≤ W·∑ wfg for nonnegative weights and monovarying f, g — the result Mathlib lacks",
-            "weighted_antivary_le_sum_mul_sum: the reverse weighted inequality for antivarying f, g",
-            "weighted_chebyshev_monotoneOn / weighted_chebyshev_antitoneOn: the monotone-sequence forms named in the open question, via the monotone ⇒ monovary bridges",
-            "weighted_sq_sum_le: the weighted Cauchy–Schwarz / power-mean corollary (∑ wf)² ≤ W·∑ wf², the self-monovarying case",
-            "unweighted_recovery: with w ≡ 1 the bound collapses to Mathlib's classical #s form, confirming the generalization",
-            "Gallery entry src/data/proofs/chebyshev-sum-inequality-oq-01-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/ChebyshevSumWeightedOQ01OQ01.lean."
-        ],
-        "insights": [
-            "The identity 2(W·∑ wfg − (∑ wf)(∑ wg)) = ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ−fⱼ)(gᵢ−gⱼ) is a weighted 'sum of products' (covariance) identity — it holds for ALL real data, so the inequality is purely a statement about the sign of the cross differences.",
-            "Mathlib's #s form is the w ≡ 1 special case; weighting is exactly what turns Chebyshev's inequality into the nonnegative-covariance statement for a finite measure.",
-            "The nonnegativity argument never touches the cardinality: replacing the constant weight 1 by an arbitrary nonnegative weight changes nothing in the proof, only in the multiplier W = ∑ wᵢ.",
-            "Each cross difference's sign is the single place monotonicity enters; everything else is a weighted algebraic rearrangement, which is why the antivary case is a one-line sign flip.",
-            "The self-monovarying instance f = g gives a weighted Cauchy–Schwarz / variance bound (∑ wf)² ≤ W·∑ wf² for free, valid for any f."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
-    },
-    "tags": [
-        "algebra",
-        "inequalities",
-        "order",
-        "chebyshev-sum-inequality",
-        "weighted",
-        "monotone",
-        "cauchy-schwarz"
-    ]
+    "since": "2026-06-23T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/ChebyshevSumWeightedOQ01OQ01.lean and gallery entry chebyshev-sum-inequality-oq-01-oq-01 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (211 lines, 9 theorems, 0 sorries, axiomCount 0, badge 'original'). Mathlib's Chebyshev sum inequality (MonovaryOn.sum_mul_sum_le_card_mul_sum) has no weighted analogue: it only multiplies the sum of products by the cardinality #s. We prove the weighted version. For nonnegative weights w with total mass W = ∑ wᵢ and functions f, g that monovary on s, (∑ wᵢfᵢ)(∑ wᵢgᵢ) ≤ W·∑ wᵢfᵢgᵢ, together with the reverse inequality for antivarying f, g, the monotone-sequence corollaries, a weighted Cauchy–Schwarz square bound (∑ wᵢfᵢ)² ≤ W·∑ wᵢfᵢ², and a w ≡ 1 recovery of the Mathlib #s form. The engine is the weighted monovariance identity 2(W·∑ wᵢfᵢgᵢ − (∑ wᵢfᵢ)(∑ wᵢgᵢ)) = ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ − fⱼ)(gᵢ − gⱼ), whose right side is a sum of products of like-signed factors, hence nonnegative.",
+    "builtItems": [
+      "two_mul_chebyshev_defect_eq: the weighted monovariance identity ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ−fⱼ)(gᵢ−gⱼ) = 2(W·∑ wfg − (∑ wf)(∑ wg)), valid for arbitrary real data with no sign hypothesis — the algebraic heart absent from Mathlib",
+      "sub_mul_sub_nonneg_of_monovaryOn / sub_mul_sub_nonpos_of_antivaryOn: each cross difference (fᵢ−fⱼ)(gᵢ−gⱼ) is ≥ 0 under monovariance and ≤ 0 under antivariance, by trichotomy on g",
+      "weighted_sum_mul_sum_le: the weighted Chebyshev sum inequality (∑ wf)(∑ wg) ≤ W·∑ wfg for nonnegative weights and monovarying f, g — the result Mathlib lacks",
+      "weighted_antivary_le_sum_mul_sum: the reverse weighted inequality for antivarying f, g",
+      "weighted_chebyshev_monotoneOn / weighted_chebyshev_antitoneOn: the monotone-sequence forms named in the open question, via the monotone ⇒ monovary bridges",
+      "weighted_sq_sum_le: the weighted Cauchy–Schwarz / power-mean corollary (∑ wf)² ≤ W·∑ wf², the self-monovarying case",
+      "unweighted_recovery: with w ≡ 1 the bound collapses to Mathlib's classical #s form, confirming the generalization",
+      "Gallery entry src/data/proofs/chebyshev-sum-inequality-oq-01-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/ChebyshevSumWeightedOQ01OQ01.lean."
+    ],
+    "insights": [
+      "The identity 2(W·∑ wfg − (∑ wf)(∑ wg)) = ∑ᵢ∑ⱼ wᵢwⱼ(fᵢ−fⱼ)(gᵢ−gⱼ) is a weighted 'sum of products' (covariance) identity — it holds for ALL real data, so the inequality is purely a statement about the sign of the cross differences.",
+      "Mathlib's #s form is the w ≡ 1 special case; weighting is exactly what turns Chebyshev's inequality into the nonnegative-covariance statement for a finite measure.",
+      "The nonnegativity argument never touches the cardinality: replacing the constant weight 1 by an arbitrary nonnegative weight changes nothing in the proof, only in the multiplier W = ∑ wᵢ.",
+      "Each cross difference's sign is the single place monotonicity enters; everything else is a weighted algebraic rearrangement, which is why the antivary case is a one-line sign flip.",
+      "The self-monovarying instance f = g gives a weighted Cauchy–Schwarz / variance bound (∑ wf)² ≤ W·∑ wf² for free, valid for any f."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "inequalities",
+    "order",
+    "chebyshev-sum-inequality",
+    "weighted",
+    "monotone",
+    "cauchy-schwarz"
+  ],
+  "relatedProofs": [
+    "chebyshev-sum-inequality-oq-01",
+    "chebyshev-sum-inequality-oq-01-oq-01",
+    "chebyshev-sum-inequality-oq-01-oq-01-oq-01",
+    "chebyshev-sum-inequality-oq-01-oq-01-oq-02",
+    "chebyshev-sum-inequality-oq-01-oq-01-oq-03"
+  ]
 }

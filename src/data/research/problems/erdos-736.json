@@ -1,64 +1,82 @@
 {
-    "slug": "erdos-736",
-    "title": "Chromatic Numbers and Finite Subgraph Inheritance",
+  "slug": "erdos-736",
+  "title": "Chromatic Numbers and Finite Subgraph Inheritance",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let G be a graph with chromatic number ℵ₁. Is there, for every cardinal m, some graph G_m of chromatic number m such that every finite subgraph of G_m is a subgraph of G?",
+    "plain": "Taylor's conjecture: If G has chromatic number ℵ₁, can we build graphs of any chromatic number using only finite subgraphs of G? Komjáth-Shelah showed this is independent of ZFC - it can fail in some models.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "Lean formalization of chromatic number for infinite graphs (Cardinal-valued)",
+      "Formal statement of Taylor's conjecture using cardinals",
+      "Generalized conjecture for arbitrary uncountable κ",
+      "Machine-checked de Bruijn–Erdős coloring theorem (compactness form) via Mathlib's nonempty_hom_of_forall_finite_subgraph_hom",
+      "Machine-checked contrapositive: a non-n-colorable graph has a finite non-n-colorable subgraph",
+      "Bridge lemmas matching the custom Cardinal-valued chromatic number to Mathlib's Colorable predicate (the defining cardinal infimum is attained because cardinals are well-ordered)",
+      "Original discrete intermediate-value theorem (exists_induce_chiN_eq): in a finite graph, every chromatic value 0..χ is realized exactly by an induced subgraph; proved by Finset induction via a one-vertex extension lemma (adding a vertex raises χ by at most one)",
+      "Fully machine-checked finite_case: for finite χ(G)=k, every m ≤ k is realized as the chromatic number of an induced subgraph of G, giving automatic finite-subgraph inheritance (the last sorry is now discharged)"
+    ],
+    "open": [],
+    "goal": "Let G be a graph with chromatic number ℵ₁. Is there, for every cardinal m, some graph G_m of chromatic number m such that every finite subgraph of G_m is a subgraph of G?"
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Let G be a graph with chromatic number ℵ₁. Is there, for every cardinal m, some graph G_m of chromatic number m such that every finite subgraph of G_m is a subgraph of G?",
-        "plain": "Taylor's conjecture: If G has chromatic number ℵ₁, can we build graphs of any chromatic number using only finite subgraphs of G? Komjáth-Shelah showed this is independent of ZFC - it can fail in some models.",
-        "whyMatters": []
-    },
-    "knownResults": {
-        "proven": [
-            "Lean formalization of chromatic number for infinite graphs (Cardinal-valued)",
-            "Formal statement of Taylor's conjecture using cardinals",
-            "Generalized conjecture for arbitrary uncountable κ",
-            "Machine-checked de Bruijn–Erdős coloring theorem (compactness form) via Mathlib's nonempty_hom_of_forall_finite_subgraph_hom",
-            "Machine-checked contrapositive: a non-n-colorable graph has a finite non-n-colorable subgraph",
-            "Bridge lemmas matching the custom Cardinal-valued chromatic number to Mathlib's Colorable predicate (the defining cardinal infimum is attained because cardinals are well-ordered)",
-            "Original discrete intermediate-value theorem (exists_induce_chiN_eq): in a finite graph, every chromatic value 0..χ is realized exactly by an induced subgraph; proved by Finset induction via a one-vertex extension lemma (adding a vertex raises χ by at most one)",
-            "Fully machine-checked finite_case: for finite χ(G)=k, every m ≤ k is realized as the chromatic number of an induced subgraph of G, giving automatic finite-subgraph inheritance (the last sorry is now discharged)"
-        ],
-        "open": [],
-        "goal": "Let G be a graph with chromatic number ℵ₁. Is there, for every cardinal m, some graph G_m of chromatic number m such that every finite subgraph of G_m is a subgraph of G?"
-    },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-01-19T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/Erdos736Problem.lean and gallery entry erdos-736 (status verified)."
-    },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (444 lines, 17 theorems, 0 sorries, axiomCount 0, badge 'verified'). Taylor's conjecture: If G has chromatic number ℵ₁, can we build graphs of any chromatic number using only finite subgraphs of G? Komjáth-Shelah showed this is independent of ZFC - it can fail in some models.",
-        "builtItems": [
-            "Lean formalization of chromatic number for infinite graphs (Cardinal-valued)",
-            "Formal statement of Taylor's conjecture using cardinals",
-            "Generalized conjecture for arbitrary uncountable κ",
-            "Machine-checked de Bruijn–Erdős coloring theorem (compactness form) via Mathlib's nonempty_hom_of_forall_finite_subgraph_hom",
-            "Machine-checked contrapositive: a non-n-colorable graph has a finite non-n-colorable subgraph",
-            "Bridge lemmas matching the custom Cardinal-valued chromatic number to Mathlib's Colorable predicate (the defining cardinal infimum is attained because cardinals are well-ordered)",
-            "Original discrete intermediate-value theorem (exists_induce_chiN_eq): in a finite graph, every chromatic value 0..χ is realized exactly by an induced subgraph; proved by Finset induction via a one-vertex extension lemma (adding a vertex raises χ by at most one)",
-            "Fully machine-checked finite_case: for finite χ(G)=k, every m ≤ k is realized as the chromatic number of an induced subgraph of G, giving automatic finite-subgraph inheritance (the last sorry is now discharged)",
-            "Gallery entry src/data/proofs/erdos-736 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos736Problem.lean."
-        ],
-        "insights": [
-            "The problem connects finite combinatorics to infinite graph theory",
-            "Independence from ZFC means the answer depends on set-theoretic axioms",
-            "Komjáth-Shelah: In some models, χ(H) ≤ ℵ₂ for all H with G's finite subgraphs",
-            "The De Bruijn-Erdős theorem provides a compactness principle for finite chromatic numbers",
-            "The gap between finite and uncountable chromatic numbers is fundamental: finite χ is computable from finite subgraphs, but uncountable χ requires genuinely infinite combinatorics"
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
-    },
-    "tags": [
-        "erdos",
-        "graph-theory",
-        "chromatic-number",
-        "infinite-graphs",
-        "set-theory",
-        "independence"
-    ]
+    "since": "2026-01-19T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/Erdos736Problem.lean and gallery entry erdos-736 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (444 lines, 17 theorems, 0 sorries, axiomCount 0, badge 'verified'). Taylor's conjecture: If G has chromatic number ℵ₁, can we build graphs of any chromatic number using only finite subgraphs of G? Komjáth-Shelah showed this is independent of ZFC - it can fail in some models.",
+    "builtItems": [
+      "Lean formalization of chromatic number for infinite graphs (Cardinal-valued)",
+      "Formal statement of Taylor's conjecture using cardinals",
+      "Generalized conjecture for arbitrary uncountable κ",
+      "Machine-checked de Bruijn–Erdős coloring theorem (compactness form) via Mathlib's nonempty_hom_of_forall_finite_subgraph_hom",
+      "Machine-checked contrapositive: a non-n-colorable graph has a finite non-n-colorable subgraph",
+      "Bridge lemmas matching the custom Cardinal-valued chromatic number to Mathlib's Colorable predicate (the defining cardinal infimum is attained because cardinals are well-ordered)",
+      "Original discrete intermediate-value theorem (exists_induce_chiN_eq): in a finite graph, every chromatic value 0..χ is realized exactly by an induced subgraph; proved by Finset induction via a one-vertex extension lemma (adding a vertex raises χ by at most one)",
+      "Fully machine-checked finite_case: for finite χ(G)=k, every m ≤ k is realized as the chromatic number of an induced subgraph of G, giving automatic finite-subgraph inheritance (the last sorry is now discharged)",
+      "Gallery entry src/data/proofs/erdos-736 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos736Problem.lean."
+    ],
+    "insights": [
+      "The problem connects finite combinatorics to infinite graph theory",
+      "Independence from ZFC means the answer depends on set-theoretic axioms",
+      "Komjáth-Shelah: In some models, χ(H) ≤ ℵ₂ for all H with G's finite subgraphs",
+      "The De Bruijn-Erdős theorem provides a compactness principle for finite chromatic numbers",
+      "The gap between finite and uncountable chromatic numbers is fundamental: finite χ is computable from finite subgraphs, but uncountable χ requires genuinely infinite combinatorics"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "infinite-graphs",
+    "set-theory",
+    "independence"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos736Problem.lean",
+      "filename": "Erdos736Problem.lean",
+      "lineCount": 445,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos736Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-73",
+    "erdos-736"
+  ]
 }

@@ -10,26 +10,48 @@
   "path": "research/problems/erdos-340-greedy-sidon-oq-05",
   "leanFiles": [
     {
+      "path": "Proofs/Erdos340GreedySidon.lean",
+      "filename": "Erdos340GreedySidon.lean",
+      "lineCount": 649,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidon.lean"
+    },
+    {
+      "path": "Proofs/Erdos340GreedySidonExtension.lean",
+      "filename": "Erdos340GreedySidonExtension.lean",
+      "lineCount": 126,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidonExtension.lean"
+    },
+    {
+      "path": "Proofs/Erdos340GreedySidonOQ02.lean",
+      "filename": "Erdos340GreedySidonOQ02.lean",
+      "lineCount": 310,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidonOQ02.lean"
+    },
+    {
       "path": "Proofs/Erdos340GreedySidonOQ05.lean",
       "filename": "Erdos340GreedySidonOQ05.lean",
-      "lineCount": 1022,
-      "theoremCount": 34,
+      "lineCount": 1226,
+      "theoremCount": 31,
       "axiomCount": 0,
-      "defCount": 4,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidonOQ05.lean"
-    },
-    {
-      "path": "Proofs/Erdos340BhUpperBound.lean",
-      "filename": "Erdos340BhUpperBound.lean",
-      "lineCount": 137,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340BhUpperBound.lean"
     }
   ],
   "tags": [
@@ -40,8 +62,12 @@
     "extremal"
   ],
   "relatedProofs": [
+    "erdos-3",
+    "erdos-34",
     "erdos-340",
     "erdos-340-greedy-sidon",
+    "erdos-340-greedy-sidon-oq-05",
+    "erdos-340-greedy-sidon-oq-05-oq-01",
     "erdos-44"
   ],
   "problemStatement": "Open question (generalization) from the gallery proof 'erdos-340-greedy-sidon': does the Sidon (B_2) theory of #340 extend to B_h sequences — sets in which all h-fold sums with repetition are distinct? Formalize the B_h property and the B_h analogue of the Sidon upper bound.",

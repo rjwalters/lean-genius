@@ -52,7 +52,8 @@
     "erdos-6",
     "erdos-63",
     "erdos-634",
-    "erdos-634-medial-congruence"
+    "erdos-634-medial-congruence",
+    "erdos-634-medial-congruence-oq-01"
   ],
   "references": [
     "Erdős Problem #634, https://www.erdosproblems.com/634",
@@ -86,6 +87,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCongruence.lean"
+    },
+    {
+      "path": "Proofs/Erdos634MedialCongruenceOQ01.lean",
+      "filename": "Erdos634MedialCongruenceOQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCongruenceOQ01.lean"
     },
     {
       "path": "Proofs/Erdos634Problem.lean",

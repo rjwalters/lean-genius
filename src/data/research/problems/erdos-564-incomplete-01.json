@@ -69,7 +69,8 @@
   "relatedProofs": [
     "erdos-5",
     "erdos-56",
-    "erdos-564"
+    "erdos-564",
+    "erdos-564-incomplete-01"
   ],
   "references": {
     "papers": [],
@@ -80,23 +81,12 @@
   "lastUpdate": "2026-06-28",
   "leanFiles": [
     {
-      "path": "Proofs/Erdos564Problem.lean",
-      "filename": "Erdos564Problem.lean",
-      "lineCount": 245,
-      "theoremCount": null,
-      "axiomCount": 3,
-      "defCount": null,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos564Problem.lean"
-    },
-    {
       "path": "Proofs/Erdos564Incomplete01.lean",
       "filename": "Erdos564Incomplete01.lean",
-      "lineCount": 192,
-      "theoremCount": 16,
+      "lineCount": 260,
+      "theoremCount": 20,
       "axiomCount": 0,
-      "defCount": null,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos564Incomplete01.lean"

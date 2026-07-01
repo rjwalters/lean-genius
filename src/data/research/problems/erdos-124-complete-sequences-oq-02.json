@@ -1,62 +1,105 @@
 {
-    "slug": "erdos-124-complete-sequences-oq-02",
-    "title": "Erdős 124 at the boundary: ∑ 1/(dᵢ−1) = 1 is exactly an Egyptian fraction",
-    "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Characterize the boundary face ∑ 1/(dᵢ−1) = 1 of the Erdős 124 reciprocal condition (bases dᵢ ≥ 2).",
-        "plain": "Erdős Problem 124 (weak Burr–Erdős–Graham–Li form) asks when bases d₁,…,d_k ≥ 2 with ∑ 1/(dᵢ−1) ≥ 1 make every natural number a sum of integers with only 0/1 digits in base dᵢ. OQ-02 asks what techniques are needed exactly at the boundary ∑ 1/(dᵢ−1) = 1.",
-        "whyMatters": [
-            "The parent Erdős 124 entry (Brown's criterion, formally verified by Harmonic's Aristotle, Nov 2025) proves completeness for the closed region ∑ ≥ 1; the boundary is its extreme face and was left as an open question.",
-            "Identifying the boundary with Egyptian-fraction decompositions of 1 reframes an opaque reciprocal-sum condition as classical unit-fraction arithmetic."
-        ]
-    },
-    "knownResults": {
-        "proven": [
-            "The substitution eᵢ = dᵢ − 1 turns the boundary ∑ 1/(dᵢ−1) = 1 into the Egyptian-fraction equation ∑ 1/eᵢ = 1; the boundary configurations are exactly the unit-fraction decompositions of 1.",
-            "Boundary configurations exist with an arbitrary number of bases (Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1))).",
-            "Base-2 rigidity: any boundary configuration that uses d = 2 must be the singleton [2] (ordinary binary).",
-            "Concrete witnesses [2], [3,3], [3,4,7], [3,4,8,43] (the last from Sylvester's sequence 2,3,7,43)."
-        ],
-        "open": [
-            "No new completeness machinery is required: equality is a face of the closed condition the parent already proves complete, so it inherits completeness for free. The parent's deep ≥ 1 completeness theorem is not reproved here."
-        ],
-        "goal": "Give the structural answer to OQ-02 and formalize it: the boundary is exactly Egyptian fractions of 1, configurations of every length exist, and the binary case is rigid."
-    },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-22T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable: Proofs/Erdos124CompleteSequencesOQ02.lean and gallery entry erdos-124-complete-sequences-oq-02 are complete in main (verified, original badge, 0 sorries, 0 axioms)."
-    },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main. Proofs/Erdos124CompleteSequencesOQ02.lean (316 lines, 19 theorems, 3 definitions, 0 sorries, 0 axioms, no native_decide) formalizes the OQ-02 answer: via eᵢ = dᵢ − 1 the Erdős-124 boundary ∑ 1/(dᵢ−1) = 1 is exactly an Egyptian-fraction decomposition ∑ 1/eᵢ = 1. The Sylvester splitting gives boundary configurations of every length, and the base-2 case is rigid (forced singleton [2]). Gallery entry present with full meta.json and annotations; badge 'original', status 'verified'. Depends only on standard Mathlib lemmas (List.sum/map, field_simp, Nat.cast_sub) over the foundational axioms.",
-        "builtItems": [
-            "reciSum_eq_egyptSum: the bridge identity reciSum d = egyptSum (d.map (·−1)), proving the boundary face ∑ 1/(dᵢ−1) = 1 equals an Egyptian-fraction decomposition ∑ 1/eᵢ = 1 with eᵢ = dᵢ − 1 (list induction; cons step uses Nat.cast_sub for a ≥ 1).",
-            "egyptSum_split + sylvester / sylvester_egyptSum / sylvester_length: the Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1)) (field_simp) and a recursive construction giving, for each k, an Egyptian decomposition of 1 with exactly k+1 unit fractions and denominators ≥ 1.",
-            "exists_boundary_config: for every k ≥ 1 there is a list of k bases, each ≥ 2, with reciSum = 1 — Erdős-124 boundary configurations exist with arbitrarily many bases.",
-            "egypt_one_forces_singleton / base_two_forces_singleton: rigidity — any boundary configuration using base d = 2 (unit fraction 1/1) is the singleton [2], i.e. plain binary; no other base fits the unit budget.",
-            "Concrete boundary witnesses [2], [3,3], [3,4,7], [3,4,8,43] verified in the Lean file.",
-            "Definitions egyptSum and reciSum as list-map-sums over ℚ; gallery entry src/data/proofs/erdos-124-complete-sequences-oq-02 (meta.json + annotations.json)."
-        ],
-        "insights": [
-            "The boundary is Egyptian fractions: the single substitution eᵢ = dᵢ − 1 converts the opaque reciprocal-sum boundary into the classical ∑ 1/eᵢ = 1, so the 'technique at the boundary' is unit-fraction arithmetic, not new completeness machinery.",
-            "Boundary configs exist for every k: Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1)) trades one unit fraction for two, so the number of bases is completely unconstrained.",
-            "Binary is rigid: base d = 2 contributes the full unit fraction 1/1 = 1, leaving zero budget — the only boundary configuration using d = 2 is the singleton [2].",
-            "Equality is a face of the closed condition ∑ ≥ 1 the parent already proves complete, so the boundary inherits completeness for free; the new content is combinatorial structure, not a harder analytic theorem."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
-    },
-    "tags": [
-        "number-theory",
-        "combinatorics",
-        "erdos",
-        "complete-sequences",
-        "egyptian-fractions",
-        "unit-fractions",
-        "sylvester-sequence"
+  "slug": "erdos-124-complete-sequences-oq-02",
+  "title": "Erdős 124 at the boundary: ∑ 1/(dᵢ−1) = 1 is exactly an Egyptian fraction",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Characterize the boundary face ∑ 1/(dᵢ−1) = 1 of the Erdős 124 reciprocal condition (bases dᵢ ≥ 2).",
+    "plain": "Erdős Problem 124 (weak Burr–Erdős–Graham–Li form) asks when bases d₁,…,d_k ≥ 2 with ∑ 1/(dᵢ−1) ≥ 1 make every natural number a sum of integers with only 0/1 digits in base dᵢ. OQ-02 asks what techniques are needed exactly at the boundary ∑ 1/(dᵢ−1) = 1.",
+    "whyMatters": [
+      "The parent Erdős 124 entry (Brown's criterion, formally verified by Harmonic's Aristotle, Nov 2025) proves completeness for the closed region ∑ ≥ 1; the boundary is its extreme face and was left as an open question.",
+      "Identifying the boundary with Egyptian-fraction decompositions of 1 reframes an opaque reciprocal-sum condition as classical unit-fraction arithmetic."
     ]
+  },
+  "knownResults": {
+    "proven": [
+      "The substitution eᵢ = dᵢ − 1 turns the boundary ∑ 1/(dᵢ−1) = 1 into the Egyptian-fraction equation ∑ 1/eᵢ = 1; the boundary configurations are exactly the unit-fraction decompositions of 1.",
+      "Boundary configurations exist with an arbitrary number of bases (Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1))).",
+      "Base-2 rigidity: any boundary configuration that uses d = 2 must be the singleton [2] (ordinary binary).",
+      "Concrete witnesses [2], [3,3], [3,4,7], [3,4,8,43] (the last from Sylvester's sequence 2,3,7,43)."
+    ],
+    "open": [
+      "No new completeness machinery is required: equality is a face of the closed condition the parent already proves complete, so it inherits completeness for free. The parent's deep ≥ 1 completeness theorem is not reproved here."
+    ],
+    "goal": "Give the structural answer to OQ-02 and formalize it: the boundary is exactly Egyptian fractions of 1, configurations of every length exist, and the binary case is rigid."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-22T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable: Proofs/Erdos124CompleteSequencesOQ02.lean and gallery entry erdos-124-complete-sequences-oq-02 are complete in main (verified, original badge, 0 sorries, 0 axioms)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main. Proofs/Erdos124CompleteSequencesOQ02.lean (316 lines, 19 theorems, 3 definitions, 0 sorries, 0 axioms, no native_decide) formalizes the OQ-02 answer: via eᵢ = dᵢ − 1 the Erdős-124 boundary ∑ 1/(dᵢ−1) = 1 is exactly an Egyptian-fraction decomposition ∑ 1/eᵢ = 1. The Sylvester splitting gives boundary configurations of every length, and the base-2 case is rigid (forced singleton [2]). Gallery entry present with full meta.json and annotations; badge 'original', status 'verified'. Depends only on standard Mathlib lemmas (List.sum/map, field_simp, Nat.cast_sub) over the foundational axioms.",
+    "builtItems": [
+      "reciSum_eq_egyptSum: the bridge identity reciSum d = egyptSum (d.map (·−1)), proving the boundary face ∑ 1/(dᵢ−1) = 1 equals an Egyptian-fraction decomposition ∑ 1/eᵢ = 1 with eᵢ = dᵢ − 1 (list induction; cons step uses Nat.cast_sub for a ≥ 1).",
+      "egyptSum_split + sylvester / sylvester_egyptSum / sylvester_length: the Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1)) (field_simp) and a recursive construction giving, for each k, an Egyptian decomposition of 1 with exactly k+1 unit fractions and denominators ≥ 1.",
+      "exists_boundary_config: for every k ≥ 1 there is a list of k bases, each ≥ 2, with reciSum = 1 — Erdős-124 boundary configurations exist with arbitrarily many bases.",
+      "egypt_one_forces_singleton / base_two_forces_singleton: rigidity — any boundary configuration using base d = 2 (unit fraction 1/1) is the singleton [2], i.e. plain binary; no other base fits the unit budget.",
+      "Concrete boundary witnesses [2], [3,3], [3,4,7], [3,4,8,43] verified in the Lean file.",
+      "Definitions egyptSum and reciSum as list-map-sums over ℚ; gallery entry src/data/proofs/erdos-124-complete-sequences-oq-02 (meta.json + annotations.json)."
+    ],
+    "insights": [
+      "The boundary is Egyptian fractions: the single substitution eᵢ = dᵢ − 1 converts the opaque reciprocal-sum boundary into the classical ∑ 1/eᵢ = 1, so the 'technique at the boundary' is unit-fraction arithmetic, not new completeness machinery.",
+      "Boundary configs exist for every k: Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1)) trades one unit fraction for two, so the number of bases is completely unconstrained.",
+      "Binary is rigid: base d = 2 contributes the full unit fraction 1/1 = 1, leaving zero budget — the only boundary configuration using d = 2 is the singleton [2].",
+      "Equality is a face of the closed condition ∑ ≥ 1 the parent already proves complete, so the boundary inherits completeness for free; the new content is combinatorial structure, not a harder analytic theorem."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "combinatorics",
+    "erdos",
+    "complete-sequences",
+    "egyptian-fractions",
+    "unit-fractions",
+    "sylvester-sequence"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos124CompleteSequences.lean",
+      "filename": "Erdos124CompleteSequences.lean",
+      "lineCount": 508,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos124CompleteSequences.lean"
+    },
+    {
+      "path": "Proofs/Erdos124CompleteSequencesOQ02.lean",
+      "filename": "Erdos124CompleteSequencesOQ02.lean",
+      "lineCount": 317,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos124CompleteSequencesOQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos124CompleteSequencesOQ02OQ01.lean",
+      "filename": "Erdos124CompleteSequencesOQ02OQ01.lean",
+      "lineCount": 152,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos124CompleteSequencesOQ02OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-12",
+    "erdos-124",
+    "erdos-124-complete-sequences",
+    "erdos-124-complete-sequences-oq-02",
+    "erdos-124-complete-sequences-oq-02-oq-01"
+  ]
 }

@@ -1,61 +1,137 @@
 {
-    "slug": "alternating-series-test-oq-01-oq-02",
-    "title": "Abel-Summation Error Bounds for Alternating Series with Bounded-Variation Coefficients",
+  "slug": "alternating-series-test-oq-01-oq-02",
+  "title": "Abel-Summation Error Bounds for Alternating Series with Bounded-Variation Coefficients",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "The parent entry alternating-series-test-oq-01-oq-01 asks whether two-sided error bounds can be recovered for alternating series whose coefficients are of bounded variation (rather than antitone), via Abel summation. \n\n**Answer: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|** for an arbitrary real coefficient sequence. The right-hand side is a boundary term plus the total variation of a on the block. For antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the estimate back to the Leibniz value a_N; for a convergent series the M → ∞ limit bounds |S_N − l| by the tail total variation.",
+    "plain": "Removes the monotonicity hypothesis from the alternating series error estimate. The parent entries bound the truncation error of S_N = ∑_{i<N} (-1)^i a_i by the first omitted term a_N — but only when the coefficients a are antitone. Via summation by parts (Abel's transformation, Finset.sum_range_by_parts) this entry proves a Cauchy-difference estimate valid for an ARBITRARY real coefficient sequence: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|, a boundary term plus the total variation of a on the block. This is the quantitative core of the Dirichlet test: the partial sums of the sign sequence (-1)^i are bounded by 1 (neg_one_geom_sum), so Abel summation trades the possibly non-monotone oscillation of a for its total variation. Two consequences are recorded: (1) for antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the bound back to the Leibniz value a_N — so the new estimate CONTAINS the classical one as the monotone special case; (2) passing M → ∞ for a convergent series bounds the genuine limit error |S_N − l| by a controlling tail value V, the bounded-variation analogue of the Leibniz remainder. The bounded-variation error bound is absent from Mathlib. This directly answers the parent entry's open question on extending the trapping to coefficients of bounded variation via Abel summation.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "abs_alternating_Ico_le: the Abel/Dirichlet error bound |∑_{i ∈ [N,M)} (-1)^i a_i| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)| for an ARBITRARY real coefficient sequence — no monotonicity assumed; absent from Mathlib",
+      "abs_partialSum_diff_le: the same bound in partial-sum (Cauchy-difference) form, |S_M − S_N| ≤ |a(M−1)| + total variation on [N,M−1)",
+      "abs_partialSum_diff_le_of_antitone: the monotone special case where the variation telescopes and the boundary term cancels, recovering the classical Leibniz value a_N — establishing that the bounded-variation estimate CONTAINS the antitone one",
+      "abs_partialSum_sub_limit_le_tail_variation: the limit-error bound |S_N − l| ≤ V obtained by passing M → ∞, the bounded-variation analogue of the Leibniz remainder with the tail total variation V in place of a_N",
+      "abs_signSum_le: the Dirichlet boundedness lemma |∑_{i<n} (-1)^i| ≤ 1 that powers the whole estimate"
+    ],
+    "open": [],
+    "goal": "The parent entry alternating-series-test-oq-01-oq-01 asks whether two-sided error bounds can be recovered for alternating series whose coefficients are of bounded variation (rather than antitone), via Abel summation. \n\n**Answer: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|** for an arbitrary real coefficient sequence. The right-hand side is a boundary term plus the total variation of a on the block. For antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the estimate back to the Leibniz value a_N; for a convergent series the M → ∞ limit bounds |S_N − l| by the tail total variation."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "The parent entry alternating-series-test-oq-01-oq-01 asks whether two-sided error bounds can be recovered for alternating series whose coefficients are of bounded variation (rather than antitone), via Abel summation. \n\n**Answer: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|** for an arbitrary real coefficient sequence. The right-hand side is a boundary term plus the total variation of a on the block. For antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the estimate back to the Leibniz value a_N; for a convergent series the M → ∞ limit bounds |S_N − l| by the tail total variation.",
-        "plain": "Removes the monotonicity hypothesis from the alternating series error estimate. The parent entries bound the truncation error of S_N = ∑_{i<N} (-1)^i a_i by the first omitted term a_N — but only when the coefficients a are antitone. Via summation by parts (Abel's transformation, Finset.sum_range_by_parts) this entry proves a Cauchy-difference estimate valid for an ARBITRARY real coefficient sequence: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|, a boundary term plus the total variation of a on the block. This is the quantitative core of the Dirichlet test: the partial sums of the sign sequence (-1)^i are bounded by 1 (neg_one_geom_sum), so Abel summation trades the possibly non-monotone oscillation of a for its total variation. Two consequences are recorded: (1) for antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the bound back to the Leibniz value a_N — so the new estimate CONTAINS the classical one as the monotone special case; (2) passing M → ∞ for a convergent series bounds the genuine limit error |S_N − l| by a controlling tail value V, the bounded-variation analogue of the Leibniz remainder. The bounded-variation error bound is absent from Mathlib. This directly answers the parent entry's open question on extending the trapping to coefficients of bounded variation via Abel summation.",
-        "whyMatters": []
+    "since": "2026-06-24T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/AlternatingSeriesTestOQ01OQ02.lean and gallery entry alternating-series-test-oq-01-oq-02 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (174 lines, 7 theorems, 0 sorries, axiomCount 0, badge 'verified'). Removes the monotonicity hypothesis from the alternating series error estimate. The parent entries bound the truncation error of S_N = ∑_{i<N} (-1)^i a_i by the first omitted term a_N — but only when the coefficients a are antitone. Via summation by parts (Abel's transformation, Finset.sum_range_by_parts) this entry proves a Cauchy-difference estimate valid for an ARBITRARY real coefficient sequence: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|, a boundary term plus the total variation of a on the block. This is the quantitative core of the Dirichlet test: the partial sums of the sign sequence (-1)^i are bounded by 1 (neg_one_geom_sum), so Abel summation trades the possibly non-monotone oscillation of a for its total variation. Two consequences are recorded: (1) for antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the bound back to the Leibniz value a_N — so the new estimate CONTAINS the classical one as the monotone special case; (2) passing M → ∞ for a convergent series bounds the genuine limit error |S_N − l| by a controlling tail value V, the bounded-variation analogue of the Leibniz remainder. The bounded-variation error bound is absent from Mathlib. This directly answers the parent entry's open question on extending the trapping to coefficients of bounded variation via Abel summation.",
+    "builtItems": [
+      "abs_alternating_Ico_le: the Abel/Dirichlet error bound |∑_{i ∈ [N,M)} (-1)^i a_i| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)| for an ARBITRARY real coefficient sequence — no monotonicity assumed; absent from Mathlib",
+      "abs_partialSum_diff_le: the same bound in partial-sum (Cauchy-difference) form, |S_M − S_N| ≤ |a(M−1)| + total variation on [N,M−1)",
+      "abs_partialSum_diff_le_of_antitone: the monotone special case where the variation telescopes and the boundary term cancels, recovering the classical Leibniz value a_N — establishing that the bounded-variation estimate CONTAINS the antitone one",
+      "abs_partialSum_sub_limit_le_tail_variation: the limit-error bound |S_N − l| ≤ V obtained by passing M → ∞, the bounded-variation analogue of the Leibniz remainder with the tail total variation V in place of a_N",
+      "abs_signSum_le: the Dirichlet boundedness lemma |∑_{i<n} (-1)^i| ≤ 1 that powers the whole estimate",
+      "Gallery entry src/data/proofs/alternating-series-test-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/AlternatingSeriesTestOQ01OQ02.lean."
+    ],
+    "insights": [
+      "Summation by parts is the right tool once monotonicity is dropped: it expresses the alternating sum through the coefficient DIFFERENCES (total variation) rather than the coefficients themselves",
+      "The sign sequence (-1)^i has partial sums in {0,1}, so the Dirichlet boundedness constant is exactly 1 — this is what turns Abel summation into a clean one-line bound",
+      "The bounded-variation bound CONTAINS the Leibniz bound: for antitone coefficients the variation telescopes and the boundary term cancels, recovering a_N exactly",
+      "Passing to the limit replaces the first omitted term a_N by a controlling tail total variation V, giving a remainder estimate |S_N − l| ≤ V for non-monotone series"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analysis",
+    "series",
+    "convergence",
+    "alternating-series",
+    "error-bound",
+    "summation-by-parts",
+    "abel-summation",
+    "dirichlet-test",
+    "bounded-variation",
+    "total-variation"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/AlternatingSeriesTestOQ01.lean",
+      "filename": "AlternatingSeriesTestOQ01.lean",
+      "lineCount": 89,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlternatingSeriesTestOQ01.lean"
     },
-    "knownResults": {
-        "proven": [
-            "abs_alternating_Ico_le: the Abel/Dirichlet error bound |∑_{i ∈ [N,M)} (-1)^i a_i| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)| for an ARBITRARY real coefficient sequence — no monotonicity assumed; absent from Mathlib",
-            "abs_partialSum_diff_le: the same bound in partial-sum (Cauchy-difference) form, |S_M − S_N| ≤ |a(M−1)| + total variation on [N,M−1)",
-            "abs_partialSum_diff_le_of_antitone: the monotone special case where the variation telescopes and the boundary term cancels, recovering the classical Leibniz value a_N — establishing that the bounded-variation estimate CONTAINS the antitone one",
-            "abs_partialSum_sub_limit_le_tail_variation: the limit-error bound |S_N − l| ≤ V obtained by passing M → ∞, the bounded-variation analogue of the Leibniz remainder with the tail total variation V in place of a_N",
-            "abs_signSum_le: the Dirichlet boundedness lemma |∑_{i<n} (-1)^i| ≤ 1 that powers the whole estimate"
-        ],
-        "open": [],
-        "goal": "The parent entry alternating-series-test-oq-01-oq-01 asks whether two-sided error bounds can be recovered for alternating series whose coefficients are of bounded variation (rather than antitone), via Abel summation. \n\n**Answer: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|** for an arbitrary real coefficient sequence. The right-hand side is a boundary term plus the total variation of a on the block. For antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the estimate back to the Leibniz value a_N; for a convergent series the M → ∞ limit bounds |S_N − l| by the tail total variation."
+    {
+      "path": "Proofs/AlternatingSeriesTestOQ01OQ01.lean",
+      "filename": "AlternatingSeriesTestOQ01OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlternatingSeriesTestOQ01OQ01.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-24T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/AlternatingSeriesTestOQ01OQ02.lean and gallery entry alternating-series-test-oq-01-oq-02 (status verified)."
+    {
+      "path": "Proofs/AlternatingSeriesTestOQ01OQ01OQ02.lean",
+      "filename": "AlternatingSeriesTestOQ01OQ01OQ02.lean",
+      "lineCount": 207,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlternatingSeriesTestOQ01OQ01OQ02.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (174 lines, 7 theorems, 0 sorries, axiomCount 0, badge 'verified'). Removes the monotonicity hypothesis from the alternating series error estimate. The parent entries bound the truncation error of S_N = ∑_{i<N} (-1)^i a_i by the first omitted term a_N — but only when the coefficients a are antitone. Via summation by parts (Abel's transformation, Finset.sum_range_by_parts) this entry proves a Cauchy-difference estimate valid for an ARBITRARY real coefficient sequence: |S_M − S_N| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)|, a boundary term plus the total variation of a on the block. This is the quantitative core of the Dirichlet test: the partial sums of the sign sequence (-1)^i are bounded by 1 (neg_one_geom_sum), so Abel summation trades the possibly non-monotone oscillation of a for its total variation. Two consequences are recorded: (1) for antitone a ≥ 0 the variation telescopes and the boundary term cancels, collapsing the bound back to the Leibniz value a_N — so the new estimate CONTAINS the classical one as the monotone special case; (2) passing M → ∞ for a convergent series bounds the genuine limit error |S_N − l| by a controlling tail value V, the bounded-variation analogue of the Leibniz remainder. The bounded-variation error bound is absent from Mathlib. This directly answers the parent entry's open question on extending the trapping to coefficients of bounded variation via Abel summation.",
-        "builtItems": [
-            "abs_alternating_Ico_le: the Abel/Dirichlet error bound |∑_{i ∈ [N,M)} (-1)^i a_i| ≤ |a(M−1)| + ∑_{i ∈ [N,M−1)} |a(i+1) − a(i)| for an ARBITRARY real coefficient sequence — no monotonicity assumed; absent from Mathlib",
-            "abs_partialSum_diff_le: the same bound in partial-sum (Cauchy-difference) form, |S_M − S_N| ≤ |a(M−1)| + total variation on [N,M−1)",
-            "abs_partialSum_diff_le_of_antitone: the monotone special case where the variation telescopes and the boundary term cancels, recovering the classical Leibniz value a_N — establishing that the bounded-variation estimate CONTAINS the antitone one",
-            "abs_partialSum_sub_limit_le_tail_variation: the limit-error bound |S_N − l| ≤ V obtained by passing M → ∞, the bounded-variation analogue of the Leibniz remainder with the tail total variation V in place of a_N",
-            "abs_signSum_le: the Dirichlet boundedness lemma |∑_{i<n} (-1)^i| ≤ 1 that powers the whole estimate",
-            "Gallery entry src/data/proofs/alternating-series-test-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/AlternatingSeriesTestOQ01OQ02.lean."
-        ],
-        "insights": [
-            "Summation by parts is the right tool once monotonicity is dropped: it expresses the alternating sum through the coefficient DIFFERENCES (total variation) rather than the coefficients themselves",
-            "The sign sequence (-1)^i has partial sums in {0,1}, so the Dirichlet boundedness constant is exactly 1 — this is what turns Abel summation into a clean one-line bound",
-            "The bounded-variation bound CONTAINS the Leibniz bound: for antitone coefficients the variation telescopes and the boundary term cancels, recovering a_N exactly",
-            "Passing to the limit replaces the first omitted term a_N by a controlling tail total variation V, giving a remainder estimate |S_N − l| ≤ V for non-monotone series"
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/AlternatingSeriesTestOQ01OQ02.lean",
+      "filename": "AlternatingSeriesTestOQ01OQ02.lean",
+      "lineCount": 175,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlternatingSeriesTestOQ01OQ02.lean"
     },
-    "tags": [
-        "analysis",
-        "series",
-        "convergence",
-        "alternating-series",
-        "error-bound",
-        "summation-by-parts",
-        "abel-summation",
-        "dirichlet-test",
-        "bounded-variation",
-        "total-variation"
-    ]
+    {
+      "path": "Proofs/AlternatingSeriesTestOQ01OQ02OQ01.lean",
+      "filename": "AlternatingSeriesTestOQ01OQ02OQ01.lean",
+      "lineCount": 197,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlternatingSeriesTestOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AlternatingSeriesTestOQ01OQ02OQ02.lean",
+      "filename": "AlternatingSeriesTestOQ01OQ02OQ02.lean",
+      "lineCount": 188,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlternatingSeriesTestOQ01OQ02OQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "alternating-series-test-oq-01",
+    "alternating-series-test-oq-01-oq-01",
+    "alternating-series-test-oq-01-oq-01-oq-02",
+    "alternating-series-test-oq-01-oq-02",
+    "alternating-series-test-oq-01-oq-02-oq-01",
+    "alternating-series-test-oq-01-oq-02-oq-02"
+  ]
 }
