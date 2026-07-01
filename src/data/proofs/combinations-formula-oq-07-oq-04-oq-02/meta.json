@@ -142,5 +142,28 @@
       "relationship": "sibling — computes the general r-th falling-factorial moment ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r); this entry complements it with the variance (the second central moment)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "W. Feller",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. 1",
+      "year": 1968,
+      "venue": "Wiley",
+      "note": "Moments and variance of discrete distributions."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

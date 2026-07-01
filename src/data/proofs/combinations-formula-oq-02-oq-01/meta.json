@@ -118,5 +118,27 @@
       "description": "Connects the Catalan numbers to lattice-path / ballot counting, the combinatorial source of the convolution recurrence behind the functional equation."
     }
   ],
-  "sorries": 0
+  "references": [
+    {
+      "authors": "P. Flajolet, R. Sedgewick",
+      "title": "Analytic Combinatorics",
+      "year": 2009,
+      "venue": "Cambridge University Press",
+      "note": "Generating functions, including the Catalan GF C(x)=(1−√(1−4x))/(2x)."
+    },
+    {
+      "authors": "R. P. Stanley",
+      "title": "Enumerative Combinatorics, Vol. 2",
+      "year": 1999,
+      "venue": "Cambridge University Press",
+      "note": "Catalan generating function and Dyck-path enumeration."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

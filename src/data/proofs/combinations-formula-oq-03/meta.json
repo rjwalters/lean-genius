@@ -278,5 +278,28 @@
       "description": "Ehrhart polynomials generalize the lattice-path interpretation of Gaussian binomials: $[n,k]_q$ enumerates lattice paths weighted by area, and Ehrhart polynomials count lattice points in integral dilations of polytopes. The q-binomial coefficient $\\binom{n}{k}_q$ is the Ehrhart polynomial of the hypersimplex $\\Delta_{k,n}$."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "V. Kac, P. Cheung",
+      "title": "Quantum Calculus",
+      "year": 2002,
+      "venue": "Springer",
+      "note": "q-analog (Gaussian) binomial coefficients and the q-Pascal rule."
+    },
+    {
+      "authors": "G. E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": 1976,
+      "venue": "Addison-Wesley",
+      "note": "q-series, Gaussian binomial coefficients, and Rogers-Ramanujan identities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

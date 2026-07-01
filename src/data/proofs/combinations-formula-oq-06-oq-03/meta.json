@@ -124,5 +124,28 @@
       "relationship": "sibling — supplies the figurate point closed forms C(n+2,3) = n(n+1)(n+2)/6 etc. via the ascending factorial; this entry re-derives them through the mirror descending factorial and uses them to close the partial sums"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "J. H. Conway, R. K. Guy",
+      "title": "The Book of Numbers",
+      "year": 1996,
+      "venue": "Springer",
+      "note": "Figurate numbers (triangular, tetrahedral, simplicial) and their closed forms."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

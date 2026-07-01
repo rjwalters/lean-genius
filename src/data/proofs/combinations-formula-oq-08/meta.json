@@ -130,5 +130,28 @@
       "relationship": "ancestor — the core combinations formula entry providing binomial coefficient context"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "É. Lucas",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": 1878,
+      "venue": "Amer. J. Math. 1",
+      "note": "Fibonacci numbers as shallow-diagonal sums of Pascal's triangle."
+    },
+    {
+      "authors": "T. Koshy",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": 2001,
+      "venue": "Wiley",
+      "note": "Fibonacci/Lucas identities, shallow diagonals of Pascal's triangle, and Cassini-type relations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

@@ -157,5 +157,35 @@
       "relationship": "sibling — another OQ-03 child building quantum-group structure on the same q-number library"
     }
   ],
-  "sorries": []
+  "sorries": [],
+  "references": [
+    {
+      "authors": "L. J. Rogers",
+      "title": "Second memoir on the expansion of certain infinite products",
+      "year": 1894,
+      "venue": "Proc. London Math. Soc. 25",
+      "note": "The Rogers-Ramanujan identities."
+    },
+    {
+      "authors": "I. Schur",
+      "title": "Ein Beitrag zur additiven Zahlentheorie und zur Theorie der Kettenbrüche",
+      "year": 1917,
+      "venue": "Sitzungsber. Preuss. Akad. Wiss.",
+      "note": "Schur's finite polynomial form of the Rogers-Ramanujan identities."
+    },
+    {
+      "authors": "G. E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": 1976,
+      "venue": "Addison-Wesley",
+      "note": "q-series, Gaussian binomial coefficients, and Rogers-Ramanujan identities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

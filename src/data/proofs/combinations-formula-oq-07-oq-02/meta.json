@@ -119,5 +119,28 @@
       "relationship": "sibling — the multiplicative (subset-of-a-subset) companion of Vandermonde, where this entry develops the additive off-diagonal companion"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "A.-T. Vandermonde",
+      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "year": 1772,
+      "venue": "Hist. Acad. Roy. Sci.",
+      "note": "Vandermonde's convolution identity for binomial coefficients."
+    },
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

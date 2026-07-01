@@ -127,5 +127,28 @@
       "relationship": "sibling — the subset-of-a-subset companion whose absorption identity k·C(n,k) = n·C(n−1,k−1) is exactly the law squared here to dispatch the quadratic weight"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "L. Comtet",
+      "title": "Advanced Combinatorics",
+      "year": 1974,
+      "venue": "Reidel",
+      "note": "Stirling numbers and power/falling-factorial moments of combinatorial sequences."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

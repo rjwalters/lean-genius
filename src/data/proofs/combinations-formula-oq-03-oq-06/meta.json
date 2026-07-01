@@ -115,5 +115,28 @@
       "relationship": "grandparent — the original combinations formula entry"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "C. Kassel",
+      "title": "Quantum Groups",
+      "year": 1995,
+      "venue": "Springer",
+      "note": "The quantized enveloping algebra U_q(𝔰𝔩₂) and q-number combinatorics."
+    },
+    {
+      "authors": "M. Jimbo",
+      "title": "A q-difference analogue of U(𝔤) and the Yang-Baxter equation",
+      "year": 1985,
+      "venue": "Lett. Math. Phys. 10",
+      "note": "Introduction of the quantum group U_q(𝔤)."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

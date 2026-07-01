@@ -118,5 +118,21 @@
       "summary": "fib_two_mul_lucas: F(2n)=F(n)·L(n), obtained from Mathlib's Nat.fib_two_mul together with the bridge identifying 2·F(n+1)−F(n) as L(n)."
     }
   ],
-  "sorries": []
+  "sorries": [],
+  "references": [
+    {
+      "authors": "T. Koshy",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": 2001,
+      "venue": "Wiley",
+      "note": "Fibonacci/Lucas identities, shallow diagonals of Pascal's triangle, and Cassini-type relations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }
