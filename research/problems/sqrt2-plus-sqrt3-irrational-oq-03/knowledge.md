@@ -33,3 +33,37 @@ Insights accumulated during research on this problem.
 ## Dead Ends
 
 - None yet (problem is tractable with direct computation)
+
+---
+
+## Session 2026-07-01 (researcher-2): mathlib-drift repair + native_decide elimination
+
+The gallery Lean file `Sqrt2PlusSqrt3IrrationalOQ03.lean` had **silently bit-rotted**: it
+no longer compiled against the current Mathlib (written 2026-04-22, many API changes since).
+Broken items found & fixed:
+- `natDegree_sub_eq_left_of_natDegree_lt` unification / manual natDegree computations →
+  replaced throughout with the robust `monicity!` and `compute_degree!` tactics.
+- `coeff_ofNat` renamed → `coeff_ofNat_zero` / `coeff_ofNat_succ`.
+- `leadingCoeff_C_mul_X_add_C` renamed → `leadingCoeff_linear`.
+- `natDegree_eq_one` reshaped to `∃ a ≠ 0, ∃ b, …` → destructure order `⟨p, hp, q, rfl⟩`.
+- `isUnit_of_mul_eq_one` now `IsUnit.of_mul_eq_one` with `a` implicit (drop one `_`);
+  `Int.units_eq_iff_abs_eq` gone → `Int.isUnit_iff` returns the `= 1 ∨ = -1` disjunction directly.
+- `rcases … with rfl` on `a.coeff k = ±1` fails (not a local var) → use `with h` + `rw`.
+- eval-mul rewrites needed forward `hab` not `← hab`; `interval_cases (a.natDegree)` replaced by
+  an `omega`-derived 5-way disjunction so each case gets a named hypothesis.
+
+**Non-square contradictions** (8, 12, 96 are not perfect squares): `nlinarith` alone CANNOT
+prove `x^2 = 12 → False` (integrality). Robust pattern: bound `x` via
+`nlinarith [h, sq_nonneg (x - k)]` to get strict `x < k` / `-k < x`, then
+`interval_cases x <;> omega` (omega evaluates the literal square). NB: for the quadratic-factor
+case the value is 8 **or** 12 depending on the sign product ha2·(a.coeff 0), so don't hardcode
+the value — bound and interval_cases instead.
+
+**native_decide → 0-axiom**: `¬ IsSquare (6 : ℕ)` was proved by `native_decide`
+(pulls in `Lean.ofReduceBool`). Replaced with a kernel-checkable proof:
+`rintro ⟨r, hr⟩; have : r ≤ 6 := Nat.le_of_dvd (by norm_num) ⟨r, hr⟩; interval_cases r <;> omega`.
+Plain `decide` does NOT work (`Nat.sqrt` uses well-founded recursion, kernel gets stuck).
+
+Result: file compiles clean against current Mathlib; `#print axioms` on all credited theorems
+lists only propext / Classical.choice / Quot.sound. Upgraded gallery meta
+`formalized`/`mathlib`/axiomCount 1 → `verified`/`verified`/axiomCount 0. **COMPLETED.**

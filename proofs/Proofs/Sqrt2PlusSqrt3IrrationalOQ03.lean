@@ -31,7 +31,7 @@ Equivalently:
 3. **Minimal polynomial**: Since f is monic, irreducible, and vanishes at α,
    apply `minpoly.eq_of_irreducible_of_monic`.
 
-## Status: 0 sorries (proof complete)
+## Status: 0 sorries, 0 axioms (fully machine-checked, kernel-verified)
 -/
 
 namespace Sqrt2PlusSqrt3IrrationalOQ03
@@ -65,30 +65,13 @@ theorem aeval_sqrt2_plus_sqrt3 :
   -- Now evaluate: f(√2+√3) = α⁴ - 10α² + 1 = (49+20√6) - 10(5+2√6) + 1 = 0
   simp only [map_sub, map_add, map_pow, map_mul, map_one, aeval_X, map_ofNat,
              Polynomial.aeval_one]
-  push_cast
   linarith [hsq, h4]
 
 /-! ## Part II: Irreducibility over ℚ -/
 
 /-- X⁴ - 10X² + 1 is monic. -/
 private theorem f_monic : (X ^ 4 - 10 * X ^ 2 + 1 : ℚ[X]).Monic := by
-  unfold Polynomial.Monic Polynomial.leadingCoeff
-  have hd : (X ^ 4 - 10 * X ^ 2 + 1 : ℚ[X]).natDegree = 4 := by
-    have h1 : (10 * X ^ 2 : ℚ[X]).natDegree ≤ 2 := by
-      calc (10 * X ^ 2 : ℚ[X]).natDegree ≤ _ := natDegree_mul_le
-        _ = _ := by simp
-    have h2 : (X ^ 4 - 10 * X ^ 2 : ℚ[X]).natDegree = 4 := by
-      apply natDegree_sub_eq_left_of_natDegree_lt
-      calc (10 * X ^ 2 : ℚ[X]).natDegree ≤ 2 := h1
-        _ < 4 := by norm_num
-      simp [natDegree_pow]
-    calc (X ^ 4 - 10 * X ^ 2 + 1 : ℚ[X]).natDegree
-        = (X ^ 4 - 10 * X ^ 2 : ℚ[X]).natDegree := by
-          apply natDegree_add_eq_left_of_natDegree_lt
-          simp [h2]
-      _ = 4 := h2
-  rw [hd]
-  simp [coeff_sub, coeff_add, coeff_X_pow, coeff_mul, coeff_ofNat]
+  monicity!
 
 /-- √2+√3 is algebraic over ℚ: X⁴ - 10X² + 1 is a monic polynomial with it as root. -/
 private theorem sqrt2_plus_sqrt3_isIntegral : IsIntegral ℚ (Real.sqrt 2 + Real.sqrt 3) :=
@@ -118,77 +101,50 @@ private lemma f_no_int_root (k : ℤ) :
 
 private theorem irred_f : Irreducible (X ^ 4 - 10 * X ^ 2 + 1 : ℚ[X]) := by
   -- Prove monic over ℤ (same structure as f_monic)
-  have fmonic_Z : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).Monic := by
-    unfold Polynomial.Monic Polynomial.leadingCoeff
-    have hd : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).natDegree = 4 := by
-      have h1 : (10 * X ^ 2 : ℤ[X]).natDegree ≤ 2 := by
-        calc (10 * X ^ 2 : ℤ[X]).natDegree ≤ _ := natDegree_mul_le
-          _ = _ := by simp
-      have h2 : (X ^ 4 - 10 * X ^ 2 : ℤ[X]).natDegree = 4 := by
-        apply natDegree_sub_eq_left_of_natDegree_lt
-        · calc (10 * X ^ 2 : ℤ[X]).natDegree ≤ 2 := h1
-            _ < 4 := by norm_num
-        · simp [natDegree_pow]
-      calc (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).natDegree
-          = (X ^ 4 - 10 * X ^ 2 : ℤ[X]).natDegree := by
-            apply natDegree_add_eq_left_of_natDegree_lt; simp [h2]
-        _ = 4 := h2
-    rw [hd]; simp [coeff_sub, coeff_add, coeff_X_pow, coeff_mul, coeff_ofNat]
+  have fmonic_Z : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).Monic := by monicity!
   -- Prove irreducible over ℤ[X]
   have hirred_int : Irreducible (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]) := by
     refine ⟨fun h => ?_, fun a b hab => ?_⟩
     · -- Not a unit: f has degree 4 ≠ 0
-      have hd : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).natDegree = 4 := by
-        have h1 : (10 * X ^ 2 : ℤ[X]).natDegree ≤ 2 := by
-          calc (10 * X ^ 2 : ℤ[X]).natDegree ≤ _ := natDegree_mul_le; _ = _ := by simp
-        have h2 : (X ^ 4 - 10 * X ^ 2 : ℤ[X]).natDegree = 4 :=
-          natDegree_sub_eq_left_of_natDegree_lt (h1.trans_lt (by norm_num)) (by simp [natDegree_pow])
-        exact (natDegree_add_eq_left_of_natDegree_lt (by simp [h2])).trans h2
+      have hd : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).natDegree = 4 := by compute_degree!
       have := Polynomial.natDegree_eq_zero_of_isUnit h
       omega
     · -- Any factorization has a unit factor
-      have hfne : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]) ≠ 0 := by
-        intro h; simp at h
+      have hfne : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]) ≠ 0 := fmonic_Z.ne_zero
       have hane : a ≠ 0 := left_ne_zero_of_mul (hab ▸ hfne)
       have hbne : b ≠ 0 := right_ne_zero_of_mul (hab ▸ hfne)
       have hdeg : a.natDegree + b.natDegree = 4 := by
         have hm := Polynomial.natDegree_mul hane hbne
-        rw [hab] at hm
-        have hd4 : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).natDegree = 4 := by
-          have h1 : (10 * X ^ 2 : ℤ[X]).natDegree ≤ 2 := by
-            calc (10 * X ^ 2 : ℤ[X]).natDegree ≤ _ := natDegree_mul_le; _ = _ := by simp
-          have h2 : (X ^ 4 - 10 * X ^ 2 : ℤ[X]).natDegree = 4 :=
-            natDegree_sub_eq_left_of_natDegree_lt (h1.trans_lt (by norm_num)) (by simp [natDegree_pow])
-          exact (natDegree_add_eq_left_of_natDegree_lt (by simp [h2])).trans h2
+        rw [← hab] at hm
+        have hd4 : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).natDegree = 4 := by compute_degree!
         omega
       have hlc_prod : a.leadingCoeff * b.leadingCoeff = 1 := by
         have := congr_arg Polynomial.leadingCoeff hab
-        rwa [Polynomial.leadingCoeff_mul, fmonic_Z.leadingCoeff] at this
+        rw [Polynomial.leadingCoeff_mul, fmonic_Z.leadingCoeff] at this
+        exact this.symm
       have ha_le : a.natDegree ≤ 4 := by omega
       -- Degree 1: extract integer root of a → integer root of f → contradiction
       have deg1_to_root : a.natDegree = 1 → False := by
         intro h1
-        obtain ⟨p, q, hp, rfl⟩ := Polynomial.natDegree_eq_one.mp h1
-        -- p * b.leadingCoeff = 1, so p = ±1
+        obtain ⟨p, hp, q, rfl⟩ := Polynomial.natDegree_eq_one.mp h1
+        -- a = C p * X + C q with leading coeff p, and p·b.leadingCoeff = 1, so p = ±1
         have hpm : p = 1 ∨ p = -1 := by
-          have : p * b.leadingCoeff = 1 := by
-            have := congr_arg Polynomial.leadingCoeff hab
-            simp [Polynomial.leadingCoeff_mul, Polynomial.leadingCoeff_C_mul_X_add_C hp] at this
-            exact this
-          rcases Int.isUnit_iff.mp (isUnit_of_mul_eq_one _ _ this) with ⟨u, hu⟩
-          rcases Int.units_eq_iff_abs_eq.mp (Units.ext hu) with h | h <;> simp [h]
+          have hlin : (C p * X + C q : ℤ[X]).leadingCoeff = p := Polynomial.leadingCoeff_linear hp
+          have hu : IsUnit p := by
+            rw [← hlin]; exact IsUnit.of_mul_eq_one _ hlc_prod
+          exact Int.isUnit_iff.mp hu
         rcases hpm with rfl | rfl
         · -- a = C 1 * X + C q, root is -q
           have hroot : (C 1 * X + C q : ℤ[X]).eval (-q) = 0 := by
             simp [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
           have hfroot : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).eval (-q) = 0 := by
-            rw [← hab, Polynomial.eval_mul, hroot, zero_mul]
+            rw [hab, Polynomial.eval_mul, hroot, zero_mul]
           exact f_no_int_root (-q) hfroot
         · -- a = C (-1) * X + C q, root is q
           have hroot : (C (-1 : ℤ) * X + C q : ℤ[X]).eval q = 0 := by
             simp [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
           have hfroot : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).eval q = 0 := by
-            rw [← hab, Polynomial.eval_mul, hroot, zero_mul]
+            rw [hab, Polynomial.eval_mul, hroot, zero_mul]
           exact f_no_int_root q hfroot
       -- Degree 2: coefficient analysis → contradiction
       have deg2_impossible : a.natDegree = 2 → False := by
@@ -196,7 +152,7 @@ private theorem irred_f : Irreducible (X ^ 4 - 10 * X ^ 2 + 1 : ℚ[X]) := by
         have hb2 : b.natDegree = 2 := by omega
         -- Get coefficient equations from a * b = f
         have hce : ∀ n, (a * b).coeff n = (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).coeff n :=
-          fun n => congr_arg (Polynomial.coeff · n) hab
+          fun n => (congr_arg (fun p : ℤ[X] => p.coeff n) hab).symm
         -- a.coeff k = 0 for k > 2, b.coeff k = 0 for k > 2
         have ha3 : a.coeff 3 = 0 := Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
         have ha4 : a.coeff 4 = 0 := Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
@@ -207,68 +163,66 @@ private theorem irred_f : Irreducible (X ^ 4 - 10 * X ^ 2 + 1 : ℚ[X]) := by
           have h := hce 4
           simp only [Polynomial.coeff_mul, Finset.Nat.antidiagonal_succ] at h
           simp [ha3, ha4, hb3, hb4, Polynomial.coeff_sub, Polynomial.coeff_add,
-                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat] at h
+                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat_zero,
+                Polynomial.coeff_ofNat_succ] at h
           linarith
         -- Coeff of X^3: a.coeff 2 * b.coeff 1 + a.coeff 1 * b.coeff 2 = 0
         have hc3 : a.coeff 2 * b.coeff 1 + a.coeff 1 * b.coeff 2 = 0 := by
           have h := hce 3
           simp only [Polynomial.coeff_mul, Finset.Nat.antidiagonal_succ] at h
           simp [ha3, ha4, hb3, hb4, Polynomial.coeff_sub, Polynomial.coeff_add,
-                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat] at h
+                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat_zero,
+                Polynomial.coeff_ofNat_succ] at h
           linarith
         -- Coeff of X^2: a.coeff 2 * b.coeff 0 + a.coeff 1 * b.coeff 1 + a.coeff 0 * b.coeff 2 = -10
         have hc2 : a.coeff 2 * b.coeff 0 + a.coeff 1 * b.coeff 1 + a.coeff 0 * b.coeff 2 = -10 := by
           have h := hce 2
           simp only [Polynomial.coeff_mul, Finset.Nat.antidiagonal_succ] at h
           simp [ha3, ha4, hb3, hb4, Polynomial.coeff_sub, Polynomial.coeff_add,
-                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat] at h
+                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat_zero,
+                Polynomial.coeff_ofNat_succ] at h
           linarith
         -- Coeff of X^1: a.coeff 1 * b.coeff 0 + a.coeff 0 * b.coeff 1 = 0
         have hc1 : a.coeff 1 * b.coeff 0 + a.coeff 0 * b.coeff 1 = 0 := by
           have h := hce 1
           simp only [Polynomial.coeff_mul, Finset.Nat.antidiagonal_succ] at h
           simp [ha3, ha4, hb3, hb4, Polynomial.coeff_sub, Polynomial.coeff_add,
-                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat] at h
+                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat_zero,
+                Polynomial.coeff_ofNat_succ] at h
           linarith
         -- Coeff of X^0: a.coeff 0 * b.coeff 0 = 1
         have hc0 : a.coeff 0 * b.coeff 0 = 1 := by
           have h := hce 0
           simp only [Polynomial.coeff_mul, Finset.Nat.antidiagonal_succ] at h
           simp [ha3, ha4, hb3, hb4, Polynomial.coeff_sub, Polynomial.coeff_add,
-                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat] at h
+                Polynomial.coeff_X_pow, Polynomial.coeff_one, Polynomial.coeff_ofNat_zero,
+                Polynomial.coeff_ofNat_succ] at h
           linarith
-        -- From hc4: a.coeff 2 * b.coeff 2 = 1, both are ±1 units in ℤ
-        have ha2_unit : IsUnit (a.coeff 2) := isUnit_of_mul_eq_one _ _ hc4
-        -- Since a.coeff 2 is the leading coeff of a (natDegree = 2)
-        have ha2_eq : a.coeff 2 = a.leadingCoeff := by
-          simp [Polynomial.leadingCoeff, h2]
-        have hb2_eq : b.coeff 2 = b.leadingCoeff := by
-          simp [Polynomial.leadingCoeff, hb2]
-        -- From hlc_prod: a.leadingCoeff * b.leadingCoeff = 1
-        -- And a.leadingCoeff is the leading coeff, b.leadingCoeff is too
-        -- From hc4: a.coeff 2 * b.coeff 2 = 1
-        -- So in ℤ: both must be ±1 with product 1 → both = 1 or both = -1
+        -- From hc4: a.coeff 2 * b.coeff 2 = 1, both must be ±1 with product 1
         have hab2 : (a.coeff 2 = 1 ∧ b.coeff 2 = 1) ∨ (a.coeff 2 = -1 ∧ b.coeff 2 = -1) := by
-          have ha2_pm : a.coeff 2 = 1 ∨ a.coeff 2 = -1 := by
-            rw [ha2_eq]; exact Int.isUnit_iff.mp (isUnit_of_mul_eq_one _ _ (ha2_eq ▸ hb2_eq ▸ hc4))
-          rcases ha2_pm with rfl | rfl
-          · left; constructor; rfl; linarith [hc4]
-          · right; constructor; rfl; linarith [hc4]
+          have ha2_pm : a.coeff 2 = 1 ∨ a.coeff 2 = -1 :=
+            Int.isUnit_iff.mp (IsUnit.of_mul_eq_one _ hc4)
+          rcases ha2_pm with h | h
+          · left; refine ⟨h, ?_⟩; rw [h] at hc4; linarith
+          · right; refine ⟨h, ?_⟩; rw [h] at hc4; linarith
         -- In either case, the analysis is symmetric (negate a and b)
-        -- We can WLOG assume a.coeff 2 = 1 (the -1 case is identical by negation)
         -- Key equations after substituting a.coeff 2 = ±1 and b.coeff 2 = ±1:
         -- From hc3: b.coeff 1 + a.coeff 1 = 0 (when a.coeff 2 = b.coeff 2 = ±1)
         -- From hc1: a.coeff 1 * b.coeff 0 + a.coeff 0 * b.coeff 1 = 0
         -- From hc0: a.coeff 0 * b.coeff 0 = 1
         -- From hc2: b.coeff 0 + a.coeff 1 * b.coeff 1 + a.coeff 0 = -10
         rcases hab2 with ⟨ha2, hb2v⟩ | ⟨ha2, hb2v⟩ <;>
-        · rw [ha2, hb2v] at hc3 hc2 hc1
+        · rw [ha2, hb2v] at hc3 hc2
           simp at hc3 hc2 hc1
           -- hc3: b.coeff 1 = -a.coeff 1
           -- hc1: a.coeff 1 * b.coeff 0 - a.coeff 0 * a.coeff 1 = 0
           --     → a.coeff 1 * (b.coeff 0 - a.coeff 0) = 0
+          -- hc3 ⟹ b.coeff 1 = -a.coeff 1; substitute into hc1 to factor
+          have hb1eq : b.coeff 1 = -a.coeff 1 := by linarith [hc3]
           have hcase : a.coeff 1 = 0 ∨ b.coeff 0 = a.coeff 0 := by
-            rcases mul_eq_zero.mp (by linarith [hc1, hc3] : a.coeff 1 * (b.coeff 0 - a.coeff 0) = 0) with h | h
+            have hz : a.coeff 1 * (b.coeff 0 - a.coeff 0) = 0 := by
+              linear_combination hc1 - a.coeff 0 * hb1eq
+            rcases mul_eq_zero.mp hz with h | h
             · left; exact h
             · right; linarith
           rcases hcase with ha1z | hb0a0
@@ -276,79 +230,77 @@ private theorem irred_f : Irreducible (X ^ 4 - 10 * X ^ 2 + 1 : ℚ[X]) := by
             have hb1z : b.coeff 1 = 0 := by linarith [hc3]
             rw [ha1z, hb1z] at hc2 hc1
             simp at hc2 hc1
-            -- hc2: a.coeff 0 + b.coeff 0 = -10 (with sign from ha2/hb2v)
-            -- hc0: a.coeff 0 * b.coeff 0 = 1
-            -- (a.coeff 0 - b.coeff 0)^2 = (a.coeff 0 + b.coeff 0)^2 - 4*a.coeff 0*b.coeff 0
-            --                            = 100 - 4 = 96
-            -- But 96 is not a perfect square → contradiction
+            -- (a.coeff 0 - b.coeff 0)² = (a.coeff 0 + b.coeff 0)² - 4·(a.coeff 0·b.coeff 0)
+            --                          = 100 - 4 = 96, but 96 is not a perfect square.
             have h96 : (a.coeff 0 - b.coeff 0) ^ 2 = 96 := by nlinarith [hc0, hc2]
-            nlinarith [sq_nonneg (a.coeff 0 - b.coeff 0 - 10 : ℤ),
-                       sq_nonneg (a.coeff 0 - b.coeff 0 + 10 : ℤ)]
+            have hlt : a.coeff 0 - b.coeff 0 < 10 := by
+              nlinarith [h96, sq_nonneg (a.coeff 0 - b.coeff 0 - 10)]
+            have hgt : -10 < a.coeff 0 - b.coeff 0 := by
+              nlinarith [h96, sq_nonneg (a.coeff 0 - b.coeff 0 + 10)]
+            interval_cases (a.coeff 0 - b.coeff 0) <;> omega
           · -- b.coeff 0 = a.coeff 0
             have hb0 : b.coeff 0 = a.coeff 0 := hb0a0
             rw [hb0] at hc0
-            -- a.coeff 0^2 = 1 → a.coeff 0 = ±1
-            have ha0_pm : a.coeff 0 = 1 ∨ a.coeff 0 = -1 := by
-              have := Int.isUnit_iff.mp (isUnit_of_mul_eq_one _ _ (show a.coeff 0 * a.coeff 0 = 1 by linarith [hc0]))
-              rcases this with ⟨u, hu⟩
-              rcases Int.units_eq_iff_abs_eq.mp (Units.ext hu) with h | h <;> simp [h]
-            rcases ha0_pm with rfl | rfl
-            · -- a.coeff 0 = 1: from hc2: 2 - a.coeff 1^2 = -10 → a.coeff 1^2 = 12
-              have ha1sq : a.coeff 1 ^ 2 = 12 := by nlinarith [hc2, hc3, hb0]
-              -- 12 is not a perfect square in ℤ
-              nlinarith [sq_nonneg (a.coeff 1 - 3 : ℤ), sq_nonneg (a.coeff 1 + 3 : ℤ),
-                         sq_nonneg (a.coeff 1 - 4 : ℤ), sq_nonneg (a.coeff 1 + 4 : ℤ)]
-            · -- a.coeff 0 = -1: from hc2: -2 - a.coeff 1^2 = -10 → a.coeff 1^2 = 8
-              have ha1sq : a.coeff 1 ^ 2 = 8 := by nlinarith [hc2, hc3, hb0]
-              -- 8 is not a perfect square in ℤ
-              nlinarith [sq_nonneg (a.coeff 1 - 2 : ℤ), sq_nonneg (a.coeff 1 + 2 : ℤ),
-                         sq_nonneg (a.coeff 1 - 3 : ℤ), sq_nonneg (a.coeff 1 + 3 : ℤ)]
+            -- a.coeff 0² = 1 → a.coeff 0 = ±1
+            have ha0_pm : a.coeff 0 = 1 ∨ a.coeff 0 = -1 :=
+              Int.isUnit_iff.mp (IsUnit.of_mul_eq_one _ (show a.coeff 0 * a.coeff 0 = 1 by linarith [hc0]))
+            -- Substituting b.coeff 1 = -a.coeff 1 into hc2 gives a.coeff 1² ∈ {8, 12}
+            -- (the exact value depends on the sign product), neither a perfect square.
+            have hprod : a.coeff 1 * b.coeff 1 = -a.coeff 1 ^ 2 := by rw [hb1eq]; ring
+            rcases ha0_pm with h | h <;>
+            · -- a.coeff 0 = ±1 ⟹ 8 ≤ a.coeff 1² ≤ 12, so |a.coeff 1| ≤ 3, ruled out cell-by-cell
+              have hlt : a.coeff 1 < 4 := by
+                nlinarith [hc2, hprod, hb0, h, sq_nonneg (a.coeff 1 - 4)]
+              have hgt : -4 < a.coeff 1 := by
+                nlinarith [hc2, hprod, hb0, h, sq_nonneg (a.coeff 1 + 4)]
+              interval_cases (a.coeff 1) <;> omega
       -- Degree 3: b has degree 1 → same argument
       have deg3_impossible : a.natDegree = 3 → False := by
         intro h3
         have hb1 : b.natDegree = 1 := by omega
-        obtain ⟨p, q, hp, rfl⟩ := Polynomial.natDegree_eq_one.mp hb1
+        obtain ⟨p, hp, q, rfl⟩ := Polynomial.natDegree_eq_one.mp hb1
         have hpm : p = 1 ∨ p = -1 := by
-          have : a.leadingCoeff * p = 1 := by
-            have := congr_arg Polynomial.leadingCoeff hab
-            simp [Polynomial.leadingCoeff_mul, Polynomial.leadingCoeff_C_mul_X_add_C hp] at this
-            linarith
-          rcases Int.isUnit_iff.mp (isUnit_of_mul_eq_one _ _ this) with ⟨u, hu⟩
-          rcases Int.units_eq_iff_abs_eq.mp (Units.ext hu) with h | h <;> simp [h]
+          have hlin : (C p * X + C q : ℤ[X]).leadingCoeff = p := Polynomial.leadingCoeff_linear hp
+          have hu : IsUnit p := by
+            rw [← hlin]; exact IsUnit.of_mul_eq_one_right _ hlc_prod
+          exact Int.isUnit_iff.mp hu
         rcases hpm with rfl | rfl
         · have hroot : (C 1 * X + C q : ℤ[X]).eval (-q) = 0 := by
             simp [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
           have hfroot : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).eval (-q) = 0 := by
-            rw [← hab, Polynomial.eval_mul, hfroot.symm]; simp [hroot]
+            rw [hab, Polynomial.eval_mul]; simp [hroot]
           exact f_no_int_root (-q) hfroot
         · have hroot : (C (-1 : ℤ) * X + C q : ℤ[X]).eval q = 0 := by
             simp [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
           have hfroot : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).eval q = 0 := by
-            rw [← hab, Polynomial.eval_mul]; simp [hroot]
+            rw [hab, Polynomial.eval_mul]; simp [hroot]
           exact f_no_int_root q hfroot
-      -- Now: case split on a.natDegree
-      interval_cases (a.natDegree)
+      -- Now: case split on a.natDegree ∈ {0,1,2,3,4}; the middle values are impossible.
+      have hval : a.natDegree = 0 ∨ a.natDegree = 1 ∨ a.natDegree = 2 ∨
+          a.natDegree = 3 ∨ a.natDegree = 4 := by omega
+      rcases hval with h0 | h1 | h2 | h3 | h4
       · -- natDegree a = 0: a is a constant unit
         left
-        have ha_const : a = C (a.coeff 0) := Polynomial.eq_C_of_natDegree_eq_zero (by assumption)
+        have ha_const : a = C (a.coeff 0) := Polynomial.eq_C_of_natDegree_eq_zero h0
         have ha0_unit : IsUnit (a.coeff 0) := by
-          have hla : a.leadingCoeff = a.coeff 0 := by simp [Polynomial.leadingCoeff, show a.natDegree = 0 from by assumption]
-          exact isUnit_of_mul_eq_one _ _ (hla ▸ hlc_prod)
+          have hla : a.leadingCoeff = a.coeff 0 := by rw [Polynomial.leadingCoeff, h0]
+          rw [← hla]; exact IsUnit.of_mul_eq_one _ hlc_prod
         rw [ha_const]; exact Polynomial.isUnit_C.mpr ha0_unit
-      · exact (deg1_to_root (by assumption)).elim
-      · exact (deg2_impossible (by assumption)).elim
-      · exact (deg3_impossible (by assumption)).elim
+      · exact (deg1_to_root h1).elim
+      · exact (deg2_impossible h2).elim
+      · exact (deg3_impossible h3).elim
       · -- natDegree a = 4: b has degree 0, b is a unit
         right
         have hb0 : b.natDegree = 0 := by omega
         have hb_const : b = C (b.coeff 0) := Polynomial.eq_C_of_natDegree_eq_zero hb0
         have hb0_unit : IsUnit (b.coeff 0) := by
-          have hlb : b.leadingCoeff = b.coeff 0 := by simp [Polynomial.leadingCoeff, hb0]
-          exact isUnit_of_mul_eq_one _ _ (mul_comm (b.coeff 0) (a.leadingCoeff) ▸ hlb ▸ hlc_prod.symm ▸ (mul_comm _ _) ▸ hlc_prod)
+          have hlb : b.leadingCoeff = b.coeff 0 := by rw [Polynomial.leadingCoeff, hb0]
+          rw [← hlb]; exact IsUnit.of_mul_eq_one_right _ hlc_prod
         rw [hb_const]; exact Polynomial.isUnit_C.mpr hb0_unit
   -- Transfer: ℤ[X] → ℚ[X] via Gauss's lemma
   have hprim : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).IsPrimitive := fmonic_Z.isPrimitive
-  have hirred_rat := (hprim.Int.irreducible_iff_irreducible_map_cast).mp hirred_int
+  have hirred_rat :=
+    (Polynomial.IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp hirred_int
   have hmap : (X ^ 4 - 10 * X ^ 2 + 1 : ℤ[X]).map (Int.castRingHom ℚ) = X ^ 4 - 10 * X ^ 2 + 1 := by
     simp [Polynomial.map_sub, Polynomial.map_add, Polynomial.map_pow, Polynomial.map_mul,
           Polynomial.map_X, Polynomial.map_one, Polynomial.map_C]
@@ -370,18 +322,7 @@ theorem adjoin_sqrt2_plus_sqrt3_finrank :
     Module.finrank ℚ ℚ⟮Real.sqrt 2 + Real.sqrt 3⟯ = 4 := by
   rw [IntermediateField.adjoin.finrank sqrt2_plus_sqrt3_isIntegral]
   rw [minpoly_sqrt2_plus_sqrt3]
-  have h1 : (10 * X ^ 2 : ℚ[X]).natDegree ≤ 2 := by
-    calc (10 * X ^ 2 : ℚ[X]).natDegree ≤ _ := natDegree_mul_le
-      _ = _ := by simp
-  have h2 : (X ^ 4 - 10 * X ^ 2 : ℚ[X]).natDegree = 4 := by
-    apply natDegree_sub_eq_left_of_natDegree_lt
-    · linarith [h1]
-    · simp [natDegree_pow]
-  calc (X ^ 4 - 10 * X ^ 2 + 1 : ℚ[X]).natDegree
-      = (X ^ 4 - 10 * X ^ 2 : ℚ[X]).natDegree := by
-        apply natDegree_add_eq_left_of_natDegree_lt
-        simp [h2]
-    _ = 4 := h2
+  compute_degree!
 
 /-- **Irrationality**: √2+√3 is not rational.
     If √2+√3 = q ∈ ℚ, squaring gives (q²−5)/2 = √6, contradicting irrationality of √6. -/
@@ -389,8 +330,14 @@ theorem sqrt2_plus_sqrt3_irrational : Irrational (Real.sqrt 2 + Real.sqrt 3) := 
   have h2 : (0 : ℝ) ≤ 2 := by norm_num
   have h3 : (0 : ℝ) ≤ 3 := by norm_num
   have h6mult : sqrt 2 * sqrt 3 = sqrt 6 := by rw [← sqrt_mul h2]; norm_num
-  have hsix : Irrational (sqrt 6) :=
-    irrational_sqrt_natCast_iff.mpr (by native_decide)
+  -- 6 is not a perfect square: a witness r with r*r = 6 would satisfy r ∣ 6,
+  -- hence r ≤ 6, and no r in 0..6 works. Kernel-checkable (unlike `native_decide`),
+  -- so the whole result stays axiom-free (no `Lean.ofReduceBool`).
+  have hnotsq : ¬ IsSquare (6 : ℕ) := by
+    rintro ⟨r, hr⟩
+    have hle : r ≤ 6 := Nat.le_of_dvd (by norm_num) ⟨r, hr⟩
+    interval_cases r <;> omega
+  have hsix : Irrational (sqrt 6) := irrational_sqrt_natCast_iff.mpr hnotsq
   intro ⟨q, hq⟩
   have hsq : (q : ℝ) ^ 2 = 5 + 2 * sqrt 6 := by
     have : (sqrt 2 + sqrt 3) ^ 2 = 5 + 2 * sqrt 6 := by
