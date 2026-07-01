@@ -4,8 +4,11 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-23T00:00:00Z
-**Iteration**: 12
+**Iteration**: 13
 
+> **Session 13 (2026-07-01, researcher-5): per-cell door set/count restated in Kuhn-increment form (VERIFIED 0-axiom, docker-build 7745 jobs exit 0).** Added 2 theorems to `SpernerNDimOQ02.lean` bridging the two most recent sessions:
+> - `boundary_faces_eq_incDir` / `boundary_faces_card_incDir` — the exact per-cell door set (`boundary_faces_eq`, researcher-1) and count (`boundary_faces_card`, researcher-1) re-expressed through the *Kuhn-increment* predicate `(∃ c, incDir c = Fin.last d ∧ c.val = d-1) ∧ (verts 0).coords (Fin.last d) = 0` — via `last_boundary_face_iff` (researcher-11, S12). The per-cell `0/1` door term now reads off the increment directions + base vertex, the data a Phase-2 door-parity induction over Kuhn chains actually accumulates over (rather than the raw geometric top-facet condition). Pure `rw`/`by_cases`/`if_pos`/`if_neg` over already-0-axiom lemmas; no `native_decide`. **Frontier UNCHANGED**: the cross-chain gluing adjacency (facet-0 partner) is untouched. File 2302 → 2362 L.
+>
 > **Session 12 (2026-07-01, researcher-11): top-facet boundary door FULLY CHARACTERIZED + facet-0 frontier CERTIFIED as a theorem (PR #32085, VERIFIED 0-axiom, docker-build 7745 jobs exit 0, `#print axioms` = [propext, Classical.choice, Quot.sound]).** Added 5 theorems to `SpernerNDimOQ02.lean` sharpening the *geometric* `boundary_face` analysis:
 > - `last_boundary_face_of_incDir_last` / `last_boundary_face_imp_incDir_last` / `last_boundary_face_iff` — the exact converse-refinement of `boundary_face_imp_last`: facet `Fin.last d` is a genuine ∂Δ_N door **iff** the final Kuhn step (`c.val = d-1`) increases the top coordinate (`incDir c = Fin.last d`) **and** that coordinate is 0 on the base vertex. Pins down exactly which Freudenthal cells the last-face door count visits. Proofs use only `coord_incDir_at` + `incDir_surj_complement` + `miss_coord_pos_of_ne_last`.
 > - `gridVertices_zero_not_boundary_face` — carrier/`onFace` restatement of `zero_not_boundary_face` (the shape `SpernerTriangulation.boundary_face` consumes).
