@@ -21,6 +21,26 @@
     ]
   },
   {
+    "id": "ann-aoc0702-setintegral",
+    "proofId": "area-of-circle-oq-07-oq-02",
+    "range": { "startLine": 32, "endLine": 32 },
+    "type": "concept",
+    "title": "Reading the Set-Restricted Integral Notation `∫ x in s, f x`",
+    "content": "`open MeasureTheory` brings two integral notations into play, and the entire entry hinges on the difference. The parent's `∫ x, f x` integrates against the volume measure on all of ℝ; here `∫ x in Set.Ioi 0, f x` is the *set integral* `MeasureTheory.setIntegral`, i.e. integration against the volume measure **restricted** to the half-line `(0, ∞)` (`volume.restrict (Set.Ioi 0)`). It is not a new primitive — `∫ x in s, f x` unfolds to `∫ x, f x ∂(μ.restrict s)` — which is exactly why the even-symmetry lemma `integral_comp_abs` can relate the two by a measure-level reflection rather than any change-of-variable bookkeeping. `Set.Ioi 0` is the *open* ray `(0, ∞)`, but since `{0}` is volume-null the endpoint is irrelevant to the value; and as with the full-line notation, a non-integrable integrand (here `b ≤ 0`) makes the whole thing evaluate to `0`.",
+    "mathContext": "$\\int_{x \\in s} f = \\int f \\, d(\\mu\\restriction s)$ with $\\mu = \\text{volume}$, $s = (0,\\infty)$. Since $\\text{volume}(\\{0\\}) = 0$, $\\int_{(0,\\infty)} = \\int_{[0,\\infty)}$; the open vs. closed ray choice does not change the value.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "MeasureTheory.setIntegral",
+      "restricted measure volume.restrict",
+      "Set.Ioi",
+      "null sets and endpoints"
+    ],
+    "prerequisites": [
+      "set integral notation",
+      "restricted measure"
+    ]
+  },
+  {
     "id": "ann-aoc0702-half",
     "proofId": "area-of-circle-oq-07-oq-02",
     "range": { "startLine": 34, "endLine": 38 },

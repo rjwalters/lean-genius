@@ -36,6 +36,18 @@
     "prerequisites": ["the per-row Jensen bound", "interchange of finite sums"]
   },
   {
+    "id": "ann-birthday-oq0201020101-uniform-ds",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 96, "endLine": 106 },
+    "type": "tactic",
+    "title": "The All-1/d Matrix Is Doubly Stochastic",
+    "content": "`uniformAveraging_mem_doublyStochastic` is the bridge lemma that instantiates the global inequality at its extreme point: the constant matrix J with every entry 1/d belongs to `doublyStochastic ℝ (Fin d)` for d ≥ 1. The proof uses `mem_doublyStochastic_iff_sum`, which reduces membership to three conditions — entrywise nonnegativity (1/d ≥ 0 from `Nat.cast_nonneg`), every row sum = 1, and every column sum = 1. Because J is symmetric and constant, the row and column obligations are literally the same computation `∑_{k<d} 1/d = d · (1/d) = 1`, discharged uniformly by `simp [Finset.sum_const, card_univ] ; field_simp` after the `<;>` splits both goals. This is the one place the operator J is certified to live in the doubly-stochastic polytope, which is what licenses feeding it to `sum_sq_mulVec_le_of_mem_doublyStochastic` in the endpoint theorem below.",
+    "mathContext": "$J = \\mathrm{of}(\\lambda i\\,j.\\ d^{-1}) \\in \\mathrm{doublyStochastic}$: entries $d^{-1} \\ge 0$, and each row/column sum $\\sum_{k<d} d^{-1} = d\\cdot d^{-1} = 1$. $J$ is the center of the Birkhoff polytope — the maximally-averaging doubly stochastic matrix.",
+    "significance": "supporting",
+    "relatedConcepts": ["doubly stochastic matrix", "mem_doublyStochastic_iff_sum", "Birkhoff polytope center", "uniform averaging"],
+    "prerequisites": ["doubly stochastic matrices", "finite sums of constants"]
+  },
+  {
     "id": "ann-birthday-oq0201020101-endpoint",
     "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 108, "endLine": 133 },

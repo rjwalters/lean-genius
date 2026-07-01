@@ -38,13 +38,25 @@
   {
     "id": "buffon-oq020201-ann-max",
     "proofId": "buffons-needle-oq-02-oq-02-oq-01",
-    "range": { "startLine": 99, "endLine": 151 },
+    "range": { "startLine": 99, "endLine": 121 },
     "type": "insight",
-    "title": "The Maximum is 2/π, Hence αₙ < 1 in Every Dimension",
-    "content": "crossingFactor_le_two_div_pi proves αₙ ≤ 2/π for all n ≥ 2 by strong induction: both base values satisfy it (α₂ = 2/π; α₃ = 1/2 ≤ 2/π since π ≤ 4) and each recurrence step shrinks by a ratio ≤ 1. So the classical planar Buffon value α₂ = 2/π is the global maximum across all dimensions. crossingFactor_lt_one then concludes αₙ < 1 for every n ≥ 2 because 2/π < 1 (as 2 < π) — the expected number of hyperplane crossings per unit L/d never reaches one in any dimension, reflecting that a random direction's first coordinate concentrates near 0 as dimension grows (αₙ → 0).",
-    "mathContext": "$\\alpha_n \\le \\tfrac2\\pi$ for $n\\ge 2$, maximized at $n=2$; $\\tfrac2\\pi < 1 \\Rightarrow \\alpha_n < 1$",
+    "title": "The Maximum is 2/π, Attained at n = 2",
+    "content": "crossingFactor_le_two_div_pi proves αₙ ≤ 2/π for all n ≥ 2 by strong induction on n. The base window n < 4 is settled by `interval_cases`: α₂ = 2/π exactly, and α₃ = 1/2 ≤ 2/π reduces to π ≤ 4 (`pi_le_four`). For n = m + 4 the two-step recurrence crossingFactor_succ_succ writes αₙ = ((m+2)/(m+3))·α_{m+2}; the induction hypothesis bounds α_{m+2} ≤ 2/π, the factor (m+2)/(m+3) ≤ 1, and positivity of α_{m+2} lets `nlinarith` combine them (the key product term 1−(m+2)/(m+3) times α_{m+2} being nonnegative). So the classical planar Buffon value α₂ = 2/π is the global maximum across all dimensions — the even subsequence starts there and the odd one starts strictly below at α₃.",
+    "mathContext": "$\\alpha_n \\le \\tfrac2\\pi$ for $n\\ge 2$, attained at $n=2$. Inductive step: $\\alpha_{m+4} = \\tfrac{m+2}{m+3}\\alpha_{m+2} \\le 1\\cdot\\tfrac2\\pi$, using $\\alpha_{m+2}>0$ and $\\tfrac{m+2}{m+3}\\le 1$.",
     "significance": "key",
-    "relatedConcepts": ["global maximum", "concentration of measure", "π inequalities", "dimension asymptotics"],
-    "prerequisites": ["the two-step monotonicity", "Real.pi bounds"]
+    "relatedConcepts": ["global maximum", "strong induction", "two-step recurrence", "π ≤ 4 base bound"],
+    "prerequisites": ["the two-step monotonicity", "Nat.strong_induction_on"]
+  },
+  {
+    "id": "buffon-oq020201-ann-lt-one",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 123, "endLine": 151 },
+    "type": "insight",
+    "title": "αₙ < 1 in Every Dimension — the Physical Payoff",
+    "content": "crossingFactor_lt_one is the entry's headline consequence: αₙ < 1 for every n ≥ 2. It is a one-line corollary of the maximum bound — αₙ ≤ 2/π and 2/π < 1 (from `pi_gt_three`, so π > 2) give the strict inequality by `linarith`. The physical reading closes the loop with the significance footer: in the n-dimensional Buffon noodle formula E[crossings] = αₙ·(L/d), the expected number of hyperplane crossings per unit L/d is *below one in every dimension*, and since a uniformly random direction's first coordinate concentrates near 0 as n grows, αₙ → 0 — crossings become vanishingly rare in high dimension. The planar case n = 2 already sits at the maximum 2/π ≈ 0.637 < 1, so no dimension recovers a crossing rate of one.",
+    "mathContext": "$\\alpha_n \\le \\tfrac2\\pi < 1$ since $\\pi > 2$; hence $E[\\text{crossings}] = \\alpha_n\\tfrac Ld < \\tfrac Ld$ in all dimensions, and $\\alpha_n \\to 0$ as $n\\to\\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["crossing rate below one", "concentration of measure", "αₙ → 0 asymptotics", "Buffon noodle formula"],
+    "prerequisites": ["the maximum bound αₙ ≤ 2/π", "Real.pi lower bounds"]
   }
 ]
