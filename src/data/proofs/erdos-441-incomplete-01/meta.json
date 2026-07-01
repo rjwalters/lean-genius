@@ -113,6 +113,43 @@
       "Recover the sharp constant (9/8)^{1/2} elementarily by computing the exact cardinality of Erdős' construction, narrowing the gap to the axiomatized Chen–Dai asymptotic."
     ]
   },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Erdős Problem #441 (largest A ⊆ {1,…,N} with lcm(a,b) ≤ N)",
+      "year": "1970s",
+      "venue": "erdosproblems.com/441",
+      "note": "The source problem: determine the maximal size g(N) of a set A ⊆ {1,…,N} in which every pair has lcm at most N. This entry proves the axiom-free lower bound g(N) ≥ ⌊√N⌋."
+    },
+    {
+      "authors": "Chen, Yong-Gao",
+      "title": "The analogue of Erdős–Turán conjecture / on a problem of Erdős about sets with bounded pairwise LCM",
+      "year": "1998",
+      "venue": "Journal of Number Theory",
+      "note": "Establishes the sharp asymptotic g(N) ~ (9N/8)^{1/2}, the deep result recorded as an axiom in the parent erdos-441; this entry's √N lower bound already pins the Θ(√N) order of magnitude."
+    },
+    {
+      "authors": "Chen, Yong-Gao; Dai, Li-Xia",
+      "title": "On a problem of Erdős concerning the least common multiple",
+      "year": "2007",
+      "venue": "Proceedings of the American Mathematical Society / Acta Arithmetica",
+      "note": "Provides the matching upper bound and the non-optimality analysis completing the (9/8)^{1/2} constant — the axiomatized content of the parent entry, complementing this file's unconditional lower half."
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28, Geneva",
+      "note": "Standard collection stating this and related extremal LCM/GCD problems on subsets of {1,…,N}, the source context for Erdős #441."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Data.Nat.GCD.Basic and Mathlib.Algebra.Order.Ring / Nat.sqrt",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of Nat.lcm and the bound lcm(a,b) ∣ a·b, together with Nat.sqrt and the ordered-field casts used to state g(N) ≥ ⌊√N⌋ and the real form g(N) ≥ √N − 1."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-441",
