@@ -19,11 +19,19 @@
       `firstMoment_W_lower_bound : N² < 2^(k-1) → N < W k`            (no new axioms)
       `firstMoment_W_pow_lower   : 2^((k-2)/2) < W k`  (a clean power corollary)
 
+  It also imports the *sharpened* first-moment count (`vdw_lower_bound_sharp`,
+  which uses `2·(k-1)·|family| ≤ n²` instead of the loose `|family| ≤ n²`) to
+  obtain the textbook bound, widening the admissible range by a `√(2(k-1))` factor:
+
+      `firstMoment_W_lower_bound_sharp : N² < 2·(k-1)·2^(k-1) → N < W k`
+      `firstMoment_W_pow_lower_sharp   : 2^((k-1)/2) < W k`  (gains 1 in the
+                                          exponent for every odd `k`)
+
   This is the first *verified* (rather than axiomatized) lower bound on `W` in the
   erdos-138 development.
 
-  HONEST STRENGTH GAP (important).  The elementary bound only gives
-  `W(k) ≳ 2^((k-1)/2)`, which is asymptotically *negligible* against the
+  HONEST STRENGTH GAP (important).  Even the sharpened bound only gives
+  `W(k) ≳ √(2(k-1))·2^((k-1)/2)`, which is asymptotically *negligible* against the
   axiomatized bounds `kozik_shabanov_lower_bound` (`W(k) ≳ c·2^k`) and
   `berlekamp_lower_bound`.  It therefore **does not eliminate** any existing
   erdos-138 axiom — it *supplements* them with a proven bound for the elementary
@@ -36,6 +44,7 @@
 -/
 import Mathlib
 import Proofs.VanDerWaerdenFirstMoment
+import Proofs.VanDerWaerdenFirstMomentOQ01
 import Proofs.Erdos138Problem
 
 namespace Erdos138
@@ -51,8 +60,12 @@ def boolToFin2 (b : Bool) : Fin 2 := if b then 1 else 0
 theorem boolToFin2_injective : Function.Injective boolToFin2 := by decide
 
 /-- Transport a `Fin N` colouring to a colouring of `{1,…,N} ⊆ ℕ` via the index
-shift `v ↦ v - 1` (mapping `{1,…,N}` onto `{0,…,N-1} = Fin N`). -/
-def shiftColoring (N : ℕ) (c : Fin N → Bool) (x : Finset.Icc 1 N) : Fin 2 :=
+shift `v ↦ v - 1` (mapping `{1,…,N}` onto `{0,…,N-1} = Fin N`).
+
+The `[NeZero N]` instance is what the `ℕ → Fin N` coercion
+(`open scoped Fin.NatCast`) requires; every caller already establishes it (the
+`N = 0` regime is handled separately, before any colouring is transported). -/
+def shiftColoring (N : ℕ) [NeZero N] (c : Fin N → Bool) (x : Finset.Icc 1 N) : Fin 2 :=
   boolToFin2 (c ((Nat.cast (x.1 - 1)) : Fin N))
 
 /-- **Verified first-moment lower bound on the van der Waerden number `W`.**
@@ -141,6 +154,91 @@ theorem firstMoment_W_pow_lower {k : ℕ} (hk : 2 ≤ k) :
     have hpos : 0 < 2 ^ (k - 2) := by positivity
     omega
   exact lt_of_le_of_lt hle hstep
+
+/-- **Sharpened verified first-moment lower bound on `W`.**
+
+If `N² < 2·(k-1)·2^(k-1)` and `k ≥ 2`, then `N < W k`.
+
+This is the textbook first-moment bound: instead of the loose `n²` count of
+length-`k` APs used by `firstMoment_W_lower_bound`, it consumes the sharpened
+family count `2·(k-1)·|family| ≤ n²` (`card_vdwFamily_two_mul_le`, packaged as
+`vdw_lower_bound_sharp`), which fits `≈ n²/(2(k-1))` APs.  The admissible range
+of `N` therefore widens by a factor `√(2(k-1))`, giving the verified witness
+`W(k) ≳ √(2(k-1))·2^((k-1)/2)`.
+
+The bridging argument is identical to `firstMoment_W_lower_bound`: the only change
+is feeding `vdw_lower_bound_sharp` (rather than `vdw_lower_bound`) at the start —
+both produce the same `Fin N` colouring interface, so the transport to `{1,…,N}`
+and the `not_in_guarantee_lt_sInf` step are unchanged. -/
+theorem firstMoment_W_lower_bound_sharp {k N : ℕ} (hk : 2 ≤ k)
+    (hNk : N ^ 2 < 2 * (k - 1) * 2 ^ (k - 1)) : N < W k := by
+  -- N = 0 is immediate (independent of the count): 0 < W k.
+  rcases Nat.eq_zero_or_pos N with hN0 | hNpos
+  · subst hN0
+    apply not_in_guarantee_lt_sInf
+    intro hmem
+    have hcontains : ContainsMonoAPofLength
+        (fun _ : Finset.Icc 1 0 => (0 : Fin 2)) k := hmem _
+    have hhas :
+        HasMonoAP (extend_coloring 0 (fun _ : Finset.Icc 1 0 => (0 : Fin 2))) 0 k :=
+      contains_mono_ap_imp 0 k (by omega) _ hcontains
+    obtain ⟨a, d, _, ha1, han, _⟩ := hhas
+    omega
+  haveI : NeZero N := ⟨by omega⟩
+  obtain ⟨c, hc⟩ := vdw_lower_bound_sharp (n := N) hk hNk
+  have eval : ∀ y : ℕ, y ∈ Finset.Icc 1 N →
+      extend_coloring N (shiftColoring N c) y
+        = boolToFin2 (c ((Nat.cast (y - 1)) : Fin N)) := by
+    intro y hy
+    simp only [extend_coloring, dif_pos hy, shiftColoring]
+  apply not_in_guarantee_lt_sInf
+  intro hmem
+  have hcontains : ContainsMonoAPofLength (shiftColoring N c) k := hmem _
+  have hhas : HasMonoAP (extend_coloring N (shiftColoring N c)) N k :=
+    contains_mono_ap_imp N k (by omega) _ hcontains
+  obtain ⟨a, d, hd, ha1, han, hmono⟩ := hhas
+  have hMono : Mono (vdwAP N (a - 1) d k) c := by
+    refine ⟨c ((Nat.cast (a - 1)) : Fin N), ?_⟩
+    intro x hx
+    simp only [vdwAP, Finset.mem_image, Finset.mem_range] at hx
+    obtain ⟨i, hi, hfi⟩ := hx
+    have hidd : i * d ≤ (k - 1) * d := Nat.mul_le_mul_right d (by omega)
+    have hmem_i : a + i * d ∈ Finset.Icc 1 N := by
+      rw [Finset.mem_Icc]; omega
+    have hmem_a : a ∈ Finset.Icc 1 N := by
+      rw [Finset.mem_Icc]; omega
+    have hmi := hmono i hi
+    rw [eval _ hmem_i, eval _ hmem_a] at hmi
+    have hcc :
+        c ((Nat.cast (a + i * d - 1)) : Fin N) = c ((Nat.cast (a - 1)) : Fin N) :=
+      boolToFin2_injective hmi
+    have hshift : a + i * d - 1 = a - 1 + i * d := by omega
+    rw [hshift] at hcc
+    rw [← hfi]
+    exact hcc
+  exact hc (a - 1) d (by omega) (by omega) hMono
+
+/-- **Sharpened power-of-two corollary.** For `k ≥ 2`, `2^((k-1)/2) < W k`.
+
+Strictly improves the loose corollary `firstMoment_W_pow_lower` (`2^((k-2)/2) < W k`)
+— the exponent gains `1` for every odd `k` — and is the integer-exponent shadow of
+the `√(2(k-1))·2^((k-1)/2)` witness.  Instantiate
+`firstMoment_W_lower_bound_sharp` at `N = 2^((k-1)/2)`: then
+`N² = 2^(2⌊(k-1)/2⌋) ≤ 2^(k-1) < 2·(k-1)·2^(k-1)` (the last step uses `k ≥ 2`,
+so `2·(k-1) ≥ 2 > 1`). -/
+theorem firstMoment_W_pow_lower_sharp {k : ℕ} (hk : 2 ≤ k) :
+    2 ^ ((k - 1) / 2) < W k := by
+  apply firstMoment_W_lower_bound_sharp hk
+  have hsq : (2 ^ ((k - 1) / 2)) ^ 2 = 2 ^ ((k - 1) / 2 * 2) :=
+    (pow_mul 2 ((k - 1) / 2) 2).symm
+  rw [hsq]
+  have hle : 2 ^ ((k - 1) / 2 * 2) ≤ 2 ^ (k - 1) :=
+    Nat.pow_le_pow_right (by norm_num) (by omega)
+  have hpos : 0 < 2 ^ (k - 1) := by positivity
+  have hge : 2 * 2 ^ (k - 1) ≤ 2 * (k - 1) * 2 ^ (k - 1) := by
+    gcongr
+    omega
+  omega
 
 /-- **Honest strength gap (formal).** The first-moment lower bound has magnitude
 `≈ 2^((k-1)/2)`; the axiomatized Kozik–Shabanov bound has magnitude `≈ 2^k`.
