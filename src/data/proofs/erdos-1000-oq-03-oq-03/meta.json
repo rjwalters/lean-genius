@@ -120,6 +120,6 @@
     "lineCount": 123,
     "theoremCount": 5,
     "definitionCount": 1,
-    "assumptions": ""
+    "assumptions": "0 axioms, 0 sorries, no native_decide. The only foundational axioms used are propext / Classical.choice / Quot.sound. The result is unconditional: J_k := mu * pow k in the Dirichlet ring ArithmeticFunction Z, the Gauss divisor-sum identity sum_{d|n} J_k(d) = n^k holds for all n != 0, and the uniqueness characterisation jordan_unique holds for every f : N -> Z on the positives. The proofs are convolution algebra over Mathlib's ArithmeticFunction ring: coe_moebius_mul_coe_zeta (mu * zeta = 1), coe_mul_zeta_apply ((f * zeta) n = sum over divisors), mul_apply, and sum_eq_iff_sum_smul_moebius_eq (Mobius inversion) for the converse; the k=1 recoveries use Nat.sum_totient. Mathlib supplies the Dirichlet-ring and Mobius-inversion API; the Jordan-totient divisor-sum identity, its uniqueness converse, and the totient specialisations are assembled in-file (none are named Mathlib theorems)."
   }
 }
