@@ -1,0 +1,162 @@
+[
+  {
+    "id": "ann-estep-def",
+    "proofId": "bezout-identity-oq-01-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "eStep: Elementary Euclidean-Step Matrix",
+    "content": "eStep q = !![0, 1; 1, -q] is the 2×2 integer matrix encoding one division step of the Euclidean algorithm with quotient q. eStep_det shows its determinant is -1 (via Matrix.det_fin_two_of, 0·(-q) - 1·1). eStep_apply computes its action on a column: eStep q *ᵥ ![a, b] = ![b, a - q·b], proved by expanding the matrix–vector product with dotProduct and Fin.sum_univ_two and closing with ring.",
+    "mathContext": "$\\text{eStep}(q) = \\begin{pmatrix} 0 & 1 \\\\ 1 & -q \\end{pmatrix}, \\quad \\det = -1, \\quad \\text{eStep}(q)\\begin{pmatrix} a \\\\ b \\end{pmatrix} = \\begin{pmatrix} b \\\\ a - qb \\end{pmatrix}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "elementary matrices",
+      "Euclidean algorithm",
+      "unimodular matrices",
+      "SL₂(ℤ) generators"
+    ],
+    "prerequisites": [
+      "Matrix.det_fin_two_of",
+      "matrix–vector product (mulVec, dotProduct)",
+      "Fin.sum_univ_two"
+    ]
+  },
+  {
+    "id": "ann-estep-euclid",
+    "proofId": "bezout-identity-oq-01-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 63
+    },
+    "type": "theorem",
+    "title": "eStep_euclid: One Euclidean Round as a Matrix Step",
+    "content": "Specialising the quotient to q = a / b turns the elementary step into exactly one round of the Euclidean algorithm: eStep (a/b) *ᵥ ![a, b] = ![b, a % b]. The proof rewrites with eStep_apply and then uses Int.emod_def (a % b = a - b·(a/b)) plus ring to identify a - (a/b)·b with a % b. This is the precise sense in which 'the algorithm corresponds to matrices': each step is a matrix multiplication.",
+    "mathContext": "$\\text{eStep}(\\lfloor a/b \\rfloor)\\begin{pmatrix} a \\\\ b \\end{pmatrix} = \\begin{pmatrix} b \\\\ a \\bmod b \\end{pmatrix}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Euclidean algorithm step",
+      "integer division algorithm",
+      "matrix encoding of recursion"
+    ],
+    "prerequisites": [
+      "Int.emod_def",
+      "eStep_apply"
+    ]
+  },
+  {
+    "id": "ann-det-mul-unimodular",
+    "proofId": "bezout-identity-oq-01-oq-02",
+    "range": {
+      "startLine": 65,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "det_mul_unimodular: Unimodular Matrices Are Closed Under Multiplication",
+    "content": "Because the determinant is multiplicative (Matrix.det_mul: det (M·N) = det M · det N), integer matrices of determinant ±1 form a multiplicatively closed set. The proof splits on the four sign combinations of det M and det N and closes each with omega. Consequently the composite of all the elementary steps of a Euclidean run is again unimodular — the algebraic reason the algorithm stays inside SL₂(ℤ) up to sign.",
+    "mathContext": "$\\det M, \\det N \\in \\{\\pm 1\\} \\implies \\det(MN) = \\det M \\cdot \\det N \\in \\{\\pm 1\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicativity of determinant",
+      "general linear group GL₂(ℤ)",
+      "special linear group SL₂(ℤ)"
+    ],
+    "prerequisites": [
+      "Matrix.det_mul"
+    ]
+  },
+  {
+    "id": "ann-bezout-matrix-def",
+    "proofId": "bezout-identity-oq-01-oq-02",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "bezoutMatrix: The Bézout Coefficient Matrix",
+    "content": "bezoutMatrix a b = !![gcdA a b, gcdB a b; -b/g, a/g] with g = gcd a b. Its top row is the pair of Bézout coefficients (from Mathlib's Int.gcdA / Int.gcdB, satisfying a·gcdA + b·gcdB = g); its bottom row is (-b/g, a/g), the exact integer divisions that are legitimate because g divides both a and b. This matrix is the accumulated transform of a full Euclidean run.",
+    "mathContext": "$\\text{bezoutMatrix}(a,b) = \\begin{pmatrix} x & y \\\\ -b/g & a/g \\end{pmatrix}, \\quad g = \\gcd(a,b),\\ ax + by = g$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Bézout coefficients",
+      "Int.gcdA / Int.gcdB",
+      "exact integer division"
+    ],
+    "prerequisites": [
+      "Int.gcdA, Int.gcdB",
+      "matrix literal notation !![...]"
+    ]
+  },
+  {
+    "id": "ann-bezout-matrix-det",
+    "proofId": "bezout-identity-oq-01-oq-02",
+    "range": {
+      "startLine": 93,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "bezoutMatrix_det: The Bézout Matrix Lies in SL₂(ℤ)",
+    "content": "det (bezoutMatrix a b) = 1 for (a,b) ≠ (0,0). By Matrix.det_fin_two_of the determinant equals gcdA·(a/g) + gcdB·(b/g). Multiplying through by g and using Int.ediv_mul_cancel to replace (a/g)·g by a and (b/g)·g by b turns this into a·gcdA + b·gcdB = g, which is Bézout's identity (Int.gcd_eq_gcd_ab); cancelling the nonzero g with mul_left_cancel₀ yields determinant exactly 1.",
+    "mathContext": "$\\det\\begin{pmatrix} x & y \\\\ -b/g & a/g \\end{pmatrix} = x\\tfrac{a}{g} + y\\tfrac{b}{g} = \\tfrac{ax+by}{g} = \\tfrac{g}{g} = 1$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "special linear group",
+      "determinant of 2×2 matrix",
+      "Bézout's identity"
+    ],
+    "prerequisites": [
+      "Matrix.det_fin_two_of",
+      "Int.gcd_eq_gcd_ab",
+      "Int.ediv_mul_cancel",
+      "mul_left_cancel₀"
+    ]
+  },
+  {
+    "id": "ann-bezout-matrix-mulvec",
+    "proofId": "bezout-identity-oq-01-oq-02",
+    "range": {
+      "startLine": 117,
+      "endLine": 143
+    },
+    "type": "theorem",
+    "title": "bezoutMatrix_mulVec: Reduction of the Input Column",
+    "content": "bezoutMatrix a b *ᵥ ![a, b] = ![gcd a b, 0]. Using the helper mulVec_two, the first component is gcdA·a + gcdB·b, which equals gcd a b by Bézout's identity (linear_combination). The second component is (-b/g)·a + (a/g)·b; multiplying by g and clearing the exact divisions gives -a·b + b·a = 0, so cancelling the nonzero g shows the component vanishes. This is the algorithm's endpoint: the gcd on top, zero below.",
+    "mathContext": "$\\begin{pmatrix} x & y \\\\ -b/g & a/g \\end{pmatrix}\\begin{pmatrix} a \\\\ b \\end{pmatrix} = \\begin{pmatrix} ax + by \\\\ (-ab + ab)/g \\end{pmatrix} = \\begin{pmatrix} g \\\\ 0 \\end{pmatrix}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Bézout's identity",
+      "matrix–vector reduction",
+      "extended Euclidean algorithm"
+    ],
+    "prerequisites": [
+      "Int.gcd_eq_gcd_ab",
+      "Int.ediv_mul_cancel",
+      "mul_left_cancel₀"
+    ]
+  },
+  {
+    "id": "ann-bezout-unimodular-reduction",
+    "proofId": "bezout-identity-oq-01-oq-02",
+    "range": {
+      "startLine": 145,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "bezout_unimodular_reduction: Matrix Form of Bézout's Identity",
+    "content": "The capstone. bezoutSL packages the Bézout matrix with its determinant-1 proof as an element of Matrix.SpecialLinearGroup (Fin 2) ℤ. The main theorem then states: for (a,b) ≠ (0,0) there exists M ∈ SL₂(ℤ) with M *ᵥ ![a, b] = ![gcd a b, 0]. This is the answer to the parent's open question — the extended Euclidean algorithm is a single unimodular transformation, and Bézout's coefficients are the top row of that SL₂(ℤ) matrix.",
+    "mathContext": "$\\exists\\, M \\in \\mathrm{SL}_2(\\mathbb{Z}),\\ M\\begin{pmatrix} a \\\\ b \\end{pmatrix} = \\begin{pmatrix} \\gcd(a,b) \\\\ 0 \\end{pmatrix}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "special linear group SL₂(ℤ)",
+      "Bézout's identity",
+      "modular group",
+      "unimodular row reduction"
+    ],
+    "prerequisites": [
+      "Matrix.SpecialLinearGroup",
+      "bezoutMatrix_det",
+      "bezoutMatrix_mulVec"
+    ]
+  }
+]
