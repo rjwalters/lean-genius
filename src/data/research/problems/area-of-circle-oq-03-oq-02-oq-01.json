@@ -38,20 +38,21 @@
       "halfPerimeter_doubling: p(n)<p(2n) (:121)",
       "halfPerimeter_lt_pi: p(m)<π (:150)",
       "halfPerimeter_tendsto_pi: p(m)→π (:163)",
-      "archimedes_doubling_method_verified: bundled summary (:212)"
+      "archimedes_doubling_method_verified: bundled summary (:212)",
+      "AreaOfCircleOQ03OQ02OQ01.lean: pi_sub_halfPerimeter_pow_le (literal O(4^-k) rate: π−p(6·2^k) ≤ (7π³/1152)·4^-k, specializing the O(1/m²) bound at m=6·2^k, m²=36·4^k) + halfPerimeter_rate_bound_quarters (bound(k+1)=bound(k)/4). Closes open-Q #2 explicit-rate form. 0 axioms."
     ],
     "insights": [
       "Mathlib's Real.sin_half_eq_sqrt and Real.cos_half give Archimedes' doubling radicals √((1∓cos)/2) verbatim; the whole method's constructive content is one square root per step.",
       "Iterating the half-angle step from a square IS Mathlib's sqrtTwoAddSeries (nested radical √(2+√(2+…))), so the inscribed 2^(n+2)-gon half-perimeter has the computable closed form 2^(n+1)·√(2-sqrtTwoAddSeries 0 n).",
       "Strict monotonicity p(n)<p(2n) is a one-line consequence of the double-angle identity: p(n)=p(2n)·cos(π/2n) and cos<1.",
-      "Convergence p(m)→π needs both inscribed (sin x<x) and circumscribed (x<tan x) bounds; squeezing π·cos(π/m)≤p(m)<π with cos(π/m)→1 captures the method of exhaustion in one limit."
+      "Convergence p(m)→π needs both inscribed (sin x<x) and circumscribed (x<tan x) bounds; squeezing π·cos(π/m)≤p(m)<π with cos(π/m)→1 captures the method of exhaustion in one limit.",
+      "The O(1/m²) half-perimeter error bound (PART V) specializes to the literal geometric O(4^-k) convergence rate along the hexagon doubling sequence m=6·2^k, since m²=36·4^k. Each doubling exactly quarters the error bound — the quantitative \"quadratic convergence\" of Archimedes."
     ],
     "mathlibGaps": [
       "None — Mathlib's half-angle (sin_half_eq_sqrt, cos_half), sqrtTwoAddSeries machinery, lt_tan, and sin_lt covered everything needed."
     ],
     "nextSteps": [
-      "Follow-up: formalize Archimedes' rational √ bounds to recover 223/71 purely from the doubling recurrence without pi_gt_d4.",
-      "Follow-up: prove an explicit convergence rate, e.g. π - p(2^k) = O(4^{-k})."
+      "Follow-up: formalize Archimedes' rational √ bounds to recover 223/71 purely from the doubling recurrence without pi_gt_d4."
     ],
     "markdown": "# Knowledge Base: area-of-circle-oq-03-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -127,7 +128,7 @@
     "mathlib": []
   },
   "started": "2026-04-04T04:39:45.987Z",
-  "lastUpdate": "2026-04-04T04:39:46.009Z",
+  "lastUpdate": "2026-06-30",
   "leanFiles": [
     {
       "path": "Proofs/AreaOfCircle.lean",

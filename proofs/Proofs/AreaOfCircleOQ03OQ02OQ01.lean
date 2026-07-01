@@ -254,6 +254,41 @@ theorem pi_sub_halfPerimeter_le {m : ℕ} (hm : 4 ≤ m) :
   rw [← hx, hgoal_rw]
   linarith [hstep]
 
+/-- **The literal `O(4⁻ᵏ)` geometric convergence rate** of the second open question.
+Running the doubling iteration from the hexagon gives `m = 6·2ᵏ` sides after `k`
+doublings, and specializing the `O(1/m²)` bound at `m = 6·2ᵏ` (where `m² = 36·4ᵏ`)
+yields the explicit geometric decay
+`π − p(6·2ᵏ) ≤ (7 π³ / 1152) · 4⁻ᵏ`.
+So the error is bounded by a constant times `4⁻ᵏ`: each doubling of the side count
+quarters the error bound (see `halfPerimeter_rate_bound_quarters`). -/
+theorem pi_sub_halfPerimeter_pow_le (k : ℕ) :
+    Real.pi - halfPerimeter (6 * 2 ^ k) ≤ (7 / 1152 * Real.pi ^ 3) / 4 ^ k := by
+  have hm : 4 ≤ 6 * 2 ^ k := by
+    have h1 : 1 ≤ 2 ^ k := Nat.one_le_two_pow
+    omega
+  have h := pi_sub_halfPerimeter_le hm
+  have hcast : ((6 * 2 ^ k : ℕ) : ℝ) = 6 * 2 ^ k := by push_cast; ring
+  rw [hcast] at h
+  have h4pos : (0 : ℝ) < 4 ^ k := by positivity
+  have hsq : (6 * (2 : ℝ) ^ k) ^ 2 = 36 * 4 ^ k := by
+    have hpk : ((2 : ℝ) ^ k) ^ 2 = 4 ^ k := by
+      rw [← pow_mul, mul_comm, pow_mul]; norm_num
+    rw [mul_pow, hpk]; ring
+  rw [hsq] at h
+  have heq : (7 : ℝ) / 32 * Real.pi ^ 3 / (36 * 4 ^ k) = (7 / 1152 * Real.pi ^ 3) / 4 ^ k := by
+    field_simp; ring
+  rw [heq] at h
+  exact h
+
+/-- **Each doubling quarters the error bound.** The `O(4⁻ᵏ)` bound of
+`pi_sub_halfPerimeter_pow_le` satisfies the exact geometric recurrence
+`bound(k+1) = bound(k)/4`: passing from a `6·2ᵏ`-gon to a `6·2ᵏ⁺¹`-gon divides the
+guaranteed error bound by exactly four. This is the quantitative content of
+"quadratic convergence" for the doubling method. -/
+theorem halfPerimeter_rate_bound_quarters (k : ℕ) :
+    (7 / 1152 * Real.pi ^ 3) / 4 ^ (k + 1) = ((7 / 1152 * Real.pi ^ 3) / 4 ^ k) / 4 := by
+  rw [pow_succ]; ring
+
 -- ============================================================
 -- PART VI: Summary
 -- ============================================================
@@ -274,3 +309,5 @@ theorem archimedes_doubling_method_verified :
    halfPerimeter_tendsto_pi⟩
 
 end AreaOfCircleOQ03OQ02OQ01
+
+#print axioms AreaOfCircleOQ03OQ02OQ01.pi_sub_halfPerimeter_pow_le
