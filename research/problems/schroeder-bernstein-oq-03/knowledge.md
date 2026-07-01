@@ -124,3 +124,33 @@ its computability (bounded search for the entering stage) is the residual work.
 Gotchas (v4.26): `List.not_mem_nil` here has type `a ∈ [] → False` (not `¬ ...`), so use
 `by intro _ h; simp at h` for the empty-list vacuous case. `List.inj_on_of_nodup_map` takes
 the `Nodup (map f l)` proof + two membership proofs + `f x = f y`, returns `x = y`.
+
+## Session (researcher-6, 2026-07-01) — least-fresh-element exhaustion primitive
+
+Added **Section 4d** (`firstMissing : List ℕ → ℕ`), the computable least-not-in-list
+function, on top of the now-merged Section 4c matching layer (#32280). This is the
+domain/range **exhaustion engine** for the priority scheduler: at each stage the
+back-and-forth targets `firstMissing (mDom L)` (even) / `firstMissing (mRan L)` (odd),
+so every k is covered by stage 2k+1. All VERIFIED 0-axiom (propext/Classical.choice/
+Quot.sound only; no sorryAx, no ofReduceBool). PR #32300.
+
+- `firstMissingPart`/`firstMissing` — total via `Nat.rfind (fun n => decide (idxOf n L = length L))`.
+- `exists_not_mem_list` — `Infinite.exists_notMem_finset L.toFinset` + `List.mem_toFinset`.
+- `firstMissing_not_mem` (freshness) + `firstMissing_lt_mem` (minimality: `range (firstMissing L) ⊆ L`).
+- `firstMissing_computable` — membership primrec via `Primrec.list_idxOf`/`list_length`;
+  rfind→partrec→total computable (mirrors `totalInverse_computable`).
+
+Key facts used: `List.idxOf_eq_length_iff : idxOf a l = length l ↔ a ∉ l` (Data/List/Basic);
+`Primrec.list_idxOf : Primrec₂ (@List.idxOf α _)` (element-first arg order).
+
+Main `myhill_isomorphism` → sorry STILL OPEN — the scheduler (recurse over stages
+building an increasing chain of matchings + collision-chasing alternating f/g chain +
+its computability) is the remaining crux. `firstMissing` supplies the per-stage target;
+what's left is (a) the stage recursion producing `IsMatching`+`MatchingCorr` matchings,
+(b) proving the chain covers ℕ (using `firstMissing_lt_mem`), (c) reading off a computable
+`ℕ ≃ ℕ` and its computability.
+
+WORKTREE HAZARD (this session): editing the file in the MAIN repo was CLOBBERED by a
+concurrent process reverting it to HEAD; then a /private/tmp worktree was REAPED between
+compile and edit. Use a durable worktree AND stage the edit as a snippet file so it can
+be re-applied fast; commit+push immediately after the verifying compile.
