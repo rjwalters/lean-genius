@@ -1,7 +1,7 @@
 {
-  "slug": "descartes-rule-of-signs-oq-01-oq-04",
   "id": "descartes-rule-of-signs-oq-01-oq-04",
   "title": "A Constructive (Computable) Sign-Variation Count for Descartes' Rule",
+  "slug": "descartes-rule-of-signs-oq-01-oq-04",
   "description": "Answers the open question of whether Descartes' Rule can be made constructive. Mathlib's Polynomial.signVariations is noncomputable as a function of the polynomial. This file isolates the genuinely computable core — a sign-variation count on an explicit list of rational coefficients — proves it agrees with the abstract Mathlib definition, transports Descartes' bound to the computable side, and derives a decidable sound certificate that a polynomial has no positive roots. Includes worked examples discharged by kernel decide (0 axioms).",
   "meta": {
     "author": "Lean Genius",
@@ -45,20 +45,6 @@
       }
     ],
     "definitionCount": 1
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Algebra.Polynomial.RuleOfSigns",
-      "Mathlib.Algebra.Polynomial.Roots",
-      "Mathlib.Tactic"
-    ],
-    "namespace": "DescartesConstructive",
-    "lineCount": 134,
-    "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 1,
-    "path": "Proofs/DescartesRuleOfSignsOQ01OQ04.lean",
-    "sorries": 0
   },
   "overview": {
     "problemStatement": "Can Descartes' Rule of Signs be made constructive — can the sign-variation bound be turned into something a machine actually computes, with decidable instances — given that Mathlib's Polynomial.signVariations is noncomputable as a function of the polynomial?",
@@ -163,6 +149,49 @@
       "Does the parity refinement (signVariations ≡ positive roots mod 2, proved over ℝ in the parent chain) lift to give a computable exact count when signVarList returns 0 or 1?",
       "Can signVarList be generalized from ℚ to an arbitrary computable LinearOrderedField (e.g. computable algebraic reals) while keeping the rfl bridge?"
     ]
+  },
+  "references": [
+    {
+      "authors": "Basu, Saugata; Pollack, Richard; Roy, Marie-Françoise",
+      "title": "Algorithms in Real Algebraic Geometry (2nd ed.)",
+      "year": "2006",
+      "venue": "Springer",
+      "note": "Sign-variation counting and constructive real-root isolation over ordered fields."
+    },
+    {
+      "authors": "Prasolov, Victor V.",
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "Modern reference for Descartes' rule, Budan–Fourier, Vincent's theorem, and root bounds."
+    },
+    {
+      "authors": "Descartes, René",
+      "title": "La Géométrie (appendix to Discours de la méthode)",
+      "year": "1637",
+      "venue": "Jan Maire, Leiden",
+      "note": "Original statement of the rule of signs."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Polynomial.signVariations, cauchyBound and root-counting lemmas (Mathlib.Analysis / Mathlib.RingTheory.Polynomial)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.RuleOfSigns",
+      "Mathlib.Algebra.Polynomial.Roots",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "DescartesConstructive",
+    "lineCount": 134,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "path": "Proofs/DescartesRuleOfSignsOQ01OQ04.lean",
+    "sorries": 0
   },
   "sorries": 0
 }

@@ -1,7 +1,7 @@
 {
-  "slug": "descartes-rule-of-signs-oq-01-oq-04-oq-03",
   "id": "descartes-rule-of-signs-oq-01-oq-04-oq-03",
   "title": "Sign Variations over an Arbitrary Ordered Field, Invariant under Order Embeddings",
+  "slug": "descartes-rule-of-signs-oq-01-oq-04-oq-03",
   "description": "Answers the parent's open question: generalize the computable sign-variation count signVarList from ℚ to any LinearOrderedField with decidable order (ℚ, computable algebraic reals, …), keeping the rfl bridge to Mathlib's abstract signVariations. The substantive new infrastructure is a theorem absent from Mathlib — signVariations is invariant under any strictly monotone ring homomorphism (signVariations_map) — because the count reads only the signs of the coefficient list, and a strict-mono ring hom preserves both signs and (being injective) the list length. As payoff this bridges ℚ to ℝ: the kernel-reducible ℚ-coefficient count equals the sign-variation count of the real polynomial, so it bounds the number of positive REAL roots (the genuine Descartes statement), not merely the rational ones the parent could reach.",
   "meta": {
     "author": "Lean Genius",
@@ -54,18 +54,6 @@
       }
     ],
     "definitionCount": 1
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "namespace": "DescartesConstructiveGeneral",
-    "lineCount": 202,
-    "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 1,
-    "path": "Proofs/DescartesRuleOfSignsOQ01OQ04OQ03.lean",
-    "sorries": 0
   },
   "overview": {
     "problemStatement": "Can the constructive sign-variation count signVarList be generalized from ℚ to an arbitrary computable LinearOrderedField while keeping the rfl bridge to the abstract count — and does the resulting count actually see the real-root behaviour Descartes' Rule is about, rather than just the roots living in the coefficient field?",
@@ -169,6 +157,47 @@
       "Can map-invariance be strengthened to an order-reflecting equivalence, characterizing exactly which (not-necessarily-injective) ring homs preserve signVariations?",
       "Combined with a formalization of Sturm's theorem over ℚ, does the real-root bound realRoots_countP_pos_le_signVarList upgrade to an exact computable count of positive real roots?"
     ]
+  },
+  "references": [
+    {
+      "authors": "Basu, Saugata; Pollack, Richard; Roy, Marie-Françoise",
+      "title": "Algorithms in Real Algebraic Geometry (2nd ed.)",
+      "year": "2006",
+      "venue": "Springer",
+      "note": "Sign-variation counting and constructive real-root isolation over ordered fields."
+    },
+    {
+      "authors": "Prasolov, Victor V.",
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "Modern reference for Descartes' rule, Budan–Fourier, Vincent's theorem, and root bounds."
+    },
+    {
+      "authors": "Descartes, René",
+      "title": "La Géométrie (appendix to Discours de la méthode)",
+      "year": "1637",
+      "venue": "Jan Maire, Leiden",
+      "note": "Original statement of the rule of signs."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Polynomial.signVariations, cauchyBound and root-counting lemmas (Mathlib.Analysis / Mathlib.RingTheory.Polynomial)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "DescartesConstructiveGeneral",
+    "lineCount": 202,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/DescartesRuleOfSignsOQ01OQ04OQ03.lean",
+    "sorries": 0
   },
   "sorries": 0
 }

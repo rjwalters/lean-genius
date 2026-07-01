@@ -1,7 +1,7 @@
 {
-  "slug": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
   "id": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
   "title": "Descartes Boundary Exact Count: One Sign Variation Forces Exactly One Positive Root (via IVT, sidestepping parity)",
+  "slug": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
   "description": "Addresses the parent's open question of whether the exact positive-root count can be pinned down in the boundary cases signVariations ∈ {0,1}. The textbook route is the parity refinement (#positive roots ≡ signVariations mod 2), but that is the hard FTA-flavoured content of Descartes' Rule and is unavailable in both Mathlib and the gallery (every gallery file takes the parity as a hypothesis). The key observation here is that the boundary cases need only root EXISTENCE, not the full odd-multiplicity parity: signVariations = 0 forces zero positive roots from Descartes' bound alone, and signVariations = 1 forces exactly one positive root because the bound gives ≤ 1 while the Intermediate Value Theorem supplies ≥ 1. The IVT existence argument — deflate by the largest power of X, then cross zero between the trailing-coefficient sign at 0 and the leading-coefficient sign near +∞ — is fully machine-checked. The single combinatorial fact that one sign variation forces opposite leading/trailing signs is taken as an explicit hypothesis (it carries no analytic content), so the entry reduces the open boundary-exact-count to that one bridge plus a verified IVT core, entirely bypassing the open parity refinement. Stated over ℝ, since over ℚ the exact count is false (X²−2 has one sign variation but no rational root).",
   "meta": {
     "author": "Lean Genius",
@@ -45,18 +45,6 @@
       }
     ],
     "definitionCount": 0
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "namespace": "DescartesExactCount",
-    "lineCount": 192,
-    "axiomCount": 0,
-    "theoremCount": 3,
-    "definitionCount": 0,
-    "path": "Proofs/DescartesRuleOfSignsOQ01OQ04OQ02.lean",
-    "sorries": 0
   },
   "overview": {
     "problemStatement": "Can the exact number of positive roots be determined in the boundary cases signVariations ∈ {0, 1}, lifting Descartes' bound from an inequality to an equality there — given that the textbook tool, the parity refinement #positive roots ≡ signVariations (mod 2), is unavailable in Mathlib and the gallery?",
@@ -145,6 +133,47 @@
       "Generalize the existence argument from sign-change endpoints to an arbitrary real-closed field, replacing the IVT with the order-completeness available there.",
       "Combine with a Sturm-style oddness count to extend the exact count beyond the boundary cases signVariations ∈ {0,1}."
     ]
+  },
+  "references": [
+    {
+      "authors": "Descartes, René",
+      "title": "La Géométrie (appendix to Discours de la méthode)",
+      "year": "1637",
+      "venue": "Jan Maire, Leiden",
+      "note": "Original statement of the rule of signs."
+    },
+    {
+      "authors": "Prasolov, Victor V.",
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "Modern reference for Descartes' rule, Budan–Fourier, Vincent's theorem, and root bounds."
+    },
+    {
+      "authors": "Basu, Saugata; Pollack, Richard; Roy, Marie-Françoise",
+      "title": "Algorithms in Real Algebraic Geometry (2nd ed.)",
+      "year": "2006",
+      "venue": "Springer",
+      "note": "Sign-variation counting and constructive real-root isolation over ordered fields."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Polynomial.signVariations, cauchyBound and root-counting lemmas (Mathlib.Analysis / Mathlib.RingTheory.Polynomial)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "DescartesExactCount",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/DescartesRuleOfSignsOQ01OQ04OQ02.lean",
+    "sorries": 0
   },
   "sorries": 0
 }
