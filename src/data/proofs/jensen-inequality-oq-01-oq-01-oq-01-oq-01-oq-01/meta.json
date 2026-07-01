@@ -100,6 +100,47 @@
       "mathContext": "$A(q)^{r-p}\\le \\big(A(p)^a A(r)^b\\big)^{r-p}=A(p)^{r-q}A(r)^{q-p}$ with $a=\\tfrac{r-q}{r-p},\\ b=\\tfrac{q-p}{r-p}$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Lyapunov, A.M."
+      ],
+      "title": "Nouvelle forme du théorème sur la limite de probabilité",
+      "year": "1901",
+      "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg (8), vol. 12, no. 5",
+      "note": "Source of Lyapunov's moment inequality, i.e. the log-convexity of the moment function."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Bullen, P.S."
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications 560, Kluwer/Springer",
+      "note": "Encyclopaedic treatment of weighted power means and the comparison inequalities between them."
+    },
+    {
+      "authors": [
+        "The mathlib community"
+      ],
+      "title": "Mathlib.Analysis.MeanInequalities",
+      "year": "2020",
+      "venue": "Mathlib4, Lean 4 mathematical library",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/MeanInequalities.html",
+      "note": "Mathlib's weighted AM–GM (Real.geom_mean_le_arith_mean_weighted) and single-exponent Jensen bounds, the engines these entries build on."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 170-line file (0 sorries, 0 axioms, no native_decide; all theorems depend only on propext/Classical.choice/Quot.sound) proves Lyapunov's inequality for the weighted moment function A(t) = ∑_i w_i·x_i^t in three faces: the interpolation inequality A(a·p+b·r) ≤ A(p)^a·A(r)^b, the log-convexity of t ↦ log A(t) on ℝ, and the symmetric three-exponent form A(q)^{r-p} ≤ A(p)^{r-q}·A(r)^{q-p}. The entire argument is a single application of the two-function discrete Hölder inequality from the parent generalized-Hölder entry.",
     "implications": "Log-convexity of moments is the discrete, elementary core of the interpolation theory of Lᵖ spaces and a structural refinement of the power-mean inequality. It exposes that the monotonicity of power means is the first-order shadow of a second-order convexity phenomenon, and it is the finite-sum prototype of the Lyapunov / Riesz–Thorin interpolation inequalities.",

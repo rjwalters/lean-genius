@@ -78,6 +78,47 @@
       "mathContext": "$ab=a^p/p+b^q/q\\iff a^p=b^q$. Apply amgm_two_weighted_eq_iff with $w_x=p^{-1}$, $w_y=q^{-1}$, $x=a^p$, $y=b^q$; $(a^p)^{p^{-1}}=a$ via $a^{p\\cdot p^{-1}}=a^1$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Young, W.H."
+      ],
+      "title": "On classes of summable functions and their Fourier series",
+      "year": "1912",
+      "venue": "Proceedings of the Royal Society A 87 (594), pp. 225–229",
+      "note": "Original source of Young's product inequality ab ≤ aᵖ/p + bᵍ/q."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Bullen, P.S."
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications 560, Kluwer/Springer",
+      "note": "Encyclopaedic treatment of weighted power means and the comparison inequalities between them."
+    },
+    {
+      "authors": [
+        "The mathlib community"
+      ],
+      "title": "Mathlib.Analysis.MeanInequalities",
+      "year": "2020",
+      "venue": "Mathlib4, Lean 4 mathematical library",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/MeanInequalities.html",
+      "note": "Mathlib's weighted AM–GM (Real.geom_mean_le_arith_mean_weighted) and single-exponent Jensen bounds, the engines these entries build on."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 89-line file (0 sorries, 0 axioms, no native_decide) adds the equality case of Young's inequality — a·b = aᵖ/p + bᵍ/q ↔ aᵖ = bᵍ — which Mathlib's library does not provide. It is obtained by recognizing Young's inequality as the two-term weighted AM–GM inequality (weights 1/p, 1/q on data aᵖ, bᵍ) and inheriting the equality characterization from the parent entry's weighted_amgm_eq_iff. The strict form young_lt_of_ne and a re-export young_le of the inequality itself round out the entry.",
     "implications": "The equality case is what makes Young's inequality usable as a rigidity tool: it identifies exactly when the pointwise bound underlying Hölder's inequality is tight, hence the extremizers of Hölder (proportional |f|ᵖ and |g|ᵍ). Recording Young as a corollary of weighted AM–GM also shows the uniform mechanism — apply the AM–GM equality case in the right coordinates — that yields the equality cases of the whole Hölder–Minkowski family.",

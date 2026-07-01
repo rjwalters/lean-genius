@@ -105,6 +105,37 @@
       "mathContext": "If $\\exists j\\,k,\\ x_j \\ne x_k$ then $(\\sum_i w_i x_i^{-1})^{-1} < \\sum_i w_i x_i$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Bullen, P.S."
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications 560, Kluwer/Springer",
+      "note": "Encyclopaedic treatment of weighted power means and the comparison inequalities between them."
+    },
+    {
+      "authors": [
+        "Cauchy, A.-L."
+      ],
+      "title": "Cours d'analyse de l'École Royale Polytechnique, I: Analyse algébrique",
+      "year": "1821",
+      "venue": "Paris (Note II)",
+      "note": "Cauchy's forward–backward induction proof of the arithmetic–geometric mean inequality."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 124-line file (0 sorries, 0 axioms, no native_decide) supplies the weighted arithmetic–harmonic mean inequality and its equality case — the M₋₁ ≤ M₁ rung of the weighted power-mean ladder — which Mathlib does not separately provide. The proof is a clean double application of the gallery parent's weighted AM–GM inequality and its equality case, bracketing the weighted geometric mean between the harmonic and arithmetic means.",
     "implications": "Together with the parent entries this completes the base H ≤ G ≤ A of the weighted power-mean chain: weighted AM–GM gives both G ≤ A and (read through reciprocals) H ≤ G. The same bracketing makes the equality cases uniform — all three means coincide exactly when the data are constant.",

@@ -79,6 +79,38 @@
       "mathContext": "$\\sum_i w_i z_i \\le \\left(\\sum_i w_i z_i^2\\right)^{1/2}$, the weighted AM–QM inequality."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Bullen, P.S."
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications 560, Kluwer/Springer",
+      "note": "Encyclopaedic treatment of weighted power means and the comparison inequalities between them."
+    },
+    {
+      "authors": [
+        "Mitrinović, D.S.",
+        "Vasić, P.M."
+      ],
+      "title": "Analytic Inequalities",
+      "year": "1970",
+      "venue": "Grundlehren der mathematischen Wissenschaften 165, Springer",
+      "note": "Systematic development of the classical mean and convexity inequalities."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 87-line file (0 sorries, 0 axioms, no native_decide) proves weighted power-mean monotonicity over positive exponents — 0 < p ≤ q ⟹ M_p ≤ M_q — which Mathlib does not package, and recovers the weighted arithmetic-mean ≤ quadratic-mean inequality as a specialization. The proof is a single change of variable on Mathlib's rpow Jensen inequality.",
     "implications": "This answers, over the positive range, the open question posed by the AM–HM sibling entry: the full power-mean ladder M_r is monotone in r. The same change-of-variable template would extend to negative exponents (with the inequality direction tracked through the sign of the ratio) and, in the limit, to the geometric-mean rung M_r → G as r → 0.",

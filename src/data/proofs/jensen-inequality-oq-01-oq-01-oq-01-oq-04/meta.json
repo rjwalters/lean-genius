@@ -90,6 +90,38 @@
       "mathContext": "$\\sum_i w_i x_i \\le M_p$ for $p\\ge1$; QM–AM: $\\sum_i w_i x_i \\le \\big(\\sum_i w_i x_i^2\\big)^{1/2}$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Bullen, P.S."
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications 560, Kluwer/Springer",
+      "note": "Encyclopaedic treatment of weighted power means and the comparison inequalities between them."
+    },
+    {
+      "authors": [
+        "Mitrinović, D.S.",
+        "Vasić, P.M."
+      ],
+      "title": "Analytic Inequalities",
+      "year": "1970",
+      "venue": "Grundlehren der mathematischen Wissenschaften 165, Springer",
+      "note": "Systematic development of the classical mean and convexity inequalities."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified file (0 sorries, 0 axioms, no native_decide) supplies the classical power-mean inequality — monotonicity of the weighted power mean M_p(x) = (∑ w_i x_i^p)^{1/p} in the exponent p on the positive reals — which Mathlib does not provide. The proof is a single application of Mathlib's single-exponent Jensen bound rpow_arith_mean_le_arith_mean_rpow to the powered data x_i^p with exponent q/p, followed by rpow-monotonicity. The weighted arithmetic-mean lower bound and the QM–AM (root-mean-square) inequality are recovered as specializations.",
     "implications": "The power-mean inequality is the unifying statement behind the elementary mean inequalities on positive exponents: AM ≤ QM (root-mean-square), and more generally M_p ≤ M_q for 0 < p ≤ q. Combined with the parent Young/AM–GM entry and the sibling Hölder entry, it rounds out the Jensen-driven family of finite-sum inequalities, all of which descend from convexity of a single elementary function.",
