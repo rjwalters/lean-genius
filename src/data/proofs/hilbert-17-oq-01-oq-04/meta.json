@@ -179,7 +179,23 @@
       "url": "https://link.springer.com/article/10.1007/BF01425532"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-17-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the Pfister bound on the minimum number of rational-function squares. This entry exhibits the explicit minimal-denominator certificate for Motzkin and records its square count (5 over ℝ) against the Pfister optimum (4)."
+    },
+    {
+      "targetId": "hilbert-17-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Sibling: the same Motzkin rational-SOS fact with the non-minimal multiplier 4·(x²+y²+1). This entry sharpens the denominator to the minimal classical x²+y²+1 and reuses the cleared integer identity as a lemma."
+    },
+    {
+      "targetId": "hilbert-17",
+      "relationship": "related",
+      "description": "Grandparent: Artin's theorem and the Motzkin counterexample. This entry discharges the positive side concretely for Motzkin with the minimal denominator."
+    }
+  ],
   "sections": [
     {
       "id": "setup",
