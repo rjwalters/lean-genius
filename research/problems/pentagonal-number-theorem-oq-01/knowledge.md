@@ -233,3 +233,36 @@ compose the already-0-axiom `franklinMoveA_*`/`franklinMoveB_*` via `unfold`/`sp
   `s ≤ ℓ` off `S` directly and make the swap statable.
 - Then the cancellation sum `∑_{distincts n}(-1)^{#parts} = pentSeriesCoeff n` via the
   sign-reversing involution on the non-fixed domain (fixed staircases = pentagonal terms).
+
+## Part 14 (partial) — recomputing the top part `max'` on the move images [VERIFIED, 0-axiom]
+
+**Session 2026-06-30 (researcher-3).** Toward the Franklin involution's self-inverse
+property (`franklinStep (franklinStep S …) … = S`), which needs the second dispatch to read
+the reverse-move parameters off the image `T`. The top parameter is `max' T`. Proved both
+recomputations in closed form (+2 thm, ~74 L; docker-build `Built Proofs.PentagonalNumberTheoremOQ01`
+clean; `#print axioms` on both = `[propext, Classical.choice, Quot.sound]`):
+
+- `franklinMoveA_max' (H hmax) : max' (franklinMoveA S s m) = m + 1`. The image inserts the
+  fresh top `m+1`; everything else is `≤ m` (from `hmax : ∀ x∈S, x≤m`). `le_antisymm`:
+  `max'_le` (mem_insert → `omega` on `m+1` branch, `hmax`+erase_subset on the other) and
+  `le_max'` on `m+1 ∈ insert …`. This is exactly the `m+1` fed to
+  `franklinMoveB (franklinMoveA S s m) s (m+1) = S`.
+- `franklinMoveB_max' (H hmax hℓ1 hℓm htop) : max' (franklinMoveB S ℓ m) = m - 1`. The new
+  top is `m-1`, present EITHER as `m-ℓ` (run length 1, `ℓ=1`) OR as a run part `m-1 ∈ S`
+  (run length ≥2, from `htop : Icc (m-ℓ+1) m ⊆ S`) — CASE SPLIT `Nat.lt_or_ge ℓ 2` is
+  required. Upper bound: `ℓ<m`, `m-ℓ≤m-1` (`ℓ≥1`), erase-branch `y≤m ∧ y≠m ⟹ y≤m-1`
+  (`omega`). This is the `m-1` fed to `franklinMoveA (franklinMoveB S ℓ m) ℓ (m-1) = S`.
+
+RECIPE: `max'` of an `insert/erase` closed form via `le_antisymm (max'_le …) (le_max' … hmem)`;
+unfold the def with `rw [franklinMoveX, Finset.mem_insert, …, Finset.mem_erase]` then
+`rcases` the disjunction; each branch closes by `omega` (given `hmax`). Membership of the
+new max in a Move B image is the only place needing a run-length case split.
+
+### STILL OPEN (next)
+The companion `min'` / staircase-length recomputations that fix the *smallest-part* dispatch
+test `s ≤ ℓ` on the image (so the second `franklinStep` provably picks the OTHER branch).
+Move B creates smallest part `ℓ`, so heuristically `min'(franklinMoveB S ℓ m) = ℓ` in the
+`s>ℓ` regime (needs `ℓ < s ≤ m-ℓ`); `min'` of a Move A image is second-smallest-of-`S` and
+needs the staircase structure. Then glue with Part 12's mutual-inverse pair for the full
+`franklinStep` involution and the cancellation sum
+`∑_{distincts n}(-1)^{#parts} = pentSeriesCoeff n`.

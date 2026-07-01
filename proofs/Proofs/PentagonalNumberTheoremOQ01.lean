@@ -1412,4 +1412,78 @@ theorem franklinStep_headline (S : Finset ℕ) (s ℓ m : ℕ)
            franklinMoveB_sign S ℓ m h1 h2 h3 h4,
            franklinMoveB_pos S ℓ m hpos h5 h6⟩
 
+/-! ## Part 14: recomputing the top part on the move images (toward the involution)
+
+To close Franklin's involution one must show `franklinStep` is self-inverse: applying it
+to the image re-dispatches into the *other* branch and returns to `S`.  The raw algebra
+for that is already in Part 12 — the two moves are mutually inverse *when fed the right
+parameters*:
+
+    `franklinMoveB (franklinMoveA S s m) s (m+1) = S`      (Move B undoes Move A)
+    `franklinMoveA (franklinMoveB S ℓ m) ℓ (m-1) = S`      (Move A undoes Move B)
+
+The missing link is that those parameters are exactly the ones the *second*
+`franklinStep` would read off the image `T`: its largest part `max' T`.  This part proves
+those two recomputations in closed form:
+
+    `max' (franklinMoveA S s m) = m + 1`     (Move A raises the top by one)
+    `max' (franklinMoveB S ℓ m) = m - 1`     (Move B lowers the top by one)
+
+so the top parameter for the reverse move (`m+1` after Move A, `m-1` after Move B) is
+*canonically* the new largest part — no ad-hoc threading.  The companion `min'` /
+staircase-length recomputations (which fix the smallest-part dispatch test `s ≤ ℓ`)
+remain for a later part. -/
+
+/-- **Move A raises the largest part to `m+1`.**  The image inserts the fresh top `m+1`
+and otherwise only deletes; since every part of `S` is `≤ m`, the maximum of the image is
+exactly `m+1`.  This is the top parameter Move B needs to undo Move A
+(`franklinMoveB (franklinMoveA S s m) s (m+1) = S`). -/
+theorem franklinMoveA_max' (S : Finset ℕ) (s m : ℕ)
+    (H : (franklinMoveA S s m).Nonempty) (hmax : ∀ x ∈ S, x ≤ m) :
+    (franklinMoveA S s m).max' H = m + 1 := by
+  have hmem : m + 1 ∈ franklinMoveA S s m := by
+    rw [franklinMoveA]; exact Finset.mem_insert_self _ _
+  apply le_antisymm
+  · apply Finset.max'_le
+    intro y hy
+    rw [franklinMoveA, Finset.mem_insert] at hy
+    rcases hy with h | h
+    · omega
+    · have hyS : y ∈ S :=
+        Finset.erase_subset _ _ (Finset.erase_subset _ _ h)
+      have := hmax y hyS; omega
+  · exact Finset.le_max' _ _ hmem
+
+/-- **Move B lowers the largest part to `m-1`.**  Move B deletes the old top `m` and
+inserts `ℓ` and `m-ℓ`.  The new maximum is `m-1`: it is present (either as the run part
+`m-1 ∈ S` when the top run has length `≥ 2`, or as the freshly created `m-ℓ` when the run
+has length `1`), and nothing exceeds it (`ℓ < m`, `m-ℓ ≤ m-1`, and every surviving part of
+`S` is `≤ m` but `≠ m`).  This is the top parameter Move A needs to undo Move B
+(`franklinMoveA (franklinMoveB S ℓ m) ℓ (m-1) = S`). -/
+theorem franklinMoveB_max' (S : Finset ℕ) (ℓ m : ℕ)
+    (H : (franklinMoveB S ℓ m).Nonempty) (hmax : ∀ x ∈ S, x ≤ m)
+    (hℓ1 : 1 ≤ ℓ) (hℓm : ℓ < m)
+    (htop : Finset.Icc (m - ℓ + 1) m ⊆ S) :
+    (franklinMoveB S ℓ m).max' H = m - 1 := by
+  have hmem : m - 1 ∈ franklinMoveB S ℓ m := by
+    rw [franklinMoveB]
+    rcases Nat.lt_or_ge ℓ 2 with hlt | hge
+    · -- run length 1: m - 1 = m - ℓ is the inserted run bottom
+      have hℓeq : ℓ = 1 := by omega
+      simp only [Finset.mem_insert]
+      right; left; omega
+    · -- run length ≥ 2: m - 1 lies in the top run, hence in S
+      have hm1S : m - 1 ∈ S := htop (by rw [Finset.mem_Icc]; omega)
+      simp only [Finset.mem_insert, Finset.mem_erase]
+      right; right; exact ⟨by omega, hm1S⟩
+  apply le_antisymm
+  · apply Finset.max'_le
+    intro y hy
+    rw [franklinMoveB, Finset.mem_insert, Finset.mem_insert, Finset.mem_erase] at hy
+    rcases hy with h | h | ⟨hne, hyS⟩
+    · omega
+    · omega
+    · have := hmax y hyS; omega
+  · exact Finset.le_max' _ _ hmem
+
 end PentagonalNumberTheoremOQ01
