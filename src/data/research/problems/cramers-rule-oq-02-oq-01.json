@@ -49,17 +49,18 @@
       "gaussSum_closed: 2·∑_{i<n} i + n = n² (subtraction-free triangular-sum closed form).",
       "solveMulsDivs_closed: 3·solveMulsDivs n + n = n³ + 3n² — complete-solve mult+div count (factorization + RHS + back-substitution).",
       "solve_overhead_quadratic: solveMulsDivs n = gaussExactOps n + n² — RHS handling is exactly an n² correction; solve_beats_cramer preserves the verdict for n ≥ 4.",
-      "Gallery entry src/data/proofs/cramers-rule-oq-02-oq-01 (meta.json) updated with the complete-solve section."
+      "Gallery entry src/data/proofs/cramers-rule-oq-02-oq-01 (meta.json) updated with the complete-solve section.",
+      "CramersRuleOQ02OQ01.lean COMPLETE-SOLVE FLOP capstone (323→420 lines): rhsElimSubs/backSubSubs, solveFlops = full flop count of solving A x=b (factorization+RHS+back-sub, muls+divs+subtractions), solveFlops_closed (6·solveFlops+7n=4n³+9n², ~2n³/3), solveFlops_eq_div ((4n³+9n²−7n)/6), solveMulsDivs_le_flops, solveFlops_le_cube (≤n³ for n≥4, crossover exactly n=4: sF(3)=28>27, sF(4)=62≤64), solveFlops_beats_cramer. 0 axioms."
     ],
     "insights": [
       "Stating the closed form subtraction-free as 3·ops + n = n³ keeps the induction in the ℕ semiring so plain `ring` closes the successor step; the (n³ − n)/3 division form is then a one-line corollary. linear_combination would not work here because ℕ is not a ring.",
       "A tighter cost for the comparison winner can never overturn the comparison: gaussExactOps n ≤ n³ = gaussMuls n lets gaussExact_beats_cramer inherit the parent's n ≥ 4 verdict for free.",
       "omega abstracts n³ and the Finset sum as opaque non-negative atoms linked only by the linear closed-form hypothesis, which suffices for both the ≤ and strict-< bounds without any cubic reasoning.",
-      "Deriving the concrete small-n counts (2,8,20,40) from the closed form via omega instead of native_decide keeps the file free of Lean.ofReduceBool — verified/original rather than the parent's axiomatized status."
+      "Deriving the concrete small-n counts (2,8,20,40) from the closed form via omega instead of native_decide keeps the file free of Lean.ofReduceBool — verified/original rather than the parent's axiomatized status.",
+      "Complete-solve full flop count = (4n³+9n²−7n)/6 ~ 2n³/3, the textbook \"flops to solve a dense linear system\". Crossover vs loose n³ model is EXACTLY n=4. GOTCHA: solveMulsDivs≤solveFlops must be proved STRUCTURALLY (unfold to gaussExactOps/Subs/gaussSum atoms) not via closed forms — omega treats n³,n² as independent atoms."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Count additions/subtractions (~n³/3 each) and back-substitution for the full ~2n³/3 flop total.",
       "Relate to Mathlib's LU / Matrix infrastructure if an algorithmic operation-count API is added."
     ],
     "markdown": "# Knowledge Base: cramers-rule-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -88,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-03-30T18:39:05.259Z",
+  "lastUpdate": "2026-06-30",
   "leanFiles": [
     {
       "path": "Proofs/CramersRule.lean",

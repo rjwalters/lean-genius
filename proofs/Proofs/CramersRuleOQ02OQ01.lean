@@ -320,4 +320,101 @@ theorem solve_complete_summary :
   ⟨solveMulsDivs_closed, solveMulsDivs_eq_div, solve_overhead_quadratic,
    fun _ h => solve_beats_cramer h⟩
 
+-- ============================================================
+-- The COMPLETE-SOLVE full flop count: the ~2n³/3 headline (OQ-01)
+-- ============================================================
+--
+-- `solveMulsDivs` counts only multiplications+divisions of a complete solve.
+-- The textbook "≈ 2n³/3 flops to solve a linear system" also counts the
+-- additions/subtractions. We complete the accounting: every multiplication in
+-- the right-hand-side elimination and in back-substitution is paired with one
+-- subtraction (`b := b − mult·b_pivot`, `x_i := (y_i − Σ U_{i,k}x_k)/U_{i,i}`),
+-- and the matrix factorization contributes its `gaussExactSubs` subtractions.
+-- Summing everything yields the full leading `2n³/3` flop count of a solve.
+
+/-- **Right-hand-side elimination subtractions.** Each RHS multiplication
+    `b := b − mult · b_pivot` is paired with one subtraction, so the count matches
+    `rhsElimMuls`: `∑_{j<n} j = n(n−1)/2`. -/
+def rhsElimSubs (n : ℕ) : ℕ := gaussSum n
+
+/-- **Back-substitution subtractions.** Each of the `i` multiply terms
+    `U_{i,k} · x_k` accumulated for the `i`-th unknown is subtracted off, so the
+    count matches `backSubMuls`: `∑_{i<n} i = n(n−1)/2`. -/
+def backSubSubs (n : ℕ) : ℕ := gaussSum n
+
+/-- **Total leading flop count of a COMPLETE linear solve `A x = b`:** the matrix
+    factorization flops (`gaussExactFlops` = multiplications + divisions +
+    subtractions), the right-hand-side elimination (multiplications and
+    subtractions), and back-substitution (multiplications, subtractions, and the
+    `n` pivot divisions). -/
+def solveFlops (n : ℕ) : ℕ :=
+  gaussExactFlops n + rhsElimMuls n + rhsElimSubs n + backSubMuls n + backSubSubs n + n
+
+/-- **Closed form for the complete-solve flop count (subtraction-free).**
+    `6 · solveFlops n + 7·n = 4·n³ + 9·n²`, i.e. `solveFlops n = (4n³ + 9n² − 7n)/6`,
+    asymptotically `2n³/3` — the classic textbook flop count for solving a dense
+    linear system by Gaussian elimination. -/
+theorem solveFlops_closed (n : ℕ) :
+    6 * solveFlops n + 7 * n = 4 * n ^ 3 + 9 * n ^ 2 := by
+  have h1 := gaussExactFlops_closed n
+  have h2 := gaussSum_closed n
+  unfold solveFlops rhsElimMuls rhsElimSubs backSubMuls backSubSubs
+  omega
+
+/-- The complete-solve flop count in explicit division form: `(4n³ + 9n² − 7n)/6`. -/
+theorem solveFlops_eq_div (n : ℕ) :
+    solveFlops n = (4 * n ^ 3 + 9 * n ^ 2 - 7 * n) / 6 := by
+  have h : 6 * solveFlops n = 4 * n ^ 3 + 9 * n ^ 2 - 7 * n := by
+    have := solveFlops_closed n; omega
+  rw [← h, Nat.mul_div_cancel_left _ (by norm_num : 0 < 6)]
+
+/-- The full flop count dominates the multiplication+division count: the
+    subtractions are genuine extra work. `solveMulsDivs n ≤ solveFlops n`. -/
+theorem solveMulsDivs_le_flops (n : ℕ) : solveMulsDivs n ≤ solveFlops n := by
+  -- `solveFlops = solveMulsDivs + gaussExactSubs + (rhs + back-sub) subtractions`;
+  -- the extra subtraction terms are manifestly nonnegative.
+  unfold solveFlops solveMulsDivs gaussExactFlops rhsElimMuls rhsElimSubs backSubMuls backSubSubs
+  omega
+
+/-- **The `2n³/3` leading term is asymptotically below the loose `n³` model.**
+    For `n ≥ 4` the complete-solve flop count stays under the parent's `n³`
+    multiplication model: `solveFlops n ≤ n³`. (The crossover is exactly at
+    `n = 4`: `solveFlops 3 = 28 > 27 = 3³`, `solveFlops 4 = 62 ≤ 64 = 4³`.) -/
+theorem solveFlops_le_cube {n : ℕ} (hn : 4 ≤ n) : solveFlops n ≤ n ^ 3 := by
+  have hc := solveFlops_closed n
+  have hpow : 9 * n ^ 2 ≤ 2 * n ^ 3 + 7 * n := by nlinarith
+  omega
+
+/-- With the full complete-solve flop accounting (factorization + RHS +
+    back-substitution, multiplications *and* additions/subtractions), Gaussian
+    elimination *still* beats Cramer's rule for `n ≥ 4`. -/
+theorem solveFlops_beats_cramer {n : ℕ} (hn : 4 ≤ n) :
+    solveFlops n < CramersComplexity.cramersRuleMuls n :=
+  lt_of_le_of_lt (solveFlops_le_cube hn) (CramersComplexity.gauss_beats_cramer hn)
+
+/-- Concrete complete-solve flop counts: `n=2 ↦ 9`, `n=3 ↦ 28`, `n=4 ↦ 62`,
+    `n=5 ↦ 115`. -/
+lemma solveFlops_small :
+    solveFlops 2 = 9 ∧ solveFlops 3 = 28 ∧
+    solveFlops 4 = 62 ∧ solveFlops 5 = 115 := by
+  have h2 := solveFlops_closed 2
+  have h3 := solveFlops_closed 3
+  have h4 := solveFlops_closed 4
+  have h5 := solveFlops_closed 5
+  norm_num at h2 h3 h4 h5
+  omega
+
+/-- Summary of the complete-solve flop accounting: closed form, division form,
+    dominance over the mul/div count, and the preserved comparison verdict. -/
+theorem solve_flops_summary :
+    (∀ n : ℕ, 6 * solveFlops n + 7 * n = 4 * n ^ 3 + 9 * n ^ 2) ∧
+    (∀ n : ℕ, solveFlops n = (4 * n ^ 3 + 9 * n ^ 2 - 7 * n) / 6) ∧
+    (∀ n : ℕ, solveMulsDivs n ≤ solveFlops n) ∧
+    (∀ n : ℕ, 4 ≤ n → solveFlops n < CramersComplexity.cramersRuleMuls n) :=
+  ⟨solveFlops_closed, solveFlops_eq_div, solveMulsDivs_le_flops,
+   fun _ h => solveFlops_beats_cramer h⟩
+
 end CramersComplexityExact
+
+#print axioms CramersComplexityExact.solveFlops_closed
+#print axioms CramersComplexityExact.solveFlops_beats_cramer
