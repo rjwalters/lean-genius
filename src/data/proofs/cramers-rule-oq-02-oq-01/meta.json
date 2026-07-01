@@ -42,14 +42,15 @@
       "Additions/subtractions count gaussExactSubs n = ∑_{j<n} j² (one multiply–subtract pair per trailing-entry update) with subtraction-free closed form gaussExactSubs_closed: 6·gaussExactSubs n + 3·n² = 2·n³ + n, i.e. (2n³−3n²+n)/6 ≈ n³/3",
       "Full leading flop count gaussExactFlops n = gaussExactOps n + gaussExactSubs n with closed form gaussExactFlops_closed: 6·gaussExactFlops n + 3·n² + n = 4·n³, i.e. (4n³−3n²−n)/6 — the textbook ≈ 2n³/3 flops (≈ n³/3 mults + ≈ n³/3 adds); plus gaussExactOps_le_flops and concrete small-n checks",
       "Back-substitution phase fully counted: backSubOps n = ∑_{j<n} (j+1) (mult+div) with backSubOps_closed: 2·backSubOps n = n²+n, and backSubSubs n = ∑_{j<n} j with backSubSubs_closed: 2·backSubSubs n + n = n²; their sum backSubFlops n is exactly n² (backSubFlops_eq), the clean O(n²) back-substitution flop count",
-      "Full solve cost fullSolveFlops n = gaussExactFlops n + backSubFlops n with subtraction-free closed form fullSolveFlops_closed: 6·fullSolveFlops n + n = 4n³ + 3n², i.e. (4n³+3n²−n)/6, leading term 2n³/3; back-substitution shown asymptotically negligible (backSubFlops_le_gaussFlops: backSubFlops n ≤ gaussExactFlops n for n ≥ 3) and the full solve still beats Cramer's rule for n ≥ 4 (fullSolve_beats_cramer), bundled in fullSolve_summary"
+      "Full solve cost fullSolveFlops n = gaussExactFlops n + backSubFlops n with subtraction-free closed form fullSolveFlops_closed: 6·fullSolveFlops n + n = 4n³ + 3n², i.e. (4n³+3n²−n)/6, leading term 2n³/3; back-substitution shown asymptotically negligible (backSubFlops_le_gaussFlops: backSubFlops n ≤ gaussExactFlops n for n ≥ 3) and the full solve still beats Cramer's rule for n ≥ 4 (fullSolve_beats_cramer), bundled in fullSolve_summary",
+      "Sharp crossover fullSolve_beats_cramer_all: under the exact ≈ 2n³/3 solve cost, Gaussian elimination beats Cramer's rule for EVERY n ≥ 1 (small cases n ∈ {1,2,3} decided directly as 1<2, 7<12, 22<72; n ≥ 4 reuses fullSolve_beats_cramer), collapsing the parent's n ≥ 4 threshold — an artifact of the loose n³ model whose beat-Cramer proof needed factorial_gt_sq (n ≥ 4). fullSolve_beats_cramer_sharp certifies the 1 ≤ n hypothesis is sharp: the strict inequality fails at n = 0 (both costs 0)"
     ],
     "dateAdded": "2026-06-26",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 333,
+    "lineCount": 370,
     "assumptions": "None. Fully kernel-checked: 0 sorries, 0 axiom declarations, 0 assumption-carrying structures, and no native_decide (all concrete small-n counts are derived from the closed forms via omega/norm_num rather than native_decide, so Lean.ofReduceBool is NOT used). The single dependency on the parent file (CramersComplexity.gauss_beats_cramer, cramersRuleMuls) is through native_decide-free declarations only.",
-    "theoremCount": 25,
+    "theoremCount": 27,
     "definitionCount": 7
   },
   "overview": {
@@ -118,13 +119,21 @@
       "startLine": 196,
       "endLine": 332,
       "mathContext": "Back-substitution on the upper-triangular system costs exactly n² flops (n(n+1)/2 mult/div + n(n−1)/2 subtractions), an O(n²) term negligible against the ~2n³/3 of forward elimination. The complete dense-solve cost is therefore (4n³ + 3n² − n)/6 ~ 2n³/3."
+    },
+    {
+      "id": "sharp-crossover",
+      "title": "Sharp Crossover: Gauss Beats Cramer for Every n ≥ 1",
+      "summary": "Sharpens the inherited n ≥ 4 comparison threshold: because the exact full-solve cost fullSolveFlops n ≈ 2n³/3 is a constant factor smaller than the loose n³ model, fullSolve_beats_cramer_all shows Gaussian elimination beats Cramer's rule for every n ≥ 1 (the small cases n ∈ {1,2,3} decided directly as 1<2, 7<12, 22<72; n ≥ 4 reuses fullSolve_beats_cramer). fullSolve_beats_cramer_sharp proves the 1 ≤ n hypothesis is sharp — the strict inequality fails at n = 0 where both costs are 0.",
+      "startLine": 334,
+      "endLine": 370,
+      "mathContext": "The n ≥ 4 threshold in the parent comparison is an artifact of bounding Gauss by the conservative n³ model (whose beat-Cramer proof relies on factorial_gt_sq, established only for n ≥ 4). Under the honest ≈ 2n³/3 cost, the crossover drops to the smallest nontrivial dimension: Gauss wins for all n ≥ 1, and n = 0 is the sharp boundary (both models cost 0)."
     }
   ],
   "conclusion": {
     "summary": "This entry pins down the exact leading cost of Gaussian elimination — (n³ − n)/3 multiplications and divisions — that the parent Cramer-vs-Gauss comparison only bounded by n³. The closed form 3·gaussExactOps n + n = n³ is proved by a short subtraction-free induction in the ℕ semiring, its (n³ − n)/3 division form follows in one line, and omega supplies both the consistency bound (≤ n³) and the strict tightening (< n³ for n ≥ 2). The whole file is axiom-free (no sorries, no native_decide), upgrading the parent's axiomatized model to a fully kernel-checked exact count.",
     "implications": "Because a smaller cost can only strengthen a comparison the winner already led, the headline verdict — Gaussian elimination beats Cramer's rule for n ≥ 4 — carries over to the exact model for free, with no re-proof needed. More broadly, the entry demonstrates a reusable pattern for formalizing exact flop counts: state the polynomial identity in subtraction-free additive form (k·sum + remainder = closed form) so the induction stays in the ℕ semiring and closes by ring, then recover the conventional division form as a one-line corollary. The same template applies to the ~2n³/3 LU-factorization count, the n²/2 back-substitution count, and other textbook complexity figures that are usually quoted asymptotically but rarely formalized exactly.",
     "openQuestions": [
-      "The back-substitution phase is now formalized (backSubFlops_eq: exactly n²) and composed with forward elimination for the complete solve cost (fullSolveFlops_closed: 6·flops + n = 4n³ + 3n², leading term 2n³/3), with back-substitution shown asymptotically negligible and the full solve still beating Cramer's rule for n ≥ 4. Remaining: a refined model separating multiplications from divisions in the full solve, or accounting for multiple right-hand sides.",
+      "The back-substitution phase is now formalized (backSubFlops_eq: exactly n²) and composed with forward elimination for the complete solve cost (fullSolveFlops_closed: 6·flops + n = 4n³ + 3n², leading term 2n³/3), with back-substitution shown asymptotically negligible and the full solve beating Cramer's rule sharply for every n ≥ 1 (fullSolve_beats_cramer_all, with n = 0 the sharp boundary). Remaining: a refined model separating multiplications from divisions in the full solve, or accounting for multiple right-hand sides.",
       "Does the exact count extend to blocked/partial-pivoting LU factorization, where row interchanges add a lower-order term but the leading (n³ − n)/3 multiplication count is unchanged?",
       "Can a matching lower bound be formalized — that no elimination-based dense solver uses asymptotically fewer than n³/3 multiplications — to complement this exact upper count?"
     ]
@@ -168,15 +177,20 @@
       "name": "fullSolve_beats_cramer",
       "statement": "4 ≤ n → fullSolveFlops n < CramersComplexity.cramersRuleMuls n",
       "description": "Even with back-substitution included, solving by Gaussian elimination beats Cramer's rule for n ≥ 4, since the full solve cost is ≤ n³ = gaussMuls n."
+    },
+    {
+      "name": "fullSolve_beats_cramer_all",
+      "statement": "1 ≤ n → fullSolveFlops n < CramersComplexity.cramersRuleMuls n",
+      "description": "Sharp crossover: under the exact ≈ 2n³/3 solve cost, Gaussian elimination beats Cramer's rule for every n ≥ 1 (the small cases n ∈ {1,2,3} decided directly), collapsing the parent's n ≥ 4 threshold, which was only an artifact of the loose n³ model."
     }
   ],
   "leanFile": {
     "path": "Proofs/CramersRuleOQ02OQ01.lean",
     "axiomCount": 0,
     "sorryCount": 0,
-    "theoremCount": 25,
+    "theoremCount": 27,
     "definitionCount": 7,
-    "lineCount": 333
+    "lineCount": 370
   },
   "references": [
     {
