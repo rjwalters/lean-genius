@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "jensen-inequality-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "Goal: the unweighted n-variable AM–GM equality case",
+    "content": "The parent entry (Proofs.JensenInequalityOQ01) proves the sharp weighted AM–GM results — the inequality ∏ᵢ zᵢ^(wᵢ) ≤ ∑ᵢ wᵢ·zᵢ, its equality case ∏ᵢ zᵢ^(wᵢ) = ∑ᵢ wᵢ·zᵢ ↔ all zᵢ equal, and the strict form — and records the concrete two-variable instance √(ab) = (a+b)/2 ↔ a = b. This file generalizes that two-variable equality case to the full unweighted n-variable statement: for a nonempty finite index set s with n = s.card and nonnegative data, (∏ᵢ zᵢ)^(1/n) = (∑ᵢ zᵢ)/n ↔ all zᵢ equal. The route is a change of weights — feed the uniform weights wᵢ = 1/n into the parent's weighted theorems.",
+    "mathContext": "Uniform weights $w_i = 1/n$, $n = |s|$; goal $\\left(\\prod_i z_i\\right)^{1/n} = \\left(\\sum_i z_i\\right)/n \\iff$ all $z_i$ equal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic-geometric mean inequality",
+      "equality case",
+      "uniform weights",
+      "strict convexity of exp"
+    ],
+    "prerequisites": [
+      "weighted AM–GM equality case (parent entry)",
+      "rpow (real power) on nonnegatives"
+    ]
+  },
+  {
+    "id": "ann-amgm-n-le",
+    "proofId": "jensen-inequality-oq-01-oq-03",
+    "range": { "startLine": 50, "endLine": 61 },
+    "type": "theorem",
+    "title": "Unweighted n-variable AM–GM inequality",
+    "content": "amgm_n_le states (∏ᵢ zᵢ)^(1/n) ≤ (∑ᵢ zᵢ)/n for nonempty s and nonnegative data (n = s.card). The proof instantiates weighted_amgm_le at the constant weight w i = (s.card : ℝ)⁻¹. These weights are nonnegative (inv_pos) and sum to 1: Finset.sum_const rewrites ∑ᵢ (s.card)⁻¹ to s.card • (s.card)⁻¹, then nsmul_eq_mul turns the scalar action into (s.card : ℝ)·(s.card)⁻¹, which mul_inv_cancel₀ collapses to 1 (using s.card ≠ 0 from nonemptiness). With the weights fixed, Real.finset_prod_rpow moves the common exponent out of the product, ∏ᵢ zᵢ^(1/n) = (∏ᵢ zᵢ)^(1/n), and Finset.mul_sum together with div_eq_inv_mul rewrites ∑ᵢ (1/n)·zᵢ as (∑ᵢ zᵢ)/n.",
+    "mathContext": "$\\left(\\prod_i z_i\\right)^{1/n} \\le \\left(\\sum_i z_i\\right)/n$; from $\\sum_i (1/n) = 1$ and $\\prod_i z_i^{1/n} = \\left(\\prod_i z_i\\right)^{1/n}$.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "weighted_amgm_le",
+      "Real.finset_prod_rpow",
+      "Finset.mul_sum",
+      "uniform-weight specialization"
+    ],
+    "prerequisites": [
+      "weighted AM–GM inequality (parent entry)",
+      "rpow of a finite product"
+    ]
+  },
+  {
+    "id": "ann-amgm-n-eq-iff",
+    "proofId": "jensen-inequality-oq-01-oq-03",
+    "range": { "startLine": 63, "endLine": 77 },
+    "type": "theorem",
+    "title": "Unweighted n-variable AM–GM equality case",
+    "content": "amgm_n_eq_iff is the main result: (∏ᵢ zᵢ)^(1/n) = (∑ᵢ zᵢ)/n ↔ ∀ j ∈ s, ∀ k ∈ s, z j = z k. It specializes the parent's weighted_amgm_eq_iff to the strictly positive uniform weights w i = (s.card : ℝ)⁻¹ (positivity from inv_pos and s.card > 0; sum-to-1 as in amgm_n_le). The identical two rewrites — Real.finset_prod_rpow for the geometric side and Finset.mul_sum / div_eq_inv_mul for the arithmetic side — carry the weighted equality-case iff verbatim onto the unweighted goal. This is exactly the n-variable generalization of the parent's amgm_two_eq_iff (√(ab) = (a+b)/2 ↔ a = b), which is the n = 2 case with the square root written as the (1/2)-rpow.",
+    "mathContext": "$\\left(\\prod_i z_i\\right)^{1/n} = \\left(\\sum_i z_i\\right)/n \\iff$ all $z_i$ equal; the $n$-variable form of $\\sqrt{ab} = (a+b)/2 \\iff a = b$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "weighted_amgm_eq_iff",
+      "amgm_two_eq_iff",
+      "equality case",
+      "uniform-weight specialization"
+    ],
+    "prerequisites": [
+      "weighted AM–GM equality case (parent entry)",
+      "strict convexity of exp"
+    ]
+  },
+  {
+    "id": "ann-amgm-n-lt-of-ne",
+    "proofId": "jensen-inequality-oq-01-oq-03",
+    "range": { "startLine": 79, "endLine": 93 },
+    "type": "theorem",
+    "title": "Strict unweighted n-variable AM–GM",
+    "content": "amgm_n_lt_of_ne gives the strict inequality: for nonempty s and strictly positive data, if some two of the values differ (∃ j ∈ s, ∃ k ∈ s, z j ≠ z k) then (∏ᵢ zᵢ)^(1/n) < (∑ᵢ zᵢ)/n. The proof specializes weighted_amgm_lt_of_ne to the uniform weights 1/n under the same product/sum rewrites; the strict gap on non-constant data is inherited directly from the parent's strict weighted statement (itself proved through strictConvexOn_exp.map_sum_lt). Together with amgm_n_eq_iff this pins down the AM–GM inequality completely on the unweighted n-variable range: equality exactly on constant data, strict everywhere else.",
+    "mathContext": "$\\exists j,k \\in s,\\ z_j \\ne z_k \\Rightarrow \\left(\\prod_i z_i\\right)^{1/n} < \\left(\\sum_i z_i\\right)/n$ for $z_i > 0$.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "weighted_amgm_lt_of_ne",
+      "strict Jensen inequality",
+      "non-constant data",
+      "uniform-weight specialization"
+    ],
+    "prerequisites": [
+      "strict weighted AM–GM (parent entry)",
+      "strict convexity of exp"
+    ]
+  }
+]

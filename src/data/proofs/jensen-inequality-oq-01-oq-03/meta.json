@@ -1,0 +1,143 @@
+{
+  "id": "jensen-inequality-oq-01-oq-03",
+  "title": "The Unweighted n-Variable AM–GM Equality Case",
+  "slug": "jensen-inequality-oq-01-oq-03",
+  "description": "Generalizes the parent entry's two-variable AM–GM equality case √(ab) = (a+b)/2 ↔ a = b to the full unweighted n-variable statement: for a nonempty finite index set s (n = s.card) with nonnegative data zᵢ, the n-th root of the product equals the average, (∏ᵢ zᵢ)^(1/n) = (∑ᵢ zᵢ)/n, if and only if all the zᵢ are equal. The result is obtained as a direct corollary of the parent's sharp weighted equality theorem weighted_amgm_eq_iff by specializing to the uniform weights wᵢ = 1/n. Under those weights the weighted geometric mean ∏ᵢ zᵢ^(1/n) collapses to the ordinary n-th root (∏ᵢ zᵢ)^(1/n) via Real.finset_prod_rpow, and the weighted arithmetic mean ∑ᵢ (1/n)·zᵢ collapses to the average (∑ᵢ zᵢ)/n via Finset.mul_sum, turning the weighted equality-case iff into the unweighted one. The same specialization produces the unweighted n-variable inequality (∏ zᵢ)^(1/n) ≤ (∑ zᵢ)/n (from weighted_amgm_le) and its strict form (from weighted_amgm_lt_of_ne). The only structural hypothesis is that s be nonempty, so that the n uniform weights are positive and sum to 1; Mathlib packages the weighted forms but not this unweighted n-variable equality characterization.",
+  "meta": {
+    "author": "Lean Genius (unweighted n-variable AM–GM equality case via uniform-weight specialization); classical (arithmetic–geometric mean inequality)",
+    "date": "2026-07-01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/JensenInequalityOQ01OQ03.lean",
+    "tags": [
+      "analysis",
+      "convexity",
+      "am-gm-inequality",
+      "jensen-inequality",
+      "inequalities",
+      "rpow",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-07-01",
+    "lineCount": 93,
+    "originalContributions": [
+      "amgm_n_eq_iff: the unweighted n-variable AM–GM equality case — for a nonempty finite index set s (n = s.card) and nonnegative data, (∏ᵢ zᵢ)^(1/n) = (∑ᵢ zᵢ)/n holds iff all zᵢ are equal. This is the n-variable generalization of the parent's two-variable amgm_two_eq_iff, obtained from weighted_amgm_eq_iff at uniform weights 1/n. Not packaged in Mathlib.",
+      "amgm_n_le: the unweighted n-variable AM–GM inequality (∏ᵢ zᵢ)^(1/n) ≤ (∑ᵢ zᵢ)/n, the uniform-weight specialization of weighted_amgm_le.",
+      "amgm_n_lt_of_ne: the strict form — if some two of the positive values differ, then (∏ᵢ zᵢ)^(1/n) < (∑ᵢ zᵢ)/n, the uniform-weight specialization of weighted_amgm_lt_of_ne."
+    ],
+    "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide. #print axioms reports only propext / Classical.choice / Quot.sound. Builds on the parent entry Proofs.JensenInequalityOQ01 (weighted_amgm_le, weighted_amgm_eq_iff, weighted_amgm_lt_of_ne) and the Mathlib rpow library (Real.finset_prod_rpow).",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "jensen-inequality-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry proves the sharp weighted AM–GM results (weighted_amgm_le, weighted_amgm_eq_iff, weighted_amgm_lt_of_ne) and records the two-variable equality case amgm_two_eq_iff. This entry specializes each weighted result to the uniform weights 1/n, generalizing the two-variable equality case to the unweighted n-variable statement (∏ zᵢ)^(1/n) = (∑ zᵢ)/n ↔ all zᵢ equal."
+    },
+    {
+      "targetId": "jensen-inequality-oq-01-oq-02",
+      "relationship": "related",
+      "description": "That sibling proves weighted power-mean monotonicity M_p ≤ M_q for 0 < p ≤ q via the rpow Jensen inequality. The unweighted geometric mean (∏ zᵢ)^(1/n) proved here to sit below the average is the r → 0 rung of that same power-mean ladder in the uniform-weight case."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The arithmetic–geometric mean inequality — that the geometric mean of nonnegative numbers never exceeds their arithmetic mean, with equality exactly when the numbers coincide — is among the oldest and most-used inequalities in analysis, with proofs due to Cauchy (forward-backward induction, 1821), Pólya (via the exponential), and many others. Its equality characterization is the substantive part: the inequality is a one-line consequence of the concavity of the logarithm, but pinning equality to the constant case requires the strict convexity of the exponential (equivalently, strict Jensen). Mathlib formalizes the weighted forms (Real.geom_mean_le_arith_mean_weighted and Real.geom_mean_eq_arith_mean_weighted_iff'), and the parent gallery entry repackages the sharp equality case as weighted_amgm_eq_iff. What remains, and what this entry supplies, is the clean unweighted n-variable statement in terms of the ordinary n-th root and average — the form in which the inequality is usually quoted — recovered by feeding the uniform weights 1/n into the weighted machinery.",
+    "problemStatement": "Prove that for a nonempty finite index set s with n = s.card elements and nonnegative data zᵢ, the unweighted geometric mean equals the unweighted arithmetic mean, (∏ᵢ zᵢ)^(1/n) = (∑ᵢ zᵢ)/n, if and only if all the zᵢ are equal — the n-variable generalization of the two-variable case √(ab) = (a+b)/2 ↔ a = b.",
+    "proofStrategy": "Instantiate the parent's weighted equality theorem weighted_amgm_eq_iff at the constant weight function w i = (s.card : ℝ)⁻¹. Two structural facts make these legitimate weights: they are strictly positive (inv_pos, using s.card > 0 from nonemptiness) and they sum to 1 (Finset.sum_const gives s.card • (s.card)⁻¹, then nsmul_eq_mul and mul_inv_cancel₀ collapse it to 1). With the weights fixed, the weighted geometric mean ∏ᵢ zᵢ^(1/n) rewrites to the ordinary n-th root (∏ᵢ zᵢ)^(1/n) by Real.finset_prod_rpow (nonnegativity of the data lets the common exponent factor out of the product), and the weighted arithmetic mean ∑ᵢ (1/n)·zᵢ rewrites to (∑ᵢ zᵢ)/n by pulling the constant out with Finset.mul_sum and rewriting the inverse-times as a division (div_eq_inv_mul). These two rewrites carry the weighted equality-case iff onto the unweighted goal verbatim. The inequality amgm_n_le and its strict form amgm_n_lt_of_ne follow from weighted_amgm_le and weighted_amgm_lt_of_ne under the identical specialization.",
+    "keyInsights": [
+      "The unweighted n-variable AM–GM equality case is not a new theorem but a change of weights: setting every weight to 1/n turns the parent's sharp weighted statement into the familiar unweighted one, with all the analytic content (strict convexity of exp) already discharged upstream.",
+      "The exponent identity is what makes the collapse clean: Real.finset_prod_rpow moves the common rpow exponent 1/n outside the product, so ∏ᵢ zᵢ^(1/n) becomes (∏ᵢ zᵢ)^(1/n) with no side conditions beyond nonnegativity of the data.",
+      "The only hypothesis needed is that the index set be nonempty. Nonemptiness gives s.card > 0, which is exactly what is required for the uniform weights to be positive and to sum to 1; no bound on n and no positivity of the data (beyond nonnegativity) enters the equality case.",
+      "The same one-line specialization yields three results at once — the inequality, its equality characterization, and its strict form — because the parent packages all three weighted statements over the same hypotheses."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Uniform-Weight Bridge",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "States the goal — the unweighted n-variable AM–GM equality case (∏ zᵢ)^(1/n) = (∑ zᵢ)/n ↔ all zᵢ equal — and the strategy: specialize the parent's weighted theorems to the uniform weights 1/n, using that these weights are positive and sum to 1.",
+      "mathContext": "Uniform weights $w_i = 1/n$ with $n = |s|$; geometric mean $\\left(\\prod_i z_i\\right)^{1/n}$, arithmetic mean $\\left(\\sum_i z_i\\right)/n$."
+    },
+    {
+      "id": "amgm-n-le",
+      "title": "Unweighted n-variable AM–GM inequality",
+      "startLine": 50,
+      "endLine": 61,
+      "summary": "amgm_n_le: for nonempty s and nonnegative data, (∏ᵢ zᵢ)^(1/n) ≤ (∑ᵢ zᵢ)/n. Specialize weighted_amgm_le to w i = (s.card)⁻¹; the weights are nonnegative and sum to 1 (Finset.sum_const, nsmul_eq_mul, mul_inv_cancel₀), then Real.finset_prod_rpow and Finset.mul_sum rewrite the two means to the n-th root and the average.",
+      "mathContext": "$\\left(\\prod_i z_i\\right)^{1/n} \\le \\left(\\sum_i z_i\\right)/n$ for $z_i \\ge 0$, $s$ nonempty."
+    },
+    {
+      "id": "amgm-n-eq-iff",
+      "title": "Unweighted n-variable AM–GM equality case",
+      "startLine": 63,
+      "endLine": 77,
+      "summary": "amgm_n_eq_iff: the main result. Specialize weighted_amgm_eq_iff to the strictly positive uniform weights 1/n; the same product/sum rewrites (Real.finset_prod_rpow, Finset.mul_sum, div_eq_inv_mul) turn the weighted equality-case iff into (∏ᵢ zᵢ)^(1/n) = (∑ᵢ zᵢ)/n ↔ ∀ j k ∈ s, z j = z k — the n-variable generalization of the parent's amgm_two_eq_iff.",
+      "mathContext": "$\\left(\\prod_i z_i\\right)^{1/n} = \\left(\\sum_i z_i\\right)/n \\iff$ all $z_i$ equal."
+    },
+    {
+      "id": "amgm-n-lt-of-ne",
+      "title": "Strict unweighted n-variable AM–GM",
+      "startLine": 79,
+      "endLine": 93,
+      "summary": "amgm_n_lt_of_ne: for nonempty s and strictly positive data, if some two values differ then (∏ᵢ zᵢ)^(1/n) < (∑ᵢ zᵢ)/n. Specialize weighted_amgm_lt_of_ne to the uniform weights 1/n under the identical rewrites, giving the strict gap on non-constant data.",
+      "mathContext": "$\\exists j,k\\in s,\\ z_j \\ne z_k \\Rightarrow \\left(\\prod_i z_i\\right)^{1/n} < \\left(\\sum_i z_i\\right)/n$ for $z_i > 0$."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for the AM–GM inequality and its equality case, including the weighted form and the convexity/Jensen route used here."
+    },
+    {
+      "authors": [
+        "Steele, J.M."
+      ],
+      "title": "The Cauchy–Schwarz Master Class",
+      "year": "2004",
+      "venue": "Cambridge University Press",
+      "note": "A modern treatment of the AM–GM inequality via convexity and Jensen, with the equality case handled through strict convexity."
+    },
+    {
+      "authors": [
+        "Bullen, P.S."
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications 560, Kluwer/Springer",
+      "note": "Encyclopaedic treatment of the arithmetic and geometric means, their weighted and unweighted forms, and the comparison inequalities between them."
+    }
+  ],
+  "conclusion": {
+    "summary": "This fully verified 93-line file (0 sorries, 0 axioms, no native_decide) proves the unweighted n-variable AM–GM equality case (∏ᵢ zᵢ)^(1/n) = (∑ᵢ zᵢ)/n ↔ all zᵢ equal, together with the underlying inequality and its strict form. Each is a one-specialization corollary of the parent's sharp weighted theorems at the uniform weights 1/n, with the weighted geometric and arithmetic means collapsing to the ordinary n-th root and average via Real.finset_prod_rpow and Finset.mul_sum.",
+    "implications": "The entry closes the gap between the parent's two-variable equality case and the form of the AM–GM inequality most often quoted — the unweighted n-variable statement in terms of the n-th root and the average. Because all analytic content lives upstream in the weighted equality theorem, the specialization is purely algebraic bookkeeping over the uniform weights.",
+    "openQuestions": [
+      "State and prove the limiting geometric-mean identification: as the exponent r → 0, the unweighted power mean M_r = ((∑ zᵢ^r)/n)^(1/r) tends to the geometric mean (∏ zᵢ)^(1/n), connecting this equality case to the power-mean ladder of the sibling entry.",
+      "Derive the reverse-direction quantitative bound: control the gap (∑ zᵢ)/n − (∏ zᵢ)^(1/n) from below in terms of the variance of the data, sharpening the strict inequality amgm_n_lt_of_ne into an explicit deficit estimate."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 93,
+    "axiomCount": 0,
+    "path": "Proofs/JensenInequalityOQ01OQ03.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 3,
+    "imports": [
+      "Mathlib",
+      "Proofs.JensenInequalityOQ01"
+    ]
+  },
+  "sorries": 0
+}
