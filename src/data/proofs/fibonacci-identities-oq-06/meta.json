@@ -112,6 +112,11 @@
       "targetId": "lucas-sum-oq-01",
       "relationship": "relatedTo",
       "description": "The Lucas analogue of this entry's fib_sum: the partial sum ∑_{k=1}^{n} Lₖ = Lₙ₊₂ − 3 telescopes exactly as F₀ + ⋯ + Fₙ = Fₙ₊₂ − 1 does here, differing only in the constant (3 vs 1) fixed by the initial conditions L₀ = 2, L₁ = 1 rather than F₀ = 0, F₁ = 1. It realizes, at degree zero, the general Gibonacci partial-sum question raised in this entry's open problems and shares the same subtraction-free-in-ℕ + omega proof recipe."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "relatedTo",
+      "description": "The archetypal index-weighted sum. Gauss's ∑_{i≤n} i = n(n+1)/2 is the first moment of the constant sequence 1, exactly the trivial rung of the moment ladder S_k(n) = ∑ iᵏ·(sequence) that this entry climbs for the Fibonacci sequence with fib_weighted_sum (∑ i·Fᵢ). Both are index-weighted sums proved by the same Finset.sum_range_succ induction; the Fibonacci case merely replaces the closed-form polynomial n(n+1)/2 with a Fibonacci-valued closed form n·Fₙ₊₂ − Fₙ₊₃ + 2, reflecting that the underlying sequence obeys the two-term recurrence rather than being constant."
     }
   ],
   "conclusion": {
