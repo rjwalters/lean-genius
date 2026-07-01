@@ -46,5 +46,17 @@
     "significance": "key",
     "relatedConcepts": ["parity sums", "ℕ subtraction avoidance", "omega", "off-by-one correction"],
     "prerequisites": ["induction", "linear arithmetic over ℕ"]
+  },
+  {
+    "id": "fibid-ann-skeleton",
+    "proofId": "fibonacci-identities",
+    "range": { "startLine": 35, "endLine": 70 },
+    "type": "insight",
+    "title": "One Induction Skeleton, Three Closing Tactics",
+    "content": "All three proofs share an identical five-move skeleton — `induction n`, `simp` base case, `Finset.sum_range_succ` to peel the last summand, the inductive hypothesis, and `Nat.fib_add_two` to expand the fresh Fibonacci term — yet each closes differently, and the difference is exactly the algebraic degree of the summand. `fib_sum_sq` sums a *quadratic* ($F_i^2$), so after expanding $F_{k+2}=F_{k+1}+F_k$ the leftover $F_kF_{k+1}+F_{k+1}^2$ must be refactored as $F_{k+1}(F_k+F_{k+1})$: that is a polynomial identity, so `ring` is needed. `fib_sum_odd` sums a *bare* Fibonacci term, so the recurrence *is* the goal — $F_{2k+2}=F_{2k+1}+F_{2k}$ — and no arithmetic tactic is required at all. `fib_sum_even` carries the $+1$ correction that keeps it inside $\\mathbb{N}$, so its step is pure linear bookkeeping over the hypothesis, dispatched by `omega`. The ladder `nothing → ring → omega` is a compact illustration of picking the *weakest* decision procedure that closes each goal.",
+    "mathContext": "The three summands have degrees $2$, $1$, and $1{+}\\text{const}$ in the $F_i$; the closing tactic tracks that structure: `ring` for the polynomial step, the recurrence alone for the linear step, `omega` for the $\\mathbb{N}$-affine step.",
+    "significance": "supporting",
+    "relatedConcepts": ["proof by induction", "Finset.sum_range_succ", "tactic selection", "ring vs omega"],
+    "prerequisites": ["induction over finite sums", "Lean tactic basics"]
   }
 ]
