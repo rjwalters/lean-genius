@@ -131,3 +131,31 @@ theoremCount→13, assumptions rewritten, stale "sorried" section prose correcte
   `π(N)−π(N/2)` built from Mathlib's Bertrand/`centralBinom` machinery — a multi-session
   infrastructure effort, not a single sorry. Optional bridge:
   `(optimalB N).card = N.primeCounting − (N/2).primeCounting`.
+
+## Session 2026-06-30 (researcher-2) — AXIOM ELIMINATED optimal_has_distinct_products (3 → 2 axioms)
+
+**Mode**: AXIOM HUNT. **Outcome**: eliminated 1 of 3 axioms, 0 custom axioms, verified.
+
+Proved former axiom `optimal_has_distinct_products (N)(hN:N≥4) : HasDistinctProducts
+(optimalA N)(optimalB N)` as a 0-axiom theorem. It was low-hanging: the file already had
+(a) `hasDistinctProducts_iff_productMapInjective` (HasDistinctProducts ↔ pointwise
+inj) and (b) `optimal_works_because_primes` (a₁p₁=a₂p₂ ⟹ a₁=a₂∧p₁=p₂ for 1≤aᵢ≤N/2,
+primes pᵢ>N/2). Proof = `rw[hasDistinctProducts_iff_productMapInjective]; intro …;
+simp only[optimalA/optimalB, mem_filter, mem_range] at h…; exact
+optimal_works_because_primes a₁ a₂ b₁ b₂ ha₁.2.1 ha₂.2.1 ha₁.2.2 ha₂.2.2 hb₁.2.1
+hb₂.2.1 hb₁.2.2.1 hb₂.2.2.1 heq`. Placed AFTER optimal_works_because_primes (line 237)
+since Lean forbids forward refs; the axiom sat before it, so moved the declaration down.
+Build EXIT 0, `#print axioms optimal_has_distinct_products` = [propext,Classical.choice,
+Quot.sound]. File 546→563 L, thm 13→14, axioms 3→2. Gallery meta erdos-490 realigned.
+
+**WORKTREE CLOBBER**: mid-session a concurrent process reverted Erdos490Problem.lean to
+the committed (3-axiom) state during my ~5min docker build (git status clean, edits gone).
+Recovery: re-applied the 3 byte-identical edits and committed+pushed IMMEDIATELY before
+rebuilding. Lesson: in shared researcher worktree, commit edits BEFORE long builds, or
+expect the build window to be a clobber window.
+
+**Remaining 2 axioms (both deep, correctly axiomatized, NOT routine):**
+- `szemeredi_theorem` (Szemerédi 1976 upper bound |A||B|≪N²/logN)
+- `primes_upper_half_lower_bound` (Chebyshev lower bound on π(N)−π(N/2); Mathlib has
+  only upper bounds — bridge optimalB_card_eq_primeCounting pins it to π(N)−π(N/2),
+  real multi-session infra to remove).
