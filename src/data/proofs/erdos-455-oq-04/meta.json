@@ -29,8 +29,8 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-05-12",
     "mathlib_version": "4.26.0",
-    "lineCount": 237,
-    "theoremCount": 10,
+    "lineCount": 266,
+    "theoremCount": 12,
     "definitionCount": 2,
     "mathlibDependencies": [
       {
@@ -75,7 +75,8 @@
       "Concrete length-5 Green-Tao d=0 cross-check (`exists_apGap_zero_length_5_witness`): the AP 5, 11, 17, 23, 29 (common difference 6) gives five primes — confirmed sorry-free and axiom-free via `decide`. Independent of `greenTao_finitary`, this provides a sanity check on the k = 5 instance of the d = 0 axiom.",
       "Predicate-form (F5) Bunyakovsky axiom signature: rather than the raw-triple (F1) form `∃ q₀ g₀, ∀ n, Nat.Prime (q₀ + n·g₀ + (n·(n-1)/2)·d.toNat)` which would require ℤ-cast bookkeeping for the quadratic, the F5 form directly returns the bridge tuple `⟨q, StrictMono q, primality prefix, HasAPGaps q d⟩` — sidesteps the ℤ-cast complications and makes the bridge theorem a one-line restatement.",
       "Bridge theorems for both axiom paths: `exists_apGap_zero_of_length` (d = 0, Green-Tao) and `exists_apGapPrimeSeq_of_length_d_pos` (d > 0, Bunyakovsky) connect the raw axioms to the slug's `HasAPGaps`/`APGapPrimeSeq` data structures — the bridge architecture isolates Mathlib-style triple-form axioms from the slug's predicate-form data types.",
-      "Verified axiom-free structural theory of AP-gap sequences (`apGap_gap_linear`, `apGap_zero_gaps_constant`, `apGap_gaps_monotone`, `apGap_closed_form`, `eulerPoly_closed_form`): unconditional consequences of the second-difference recurrence, requiring neither primality nor the Green-Tao / Bunyakovsky axioms. `apGap_gap_linear` integrates the recurrence once to show the gaps `q(n+1) - q(n) = (q 1 - q 0) + n·d` form an arithmetic progression; `apGap_closed_form` integrates again to the quadratic closed form `2·q(n) = 2·q0 + 2n·(q1 - q0) + n(n-1)·d` (with d = 2, q0 = 41, q1 = 43 this is exactly Euler's n² + n + 41, checked by `eulerPoly_closed_form`). `apGap_gaps_monotone` establishes the key inclusion `APGap_{d ≥ 0} ⊆ MonotoneGap` (non-negative common difference ⟹ non-decreasing gaps), formally placing the AP-gap condition inside the parent erdos-455 monotone-gap condition; `apGap_zero_gaps_constant` is the d = 0 endpoint (constant gaps = primes in AP). All five depend only on propext / Classical.choice / Quot.sound (0 counted axioms)."
+      "Verified axiom-free structural theory of AP-gap sequences (`apGap_gap_linear`, `apGap_zero_gaps_constant`, `apGap_gaps_monotone`, `apGap_closed_form`, `eulerPoly_closed_form`): unconditional consequences of the second-difference recurrence, requiring neither primality nor the Green-Tao / Bunyakovsky axioms. `apGap_gap_linear` integrates the recurrence once to show the gaps `q(n+1) - q(n) = (q 1 - q 0) + n·d` form an arithmetic progression; `apGap_closed_form` integrates again to the quadratic closed form `2·q(n) = 2·q0 + 2n·(q1 - q0) + n(n-1)·d` (with d = 2, q0 = 41, q1 = 43 this is exactly Euler's n² + n + 41, checked by `eulerPoly_closed_form`). `apGap_gaps_monotone` establishes the key inclusion `APGap_{d ≥ 0} ⊆ MonotoneGap` (non-negative common difference ⟹ non-decreasing gaps), formally placing the AP-gap condition inside the parent erdos-455 monotone-gap condition; `apGap_zero_gaps_constant` is the d = 0 endpoint (constant gaps = primes in AP). All five depend only on propext / Classical.choice / Quot.sound (0 counted axioms).",
+      "Rigidity and strict-boundary sharpenings (`apGap_unique`, `apGap_gaps_strictMono`), verified and axiom-free. `apGap_unique` is the initial-value uniqueness of the second-difference recurrence: two `HasAPGaps _ d` sequences that agree at n = 0 and n = 1 agree everywhere (a two-line corollary of the quadratic closed form). `apGap_gaps_strictMono` sharpens `apGap_gaps_monotone` from ≤ to <, showing d > 0 forces strictly increasing gaps; combined with `apGap_zero_gaps_constant` (all gaps equal when d = 0) it witnesses the strictness of the inclusion `ConstantGap (d = 0) ⊊ APGap_{d>0}`. Both depend only on propext / Classical.choice / Quot.sound."
     ],
     "prerequisites": [
       "Elementary number theory (primality of natural numbers, arithmetic progressions)",
@@ -176,11 +177,11 @@
   ],
   "leanFile": {
     "axiomCount": 2,
-    "lineCount": 237,
+    "lineCount": 266,
     "path": "Proofs/Erdos455OQ04.lean",
     "sorries": 0,
     "definitionCount": 2,
-    "theoremCount": 10
+    "theoremCount": 12
   },
   "sorries": 0
 }
