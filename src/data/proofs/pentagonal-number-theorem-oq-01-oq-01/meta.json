@@ -11,9 +11,9 @@
       "PentagonalNumberTheoremOQ01"
     ],
     "namespace": "PentagonalNumberTheoremOQ01OQ01",
-    "lineCount": 326,
+    "lineCount": 367,
     "axiomCount": 0,
-    "theoremCount": 28,
+    "theoremCount": 31,
     "definitionCount": 2,
     "path": "Proofs/PentagonalNumberTheoremOQ01OQ01.lean",
     "sorries": 0
@@ -72,13 +72,14 @@
       "gpAt_gap_odd / gpAt_gap_even / gpAt_gaps (Part 5): the exact first differences of A001318. Strict monotonicity records only that the enumeration increases; these pin down by how much. An even step 2j → 2j+1 (crossing g(-j) → g(j+1)) has gap 2j+1 (the odd numbers 1,3,5,7,…) and an odd step 2j+1 → 2j+2 (crossing g(j+1) → g(-(j+1))) has gap j+1 (the naturals 1,2,3,4,…). So A001318's first differences are two interleaved arithmetic progressions, and gpAt_gap_pos (every gap ≥ 1) is a quantitative refinement of strict monotonicity.",
       "gpAt_eight_even / gpAt_eight_odd (Part 6): the exact quadratic closed form of the n-th generalized pentagonal number. Telescoping the two interleaved gap progressions collapses to a single quadratic: 8·gpAt(2j) = 3(2j)²+2(2j) and 8·gpAt(2j+1) = 3(2j+1)²+4(2j+1)+1, each a one-line linear_combination of the parent's doubling relation two_mul_genPent at -j and j+1.",
       "gpAt_eight_sandwich and gpAt_eight_upper' (Part 6): the growth law gpAt n = Θ(n²). The closed forms squeeze the whole sequence between two quadratics, 3n² ≤ 8·gpAt n ≤ 3n²+4n+1 ≤ 3(n+1)², so the n-th generalized pentagonal number is (3/8)n² + O(n).",
-      "gpAt_le_imp_index_sq_le (Part 6): the density / sparsity of A001318. If gpAt n ≤ N then 3n² ≤ 8N, i.e. n ≤ √(8N/3); since gpAt enumerates the generalized pentagonal numbers in increasing order, at most ⌊√(8N/3)⌋+1 of them lie in [0,N] — they thin out like √N, the reciprocal of the Θ(n²) growth rate."
+      "gpAt_le_imp_index_sq_le (Part 6): the density / sparsity of A001318. If gpAt n ≤ N then 3n² ≤ 8N, i.e. n ≤ √(8N/3); since gpAt enumerates the generalized pentagonal numbers in increasing order, at most ⌊√(8N/3)⌋+1 of them lie in [0,N] — they thin out like √N, the reciprocal of the Θ(n²) growth rate.",
+      "gpAt_two_mul_closed / gpAt_closed (Part 7): the single parity-free closed form 2·gpAt n = 3⌈n/2⌉² + (-1)ⁿ⌈n/2⌉ (equivalently gpAt n = (3⌈n/2⌉²+(-1)ⁿ⌈n/2⌉)/2), one expression valid for all n. Part 6's two arms are different quadratics (8·gpAt n = 3n²+2n even, 3n²+4n+1 odd) that no plain ⌊(3n²+bn+c)/8⌋ can unify — the parity must live in the two standard functions ⌈n/2⌉=(n+1)/2 and (-1)ⁿ. Proved by parity split feeding two_mul_genPent at -j (even) and j+1 (odd), with (-1)^(2j)=1 / (-1)^(2j+1)=-1. This resolves the entry's long-standing parity-free-closed-form open question."
     ],
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
-    "lineCount": 326,
-    "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. The headline results gpAt_strictMono, gpAt_enumerates, range_gpAt, mem_range_gpAt_iff_isSquare, gpAt_gaps and gpAt_eight_sandwich each #print axioms to only [propext, Classical.choice, Quot.sound] — the standard foundational axioms, none counted under the project's axiom policy. gpAt_values and gpAt_gap_values are discharged by decide (kernel Decidable evaluation, no native_decide / Lean.ofReduceBool). Machine-verified: the file compiles cleanly against Mathlib 4.26.0 (Built Proofs.PentagonalNumberTheoremOQ01OQ01, exit 0).",
-    "theoremCount": 28,
+    "lineCount": 367,
+    "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. The headline results gpAt_strictMono, gpAt_enumerates, range_gpAt, mem_range_gpAt_iff_isSquare, gpAt_gaps, gpAt_eight_sandwich and gpAt_two_mul_closed each #print axioms to only [propext, Classical.choice, Quot.sound] — the standard foundational axioms, none counted under the project's axiom policy. gpAt_values and gpAt_gap_values are discharged by decide (kernel Decidable evaluation, no native_decide / Lean.ofReduceBool). Machine-verified: the file compiles cleanly against Mathlib 4.26.0 (Built Proofs.PentagonalNumberTheoremOQ01OQ01, exit 0).",
+    "theoremCount": 31,
     "definitionCount": 2
   },
   "overview": {
@@ -147,11 +148,19 @@
       "endLine": 322,
       "summary": "gpAt_eight_even / gpAt_eight_odd (the exact closed forms 8·gpAt(2j)=3(2j)²+2(2j) and 8·gpAt(2j+1)=3(2j+1)²+4(2j+1)+1), the growth bounds gpAt_eight_lower / gpAt_eight_upper / gpAt_eight_upper', the sandwich gpAt_eight_sandwich (3n² ≤ 8·gpAt n ≤ 3n²+4n+1), and the density corollary gpAt_le_imp_index_sq_le (gpAt n ≤ N ⟹ 3n² ≤ 8N).",
       "mathContext": "Telescoping the two interleaved gap progressions of Part 5 collapses to a single quadratic, closed-form per parity via a linear_combination of two_mul_genPent. The two closed forms squeeze the sequence between 3n² and 3(n+1)², so gpAt n = Θ(n²) — the n-th generalized pentagonal number is (3/8)n²+O(n). The lower bound inverts to a sparsity statement: at most √(8N/3)+1 generalized pentagonal numbers lie below N, so A001318 thins out like √N."
+    },
+    {
+      "id": "parity-free",
+      "title": "Part 7 — A Single Parity-Free Closed Form via ⌈n/2⌉ and (-1)ⁿ",
+      "startLine": 326,
+      "endLine": 367,
+      "summary": "gpAt_two_mul_closed (2·gpAt n = 3⌈n/2⌉²+(-1)ⁿ⌈n/2⌉, division-free), gpAt_closed (the value form gpAt n = (3⌈n/2⌉²+(-1)ⁿ⌈n/2⌉)/2), and gpAt_closed_values (first seven terms). One expression valid for all n, carrying the parity in ⌈n/2⌉=(n+1)/2 and (-1)ⁿ.",
+      "mathContext": "Part 6's two arms are different quadratics (8·gpAt n = 3n²+2n even, 3n²+4n+1 odd) that no plain ⌊(3n²+bn+c)/8⌋ can unify. Setting c=⌈n/2⌉ makes the even arm g(-c)=(3c²+c)/2 and the odd arm g(c)=(3c²-c)/2, unified by the sign (-1)ⁿ into 3c²+(-1)ⁿc. Proof: parity split feeding two_mul_genPent at -j (even, (-1)^(2j)=1) and j+1 (odd, (-1)^(2j+1)=-1); gpAt_closed then divides by 2 (the numerator c(3c±1) is always even). Resolves the entry's parity-free-closed-form open question."
     }
   ],
   "openQuestions": [
     "Strengthen gpAt_enumerates to an explicit OrderIso ℕ ≃o {m : ℤ // IsGenPent m}, packaging strict monotonicity and the range bijection as a single order isomorphism onto the subtype of generalized pentagonal numbers.",
-    "Part 6 gives the exact per-parity closed form (8·gpAt(2j)=3(2j)²+2(2j), 8·gpAt(2j+1)=3(2j+1)²+4(2j+1)+1) and the growth law gpAt n = Θ(n²). The two arms are genuinely different quadratics — 8·gpAt n = 3n²+2n (even) versus 3n²+4n+1 (odd) — so NO single ⌊(3n²+bn+c)/8⌋ collapses them (their values diverge, e.g. at n=4 the odd formula gives 8 but gpAt 4 = 7). A parity-free closed form therefore requires an explicit parity term: express gpAt n via ⌈n/2⌉ (each arm is a clean quadratic in ⌈n/2⌉) or a (-1)^n correction, and prove agreement with the per-parity forms for all n.",
+    "ANSWERED by Part 7 (gpAt_two_mul_closed / gpAt_closed): the parity-free closed form is 2·gpAt n = 3⌈n/2⌉² + (-1)ⁿ⌈n/2⌉. Remaining refinements: derive the OrderIso ℕ ≃o {m // IsGenPent m} using gpAt_closed as the explicit forward map, and settle whether a bare ⌊f(n)⌋ form (single floor, no (-1)ⁿ) exists (Part 7's proof that the two arms diverge suggests not).",
     "Turn the Part 6 sparsity bound (gpAt n ≤ N ⟹ 3n² ≤ 8N) into an exact counting function: prove the cardinality #{m | IsGenPent m ∧ 0 ≤ m ≤ N} = ⌊(√(24N+1)+1)/6⌋·2 (or the equivalent floor expression), pinning the number of generalized pentagonal numbers below N rather than only bounding it.",
     "Use the enumeration to index Euler's partition recurrence p(n) = ∑(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})) by rank, summing over the initial segment of gpAt below n rather than over the index interval [-n,n]."
   ],
@@ -160,7 +169,7 @@
     "implications": "The parent's index map g is injective but not monotone, so 'the n-th generalized pentagonal number' is not g(n); this entry supplies the correct object gpAt n and proves it lists exactly OEIS A001318 in order. The whole construction rests on three short integer inequalities derived from the parent's doubling relation and ±k pairing, illustrating how an order structure can be bootstrapped from purely algebraic identities. The bijection range_gpAt is the form a formalization of Euler's partition recurrence wants when summing the pentagonal shifts by rank rather than by index.",
     "openQuestions": [
       "Promote the bijection to an explicit OrderIso ℕ ≃o {m // IsGenPent m}.",
-      "Collapse Part 6's per-parity closed form into a single parity-free expression via ⌈n/2⌉ or a (-1)^n term (a plain ⌊quadratic/8⌋ provably cannot work — the two arms diverge).",
+      "ANSWERED (Part 7): the parity-free closed form 2·gpAt n = 3⌈n/2⌉²+(-1)ⁿ⌈n/2⌉.",
       "Upgrade Part 6's sparsity bound to the exact counting function #{generalized pentagonal m ≤ N}.",
       "Re-index Euler's partition recurrence by rank using the initial segment of gpAt below n."
     ]

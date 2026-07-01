@@ -323,4 +323,45 @@ theorem gpAt_le_imp_index_sq_le {n : ℕ} {N : ℤ} (h : gpAt n ≤ N) :
   have hlow := gpAt_eight_lower n
   linarith
 
+/-! ## Part 7: A single parity-free closed form via `⌈n/2⌉` and `(-1)ⁿ`
+
+Part 6's closed forms are stated per parity (even vs odd `n`).  Because the two arms are
+genuinely different quadratics — `8·gpAt n = 3n²+2n` (even) and `3n²+4n+1` (odd) — no plain
+`⌊(3n²+bn+c)/8⌋` collapses them into one expression (their values diverge: at `n=4` the odd
+formula gives `8` but `gpAt 4 = 7`).  The correct parity-free form carries the parity in the
+two standard functions `c := ⌈n/2⌉ = (n+1)/2` and `(-1)ⁿ`:
+
+    `2·gpAt n = 3c² + (-1)ⁿ·c`,   i.e.   `gpAt n = (3⌈n/2⌉² + (-1)ⁿ⌈n/2⌉)/2`.
+
+For even `n=2j` this is `g(-j) = (3j²+j)/2` (with `c=j`, `(-1)ⁿ=1`); for odd `n=2j+1` it is
+`g(j+1) = (3(j+1)²-(j+1))/2` (with `c=j+1`, `(-1)ⁿ=-1`).  A single formula, valid for all `n`. -/
+
+/-- **Parity-free closed form (division-free).**  `2·gpAt n = 3⌈n/2⌉² + (-1)ⁿ⌈n/2⌉`, where
+`⌈n/2⌉` is the natural `(n+1)/2`.  The two arms of the enumeration are unified by carrying the
+parity in `(-1)ⁿ` and the ceiling `⌈n/2⌉` rather than by a case split on `n`. -/
+theorem gpAt_two_mul_closed (n : ℕ) :
+    2 * gpAt n = 3 * (((n + 1) / 2 : ℕ) : ℤ) ^ 2 + (-1) ^ n * (((n + 1) / 2 : ℕ) : ℤ) := by
+  rcases Nat.even_or_odd n with ⟨j, rfl⟩ | ⟨j, rfl⟩
+  · rw [show j + j = 2 * j from (two_mul j).symm, gpAt_even,
+      show (2 * j + 1) / 2 = j from by omega, show (-1 : ℤ) ^ (2 * j) = 1 from by
+        rw [pow_mul]; norm_num]
+    linear_combination two_mul_genPent (-(j : ℤ))
+  · rw [gpAt_odd, show (2 * j + 1 + 1) / 2 = j + 1 from by omega,
+      show (-1 : ℤ) ^ (2 * j + 1) = -1 from by rw [pow_succ, pow_mul]; norm_num]
+    push_cast
+    linear_combination two_mul_genPent ((j : ℤ) + 1)
+
+/-- **Parity-free closed form (value form).**  `gpAt n = (3⌈n/2⌉² + (-1)ⁿ⌈n/2⌉)/2`, the exact
+n-th generalized pentagonal number as one expression in `n` — the half is an honest integer
+because `3c²+(-1)ⁿc = c(3c±1)` is always even. -/
+theorem gpAt_closed (n : ℕ) :
+    gpAt n = (3 * (((n + 1) / 2 : ℕ) : ℤ) ^ 2 + (-1) ^ n * (((n + 1) / 2 : ℕ) : ℤ)) / 2 := by
+  rw [← gpAt_two_mul_closed n]
+  omega
+
+/-- Sanity check of the parity-free closed form against A001318's first terms `0,1,2,5,7,12,15`. -/
+theorem gpAt_closed_values :
+    gpAt 0 = 0 ∧ gpAt 1 = 1 ∧ gpAt 2 = 2 ∧ gpAt 3 = 5 ∧
+      gpAt 4 = 7 ∧ gpAt 5 = 12 ∧ gpAt 6 = 15 := gpAt_values
+
 end PentagonalNumberTheoremOQ01OQ01
