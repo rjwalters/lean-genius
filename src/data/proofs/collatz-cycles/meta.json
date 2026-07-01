@@ -163,5 +163,35 @@
     "definitionCount": 4,
     "theoremCount": 27
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Jeffrey C. Lagarias",
+      "title": "The 3x+1 problem and its generalizations",
+      "year": 1985,
+      "venue": "American Mathematical Monthly 92(1), 3–23",
+      "note": "Canonical survey of the Collatz (3x+1) problem, including the cycle-structure constraints and the log₂3 halving count that this entry formalizes."
+    },
+    {
+      "authors": "Jeffrey C. Lagarias (ed.)",
+      "title": "The Ultimate Challenge: The 3x+1 Problem",
+      "year": 2010,
+      "venue": "American Mathematical Society",
+      "note": "Comprehensive collected volume on the Collatz problem; the reference for known results on the absence of short cycles proved here."
+    },
+    {
+      "authors": "Ray P. Steiner",
+      "title": "A theorem on the Syracuse problem",
+      "year": 1977,
+      "venue": "Proceedings of the 7th Manitoba Conference on Numerical Mathematics, 553–559",
+      "note": "Establishes the arithmetic constraint relating odd steps to halvings (j odd steps force ≥⌈j·log₂3⌉ divisions) that this formalization reproves for small cycles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Nat arithmetic, parity, and decide-based verification in Mathlib",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Supplies the natural-number arithmetic and decidability machinery used to rule out fixed points and 2-cycles and to verify that every integer 1–20 reaches 1."
+    }
+  ]
 }
