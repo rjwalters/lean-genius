@@ -124,6 +124,35 @@
       "content": "The finite filter/ideal theory underpins the σ-complete (indeed κ-complete) club filter. The binary intersection theorem is the base case of the κ-indexed diagonal-intersection theorem the parent used for Fodor's lemma; closure of NS(κ) under finite unions is the dual statement. Natural next steps: κ-completeness of the club filter (countable / <κ intersections), the normality of NS(κ) via the diagonal intersection, and Solovay's stationary-set splitting."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Fodor, G."
+      ],
+      "title": "Eine Bemerkung zur Theorie der regressiven Funktionen",
+      "year": "1956",
+      "venue": "Acta Scientiarum Mathematicarum (Szeged) 17, pp. 139–142",
+      "note": "Original statement of the pressing-down (regressive-function) lemma."
+    },
+    {
+      "authors": [
+        "Jech, T."
+      ],
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "3rd millennium ed., Springer Monographs in Mathematics",
+      "note": "Standard reference for cardinal arithmetic, König's theorem, cofinality, club and stationary sets, and Fodor's lemma."
+    },
+    {
+      "authors": [
+        "Kunen, K."
+      ],
+      "title": "Set Theory: An Introduction to Independence Proofs",
+      "year": "1980",
+      "venue": "Studies in Logic 102, North-Holland",
+      "note": "Foundational treatment of clubs, stationary sets, the diagonal intersection, and Fodor's pressing-down lemma."
+    }
+  ],
   "conclusion": {
     "summary": "This file formalizes the finite theory of the club filter Club(κ) and the nonstationary ideal NS(κ) on a regular uncountable cardinal κ, answering the first open question of the parent Fodor's-lemma proof. It proves that the whole space is a club, that the intersection of two clubs is a club (the unbounded half via interleaving two clubs into one ω-chain), and by induction that finite intersections of clubs are clubs — establishing that the clubs generate a proper filter. Dually, it defines NS(κ) as the sets disjoint from some club, proves NS(κ) is downward closed, closed under finite unions (using binary club-intersection), proper, and that a set is stationary exactly when it is not nonstationary. 0 sorries, 0 axioms.",
     "implications": "**Club filter as a filter of large sets**: Finite intersection closure plus properness is exactly the statement that Club(κ) is a proper filter; the stationary sets are its 'positive' sets and NS(κ) is its dual ideal. This is the finite backbone of the κ-complete club filter used throughout combinatorial set theory.\n\n**Duality with the parent**: The binary intersection theorem is the base case of the parent's κ-indexed diagonal-intersection theorem (diagInter_isClub). Closure of NS(κ) under finite unions is its dual face. Together they make the filter/ideal language in which Fodor's lemma — 'a regressive function on a stationary set is constant on a stationary set' — is naturally stated.\n\n**Toward normality**: With finite closure in place, the natural continuations are κ-completeness (<κ-sized intersections of clubs are clubs, again via diagInter) and normality of NS(κ) (closure under diagonal unions), the property that makes the nonstationary ideal the canonical normal ideal on κ.",

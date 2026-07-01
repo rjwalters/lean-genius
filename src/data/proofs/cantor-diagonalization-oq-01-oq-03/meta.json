@@ -96,6 +96,36 @@
       "mathContext": "All cofinality facts the diagonal argument plus ZFC establish about the continuum, with no axioms beyond Mathlib's foundations."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "König, J."
+      ],
+      "title": "Zum Kontinuum-Problem",
+      "year": "1905",
+      "venue": "Mathematische Annalen 60, pp. 177–180",
+      "note": "König's inequality; in particular the cofinality bound cf(2^ℵ₀) > ℵ₀ used here."
+    },
+    {
+      "authors": [
+        "Jech, T."
+      ],
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "3rd millennium ed., Springer Monographs in Mathematics",
+      "note": "Standard reference for cardinal arithmetic, König's theorem, cofinality, club and stationary sets, and Fodor's lemma."
+    },
+    {
+      "authors": [
+        "The mathlib community"
+      ],
+      "title": "Mathlib.SetTheory.Cardinal.Cofinality",
+      "year": "2020",
+      "venue": "Mathlib4, Lean 4 mathematical library",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Cardinal/Cofinality.html",
+      "note": "Mathlib's cofinality API (Cardinal.lt_power_cof / lt_cof_power) used to discharge the König constraint."
+    }
+  ],
   "conclusion": {
     "summary": "Eliminates the two axioms (konig_cofinality_bound, aleph_omega_cofinality_is_aleph_zero) used by the parent CH entry, proving cf(2^ℵ₀) > ℵ₀ and cf(ℵ_ω) = ℵ₀ from Mathlib, hence 2^ℵ₀ ≠ ℵ_ω. 0 sorries, 0 axioms, 8 theorems, 1 definition. Adds the sharp form: the continuum differs from every cardinal of countable cofinality.",
     "implications": "König's constraint is the unique nontrivial ZFC-provable restriction on the size of the continuum, and it is fully constructible inside Mathlib's cardinal/cofinality API — no assumptions required. The diagonal argument establishes that a gap exists; König's theorem establishes that the gap has uncountable cofinality, forbidding the singular alephs while leaving CH and most ¬CH values open.",
