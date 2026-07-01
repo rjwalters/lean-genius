@@ -29,6 +29,14 @@
   },
   "sections": [
     {
+      "id": "overview-hierarchy",
+      "title": "Overview: The Triangular-Rank Hierarchy",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring placing this file as the rank-1 base case of the triangular-rank hierarchy (rank 3 = Gauss's Eureka theorem, rank 2 = the two-triangle characterization). States the main result n = T(k) ⟺ 8n+1 is a perfect square, the driving identity (2k+1)² = 8·T(k)+1, uniqueness of the recovered index, and the decidability upgrade to a DecidablePred. Imports Mathlib and opens the TriangularSingle namespace with tri and IsTriangular.",
+      "mathContext": "n = T(k) ⟺ 8n+1 is a perfect square; (2k+1)² = 8·T(k)+1."
+    },
+    {
       "id": "triangular-setup",
       "title": "Triangular Numbers and the Defining Identity",
       "startLine": 44,
