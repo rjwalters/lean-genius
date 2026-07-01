@@ -3,6 +3,38 @@
   "title": "The Finite q-Binomial Theorem (Gauss/Rothe)",
   "slug": "arithmetic-series-oq-02-oq-01-oq-01-oq-01",
   "description": "Proves the finite q-binomial theorem ∏_{i=0}^{n-1}(1 + x·q^i) = ∑_{k=0}^{n} q^{C(k,2)}·[n choose k]_q·x^k over any commutative ring, with x a free (continuous) parameter. This is the 'non-integer q-exponent' generalization requested by the parent q-Vandermonde entry: with x = q^α (α not necessarily an integer) the product is the q-Pochhammer symbol (-q^α; q)_n. The identity is the generating-function master from which the parent's natural-number q-Vandermonde convolution follows by x-coefficient extraction. Proof by induction on n, peeling the first factor with prod_range_succ' and applying the IH at x·q so the step routes through the available q-Pascal rule. 6 theorems/lemmas, 1 definition, 0 axioms, 0 sorries, no native_decide.",
+  "references": [
+    {
+      "authors": "Heinrich August Rothe",
+      "title": "Systematisches Lehrbuch der Arithmetik (containing the q-binomial / Rothe formula)",
+      "year": 1811,
+      "note": "The 1811 identity ∏(1+x q^i) = Σ q^{C(k,2)} [n choose k]_q x^k, the finite q-binomial theorem proved here; also attributed to Gauss."
+    },
+    {
+      "authors": "George E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": 1976,
+      "note": "Cambridge University Press. Chapter 3 develops the q-binomial theorem and Gaussian coefficients used throughout this branch."
+    },
+    {
+      "authors": "Victor Kac and Pokman Cheung",
+      "title": "Quantum Calculus",
+      "year": 2002,
+      "note": "Springer Universitext. Presents Gauss's binomial formula ∏(1+q^i x) and its coefficient extraction directly."
+    },
+    {
+      "authors": "George Gasper and Mizan Rahman",
+      "title": "Basic Hypergeometric Series (2nd ed.)",
+      "year": 2004,
+      "note": "Cambridge University Press. The q-binomial theorem as the base case of the ₁φ₀ summation."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Mathlib.Algebra.BigOperators.Fin (Finset.prod_range_succ') and q-Pascal machinery",
+      "year": 2024,
+      "note": "Supplies the peeling lemma prod_range_succ' and the q-Pascal rule that route the induction step."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient#q-binomial_theorem",

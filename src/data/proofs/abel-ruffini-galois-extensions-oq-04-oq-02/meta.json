@@ -3,6 +3,44 @@
   "title": "The Jordan–Hölder Theorem for Modules",
   "slug": "abel-ruffini-galois-extensions-oq-04-oq-02",
   "description": "Open question oq-02 of the Jordan–Hölder branch asks for the module analogue of the JordanHolderLattice instance: instantiate the Jordan–Hölder theorem for modules over a ring, where composition factors are simple subquotients. Unlike the group case (oq-01), Mathlib already supplies the instance JordanHolderModule.instJordanHolderLattice : JordanHolderLattice (Submodule R M), in which IsMaximal N N' is the covering relation N ⋖ N' and Iso (A,B) (C,D) is a linear equivalence of successive quotients B/A ≃ₗ[R] D/C. This entry pulls that instance together with the abstract CompositionSeries.jordan_holder to state the module-theoretic Jordan–Hölder theorem — any two composition series of M with the same endpoints are equivalent — derives the well-definedness of the composition length, exposes the explicit factor bijection, and specializes to simple modules (composition length 1). The deep induction is Mathlib's; the gallery contribution is the module specialization and its corollaries, which were not previously present.",
+  "references": [
+    {
+      "authors": "Camille Jordan",
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": 1870,
+      "note": "Gauthier-Villars. Origin of the composition-series invariance (the Jordan half of Jordan–Hölder)."
+    },
+    {
+      "authors": "Otto Hölder",
+      "title": "Zurückführung einer beliebigen algebraischen Gleichung auf eine Kette von Gleichungen (Math. Ann. 34)",
+      "year": 1889,
+      "note": "Establishes isomorphism of composition factors, completing the Jordan–Hölder theorem."
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Algebra (Revised 3rd ed.), GTM 211",
+      "year": 2002,
+      "note": "Springer. The Jordan–Hölder theorem for modules and modules of finite length (Chapter I / XVII)."
+    },
+    {
+      "authors": "David S. Dummit and Richard M. Foote",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": 2004,
+      "note": "Wiley. Composition series, simple subquotients, and composition length for modules."
+    },
+    {
+      "authors": "Michael Atiyah and Ian G. Macdonald",
+      "title": "Introduction to Commutative Algebra",
+      "year": 1969,
+      "note": "Addison-Wesley. Modules of finite length and well-definedness of the length function (Chapter 6)."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: JordanHolderModule.instJordanHolderLattice and CompositionSeries.jordan_holder",
+      "year": 2024,
+      "note": "The module-lattice instance and abstract Jordan–Hölder theorem specialized in this entry."
+    }
+  ],
   "meta": {
     "author": "Jordan, Hölder; Lean formalization original (researcher-8)",
     "status": "verified",

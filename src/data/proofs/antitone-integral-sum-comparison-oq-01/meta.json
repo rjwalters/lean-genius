@@ -3,6 +3,38 @@
   "title": "The Integral Test: Sum–Integral Comparison for Antitone Functions",
   "slug": "antitone-integral-sum-comparison-oq-01",
   "description": "Packages the two one-sided Mathlib bounds for antitone functions into the single two-sided integral-test sandwich ∑_{i<a} f(x₀+i+1) ≤ ∫_{x₀}^{x₀+a} f ≤ ∑_{i<a} f(x₀+i), then applies it to f(x)=1/x on [1,1+n] to derive the classical logarithmic bounds on the harmonic numbers: log(n+1) ≤ Hₙ and H_{n+1} ≤ 1 + log(n+1). Together these trap Hₙ − log(n+1) in [0,1], the boundedness behind the Euler–Mascheroni constant and the logarithmic divergence of the harmonic series. 5 theorems, 1 definition, 0 sorries, 0 axioms.",
+  "references": [
+    {
+      "authors": "Walter Rudin",
+      "title": "Principles of Mathematical Analysis (3rd ed.)",
+      "year": 1976,
+      "note": "McGraw-Hill. The integral test (Theorem 3.28) and its comparison of monotone sums to integrals."
+    },
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Mathematical Analysis (2nd ed.)",
+      "year": 1974,
+      "note": "Addison-Wesley. Sum–integral comparison for monotone functions and the harmonic-number logarithmic bounds."
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "De progressionibus harmonicis observationes (E43)",
+      "year": 1740,
+      "note": "Introduces the constant γ = lim (Hₙ − log n), the boundedness this entry exhibits via 0 ≤ Hₙ − log(n+1) ≤ 1."
+    },
+    {
+      "authors": "Julian Havil",
+      "title": "Gamma: Exploring Euler's Constant",
+      "year": 2003,
+      "note": "Princeton University Press. History and analysis of the Euler–Mascheroni constant and the harmonic series."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Mathlib.Analysis.SumOverResidueClass / AntitoneOn.integral bounds",
+      "year": 2024,
+      "note": "The two one-sided antitone sum-vs-integral bounds packaged here into the two-sided sandwich."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Integral_test_for_convergence",
