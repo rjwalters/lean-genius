@@ -47,6 +47,28 @@
       "mathContext": "Each specialisation is a one-line `have … ; simpa` off taylor_abel_iterate / taylor_abel_biadditive: smulAddHom_apply for the module form, AddMonoidHom.mul_apply for the ring form, and a sum_range_succ/pow unfolding for the order-two form. f and the weight tower live in genuinely different objects in the module case, exhibiting the bimodule pairing."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Finite calculus: summation by parts (Abel transform), difference/antidifference operators, and arithmetico-geometric sums."
+    },
+    {
+      "authors": [
+        "Knuth, D.E."
+      ],
+      "title": "The Art of Computer Programming, Volume 1: Fundamental Algorithms",
+      "year": "1997",
+      "venue": "3rd ed., Addison-Wesley",
+      "note": "Summation by parts and closed forms for weighted geometric sums via the finite-calculus operators."
+    }
+  ],
   "conclusion": {
     "summary": "This entry proves the finite Taylor–Abel expansion: iterating the parent's single-step biadditive Abel transform D times turns ∑_{k<n} p(F 0 k)(H 0 (k+1)) into a finite alternating sum of D boundary terms plus a remainder (−1)ᴰ ∑_{k<n} p(F D k)(H D (k+1)) pairing the D-th forward difference of the left tower against the D-th antidifference of the right tower, for any biadditive pairing p : A →+ B →+ M between abelian groups. Specialising the left tower to the genuine iterated forward difference Δʲf and the pairing to the scalar action / ring multiplication yields the module-valued and arbitrary-ring forms; D=2 gives the explicit second-order expansion. It answers the parent entry's first open question.",
     "implications": "The expansion is the discrete, module-valued analogue of the Taylor formula obtained from iterated integration by parts — the finite boundary sum is the Taylor polynomial and the last sum the order-D remainder. Because only biadditivity is used, it applies verbatim to vector-, matrix-, and operator-valued sums and to any bilinear pairing with a fixed argument order, and it underlies discrete Taylor remainders, Euler–Maclaurin-style estimates, and Abel/Dirichlet convergence tests over general modules. The abstract-tower formulation isolates the one structural choice that makes iteration uniform: a shifted antidifference at each order.",
