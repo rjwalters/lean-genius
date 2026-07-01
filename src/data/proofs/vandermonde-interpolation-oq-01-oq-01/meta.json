@@ -66,6 +66,56 @@
       "description": "The companion entry proves interpolation uniqueness (at most one degree-< n interpolant) from the nonvanishing of the Vandermonde determinant. This entry supplies the matching existence half via the explicit Lagrange interpolant and packages the two into a single ∃! well-posedness statement in the same Fin n / natDegree idiom."
     }
   ],
+  "sections": [
+    {
+      "id": "def-interp",
+      "title": "The Explicit Lagrange Interpolant",
+      "summary": "interp v r := Lagrange.interpolate univ v r, the concrete existence witness ∑_i r_i·ℓ_i built from Mathlib's Lagrange API over univ : Finset (Fin n)",
+      "startLine": 44,
+      "endLine": 54,
+      "mathContext": "$\\mathrm{interp}\\,v\\,r = \\sum_i r_i\\,\\ell_i$, where $\\ell_i$ is the Lagrange basis polynomial with $\\ell_i(v_j)=\\delta_{ij}$; here $\\mathrm{interp}\\,v\\,r := \\mathrm{Lagrange.interpolate}\\,(\\mathrm{univ})\\,v\\,r$."
+    },
+    {
+      "id": "existence",
+      "title": "Existence: the Interpolant Hits the Data",
+      "summary": "eval_interp — for injective nodes, (interp v r)(v_j) = r_j, from Lagrange.eval_interpolate_at_node (hv.injOn)",
+      "startLine": 56,
+      "endLine": 61,
+      "mathContext": "$v$ injective $\\Rightarrow (\\mathrm{interp}\\,v\\,r)(v_j) = r_j$ for every node $v_j$ — the realizer witnesses solvability of the interpolation system."
+    },
+    {
+      "id": "degree-bound",
+      "title": "Degree Bound and the degree ↔ natDegree Bridge",
+      "summary": "degree_interp_lt (degree < #univ = n via Lagrange.degree_interpolate_lt) and natDegree_interp_lt (natDegree < n for n ≥ 1, case-splitting on the zero polynomial)",
+      "startLine": 63,
+      "endLine": 87,
+      "mathContext": "$\\deg(\\mathrm{interp}\\,v\\,r) < n$; recasting to $\\deg_{\\mathbb N} < n$ needs $0<n$ and a split on $\\mathrm{interp}=0$ (where $\\deg_{\\mathbb N}=0$) vs $\\ne 0$ (where $\\deg = \\uparrow\\deg_{\\mathbb N}$)."
+    },
+    {
+      "id": "uniqueness",
+      "title": "The Interpolant Is the Unique Answer",
+      "summary": "eq_interp_of_eval_eq — any degree-< n polynomial matching the data at the nodes equals interp v r (from Lagrange.eq_interpolate_of_eval_eq)",
+      "startLine": 89,
+      "endLine": 97,
+      "mathContext": "$v$ injective, $\\deg p < n$, $p(v_j)=r_j\\ \\forall j \\Rightarrow p = \\mathrm{interp}\\,v\\,r$ — the explicit formula is not merely a solution but the solution."
+    },
+    {
+      "id": "well-posedness",
+      "title": "Well-Posedness: ∃! Interpolant",
+      "summary": "existsUnique_interp and existsUnique_interp_natDegree package existence + uniqueness into a single ∃! statement in both the degree and natDegree idioms",
+      "startLine": 99,
+      "endLine": 114,
+      "mathContext": "$v$ injective $\\Rightarrow \\exists!\\,p,\\ \\deg p < n \\wedge \\forall j,\\ p(v_j)=r_j$ (and the $\\deg_{\\mathbb N}<n$ variant for $0<n$); the witness is the Lagrange interpolant."
+    },
+    {
+      "id": "reproduction-linearity",
+      "title": "Reproduction and Linearity",
+      "summary": "interp_eval_self (interpolation is a left inverse to evaluation on degree-< n polynomials) and interp_add / interp_smul (the data ↦ interpolant map is F-linear, via map_add / map_smul of the LinearMap)",
+      "startLine": 116,
+      "endLine": 133,
+      "mathContext": "$\\deg f < n \\Rightarrow \\mathrm{interp}\\,v\\,(f\\circ v) = f$; and $\\mathrm{interp}\\,v\\,(r+r')=\\mathrm{interp}\\,v\\,r+\\mathrm{interp}\\,v\\,r'$, $\\mathrm{interp}\\,v\\,(c\\cdot r)=c\\cdot\\mathrm{interp}\\,v\\,r$."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
