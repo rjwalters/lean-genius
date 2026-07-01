@@ -2169,4 +2169,49 @@ theorem gridNeighbor_zero_none_not_boundary_face (s : SpernerGrid.GridSimplex d 
         SpernerNDim.onFace (gridVertices s j) (0 : Fin (d + 1))) :=
   ⟨gridNeighbor_boundary s (Or.inl rfl), gridVertices_zero_not_boundary_face s hd⟩
 
+/-!
+## At most one geometric boundary door per cell
+
+`boundary_face_imp_last` forces every geometric `∂Δ_N` boundary face of a Freudenthal
+cell to be the single top facet `Fin.last d`.  The immediate consequence is that a cell
+has **at most one** boundary door — the "`0`-or-`1` door per cell" fact that a Phase-2
+door-parity (oddness) induction depends on: each cell contributes an even (`0`) or the
+single boundary door to the global door count, never two competing boundary facets.
+-/
+
+/-- **At most one geometric boundary door per cell.**  Any two facets of a Freudenthal
+cell that are geometric `∂Δ_N` boundary faces coincide — each is forced to the top
+facet `Fin.last d` by `boundary_face_imp_last`.  So the boundary-door facet of a cell,
+if it exists, is unique. -/
+theorem boundary_face_subsingleton (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d)
+    {k₁ k₂ : Fin (d + 1)}
+    (h₁ : ∀ j : Fin (d + 1), j ≠ k₁ → (s.verts j).coords k₁ = 0)
+    (h₂ : ∀ j : Fin (d + 1), j ≠ k₂ → (s.verts j).coords k₂ = 0) :
+    k₁ = k₂ := by
+  rw [boundary_face_imp_last s hd k₁ h₁, boundary_face_imp_last s hd k₂ h₂]
+
+/-- **Carrier form of at-most-one-door.**  The `SpernerNDim.onFace` restatement of
+`boundary_face_subsingleton`, in the shape the abstract triangulation layer consumes. -/
+theorem gridVertices_boundary_face_subsingleton (s : SpernerGrid.GridSimplex d N)
+    (hd : 2 ≤ d) {k₁ k₂ : Fin (d + 1)}
+    (h₁ : ∀ j : Fin (d + 1), j ≠ k₁ → SpernerNDim.onFace (gridVertices s j) k₁)
+    (h₂ : ∀ j : Fin (d + 1), j ≠ k₂ → SpernerNDim.onFace (gridVertices s j) k₂) :
+    k₁ = k₂ :=
+  boundary_face_subsingleton s hd
+    (fun j hj => (gridVertices_onFace_iff s j k₁).mp (h₁ j hj))
+    (fun j hj => (gridVertices_onFace_iff s j k₂).mp (h₂ j hj))
+
+/-- **The boundary-door facets of a cell number at most one.**  The finset of facet
+indices that are geometric `∂Δ_N` boundary doors has cardinality `≤ 1`: it is either
+empty or the singleton `{Fin.last d}`.  This is the per-cell contribution bound the
+door-parity argument relies on. -/
+theorem boundary_faces_card_le_one (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    (Finset.univ.filter
+      (fun k : Fin (d + 1) =>
+        ∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0)).card ≤ 1 := by
+  rw [Finset.card_le_one]
+  intro k₁ hk₁ k₂ hk₂
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk₁ hk₂
+  exact boundary_face_subsingleton s hd hk₁ hk₂
+
 end SpernerNDimOQ02
