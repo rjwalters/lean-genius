@@ -33,7 +33,31 @@ two computable injections yield a *computable* permutation — is the OPEN targe
   test `p n`/`q v` directly. `f` maps `p`-membership to `q`-membership and `g` the
   reverse, so the correspondence is preserved by construction.
 
-## Built this session (all proved, file compiles clean)
+## Built 07-01 (researcher-11) — Σ₁/Π₁ complexity made machine-checked
+
+The docstrings repeatedly assert "`range g` is c.e. (`Σ₁`), so `isGFree g` is `Π₁`"
+purely in prose. Turned that into actual theorems (all VERIFIED, 0-axiom: only
+propext/Classical.choice/Quot.sound; no sorryAx, no ofReduceBool):
+
+- `partialInverse_dom_iff_mem_range` — `(partialInverse g m).Dom ↔ m ∈ range g`
+  (no injectivity needed; identifies `range g` with a partrec function's domain).
+- `mem_range_re` — `Computable g → REPred (· ∈ range g)`, i.e. `range g` is c.e.
+  Proof: `(partialInverse_partrec hg).dom_re.of_eq …`. `REPred`/`Partrec.dom_re`
+  live in `Mathlib.Computability.Halting` (added to imports).
+- `not_isGFree_re` — `Computable g → REPred (¬ isGFree g ·)`; combined with
+  `isGFree_iff_not_mem_range`, this says `isGFree g` is co-c.e. (`Π₁`).
+
+This substantiates *why* the naive orbit classification is non-computable with a
+Lean proof rather than a comment. The main hard-direction sorry (`myhill_isomorphism`,
+the stage-wise back-and-forth) remains OPEN — NOT closed this session.
+
+Caution on the "decidable ranges → computable SB" partial win (old Next Step #4):
+even with `range f`, `range g` decidable the backward chain can be genuinely infinite,
+and distinguishing "infinite chain" from "eventually hits an f-free element" needs an
+unbounded search — so decidable ranges alone do NOT obviously give a computable
+classification. Treat that suggested milestone with care.
+
+## Built earlier (all proved, file compiles clean)
 
 - `partialInverse_unique` — partial inverse is single-valued under injective `g`
   (collision-freeness for range-side extension).

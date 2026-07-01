@@ -231,6 +231,7 @@
     "imports": [
       "Mathlib.Computability.Reduce",
       "Mathlib.Computability.Partrec",
+      "Mathlib.Computability.Halting",
       "Mathlib.Computability.Primrec",
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Tactic"
@@ -241,10 +242,10 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 269,
+    "lineCount": 444,
     "axiomCount": 0,
-    "theoremCount": 14,
-    "definitionCount": 4,
+    "theoremCount": 26,
+    "definitionCount": 6,
     "sorries": 1,
     "path": "Proofs/SchroederBernsteinOQ03.lean",
     "additionalFiles": [

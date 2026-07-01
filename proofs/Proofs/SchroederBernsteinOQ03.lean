@@ -1,5 +1,6 @@
 import Mathlib.Computability.Reduce
 import Mathlib.Computability.Partrec
+import Mathlib.Computability.Halting
 import Mathlib.Computability.Primrec
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
@@ -52,6 +53,9 @@ computable via Partrec.rfind. The orbit type is determined by bounded search.
 - fwdOrbit_eq_iterate: proved (forward orbit = iteration of g∘f; forward direction is computable)
 - isGFree_iff_not_mem_range: proved — pins down WHY the naive orbit classification is
   not computable: `isGFree` is Π₁ (complement of the c.e. set `range g`), hence undecidable
+- partialInverse_dom_iff_mem_range / mem_range_re / not_isGFree_re: proved — the Σ₁/Π₁
+  complexity claim made machine-checked: `range g` is `REPred` (c.e.) for computable `g`
+  (its the domain of `partialInverse g`), so `isGFree g` is co-c.e. (Π₁)
 - decidableIsGFree: proved — the Π₁ obstruction becomes decidable once `range g` is decidable
 - totalInverse_{mem,right,left,computable}: proved — a surjective computable injection has a
   total, computable two-sided inverse (partialInverse becomes everywhere-defined)
@@ -200,6 +204,50 @@ def isGFree (g : ℕ → ℕ) (n : ℕ) : Prop := ∀ k, g k ≠ n
 theorem isGFree_iff_not_mem_range (g : ℕ → ℕ) (n : ℕ) :
     isGFree g n ↔ n ∉ Set.range g := by
   simp only [isGFree, Set.mem_range, not_exists, ne_eq]
+
+/-!
+## Section 4a: The Σ₁ / Π₁ complexity of `range g` — machine-checked
+
+The docstrings above justify the failure of the naive orbit classification by the
+*complexity* of `range g`: for a merely computable injection it is only
+computably enumerable (`Σ₁`), so its complement `isGFree g` is `Π₁`. Here we turn
+that prose into actual theorems. `REPred` (Mathlib, `Computability/Halting`) is the
+predicate "is the domain of a computable partial function", i.e. computably
+enumerable. Since `partialInverse g` is partial recursive (Section 3) and its domain
+is *exactly* `range g`, `Partrec.dom_re` gives `REPred (· ∈ range g)` directly.
+-/
+
+/-- The partial inverse `partialInverse g` is defined at `m` **iff** `m ∈ range g`.
+    (No injectivity needed: `rfind` halts exactly when a preimage exists.) This
+    identifies `range g` with the domain of a partial recursive function. -/
+theorem partialInverse_dom_iff_mem_range (g : ℕ → ℕ) (m : ℕ) :
+    (partialInverse g m).Dom ↔ m ∈ Set.range g := by
+  rw [Set.mem_range]
+  constructor
+  · intro h
+    obtain ⟨n, hn⟩ := Part.dom_iff_mem.mp h
+    exact ⟨n, by simpa using Nat.rfind_spec hn⟩
+  · exact fun hm => partialInverse_dom hm
+
+/-- **`range g` is computably enumerable (`Σ₁`)** for any computable `g`.
+
+    This is the machine-checked form of the "`range g` is c.e." claim used
+    throughout to explain why the classical Schröder–Bernstein orbit classification
+    is not computable. `REPred p` means `p` is the halting domain of a computable
+    partial function; here that function is `partialInverse g`. -/
+theorem mem_range_re {g : ℕ → ℕ} (hg : Computable g) :
+    REPred (fun n => n ∈ Set.range g) :=
+  (partialInverse_partrec hg).dom_re.of_eq (fun n => partialInverse_dom_iff_mem_range g n)
+
+/-- **The complement of `isGFree g` is computably enumerable.** Equivalently,
+    `isGFree g` is co-c.e. (`Π₁`): its negation `· ∈ range g` is `REPred`. Combined
+    with `isGFree_iff_not_mem_range`, this pins down the exact complexity of the
+    obstruction predicate — it is the complement of a c.e. set, hence in general
+    not itself computable, which is precisely why the orbit type of `n` cannot be
+    decided by bounded search. -/
+theorem not_isGFree_re {g : ℕ → ℕ} (hg : Computable g) :
+    REPred (fun n => ¬ isGFree g n) :=
+  (mem_range_re hg).of_eq fun n => by rw [isGFree_iff_not_mem_range, not_not]
 
 /-!
 ## Section 4b: Isolating the Π₁ obstruction — the fully computable case
