@@ -134,6 +134,43 @@
       "Sharpen the additive constant: the truth is F(N) = log N + γ + o(1) (γ the Euler–Mascheroni constant); formalize the refined asymptotic, not merely the +2 bound."
     ]
   },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Erdős Problem #309 (sums of distinct unit fractions from {1,…,N})",
+      "year": "1950s",
+      "venue": "erdosproblems.com/309",
+      "note": "The source problem: estimate F(N), the number of integers representable as sums of distinct unit fractions with denominators in {1,…,N}. This entry formalizes the elementary upper half F(N) ≤ log N + 2."
+    },
+    {
+      "authors": "Yokota, Hiroshi",
+      "title": "On a problem of Erdős concerning sums of distinct unit fractions",
+      "year": "1988",
+      "venue": "Journal of Number Theory",
+      "note": "Establishes the hard matching lower bound for F(N); it is the direction axiomatized in the parent erdos-309, while this entry supplies the easy upper direction unconditionally."
+    },
+    {
+      "authors": "Graham, Ronald L.",
+      "title": "On finite sums of unit fractions",
+      "year": "1964",
+      "venue": "Proceedings of the London Mathematical Society, s3-14",
+      "note": "Foundational work on which integers and rationals are sums of distinct unit fractions with bounded denominators — the Egyptian-fraction representability context of Erdős #309."
+    },
+    {
+      "authors": "Graham, R. L.; Knuth, D. E.; Patashnik, O.",
+      "title": "Concrete Mathematics: A Foundation for Computer Science (2nd ed.)",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "note": "§6.3 develops the harmonic numbers Hₙ and the sharp estimate Hₙ = ln n + γ + O(1/n) underlying the log N + 2 bound proved here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Analysis.SpecialFunctions.Harmonic (harmonic, harmonic_le_one_add_log)",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the harmonic-number bound harmonic_le_one_add_log (Hₙ ≤ 1 + log n), to which this entry bridges its custom harmonic sum to obtain F(N) ≤ log N + 2."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-309",
