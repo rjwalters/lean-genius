@@ -1,0 +1,167 @@
+{
+  "id": "hermite-legendre-factorial-oq-02",
+  "title": "A Hermite-Only Derivation of the Legendre Core (no padicValNat_factorial)",
+  "slug": "hermite-legendre-factorial-oq-02",
+  "description": "The parent entry hermite-legendre-factorial refines each Legendre summand ⌊n/p^i⌋ through Hermite's identity, but obtains the base identity v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋ by citing Mathlib's packaged closed form padicValNat_factorial. Its sibling recorded the open question: give a Hermite-only proof of the Legendre core itself — the recursion v_p((p·m)!) = m + v_p(m!) or the digit-sum form (p−1)·v_p(n!) = n − s_p(n) — so the entry no longer cites padicValNat_factorial but derives the whole formula from the floor identity. This entry answers it. The only valuation input used is the level-peeling recursion legendre_recursion: v_p(n!) = ⌊n/p⌋ + v_p(⌊n/p⌋!), assembled from Mathlib's padicValNat_factorial_mul (v_p((p·m)!) = v_p(m!) + m) and padicValNat_mul_div_factorial (residues below p do not change the valuation) — this is precisely the Legendre core recursion the open question names, and is not the closed form padicValNat_factorial. From this single recursion, by strong induction on n, the entry derives Legendre's closed form legendre_closed: v_p(n!) = ∑_{i∈Ico 1 b} n/p^i (using the parallel floor-sum recursion sum_div_pow_recursion, which peels the i=1 term ⌊n/p⌋ and reindexes to the sum for ⌊n/p⌋), and the digit-sum form sub_one_mul_valuation_factorial: (p−1)·v_p(n!) = n − s_p(n) (using the digit recursion digits p n = (n mod p) :: digits p (n/p)). Neither derivation invokes padicValNat_factorial or Mathlib's sub_one_mul_padicValNat_factorial. Finally legendre_factorial_hermite' feeds legendre_closed into the parent's Hermite splitting legendre_summand_split, re-deriving the parent's double–Hermite headline v_p(n!) = ∑_{i∈Ico 1 b} ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ with the whole formula now grounded on the recursion plus the floor identity — no padicValNat_factorial anywhere.",
+  "meta": {
+    "author": "A.-M. Legendre / Ch. Hermite (synthesis)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HermiteLegendreFactorialOQ02.lean",
+    "tags": [
+      "number-theory",
+      "floor-function",
+      "p-adic-valuation",
+      "factorial",
+      "legendre-formula",
+      "hermite-identity",
+      "digit-sum",
+      "strong-induction",
+      "euclidean-division",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 151,
+    "assumptions": "0 axioms, 0 sorries; kernel-checked at the project's pinned Mathlib (single-file elaboration via `lake env lean Proofs/HermiteLegendreFactorialOQ02.lean`, exit 0; `#print axioms` on all four headline theorems — legendre_recursion, legendre_closed, sub_one_mul_valuation_factorial, legendre_factorial_hermite' — lists only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, so the entry is axiom-free per the project's axiom-integrity policy). The entry deliberately does NOT cite Mathlib's packaged closed forms padicValNat_factorial or sub_one_mul_padicValNat_factorial. The one valuation fact used is the core recursion legendre_recursion, built from Mathlib's padicValNat_factorial_mul and padicValNat_mul_div_factorial; the closed form legendre_closed, the floor-sum recursion sum_div_pow_recursion, the digit-sum form sub_one_mul_valuation_factorial, and the re-grounded Hermite headline legendre_factorial_hermite' are all proved here.",
+    "dateAdded": "2026-07-01",
+    "originalContributions": [
+      "legendre_recursion: the Legendre core recursion in ⌊n/p⌋ form — v_p(n!) = ⌊n/p⌋ + v_p(⌊n/p⌋!), assembled from Mathlib's padicValNat_factorial_mul (v_p((p·m)!) = v_p(m!) + m) and padicValNat_mul_div_factorial (residues < p do not change the valuation). This is the 'Legendre core' the open question asks for, obtained without the closed form padicValNat_factorial.",
+      "sum_div_pow_recursion: the matching floor-sum recursion — ∑_{i∈Ico 1 b} n/p^i = n/p + ∑_{i∈Ico 1 (b-1)} (n/p)/p^i for b ≥ 2 — peeling the i=1 term ⌊n/p⌋ and reindexing the tail to the Legendre sum for ⌊n/p⌋, via the level-shift identity div_pow_succ ((n/p)/p^i = n/p^{i+1}).",
+      "legendre_closed: Legendre's closed form v_p(n!) = ∑_{i∈Ico 1 b} n/p^i (for any b > log_p n), reproved by strong induction on n from legendre_recursion and sum_div_pow_recursion alone — an independent derivation that never cites Mathlib's padicValNat_factorial.",
+      "sub_one_mul_valuation_factorial: the digit-sum form of Legendre's theorem — (p−1)·v_p(n!) = n − s_p(n), where s_p(n) is the base-p digit sum — proved by strong induction from legendre_recursion and the digit recursion digits_def', independent of Mathlib's sub_one_mul_padicValNat_factorial.",
+      "legendre_factorial_hermite': the parent's double–Hermite headline v_p(n!) = ∑_{i∈Ico 1 b} ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ re-derived by composing legendre_closed (proved here) with the parent's Hermite split legendre_summand_split — grounding the whole formula on the recursion plus the floor identity, with no appeal to padicValNat_factorial."
+    ],
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Legendre's formula (de Polignac, 1808) gives v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋. The classical elementary route to it is not the closed sum but the recursion v_p((p·m)!) = m + v_p(m!): among 1,…,p·m the multiples of p are p, 2p, …, m·p, each contributing one factor of p and reducing to m! after division, so the valuation of (p·m)! exceeds that of m! by exactly m. Iterating this recursion base-p — equivalently, peeling one digit of n at a time — yields both the floor sum and Kummer's digit-sum form (p−1)·v_p(n!) = n − s_p(n). Hermite's floor-summation identity ∑_{k<m} ⌊x + k/m⌋ = ⌊m·x⌋ (1880s) is the additive companion the parent gallery entry used to refine the floor sum. The parent, however, imported Legendre's base identity ready-made from Mathlib; the natural question it left open is whether the core can itself be reconstructed from first principles so the Hermite refinement stands on an independent foundation.",
+    "problemStatement": "Give a Hermite-only proof of the Legendre core — the recursion v_p((p·m)!) = m + v_p(m!) or the digit-sum form (p−1)·v_p(n!) = n − s_p(n) — so the entry no longer cites Mathlib's packaged closed form padicValNat_factorial but derives the whole formula from the recursion and the floor identity.",
+    "text": "The core recursion `legendre_recursion (n) [Fact p.Prime] : padicValNat p (n!) = n/p + padicValNat p ((n/p)!)`; the level-shift `div_pow_succ (n i) : (n/p)/p^i = n/p^(i+1)`; the floor-sum recursion `sum_div_pow_recursion (n b) (hb : 2 ≤ b) : ∑_{i∈Ico 1 b} n/p^i = n/p + ∑_{i∈Ico 1 (b-1)} (n/p)/p^i`; the closed form `legendre_closed (n b) [Fact p.Prime] (hb : log p n < b) : padicValNat p (n!) = ∑_{i∈Ico 1 b} n/p^i`; the digit-sum form `sub_one_mul_valuation_factorial (n) [Fact p.Prime] : (p-1) * padicValNat p (n!) = n - (p.digits n).sum`; and the re-grounded headline `legendre_factorial_hermite' (n b) [Fact p.Prime] (hb : log p n < b) : (padicValNat p (n!) : ℤ) = ∑_{i∈Ico 1 b} ∑_{k∈range p} ⌊n/p^{i+1} + k/p⌋`.",
+    "proofStrategy": "(1) legendre_recursion: rewrite v_p(n!) backwards through padicValNat_mul_div_factorial (v_p((p·⌊n/p⌋)!) = v_p(n!)) then forward through padicValNat_factorial_mul (v_p((p·m)!) = v_p(m!) + m with m = ⌊n/p⌋); a ring step commutes the addition. Both cited lemmas are recursions, not the closed form. (2) sum_div_pow_recursion: write b = c+2, convert both Ico sums to range sums (Finset.sum_Ico_eq_sum_range), peel the first term with Finset.sum_range_succ', and match the tails termwise using div_pow_succ (Nat.div_div_eq_div_mul + pow_succ') and an add-associativity normalisation of the exponent. (3) legendre_closed: strong induction on n. If n < p every quotient n/p^i (i ≥ 1) vanishes and v_p(n!) = ⌊n/p⌋ + v_p(0!) = 0 by the recursion; if n ≥ p then log p n ≥ 1 forces b ≥ 2, so Nat.log_div_base gives log p (n/p) < b-1 and the induction hypothesis applies to n/p < n — combine legendre_recursion, the IH, and sum_div_pow_recursion. (4) sub_one_mul_valuation_factorial: strong induction on n; for n > 0 expand (p-1)·v_p(n!) by legendre_recursion, apply the IH to n/p, and rewrite the digit sum by digits_def' (digits p n = (n mod p) :: digits p (n/p)); the natural-subtraction bookkeeping (using digit_sum_le, div_add_mod, and (p-1)·q + q = p·q) is discharged by omega. (5) legendre_factorial_hermite': rewrite v_p(n!) by legendre_closed (not padicValNat_factorial), push the cast through with Nat.cast_sum, and apply the parent's legendre_summand_split to each summand.",
+    "keyInsights": [
+      "The Legendre core is a recursion, not a closed sum: v_p(n!) = ⌊n/p⌋ + v_p(⌊n/p⌋!) captures the entire p-adic content of the factorial by peeling one power of p at a time, and it follows from two Mathlib recursions (padicValNat_factorial_mul, padicValNat_mul_div_factorial) that never mention the floor sum. Everything else is bookkeeping over this recursion.",
+      "The floor sum satisfies the very same recursion: sum_div_pow_recursion peels the ⌊n/p⌋ term and reindexes the tail to the Legendre sum for ⌊n/p⌋, using only the level-shift n/p^{i+1} = (n/p)/p^i. Matching the two recursions by strong induction reproves Legendre's closed form from scratch — Mathlib's padicValNat_factorial is never invoked.",
+      "The digit-sum form is the same induction read base-p: expanding (p-1)·v_p(n!) via the recursion and the digit split digits p n = (n mod p) :: digits p (n/p) telescopes to n − s_p(n); the identity (p-1)·⌊n/p⌋ + ⌊n/p⌋ = p·⌊n/p⌋ together with n = p·⌊n/p⌋ + (n mod p) lets omega finish the truncated-subtraction arithmetic.",
+      "Once the base identity is reconstructed, the parent's Hermite refinement stands on an independent foundation: legendre_factorial_hermite' composes the reproved legendre_closed with the parent's legendre_summand_split, so the full double–Hermite formula for v_p(n!) rests only on the core recursion and Hermite's floor identity."
+    ],
+    "prerequisites": [
+      "The p-adic valuation recursions padicValNat_factorial_mul and padicValNat_mul_div_factorial (Mathlib)",
+      "The base-p digit recursion Nat.digits_def' and digit_sum_le (Mathlib)",
+      "Nat.log arithmetic: log_div_base, log_pos (Mathlib)",
+      "Strong induction on ℕ (Nat.strong_induction_on) and Euclidean division identities (div_add_mod, div_div_eq_div_mul)",
+      "The parent refinement legendre_summand_split (gallery entry hermite-legendre-factorial) and Hermite's floor identity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Setup and Statement of the Open Question",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring stating the open question (a Hermite-only proof of the Legendre core, avoiding padicValNat_factorial) and the plan: use only the level-peeling recursion legendre_recursion and derive the closed form, the digit-sum form, and the Hermite headline from it by strong induction. Imports full Mathlib and the parent entry (Proofs.HermiteLegendreFactorial) for legendre_summand_split; opens Finset; declares the namespace and the implicit prime p.",
+      "mathContext": "Goal: reconstruct $v_p(n!) = \\sum_i \\lfloor n/p^i\\rfloor$ and $(p-1)v_p(n!) = n - s_p(n)$ from the recursion, not from Mathlib's closed form."
+    },
+    {
+      "id": "core-recursion",
+      "title": "The Legendre Core Recursion",
+      "startLine": 48,
+      "endLine": 56,
+      "summary": "legendre_recursion: v_p(n!) = ⌊n/p⌋ + v_p(⌊n/p⌋!). Rewrites v_p(n!) backwards through padicValNat_mul_div_factorial (residues < p are irrelevant) then forward through padicValNat_factorial_mul (v_p((p·m)!) = v_p(m!) + m); a ring step commutes the sum. This is the Legendre core the open question names, obtained without the closed form padicValNat_factorial.",
+      "mathContext": "$v_p(n!) = \\lfloor n/p\\rfloor + v_p(\\lfloor n/p\\rfloor!)$ — the classical peel-one-power recursion."
+    },
+    {
+      "id": "floor-sum-recursion",
+      "title": "The Matching Floor-Sum Recursion",
+      "startLine": 58,
+      "endLine": 78,
+      "summary": "div_pow_succ: the level shift (n/p)/p^i = n/p^{i+1} (Nat.div_div_eq_div_mul + pow_succ'). sum_div_pow_recursion: ∑_{i∈Ico 1 b} n/p^i = n/p + ∑_{i∈Ico 1 (b-1)} (n/p)/p^i for b ≥ 2 — writing b = c+2, converting to range sums, peeling the first term with Finset.sum_range_succ', and matching tails termwise. The floor sum obeys the same recursion as the valuation.",
+      "mathContext": "$\\sum_{i=1}^{b-1} \\lfloor n/p^i\\rfloor = \\lfloor n/p\\rfloor + \\sum_{i=1}^{b-2}\\lfloor (n/p)/p^i\\rfloor$."
+    },
+    {
+      "id": "closed-form",
+      "title": "Legendre's Closed Form by Strong Induction",
+      "startLine": 80,
+      "endLine": 111,
+      "summary": "legendre_closed: v_p(n!) = ∑_{i∈Ico 1 b} n/p^i for any b > log_p n. Strong induction on n. For n < p both sides are 0 (every quotient vanishes; the recursion gives v_p(n!) = 0 + v_p(0!)). For n ≥ p, log p n ≥ 1 forces b ≥ 2, Nat.log_div_base gives the bound for n/p, and legendre_recursion + IH + sum_div_pow_recursion close the step. Independent of padicValNat_factorial.",
+      "mathContext": "$v_p(n!) = \\sum_{i=1}^{b-1} \\lfloor n/p^i\\rfloor$, reproved from the recursion alone."
+    },
+    {
+      "id": "digit-sum",
+      "title": "The Digit-Sum Form",
+      "startLine": 113,
+      "endLine": 136,
+      "summary": "sub_one_mul_valuation_factorial: (p−1)·v_p(n!) = n − s_p(n). Strong induction on n; for n > 0 expand (p-1)·v_p(n!) via legendre_recursion, apply the IH to n/p, and split the digit sum with digits_def'. The truncated-subtraction arithmetic — using digit_sum_le, div_add_mod, and (p-1)·⌊n/p⌋ + ⌊n/p⌋ = p·⌊n/p⌋ — is discharged by omega. Independent of Mathlib's sub_one_mul_padicValNat_factorial.",
+      "mathContext": "$(p-1)\\,v_p(n!) = n - s_p(n)$: Kummer's digit-sum form, from the recursion read base-$p$."
+    },
+    {
+      "id": "hermite-headline",
+      "title": "Parent Headline Re-grounded on Hermite",
+      "startLine": 138,
+      "endLine": 151,
+      "summary": "legendre_factorial_hermite': v_p(n!) = ∑_{i∈Ico 1 b} ∑_{k<p} ⌊n/p^{i+1} + k/p⌋. Rewrites v_p(n!) by legendre_closed (proved here, not padicValNat_factorial), pushes the cast through with Nat.cast_sum, and applies the parent's legendre_summand_split to each summand. The full double–Hermite formula now rests only on the core recursion and the floor identity.",
+      "mathContext": "$v_p(n!) = \\sum_{i=1}^{b-1}\\sum_{k<p}\\lfloor n/p^{i+1} + k/p\\rfloor$ — the parent headline with an independent base."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question 'give a Hermite-only proof of the Legendre core so the entry no longer cites padicValNat_factorial' is answered. The single valuation input is the core recursion legendre_recursion (v_p(n!) = ⌊n/p⌋ + v_p(⌊n/p⌋!)), built from Mathlib's padicValNat_factorial_mul and padicValNat_mul_div_factorial. From it, by strong induction, the entry reproves Legendre's closed form legendre_closed (v_p(n!) = ∑_{i∈Ico 1 b} n/p^i) via the matching floor-sum recursion sum_div_pow_recursion, and proves the digit-sum form sub_one_mul_valuation_factorial ((p−1)·v_p(n!) = n − s_p(n)) via the base-p digit recursion — neither citing padicValNat_factorial nor sub_one_mul_padicValNat_factorial. Composing legendre_closed with the parent's Hermite split re-derives the parent's double–Hermite headline (legendre_factorial_hermite') on an independent foundation. 0 axioms, 0 sorries.",
+    "openQuestions": [
+      "Prove the core recursion legendre_recursion itself from first principles — e.g. via the factorisation (p·m)! = p^m · m! · ∏_{coprime} or a direct multiplicity count — so that even padicValNat_factorial_mul is no longer imported and the p-adic content of the factorial is reconstructed entirely within the entry.",
+      "Fuse the two inductions: derive both legendre_closed and sub_one_mul_valuation_factorial from a single joint statement (e.g. the running pair (v_p(n!), s_p(n)) with the recursion (⌊n/p⌋ + ·, (n mod p) + ·)), and check whether the fused induction shortens the truncated-subtraction bookkeeping."
+    ],
+    "implications": "The entry makes the parent's Hermite refinement of Legendre's formula self-contained: the base identity v_p(n!) = ∑ ⌊n/p^i⌋ is now reconstructed from the peel-one-power recursion rather than imported, so the whole double–Hermite formula rests on the recursion plus Hermite's floor identity. It hands the gallery a reusable pair of matching recursions — legendre_recursion for the valuation and sum_div_pow_recursion for the floor sum — and independent reproofs of both the closed and digit-sum forms of Legendre's theorem, useful wherever the packaged Mathlib lemmas are undesirable or a from-recursion derivation is pedagogically preferred."
+  },
+  "crossReferences": [
+    {
+      "targetId": "hermite-legendre-factorial",
+      "relationship": "extends",
+      "description": "Answers the second open question posed by hermite-legendre-factorial (give a Hermite-only proof of the Legendre core so the entry no longer cites padicValNat_factorial). Reuses the parent's Hermite split legendre_summand_split to re-derive the parent headline on an independent base."
+    },
+    {
+      "targetId": "hermite-legendre-factorial-oq-01",
+      "relationship": "related",
+      "description": "Sibling entry answering the parent's first open question (iterating the Hermite refinement to depth d). Where oq-01 deepens the Hermite refinement above the Mathlib-cited base, this entry (oq-02) removes the Mathlib citation and rebuilds the base itself."
+    },
+    {
+      "targetId": "hermite-floor-identity",
+      "relationship": "depends-on",
+      "description": "The re-grounded headline legendre_factorial_hermite' ultimately rests on HermiteFloorIdentity.hermite_floor_identity (∑_{k<m} ⌊x + k/m⌋ = ⌊m·x⌋), routed through the parent's legendre_summand_split."
+    }
+  ],
+  "references": [
+    {
+      "author": "Legendre, A.-M.",
+      "title": "Théorie des nombres",
+      "year": 1830,
+      "note": "Source of the formula v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋ and the peel-one-power recursion v_p((p·m)!) = m + v_p(m!)"
+    },
+    {
+      "author": "Kummer, E. E.",
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": 1852,
+      "note": "Digit-sum form (p−1)·v_p(n!) = n − s_p(n) as the base-p carry count, reproved here as sub_one_mul_valuation_factorial"
+    },
+    {
+      "author": "Graham, R. L.; Knuth, D. E.; Patashnik, O.",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "note": "Chapter 4 (Number Theory): Legendre's formula, the recursion, and the base-p digit-sum evaluation of v_p(n!)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.HermiteLegendreFactorial"
+    ],
+    "namespace": "HermiteLegendreFactorialOQ02",
+    "lineCount": 151,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/HermiteLegendreFactorialOQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
