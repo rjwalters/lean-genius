@@ -1,0 +1,86 @@
+[
+  {
+    "id": "jordan-def",
+    "proofId": "erdos-1000-oq-03-oq-03",
+    "range": { "startLine": 55, "endLine": 55 },
+    "type": "definition",
+    "title": "Jordan's totient as a Dirichlet convolution",
+    "content": "`jordan k := moebius * (pow k)` reuses the exact Dirichlet-convolution definition of $J_k = \\mu * \\mathrm{pow}_k$ from the sibling entry `erdos-1000-oq-03-oq-01-oq-01`, valued in $\\mathbb{Z}$. Packaging $J_k$ as a convolution is what makes the Gauss identity a one-line computation: convolving with $\\zeta$ (the divisor-sum operator) telescopes against the $\\mu$ inside $J_k$ because $\\zeta * \\mu = 1$.",
+    "mathContext": "$J_k = \\mu * \\mathrm{pow}_k$, where $(\\mathrm{pow}_k)(n) = n^k$ and $(f*g)(n) = \\sum_{d\\mid n} f(d)\\,g(n/d)$ is Dirichlet convolution.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet convolution", "arithmetic function", "Mobius function", "Jordan totient"],
+    "prerequisites": ["Dirichlet convolution", "arithmetic functions"]
+  },
+  {
+    "id": "zeta-mul-jordan",
+    "proofId": "erdos-1000-oq-03-oq-03",
+    "range": { "startLine": 64, "endLine": 77 },
+    "type": "theorem",
+    "title": "Structural identity: ζ * J_k = pow k",
+    "content": "`zeta_mul_jordan` is the heart of the entry: the Gauss identity stated as an equation of arithmetic functions, $\\zeta * J_k = \\mathrm{pow}_k$. The proof is extensionality plus convolution algebra — for each $n$ both sides become divisor sums via `coe_zeta_mul_apply`, and $\\zeta * (\\mu * \\mathrm{pow}_k) = (\\zeta * \\mu) * \\mathrm{pow}_k = 1 * \\mathrm{pow}_k = \\mathrm{pow}_k$ using $\\zeta * \\mu = 1$ (`coe_zeta_mul_moebius`). The numeric Gauss identity is just this evaluated at a point.",
+    "mathContext": "$\\zeta * J_k = \\mathrm{pow}_k$ in the arithmetic-function ring; equivalently $\\mathrm{pow}_k = \\zeta * J_k$, the Dirichlet-series relation $\\zeta(s-k) = \\zeta(s)\\cdot\\frac{\\zeta(s-k)}{\\zeta(s)}$.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet convolution", "zeta function", "Mobius function", "unit of a ring"],
+    "prerequisites": ["Dirichlet convolution", "convolution with zeta as divisor sum"]
+  },
+  {
+    "id": "jordan-divisor-sum",
+    "proofId": "erdos-1000-oq-03-oq-03",
+    "range": { "startLine": 79, "endLine": 85 },
+    "type": "theorem",
+    "title": "The Gauss divisor-sum identity ∑ J_k(d) = n^k",
+    "content": "`jordan_divisor_sum` is the headline result: $\\sum_{d\\mid n} J_k(d) = n^k$, the exact generalization of Gauss's $\\sum_{d\\mid n}\\varphi(d) = n$. It rewrites the divisor sum as $(\\zeta * J_k)(n)$ (`coe_zeta_mul_apply`), collapses $\\zeta * \\mu = 1$, and evaluates $\\mathrm{pow}_k$ at $n$. This is a structurally different proof from the combinatorial fiberwise bijection used for the tuple count $C_k$ in `erdos-1000-oq-03-oq-01`: no tuples or gcd-scaling, just that $\\zeta$ is invertible.",
+    "mathContext": "$\\sum_{d\\mid n} J_k(d) = n^k$ for $n \\geq 1$; at $k=1$ this is Gauss's $\\sum_{d\\mid n}\\varphi(d)=n$.",
+    "significance": "key",
+    "relatedConcepts": ["Gauss identity", "divisor sum", "Jordan totient", "Mobius inversion"],
+    "prerequisites": ["Dirichlet convolution", "zeta * mu = 1"]
+  },
+  {
+    "id": "jordan-apply",
+    "proofId": "erdos-1000-oq-03-oq-03",
+    "range": { "startLine": 87, "endLine": 101 },
+    "type": "tactic",
+    "title": "Closed form of J_k",
+    "content": "`jordan_apply` unfolds the convolution to the explicit divisor sum $J_k(n) = \\sum_{d\\mid n}\\mu(d)(n/d)^k$, recorded so that the uniqueness theorem and the $k=1$ recovery are self-contained. The proof rewrites `mul_apply` over the divisor antidiagonal and discharges the `pow` branch (the arithmetic function $\\mathrm{pow}_k$ sends $0\\mapsto 0$, so the guard needs $n/d \\neq 0$).",
+    "mathContext": "$J_k(n) = \\sum_{d\\mid n}\\mu(d)\\left(\\tfrac{n}{d}\\right)^k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisor sum", "Mobius function", "divisor antidiagonal"],
+    "prerequisites": ["Dirichlet convolution", "Mobius function"]
+  },
+  {
+    "id": "jordan-unique",
+    "proofId": "erdos-1000-oq-03-oq-03",
+    "range": { "startLine": 103, "endLine": 116 },
+    "type": "theorem",
+    "title": "Uniqueness: the Gauss identity characterizes J_k",
+    "content": "`jordan_unique` upgrades the identity from a property to a characterization: if an arithmetic function $f$ satisfies $\\sum_{d\\mid m} f(d) = m^k$ for every $m \\geq 1$, then $f = J_k$. Because $\\zeta$ is a unit in the convolution ring (inverse $\\mu$), the divisor-sum operator is invertible, so its output determines its input. Concretely the proof is Möbius inversion (`sum_eq_iff_sum_smul_moebius_eq`) matched against the closed form `jordan_apply`. Thus $J_k$ is the ONLY function whose divisor sums are $n \\mapsto n^k$.",
+    "mathContext": "If $\\forall m\\geq 1,\\ \\sum_{d\\mid m} f(d) = m^k$, then $f = \\mu * \\mathrm{pow}_k = J_k$.",
+    "significance": "key",
+    "relatedConcepts": ["Mobius inversion", "uniqueness", "unit of a ring", "characterization"],
+    "prerequisites": ["Mobius inversion", "invertibility of zeta"]
+  },
+  {
+    "id": "jordan-one-apply",
+    "proofId": "erdos-1000-oq-03-oq-03",
+    "range": { "startLine": 118, "endLine": 132 },
+    "type": "theorem",
+    "title": "Euler totient recovery: J_1 = φ",
+    "content": "`jordan_one_apply` proves $J_1 = \\varphi$ by Möbius inversion of Gauss's identity $\\sum_{d\\mid n}\\varphi(d) = n$, anchoring $J_k$ as the genuine generalization of Euler's totient and setting up the $k=1$ collapse of the Gauss divisor-sum identity.",
+    "mathContext": "$J_1(n) = \\varphi(n)$, since $\\mu * \\mathrm{id} = \\varphi$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler totient", "Mobius inversion", "Gauss identity"],
+    "prerequisites": ["Mobius inversion", "Euler totient"]
+  },
+  {
+    "id": "gauss-sum-totient",
+    "proofId": "erdos-1000-oq-03-oq-03",
+    "range": { "startLine": 134, "endLine": 139 },
+    "type": "theorem",
+    "title": "Classical Gauss identity recovered at k = 1",
+    "content": "`gauss_sum_totient` recovers the textbook $\\sum_{d\\mid n}\\varphi(d) = n$ as the $k=1$ specialization of `jordan_divisor_sum` together with $J_1 = \\varphi$. This confirms the generalized identity $\\sum_{d\\mid n} J_k(d) = n^k$ collapses correctly to the classical case, closing the loop between the general convolution argument and Gauss's original statement.",
+    "mathContext": "$\\sum_{d\\mid n}\\varphi(d) = n$, the $k=1$ case of $\\sum_{d\\mid n} J_k(d) = n^k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gauss identity", "Euler totient", "specialization"],
+    "prerequisites": ["Euler totient", "Gauss identity"]
+  }
+]

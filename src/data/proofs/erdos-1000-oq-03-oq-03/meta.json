@@ -1,0 +1,187 @@
+{
+  "id": "erdos-1000-oq-03-oq-03",
+  "title": "The Gauss Divisor-Sum Identity for Jordan's Totient $J_k$",
+  "slug": "erdos-1000-oq-03-oq-03",
+  "description": "Proves the Gauss-type divisor-sum identity ∑_{d∣n} J_k(d) = n^k for Jordan's totient J_k = μ * pow k directly at the level of the Dirichlet convolution, answering the converse-Möbius open question left by erdos-1000-oq-03-oq-01-oq-01. Where the combinatorial companion (erdos-1000-oq-03-oq-01) established the numeric identity ∑_{d∣n} C_k(d) = n^k for the tuple count C_k via an explicit fiberwise bijection, this entry gives a structurally different proof by pure Dirichlet-convolution algebra: summing an arithmetic function over the divisors of n is convolution with ζ, and ζ is a unit in the arithmetic-function ring with inverse μ (ζ * μ = 1), so ζ * J_k = ζ * (μ * pow k) = (ζ * μ) * pow k = pow k. With 0 axioms and 0 sorries (no native_decide) it proves: the structural identity ζ * J_k = pow k at the arithmetic-function level (zeta_mul_jordan); the pointwise Gauss identity ∑_{d∣n} J_k(d) = n^k (jordan_divisor_sum); a uniqueness/characterization theorem showing J_k is the ONLY arithmetic function whose divisor sums are n ↦ n^k, via Möbius inversion (jordan_unique); the closed form J_k(n) = ∑_{d∣n} μ(d)(n/d)^k (jordan_apply); the Euler-totient recovery J_1 = φ (jordan_one_apply); and the classical Gauss identity ∑_{d∣n} φ(d) = n recovered as the k = 1 case (gauss_sum_totient). The whole development rests on Mathlib's Dirichlet-convolution machinery (coe_zeta_mul_apply, coe_zeta_mul_moebius, sum_eq_iff_sum_smul_moebius_eq); no analysis.",
+  "overview": {
+    "historicalContext": "Gauss's identity ∑_{d∣n} φ(d) = n is one of the oldest facts about Euler's totient: summing φ over the divisors of n reconstructs n. Camille Jordan's totient J_k (Traité des substitutions, ~1870) generalizes φ = J_1, and it satisfies the exact generalization ∑_{d∣n} J_k(d) = n^k. In the language of Dirichlet series this is the identity ζ(s−k) = ζ(s) · (ζ(s−k)/ζ(s)), i.e. pow k = ζ * J_k, dual to the divisor-power relation σ_k = ζ * pow k that Mathlib already formalizes. The parent thread of this gallery built J_k from its combinatorial count and from its multiplicative structure; the multiplicativity entry (erdos-1000-oq-03-oq-01-oq-01) explicitly flagged the converse-Möbius relation ∑_{d∣n} J_k(d) = n^k as an open follow-up 'completing the convolution-inverse pair'. This entry supplies exactly that, and does so by the clean unit-of-the-convolution-ring argument rather than the combinatorial bijection used by the sibling count.",
+    "problemStatement": "Prove, in Lean 4 with 0 axioms and 0 sorries, the Gauss divisor-sum identity ∑_{d∣n} J_k(d) = n^k for Jordan's totient J_k = μ * pow k, directly for the Dirichlet-convolution definition; establish the underlying arithmetic-function identity ζ * J_k = pow k; show the identity characterizes J_k uniquely; and recover the classical ∑_{d∣n} φ(d) = n as the case k = 1.",
+    "proofStrategy": "Read the divisor-sum operator as convolution with ζ. Since summing f over divisors of n equals (ζ * f)(n) (coe_zeta_mul_apply), and ζ * μ = 1 in the arithmetic-function ring (coe_zeta_mul_moebius), the identity ζ * J_k = ζ * (μ * pow k) = (ζ * μ) * pow k = pow k follows by associativity — this is zeta_mul_jordan, proved by extensionality reducing both sides to divisor sums. Evaluating at n and unfolding pow k gives the numeric identity jordan_divisor_sum. For uniqueness, invert: because ζ is a unit with inverse μ, any f with ζ * f = pow k must equal μ * pow k = J_k; concretely this is Möbius inversion (sum_eq_iff_sum_smul_moebius_eq) matched against the closed form jordan_apply. Specializing k = 1 and using J_1 = φ (jordan_one_apply, itself Möbius inversion of Gauss's identity) recovers ∑_{d∣n} φ(d) = n.",
+    "keyInsights": [
+      "The divisor-sum operator IS convolution with ζ: ∑_{d∣n} f(d) = (ζ * f)(n). This single reinterpretation turns the Gauss identity from a counting statement into one line of ring algebra.",
+      "ζ is a unit in the Dirichlet-convolution ring with inverse μ (ζ * μ = 1). Hence J_k = μ * pow k and pow k = ζ * J_k are two readings of the same invertible relation — Möbius inversion and Gauss summation are inverse operations.",
+      "The identity ∑_{d∣n} J_k(d) = n^k does not merely hold for J_k — it characterizes J_k: any arithmetic function with those divisor sums equals μ * pow k, because a unit is cancellable. This upgrades the identity from a property to a definition.",
+      "This convolution-algebra proof is structurally different from the combinatorial fiberwise bijection of the sibling count C_k: no tuples, no gcd-scaling, no fibers — just the fact that ζ has an inverse.",
+      "The classical Gauss identity ∑_{d∣n} φ(d) = n is the k = 1 shadow of a whole family; recovering it from jordan_divisor_sum via J_1 = φ makes the generalization concrete."
+    ]
+  },
+  "sections": [
+    {
+      "id": "context-docstring",
+      "title": "Context: closing the convolution-inverse pair",
+      "startLine": 3,
+      "endLine": 46,
+      "summary": "Module docstring situating the entry as the converse-Möbius follow-up to the Jordan-totient thread, contrasting the Dirichlet-convolution proof with the combinatorial bijection of the sibling count, and listing the six results (0 axioms, 0 sorries)."
+    },
+    {
+      "id": "definition",
+      "title": "Definition: J_k as μ * pow k",
+      "startLine": 48,
+      "endLine": 55,
+      "summary": "Opens Finset, ArithmeticFunction and the ζ notation, and defines jordan k = moebius * (pow k) over ℤ — the same Dirichlet-convolution definition as erdos-1000-oq-03-oq-01-oq-01."
+    },
+    {
+      "id": "structural-identity",
+      "title": "Structural identity ζ * J_k = pow k (zeta_mul_jordan)",
+      "startLine": 57,
+      "endLine": 77,
+      "summary": "Proves the arithmetic-function identity ζ * J_k = pow k by extensionality: each side read at n is a divisor sum (coe_zeta_mul_apply), and ζ * μ = 1 collapses the convolution. The numeric Gauss identity is this evaluated at a point."
+    },
+    {
+      "id": "divisor-sum",
+      "title": "Gauss divisor-sum identity (jordan_divisor_sum)",
+      "startLine": 79,
+      "endLine": 85,
+      "summary": "The headline: ∑_{d∣n} J_k(d) = n^k, obtained by rewriting the divisor sum as (ζ * J_k)(n), collapsing ζ * μ = 1, and evaluating pow k at n."
+    },
+    {
+      "id": "closed-form",
+      "title": "Closed form (jordan_apply)",
+      "startLine": 87,
+      "endLine": 101,
+      "summary": "Unfolds the convolution to J_k(n) = ∑_{d∣n} μ(d)(n/d)^k, recorded so the uniqueness and k = 1 results are self-contained."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness / characterization (jordan_unique)",
+      "startLine": 103,
+      "endLine": 116,
+      "summary": "Shows J_k is the unique arithmetic function whose divisor sums are n ↦ n^k: if ∑_{d∣m} f(d) = m^k for all m ≥ 1 then f = J_k, by Möbius inversion (sum_eq_iff_sum_smul_moebius_eq) against the closed form. The Gauss identity pins down J_k."
+    },
+    {
+      "id": "euler-recovery",
+      "title": "Euler totient recovery (jordan_one_apply)",
+      "startLine": 118,
+      "endLine": 132,
+      "summary": "Proves J_1 = φ by Möbius inversion of Gauss's identity ∑_{d∣n} φ(d) = n, anchoring J_k as the generalization of Euler's totient."
+    },
+    {
+      "id": "classical-gauss",
+      "title": "Classical Gauss identity recovered (gauss_sum_totient)",
+      "startLine": 134,
+      "endLine": 139,
+      "summary": "Recovers the textbook ∑_{d∣n} φ(d) = n as the k = 1 specialization of jordan_divisor_sum together with J_1 = φ, confirming the family collapses to the classical case."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry completes the Jordan-totient thread's convolution-inverse pair by proving the Gauss divisor-sum identity ∑_{d∣n} J_k(d) = n^k directly for the Dirichlet convolution J_k = μ * pow k, with 0 axioms and 0 sorries. The proof reinterprets the divisor-sum operator as convolution with ζ and uses that ζ is a unit with inverse μ (ζ * μ = 1), giving the structural identity ζ * J_k = pow k (zeta_mul_jordan) in one line of ring algebra; the numeric identity (jordan_divisor_sum) is its evaluation at a point. A uniqueness theorem (jordan_unique) upgrades the identity to a characterization: J_k is the only arithmetic function with those divisor sums. The case k = 1 recovers Euler's totient (jordan_one_apply) and the classical Gauss identity ∑_{d∣n} φ(d) = n (gauss_sum_totient). The convolution-algebra proof is structurally independent of the combinatorial fiberwise bijection used by the sibling count erdos-1000-oq-03-oq-01.",
+    "implications": "Together with the sibling entries this closes the elementary theory of J_k: the combinatorial meaning (oq-03-oq-01), the multiplicative structure and Euler products (oq-03-oq-01-oq-01), and now the defining Gauss/summation identity and its uniqueness (this entry). The structural identity ζ * J_k = pow k is the natural launch point for the Dirichlet-series formulation ∑ J_k(n)/n^s = ζ(s−k)/ζ(s), and the uniqueness result means any future object shown to have divisor sums n^k is automatically J_k.",
+    "openQuestions": [
+      "Formalize the Dirichlet-series identity ∑_n J_k(n)/n^s = ζ(s−k)/ζ(s), reading the ζ * J_k = pow k relation analytically and connecting to Mathlib's L-series library.",
+      "State and prove the σ_k / J_k reciprocity within a single framework: both are ζ- and μ-convolutions of pow k, so σ_k * (μ-analogue) relations should follow from the same unit-of-the-ring argument."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000-oq-03-oq-01-oq-01",
+      "relationship": "depends-on",
+      "description": "Sibling entry defining J_k = μ * pow k and developing its multiplicativity and Euler products. Its open question #3 explicitly asked for the converse-Möbius relation ∑_{d∣n} J_k(d) = n^k 'completing the convolution-inverse pair' — which this entry proves."
+    },
+    {
+      "targetId": "erdos-1000-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Combinatorial companion. Proves ∑_{d∣n} C_k(d) = n^k for the jointly-coprime tuple count C_k via an explicit fiberwise bijection, and identifies C_k = J_k. This entry reproves the divisor-sum identity for the convolution J_k by structurally different Dirichlet-convolution algebra."
+    },
+    {
+      "targetId": "erdos-1000-oq-03",
+      "relationship": "related",
+      "description": "Grandparent entry on generalized totients with restricted denominator conditions, source of the Jordan-totient thread and of the classical Gauss identity ∑_{d∣n} φ(d) = n that this entry recovers at k = 1."
+    }
+  ],
+  "meta": {
+    "author": "Classical theory of Jordan's totient (Camille Jordan, 1870); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Jordan%27s_totient_function",
+    "date": "1870",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1000OQ03OQ03.lean",
+    "tags": [
+      "number-theory",
+      "jordan-totient",
+      "euler-totient",
+      "gauss-identity",
+      "divisor-sums",
+      "dirichlet-convolution",
+      "moebius-inversion",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 141,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). #print axioms confirms the headline theorems (zeta_mul_jordan, jordan_divisor_sum, jordan_unique, gauss_sum_totient) depend only on the foundational propext, Classical.choice, Quot.sound.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.coe_zeta_mul_apply",
+        "description": "(ζ * f)(x) = ∑_{i∣x} f(i): convolution with the arithmetic zeta function is exactly the divisor-sum operator. This is the reinterpretation that turns the Gauss identity into convolution algebra.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Zeta"
+      },
+      {
+        "theorem": "ArithmeticFunction.coe_zeta_mul_moebius",
+        "description": "ζ * μ = 1 in the arithmetic-function ring over ℤ. Collapses ζ * (μ * pow k) = pow k, the core of both zeta_mul_jordan and jordan_divisor_sum.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Moebius"
+      },
+      {
+        "theorem": "ArithmeticFunction.sum_eq_iff_sum_smul_moebius_eq",
+        "description": "Möbius inversion over an AddCommGroup. Used to prove uniqueness (jordan_unique): the divisor sums n ↦ n^k determine f = μ * pow k, and to recover J_1 = φ from Gauss's identity.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Moebius"
+      },
+      {
+        "theorem": "ArithmeticFunction.pow_apply",
+        "description": "pow k n = n^k for n ≠ 0 (with pow 0 0 = 0). Evaluates the right-hand side pow k at n to give the numeric n^k.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Misc"
+      },
+      {
+        "theorem": "Nat.sum_totient",
+        "description": "∑_{d∣n} φ(d) = n, Gauss's classical identity. Anchors the k = 1 recovery J_1 = φ and the recovered gauss_sum_totient.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Nat.sum_divisorsAntidiagonal",
+        "description": "Reindexes a sum over the divisor antidiagonal {(d, n/d)} as a sum over divisors d∣n. Bridges the convolution mul_apply / Möbius-inversion antidiagonal forms and the divisor-sum closed form.",
+        "module": "Mathlib.NumberTheory.Divisors"
+      }
+    ],
+    "originalContributions": [
+      "`zeta_mul_jordan`: the structural identity ζ * J_k = pow k at the arithmetic-function level — the Gauss divisor-sum identity read as an equation of arithmetic functions, proved by extensionality plus ζ * μ = 1.",
+      "`jordan_divisor_sum`: ∑_{d∣n} J_k(d) = n^k for the Dirichlet-convolution J_k, proved by convolution algebra rather than the combinatorial fiberwise bijection of the sibling count — answering the converse-Möbius open question of erdos-1000-oq-03-oq-01-oq-01.",
+      "`jordan_unique`: uniqueness/characterization — J_k is the ONLY arithmetic function whose divisor sums are n ↦ n^k, via Möbius inversion, upgrading the Gauss identity from a property to a defining characterization.",
+      "`jordan_apply`: the closed form J_k(n) = ∑_{d∣n} μ(d)(n/d)^k, recorded self-containedly.",
+      "`jordan_one_apply`: J_1 = φ, recovering Euler's totient via Möbius inversion of Gauss's identity.",
+      "`gauss_sum_totient`: the classical ∑_{d∣n} φ(d) = n recovered as the k = 1 specialization of jordan_divisor_sum, confirming the generalization collapses correctly."
+    ],
+    "prerequisites": [
+      "Dirichlet convolution of arithmetic functions and the arithmetic zeta and Möbius functions",
+      "The unit ζ * μ = 1 and the equivalence between Gauss summation and Möbius inversion",
+      "Reading ∑_{d∣n} f(d) as convolution with ζ (coe_zeta_mul_apply)",
+      "Gauss's classical identity ∑_{d∣n} φ(d) = n and Euler's totient as J_1"
+    ],
+    "dateAdded": "2026-07-01",
+    "relatedProblems": [
+      {
+        "id": "erdos-1000-oq-03-oq-01-oq-01",
+        "relationship": "Sibling entry defining J_k = μ * pow k and its multiplicative/Euler-product theory; its open question #3 requested exactly the converse-Möbius identity ∑_{d∣n} J_k(d) = n^k proved here."
+      },
+      {
+        "id": "erdos-1000-oq-03-oq-01",
+        "relationship": "Combinatorial companion proving ∑_{d∣n} C_k(d) = n^k for the tuple count C_k via a fiberwise bijection; this entry reproves the identity for the convolution J_k by structurally different algebra."
+      },
+      {
+        "id": "erdos-1000-oq-03",
+        "relationship": "Grandparent entry on generalized totients, source of the Jordan-totient thread and of the classical Gauss identity recovered here at k = 1."
+      }
+    ]
+  }
+}
