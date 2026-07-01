@@ -59,8 +59,18 @@ keeper_log() {
     echo "[$ts] [keeper] $*" | tee -a "$KEEPER_LOG"
 }
 
-# Best-effort cleanup of our own pid file on exit.
-cleanup() { rm -f "$KEEPER_PID_FILE" 2>/dev/null || true; }
+# Infra guardian: a separate process that watches Docker health, disk space, and
+# git-worktree leaks and remediates them (restart wedged Docker, reclaim disk,
+# reap merged/stale worktrees). Kept out-of-process from the daemon so its
+# remediation can never crash the fleet supervisor. Launched once below.
+GUARDIAN="$SCRIPT_DIR/infra-guardian.sh"
+GUARDIAN_PID=""
+
+# Best-effort cleanup of our own pid file (and the guardian) on exit.
+cleanup() {
+    rm -f "$KEEPER_PID_FILE" 2>/dev/null || true
+    [[ -n "$GUARDIAN_PID" ]] && kill "$GUARDIAN_PID" 2>/dev/null || true
+}
 trap cleanup EXIT
 # Forward termination signals: on TERM/INT, drop a stop signal so the daemon
 # tears down cleanly, then exit the keeper loop.
@@ -73,6 +83,16 @@ keeper_log "starting; daemon=$DAEMON args: $*"
 if [[ ! -x "$DAEMON" ]]; then
     keeper_log "FATAL: daemon script not found or not executable: $DAEMON"
     exit 1
+fi
+
+# Launch the infra guardian once, in the background, unless disabled. It watches
+# Docker/disk/worktrees for the whole life of the fleet; cleanup() kills it.
+if [[ "${KEEPER_DISABLE_GUARDIAN:-0}" != "1" && -x "$GUARDIAN" ]]; then
+    "$GUARDIAN" &
+    GUARDIAN_PID=$!
+    keeper_log "launched infra-guardian (pid $GUARDIAN_PID)"
+elif [[ ! -x "$GUARDIAN" ]]; then
+    keeper_log "WARN: infra-guardian not found/executable at $GUARDIAN — skipping"
 fi
 
 fast_fails=0
