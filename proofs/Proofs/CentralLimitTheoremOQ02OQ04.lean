@@ -31,7 +31,18 @@ Sorries remaining: 2 (unchanged — this PR adds one proven theorem; the two
 sorries `davydov_covariance_inequality` (S5c) and `mixing_clt_ibragimov` (S6+)
 remain).
 
-**This session: S17 — simple-function (finite-sum) covariance bound.**
+**S19 (this session): covariance translation-invariance.** Added
+`covariance_add_const_left` and `covariance_add_const_right` (PROVEN, 0-axiom):
+`Cov(f + c, g) = Cov(f, g)` and `Cov(f, g + c) = Cov(f, g)` in the explicit
+`∫ f·g − (∫ f)(∫ g)` form, under integrability of `f`, `g`, `f·g` on a
+probability measure. These are the algebraic reduction the Davydov density step
+(S5c) uses to replace a signed bounded `f ∈ [m, M]` by the *nonnegative* shift
+`f − m ∈ [0, M − m]` (the form required by the layer-cake / super-level
+indicator decomposition). Pure Bochner linearity: `integral_add` +
+`integral_const_mul` on the joint integral, `∫ c ∂μ = c` on the marginal.
+Sorries unchanged (2).
+
+**Earlier session: S17 — simple-function (finite-sum) covariance bound.**
 Added `finset_indicator_covariance_le_alpha` (PROVEN, 0-axiom): lifts the S16
 single-cell bound to a *pair of simple functions*
 `f = ∑ᵢ aᵢ 1_{Aᵢ}` (σPair 0-measurable) and `g = ∑ⱼ bⱼ 1_{Bⱼ}`
@@ -776,6 +787,72 @@ theorem finset_indicator_covariance_le_alpha
     _ = (∑ i ∈ s, |a i|) * (∑ j ∈ t, |b j|) * α := by
         rw [Finset.sum_mul_sum]
         simp_rw [Finset.sum_mul]
+
+/-! ### Covariance translation-invariance (S19 — algebraic reduction for the
+     L^p density step)
+
+The Davydov density step (`davydov_covariance_inequality`, S5c) reduces a
+signed bounded variable `f` with values in `[m, M]` to the *nonnegative* shift
+`f − m ∈ [0, M − m]`, which is the form required by the layer-cake /
+super-level indicator decomposition `f − m = ∫₀^{M−m} 1_{f − m > t} dt`. That
+reduction is legitimate precisely because covariance is unchanged when a
+constant is added to either argument:
+`Cov(f + c, g) = Cov(f, g)` and `Cov(f, g + c) = Cov(f, g)`.
+
+Both identities are pure linearity of the Bochner integral together with
+`∫ c ∂μ = c` on a probability measure; they carry no assumption beyond
+integrability of `f`, `g`, and the product `f · g`. -/
+
+/-- **Covariance is invariant under adding a constant to the left argument.**
+
+`Cov(f + c, g) = Cov(f, g)`, where covariance is written in the explicit form
+`∫ f·g − (∫ f)(∫ g)` used throughout this file. The proof splits the joint
+integral `∫ (f + c)·g = ∫ f·g + c ∫ g` and the marginal `∫ (f + c) = ∫ f + c`
+(using `IsProbabilityMeasure μ`, so `∫ c ∂μ = c`); the two `c ∫ g` terms then
+cancel. This is the algebraic reduction that lets the Davydov density step
+replace a bounded `f ∈ [m, M]` by the nonnegative shift `f − m`. -/
+theorem covariance_add_const_left
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {f g : Ω → ℝ} (c : ℝ)
+    (hf : Integrable f μ) (hg : Integrable g μ)
+    (hfg : Integrable (fun ω => f ω * g ω) μ) :
+    (∫ ω, (f ω + c) * g ω ∂μ) - (∫ ω, (f ω + c) ∂μ) * (∫ ω, g ω ∂μ)
+      = (∫ ω, f ω * g ω ∂μ) - (∫ ω, f ω ∂μ) * (∫ ω, g ω ∂μ) := by
+  have hcg : Integrable (fun ω => c * g ω) μ := hg.const_mul c
+  -- Joint integral splits: `∫ (f + c)·g = ∫ f·g + c ∫ g`.
+  have hjoint : (∫ ω, (f ω + c) * g ω ∂μ)
+      = (∫ ω, f ω * g ω ∂μ) + c * ∫ ω, g ω ∂μ := by
+    have hpt : (fun ω => (f ω + c) * g ω) = (fun ω => f ω * g ω + c * g ω) := by
+      funext ω; ring
+    rw [hpt, integral_add hfg hcg, integral_const_mul]
+  -- Marginal integral splits: `∫ (f + c) = ∫ f + c` (probability measure).
+  have hmarg : (∫ ω, (f ω + c) ∂μ) = (∫ ω, f ω ∂μ) + c := by
+    rw [integral_add hf (integrable_const c), integral_const]; simp
+  rw [hjoint, hmarg]; ring
+
+/-- **Covariance is invariant under adding a constant to the right argument.**
+
+`Cov(f, g + c) = Cov(f, g)`, the right-hand companion of
+`covariance_add_const_left`. Proved analogously by splitting the joint integral
+`∫ f·(g + c) = ∫ f·g + c ∫ f` and the marginal `∫ (g + c) = ∫ g + c`. -/
+theorem covariance_add_const_right
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {f g : Ω → ℝ} (c : ℝ)
+    (hf : Integrable f μ) (hg : Integrable g μ)
+    (hfg : Integrable (fun ω => f ω * g ω) μ) :
+    (∫ ω, f ω * (g ω + c) ∂μ) - (∫ ω, f ω ∂μ) * (∫ ω, (g ω + c) ∂μ)
+      = (∫ ω, f ω * g ω ∂μ) - (∫ ω, f ω ∂μ) * (∫ ω, g ω ∂μ) := by
+  have hcf : Integrable (fun ω => c * f ω) μ := hf.const_mul c
+  -- Joint integral splits: `∫ f·(g + c) = ∫ f·g + c ∫ f`.
+  have hjoint : (∫ ω, f ω * (g ω + c) ∂μ)
+      = (∫ ω, f ω * g ω ∂μ) + c * ∫ ω, f ω ∂μ := by
+    have hpt : (fun ω => f ω * (g ω + c)) = (fun ω => f ω * g ω + c * f ω) := by
+      funext ω; ring
+    rw [hpt, integral_add hfg hcf, integral_const_mul]
+  -- Marginal integral splits: `∫ (g + c) = ∫ g + c` (probability measure).
+  have hmarg : (∫ ω, (g ω + c) ∂μ) = (∫ ω, g ω ∂μ) + c := by
+    rw [integral_add hg (integrable_const c), integral_const]; simp
+  rw [hjoint, hmarg]; ring
 
 /-- **Davydov's covariance inequality** (Davydov 1968).
 

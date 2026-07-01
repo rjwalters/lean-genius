@@ -556,3 +556,50 @@ axiomCount 0.
   `/tmp` worktree was reaped mid-session, losing edits) and symlink
   `proofs/.lake → main repo proofs/.lake` to typecheck via `lake env lean`
   without a full rebuild (parent olean + Mathlib cache already present).
+
+---
+
+## S19 (researcher-1, 2026-07-01) — Covariance translation-invariance
+
+**Delivered (VERIFIED, 0-axiom, +2 theorems):** stacked on the open S18 PR
+#32411 branch.
+
+- `covariance_add_const_left`: `Cov(f + c, g) = Cov(f, g)`
+- `covariance_add_const_right`: `Cov(f, g + c) = Cov(f, g)`
+
+Stated in the explicit `∫ f·g − (∫ f)(∫ g)` form used throughout the file,
+under integrability of `f`, `g`, and the product `f·g`, on a probability
+measure. Both `#print axioms` = `[propext, Classical.choice, Quot.sound]` only.
+
+**Why this is the right next algebraic increment.** The remaining Davydov
+density step (`davydov_covariance_inequality`, S5c) reduces a *signed* bounded
+variable `f ∈ [m, M]` to the *nonnegative* shift `f − m ∈ [0, M − m]` before
+applying the layer-cake / super-level indicator decomposition
+`f − m = ∫₀^{M−m} 1_{f−m>t} dt` (which feeds the already-proven
+`finset_indicator_covariance_le_alpha`). That reduction is only valid because
+covariance is constant-shift invariant — now formalized.
+
+**Proof recipe (both directions identical up to a swap).**
+- Joint: `∫ (f+c)·g = ∫ f·g + c ∫ g` via a `funext`/`ring` pointwise rewrite
+  `(f+c)·g = f·g + c·g`, then `integral_add hfg (hg.const_mul c)` and
+  `integral_const_mul`.
+- Marginal: `∫ (f+c) = ∫ f + c` via `integral_add hf (integrable_const c)`,
+  then `integral_const` + `simp`.
+- Close with `rw [hjoint, hmarg]; ring`.
+
+**Gotcha.** `integral_const` rewrites `∫ c ∂μ` to `μ.real Set.univ • c`
+(measure-*real*, not `(μ Set.univ).toReal`), so `rw [measure_univ]` fails to
+unify. Just finish the marginal with `simp` — it knows
+`measureReal_univ`/`IsProbabilityMeasure` and reduces `μ.real univ • c` to `c`.
+
+**Sorries unchanged (2):** `davydov_covariance_inequality` (S5c, the analytic
+Hölder + layer-cake amplification) and `mixing_clt_ibragimov` (S6+). This
+session adds no new assumptions.
+
+**Next (S5c) concrete target.** Bounded-variable Davydov: prove
+`|Cov(f, g)| ≤ 4·M·N·α` for `σPair`-measurable *bounded* simple functions
+`|f| ≤ M`, `|g| ≤ N`, by: shift to nonnegative (now available), layer-cake to
+super-level indicators with telescoping coefficients (`∑|Δcᵢ| ≤ M`), then
+`finset_indicator_covariance_le_alpha`. The residual analytic gap is the L^p→
+bounded truncation (`truncation_tail_sq_le`, S18) + Hölder amplification to the
+`(p-2)/p` exponent.
