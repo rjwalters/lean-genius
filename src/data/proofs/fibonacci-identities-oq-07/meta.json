@@ -45,7 +45,8 @@
       "The reverse direction is exactly the injectivity of fib composed with the strong-divisibility identity — no new recurrence manipulation is needed",
       "The boundary collision F₁ = F₂ = 1 is the sole obstruction; requiring Fₘ ≥ 2 (i.e. m ≥ 3) removes it and is provably necessary",
       "gcd(m,n) ≥ 2 must be established before invoking injectivity on [2,∞): F_{gcd} = Fₘ ≥ 2 rules out gcd ∈ {0,1} via interval_cases",
-      "gcd(m,n) = m is definitionally m ∣ n (gcd_dvd_right after the rewrite)"
+      "gcd(m,n) = m is definitionally m ∣ n (gcd_dvd_right after the rewrite)",
+      "All the arithmetic weight sits in Mathlib's Nat.fib_gcd; the entry's originality is the extraction — turning strong divisibility into a clean biconditional and pinning the sharp m ≥ 3 boundary that Mathlib's one-directional fib_dvd leaves implicit"
     ],
     "prerequisites": [
       "Nat.fib and Nat.fib_gcd (strong divisibility sequence)",
