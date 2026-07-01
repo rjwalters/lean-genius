@@ -86,7 +86,40 @@
     {
       "targetId": "fibonacci-identities",
       "relationship": "extends",
-      "description": "Parent: Fibonacci identities; this entry adds the divisibility characterization"
+      "description": "Parent: Fibonacci identities; this entry adds the divisibility characterization Fₘ ∣ Fₙ ⟺ m ∣ n."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-02-oq-02-prime-index",
+      "relationship": "related",
+      "description": "Sibling: 'Prime Fibonacci Numbers Have Prime (or 4) Indices'. That index-primality result is a direct downstream consequence of the divisibility characterization proved here — if m ∣ n (m ≥ 3) forces Fₘ ∣ Fₙ, then a prime Fₙ can only have an index n that is prime (or the exceptional 4)."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The reverse direction runs entirely through the greatest common divisor: it rewrites gcd(Fₘ,Fₙ) via the strong-divisibility identity gcd(Fₘ,Fₙ) = F_{gcd(m,n)} (Nat.fib_gcd), the Fibonacci analogue of the gcd computed by the Euclidean algorithm."
+    }
+  ],
+  "references": [
+    {
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "author": "Édouard Lucas",
+      "year": "1878",
+      "venue": "American Journal of Mathematics, vol. 1",
+      "description": "The founding paper on Lucas sequences, where the strong-divisibility property gcd(Uₘ,Uₙ) = U_{gcd(m,n)} and its divisibility corollary first appear for the Fibonacci and Lucas numbers."
+    },
+    {
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "author": "Steven Vajda",
+      "year": "1989",
+      "venue": "Ellis Horwood",
+      "description": "Standard reference developing the arithmetic of Fibonacci and Lucas numbers, including the strong-divisibility sequence property and the divisibility characterization Fₘ ∣ Fₙ ⟺ m ∣ n."
+    },
+    {
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "author": "Thomas Koshy",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "description": "Comprehensive treatment of Fibonacci divisibility, entry points (rank of apparition), and the primality tests that rest on the characterization proved in this entry."
     }
   ],
   "references": [
