@@ -1,0 +1,63 @@
+{
+  "id": "divisibility-by-3-oq-01-oq-02",
+  "title": "Uniform Osculator Function for Truncation Divisibility",
+  "slug": "divisibility-by-3-oq-01-oq-02",
+  "description": "Replaces the parent's hand-supplied per-divisor osculator constants with a single computable osculator function osculator(d) = Int.gcdA 10 d (a Bezout coefficient of 10 mod d). Proves once and for all that it satisfies the positive-osculator relation d | 10*osculator(d) - 1 for every d coprime to 10, yielding a uniform truncation rule d | n <-> d | (n/10 + osculator(d)*(n%10)) whose only side goal at a concrete divisor is decidable coprimality. This subsumes the parent's hand-written coverage extension (23, 29, 31, 37, 41, 43): those primes and all others are now instances of one theorem whose osculator is produced automatically from Bezout's identity.",
+  "meta": {
+    "author": "Extension of General Truncation Divisibility Rule",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_rule",
+    "date": "2026-07-01",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "bezout",
+      "computable",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/DivisibilityBy3OQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.gcd_eq_gcd_ab",
+        "description": "Bezout's identity: (gcd x y : Z) = x * gcdA x y + y * gcdB x y",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.isCoprime_iff_gcd_eq_one",
+        "description": "IsCoprime a b <-> Int.gcd a b = 1 over the integers",
+        "module": "Mathlib.RingTheory.Int.Basic"
+      },
+      {
+        "theorem": "Int.gcd_comm",
+        "description": "Int.gcd is symmetric",
+        "module": "Mathlib.Data.Int.GCD"
+      }
+    ],
+    "originalContributions": [
+      "Computable osculator function osculator(d) = Int.gcdA 10 d, total on all d",
+      "osculator_spec: for every d coprime to 10, d | 10*osculator(d) - 1, discharged from Bezout's identity rather than a supplied witness",
+      "truncation_uniform: a single truncation rule covering every d coprime to 10 with no supplied osculator constant",
+      "extended_coverage_uniform: the parent's six primes (23,29,31,37,41,43) recovered as evaluations of one uniform rule (side goal = decidable coprimality only)"
+    ],
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "relatedProblems": [
+      {
+        "id": "divisibility-truncation-general",
+        "relationship": "Grandparent: parametric truncation_pos/truncation_neg theorems this file instantiates uniformly"
+      },
+      {
+        "id": "divisibility-truncation-general-oq-01",
+        "relationship": "Sibling: unifies positive/negative osculator into a signed constant; this file instead computes the osculator"
+      }
+    ],
+    "lineCount": 145,
+    "definitionCount": 1,
+    "theoremCount": 6,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Builds on the parent's truncation_pos (also 0-axiom).",
+    "mathlib_version": "4.26.0"
+  }
+}
