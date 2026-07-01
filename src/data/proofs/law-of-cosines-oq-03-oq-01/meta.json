@@ -10,8 +10,12 @@
   "leanFile": {
     "path": "Proofs/HyperbolicLawCosinesModelOQ0301.lean",
     "namespace": "HyperbolicLawCosines",
-    "imports": ["Mathlib"],
-    "opens": ["Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
     "axiomCount": 0,
     "sorries": 0,
     "lineCount": 191,
@@ -91,6 +95,26 @@
       "endLine": 190,
       "summary": "tangent θ = (0, cos θ, sin θ). geo_tangent_t/x/y: tangent θ is the r=0 velocity of geo · θ (HasDerivAt on cosh/sinh). tangent_unit: each tangent is a unit vector. tangent_inner: their induced inner product is cos C. apex_angle: arccos⟨tangent 0, tangent C⟩ = C on [0,π].",
       "mathContext": "The induced Riemannian metric on the spacelike tangent plane at the apex is the Euclidean form; the angle between the geodesics' unit initial velocities is arccos(cos C) = C, confirming C is the true interior angle."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Ratcliffe, J.G."
+      ],
+      "title": "Foundations of Hyperbolic Manifolds",
+      "year": "2019",
+      "venue": "3rd ed., Graduate Texts in Mathematics 149, Springer",
+      "note": "Hyperboloid model of the hyperbolic plane and the hyperbolic laws of cosines and sines."
+    },
+    {
+      "authors": [
+        "Anderson, J.W."
+      ],
+      "title": "Hyperbolic Geometry",
+      "year": "2005",
+      "venue": "2nd ed., Springer Undergraduate Mathematics Series, Springer",
+      "note": "Hyperbolic trigonometry, including the laws of cosines and sines and AAA rigidity."
     }
   ],
   "conclusion": {

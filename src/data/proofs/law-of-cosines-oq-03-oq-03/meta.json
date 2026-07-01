@@ -136,6 +136,26 @@
       "mathContext": "The defect π-(A+B+C) equals the hyperbolic area (Gauss-Bonnet, curvature -1)."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Ratcliffe, J.G."
+      ],
+      "title": "Foundations of Hyperbolic Manifolds",
+      "year": "2019",
+      "venue": "3rd ed., Graduate Texts in Mathematics 149, Springer",
+      "note": "Hyperboloid model of the hyperbolic plane and the hyperbolic laws of cosines and sines."
+    },
+    {
+      "authors": [
+        "Coxeter, H.S.M."
+      ],
+      "title": "Non-Euclidean Geometry",
+      "year": "1998",
+      "venue": "6th ed., Mathematical Association of America",
+      "note": "Unified treatment of spherical and hyperbolic trigonometry and their dualities."
+    }
+  ],
   "conclusion": {
     "summary": "Hyperbolic AAA congruence is formalized by inverting the second law of cosines: cosh c = (cos C + cos A cos B)/(sin A sin B) expresses each side as a function of the angles, and injectivity of cosh on [0,∞) turns equal angles into equal sides. An internal-consistency theorem shows the angular defect A+B+C<π is exactly the condition making the formula exceed 1 (cosh c > 1), and the equilateral case yields the closed form cosh(side) = cos θ/(1-cos θ). 7 structure-encoded axioms, 0 sorries.",
     "implications": "AAA congruence is the precise sense in which hyperbolic geometry is rigid: there are no similar non-congruent triangles, in sharp contrast to Euclidean geometry. The same inversion underlies the fact that hyperbolic structures on surfaces are determined by their holonomy/angle data, a theme central to Thurston's geometrization. Together with the parent law of cosines and the sibling law of sines, this completes the basic congruence theory of hyperbolic triangles.",
