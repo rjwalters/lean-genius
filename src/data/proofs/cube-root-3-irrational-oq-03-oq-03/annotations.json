@@ -1,0 +1,38 @@
+[
+  {
+    "id": "real-root-unique",
+    "proofId": "cube-root-3-irrational-oq-03-oq-03",
+    "range": { "startLine": 55, "endLine": 63 },
+    "type": "theorem",
+    "title": "Uniqueness of the Real Cube Root of 3",
+    "content": "`real_root_eq_cbrt3` proves that any real number `r` with `r³ = 3` is exactly `∛3`. The argument is a one-liner: `r³ = 3 = (∛3)³` (using the parent's `cbrt3_pow_three`), and `x ↦ x³` is injective on ℝ because it is strictly monotone (`Odd.strictMono_pow` with `Odd 3`). This is the real-analytic heart of the whole proof — the fact that ℝ contains only ONE cube root of 3, unlike ℂ which contains three (∛3, ω∛3, ω²∛3).",
+    "significance": "key"
+  },
+  {
+    "id": "not-splits-real",
+    "proofId": "cube-root-3-irrational-oq-03-oq-03",
+    "range": { "startLine": 65, "endLine": 87 },
+    "type": "theorem",
+    "title": "X³ − 3 Does Not Split over ℝ",
+    "content": "`not_splits_real` refutes splitting over ℝ by a counting contradiction. If `X³ − 3` split, `splits_iff_card_roots` would give `roots.card = natDegree = 3` (three roots with multiplicity). Separability (`separable_X_pow_sub_C`, valid since `3 ≠ 0` in ℝ) upgrades this via `nodup_roots` to three DISTINCT roots. But the finset of distinct roots is contained in `{∛3}` — every root `r` has `r³ = 3` hence `r = ∛3` (`real_root_eq_cbrt3`) — so its cardinality is at most 1. Three distinct roots inside a one-element set is the contradiction.",
+    "significance": "key"
+  },
+  {
+    "id": "minpoly-not-splits",
+    "proofId": "cube-root-3-irrational-oq-03-oq-03",
+    "range": { "startLine": 91, "endLine": 102 },
+    "type": "theorem",
+    "title": "The Minimal Polynomial Does Not Split in ℚ(∛3)",
+    "content": "`minpoly_not_splits_adjoin` is the direct obstruction to normality. A hypothetical splitting of `X³ − 3` over the intermediate field ℚ(∛3) is transported to ℝ by `Polynomial.splits_of_algHom` along the canonical algebra embedding `IntermediateField.val : ℚ(∛3) →ₐ[ℚ] ℝ`, after rewriting the mapped polynomial as `X³ − 3 : ℝ[X]` (`map_X_cubed_sub_three`). That contradicts `not_splits_real`. Conceptually: the two complex-conjugate roots `ω∛3, ω²∛3` of `X³ − 3` cannot live in the real field ℚ(∛3).",
+    "significance": "supporting"
+  },
+  {
+    "id": "not-normal-headline",
+    "proofId": "cube-root-3-irrational-oq-03-oq-03",
+    "range": { "startLine": 104, "endLine": 114 },
+    "type": "theorem",
+    "title": "ℚ(∛3)/ℚ Is Not Normal (nor Galois)",
+    "content": "`not_normal_adjoin_cbrt3` is the headline. If ℚ(∛3)/ℚ were normal, `Normal.splits` applied to the generator `AdjoinSimple.gen ℚ ∛3` — whose minimal polynomial is `X³ − 3` via `minpoly_gen ▸ minpoly_cbrt3` — would force `X³ − 3` to split in ℚ(∛3), contradicting `minpoly_not_splits_adjoin`. `not_isGalois_adjoin_cbrt3` follows immediately since every Galois extension is normal (`IsGalois.to_normal`). This is the standard first example of a finite non-normal field extension.",
+    "significance": "key"
+  }
+]
