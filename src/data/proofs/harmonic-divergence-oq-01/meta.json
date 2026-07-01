@@ -3,6 +3,38 @@
   "title": "Euler-Mascheroni Constant: Bounds, Structure, and Connections",
   "slug": "harmonic-divergence-oq-01",
   "description": "A comprehensive formalization of the Euler-Mascheroni constant γ ≈ 0.5772: convergence and monotonicity of the defining sequences, log bounds on harmonic numbers, Theisinger's theorem that H_n is never an integer for n ≥ 2, sandwich sequence convergence rate, systematic rational exclusion (all p/q with denominator ≤ 4), conditional irrationality consequences, and connections to the p-series boundary.",
+  "references": [
+    {
+      "authors": "Leonhard Euler",
+      "title": "De progressionibus harmonicis observationes (Comment. Acad. Sci. Petrop. 7)",
+      "year": 1734,
+      "note": "Introduces the constant γ = lim (Hₙ − log n), the Euler–Mascheroni constant formalized here."
+    },
+    {
+      "authors": "Lorenzo Mascheroni",
+      "title": "Adnotationes ad calculum integralem Euleri",
+      "year": 1790,
+      "note": "Refines the numerical value of γ, giving the constant its second name."
+    },
+    {
+      "authors": "Julian Havil",
+      "title": "Gamma: Exploring Euler's Constant",
+      "year": 2003,
+      "note": "Princeton University Press. Comprehensive account of γ, its bounds, and connections."
+    },
+    {
+      "authors": "Leopold Theisinger",
+      "title": "Bemerkung über die harmonische Reihe (Monatshefte für Mathematik und Physik 26)",
+      "year": 1915,
+      "note": "Theisinger's theorem that Hₙ is never an integer for n ≥ 2, proved in this entry."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: harmonic, Real.log bounds and monotone-sequence convergence infrastructure",
+      "year": 2024,
+      "note": "Harmonic numbers, logarithmic sandwich bounds, and the convergence of the defining sequences for γ."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",

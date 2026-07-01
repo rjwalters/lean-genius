@@ -3,6 +3,38 @@
   "title": "Euler Product Formula from Geometric Series",
   "slug": "geometric-series-oq-03",
   "description": "The Riemann zeta function's Euler product ζ(s) = ∏_p (1-p^{-s})^{-1} as an explicit product of geometric series, proved for Re(s) > 1.",
+  "references": [
+    {
+      "authors": "Leonhard Euler",
+      "title": "Variae observationes circa series infinitas (Comment. Acad. Sci. Petrop. 9)",
+      "year": 1737,
+      "note": "Euler's product ζ(s)=∏_p (1−p^{−s})^{−1}, derived here from geometric series."
+    },
+    {
+      "authors": "Bernhard Riemann",
+      "title": "Über die Anzahl der Primzahlen unter einer gegebenen Größe (Monatsber. Berlin Akad.)",
+      "year": 1859,
+      "note": "Uses the Euler product as the analytic bridge between ζ and the primes."
+    },
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "note": "Springer. The Euler product and Dirichlet series for Re(s) > 1."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": 2008,
+      "note": "Oxford University Press. Convergence of ∏_p (1−p^{−s})^{−1} and its equality with ζ(s)."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: riemannZeta and Nat.Primes tprod (Euler product) infrastructure",
+      "year": 2024,
+      "note": "The geometric-series expansion (1−p^{−s})^{−1} = Σ p^{−ks} and the prime product used here."
+    }
+  ],
   "meta": {
     "author": "Leonhard Euler (1737), formalized via Mathlib",
     "sourceUrl": "https://github.com/leanprover-community/mathlib4",
