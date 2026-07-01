@@ -113,6 +113,56 @@
       "The parent parallelepiped defect entry (Proofs.BritishFlagParallelepipedOQ010201) and its finite-difference lemma"
     ]
   },
+  "sections": [
+    {
+      "id": "vanishing-principle",
+      "title": "The Abstract Vanishing Principle",
+      "startLine": 67,
+      "endLine": 86,
+      "summary": "alt_sum_zero_of_inter: if g(t) depends on t only through t ∩ A for a proper subset A ≠ univ, then the signed powerset sum ∑_t (−1)^{|t|}·g(t) = 0. Repackages the parent's finite-difference lemma by choosing a free coordinate k ∉ A on which g is invariant.",
+      "mathContext": "The alternating powerset operator g ↦ ∑_t (−1)^{|t|}·g(t) is the n-fold iterated finite difference on the Boolean cube; it annihilates any function that ignores at least one coordinate."
+    },
+    {
+      "id": "displacement-model",
+      "title": "The Optional-Coordinate Model of the Displacement",
+      "startLine": 87,
+      "endLine": 132,
+      "summary": "The definitions evec (e(none)=X−c, e(some i)=−uᵢ), ind (indicator with ind(none)=1), and term, then displacement_eq_sum (X − vertex t = ∑_a indᵗ(a)•e(a)) and sqDist_eq_sum expanding ‖X − vertex t‖² by bilinearity into a single sum over coordinate pairs, with all t-dependence confined to the indicator factors.",
+      "mathContext": "Encoding the base point as an extra coordinate `none` unifies the constant, linear, and quadratic pieces of the squared distance into one indexed sum, so ‖·‖^{2m} becomes a single Fintype.sum_pow."
+    },
+    {
+      "id": "touched-count",
+      "title": "The Degree-vs-Dimension Count",
+      "startLine": 133,
+      "endLine": 161,
+      "summary": "touched π (the coordinates a multi-index constrains), card_touched_le (|touched π| ≤ 2m, each of the m factors contributing ≤ 2 coordinates), and touched_ne_univ (when 2m < n, touched π is a proper subset — some coordinate is always free).",
+      "mathContext": "The exact analogue of 'an order-n finite difference kills degree < n': a length-m multi-index has degree ≤ 2m in the indicators, so it omits a coordinate precisely when n > 2m, giving the sharp threshold n ≥ 2m+1."
+    },
+    {
+      "id": "factor-through-touched",
+      "title": "Each Product Factors Through t ∩ touched π",
+      "startLine": 162,
+      "endLine": 187,
+      "summary": "ind_inter (an indicator weight is unchanged by restricting to a superset of its coordinate) and term_inter (a whole term factors through t ∩ touched π), so the product ∏_j term X c u t (π j) depends on t only through t ∩ touched π.",
+      "mathContext": "Supplies exactly the hypothesis alt_sum_zero_of_inter requires: the summand for a fixed multi-index is a function of t ∩ (a proper subset)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Every Even Moment Vanishes for 2m < n",
+      "startLine": 188,
+      "endLine": 217,
+      "summary": "defectPow and even_moment_defect_eq_zero: expand each ‖X − vertex t‖^{2m} over multi-indices (sqDist_eq_sum + Fintype.sum_pow), swap the powerset and multi-index sums (Finset.sum_comm), and for each π apply term_inter + touched_ne_univ + alt_sum_zero_of_inter to kill its signed powerset sum; summing over π gives defectPow = 0.",
+      "mathContext": "The whole moment family collapses to one statement: the 2m-th power distance is a degree-2m function on the cube, and the n-fold finite difference annihilates it whenever 2m < n — no orthogonality, no edge-vector constraints, no restriction on X."
+    },
+    {
+      "id": "corollaries",
+      "title": "Consistency Corollaries: the n ≥ 3 and n ≥ 5 Thresholds",
+      "startLine": 218,
+      "endLine": 246,
+      "summary": "defectPow_eq (rewriting sqDist^m into ‖·‖^{2m} via pow_mul), second_moment_zero (m=1, n≥3, recovering the parent parallelepiped defect) and fourth_moment_zero (m=2, n≥5, recovering the fourth-moment sibling) — each a one-line instantiation of the main theorem.",
+      "mathContext": "n ≥ 2m+1 is sharp: m=1 gives n≥3 and m=2 gives n≥5, exactly matching the independently proved thresholds of the parent and sibling entries."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "british-flag-theorem-oq-01-oq-02",
