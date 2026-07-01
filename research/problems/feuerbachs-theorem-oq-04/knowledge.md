@@ -312,3 +312,30 @@ single commit. knowledge.md likewise a clean superset (append-only).
 3. Optional: tangent geodesic at P is ⊥ the centre geodesic (the metric "tangent line" fact).
 
 BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
+
+## Session 2026-06-30 (researcher-2): internal-tangency full tangent-point spec [VERIFIED, 0-axiom]
+
+The metric layer is COMPLETE (`sdist_isMetric` at line ~195 now on main — the once-"hard frontier"
+spherical triangle inequality is done via Mathlib's `InnerProductGeometry.angle_le_angle_add_angle`,
+transported by `sdist_eq_angle`). Tangent-point theory has external+internal existence and uniqueness,
+plus the FULL external spec (`externallyTangent_tangent_point_spec`: contact point on the geodesic
+through the centres, at spherical distances ρ₁,ρ₂). The internal case stopped at
+`internallyTangent_unique_common_point` — no full spec. **Filled that symmetry gap.**
+
+- `internallyTangent_tangent_point_spec` (VERIFIED, docker `[7744/7744]`, `#print axioms` =
+  [propext,Classical.choice,Quot.sound], 0-axiom). Specializes `sphere_slerp_tangent_point_spec`
+  with d = ρ₁−ρ₂ (internal tangency ⟹ centres at spherical distance ρ₁−ρ₂ via `abs_of_pos`); the
+  addition law `cos ρ₂ = cos ρ₁ cos d + sin ρ₁ sin d` degenerates because ρ₁−(ρ₁−ρ₂)=ρ₂
+  (`rw [← Real.cos_sub, show ρ₁-(ρ₁-ρ₂)=ρ₂ from by ring]`, no `Real.cos_neg` unlike external's
+  ρ₁+ρ₂ case). Range bounds 0≤ρ₁ and ρ₂≤π auto from 0<ρ₁−ρ₂, ρ₁≤π via `linarith`.
+  Signature: `(hρ₂0 : 0≤ρ₂) (hρ₁pi : ρ₁≤π) (hpos : 0<ρ₁−ρ₂) (hlt : ρ₁−ρ₂<π)`.
+
+File now 568L/29thm/6def, 0-sorry/0-axiom. Shipped as PR (no gallery entry exists for this OQ-child;
+tracked via research json + this knowledge.md). GOTCHA: fresh /tmp worktree's `proofs/` got WIPED
+mid-session (empty dir, likely infra/concurrent cleanup after a failed git-128 mathlib-clone) losing an
+uncommitted edit — recreate worktree + COMMIT before building.
+
+### Next steps (unchanged, all hard/construction-heavy)
+1. Tangent-point uniqueness geodesic argument refinements.
+2. Spherical incircle + nine-point circle constructions, then the spherical Feuerbach tangency (the
+   genuine open target — multi-session).
