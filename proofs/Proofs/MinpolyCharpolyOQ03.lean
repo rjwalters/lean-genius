@@ -3,6 +3,7 @@ import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
 import Mathlib.Algebra.Polynomial.Monic
 import Mathlib.Tactic
 import Proofs.MinpolyCharpoly
+import Proofs.RationalCanonicalFormExists
 
 /-
 # Rational Canonical Form via Minimal-Polynomial Invariant Factors
@@ -109,9 +110,13 @@ assessment).
   chain, target value `charpoly M`.
 * **`InvariantFactorChain.lastFactor`** — the last factor `pₖ`, target
   value `minpoly M`.
-* **`rational_canonical_form_exists`** — the **main RCF theorem
-  statement**, guarded by a single `sorry` that the S1 OBSERVE iteration
-  leaves for the four sub-OQs above to discharge.
+* **`rational_canonical_form_exists`** — the **main RCF theorem**
+  (strong form: product `= charpoly M`, last factor `= minpoly F M`),
+  now **fully proved** (S16). The lone `sorry` is discharged by a
+  one-line bridge to `RationalCanonicalFormExists.rational_canonical_form_exists`
+  (the axiom-free RCF development built from scratch in-tree via the PID
+  structure theorem). The similarity-transform assertion remains omitted,
+  deferred to sub-OQ OQ-03-OQ-04.
 * **`prodFactors_empty`** — unconditional sanity check that an empty
   chain has product 1.
 * **`prodFactors_monic`** *(S2)* — the product of the invariant factors
@@ -196,40 +201,53 @@ noncomputable def InvariantFactorChain.lastFactor
     (c : InvariantFactorChain F) : F[X] :=
   c.factors.getLast?.getD 1
 
-/-! ## Part 2: Main Theorem Statement (S1 — sorry placeholder)
+/-! ## Part 2: Main Theorem (proved)
 
-The S1 deliverable is the **statement** of the rational canonical form
-existence theorem. The proof is left as a `sorry` and will be
-discharged by the four-step decomposition documented at the top of
-this file (sub-OQs `oq-03-oq-01` through `oq-03-oq-04`).
+The **rational canonical form existence theorem**, strong form. The
+proof (S16) discharges the former `sorry` by bridging to the axiom-free
+in-tree `RationalCanonicalFormExists` development, whose
+`InvariantFactorChain` is field-identical to this one.
 -/
 
-/-- **Rational Canonical Form — Existence (S1 statement; S14 strengthened; S2+ proof)**:
+/-- **Rational Canonical Form — Existence (strong form; proved S16)**:
 
     Every square matrix `M` over a field `F` admits an
     `InvariantFactorChain` whose product equals `charpoly M` **and**
     whose last factor equals `minpoly M`.
 
-    *Status*: **S14 strong-form statement** — statement only, proof
-    deferred to the four-step decomposition (sub-OQs `oq-03-oq-01`
-    through `oq-03-oq-04`) plus the `lastFactor = minpoly`
-    follow-up (state.md next-action option 2).
+    *Status*: **fully proved, axiom-free** (`#print axioms` reports only
+    propext/Classical.choice/Quot.sound). The proof discharges the
+    former `sorry` by a one-line bridge to
+    `RationalCanonicalFormExists.rational_canonical_form_exists` — the
+    strong-form RCF existence theorem built from scratch in-tree (via
+    Mathlib's `Module.equiv_directSum_of_isTorsion` and a combinatorial
+    regrouping of prime powers into an invariant-factor chain). Its
+    `InvariantFactorChain` is field-identical to this one, so the four
+    fields copy across and the two equalities transport definitionally.
 
-    The strong form adds the conjunct `c.lastFactor = M.minpoly` to
-    the S1 statement. This sets up the deliverable surface for the
-    follow-up proof (option 2 in state.md): the structural fact that
-    `ann(xModule M) = (M.minpoly)` (via
-    `annihilator_top_eq_ker_aeval`) plus monic uniqueness forces
-    `c.lastFactor = M.minpoly`. The strengthened statement remains
-    consistent with the full Frobenius theorem; only the similarity-
-    transform assertion (`M` is similar to the block diagonal of the
-    companion matrices) is still omitted, to be added when sub-OQ
+    The strong form asserts the conjunct `c.lastFactor = M.minpoly`
+    (not optional padding: without it a degenerate chain
+    `factors = [charpoly M]` would satisfy the existential vacuously).
+    Only the similarity-transform assertion (`M` is similar to the block
+    diagonal of the companion matrices) is still omitted, to be added
+    when sub-OQ
     `oq-03-oq-04` lands. -/
 theorem rational_canonical_form_exists
     {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n F) :
     ∃ c : InvariantFactorChain F,
       c.prodFactors = M.charpoly ∧ c.lastFactor = minpoly F M := by
-  sorry
+  -- Discharged by `RationalCanonicalFormExists.rational_canonical_form_exists`, the
+  -- axiom-free strong-form RCF existence theorem proved in the companion file
+  -- `Proofs/RationalCanonicalFormExists.lean` (Aristotle-synthesized, integrated
+  -- verbatim). Its `InvariantFactorChain` is field-identical to this one
+  -- (`factors`/`monic`/`posDegree`/`chain`), and `prodFactors` / `lastFactor` are
+  -- definitionally `factors.prod` / `factors.getLast?.getD 1` on both, so we copy
+  -- the four fields across and transport the two equalities unchanged. This is the
+  -- same one-line bridge already used by `MinpolyCharpolyOQ03OQ01`
+  -- (`xModule_has_invariantFactorChain`); it is inlined here rather than imported to
+  -- avoid the import cycle (the OQ-01 bridge imports this file).
+  obtain ⟨c, hprod, hlast⟩ := RationalCanonicalFormExists.rational_canonical_form_exists M
+  exact ⟨⟨c.factors, c.monic, c.posDegree, c.chain⟩, hprod, hlast⟩
 
 /-! ## Part 3: Unconditional structural lemmas
 
