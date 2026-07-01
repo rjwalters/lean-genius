@@ -1541,19 +1541,19 @@ theorem franklinMoveA_min' (S : Finset ℕ) (s m : ℕ)
     (H' : ((S.erase s).erase (m - s + 1)).Nonempty)
     (hmax : ∀ x ∈ S, x ≤ m) :
     (franklinMoveA S s m).min' H = ((S.erase s).erase (m - s + 1)).min' H' := by
-  set A := (S.erase s).erase (m - s + 1) with hA
-  have hmemA : A.min' H' ∈ franklinMoveA S s m := by
-    rw [franklinMoveA, Finset.mem_insert]; right; exact A.min'_mem H'
   apply le_antisymm
-  · exact Finset.min'_le _ _ hmemA
+  · apply Finset.min'_le
+    rw [franklinMoveA, Finset.mem_insert]; right
+    exact ((S.erase s).erase (m - s + 1)).min'_mem H'
   · apply Finset.le_min'
     intro y hy
     rw [franklinMoveA, Finset.mem_insert] at hy
     rcases hy with h | h
-    · have hmemS : A.min' H' ∈ S :=
-        Finset.erase_subset _ _ (Finset.erase_subset _ _ (A.min'_mem H'))
-      have := hmax _ hmemS
+    · have hmemS : ((S.erase s).erase (m - s + 1)).min' H' ∈ S :=
+        Finset.erase_subset _ _ (Finset.erase_subset _ _
+          (((S.erase s).erase (m - s + 1)).min'_mem H'))
+      have hle := hmax _ hmemS
       omega
-    · exact Finset.min'_le A y h
+    · exact Finset.min'_le _ y h
 
 end PentagonalNumberTheoremOQ01
