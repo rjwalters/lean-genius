@@ -52,6 +52,35 @@
       "Classical logic for double-negation elimination"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Gödel, K."
+      ],
+      "title": "Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I",
+      "year": "1931",
+      "venue": "Monatshefte für Mathematik und Physik 38, pp. 173–198",
+      "note": "Gödel's first incompleteness theorem; its diagonal lemma is the fixed point realized here through Lawvere."
+    },
+    {
+      "authors": [
+        "Lawvere, F.W."
+      ],
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Category Theory, Homology Theory and their Applications II, Lecture Notes in Math. 92, Springer, pp. 134–145 (repr. Theory Appl. Categ. 15, 2006)",
+      "note": "The abstract fixed-point theorem unifying Cantor, Russell, Gödel and Tarski via point-surjectivity in a cartesian closed category."
+    },
+    {
+      "authors": [
+        "Yanofsky, N.S."
+      ],
+      "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic 9 (3), pp. 362–386",
+      "note": "Modern exposition deriving Cantor, Russell, Gödel, Turing and Rice as instances of Lawvere's theorem."
+    }
+  ],
   "conclusion": {
     "summary": "Proved Gödel's First Incompleteness Theorem as a Lawvere instance: the diagonal lemma = point-surjectivity, the Gödel sentence = fixed point of Neg∘PrSent, and consistency forces unprovability. Derived 6 theorems — diagonal lemma, Gödel sentence, first incompleteness, strong incompleteness, completeness failure, and explicit Lawvere chain connection — in 256 lines with 0 sorries. The GodelModel structure axiomatizes provability arithmetic as structure hypotheses.",
     "implications": "This file completes the Lawvere fixed-point theorem application chain in the gallery: Cantor (Prop, negation) → Rice (Bool, Bool.not) → Gödel (sentences, negation of provability). The key mathematical insight is the distinction between Rice and Gödel: in Rice, the endomorphism Bool.not has NO fixed point, making point-surjectivity impossible; in Gödel, the endomorphism Neg∘PrSent DOES have a fixed point (the Gödel sentence), but this fixed point is unprovable by consistency. Same categorical mechanism, different mathematical consequences.",

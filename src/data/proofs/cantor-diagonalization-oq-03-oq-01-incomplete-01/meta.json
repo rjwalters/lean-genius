@@ -116,6 +116,26 @@
       "mathContext": "Final verification that the principal theorems type-check as stated."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Lawvere, F.W."
+      ],
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Category Theory, Homology Theory and their Applications II, Lecture Notes in Math. 92, Springer, pp. 134–145 (repr. Theory Appl. Categ. 15, 2006)",
+      "note": "The abstract fixed-point theorem unifying Cantor, Russell, Gödel and Tarski via point-surjectivity in a cartesian closed category."
+    },
+    {
+      "authors": [
+        "Yanofsky, N.S."
+      ],
+      "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic 9 (3), pp. 362–386",
+      "note": "Modern exposition deriving Cantor, Russell, Gödel, Turing and Rice as instances of Lawvere's theorem."
+    }
+  ],
   "conclusion": {
     "summary": "The categorical Lawvere fixed-point theorem is completed with 0 sorries and 0 axioms. The fix was to make the evaluation morphism e explicit as a parameter. The proof reduces to lawvere_abstract in one step via EvalStructure. The categorical framework now properly connects to the type-theoretic version.",
     "implications": "The completion shows that the abstract categorical framework for Lawvere's theorem requires only the evaluation morphism to be explicit — no full CCC or topos machinery is needed. The EvalStructure serves as the minimal interface between category theory and type theory. This architecture (abstract structure → reduction → type-theoretic core) is the right pattern for formalizing category-theoretic results in a type-theoretic proof assistant.",

@@ -92,6 +92,36 @@
       "summary": "Packages both ZFC constraints (ℵ₁ ≤ 2^ℵ₀ and cf(2^ℵ₀) > ℵ₀) and proves ℵ_ω is the first excluded value."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "König, J."
+      ],
+      "title": "Zum Kontinuum-Problem",
+      "year": "1905",
+      "venue": "Mathematische Annalen 60, pp. 177–180",
+      "note": "König's inequality; in particular the cofinality bound cf(2^ℵ₀) > ℵ₀ used here."
+    },
+    {
+      "authors": [
+        "Jech, T."
+      ],
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "3rd millennium ed., Springer Monographs in Mathematics",
+      "note": "Standard reference for cardinal arithmetic, König's theorem, cofinality, club and stationary sets, and Fodor's lemma."
+    },
+    {
+      "authors": [
+        "The mathlib community"
+      ],
+      "title": "Mathlib.SetTheory.Cardinal.Cofinality",
+      "year": "2020",
+      "venue": "Mathlib4, Lean 4 mathematical library",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Cardinal/Cofinality.html",
+      "note": "Mathlib's cofinality API (Cardinal.lt_power_cof / lt_cof_power) used to discharge the König constraint."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified formalization (0 axioms, 0 sorries) proves König's cofinality constraint from Mathlib and gives the complete ZFC characterization of possible values for the continuum. The core result is a one-line proof from `Cardinal.lt_cof_power`, eliminating the axiom from the parent file. The formalization then classifies alephs as permitted (regular, like $\\aleph_1, \\aleph_2, \\aleph_{\\alpha+1}$) or excluded (singular with countable cofinality, like $\\aleph_\\omega$).",
     "implications": "Combined with Easton's theorem (not formalized, as it requires forcing), this gives a complete independence result: ZFC constrains $2^{\\aleph_0}$ to be a regular uncountable cardinal, and every such cardinal is consistent. This is one of the cleanest applications of Mathlib's cardinal arithmetic API, demonstrating that deep set-theoretic results can be expressed concisely in Lean 4.",

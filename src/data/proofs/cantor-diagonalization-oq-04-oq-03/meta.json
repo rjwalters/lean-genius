@@ -105,6 +105,35 @@
       "summary": "Summary docstring listing the ten proved theorems (0 axioms) and the single derivable helper sorry (OmegaContinuous.monotone), plus #check sanity statements for the key results."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Lawvere, F.W."
+      ],
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Category Theory, Homology Theory and their Applications II, Lecture Notes in Math. 92, Springer, pp. 134–145 (repr. Theory Appl. Categ. 15, 2006)",
+      "note": "The abstract fixed-point theorem unifying Cantor, Russell, Gödel and Tarski via point-surjectivity in a cartesian closed category."
+    },
+    {
+      "authors": [
+        "Kleene, S.C."
+      ],
+      "title": "Introduction to Metamathematics",
+      "year": "1952",
+      "venue": "North-Holland / Van Nostrand",
+      "note": "Source of the recursion (fixed-point) theorem underlying both Rice's theorem and the domain-theoretic least-fixed-point construction."
+    },
+    {
+      "authors": [
+        "Yanofsky, N.S."
+      ],
+      "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic 9 (3), pp. 362–386",
+      "note": "Modern exposition deriving Cantor, Russell, Gödel, Turing and Rice as instances of Lawvere's theorem."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization reveals that Lawvere's categorical fixed-point theorem, Kleene's domain-theoretic fixed-point theorem, and the Y combinator of λ-calculus are three incarnations of the same self-referential principle. The Kleene chain construction is fully proved with the least-fixed-point property. The Y combinator is shown to be definitionally equal to Lawvere's diagonal construction. The Lawvere–Kleene connection is captured by `lawvere_is_least_when_eq_kleene`: when the Lawvere and Kleene fixed points coincide, the Lawvere fixed point inherits the least-fixed-point property. The unconditional coincidence (without assuming they are equal) remains an open mathematical question, not a Lean gap.",
     "implications": "The unification of these three perspectives — categorical (Lawvere), order-theoretic (Kleene/Scott), and type-theoretic (Y combinator) — provides a foundation for formalizing denotational semantics in Lean 4. The insight that self-application and diagonalization are the same operation connects Cantor's theorem, Gödel's incompleteness, recursive function theory, and domain theory into a single framework.",

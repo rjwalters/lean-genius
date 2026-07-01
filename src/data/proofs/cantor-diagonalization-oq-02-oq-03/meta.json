@@ -48,6 +48,35 @@
       "Lean 4 ▸ rewrite and obtain tactic"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Cantor, G."
+      ],
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 1, pp. 75–78",
+      "note": "Original diagonal argument, generalized in this entry to arbitrary regular cardinals."
+    },
+    {
+      "authors": [
+        "Jech, T."
+      ],
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "3rd millennium ed., Springer Monographs in Mathematics",
+      "note": "Standard reference for cardinal arithmetic, König's theorem, cofinality, club and stationary sets, and Fodor's lemma."
+    },
+    {
+      "authors": [
+        "Kunen, K."
+      ],
+      "title": "Set Theory: An Introduction to Independence Proofs",
+      "year": "1980",
+      "venue": "Studies in Logic 102, North-Holland",
+      "note": "Foundational treatment of clubs, stationary sets, the diagonal intersection, and Fodor's pressing-down lemma."
+    }
+  ],
   "conclusion": {
     "summary": "This file generalizes the Cantor diagonal argument from $\\aleph_1$ to all regular uncountable cardinals $\\kappa$, in 142 lines with 0 axioms and 0 sorries. The proof reduces entirely to Mathlib's `Ordinal.iSup_lt_ord` via the cofinality definition of regularity, with supporting lemmas for the limit-ordinal property of $\\kappa.\\text{ord}$ and the $\\aleph_1$ instantiation recovering the classical case.",
     "implications": "**Set theory and forcing**: Regularity is the key property behind club (closed unbounded) sets and stationary sets in set theory. The pressing lemma (Fodor's theorem) — that any regressive function on a stationary set is constant on a stationary set — uses exactly the diagonal closure property of regular cardinals. Forcing arguments routinely use regularity to show that small forcing does not add cofinal sequences through regular cardinals.\n\n**Infinite combinatorics**: The $\\Delta$-system lemma (a large family of finite sets contains a large subfamily with pairwise equal intersections) uses regularity. Tree combinatorics (Aronszajn trees, Suslin trees) are defined relative to $\\omega_1$-closure.\n\n**Large cardinal theory**: Inaccessible cardinals are regular limit cardinals (i.e., regular cardinals that are also limits). They arise as the first models of ZFC (Grothendieck universes), and their existence cannot be proved in ZFC. The diagonal property is a necessary ingredient of inaccessibility.",

@@ -107,6 +107,26 @@
       "mathContext": "Topos: CCC + subobject classifier $\\Omega$. Cantor: $B = \\Omega$, $f = \\lnot$ (negation morphism on $\\Omega$, fixed-point-free). Lean proxy: `Prop` plays the role of $\\Omega$, `Not` plays $\\lnot$. Full formalization requires $\\Omega$-valued predicate logic in a topos."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Lawvere, F.W."
+      ],
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Category Theory, Homology Theory and their Applications II, Lecture Notes in Math. 92, Springer, pp. 134–145 (repr. Theory Appl. Categ. 15, 2006)",
+      "note": "The abstract fixed-point theorem unifying Cantor, Russell, Gödel and Tarski via point-surjectivity in a cartesian closed category."
+    },
+    {
+      "authors": [
+        "Yanofsky, N.S."
+      ],
+      "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic 9 (3), pp. 362–386",
+      "note": "Modern exposition deriving Cantor, Russell, Gödel, Turing and Rice as instances of Lawvere's theorem."
+    }
+  ],
   "conclusion": {
     "summary": "lawvere_categorical is now fully proved with 0 sorries. The fix required adding one parameter (e_pt : Pt A → Pt (exp A B)) that was always needed but had been replaced by a sorry placeholder. The entire categorical Lawvere FPT reduces to the abstract version in one line.",
     "implications": "This formalization demonstrates that Cantor's diagonal argument, Gödel's incompleteness, and Turing's undecidability are not three separate results — they are three instances of a single categorical fixed-point theorem. The EvalStructure abstraction is exactly what a 'proof assistant' needs to internalize diagonal arguments without importing category theory. The connection to toposes (§7) points toward future Mathlib work: once a topos typeclass with subobject classifier exists, this proof will yield a machine-verified Cantor theorem for all Grothendieck toposes.",
