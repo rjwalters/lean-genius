@@ -20,11 +20,11 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 389,
+    "lineCount": 477,
     "assumptions": "None. The file introduces no axioms and no sorries; every theorem depends only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms). The concrete crossover examples use kernel `decide` (not `native_decide`), so they introduce no Lean.ofReduceBool dependency. The open content of OQ-02 — whether the small-n/large-n gap can be closed for general r, i.e. the Erdős Matching Conjecture itself for r≥4 — is left unproved and unaxiomatized; only the regime-transition structure of the conjectured extremal value is established.",
     "dateAdded": "2026-06-27",
     "mathlib_version": "4.26.0",
-    "theoremCount": 17,
+    "theoremCount": 22,
     "definitionCount": 3
   },
   "overview": {
@@ -112,6 +112,13 @@
       "endLine": 283,
       "summary": "choose_add_sum_Ico proves the subtraction-free telescoping Pascal identity C(a,r) + Σ_{j∈[a,b)} C(j,r-1) = C(b,r) (a≤b, r≥1) by Nat.le_induction with Finset.sum_Ico_succ_top and a single Pascal step; construction2_eq_sum reads off construction2 n r k = Σ_{j=n-k+1}^{n-1} C(j,r-1); construction2_sum_card (via Nat.card_Ico) confirms the window holds exactly k-1 terms. The closed form makes the Section-1 monotonicity transparent (each summand is nondecreasing as the window slides) and exposes the combinatorial stratification of edges meeting the fixed (k-1)-set.",
       "mathContext": "$\\mathrm{construction2}\\,n\\,r\\,k=\\sum_{j=n-k+1}^{n-1}\\binom{j}{r-1}$, a sum of $k-1$ consecutive binomial coefficients; telescoping $\\binom{j}{r-1}=\\binom{j+1}{r}-\\binom{j}{r}$."
+    },
+    {
+      "id": "crossover-r2-threshold",
+      "title": "Sharp Crossover Threshold for the r = 2 Family",
+      "startLine": 390,
+      "endLine": 477,
+      "summary": "two_mul_choose_two clears the division in Nat.choose _ 2 (2·C(m,2)=m·(m-1), via Even (m·(m-1))). This gives the two explicit quadratics two_mul_construction2_r2 (2·construction2 n 2 k = (k-1)·(2n-k)) and two_mul_construction1_r2 (2·construction1 2 k = (2k-1)·(2k-2)), each proved by carrying the polynomial content to ℤ with zify+ring and discharging the subtraction side-conditions by omega. crossover_r2 then computes the threshold exactly: for k≥2, n≥k, construction2 reaches construction1 iff 2n ≥ 5k-2, i.e. n₀(2,k)=⌈(5k-2)/2⌉ (k=2 recovers n₀=4). The common factor k-1 is cancelled by Nat.le_of_mul_le_mul_left. conjecturedValue_r2_large reads off that the conjectured value collapses to construction2 on the threshold. This sharpens both the single worked point crossover_r4k2 (n₀(4,2)=8) and the qualitative finiteness exists_large_regime into an exact closed form for a whole infinite family."
     }
   ],
   "conclusion": {
@@ -162,9 +169,9 @@
       "Nat"
     ],
     "namespace": "Erdos1020OQ02",
-    "lineCount": 284,
+    "lineCount": 477,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 22,
     "path": "Proofs/Erdos1020OQ02.lean",
     "sorries": 0,
     "definitionCount": 3
@@ -175,6 +182,7 @@
     "construction2 has a closed-form sum representation (construction2_eq_sum): construction2 n r k = Σ_{j=n-k+1}^{n-1} C(j,r-1), a sum of exactly k-1 consecutive binomial coefficients (construction2_sum_card) — the structural source of its monotonicity, derived from a subtraction-free telescoping Pascal lemma (choose_add_sum_Ico).",
     "The region where the large-n construction dominates the constant small-n construction is upward-closed (construction2_dominant_up): the small-n and large-n regimes are separated by a single threshold, never interleaved.",
     "The conjectured extremal value max(construction1, construction2) is therefore monotone nondecreasing in n (conjecturedValue_mono) and collapses to the relevant construction on each side of the threshold (conjecturedValue_small / conjecturedValue_large).",
-    "The open content of OQ-02 — closing the gap between the Frankl and Huang–Loh–Sudakov regimes, i.e. the Erdős Matching Conjecture for r≥4 — is stated, not axiomatized; the file is fully verified (0 axioms, 0 sorries, kernel decide only)."
+    "The open content of OQ-02 — closing the gap between the Frankl and Huang–Loh–Sudakov regimes, i.e. the Erdős Matching Conjecture for r≥4 — is stated, not axiomatized; the file is fully verified (0 axioms, 0 sorries, kernel decide only).",
+    "For the entire r=2 family the crossover threshold is computed in closed form: construction2 overtakes construction1 exactly when 2n ≥ 5k-2, i.e. n₀(2,k)=⌈(5k-2)/2⌉ (crossover_r2) — an exact sharpening of the single point n₀(4,2)=8 and of §9's existence-only threshold."
   ]
 }
