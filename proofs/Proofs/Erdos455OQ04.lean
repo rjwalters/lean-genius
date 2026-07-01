@@ -263,4 +263,32 @@ theorem apGap_gaps_strictMono {q : ℕ → ℕ} {d : ℤ} (h : HasAPGaps q d) (h
   have hmn' : (m : ℤ) < (n : ℤ) := by exact_mod_cast hmn
   nlinarith [mul_pos (by linarith : (0 : ℤ) < (n : ℤ) - (m : ℤ)) hd]
 
+/-- **No infinite constant-gap prime sequence exists** (folklore). Complements
+`apGap_zero_gaps_constant`: the `d = 0` case is not merely degenerate at the gap
+level, it is *uninhabited* once primality and strict monotonicity are required.
+By the quadratic closed form `apGap_closed_form` (with `d = 0`), a `HasAPGaps q 0`
+sequence is the arithmetic progression `q n = q 0 + n·(q 1 - q 0)`. Evaluating at
+the index `n = q 0` gives `q (q 0) = q 0 · (1 + (q 1 - q 0))`, a proper multiple of
+the prime `q 0` (strict monotonicity forces `q (q 0) > q 0`), so it cannot be
+prime — a contradiction. Hence `APGapPrimeSeq 0` is empty: the finitary
+`exists_apGap_zero_of_length` is the *only* shape the `d = 0` (Green-Tao) case can
+take. Axiom-free and sorry-free; independent of `greenTao_finitary`. -/
+theorem apGapPrimeSeq_zero_isEmpty : IsEmpty (APGapPrimeSeq 0) := by
+  refine ⟨fun s => ?_⟩
+  obtain ⟨q, hmono, hp, hgap⟩ := s
+  have hp2 : 2 ≤ q 0 := (hp 0).two_le
+  have hlt : q 0 < q (q 0) := hmono (by omega : (0 : ℕ) < q 0)
+  -- Closed form at `n = q 0` (the `d = 0` term `q0·(q0-1)·d` vanishes), doubled.
+  have h2 : 2 * (q (q 0) : ℤ) =
+      2 * ((q 0 : ℤ) * (1 + ((q 1 : ℤ) - (q 0 : ℤ)))) := by
+    have hcf := apGap_closed_form hgap (q 0)
+    linear_combination hcf
+  have hval : (q (q 0) : ℤ) = (q 0 : ℤ) * (1 + ((q 1 : ℤ) - (q 0 : ℤ))) := by linarith
+  have hdvd : q 0 ∣ q (q 0) := by
+    have : (q 0 : ℤ) ∣ (q (q 0) : ℤ) := ⟨1 + ((q 1 : ℤ) - (q 0 : ℤ)), hval⟩
+    exact_mod_cast this
+  rcases (hp (q 0)).eq_one_or_self_of_dvd (q 0) hdvd with h1 | hself
+  · omega
+  · omega
+
 end Erdos455OQ04
