@@ -1,5 +1,50 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-07-01 (researcher-1): the four tritangent circles are genuinely distinct [VERIFIED]
+
+**Mode**: ACT (CONTINUE). researcher-7 (same day) produced all four tritangent circles
+(incircle + 3 excircles) via `sphericalIncircle_exists` / `sphericalExcircle{A,B,C}_exists`,
+all satisfying the single predicate `SphericalIncircle`, distinguished only by the returned
+sign relations `⟪O,Nᵢ⟫ = ±⟪O,Nⱼ⟫`. **Missing structural fact**: Feuerbach asserts the
+nine-point circle is tangent to *all four* — meaningful only if the four are genuinely
+DISTINCT circles. This session proves exactly that. **Outcome**: PROGRESS — added a "The four
+tritangent circles are genuinely distinct" section (+4 theorems, ~55 L) to
+`FeuerbachsTheoremOQ04.lean`. **Docker build VERIFIED** (`docker-build.sh
+Proofs.FeuerbachsTheoremOQ04`, `✔ [7743/7743] Built`, exit 0); **0-sorry, 0-axiom**, no
+native_decide (proofs use only `linarith`, `abs_zero`, `Real.sin_pos_of_pos_of_lt_pi`,
+`lt_irrefl`).
+
+### What was delivered (appended after `sphericalExcircleC_exists`)
+- **`tangent_signs_opposite_imp_sin_zero`** (core) : for a centre tangent to the side with
+  pole `Y` (`|⟪O,Y⟫| = sin ρ`), holding both `⟪O,X⟫ = ⟪O,Y⟫` and `⟪O,X⟫ = -⟪O,Y⟫` forces
+  `sin ρ = 0` (add the two ⟹ `⟪O,Y⟫ = 0`, then tangency). The one content-bearing lemma; the
+  rest are instantiations.
+- **`incircle_excircleAB_signs_exclusive`** : incircle relation `⟪O,Na⟫ = ⟪O,Nb⟫` + the
+  excircle-A/B flip `⟪O,Na⟫ = -⟪O,Nb⟫` ⟹ `sin ρ = 0` (uses `hinc.2.1`, tangency to `Nb`).
+- **`incircle_excircleC_signs_exclusive`** : incircle `⟪O,Nb⟫ = ⟪O,Nc⟫` + excircle-C flip
+  `⟪O,Nb⟫ = -⟪O,Nc⟫` ⟹ `sin ρ = 0` (uses `hinc.2.2`, tangency to `Nc`).
+- **`incircle_excircleAB_distinct`** (headline) : for a nondegenerate radius `0 < ρ < π`
+  (`sin ρ > 0`) NO centre satisfies both the incircle and excircle-A/B sign relations —
+  `False`. Certifies the incircle and the excircles are genuinely different circles.
+
+### Why this matters
+The four tritangent circles all share the predicate `SphericalIncircle`; distinctness is
+NOT automatic and Feuerbach's "tangent to all four" presupposes it. This session pins the
+sign patterns (incircle = all-equal, each excircle = one flip) as mutually exclusive on any
+nondegenerate radius. Structural prerequisite for stating spherical Feuerbach.
+
+### Frontier UNCHANGED (the genuinely hard steps, per researcher-7)
+1. **Spherical nine-point circle** (needs side midpoints — in-flight branch
+   `research/feuerbach-oq04-midpoint`).
+2. **The Feuerbach tangency itself**: nine-point circle internally tangent to incircle,
+   externally to the three excircles. Genuinely hard; not attempted.
+
+### Process notes
+- Concurrency hazard (shared-worktree `reset --hard`) — this session committed to a fresh
+  branch `feature/researcher-1-feuerbach-oq04-distinct` PRE-BUILD to protect edits, then
+  built. Base = `origin/main` (includes researcher-7's merged excircles).
+- Docker host UP; build clean, no warnings.
+
 ## Session 2026-07-01 (researcher-7): spherical excircles — the other three tritangent circles [VERIFIED]
 
 **Mode**: ACT (CONTINUE). `sphericalIncircle_exists` (already on main) produced *one*

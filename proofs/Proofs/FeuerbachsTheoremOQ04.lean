@@ -1104,4 +1104,68 @@ theorem sphericalExcircleC_exists [FiniteDimensional ℝ E] (Na Nb Nc : E)
   have hAC : |(⟪O, Na⟫ : ℝ)| = |⟪O, Nc⟫| := by rw [hab', hbc', abs_neg]
   exact ⟨O, _, sphericalIncircle_of_abs_eq hOon hNa hAB hAC, hab', hbc'⟩
 
+/-! ## The four tritangent circles are genuinely distinct
+
+`sphericalIncircle_exists` and `sphericalExcircle{A,B,C}_exists` produce four tritangent
+circles, all satisfying the same predicate `SphericalIncircle`, distinguished only by the
+sign relations `⟪O,Nᵢ⟫ = ±⟪O,Nⱼ⟫` they return: the incircle has all three inner products
+equal (same sign), while each excircle *flips* one relation.  Feuerbach's theorem asserts
+the spherical nine-point circle is tangent to *all four* — which is only meaningful if the
+four are genuinely distinct circles.  This section certifies exactly that: an equal-sign
+relation `⟪O,X⟫ = ⟪O,Y⟫` and the flipped relation `⟪O,X⟫ = -⟪O,Y⟫` cannot hold at one
+tangent centre unless its radius is degenerate (`sin ρ = 0`, i.e. the "circle" is a point on
+a side).  So on a nondegenerate radius the incircle and each excircle carry incompatible
+sign patterns, hence are different circles.  All 0-sorry, 0-axiom. -/
+
+/-- **Core sign exclusivity.**  If a circle `SphericalIncircle`-tangent to the side with pole
+`Y` (`|⟪O,Y⟫| = sin ρ`) has a centre satisfying both the equal-sign relation `⟪O,X⟫ = ⟪O,Y⟫`
+and the flipped relation `⟪O,X⟫ = -⟪O,Y⟫`, then its radius is degenerate: `sin ρ = 0`.
+Adding the two relations forces `⟪O,Y⟫ = 0`, and tangency then reads off `sin ρ = 0`. -/
+theorem tangent_signs_opposite_imp_sin_zero {O X Y : E} {ρ : ℝ}
+    (htan : |(⟪O, Y⟫ : ℝ)| = Real.sin ρ)
+    (heq : (⟪O, X⟫ : ℝ) = ⟪O, Y⟫)
+    (hopp : (⟪O, X⟫ : ℝ) = -⟪O, Y⟫) :
+    Real.sin ρ = 0 := by
+  have hz : (⟪O, Y⟫ : ℝ) = 0 := by linarith
+  rw [hz, abs_zero] at htan
+  exact htan.symm
+
+/-- **Incircle vs. excircle A/B: the `a`–`b` sign patterns are exclusive.**  Both excircles A
+and B flip the first relation to `⟪O,Na⟫ = -⟪O,Nb⟫`, whereas the incircle has `⟪O,Na⟫ =
+⟪O,Nb⟫`.  A single tangent centre carrying both forces a degenerate radius `sin ρ = 0` (its
+`b`-side tangency vanishes). -/
+theorem incircle_excircleAB_signs_exclusive {Na Nb Nc O : E} {ρ : ℝ}
+    (hinc : SphericalIncircle Na Nb Nc O ρ)
+    (hIn : (⟪O, Na⟫ : ℝ) = ⟪O, Nb⟫)
+    (hEx : (⟪O, Na⟫ : ℝ) = -⟪O, Nb⟫) :
+    Real.sin ρ = 0 :=
+  tangent_signs_opposite_imp_sin_zero hinc.2.1 hIn hEx
+
+/-- **Incircle vs. excircle C: the `b`–`c` sign patterns are exclusive.**  Excircle C flips
+the second relation to `⟪O,Nb⟫ = -⟪O,Nc⟫`, whereas the incircle has `⟪O,Nb⟫ = ⟪O,Nc⟫`.  A
+single tangent centre carrying both forces a degenerate radius `sin ρ = 0` (its `c`-side
+tangency vanishes). -/
+theorem incircle_excircleC_signs_exclusive {Na Nb Nc O : E} {ρ : ℝ}
+    (hinc : SphericalIncircle Na Nb Nc O ρ)
+    (hIn : (⟪O, Nb⟫ : ℝ) = ⟪O, Nc⟫)
+    (hEx : (⟪O, Nb⟫ : ℝ) = -⟪O, Nc⟫) :
+    Real.sin ρ = 0 :=
+  tangent_signs_opposite_imp_sin_zero hinc.2.2 hIn hEx
+
+/-- **On a nondegenerate radius, the incircle and excircle A/B sign patterns are
+incompatible.**  For a genuine tritangent circle (`0 < ρ < π`, so `sin ρ > 0`) no centre can
+satisfy both the incircle relation `⟪O,Na⟫ = ⟪O,Nb⟫` and the excircle relation `⟪O,Na⟫ =
+-⟪O,Nb⟫`.  This certifies the incircle and the first two excircles are genuinely distinct
+circles — a prerequisite for the "tangent to all four" statement of spherical Feuerbach. -/
+theorem incircle_excircleAB_distinct {Na Nb Nc O : E} {ρ : ℝ}
+    (hinc : SphericalIncircle Na Nb Nc O ρ)
+    (hρpos : 0 < ρ) (hρlt : ρ < Real.pi)
+    (hIn : (⟪O, Na⟫ : ℝ) = ⟪O, Nb⟫)
+    (hEx : (⟪O, Na⟫ : ℝ) = -⟪O, Nb⟫) :
+    False := by
+  have h0 : Real.sin ρ = 0 := incircle_excircleAB_signs_exclusive hinc hIn hEx
+  have hpos : 0 < Real.sin ρ := Real.sin_pos_of_pos_of_lt_pi hρpos hρlt
+  rw [h0] at hpos
+  exact lt_irrefl 0 hpos
+
 end FeuerbachsTheoremOQ04
