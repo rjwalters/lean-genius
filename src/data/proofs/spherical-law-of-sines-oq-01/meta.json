@@ -60,6 +60,23 @@
       "Combine with the dual spherical law of cosines to derive the four-parts (cotangent) formula in the same vector framework"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "spherical-law-of-sines",
+      "relationship": "Parent squared identity this entry upgrades",
+      "description": "The squared spherical law of sines sin²a/sin²α = sin²b/sin²β = sin²c/sin²γ, derived in the ℝ³ vector model. This entry supplies the missing square-root step, removing the sign ambiguity to recover the honest textbook proportion."
+    },
+    {
+      "proofId": "spherical-law-of-cosines",
+      "relationship": "Companion spherical trigonometry law",
+      "description": "The spherical law of cosines in the same vector framework. Together with the law of sines it forms the core of spherical trigonometry; the entry's second open question proposes combining the two to derive the four-parts (cotangent) formula."
+    },
+    {
+      "proofId": "law-of-cosines",
+      "relationship": "Planar (Euclidean) analogue",
+      "description": "The Euclidean law of cosines, the flat-space counterpart whose curvature-corrected version is the spherical law. The planar law of sines sin A/a = sin B/b = sin C/c is the small-triangle limit of the proportion proved here."
+    }
+  ],
   "leanFile": {
     "namespace": "SphericalLawOfSinesOQ01",
     "lineCount": 119,
