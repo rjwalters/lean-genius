@@ -63,6 +63,48 @@
       "Define the twin prime constant C₂ = ∏_{p≥3} p(p−2)/(p−1)² as a convergent infinite product and replace the existential constant with its exact value"
     ]
   },
+  "sections": [
+    {
+      "id": "def-pitwo",
+      "title": "The Twin-Prime Counting Function π₂",
+      "summary": "piTwo N counts p ≤ N with p and p+2 both prime, as a decidable Finset.filter cardinality over range (N+1)",
+      "startLine": 40,
+      "endLine": 45,
+      "mathContext": "$\\pi_2(N) := \\#\\{\\,p \\le N : p,\\ p+2 \\text{ both prime}\\,\\}$, written with the explicit predicate $\\mathrm{Nat.Prime}\\,p \\wedge \\mathrm{Nat.Prime}\\,(p+2)$ to keep the filter decidable."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Values by decide",
+      "summary": "piTwo_zero, piTwo_five, piTwo_thirteen give π₂(0)=0, π₂(5)=2, π₂(13)=3 by kernel decide (no native_decide, hence no Lean.ofReduceBool)",
+      "startLine": 47,
+      "endLine": 55,
+      "mathContext": "$\\pi_2(5)=2$ (pairs $(3,5),(5,7)$), $\\pi_2(13)=3$ (heads $3,5,11$). Verified by `decide` — kernel reduction, not `native_decide`."
+    },
+    {
+      "id": "structural-facts",
+      "title": "Unconditional Structural Facts",
+      "summary": "piTwo_mono (π₂ non-decreasing via Finset.card_le_card ∘ range_mono) and piTwo_le (π₂(N) ≤ N+1 via card_filter_le)",
+      "startLine": 57,
+      "endLine": 70,
+      "mathContext": "$M\\le N \\Rightarrow \\pi_2(M)\\le\\pi_2(N)\\le N+1$; monotonicity from the superset filter, the bound from the head range $\\{0,\\dots,N\\}$."
+    },
+    {
+      "id": "growth-controls-existence",
+      "title": "Growth Controls Existence",
+      "summary": "twinPrimeConjecture_of_piTwo_unbounded: if π₂ is unbounded then the Twin Prime Conjecture holds; a strict cardinality gap in nested filtered ranges pins a new twin head into the interval (N, N'] via exists_of_ssubset",
+      "startLine": 72,
+      "endLine": 116,
+      "mathContext": "$(\\forall M,\\ \\exists N,\\ \\pi_2(N) > M) \\Longrightarrow \\forall N,\\ \\exists p > N,\\ (p,p+2)\\text{ twin}$ — so any unbounded lower bound on $\\pi_2$ (in particular Hardy–Littlewood) is strictly stronger than infinitude."
+    },
+    {
+      "id": "hardy-littlewood-axiom",
+      "title": "The Hardy–Littlewood Asymptotic (Axiomatized)",
+      "summary": "hardy_littlewood_conjecture_B: the open prediction π₂(N) ~ 2C₂N/(log N)², stated as the file's single explicit axiom (badge axiom, axiomCount 1)",
+      "startLine": 118,
+      "endLine": 131,
+      "mathContext": "$\\pi_2(N)\\sim \\dfrac{2C_2\\,N}{(\\log N)^2}$, $C_2=\\prod_{p\\ge 3}\\dfrac{p(p-2)}{(p-1)^2}\\approx 0.6601$; recorded via an existential positive leading constant, order $N/(\\log N)^2$."
+    }
+  ],
   "leanFile": {
     "namespace": "TwinPrimesSpecialOQ02",
     "lineCount": 132,
