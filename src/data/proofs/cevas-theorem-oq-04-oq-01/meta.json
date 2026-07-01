@@ -99,6 +99,27 @@
       "Elementary real arithmetic"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Coxeter, H.S.M.",
+        "Greitzer, S.L."
+      ],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "New Mathematical Library 19, Mathematical Association of America",
+      "note": "Classical treatment of Ceva's and Menelaus' theorems, mass points and the special triangle centers."
+    },
+    {
+      "authors": [
+        "Honsberger, R."
+      ],
+      "title": "Episodes in Nineteenth and Twentieth Century Euclidean Geometry",
+      "year": "1995",
+      "venue": "New Mathematical Library 37, Mathematical Association of America",
+      "note": "The Nagel and Gergonne points, excenters and mass-point constructions."
+    }
+  ],
   "conclusion": {
     "summary": "The triangle mass-point structure of the parent entry generalizes to an n-simplex: with n+1 positive vertex masses, each complement fraction ratio i = (Σ_{j≠i} mass j)/total lies in (0,1) and the fractions sum to exactly n. The uniform mass point gives ratio i = n/(n+1) (the centroid), and the n = 2 case recovers the triangle sum of 2. Fully verified, 0 axioms, 0 sorries.",
     "implications": "This establishes the algebraic skeleton of n-dimensional mass-point geometry, the affine setting for cevian concurrency in a simplex. It resolves the parent's generalization question at the level of the mass/ratio identities; connecting these to geometric concurrency via Mathlib.LinearAlgebra.AffineSpace.Ceva, and bridging to the parent's edge-split parametrization, are the natural next steps.",

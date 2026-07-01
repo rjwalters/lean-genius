@@ -177,6 +177,27 @@
       "mathContext": "Translates the weight ratios $\\beta_i/\\alpha_i$ into products of trigonometric angle ratios, recovering the spherical Ceva formulation."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Todhunter, I."
+      ],
+      "title": "Spherical Trigonometry, for the Use of Colleges and Schools",
+      "year": "1886",
+      "venue": "5th ed., Macmillan",
+      "note": "The spherical (great-circle) forms of the Ceva and Menelaus theorems."
+    },
+    {
+      "authors": [
+        "Coxeter, H.S.M.",
+        "Greitzer, S.L."
+      ],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "New Mathematical Library 19, Mathematical Association of America",
+      "note": "Classical treatment of Ceva's and Menelaus' theorems, mass points and the special triangle centers."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization fully answers OQ-02-OQ-02: YES, the spherical Ceva theorem generalizes from triangles to arbitrary convex n-gons. The concurrency condition ∏αᵢ = ∏βᵢ (where αᵢ, βᵢ are weight parameters for cevian points on each side) is a clean algebraic criterion. All 17 theorems are proved with 0 sorries.",
     "implications": "**Mathematical Significance**:\n\n**1. New Quadrilateral Ceva**: The condition α₁α₂α₃α₄ = β₁β₂β₃β₄ for spherical quadrilateral concurrency is a concrete new result not commonly found in textbooks.\n\n**2. Unified Framework**: The PolygonCevaConfig structure and Fin n indexing provide a single framework for all polygon sizes, avoiding case-by-case arguments.\n\n**3. Scaling Invariance**: The proof that the Ceva condition depends only on weight ratios (not absolute values) shows the underlying projective nature of the concurrency condition.\n\n**4. Polygon Menelaus Duality**: The sign-flip theorem extends the classical Ceva-Menelaus duality to polygons, with the Menelaus sign being (-1)ⁿ.",

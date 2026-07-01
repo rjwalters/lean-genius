@@ -91,6 +91,27 @@
       "summary": "Recap: SignedMeasure abstraction, the unified theorem and its algebraic cores, the oddness/coherence lemmas, the three instances, and the domain characterization (0 sorries, 0 axioms)."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Coxeter, H.S.M.",
+        "Greitzer, S.L."
+      ],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "New Mathematical Library 19, Mathematical Association of America",
+      "note": "Classical treatment of Ceva's and Menelaus' theorems, mass points and the special triangle centers."
+    },
+    {
+      "authors": [
+        "Todhunter, I."
+      ],
+      "title": "Spherical Trigonometry, for the Use of Colleges and Schools",
+      "year": "1886",
+      "venue": "5th ed., Macmillan",
+      "note": "The spherical (great-circle) forms of the Ceva and Menelaus theorems."
+    }
+  ],
   "conclusion": {
     "summary": "The three classical Menelaus theorems are unified into a single result parametrized by an odd measure function. unified_menelaus holds for any SignedMeasure, and Euclidean/spherical/hyperbolic Menelaus are one-line instances via id/sin/sinh. The proof separates the function-free algebraic core from the role of oddness, which is shown to be exactly the property providing signed-arc (Ceva ↔ Menelaus) coherence. 0 sorries, 0 axioms.",
     "implications": "Identifying oddness as the operative hypothesis suggests the 'real' object is a signed arc-measure on an oriented geodesic, with the three geometries as special cases of a one-parameter family. The Ceva/Menelaus toggle under reversal is a Z/2 grading on configurations.",

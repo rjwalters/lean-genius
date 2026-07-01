@@ -97,6 +97,27 @@
       "Elementary real arithmetic"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Coxeter, H.S.M.",
+        "Greitzer, S.L."
+      ],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "New Mathematical Library 19, Mathematical Association of America",
+      "note": "Classical treatment of Ceva's and Menelaus' theorems, mass points and the special triangle centers."
+    },
+    {
+      "authors": [
+        "Honsberger, R."
+      ],
+      "title": "Episodes in Nineteenth and Twentieth Century Euclidean Geometry",
+      "year": "1995",
+      "venue": "New Mathematical Library 37, Mathematical Association of America",
+      "note": "The Nagel and Gergonne points, excenters and mass-point constructions."
+    }
+  ],
   "conclusion": {
     "summary": "The necessary conditions for an n-simplex complement-fraction profile — each r i < 1 and Σ r i = n — are also sufficient: the explicit masses mass i = 1 - r i realise any such profile, with total mass 1, and these normalised masses are uniquely determined by the profile. This closes the converse direction of the parent's n-dimensional mass-point Ceva identity. Fully verified, 0 axioms, 0 sorries.",
     "implications": "Together with the parent's forward identity (masses → ratios with Σ ratio i = n), this gives a complete characterisation of realisable complement-fraction profiles on an n-simplex and pins down the normalised mass representative of each. It is the n-dim analogue of recovering vertex masses from a triangle Ceva ratio (masses_from_ceva). The remaining open directions are geometric: bridging to the parent's edge-split parametrization and to Mathlib.LinearAlgebra.AffineSpace.Ceva for cevian concurrency.",

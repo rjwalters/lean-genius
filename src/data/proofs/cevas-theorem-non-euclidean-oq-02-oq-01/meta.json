@@ -115,6 +115,27 @@
       "summary": "Recap of the 6 core results + 4 sin-property lemmas (0 sorries, 0 axioms), the shared algebraic core with OQ02's sinh version, and the completed Euclidean/spherical/hyperbolic × Ceva/Menelaus 2×2 matrix."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Todhunter, I."
+      ],
+      "title": "Spherical Trigonometry, for the Use of Colleges and Schools",
+      "year": "1886",
+      "venue": "5th ed., Macmillan",
+      "note": "The spherical (great-circle) forms of the Ceva and Menelaus theorems."
+    },
+    {
+      "authors": [
+        "Coxeter, H.S.M.",
+        "Greitzer, S.L."
+      ],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "New Mathematical Library 19, Mathematical Association of America",
+      "note": "Classical treatment of Ceva's and Menelaus' theorems, mass points and the special triangle centers."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization proves the spherical Menelaus theorem with 0 sorries and 0 axioms. The proof is a 2-line consequence of a reusable algebraic core, demonstrating that all three geometries (Euclidean, spherical, hyperbolic) share identical algebraic structure — only the measure function changes.",
     "implications": "The completion of the 2×2 matrix (Ceva/Menelaus × Euclidean/Spherical/Hyperbolic) suggests a natural next question: is there a unified statement parametrized by the measure function? The pattern f(-x) = -f(x) (odd function) is the key property, suggesting the real claim is: for any odd function f with f(x) ≠ 0 in the relevant domain, the f-Menelaus theorem holds with the same algebraic core.",

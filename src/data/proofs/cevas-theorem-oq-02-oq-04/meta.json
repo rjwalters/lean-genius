@@ -142,6 +142,26 @@
       "mathContext": "Specialization to ι = Fin 4 makes the higher-dimensional content concrete: the tetrahedron's faces and full vertex cycle all carry edge-ratio product 1."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Richter-Gebert, J."
+      ],
+      "title": "Perspectives on Projective Geometry",
+      "year": "2011",
+      "venue": "Springer",
+      "note": "Cocycle / determinant criteria for incidence and concurrency in higher dimensions."
+    },
+    {
+      "authors": [
+        "Coxeter, H.S.M."
+      ],
+      "title": "Introduction to Geometry",
+      "year": "1969",
+      "venue": "2nd ed., Wiley",
+      "note": "Affine and projective ratios underlying Ceva/Menelaus and their higher-dimensional analogues."
+    }
+  ],
   "conclusion": {
     "summary": "The planar Ceva equation BD/DC·CE/EA·AF/FB = 1 is identified as the n = 2 instance of a 1-cocycle condition on a simplex's edge ratios. In every dimension, cevians of an n-simplex concur precisely when the edge ratios form a cocycle, equivalently when the classical Ceva product equals 1 on every triangular 2-face; the concurrency point is reconstructed explicitly from any base vertex as w_i = r(b,i). The full three-way equivalence is machine-checked with 0 axioms and 0 sorries.",
     "implications": "This answers open question 4 of cevas-theorem-oq-02 — when do hypersurfaces bisect a simplex concurrently? — at the algebraic level shared by all the gallery's Ceva/Menelaus entries. By recasting concurrency as the solvability of a coboundary equation r(i,j) = w_j/w_i, the result both unifies the planar Ceva product with its higher-dimensional and closed-walk generalizations and makes the criterion constructive: the concurrency point's barycentric coordinates are produced explicitly rather than merely shown to exist.",
