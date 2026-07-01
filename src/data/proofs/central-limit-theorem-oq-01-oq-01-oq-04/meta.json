@@ -146,5 +146,37 @@
       "description": "Classical CLT — recovered as the Gaussian DOA theorem in the operator-stable framework"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Mark M. Meerschaert",
+        "Hans-Peter Scheffler"
+      ],
+      "title": "Limit Distributions for Sums of Independent Random Vectors: Heavy Tails in Theory and Practice",
+      "year": 2001,
+      "venue": "Wiley",
+      "note": "Operator-stable laws, matrix normalizations A_n = n^{-E}, and the multivariate domain of attraction theory."
+    },
+    {
+      "authors": [
+        "Boris V. Gnedenko",
+        "Andrey N. Kolmogorov"
+      ],
+      "title": "Limit Distributions for Sums of Independent Random Variables",
+      "year": 1954,
+      "venue": "Addison-Wesley",
+      "note": "Classical domain-of-attraction theory for stable laws, generalized here to the multivariate setting."
+    },
+    {
+      "authors": [
+        "Mark M. Meerschaert",
+        "Hans-Peter Scheffler"
+      ],
+      "title": "Portmanteau theorem for unbounded measures",
+      "year": 2008,
+      "venue": "Statistics & Probability Letters 78(12), 1745–1747",
+      "note": "Technical convergence tools for operator-stable limit theory."
+    }
+  ]
 }

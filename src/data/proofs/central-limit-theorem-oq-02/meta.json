@@ -173,5 +173,34 @@
       "mathContext": "$(X_1+\\cdots+X_n)/\\sqrt{n} \\xrightarrow{d} N(0,\\sigma^2)$; proved: $\\mathbb{E}[X^2 \\cdot \\mathbf{1}_{|X|>\\varepsilon\\sqrt{n}}] \\xrightarrow{\\text{DCT}} 0$; $\\Lambda_n(\\delta) = \\mathbb{E}[|X|^{2+\\delta}]/n^{\\delta/2} \\to 0$"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Donald L. McLeish"
+      ],
+      "title": "Dependent Central Limit Theorems and Invariance Principles",
+      "year": 1974,
+      "venue": "Annals of Probability 2(4), 620–628",
+      "note": "Martingale-difference CLT under a Lindeberg condition — one of the two generalizations formalized here."
+    },
+    {
+      "authors": [
+        "Ildar A. Ibragimov"
+      ],
+      "title": "Some Limit Theorems for Stationary Processes",
+      "year": 1962,
+      "venue": "Theory of Probability and Its Applications 7(4), 349–382",
+      "note": "CLT for stationary α-mixing sequences, including the polynomial-decay threshold on the mixing coefficients."
+    },
+    {
+      "authors": [
+        "Patrick Billingsley"
+      ],
+      "title": "Probability and Measure",
+      "year": 1995,
+      "venue": "Wiley (3rd ed.)",
+      "note": "Classical CLT, Lindeberg/Lyapunov conditions, and characteristic-function methods."
+    }
+  ]
 }
