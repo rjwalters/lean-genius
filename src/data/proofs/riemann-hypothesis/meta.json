@@ -335,11 +335,6 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "foundational",
       "description": "FTA proves every polynomial splits over C; the Hadamard product formula for entire functions generalizes this to the Riemann zeta function, expressing zeta(s) as a product over its non-trivial zeros — the zeros that RH asks about living on the critical line Re(s)=1/2"
-    },
-    {
-      "targetId": "prime-number-theorem",
-      "relationship": "strengthens",
-      "description": "PNT gives pi(x) ~ x/ln(x); RH would sharpen the error term to the optimal O(sqrt(x) * log(x)), connecting the distribution of primes to the positions of zeta zeros on the critical line"
     }
   ],
   "leanFile": {
