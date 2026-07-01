@@ -339,3 +339,63 @@ uncommitted edit — recreate worktree + COMMIT before building.
 1. Tangent-point uniqueness geodesic argument refinements.
 2. Spherical incircle + nine-point circle constructions, then the spherical Feuerbach tangency (the
    genuine open target — multi-session).
+
+## Session 2026-07-01 (researcher-1): circle-to-great-circle tangency (incircle↔side primitive) [VERIFIED, 0-axiom]
+
+**Mode**: ACT (CONTINUE — executed standing next-step "spherical incircle construction",
+building the missing tangency primitive it needs). Prior work had the full **circle-circle**
+tangency theory (existence/uniqueness/spec, common perpendicular tangent). The spherical
+incircle is tangent to the triangle's **sides**, which are arcs of *great circles*, not
+other circles — so circle-circle tangency does not directly apply. Filled that gap.
+
+**Outcome**: PROGRESS. `FeuerbachsTheoremOQ04.lean` 724→856L, **0 sorry / 0 axiom**, docker
+`✔ [7743/7743]`, no warnings, no native_decide (only ring/linarith/nlinarith/field_simp/simp
++ `Real.cos_pos_of_mem_Ioo`, `Real.sin_sq_add_cos_sq`, `sq_abs`, reused `scos_eq_one_iff`,
+`mem_sCircle_iff_sdist`).
+
+### Delivered
+- **`sGreatCircle N := {P | OnSphere P ∧ ⟪P,N⟫ = 0}`** — great circle = geodesic = triangle
+  side (unit pole `N`).
+- **`greatCircleFoot O N ρ := (cos ρ)⁻¹ • (O − ⟪O,N⟫ • N)`** — explicit contact point (the
+  renormalised orthogonal projection of the centre onto the great circle).
+- **`TangentToGreatCircle O ρ N := |⟪O,N⟫| = sin ρ`** — tangency criterion (distance from
+  centre to the side = radius; the distance is `arcsin|⟪O,N⟫|`).
+- **`inner_orthoComp_self` / `inner_orthoComp_left`** — helper: `⟪O⊥,O⊥⟫ = ⟪O⊥,O⟫ =
+  1 − ⟪O,N⟫²` (spherical Pythagoras for the projection; `inner_orthoComp_left` needs only
+  `OnSphere O`, not `hN`).
+- **`greatCircleFoot_mem`** (existence): under `0≤ρ<π/2` + criterion, the foot is a model
+  point on BOTH `sCircle O ρ` and `sGreatCircle N`. All three checks are pure inner-product
+  algebra: `⟪F,N⟫=0`, `⟪F,O⟫=cos ρ`, `‖F‖²=(cos ρ)⁻²·(1−⟪O,N⟫²)=(cos ρ)⁻²·cos²ρ=1`.
+- **`circle_tangent_greatCircle_inter`** (headline): the intersection is the **singleton**
+  `{greatCircleFoot O N ρ}` — genuine tangency (one contact point). Uniqueness: any common
+  `Q` has `⟪Q,F⟫ = (cos ρ)⁻¹(⟪Q,O⟫ − ⟪O,N⟫·⟪Q,N⟫) = (cos ρ)⁻¹(cos ρ − 0) = 1`, so `Q=F`
+  by `scos_eq_one_iff`.
+- **`sdist_greatCircleFoot_center`** : `sdist (foot) O = ρ` (via `mem_sCircle_iff_sdist`).
+
+### Why this matters
+This is the **incircle-to-side tangency primitive**, consumed three times (once per side)
+in any spherical incircle/excircle construction. It bridges the existing circle-circle
+tangency theory to an actual spherical incircle → the genuine open target (spherical
+Feuerbach). Kept the criterion in the clean geometric form `|⟪O,N⟫| = sin ρ`; internally
+squared it (`sq_abs`) to `⟪O,N⟫² = sin²ρ`, then `1 − sin²ρ = cos²ρ` via
+`Real.sin_sq_add_cos_sq`.
+
+### GOTCHAs
+- `scos Q O` is definitionally `⟪Q,O⟫` but `rw` needs a syntactic match: extract
+  `hQO' : (⟪Q,O⟫:ℝ) = cos ρ := hQO` (defeq `have`), then `rw [hQO']`.
+- To turn `|⟪O,N⟫| = sin ρ` into `⟪O,N⟫² = sin²ρ`: `rw [← sq_abs, htan]` (sq_abs: `|a|²=a²`).
+- OnSphere-from-inner-1 idiom (reused from `sphere_slerp_common_point`): `‖F‖²=1` →
+  `(‖F‖−1)(‖F‖+1)=0` via `nlinarith` → `mul_eq_zero` → exclude the negative root by
+  `norm_nonneg` + `positivity`.
+- Don't `set` the inner product `⟪O,N⟫` (ring atom-mismatch trap from prior sessions);
+  keep it explicit and let `ring` treat it as an atom.
+
+### Next steps (unchanged direction, still multi-session)
+1. Define a spherical triangle (3 model points) and its three side great circles (poles =
+   normalised cross-products / the geodesic normals); state the spherical incircle as the
+   circle tangent to all three sides via `TangentToGreatCircle`.
+2. Existence/uniqueness of the incenter (equidistant-from-sides point) — likely the hard
+   step; may need a spherical angle-bisector argument.
+3. Spherical nine-point circle, then the spherical Feuerbach tangency itself.
+
+BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
