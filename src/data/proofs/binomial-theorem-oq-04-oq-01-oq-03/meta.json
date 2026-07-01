@@ -104,5 +104,28 @@
       "endLine": 252,
       "summary": "vandermonde_classical: specializing q=1 (where every power weight becomes 1 and C_1(n,k) = C(n,k)) recovers the classical Vandermonde identity C(m+n,r) = Σ_k C(m,k)·C(n,r-k)."
     }
+  ],
+  "references": [
+    {
+      "authors": "G. E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": 1976,
+      "venue": "Addison-Wesley",
+      "note": "Gaussian binomial coefficients and the q-Vandermonde (q-Chu-Vandermonde) identity."
+    },
+    {
+      "authors": "V. Kac, P. Cheung",
+      "title": "Quantum Calculus",
+      "year": 2002,
+      "venue": "Springer",
+      "note": "Gaussian binomial coefficients and the q-Chu-Vandermonde convolution."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
   ]
 }

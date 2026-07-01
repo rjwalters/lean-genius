@@ -193,5 +193,27 @@
     "definitionCount": 0,
     "theoremCount": 10
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "W. Rudin",
+      "title": "Principles of Mathematical Analysis",
+      "year": 1976,
+      "venue": "McGraw-Hill",
+      "note": "The limit (1+x/n)ⁿ → eˣ and monotone bounds for e."
+    },
+    {
+      "authors": "L. Euler",
+      "title": "Introductio in analysin infinitorum",
+      "year": 1748,
+      "note": "The exponential as the limit (1+x/n)ⁿ."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
+  ]
 }

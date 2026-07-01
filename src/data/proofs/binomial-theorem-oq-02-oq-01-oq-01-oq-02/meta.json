@@ -194,5 +194,28 @@
       "leanType": "multinomialProb s p 1 (fun i => if i = j then 1 else 0) = p j"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "T. M. Cover, J. A. Thomas",
+      "title": "Elements of Information Theory",
+      "year": 2006,
+      "venue": "Wiley",
+      "note": "Shannon entropy of discrete distributions."
+    },
+    {
+      "authors": "C. E. Shannon",
+      "title": "A Mathematical Theory of Communication",
+      "year": 1948,
+      "venue": "Bell Syst. Tech. J. 27",
+      "note": "Definition of entropy H(X) = −∑ P log P."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
+  ]
 }

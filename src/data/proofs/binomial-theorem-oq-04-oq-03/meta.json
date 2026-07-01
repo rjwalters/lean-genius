@@ -152,5 +152,28 @@
       "leanType": "(q : ℝ) → (n k : ℕ) → k ≤ n → [n,k]_q = [n,n-k]_q"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": 1976,
+      "venue": "Addison-Wesley",
+      "note": "Gaussian binomial coefficients and the q-Vandermonde (q-Chu-Vandermonde) identity."
+    },
+    {
+      "authors": "V. Kac, P. Cheung",
+      "title": "Quantum Calculus",
+      "year": 2002,
+      "venue": "Springer",
+      "note": "q-Vandermonde identity counting subspaces of 𝔽_q vector spaces."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
+  ]
 }

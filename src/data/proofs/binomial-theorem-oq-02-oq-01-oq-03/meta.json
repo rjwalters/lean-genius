@@ -133,5 +133,28 @@
       "description": "PMF.multinomial integration with Mathlib — another application of the multinomial distribution infrastructure"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "N. L. Johnson, S. Kotz, N. Balakrishnan",
+      "title": "Discrete Multivariate Distributions",
+      "year": 1997,
+      "venue": "Wiley",
+      "note": "Multinomial distribution: moments, covariance matrix (Cov(Xᵢ,Xⱼ)=−n pᵢ pⱼ), and binomial marginals."
+    },
+    {
+      "authors": "W. Feller",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. 1",
+      "year": 1968,
+      "venue": "Wiley",
+      "note": "Multinomial and binomial distributions, the de Moivre-Laplace and Poisson limit theorems."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
+  ]
 }

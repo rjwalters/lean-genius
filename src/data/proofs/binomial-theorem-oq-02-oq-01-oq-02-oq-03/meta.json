@@ -116,5 +116,28 @@
       "description": "The other classical limit law for the binomial: CLT gives the normal approximation for fixed p, while the Poisson limit governs the rare-event regime np→λ."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "S. D. Poisson",
+      "title": "Recherches sur la probabilité des jugements en matière criminelle et en matière civile",
+      "year": 1837,
+      "venue": "Bachelier, Paris",
+      "note": "The Poisson distribution as the law of rare events."
+    },
+    {
+      "authors": "W. Feller",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. 1",
+      "year": 1968,
+      "venue": "Wiley",
+      "note": "Multinomial and binomial distributions, the de Moivre-Laplace and Poisson limit theorems."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
+  ]
 }

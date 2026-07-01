@@ -157,5 +157,28 @@
       "relationship": "ancestor",
       "description": "The binomial theorem (x+y)ⁿ = Σ C(n,k)·xᵏ·yⁿ⁻ᵏ is the prototype: the result here is its umbral counterpart with ordinary powers replaced by falling factorials."
     }
+  ],
+  "references": [
+    {
+      "authors": "S. Roman",
+      "title": "The Umbral Calculus",
+      "year": 1984,
+      "venue": "Academic Press",
+      "note": "Sequences of binomial type and the falling-factorial Vandermonde convolution."
+    },
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Binomial-coefficient moments, Vandermonde convolution, and the hockey-stick identity."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
   ]
 }

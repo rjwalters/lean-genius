@@ -164,5 +164,28 @@
       "relationship": "ancestor",
       "description": "The binomial theorem (1+x)ⁿ = Σ C(n,k)xᵏ is the generating function whose r-th derivative at x = 1 is exactly the r-th falling-factorial moment proved here."
     }
+  ],
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Binomial-coefficient moments, Vandermonde convolution, and the hockey-stick identity."
+    },
+    {
+      "authors": "L. Comtet",
+      "title": "Advanced Combinatorics",
+      "year": 1974,
+      "venue": "Reidel",
+      "note": "Falling-factorial moments and finite-difference calculus of binomial sums."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
   ]
 }
