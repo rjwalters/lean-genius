@@ -3,6 +3,38 @@
   "slug": "fourth-root-2-degree4-oq-02",
   "title": "Xⁿ − p is irreducible for every prime p and every n ≥ 1: the Eisenstein-then-Gauss route packaged as a reusable lemma",
   "description": "Open-question generalization of the gallery proof ⁴√2-has-degree-4. The parent handled X⁴ − 2 (the case 4 = 2² that Mathlib's Kummer API explicitly cannot reach) by a hand-rolled Eisenstein-at-2 argument. This entry shows that argument was never special to the prime 2 or the exponent 4: Eisenstein's criterion at a prime p applies verbatim to Xⁿ − p for EVERY prime p and EVERY n ≥ 1, with no parity or p ≠ 2 restriction, because the only facts used are leadingCoeff = 1 ∉ (p), all lower coefficients ∈ (p), and constant term −p ∉ (p)². Gauss's lemma descends irreducibility from ℤ[X] to ℚ[X]. From the single packaged lemma we recover, as one-line corollaries, the minimal polynomial and field degree [ℚ(α):ℚ] = n of any root αⁿ = p, the previously TODO-blocked even cases X² − 2, X⁴ − 2, X⁸ − 2, X¹⁶ − 2, and odd-prime even-exponent cases X⁴ − 3, X⁶ − 7, plus the parent's [ℚ(√2):ℚ] = 2 and [ℚ(⁴√2):ℚ] = 4.",
+  "references": [
+    {
+      "authors": "Gotthold Eisenstein",
+      "title": "Über die Irreductibilität und einige andere Eigenschaften der Gleichung... (Journal für die reine und angewandte Mathematik 39)",
+      "year": 1850,
+      "note": "The Eisenstein irreducibility criterion, the core of the Xⁿ − p argument packaged here."
+    },
+    {
+      "authors": "Ernst Eduard Kummer",
+      "title": "Über die Zerlegung der aus Wurzeln der Einheit gebildeten complexen Zahlen (Journal für die reine und angewandte Mathematik 35)",
+      "year": 1847,
+      "note": "Kummer theory of Xⁿ − a, whose 4 = 2² gap Eisenstein-at-p fills."
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Algebra (Revised 3rd ed.), GTM 211",
+      "year": 2002,
+      "note": "Springer. Eisenstein's criterion and Gauss's lemma for irreducibility over ℚ."
+    },
+    {
+      "authors": "David S. Dummit and Richard M. Foote",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": 2004,
+      "note": "Wiley. Eisenstein criterion and irreducibility of Xⁿ − p (§9.4)."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Polynomial.irreducible_of_eisenstein_criterion and IsPrimitive.Int infrastructure",
+      "year": 2024,
+      "note": "The Eisenstein-then-Gauss lemmas assembled into the reusable Xⁿ − p irreducibility result."
+    }
+  ],
   "meta": {
     "author": "Lean Genius (Researcher)",
     "date": "2026-06-27",

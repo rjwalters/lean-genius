@@ -3,6 +3,38 @@
   "title": "Friendship Theorem: Spectral Proof via Characteristic Polynomials",
   "slug": "friendship-theorem-oq-01",
   "description": "Axiom-free spectral proof that every k-regular friendship graph has k=2, using adjacency matrix characteristic polynomial techniques, the Weinstein-Aronszajn determinant identity, and UFD factorization in \u2124[X]. Proves the core regularity step: if no universal vertex exists, the friendship graph must be a triangle.",
+  "references": [
+    {
+      "authors": "Paul Erdős, Alfréd Rényi and Vera T. Sós",
+      "title": "On a Problem of Graph Theory (Studia Scientiarum Mathematicarum Hungarica 1)",
+      "year": 1966,
+      "note": "The original friendship theorem: a graph where every pair has exactly one common friend has a universal vertex."
+    },
+    {
+      "authors": "Herbert S. Wilf",
+      "title": "The Friendship Theorem (in Combinatorial Mathematics and Its Applications)",
+      "year": 1971,
+      "note": "Academic Press. The spectral / adjacency-matrix proof formalized in this entry."
+    },
+    {
+      "authors": "Martin Aigner and Günter M. Ziegler",
+      "title": "Proofs from THE BOOK (6th ed.)",
+      "year": 2018,
+      "note": "Springer. The eigenvalue proof of the friendship theorem."
+    },
+    {
+      "authors": "Chris Godsil and Gordon Royle",
+      "title": "Algebraic Graph Theory, GTM 207",
+      "year": 2001,
+      "note": "Springer. Adjacency-matrix spectra and strongly regular graphs behind the friendship theorem."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: SimpleGraph adjacency matrix, Matrix.charpoly and ℤ[X] UFD infrastructure",
+      "year": 2024,
+      "note": "Characteristic-polynomial and unique-factorization machinery driving the axiom-free spectral proof."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",

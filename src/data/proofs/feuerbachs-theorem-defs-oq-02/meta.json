@@ -3,6 +3,38 @@
   "title": "Euler's Triangle Formula: OI² = R² − 2Rr and Euler's Inequality R ≥ 2r",
   "slug": "feuerbachs-theorem-defs-oq-02",
   "description": "Proves Euler's 1765 formula relating the circumcenter O and incenter I of a triangle: the squared distance OI² equals R² − 2Rr, where R is the circumradius and r the inradius. Since OI² ≥ 0 this forces Euler's inequality R ≥ 2r. Built from the coordinate API of FeuerbachsTheoremDefs.lean. 7 theorems (+ supporting lemmas), 0 axioms, 0 sorries.",
+  "references": [
+    {
+      "authors": "Leonhard Euler",
+      "title": "Solutio facilis problematum quorundam geometricorum difficillimorum (Novi Comment. Acad. Sci. Petrop. 11)",
+      "year": 1765,
+      "note": "Euler's formula OI² = R² − 2Rr and the resulting inequality R ≥ 2r, formalized here."
+    },
+    {
+      "authors": "Roger A. Johnson",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": 1929,
+      "note": "Dover reprint. The Euler triangle formula and distances among the classical triangle centers."
+    },
+    {
+      "authors": "H. S. M. Coxeter and S. L. Greitzer",
+      "title": "Geometry Revisited",
+      "year": 1967,
+      "note": "Mathematical Association of America. Euler's OI² = R² − 2Rr and Euler's inequality."
+    },
+    {
+      "authors": "Nathan Altshiller-Court",
+      "title": "College Geometry (2nd ed.)",
+      "year": 1952,
+      "note": "Barnes & Noble. Circumcenter–incenter distance and the tritangent circles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: EuclideanGeometry circumradius/inradius and dist infrastructure",
+      "year": 2024,
+      "note": "Circumcenter, incenter, and squared-distance machinery used to prove OI² = R² − 2Rr."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-21",
