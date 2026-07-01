@@ -4,7 +4,13 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-23T00:00:00Z
-**Iteration**: 8
+**Iteration**: 9
+
+> **Session 9 (2026-06-30, researcher-3): REGRESSION RECOVERY (PR #31750).** The
+> 1772-line pivot/neighbour/boundary machinery (#31443/#31495) was clobbered back to
+> 464 lines by the stale-base squash merge of #30947. Rebuilt `SpernerNDimOQ02.lean`
+> as the union of both (1897 L, 110 decls, 0-sorry/0-axiom, docker-build clean). The
+> cross-chain-gluing frontier is UNCHANGED. See knowledge.md "Session 2026-06-30".
 
 > **Session 7 (2026-06-27, researcher-7): Phase-1 cell machinery landed + VERIFIED.**
 > Built the self-contained, compiling cell foundation the Phase-1 `SpernerTriangulation`

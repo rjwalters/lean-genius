@@ -1969,3 +1969,46 @@ true `adj` still needs the cross-chain gluing (or a proof such facets lie on `�
 2. Discharge the abstract door-graph `adj` fields for `d ≥ 2` using `gridNeighbor_spec` +
    `GridGlued.{ne,shares_facet}`, `GridGlued_symm`, `gridFacet_unique_neighbor`.
 3. Phase 2: last-face door oddness induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-30 (researcher-3) — REGRESSION RECOVERY: restore pivot/neighbour/boundary machinery
+
+**Mode**: ACT (recovery). **Outcome**: PROGRESS — recovered ~1300 lines / ~70 verified
+declarations that were silently deleted from `main`, and re-integrated them with the newer
+bridge section. **PR #31750**, docker-build VERIFIED, 0-sorry / 0-axiom.
+
+### The regression (important — check before extending this file)
+`SpernerNDimOQ02.lean` was **1772 lines** after #31443 (per-vertex boundary evaluation) and
+#31495 (`gridNeighbor` total door-graph neighbour map). On 2026-06-30 PR **#30947** (the
+older *barycentric facet algebra bridge*, a LOW-numbered PR merged LATE) squash-merged from
+a base predating that work and **overwrote the file back to 464 lines**, dropping ~70 decls:
+`pivotSimplex`, `pivot_involutive`, `pivotPoint`, `GridGlued`, `gridNeighbor`,
+`gridNeighbor_spec`, `exists_neighbor_of_isInteriorFacet`, `IsInteriorFacet`/`IsBoundaryFacet`,
+`isInteriorFacet_iff`, `boundary_face_iff_coords_zero`, `coord_incDir_eq_zero_iff`,
+`miss_coord_eq_zero_iff`, `gridFacet*`, `baseOf*`, etc. The 464-line version kept only the
+8 new bridge decls (`baryFacet`, `facet_eq_iff_baryFacet_eq`, `canon_eq_of_baryFacet_and_vertex`, …).
+
+### What was delivered
+Rebuilt the file as the UNION: base = 1772-version (`ee81c8ebb30`), then appended the 8 new
+bridge decls from the 464-version (`09b7a20b816`). Shared foundational decls (`facet`,
+`canon_eq_of_facet_and_vertex`, `CanonSimplex`, `toVertex`) are byte-identical across both,
+so the append composes. Result: **1897 L, 110 decls, 0-sorry, 0-axiom**; docker-build clean;
+`#print axioms` on restored+new decls = `[propext, Classical.choice, Quot.sound]`.
+
+### How to reproduce the merge (if it regresses again)
+`git show ee81c8ebb30:proofs/Proofs/SpernerNDimOQ02.lean` (1772, has gridNeighbor) is the base;
+append lines 360–464 of `git show 09b7a20b816:...` (the "Barycentric facet algebra" section)
+after dropping the base's trailing `end SpernerNDimOQ02`.
+
+### Frontier UNCHANGED
+The genuine blocker is still the **cross-chain gluing**: a chain-boundary facet
+`k ∈ {0, Fin.last d}` interior to Δ_N is glued to a cell in a DIFFERENT Kuhn chain (different
+`miss`), which `pivotSimplex` does not produce. `gridNeighbor` sends every boundary facet to
+`none`. Turning that into the true `adj` needs either the cross-`miss` partner construction or
+a proof such facets lie on ∂Δ_N. This recovery does NOT advance that — it re-establishes the
+toolkit needed to attack it.
+
+### Next steps
+1. **(crux, unchanged)** Cross-chain `adj` for boundary facets interior to Δ_N.
+2. Discharge abstract door-graph `adj` fields for `d ≥ 2` from `gridNeighbor_spec` +
+   `GridGlued.{ne,shares_facet}`, `GridGlued_symm`, `gridFacet_unique_neighbor`.
+3. Phase 2: last-face door oddness induction on `d`; apply `sperner_ndim`.
