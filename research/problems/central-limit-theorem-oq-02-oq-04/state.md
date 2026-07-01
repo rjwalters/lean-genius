@@ -1,19 +1,46 @@
 # Current State
 
-**Phase**: ACT (S25 — survival-covariance integrand α-bound. NOTE: this state.md
-head predates S16–S24, which were tracked only in git/session notes; the Lean
-file has grown 733 → **1641 LOC**, 32 top-level theorems, still **2 sorries**
-(`davydov_covariance_inequality` L1399, `mixing_clt_ibragimov` L1591), 0 axioms.
-S16–S24 built the full layer-cake / survival-function machinery culminating in
-S24's `covariance_eq_double_survival_covariance` (Cov(f,g) as a double survival
-integral). S25 (this session) closes the pointwise step: the survival-covariance
-integrand is majorised by `α` uniformly in the threshold pair, via
-`superlevel_setOf_measurable` + `davydov_indicator_bound`. Build-pending
-(hostile Docker env — 5 concurrent builds, 99% disk). S26 = double-integral
-assembly `|∫∫ integrand| ≤ α·M·N` → Hölder + Markov → close the Davydov sorry.)
+**Phase**: ACT (S26 — bounded-variable Davydov double-integral assembly. The Lean
+file is now **1725 LOC**, 33 top-level theorems, still **2 sorries**
+(`davydov_covariance_inequality`, `mixing_clt_ibragimov`), 0 axioms. S16–S24 built
+the full layer-cake / survival machinery culminating in S24's
+`covariance_eq_double_survival_covariance`; S25 bounded the integrand by `α`
+uniformly; S26 (this session) assembles the two into the bounded-variable Davydov
+estimate `|Cov(f,g)| ≤ α·M·N` for `f∈[0,M]`, `g∈[0,N]`. Build-pending (hostile
+Docker env — 5 concurrent builds, 97% disk / 496 MiB free, S24/S25 precedent).
+S27 = the general-`L^p` truncation + Hölder step that reduces
+`davydov_covariance_inequality` to this bounded base case, closing that sorry.)
 **Since**: 2026-07-01
-**Iteration**: 25 (S25 ACT)
-**Last Updated**: 2026-07-01 (researcher-1)
+**Iteration**: 26 (S26 ACT)
+**Last Updated**: 2026-07-01 (researcher-4)
+
+## S26 ACT — bounded-variable Davydov `|Cov|≤α·M·N` (researcher-4, 2026-07-01, build-pending)
+
+Added one proven theorem `bounded_covariance_le_alpha_mul_rectangle` after S25's
+`survival_covariance_integrand_le_alpha`, before the open
+`davydov_covariance_inequality` sorry:
+
+```
+|∫ f·g − (∫f)(∫g)| ≤ alphaMixingCoeff μ (σPair 0) (σPair 1) · M · N
+```
+
+for `f∈[0,M]`, `g∈[0,N]`, `Measurable f`/`Measurable g` + `Measurable[σPair 0] f`/
+`Measurable[σPair 1] g` + the two S24 outer survival-integrabilities. Proof:
+S24 (`covariance_eq_double_survival_covariance`) rewrites `Cov` as the double
+survival integral over `(0,M]×(0,N]`; then `norm_setIntegral_le_of_norm_le_const`
+is applied twice — inner (`s` over `(0,N]`, constant bound `α` from S25 ⇒ `α·N`)
+then outer (`t` over `(0,M]`, constant bound `α·N` ⇒ `α·N·M`), with
+`volume(Ioc 0 M)=M` via `Real.volume_Ioc`+`ENNReal.toReal_ofReal`; `ring` reorders
+to `α·M·N`. Reuses only in-file S24/S25 + standard Mathlib measure lemmas — no new
+Mathlib surface, no new axioms. lineCount 1641→1725, theoremCount 32→33, sorries 2
+(unchanged), axioms 0.
+
+Session note: `sessions/2026-07-01-s26-bounded-variable-davydov-assembly.md`.
+PR on branch `research/clt-oq0204-s26` off `origin/main 0d80357956a`.
+**Build-pending** (S24/S25 precedent; Docker hostile, 496 MiB free disk). S27 next:
+`L^p` truncation + Hölder reducing `davydov_covariance_inequality` to this base case.
+
+---
 
 ## S25 ACT — survival-covariance integrand α-bound (researcher-1, 2026-07-01, build-pending)
 
