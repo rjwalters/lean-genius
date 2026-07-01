@@ -2987,4 +2987,126 @@ theorem continuant_ge_pow_example :
   refine continuant_ge_pow 3 (by norm_num) [3, 3, 3] ?_
   intro k hk; fin_cases hk <;> norm_num
 
+/-! ## §31: The geometric ceiling and the two-sided logarithmic sandwich
+
+§30 delivered the geometric *floor* `(d − 1)^|ks| ≤ Continuant ks` on all-`≥ d` runs,
+hence the *upper* logarithmic cap `|ks| ≤ log_{d−1} N` under a continuant ceiling `N`.
+The matching *ceiling* comes from §28's product bound `Continuant ks ≤ ks.prod`: if every
+quotient is *also* bounded above by `D`, then `ks.prod ≤ D^|ks|`, so
+`Continuant ks ≤ D^|ks|`.  A continuant *floor* `N ≤ Continuant ks` then forces the run
+*long*: `log_D N ≤ |ks|`.
+
+Together the two directions pin the run length of a bounded-quotient run (`d ≤ kᵢ ≤ D`,
+`3 ≤ d`) to a logarithmic band `log_D (K) ≤ |ks| ≤ log_{d−1} (K)` around the continuant —
+so in the bounded-quotient regime the continuant grows *exactly* geometrically and the run
+length is `Θ(log K)`, equivalently `Θ(log n)` under the order-`n` Farey cap `K ≤ n`.  This
+is the honest opposite extreme to the small-quotient (all-`1`/all-`2`) regime, where the
+continuant grows only linearly (`K([2,…,2]) = m + 1`, §20) and the open `1/12`–`1/4`
+run-length constant lives.  It certifies that any similarly-ordered run *long* enough to
+matter for `f(n)` must be built from *small* quotients: a floor of `d ≥ 3` on the quotients
+collapses admissible run lengths to `O(log n)`.
+-/
+
+/-- Product of an all-`≥ 2` quotient list is at least `1` (hence positive).  Elementary
+induction feeding `(k − 2)(∏rest − 1) ≥ 0` to `nlinarith`. -/
+theorem one_le_prod (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) : 1 ≤ ks.prod := by
+  induction ks with
+  | nil => simp
+  | cons k rest ih =>
+      have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+      have hk : (2 : ℤ) ≤ k := h k (by simp)
+      have hIH := ih hrest
+      rw [List.prod_cons]
+      nlinarith [mul_nonneg (show (0 : ℤ) ≤ k - 2 by linarith)
+        (show (0 : ℤ) ≤ rest.prod - 1 by linarith)]
+
+/-- Product ceiling by a uniform upper bound: if every entry lies in `[2, D]` the product is
+at most `D^|ks|`.  Each head step scales `k ≤ D` against the nonnegative tail product and the
+inductive ceiling. -/
+theorem prod_le_pow (D : ℤ) (ks : List ℤ) (h2 : ∀ k ∈ ks, (2 : ℤ) ≤ k)
+    (hD : ∀ k ∈ ks, k ≤ D) : ks.prod ≤ D ^ ks.length := by
+  induction ks with
+  | nil => simp
+  | cons k rest ih =>
+      have hrest2 : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h2 j (List.mem_cons_of_mem k hj)
+      have hrestD : ∀ j ∈ rest, j ≤ D := fun j hj => hD j (List.mem_cons_of_mem k hj)
+      have hk2 : (2 : ℤ) ≤ k := h2 k (by simp)
+      have hkD : k ≤ D := hD k (by simp)
+      have hDnn : (0 : ℤ) ≤ D := by linarith
+      have hprodnn : (0 : ℤ) ≤ rest.prod := by linarith [one_le_prod rest hrest2]
+      have hIH := ih hrest2 hrestD
+      simp only [List.prod_cons, List.length_cons, pow_succ]
+      calc k * rest.prod
+          ≤ D * rest.prod := mul_le_mul_of_nonneg_right hkD hprodnn
+        _ ≤ D * D ^ rest.length := mul_le_mul_of_nonneg_left hIH hDnn
+        _ = D ^ rest.length * D := by ring
+
+/-- **Geometric continuant ceiling (headline).**  On a bounded quotient regime with every
+entry in `[2, D]` the continuant is at most geometric with ratio `D`:
+`Continuant ks ≤ D^|ks|`.  Chains §28's product ceiling `continuant_le_prod` through the
+uniform product bound `prod_le_pow`.  The upper companion to §30's floor
+`continuant_ge_pow`. -/
+theorem continuant_le_pow (D : ℤ) (ks : List ℤ) (h2 : ∀ k ∈ ks, (2 : ℤ) ≤ k)
+    (hD : ∀ k ∈ ks, k ≤ D) : Continuant ks ≤ D ^ ks.length :=
+  le_trans (continuant_le_prod ks h2) (prod_le_pow D ks h2 hD)
+
+/-- **Geometric run-length floor (power form).**  A continuant *floor* `N ≤ Continuant ks`
+on a bounded-quotient run (`kᵢ ∈ [2, D]`) forces the *power* `N ≤ D^|ks|` — the lower
+companion to §30's `continuant_pow_run_length_le`. -/
+theorem continuant_pow_run_length_ge {D N : ℤ} (ks : List ℤ) (h2 : ∀ k ∈ ks, (2 : ℤ) ≤ k)
+    (hD : ∀ k ∈ ks, k ≤ D) (hfloor : N ≤ Continuant ks) : N ≤ D ^ ks.length :=
+  le_trans hfloor (continuant_le_pow D ks h2 hD)
+
+/-- **Logarithmic run-length floor.**  With a uniform quotient ceiling `D ≥ 2`, a continuant
+floor `N ≤ Continuant ks` forces the run length *up* logarithmically: `log_D N ≤ |ks|`.  The
+exact mirror of §30's `continuant_run_length_le_log`, and the second jaw of the Θ(log K)
+sandwich. -/
+theorem continuant_run_length_ge_log {D N : ℤ} (hDb : 2 ≤ D) (ks : List ℤ)
+    (h2 : ∀ k ∈ ks, (2 : ℤ) ≤ k) (hD : ∀ k ∈ ks, k ≤ D) (hfloor : N ≤ Continuant ks) :
+    Nat.log D.toNat N.toNat ≤ ks.length := by
+  have hpow : N ≤ D ^ ks.length := continuant_pow_run_length_ge ks h2 hD hfloor
+  have hDnn : (0 : ℤ) ≤ D := by linarith
+  have hb : 1 < D.toNat := by omega
+  by_cases hN : N ≤ 0
+  · have hz : N.toNat = 0 := by omega
+    simp [hz]
+  · push_neg at hN
+    have hNnn : (0 : ℤ) ≤ N := le_of_lt hN
+    have hcast : N.toNat ≤ D.toNat ^ ks.length := by
+      have hZ : (N.toNat : ℤ) ≤ ((D.toNat : ℤ)) ^ ks.length := by
+        rw [Int.toNat_of_nonneg hNnn, Int.toNat_of_nonneg hDnn]
+        exact hpow
+      exact_mod_cast hZ
+    calc Nat.log D.toNat N.toNat
+        ≤ Nat.log D.toNat (D.toNat ^ ks.length) := Nat.log_mono_right hcast
+      _ = ks.length := Nat.log_pow hb ks.length
+
+/-- **Two-sided logarithmic sandwich (headline).**  A bounded-quotient run with every entry
+in `[d, D]` and floor `d ≥ 3` has its length pinned into a logarithmic band around its own
+continuant: `log_D (Continuant ks) ≤ |ks| ≤ log_{d−1} (Continuant ks)`.  The lower jaw is
+§31's geometric ceiling, the upper jaw is §30's geometric floor.  Since both bases exceed
+`1`, the continuant of a bounded-quotient run grows *exactly* geometrically and the run
+length is `Θ(log K)` — equivalently `Θ(log n)` once the order-`n` Farey cap `Continuant ks ≤ n`
+is imposed.  A quotient floor `d ≥ 3` therefore caps admissible similarly-ordered runs at
+`O(log n)`, so the `Θ(n)`-long runs behind the open `1/12` lower bound must live entirely in
+the small-quotient regime. -/
+theorem continuant_run_length_log_sandwich {d D : ℤ} (hd : 3 ≤ d) (hdD : d ≤ D)
+    (ks : List ℤ) (hlo : ∀ k ∈ ks, d ≤ k) (hhi : ∀ k ∈ ks, k ≤ D) :
+    Nat.log D.toNat (Continuant ks).toNat ≤ ks.length ∧
+      ks.length ≤ Nat.log (d - 1).toNat (Continuant ks).toNat := by
+  have h2 : ∀ k ∈ ks, (2 : ℤ) ≤ k := fun k hk => le_trans (by linarith) (hlo k hk)
+  have hDb : (2 : ℤ) ≤ D := by linarith
+  exact ⟨continuant_run_length_ge_log hDb ks h2 hhi (le_refl _),
+    continuant_run_length_le_log hd ks hlo (le_refl _)⟩
+
+/-- **Concrete sandwich.**  For the all-`3` run `[3, 3, 3]` (`Continuant [3,3,3] = 21`):
+`log₃ 21 = 2 ≤ 3 = |ks| ≤ 4 = log₂ 21`, so the length-`3` run sits inside the band
+`[log₃ 21, log₂ 21] = [2, 4]`.  Discharged through the general sandwich. -/
+theorem continuant_run_length_log_sandwich_example :
+    Nat.log (3 : ℤ).toNat (Continuant [3, 3, 3]).toNat ≤ ([3, 3, 3] : List ℤ).length ∧
+      ([3, 3, 3] : List ℤ).length
+        ≤ Nat.log ((3 : ℤ) - 1).toNat (Continuant [3, 3, 3]).toNat :=
+  continuant_run_length_log_sandwich (d := 3) (D := 3) (by norm_num) (le_refl _) [3, 3, 3]
+    (by intro k hk; fin_cases hk <;> norm_num) (by intro k hk; fin_cases hk <;> norm_num)
+
 end Erdos1005OQ02
