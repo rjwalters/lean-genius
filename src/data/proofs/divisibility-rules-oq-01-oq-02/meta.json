@@ -52,6 +52,27 @@
       "Multiplicative order in a monoid (orderOf, orderOf_dvd_iff_pow_eq_one) and ZMod d casts"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Wright, E.M."
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "6th ed., Oxford University Press",
+      "note": "Congruences, Euler's theorem and the theory behind digit-sum and alternating-digit divisibility tests."
+    },
+    {
+      "authors": [
+        "Burton, D.M."
+      ],
+      "title": "Elementary Number Theory",
+      "year": "2010",
+      "venue": "7th ed., McGraw-Hill",
+      "note": "Divisibility tests, casting out nines, and block/truncation rules for 7, 11, 13."
+    }
+  ],
   "conclusion": {
     "summary": "Twelve theorems establish that a power-of-10 digit-sum base exists for every modulus coprime to 10, identify the valid exponents as the multiples of the multiplicative order of 10, and pin the minimal working base at 10^{ord_d(10)}. Five concrete instances (3, 7, 13, 27, 37) are recovered as corollaries, including new base-10^6 rules for 7 and 13.",
     "implications": "This upgrades the parent's list of individually proved rules to a universal existence-and-sharpness statement: the question 'which moduli have a power-of-10 digit-sum rule?' is answered completely (all d coprime to 10) and the optimal base is characterized. The 0-axiom, native_decide-free proof also tightens the parent's Lean.ofReduceBool dependency.",

@@ -132,6 +132,27 @@
       "description": "Original divisibility rules gallery (specific cases)"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Wright, E.M."
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "6th ed., Oxford University Press",
+      "note": "Congruences, Euler's theorem and the theory behind digit-sum and alternating-digit divisibility tests."
+    },
+    {
+      "authors": [
+        "Burton, D.M."
+      ],
+      "title": "Elementary Number Theory",
+      "year": "2010",
+      "venue": "7th ed., McGraw-Hill",
+      "note": "Divisibility tests, casting out nines, and block/truncation rules for 7, 11, 13."
+    }
+  ],
   "conclusion": {
     "summary": "A complete proof that every d > 1 coprime to 10 admits a digit-block divisibility rule, with k = φ(d) as an explicit universal witness. 0 sorries, 0 axioms.",
     "implications": "Provides the theoretical foundation for algorithmic divisibility testing of any number coprime to 10 using positional digit sums.",

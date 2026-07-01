@@ -53,6 +53,26 @@
       "Nat.Coprime for natural number coprimality"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Burton, D.M."
+      ],
+      "title": "Elementary Number Theory",
+      "year": "2010",
+      "venue": "7th ed., McGraw-Hill",
+      "note": "Divisibility tests, casting out nines, and block/truncation rules for 7, 11, 13."
+    },
+    {
+      "authors": [
+        "Dickson, L.E."
+      ],
+      "title": "History of the Theory of Numbers, Volume I: Divisibility and Primality",
+      "year": "1919",
+      "venue": "Carnegie Institution of Washington",
+      "note": "Historical account of casting out nines and classical divisibility criteria."
+    }
+  ],
   "conclusion": {
     "summary": "This OQ-01 extension proves 41 theorems extending the base divisibility rules collection. The general dvd_iff_dvd_mod theorem provides a unified foundation for all last-k-digit rules, while the alternating sum and truncation methods cover divisibility by 7, 11, and 13. The casting out nines module provides both the arithmetic preservation theorems and a practical error-detection theorem.",
     "implications": "The generalization of last-k-digit rules to a single theorem demonstrates the power of modular arithmetic abstraction. The simultaneous coverage of divisibility by 7, 11, and 13 through the truncation/alternating-sum methods reflects the algebraic unity behind these seemingly disparate rules — all exploiting coprimality of 10 with the target divisor.",

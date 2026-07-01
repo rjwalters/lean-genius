@@ -101,6 +101,27 @@
       "mathContext": "Concrete examples verified by `native_decide`: $7 \\mid 1001$ (altDigitSum$(1000, 1001) = 1 + 1 = 2$... wait, $1001 = 1 \\cdot 1000 + 1$, so altDigitSum $= 1 - 1 = 0$, $7 \\mid 0$ ✓). **Classical instances**: `eleven_dvd_iff_altDigitSum`: $b = 10$, since $10 \\equiv -1 \\pmod{11}$; the alternating 1-digit sum rule (alternating digit sum divisible by 11). `hundredone_dvd_iff_altDigitSum`: $b = 100$, since $100 \\equiv -1 \\pmod{101}$; the 2-digit block alternating sum rule for 101. These show the general framework covers all classical alternating divisibility rules, unified by $b \\equiv -1 \\pmod{d}$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Wright, E.M."
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "6th ed., Oxford University Press",
+      "note": "Congruences, Euler's theorem and the theory behind digit-sum and alternating-digit divisibility tests."
+    },
+    {
+      "authors": [
+        "Burton, D.M."
+      ],
+      "title": "Elementary Number Theory",
+      "year": "2010",
+      "venue": "7th ed., McGraw-Hill",
+      "note": "Divisibility tests, casting out nines, and block/truncation rules for 7, 11, 13."
+    }
+  ],
   "conclusion": {
     "summary": "Proves a general alternating block divisibility test: for any d and base b with b ≡ -1 (mod d), divisibility by d is equivalent to divisibility of the alternating sum of b-ary blocks. Instantiated for d ∈ {7, 11, 13, 101} with respective bases b ∈ {1000, 10, 1000, 100}.",
     "implications": "The framework shows that divisibility rules for 7, 11, 13, and 101 are all instances of a single pattern determined by the congruence b ≡ -1 (mod d). More generally, b^k ≡ -1 (mod d) yields a k-digit alternating block sum rule. This unification suggests a complete classification of 'alternating sum' divisibility rules for all d.",
