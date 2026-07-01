@@ -10,8 +10,12 @@
   "leanFile": {
     "path": "Proofs/HyperbolicLawCosinesModelOQ0301.lean",
     "namespace": "HyperbolicLawCosines",
-    "imports": ["Mathlib"],
-    "opens": ["Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
     "axiomCount": 0,
     "sorries": 0,
     "lineCount": 191,
@@ -152,5 +156,34 @@
       "Transport the derivation to the Poincaré disk model via the explicit isometry",
       "Formalize transitivity of O⁺(2,1) to make the vertex-at-apex reduction a theorem"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": [
+        "William F. Reynolds"
+      ],
+      "title": "Hyperbolic Geometry on a Hyperboloid",
+      "year": 1993,
+      "venue": "American Mathematical Monthly 100(5), 442–455",
+      "note": "Derives hyperbolic trigonometry, including the law of cosines, directly from the upper sheet ⟨u,u⟩=−1 of the Minkowski hyperboloid model used here."
+    },
+    {
+      "authors": [
+        "John G. Ratcliffe"
+      ],
+      "title": "Foundations of Hyperbolic Manifolds",
+      "year": 2019,
+      "venue": "Springer, Graduate Texts in Mathematics 149 (3rd ed.)",
+      "note": "Hyperboloid (Lorentzian) model and derivation of the hyperbolic law of cosines cosh c = cosh a cosh b − sinh a sinh b cos C."
+    },
+    {
+      "authors": [
+        "James W. Anderson"
+      ],
+      "title": "Hyperbolic Geometry",
+      "year": 2005,
+      "venue": "Springer (Springer Undergraduate Mathematics Series, 2nd ed.)",
+      "note": "Standard undergraduate reference for hyperbolic trigonometric laws."
+    }
+  ]
 }

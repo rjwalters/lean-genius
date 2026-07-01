@@ -258,5 +258,34 @@
       "significance": "Provides the isoceles criterion and right-angle specialization for hyperbolic triangles, useful in classification and computation in hyperbolic geometry and Thurston's geometrization program."
     }
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "John G. Ratcliffe"
+      ],
+      "title": "Foundations of Hyperbolic Manifolds",
+      "year": 2019,
+      "venue": "Springer, Graduate Texts in Mathematics 149 (3rd ed.)",
+      "note": "Contains the hyperbolic law of sines sin A / sinh a = sin B / sinh b = sin C / sinh c."
+    },
+    {
+      "authors": [
+        "William F. Reynolds"
+      ],
+      "title": "Hyperbolic Geometry on a Hyperboloid",
+      "year": 1993,
+      "venue": "American Mathematical Monthly 100(5), 442–455",
+      "note": "Derives the full hyperbolic trigonometry (sine and cosine laws) from the hyperboloid model."
+    },
+    {
+      "authors": [
+        "James W. Anderson"
+      ],
+      "title": "Hyperbolic Geometry",
+      "year": 2005,
+      "venue": "Springer (Springer Undergraduate Mathematics Series, 2nd ed.)",
+      "note": "Discusses the law of sines and isoceles-triangle characterizations in the hyperbolic plane."
+    }
+  ]
 }

@@ -128,5 +128,35 @@
       "relationship": "shared-corollary",
       "description": "The angle-bisector length formula is developed as its own entry from the scalar Stewart's theorem; here the same formula $(b+c)^2\\lVert A-D\\rVert^2 = bc((b+c)^2 - a^2)$ is obtained as a direct specialization of the coordinate-free master identity."
     }
+  ],
+  "references": [
+    {
+      "authors": [
+        "H. S. M. Coxeter",
+        "S. L. Greitzer"
+      ],
+      "title": "Geometry Revisited",
+      "year": 1967,
+      "venue": "Mathematical Association of America (New Mathematical Library 19)",
+      "note": "Classic exposition of Stewart's theorem b²m + c²n = a(d² + mn) and Apollonius' median theorem."
+    },
+    {
+      "authors": [
+        "Nathan Altshiller-Court"
+      ],
+      "title": "College Geometry: An Introduction to the Modern Geometry of the Triangle and the Circle",
+      "year": 1952,
+      "venue": "Barnes & Noble",
+      "note": "Detailed treatment of Stewart's theorem, cevians, and the internal angle-bisector length formula."
+    },
+    {
+      "authors": [
+        "Matthew Stewart"
+      ],
+      "title": "Some General Theorems of Considerable Use in the Higher Parts of Mathematics",
+      "year": 1746,
+      "venue": "Edinburgh",
+      "note": "Original statement of the cevian length identity now known as Stewart's theorem."
+    }
   ]
 }

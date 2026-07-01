@@ -259,5 +259,34 @@
       "significance": "Establishes that there are no non-trivial similar triangles in hyperbolic geometry and exhibits the explicit angle-to-side map, completing the basic congruence theory alongside the laws of cosines and sines."
     }
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "John G. Ratcliffe"
+      ],
+      "title": "Foundations of Hyperbolic Manifolds",
+      "year": 2019,
+      "venue": "Springer, Graduate Texts in Mathematics 149 (3rd ed.)",
+      "note": "Second law of cosines cosh c = (cos C + cos A cos B)/(sin A sin B) expressing sides via angles — basis of AAA congruence."
+    },
+    {
+      "authors": [
+        "William P. Thurston"
+      ],
+      "title": "Three-Dimensional Geometry and Topology, Volume 1",
+      "year": 1997,
+      "venue": "Princeton University Press",
+      "note": "Explains the rigidity of hyperbolic triangles: angles determine the triangle, so there are no non-trivial similar triangles."
+    },
+    {
+      "authors": [
+        "James W. Anderson"
+      ],
+      "title": "Hyperbolic Geometry",
+      "year": 2005,
+      "venue": "Springer (Springer Undergraduate Mathematics Series, 2nd ed.)",
+      "note": "Treats hyperbolic congruence criteria and the absence of similarity in hyperbolic geometry."
+    }
+  ]
 }
