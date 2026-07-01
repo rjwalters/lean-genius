@@ -108,6 +108,21 @@
       "targetId": "erdos-1018-oq-04-incomplete-01",
       "relationship": "extends",
       "description": "Parent: the axiomatized topological completion whose planar edge-bound sorry this entry's threshold makes precise and verifies."
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "foundation",
+      "description": "Source of the bound: Euler's V − E + F = 2 yields |E| ≤ 3n − 6 for simple planar graphs, the exact inequality this entry shows Kₙ violates for n ≥ 5."
+    },
+    {
+      "targetId": "erdos-1018",
+      "relationship": "ancestor",
+      "description": "Root of the problem chain: Erdős #1018 asks when dense graphs must contain non-planar subgraphs; the Kₙ edge-count threshold proved here is the elementary first-moment core of the OQ-04 density argument."
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Companion planarity result: the four-colour theorem concerns colourings of planar graphs, while this entry concerns the edge-count certificate (|E| > 3n − 6) that detects non-planarity — K₅ being the first complete graph it rules out."
     }
   ],
   "references": [
