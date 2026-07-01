@@ -153,32 +153,32 @@
   "sorries": 0,
   "references": [
     {
-      "authors": "I. Todhunter",
+      "authors": "Isaac Todhunter",
       "title": "Spherical Trigonometry, for the Use of Colleges and Schools",
       "year": 1886,
-      "venue": "Macmillan, 5th ed.",
-      "note": "Classical derivation of the spherical law of cosines."
+      "venue": "Macmillan, 5th ed., Chapter III",
+      "note": "Classical derivation of the spherical law of cosines cos c = cos a cos b + sin a sin b cos C reproduced here via unit vectors."
     },
     {
-      "authors": "M. do Carmo",
-      "title": "Differential Geometry of Curves and Surfaces",
-      "year": 2016,
-      "venue": "Dover, 2nd ed.",
-      "note": "Geodesic triangles on the sphere and inner-product formulation."
+      "authors": "Marcel Berger",
+      "title": "Geometry I",
+      "year": 1987,
+      "venue": "Springer, Chapter 18 (Spherical geometry)",
+      "note": "Modern vector treatment of spherical triangles on S², matching this entry's ℝ³ unit-vector and dot-product approach."
     },
     {
-      "authors": "W. Gellert et al. (eds.)",
+      "authors": "W. Gellert, S. Gottwald, M. Hellwich, H. Kästner and H. Küstner (eds.)",
       "title": "The VNR Concise Encyclopedia of Mathematics",
       "year": 1989,
-      "venue": "Van Nostrand Reinhold, 2nd ed.",
-      "note": "Reference formulas of spherical trigonometry."
+      "venue": "Van Nostrand Reinhold, 2nd ed., §12 (Spherical trigonometry)",
+      "note": "Reference statement of the spherical cosine and sine rules and their interrelation."
     },
     {
       "authors": "The mathlib Community",
-      "title": "Mathlib4: InnerProductSpace and EuclideanSpace API",
+      "title": "EuclideanSpace ℝ (Fin 3), inner products, and Real.cos/Real.sin in Mathlib",
       "year": 2024,
       "venue": "leanprover-community/mathlib4",
-      "note": "Inner products and orthogonal projections in ℝ³ used in the proof."
+      "note": "Provides the inner-product-space and trigonometric API used to encode arc-length sides and dihedral angles and prove the identity."
     }
   ]
 }

@@ -206,32 +206,32 @@
   "sorries": 0,
   "references": [
     {
-      "authors": "T. M. Apostol",
-      "title": "Introduction to Analytic Number Theory",
-      "year": 1976,
-      "venue": "Springer, Undergraduate Texts in Mathematics, ch. 2",
-      "note": "Multiplicative arithmetic functions, σ(n) and the prime-power formula."
-    },
-    {
       "authors": "G. H. Hardy and E. M. Wright",
       "title": "An Introduction to the Theory of Numbers",
       "year": 2008,
-      "venue": "Oxford Univ. Press, 6th ed.",
-      "note": "Divisor functions and perfect/abundant number classification."
+      "venue": "Oxford University Press, 6th ed., §16–17",
+      "note": "Standard development of σ(n), its multiplicativity, and the prime-power formula σ(p^k) = (p^{k+1}−1)/(p−1) formalized here."
     },
     {
-      "authors": "L. E. Dickson",
-      "title": "History of the Theory of Numbers, Vol. I: Divisibility and Primality",
-      "year": 1919,
-      "venue": "Carnegie Institution of Washington",
-      "note": "Historical account of perfect, abundant, deficient and amicable numbers."
+      "authors": "Tom M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer, Chapter 2",
+      "note": "Treats σ as a multiplicative arithmetic function and its Dirichlet-convolution structure, the properties proved in this entry."
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "De numeris amicabilibus (On amicable numbers)",
+      "year": 1747,
+      "venue": "Opuscula varii argumenti",
+      "note": "Euler's foundational study of σ(n) and perfect/abundant/deficient classification, the number-classification aspect of this entry."
     },
     {
       "authors": "The mathlib Community",
-      "title": "Mathlib4: NumberTheory.Divisors and ArithmeticFunction.sigma",
+      "title": "Nat.sigma, ArithmeticFunction.IsMultiplicative, and Nat.Coprime in Mathlib",
       "year": 2024,
       "venue": "leanprover-community/mathlib4",
-      "note": "σ arithmetic function, multiplicativity and divisor-sum API used here."
+      "note": "Provides the σ arithmetic function and multiplicativity API on which the concrete values and classification are built."
     }
   ]
 }

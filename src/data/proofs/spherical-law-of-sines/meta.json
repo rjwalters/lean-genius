@@ -156,32 +156,32 @@
   ],
   "references": [
     {
-      "authors": "I. Todhunter",
+      "authors": "Isaac Todhunter",
       "title": "Spherical Trigonometry, for the Use of Colleges and Schools",
       "year": 1886,
-      "venue": "Macmillan, 5th ed.",
-      "note": "Classical derivation of the spherical law of sines."
+      "venue": "Macmillan, 5th ed., Chapter III",
+      "note": "Classical statement of the spherical law of sines sin a / sin α = sin b / sin β = sin c / sin γ formalized in this entry."
     },
     {
-      "authors": "M. do Carmo",
-      "title": "Differential Geometry of Curves and Surfaces",
-      "year": 2016,
-      "venue": "Dover, 2nd ed.",
-      "note": "Geodesic triangles on the sphere and their trigonometric relations."
+      "authors": "Marcel Berger",
+      "title": "Geometry I",
+      "year": 1987,
+      "venue": "Springer, Chapter 18 (Spherical geometry)",
+      "note": "Vector derivation of the sine rule via the scalar triple product of the vertex unit vectors, the method used here."
     },
     {
-      "authors": "W. Gellert et al. (eds.)",
-      "title": "The VNR Concise Encyclopedia of Mathematics",
-      "year": 1989,
-      "venue": "Van Nostrand Reinhold, 2nd ed.",
-      "note": "Reference formulas of spherical trigonometry."
+      "authors": "Glen Van Brummelen",
+      "title": "Heavenly Mathematics: The Forgotten Art of Spherical Trigonometry",
+      "year": 2013,
+      "venue": "Princeton University Press",
+      "note": "Historical and geometric account of the spherical sine and cosine laws, giving context for this formalization."
     },
     {
       "authors": "The mathlib Community",
-      "title": "Mathlib4: InnerProductSpace, cross product and determinant API",
+      "title": "EuclideanSpace ℝ (Fin 3), crossProduct, and Real.sin in Mathlib",
       "year": 2024,
       "venue": "leanprover-community/mathlib4",
-      "note": "Cross-product/determinant identities in ℝ³ used in the proof."
+      "note": "Supplies the cross-product / triple-product and trigonometric API used to relate side and angle sines."
     }
   ]
 }

@@ -131,32 +131,32 @@
   ],
   "references": [
     {
-      "authors": "W. Feller",
-      "title": "An Introduction to Probability Theory and Its Applications, Vol. I",
+      "authors": "William Feller",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. 1",
       "year": 1968,
-      "venue": "Wiley, 3rd ed., ch. II",
-      "note": "The stars-and-bars occupancy model and its counting formula."
+      "venue": "Wiley, 3rd ed., Chapter II",
+      "note": "Origin of the 'stars and bars' occupancy argument counting weak compositions as C(n+k−1, n), the identity formalized here."
     },
     {
-      "authors": "R. P. Stanley",
+      "authors": "Richard P. Stanley",
       "title": "Enumerative Combinatorics, Vol. 1",
       "year": 2011,
-      "venue": "Cambridge Univ. Press, 2nd ed.",
-      "note": "Weak compositions and multiset coefficients C(n+k-1, n)."
+      "venue": "Cambridge University Press, 2nd ed., §1.2",
+      "note": "Rigorous treatment of multiset and weak-composition counting via the stars-and-bars bijection used in this proof."
     },
     {
-      "authors": "J. H. van Lint and R. M. Wilson",
-      "title": "A Course in Combinatorics",
-      "year": 2001,
-      "venue": "Cambridge Univ. Press, 2nd ed.",
-      "note": "Bijective proof of the multiset/composition count."
+      "authors": "Ronald L. Graham, Donald E. Knuth and Oren Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley, 2nd ed., §5.3",
+      "note": "Develops multichoose numbers ((n multichoose k)) and their C(n+k−1, n) formula, the exact statement verified here."
     },
     {
       "authors": "The mathlib Community",
-      "title": "Mathlib4: Sym, Finset and Nat.multichoose API",
+      "title": "Nat.choose, Finset.sum, and Sym / multiset cardinality in Mathlib",
       "year": 2024,
       "venue": "leanprover-community/mathlib4",
-      "note": "Multiset and cardinality machinery underlying the formalization."
+      "note": "Provides the binomial-coefficient and finitely-supported-function API used to count {f : Fin k → ℕ // ∑ f = n}."
     }
   ]
 }

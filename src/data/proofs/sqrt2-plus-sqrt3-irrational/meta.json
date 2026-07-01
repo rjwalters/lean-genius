@@ -139,29 +139,29 @@
       "authors": "G. H. Hardy and E. M. Wright",
       "title": "An Introduction to the Theory of Numbers",
       "year": 2008,
-      "venue": "Oxford Univ. Press, 6th ed., ch. IV",
-      "note": "Irrationality of surds and elementary irrationality arguments."
+      "venue": "Oxford University Press, 6th ed., §4 (Irrational numbers)",
+      "note": "Classical treatment of irrationality of square roots and their combinations, the setting of this √2 + √3 argument."
     },
     {
-      "authors": "I. Niven",
+      "authors": "Ivan Niven",
       "title": "Irrational Numbers",
       "year": 1956,
-      "venue": "Mathematical Association of America, Carus Monograph 11",
-      "note": "Systematic treatment of irrationality proofs including sums of square roots."
+      "venue": "Mathematical Association of America (Carus Monograph 11)",
+      "note": "Standard reference on irrationality proofs, including sums of surds handled by squaring and reduction as done here."
     },
     {
-      "authors": "M. Aigner and G. M. Ziegler",
-      "title": "Proofs from THE BOOK",
-      "year": 2018,
-      "venue": "Springer, 6th ed.",
-      "note": "Classic short irrationality proofs by contradiction."
+      "authors": "Michael Spivak",
+      "title": "Calculus",
+      "year": 2008,
+      "venue": "Publish or Perish, 4th ed., Chapter 2",
+      "note": "Presents the squaring-and-contradiction technique used to reduce irrationality of √2 + √3 to that of √6."
     },
     {
       "authors": "The mathlib Community",
-      "title": "Mathlib4: irrational_sqrt_natCast_iff and Irrational API",
+      "title": "Irrational, irrational_sqrt_natCast_iff, and Nat.Prime in Mathlib",
       "year": 2024,
       "venue": "leanprover-community/mathlib4",
-      "note": "Irrationality of √n for non-square n, used directly for √6."
+      "note": "Provides the irrationality predicate and the √n irrationality criterion invoked to show √6 (hence √2 + √3) is irrational."
     }
   ]
 }
