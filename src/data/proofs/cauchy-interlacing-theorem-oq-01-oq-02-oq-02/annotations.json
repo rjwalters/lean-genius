@@ -11,6 +11,17 @@
     "relatedConcepts": ["positive semidefinite operators", "orthogonal compression", "Rayleigh quotient", "orthogonal projection adjoint"]
   },
   {
+    "id": "ann-poincare-hypothesis-package",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-02",
+    "range": { "startLine": 80, "endLine": 92 },
+    "type": "technique",
+    "title": "The Shared Poincaré Hypothesis Package (Rayleigh Agreement)",
+    "content": "The three eigenvalue corollaries share one `variable` block that abstracts exactly the data of Poincaré separation: the operator `T` with antitone eigendata `(b, lam)` on `V`, a codimension-`m` subspace `H` of dimension `n`, a symmetric operator `TH` on `H` with antitone eigendata `(bH, mu)`, and — the crucial hypothesis — `hRayleigh`, stating that `TH`'s Rayleigh quotient on `H` agrees pointwise with `T`'s. This agreement is the ONLY link between the compression and the full operator that the corollaries need; because it is passed as a hypothesis rather than derived, the file never re-opens the spectral theorem. The explicit `include T b hT ... hRayleigh` forces Lean to thread these into every proof body even though several appear only through `poincare_separation`.",
+    "mathContext": "Rayleigh agreement: for all y ∈ H, re⟪TH y, y⟫/‖y‖² = re⟪T y, y⟫/‖y‖². This single identity, plus the two Poincaré bounds λ_{k+m} ≤ μ_k ≤ λ_k, yields every corollary below.",
+    "significance": "supporting",
+    "relatedConcepts": ["Poincaré separation", "Rayleigh quotient", "Lean include directive", "hypothesis abstraction"]
+  },
+  {
     "id": "ann-compress-eigenvalues-nonneg",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-02",
     "range": { "startLine": 98, "endLine": 101 },
