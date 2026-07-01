@@ -99,7 +99,23 @@
       "significance": "medium"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "baire-category-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “The Uniform Boundedness Principle from Baire's Theorem”. Derives the Banach–Steinhaus theorem (Uniform Boundedness Principle) directly from the gallery's own Baire category theorem (BaireCategoryTheoremOQ01.baire_nonempty_interior) rather than Mathlib's packaged banach_steinhaus: a pointwise-bounded family g : ι →…"
+    },
+    {
+      "targetId": "baire-category-theorem-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “A Complete Metric Space with No Isolated Points Has Cardinality ≥ 𝔠”. Sharpens the parent Baire-category uncountability result to an explicit cardinal floor: a nonempty complete metric space with no isolated points (a PerfectSpace) has cardinality at least the continuum, 𝔠 ≤ #α — and more generally every nonempty p…"
+    },
+    {
+      "targetId": "baire-category-theorem-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Perfect Complete Metric Spaces Have at Least the Cardinality of the Continuum”. The parent entry derives the uncountability of ℝ from the Baire category theorem."
+    }
+  ],
   "references": [
     {
       "title": "René-Louis Baire, Sur les fonctions de variables réelles",
