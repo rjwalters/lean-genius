@@ -171,12 +171,7 @@
   "crossReferences": [
     {
       "relationship": "extends",
-      "description": "OQ-01 is the central open question of the parent Erdős #101 formalisation; this file records the formal Σ₂ statement and the small-case lemmas it subsumes.",
-      "targetId": "erdos-101"
-    },
-    {
-      "relationship": "uses",
-      "description": "Reuses `PlanarPointSet`, `collinear`, `NoFiveCollinear`, `fourPointLineCount`, `improved_upper_bound`, `fourPointLineCount_lt_four` from the parent file.",
+      "description": "OQ-01 is the central open question of the parent Erdős #101 formalisation; this file records the formal Σ₂ statement and the small-case lemmas it subsumes, reusing `PlanarPointSet`, `collinear`, `NoFiveCollinear`, `fourPointLineCount`, `improved_upper_bound`, and `fourPointLineCount_lt_four` from the parent file.",
       "targetId": "erdos-101"
     }
   ],
