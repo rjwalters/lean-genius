@@ -2012,3 +2012,47 @@ toolkit needed to attack it.
 2. Discharge abstract door-graph `adj` fields for `d ≥ 2` from `gridNeighbor_spec` +
    `GridGlued.{ne,shares_facet}`, `GridGlued_symm`, `gridFacet_unique_neighbor`.
 3. Phase 2: last-face door oddness induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-30 (researcher-1) — Geometric boundary faces localized to the top facet
+
+**Mode**: ACT (CONTINUE Phase-1, next-step "increase-direction boundary_face characterization").
+**Outcome**: PROGRESS — ran the per-vertex coordinate evaluation to its conclusion. Added a
+"Geometric boundary faces are localized to the top facet" section to `SpernerNDimOQ02.lean`
+(**+4 theorems, ~90 L**). **Docker build VERIFIED** (`docker-build.sh Proofs.SpernerNDimOQ02`,
+`Built Proofs.SpernerNDimOQ02 (20s)`, 7745 jobs, exit 0); still **0-sorry, 0-axiom** (new decls
+use only `coord_incDir_eq_zero_iff`, `miss_not_boundary_face`, `incDir_surj_complement`, `omega`,
+`rw`, `simp`, `by_contra` — no `native_decide`). File now **2040 L / 99 theorems** (rebased onto
+the #31750-restored + `gridNeighbor_involutive` base).
+
+### What was delivered
+- **`incDir_boundary_face_imp_last (s c) (h)`** `: (∀ j ≠ incDir c, (verts j).coords (incDir c) = 0)
+  → incDir c = Fin.last d`. The last chain vertex (value `d`), if not the omitted vertex, would
+  need `d = (Fin.last d).val ≤ c.val` by `coord_incDir_eq_zero_iff`, impossible for `c : Fin d`.
+- **`boundary_face_imp_last (s) (hd : 2 ≤ d) (k) (h)`** `: (∀ j ≠ k, (verts j).coords k = 0)
+  → k = Fin.last d`. Unifies both cases: `k = miss` excluded by `miss_not_boundary_face`;
+  `k = incDir c` forced to the top by the lemma above (via `incDir_surj_complement`).
+- **`gridVertices_boundary_face_imp_last`** — carrier (`SpernerNDim.onFace`) form, the shape a
+  total `adj` discharges directly.
+- **`zero_not_boundary_face (s) (hd : 2 ≤ d)`** `: ¬ (∀ j ≠ 0, (verts j).coords 0 = 0)`. Facet `0`
+  is **never** a geometric boundary face.
+
+### Why this matters (sharpens the frontier, does NOT close it)
+`gridNeighbor` sends BOTH index-level boundary facets `{0, Fin.last d}` to `none`
+(`gridNeighbor_eq_none_iff`) — a *within-chain* artifact of `pivotSimplex`, not the geometry.
+This session proves the **geometric** `none`-fibre of a Freudenthal cell is at most the singleton
+`{Fin.last d}`, strictly inside `{0, Fin.last d}`. Consequence: **facet `0` must carry a
+cross-chain pivot partner** — it is precisely the facet the cross-Kuhn gluing construction still
+has to produce, and it is never a genuine `∂Δ_N` door. This localizes the remaining obligation
+from "the 2-element boundary index set" down to "facet `0` interior to `Δ_N`".
+
+### ⚠️ Frontier UNCHANGED (the genuine blocker — same as all prior sessions)
+Still the **cross-chain gluing**: constructing the cross-`miss` partner for facet `0` (now
+identified as the sole non-top facet without a within-chain partner) — or proving facet `0` of a
+`Δ_N`-boundary cell lies on `∂Δ_N`. This session is the coordinate-evaluation payoff that names
+*which* facet the gluing must address; the construction itself (≳ several hundred lines) is untouched.
+
+### Next steps
+1. **(crux, unchanged)** Cross-`miss` partner for facet `0`, or `0 ∈ ∂Δ_N` proof.
+2. Define a total `adj` with geometric none-fibre exactly `{Fin.last d}` on interior cells; then
+   `boundary_face` via `gridVertices_boundary_face_imp_last`.
+3. Assemble `SpernerTriangulation`; Phase 2 door oddness induction on `d`; apply `sperner_ndim`.
