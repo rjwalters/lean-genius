@@ -3,6 +3,38 @@
   "title": "Kakutani Fixed Point Theorem for Set-Valued Maps",
   "slug": "schauder-fixed-point-oq-03",
   "description": "Formalizes the Kakutani fixed point theorem framework: set-valued maps, upper hemicontinuity, and the main theorem for compact convex sets. Recovers Brouwer as a corollary.",
+  "references": [
+    {
+      "authors": "Shizuo Kakutani",
+      "title": "A Generalization of Brouwer's Fixed Point Theorem (Duke Mathematical Journal 8)",
+      "year": 1941,
+      "note": "The Kakutani fixed point theorem for upper-hemicontinuous set-valued maps, formalized here."
+    },
+    {
+      "authors": "L. E. J. Brouwer",
+      "title": "Über Abbildung von Mannigfaltigkeiten (Mathematische Annalen 71)",
+      "year": 1911,
+      "note": "Brouwer's fixed point theorem, recovered as a corollary of Kakutani's."
+    },
+    {
+      "authors": "John F. Nash",
+      "title": "Equilibrium Points in n-Person Games (Proc. National Academy of Sciences 36)",
+      "year": 1950,
+      "note": "The classic application of Kakutani's theorem to the existence of Nash equilibria."
+    },
+    {
+      "authors": "Kim C. Border",
+      "title": "Fixed Point Theorems with Applications to Economics and Game Theory",
+      "year": 1985,
+      "note": "Cambridge University Press. Set-valued maps, upper hemicontinuity, and Kakutani's theorem."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: convexity, compactness and set-valued map infrastructure",
+      "year": 2024,
+      "note": "Compact-convex sets and continuity structures underlying the Kakutani framework."
+    }
+  ],
   "meta": {
     "author": "Kakutani (1941)",
     "date": "2026",

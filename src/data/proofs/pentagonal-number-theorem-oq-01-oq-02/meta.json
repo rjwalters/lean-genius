@@ -22,6 +22,38 @@
     "sorries": 0
   },
   "description": "Answers the parent's second open question — derive Euler's partition recurrence for p(n) as a corollary — by isolating its true analytic engine: the formal power-series reciprocal identity P(X)·∏_{m≥1}(1−Xᵐ) = 1, where P(X)=∑ p(n)Xⁿ is the partition generating function (Mathlib's Nat.Partition.genFun with the trivial character). The proof multiplies the two convergent infinite products factor-by-factor (Multipliable.tprod_mul), each combined factor (∑_j X^{(i+1)j})·(1−X^{i+1}) collapsing to 1 by the geometric-series identity, so the whole product is 1. Reading off the n-th coefficient (PowerSeries.coeff_mul) gives Euler's recurrence in Cauchy-convolution form ∑_{a+b=n} p(a)·c_b = [n=0], and solving for p(n) yields the explicit recurrence p(n) = −∑_{k<n} p(k)·c_{n−k}. The Euler coefficients c_b = [Xᵇ]∏(1−Xᵐ) = ∑_{q∈distincts b}(−1)^{#parts} are supplied by the parent's verified coeff_tprod_pent. All 0-sorry, 0-axiom. The famous pentagonal indexing p(n)=∑(−1)^{k−1}(p(n−g_k)+p(n−g_{−k})) is the only conditional step, gated on the identity ∑_{q∈distincts b}(−1)^{#parts}=pentSeriesCoeff b — Franklin's involution, the parent entry's stated OPEN CORE and still absent from Mathlib.",
+  "references": [
+    {
+      "authors": "Leonhard Euler",
+      "title": "Introductio in analysin infinitorum, Vol. 1",
+      "year": 1748,
+      "note": "The pentagonal number theorem and the partition recurrence p(n)=Σ(−1)^{k−1}[p(n−g_k)+p(n−g_k')] derived here."
+    },
+    {
+      "authors": "George E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": 1976,
+      "note": "Cambridge University Press. The generating function ∏(1−Xⁿ) and Euler's recurrence for p(n)."
+    },
+    {
+      "authors": "Herbert S. Wilf",
+      "title": "generatingfunctionology (3rd ed.)",
+      "year": 2006,
+      "note": "A K Peters. Formal power-series reciprocals P(X)·∏(1−Xᵐ)=1, the analytic engine isolated in this entry."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": 2008,
+      "note": "Oxford University Press. Partitions, generating functions, and the pentagonal number theorem."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: PowerSeries and Nat.Partition infrastructure",
+      "year": 2024,
+      "note": "Formal power series over ℤ and the partition function used to state P(X)·∏(1−Xᵐ)=1."
+    }
+  ],
   "meta": {
     "status": "verified",
     "tags": [

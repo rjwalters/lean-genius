@@ -3,6 +3,38 @@
   "title": "De Gua's Theorem: The 3-D Pythagorean Theorem",
   "slug": "pythagorean-theorem-oq-06",
   "description": "For a trirectangular tetrahedron — a tetrahedron with three mutually perpendicular edges meeting at one vertex — the square of the area of the face opposite that vertex equals the sum of the squares of the areas of the three right-angle faces: Area(ABC)² = Area(OAB)² + Area(OBC)² + Area(OCA)². This is the natural three-dimensional analogue of the Pythagorean theorem.",
+  "references": [
+    {
+      "authors": "Jean Paul de Gua de Malves",
+      "title": "Mémoire (presented to the Académie Royale des Sciences)",
+      "year": 1783,
+      "note": "The 3-D Pythagorean theorem for a trirectangular tetrahedron, formalized in this entry."
+    },
+    {
+      "authors": "René Descartes",
+      "title": "Progymnasmata de solidorum elementis (posthumous)",
+      "year": 1650,
+      "note": "An earlier appearance of the trirectangular-tetrahedron area relation (also known to Faulhaber)."
+    },
+    {
+      "authors": "H. S. M. Coxeter",
+      "title": "Introduction to Geometry (2nd ed.)",
+      "year": 1969,
+      "note": "Wiley. Areas and orthogonality in tetrahedra, including the De Gua relation."
+    },
+    {
+      "authors": "Marcel Berger",
+      "title": "Geometry I",
+      "year": 1987,
+      "note": "Springer. Metric relations for simplices generalizing the Pythagorean theorem."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: EuclideanSpace, inner product and area (Gram determinant) infrastructure",
+      "year": 2024,
+      "note": "Orthogonality and area-squared computations used to prove the sum-of-squares of face areas."
+    }
+  ],
   "meta": {
     "author": "Jean Paul de Gua de Malves (1783), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/De_Gua%27s_theorem",
