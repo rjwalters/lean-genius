@@ -50,18 +50,18 @@ open Real
 -- Part I: Scissors Congruence
 -- ========================================================================
 
-/-- Two polyhedra are scissors congruent if one can be cut into finitely
-many polyhedral pieces that reassemble into the other. -/
-def ScissorsCongruent (P Q : Type*) : Prop :=
-  ∃ (n : ℕ), True -- Placeholder: n pieces partition P and reassemble to Q
-
-/-- Scissors congruence is reflexive. -/
-theorem scissors_congruent_refl (P : Type*) : ScissorsCongruent P P :=
-  ⟨1, trivial⟩
-
-theorem scissors_congruent_symm {P Q : Type*} (h : ScissorsCongruent P Q) :
-    ScissorsCongruent Q P :=
-  let ⟨n, _⟩ := h; ⟨n, trivial⟩
+/-
+Scissors congruence ("P can be cut into finitely many polyhedral pieces that
+reassemble into Q") is not formalized here as a standalone predicate. The
+impossibility result below is stated and proved entirely through the Dehn
+invariant obstruction (`hilbert_third_problem`, `dehn_obstruction`): if the
+cube and tetrahedron were scissors congruent, Dehn's theorem would force their
+Dehn invariants to agree, which `tetrahedron_dehn_nonzero` rules out.
+A prior revision carried a vacuous `ScissorsCongruent P Q := ∃ n, True`
+placeholder definition together with two trivial reflexivity/symmetry lemmas.
+That predicate held for every pair of types regardless of geometry and was
+load-bearing for nothing in the development, so it has been removed.
+-/
 
 -- ========================================================================
 -- Part II: Dihedral Angles of Common Polyhedra
