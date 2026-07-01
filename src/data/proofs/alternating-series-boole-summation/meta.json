@@ -46,12 +46,14 @@
       "altSum_sub_half_endpoints: the exact error identity altSum − model = −½·altSum (Δa) n m",
       "altSum_sub_half_endpoints_abs_le: the total-variation remainder bound |altSum − model| ≤ ½∑|Δa_j|",
       "sum_abs_fdiff_antitone: for a decreasing sequence the total variation telescopes, ∑|Δa_j| = a_n − a_m",
-      "altSum_sub_half_first_le_antitone: the half-first-term estimate |altSum − model| ≤ ½(a_n − a_m) for antitone a — the finite form of 'remainder ≈ half the first omitted term'"
+      "altSum_sub_half_first_le_antitone: the half-first-term estimate |altSum − model| ≤ ½(a_n − a_m) for antitone a — the finite form of 'remainder ≈ half the first omitted term'",
+      "sum_abs_fdiff_monotone / sum_abs_fdiff_of_monotone_or_antitone: the telescoping of the total variation for a monotone sequence in either direction, ∑|Δa_j| = |a_m − a_n|",
+      "altSum_sub_booleModel_le_of_iterate_monotone: the higher-order telescoping — when the K-th difference Δᴷa is monotone (either direction) the order-(K+1) Boole error collapses to (1/2^{K+1})·|(Δᴷa)_m − (Δᴷa)_n|, generalizing the antitone half-first-term estimate to every order (e.g. a convex decreasing a gets the order-2 bound (1/4)|Δa_m − Δa_n|)"
     ],
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
-    "lineCount": 180,
-    "theoremCount": 10,
+    "lineCount": 230,
+    "theoremCount": 13,
     "definitionCount": 2
   },
   "overview": {
@@ -112,6 +114,14 @@
       "endLine": 127,
       "summary": "For antitone a the total variation telescopes to a_n − a_m, giving |altSum − model| ≤ ½(a_n − a_m) — the finite form of 'remainder ≈ half the first omitted term'.",
       "mathContext": "$\\big|\\mathrm{altSum} - \\mathrm{model}\\big| \\le \\tfrac12 (a_n - a_m) \\xrightarrow{a_m\\to 0} \\tfrac12 a_n.$"
+    },
+    {
+      "id": "higher-order-telescoping",
+      "title": "Higher-Order Monotone Telescoping",
+      "startLine": 156,
+      "endLine": 230,
+      "summary": "sum_abs_fdiff_monotone / sum_abs_fdiff_of_monotone_or_antitone telescope the total variation of a monotone sequence to |a_m − a_n| (either direction). Feeding this into the order-(K+1) remainder bound gives altSum_sub_booleModel_le_of_iterate_monotone: when the K-th difference Δᴷa is monotone the error collapses to (1/2^{K+1})·|(Δᴷa)_m − (Δᴷa)_n|, the exact 'remainder ≈ leading Boole term' statement at every order.",
+      "mathContext": "$\\big|\\mathrm{altSum} - \\text{model}_{K+1}\\big| \\le \\tfrac{1}{2^{K+1}}\\,\\big|(\\Delta^K a)_m - (\\Delta^K a)_n\\big|$ when $\\Delta^K a$ is monotone; $K=0$ recovers the antitone half-first-term estimate, $K=1$ (convex decreasing $a$) gives $\\tfrac14|\\Delta a_m - \\Delta a_n|$."
     }
   ],
   "leanFile": {
@@ -122,9 +132,9 @@
       "Finset"
     ],
     "namespace": "AlternatingSeriesBooleSummation",
-    "lineCount": 180,
+    "lineCount": 230,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 13,
     "definitionCount": 2,
     "path": "Proofs/AlternatingSeriesBooleSummation.lean",
     "sorries": 0

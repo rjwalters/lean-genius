@@ -35,7 +35,11 @@ This file proves:
   the half-endpoint model by at most half the total variation `∑ |Δa_j|`;
 * `sum_abs_fdiff_antitone` / `altSum_sub_half_first_le_antitone` — for a decreasing `a` the bound
   telescopes to `(1/2)(a_n - a_m)`, so the half-first-term model is accurate to within half the
-  drop of `a` across the window — the precise finite form of "remainder ≈ half the first term".
+  drop of `a` across the window — the precise finite form of "remainder ≈ half the first term";
+* `altSum_sub_booleModel_le_of_iterate_monotone` — the order-`K` telescoping: when the `K`-th
+  difference `Δᴷa` is monotone (either direction) the order-`(K+1)` error collapses to
+  `(1/2^{K+1})·|(Δᴷa)_m - (Δᴷa)_n|`, generalizing the antitone half-first-term estimate to every
+  order (e.g. a convex decreasing `a` gets the order-`2` bound `(1/4)|Δa_m - Δa_n|`).
 
 All results are over `ℝ`, elementary, and axiom-free. Mathlib has the alternating series test and
 its bracketing/remainder bounds, but not the Boole summation identity itself.
@@ -150,6 +154,27 @@ theorem sum_abs_fdiff_antitone {a : ℕ → ℝ} (ha : Antitone a) (n m : ℕ) (
     · have : a (k + 1) ≤ a k := ha (Nat.le_succ k)
       linarith
 
+/-- For a monotone (increasing) sequence the total variation telescopes to `a_m - a_n`. -/
+theorem sum_abs_fdiff_monotone {a : ℕ → ℝ} (ha : Monotone a) (n m : ℕ) (h : n ≤ m) :
+    ∑ j ∈ Finset.Ico n m, |fdiff a j| = a m - a n := by
+  induction m, h using Nat.le_induction with
+  | base => simp
+  | succ k hk ih =>
+    rw [Finset.sum_Ico_succ_top hk, ih, fdiff, abs_of_nonneg]
+    · ring
+    · have : a k ≤ a (k + 1) := ha (Nat.le_succ k)
+      linarith
+
+/-- Either way — increasing or decreasing — the total variation of a monotone sequence over a
+window is the absolute endpoint difference `|a_m - a_n|`. -/
+theorem sum_abs_fdiff_of_monotone_or_antitone {a : ℕ → ℝ} (n m : ℕ) (h : n ≤ m)
+    (ha : Monotone a ∨ Antitone a) :
+    ∑ j ∈ Finset.Ico n m, |fdiff a j| = |a m - a n| := by
+  rcases ha with ha | ha
+  · rw [sum_abs_fdiff_monotone ha n m h, abs_of_nonneg (sub_nonneg.mpr (ha h))]
+  · rw [sum_abs_fdiff_antitone ha n m h, abs_of_nonpos (by have := ha h; linarith)]
+    ring
+
 /-- **Half-first-term remainder estimate for a decreasing sequence.** The alternating sum lies
 within `(1/2)(a_n - a_m)` of the half-endpoint model `½·((-1)^n a_n - (-1)^m a_m)`. Letting the
 upper endpoint terms tend to `0` (as for a convergent alternating series with `a → 0`) leaves the
@@ -176,5 +201,30 @@ theorem altSum_sub_booleModel_abs_le (a : ℕ → ℝ) (n m : ℕ) (h : n ≤ m)
     rw [abs_div, abs_pow, abs_pow]; norm_num
   rw [hpow]
   exact mul_le_mul_of_nonneg_left (abs_altSum_le (fdiff^[K] a) n m) (by positivity)
+
+/-- **Higher-order monotone telescoping of the Boole remainder.** If the `K`-th forward
+difference `Δᴷa` is monotone (in *either* direction), the order-`(K+1)` remainder bound
+`altSum_sub_booleModel_abs_le` telescopes — the window total variation of `Δ^{K+1}a` collapses to a
+single absolute endpoint difference of `Δᴷa`:
+
+`|∑_{j=n}^{m-1} (-1)^j a_j - (order-(K+1) Boole model)| ≤ (1/2^{K+1})·|(Δᴷa)_m - (Δᴷa)_n|`.
+
+This is the exact finite "remainder ≈ leading Boole term" statement at every order. `K = 0` with
+`a` antitone recovers `altSum_sub_half_first_le_antitone` (and now covers the increasing case too);
+higher `K` is the natural refinement for sequences with monotone higher differences — e.g. a
+convex decreasing `a` (so `Δa` is monotone) gets the order-`2` estimate
+`(1/4)·|Δa_m - Δa_n|`. -/
+theorem altSum_sub_booleModel_le_of_iterate_monotone (a : ℕ → ℝ) (n m : ℕ) (h : n ≤ m) (K : ℕ)
+    (hg : Monotone (fdiff^[K] a) ∨ Antitone (fdiff^[K] a)) :
+    |altSum a n m
+        - (∑ k ∈ Finset.range (K + 1),
+            ((-1 : ℝ) ^ k / 2 ^ (k + 1))
+              * ((-1 : ℝ) ^ n * (fdiff^[k] a) n - (-1 : ℝ) ^ m * (fdiff^[k] a) m))|
+      ≤ (1 / 2 ^ (K + 1)) * |(fdiff^[K] a) m - (fdiff^[K] a) n| := by
+  have hbound := altSum_sub_booleModel_abs_le a n m h (K + 1)
+  rw [show (fdiff^[K + 1] a) = fdiff (fdiff^[K] a) from
+        congrFun (Function.iterate_succ' fdiff K) a,
+      sum_abs_fdiff_of_monotone_or_antitone n m h hg] at hbound
+  exact hbound
 
 end AlternatingSeriesBooleSummation
