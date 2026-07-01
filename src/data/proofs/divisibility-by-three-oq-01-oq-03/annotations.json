@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-oq0103-altdigitsum-def",
+    "proofId": "divisibility-by-three-oq-01-oq-03",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "Alternating Digit Sum over ℤ",
+    "content": "altDigitSum b n is defined as the alternating sum a₀ - a₁ + a₂ - … of the base-b digits of n, computed in ℤ. Concretely it maps the digit list Nat.digits b n (least-significant-first) into ℤ and applies List.alternatingSum. Working over ℤ (rather than ℕ) is essential: alternating sums can be negative, and the divisibility/congruence statements are naturally integer statements. This is the alternating counterpart of the plain digit sum used in casting out nines.",
+    "mathContext": "$\\text{altDigitSum}_b(n) = \\sum_i (-1)^i a_i = a_0 - a_1 + a_2 - \\cdots$ where $n = \\sum_i a_i b^i$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.digits", "List.alternatingSum", "base representation", "casting out elevens"],
+    "prerequisites": ["positional notation", "Nat.digits API", "List.alternatingSum"]
+  },
+  {
+    "id": "ann-oq0103-modeq-general",
+    "proofId": "divisibility-by-three-oq-01-oq-03",
+    "range": { "startLine": 59, "endLine": 71 },
+    "type": "theorem",
+    "title": "General Alternating Casting-Out (Congruence Form)",
+    "content": "The central result: whenever the base b satisfies d ∣ b+1 (equivalently b ≡ -1 mod d), every natural number is congruent modulo d to the alternating sum of its base-b digits. The proof converts the divisibility hypothesis d ∣ b+1 into the modular hypothesis b ≡ -1 [ZMOD d] using Int.modEq_iff_dvd (with the ring rewrite -1 - b = -(b+1) and dvd_neg), then applies Mathlib's master congruence Nat.zmodeq_ofDigits_digits at residue c = -1, and finally rewrites Nat.ofDigits_neg_one to expose the alternating sum. This is the exact dual of Nat.modEq_digits_sum (which requires b ≡ 1 mod d).",
+    "mathContext": "If $d \\mid b+1$ then $n \\equiv \\text{altDigitSum}_b(n) \\pmod d$. Dual to casting out nines: there $10 \\equiv 1 \\pmod 9$; here $b \\equiv -1 \\pmod d$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.zmodeq_ofDigits_digits", "Nat.ofDigits_neg_one", "Int.modEq_iff_dvd", "casting out nines"],
+    "prerequisites": ["Int.ModEq", "Nat.ofDigits", "modular arithmetic"]
+  },
+  {
+    "id": "ann-oq0103-dvd-general",
+    "proofId": "divisibility-by-three-oq-01-oq-03",
+    "range": { "startLine": 73, "endLine": 84 },
+    "type": "theorem",
+    "title": "General Alternating Divisibility Test",
+    "content": "The divisibility-test form: when d ∣ b+1, we have d ∣ n if and only if d divides the alternating sum of the base-b digits of n. Proved by applying Nat.dvd_iff_dvd_ofDigits at c = -1 (whose hypothesis d ∣ b - (-1) = b + 1 is exactly ours) and rewriting Nat.ofDigits_neg_one. This is the dual of Nat.dvd_iff_dvd_digits_sum and the engine behind every concrete rule below.",
+    "mathContext": "If $d \\mid b+1$ then $d \\mid n \\iff d \\mid \\text{altDigitSum}_b(n)$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.dvd_iff_dvd_ofDigits", "divisibility rule", "alternating sum"],
+    "prerequisites": ["Nat.ofDigits", "divisibility in ℤ"]
+  },
+  {
+    "id": "ann-oq0103-universal-corollary",
+    "proofId": "divisibility-by-three-oq-01-oq-03",
+    "range": { "startLine": 88, "endLine": 92 },
+    "type": "theorem",
+    "title": "Universal Corollary: Every Base Tests b+1",
+    "content": "For every base b, the number b+1 divides n exactly when it divides the alternating base-b digit sum. This needs no coprimality or primality hypothesis because the required condition d ∣ b+1 becomes (b+1) ∣ (b+1), a tautology (dvd_refl after push_cast). Thus every positional numeral system carries a built-in alternating-sum divisibility test for b+1: base 10 → divisibility by 11, base 2 → by 3, base 16 → by 17.",
+    "mathContext": "$(b+1) \\mid n \\iff (b+1) \\mid \\text{altDigitSum}_b(n)$ for all bases $b$.",
+    "significance": "key",
+    "relatedConcepts": ["dvd_refl", "positional notation", "divisibility by eleven"],
+    "prerequisites": ["natural number coercion to ℤ", "push_cast"]
+  },
+  {
+    "id": "ann-oq0103-base1000-tests",
+    "proofId": "divisibility-by-three-oq-01-oq-03",
+    "range": { "startLine": 111, "endLine": 132 },
+    "type": "concept",
+    "title": "Base-1000 Group Tests: 7, 11, 13, 1001 via 1001 = 7·11·13",
+    "content": "Because 1001 = 7·11·13, we have 1000 ≡ -1 modulo each of 7, 11, 13 and 1001. Applying the general alternating divisibility test in base 1000 therefore yields simultaneous divisibility tests for all four moduli: group the decimal digits into blocks of three and alternately add and subtract the blocks. This is exactly the classical hand rule for divisibility by 7. The parent extension only remarked on this factorization in a comment; here each rule is a proven theorem obtained by a one-line application with a norm_num proof of d ∣ 1001.",
+    "mathContext": "$1000 \\equiv -1 \\pmod{7},\\ \\pmod{11},\\ \\pmod{13},\\ \\pmod{1001}$, so alternating three-digit group sums decide divisibility by all four at once.",
+    "significance": "supporting",
+    "relatedConcepts": ["1001 = 7·11·13", "divisibility by 7", "three-digit grouping"],
+    "prerequisites": ["general alternating divisibility test", "norm_num"]
+  },
+  {
+    "id": "ann-oq0103-summary",
+    "proofId": "divisibility-by-three-oq-01-oq-03",
+    "range": { "startLine": 188, "endLine": 204 },
+    "type": "theorem",
+    "title": "Master Summary Statement",
+    "content": "alternating_digit_rules_summary bundles the universal corollary (every base b tests b+1) together with the base-10 (11), base-100 (101), and base-1000 (7, 11, 13, 1001) instances into a single conjunction, giving a one-glance record of the alternating digit-sum rules formalized in this entry. Its proof is simply the tuple of the individually proved theorems.",
+    "mathContext": "A conjunction collecting the general rule and its principal instances into one statement.",
+    "significance": "context",
+    "relatedConcepts": ["summary theorem", "divisibility rules"],
+    "prerequisites": ["all preceding theorems in the file"]
+  }
+]
