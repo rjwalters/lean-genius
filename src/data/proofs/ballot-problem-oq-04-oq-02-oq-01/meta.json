@@ -25,8 +25,8 @@
     "axiomCount": 0,
     "assumptions": "1 sorry: nonCrossingCount_recurrence (the combinatorial Catalan convolution recurrence for non-crossing Finpartitions; HARD, bijection-level, no Mathlib support). 0 literal `axiom` declarations. The proved parts (nonCrossingCount_zero, and the nonCrossingCount_eq_catalan reduction) depend only on the foundational axioms propext / Classical.choice / Quot.sound; no native_decide, no Lean.ofReduceBool. Because a sorry remains, this entry is `formalized`, not `verified` — the headline equality nonCrossingCount n = catalan n is proved CONDITIONAL on the outstanding recurrence.",
     "dateAdded": "2026-06-26",
-    "lineCount": 168,
-    "theoremCount": 5,
+    "lineCount": 200,
+    "theoremCount": 6,
     "definitionCount": 0,
     "mathlibDependencies": [
       {
@@ -154,12 +154,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 168,
+    "lineCount": 200,
     "path": "Proofs/BallotProblemOQ04OQ02OQ01.lean",
     "axiomCount": 0,
     "sorries": 1,
     "definitionCount": 0,
-    "theoremCount": 5
+    "theoremCount": 6
   },
   "sorries": 1
 }
