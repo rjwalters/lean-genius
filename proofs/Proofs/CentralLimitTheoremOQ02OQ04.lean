@@ -962,6 +962,69 @@ theorem covariance_add_const_right
     rw [integral_add hg (integrable_const c), integral_const]; simp
   rw [hjoint, hmarg]; ring
 
+/-! ### Layer-cake primitives (S21 — analytic reduction for the L^p density step)
+
+The remaining content of `davydov_covariance_inequality` after the S16–S20
+*algebraic* layers (scaled-cell → simple-function → telescoping-step bound, plus
+the S19 constant-shift reduction to nonnegative variables) is the *analytic*
+passage from step functions to a general bounded nonnegative variable. That
+passage rests on the **layer-cake identity**: a nonnegative `x ∈ [0, M]` is the
+Lebesgue integral of its super-level indicators,
+`x = ∫₀^M 𝟙_{t < x} dt`. Fed pointwise at `x = f ω` and integrated in `ω`
+(Fubini), this rewrites `Cov(f, g)` as a double `t`-integral of the *indicator*
+covariances `Cov(𝟙_{f > s}, 𝟙_{g > t})`, each of which is already bounded by
+`α` via `indicator_covariance_le_alpha` — provided the super-level sets are
+measurable in the respective sub-σ-algebras (`superlevel_setOf_measurable`). -/
+
+/-- **Pointwise layer-cake identity.** For `0 ≤ x ≤ M`, the super-level
+indicator `t ↦ 𝟙_{t < x}` integrates to `x` over `[0, M]`:
+`∫₀^M 𝟙_{t < x} dt = x`. The integrand is (a.e.) the indicator of `Iio x`, so
+the interval integral equals `volume (Ioc 0 M ∩ Iio x) = volume (Ioo 0 x) = x`
+(the last step uses `0 ≤ x` and `x ≤ M`). This is the elementary atom of the
+layer-cake representation used in the analytic (`L^p` density) step of Davydov's
+inequality. -/
+theorem layer_cake_pointwise {x M : ℝ} (hx : 0 ≤ x) (hxM : x ≤ M) :
+    ∫ t in (0:ℝ)..M, (if t < x then (1:ℝ) else 0) = x := by
+  have hind : (fun t : ℝ => if t < x then (1:ℝ) else 0)
+      = (Set.Iio x).indicator (fun _ => (1:ℝ)) := by
+    funext t; simp [Set.indicator_apply, Set.mem_Iio]
+  rw [hind, intervalIntegral.integral_of_le (by linarith : (0:ℝ) ≤ M),
+    MeasureTheory.setIntegral_indicator measurableSet_Iio]
+  have hset : Set.Ioc 0 M ∩ Set.Iio x = Set.Ioo 0 x := by
+    ext t
+    simp only [Set.mem_inter_iff, Set.mem_Ioc, Set.mem_Iio, Set.mem_Ioo]
+    constructor
+    · rintro ⟨⟨h0, _⟩, hx'⟩; exact ⟨h0, hx'⟩
+    · rintro ⟨h0, hx'⟩; exact ⟨⟨h0, by linarith⟩, hx'⟩
+  rw [hset, MeasureTheory.setIntegral_const]
+  simp only [smul_eq_mul, mul_one]
+  rw [MeasureTheory.measureReal_def, Real.volume_Ioo, sub_zero, ENNReal.toReal_ofReal hx]
+
+/-- **Layer-cake representation** (`x = ∫₀^M 𝟙_{t < x} dt` for `0 ≤ x ≤ M`).
+
+The `.symm` orientation of `layer_cake_pointwise`, stated as a rewrite that
+replaces a bounded nonnegative scalar by its super-level integral. This is the
+form consumed by the analytic step: apply at `x = f ω` for a nonnegative
+`f ≤ M`, then Fubini-swap the `ω`- and `t`-integrals to expose the indicator
+covariances. -/
+theorem layer_cake_repr {x M : ℝ} (hx : 0 ≤ x) (hxM : x ≤ M) :
+    x = ∫ t in (0:ℝ)..M, (if t < x then (1:ℝ) else 0) :=
+  (layer_cake_pointwise hx hxM).symm
+
+omit [MeasurableSpace Ω] in
+/-- **Super-level sets are sub-σ-measurable.** If `X` is measurable w.r.t. a
+σ-algebra `m`, then every super-level set `{ω | t < X ω}` is `m`-measurable.
+
+This is the measurability hypothesis needed to feed the layer-cake indicators
+`𝟙_{X > t}` into `indicator_covariance_le_alpha`: the σ-algebra requirements
+`@MeasurableSet Ω (σPair 0) A` / `@MeasurableSet Ω (σPair 1) B` of the indicator
+covariance bound are discharged for `A = {X > s}`, `B = {Y > t}` exactly when
+`X`, `Y` are measurable w.r.t. `σPair 0`, `σPair 1` respectively. -/
+theorem superlevel_setOf_measurable {m : MeasurableSpace Ω}
+    {X : Ω → ℝ} (hX : Measurable[m] X) (t : ℝ) :
+    @MeasurableSet Ω m {ω | t < X ω} :=
+  measurableSet_lt measurable_const hX
+
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
 For random variables `X, Y : Ω → ℝ` with finite `L^p` norms (`p > 2`), where `X`
