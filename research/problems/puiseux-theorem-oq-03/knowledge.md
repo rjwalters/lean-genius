@@ -475,3 +475,46 @@ STILL OPEN (the genuine >1000-line part, unchanged): the ramified embedding K⸨
 HahnSeries ℚ K and the GENERAL edgeSlope = −v(root) bridge for arbitrary P ∈ K⸨x⸩[Y]. This
 session strengthens the target-field theory (monomial calculus + value group) but does not
 build the embedding. Phase: ACT.
+
+---
+
+## Session (2026-06-30, researcher-8, S09): single-edge (binomial) bridge — `edgeSlope = −v(root)` as a family
+
+S07/S08 built the valued Puiseux target field (`PuiseuxSeries K := HahnSeries ℚ K` + `addVal`)
+and the ramified-root *family* `x^{1/n}` (every ramification index, value group all of ℚ), but
+the slope ↔ root-valuation correspondence `edgeSlope = −v(root)` was realized only for the
+**single** instance `Y² − x` (`ysqMinusX_root_valuation`). This session lifts that bridge to an
+**unbounded parametric family** — the binomial `Yⁿ − x^a` (single Newton edge, support
+`{(0,a),(n,0)}`). File 1260→1315 lines, 66→71 theorems, **0 sorry / 0 axiom**
+(docker `[3071/3071]`; `#print axioms binomial_edgeSlope_eq_neg_root_valuation` =
+propext/Classical.choice/Quot.sound).
+
+* `binomial_edgeSlope (n a)` — `edgeSlope ((0,a),(n,0)) = −a/n`, general in ramification index
+  `n : ℕ` and constant valuation `a : ℚ`. One line `simp [edgeSlope]` (the `(0:ℕ)` fst casts to
+  0, `sub_zero`/`zero_sub` collapse the quotient).
+* `binomial_root (n a) (0<n)` — `(x^{a/n})ⁿ = x^a` via `puiseuxMonomial_pow` then
+  `nsmul_eq_mul, mul_comm, div_mul_cancel₀ _ hn'` (generalizes S07 `sqrt_x_sq` from a/n=1/2 to
+  arbitrary a/n; note `div_mul_cancel₀` shape `a/n * n = a`, so `mul_comm` first).
+* `binomial_root_valuation (n a)` — `v(x^{a/n}) = a/n` (instance of `puiseuxVal_monomial`).
+* **`binomial_edgeSlope_eq_neg_root_valuation (n a) (0<n)`** (capstone) — for every `n ≥ 1`,
+  `a ∈ ℚ` the binomial `Yⁿ − x^a` has a Puiseux root `t` with `tⁿ = x^a`, `v(t) = a/n`, and
+  `a/n = −edgeSlope ((0,a),(n,0))`. First `edgeSlope = −v(root)` statement holding for a whole
+  family rather than one polynomial. Proof: witness `puiseuxMonomial (a/n)`, then
+  `rw [binomial_edgeSlope]; ring`.
+* `ycubeMinusXsq_root_bridge` — non-`Y²−x` worked instance `Y³ − x²`: root `x^{2/3}`, `t³=x²`,
+  `v(t)=2/3 = −edgeSlope((0,2),(3,0))`.
+
+**Why this matters.** The combinatorial edge slope is now pinned to an actual Puiseux root
+valuation for an unbounded family (all binomials), not just the one hand-checked `Y²−x` case —
+the first genuinely parametric realization of the analytic bridge. **STILL OPEN** (unchanged,
+the >1000-line part): the general *multi-edge* bridge for arbitrary `P ∈ K⸨x⸩[Y]` and the
+ramified embedding `K⸨x⸩ ↪ HahnSeries ℚ K`. The binomial case sidesteps the embedding because a
+binomial root is an explicit monomial; a general polynomial needs the recursive Newton–Puiseux
+construction of the root series. Phase: ACT.
+
+### GOTCHA: host `bin/lake env lean` segfaults (exit 139) this session
+Even a trivial `import Mathlib` crashed with exit 139 / zero output on the host toolchain
+(olean cache incompatible with the lean binary, likely mid-rebuild by a concurrent process) —
+NOT a file error. Verified via the sanctioned `./proofs/scripts/docker-build.sh
+Proofs.PuiseuxTheoremOQ03` instead (docker healthy 29.x, `[3071/3071]`, 5.2s incremental). When
+host env-lean segfaults on *any* import, fall straight to docker rather than debugging the file.

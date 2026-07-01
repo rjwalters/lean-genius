@@ -1254,7 +1254,62 @@ theorem puiseuxVal_surjective (q : ℚ) :
     ∃ t : PuiseuxSeries K, HahnSeries.addVal ℚ K t = (q : WithTop ℚ) :=
   ⟨puiseuxMonomial q, puiseuxVal_monomial q⟩
 
+/-! ### The single-edge (binomial) bridge: `edgeSlope = −v(root)` as a family
+
+`ysqMinusX_root_valuation` realizes the slope ↔ root-valuation correspondence for the
+*single* polynomial `Y² − x`.  For a **binomial** `Yⁿ − x^a` — support `{(0,a), (n,0)}`, a
+single Newton edge — the correspondence holds as an *unbounded parametric family*: the edge
+from `(0,a)` to `(n,0)` has slope `−a/n`, and the Puiseux element `t = x^{a/n}` is a genuine
+root (`tⁿ = x^a`) carrying valuation `a/n = −edgeSlope`.  This is the first realization of
+`edgeSlope = −v(root)` for a whole family rather than one instance; the general multi-edge
+bridge (arbitrary `P ∈ K⸨x⸩[Y]`) stays open, blocked on the ramified embedding. -/
+
+/-- The single Newton edge of the binomial `Yⁿ − x^a` (support `{(0,a),(n,0)}`) has slope
+`−a/n`.  General in both the ramification index `n` and the constant valuation `a`. -/
+theorem binomial_edgeSlope (n : ℕ) (a : ℚ) :
+    edgeSlope ((0 : ℕ), a) ((n : ℕ), (0 : ℚ)) = -a / n := by
+  simp [edgeSlope]
+
+/-- The Puiseux element `x^{a/n}` is a genuine root of `Yⁿ − x^a`: raising it to the `n`-th
+power recovers the base monomial `x^a`.  Generalizes `sqrt_x_sq` (`n = 2, a = 1`) to the
+whole binomial family. -/
+theorem binomial_root (n : ℕ) (a : ℚ) (hn : 0 < n) :
+    (puiseuxMonomial (K := K) (a / n)) ^ n = puiseuxMonomial (K := K) a := by
+  have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  rw [puiseuxMonomial_pow]
+  congr 1
+  rw [nsmul_eq_mul, mul_comm, div_mul_cancel₀ _ hn']
+
+/-- The binomial root `x^{a/n}` carries valuation `a/n`. -/
+theorem binomial_root_valuation (n : ℕ) (a : ℚ) :
+    HahnSeries.addVal ℚ K (puiseuxMonomial (K := K) (a / n)) = ((a / n : ℚ) : WithTop ℚ) :=
+  puiseuxVal_monomial (a / n)
+
+/-- **`edgeSlope = −v(root)` for the whole binomial family.**  For every ramification index
+`n ≥ 1` and every constant valuation `a ∈ ℚ`, the binomial `Yⁿ − x^a` has a Puiseux root `t`
+(`tⁿ = x^a`) whose valuation `v(t) = a/n` equals the *negated* Newton-polygon edge slope
+`−edgeSlope ((0,a),(n,0))`.  This lifts the single `Y² − x` brick to an unbounded family and
+is the first statement pinning the combinatorial edge slope to an actual Puiseux root
+valuation for anything beyond one instance. -/
+theorem binomial_edgeSlope_eq_neg_root_valuation (n : ℕ) (a : ℚ) (hn : 0 < n) :
+    ∃ t : PuiseuxSeries K,
+      t ^ n = puiseuxMonomial (K := K) a ∧
+      HahnSeries.addVal ℚ K t = ((a / n : ℚ) : WithTop ℚ) ∧
+      (a / n : ℚ) = -edgeSlope ((0 : ℕ), a) ((n : ℕ), (0 : ℚ)) := by
+  refine ⟨puiseuxMonomial (a / n), binomial_root n a hn, binomial_root_valuation n a, ?_⟩
+  rw [binomial_edgeSlope n a]; ring
+
+/-- Worked instance `Y³ − x²`: the root `t = x^{2/3}` satisfies `t³ = x²`, has valuation
+`2/3`, and `2/3 = −edgeSlope ((0,2),(3,0))`.  A non-`Y²−x` witness of the family bridge. -/
+theorem ycubeMinusXsq_root_bridge :
+    ∃ t : PuiseuxSeries K,
+      t ^ 3 = puiseuxMonomial (K := K) 2 ∧
+      HahnSeries.addVal ℚ K t = ((2 / 3 : ℚ) : WithTop ℚ) ∧
+      (2 / 3 : ℚ) = -edgeSlope ((0 : ℕ), (2 : ℚ)) ((3 : ℕ), (0 : ℚ)) :=
+  binomial_edgeSlope_eq_neg_root_valuation 3 2 (by norm_num)
+
 #print axioms exists_nthRoot_of_x
 #print axioms puiseuxVal_surjective
+#print axioms binomial_edgeSlope_eq_neg_root_valuation
 
 end PuiseuxTheoremOQ03
