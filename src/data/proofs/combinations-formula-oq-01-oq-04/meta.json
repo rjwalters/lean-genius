@@ -137,5 +137,28 @@
     "definitionCount": 2,
     "additionalFiles": []
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "B. Lindström",
+      "title": "On the vector representations of induced matroids",
+      "year": 1973,
+      "venue": "Bull. London Math. Soc. 5",
+      "note": "The determinant / non-intersecting-lattice-path lemma."
+    },
+    {
+      "authors": "I. Gessel, G. Viennot",
+      "title": "Binomial determinants, paths, and hook length formulae",
+      "year": 1985,
+      "venue": "Adv. Math. 58",
+      "note": "The Lindström-Gessel-Viennot lemma for binomial-coefficient determinants."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

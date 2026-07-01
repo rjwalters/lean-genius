@@ -104,5 +104,28 @@
       "summary": "lucas_sq_sub_five_fib_sq: L(n)² − 5·F(n)² = 4·(−1)^n, derived algebraically from fib_catalan_int and the parent's bridge L(n)=2·F(n+1)−F(n) via linear_combination, exhibiting the Cassini constant 5 as the discriminant of x²−x−1."
     }
   ],
-  "sorries": []
+  "sorries": [],
+  "references": [
+    {
+      "authors": "T. Koshy",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": 2001,
+      "venue": "Wiley",
+      "note": "Fibonacci/Lucas identities, shallow diagonals of Pascal's triangle, and Cassini-type relations."
+    },
+    {
+      "authors": "S. Vajda",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section",
+      "year": 1989,
+      "venue": "Ellis Horwood",
+      "note": "Cassini and Catalan identities for Fibonacci and Lucas numbers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

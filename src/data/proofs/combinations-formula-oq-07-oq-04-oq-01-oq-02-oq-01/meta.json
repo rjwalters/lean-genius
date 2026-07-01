@@ -161,5 +161,28 @@
       "relationship": "great-great-grandparent — proves C(2n,n) = ∑ C(n,k)² and the underlying Vandermonde convolution add_choose_eq_sum_range, the p=0 symmetric root of the moment ladder this rectangular branch generalises"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "L. Comtet",
+      "title": "Advanced Combinatorics",
+      "year": 1974,
+      "venue": "Reidel",
+      "note": "Stirling numbers and power/falling-factorial moments of combinatorial sequences."
+    },
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

@@ -112,5 +112,28 @@
       "relationship": "great-grandparent — refines the weighted-row vanishing thread; reproves the quadratic full-row anchor ∑ (-1)^k k² C(n,k) = 0 (n ≥ 3) as the case j = n"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "J. Riordan",
+      "title": "Combinatorial Identities",
+      "year": 1968,
+      "venue": "Wiley",
+      "note": "Systematic treatment of binomial-sum and alternating-sum identities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

@@ -147,5 +147,28 @@
       "relationship": "great-grandparent — proves the unweighted ∑ C(n,k)² = C(2n,n) and supplies the Vandermonde range form add_choose_eq_sum_range underlying the diagonal; the r=s=0 case here, ∑ C(m,k)·C(n,k) = C(m+n,n), is its off-diagonal counterpart"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "L. Comtet",
+      "title": "Advanced Combinatorics",
+      "year": 1974,
+      "venue": "Reidel",
+      "note": "Stirling numbers and power/falling-factorial moments of combinatorial sequences."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

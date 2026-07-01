@@ -121,5 +121,28 @@
       "relationship": "ancestor — the core combinations formula entry providing binomial coefficient context"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "J. H. Conway, R. K. Guy",
+      "title": "The Book of Numbers",
+      "year": 1996,
+      "venue": "Springer",
+      "note": "Figurate numbers (triangular, tetrahedral, simplicial) and their closed forms."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

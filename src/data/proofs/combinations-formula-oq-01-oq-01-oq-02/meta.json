@@ -121,5 +121,28 @@
       "summary": "pbonacci_one_eq_fib: S 1 n = F(n+1), proved by two-step induction from pbonacci_rec at q=1 and Nat.fib_add_two — the parent result as a corollary of the general recurrence."
     }
   ],
-  "sorries": []
+  "sorries": [],
+  "references": [
+    {
+      "authors": "T. Koshy",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": 2001,
+      "venue": "Wiley",
+      "note": "Fibonacci/Lucas identities, shallow diagonals of Pascal's triangle, and Cassini-type relations."
+    },
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }

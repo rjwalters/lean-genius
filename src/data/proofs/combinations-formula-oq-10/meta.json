@@ -104,5 +104,28 @@
       "targetId": "combinations-formula-oq-02",
       "relationship": "ancestor — the core combinations formula entry providing binomial coefficient context"
     }
+  ],
+  "references": [
+    {
+      "authors": "A.-T. Vandermonde",
+      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "year": 1772,
+      "venue": "Hist. Acad. Roy. Sci.",
+      "note": "Vandermonde's convolution identity for binomial coefficients."
+    },
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for binomial-coefficient identities, hockey-stick sums, and moment computations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
   ]
 }

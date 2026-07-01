@@ -127,5 +127,28 @@
     "definitionCount": 0,
     "additionalFiles": []
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. E. Andrews, R. Askey, R. Roy",
+      "title": "Special Functions",
+      "year": 1999,
+      "venue": "Cambridge University Press",
+      "note": "The Chu-Vandermonde / Gauss ₂F₁(−n,b;c;1) terminating summation."
+    },
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones generales circa seriem infinitam",
+      "year": 1813,
+      "venue": "Comment. Soc. Reg. Sci. Gott.",
+      "note": "Gauss's hypergeometric series and its summation."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
+    }
+  ]
 }
