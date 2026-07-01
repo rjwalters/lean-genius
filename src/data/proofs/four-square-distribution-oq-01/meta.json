@@ -366,5 +366,31 @@
       "relationship": "uses",
       "description": "Lagrange's four-square theorem (every n ≥ 0 is a sum of four integer squares). Lagrange gives existence; Jacobi's formula refines this by counting representations exactly. r₄(n) ≥ 1 for all n ≥ 0 from Lagrange, and Jacobi's r₄(n) = 8·σ*(n) > 0 confirms this for n ≥ 1."
     }
+  ],
+  "references": [
+    {
+      "authors": "Jacobi, C. G. J.",
+      "title": "Fundamenta Nova Theoriae Functionum Ellipticarum",
+      "year": "1829",
+      "note": "Königsberg. Derives the four-square formula r₄(n)=8·∑_{d|n,4∤d}d from theta-function (elliptic function) identities — the result this entry axiomatizes pending modular-form machinery."
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": "2008",
+      "note": "Oxford University Press. §20.12–20.13 state and prove Jacobi's formula r₄(n)=8σ*(n) for the number of representations as four squares."
+    },
+    {
+      "authors": "Grosswald, E.",
+      "title": "Representations of Integers as Sums of Squares",
+      "year": "1985",
+      "note": "Springer. A comprehensive reference for rₖ(n) formulas, including Jacobi's four-square theorem and its modular-form proofs."
+    },
+    {
+      "authors": "Hirschhorn, M. D.",
+      "title": "The Power of q: A Personal Journey",
+      "year": "2017",
+      "note": "Springer Developments in Mathematics 49. Gives elementary q-series proofs of Jacobi's two- and four-square theorems."
+    }
   ]
 }
