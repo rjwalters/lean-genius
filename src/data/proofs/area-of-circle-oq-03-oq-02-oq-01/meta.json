@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-03-oq-02-oq-01",
   "title": "Archimedes' Half-Angle Doubling Method: Constructive Formalization",
   "slug": "area-of-circle-oq-03-oq-02-oq-01",
-  "description": "A constructive formalization of Archimedes' half-angle polygon-doubling method for computing π. The doubling identity sin(π/(2n)) = √((1−cos(π/n))/2) is derived, the inscribed half-perimeters m·sin(π/m) are shown to increase strictly under doubling while staying below π, and the sequence is proved to converge to π. An explicit O(1/m²) convergence rate π − p(m) ≤ (7/32)·π³/m² is also proved (m ≥ 4), quantifying how fast doubling approaches π. Fully verified: 0 sorries, 0 axioms.",
+  "description": "A constructive formalization of Archimedes' half-angle polygon-doubling method for computing π, done from BOTH sides. The doubling identity sin(π/(2n)) = √((1−cos(π/n))/2) is derived, the inscribed half-perimeters p(m) = m·sin(π/m) are shown to increase strictly under doubling while staying below π, and to converge to π, with an explicit O(1/m²) rate π − p(m) ≤ (7/32)·π³/m² (m ≥ 4). The circumscribed half-perimeters q(m) = m·tan(π/m) are then shown to strictly DECREASE under doubling (via the tangent double-angle identity), to stay above π, and to converge to π — yielding Archimedes' full two-sided sandwich p(m) < π < q(m), the exact shape of his 3+10/71 < π < 3+1/7 bound. Fully verified: 0 sorries, 0 axioms.",
   "meta": {
     "author": "Archimedes (c. 250 BCE), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Archimedes",
@@ -50,6 +50,16 @@
         "theorem": "Real.sin_lt",
         "description": "sin(x) < x for x > 0 — gives the inscribed upper bound p(m) < π",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.tan_two_mul",
+        "description": "tan(2x) = 2 tan x/(1 − tan²x) — the tangent double-angle identity driving the circumscribed doubling decrease q(2n) < q(n)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan"
+      },
+      {
+        "theorem": "Real.tan_pi_div_six",
+        "description": "tan(π/6) = 1/√3 — gives the circumscribed hexagon seed q(6) = 2√3",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ],
     "originalContributions": [
@@ -60,15 +70,20 @@
       "Strict monotonicity under doubling: p(n) < p(2n) for all n ≥ 1 (fully proved)",
       "Upper bound: p(m) < π for all m ≥ 1 (fully proved)",
       "Convergence: p(m) → π as m → ∞, by squeezing π·cos(π/m) ≤ p(m) < π (fully proved)",
-      "Explicit convergence rate: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4 (quadratic in 1/m), proved from the sin Taylor estimate Real.sin_bound by absorbing the quartic remainder into the cubic term — gives π − p(2ᵏ) = O(4⁻ᵏ) (fully proved)"
+      "Explicit convergence rate: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4 (quadratic in 1/m), proved from the sin Taylor estimate Real.sin_bound by absorbing the quartic remainder into the cubic term — gives π − p(2ᵏ) = O(4⁻ᵏ) (fully proved)",
+      "Circumscribed (upper-bound) side: defines the circumscribed half-perimeter q(m) = m·tan(π/m), with hexagon seed q(6) = 2√3 (fully proved)",
+      "Circumscribed overestimate: π < q(m) for all m ≥ 3, from x < tan x (fully proved)",
+      "Circumscribed strict monotone DECREASE under doubling: q(2n) < q(n) for n ≥ 3, via the tangent double-angle identity tan(π/n) = 2 tan y/(1−tan²y) with y = π/(2n) and 0 < tan²y < 1 (fully proved)",
+      "Circumscribed convergence: q(m) → π as m → ∞, since q(m) = p(m)/cos(π/m) with p(m) → π and cos(π/m) → 1 (fully proved)",
+      "Archimedes' two-sided sandwich: p(m) < π < q(m) for all m ≥ 3 — the exact logical shape of his 3+10/71 < π < 3+1/7 bound — with both envelopes converging to π (fully proved)"
     ],
     "dateAdded": "2026-06-28",
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
-    "lineCount": 276,
+    "lineCount": 441,
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
-    "definitionCount": 1
+    "theoremCount": 17,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "In 'Measurement of a Circle' (c. 250 BCE), Archimedes bounded π by inscribing and circumscribing regular polygons in a circle, starting from a hexagon (giving the trivial π > 3) and doubling the number of sides four times to reach a 96-gon: 6 → 12 → 24 → 48 → 96. The engine of the method is the half-angle step: when the central angle is halved, the new polygon's side length is recovered from the old one by extracting a square root, an instance of the identity sin(θ/2) = √((1−cos θ)/2). Archimedes performed these root extractions by hand using clever rational bounds. The parent entry (oq-03-oq-02) verified Archimedes' final numerical bounds 223/71 < π < 22/7 directly from Mathlib's precomputed π bounds; this entry instead formalizes the doubling mechanism itself, answering the open question of whether the half-angle method can be carried out constructively in Lean. The constructive content is made fully explicit through Mathlib's sqrtTwoAddSeries, which is exactly the chain of nested radicals √(2+√(2+√(2+…))) produced by iterating the half-angle step from a square.",
@@ -134,21 +149,29 @@
       "title": "Explicit Convergence Rate",
       "summary": "pi_sub_halfPerimeter_le: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4, an explicit O(1/m²) error bound. Proved from Real.sin_bound (sin x ≥ x − x³/6 − (5/96)x⁴) by absorbing x⁴ ≤ x³ into the cubic term, then scaling by m.",
       "startLine": 205,
-      "endLine": 257,
+      "endLine": 291,
       "mathContext": "With $x=\\pi/m\\le 1$, the Taylor estimate gives $\\sin x \\ge x - \\tfrac{7}{32}x^3$ (since $\\tfrac16+\\tfrac{5}{96}=\\tfrac{7}{32}$). Multiplying by $m$ and using $mx=\\pi$, $mx^3=\\pi^3/m^2$ yields $p(m)\\ge \\pi-\\tfrac{7}{32}\\pi^3/m^2$, i.e. the doubling error is $O(4^{-k})$ for $m=c\\,2^k$."
     },
     {
+      "id": "circumscribed",
+      "title": "The Circumscribed Side — Archimedes' Sandwich",
+      "summary": "Defines the circumscribed half-perimeter q(m) = m·tan(π/m), with hexagon seed q(6) = 2√3. Proves π < q(m) (m ≥ 3), strict monotone DECREASE q(2n) < q(n) (n ≥ 3) via the tangent double-angle identity, and convergence q(m) → π. Assembles the two-sided sandwich p(m) < π < q(m).",
+      "startLine": 292,
+      "endLine": 403,
+      "mathContext": "The circumscribed $m$-gon has half-perimeter $q(m)=m\\tan(\\pi/m)>\\pi$ (from $x<\\tan x$). With $y=\\pi/(2n)$, $\\tan(\\pi/n)=2\\tan y/(1-\\tan^2 y)$ gives $q(n)=q(2n)/(1-\\tan^2 y)$; since $0<\\tan^2 y<1$ (as $0<y<\\pi/4$), $q(2n)<q(n)$. And $q(m)=p(m)/\\cos(\\pi/m)\\to\\pi$. Thus $p(m)<\\pi<q(m)$ with both envelopes collapsing onto $\\pi$ — Archimedes' actual two-sided method."
+    },
+    {
       "id": "summary",
-      "title": "Summary Theorem",
-      "summary": "Packaging theorem bundling the doubling identity, hexagon seed, monotonicity, upper bound, and convergence into one statement.",
-      "startLine": 258,
-      "endLine": 276,
-      "mathContext": "The bundled result asserts the doubling radical holds for all $n \\ge 1$, $p(6) = 3$, $p(n) < p(2n)$, $p(m) < \\pi$, and $p(m) \\to \\pi$ — Archimedes' method, formalized end to end."
+      "title": "Summary Theorems",
+      "summary": "Two packaging theorems: the inscribed-only bundle (doubling identity, hexagon seed, monotonicity, upper bound, convergence) and the two-sided bundle adding the circumscribed sandwich p(m) < π < q(m), circumscribed decrease, and circumscribed convergence.",
+      "startLine": 404,
+      "endLine": 441,
+      "mathContext": "The two-sided bundle asserts $p(m)<\\pi<q(m)$ for $m\\ge 3$, $p(n)<p(2n)$, $q(2n)<q(n)$, and $p(m),q(m)\\to\\pi$ — the complete Archimedes method as he actually ran it, formalized end to end."
     }
   ],
   "conclusion": {
-    "summary": "This entry answers affirmatively the open question of whether Archimedes' half-angle doubling method can be formalized constructively. The doubling radical √((1−cos)/2) is derived for all n, the inscribed half-perimeters are exhibited as a computable nested radical, and they are proved to increase strictly under doubling, remain below π, and converge to π. Fully verified: 0 axioms, 0 sorries.",
-    "implications": "Where the parent entry verified Archimedes' final numbers from Mathlib's precomputed π bounds, this entry formalizes the algorithm that generates them and proves its convergence — making the 2,300-year-old method of exhaustion a fully machine-checked, constructive computation of π.",
+    "summary": "This entry answers affirmatively the open question of whether Archimedes' half-angle doubling method can be formalized constructively, and does so from BOTH sides. The doubling radical √((1−cos)/2) is derived for all n, the inscribed half-perimeters are exhibited as a computable nested radical and proved to increase strictly under doubling, remain below π, and converge to π (with an explicit O(1/m²) rate). The circumscribed half-perimeters q(m) = m·tan(π/m) are proved to strictly decrease under doubling, stay above π, and converge to π — giving Archimedes' full two-sided sandwich p(m) < π < q(m). Fully verified: 0 axioms, 0 sorries.",
+    "implications": "Where the parent entry verified Archimedes' final numbers from Mathlib's precomputed π bounds, this entry formalizes the algorithm that generates them — now from both the inscribed and circumscribed sides — and proves both envelopes converge to π. The two-sided bracket p(m) < π < q(m) is the exact logical form of Archimedes' 3+10/71 < π < 3+1/7, making the 2,300-year-old method of exhaustion a fully machine-checked, constructive, two-sided computation of π.",
     "openQuestions": [
       "Can Archimedes' rational square-root bounds (how he approximated √3 and the nested radicals by hand) be formalized to recover his exact 223/71 bound purely from the doubling recurrence, without invoking Mathlib's pi_gt_d4?",
       "Sharpen the convergence-rate constant: the proved bound π − p(m) ≤ (7/32)·π³/m² is not tight (the true leading term is π³/(6m²)); can the (7/32) factor be reduced to 1/6 + o(1), matching the exact second-order Taylor coefficient?"
@@ -186,10 +209,10 @@
       "Topology"
     ],
     "namespace": "AreaOfCircleOQ03OQ02OQ01",
-    "lineCount": 313,
+    "lineCount": 441,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 1,
+    "theoremCount": 17,
+    "definitionCount": 2,
     "mainTheorems": [
       "archimedes_sin_doubling",
       "archimedes_cos_doubling",
@@ -198,7 +221,15 @@
       "halfPerimeter_doubling",
       "halfPerimeter_lt_pi",
       "halfPerimeter_tendsto_pi",
-      "archimedes_doubling_method_verified"
+      "pi_sub_halfPerimeter_le",
+      "pi_sub_halfPerimeter_pow_le",
+      "circumHalfPerimeter_hexagon",
+      "pi_lt_circumHalfPerimeter",
+      "circumHalfPerimeter_doubling",
+      "circumHalfPerimeter_tendsto_pi",
+      "archimedes_sandwich",
+      "archimedes_doubling_method_verified",
+      "archimedes_two_sided_method_verified"
     ],
     "path": "Proofs/AreaOfCircleOQ03OQ02OQ01.lean",
     "sorries": 0
