@@ -1,8 +1,8 @@
 {
   "slug": "minpoly-charpoly-oq-02",
   "title": "Diagonalizable Matrices via Squarefree Minimal Polynomial",
-  "phase": "ACT",
-  "status": "blocked",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,29 +16,23 @@
   },
   "knownResults": {
     "proven": [
-      "Standard textbook fact (Axler, *Linear Algebra Done Right* 3rd ed., §8.A; Dummit–Foote, *Abstract Algebra* 3rd ed., §12.2): over an algebraically closed field, an operator is diagonalizable iff its minimal polynomial has distinct roots.",
-      "Mathlib `Module.End.isSemisimple_iff_squarefree_minpoly` (`Mathlib.LinearAlgebra.Semisimple`): for a finite-dim endomorphism over a field where minpoly is separable, `IsSemisimple` ↔ `Squarefree (minpoly K f)`.",
-      "Mathlib `Matrix.minpoly_toLin'` (`Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`): the minimal polynomial transports across the matrix–endomorphism bridge.",
-      "Mathlib `Module.End.IsSemisimple` API: definition and basic closure properties.",
-      "In-tree (S1, this PR): `Matrix.IsDiagonalizable` predicate, `Matrix.IsDiagonalizable.of_isDiag`, `Matrix.IsDiagonalizable.zero`."
+      "diagonalizable_iff_squarefree_minpoly [IsAlgClosed K][CharZero K]: M.IsDiagonalizable ↔ Squarefree (minpoly K M) — VERIFIED, 0-axiom, 0-sorry",
+      "isDiagonalizable_of_eigenbasis: eigenbasis ⇒ diagonalizable (any field), the reusable reverse-direction core",
+      "Matrix.IsDiagonalizable.squarefree_minpoly (forward, any field), Bridge B/C, similarity invariance"
     ],
     "open": [
-      "Full discharge of `diagonalizable_iff_squarefree_minpoly` (sorry in S1 scaffold).",
-      "Bridge `Matrix.IsDiagonalizable M ↔ Module.End.IsSemisimple (Matrix.toLin' M) ∧ Polynomial.Splits (algebraMap K K) (minpoly K M)` (OQ-02-OQ-02 target).",
-      "General-field version with explicit `splits` hypothesis (OQ-02-OQ-03).",
-      "Char-0 corollary: `CharZero K → ∀ M, Separable (minpoly K M)` so the `IsSemisimple` ↔ `Squarefree minpoly` API applies unconditionally (OQ-02-OQ-04)."
+      "OQ-02-OQ-03: general-field form with explicit Polynomial.Splits hypothesis (weaken [IsAlgClosed K] to perfect field + minpoly splits).",
+      "OQ-02-OQ-04: char-0 corollary that minpoly is automatically separable, so the biconditional applies unconditionally."
     ],
     "goal": "Statement and proof of `diagonalizable_iff_squarefree_minpoly`: over an algebraically closed field of characteristic zero (and, in OQ-02-OQ-03, over any field with the explicit `splits` hypothesis), `M.IsDiagonalizable ↔ Squarefree (minpoly K M)`."
   },
   "currentState": {
-    "phase": "BLOCKED",
+    "phase": "COMPLETED",
     "since": "2026-06-13T00:00:00Z",
     "iteration": 17,
-    "focus": "S13 STATE-SYNC (researcher-1, 2026-06-13): CONTENT CORRECTION — prior records (leanFiles + S12 focus) were stale, NOT dormant. They claimed MinpolyCharpolyOQ02.lean = 169 LOC, 1 sorry at line 122, '25 days dormant, no PRs since S7'. Reality on origin/main: PR #22923 (helpers) and PR #22909 (forward direction) merged AFTER S12, growing the file to 279 LOC. The FORWARD direction (diagonalizable ⇒ squarefree minpoly) is now FULLY PROVED and unconditional over any field (Matrix.IsDiagonalizable.squarefree_minpoly); matConj similarity-transport automorphism built. The SOLE remaining sorry is the REVERSE direction at line 221 inside diagonalizable_iff_squarefree_minpoly ([IsAlgClosed K][CharZero K]): squarefree minpoly ⇒ diagonalizable, via Bridge C (Module.End.isSemisimple_iff_squarefree_minpoly) + Bridge B (iSup_eigenspace_eq_top_of_isSemisimple) transported through Matrix.toLin'. This corrects a factual missed-merge, distinct from the prior 5:1 doc-only infra re-measurement churn (S6/S8/S10/S11/S12). Build NOT attempted: Docker down 2026-06-13 (verification blackout).",
-    "blockers": [
-      "Verification blackout (2026-06-13, all routes): Docker daemon HUNG (docker info rc=124) and Aristotle backend 404 (mcp-smoke-test.sh). The sole remaining sorry (reverse direction, MinpolyCharpolyOQ02.lean:221) is build-dependent; CI does not build Lean, so a blind edit could silently break the currently-green file. Mathematically unblocked — bridges pinned."
-    ],
-    "nextAction": "UNBLOCK when Docker recovers, then S15 ACT (reverse direction only). Bridges B-fwd/C/D are in-tree; the sole gap is Bridge A reverse (eigenspace decomposition -> conjugating matrix), recipe written out in state.md S14: set f:=toLin' M; minpoly K f = minpoly K M (Matrix.minpoly_toLin'); f.IsSemisimple (Bridge C); iSup eigenspace = top (Bridge B fwd); then DirectSum.IsInternal of eigenspaces -> collectedBasis -> reindex to n -> P:=Basis.toMatrix -> IsDiag(P-inv M P). Est ~50 LOC -> ~330 LOC, 0 sorries, promote to verified.",
+    "focus": "SHIPPED (VERIFIED, 0-axiom, 0-sorry): reverse direction of diagonalizable_iff_squarefree_minpoly discharged; headline biconditional fully proved.",
+    "blockers": [],
+    "nextAction": "Done. Optional follow-ups: OQ-02-OQ-03 general-field form (perfect field + splits); OQ-02-OQ-04 char-0 separability corollary.",
     "attemptCounts": {
       "total": 15,
       "currentApproach": 14,
@@ -46,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S13 STATE-SYNC (researcher-1, 2026-06-13): content correction. The forward direction of the headline theorem (diagonalizable ⇒ squarefree minpoly) is now FULLY PROVED and unconditional over any field (Matrix.IsDiagonalizable.squarefree_minpoly), shipped via PR #22909 after S12. File MinpolyCharpolyOQ02.lean is 279 LOC, 9 theorems/lemmas, 2 defs, 0 axioms, 1 sorry — the sorry is now ONLY the reverse direction at line 221 (squarefree minpoly ⇒ diagonalizable over alg-closed char-0, via Bridge B/C through Matrix.toLin'). Prior tracker records (S11/S12) incorrectly described the file as 169 LOC / dormant-since-S7 with the forward direction still open. Build not attempted (Docker down 2026-06-13).",
+    "progressSummary": "SHIPPED (researcher-1, VERIFIED 0-axiom, 0-sorry). Closed the multi-session-blocked reverse-direction sorry: diagonalizable_iff_squarefree_minpoly is now fully proved over [IsAlgClosed K][CharZero K]. Added isDiagonalizable_of_eigenbasis (change-of-basis eigenbasis bridge: P=e.toMatrix b gives P⁻¹MP=diagonal μ) and assembled the reverse direction via Bridge C (semisimple↔squarefree, minpoly_toLin') + Bridge B (eigenspaces span) + eigenspaces_iSupIndep → DirectSum.IsInternal → collectedBasis eigenbasis → reindex to n (equivOfCardEq) → the eigenbasis bridge. File now 389 LOC, 12 thm, 2 def, 0 sorries, 0 axioms. #print axioms = only propext/Classical.choice/Quot.sound.",
     "builtItems": [
       "Matrix.IsDiagonalizable (def, line 107-108): `∃ P, IsUnit P ∧ IsDiag (P⁻¹ * M * P)` — the matrix-level diagonalizability predicate as an existential over invertible similarity transforms.",
       "diagonalizable_iff_squarefree_minpoly (theorem, sorry-guarded, lines 119-122): the S1 statement of the textbook characterisation under `IsAlgClosed K + CharZero K`. Single sorry at line 122; ~59 LOC paste expected to close it per S7c PREP §5.1.",
@@ -117,7 +111,7 @@
     ]
   },
   "started": "2026-05-12T20:35:00Z",
-  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "lastUpdate": "2026-07-01",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

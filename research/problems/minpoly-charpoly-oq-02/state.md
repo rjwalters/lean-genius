@@ -527,3 +527,41 @@ No edits to Lean files, parent gallery JSON
 `knowledge.md`, or any sister-slug file. Sorry count unchanged at 1;
 axiom count unchanged at 0; lineCount unchanged at 169 (matches the
 merged S7 ACT state on `origin/main`).
+
+## S15 ACT — SHIPPED (researcher-1, 2026-07-01): reverse direction closed
+
+The sole remaining sorry (reverse direction of `diagonalizable_iff_squarefree_minpoly`
+over `[IsAlgClosed K] [CharZero K]`) is now **discharged**. File `MinpolyCharpolyOQ02.lean`
+is 389 LOC, 12 thm, 2 def, **0 sorries, 0 axioms** (`#print axioms` = only propext /
+Classical.choice / Quot.sound).
+
+Two new theorems (both VERIFIED, 0-axiom):
+
+1. `isDiagonalizable_of_eigenbasis {M} (b : Basis n K (n→K)) (μ : n → K)
+   (hb : ∀ i, toLin' M (b i) = μ i • b i) : M.IsDiagonalizable` — the reusable Bridge A
+   reverse. Witness `P = e.toMatrix b` (e = Pi.basisFun). Key steps: `LinearMap.toMatrix
+   b b (toLin' M) = diagonal μ` (via `toMatrix_apply` + `hb` + `Basis.repr_self`);
+   `toMatrix e e (toLin' M) = M` (`toMatrix_eq_toMatrix'` + `toMatrix'_toLin'`); change of
+   basis `basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix` gives
+   `P⁻¹ M P = toMatrix b b (toLin' M) = diagonal μ`, which `isDiag_diagonal` closes.
+
+2. `diagonalizable_iff_squarefree_minpoly` (relocated to end of file, after Bridges B/C).
+   Reverse assembly: `f := toLin' M`; `minpoly K f = minpoly K M` (`minpoly_toLin'`);
+   `f.IsSemisimple` (Bridge C `.mpr`); `⨆ eigenspace = ⊤` (Bridge B); `eigenspaces_iSupIndep`
+   → `DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top` → `IsInternal`;
+   `IsInternal.collectedBasis (fun μ => Module.finBasis K (eigenspace μ))`; get `Fintype`
+   on the Σ-index from `FiniteDimensional.fintypeBasisIndex` of the collected basis;
+   card equality via `Module.finrank_eq_card_basis` (both = finrank(n→K)) →
+   `Fintype.equivOfCardEq` reindex to `n`; eigenvalue `fun i => (ρ.symm i).1`,
+   eigen-equation from `collectedBasis_mem` + `mem_eigenspace_iff`.
+
+GOTCHAS: `Basis` is `Module.Basis` in v4.26 — unqualified `Basis.repr_self` /
+`toMatrix_mul_toMatrix_flip` / `reindex_apply` fail without `open Module` (qualify with
+`Module.`). `isUnit_of_mul_eq_one` deprecated → used `isUnit_of_invertible` +
+`Basis.invertibleToMatrix`. `conv_lhs => rw [← hM]` (not plain `rw`) to avoid rewriting
+`M` inside the target's `toLin' M`. The main theorem had to be MOVED after Bridges B/C
+(it originally preceded them, so couldn't reference them). Docker down (containerd) →
+`lake env lean` against main's prebuilt Mathlib.
+
+Remaining follow-ups: OQ-02-OQ-03 (general field + splits), OQ-02-OQ-04 (char-0
+separability corollary).
