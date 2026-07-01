@@ -15,13 +15,15 @@
       "odd-cycle",
       "walks",
       "combinatorics",
-      "mathlib-gap"
+      "mathlib-gap",
+      "odd-girth",
+      "quantitative"
     ],
     "proofRepoPath": "Proofs/Erdos57Problem.lean",
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 343,
+    "lineCount": 533,
     "dateAdded": "06/27/26",
     "mathlibDependencies": [
       {
@@ -66,11 +68,16 @@
       "exists_odd_cycle_aux: the strong-induction workhorse on walk length. In the non-cycle case it rotates the odd closed walk to base at a repeated vertex and splits at the second occurrence into two strictly shorter closed walks of total odd length, recursing on whichever is odd.",
       "aux_length_rotate: `(c.rotate h).length = c.length` — rotation preserves walk length (Mathlib provides `support_rotate` but no length lemma); needed to keep the induction measure under control.",
       "isPath_length_one_of_mem_edges: a path between two vertices that uses the edge directly joining its endpoints must be the single-edge path. This rules out the degenerate `cons_isCycle_iff` case where the closing edge already lies inside the tail, leaving exactly the repeated-vertex case for an odd walk.",
-      "Net effect on the parent: `bipartite_iff_no_odd_cycles` and `colorable_two_no_odd_cycles` become fully proved (0 sorries); `Erdos57Problem.lean` drops from 1 sorry to 0."
+      "Net effect on the parent: `bipartite_iff_no_odd_cycles` and `colorable_two_no_odd_cycles` become fully proved (0 sorries); `Erdos57Problem.lean` drops from 1 sorry to 0.",
+      "exists_short_odd_cycle_of_odd_closed_walk (Erdos57OddGirthBound.lean): the SHARP form of the crux — every odd closed walk w contains an odd cycle c with c.length ≤ w.length. The parent's exists_odd_cycle_aux already only ever descends into strictly shorter sub-walks, but discards the bound; this re-threads it through a parallel bounded strong induction (exists_short_odd_cycle_aux), reusing the parent's verified helpers aux_length_rotate and isPath_length_one_of_mem_edges. 0-axiom.",
+      "oddGirth := sInf (oddCycleLengths G) and oddGirth_le_of_odd_closed_walk: any odd closed walk bounds the odd girth from above — the quantitative statement that the shortest odd cycle is no longer than any odd closed walk. With odd_oddGirth (the odd girth is itself odd whenever an odd cycle exists, via Nat.sInf_mem) and oddGirth_le_of_mem, this packages the odd-cycle obstruction as a single numeric invariant. Mathlib has no odd-girth API for this."
     ],
     "assumptions": "None for the contributed lemmas. The crux lemma `exists_odd_cycle_of_odd_closed_walk`, the strong-induction auxiliary, and the now-complete `bipartite_iff_no_odd_cycles` / `colorable_two_no_odd_cycles` contain 0 `sorry` and 0 `axiom`; `#print axioms exists_odd_cycle_of_odd_closed_walk` and `#print axioms bipartite_iff_no_odd_cycles` report only `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`, no `Lean.ofReduceBool`. (The host file `Erdos57Problem.lean` retains the single open axiom `erdos_57`, the deep Liu–Montgomery theorem, which these lemmas do not touch.)",
-    "theoremCount": 4,
-    "definitionCount": 0
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "additionalFiles": [
+      "Proofs/Erdos57OddGirthBound.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The classical foundation of chromatic graph theory is König's theorem: a graph is bipartite (2-colorable) if and only if it contains no odd cycle. Erdős Problem #57 sits directly atop this equivalence — the whole hierarchy of the problem (no odd cycles ⟹ χ ≤ 2; finitely many ⟹ infinitely many ⟹ ∑ 1/aᵢ = ∞) begins with the bipartite characterization. While Mathlib has the forward direction and the distance-parity 2-coloring machinery (`two_colorable_iff_forall_loop_even`), it does not have the one combinatorial lemma that bridges 'an odd closed walk exists' to 'an odd cycle exists', and its `SimpleGraph.Bipartite` file flags the full characterization as a TODO. This is the gap open question 4 of Erdős #57 asked about, and the gap this entry fills.",
@@ -131,6 +138,14 @@
       "endLine": 330,
       "summary": "The crux lemma is the auxiliary specialized to `n = w.length`. With it, the parent's `bipartite_iff_no_odd_cycles` reverse direction goes through (`two_colorable_iff_forall_loop_even` + crux lemma), and `colorable_two_no_odd_cycles` follows. Both are now 0-sorry; `#print axioms` reports only foundational axioms.",
       "mathContext": "Completes the König-style equivalence bipartite ⟺ no odd cycle for arbitrary vertex types, the foundation of the Erdős #57 hierarchy."
+    },
+    {
+      "id": "odd-girth-bound",
+      "title": "Erdos57OddGirthBound — length-bounded odd cycle and the odd girth",
+      "startLine": 344,
+      "endLine": 533,
+      "summary": "A parallel bounded strong induction (exists_short_odd_cycle_aux) carries the bound c.length ≤ n that the parent's crux discards, yielding exists_short_odd_cycle_of_odd_closed_walk. Defines oddGirth := sInf (oddCycleLengths G) and derives oddGirth_le_of_odd_closed_walk, odd_oddGirth (the odd girth is odd when attained), and oddGirth_le_of_mem.",
+      "mathContext": "Turns the qualitative Mathlib-TODO lemma into a sharp numeric statement: the shortest odd cycle is no longer than any odd closed walk, so an odd closed walk of length ℓ forces odd girth ≤ ℓ. Mathlib has no odd-girth API."
     }
   ],
   "conclusion": {
@@ -182,6 +197,16 @@
       "name": "isPath_length_one_of_mem_edges",
       "statement": "p.IsPath → s(u, v) ∈ p.edges → p.length = 1",
       "description": "A path that uses the edge joining its two endpoints is the single-edge path; rules out the degenerate `cons_isCycle_iff` failure mode for odd walks."
+    },
+    {
+      "name": "exists_short_odd_cycle_of_odd_closed_walk",
+      "statement": "∀ {u} (w : G.Walk u u), Odd w.length → ∃ x (c : G.Walk x x), c.IsCycle ∧ Odd c.length ∧ c.length ≤ w.length",
+      "description": "Sharp refinement of the crux: the extracted odd cycle is no longer than the walk. Proved by re-threading the length bound through a parallel bounded strong induction, reusing the parent's verified helpers. 0-axiom."
+    },
+    {
+      "name": "oddGirth_le_of_odd_closed_walk",
+      "statement": "∀ {u} (w : G.Walk u u), Odd w.length → oddGirth G ≤ w.length",
+      "description": "Any odd closed walk bounds the odd girth (sInf of the odd cycle lengths) from above — the quantitative form of the odd-cycle obstruction. Companion lemmas odd_oddGirth / oddGirth_le_of_mem package it as an invariant."
     }
   ],
   "sorries": 0

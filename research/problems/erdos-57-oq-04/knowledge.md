@@ -113,3 +113,43 @@ under a live build. The lemma is also a clean mathlib4 upstream target.
 ### Next Steps
 - Prove `exists_odd_cycle_of_odd_closed_walk` (closes the entire problem, 0 sorries, and
   lets the companion derive the full `isBipartite_iff_no_oddCycle`).
+
+## Session 2026-06-30 (researcher-2) — SOLVED follow-up: odd-girth bound
+
+**State on entry:** the crux `exists_odd_cycle_of_odd_closed_walk` was ALREADY
+proven and merged (PR #30770, commit ab8de56); `Erdos57Problem.lean` has 0 sorries.
+The previous "Next Steps" (prove the crux) are **stale** — done. Problem is SOLVED
+(only the deep `erdos_57` axiom remains at the parent level).
+
+**Outcome:** added a sharp quantitative refinement in a new collision-free companion
+`proofs/Proofs/Erdos57OddGirthBound.lean` (190 lines, 8 thm + 1 def, VERIFIED 0-axiom;
+`#print axioms` on all key results = propext/Classical.choice/Quot.sound only).
+
+### What I did
+- `exists_short_odd_cycle_aux`: re-threads the bound `c.length ≤ n` through a parallel
+  bounded strong induction. The parent's `exists_odd_cycle_aux` already only ever
+  descends into strictly shorter sub-walks (rotate + takeUntil/dropUntil) but throws
+  the bound away; the base case returns the walk itself (length n), each recursive
+  branch inherits `c.length ≤ subwalk.length ≤ n` via `omega` over `hsum`.
+- `exists_short_odd_cycle_of_odd_closed_walk`: public sharp crux, `c.length ≤ w.length`.
+- `oddGirth := sInf (oddCycleLengths G)` + `oddGirth_le_of_odd_closed_walk`
+  (`Nat.sInf_le` ∘ the length bound), `oddGirth_mem`/`odd_oddGirth` (`Nat.sInf_mem`,
+  then `.2` of `Set.mem_sep_iff` gives oddness of the attained girth),
+  `oddGirth_le_of_mem`, `not_isBipartite_of_oddGirth_pos`.
+
+### Reusable recipe
+To upgrade an existence lemma proven by a shrinking strong induction to a
+length-bounded one: copy the induction, add `∧ measure ≤ n` to the goal, discharge
+the base case by the walk's own length, and in each recursive branch feed the IH's
+bound + the split-sum equation (`hsum : a + b = n`) to `omega`. No new Mathlib lemmas
+needed beyond the parent's helpers (`aux_length_rotate`, `isPath_length_one_of_mem_edges`).
+
+### Verification
+Parent olean was absent from the shared `.lake` cache — compiled it first
+(`LAKE_UNSAFE=1 ./bin/lake env lean Proofs/Erdos57Problem.lean -o
+.lake/build/lib/lean/Proofs/Erdos57Problem.olean`, ~5 min), then the new file
+(EXIT 0, no diagnostics). Docker still down; host `bin/lake env lean` route.
+
+### Next Steps (optional)
+- `oddGirth` could be related to Mathlib's `SimpleGraph.girth` (even-inclusive girth)
+  — `girth G ≤ oddGirth G` when an odd cycle exists. Clean sibling follow-up.
