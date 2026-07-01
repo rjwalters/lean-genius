@@ -91,5 +91,30 @@
       "catalan_succ'",
       "Finset.mem_antidiagonal"
     ]
+  },
+  {
+    "id": "ballot-oq040201-ann-unconditional",
+    "proofId": "ballot-problem-oq-04-oq-02-oq-01",
+    "range": {
+      "startLine": 166,
+      "endLine": 200
+    },
+    "type": "insight",
+    "title": "Unconditional Verification for n ≤ 3 (Independent of the Open Bijection)",
+    "content": "nonCrossingCount_eq_catalan above is proved only *modulo* the still-open first-return bijection nonempty_firstReturnEquiv. This corollary, nonCrossingCount_eq_catalan_of_le_three, discharges nonCrossingCount n = catalan n **unconditionally** for every n ≤ 3 — assuming no bijection at all. The mechanism: for n ≤ 3 every partition of Fin n is already non-crossing (nonCrossingCount_eq_card_of_n_le_three), so the count is literally the Bell number Fintype.card (Finpartition (Fin n)), which kernel `decide` evaluates; and Bell and Catalan agree exactly up to n = 3 (1, 1, 2, 5). This is the regime *just before* the first divergence — Bell 4 = 15 > 14 = catalan 4, isolated separately as nonCrossingCount_four_lt — so the two results pin the conjecture on both sides of its first nontrivial test. `set_option maxRecDepth 8000` accommodates the deep `decide` on Finpartition cardinalities.",
+    "mathContext": "For $n \\le 3$: $\\mathrm{nonCrossingCount}\\,n = \\mathrm{Bell}\\,n = \\mathrm{catalan}\\,n$ (values $1,1,2,5$). First divergence at $n=4$: $\\mathrm{Bell}\\,4 = 15 > 14 = \\mathrm{catalan}\\,4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bell numbers",
+      "Catalan numbers",
+      "kernel decide",
+      "interval_cases",
+      "unconditional verification"
+    ],
+    "prerequisites": [
+      "Bell vs Catalan numbers",
+      "decidable finite computation",
+      "Finpartition cardinality"
+    ]
   }
 ]
