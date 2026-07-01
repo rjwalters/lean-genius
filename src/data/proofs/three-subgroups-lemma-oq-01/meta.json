@@ -107,5 +107,41 @@
       "Can the centralizing corollary be packaged into reusable nilpotency/solvability infrastructure, for example tools relating membership in successive terms of the lower central series?"
     ]
   },
-  "crossReferences": []
+  "references": [
+    {
+      "authors": "Hall, Philip",
+      "title": "A contribution to the theory of groups of prime-power order",
+      "year": "1934",
+      "venue": "Proceedings of the London Mathematical Society, s2-36",
+      "note": "Introduces the Hall–Witt identity relating the three cyclically-rotated iterated commutators, the algebraic identity from which the three subgroups lemma (and Mathlib's ⊥-case) is derived."
+    },
+    {
+      "authors": "Robinson, Derek J. S.",
+      "title": "A Course in the Theory of Groups (2nd ed.)",
+      "year": "1996",
+      "venue": "Springer GTM 80",
+      "note": "Standard reference stating and proving the three subgroups lemma in its relative ≤ N form (5.1.10) and applying it to the lower central series and nilpotency — the classical statement this entry formalizes."
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "venue": "American Mathematical Society, GSM 92",
+      "note": "Develops the commutator calculus, the Hall–Witt identity, and the three subgroups lemma as the workhorse for commutator and nilpotency arguments in the setting this entry targets."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.GroupTheory.Commutator (Subgroup.commutator_commutator_eq_bot_of_rotate)",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the bottom-case (N = ⊥) three subgroups lemma derived from the Hall–Witt identity; this entry transports it through the quotient by N to the general relative ≤ N form."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "three-subgroups-lemma-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "The child entry applies this relative form to bound iterated commutators of lower-central-series terms, ⁅γᵢ,γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎ — the bilinear nilpotency estimate this entry's second open question anticipates."
+    }
+  ]
 }
