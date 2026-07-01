@@ -721,4 +721,136 @@ theorem internallyTangent_common_perp_tangent {O₁ O₂ T : E}
   obtain ⟨-, ht1, ht2, hperp⟩ := common_perp_tangent hspan hTO₁ hTO₂
   exact ⟨P, hsing, ht1, ht2, hperp⟩
 
+/-! ## Tangency of a spherical circle to a great circle
+
+The incircle and excircles of a spherical triangle are characterised by tangency to the
+triangle's *sides* — arcs of great circles — rather than to other circles.  A great circle
+is the set of model points orthogonal to a fixed unit *pole* `N`; these are the "lines"
+(geodesics) of spherical geometry.  This section records exactly when a spherical circle
+`sCircle O ρ` is tangent to such a great circle and exhibits the contact point: the **foot
+of the perpendicular** from the centre `O`, i.e. the orthogonal component `O − ⟪O,N⟫ • N`
+renormalised to a unit vector.  The tangency criterion is the spherical analogue of
+"distance from centre to line = radius": since the spherical distance from `O` to the
+great circle is `arcsin |⟪O,N⟫|`, tangency is `|⟪O, N⟫| = sin ρ`.  This is the primitive a
+spherical incircle construction consumes three times, once per side. -/
+
+/-- The **great circle** with unit pole `N`: the model points orthogonal to `N`.  These are
+the geodesics of the spherical model — in particular the sides of a spherical triangle. -/
+def sGreatCircle (N : E) : Set E := {P | OnSphere P ∧ (⟪P, N⟫ : ℝ) = 0}
+
+/-- The **foot of the perpendicular** from the centre `O` of a spherical circle of angular
+radius `ρ` onto the great circle with pole `N`: the orthogonal component `O − ⟪O,N⟫ • N`
+renormalised by `(cos ρ)⁻¹`.  When `sCircle O ρ` is tangent to the great circle this is
+their unique common point (`circle_tangent_greatCircle_inter`). -/
+noncomputable def greatCircleFoot (O N : E) (ρ : ℝ) : E :=
+  (Real.cos ρ)⁻¹ • (O - (⟪O, N⟫ : ℝ) • N)
+
+/-- A spherical circle `sCircle O ρ` is **tangent to the great circle** with pole `N` when
+the spherical distance from the centre to the great circle equals the angular radius.  That
+distance is `arcsin |⟪O, N⟫|`, so the algebraic criterion is `|⟪O, N⟫| = sin ρ` — the
+spherical shadow of the Euclidean "distance from centre to the line equals the radius". -/
+def TangentToGreatCircle (O : E) (ρ : ℝ) (N : E) : Prop :=
+  |(⟪O, N⟫ : ℝ)| = Real.sin ρ
+
+/-- The squared norm of the orthogonal component of a unit centre `O` off a unit pole `N`
+is `1 − ⟪O,N⟫²` (the spherical Pythagoras for the projection onto the great circle). -/
+theorem inner_orthoComp_self {O N : E} (hO : OnSphere O) (hN : OnSphere N) :
+    (⟪O - (⟪O, N⟫ : ℝ) • N, O - (⟪O, N⟫ : ℝ) • N⟫ : ℝ) = 1 - (⟪O, N⟫ : ℝ) ^ 2 := by
+  have hOO : (⟪O, O⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, hO]; norm_num
+  have hNN : (⟪N, N⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, hN]; norm_num
+  simp only [inner_sub_left, inner_sub_right, real_inner_smul_left, real_inner_smul_right]
+  rw [hOO, hNN, real_inner_comm N O]
+  ring
+
+/-- The inner product of the orthogonal component of `O` off `N` with `O` itself is
+`1 − ⟪O,N⟫²`. -/
+theorem inner_orthoComp_left {O N : E} (hO : OnSphere O) :
+    (⟪O - (⟪O, N⟫ : ℝ) • N, O⟫ : ℝ) = 1 - (⟪O, N⟫ : ℝ) ^ 2 := by
+  have hOO : (⟪O, O⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, hO]; norm_num
+  simp only [inner_sub_left, real_inner_smul_left]
+  rw [hOO, real_inner_comm N O]
+  ring
+
+/-- **The foot of the perpendicular is the contact point.**  If `sCircle O ρ` is tangent to
+the great circle with pole `N` (with `0 ≤ ρ < π/2`, so the circle is a genuine small
+circle), then `greatCircleFoot O N ρ` is a model point lying on *both* the circle and the
+great circle.  This is the existence half of the incircle-to-side tangency primitive. -/
+theorem greatCircleFoot_mem {O N : E} {ρ : ℝ}
+    (hO : OnSphere O) (hN : OnSphere N) (hρ0 : 0 ≤ ρ) (hρ2 : ρ < Real.pi / 2)
+    (htan : TangentToGreatCircle O ρ N) :
+    OnSphere (greatCircleFoot O N ρ) ∧
+      greatCircleFoot O N ρ ∈ sCircle O ρ ∧
+      greatCircleFoot O N ρ ∈ sGreatCircle N := by
+  have hcpos : 0 < Real.cos ρ :=
+    Real.cos_pos_of_mem_Ioo ⟨by linarith [Real.pi_pos], hρ2⟩
+  have hcne : Real.cos ρ ≠ 0 := ne_of_gt hcpos
+  -- the tangency criterion, squared
+  have hsq : (⟪O, N⟫ : ℝ) ^ 2 = (Real.sin ρ) ^ 2 := by rw [← sq_abs, htan]
+  -- the orthogonal component has squared norm cos²ρ
+  have hperp : (⟪O - (⟪O, N⟫ : ℝ) • N, O - (⟪O, N⟫ : ℝ) • N⟫ : ℝ) = (Real.cos ρ) ^ 2 := by
+    rw [inner_orthoComp_self hO hN, hsq]; linarith [Real.sin_sq_add_cos_sq ρ]
+  -- foot has unit inner product with itself
+  have hFF : (⟪greatCircleFoot O N ρ, greatCircleFoot O N ρ⟫ : ℝ) = 1 := by
+    have e : (⟪greatCircleFoot O N ρ, greatCircleFoot O N ρ⟫ : ℝ)
+        = (Real.cos ρ)⁻¹ * ((Real.cos ρ)⁻¹ * (Real.cos ρ) ^ 2) := by
+      simp only [greatCircleFoot, real_inner_smul_left, real_inner_smul_right, hperp]
+    rw [e]; field_simp
+  -- foot is a model point
+  have hFsphere : OnSphere (greatCircleFoot O N ρ) := by
+    have hsqn : ‖greatCircleFoot O N ρ‖ ^ 2 = 1 := by
+      rw [← real_inner_self_eq_norm_sq]; exact hFF
+    have hfac : (‖greatCircleFoot O N ρ‖ - 1) * (‖greatCircleFoot O N ρ‖ + 1) = 0 := by
+      nlinarith [hsqn]
+    rcases mul_eq_zero.mp hfac with h | h
+    · show ‖greatCircleFoot O N ρ‖ = 1; linarith
+    · exact absurd h (by have := norm_nonneg (greatCircleFoot O N ρ); positivity)
+  -- foot lies on the circle: scos = cos ρ
+  have hFO : scos (greatCircleFoot O N ρ) O = Real.cos ρ := by
+    have e : (⟪greatCircleFoot O N ρ, O⟫ : ℝ)
+        = (Real.cos ρ)⁻¹ * (1 - (⟪O, N⟫ : ℝ) ^ 2) := by
+      simp only [greatCircleFoot, real_inner_smul_left, inner_orthoComp_left hO]
+    rw [scos, e, hsq, show (1 : ℝ) - (Real.sin ρ) ^ 2 = (Real.cos ρ) ^ 2 from by
+      linarith [Real.sin_sq_add_cos_sq ρ]]
+    field_simp
+  -- foot lies on the great circle: ⟪·, N⟫ = 0
+  have hFN : (⟪greatCircleFoot O N ρ, N⟫ : ℝ) = 0 := by
+    have hNN : (⟪N, N⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, hN]; norm_num
+    simp only [greatCircleFoot, real_inner_smul_left, inner_sub_left, real_inner_smul_left, hNN]
+    ring
+  exact ⟨hFsphere, ⟨hFsphere, hFO⟩, hFsphere, hFN⟩
+
+/-- **Tangent circles meet a side in exactly one point.**  If `sCircle O ρ` is tangent to
+the great circle with pole `N` (with `0 ≤ ρ < π/2`), their intersection is the single
+contact point `greatCircleFoot O N ρ`.  This upgrades the existence lemma to genuine
+tangency (one common point, not two), and is the exact fact a spherical incircle
+construction needs for each of the triangle's three sides. -/
+theorem circle_tangent_greatCircle_inter {O N : E} {ρ : ℝ}
+    (hO : OnSphere O) (hN : OnSphere N) (hρ0 : 0 ≤ ρ) (hρ2 : ρ < Real.pi / 2)
+    (htan : TangentToGreatCircle O ρ N) :
+    sCircle O ρ ∩ sGreatCircle N = {greatCircleFoot O N ρ} := by
+  have hcpos : 0 < Real.cos ρ :=
+    Real.cos_pos_of_mem_Ioo ⟨by linarith [Real.pi_pos], hρ2⟩
+  have hcne : Real.cos ρ ≠ 0 := ne_of_gt hcpos
+  obtain ⟨hFsphere, hFcirc, hFgc⟩ := greatCircleFoot_mem hO hN hρ0 hρ2 htan
+  refine Set.eq_singleton_iff_unique_mem.mpr ⟨⟨hFcirc, hFgc⟩, ?_⟩
+  rintro Q ⟨⟨hQsphere, hQO⟩, -, hQN⟩
+  have hQO' : (⟪Q, O⟫ : ℝ) = Real.cos ρ := hQO
+  have hQF : scos Q (greatCircleFoot O N ρ) = 1 := by
+    have e : (⟪Q, greatCircleFoot O N ρ⟫ : ℝ)
+        = (Real.cos ρ)⁻¹ * ((⟪Q, O⟫ : ℝ) - (⟪O, N⟫ : ℝ) * (⟪Q, N⟫ : ℝ)) := by
+      simp only [greatCircleFoot, real_inner_smul_right, inner_sub_right, real_inner_smul_right]
+    rw [scos, e, hQN, hQO', mul_zero, sub_zero]
+    field_simp
+  exact (scos_eq_one_iff hQsphere hFsphere).mp hQF
+
+/-- The contact point is at spherical distance exactly `ρ` from the circle's centre — it
+genuinely lies *on* the circle, the spherical restatement of the foot lemma via `sdist`. -/
+theorem sdist_greatCircleFoot_center {O N : E} {ρ : ℝ}
+    (hO : OnSphere O) (hN : OnSphere N) (hρ0 : 0 ≤ ρ) (hρ2 : ρ < Real.pi / 2)
+    (htan : TangentToGreatCircle O ρ N) :
+    sdist (greatCircleFoot O N ρ) O = ρ := by
+  obtain ⟨hFsphere, hFcirc, -⟩ := greatCircleFoot_mem hO hN hρ0 hρ2 htan
+  have hρπ : ρ ≤ Real.pi := by linarith [Real.pi_pos]
+  exact ((mem_sCircle_iff_sdist hO hρ0 hρπ (greatCircleFoot O N ρ)).mp hFcirc).2
+
 end FeuerbachsTheoremOQ04
