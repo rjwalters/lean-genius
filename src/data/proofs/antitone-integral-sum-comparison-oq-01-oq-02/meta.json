@@ -124,6 +124,36 @@
     ]
   },
   "references": null,
+  "references": [
+    {
+      "authors": "Apostol, Tom M.",
+      "title": "Mathematical Analysis (2nd ed.)",
+      "year": "1974",
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for the integral test (Theorem 8.23) comparing ∑f(n) with ∫f, and its application to the p-series ∑1/nᵖ — the comparison framework this family formalizes."
+    },
+    {
+      "authors": "Knopp, Konrad",
+      "title": "Theory and Application of Infinite Series",
+      "year": "1951",
+      "venue": "Blackie & Son / Dover reprint",
+      "note": "Classical treatment of the integral (Cauchy–Maclaurin) test and monotone series–integral comparisons, the historical source of the sandwich ∑f(x₀+i) ≤ ∫f ≤ ∑f(x₀+i+1)."
+    },
+    {
+      "authors": "Havil, Julian",
+      "title": "Gamma: Exploring Euler's Constant",
+      "year": "2003",
+      "venue": "Princeton University Press",
+      "note": "Book-length account of the Euler–Mascheroni constant γ = lim(Hₙ − log n), including the monotone-defect convergence argument this entry formalizes."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Analysis.PSeries and Mathlib.MeasureTheory.Integral.FundThmCalculus",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the monotone/antitone Riemann-sum bounds against the integral and the interval-integral machinery through which this entry's sandwich and p-series estimates are proved."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "antitone-integral-sum-comparison-oq-01",
