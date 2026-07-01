@@ -63,14 +63,15 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "The first-moment (union-bound) lower bound on van der Waerden numbers counts the length-k arithmetic progressions fitting in [n]. The base entry van-der-waerden-first-moment uses the loose count n²; the sibling oq-01 sharpens this to the exact parameter box ∑_{d=1}^{n}(n-(k-1)d) and bounds the AP FAMILY above by it via card_image_le. Whether that family bound is tight — whether distinct (a,d) give distinct APs — was left open.",
+    "historicalContext": "The probabilistic (first-moment) lower bound on van der Waerden numbers, going back to Erdős's founding uses of the union bound in Ramsey-type combinatorics, colours [n] at random and estimates the expected number of monochromatic length-k arithmetic progressions; if that expectation is below 1 no monochromatic AP need exist, forcing W(k,r) large. The estimate hinges on counting how many length-k APs actually fit in [n]. The base entry van-der-waerden-first-moment uses the loose count n²; the sibling oq-01 sharpens this to the exact parameter box ∑_{d=1}^{n}(n-(k-1)d) and bounds the AP FAMILY above by it via card_image_le, since the family is the image of the (a,d) box. Whether that family bound is tight — whether distinct (a,d) give distinct APs — was left open. The affirmative answer here is a lattice-point/enumeration fact: the fitting pairs (a,d) sit in a triangular region of the integer plane, and counting the APs exactly is the same as counting those lattice points, provided the map to progressions loses nothing. This is the discrete analogue of computing an Ehrhart polynomial for the fitting polytope.",
     "problemStatement": "Is the sibling's family bound |vdwFamily n k| ≤ ∑_{d=1}^{n}(n-(k-1)d) an equality? Equivalently, is the parametrization (a,d) ↦ vdwAP n a d k injective on the fitting box?",
     "proofStrategy": "Prove injectivity of (a,d) ↦ vdwAP n a d k on the fitting box for k ≥ 2. A fitting AP has all terms < n, so casting to Fin n is wraparound-free (Fin.val_cast_of_lt) and the Fin n order matches the natural order on the terms. Isolate the two endpoints by membership: the first term ↑a is a member ≤ every member (vdwAP_fst_mem, vdwAP_fst_le) and the last term ↑(a+(k-1)d) is a member ≥ every member (vdwAP_last_mem, vdwAP_last_ge). Given two fitting pairs with equal AP sets, transport these across the equality: each set's least element lies in the other, so ↑a = ↑a' and (with k ≥ 2) ↑(a+(k-1)d) = ↑(a'+(k-1)d'); reading off Fin values gives a = a' and a+(k-1)d = a'+(k-1)d', and cancelling k-1 > 0 gives d = d'. Then Finset.card_image_of_injOn turns the sibling's image bound into an equality, and vdwFilter_card_eq_sum supplies the box count.",
     "keyInsights": [
       "A fitting AP (a+(k-1)d < n) never wraps in Fin n, so the cast is a bijection onto its image of naturals and order is preserved — injectivity reduces to recovering a and d from the term set.",
       "Only the two endpoints are needed: least = a, greatest = a+(k-1)d, and k-1 ≥ 1 recovers d. There is no need to reconstruct the whole progression.",
       "Phrasing 'least element' as 'a member ≤ all members' (rather than Finset.min') lets the recovery transport across set equality with a plain ≤-antisymmetry, dodging the dependent Nonempty proof that min'/max' carry.",
-      "The exact count gives the matching lower bound: the family size is pinned at the triangular sum, bracketed with the sibling's factor-2 upper bound into [n-(k-1), n²/(2(k-1))]."
+      "The exact count gives the matching lower bound: the family size is pinned at the triangular sum, bracketed with the sibling's factor-2 upper bound into [n-(k-1), n²/(2(k-1))].",
+      "Injectivity, not a Möbius/inclusion-exclusion count, is what makes the enumeration exact here: because distinct fitting (a,d) pairs yield genuinely distinct term-sets, the image cardinality equals the domain cardinality outright (Finset.card_image_of_injOn), so no overcounting correction is needed — the triangular box count transfers verbatim to the AP family."
     ]
   },
   "sections": [
@@ -97,10 +98,17 @@
     },
     {
       "id": "exact-count",
-      "title": "Exact Count and Lower Bound",
+      "title": "The Exact Count",
       "startLine": 158,
+      "endLine": 163,
+      "summary": "card_vdwFamily_eq_sum: Finset.card_image_of_injOn + the sibling's vdwFilter_card_eq_sum give |vdwFamily n k| = ∑_{d=1}^{n}(n-(k-1)d) for k ≥ 2 — the sibling's upper bound is now an equality."
+    },
+    {
+      "id": "lower-bound",
+      "title": "A Closed-Form Lower Bound",
+      "startLine": 164,
       "endLine": 178,
-      "summary": "card_vdwFamily_eq_sum: Finset.card_image_of_injOn + the sibling's vdwFilter_card_eq_sum give |vdwFamily n k| = ∑_{d=1}^{n}(n-(k-1)d). card_vdwFamily_ge: the d=1 term yields n-(k-1) ≤ |vdwFamily n k|."
+      "summary": "card_vdwFamily_ge: the d=1 slice n-(k-1) is ≤ the whole triangular sum by Finset.single_le_sum, so n-(k-1) ≤ |vdwFamily n k|. With the sibling's factor-2 upper bound this brackets the family size in [n-(k-1), n²/(2(k-1))]."
     }
   ],
   "conclusion": {
