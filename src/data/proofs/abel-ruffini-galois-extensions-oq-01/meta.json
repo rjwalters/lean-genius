@@ -167,6 +167,28 @@
       "Upstream `permCongrMulEquiv` (the `MulEquiv` refinement of `Equiv.permCongr`) and a `Gal ≃* Equiv.Perm (rootSet)` packaging of `galActionHom_bijective_of_prime_degree'` to Mathlib, so downstream users obtain the isomorphism object directly rather than only the `Bijective` statement."
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "extends",
+      "description": "Parent: proves the abstract Abel–Ruffini obstruction (Sₙ solvable iff n ≤ 4; A₅ simple; non-solvable Galois group ⟹ no radical formula) but leaves the constructive direction open. This entry supplies the concrete witness X⁵ − 4X + 2 and builds the isomorphism Gal ≃* S₅ the parent only reasons about abstractly."
+    },
+    {
+      "targetId": "abel-ruffini-oq-07",
+      "relationship": "related",
+      "description": "Sibling witness X⁵ − X − 1 (Selmer): its complex conjugation is a double transposition (four non-real roots), so that entry can only reduce to — not prove — Gal ≅ S₅, needing the Dedekind–Frobenius bridge absent from Mathlib. This entry's witness X⁵ − 4X + 2 has exactly two non-real roots, so the prime-degree transposition theorem applies directly and Gal ≅ S₅ is proved outright."
+    },
+    {
+      "targetId": "abel-ruffini-oq-03",
+      "relationship": "related",
+      "description": "Companion in the inverse-direction thread: OQ-03 realizes the abelian family (ZMod n)ˣ as Galois groups over ℚ via cyclotomic fields, while this entry realizes the non-solvable S₅ over ℚ via an explicit quintic — the two extremes (abelian vs. non-solvable) of which finite groups occur as Gal(L/ℚ)."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "ancestor",
+      "description": "Root entry: the Abel–Ruffini theorem and the solvability of Sₙ. The unconditional consequence proved here — no root of X⁵ − 4X + 2 is solvable by radicals — is a concrete instance of the general unsolvability of the quintic."
+    }
+  ],
   "references": [
     {
       "authors": "Abel, N. H.",
