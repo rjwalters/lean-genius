@@ -603,3 +603,56 @@ super-level indicators with telescoping coefficients (`∑|Δcᵢ| ≤ M`), then
 `finset_indicator_covariance_le_alpha`. The residual analytic gap is the L^p→
 bounded truncation (`truncation_tail_sq_le`, S18) + Hölder amplification to the
 `(p-2)/p` exponent.
+
+---
+
+## S20 (researcher-1, 2026-07-01) — Telescoping layer-cake Davydov bound
+
+**Delivered (VERIFIED, 0-axiom, +2 theorems), stacked on the S19 line at HEAD
+343fc16518f.** Both `#print axioms` = `[propext, Classical.choice, Quot.sound]`
+only; neither depends on the `davydov_covariance_inequality` sorry (no
+`sorryAx`). File now 1119 → 1227 lines.
+
+- `finset_indicator_covariance_le_alpha_of_nonneg`: when all cell weights are
+  nonnegative, the simple-function bound reads
+  `|Cov(f,g)| ≤ (∑ᵢ aᵢ)(∑ⱼ bⱼ) · α` — the absolute values collapse
+  (`∑|aᵢ| = ∑aᵢ` via `abs_of_nonneg`).
+- `telescoping_layer_covariance_le_alpha`: the discretized layer-cake step.
+  For increasing grids `sg, ug : ℕ → ℝ` with `sg 0 = 0, sg m = M`, `ug 0 = 0,
+  ug n = N`, the super-level step approximants with telescoping weights
+  `sg(k+1) − sg k ≥ 0` satisfy `|Cov(f_step, g_step)| ≤ M · N · α`.
+
+**Why this is the right increment.** `finset_indicator_covariance_le_alpha`
+(S17) gives `(∑|aᵢ|)(∑|bⱼ|)·α`, whose constant blows up as the partition is
+refined for a *general* signed decomposition. The Davydov bounded-variable step
+needs the constant pinned at the *range* `M·N`, uniformly in the grid. This is
+achieved precisely because (a) after the S19 shift to `[0, M]` the super-level
+weights are nonnegative, so the absolute values drop
+(`..._of_nonneg`), and (b) the telescoping weights sum to the range via
+`Finset.sum_range_sub`: `∑_{k<m}(sg(k+1)−sg k) = sg m − sg 0 = M`, *independent
+of the grid*. Together with S19's constant-shift invariance, this is the last
+purely-algebraic layer of `davydov_covariance_inequality`.
+
+**Proof recipe.**
+- `..._of_nonneg`: `have hbase := finset_indicator_covariance_le_alpha ...`;
+  `hsa : ∑ i ∈ s, |a i| = ∑ i ∈ s, a i := Finset.sum_congr rfl (fun i hi =>
+  abs_of_nonneg (ha i hi))`; likewise `hsb`; `rwa [hsa, hsb] at hbase`.
+- telescoping: weights nonneg by `sub_nonneg.mpr (hsg_mono (Nat.le_succ k))`;
+  apply `..._of_nonneg` with `a := fun k => sg (k+1) − sg k`; ranges by
+  `rw [Finset.sum_range_sub sg m, hsgm, hsg0, sub_zero]`; `rwa [hSsum, hUsum] at
+  hbound`.
+
+**Key Mathlib fact used.** `Finset.sum_range_sub (f : ℕ → G) (n) :
+∑ i ∈ range n, (f (i+1) − f i) = f n − f 0` (telescoping).
+
+**Sorries unchanged (2):** `davydov_covariance_inequality` (S5c, the residual
+*analytic* content — monotone-convergence layer-cake limit + Hölder
+amplification to exponent `(p−2)/p`) and `mixing_clt_ibragimov` (S6+). This
+session adds no assumptions.
+
+**Next (S5c analytic).** The remaining gap is now cleanly delimited: pass from
+the telescoping step bound `M·N·α` to a general bounded variable by monotone
+convergence of the super-level step functions (layer-cake:
+`f = ∫₀^M 1_{f>t} dt`, dominated-convergence for the covariance integral), then
+Hölder-amplify `M·N` down to `‖X‖_{L^p}‖Y‖_{L^p} · α^{(p−2)/p}` using the
+truncation tail second-moment bound `truncation_tail_sq_le` (S18).
