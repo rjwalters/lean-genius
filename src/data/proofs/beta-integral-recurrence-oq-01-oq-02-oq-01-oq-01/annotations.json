@@ -1,5 +1,26 @@
 [
   {
+    "id": "betadiagasymp-ann-imports",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 4 },
+    "type": "context",
+    "title": "Imports: Two Gallery Parents Feed This Asymptotic",
+    "content": "Beyond the blanket `import Mathlib`, this file draws on two *gallery-internal* parents, and the proof is exactly the composition of what they provide. `import Proofs.BetaIntegralRecurrenceOQ01OQ02OQ01` supplies the exact closed form of the half-integer Beta diagonal B(n+1/2, n+1/2) (a ratio of central binomial / factorial terms). `import Proofs.StirlingFormulaOQ03OQ02` supplies the Stirling asymptotic for the factorials/central binomials appearing in that closed form. The headline `IsEquivalent` result B(n+1/2,n+1/2) ~ √(π/n)·4⁻ⁿ is obtained by feeding the parent's exact value into the parent Stirling estimate — no independent analysis, only the algebra of combining the two.",
+    "mathContext": "$B(n+\\tfrac12, n+\\tfrac12) \\sim \\sqrt{\\pi/n}\\,\\cdot 4^{-n}$, obtained by substituting Stirling's asymptotic into the exact half-integer Beta closed form.",
+    "significance": "context",
+    "relatedConcepts": [
+      "gallery-internal dependency",
+      "Beta function closed form",
+      "Stirling's approximation",
+      "asymptotic equivalence"
+    ],
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib",
+      "parent Beta and Stirling entries"
+    ]
+  },
+  {
     "id": "betadiagasymp-ann-header",
     "proofId": "beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01",
     "range": {
