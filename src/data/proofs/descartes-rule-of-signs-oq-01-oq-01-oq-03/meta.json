@@ -116,6 +116,27 @@
       "mathContext": "$\\#\\{z: \\Im z\\ne 0\\}$ even $\\Rightarrow \\#\\{z: \\Im z=0\\} \\equiv \\deg p \\pmod 2$ (counts with multiplicity, using $\\#\\mathrm{roots}=\\deg p$ over $\\mathbb{C}$)."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "Modern reference covering Descartes' rule, the Budan–Fourier theorem, Sturm's theorem and root-localization bounds."
+    },
+    {
+      "authors": [
+        "Rahman, Q.I.",
+        "Schmeisser, G."
+      ],
+      "title": "Analytic Theory of Polynomials",
+      "year": "2002",
+      "venue": "London Mathematical Society Monographs 26, Oxford University Press",
+      "note": "Comprehensive treatment of root distribution, sign variations and conjugate-root structure."
+    }
+  ],
   "conclusion": {
     "summary": "For a real polynomial viewed over ℂ, a root and its conjugate occur with equal multiplicity in the root multiset; therefore the non-real roots counted with multiplicity are even in number and the real roots counted with multiplicity are congruent to the degree modulo 2. This refines the parent entry's set-level pairing to the level of multiplicities, answering its open question.",
     "implications": "The multiplicity-aware pairing is the natural home for the parity behind Descartes' rule of signs and is the right foundation for a multiplicity-correct treatment of Budan–Fourier-type root counts.",
@@ -126,8 +147,12 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Polynomial"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
     "namespace": "DescartesRuleComplexMult",
     "lineCount": 147,
     "axiomCount": 0,

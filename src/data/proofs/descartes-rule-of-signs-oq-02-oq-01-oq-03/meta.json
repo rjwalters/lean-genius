@@ -169,6 +169,38 @@
       ]
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Vincent, A.J.H."
+      ],
+      "title": "Sur la résolution des équations numériques",
+      "year": "1836",
+      "venue": "Journal de Mathématiques Pures et Appliquées 1, pp. 341–372",
+      "note": "Vincent's continued-fraction / bisection theorem underlying modern real-root isolation."
+    },
+    {
+      "authors": [
+        "Collins, G.E.",
+        "Akritas, A.G."
+      ],
+      "title": "Polynomial real root isolation using Descartes' rule of signs",
+      "year": "1976",
+      "venue": "Proc. ACM Symposium on Symbolic and Algebraic Computation (SYMSAC), pp. 272–275",
+      "note": "The Descartes/Vincent-based real-root isolation algorithm behind the computable sign-variation count."
+    },
+    {
+      "authors": [
+        "Basu, S.",
+        "Pollack, R.",
+        "Roy, M.-F."
+      ],
+      "title": "Algorithms in Real Algebraic Geometry",
+      "year": "2006",
+      "venue": "Algorithms and Computation in Mathematics 10, 2nd ed., Springer",
+      "note": "Standard algorithmic reference for sign variations, Sturm sequences, and real-root isolation (Vincent/VAS/VCA)."
+    }
+  ],
   "conclusion": {
     "summary": "This file gives a fully machine-checked proof (0 axioms, 0 sorries; only propext / Classical.choice / Quot.sound) of the termination core of Vincent's bisection theorem: bisection subdivision of an interval must eventually isolate the real roots of a polynomial, because the roots form a finite separated set and halving drives every subinterval below the separation distance. The eight theorems build from the minimum-gap definition through the narrow-interval subsingleton bound to the headline existence of an isolating bisection level, uniform across all dyadic subintervals.",
     "implications": "Termination is the part of real-root isolation that is easy to state and easy to get wrong informally; pinning it down formally provides a verified foundation for the VAS/VCA algorithms used throughout computer algebra. The metric formulation (any finite separated set) is reusable beyond polynomials — e.g. for isolating eigenvalues or sampled signals. Combined with the separately-tracked Descartes sign-test step (0 or 1 sign variations on an isolated interval), it would yield a complete verified root-isolation pipeline atop the Budan/Descartes lineage.",
