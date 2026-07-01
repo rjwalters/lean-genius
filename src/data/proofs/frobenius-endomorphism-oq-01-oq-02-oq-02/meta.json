@@ -105,8 +105,99 @@
     "sorries": 0
   },
   "sorries": 0,
-  "mainTheorems": 8,
-  "sections": 2,
+  "mainTheorems": [
+    {
+      "name": "frobenius_injective_polynomial",
+      "type": "supporting",
+      "statement": "$\\mathrm{Injective}\\,(\\mathrm{frobenius}\\,\\mathbb{F}_p[X]\\,p)$",
+      "significance": "Frobenius stays injective in the infinite setting - the polynomial ring is a domain, hence reduced.",
+      "description": "Frobenius x -> x^p is injective on 𝔽ₚ[X], directly from Mathlib's frobenius_inj for reduced characteristic-p rings."
+    },
+    {
+      "name": "X_isNotPthPower",
+      "type": "core",
+      "statement": "$\\neg\\,\\exists f \\in \\mathbb{F}_p[X],\\ f^p = X$",
+      "significance": "The degree obstruction: a single element with no p-th root defeats surjectivity.",
+      "description": "X has no p-th root in 𝔽ₚ[X]: f^p = X forces p·natDegree f = 1, so p | 1, impossible for prime p."
+    },
+    {
+      "name": "frobenius_not_surjective_polynomial",
+      "type": "core",
+      "statement": "$\\neg\\,\\mathrm{Surjective}\\,(\\mathrm{frobenius}\\,\\mathbb{F}_p[X]\\,p)$",
+      "significance": "Injective but not surjective - exactly what cannot happen on a finite field.",
+      "description": "Frobenius is not surjective on 𝔽ₚ[X]: X is not in its image, via frobenius_def and X_isNotPthPower."
+    },
+    {
+      "name": "not_perfectRing_polynomial",
+      "type": "core",
+      "statement": "$\\neg\\,\\mathrm{PerfectRing}\\,\\mathbb{F}_p[X]\\,p$",
+      "significance": "𝔽ₚ[X] is an explicit imperfect ring - the stepping stone to the field result.",
+      "description": "𝔽ₚ[X] is not a PerfectRing: a PerfectRing would make Frobenius surjective (surjective_frobenius), contradicting the previous theorem."
+    },
+    {
+      "name": "intDegree_pow",
+      "type": "supporting",
+      "statement": "$r \\ne 0 \\Rightarrow (r^n).\\mathrm{intDegree} = n\\cdot r.\\mathrm{intDegree}$",
+      "significance": "Carries the degree obstruction from ℕ to ℤ for the function field.",
+      "description": "The integer degree intDegree is multiplicative under powers of a nonzero rational function, by induction using RatFunc.intDegree_mul."
+    },
+    {
+      "name": "ratfunc_X_isNotPthPower",
+      "type": "core",
+      "statement": "$\\neg\\,\\exists r \\in \\mathbb{F}_p(X),\\ r^p = X$",
+      "significance": "The field-level obstruction: X still has no p-th root, now over ℤ-valued degree.",
+      "description": "X has no p-th root in 𝔽ₚ(X): r^p = X gives (p:ℤ)·intDegree r = 1, forcing (p:ℤ) | 1, closed by omega."
+    },
+    {
+      "name": "frobenius_not_surjective_ratfunc",
+      "type": "core",
+      "statement": "$\\neg\\,\\mathrm{Surjective}\\,(\\mathrm{frobenius}\\,\\mathbb{F}_p(X)\\,p)$",
+      "significance": "Frobenius loses surjectivity on the function field.",
+      "description": "Frobenius is not surjective on 𝔽ₚ(X): X is not a p-th power, via frobenius_def and ratfunc_X_isNotPthPower."
+    },
+    {
+      "name": "not_perfectField_ratfunc",
+      "type": "headline",
+      "statement": "$\\neg\\,\\mathrm{PerfectField}\\,\\mathbb{F}_p(X)$",
+      "significance": "The main result: an explicit imperfect field, the sharp counterpoint to the finite-field case.",
+      "description": "𝔽ₚ(X) is not a PerfectField: PerfectField.toPerfectRing plus surjective_frobenius would make Frobenius surjective, contradicting frobenius_not_surjective_ratfunc."
+    }
+  ],
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Motivation: Sharpening the Perfect-Field Dichotomy",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "The module docstring recalls the thread: the grandparent showed Frobenius is a ring hom in characteristic p, the parent showed it is an automorphism on finite fields (which are perfect). This file answers the parent's second open question from the other side: exhibit an explicit imperfect field where Frobenius fails to be surjective, using the polynomial ring as a stepping stone to the function field. Imports Mathlib; opens Polynomial and Function; fixes a prime p.",
+      "mathContext": "A field is perfect iff its Frobenius $x \\mapsto x^p$ is surjective. Finite fields and characteristic-0 fields are perfect; the goal is the simplest explicit imperfect field, $\\mathbb{F}_p(X)$."
+    },
+    {
+      "id": "part-1-polynomial-ring",
+      "title": "Part 1 - The Polynomial Ring 𝔽ₚ[X] Is an Explicit Imperfect Ring",
+      "startLine": 43,
+      "endLine": 79,
+      "summary": "frobenius_injective_polynomial: Frobenius is injective on 𝔽ₚ[X] (a domain, hence reduced), directly from Mathlib's frobenius_inj. X_isNotPthPower: X has no p-th root, by the degree obstruction p·natDegree f = 1 (from natDegree_pow and natDegree_X), forcing p | 1. frobenius_not_surjective_polynomial specializes surjectivity at X through frobenius_def; not_perfectRing_polynomial concludes 𝔽ₚ[X] is not a PerfectRing via surjective_frobenius.",
+      "mathContext": "If $f^p = X$ in $\\mathbb{F}_p[X]$ then $p\\cdot\\deg f = \\deg X = 1$, so $p \\mid 1$ - impossible for prime $p$. Frobenius is injective but not surjective, so $\\mathbb{F}_p[X]$ is an imperfect ring."
+    },
+    {
+      "id": "part-2-function-field",
+      "title": "Part 2 - The Rational Function Field 𝔽ₚ(X) Is an Explicit Imperfect Field",
+      "startLine": 81,
+      "endLine": 136,
+      "summary": "intDegree_pow: intDegree(rⁿ) = n·intDegree r for nonzero r, by induction using RatFunc.intDegree_mul. ratfunc_X_isNotPthPower: X has no p-th root in 𝔽ₚ(X); the same degree argument now lives in ℤ, giving (p:ℤ)·intDegree r = 1, closed by Int.le_of_dvd and omega. frobenius_not_surjective_ratfunc specializes at X; the headline not_perfectField_ratfunc concludes 𝔽ₚ(X) is not a PerfectField via PerfectField.toPerfectRing and surjective_frobenius.",
+      "mathContext": "In $\\mathbb{F}_p(X)$, $r^p = X$ gives $p\\cdot\\operatorname{intDegree} r = 1$ in $\\mathbb{Z}$, again forcing $p \\mid 1$. The $\\mathbb{N}$-degree obstruction of Part 1 lifts verbatim once degree is allowed to be negative."
+    }
+  ],
+  "conclusion": {
+    "summary": "The parent's second open question is answered verbatim with the simplest explicit witness. In 𝔽ₚ[X] the Frobenius x -> x^p is injective (a domain is reduced) but not surjective, since X has no p-th root by the degree obstruction p·natDegree f = 1; so 𝔽ₚ[X] is an explicit imperfect ring. Passing to the fraction field 𝔽ₚ(X), the identical argument over the integer degree intDegree shows X still has no p-th root, so 𝔽ₚ(X) is an explicit imperfect field (not_perfectField_ratfunc). 8 theorems, 138 lines, 0 sorries, 0 axioms, no native_decide.",
+    "implications": "This closes the perfect-field dichotomy from both sides: the parent showed every finite field is perfect (injective forces surjective on a finite set), and this entry shows the infinite field 𝔽ₚ(X) is imperfect (injective without surjective). The lesson is that finiteness, not characteristic p, is what made finite fields perfect. The two-part structure - polynomial ring first, then fraction field - isolates a single reusable idea: a degree valuation multiplicative under powers turns f^p = X into p·deg f = 1, an impossibility. The same template applies to any 𝔽ₚ(t₁,...,tₙ) and, more generally, wherever a ℤ-valued multiplicative degree is available.",
+    "openQuestions": [
+      "Formalize that 𝔽ₚ(X) has [𝔽ₚ(X) : 𝔽ₚ(X)^p] = p (the imperfection degree / p-basis {X}), quantifying how far it is from perfect.",
+      "Build the perfect closure 𝔽ₚ(X^{1/p^∞}) explicitly and show Frobenius becomes surjective there.",
+      "Generalize the degree obstruction to 𝔽ₚ(t₁,...,tₙ), exhibiting imperfection degree pⁿ from the n-element p-basis."
+    ]
+  },
   "crossReferences": [
     {
       "proofId": "frobenius-endomorphism-oq-01-oq-02",
