@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-03-30T21:46:38.106Z",
     "iteration": 1,
-    "focus": "Regime-transition structure formalized & verified; open gap closure remains.",
+    "focus": "General threshold existence (r≥2,k≥2) now verified; exact n₀(r,k) closed form + conjecture gap remain.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED (0-axiom). Created gallery entry erdos-1020-oq-02 + Proofs/Erdos1020OQ02.lean. Did NOT resolve the open gap (Erdős Matching Conjecture, OPEN r≥4); instead formalized the unconditional structure of the small-n/large-n regime transition of the conjectured value max(construction1, construction2): construction2 monotone in n (Pascal telescoping), dominance region upward-closed (single threshold), conjecturedValue monotone, collapse on each side. Worked instance r=4,k=2 crossover at n=8 by kernel decide. [Session 2] Added 3 verified theorems sharpening the transition: construction2_step_eq (EXACT step difference = C(n,r-1)-C(n-k+1,r-1), the equality behind the old inequality), construction2_strict_mono_step (strict refinement), and crossover_r4k2 — the SHARP crossover threshold for r=4,k=2: construction1 4 2 ≤ construction2 n 4 2 ⇔ 8 ≤ n (n₀=8). All 0-axiom (decide, not native_decide). File now 232 lines, 9 theorems.",
+    "progressSummary": "2026-06-30 (researcher-1): generalized the regime-threshold structure from the r=4,k=2 worked instance to ALL r≥2,k≥2. Proved exists_dominance_threshold (a single crossover threshold n₀≥k exists beyond which construction2 dominates construction1) via construction2_eventually_dominates (construction2 unbounded in n — its top summand C(n−1,r−1) is, using the elementary bound sub_add_one_le_choose: n−d+1≤C(n,d)) + the upward-closed dominance region; corollary conjecturedValue_eq_construction2_eventually. 0-axiom, 0-sorry, 352 lines/17 thms. VERIFIED (0-axiom). Created gallery entry erdos-1020-oq-02 + Proofs/Erdos1020OQ02.lean. Did NOT resolve the open gap (Erdős Matching Conjecture, OPEN r≥4); instead formalized the unconditional structure of the small-n/large-n regime transition of the conjectured value max(construction1, construction2): construction2 monotone in n (Pascal telescoping), dominance region upward-closed (single threshold), conjecturedValue monotone, collapse on each side. Worked instance r=4,k=2 crossover at n=8 by kernel decide. [Session 2] Added 3 verified theorems sharpening the transition: construction2_step_eq (EXACT step difference = C(n,r-1)-C(n-k+1,r-1), the equality behind the old inequality), construction2_strict_mono_step (strict refinement), and crossover_r4k2 — the SHARP crossover threshold for r=4,k=2: construction1 4 2 ≤ construction2 n 4 2 ⇔ 8 ≤ n (n₀=8). All 0-axiom (decide, not native_decide). File now 232 lines, 9 theorems.",
     "builtItems": [
       "Proofs/Erdos1020OQ02.lean (165 lines, 0 axioms, 0 sorries, verified): construction2_mono_step, construction2_mono, construction2_dominant_up, conjecturedValue_mono, conjecturedValue_large, conjecturedValue_small + 5 kernel-decide crossover examples.",
       "Gallery entry src/data/proofs/erdos-1020-oq-02/ (meta.json + annotations.json).",
@@ -45,10 +45,10 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "Threshold EXISTENCE now proved for all r≥2,k≥2 (exists_dominance_threshold). Remaining: closed-form n₀(r,k), and the actual conjecture gap (r≥4 middle band).",
       "Open: prove the Erdős Matching Conjecture across the middle band (r≥4) — the actual gap closure.",
       "Decide whether extremal hypergraphs interpolate between the two constructions inside the gap.",
-      "Generalize crossover_r4k2 to a closed-form threshold n₀(r,k) for all r,k (instance r=4,k=2 done).",
-      "Prove construction2 → ∞ (k≥2) to establish threshold EXISTENCE for general r,k, not just the worked instance."
+      "Generalize crossover_r4k2 to a closed-form threshold n₀(r,k) for all r,k (instance r=4,k=2 done)."
     ]
   },
   "tags": [
@@ -68,7 +68,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T21:46:38.106Z",
-  "lastUpdate": "2026-06-27",
+  "lastUpdate": "2026-06-30T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
