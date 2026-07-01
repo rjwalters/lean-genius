@@ -48,7 +48,18 @@
     "substantiveTheoremCount": 6
   },
   "description": "A structural / arithmetic barrier for the extremal case of Erdős Problem #101. The parent entry proves the sharp pair-packing upper bound $\\mathrm{fourPointLineCount}(P) \\le \\tfrac{n(n-1)}{12}$ for any $n$-point planar set with no five collinear. This follow-up characterises the equality case: a configuration attains the bound exactly when its four-point lines perfectly cover the pairs of points — i.e. it realises a Steiner system $S(2,4,n)$ in the plane — and derives the classical Hanani divisibility conditions $n \\equiv 1$ or $4 \\pmod{12}$ that any such configuration must satisfy.",
-  "overview": "Erdős #101 OQ-02 asks whether the Solymosi–Stojaković $\\Omega(n^{2-o(1)})$ lower-bound construction can be pushed to $\\Omega(n^2/\\mathrm{polylog}\\,n)$, or whether there is a barrier. The pair-packing bound $\\tfrac{n(n-1)}{12}$ is the natural elementary ceiling ($\\binom{4}{2}=6$ disjoint pairs per line, packed into $\\binom{n}{2}$ pairs). This entry pins down precisely when that ceiling is met: it is attained iff every 2-subset of points lies on a (unique) four-point line, which is exactly a Steiner system $S(2,4,n)$. Counting the block count ($12 \\mid n(n-1)$) and the replication number ($3 \\mid n-1$) forces $n \\equiv 1, 4 \\pmod{12}$. Consequently the $\\tfrac{n(n-1)}{12}$ bound is unattainable for all other residues — a hard arithmetic obstruction that precedes any geometric input. This does not resolve OQ-02 (which concerns $\\Omega(n^2)$ growth, well below the extremal ceiling), but it exactly delimits the extreme end of the packing spectrum.",
+  "overview": {
+    "historicalContext": "Erdős Problem #101 concerns how many four-point lines an $n$-point planar set with no five collinear can have. The elementary ceiling is a pair-packing bound: a four-point line accounts for $\\binom{4}{2}=6$ of the $\\binom{n}{2}$ point-pairs, and distinct four-point lines share at most one point, so their pair-sets are disjoint — giving at most $\\tfrac{n(n-1)}{12}$ such lines. The perfect-packing case is precisely a Steiner system $S(2,4,n)$: a family of 4-blocks in which every pair of points lies in exactly one block. The arithmetic of such systems is classical: Haim Hanani proved in 1961 that $S(2,4,n)$ exists iff $n \\equiv 1$ or $4 \\pmod{12}$, the necessity half coming from two integrality counts — the block count $\\tfrac{n(n-1)}{12}$ and the replication number $\\tfrac{n-1}{3}$ must both be integers. This entry ports the necessity direction into Lean as an obstruction on the extremal geometric problem: if a no-five-collinear configuration attains the $\\tfrac{n(n-1)}{12}$ bound, its four-point lines form a plane-realised $S(2,4,n)$, so $n$ must satisfy Hanani's congruences. It builds on the parent Erdos101Problem entry, which establishes the pair-packing bound itself.",
+    "problemStatement": "The open question OQ-02 asks whether the Solymosi–Stojaković $\\Omega(n^{2-o(1)})$ lower-bound construction can be pushed to $\\Omega(n^2/\\mathrm{polylog}\\,n)$, or whether a barrier intervenes. This entry addresses the extreme end of the spectrum: characterise exactly when the pair-packing ceiling $\\tfrac{n(n-1)}{12}$ is attained, and extract the arithmetic constraints on $n$ that follow.",
+    "proofStrategy": "Attaining the bound means $6L = \\binom{n}{2}$ where $L$ is the number of four-point lines, so $n(n-1) = 12L$ and $12 \\mid n(n-1)$ (twelve_dvd_of_extremal). Equality also forces the pair-packing to be perfect: rebuilding the disjoint 6-pair blocks and comparing cardinalities shows every 2-subset lies on some four-point line (extremal_covers_all_pairs), and distinct lines sharing $\\le 1$ point make that line unique — a Steiner system $S(2,4,n)$ (extremal_pair_covered_uniquely). Fixing a point $p$, the perfect cover partitions the other $n-1$ points into the 3-element sets $S \\setminus \\{p\\}$ over lines through $p$, so $3 \\mid (n-1)$ (three_dvd_of_extremal). Feeding $3 \\mid (n-1)$ and $12 \\mid n(n-1)$ into a 12-way residue case split (Nat.mul_mod, interval_cases, omega) forces $n \\equiv 1, 4 \\pmod{12}$ (mod12_of_extremal); the contrapositive rules out the bound for all other residues.",
+    "keyInsights": [
+      "The equality case of a purely combinatorial packing bound is a design: attaining $\\tfrac{n(n-1)}{12}$ is *equivalent* to the four-point lines forming a Steiner system $S(2,4,n)$, so extremal incidence geometry collapses into design theory.",
+      "Two independent integrality counts do all the work: the block count $12 \\mid n(n-1)$ (global) and the replication number $3 \\mid (n-1)$ (local, seen by fixing one point), and together they pin the residue of $n$ mod 12 to exactly $\\{1,4\\}$.",
+      "The obstruction is arithmetic and precedes any geometry: for $n \\not\\equiv 1,4 \\pmod{12}$ the bound is unattainable for *number-theoretic* reasons, no matter how the points are placed — recovering the necessity half of Hanani's 1961 theorem inside the geometric problem.",
+      "Phrasing extremality as a *perfect* packing (every pair covered exactly once) is what turns a one-sided inequality $6L \\le \\binom{n}{2}$ into the two-sided structural statement needed to read off both divisibility facts.",
+      "The result delimits rather than resolves OQ-02: the open $\\Omega(n^2)$ growth question lives well below the extremal ceiling, so this cleanly separates the 'perfect packing' regime from the asymptotic-density regime without claiming to settle the latter."
+    ]
+  },
   "sections": [
     {
       "id": "arithmetic-core",
@@ -100,8 +111,16 @@
     ]
   },
   "crossReferences": [
-    "erdos-101",
-    "erdos-101-oq-01"
+    {
+      "targetId": "erdos-101",
+      "relationship": "parent",
+      "description": "The base Erdős #101 entry establishes the pair-packing upper bound fourPointLineCount(P) ≤ n(n-1)/12; this entry characterises its equality case as a Steiner system S(2,4,n)."
+    },
+    {
+      "targetId": "erdos-101-oq-01",
+      "relationship": "sibling",
+      "description": "A companion follow-up on Erdős #101; both refine the structure of extremal four-point-line configurations under the no-five-collinear hypothesis."
+    }
   ],
   "references": [
     {
