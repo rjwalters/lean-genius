@@ -98,6 +98,64 @@
       "Elementary inequality reasoning over the reals"
     ]
   },
+  "sections":   [
+    {
+      "id": "intro",
+      "title": "Motivation: The Correctness Invariant of Bisection",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports the parent IntermediateValueTheoremOQ01 (bisectIter, bisectLeft/Right, the width law) and Mathlib. The docstring frames the goal: the parent proves the intervals shrink; this file proves they never lose the root, by establishing the sign-change invariant f(an)*f(bn) <= 0 and deriving from it (via the IVT) that every bisection interval contains a genuine root. Opens namespace BisectionMethod, Real.",
+      "mathContext": "Sign persistence $f(a_n)\\,f(b_n) \\le 0$ is the invariant certifying that f changes sign on $[a_n,b_n]$, which by the IVT guarantees a root in every interval the method produces."
+    },
+    {
+      "id": "part-i-sign-algebra",
+      "title": "Part I - The Sign-Algebra Core",
+      "startLine": 40,
+      "endLine": 52,
+      "summary": "sign_persist_aux: from p*q <= 0 (a sign change) and 0 < p*m (m has the same sign as p) deduce m*q <= 0. The pure algebra behind transferring a sign change to the right half. Proof: (p*m)*(m*q) = (p*q)*m^2 <= 0 while p*m > 0, forcing m*q <= 0 (nlinarith).",
+      "mathContext": "$p q \\le 0 \\land 0 < p m \\Rightarrow m q \\le 0$, since $(pm)(mq) = (pq)m^2 \\le 0$ and $pm > 0$."
+    },
+    {
+      "id": "part-ii-one-step",
+      "title": "Part II - One Step Preserves the Sign Change",
+      "startLine": 54,
+      "endLine": 68,
+      "summary": "bisectStep_sign_persist: if f a * f b <= 0 then f still changes sign across the chosen sub-interval of one bisectStep. split_ifs on which half is kept: the left half is the chosen condition verbatim; the right half transfers the sign via sign_persist_aux.",
+      "mathContext": "One bisection step maps a sign-changing interval to a sign-changing sub-interval: the invariant $f a \\cdot f b \\le 0$ is preserved by bisectStep."
+    },
+    {
+      "id": "part-iii-invariant",
+      "title": "Part III - The Invariant for All n",
+      "startLine": 70,
+      "endLine": 86,
+      "summary": "bisect_sign_persist: if f a * f b <= 0 then f(bisectLeft n) * f(bisectRight n) <= 0 for every n, by induction on n (base case simp on the iter definitions; successor applies bisectStep_sign_persist to the inductive hypothesis). The correctness invariant of the bisection method.",
+      "mathContext": "$f(a_n)\\,f(b_n) \\le 0$ for all $n$ - the sign change is never lost as the intervals bisect."
+    },
+    {
+      "id": "part-iv-ordered",
+      "title": "Part IV - The Intervals Stay Ordered",
+      "startLine": 88,
+      "endLine": 100,
+      "summary": "bisect_le: an <= bn for every n, so each bisection interval is non-degenerate. Follows from the parent's width law bisect_width (bn - an = (b-a)/2^n) and (b-a)/2^n >= 0 by positivity, closed by linarith.",
+      "mathContext": "$a_n \\le b_n$ from the width law $b_n - a_n = (b-a)/2^n \\ge 0$ - needed so $[a_n,b_n]$ is a genuine interval for the IVT."
+    },
+    {
+      "id": "part-v-ivt-corollary",
+      "title": "Part V - IVT Corollary: Every Interval Contains a Root",
+      "startLine": 102,
+      "endLine": 129,
+      "summary": "sign_change_root: a continuous f with f a * f b <= 0 on [a,b] has a root in [a,b], by casing mul_nonpos_iff into the two sign patterns and applying the descending (intermediate_value_Icc') or ascending (intermediate_value_Icc) IVT. bisect_interval_contains_root combines Parts III+IV+V: every bisection interval [an,bn] of a continuous f contains a true root.",
+      "mathContext": "Continuity + $f a \\cdot f b \\le 0 \\Rightarrow \\exists c \\in [a,b],\\ f c = 0$; combined with the invariant and ordering, every $[a_n,b_n]$ contains a root - the full correctness statement."
+    },
+    {
+      "id": "part-vi-sqrt2",
+      "title": "Part VI - Concrete Instance: sqrt 2",
+      "startLine": 131,
+      "endLine": 153,
+      "summary": "bisect_sqrt2_sign_persist: the invariant holds for f(x) = x^2 - 2 on [1,2] (norm_num verifies the initial sign change, then bisect_sign_persist). bisect_sqrt2_contains_root: consequently every bisection interval of the x^2 - 2 search on [1,2] contains a genuine root - namely sqrt 2 - via bisect_interval_contains_root with continuity by continuity.",
+      "mathContext": "For $f(x) = x^2 - 2$ on $[1,2]$: $f(1)f(2) = (-1)(2) \\le 0$, so every bisection interval brackets $\\sqrt2$."
+    }
+  ],
   "conclusion": {
     "summary": "The sign-persistence invariant f(a_n)*f(b_n) <= 0 of the bisection method is proved for all n, resolving the parent entry's first open question. Combined with the parent's width decay and Mathlib's intermediate value theorem, it shows every bisection interval of a continuous sign-changing function contains a genuine root. Fully verified with 0 axioms and 0 sorries.",
     "implications": "This completes the correctness story for the bisection method begun in intermediate-value-theorem-oq-01: the intervals both shrink to zero width and provably contain a root at every step. The reusable lemma sign_change_root (continuous sign change implies a root) is a packaged, search-friendly form of the IVT for root finding. The remaining parent open questions — connecting bisectIter to Filter.Tendsto for full convergence, and formalizing Newton's method for comparison — are natural follow-ups.",
