@@ -758,4 +758,56 @@ lemma remove_balanced_subset_target_excess' (S E : Finset (V × V)) (v : V)
   rw [h_filt_src, h_filt_tgt, h_src_card, h_tgt_card, hSexc, hEbal]
   omega
 
+/-! ## Global counting constraint: the directed handshake lemma
+
+The `remove_balanced_subset_*` lemmas above are all *local* (per-vertex) preservation
+facts. The Hierholzer classification of directed Euler trails also rests on a *global*
+counting constraint, proved here for the first time in this file: summed over all
+vertices, the source-count and target-count of any finite edge-set are both equal to the
+edge count. This is the directed **handshake lemma** — total out-degree = total in-degree
+= number of edges — and its immediate corollary is that the signed excesses `out(v) − in(v)`
+sum to zero. That vanishing sum is exactly why the imbalanced vertices of an Euler *trail*
+must pair up (one `+1`-source-excess start against one `+1`-target-excess end), complementing
+the local lemmas' statement that removing a balanced trail preserves each vertex's excess.
+
+These lemmas are purely `Finset`/`Fintype` combinatorics with no walk-level content, hence
+independent of the still-absent `walkEdges'` bridge; they build standalone under Mathlib
+v4.26 via `Finset.card_eq_sum_card_fiberwise`. -/
+
+/-- **Directed handshake, source side.** Summed over all vertices, the number of edges of
+`S` with source `v` equals the total edge count: the fibers `{e ∈ S | e.1 = v}` partition
+`S` according to the value of `e.1`. This is `∑_v outDegree(v) = |E|`. -/
+lemma sum_source_card_eq_card [Fintype V] (S : Finset (V × V)) :
+    ∑ v, (S.filter fun e => e.1 = v).card = S.card :=
+  (Finset.card_eq_sum_card_fiberwise (fun e _ => Finset.mem_univ e.1)).symm
+
+/-- **Directed handshake, target side.** Summed over all vertices, the number of edges of
+`S` with target `v` equals the total edge count: the fibers `{e ∈ S | e.2 = v}` partition
+`S` according to the value of `e.2`. This is `∑_v inDegree(v) = |E|`. -/
+lemma sum_target_card_eq_card [Fintype V] (S : Finset (V × V)) :
+    ∑ v, (S.filter fun e => e.2 = v).card = S.card :=
+  (Finset.card_eq_sum_card_fiberwise (fun e _ => Finset.mem_univ e.2)).symm
+
+/-- **Directed handshake lemma.** For any finite edge-set, total out-degree equals total
+in-degree (both equal `|E|`). This global identity is the counting reason the local
+excesses must cancel; see `sum_signed_excess_eq_zero`. -/
+lemma sum_source_card_eq_sum_target_card [Fintype V] (S : Finset (V × V)) :
+    ∑ v, (S.filter fun e => e.1 = v).card = ∑ v, (S.filter fun e => e.2 = v).card := by
+  rw [sum_source_card_eq_card, sum_target_card_eq_card]
+
+/-- **Signed excesses cancel.** Over `ℤ`, the sum over all vertices of the signed excess
+`outDegree(v) − inDegree(v)` is zero. Consequently a directed graph admitting an open
+Euler trail cannot have a lone imbalanced vertex: the unique `+1` source excess at the
+trail's start must be balanced by a unique `+1` target excess at its end. This is the
+global obstruction that the per-vertex `remove_balanced_subset_source_excess'` /
+`remove_balanced_subset_target_excess'` lemmas propagate through Hierholzer induction. -/
+lemma sum_signed_excess_eq_zero [Fintype V] (S : Finset (V × V)) :
+    ∑ v, (((S.filter fun e => e.1 = v).card : ℤ) - (S.filter fun e => e.2 = v).card) = 0 := by
+  rw [Finset.sum_sub_distrib]
+  have h1 : ∑ v, ((S.filter fun e => e.1 = v).card : ℤ) = (S.card : ℤ) := by
+    rw [← Nat.cast_sum, sum_source_card_eq_card]
+  have h2 : ∑ v, ((S.filter fun e => e.2 = v).card : ℤ) = (S.card : ℤ) := by
+    rw [← Nat.cast_sum, sum_target_card_eq_card]
+  rw [h1, h2, sub_self]
+
 end KonigsbergOQ01OQ02Recipe
