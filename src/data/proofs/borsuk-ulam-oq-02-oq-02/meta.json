@@ -3,6 +3,38 @@
   "title": "Equivariant Borsuk-Ulam for Compact Lie Groups",
   "slug": "borsuk-ulam-oq-02-oq-02",
   "description": "Survey of equivariant Borsuk-Ulam for compact Lie groups (SO(n), U(n)). Formalizes equivariant map definitions, fixed-point subspace properties, and identifies ~2000 lines of infrastructure needed for the full theorem.",
+  "references": [
+    {
+      "authors": "Karol Borsuk",
+      "title": "Drei Sätze über die n-dimensionale euklidische Sphäre (Fundamenta Mathematicae 20)",
+      "year": 1933,
+      "note": "The original Borsuk–Ulam theorem, whose equivariant generalization to compact Lie groups is surveyed here."
+    },
+    {
+      "authors": "Tammo tom Dieck",
+      "title": "Transformation Groups",
+      "year": 1987,
+      "note": "de Gruyter Studies in Mathematics 8. Equivariant maps, fixed-point subspaces, and G-representation theory for compact Lie groups."
+    },
+    {
+      "authors": "Glen E. Bredon",
+      "title": "Introduction to Compact Transformation Groups",
+      "year": 1972,
+      "note": "Academic Press. Fixed-point sets and representation spheres for compact Lie group actions."
+    },
+    {
+      "authors": "Jiří Matoušek",
+      "title": "Using the Borsuk–Ulam Theorem",
+      "year": 2003,
+      "note": "Springer. Modern account of Borsuk–Ulam and its equivariant/topological-combinatorial generalizations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Representation, MulAction fixed points, and topology infrastructure",
+      "year": 2024,
+      "note": "G-representation and fixed-point subspace definitions underlying the ~2000-line infrastructure this entry scopes."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "axiomatized",

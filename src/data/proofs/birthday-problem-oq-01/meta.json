@@ -3,6 +3,38 @@
   "title": "Birthday Problem OQ01: Expected Number of Shared Birthday Pairs",
   "slug": "birthday-problem-oq-01",
   "description": "The expected number of shared birthday pairs among n people with d equally likely birthdays is C(n,2)/d = n(n-1)/(2d). Proved: formula, monotonicity, variance bounds, threshold computations (n=28 first exceeds 1 pair for d=365), and general threshold criterion. The concrete triple/quad threshold values and the thresholds_summary record are discharged by native_decide (relies on Lean.ofReduceBool).",
+  "references": [
+    {
+      "authors": "Richard von Mises",
+      "title": "Über Aufteilungs- und Besetzungswahrscheinlichkeiten (Revue de la Faculté des Sciences, Istanbul)",
+      "year": 1939,
+      "note": "An early formulation of the birthday problem and coincidence counting."
+    },
+    {
+      "authors": "William Feller",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. 1 (3rd ed.)",
+      "year": 1968,
+      "note": "Wiley. Occupancy problems and expected coincidences via indicator variables."
+    },
+    {
+      "authors": "Sheldon Ross",
+      "title": "A First Course in Probability (8th ed.)",
+      "year": 2010,
+      "note": "Pearson. Linearity of expectation over pair-indicators gives E[X]=C(n,2)/d directly."
+    },
+    {
+      "authors": "Persi Diaconis and Frederick Mosteller",
+      "title": "Methods for Studying Coincidences (Journal of the American Statistical Association 84)",
+      "year": 1989,
+      "note": "Systematic treatment of birthday-type coincidence expectations and thresholds."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Finset.sum, Nat.choose and probability-mass infrastructure",
+      "year": 2024,
+      "note": "Summation over pair-indicators and the C(n,2) count used in the expectation formula."
+    }
+  ],
   "meta": {
     "author": "Lean Genius OQ-01",
     "status": "axiomatized",
