@@ -1,5 +1,27 @@
 [
   {
+    "id": "ann-asoq010301-defs",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-01",
+    "range": { "startLine": 37, "endLine": 46 },
+    "type": "definition",
+    "title": "Both Factorials, Built From Scratch Over a Commutative Ring",
+    "content": "risingFactorial and fallingFactorial are defined by direct recursion on the exponent k: x^{(0)} = 1, x^{(k+1)} = x^{(k)}·(x+k) for the rising factorial, and x^{underline 0} = 1, x^{underline (k+1)} = x^{underline k}·(x-k) for the falling one. Each ships with a `@[simp]` zero lemma and a `succ` unfolding lemma proved by `rfl`. The design choice is deliberate: rather than route through Mathlib's `ascPochhammer`/`descPochhammer` (which are polynomials evaluated at a ring element), the factorials are recursive `R`-valued functions. This keeps every downstream proof elementary — the reflection lemma becomes one line, and `risingFactorial_succ`/`fallingFactorial_succ` rewrite definitionally — at the cost of not reusing the Pochhammer API. The falling definition's use of `x - k` is exactly why the development lives over a `CommRing` and not a `CommSemiring`.",
+    "mathContext": "The rising factorial $x^{\\overline{k}}=x(x+1)\\cdots(x+k-1)$ and falling factorial $x^{\\underline{k}}=x(x-1)\\cdots(x-k+1)$ are the empty product $1$ at $k=0$. Here $k \\in \\mathbb{N}$ is a genuine natural-number recursion index while $x \\in R$ ranges over an arbitrary commutative ring, so $x + k$ and $x - k$ read the cast $(k : R)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "falling factorial",
+      "rising factorial",
+      "Pochhammer symbol",
+      "primitive recursion",
+      "commutative ring"
+    ],
+    "prerequisites": [
+      "structural recursion on ℕ",
+      "Nat.cast into a ring",
+      "empty product convention"
+    ]
+  },
+  {
     "id": "ann-asoq010301-rising",
     "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-01",
     "range": { "startLine": 51, "endLine": 128 },
