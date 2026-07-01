@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 200,
+    "lineCount": 246,
     "assumptions": "One stated assumption: baker_linear_form_two, the two-logarithm homogeneous case of Baker's theorem (algebraic bases a₁, a₂ > 1 with ℚ-linearly-independent logarithms, algebraic coefficients β₁, β₂ not both zero ⟹ β₁·log a₁ + β₂·log a₂ transcendental), re-declared as an `axiom` exactly as the gallery parent `gelfond-schneider` records Gelfond-Schneider — the full proof of Baker's theorem (auxiliary functions, zero estimates, the theory of linear forms in logarithms) is not formalized. Every theorem in this file is otherwise fully machine-checked: `lake env lean` builds Proofs/GelfondSchneiderOQ01.lean to exit 0 against the pinned Mathlib (v4.26.0), and #print axioms reports, beyond the foundational propext / Classical.choice / Quot.sound, only the single GelfondSchneiderOQ01.baker_linear_form_two assumption (no sorryAx, no Lean.ofReduceBool). In particular irrational_log_three_div_log_two depends on NO Baker assumption — it is unconditional. The file imports only Mathlib.",
     "dateAdded": "2026-06-27",
     "mathlib_version": "4.26.0",
@@ -53,11 +53,13 @@
     ],
     "originalContributions": [
       "baker_linear_form_two: the two-logarithm homogeneous form of Baker's theorem, stated as a Lean `axiom` exactly as the parent entry states Gelfond-Schneider. This isolates the precise n = 2 input that goes beyond the single-logarithm (n = 1) Gelfond-Schneider / Hermite-Lindemann theory.",
-      "transcendental_log_two_add_sqrt_two_log_three: log 2 + √2·log 3 is transcendental — the flagship consequence. Both summands are transcendental, but the genuinely new content beyond Gelfond-Schneider is that two ℚ-linearly-independent logarithms cannot cancel into an algebraic number when scaled by algebraic coefficients not both zero. Gelfond-Schneider (n = 1) says nothing about this n = 2 cancellation question.",
+      "transcendental_log_two_add_algebraic_log_three: for EVERY algebraic coefficient β, the form log 2 + β·log 3 is transcendental. The leading coefficient 1 ≠ 0 makes the not-both-zero hypothesis automatic, so no constraint on β is needed beyond algebraicity. This general family shows the new n = 2 content is not an artefact of the specific coefficient √2 — any algebraic β (rational, √2, or a root of any polynomial) produces a form single-logarithm theory cannot reach; the flagship is its β = √2 specialization.",
+      "log_two_log_three_linearIndependent_over_algebraic: the canonical STRUCTURAL form of Baker's theorem — log 2 and log 3 are linearly independent over the algebraic numbers, not merely over ℚ. If β₁·log 2 + β₂·log 3 = 0 with β₁, β₂ algebraic, then β₁ = β₂ = 0. This upgrades the soft ℚ-linear independence (a parity fact) to independence over the much larger field ℚ̄, which is exactly the content Gelfond-Schneider (n = 1) cannot supply; it is a one-line consequence of the axiom (a nontrivial algebraic combination is transcendental, hence ≠ 0).",
+      "transcendental_log_two_add_sqrt_two_log_three: log 2 + √2·log 3 is transcendental — the flagship consequence, now derived as the β = √2 case of the general family. Both summands are transcendental, but the genuinely new content beyond Gelfond-Schneider is that two ℚ-linearly-independent logarithms cannot cancel into an algebraic number when scaled by algebraic coefficients not both zero. Gelfond-Schneider (n = 1) says nothing about this n = 2 cancellation question.",
       "irrational_log_three_div_log_two / irrational_log_two_div_log_three: log 3 / log 2 (and its reciprocal) are irrational, proved unconditionally (no Baker assumption) — a rational value forces 2^p = 3^d for positive integers, impossible by parity. This supplies the ℚ-linear-independence hypothesis for the bases 2, 3.",
       "transcendental_log_six: the collapsing sanity case — with both coefficients 1 the n = 2 form degenerates to the single logarithm log 2 + log 3 = log 6, where Baker's conclusion agrees with single-logarithm Hermite-Lindemann, contrasting with the flagship where the algebraic-irrational coefficient √2 prevents the collapse."
     ],
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 0
   },
   "overview": {
@@ -69,7 +71,8 @@
       "**Two hypotheses do all the work and both are discharged unconditionally.** Baker's theorem needs (i) ℚ-linear independence of the logarithms and (ii) algebraicity of the coefficients. Here (i) is log 2 / log 3 ∉ ℚ, proved by exponentiating an assumed rational value to 2^p = 3^d and killing it with the parity fact 2 ∣ 3^d ⇒ 2 ∣ 3; (ii) is √2 algebraic as a root of X² − 2. Only Baker's theorem itself remains an assumption.",
       "**The √2 coefficient is what forces the form past the single-logarithm regime.** With β₁ = β₂ = 1 the form collapses: log 2 + log 3 = log 6, a single logarithm that Hermite-Lindemann already handles. Replacing one coefficient by the algebraic *irrational* √2 breaks the collapse — log 2 + √2·log 3 is not any single b · log a — so the result genuinely requires the n ≥ 2 theory.",
       "**The formalization mirrors the parent's axiomatization strategy.** Just as the parent entry states Gelfond-Schneider as an axiom (its full proof — Baker's auxiliary functions, zero estimates, and the theory of linear forms in logarithms — is far beyond current Mathlib), this entry states only the two-logarithm Baker form as `baker_linear_form_two` and machine-checks everything downstream. `#print axioms` confirms that single assumption is the sole non-foundational dependency.",
-      "**Independence is captured by a single irrationality, exploiting the homogeneity of the form.** Rather than the general notion of ℚ-linear independence of {log a₁, …, log aₙ}, the n = 2 case needs only that the ratio log a₁ / log a₂ is irrational, and the reciprocal lemma (log 2 / log 3 irrational ⇔ log 3 / log 2 irrational) lets the parity argument be run in whichever direction is convenient."
+      "**Independence is captured by a single irrationality, exploiting the homogeneity of the form.** Rather than the general notion of ℚ-linear independence of {log a₁, …, log aₙ}, the n = 2 case needs only that the ratio log a₁ / log a₂ is irrational, and the reciprocal lemma (log 2 / log 3 irrational ⇔ log 3 / log 2 irrational) lets the parity argument be run in whichever direction is convenient.",
+      "**The transcendence result and the independence-over-ℚ̄ result are two faces of the same axiom.** The transcendence statement (log 2 + β·log 3 ∉ ℚ̄ for algebraic β) and the structural statement (log 2, log 3 linearly independent over ℚ̄) are logically equivalent packagings of Baker's n = 2 theorem: a nontrivial algebraic combination is transcendental precisely because it cannot be zero (0 being algebraic), and conversely non-vanishing of all nontrivial combinations is what 'independent over ℚ̄' means. The file records both — the general family transcendental_log_two_add_algebraic_log_three and the independence theorem log_two_log_three_linearIndependent_over_algebraic — from the single assumption, each a one-line derivation."
     ]
   },
   "sections": [
@@ -88,16 +91,23 @@
       "endLine": 156
     },
     {
-      "id": "flagship",
-      "title": "log 2 + √2·log 3 is Transcendental, and the Collapsing Case",
-      "summary": "transcendental_log_two_add_sqrt_two_log_three feeds the algebraic and independence inputs into Baker's theorem for the flagship result. transcendental_log_six is the sanity sibling: with both coefficients 1 the form degenerates to log 6 and Baker agrees with single-logarithm Hermite-Lindemann.",
-      "startLine": 158,
-      "endLine": 191
+      "id": "general-family",
+      "title": "The General Family log 2 + β·log 3 and the Flagship",
+      "summary": "transcendental_log_two_add_algebraic_log_three proves that for EVERY algebraic coefficient β the form log 2 + β·log 3 is transcendental (the leading coefficient 1 ≠ 0 discharges the not-both-zero hypothesis automatically). The flagship transcendental_log_two_add_sqrt_two_log_three is now the β = √2 specialization, showing the effect is generic to the n = 2 structure rather than special to √2.",
+      "startLine": 167,
+      "endLine": 198
+    },
+    {
+      "id": "linear-independence",
+      "title": "Linear Independence of log 2, log 3 over the Algebraic Numbers",
+      "summary": "log_two_log_three_linearIndependent_over_algebraic is the canonical structural form of Baker's theorem: if β₁·log 2 + β₂·log 3 = 0 with β₁, β₂ algebraic then β₁ = β₂ = 0. It upgrades the soft ℚ-linear independence to independence over ℚ̄ — a one-line consequence of the axiom, since a nontrivial algebraic combination is transcendental and therefore nonzero. transcendental_log_six is the collapsing sanity sibling: with both coefficients 1 the form degenerates to log 6 and Baker agrees with single-logarithm Hermite-Lindemann.",
+      "startLine": 200,
+      "endLine": 227
     }
   ],
   "conclusion": {
-    "summary": "Formalized in Lean 4 (0 sorries; the sole non-foundational assumption is the two-logarithm case of Baker's theorem, re-declared as an axiom as the parent does for Gelfond-Schneider): log 2 + √2·log 3 is transcendental, a result strictly beyond single-logarithm transcendence theory. The ℚ-linear independence of log 2 and log 3 is established unconditionally.",
-    "implications": "Answers OQ-01 affirmatively: Baker's theorem proves strictly more than Gelfond-Schneider. The new phenomenon is non-cancellation of ℚ-linearly-independent logarithms under algebraic coefficients — a genuine n ≥ 2 effect invisible to the n = 1 theory. The collapsing case log 6 marks the boundary where the two regimes agree. The same template gives transcendence of β₁ log p + β₂ log q for distinct primes p, q and any algebraic coefficients not both zero.",
+    "summary": "Formalized in Lean 4 (0 sorries; the sole non-foundational assumption is the two-logarithm case of Baker's theorem, re-declared as an axiom as the parent does for Gelfond-Schneider): log 2 + β·log 3 is transcendental for every algebraic β (flagship β = √2), and — its structural counterpart — log 2 and log 3 are linearly independent over the algebraic numbers, both results strictly beyond single-logarithm transcendence theory. The ℚ-linear independence of log 2 and log 3 is established unconditionally.",
+    "implications": "Answers OQ-01 affirmatively: Baker's theorem proves strictly more than Gelfond-Schneider. The new phenomenon is non-cancellation of ℚ-linearly-independent logarithms under algebraic coefficients — a genuine n ≥ 2 effect invisible to the n = 1 theory. The general family (any algebraic β) shows the effect is not tied to the specific coefficient √2, and its equivalent packaging as ℚ̄-linear independence of log 2, log 3 is the canonical textbook statement of Baker's content. The collapsing case log 6 marks the boundary where the two regimes agree. The same template gives transcendence of β₁ log p + β₂ log q for distinct primes p, q and any algebraic coefficients not both zero.",
     "openQuestions": [
       "Generalize from the two fixed bases 2, 3 to arbitrary multiplicatively independent positive algebraic a₁, a₂, or to the full n-logarithm form of Baker's theorem.",
       "Discharge the baker_linear_form_two assumption by formalizing Baker's method (auxiliary functions, zero estimates), which would make this and the parent's Gelfond-Schneider axiom unconditional.",
@@ -145,9 +155,9 @@
       "Real"
     ],
     "namespace": "GelfondSchneiderOQ01",
-    "lineCount": 200,
+    "lineCount": 246,
     "axiomCount": 1,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/GelfondSchneiderOQ01.lean",
     "sorries": 0
