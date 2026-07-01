@@ -177,10 +177,10 @@ theorem sum_tetrahedral_closed_form (n : ℕ) :
 
 /-! ### Concrete verifications -/
 
-/-- `T_0 + ⋯ + T_4 = 0+1+3+6+10 = 20 = 3·4·5/6`, the running total in closed form. -/
-example : ∑ m ∈ Finset.range 5, Nat.choose (m + 1) 2 = 3 * 4 * 5 / 6 := by decide
-/-- `Te_0 + ⋯ + Te_4 = 0+1+4+10+20 = 35 = C(7, 4) = 3·4·5·6/24`. -/
-example : ∑ m ∈ Finset.range 5, Nat.choose (m + 2) 3 = 3 * 4 * 5 * 6 / 24 := by decide
+/-- `T_0 + ⋯ + T_4 = 0+1+3+6+10 = 20 = 4·5·6/6` (the `n = 4` triangular running total). -/
+example : ∑ m ∈ Finset.range 5, Nat.choose (m + 1) 2 = 4 * 5 * 6 / 6 := by decide
+/-- `Te_0 + ⋯ + Te_4 = 0+1+4+10+20 = 35 = C(7, 4) = 4·5·6·7/24`. -/
+example : ∑ m ∈ Finset.range 5, Nat.choose (m + 2) 3 = 4 * 5 * 6 * 7 / 24 := by decide
 /-- `∑_{m≤4} Te_m = 35 = C(7, 4)`, the running total as a binomial. -/
 example : ∑ m ∈ Finset.range 5, Nat.choose (m + 2) 3 = Nat.choose 7 4 := by decide
 
