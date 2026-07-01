@@ -185,5 +185,31 @@
       "relationship": "foundational",
       "description": "The Euclidean GCD algorithm makes the `Nat.Coprime a b` hypothesis checkable and decidable. This is essential for instantiating the Sylvester bound $(a-1)(b-1)$ on concrete numeric examples — without computable coprimality testing, the bound is purely abstract."
     }
+  ],
+  "references": [
+    {
+      "authors": "Sylvester, J. J.",
+      "title": "Question 7382",
+      "year": "1884",
+      "note": "Mathematical Questions from the Educational Times 41, 21. Gives the two-generator Frobenius number g(a,b)=ab−a−b, the base case the three-generator theory here generalizes."
+    },
+    {
+      "authors": "Brauer, A.",
+      "title": "On a problem of partitions",
+      "year": "1942",
+      "note": "American Journal of Mathematics 64, 299–312. Early systematic study of the Frobenius (coin) problem for several generators."
+    },
+    {
+      "authors": "Ramírez Alfonsín, J. L.",
+      "title": "The Diophantine Frobenius Problem",
+      "year": "2005",
+      "note": "Oxford Lecture Series in Mathematics and its Applications 30. The comprehensive monograph on the Frobenius number, including the NP-hardness and known formulas for three generators."
+    },
+    {
+      "authors": "Rosales, J. C.; García-Sánchez, P. A.",
+      "title": "Numerical Semigroups",
+      "year": "2009",
+      "note": "Springer Developments in Mathematics 20. Develops the numerical-semigroup framework ⟨a,b,c⟩ and the Frobenius number as its largest gap, matching this entry's Representable3 API."
+    }
   ]
 }

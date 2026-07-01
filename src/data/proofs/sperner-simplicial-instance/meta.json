@@ -180,5 +180,31 @@
   "sorries": 0,
   "additionalFiles": [
     "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
+  ],
+  "references": [
+    {
+      "authors": "Sperner, E.",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": "1928",
+      "note": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6, 265–272. The original statement of Sperner's lemma for triangulated simplices."
+    },
+    {
+      "authors": "Kuhn, H. W.",
+      "title": "Some combinatorial lemmas in topology",
+      "year": "1960",
+      "note": "IBM Journal of Research and Development 4(5), 518–524. Path-following proof; the pseudomanifold parity structure bridged here generalizes Kuhn's triangulation setting."
+    },
+    {
+      "authors": "Henle, M.",
+      "title": "A Combinatorial Introduction to Topology",
+      "year": "1994",
+      "note": "Dover. Treats simplicial complexes, pseudomanifolds, and Sperner's lemma with the boundary/interior door counting used in this bridge."
+    },
+    {
+      "authors": "Aigner, M.; Ziegler, G. M.",
+      "title": "Proofs from THE BOOK (6th ed.)",
+      "year": "2018",
+      "note": "Springer. Sperner's lemma and its role in Brouwer's fixed-point theorem via triangulations."
+    }
   ]
 }
