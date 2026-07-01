@@ -788,6 +788,114 @@ theorem finset_indicator_covariance_le_alpha
         rw [Finset.sum_mul_sum]
         simp_rw [Finset.sum_mul]
 
+/-- **Nonnegative-coefficient simple-function Davydov bound** (S20, this session).
+
+Specialization of `finset_indicator_covariance_le_alpha` to the case where every
+cell weight is nonnegative (`0 ≤ aᵢ`, `0 ≤ bⱼ`). The absolute values in the
+constant then collapse — `∑ᵢ |aᵢ| = ∑ᵢ aᵢ` and `∑ⱼ |bⱼ| = ∑ⱼ bⱼ` — so the
+bound reads with the plain coefficient sums:
+$$
+\Bigl|\mathrm{Cov}(f, g)\Bigr|
+   \;\le\; \Bigl(\sum_i a_i\Bigr)\Bigl(\sum_j b_j\Bigr)\,
+     \alpha(\mathcal F, \mathcal G).
+$$
+
+**Why this is the right increment.** The super-level (layer-cake) decomposition
+of a *nonnegative* bounded variable carries only nonnegative weights, so this is
+exactly the form the Davydov density step produces once the signed variable has
+been shifted to `[0, M]` (via `covariance_add_const_left/right`, S19). Removing
+the absolute values is what lets the coefficient sum *telescope to the range* of
+the function — the content of `telescoping_layer_covariance_le_alpha` below —
+rather than growing without bound as the partition is refined. -/
+theorem finset_indicator_covariance_le_alpha_of_nonneg
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {ι κ : Type*} (s : Finset ι) (t : Finset κ)
+    (a : ι → ℝ) (b : κ → ℝ)
+    (A : ι → Set Ω) (B : κ → Set Ω)
+    (ha : ∀ i ∈ s, 0 ≤ a i) (hb : ∀ j ∈ t, 0 ≤ b j)
+    (hA_amb : ∀ i ∈ s, MeasurableSet (A i))
+    (hB_amb : ∀ j ∈ t, MeasurableSet (B j))
+    (hA : ∀ i ∈ s, @MeasurableSet Ω (σPair 0) (A i))
+    (hB : ∀ j ∈ t, @MeasurableSet Ω (σPair 1) (B j)) :
+    |∫ ω, (∑ i ∈ s, a i * (A i).indicator (1 : Ω → ℝ) ω)
+            * (∑ j ∈ t, b j * (B j).indicator (1 : Ω → ℝ) ω) ∂μ
+      - (∫ ω, ∑ i ∈ s, a i * (A i).indicator (1 : Ω → ℝ) ω ∂μ)
+        * (∫ ω, ∑ j ∈ t, b j * (B j).indicator (1 : Ω → ℝ) ω ∂μ)|
+    ≤ (∑ i ∈ s, a i) * (∑ j ∈ t, b j)
+        * CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+  have hbase := finset_indicator_covariance_le_alpha (μ := μ) σPair s t a b A B
+    hA_amb hB_amb hA hB
+  have hsa : ∑ i ∈ s, |a i| = ∑ i ∈ s, a i :=
+    Finset.sum_congr rfl (fun i hi => abs_of_nonneg (ha i hi))
+  have hsb : ∑ j ∈ t, |b j| = ∑ j ∈ t, b j :=
+    Finset.sum_congr rfl (fun j hj => abs_of_nonneg (hb j hj))
+  rwa [hsa, hsb] at hbase
+
+/-- **Telescoping layer-cake Davydov bound** (S20, this session).
+
+The discretized layer-cake step of Davydov's inequality for *bounded* variables.
+Given increasing grids `sg, ug : ℕ → ℝ` with `sg 0 = 0`, `sg m = M`, `ug 0 = 0`,
+`ug n = N`, form the super-level step approximants with telescoping weights
+`sg (k+1) − sg k ≥ 0` and `ug (k+1) − ug k ≥ 0` attached to sub-σ-measurable
+level sets `A k` (w.r.t. `σPair 0`) and `B k` (w.r.t. `σPair 1`). Then
+$$
+\Bigl|\mathrm{Cov}(f_{\mathrm{step}}, g_{\mathrm{step}})\Bigr|
+   \;\le\; M \cdot N \cdot \alpha(\mathcal F, \mathcal G).
+$$
+
+**The point.** The coefficient sums telescope to the ranges by
+`Finset.sum_range_sub`:
+`∑_{k<m} (sg (k+1) − sg k) = sg m − sg 0 = M` (and likewise `N`), *independently
+of the grid* `sg`. Refining the partition therefore does **not** inflate the
+constant — it stays pinned at `M · N`. This is precisely the uniform bound that
+survives the layer-cake limit and turns the `(∑|aᵢ|)(∑|bⱼ|)` simple-function
+estimate into the sharp `‖X‖_∞ ‖Y‖_∞`-type factor of the bounded-variable
+Davydov inequality. The nonnegativity of the weights (needed to drop the
+absolute values, `finset_indicator_covariance_le_alpha_of_nonneg`) is exactly
+what makes the telescoping legitimate; a signed decomposition would give
+`∑|Δ|`, not `∑ Δ`.
+
+Combined with the constant-shift invariance of S19 (which reduces a signed
+`f ∈ [m, M]` to the nonnegative `f − m ∈ [0, M − m]`), this is the final
+*algebraic* layer of `davydov_covariance_inequality`; the residual content is
+the analytic passage from step functions to general bounded/`L^p` variables
+(monotone convergence for the layer-cake limit + Hölder amplification to the
+`(p−2)/p` exponent). -/
+theorem telescoping_layer_covariance_le_alpha
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    (m n : ℕ) (sg ug : ℕ → ℝ) (M N : ℝ)
+    (A : ℕ → Set Ω) (B : ℕ → Set Ω)
+    (hsg_mono : Monotone sg) (hug_mono : Monotone ug)
+    (hsg0 : sg 0 = 0) (hsgm : sg m = M)
+    (hug0 : ug 0 = 0) (hugn : ug n = N)
+    (hA_amb : ∀ k ∈ Finset.range m, MeasurableSet (A k))
+    (hB_amb : ∀ k ∈ Finset.range n, MeasurableSet (B k))
+    (hA : ∀ k ∈ Finset.range m, @MeasurableSet Ω (σPair 0) (A k))
+    (hB : ∀ k ∈ Finset.range n, @MeasurableSet Ω (σPair 1) (B k)) :
+    |∫ ω, (∑ k ∈ Finset.range m, (sg (k + 1) - sg k) * (A k).indicator (1 : Ω → ℝ) ω)
+            * (∑ k ∈ Finset.range n, (ug (k + 1) - ug k) * (B k).indicator (1 : Ω → ℝ) ω) ∂μ
+      - (∫ ω, ∑ k ∈ Finset.range m, (sg (k + 1) - sg k) * (A k).indicator (1 : Ω → ℝ) ω ∂μ)
+        * (∫ ω, ∑ k ∈ Finset.range n, (ug (k + 1) - ug k) * (B k).indicator (1 : Ω → ℝ) ω ∂μ)|
+    ≤ M * N * CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+  -- Telescoping weights are nonnegative (grids are monotone).
+  have ha : ∀ k ∈ Finset.range m, 0 ≤ sg (k + 1) - sg k := fun k _ =>
+    sub_nonneg.mpr (hsg_mono (Nat.le_succ k))
+  have hb : ∀ k ∈ Finset.range n, 0 ≤ ug (k + 1) - ug k := fun k _ =>
+    sub_nonneg.mpr (hug_mono (Nat.le_succ k))
+  -- Apply the nonnegative-coefficient simple-function bound.
+  have hbound := finset_indicator_covariance_le_alpha_of_nonneg (μ := μ) σPair
+    (Finset.range m) (Finset.range n)
+    (fun k => sg (k + 1) - sg k) (fun k => ug (k + 1) - ug k) A B ha hb
+    hA_amb hB_amb hA hB
+  -- The coefficient sums telescope to the ranges `M`, `N`.
+  have hSsum : ∑ k ∈ Finset.range m, (sg (k + 1) - sg k) = M := by
+    rw [Finset.sum_range_sub sg m, hsgm, hsg0, sub_zero]
+  have hUsum : ∑ k ∈ Finset.range n, (ug (k + 1) - ug k) = N := by
+    rw [Finset.sum_range_sub ug n, hugn, hug0, sub_zero]
+  rwa [hSsum, hUsum] at hbound
+
 /-! ### Covariance translation-invariance (S19 — algebraic reduction for the
      L^p density step)
 
