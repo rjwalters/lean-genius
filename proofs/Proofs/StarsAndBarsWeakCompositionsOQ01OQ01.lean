@@ -1,4 +1,5 @@
 import Mathlib.RingTheory.PowerSeries.WellKnown
+import Mathlib.RingTheory.PowerSeries.Order
 import Mathlib.Tactic
 import Proofs.StarsAndBarsWeakCompositions
 import Proofs.StarsAndBarsWeakCompositionsOQ01
@@ -51,7 +52,13 @@ function of the positive-composition *counts* is `Xᵏ/(1 − X)ᵏ`. The new co
 bridge: `positiveCompositionGenFun_eq` (`P k = Xᵏ · W k`, all `k`) and its corollaries
 `positiveCompositionGenFun_eq_X_pow_mul_invOneSubPow`,
 `positiveCompositionGenFun_mul_one_sub_pow` (`P k · (1 − X)ᵏ = Xᵏ`) and
-`coeff_positiveCompositionGenFun_eq_choose` (the coefficient is `C(n − 1, k − 1)`).
+`coeff_positiveCompositionGenFun_eq_choose` (the coefficient is `C(n − 1, k − 1)`). The
+convolution section adds the semigroup law `P j · P k = P (j + k)` (concatenation of
+compositions) and its coefficientwise negative-binomial Vandermonde form. The order section
+adds the valuation reading: `Xᵏ ∣ P k`, the coefficients vanish below degree `k`, the
+degree-`k` coefficient is `1`, and hence the `X`-adic order of `P k` is exactly `k`
+(`order_positiveCompositionGenFun`) — the least number with a positive composition into `k`
+parts, realised uniquely by the all-ones tuple.
 -/
 
 open PowerSeries
@@ -71,6 +78,23 @@ theorem coeff_positiveCompositionGenFun (k n : ℕ) :
       (Fintype.card {g : Fin k → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = n} : S) := by
   rw [positiveCompositionGenFun, coeff_mk]
 
+/-- **Vanishing below the diagonal.** There is no positive composition of `n` into `k`
+positive parts when `n < k` (the parts already sum to at least `k`), so the coefficient
+of `Xⁿ` in `P k` is `0` for every `n < k`. -/
+theorem coeff_positiveCompositionGenFun_of_lt (k n : ℕ) (h : n < k) :
+    coeff n (positiveCompositionGenFun S k) = 0 := by
+  rw [coeff_positiveCompositionGenFun]
+  have hemp : IsEmpty {g : Fin k → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = n} := by
+    refine ⟨fun g => ?_⟩
+    have hlt : n < ∑ i, g.1 i := by
+      calc n < k := h
+        _ = ∑ _i : Fin k, 1 := by
+              rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
+        _ ≤ ∑ i, g.1 i := Finset.sum_le_sum (fun i _ => g.2.1 i)
+    exact absurd g.2.2 (by omega)
+  haveI := hemp
+  rw [Fintype.card_eq_zero, Nat.cast_zero]
+
 /-- **Positive-composition generating function, factored form.** Over any commutative
 ring `S` and for *every* `k` (no positivity needed), the ordinary generating function of
 the positive-composition counts is `Xᵏ` times the weak-composition generating function:
@@ -89,16 +113,7 @@ theorem positiveCompositionGenFun_eq (k : ℕ) :
     congr 1
     exact Fintype.card_congr (StarsAndBars.positiveCompositionEquivWeak k n h)
   · -- `n < k`: no positive composition of `n` into `k` positive parts
-    have hemp : IsEmpty {g : Fin k → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = n} := by
-      refine ⟨fun g => ?_⟩
-      have hlt : n < ∑ i, g.1 i := by
-        calc n < k := by omega
-          _ = ∑ _i : Fin k, 1 := by
-                rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
-          _ ≤ ∑ i, g.1 i := Finset.sum_le_sum (fun i _ => g.2.1 i)
-      exact absurd g.2.2 (by omega)
-    haveI := hemp
-    rw [Fintype.card_eq_zero, Nat.cast_zero]
+    rw [← coeff_positiveCompositionGenFun, coeff_positiveCompositionGenFun_of_lt S k n (by omega)]
 
 /-- **The generating function is `Xᵏ/(1 − X)ᵏ`.** For `0 < k`, the positive-composition
 generating function equals `Xᵏ · (invOneSubPow S k).val`, i.e. `Xᵏ/(1 − X)ᵏ`. -/
@@ -190,5 +205,44 @@ theorem card_positiveComposition_convolution (j k n : ℕ) (hj : 0 < j) (hk : 0 
   rw [coeff_mul, coeff_positiveCompositionGenFun] at hmul
   simp_rw [coeff_positiveCompositionGenFun] at hmul
   exact hmul
+
+/-! ## Order (valuation): the series starts exactly at `Xᵏ`
+
+The factored form `P k = Xᵏ · W k`, with `W k` having nonzero constant term
+(`coeff 0 (W k) = 1`), pins down the lowest-degree behaviour of `P k`: the series is
+divisible by `Xᵏ`, its coefficients vanish below degree `k`, and the coefficient at
+degree `k` is `1`. Combinatorially, the smallest number admitting a positive composition
+into `k` parts is `k` itself, realised uniquely by the all-ones tuple `(1, …, 1)`. Hence
+the formal-power-series order (`X`-adic valuation) of `P k` is exactly `k`.
+-/
+
+/-- **`Xᵏ` divides `P k`.** Over any commutative ring and for every `k`, the
+positive-composition generating function is divisible by `Xᵏ` — the algebraic shadow of
+"every part is `≥ 1`, so the total is `≥ k`." Witnessed by the weak series `W k` via the
+factored form `P k = Xᵏ · W k`. -/
+theorem X_pow_dvd_positiveCompositionGenFun (k : ℕ) :
+    (X : S⟦X⟧) ^ k ∣ positiveCompositionGenFun S k :=
+  ⟨weakCompositionGenFun S k, positiveCompositionGenFun_eq S k⟩
+
+/-- **Leading coefficient is `1`.** For `0 < k`, the coefficient of `Xᵏ` in `P k` is `1`:
+the only positive composition of `k` into `k` parts is the all-ones tuple `(1, …, 1)`
+(`C(k − 1, k − 1) = 1`). -/
+theorem coeff_positiveCompositionGenFun_self (k : ℕ) (hk : 0 < k) :
+    coeff k (positiveCompositionGenFun S k) = 1 := by
+  rw [coeff_positiveCompositionGenFun_eq_choose S k k hk (le_refl k), Nat.choose_self,
+    Nat.cast_one]
+
+/-- **The order (X-adic valuation) of `P k` is exactly `k`.** Over a nontrivial commutative
+ring and for `0 < k`, the formal-power-series order of the positive-composition generating
+function equals `k`: all coefficients below degree `k` vanish
+(`coeff_positiveCompositionGenFun_of_lt`) and the degree-`k` coefficient is `1 ≠ 0`
+(`coeff_positiveCompositionGenFun_self`). This is the valuation-theoretic statement that
+`k` is the least integer with a positive composition into `k` parts. -/
+theorem order_positiveCompositionGenFun [Nontrivial S] (k : ℕ) (hk : 0 < k) :
+    PowerSeries.order (positiveCompositionGenFun S k) = k := by
+  rw [PowerSeries.order_eq_nat]
+  refine ⟨?_, fun i hi => coeff_positiveCompositionGenFun_of_lt S k i hi⟩
+  rw [coeff_positiveCompositionGenFun_self S k hk]
+  exact one_ne_zero
 
 end StarsAndBarsGenFun
