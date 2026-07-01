@@ -86,6 +86,40 @@
       "description": "Eisenstein's criterion certifies irreducibility over ℤ; Gauss's Lemma is what lifts such ℤ-irreducibility to irreducibility over ℚ"
     }
   ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Gauss's Lemma and What Gives It Teeth",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "States Gauss's Lemma in irreducibility form: for a primitive p ∈ ℤ[X], irreducibility over ℤ is equivalent to irreducibility of its image in ℚ[X]. Notes that Mathlib supplies the core biconditional (IsPrimitive.Int.irreducible_iff_irreducible_map_cast) but the gallery lacked an entry assembling it with the monic specialization and a worked witness that primitivity is essential (the polynomial 2X). Lists the six results the file packages.",
+      "mathContext": "$p\\ \\text{primitive} \\Rightarrow \\big(\\mathrm{Irreducible}(p) \\iff \\mathrm{Irreducible}(p\\ \\text{over}\\ \\mathbb{Q})\\big).$"
+    },
+    {
+      "id": "biconditionals",
+      "title": "gauss_lemma_int and gauss_lemma_int_monic",
+      "startLine": 41,
+      "endLine": 54,
+      "summary": "gauss_lemma_int is the headline biconditional for a primitive p : ℤ[X], applying Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast directly. gauss_lemma_int_monic specializes to monic p: since a monic polynomial is automatically primitive (Monic.isPrimitive), the biconditional holds with no side condition — the everyday form used to check irreducibility of a monic integer polynomial by working over ℚ.",
+      "mathContext": "$p\\ \\text{monic} \\Rightarrow p\\ \\text{primitive}$, so $\\mathrm{Irreducible}(p) \\iff \\mathrm{Irreducible}(p_{\\mathbb{Q}})$ unconditionally."
+    },
+    {
+      "id": "counterexample-int",
+      "title": "The witness 2X: non-primitive and reducible over ℤ",
+      "startLine": 56,
+      "endLine": 75,
+      "summary": "two_mul_X_not_primitive: 2X = (C 2)·X is not primitive — C 2 divides it but 2 is not a unit of ℤ, so isPrimitive_iff_isUnit_of_C_dvd fails. two_mul_X_reducible_over_int: 2X is reducible over ℤ, factoring as (C 2)·X with neither factor a unit (C 2 is not a unit since 2 is not; X is not a unit since it has degree 1).",
+      "mathContext": "$2X = (C\\,2)\\cdot X$ over $\\mathbb{Z}$: content $2$, both factors non-units."
+    },
+    {
+      "id": "counterexample-rat-capstone",
+      "title": "2X irreducible over ℚ, and why primitivity is essential",
+      "startLine": 77,
+      "endLine": 95,
+      "summary": "two_mul_X_irreducible_over_rat: over the field ℚ the image of 2X has degree one, hence is irreducible (irreducible_of_degree_eq_one, degree preserved by the injective cast, compute_degree!). primitivity_necessary bundles the three 2X facts into an existential: there is a polynomial reducible over ℤ but irreducible over ℚ and non-primitive, so the primitivity hypothesis in gauss_lemma_int genuinely cannot be dropped.",
+      "mathContext": "$\\deg_{\\mathbb{Q}}(2X) = 1 \\Rightarrow \\mathrm{Irreducible}$; so $\\exists p,\\ \\neg\\mathrm{Irred}_{\\mathbb{Z}}(p) \\wedge \\mathrm{Irred}_{\\mathbb{Q}}(p) \\wedge \\neg\\, p\\ \\text{primitive}.$"
+    }
+  ],
   "conclusion": {
     "summary": "Gauss's Lemma (irreducibility form) is packaged for ℤ/ℚ: a primitive integer polynomial is irreducible over ℤ iff over ℚ (gauss_lemma_int), with the hypothesis automatic for monic polynomials (gauss_lemma_int_monic). The polynomial 2X — non-primitive, reducible over ℤ, irreducible over ℚ — is fully formalized and bundled as primitivity_necessary, proving the primitivity hypothesis is indispensable. All six theorems are verified with 0 axioms and 0 sorries.",
     "implications": "Supplies a citable, self-contained statement of Gauss's Lemma in its working irreducibility form together with the sharpness witness, complementing the integer-coefficient irreducibility criteria (e.g. Eisenstein) that rely on it.",
