@@ -22,6 +22,56 @@
       "The sibling entry cayley-hamilton-oq-01-oq-01 (vecAnnIdeal and the AEval' module structure)"
     ]
   },
+  "sections": [
+    {
+      "id": "overview-minpoly-lcm",
+      "title": "Overview: minpoly as the lcm of Basis-Vector Orders",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Frames the result: the minimal polynomial of a matrix M is the lcm of the order (annihilator) polynomials of the vectors of any basis of Kⁿ. Sets up Kⁿ as a K[X]-module via M (parent's vecAnnIdeal framework) and the two forms — an ideal identity and a literal polynomial equality minpoly K M = Finset.univ.lcm μ.",
+      "mathContext": "$\\minpoly_K M = \\operatorname{lcm}_i \\mu_i$, where $\\mu_i$ generates the annihilator ideal of basis vector $b_i$."
+    },
+    {
+      "id": "helpers",
+      "title": "Helpers: minpoly of mulVecLin and Integrality",
+      "startLine": 63,
+      "endLine": 74,
+      "summary": "minpoly_mulVecLin_eq (minpoly K M = minpoly K M.mulVecLin, via Matrix.minpoly_toLin') and isIntegral_matrix (every matrix over a field is integral — Cayley–Hamilton, witnessed by the monic charpoly). These license the minpoly-divides and monic arguments below.",
+      "mathContext": "$\\minpoly_K M = \\minpoly_K M_{\\mathrm{mulVecLin}}$; $M$ integral via $\\chi_M$ monic with $\\chi_M(M)=0$."
+    },
+    {
+      "id": "part-i-intersection",
+      "title": "Part I — minpoly Ideal = Intersection of Vector Annihilators",
+      "startLine": 76,
+      "endLine": 107,
+      "summary": "minpoly_span_eq_iInf_vecAnnIdeal: for any spanning family v, span{minpoly K M} = ⨅ᵢ vecAnnIdeal M (vᵢ). One inclusion is that minpoly kills every vector; the converse is that a polynomial killing a spanning family kills M as an endomorphism (LinearMap.ext_on_range), so minpoly divides it.",
+      "mathContext": "$\\langle\\minpoly_K M\\rangle = \\bigcap_i \\operatorname{Ann}(v_i)$ for any family $v$ with $\\operatorname{span}\\{v_i\\} = K^n$."
+    },
+    {
+      "id": "part-ii-lcm-ideal",
+      "title": "Part II — Intersection of Principal Ideals = lcm",
+      "startLine": 109,
+      "endLine": 118,
+      "summary": "iInf_span_singleton_eq_lcm: in the PID K[X], ⨅ᵢ span{aᵢ} = span{Finset.univ.lcm a}, unfolded directly from Finset.lcm_dvd_iff. The purely ideal-theoretic bridge that turns the intersection of Part I into an lcm.",
+      "mathContext": "$\\bigcap_i \\langle a_i\\rangle = \\langle \\operatorname{lcm}_i a_i\\rangle$ in $K[X]$."
+    },
+    {
+      "id": "part-iii-minpoly-lcm",
+      "title": "Part III — minpoly = lcm of Basis Order Polynomials",
+      "startLine": 120,
+      "endLine": 175,
+      "summary": "Combines Parts I & II. minpoly_span_eq_lcm_of_generators gives the ideal form span{minpoly} = span{lcm μ}. exists_monic_generators produces monic order polynomials (each annihilator is principal in the PID; normalize the generator). minpoly_eq_lcm upgrades associated-ideals to a literal equality using monicity of both minpoly and the normalized Finset.lcm.",
+      "mathContext": "$\\minpoly_K M = \\operatorname{Finset.univ.lcm}\\ \\mu$ — associated ideals + both sides monic $\\Rightarrow$ equal."
+    },
+    {
+      "id": "headline",
+      "title": "Headline: Existence of a Monic lcm Decomposition",
+      "startLine": 177,
+      "endLine": 185,
+      "summary": "exists_minpoly_eq_lcm bundles it: for any basis b there exist monic order polynomials μᵢ generating the annihilator ideals with minpoly K M = Finset.univ.lcm μ — the clean statement of the minimal polynomial as an lcm of basis-vector orders.",
+      "mathContext": "$\\exists\\,\\mu\\ \\text{monic}:\\ \\operatorname{Ann}(b_i)=\\langle\\mu_i\\rangle\\ \\wedge\\ \\minpoly_K M = \\operatorname{lcm}_i \\mu_i.$"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",
