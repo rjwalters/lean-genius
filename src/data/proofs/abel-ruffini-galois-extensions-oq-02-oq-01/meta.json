@@ -162,6 +162,28 @@
       "note": "John Wiley & Sons. §14.2, Theorem 14 (the Fundamental Theorem), part (ii): the correspondence between normal subgroups and Galois subextensions."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-02",
+      "relationship": "extends",
+      "description": "Parent. OQ-02 packages the full Galois correspondence and, in Part VI, only the one-way normal refinement (isGalois_fixedField_of_normal, normalQuotientEquiv). This entry imports it and completes the refinement into the biconditional IsGalois F K ↔ K.fixingSubgroup.Normal, restricting the bijection to Galois subextensions ↔ normal subgroups."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-01",
+      "relationship": "instantiated on",
+      "description": "Concrete witness (transitively). OQ-01 builds (X⁵ − 4X + 2).Gal ≃* S₅; via OQ-02's IsGalois ℚ (X⁵−4X+2).SplittingField instance, the final section instantiates the normal correspondence on this quintic — its Galois subextensions biject with the normal subgroups of S₅."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "part of",
+      "description": "Grandparent file for the Abel–Ruffini Galois program. The normal-subgroup ↔ Galois-subextension bijection proved here is the exact piece that makes each quotient in a solvable series itself the Galois group of a subextension."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "underpins",
+      "description": "The abstract Abel–Ruffini obstruction. Solvability by radicals is read off a subnormal series with abelian quotients; the normal-subgroup half of the correspondence formalized here is precisely what guarantees each such quotient is again a Galois group, so the series lives on the field side too."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "isGalois_iff_fixingSubgroup_normal",
