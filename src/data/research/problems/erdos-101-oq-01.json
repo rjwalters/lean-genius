@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S13 (researcher-1, 2026-05-29): BUILD-FIX + conjecture↔rate_form equivalence, Docker-VERIFIED GREEN. Cleared a build-blocker dormant on main since S12 (rate_form_iff_isLittleO mod_cast beta-redex). Added the missing conjecture↔rate_form equivalence with sup witness maxCountAtSize, letting erdos_101_oq_01_isLittleO be DERIVED from the primary conjecture. Genuine sorries 3→2 (only erdos_101_oq_01 [$100 OPEN] and solymosi_stojakovic_lower_bound [deferred finite-field construction] remain); axioms 0; +4 theorems/defs; LOC 603→712. Prior: S12 (researcher-1, 2026-05-24) IsBigO/IsLittleO bridge shipped UNVERIFIED (turned out RED). S1-S4 scaffold + SS lower bound + Θ(n^{3/2}) refutation (proved).",
+    "progressSummary": "S14 (researcher-7, 2026-07-01): lower-bound transfer to the extremal function, lake-env-lean VERIFIED (docker containerd broken). Added maxCountAtSize_not_O_rpow — maxCountAtSize is not O(nᵝ) for any β<2 — the missing lower-bound counterpart to the existing O(n²) upper bound maxCountAtSize_isBigO_n_squared, giving a two-sided n^{2-o(1)} ≤ maxCountAtSize n ≤ n² framing of the OQ-01 gap. Genuine sorries unchanged at 2 (erdos_101_oq_01 [$100 OPEN] + solymosi_stojakovic_lower_bound [deferred finite-field construction]); axioms 0; +1 theorem; LOC 837→887. Prior: S13 conjecture↔rate_form equivalence + true-sup unification (maxCountAtSize_le_maxFourPointLines).",
     "builtItems": [
       "proofs/Proofs/Erdos101OQ01.lean: IsLittleOh_n_squared (def)",
       "proofs/Proofs/Erdos101OQ01.lean: BoundsAtRate (def)",
@@ -76,7 +76,8 @@
       "Fixed pre-existing build-blocker: erdos_101_oq_01_rate_form_iff_isLittleO (both directions) — S12 was committed unverified and never compiled (mod_cast beta-redex).",
       "maxCountAtSize (noncomputable def) + maxCountAtSize_bddAbove + le_maxCountAtSize + maxCountAtSize_lt_of_forall in Erdos101OQ01.lean",
       "erdos_101_oq_01_conjecture_iff_rate_form (primary ε-N ↔ rate form) in Erdos101OQ01.lean",
-      "erdos_101_oq_01_isLittleO now derived from erdos_101_oq_01 (sorries 3→2; axioms 0; Docker build VERIFIED GREEN)"
+      "erdos_101_oq_01_isLittleO now derived from erdos_101_oq_01 (sorries 3→2; axioms 0; Docker build VERIFIED GREEN)",
+      "proofs/Proofs/Erdos101OQ01.lean — theorem maxCountAtSize_not_O_rpow (β:ℝ) (hβ:β<2) : ¬∃N,∀n≥N,(maxCountAtSize n:ℝ)≤n^β (S14 ACT, ~12 LOC, 0 new sorries/0 axioms; lower-bound counterpart to maxCountAtSize_isBigO_n_squared; proof = refine four_point_line_count_not_O_rpow β hβ ⟨N₀,...⟩ + le_maxCountAtSize restriction + linarith)"
     ],
     "insights": [
       "The OQ-01 question is the precise quantitative refinement of the trivial $O(n^2)$ upper bound; the $\\Theta(n^2)$ regime is already established elementarily.",
@@ -93,17 +94,17 @@
       "S12 ACT (researcher-1, 2026-05-24): per-P NoFiveCollinear gating is load-bearing on fourPointLineCount_le_max — without the hypothesis, 9 collinear points refute the bound: fourPointLineCount = C(9,4) = 126 (every 4-subset of the 9 is collinear) while maxFourPointLines 9 = 9*8/12 = 72/12 = 6. The hypothesis routes through improved_upper_bound P hP, which uses NoFiveCollinear directly. S9 PREP Bug-G first surfaced this.",
       "S13: erdos_101_oq_01_conjecture (primary ε-N) and erdos_101_oq_01_rate_form are provably equivalent; the conjecture→rate_form witness is the exact supremum maxCountAtSize n = sSup{count Q | |Q|=n, NoFiveCollinear Q}, NOT n(n-1)/12 (which is Θ(n²), not o(n²)).",
       "S13: with conjecture↔rate_form proven, erdos_101_oq_01_isLittleO is DERIVED from erdos_101_oq_01 rather than an independent sorry — the Mathlib-idiom twin and primary form are the same conjecture; proving one yields the other.",
-      "S13: Nat.sSup_empty does not exist in Mathlib; use csSup_empty (sSup ∅ = ⊥ = 0 in ℕ). exact_mod_cast does not beta-reduce (fun n => ↑(g n)) x — materialise the reduced inequality via have first."
+      "S13: Nat.sSup_empty does not exist in Mathlib; use csSup_empty (sSup ∅ = ⊥ = 0 in ℕ). exact_mod_cast does not beta-reduce (fun n => ↑(g n)) x — materialise the reduced inequality via have first.",
+      "S14 (researcher-7, 2026-07-01): the extremal function maxCountAtSize was proved O(n²) (upper) but never lower-bounded — all refutations were witness-P-indexed. maxCountAtSize_not_O_rpow transfers four_point_line_count_not_O_rpow to the aggregator: maxCountAtSize is NOT O(nᵝ) for any β<2, via a one-line le_maxCountAtSize restriction. Together with maxCountAtSize_isBigO_n_squared this pins the extremal function in n^{2-o(1)} ≤ maxCountAtSize n ≤ n² — the exact OQ-01 gap at the extremal-function level, showing no elementary sharpening of the upper bound alone can settle OQ-01."
     ],
     "mathlibGaps": [
       "No direct Σ₂-style $o(n^2)$ uniform-bound vocabulary; we use an explicit ε–N form. Bridge to `Asymptotics.IsLittleO` deferred to S3.",
       "Szemerédi–Trotter incidence bound not formalised in Mathlib; would be a useful prerequisite for the Solymosi–Stojaković construction."
     ],
     "nextSteps": [
-      "S14: true-sup unification — the S12 surrogate maxFourPointLines n := n*(n-1)/12 is Θ(n²) (deliberately not o(n²)); maxCountAtSize (S13) is the genuine sup. Consider relating them (maxCountAtSize ≤ maxFourPointLines) or dropping the surrogate.",
-      "S14: Cauchy–Schwarz refinement of fourCollinearThrough_bound ≤ (n-1)/3 for a 1-o(1) leading constant on the n²/12 elementary bound (still Θ(n²)).",
-      "S14: witness extraction at small n via decide/native_decide for certified gallery examples (no-five-collinear sets, fourPointLineCount values).",
-      "Deferred (OPEN): erdos_101_oq_01 ($100 prize, sub-quadratic upper bound) and solymosi_stojakovic_lower_bound (finite-field construction, beyond current Mathlib)."
+      "Deferred (OPEN): erdos_101_oq_01 ($100 sub-quadratic upper bound) and solymosi_stojakovic_lower_bound (finite-field construction, beyond current Mathlib).",
+      "Elementary explicit lower-bound construction (e.g. a grid family) to replace the deferred SS obligation with a sorry-free Ω(n^{3/2}) witness — high value, geometric, substantial.",
+      "The elementary-theory layer around maxCountAtSize is now two-sided-saturated (O(n²) upper + not-O(nᵝ) lower); further parent progress requires either the OPEN upper bound or a formalized construction."
     ]
   },
   "tags": [
