@@ -171,5 +171,35 @@
       "leanType": "{p q : ℕ} → [Fact p.Prime] → [Fact q.Prime] → p ≠ 2 → q ≠ 2 → legendreSym q p = (-1)^(p/2*(q/2)) * legendreSym p q"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "venue": "Leipzig (English transl. A. A. Clarke, Yale Univ. Press, 1966)",
+      "note": "First complete proof of the law of quadratic reciprocity."
+    },
+    {
+      "authors": "K. Ireland and M. Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer GTM 84, 2nd ed.",
+      "note": "Legendre/Jacobi symbols and reciprocity as a computational tool."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford Univ. Press, 6th ed.",
+      "note": "Elementary treatment of the Legendre symbol and reciprocity."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Legendre symbol, its multiplicativity and the reciprocity law formalized in Lean."
+    }
+  ]
 }

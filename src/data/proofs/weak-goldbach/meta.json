@@ -186,5 +186,42 @@
       "description": "Dirichlet's theorem on primes in arithmetic progressions is the analytic foundation underlying the singular series in the Goldbach circle method: the local factors Π_p (correction) are computed from the distribution of primes modulo small primes, exactly what Dirichlet L-functions govern."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "H. A. Helfgott",
+      "title": "The ternary Goldbach conjecture is true",
+      "year": 2013,
+      "venue": "arXiv:1312.7748",
+      "note": "Unconditional proof that every odd integer > 5 is a sum of three primes."
+    },
+    {
+      "authors": "I. M. Vinogradov",
+      "title": "Representation of an odd number as a sum of three primes",
+      "year": 1937,
+      "venue": "Dokl. Akad. Nauk SSSR 15, 291–294",
+      "note": "Circle-method proof for all sufficiently large odd integers."
+    },
+    {
+      "authors": "T. Tao",
+      "title": "Every odd number greater than 1 is the sum of at most five primes",
+      "year": 2014,
+      "venue": "Math. Comp. 83, 997–1038",
+      "note": "The 5-prime bound, superseded by Helfgott."
+    },
+    {
+      "authors": "O. Ramaré",
+      "title": "On Šnirel'man's constant",
+      "year": 1995,
+      "venue": "Ann. Scuola Norm. Sup. Pisa Cl. Sci. (4) 22, 645–706",
+      "note": "Six-prime bound and Schnirelmann-type additive-basis results."
+    },
+    {
+      "authors": "H. A. Helfgott",
+      "title": "Major arcs for Goldbach's problem",
+      "year": 2015,
+      "venue": "arXiv:1305.2897",
+      "note": "Companion paper supplying the major-arc estimates of the ternary proof."
+    }
+  ]
 }

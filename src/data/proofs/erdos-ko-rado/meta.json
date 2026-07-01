@@ -170,5 +170,49 @@
       "summary": "A closing block of `#check` commands, grouped by part, that elaborates the type of every named definition, axiom, and theorem across Parts II–VI. Acts as a lightweight compile-time regression guard documenting the file's public surface."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "P. Erdős, C. Ko and R. Rado",
+      "title": "Intersection theorems for systems of finite sets",
+      "year": 1961,
+      "venue": "Quart. J. Math. Oxford Ser. (2) 12, 313–320",
+      "note": "Original theorem: an intersecting family of k-subsets of [n] with n≥2k has at most C(n-1,k-1) members."
+    },
+    {
+      "authors": "G. O. H. Katona",
+      "title": "A simple proof of the Erdős–Ko–Rado theorem",
+      "year": 1972,
+      "venue": "J. Combin. Theory Ser. B 13, 183–184",
+      "note": "The cyclic-permutation averaging argument formalized here."
+    },
+    {
+      "authors": "A. J. W. Hilton and E. C. Milner",
+      "title": "Some intersection theorems for systems of finite sets",
+      "year": 1967,
+      "venue": "Quart. J. Math. Oxford Ser. (2) 18, 369–384",
+      "note": "Hilton–Milner refinement bounding non-star intersecting families."
+    },
+    {
+      "authors": "P. Frankl",
+      "title": "The Erdős–Ko–Rado theorem is true for n = ckt",
+      "year": 1978,
+      "venue": "Combinatorics (Keszthely 1976), Colloq. Math. Soc. János Bolyai 18, 365–375",
+      "note": "t-intersecting extension used in the generalizations."
+    },
+    {
+      "authors": "P. Erdős and R. Rado",
+      "title": "Intersection theorems for systems of sets",
+      "year": 1960,
+      "venue": "J. London Math. Soc. 35, 85–90",
+      "note": "Origin of the sunflower (Δ-system) lemma."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Combinatorics.SetFamily.KruskalKatona and intersecting families",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Finset-based set-family API supporting the formalization."
+    }
+  ]
 }

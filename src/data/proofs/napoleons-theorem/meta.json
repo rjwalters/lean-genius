@@ -201,5 +201,35 @@
     "definitionCount": 10,
     "sorries": 0,
     "path": "Proofs/NapoleonsTheorem.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "H. S. M. Coxeter and S. L. Greitzer",
+      "title": "Geometry Revisited",
+      "year": 1967,
+      "venue": "Mathematical Association of America, New Mathematical Library 19",
+      "note": "Classical exposition of Napoleon's theorem via rotations and complex numbers."
+    },
+    {
+      "authors": "J. E. Wetzel",
+      "title": "Converses of Napoleon's theorem",
+      "year": 1992,
+      "venue": "Amer. Math. Monthly 99(4), 339–351",
+      "note": "Survey of the theorem, its history, and converse statements."
+    },
+    {
+      "authors": "H. S. M. Coxeter",
+      "title": "Introduction to Geometry",
+      "year": 1969,
+      "venue": "Wiley, 2nd ed.",
+      "note": "Treats the centroid/isogonal structure underlying the equilateral outer triangle."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Geometry.Euclidean and complex-number rotation API",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Euclidean geometry and rotation lemmas used in the formalization."
+    }
+  ]
 }
