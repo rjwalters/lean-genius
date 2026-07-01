@@ -119,6 +119,33 @@ theorem card_perms_with_kfixed_zero_closed_form
   have h := card_perms_with_kfixed_closed_form 𝕜 n 0 (Nat.zero_le n)
   simpa using h
 
+/-- **Fixed-point generating function.**  Grouping the permutations of `Fin n` by
+their number of fixed points turns the polynomial `∑_{k=0}^{n} S(n,k) x^k` into the
+statistic-generating sum `∑_{σ} x^{#fix σ}` over all permutations, for any element
+`x` of a commutative ring.  This is the "vertical" companion of the closed form: the
+closed form evaluates each coefficient `S(n,k)`, while this identity packages all
+coefficients into the fixed-point statistic.  It holds over *any* commutative ring —
+no characteristic hypothesis — because it is a pure regrouping of a finite sum. -/
+theorem sum_kfixed_smul_pow (R : Type*) [CommRing R] (n : ℕ) (x : R) :
+    ∑ k ∈ range (n + 1),
+        ((univ.filter (fun σ : Equiv.Perm (Fin n) =>
+            (univ.filter (fun p => σ p = p)).card = k)).card : R) * x ^ k
+      = ∑ σ : Equiv.Perm (Fin n), x ^ (univ.filter (fun p => σ p = p)).card := by
+  -- regroup the permutation sum over the fibres of the fixed-point-count map
+  rw [← Finset.sum_fiberwise_of_maps_to (s := (univ : Finset (Equiv.Perm (Fin n))))
+      (t := range (n + 1))
+      (g := fun σ => (univ.filter (fun p => σ p = p)).card)
+      (f := fun σ => x ^ (univ.filter (fun p => σ p = p)).card)
+      (fun σ _ => Finset.mem_range.mpr
+        (Nat.lt_succ_of_le (by simpa using Finset.card_filter_le (univ : Finset (Fin n)) _)))]
+  -- on each fibre `#fix σ = k`, every term is `x ^ k`, so the fibre sums to `card • x^k`
+  refine Finset.sum_congr rfl fun k _ => ?_
+  have hfib : ∀ σ ∈ univ.filter (fun σ : Equiv.Perm (Fin n) =>
+      (univ.filter (fun p => σ p = p)).card = k),
+      x ^ (univ.filter (fun p => σ p = p)).card = x ^ k :=
+    fun σ hσ => by rw [(Finset.mem_filter.mp hσ).2]
+  rw [Finset.sum_congr rfl hfib, Finset.sum_const, nsmul_eq_mul]
+
 /-- Sanity check for `S(4,1)`.  A permutation of `4` elements with exactly one
 fixed point chooses that fixed point (`C(4,1) = 4` ways) and deranges the other
 `3` (`D_3 = 2` ways), so `S(4,1) = 4·2 = 8`.  The closed form
