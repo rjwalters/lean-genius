@@ -1,0 +1,135 @@
+[
+  {
+    "id": "ann-oddDegree-iff-endpoint",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 49,
+      "endLine": 55
+    },
+    "type": "theorem",
+    "title": "Odd Degree ⟺ Endpoint (Open Trail)",
+    "content": "The central result. For an open Eulerian trail from $u$ to $v$ (with $u \\neq v$), a vertex $x$ has odd degree exactly when it is one of the two endpoints. The proof specializes Mathlib's `IsEulerian.even_degree_iff` — which reads Even (G.degree x) ↔ (u ≠ v → x ≠ u ∧ x ≠ v) — at the known hypothesis $u \\neq v$, collapsing the implication to $x \\neq u \\wedge x \\neq v$, then negates both sides with `Nat.not_even_iff_odd` and De Morgan (`not_and_or`, `not_not`).",
+    "mathContext": "$\\text{Odd}(\\deg_G x) \\iff (x = u \\vee x = v)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Eulerian trail",
+      "vertex degree parity",
+      "IsEulerian.even_degree_iff",
+      "De Morgan's laws"
+    ],
+    "prerequisites": [
+      "SimpleGraph.degree",
+      "SimpleGraph.Walk.IsEulerian",
+      "parity of natural numbers"
+    ]
+  },
+  {
+    "id": "ann-oddDegreeVerts-eq-pair",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 57,
+      "endLine": 62
+    },
+    "type": "theorem",
+    "title": "Odd-Degree Vertex Set = {u, v}",
+    "content": "Recasts the pointwise characterization as a Finset identity: the set of odd-degree vertices of a graph carrying an open Eulerian trail is exactly the two-element endpoint set $\\{u, v\\}$. Proved by Finset extensionality, reducing membership to `oddDegree_iff_endpoint`. This is the explicit content that Mathlib's `card_odd_degree` (a cardinality-only statement) leaves implicit.",
+    "mathContext": "$\\{x \\mid \\text{Odd}(\\deg_G x)\\} = \\{u, v\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset extensionality",
+      "odd-degree vertices",
+      "IsEulerian.card_odd_degree"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.ext"
+    ]
+  },
+  {
+    "id": "ann-card-oddDegreeVerts",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 67,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "Exactly Two Odd-Degree Vertices",
+    "content": "For an open Eulerian trail the odd-degree vertex count is exactly $2$, sharpening Mathlib's `IsEulerian.card_odd_degree` (which gives only $0 \\vee 2$). Follows from the set equality $\\{u, v\\}$ together with $u \\neq v$, so the pair genuinely has two distinct elements.",
+    "mathContext": "$\\#\\{x \\mid \\text{Odd}(\\deg_G x)\\} = 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card",
+      "card_insert_of_notMem",
+      "cardinality of a pair"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "distinctness"
+    ]
+  },
+  {
+    "id": "ann-endpoints-odd",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 73,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "Each Endpoint Has Odd Degree",
+    "content": "The two-line corollaries `endpoint_left_odd` and `endpoint_right_odd`: each endpoint $u$, $v$ of an open Eulerian trail has odd degree, obtained by feeding `Or.inl rfl` / `Or.inr rfl` into the mpr direction of the endpoint characterization. This is the fact usually stated as the 'interesting half' of Euler's criterion.",
+    "mathContext": "$\\text{Odd}(\\deg_G u) \\wedge \\text{Odd}(\\deg_G v)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Eulerian trail endpoints",
+      "odd degree"
+    ],
+    "prerequisites": [
+      "biconditional elimination"
+    ]
+  },
+  {
+    "id": "ann-circuit-all-even",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 85,
+      "endLine": 94
+    },
+    "type": "theorem",
+    "title": "Eulerian Circuit ⟹ All Even",
+    "content": "For a closed Eulerian trail ($u = v$, an Eulerian circuit), every vertex has even degree (`circuit_all_even`), hence the odd-degree vertex set is empty (`circuit_no_odd`). Here the antecedent $u \\neq v$ of `even_degree_iff` is false, so the biconditional yields Even for all vertices with no side conditions.",
+    "mathContext": "$u = v \\implies \\forall x,\\ \\text{Even}(\\deg_G x)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eulerian circuit",
+      "even degree",
+      "vacuous implication"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Walk.IsEulerian",
+      "even/odd parity"
+    ]
+  },
+  {
+    "id": "ann-parity-obstruction",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "Königsberg Parity Obstruction",
+    "content": "A graph with three or more odd-degree vertices admits no Eulerian trail — open or closed. An open trail permits exactly two odd vertices (`card_oddDegreeVerts`) and a closed trail permits none (`circuit_no_odd`), so a count exceeding two is incompatible with any Eulerian trail. This is precisely why the Seven Bridges of Königsberg cannot be walked: its four landmasses all have odd degree, and $4 > 2$.",
+    "mathContext": "$\\#\\{x \\mid \\text{Odd}(\\deg_G x)\\} > 2 \\implies \\neg\\, \\exists\\, (u\\, v)\\, (p : G.\\text{Walk}\\ u\\ v),\\ p.\\text{IsEulerian}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Seven Bridges of Königsberg",
+      "Euler's theorem",
+      "parity obstruction",
+      "non-existence of Eulerian trails"
+    ],
+    "prerequisites": [
+      "case analysis on u = v",
+      "Finset cardinality"
+    ]
+  }
+]

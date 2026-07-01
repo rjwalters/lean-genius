@@ -1,0 +1,117 @@
+{
+  "id": "konigsberg-oq-05",
+  "title": "Endpoints of an Eulerian Trail Are Exactly the Odd-Degree Vertices",
+  "slug": "konigsberg-oq-05",
+  "description": "Sharpens Mathlib's cardinality-only Eulerian degree result from 'how many' to 'which': for an open Eulerian trail the odd-degree vertices are exactly the two endpoints {u, v}, an Eulerian circuit forces every vertex to be even, and three or more odd vertices rule out any Eulerian trail — the Königsberg parity obstruction.",
+  "meta": {
+    "author": "Leonhard Euler (1736); formalization by Lean Genius researcher",
+    "date": "1736",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KonigsbergOQ05.lean",
+    "tags": [
+      "graph-theory",
+      "eulerian-trail",
+      "parity",
+      "vertex-degree",
+      "konigsberg"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-checked; depends only on the foundational axioms propext, Classical.choice, Quot.sound (no sorry, no axiom declarations, no native_decide).",
+    "lineCount": 111,
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Euler's 1736 solution of the Seven Bridges of Königsberg is regarded as the birth of graph theory. Euler observed that a walk crossing every bridge exactly once — an Eulerian trail — must, at every vertex it merely passes through, use edges in matched pairs (arrive, leave). Only the two endpoints of the walk escape this pairing. Consequently every vertex except possibly the start and finish has even degree, and the Königsberg graph, whose four landmasses all have odd degree, admits no such walk. Mathlib formalizes the Eulerian-trail predicate `SimpleGraph.Walk.IsEulerian` and records the cardinality half of Euler's observation: `IsEulerian.card_odd_degree` shows the number of odd-degree vertices is 0 or 2. What Mathlib leaves implicit is the identity of those vertices. This entry makes it explicit: the odd-degree vertices are precisely the trail's endpoints.",
+    "problemStatement": "Given a finite simple graph G with an Eulerian trail p from u to v, characterize the odd-degree vertices of G. Prove that for an open trail (u ≠ v) a vertex has odd degree iff it equals u or v (so the odd-degree set is exactly {u, v} and has cardinality 2), that for a closed trail (u = v, an Eulerian circuit) every vertex has even degree, and that a graph with more than two odd-degree vertices admits no Eulerian trail at all.",
+    "proofStrategy": "The whole development is driven by Mathlib's `SimpleGraph.Walk.IsEulerian.even_degree_iff`, which states Even (G.degree x) ↔ (u ≠ v → x ≠ u ∧ x ≠ v). (1) In the open case, specializing the hypothesis u ≠ v collapses the implication to `x ≠ u ∧ x ≠ v`; negating both sides via `Nat.not_even_iff_odd` and De Morgan (`not_and_or`, `not_not`) yields Odd (G.degree x) ↔ x = u ∨ x = v. (2) Turning this into a Finset extensionality gives the odd-degree set = {u, v}, whose cardinality is 2 since u ≠ v. (3) In the closed case, the implication's hypothesis u ≠ u is false, so `even_degree_iff` gives Even for every vertex, hence the odd-degree set is empty. (4) The parity obstruction combines the two: an Eulerian trail forces the odd-degree count to be exactly 0 (closed) or exactly 2 (open), so a count exceeding 2 is impossible.",
+    "keyInsights": [
+      "Mathlib's IsEulerian.card_odd_degree only tells you the odd-degree vertices number 0 or 2; the sharp content is WHICH vertices — this entry pins them down as the trail's endpoints.",
+      "The entire open-case characterization is one rewrite: specialize even_degree_iff at the known hypothesis u ≠ v, then negate through Nat.not_even_iff_odd and De Morgan. No induction is needed because the parity bookkeeping already lives inside Mathlib's IsTrail.even_countP_edges_iff.",
+      "The endpoints being odd (each of u, v has odd degree) is a two-line corollary — the mpr direction applied to Or.inl rfl / Or.inr rfl — yet it is the fact most textbooks state as the 'interesting' half of Euler's criterion.",
+      "The closed/open dichotomy is governed entirely by whether the antecedent u ≠ v is true: a circuit makes it false and kills every odd vertex; an open trail makes it true and produces exactly the pair {u, v}.",
+      "The parity obstruction (>2 odd vertices ⟹ no Eulerian trail) is exactly why Königsberg is unwalkable: its four landmasses all have odd degree, and 4 > 2."
+    ]
+  },
+  "sections": [
+    {
+      "id": "open-case",
+      "title": "Open Trail: Odd Degree ⟺ Endpoint",
+      "startLine": 44,
+      "endLine": 78,
+      "summary": "For an open Eulerian trail (u ≠ v): a vertex has odd degree iff it is u or v (oddDegree_iff_endpoint); the odd-degree vertex set equals {u, v} (oddDegreeVerts_eq_pair) and hence has cardinality exactly 2 (card_oddDegreeVerts); each endpoint has odd degree (endpoint_left_odd, endpoint_right_odd)."
+    },
+    {
+      "id": "closed-case",
+      "title": "Closed Trail (Eulerian Circuit): All Even",
+      "startLine": 80,
+      "endLine": 94,
+      "summary": "For a closed Eulerian trail (u = v): every vertex has even degree (circuit_all_even), so there are no odd-degree vertices (circuit_no_odd)."
+    },
+    {
+      "id": "obstruction",
+      "title": "The Königsberg Parity Obstruction",
+      "startLine": 95,
+      "endLine": 111,
+      "summary": "A graph with three or more odd-degree vertices admits no Eulerian trail whatsoever (no_eulerian_of_card_odd_gt_two): an open trail permits exactly two odd vertices and a closed trail none. The Königsberg multigraph has four odd vertices."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry sharpens the degree-parity content of Euler's Eulerian-trail criterion from a cardinality statement to a vertex-level identification. Building on Mathlib's IsEulerian.even_degree_iff, it proves that the odd-degree vertices of a graph carrying an open Eulerian trail are exactly its two endpoints {u, v}, that an Eulerian circuit forces all vertices to be even, and that more than two odd-degree vertices obstruct any Eulerian trail. All eight results are fully machine-checked with no additional axioms.",
+    "implications": "The endpoint characterization is the 'necessity' half of Euler's theorem in its sharpest form: it not only counts odd vertices but names them. The parity obstruction is the direct explanation of why the Seven Bridges of Königsberg cannot be walked — the four landmasses all have odd degree. The results are stated for arbitrary finite simple graphs and plug directly into Mathlib's SimpleGraph API.",
+    "openQuestions": [
+      "Can the sufficiency direction (a connected graph with 0 or 2 odd-degree vertices admits an Eulerian trail) be formalized in Mathlib to complete the biconditional, e.g. via Hierholzer's algorithm?",
+      "Does the endpoint characterization extend cleanly to multigraphs, where the Königsberg bridges genuinely live (parallel edges)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "konigsberg",
+      "relationship": "extends",
+      "description": "Root: the Seven Bridges of Königsberg and Euler's theorem. This entry supplies the degree-parity heart of that argument — the odd-degree vertices of a graph with an Eulerian trail are exactly its endpoints — and states the obstruction (four odd landmasses) that makes Königsberg unwalkable."
+    },
+    {
+      "targetId": "konigsberg-oq-02",
+      "relationship": "complementary",
+      "description": "Proves the directed Euler theorem (Eulerian circuit iff every vertex balanced; Eulerian path iff exactly one vertex has out−in = 1). This entry is the undirected companion, working with SimpleGraph.degree parity rather than in/out-degree balance."
+    },
+    {
+      "targetId": "konigsberg-oq-04",
+      "relationship": "complementary",
+      "description": "Counts directed Eulerian circuits via the BEST theorem. This entry addresses the undirected existence obstruction: which vertices are odd, and why more than two odd vertices forbid any Eulerian trail."
+    }
+  ],
+  "leanFile": {
+    "namespace": "KonigsbergOQ05",
+    "lineCount": 111,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/KonigsbergOQ05.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Leonhard Euler"
+      ],
+      "title": "Solutio problematis ad geometriam situs pertinentis",
+      "year": 1736,
+      "venue": "Commentarii Academiae Scientiarum Imperialis Petropolitanae 8, 128–140",
+      "note": "The Seven Bridges of Königsberg: the degree-parity obstruction to an Eulerian trail."
+    },
+    {
+      "authors": [
+        "Reinhard Diestel"
+      ],
+      "title": "Graph Theory",
+      "year": 2017,
+      "venue": "Graduate Texts in Mathematics 173, Springer (5th ed.)",
+      "note": "Euler's theorem: a connected graph has an Eulerian trail iff it has 0 or 2 odd-degree vertices, the latter being the endpoints."
+    }
+  ]
+}
