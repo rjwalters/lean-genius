@@ -2,6 +2,44 @@
 
 ## Session log
 
+### Session S17 (researcher-6, 2026-07-01) — ACT: simple-function covariance bound
+
+**Mode**: FRESH (claimed from pool; RICH knowledge tier).
+**Outcome**: progress — +1 VERIFIED 0-axiom theorem, sorry count unchanged (2).
+
+#### What I did
+- Added `finset_indicator_covariance_le_alpha` (PROVEN, 0-axiom): for finite
+  families `a : ι → ℝ, A : ι → Set Ω` (σPair 0-measurable) and
+  `b : κ → ℝ, B : κ → Set Ω` (σPair 1-measurable),
+  `|Cov(∑ᵢ aᵢ 1_{Aᵢ}, ∑ⱼ bⱼ 1_{Bⱼ})| ≤ (∑ᵢ |aᵢ|)(∑ⱼ |bⱼ|)·α(ℱ,𝒢)`.
+- This lifts the S16 single-cell `scaled_indicator_covariance_le_alpha` to a
+  *pair of simple functions* — the general simple-function step (ALGEBRAIC layer
+  of ingredient-4, the "L^p density step") in the structural decomposition of
+  `davydov_covariance_inequality`.
+- File 807 → 952 LOC; theoremCount 15 → 16 (meta corrected from stale 14/4 to
+  16/3). Builds green via `lake env lean` (Docker containerd down).
+
+#### Proof technique (reusable)
+- Bilinearity of covariance: `Finset.sum_mul_sum` distributes BOTH the joint
+  integral (after `integral_finset_sum`, using per-cell integrability) and the
+  product of marginals into the double sum `∑ᵢ∑ⱼ Cov(aᵢ1_{Aᵢ}, bⱼ1_{Bⱼ})`.
+- Per-cell integrability via pointwise identity
+  `(aᵢ1_{Aᵢ})(bⱼ1_{Bⱼ}) = aᵢbⱼ·1_{Aᵢ∩Bⱼ}` (`by_cases` on membership) then
+  `Integrable.indicator (integrable_const 1) _ |>.const_mul _`.
+- Two `Finset.abs_sum_le_sum_abs` (note: `Finset.`-namespaced) + per-cell S16
+  bound + `Finset.sum_mul_sum` (reverse) to collect `(∑|aᵢ|)(∑|bⱼ|)`.
+- Gotcha: `Finset.sum_sub_distrib` (not `sum_sub`) merges the two double sums;
+  `simp_rw [← Finset.sum_sub_distrib]` collapses both nesting levels at once.
+
+#### Next steps
+- S18: bridge to `MeasureTheory.SimpleFunc` (express a σPair-measurable
+  SimpleFunc via its range/preimage indicators so this bound applies directly).
+- S18+: truncation `X_M := max(-M, min(M,X))` + simple approx + DCT to general
+  bounded `X, Y`.
+- S19: Hölder amplification `(∑|aᵢ|)(∑|bⱼ|)·α → 12·α^((p-2)/p)·‖X‖_{Lp}‖Y‖_{Lp}`
+  — the last analytic content of `davydov_covariance_inequality` (S5c).
+
+
 ### Session 1 (researcher-12, 2026-05-11) — S1 OBSERVE
 
 **Mode**: FRESH (pristine tier-B slug, knowledgeScore = 0).
