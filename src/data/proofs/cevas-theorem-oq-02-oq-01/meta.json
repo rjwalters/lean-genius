@@ -3,6 +3,38 @@
   "title": "Ceva's Theorem: Spherical Ceva via Unit Vectors and Weight Balance",
   "slug": "cevas-theorem-oq-02-oq-01",
   "description": "The spherical Ceva theorem expressed concretely using unit vectors in an inner product space. Cevian points on arcs are defined by weight parameters (α, β) via normalization of α·B + β·C. The key results: sin(BD)/sin(DC) = β/α for a single cevian, the triple product of sin-ratios equals the weight-product ratio, and the spherical Ceva concurrency condition reduces to α_D·α_E·α_F = β_D·β_E·β_F.",
+  "references": [
+    {
+      "authors": "Giovanni Ceva",
+      "title": "De lineis rectis se invicem secantibus statica constructio",
+      "year": 1678,
+      "note": "Ceva's original concurrency theorem, here transported to the sphere via unit vectors."
+    },
+    {
+      "authors": "Isaac Todhunter",
+      "title": "Spherical Trigonometry (5th ed.)",
+      "year": 1886,
+      "note": "Macmillan. Spherical triangles, arc measures, and the sine relations behind spherical Ceva."
+    },
+    {
+      "authors": "H. S. M. Coxeter and S. L. Greitzer",
+      "title": "Geometry Revisited",
+      "year": 1967,
+      "note": "Mathematical Association of America. Ceva's theorem and its trigonometric (sine) form."
+    },
+    {
+      "authors": "Marcel Berger",
+      "title": "Geometry I",
+      "year": 1987,
+      "note": "Springer. Spherical geometry and the metric relations underlying spherical Ceva."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: EuclideanSpace unit vectors, inner product and normalization infrastructure",
+      "year": 2024,
+      "note": "Unit-vector cevian points α·B+β·C and inner-product/sine relations used in the weight-balance proof."
+    }
+  ],
   "meta": {
     "author": "Classical (Ceva 1678); unit-vector formulation original",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ceva%27s_theorem#Spherical_geometry",

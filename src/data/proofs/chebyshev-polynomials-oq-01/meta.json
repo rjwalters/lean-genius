@@ -19,6 +19,38 @@
     "sorries": 0
   },
   "description": "The composition law T_{m·n} = T_m ∘ T_n for the Chebyshev polynomials of the first kind, over any commutative ring and for all integer indices. Mathlib proves the multiplicativity (Polynomial.Chebyshev.T_mul) but records none of its structural consequences. The headline original result is the one Mathlib omits — that the Chebyshev polynomials commute under composition, T_m ∘ T_n = T_n ∘ T_m — together with the surrounding monoid picture (X = T₁ as the compositional identity, associativity of the triple composite) and the trigonometric origin cos(m·n·θ) = T_m(T_n(cos θ)).",
+  "references": [
+    {
+      "authors": "Pafnuty Chebyshev",
+      "title": "Théorie des mécanismes connus sous le nom de parallélogrammes (Mém. Acad. Sci. St.-Pétersbourg)",
+      "year": 1854,
+      "note": "Introduces the Chebyshev polynomials whose composition law T_{mn}=T_m∘T_n is proved here."
+    },
+    {
+      "authors": "Theodore J. Rivlin",
+      "title": "Chebyshev Polynomials: From Approximation Theory to Algebra and Number Theory (2nd ed.)",
+      "year": 1990,
+      "note": "Wiley. Composition and semigroup properties of the Chebyshev polynomials T_n."
+    },
+    {
+      "authors": "J. C. Mason and D. C. Handscomb",
+      "title": "Chebyshev Polynomials",
+      "year": 2002,
+      "note": "Chapman & Hall/CRC. Identities for T_n including multiplicativity and composition of indices."
+    },
+    {
+      "authors": "Gábor Szegő",
+      "title": "Orthogonal Polynomials (4th ed.)",
+      "year": 1975,
+      "note": "American Mathematical Society. The Chebyshev polynomials among the classical orthogonal families."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Polynomial.Chebyshev.T_mul and T_complex_cos",
+      "year": 2024,
+      "note": "Mathlib's multiplicativity T_{m·n}=T_m(T_n) bridged to the general composition/commutation law."
+    }
+  ],
   "meta": {
     "author": "Pafnuty Chebyshev (1854)",
     "status": "verified",
