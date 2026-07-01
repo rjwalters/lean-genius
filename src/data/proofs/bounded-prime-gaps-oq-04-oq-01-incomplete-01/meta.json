@@ -77,6 +77,27 @@
       "mathContext": "$2\\|\\theta\\| \\leq |\\sin(\\pi\\theta)|$, hence $1/|\\sin(\\pi\\theta)| \\leq 1/(2\\|\\theta\\|)$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Montgomery, H.L.",
+        "Vaughan, R.C."
+      ],
+      "title": "Multiplicative Number Theory I: Classical Theory",
+      "year": "2007",
+      "venue": "Cambridge Studies in Advanced Mathematics 97, Cambridge University Press",
+      "note": "Modern treatment of the large sieve, the Pólya–Vinogradov inequality and related character-sum bounds."
+    },
+    {
+      "authors": [
+        "Davenport, H."
+      ],
+      "title": "Multiplicative Number Theory",
+      "year": "2000",
+      "venue": "3rd ed., Graduate Texts in Mathematics 74, Springer",
+      "note": "Standard reference for character sums, Pólya–Vinogradov and Bombieri–Vinogradov."
+    }
+  ],
   "conclusion": {
     "summary": "The cosecant→distance conversion |sin(πθ)| ≥ 2‖θ‖ (and its reciprocal form) is fully formalized, supplying the bridge that puts the sibling's geometric exponential sum bound into the standard 1/(2‖θ‖) form used throughout Pólya–Vinogradov. 4 theorems, 0 sorries, 0 axioms.",
     "implications": "Together with BoundedPrimeGapsOQ04OQ01WIP01's geometric sum bound, this gives |∑_{n=M+1}^{M+N} e^{2πiθn}| ≤ 1/(2‖θ‖), the exact input the Pólya–Vinogradov cotangent aggregation consumes. It is the second self-contained classical ingredient of that inequality.",

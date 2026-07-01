@@ -119,6 +119,36 @@
       "mathContext": "The key identity $\\tau(\\chi)\\overline{\\tau(\\chi)} = \\chi(-1) q$ for primitive $\\chi \\bmod q$ is proved by substituting $u = t - s$ and applying character orthogonality: $\\sum_s \\chi(u+s)\\bar{\\chi}(s) = \\chi(u)\\varphi(q)$ for $\\gcd(u,q) = 1$ (and 0 otherwise by primitivity). This yields $|\\tau(\\chi)|^2 = q$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Bombieri, E."
+      ],
+      "title": "On the large sieve",
+      "year": "1965",
+      "venue": "Mathematika 12, pp. 201–225",
+      "note": "The Bombieri–Vinogradov theorem on the average distribution of primes in arithmetic progressions."
+    },
+    {
+      "authors": [
+        "Davenport, H."
+      ],
+      "title": "Multiplicative Number Theory",
+      "year": "2000",
+      "venue": "3rd ed., Graduate Texts in Mathematics 74, Springer",
+      "note": "Standard reference for character sums, Pólya–Vinogradov and Bombieri–Vinogradov."
+    },
+    {
+      "authors": [
+        "Montgomery, H.L.",
+        "Vaughan, R.C."
+      ],
+      "title": "Multiplicative Number Theory I: Classical Theory",
+      "year": "2007",
+      "venue": "Cambridge Studies in Advanced Mathematics 97, Cambridge University Press",
+      "note": "Modern treatment of the large sieve, the Pólya–Vinogradov inequality and related character-sum bounds."
+    }
+  ],
   "conclusion": {
     "summary": "The minimal set for Bombieri-Vinogradov is 6 additions totaling ~5500 lines. The most tractable entry point is gaussSumBound (~300 lines, HIGH tractability: builds on ZMod.gaussSum and character orthogonality in Mathlib). Parallel development of vaughanIdentity (~400 lines, HIGH tractability: algebraic Möbius identity) would let two Mathlib PRs proceed simultaneously. Once these two are in, polyaVinogradov follows directly.",
     "implications": "Proving all 6 additions would reduce BoundedPrimeGaps.lean from 3 axioms to 2 (eliminating bombieriVinogradov), making the Maynard-Tao bounded prime gaps proof closer to axiom-free. Beyond BV, the same additions unlock the Barban-Davenport-Halberstam theorem, Linnik's theorem on least primes in APs, the GPY sieve, and Chen's theorem approach to Goldbach.",

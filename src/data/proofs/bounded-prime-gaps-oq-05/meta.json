@@ -75,6 +75,26 @@
       "summary": "Defines nthPrime = Nat.nth Nat.Prime and the three prime formulations FiroozbakhtRoot / FiroozbakhtRpow / FiroozbakhtIntPow, proves the three pairwise equivalences by chaining the pointwise lemmas with core_real_iff_nat and nthPrime_pos, and packages them as firoozbakht_forms_tfae (List.TFAE)."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Ribenboim, P."
+      ],
+      "title": "The Little Book of Bigger Primes",
+      "year": "2004",
+      "venue": "2nd ed., Springer",
+      "note": "Standard survey source for Firoozbakht's conjecture and related prime-gap conjectures."
+    },
+    {
+      "authors": [
+        "Kourbatov, A."
+      ],
+      "title": "Upper bounds for prime gaps related to Firoozbakht's conjecture",
+      "year": "2015",
+      "venue": "Journal of Integer Sequences 18, Article 15.11.2",
+      "note": "Analysis of the equivalent formulations and consequences of Firoozbakht's conjecture."
+    }
+  ],
   "conclusion": {
     "summary": "Proved, unconditionally and axiom-free, that the three standard formulations of Firoozbakht's conjecture — the original root form $p_{n+1}^{1/(n+1)} < p_n^{1/n}$, the rpow form $p_{n+1} < p_n^{1+1/n}$, and the integer-power form $p_{n+1}^n < p_n^{n+1}$ — are equivalent. The core mechanism is a pointwise reduction of each inequality (for positive reals) to the single inequality $a^n < b^{n+1}$ via strict monotonicity of real rpow, followed by a bridge to the natural-number statement. 150 lines, 8 theorems, 4 definitions, 0 sorries, 0 axioms.",
     "implications": "This connects the gallery's RPOW formalization (BoundedPrimeGaps.lean's FireoozbakhtConjecture) to the original 1982 root statement and to the elementary integer-power statement, so a result proved against any one form transfers to the others. The pointwise lemmas root_lt_iff / rpow_lt_iff are reusable for any strictly-monotone comparison of $a^{1/(n+1)}$ and $b^{1/n}$. Establishing the equivalence is the prerequisite for any future formal work that would, e.g., verify the conjecture for an initial range of primes via the elementary integer-power form (the cheapest to decide) and conclude the analytic forms.",

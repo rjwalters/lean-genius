@@ -84,6 +84,36 @@
       "summary": "Detailed four-phase proof plan (~700 lines total): Gauss sum bound (~300 lines), geometric series (~100 lines), cotangent sum (~200 lines), assembly (~100 lines). Lists Mathlib infrastructure required."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Pólya, G."
+      ],
+      "title": "Über die Verteilung der quadratischen Reste und Nichtreste",
+      "year": "1918",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, pp. 21–29",
+      "note": "One of the two independent origins of the Pólya–Vinogradov character-sum inequality."
+    },
+    {
+      "authors": [
+        "Vinogradov, I.M."
+      ],
+      "title": "Sur la distribution des résidus et non-résidus des puissances",
+      "year": "1918",
+      "venue": "Journal of the Physico-Mathematical Society of Perm 1, pp. 94–98",
+      "note": "Independent origin of the Pólya–Vinogradov inequality."
+    },
+    {
+      "authors": [
+        "Montgomery, H.L.",
+        "Vaughan, R.C."
+      ],
+      "title": "Multiplicative Number Theory I: Classical Theory",
+      "year": "2007",
+      "venue": "Cambridge Studies in Advanced Mathematics 97, Cambridge University Press",
+      "note": "Modern treatment of the large sieve, the Pólya–Vinogradov inequality and related character-sum bounds."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization precisely states all components of the Pólya-Vinogradov inequality in Lean 4 with a detailed four-phase proof roadmap. All five sorries correspond to well-understood mathematical arguments; the formalization is complete at the statement level and is structured to support incremental completion of each phase.",
     "implications": "Completing this formalization would unlock the Bombieri-Vinogradov theorem (the parent goal), which is the key analytic ingredient in the bounded prime gap problem. The Pólya-Vinogradov inequality also has independent significance as the sharpest unconditional bound on character sums over intervals, with applications throughout analytic number theory including zero-free regions for L-functions and exponential sum bounds in cryptography.",
