@@ -46,5 +46,17 @@
     "significance": "key",
     "relatedConcepts": ["principal submatrix", "compression", "Cauchy interlacing"],
     "prerequisites": ["Matrix.submatrix", "the two ingredient lemmas above"]
+  },
+  {
+    "id": "ann-finrank-hyperplane",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-01",
+    "range": { "startLine": 132, "endLine": 141 },
+    "type": "theorem",
+    "title": "The Hyperplane Really Is n-Dimensional",
+    "content": "`finrank_coordinateHyperplane`: `Module.finrank 𝕜 (coordinateHyperplane j) = n`. Interlacing via `cauchy_interlacing_compression` only applies to a genuine codimension-one subspace, so this dimension count is not bookkeeping — it certifies the hypothesis. The argument is a clean chain: `EuclideanSpace.orthonormal_single` gives that the full standard basis `(e_a)_{a : Fin (n+1)}` is orthonormal; `Orthonormal.comp` along the *injective* deletion map `Fin.succAbove_right_injective` restricts it to the orthonormal sub-family `(e_{j.succAbove i})_{i : Fin n}`; `Orthonormal.linearIndependent` upgrades orthonormality to linear independence; and `finrank_span_eq_card` reads the dimension of the span off the cardinality `Fintype.card (Fin n) = n`. Injectivity of `succAbove` is load-bearing — orthonormality is preserved under composition only with an injection, and it is exactly what keeps the deleted index `j` from collapsing the family.",
+    "mathContext": "An orthonormal sub-family of size n spans an n-dimensional subspace: dim span{e_{j◁i} : i ∈ Fin n} = |Fin n| = n.",
+    "significance": "supporting",
+    "relatedConcepts": ["orthonormal family", "linear independence", "finrank of a span", "Fin.succAbove injectivity"],
+    "prerequisites": ["Orthonormal.comp and Orthonormal.linearIndependent", "finrank_span_eq_card"]
   }
 ]
