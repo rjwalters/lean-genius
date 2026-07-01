@@ -164,7 +164,23 @@
       "url": "https://www.ams.org/books/conm/253/"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-17-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the Pfister bound on the minimum number of squares for PSD polynomials. The univariate case (n=1) is the base of that hierarchy; this entry adds the sharp degree bound on the two summands."
+    },
+    {
+      "targetId": "hilbert-17",
+      "relationship": "related",
+      "description": "Grandparent: Hilbert's 17th problem and Artin's theorem. Its univariate strand is discharged by Hilbert17UnivariatePSDSOS.lean; this entry sharpens that result with the Fejér–Riesz degree bound."
+    },
+    {
+      "targetId": "hilbert-17-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Cousin: the multivariate minimal-denominator certificate for the Motzkin polynomial. Both entries concern the size/structure of SOS certificates rather than mere existence — degree of the summands here, denominator there."
+    }
+  ],
   "sections": [
     {
       "id": "setup",
