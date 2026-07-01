@@ -234,5 +234,34 @@
       "Generalize to β-mixing or ρ-mixing rates: the same Bernstein-block strategy works under absolute regularity (β-mixing) with sharper constants, and under ρ-mixing without any moment assumption beyond L². Which mixing class gives the smallest moment requirement for a CLT? Bradley 2007 vol I conjectures a unified theorem but no full proof is known in the polynomial-rate regime.",
       "Functional CLT (invariance principle): under the same hypotheses, the partial-sum process (1/√n)·S_{⌊nt⌋} converges weakly to a Brownian motion of variance σ². The Lean infrastructure built here for the marginal CLT should suffice for an invariance-principle extension via tightness of the rescaled process."
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": [
+        "Ildar A. Ibragimov"
+      ],
+      "title": "Some Limit Theorems for Stationary Processes",
+      "year": 1962,
+      "venue": "Theory of Probability and Its Applications 7(4), 349–382",
+      "note": "CLT for stationary α-mixing sequences, including the polynomial-decay threshold on the mixing coefficients."
+    },
+    {
+      "authors": [
+        "Richard C. Bradley"
+      ],
+      "title": "Introduction to Strong Mixing Conditions",
+      "year": 2007,
+      "venue": "Kendrick Press",
+      "note": "Comprehensive reference on α-mixing coefficients, m-dependence, Davydov's inequality, and mixing CLTs."
+    },
+    {
+      "authors": [
+        "Paul Doukhan"
+      ],
+      "title": "Mixing: Properties and Examples",
+      "year": 1994,
+      "venue": "Springer (Lecture Notes in Statistics 85)",
+      "note": "Davydov covariance inequality and polynomial-mixing CLT thresholds."
+    }
+  ]
 }

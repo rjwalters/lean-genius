@@ -118,5 +118,38 @@
       "description": "Formalizes the Lévy-Khintchine representation: every infinitely divisible distribution corresponds to a triplet $(\\gamma, \\sigma^2, \\nu)$ where $\\nu$ is the Lévy measure. The Bercovici-Pata bijection $\\Lambda$ maps classical Lévy-Khintchine triplets to free Lévy-Khintchine triplets, preserving $\\sigma^2$ (the Gaussian component) and transforming $\\nu$ via the free Lévy-Khintchine formula. The classical framework formalized in OQ-02 is precisely what $\\Lambda$ acts on to produce the free stable distributions cataloged here"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Alexandru Nica",
+        "Roland Speicher"
+      ],
+      "title": "Lectures on the Combinatorics of Free Probability",
+      "year": 2006,
+      "venue": "Cambridge University Press (LMS Lecture Notes 335)",
+      "note": "Free independence, free convolution, R-transform, and free cumulants."
+    },
+    {
+      "authors": [
+        "Hari Bercovici",
+        "Vittorino Pata"
+      ],
+      "title": "Stable Laws and Domains of Attraction in Free Probability Theory",
+      "year": 1999,
+      "venue": "Annals of Mathematics 149(3), 1023–1060",
+      "note": "The Bercovici–Pata bijection between classical and free (stable) infinitely divisible laws."
+    },
+    {
+      "authors": [
+        "Dan V. Voiculescu",
+        "Ken J. Dykema",
+        "Alexandru Nica"
+      ],
+      "title": "Free Random Variables",
+      "year": 1992,
+      "venue": "American Mathematical Society (CRM Monograph Series 1)",
+      "note": "Foundations of free probability, free independence, and the free central limit theorem."
+    }
+  ]
 }
