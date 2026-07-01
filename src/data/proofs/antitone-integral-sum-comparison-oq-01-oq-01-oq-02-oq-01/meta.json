@@ -56,6 +56,56 @@
       "Partial sums bounded by the tsum (Summable.sum_le_tsum) and the shifted p-series summability criterion (summable_nat_add_iff, Real.summable_one_div_nat_rpow)"
     ]
   },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: The Left-Riemann Lower-Bound Strategy",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Imports the parent entry (which supplies the matching upper bound) and states the goal: derive the p-series tail LOWER bound from the left Riemann sum and assemble the two-sided sandwich (N+1)^{1−p}/(p−1) ≤ ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1).",
+      "mathContext": "$\\sum_{n>N}\\tfrac1{n^p} \\ge \\int_{N+1}^{\\infty} x^{-p}\\,dx = \\tfrac{(N+1)^{1-p}}{p-1}$ — the left-endpoint half of the integral test."
+    },
+    {
+      "id": "partial-lower-bound",
+      "title": "Tail Partial-Sum Lower Bound (Left Riemann Sum)",
+      "startLine": 45,
+      "endLine": 97,
+      "summary": "pseries_tail_partial_ge: every finite tail ∑_{i<m} 1/(N+1+i)ᵖ dominates ∫_{N+1}^{N+1+m} x^{−p} dx = ((N+1)^{1−p} − (N+1+m)^{1−p})/(p−1), via AntitoneOn.integral_le_sum with the integral evaluated by integral_rpow.",
+      "mathContext": "$\\tfrac{(N+1)^{1-p} - (N+1+m)^{1-p}}{p-1} \\le \\sum_{i<m}\\tfrac1{(N+1+i)^p}.$"
+    },
+    {
+      "id": "tsum-floor",
+      "title": "The Tail Floor in the Limit",
+      "startLine": 98,
+      "endLine": 134,
+      "summary": "pseries_tail_tsum_ge: passing the uniform partial-sum bound to the limit with le_of_tendsto' gives (N+1)^{1−p}/(p−1) ≤ ∑'_i 1/(N+1+i)ᵖ; the subtracted endpoint term (N+1+m)^{1−p} → 0 by tendsto_rpow_neg_atTop, and each partial sum ≤ tsum by Summable.sum_le_tsum.",
+      "mathContext": "$\\tfrac{(N+1)^{1-p}}{p-1} \\le \\sum'_{i}\\tfrac1{(N+1+i)^p}$ since $(N+1+m)^{1-p}\\to 0$ for $p>1$."
+    },
+    {
+      "id": "explicit-form",
+      "title": "Explicit Lower Bound, Textbook Form",
+      "startLine": 135,
+      "endLine": 150,
+      "summary": "pseries_tail_ge_explicit rewrites the floor as 1/((p−1)·(N+1)^{p−1}) via Real.rpow_neg and field_simp, exhibiting the matching O(N^{1−p}) order from below.",
+      "mathContext": "$\\tfrac{(N+1)^{1-p}}{p-1} = \\tfrac1{(p-1)\\,(N+1)^{p-1}}.$"
+    },
+    {
+      "id": "sandwich",
+      "title": "The Two-Sided Remainder Sandwich",
+      "startLine": 151,
+      "endLine": 166,
+      "summary": "pseries_tail_sandwich pairs the new lower bound with the parent's pseries_tail_tsum_le upper bound, pinning the remainder between two consecutive values of the same primitive x ↦ x^{1−p}/(p−1) — leading order exactly N^{1−p}.",
+      "mathContext": "$\\tfrac{(N+1)^{1-p}}{p-1} \\le \\sum_{n>N}\\tfrac1{n^p} \\le \\tfrac{N^{1-p}}{p-1}.$"
+    },
+    {
+      "id": "witnesses",
+      "title": "Worked Witnesses (Basel Exponent)",
+      "startLine": 167,
+      "endLine": 194,
+      "summary": "Two example specializations at p = 2: the Basel-exponent sandwich 1/(N+1) ≤ ∑_{n>N} 1/n² ≤ 1/N for all N ≥ 1, and the concrete floor 1/11 ≤ ∑_{n>10} 1/n².",
+      "mathContext": "$\\tfrac1{N+1} \\le \\sum_{n>N}\\tfrac1{n^2} \\le \\tfrac1N; \\qquad \\tfrac1{11} \\le \\sum_{n>10}\\tfrac1{n^2}.$"
+    }
+  ],
   "conclusion": {
     "summary": "The p-series tail is sandwiched: for p > 1 and N ≥ 1, (N+1)^{1−p}/(p−1) ≤ ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1). The lower bound is the antitone integral test in left-Riemann form (∫_{N+1}^∞) passed to the limit; the upper bound is the parent's right-Riemann estimate (∫_N^∞). The Basel exponent gives 1/(N+1) ≤ ∑_{n>N} 1/n² ≤ 1/N. 4 theorems, 2 witnesses, 0 definitions, 194 lines, 0 sorries, 0 axioms.",
     "implications": "Upgrades the parent's one-sided remainder bound to a two-sided estimate, certifying that N^{1−p}/(p−1) is the exact leading order of the truncation error of ζ(p), not just an upper bound. The base-shift technique (run the left-Riemann comparison from x = N+1) produces matching lower bounds for any antitone summand whose integral can be evaluated.",
