@@ -189,6 +189,28 @@
       "note": "John Wiley & Sons. §14.2 is the textbook Fundamental Theorem of Galois Theory, including the degree/index dictionary and the normal-subgroup correspondence."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-01",
+      "relationship": "instantiated on",
+      "description": "Concrete witness. OQ-01 builds the isomorphism (X⁵ − 4X + 2).Gal ≃* S₅. The final Quintic section here imports that file, establishes that the witness's splitting field is Galois over ℚ, and instantiates the counting bijection on it — so the subfield lattice of a concrete unsolvable quintic mirrors the subgroup lattice of S₅."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "extends",
+      "description": "Parent file. The Abel–Ruffini program rests on 'solvable by radicals ⟺ solvable Galois group'. The Galois correspondence packaged here is the structural backbone of that equivalence: it is how subextensions of a radical tower are translated into a subnormal series of the Galois group."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "underpins",
+      "description": "The abstract Abel–Ruffini theorem (Sₙ solvable iff n ≤ 4; A₅ simple; a non-solvable Galois group blocks any radical formula). Order-reversal in this correspondence is precisely what turns that group-theoretic obstruction into a statement about towers of fields — a radical tower descends to a subnormal series whose quotients must be abelian."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "feeds into",
+      "description": "Jordan–Hölder uniqueness. Once the correspondence converts a field tower into a subnormal series of the Galois group, Jordan–Hölder guarantees the composition factors are well-defined — the invariant that makes 'solvable Galois group' independent of the chosen radical tower."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "galoisCorrespondence",
