@@ -106,6 +106,40 @@
       "Carmichael's function (parent entry euler-totient-oq-01)"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "The Keystone: Multiplicativity over Coprime Factors",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Sets up the goal — strengthen the parent's carmichael_dvd_totient toward the full characterization λ(n) = lcm of the cyclic-factor orders of (ℤ/nℤ)*. The keystone is multiplicativity over coprime factors, λ(m·n) = lcm(λ(m), λ(n)); iterating over the prime-power factorization then yields λ(n) = lcmᵢ λ(pᵢ^kᵢ). Outlines the proof route via the CRT unit-group splitting and the exponent's behaviour on products, and honestly notes the contribution is the explicit gallery statement, not new mathematics.",
+      "mathContext": "$\\gcd(m,n)=1 \\Rightarrow \\lambda(mn) = \\mathrm{lcm}(\\lambda(m),\\lambda(n));\\quad \\lambda(n) = \\mathrm{lcm}_i\\, \\lambda(p_i^{k_i}).$"
+    },
+    {
+      "id": "definitions",
+      "title": "Carmichael's function and the CRT unit-group splitting",
+      "startLine": 42,
+      "endLine": 58,
+      "summary": "carmichael n is defined as the group exponent of the unit group (ℤ/nℤ)* (redefined locally so the file is build-independent of the parent). unitsChineseRemainder packages the multiplicative isomorphism (ℤ/mnℤ)* ≃* (ℤ/mℤ)* × (ℤ/nℤ)* for coprime m, n, by transporting Mathlib's CRT ring isomorphism ZMod.chineseRemainder to units (Units.mapEquiv) and splitting the product with MulEquiv.prodUnits.",
+      "mathContext": "$\\lambda(n) = \\mathrm{Monoid.exponent}\\,(\\mathbb{Z}/n)^\\times;\\quad (\\mathbb{Z}/mn)^\\times \\cong (\\mathbb{Z}/m)^\\times \\times (\\mathbb{Z}/n)^\\times.$"
+    },
+    {
+      "id": "multiplicativity",
+      "title": "carmichael_mul_coprime: the multiplicativity theorem",
+      "startLine": 60,
+      "endLine": 66,
+      "summary": "The headline: λ(m·n) = lcm(λ(m), λ(n)) for coprime m, n. After unfolding to exponents, the proof chains three facts — the exponent is invariant under the multiplicative isomorphism (Monoid.exponent_eq_of_mulEquiv on unitsChineseRemainder), the exponent of a product is the lcm of the factor exponents (Monoid.exponent_prod), and lcm_eq_nat_lcm converts to Nat.lcm.",
+      "mathContext": "$\\mathrm{exponent}(G \\times H) = \\mathrm{lcm}(\\mathrm{exponent}(G), \\mathrm{exponent}(H)).$"
+    },
+    {
+      "id": "universal-exponent",
+      "title": "order_dvd_carmichael: the universal-exponent property",
+      "startLine": 68,
+      "endLine": 76,
+      "summary": "order_dvd_carmichael records that every unit's order divides λ(n) — the universal-exponent property restated for the Carmichael function (Monoid.order_dvd_exponent). Combined with carmichael_mul_coprime, this certifies λ(n) as a common multiple of all element orders in each coprime factor.",
+      "mathContext": "$\\forall a \\in (\\mathbb{Z}/n)^\\times,\\ \\mathrm{ord}(a) \\mid \\lambda(n).$"
+    }
+  ],
   "conclusion": {
     "summary": "The keystone multiplicativity of Carmichael's function, λ(m·n) = lcm(λ(m), λ(n)) for coprime m, n, is proved from the CRT splitting of unit groups and the lcm behavior of the exponent on product groups. With order_dvd_carmichael recording the universal-exponent property, this is the step that reduces λ(n) to the lcm of its prime-power (cyclic-factor) values. Fully verified, 0 axioms, 0 sorries.",
     "implications": "This advances the parent entry's open question toward the full characterization λ(n) = lcm of cyclic group orders: iterating carmichael_mul_coprime over the prime-power factorization yields λ(n) = lcm_i λ(p_i^{k_i}), and the cyclicity of (Z/p^kZ)* (odd p) identifies each factor exponent with a cyclic group order. It also underpins the RSA-relevant fact that λ, not φ, is the minimal exponent for modular exponentiation.",
