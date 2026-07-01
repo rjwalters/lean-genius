@@ -36,6 +36,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Context, imports, and namespace",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Docstring: this file records the UNCONDITIONAL content of the rational three-square characterization, combining ThreeSquares (Legendre necessity) and ThreeSquaresDavenportCassels (rational⇒integral descent). The genuinely open piece — rational sufficiency (Hasse–Minkowski, absent from Mathlib) — is carried only as a hypothesis. Import Mathlib + the three companion files; open ThreeSquares / ThreeSquaresRationalBridge.",
+      "mathContext": "Davenport–Cassels: for $x^2+y^2+z^2$, rational representability $\\Leftrightarrow$ integral; the excluded family is $4^a(8b+7)$."
+    },
+    {
       "id": "iff",
       "title": "The Davenport–Cassels Iff and Rational Necessity",
       "startLine": 44,
