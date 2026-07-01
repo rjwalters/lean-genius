@@ -78,50 +78,58 @@
     {
       "id": "definitions",
       "title": "Alternating Sum and Forward Difference",
-      "startLine": 44,
-      "endLine": 57,
+      "startLine": 54,
+      "endLine": 68,
       "summary": "altSum a n m = ∑_{j∈Ico n m} (-1)^j a_j and fdiff a j = a_{j+1} − a_j, with the one-step recurrence altSum_succ from Finset.sum_Ico_succ_top.",
       "mathContext": "$\\mathrm{altSum}\\,a\\,n\\,m = \\sum_{j=n}^{m-1} (-1)^j a_j$, $\\Delta a_j = a_{j+1}-a_j$."
     },
     {
       "id": "boole-first",
       "title": "First-Order Boole Summation Formula",
-      "startLine": 59,
-      "endLine": 70,
+      "startLine": 70,
+      "endLine": 82,
       "summary": "The exact identity altSum a n m = ½·((-1)^n a_n − (-1)^m a_m) − ½·altSum (Δa) n m, by Nat.le_induction and ring.",
       "mathContext": "$\\sum_{j=n}^{m-1} (-1)^j a_j = \\tfrac12\\big((-1)^n a_n - (-1)^m a_m\\big) - \\tfrac12 \\sum_{j=n}^{m-1} (-1)^j \\Delta a_j.$"
     },
     {
       "id": "boole-second",
       "title": "Second-Order Iterate and the Δ²a Correction",
-      "startLine": 72,
-      "endLine": 80,
+      "startLine": 84,
+      "endLine": 93,
       "summary": "Iterating once on the differences yields the second-difference term with coefficient 1/4, the discrete analogue of the a'' correction.",
       "mathContext": "$+\\,\\tfrac14 \\sum (-1)^j \\Delta^2 a_j$, the start of the Euler-number expansion."
     },
     {
       "id": "remainder-bounds",
       "title": "Error Identity and Total-Variation Bound",
-      "startLine": 82,
-      "endLine": 106,
+      "startLine": 95,
+      "endLine": 151,
       "summary": "altSum − model = −½·altSum(Δa); hence |altSum − model| ≤ ½∑|Δa_j| via the triangle inequality (|(-1)^j| = 1).",
       "mathContext": "$\\big|\\mathrm{altSum} - \\tfrac12((-1)^n a_n-(-1)^m a_m)\\big| \\le \\tfrac12 \\sum_{j=n}^{m-1} |\\Delta a_j|.$"
     },
     {
       "id": "antitone",
       "title": "Half-First-Term Estimate for Decreasing Sequences",
-      "startLine": 108,
-      "endLine": 127,
+      "startLine": 153,
+      "endLine": 192,
       "summary": "For antitone a the total variation telescopes to a_n − a_m, giving |altSum − model| ≤ ½(a_n − a_m) — the finite form of 'remainder ≈ half the first omitted term'.",
       "mathContext": "$\\big|\\mathrm{altSum} - \\mathrm{model}\\big| \\le \\tfrac12 (a_n - a_m) \\xrightarrow{a_m\\to 0} \\tfrac12 a_n.$"
     },
     {
       "id": "higher-order-telescoping",
       "title": "Higher-Order Monotone Telescoping",
-      "startLine": 156,
-      "endLine": 230,
+      "startLine": 194,
+      "endLine": 234,
       "summary": "sum_abs_fdiff_monotone / sum_abs_fdiff_of_monotone_or_antitone telescope the total variation of a monotone sequence to |a_m − a_n| (either direction). Feeding this into the order-(K+1) remainder bound gives altSum_sub_booleModel_le_of_iterate_monotone: when the K-th difference Δᴷa is monotone the error collapses to (1/2^{K+1})·|(Δᴷa)_m − (Δᴷa)_n|, the exact 'remainder ≈ leading Boole term' statement at every order.",
       "mathContext": "$\\big|\\mathrm{altSum} - \\text{model}_{K+1}\\big| \\le \\tfrac{1}{2^{K+1}}\\,\\big|(\\Delta^K a)_m - (\\Delta^K a)_n\\big|$ when $\\Delta^K a$ is monotone; $K=0$ recovers the antitone half-first-term estimate, $K=1$ (convex decreasing $a$) gives $\\tfrac14|\\Delta a_m - \\Delta a_n|$."
+    },
+    {
+      "id": "exactness-polynomial",
+      "title": "Exactness on Polynomial Sequences and Closed Forms",
+      "startLine": 236,
+      "endLine": 302,
+      "summary": "When Δᴷa ≡ 0 the order-K Boole remainder vanishes (boole_exact_of_iterate_fdiff_zero), so the alternating sum equals its finite Boole endpoint model with no residual; instantiated for affine sequences (altSum_affine: Δ²(α+βj)=0 gives an exact pure-endpoint closed form) and constants (altSum_const).",
+      "mathContext": "$\\sum_{j=n}^{m-1} (-1)^j (\\alpha+\\beta j) = \\tfrac12\\big((-1)^n(\\alpha+\\beta n) - (-1)^m(\\alpha+\\beta m)\\big) - \\tfrac14\\beta\\big((-1)^n - (-1)^m\\big).$"
     }
   ],
   "leanFile": {
@@ -132,9 +140,9 @@
       "Finset"
     ],
     "namespace": "AlternatingSeriesBooleSummation",
-    "lineCount": 230,
+    "lineCount": 302,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 19,
     "definitionCount": 2,
     "path": "Proofs/AlternatingSeriesBooleSummation.lean",
     "sorries": 0

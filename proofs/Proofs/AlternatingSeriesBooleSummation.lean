@@ -39,7 +39,13 @@ This file proves:
 * `altSum_sub_booleModel_le_of_iterate_monotone` — the order-`K` telescoping: when the `K`-th
   difference `Δᴷa` is monotone (either direction) the order-`(K+1)` error collapses to
   `(1/2^{K+1})·|(Δᴷa)_m - (Δᴷa)_n|`, generalizing the antitone half-first-term estimate to every
-  order (e.g. a convex decreasing `a` gets the order-`2` bound `(1/4)|Δa_m - Δa_n|`).
+  order (e.g. a convex decreasing `a` gets the order-`2` bound `(1/4)|Δa_m - Δa_n|`);
+* `boole_exact_of_iterate_fdiff_zero` — **exactness on polynomial sequences**: when `Δᴷa ≡ 0`
+  the order-`K` remainder is exactly zero, so the alternating sum equals its finite Boole endpoint
+  model with no residual (the remainder is precisely the obstruction to polynomiality);
+* `altSum_affine` / `altSum_const` — the resulting exact closed forms: the alternating sum of an
+  arithmetic progression `α + βj` is the pure endpoint expression
+  `½·((-1)^n(α+βn) - (-1)^m(α+βm)) - ¼β·((-1)^n - (-1)^m)`.
 
 All results are over `ℝ`, elementary, and axiom-free. Mathlib has the alternating series test and
 its bracketing/remainder bounds, but not the Boole summation identity itself.
@@ -226,5 +232,71 @@ theorem altSum_sub_booleModel_le_of_iterate_monotone (a : ℕ → ℝ) (n m : �
         congrFun (Function.iterate_succ' fdiff K) a,
       sum_abs_fdiff_of_monotone_or_antitone n m h hg] at hbound
   exact hbound
+
+/-- An alternating sum of the identically-zero sequence vanishes: every summand `(-1)^j·0 = 0`. -/
+theorem altSum_eq_zero_of_forall_eq_zero (a : ℕ → ℝ) (n m : ℕ) (ha : ∀ j, a j = 0) :
+    altSum a n m = 0 := by
+  simp only [altSum]
+  exact Finset.sum_eq_zero fun j _ => by rw [ha j, mul_zero]
+
+/-- **Exactness of the finite Boole formula on polynomial sequences.** If the `K`-th forward
+difference `Δᴷa` vanishes identically — equivalently `a` agrees with a polynomial of degree `< K`
+in `j` on the relevant range — then the order-`K` Boole remainder is exactly zero, so the
+alternating sum *equals* its finite Boole endpoint model with no residual:
+
+`∑_{j=n}^{m-1} (-1)^j a_j = ∑_{k=0}^{K-1} ((-1)^k/2^{k+1})·((-1)^n (Δᵏa)_n - (-1)^m (Δᵏa)_m)`.
+
+This is the sharp qualitative boundary of the expansion: the alternating sum of a sequence is a
+*finite* combination of endpoint difference-data precisely when the sequence is (eventually)
+polynomial, and the order-`K` Boole remainder `((-1)^K/2^K)·altSum(Δᴷa)` is exactly the
+obstruction to `Δᴷa ≡ 0`. -/
+theorem boole_exact_of_iterate_fdiff_zero (a : ℕ → ℝ) (n m : ℕ) (h : n ≤ m) (K : ℕ)
+    (hK : ∀ j, (fdiff^[K] a) j = 0) :
+    altSum a n m
+      = ∑ k ∈ Finset.range K,
+          ((-1 : ℝ) ^ k / 2 ^ (k + 1))
+            * ((-1 : ℝ) ^ n * (fdiff^[k] a) n - (-1 : ℝ) ^ m * (fdiff^[k] a) m) := by
+  rw [boole_general a n m h K, altSum_eq_zero_of_forall_eq_zero (fdiff^[K] a) n m hK,
+    mul_zero, add_zero]
+
+/-- The forward difference of an affine sequence `a_j = α + β·j` is the constant `β`: this is the
+discrete analogue of `(α + βx)' = β`, and shows `Δa` is constant so `Δ²a ≡ 0`. -/
+theorem fdiff_affine (α β : ℝ) : fdiff (fun j => α + β * (j : ℝ)) = fun _ => β := by
+  funext j; simp only [fdiff]; push_cast; ring
+
+/-- The second forward difference of an affine sequence vanishes identically. -/
+theorem iterate_fdiff_two_affine (α β : ℝ) :
+    ∀ j, (fdiff^[2] (fun j => α + β * (j : ℝ))) j = 0 := by
+  have step : fdiff^[2] (fun j => α + β * (j : ℝ)) = fdiff (fun _ => β) := by
+    have h1 : fdiff^[2] (fun j => α + β * (j : ℝ))
+        = fdiff (fdiff^[1] (fun j => α + β * (j : ℝ))) :=
+      congrFun (Function.iterate_succ' fdiff 1) _
+    rw [h1, Function.iterate_one, fdiff_affine]
+  intro j; rw [step]; simp only [fdiff]; ring
+
+/-- **Exact closed form for the alternating sum of an affine sequence.** Since `Δ²(α + β·j) ≡ 0`,
+the order-`2` Boole formula terminates and evaluates completely: the alternating sum of an
+arithmetic progression is a pure endpoint expression, with no remainder.
+
+`∑_{j=n}^{m-1} (-1)^j (α + βj)`
+`  = ½·((-1)^n (α+βn) - (-1)^m (α+βm)) - ¼·β·((-1)^n - (-1)^m)`.
+
+This is the exact discrete Boole/Euler evaluation of an alternating polynomial sum of degree `1`;
+the constant case `β = 0` recovers `∑ (-1)^j α = ½α·((-1)^n - (-1)^m)`. -/
+theorem altSum_affine (α β : ℝ) (n m : ℕ) (h : n ≤ m) :
+    altSum (fun j => α + β * (j : ℝ)) n m
+      = (1 / 2) * ((-1 : ℝ) ^ n * (α + β * n) - (-1 : ℝ) ^ m * (α + β * m))
+        - (1 / 4) * β * ((-1 : ℝ) ^ n - (-1 : ℝ) ^ m) := by
+  rw [boole_exact_of_iterate_fdiff_zero (fun j => α + β * (j : ℝ)) n m h 2
+      (iterate_fdiff_two_affine α β), Finset.sum_range_succ, Finset.sum_range_one]
+  simp only [Function.iterate_zero, id_eq, pow_zero, pow_one, Function.iterate_one, fdiff_affine]
+  ring
+
+/-- **Closed form for a pure alternating sum of a constant.** The `β = 0` specialization of
+`altSum_affine`: `∑_{j=n}^{m-1} (-1)^j c = ½c·((-1)^n - (-1)^m)`. -/
+theorem altSum_const (c : ℝ) (n m : ℕ) (h : n ≤ m) :
+    altSum (fun _ => c) n m = (1 / 2) * c * ((-1 : ℝ) ^ n - (-1 : ℝ) ^ m) := by
+  have key : (fun _ : ℕ => c) = (fun j : ℕ => c + 0 * (j : ℝ)) := by funext j; ring
+  rw [key, altSum_affine c 0 n m h]; ring
 
 end AlternatingSeriesBooleSummation
