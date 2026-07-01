@@ -202,5 +202,49 @@
     "definitionCount": 17,
     "theoremCount": 19
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Minkowski, H.",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "note": "The founding monograph of the geometry of numbers (Teubner, Leipzig); the fundamental theorem on convex bodies and lattices first appeared in Minkowski's 1889 work."
+    },
+    {
+      "authors": "Blichfeldt, H. F.",
+      "title": "A new principle in the geometry of numbers, with some applications",
+      "year": "1914",
+      "note": "Transactions of the AMS 15(3), 227–235. Generalizes Minkowski's theorem: if vol(S) exceeds the covolume, S contains two points whose difference is a nonzero lattice vector — the pigeonhole heart of the modern proof."
+    },
+    {
+      "authors": "Cassels, J. W. S.",
+      "title": "An Introduction to the Geometry of Numbers",
+      "year": "1959",
+      "note": "Springer, Grundlehren series. The standard graduate reference; Chapter III develops Minkowski's convex body theorem and its successive-minima refinements."
+    },
+    {
+      "authors": "Siegel, C. L.",
+      "title": "Lectures on the Geometry of Numbers",
+      "year": "1989",
+      "note": "Springer (notes by K. Chandrasekharan). A classic lecture treatment of Minkowski's theorem and its arithmetic applications."
+    },
+    {
+      "authors": "Olds, C. D.; Lax, A.; Davidoff, G.",
+      "title": "The Geometry of Numbers",
+      "year": "2000",
+      "note": "Anneli Lax New Mathematical Library 41, MAA. An accessible exposition connecting Minkowski's theorem to Fermat two-squares, Lagrange four-squares, and Diophantine approximation."
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": "2008",
+      "note": "Oxford University Press. Chapter XXIV, 'The Geometry of Numbers', proves Minkowski's theorem and derives the two- and four-square theorems from it."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.MeasureTheory.Group.GeometryOfNumbers — exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure",
+      "year": "2024",
+      "note": "The measure-theoretic Minkowski convex body theorem in Mathlib, the Lean result this entry bridges its custom Lattice/ConvexBody API to."
+    }
+  ]
 }
