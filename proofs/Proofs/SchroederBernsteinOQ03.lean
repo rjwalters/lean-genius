@@ -145,6 +145,25 @@ def fwdOrbit (f g : ℕ → ℕ) (n : ℕ) : ℕ → ℕ
   | 0 => n
   | k + 1 => g (f (fwdOrbit f g n k))
 
+/-- The forward orbit `(n, k) ↦ (g∘f)^k(n)` is computable when `f` and `g` are.
+    This discharges the "orbit structure is effective" requirement (step (d) of the
+    back-and-forth construction): the orbit is a primitive recursion in `k` whose step
+    `IH ↦ g (f IH)` is a composition of computable functions, so `Computable.nat_rec`
+    applies. Fully verified, 0 axioms — infrastructure for the hard direction. -/
+theorem fwdOrbit_computable {f g : ℕ → ℕ} (hf : Computable f) (hg : Computable g) :
+    Computable (fun nk : ℕ × ℕ => fwdOrbit f g nk.1 nk.2) := by
+  have hstep : Computable₂ (fun (_ : ℕ × ℕ) (p : ℕ × ℕ) => g (f p.2)) :=
+    (hg.comp (hf.comp (Computable.snd.comp Computable.snd))).to₂
+  have key := Computable.nat_rec (σ := ℕ) (α := ℕ × ℕ)
+    (f := fun nk : ℕ × ℕ => nk.2) (g := fun nk : ℕ × ℕ => nk.1)
+    (h := fun _ p => g (f p.2)) Computable.snd Computable.fst hstep
+  refine key.of_eq ?_
+  rintro ⟨n, k⟩
+  simp only
+  induction k with
+  | zero => rfl
+  | succ k ih => simp only [fwdOrbit, ih]
+
 /-- The back-and-forth strategy: an element n is "f-type" if its backward chain
     under alternating g⁻¹, f⁻¹ terminates outside range(g) (i.e., not a g-image).
     These are exactly the elements where σ(n) := f(n) is the right choice.

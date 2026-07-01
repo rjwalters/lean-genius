@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 269,
+    "lineCount": 288,
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
@@ -47,12 +47,13 @@
       "Clean proof of the easy direction: computable bijection implies one-one equivalence",
       "Fully proved partial-inverse infrastructure via Nat.rfind: partialInverse_partrec (Partrec), partialInverse_spec (recovers input under injection), partialInverse_dom (defined on range)",
       "Proof that computable isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
-      "Forward orbit definition: (g∘f)^k(n) for the back-and-forth construction"
+      "Forward orbit definition: (g∘f)^k(n) for the back-and-forth construction",
+      "Fully proved fwdOrbit_computable: the forward orbit (n,k) ↦ (g∘f)^k(n) is Computable when f, g are (via Computable.nat_rec) — verifies the 'orbit structure is effective' requirement (step (d)) of the hard-direction construction"
     ],
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
     ],
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 4,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
