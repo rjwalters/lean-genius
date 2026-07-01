@@ -183,5 +183,35 @@
     "definitionCount": 1,
     "theoremCount": 13
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Claude E. Shannon"
+      ],
+      "title": "A Mathematical Theory of Communication",
+      "year": 1948,
+      "venue": "Bell System Technical Journal 27, 379–423 & 623–656",
+      "note": "Founding paper of information theory: channel capacity, the channel coding theorem, and the entropy of discrete sources."
+    },
+    {
+      "authors": [
+        "Thomas M. Cover",
+        "Joy A. Thomas"
+      ],
+      "title": "Elements of Information Theory",
+      "year": 2006,
+      "venue": "Wiley (2nd ed.)",
+      "note": "Standard textbook: mutual information, channel capacity, Fano's inequality, and the coding theorem with its converse."
+    },
+    {
+      "authors": [
+        "Robert G. Gallager"
+      ],
+      "title": "Information Theory and Reliable Communication",
+      "year": 1968,
+      "venue": "Wiley",
+      "note": "Random-coding achievability, the converse, and capacity of discrete memoryless channels."
+    }
+  ]
 }

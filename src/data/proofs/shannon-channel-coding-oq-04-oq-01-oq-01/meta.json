@@ -144,5 +144,37 @@
       "mathContext": "$h_2(p) = h(p)/\\log 2 = 1 \\iff h(p) = \\log 2 \\iff p = 1/2$. BSC capacity $C = 1 - h_2(p)$ achieves minimum 0 uniquely at $p = 1/2$."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Thomas M. Cover",
+        "Joy A. Thomas"
+      ],
+      "title": "Elements of Information Theory",
+      "year": 2006,
+      "venue": "Wiley (2nd ed.)",
+      "note": "Standard textbook: mutual information, channel capacity, Fano's inequality, and the coding theorem with its converse."
+    },
+    {
+      "authors": [
+        "David J. C. MacKay"
+      ],
+      "title": "Information Theory, Inference, and Learning Algorithms",
+      "year": 2003,
+      "venue": "Cambridge University Press",
+      "note": "Accessible treatment of erasure/symmetric channels, capacity, and binary entropy."
+    },
+    {
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
+      "title": "Inequalities",
+      "year": 1952,
+      "venue": "Cambridge University Press (2nd ed.)",
+      "note": "Concavity of the entropy function and Jensen's inequality underlying its unique maximum."
+    }
+  ]
 }
