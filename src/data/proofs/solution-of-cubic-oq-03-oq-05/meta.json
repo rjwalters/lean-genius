@@ -121,6 +121,27 @@
       "mathContext": "`root_satisfies (h : X^3 + C a * X^2 + C b * X + C c = (X - C r₁) * (X - C r₂) * (X - C r₃)) : Polynomial.eval r₁ (X^3 + C a * X^2 + C b * X + C c) = 0`. Proof: `rw [h]; simp [Polynomial.eval_mul, Polynomial.eval_sub, sub_self]` — evaluating $(r_1 - r_1) = 0$ kills the first factor. This is the reverse direction of the factor theorem: $p(r_i) = 0$ iff $(X - r_i) \\mid p$. Here we prove it directly from the factored form, avoiding the general factor theorem. In Lean, `Polynomial.eval r₁ (X - C r₁) = r₁ - r₁ = 0` by `simp`."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "The discriminant as a root-separation product and Vieta's formulas via symmetric functions."
+    },
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Vieta's formulas via elementary symmetric polynomials and the discriminant over a commutative ring."
+    }
+  ],
   "conclusion": {
     "summary": "Vieta's formulas for the general cubic are fully machine-verified over any commutative ring, with no axioms and no sorries. The proof by coefficient extraction from the factored form is clean and generalizes immediately to polynomials of any degree.",
     "implications": "These formulas connect the roots of a cubic to its coefficients and are the foundation for: (1) the discriminant Δ = 18abcd - 4b³d + b²c² - 4ac³ - 27a²d² expressed in terms of roots; (2) the resolvent cubic in Galois theory; (3) Newton's identities relating power sums to elementary symmetric polynomials. In Lean, they provide the formal basis for any proof that needs to relate polynomial coefficients to roots.",

@@ -145,6 +145,27 @@
       "mathContext": "cubic_coeff_two applies prod_linear_sub_one at cardinality 3; cubic_coeff_zero reads off the constant term via coeff 0 = eval 0. Together they show the general degree-n machinery subsumes the hand-expanded cubic Vieta of the parent."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "The discriminant as a root-separation product and Vieta's formulas via symmetric functions."
+    },
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Vieta's formulas via elementary symmetric polynomials and the discriminant over a commutative ring."
+    }
+  ],
   "conclusion": {
     "summary": "Vieta's formulas are established for arbitrary degree n over any integral domain (and field), with 0 sorries and 0 axioms. The classical named relations — sum of roots, product of roots, second symmetric function, and their field-division forms — are extracted from the single Mathlib coefficient formula, and the parent's cubic relations are recovered as the cardinality-3 instance. This affirmatively answers the parent's open question: Mathlib's Polynomial.roots / Multiset.esymm machinery fully covers the general case.",
     "implications": "The named relations provide ready-to-use lemmas for any argument relating a split polynomial's coefficients to symmetric functions of its roots — trace and determinant of a matrix from its characteristic polynomial, Newton's identities, discriminants, and the Galois-theoretic fact that coefficients are the symmetric (invariant) functions of the roots.",

@@ -187,6 +187,26 @@
       "mathContext": "For $p=0$: no Tschirnhaus shift, $P_r = 0$, $Q_r = -q^2/8$. For $p=-1$: shift $= -5/6$, $P_r = -1/12$, $Q_r = 1/108$. The identity evaluations confirm both sides match on concrete inputs."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Cardano, G."
+      ],
+      "title": "Ars Magna (The Great Art, or the Rules of Algebra)",
+      "year": "1545",
+      "venue": "Nuremberg",
+      "note": "The original published solution of the cubic and (via Ferrari) the quartic by radicals."
+    },
+    {
+      "authors": [
+        "Cox, D.A."
+      ],
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "2nd ed., Pure and Applied Mathematics, Wiley",
+      "note": "Modern treatment of the cubic and quartic — depressed forms, discriminants, resolvent cubic and the Cardano/Ferrari methods."
+    }
+  ],
   "conclusion": {
     "summary": "Fully verified (0 sorries, 0 axioms) proof that Ferrari's resolvent cubic reduces to a depressed cubic via the Tschirnhaus substitution m = t − 5p/6, and that Cardano's formula directly provides the required resolvent root. Eight theorems in 183 lines, including the key polynomial identity (proved by ring), the main Cardano-Ferrari connection, FTA-based existence results, and concrete numerical checks.",
     "implications": "This file completes the chain connecting Wiedijk #37 (Cardano's cubic) and Wiedijk #46 (Ferrari's quartic) in a fully machine-verified way. The Tschirnhaus reduction shows that solving the quartic ultimately reduces to the cubic, which in turn reduces to the depressed cubic via another Tschirnhaus substitution. This chain — quartic → resolvent cubic → depressed cubic → Cardano's formula — is now fully formalized in Lean 4 with zero gaps.",

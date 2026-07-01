@@ -84,6 +84,26 @@
       "summary": "Two theorems over ℝ: `distinct_roots_of_pos_discriminant` (Δ>0 → all roots distinct, proved by simp+contradiction) and `repeated_root_of_zero_discriminant` (Δ=0 → some roots coincide, proved by positivity+linarith)."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Cox, D.A."
+      ],
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "2nd ed., Pure and Applied Mathematics, Wiley",
+      "note": "Modern treatment of the cubic and quartic — depressed forms, discriminants, resolvent cubic and the Cardano/Ferrari methods."
+    },
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "The discriminant as a root-separation product and Vieta's formulas via symmetric functions."
+    }
+  ],
   "conclusion": {
     "summary": "A concise 89-line fully verified formalization proving that Δ = -4p³-27q² equals the squared Vandermonde product (x₁-x₂)²(x₁-x₃)²(x₂-x₃)² for the depressed cubic, with sign-based theorems for root nature. The main identity proof is a clean ring calculation; the sign theorems use positivity and linarith elegantly.",
     "implications": "The discriminant connects algebra, geometry, and topology. In algebraic geometry, the discriminant locus {(p,q) : Δ(p,q) = 0} is a curve in parameter space where the cubic has a repeated root (a bifurcation set in dynamical systems). In Galois theory, the discriminant determines whether the Galois group of the polynomial is contained in the alternating group: for cubics over ℚ, Gal(f) ⊆ A₃ (cyclic order 3) iff Δ is a perfect square in ℚ.",
