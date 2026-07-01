@@ -42,7 +42,8 @@
     "keyInsights": [
       "König's constraint, stated as a Prop in the parent, is a direct corollary of Mathlib's Cardinal.lt_cof_power — no axiom needed.",
       "The strict inequality is between an index and its own value (Cantor); between distinct indices only ≤ holds — the continuum function is monotone but NOT strictly monotone (e.g. 2^{ℵ₀} = 2^{ℵ₁} under Martin's Axiom).",
-      "Together monotonicity, Cantor and König are exactly the Easton constraints, so this is a faithful formal answer to 'which patterns are consistent'."
+      "Together monotonicity, Cantor and König are exactly the Easton constraints, so this is a faithful formal answer to 'which patterns are consistent'.",
+      "König's constraint concretely forbids 2^{ℵ₀} = ℵ_ω: because cf(ℵ_ω) = ℵ₀ is not > ℵ₀, the value ℵ_ω fails cf(2^{ℵ₀}) > ℵ₀. So ℵ_ω is the smallest cardinal above all the ℵ_n that the continuum provably cannot equal — even though Cantor's inequality 2^{ℵ₀} > ℵ₀ alone would permit it. This is the sense in which König strictly sharpens Cantor."
     ],
     "prerequisites": [
       "Cardinal arithmetic and the aleph hierarchy",
@@ -69,6 +70,24 @@
     "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ03.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "title": "J. König, \"Zum Kontinuum-Problem\" (1905) — cf(2^{ℵ_α}) > ℵ_α",
+      "url": "https://en.wikipedia.org/wiki/K%C5%91nig%27s_theorem_(set_theory)"
+    },
+    {
+      "title": "W. B. Easton, \"Powers of regular cardinals\" (1970) — the three constraints are the only ZFC restrictions on regular cardinals",
+      "url": "https://en.wikipedia.org/wiki/Easton%27s_theorem"
+    },
+    {
+      "title": "K. Gödel (1938) & P. Cohen (1963) — consistency and independence of GCH/CH over ZFC",
+      "url": "https://en.wikipedia.org/wiki/Continuum_hypothesis"
+    },
+    {
+      "title": "Mathlib: Cardinal cofinality and König's theorem (Cardinal.lt_cof_power, Cardinal.cantor)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Cardinal/Cofinality.html"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cantor-diagonalization-oq-01-oq-01",
