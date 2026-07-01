@@ -165,4 +165,159 @@ theorem finrank_splitting_field : Module.finrank ℚ ℚ⟮frc, Complex.I⟯ = 8
   show Module.finrank ℚ ℚ⟮frc⟯⟮Complex.I⟯ = 8
   omega
 
+/-! ## Part V: The explicit roots and the factorization of `X⁴ − 2` over `K`
+
+The degree-8 result above pins down the *size* of the splitting field.  This part
+supplies the missing *structural* content: the four roots of `X⁴ − 2` in ℂ are
+
+  `⁴√2,  i·⁴√2,  −⁴√2,  −i·⁴√2`,
+
+all four of which live in `K = ℚ⟮frc, Complex.I⟯`, so `X⁴ − 2` factors into linear
+factors over `K` and hence **splits** over `K`.  This is precisely the ingredient
+`inverse-galois-d4` obtains only abstractly (inside `(X⁴−2).SplittingField`); here it
+is a concrete factorization inside the subfield `K ⊆ ℂ`. -/
+
+/-- The concrete splitting field `K = ℚ(⁴√2, i) ⊆ ℂ`. -/
+noncomputable abbrev SF : IntermediateField ℚ ℂ := ℚ⟮frc, Complex.I⟯
+
+/-- `frc = ⁴√2 ∈ K`. -/
+theorem frc_mem_SF : frc ∈ SF := IntermediateField.subset_adjoin ℚ _ (by simp)
+
+/-- `i ∈ K`. -/
+theorem I_mem_SF : Complex.I ∈ SF := IntermediateField.subset_adjoin ℚ _ (by simp)
+
+/-- `⁴√2` as an element of the field `K`. -/
+noncomputable def rt : SF := ⟨frc, frc_mem_SF⟩
+
+/-- `i` as an element of the field `K`. -/
+noncomputable def im_i : SF := ⟨Complex.I, I_mem_SF⟩
+
+@[simp] theorem coe_rt : ((rt : SF) : ℂ) = frc := rfl
+@[simp] theorem coe_im_i : ((im_i : SF) : ℂ) = Complex.I := rfl
+
+/-- In `K`, `(⁴√2)⁴ = 2`. -/
+theorem rt_pow_four : rt ^ 4 = 2 := by
+  apply_fun (Subtype.val : SF → ℂ) using Subtype.val_injective
+  push_cast
+  exact frc_pow_four
+
+/-- In `K`, `i² = −1`. -/
+theorem im_i_sq : im_i ^ 2 = -1 := by
+  apply_fun (Subtype.val : SF → ℂ) using Subtype.val_injective
+  push_cast
+  exact Complex.I_sq
+
+/-- **Factorization of `X⁴ − 2` over `K`.**  With `α = ⁴√2` and `i` the imaginary
+unit (both in `K`), `X⁴ − 2 = (X − α)(X + α)(X − iα)(X + iα)`. -/
+theorem X4_sub_2_factor :
+    (X ^ 4 - C 2 : SF[X])
+      = (X - C rt) * (X - C (-rt)) * (X - C (im_i * rt)) * (X - C (-(im_i * rt))) := by
+  have h4 : rt ^ 4 = 2 := rt_pow_four
+  have h2 : im_i ^ 2 = -1 := im_i_sq
+  have e1 : (X - C rt) * (X - C (-rt)) = X ^ 2 - C (rt ^ 2) := by
+    rw [map_neg, map_pow]; ring
+  have e2 : (X - C (im_i * rt)) * (X - C (-(im_i * rt))) = X ^ 2 + C (rt ^ 2) := by
+    have hsq : C (im_i * rt) ^ 2 = - C (rt ^ 2) := by
+      rw [← map_pow, mul_pow, h2, neg_one_mul, map_neg]
+    rw [map_neg,
+      show (X - C (im_i * rt)) * (X - -(C (im_i * rt))) = X ^ 2 - C (im_i * rt) ^ 2 from by ring,
+      hsq]
+    ring
+  have e3 : (X ^ 2 - C (rt ^ 2)) * (X ^ 2 + C (rt ^ 2)) = X ^ 4 - C 2 := by
+    have hc : C (rt ^ 2) ^ 2 = C 2 := by
+      rw [← map_pow, show (rt ^ 2) ^ 2 = rt ^ 4 from by ring, h4]
+    rw [show (X ^ 2 - C (rt ^ 2)) * (X ^ 2 + C (rt ^ 2)) = X ^ 4 - C (rt ^ 2) ^ 2 from by ring, hc]
+  calc (X ^ 4 - C 2 : SF[X])
+      = (X ^ 2 - C (rt ^ 2)) * (X ^ 2 + C (rt ^ 2)) := e3.symm
+    _ = ((X - C rt) * (X - C (-rt))) * ((X - C (im_i * rt)) * (X - C (-(im_i * rt)))) := by
+        rw [e1, e2]
+    _ = (X - C rt) * (X - C (-rt)) * (X - C (im_i * rt)) * (X - C (-(im_i * rt))) := by ring
+
+/-- **`X⁴ − 2` splits over the concrete splitting field `K = ℚ(⁴√2, i)`.**  All four
+roots lie in `K`, so the polynomial factors into linear factors there.  This upgrades
+the degree-8 statement to the genuine splitting property. -/
+theorem X4_sub_2_splits : Splits (X ^ 4 - C 2 : SF[X]) := by
+  rw [X4_sub_2_factor]
+  exact ((((Splits.X_sub_C rt).mul (Splits.X_sub_C (-rt))).mul
+    (Splits.X_sub_C (im_i * rt))).mul (Splits.X_sub_C (-(im_i * rt))))
+
+/-- The `ℚ`-polynomial `X⁴ − 2`, mapped into `K = ℚ(⁴√2, i)`, splits — the form of the
+splitting statement matching `Polynomial.IsSplittingField`. -/
+theorem X4_sub_2_splits_map :
+    Splits ((X ^ 4 - C 2 : ℚ[X]).map (algebraMap ℚ SF)) := by
+  have hmap : (X ^ 4 - C 2 : ℚ[X]).map (algebraMap ℚ SF) = (X ^ 4 - C 2 : SF[X]) := by
+    simp
+  rw [hmap]; exact X4_sub_2_splits
+
+/-- **Exactly two of the four roots are non-real.**  The roots `±⁴√2` are real, while
+`±i·⁴√2` have imaginary part `±⁴√2 ≠ 0` — this is *why* the splitting field must
+extend the real field `ℚ(⁴√2)` by adjoining `i`. -/
+theorem two_roots_nonreal :
+    (Complex.I * frc).im ≠ 0 ∧ (-(Complex.I * frc)).im ≠ 0 := by
+  have hpos : (0 : ℝ) < Real.sqrt (Real.sqrt 2) :=
+    Real.sqrt_pos.mpr (Real.sqrt_pos.mpr (by norm_num))
+  have him : (Complex.I * frc).im = Real.sqrt (Real.sqrt 2) := by
+    simp [Complex.mul_im, frc]
+  refine ⟨?_, ?_⟩
+  · rw [him]; exact hpos.ne'
+  · rw [Complex.neg_im, him]; exact neg_ne_zero.mpr hpos.ne'
+
+/-! ## Part VI: `K` is a splitting field of `X⁴ − 2`
+
+Combining the splitting property (Part V) with the fact that the roots *generate* `K`,
+`K = ℚ(⁴√2, i)` is a `Polynomial.IsSplittingField` of `X⁴ − 2` over `ℚ` — the full
+structural characterization, matching the abstract `(X⁴−2).SplittingField`. -/
+
+/-- The two generators `⁴√2, i` of `K` generate the whole field: `ℚ⟮⁴√2, i⟯ = ⊤`
+(inside `K` itself). -/
+theorem adjoin_gens_eq_top : IntermediateField.adjoin ℚ {rt, im_i} = ⊤ := by
+  apply IntermediateField.lift_injective SF
+  rw [IntermediateField.lift_adjoin, IntermediateField.lift_top]
+  rw [Set.image_pair, coe_rt, coe_im_i]
+
+/-- `⁴√2 ≠ 0` inside `K`. -/
+theorem rt_ne_zero : rt ≠ 0 := by
+  intro h
+  have h0 : frc = 0 := by rw [← coe_rt, h]; simp
+  rw [frc, Complex.ofReal_eq_zero] at h0
+  exact (Real.sqrt_pos.mpr (Real.sqrt_pos.mpr (by norm_num))).ne' h0
+
+/-- **`K = ℚ(⁴√2, i)` is a splitting field of `X⁴ − 2` over `ℚ`.**  This is the full
+structural statement underlying the degree-8 count and the `D₄` Galois picture: the
+polynomial both splits over `K` (Part V) and its roots generate `K`. -/
+theorem X4_sub_2_isSplittingField :
+    (X ^ 4 - C 2 : ℚ[X]).IsSplittingField ℚ SF := by
+  have hp0 : (X ^ 4 - C 2 : ℚ[X]) ≠ 0 :=
+    (monic_X_pow_sub_C (2 : ℚ) (show (4 : ℕ) ≠ 0 by norm_num)).ne_zero
+  -- `⁴√2` and `i·⁴√2` are roots living in `K`.
+  have hrt : rt ∈ (X ^ 4 - C 2 : ℚ[X]).rootSet SF := by
+    rw [Polynomial.mem_rootSet]
+    refine ⟨hp0, ?_⟩
+    rw [map_sub, map_pow, aeval_X, aeval_C, rt_pow_four]; simp
+  have himrt : im_i * rt ∈ (X ^ 4 - C 2 : ℚ[X]).rootSet SF := by
+    rw [Polynomial.mem_rootSet]
+    refine ⟨hp0, ?_⟩
+    have hpow : (im_i * rt) ^ 4 = 2 := by
+      have h4 : im_i ^ 4 = 1 := by
+        rw [show (4 : ℕ) = 2 * 2 from rfl, pow_mul, im_i_sq]; norm_num
+      rw [mul_pow, h4, rt_pow_four, one_mul]
+    rw [map_sub, map_pow, aeval_X, aeval_C, hpow]; simp
+  rw [isSplittingField_iff_intermediateField]
+  refine ⟨X4_sub_2_splits_map, ?_⟩
+  -- The roots generate `K`: from `⁴√2` and `i·⁴√2` we recover `i = (i·⁴√2)·(⁴√2)⁻¹`.
+  set R := (X ^ 4 - C 2 : ℚ[X]).rootSet SF with hR
+  have h1 : rt ∈ IntermediateField.adjoin ℚ R := IntermediateField.subset_adjoin ℚ R hrt
+  have h2 : im_i * rt ∈ IntermediateField.adjoin ℚ R := IntermediateField.subset_adjoin ℚ R himrt
+  have him : im_i ∈ IntermediateField.adjoin ℚ R := by
+    rw [← mul_inv_cancel_right₀ rt_ne_zero im_i]
+    exact mul_mem h2 (inv_mem h1)
+  refine top_le_iff.mp ?_
+  rw [← adjoin_gens_eq_top]
+  apply IntermediateField.adjoin_le_iff.mpr
+  intro x hx
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+  rcases hx with rfl | rfl
+  · exact h1
+  · exact him
+
 end FourthRoot2SplittingFieldOQ01
