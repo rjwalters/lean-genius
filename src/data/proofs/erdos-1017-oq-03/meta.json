@@ -8,9 +8,9 @@
     ],
     "opens": [],
     "namespace": "Erdos1017OQ03",
-    "lineCount": 145,
+    "lineCount": 195,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/Erdos1017OQ03.lean",
     "sorries": 0
@@ -44,7 +44,8 @@
       "turanBound_strictMono: STRICT monotonicity T(n) < T(n+1) for n >= 1, sharpening the companion's non-strict bound",
       "turanBound_le_sq_div_four: the upper real-valued envelope T(n) <= n^2/4 (the floor never exceeds the exact quarter-square)",
       "turanBound_four_mul: the exact integer identity 4*T(n) = n^2 - (n mod 2), i.e. n^2 mod 4 = n mod 2 — the floor discards exactly the parity bit",
-      "turanBound_ge_sq_sub_one_div_four: the lower real envelope (n^2 - 1)/4 <= T(n), which together with the upper envelope sandwiches T(n) within 1/4 of n^2/4 and yields T(n) ~ n^2/4"
+      "turanBound_ge_sq_sub_one_div_four: the lower real envelope (n^2 - 1)/4 <= T(n), which together with the upper envelope sandwiches T(n) within 1/4 of n^2/4 and yields T(n) ~ n^2/4",
+      "Convexity and asymptotic limit of the Turán bound T(n)=⌊n²/4⌋ (0-axiom): turanBound_convex (2·T(n+1) ≤ T(n)+T(n+2) — the increments ⌊(n+1)/2⌋ are nondecreasing, so growth accelerates, complementing the strict monotonicity turanBound_strictMono) and turanBound_div_sq_tendsto (T(n)/n² → 1/4, squeezing the two-sided envelope (n²−1)/4 ≤ T(n) ≤ n²/4 through by n² with (n²)⁻¹→0), making the file's stated asymptotic T(n)∼n²/4 an actual theorem."
     ]
   },
   "overview": {

@@ -119,6 +119,56 @@ theorem turanBound_ge_sq_sub_one_div_four (n : ℕ) :
     linarith
   linarith
 
+/-- **Convexity of `T`:** `2·T(n+1) ≤ T(n) + T(n+2)`, i.e. the increments
+    `T(n+1) − T(n) = ⌊(n+1)/2⌋` are nondecreasing in `n`. Where strict monotonicity
+    says `T` never plateaus, convexity says its growth never decelerates — the Turán
+    extremal count accelerates as vertices are added. -/
+theorem turanBound_convex (n : ℕ) :
+    2 * turanBound (n + 1) ≤ turanBound n + turanBound (n + 1 + 1) := by
+  have h1 := turanBound_succ_diff n
+  have h2 := turanBound_succ_diff (n + 1)
+  have hm1 : turanBound n ≤ turanBound (n + 1) := by
+    unfold turanBound; exact Nat.div_le_div_right (Nat.pow_le_pow_left (Nat.le_succ n) 2)
+  have hm2 : turanBound (n + 1) ≤ turanBound (n + 1 + 1) := by
+    unfold turanBound; exact Nat.div_le_div_right (Nat.pow_le_pow_left (Nat.le_succ (n + 1)) 2)
+  omega
+
+/-- **Asymptotic `T(n) ∼ n²/4`:** `T(n)/n² → 1/4` as `n → ∞`. The two-sided envelope
+    `(n² − 1)/4 ≤ T(n) ≤ n²/4` divides through by `n²` to the squeeze
+    `1/4 − 1/(4n²) ≤ T(n)/n² ≤ 1/4`, and the left side tends to `1/4` (since
+    `(n²)⁻¹ → 0`). This is the precise asymptotic the sandwich was built to deliver. -/
+theorem turanBound_div_sq_tendsto :
+    Filter.Tendsto (fun n : ℕ => (turanBound n : ℝ) / (n : ℝ) ^ 2)
+      Filter.atTop (nhds (1 / 4)) := by
+  -- `n² → ∞`, hence `(n²)⁻¹ → 0`
+  have hsq : Filter.Tendsto (fun n : ℕ => (n : ℝ) ^ 2) Filter.atTop Filter.atTop :=
+    (Filter.tendsto_pow_atTop (by norm_num : (2 : ℕ) ≠ 0)).comp (tendsto_natCast_atTop_atTop (R := ℝ))
+  have hinv : Filter.Tendsto (fun n : ℕ => ((n : ℝ) ^ 2)⁻¹) Filter.atTop (nhds 0) := by
+    simpa using hsq.inv_tendsto_atTop
+  -- the lower squeeze function `1/4 − (1/4)·(n²)⁻¹ → 1/4`
+  have hlow : Filter.Tendsto (fun n : ℕ => 1 / 4 - 1 / 4 * ((n : ℝ) ^ 2)⁻¹)
+      Filter.atTop (nhds (1 / 4)) := by
+    have h0 : Filter.Tendsto (fun n : ℕ => 1 / 4 * ((n : ℝ) ^ 2)⁻¹) Filter.atTop (nhds 0) := by
+      simpa using hinv.const_mul (1 / 4 : ℝ)
+    simpa using h0.const_sub (1 / 4 : ℝ)
+  refine tendsto_of_tendsto_of_tendsto_of_le_of_le' hlow tendsto_const_nhds ?_ ?_
+  · -- `1/4 − 1/(4n²) ≤ T(n)/n²`
+    filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+    have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+    have hsqpos : (0 : ℝ) < (n : ℝ) ^ 2 := by positivity
+    rw [le_div_iff₀ hsqpos]
+    have hne : (n : ℝ) ^ 2 ≠ 0 := ne_of_gt hsqpos
+    have hexp : (1 / 4 - 1 / 4 * ((n : ℝ) ^ 2)⁻¹) * (n : ℝ) ^ 2 = ((n : ℝ) ^ 2 - 1) / 4 := by
+      field_simp
+    rw [hexp]
+    exact turanBound_ge_sq_sub_one_div_four n
+  · -- `T(n)/n² ≤ 1/4`
+    filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+    have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+    have hsqpos : (0 : ℝ) < (n : ℝ) ^ 2 := by positivity
+    rw [div_le_iff₀ hsqpos]
+    linarith [turanBound_le_sq_div_four n]
+
 /-
 ## Significance
 
