@@ -346,4 +346,44 @@ example : construction2 8 4 2 = Nat.choose 7 3 := by decide
 /-- The top-summand bound, concretely at the crossover: `C(7, 3) = 35 ≤ construction2 8 4 2`. -/
 example : Nat.choose 7 3 ≤ construction2 8 4 2 := by decide
 
+/-! ### 9. The large-`n` regime is reached — the dominance threshold is finite.
+
+Monotonicity (§1) shows the set of `n` on which `construction2` dominates `construction1`
+is *upward-closed*; the results above (§8) bound `construction2` below by a single binomial
+of full degree `r − 1`.  What remains, to confirm the regime transition is a genuine finite
+threshold rather than a dominance never attained, is that this set is *nonempty*: for `r ≥ 2`,
+`k ≥ 2`, `construction2` eventually exceeds the constant `construction1`.  The driver is that
+`C(·, r − 1)` is unbounded for `r − 1 ≥ 1`. -/
+
+/-- `Nat.choose m d` is unbounded in `m` for any fixed degree `d ≥ 1`: for every target `T`
+there is an `m` with `T ≤ C(m, d)`.  Pascal's step `C(m+1, d+1) ≥ C(m, d)` lifts the base
+`C(m, 1) = m`. -/
+theorem choose_unbounded (d : ℕ) (hd : 1 ≤ d) (T : ℕ) : ∃ m, T ≤ Nat.choose m d := by
+  induction d with
+  | zero => omega
+  | succ e ih =>
+    rcases Nat.eq_zero_or_pos e with he | he
+    · subst he; exact ⟨T, by rw [Nat.choose_one_right]⟩
+    · obtain ⟨m, hm⟩ := ih he
+      refine ⟨m + 1, ?_⟩
+      calc T ≤ Nat.choose m e := hm
+        _ ≤ Nat.choose (m + 1) (e + 1) := by rw [Nat.choose_succ_succ]; omega
+
+/-- **The large-`n` regime is nonempty: the dominance threshold is finite.**  For `r ≥ 2`,
+`k ≥ 2`, there is an `N` beyond which `construction2` (the large-`n` extremal construction)
+dominates the constant `construction1`.  Together with the upward-closed dominance from §1
+this shows the regime transition is a genuine *finite* threshold: the `n`-axis splits into a
+bounded small-`n` regime (extremal value `construction1`) and an unbounded large-`n` regime
+(extremal value `construction2`), with the crossover actually attained.  The witness `N` is
+`m + k`, where `m` realises `construction1 r k ≤ C(m, r − 1)` via `choose_unbounded`. -/
+theorem exists_large_regime (r k : ℕ) (hr : 2 ≤ r) (hk : 2 ≤ k) :
+    ∃ N, ∀ n, N ≤ n → construction1 r k ≤ construction2 n r k := by
+  obtain ⟨m, hm⟩ := choose_unbounded (r - 1) (by omega) (construction1 r k)
+  refine ⟨m + k, fun n hn => ?_⟩
+  have hge : Nat.choose (n - 1) (r - 1) ≤ construction2 n r k :=
+    construction2_ge_top_summand n r k (by omega) hk (by omega)
+  have hmono : Nat.choose m (r - 1) ≤ Nat.choose (n - 1) (r - 1) :=
+    Nat.choose_le_choose (r - 1) (by omega)
+  exact le_trans hm (le_trans hmono hge)
+
 end Erdos1020OQ02
