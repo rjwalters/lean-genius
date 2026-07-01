@@ -1,13 +1,13 @@
 {
   "id": "minpoly-charpoly-oq-03",
-  "title": "Rational Canonical Form via Minimal-Polynomial Invariant Factors (S1 Scaffold)",
+  "title": "Rational Canonical Form via Minimal-Polynomial Invariant Factors",
   "slug": "minpoly-charpoly-oq-03",
-  "description": "S1 OBSERVE scaffold resolving the parent's third open question 'Can the rational canonical form (based on minpoly factorization) be formalized?' Affirmative: provides the abstract InvariantFactorChain data structure, states the main RCF existence theorem (guarded by a single sorry), and lays out a four-sub-OQ decomposition routing through Mathlib's structure theorem for finitely generated modules over a PID plus the in-tree companion matrix infrastructure.",
+  "description": "Resolves the parent's third open question 'Can the rational canonical form (based on minpoly factorization) be formalized?' — affirmatively and now fully machine-checked. Provides the abstract InvariantFactorChain data structure and proves the main RCF existence theorem (strong form): every square matrix M over a field admits an invariant-factor chain p_1 | p_2 | ... | p_k with product = charpoly M and last factor = minpoly F M. The lone remaining sorry was discharged (S16) by bridging to the axiom-free in-tree RationalCanonicalFormExists development, which builds the required theory from scratch via Mathlib's structure theorem for finitely generated torsion modules over a PID plus a combinatorial regrouping of prime powers into a divisibility chain.",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/PID.html",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/MinpolyCharpolyOQ03.lean",
     "tags": [
       "linear-algebra",
@@ -19,11 +19,11 @@
       "structure-theorem-pid",
       "research"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 721,
-    "assumptions": "0 axioms; 1 sorry guarding the proof of `rational_canonical_form_exists`. The sorry is the four-sub-OQ scaffold's main deliverable (S1 OBSERVE → S2+ ACT) plus the lastFactor=minpoly follow-up. The statement itself is unconditional. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`. S13 added Part 7 — the firstFactor-side mirror to Parts 5–6 — yielding the structural sandwich k · deg(firstFactor) ≤ deg(prodFactors) ≤ k · deg(lastFactor) on the abstract InvariantFactorChain. S14 (2026-06-04) strengthens the rational_canonical_form_exists statement to additionally assert `c.lastFactor = M.minpoly`, sorry-preserved (state.md next-action option 3). S15 (2026-06-09) adds Part 8 — three endpoint-divisibility helpers (lastFactor_dvd_prodFactors, firstFactor_dvd_prodFactors, firstFactor_dvd_lastFactor) yielding the abstract counterpart of the parent file's headline `minpoly ∣ charpoly` theorem on the chain endpoints, sorry-free.",
+    "lineCount": 739,
+    "assumptions": "0 axioms, 0 sorries — fully machine-checked (`#print axioms` reports only propext/Classical.choice/Quot.sound). S16 (2026-07-01) discharges the lone remaining `sorry` on `rational_canonical_form_exists` (RCF existence, strong form: an invariant-factor chain with product = charpoly M and last factor = minpoly F M). The proof adds `import Proofs.RationalCanonicalFormExists` and bridges to the axiom-free `RationalCanonicalFormExists.rational_canonical_form_exists` (Aristotle-synthesized, integrated verbatim in-tree; its `InvariantFactorChain` is field-identical, so the four fields copy across and the two equalities transport definitionally). This is the same one-line bridge already used by `MinpolyCharpolyOQ03OQ01.xModule_has_invariantFactorChain`, inlined here to avoid the import cycle (the OQ-01 bridge imports this file). Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`, `Proofs.RationalCanonicalFormExists`. Earlier layers: S13 Part 7 (firstFactor-side mirror, structural sandwich k·deg(firstFactor) ≤ deg(prodFactors) ≤ k·deg(lastFactor)); S14 strengthened the statement to add `c.lastFactor = M.minpoly`; S15 Part 8 (three endpoint-divisibility helpers yielding the abstract `minpoly ∣ charpoly` on the chain endpoints).",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
     "theoremCount": 25,
@@ -31,7 +31,7 @@
     "originalContributions": [
       "InvariantFactorChain structure: bundles a list of monic polynomials with divisibility chain p_1 | p_2 | ... | p_k as a first-class invariant",
       "InvariantFactorChain.prodFactors and .lastFactor: the two target values (charpoly, minpoly) packaged with the data",
-      "rational_canonical_form_exists: statement of Frobenius's RCF existence theorem (sorry-guarded; weak form omitting similarity and minpoly equality)",
+      "rational_canonical_form_exists: Frobenius's RCF existence theorem (strong form: product = charpoly M, last factor = minpoly F M), fully proved by bridging to the in-tree axiom-free RationalCanonicalFormExists development; the similarity-transform assertion is still omitted (deferred to sub-OQ OQ-03-OQ-04)",
       "Sub-OQ decomposition (OQ-03-OQ-01 ... OQ-03-OQ-04): four-step roadmap totaling ~900 lines for the full RCF formalization, routed via Mathlib's `Module.equiv_directSum_of_isTorsion`",
       "InvariantFactorChain.firstFactor + firstFactor-side mirror lemmas (membership, monicness, natDegree-minimality, length-times-first lower bound on prodFactors.natDegree) — the symmetric counterpart to the lastFactor-side helpers, yielding a two-sided sandwich on prodFactors.natDegree"
     ],
@@ -67,7 +67,7 @@
   "overview": {
     "historicalContext": "Frobenius (1879) classified matrices over a field up to similarity via the rational canonical form (RCF): every square matrix M over F is similar to a block-diagonal matrix whose blocks are the companion matrices of a sequence of monic polynomials p_1, p_2, …, p_k satisfying p_1 | p_2 | ⋯ | p_k. The polynomials, called the *invariant factors* of M, are uniquely determined by M, and their last factor equals minpoly(M) while their product equals charpoly(M). The RCF is the field-independent canonical form: it makes no use of eigenvalues (unlike Jordan normal form) and exists over any field, including non-algebraically-closed fields like ℚ. Modern presentations (Dummit & Foote §12.2, Hungerford §VII.4) derive the RCF from the structure theorem for finitely generated modules over a principal ideal domain, applied to K^n viewed as an F[X]-module via the action of M.",
     "problemStatement": "**Open Question (minpoly-charpoly-oq-03)**: Can the rational canonical form (based on minpoly factorization) be formalized in Lean 4? — `conclusion.openQuestions[2]` of the parent gallery entry `minpoly-charpoly`. The question is whether Lean 4 + Mathlib provides enough infrastructure to (a) state RCF rigorously and (b) prove the existence theorem.",
-    "text": "**Resolution (S1 OBSERVE): YES.** All three required ingredients are available — companion-matrix infrastructure (in-tree), Mathlib's structure theorem for finitely generated modules over a PID, and the cyclic-summand-to-companion-block correspondence. The remaining work is purely integrative and decomposes into four sub-OQs totaling ~900 lines.",
+    "text": "**Resolution: YES — and now fully proved.** All three required ingredients are available — companion-matrix infrastructure (in-tree), Mathlib's structure theorem for finitely generated modules over a PID, and the prime-power → invariant-factor regrouping. The existence theorem `rational_canonical_form_exists` (product = charpoly, last factor = minpoly) is machine-checked axiom-free (S16), bridging to the in-tree `RationalCanonicalFormExists` development. Only the explicit similarity-transform assertion remains as future work (sub-OQ OQ-03-OQ-04).",
     "proofStrategy": "**S1 scaffold deliverable**: state RCF rigorously via `InvariantFactorChain` (structure bundling factors + monic + posDegree + divisibility chain) and `rational_canonical_form_exists` (existence theorem with sorry).\n\n**S2+ deliverable** (sub-OQs):\n\n1. **OQ-03-OQ-01** (~150 lines): F[X]-module structure on K^n via the M-action; show finitely generated and torsion (Cayley-Hamilton).\n2. **OQ-03-OQ-02** (~300 lines): apply `Module.equiv_directSum_of_isTorsion` to obtain the invariant-factor decomposition with divisibility chain.\n3. **OQ-03-OQ-03** (~250 lines): on each cyclic F[X]/(p_i), basis {1, X, ..., X^{d_i-1}} realises mul-by-X as companionMatrix p_i.\n4. **OQ-03-OQ-04** (~200 lines): reassembly into the global similarity transform.",
     "keyInsights": [
       "**Three-ingredient resolution**: companion matrix (in-tree) + Mathlib structure theorem (PID) + cyclic-summand-to-companion correspondence. No genuine Mathlib gap; only integrative work remains.",
@@ -112,10 +112,10 @@
     },
     {
       "id": "part-2",
-      "title": "§2 (Part 2): rational_canonical_form_exists (S14 statement + sorry)",
+      "title": "§2 (Part 2): rational_canonical_form_exists (proved)",
       "startLine": 199,
-      "endLine": 233,
-      "summary": "The main deliverable statement: Frobenius's RCF existence theorem in its S14-strengthened form — every square matrix `M` over a field admits an `InvariantFactorChain` whose product equals `M.charpoly` AND whose last factor equals `minpoly F M`. The proof is the single `sorry` in the file (line 232); the similarity-transform assertion is still omitted, deferred to sub-OQ OQ-03-OQ-04.",
+      "endLine": 245,
+      "summary": "The main deliverable: Frobenius's RCF existence theorem in its S14-strengthened form — every square matrix `M` over a field admits an `InvariantFactorChain` whose product equals `M.charpoly` AND whose last factor equals `minpoly F M`. Now fully proved (S16): the lone `sorry` is discharged by a one-line bridge to `RationalCanonicalFormExists.rational_canonical_form_exists` (axiom-free, in-tree). The similarity-transform assertion is still omitted, deferred to sub-OQ OQ-03-OQ-04.",
       "mathContext": "**Frobenius RCF (existence, S14 form)**: $\\forall M\\in\\mathrm{Mat}_n(F),\\ \\exists(p_1,\\dots,p_k)$ monic with $\\deg p_i\\ge 1$, $p_1\\mid\\cdots\\mid p_k$, $\\prod_i p_i=\\mathrm{charpoly}(M)$ and $p_k=\\mathrm{minpoly}(M)$."
     },
     {
@@ -185,12 +185,12 @@
       "BigOperators"
     ],
     "namespace": "MinpolyCharpolyOQ03",
-    "lineCount": 721,
+    "lineCount": 739,
     "axiomCount": 0,
     "theoremCount": 25,
     "definitionCount": 4,
     "path": "Proofs/MinpolyCharpolyOQ03.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -230,7 +230,7 @@
       "significance": "Internal consistency of InvariantFactorChain / prodFactors definitions"
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "references": [
     {
       "authors": [
