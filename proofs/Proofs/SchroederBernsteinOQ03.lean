@@ -472,6 +472,92 @@ theorem matching_length_cons (a b : ℕ) (L : List (ℕ × ℕ)) :
     ((a, b) :: L).length = L.length + 1 := by simp
 
 /-!
+### Section 4d: The matching as a *computed* partial function (`List.lookup`)
+
+`matching_functional` / `matching_cofunctional` establish that a matching is a
+partial bijection *set-theoretically* (each coordinate determines its partner).
+For the scheduler's final step — reading off the total permutation `σ` from the
+limiting matching, and certifying its computability — we need the *functional*
+counterpart: an actual computed partner map with a full specification. We use the
+computable `List.lookup`, which returns the partner of a domain element and `none`
+off the domain, and prove it agrees with membership, with the uniqueness lemmas,
+and (crucially) with the `p ↔ q` correspondence. -/
+
+/-- The partial partner map of a matching: the computable `List.lookup`. -/
+def mLookup (L : List (ℕ × ℕ)) (a : ℕ) : Option ℕ := L.lookup a
+
+theorem mLookup_nil (a : ℕ) : mLookup [] a = none := rfl
+
+/-- If a matching records `(a, b)`, then looking up `a` returns exactly `b`.
+This is the functional (computed) form of `matching_functional`: not only is the
+partner unique, it is the value the computable lookup produces. -/
+theorem mLookup_eq_some_of_mem :
+    ∀ {L : List (ℕ × ℕ)}, IsMatching L → ∀ {a b : ℕ}, (a, b) ∈ L →
+      mLookup L a = some b := by
+  intro L
+  induction L with
+  | nil => intro _ a b h; simp at h
+  | cons hd tl ih =>
+    obtain ⟨k, v⟩ := hd
+    intro hL a b h
+    have hknd : k ∉ mDom tl := by
+      have hnd := hL.1; rw [mDom_cons] at hnd; exact (List.nodup_cons.mp hnd).1
+    have hLtl : IsMatching tl := by
+      refine ⟨?_, ?_⟩
+      · have hnd := hL.1; rw [mDom_cons] at hnd; exact hnd.of_cons
+      · have hnd := hL.2; rw [mRan_cons] at hnd; exact hnd.of_cons
+    unfold mLookup at *
+    rw [List.lookup_cons]
+    rcases List.mem_cons.mp h with heq | hmem
+    · rw [Prod.mk.injEq] at heq; obtain ⟨rfl, rfl⟩ := heq; simp
+    · have ha_dom : a ∈ mDom tl := by
+        simp only [mDom, List.mem_map]; exact ⟨(a, b), hmem, rfl⟩
+      have hne : a ≠ k := by rintro rfl; exact hknd ha_dom
+      have hbeq : (a == k) = false := by simpa using hne
+      rw [hbeq]; simpa using ih hLtl hmem
+
+/-- The lookup is defined exactly on the domain: `mLookup L a` succeeds iff
+`a ∈ mDom L`. Together with `mLookup_eq_some_of_mem` this says the matching *is*
+its lookup — a computable partial map whose support is precisely `mDom L`. -/
+theorem mLookup_isSome_iff (L : List (ℕ × ℕ)) (a : ℕ) :
+    (mLookup L a).isSome ↔ a ∈ mDom L := by
+  unfold mLookup mDom
+  induction L with
+  | nil => simp
+  | cons hd tl ih =>
+    obtain ⟨k, v⟩ := hd
+    rw [List.lookup_cons]
+    rcases eq_or_ne a k with rfl | hne
+    · simp
+    · have hbeq : (a == k) = false := by simpa using hne
+      rw [hbeq, List.map_cons, List.mem_cons]
+      simp only [hne, false_or]; exact ih
+
+/-- A successful lookup corresponds to a recorded pair — the converse of
+`mLookup_eq_some_of_mem`, valid for *any* list (no matching hypothesis needed). -/
+theorem mem_of_mLookup_eq_some {L : List (ℕ × ℕ)} {a b : ℕ}
+    (h : mLookup L a = some b) : (a, b) ∈ L := by
+  unfold mLookup at h
+  induction L with
+  | nil => simp at h
+  | cons hd tl ih =>
+    obtain ⟨k, v⟩ := hd
+    rw [List.lookup_cons] at h
+    rcases eq_or_ne a k with rfl | hne
+    · simp only [beq_self_eq_true] at h
+      rw [Option.some.injEq] at h; subst h; exact List.mem_cons_self ..
+    · have hbeq : (a == k) = false := by simpa using hne
+      rw [hbeq] at h; exact List.mem_cons_of_mem _ (ih h)
+
+/-- The computed lookup respects the `p ↔ q` correspondence: if `mLookup L a = some b`
+in a correspondence-respecting matching, then `p a ↔ q b`. This is what lets the
+scheduler read off a correspondence-preserving `σ` *without* ever evaluating the
+(possibly non-computable) predicates `p, q`. -/
+theorem matchingCorr_mLookup {p q : ℕ → Prop} {L : List (ℕ × ℕ)}
+    (hC : MatchingCorr p q L) {a b : ℕ} (h : mLookup L a = some b) : p a ↔ q b :=
+  hC (a, b) (mem_of_mLookup_eq_some h)
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 

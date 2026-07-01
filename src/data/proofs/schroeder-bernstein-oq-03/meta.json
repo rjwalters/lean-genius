@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 269,
+    "lineCount": 674,
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
@@ -47,13 +47,17 @@
       "Clean proof of the easy direction: computable bijection implies one-one equivalence",
       "Fully proved partial-inverse infrastructure via Nat.rfind: partialInverse_partrec (Partrec), partialInverse_spec (recovers input under injection), partialInverse_dom (defined on range)",
       "Proof that computable isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
-      "Forward orbit definition: (g∘f)^k(n) for the back-and-forth construction"
+      "Forward orbit definition: (g∘f)^k(n) for the back-and-forth construction",
+      "mLookup + mLookup_eq_some_of_mem: PROVED — the computed (List.lookup-based) partner map of a matching returns the recorded partner (functional form of matching_functional)",
+      "mLookup_isSome_iff: PROVED — the lookup is defined exactly on the domain mDom L",
+      "mem_of_mLookup_eq_some: PROVED — a successful lookup recovers a recorded pair (converse, no matching hypothesis)",
+      "matchingCorr_mLookup: PROVED — the computed lookup respects the p↔q correspondence, so σ can be read off the limiting matching without evaluating p, q"
     ],
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
     ],
-    "theoremCount": 14,
-    "definitionCount": 4,
+    "theoremCount": 41,
+    "definitionCount": 11,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
     ]
@@ -68,7 +72,8 @@
       "The partial inverse $g^{-1}(m) = \\mu n[g(n) = m]$ (computable via `Nat.rfind`) is the key technical tool: it lets the back-and-forth construction 'step backward' along $g$, and its partial recursiveness (not total computability) is precisely why the construction requires `Partrec` rather than `Computable`",
       "The back-and-forth orbit classification (Type A/B/C) is a finite-priority precursor to the Friedberg-Muchnik priority method (1956). Understanding Myhill's construction is the natural stepping-stone to formalizing infinite-injury priority arguments",
       "Lean 4's `Equiv.Computable` captures exactly the right notion: a computable permutation requires both $e$ and $e^{-1}$ to be computable — this is non-trivial since a computable bijection can have a non-computable inverse in general (though not for permutations of $\\mathbb{N}$ with decidable range)",
-      "The corollaries (reflexivity via identity, symmetry via inverse, transitivity via composition) show that computable isomorphism is a genuine equivalence relation on predicates — paving the way for quotient structures over the one-one degrees"
+      "The corollaries (reflexivity via identity, symmetry via inverse, transitivity via composition) show that computable isomorphism is a genuine equivalence relation on predicates — paving the way for quotient structures over the one-one degrees",
+      "**Matching as a computable partial function:** The uniqueness lemmas (matching_functional/cofunctional) show a matching is a partial bijection set-theoretically; the new mLookup API gives the *functional* counterpart — a computable List.lookup returning the partner, defined exactly on mDom L, respecting the correspondence. This is the concrete object the scheduler reads off the limiting matching to build σ, and certifies σ's computability reduces to computability of lookup."
     ]
   },
   "sections": [
@@ -127,6 +132,14 @@
       "endLine": 269,
       "summary": "Proves that ∅ and ℕ (the empty and universal predicates) are fixed points of computable isomorphism: any computable permutation maps ∅ to ∅ and ℕ to ℕ. These are the extreme cases in the one-one degree hierarchy.",
       "mathContext": "For the empty predicate $p = \\bot$: if $e$ maps $\\bot$ to $q$ (meaning $\\bot(n) \\leftrightarrow q(e(n))$), then $q(m) = \\bot$ for all $m$ (surjectivity of $e$). Dually for $p = \\top$. These facts follow from surjectivity of $e$ as a bijection."
+    },
+    {
+      "id": "matching-lookup",
+      "title": "Section 4d: The matching as a computed partial function",
+      "startLine": 474,
+      "endLine": 561,
+      "summary": "Adds mLookup (the computable List.lookup partner map) with its full spec: mLookup_eq_some_of_mem (returns the recorded partner), mLookup_isSome_iff (defined exactly on mDom L), mem_of_mLookup_eq_some (converse), and matchingCorr_mLookup (respects the p↔q correspondence).",
+      "mathContext": "For the scheduler to read off the total permutation σ from the limiting matching and certify its computability, the matching must be presented as an actual computed function, not merely a set-theoretic partial bijection. List.lookup supplies this: it returns the partner on the domain and none off it, agrees with the uniqueness lemmas, and preserves the correspondence, so σ is obtained without ever evaluating the possibly non-computable predicates p, q."
     }
   ],
   "crossReferences": [
@@ -242,10 +255,10 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 444,
+    "lineCount": 674,
     "axiomCount": 0,
-    "theoremCount": 26,
-    "definitionCount": 6,
+    "theoremCount": 41,
+    "definitionCount": 11,
     "sorries": 1,
     "path": "Proofs/SchroederBernsteinOQ03.lean",
     "additionalFiles": [

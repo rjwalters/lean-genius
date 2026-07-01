@@ -28,10 +28,10 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-04-21T16:44:09+02:00",
-    "iteration": 1,
-    "focus": "Hard direction open; obstruction (Π₁ isGFree) identified; back-and-forth builder is the path.",
+    "iteration": 2,
+    "focus": "Hard direction still open (stage-wise back-and-forth scheduler). researcher-2 added the functional/computed partial-map layer on top of r1's finite-matching layer: mLookup (List.lookup partner map) + full spec, the object the scheduler reads off the limiting matching to build σ.",
     "blockers": [],
-    "nextAction": "Formalize stage-wise partial-bijection builder + invariants.",
+    "nextAction": "Define the stage builder (recursion over stages) using the atomic matching_step_f/_g, then read off σ via mLookup on the limiting matching.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-6, VERIFIED 0-axiom via direct-lean-compile; Docker down host-wide): Landed the flagged TRACTABLE PARTIAL WIN — the fully computable easy case. Added to SchroederBernsteinOQ03.lean: (1) decidableIsGFree — the Π₁ obstruction isGFree g becomes DECIDABLE once Set.range g is decidable (via isGFree_iff_not_mem_range), making explicit that range-decidability is exactly what the general merely-computable case lacks; (2) totalInverse + totalInverse_{mem,right,left,computable} — a surjective computable injection's partialInverse is everywhere-defined, giving a total COMPUTABLE two-sided inverse (Part.some_get + Partrec.of_eq); (3) computable_bijection_isComputablePerm — a computable BIJECTION of ℕ is a computable permutation (Equiv.ofBijective g hg).Computable, both g and g⁻¹ computable; (4) oneOneEquiv_of_computable_bijection — Myhill's easy case discharged with no back-and-forth. All 6 new decls #print axioms = only foundational (no sorryAx). The HARD direction (myhill_isomorphism, arbitrary computable injections → computable permutation) remains OPEN: still needs the stage-wise bounded back-and-forth/priority construction; the isGFree Π₁ obstruction blocks the naive orbit classification.",
+    "progressSummary": "PROGRESS (researcher-2, VERIFIED 0-axiom via direct lean-compile): added the FUNCTIONAL/computed partial-map layer bridging r1's finite-matching layer to σ. New: mLookup (computable List.lookup partner map), mLookup_eq_some_of_mem (returns recorded partner — functional form of matching_functional), mLookup_isSome_iff (defined exactly on mDom L), mem_of_mLookup_eq_some (converse), matchingCorr_mLookup (respects p↔q so σ is read off WITHOUT evaluating p,q). All 4 lemmas #print axioms = only propext/Classical.choice/Quot.sound (no sorryAx). File now 674L/41thm/11def/1 sorry. HARD direction (myhill_isomorphism →) still OPEN: the stage-wise scheduler with collision-chasing remains the single sorry.",
     "builtItems": [
       "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
       "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
@@ -48,7 +48,12 @@
       "totalInverse + totalInverse_{mem,right,left} — total two-sided inverse of a surjective (injective) g from the everywhere-defined partialInverse (VERIFIED, 0-axiom)",
       "totalInverse_computable — Computable (totalInverse g hg) for computable surjective g, via Partrec.of_eq + Part.some_get (VERIFIED, 0-axiom)",
       "computable_bijection_isComputablePerm — a computable bijection of ℕ is a computable permutation (Equiv.ofBijective g hg).Computable (VERIFIED, 0-axiom)",
-      "oneOneEquiv_of_computable_bijection — fully computable easy-case Myhill: computable bijection g with p n↔q(g n) ⟹ OneOneEquiv p q (VERIFIED, 0-axiom)"
+      "oneOneEquiv_of_computable_bijection — fully computable easy-case Myhill: computable bijection g with p n↔q(g n) ⟹ OneOneEquiv p q (VERIFIED, 0-axiom)",
+      "mLookup (def) - computable List.lookup partner map of a matching",
+      "mLookup_eq_some_of_mem (PROVED) - lookup returns the recorded partner (functional matching_functional)",
+      "mLookup_isSome_iff (PROVED) - lookup defined exactly on mDom L",
+      "mem_of_mLookup_eq_some (PROVED) - successful lookup recovers a recorded pair (converse)",
+      "matchingCorr_mLookup (PROVED) - lookup respects the p↔q correspondence"
     ],
     "insights": [
       "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
@@ -56,12 +61,14 @@
       "Correct route: stage-wise finite back-and-forth (priority) where each stage does only a BOUNDED search and never decides range g (matches myhill_isomorphism docstring, not the Section-4 orbit sketch).",
       "p,q are arbitrary predicates (NOT computable); the construction must route membership through the computable reductions f,g structurally and never test p/q directly.",
       "partialInverse is single-valued under injective g (partialInverse_unique) — collision-freeness for extending the partial map by a g-edge.",
-      "fwdOrbit f g n k = (g∘f)^[k] n (fwdOrbit_eq_iterate): the forward orbit is unproblematically computable; difficulty is entirely backward."
+      "fwdOrbit f g n k = (g∘f)^[k] n (fwdOrbit_eq_iterate): the forward orbit is unproblematically computable; difficulty is entirely backward.",
+      "The scheduler's final step (reading σ off the limiting matching) needs the matching as a COMPUTED function, not just a set-theoretic partial bijection. List.lookup supplies this: mLookup_eq_some_of_mem via induction using domain-side Nodup (a≠k off-head so lookup skips), mLookup_isSome_iff for support=mDom, matchingCorr_mLookup so the correspondence transfers without touching p,q."
     ],
     "mathlibGaps": [
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
     ],
     "nextSteps": [
+      "DONE (researcher-2): functional layer mLookup + spec — the matching now presents as a computable partial map with support mDom, ready to read off σ. Remaining frontier unchanged: the stage-wise scheduler with collision-chasing.",
       "DONE (researcher-6): the 'tractable partial win' (classical/computable SB is computable when ranges decidable / when g is a bijection) is now formalized as computable_bijection_isComputablePerm + decidableIsGFree. Remaining frontier is unchanged: the stage-wise back-and-forth for arbitrary computable injections.",
       "Formalize the stage-wise partial-bijection builder (List (ℕ×ℕ) by recursion on stage) using f for domain-side and partialInverse g for range-side extensions.",
       "Prove the stage invariants: injectivity (via partialInverse_unique + f injective), correspondence p↔q preserved, and domain/range exhaustion (n covered by stage 2n+1).",
@@ -141,11 +148,11 @@
     {
       "path": "Proofs/SchroederBernsteinOQ03.lean",
       "filename": "SchroederBernsteinOQ03.lean",
-      "lineCount": 258,
-      "theoremCount": 14,
+      "lineCount": 674,
+      "theoremCount": 41,
       "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 5,
+      "defCount": 11,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ03.lean"
     },
