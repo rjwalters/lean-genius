@@ -80,7 +80,7 @@ theorem integral_test (hmono : AntitoneOn f (Set.Ici (1 : ℝ)))
   constructor
   · -- Summable ⟹ integrals bounded (by the total sum)
     intro hsum
-    refine ⟨∑' n, f ((n : ℝ) + 1), ?_⟩
+    refine ⟨∑' n : ℕ, f ((n : ℝ) + 1), ?_⟩
     rintro _ ⟨n, rfl⟩
     refine (integral_le_partialSum hmono n).trans ?_
     exact sum_le_hasSum (Finset.range n) (fun i _ => hgnn i) hsum.hasSum
