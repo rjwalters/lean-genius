@@ -34,15 +34,30 @@
     "proofId": "basel-problem-oq-08-oq-02",
     "range": {
       "startLine": 44,
-      "endLine": 65
+      "endLine": 53
     },
     "type": "theorem",
-    "title": "The Value ζ(6) = π⁶/945",
-    "content": "`tsum_one_div_nat_pow_six` is the headline result $\\sum' n,\\ 1/n^6 = \\pi^6/945$. It comes from `hasSum_one_div_nat_pow_six`, the $k=3$ instance of `hasSum_zeta_nat`: substituting $B_6 = 1/42$ and $6! = 720$ into $(-1)^4\\cdot 2^5\\cdot\\pi^6\\cdot B_6/6!$ gives $32\\cdot(1/42)/720 = 1/945$. `riemannZeta_six_eq` records the same value for the analytically continued zeta, $\\zeta(6) = \\pi^6/945$ over $\\mathbb{C}$, via `riemannZeta_two_mul_nat`.",
-    "mathContext": "$\\sum_{n\\ge1} 1/n^6 = \\dfrac{2^5\\pi^6\\cdot(1/42)}{720} = \\dfrac{\\pi^6}{945}$; also $\\zeta(6) = \\pi^6/945$ over $\\mathbb{C}$.",
+    "title": "The Value ζ(6) = π⁶/945 (real series)",
+    "content": "`tsum_one_div_nat_pow_six` is the headline result $\\sum' n,\\ 1/n^6 = \\pi^6/945$. It comes from `hasSum_one_div_nat_pow_six`, the $k=3$ instance of `hasSum_zeta_nat`: substituting $B_6 = 1/42$ and $6! = 720$ into $(-1)^4\\cdot 2^5\\cdot\\pi^6\\cdot B_6/6!$ gives $32\\cdot(1/42)/720 = 1/945$. The `tsum` value is then just `.tsum_eq` applied to the `HasSum` statement — summability is automatic from `HasSum`, so no separate convergence argument is needed.",
+    "mathContext": "$\\sum_{n\\ge1} 1/n^6 = \\dfrac{2^5\\pi^6\\cdot(1/42)}{720} = \\dfrac{\\pi^6}{945}$. The $\\texttt{HasSum}$ form carries both the value and summability; $\\texttt{.tsum\\_eq}$ extracts the $\\sum'$ identity.",
     "significance": "critical",
-    "relatedConcepts": ["ζ(6)", "even-zeta formula", "riemannZeta_two_mul_nat", "analytic continuation"],
+    "relatedConcepts": ["ζ(6)", "even-zeta formula hasSum_zeta_nat", "HasSum vs tsum", "Bernoulli substitution"],
     "prerequisites": ["B₆ = 1/42", "the even-argument zeta formula"]
+  },
+  {
+    "id": "baseloq08oq02-riemannzeta",
+    "proofId": "basel-problem-oq-08-oq-02",
+    "range": {
+      "startLine": 55,
+      "endLine": 63
+    },
+    "type": "theorem",
+    "title": "The Analytically-Continued ζ(6) over ℂ",
+    "content": "`riemannZeta_six_eq` records $\\zeta(6) = \\pi^6/945$ for Mathlib's `riemannZeta` — the *analytically continued* zeta function on $\\mathbb{C}$, a genuinely different object from the real series `∑' 1/n⁶` even though the two agree at $s = 6$. The value comes from `riemannZeta_two_mul_nat` at $k = 3$ (the even-integer special values of the meromorphic continuation), after which the same $B_6 = 1/42$ substitution and a `push_cast`/`ring` normalize the cast $\\mathbb{Q} \\to \\mathbb{C}$. Stating this separately from the real sum is the honest thing to do: the equality of the Dirichlet-series value and the continued value is a theorem (both are $\\pi^6/945$), not a definition — for $\\Re(s) > 1$ they coincide, and $s=6$ lies in that half-plane, but the `riemannZeta` symbol denotes the continuation everywhere.",
+    "mathContext": "$\\zeta(6) = \\pi^6/945$ in $\\mathbb{C}$, where $\\zeta = \\texttt{riemannZeta}$ is the analytic continuation. For $\\Re(s) > 1$, $\\texttt{riemannZeta}(s) = \\sum' n^{-s}$, so the complex value at $6$ matches the real series; the cast is $\\mathbb{Q}\\hookrightarrow\\mathbb{C}$ via $\\texttt{push\\_cast}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["riemannZeta_two_mul_nat", "analytic continuation", "Dirichlet series vs continuation", "ℚ → ℂ cast"],
+    "prerequisites": ["riemannZeta (analytic continuation)", "B₆ = 1/42"]
   },
   {
     "id": "baseloq08oq02-ratio",
