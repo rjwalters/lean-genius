@@ -96,23 +96,46 @@
     "id": "anoq03-ann-cardinality",
     "proofId": "algebraic-numbers-countable-oq-01-oq-03",
     "range": {
-      "startLine": 118,
-      "endLine": 153
+      "startLine": 108,
+      "endLine": 130
     },
     "type": "theorem",
-    "title": "Cardinality transport — AlgebraicClosure ℚ is countably infinite",
-    "content": "cardinalMk_algebraicNumbersField reads off #algebraicNumbersField = ℵ₀ from Mathlib's Algebraic.cardinalMk_of_countable_of_charZero, using that the field's carrier is definitionally {z : ℂ // IsAlgebraic ℚ z} (membership is Iff.rfl). Because cardinality is an isomorphism invariant, Cardinal.mk_congr applied to the equiv transports this to cardinalMk_algebraicClosure_rat : #(AlgebraicClosure ℚ) = ℵ₀. Cardinal.mk_le_aleph0_iff and Cardinal.infinite_iff then give countable_algebraicClosure_rat and infinite_algebraicClosure_rat — the abstract closure is countably infinite, the classical countability of the algebraic numbers freed of any embedding into ℂ.",
-    "mathContext": "Cantor (1874): the algebraic numbers are countable. Transporting across the $\\mathbb{Q}$-algebra isomorphism shows the intrinsic $\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}$ — uncoupled from $\\mathbb{C}$ — is itself countably infinite.",
+    "title": "Cardinality of the concrete carrier, transported across the isomorphism",
+    "content": "cardinalMk_algebraicNumbersField reads off #algebraicNumbersField = ℵ₀ from Mathlib's Algebraic.cardinalMk_of_countable_of_charZero, using that the field's carrier is definitionally {z : ℂ // IsAlgebraic ℚ z} (membership unfolds to IsAlgebraic ℚ · by Iff.rfl), so the lemma applies with no coercion bookkeeping. Because cardinality is an isomorphism invariant, cardinalMk_algebraicClosure_rat transports this along the equiv: Cardinal.mk_congr algebraicNumbersEquivAlgebraicClosure.toEquiv gives #algebraicNumbersField = #(AlgebraicClosure ℚ), and composing (.symm.trans) with the concrete count yields #(AlgebraicClosure ℚ) = ℵ₀ — the count established for the intrinsic closure that carries no embedding into ℂ.",
+    "mathContext": "Cantor (1874): the algebraic numbers are countable. Transporting across the $\\mathbb{Q}$-algebra isomorphism shows the intrinsic $\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}$ — uncoupled from $\\mathbb{C}$ — has $\\#(\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}) = \\aleph_0$.",
     "significance": "critical",
     "relatedConcepts": [
       "cardinality",
-      "countable",
       "aleph-null",
-      "isomorphism invariant"
+      "isomorphism invariant",
+      "Cardinal.mk_congr"
     ],
     "prerequisites": [
       "cardinal arithmetic",
-      "countable sets"
+      "cardinality transport across an equiv"
+    ]
+  },
+  {
+    "id": "anoq03-ann-countably-infinite",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-03",
+    "range": {
+      "startLine": 132,
+      "endLine": 151
+    },
+    "type": "insight",
+    "title": "From #= ℵ₀ to a Countable, Infinite type — genuine countable infinity",
+    "content": "The bare cardinal equality #(AlgebraicClosure ℚ) = ℵ₀ is unpacked into the two typeclass facts a downstream user actually wants. countable_algebraicClosure_rat applies Cardinal.mk_le_aleph0_iff.mp to le_of_eq of the equality, giving a Countable instance; infinite_algebraicClosure_rat applies Cardinal.infinite_iff.mpr to the reversed inequality ℵ₀ ≤ #·, giving Infinite. Together they certify countably infinite — not merely 'at most countable'. The Examples section then sanity-checks the identification concretely: the isomorphism is a bijection of carriers (algebraicNumbersEquivAlgebraicClosure.bijective), and the two instances resolve, confirming AlgebraicClosure ℚ is countably infinite by typeclass inference alone.",
+    "mathContext": "$\\#\\alpha = \\aleph_0$ splits into $\\#\\alpha \\le \\aleph_0$ (Countable) and $\\aleph_0 \\le \\#\\alpha$ (Infinite); their conjunction is countable infinity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "countable",
+      "infinite type",
+      "countably infinite",
+      "typeclass instances"
+    ],
+    "prerequisites": [
+      "countable and infinite types",
+      "Cardinal.mk_le_aleph0_iff"
     ]
   }
 ]
