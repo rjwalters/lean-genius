@@ -114,6 +114,46 @@
       "mathContext": "Honest scoping: the whole-line case is proved; the finite-interval generalization is the natural next step and reuses this file's backbone."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Budan de Boislaurent, F.D."
+      ],
+      "title": "Nouvelle méthode pour la résolution des équations numériques",
+      "year": "1807",
+      "venue": "Paris",
+      "note": "Budan's theorem bounding real roots in an interval by the drop in sign variations."
+    },
+    {
+      "authors": [
+        "Fourier, J.B.J."
+      ],
+      "title": "Analyse des équations déterminées",
+      "year": "1831",
+      "venue": "Firmin Didot, Paris (posthumous)",
+      "note": "The Fourier (iterated-derivative) sign-variation sequence underlying the Budan–Fourier theorem."
+    },
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "Modern reference covering Descartes' rule, the Budan–Fourier theorem, Sturm's theorem and root-localization bounds."
+    },
+    {
+      "authors": [
+        "Basu, S.",
+        "Pollack, R.",
+        "Roy, M.-F."
+      ],
+      "title": "Algorithms in Real Algebraic Geometry",
+      "year": "2006",
+      "venue": "Algorithms and Computation in Mathematics 10, 2nd ed., Springer",
+      "note": "Standard algorithmic reference for sign variations, Sturm sequences, and real-root isolation (Vincent/VAS/VCA)."
+    }
+  ],
   "conclusion": {
     "summary": "YES — a Budan–Fourier formalization can be built on the parent's framework. This entry formalizes the endpoint backbone (the Fourier sequence's leading-coefficient law and the sign-variation counts V(+∞)=0, V(−∞)=n) and proves the whole-line identity V(−∞) − V(+∞) = deg p, which recovers the parent's parity result as the interval-(−∞,+∞) case of Budan–Fourier. All 11 theorems are machine-checked with 0 sorries and 0 axioms.",
     "implications": "The descending-factorial leading-coefficient law (leadingCoeff_iterate_derivative) and the sign-variation counter (sv) are reusable infrastructure for the full finite-interval Budan–Fourier theorem and for Sturm-sequence formalizations. The whole-line result makes explicit the precise sense in which Descartes/parity is the endpoint case of Budan–Fourier, complementing the parent file's complex-conjugate-pairing explanation of the same parity fact.",

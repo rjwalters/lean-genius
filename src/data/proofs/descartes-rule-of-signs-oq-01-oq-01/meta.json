@@ -103,6 +103,27 @@
       "mathContext": "Cubic (3 = r + 2k): r ∈ {1,3}. Quartic (4 = r + 2k): r ∈ {0,2,4}. Assessment: complex approach is pedagogically valuable (explains WHY) but factoring approach is more direct in Lean."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "Modern reference covering Descartes' rule, the Budan–Fourier theorem, Sturm's theorem and root-localization bounds."
+    },
+    {
+      "authors": [
+        "Rahman, Q.I.",
+        "Schmeisser, G."
+      ],
+      "title": "Analytic Theory of Polynomials",
+      "year": "2002",
+      "venue": "London Mathematical Society Monographs 26, Oxford University Press",
+      "note": "Comprehensive treatment of root distribution, sign variations and conjugate-root structure."
+    }
+  ],
   "conclusion": {
     "summary": "YES, the complex root theory approach can prove the Descartes parity result. The formalization proves eval_conj_eq_conj_eval (via polynomial induction), the conjugate root theorem, and the parity arithmetic framework. The approach is more pedagogically informative than the factoring proof but less direct in Lean.",
     "implications": "The comparative analysis — showing that two proof approaches are valid but differ in directness — models best practice in formal mathematics: understanding not just what can be proved but how different methods compare. The conjugate root approach generalizes immediately to other complex number fields and provides structural insight into why parity holds. The parity framework (parity_of_real_roots) is reusable for any polynomial degree.",

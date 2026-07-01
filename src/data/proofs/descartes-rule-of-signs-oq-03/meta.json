@@ -51,6 +51,36 @@
       "Cauchy bound: Mathlib.Analysis.Polynomial.CauchyBound"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Cauchy, A.-L."
+      ],
+      "title": "Exercices de mathématiques, IV",
+      "year": "1829",
+      "venue": "De Bure, Paris",
+      "note": "Source of the Cauchy bound localizing all roots of a polynomial."
+    },
+    {
+      "authors": [
+        "Rahman, Q.I.",
+        "Schmeisser, G."
+      ],
+      "title": "Analytic Theory of Polynomials",
+      "year": "2002",
+      "venue": "London Mathematical Society Monographs 26, Oxford University Press",
+      "note": "Comprehensive treatment of root distribution, sign variations and conjugate-root structure."
+    },
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "Modern reference covering Descartes' rule, the Budan–Fourier theorem, Sturm's theorem and root-localization bounds."
+    }
+  ],
   "conclusion": {
     "summary": "Fully machine-verified constructive root localization: 24 theorems combining Descartes' Rule of Signs (signVariations) with the Cauchy bound to confine all roots to a computable interval. Includes the Lagrange alternative bound, negative root reduction, intermediate value root existence, and a RootCertificate structure for verified root isolation. 440 lines, 0 axioms, 0 sorries.",
     "implications": "Constructive root bounds are the foundation for certified numerical algorithms. Root isolation (determining intervals containing exactly one root) is a subroutine in all real algebraic geometry software; the Descartes-Cauchy combination gives the first-pass interval before applying Sturm sequences or bisection. The formalization in Lean 4 makes these bounds available for verified algorithm analysis: any Lean 4 program that calls a root finder can carry a machine-checked certificate that its output lies in the correct interval. This connects formal mathematics to practical computer algebra, an active research area (certified CAS, computational real algebraic geometry).",

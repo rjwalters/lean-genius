@@ -341,6 +341,37 @@
       "tactics": []
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Sturm, C."
+      ],
+      "title": "Mémoire sur la résolution des équations numériques",
+      "year": "1835",
+      "venue": "Mémoires présentés par divers savants 6, pp. 271–318 (announced 1829)",
+      "note": "Sturm's theorem: the exact count of distinct real roots in an interval via sign changes in the Sturm sequence."
+    },
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "Modern reference covering Descartes' rule, the Budan–Fourier theorem, Sturm's theorem and root-localization bounds."
+    },
+    {
+      "authors": [
+        "Basu, S.",
+        "Pollack, R.",
+        "Roy, M.-F."
+      ],
+      "title": "Algorithms in Real Algebraic Geometry",
+      "year": "2006",
+      "venue": "Algorithms and Computation in Mathematics 10, 2nd ed., Springer",
+      "note": "Standard algorithmic reference for sign variations, Sturm sequences, and real-root isolation (Vincent/VAS/VCA)."
+    }
+  ],
   "conclusion": {
     "summary": "This file provides a complete formalization of Sturm's theorem for the Lean Genius gallery. The Sturm sequence is defined constructively via fuel-based GCD recursion, the sign-variation count is defined rigorously, and the main theorem is axiomatized with 1 axiom. Ten supporting theorems are fully proved, including the fundamental algebraic identity (mod_eval_at_root), the structural sign property, four corollaries from the exact count, and explicit verification for linear polynomials.",
     "implications": "Sturm's theorem has three major algorithmic consequences: (1) Real root isolation — bisect any interval until the Sturm count difference equals 0 or 1, giving provably correct root isolation in finite time; (2) Root count decision — for any polynomial, compute the total number of real roots in (-M, M] for large M in O(n²) time using polynomial GCD; (3) Isolation certificates — each isolated interval with Sturm count 1 is a certificate that exactly one root exists there, usable for constructive analysis.",
