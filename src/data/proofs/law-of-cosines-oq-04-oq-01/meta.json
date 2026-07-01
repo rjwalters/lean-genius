@@ -10,9 +10,9 @@
       "RealInnerProductSpace"
     ],
     "namespace": "StewartsTheoremInner",
-    "lineCount": 141,
+    "lineCount": 178,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/LawOfCosinesOQ04OQ01.lean",
     "sorries": 0
@@ -34,7 +34,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 141,
+    "lineCount": 178,
     "assumptions": "No axioms or sorries. All results proved bilinearly from the inner-product structure. Docker-verified GREEN (7744 jobs) under the current Mathlib pin. The companion file Proofs/LawOfCosinesOQ04OQ01Bisector.lean (also registered and verified) proves the coordinate-free Angle Bisector Theorem (angle_bisector_ratio_of_equal_angle), resolving open question 1 below: the segment ratio BD:DC = c:b is derived from genuine equal angles at A rather than assumed.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
@@ -44,7 +44,7 @@
       "Cevian foot encoded as the affine combination D = (1−s)·B + s·C, so the segment relation m + n = a holds by construction (no sign hypotheses)",
       "Apollonius' median theorem and the internal-bisector length formula derived as specializations of the master identity"
     ],
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 0
   },
   "overview": {
