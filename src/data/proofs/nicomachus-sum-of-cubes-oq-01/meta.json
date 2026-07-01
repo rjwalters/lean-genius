@@ -97,6 +97,24 @@
       "Can the squared-triangular identity be promoted to a bijective / combinatorial proof in Lean (counting ordered pairs in an n×n grid), matching the classic visual dissection?"
     ]
   },
+  "references": [
+    {
+      "title": "Squared triangular number (Nicomachus's theorem)",
+      "url": "https://en.wikipedia.org/wiki/Squared_triangular_number"
+    },
+    {
+      "title": "Nicomachus of Gerasa, Introduction to Arithmetic (c. 100 AD), trans. M. L. D'Ooge",
+      "url": "https://archive.org/details/nicomachusofgera00nicouoft"
+    },
+    {
+      "title": "Mathlib: Finset.sum_range_id_mul_two (division-free Gauss triangular-number identity)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/BigOperators/Intervals.html"
+    },
+    {
+      "title": "R. B. Nelsen, Proofs Without Words: Exercises in Visual Thinking (MAA, 1993) — visual dissection proofs of ∑k³ = (∑k)²",
+      "url": "https://www.jstor.org/stable/10.4169/j.ctt5hh8mw"
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "nicomachus-sum-of-cubes-oq-02",
