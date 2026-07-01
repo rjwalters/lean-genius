@@ -119,12 +119,37 @@
   ],
   "references": [
     {
-      "title": "Fibonacci sequence — other identities",
-      "url": "https://en.wikipedia.org/wiki/Fibonacci_sequence#Other_identities"
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Comprehensive reference for Fibonacci summation identities, including the sum of squares ∑Fᵢ² = FₙFₙ₊₁ and the odd/even-indexed sums ∑F₂ᵢ₋₁ = F₂ₙ and ∑F₂ᵢ = F₂ₙ₊₁ − 1 formalized here."
     },
     {
-      "title": "Mathlib: Nat.fib",
-      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Nat/Fib/Basic.html"
+      "authors": "Vajda, Steven",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood",
+      "note": "Systematic catalogue of Fibonacci/Lucas identities; the three summation formulas of this entry appear as standard entries proved by induction on the recurrence."
+    },
+    {
+      "authors": "Graham, R. L.; Knuth, D. E.; Patashnik, O.",
+      "title": "Concrete Mathematics: A Foundation for Computer Science, §6.6",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "note": "Develops Fibonacci summation and telescoping identities; the sum-of-squares identity is the classic dissection of an Fₙ×Fₙ₊₁ rectangle into squares of side F₀,…,Fₙ."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Data.Nat.Fib.Basic",
+      "year": "2026",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Nat/Fib/Basic.html",
+      "note": "Supplies Nat.fib and the pointwise identities (fib_add_two, fib_add, doubling, Cassini, fib_gcd); the summation identities proved here are absent from it and are the contribution of this entry."
+    },
+    {
+      "title": "Fibonacci sequence — other identities (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Fibonacci_sequence#Other_identities",
+      "note": "Overview of the standard Fibonacci summation identities and their combinatorial interpretations."
     }
   ],
   "crossReferences": [
