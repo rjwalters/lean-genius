@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-cf0802-def-dg",
+    "proofId": "combinations-formula-oq-08-oq-02",
+    "range": { "startLine": 63, "endLine": 78 },
+    "type": "definition",
+    "title": "The Stride Diagonal Total Dg(t, n)",
+    "content": "The sibling entry combinations-formula-oq-08-oq-01 derived the Fibonacci recurrence from the shallow diagonals of Pascal's triangle by Pascal's rule, and asked whether a stride-s sum recovers a higher-order recurrence uniformly. This file answers that. Writing the stride as s = t+1, the definition `Dg t n := ∑ k ∈ range (n+1), C(n − t·k, k)` names the total along the diagonal that steps t+1 columns per row. At t=0 the multiplier vanishes and Dg(0,n) = ∑_k C(n,k) = 2ⁿ; at t=1 it is ∑_k C(n−k, k) = fib(n+1). Terms with t·k > n have top index below the bottom index and vanish, so the generous range range(n+1) is harmless — a point that recurs throughout the proof.",
+    "mathContext": "$Dg(t, n) = \\sum_{k=0}^{n} \\binom{n - t\\,k}{k}$, the sum along the shallow diagonal of stride $t+1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["shallow diagonals", "Pascal's triangle", "binomial coefficients", "lagged recurrences", "generating function 1/(1−x−x^s)"],
+    "prerequisites": ["binomial coefficients C(n,k)", "finite sums over Finset.range", "the sibling Fibonacci-from-Pascal entry"]
+  },
+  {
+    "id": "ann-cf0802-stride-term",
+    "proofId": "combinations-formula-oq-08-oq-02",
+    "range": { "startLine": 80, "endLine": 103 },
+    "type": "theorem",
+    "title": "The Stride Term Identity: One Pascal Split, Uniform in the Stride",
+    "content": "`stride_term` is the entire combinatorial content: C(n+t+1 − t(k+1), k+1) = C(n+t − t(k+1), k+1) + C(n − t·k, k). It says one diagonal entry on level n+t+1 splits into the entry directly above it on level n+t and the entry t columns back on level n — the two predecessors of the lagged recurrence. The proof case-splits on t(k+1) ≤ n+t. When it holds, the top index n+t+1 − t(k+1) is a successor (n+t − t(k+1))+1, so `Nat.choose_succ_succ` (Pascal's rule) applies, and the index identity n+t − t(k+1) = n − t·k is closed by `omega` after `Nat.mul_succ` exposes t(k+1) = t·k + t. When it fails the top indices nat-truncate to 0; crucially k ≥ 1 there (k = 0 would force t ≥ n+t+1), so C(0, k) = 0 and both sides vanish. This uniform handling of the truncated tail is exactly what lets one statement cover every stride, degenerate t = 0 included.",
+    "mathContext": "$\\binom{n+t+1 - t(k+1)}{k+1} = \\binom{n+t - t(k+1)}{k+1} + \\binom{n - t k}{k}$ for all $t, k$.",
+    "significance": "key",
+    "relatedConcepts": ["Pascal's rule", "Nat.choose_succ_succ", "Nat.choose_eq_zero_of_lt", "truncated subtraction", "case analysis"],
+    "prerequisites": ["Pascal's identity C(a+1,b+1)=C(a,b)+C(a,b+1)", "vanishing binomials C(0,k)=0 for k≥1", "ℕ subtraction arithmetic via omega"]
+  },
+  {
+    "id": "ann-cf0802-recurrence",
+    "proofId": "combinations-formula-oq-08-oq-02",
+    "range": { "startLine": 105, "endLine": 148 },
+    "type": "theorem",
+    "title": "The Uniform Stride Recurrence Dg(t, n+t+1) = Dg(t, n+t) + Dg(t, n)",
+    "content": "`Dg_recurrence` proves the lagged Fibonacci recurrence a(m) = a(m−1) + a(m−(t+1)) for every stride t+1 and every n. Expand Dg(t, n+t+1) and peel its k=0 term with `Finset.sum_range_succ'` (the constant C(n+t+1, 0) = 1); apply `stride_term` to each remaining summand and split with `Finset.sum_add_distrib`. The first child-sum, after re-attaching its own peeled boundary term (sum_range_succ') and discarding a vanishing top term C(n+t − t(n+t+1), n+t+1) = 0, reassembles Dg(t, n+t). The second child-sum is ∑_{k<n+t+1} C(n − t·k, k); its terms with k > n vanish, so `Finset.sum_subset` identifies it with Dg(t, n) = ∑_{k<n+1}. A final `omega` recombines the pieces (S₁ + 1 = Dg(t,n+t), S₂ = Dg(t,n), and the peeled +1). No appeal to any predefined recurrence sequence.",
+    "mathContext": "$Dg(t, n{+}t{+}1) = Dg(t, n{+}t) + Dg(t, n)$, equivalently $a(m) = a(m{-}1) + a(m{-}(t{+}1))$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_range_succ'", "Finset.sum_add_distrib", "Finset.sum_subset", "boundary-term peeling", "range reconciliation"],
+    "prerequisites": ["the stride term identity", "peeling first/last terms of a range sum", "dropping vanishing terms across differing supports", "omega for the final linear combination"]
+  },
+  {
+    "id": "ann-cf0802-stride-one",
+    "proofId": "combinations-formula-oq-08-oq-02",
+    "range": { "startLine": 150, "endLine": 162 },
+    "type": "theorem",
+    "title": "Stride 1: the Binomial Row Sums 2ⁿ",
+    "content": "`Dg_zero` records the degenerate stride: at t = 0 the multiplier t·k vanishes, so Dg(0, n) = ∑_k C(n, k), which is 2ⁿ by Mathlib's `Nat.sum_range_choose`. `Dg_zero_recurrence` then specializes the uniform recurrence to Dg(0, n+1) = Dg(0, n) + Dg(0, n), i.e. the doubling 2^{n+1} = 2·2ⁿ — the lag-1 member of the family, where 'lag 1' collapses both predecessors onto a(m−1).",
+    "mathContext": "$Dg(0, n) = \\sum_{k=0}^{n}\\binom{n}{k} = 2^n$, with recurrence $2^{n+1} = 2\\cdot 2^n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.sum_range_choose", "binomial theorem row sums", "degenerate recurrence"],
+    "prerequisites": ["the row-sum identity ∑_k C(n,k) = 2ⁿ", "the uniform stride recurrence"]
+  },
+  {
+    "id": "ann-cf0802-stride-two",
+    "proofId": "combinations-formula-oq-08-oq-02",
+    "range": { "startLine": 164, "endLine": 190 },
+    "type": "theorem",
+    "title": "Stride 2: the Fibonacci Diagonals and Recurrence",
+    "content": "`fib_eq_sum_range_choose` reproves the parent shallow-diagonal identity fib(n+1) = ∑_k C(n−k, k) inline (from `Nat.fib_succ_eq_sum_choose` via the antidiagonal-to-range conversion and the reflection k ↦ n−k), so the file stands alone. `Dg_one` reads off Dg(1, n) = fib(n+1) (stride 2). `fib_recurrence_via_stride` then obtains fib(n+3) = fib(n+2) + fib(n+1) as the t = 1 case of `Dg_recurrence` — the classical Fibonacci recurrence produced by Pascal's rule on the stride diagonals, not by Nat.fib_add_two.",
+    "mathContext": "$Dg(1, n) = \\mathrm{fib}(n+1)$ and $\\mathrm{fib}(n+3) = \\mathrm{fib}(n+2) + \\mathrm{fib}(n+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.fib_succ_eq_sum_choose", "Finset.sum_range_reflect", "index reflection", "Fibonacci recurrence"],
+    "prerequisites": ["Mathlib's antidiagonal Fibonacci form", "reindexing finite sums", "the uniform stride recurrence at t=1"]
+  },
+  {
+    "id": "ann-cf0802-stride-three",
+    "proofId": "combinations-formula-oq-08-oq-02",
+    "range": { "startLine": 192, "endLine": 197 },
+    "type": "theorem",
+    "title": "Stride 3: Narayana's Cows, a Genuinely Higher-Order Recurrence",
+    "content": "`Dg_two_recurrence` specializes the uniform recurrence to stride 3 (t = 2): Dg(2, n+3) = Dg(2, n+2) + Dg(2, n). This is the lag-2 recurrence a(m) = a(m−1) + a(m−3) — note the absence of any a(m−2) term — which generates Narayana's cows sequence 1,1,1,2,3,4,6,9,13,… (OEIS A000930). It witnesses that the single Dg_recurrence produces genuinely higher-order recurrences beyond Fibonacci, confirming the 'higher-order' half of the open question.",
+    "mathContext": "$Dg(2, n+3) = Dg(2, n+2) + Dg(2, n)$, i.e. $a(m) = a(m-1) + a(m-3)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Narayana's cows", "OEIS A000930", "lagged recurrence", "higher-order linear recurrence"],
+    "prerequisites": ["the uniform stride recurrence at t=2"]
+  },
+  {
+    "id": "ann-cf0802-verification",
+    "proofId": "combinations-formula-oq-08-oq-02",
+    "range": { "startLine": 199, "endLine": 208 },
+    "type": "tactic",
+    "title": "Worked Verifications",
+    "content": "Four `decide` sanity checks anchor the abstractions in numbers: Dg(1, 6) = fib(7) = 13 (from C(6,0)+C(5,1)+C(4,2)+C(3,3) = 1+5+6+1); Dg(0, 4) = 2⁴ = 16, the fourth Pascal row sum; and for Narayana's cows, Dg(2, 7) = 9 together with the lagged recurrence Dg(2, 8) = Dg(2, 7) + Dg(2, 5), i.e. 13 = 9 + 4. These use kernel decidability (decide), not native_decide, so they add no axioms.",
+    "mathContext": "$Dg(1,6)=13,\\ Dg(0,4)=16,\\ Dg(2,7)=9,\\ Dg(2,8)=Dg(2,7)+Dg(2,5)=13$.",
+    "significance": "context",
+    "relatedConcepts": ["decide", "kernel decidability", "sanity checks"],
+    "prerequisites": ["decidable equality on ℕ"]
+  }
+]
