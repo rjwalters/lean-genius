@@ -137,3 +137,49 @@ inertia-tower multiplicativity → `inertiaDegIn_eq_inertiaDeg` (Galois) →
 **not** remove `three_dvd_gal_card`; it verifies and pins the arithmetic datum the
 remaining ~hundreds-of-lines KummerDedekind bridge will consume. Gallery entry
 `inverse-galois-a5` remains correctly `axiomatized` (axiomCount 1) — no gallery change.
+
+## Session 4 (researcher-8, 2026-07-01): PACKAGED the inertia-tower + Galois-uniformity brick (VERIFIED 0-axiom)
+
+New file `proofs/Proofs/DedekindInertiaTower.lean` isolates **steps 2 and 3** of the
+Session-3 residual gap as a single abstract, reusable, 0-axiom lemma (only
+`propext` / `Classical.choice` / `Quot.sound`; no `sorry`, no `native_decide`).
+
+- `DedekindInertiaTower.inertiaDeg_dvd_inertiaDegIn` : in a tower of commutative rings
+  `R ⊆ S ⊆ T` with `T / R` Galois (Galois group `G`, `[IsGaloisGroup G R T]`), for
+  maximal ideals `p ◁ R`, `P ◁ S` over `p`, `Q ◁ T` over `P`,
+  `Ideal.inertiaDeg p P ∣ Ideal.inertiaDegIn p T`.
+- `DedekindInertiaTower.dvd_inertiaDegIn_of_dvd_inertiaDeg` : reduction form — to get
+  `d ∣ inertiaDegIn p T` it suffices to exhibit *one* intermediate prime `P` with
+  `d ∣ inertiaDeg p P`. This is exactly the shape the A₅ argument consumes.
+
+Proof packages two existing Mathlib facts:
+- `Ideal.inertiaDeg_algebra_tower p P Q : inertiaDeg p Q = inertiaDeg p P * inertiaDeg P Q`
+  — multiplicativity in the tower, needing **no** Galois hypothesis on the non-normal
+  middle field `S = ℚ(α)`;
+- `Ideal.inertiaDegIn_eq_inertiaDeg p Q G : inertiaDegIn p T = inertiaDeg p Q`
+  — Galois uniformity: all primes of the top field `T` over `p` share one inertia degree.
+Then `inertiaDeg p P ∣ inertiaDeg p P * inertiaDeg P Q = inertiaDeg p Q = inertiaDegIn p T`.
+The transitivity instance `Q.LiesOver p` is supplied by `Ideal.LiesOver.trans Q P p`.
+
+### Effect on the residual gap
+Applied with `R = ℤ`, `S = 𝓞 ℚ(α)`, `T = 𝓞 q.SplittingField`, `G = q.Gal`, `p = (7)`,
+`d = 3`, this collapses the three-step route to a **single** remaining obligation:
+
+> **(Step 1, KummerDedekind only)** exhibit one prime `P` of `𝓞 ℚ(α)` over `(7)` with
+> `3 ∣ Ideal.inertiaDeg (7) P` — i.e. the prime matching the irreducible cubic factor
+> `cubic7` of `q mod 7` (Session 3), whose inertia degree is its degree, `3`.
+
+Steps 2 (inertia-tower multiplicativity) and 3 (Galois uniformity) are now machine-checked
+and packaged; only the KummerDedekind conductor step
+(`inertiaDeg_primesOverSpanEquivMonicFactorsMod_symm_apply`, using `7 ∤ disc q = 32000²`)
+still stands between the verified arithmetic datum and `3 ∣ inertiaDegIn (7)`. This file
+does **not** remove `three_dvd_gal_card`; gallery entry `inverse-galois-a5` stays
+correctly `axiomatized` (axiomCount 1) — no gallery change.
+
+### Key Lean recipe (reusable)
+- **Tower inertia divisibility, abstractly**: for `d ∣ inertiaDegIn` reductions, use
+  `Ideal.inertiaDeg_algebra_tower` (multiplicativity, no Galois needed on the middle
+  ring) composed with `Ideal.inertiaDegIn_eq_inertiaDeg _ _ G` (Galois uniformity on the
+  top ring), stated over an `[IsGaloisGroup G R T]` tower with `[IsScalarTower R S T]`
+  and `LiesOver` instances chained by `Ideal.LiesOver.trans`. Keeps the middle field
+  non-normal — the whole point for `ℚ(α) ⊂ splitting field`.
