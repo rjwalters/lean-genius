@@ -71,8 +71,17 @@
   },
   "leanFile": {
     "path": "Proofs/GreensTheoremOQ01OQ01OQ03.lean",
-    "imports": ["Mathlib"],
-    "opens": ["MeasureTheory", "intervalIntegral", "Set", "Measure", "Filter", "Topology"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral",
+      "Set",
+      "Measure",
+      "Filter",
+      "Topology"
+    ],
     "namespace": "GreensTheoremOQ01OQ01OQ03",
     "lineCount": 292,
     "axiomCount": 0,
@@ -199,5 +208,35 @@
       "description": "Explicit equivalence: Icc and Ioo integrability conditions are identical for Lebesgue measure."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Gerald B. Folland"
+      ],
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": 1999,
+      "venue": "Wiley (2nd ed.)",
+      "note": "Lebesgue measure of the boundary of a box is zero, so Icc and Ioo integrals agree — the key measure-zero argument."
+    },
+    {
+      "authors": [
+        "Walter Rudin"
+      ],
+      "title": "Real and Complex Analysis",
+      "year": 1987,
+      "venue": "McGraw-Hill (3rd ed.)",
+      "note": "Restriction of Lebesgue measure to sets differing by a null set; integrability equivalences."
+    },
+    {
+      "authors": [
+        "Elias M. Stein",
+        "Rami Shakarchi"
+      ],
+      "title": "Real Analysis: Measure Theory, Integration, and Hilbert Spaces",
+      "year": 2005,
+      "venue": "Princeton University Press",
+      "note": "Measure-zero boundaries and equality of integrals over closed vs. open rectangles."
+    }
+  ]
 }

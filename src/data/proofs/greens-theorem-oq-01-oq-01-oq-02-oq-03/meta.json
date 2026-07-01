@@ -183,5 +183,36 @@
       "targetId": "greens-theorem",
       "relationship": "Ancestor. Green's theorem ultimately requires Fubini for line-integral splitting; the Bochner-valued generalization (this file) is a building block for Banach-valued differential-form analogues of Green's theorem."
     }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Joseph Diestel",
+        "John J. Uhl"
+      ],
+      "title": "Vector Measures",
+      "year": 1977,
+      "venue": "American Mathematical Society (Mathematical Surveys 15)",
+      "note": "Bochner integration theory for Banach-valued functions, including Fubini-type theorems."
+    },
+    {
+      "authors": [
+        "Einar Hille",
+        "Ralph S. Phillips"
+      ],
+      "title": "Functional Analysis and Semi-Groups",
+      "year": 1957,
+      "venue": "American Mathematical Society",
+      "note": "Foundational treatment of the Bochner integral for functions valued in a Banach space."
+    },
+    {
+      "authors": [
+        "Gerald B. Folland"
+      ],
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": 1999,
+      "venue": "Wiley (2nd ed.)",
+      "note": "Fubini's theorem and integration of vector-valued functions."
+    }
   ]
 }

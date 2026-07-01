@@ -230,5 +230,35 @@
     "path": "Proofs/GreensTheoremOQ03.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Jerrold E. Marsden",
+        "Anthony J. Tromba"
+      ],
+      "title": "Vector Calculus",
+      "year": 2011,
+      "venue": "W. H. Freeman (6th ed.)",
+      "note": "Green's theorem for Type I and Type II regions, with the inner FTC computation for each contribution."
+    },
+    {
+      "authors": [
+        "Tom M. Apostol"
+      ],
+      "title": "Mathematical Analysis",
+      "year": 1974,
+      "venue": "Addison-Wesley (2nd ed.)",
+      "note": "Rigorous treatment of Green's theorem on regions bounded by graphs of continuous functions."
+    },
+    {
+      "authors": [
+        "James Stewart"
+      ],
+      "title": "Calculus: Early Transcendentals",
+      "year": 2015,
+      "venue": "Cengage (8th ed.)",
+      "note": "Standard exposition of Green's theorem over Type I / Type II simply-connected regions with disk examples."
+    }
+  ]
 }

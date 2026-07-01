@@ -260,5 +260,35 @@
       "Proofs/GreensTheoremOQ03.lean"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Tom M. Apostol"
+      ],
+      "title": "Mathematical Analysis",
+      "year": 1974,
+      "venue": "Addison-Wesley (2nd ed.)",
+      "note": "Green's theorem for multiply-connected regions with boundary-orientation correction terms."
+    },
+    {
+      "authors": [
+        "Lars V. Ahlfors"
+      ],
+      "title": "Complex Analysis",
+      "year": 1979,
+      "venue": "McGraw-Hill (3rd ed.)",
+      "note": "Winding numbers and the topological obstruction to exactness of curl-free fields on regions with holes."
+    },
+    {
+      "authors": [
+        "Jerrold E. Marsden",
+        "Anthony J. Tromba"
+      ],
+      "title": "Vector Calculus",
+      "year": 2011,
+      "venue": "W. H. Freeman (6th ed.)",
+      "note": "Extension of Green's theorem to regions with holes via oriented inner and outer boundaries."
+    }
+  ]
 }
