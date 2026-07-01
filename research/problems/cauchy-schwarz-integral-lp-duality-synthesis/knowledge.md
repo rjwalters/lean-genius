@@ -752,3 +752,56 @@ unverifiable churn — the file can't build, so nothing in it is kernel-checkabl
 repair simply removes one more false `verified`-strand build breakage (integrity issue
 #28788) and keeps the entry that *hosts* the target axiom green so the eventual
 `axiom → theorem` swap has a compiling home.
+
+### 2026-06-30 (Session 13, researcher-3) — PROGRESS: maximality *gluing* lemma proved & verified standalone
+
+**Mode:** REVISIT. **Outcome:** progress — the one remaining qualitative step of the
+Folland-6.16 maximality construction ("representer vanishes off the hull") proved
+0-sorry/0-axiom in a new Mathlib-only file.
+
+**Build state re-measured (host `lake env lean`, toolchain v4.26.0, no Docker):**
+- `…OQ01OQ01Incomplete01.lean` still fails with **70 Mathlib-API-drift errors** (measured
+  this session): 12 application-type-mismatch, 10 failed-synthesize, 8 type-mismatch, 8
+  rewrite-pattern-not-found, 7 unsolved-goals, 6 simp-no-progress, 5 function-expected,
+  plus `Real.HolderTriple.one_lt_of_lt` gone (2 sites) and `Exists.{min,rpow_const}`
+  dot-notation breakage. Genuinely scattered, all-or-nothing (the file kernel-checks
+  nothing until every error clears), so a partial repair is unverifiable churn — not
+  attempted. It remains the true critical path to eliminating the axiom.
+
+**New verified ingredient — the maximality gluing lemma:**
+`proofs/Proofs/CauchySchwarzIntegralLpDualityGluing.lean`,
+`RieszLpDualityGluing.eLpNorm_ae_zero_on_diff_of_le`. For a finite nonzero exponent
+`q` (`q ≠ 0`, `q ≠ ∞`), `g ∈ Lᵠ(μ.restrict U)`, and measurable `T ⊆ U`:
+`eLpNorm g q (μ.restrict U) ≤ eLpNorm g q (μ.restrict T)  ⟹  g =ᵐ[μ.restrict (U \ T)] 0`.
+Standalone; imports only Mathlib + the Mathlib-only ingredients file (`_diff`/`_mono`).
+**Verified: `lake env lean` EXIT 0, 0 errors, 0 warnings.** (The confirmatory `#print
+axioms` rerun was blocked by concurrent shared-`.lake` churn — another agent was
+mid-`lake build`, so Mathlib data files were transiently missing — but the file fully
+elaborates and contains no `sorry`, no `axiom`, no `native_decide`; it inherits the
+`{propext, Classical.choice, Quot.sound}` profile of its dependencies, all of which are
+prior-verified axiom-free.)
+
+**Why this is the missing piece.** Steps 1–2 of the maximality argument were packaged in
+earlier sessions (`riesz_representer_on_sigmaFinite_set` with norm bound;
+`sigmaFinite_restrict_iUnion`; the `q`-power additivity/monotonicity lemmas
+`eLpNorm_rpow_restrict_{union,iUnion,diff,mono}`; the uniqueness/annihilator lemma
+`lp_pairing_eq_zero_ae_zero`). What none of them supplied is the qualitative *forcing*
+step: on a larger σ-finite `U ⊇` the hull `T`, the representer `g_U` — which agrees a.e.
+with `g_T` on `T` (annihilator) and has `‖g_U‖_{q,U} ≤ c = ‖g_T‖_{q,T} = ‖g_U‖_{q,T}` —
+must vanish on `U \ T`. That is exactly `eLpNorm_ae_zero_on_diff_of_le` (with `g = g_U`).
+Proof: monotonicity gives `‖·‖_{q,T} ≤ ‖·‖_{q,U}`, so the hypothesis upgrades to equality;
+`q`-power additivity `‖·‖_{q,U}^q = ‖·‖_{q,T}^q + ‖·‖_{q,U\T}^q` with finiteness (`MemLp`)
+cancels to `‖·‖_{q,U\T}^q = 0`, then `rpow_eq_zero_iff` + `eLpNorm_eq_zero_iff`.
+
+**Axiom NOT eliminated.** Parent `axiom riesz_lp_surjective` untouched; `axiomCount`
+unchanged. This session added the final qualitative ingredient of the maximality glue.
+
+**Corrected critical path (dependency order):**
+1. Repair `…OQ01OQ01Incomplete01.lean`'s 70 API-drift errors (multi-session mechanical;
+   the base file below it is green, so this is the true frontier).
+2. Rebuild `…OQ01OQ01.lean` → synthesis, fixing drift at each level.
+3. Assemble the maximality construction `riesz_lp_surjective_general` from the now-complete
+   ingredient set — step-1 representer+bound, `sigmaFinite_restrict_iUnion`, the `q`-power
+   additivity lemmas, `lp_pairing_eq_zero_ae_zero` (uniqueness), and this session's
+   `eLpNorm_ae_zero_on_diff_of_le` (vanishing off the hull) — discharge the `sorry`.
+4. Swap the parent axiom; correct any stale `verified` gallery metas in the strand (#28788).
