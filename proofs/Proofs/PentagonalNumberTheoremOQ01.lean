@@ -1556,4 +1556,34 @@ theorem franklinMoveA_min' (S : Finset ℕ) (s m : ℕ)
       omega
     · exact Finset.min'_le _ y h
 
+/-! ## Part 16: the Move B branch is self-inverse with *canonically recomputed* parameters
+
+Parts 14–15 pinned both endpoints of each move image: `max' (Move B) = m-1` (Part 14) and
+`min' (Move B) = ℓ` (Part 15).  These are exactly the two parameters the reverse move reads —
+the top `m-1` and the new smallest part `ℓ` — so the raw mutual-inverse identity
+`franklinMoveA (franklinMoveB S ℓ m) ℓ (m-1) = S` (Part 12) can now be restated with *no
+ad-hoc threading*: the reverse Move A takes its smallest-part and top parameters **directly as
+`min'` and `max'` of the image**, precisely as the second `franklinStep` dispatch would compute
+them.  This closes the Move B → Move A half of Franklin's involution as a genuine self-inverse.
+
+(The Move A → Move B half additionally requires the top-run-**length** `ℓ` of the image — the
+smallest part `s` that Move A removes is *not* recoverable from the image's `min'` (which is the
+second-smallest of `S`), so that direction still awaits the staircase-length recomputation.) -/
+
+/-- **Move B is undone by Move A reading its parameters canonically off the image.**  With the
+smallest part `min'` and largest part `max'` of the image `franklinMoveB S ℓ m` substituted for
+Move A's two parameters — the exact values the second Franklin dispatch computes — Move A returns
+`S`.  Combines Part 12's `franklinMoveA_franklinMoveB` with the Part 15 `min' = ℓ` and Part 14
+`max' = m-1` recomputations. -/
+theorem franklinMoveA_franklinMoveB_canonical (S : Finset ℕ) (ℓ m : ℕ)
+    (H : (franklinMoveB S ℓ m).Nonempty) (HS : S.Nonempty)
+    (hmS : m ∈ S) (hml : m - ℓ ∉ S) (hlS : ℓ ∉ S) (hne : ℓ ≠ m - ℓ)
+    (hℓ1 : 1 ≤ ℓ) (hℓm : ℓ < m) (hℓs : ℓ < S.min' HS) (hℓm2 : ℓ ≤ m - ℓ)
+    (hmax : ∀ x ∈ S, x ≤ m) (htop : Finset.Icc (m - ℓ + 1) m ⊆ S) :
+    franklinMoveA (franklinMoveB S ℓ m) ((franklinMoveB S ℓ m).min' H)
+      ((franklinMoveB S ℓ m).max' H) = S := by
+  rw [franklinMoveB_min' S ℓ m H HS hℓs hℓm2,
+      franklinMoveB_max' S ℓ m H hmax hℓ1 hℓm htop]
+  exact franklinMoveA_franklinMoveB S ℓ m hmS hml hlS hne hℓm
+
 end PentagonalNumberTheoremOQ01
