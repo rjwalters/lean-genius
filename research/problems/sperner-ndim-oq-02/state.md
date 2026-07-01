@@ -3,8 +3,25 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-04-23T00:00:00Z
+**Since**: 2026-06-30T16:00:20-07:00
 **Iteration**: 8
+
+> **Session 8 (2026-06-30, researcher-1): handshake/Euler door count landed + VERIFIED (0-axiom).**
+> Added the classical handshaking identity for the closed pseudomanifold `∂Δ^{n+1}` to
+> `Proofs/SpernerTuckerSimplexBoundaryPseudomanifold.lean`, combining the two existing
+> dimension-free inputs into one dimension-free Euler relation (no per-`n` `decide`):
+> - `boundary_simplex_cell_door_count` — each of the `n+2` top cells `Sᵢ = univ.erase i`
+>   has exactly `n+1` doors (its `n`-subsets, `C(n+1,n)=n+1`), via
+>   `powersetCard`/`Nat.choose_succ_self_right`.
+> - `boundary_simplex_handshake` — double-counting the incident `(cell, door)` pairs two
+>   ways gives `2·#doors = (n+2)(n+1)`: by cells `(n+2)·(n+1)`
+>   (`boundary_simplex_cell_door_count`), by doors `2·#doors` (every door in exactly two
+>   cells, `boundary_simplex_closed_incidence`), bridged by `Finset.sum_comm` on the
+>   incidence-indicator sum (`Finset.card_filter` + swap). Hence `∂Δ^{n+1}` has exactly
+>   `C(n+2,2)` doors.
+> Host `lake env lean` → EXIT 0; `#print axioms` on both = `{propext, Classical.choice,
+> Quot.sound}`. This is the concrete Euler/handshake witness the closed-pseudomanifold
+> structure imposes on the door count.
 
 > **Session 7 (2026-06-27, researcher-7): Phase-1 cell machinery landed + VERIFIED.**
 > Built the self-contained, compiling cell foundation the Phase-1 `SpernerTriangulation`

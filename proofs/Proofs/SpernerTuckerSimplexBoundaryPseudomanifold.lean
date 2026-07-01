@@ -190,4 +190,75 @@ theorem boundary_simplex_hpair {n : ℕ} (i j : Fin (n + 2)) (hij : i ≠ j) :
         d.card = n ∧ d ⊆ Finset.univ.erase i ∧ d ⊆ Finset.univ.erase j} ≤ 1 :=
   (boundary_simplex_shared_door i j hij).le
 
+/-! ### The handshake (Euler) relation: double-counting cell/door incidences, all `n`
+
+The two dimension-free inputs above combine into the classical handshaking identity for the
+closed pseudomanifold `∂Δ^{n+1}`.  Each of the `n+2` top cells `Sᵢ = univ.erase i` has `n+1`
+doors (its `n`-subsets, `C(n+1,n)=n+1`), and each door lies in exactly two top cells
+(`boundary_simplex_closed_incidence`).  Counting the incident `(cell, door)` pairs two ways —
+by cells (`(n+2)·(n+1)`) and by doors (`2·#doors`) — gives `2·#doors = (n+2)(n+1)`.  So
+`∂Δ^{n+1}` has exactly `(n+2)(n+1)/2 = C(n+2,2)` doors, again with no per-dimension `decide`.
+This is the concrete Euler/handshake witness that the closed-pseudomanifold structure imposes
+on the door count. -/
+
+/-- **Per-cell door count.**  Each top cell `Sᵢ = univ.erase i` of `∂Δ^{n+1}` has exactly
+`n+1` doors: the `n`-subsets of its `n+1` vertices, `C(n+1,n)=n+1`.  Dimension-free. -/
+theorem boundary_simplex_cell_door_count {n : ℕ} (i : Fin (n + 2)) :
+    #{d : Finset (Fin (n + 2)) | d.card = n ∧ d ⊆ Finset.univ.erase i} = n + 1 := by
+  have hcard : (Finset.univ.erase i).card = n + 1 := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_fin]; omega
+  have hset : Finset.filter
+      (fun d : Finset (Fin (n + 2)) => d.card = n ∧ d ⊆ Finset.univ.erase i) Finset.univ
+      = (Finset.univ.erase i).powersetCard n := by
+    ext d
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_powersetCard]
+    tauto
+  rw [hset, Finset.card_powersetCard, hcard, Nat.choose_succ_self_right]
+
+/-- **Handshake / Euler relation for `∂Δ^{n+1}` (dimension-free).**  Double-counting the
+incident `(top cell, door)` pairs of the boundary of the standard `(n+1)`-simplex: `n+2` top
+cells with `n+1` doors each (`boundary_simplex_cell_door_count`), every door in exactly two
+cells (`boundary_simplex_closed_incidence`), hence `2·#doors = (n+2)(n+1)`.  No
+per-dimension `decide`. -/
+theorem boundary_simplex_handshake {n : ℕ} :
+    2 * #{d : Finset (Fin (n + 2)) | d.card = n} = (n + 2) * (n + 1) := by
+  classical
+  set Doors : Finset (Finset (Fin (n + 2))) :=
+    Finset.filter (fun d => d.card = n) Finset.univ with hDoors
+  -- The per-cell door filter is a filter of `Doors`.
+  have hcellfilter : ∀ i : Fin (n + 2),
+      Finset.filter (fun d : Finset (Fin (n + 2)) => d.card = n ∧ d ⊆ Finset.univ.erase i)
+        Finset.univ
+      = Finset.filter (fun d => d ⊆ Finset.univ.erase i) Doors := by
+    intro i; rw [hDoors, Finset.filter_filter]
+  -- Counting by cells: `(n+2)` cells, each with `n+1` doors.
+  have hcells :
+      (∑ i : Fin (n + 2),
+        (Finset.filter (fun d => d ⊆ Finset.univ.erase i) Doors).card) = (n + 2) * (n + 1) := by
+    have hval : ∀ i : Fin (n + 2),
+        (Finset.filter (fun d => d ⊆ Finset.univ.erase i) Doors).card = n + 1 := by
+      intro i; rw [← hcellfilter i]; exact boundary_simplex_cell_door_count i
+    rw [Finset.sum_congr rfl (fun i _ => hval i), Finset.sum_const, Finset.card_univ,
+      Fintype.card_fin, smul_eq_mul]
+  -- Double counting: swap the summation order.
+  have hswap :
+      (∑ i : Fin (n + 2),
+        (Finset.filter (fun d => d ⊆ Finset.univ.erase i) Doors).card)
+      = ∑ d ∈ Doors, (Finset.filter (fun i => d ⊆ Finset.univ.erase i) Finset.univ).card := by
+    simp_rw [Finset.card_filter]
+    rw [Finset.sum_comm]
+  -- Counting by doors: each door lies in exactly two cells.
+  have hdoors :
+      (∑ d ∈ Doors, (Finset.filter (fun i => d ⊆ Finset.univ.erase i) Finset.univ).card)
+        = 2 * Doors.card := by
+    rw [Finset.sum_congr rfl (fun d hd => ?_), Finset.sum_const, smul_eq_mul, mul_comm]
+    rw [hDoors, Finset.mem_filter] at hd
+    exact boundary_simplex_closed_incidence d hd.2
+  calc 2 * Doors.card
+      = ∑ d ∈ Doors, (Finset.filter (fun i => d ⊆ Finset.univ.erase i) Finset.univ).card :=
+        hdoors.symm
+    _ = ∑ i : Fin (n + 2),
+          (Finset.filter (fun d => d ⊆ Finset.univ.erase i) Doors).card := hswap.symm
+    _ = (n + 2) * (n + 1) := hcells
+
 end SpernerTuckerSimplexBoundaryPseudomanifold
