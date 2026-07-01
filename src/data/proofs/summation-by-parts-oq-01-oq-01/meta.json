@@ -52,7 +52,8 @@
     "keyInsights": [
       "**Non-constant differences expose the ladder.** Where the first-order weight $k$ has constant differences $1$ (collapsing Abel's correction to pure geometric data), the quadratic weight $k^2$ has differences $2k+1$. Summation by parts therefore drops $\\sum k^2 r^k$ to a first-order sum $\\sum (2k+1) G_{i+1}$ — making visible the recursion $\\deg \\to \\deg-1$ that produces every $\\sum k^m r^k$ in closed form.",
       "**Field, not analysis.** Like its parent, the identity needs no norm and no convergence hypothesis: it is an exact rational-function-in-$r$ identity over $(r-1)^3$, valid for every $r\\neq 1$ in any field. The familiar $r(1+r)/(1-r)^3$ is only its $n\\to\\infty$ shadow when $|r|<1$.",
-      "**The cube vanishes at $r=2$.** Because $(2-1)^3=1$, the second-order formula specializes to a clean polynomial-times-$2^n$ identity with integer coefficients, a memorable closed form $\\sum_{k<n} k^2 2^k = 2^n(n^2-4n+6)-6$ that the division-free induction confirms independently."
+      "**The cube vanishes at $r=2$.** Because $(2-1)^3=1$, the second-order formula specializes to a clean polynomial-times-$2^n$ identity with integer coefficients, a memorable closed form $\\sum_{k<n} k^2 2^k = 2^n(n^2-4n+6)-6$ that the division-free induction confirms independently.",
+      "**Abel summation is discrete integration by parts, and the weight-difference is a discrete derivative.** The forward difference $k^2 \\mapsto 2k+1$ is the finite-difference analogue of $\\tfrac{d}{dr}$ acting on the index-weight; iterating the by-parts transform is the exact combinatorial shadow of the analytic identity $\\sum_{k\\ge0} k^m r^k = (r\\,\\tfrac{d}{dr})^m (1-r)^{-1}$, where each application of $r\\,\\tfrac{d}{dr}$ is mirrored by one Abel transform lowering the polynomial degree by one — which is precisely the ladder the open questions ask to iterate."
     ]
   },
   "sections": [
@@ -97,6 +98,24 @@
       "Is there a single statement ∑_{k<n} P(k)·rᵏ = (Q(n,r)·rⁿ − Q(0,r))/(r−1)^{deg P + 1} for an arbitrary polynomial P, packaging all of these as one theorem with Q determined by the finite differences of P?"
     ]
   },
+  "references": [
+    {
+      "title": "Abel's summation by parts / summation transformation",
+      "url": "https://en.wikipedia.org/wiki/Abel%27s_summation_formula"
+    },
+    {
+      "title": "Arithmetico-geometric sequence and the sums ∑ kⁿ rᵏ",
+      "url": "https://en.wikipedia.org/wiki/Arithmetico-geometric_sequence"
+    },
+    {
+      "title": "R. Graham, D. Knuth, O. Patashnik, Concrete Mathematics (2nd ed., 1994) — finite calculus, summation by parts, and ∑ k² xᵏ",
+      "url": "https://en.wikipedia.org/wiki/Concrete_Mathematics"
+    },
+    {
+      "title": "Mathlib: Finset.sum_range_by_parts (Abel summation for ranges)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/BigOperators/Module.html"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "summation-by-parts-oq-01",
