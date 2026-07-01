@@ -3,6 +3,38 @@
   "title": "Cassini's Identity via the Fibonacci Q-Matrix Determinant",
   "slug": "cassini-identity-oq-01",
   "description": "A fully machine-checked proof of Cassini's identity F_{n+2}·F_n − F_{n+1}² = (−1)^{n+1} obtained from the multiplicativity of the determinant along powers of the Fibonacci companion matrix Q = !![1,1;1,0]. Since det(Q^{n+1}) = (det Q)^{n+1} = (−1)^{n+1} while the explicit power Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n] expands to F_{n+2}·F_n − F_{n+1}², the identity falls out by equating the two evaluations. Mathlib proves the integer-indexed Cassini identity (Int.fib_succ_mul_fib_pred_sub_fib_sq) only by direct induction and records no Fibonacci matrix; this entry supplies the conceptually different linear-algebra/determinant proof.",
+  "references": [
+    {
+      "authors": "Giovanni Domenico Cassini",
+      "title": "Une nouvelle progression de nombres (Académie Royale des Sciences)",
+      "year": 1680,
+      "note": "The identity F_{n+1}F_{n−1} − Fₙ² = (−1)ⁿ, proved here from the Fibonacci Q-matrix determinant."
+    },
+    {
+      "authors": "Robert Simson",
+      "title": "An Explication of an Obscure Passage in Albert Girard's Commentary (Phil. Trans. Royal Soc. 48)",
+      "year": 1753,
+      "note": "An early rediscovery; the identity is sometimes called the Simson (or Cassini–Simson) identity."
+    },
+    {
+      "authors": "Ronald L. Graham, Donald E. Knuth and Oren Patashnik",
+      "title": "Concrete Mathematics (2nd ed.)",
+      "year": 1994,
+      "note": "Addison-Wesley. The Fibonacci companion matrix Q = [[1,1],[1,0]] and det(Qⁿ) = (−1)ⁿ, the exact method used here."
+    },
+    {
+      "authors": "Nikolai N. Vorobiev",
+      "title": "Fibonacci Numbers",
+      "year": 2002,
+      "note": "Birkhäuser. Cassini's identity and matrix representations of Fibonacci numbers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Nat.fib, Matrix.det_pow and Matrix.det_fin_two",
+      "year": 2024,
+      "note": "Determinant multiplicativity det(Qⁿ⁺¹)=(det Q)ⁿ⁺¹ and the explicit 2×2 power giving the identity."
+    }
+  ],
   "meta": {
     "author": "Jean-Dominique Cassini (1680); matrix proof formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cassini_and_Catalan_identities",
