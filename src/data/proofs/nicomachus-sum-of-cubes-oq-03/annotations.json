@@ -7,7 +7,7 @@
     "title": "The Odd-Cube Analogue of Nicomachus's Theorem",
     "content": "Where the parent identity sums *all* cubes, $1^3 + 2^3 + \\cdots + n^3 = (\\sum k)^2$, this entry sums only the **odd** cubes: $1^3 + 3^3 + 5^3 + \\cdots + (2n-1)^3 = n^2(2n^2-1)$. Indexing the $n$ odd numbers as $2k+1$ for $k = 0,\\dots,n-1$, the statement is $\\sum_{k<n}(2k+1)^3 = n^2(2n^2-1)$ — verified by hand at $n=1$ ($1 = 1\\cdot 1$), $n=2$ ($1+27 = 28 = 4\\cdot 7$), and $n=3$ ($1+27+125 = 153 = 9\\cdot 17$). Unlike the all-cubes case, the right side is not a perfect square: the triangular-number structure is replaced by the factor $2n^2-1$. The proof's central design choice — foreshadowed here — is to dodge the truncated subtraction in $2n^2-1 = 2n^4/n^2 - 1$ by proving a subtraction-free equivalent over $\\mathbb{N}$ and recovering the headline form over $\\mathbb{Z}$ only at the end. Mathlib has neither the odd-cube identity nor this repackaging.",
     "mathContext": "$\\sum_{k=1}^{n}(2k-1)^3 = 1^3+3^3+\\cdots+(2n-1)^3 = n^2(2n^2-1)$.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": ["Nicomachus's theorem (∑k³ = (∑k)²)", "odd-number indexing 2k+1", "figurate/power sums"],
     "relatedConcepts": ["Nicomachus's theorem", "odd cubes", "Faulhaber identities", "truncated subtraction in ℕ"]
   },

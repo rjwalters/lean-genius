@@ -7,7 +7,7 @@
     "title": "The Open Question and Why the Naive Generalization Fails",
     "content": "The parent entry uses Cantor's 1874 height function to prove $\\{x \\in \\mathbb{R} \\mid \\text{IsAlgebraic } \\mathbb{Q}\\ x\\}$ countable. Its open question asks whether this extends to other base fields — e.g. $\\mathbb{Q}(\\sqrt 2)$ or 'algebraic $p$-adic numbers'. The header pins down the trap: the phrase *algebraic $p$-adic numbers* silently changes the base field to $\\mathbb{Q}_p$, which is **uncountable**, and every element of an uncountable field is trivially algebraic over itself (a root of $X - k$). So the honest statement is not an unconditional 'yes' but a biconditional: for a field extension $L/K$, the algebraic set $\\{x \\in L \\mid \\text{IsAlgebraic } K\\ x\\}$ is countable **iff** the base field $K$ is countable. The ambient field $L$ is irrelevant.",
     "mathContext": "$\\{x \\in L \\mid \\text{IsAlgebraic } K\\ x\\}\\ \\text{countable} \\iff K\\ \\text{countable}.$ The algebraic elements are the roots of the polynomials in $K[X]$; there are $\\#K$-many such polynomials, so the count is governed entirely by $\\#K$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["algebraic numbers", "countability", "field extension", "p-adic numbers", "Cantor's theorem"],
     "prerequisites": ["cardinality", "algebraic elements over a field"]
   },

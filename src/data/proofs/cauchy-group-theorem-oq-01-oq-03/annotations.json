@@ -31,7 +31,7 @@
     "title": "The Two-Way Absence Certificate",
     "content": "`not_dvd_card_iff_forall_orderOf_ne` states ¬ p ∣ |G| ↔ ∀ x, orderOf x ≠ p — the contrapositive of the biconditional, obtained by rewriting and push_neg. This upgrades the parent's not_dvd_card_of_no_orderOf_eq, which proves only (no order-p element) → p ∤ |G|. As an equivalence it certifies that the absence of an order-p witness is not merely sufficient but precisely equivalent to p ∤ |G|: exhaustively failing to find an order-p element is a valid proof that p does not divide the order.",
     "mathContext": "$\\lnot(p\\mid|G|) \\iff \\forall x,\\ \\mathrm{ord}(x)\\neq p$. The negation of an existential over a Fintype is a decidable universal.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": ["push_neg", "contrapositive", "decidable existentials"],
     "relatedConcepts": ["not_dvd_card_of_no_orderOf_eq", "decision procedure", "completeness"]
   },
@@ -55,7 +55,7 @@
     "title": "Running the Certificate on ZMod 12: Presence and Certified Absence",
     "content": "ZMod 12 has order 12 = 2²·3. The biconditional fires at p = 2 and p = 3 (since 2, 3 ∣ 12, by decide), yielding elements of those orders; explicit witnesses 6 (order 2) and 4 (order 3) are certified through addOrderOf_eq_prime from decidable facts, since addOrderOf itself does not reduce under the kernel. At p = 5 the two-way absence certificate proves ∀ x, addOrderOf x ≠ 5 from the single fact 5 ∤ 12 — a universally quantified non-existence over all 12 elements obtained WITHOUT enumeration. Every step is kernel `decide` on ℕ, so the file avoids native_decide and Lean.ofReduceBool.",
     "mathContext": "$\\mathrm{card}(\\mathbb{Z}/12) = 12$ via ZMod.card; presence from $2,3\\mid 12$, absence from $5\\nmid 12$. The order-5 non-existence is a corollary of a divisibility check, not a 12-fold search.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": ["ZMod n and addOrderOf", "addOrderOf_eq_prime", "kernel decide vs native_decide"],
     "relatedConcepts": ["ZMod.card", "concrete witnesses", "certified absence"]
   },

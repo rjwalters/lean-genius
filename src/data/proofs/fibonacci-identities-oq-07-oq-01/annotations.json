@@ -7,7 +7,7 @@
     "title": "From Fibonacci to every Lucas sequence",
     "content": "A sequence (aₙ) is a divisibility sequence when m ∣ n implies aₘ ∣ aₙ. The Fibonacci numbers are the archetype — Mathlib records m ∣ n → Fₘ ∣ Fₙ as Nat.fib_dvd — but Fibonacci is just the (P,Q) = (1,−1) member of the two-parameter Lucas family Uₙ(P,Q): U₀ = 0, U₁ = 1, Uₙ₊₂ = P·Uₙ₊₁ − Q·Uₙ. Mathlib has no divisibility results for the general family. This entry proves m ∣ n ⟹ Uₘ ∣ Uₙ for arbitrary integer P, Q, with no coprimality hypothesis, so Fibonacci, Pell (2,−1), and Uₙ = 2ⁿ − 1 at (3,2) are all divisibility sequences by one theorem.",
     "mathContext": "Fundamental Lucas sequence $U_0 = 0,\\ U_1 = 1,\\ U_{n+2} = P U_{n+1} - Q U_n$. Goal: $m \\mid n \\Rightarrow U_m \\mid U_n$ for all $P, Q \\in \\mathbb{Z}$, generalizing $\\texttt{Nat.fib\\_dvd}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "divisibility sequence",
       "Lucas sequence Uₙ(P,Q)",

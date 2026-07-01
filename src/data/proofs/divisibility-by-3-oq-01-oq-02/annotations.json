@@ -7,7 +7,7 @@
     "title": "From Hand-Supplied Constants to a Computed Osculator",
     "content": "The parent framework `DivisibilityTruncationGeneral` proves two parametric truncation theorems, `truncation_pos` and `truncation_neg`, but every concrete divisibility test still requires a human to *supply* the osculator constant $c$ together with a witness that $d \\mid 10c \\pm 1$.\n\nThis file removes that per-divisor hand-work. We give a single computable function $\\mathrm{osculator}(d) = \\mathtt{Int.gcdA}\\,10\\,d$ (a Bézout coefficient of $10$ modulo $d$) and prove once and for all that it satisfies the positive-osculator relation for every $d$ coprime to $10$. The truncation rule then becomes *uniform*: at any concrete divisor the only remaining side goal is decidable coprimality.",
     "mathContext": "For $\\gcd(d,10)=1$, Bézout gives integers with $10 a + d b = 1$; taking $c = a = \\mathtt{gcdA}\\,10\\,d$ yields $10c - 1 = -db$, i.e. $d \\mid 10c - 1$.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": [
       "divisibility-truncation-general entry",
       "Bézout's identity over the integers"
@@ -26,7 +26,7 @@
     "title": "The Computable Osculator osculator(d) = Int.gcdA 10 d",
     "content": "`osculator d` is defined as `Int.gcdA 10 (d : ℤ)`, the first Bézout coefficient of $10$ and $d$. It is a *total* computable function of $d$: no coprimality hypothesis is needed to define it, only to prove it behaves as an inverse. For $d$ coprime to $10$ it is an inverse of $10$ modulo $d$; for other $d$ it is still well-defined but the truncation rule need not apply.",
     "mathContext": "$\\mathrm{osculator}(d) := \\mathtt{Int.gcdA}\\,10\\,d$; when $\\gcd(d,10)=1$ this is $10^{-1} \\bmod d$ (up to sign/representative).",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": ["extended Euclidean algorithm"],
     "relatedConcepts": ["modular inverse", "extended Euclidean algorithm"]
   },
@@ -38,7 +38,7 @@
     "title": "osculator_spec: Correctness from Bézout's Identity",
     "content": "`osculator_spec` proves that for every $d$ coprime to $10$, the computed osculator satisfies $d \\mid 10\\cdot\\mathrm{osculator}(d) - 1$ — exactly the hypothesis `truncation_pos` requires. The proof invokes `Int.gcd_eq_gcd_ab` (Bézout: $\\gcd(10,d) = 10\\,\\mathtt{gcdA} + d\\,\\mathtt{gcdB}$), collapses $\\gcd(10,d)$ to $1$ using `Int.isCoprime_iff_gcd_eq_one`, and exhibits $-\\mathtt{gcdB}$ as the witness for the divisibility, closing with `linear_combination`.\n\nThis is the crux: it converts a fact previously discharged by a *supplied* numeric witness into one *derived* from the structure of Bézout's identity.",
     "mathContext": "$\\gcd(10,d)=1 \\Rightarrow 1 = 10c + d\\,b$ with $c=\\mathrm{osculator}(d)$, so $10c-1 = d(-b)$ and $d \\mid 10c-1$.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": ["Bézout's identity", "IsCoprime <-> gcd = 1"],
     "relatedConcepts": ["Bézout coefficients", "coprimality"]
   },
@@ -50,7 +50,7 @@
     "title": "truncation_uniform: One Rule for All Divisors Coprime to 10",
     "content": "`truncation_uniform` combines `truncation_pos` with `osculator_spec` to obtain, for *every* $d$ coprime to $10$,\n$$ d \\mid n \\iff d \\mid \\left(\\lfloor n/10\\rfloor + \\mathrm{osculator}(d)\\cdot(n \\bmod 10)\\right). $$\nThe osculator is no longer an input: it is computed from $d$. The only hypothesis is `IsCoprime (d:ℤ) 10`, which at any concrete numeral is decidable.",
     "mathContext": "Instantiates the parametric positive-osculator rule at $c = \\mathrm{osculator}(d)$, with the osculator relation supplied by `osculator_spec`.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": ["truncation_pos", "osculator_spec"],
     "relatedConcepts": ["truncation divisibility test", "uniformity"]
   },

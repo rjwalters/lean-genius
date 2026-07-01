@@ -7,7 +7,7 @@
     "title": "From Infinitude to a Counting Bound",
     "content": "The parent entry (abundant-number-oq-03) proves the set $\\{n : \\text{Odd } n \\wedge n \\text{ abundant}\\}$ is infinite, using the witness family $945\\cdot(2k+1) = 945, 2835, 4725, \\dots$ — each an odd positive multiple of the smallest odd abundant number $945 = 3^3\\cdot 5\\cdot 7$. That is a purely qualitative fact. Here we extract the *quantitative* content already latent in the family. Because consecutive witnesses differ by exactly $2\\cdot 945 = 1890$, one witness falls in each length-$1890$ window, so about $N/1890$ of them lie below $N$. This gives odd abundant numbers **positive lower density** $\\geq 1/1890$ — the first open question raised in the parent's conclusion.",
     "mathContext": "$\\mathrm{oddAbundantCount}(N) \\ge N/1890 \\iff \\liminf_{N} \\frac{\\mathrm{oddAbundantCount}(N)}{N} \\ge \\frac{1}{1890} > 0$.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": ["Abundant numbers (σ(n) > 2n)", "Set.Infinite and lower density of a set of integers"],
     "relatedConcepts": ["natural density", "abundant numbers", "witness family 945·(2k+1)", "OEIS A005231"]
   },

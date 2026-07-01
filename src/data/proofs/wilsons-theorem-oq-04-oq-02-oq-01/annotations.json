@@ -10,7 +10,7 @@
     "title": "What Survives the Loss of Commutativity",
     "content": "The docstring frames the whole file against its parent. For a finite abelian group, ∏ x : G, x is a single well-defined element (Finset.prod requires a commutative monoid). Drop commutativity and that expression stops type-checking: there is no order-free product of all elements. Rather than abandon the question, this file locates the largest quotient on which the product still makes sense — the abelianization Gᵃᵇ = G/[G,G], the universal commutative quotient of G. The main theorem states that the image of any ordered product there is canonical, and the four supporting results (permutation lemmas, order-independence corollary, abelian contrast, two-element witness) triangulate exactly why that quotient is both necessary and sufficient.",
     "mathContext": "The universal property of abelianization: $\\mathrm{of} : G \\to G^{\\mathrm{ab}}$ is initial among homomorphisms from $G$ to a commutative group. Any construction that only becomes canonical after killing commutators factors through $G^{\\mathrm{ab}}$, which is precisely why the order-dependent $l.\\mathrm{prod}$ acquires a well-defined value there.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "abelianization",
       "commutator subgroup",

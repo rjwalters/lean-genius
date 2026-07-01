@@ -19,7 +19,7 @@
     "title": "The figurate family object S(k,n) = C(n+k−1,k)",
     "content": "S(k,n) := Nat.multichoose n k is the k-dimensional figurate number, taken directly as Mathlib's multiset coefficient. S_eq_choose rewrites it to the ordinary binomial C(n+k−1,k) via Nat.multichoose_eq. This is the same family object as the sibling entry, re-derived here so this entry is self-contained rather than importing the sibling file — avoiding any cross-file build coupling while still cross-referencing it.",
     "mathContext": "$S(k,n) = \\mathrm{multichoose}(n,k) = \\binom{n+k-1}{k}$",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": ["multiset coefficient", "binomial coefficient", "figurate numbers"],
     "prerequisites": ["Nat.multichoose", "Nat.multichoose_eq"]
   },
@@ -31,7 +31,7 @@
     "title": "The uniform product closed form: k! · S(k,n) = ascFactorial n k",
     "content": "This is the mathematical heart of the entry. factorial_mul_S states k! · S(k,n) = n·(n+1)·⋯·(n+k−1) = Nat.ascFactorial n k, a SINGLE identity valid for every dimension k with no per-k induction. Its proof is one rewrite: read Mathlib's Nat.ascFactorial_eq_factorial_mul_choose' (which says n.ascFactorial k = k! · C(n+k−1,k)) backwards through S_eq_choose. The 'no separate induction' phenomenon the open question isolates is therefore genuine — the induction that classically establishes each figurate closed form is pre-packaged in the choose ↔ ascending-factorial bridge, and reading it through S(k,n) = C(n+k−1,k) settles every rung at once. S_closed then gives the division form S(k,n) = ascFactorial n k / k! directly from Nat.choose_eq_asc_factorial_div_factorial'.",
     "mathContext": "$k!\\cdot S(k,n) = \\prod_{i=0}^{k-1}(n+i) = n^{\\overline{k}};\\qquad S(k,n) = \\frac{n^{\\overline{k}}}{k!}$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["ascending factorial", "rising factorial", "closed form", "Pochhammer symbol"],
     "prerequisites": ["Nat.ascFactorial_eq_factorial_mul_choose'", "Nat.choose_eq_asc_factorial_div_factorial'"]
   },
@@ -55,7 +55,7 @@
     "title": "Multiplied closed forms: the honest, division-free statements",
     "content": "Combining factorial_mul_S with the ascFactorial evaluations and the numeric factorials 2! = 2, 3! = 6, 4! = 24 gives 2·S(2,n) = n(n+1), 6·S(3,n) = n(n+1)(n+2), and 24·S(4,n) = n(n+1)(n+2)(n+3). These are exact equations of natural numbers — no truncating division is involved — so they are the most faithful form of the closed forms. The tetrahedral case six_mul_S_three is precisely the object the open question named; twentyfour_mul_S_four is a pentatope rung that goes beyond the sibling entry.",
     "mathContext": "$2\\,S(2,n)=n(n+1),\\quad 6\\,S(3,n)=n(n+1)(n+2),\\quad 24\\,S(4,n)=n(n+1)(n+2)(n+3)$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["tetrahedral numbers", "pentatope numbers", "triangular numbers", "closed form"],
     "prerequisites": ["factorial_mul_S", "Nat.factorial"]
   },
@@ -67,7 +67,7 @@
     "title": "Divided closed forms: the textbook shapes",
     "content": "Dividing each multiplied identity by its factorial with Nat.eq_div_of_mul_eq_right yields the familiar textbook forms S(2,n) = n(n+1)/2, S(3,n) = n(n+1)(n+2)/6, and S(4,n) = n(n+1)(n+2)(n+3)/24. The divisibility needed for the natural-number quotient to be exact is supplied automatically by the multiplied identities themselves. S_three_closed is the exact tetrahedral answer the open question requested, mirroring the sibling's triangular S_two_closed one rung up.",
     "mathContext": "$S(2,n)=\\tfrac{n(n+1)}{2},\\quad S(3,n)=\\tfrac{n(n+1)(n+2)}{6},\\quad S(4,n)=\\tfrac{n(n+1)(n+2)(n+3)}{24}$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["tetrahedral numbers", "pentatope numbers", "closed form", "natural-number division"],
     "prerequisites": ["Nat.eq_div_of_mul_eq_right", "the multiplied closed forms"]
   },

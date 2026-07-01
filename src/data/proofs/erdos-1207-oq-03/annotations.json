@@ -32,7 +32,7 @@
     "title": "The base-3 digit map and its recursion",
     "content": "toNat k b = ∑_{i<k} bᵢ·3ⁱ encodes a digit string b : Fin k → Fin 2 (digits 0 or 1) as a natural number. The key structural fact is toNat_succ: peeling the least significant digit gives toNat (k+1) b = b₀ + 3·toNat k (tail b). This single recursion drives every subsequent induction.",
     "mathContext": "Obtained from Finset.sum_univ_succ after factoring 3 out of the higher-order terms; digit_le_one bounds each digit by 1.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "positional representation",
       "Finset.sum_univ_succ"
@@ -52,7 +52,7 @@
     "title": "Digit uniqueness (injectivity)",
     "content": "toNat_injective: distinct {0,1}-digit strings encode distinct numbers. This is base-3 representation uniqueness restricted to digits 0,1, and it makes |S_k| = 2ᵏ. The proof inducts with toNat_succ: the units digit is determined modulo 3 (all digits < 3), the higher part by division, and Fin.cases reassembles equality of the strings.",
     "mathContext": "The single linear equation b₀ + 3·B' = c₀ + 3·C' with b₀,c₀ ≤ 1 forces b₀ = c₀ and B' = C'; omega decides it.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "base-3 uniqueness",
       "injectivity"

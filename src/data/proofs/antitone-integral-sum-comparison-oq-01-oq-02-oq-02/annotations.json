@@ -23,7 +23,7 @@
     "title": "The Defect Is Nonnegative",
     "content": "defect_nonneg: 0 ≤ D f n. The upper Riemann sum ∑_{i<n} f(1+i) dominates the integral ∫₁^{1+n} f because f is antitone (on [k,k+1] the maximum of f is f(k)). This is Mathlib's AntitoneOn.integral_le_sum applied on the window [1,1+n].",
     "mathContext": "\\int_1^{1+n} f \\le \\sum_{i<n} f(1+i)",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "antitone integral test",
       "upper Riemann sum"
@@ -86,7 +86,7 @@
     "title": "The Limit Lies in [0, f(1)]",
     "content": "generalizedEuler_mem_Icc: 0 ≤ generalizedEuler f ≤ f 1. The lower bound comes from D f 0 = 0 ≤ ⨆ (le_ciSup); the upper bound from all terms being ≤ f 1 (ciSup_le). Thus every antitone nonnegative summand carries a generalized Euler constant bounded above by its first term.",
     "mathContext": "\\gamma_f \\in [0, f(1)]",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "supremum bounds",
       "generalized Euler constant"

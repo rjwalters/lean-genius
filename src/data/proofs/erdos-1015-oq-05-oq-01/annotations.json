@@ -56,7 +56,7 @@
     "title": "The Fold-Cardinality Induction",
     "content": "card_foldl_union_aux is the technical core: folding ∪ over a list of pairwise-disjoint Finsets, each of card t, starting from an init disjoint from all of them, produces exactly init.card + (length)·t. The proof inducts on the list with the init GENERALIZED, so the cons step can recurse with init ⊔ a. It maintains two invariants across the step: (i) init ⊔ a is disjoint from every tail element (via Finset.disjoint_union_left, combining hinit and the Pairwise head), and (ii) card (init ⊔ a) = init.card + t (via Finset.card_union_of_disjoint). `ring` closes the arithmetic.",
     "mathContext": "Generalizing the accumulator is essential: foldl threads init ⊔ a into the recursive call, so a fixed-init statement would not carry through the induction. The equal-size and disjointness hypotheses are exactly what upgrades the trivial bound card(⋃) ≤ Σcard to an equality.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "foldl induction",
       "generalized accumulator",
@@ -125,7 +125,7 @@
     "title": "Triangles: Leftover ≡ n (mod 3) and No Perfect Packing when 3 ∤ n",
     "content": "Specializing to t=3 (Moon's setting): triangle_covered_mod3 and triangle_leftover_mod3 state that every triangle partition covers a multiple of 3 vertices and leaves a count congruent to n mod 3. triangle_leftover_pos_of_mod3 then shows that when n ≡ 1 (mod 3) the leftover is strictly positive — a perfect triangle packing is impossible. These are the exact residue obstructions f(3)=4 must be consistent with; they do not by themselves pin the value 4, which needs Moon's extremal case analysis.",
     "mathContext": "The value f(3)=4 exceeds the crude mod-3 lower bound (which only forces leftover ∈ {0,1,2} depending on n mod 3). The extra content — that the worst case is 4, not smaller — is precisely the part beyond current Mathlib and is left as the entry's open question.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "triangle packing",
       "mod 3 residue",

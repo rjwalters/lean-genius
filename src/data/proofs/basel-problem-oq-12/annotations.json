@@ -10,7 +10,7 @@
     "title": "Module Header: Euler's Formula and Why B₆ Is the Crux",
     "content": "The header frames the whole entry. ζ(6) = ∑ 1/n⁶ is the next Euler zeta value after ζ(2) = π²/6 and ζ(4) = π⁴/90, and all three are instances of Euler's general even-argument formula ζ(2k) = (−1)^{k+1}·2^{2k−1}·π^{2k}·B_{2k}/(2k)!, which Mathlib packages as `hasSum_zeta_nat`. Specializing at k = 3 collapses the entire problem onto a single unknown: the sixth Bernoulli number B₆. Mathlib's Bernoulli API stops at `bernoulli'_four`, so B₆ = 1/42 is exactly the missing ingredient this entry supplies — every other step is arithmetic on top of `hasSum_zeta_nat`. The header even carries the full numerical reduction ζ(6) = 32·π⁶·(1/42)/720 = 32π⁶/30240 = π⁶/945, which the Lean proof then discharges formally with `norm_num`/`ring`.",
     "mathContext": "$\\zeta(2k) = \\dfrac{(-1)^{k+1}\\,2^{2k-1}\\,\\pi^{2k}\\,B_{2k}}{(2k)!}$; at $k=3$: $\\zeta(6) = \\dfrac{2^5\\pi^6 (1/42)}{720} = \\dfrac{\\pi^6}{945}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euler's even-zeta formula",
       "hasSum_zeta_nat",

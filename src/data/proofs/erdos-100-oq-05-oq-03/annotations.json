@@ -34,7 +34,7 @@
     "title": "The Equilateral predicate",
     "content": "$\\texttt{Equilateral}\\;p\\;s$ says every two distinct points of the family $p$ are at distance exactly $s$. When $s > 0$ this forces the points to be distinct, and (as the next theorem shows) affinely independent — so an $s$-equilateral family of $m+1$ points is exactly the vertex set of a regular $m$-simplex of edge length $s$.",
     "mathContext": "$\\forall i\\,j,\\; i \\ne j \\to \\operatorname{dist}(p_i, p_j) = s$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "equidistant set",
       "regular simplex edge length"

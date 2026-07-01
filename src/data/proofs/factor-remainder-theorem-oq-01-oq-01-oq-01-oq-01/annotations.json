@@ -19,7 +19,7 @@
     "title": "The ordinary-derivative test is vacuous on X^(pᵉ)",
     "content": "derivative(X^(pᵉ)) = C(pᵉ)·X^(pᵉ−1) = 0 because (pᵉ : K) = 0 (p ∣ pᵉ for e ≥ 1, via CharP.cast_eq_zero_iff). Hence every iterated derivative of positive order vanishes, and every condition (derivative^[j] X^(pᵉ)).eval 0 = 0 holds — at j = 0 because X^(pᵉ) evaluates to 0, at j ≥ 1 because the derivative is already 0. The ordinary test therefore certifies Xᵏ ∣ X^(pᵉ) for every k, an unbounded overcount.",
     "mathContext": "$\\tfrac{d}{dX}X^{p^e} = p^e X^{p^e-1} = 0$ in characteristic $p$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["formal derivative", "characteristic p", "iterated derivative"],
     "prerequisites": ["derivative_X_pow", "CharP.cast_eq_zero_iff"]
   },
@@ -31,7 +31,7 @@
     "title": "The coefficient/Taylor test is exact",
     "content": "The characteristic-free criterion X_pow_dvd_iff (Xⁿ ∣ f ↔ the first n coefficients of f vanish) is exactly the a = 0 Taylor-coefficient test. Applied to X^(pᵉ) via coeff_X_pow it gives Xᵏ ∣ X^(pᵉ) ↔ k ≤ pᵉ, so the true multiplicity pᵉ of the root 0 is detected exactly — in flat contradiction with the ordinary test's vacuous certificate.",
     "mathContext": "$X^k \\mid X^{p^e} \\iff k \\le p^e$, valid in every characteristic.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["Taylor coefficients", "divisibility of monomials"],
     "prerequisites": ["X_pow_dvd_iff", "coeff_X_pow"]
   },

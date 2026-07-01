@@ -29,7 +29,7 @@
     "title": "Part I: Closed Forms for the Reference Block",
     "content": "`sum_range_id_int` (2∑_{i<M}i = M(M−1)) and `sum_range_sq_int` (6∑_{i<M}i² = (M−1)M(2M−1)), both stated over ℤ and proved by a one-line induction (`Finset.sum_range_succ`, then `push_cast; ring`). Working in ℤ from the start avoids natural-number subtraction in the M(M−1) and (2M−1) factors.",
     "mathContext": "Gauss' sum and the square-pyramidal sum. Together they give the exact pairwise value ∑_{i,j<M}(i−j)² = 2(M·∑i² − (∑i)²) = M²(M²−1)/6 for the consecutive block {0,…,M−1}, the unique variance-minimiser among M distinct integers.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["Gauss sum", "square-pyramidal numbers", "induction"],
     "prerequisites": ["Finset.sum_range_succ", "ring/push_cast"]
   },

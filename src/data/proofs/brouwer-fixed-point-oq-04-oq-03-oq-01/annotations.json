@@ -101,7 +101,7 @@
     "title": "Fixed Points Transfer Exactly",
     "content": "`singleton_isFixedPoint_iff` shows the set-valued fixed-point equation specializes exactly to the scalar one: `IsFixedPoint (singletonMap f) x ↔ f x = x`. After unfolding, `mem_singleton_iff` turns `x ∈ {f x}` into `x = f x`, and `eq_comm` flips it to `f x = x`. The embedding therefore neither invents nor destroys fixed points — the correspondence has exactly the fixed points of the original map.",
     "mathContext": "$x \\in F_f(x) = \\{f(x)\\} \\iff x = f(x) \\iff f(x) = x$. The conclusion of Kakutani's theorem (a set-valued fixed point) specializes to the conclusion of Brouwer's theorem (an ordinary fixed point) with no loss.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "fixed point",
       "mem_singleton_iff"

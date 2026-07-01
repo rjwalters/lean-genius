@@ -34,7 +34,7 @@
     "title": "The Complex Geometric Sum of Exponentials",
     "content": "`geom_exp_partial_sum` proves $\\sum_{k=0}^{n} e^{ik\\theta} = \\frac{e^{i(n+1)\\theta}-1}{e^{i\\theta}-1}$ for $e^{i\\theta}\\ne 1$. The proof is three moves: (1) rewrite every summand $e^{ik\\theta}=(e^{i\\theta})^k$ using `Complex.exp_nat_mul` (the exponential power law), under the sum binder via `simp_rw`; (2) apply Mathlib's `geom_sum_eq`, whose hypothesis $e^{i\\theta}\\ne 1$ is exactly the given `h`; (3) re-express the top power $(e^{i\\theta})^{n+1}=e^{i(n+1)\\theta}$ by running the exponential power law backwards and normalising the cast $\\uparrow(n+1)=n+1$. No analysis beyond the exponential functional equation is needed.",
     "mathContext": "$\\sum_{k=0}^{n}(e^{i\\theta})^k = \\frac{(e^{i\\theta})^{n+1}-1}{e^{i\\theta}-1}$, with $(e^{i\\theta})^{n+1}=e^{i(n+1)\\theta}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "geometric series",
       "complex exponential",
@@ -56,7 +56,7 @@
     "title": "The Product-to-Sum Telescoping Step",
     "content": "`two_sin_half_mul_cos` and `two_sin_half_mul_sin` establish the integrating-factor identities $2\\sin(\\theta/2)\\cos(m\\theta)=\\sin((m+\\tfrac12)\\theta)-\\sin((m-\\tfrac12)\\theta)$ and $2\\sin(\\theta/2)\\sin(m\\theta)=\\cos((m-\\tfrac12)\\theta)-\\cos((m+\\tfrac12)\\theta)$. Each is proved by rewriting the half-integer-shifted arguments $(m\\pm\\tfrac12)\\theta = m\\theta\\pm\\theta/2$, expanding with the angle-addition formulas `Real.sin_add`/`Real.sin_sub` (resp. `Real.cos_add`/`Real.cos_sub`), and closing with `ring`. Multiplying a summand by the factor $2\\sin(\\theta/2)$ turns it into a difference of consecutive terms — the algebraic heart of the telescope.",
     "mathContext": "$2\\sin(\\theta/2)\\cos(m\\theta)=\\sin((m+\\tfrac12)\\theta)-\\sin((m-\\tfrac12)\\theta)$; sine analogue with cosines. Both are the addition formulas $\\sin(a\\pm b)$, $\\cos(a\\pm b)$ specialised at $b=\\theta/2$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "product-to-sum identities",
       "angle-addition formulas",

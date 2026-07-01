@@ -79,7 +79,7 @@
     "title": "k = 0: Minkowski Sum of Convex Sets Is Convex",
     "content": "`nonConvexIndices_eq_empty`: if every summand is convex, there are no non-convex indices.\n\n`convex_summands_hull_eq` then recovers a classical theorem as the zero-excess special case: if every Sᵢ is convex, then conv(∑Sᵢ) = ∑Sᵢ, i.e. any point of the convex hull of the Minkowski sum already lies in the sum. The proof drives the refined excess bound to min(d, 0) = 0, so the convexification filter is empty, meaning every f i ∈ Sᵢ; assembling these gives membership in ∑Sᵢ.\n\nThis is a satisfying sanity check: the refinement's endpoint is exactly the well-known fact that a Minkowski sum of convex sets is convex — obtained here for free from the counting bound.",
     "mathContext": "$k = 0 \\Rightarrow \\text{excess} \\le \\min(d, 0) = 0 \\Rightarrow \\mathrm{conv}(\\sum_i S_i) \\subseteq \\sum_i S_i$; the reverse inclusion is automatic, so equality holds.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Minkowski sum of convex sets",
       "convex hull",

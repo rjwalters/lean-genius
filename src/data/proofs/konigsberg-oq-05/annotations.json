@@ -64,7 +64,7 @@
     "title": "Odd-Degree Vertices Are Exactly {u, v}",
     "content": "Repackages the endpoint biconditional as a set equality: the set of odd-degree vertices of a graph carrying an open Eulerian trail equals the two-element endpoint set $\\{u, v\\}$. Proved by `ext` followed by the pointwise biconditional.",
     "mathContext": "$\\{w \\mid \\mathrm{Odd}(\\deg_G w)\\} = \\{u, v\\}$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "set extensionality",
       "odd-degree vertex set"
@@ -89,7 +89,7 @@
     "title": "Exactly Two Odd-Degree Vertices",
     "content": "Sharpens Mathlib's `card_odd_degree` (which gives 0 or 2) to exactly 2 in the open-trail case. The count-0 branch is excluded because the endpoint $u$ is a concrete odd-degree witness, making the subtype nonempty; `Fintype.card_pos_iff` and `omega` finish.",
     "mathContext": "$|\\{w \\mid \\mathrm{Odd}(\\deg_G w)\\}| = 2$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "IsEulerian.card_odd_degree",
       "Fintype.card_pos_iff"
@@ -114,7 +114,7 @@
     "title": "A Circuit Has No Odd-Degree Vertices",
     "content": "The closed-trail complement: for an Eulerian circuit ($u = u$) every vertex has even degree, so the odd-degree set is empty and its cardinality is 0. Here `even_degree_iff` specialises to $u = v$, where the guard $u \\neq v$ is false and the implication holds vacuously for every vertex.",
     "mathContext": "$\\{w \\mid \\mathrm{Odd}(\\deg_G w)\\} = \\varnothing, \\quad |\\{w \\mid \\mathrm{Odd}(\\deg_G w)\\}| = 0$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Eulerian circuit",
       "even degree",

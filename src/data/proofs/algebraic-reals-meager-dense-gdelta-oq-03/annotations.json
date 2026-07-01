@@ -27,7 +27,7 @@
     "title": "The Liouville numbers as a dense Gδ / residual set",
     "content": "The topological backbone, imported from Mathlib's `Liouville.Residual`: the Liouville set is a Gδ (`IsGδ.setOf_liouville`, a countable intersection of the open shells around rationals), it is dense (`dense_liouville`), and hence residual (`eventually_residual_liouville`). By the Baire Category Theorem a dense Gδ is comeagre — topologically 'almost all' reals.",
     "mathContext": "$\\{x \\mid \\text{Liouville}(x)\\} = \\bigcap_n \\bigcup_{a,\\,b>1} B\\!\\left(\\tfrac{a}{b}, \\tfrac{1}{b^n}\\right)\\setminus\\{\\tfrac ab\\}$ is a dense $G_\\delta$, hence residual.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Gδ set",
       "residual set",
@@ -86,7 +86,7 @@
     "title": "Almost every real is transcendental and NOT Liouville",
     "content": "The measure-theoretic counterpoint. The algebraic reals are countable (`AlgebraicNumbersCountable.algebraic_reals_countable`), hence Lebesgue-null, so almost every real is transcendental; and `ae_not_liouville` says almost every real is non-Liouville. Conjoining gives that a.e. real is a non-Liouville transcendental — the opposite of the Baire-generic behaviour.",
     "mathContext": "$\\forall^{\\text{a.e.}} x,\\ \\neg\\mathrm{Alg}_{\\mathbb{Q}}(x) \\wedge \\neg\\text{Liou}(x)$, using $\\mathrm{vol}\\{x \\mid \\mathrm{Alg}_{\\mathbb{Q}}(x)\\}=0$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Lebesgue measure",
       "null set",

@@ -60,7 +60,7 @@
     "title": "naive_sigma_fails: The 4∤d Exclusion Is Load-Bearing",
     "content": "`naive_sigma_fails` guards the counting convention by proving three facts at once: 8·σ(4)=56, jacobiCount 4 = 24, and r₄ 4 = 24. The naive formula 8·σ(n) — correct for odd n — overcounts badly at n=4 (56 vs the true 24) because it fails to drop the divisor d=4. This is why Jacobi's formula cannot be stated as 8·σ for all n; the 4∤d exclusion (equivalently the odd/even split 8·σ(n) vs 24·σ(oddPart n)) is mandatory. The first two conjuncts are 0-axiom (`decide`); the r₄ 4 = 24 conjunct uses native_decide.",
     "mathContext": "σ(4) = 1+2+4 = 7, so 8·σ(4) = 56. But r₄(4) = 24: dropping the excluded divisor d=4 gives jacobiCount 4 = 8·(1+2) = 24. The overcount 56−24 = 32 = 8·4 is exactly 8 times the excluded divisor.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "divisor sum σ",
       "convention pinning",

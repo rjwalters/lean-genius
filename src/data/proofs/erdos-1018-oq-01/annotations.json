@@ -23,7 +23,7 @@
     "title": "Per-Vertex Erase Identity",
     "content": "Deleting a vertex v from the ambient set changes the within-set degree of any other vertex u by exactly the indicator [u ~ v]: degOn S u = degOn (S.erase v) u + (if G.Adj u v then 1 else 0). Proved by rewriting the filtered neighbour set of u over S.erase v as the erase of its filtered neighbour set over S, then case-splitting on whether u is adjacent to v.",
     "mathContext": "$\\deg_S(u) = \\deg_{S\\setminus\\{v\\}}(u) + [u \\sim v]$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.erase and neighbour-set filtering",
       "Adjacency indicator [u ~ v]",

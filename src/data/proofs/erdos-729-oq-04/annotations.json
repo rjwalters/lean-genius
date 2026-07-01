@@ -38,7 +38,7 @@
     "title": "Legendre's Identity in Subtraction-Free Additive Form",
     "content": "`legendre_add` recasts Legendre's formula as `(p−1)·v_p(n!) + s_p(n) = n`, where `s_p(n) = (p.digits n).sum`. It combines Mathlib's multiplied form `sub_one_mul_padicValNat_factorial` with the digit-sum bound `Nat.digit_sum_le` and closes by `omega`. Keeping the identity additive (rather than the classical `v_p(n!) = (n − s_p(n))/(p−1)`) is the key move: it eliminates natural-number subtraction, so the whole downstream derivation can be discharged by `omega` on shared atoms.",
     "mathContext": "Legendre (1808): $v_p(n!) = \\dfrac{n - s_p(n)}{p-1}$. Clearing the denominator gives the subtraction-free form $(p-1)\\,v_p(n!) + s_p(n) = n$, valid since $s_p(n)\\le n$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Legendre's formula",
       "Base-p digit sum",
@@ -67,7 +67,7 @@
     "title": "The Multinomial Legendre/Kummer Identity (★)",
     "content": "`sub_one_mul_padicValNat_multinomial` is the core result: `(p−1)·v_p(multinomial s f) + s_p(Σᵢ f i) = Σᵢ s_p(f i)` over an arbitrary finite index set `s` (any number of parts `k = |s|`). The proof extracts `v_p(N!) = Σᵢ v_p((f i)!) + v_p(multinomial)` from `Nat.multinomial_spec` (via `padicValNat.mul` and `padicValNat_prod_factorial`), sums `legendre_add` over the parts, expands `legendre_add` for the total `N` through that relation, and lets `omega` cancel the shared atom `(p−1)·Σ v_p((f i)!)`. No subtraction, no per-prime bookkeeping.",
     "mathContext": "For $N=\\sum_i a_i$: $(p-1)\\,v_p\\!\\big(\\tfrac{N!}{\\prod a_i!}\\big) = \\sum_i s_p(a_i) - s_p(N)$. The right side, divided by $p-1$, is the number of carries when the $a_i$ are added in base $p$ (multinomial Kummer theorem).",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Kummer's theorem",
       "Multinomial coefficients",
@@ -97,7 +97,7 @@
     "title": "The Classical Division Form",
     "content": "`padicValNat_multinomial_eq_div` restates (★) in the familiar quotient form `v_p(multinomial s f) = (Σᵢ s_p(f i) − s_p(Σᵢ f i))/(p−1)`. Because `p ≥ 2` gives `p−1 > 0`, the additive identity can be divided cleanly by `Nat.mul_div_cancel_left`. This is the shape most directly comparable to Legendre's `v_p(n!) = (n − s_p(n))/(p−1)`.",
     "mathContext": "$v_p\\!\\big(\\tfrac{N!}{\\prod a_i!}\\big) = \\dfrac{\\sum_i s_p(a_i) - s_p(N)}{p-1}$, the multinomial analogue of Legendre's factorial valuation.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "Legendre's formula",
       "Exact division in ℕ",
@@ -125,7 +125,7 @@
     "title": "The k-Part Form and the Kummer Divisibility Criterion",
     "content": "`sub_one_mul_padicValNat_multinomial_fin` specializes (★) to `k` parts indexed by `Fin k` (via `s = Finset.univ`), the literal answer to the parent's `n!/(a₁!⋯a_k!)` with `k > 2` phrasing. `prime_dvd_multinomial_iff` then reads off the divisibility criterion `p ∣ multinomial s f ↔ s_p(Σᵢ f i) < Σᵢ s_p(f i)` — i.e. adding the parts in base `p` produces at least one carry. It uses `dvd_iff_padicValNat_ne_zero` and `mul_pos_iff_of_pos_left` to turn `p ∣ ·` into positivity of the left side of (★), then `omega`.",
     "mathContext": "$p \\mid \\dfrac{N!}{\\prod a_i!} \\iff s_p(N) < \\sum_i s_p(a_i)$: a prime divides the multinomial coefficient exactly when the base-$p$ addition of the parts carries. The two-part case $s=\\{a,b\\}$ is the classical binomial Kummer theorem.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Kummer's theorem",
       "Divisibility criteria",

@@ -73,7 +73,7 @@
     "title": "Fermat's Little Theorem as φ(p) = p − 1",
     "content": "Fermat's little theorem is nothing but Euler's theorem at a prime modulus:\n```\ntheorem fermat_little_of_euler {p a : ℕ} (hp : p.Prime) (h : Nat.Coprime a p) :\n    a ^ (p - 1) ≡ 1 [MOD p] := by\n  have := euler_modEq h\n  rwa [Nat.totient_prime hp] at this\n```\nSince `φ(p) = p - 1` for prime `p` (`Nat.totient_prime`), the totient exponent in Euler's congruence becomes `p - 1`. This makes the historical order of discovery explicit: Fermat (1640) is the prime case; Euler (1763) is the general modulus.",
     "mathContext": "$a^{p-1} \\equiv 1 \\pmod p$ for prime $p \\nmid a$, obtained from $a^{\\varphi(p)} \\equiv 1 \\pmod p$ and $\\varphi(p) = p - 1$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Fermat's little theorem",
       "Nat.totient_prime"

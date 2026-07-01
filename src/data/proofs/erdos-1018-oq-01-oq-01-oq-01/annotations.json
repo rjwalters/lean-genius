@@ -7,7 +7,7 @@
     "title": "Degeneracy on the Colouring Axis",
     "content": "The docstring situates this file as the colouring counterpart of the parent's edge bound. Both facts flow from the single hypothesis IsKDegenerate G k: in every non-empty induced subgraph there is a vertex of within-degree ≤ k. The grandparent (Erdos1018OQ01) extracts a dense subgraph from an edge count; the parent (Erdos1018OQ01OQ01) turns degeneracy into |E| ≤ k·n; here the same hypothesis is turned into χ(G) ≤ k+1, and the same split graph S_{n,k} witnesses tightness of both bounds simultaneously.",
     "mathContext": "$k\\text{-degenerate} \\implies |E| \\le k\\,n \\ \\text{and}\\ \\chi(G) \\le k+1$; both sharp on $S_{n,k}=K_k \\vee \\overline{K_{n-k}}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["graph degeneracy", "colouring number", "chromatic number", "extremal graph theory"],
     "prerequisites": ["simple graphs", "graph colouring"]
   },
@@ -19,7 +19,7 @@
     "title": "Reusing the Parent's Definitions",
     "content": "Rather than redefine degeneracy or the split graph, the file opens the parent namespaces and imports exactly the reusable pieces: degOn (within-set degree), IsKDegenerate, splitGraph and its adjacency lemma splitGraph_adj, the k-degeneracy proof splitGraph_kDegenerate, and the universal-part cardinality lemmas card_lt_le / card_lt_eq. This keeps the two extremal axes (edges and colours) anchored to one identical hypothesis and one identical witness graph.",
     "mathContext": "$\\deg_T(v) = \\#\\{w \\in T : v \\sim w\\}$; IsKDegenerate: every non-empty $T$ has $v \\in T$ with $\\deg_T(v) \\le k$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["induced subgraph", "modular formalization", "namespace reuse"],
     "prerequisites": ["Lean namespaces", "Mathlib SimpleGraph"]
   },
