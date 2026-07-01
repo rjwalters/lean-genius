@@ -98,6 +98,27 @@
       "mathContext": "$\\sum_{t \\geq 0} L(P,t) z^t = \\frac{h_0^* + h_1^* z + h_2^* z^2}{(1-z)^3}$, where $h_i^* \\geq 0$ (Stanley's theorem)."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Beck, M.",
+        "Robins, S."
+      ],
+      "title": "Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra",
+      "year": "2015",
+      "venue": "2nd ed., Undergraduate Texts in Mathematics, Springer",
+      "note": "Standard modern reference for Pick's theorem, Ehrhart polynomials, Ehrhart–Macdonald reciprocity and h*-vectors."
+    },
+    {
+      "authors": [
+        "Ehrhart, E."
+      ],
+      "title": "Sur les polyèdres rationnels homothétiques à n dimensions",
+      "year": "1962",
+      "venue": "Comptes Rendus de l'Académie des Sciences (Paris) 254, pp. 616–618",
+      "note": "Introduces the Ehrhart polynomial counting lattice points in dilates of a lattice polytope."
+    }
+  ],
   "conclusion": {
     "summary": "The 2D Ehrhart polynomial L(P,t) = A·t² + (B/2)·t + 1 is machine-verified via three independent proof routes: combinatorial (rectangles and triangles via Finset), algebraic (from Pick's theorem and scaling axioms). The interior count formula and h*-vector non-negativity are derived as immediate consequences. 25 theorems, 7 definitions, 324 lines.",
     "implications": "This formalization establishes the 2D Ehrhart polynomial as a direct corollary of Pick's theorem when combined with the geometric scaling laws. The cross-framework consistency result (rectangle_frameworks_agree) validates that the axiomatic and combinatorial approaches agree. The h*-vector formulation opens the path to Stanley's non-negativity theorem in higher dimensions.",

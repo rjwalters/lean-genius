@@ -192,6 +192,27 @@
       ]
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Beck, M.",
+        "Robins, S."
+      ],
+      "title": "Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra",
+      "year": "2015",
+      "venue": "2nd ed., Undergraduate Texts in Mathematics, Springer",
+      "note": "Standard modern reference for Pick's theorem, Ehrhart polynomials, Ehrhart–Macdonald reciprocity and h*-vectors."
+    },
+    {
+      "authors": [
+        "Stanley, R.P."
+      ],
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge Studies in Advanced Mathematics 49, Cambridge University Press",
+      "note": "Ehrhart theory, h*-vectors and the algebra of lattice-point generating functions."
+    }
+  ],
   "conclusion": {
     "summary": "Cross-polytope Ehrhart theory fully formalized: 69 theorems, 0 sorries, 0 axioms. Ehrhart polynomials, reciprocity, palindromic h*-vectors, duality with hypercube, and the identity h*(z) = (1+z)^d all proved.",
     "implications": "The identity h*(z) = (1+z)^d is a hallmark of the cross-polytope's combinatorial regularity. The palindromic h*-vector characterizes reflexive polytopes, placing β_d in the same family as simplices and hypercubes.",

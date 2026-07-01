@@ -127,6 +127,27 @@
       "summary": "Documents the remaining gap (primitive triangulation requires computational geometry) and proves `picks_from_triangulation`: given n primitive triangles and Pick's formula for the composite, the formula holds. This is the tautological conclusion that makes the inductive hypothesis explicit."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Pick, G."
+      ],
+      "title": "Geometrisches zur Zahlenlehre",
+      "year": "1899",
+      "venue": "Sitzungsberichte des deutschen naturwissenschaftlich-medicinischen Vereines für Böhmen \"Lotos\" 19, pp. 311–319",
+      "note": "Original statement of Pick's area formula for lattice polygons."
+    },
+    {
+      "authors": [
+        "Beck, M.",
+        "Robins, S."
+      ],
+      "title": "Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra",
+      "year": "2015",
+      "venue": "2nd ed., Undergraduate Texts in Mathematics, Springer",
+      "note": "Standard modern reference for Pick's theorem, Ehrhart polynomials, Ehrhart–Macdonald reciprocity and h*-vectors."
+    }
+  ],
   "conclusion": {
     "summary": "This 206-line fully verified file (0 sorries, 0 axioms) establishes the algebraic core of the constructive proof of Pick's theorem via triangulation. The base case (primitive triangles have area 1/2), the shoelace formula, Pick's formula for rectangles, and the additivity lemma are all machine-checked. The only gap is the triangulation existence theorem, which requires computational geometry infrastructure not yet in Mathlib.",
     "implications": "Pick's theorem connects to several deep mathematical areas: the theory of lattice polytopes (Ehrhart polynomials generalize Pick to higher dimensions), algebraic K-theory (the unimodularity condition is the SL₂(ℤ) orbit), and toric geometry (the Newton polytope of a polynomial's lattice structure). The formalization here demonstrates that the algebraic content of the classical proof is entirely straightforward; the difficulty lies in the combinatorial geometry of triangulation.",

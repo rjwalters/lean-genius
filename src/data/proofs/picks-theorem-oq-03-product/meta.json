@@ -159,6 +159,27 @@
       "mathContext": "Consolidates the 57 theorems: product formula and its reciprocity/interior variants, valuation, quasipolynomial examples, zonotope and simplex-product identities, and the Eulerian $h^*$-vector computations."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Beck, M.",
+        "Robins, S."
+      ],
+      "title": "Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra",
+      "year": "2015",
+      "venue": "2nd ed., Undergraduate Texts in Mathematics, Springer",
+      "note": "Standard modern reference for Pick's theorem, Ehrhart polynomials, Ehrhart–Macdonald reciprocity and h*-vectors."
+    },
+    {
+      "authors": [
+        "Stanley, R.P."
+      ],
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge Studies in Advanced Mathematics 49, Cambridge University Press",
+      "note": "Ehrhart theory, h*-vectors and the algebra of lattice-point generating functions."
+    }
+  ],
   "conclusion": {
     "summary": "Ehrhart product theory fully formalized: 57 theorems, 0 sorries, 0 axioms. Product formula, quasipolynomials, valuation property, zonotopes all proved.",
     "implications": "These results show Ehrhart's counting function is a valuation on the lattice of polytopes, opening the door to inclusion-exclusion arguments in lattice point counting. The product formula enables counting in multi-dimensional product spaces efficiently.",
