@@ -29,11 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (build-BLOCKED, unverified): wrote a non-vacuous framework witness in Erdos101OQ04.lean. The file previously exhibited only the general-position arc (realParabolaSet, fourPointLineCount=0), inhabiting just IsLowerBoundConstruction _ 0. Added explicit 5-point set W={(0,0),(1,0),(2,0),(3,0),(0,1)} proving IsLowerBoundConstruction W 1 (0 axioms), plus exists_isLowerBoundConstruction_pos (|W|=5>4 with positive threshold). NOT build-verified: Docker containerd content-store hit host-wide input/output error (even docker run alpine fails); no local Mathlib oleans for a private-snapshot fallback. Branch research/erdos-101-oq-04-witness-r6 holds the commit; rebuild+verify when Docker recovers. The two OPEN sorries (grunbaum_lower_bound_three_halves Omega(n^3/2), solymosi_stojakovic_lower_bound n^{2-o(1)}) remain untouched genuine open constructions.",
+    "progressSummary": "PROGRESS (VERIFIED, 0-axiom): added a non-vacuous framework witness in Erdos101OQ04.lean. The file previously exhibited only the general-position arc (realParabolaSet, fourPointLineCount=0), inhabiting just IsLowerBoundConstruction _ 0. Added explicit 5-point set W={(0,0),(1,0),(2,0),(3,0),(0,1)} proving IsLowerBoundConstruction W 1, plus exists_isLowerBoundConstruction_pos (|W|=5>4 with positive threshold). Build-verified via direct lean compile (Docker containerd content-store still down host-wide with input/output error); #print axioms of the four new theorems shows only [propext, Classical.choice, Quot.sound] (no sorryAx, no ofReduceBool). The two OPEN sorries (grunbaum_lower_bound_three_halves Omega(n^3/2), solymosi_stojakovic_lower_bound n^{2-o(1)}) remain untouched genuine open constructions.",
     "builtItems": [
-      "Erdos101OQ04.witnessPoints/witnessSet: explicit 5-point ppset {(0,0),(1,0),(2,0),(3,0),(0,1)} (WRITTEN, unverified)",
-      "Erdos101OQ04.witnessSet_isLowerBoundConstruction: IsLowerBoundConstruction witnessSet 1, 0 axioms (WRITTEN, unverified)",
-      "Erdos101OQ04.exists_isLowerBoundConstruction_pos: framework floor > arc zero for a >4-point set (WRITTEN, unverified)"
+      "Erdos101OQ04.witnessPoints/witnessSet: explicit 5-point ppset {(0,0),(1,0),(2,0),(3,0),(0,1)} (VERIFIED)",
+      "Erdos101OQ04.witnessSet_isLowerBoundConstruction: IsLowerBoundConstruction witnessSet 1, 0 axioms (VERIFIED)",
+      "Erdos101OQ04.exists_isLowerBoundConstruction_pos: framework floor > arc zero for a >4-point set (VERIFIED)"
     ],
     "insights": [
       "The realParabolaSet arc has fourPointLineCount=0, so the file only inhabited IsLowerBoundConstruction _ 0 before this session; the four collinear x-axis points of W give the first positive four-point-line count witness (>=1) with no five collinear.",
@@ -43,8 +43,7 @@
       "No mathlib gap for the witness; the OPEN Path A (Solymosi-Stojakovic) needs a measure-zero certificate for algebraic varieties in projection-parameter space, not currently in Mathlib in usable form."
     ],
     "nextSteps": [
-      "Rebuild Proofs.Erdos101OQ04 via Docker once containerd I/O corruption clears; verify the 3 new theorems compile.",
-      "If verified, this closes the non-vacuity gap; the frontier stays the two OPEN construction sorries.",
+      "Non-vacuity gap is now closed (witness verified 0-axiom); the frontier stays the two OPEN construction sorries.",
       "Path B (Grunbaum): next brick is a concrete finite construction with a PROVABLE positive lower bound on fourPointLineCount that grows (e.g. k disjoint 4-point lines with no cross-collinearity) - the hard part is ruling out accidental alignments for all n."
     ]
   },
