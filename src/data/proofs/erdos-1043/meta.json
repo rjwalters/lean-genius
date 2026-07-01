@@ -49,7 +49,7 @@
       "Verified corollary that every monomial z^n level set has all projections equal to 2 (monomial_projection)"
     ],
     "axiomCount": 2,
-    "lineCount": 311,
+    "lineCount": 344,
     "assumptions": "2 axioms: pommerenke_counterexample (Pommerenke — monic poly s.t. every projection of level set has measure ≥ 2.386), pommerenke_upper_bound (measure 3.3 is achievable as upper bound). 2 sorries remain in complex-analysis supporting lemmas (levelSet_connected_iff, levelSet_compact). disk_projection_measure and monomial_projection are now fully proved (0-axiom, only propext/Classical.choice/Quot.sound). The file now compiles cleanly (previously failed to elaborate due to missing scoped notation for `conj`/`ℝ≥0∞` and orphaned docstrings).",
     "theoremCount": 12,
     "definitionCount": 15,
@@ -258,7 +258,7 @@
       "Complex"
     ],
     "namespace": "Erdos1043",
-    "lineCount": 311,
+    "lineCount": 344,
     "axiomCount": 2,
     "theoremCount": 12,
     "definitionCount": 15,
