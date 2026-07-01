@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-chebo06-header",
+    "proofId": "chebyshev-bounds-oq-06",
+    "range": { "startLine": 4, "endLine": 31 },
+    "type": "concept",
+    "title": "The Workhorse Sandwich Behind Chebyshev Prime-Counting",
+    "content": "The docstring frames this file as a routine but load-bearing assembly: the two-sided bound 4ⁿ/(2n+1) ≤ C(2n,n) ≤ 4ⁿ is the estimate that drives Chebyshev-type prime-counting inequalities. The UPPER bound feeds the O(n) bound on θ(n) = ∑_{p≤n} log p (each prime p in (n,2n] divides C(2n,n), so ∏ p ≤ C(2n,n) ≤ 4ⁿ ⟹ θ-type upper bound); the LOWER bound forces enough prime factors into C(2n,n) to drive the lower estimate on π(n). Neither inequality is new — the lower is Mathlib's Nat.four_pow_le_two_mul_add_one_mul_central_binom (from (1+1)^{2n} = ∑ C(2n,m) with the central term largest), the upper a one-line corollary of Nat.choose_le_two_pow — but Mathlib records the even-row upper bound C(2n,n) ≤ 4ⁿ nowhere, and the packaged sandwich (ℕ, quotient, and real-valued forms) is the reusable, axiom-free building block this entry contributes to the axiomatized parent chebyshev-bounds.",
+    "mathContext": "$\\frac{4^n}{2n+1} \\le \\binom{2n}{n} \\le 4^n$ — the central term dominates its row ($\\ge$ average $4^n/(2n+1)$) yet is bounded by the full row sum $2^{2n} = 4^n$.",
+    "significance": "context",
+    "relatedConcepts": ["central binomial coefficient", "Chebyshev prime-counting bounds", "row sum of Pascal's triangle", "axiom-free building block"],
+    "prerequisites": ["binomial coefficients", "Chebyshev θ and π functions", "central term is the row maximum"]
+  },
+  {
     "id": "ann-upper-bound",
     "proofId": "chebyshev-bounds-oq-06",
     "range": { "startLine": 38, "endLine": 45 },
