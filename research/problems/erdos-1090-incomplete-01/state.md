@@ -1,16 +1,21 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-04-03T08:10:05.551Z
-**Iteration**: 1
+**Phase**: COMPLETED
+**Since**: 2026-06-30
+**Iteration**: 2
 
 ## Current Focus
 
-Initial exploration of the problem.
+r-coloring generalization of the Hales–Jewett construction.
 
 ## Active Approach
 
-None yet.
+Refactored `erdos1090_construction` into a palette-generic core
+`erdos1090_construction_colors (κ : Type) [Finite κ]`, then recovered the
+2-coloring result as the `Bool` instance and proved the previously prose-only
+`Erdos1090Generalized` (r-coloring) as the `Fin r` instance
+(`erdos1090_generalized_holds`). All 0-axiom (`[propext, Classical.choice,
+Quot.sound]` only), 0-sorry, compiles on host lean v4.26.0.
 
 ## Blockers
 
@@ -18,10 +23,11 @@ None.
 
 ## Next Action
 
-Begin problem exploration.
+None — SOLVED, 0-axiom, 0-sorry. Optional future work: quantitative upper bound
+on `ramseyNumber k`, or the higher-dimensional (`Erdos1090HigherDim`) version.
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 2
+- Current approach attempts: 1
+- Approaches tried: 1

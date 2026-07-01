@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-03T08:10:05.551Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,21 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED & VERIFIED (0 axioms, 0 sorries): Eliminated BOTH axioms (graham_selfridge, hunter_observation) by proving erdos1090_construction from Mathlib's Hales-Jewett theorem (Combinatorics.Line.exists_mono_in_high_dimension) via an explicit linear projection of the combinatorial cube [k]^ι into ℝ². Also repaired the file's pre-existing non-compiling state (orphan /-- docstrings, invalid ∀ p q r ∈ A multi-binders, SylvesterGallai DecidablePred). #print axioms: [propext, Classical.choice, Quot.sound] only.",
+    "progressSummary": "COMPLETED & VERIFIED (0 axioms, 0 sorries). Refactored erdos1090_construction into a PALETTE-GENERIC core erdos1090_construction_colors (κ : Type) [Finite κ] — the Hales-Jewett generic-projection argument does not depend on the color type. The 2-coloring result (erdos1090_construction, κ=Bool) and the previously prose-only r-coloring generalization (erdos1090_generalized_holds : Erdos1090Generalized k r, κ=Fin r) are now both proved as instances. #print axioms on all three: [propext, Classical.choice, Quot.sound] only.",
     "builtItems": [
-      "erdos1090_construction (Erdos1090Problem.lean:155): general k≥3 Ramsey set built from Hales-Jewett combinatorial line via linear projection φ p = ∑ j (p j:ℝ)•v j, v j=!₂[1,w j]; direction nonzero since first coord = |varying|≥1.",
-      "graham_selfridge, hunter_observation: converted from axiom to theorem (both = instances of erdos1090_construction).",
-      "Repaired 7 orphan /-- docstrings → /- block comments; expanded 2 invalid multi-binders ∀ p q r ∈ A; added open Classical in before SylvesterGallai for filter DecidablePred."
+      "erdos1090_construction_colors (κ : Type) [Finite κ] (k) (hk : k≥3): for ANY finite palette κ there is a finite A⊂ℝ² such that every κ-coloring has k monochromatic collinear points. Body = former erdos1090_construction proof with Bool→κ; Combinatorics.Line.exists_mono_in_high_dimension (Fin k) κ supplies the combinatorial line, geometry (dir=∑_{V} vⱼ, first coord=|V|≥1>0, injectivity) is palette-independent.",
+      "erdos1090_construction (k) (hk): 2-coloring result, now the κ=Bool instance of the generic core (binder-reorder to match MonochromaticKCollinear).",
+      "erdos1090_generalized_holds (k r): proves Erdos1090Generalized k r (was only a def + prose comment) as the κ=Fin r instance."
     ],
     "insights": [
-      "Erdős #1090 general case is provable axiom-free in Lean: Mathlib's Hales-Jewett (Combinatorics.Line.exists_mono_in_high_dimension) + a linear 'generic projection' suffices. No genericity argument needed — taking the projection's first coordinate as the coordinate-SUM makes any combinatorial line's direction have first coord = |V| ≥ 1 > 0, so it is automatically nonzero and the k image points are distinct.",
-      "Affine identity φ(l a) = φ(l 0) + (a:ℝ)•dir proved at the module level (add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum) from the per-coordinate fact emb(l a j)=emb(l 0 j)+emb a*[varying]; nonzeroness pushed through WithLp.ofLp (linear) to a positive Finset sum.",
-      "The committed file at HEAD never compiled (last commit was 'UNVERIFIED — build host down'); a prior knowledge note claimed the build was fixed but that fix was not in the committed state."
+      "Hales-Jewett already allows an arbitrary FINITE color type, and the generic linear projection [k]^ι → ℝ² is defined without reference to the palette — so once the 2-coloring construction is written palette-generically, the r-coloring generalization is FREE (a one-line Fin r instantiation). No new geometry is needed to go from 2 colors to r.",
+      "Making the color type a parameter (rather than re-proving) is the DRY win: erdos1090_construction and erdos1090_generalized_holds share one ~90-line proof. Only the final monochromatic step needed a binder reorder (∀ p q, p∈S→q∈S vs ∀ p∈S, ∀ q∈S) to match the Bool-side MonochromaticKCollinear shape.",
+      "The r≥2 hypothesis in Erdos1090Generalized is inessential for existence (a monochromatic line exists even for r=1); kept only to mirror the classical statement."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Optional follow-up: prove a quantitative upper bound on ramseyNumber k (currently only ramsey_lower_bound ≥ k is proved).",
-      "Optional: prove Erdos1090Generalized (r-coloring) from the same Hales-Jewett projection (Mathlib HJ already allows arbitrary finite color type)."
+      "Quantitative upper bound on ramseyNumber k (currently only ramsey_lower_bound ≥ k).",
+      "Prove the higher-dimensional analogue Erdos1090HigherDim (planes in ℝ^d) — Mathlib Hales-Jewett projects to ℝ^d just as it does to ℝ²."
     ]
   },
   "tags": [
@@ -65,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:10:05.551Z",
-  "lastUpdate": "2026-04-03T08:10:05.551Z",
+  "lastUpdate": "2026-06-30",
   "significance": 7,
   "tractability": 5
 }

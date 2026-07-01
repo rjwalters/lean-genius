@@ -61,12 +61,13 @@
       "IsMonochromatic, IsKCollinear, MonochromaticKCollinear, HasRamseyProperty, Erdos1090Question statements",
       "erdos_1090_affirmative, erdos_1090, erdos_1090_summary: main results, now axiom-free",
       "hasRamseyProperty_card_ge, ramsey_lower_bound: size lower bounds",
+      "erdos1090_construction_colors: palette-generic construction for ANY finite color type; erdos1090_construction (2-coloring) and erdos1090_generalized_holds (r-coloring) are its Bool / Fin r instances",
       "SylvesterGallai, HellyProperty, Erdos1090Generalized, Erdos1090HigherDim: related/generalized statements"
     ],
     "axiomCount": 0,
-    "lineCount": 487,
+    "lineCount": 512,
     "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 17
   },
   "overview": {
@@ -79,7 +80,8 @@
       "**Generic Projection:** For algebraically independent projection coordinates, the map from [k]ⁿ to ℝ² is injective and maps combinatorial lines to geometric lines. The `generic_projection` axiom captures both properties.",
       "**Ramsey Property Architecture:** The formalization cleanly separates `IsKCollinear` (geometric), `IsMonochromatic` (chromatic), `MonochromaticKCollinear` (combined), and `HasRamseyProperty` (universal over colorings), creating a reusable framework.",
       "**Minimum Size Problem:** The `ramseyNumber` definition and `r3_small` axiom (R(3) ≤ 9) address the optimization question of finding the smallest set with the Ramsey property.",
-      "**Generalizations:** The file extends to r colors (`Erdos1090Generalized`) and higher dimensions (`Erdos1090HigherDim`), both following from the general Hales-Jewett theorem."
+      "**Palette-generic core:** `erdos1090_construction_colors` proves the construction for an arbitrary finite color type `κ`. Because Hales-Jewett already allows any finite palette and the generic-projection geometry (image-line direction, nonzeroness, injectivity) is independent of the number of colors, the 2-coloring result (`erdos1090_construction`, `κ = Bool`) and the fully proved r-coloring generalization (`erdos1090_generalized_holds`, `κ = Fin r`) are both immediate instances — the passage from 2 to r colors is free.",
+      "**Generalizations:** The file proves the r-coloring version (`erdos1090_generalized_holds : Erdos1090Generalized k r`) and states the higher-dimensional version (`Erdos1090HigherDim`), both flowing from the general Hales-Jewett theorem."
     ],
     "prerequisites": [
       "Ramsey theory fundamentals: pigeonhole principle and partition regularity",
@@ -102,9 +104,9 @@
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 487,
+    "lineCount": 512,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 17,
     "path": "Proofs/Erdos1090Problem.lean",
     "sorries": 0

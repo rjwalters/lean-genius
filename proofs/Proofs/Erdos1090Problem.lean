@@ -148,17 +148,24 @@ now derived as honest theorems from Mathlib's Hales–Jewett theorem
 This eliminates both axioms; the file is `sorry`-free and axiom-free.
 -/
 
-/-- **Erdős #1090 — explicit construction.** For every `k ≥ 3` there is a finite
-set `A ⊂ ℝ²` with the Ramsey property: any 2-coloring of `A` contains `k`
-monochromatic collinear points.  Proved from the Hales–Jewett theorem by a
-generic linear projection of the combinatorial cube `[k]^ι` into the plane. -/
-theorem erdos1090_construction (k : ℕ) (hk : k ≥ 3) :
-    ∃ A : Finset Point, HasRamseyProperty A k := by
+/-- **Erdős #1090 — explicit construction, arbitrary finite palette.**
+For every `k ≥ 3` and *every* finite color type `κ` there is a finite set
+`A ⊂ ℝ²` such that any `κ`-coloring of `A` contains `k` monochromatic collinear
+points.  Proved from the Hales–Jewett theorem by a generic linear projection of
+the combinatorial cube `[k]^ι` into the plane.  The geometry (direction of the
+image line, nonzeroness, injectivity) is entirely independent of the palette, so
+Hales–Jewett's freedom to use any finite color type carries over unchanged.  The
+2-coloring statement `erdos1090_construction` and the `r`-coloring generalization
+`erdos1090_generalized_holds` are both instances of this theorem. -/
+theorem erdos1090_construction_colors (κ : Type) [Finite κ] (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, ∀ c : Point → κ,
+      ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k ∧
+        ∀ p ∈ S, ∀ q ∈ S, c p = c q := by
   classical
   haveI : NeZero k := ⟨by omega⟩
-  -- Hales–Jewett: a finite index type `ι` controlling every 2-coloring of `[k]^ι`.
+  -- Hales–Jewett: a finite index type `ι` controlling every `κ`-coloring of `[k]^ι`.
   obtain ⟨ι, ιfin, hHJ⟩ :=
-    Combinatorics.Line.exists_mono_in_high_dimension (Fin k) Bool
+    Combinatorics.Line.exists_mono_in_high_dimension (Fin k) κ
   haveI : Fintype ι := ιfin
   -- Real embedding of coordinate values, and the per-coordinate image vectors.
   set emb : Fin k → ℝ := fun a => (a.val : ℝ) with hemb
@@ -244,11 +251,22 @@ theorem erdos1090_construction (k : ℕ) (hk : k ≥ 3) :
       obtain ⟨a, ha⟩ := hp
       exact ⟨emb a, by rw [← ha, hline a]⟩
   · -- Monochromatic.
-    intro p q hp hq
+    intro p hp q hq
     simp only [Finset.mem_image, Finset.mem_univ, true_and] at hp hq
     obtain ⟨a, ha⟩ := hp
     obtain ⟨a', ha'⟩ := hq
     rw [← ha, ← ha', hcol' a, hcol' a']
+
+/-- **Erdős #1090 — explicit construction (2-coloring).** For every `k ≥ 3`
+there is a finite set `A ⊂ ℝ²` with the Ramsey property: any 2-coloring of `A`
+contains `k` monochromatic collinear points.  The `Bool` instance of
+`erdos1090_construction_colors`. -/
+theorem erdos1090_construction (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, HasRamseyProperty A k := by
+  obtain ⟨A, hA⟩ := erdos1090_construction_colors Bool k hk
+  refine ⟨A, fun c => ?_⟩
+  obtain ⟨S, hSA, hSk, hmono⟩ := hA c
+  exact ⟨S, hSA, hSk, fun p q hp hq => hmono p hp q hq⟩
 
 /-
 ## Part IV: Graham-Selfridge for k = 3
@@ -438,10 +456,17 @@ def Erdos1090Generalized (k r : ℕ) : Prop :=
     ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k ∧
       ∀ p ∈ S, ∀ q ∈ S, c p = c q
 
-/-
-**Generalized Version Holds:**
-By Hales-Jewett for r colors, the generalized version also holds.
--/
+/-- **Generalized Version Holds (r colors).**
+For every `k ≥ 3` and `r ≥ 2`, there is a finite set `A ⊂ ℝ²` such that any
+`r`-coloring of `A` contains `k` monochromatic collinear points.  This is the
+`Fin r` instance of `erdos1090_construction_colors`: Hales–Jewett already permits
+an arbitrary finite palette, and the generic-projection geometry does not depend
+on the number of colors, so the passage from 2 colors to `r` colors is free.
+(The hypothesis `r ≥ 2` is not actually needed for the construction — a monochromatic
+line exists even for `r = 1` — but it is kept to match the classical statement.) -/
+theorem erdos1090_generalized_holds (k r : ℕ) : Erdos1090Generalized k r := by
+  intro hk _hr
+  exact erdos1090_construction_colors (Fin r) k hk
 
 /--
 **Higher Dimensions:**
