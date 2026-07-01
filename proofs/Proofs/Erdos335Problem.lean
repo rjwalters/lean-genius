@@ -25,6 +25,7 @@ import Mathlib.Data.Set.Finite.Lattice
 import Mathlib.Topology.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Algebra.Order.Field.Basic
+import Mathlib.Combinatorics.Schnirelmann
 import Mathlib.Tactic
 
 open Set Filter
@@ -457,3 +458,66 @@ theorem exists_self_additive_density_quarter :
   refine ⟨FractionalPartSet (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)), ?_, hadd, hdens, ?_⟩
   · unfold HasPositiveDensity; rw [hdens]; norm_num
   · rw [hadd.2.2.2, hdens]; norm_num
+
+/- ## Bridge to Mathlib's Schnirelmann Density
+
+This section connects the file's `asympDensity` (the asymptotic/natural density,
+which is *not* in Mathlib at the pinned SHA — its module TODO lists it as
+unformalized) to Mathlib's `schnirelmannDensity`. The Schnirelmann density is the
+*infimum* of the same counting ratios `|A ∩ {1,…,n}| / n`, whereas the asymptotic
+density is their *limit*. Consequently the Schnirelmann density is a lower bound
+for the asymptotic density whenever the latter exists.
+
+The bridge is proved by matching the two counting functions: `countingFn A N`
+(defined here via `Set.ncard (A ∩ Icc 1 N)`) equals Mathlib's filtered-cardinal
+counting `#{a ∈ Ioc 0 N | a ∈ A}`, since `Set.Ioc 0 N = Set.Icc 1 N` on `ℕ`. -/
+
+/-- The counting function of this file agrees with the filtered-cardinal counting
+used in Mathlib's Schnirelmann density: `|A ∩ {1,…,N}|` computed as a set-`ncard`
+equals the `Finset.filter` cardinality over `Ioc 0 N`. -/
+theorem countingFn_eq_filter_card (A : Set ℕ) [DecidablePred (· ∈ A)] (N : ℕ) :
+    countingFn A N = ((Finset.Ioc 0 N).filter (· ∈ A)).card := by
+  unfold countingFn
+  rw [← Set.ncard_coe_finset]
+  congr 1
+  ext x
+  simp only [Finset.coe_filter, Finset.mem_Ioc, Set.mem_setOf_eq, Set.mem_inter_iff,
+    Set.mem_Icc]
+  constructor
+  · rintro ⟨hA, h1, h2⟩; exact ⟨⟨by omega, h2⟩, hA⟩
+  · rintro ⟨⟨h0, h2⟩, hA⟩; exact ⟨hA, by omega, h2⟩
+
+/-- **Schnirelmann–asymptotic bridge.** For any set `A ⊆ ℕ` whose asymptotic
+density exists, the Schnirelmann density is a lower bound:
+`schnirelmannDensity A ≤ asympDensity A`.
+
+This is the natural comparison between the two densities: Schnirelmann is the
+infimum of the ratios `|A ∩ {1,…,n}| / n` while `asympDensity` is their limit, so
+the infimum cannot exceed the limit. It gives a route to transfer Mathlib's ~20
+Schnirelmann lemmas into statements about the asymptotic density used throughout
+this file. Note the inequality can be strict: `schnirelmannDensity {even} = 0`
+(as `1 ∉ {even}` forces the `n = 1` ratio to `0`) while `asympDensity {even} = 1/2`. -/
+theorem schnirelmann_le_asymp (A : Set ℕ) [DecidablePred (· ∈ A)]
+    (hA : DensityExists A) : schnirelmannDensity A ≤ asympDensity A := by
+  obtain ⟨d, hd⟩ := hA
+  rw [show asympDensity A = d from hd.limUnder_eq]
+  refine ge_of_tendsto hd ?_
+  filter_upwards [Filter.eventually_ne_atTop 0] with N hN
+  rw [countingFn_eq_filter_card A N]
+  exact schnirelmannDensity_le_div hN
+
+/-- Consequence of the bridge: for a set with positive Schnirelmann density and an
+existing asymptotic density, the asymptotic density is also positive. This lets one
+certify `HasPositiveDensity` from the more computable Schnirelmann density. -/
+theorem hasPositiveDensity_of_schnirelmann_pos (A : Set ℕ) [DecidablePred (· ∈ A)]
+    (hA : DensityExists A) (hpos : 0 < schnirelmannDensity A) : HasPositiveDensity A :=
+  lt_of_lt_of_le hpos (schnirelmann_le_asymp A hA)
+
+/-- In a density-additive pair, the Schnirelmann density of each part is bounded by
+its share of the total: `schnirelmannDensity A ≤ asympDensity A ≤ 1 - asympDensity B`.
+Combines the bridge with `density_additive_complement_bound`. -/
+theorem schnirelmann_le_complement (A B : Set ℕ) [DecidablePred (· ∈ A)]
+    (h : DensityAdditive A B) : schnirelmannDensity A ≤ 1 - asympDensity B := by
+  have hbridge := schnirelmann_le_asymp A h.1
+  have hsum := additive_sum_le_one A B h
+  linarith

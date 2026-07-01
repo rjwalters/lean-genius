@@ -1,16 +1,16 @@
 # Current State
 
-**Phase**: ACT (build repair + S8/S9 lemmas landed)
-**Since**: 2026-06-25T13:30:00Z (S7 ACT shipped 2026-06-25; baseline iteration tracking carried over from S1 OBSERVE on 2026-01-13)
-**Iteration**: 7
+**Phase**: ACT (Schnirelmann↔asymptotic bridge landed — S7 roadmap item closed)
+**Since**: 2026-07-01 (S8 ACT shipped 2026-07-01; baseline iteration tracking carried over from S1 OBSERVE on 2026-01-13)
+**Iteration**: 8
 
 ## Current Focus
 
-S7 ACT (researcher-4) **repaired a broken build**: the `origin/main` file no longer compiled against its *own* pinned Mathlib v4.26.0 due to API drift (`Set.ncard_Icc`, `div_le_div_right`, `div_lt_iff` removed; `Tendsto.congr'` arg order changed). Fixed all four and landed S8 (`density_additive_zero_singleton`) + S9 (`Sumset_singleton_left`/`_right`) from the S6 roadmap, plus two strict-bound corollaries. Remaining roadmap item — the Schnirelmann↔asymptotic bridge — is still open.
+S8 ACT (researcher-2) **closed the last open S6 roadmap item**, the Schnirelmann↔asymptotic bridge. Imported `Mathlib.Combinatorics.Schnirelmann` and proved `schnirelmann_le_asymp : schnirelmannDensity A ≤ asympDensity A` when the asymptotic density exists (infimum of the ratios ≤ their limit), plus the supporting `countingFn_eq_filter_card` (identifying this file's `Set.ncard` counting with Mathlib's `Finset.filter` counting over `Ioc 0 N`) and two corollaries (`hasPositiveDensity_of_schnirelmann_pos`, `schnirelmann_le_complement`). All four are 0-axiom; the three deep axioms are untouched. This makes Mathlib's ~20 Schnirelmann lemmas available as lower bounds for the asymptotic density used throughout the file.
 
-## Lean File Snapshot (HEAD = research/erdos-335-oq-01-build-repair)
+## Lean File Snapshot
 
-- `proofs/Proofs/Erdos335Problem.lean`: 414 LOC, **40 theorems/lemmas**, 8 defs, **0 sorries**, **3 axioms**. Compiles clean (0 errors / 0 warnings) against pinned Mathlib v4.26.0 via `lake env lean`.
+- `proofs/Proofs/Erdos335Problem.lean`: 523 LOC, **46 theorems/lemmas**, 8 defs, **0 sorries**, **3 axioms**. Compiles clean (0 errors / 0 warnings) against pinned Mathlib v4.26.0 via `lake env lean`.
 - Axioms (all deep / mathematically necessary):
   1. `weyl_equidistribution` — Weyl's equidistribution theorem (ABSENT from Mathlib at pinned SHA).
   2. `fractional_part_density_additive` — measure-theoretic transfer (ABSENT from Mathlib).
@@ -32,9 +32,14 @@ S7 ACT (researcher-4) **repaired a broken build**: the `origin/main` file no lon
 
 ## Open / Active Sub-Goals (post-S6 PREP)
 
-1. **S7 — Schnirelmann↔asymptotic bridge** (ACT): prove `schnirelmannDensity A ≤ asympDensity A` when `DensityExists A`, importing `Mathlib.Combinatorics.Schnirelmann`. ~40–80 LOC.
-2. **S8 — Concrete witness `DensityAdditive {0} A`** (ACT): ~10–20 LOC, no new imports, uses only existing theorems in the file.
-3. **S9 — Translation identity `Sumset {k} A = (·+k) '' A`** (ACT): ~10–20 LOC, no new imports.
+1. ~~**S7 — Schnirelmann↔asymptotic bridge**~~ ✅ **DONE (S8 ACT, 2026-07-01)**: `schnirelmann_le_asymp : schnirelmannDensity A ≤ asympDensity A` + `countingFn_eq_filter_card` + 2 corollaries. All 0-axiom.
+2. ~~**S8 — Concrete witness `DensityAdditive {0} A`**~~ ✅ **DONE (S7 ACT, 2026-06-25)** as `density_additive_zero_singleton`.
+3. ~~**S9 — Translation identity `Sumset {k} A = (·+k) '' A`**~~ ✅ **DONE (S7 ACT, 2026-06-25)** as `Sumset_singleton_left`/`_right`.
+
+### Follow-up (post-S8)
+
+- Transfer further Mathlib Schnirelmann lemmas through the bridge (e.g. `schnirelmannDensity_le_of_notMem` ⟹ asymptotic upper bounds from a missing element).
+- Mann-type lower bound `d(A+B) ≥ min(d(A)+d(B),1)` — still blocked upstream (absent from Mathlib; module TODO).
 
 See `sessions/2026-05-13-s06-prep-mathlib-bearer-audit-and-subgoal-roadmap.md` for bearer plans.
 
