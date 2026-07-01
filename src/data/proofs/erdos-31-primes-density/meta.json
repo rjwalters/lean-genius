@@ -122,6 +122,11 @@
       "targetId": "bounded-prime-gaps",
       "relationship": "related",
       "description": "Bounded Prime Gaps (Zhang/Maynard-Tao/Polymath 8b) studies how closely primes can cluster despite their global thinning. Density zero established here is the baseline 'primes are sparse' fact; the bounded-gaps theory shows that sparsity nonetheless permits infinitely many pairs within distance 246, a striking tension between average density and local clustering."
+    },
+    {
+      "targetId": "erdos-357-oq-04",
+      "relationship": "generalized-by",
+      "description": "π(N)/N → 0 established here is a worked instance of the little-o ⇔ ratio-limit ⇔ ε–N trichotomy stated for arbitrary sequences in the Erdős #357 generalization: π(N)/N → 0 is the ratio-limit face, π(N) =o[atTop] N the little-o face, and 'eventually π(N) ≤ ε·N' the ε–N face, all supplied at once by density_zero_iff_littleO / density_zero_iff_eventually_le for the counting function #{p prime | p ≤ N}."
     }
   ],
   "leanFile": {
