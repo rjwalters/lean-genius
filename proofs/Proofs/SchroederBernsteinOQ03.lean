@@ -48,7 +48,11 @@ computable via Partrec.rfind. The orbit type is determined by bounded search.
 - myhill_easy: proved (computable bijection → one-one equivalence)
 - one_one_equiv_of_computable_perm: proved
 - myhill_self, myhill_symm, myhill_trans: proved (reflexivity/symmetry/transitivity)
-- myhill_isomorphism: hard direction has sorry (open: back-and-forth construction)
+- partialInverse_{spec,dom,unique}: proved (partial-inverse API for the hard direction)
+- fwdOrbit_eq_iterate: proved (forward orbit = iteration of g∘f; forward direction is computable)
+- isGFree_iff_not_mem_range: proved — pins down WHY the naive orbit classification is
+  not computable: `isGFree` is Π₁ (complement of the c.e. set `range g`), hence undecidable
+- myhill_isomorphism: hard direction has sorry (open: stage-wise back-and-forth construction)
 
 ## References
 - Myhill, J. (1955). "Creative sets." Z. Math. Logik Grundlag. Math. 1, 97–108.
@@ -133,6 +137,15 @@ theorem partialInverse_dom {g : ℕ → ℕ} {m : ℕ} (hm : ∃ k, g k = m) :
   rw [partialInverse, Nat.rfind_dom']
   exact ⟨k, by simp [hk], fun _ => trivial⟩
 
+/-- The partial inverse is **single-valued** under an injective `g`: any two
+    values returned for the same `m` coincide. This is the bijectivity fact the
+    back-and-forth construction needs — extending the partial map by a `g`-edge
+    can never collide, because preimages under an injection are unique. -/
+theorem partialInverse_unique {g : ℕ → ℕ} (hg_inj : Injective g)
+    {m n₁ n₂ : ℕ} (h₁ : n₁ ∈ partialInverse g m) (h₂ : n₂ ∈ partialInverse g m) :
+    n₁ = n₂ :=
+  hg_inj (by rw [partialInverse_spec hg_inj h₁, partialInverse_spec hg_inj h₂])
+
 /-!
 ## Section 4: Orbit Structure for the Back-and-Forth
 
@@ -145,12 +158,43 @@ def fwdOrbit (f g : ℕ → ℕ) (n : ℕ) : ℕ → ℕ
   | 0 => n
   | k + 1 => g (f (fwdOrbit f g n k))
 
+/-- The forward orbit is exactly iteration of `g ∘ f`, identifying `fwdOrbit`
+    with Mathlib's `Function.iterate` (unlocking its API). Since `fun x => g (f x)`
+    is computable whenever `f` and `g` are, the *forward* orbit is unproblematically
+    computable — the difficulty in Myhill's construction lies entirely in the
+    *backward* direction (see the note on `isGFree` below). -/
+theorem fwdOrbit_eq_iterate (f g : ℕ → ℕ) (n k : ℕ) :
+    fwdOrbit f g n k = (fun x => g (f x))^[k] n := by
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+      simp only [fwdOrbit, ih, Function.iterate_succ_apply']
+
 /-- The back-and-forth strategy: an element n is "f-type" if its backward chain
     under alternating g⁻¹, f⁻¹ terminates outside range(g) (i.e., not a g-image).
     These are exactly the elements where σ(n) := f(n) is the right choice.
 
     For elements where the chain never terminates (infinite orbits), we also use f. -/
 def isGFree (g : ℕ → ℕ) (n : ℕ) : Prop := ∀ k, g k ≠ n
+
+/-- `isGFree g n` is exactly the statement that `n` is **not** in the range of `g`.
+
+    **Why this matters for computability.** The "orbit classification" sketch above
+    (Type A/B/C) asks, for each `n`, whether the backward chain terminates outside
+    `range g` — i.e. whether some ancestor is `isGFree`. But `isGFree g n` is a
+    `Π₁` (universally quantified) predicate: for a merely *computable* injection `g`,
+    `range g` is only computably enumerable (`Σ₁`), so its complement `isGFree g`
+    is `Π₁` and in general **undecidable**. Hence the orbit type of `n` is *not*
+    computable, and the classical Schröder–Bernstein orbit construction does **not**
+    yield a computable bijection.
+
+    This is precisely why Myhill's theorem cannot be obtained by "reading off" the
+    classical proof, and must instead use the stage-wise finite back-and-forth
+    (priority) construction described on `myhill_isomorphism`, where each stage
+    performs only a *bounded* search and never has to decide `range g`. -/
+theorem isGFree_iff_not_mem_range (g : ℕ → ℕ) (n : ℕ) :
+    isGFree g n ↔ n ∉ Set.range g := by
+  simp only [isGFree, Set.mem_range, not_exists, ne_eq]
 
 /-!
 ## Section 5: The Myhill Isomorphism Theorem
