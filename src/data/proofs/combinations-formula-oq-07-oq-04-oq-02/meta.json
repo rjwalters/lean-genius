@@ -119,7 +119,10 @@
   "conclusion": {
     "summary": "2 theorems, 0 sorries, 0 axioms. The cleared variance identity (2n−1)·∑_{k=0}^{n} (2k−n)²·C(n,k)² = n²·C(2n,n) (over ℤ, n ≥ 1) and its lowest-terms rational form (∑ (k−n/2)²·C(n,k)²)/C(2n,n) = n²/(4(2n−1)) (over ℚ) formalize the variance of the squared-binomial law C(n,k)²/C(2n,n). The whole proof expands the centred square into the family's three already-proved raw moments and collapses their combination via the central-binomial halving and recurrence in a single linear_combination.",
     "implications": "Completes the moment computation of the OQ-07-OQ-04 family by formalizing the variance the parent only stated verbally. The technique — centre on the integer deviation 2k − n to stay in ℤ, expand into known raw moments, and collapse via the two central-binomial relations — is a reusable route to variances of symmetric binomial-square sums. The value n²/(4(2n−1)) is the variance of the hypergeometric distribution H(2n,n,n), now derived inside Lean from the family's own identities rather than imported.",
-    "openQuestions": []
+    "openQuestions": [
+      "Extend the moment computation to the third and fourth central moments (skewness and kurtosis) of the squared-binomial law, using the same 'centre on the integer deviation 2k − n, expand into raw moments' route with the higher weighted sums ∑ k³·C(n,k)² and ∑ k⁴·C(n,k)².",
+      "Identify the distribution k ↦ C(n,k)²/C(2n,n) with the hypergeometric law H(2n,n,n) inside Mathlib and derive the variance n²/(4(2n−1)) as a corollary of a general hypergeometric-variance lemma, rather than from this family's bespoke identities."
+    ]
   },
   "crossReferences": [
     {
