@@ -145,6 +145,8 @@
       "Mathlib.Algebra.Polynomial.HasseDeriv",
       "Mathlib.Algebra.Polynomial.Derivative",
       "Mathlib.Algebra.Polynomial.RingDivision",
+      "Mathlib.Algebra.Polynomial.Taylor",
+      "Mathlib.Algebra.Polynomial.Div",
       "Mathlib.Algebra.CharP.Basic",
       "Mathlib.Data.Nat.Prime.Factorial",
       "Mathlib.Tactic"
@@ -154,9 +156,9 @@
       "Nat"
     ],
     "namespace": "FactorRemainderHasseDerivativeFq",
-    "lineCount": 150,
+    "lineCount": 280,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 15,
     "definitionCount": 0,
     "path": "Proofs/FactorRemainderHasseDerivativeFq.lean",
     "sorries": 0
@@ -180,5 +182,15 @@
       "type": "book"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "openQuestions": [
+    {
+      "id": "factor-remainder-hasse-derivative-fq-oq-01",
+      "question": "The reliability range m ≤ p is sharp via the single witness X^p at the threshold m = p+1. Characterize the FULL set of (f, a, m) over 𝔽_q for which the ordinary-derivative test mis-certifies multiplicity at order m = p+1 (or general m > p): is it exactly the polynomials with a p-th-power factor (X − a)^p ∣ f vanishing under all ordinary derivatives, and what is the precise gap between the ordinary-certified multiplicity ⌊·⌋ and the true Hasse multiplicity?"
+    },
+    {
+      "id": "factor-remainder-hasse-derivative-fq-oq-02",
+      "question": "sub_pow_dvd_iff_hasseDeriv_eval_eq_zero is a characteristic-free Hasse-derivative multiplicity criterion assembled from Mathlib primitives. Is it worth upstreaming to Mathlib as the divided-power companion of le_rootMultiplicity_iff, and does it give a cleaner derivation of rootMultiplicity via natTrailingDegree (taylor a f)?"
+    }
+  ]
 }
