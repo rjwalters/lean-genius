@@ -884,4 +884,104 @@ theorem maxCountAtSize_not_O_rpow (β : ℝ) (hβ : β < 2) :
     hN₀ P.points.card hcard
   linarith
 
+/-! ## S18 ACT: unconditional lower-bound infrastructure (sorry-free)
+
+Every lower-bound result above — `solymosi_stojakovic_lower_bound` and the
+refutations `erdos_three_halves_conjecture_refuted`,
+`erdos_three_halves_conjecture_refuted_constructive`, and
+`four_point_line_count_not_O_rpow` derived from it — is carried by the deferred
+`sorry` recording the Solymosi–Stojaković construction. Until now the file had
+**no unconditional, `sorry`-free lower-bound content at all**: the extremal
+function was pinned above by `improved_upper_bound`, but nothing proved it was
+even positive without assuming the deep 2013 construction.
+
+This section supplies the elementary half of the counting. A finite family `𝒮`
+of subsets of `P.points`, each of cardinality `4` and each collinear, is
+literally a subset of the filtered `powerset` whose cardinality *defines*
+`fourPointLineCount P`; hence `𝒮.card ≤ fourPointLineCount P`. All the
+mathematical content of any concrete lower bound lives in *producing* such a
+family together with a proof of `NoFiveCollinear` — never in this counting step,
+which `fourPointLineCount_ge_of_family` discharges once and for all. Grünbaum-type
+grids, disjoint collinear quadruples on parallel lines, and the
+Solymosi–Stojaković sets themselves all plug in through this single lemma.
+
+As an immediate `sorry`-free consequence,
+`exists_noFiveCollinear_fourPointLineCount_pos` exhibits a no-five-collinear set
+with a genuine four-point line, so the extremal function is `≥ 1` — the file's
+first lower bound with no appeal to any deferred obligation.
+
+Sorry count unchanged (still 2: the open conjecture + Solymosi–Stojaković).
+Axiom count unchanged (still 0). Theorem count: +2. -/
+
+/-- **Lower-bound tool.** If `𝒮` is a finite family of subsets of `P.points`,
+each of cardinality `4` and each collinear (witnessed by a distinct pair of its
+own points), then the number of four-point lines of `P` is at least `𝒮.card`.
+
+This is the elementary converse of `improved_upper_bound`: it turns an explicit
+collection of four-point lines into a bound *from below*, with no appeal to the
+deferred Solymosi–Stojaković construction. The proof is a one-line
+`Finset.card_le_card`: every member of `𝒮` satisfies exactly the predicate
+defining `fourPointLineCount`, so `𝒮` is a subset of that filtered `powerset`. -/
+theorem fourPointLineCount_ge_of_family (P : PlanarPointSet)
+    (𝒮 : Finset (Finset (ℝ × ℝ)))
+    (hsub : ∀ S ∈ 𝒮, S ⊆ P.points)
+    (hcard : ∀ S ∈ 𝒮, S.card = 4)
+    (hcol : ∀ S ∈ 𝒮, ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p) :
+    𝒮.card ≤ fourPointLineCount P := by
+  unfold fourPointLineCount
+  apply Finset.card_le_card
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨hsub S hS, hcard S hS, hcol S hS⟩
+
+/-- **Unconditional positivity of the four-point-line count.** There is a
+no-five-collinear planar point set carrying a genuine four-point line, so the
+maximum of `fourPointLineCount` over no-five-collinear sets is at least `1`
+(attained already at size `4`).
+
+The witness is the collinear quadruple `{(0,0),(1,0),(2,0),(3,0)}` on the
+`x`-axis: having only `4` points it is trivially no-five-collinear
+(`noFiveCollinear_small`), and the whole set is a single four-point line, so
+`fourPointLineCount_ge_of_family` supplies the bound. This is the file's first
+lower bound proved with **no `sorry`** and **no axiom** — in particular it does
+*not* depend on `solymosi_stojakovic_lower_bound`. -/
+theorem exists_noFiveCollinear_fourPointLineCount_pos :
+    ∃ P : PlanarPointSet, NoFiveCollinear P ∧ 0 < fourPointLineCount P := by
+  classical
+  -- The collinear quadruple on the x-axis.
+  set pts : Finset (ℝ × ℝ) := {(0, 0), (1, 0), (2, 0), (3, 0)} with hpts
+  have hcard : pts.card = 4 := by
+    rw [hpts,
+        Finset.card_insert_of_notMem
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]),
+        Finset.card_insert_of_notMem
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]),
+        Finset.card_insert_of_notMem
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]),
+        Finset.card_singleton]
+  have hpos : (0 : ℕ) < pts.card := by rw [hcard]; norm_num
+  refine ⟨⟨pts, hpos⟩, noFiveCollinear_small _ hcard.le, ?_⟩
+  -- The single four-point line `pts` itself witnesses a nonempty count.
+  have key : ({pts} : Finset (Finset (ℝ × ℝ))).card ≤
+      fourPointLineCount ⟨pts, hpos⟩ := by
+    apply fourPointLineCount_ge_of_family
+    · intro S hS
+      rw [Finset.mem_singleton] at hS; subst hS
+      exact Finset.Subset.refl _
+    · intro S hS
+      rw [Finset.mem_singleton] at hS; subst hS
+      exact hcard
+    · intro S hS
+      rw [Finset.mem_singleton] at hS; subst hS
+      refine ⟨(0, 0), (1, 0), ?_, ?_, ?_, ?_⟩
+      · rw [hpts]; simp
+      · rw [hpts]; simp
+      · norm_num [Prod.mk.injEq]
+      · intro p hp
+        rw [hpts] at hp
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+        rcases hp with rfl | rfl | rfl | rfl <;> (unfold collinear; norm_num)
+  simpa using key
+
 end Erdos101OQ01
