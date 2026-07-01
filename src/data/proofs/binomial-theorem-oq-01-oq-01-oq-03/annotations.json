@@ -1,0 +1,67 @@
+[
+  {
+    "id": "ann-binom-oq010103-01-header",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "concept",
+    "title": "The Negative Half-Integer Coefficient and Its Central-Binomial Closed Form",
+    "content": "This file proves the uniform closed form C(-1/2, k) = (-1)^k · C(2k,k) / 4^k for Newton's generalized binomial coefficient at α = -1/2. Unlike the positive case α = 1/2 (√(1+x)), the negative case gives the Taylor coefficients of 1/√(1+x), which — after x ↦ -4x — become the generating function 1/√(1-4x) = Σ C(2k,k) x^k of the central binomial coefficients. The parent entry evaluated only a few small-k values of the positive coefficient ad hoc; here the negative case is settled uniformly for all k.",
+    "mathContext": "$\\binom{-1/2}{k} = \\dfrac{1}{k!}\\prod_{j=0}^{k-1}\\left(-\\tfrac12 - j\\right) = \\dfrac{(-1)^k}{4^k}\\binom{2k}{k}$. The generating function is $\\sum_k \\binom{-1/2}{k} x^k = (1+x)^{-1/2} = 1/\\sqrt{1+x}$.",
+    "significance": "foundational",
+    "relatedConcepts": ["central binomial coefficient", "square root generating function", "Newton's binomial series"],
+    "prerequisites": ["generalized binomial coefficient", "power series"],
+    "tags": ["overview", "central-binomial"]
+  },
+  {
+    "id": "ann-binom-oq010103-02-central-rec",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 54, "endLine": 61 },
+    "type": "technique",
+    "title": "Transporting the Central-Binomial Recurrence to ℝ",
+    "content": "Mathlib's Nat.succ_mul_centralBinom_succ states (n+1)·centralBinom(n+1) = 2·(2n+1)·centralBinom(n) over ℕ. Casting it to ℝ (via congrArg + push_cast) is the crucial bridge: it exposes that (-1)^k·centralBinom(k)/4^k has successive ratio -(2k+1)/(2(k+1)), matching the ODE recurrence ratio (-1/2 - k)/(k+1) of the binomial coefficient exactly.",
+    "mathContext": "Over $\\mathbb{R}$: $(n+1)\\,\\mathrm{cb}(n+1) = 2(2n+1)\\,\\mathrm{cb}(n)$, hence $\\dfrac{\\mathrm{cb}(n+1)}{\\mathrm{cb}(n)} = \\dfrac{2(2n+1)}{n+1}$ and the ratio of $(-1)^n \\mathrm{cb}(n)/4^n$ is $-\\dfrac{2n+1}{2(n+1)}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["recurrence relation", "central binomial coefficient", "cast lemmas"],
+    "prerequisites": ["central binomial recurrence"],
+    "tags": ["technique", "recurrence"]
+  },
+  {
+    "id": "ann-binom-oq010103-03-division-free",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 65, "endLine": 81 },
+    "type": "key-step",
+    "title": "Division-Free Induction via a Single linear_combination",
+    "content": "The heart of the proof: rather than manipulate fractions, we prove C(-1/2, k)·4^k = (-1)^k·centralBinom(k). In the inductive step, cancelling the common factor (n+1) with mul_left_cancel₀ reduces the goal to a linear identity in the ODE recurrence, the inductive hypothesis, and the ℝ-cast central recurrence — closed by one linear_combination with explicit coefficients (4·4^n)·hrec + (4·(-1/2 - n))·ih + (-1)^n·hcb.",
+    "mathContext": "Multiplying through by $4^k$ removes all denominators; the two shared-ratio recurrences then combine linearly, so no field arithmetic is needed and the step is a pure ring identity.",
+    "significance": "critical",
+    "relatedConcepts": ["induction", "linear_combination", "mul_left_cancel"],
+    "prerequisites": ["ODE recurrence", "central binomial recurrence"],
+    "tags": ["key-step", "induction"]
+  },
+  {
+    "id": "ann-binom-oq010103-04-closed-forms",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 85, "endLine": 107 },
+    "type": "key-step",
+    "title": "Three Equivalent Closed Forms: centralBinom, C(2k,k), Catalan",
+    "content": "From the division-free identity, dividing by 4^k gives the main closed form C(-1/2, k) = (-1)^k·centralBinom(k)/4^k. Rewriting centralBinom k = (2k).choose k (Nat.centralBinom_eq_two_mul_choose) yields the explicit C(2k,k) form; substituting Catalan's identity (k+1)·catalan k = centralBinom k (succ_mul_catalan_eq_centralBinom) yields the Catalan form C(-1/2, k) = (-1)^k·(k+1)·catalan k/4^k.",
+    "mathContext": "$\\binom{-1/2}{k} = \\dfrac{(-1)^k}{4^k}\\binom{2k}{k} = \\dfrac{(-1)^k (k+1)}{4^k}\\,C_k$, where $C_k$ is the $k$-th Catalan number.",
+    "significance": "foundational",
+    "relatedConcepts": ["Catalan numbers", "central binomial coefficient", "closed form"],
+    "prerequisites": ["Catalan's formula"],
+    "tags": ["key-step", "catalan"]
+  },
+  {
+    "id": "ann-binom-oq010103-05-sign-magnitude",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 109, "endLine": 152 },
+    "type": "concept",
+    "title": "Sign, Nonvanishing, Magnitude, and Concrete Values",
+    "content": "The closed form immediately gives structural consequences uniform in k: the coefficient never vanishes (strict alternation of sign), and its magnitude is |C(-1/2, k)| = centralBinom(k)/4^k — the Wallis-type decay of the 1/√(1+x) coefficients. Concrete values C(-1/2, k) for k = 0,1,2,3 (namely 1, -1/2, 3/8, -5/16) are verified by norm_num as sanity checks against the parent's small-k data.",
+    "mathContext": "$\\left|\\binom{-1/2}{k}\\right| = \\dfrac{\\binom{2k}{k}}{4^k} \\to 0$ (Wallis decay $\\sim 1/\\sqrt{\\pi k}$); the sign is $(-1)^k$, so $\\binom{-1/2}{k} \\ne 0$ for all $k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Wallis product", "alternating series", "nonvanishing"],
+    "prerequisites": ["central binomial positivity"],
+    "tags": ["concept", "sign-analysis"]
+  }
+]
