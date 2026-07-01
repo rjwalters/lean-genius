@@ -1,7 +1,7 @@
 {
   "slug": "schroeder-bernstein-oq-03",
   "title": "Myhill Isomorphism Theorem (Computable Schroeder-Bernstein)",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -39,11 +39,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hard direction (OneOneEquiv → computable permutation) still OPEN. Confirmed Mathlib lacks Myhill's isomorphism theorem (only MyhillNerode, unrelated). Added 3 proved lemmas decomposing toward the construction and identified the core obstruction: isGFree (= n ∉ range g) is Π₁/undecidable, so the file's orbit-classification sketch is NOT computable; Myhill genuinely requires the stage-wise bounded back-and-forth.",
+    "progressSummary": "PROGRESS (researcher-6, VERIFIED 0-axiom via direct-lean-compile; Docker down host-wide): Landed the flagged TRACTABLE PARTIAL WIN — the fully computable easy case. Added to SchroederBernsteinOQ03.lean: (1) decidableIsGFree — the Π₁ obstruction isGFree g becomes DECIDABLE once Set.range g is decidable (via isGFree_iff_not_mem_range), making explicit that range-decidability is exactly what the general merely-computable case lacks; (2) totalInverse + totalInverse_{mem,right,left,computable} — a surjective computable injection's partialInverse is everywhere-defined, giving a total COMPUTABLE two-sided inverse (Part.some_get + Partrec.of_eq); (3) computable_bijection_isComputablePerm — a computable BIJECTION of ℕ is a computable permutation (Equiv.ofBijective g hg).Computable, both g and g⁻¹ computable; (4) oneOneEquiv_of_computable_bijection — Myhill's easy case discharged with no back-and-forth. All 6 new decls #print axioms = only foundational (no sorryAx). The HARD direction (myhill_isomorphism, arbitrary computable injections → computable permutation) remains OPEN: still needs the stage-wise bounded back-and-forth/priority construction; the isGFree Π₁ obstruction blocks the naive orbit classification.",
     "builtItems": [
       "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
       "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
-      "isGFree_iff_not_mem_range in Proofs/SchroederBernsteinOQ03.lean (Π₁ obstruction lemma)"
+      "isGFree_iff_not_mem_range in Proofs/SchroederBernsteinOQ03.lean (Π₁ obstruction lemma)",
+      "decidableIsGFree in Proofs/SchroederBernsteinOQ03.lean — DecidablePred (isGFree g) given DecidablePred (·∈range g); isolates the Π₁ obstruction (VERIFIED, 0-axiom)",
+      "totalInverse + totalInverse_{mem,right,left} — total two-sided inverse of a surjective (injective) g from the everywhere-defined partialInverse (VERIFIED, 0-axiom)",
+      "totalInverse_computable — Computable (totalInverse g hg) for computable surjective g, via Partrec.of_eq + Part.some_get (VERIFIED, 0-axiom)",
+      "computable_bijection_isComputablePerm — a computable bijection of ℕ is a computable permutation (Equiv.ofBijective g hg).Computable (VERIFIED, 0-axiom)",
+      "oneOneEquiv_of_computable_bijection — fully computable easy-case Myhill: computable bijection g with p n↔q(g n) ⟹ OneOneEquiv p q (VERIFIED, 0-axiom)"
     ],
     "insights": [
       "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
@@ -57,6 +62,7 @@
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
     ],
     "nextSteps": [
+      "DONE (researcher-6): the 'tractable partial win' (classical/computable SB is computable when ranges decidable / when g is a bijection) is now formalized as computable_bijection_isComputablePerm + decidableIsGFree. Remaining frontier is unchanged: the stage-wise back-and-forth for arbitrary computable injections.",
       "Formalize the stage-wise partial-bijection builder (List (ℕ×ℕ) by recursion on stage) using f for domain-side and partialInverse g for range-side extensions.",
       "Prove the stage invariants: injectivity (via partialInverse_unique + f injective), correspondence p↔q preserved, and domain/range exhaustion (n covered by stage 2n+1).",
       "Derive computability of the resulting permutation from computability of the stage builder + bounded search for the entering stage.",
