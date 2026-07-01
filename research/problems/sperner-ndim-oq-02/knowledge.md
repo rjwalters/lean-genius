@@ -1,5 +1,109 @@
 # sperner-ndim-oq-02: Boundary-Door Oddness by Dimensional Induction
 
+## Session 2026-07-01 (researcher-1) — the facet-`0` cross-chain PARTNER CELL, fully constructed
+
+**Mode**: ACT (frontier — for the first time the actual cross-chain partner is *built*,
+not merely scoped). **Outcome**: PROGRESS — the facet-`0` partner cell is assembled as a
+bona-fide `GridSimplex` in the feasible regime. Verified via `lake env lean` (EXIT 0);
+`#print axioms` = `[propext, Classical.choice, Quot.sound]` on every new decl → **genuinely
+0-axiom** (no `sorryAx`/`ofReduceBool`). Builds on prior frontier work (`zeroPivotTop`,
+PR #32251).
+
+### What was delivered (`SpernerNDimOQ02.lean`, after `zeroPivot_feasible_iff`, +~250 L)
+Prior sessions built only the single new **top vertex** `zeroPivotTop` (+ its coordinate
+lemmas, feasibility, "genuinely new"). This session assembles the **whole neighbouring
+cell**:
+- **`zeroPivotVerts` / `zeroPivotInc`** — vertex map and increment-direction map of the
+  partner. Vertices = `s`'s upper chain `verts 1, …, verts d` (indices `0..d-1`) then
+  `zeroPivotTop` (index `d`). Directions = `s`'s cyclic rotation `incDir 1, …, incDir(d-1),
+  incDir 0`, deferring the omitted direction `incDir 0` to the FINAL step — exactly the
+  Freudenthal facet-`0` pivot. Same `miss`.
+- **`zeroPivotCell : GridSimplex d N`** — the full structure, all six proof fields
+  discharged: `step_inc`/`step_dec`/`step_same` split into (a) interior steps `k+1<d`
+  reducing to `s.step_*` at the shifted index `m=⟨k+1⟩`, and (b) the final step `k+1=d`
+  reducing to the `zeroPivotTop_coords_*` lemmas; `inc_injective` via
+  `s.inc_injective` + the rotation being a bijection; `miss_ne_inc` inherited.
+- **`zeroPivotCell_verts_of_lt`** (`k<d ⇒ verts k = s.verts (k+1)`) → the partner reuses
+  `s`'s upper chain as its own bottom `d` vertices, so dropping its LAST vertex recovers
+  facet `{verts 1,…,verts d}` = facet `0` of `s` (the shared cross-chain facet).
+- **`zeroPivotCell_verts_last`**, **`zeroPivotCell_miss`**, and **`zeroPivotCell_ne`**
+  (partner ≠ `s`, since its last vertex `zeroPivotTop ∉ s`'s chain) — exhibiting
+  `zeroPivotCell` as a genuine *second* cell filling the shared facet.
+
+### Why this matters
+This is the first *construction* on the Phase-1 frontier rather than another door-counting
+toolkit lemma or scoping restatement. The remaining gluing obligations (`adj`-involution:
+that facet `0` of `s` ↔ facet `last` of `zeroPivotCell`, and that the map is symmetric) now
+have a concrete `GridSimplex` to point `gridNeighbor` at for the two boundary facets — the
+piece all prior sessions flagged as "must be constructed" but none built.
+
+### Feasibility caveat (residual frontier)
+`zeroPivotCell` is defined only in the feasible regime `top miss ≥ 1` (⟺ base `miss ≥ d+1`,
+`zeroPivot_feasible_iff`). The extremal cells `base miss = d` (top vertex already on the
+`miss`-hyperplane) need the *cross-`miss`* partner instead — the genuinely different
+`miss`-fibre pivot. That regime is the next concrete subgoal.
+
+## Session 2026-07-01 (researcher-6) — verification channel restored + cross-chain gluing obligation consolidated
+
+**Mode**: ACT. **Outcome**: PROGRESS on two fronts:
+1. **Restored the local machine-verification channel** that had been infra-blocked for
+   3+ sessions (S13/S14 and the r1 bf9f149 commit all shipped "0-axiom by
+   construction", unverified). Root cause pinned precisely and fixed (see below).
+2. **Machine-verified the current merged file end-to-end** (`lake env lean
+   Proofs/SpernerNDimOQ02.lean`, exit 0, only a `Finset.eq_empty_iff_forall_notMem`
+   deprecation warning) — confirming S13/S14/bf9f149's previously-unverified additions
+   genuinely compile.
+3. **Added one genuinely-new consolidation theorem** (verified 0-axiom): the exact
+   scope of the remaining cross-chain gluing frontier.
+
+### Infra fix (unblocks all agents on this host)
+The recurring `missing data file for module Mathlib.RingTheory.Kaehler.Basic` wall was
+**not** disk failure and **not** a corrupt olean. Diagnosis: of 7376 Mathlib modules in
+the main-repo olean cache, **exactly one** (`RingTheory/Kaehler/Basic`) was missing its
+`.olean.server` companion file (it had `.olean`, `.olean.private`, `.olean.hash`,
+`.olean.server.hash` — but not the `.olean.server` itself). Under the experimental
+module system, loading a module requires its `.olean.server`; since our proof deps use
+`import Mathlib` (umbrella), the whole closure — including Kaehler — must load, so the
+one missing file blocked everything. `lake exe cache get` reported "No files to
+download" (the `.ltar` hashes matched), so it never repaired it — the `.olean.server`
+is generated locally on build, not shipped in the Azure cache.
+**Fix**: copied `Kaehler/Basic.olean.server` from a sibling worktree cache
+(`lean-genius-wt/r6-geom/...`) whose `Basic.olean.hash` (`213e9c0ef2fd722b`) and
+`.olean.server.hash` (`ef15e8df43befe05`) both match main's expected hashes → the file
+is byte-identical to what main expects. This is a cache-only change (gitignored, not
+committed); it restores `lake env lean` single-file verification for every agent on the
+host. Docker remains down (containerd content-store blob I/O error at *image* build; the
+still-running `lean-build-*` containers predate the corruption).
+
+### What was delivered (`SpernerNDimOQ02.lean`, after `zero_facet_not_on_boundary`)
+- **`gridNeighbor_none_geom_interior_iff (s) (hd : 2 ≤ d) (k)`** — the exact
+  cross-chain gluing obligation as a full dichotomy over ALL facets:
+  `(gridNeighbor s k = none ∧ ¬ GeomBdry s k) ↔ (k = 0 ∨ (k = Fin.last d ∧ ¬ GeomBdry s
+  (Fin.last d)))`, where `GeomBdry s k := ∃ i, ∀ j ≠ k, (verts j).coords i = 0`.
+  A facet is a genuine gluing site (within-chain `none` but geometrically interior)
+  **exactly** at the bottom facet `0` (unconditionally) or the top facet `Fin.last d`
+  when it is not a last-face door. Interior facets `0 < k < last` are excluded
+  (`gridNeighbor` already pairs them). Consolidates the two endpoint analyses
+  (`zero_facet_not_on_boundary` + `geom_boundary_face_imp_last`/`boundary_faces_eq`)
+  into one statement that precisely scopes what a total `SpernerTriangulation.adj` must
+  glue. Proof: pure case-split over `gridNeighbor_eq_none_iff` (none-fibre =
+  `{0, last}`) + `zero_facet_not_on_boundary`; `#print axioms` =
+  `[propext, Classical.choice, Quot.sound]` (0-axiom).
+
+### Honest significance
+Modest. The theorem is a synthesis/consolidation of already-proven endpoint facts, not
+new geometry — but it is the first statement giving the *complete* per-facet dichotomy
+of the gluing obligation (prior work covered facet 0 alone, in carrier form), and it is
+machine-verified. The genuinely valuable part of the session is the infra diagnosis+fix
+that re-enables authoritative verification. **Frontier UNCHANGED**: the cross-chain
+partner *construction* for facet 0 (and interior top facets) is still open.
+
+### Next steps (unchanged frontier)
+1. **(crux)** Construct the cross-chain facet-0 (and non-door facet-`last`) partner cell
+   → total `adj`, discharge the 5 involution fields + `boundary_face`.
+2. Phase 2: sum `boundary_faces_card_lastStep` over cells; last-step door-parity
+   induction on `d`; apply `sperner_ndim`.
+
 ## Session 2026-07-01 (researcher-5, S14) — per-cell door indicator collapses to the single final Kuhn step
 
 **Mode**: ACT (Phase-2 prep; frontier = cross-chain facet-0 gluing, deliberately NOT
