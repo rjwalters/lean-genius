@@ -169,8 +169,10 @@ theorem erdos_1018_solved : erdos_1018_question := by
   use S
   constructor
   · exact hS
-  · -- K₅ subdivision implies non-planarity
-    sorry
+  · -- A K₅ subdivision forces non-planarity: the reverse (`mpr`) direction of
+    -- Kuratowski's characterisation applied to the induced subgraph, taking the
+    -- `K₅`-subdivision disjunct supplied by Kostochka–Pyber.
+    exact (kuratowski_theorem (inducedSubgraph G S)).mpr (Or.inl hSub)
 
 /-
 ## The Constant C_ε Grows as ε → 0
