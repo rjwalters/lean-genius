@@ -90,6 +90,48 @@
    "DissectionOfCubesOQ01OQ01 (achievability witness, cube constructions)"
   ]
  },
+ "sections": [
+  {
+   "id": "overview",
+   "title": "Overview: The Minimum Collision Count Question",
+   "startLine": 7,
+   "endLine": 48,
+   "summary": "Module docstring. States the sub-question — the actual minimum of collidingCubes.card over all valid dissections — and its answer, exactly 2, packaged from the sibling files' lower bound (≥ 2) and achievability (= 2) as IsLeast collisionSpectrum 2. Also frames the nontriviality claim (3 is attainable too, so the spectrum contains {2,3}) and the caveat that CubeDissection carries covers_unit_cube : True, so every statement is about the combinatorial model.",
+   "mathContext": "$\\min_{d}\\ \\#(\\text{collidingCubes}\\ d) = 2$; the geometric minimum remains open."
+  },
+  {
+   "id": "spectrum-and-minimum",
+   "title": "The Collision Spectrum and Its Minimum",
+   "startLine": 56,
+   "endLine": 99,
+   "summary": "Defines collisionSpectrum := the set of collision counts attainable by a nonempty dissection. two_mem_collisionSpectrum (achievability) and collisionSpectrum_lower_bound (every element ≥ 2) combine into isLeast_collisionSpectrum (IsLeast … 2), sInf_collisionSpectrum (sInf = 2), and minimum_collision_count_is_two.",
+   "mathContext": "$\\text{collisionSpectrum} = \\{n : \\exists\\,d \\neq \\emptyset,\\ \\#(\\text{collidingCubes}\\ d) = n\\};\\ \\text{IsLeast} = 2.$"
+  },
+  {
+   "id": "excluding-0-1",
+   "title": "0 and 1 Are Not Attainable",
+   "startLine": 101,
+   "endLine": 116,
+   "summary": "zero_not_mem_collisionSpectrum and one_not_mem_collisionSpectrum: neither 0 nor 1 lies in the spectrum, immediate from the lower bound ≥ 2. These pin 2 as a genuine boundary rather than an artefact of the definition.",
+   "mathContext": "$0 \\notin \\text{collisionSpectrum},\\ 1 \\notin \\text{collisionSpectrum}$ (from $n \\ge 2$)."
+  },
+  {
+   "id": "third-witness",
+   "title": "A Third Witness: Three Equal Cubes Side-by-Side",
+   "startLine": 117,
+   "endLine": 205,
+   "summary": "Constructs cubeD and assembles triCubes = {cubeA, cubeB, cubeD} into triDissection, with the pairwise interior-disjointness lemmas and the distinctness lemmas needed for a valid three-cube dissection, plus the membership lemmas cubeA/cubeB/cubeD_mem_tri.",
+   "mathContext": "$\\text{triDissection} = \\{A, B, D\\}$, three equal cubes, pairwise interior-disjoint."
+  },
+  {
+   "id": "three-collisions",
+   "title": "Three Collisions and the Nontrivial Spectrum",
+   "startLine": 206,
+   "endLine": 263,
+   "summary": "colliding_eq_tri identifies the colliding set of triDissection as {cubeA, cubeB, cubeD}, so tri_has_three_collisions gives card = 3 and three_mem_collisionSpectrum places 3 in the spectrum. collisionSpectrum_nontrivial concludes {2,3} ⊆ collisionSpectrum ∧ IsLeast collisionSpectrum 2 — the minimum 2 is the bottom of a genuinely nontrivial set.",
+   "mathContext": "$\\{2,3\\} \\subseteq \\text{collisionSpectrum} \\ \\wedge\\ \\text{IsLeast}\\ \\text{collisionSpectrum}\\ 2.$"
+  }
+ ],
  "conclusion": {
   "summary": "The minimum collision number over all nonempty (combinatorial) cube dissections is exactly 2: IsLeast collisionSpectrum 2, equivalently sInf collisionSpectrum = 2. Neither 0 nor 1 is attainable. A second three-cube construction shows 3 is also attainable, so 2 is the genuine bottom of a nontrivial spectrum rather than its only value.",
   "implications": "**Sharp answer to OQ-01 item 2**: the parent left the minimum collidingCubes.card open with only a lower bound of 2; combining the sibling achievability result yields the exact value via the canonical IsLeast/sInf packaging. **Combinatorial vs geometric**: the achievability half is fully axiom-free, isolating the single inherited base axiom (all_different_implies_long_chains_axiom) as the only place where the unformalized 3D covering argument enters. The genuine geometric minimum — whether Littlewood's cascade forces strictly more than 2 once covers_unit_cube is replaced by a real covering predicate — remains open.",
