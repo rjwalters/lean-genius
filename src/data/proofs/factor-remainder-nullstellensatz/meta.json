@@ -192,5 +192,35 @@
       "leanType": "(W : Set (σ → k)) → vanishingIdeal (zeroLocus ↑(vanishingIdeal W)) = vanishingIdeal W"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "D. Hilbert",
+      "title": "Über die vollen Invariantensysteme",
+      "year": 1893,
+      "venue": "Math. Ann. 42, 313–373",
+      "note": "Origin of the Nullstellensatz."
+    },
+    {
+      "authors": "D. Cox, J. Little and D. O'Shea",
+      "title": "Ideals, Varieties, and Algorithms",
+      "year": 2015,
+      "venue": "Springer, 4th ed.",
+      "note": "Factor theorem, vanishing ideals and the ideal–variety Galois connection."
+    },
+    {
+      "authors": "M. Atiyah and I. G. Macdonald",
+      "title": "Introduction to Commutative Algebra",
+      "year": 1969,
+      "venue": "Addison-Wesley",
+      "note": "Nullstellensatz and maximal ideals over algebraically closed fields."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: RingTheory.Polynomial and Nullstellensatz (MvPolynomial vanishing ideal)",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Factor theorem and zero-locus/vanishing-ideal API used here."
+    }
+  ]
 }

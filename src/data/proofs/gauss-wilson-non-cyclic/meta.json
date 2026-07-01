@@ -131,5 +131,35 @@
       "Proofs/GaussWilsonNonCyclicOQ03.lean"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "venue": "Leipzig",
+      "note": "Generalized Wilson theorem and the structure of (ℤ/nℤ)×."
+    },
+    {
+      "authors": "K. Ireland and M. Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer GTM 84, 2nd ed., ch. 4",
+      "note": "Structure of the unit group (ℤ/nℤ)× and its cyclicity criterion."
+    },
+    {
+      "authors": "D. S. Dummit and R. M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley, 3rd ed.",
+      "note": "CRT decomposition and 2-torsion of finite abelian groups."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: ZMod.unitsMap, ZMod.chineseRemainder and IsCyclic",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Unit group, CRT and cyclicity API underlying the two-case proof."
+    }
+  ]
 }
