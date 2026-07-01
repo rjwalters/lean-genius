@@ -214,7 +214,7 @@ theorem two_group_solvable {G : Type*} [Group G] [Fintype G]
 -- PART 4: The Galois Correspondence Connection
 -- ============================================================
 
-/-- **Mathlib's Galois Correspondence** (reference):
+/- **Mathlib's Galois Correspondence** (reference):
     For a finite Galois extension L/K, there is an order-reversing bijection
     between subgroups of Gal(L/K) and intermediate fields K ≤ M ≤ L.
 
