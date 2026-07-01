@@ -92,6 +92,14 @@
   },
   "sections": [
     {
+      "id": "framing",
+      "title": "Open Question and the Abstract Avoidance Engine",
+      "startLine": 1,
+      "endLine": 58,
+      "mathContext": "$|\\text{cliques}|\\cdot 2^{|E|-m+1} < 2^{|E|} \\ \\Rightarrow\\ \\exists S,\\ \\forall K,\\ \\neg(K\\subseteq S \\vee K\\cap S = \\varnothing)$",
+      "summary": "Module docstring, imports (the companion ProbMethodApplicationsWIP and RamseyFirstMoment), and the statement of ramsey_avoidance_Kn. Records the open question — instantiate the abstract engine ProbMethod.Core.ramsey_avoidance to K_n and recover Erdős's R(k,k) > n — and explains that the companion file proves the abstract union-bound engine over an arbitrary edge set E but only asserts (never carries out) the K_n instantiation this file supplies. Also notes the omitted-as-redundant 2 ≤ k side condition."
+    },
+    {
       "id": "instantiation",
       "title": "Instantiating the Abstract Engine over K_n",
       "startLine": 59,
