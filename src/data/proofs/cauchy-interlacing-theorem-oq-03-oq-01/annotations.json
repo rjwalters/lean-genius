@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-stability-oq0301-header",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
+    "range": { "startLine": 4, "endLine": 42 },
+    "type": "concept",
+    "title": "The Open Question: Quantitative Stability from Qualitative Monotonicity",
+    "content": "The module docstring frames the deliverable: this file answers the lead open question of the parent entry cauchy-interlacing-theorem-oq-03 — derive the operator-norm eigenvalue stability bound |μ(k) − ν(k)| ≤ ‖T − U‖ (Weyl's perturbation theorem, eigenvalues are 1-Lipschitz in the operator norm) purely from the already-proven Weyl MONOTONICITY theorem weyl_monotone, itself a 0-sorry/0-axiom corollary of the Courant–Fischer keystone (#25063). The strategy is the Loewner sandwich: with δ = ‖T − U‖, the elementary Rayleigh bound re⟪(T−U)x,x⟫ ≤ δ‖x‖² yields U − δ·I ⪯ T ⪯ U + δ·I; the shifted operators U ± δ·I reuse U's eigenbasis with eigenvalues ν ± δ, and feeding both inequalities into weyl_monotone brackets μ(k) between ν(k) − δ and ν(k) + δ. No new spectral theory is introduced — the qualitative monotonicity result already contains the quantitative Lipschitz bound.",
+    "mathContext": "Answers parent oq-03: from $weyl\\_monotone$ obtain $|\\mu_k - \\nu_k| \\le \\|T-U\\|$ via $U - \\|T-U\\| I \\preceq T \\preceq U + \\|T-U\\| I$.",
+    "significance": "context",
+    "relatedConcepts": ["Weyl perturbation theorem", "Loewner sandwich", "Courant–Fischer keystone", "open question resolution"],
+    "prerequisites": ["Weyl monotonicity", "operator norm", "Loewner order"]
+  },
+  {
     "id": "ann-stability-oq0301-setup",
     "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
     "range": { "startLine": 44, "endLine": 50 },
