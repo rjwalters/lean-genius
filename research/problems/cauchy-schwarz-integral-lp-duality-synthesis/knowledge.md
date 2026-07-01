@@ -1033,3 +1033,73 @@ measurability (234+ — `AEMeasurable`/`Measurable` + `‖·‖ₑ`/`↑‖·‖
 path is unchanged from S16/S17 (repair chain → surface σ-finite norm bound → discharge synthesis
 `sorry` → swap axiom), but this session pins the true blocker on step 1: **the repair is now
 mechanical + source-verifiable, but the monolithic theorem must be split to be buildable.**
+
+### 2026-07-01 (Session 19, researcher-5) — S18 SPLIT EXECUTED: Step A1 extracted to gseq_norm_bound (build-verified faithful); + 8 drift fixes, Incomplete01 63→55 [VERIFIED, no regressions]
+
+**Mode:** REVISIT (executes S18's pinned mandate "NEXT SESSION MUST SPLIT localization_existence").
+Two verified deliverables this session; axiom untouched.
+
+**1. SPLIT DONE + build-verified faithful (commit 9be62d50c3b).** Extracted Step A1 (the
+~275-line `hgnorm` block, the converse-Hölder norm bound `eLpNorm gₙ q (μ|Sₙ) ≤ ‖φ‖`) out of
+the 600-line monolith `localization_existence` into a standalone top-level theorem
+`gseq_norm_bound` (Incomplete01 line ~356, before localization_existence). It takes the fixed
+`n`, `hp0`, the representer `g`, its `MemLp`, and the `extByZeroCLM`-form representation `hgrep`
+as explicit params; `localization_existence` now calls it via a one-liner
+(`fun n => gseq_norm_bound p q hp1 hptop hpq φ n hp0 (g_seq n) (hg_seq_mem n) (hg_seq_rep n)`).
+Docker build confirmed the split is **error-neutral: 63→63, downstream error set identical**
+(pure structural move, no new/lost errors). This is the S18 step-1 unblock: the monolith is now
+splittable/measurable and the isolated Step A1 drift is repairable independently.
+**Extraction recipe** (reap-safe, no hand-retyping 275 lines): Python script that (a) copies the
+inner tactic block keeping its 4-space indent (valid under a col-0 `theorem … := by`), dropping
+the `have hg :=`/`set g :=` setup lines (now params) and swapping `exact hg_seq_rep n f`→`exact
+hgrep f`; (b) inserts the new theorem before the localization_existence docstring; (c) replaces
+the old `have hgnorm := by …` block with the one-liner. Proof-irrelevance handles the `hp0` term
+in `hgrep` (explicit param avoids relying on it).
+
+**2. 8 root drift fixes in gseq_norm_bound, Docker-verified 63→55 (-8), ZERO downstream
+regression (commit c66b2b8c130).** Diffed the two builds' error-line sets: all downstream lines
+identical (shifted +2), all 8 cleared errors were inside gseq_norm_bound (24→16). **NEW drift
+NOT in S17/S18's dictionary — add to it:**
+- `MemLp.of_bound`: signature is now `(hf : AEStronglyMeasurable f μ) (C : ℝ) (hfC)` — the
+  **measurability hypothesis comes FIRST**, then the bound `C`. (Was `C` first.) 2 sites.
+- `ENNReal.coe_rpow_of_nonneg (x : ℝ≥0) {y} (h : 0 ≤ y)`: the **base `x` is now an explicit
+  first argument** → write `ENNReal.coe_rpow_of_nonneg _ (le_of_lt h…)` (insert `_`). 4 sites.
+- `hextZ_le`: `simp only [extZ, extByZeroCLM, LinearMap.mkContinuous_apply, Lp.norm_def]` no longer
+  reduces the `LinearMap.mkContinuous`-anon-ctor application `({toFun:=…} f)` → add
+  `LinearMap.coe_mk, AddHom.coe_mk` to the simp set so `{toFun:=t,…} f ↝ t f`.
+- `hhk_bound` calc: after `simp only […, abs_mul]` the LHS gains an inner abs
+  `|sign|*||g_k a|^(q-1)|` → `rw [abs_of_nonneg (Real.rpow_nonneg (abs_nonneg (g_k a)) (q.toReal-1))]`
+  before the calc.
+- `hsign` (in hpw2): `rcases lt_trichotomy (g_k a) 0 with ha | rfl | ha` — the `rfl` subst on the
+  **non-variable** `g_k a` fails now → use `… | ha | ha` with middle case `simp [ha]`.
+
+**Remaining 16 gseq_norm_bound errors = the fragile rpow-arithmetic chain** (Incomplete01 new
+line nums, all cascade through hint_hkgk→hgk_memLq→hchain→hx_le so gseq stays red until cleared):
+- `hpw2` (≈492) & `hpw_real` (≈515,528): `Real.rpow_add` now requires **`hx : 0 < x`** (was
+  `0 ≤ x`); base `|g_k a|` can be 0 → must case-split `g_k a = 0` (use `Real.zero_rpow hq_pos'.ne'`)
+  and in the nonzero branch use `Real.rpow_add habs …` with `habs : 0 < |g_k a|`, or
+  `Real.rpow_add' (abs_nonneg _) (h : y+z ≠ 0)`. Avoid the global `rw [show |g_k a|=|g_k a|^1]`
+  (it rewrites the exponent-base too) — use a calc `_ = |g_k a|^(q-1) * |g_k a|^1 := by rw
+  [Real.rpow_one] _ = |g_k a|^((q-1)+1) := (Real.rpow_add habs _ _).symm _ = |g_k a|^q := by
+  congr 1; ring`.
+- `460` unsolved goals / failed to synthesize (hgk_memLq eLpNorm_mono_ae area).
+- `503` app type mismatch (`integral_toReal` measurability arg — enorm.pow_const form).
+- `535` hn_eLpNorm final rw (eLpNorm_eq_lintegral_rpow_enorm enorm/nnnorm).
+- `556` `rw [x]` invalid — `x` is a value not an eq (the `set x := …` rewrite target drifted).
+- `593` unsolved (hchain).
+- `615` `iSup (min x) = x` vs `⨆ k, min x ↑k` (sup_min — Nat.cast coe mismatch).
+- `620/625/629` OrderIso.map_iSup type mismatch + `AEMeasurable.pow_const`/`.min`/`.enorm` form.
+Also warning `614`: unused simp arg.
+
+**Recommended next ACT:** clear the ~16 rpow-chain errors in gseq_norm_bound (all mechanical/
+source-verifiable per above; a fast-iteration or Aristotle pass is ideal since each Docker verify
+is ~17 min). Once gseq_norm_bound is green, apply S18's staged `s18-batch3-drift-fixes.patch`
+(targets integrationCLM_sf / hagree_n / Step A4 / Step A5 — all OUTSIDE gseq, patch line numbers
+now shifted by the split so apply by content not `git apply`) to clear the downstream ~40, then
+Incomplete01 greens → surfaces the σ-finite norm bound → discharges synthesis `sorry` → eliminates
+the parent axiom. **The split means each piece now elaborates independently within budget.**
+**INFRA:** Docker builds work (~17 min/iteration incl. dep-clone+cache; the split file compiles
+Lean-side much longer than S18's "180s" figure but well under the 60min envelope). **Worktree got
+reaped mid-session once** (killed an in-flight build; branch survived) — commit before every
+Docker build; recreate via `git worktree add .loom/worktrees/researcher-5 feature/researcher-5`
+then `git reset --hard origin/main`.
