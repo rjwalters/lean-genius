@@ -98,7 +98,7 @@ theorem sum_Icc_mul_factorial_int (n : ℕ) :
         refine Finset.sum_congr rfl (fun k _ => ?_)
         rw [factorial_diff]
     _ = ((n + 1)! : ℤ) - (1 ! : ℤ) := h
-    _ = ((n + 1)! : ℤ) - 1 := by norm_num
+    _ = ((n + 1)! : ℤ) - 1 := by simp
 
 /-- **Recovered gallery identity (over ℕ).**  `∑_{k=1}^{n} k·k! = (n+1)! − 1`.
 
