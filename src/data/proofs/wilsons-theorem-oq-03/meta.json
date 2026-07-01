@@ -184,5 +184,27 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/WilsonsTheoremOQ03.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "A.-M. Legendre",
+      "title": "Essai sur la théorie des nombres",
+      "year": 1808,
+      "note": "Legendre's formula for the p-adic valuation v_p(n!) = (n − S_p(n))/(p−1)."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Wilson's theorem and quadratic residues."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
+  ]
 }

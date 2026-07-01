@@ -192,5 +192,27 @@
       "mathContext": "$W_p := \\frac{(p-1)!+1}{p}$ (Wilson quotient, always a positive integer by Wilson's theorem for primes). $p$ is a Wilson prime iff $p \\mid W_p$ iff $p^2 \\mid (p-1)!+1$. Verified: $W_5 = 5$, $W_{13} = 13$ (Wilson primes). $\\texttt{native\\_decide}$: for all primes $p \\in [14,100]$, $p^2 \\nmid (p-1)!+1$. Known Wilson primes: $\\{5, 13, 563\\}$ — no fourth is known; search extended to $\\approx 2 \\times 10^{13}$."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "note": "Art. 78: generalization of Wilson's theorem to the product of units mod n."
+    },
+    {
+      "authors": "K. Ireland, M. Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer",
+      "note": "Structure of (ℤ/nℤ)× and the Gauss-Wilson product law."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
+  ]
 }

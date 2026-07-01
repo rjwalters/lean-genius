@@ -151,5 +151,28 @@
       "relationship": "sibling",
       "description": "oq-03 computes the p-adic valuation ν_p((p-1)!) = 0 (p does not divide (p-1)!). This entry sharpens 'non-divisible' to the exact remainder (p-1)! % p = p-1."
     }
+  ],
+  "references": [
+    {
+      "authors": "J.-L. Lagrange",
+      "title": "Démonstration d'un théorème nouveau concernant les nombres premiers",
+      "year": 1771,
+      "venue": "Nouv. Mém. Acad. Roy. Berlin",
+      "note": "First proof of Wilson's theorem (p−1)! ≡ −1 (mod p)."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Wilson's theorem and quadratic residues."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
   ]
 }

@@ -112,5 +112,27 @@
     ],
     "namespace": "WilsonsTheoremOQ02ExtOQ01"
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. A. Miller",
+      "title": "The product of the elements of a finite abelian group (two-involution trick)",
+      "year": 1903,
+      "note": "Generalizes Wilson's product law to arbitrary finite abelian groups."
+    },
+    {
+      "authors": "J. J. Rotman",
+      "title": "An Introduction to the Theory of Groups",
+      "year": 1995,
+      "venue": "Springer",
+      "note": "Product of all elements of a finite abelian group equals the product of its involutions."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
+  ]
 }

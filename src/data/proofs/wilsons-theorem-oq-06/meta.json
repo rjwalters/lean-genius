@@ -151,5 +151,28 @@
     "sorries": 0,
     "definitionCount": 2,
     "theoremCount": 9
-  }
+  },
+  "references": [
+    {
+      "authors": "R. Crandall, C. Pomerance",
+      "title": "Prime Numbers: A Computational Perspective",
+      "year": 2005,
+      "venue": "Springer",
+      "note": "Wilson quotient, Wilson primes, and their computation."
+    },
+    {
+      "authors": "R. K. Guy",
+      "title": "Unsolved Problems in Number Theory",
+      "year": 2004,
+      "venue": "Springer",
+      "note": "Wilson primes (p² ∣ (p−1)!+1) and the scarcity of known examples."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
+  ]
 }

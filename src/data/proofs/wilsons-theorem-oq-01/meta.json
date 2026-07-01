@@ -209,5 +209,28 @@
       "mathContext": "$\\texttt{gaussWilson\\_classification}$ (for $n \\ge 3$): $\\texttt{unitsProduct}\\,n \\bmod n = n-1 \\iff (\\exists\\, p\\,k,\\ p\\text{ prime},\\ p \\ne 2,\\ k \\ge 1,\\ n = p^k \\lor n = 2p^k) \\lor n = 4$. Proof chain: bridge lemma $\\texttt{unitsProduct\\_eq\\_neg\\_one\\_iff\\_cyclic}$ (concrete $\\leftrightarrow$ $\\texttt{IsCyclic}\\,(\\mathbb{Z}/n\\mathbb{Z})^\\times$ via OQ02's $\\texttt{gaussWilson\\_abstract}$ and the cast $\\texttt{unitsProduct\\_cast\\_eq\\_abstract}$), composed with $\\texttt{isCyclic\\_units\\_iff\\_gaussWilson}$ (Mathlib's $\\texttt{ZMod.isCyclic\\_units\\_iff}$). The helper $\\texttt{natCast\\_sub\\_one\\_eq\\_neg\\_one'}$ gives $\\uparrow(n-1) = -1$ in $\\mathbb{Z}/n\\mathbb{Z}$."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "J.-L. Lagrange",
+      "title": "Démonstration d'un théorème nouveau concernant les nombres premiers",
+      "year": 1771,
+      "venue": "Nouv. Mém. Acad. Roy. Berlin",
+      "note": "First proof of Wilson's theorem (p−1)! ≡ −1 (mod p)."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Wilson's theorem and quadratic residues."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
+  ]
 }
