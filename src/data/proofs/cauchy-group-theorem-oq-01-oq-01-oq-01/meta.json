@@ -2,6 +2,36 @@
   "id": "cauchy-group-theorem-oq-01-oq-01-oq-01",
   "title": "The power-map dichotomy: x ↦ xⁿ is a bijection iff gcd(n, |G|) = 1",
   "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+  "references": [
+    {
+      "authors": "Hall, Marshall, Jr.",
+      "title": "The Theory of Groups",
+      "year": "1959",
+      "venue": "Macmillan",
+      "note": "Classical treatment of power maps and coprime automorphisms: x ↦ x^n is bijective when gcd(n, |G|) = 1, and regular / fixed-point-free actions on finite groups."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "John Wiley & Sons",
+      "note": "Standard graduate reference for Cauchy's theorem, the Sylow theorems, and the structure theorem for finite abelian groups invoked here."
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+      "year": "1845",
+      "venue": "Exercices d'analyse et de physique mathématique, Vol. 3, 151–252",
+      "note": "The origin of Cauchy's theorem: a finite group whose order is divisible by a prime p contains an element of order p."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.GroupTheory (exists_prime_orderOf_dvd_card, Sylow, IsCyclic.card_pow_eq_one_le, powCoprime)",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Provides Cauchy's theorem, the Sylow API, the coprime power-map equivalence, and the one-sided solution-count bound that this entry sharpens to an exact equality."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.GroupTheory.OrderOfElement",
@@ -10,7 +40,9 @@
       "Mathlib.Data.ZMod.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Function"],
+    "opens": [
+      "Function"
+    ],
     "namespace": "CauchyGroupTheoremOQ01OQ01OQ01",
     "lineCount": 160,
     "axiomCount": 0,

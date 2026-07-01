@@ -2,12 +2,37 @@
   "id": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-02",
   "title": "Fibre sizes of the power map are constant: on any finite abelian group #(fibre) = #{xⁿ=1}, and on a product of cyclics this is ∏ gcd(n, mᵢ)",
   "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-02",
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Über einen Fundamentalsatz der Gruppentheorie",
+      "year": "1895",
+      "venue": "Sitzungsberichte der Preußischen Akademie der Wissenschaften, 981–993",
+      "note": "Frobenius's theorem: if n divides |G|, the number of solutions of x^n = 1 in a finite group is a multiple of n — the divisibility underlying the exact solution counts formalized here."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "John Wiley & Sons",
+      "note": "Standard graduate reference for Cauchy's theorem, the Sylow theorems, and the structure theorem for finite abelian groups invoked here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.GroupTheory (exists_prime_orderOf_dvd_card, Sylow, IsCyclic.card_pow_eq_one_le, powCoprime)",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Provides Cauchy's theorem, the Sylow API, the coprime power-map equivalence, and the one-sided solution-count bound that this entry sharpens to an exact equality."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",
       "Proofs.CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02"
     ],
-    "opens": ["Finset"],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02OQ02",
     "lineCount": 202,
     "axiomCount": 0,

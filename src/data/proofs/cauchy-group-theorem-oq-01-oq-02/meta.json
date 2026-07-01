@@ -2,6 +2,36 @@
   "id": "cauchy-group-theorem-oq-01-oq-02",
   "title": "From Cauchy to Sylow: the maximal p-power subgroup as a named corollary",
   "slug": "cauchy-group-theorem-oq-01-oq-02",
+  "references": [
+    {
+      "authors": "Sylow, Ludwig",
+      "title": "Théorèmes sur les groupes de substitutions",
+      "year": "1872",
+      "venue": "Mathematische Annalen 5, 584–594",
+      "note": "The Sylow theorems, extending Cauchy's element of order p to the existence, conjugacy and count of maximal p-power subgroups."
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+      "year": "1845",
+      "venue": "Exercices d'analyse et de physique mathématique, Vol. 3, 151–252",
+      "note": "The origin of Cauchy's theorem: a finite group whose order is divisible by a prime p contains an element of order p."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "John Wiley & Sons",
+      "note": "Standard graduate reference for Cauchy's theorem, the Sylow theorems, and the structure theorem for finite abelian groups invoked here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.GroupTheory (exists_prime_orderOf_dvd_card, Sylow, IsCyclic.card_pow_eq_one_le, powCoprime)",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Provides Cauchy's theorem, the Sylow API, the coprime power-map equivalence, and the one-sided solution-count bound that this entry sharpens to an exact equality."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.GroupTheory.Sylow",

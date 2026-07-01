@@ -3,6 +3,29 @@
   "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
   "title": "The exponent governs the power map: range(x ↦ xⁿ) = range(x ↦ x^gcd(n, exp G)) in every group",
   "description": "The parent showed that in a finite group of order m the power map x ↦ xⁿ has the same kernel as x ↦ x^gcd(n,m), but could only prove the corresponding image equality in the cyclic case, where the order m and the counting identity #range · #ker = m do the work. Its first open question asked for the image equality in a general finite abelian group and for the right partition analogue. This entry answers it by changing the invariant: the controlling number is not the order m = |G| but the exponent e = exp G. Against the exponent the image equality range(x ↦ xⁿ) = range(x ↦ x^gcd(n,e)) holds in EVERY group — no commutativity, no finiteness — because the hard inclusion is a single Bézout identity. Writing gcd(n,e) = n·A + e·B over ℤ and using x^e = 1 (Monoid.pow_exponent_eq_one) exhibits x^gcd(n,e) = (x^A)ⁿ, so every gcd(n,e)-th power is already an n-th power; the reverse inclusion is the elementary gcd(n,e) ∣ n. The kernel equality xⁿ = 1 ↔ x^gcd(n,e) = 1 is likewise upgraded from gcd-with-order to gcd-with-exponent (orderOf x ∣ exp G always), again with no finiteness. For a finite abelian group these specialize to subgroup equalities of ker and range of powMonoidHom, and the partition identity becomes #range · #ker = |G| via the first isomorphism theorem — the constant fibre size #ker replaces the cyclic value gcd(n, m), with which it agrees exactly when G is cyclic.",
+  "references": [
+    {
+      "authors": "Hall, Marshall, Jr.",
+      "title": "The Theory of Groups",
+      "year": "1959",
+      "venue": "Macmillan",
+      "note": "Classical treatment of power maps and coprime automorphisms: x ↦ x^n is bijective when gcd(n, |G|) = 1, and regular / fixed-point-free actions on finite groups."
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "venue": "American Mathematical Society, Graduate Studies in Mathematics 92",
+      "note": "Modern text covering Cauchy/Sylow theory and counting arguments for element orders and power maps in finite groups."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.GroupTheory (exists_prime_orderOf_dvd_card, Sylow, IsCyclic.card_pow_eq_one_le, powCoprime)",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Provides Cauchy's theorem, the Sylow API, the coprime power-map equivalence, and the one-sided solution-count bound that this entry sharpens to an exact equality."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic"
