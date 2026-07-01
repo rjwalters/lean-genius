@@ -182,10 +182,16 @@ Erdős noted that C_ε → ∞ as ε → 0.
 axiom constant_grows : ∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀,
   ∀ C, existsBoundingConstant ε → C ≥ M
 
-/-- Intuition: sparser graphs hide non-planarity in larger structures. -/
+/-- Intuition: sparser graphs hide non-planarity in larger structures.
+
+    As with `existsBoundingConstant`, the hypothesis quantifies vertex types over
+    `Type` (universe 0). This is no loss of generality — every finite graph is
+    isomorphic to one on a `Type 0` vertex set — and it lets the uniform bound
+    feed directly into `existsBoundingConstant ε` (which is itself pinned to
+    `Type` to stay universe-monomorphic under Lean 4.26). -/
 theorem sparse_hides_nonplanarity :
     ∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀, ∀ C,
-      (∀ (V : Type*) [Fintype V] [DecidableEq V],
+      (∀ (V : Type) [Fintype V] [DecidableEq V],
         ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
           isDense G ε → hasSmallNonPlanarSubgraph G C) → C ≥ M := by
   -- Follows from `constant_grows`: a hypothesis providing a *uniform* bounding
