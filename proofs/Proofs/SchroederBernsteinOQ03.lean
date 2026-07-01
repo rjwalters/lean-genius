@@ -52,6 +52,11 @@ computable via Partrec.rfind. The orbit type is determined by bounded search.
 - fwdOrbit_eq_iterate: proved (forward orbit = iteration of g∘f; forward direction is computable)
 - isGFree_iff_not_mem_range: proved — pins down WHY the naive orbit classification is
   not computable: `isGFree` is Π₁ (complement of the c.e. set `range g`), hence undecidable
+- decidableIsGFree: proved — the Π₁ obstruction becomes decidable once `range g` is decidable
+- totalInverse_{mem,right,left,computable}: proved — a surjective computable injection has a
+  total, computable two-sided inverse (partialInverse becomes everywhere-defined)
+- computable_bijection_isComputablePerm / oneOneEquiv_of_computable_bijection: proved — the
+  fully computable easy case (Myhill when the reductions are already bijections)
 - myhill_isomorphism: hard direction has sorry (open: stage-wise back-and-forth construction)
 
 ## References
@@ -195,6 +200,84 @@ def isGFree (g : ℕ → ℕ) (n : ℕ) : Prop := ∀ k, g k ≠ n
 theorem isGFree_iff_not_mem_range (g : ℕ → ℕ) (n : ℕ) :
     isGFree g n ↔ n ∉ Set.range g := by
   simp only [isGFree, Set.mem_range, not_exists, ne_eq]
+
+/-!
+## Section 4b: Isolating the Π₁ obstruction — the fully computable case
+
+The insight `isGFree_iff_not_mem_range` shows the *only* obstruction to reading a
+computable bijection off the classical Schröder–Bernstein construction is that
+`isGFree g` (equivalently `· ∉ Set.range g`) is `Π₁`. Here we make that precise
+in two ways:
+
+* `decidableIsGFree` — as soon as `Set.range g` is *decidable*, the obstruction
+  disappears and `isGFree g` is a decidable predicate.
+* `computable_bijection_isComputablePerm` — the fully computable special case:
+  a computable **bijection** of ℕ is automatically a computable permutation, i.e.
+  its inverse is computable too. (This is Myhill's theorem in the degenerate case
+  where the two one-one reductions are already bijections, so no back-and-forth is
+  needed.) The inverse is obtained from the partial-recursive `partialInverse`,
+  which becomes total because `g` is surjective.
+-/
+
+/-- If `Set.range g` is decidable then the `Π₁` obstruction predicate `isGFree g`
+    is itself decidable — the range-decidability hypothesis is exactly what the
+    general (merely-computable) case lacks. -/
+def decidableIsGFree (g : ℕ → ℕ) [DecidablePred (· ∈ Set.range g)] :
+    DecidablePred (isGFree g) :=
+  fun n => decidable_of_iff _ (isGFree_iff_not_mem_range g n).symm
+
+/-- Under a surjective `g`, the partial inverse (Section 3) is defined everywhere,
+    so it yields a genuine total function `ℕ → ℕ`. -/
+def totalInverse (g : ℕ → ℕ) (hg : Surjective g) : ℕ → ℕ :=
+  fun m => (partialInverse g m).get (partialInverse_dom (hg m))
+
+/-- The total inverse is always a valid `partialInverse` value. -/
+theorem totalInverse_mem {g : ℕ → ℕ} (hg : Surjective g) (m : ℕ) :
+    totalInverse g hg m ∈ partialInverse g m :=
+  Part.get_mem _
+
+/-- `totalInverse` is a right inverse of `g` (needs only surjectivity). -/
+theorem totalInverse_right {g : ℕ → ℕ} (hg : Surjective g) (m : ℕ) :
+    g (totalInverse g hg m) = m := by
+  have h := Nat.rfind_spec (totalInverse_mem hg m)
+  simpa using h
+
+/-- `totalInverse` is a left inverse of `g` (needs injectivity too). -/
+theorem totalInverse_left {g : ℕ → ℕ} (hg_inj : Injective g) (hg : Surjective g)
+    (n : ℕ) : totalInverse g hg (g n) = n :=
+  hg_inj (totalInverse_right hg (g n))
+
+/-- When `g` is a computable injection **and** surjective, its total inverse is
+    computable: `partialInverse` is partial recursive and here everywhere defined,
+    so it coincides with the total function `totalInverse`. -/
+theorem totalInverse_computable {g : ℕ → ℕ} (hgc : Computable g) (hg : Surjective g) :
+    Computable (totalInverse g hg) :=
+  (partialInverse_partrec hgc).of_eq (fun _ => (Part.some_get _).symm)
+
+/-- **Computable easy-case Schröder–Bernstein / Myhill.** A computable *bijection*
+    of ℕ is a computable permutation: both it and its inverse are computable. This
+    is the special case where the two one-one reductions are already bijections, so
+    the back-and-forth priority construction is unnecessary and the `Π₁` `isGFree`
+    obstruction never arises. -/
+theorem computable_bijection_isComputablePerm {g : ℕ → ℕ}
+    (hgc : Computable g) (hg : Bijective g) :
+    (Equiv.ofBijective g hg).Computable := by
+  refine ⟨hgc, ?_⟩
+  have hsymm : ⇑(Equiv.ofBijective g hg).symm = totalInverse g hg.surjective := by
+    funext m
+    apply hg.injective
+    rw [totalInverse_right hg.surjective]
+    exact (Equiv.ofBijective g hg).apply_symm_apply m
+  rw [hsymm]
+  exact totalInverse_computable hgc hg.surjective
+
+/-- Consequently, a computable bijection `g` with `p n ↔ q (g n)` computably
+    witnesses `OneOneEquiv p q` — the fully computable instance of Myhill's
+    theorem, discharged without the open back-and-forth construction. -/
+theorem oneOneEquiv_of_computable_bijection {p q : ℕ → Prop} {g : ℕ → ℕ}
+    (hgc : Computable g) (hg : Bijective g) (hpq : ∀ n, p n ↔ q (g n)) :
+    OneOneEquiv p q :=
+  myhill_easy (Equiv.ofBijective g hg) (computable_bijection_isComputablePerm hgc hg) hpq
 
 /-!
 ## Section 5: The Myhill Isomorphism Theorem
