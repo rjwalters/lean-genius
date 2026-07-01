@@ -77,6 +77,56 @@
       "Ordered-field positivity"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "The Open Question and the Key Identity",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "States the follow-up to the parent Vieta entry: express the discriminant Δ = b² − 4ac of a quadratic directly in terms of its roots, and characterise repeated roots. Announces the central identity b² − 4ac = a²(r − s)² and previews the corollaries (repeated-root, nonnegativity, distinct-roots) plus the converse vieta_from_roots. Declares 0 axioms.",
+      "mathContext": "$b^2 - 4ac = a^2(r-s)^2$, with $b = -a(r+s),\\ c = a\\,rs$ the Vieta relations."
+    },
+    {
+      "id": "core-identity",
+      "title": "discriminant_eq: the identity over any commutative ring",
+      "startLine": 34,
+      "endLine": 40,
+      "summary": "discriminant_eq substitutes the Vieta relations b = −a(r+s), c = a·r·s into b² − 4ac and collapses it to a²(r − s)² by a single `subst` + `ring` call. Stated over an arbitrary CommRing R, so it holds over ℤ, finite fields, and matrix rings — no field, order, or characteristic hypothesis.",
+      "mathContext": "$b^2 - 4ac = a^2\\big((r+s)^2 - 4rs\\big) = a^2(r-s)^2$ over any $\\mathrm{CommRing}$."
+    },
+    {
+      "id": "vieta-from-roots",
+      "title": "vieta_from_roots and discriminant_eq_of_roots",
+      "startLine": 42,
+      "endLine": 68,
+      "summary": "vieta_from_roots recovers the Vieta relations from two distinct roots: subtracting the root equations gives (r − s)(a(r+s) + b) = 0 (via `linear_combination`); since r ≠ s the factor r − s is invertible, forcing b = −a(r+s), and back-substitution yields c = a·r·s. discriminant_eq_of_roots then chains this with the core identity so b² − 4ac = a²(r − s)² holds for any quadratic with distinct roots in a field, without assuming Vieta.",
+      "mathContext": "$(r-s)\\big(a(r+s)+b\\big)=0,\\ r\\ne s \\Rightarrow b=-a(r+s),\\ c=a\\,rs.$"
+    },
+    {
+      "id": "repeated-root",
+      "title": "discriminant_zero_iff: the repeated-root criterion",
+      "startLine": 70,
+      "endLine": 81,
+      "summary": "discriminant_zero_iff shows that over a field with a ≠ 0, the discriminant vanishes exactly when the roots coincide. After rewriting Δ as a²(r − s)², the forward direction uses no-zero-divisors (a² ≠ 0, so (r − s)² = 0) then sq_eq_zero_iff and sub_eq_zero; the reverse substitutes r = s and closes by `ring`.",
+      "mathContext": "$a\\ne 0 \\Rightarrow \\big(b^2 - 4ac = 0 \\iff r = s\\big).$"
+    },
+    {
+      "id": "sign-analysis",
+      "title": "Sign analysis over an ordered field",
+      "startLine": 83,
+      "endLine": 107,
+      "summary": "discriminant_nonneg: over an ordered field the discriminant is ≥ 0 because it literally equals the square a²(r − s)² (`positivity`). discriminant_pos_iff_distinct: with a ≠ 0, Δ > 0 exactly when r ≠ s — the familiar 'two distinct real roots ⇔ Δ > 0' dichotomy, proved from the strict positivity of a² and (r − s)² when their bases are nonzero.",
+      "mathContext": "$0 \\le b^2 - 4ac$ always; and $a\\ne 0 \\Rightarrow \\big(0 < b^2-4ac \\iff r \\ne s\\big).$"
+    },
+    {
+      "id": "examples-summary",
+      "title": "Concrete examples and summary table",
+      "startLine": 109,
+      "endLine": 145,
+      "summary": "Three worked ℚ examples exercise the three regimes: x² − 5x + 6 (distinct roots 2, 3, Δ = 1), x² − 4x + 4 (repeated root 2, Δ = 0), and x² + 1 (no real roots, Δ = −4 < 0), all closed by `norm_num`. A closing summary table lists all six theorems and reiterates that everything reduces to the single identity b² − 4ac = a²(r − s)².",
+      "mathContext": "$(-5)^2 - 4\\cdot 6 = 1 = (3-2)^2;\\quad (-4)^2 - 16 = 0;\\quad 0 - 4 = -4 < 0.$"
+    }
+  ],
   "conclusion": {
     "summary": "The quadratic discriminant equals a²(r − s)², a single ring identity from which the repeated-root criterion (Δ = 0 ⇔ r = s), discriminant nonnegativity, and the distinct-roots dichotomy (Δ > 0 ⇔ r ≠ s) all follow. A companion lemma derives the Vieta relations from two distinct roots. 6 theorems, 0 sorries, 0 axioms.",
     "implications": "The identity b² − 4ac = a²(r − s)² makes the sign analysis of quadratics purely algebraic and characteristic-independent. The same root-gap-squared pattern underlies the discriminant of a polynomial as the squared Vandermonde of its roots, suggesting the natural generalization to higher degree.",
