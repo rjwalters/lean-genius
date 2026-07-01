@@ -110,6 +110,17 @@
       "description": "Discharges the tripleLog_unbounded axiom of the erdos-191 entry, reducing its genuine assumption count from 4 to 3"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Bloom, Thomas F."
+      ],
+      "title": "Erdős Problems — Problem 191",
+      "year": "2024",
+      "venue": "erdosproblems.com/191",
+      "note": "Canonical catalog entry: every 2-colouring of the pairs from {2,…,n} contains a monochromatic X with ∑_{x∈X} 1/log x as large as ≍ log log log n. Rödl (2003) supplied the matching upper-bound construction; Conlon, Fox and Sudakov proved the tight lower bound ∑_{x∈X} 1/log x ≥ 2⁻⁸ · log log log n — the source of the triple-logarithm scale tripleLog whose divergence this entry proves axiom-free."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "tripleLog_unbounded",
