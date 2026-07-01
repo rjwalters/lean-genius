@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-cyc-oq0401-setup",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-01",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "A corollary file layered on the verified parent",
+    "content": "The architecture is a thin strengthening layer, not a re-derivation. The first import is the parent `CayleyHamiltonMinpolyOQ04BackwardIncomplete01`, which already proves the hard direction (`cyclic_of_irreducible_minpoly`: irreducible full-degree $\\mathrm{minpoly}\\,K\\,M \\Rightarrow$ every nonzero vector is cyclic) with $0$ sorries; `Mathlib.Data.Set.Card` and `Mathlib.Data.Fintype.BigOperators` supply only the counting apparatus ($\\mathrm{Set.ncard}$, `Fintype.card_fun`) for the finite-field enumeration. The `variable` block fixes a general field $K$ and dimension $n$, so the characterization (`cyclic_iff_ne_zero`, `setOf_cyclic_eq_compl_zero`) holds over any field; only the final count `ncard_cyclic_vectors` adds a `[Fintype K]` hypothesis to specialize to $q = |K|$. This separation keeps the qualitative iff field-agnostic and isolates finiteness to the one place it is genuinely used.",
+    "mathContext": "$K$ an arbitrary field for the iff; a `[Fintype K]` instance with $q = |K|$ is added only for the $q^n - 1$ count.",
+    "significance": "context",
+    "relatedConcepts": ["module import architecture", "cyclic vector", "corollary layering", "finite field specialization"],
+    "prerequisites": ["the verified parent entry", "IsCyclicVector", "Set.ncard and Fintype cardinality"]
+  },
+  {
     "id": "ann-cyc-oq0401-zero",
     "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-01",
     "range": { "startLine": 40, "endLine": 48 },
