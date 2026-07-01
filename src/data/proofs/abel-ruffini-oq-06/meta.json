@@ -104,6 +104,57 @@
       "Package the full equivalence 'IsSolvable (Equiv.Perm (Fin n)) ⟺ n ≤ 4' as a single theorem once n = 4 is closed, combining this file's positive instances with the uniform n ≥ 5 non-solvability."
     ]
   },
+  "references": [
+    {
+      "authors": "Galois, Évariste",
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 11",
+      "note": "The origin of the notion of a solvable group: Galois showed an equation is solvable by radicals iff its group admits a chain of normal subgroups with abelian (prime-cyclic) successive quotients — exactly the structure this file transfers along the sign exact sequence 1 → Aₙ → Sₙ → ℤˣ."
+    },
+    {
+      "authors": "Jordan, Camille",
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": "1870",
+      "venue": "Gauthier-Villars, Paris",
+      "note": "The first systematic theory of composition series and solvable permutation groups, and the source of the Jordan–Hölder framework underlying the claim that Sₙ is solvable exactly for n ≤ 4."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "John Wiley & Sons",
+      "note": "Standard graduate reference. §3.4 and §6.1 prove Sₙ is solvable iff n ≤ 4, including the small-case tower A₄ ⊳ V₄ ⊳ 1 and the reduction of solvability of Sₙ to that of Aₙ via the index-2 sign subgroup used here."
+    },
+    {
+      "authors": "Rotman, Joseph J.",
+      "title": "An Introduction to the Theory of Groups (4th ed.)",
+      "year": "1995",
+      "venue": "Springer GTM 148",
+      "note": "Develops solvable series, the extension property 'solvable is closed under extensions' (the abstract form of Mathlib's solvable_of_ker_le_range), and the solvability of S₂, S₃, S₄ from that of their alternating subgroups."
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "venue": "American Mathematical Society, GSM 92",
+      "note": "Detailed treatment of solvable groups and their closure under subgroups, quotients, and extensions — the closure properties that make the Aₙ ↪ Sₙ ↠ ℤˣ short exact sequence yield Sₙ solvable from Aₙ solvable."
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory (4th ed.)",
+      "year": "2015",
+      "venue": "CRC Press / Chapman & Hall",
+      "note": "Accessible account tying the group-theoretic threshold to solvability of polynomials, with explicit verification that S₂, S₃, S₄ are solvable (enabling the quadratic, Cardano, and Ferrari formulas) while S₅ is not."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the building blocks: solvable_of_ker_le_range (solvability under extensions), alternatingGroup_eq_sign_ker (Aₙ = ker sign), nat_card_alternatingGroup (|Aₙ| = n!/2), and Equiv.Perm.fin_5_not_solvable for the complementary non-solvable side."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "abel-ruffini-obstruction-oq-06",
