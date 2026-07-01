@@ -171,6 +171,13 @@
   "crossReferences": [],
   "sections": [
     {
+      "id": "header",
+      "title": "Module header, imports, and the structural idea",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Docstring framing the sharpening: the parent's symmetric upper bound 2·deg u, 2·deg v ≤ deg p versus the exact certificate pinned down here via the no-collapse fact deg(u²+v²) = 2·max(deg u, deg v). Imports Mathlib and the parent file Proofs.Hilbert17OQ01OQ01, opens Polynomial, and brings in the parent's IsPSD predicate."
+    },
+    {
       "id": "coeff-engine",
       "title": "Reading the leading data of a square",
       "startLine": 39,
