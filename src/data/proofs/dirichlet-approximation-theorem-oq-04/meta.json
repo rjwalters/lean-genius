@@ -148,5 +148,35 @@
       "relationship": "sibling",
       "description": "The dual SHARPNESS lower bound (the golden ratio is badly approximable). OQ-04 shows every irrational's multiples come arbitrarily close to integers; OQ-05 shows that for φ they cannot come too close too fast — bounding the irrational rotation's orbit from both qualitative and quantitative sides."
     }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Leopold Kronecker"
+      ],
+      "title": "Näherungsweise ganzzahlige Auflösung linearer Gleichungen",
+      "year": 1884,
+      "venue": "Sitzungsberichte der Preußischen Akademie der Wissenschaften, 1179–1193, 1271–1299",
+      "note": "Original statement of Kronecker's density/approximation theorem."
+    },
+    {
+      "authors": [
+        "Hermann Weyl"
+      ],
+      "title": "Über die Gleichverteilung von Zahlen mod. Eins",
+      "year": 1916,
+      "venue": "Mathematische Annalen 77, 313–352",
+      "note": "Equidistribution of {nα} for irrational α, strengthening Kronecker's density theorem."
+    },
+    {
+      "authors": [
+        "G. H. Hardy",
+        "E. M. Wright"
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press (6th ed., rev. Heath-Brown & Silverman)",
+      "note": "Comprehensive treatment of Dirichlet's and Hurwitz's approximation theorems, continued fractions, and badly approximable numbers."
+    }
   ]
 }
