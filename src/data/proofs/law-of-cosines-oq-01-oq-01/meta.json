@@ -165,5 +165,37 @@
       "relationship": "Planar analogue: c² = a² + b² − 2ab·cos(C). The spherical law of cosines reduces to this as the sphere radius → ∞ (small-angle limit)."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Isaac Todhunter"
+      ],
+      "title": "Spherical Trigonometry, for the Use of Colleges and Schools",
+      "year": 1886,
+      "venue": "Macmillan",
+      "note": "Derives the second (dual) law of cosines cos C = −cos A cos B + sin A sin B cos c from the polar triangle."
+    },
+    {
+      "authors": [
+        "Glen Van Brummelen"
+      ],
+      "title": "Heavenly Mathematics: The Forgotten Art of Spherical Trigonometry",
+      "year": 2013,
+      "venue": "Princeton University Press",
+      "note": "Historical and geometric account of the angle/side dual laws of cosines on the sphere."
+    },
+    {
+      "authors": [
+        "W. Gellert",
+        "H. Küstner",
+        "M. Hellwich",
+        "H. Kästner"
+      ],
+      "title": "The VNR Concise Encyclopedia of Mathematics",
+      "year": 1977,
+      "venue": "Van Nostrand Reinhold",
+      "note": "Compact reference for the standard and dual spherical laws of cosines."
+    }
+  ]
 }

@@ -115,5 +115,34 @@
       "summary": "Informal comment (not a theorem) explaining the Euclidean limit: Taylor expansions cosh(x) ≈ 1 + x²/2 and sinh(x) ≈ x for small x give 1 + c²/2 ≈ (1+a²/2)(1+b²/2) - ab·cos(C), recovering c² ≈ a²+b²-2ab·cos(C) up to O(a²b²). This shows the hyperbolic law is a deformation of the Euclidean law parametrized by curvature."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "John G. Ratcliffe"
+      ],
+      "title": "Foundations of Hyperbolic Manifolds",
+      "year": 2019,
+      "venue": "Springer, Graduate Texts in Mathematics 149 (3rd ed.)",
+      "note": "Hyperbolic law of cosines and its dual, the hyperbolic Pythagorean theorem, and the angle defect A+B+C<π."
+    },
+    {
+      "authors": [
+        "James W. Anderson"
+      ],
+      "title": "Hyperbolic Geometry",
+      "year": 2005,
+      "venue": "Springer (Springer Undergraduate Mathematics Series, 2nd ed.)",
+      "note": "Foundational reference for the hyperbolic cosine law and hyperbolic function identities."
+    },
+    {
+      "authors": [
+        "William F. Reynolds"
+      ],
+      "title": "Hyperbolic Geometry on a Hyperboloid",
+      "year": 1993,
+      "venue": "American Mathematical Monthly 100(5), 442–455",
+      "note": "Shows how the axiomatized laws here follow from an explicit hyperboloid metric model (see child oq-03-oq-01)."
+    }
+  ]
 }
