@@ -127,15 +127,15 @@
   ],
   "crossReferences": [
     {
-      "id": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+      "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01",
       "relationship": "Direct parent: settled the 2×2 trace power sum tr(A²) = λ₁² + λ₂² via Newton's p₂ = e₁² − 2e₂ and explicitly posed (openQuestions[1]) the extension to tr(A³) = e₁³ − 3e₁e₂ + 3e₃ in fixed small dimensions that this entry takes up."
     },
     {
-      "id": "spectral-trace-det-eigenvalues-oq-01",
+      "proofId": "spectral-trace-det-eigenvalues-oq-01",
       "relationship": "Grandparent: establishes trace = Σλ, determinant = Πλ, the eigenvalue count, and the Vieta correspondence reused here to identify e₁ and e₃ of the spectrum with trace and determinant."
     },
     {
-      "id": "spectral-trace-det-eigenvalues-oq-02",
+      "proofId": "spectral-trace-det-eigenvalues-oq-02",
       "relationship": "Sibling on cyclic invariance of the trace and similarity-invariance of the eigenvalue multiset; the cube power sum tr(A³) is similarity-invariant for the same reason (conjugation preserves the characteristic polynomial)."
     }
   ],

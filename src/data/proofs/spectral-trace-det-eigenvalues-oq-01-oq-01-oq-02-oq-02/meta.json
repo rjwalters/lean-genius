@@ -128,15 +128,15 @@
   ],
   "crossReferences": [
     {
-      "id": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+      "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
       "relationship": "Direct parent: proved tr(A³) = λ₁³ + λ₂³ + λ₃³ for 3×3 matrices via a dimension-specific Newton identity and Vieta, and posed (openQuestions[1]) the general trace power sum tr(Aᵏ) = Σλᵢᵏ for all dimensions and powers — which this entry settles for diagonalizable matrices by the dimension-free spectral-mapping argument."
     },
     {
-      "id": "spectral-trace-det-eigenvalues-oq-01",
+      "proofId": "spectral-trace-det-eigenvalues-oq-01",
       "relationship": "Grandparent (imported): establishes the eigenvalues abbreviation A.charpoly.roots, trace = Σλ and determinant = Πλ, and the eigenvalue count; the k=1 case of this entry's headline recovers its trace = Σλ."
     },
     {
-      "id": "spectral-trace-det-eigenvalues-oq-02",
+      "proofId": "spectral-trace-det-eigenvalues-oq-02",
       "relationship": "Sibling on cyclic/similarity invariance of the trace and the eigenvalue multiset — exactly the conjugation invariance (trace_pow_units_conj, charpoly_units_conj) that drives the diagonalizable spectral mapping here."
     }
   ],

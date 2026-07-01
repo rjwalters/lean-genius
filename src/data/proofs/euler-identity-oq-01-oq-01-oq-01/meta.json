@@ -110,7 +110,11 @@
       "startLine": 58,
       "endLine": 88,
       "summary": "Defines circleMap and proves the basic algebraic identities: zero, addition (homomorphism), negation, subtraction, and the connection to Euler's formula from EulerIdentityOQ01OQ01.",
-      "concepts": ["complex exponential", "homomorphism", "Euler's formula"]
+      "concepts": [
+        "complex exponential",
+        "homomorphism",
+        "Euler's formula"
+      ]
     },
     {
       "id": "sec-unit-circle",
@@ -118,7 +122,11 @@
       "startLine": 90,
       "endLine": 102,
       "summary": "Proves ‖circleMap t‖ = 1 using Complex.norm_exp_ofReal_mul_I, and circleMap t ≠ 0 as a corollary.",
-      "concepts": ["unit circle", "norm", "non-vanishing"]
+      "concepts": [
+        "unit circle",
+        "norm",
+        "non-vanishing"
+      ]
     },
     {
       "id": "sec-monoid-hom",
@@ -126,7 +134,11 @@
       "startLine": 104,
       "endLine": 134,
       "summary": "Packages circleMap as circleHom : Multiplicative ℝ →* ℂˣ — the formal Lie-group statement that t ↦ exp(it) is a group homomorphism (ℝ,+) → (ℂˣ,·).",
-      "concepts": ["MonoidHom", "Multiplicative", "Lie group homomorphism"]
+      "concepts": [
+        "MonoidHom",
+        "Multiplicative",
+        "Lie group homomorphism"
+      ]
     },
     {
       "id": "sec-continuity",
@@ -134,7 +146,11 @@
       "startLine": 136,
       "endLine": 148,
       "summary": "Proves continuous_circleMap from continuity of exp composed with continuity of t ↦ ↑t * I.",
-      "concepts": ["continuity", "topological group", "Lie group"]
+      "concepts": [
+        "continuity",
+        "topological group",
+        "Lie group"
+      ]
     },
     {
       "id": "sec-kernel",
@@ -142,7 +158,11 @@
       "startLine": 150,
       "endLine": 175,
       "summary": "Proves circleMap_eq_one_iff: the kernel of the homomorphism is exactly 2π·ℤ. Uses Complex.exp_eq_one_iff and cancels the imaginary unit.",
-      "concepts": ["kernel", "quotient group", "ℝ/2πℤ"]
+      "concepts": [
+        "kernel",
+        "quotient group",
+        "ℝ/2πℤ"
+      ]
     },
     {
       "id": "sec-surjectivity",
@@ -150,7 +170,11 @@
       "startLine": 177,
       "endLine": 195,
       "summary": "Proves circleMap_surjective_unit_circle: every z with ‖z‖ = 1 has the form exp(i · arg z). Uses Complex.cos_arg and Complex.sin_arg with the fact ‖z‖ = 1.",
-      "concepts": ["surjectivity", "polar decomposition", "argument"]
+      "concepts": [
+        "surjectivity",
+        "polar decomposition",
+        "argument"
+      ]
     },
     {
       "id": "sec-demoivre",
@@ -158,7 +182,10 @@
       "startLine": 197,
       "endLine": 220,
       "summary": "Proves circleMap_npow and circleMap_zpow: (circleMap t)^n = circleMap (n·t) for n : ℕ and ℤ. The integer version drops out from Complex.exp_int_mul in 4 lines.",
-      "concepts": ["de Moivre", "homomorphism corollary"]
+      "concepts": [
+        "de Moivre",
+        "homomorphism corollary"
+      ]
     },
     {
       "id": "sec-summary",
@@ -166,7 +193,11 @@
       "startLine": 222,
       "endLine": 241,
       "summary": "Bundles the main result and lists the proven properties as the rigorous form of 'Euler's formula identifies S¹ as a 1-parameter Lie group with Lie algebra iℝ.'",
-      "concepts": ["summary", "Lie algebra", "1-parameter subgroup"]
+      "concepts": [
+        "summary",
+        "Lie algebra",
+        "1-parameter subgroup"
+      ]
     }
   ],
   "conclusion": {
@@ -181,13 +212,18 @@
     "papers": [
       {
         "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
-        "authors": ["Leonhard Euler"],
+        "authors": [
+          "Leonhard Euler"
+        ],
         "year": 1748,
         "description": "Original derivation of e^(ix) = cos x + i sin x via Taylor series."
       },
       {
         "title": "Theorie der Transformationsgruppen",
-        "authors": ["Sophus Lie", "Friedrich Engel"],
+        "authors": [
+          "Sophus Lie",
+          "Friedrich Engel"
+        ],
         "year": 1888,
         "description": "Foundational text on continuous transformation groups; introduces exponential map for Lie groups."
       }
@@ -203,12 +239,12 @@
   "crossReferences": [
     {
       "type": "extends",
-      "id": "euler-identity-oq-01-oq-01",
+      "proofId": "euler-identity-oq-01-oq-01",
       "description": "Builds directly on EulerIdentityOQ01OQ01.euler_formula (axiom-free Taylor proof of exp(ix) = cos x + i sin x) to derive the homomorphism."
     },
     {
       "type": "related",
-      "id": "de-moivre",
+      "proofId": "de-moivre",
       "description": "De Moivre's theorem (circleMap_npow / circleMap_zpow) is a one-line corollary of the homomorphism property + Complex.exp_int_mul."
     }
   ],

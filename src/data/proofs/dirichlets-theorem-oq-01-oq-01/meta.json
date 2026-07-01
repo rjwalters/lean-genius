@@ -25,7 +25,14 @@
       "deuring_heilbronn_repulsion: Deuring-Heilbronn repulsion (from DirichletsTheoremOQ01)",
       "tatuzawa_theorem: Tatuzawa single-exception theorem (from DirichletsTheoremOQ01)"
     ],
-    "tags": ["dirichlet", "l-functions", "siegel-zeros", "linnik", "analytic-number-theory", "open-question"],
+    "tags": [
+      "dirichlet",
+      "l-functions",
+      "siegel-zeros",
+      "linnik",
+      "analytic-number-theory",
+      "open-question"
+    ],
     "sorries": 0,
     "lineCount": 335,
     "definitionCount": 1
@@ -37,7 +44,14 @@
       "Proofs.DirichletsTheoremOQ01",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat", "Real", "Filter", "DirichletCharacter", "Topology", "DirichletsTheoremOQ01"],
+    "opens": [
+      "Nat",
+      "Real",
+      "Filter",
+      "DirichletCharacter",
+      "Topology",
+      "DirichletsTheoremOQ01"
+    ],
     "lineCount": 335,
     "axiomCount": 2,
     "theoremCount": 20,
@@ -114,12 +128,12 @@
   },
   "crossReferences": [
     {
-      "id": "dirichlets-theorem-oq-01",
+      "proofId": "dirichlets-theorem-oq-01",
       "relationship": "parent",
       "description": "Parent file establishing Siegel zeros framework, IsSiegelZero definition, and the five key axioms (Siegel's theorem, GRH conditional, Landau-Page, Deuring-Heilbronn, Tatuzawa)"
     },
     {
-      "id": "dirichlets-theorem-oq-02-oq-01",
+      "proofId": "dirichlets-theorem-oq-02-oq-01",
       "relationship": "sibling",
       "description": "GRH for Dirichlet L-functions — the hypothesis that would imply SiegelZeroConjecture via grh_implies_no_siegel_zeros_standard"
     }

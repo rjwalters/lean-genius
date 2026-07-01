@@ -31,7 +31,11 @@
       "startLine": 59,
       "endLine": 71,
       "summary": "Re-proves e^{ix} = cos x + i·sin x for a real angle in one line from Mathlib's Complex.exp_mul_I, pushing the complex cos/sin to real cos/sin via ofReal_cos/ofReal_sin. This is the same statement the parent reconstructs from the Taylor series; it is taken here as the foundation of the multiplicative theory.",
-      "concepts": ["Euler's formula", "Complex.exp_mul_I", "ofReal_cos / ofReal_sin"]
+      "concepts": [
+        "Euler's formula",
+        "Complex.exp_mul_I",
+        "ofReal_cos / ofReal_sin"
+      ]
     },
     {
       "id": "sec-de-moivre",
@@ -39,7 +43,12 @@
       "startLine": 72,
       "endLine": 101,
       "summary": "De Moivre's theorem for natural and integer exponents: (cos x + i·sin x)^n = cos(nx) + i·sin(nx). Each is Euler's formula applied twice with the exponent law exp_nat_mul / exp_int_mul in between. The integer version covers negative powers.",
-      "concepts": ["De Moivre's theorem", "exp_nat_mul", "exp_int_mul", "zpow / negative exponents"]
+      "concepts": [
+        "De Moivre's theorem",
+        "exp_nat_mul",
+        "exp_int_mul",
+        "zpow / negative exponents"
+      ]
     },
     {
       "id": "sec-rou",
@@ -47,7 +56,12 @@
       "startLine": 103,
       "endLine": 155,
       "summary": "Defines ω_n = exp((2π/n)·I), its geometric form cos(2π/n) + i·sin(2π/n), the root-of-unity property ω_n^n = 1 (via De Moivre at angle 2π/n), and the non-triviality ω_n ≠ 1 for n ≥ 2 (via Complex.exp_eq_one_iff and an integer squeeze).",
-      "concepts": ["roots of unity", "exp_two_pi_mul_I", "Complex.exp_eq_one_iff", "cos_two_pi / sin_two_pi"]
+      "concepts": [
+        "roots of unity",
+        "exp_two_pi_mul_I",
+        "Complex.exp_eq_one_iff",
+        "cos_two_pi / sin_two_pi"
+      ]
     },
     {
       "id": "sec-sum",
@@ -55,7 +69,11 @@
       "startLine": 157,
       "endLine": 173,
       "summary": "∑_{k<n} ω_n^k = 0 for n ≥ 2, via the finite geometric series geom_sum_eq with ω_n^n = 1 and ω_n ≠ 1. The algebraic statement that the centroid of a regular n-gon on the unit circle is the origin.",
-      "concepts": ["geometric series", "geom_sum_eq", "centroid of regular polygon"]
+      "concepts": [
+        "geometric series",
+        "geom_sum_eq",
+        "centroid of regular polygon"
+      ]
     }
   ],
   "leanFile": {
@@ -146,13 +164,17 @@
     "papers": [
       {
         "title": "Miscellanea Analytica de Seriebus et Quadraturis",
-        "authors": ["Abraham de Moivre"],
+        "authors": [
+          "Abraham de Moivre"
+        ],
         "year": 1730,
         "description": "Source of the power law (cos θ + i sin θ)^n = cos nθ + i sin nθ that bears de Moivre's name."
       },
       {
         "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
-        "authors": ["Leonhard Euler"],
+        "authors": [
+          "Leonhard Euler"
+        ],
         "year": 1748,
         "description": "Euler's formula e^{ix} = cos x + i sin x, the identity that turns De Moivre's power law into the exponent law."
       }
@@ -167,17 +189,17 @@
   "crossReferences": [
     {
       "type": "extends",
-      "id": "euler-identity-oq-01",
+      "proofId": "euler-identity-oq-01",
       "description": "Parent: 'Euler's Formula via Taylor Series Splitting' proves e^{ix} = cos x + i·sin x. This file builds the multiplicative layer — De Moivre and the roots of unity — on top of that identity."
     },
     {
       "type": "related",
-      "id": "euler-identity-oq-01-oq-04",
+      "proofId": "euler-identity-oq-01-oq-04",
       "description": "Sibling on the additive side: that file packages ℝ/2πℤ ≃+ Additive Circle (the group structure of S¹); this file develops the power/root-of-unity structure of the same circle."
     },
     {
       "type": "related",
-      "id": "euler-identity",
+      "proofId": "euler-identity",
       "description": "Great-grandparent: the point identity e^{iπ} + 1 = 0 is the n = 2 root of unity ω_2 = e^{iπ} = −1; the sum ∑ ω_2^k = 1 + (−1) = 0 is the simplest case of sum_rou_pow_eq_zero."
     }
   ],

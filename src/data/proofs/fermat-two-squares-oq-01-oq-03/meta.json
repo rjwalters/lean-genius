@@ -142,22 +142,22 @@
   },
   "crossReferences": [
     {
-      "id": "fermat-two-squares-oq-01",
+      "proofId": "fermat-two-squares-oq-01",
       "title": "Lipschitz Quaternions and Four Squares",
       "relationship": "Direct parent: defines LipschitzQuat and the basic Lagrange infrastructure. This entry builds on that foundation by extending to Hurwitz quaternions and adding the Euclidean domain structure."
     },
     {
-      "id": "fermat-two-squares",
+      "proofId": "fermat-two-squares",
       "title": "Fermat's Theorem on Sums of Two Squares",
       "relationship": "Sibling result: characterizes primes of the form a²+b² (p ≡ 1 mod 4) using Gaussian integers. The Hurwitz proof of four squares is analogous but uses quaternions instead of complex numbers."
     },
     {
-      "id": "lagrange-four-squares",
+      "proofId": "lagrange-four-squares",
       "title": "Lagrange's Four Squares Theorem",
       "relationship": "The target theorem: every natural number is a sum of four squares. This entry provides the Hurwitz quaternion proof, which is more algebraically transparent than Lagrange's original infinite-descent argument."
     },
     {
-      "id": "lagrange-four-squares-oq-01",
+      "proofId": "lagrange-four-squares-oq-01",
       "title": "Lagrange Four Squares — Representations via Quaternions",
       "relationship": "Sibling open question exploring representation counts and the role of quaternion arithmetic in the four-squares problem."
     }
