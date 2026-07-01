@@ -129,6 +129,48 @@
       "Polynomial algebra (divisibility and degree)"
     ]
   },
+  "sections": [
+    {
+      "id": "overview-nonderogatory",
+      "title": "Overview: The Non-Derogatory Case",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "States the open question — existence of a cyclic vector when minpoly = charpoly (the non-derogatory case) — and its reduction to one general module-theoretic fact (exists_vecAnnIdeal_eq_minpoly): every M has a vector of maximal order, whose annihilator is exactly span{minpoly K M}. Sets up Kⁿ as a K[X]-module via M through the parent's Module.AEval' framework.",
+      "mathContext": "Non-derogatory: $\\mu_M = \\chi_M \\iff \\deg\\mu_M = n$. Goal: $\\exists v,\\ \\mathrm{IsCyclicVector}\\ M\\ v$."
+    },
+    {
+      "id": "part-i-bridge",
+      "title": "Part I — Bridging aeval-Annihilation and the Vector Annihilator Ideal",
+      "startLine": 61,
+      "endLine": 77,
+      "summary": "aeval_eq_zero_iff_mem_vecAnnIdeal: p(M)·v = 0 iff p ∈ vecAnnIdeal M v, translating polynomial annihilation of a vector into ideal membership through the Module.AEval'.of linear equivalence — the dictionary the rest of the proof speaks in.",
+      "mathContext": "$p(M)\\cdot v = 0 \\iff p \\in \\mathrm{vecAnnIdeal}\\ M\\ v$, via the $\\mathrm{Module.AEval'}$ equivalence."
+    },
+    {
+      "id": "part-ii-maximal-cyclic",
+      "title": "Part II — A Maximal-Order Vector Is Cyclic",
+      "startLine": 79,
+      "endLine": 97,
+      "summary": "isCyclicVector_of_vecAnnIdeal_eq_minpoly: if v realizes the minimal polynomial as its order (vecAnnIdeal M v = span{minpoly}) and deg(minpoly) = n, then v is cyclic. A degree-<n polynomial killing v lies in span{minpoly}, so minpoly ∣ p; nonzero p would then have degree ≥ n — contradiction, forcing p = 0.",
+      "mathContext": "$\\minpoly \\mid p$ and $\\deg p < n = \\deg\\minpoly \\Rightarrow p = 0$, so no low-degree polynomial annihilates $v$."
+    },
+    {
+      "id": "part-iii-maximal-order",
+      "title": "Part III — Existence of a Vector of Maximal Order",
+      "startLine": 99,
+      "endLine": 122,
+      "summary": "exists_vecAnnIdeal_eq_minpoly: for every M (derogatory or not) some vector has annihilator exactly span{minpoly K M}. Uses Mathlib's Module.exists_ker_toSpanSingleton_eq_annihilator (PID structure theorem on the finite K[X]-module Module.AEval' M.mulVecLin), then transports the witness back and identifies the module annihilator with span{minpoly} via the parent's kn_module_annihilator_eq_minpoly.",
+      "mathContext": "Classical structure theorem: a f.g. module over the PID $K[X]$ contains an element whose order equals the module exponent $\\minpoly_K M$."
+    },
+    {
+      "id": "part-iv-main",
+      "title": "Part IV — Main Theorems",
+      "startLine": 124,
+      "endLine": 140,
+      "summary": "Combines Parts II and III: exists_cyclicVector_of_minpoly_natDegree_eq (degree form) and exists_cyclicVector_of_minpoly_eq_charpoly (μ = χ form, using charpoly_natDegree_eq_dim to get deg = n) — the converse direction of the cyclic-vector ⟺ μ = χ equivalence.",
+      "mathContext": "$\\deg(\\minpoly_K M) = n \\Rightarrow \\exists v,\\ \\mathrm{IsCyclicVector}\\ M\\ v$; and $\\minpoly_K M = \\chi_M \\Rightarrow$ same."
+    }
+  ],
   "conclusion": {
     "summary": "When minpoly K M = charpoly M (the non-derogatory case), M admits a cyclic vector. The proof reduces to the existence of a vector of maximal order — vecAnnIdeal M v = span{minpoly K M} — obtained from Mathlib's PID structure theorem on the finite K[X]-module Module.AEval' M.mulVecLin; a degree argument then shows any such vector is cyclic when deg(minpoly) = n. Fully verified, 0 axioms, 0 sorries.",
     "implications": "This completes the converse direction of the cyclic-vector ⟺ μ = χ equivalence and, together with the parent entry, the per-vector annihilator picture: a non-derogatory matrix is similar to a single companion matrix, the rank-1 building block of the rational canonical form. The reduction isolates the only nontrivial ingredient — a vector of maximal order — and discharges it via Mathlib's PID machinery.",
