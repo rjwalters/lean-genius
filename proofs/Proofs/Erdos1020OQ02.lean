@@ -346,4 +346,88 @@ example : construction2 8 4 2 = Nat.choose 7 3 := by decide
 /-- The top-summand bound, concretely at the crossover: `C(7, 3) = 35 ≤ construction2 8 4 2`. -/
 example : Nat.choose 7 3 ≤ construction2 8 4 2 := by decide
 
+/-! ### 9. Threshold EXISTENCE for all `r ≥ 2, k ≥ 2` (not just the worked instance).
+
+Section 6 pinned the crossover threshold `n₀(4, 2) = 8` for a single worked
+instance, using two `decide`-checked boundary evaluations. That argument does
+not generalize: for arbitrary `r, k` there is no finite computation certifying
+that `construction2` *ever* overtakes the constant `construction1`.
+
+Here we close that gap unconditionally. The §8 lower bound
+`C(n−1, r−1) ≤ construction2 n r k` (`construction2_ge_top_summand`, `k ≥ 2`)
+combines with the elementary linear lower bound `n − (r−1) ≤ C(n−1, r−1)` to give
+
+  `n − (r − 1) ≤ construction2 n r k`   (for `r ≥ 2, k ≥ 2, n ≥ k`),
+
+i.e. `construction2` grows at least linearly in `n`. Since `construction1 r k`
+is a *constant* (independent of `n`), `construction2` must eventually exceed it:
+there is a threshold `N` past which `construction2` dominates. Together with the
+upward-closedness of Section 2 this establishes the single-threshold regime
+picture for **every** `r ≥ 2, k ≥ 2` — the existence half of the open next step
+"prove `construction2 → ∞` to establish threshold existence for general `r, k`".
+
+The `r = 1` case is genuinely excluded: `construction2 n 1 k = k − 1` is constant
+in `n`, so no such threshold exists there — the linear growth needs the
+degree-`(r−1) ≥ 1` binomial. -/
+
+/-- Elementary linear lower bound on binomial coefficients: for `d ≥ 1`,
+    `C(m, d) ≥ m + 1 − d` (truncated subtraction). Each Pascal step
+    `C(m+1, d) = C(m, d−1) + C(m, d)` adds at least `1` once `d − 1 ≤ m`, so the
+    coefficient grows by at least one per unit increase of `m`. Equality holds at
+    `d = 1` (`C(m, 1) = m`) and at `m = d` (`C(d, d) = 1`). -/
+theorem choose_ge_linear (d m : ℕ) (hd : d ≥ 1) : m + 1 - d ≤ Nat.choose m d := by
+  induction m with
+  | zero =>
+    have : Nat.choose 0 d = 0 := Nat.choose_eq_zero_of_lt (by omega)
+    omega
+  | succ m ih =>
+    obtain ⟨d', rfl⟩ : ∃ d', d = d' + 1 := ⟨d - 1, by omega⟩
+    have hrec : Nat.choose (m + 1) (d' + 1) = Nat.choose m d' + Nat.choose m (d' + 1) :=
+      Nat.choose_succ_succ m d'
+    rcases le_or_gt d' m with hle | hlt
+    · have hpos : 1 ≤ Nat.choose m d' := Nat.choose_pos hle
+      omega
+    · -- `d' > m` ⇒ `d = d' + 1 > m + 1` ⇒ the truncated LHS `(m+1)+1 − d` is `0`.
+      omega
+
+/-- `construction2` grows at least linearly in `n`: for `r ≥ 2, k ≥ 2, n ≥ k`,
+    `n − (r − 1) ≤ construction2 n r k`. The degree-`(r−1) ≥ 1` top summand
+    `C(n−1, r−1)` already contributes a linear-in-`n` term. -/
+theorem construction2_ge_linear (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) (hn : n ≥ k) :
+    n - (r - 1) ≤ construction2 n r k := by
+  have htop := construction2_ge_top_summand n r k (by omega) hk hn
+  have hlin := choose_ge_linear (r - 1) (n - 1) (by omega)
+  -- `(n − 1) + 1 = n` since `n ≥ k ≥ 2`.
+  have hn1 : (n - 1) + 1 = n := by omega
+  rw [hn1] at hlin
+  omega
+
+/-- **Threshold existence for general `r ≥ 2, k ≥ 2`.** There is an `N` past which
+    the large-`n` construction dominates the constant small-`n` construction:
+    `∀ n ≥ N, construction1 r k ≤ construction2 n r k`. This upgrades the single
+    worked instance of Section 6 (`r = 4, k = 2`, threshold `8`) to an
+    unconditional existence statement for every admissible `r, k`. The explicit
+    witness `N = construction1 r k + r + k` suffices because `construction2` grows
+    at least linearly (`construction2_ge_linear`) while `construction1` is constant. -/
+theorem construction2_eventually_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+    ∃ N, ∀ n, N ≤ n → construction1 r k ≤ construction2 n r k := by
+  refine ⟨construction1 r k + r + k, fun n hn => ?_⟩
+  have hnk : n ≥ k := by omega
+  have hlb := construction2_ge_linear n r k hr hk hnk
+  omega
+
+/-- **The large-`n` regime is unconditional.** For every `r ≥ 2, k ≥ 2` there is a
+    threshold past which the conjectured extremal value collapses to
+    `construction2`: `∀ n ≥ N, conjecturedValue n r k = construction2 n r k`.
+    (What remains open is the *value* of the extremal function inside the gap band,
+    not the identity of the eventual maximiser.) -/
+theorem conjecturedValue_eventually (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+    ∃ N, ∀ n, N ≤ n → conjecturedValue n r k = construction2 n r k := by
+  obtain ⟨N, hN⟩ := construction2_eventually_dominates r k hr hk
+  exact ⟨N, fun n hn => conjecturedValue_large n r k (hN n hn)⟩
+
 end Erdos1020OQ02
+
+#print axioms Erdos1020OQ02.choose_ge_linear
+#print axioms Erdos1020OQ02.construction2_eventually_dominates
+#print axioms Erdos1020OQ02.conjecturedValue_eventually
