@@ -116,6 +116,7 @@ theorem card_roots_eq_natDegree (hsplit : p.Splits) :
     Multiset.card p.roots = p.natDegree :=
   splits_iff_card_roots.mp hsplit
 
+omit [IsDomain R] in
 /-- **Forward (constructive) Vieta.** For any multiset `s` of prescribed roots,
 the monic polynomial `∏ (X - rᵢ)` has coefficients given by the elementary
 symmetric functions of `s`: the coefficient in position `k` is
