@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-centralbinom-rec-real",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 56, "endLine": 61 },
+    "type": "theorem",
+    "title": "The central-binomial recurrence, cast to ℝ",
+    "content": "Mathlib's `Nat.succ_mul_centralBinom_succ` states `(n+1)·centralBinom(n+1) = 2·(2n+1)·centralBinom(n)` over ℕ. To use it inside a real-valued induction it must live in ℝ, so we apply `congrArg (Nat.cast : ℕ → ℝ)`, then `push_cast` distributes the cast across the products and successors, and `linarith` closes the resulting real identity. This cast recurrence is the bridge whose ratio `centralBinom(n+1)/centralBinom(n) = 2(2n+1)/(n+1)` matches the coefficient ratio coming from the parent's ODE recurrence.",
+    "mathContext": "$(n+1)\\,\\binom{2(n+1)}{n+1} = 2(2n+1)\\,\\binom{2n}{n}$ transported to $\\mathbb{R}$. Equivalently $\\frac{\\mathrm{cb}_{n+1}}{\\mathrm{cb}_n} = \\frac{2(2n+1)}{n+1}$, the exact ratio needed to match $\\frac{C(-1/2,\\,n+1)}{C(-1/2,\\,n)} = -\\frac{2n+1}{2(n+1)}$.",
+    "significance": "key",
+    "relatedConcepts": ["central binomial coefficients", "recurrence relations", "Nat.cast / push_cast", "matching-ratio induction"],
+    "prerequisites": ["central binomial coefficients", "casting ℕ identities into ℝ"]
+  },
+  {
+    "id": "ann-genbinom-neghalf-mul-pow",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 69, "endLine": 81 },
+    "type": "theorem",
+    "title": "Division-free closed form (the core induction)",
+    "content": "The heart of the entry: `C(-1/2, k)·4^k = (-1)^k·centralBinom(k)`, cleared of the `4^k` denominator so the induction stays polynomial. The base case is `simp` on `genBinom_zero` and `centralBinom_zero`. For the step, the common factor `(n+1)` is stripped with `mul_left_cancel₀`, then a single `linear_combination` — weighting the parent's `ode_recurrence` by `4·4^n`, the inductive hypothesis by `4·(-1/2 - n)`, and the real central recurrence by `(-1)^n` — closes the goal exactly. This is where the two matching ratios are algebraically fused.",
+    "mathContext": "$C(-1/2,k)\\,4^{k} = (-1)^{k}\\,\\mathrm{cb}_k$. Induction: assuming it at $n$, multiply the ODE recurrence $(n+1)C(-1/2,n+1) = (-1/2-n)C(-1/2,n)$ by $4^{n+1}$ and substitute both the hypothesis and $\\mathrm{cb}_{n+1} = \\tfrac{2(2n+1)}{n+1}\\mathrm{cb}_n$ to obtain the claim at $n+1$.",
+    "significance": "critical",
+    "relatedConcepts": ["generalized binomial coefficient", "linear_combination tactic", "induction", "mul_left_cancel₀", "Newton series of 1/√(1+x)"],
+    "prerequisites": ["the parent's ODE recurrence for C(α,k)", "the central-binomial recurrence over ℝ"]
+  },
+  {
+    "id": "ann-genbinom-neghalf-main",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 86, "endLine": 89 },
+    "type": "theorem",
+    "title": "Main closed form C(-1/2, k) = (-1)^k·centralBinom(k)/4^k",
+    "content": "The headline identity, recovered from the division-free version by reintroducing the `4^k` denominator via `eq_div_iff` (valid since `4^k ≠ 0`). Its companion `genBinom_negHalf_choose` immediately rewrites `centralBinom k` as `(2k).choose k` to display the fully explicit `C(-1/2,k) = (-1)^k·C(2k,k)/4^k`. These are exactly the Taylor coefficients of `(1+x)^(-1/2) = 1/√(1+x)`.",
+    "mathContext": "$\\binom{-1/2}{k} = \\frac{(-1)^k}{4^k}\\binom{2k}{k}$, the coefficients of $\\frac{1}{\\sqrt{1+x}} = \\sum_{k\\ge 0}\\binom{-1/2}{k}x^k$. Uniform in $k$, where the parent proof only evaluated the positive coefficient $C(1/2,k)$ at small $k$.",
+    "significance": "critical",
+    "relatedConcepts": ["Newton's generalized binomial theorem", "generating function of central binomial coefficients", "eq_div_iff", "Taylor series of 1/√(1+x)"],
+    "prerequisites": ["the division-free closed form", "generalized binomial coefficients"]
+  },
+  {
+    "id": "ann-genbinom-neghalf-catalan",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 99, "endLine": 107 },
+    "type": "theorem",
+    "title": "Catalan form via (k+1)·catalan(k) = centralBinom(k)",
+    "content": "Rewrites the main formula through Mathlib's `succ_mul_catalan_eq_centralBinom` (cast to ℝ with `push_cast`/`linarith`) to expose the Catalan number: `C(-1/2,k) = (-1)^k·(k+1)·catalan(k)/4^k`. This is the algebraic shadow of the generating-function identity `√(1-4x) = 1 - 2∑_{k≥1} catalan(k-1) x^k`, tying the half-integer binomial coefficient directly to the Catalan sequence.",
+    "mathContext": "$\\binom{-1/2}{k} = \\frac{(-1)^k (k+1)\\,C_k}{4^k}$ where $C_k$ is the $k$-th Catalan number, using $(k+1)C_k = \\binom{2k}{k}$. Connects the analytic $1/\\sqrt{1+x}$ coefficients to the combinatorial Catalan generating function $\\frac{1-\\sqrt{1-4x}}{2x}$.",
+    "significance": "key",
+    "relatedConcepts": ["Catalan numbers", "central binomial coefficients", "generating functions", "√(1-4x) expansion"],
+    "prerequisites": ["Catalan's formula (k+1)·catalan k = centralBinom k", "the main closed form"]
+  },
+  {
+    "id": "ann-abs-genbinom-neghalf",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 125, "endLine": 132 },
+    "type": "theorem",
+    "title": "Strict alternation and Wallis-type magnitude decay",
+    "content": "Two structural consequences proved uniformly for all k. `genBinom_negHalf_ne_zero` shows the coefficient never vanishes — it strictly alternates in sign — because `centralBinom k > 0`; contrast the parent, which established nonvanishing of the positive coefficient only for small k. `abs_genBinom_negHalf` computes the magnitude `|C(-1/2,k)| = centralBinom(k)/4^k`, the positive rational that decays to 0 like Wallis' product — the actual size of the Taylor coefficients of `1/√(1+x)`.",
+    "mathContext": "$\\bigl|\\binom{-1/2}{k}\\bigr| = \\frac{\\binom{2k}{k}}{4^k} \\sim \\frac{1}{\\sqrt{\\pi k}}$ by Wallis/Stirling asymptotics, a strictly decreasing positive sequence; and $\\binom{-1/2}{k}\\ne 0$ for every $k$ with sign $(-1)^k$.",
+    "significance": "key",
+    "relatedConcepts": ["sign alternation", "Wallis product decay", "abs_pow / abs_div", "central binomial positivity"],
+    "prerequisites": ["the main closed form", "positivity of central binomial coefficients"]
+  }
+]
