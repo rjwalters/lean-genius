@@ -1,0 +1,41 @@
+[
+  {
+    "id": "ann-hcs-framing",
+    "proofId": "hurwitz-theorem-oq-03-oq-01-incomplete-01",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "concept",
+    "title": "From an upper bound to an exact characterization",
+    "content": "Hurwitz's only-if theorem says a finite-dimensional real normed division algebra has dimension in {1,2,4,8}. The parent entry (HurwitzOnlyIf.lean) proves the COMMUTATIVE case as a one-sided upper bound — any normed field over ℝ has finrank 1 or 2, by Gelfand-Mazur — and leaves the non-commutative division-ring case as a sorry. A dimension bound alone is not a classification: one must also exhibit algebras realizing each allowed value. This file adds that realizability direction for the commutative case, making the bound {1,2} exact.",
+    "mathContext": "Commutative real normed division algebra = normed field over ℝ; Gelfand-Mazur ⇒ it is ℝ or ℂ.",
+    "significance": "Separates 'no dimension outside {1,2}' (parent) from 'exactly {1,2} occur' (this file). The latter is the complete commutative classification.",
+    "relatedConcepts": ["Hurwitz's theorem", "normed division algebra", "Gelfand-Mazur theorem", "Frobenius theorem"],
+    "prerequisites": ["normed field", "finrank", "ℝ-algebra"],
+    "tags": ["hurwitz", "classification", "sharpness"]
+  },
+  {
+    "id": "ann-hcs-upper-bound",
+    "proofId": "hurwitz-theorem-oq-03-oq-01-incomplete-01",
+    "range": { "startLine": 43, "endLine": 64 },
+    "type": "theorem",
+    "title": "Gelfand–Mazur upper bound (reproduced)",
+    "content": "finrank_normed_field_eq_one_or_two reproduces the parent's argument: NormedAlgebra.Real.nonempty_algEquiv_or gives an ℝ-algebra isomorphism F ≅ ℝ or F ≅ ℂ; transporting finrank across the induced linear equivalence (LinearEquiv.finrank_eq) with CommSemiring.finrank_self ℝ (=1) or Complex.finrank_real_complex (=2) yields finrank ℝ F ∈ {1,2}. finrank_normed_field_admissible then packages this into the admissible set {1,2,4,8} via omega.",
+    "mathContext": "$F \\cong_{\\mathbb R\\text{-alg}} \\mathbb R$ or $\\mathbb C \\Rightarrow \\operatorname{finrank}_{\\mathbb R}F \\in \\{1,2\\}$.",
+    "significance": "Supplies the 'no other value' half of the sharpness statement, self-contained so the entry stands alone.",
+    "relatedConcepts": ["Gelfand-Mazur theorem", "algebra isomorphism", "finrank of a linear equivalence"],
+    "prerequisites": ["NormedAlgebra ℝ F", "AlgEquiv", "LinearEquiv.finrank_eq"],
+    "tags": ["gelfand-mazur", "upper-bound"]
+  },
+  {
+    "id": "ann-hcs-sharpness",
+    "proofId": "hurwitz-theorem-oq-03-oq-01-incomplete-01",
+    "range": { "startLine": 66, "endLine": 79 },
+    "type": "theorem",
+    "title": "Realizability and sharpness of {1,2}",
+    "content": "finrank_real_self (finrank ℝ ℝ = 1) and finrank_complex (finrank ℝ ℂ = 2) exhibit commutative real normed division algebras of each admissible dimension. comm_bound_sharp bundles both endpoints with the upper bound: both 1 and 2 are attained and no commutative real normed division algebra has any other dimension, so the set of realized dimensions is EXACTLY {1,2}. This is the realizability/lower direction the parent's impossibility bound lacked.",
+    "mathContext": "$\\operatorname{finrank}_{\\mathbb R}\\mathbb R=1$, $\\operatorname{finrank}_{\\mathbb R}\\mathbb C=2$, and these are the only values $\\Rightarrow$ realized set $=\\{1,2\\}$.",
+    "significance": "Completes the commutative half of the {1,2,4,8} classification; the non-commutative case (dim 4, 8; Clifford/Radon-Hurwitz) remains the parent's open sorry.",
+    "relatedConcepts": ["realizability", "sharp bound", "complex numbers as ℝ-algebra"],
+    "prerequisites": ["finrank ℝ ℝ", "Complex.finrank_real_complex"],
+    "tags": ["sharpness", "realizability", "hurwitz"]
+  }
+]
