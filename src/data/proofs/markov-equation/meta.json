@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-06-21",
-    "lineCount": 237,
+    "lineCount": 344,
     "originalContributions": [
       "IsMarkov predicate and markov_one: the singular solution (1,1,1)",
       "markov_vieta: the Vieta jump z ↦ 3xy − z preserves Markov triples (with positivity)",
@@ -33,8 +33,8 @@
       "markov_all_eq: (t,t,t) is Markov iff t = 1 (uniqueness of the singular solution)"
     ],
     "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound. No native_decide is used.",
-    "theoremCount": 17,
-    "definitionCount": 3
+    "theoremCount": 21,
+    "definitionCount": 2
   },
   "sections": [
     {
@@ -121,12 +121,12 @@
     ]
   },
   "leanFile": {
-    "lineCount": 274,
+    "lineCount": 344,
     "axiomCount": 0,
     "path": "Proofs/MarkovEquation.lean",
     "sorries": 0,
-    "definitionCount": 3,
-    "theoremCount": 18
+    "definitionCount": 2,
+    "theoremCount": 21
   },
   "mainTheorems": [
     {
