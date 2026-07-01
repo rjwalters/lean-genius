@@ -40,6 +40,16 @@
       "targetId": "markov-equation",
       "relationship": "extends",
       "description": "Supplies the structural converse of the parent's Vieta lemmas. The parent proves the neighbor 3xy − z is *a* solution (markov_vieta) and computes the root product (markov_root_prod); this entry proves it is the *unique* other solution, so the fiber over (x,y) is exactly {z, 3xy − z} and Vieta jumping is an involutive permutation of it."
+    },
+    {
+      "targetId": "markov-equation-oq-06",
+      "relationship": "related",
+      "description": "Vieta ascent generates infinitely many Markov triples by iterating the neighbor move z ↦ 3xy − z. This entry supplies the well-definedness that ascent relies on: because each fixed-pair fiber is exactly the doubleton {z, 3xy − z} swapped by the involution vietaPerm, the ascent step lands on a unique, genuinely new triple."
+    },
+    {
+      "targetId": "markov-equation-oq-03",
+      "relationship": "related",
+      "description": "Generalizes Vieta jumping to the parametric Markov–Hurwitz family x² + y² + z² = kxyz. This entry's open question — whether each fixed-pair fiber is still a doubleton and how the fixed-point locus 2z = kxy varies with k — is exactly the fiber-uniqueness question oq-03 pursues for general k; the monic-quadratic + integral-domain template proved here is what transfers."
     }
   ],
   "overview": {
