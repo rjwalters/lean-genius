@@ -140,6 +140,21 @@
       "targetId": "cauchy-schwarz-integral",
       "relationship": "extends",
       "description": "Parent entry: proved the L² Bunyakovsky–Schwarz inequality via the inner-product = integral bridge and asked (open question 3) whether the bridge extends to Lᵖ for p ≠ 2. This entry answers yes via Hölder's inequality, recovering the parent's absolute-value and squared L² theorems as the self-conjugate case p = q = 2."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "relatedTo",
+      "description": "Sibling under the same parent, also framing Hölder as the generalization of Cauchy–Schwarz — but in the nonnegative / norm form ∫ |f·g| ≤ (∫|f|ᵖ)^{1/p}(∫|g|ᵍ)^{1/q}. This entry supplies the complementary signed pairing bound |∫ f·g| ≤ … and additionally recovers the L² sqrt-form and squared Cauchy–Schwarz as the p = q = 2 fixed point."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "relatedTo",
+      "description": "The finite-dimensional / inner-product Cauchy–Schwarz inequality (abstract inner product, Lagrange identity, and finite sums). It is the discrete counterpart of the L² case recovered here as p = q = 2; the integral bound ∫ f·g ≤ ‖f‖₂‖g‖₂ is the continuum analogue of ⟨u,v⟩ ≤ ‖u‖‖v‖."
+    },
+    {
+      "targetId": "jensen-inequality-oq-01",
+      "relationship": "relatedTo",
+      "description": "Hölder's inequality rests on convexity: the pointwise Young inequality ab ≤ aᵖ/p + bᵍ/q that underlies it is exactly the convexity (Jensen) inequality for exp, and the equality case |f|ᵖ ∝ |g|ᵍ mirrors Jensen's equality-iff-constant characterization. This entry's open question on the extremal case connects directly to that Jensen equality analysis."
     }
   ],
   "sorries": null
