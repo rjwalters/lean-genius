@@ -236,7 +236,7 @@
       "Can all friendship 3-hypergraphs be characterized precisely as Steiner triple systems, or does the friendship property permit hypergraphs that are not STS (e.g., with repeated edges or non-uniform vertex degrees)?",
       "Is there a non-computational proof of friendship theorem failure for 3-hypergraphs — one that gives structural insight rather than case-by-case verification — perhaps via a spectral or algebraic argument showing why the spectral method fails for hypergraphs?"
     ],
-    "implications": "The Friendship Theorem does not generalize to 3-uniform hypergraphs. The Fano plane serves as a clean, constructive counterexample: it satisfies the friendship property (every pair in exactly one triple) but has no universal vertex (each vertex is in only 3 of 7 triples). This is fully verified in Lean 4 with 0 sorries and 0 axioms."
+    "implications": "The counterexample shows that the Friendship Theorem's rigidity — the forced 'universal friend' or politician vertex — is special to graphs (2-uniform structures) and evaporates once edges become triples. Concretely, the friendship condition on a 3-uniform hypergraph (every pair in exactly one triple) is precisely the defining axiom of a Steiner triple system, and the Fano plane PG(2,2) = STS(7) is the smallest one. Because it is vertex-transitive, no vertex can be distinguished as universal, so the graph-theoretic conclusion fails in the strongest possible way. The result thus reframes a classical extremal-combinatorics theorem as a statement about finite projective geometry and combinatorial design theory: the very symmetry (the 2-transitive automorphism group of PG(2,2)) that lets such designs exist is exactly what defeats the universal-vertex conclusion."
   },
   "sorries": 0
 }
