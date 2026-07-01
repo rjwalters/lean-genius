@@ -9,7 +9,7 @@
     "mathContext": "\\sin(\\operatorname{arcLen}(u,v)) = \\sqrt{1-(u\\cdot v)^2} \\ge 0",
     "significance": "key",
     "relatedConcepts": ["arccos", "Real.sin_arccos", "non-negativity"],
-    "prerequisites": []
+    "prerequisites": ["Real.sin_arccos", "Real.sqrt_nonneg", "arccos range [0,π]", "spherical arc length"]
   },
   {
     "id": "ann-sls-oq01-sin-dihedral-nonneg",
@@ -21,7 +21,7 @@
     "mathContext": "\\sin(\\operatorname{dihedralAngle}(A,B,C)) \\ge 0",
     "significance": "key",
     "relatedConcepts": ["dihedral angle", "case split", "arccos", "non-negativity"],
-    "prerequisites": []
+    "prerequisites": ["dihedral angle definition (by cases)", "split_ifs tactic", "Real.sin_arccos", "sin 0 = 0"]
   },
   {
     "id": "ann-sls-oq01-ratio-step",
@@ -33,7 +33,7 @@
     "mathContext": "\\frac{x^2}{p^2}=\\frac{y^2}{q^2},\\ x,p,y,q\\ge 0 \\;\\Longrightarrow\\; \\frac{x}{p}=\\frac{y}{q}",
     "significance": "key",
     "relatedConcepts": ["Real.sqrt_sq", "div_pow", "non-negative ratios"],
-    "prerequisites": []
+    "prerequisites": ["Real.sqrt_sq (√(x²)=x for x≥0)", "div_pow", "totality of √ and / in ℝ"]
   },
   {
     "id": "ann-sls-oq01-law",
@@ -45,7 +45,7 @@
     "mathContext": "\\frac{\\sin a}{\\sin\\alpha}=\\frac{\\sin b}{\\sin\\beta}=\\frac{\\sin c}{\\sin\\gamma}",
     "significance": "key",
     "relatedConcepts": ["spherical law of sines", "proportion", "spherical trigonometry"],
-    "prerequisites": []
+    "prerequisites": ["parent's spherical_law_of_sines_all_sq", "ratio_of_sq_ratio", "sin non-negativity lemmas", "non-degeneracy hypotheses"]
   },
   {
     "id": "ann-sls-oq01-corollaries",
@@ -57,6 +57,6 @@
     "mathContext": "\\frac{\\sin a}{\\sin\\alpha}=\\frac{\\sin b}{\\sin\\beta},\\qquad \\frac{\\sin a}{\\sin\\alpha}=\\frac{\\sin c}{\\sin\\gamma}",
     "significance": "supporting",
     "relatedConcepts": ["corollary", "transitivity"],
-    "prerequisites": []
+    "prerequisites": ["the unsquared spherical law of sines", "transitivity of equality", "projecting conjunctions"]
   }
 ]
