@@ -45,17 +45,13 @@ def HasFabryGaps (n : ℕ → ℕ) : Prop :=
   Tendsto (fun k => (n k : ℝ) / k) atTop atTop
 
 /-- The Fejér gap condition: Σ 1/nₖ < ∞.
-    A weaker condition than Fabry gaps. -/
+    A distinct gap condition from Fabry gaps: in general neither implies
+    the other. For increasing (nₖ), Σ 1/nₖ < ∞ forces nₖ/k → ∞ (so Fejér
+    gaps imply Fabry gaps), but the converse fails — e.g. nₖ = k⌊log k⌋
+    satisfies nₖ/k → ∞ while Σ 1/nₖ = Σ 1/(k⌊log k⌋) diverges. Hence there
+    is no `fabry_implies_fejer` implication. -/
 def HasFejerGaps (n : ℕ → ℕ) : Prop :=
   Summable (fun k => (1 : ℝ) / n k)
-
-/-- Fabry gaps are stronger than Fejér gaps.
-    If nₖ/k → ∞, then nₖ grows superlinearly, so 1/nₖ is summable. -/
-theorem fabry_implies_fejer (n : ℕ → ℕ) (hn : HasFabryGaps n) :
-    HasFejerGaps n := by
-  -- This follows from the comparison test: if nₖ/k → ∞ then
-  -- eventually nₖ > k², so Σ 1/nₖ < Σ 1/k² < ∞
-  sorry
 
 /-
 ## Entire Functions of Finite Order

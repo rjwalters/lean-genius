@@ -76,7 +76,7 @@
     },
     "type": "definition",
     "title": "Fejér Gap Condition",
-    "content": "**HasFejerGaps(n)**: The series Σ 1/nₖ converges.\n\n```lean\ndef HasFejerGaps (n : ℕ → ℕ) : Prop :=\n  Summable (fun k => (1 : ℝ) / n k)\n```\n\nThis is weaker than Fabry gaps. It remains open whether this suffices for the minimum modulus result.",
+    "content": "**HasFejerGaps(n)**: The series Σ 1/nₖ converges.\n\n```lean\ndef HasFejerGaps (n : ℕ → ℕ) : Prop :=\n  Summable (fun k => (1 : ℝ) / n k)\n```\n\nDistinct from Fabry gaps: in general neither implies the other. It remains open whether Σ 1/nₖ < ∞ suffices for the minimum modulus result on arbitrary entire functions.",
     "mathContext": "Named after Lipót Fejér. This condition appears in Macintyre's optimality result: if Σ 1/nₖ = ∞, counterexamples to the minimum modulus result exist.",
     "significance": "key",
     "relatedConcepts": [
@@ -93,13 +93,13 @@
     "id": "ann-e516-fabry-implies-fejer",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 52,
-      "endLine": 58
+      "startLine": 47,
+      "endLine": 54
     },
     "type": "concept",
-    "title": "Fabry Implies Fejér",
-    "content": "**Theorem**: Fabry gaps imply Fejér gaps.\n\nIf nₖ/k → ∞, then eventually nₖ > k², so Σ 1/nₖ < Σ 1/k² < ∞.\n\nThis shows Fabry is a strictly stronger condition.",
-    "mathContext": "The proof uses the comparison test: superlinear growth of nₖ gives superlinear decay of 1/nₖ, which is summable.",
+    "title": "Fabry vs. Fejér Gaps",
+    "content": "**Relationship**: Fabry gaps (nₖ/k → ∞) and Fejér gaps (Σ 1/nₖ < ∞) are distinct — in general neither implies the other.\n\nFor *increasing* (nₖ), Σ 1/nₖ < ∞ forces k/nₖ → 0 (decreasing summable terms), i.e. nₖ/k → ∞, so **Fejér gaps imply Fabry gaps** and Fejér is the stronger condition.\n\nThe converse **fails**: nₖ = k⌊log k⌋ satisfies nₖ/k = ⌊log k⌋ → ∞ (Fabry) while Σ 1/nₖ = Σ 1/(k⌊log k⌋) diverges (not Fejér). So there is no `fabry_implies_fejer` implication.",
+    "mathContext": "A common pitfall is to claim nₖ/k → ∞ forces nₖ > k² eventually — false, since nₖ may grow only slightly faster than linear (e.g. k log k). The correct direction uses that a decreasing summable sequence 1/nₖ satisfies k/nₖ → 0.",
     "significance": "supporting",
     "relatedConcepts": [
       "comparison-test",
@@ -115,8 +115,8 @@
     "id": "ann-e516-finite-order",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 67,
-      "endLine": 70
+      "startLine": 63,
+      "endLine": 66
     },
     "type": "definition",
     "title": "Finite Order Entire Functions",
@@ -138,8 +138,8 @@
     "id": "ann-e516-order-def",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 72,
-      "endLine": 74
+      "startLine": 68,
+      "endLine": 70
     },
     "type": "definition",
     "title": "Order of an Entire Function",
@@ -160,8 +160,8 @@
     "id": "ann-e516-max-modulus",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 82,
-      "endLine": 84
+      "startLine": 78,
+      "endLine": 80
     },
     "type": "definition",
     "title": "Maximum Modulus",
@@ -183,8 +183,8 @@
     "id": "ann-e516-min-modulus",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 86,
-      "endLine": 88
+      "startLine": 82,
+      "endLine": 84
     },
     "type": "definition",
     "title": "Minimum Modulus",
@@ -206,8 +206,8 @@
     "id": "ann-e516-ratio",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 90,
-      "endLine": 92
+      "startLine": 86,
+      "endLine": 88
     },
     "type": "definition",
     "title": "Modulus Ratio",
@@ -229,8 +229,8 @@
     "id": "ann-e516-fuchs",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 101,
-      "endLine": 117
+      "startLine": 97,
+      "endLine": 113
     },
     "type": "concept",
     "title": "Fuchs's Theorem (1963)",
@@ -252,8 +252,8 @@
     "id": "ann-e516-wiman",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 125,
-      "endLine": 135
+      "startLine": 121,
+      "endLine": 131
     },
     "type": "concept",
     "title": "Wiman's Theorem (1914)",
@@ -274,8 +274,8 @@
     "id": "ann-e516-erdos-macintyre",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 137,
-      "endLine": 147
+      "startLine": 133,
+      "endLine": 143
     },
     "type": "concept",
     "title": "Erdős-Macintyre Theorem (1954)",
@@ -296,8 +296,8 @@
     "id": "ann-e516-kovari",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 156,
-      "endLine": 167
+      "startLine": 152,
+      "endLine": 163
     },
     "type": "concept",
     "title": "Kovári's Theorem (1965)",
@@ -318,8 +318,8 @@
     "id": "ann-e516-fejer-conj",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 176,
-      "endLine": 190
+      "startLine": 172,
+      "endLine": 186
     },
     "type": "definition",
     "title": "Fejér Gap Conjecture (Open)",
@@ -340,8 +340,8 @@
     "id": "ann-e516-macintyre-counter",
     "proofId": "erdos-516",
     "range": {
-      "startLine": 192,
-      "endLine": 196
+      "startLine": 188,
+      "endLine": 192
     },
     "type": "concept",
     "title": "Macintyre's Counterexample (1952)",
