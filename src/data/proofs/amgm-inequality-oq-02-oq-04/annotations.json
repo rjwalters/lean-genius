@@ -1,5 +1,62 @@
 [
   {
+    "id": "ann-amgmoq0204-setup",
+    "proofId": "amgm-inequality-oq-02-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "context",
+    "title": "What This File Discharges, and the Symmetric-Function Setup",
+    "content": "The header fixes notation and the goal. The parent entry `amgm-inequality-oq-02` proves Newton's k=1 inequality from scratch but takes the general log-concavity `pₖ² ≥ pₖ₋₁pₖ₊₁` as an axiom (`newton_log_concavity`), and derives the whole Maclaurin chain from it. This file removes that assumption entirely for n=3. It works with the three elementary symmetric polynomials e₁ = x+y+z, e₂ = xy+yz+zx, e₃ = xyz and the normalized Maclaurin means M₁ = e₁/3, M₂ = √(e₂/3), M₃ = (e₃)^(1/3), where the normalization is pₖ = eₖ/C(3,k). The two Newton inequalities become e₁² ≥ 3e₂ and e₂² ≥ 3e₁e₃, and the two chain steps M₁ ≥ M₂, M₂ ≥ M₃ become the radical-free e₁² ≥ 3e₂ and e₂³ ≥ 27e₃². The single `import Mathlib` is deliberate for a gallery file; the real content is elementary and self-contained.",
+    "mathContext": "For a real-rooted monic cubic with roots $x,y,z$, $p_k = e_k/\\binom{3}{k}$ are the normalized coefficients: $p_0=1,\\ p_1=e_1/3,\\ p_2=e_2/3,\\ p_3=e_3$. Newton's log-concavity $p_k^2 \\ge p_{k-1}p_{k+1}$ specializes to $e_1^2\\ge 3e_2$ and $e_2^2\\ge 3e_1e_3$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Elementary symmetric polynomials",
+      "Newton's normalized means pₖ",
+      "Axiom discharge / de-axiomatization",
+      "Real-rooted polynomials"
+    ],
+    "prerequisites": [
+      "Binomial coefficients C(3,k)",
+      "Symmetric polynomials of three variables"
+    ],
+    "tags": [
+      "context",
+      "setup",
+      "axiom-discharge"
+    ]
+  },
+  {
+    "id": "ann-amgmoq0204-sos",
+    "proofId": "amgm-inequality-oq-02-oq-04",
+    "range": {
+      "startLine": 65,
+      "endLine": 75
+    },
+    "type": "insight",
+    "title": "The Exact SOS Certificates Are Why No Axiom Is Needed",
+    "content": "`newton_n3_k1_identity` and `newton_n3_k2_identity` are the mathematical heart of the de-axiomatization: each records, by `ring` alone, that the Newton gap equals a manifestly nonnegative sum of squares — e₁²−3e₂ = ½∑(x−y)² and e₂²−3e₁e₃ = ½∑(xy−yz)². These are *exact* certificates (equalities, not just bounds), so they double as equality analysis: both gaps vanish iff x=y=z. For n=3 Newton's inequalities are therefore Positivstellensatz-trivial — a genuine SOS decomposition with rational coefficients — whereas for n≥4 the general Newton inequalities need the real-rootedness/Rolle argument that Mathlib still lacks. That contrast is exactly the boundary this entry maps: the elementary n=3 core versus the analytic input required beyond it.",
+    "mathContext": "A polynomial $p$ is a sum of squares (SOS) if $p=\\sum q_i^2$; SOS $\\Rightarrow$ globally nonnegative. Here the certificates are explicit: $e_1^2-3e_2=\\tfrac12\\sum_{\\text{cyc}}(x-y)^2$ and $e_2^2-3e_1e_3=\\tfrac12\\sum_{\\text{cyc}}(xy-yz)^2$, both with equality iff $x=y=z$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Sum-of-squares / Positivstellensatz",
+      "Equality case analysis",
+      "Equal-variable symmetrization",
+      "Real-rootedness (needed for n≥4)"
+    ],
+    "prerequisites": [
+      "ring identities",
+      "Nonnegativity of squares",
+      "Cyclic symmetric sums"
+    ],
+    "tags": [
+      "insight",
+      "sum-of-squares",
+      "equality-case"
+    ]
+  },
+  {
     "id": "ann-amgmoq0204-0",
     "proofId": "amgm-inequality-oq-02-oq-04",
     "range": {
