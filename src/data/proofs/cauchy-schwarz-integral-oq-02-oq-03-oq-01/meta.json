@@ -229,5 +229,37 @@
       "significance": "Completes the parent's symmetric CS picture at the level of equality cases: forward and reverse Minkowski saturate the upper and lower CS bounds, and they do so exactly when the vectors are proportional, respectively antiproportional."
     }
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Elliott H. Lieb",
+        "Michael Loss"
+      ],
+      "title": "Analysis",
+      "year": 2001,
+      "venue": "American Mathematical Society (Graduate Studies in Mathematics 14, 2nd ed.)",
+      "note": "Minkowski and reverse-triangle inequalities in L^p, with equality (antiparallel) conditions."
+    },
+    {
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
+      "title": "Inequalities",
+      "year": 1952,
+      "venue": "Cambridge University Press (2nd ed.)",
+      "note": "Definitive reference for power-mean monotonicity, the AM–GM–HM–QM chain, and Minkowski's inequality."
+    },
+    {
+      "authors": [
+        "J. Michael Steele"
+      ],
+      "title": "The Cauchy–Schwarz Master Class",
+      "year": 2004,
+      "venue": "Cambridge University Press",
+      "note": "Cauchy–Schwarz and its consequences, including power means and Minkowski-type inequalities."
+    }
+  ]
 }

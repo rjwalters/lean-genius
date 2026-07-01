@@ -163,21 +163,31 @@
         "content": "reverse_minkowski_l2_from_CS, reverse_minkowski_inner_product_space.",
         "startLine": 60,
         "endLine": 88,
-        "theorems": ["reverse_minkowski_l2_from_CS", "reverse_minkowski_inner_product_space"]
+        "theorems": [
+          "reverse_minkowski_l2_from_CS",
+          "reverse_minkowski_inner_product_space"
+        ]
       },
       {
         "title": "General Lᵖ from Forward Triangle",
         "content": "reverse_minkowski_norm, reverse_minkowski_lp.",
         "startLine": 90,
         "endLine": 116,
-        "theorems": ["reverse_minkowski_norm", "reverse_minkowski_lp"]
+        "theorems": [
+          "reverse_minkowski_norm",
+          "reverse_minkowski_lp"
+        ]
       },
       {
         "title": "One-Sided and Difference Forms",
         "content": "norm_sub_norm_le_norm_add, reverse_minkowski_sub, norm_add_ge_norm_sub_norm.",
         "startLine": 118,
         "endLine": 136,
-        "theorems": ["norm_sub_norm_le_norm_add", "reverse_minkowski_sub", "norm_add_ge_norm_sub_norm"]
+        "theorems": [
+          "norm_sub_norm_le_norm_add",
+          "reverse_minkowski_sub",
+          "norm_add_ge_norm_sub_norm"
+        ]
       }
     ],
     "mathContext": {
@@ -187,5 +197,37 @@
       "significance": "Completes the CS-based derivation of both halves of the Lᵖ triangle inequality, showing the forward and reverse inequalities arise from the upper and lower Cauchy-Schwarz bounds respectively."
     }
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
+      "title": "Inequalities",
+      "year": 1952,
+      "venue": "Cambridge University Press (2nd ed.)",
+      "note": "Definitive reference for power-mean monotonicity, the AM–GM–HM–QM chain, and Minkowski's inequality."
+    },
+    {
+      "authors": [
+        "Elliott H. Lieb",
+        "Michael Loss"
+      ],
+      "title": "Analysis",
+      "year": 2001,
+      "venue": "American Mathematical Society (Graduate Studies in Mathematics 14, 2nd ed.)",
+      "note": "Minkowski and reverse-triangle inequalities in L^p, with equality (antiparallel) conditions."
+    },
+    {
+      "authors": [
+        "Gerald B. Folland"
+      ],
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": 1999,
+      "venue": "Wiley (2nd ed.)",
+      "note": "L^p duality, Radon–Nikodým derivatives, and σ-finite measure theory."
+    }
+  ]
 }
