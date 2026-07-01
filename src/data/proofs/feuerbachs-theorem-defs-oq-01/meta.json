@@ -106,15 +106,6 @@
       "mathContext": "altitude_feet_characterization is the conjunction of the six core lemmas; triangle_345_foot_a computes Hₐ = (48/25, 36/25) for A=(0,0), B=(3,0), C=(0,4) by norm_num."
     }
   ],
-  "conclusion": {
-    "summary": "Supplies the defining geometric lemmas for the three altitude feet of the nine-point circle: collinearity with the opposite side, perpendicularity of each altitude, a Pythagorean split at each foot, and uniqueness of the foot as the perpendicular's base point. 12 theorems, 0 axioms, 0 sorries.",
-    "implications": "**Foundational grounding**: the parent's on-circle membership theorems now rest on a verified characterization of the feet as genuine orthogonal projections, not just on an opaque coordinate formula.\n\n**Reusable foot API**: collinearity, perpendicularity, and the Pythagorean split are the standard facts downstream Euclidean-geometry proofs need about altitude feet, available here for import.",
-    "openQuestions": [
-      "Prove the orthocenter is the common intersection of the three altitude lines (each altitude passes through its foot and is perpendicular to its side), using the perpendicularity lemmas of this file.",
-      "Show the reflection of the orthocenter across each side lies on the circumcircle, a classical consequence of the altitude-foot configuration.",
-      "Reformulate the altitude-foot characterization in Mathlib's EuclideanGeometry.orthogonalProjection API to enable an upstream contribution."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs",
@@ -132,9 +123,50 @@
       "description": "the full Feuerbach theorem whose nine-point circle the altitude feet lie on"
     }
   ],
+  "conclusion": {
+    "summary": "Supplies the defining geometric lemmas for the three altitude feet of the nine-point circle: collinearity with the opposite side, perpendicularity of each altitude, a Pythagorean split at each foot, and uniqueness of the foot as the perpendicular's base point. 12 theorems, 0 axioms, 0 sorries.",
+    "implications": "**Foundational grounding**: the parent's on-circle membership theorems now rest on a verified characterization of the feet as genuine orthogonal projections, not just on an opaque coordinate formula.\n\n**Reusable foot API**: collinearity, perpendicularity, and the Pythagorean split are the standard facts downstream Euclidean-geometry proofs need about altitude feet, available here for import.",
+    "openQuestions": [
+      "Prove the orthocenter is the common intersection of the three altitude lines (each altitude passes through its foot and is perpendicular to its side), using the perpendicularity lemmas of this file.",
+      "Show the reflection of the orthocenter across each side lies on the circumcircle, a classical consequence of the altitude-foot configuration.",
+      "Reformulate the altitude-foot characterization in Mathlib's EuclideanGeometry.orthogonalProjection API to enable an upstream contribution."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ01",
     "lineCount": 204,
     "axiomCount": 0,
@@ -146,6 +178,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "altitude_feet_characterization",
@@ -165,6 +198,5 @@
       "description": "Pythagorean split at the foot from A.",
       "leanType": "dist2_sq A foot_a + dist2_sq foot_a B = dist2_sq A B"
     }
-  ],
-  "sorries": 0
+  ]
 }

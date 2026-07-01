@@ -98,15 +98,6 @@
       "mathContext": "The `end FeuerbachsTheoremDefsOQ04` and `end` close the namespace and noncomputable section, making all 12 theorems available under the `FeuerbachsTheoremDefsOQ04` prefix for import by downstream proofs."
     }
   ],
-  "conclusion": {
-    "summary": "Successfully bridges the gallery's coordinate-based Feuerbach formalization to Mathlib's abstract EuclideanSpace and Metric.sphere types. The 155-line file provides 12 theorems (1 bridge lemma + 9 individual memberships + 1 combined + 1 corollary), all with 0 sorries, showing full compatibility between the two formulations.",
-    "implications": "**Mathlib alignment**: The reformulation expresses the nine-point circle theorem using Mathlib's preferred geometry types, making it a candidate for Mathlib contribution after appropriate abstraction.\n\n**API bridge pattern**: The `toEuclidean` + bridge lemma approach can be applied to other gallery proofs using the custom coordinate API (FeuerbachsTheorem.lean, FeuerbachsTheoremOQ01.lean, etc.).\n\n**Incircle tangency**: The next step is to reformulate the incircle tangency (`feuerbach_incircle_distance`) using Mathlib's tangent sphere condition, which would complete the Mathlib reformulation of the full Feuerbach theorem.",
-    "openQuestions": [
-      "Reformulate the incircle tangency theorem using Mathlib's sphere tangency: `Metric.sphere (toEuclidean N) R₉ ∩ Metric.sphere (toEuclidean I) r = {toEuclidean F}` where F is the Feuerbach point.",
-      "Prove the result using Mathlib's EuclideanGeometry.sphere type (the affine geometry version) rather than Metric.sphere, enabling connection to Mathlib's incircle/circumcircle formalism.",
-      "Contribute the nine-point circle theorem to Mathlib using this Mathlib-compatible formulation as the starting point."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs",
@@ -119,9 +110,53 @@
       "description": "the full Feuerbach theorem including incircle tangency, which this bridge enables reformulating"
     }
   ],
+  "conclusion": {
+    "summary": "Successfully bridges the gallery's coordinate-based Feuerbach formalization to Mathlib's abstract EuclideanSpace and Metric.sphere types. The 155-line file provides 12 theorems (1 bridge lemma + 9 individual memberships + 1 combined + 1 corollary), all with 0 sorries, showing full compatibility between the two formulations.",
+    "implications": "**Mathlib alignment**: The reformulation expresses the nine-point circle theorem using Mathlib's preferred geometry types, making it a candidate for Mathlib contribution after appropriate abstraction.\n\n**API bridge pattern**: The `toEuclidean` + bridge lemma approach can be applied to other gallery proofs using the custom coordinate API (FeuerbachsTheorem.lean, FeuerbachsTheoremOQ01.lean, etc.).\n\n**Incircle tangency**: The next step is to reformulate the incircle tangency (`feuerbach_incircle_distance`) using Mathlib's tangent sphere condition, which would complete the Mathlib reformulation of the full Feuerbach theorem.",
+    "openQuestions": [
+      "Reformulate the incircle tangency theorem using Mathlib's sphere tangency: `Metric.sphere (toEuclidean N) R₉ ∩ Metric.sphere (toEuclidean I) r = {toEuclidean F}` where F is the Feuerbach point.",
+      "Prove the result using Mathlib's EuclideanGeometry.sphere type (the affine geometry version) rather than Metric.sphere, enabling connection to Mathlib's incircle/circumcircle formalism.",
+      "Contribute the nine-point circle theorem to Mathlib using this Mathlib-compatible formulation as the starting point."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Feuerbach, Karl Wilhelm",
+      "title": "Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks",
+      "year": "1822",
+      "venue": "Riegel und Wießner, Nürnberg",
+      "note": "Nine-point circle and its tangency to the incircle and excircles (Feuerbach's theorem)."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem", "Real", "EuclideanGeometry"],
+    "imports": [
+      "Mathlib",
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem",
+      "Real",
+      "EuclideanGeometry"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ04",
     "lineCount": 190,
     "axiomCount": 0,
@@ -133,6 +168,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "toEuclidean_dist",
@@ -146,6 +182,5 @@
       "description": "All 9 nine-point circle points lie on a Mathlib Metric.sphere",
       "leanType": "∀ p ∈ [nine points], p ∈ Metric.sphere (toEuclidean T.ninePointCenter) T.ninePointRadius"
     }
-  ],
-  "sorries": 0
+  ]
 }

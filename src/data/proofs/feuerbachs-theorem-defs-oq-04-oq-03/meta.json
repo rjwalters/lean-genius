@@ -97,15 +97,6 @@
       "mathContext": "Each conjunct is discharged by Metric.mem_sphere + dist_comm and the corresponding distance lemma; the radius is R/2 with R the common circumradius."
     }
   ],
-  "conclusion": {
-    "summary": "Establishes the nine-point circle theorem in full generality: for any triangle in any real inner product space with a common circumcenter, the nine classical points lie on one Metric.sphere of radius R/2. This removes the coordinate (ℝ×ℝ) restriction of the gallery's earlier Feuerbach formalisations and provides Mathlib-ready infrastructure, since Mathlib currently has no nine-point circle. 14 theorems, 4 definitions, 0 axioms, 0 sorries.",
-    "implications": "Coordinate-free formulation: the result holds in EuclideanSpace ℝ (Fin 2), ℝ³, or any abstract Hilbert space, making it a direct candidate for upstreaming to Mathlib's EuclideanGeometry. The translation-and-rotation proof skeleton (normalise circumcenter to origin, reduce to a single core lemma) is reusable for the remaining open questions — incircle/excircle tangency (Feuerbach's tangency theorem proper) and the affine-space (EuclideanGeometry.sphere) reformulation.",
-    "openQuestions": [
-      "Prove the Feuerbach tangency itself in this abstract setting: the nine-point sphere is internally tangent to the incircle and externally tangent to the three excircles, i.e. dist between centres equals the difference/sum of radii.",
-      "Recast the construction in Mathlib's affine EuclideanGeometry framework (AffineSpace, EuclideanGeometry.sphere, Affine.Simplex.circumcenter / orthocenter) so that O is recovered as the genuine circumcenter rather than supplied as a hypothesis.",
-      "Show the nine-point centre lies on the Euler line and equals the circumcentre of the medial triangle, in the same coordinate-free language."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-04",
@@ -116,6 +107,43 @@
       "targetId": "feuerbachs-theorem-defs",
       "relationship": "related",
       "description": "the coordinate (Point = ℝ × ℝ) nine-point circle proofs that this file abstracts away from"
+    }
+  ],
+  "conclusion": {
+    "summary": "Establishes the nine-point circle theorem in full generality: for any triangle in any real inner product space with a common circumcenter, the nine classical points lie on one Metric.sphere of radius R/2. This removes the coordinate (ℝ×ℝ) restriction of the gallery's earlier Feuerbach formalisations and provides Mathlib-ready infrastructure, since Mathlib currently has no nine-point circle. 14 theorems, 4 definitions, 0 axioms, 0 sorries.",
+    "implications": "Coordinate-free formulation: the result holds in EuclideanSpace ℝ (Fin 2), ℝ³, or any abstract Hilbert space, making it a direct candidate for upstreaming to Mathlib's EuclideanGeometry. The translation-and-rotation proof skeleton (normalise circumcenter to origin, reduce to a single core lemma) is reusable for the remaining open questions — incircle/excircle tangency (Feuerbach's tangency theorem proper) and the affine-space (EuclideanGeometry.sphere) reformulation.",
+    "openQuestions": [
+      "Prove the Feuerbach tangency itself in this abstract setting: the nine-point sphere is internally tangent to the incircle and externally tangent to the three excircles, i.e. dist between centres equals the difference/sum of radii.",
+      "Recast the construction in Mathlib's affine EuclideanGeometry framework (AffineSpace, EuclideanGeometry.sphere, Affine.Simplex.circumcenter / orthocenter) so that O is recovered as the genuine circumcenter rather than supplied as a hypothesis.",
+      "Show the nine-point centre lies on the Euler line and equals the circumcentre of the medial triangle, in the same coordinate-free language."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Feuerbach, Karl Wilhelm",
+      "title": "Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks",
+      "year": "1822",
+      "venue": "Riegel und Wießner, Nürnberg",
+      "note": "Nine-point circle and its tangency to the incircle and excircles (Feuerbach's theorem)."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ]
 }

@@ -120,15 +120,6 @@
       "mathContext": "An acute configuration keeps all four points distinct, unlike the degenerate 3-4-5 right triangle where H coincides with the right-angle vertex."
     }
   ],
-  "conclusion": {
-    "summary": "Establishes the orthocentric system that the concurrency, metric, and reflection strands of the orthocenter sub-line left implicit: the four-point set {A, B, C, H} is symmetric, each point being the orthocenter of the triangle on the other three. The deep-looking symmetry reduces entirely to the three perpendicular-bisector relations of the circumcenter — one linear_combination per perpendicularity — and a 2×2 Cramer argument upgrades the memberships to a uniqueness statement identifying THE orthocenter. As a structural consequence the six connector midpoints of the system share one nine-point circle, and an acute worked example exhibits a genuine, non-collapsed configuration.",
-    "significance": "Completes the conceptual picture of the orthocenter begun by the concurrency entry: beyond existing and being measured, the orthocenter is the fourth point of a symmetric four-point system, which is the natural home of the nine-point circle and the reflection facts proved earlier in the strand.",
-    "futureDirections": [
-      "Identify the common nine-point centre N as the circumcenter of the medial-type configuration shared by all four triangles of the system, and prove the four circumcircles are congruent (all radius R).",
-      "Show the de Longchamps point (reflection of H over O) is the orthocenter of the anticomplementary triangle, extending the system outward.",
-      "Formalize that the four triangles of an orthocentric system have a common nine-point circle as an equality of circles, not just a shared six-point incidence."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-01-oq-01",
@@ -146,9 +137,50 @@
       "description": "uses the grandparent's coordinate orthocenter, circumcenter and nine-point circle theorems to state and prove the orthocentric system"
     }
   ],
+  "conclusion": {
+    "summary": "Establishes the orthocentric system that the concurrency, metric, and reflection strands of the orthocenter sub-line left implicit: the four-point set {A, B, C, H} is symmetric, each point being the orthocenter of the triangle on the other three. The deep-looking symmetry reduces entirely to the three perpendicular-bisector relations of the circumcenter — one linear_combination per perpendicularity — and a 2×2 Cramer argument upgrades the memberships to a uniqueness statement identifying THE orthocenter. As a structural consequence the six connector midpoints of the system share one nine-point circle, and an acute worked example exhibits a genuine, non-collapsed configuration.",
+    "significance": "Completes the conceptual picture of the orthocenter begun by the concurrency entry: beyond existing and being measured, the orthocenter is the fourth point of a symmetric four-point system, which is the natural home of the nine-point circle and the reflection facts proved earlier in the strand.",
+    "futureDirections": [
+      "Identify the common nine-point centre N as the circumcenter of the medial-type configuration shared by all four triangles of the system, and prove the four circumcircles are congruent (all radius R).",
+      "Show the de Longchamps point (reflection of H over O) is the orthocenter of the anticomplementary triangle, extending the system outward.",
+      "Formalize that the four triangles of an orthocentric system have a common nine-point circle as an equality of circles, not just a shared six-point incidence."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ01OQ01OQ02",
     "lineCount": 344,
     "axiomCount": 0,
@@ -156,8 +188,11 @@
     "definitionCount": 2,
     "path": "Proofs/FeuerbachsTheoremDefsOQ01OQ01OQ02.lean",
     "sorries": 0,
-    "additionalFiles": ["Proofs/FeuerbachsTheoremDefs.lean"]
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ]
   },
+  "sorries": [],
   "mainTheorems": [
     {
       "name": "orthocentric_system",
@@ -183,6 +218,5 @@
       "description": "The midpoints of all six connectors of {A, B, C, H} — three sides and three cevian segments — lie on one nine-point circle of centre N and radius R/2.",
       "leanType": "∀ T : Triangle, dist(N, M_a) = R/2 ∧ … ∧ dist(N, M_CH) = R/2"
     }
-  ],
-  "sorries": []
+  ]
 }

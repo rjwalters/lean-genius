@@ -127,15 +127,6 @@
       "mathContext": "Instantiates the main theorem at the parent's triangle_345 and uses its circumradius 5/2; norm_num evaluates 12·(5/2)² = 75."
     }
   ],
-  "conclusion": {
-    "summary": "Proves the shape-independent conservation law OI² + OIₐ² + OI_b² + OI_c² = 12R² summing Euler's incenter and three excenter formulas over the four tritangent centers, together with the classical exradius identity rₐ + r_b + r_c − r = 4R that drives the collapse, both resting on a from-scratch proof of Heron's identity. Answers the first open question of the excenter entry. 3 theorems (plus 16 supporting lemmas), 0 axioms, 0 sorries.",
-    "implications": "**A conservation law on Euler's pair**: the sibling entries gave OI² = R² − 2Rr and OIₐ² = R² + 2Rrₐ; summing all four centers cancels every shape-dependent term and leaves the pure constant 12R², a fact more rigid than either Euler formula alone.\n\n**The exradius identity made explicit**: rₐ + r_b + r_c − r = 4R is supplied as a standalone theorem, a classical companion of Euler's formula useful wherever exradii and the circumradius interact.\n\n**Heron's identity as gallery infrastructure**: 16·Area² = (a+b+c)(−a+b+c)(a−b+c)(a+b−c) is proved coordinate-free of trigonometry and is reusable for any side-length/area relation in the triangle-geometry strand.",
-    "openQuestions": [
-      "Establish the incenter–excenter distance IIₐ² = 4R·rₐ (so IIₐ = 2√(R rₐ)) and the excenter–excenter distances IₐI_b, completing the metric table of the four tritangent centers and recovering their pairwise sum.",
-      "Show that I, Iₐ, I_b, I_c form an orthocentric system with common nine-point circle the circumcircle of ABC, so that 12R² also equals the analogous square-distance sum from the centroid of the four centers, linking back to the Feuerbach configuration.",
-      "Generalize to weighted tritangent sums: determine for which weights wₐ,w_b,w_c,w₀ the combination w₀·OI² + wₐ·OIₐ² + w_b·OI_b² + w_c·OI_c² is shape-independent, and characterize the resulting constants."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-02-oq-01",
@@ -158,9 +149,52 @@
       "description": "the full Feuerbach theorem, whose nine-point circle is tangent to the incircle and all three excircles whose centers appear here"
     }
   ],
+  "conclusion": {
+    "summary": "Proves the shape-independent conservation law OI² + OIₐ² + OI_b² + OI_c² = 12R² summing Euler's incenter and three excenter formulas over the four tritangent centers, together with the classical exradius identity rₐ + r_b + r_c − r = 4R that drives the collapse, both resting on a from-scratch proof of Heron's identity. Answers the first open question of the excenter entry. 3 theorems (plus 16 supporting lemmas), 0 axioms, 0 sorries.",
+    "implications": "**A conservation law on Euler's pair**: the sibling entries gave OI² = R² − 2Rr and OIₐ² = R² + 2Rrₐ; summing all four centers cancels every shape-dependent term and leaves the pure constant 12R², a fact more rigid than either Euler formula alone.\n\n**The exradius identity made explicit**: rₐ + r_b + r_c − r = 4R is supplied as a standalone theorem, a classical companion of Euler's formula useful wherever exradii and the circumradius interact.\n\n**Heron's identity as gallery infrastructure**: 16·Area² = (a+b+c)(−a+b+c)(a−b+c)(a+b−c) is proved coordinate-free of trigonometry and is reusable for any side-length/area relation in the triangle-geometry strand.",
+    "openQuestions": [
+      "Establish the incenter–excenter distance IIₐ² = 4R·rₐ (so IIₐ = 2√(R rₐ)) and the excenter–excenter distances IₐI_b, completing the metric table of the four tritangent centers and recovering their pairwise sum.",
+      "Show that I, Iₐ, I_b, I_c form an orthocentric system with common nine-point circle the circumcircle of ABC, so that 12R² also equals the analogous square-distance sum from the centroid of the four centers, linking back to the Feuerbach configuration.",
+      "Generalize to weighted tritangent sums: determine for which weights wₐ,w_b,w_c,w₀ the combination w₀·OI² + wₐ·OIₐ² + w_b·OI_b² + w_c·OI_c² is shape-independent, and characterize the resulting constants."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Solutio facilis problematum quorundam geometricorum difficillimorum",
+      "year": "1765",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 11, 103–123",
+      "note": "The Euler line and the distance formula OI² = R² − 2Rr."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefsOQ02OQ01"],
-    "opens": ["FeuerbachsTheorem", "FeuerbachEulerOI", "FeuerbachExcenterEuler"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefsOQ02OQ01"
+    ],
+    "opens": [
+      "FeuerbachsTheorem",
+      "FeuerbachEulerOI",
+      "FeuerbachExcenterEuler"
+    ],
     "namespace": "FeuerbachSumOISq",
     "lineCount": 330,
     "axiomCount": 0,
@@ -174,6 +208,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "sum_OI_sq_eq_twelve_R_sq",
@@ -205,6 +240,5 @@
       "description": "Worked example: for the 3-4-5 right triangle the four squared distances sum to 75 = 12·(5/2)².",
       "leanType": "dist2_sq triangle_345.circumcenter triangle_345.incenter + dist2_sq triangle_345.circumcenter triangle_345.excenter_a + dist2_sq triangle_345.circumcenter triangle_345.excenter_b + dist2_sq triangle_345.circumcenter triangle_345.excenter_c = 75"
     }
-  ],
-  "sorries": 0
+  ]
 }

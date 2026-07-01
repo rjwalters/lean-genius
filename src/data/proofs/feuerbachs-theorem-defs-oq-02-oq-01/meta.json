@@ -144,15 +144,6 @@
       "mathContext": "Uses the parent's computed circumcenter (3/2, 2), circumradius 5/2 and side lengths 5, 4, 3."
     }
   ],
-  "conclusion": {
-    "summary": "Establishes Euler's circumcenter–excenter formula OIₐ² = R² + 2Rrₐ for all three excenters, the sign-flipped companion of the incenter law OI² = R² − 2Rr, and derives the strict consequence R < OIₐ. Along the way it proves the strict triangle inequality for the Euclidean side lengths from the 2-D Lagrange identity. 15 theorems (plus supporting lemmas), 0 axioms, 0 sorries.",
-    "implications": "**Euler's pair completed**: the sibling entry gave OI² = R² − 2Rr; this entry gives OIₐ² = R² + 2Rrₐ, so the gallery now records both of Euler's 1765 center-distance laws.\n\n**Opposite inclusions**: the incenter law's minus sign yields OI < R (incenter inside the circumcircle); the excenter law's plus sign yields OIₐ > R (circumcenter farther from any excenter than R). One sign captures the geometric dichotomy.\n\n**Reusable triangle inequality**: strict_tri_ineq_a/b/c prove a < b+c for the coordinate side lengths via a Lagrange identity, a fact useful wherever escribed circles or barycentric coordinates with signed weights appear.",
-    "openQuestions": [
-      "Prove the excentral identity OIₐ² + OI_b² + OI_c² = 3R² + 2R(rₐ + r_b + r_c) and combine with the incenter law to obtain OI² + OIₐ² + OI_b² + OI_c² in closed form.",
-      "Establish the distance between the incenter and an excenter, IIₐ² = 4R·rₐ (so IIₐ = 2√(R rₐ)), and the excenter–excenter distances, completing the metric table of the four tritangent centers.",
-      "Show that the four points I, Iₐ, I_b, I_c form an orthocentric system whose nine-point circle is the circumcircle of ABC, linking these distances back to the Feuerbach configuration."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-02",
@@ -170,9 +161,50 @@
       "description": "the full Feuerbach theorem, whose nine-point circle is tangent to each of the three excircles whose centers appear here"
     }
   ],
+  "conclusion": {
+    "summary": "Establishes Euler's circumcenter–excenter formula OIₐ² = R² + 2Rrₐ for all three excenters, the sign-flipped companion of the incenter law OI² = R² − 2Rr, and derives the strict consequence R < OIₐ. Along the way it proves the strict triangle inequality for the Euclidean side lengths from the 2-D Lagrange identity. 15 theorems (plus supporting lemmas), 0 axioms, 0 sorries.",
+    "implications": "**Euler's pair completed**: the sibling entry gave OI² = R² − 2Rr; this entry gives OIₐ² = R² + 2Rrₐ, so the gallery now records both of Euler's 1765 center-distance laws.\n\n**Opposite inclusions**: the incenter law's minus sign yields OI < R (incenter inside the circumcircle); the excenter law's plus sign yields OIₐ > R (circumcenter farther from any excenter than R). One sign captures the geometric dichotomy.\n\n**Reusable triangle inequality**: strict_tri_ineq_a/b/c prove a < b+c for the coordinate side lengths via a Lagrange identity, a fact useful wherever escribed circles or barycentric coordinates with signed weights appear.",
+    "openQuestions": [
+      "Prove the excentral identity OIₐ² + OI_b² + OI_c² = 3R² + 2R(rₐ + r_b + r_c) and combine with the incenter law to obtain OI² + OIₐ² + OI_b² + OI_c² in closed form.",
+      "Establish the distance between the incenter and an excenter, IIₐ² = 4R·rₐ (so IIₐ = 2√(R rₐ)), and the excenter–excenter distances, completing the metric table of the four tritangent centers.",
+      "Show that the four points I, Iₐ, I_b, I_c form an orthocentric system whose nine-point circle is the circumcircle of ABC, linking these distances back to the Feuerbach configuration."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Solutio facilis problematum quorundam geometricorum difficillimorum",
+      "year": "1765",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 11, 103–123",
+      "note": "The Euler line and the distance formula OI² = R² − 2Rr."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefsOQ02"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefsOQ02"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachExcenterEuler",
     "lineCount": 594,
     "axiomCount": 0,
@@ -185,6 +217,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "euler_OI_a_formula",
@@ -216,6 +249,5 @@
       "description": "Reusable weighted-norm master identity for arbitrary weights, specializing to the incenter and all three excenters.",
       "leanType": "∀ (T : Triangle) (wa wb wc : ℝ), |wa(A−O)+wb(B−O)+wc(C−O)|² = |A−O|²(wa+wb+wc)² − (wa·wb·c²+wb·wc·a²+wc·wa·b²)"
     }
-  ],
-  "sorries": 0
+  ]
 }

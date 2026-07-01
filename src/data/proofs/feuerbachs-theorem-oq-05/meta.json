@@ -93,15 +93,6 @@
       "summary": "Closing comment cataloging the 12 theorems proved in this file with their geometric meaning, and explaining the overall inversive proof strategy connecting to the excircle tangency (the next step not formalized here)"
     }
   ],
-  "conclusion": {
-    "summary": "This file proves 12 theorems plus 2 auxiliary lemmas (12 total) with 0 sorries and 0 axioms, formalizing the inversive geometry framework. The Feuerbach point is defined and shown to lie on both circles; the Circle-to-Line theorem is proved; and the parallel-image-lines result establishes the core geometric content of the inversive proof strategy.",
-    "implications": "The inversive framework established here is the foundation for the full proof that excircles are also tangent to the nine-point circle. The parallel line result — that inversion at F maps both circles to parallel lines — means any circle tangent to both original circles maps to a circle between the two parallel lines, automatically tangent to both lines and hence to both original circles. This reduces the excircle tangency to the simpler problem of finding circles between two parallel lines. The `circle_to_line` theorem and `invertPoint` definition are reusable for other inversive geometry arguments.",
-    "openQuestions": [
-      "Complete the inversive proof by showing each excircle maps under inversion at $F$ to a circle between the two parallel lines, establishing external tangency of each excircle to the nine-point circle",
-      "Formalize Feuerbach's theorem using Mathlib's projective geometry or complex plane approach (where inversion is Möbius transformation and the computation is more algebraically streamlined via complex multiplication)",
-      "Extend the framework to other tangency results in triangle geometry: the Soddy circles, mixtilinear incircles, or the Apollonius circle — all of which use inversive methods"
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem",
@@ -124,6 +115,53 @@
       "description": "Ptolemy's theorem is proved via inversive geometry — inversion maps circles to lines in both theorems; the technique is the same"
     }
   ],
+  "conclusion": {
+    "summary": "This file proves 12 theorems plus 2 auxiliary lemmas (12 total) with 0 sorries and 0 axioms, formalizing the inversive geometry framework. The Feuerbach point is defined and shown to lie on both circles; the Circle-to-Line theorem is proved; and the parallel-image-lines result establishes the core geometric content of the inversive proof strategy.",
+    "implications": "The inversive framework established here is the foundation for the full proof that excircles are also tangent to the nine-point circle. The parallel line result — that inversion at F maps both circles to parallel lines — means any circle tangent to both original circles maps to a circle between the two parallel lines, automatically tangent to both lines and hence to both original circles. This reduces the excircle tangency to the simpler problem of finding circles between two parallel lines. The `circle_to_line` theorem and `invertPoint` definition are reusable for other inversive geometry arguments.",
+    "openQuestions": [
+      "Complete the inversive proof by showing each excircle maps under inversion at $F$ to a circle between the two parallel lines, establishing external tangency of each excircle to the nine-point circle",
+      "Formalize Feuerbach's theorem using Mathlib's projective geometry or complex plane approach (where inversion is Möbius transformation and the computation is more algebraically streamlined via complex multiplication)",
+      "Extend the framework to other tangency results in triangle geometry: the Soddy circles, mixtilinear incircles, or the Apollonius circle — all of which use inversive methods"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Feuerbach, Karl Wilhelm",
+      "title": "Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks",
+      "year": "1822",
+      "venue": "Riegel und Wießner, Nürnberg",
+      "note": "Nine-point circle and its tangency to the incircle and excircles (Feuerbach's theorem)."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
+  "leanFile": {
+    "namespace": "FeuerbachsTheoremOQ05",
+    "lineCount": 266,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/FeuerbachsTheoremOQ05.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "feuerbach_inversive_parallel_lines",
@@ -140,15 +178,5 @@
       "type": "supporting",
       "description": "The Feuerbach point lies on the nine-point circle (dist2(N,F) = R₉), proved from the explicit coordinate definition F = N + (R₉/d)·(I-N) where d = R₉ - r."
     }
-  ],
-  "leanFile": {
-    "namespace": "FeuerbachsTheoremOQ05",
-    "lineCount": 266,
-    "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 2,
-    "path": "Proofs/FeuerbachsTheoremOQ05.lean",
-    "sorries": 0
-  },
-  "sorries": 0
+  ]
 }

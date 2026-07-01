@@ -100,15 +100,6 @@
       "mathContext": "orthocenter_vertex_le_diameter_sq uses the classical identity and sq_nonneg; triangle_345_AH_sq / triangle_345_vertex_A_metric / triangle_345_vertex_sum rewrite the parent's orthocenter (0,0) and side/circumradius values then norm_num."
     }
   ],
-  "conclusion": {
-    "summary": "Supplies the orthocenter–vertex distances of the orthocenter sub-line: AH² = 4R² − a², BH² = 4R² − b², CH² = 4R² − c², their sum AH² + BH² + CH² = 12R² − (a²+b²+c²), the link AH² + BH² + CH² = OH² + 3R² to Euler's metric identity, the diameter bound AH² ≤ 4R², and a 3-4-5 worked example. 13 theorems and 5 lemmas, 0 definitions, 0 axioms, 0 sorries.",
-    "implications": "**Metric completion**: together with the sibling entry's OH² = 9R² − (a²+b²+c²), the orthocenter is now fully characterized metrically — its distance to the circumcenter and to each vertex — and not only qualitatively (concurrency, reflections).\n\n**Bridge to angle form**: AH² = 4R² − a² is the squared, coordinate-free statement of AH = 2R·cos A, the natural entry point to a trigonometric treatment of the orthocenter and the pedal triangle.",
-    "openQuestions": [
-      "Prove the angle form AH = 2R·cos A directly, recovering the sign of cos A (and hence whether H lies inside or outside the triangle) from the obtuse/acute dichotomy.",
-      "Use AH² = 4R² − a² together with the reflection entry to compute the side lengths of the orthic (pedal) triangle, a²·(…)-type identities feeding the nine-point circle's tangency in the Feuerbach umbrella.",
-      "Reformulate AH² = 4R² − a² and the vertex-distance sum in Mathlib's EuclideanGeometry API (dist, EuclideanGeometry.orthocenter, circumradius) for a possible upstream contribution."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01-oq-01",
@@ -131,9 +122,50 @@
       "description": "adds the vertex distances of the orthocenter, a metric quantity the nine-point-circle development in FeuerbachsTheoremDefs.lean never measures"
     }
   ],
+  "conclusion": {
+    "summary": "Supplies the orthocenter–vertex distances of the orthocenter sub-line: AH² = 4R² − a², BH² = 4R² − b², CH² = 4R² − c², their sum AH² + BH² + CH² = 12R² − (a²+b²+c²), the link AH² + BH² + CH² = OH² + 3R² to Euler's metric identity, the diameter bound AH² ≤ 4R², and a 3-4-5 worked example. 13 theorems and 5 lemmas, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "**Metric completion**: together with the sibling entry's OH² = 9R² − (a²+b²+c²), the orthocenter is now fully characterized metrically — its distance to the circumcenter and to each vertex — and not only qualitatively (concurrency, reflections).\n\n**Bridge to angle form**: AH² = 4R² − a² is the squared, coordinate-free statement of AH = 2R·cos A, the natural entry point to a trigonometric treatment of the orthocenter and the pedal triangle.",
+    "openQuestions": [
+      "Prove the angle form AH = 2R·cos A directly, recovering the sign of cos A (and hence whether H lies inside or outside the triangle) from the obtuse/acute dichotomy.",
+      "Use AH² = 4R² − a² together with the reflection entry to compute the side lengths of the orthic (pedal) triangle, a²·(…)-type identities feeding the nine-point circle's tangency in the Feuerbach umbrella.",
+      "Reformulate AH² = 4R² − a² and the vertex-distance sum in Mathlib's EuclideanGeometry API (dist, EuclideanGeometry.orthocenter, circumradius) for a possible upstream contribution."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02",
     "lineCount": 272,
     "axiomCount": 0,
@@ -145,6 +177,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "orthocenter_vertex_A_dist_classical",
@@ -176,6 +209,5 @@
       "description": "Diameter bound: AH² ≤ 4R², a vertex is never farther from the orthocenter than the diameter of the circumcircle (immediate from AH² = 4R² − a² and a² ≥ 0).",
       "leanType": "∀ T : Triangle, dist2_sq T.A T.orthocenter ≤ 4 * T.circumradius ^ 2"
     }
-  ],
-  "sorries": 0
+  ]
 }

@@ -102,15 +102,6 @@
       "mathContext": "triangle_345_OH_sq rewrites the parent's circumcenter (3/2,2) and orthocenter (0,0) then norm_num; triangle_345_euler_metric substitutes R = 5/2 and sides 5,4,3."
     }
   ],
-  "conclusion": {
-    "summary": "Supplies the metric capstone of the orthocenter sub-line: OH² = 9R² − (a²+b²+c²), together with Euler's inequality precursor a²+b²+c² ≤ 9R², the metric Euler-line ratio OG : GH : OH = 1 : 2 : 3, the centroid identity OG² = R² − (a²+b²+c²)/9, and a 3-4-5 worked example. 8 theorems and 5 lemmas, 0 definitions, 0 axioms, 0 sorries.",
-    "implications": "**Quantitative completion**: the orthocenter is now characterized metrically (its exact distance to the circumcenter) and not only qualitatively (concurrency, reflections), and the development can now state inequalities — a²+b²+c² ≤ 9R² — that the earlier entries could not reach.\n\n**Euler line as metric**: the collinearity recorded by the grandparent is upgraded to the exact 1:2:3 distance ratio among O, G, H, the standard metric statement of the Euler line.",
-    "openQuestions": [
-      "Prove Euler's theorem OI² = R² − 2Rr (distance between circumcenter and incenter) and deduce Euler's inequality R ≥ 2r — the direct path to the Feuerbach tangency the umbrella theorem targets.",
-      "Sharpen a²+b²+c² ≤ 9R² to the equality case, showing OH = 0 (and hence equality) holds exactly for the equilateral triangle.",
-      "Reformulate OH² = 9R² − (a²+b²+c²) and the metric Euler line in Mathlib's EuclideanGeometry API (dist, EuclideanGeometry.orthocenter, circumradius) for a possible upstream contribution."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01",
@@ -128,9 +119,50 @@
       "description": "upgrades the qualitative Euler line (G = (2O+H)/3) recorded in FeuerbachsTheoremDefs.lean to the exact metric ratio OG : GH : OH = 1 : 2 : 3"
     }
   ],
+  "conclusion": {
+    "summary": "Supplies the metric capstone of the orthocenter sub-line: OH² = 9R² − (a²+b²+c²), together with Euler's inequality precursor a²+b²+c² ≤ 9R², the metric Euler-line ratio OG : GH : OH = 1 : 2 : 3, the centroid identity OG² = R² − (a²+b²+c²)/9, and a 3-4-5 worked example. 8 theorems and 5 lemmas, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "**Quantitative completion**: the orthocenter is now characterized metrically (its exact distance to the circumcenter) and not only qualitatively (concurrency, reflections), and the development can now state inequalities — a²+b²+c² ≤ 9R² — that the earlier entries could not reach.\n\n**Euler line as metric**: the collinearity recorded by the grandparent is upgraded to the exact 1:2:3 distance ratio among O, G, H, the standard metric statement of the Euler line.",
+    "openQuestions": [
+      "Prove Euler's theorem OI² = R² − 2Rr (distance between circumcenter and incenter) and deduce Euler's inequality R ≥ 2r — the direct path to the Feuerbach tangency the umbrella theorem targets.",
+      "Sharpen a²+b²+c² ≤ 9R² to the equality case, showing OH = 0 (and hence equality) holds exactly for the equilateral triangle.",
+      "Reformulate OH² = 9R² − (a²+b²+c²) and the metric Euler line in Mathlib's EuclideanGeometry API (dist, EuclideanGeometry.orthocenter, circumradius) for a possible upstream contribution."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Solutio facilis problematum quorundam geometricorum difficillimorum",
+      "year": "1765",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 11, 103–123",
+      "note": "The Euler line and the distance formula OI² = R² − 2Rr."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ01OQ01OQ01OQ01",
     "lineCount": 229,
     "axiomCount": 0,
@@ -142,6 +174,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "orthocenter_circumcenter_dist_classical",
@@ -173,6 +206,5 @@
       "description": "Metric Euler line (2:3 leg): 4·OH² = 9·GH², so OG : GH : OH = 1 : 2 : 3.",
       "leanType": "∀ T : Triangle, 4 * dist2_sq T.circumcenter T.orthocenter = 9 * dist2_sq T.centroid T.orthocenter"
     }
-  ],
-  "sorries": 0
+  ]
 }

@@ -221,6 +221,34 @@
       "Investigate the analogue for n-dimensional simplices."
     ]
   },
+  "references": [
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Sqrt",
@@ -243,6 +271,7 @@
       "Proofs/FeuerbachsTheoremOQ02Aristotle.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "orthocentric_third_perp",
@@ -286,6 +315,5 @@
       "description": "Volume = inradius × surface area / 3",
       "leanType": "(T : Tetrahedron) → (hS : T.surfaceArea > 0) → T.volume = T.inradius * T.surfaceArea / 3"
     }
-  ],
-  "sorries": 0
+  ]
 }
