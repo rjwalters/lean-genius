@@ -106,5 +106,35 @@
       "description": "Bessel's inequality is another inner-product-space consequence of Cauchy-Schwarz at the same level of generality"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "W. Heisenberg",
+      "title": "Über den anschaulichen Inhalt der quantentheoretischen Kinematik und Mechanik",
+      "year": 1927,
+      "venue": "Z. Phys. 43",
+      "note": "Original uncertainty principle."
+    },
+    {
+      "authors": "H. P. Robertson",
+      "title": "The Uncertainty Principle",
+      "year": 1929,
+      "venue": "Phys. Rev. 34",
+      "note": "General operator form σ_A σ_B ≥ ½|⟨[A,B]⟩| derived from Cauchy-Schwarz, as formalized here."
+    },
+    {
+      "authors": "J. M. Steele",
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": 2004,
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of Cauchy-Schwarz and its refinements."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

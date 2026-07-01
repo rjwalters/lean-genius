@@ -162,5 +162,28 @@
       "summary": "kittaneh_inner_sq_le_opNorm_sq ((‖T‖² + ‖T²‖)/2 ≤ ‖T‖²), inner_diag_le_opNorm (recovery of ‖⟪T x, x⟫‖ ≤ ‖T‖), and inner_diag_nilpotent (the strict refinement ‖⟪T x, x⟫‖ ≤ ‖T‖/√2 when T² = 0)."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "F. Kittaneh",
+      "title": "A numerical radius inequality and an estimate for the numerical radius of the Frobenius companion matrix",
+      "year": 2003,
+      "venue": "Studia Math. 158",
+      "note": "The bound ‖⟪Tx,x⟫‖² ≤ (‖T‖² + ‖T²‖)/2 formalized here."
+    },
+    {
+      "authors": "K. E. Gustafson, D. K. M. Rao",
+      "title": "Numerical Range: The Field of Values of Linear Operators and Matrices",
+      "year": 1997,
+      "venue": "Springer",
+      "note": "Numerical radius theory and its inequalities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

@@ -127,5 +127,35 @@
       "description": "Both proofs use the polarization-style identity $\\|\\alpha u + \\beta v\\|^2 = |\\alpha|^2 \\|u\\|^2 + 2\\operatorname{Re}(\\bar\\alpha \\beta \\langle u, v\\rangle) + |\\beta|^2 \\|v\\|^2$ as a building block. In Cauchy-Schwarz that polarization is plugged with the optimal coefficient (the projection coefficient $\\langle u, v\\rangle / \\|v\\|^2$); in Lagrange's four-square identity, the same multiplicative structure on quaternion norms drives the four-square sum-product formula."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "E. Schmidt",
+      "title": "Zur Theorie der linearen und nichtlinearen Integralgleichungen",
+      "year": 1907,
+      "venue": "Math. Ann. 63",
+      "note": "Origin of the Gram-Schmidt orthogonalization process."
+    },
+    {
+      "authors": "J. P. Gram",
+      "title": "Über die Entwickelung reeller Functionen in Reihen mittelst der Methode der kleinsten Quadrate",
+      "year": 1883,
+      "venue": "J. Reine Angew. Math. 94",
+      "note": "Earlier form of the orthogonalization procedure."
+    },
+    {
+      "authors": "J. M. Steele",
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": 2004,
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of Cauchy-Schwarz and its refinements."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

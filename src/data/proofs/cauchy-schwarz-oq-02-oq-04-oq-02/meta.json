@@ -163,5 +163,28 @@
       "summary": "energyNorm_parallelogram: ‖x+y‖_T² + ‖x−y‖_T² = 2‖x‖_T² + 2‖y‖_T², a pure bilinear identity. After replacing each ‖·‖_T² by its diagonal form (energyNorm_sq, needing only positivity), sesquilinearity (simp) expands both sides and the cross terms cancel by ring — no symmetry hypothesis required."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. V. Kadison",
+      "title": "A generalized Schwarz inequality and algebraic invariants for operator algebras",
+      "year": 1952,
+      "venue": "Ann. of Math. 56",
+      "note": "Positive-operator (Kadison-Schwarz) inequality underlying the energy seminorm."
+    },
+    {
+      "authors": "P. R. Halmos",
+      "title": "A Hilbert Space Problem Book",
+      "year": 1982,
+      "venue": "Springer",
+      "note": "Positive operators and induced seminorms."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

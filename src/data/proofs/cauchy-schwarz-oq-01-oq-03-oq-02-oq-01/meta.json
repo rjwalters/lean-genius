@@ -96,5 +96,35 @@
     "definitionCount": 1,
     "theoremCount": 4
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "H. Maassen, J. B. M. Uffink",
+      "title": "Generalized entropic uncertainty relations",
+      "year": 1988,
+      "venue": "Phys. Rev. Lett. 60",
+      "note": "The bound H(p) + H(q) ≥ -2 ln c toward which this entry contributes the elementary min-entropy case."
+    },
+    {
+      "authors": "I. I. Hirschman",
+      "title": "A note on entropy",
+      "year": 1957,
+      "venue": "Amer. J. Math. 79",
+      "note": "First entropic uncertainty relation."
+    },
+    {
+      "authors": "P. J. Coles, M. Berta, M. Tomamichel, S. Wehner",
+      "title": "Entropic uncertainty relations and their applications",
+      "year": 2017,
+      "venue": "Rev. Mod. Phys. 89",
+      "note": "Modern survey."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }
