@@ -2404,4 +2404,111 @@ theorem boundary_faces_card_lastStep (s : SpernerGrid.GridSimplex d N) (hd : 2 �
   · rw [if_neg hstep,
       if_neg (fun h => hstep ⟨(exists_incDir_last_iff s hd).mpr h.1, h.2⟩)]
 
+
+-- ============================================================
+-- SECTION: Geometric ∂Δ_N boundary faces over ALL coordinates
+-- ============================================================
+-- The `boundary_face k` predicate used above tests the SINGLE
+-- coordinate whose index matches the dropped facet index `k`
+-- (`(verts j).coords k = 0`), because that is the obligation a
+-- `gridNeighbor`-`none` facet discharges.  But the genuine
+-- *geometric* question — "does facet `k` lie on `∂Δ_N`?" — is
+-- whether the `d` vertices of the facet share a common vanishing
+-- coordinate `i`, for ANY `i : Fin (d+1)`, not necessarily `i = k`.
+--
+-- This section proves that the geometric boundary condition is no
+-- weaker: a facet lies on `∂Δ_N` (any coordinate hyperplane) ONLY
+-- for the top facet `k = Fin.last d`.  In particular facet `0` lies
+-- on NO coordinate hyperplane — it is ALWAYS strictly interior to
+-- `Δ_N`.  This settles the Phase-1 frontier dichotomy: the option
+-- "route facet `0` to `∂Δ_N` so `adj = none` is sound" is
+-- impossible, so the cross-`miss` partner construction for facet `0`
+-- is unavoidable.  All 0-sorry, 0-axiom (builds only on
+-- `coord_incDir_at`, `miss_coord_pos_of_ne_last`, and
+-- `incDir_surj_complement`).
+
+/-- **Geometric boundary faces are localized to the top facet.**
+If some coordinate `i` vanishes at every vertex of facet `k`
+(every `j ≠ k`), then `k = Fin.last d`.  Generalizes
+`boundary_face_imp_last` from the index-matched coordinate `i = k`
+to an ARBITRARY coordinate `i`: no matter which hyperplane the
+facet is tested against, only the top facet can lie on it.
+
+The `miss` coordinate is excluded because it is positive at every
+non-top vertex (`miss_coord_pos_of_ne_last`), and a facet with
+`2 ≤ d` contains at least one non-top vertex `≠ k`.  An
+increase-direction coordinate `incDir c` is excluded unless the top
+vertex is the dropped one, since at `Fin.last d` its value is
+`base + 1 ≥ 1 > 0` (`coord_incDir_at`, as `c.val < d`). -/
+theorem geom_boundary_face_imp_last (s : SpernerGrid.GridSimplex d N)
+    (hd : 2 ≤ d) (k : Fin (d + 1))
+    (h : ∃ i : Fin (d + 1), ∀ j : Fin (d + 1), j ≠ k →
+      (s.verts j).coords i = 0) :
+    k = Fin.last d := by
+  obtain ⟨i, hi⟩ := h
+  by_cases hmiss : i = s.miss
+  · -- `i = miss`: impossible outright.  Pick a vertex `j ≠ k` with
+    -- `j ≠ Fin.last d` (available since `d ≥ 2` gives `≥ 3` indices);
+    -- its `miss` coordinate is positive, contradicting `hi j`.
+    subst hmiss
+    exfalso
+    have hlast0 : (0 : Fin (d + 1)) ≠ Fin.last d := by
+      rw [Ne, Fin.ext_iff]; simp only [Fin.val_zero, Fin.val_last]; omega
+    have hlast1 : (⟨1, by omega⟩ : Fin (d + 1)) ≠ Fin.last d := by
+      rw [Ne, Fin.ext_iff]; simp only [Fin.val_last]; omega
+    by_cases hk0 : (0 : Fin (d + 1)) = k
+    · -- `k = 0`, so use `j = 1`.
+      have hne : (⟨1, by omega⟩ : Fin (d + 1)) ≠ k := by
+        rw [← hk0, Ne, Fin.ext_iff]; simp
+      have hz := hi ⟨1, by omega⟩ hne
+      have hpos := miss_coord_pos_of_ne_last s ⟨1, by omega⟩ hlast1
+      omega
+    · -- `k ≠ 0`, so use `j = 0`.
+      have hz := hi 0 hk0
+      have hpos := miss_coord_pos_of_ne_last s 0 hlast0
+      omega
+  · -- `i = incDir c` for some `c` (surjectivity onto the miss
+    -- complement).  If `k ≠ Fin.last d`, apply `hi` at the top
+    -- vertex `Fin.last d`; `coord_incDir_at` makes that coordinate
+    -- `base + 1`, contradicting `= 0`.
+    obtain ⟨c, hc⟩ := s.incDir_surj_complement i hmiss
+    subst hc
+    by_contra hk
+    have hne : (Fin.last d) ≠ k := fun h => hk h.symm
+    have hz := hi (Fin.last d) hne
+    rw [s.coord_incDir_at c (Fin.last d)] at hz
+    have hcd : c.val < (Fin.last d).val := by
+      simp only [Fin.val_last]; exact c.isLt
+    simp only [hcd, if_true] at hz
+    omega
+
+/-- Carrier (`SpernerNDim.onFace`) form of
+`geom_boundary_face_imp_last`. -/
+theorem gridVertices_geom_boundary_face_imp_last
+    (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) (k : Fin (d + 1))
+    (h : ∃ i : Fin (d + 1), ∀ j : Fin (d + 1), j ≠ k →
+      SpernerNDim.onFace (gridVertices s j) i) :
+    k = Fin.last d := by
+  apply geom_boundary_face_imp_last s hd k
+  obtain ⟨i, hi⟩ := h
+  exact ⟨i, fun j hj => (gridVertices_onFace_iff s j i).mp (hi j hj)⟩
+
+/-- **Facet `0` is always strictly interior to `Δ_N`.**  No
+coordinate hyperplane contains all of facet `0`'s vertices
+`{verts 1, …, verts d}`.  Immediate from
+`geom_boundary_face_imp_last` (facet `0` on `∂Δ_N` would force
+`0 = Fin.last d`, false for `d ≥ 2`).  Consequence for Phase-1:
+facet `0` has NO geometric escape to `∂Δ_N`, so a total triangulation
+`adj` cannot legitimately send it to `none` — the cross-`miss`
+partner cell for facet `0` must be constructed. -/
+theorem zero_facet_not_on_boundary (s : SpernerGrid.GridSimplex d N)
+    (hd : 2 ≤ d) :
+    ¬ ∃ i : Fin (d + 1), ∀ j : Fin (d + 1), j ≠ 0 →
+      (s.verts j).coords i = 0 := by
+  intro h
+  have hk := geom_boundary_face_imp_last s hd 0 h
+  rw [Fin.ext_iff] at hk
+  simp only [Fin.val_zero, Fin.val_last] at hk
+  omega
+
 end SpernerNDimOQ02
