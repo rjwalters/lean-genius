@@ -92,6 +92,38 @@
       "summary": "no_collision_le: 1 − ∑ pᵢ² ≤ 1 − 1/d. no_collision_eq_iff: equality iff uniform. Restates the collision bound in complementary (no-collision) form."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Munford, A.G."
+      ],
+      "title": "A note on the uniformity assumption in the birthday problem",
+      "year": "1977",
+      "venue": "The American Statistician 31 (3), p. 119",
+      "note": "Shows the uniform distribution minimizes birthday-collision probability."
+    },
+    {
+      "authors": [
+        "Klamkin, M.S.",
+        "Newman, D.J."
+      ],
+      "title": "Extensions of the birthday surprise",
+      "year": "1967",
+      "venue": "Journal of Combinatorial Theory 3 (3), pp. 279–282",
+      "note": "Extremality of the uniform distribution for multi-coincidence birthday problems."
+    },
+    {
+      "authors": [
+        "Marshall, A.W.",
+        "Olkin, I.",
+        "Arnold, B.C."
+      ],
+      "title": "Inequalities: Theory of Majorization and Its Applications",
+      "year": "2011",
+      "venue": "2nd ed., Springer Series in Statistics",
+      "note": "Standard reference for Schur-convexity, majorization and doubly-stochastic smoothing."
+    }
+  ],
   "conclusion": {
     "summary": "Proved that the uniform distribution minimizes the two-draw collision probability: ∑ᵢ pᵢ² ≥ 1/d for every probability vector p on d outcomes, with equality iff p is uniform. The complementary no-collision probability 1 − ∑ pᵢ² is correspondingly maximized at uniform. 140 lines, 7 theorems, 0 sorries, 0 axioms — the proof rests entirely on the variance identity ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)².",
     "implications": "This is the n = 2 instance of the Munford/Klamkin–Newman non-uniform birthday extremality: among all birthday distributions on d days, uniform is the least likely to produce a shared birthday. Practically, any real-world seasonal bias *increases* the probability of a coincidence, so the textbook uniform calculation is a conservative (lower) bound on the true collision probability. The variance-identity proof also yields the exact minimizer characterization, not just the bound.",

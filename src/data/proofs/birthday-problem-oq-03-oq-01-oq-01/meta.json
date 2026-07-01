@@ -151,6 +151,27 @@
       "mathContext": "native_decide confirms n=12 despite the loose asymptotic prediction n≈7.5 — asymptotics are inaccurate at small d."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "McKinney, E.H."
+      ],
+      "title": "Generalized birthday problem",
+      "year": "1966",
+      "venue": "American Mathematical Monthly 73 (4), pp. 385–387",
+      "note": "The generalized (k-coincidence) birthday problem and its counting recurrences."
+    },
+    {
+      "authors": [
+        "Diaconis, P.",
+        "Mosteller, F."
+      ],
+      "title": "Methods for studying coincidences",
+      "year": "1989",
+      "venue": "Journal of the American Statistical Association 84 (408), pp. 853–861",
+      "note": "Asymptotics of k-fold birthday coincidences, including the (k=3) threshold scaling."
+    }
+  ],
   "conclusion": {
     "summary": "The slot-based recurrence reduces birthday counting from O(d^n) to O(n²). The definition is computable, the capacity theorem and polynomial bound are proved, the general n=3 formula birthdayCount3 3 d = d³ - d is proved, and thresholds for d=3,4,5,7,10,365 are all machine-verified by decide/native_decide. Fully verified: 0 axioms, 0 sorries.",
     "implications": "The slot-based recurrence R(n, e, s) is the Lean formalization of the standard dynamic programming approach to birthday counting. The O(n²) state space is optimal: by the capacity theorem, states with n > 2e+s are unreachable, and the remaining states form a triangular region of size O(n²). This framework extends to k-way coincidences for general k by tracking a k-level histogram instead of just (e, s).",

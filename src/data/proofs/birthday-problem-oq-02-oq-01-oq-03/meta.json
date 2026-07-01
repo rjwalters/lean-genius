@@ -103,6 +103,27 @@
       "summary": "collisionProb_one: collisionProb 1 d = 0 (no collision with a single person). collisionProb_nonneg / collisionProb_le_one: 0 ≤ collisionProb k d ≤ 1 for k ≤ d+1."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Feller, W."
+      ],
+      "title": "An Introduction to Probability Theory and Its Applications, Volume I",
+      "year": "1968",
+      "venue": "3rd ed., Wiley",
+      "note": "Classic treatment of the birthday problem and occupancy / collision distributions."
+    },
+    {
+      "authors": [
+        "Motwani, R.",
+        "Raghavan, P."
+      ],
+      "title": "Randomized Algorithms",
+      "year": "1995",
+      "venue": "Cambridge University Press",
+      "note": "The birthday paradox and collision bounds in the algorithmic setting."
+    }
+  ],
   "conclusion": {
     "summary": "This file formalizes the qualitative heart of the birthday paradox: the collision probability collisionProb(k,d) = 1 − ∏_{i<k}(1 − i/d) is non-decreasing in the number of people k for 1 ≤ k ≤ d (collisionProb_monotone), so growing the group can only make a shared birthday more likely. The proof rests on a single product recurrence P(k+1) = P(k)·(1 − k/d) and the elementary fact that each conditional avoidance factor lies in [0,1]; Nat.le_induction lifts the one-step bound to the global antitone statement, and taking complements yields the headline. Companion lemmas certify collisionProb is a genuine probability (collisionProb 1 d = 0 and 0 ≤ collisionProb ≤ 1). Everything is machine-checked with 0 axioms and 0 sorries.",
     "implications": [
