@@ -73,7 +73,7 @@
     },
     "type": "theorem",
     "title": "The British Flag Identity",
-    "content": "The core theorem `british_flag`. After substituting the parallelogram closure C = B + D − A, the goal expands to a polynomial identity in the coordinates. Writing u = B − A and v = D − A, the key cancellation is\n\n(PA² + PC²) − (PB² + PD²) = 2 (u.1·v.1 + u.2·v.2) = 2 (u ⬝ v).\n\nThe right-hand side is exactly twice the orthogonality hypothesis, so a single `linear_combination (2 : ℝ) * hperp` closes the goal. The theorem is therefore a metric restatement of the right angle at A: the squared-distance identity holds precisely because the edges are perpendicular.",
+    "content": "The core theorem `british_flag`. After substituting the parallelogram closure C = B + D − A, the goal expands to a polynomial identity in the coordinates. Writing u = B − A and v = D − A, the key cancellation is\n\n(PA² + PC²) − (PB² + PD²) = 2 (u.1·v.1 + u.2·v.2) = 2 (u ⬝ v).\n\nThe right-hand side is exactly twice the orthogonality hypothesis, so a single `linear_combination (2 : ℝ) * hperp` closes the goal. The theorem is therefore a metric restatement of the right angle at A: the squared-distance identity holds precisely because the edges are perpendicular.\n\nNotice that P never survives to the right-hand side: its quadratic terms cancel automatically, and its linear terms cancel because the parallelogram closure makes the coefficient (A + C) − (B + D) equal to zero. So although P appears in all four distances, the identity is really a fact about the vertices.",
     "mathContext": "$(PA^2+PC^2)-(PB^2+PD^2) = 2(u_1 v_1 + u_2 v_2)$ with $u = B-A$, $v = D-A$; this vanishes by $u \\cdot v = 0$.",
     "significance": "key",
     "relatedConcepts": [
