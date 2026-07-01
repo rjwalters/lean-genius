@@ -97,6 +97,64 @@
       "Elementary real arithmetic"
     ]
   },
+  "sections": [
+    {
+      "id": "overview-converse",
+      "title": "Overview: Constructive Converse of n-Dim Mass-Point Ceva",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Frames the converse to the sibling forward result: every ratio profile r satisfying the necessary conditions (each r i < 1 and Σ r i = n) is realised by an actual positive-mass assignment on the n-simplex. The n-dimensional analogue of the triangle file's masses_from_ceva.",
+      "mathContext": "Given $r_i < 1$ and $\\sum_i r_i = n$, construct positive masses whose complement fractions are exactly $r$."
+    },
+    {
+      "id": "construction",
+      "title": "The Canonical Mass-from-Ratios Construction",
+      "startLine": 67,
+      "endLine": 81,
+      "summary": "massesFromRatio r: sets mass i = 1 − r i, positive precisely because r i < 1 (the sum constraint is not needed for positivity). massesFromRatio_mass and massesFromRatio_pos record the value and positivity of the constructed masses.",
+      "mathContext": "$\\mathrm{mass}\\ i = 1 - r_i > 0 \\iff r_i < 1.$"
+    },
+    {
+      "id": "total-normalises",
+      "title": "The Sum Condition Normalises the Total to 1",
+      "startLine": 83,
+      "endLine": 92,
+      "summary": "massesFromRatio_total: the constraint Σ r i = n forces the constructed total mass Σ(1 − r i) = (n+1) − n = 1. This is exactly where the Ceva sum identity enters the converse.",
+      "mathContext": "$\\sum_i (1 - r_i) = (n+1) - n = 1$ when $\\sum_i r_i = n$."
+    },
+    {
+      "id": "recover-ratios",
+      "title": "Recovering the Ratios: ratio i = r i",
+      "startLine": 93,
+      "endLine": 101,
+      "summary": "massesFromRatio_ratio: with total = 1, the complement fraction ratio i = 1 − mass i/total = 1 − (1 − r i) = r i, so the construction recovers the target profile exactly.",
+      "mathContext": "$\\mathrm{ratio}\\ i = 1 - \\dfrac{1 - r_i}{1} = r_i.$"
+    },
+    {
+      "id": "realisation-theorem",
+      "title": "Realisation Theorem (the n-dim Converse)",
+      "startLine": 102,
+      "endLine": 111,
+      "summary": "exists_massPoint_of_ratioProfile: packages the construction into the headline existence statement — every profile r with r i < 1 and Σ r i = n is realised by some MassPoint n whose ratios are r.",
+      "mathContext": "$\\exists\\,mp:\\ \\forall i,\\ mp.\\mathrm{ratio}\\ i = r_i$, for any admissible $r$."
+    },
+    {
+      "id": "normalized-uniqueness",
+      "title": "Normalised Uniqueness",
+      "startLine": 113,
+      "endLine": 128,
+      "summary": "massPoint_normalized_unique: among mass points of total 1, the complement-fraction profile determines the masses uniquely (mass i = 1 − ratio i). So massesFromRatio is the unique total-1 representative of each realisable ratio class.",
+      "mathContext": "total $=1$ and equal ratios $\\Rightarrow$ equal masses: $\\mathrm{mass}\\ i = 1 - \\mathrm{ratio}\\ i.$"
+    },
+    {
+      "id": "triangle-specialisation",
+      "title": "Triangle Specialisation (n = 2)",
+      "startLine": 130,
+      "endLine": 139,
+      "summary": "The n = 2 sanity check: any triangle profile (r₀,r₁,r₂) with each rᵢ < 1 and r₀+r₁+r₂ = 2 is realised by a positive-mass triangle, via Fin.sum_univ_three.",
+      "mathContext": "$r_0+r_1+r_2 = 2,\\ r_i<1 \\Rightarrow$ a positive-mass triangle realises $(r_0,r_1,r_2)$."
+    }
+  ],
   "references": [
     {
       "authors": [
