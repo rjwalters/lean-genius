@@ -203,21 +203,58 @@ axiom planar_linear_bound : ∀ (V : Type*) [Fintype V] [DecidableEq V],
   ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
     isPlanar G → edgeCount G ≤ 3 * Fintype.card V - 6
 
-/-- Super-linear edges force non-planarity somewhere. -/
+/-- **Pure crossover inequality (axiom-free).** For every ε > 0 there is a
+    threshold N — explicitly `⌈3^(1/ε)⌉ + 1` — beyond which super-linear growth
+    strictly dominates any linear bound: `n^(1+ε) > 3n` for all `n ≥ N`.
+
+    This is the analytic heart of `superlinear_forces_nonplanar`, isolated as a
+    self-contained real-analysis fact with **no graph-theoretic assumptions and no
+    axioms**. The crossover happens exactly when `n^ε > 3`, i.e. `n > 3^(1/ε)`. -/
+theorem superlinear_gt_linear (ε : ℝ) (hε : ε > 0) :
+    ∃ N : ℕ, ∀ n : ℕ, n ≥ N → (n : ℝ) ^ (1 + ε) > 3 * n := by
+  refine ⟨⌈(3 : ℝ) ^ (1 / ε)⌉₊ + 1, ?_⟩
+  intro n hN
+  -- n ≥ N ≥ 1, so n is a positive real.
+  have hn1 : 1 ≤ n := le_trans (Nat.le_add_left 1 _) hN
+  have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn1
+  -- n > 3^(1/ε) forces n^ε > (3^(1/ε))^ε = 3.
+  have hTpos : (0 : ℝ) ≤ (3 : ℝ) ^ (1 / ε) := Real.rpow_nonneg (by norm_num) _
+  have hnT : (3 : ℝ) ^ (1 / ε) < (n : ℝ) := by
+    have hceil : (3 : ℝ) ^ (1 / ε) ≤ (⌈(3 : ℝ) ^ (1 / ε)⌉₊ : ℝ) := Nat.le_ceil _
+    have hstep : ((⌈(3 : ℝ) ^ (1 / ε)⌉₊ : ℝ)) + 1 ≤ (n : ℝ) := by exact_mod_cast hN
+    linarith
+  have hmono : ((3 : ℝ) ^ (1 / ε)) ^ ε < (n : ℝ) ^ ε :=
+    Real.rpow_lt_rpow hTpos hnT hε
+  have hcollapse : ((3 : ℝ) ^ (1 / ε)) ^ ε = 3 := by
+    rw [← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 3), one_div,
+      inv_mul_cancel₀ (ne_of_gt hε), Real.rpow_one]
+  rw [hcollapse] at hmono
+  -- Split the exponent: n^(1+ε) = n · n^ε > n · 3 = 3n.
+  have hsplit : (n : ℝ) ^ (1 + ε) = (n : ℝ) * (n : ℝ) ^ ε := by
+    rw [Real.rpow_add hnpos, Real.rpow_one]
+  rw [hsplit]
+  have hmul : (n : ℝ) * 3 < (n : ℝ) * (n : ℝ) ^ ε := mul_lt_mul_of_pos_left hmono hnpos
+  linarith
+
+/-- Super-linear edges force non-planarity somewhere.
+
+    The whole analytic content is now carried by `superlinear_gt_linear`; here we
+    only combine it with the planar edge budget `3n − 6 ≤ 3n` (from
+    `planar_linear_bound`) and the density lower bound `n^(1+ε) ≤ edges`. -/
 theorem superlinear_forces_nonplanar (ε : ℝ) (hε : ε > 0) :
     ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
       Fintype.card V ≥ N →
       ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
         isDense G ε → isNonPlanar G := by
-  -- Choose N above the crossover point 3^(1/ε): once n^ε > 3, a planar graph
-  -- (which has ≤ 3n − 6 ≤ 3n edges) can no longer carry n^(1+ε) = n · n^ε edges.
-  refine ⟨⌈(3 : ℝ) ^ (1 / ε)⌉₊ + 1, ?_⟩
+  -- Reuse the crossover threshold from the axiom-free analytic lemma.
+  obtain ⟨N, hcross⟩ := superlinear_gt_linear ε hε
+  refine ⟨N, ?_⟩
   intro V _ _ hN G _ hDense
   -- `isNonPlanar G` unfolds to `¬ isPlanar G`; assume planarity for contradiction.
   intro hPlanar
-  -- n ≥ N ≥ 1, so n is a positive real.
-  have hn1 : 1 ≤ Fintype.card V := le_trans (Nat.le_add_left 1 _) hN
-  have hnpos : (0 : ℝ) < (Fintype.card V : ℝ) := by exact_mod_cast hn1
+  -- Beyond the threshold, super-linear density strictly exceeds 3n.
+  have hgt : (Fintype.card V : ℝ) ^ (1 + ε) > 3 * (Fintype.card V : ℝ) :=
+    hcross (Fintype.card V) hN
   -- Planarity gives the linear edge bound; relax `3n − 6 ≤ 3n` over ℝ.
   have hedge : edgeCount G ≤ 3 * Fintype.card V - 6 := planar_linear_bound V G hPlanar
   have hedgeR : (edgeCount G : ℝ) ≤ 3 * (Fintype.card V : ℝ) := by
@@ -226,31 +263,23 @@ theorem superlinear_forces_nonplanar (ε : ℝ) (hε : ε > 0) :
       exact_mod_cast Nat.sub_le _ _
     push_cast at h2
     linarith
-  -- Density gives the super-linear lower bound.
+  -- Density gives the super-linear lower bound: n^(1+ε) ≤ edges.
   have hdense' : (Fintype.card V : ℝ) ^ (1 + ε) ≤ (edgeCount G : ℝ) := hDense
-  -- Split the exponent: n^(1+ε) = n · n^ε.
-  have hsplit : (Fintype.card V : ℝ) ^ (1 + ε)
-      = (Fintype.card V : ℝ) * (Fintype.card V : ℝ) ^ ε := by
-    rw [Real.rpow_add hnpos, Real.rpow_one]
-  -- Hence n · n^ε ≤ 3n = n · 3, and cancelling n > 0 gives n^ε ≤ 3.
-  have hle : (Fintype.card V : ℝ) * (Fintype.card V : ℝ) ^ ε
-      ≤ (Fintype.card V : ℝ) * 3 := by
-    rw [← hsplit]; linarith
-  have hnε_le : (Fintype.card V : ℝ) ^ ε ≤ 3 := le_of_mul_le_mul_left hle hnpos
-  -- But n > 3^(1/ε) forces n^ε > (3^(1/ε))^ε = 3, a contradiction.
-  have hTpos : (0 : ℝ) ≤ (3 : ℝ) ^ (1 / ε) := Real.rpow_nonneg (by norm_num) _
-  have hnT : (3 : ℝ) ^ (1 / ε) < (Fintype.card V : ℝ) := by
-    have hceil : (3 : ℝ) ^ (1 / ε) ≤ (⌈(3 : ℝ) ^ (1 / ε)⌉₊ : ℝ) := Nat.le_ceil _
-    have hstep : ((⌈(3 : ℝ) ^ (1 / ε)⌉₊ : ℝ)) + 1 ≤ (Fintype.card V : ℝ) := by
-      exact_mod_cast hN
-    linarith
-  have hmono : ((3 : ℝ) ^ (1 / ε)) ^ ε < (Fintype.card V : ℝ) ^ ε :=
-    Real.rpow_lt_rpow hTpos hnT hε
-  have hcollapse : ((3 : ℝ) ^ (1 / ε)) ^ ε = 3 := by
-    rw [← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 3), one_div,
-      inv_mul_cancel₀ (ne_of_gt hε), Real.rpow_one]
-  rw [hcollapse] at hmono
+  -- Chain: 3n < n^(1+ε) ≤ edges ≤ 3n — contradiction.
   linarith
+
+/-- **Dual form.** A planar graph on `≥ N` vertices cannot be ε-dense: this is
+    exactly the contrapositive of `superlinear_forces_nonplanar`, recorded
+    explicitly as the "planarity caps density" direction. -/
+theorem planar_not_dense (ε : ℝ) (hε : ε > 0) :
+    ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
+      Fintype.card V ≥ N →
+      ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
+        isPlanar G → ¬ isDense G ε := by
+  obtain ⟨N, hN⟩ := superlinear_forces_nonplanar ε hε
+  refine ⟨N, ?_⟩
+  intro V _ _ hcard G _ hPlanar hDense
+  exact (hN V hcard G hDense) hPlanar
 
 /-
 ## Quantitative Bounds
