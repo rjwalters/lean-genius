@@ -347,117 +347,26 @@ noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
 -- § 5. Localization step (Step A — proved)
 -- ============================================================================
 
-/-- **Step A**: constructs g ∈ Lq(μ) with indicator agreement on finite-measure sets.
-
-    Proof outline (Folland §6.2):
-    1. For each n, μ.restrict(Sₙ) is finite. Build φₙ = φ ∘ extByZeroCLM.
-    2. Apply `RieszLpSurjectivity.riesz_lp_surjective_from_rn` to get gₙ ∈ Lq(μₙ).
-    3. Consistency: gₙ₊₁ = gₙ a.e. on Sₙ (Lq uniqueness).
-    4. MCT + uniform bound ‖gₙ‖_{Lq(μₙ)} ≤ ‖φₙ‖ ≤ ‖φ‖ gives g ∈ Lq(μ).
-    5. Indicator agreement via continuity of φ and DCT.
-    Infrastructure (extByZeroCLM, finite-measure application) is proved above.
-    All steps proved below; 0 sorries. -/
-theorem localization_existence
+/-- **Step A1 of `localization_existence`, extracted.** For a single spanning set
+`Sₙ`, the finite-measure Riesz representer `g` on `μ.restrict Sₙ` satisfies the
+converse-Hölder norm bound `‖g‖_{Lq(μ|Sₙ)} ≤ ‖φ‖`.  Split out of the monolithic
+`localization_existence` (S18: the 600-line theorem exceeded the 40min/32GB build
+envelope once further drift fixes let elaboration proceed) so each piece
+elaborates independently and within budget. -/
+theorem gseq_norm_bound
     (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal)
     [SigmaFinite μ] [Fact (1 ≤ p)]
-    (φ : Lp ℝ p μ →L[ℝ] ℝ) :
-    ∃ g : α → ℝ, MemLp g q μ ∧
-      eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖ ∧
-      ∀ (E : Set α) (hE : MeasurableSet E) (hfin : μ E ≠ ⊤),
-        φ ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _) =
-        ∫ a in E, g a ∂μ := by
-  have hp0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one (le_of_lt hp1))
-  -- For each n, finite-measure Riesz on μ.restrict(Sₙ) via φₙ = φ ∘ extByZeroCLM
-  have hriesz_n : ∀ n, ∃ gₙ : α → ℝ,
-      MemLp gₙ q (μ.restrict (spanningSets μ n)) ∧
-      ∀ f : Lp ℝ p (μ.restrict (spanningSets μ n)),
+    (φ : Lp ℝ p μ →L[ℝ] ℝ) (n : ℕ) (hp0 : p ≠ 0)
+    (g : α → ℝ)
+    (hg : MemLp g q (μ.restrict (spanningSets μ n)))
+    (hgrep : ∀ f : Lp ℝ p (μ.restrict (spanningSets μ n)),
         φ (extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop f) =
-        ∫ a, (f : α → ℝ) a * gₙ a ∂(μ.restrict (spanningSets μ n)) := by
-    intro n
-    haveI hfin_n : IsFiniteMeasure (μ.restrict (spanningSets μ n)) :=
-      { measure_univ_lt_top := by
-          have : (μ.restrict (spanningSets μ n)) Set.univ =
-              μ (spanningSets μ n) := by
-            rw [Measure.restrict_apply MeasurableSet.univ, Set.inter_univ]
-          rw [this]; exact measure_spanningSets_lt_top μ n }
-    haveI : SigmaFinite (μ.restrict (spanningSets μ n)) := inferInstance
-    let φₙ : Lp ℝ p (μ.restrict (spanningSets μ n)) →L[ℝ] ℝ :=
-      φ.comp (extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop)
-    obtain ⟨gₙ, hgₙ, hgₙ_rep⟩ :=
-      RieszLpSurjectivity.riesz_lp_surjective_from_rn p q hp1 hptop hpq φₙ
-    exact ⟨gₙ, hgₙ, hgₙ_rep⟩
-  -- Extract the gₙ family
-  choose g_seq hg_seq_mem hg_seq_rep using hriesz_n
-  -- Key: extByZeroCLM(Sₙ)(1_E^Lp(μₙ)) = 1_E^Lp(μ), for E ⊆ Sₙ
-  -- (Both have representative E.indicator 1 a.e. w.r.t. μ)
-  have hext_ind : ∀ n (E : Set α) (hE : MeasurableSet E) (hEn : E ⊆ spanningSets μ n)
-      (hfin : μ E ≠ ⊤),
-      extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop
-        ((memLp_indicator_const p hE 1 (Or.inr (show (μ.restrict (spanningSets μ n)) E ≠ ⊤ from by
-            rw [Measure.restrict_apply hE, Set.inter_eq_left.mpr hEn]; exact hfin))).toLp _) =
-      (memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _ := by
-    intro n E hE hEn hfin
-    have hfin_n : (μ.restrict (spanningSets μ n)) E ≠ ⊤ := by
-      rw [Measure.restrict_apply hE, Set.inter_eq_left.mpr hEn]; exact hfin
-    rw [Lp.ext_iff]
-    -- Show both cofunctions are a.e. E.indicator 1 under μ
-    have hlhs : (extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop
-        ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _) : α → ℝ) =ᵐ[μ]
-        (spanningSets μ n).indicator
-          ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ : α → ℝ) :=
-      (memLp_indicator_of_restrict_loc (measurableSet_spanningSets μ n) hp0 hptop
-        (Lp.memLp _)).coeFn_toLp
-    have hrhs : ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _ : α → ℝ) =ᵐ[μ]
-        E.indicator 1 :=
-      (memLp_indicator_const p hE 1 (Or.inr hfin)).coeFn_toLp
-    -- Sₙ.indicator (coeFn of 1_E^Lp(μₙ)) =ᵐ[μ] E.indicator 1
-    -- coeFn_toLp gives =ᵐ[μ.restrict Sₙ]; convert to =ᵐ[μ] via ae_restrict_iff'
-    have hkey : (spanningSets μ n).indicator
-        ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ : α → ℝ) =ᵐ[μ]
-        E.indicator 1 := by
-      have hcoe_restrict : ∀ᵐ a ∂μ, a ∈ spanningSets μ n →
-          (memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ a = E.indicator 1 a :=
-        (ae_restrict_iff' (measurableSet_spanningSets μ n)).mp
-          (memLp_indicator_const p hE 1 (Or.inr hfin_n)).coeFn_toLp
-      filter_upwards [hcoe_restrict] with a ha
-      simp only [Set.indicator_apply]
-      by_cases hn : a ∈ spanningSets μ n
-      · simp only [hn, ite_true]; exact ha hn
-      · simp only [hn, ite_false, Set.indicator_apply, if_neg (fun he => hn (hEn he))]
-    exact hlhs.trans hkey |>.trans hrhs.symm
-  -- For E ⊆ Sₙ with μ(E) < ∞: φ(1_E^Lp(μ)) = ∫_E g_seq n dμ
-  have hagree_n : ∀ n (E : Set α) (hE : MeasurableSet E) (hEn : E ⊆ spanningSets μ n)
-      (hfin : μ E ≠ ⊤),
-      φ ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _) =
-      ∫ a in E, g_seq n a ∂μ := by
-    intro n E hE hEn hfin
-    have hfin_n : (μ.restrict (spanningSets μ n)) E ≠ ⊤ := by
-      rw [Measure.restrict_apply hE, Set.inter_eq_left.mpr hEn]; exact hfin
-    -- φ(1_E) = φ(extByZeroCLM(1_E^Lp(μₙ))) = ∫ 1_E * g_seq n ∂μₙ = ∫_E g_seq n ∂μ
-    rw [← hext_ind n E hE hEn hfin]
-    rw [hg_seq_rep n]
-    -- ∫ (coeFn of 1_E^Lp(μₙ)) * g_seq n ∂(μ.restrict Sₙ) = ∫_E g_seq n ∂μ
-    have hcoe : ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ : α → ℝ) =ᵐ[μ.restrict (spanningSets μ n)]
-        E.indicator 1 :=
-      (memLp_indicator_const p hE 1 (Or.inr hfin_n)).coeFn_toLp
-    rw [integral_congr_ae (EventuallyEq.mul_right hcoe _)]
-    simp_rw [Set.indicator_apply, Pi.one_apply, ite_mul, one_mul, zero_mul]
-    rw [integral_indicator hE, Measure.restrict_restrict hE,
-      Set.inter_comm, Set.inter_eq_left.mpr hEn]
-  -- ── Step A1: Norm bound ─────────────────────────────────────────────────────
-  -- Hölder-extremizer norm bound: ‖g_seq n‖_{Lq(μ.restrict Sₙ)} ≤ ‖φ‖
-  -- Proof sketch: let φₙ := φ ∘ extByZeroCLM(Sₙ); then ‖φₙ‖ ≤ ‖φ‖.
-  -- riesz_lp_surjective_from_rn gives g_seq n with ‖g_seq n‖_Lq = ‖φₙ‖ ≤ ‖φ‖.
-  -- The equality uses the Hölder extremizer (cf. holder_extremizer_lq_bound in parent).
-  have hgnorm : ∀ n, eLpNorm (g_seq n) q (μ.restrict (spanningSets μ n)) ≤
-      ENNReal.ofReal ‖φ‖ := by
-    intro n
+        ∫ a, (f : α → ℝ) a * g a ∂(μ.restrict (spanningSets μ n))) :
+    eLpNorm g q (μ.restrict (spanningSets μ n)) ≤ ENNReal.ofReal ‖φ‖ := by
     set μₙ := μ.restrict (spanningSets μ n)
     set hS := measurableSet_spanningSets μ n
     set extZ := extByZeroCLM hS hp0 hptop
-    have hg := hg_seq_mem n
-    set g := g_seq n
     -- Derived constants
     have hqtop' : q ≠ ⊤ := by
       intro h; rw [h, ENNReal.toReal_top] at hpq; linarith [hpq.symm.pos]
@@ -484,7 +393,7 @@ theorem localization_existence
         (mul_le_of_le_one_right (norm_nonneg _) hextZ_norm)
     -- hrep: (φ ∘ extZ) f = ∫ f * g ∂μₙ for all f ∈ Lp(μₙ)
     have hrep : ∀ f : Lp ℝ p μₙ, (φ.comp extZ) f = ∫ a, (f : α → ℝ) a * g a ∂μₙ := by
-      intro f; simp only [ContinuousLinearMap.comp_apply]; exact hg_seq_rep n f
+      intro f; simp only [ContinuousLinearMap.comp_apply]; exact hgrep f
     -- For each truncation g_k := clamp(g, -k, k), prove ‖g_k‖_q ≤ ‖φ ∘ extZ‖
     have htrunc : ∀ k : ℕ,
         eLpNorm (fun a => max (min (g a) (k : ℝ)) (-(k : ℝ))) q μₙ ≤
@@ -725,6 +634,113 @@ theorem localization_existence
             rw [hMCT]; exact iSup_le hgn_lint
       _ = ENNReal.ofReal ‖φ.comp extZ‖ := by
             rw [← ENNReal.rpow_mul, mul_one_div_cancel hq_pos'.ne', ENNReal.rpow_one]
+
+/-- **Step A**: constructs g ∈ Lq(μ) with indicator agreement on finite-measure sets.
+
+    Proof outline (Folland §6.2):
+    1. For each n, μ.restrict(Sₙ) is finite. Build φₙ = φ ∘ extByZeroCLM.
+    2. Apply `RieszLpSurjectivity.riesz_lp_surjective_from_rn` to get gₙ ∈ Lq(μₙ).
+    3. Consistency: gₙ₊₁ = gₙ a.e. on Sₙ (Lq uniqueness).
+    4. MCT + uniform bound ‖gₙ‖_{Lq(μₙ)} ≤ ‖φₙ‖ ≤ ‖φ‖ gives g ∈ Lq(μ).
+    5. Indicator agreement via continuity of φ and DCT.
+    Infrastructure (extByZeroCLM, finite-measure application) is proved above.
+    All steps proved below; 0 sorries. -/
+theorem localization_existence
+    (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
+    (hpq : p.toReal.HolderConjugate q.toReal)
+    [SigmaFinite μ] [Fact (1 ≤ p)]
+    (φ : Lp ℝ p μ →L[ℝ] ℝ) :
+    ∃ g : α → ℝ, MemLp g q μ ∧
+      eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖ ∧
+      ∀ (E : Set α) (hE : MeasurableSet E) (hfin : μ E ≠ ⊤),
+        φ ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _) =
+        ∫ a in E, g a ∂μ := by
+  have hp0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one (le_of_lt hp1))
+  -- For each n, finite-measure Riesz on μ.restrict(Sₙ) via φₙ = φ ∘ extByZeroCLM
+  have hriesz_n : ∀ n, ∃ gₙ : α → ℝ,
+      MemLp gₙ q (μ.restrict (spanningSets μ n)) ∧
+      ∀ f : Lp ℝ p (μ.restrict (spanningSets μ n)),
+        φ (extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop f) =
+        ∫ a, (f : α → ℝ) a * gₙ a ∂(μ.restrict (spanningSets μ n)) := by
+    intro n
+    haveI hfin_n : IsFiniteMeasure (μ.restrict (spanningSets μ n)) :=
+      { measure_univ_lt_top := by
+          have : (μ.restrict (spanningSets μ n)) Set.univ =
+              μ (spanningSets μ n) := by
+            rw [Measure.restrict_apply MeasurableSet.univ, Set.inter_univ]
+          rw [this]; exact measure_spanningSets_lt_top μ n }
+    haveI : SigmaFinite (μ.restrict (spanningSets μ n)) := inferInstance
+    let φₙ : Lp ℝ p (μ.restrict (spanningSets μ n)) →L[ℝ] ℝ :=
+      φ.comp (extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop)
+    obtain ⟨gₙ, hgₙ, hgₙ_rep⟩ :=
+      RieszLpSurjectivity.riesz_lp_surjective_from_rn p q hp1 hptop hpq φₙ
+    exact ⟨gₙ, hgₙ, hgₙ_rep⟩
+  -- Extract the gₙ family
+  choose g_seq hg_seq_mem hg_seq_rep using hriesz_n
+  -- Key: extByZeroCLM(Sₙ)(1_E^Lp(μₙ)) = 1_E^Lp(μ), for E ⊆ Sₙ
+  -- (Both have representative E.indicator 1 a.e. w.r.t. μ)
+  have hext_ind : ∀ n (E : Set α) (hE : MeasurableSet E) (hEn : E ⊆ spanningSets μ n)
+      (hfin : μ E ≠ ⊤),
+      extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop
+        ((memLp_indicator_const p hE 1 (Or.inr (show (μ.restrict (spanningSets μ n)) E ≠ ⊤ from by
+            rw [Measure.restrict_apply hE, Set.inter_eq_left.mpr hEn]; exact hfin))).toLp _) =
+      (memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _ := by
+    intro n E hE hEn hfin
+    have hfin_n : (μ.restrict (spanningSets μ n)) E ≠ ⊤ := by
+      rw [Measure.restrict_apply hE, Set.inter_eq_left.mpr hEn]; exact hfin
+    rw [Lp.ext_iff]
+    -- Show both cofunctions are a.e. E.indicator 1 under μ
+    have hlhs : (extByZeroCLM (measurableSet_spanningSets μ n) hp0 hptop
+        ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _) : α → ℝ) =ᵐ[μ]
+        (spanningSets μ n).indicator
+          ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ : α → ℝ) :=
+      (memLp_indicator_of_restrict_loc (measurableSet_spanningSets μ n) hp0 hptop
+        (Lp.memLp _)).coeFn_toLp
+    have hrhs : ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _ : α → ℝ) =ᵐ[μ]
+        E.indicator 1 :=
+      (memLp_indicator_const p hE 1 (Or.inr hfin)).coeFn_toLp
+    -- Sₙ.indicator (coeFn of 1_E^Lp(μₙ)) =ᵐ[μ] E.indicator 1
+    -- coeFn_toLp gives =ᵐ[μ.restrict Sₙ]; convert to =ᵐ[μ] via ae_restrict_iff'
+    have hkey : (spanningSets μ n).indicator
+        ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ : α → ℝ) =ᵐ[μ]
+        E.indicator 1 := by
+      have hcoe_restrict : ∀ᵐ a ∂μ, a ∈ spanningSets μ n →
+          (memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ a = E.indicator 1 a :=
+        (ae_restrict_iff' (measurableSet_spanningSets μ n)).mp
+          (memLp_indicator_const p hE 1 (Or.inr hfin_n)).coeFn_toLp
+      filter_upwards [hcoe_restrict] with a ha
+      simp only [Set.indicator_apply]
+      by_cases hn : a ∈ spanningSets μ n
+      · simp only [hn, ite_true]; exact ha hn
+      · simp only [hn, ite_false, Set.indicator_apply, if_neg (fun he => hn (hEn he))]
+    exact hlhs.trans hkey |>.trans hrhs.symm
+  -- For E ⊆ Sₙ with μ(E) < ∞: φ(1_E^Lp(μ)) = ∫_E g_seq n dμ
+  have hagree_n : ∀ n (E : Set α) (hE : MeasurableSet E) (hEn : E ⊆ spanningSets μ n)
+      (hfin : μ E ≠ ⊤),
+      φ ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _) =
+      ∫ a in E, g_seq n a ∂μ := by
+    intro n E hE hEn hfin
+    have hfin_n : (μ.restrict (spanningSets μ n)) E ≠ ⊤ := by
+      rw [Measure.restrict_apply hE, Set.inter_eq_left.mpr hEn]; exact hfin
+    -- φ(1_E) = φ(extByZeroCLM(1_E^Lp(μₙ))) = ∫ 1_E * g_seq n ∂μₙ = ∫_E g_seq n ∂μ
+    rw [← hext_ind n E hE hEn hfin]
+    rw [hg_seq_rep n]
+    -- ∫ (coeFn of 1_E^Lp(μₙ)) * g_seq n ∂(μ.restrict Sₙ) = ∫_E g_seq n ∂μ
+    have hcoe : ((memLp_indicator_const p hE 1 (Or.inr hfin_n)).toLp _ : α → ℝ) =ᵐ[μ.restrict (spanningSets μ n)]
+        E.indicator 1 :=
+      (memLp_indicator_const p hE 1 (Or.inr hfin_n)).coeFn_toLp
+    rw [integral_congr_ae (EventuallyEq.mul_right hcoe _)]
+    simp_rw [Set.indicator_apply, Pi.one_apply, ite_mul, one_mul, zero_mul]
+    rw [integral_indicator hE, Measure.restrict_restrict hE,
+      Set.inter_comm, Set.inter_eq_left.mpr hEn]
+  -- ── Step A1: Norm bound ─────────────────────────────────────────────────────
+  -- Hölder-extremizer norm bound: ‖g_seq n‖_{Lq(μ.restrict Sₙ)} ≤ ‖φ‖
+  -- Proof sketch: let φₙ := φ ∘ extByZeroCLM(Sₙ); then ‖φₙ‖ ≤ ‖φ‖.
+  -- riesz_lp_surjective_from_rn gives g_seq n with ‖g_seq n‖_Lq = ‖φₙ‖ ≤ ‖φ‖.
+  -- The equality uses the Hölder extremizer (cf. holder_extremizer_lq_bound in parent).
+  have hgnorm : ∀ n, eLpNorm (g_seq n) q (μ.restrict (spanningSets μ n)) ≤
+      ENNReal.ofReal ‖φ‖ := fun n =>
+    gseq_norm_bound p q hp1 hptop hpq φ n hp0 (g_seq n) (hg_seq_mem n) (hg_seq_rep n)
   -- ── Step A2: Consistency ────────────────────────────────────────────────────
   -- g_seq m =ᵐ[μ.restrict Sₘ] g_seq n for m ≤ n, via set-integral uniqueness.
   -- Key: ∫_s gₘ ∂(μ.restrict Sₘ) = ∫_{s∩Sₘ} gₘ ∂μ = φ(1_{s∩Sₘ}) = ∫_{s∩Sₘ} gₙ ∂μ
