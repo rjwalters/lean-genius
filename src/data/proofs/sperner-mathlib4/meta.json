@@ -128,5 +128,41 @@
       "Proofs/SpernerGridAristotle.lean"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Emanuel Sperner",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": 1928,
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6, 265–272",
+      "note": "Original combinatorial lemma on labelings of triangulations, the door-counting core abstracted here."
+    },
+    {
+      "authors": "Martin Aigner and Günter M. Ziegler",
+      "title": "Proofs from THE BOOK",
+      "year": 2018,
+      "venue": "Springer, 6th ed.",
+      "note": "The elegant door-counting (parity) proof of Sperner's lemma that this abstract CellComplex formulation mirrors."
+    },
+    {
+      "authors": "Jiří Matoušek",
+      "title": "Using the Borsuk–Ulam Theorem",
+      "year": 2003,
+      "venue": "Springer",
+      "note": "Sperner's lemma, its equivalence with Brouwer's fixed-point theorem, and combinatorial-topology context."
+    },
+    {
+      "authors": "L. E. J. Brouwer",
+      "title": "Über Abbildung von Mannigfaltigkeiten",
+      "year": 1911,
+      "venue": "Mathematische Annalen 71, 97–115",
+      "note": "Brouwer's fixed-point theorem, the classical application of Sperner's lemma."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Finset, parity, and combinatorics API",
+      "year": 2024,
+      "note": "Supplies the finite-set door-counting infrastructure over which the abstract CellComplex adjacency axioms are stated; drafted in Yaël Dillies' suggested contribution style."
+    }
+  ]
 }

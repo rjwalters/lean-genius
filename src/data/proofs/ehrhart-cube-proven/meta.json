@@ -215,5 +215,41 @@
       "significance": "Product formula for cube Ehrhart polynomials"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Eugène Ehrhart",
+      "title": "Sur les polyèdres rationnels homothétiques à n dimensions",
+      "year": 1962,
+      "venue": "Comptes Rendus de l'Académie des Sciences 254, 616–618",
+      "note": "Introduces the Ehrhart polynomial counting lattice points in dilates of a rational polytope; L([0,1]^d, n) = (n+1)^d is the paradigm case."
+    },
+    {
+      "authors": "Matthias Beck and Sinai Robins",
+      "title": "Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra",
+      "year": 2015,
+      "venue": "Springer, 2nd ed.",
+      "note": "Modern textbook on Ehrhart theory and Ehrhart–Macdonald reciprocity, both verified here for the unit cube."
+    },
+    {
+      "authors": "Ian G. Macdonald",
+      "title": "Polynomials Associated with Finite Cell-Complexes",
+      "year": 1971,
+      "venue": "Journal of the London Mathematical Society s2-4(1), 181–192",
+      "note": "Establishes Ehrhart–Macdonald reciprocity L(P, −n) = (−1)^d L(P°, n), the interior-count (n−1)^d identity proved algebraically here."
+    },
+    {
+      "authors": "Georg Alexander Pick",
+      "title": "Geometrisches zur Zahlenlehre",
+      "year": 1899,
+      "venue": "Sitzungsberichte des deutschen naturwissenschaftlich-medicinischen Vereines für Böhmen ‘Lotos’ 19, 311–319",
+      "note": "Pick's formula for lattice polygons, derived here as the d = 2 specialization of the cube Ehrhart polynomial."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Fintype cardinality and Finset.prod API",
+      "year": 2024,
+      "note": "Provides the lattice-point bijection Fin d → Fin(n+1) and the product-formula cardinality machinery used from first principles."
+    }
+  ]
 }

@@ -124,5 +124,41 @@
       "significance": "Bridges to the gallery's definition; lets negMulLog_mul drive the proof"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Claude E. Shannon",
+      "title": "A Mathematical Theory of Communication",
+      "year": 1948,
+      "venue": "Bell System Technical Journal 27, 379–423 & 623–656",
+      "note": "Establishes entropy as the fundamental measure of information; additivity for independent sources is the basis of the source-coding theorem (n i.i.d. symbols carry n·H bits)."
+    },
+    {
+      "authors": "Thomas M. Cover and Joy A. Thomas",
+      "title": "Elements of Information Theory",
+      "year": 2006,
+      "venue": "Wiley, 2nd ed.",
+      "note": "Chapter 2: joint entropy, independence, and the equality case H(X,Y) = H(X) + H(Y) formalized here."
+    },
+    {
+      "authors": "Robert M. Gray",
+      "title": "Entropy and Information Theory",
+      "year": 2011,
+      "venue": "Springer, 2nd ed.",
+      "note": "Rigorous measure-theoretic development of entropy additivity for product measures."
+    },
+    {
+      "authors": "David J. C. MacKay",
+      "title": "Information Theory, Inference, and Learning Algorithms",
+      "year": 2003,
+      "venue": "Cambridge University Press",
+      "note": "Elementary derivation of entropy additivity and its role in typical-set source coding."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Real.negMulLog and finite-sum API",
+      "year": 2024,
+      "note": "Supplies negMulLog_mul and the symbol-by-symbol linearization that drives the additivity proof."
+    }
+  ]
 }
