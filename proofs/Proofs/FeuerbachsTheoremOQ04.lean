@@ -853,4 +853,43 @@ theorem sdist_greatCircleFoot_center {O N : E} {ρ : ℝ}
   have hρπ : ρ ≤ Real.pi := by linarith [Real.pi_pos]
   exact ((mem_sCircle_iff_sdist hO hρ0 hρπ (greatCircleFoot O N ρ)).mp hFcirc).2
 
+/-- **Great circles are the spherical circles of angular radius `π/2`.**  With unit pole
+`N`, `sGreatCircle N = sCircle N (π/2)`, since `cos (π/2) = 0` and membership of both is
+`⟪P, N⟫ = 0`.  This unifies the two tangency notions: tangency to a "side" is tangency to a
+particular circle, so a spherical incircle is tangent (in the circle–circle sense of the
+earlier sections) to three radius-`π/2` circles centred at the side poles. -/
+theorem sGreatCircle_eq_sCircle (N : E) : sGreatCircle N = sCircle N (Real.pi / 2) := by
+  simp only [sGreatCircle, sCircle, scos, Real.cos_pi_div_two]
+
+/-! ## The spherical incircle of a spherical triangle
+
+A spherical triangle is presented by the unit **poles** `Nₐ, N_b, N_c` of its three side
+great circles.  A spherical **incircle** is a circle `sCircle O ρ` tangent to all three
+sides.  The tangency primitive `circle_tangent_greatCircle_inter` then delivers, for free,
+that such an incircle touches each side in exactly one point — the corresponding foot of the
+perpendicular.  This is the spherical form of "the incircle is tangent to all three sides",
+the first ingredient of a spherical Feuerbach configuration.  (Existence/uniqueness of the
+incenter `O` for a given triangle is the remaining hard step and is not asserted here.) -/
+
+/-- A circle `sCircle O ρ` is a **spherical incircle** for the triangle with side poles
+`Nₐ, N_b, N_c` when it is tangent to all three sides. -/
+def SphericalIncircle (Na Nb Nc O : E) (ρ : ℝ) : Prop :=
+  TangentToGreatCircle O ρ Na ∧ TangentToGreatCircle O ρ Nb ∧ TangentToGreatCircle O ρ Nc
+
+/-- **A spherical incircle meets each side in exactly one point.**  For an incircle
+`sCircle O ρ` (with `0 ≤ ρ < π/2`) of the triangle with unit side poles `Nₐ, N_b, N_c`, the
+intersection with each side great circle is the singleton foot of the perpendicular from the
+centre `O`.  Three applications of `circle_tangent_greatCircle_inter`: the incircle is
+tangent to all three sides, with explicit contact points. -/
+theorem sphericalIncircle_contact_points {Na Nb Nc O : E} {ρ : ℝ}
+    (hO : OnSphere O) (hNa : OnSphere Na) (hNb : OnSphere Nb) (hNc : OnSphere Nc)
+    (hρ0 : 0 ≤ ρ) (hρ2 : ρ < Real.pi / 2)
+    (hinc : SphericalIncircle Na Nb Nc O ρ) :
+    sCircle O ρ ∩ sGreatCircle Na = {greatCircleFoot O Na ρ} ∧
+      sCircle O ρ ∩ sGreatCircle Nb = {greatCircleFoot O Nb ρ} ∧
+      sCircle O ρ ∩ sGreatCircle Nc = {greatCircleFoot O Nc ρ} :=
+  ⟨circle_tangent_greatCircle_inter hO hNa hρ0 hρ2 hinc.1,
+   circle_tangent_greatCircle_inter hO hNb hρ0 hρ2 hinc.2.1,
+   circle_tangent_greatCircle_inter hO hNc hρ0 hρ2 hinc.2.2⟩
+
 end FeuerbachsTheoremOQ04
