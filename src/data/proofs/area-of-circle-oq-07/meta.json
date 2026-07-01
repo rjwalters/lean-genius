@@ -28,7 +28,8 @@
       "The Gaussian integral has no elementary antiderivative, so the integral I itself cannot be evaluated by the fundamental theorem of calculus; only its square I² — a genuine planar integral — admits a clean polar evaluation, which is why the squared identity is stated separately.",
       "Squaring and switching to polar coordinates produces the factor π through the Jacobian r dr dθ — exactly the circle-area object of the parent entry — so the appearance of π here is not coincidental but the same geometric fact in analytic disguise.",
       "Formalization-wise this is an honest, routine specialization: Mathlib's integral_gaussian already encapsulates the hard analytic work, so the entry's value is curatorial (the iconic b = 1 case) rather than a new proof. The badge 'mathlib' reflects this honestly.",
-      "The b = 1 value √π is the seed from which the standard-normal normalization √(2π) (the b = 1/2 case) and the whole normal-distribution density follow — flagged as the first open question."
+      "The b = 1 value √π is the seed from which the standard-normal normalization √(2π) (the b = 1/2 case) and the whole normal-distribution density follow — flagged as the first open question.",
+      "Under Mathlib's Bochner-integral convention, ∫ x, f x silently returns 0 for a non-integrable f, so asserting the value is √π ≠ 0 makes the theorem an implicit integrability certificate for e^{-x²} on ℝ, not merely an evaluation — a formalization subtlety with no counterpart in the informal statement."
     ]
   },
   "sections": [
