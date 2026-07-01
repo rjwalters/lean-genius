@@ -202,6 +202,12 @@
       "url": "https://en.wikipedia.org/wiki/LU_decomposition#Theoretical_complexity"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule-oq-02",
+      "relationship": "extends",
+      "description": "Parent Cramer-vs-Gauss complexity entry; this tightens the loose n³ model to the exact (n³−n)/3 multiply/divide count of forward Gaussian elimination."
+    }
+  ],
   "sorries": []
 }

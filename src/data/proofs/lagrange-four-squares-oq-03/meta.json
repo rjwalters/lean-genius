@@ -132,5 +132,12 @@
       "Generalize the Liouville-style identity to give elementary finite bounds for g(8) (eighth powers, where an analogous identity expresses a constant times a square of a four-square form as a sum of eighth powers) and other even exponents."
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "extends",
+      "description": "Parent Lagrange four-square theorem; this derives an explicit Waring bound g(4) ≤ 53 (every natural is a sum of ≤53 fourth powers) by a Lagrange-type argument building on Nat.sum_four_squares."
+    }
+  ]
 }

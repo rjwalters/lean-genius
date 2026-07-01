@@ -188,6 +188,12 @@
       "url": "https://en.wikipedia.org/wiki/Triangular_number"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent flop-count entry; this refines the (n³−n)/3 elimination count into its cubic ∑j² part (the n³/3 term) and quadratic ∑j = C(n,2) part."
+    }
+  ],
   "sorries": []
 }

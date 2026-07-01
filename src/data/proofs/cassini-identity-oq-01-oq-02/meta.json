@@ -147,5 +147,12 @@
       "Can d'Ocagne's identity $F_m F_{n+1} - F_{m+1}F_n = (-1)^n F_{m-n}$ be obtained from the off-diagonal entries of $Q^m Q^{-n}$ or from a determinant of a product, completing the entry-reading programme for the standard identity list?",
       "Does the Catalan identity $F_{n-r}F_{n+r} - F_n^2 = (-1)^{n-r+1}F_r^2$ follow from a determinant of $Q^{n-r}Q^{2r}$ as suggested in the parent entry, or does the off-diagonal mixing require a separate entry analysis?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cassini-identity-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry; this answers its open question by reading the Fibonacci addition formula off the matrix law Q^{m+n}=Q^m·Q^n for the companion matrix Q=[[1,1],[1,0]]."
+    }
+  ]
 }

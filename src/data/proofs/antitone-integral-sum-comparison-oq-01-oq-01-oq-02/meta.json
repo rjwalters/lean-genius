@@ -120,5 +120,12 @@
     "definitionCount": 0,
     "path": "Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02.lean",
     "sorries": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "antitone-integral-sum-comparison-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry; this answers its second open question, turning the integral test into a quantitative convergence rate for the p-series tail (∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1))."
+    }
+  ]
 }

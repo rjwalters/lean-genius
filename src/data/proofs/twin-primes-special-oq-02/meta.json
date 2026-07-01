@@ -71,5 +71,12 @@
     "definitionCount": 1,
     "path": "Proofs/TwinPrimesSpecialOQ02.lean",
     "sorries": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "twin-primes-special",
+      "relationship": "extends",
+      "description": "Parent twin-primes entry; this addresses its open question on the true growth rate π₂(N), stating the Hardy–Littlewood Conjecture B prediction π₂(N) ~ 2C₂N/(log N)²."
+    }
+  ]
 }

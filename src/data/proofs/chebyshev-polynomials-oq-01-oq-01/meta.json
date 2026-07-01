@@ -4,8 +4,13 @@
   "title": "Chebyshev addition formulas: T_{m+n} = T_m·T_n − (1−X²)·U_{m−1}·U_{n−1}, and the second-kind companion",
   "description": "The angle-addition formula for Chebyshev polynomials, the polynomial shadow of cos(α+β) = cos α cos β − sin α sin β: T_{m+n} = T_m·T_n − (1−X²)·U_{m−1}·U_{n−1}, over any commutative ring and for all integer indices. Mathlib records only the product-to-sum identity T_mul_T (2·T_m·T_k = T_{m+k} + T_{m−k}), not this addition law. The entry also proves the matching subtraction formula T_{m−n} = T_m·T_n + (1−X²)·U_{m−1}·U_{n−1}, the second-kind addition formula U_{m+n} = U_m·T_n + T_{m+1}·U_{n−1} (the sin(α+β) analog, likewise absent from Mathlib), and the Pell/Pythagorean identity Tₙ² + (1−X²)·U_{n−1}² = 1 obtained on the diagonal.",
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Polynomial", "Polynomial.Chebyshev"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Polynomial.Chebyshev"
+    ],
     "namespace": "ChebyshevPolynomialsOQ01OQ01",
     "lineCount": 135,
     "axiomCount": 0,
@@ -107,8 +112,13 @@
     "lineCount": 135,
     "theoremCount": 4,
     "definitionCount": 0,
-    "imports": ["Mathlib"],
-    "opens": ["Polynomial", "Polynomial.Chebyshev"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Polynomial.Chebyshev"
+    ],
     "namespace": "ChebyshevPolynomialsOQ01OQ01",
     "path": "Proofs/ChebyshevPolynomialsOQ01OQ01.lean"
   },
@@ -186,6 +196,13 @@
     {
       "title": "Mathlib.RingTheory.Polynomial.Chebyshev",
       "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Polynomial/Chebyshev.html"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-polynomials-oq-01",
+      "relationship": "extends",
+      "description": "Parent Chebyshev-polynomial entry; this adds the angle-addition formula T_{m+n}=T_m·T_n − (1−X²)·U_{m−1}·U_{n−1} over any commutative ring, extending Mathlib's product-to-sum identity."
     }
   ]
 }
