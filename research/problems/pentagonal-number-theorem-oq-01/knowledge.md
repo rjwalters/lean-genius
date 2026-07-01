@@ -189,3 +189,47 @@ built for the worktree).
   `s > ℓ` directly, then glue the two headlines into a single `franklinInvolution` on the
   non-fixed domain and a `card`-parity sign-reversal — the last structural step before the
   cancellation sum `∑_{distincts n}(-1)^{#parts} = pentSeriesCoeff n`.
+
+## Part 13 — the unified Franklin step (dispatch A/B) with uniform sign reversal [VERIFIED build, 0-axiom by inheritance]
+
+Consolidated Parts 11–12's two separate moves into one dispatched map and proved the two
+properties that hold **uniformly across both branches** — the cancellation engine.
+
+`franklinStep S s ℓ m := if s ≤ ℓ then franklinMoveA S s m else franklinMoveB S ℓ m`
+(+1 def, +4 thm). `PentagonalNumberTheoremOQ01.lean` now ~1454 lines.
+
+- `franklinStep_sum` — `∑ (franklinStep) = ∑ S` in either regime.
+- `franklinStep_sign` — **`(-1)^{#parts} ↦ -(-1)^{#parts}` uniformly** (Move A: card−1,
+  Move B: card+1; parity flips either way). This is *the* fact forcing
+  `∑_{non-fixed} (-1)^{#parts} = 0`.
+- `franklinStep_pos` — image stays in positive parts.
+- `franklinStep_headline` — the three packaged together.
+
+RECIPE (clean regime dispatch without over-requiring hypotheses): give each theorem its
+preconditions **conditionally** — `hA : s ≤ ℓ → <MoveA hyps>` and `hB : ℓ < s → <MoveB
+hyps>`. Proof: `unfold franklinStep; split_ifs with h`; in the A branch `obtain … := hA h`,
+in the B branch `obtain … := hB (not_le.mp h)`, then apply the matching Part 11/12 branch
+lemma. No branch is asked to satisfy the other's preconditions (Move A's `Icc ⊆ S` would
+fail in the `s>ℓ` regime, so unconditional bundling would be unprovable). Move B's `sum`
+needs `ℓ ≤ m`; feed `le_of_lt h6` from the headline's `ℓ < m`.
+
+VERIFY: full-file `cd proofs && env LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/PentagonalNumberTheoremOQ01.lean` → **EXIT 0, 0 errors, 0 sorry warnings**.
+`#print axioms` could **not** be run this session: the box was at load-avg ~28–51 with
+~149 concurrent lean/lake processes and every `#print axioms`/`-o` invocation segfaulted
+(EXIT 139, empty output) on resource exhaustion — NOT a proof defect. 0-axiom status is
+inferred from (a) the clean sorry-free build and (b) axiom-inheritance: the new decls only
+compose the already-0-axiom `franklinMoveA_*`/`franklinMoveB_*` via `unfold`/`split_ifs`/
+`obtain`/`exact` (no axiom/sorry/native_decide/decide-on-data introduced). Re-run
+`#print axioms PentagonalNumberTheoremOQ01.franklinStep_headline` when the box is quiet.
+
+### Next Steps
+- Part 14: **bijectivity / involution.** `franklinStep (franklinStep S …) … = S`. The raw
+  algebra is Part 12's mutual-inverse pair (`franklinMoveB_franklinMoveA`,
+  `franklinMoveA_franklinMoveB`); the missing piece is that the regime **swaps** under one
+  move (so the second dispatch picks the other branch), which needs recomputing
+  `min'/max'` and the top-run length `ℓ` on the image. A `staircaseLen`/run-length
+  definition (`Nat.find` of the first gap below `max'`) would let the dispatch test read
+  `s ≤ ℓ` off `S` directly and make the swap statable.
+- Then the cancellation sum `∑_{distincts n}(-1)^{#parts} = pentSeriesCoeff n` via the
+  sign-reversing involution on the non-fixed domain (fixed staircases = pentagonal terms).
