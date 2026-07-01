@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Roadmap and Imports",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "The doc-comment states Erdős #11 (open), recalls why the parent Erdos11WIP01 needed hand-supplied witnesses (Squarefree's Decidable instance routes through Nat.minSqFac, which the kernel does not reduce), and lays out the four contributions that remove that obstruction. Then imports the parent, opens the Erdos11WIP01 namespace and Finset, and reaches the docstring of the SquarefreeCheck definition.",
+      "mathContext": "Erdős #11: every odd $n>1$ is $m+2^k$ with $m$ squarefree — open; this file verifies all odd $1<n<100$ at 0 axioms via a kernel-reducible test."
+    },
+    {
       "id": "check",
       "title": "The Kernel-Reducible Squarefree Test",
       "startLine": 47,
