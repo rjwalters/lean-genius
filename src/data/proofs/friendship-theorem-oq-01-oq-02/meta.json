@@ -68,6 +68,56 @@
       "The Frobenius/trace identity tr(Aᵖ) = (tr A)ᵖ over ZMod p"
     ]
   },
+  "sections": [
+    {
+      "id": "setup-definitions",
+      "title": "Setup and Definitions",
+      "startLine": 1,
+      "endLine": 95,
+      "summary": "Imports Mathlib and opens the ported namespace Theorems100. Defines Friendship G (every pair of distinct vertices has exactly one common neighbor) and ExistsPolitician G (a vertex adjacent to all others), matching the upstream Archive names for line-by-line diffability.",
+      "mathContext": "$\\forall u\\ne v,\\ |N(u)\\cap N(v)| = 1; \\qquad \\exists c,\\ \\forall v\\ne c,\\ c\\sim v.$"
+    },
+    {
+      "id": "adjacency-square",
+      "title": "The Adjacency Matrix Squared",
+      "startLine": 96,
+      "endLine": 162,
+      "summary": "Reads the friendship condition matricially: (A²)_{vw} counts common neighbors (= 1 for v ≠ w), (A²)_{vv} = deg v. degree_eq_of_not_adj proves nonadjacent vertices share a degree via a length-3 walk count; adjMatrix_sq_of_regular yields A² = (d−1)I + J and its mod-p reduction A² = J.",
+      "mathContext": "$A^2 = (d-1)I + J, \\qquad A^2 \\equiv J \\pmod{p\\mid d-1}.$"
+    },
+    {
+      "id": "regularity-and-count",
+      "title": "Regularity and the Vertex Count",
+      "startLine": 163,
+      "endLine": 253,
+      "summary": "isRegularOf_not_existsPolitician: a friendship graph with no politician is d-regular. card_of_regular counts the vertices as |V| = d²−d+1. adjMatrix_pow_mod_p_of_regular pushes A² = J up to Aᵏ = J (k ≥ 2) over ZMod p.",
+      "mathContext": "$|V| = d^2 - d + 1, \\qquad A^k \\equiv J \\pmod p\\ (k\\ge 2).$"
+    },
+    {
+      "id": "trace-contradiction",
+      "title": "The Trace-mod-p Contradiction (d ≥ 3)",
+      "startLine": 254,
+      "endLine": 288,
+      "summary": "false_of_three_le_degree: for a prime p ∣ d−1, tr(Aᵖ) = |V| ≡ 1 (mod p) because Aᵖ = J, while the Frobenius identity ZMod.trace_pow_card gives tr(Aᵖ) = (tr A)ᵖ = 0. Hence 1 = 0 in ZMod p — impossible. This is the spectral heart of the proof.",
+      "mathContext": "$\\operatorname{tr}(A^p) = |V| \\equiv 1 \\ \\text{and}\\ = (\\operatorname{tr}A)^p = 0 \\Rightarrow 1=0.$"
+    },
+    {
+      "id": "small-degree-assembly",
+      "title": "Small-Degree Casework and the Friendship Theorem",
+      "startLine": 289,
+      "endLine": 362,
+      "summary": "Handles d ≤ 2 directly (d ≤ 1 gives ≤ 1 vertex; d = 2 gives the complete graph K₃, all vertices universal), then friendship_theorem assembles the whole proof by contradiction: no politician ⇒ d-regular ⇒ casework d ≤ 2 vs d ≥ 3.",
+      "mathContext": "$d\\le 1:|V|\\le 1;\\quad d=2:G\\cong K_3;\\quad d\\ge 3:\\text{false}.$"
+    },
+    {
+      "id": "gallery-bridge",
+      "title": "Gallery Bridge",
+      "startLine": 364,
+      "endLine": 411,
+      "summary": "Connects the ported Archive statement to the gallery's own Set.ncard-based IsFriendshipGraph and IsUniversalVertex predicates. isFriendship_iff_friendship reconciles ncard with Fintype.card; friendship_theorem_of_isFriendship states the gallery headline (∃ universal vertex), 0 axioms.",
+      "mathContext": "$\\mathrm{IsFriendshipGraph}\\,G \\iff \\mathrm{Friendship}\\,G \\;\\Rightarrow\\; \\exists c,\\ \\mathrm{IsUniversalVertex}\\,G\\,c.$"
+    }
+  ],
   "conclusion": {
     "summary": "A complete, self-contained, 0-axiom Lean 4 formalization of the classical spectral (trace-mod-p) proof of the Friendship Theorem, ported from Mathlib's non-importable Archive and bridged to the gallery's own friendship-graph predicates. It complements the sibling entry friendship-theorem-oq-01, which proves the same result while deliberately avoiding spectral methods.",
     "implications": "The friendship theorem is now available in the gallery via BOTH of its standard proofs — the classical eigenvalue/trace argument (here) and the characteristic-polynomial/UFD argument (friendship-theorem-oq-01). The port also demonstrates a reusable pattern: valuable results stranded in Mathlib's Archive target can be brought into verified gallery code with proper attribution.",
