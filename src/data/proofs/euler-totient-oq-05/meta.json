@@ -134,5 +134,35 @@
       "relationship": "extends",
       "description": "Parent Euler-totient entry; this develops the number-theoretic Nat.ModEq face — a^φ(n)≡1, exponent reduction a^k≡a^(k mod φ(n)), Fermat's little theorem, and RSA correctness."
     }
+  ],
+  "references": [
+    {
+      "authors": "L. Euler",
+      "title": "Theoremata arithmetica nova methodo demonstrata",
+      "year": 1763,
+      "venue": "Novi Comment. Acad. Sci. Petrop. 8",
+      "note": "Introduces the totient function and proves a^φ(n) ≡ 1 (mod n)."
+    },
+    {
+      "authors": "R. L. Rivest, A. Shamir, L. Adleman",
+      "title": "A Method for Obtaining Digital Signatures and Public-Key Cryptosystems",
+      "year": 1978,
+      "venue": "Comm. ACM 21",
+      "note": "RSA: correctness rests on a^φ(n) ≡ 1 (mod n) and exponent reduction mod φ(n)."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Standard reference for Euler's totient and its elementary properties."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
+    }
   ]
 }

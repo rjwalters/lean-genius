@@ -148,5 +148,21 @@
       "relationship": "sibling",
       "description": "oq-06 proves the parity classification φ(n) even ⟺ n ∉ {1,2}. This entry uses that dichotomy uniformly across a family: every argument outside {1,2} has an even totient, so the family shares the factor 2 and is never setwise coprime."
     }
+  ],
+  "references": [
+    {
+      "authors": "T. M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer",
+      "note": "Multiplicative arithmetic functions, Dirichlet convolution, and Möbius inversion."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
+    }
   ]
 }

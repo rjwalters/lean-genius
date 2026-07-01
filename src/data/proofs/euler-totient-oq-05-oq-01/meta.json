@@ -120,5 +120,28 @@
       "relationship": "extends",
       "description": "Parent RSA-correctness entry; this drops the coprimality hypothesis, proving (m^e)^d ≡ m (mod p·q) for ALL messages m via the all-m fixed-point form of Fermat's little theorem."
     }
+  ],
+  "references": [
+    {
+      "authors": "R. L. Rivest, A. Shamir, L. Adleman",
+      "title": "A Method for Obtaining Digital Signatures and Public-Key Cryptosystems",
+      "year": 1978,
+      "venue": "Comm. ACM 21",
+      "note": "RSA: correctness rests on a^φ(n) ≡ 1 (mod n) and exponent reduction mod φ(n)."
+    },
+    {
+      "authors": "S. J. Katzenbeisser",
+      "title": "Recent Advances in RSA Cryptography",
+      "year": 2001,
+      "venue": "Springer",
+      "note": "Full RSA correctness for all messages via CRT over n = p·q."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
+    }
   ]
 }

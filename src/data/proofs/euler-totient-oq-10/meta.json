@@ -154,5 +154,35 @@
       "relationship": "sibling",
       "description": "oq-07 characterizes when two totient values φ(m), φ(n) are coprime; this entry establishes Menon's identity over the units of a single modulus n. Both sit under the euler-totient root."
     }
+  ],
+  "references": [
+    {
+      "authors": "P. Kesava Menon",
+      "title": "On the sum Σ(a−1,n), [(a,n)=1]",
+      "year": 1965,
+      "venue": "J. Indian Math. Soc. 29",
+      "note": "Menon's identity Σ_{gcd(k,n)=1} gcd(k−1,n) = φ(n)·d(n)."
+    },
+    {
+      "authors": "R. Sivaramakrishnan",
+      "title": "Classical Theory of Arithmetic Functions",
+      "year": 1989,
+      "venue": "Marcel Dekker",
+      "note": "Menon's identity and its generalizations over the unit group."
+    },
+    {
+      "authors": "T. M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer",
+      "note": "Multiplicative arithmetic functions, Dirichlet convolution, and Möbius inversion."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
+    }
   ]
 }

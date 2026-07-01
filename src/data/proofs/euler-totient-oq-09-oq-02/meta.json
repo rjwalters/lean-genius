@@ -165,5 +165,35 @@
       "relationship": "related",
       "description": "The ancestor gallery family develops Euler's totient and his generalization of Fermat's little theorem; this entry contributes the basic growth estimates for prime-power totients."
     }
+  ],
+  "references": [
+    {
+      "authors": "J. B. Rosser, L. Schoenfeld",
+      "title": "Approximate formulas for some functions of prime numbers",
+      "year": 1962,
+      "venue": "Illinois J. Math. 6",
+      "note": "Explicit lower bounds for φ(n)/n and related growth estimates."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Standard reference for Euler's totient and its elementary properties."
+    },
+    {
+      "authors": "T. M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer",
+      "note": "Multiplicative arithmetic functions, Dirichlet convolution, and Möbius inversion."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
+    }
   ]
 }

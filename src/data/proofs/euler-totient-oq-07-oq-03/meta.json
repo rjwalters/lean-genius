@@ -168,5 +168,21 @@
       "relationship": "related",
       "description": "The root gallery family on Euler's totient and his generalization of Fermat's little theorem; this entry studies the arithmetic of φ across a finite collection of arguments."
     }
+  ],
+  "references": [
+    {
+      "authors": "T. M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer",
+      "note": "Multiplicative arithmetic functions, Dirichlet convolution, and Möbius inversion."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
+    }
   ]
 }
