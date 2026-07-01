@@ -11,7 +11,7 @@
     "whyMatters": []
   },
   "knowledge": {
-    "progressSummary": "Supplied explicit parity-split closed forms, strict growth, AND a two-sided real envelope for the Turán extremal bound T(n)=floor(n^2/4) of Erdős #1017 (clique partition of dense graphs). Companion Erdos1017OQ01.lean has product form + non-strict mono; this file has T(2m)=m^2, T(2m+1)=m(m+1) (extremal K_{m,m}/K_{m,m+1} edge counts), increment T(n+1)-T(n)=floor((n+1)/2), STRICT T(n)<T(n+1) n>=1, upper envelope T(n)<=n^2/4. Added 2026-06-30: exact integer identity 4*T(n)=n^2-(n mod 2) (i.e. n^2 mod 4 = n mod 2) and the matching LOWER real envelope (n^2-1)/4 <= T(n), so T is now sandwiched (n^2-1)/4 <= T(n) <= n^2/4 — pinning T within 1/4 of the quarter-square and giving T(n)~n^2/4 immediately. Self-contained re-decl (companion has 2 axioms egp_theorem/k4free_partition_number, not used). 7 thm/1 def, 0 sorries/0 axioms, builds green 7743 jobs.",
+    "progressSummary": "2026-06-30 (researcher-1): added convexity turanBound_convex (2·T(n+1)≤T(n)+T(n+2), increments ⌊(n+1)/2⌋ nondecreasing — complements strict monotonicity) and the asymptotic limit turanBound_div_sq_tendsto (T(n)/n²→1/4, squeeze on the two-sided envelope), making the stated T(n)∼n²/4 an actual theorem. 0-axiom, 0-sorry, 195L/9thm. Supplied explicit parity-split closed forms, strict growth, AND a two-sided real envelope for the Turán extremal bound T(n)=floor(n^2/4) of Erdős #1017 (clique partition of dense graphs). Companion Erdos1017OQ01.lean has product form + non-strict mono; this file has T(2m)=m^2, T(2m+1)=m(m+1) (extremal K_{m,m}/K_{m,m+1} edge counts), increment T(n+1)-T(n)=floor((n+1)/2), STRICT T(n)<T(n+1) n>=1, upper envelope T(n)<=n^2/4. Added 2026-06-30: exact integer identity 4*T(n)=n^2-(n mod 2) (i.e. n^2 mod 4 = n mod 2) and the matching LOWER real envelope (n^2-1)/4 <= T(n), so T is now sandwiched (n^2-1)/4 <= T(n) <= n^2/4 — pinning T within 1/4 of the quarter-square and giving T(n)~n^2/4 immediately. Self-contained re-decl (companion has 2 axioms egp_theorem/k4free_partition_number, not used). 7 thm/1 def, 0 sorries/0 axioms, builds green 7743 jobs.",
     "builtItems": [
       "turanBound_two_mul: T(2m)=m^2",
       "turanBound_two_mul_add_one: T(2m+1)=m(m+1)",
@@ -69,8 +69,8 @@
     {
       "path": "Proofs/Erdos1017OQ03.lean",
       "filename": "Erdos1017OQ03.lean",
-      "lineCount": 145,
-      "theoremCount": 7,
+      "lineCount": 195,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -97,5 +97,6 @@
     "erdos-1017-oq-01",
     "erdos-1017-oq-02",
     "erdos-1017-oq-03"
-  ]
+  ],
+  "lastUpdate": "2026-06-30T00:00:00.000Z"
 }
