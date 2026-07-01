@@ -1,0 +1,118 @@
+[
+  {
+    "id": "ann-programme",
+    "proofId": "factorial-telescoping-sum-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "From One Instance to the Universal Engine",
+    "content": "The docstring frames the open question: the gallery entry factorial-telescoping-sum-oq-01 proves ∑_{k=1}^{n} k·k! = (n+1)! − 1 by a bespoke induction, but that identity is really one evaluation of a universal law — the telescoping collapse ∑_{k=1}^{n} (a_{k+1} − a_k) = a_{n+1} − a_1, valid over any abelian group. This file states that engine (over arbitrary AddCommGroup, plus a multiplicative dual over CommGroup) and then recovers the factorial identity as the single instance a_k = k!. The message is structural: the cancellation is not special to factorials — it belongs to the group operation.",
+    "mathContext": "$\\sum_{k=1}^{n} (a_{k+1} - a_k) = a_{n+1} - a_1$ over any abelian group; the factorial identity is the case $a_k = k!$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "telescoping sum",
+      "abelian group",
+      "finite differences",
+      "generalization"
+    ],
+    "prerequisites": [
+      "Finset.sum over range and Icc",
+      "abelian groups"
+    ]
+  },
+  {
+    "id": "ann-additive-law",
+    "proofId": "factorial-telescoping-sum-oq-01-oq-01",
+    "range": { "startLine": 39, "endLine": 63 },
+    "type": "insight",
+    "title": "The Universal Additive Telescoping Law",
+    "content": "telescope_range is the engine in its purest form: ∑_{i<n} (a(i+1) − a i) = a n − a 0 over any AddCommGroup, and it is literally Mathlib's Finset.sum_range_sub re-exposed under a telescoping name — no induction needed, the cancellation is already a library fact. telescope_Icc reshapes it to the interval [1,n] that practitioners use: ∑_{k=1}^{n} (a(k+1) − a k) = a(n+1) − a 1, exactly the a_{n+1} − a_1 shape of the open question. Its proof is a two-line induction: Finset.sum_Icc_succ_top peels the top summand and abel discharges the abelian-group regrouping (a(n+1) − a 1) + (a(n+2) − a(n+1)) = a(n+2) − a 1.",
+    "mathContext": "$\\sum_{k=1}^{n} (a_{k+1} - a_k) = a_{n+1} - a_1$; step: $(a_{n+1}-a_1) + (a_{n+2}-a_{n+1}) = a_{n+2}-a_1$, closed by $\\texttt{abel}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset.sum_range_sub",
+      "Finset.sum_Icc_succ_top",
+      "abel tactic",
+      "AddCommGroup"
+    ],
+    "prerequisites": [
+      "induction over ℕ",
+      "abelian-group arithmetic"
+    ]
+  },
+  {
+    "id": "ann-multiplicative-dual",
+    "proofId": "factorial-telescoping-sum-oq-01-oq-01",
+    "range": { "startLine": 65, "endLine": 79 },
+    "type": "insight",
+    "title": "The Multiplicative Dual",
+    "content": "telescope_prod_Icc records the same theorem written multiplicatively: ∏_{k=1}^{n} (a(k+1) / a k) = a(n+1) / a 1 over any commutative group. The proof mirrors telescope_Icc exactly — Finset.prod_Icc_succ_top peels the top factor and the group tactic normalizes (a(n+1)/a 1) · (a(n+2)/a(n+1)) = a(n+2)/a 1. Presenting both forms side by side makes the real content visible: telescoping is a fact about a group operation, and the additive and multiplicative statements are one theorem in two notations.",
+    "mathContext": "$\\prod_{k=1}^{n} a_{k+1}/a_k = a_{n+1}/a_1$ over any commutative group; the exact dual of $\\texttt{telescope\\_Icc}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.prod_Icc_succ_top",
+      "group tactic",
+      "CommGroup",
+      "additive-multiplicative duality"
+    ],
+    "prerequisites": [
+      "commutative groups",
+      "finite products"
+    ]
+  },
+  {
+    "id": "ann-factorial-diff",
+    "proofId": "factorial-telescoping-sum-oq-01-oq-01",
+    "range": { "startLine": 80, "endLine": 91 },
+    "type": "insight",
+    "title": "The Factorial Cancellation Term",
+    "content": "factorial_diff supplies the pointwise term that makes a_k = k! telescope: over ℤ, (k+1)! − k! = k·k!. The proof rewrites (k+1)! = (k+1)·k! via Nat.factorial_succ (pushed through the ℤ cast) and finishes with ring, since (k+1)·k! − k! = k·k!. Working over ℤ rather than ℕ is deliberate — the difference (k+1)! − k! is a genuine subtraction here, so no truncated-subtraction bookkeeping is needed before the telescoping law applies.",
+    "mathContext": "$(k+1)! - k! = (k+1)k! - k! = k\\cdot k!$ over $\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.factorial_succ",
+      "push_cast",
+      "ring tactic",
+      "ℤ vs ℕ subtraction"
+    ],
+    "prerequisites": [
+      "factorial recurrence",
+      "integer arithmetic"
+    ]
+  },
+  {
+    "id": "ann-factorial-recovery",
+    "proofId": "factorial-telescoping-sum-oq-01-oq-01",
+    "range": { "startLine": 92, "endLine": 117 },
+    "type": "insight",
+    "title": "Recovering the Parent Identity as an Instance",
+    "content": "sum_Icc_mul_factorial_int instantiates telescope_Icc at a_k = (k!:ℤ): each summand becomes (k+1)! − k! = k·k! by factorial_diff, and the boundary collapses to (n+1)! − 1! = (n+1)! − 1, giving ∑_{k=1}^{n} k·k! = (n+1)! − 1 over ℤ. sum_Icc_mul_factorial then transfers this back to ℕ — push_cast moves the ℕ sum into ℤ to match the integer statement, and omega discharges the truncated subtraction using (n+1)! ≥ 1. The result is verbatim the parent entry's identity, now obtained with zero bespoke induction: the whole proof is 'evaluate the universal engine at a_k = k!'.",
+    "mathContext": "$a_k=(k!{:}\\mathbb{Z}) \\Rightarrow \\sum_{k=1}^{n} k\\cdot k! = a_{n+1}-a_1 = (n+1)! - 1$; cast to $\\mathbb{N}$ via push_cast + omega since $(n+1)!\\ge 1$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "telescope_Icc instantiation",
+      "push_cast",
+      "omega",
+      "ℕ↔ℤ transfer"
+    ],
+    "prerequisites": [
+      "the telescoping law telescope_Icc",
+      "casting between ℕ and ℤ"
+    ]
+  },
+  {
+    "id": "ann-verification-status",
+    "proofId": "factorial-telescoping-sum-oq-01-oq-01",
+    "range": { "startLine": 118, "endLine": 122 },
+    "type": "caveat",
+    "title": "Verification Status: Pending",
+    "content": "The two `example` lines are kernel-`decide` sanity checks (∑_{Icc 1 4} k·k! = 119 = 5!−1, ∑_{Icc 1 5} k·k! = 719 = 6!−1). IMPORTANT: at authoring time the file had not been machine-checked. The host build environment was blocked — a dependency olean (Aesop.Tree.ExtractProof, pulled in transitively by import Mathlib.Tactic) was missing from a concurrently-interrupted build, the Mathlib docker cache volume was absent, and the disk was full — so neither a docker build nor a single-file `lake env lean` typecheck could complete. The proof is thin over well-established Mathlib lemmas and standard tactics, so confidence is high, but the entry is marked 'formalized' rather than 'verified' until a clean build confirms 0 sorries / 0 axioms.",
+    "mathContext": "Sanity: $\\sum_{k=1}^{4} k\\cdot k! = 119 = 5!-1$, $\\sum_{k=1}^{5} k\\cdot k! = 719 = 6!-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "decide",
+      "build verification",
+      "axiom auditing"
+    ],
+    "prerequisites": []
+  }
+]
