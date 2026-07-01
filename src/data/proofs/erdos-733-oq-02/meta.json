@@ -96,11 +96,6 @@
       "targetId": "erdos-733",
       "relationship": "extends",
       "description": "The parent entry formalizes the count of line-compatible sequences and axiomatizes the sharp Szemerédi–Trotter bounds. Its Part III states the rich-line corollary O(n²/k³ + n/k) only as an unproved docstring; this entry supplies the elementary unconditional baseline #{k-rich lines} = O(n²/k²), fully machine-checked."
-    },
-    {
-      "targetId": "erdos-733-oq-01",
-      "relationship": "related",
-      "description": "OQ-01 addresses the limit constant λ = lim log f(n)/√n of the parent's count; this entry instead proves the elementary combinatorial estimate underlying the rich-line side of the Szemerédi–Trotter machinery."
     }
   ],
   "conclusion": {

@@ -149,11 +149,6 @@
       "targetId": "cauchy-schwarz",
       "relationship": "related",
       "description": "Cauchy–Schwarz is the p = q = 2 case of Hölder's inequality, and Minkowski for L² follows from it; more generally Minkowski for L^p is proved from Hölder with conjugate exponents p and p/(p−1)."
-    },
-    {
-      "targetId": "holder-inequality",
-      "relationship": "depends",
-      "description": "Minkowski's inequality is proved from Hölder's inequality applied to the splitting ‖f+g‖^p ≤ (‖f‖+‖g‖)·‖f+g‖^{p−1}; the conjugate exponent p/(p−1) is admissible precisely when p ≥ 1."
     }
   ],
   "references": [

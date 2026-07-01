@@ -49,11 +49,6 @@
       "targetId": "pell-equation",
       "relationship": "extends",
       "description": "The root entry proves x² − Dy² = 1 always has infinitely many solutions for non-square D > 0. This entry treats the negative form x² − Dy² = −1, which is far more restrictive, and proves congruence obstructions (D ≢ 3 mod 4; no prime factor ≡ 3 mod 4) that must hold for any solution to exist."
-    },
-    {
-      "targetId": "pell-equation-oq-06",
-      "relationship": "complements",
-      "description": "The sibling builds the infinite solution chain (1,1) → (7,5) → (41,29) → … for the solvable negative-Pell instance D = 2. This entry provides the opposite side: the local (mod p and mod 4) reasons that make the negative Pell equation unsolvable for many other D, e.g. D = 3 and D = 7. Together they frame negative-Pell solvability as a congruence-constrained phenomenon."
     }
   ],
   "overview": {

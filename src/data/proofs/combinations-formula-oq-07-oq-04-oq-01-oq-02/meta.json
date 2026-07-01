@@ -152,10 +152,6 @@
       "relationship": "parent question — OQ-07-OQ-04-OQ-01 gives the uniform falling-factorial moment ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r) and the raw cubic moment by hand, and states the general raw r-th power moment ∑_j S(r,j)·(n)_j·C(2n−j,n−j) as its open question; this entry proves it for all p via the Stirling bridge and recovers the parent's cubic moment as the p=3 case"
     },
     {
-      "targetId": "combinations-formula-oq-07-oq-04-oq-01-oq-01",
-      "relationship": "sibling — the mixed two-row falling-factorial moment ∑ (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r,n−r); the Stirling bridge proved here would lift it to raw power moments by the same expand-swap-close argument"
-    },
-    {
       "targetId": "combinations-formula-oq-07-oq-04",
       "relationship": "grandparent — computes the second moment ∑ k(k−1)·C(n,k)² = n(n−1)·C(2n−2,n−2), the r=2 rung whose generalisation to all raw powers this entry completes"
     },

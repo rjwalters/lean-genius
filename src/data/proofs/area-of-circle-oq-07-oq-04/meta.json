@@ -119,11 +119,6 @@
       "targetId": "area-of-circle-oq-07",
       "relationship": "extends",
       "description": "Parent. Recovers the parent's squared real value (∫_ℝ e^{-x²})² = π as the b = 1 specialization in gaussian_integral_sq_eq_pi."
-    },
-    {
-      "targetId": "gaussian-integral",
-      "relationship": "related",
-      "description": "The real parametrized Gaussian ∫ e^{-b x²} = √(π/b), whose square π/b this entry establishes in the complex-parameter form."
     }
   ],
   "references": [

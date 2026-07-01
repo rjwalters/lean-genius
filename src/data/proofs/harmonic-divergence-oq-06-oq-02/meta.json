@@ -111,11 +111,6 @@
       "targetId": "harmonic-divergence",
       "relationship": "extends",
       "description": "Grandparent: divergence of Σ 1/n, recovered here as the a = 1, b = 0 instance (not_summable_harmonic). The whole b = 0 family is a constant multiple of it."
-    },
-    {
-      "targetId": "p-series",
-      "relationship": "related",
-      "description": "Σ 1/n^p converges iff p > 1; the scaled-harmonic series Σ 1/(a·n) is the borderline linear case p = 1 and diverges for every a > 0."
     }
   ],
   "conclusion": {

@@ -36,11 +36,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "pell-equation-oq-06",
-      "relationship": "extends",
-      "description": "The parent builds the chain (1,1)→(7,5)→(41,29)→… and proves there are infinitely many integer solutions of x² − 2y² = −1. This entry proves the converse — that the chain captures every positive solution — turning 'infinitely many exist' into the exact classification of the solution set."
-    },
-    {
       "targetId": "pell-equation",
       "relationship": "related",
       "description": "The classical (norm +1) Pell equation x² − Dy² = 1. The bridge theorem negPell_sq_is_pos_pell maps each negative-Pell solution to a positive-Pell solution by squaring in ℤ[√2], reflecting that the norm is multiplicative and (−1)·(−1) = +1."

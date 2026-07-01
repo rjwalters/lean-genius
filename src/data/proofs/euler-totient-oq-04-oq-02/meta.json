@@ -5,34 +5,32 @@
   "description": "Proves the Möbius-inversion formula for Euler's totient, φ(n) = Σ_{d|n} μ(d)·(n/d), i.e. the totient is the Dirichlet convolution μ ∗ id (over ℤ). This is the inverse of the parent's Gauss identity n = Σ_{d|n} φ(d): instantiating Mathlib's abstract Möbius inversion with f = φ and g = id turns Gauss's forward sum into the signed divisor sum for φ. Also gives the antidiagonal-convolution form and the n/d↔d reflected form. 4 theorems, 0 axioms, 0 sorries.",
   "references": [
     {
-      "authors": "August Ferdinand Möbius",
-      "title": "Über eine besondere Art von Umkehrung der Reihen (Journal für die reine und angewandte Mathematik 9)",
+      "authors": "A. F. Möbius",
+      "title": "Über eine besondere Art von Umkehrung der Reihen",
       "year": 1832,
-      "note": "Introduces the Möbius function and inversion formula used to invert Gauss's totient identity."
+      "venue": "J. Reine Angew. Math. 9",
+      "note": "Möbius inversion, giving φ = μ ∗ id from n = Σ_{d|n} φ(d)."
     },
     {
-      "authors": "Tom M. Apostol",
+      "authors": "T. M. Apostol",
       "title": "Introduction to Analytic Number Theory",
       "year": 1976,
-      "note": "Springer. Dirichlet convolution and the identity φ = μ ∗ id inverting n = Σ_{d|n} φ(d)."
+      "venue": "Springer",
+      "note": "Multiplicative arithmetic functions, Dirichlet convolution, and Möbius inversion."
     },
     {
-      "authors": "G. H. Hardy and E. M. Wright",
-      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
       "year": 2008,
-      "note": "Oxford University Press. Möbius inversion and the multiplicative structure of the totient."
-    },
-    {
-      "authors": "Harold Davenport",
-      "title": "Multiplicative Number Theory (3rd ed.)",
-      "year": 2000,
-      "note": "Springer. Dirichlet convolution and Möbius inversion in analytic number theory."
+      "venue": "Oxford University Press",
+      "note": "Standard reference for Euler's totient and its elementary properties."
     },
     {
       "authors": "The mathlib Community",
-      "title": "Mathlib4: Nat.ArithmeticFunction.moebius and the abstract Möbius inversion theorem",
-      "year": 2024,
-      "note": "Mathlib's Dirichlet-convolution Möbius inversion, instantiated to φ = μ ∗ id."
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
     }
   ],
   "meta": {
@@ -107,11 +105,6 @@
       "description": "Parent entry proves the forward Gauss identity n = Σ_{d|n} φ(d) (φ ∗ ζ = id); this leaf inverts it to φ(n) = Σ_{d|n} μ(d)·(n/d) (φ = μ ∗ id)."
     },
     {
-      "targetId": "euler-totient-oq-04-oq-01",
-      "relationship": "related",
-      "description": "Sibling proves the kernel identity Σ_{d|n} μ(d) = [n=1] (μ ∗ ζ = ε); together with this leaf and the parent it completes the convolution triangle defining μ as the inverse of ζ."
-    },
-    {
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Parent formalization of Euler's totient function."
@@ -151,35 +144,5 @@
       "mathContext": "Nat.sum_divisorsAntidiagonal folds Σ_{(a,b)} f(a,b) = Σ_{d|n} f(d, n/d), turning the antidiagonal convolution into the textbook signed divisor sum φ(n) = Σ_{d|n} μ(d)·(n/d). The reflected fold Nat.sum_divisorsAntidiagonal' gives the swap form Σ_{d|n} μ(n/d)·d."
     }
   ],
-  "sorries": 0,
-  "references": [
-    {
-      "authors": "A. F. Möbius",
-      "title": "Über eine besondere Art von Umkehrung der Reihen",
-      "year": 1832,
-      "venue": "J. Reine Angew. Math. 9",
-      "note": "Möbius inversion, giving φ = μ ∗ id from n = Σ_{d|n} φ(d)."
-    },
-    {
-      "authors": "T. M. Apostol",
-      "title": "Introduction to Analytic Number Theory",
-      "year": 1976,
-      "venue": "Springer",
-      "note": "Multiplicative arithmetic functions, Dirichlet convolution, and Möbius inversion."
-    },
-    {
-      "authors": "G. H. Hardy, E. M. Wright",
-      "title": "An Introduction to the Theory of Numbers",
-      "year": 2008,
-      "venue": "Oxford University Press",
-      "note": "Standard reference for Euler's totient and its elementary properties."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
-      "year": 2020,
-      "venue": "CPP",
-      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
-    }
-  ]
+  "sorries": 0
 }

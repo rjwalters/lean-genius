@@ -105,11 +105,6 @@
       "targetId": "synthesis-curvature-ptolemy",
       "relationship": "parent",
       "description": "Defines curvatureSin K t and lists 'Prove continuity of curvatureSin K in both K and t (joint continuity)' as an open question. This entry settles that question; the curvatureSin definition is reproduced verbatim from the parent so the continuity development depends only on Mathlib."
-    },
-    {
-      "targetId": "synthesis-curvature-ptolemy-oq-01",
-      "relationship": "sibling",
-      "description": "The OQ-01 sibling proves curvatureSin K satisfies the Jacobi ODE y'' + K·y = 0 with derivative curvatureCos K. The normalization y'(0)=1 appearing there is exactly the common seam value 1 that makes the joint continuity proved here hold across K=0."
     }
   ],
   "references": [

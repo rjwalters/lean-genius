@@ -115,11 +115,6 @@
       "targetId": "area-of-circle",
       "relationship": "extends",
       "description": "Parent. The classical evaluation of ∫ e^{-x²} squares the integral and passes to polar coordinates, where the circle-area Jacobian r dr dθ — the subject of the parent entry — appears. gaussian_integral_sq records the squared value π that this Jacobian computation produces."
-    },
-    {
-      "targetId": "gaussian-integral",
-      "relationship": "related",
-      "description": "The general Gaussian integral ∫ e^{-b x²} = √(π/b). This entry is its b = 1 special case, the normalization constant behind the normal distribution."
     }
   ],
   "references": [

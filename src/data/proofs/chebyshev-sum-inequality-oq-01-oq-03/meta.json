@@ -4,8 +4,13 @@
   "title": "Continuous (Integral) Chebyshev Sum Inequality for Monotone Functions",
   "description": "The continuous analogue of Chebyshev's sum inequality: for f, g monotone the same way on [a,b], (∫f)(∫g) ≤ (b−a)∫fg, with the inequality reversing when one is increasing and the other decreasing. Proved from the symmetrised double integral ∫∫(f x−f y)(g x−g y) ≥ 0 via the product measure and Fubini, filling a gap Mathlib leaves open (it has only the discrete sum version).",
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["MeasureTheory", "Set"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set"
+    ],
     "namespace": "ChebyshevIntegralMonotone",
     "lineCount": 212,
     "axiomCount": 0,
@@ -154,11 +159,6 @@
       "targetId": "chebyshev-sum-inequality-oq-01-oq-01-oq-01",
       "relationship": "related",
       "description": "The general comonotone integral Chebyshev inequality (bounded measurable functions, arbitrary finite measure, global comonotonicity); this entry gives the local MonotoneOn / interval-integral specialization it does not directly cover"
-    },
-    {
-      "targetId": "chebyshev-sum-inequality",
-      "relationship": "related",
-      "description": "Root Chebyshev sum inequality entry"
     }
   ],
   "references": [

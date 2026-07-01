@@ -133,11 +133,6 @@
   ],
   "crossReferences": [
     {
-      "targetId": "lagrange-four-squares-waring-g2-oq-03",
-      "relationship": "depends-on",
-      "description": "The parent three-square sufficiency study isolates sufficiency as the single axiom not_excluded_form_is_sum_three_sq, whose classical proof selects a multiplier prime p = d·n − 1 with legendreSym p (−d) = 1 and runs a geometry-of-numbers descent. This entry simplifies that selection step: legendreSym p (−d) reduces to legendreSym p (−n), eliminating the unbounded multiplier d from the residue/QR bookkeeping, and supplies the multiplier primes via Mathlib's Dirichlet theorem."
-    },
-    {
       "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-01",
       "relationship": "related",
       "description": "The Gauss-Eureka 8n+3 slice (oq-03-oq-01) handles one residue class of sufficiency via a bounded auxiliary prime; this entry treats the multiplier-selection mechanism uniformly in n and shows the QR condition is intrinsically a condition on −n, the form needed for the harder classes n mod 8 ∈ {1,2,5,6} that require unbounded multipliers."

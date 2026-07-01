@@ -34,11 +34,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "pell-equation-oq-06",
-      "relationship": "extends",
-      "description": "The parent defines the chain by the first-order vector recurrence (multiplication by the matrix [[3,4],[2,3]]). This entry derives the equivalent second-order scalar recurrence uₙ₊₂ = 6uₙ₊₁ − uₙ obeyed by each coordinate separately, and shows it characterizes the sequences uniquely from their initial values."
-    },
-    {
       "targetId": "pell-equation-oq-06-oq-02",
       "relationship": "related",
       "description": "The sibling realizes the chain as the odd powers of the fundamental unit ζ = 1 + √2 of ℤ[√2]. The eigenvalues 3 ± 2√2 of the transfer matrix here are exactly ζ² and ζ⁻²; the characteristic polynomial t² − 6t + 1 is the minimal polynomial of ζ² over ℚ. The two entries give the matrix/recurrence and the ring/unit views of the same structure."
