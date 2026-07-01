@@ -565,4 +565,160 @@ theorem internallyTangent_tangent_point_spec {O₁ O₂ : E}
     (by rw [← Real.cos_sub, show ρ₁ - (ρ₁ - ρ₂) = ρ₂ from by ring])
     (by linarith) hρ₁pi hρ₂0 (by linarith)
 
+/-! ## The common tangent geodesic at the point of contact
+
+The point of contact `P` of two tangent circles carries a **common tangent geodesic**, and
+that geodesic is perpendicular to the geodesic through the two centres (the "line of
+centres").  This is the last elementary metric fact underneath a spherical Feuerbach
+argument, and the spherical form of the Euclidean statement "two tangent circles share a
+common tangent line at the contact point, perpendicular to the line joining the centres".
+
+In the sphere model the tangent space at a model point `P` is the orthogonal complement
+`{P}ᗮ`; the geodesic from `P` towards a centre `O` leaves `P` in the **radial direction**
+`radialDir P O = O − ⟪O,P⟫ • P` (the component of `O` orthogonal to `P`); and a tangent-space
+vector `T` (one with `⟪T,P⟫ = 0`) is tangent to the circle centred at `O` exactly when it is
+perpendicular to that radial direction — equivalently, since `⟪T,P⟫ = 0`, when `⟪T,O⟫ = 0`
+(`isTangentDir_iff`).
+
+Because the contact point lies on the geodesic through the centres (`P ∈ span{O₁,O₂}`, the
+`hspan` conjunct proved above), any direction `T` orthogonal to *both* centres is
+automatically (i) in the tangent space at `P`, (ii) tangent to *both* circles — a common
+tangent — and (iii) orthogonal to the whole centre-plane `span{O₁,O₂}`, hence to both radial
+directions `radialDir P O₁`, `radialDir P O₂` (which lie in that plane by
+`radialDir_mem_span`): the common tangent is perpendicular to the line of centres
+(`common_perp_tangent`).  A nonzero such `T` exists as soon as the ambient dimension exceeds
+`2` (`exists_common_perp_tangent`), so the statement is not vacuous — on a genuine sphere
+`Sⁿ`, `n ≥ 2`, the common tangent geodesic is real. -/
+
+/-- The **radial direction** at a model point `P` towards a centre `O`: the component of `O`
+orthogonal to `P`.  It spans the tangent line at `P` of the geodesic from `P` to `O` (the
+"spherical radius" direction). -/
+noncomputable def radialDir (P O : E) : E := O - (⟪O, P⟫ : ℝ) • P
+
+/-- The inner product of an arbitrary vector with a radial direction. -/
+theorem inner_radialDir (T P O : E) :
+    (⟪T, radialDir P O⟫ : ℝ) = ⟪T, O⟫ - ⟪O, P⟫ * ⟪T, P⟫ := by
+  rw [radialDir, inner_sub_right, real_inner_smul_right]
+
+/-- On the tangent space at `P` (vectors `T` with `⟪T,P⟫ = 0`) the radial inner product
+collapses to the inner product with the centre itself. -/
+theorem inner_radialDir_of_tangent {T P O : E} (hTP : (⟪T, P⟫ : ℝ) = 0) :
+    (⟪T, radialDir P O⟫ : ℝ) = ⟪T, O⟫ := by
+  rw [inner_radialDir, hTP]; ring
+
+/-- A radial direction at `P` towards a centre `O` lies in the plane `span{O₁,O₂}` spanned by
+the two centres whenever both `P` and `O` do — so the radii sit on the geodesic through the
+centres. -/
+theorem radialDir_mem_span {O₁ O₂ P O : E}
+    (hP : P ∈ Submodule.span ℝ ({O₁, O₂} : Set E))
+    (hO : O ∈ Submodule.span ℝ ({O₁, O₂} : Set E)) :
+    radialDir P O ∈ Submodule.span ℝ ({O₁, O₂} : Set E) :=
+  Submodule.sub_mem _ hO (Submodule.smul_mem _ _ hP)
+
+/-- A direction `T` is **tangent** to the spherical circle centred at `O` at the model point
+`P` when it lies in the tangent space at `P` (`⟪T,P⟫ = 0`) and is perpendicular to the radial
+direction towards `O`. -/
+def IsTangentDir (T P O : E) : Prop :=
+  (⟪T, P⟫ : ℝ) = 0 ∧ (⟪T, radialDir P O⟫ : ℝ) = 0
+
+/-- **Tangent ⇔ perpendicular to the centre.**  A tangent-space vector at `P` is tangent to
+the circle centred at `O` exactly when it is orthogonal to the centre `O` itself. -/
+theorem isTangentDir_iff {T P O : E} :
+    IsTangentDir T P O ↔ (⟪T, P⟫ : ℝ) = 0 ∧ (⟪T, O⟫ : ℝ) = 0 := by
+  unfold IsTangentDir
+  constructor
+  · rintro ⟨hTP, hr⟩; exact ⟨hTP, by rwa [inner_radialDir_of_tangent hTP] at hr⟩
+  · rintro ⟨hTP, hO⟩; exact ⟨hTP, by rw [inner_radialDir_of_tangent hTP, hO]⟩
+
+/-- A vector orthogonal to both centres `O₁, O₂` is orthogonal to every vector of the plane
+`span{O₁,O₂}` they span — the plane carrying the line-of-centres geodesic. -/
+theorem inner_eq_zero_of_mem_span_pair {T O₁ O₂ : E}
+    (h₁ : (⟪T, O₁⟫ : ℝ) = 0) (h₂ : (⟪T, O₂⟫ : ℝ) = 0)
+    {x : E} (hx : x ∈ Submodule.span ℝ ({O₁, O₂} : Set E)) :
+    (⟪T, x⟫ : ℝ) = 0 := by
+  obtain ⟨a, b, rfl⟩ := Submodule.mem_span_pair.mp hx
+  rw [inner_add_right, real_inner_smul_right, real_inner_smul_right, h₁, h₂]; ring
+
+/-- **Common perpendicular tangent at the point of contact (dimension-free core).**  Let `P`
+lie on the geodesic through the two centres (`P ∈ span{O₁,O₂}` — the `hspan` conjunct proved
+for the contact point of any pair of tangent circles).  Any direction `T` orthogonal to both
+centres is then (i) in the tangent space at `P` (`⟪T,P⟫ = 0`), (ii) a **common tangent** to
+the circles centred at `O₁` and `O₂` at `P`, and (iii) orthogonal to the entire centre-plane
+`span{O₁,O₂}` — in particular to both radial directions `radialDir P O₁`, `radialDir P O₂`.
+So a common tangent at the contact point is perpendicular to the line of centres. -/
+theorem common_perp_tangent {O₁ O₂ P T : E}
+    (hP : P ∈ Submodule.span ℝ ({O₁, O₂} : Set E))
+    (hTO₁ : (⟪T, O₁⟫ : ℝ) = 0) (hTO₂ : (⟪T, O₂⟫ : ℝ) = 0) :
+    (⟪T, P⟫ : ℝ) = 0 ∧ IsTangentDir T P O₁ ∧ IsTangentDir T P O₂ ∧
+      ∀ x ∈ Submodule.span ℝ ({O₁, O₂} : Set E), (⟪T, x⟫ : ℝ) = 0 := by
+  have hTP : (⟪T, P⟫ : ℝ) = 0 := inner_eq_zero_of_mem_span_pair hTO₁ hTO₂ hP
+  refine ⟨hTP, isTangentDir_iff.mpr ⟨hTP, hTO₁⟩, isTangentDir_iff.mpr ⟨hTP, hTO₂⟩, ?_⟩
+  intro x hx
+  exact inner_eq_zero_of_mem_span_pair hTO₁ hTO₂ hx
+
+/-- **Existence of a common perpendicular tangent (non-vacuity).**  Once the ambient
+dimension exceeds `2`, there is a *nonzero* direction orthogonal to both centres, so the
+common tangent of `common_perp_tangent` is a genuine geodesic — on a real sphere `Sⁿ` with
+`n ≥ 2` (`finrank ℝ E ≥ 3`) the contact point has an honest common tangent line.  Proof: the
+centre-plane `span{O₁,O₂}` has dimension `≤ 2`, so its orthogonal complement has positive
+dimension and hence a nonzero vector, which is orthogonal to every element of the plane. -/
+theorem exists_common_perp_tangent [FiniteDimensional ℝ E] (O₁ O₂ : E)
+    (hdim : 2 < Module.finrank ℝ E) :
+    ∃ T : E, T ≠ 0 ∧ (⟪T, O₁⟫ : ℝ) = 0 ∧ (⟪T, O₂⟫ : ℝ) = 0 := by
+  classical
+  set K : Submodule ℝ E := Submodule.span ℝ ({O₁, O₂} : Set E) with hK
+  -- the centre-plane has dimension at most 2
+  have hKle : Module.finrank ℝ K ≤ 2 := by
+    have h := finrank_span_le_card (R := ℝ) ({O₁, O₂} : Set E)
+    rw [← hK] at h
+    refine h.trans ?_
+    have hsub : ({O₁, O₂} : Set E).toFinset ⊆ ({O₁, O₂} : Finset E) := by
+      intro x; simp
+    exact (Finset.card_le_card hsub).trans ((Finset.card_insert_le _ _).trans (by simp))
+  -- so its orthogonal complement has positive dimension, hence a nonzero vector
+  have hsum : Module.finrank ℝ K + Module.finrank ℝ Kᗮ = Module.finrank ℝ E :=
+    K.finrank_add_finrank_orthogonal
+  have hpos : 0 < Module.finrank ℝ Kᗮ := by omega
+  haveI hnt : Nontrivial Kᗮ := Module.nontrivial_of_finrank_pos hpos
+  obtain ⟨w, hw₀⟩ : ∃ w : Kᗮ, w ≠ 0 := exists_ne 0
+  have hwne : (w : E) ≠ 0 := fun h => hw₀ (Submodule.coe_eq_zero.mp h)
+  have hO₁ : O₁ ∈ K := Submodule.subset_span (by simp)
+  have hO₂ : O₂ ∈ K := Submodule.subset_span (by simp)
+  refine ⟨(w : E), hwne, ?_, ?_⟩
+  · rw [real_inner_comm]; exact Submodule.inner_right_of_mem_orthogonal hO₁ w.2
+  · rw [real_inner_comm]; exact Submodule.inner_right_of_mem_orthogonal hO₂ w.2
+
+/-- **The two tangent circles share a common perpendicular tangent at their contact point
+(external case).**  For two externally tangent spherical circles, any direction `T`
+orthogonal to both centres is a common tangent — tangent to *both* circles — at the unique
+point of contact, and is perpendicular to the entire line-of-centres plane.  (Such a nonzero
+`T` exists whenever `finrank ℝ E > 2`, by `exists_common_perp_tangent`.) -/
+theorem externallyTangent_common_perp_tangent {O₁ O₂ T : E}
+    (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ : ℝ}
+    (htan : ExternallyTangent O₁ ρ₁ O₂ ρ₂)
+    (hρ₁0 : 0 ≤ ρ₁) (hρ₂0 : 0 ≤ ρ₂) (hpos : 0 < ρ₁ + ρ₂) (hlt : ρ₁ + ρ₂ < Real.pi)
+    (hTO₁ : (⟪T, O₁⟫ : ℝ) = 0) (hTO₂ : (⟪T, O₂⟫ : ℝ) = 0) :
+    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} ∧
+      IsTangentDir T P O₁ ∧ IsTangentDir T P O₂ ∧
+      ∀ x ∈ Submodule.span ℝ ({O₁, O₂} : Set E), (⟪T, x⟫ : ℝ) = 0 := by
+  obtain ⟨P, hsing, hspan, -, -⟩ :=
+    externallyTangent_tangent_point_spec h₁ h₂ htan hρ₁0 hρ₂0 hpos hlt
+  obtain ⟨-, ht1, ht2, hperp⟩ := common_perp_tangent hspan hTO₁ hTO₂
+  exact ⟨P, hsing, ht1, ht2, hperp⟩
+
+/-- **The two tangent circles share a common perpendicular tangent at their contact point
+(internal case).**  The internal analogue of `externallyTangent_common_perp_tangent`. -/
+theorem internallyTangent_common_perp_tangent {O₁ O₂ T : E}
+    (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ : ℝ}
+    (htan : InternallyTangent O₁ ρ₁ O₂ ρ₂)
+    (hρ₂0 : 0 ≤ ρ₂) (hρ₁pi : ρ₁ ≤ Real.pi) (hpos : 0 < ρ₁ - ρ₂) (hlt : ρ₁ - ρ₂ < Real.pi)
+    (hTO₁ : (⟪T, O₁⟫ : ℝ) = 0) (hTO₂ : (⟪T, O₂⟫ : ℝ) = 0) :
+    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} ∧
+      IsTangentDir T P O₁ ∧ IsTangentDir T P O₂ ∧
+      ∀ x ∈ Submodule.span ℝ ({O₁, O₂} : Set E), (⟪T, x⟫ : ℝ) = 0 := by
+  obtain ⟨P, hsing, hspan, -, -⟩ :=
+    internallyTangent_tangent_point_spec h₁ h₂ htan hρ₂0 hρ₁pi hpos hlt
+  obtain ⟨-, ht1, ht2, hperp⟩ := common_perp_tangent hspan hTO₁ hTO₂
+  exact ⟨P, hsing, ht1, ht2, hperp⟩
+
 end FeuerbachsTheoremOQ04

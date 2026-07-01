@@ -32,19 +32,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BUILD: spherical model verified layer (FeuerbachsTheoremOQ04.lean, 0-axiom). chord_sq is the chord-cosine bridge; scos/sdist well-defined ([-1,1] cosine, [0,pi] distance). Spherical circles defined as scos level sets with the internal/external tangency criterion (mem_sCircle_iff_sdist, InternallyTangent/ExternallyTangent + symmetry). Point separation: scos_eq_one_iff, sdist_eq_zero_iff (sdist P Q = 0 <-> P = Q), sdist_pos. NEW (researcher-4): spherical triangle inequality — sdist_eq_angle identifies sdist with Mathlib's InnerProductGeometry.angle on unit vectors, transporting angle_le_angle_add_angle to sdist_triangle (sdist P R <= sdist P Q + sdist Q R); sdist_isMetric bundles all four metric-space axioms, so (S^n, sdist) is now a genuine metric on the spherical model. Hyperbolic model deferred (no Mathlib support). Next: tangent-point existence and incircle/nine-point constructions toward the Feuerbach tangency.",
+    "progressSummary": "BUILD: common-tangent geodesic layer added (FeuerbachsTheoremOQ04.lean, 724L, 0-axiom/0-sorry, VERIFIED). radialDir/IsTangentDir formalise the tangent direction at the contact point; isTangentDir_iff reduces tangency to ⟪T,O⟫=0; common_perp_tangent proves any T orthogonal to both centres is a common tangent perpendicular to the line of centres; exists_common_perp_tangent gives non-vacuity for finrank>2; external/internal wrappers instantiate at the unique contact point. This is the spherical analogue of 'two tangent circles share a common tangent line at contact, perpendicular to the line of centres'.",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
       "FeuerbachsTheoremOQ04.scos_self/sdist_self/sdist_nonneg/sdist_le_pi/sdist_eq_zero_of_eq — sdist is a well-defined [0,pi]-valued angle vanishing on the diagonal",
       "defs OnSphere (unit vector), scos := <P,Q>, sdist := arccos <P,Q> — the spherical model primitives",
       "FeuerbachsTheoremOQ04.scos_eq_one_iff/sdist_eq_zero_iff/sdist_pos (researcher-4) — point separation: for unit vectors sdist P Q = 0 iff P = Q, so sdist separates points (genuine metric modulo triangle ineq). 0-axiom.",
-      "FeuerbachsTheoremOQ04.sdist_eq_angle/sdist_triangle/sdist_isMetric (researcher-4) — spherical triangle inequality: sdist = InnerProductGeometry.angle on unit vectors, so angle_le_angle_add_angle gives sdist P R <= sdist P Q + sdist Q R; sdist_isMetric bundles all four metric-space axioms, completing (S^n, sdist) as a genuine metric on the spherical model. 0-axiom."
+      "FeuerbachsTheoremOQ04.sdist_eq_angle/sdist_triangle/sdist_isMetric (researcher-4) — spherical triangle inequality: sdist = InnerProductGeometry.angle on unit vectors, so angle_le_angle_add_angle gives sdist P R <= sdist P Q + sdist Q R; sdist_isMetric bundles all four metric-space axioms, completing (S^n, sdist) as a genuine metric on the spherical model. 0-axiom.",
+      "radialDir + IsTangentDir (FeuerbachsTheoremOQ04.lean): tangent-direction at contact point, with isTangentDir_iff reducing tangency to orthogonality with the centre",
+      "common_perp_tangent (FeuerbachsTheoremOQ04.lean): dimension-free core — any T ⟂ both centres is a common tangent at the contact point and ⟂ the whole line-of-centres plane",
+      "exists_common_perp_tangent (FeuerbachsTheoremOQ04.lean): non-vacuity for finrank ℝ E > 2 via orthogonal-complement dimension count",
+      "externallyTangent_common_perp_tangent / internallyTangent_common_perp_tangent (FeuerbachsTheoremOQ04.lean): both tangency cases share a common perpendicular tangent at the unique contact point"
     ],
     "insights": [
       "Mathlib has clean spherical geometry for free (unit vectors of any InnerProductSpace R E; geodesic distance = arccos of inner product) but essentially no hyperbolic metric, so the spherical model is the tractable non-Euclidean route for Feuerbach.",
       "The chord-cosine bridge ||P-Q||^2 = 2-2<P,Q> is the key reduction: a spherical circle (level set of <P,O>) and tangency conditions become polynomial in the inner product, so the argument stays axiom-free.",
-      "Spherical circle tangency target: internal iff sdist(O1,O2)=|rho1-rho2|, external iff sdist(O1,O2)=rho1+rho2 — the non-Euclidean analog of the Euclidean d=|r1-r2| / r1+r2 used in the verified Euclidean Feuerbach gallery files."
+      "Spherical circle tangency target: internal iff sdist(O1,O2)=|rho1-rho2|, external iff sdist(O1,O2)=rho1+rho2 — the non-Euclidean analog of the Euclidean d=|r1-r2| / r1+r2 used in the verified Euclidean Feuerbach gallery files.",
+      "Spherical common tangent at a contact point is captured coordinate-free: since P ∈ span{O₁,O₂}, any T ⟂ {O₁,O₂} is simultaneously in the tangent space at P and tangent to both circles — no explicit geodesic parametrisation needed."
     ],
     "mathlibGaps": [
       "No developed hyperbolic-geometry metric (hyperboloid / Poincare disk distance) in Mathlib — blocks an axiom-free hyperbolic Feuerbach without building the model first.",
@@ -53,7 +58,8 @@
     "nextSteps": [
       "Bundle (S^n, sdist) as an actual Mathlib MetricSpace instance on the sphere subtype (sdist_isMetric supplies all four axioms; the remaining work is the subtype packaging).",
       "Tangent-point existence for tangent spherical circles (slerp midpoint on the geodesic between centres), using sdist_triangle for the betweenness/uniqueness argument.",
-      "Construct the spherical incircle and nine-point circle for a spherical triangle, then attempt the tangency conclusion."
+      "Construct the spherical incircle and nine-point circle for a spherical triangle, then attempt the tangency conclusion.",
+      "Relate the common tangent direction to a spherical Feuerbach configuration (incircle/nine-point-analogue tangency) building on the contact-point tangent structure."
     ]
   },
   "tags": [
