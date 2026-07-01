@@ -97,6 +97,27 @@
       "summary": "Four concrete existence witnesses derived from the main theorem: exists_noncyclic_of_order_6 (DihedralGroup 3 ≅ S₃), exists_noncyclic_of_order_10 (DihedralGroup 5), exists_noncyclic_of_order_14 (DihedralGroup 7), exists_noncyclic_of_order_22 (DihedralGroup 11). Each instantiates with norm_num for the primality and inequality hypotheses."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Standard reference for the Sylow theorems, groups of order pq, the class equation, and A₄ as a counterexample to Lagrange's converse."
+    },
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "4th ed., Graduate Texts in Mathematics 148, Springer",
+      "note": "Detailed development of Sylow theory, p-group structure, and small-order classification."
+    }
+  ],
   "conclusion": {
     "summary": "This file proves 6 theorems with 0 sorries and 0 axioms, supplying explicit non-cyclic witnesses of order 2q for every odd prime q. The main theorem exists_noncyclic_of_order_two_mul_odd_prime, the divisibility certificate two_dvd_sub_one_of_odd_prime, and four concrete corollaries (orders 6, 10, 14, 22) complete the p = 2 specialization of the OQ.",
     "implications": "Combined with the parent pq-classification (LagrangeTheoremOQ01OQ01), this gives a complete two-sided picture in the p = 2 regime: when 2 ∤ (q-1) — i.e., q = 2 — only the cyclic group ℤ/4 and Klein four exist (handled separately because p < q is required); when 2 | (q-1) — i.e., q odd prime — both ℤ/(2q) and DihedralGroup q exist, and they are non-isomorphic (cyclic vs not cyclic). The Approach B generalization to arbitrary p with p | (q-1) is deferred and requires the SemidirectProduct construction.",

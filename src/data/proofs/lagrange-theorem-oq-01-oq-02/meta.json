@@ -34,8 +34,13 @@
   "leanFile": {
     "path": "Proofs/LagrangeTheoremOQ01OQ02.lean",
     "namespace": "LagrangeOQ01OQ02",
-    "imports": ["Mathlib"],
-    "opens": ["Subgroup", "Fintype"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Subgroup",
+      "Fintype"
+    ],
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 121,
@@ -101,6 +106,27 @@
       "endLine": 121,
       "summary": "A4_no_index2_subgroup: no index-2 subgroup of A₄ (since an index-2 subgroup would have order 6). lagrange_converse_fails: the precise counterexample statement — 6 divides |A₄| but no subgroup of order 6 exists.",
       "mathContext": "Index-2 corollary: $[A_4:H]=2 \\Rightarrow |H|=6$ (from $|H| \\cdot [A_4:H] = |A_4| = 12$). Then `A4_no_subgroup_order6` gives contradiction. Formal counterexample: $6 \\mid 12$ (witnessed by $6 \\times 2 = 12$) and $\\forall H \\leq A_4,\\, |H| \\neq 6$."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Standard reference for the Sylow theorems, groups of order pq, the class equation, and A₄ as a counterexample to Lagrange's converse."
+    },
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "4th ed., Graduate Texts in Mathematics 148, Springer",
+      "note": "Detailed development of Sylow theory, p-group structure, and small-order classification."
     }
   ],
   "conclusion": {

@@ -1,7 +1,6 @@
 {
   "id": "lagrange-theorem-oq-01-oq-01",
   "title": "pq-Groups: Classification of Groups of Order pq via Sylow Theory",
-  "id": "lagrange-theorem-oq-01-oq-01",
   "description": "Formal proof classifying all finite groups of order pq (p < q distinct primes): the Sylow q-subgroup is always unique and normal; when p ∤ (q-1) the group is cyclic; when p | (q-1) two groups exist.",
   "meta": {
     "author": "Lean Genius",
@@ -93,6 +92,36 @@
       "startLine": 143,
       "endLine": 169,
       "summary": "Six concrete examples: order_15_cyclic, order_35_cyclic, order_77_cyclic (all via pq_cyclic_classification with norm_num/omega); order_6_non_unique (2 | 2), order_21_non_unique (3 | 6), order_55_non_unique (5 | 10). The cyclic theorems are machine-verified; the non-unique cases prove the divisibility condition confirming two groups exist."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Sylow, L."
+      ],
+      "title": "Théorèmes sur les groupes de substitutions",
+      "year": "1872",
+      "venue": "Mathematische Annalen 5, pp. 584–594",
+      "note": "Original source of the Sylow theorems, the partial converse to Lagrange's theorem."
+    },
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Standard reference for the Sylow theorems, groups of order pq, the class equation, and A₄ as a counterexample to Lagrange's converse."
+    },
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "4th ed., Graduate Texts in Mathematics 148, Springer",
+      "note": "Detailed development of Sylow theory, p-group structure, and small-order classification."
     }
   ],
   "conclusion": {

@@ -93,6 +93,36 @@
       "summary": "Proves partial_converse_lagrange: p^k | |G| implies ∃ H : Subgroup G with |H| = p^k, via Sylow.exists_subgroup_card_pow_prime. Proves cauchy_theorem: p prime, p | |G| implies ∃ g with orderOf g = p, via exists_prime_orderOf_dvd_card. Both are one-line delegations to Mathlib"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Sylow, L."
+      ],
+      "title": "Théorèmes sur les groupes de substitutions",
+      "year": "1872",
+      "venue": "Mathematische Annalen 5, pp. 584–594",
+      "note": "Original source of the Sylow theorems, the partial converse to Lagrange's theorem."
+    },
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Standard reference for the Sylow theorems, groups of order pq, the class equation, and A₄ as a counterexample to Lagrange's converse."
+    },
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "4th ed., Graduate Texts in Mathematics 148, Springer",
+      "note": "Detailed development of Sylow theory, p-group structure, and small-order classification."
+    }
+  ],
   "conclusion": {
     "summary": "This file proves 11 theorems with 0 sorries and 0 axioms, all sourced from Mathlib, covering Lagrange's theorem, all three Sylow theorems, and Cauchy's theorem, within the namespace LagrangeOQ01.",
     "implications": "The Sylow theorems are among the most important results in finite group theory, enabling the classification of groups of small order and underpinning the structure theory of finite groups. Having them formally verified and contextualized relative to Lagrange's theorem completes the classical picture. Mathlib's implementation represents decades of development: the proof of the third Sylow theorem (n_p ≡ 1 mod p) uses the orbit-counting lemma (Burnside's lemma) applied to the action of P on the set of Sylow p-subgroups by conjugation — all formalized in `Mathlib.GroupTheory.Sylow`.",
