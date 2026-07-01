@@ -128,7 +128,13 @@
       "note": "Theorem 2.2 and the role of M/𝔪M in counting minimal generators"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "nakayama-lemma-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Minimal number of generators equals dim of the residue space M/𝔪M”. Over a local ring (R, 𝔪) with residue field k = R/𝔪, a finitely generated module M has a minimal generating set whose size equals dim_k(M/𝔪M)."
+    }
+  ],
   "conclusion": {
     "summary": "The textbook local-ring forms of Nakayama's lemma — N ≤ 𝔪·N ⟹ N = 0 (nakayama_local), 𝔪·M = M ⟹ M = 0 (nakayama_local_top), the nonvanishing 𝔪·M ≠ M (nakayama_local_top_ne), the generators corollary (nakayama_generators), and the lifting of a generating set from M/𝔪M (nakayama_span_of_span_quotient) — are derived from Mathlib's general Jacobson-radical statements through the single inclusion 𝔪 ≤ jacobson ⊥. All results are verified with 0 axioms and 0 sorries.",
     "implications": "Supplies the commutative-algebra-course versions of Nakayama's lemma that Mathlib's general Jacobson formulation leaves implicit, including the precise sense in which the residue vector space M/𝔪M governs the generators of M.",

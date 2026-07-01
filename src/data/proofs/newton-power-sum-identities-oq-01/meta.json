@@ -112,7 +112,13 @@
       "mathContext": "$p_3 = e_1^3 - 3e_1 e_2 + 3e_3$."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "newton-power-sum-identities-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Newton's Identities in Degrees 4 and 5: Explicit Power-Sum Closed Forms”. Newton's identities express the power sums pₖ = ∑ᵢ Xᵢᵏ of finitely many variables in terms of the elementary symmetric polynomials eⱼ."
+    }
+  ],
   "conclusion": {
     "summary": "Complete, fully verified (0 sorries, 0 axioms) derivation of the three low-degree Newton identities p₁ = e₁, p₂ = e₁² - 2e₂, p₃ = e₁³ - 3e₁e₂ + 3e₃ as universal identities in MvPolynomial σ R, obtained by unrolling Mathlib's general Newton recurrence.",
     "implications": "Supplies the explicit closed forms that Mathlib's general recurrence leaves implicit, giving reusable lemmas for converting between power sums and elementary symmetric polynomials (equivalently, between traces of powers and coefficients of a characteristic polynomial).",

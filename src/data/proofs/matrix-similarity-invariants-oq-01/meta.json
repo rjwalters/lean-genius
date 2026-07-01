@@ -113,7 +113,18 @@
       "note": "Similarity invariants: determinant, trace, characteristic polynomial, eigenvalues"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "matrix-similarity-invariants-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Rank, Nullity, and Invertibility Are Similarity Invariants”. A follow-up to the classical similarity invariants (determinant, trace, characteristic polynomial): the rank, the nullity, and invertibility of a square matrix are also preserved under similarity B = P·A·P⁻¹."
+    },
+    {
+      "targetId": "matrix-similarity-invariants-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “The Minimal Polynomial Is a Similarity Invariant”. Extends the classical similarity invariants (determinant, trace, characteristic polynomial) with the minimal polynomial: similar matrices B = P·A·P⁻¹ have equal minimal polynomials over any commutative ring."
+    }
+  ],
   "conclusion": {
     "summary": "Matrix similarity B = P·A·P⁻¹ is packaged as a named equivalence relation, and its determinant, trace, and characteristic-polynomial invariance — together with eigenvalue invariance over a domain — are collected into a single verified statement (0 axioms), using Mathlib's per-invariant conjugation lemmas.",
     "implications": "Provides the unified 'similarity invariants' interface Mathlib leaves implicit, as a Setoid with proven invariants, a natural foundation for formalizing rational/Jordan canonical forms and invariant-factor theory.",

@@ -109,7 +109,18 @@
       "note": "Bull. Amer. Math. Soc. 23, 37–75 — the abc conjecture and its function-field analogue."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "mason-stothers-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Mason–Stothers via distinct roots: deg(rad p) = #{distinct roots of p} over an algebraically closed field”. The parent entry (mason-stothers-theorem-oq-01) proves the polynomial ABC inequality deg c < deg(rad(a·b·c)), leaving the radical rad(p) — the product of the distinct monic irreducible factors of p — as an al…"
+    },
+    {
+      "targetId": "mason-stothers-theorem-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Davenport's inequality as a 0-axiom corollary of Mason–Stothers (characteristic zero)”. Davenport's inequality bounds how small the degree of f³ − g² can be relative to f: for coprime polynomials f, g over a characteristic-zero field with f non-constant and f³ ≠ g², deg f + 2 ≤ 2·deg(f³ − g²), i.e."
+    }
+  ],
   "sections": [
     {
       "id": "sec-header",

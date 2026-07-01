@@ -113,7 +113,18 @@
       "mathContext": "$|\\mathrm{class}(g)| \\mid |G|$; in $S_3$ every class size divides $6$."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "conjugacy-class-equation-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “The Class Equation in Index Form: |G| = |Z(G)| + Σ [G : C_G(gᵢ)]”. Assembles the standard textbook form of the class equation."
+    },
+    {
+      "targetId": "conjugacy-class-equation-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Finite p-Groups Have Nontrivial Center, via the Class Equation”. Answers the second open question of the parent entry (conjugacy-class-equation-oq-01): deduce that a nontrivial finite p-group has nontrivial center by combining per-class divisibility with the observation that every noncentral conjugacy class has siz…"
+    }
+  ],
   "conclusion": {
     "summary": "Complete, fully verified (0 sorries, 0 axioms) derivation of the per-class class equation: |class(g)|·|C_G(g)| = |G|, |class(g)| = [G : C_G(g)], and |class(g)| ∣ |G|, obtained by specializing the orbit–stabilizer theorem to the conjugation action ConjAct G ↷ G, with a concrete S₃ witness.",
     "implications": "Supplies the per-class divisibility and centralizer-index identities that Mathlib leaves implicit between its orbit–stabilizer theorem and its summed class equation — the lemmas one cites directly when applying the class equation (e.g. to prove p-groups have nontrivial center or in Sylow theory).",

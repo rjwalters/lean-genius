@@ -119,7 +119,23 @@
       "Package the keystone's bound form as an iSup/iInf equality with the BddAbove/BddBelow obligations discharged, for downstream Weyl/Lidskii applications."
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Cauchy Interlacing: the Self-Contained Compression Corollary”. Discharges the Rayleigh-agreement hypothesis of the abstract Cauchy interlacing theorem by building the orthogonal compression operator explicitly."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Poincaré Separation: Cauchy Interlacing for an Arbitrary-Codimension Compression”. Generalises the parent entry's codimension-one Cauchy interlacing inequality λ(k+1) ≤ μ(k) ≤ λ(k) to a compression of arbitrary codimension m — the Poincaré separation theorem."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-03",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Weyl's Eigenvalue Inequalities from the Courant–Fischer Keystone”. Derives the two classical Weyl spectral inequalities for symmetric operators — monotonicity and the subadditive (additive) inequality — as pure corollaries of the parent entry's bound-form Courant–Fischer max–min keystone, with no new spectral theory."
+    }
+  ],
   "references": [
     {
       "authors": [

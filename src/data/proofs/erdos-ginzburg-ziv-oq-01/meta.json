@@ -142,7 +142,13 @@
       "note": "Chapter on the Erdős–Ginzburg–Ziv theorem and the extremal configuration of n−1 zeros and n−1 ones"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "erdos-ginzburg-ziv-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “The Davenport constant of a cyclic group: D(ℤ/nℤ) = n”. The Davenport constant D(G) of a finite abelian group is the least length d such that every length-d sequence over G has a nonempty zero-sum subsequence."
+    }
+  ],
   "conclusion": {
     "summary": "The Erdős–Ginzburg–Ziv theorem is restated from Mathlib in its integer, modular, and multiset forms (egz_int, egz_zmod, egz_int_multiset, egz_zmod_multiset), the n=2 case is made explicit (egz_three_integers), and the threshold 2n−1 is proved best possible (egz_sharp) via the extremal configuration of n−1 zeros and n−1 ones. All results are verified with 0 axioms and 0 sorries.",
     "implications": "Supplies the optimality half of the Erdős–Ginzburg–Ziv constant computation s(ℤ/nℤ) = 2n−1 that Mathlib's theorem leaves implicit, making the sharpness of the bound a machine-checked statement.",

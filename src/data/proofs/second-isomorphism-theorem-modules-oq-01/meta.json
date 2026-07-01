@@ -129,7 +129,13 @@
       "note": "Section 10.2 (the isomorphism theorems for modules) and the modular/dimension law for vector spaces"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "second-isomorphism-theorem-modules-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Three Submodules: the Iterated Modular Dimension Law and the Failure of Naive Inclusion–Exclusion”. The parent entry derives the two-submodule modular dimension law finrank(p+q)+finrank(p∩q)=finrank p+finrank q structurally from the second (diamond) isomorphism theorem."
+    }
+  ],
   "conclusion": {
     "summary": "The modular dimension law finrank(p ⊔ p') + finrank(p ⊓ p') = finrank p + finrank p' is derived purely from the second (diamond) isomorphism theorem (secondIso) and the quotient form of rank–nullity, with the comap denominators identified via comapSubtypeEquivOfLe. The direct-sum (finrank_sup_of_inf_bot) and co-dimension (finrank_inf_of_sup_top) corollaries follow by substituting the boundary cases ⊥ and ⊤. All results are verified with 0 axioms and 0 sorries.",
     "implications": "Makes explicit the conceptual dependency between two facts Mathlib proves independently — the diamond isomorphism and the modular dimension law — by exhibiting the latter as a corollary of the former, the standard textbook route.",

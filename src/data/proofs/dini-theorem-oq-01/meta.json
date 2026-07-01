@@ -139,7 +139,18 @@
       "note": "Dini's theorem and the pointwise-but-not-uniform behaviour of xⁿ on [0,1]"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "dini-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Dini's Theorem: Monotonicity in n Is Necessary (a Moving-Bump Witness)”. Dini's theorem upgrades pointwise convergence of a monotone sequence of continuous functions on a compact space to uniform convergence."
+    },
+    {
+      "targetId": "dini-theorem-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “The Sharp Modulus of Non-Uniform Convergence of xⁿ on [0,1)”. Sharpens the parent Dini sharpness witness: on the non-compact interval [0,1), the sequence xⁿ converges pointwise to 0 but not uniformly, and the uniform error sup_{x∈[0,1)} |xⁿ| equals exactly 1 for every n ≥ 1 — the sharp modulus of non-uniform conver…"
+    }
+  ],
   "conclusion": {
     "summary": "Dini's theorem in its four real-valued faces (dini_monotone, dini_antitone, dini_monotone_on, dini_antitone_on) is re-exported from Mathlib, and the necessity of its hypotheses is established by two formalized counterexamples: xⁿ on the compact [0,1] (pow_not_tendstoUniformlyOn — continuity of the limit is necessary) and xⁿ on the non-compact [0,1) (pow_not_tendstoUniformlyOn_Ico — compactness of the domain is necessary). All results are verified with 0 axioms and 0 sorries.",
     "implications": "Gives the gallery a dedicated statement of Dini's theorem together with the precise reasons it cannot be weakened, packaged so each counterexample isolates a single failing hypothesis of the same canonical sequence xⁿ.",

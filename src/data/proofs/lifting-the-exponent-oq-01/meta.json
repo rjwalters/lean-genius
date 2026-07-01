@@ -114,7 +114,13 @@
       "mathContext": "$v_p(a^n - 1) = v_p(a - 1) + v_p(n)$ when $p \\mid a - 1$."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "lifting-the-exponent-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Lifting the Exponent at p = 2 — the even-exponent exception (difference form)”. The two-adic exception to Lifting the Exponent, stated as an honest integer valuation equation."
+    }
+  ],
   "conclusion": {
     "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of the Lifting the Exponent Lemma in the standard padicValNat form: the subtraction form v_p(xⁿ - yⁿ) = v_p(x - y) + v_p(n), the odd-exponent addition form v_p(xⁿ + yⁿ) = v_p(x + y) + v_p(n), and the specialisation v_p(aⁿ - 1) = v_p(a - 1) + v_p(n).",
     "implications": "Provides the working number theorist's form of LTE — an honest natural-number valuation equation — which Mathlib previously offered only in the abstract emultiplicity/ℕ∞ form. The reduction makes p-adic valuation computations on aⁿ ± bⁿ mechanical (orders, Mersenne/repunit divisibility, Zsygmondy-style arguments).",

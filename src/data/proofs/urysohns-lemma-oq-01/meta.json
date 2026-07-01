@@ -19,7 +19,7 @@
   },
   "title": "Urysohn's Lemma and the Explicit Metric Urysohn Function",
   "description": "Urysohn's lemma — the cornerstone separation theorem of point-set topology: in a normal space any two disjoint closed sets are functionally separated by a continuous [0,1]-valued function. This entry re-exports Mathlib's abstract statement (normal and locally-compact-Hausdorff forms, plus point-from-closed-set separation) and then supplies the content absent from Mathlib: the explicit metric Urysohn function f(x) = d(x,s)/(d(x,s)+d(x,t)) for disjoint nonempty closed sets, proved continuous, identically 0 on s and 1 on t, and [0,1]-valued — entirely from the Metric.infDist API, with no appeal to the abstract Urysohn machinery.",
-    "overview": {
+  "overview": {
     "historicalContext": "Urysohn's lemma, proved by Pavel Urysohn in 1925, is the foundational functional-separation result of general topology: it shows that normality — a purely set-theoretic separation condition on closed sets — is equivalent to the ability to separate disjoint closed sets by continuous real functions. It is the linchpin of the Urysohn metrization theorem and the Tietze extension theorem, and its locally-compact-Hausdorff form underlies partitions of unity and the Riesz representation theorem. The abstract proof is delicate (a dyadic-rational interpolation of nested open sets), and Mathlib formalizes it as exists_continuous_zero_one_of_isClosed. In a metric space, however, the separating function has a famous closed form — the normalized distance d(x,s)/(d(x,s)+d(x,t)) — that bypasses the abstract construction entirely. This entry re-exports the abstract lemma (hence the mathlib badge) and contributes the explicit metric witness, which is not a named result in Mathlib.",
     "problemStatement": "Present Urysohn's lemma and construct the explicit metric Urysohn function. Re-export Mathlib's abstract statement (normal-space and locally-compact-Hausdorff forms, and point-from-closed-set separation), and for disjoint nonempty closed sets s, t in a metric space define urysohnFn s t x = d(x,s)/(d(x,s)+d(x,t)) and prove it continuous, equal to 0 on s and 1 on t, and valued in [0,1], packaged as a bundled continuous separator.",
     "proofStrategy": "Two parts. The abstract part is direct re-export: urysohn_normal and urysohn_locallyCompact wrap Mathlib's existence theorems, and urysohn_point_isClosed applies the normal-space form to the closed singleton {x₀}. The explicit metric part is built from the Metric.infDist API: infDist_add_pos shows the denominator d(x,s)+d(x,t) is strictly positive everywhere (a point with both distances zero would lie in s ∩ t, contradicting disjointness, via IsClosed.mem_iff_infDist_zero and notMem_iff_infDist_pos); continuous_urysohnFn is then Continuous.div of the continuous distance maps with this nowhere-vanishing denominator; urysohnFn_eq_zero/eq_one use infDist_zero_of_mem and closed-set distance positivity; urysohnFn_mem_Icc bounds the numerator by the positive denominator. urysohn_metric bundles these into a C(X,ℝ) separator.",
@@ -136,7 +136,18 @@
       "significance": "medium"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "urysohns-lemma-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “The Tietze Extension Theorem from Urysohn's Lemma”. The classical derivation of the Tietze extension theorem from Urysohn's lemma, with the engine made explicit."
+    },
+    {
+      "targetId": "urysohns-lemma-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “The Metric Urysohn Function Is Lipschitz for Positively Separated Sets”. The parent entry builds the explicit metric Urysohn function f(x) = d(x,s)/(d(x,s) + d(x,t)) separating two disjoint nonempty closed sets and proves it merely continuous."
+    }
+  ],
   "references": [
     {
       "title": "Mathlib4: Topology.UrysohnsLemma",

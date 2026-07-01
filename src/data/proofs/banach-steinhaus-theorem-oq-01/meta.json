@@ -122,7 +122,18 @@
       "note": "Theorem 2.2 (uniform boundedness) and Corollary 2.3 (pointwise limits of operators)"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "banach-steinhaus-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “Resonance principle for Fourier divergence (functional-analysis core)”. The classical proof that some continuous 2π-periodic function has a Fourier series diverging at a point runs through the resonance (contrapositive) form of the Banach–Steinhaus uniform boundedness principle, applied to the partial-sum functiona…"
+    },
+    {
+      "targetId": "banach-steinhaus-theorem-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Follow-up entry that develops this one: “The resonance set of an unbounded operator family is comeagre”. The Banach–Steinhaus entry's condensation-of-singularities contrapositive (`resonance`) only asserts the resonance set is nonempty: a single point where a family of operators with unbounded norms blows up."
+    }
+  ],
   "conclusion": {
     "summary": "The Banach–Steinhaus theorem (uniform_boundedness), its supremum form (uniform_boundedness_iSup), the condensation-of-singularities contrapositive (resonance), and the closure of continuous linear maps under pointwise limits (pointwise_limit_isClm, with additivity pointwise_limit_map_add) are packaged from Mathlib's `banach_steinhaus` and `continuousLinearMapOfTendsto`. All results are verified with 0 axioms and 0 sorries.",
     "implications": "Supplies a dedicated gallery statement of one of the three pillars of functional analysis, together with the two consequences practitioners actually invoke: a single resonance point for divergent operator families, and the fact that pointwise limits of operators remain operators.",
