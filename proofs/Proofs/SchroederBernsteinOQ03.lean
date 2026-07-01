@@ -613,6 +613,69 @@ theorem matchingCorr_map_swap {p q : ℕ → Prop} {L : List (ℕ × ℕ)}
   exact (hC cd hcd).symm
 
 /-!
+## Section 4e: Monotone exhaustion — the least-fresh targeting makes progress
+
+Section 4d produced `firstMissing L`, the least natural absent from `L`, with its two
+defining properties (`firstMissing_not_mem`, `firstMissing_lt_mem`). The priority
+scheduler of `myhill_isomorphism` uses it as the *target* at each stage, and needs one
+more quantitative fact to guarantee **domain/range exhaustion**: that repeatedly
+prepending the least-fresh element strictly enlarges the covered initial segment of ℕ,
+so every `k` is reached in finitely many stages.
+
+We package that here. First we restate minimality as a genuine initial-segment cover
+(`range_firstMissing_subset`: `[0, firstMissing L) ⊆ L`) and prove its converse
+characterization (`le_firstMissing_of_range_subset`: covering `[0, n)` forces
+`n ≤ firstMissing L`). Together these say `firstMissing L` is *exactly* the length of
+the exhausted prefix. The payoff is `firstMissing_lt_cons_self`: prepending the
+least-fresh element strictly increases `firstMissing`, i.e. the exhausted prefix grows
+by at least one at every stage. This is the strictly-increasing, ℕ-valued progress
+measure the back-and-forth construction decreases against (dual to
+`matching_length_cons`), pinning down *why* the naive least-fresh targeting terminates
+its coverage obligation for each `k` — independently of how collisions are resolved.
+-/
+
+/-- **Covered prefix.** Minimality of `firstMissing` (Section 4d), restated as an
+    initial-segment cover: every natural below `firstMissing L` occurs in `L`, i.e.
+    `[0, firstMissing L) ⊆ L`. -/
+theorem range_firstMissing_subset (L : List ℕ) :
+    List.range (firstMissing L) ⊆ L := by
+  intro m hm
+  exact firstMissing_lt_mem L (List.mem_range.mp hm)
+
+/-- **Characterization of `firstMissing` as the exhausted-prefix length.** If `L`
+    already covers the whole initial segment `[0, n)`, then `firstMissing L ≥ n`
+    (the least gap cannot occur before `n`). Combined with `range_firstMissing_subset`
+    this shows `firstMissing L` is precisely the length of the largest gap-free prefix
+    `[0, firstMissing L)` of ℕ recorded in `L`. -/
+theorem le_firstMissing_of_range_subset {n : ℕ} {L : List ℕ}
+    (h : List.range n ⊆ L) : n ≤ firstMissing L := by
+  by_contra hlt
+  push_neg at hlt
+  exact firstMissing_not_mem L (h (List.mem_range.mpr hlt))
+
+/-- Prepending the least-fresh element extends the covered prefix by one: `[0,
+    firstMissing L]` is covered by `firstMissing L :: L`. This is the single step the
+    progress measure rests on. -/
+theorem range_succ_firstMissing_subset_cons_self (L : List ℕ) :
+    List.range (firstMissing L + 1) ⊆ firstMissing L :: L := by
+  intro m hm
+  rcases (Nat.lt_succ_iff.mp (List.mem_range.mp hm)).lt_or_eq with h | h
+  · exact List.mem_cons_of_mem _ (firstMissing_lt_mem L h)
+  · exact h ▸ List.mem_cons_self
+
+/-- **Strict progress of least-fresh targeting.** Prepending the least missing element
+    of `L` strictly increases `firstMissing`. Hence iterating the least-fresh choice
+    drives `firstMissing` (the exhausted-prefix length) to infinity: every `k` is
+    covered after finitely many stages. This strictly-monotone ℕ-valued measure is the
+    exhaustion guarantee the scheduler in `myhill_isomorphism` needs, complementing the
+    length measure `matching_length_cons` of the atomic steps. -/
+theorem firstMissing_lt_cons_self (L : List ℕ) :
+    firstMissing L < firstMissing (firstMissing L :: L) := by
+  have h : firstMissing L + 1 ≤ firstMissing (firstMissing L :: L) :=
+    le_firstMissing_of_range_subset (range_succ_firstMissing_subset_cons_self L)
+  omega
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
