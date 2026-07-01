@@ -71,9 +71,9 @@
       "CentralLimitTheoremOQ02"
     ],
     "namespace": "CentralLimitTheoremOQ02OQ03",
-    "lineCount": 208,
+    "lineCount": 256,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 1,
     "path": "Proofs/CentralLimitTheoremOQ02OQ03.lean",
     "sorries": 0
@@ -96,8 +96,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 252,
-    "assumptions": "None. All 6 theorems are machine-checked; #print axioms reports only the foundational axioms propext, Classical.choice, Quot.sound (no sorryAx, no custom axioms, no Lean.ofReduceBool). The file reuses the definition alphaMixingCoeff from the parent CentralLimitTheoremOQ02.lean; that parent definition is axiom-free (the parent's single axiom martingale_clt is unrelated and not referenced here).",
+    "lineCount": 256,
+    "assumptions": "None. All 7 theorems are machine-checked; #print axioms reports only the foundational axioms propext, Classical.choice, Quot.sound (no sorryAx, no custom axioms, no Lean.ofReduceBool). The file reuses the definition alphaMixingCoeff from the parent CentralLimitTheoremOQ02.lean; that parent definition is axiom-free (the parent's single axiom martingale_clt is unrelated and not referenced here).",
     "mathlib_version": "4.26.0",
     "historicalContext": "m-dependence was introduced by Hoeffding and Robbins (1948) as the first tractable dependence structure beyond independence admitting a CLT. It is the finite-range special case of Rosenblatt's (1956) α-mixing, with α(n) = 0 for n > m. Finite-order moving averages MA(q) are exactly q-dependent, and one-step functions of finite-state Markov chains are 1-dependent.",
     "proofStrategy": "Reuse the parent's nested-supremum-collapse: at lag n > m, m-dependence forces each term of the defining ⨆ to 0 (ENNReal.toReal_mul), and the Prop-indexed all-zero nested supremum over ℝ collapses via a Nonempty/IsEmpty case split. Derive the m = 0 (independence) recovery, eventual mixing decay (tendsto_atTop_of_eventually_const), and Ibragimov-series summability for every exponent (summable_of_ne_finset_zero + Real.zero_rpow).",
