@@ -127,6 +127,29 @@
       "description": "Grandparent: existence of a decimal digit-block rule for every d coprime to 10."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Wright, E.M."
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "6th ed., Oxford University Press",
+      "note": "Congruences, Euler's theorem and the theory behind digit-sum and alternating-digit divisibility tests."
+    },
+    {
+      "authors": [
+        "Niven, I.",
+        "Zuckerman, H.S.",
+        "Montgomery, H.L."
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1991",
+      "venue": "5th ed., Wiley",
+      "note": "Modular arithmetic and the order of the base mod d underlying base-b divisibility rules."
+    }
+  ],
   "conclusion": {
     "summary": "A complete, base-independent proof that every d > 1 coprime to a base b ≥ 2 admits a base-b^k digit-sum divisibility rule, with k = φ(d) as a universal witness. The base-10 parent is the b = 10 corollary. 0 sorries, 0 axioms.",
     "implications": "Unifies all positional digit-sum divisibility tests under a single Euler-theorem mechanism, independent of the choice of numeral base.",

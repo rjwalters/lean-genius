@@ -50,6 +50,29 @@
       "Basic cyclic-group reasoning: order divides φ(d), coprimality of an odd number with 2"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Wright, E.M."
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "6th ed., Oxford University Press",
+      "note": "Congruences, Euler's theorem and the theory behind digit-sum and alternating-digit divisibility tests."
+    },
+    {
+      "authors": [
+        "Niven, I.",
+        "Zuckerman, H.S.",
+        "Montgomery, H.L."
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1991",
+      "venue": "5th ed., Wiley",
+      "note": "Modular arithmetic and the order of the base mod d underlying base-b divisibility rules."
+    }
+  ],
   "conclusion": {
     "summary": "Thirteen theorems establish a genuine per-base iff for the alternating digit-sum rule (it holds for base 10^k iff 10^k ≡ -1 mod d), and the sharp solvability criterion that a power-of-10 alternating rule exists for d > 2 coprime to 10 iff ord_d(10) is even and 10^{ord_d(10)/2} ≡ -1 (mod d). Positive instances (11, 7, 13) and negative instances (3, 37) illustrate the dichotomy.",
     "implications": "This is the alternating counterpart to the parent's universal digit-sum theorem and completes its open question. Where the digit-sum rule exists for every modulus coprime to 10, the alternating rule exists only for the 'even-order' moduli, with the witness base 10^{ord_d(10)/2} explicitly identified. The proof is 0-axiom and native_decide-free.",
