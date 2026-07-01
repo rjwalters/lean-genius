@@ -126,4 +126,69 @@ theorem coeff_positiveCompositionGenFun_eq_choose (k n : ℕ) (hk : 0 < k) (hkn 
     coeff n (positiveCompositionGenFun S k) = ((n - 1).choose (k - 1) : S) := by
   rw [coeff_positiveCompositionGenFun, StarsAndBars.card_positiveComposition k n hk hkn]
 
+/-! ## Convolution: concatenation of compositions
+
+The factored forms `W k = (invOneSubPow S k).val` and `P k = Xᵏ · W k` turn Mathlib's
+semigroup law `invOneSubPow_add` into a multiplicative law on the generating functions
+themselves. The combinatorial meaning is *concatenation of compositions*: gluing a
+(weak or positive) composition into `j` parts onto one into `k` parts produces one into
+`j + k` parts, and this is a bijection. The Cauchy product of the series is therefore the
+generating function for `j + k` parts.
+-/
+
+/-- **Semigroup law for the weak-composition generating function.** For `0 < j` and
+`0 < k`, the Cauchy product of the weak series for `j` and `k` parts is the weak series
+for `j + k` parts:
+
+  `W j · W k = W (j + k)`.
+
+Immediate from Mathlib's `invOneSubPow_add` once each factor is identified with
+`(invOneSubPow S ·).val` (the parent entry's `weakCompositionGenFun_eq_invOneSubPow`). -/
+theorem weakCompositionGenFun_mul (j k : ℕ) (hj : 0 < j) (hk : 0 < k) :
+    weakCompositionGenFun S j * weakCompositionGenFun S k
+      = weakCompositionGenFun S (j + k) := by
+  rw [weakCompositionGenFun_eq_invOneSubPow S j hj,
+      weakCompositionGenFun_eq_invOneSubPow S k hk,
+      weakCompositionGenFun_eq_invOneSubPow S (j + k) (by omega),
+      invOneSubPow_add, Units.val_mul]
+
+/-- **Semigroup law for the positive-composition generating function.** For `0 < j` and
+`0 < k`,
+
+  `P j · P k = P (j + k)`.
+
+This is the generating-function avatar of *concatenating compositions*: a positive
+composition of `a` into `j` parts glued to one of `b` into `k` parts is a positive
+composition of `a + b` into `j + k` parts. Algebraically it is the `Xᵏ`-shift of the weak
+law: `P j · P k = Xʲ⁺ᵏ · (W j · W k) = Xʲ⁺ᵏ · W (j + k) = P (j + k)`. -/
+theorem positiveCompositionGenFun_mul (j k : ℕ) (hj : 0 < j) (hk : 0 < k) :
+    positiveCompositionGenFun S j * positiveCompositionGenFun S k
+      = positiveCompositionGenFun S (j + k) := by
+  rw [positiveCompositionGenFun_eq_X_pow_mul_invOneSubPow S j hj,
+      positiveCompositionGenFun_eq_X_pow_mul_invOneSubPow S k hk,
+      positiveCompositionGenFun_eq_X_pow_mul_invOneSubPow S (j + k) (by omega),
+      invOneSubPow_add, Units.val_mul, pow_add]
+  ring
+
+/-- **Coefficient form of the convolution law.** Reading off the coefficient of `Xⁿ` in
+`P j · P k = P (j + k)` via the Cauchy product gives a convolution identity on the
+positive-composition *counts*: summed over the additive splits `a + b = n`, the product of
+the counts for `j` and `k` parts equals the count for `j + k` parts (cast in `S`):
+
+  `∑_{a + b = n} #pos(a, j) · #pos(b, k) = #pos(n, j + k)`.
+
+This is the upper-index (negative-binomial) Vandermonde convolution
+`∑_{a} C(a − 1, j − 1) · C(n − a − 1, k − 1) = C(n − 1, j + k − 1)` in combinatorial form;
+the count vanishes off the range `j ≤ a ≤ n − k`, so no truncated-subtraction conventions
+are needed. -/
+theorem card_positiveComposition_convolution (j k n : ℕ) (hj : 0 < j) (hk : 0 < k) :
+    (∑ p ∈ Finset.antidiagonal n,
+        (Fintype.card {g : Fin j → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = p.1} : S)
+          * (Fintype.card {g : Fin k → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = p.2} : S))
+      = (Fintype.card {g : Fin (j + k) → ℕ // (∀ i, 1 ≤ g i) ∧ ∑ i, g i = n} : S) := by
+  have hmul := congrArg (coeff (R := S) n) (positiveCompositionGenFun_mul S j k hj hk)
+  rw [coeff_mul, coeff_positiveCompositionGenFun] at hmul
+  simp_rw [coeff_positiveCompositionGenFun] at hmul
+  exact hmul
+
 end StarsAndBarsGenFun
