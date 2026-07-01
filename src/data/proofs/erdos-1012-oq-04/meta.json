@@ -130,7 +130,14 @@
   ],
   "conclusion": {
     "summary": "The Woodall edge threshold of Erdős #1012 is the complete graph minus a deficiency: C(n,2) = C(n-k-1,2) + C(k+2,2) + (k+1)(n-k-2), so the maximal long-cycle-free edge count is K_n minus exactly (k+1)(n-k-2) = |E(K_{k+1,n-k-2})| edges. This places the threshold inside the complete graph, complementing the parent's extremal-point evaluation and the sibling's monotonicity in n. Everything is elementary Nat.choose arithmetic, sorry-free and 0-axiom.",
-    "futureWork": "Formalise the Woodall extremal graph itself (a clique join realising exactly edgeThreshold n k − 1 edges with no (n-k)-cycle) and verify its edge count against this decomposition, turning the arithmetic deficiency into a witnessed extremal construction."
+    "implications": "Recasts the Woodall/Erdős #1012 edge threshold as a transparent 'complete graph minus a bipartite deficiency' identity, making the extremal number structural rather than a bare formula: the (k+1)(n-k-2) missing edges are exactly |E(K_{k+1,n-k-2})|, the complete bipartite graph appearing in the Woodall extremal construction. This bridges the parent's numeric threshold and the sibling's monotonicity toward the actual extremal graph, and isolates the remaining work as constructing and verifying that graph rather than re-deriving the count.",
+    "futureWork": "Formalise the Woodall extremal graph itself (a clique join realising exactly edgeThreshold n k − 1 edges with no (n-k)-cycle) and verify its edge count against this decomposition, turning the arithmetic deficiency into a witnessed extremal construction.",
+    "openQuestions": [
+      "Formalise the Woodall extremal graph itself — a clique-join / K_{n-k-1}-based construction realising exactly edgeThreshold n k − 1 edges with no cycle of length ≥ n-k — and verify its edge count against this decomposition, upgrading the arithmetic deficiency to a witnessed extremal example.",
+      "Prove extremal uniqueness: is the deficiency-K_{k+1,n-k-2} structure the unique edge-maximal long-cycle-free graph on n vertices, or do other graphs attain the same threshold, and can that be settled formally?",
+      "Generalise the complete-minus-deficiency decomposition to other forbidden circumferences (cycles of length ≥ ℓ for ℓ ≠ n-k): does an analogous C(n,2) = block + block + bipartite-deficiency identity hold, and what bipartite graph plays the deficiency role?",
+      "Relate this identity to the Erdős–Gallai theorem on the maximum number of edges forcing a long path/cycle, and formalise the reduction showing the Woodall threshold as a sharp instance of the general Erdős–Gallai bound."
+    ]
   },
   "crossReferences": [
     {
