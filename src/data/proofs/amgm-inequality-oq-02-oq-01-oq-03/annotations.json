@@ -89,5 +89,29 @@
       "Finset.powersetCard",
       "multiset symmetric functions"
     ]
+  },
+  {
+    "id": "ann-ng3-unfolding",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 51,
+      "endLine": 57
+    },
+    "type": "insight",
+    "title": "Recurrence vs. Closed Form: the Triangular Unfolding",
+    "content": "This entry exists as a result separate from its recurrence sibling because the two express p₃ in fundamentally different bases. The Newton-Girard RECURRENCE pₖ = e₁pₖ₋₁ − e₂pₖ₋₂ + ⋯ + (−1)ᵏ⁻¹k·eₖ writes each power sum in terms of LOWER power sums, so it is only 'closed' relative to p₁,…,pₖ₋₁. The fully reduced CLOSED FORM expresses pₖ purely in the eⱼ, with no power sums on the right. Passing from one to the other is a triangular unfolding: substitute the already-reduced p₁ = e₁, then p₂ = e₁² − 2e₂, into the k=3 recurrence, and the power sums cancel, leaving a polynomial in e₁,e₂,e₃ that `ring` normalises. The proof of `psum_three_closed` is exactly these three substitutions (h3, h2, h1) followed by `ring`.\n\nThe pattern iterates: every closed form is one substitution step past the previous one, so the whole family p₁,p₂,p₃,… can be generated inductively from the single recurrence — the constructive content of Waring's formula. That is precisely what the entry's open question ('generalize the aeval bridge to arbitrary degree k') asks to mechanise, replacing the per-degree substitutions with one uniform induction.",
+    "mathContext": "Recurrence (basis $p_1,\\dots,p_{k-1}$): $p_3 = e_1 p_2 - e_2 p_1 + 3e_3$. Closed form (basis $e_1,e_2,e_3$): $p_3 = e_1^3 - 3e_1e_2 + 3e_3$. The change of basis is the back-substitution $p_1\\mapsto e_1$, $p_2\\mapsto e_1^2-2e_2$ — a lower-triangular unfolding whose general form is Waring's formula $p_k = \\sum (-1)^{\\dots}\\tfrac{k}{r_1+\\dots}\\binom{\\dots}{\\dots}\\prod e_i^{r_i}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton-Girard recurrence",
+      "Waring's formula",
+      "change of basis in symmetric functions",
+      "triangular substitution",
+      "power sums vs elementary symmetric polynomials"
+    ],
+    "prerequisites": [
+      "the Newton-Girard recurrence",
+      "the k=1 and k=2 closed forms"
+    ]
   }
 ]
