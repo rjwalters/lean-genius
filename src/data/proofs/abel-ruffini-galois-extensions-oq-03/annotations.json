@@ -61,6 +61,26 @@
     ]
   },
   {
+    "id": "ann-oq03-witness-construction",
+    "proofId": "abel-ruffini-galois-extensions-oq-03",
+    "range": { "startLine": 104, "endLine": 109 },
+    "type": "tactic",
+    "title": "Manufacturing the 3-Cycle Witness Inside the Subtype",
+    "content": "The converse must exhibit an element of the *subtype* `alternatingGroup α`, not merely a permutation. The construction has three moving parts. (1) `isThreeCycle_swap_mul_swap_same ab ac bc` proves the underlying `Perm α` element `swap a b * swap a c` is a 3-cycle — this product form (two transpositions sharing the point `a`) is exactly the standard presentation of the cycle `(a c b)`, and Mathlib packages it as a lemma rather than making you compute the cycle type. (2) The subtype element is assembled as `⟨_, htc.mem_alternatingGroup⟩`: `IsThreeCycle.mem_alternatingGroup` witnesses that a 3-cycle is even (sign `+1`), which is the membership proof the anonymous constructor needs. (3) Membership in `H` is discharged by `rw [h]; exact Subgroup.mem_top _` — after rewriting `H = ⊤` everything lies in `⊤`. The pattern (build the raw object, certify it, repackage into the subtype, then land it in the target subgroup) is the reusable recipe for producing concrete elements of `alternatingGroup α`.",
+    "mathContext": "$(a\\,b)(a\\,c) = (a\\,c\\,b)$ is even, hence in $A_\\alpha$; and $A_\\alpha = \\top = H$ so it lies in $H$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsThreeCycle.mem_alternatingGroup",
+      "swap_mul_swap as a 3-cycle presentation",
+      "subtype anonymous constructor",
+      "Subgroup.mem_top"
+    ],
+    "prerequisites": [
+      "A 3-cycle is an even permutation",
+      "Elements of a subgroup as subtype terms ⟨value, proof⟩"
+    ]
+  },
+  {
     "id": "ann-oq03-characterization",
     "proofId": "abel-ruffini-galois-extensions-oq-03",
     "range": { "startLine": 111, "endLine": 126 },

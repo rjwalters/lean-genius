@@ -92,7 +92,8 @@
       "**The open content is one criterion.** The classical simplicity proof has exactly one hard, combinatorial step — 'a nontrivial normal subgroup contains a 3-cycle' — while the rest (3-cycles generate, all 3-cycles are conjugate, normal closure of a 3-cycle is everything) is already in Mathlib for general $n$. The iff makes this precise: simplicity is *logically equivalent* to that one criterion, so a future general-$n$ simplicity proof needs only to supply it.",
       "**Upgrading singleton normal closure to arbitrary normal subgroups.** Mathlib computes the normal closure of a *single* 3-cycle but never states the directly useful consequence: any normal subgroup that merely *contains* a 3-cycle is the whole group. `threeCycle_normal_eq_top` is that one-line-of-mathematics, several-lines-of-Lean upgrade, and is the reusable workhorse for both the reduction and any concrete simplicity argument.",
       "**The converse is not vacuous.** That a simple $A_n$ forces every nontrivial normal subgroup to contain a 3-cycle is only interesting because 3-cycles actually exist — which needs $|\\alpha| \\ge 3$. The proof exhibits a concrete witness $(a\\,b)(a\\,c)$ rather than appealing to existence abstractly, keeping the statement constructive.",
-      "**Generality over `α`, not just `Fin n`.** Working with an arbitrary finite type with a decidable equality (rather than `Fin n`) matches Mathlib's `alternating_normalClosure` API and makes the result directly reusable for any concrete alternating group, including the `Fin 5` instance Mathlib already proves."
+      "**Generality over `α`, not just `Fin n`.** Working with an arbitrary finite type with a decidable equality (rather than `Fin n`) matches Mathlib's `alternating_normalClosure` API and makes the result directly reusable for any concrete alternating group, including the `Fin 5` instance Mathlib already proves.",
+      "**A reduction, not a simplicity proof.** The headline result is a *biconditional*, and it is unconditional: it asserts nothing about whether $A_n$ actually is simple. `isSimpleGroup_alternating_iff` is true even in a hypothetical world where the 3-cycle-containment criterion failed — both sides would simply be false together. The value is diagnostic: it certifies that the entire remaining gap between Mathlib's `Fin 5` instance and general-$n$ simplicity is *exactly* one lemma, `∀ normal H ≠ ⊥, ∃ 3-cycle ∈ H`, with no hidden side conditions. This is why the forward direction `isSimpleGroup_of_forall_normal_contains_threeCycle` is packaged separately — it is the piece a future proof plugs its combinatorial lemma into."
     ],
     "prerequisites": [
       "Mathlib.GroupTheory.SpecificGroups.Alternating (alternatingGroup, IsThreeCycle.alternating_normalClosure, isThreeCycle_isConj, nontrivial_of_three_le_card)",
@@ -120,12 +121,20 @@
       "mathContext": "Stage (i) of the classical argument: $\\langle\\!\\langle g \\rangle\\!\\rangle = A_n$ and $\\langle\\!\\langle g \\rangle\\!\\rangle \\le H$ force $H = A_n$."
     },
     {
-      "id": "reduction",
-      "title": "Simplicity reduction and its converse",
+      "id": "reduction-forward",
+      "title": "Forward reduction: the 3-cycle criterion implies simplicity",
       "startLine": 81,
+      "endLine": 93,
+      "summary": "`isSimpleGroup_of_forall_normal_contains_threeCycle`: assuming every nontrivial normal subgroup contains a 3-cycle, `IsSimpleGroup (alternatingGroup α)` follows. `nontrivial_of_three_le_card` (via `omega` from `5 ≤ card α`) supplies the `Nontrivial` field; for a normal `H` the proof case-splits on `H = ⊥` (`eq_or_ne`), and in the nontrivial branch feeds the hypothesized 3-cycle to the core lemma `threeCycle_normal_eq_top` to force `H = ⊤`.",
+      "mathContext": "The `⊥`-or-`⊤` dichotomy: `H = ⊥ ∨ (∃ 3-cycle ∈ H ⇒ H = ⊤)`. This is the direction a future general-`n` proof plugs its combinatorial lemma into."
+    },
+    {
+      "id": "reduction-converse",
+      "title": "Converse: simplicity yields an explicit 3-cycle",
+      "startLine": 95,
       "endLine": 109,
-      "summary": "`isSimpleGroup_of_forall_normal_contains_threeCycle`: the 3-cycle-containment criterion implies `IsSimpleGroup (alternatingGroup α)`, using `nontrivial_of_three_le_card` for the `Nontrivial` field and the core lemma for the `⊥`-or-`⊤` dichotomy. `forall_normal_contains_threeCycle_of_isSimpleGroup`: conversely, simplicity makes a nontrivial normal subgroup `⊤`, which contains the explicit 3-cycle `(a b)(a c)` built from three distinct points via `isThreeCycle_swap_mul_swap_same`.",
-      "mathContext": "Both implications between simplicity and the 3-cycle-containment criterion."
+      "summary": "`forall_normal_contains_threeCycle_of_isSimpleGroup`: given `[IsSimpleGroup (alternatingGroup α)]`, a nontrivial normal `H` is `⊤` by `Normal.eq_bot_or_eq_top`. Since `5 ≤ card α ⇒ 2 < card α`, `Fintype.two_lt_card_iff` extracts three distinct points `a, b, c`, and `isThreeCycle_swap_mul_swap_same` certifies `(a b)(a c)` a 3-cycle; it lies in `⊤ = H` via `mem_top`.",
+      "mathContext": "Not vacuous: the witness `(a\\,b)(a\\,c)` is built concretely from three distinct points, which exist precisely because `card α ≥ 3`."
     },
     {
       "id": "characterization",
