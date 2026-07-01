@@ -99,6 +99,64 @@
       "Elementary real arithmetic"
     ]
   },
+  "sections": [
+    {
+      "id": "overview-masspoint",
+      "title": "Overview: Mass-Point Geometry on an n-Simplex",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Frames the generalization of triangle mass-point Ceva to an n-simplex with n+1 positive vertex masses, and the headline identity: the complement-mass fractions ratio i = (Σ_{j≠i} mass j)/total sum to n. Notes the relation to the parent triangle file and Mathlib's affine Ceva.",
+      "mathContext": "Complement fraction $\\mathrm{ratio}\\ i = \\dfrac{\\sum_{j\\neq i} m_j}{\\sum_j m_j}$ on an $n$-simplex ($n+1$ vertices)."
+    },
+    {
+      "id": "structure-total",
+      "title": "The Mass-Point Structure and Total Mass",
+      "startLine": 68,
+      "endLine": 83,
+      "summary": "Defines MassPoint n (positive masses at the n+1 vertices, indexed by Fin (n+1)) and MassPoint.total = Σ mass i, with total_pos and total_ne_zero — the nonzero total that licenses every division below.",
+      "mathContext": "$\\mathrm{total} = \\sum_{i} m_i > 0$, so division by the total is always valid."
+    },
+    {
+      "id": "complement-fraction",
+      "title": "The Complement-Mass Fraction",
+      "startLine": 85,
+      "endLine": 104,
+      "summary": "Defines ratio i and proves the key rewrite ratio_eq_one_sub: ratio i = 1 − mass i/total (via sum_erase_eq_total_sub, the erased sum = total − mass i). This closed form drives both the bounds and the sum identity.",
+      "mathContext": "$\\mathrm{ratio}\\ i = 1 - \\dfrac{m_i}{\\mathrm{total}}$."
+    },
+    {
+      "id": "fractions-in-unit-interval",
+      "title": "The Fractions Lie in (0, 1)",
+      "startLine": 105,
+      "endLine": 127,
+      "summary": "ratio_lt_one (unconditional, from mass i/total > 0) and ratio_pos (needs n ≥ 1, since at n = 0 the erased sum is empty and the fraction is 0). Includes the auxiliary sum_mass_div_total: the mass fractions mass i/total sum to 1.",
+      "mathContext": "$0 < \\mathrm{ratio}\\ i < 1$ for $n\\ge1$; and $\\sum_i \\dfrac{m_i}{\\mathrm{total}} = 1$."
+    },
+    {
+      "id": "ceva-sum-identity",
+      "title": "The n-Dimensional Ceva Identity Σ ratio i = n",
+      "startLine": 128,
+      "endLine": 149,
+      "summary": "MassPoint.sum_ratio_eq: the complement fractions sum to n. Proof telescopes Σ(1 − mass i/total) = (n+1) − 1 = n using sum_sub_distrib and sum_mass_div_total — the total mass is counted (n+1) − 1 = n times.",
+      "mathContext": "$\\sum_{i} \\mathrm{ratio}\\ i = (n+1) - 1 = n.$"
+    },
+    {
+      "id": "triangle-specialization",
+      "title": "Specialization to the Triangle (n = 2)",
+      "startLine": 151,
+      "endLine": 164,
+      "summary": "The n = 2 instance ratio 0 + ratio 1 + ratio 2 = 2, via Fin.sum_univ_three. Notes that the parent triangle file uses edge-split parameters rD = mC/(mB+mC), a different normalisation of the same mass data (a semantic bridge deferred).",
+      "mathContext": "$\\mathrm{ratio}\\ 0 + \\mathrm{ratio}\\ 1 + \\mathrm{ratio}\\ 2 = 2$ for a triangle."
+    },
+    {
+      "id": "centroid-uniform",
+      "title": "The Centroid: Uniform Masses",
+      "startLine": 166,
+      "endLine": 184,
+      "summary": "The uniform assignment (all masses 1) with uniform_total = n+1 and uniform_ratio = n/(n+1) — the centroid of the n-simplex, the symmetric point where every complement fraction is equal.",
+      "mathContext": "Uniform masses: $\\mathrm{total} = n+1$, $\\mathrm{ratio}\\ i = \\dfrac{n}{n+1}$ (the centroid)."
+    }
+  ],
   "references": [
     {
       "authors": [
