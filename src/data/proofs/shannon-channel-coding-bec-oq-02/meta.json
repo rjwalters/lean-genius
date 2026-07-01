@@ -79,6 +79,48 @@
       "This directly answers an open question logged by the sibling entry bec-oq-01, which asked to connect the proved information capacity to achievable communication rates via the operational coding theorem."
     ]
   },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "From Information-Theoretic to Operational BEC Capacity",
+      "summary": "Module header, imports, and setup: specialize the gallery's abstract channel-coding theorems to the concrete bec : DMChannel Bool (Option Bool), discharging the capacity hypothesis with the parent's proved bec_capacity = (1−p)·log 2",
+      "startLine": 1,
+      "endLine": 59,
+      "mathContext": "$C(\\mathrm{BEC}(p)) = (1-p)\\log 2$ nats (proved axiom-free in the parent). The two abstract operational theorems channel_coding_achievability / channel_coding_converse are framework axioms, so this entry is honestly axiomatized (2 inherited axioms)."
+    },
+    {
+      "id": "operational-achievability",
+      "title": "Operational Achievability for the BEC",
+      "summary": "bec_coding_achievability: for any nat-rate 0 < R < (1−p)·log 2 and any target ε > 0, all sufficiently long block lengths admit a rate-≥R code with average error < ε",
+      "startLine": 61,
+      "endLine": 79,
+      "mathContext": "$0 < R < (1-p)\\log 2 \\Rightarrow \\forall \\varepsilon>0,\\ \\text{eventually in }n,\\ \\exists$ a rate-$\\ge R$ block code + decoder with average error $< \\varepsilon$; obtained from $\\mathrm{channel\\_coding\\_achievability}$ via $\\mathrm{bec\\_capacity}$."
+    },
+    {
+      "id": "operational-converse",
+      "title": "Operational Converse for the BEC",
+      "summary": "bec_coding_converse: for any nat-rate R > (1−p)·log 2 there is a fixed δ > 0 such that every rate-≥R block code (at every length) has average error ≥ δ",
+      "startLine": 81,
+      "endLine": 97,
+      "mathContext": "$R > (1-p)\\log 2 \\Rightarrow \\exists\\delta>0,\\ \\forall$ rate-$\\ge R$ code, average error $\\ge\\delta$; from $\\mathrm{channel\\_coding\\_converse}$ via $\\mathrm{bec\\_capacity}$."
+    },
+    {
+      "id": "achievability-bits",
+      "title": "Achievability in Bits — the Textbook Headline",
+      "summary": "bec_coding_achievability_bits: any bit-rate 0 < R₂ < 1−p is achievable, the classic 'the BEC achieves rate 1−p' statement, obtained from the nat-rate form by R = R₂·log 2",
+      "startLine": 99,
+      "endLine": 115,
+      "mathContext": "$0 < R_2 < 1-p$ achievable; the nat/bit conversion is a single multiplication by $\\log 2 > 0$ (the code's bit-rate $\\mathrm{rate}/\\log 2 \\ge R_2$)."
+    },
+    {
+      "id": "converse-bits",
+      "title": "Converse in Bits",
+      "summary": "bec_coding_converse_bits: any bit-rate R₂ > 1−p is bounded away from zero error — the bit-rate form of the converse, completing the sharp threshold at the BEC capacity 1−p bits",
+      "startLine": 117,
+      "endLine": 132,
+      "mathContext": "$R_2 > 1-p \\Rightarrow \\exists\\delta>0$ bounding every code's error below; together with achievability this pins the operational bit-capacity at exactly $1-p$."
+    }
+  ],
   "conclusion": {
     "summary": "Specialises the gallery's abstract channel-coding theorems to the binary erasure channel, establishing the BEC operational coding theorem: every rate below the capacity (1 - p) log 2 nats (every bit-rate below 1 - p) is achievable by block codes with vanishing average error, and every rate above is bounded away from zero error. The capacity value is supplied by the parent's axiom-free bec_capacity, so the threshold is explicit and numerical; the achievability and converse content are inherited from the framework's abstract operational theorems, which are axioms, making this entry honestly axiomatized (2 axioms, 0 sorries).",
     "implications": "Completes the BEC strand of the Shannon channel-coding development from information capacity to operational capacity, the form in which capacity is actually used in coding theory. The specialisation pattern is reusable: any concrete DMChannel with a proved channelCapacity value (the BSC and AWGN entries also have one) can be turned into an operational coding theorem with an explicit threshold by the same two-line instantiation, so this entry doubles as a template for the sibling channels.",
