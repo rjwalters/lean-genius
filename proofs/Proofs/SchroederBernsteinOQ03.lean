@@ -472,6 +472,93 @@ theorem matching_length_cons (a b : ℕ) (L : List (ℕ × ℕ)) :
     ((a, b) :: L).length = L.length + 1 := by simp
 
 /-!
+## Section 4d: Least fresh element — the computable exhaustion primitive
+
+The atomic steps of Section 4c (`matching_step_f`, `matching_step_g`) each extend a
+finite matching by one edge, provided the new endpoint is *fresh* (not already in
+`mDom L` / `mRan L`). To turn these steps into a construction that covers **all** of
+ℕ, the priority scheduler must, at each stage, target the *least* natural number not
+yet present on the relevant side (`mDom` at even stages, `mRan` at odd stages).
+Because it always attacks the least uncovered element, every `k` is guaranteed to be
+handled by stage `2k + 1` — this is exactly the domain/range-exhaustion argument the
+scheduler needs (cf. `matching_length_cons`).
+
+This section provides that targeting function as a total, computable
+`firstMissing : List ℕ → ℕ` returning the least natural not occurring in a finite
+list, together with the two properties the exhaustion proof consumes: `firstMissing`
+is genuinely absent (`firstMissing_not_mem`), and it is *minimal* — every smaller
+number is already present (`firstMissing_lt_mem`), so `List.range (firstMissing L) ⊆
+L` and repeated extension strictly grows the covered prefix. Its computability
+(`firstMissing_computable`) is what keeps the permutation built on top of it
+computable; the proof mirrors the `partialInverse`/`totalInverse` pattern of
+Sections 3–4b (`Nat.rfind` search + everywhere-defined ⟹ total computable).
+-/
+
+/-- Partial version: search (via `Nat.rfind`) for the least `n` absent from `L`.
+    Absence `n ∉ L` is phrased decidably as `List.idxOf n L = L.length` (a list's
+    `idxOf` equals its length exactly when the element is missing). -/
+def firstMissingPart (L : List ℕ) : Part ℕ :=
+  Nat.rfind fun n => decide (List.idxOf n L = L.length)
+
+/-- A finite list of naturals always omits some natural number (ℕ is infinite). -/
+theorem exists_not_mem_list (L : List ℕ) : ∃ n : ℕ, n ∉ L := by
+  obtain ⟨n, hn⟩ := Infinite.exists_notMem_finset L.toFinset
+  exact ⟨n, fun h => hn (List.mem_toFinset.mpr h)⟩
+
+/-- The search terminates: a missing element exists, so `firstMissingPart` is
+    everywhere defined. -/
+theorem firstMissingPart_dom (L : List ℕ) : (firstMissingPart L).Dom := by
+  obtain ⟨n, hn⟩ := exists_not_mem_list L
+  rw [firstMissingPart, Nat.rfind_dom']
+  exact ⟨n, by simp [hn], fun _ => trivial⟩
+
+/-- **Least fresh element**: the least natural number not occurring in `L`. -/
+def firstMissing (L : List ℕ) : ℕ := (firstMissingPart L).get (firstMissingPart_dom L)
+
+/-- `firstMissing L` is a valid value of the underlying `rfind` search. -/
+theorem firstMissing_mem_part (L : List ℕ) : firstMissing L ∈ firstMissingPart L :=
+  Part.get_mem _
+
+/-- **Freshness**: `firstMissing L` is genuinely absent from `L`. This is what makes
+    it a legal endpoint for `matching_step_f` / `matching_step_g` (with `L := mDom …`
+    or `mRan …`). -/
+theorem firstMissing_not_mem (L : List ℕ) : firstMissing L ∉ L := by
+  have h := Nat.rfind_spec (firstMissing_mem_part L)
+  have h2 : List.idxOf (firstMissing L) L = L.length := by simpa using h
+  exact List.idxOf_eq_length_iff.mp h2
+
+/-- **Minimality**: every natural number below `firstMissing L` already occurs in
+    `L`. Equivalently `List.range (firstMissing L) ⊆ L`. Together with
+    `firstMissing_not_mem` this pins down `firstMissing L` as the least element of the
+    complement of `L`, so repeatedly extending by it exhausts an ever-larger initial
+    segment of ℕ — the termination measure of the priority construction. -/
+theorem firstMissing_lt_mem (L : List ℕ) {m : ℕ} (hm : m < firstMissing L) : m ∈ L := by
+  have h := Nat.rfind_min (firstMissing_mem_part L) hm
+  have h2 : ¬ (List.idxOf m L = L.length) := by simpa using h
+  by_contra hmem
+  exact h2 (List.idxOf_eq_length_iff.mpr hmem)
+
+/-- **`firstMissing` is computable.** List membership `n ∈ L` is primitive recursive
+    (through `List.idxOf` and `List.length`), so the bounded `rfind` search is partial
+    recursive; being everywhere defined (`firstMissingPart_dom`) it coincides with the
+    total function `firstMissing`. This is the computability guarantee that lets the
+    back-and-forth permutation assembled from these fresh-element choices remain
+    computable. -/
+theorem firstMissing_computable : Computable firstMissing := by
+  have hp : Partrec firstMissingPart := by
+    unfold firstMissingPart
+    apply Partrec.rfind
+    apply Computable₂.partrec₂
+    have hidx : Computable (fun p : List ℕ × ℕ => List.idxOf p.2 p.1) :=
+      Primrec.list_idxOf.to_comp.comp Computable.snd Computable.fst
+    have hlen : Computable (fun p : List ℕ × ℕ => p.1.length) :=
+      Primrec.list_length.to_comp.comp Computable.fst
+    have heq0 : Primrec₂ (fun a b : ℕ => decide (a = b)) := Primrec.eq.decide
+    have heq : Computable₂ (fun a b : ℕ => decide (a = b)) := heq0.to_comp
+    exact heq.comp hidx hlen
+  exact hp.of_eq (fun L => (Part.some_get (firstMissingPart_dom L)).symm)
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
