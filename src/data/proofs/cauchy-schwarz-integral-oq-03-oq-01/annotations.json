@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-csi-oq0301-signed",
+    "proofId": "cauchy-schwarz-integral-oq-03-oq-01",
+    "range": { "startLine": 66, "endLine": 79 },
+    "type": "theorem",
+    "title": "Signed Hölder Integral Inequality",
+    "content": "holder_integral_abs is the genuine extension of the L² bridge: for real f ∈ Lᵖ and g ∈ Lᵍ with conjugate exponents, |∫ f·g dμ| ≤ (∫ |f|ᵖ)^{1/p}·(∫ |g|ᵍ)^{1/q}. The absolute value is placed outside the integral (the signed pairing), matching the parent's |∫ f·g| ≤ ‖f‖·‖g‖ rather than Mathlib's ∫ ‖f‖·‖g‖ or nonnegative-only forms.",
+    "mathContext": "|∫ f·g dμ| ≤ (∫ |f|^p dμ)^{1/p} · (∫ |g|^q dμ)^{1/q}"
+  },
+  {
+    "id": "ann-csi-oq0301-proof-chain",
+    "proofId": "cauchy-schwarz-integral-oq-03-oq-01",
+    "range": { "startLine": 80, "endLine": 84 },
+    "type": "insight",
+    "title": "Pulling the Sign Outside",
+    "content": "The three-step calc: |∫ f·g| ≤ ∫ |f·g| holds with no integrability hypothesis (abs_integral_le_integral_abs, a specialization of norm_integral_le_integral_norm), then ∫ |f·g| = ∫ |f|·|g| by abs_mul, then Mathlib's norm-form Hölder integral_mul_norm_le_Lp_mul_Lq closes it after rewriting ‖x‖ = |x| on ℝ.",
+    "mathContext": "|∫ f·g| ≤ ∫ |f·g| = ∫ |f|·|g| ≤ ‖f‖_p‖g‖_q"
+  },
+  {
+    "id": "ann-csi-oq0301-l2",
+    "proofId": "cauchy-schwarz-integral-oq-03-oq-01",
+    "range": { "startLine": 85, "endLine": 103 },
+    "type": "theorem",
+    "title": "The L² Case as the Conjugation Fixed Point",
+    "content": "holder_integral_abs_L2 instantiates the general bound at p = q = 2 — the unique self-conjugate exponent (Real.HolderConjugate.two_two). Rewriting |f|^(2:ℝ) = f² (Real.rpow_two, sq_abs) and the 1/2-powers as square roots (Real.sqrt_eq_rpow) turns the bound into √(∫ f²)·√(∫ g²), which is exactly ‖f‖_{L²}·‖g‖_{L²}.",
+    "mathContext": "|∫ f·g dμ| ≤ √(∫ f² dμ) · √(∫ g² dμ)"
+  },
+  {
+    "id": "ann-csi-oq0301-recover",
+    "proofId": "cauchy-schwarz-integral-oq-03-oq-01",
+    "range": { "startLine": 105, "endLine": 124 },
+    "type": "theorem",
+    "title": "Squared Cauchy–Schwarz is the Diagonal of Hölder",
+    "content": "holder_recovers_cauchy_schwarz squares the sqrt-form bound (pow_le_pow_left₀ on the nonnegative sides) and collapses (√A)² = A via Real.sq_sqrt to obtain (∫ f·g)² ≤ (∫ f²)·(∫ g²). This proves the parent's bunyakovsky_schwarz_sq is not an independent theorem but the p = q = 2 restriction of the conjugate-exponent family.",
+    "mathContext": "(∫ f·g dμ)² ≤ (∫ f² dμ)·(∫ g² dμ)"
+  },
+  {
+    "id": "ann-csi-oq0301-symm",
+    "proofId": "cauchy-schwarz-integral-oq-03-oq-01",
+    "range": { "startLine": 126, "endLine": 133 },
+    "type": "theorem",
+    "title": "Symmetry of the Pairing",
+    "content": "holder_integral_abs_symm records that swapping (f, p) ↔ (g, q) leaves the bound invariant, an immediate consequence of Real.HolderConjugate.symm. The integral ∫ f·g pairs Lᵖ against Lᵍ symmetrically, with no preferred factor — the structural reason Cauchy–Schwarz lives at the symmetric point p = q.",
+    "mathContext": "p.HolderConjugate q ↔ q.HolderConjugate p"
+  }
+]
