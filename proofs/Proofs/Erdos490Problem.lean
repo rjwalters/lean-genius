@@ -163,9 +163,9 @@ def optimalA (N : ℕ) : Finset ℕ :=
 def optimalB (N : ℕ) : Finset ℕ :=
   Finset.filter (fun p => Nat.Prime p ∧ N / 2 < p ∧ p ≤ N) (Finset.range (N + 1))
 
-/-- The optimal example has distinct products. -/
-axiom optimal_has_distinct_products (N : ℕ) (hN : N ≥ 4) :
-  HasDistinctProducts (optimalA N) (optimalB N)
+-- `optimal_has_distinct_products` (formerly an axiom) is now proved as a theorem
+-- below, immediately after `optimal_works_because_primes` supplies the pointwise
+-- injectivity it needs.
 
 /-- The first half is exactly `Icc 1 (N/2)`, so it has `⌊N/2⌋` elements. -/
 theorem optimalA_card (N : ℕ) : (optimalA N).card = N / 2 := by
@@ -257,6 +257,21 @@ theorem optimal_works_because_primes (a₁ a₂ : ℕ) (p₁ p₂ : ℕ)
   have hp₁_pos : 0 < p₁ := hp₁.pos
   have : a₁ * p₁ = a₂ * p₁ := by rw [heq, hp₁p₂]
   exact Nat.eq_of_mul_eq_mul_right hp₁_pos this
+
+/-- **The optimal example has distinct products** — now a theorem (0-axiom), formerly
+the axiom `optimal_has_distinct_products`.  For `a ∈ optimalA N` we have `1 ≤ a ≤ N/2`,
+and for `p ∈ optimalB N` we have `p` prime with `N/2 < p ≤ N`; so any coincidence
+`a₁·p₁ = a₂·p₂` forces `a₁ = a₂ ∧ p₁ = p₂` by `optimal_works_because_primes`.  That is
+exactly `ProductMapInjective (optimalA N) (optimalB N)`, which
+`hasDistinctProducts_iff_productMapInjective` transports to `HasDistinctProducts`. -/
+theorem optimal_has_distinct_products (N : ℕ) (hN : N ≥ 4) :
+    HasDistinctProducts (optimalA N) (optimalB N) := by
+  rw [hasDistinctProducts_iff_productMapInjective]
+  intro a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ heq
+  simp only [optimalA, Finset.mem_filter, Finset.mem_range] at ha₁ ha₂
+  simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hb₁ hb₂
+  exact optimal_works_because_primes a₁ a₂ b₁ b₂
+    ha₁.2.1 ha₂.2.1 ha₁.2.2 ha₂.2.2 hb₁.2.1 hb₂.2.1 hb₁.2.2.1 hb₂.2.2.1 heq
 
 /-
 ## Part V: The Limit Question (Open)
@@ -544,3 +559,5 @@ theorem bound_is_optimal :
 end Erdos490
 
 #print axioms Erdos490.hasDistinctProducts_iff_productMapInjective
+#print axioms Erdos490.optimal_has_distinct_products
+#print axioms Erdos490.bound_is_optimal
