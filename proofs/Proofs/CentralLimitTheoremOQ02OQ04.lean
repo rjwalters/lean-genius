@@ -1124,6 +1124,111 @@ theorem mean_prod_eq_double_survival_lt_Ioc
   simp_rw [MeasureTheory.integral_const_mul]
   rw [MeasureTheory.integral_mul_const]
 
+/-- **Bounded layer-cake atom over `Ioc`.** The `Set.Ioc`-restricted companion of
+`layer_cake_pointwise`: for `0 ≤ x ≤ M`, `∫_{(0,M]} 𝟙_{t < x} dt = x`. Identical
+value to the interval-integral form (`intervalIntegral.integral_of_le` identifies
+`∫ t in 0..M` with `∫ t in Set.Ioc 0 M` since `0 ≤ M`), but stated over the
+`setIntegral`/`Measure.restrict` measure so it can be applied *inside* the Fubini
+swap of `mean_mul_eq_double_joint_survival_lt_Ioc`, where the interval variable
+lives against `volume.restrict (Set.Ioc 0 M)`. -/
+theorem layer_cake_pointwise_Ioc {x M : ℝ} (hx : 0 ≤ x) (hxM : x ≤ M) :
+    ∫ t in Set.Ioc 0 M, (if t < x then (1:ℝ) else 0) = x := by
+  rw [← intervalIntegral.integral_of_le (show (0:ℝ) ≤ M by linarith)]
+  exact layer_cake_pointwise hx hxM
+
+/-- **Joint bivariate layer-cake representation of `∫ f·g`** (S23, this session).
+For two bounded nonnegative integrable random variables `f ∈ [0, M]`, `g ∈ [0, N]`
+(a.e.), the mean of the product is the double integral of the *joint* survival
+probability:
+`∫ f·g = ∫_{(0,M]} ∫_{(0,N]} μ.real {ω | t < f ω ∧ s < g ω} ds dt`.
+
+This is the *joint* half of the covariance layer-cake representation, the genuine
+bivariate term deferred by `mean_prod_eq_double_survival_lt_Ioc`. Subtracting the
+product-of-marginals half (S22) yields
+`Cov(f,g) = ∫∫ (μ.real{t<f ∧ s<g} - μ.real{t<f}·μ.real{s<g}) ds dt
+          = ∫∫ Cov(𝟙_{f>t}, 𝟙_{g>s}) ds dt`,
+the representation feeding the indicator covariance bound
+`indicator_covariance_le_alpha` in the `L^p` density step of Davydov's inequality.
+
+**Proof.** The inner `s`-integral collapses without a product-measure Fubini: at
+fixed `t`, `{ω | t < f ω ∧ s < g ω} = {ω | s < g ω} ∩ {ω | t < f ω}`, so its
+survival probability is `(μ.restrict {t < f}).real {s < g}`, and
+`mean_eq_survival_lt_Ioc` applied to the finite measure `μ.restrict {t < f}` turns
+`∫_{(0,N]} (μ.restrict {t<f}).real {s<g} ds` into `∫_{{t<f}} g = ∫ g·𝟙_{t<f}`.
+The remaining single `t`-integral is swapped against the `ω`-integral by Fubini
+(`integral_integral_swap`; the integrand `(ω,t) ↦ g ω · 𝟙_{t<f ω}` is dominated
+in norm by `‖g ∘ Prod.fst‖`, integrable on `μ ⊗ volume|_{(0,M]}` via
+`Integrable.comp_fst` since `volume (Ioc 0 M) < ∞`), collapsing via the pointwise
+atom `layer_cake_pointwise_Ioc` to `∫ g·f = ∫ f·g`. -/
+theorem mean_mul_eq_double_joint_survival_lt_Ioc
+    {μ : Measure Ω} [IsProbabilityMeasure μ] {f g : Ω → ℝ} {M N : ℝ}
+    (hf_meas : Measurable f) (hg_meas : Measurable g)
+    (_hf_int : Integrable f μ) (hf_nn : 0 ≤ᵐ[μ] f) (hf_bdd : f ≤ᵐ[μ] (fun _ => M))
+    (hg_int : Integrable g μ) (hg_nn : 0 ≤ᵐ[μ] g) (hg_bdd : g ≤ᵐ[μ] (fun _ => N)) :
+    ∫ ω, f ω * g ω ∂μ
+      = ∫ t in Set.Ioc 0 M, ∫ s in Set.Ioc 0 N,
+          μ.real {ω | t < f ω ∧ s < g ω} := by
+  -- Inner `s`-integral collapse via `mean_eq_survival_lt_Ioc` on `μ.restrict {t<f}`.
+  have hcollapse : ∀ t : ℝ,
+      (∫ s in Set.Ioc 0 N, μ.real {ω | t < f ω ∧ s < g ω})
+        = ∫ ω, g ω * (if t < f ω then (1:ℝ) else 0) ∂μ := by
+    intro t
+    have hB : MeasurableSet {ω | t < f ω} := measurableSet_lt measurable_const hf_meas
+    have hrw : ∀ s : ℝ, μ.real {ω | t < f ω ∧ s < g ω}
+        = (μ.restrict {ω | t < f ω}).real {ω | s < g ω} := by
+      intro s
+      have hset : {ω | t < f ω ∧ s < g ω} = {ω | s < g ω} ∩ {ω | t < f ω} := by
+        ext ω
+        simp only [Set.mem_setOf_eq, Set.mem_inter_iff]
+        exact and_comm
+      rw [hset, measureReal_def, measureReal_def,
+          Measure.restrict_apply (measurableSet_lt measurable_const hg_meas)]
+    simp_rw [hrw]
+    rw [← mean_eq_survival_lt_Ioc hg_int.restrict (ae_restrict_of_ae hg_nn)
+          (ae_restrict_of_ae hg_bdd), ← MeasureTheory.integral_indicator hB]
+    apply integral_congr_ae
+    apply Filter.Eventually.of_forall
+    intro ω
+    by_cases h : t < f ω <;> simp [h]
+  -- Product-measure integrability of the swapped integrand.
+  haveI hνfin : IsFiniteMeasure (volume.restrict (Set.Ioc (0:ℝ) M)) :=
+    ⟨by rw [Measure.restrict_apply_univ]; exact measure_Ioc_lt_top⟩
+  have hmeas : Measurable
+      (Function.uncurry (fun (ω : Ω) (t : ℝ) => g ω * (if t < f ω then (1:ℝ) else 0))) := by
+    have h1 : Measurable (fun z : Ω × ℝ => g z.1) := hg_meas.comp measurable_fst
+    have hset : MeasurableSet {z : Ω × ℝ | z.2 < f z.1} :=
+      measurableSet_lt measurable_snd (hf_meas.comp measurable_fst)
+    have h2 : Measurable (fun z : Ω × ℝ => if z.2 < f z.1 then (1:ℝ) else 0) :=
+      Measurable.ite hset measurable_const measurable_const
+    exact h1.mul h2
+  have hInt : Integrable
+      (Function.uncurry (fun (ω : Ω) (t : ℝ) => g ω * (if t < f ω then (1:ℝ) else 0)))
+      (μ.prod (volume.restrict (Set.Ioc (0:ℝ) M))) := by
+    have hgfst : Integrable (fun z : Ω × ℝ => g z.1)
+        (μ.prod (volume.restrict (Set.Ioc (0:ℝ) M))) :=
+      hg_int.comp_fst (volume.restrict (Set.Ioc (0:ℝ) M))
+    refine hgfst.norm.mono' hmeas.aestronglyMeasurable
+      (Filter.Eventually.of_forall (fun z => ?_))
+    show ‖g z.1 * (if z.2 < f z.1 then (1:ℝ) else 0)‖ ≤ ‖g z.1‖
+    rw [norm_mul]
+    have hind : ‖(if z.2 < f z.1 then (1:ℝ) else 0)‖ ≤ 1 := by
+      by_cases h : z.2 < f z.1 <;> simp [h]
+    calc ‖g z.1‖ * ‖(if z.2 < f z.1 then (1:ℝ) else 0)‖
+        ≤ ‖g z.1‖ * 1 := by gcongr
+      _ = ‖g z.1‖ := mul_one _
+  -- Assemble: rewrite inner integral, Fubini swap, collapse outer integral.
+  symm
+  calc (∫ t in Set.Ioc 0 M, ∫ s in Set.Ioc 0 N, μ.real {ω | t < f ω ∧ s < g ω})
+      = ∫ t in Set.Ioc 0 M, ∫ ω, g ω * (if t < f ω then (1:ℝ) else 0) ∂μ := by
+        simp_rw [hcollapse]
+    _ = ∫ ω, (∫ t in Set.Ioc 0 M, g ω * (if t < f ω then (1:ℝ) else 0)) ∂μ :=
+        (integral_integral_swap hInt).symm
+    _ = ∫ ω, g ω * f ω ∂μ := by
+        apply integral_congr_ae
+        filter_upwards [hf_nn, hf_bdd] with ω hω_nn hω_bd
+        rw [MeasureTheory.integral_const_mul, layer_cake_pointwise_Ioc hω_nn hω_bd]
+    _ = ∫ ω, f ω * g ω ∂μ := by simp_rw [mul_comm]
+
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
 For random variables `X, Y : Ω → ℝ` with finite `L^p` norms (`p > 2`), where `X`
