@@ -1,5 +1,33 @@
 [
   {
+    "id": "ann-chmoq0701-0",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "The Minimal-Polynomial Inverse Polynomial",
+    "content": "Two setup facts. First, `isIntegral_matrix`: every matrix over a field is integral over $K$, because the matrix algebra $M_n(K)$ is a finite-dimensional $K$-algebra — this is what guarantees $\\mathrm{minpoly}_K A$ is monic, nonzero, and of positive degree. Second, the definition itself: $\\mathrm{minInvPoly}\\ A := C(-c_0)^{-1}\\cdot \\mathrm{div}_X(\\mathrm{minpoly}_K A)$ where $c_0 = (\\mathrm{minpoly}_K A).\\mathrm{coeff}\\ 0$. Everything downstream is the claim that evaluating this explicit polynomial at $A$ returns $A^{-1}$. The polynomial is `noncomputable` only because it references the (classically defined) minimal polynomial; it is a perfectly concrete element of $K[X]$ once $\\mathrm{minpoly}_K A$ is known.",
+    "mathContext": "$s = C(-c_0)^{-1}\\cdot \\mathrm{div}_X m$, so $\\deg s = \\deg(\\mathrm{div}_X m) = \\deg m - 1 < \\deg m$; evaluation at $A$ gives $A^{-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Integral element",
+      "Minimal polynomial",
+      "Polynomial division by X (divX)",
+      "Finite-dimensional algebra"
+    ],
+    "prerequisites": [
+      "IsIntegral",
+      "minpoly over a field",
+      "Polynomial.divX"
+    ],
+    "tags": [
+      "definition",
+      "setup"
+    ]
+  },
+  {
     "id": "ann-chmoq0701-1",
     "proofId": "cayley-hamilton-minpoly-oq-07-oq-01",
     "range": {
@@ -24,6 +52,33 @@
       "minpoly",
       "invertibility",
       "key-step"
+    ]
+  },
+  {
+    "id": "ann-chmoq0701-15",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 110
+    },
+    "type": "technique",
+    "title": "Cayley–Hamilton (Minpoly Form) in Additive Form",
+    "content": "The bridge from the annihilation identity to the inverse. `Polynomial.divX_mul_X_add` splits any polynomial as $\\mathrm{div}_X m \\cdot X + C(m.\\mathrm{coeff}\\ 0) = m$; evaluating this at $A$ (using `map_add`, `map_mul`, `aeval_X`, `aeval_C`) and using $\\mathrm{aeval}\\ A\\ m = 0$ (the matrix is a root of its own minimal polynomial, `minpoly.aeval`) yields $(\\mathrm{div}_X m)(A)\\cdot A + c_0\\cdot 1 = 0$. This isolates a relation of the shape (polynomial in $A$)$\\cdot A = $ scalar, which — once $c_0$ is known to be a unit — is exactly what can be divided through to expose $A^{-1}$ as a polynomial in $A$.",
+    "mathContext": "$(\\mathrm{div}_X m)(A)\\cdot A + c_0\\, I = 0$, the additive rearrangement of $\\mathrm{aeval}\\ A\\ (\\mathrm{minpoly}_K A) = 0$ after peeling off the constant term.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cayley–Hamilton theorem",
+      "minpoly.aeval",
+      "divX_mul_X_add",
+      "aeval ring homomorphism"
+    ],
+    "prerequisites": [
+      "aeval as an algebra homomorphism",
+      "Polynomial.divX_mul_X_add"
+    ],
+    "tags": [
+      "additive-form",
+      "aeval"
     ]
   },
   {
