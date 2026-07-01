@@ -59,19 +59,31 @@
   "sections": [
     {
       "id": "rising-convolution",
-      "title": "Part I: The Rising-Factorial Vandermonde Convolution (CommRing)"
+      "title": "Part I: The Rising-Factorial Vandermonde Convolution (CommRing)",
+      "startLine": 37,
+      "endLine": 130,
+      "summary": "Defines the rising factorial $x^{\\overline{k}} = x(x+1)\\cdots(x+k-1)$ recursively over any commutative ring (with `risingFactorial_zero` and `risingFactorial_succ` unfolding lemmas), then proves the headline rising convolution `risingFactorial_add`: $(x+y)^{\\overline{r}} = \\sum_{j=0}^{r}\\binom{r}{j}x^{\\overline{j}}y^{\\overline{r-j}}$. The induction on $r$ mirrors `Commute.add_pow`, with the index-dependent shift $(x+y)+r$ split as $(x+j)+(y+(r-j))$ and Pascal's rule $\\binom{r+1}{j+1}=\\binom{r}{j}+\\binom{r}{j+1}$ recombining the two resulting sums."
     },
     {
       "id": "reflection",
-      "title": "Part II: The Sign Reflection x^{underline k} = (-1)^k·(-x)^{(k)}"
+      "title": "Part II: The Sign Reflection x^{underline k} = (-1)^k·(-x)^{(k)}",
+      "startLine": 132,
+      "endLine": 153,
+      "summary": "Defines the falling factorial $x^{\\underline{k}} = x(x-1)\\cdots(x-k+1)$ (again recursively, using ring subtraction) and proves the duality `fallingFactorial_eq_neg_one_pow_mul_risingFactorial`: $x^{\\underline{k}} = (-1)^k(-x)^{\\overline{k}}$ by a one-line induction closed with `ring`. This reflection is the hinge that transports the rising convolution to the falling one and the exact point where additive inverses (a ring, not a semiring) become necessary."
     },
     {
       "id": "falling-convolution",
-      "title": "Part III: The Falling-Factorial Convolution over a Commutative Ring"
+      "title": "Part III: The Falling-Factorial Convolution over a Commutative Ring",
+      "startLine": 155,
+      "endLine": 172,
+      "summary": "Proves the headline `fallingFactorial_add`: $(x+y)^{\\underline{r}} = \\sum_{j=0}^{r}\\binom{r}{j}x^{\\underline{j}}y^{\\underline{r-j}}$ over any commutative ring — with no fresh induction. Each falling factorial is rewritten by the reflection, $-(x+y)=(-x)+(-y)$ feeds `risingFactorial_add`, and the global sign reassembles term-by-term from $(-1)^r = (-1)^j(-1)^{r-j}$."
     },
     {
       "id": "nat-bridge",
-      "title": "Part IV: Numerical Bridge to the Parent's ℕ Identity"
+      "title": "Part IV: Numerical Bridge to the Parent's ℕ Identity",
+      "startLine": 174,
+      "endLine": 187,
+      "summary": "Proves `risingFactorial_natCast`: $\\text{risingFactorial}\\,(m:R)\\,k = (\\text{Nat.ascFactorial}\\,m\\,k : R)$ by induction against `Nat.ascFactorial_succ`. Specializing the ring convolutions to natural-number casts reproduces the parent's ℕ-valued descFactorial/ascFactorial Vandermonde identities exactly, confirming the ring statement is a strict generalization."
     }
   ],
   "crossReferences": [
@@ -91,5 +103,14 @@
       "description": "Grandparent: the descending (falling) factorial identity C(n,k)·k! = n(n-1)···(n-k+1) over ℕ, whose ring-element falling convolution is completed here."
     }
   ],
-  "relatedProblems": null
+  "relatedProblems": null,
+  "conclusion": {
+    "summary": "The entry settles the parent's open question by upgrading the falling-factorial Vandermonde convolution from a numerical identity over ℕ to a genuine polynomial identity of ring elements: for any commutative ring $R$ and $x, y \\in R$, $(x+y)^{\\underline{r}} = \\sum_{j=0}^{r}\\binom{r}{j}x^{\\underline{j}}y^{\\underline{r-j}}$, with the companion rising form $(x+y)^{\\overline{r}} = \\sum_{j=0}^{r}\\binom{r}{j}x^{\\overline{j}}y^{\\overline{r-j}}$ and the reflection $x^{\\underline{k}} = (-1)^k(-x)^{\\overline{k}}$ that ties them together. Both factorials are built from scratch by recursion over `CommRing`, the rising convolution is proved by a single `add_pow`-style induction, and the falling one follows with no further induction via the reflection. The whole development is 0-axiom, 0-sorry, kernel-verified against Mathlib v4.26.0.",
+    "implications": "Stated over a commutative ring, the identity holds simultaneously for $\\mathbb{Z}$, $\\mathbb{Q}$, $\\mathbb{R}$, $\\mathbb{C}$, and any polynomial ring, so it is a true polynomial identity in $x$ and $y$ rather than a fact about counting. The natural-number bridge `risingFactorial_natCast` shows the parent's ℕ statement is the $x,y\\in\\mathbb{N}$ specialization, so the ring theorem is strictly stronger. Structurally it exhibits the falling and rising factorials as sequences of binomial type — the monomials of the finite-difference calculus $\\Delta f(x)=f(x+1)-f(x)$ — for which this convolution is the exact analogue of $(x+y)^n=\\sum\\binom{n}{m}x^m y^{n-m}$. The reflection cleanly localizes where negation is essential: the rising case lives already over a semiring, but the falling case genuinely requires additive inverses.",
+    "openQuestions": [
+      "Can the two convolutions be unified and reproved through Mathlib's existing `ascPochhammer`/`descPochhammer` polynomial API — supplying the missing `ascPochhammer_add`/`descPochhammer_add` binomial-convolution lemmas upstream — rather than via the self-contained recursive definitions used here?",
+      "Does the same reflection-plus-induction template extend to other sequences of binomial type (e.g. the Abel polynomials $A_k(x;a)=x(x-ka)^{k-1}$ or the exponential/Bell polynomials), giving a uniform ring-level umbral binomial theorem?",
+      "Is there a $q$-analogue: a Gaussian-binomial convolution for the $q$-falling factorial $(x;q)_k$ valid over an arbitrary commutative ring, recovering this identity as $q\\to 1$?"
+    ]
+  }
 }
