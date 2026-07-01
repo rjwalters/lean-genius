@@ -1,5 +1,45 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-07-01 (researcher-7): spherical excircles — the other three tritangent circles [VERIFIED]
+
+**Mode**: ACT (CONTINUE). `sphericalIncircle_exists` (already on main) produced *one*
+tritangent circle from intersecting the two internal angle bisectors. Feuerbach's theorem
+requires the nine-point circle to be tangent to the incircle **and the three excircles**, so
+the missing existence ingredient was the other three tritangent circles. **Outcome**:
+PROGRESS — added 4 declarations (~70 L) to `FeuerbachsTheoremOQ04.lean`. **Docker build
+VERIFIED** (`docker-build.sh Proofs.FeuerbachsTheoremOQ04`, `✔ [7743/7743]`); **0-sorry,
+0-axiom**, no native_decide.
+
+### What was delivered (appended after `sphericalIncircle_exists`)
+- **`sphericalIncircle_of_abs_eq`** (shared tail) : a unit centre `O` with `|⟪O,Na⟫| =
+  |⟪O,Nb⟫| = |⟪O,Nc⟫|` gives a circle `sCircle O (arcsin|⟪O,Na⟫|)` tangent to all three sides.
+  Factors the common end of the incircle/excircle proofs (`Real.sin_arcsin` + the
+  Cauchy–Schwarz bound `|⟪O,Na⟫| ≤ 1`).
+- **`sphericalExcircleA_exists`** : excircle opposite the first vertex, from
+  `greatCircles_inter (Na + Nb) (Nb − Nc)` — external bisector of `(Na,Nb)` × internal
+  bisector of `(Nb,Nc)`. Returns `⟪O,Na⟫ = −⟪O,Nb⟫ = −⟪O,Nc⟫` (sign of pole a flipped).
+- **`sphericalExcircleB_exists`** : from `greatCircles_inter (Na + Nb) (Na − Nc)`, returns
+  `⟪O,Na⟫ = −⟪O,Nb⟫`, `⟪O,Na⟫ = ⟪O,Nc⟫` (pole b flipped).
+- **`sphericalExcircleC_exists`** : from `greatCircles_inter (Na − Nb) (Nb + Nc)`, returns
+  `⟪O,Na⟫ = ⟪O,Nb⟫`, `⟪O,Nb⟫ = −⟪O,Nc⟫` (pole c flipped).
+
+Together with the incircle (all-same-sign), this establishes existence of the full family of
+**four tritangent circles** of a spherical triangle — exactly the circles the spherical
+nine-point circle must touch in Feuerbach's theorem. The tangency criterion `|⟪O,N⟫| = sin ρ`
+is sign-insensitive, so all four satisfy the single `SphericalIncircle` predicate; the
+returned sign relations `⟪O,Nᵢ⟫ = ±⟪O,Nⱼ⟫` are what distinguish the four.
+
+GOTCHA: `greatCircles_inter` returns membership `⟪O, N⟫ = 0` for the *pole* `N` (robust to the
+`P` vs `−P` antipodal ambiguity — both give inner product `0`), so the sign *relations*
+between `⟪O,Na⟫, ⟪O,Nb⟫, ⟪O,Nc⟫` are well-defined and provable; the individual signs are not
+(they flip under `O ↦ −O`). Excircle vs incircle is therefore characterised by relative signs.
+
+### Next steps (unchanged direction)
+1. **Spherical nine-point circle** for a spherical triangle (needs side midpoints — see the
+   in-flight midpoint arc-bisection work, branch `research/feuerbach-oq04-midpoint`).
+2. The Feuerbach tangency itself: nine-point circle internally tangent to the incircle and
+   externally tangent to the three excircles. This is the genuinely hard remaining step.
+
 ## Session 2026-06-28 (researcher-4): antipodal-pole layer — two-pole description of a spherical circle [BUILD-PENDING: Docker outage]
 
 **Mode**: ACT (CONTINUE). The metric layer (`sdist_isMetric`, point separation, triangle

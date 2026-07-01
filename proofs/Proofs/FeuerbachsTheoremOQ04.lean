@@ -1017,4 +1017,91 @@ theorem sphericalIncircle_exists [FiniteDimensional ℝ E] (Na Nb Nc : E)
   · show |(⟪O, Nc⟫ : ℝ)| = Real.sin (Real.arcsin |⟪O, Na⟫|)
     rw [Real.sin_arcsin (by linarith [abs_nonneg (⟪O, Na⟫ : ℝ)]) hbound, ← hbc', ← hab']
 
+/-! ## Spherical excircles — the other three tritangent circles
+
+`sphericalIncircle_exists` produced *one* circle tangent to all three sides, from intersecting
+the two **internal** bisectors (poles `Na − Nb`, `Nb − Nc`), giving a centre with
+`⟪O,Na⟫ = ⟪O,Nb⟫ = ⟪O,Nc⟫` — the incircle.  Replacing an internal bisector by the matching
+**external** one (pole `Na + Nb` in place of `Na − Nb`) flips the sign of the inner product
+against one pole, producing a centre still equidistant from all three sides but on the far
+side of one of them: an **excircle**.  There are three such choices, one per vertex, so a
+spherical triangle carries the same four tritangent circles (incircle + three excircles) as
+its Euclidean counterpart — exactly the four circles the spherical nine-point circle must be
+tangent to in Feuerbach's theorem.  The tangency criterion `|⟪O,N⟫| = sin ρ` is
+sign-insensitive, so all four share the definition `SphericalIncircle`; the returned sign
+relations `⟪O,Nᵢ⟫ = ±⟪O,Nⱼ⟫` are what tell the four circles apart. -/
+
+/-- **Tritangent circles from equal side-distances.**  If a unit centre `O` is equidistant
+from the three side great circles in the strong sense `|⟪O,Na⟫| = |⟪O,Nb⟫| = |⟪O,Nc⟫|`, then
+`sCircle O (arcsin |⟪O,Na⟫|)` is tangent to all three sides.  This packages the common tail of
+the incircle and excircle existence proofs. -/
+theorem sphericalIncircle_of_abs_eq {Na Nb Nc O : E}
+    (hO : OnSphere O) (hNa : OnSphere Na)
+    (hab : |(⟪O, Na⟫ : ℝ)| = |⟪O, Nb⟫|) (hac : |(⟪O, Na⟫ : ℝ)| = |⟪O, Nc⟫|) :
+    SphericalIncircle Na Nb Nc O (Real.arcsin |⟪O, Na⟫|) := by
+  have hbound : |(⟪O, Na⟫ : ℝ)| ≤ 1 := by
+    have h := abs_real_inner_le_norm O Na; rw [hO, hNa, mul_one] at h; exact h
+  have key : |(⟪O, Na⟫ : ℝ)| = Real.sin (Real.arcsin |⟪O, Na⟫|) :=
+    (Real.sin_arcsin (by linarith [abs_nonneg (⟪O, Na⟫ : ℝ)]) hbound).symm
+  refine ⟨?_, ?_, ?_⟩
+  · show |(⟪O, Na⟫ : ℝ)| = Real.sin (Real.arcsin |⟪O, Na⟫|); exact key
+  · show |(⟪O, Nb⟫ : ℝ)| = Real.sin (Real.arcsin |⟪O, Na⟫|); rw [← hab]; exact key
+  · show |(⟪O, Nc⟫ : ℝ)| = Real.sin (Real.arcsin |⟪O, Na⟫|); rw [← hac]; exact key
+
+/-- **Existence of the spherical excircle opposite the first vertex.**  Intersecting the
+*external* bisector of the `(Na, Nb)` pair (pole `Na + Nb`) with the *internal* bisector of
+`(Nb, Nc)` (pole `Nb − Nc`) yields a centre `O` with `⟪O,Na⟫ = −⟪O,Nb⟫ = −⟪O,Nc⟫`: a circle
+tangent to all three sides but on the far side of the first, an excircle.  The returned sign
+relations record which tritangent circle this is, distinguishing it from the incircle
+(`⟪O,Na⟫ = ⟪O,Nb⟫ = ⟪O,Nc⟫`). -/
+theorem sphericalExcircleA_exists [FiniteDimensional ℝ E] (Na Nb Nc : E)
+    (hNa : OnSphere Na) (hdim : 2 < Module.finrank ℝ E) :
+    ∃ (O : E) (ρ : ℝ), SphericalIncircle Na Nb Nc O ρ ∧
+      (⟪O, Na⟫ : ℝ) = -⟪O, Nb⟫ ∧ (⟪O, Nb⟫ : ℝ) = ⟪O, Nc⟫ := by
+  obtain ⟨O, hOon, -, ⟨-, hab⟩, ⟨-, hbc⟩, -, -⟩ :=
+    greatCircles_inter (Na + Nb) (Nb - Nc) hdim
+  have hab' : (⟪O, Na⟫ : ℝ) = -⟪O, Nb⟫ := by
+    have := hab; rw [inner_add_right] at this; linarith
+  have hbc' : (⟪O, Nb⟫ : ℝ) = ⟪O, Nc⟫ := by
+    have := hbc; rw [inner_sub_right] at this; linarith
+  have hAB : |(⟪O, Na⟫ : ℝ)| = |⟪O, Nb⟫| := by rw [hab', abs_neg]
+  have hAC : |(⟪O, Na⟫ : ℝ)| = |⟪O, Nc⟫| := by rw [hab', abs_neg, hbc']
+  exact ⟨O, _, sphericalIncircle_of_abs_eq hOon hNa hAB hAC, hab', hbc'⟩
+
+/-- **Existence of the spherical excircle opposite the second vertex.**  Uses the external
+bisector of `(Na, Nb)` (pole `Na + Nb`) and the internal bisector of `(Na, Nc)` (pole
+`Na − Nc`), yielding `⟪O,Na⟫ = −⟪O,Nb⟫` and `⟪O,Na⟫ = ⟪O,Nc⟫`; the sign of the second pole is
+the one flipped. -/
+theorem sphericalExcircleB_exists [FiniteDimensional ℝ E] (Na Nb Nc : E)
+    (hNa : OnSphere Na) (hdim : 2 < Module.finrank ℝ E) :
+    ∃ (O : E) (ρ : ℝ), SphericalIncircle Na Nb Nc O ρ ∧
+      (⟪O, Na⟫ : ℝ) = -⟪O, Nb⟫ ∧ (⟪O, Na⟫ : ℝ) = ⟪O, Nc⟫ := by
+  obtain ⟨O, hOon, -, ⟨-, hab⟩, ⟨-, hac⟩, -, -⟩ :=
+    greatCircles_inter (Na + Nb) (Na - Nc) hdim
+  have hab' : (⟪O, Na⟫ : ℝ) = -⟪O, Nb⟫ := by
+    have := hab; rw [inner_add_right] at this; linarith
+  have hac' : (⟪O, Na⟫ : ℝ) = ⟪O, Nc⟫ := by
+    have := hac; rw [inner_sub_right] at this; linarith
+  have hAB : |(⟪O, Na⟫ : ℝ)| = |⟪O, Nb⟫| := by rw [hab', abs_neg]
+  have hAC : |(⟪O, Na⟫ : ℝ)| = |⟪O, Nc⟫| := by rw [hac']
+  exact ⟨O, _, sphericalIncircle_of_abs_eq hOon hNa hAB hAC, hab', hac'⟩
+
+/-- **Existence of the spherical excircle opposite the third vertex.**  Uses the internal
+bisector of `(Na, Nb)` (pole `Na − Nb`) and the external bisector of `(Nb, Nc)` (pole
+`Nb + Nc`), yielding `⟪O,Na⟫ = ⟪O,Nb⟫` and `⟪O,Nb⟫ = −⟪O,Nc⟫`; the sign of the third pole is
+the one flipped. -/
+theorem sphericalExcircleC_exists [FiniteDimensional ℝ E] (Na Nb Nc : E)
+    (hNa : OnSphere Na) (hdim : 2 < Module.finrank ℝ E) :
+    ∃ (O : E) (ρ : ℝ), SphericalIncircle Na Nb Nc O ρ ∧
+      (⟪O, Na⟫ : ℝ) = ⟪O, Nb⟫ ∧ (⟪O, Nb⟫ : ℝ) = -⟪O, Nc⟫ := by
+  obtain ⟨O, hOon, -, ⟨-, hab⟩, ⟨-, hbc⟩, -, -⟩ :=
+    greatCircles_inter (Na - Nb) (Nb + Nc) hdim
+  have hab' : (⟪O, Na⟫ : ℝ) = ⟪O, Nb⟫ := by
+    have := hab; rw [inner_sub_right] at this; linarith
+  have hbc' : (⟪O, Nb⟫ : ℝ) = -⟪O, Nc⟫ := by
+    have := hbc; rw [inner_add_right] at this; linarith
+  have hAB : |(⟪O, Na⟫ : ℝ)| = |⟪O, Nb⟫| := by rw [hab']
+  have hAC : |(⟪O, Na⟫ : ℝ)| = |⟪O, Nc⟫| := by rw [hab', hbc', abs_neg]
+  exact ⟨O, _, sphericalIncircle_of_abs_eq hOon hNa hAB hAC, hab', hbc'⟩
+
 end FeuerbachsTheoremOQ04
