@@ -1229,6 +1229,105 @@ theorem mean_mul_eq_double_joint_survival_lt_Ioc
         rw [MeasureTheory.integral_const_mul, layer_cake_pointwise_Ioc hω_nn hω_bd]
     _ = ∫ ω, f ω * g ω ∂μ := by simp_rw [mul_comm]
 
+/-- **Survival-function integrability atom** (S24, this session). For a finite
+measure `μ` on `Ω`, the real-valued survival function
+`t ↦ μ.real {ω | t < f ω}` is Lebesgue-integrable over any finite window
+`(0, M]` of the threshold variable `t`.
+
+The survival function is *antitone* in `t` (a larger threshold carves out a
+smaller super-level set `{ω | t < f ω}`, whose measure is therefore no larger),
+hence measurable via `Antitone.measurable`; and it is uniformly bounded above by
+`μ.real univ < ∞` (finiteness) and below by `0` (`measureReal_nonneg`). A bounded
+measurable function on the finite-measure interval `(0, M]` is integrable
+(`Measure.integrableOn_of_bounded`). No measurability of `f` is needed —
+`measure_mono` acts on the outer measure. This mirrors the survival-integrability
+step inside Mathlib's `BoundedContinuousFunction.integral_le_of_levyProkhorovEDist_lt`.
+
+**Role.** This is the reusable atom that discharges the survival-integrand
+side-conditions of the covariance layer-cake representation
+`covariance_eq_double_survival_covariance`: the product inner integrand
+`μ.real{t<f} · μ.real{s<g}` is a constant multiple of a survival function
+(`Integrable.const_mul`), and the joint inner integrand
+`μ.real{t<f ∧ s<g} = (μ.restrict {t<f}).real{s<g}` is the survival function for
+the restricted finite measure `μ.restrict {t<f}`. -/
+theorem survival_lt_integrableOn_Ioc
+    {μ : Measure Ω} [IsFiniteMeasure μ] (f : Ω → ℝ) (M : ℝ) :
+    IntegrableOn (fun t => μ.real {ω | t < f ω}) (Set.Ioc 0 M) := by
+  apply Measure.integrableOn_of_bounded (M := μ.real Set.univ) measure_Ioc_lt_top.ne
+  · apply (Measurable.ennreal_toReal (Antitone.measurable ?_)).aestronglyMeasurable
+    exact fun _ _ hst => measure_mono (fun _ h => hst.trans_lt h)
+  · apply Filter.Eventually.of_forall (fun t => ?_)
+    simp only [Real.norm_eq_abs, abs_of_nonneg measureReal_nonneg]
+    exact measureReal_mono (Set.subset_univ _)
+
+/-- **Covariance layer-cake representation** (S24, this session). For two bounded
+nonnegative integrable random variables `f ∈ [0, M]`, `g ∈ [0, N]` (a.e.), the
+covariance is the double integral over the threshold window `(0,M] × (0,N]` of the
+*indicator covariance* `Cov(𝟙_{f>t}, 𝟙_{g>s}) = μ{t<f ∧ s<g} - μ{t<f}·μ{s<g}`:
+$$
+  \mathrm{Cov}(f, g)
+    = \int_0^M \!\!\int_0^N
+        \big(\mu\{t<f \wedge s<g\} - \mu\{t<f\}\,\mu\{s<g\}\big)\, ds\, dt.
+$$
+
+This is the assembly the S22/S23 docstrings flagged as "subtracting the two
+halves yields the covariance representation": the joint half
+(`mean_mul_eq_double_joint_survival_lt_Ioc`, S23) gives `∫ f·g`, the
+product-of-marginals half (`mean_prod_eq_double_survival_lt_Ioc`, S22) gives
+`(∫ f)(∫ g)`, and linearity of the (set) integral (`integral_sub`, applied once
+on the outer `t`-integral and once inside on the `s`-integral) combines the two
+double integrals into a single double integral of the pointwise difference.
+
+The four survival integrabilities required by `integral_sub` split into two
+*inner* ones — discharged here via the `survival_lt_integrableOn_Ioc` atom (the
+product integrand is a constant multiple of a survival function; the joint
+integrand is a survival function for the restricted measure `μ.restrict {t<f}`)
+— and two *outer* ones, taken as hypotheses `h_joint_outer` / `h_prod_outer`
+(each follows from the atom via `integral_const_mul` for the product and via the
+antitonicity of the collapsed `t ↦ ∫_{t<f} g` for the joint; deferred to keep
+this assembly leaf-clean).
+
+This representation feeds `indicator_covariance_le_alpha` — each integrand
+`Cov(𝟙_{f>t}, 𝟙_{g>s})` is bounded in absolute value by the α-mixing coefficient
+— in the `L^p` density (`S5c`) step of `davydov_covariance_inequality`. -/
+theorem covariance_eq_double_survival_covariance
+    {μ : Measure Ω} [IsProbabilityMeasure μ] {f g : Ω → ℝ} {M N : ℝ}
+    (hf_meas : Measurable f) (hg_meas : Measurable g)
+    (hf_int : Integrable f μ) (hf_nn : 0 ≤ᵐ[μ] f) (hf_bdd : f ≤ᵐ[μ] (fun _ => M))
+    (hg_int : Integrable g μ) (hg_nn : 0 ≤ᵐ[μ] g) (hg_bdd : g ≤ᵐ[μ] (fun _ => N))
+    (h_joint_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 N, μ.real {ω | t < f ω ∧ s < g ω}) (Set.Ioc 0 M))
+    (h_prod_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 N, μ.real {ω | t < f ω} * μ.real {ω | s < g ω})
+      (Set.Ioc 0 M)) :
+    (∫ ω, f ω * g ω ∂μ) - (∫ ω, f ω ∂μ) * (∫ ω, g ω ∂μ)
+      = ∫ t in Set.Ioc 0 M, ∫ s in Set.Ioc 0 N,
+          (μ.real {ω | t < f ω ∧ s < g ω}
+            - μ.real {ω | t < f ω} * μ.real {ω | s < g ω}) := by
+  -- Inner integrabilities from the survival atom.
+  have h_prod_inner : ∀ t : ℝ, IntegrableOn
+      (fun s => μ.real {ω | t < f ω} * μ.real {ω | s < g ω}) (Set.Ioc 0 N) :=
+    fun t => (survival_lt_integrableOn_Ioc g N).const_mul (μ.real {ω | t < f ω})
+  have h_joint_inner : ∀ t : ℝ, IntegrableOn
+      (fun s => μ.real {ω | t < f ω ∧ s < g ω}) (Set.Ioc 0 N) := by
+    intro t
+    haveI : IsFiniteMeasure (μ.restrict {ω | t < f ω}) :=
+      ⟨by rw [Measure.restrict_apply_univ]; exact measure_lt_top μ _⟩
+    refine (survival_lt_integrableOn_Ioc (μ := μ.restrict {ω | t < f ω}) g N).congr_fun
+      (fun s _ => ?_) measurableSet_Ioc
+    have hset : {ω | t < f ω ∧ s < g ω} = {ω | s < g ω} ∩ {ω | t < f ω} := by
+      ext ω; simp only [Set.mem_setOf_eq, Set.mem_inter_iff]; exact and_comm
+    rw [hset, measureReal_def, measureReal_def,
+        Measure.restrict_apply (measurableSet_lt measurable_const hg_meas)]
+  -- Assemble: rewrite both halves, then combine the two double integrals via
+  -- linearity of the integral (outer once, inner pointwise).
+  rw [mean_mul_eq_double_joint_survival_lt_Ioc hf_meas hg_meas hf_int hf_nn hf_bdd
+        hg_int hg_nn hg_bdd,
+      mean_prod_eq_double_survival_lt_Ioc hf_int hf_nn hf_bdd hg_int hg_nn hg_bdd,
+      ← integral_sub h_joint_outer h_prod_outer]
+  refine setIntegral_congr_fun measurableSet_Ioc (fun t _ => ?_)
+  exact (integral_sub (h_joint_inner t) (h_prod_inner t)).symm
+
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
 For random variables `X, Y : Ω → ℝ` with finite `L^p` norms (`p > 2`), where `X`
