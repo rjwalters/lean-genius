@@ -34,9 +34,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-22",
-    "iteration": 6,
-    "focus": "S3-B3 ACT iteration 6 (researcher-8, 2026-06-22) — Docker-verified build (0 errors; #print axioms = [propext, Classical.choice, Quot.sound] only ⇒ 0-axiom verified, no native_decide). **Formalized the honest scope of the realized ℝ² arc**: added `realParabolaSet_fourPointLineCount_zero` (p ≠ 2) proving `fourPointLineCount (realParabolaSet p hp) = 0`. Being an arc (no three collinear), a fortiori no four of its points lie on a common line. The proof unfolds `fourPointLineCount` to an empty filtered powerset: any candidate 4-set on a line through a ≠ b must contain a third point c (card argument via Finset.card_pair), contradicting `realParabola_no_three_collinear`. This makes explicit in Lean that the bare general-position base is NOT a four-point-line lower-bound witness — the Ω(p^{3/2}) count must come from the sumset/grid construction built ON TOP of this arc. Net: +1 PROVED theorem, 0 axioms, 0 new sorries; the 2 pre-existing OPEN-construction sorries (grunbaum_lower_bound_three_halves, solymosi_stojakovic_lower_bound) remain.",
+    "since": "2026-07-01",
+    "iteration": 7,
+    "focus": "S3-witness ACT iteration 7 (researcher-4, 2026-07-01) — direct-lean-verified build (lean v4.26.0; #print axioms crossSet_isLowerBoundConstruction = [propext, Classical.choice, Quot.sound] only ⇒ 0-axiom VERIFIED, no sorryAx, no native_decide). **Raised the framework floor from 1 to 2 four-point lines** with an explicit 7-point 'cross' construction crossSet = {(0,0),(1,0),(2,0),(3,0),(0,1),(0,2),(0,3)}: the x-axis and y-axis are two distinct four-point lines, giving fourPointLineCount ≥ 2, and it has no five collinear points ⇒ IsLowerBoundConstruction crossSet 2. Because two distinct four-point lines meet in ≤1 point, this floor cannot be realized by fewer than 7 points (five-point sets carry ≤1 four-point line), so the jump 1→2 forces a genuinely larger, structurally different witness. Added two reusable general collinearity lemmas: collinear_snd_inj (on a non-horizontal line the 2nd coordinate is injective ⇒ ≤1 point per y-level) and collinear_snd_eq_of_horiz (a horizontal line's points all share that y). The no-five proof: a horizontal line hits only the 4 x-axis points; a non-horizontal line hits ≤1 per y-value and crossSet has only 4 distinct y-values {0,1,2,3}. Net: +9 PROVED theorems, +2 defs, 0 axioms, 0 new sorries; the 2 pre-existing OPEN-construction sorries (grunbaum_lower_bound_three_halves, solymosi_stojakovic_lower_bound) remain — the asymptotic Ω(n^{3/2}) / n^{2−o(1)} growth is still the OPEN content.",
     "blockers": [
       "S3-B2-β 4-collinear COUNT `Ω(p^{3/2})`: the parabola itself is now PROVEN to be no-three-collinear, so it has zero four-point lines on its own — the Ω(p^{3/2}) four-point-line witness requires the further sumset/grid construction over this general-position base, not the bare parabola.",
       "S4-S5 (Path A random-projection genericity): unchanged from S2 — measure-theoretic infrastructure deferred to dedicated multi-session ACT."
@@ -54,6 +54,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos101Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos101OQ04.lean",
+      "filename": "Erdos101OQ04.lean",
+      "lineCount": 1158,
+      "theoremCount": 35,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos101OQ04.lean"
     }
   ],
   "knowledge": {
@@ -150,7 +161,7 @@
     "sourceTitle": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
     "sourceType": "open-question"
   },
-  "lastUpdate": "2026-06-22T13:00:00.000Z",
+  "lastUpdate": "2026-07-01T14:00:00.000Z",
   "relatedProofs": [
     "erdos-101",
     "erdos101-problem"

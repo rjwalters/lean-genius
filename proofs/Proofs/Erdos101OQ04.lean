@@ -823,4 +823,336 @@ theorem exists_isLowerBoundConstruction_pos :
     rw [show witnessSet.points = witnessPoints from rfl, witnessPoints_card]
     norm_num, witnessSet_isLowerBoundConstruction⟩
 
+/- ## Raising the framework floor: a construction with two four-point lines
+
+The `witnessSet` above achieves `IsLowerBoundConstruction _ 1` — one
+four-point line.  A single four-point line uses only four points, so
+five-point sets can carry at most one such line; indeed **no** set of
+exactly five points has two four-point lines (two distinct four-point
+lines meet in at most one point, so already require `4 + 4 - 1 = 7`
+distinct points).  Raising the floor from `1` to `2` therefore forces a
+genuinely larger, structurally different construction: the minimal one
+is a *cross* of two four-point lines sharing a single point.
+
+We use the explicit 7-point set
+
+    X = {(0,0),(1,0),(2,0),(3,0),(0,1),(0,2),(0,3)} ⊂ ℝ²,
+
+the union of the four `x`-axis points and three further `y`-axis points,
+meeting at the origin.  Its two four-point lines are the `x`-axis
+`{(0,0),(1,0),(2,0),(3,0)}` and the `y`-axis
+`{(0,0),(0,1),(0,2),(0,3)}`, giving `fourPointLineCount X ≥ 2`; and it
+has no five collinear points, so `IsLowerBoundConstruction X 2`.
+
+The no-five-collinear proof is powered by two reusable "one rich
+coordinate direction" lemmas about the gallery's determinant
+`collinear`, both fully general (not tied to this witness):
+
+* `collinear_snd_inj` — on a *non-horizontal* line, the second
+  coordinate is injective: two collinear-with-`a,b` points sharing a
+  `y`-value coincide.  Hence a non-horizontal line meets any set with
+  `≤ k` distinct `y`-values in `≤ k` points.
+* `collinear_snd_eq_of_horiz` — on a *horizontal* line (`a.2 = b.2`,
+  `a.1 ≠ b.1`) every collinear point has that same `y`-value.
+
+Since the cross set has only the four `y`-values `{0,1,2,3}`, a
+non-horizontal line hits at most four of its points (one per `y`),
+while a horizontal line hits only the four `x`-axis points; either way
+fewer than five.  This remains a *constant*-size witness: the OPEN
+content is the asymptotic Ω(n^{3/2}) / n^{2−o(1)} growth recorded in the
+two deferred construction theorems above. -/
+
+/-- **Second-coordinate injectivity on a non-horizontal line.**  If `p`
+and `q` are both collinear with the distinct-`y` anchor pair `a, b`
+(`a.2 ≠ b.2`) and share the same second coordinate, they are equal.
+General-purpose collinearity lemma: a non-vertical-direction... more
+precisely a *non-horizontal* line is the graph of `x` as a function of
+`y`, so it meets each horizontal level in at most one point. -/
+theorem collinear_snd_inj {a b p q : ℝ × ℝ} (hp : collinear a b p)
+    (hq : collinear a b q) (hab : a.2 ≠ b.2) (hpq : p.2 = q.2) : p = q := by
+  unfold collinear at hp hq
+  have hb2 : b.2 - a.2 ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
+  have key : (p.1 - q.1) * (b.2 - a.2) = 0 := by
+    linear_combination hq - hp + (b.1 - a.1) * hpq
+  have hp1 : p.1 = q.1 := sub_eq_zero.mp ((mul_eq_zero.mp key).resolve_right hb2)
+  exact Prod.ext hp1 hpq
+
+/-- **Constant second coordinate on a horizontal line.**  If `a, b` have
+equal second coordinate but distinct first coordinate (a genuinely
+horizontal segment) then every point `p` collinear with `a, b` has that
+same second coordinate. -/
+theorem collinear_snd_eq_of_horiz {a b p : ℝ × ℝ} (hp : collinear a b p)
+    (hab2 : a.2 = b.2) (hab1 : a.1 ≠ b.1) : p.2 = a.2 := by
+  unfold collinear at hp
+  have hb1 : b.1 - a.1 ≠ 0 := sub_ne_zero.mpr (Ne.symm hab1)
+  have key : (b.1 - a.1) * (p.2 - a.2) = 0 := by
+    linear_combination hp - (p.1 - a.1) * hab2
+  exact sub_eq_zero.mp ((mul_eq_zero.mp key).resolve_left hb1)
+
+/-- The explicit 7-point cross: four `x`-axis points and three further
+`y`-axis points, meeting at the origin. -/
+noncomputable def crossPoints : Finset (ℝ × ℝ) :=
+  {(0, 0), (1, 0), (2, 0), (3, 0), (0, 1), (0, 2), (0, 3)}
+
+/-- The four second coordinates occurring in `crossPoints` are exactly
+`{0, 1, 2, 3}`. -/
+theorem crossPoints_snd_mem {p : ℝ × ℝ} (h : p ∈ crossPoints) :
+    p.2 ∈ ({0, 1, 2, 3} : Finset ℝ) := by
+  simp only [crossPoints, Finset.mem_insert, Finset.mem_singleton] at h
+  rcases h with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    simp
+
+/-- Two distinct points of `crossPoints` with a common second coordinate
+must both lie on the `x`-axis (`y = 0`): the levels `y = 1, 2, 3` each
+contain only one point. -/
+theorem crossPoints_snd_eq_zero_of_ne {p q : ℝ × ℝ} (hp : p ∈ crossPoints)
+    (hq : q ∈ crossPoints) (hne : p ≠ q) (heq : p.2 = q.2) : p.2 = 0 := by
+  simp only [crossPoints, Finset.mem_insert, Finset.mem_singleton] at hp hq
+  rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    rcases hq with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    first
+      | rfl
+      | (exfalso; apply hne; rfl)
+      | (exfalso; revert heq; norm_num)
+
+/-- A point of `crossPoints` on the `x`-axis is one of the four `x`-axis
+points. -/
+theorem crossPoints_mem_xaxis {p : ℝ × ℝ} (hp : p ∈ crossPoints)
+    (hy : p.2 = 0) : p ∈ ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)) := by
+  simp only [crossPoints, Finset.mem_insert, Finset.mem_singleton] at hp
+  rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · simp
+  · simp
+  · simp
+  · simp
+  · exact absurd (show (1 : ℝ) = 0 from hy) (by norm_num)
+  · exact absurd (show (2 : ℝ) = 0 from hy) (by norm_num)
+  · exact absurd (show (3 : ℝ) = 0 from hy) (by norm_num)
+
+/-- The cross set as a `PlanarPointSet`. -/
+noncomputable def crossSet : PlanarPointSet where
+  points := crossPoints
+  size_pos := by
+    rw [crossPoints]
+    apply Finset.card_pos.mpr
+    exact ⟨(0, 0), by simp⟩
+
+/-- **The cross has no five collinear points.**  Any five distinct
+points of the cross lying on a common line contradict its having only
+four distinct `y`-values: a horizontal line hits only the four `x`-axis
+points, and a non-horizontal line hits at most one point per `y`-value
+(`collinear_snd_inj`), i.e. at most four. -/
+theorem crossSet_noFiveCollinear : NoFiveCollinear crossSet := by
+  intro a b c d e ha hb hc hd he hab hac had hae hbc hbd hbe hcd hce hde
+  rintro ⟨hcol_c, hcol_d, hcol_e⟩
+  -- `a` and `b` are themselves collinear with the anchor pair `a, b`.
+  have caa : collinear a b a := by unfold collinear; ring
+  have cab : collinear a b b := by unfold collinear; ring
+  -- membership facts
+  have ha' : a ∈ crossPoints := ha
+  have hb' : b ∈ crossPoints := hb
+  have hc' : c ∈ crossPoints := hc
+  have hd' : d ∈ crossPoints := hd
+  have he' : e ∈ crossPoints := he
+  by_cases hab2 : a.2 = b.2
+  · -- Horizontal line: all five points share the second coordinate `a.2`.
+    have hab1 : a.1 ≠ b.1 := by
+      intro h1; exact hab (Prod.ext h1 hab2)
+    have hb0 : b.2 = a.2 := (collinear_snd_eq_of_horiz cab hab2 hab1)
+    have hc0 : c.2 = a.2 := collinear_snd_eq_of_horiz hcol_c hab2 hab1
+    have hd0 : d.2 = a.2 := collinear_snd_eq_of_horiz hcol_d hab2 hab1
+    have he0 : e.2 = a.2 := collinear_snd_eq_of_horiz hcol_e hab2 hab1
+    -- Two distinct points `a, b` share `y = a.2`, forcing `a.2 = 0`.
+    have hzero : a.2 = 0 :=
+      crossPoints_snd_eq_zero_of_ne ha' hb' hab (by rw [hb0])
+    -- Hence all five lie on the four-point `x`-axis set.
+    have hxset : ({a, b, c, d, e} : Finset (ℝ × ℝ)) ⊆
+        ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)) := by
+      intro x hx
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl | rfl | rfl | rfl
+      · exact crossPoints_mem_xaxis ha' hzero
+      · exact crossPoints_mem_xaxis hb' (by rw [hb0, hzero])
+      · exact crossPoints_mem_xaxis hc' (by rw [hc0, hzero])
+      · exact crossPoints_mem_xaxis hd' (by rw [hd0, hzero])
+      · exact crossPoints_mem_xaxis he' (by rw [he0, hzero])
+    have hcard5 : ({a, b, c, d, e} : Finset (ℝ × ℝ)).card = 5 := by
+      rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · rw [Finset.card_insert_of_notMem]
+            · simp
+            · simp [hde]
+          · simp [hcd, hce]
+        · simp [hbc, hbd, hbe]
+      · simp [hab, hac, had, hae]
+    have hle := Finset.card_le_card hxset
+    rw [hcard5] at hle
+    have h4 : ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)).card = 4 := by
+      rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    rw [h4] at hle
+    omega
+  · -- Non-horizontal line: the second coordinate is injective on the five
+    -- points, so their `y`-values are five distinct elements of `{0,1,2,3}`.
+    have inj : ∀ x y : ℝ × ℝ, collinear a b x → collinear a b y →
+        x ≠ y → x.2 ≠ y.2 := by
+      intro x y hx hy hxy h2
+      exact hxy (collinear_snd_inj hx hy hab2 h2)
+    have yab : a.2 ≠ b.2 := hab2
+    have yac : a.2 ≠ c.2 := inj a c caa hcol_c hac
+    have yad : a.2 ≠ d.2 := inj a d caa hcol_d had
+    have yae : a.2 ≠ e.2 := inj a e caa hcol_e hae
+    have ybc : b.2 ≠ c.2 := inj b c cab hcol_c hbc
+    have ybd : b.2 ≠ d.2 := inj b d cab hcol_d hbd
+    have ybe : b.2 ≠ e.2 := inj b e cab hcol_e hbe
+    have ycd : c.2 ≠ d.2 := inj c d hcol_c hcol_d hcd
+    have yce : c.2 ≠ e.2 := inj c e hcol_c hcol_e hce
+    have yde : d.2 ≠ e.2 := inj d e hcol_d hcol_e hde
+    have hysub : ({a.2, b.2, c.2, d.2, e.2} : Finset ℝ) ⊆
+        ({0, 1, 2, 3} : Finset ℝ) := by
+      intro x hx
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl | rfl | rfl | rfl
+      · exact crossPoints_snd_mem ha'
+      · exact crossPoints_snd_mem hb'
+      · exact crossPoints_snd_mem hc'
+      · exact crossPoints_snd_mem hd'
+      · exact crossPoints_snd_mem he'
+    have hycard5 : ({a.2, b.2, c.2, d.2, e.2} : Finset ℝ).card = 5 := by
+      rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · rw [Finset.card_insert_of_notMem]
+            · simp
+            · simp [yde]
+          · simp [ycd, yce]
+        · simp [ybc, ybd, ybe]
+      · simp [yab, yac, yad, yae]
+    have hle := Finset.card_le_card hysub
+    rw [hycard5] at hle
+    have h4 : ({0, 1, 2, 3} : Finset ℝ).card = 4 := by
+      rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num
+        · norm_num
+      · norm_num
+    rw [h4] at hle
+    omega
+
+/-- The cross has at least two four-point lines: the `x`-axis
+`{(0,0),(1,0),(2,0),(3,0)}` and the `y`-axis `{(0,0),(0,1),(0,2),(0,3)}`
+are two distinct four-element collinear subsets. -/
+theorem crossSet_fourPointLineCount_ge_two :
+    2 ≤ fourPointLineCount crossSet := by
+  rw [fourPointLineCount]
+  -- The predicate defining membership of the powerset-filter.
+  set Q : Finset (ℝ × ℝ) → Prop := fun S =>
+    S.card = 4 ∧ ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p with hQ
+  -- The two witness lines.
+  have hx_mem : ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)) ∈
+      crossSet.points.powerset.filter Q := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_, (0, 0), (1, 0), ?_, ?_, ?_, ?_⟩
+    · intro x hx
+      show x ∈ crossPoints
+      rw [crossPoints]
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+      tauto
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    · simp
+    · simp
+    · norm_num [Prod.ext_iff]
+    · intro p hp
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+      rcases hp with rfl | rfl | rfl | rfl <;> simp [collinear]
+  have hy_mem : ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ)) ∈
+      crossSet.points.powerset.filter Q := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_, (0, 0), (0, 1), ?_, ?_, ?_, ?_⟩
+    · intro x hx
+      show x ∈ crossPoints
+      rw [crossPoints]
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+      tauto
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    · simp
+    · simp
+    · norm_num [Prod.ext_iff]
+    · intro p hp
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+      rcases hp with rfl | rfl | rfl | rfl <;> simp [collinear]
+  -- The two lines are distinct: `(1,0)` is on the `x`-axis but not the `y`-axis.
+  have hne : ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)) ≠
+      ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ)) := by
+    intro h
+    have : ((1, 0) : ℝ × ℝ) ∈ ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ)) := by
+      rw [← h]; simp
+    simp only [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff] at this
+    norm_num at this
+  -- A two-element subset of the filter gives card ≥ 2.
+  have hsub : ({({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)),
+      ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ))} :
+      Finset (Finset (ℝ × ℝ))) ⊆ crossSet.points.powerset.filter Q := by
+    intro S hS
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hS
+    rcases hS with rfl | rfl
+    · exact hx_mem
+    · exact hy_mem
+  have hpair : ({({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)),
+      ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ))} :
+      Finset (Finset (ℝ × ℝ))).card = 2 := Finset.card_pair hne
+  have hle := Finset.card_le_card hsub
+  rw [hpair] at hle
+  exact hle
+
+/-- **Framework floor ≥ 2** (this session's deliverable).  The explicit
+7-point cross set is a no-five-collinear planar point set with at least
+two four-point lines: `IsLowerBoundConstruction crossSet 2`.  This
+strictly raises the framework floor above the single-line
+`witnessSet_isLowerBoundConstruction`, and — because two four-point lines
+cannot share more than one point — cannot be realized by any set of
+fewer than seven points.  The construction remains *constant* in size;
+the asymptotic growth of `fourPointLineCount` is the OPEN content of
+`grunbaum_lower_bound_three_halves` and `solymosi_stojakovic_lower_bound`. -/
+theorem crossSet_isLowerBoundConstruction :
+    IsLowerBoundConstruction crossSet 2 :=
+  ⟨crossSet_noFiveCollinear, by exact_mod_cast crossSet_fourPointLineCount_ge_two⟩
+
+/-- **The framework floor reaches at least two.**  There is a
+no-five-collinear planar point set of exactly seven points that is a
+lower-bound construction for threshold `2` — two four-point lines.  With
+`exists_isLowerBoundConstruction_pos` (floor `1`, five points) this shows
+the `IsLowerBoundConstruction` threshold is not pinned at the minimal
+non-vacuous value. -/
+theorem exists_isLowerBoundConstruction_two :
+    ∃ P : PlanarPointSet, P.points.card = 7 ∧ IsLowerBoundConstruction P 2 :=
+  ⟨crossSet, by
+    show crossPoints.card = 7
+    rw [crossPoints]
+    -- seven distinct points
+    repeat rw [Finset.card_insert_of_notMem
+      (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff])]
+    simp, crossSet_isLowerBoundConstruction⟩
+
 end Erdos101OQ04
