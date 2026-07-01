@@ -3,6 +3,38 @@
   "title": "General Inclusion-Exclusion for k Sets",
   "slug": "inclusion-exclusion-oq-01-oq-01",
   "description": "Proves the general inclusion-exclusion formula for k finite sets using Mathlib's Finset.inclusion_exclusion_card_biUnion. Establishes the inductive step (adding one more set to a union), the complementary counting form, explicit 2/3/4-set specializations, and the first Bonferroni inequality (union bound). 13 theorems, 0 definitions, 0 axioms.",
+  "references": [
+    {
+      "authors": "Abraham de Moivre",
+      "title": "The Doctrine of Chances",
+      "year": 1718,
+      "note": "An early appearance of the inclusion–exclusion principle in probability."
+    },
+    {
+      "authors": "Henri Poincaré",
+      "title": "Calcul des probabilités",
+      "year": 1896,
+      "note": "The general inclusion–exclusion (Poincaré) formula for the measure of a union."
+    },
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Enumerative Combinatorics, Volume 1 (2nd ed.)",
+      "year": 2011,
+      "note": "Cambridge University Press. Inclusion–exclusion, sieve methods, and Bonferroni inequalities (§2.1)."
+    },
+    {
+      "authors": "Jacobus H. van Lint and Richard M. Wilson",
+      "title": "A Course in Combinatorics (2nd ed.)",
+      "year": 2001,
+      "note": "Cambridge University Press. The k-set inclusion–exclusion formula and its number-theoretic applications."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Finset.inclusion_exclusion_card_biUnion",
+      "year": 2024,
+      "note": "The Mathlib inclusion–exclusion theorem specialized here to k sets and complementary counting."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-05",

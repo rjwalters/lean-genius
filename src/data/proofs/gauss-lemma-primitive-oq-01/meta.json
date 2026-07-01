@@ -3,6 +3,38 @@
   "title": "Gauss's Lemma: a primitive integer polynomial is irreducible over ℤ iff over ℚ",
   "slug": "gauss-lemma-primitive-oq-01",
   "description": "Gauss's Lemma (irreducibility form): a primitive polynomial p ∈ ℤ[X] is irreducible over ℤ if and only if its image in ℚ[X] is irreducible. Mathlib proves the biconditional (IsPrimitive.Int.irreducible_iff_irreducible_map_cast) but the gallery had no entry packaging it with the monic specialization (where primitivity is automatic) and a fully-formalized witness that primitivity is essential — the non-primitive polynomial 2X, reducible over ℤ yet irreducible over ℚ.",
+  "references": [
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones Arithmeticae (art. 42)",
+      "year": 1801,
+      "note": "The original Gauss's lemma: a product of primitive polynomials is primitive, yielding the ℤ↔ℚ irreducibility equivalence."
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Algebra (Revised 3rd ed.), GTM 211",
+      "year": 2002,
+      "note": "Springer. Gauss's lemma and irreducibility over ℤ versus ℚ (Chapter IV)."
+    },
+    {
+      "authors": "David S. Dummit and Richard M. Foote",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": 2004,
+      "note": "Wiley. §9.3 proves Gauss's lemma and the primitive-polynomial irreducibility criterion."
+    },
+    {
+      "authors": "B. L. van der Waerden",
+      "title": "Algebra, Volume 1 (7th ed.)",
+      "year": 1991,
+      "note": "Springer. Content, primitive polynomials, and Gauss's lemma over a UFD."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Polynomial.IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+      "year": 2024,
+      "note": "The Mathlib biconditional wrapped by this entry to give a gallery-friendly Gauss's lemma."
+    }
+  ],
   "meta": {
     "author": "Carl Friedrich Gauss (1801)",
     "status": "verified",

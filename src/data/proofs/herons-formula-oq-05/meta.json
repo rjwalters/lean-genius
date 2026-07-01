@@ -3,6 +3,38 @@
   "title": "Heron's Formula via the Cayley–Menger Determinant",
   "slug": "herons-formula-oq-05",
   "description": "Generalizes Heron's formula to simplex content from squared edge lengths via the Cayley–Menger determinant. Proves two classical cases as explicit polynomial identities in the squared edge lengths: the triangle (n=2) gives 16·Area² = −cmDet3 (Heron's formula), and the tetrahedron (n=3) gives 288·V² = cmDet4. Includes realizability (cmDet4 ≥ 0) and a coplanarity/degeneracy criterion. 6 theorems, 0 axioms.",
+  "references": [
+    {
+      "authors": "Heron of Alexandria",
+      "title": "Metrica, Book I",
+      "year": 60,
+      "note": "The original area formula √(s(s−a)(s−b)(s−c)), generalized here to simplex content."
+    },
+    {
+      "authors": "Arthur Cayley",
+      "title": "On a Theorem in the Geometry of Position (Cambridge Mathematical Journal 2)",
+      "year": 1841,
+      "note": "The determinant of squared distances that became the Cayley–Menger determinant."
+    },
+    {
+      "authors": "Karl Menger",
+      "title": "Untersuchungen über allgemeine Metrik (Mathematische Annalen 100)",
+      "year": 1928,
+      "note": "The Cayley–Menger determinant characterizing metric embeddability and simplex volume."
+    },
+    {
+      "authors": "Marcel Berger",
+      "title": "Geometry I",
+      "year": 1987,
+      "note": "Springer. Cayley–Menger determinants and the metric geometry of simplices."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Matrix.det (det_fin_three) and EuclideanSpace distance infrastructure",
+      "year": 2024,
+      "note": "Determinant expansions used to prove 16·Area² = −cmDet3 and the higher-simplex identities."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-16",

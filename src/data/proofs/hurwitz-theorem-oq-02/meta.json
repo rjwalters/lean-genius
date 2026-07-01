@@ -3,6 +3,38 @@
   "title": "Hurwitz's Theorem: The Four Division Algebras and the Four Fundamental Forces",
   "slug": "hurwitz-theorem-oq-02",
   "description": "Formalizes the mathematical backbone of the Dixon–Furey–Baez–Huerta 'division algebras and physics' dictionary: a canonical bijection between the four normed division algebras (ℝ, ℂ, ℍ, 𝕆) classified by Hurwitz's theorem and the four fundamental forces (gravity, electromagnetism, weak, strong), under which every gauge-group dimension matches a dimension of the corresponding algebra — U(1)=1=Im ℂ, SU(2)=3=Im ℍ, SU(3)=8=dim 𝕆. Proves the unit quaternions Sp(1)≅SU(2) (weak gauge group) form a subgroup of ℍˣ and the unit complex numbers U(1) (electromagnetism) are closed, via multiplicativity of the quaternion/complex norm.",
+  "references": [
+    {
+      "authors": "Adolf Hurwitz",
+      "title": "Über die Composition der quadratischen Formen von beliebig vielen Variabeln (Nachr. Ges. Wiss. Göttingen)",
+      "year": 1898,
+      "note": "Hurwitz's theorem classifying the normed division algebras ℝ, ℂ, ℍ, 𝕆 via the 1,2,4,8-square identities."
+    },
+    {
+      "authors": "John C. Baez",
+      "title": "The Octonions (Bulletin of the American Mathematical Society 39)",
+      "year": 2002,
+      "note": "Definitive survey of ℝ, ℂ, ℍ, 𝕆 and their appearances in physics."
+    },
+    {
+      "authors": "John H. Conway and Derek A. Smith",
+      "title": "On Quaternions and Octonions: Their Geometry, Arithmetic, and Symmetry",
+      "year": 2003,
+      "note": "A K Peters. The four normed division algebras and their symmetry groups."
+    },
+    {
+      "authors": "Geoffrey M. Dixon",
+      "title": "Division Algebras: Octonions, Quaternions, Complex Numbers and the Algebraic Design of Physics",
+      "year": 1994,
+      "note": "Kluwer. The division-algebra dictionary underlying the four-forces correspondence formalized here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Quaternion, Octonion-style normed-algebra infrastructure",
+      "year": 2024,
+      "note": "Normed division algebra structures used to state the four-algebra bijection."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-27",
