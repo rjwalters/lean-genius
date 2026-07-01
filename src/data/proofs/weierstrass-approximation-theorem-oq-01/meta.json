@@ -113,5 +113,58 @@
       "Can quantitative refinements — Jackson-type theorems bounding the approximation rate in terms of the modulus of continuity of f — be formalized on top of the Bernstein construction provided here?"
     ]
   },
-  "crossReferences": []
+  "references": [
+    {
+      "authors": "Weierstrass, Karl",
+      "title": "Über die analytische Darstellbarkeit sogenannter willkürlicher Functionen einer reellen Veränderlichen",
+      "year": "1885",
+      "venue": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften zu Berlin",
+      "note": "The original paper establishing that every continuous function on a closed bounded interval is a uniform limit of polynomials — the theorem this entry formalizes in four equivalent forms."
+    },
+    {
+      "authors": "Bernstein, Sergei N.",
+      "title": "Démonstration du théorème de Weierstrass fondée sur le calcul des probabilités",
+      "year": "1912",
+      "venue": "Communications de la Société Mathématique de Kharkov, vol. 13",
+      "note": "The constructive probabilistic proof: the Bernstein polynomials Bₙ(f) converge uniformly to f, giving an explicit, choice-free approximating sequence — the form behind Mathlib's bernsteinApproximation_uniform used here."
+    },
+    {
+      "authors": "Stone, Marshall H.",
+      "title": "The Generalized Weierstrass Approximation Theorem",
+      "year": "1948",
+      "venue": "Mathematics Magazine, vol. 21, no. 4–5",
+      "note": "The Stone–Weierstrass generalization characterizing dense point-separating subalgebras of C(X); the density form in this entry (polynomialFunctions_closure_eq_top) is the algebraic face that this theorem abstracts."
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Principles of Mathematical Analysis (3rd ed.)",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "note": "Standard textbook treatment (Theorem 7.26) stating the theorem in the uniform-limit-of-polynomials form that this entry supplies as an explicit TendstoUniformlyOn sequence, together with the Stone–Weierstrass theorem in Chapter 7."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Analysis.SpecialFunctions.Bernstein and Mathlib.Topology.ContinuousMap.Weierstrass",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the analytic core reused here: bernsteinApproximation_uniform, exists_polynomial_near_of_continuousOn, and polynomialFunctions_closure_eq_top — the density/constructive facts that this entry repackages into the textbook single-sequence statement."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-polynomials-oq-01",
+      "relationship": "related",
+      "description": "Chebyshev polynomials are the tool of best (minimax) polynomial approximation: Weierstrass guarantees a polynomial within any ε, while Chebyshev theory quantifies the optimal such polynomial and its equioscillation error. This entry provides the existence side that Chebyshev approximation refines."
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "related",
+      "description": "Taylor's theorem gives a LOCAL polynomial approximation valid near a point (for sufficiently smooth f), whereas Weierstrass gives a GLOBAL uniform approximation on all of [a,b] for merely continuous f — the |x| witness here, non-differentiable at 0, has no Taylor expansion there yet is uniformly polynomial-approximable, sharpening the contrast."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Fourier series are the trigonometric-polynomial analog of this theorem: uniform approximation of continuous periodic functions by trigonometric polynomials. Both are instances of density in C(X) that the Stone–Weierstrass theorem unifies."
+    }
+  ]
 }
