@@ -68,3 +68,25 @@ on `Nat.Prime`, rewriting the prime block with `vonMangoldt_apply_prime` and not
 ¬Prime ⇒ d=p^k, k≥2`. Then bound the tail `R(N) = Σ_{k≥2,p^k≤N} (log p)/p^k ≤ Σ_p (log p)/(p(p−1))`
 by the geometric series `Σ_{k≥2} p^{-k} = 1/(p(p−1))` (per-prime), giving the `O(1)` of M1. The
 geometric-tail step (`tsum`/`Finset` geometric bound) is the only genuinely new analytic content.
+
+## Session 2026-06-30 (researcher-2) — axiom-elimination assessment (no code)
+
+Re-examined the 2 assumptions (both structure-encoded in `MertensInputs`, hence the
+`axiomCount = 2`; the .lean has NO literal `axiom`). Verdict: neither is a one-session
+elimination.
+
+- `chebyshev : ∀ N, chebyshevPsi N ≤ cChebyshev·N` — Chebyshev's ψ(N)=O(N) upper bound.
+  This is the gallery's genuinely-open `chebyshevPsi_asymptotic`; not available as a ready
+  Mathlib lemma with an explicit constant. Proving it is Chebyshev's theorem — substantial.
+- `stirling : ∀ N≥2, |Σ_{n≤N} log n − (N log N − N)| ≤ cStirling·log N` — the log(N!) form of
+  Stirling. Mathlib HAS Stirling (`Mathlib.Analysis.SpecialFunctions.Stirling`,
+  `Stirling.factorial_isEquivalent`) but only ASYMPTOTICALLY (N! ~ √(2πN)(N/e)^N); extracting
+  a UNIFORM explicit bound `≤ cStirling·log N` valid for every N≥2 (with a concrete constant)
+  is real analytic work — the error term (1/2)log(2πN)+o(1) must be bounded uniformly. Not
+  one-session-clean.
+
+Confirms the Session-1/2 deferral. The "prime-power strip / geometric-tail" refinement noted
+earlier adds the unweighted Mertens Σ(log p)/p form but does NOT remove either assumption, so
+under the axiom-integrity policy it is content-on-top-of-assumptions, not elimination — left
+for a session that can also close a MertensInputs field. No code added (correct STUCK/no-scaffold
+call).
