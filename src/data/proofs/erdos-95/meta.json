@@ -52,13 +52,16 @@
       "sum_multiplicities: ∑f(d) = n(n-1) via fibre decomposition (proved)",
       "erdos_conjecture_proved: derives conjecture from Guth-Katz by absorbing log into n^ε (proved)",
       "convex_polygon_case: Fishburn/Altman axiom",
-      "erdos_95: combined main theorem"
+      "erdos_95: combined main theorem",
+      "distinctDistances: number of distinct distances t = |distanceSet| (new)",
+      "sq_sum_multiplicities_le: Cauchy–Schwarz bridge (n(n-1))² ≤ t·∑f(d)², unconditional/0-axiom (new, proved)",
+      "distinctDistances_lower_bound: combines the bridge with Guth–Katz to give n²(n-1)² ≤ C·t·n³·log n, i.e. t ≫ n/log n (Erdős #94), reuses only guth_katz_theorem (new, proved)"
     ],
     "axiomCount": 2,
-    "lineCount": 231,
+    "lineCount": 300,
     "assumptions": "2 axiom(s) and 0 sorry(s). The two axioms are the deep results Guth–Katz (2015) and the Fishburn/Altman convex-polygon case; both are stated, not proved. See the Lean source for details.",
-    "theoremCount": 3,
-    "definitionCount": 9
+    "theoremCount": 5,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "**Erdős Problem #95: Sum of Squared Distance Multiplicities**\n\nThis problem is part of Erdős's famous family of distinct distances problems, which he began studying in the 1940s. While Problem #94 asks for the minimum number of distinct distances among $n$ points in the plane, this companion problem asks about the *distribution* of distance multiplicities.\n\n**Historical Timeline:**\n- 1946: Erdős proved the lower bound $\\Omega(n^{1/2})$ for distinct distances and conjectured $\\Omega(n/\\sqrt{\\log n})$\n- 1963: Altman proved the convex polygon case: $O(n)$ distinct distances, each with multiplicity $O(n)$\n- 1983: Chung computed extremal configurations for small $n$ and established the lattice as near-extremal\n- 2001: Solymosi and Tóth improved the distinct distances lower bound to $\\Omega(n^{4/5})$\n- 2010: Elekes and Sharir developed the framework reducing distance problems to 3D incidence problems\n- 2015: Guth and Katz proved $\\sum f(d)^2 \\ll n^3 \\log n$ AND the distinct distances conjecture $\\Omega(n/\\log n)$ in the same landmark *Annals of Mathematics* paper\n\n**Why the Lattice is Extremal:** For the $\\sqrt{n} \\times \\sqrt{n}$ integer lattice, a distance $d$ occurs $f(d) \\sim \\frac{n}{\\sqrt{\\log n}} \\cdot r_2(d^2)$ times on average, where $r_2(m)$ is the number of representations of $m$ as a sum of two squares. Since $\\sum_{m \\le x} r_2(m)^2 \\sim cx \\log x$ (Ramanujan), we get $\\sum f(d)^2 = \\Theta(n^3 \\log n)$.\n\n**The Polynomial Revolution:** The Guth-Katz paper introduced polynomial partitioning to combinatorial geometry, spawning an entirely new research program. The technique has since been applied to problems in incidence geometry, harmonic analysis, and theoretical computer science.",
@@ -158,16 +161,17 @@
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Real.Basic"
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.Order.Chebyshev"
     ],
     "opens": [
       "Finset"
     ],
     "namespace": "Erdos95",
-    "lineCount": 231,
+    "lineCount": 300,
     "axiomCount": 2,
-    "theoremCount": 3,
-    "definitionCount": 9,
+    "theoremCount": 5,
+    "definitionCount": 10,
     "path": "Proofs/Erdos95Problem.lean",
     "sorries": 0
   },

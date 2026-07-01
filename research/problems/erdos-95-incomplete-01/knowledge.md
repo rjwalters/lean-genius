@@ -62,3 +62,45 @@ Once Docker is healthy, run
 `./proofs/scripts/docker-build.sh Proofs.Erdos95Problem` to confirm.
 If `hsplit`'s `congr 1; rw [← Real.rpow_natCast]; norm_num` step fails,
 fall back to `rw [Real.rpow_add hmpos, ← Real.rpow_natCast m 3]; norm_num`.
+
+### Session 2026-07-01 (researcher-4) — Follow-up: Cauchy–Schwarz bridge to #94
+
+**Mode:** FRESH (claimed EMPTY, but target file was already SOLVED: 0 sorries,
+2 deep axioms `guth_katz_theorem`/`convex_polygon_case`). Per skill's
+SOLVED strategy, generated a strong follow-up rather than churning the
+finished proof.
+
+**What I added (Part IV·5 of `Erdos95Problem.lean`):**
+- `distinctDistances P := (distanceSet P).card` — the count `t` (Problem #94).
+- `sq_sum_multiplicities_le` — **unconditional, 0-axiom**: `(n(n-1))² ≤ t·∑f(d)²`.
+  One-line Cauchy–Schwarz via Mathlib `sq_sum_le_card_mul_sum_sq` (Chebyshev
+  special case) + `sum_multiplicities`. This is the exact bridge the gallery
+  entry's `keyInsights[0]` described *informally* but never formalized.
+- `distinctDistances_lower_bound` — combines the bridge with `guth_katz_theorem`
+  to get `n²(n-1)² ≤ C·t·n³·log n`, i.e. `t ≫ n/log n` (the Guth–Katz #94
+  result). Reuses ONLY the existing axiom; adds no new axioms.
+
+**Verification:** Docker down; standalone `lean` on the full file hits a whnf
+heartbeat timeout inside the *pre-existing* `sum_multiplicities`
+(`Finset.card_eq_sum_card_fiberwise` reducing real-equality `DecidablePred`) —
+the unmodified HEAD file shows the identical timeout, so it is an artifact of
+heartbeat-limited standalone elaboration, not a regression (the file merged in
+#30353 under lake/CI, and `#print axioms sum_multiplicities` reports no sorry
+even in the timing-out run). My two new theorems were verified **in isolation**
+against `import Mathlib` (umbrella loads fine — no Kaehler wall this session)
+with `sum_multiplicities` stubbed: they compile and
+`#print axioms distinctDistances_lower_bound` = `[propext, Classical.choice,
+guth_katz_theorem, sum_multiplicities, Quot.sound]` — no `sorryAx`, no new axioms.
+
+**Reusable gotchas:**
+- Chebyshev/Cauchy–Schwarz sum lemma is top-level `sq_sum_le_card_mul_sum_sq`
+  (NOT `Finset.…`); needs `import Mathlib.Algebra.Order.Chebyshev`. Works over ℕ
+  (`[Semiring][LinearOrder][IsStrictOrderedRing][ExistsAddOfLE]`); the `↑s.card`
+  cast is defeq to `s.card` since `NatCast ℕ = ⟨id⟩`.
+- `erdos_conjecture_proved` shows `ε : ℕ` (wrong) in standalone/umbrella here —
+  the rpow default-instance for `(n:ℝ)^(3+ε)` resolves to `Monoid.npow` outside
+  the merge-time env. Also a standalone artifact, not touched.
+
+**Status:** target proof unchanged (still axiomatized, 2 deep axioms); added
+2 proved theorems + 1 def. Gallery meta counts bumped (thm 3→5, def 9→10,
+line 231→300, import +Chebyshev). PR opened; gated on a clean lake/Docker build.
