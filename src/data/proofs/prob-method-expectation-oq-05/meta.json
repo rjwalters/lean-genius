@@ -1,0 +1,130 @@
+{
+  "id": "prob-method-expectation-oq-05",
+  "title": "Weighted First Moment Principle: Some Outcome Meets the Average",
+  "slug": "prob-method-expectation-oq-05",
+  "description": "Generalizes the first moment method from uniform averages to arbitrary finite probability weightings: if the weighted mean E_w[X] = Σ w·f beats a threshold, some positive-weight outcome beats it too. The uniform gallery results are recovered as the w ≡ 1 instance.",
+  "meta": {
+    "author": "Alon-Spencer (probabilistic method), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
+    "date": "2000",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ProbMethodExpectationOQ05.lean",
+    "tags": [
+      "probability",
+      "probabilistic-method",
+      "combinatorics",
+      "expectation",
+      "intermediate"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "lineCount": 201,
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "extends",
+      "description": "Generalizes the parent's uniform first moment principle E[X] = (Σ f)/|s| to the weighted expectation E_w[X] = Σ w·f for an arbitrary nonnegative weighting; the parent is the w ≡ 1 instance (weighted_generalizes_uniform)."
+    },
+    {
+      "targetId": "prob-method-expectation-oq-04",
+      "relationship": "sibling",
+      "description": "OQ-04 supplies the non-strict uniform averaging lemmas (some outcome meets the mean under uniform weights); this file lifts the same statements to non-uniform weightings and sharpens the witness to carry positive weight."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The first moment method is the simplest incarnation of Erdős's probabilistic method: to show an object with a property exists, exhibit a random one whose expected 'badness' is small. In its textbook form (Alon–Spencer, The Probabilistic Method, Ch. 2) the underlying distribution is rarely uniform — one weights outcomes by their probabilities. The gallery's parent entry and its OQ-04 child both formalize only the uniform case, where the expectation is the plain average (Σ f)/|s|. This entry closes that gap by formalizing the general finite-distribution statement: the expectation is the weighted sum Σ w(a)·f(a) against a nonnegative weighting w, and the first moment principle continues to hold. Weighting by an arbitrary nonnegative measure — not just the counting measure — is exactly what makes the method applicable to biased random constructions, importance sampling, and Chernoff-style tilted distributions.",
+    "problemStatement": "Let s be a finite set, f : s → ℚ an observable, and w : s → ℚ a nonnegative weighting with total weight W = Σ_{a∈s} w(a). Define the weighted mean E_w[f] = (Σ w·f)/W. Does the first moment principle survive the passage from uniform to weighted averages? Concretely: if E_w[f] > t, must some *supported* outcome (w(a) > 0) satisfy f(a) > t? And is the uniform gallery result the special case w ≡ 1?",
+    "proofStrategy": "Every statement is proved by contradiction against the division-free inequality t·W ≤ Σ w·f (or its reverse), avoiding any division until the final mean forms. The engine is a single pointwise bound: for each outcome, w(a)·f(a) ≤ w(a)·t, split on whether w(a) = 0 (contributes nothing) or w(a) > 0 (where the assumed f(a) ≤ t applies with a nonnegative multiplier). Summing via Finset.sum_le_sum and factoring Σ w·t = W·t via Finset.sum_mul closes the strict cases with nlinarith. The non-strict forms additionally extract a positive-weight witness from W > 0 (else the whole sum is zero) and upgrade the sum bound to strict via Finset.sum_lt_sum. The titular 'meets the average' lemmas instantiate t at the weighted mean using div_mul_cancel₀. A sandwich lemma shows the weighted mean stays in [lo, hi] whenever every supported value does, and weighted_generalizes_uniform certifies that w ≡ 1 reduces Σ (1·f) to Σ f and W to |s|.",
+    "keyInsights": [
+      "Sharper witness than the uniform case: the conclusion delivers a *supported* outcome (w(a) > 0), not merely an index. Zero-weight outcomes are genuinely irrelevant to a weighted expectation, and the proof makes that precise by handling w(a) = 0 as the trivial branch of a case split.",
+      "The division-free hypotheses t·W ≤ Σ w·f are the shape lower-bound arguments actually use — one never wants to divide by the total weight W when chasing an existence witness. The mean forms (exists_ge_weighted_mean) are then one div_mul_cancel₀ away.",
+      "Positivity of the total weight W does real work in the non-strict forms: it guarantees at least one supported outcome, which is exactly the point where Finset.sum_lt_sum needs a strict inequality to fire. Without W > 0 the statement is false (an all-zero weighting has an empty support).",
+      "The sandwich lemma weighted_mean_mem_Icc is the convexity fact behind the method: a convex combination never escapes the range of its inputs, so E_w[f] ∈ [min f, max f] over the support. This is what lets first-moment bounds be read off from extreme values.",
+      "weighted_generalizes_uniform certifies this file strictly subsumes the parent: setting w ≡ 1 turns Σ (1·f) into Σ f and W into |s|, so every uniform first-moment statement is the w ≡ 1 specialization of a weighted one here."
+    ],
+    "prerequisites": [
+      "Finite sums over Finsets (Finset.sum) and their monotonicity lemmas",
+      "Expectation as a weighted average against a probability distribution",
+      "The first moment method (uniform case) from the parent entry",
+      "Convex combinations and the range of a weighted average",
+      "Proof by contradiction with ordered-field arithmetic (nlinarith)"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: From Uniform to Weighted Averages",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Frames the gap: the parent and OQ-04 work with the uniform mean (Σ f)/|s|, while the genuine probabilistic setting weights outcomes by a finite distribution. Sets up the weighting w, total weight W, and the weighted mean (Σ w·f)/W.",
+      "mathContext": "Setup over ℚ: a Finset s, observable f : α → ℚ, weighting w : α → ℚ with w(a) ≥ 0 on s, total weight W = Σ_{a∈s} w(a). The weighted mean is E_w[f] = (Σ w·f)/W when W > 0. The uniform case of the parent is w ≡ 1, giving W = |s| and E_w[f] = (Σ f)/|s|."
+    },
+    {
+      "id": "strict",
+      "title": "Part I: Strict Weighted First Moment (both directions)",
+      "startLine": 45,
+      "endLine": 91,
+      "summary": "totalWeight_nonneg (W ≥ 0), then weighted_first_moment_gt and its dual weighted_first_moment_lt: if the weighted mean strictly beats t, some positive-weight outcome strictly beats t. Division-free hypotheses t·W < Σ w·f.",
+      "mathContext": "weighted_first_moment_gt: given w ≥ 0 on s and t·W < Σ w·f, there is a ∈ s with w(a) > 0 and f(a) > t. Contradiction: if every supported a had f(a) ≤ t then pointwise w(a)·f(a) ≤ w(a)·t (trivial when w(a) = 0), so Σ w·f ≤ Σ w·t = W·t, contradicting the hypothesis. The dual weighted_first_moment_lt reverses all inequalities."
+    },
+    {
+      "id": "nonstrict",
+      "title": "Part II: Non-strict Threshold Forms",
+      "startLine": 92,
+      "endLine": 147,
+      "summary": "weighted_first_moment_ge and weighted_first_moment_le: with W > 0, if the weighted mean is at least (resp. at most) t, some supported outcome is ≥ t (resp. ≤ t). Positivity of W supplies the supported witness that makes Finset.sum_lt_sum strict.",
+      "mathContext": "weighted_first_moment_ge: w ≥ 0, W > 0, t·W ≤ Σ w·f ⟹ ∃ a ∈ s, w(a) > 0 ∧ t ≤ f(a). If instead every supported a had f(a) < t, then since W > 0 some outcome b has w(b) > 0 where the pointwise bound is strict, so Σ w·f < Σ w·t = W·t by Finset.sum_lt_sum, contradicting t·W ≤ Σ w·f. The ≤ dual is symmetric."
+    },
+    {
+      "id": "meets-mean",
+      "title": "Part III: Some Outcome Meets the Weighted Average",
+      "startLine": 148,
+      "endLine": 166,
+      "summary": "exists_ge_weighted_mean and exists_le_weighted_mean: the titular statement. There is a positive-weight outcome whose value is at least (resp. at most) the weighted mean (Σ w·f)/W. Obtained by instantiating the threshold forms at t = mean via div_mul_cancel₀.",
+      "mathContext": "exists_ge_weighted_mean: with w ≥ 0 and W > 0, ∃ a ∈ s, w(a) > 0 ∧ (Σ w·f)/W ≤ f(a). Apply weighted_first_moment_ge with t = (Σ w·f)/W; the hypothesis t·W ≤ Σ w·f is an equality, div_mul_cancel₀ _ (W ≠ 0). This is the pigeonhole core of the first moment method for non-uniform distributions."
+    },
+    {
+      "id": "sandwich",
+      "title": "Part IV: Weighted Mean Sandwiched by Extremes",
+      "startLine": 167,
+      "endLine": 195,
+      "summary": "weighted_mean_mem_Icc: if every supported outcome lies in [lo, hi], the weighted mean lies in [lo, hi] too — the convexity fact that a weighted average never escapes the range of its inputs.",
+      "mathContext": "weighted_mean_mem_Icc: w ≥ 0, W > 0, and lo ≤ f(a) ≤ hi for every supported a ⟹ lo ≤ (Σ w·f)/W ≤ hi. Pointwise w(a)·lo ≤ w(a)·f(a) ≤ w(a)·hi sums to W·lo ≤ Σ w·f ≤ W·hi (via Finset.sum_mul), then le_div_iff₀ / div_le_iff₀ with W > 0 give the mean bounds."
+    },
+    {
+      "id": "generalizes",
+      "title": "Part V: Recovering the Uniform Case",
+      "startLine": 196,
+      "endLine": 201,
+      "summary": "weighted_generalizes_uniform: with all weights equal to 1, Σ (1·f) = Σ f and the total weight Σ 1 = |s|, so E_w reduces to the uniform mean (Σ f)/|s|. Certifies this file subsumes the parent.",
+      "mathContext": "weighted_generalizes_uniform: Σ_{a∈s} (1·f(a)) = Σ_{a∈s} f(a) and Σ_{a∈s} 1 = |s| (Finset.sum_const, nsmul_eq_mul). Hence the uniform first-moment results of the parent are exactly the w ≡ 1 instance of the weighted theorems above."
+    }
+  ],
+  "conclusion": {
+    "summary": "This 201-line fully verified (0 sorries, 0 axioms) file lifts the first moment method from uniform averages to arbitrary nonnegative finite weightings. Nine theorems cover the strict principle in both directions, its non-strict threshold forms, the titular 'some outcome meets the weighted average' statements (with a positive-weight witness), a convexity sandwich placing the weighted mean between the extreme supported values, and a reduction certifying that the uniform gallery results are the w ≡ 1 special case.",
+    "implications": "Weighting outcomes by an arbitrary distribution is what makes the probabilistic method practical: biased random constructions, importance sampling, and tilted (Chernoff) distributions all replace the uniform measure with a weighted one. Formalizing the first moment principle at this generality means existence arguments over non-uniform random structures can cite these lemmas directly, rather than re-deriving the averaging step each time.",
+    "openQuestions": [
+      "Can the weighted second moment method (weighted Paley–Zygmund) be formalized similarly, replacing the uniform variance with a w-weighted variance?",
+      "Does an equality-characterization hold — is E_w[f] = max_support f iff f is w-a.e. constant on the support, mirroring the uniform equality case?",
+      "Can these ℚ-valued weighted statements be transported to ℝ≥0∞-valued measures to connect with the MeasureTheory bridge of OQ-01?"
+    ]
+  },
+  "leanFile": {
+    "axiomCount": 0,
+    "lineCount": 201,
+    "path": "Proofs/ProbMethodExpectationOQ05.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 9
+  },
+  "sorries": 0
+}

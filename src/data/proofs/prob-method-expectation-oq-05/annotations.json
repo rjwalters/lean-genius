@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-pmeoq05-strict-gt",
+    "proofId": "prob-method-expectation-oq-05",
+    "range": {
+      "startLine": 52,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "weighted_first_moment_gt: Strict Weighted First Moment",
+    "content": "`weighted_first_moment_gt` proves: for a nonnegative weighting `w` on `s`, if `t * (Σ w) < Σ (w·f)` then there exists `a ∈ s` with `0 < w a ∧ t < f a`. The hypothesis is the division-free form of 'the weighted mean beats t'. The conclusion sharpens the uniform first-moment principle by producing a *supported* witness (`w a > 0`) — zero-weight outcomes carry no information about a weighted expectation. Proof is by contradiction: `push_neg` yields `∀ a ∈ s, 0 < w a → f a ≤ t`; a pointwise case split on `w a = 0` vs `w a > 0` gives `w a * f a ≤ w a * t` everywhere; `Finset.sum_le_sum` then `Finset.sum_mul` factor `Σ w·t = (Σ w)·t`, and `nlinarith` closes against the hypothesis.",
+    "mathContext": "This is the weighted analogue of the parent's `first_moment_principle`. Writing $W = \\sum_{a} w(a)$ and the weighted mean $E_w[f] = \\frac{\\sum_a w(a) f(a)}{W}$, the hypothesis $t\\cdot W < \\sum_a w(a) f(a)$ says $E_w[f] > t$ (when $W>0$), and the conclusion extracts an outcome of positive weight exceeding $t$. The case split on $w(a)=0$ is essential: at zero-weight points $w(a)f(a) \\le w(a)t$ holds trivially ($0 \\le 0$), so no assumption on $f$ there is needed."
+  },
+  {
+    "id": "ann-pmeoq05-nonstrict-ge",
+    "proofId": "prob-method-expectation-oq-05",
+    "range": {
+      "startLine": 92,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "weighted_first_moment_ge: Non-strict Threshold Form",
+    "content": "`weighted_first_moment_ge` proves: with `w ≥ 0` on `s` and total weight `0 < Σ w`, if `t * (Σ w) ≤ Σ (w·f)` then some supported outcome satisfies `t ≤ f a`. The positivity of the total weight `W` is what makes the non-strict hypothesis usable: it guarantees at least one outcome `b` with `w b > 0` (else `Finset.sum_eq_zero` forces `W = 0`), and at that outcome the pointwise inequality is *strict*, so `Finset.sum_lt_sum` upgrades `Σ w·f < Σ w·t = W·t`, contradicting `t·W ≤ Σ w·f`.",
+    "mathContext": "The strict principle cannot conclude anything at the boundary $E_w[f] = t$; the non-strict form fills that gap, matching how the method is actually invoked ('some outcome is at least the mean'). The hypothesis $W>0$ is not cosmetic: for an all-zero weighting the support is empty and the statement is false, so the existence of a positive-weight witness is precisely the ingredient that revives the strict step `Finset.sum_lt_sum`."
+  },
+  {
+    "id": "ann-pmeoq05-meets-mean",
+    "proofId": "prob-method-expectation-oq-05",
+    "range": {
+      "startLine": 148,
+      "endLine": 166
+    },
+    "type": "theorem",
+    "title": "exists_ge_weighted_mean / exists_le_weighted_mean: Some Outcome Meets the Weighted Average",
+    "content": "`exists_ge_weighted_mean` proves: with `w ≥ 0` and `0 < Σ w`, there exists `a ∈ s` with `0 < w a ∧ (Σ w·f)/(Σ w) ≤ f a`; `exists_le_weighted_mean` is the dual. These are the titular results — 'some outcome meets the weighted average' — obtained by instantiating the threshold forms at `t = (Σ w·f)/(Σ w)`. The side goal `t·W ≤ Σ w·f` becomes an equality discharged by `div_mul_cancel₀ _ (ne_of_gt hW)`.",
+    "mathContext": "This is the pigeonhole core of the first moment method in the non-uniform setting: at least one supported outcome sits at or above the weighted mean, and (dually) at or below it. In the uniform case $w\\equiv 1$ these reduce to 'some value is at least the average $(\\sum f)/|s|$', the statement in the sibling OQ-04 — here proved for arbitrary finite distributions with the additional guarantee that the witnessing outcome carries positive weight."
+  },
+  {
+    "id": "ann-pmeoq05-sandwich",
+    "proofId": "prob-method-expectation-oq-05",
+    "range": {
+      "startLine": 167,
+      "endLine": 195
+    },
+    "type": "theorem",
+    "title": "weighted_mean_mem_Icc: Weighted Mean Between the Extremes",
+    "content": "`weighted_mean_mem_Icc` proves: if `w ≥ 0`, `0 < Σ w`, and every supported outcome satisfies `lo ≤ f a ≤ hi`, then `lo ≤ (Σ w·f)/(Σ w) ≤ hi`. Two pointwise chains `w a * lo ≤ w a * f a ≤ w a * hi` sum (via `Finset.sum_mul`) to `W·lo ≤ Σ w·f ≤ W·hi`; then `le_div_iff₀` and `div_le_iff₀` (both needing `W > 0`) turn these into the mean bounds.",
+    "mathContext": "This is the convexity fact underlying the whole method: a convex combination of values never escapes their range, so $E_w[f] \\in [\\min_{\\text{supp}} f, \\max_{\\text{supp}} f]$. It is what lets a first-moment argument read off a usable bound purely from the extreme observed values, without knowing the distribution in detail."
+  },
+  {
+    "id": "ann-pmeoq05-generalizes",
+    "proofId": "prob-method-expectation-oq-05",
+    "range": {
+      "startLine": 196,
+      "endLine": 201
+    },
+    "type": "theorem",
+    "title": "weighted_generalizes_uniform: Recovering the Uniform Case",
+    "content": "`weighted_generalizes_uniform` proves the two reductions `Σ_{a∈s} (1·f a) = Σ_{a∈s} f a` (by `simp`) and `Σ_{a∈s} 1 = s.card` (by `Finset.sum_const, nsmul_eq_mul, mul_one`). Setting every weight to 1 turns the weighted sum into the plain sum and the total weight into the cardinality, so the weighted mean `(Σ w·f)/W` becomes the uniform average `(Σ f)/|s|`.",
+    "mathContext": "This certifies that the file strictly subsumes the parent entry: every uniform first-moment statement (`first_moment_principle` and the OQ-04 averaging lemmas) is the $w \\equiv 1$ specialization of a weighted theorem proved here. Generalization without loss — the classical case is a corollary, not a separate development."
+  }
+]
