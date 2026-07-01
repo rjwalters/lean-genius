@@ -1,0 +1,118 @@
+[
+  {
+    "id": "ann-fiboq06oq01oq02-1",
+    "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "From the Plus-Signed to the Alternating Transform",
+    "content": "**Module framing.** The parent entry `fibonacci-identities-oq-06-oq-01` proves the *plus-signed* Fibonacci binomial transform $\\sum_{k=0}^{n}\\binom{n}{k}F_{m+k} = F_{2n+m}$, folding the sequence onto itself at a **doubled** index. This descendant supplies the *alternating* (falling) transform, where each weight carries the sign $(-1)^k$: $\\sum_{k=0}^{n}(-1)^k\\binom{n}{k}F_k = -F_n$. The index is now held **fixed** and the sequence is merely negated — the single sign flip converts the parent's index-doubling $n\\mapsto 2n$ into a pure cancellation.",
+    "mathContext": "$\\sum_{k=0}^{n}(-1)^k\\binom{n}{k}F_k = -F_n$, versus the parent's $\\sum_{k=0}^{n}\\binom{n}{k}F_k = F_{2n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Alternating (falling) binomial transform",
+      "Conjugate-root identity 1 − φ = ψ",
+      "Index-fixed vs index-doubling summation identities",
+      "Parent plus-signed binomial transform (oq-06-oq-01)"
+    ],
+    "prerequisites": [
+      "The 0-indexed Fibonacci sequence Nat.fib",
+      "Binomial coefficients Nat.choose",
+      "The alternating weight (−1)ᵏ over ℤ"
+    ],
+    "tags": [
+      "module-header",
+      "framing",
+      "alternating-sum",
+      "binomial-transform",
+      "fibonacci"
+    ]
+  },
+  {
+    "id": "ann-fiboq06oq01oq02-2",
+    "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 48,
+      "endLine": 85
+    },
+    "type": "technique",
+    "title": "Signed Pascal Convolution: a Difference of Shifts",
+    "content": "**The reusable engine.** `signed_pascal_conv` proves, for *any* summand $f:\\mathbb{N}\\to\\mathbb{Z}$, that\n$$\\sum_{k=0}^{n+1}(-1)^k\\binom{n+1}{k}f(k) \\;=\\; \\sum_{k=0}^{n}(-1)^k\\binom{n}{k}f(k) \\;-\\; \\sum_{k=0}^{n}(-1)^k\\binom{n}{k}f(k+1).$$\nThe proof peels the $k=0$ term with `Finset.sum_range_succ'` (reindexing the tail by $k\\mapsto k+1$), applies Pascal's rule `Nat.choose_succ_succ'` together with the sign law $(-1)^{k+1}=-(-1)^k$, splits via `Finset.sum_sub_distrib`, and pulls the sign out with `Finset.sum_neg_distrib`. The leftover $\\binom{n}{k+1}$-weighted signed sum plus the peeled boundary term is reconciled with the first summand by peeling *its* $k=0$ term and dropping the vanishing top term $\\binom{n}{n+1}=0$ (`Nat.choose_succ_self`). The **only** structural difference from the parent's `pascal_conv` is a minus in place of a plus — and that minus is the entire source of the cancellation.",
+    "mathContext": "$\\sum_{k=0}^{n+1}(-1)^k\\binom{n+1}{k}f(k) = \\sum_{k=0}^{n}(-1)^k\\binom{n}{k}f(k) - \\sum_{k=0}^{n}(-1)^k\\binom{n}{k}f(k+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pascal's rule C(n+1,k+1) = C(n,k) + C(n,k+1)",
+      "Range-peeling lemmas Finset.sum_range_succ / sum_range_succ'",
+      "Signed-sum bookkeeping (sum_sub_distrib, sum_neg_distrib)",
+      "Binomial transform of an arbitrary integer sequence"
+    ],
+    "prerequisites": [
+      "Pascal's rule Nat.choose_succ_succ' and the vanishing C(n,n+1)=0",
+      "The sign law (−1)^{k+1} = −(−1)^k"
+    ],
+    "tags": [
+      "signed-pascal-convolution",
+      "reusable-lemma",
+      "alternating-sum",
+      "finset-sum"
+    ]
+  },
+  {
+    "id": "ann-fiboq06oq01oq02-3",
+    "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 87,
+      "endLine": 116
+    },
+    "type": "technique",
+    "title": "A Joint Induction: the Two Offsets are Inseparable",
+    "content": "**Why a pair.** Neither $\\sum(-1)^k\\binom{n}{k}F_k = -F_n$ nor its offset-1 sibling proves itself by induction: `signed_pascal_conv` sends offset $0$ to a combination involving offset $1$, and offset $1$ to one involving offset $2$. But the offset-2 sum reduces back via $F_{k+2}=F_k+F_{k+1}$ (`Nat.fib_add_two`, `Finset.sum_add_distrib`): $U(n)=S(n)+T(n)$. So the pair $(S,T)=\\big(\\sum(-1)^k\\binom{n}{k}F_k,\\ \\sum(-1)^k\\binom{n}{k}F_{k+1}\\big)$ is self-reproducing, and `alt_fib_pair` proves $(S,T)=(-F_n,\\,F_{n+1}-F_n)$ by a single induction on $n$. The step computes $S(n{+}1)=S(n)-T(n)=-F_{n+1}$ and $T(n{+}1)=T(n)-U(n)=-S(n)=F_n$ — the loop invariant obeys the Fibonacci recurrence itself.",
+    "mathContext": "$\\big(\\sum (-1)^k\\binom{n}{k}F_k,\\ \\sum (-1)^k\\binom{n}{k}F_{k+1}\\big) = (-F_n,\\ F_{n+1}-F_n)$; step: $S_{n+1}=S_n-T_n,\\ T_{n+1}=-S_n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mutually-dependent loop invariant",
+      "Proving a conjunction by joint induction",
+      "Linearity of the transform in the summand",
+      "The Fibonacci recurrence Nat.fib_add_two"
+    ],
+    "prerequisites": [
+      "signed_pascal_conv",
+      "Nat.fib_add_two and Finset.sum_add_distrib"
+    ],
+    "tags": [
+      "joint-induction",
+      "loop-invariant",
+      "fibonacci-recurrence",
+      "alternating-sum"
+    ]
+  },
+  {
+    "id": "ann-fiboq06oq01oq02-4",
+    "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 118,
+      "endLine": 127
+    },
+    "type": "key_step",
+    "title": "The Headline ∑ (−1)ᵏ C(n,k)·Fₖ = −Fₙ",
+    "content": "**The result.** `alt_fib_binom_transform_zero` and `alt_fib_binom_transform_one` are the two projections of `alt_fib_pair`: the alternating binomial transform of the Fibonacci sequence is its own negation, $\\sum_{k=0}^{n}(-1)^k\\binom{n}{k}F_k = -F_n$, and the offset-1 variant is $\\sum_{k=0}^{n}(-1)^k\\binom{n}{k}F_{k+1} = F_{n+1}-F_n$ (equal to $F_{n-1}$). This is the discrete image of $\\sum(-1)^k\\binom{n}{k}\\varphi^k = (1-\\varphi)^n = \\psi^n$, which Binet sends to $(\\psi^n-\\varphi^n)/\\sqrt5 = -F_n$.",
+    "mathContext": "$\\sum_{k=0}^{n}(-1)^k\\binom{n}{k}F_k = -F_n,\\qquad \\sum_{k=0}^{n}(-1)^k\\binom{n}{k}F_{k+1} = F_{n+1}-F_n = F_{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Binet formula and the conjugate root ψ",
+      "Alternating binomial theorem ∑(−1)ᵏC(n,k)xᵏ = (1−x)ⁿ",
+      "Fibonacci at fixed vs doubled index"
+    ],
+    "prerequisites": [
+      "alt_fib_pair (the joint invariant)"
+    ],
+    "tags": [
+      "headline-result",
+      "alternating-sum",
+      "fibonacci",
+      "binomial-transform"
+    ]
+  }
+]

@@ -1,0 +1,144 @@
+{
+  "id": "fibonacci-identities-oq-06-oq-01-oq-02",
+  "title": "The Alternating Fibonacci Binomial Transform: ∑ (−1)ᵏ C(n,k)·Fₖ = −Fₙ",
+  "slug": "fibonacci-identities-oq-06-oq-01-oq-02",
+  "description": "The parent entry fibonacci-identities-oq-06-oq-01 established the ordinary Fibonacci binomial transform ∑_{k≤n} C(n,k)·Fₘ₊ₖ = F₂ₙ₊ₘ, whose plus-signed weights fold the sequence onto itself at a doubled index. This open-question descendant supplies the qualitatively different ALTERNATING (falling) binomial transform, where the weights carry the sign (−1)ᵏ: alt_fib_binom_transform_zero proves ∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ = −Fₙ, so the alternating transform of the Fibonacci sequence returns the same sequence negated, with the index held FIXED — the sign converts the parent's index-doubling n↦2n into a pure cancellation. This is the discrete shadow of the conjugate-root identity 1 − φ = ψ (ψ = (1−√5)/2): applying ∑ (−1)ᵏ C(n,k)(·)ᵏ to φ sends φ ↦ (1−φ)ⁿ = ψⁿ, so via Binet ∑ (−1)ᵏ C(n,k) Fₖ = (ψⁿ − φⁿ)/√5 = −Fₙ. The offset-1 companion alt_fib_binom_transform_one reads ∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ₊₁ = Fₙ₊₁ − Fₙ (= Fₙ₋₁). The engine is a signed Pascal convolution (signed_pascal_conv), the (−1)ᵏ analogue of the parent's pascal_conv, which splits a length-(n+2) signed binomial sum for n+1 into the DIFFERENCE of the two length-(n+1) signed binomial sums for n at consecutive offsets; the sign is exactly what turns the parent's + into a −. Because the offset-0 and offset-1 transforms feed each other through Fₖ₊₂ = Fₖ + Fₖ₊₁, they are proved together by a single joint induction on n (the pair (∑(−1)ᵏC(n,k)Fₖ, ∑(−1)ᵏC(n,k)Fₖ₊₁) = (−Fₙ, Fₙ₊₁−Fₙ) is the loop invariant). The proofs use 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Classical (alternating binomial transform of Fibonacci; conjugate-root identity 1−φ=ψ); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_transform",
+    "date": "1876",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "summation-identity",
+      "binomial-transform",
+      "binomial-coefficients",
+      "alternating-sum",
+      "integer-sequences",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ06OQ01OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_succ_succ'",
+        "description": "choose (n+1) (k+1) = choose n k + choose n (k+1) — Pascal's rule (the (n+1)/(k+1)-shifted form); the algebraic heart of the signed_pascal_conv splitting lemma, summed against the alternating weight (−1)ᵏ",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_succ_self",
+        "description": "choose n (n+1) = 0 — the coefficient just past the diagonal vanishes; lets the offset-1 reindexed sum over range (n+1) be truncated to range n in signed_pascal_conv",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the defining Fibonacci recurrence; the only Fibonacci-specific fact, used both to split the offset-2 sum into offset-0 + offset-1 and to contract the closed-form targets in the joint induction",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ'",
+        "description": "∑ i ∈ range (n+1), f i = (∑ i ∈ range n, f (i+1)) + f 0 — peels the FIRST term and reindexes the rest by i ↦ i+1; used to expose the Pascal shift on the signed coefficient",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑ i ∈ range (n+1), f i = (∑ i ∈ range n, f i) + f n — peels the LAST term; used with choose_succ_self to drop the vanishing top term of the offset-1 signed sum",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_sub_distrib",
+        "description": "∑ (f i − g i) = (∑ f i) − (∑ g i) — splits the Pascal-distributed signed summand into two signed binomial sums; the subtraction (vs the parent's sum_add_distrib) is the sign's structural fingerprint",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_neg_distrib",
+        "description": "∑ (−f i) = −∑ f i — pulls the (−1)^{k+1} = −(−1)^k sign out of the reindexed signed sum so the residual terms align for the closing ring",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ],
+    "originalContributions": [
+      "signed_pascal_conv: ∀ (f : ℕ → ℤ) n, ∑_{k<n+2} (−1)ᵏ C(n+1,k)·f(k) = (∑_{k<n+1} (−1)ᵏ C(n,k)·f(k)) − ∑_{k<n+1} (−1)ᵏ C(n,k)·f(k+1) — the alternating (−1)ᵏ analogue of the parent's pascal_conv, splitting a signed binomial-weighted sum into the DIFFERENCE of two shifted lower-order signed sums; absent from Mathlib",
+      "alt_fib_binom_transform_zero: ∀ n, ∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ = −Fₙ — the headline: the alternating binomial transform of the Fibonacci sequence is its own negation, index held fixed (contrast the parent's index-doubling)",
+      "alt_fib_binom_transform_one: ∀ n, ∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ₊₁ = Fₙ₊₁ − Fₙ — the offset-1 companion (= Fₙ₋₁), the second component of the joint loop invariant"
+    ],
+    "dateAdded": "2026-07-01",
+    "lineCount": 129,
+    "assumptions": "None. The proofs contain 0 axioms and 0 sorries and use only Mathlib's foundational propext/Classical.choice/Quot.sound (confirmed by #print axioms on signed_pascal_conv, alt_fib_binom_transform_zero and alt_fib_binom_transform_one); no decide on substantive results and no native_decide.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The binomial transform sends a sequence (aₖ) to (∑ₖ (±1)ᵏ C(n,k) aₖ). Its plus-signed form applied to the Fibonacci sequence yields the even-indexed subsequence F₂ₙ (the parent entry). Its alternating (falling) form — the classical inverse-type transform — instead reproduces the sequence up to sign: ∑ (−1)ᵏ C(n,k) Fₖ = −Fₙ. The two are the discrete shadows of the two golden-ratio roots: 1 + φ = φ² doubles the index, while 1 − φ = ψ (the conjugate root) fixes it. This descendant formalizes the alternating half, completing the ± pair opened by the parent's index-doubling transform.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-06-oq-01-oq-02)**: Establish the alternating/falling binomial transform ∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ, the qualitatively different signed counterpart of the parent's plus-signed index-doubling transform ∑ C(n,k)·Fₘ₊ₖ = F₂ₙ₊ₘ.\n\n**Result**: alt_fib_binom_transform_zero (∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ = −Fₙ) and its offset-1 companion alt_fib_binom_transform_one (∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ₊₁ = Fₙ₊₁ − Fₙ), via a reusable signed Pascal-convolution lemma signed_pascal_conv and a single joint induction.",
+    "text": "Using Mathlib's 0-indexed Nat.fib (F₀ = 0, F₁ = 1), binomial coefficients Nat.choose, and the alternating weight (−1)ᵏ in ℤ: for all n, the signed binomial-weighted sum ∑_{k=0}^{n} (−1)ᵏ C(n,k)·Fₖ equals −Fₙ, and the offset-1 variant ∑_{k=0}^{n} (−1)ᵏ C(n,k)·Fₖ₊₁ equals Fₙ₊₁ − Fₙ (i.e. Fₙ₋₁). The alternating binomial transform therefore returns the Fibonacci sequence negated, with its index held fixed — where the plus-signed transform of the parent doubled it.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Signed Pascal convolution (`signed_pascal_conv`).** For an arbitrary summand f : ℕ → ℤ, prove ∑_{k<n+2} (−1)ᵏ C(n+1,k)·f(k) = (∑_{k<n+1} (−1)ᵏ C(n,k)·f(k)) − ∑_{k<n+1} (−1)ᵏ C(n,k)·f(k+1). Peel the k=0 term with Finset.sum_range_succ' (reindexing the tail by k ↦ k+1), apply Pascal's rule Nat.choose_succ_succ' together with (−1)^{k+1} = −(−1)^k, split with Finset.sum_sub_distrib and pull the sign out with Finset.sum_neg_distrib. The offset-1 sub-sum matches the target's second summand; the residual C(n,k+1)-weighted signed sum plus the peeled boundary term is reconciled with the first summand by peeling k=0 from it and dropping the vanishing top term C(n,n+1)=0 (Nat.choose_succ_self via Finset.sum_range_succ). A final ring closes the ℤ bookkeeping. The lone structural difference from the parent pascal_conv — a minus in place of a plus — is precisely the sign's fingerprint.\n\n2. **Joint induction (`alt_fib_pair`).** The offset-0 and offset-1 transforms cannot be proved separately: the inductive step for one produces the other. Prove the PAIR ∑(−1)ᵏC(n,k)Fₖ = −Fₙ ∧ ∑(−1)ᵏC(n,k)Fₖ₊₁ = Fₙ₊₁−Fₙ together by induction on n. The base n=0 is closed by simp. In the step, feed each transform through signed_pascal_conv: the offset-0 sum at n+1 becomes S(n) − T(n) = −Fₙ − (Fₙ₊₁−Fₙ) = −Fₙ₊₁; the offset-1 sum at n+1 becomes T(n) − U(n), where the offset-2 sum U(n) = ∑(−1)ᵏC(n,k)Fₖ₊₂ splits via Fₖ₊₂ = Fₖ + Fₖ₊₁ (Nat.fib_add_two, Finset.sum_add_distrib) back into S(n) + T(n), giving T(n) − (S(n)+T(n)) = −S(n) = Fₙ = Fₙ₊₂ − Fₙ₊₁. Each closes with push_cast and ring.\n\n3. **Headline corollaries.** alt_fib_binom_transform_zero and alt_fib_binom_transform_one are the two projections of alt_fib_pair.",
+    "keyInsights": [
+      "**The sign converts doubling into cancellation.** The parent's plus-signed transform advances the Fibonacci index by 1 at each of n induction steps, doubling it to 2n. The single structural change here — Pascal's rule summed against (−1)ᵏ produces a DIFFERENCE of shifted sums rather than a sum — makes those advances cancel, so the index returns to n (and the sequence picks up an overall minus). One sign flip in signed_pascal_conv is the entire mathematical content of the doubling-vs-fixed dichotomy.",
+      "**Discrete shadow of the conjugate root 1 − φ = ψ.** The plus-signed transform is the ℕ-image of ∑ C(n,k) φᵏ = (1+φ)ⁿ = φ²ⁿ (using 1+φ=φ²). The alternating transform is the image of ∑ (−1)ᵏ C(n,k) φᵏ = (1−φ)ⁿ = ψⁿ (using 1−φ=ψ, the OTHER golden-ratio root). Binet then gives (ψⁿ − φⁿ)/√5 = −Fₙ. The inductive proof formalizes this without ever leaving ℤ or invoking irrationals.",
+      "**The two offsets are inseparable — a joint invariant is forced.** Neither ∑(−1)ᵏC(n,k)Fₖ = −Fₙ nor its offset-1 sibling proves itself by induction: signed_pascal_conv sends offset 0 to a combination involving offset 1, and offset 1 to one involving offset 2, which the Fibonacci recurrence folds back to offsets 0 and 1. The closed 2-vector (−Fₙ, Fₙ₊₁−Fₙ) is the smallest self-reproducing loop invariant, and it satisfies exactly the Fibonacci recurrence itself.",
+      "**signed_pascal_conv is a reusable, Fibonacci-free splitting lemma.** Like the parent's pascal_conv it holds for an arbitrary ℤ-valued summand, so it computes the alternating binomial transform of ANY integer sequence — the difference-of-shifts structure is the signed analogue of Finset.sum_range_succ."
+    ],
+    "prerequisites": [
+      "The binomial coefficients Nat.choose and Pascal's rule Nat.choose_succ_succ'",
+      "The Fibonacci recurrence Nat.fib_add_two",
+      "Range-peeling of finite sums: Finset.sum_range_succ' (first term) and Finset.sum_range_succ (last term)",
+      "Signed-sum bookkeeping over ℤ: Finset.sum_sub_distrib and Finset.sum_neg_distrib",
+      "Proving a conjunction by a single joint induction (mutually-dependent loop invariant)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring framing the alternating binomial transform ∑ (−1)ᵏ C(n,k)·Fₖ = −Fₙ as the signed, index-FIXED counterpart of the parent's plus-signed index-doubling transform, with the conjugate-root motivation 1−φ=ψ and an outline of the signed Pascal-convolution engine and the joint induction, plus the import and namespace setup (open Finset).",
+      "mathContext": "$\\sum_{k=0}^{n} (-1)^k \\binom{n}{k} F_k = -F_n$; the sign turns the parent's $n\\mapsto 2n$ into a fixed index."
+    },
+    {
+      "id": "signed_pascal_conv",
+      "title": "Signed Pascal Convolution (the Splitting Engine)",
+      "startLine": 48,
+      "endLine": 85,
+      "summary": "signed_pascal_conv: for any f : ℕ → ℤ, ∑_{k<n+2} (−1)ᵏ C(n+1,k)·f(k) = (∑_{k<n+1} (−1)ᵏ C(n,k)·f(k)) − ∑_{k<n+1} (−1)ᵏ C(n,k)·f(k+1). Peels the first term with Finset.sum_range_succ', applies Pascal's rule Nat.choose_succ_succ' with the sign (−1)^{k+1}=−(−1)^k, splits with Finset.sum_sub_distrib and Finset.sum_neg_distrib, then reconciles the residual against the first target summand by peeling its first term and dropping the vanishing top term C(n,n+1)=0 (Nat.choose_succ_self); closed by ring. The minus in place of the parent's plus is the sign's structural fingerprint.",
+      "mathContext": "$\\sum_{k=0}^{n+1}(-1)^k\\binom{n+1}{k}f(k) = \\sum_{k=0}^{n}(-1)^k\\binom{n}{k}f(k) - \\sum_{k=0}^{n}(-1)^k\\binom{n}{k}f(k+1)$."
+    },
+    {
+      "id": "alt_fib_pair",
+      "title": "The Joint Invariant (offsets 0 and 1 together)",
+      "startLine": 87,
+      "endLine": 116,
+      "summary": "alt_fib_pair: ∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ = −Fₙ AND ∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ₊₁ = Fₙ₊₁ − Fₙ, proved together by induction on n. The step feeds each transform through signed_pascal_conv; the offset-2 sum that appears is reduced back to the pair via Fₖ₊₂ = Fₖ + Fₖ₊₁ (Nat.fib_add_two, Finset.sum_add_distrib). Base case by simp; steps by push_cast and ring.",
+      "mathContext": "$\\big(\\sum (-1)^k\\binom{n}{k}F_k,\\ \\sum (-1)^k\\binom{n}{k}F_{k+1}\\big) = (-F_n,\\ F_{n+1}-F_n)$."
+    },
+    {
+      "id": "corollaries",
+      "title": "The Headline ∑ (−1)ᵏ C(n,k)·Fₖ = −Fₙ and its Offset-1 Companion",
+      "startLine": 118,
+      "endLine": 127,
+      "summary": "alt_fib_binom_transform_zero (∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ = −Fₙ) and alt_fib_binom_transform_one (∑_{k≤n} (−1)ᵏ C(n,k)·Fₖ₊₁ = Fₙ₊₁ − Fₙ = Fₙ₋₁), the two projections of alt_fib_pair. The headline states that the alternating binomial transform of the Fibonacci sequence is its own negation.",
+      "mathContext": "$\\sum_{k=0}^{n}(-1)^k\\binom{n}{k}F_k = -F_n,\\qquad \\sum_{k=0}^{n}(-1)^k\\binom{n}{k}F_{k+1} = F_{n+1}-F_n."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-06-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry proves the plus-signed Fibonacci binomial transform ∑ C(n,k)·Fₘ₊ₖ = F₂ₙ₊ₘ via a Pascal convolution pascal_conv, folding the sequence onto itself at a doubled index. This entry supplies the alternating counterpart ∑ (−1)ᵏ C(n,k)·Fₖ = −Fₙ via the signed analogue signed_pascal_conv; the single sign change turns the sum-of-shifts into a difference-of-shifts, converting index-doubling into a pure cancellation — completing the ± pair."
+    },
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "relatedTo",
+      "description": "The base FibonacciIdentities entry catalogues the pointwise/quadratic identities. The alternating binomial transform is a summation identity whose combinatorial weights carry a sign; its index-FIXED conclusion −Fₙ contrasts both the base entry's local recurrences and the doubling F₂ₙ of the plus-signed transform."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "relatedTo",
+      "description": "The identity is the Fibonacci image of the alternating binomial theorem ∑ (−1)ᵏ C(n,k)·xᵏ = (1−x)ⁿ specialized at the golden ratio x=φ: (1−φ)ⁿ = ψⁿ (since 1−φ=ψ, the conjugate root), which Binet turns into (ψⁿ−φⁿ)/√5 = −Fₙ. The Lean proof formalizes this over ℤ via the signed Pascal-rule convolution signed_pascal_conv."
+    }
+  ]
+}
