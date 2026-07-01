@@ -126,6 +126,11 @@
       "targetId": "fibonacci-identities-oq-04",
       "relationship": "relatedTo",
       "description": "The oq-04 entry formalizes Cassini's identity over Int.fib as a corollary of Vajda's identity; here Cassini is reproved directly over Nat.fib and used as the engine of a summation identity rather than as a product identity in its own right."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-06",
+      "relationship": "relatedTo",
+      "description": "The oq-06 entry handles the strictly simpler linear sums ∑ Fₖ and ∑ k·Fₖ, which telescope or reduce to a single linear combination of the induction hypothesis with no parity split — a useful contrast to this entry's bilinear product sum ∑ FₖFₖ₊₁, whose closed form is parity-governed and requires Cassini's identity rather than mere telescoping."
     }
   ],
   "conclusion": {

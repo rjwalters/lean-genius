@@ -142,6 +142,11 @@
       "proofId": "combinations-formula-oq-08-oq-01",
       "relationship": "Source of the recurrence",
       "description": "combinations-formula-oq-08-oq-01 derives the Fibonacci recurrence Fₙ₊₂ = Fₙ₊₁ + Fₙ itself from Pascal's rule on the shallow-diagonal binomial sums. That recurrence is the single fact all three summation identities here reduce to, so this entry can be read as the summation-level consequences of the recurrence that entry establishes combinatorially."
+    },
+    {
+      "proofId": "fibonacci-identities-oq-06",
+      "relationship": "Linear-sum descendant",
+      "description": "fibonacci-identities-oq-06 supplies the two un-filtered linear summation identities this entry left open: the full partial sum ∑Fᵢ = Fₙ₊₂ − 1 and the index-weighted first moment ∑ i·Fᵢ = n·Fₙ₊₂ − Fₙ₊₃ + 2 — directly answering the '∑ i·Fᵢ' weighted-sum open question posed below. Together they are the degree-zero and degree-one companions to this entry's degree-two sum of squares ∑Fᵢ² = Fₙ·Fₙ₊₁."
     }
   ],
   "conclusion": {
