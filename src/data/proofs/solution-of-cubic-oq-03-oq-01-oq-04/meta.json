@@ -18,6 +18,26 @@
     "path": "Proofs/SolutionOfCubicOQ03OQ01OQ04.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "authors": [
+        "Cox, D.A."
+      ],
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "2nd ed., Pure and Applied Mathematics, Wiley",
+      "note": "Modern treatment of the cubic and quartic — depressed forms, discriminants, resolvent cubic and the Cardano/Ferrari methods."
+    },
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "The discriminant as a root-separation product and Vieta's formulas via symmetric functions."
+    }
+  ],
   "conclusion": {
     "summary": "The discriminant of the general monic cubic x³ + ax² + bx + c equals the same root-separation product (x₁−x₂)²(x₁−x₃)²(x₂−x₃)² that the parent established only for the depressed cubic, with 0 sorries and 0 axioms. The parent's formula −4p³ − 27q² is recovered exactly as the a = 0 specialization. The discriminant is proved invariant under a common translation of the roots — the depression substitution x ↦ x + t — so depressing a cubic never changes its discriminant. Finally, over any integral domain the discriminant vanishes iff two roots coincide, a characteristic-free separability criterion that strengthens the parent's real-sign analysis (no ordering required).",
     "implications": "The root-form identity and the translation-invariance lemma justify the standard practice of computing a cubic's discriminant from its depressed form: the depression step is discriminant-preserving. The integral-domain criterion Δ ≠ 0 ⟺ distinct roots is the squarefree/separability test underlying Galois-theoretic arguments about cubic field extensions, and being characteristic-free it applies over ℚ, finite fields (away from characteristic obstructions to depression), and polynomial rings alike.",
