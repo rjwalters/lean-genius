@@ -1,7 +1,7 @@
 {
   "slug": "inverse-galois-oq-04",
   "title": "Dedekind Theorem to Eliminate A5 Axiom",
-  "phase": "BLOCKED",
+  "phase": "PARTIAL",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,28 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-06-28T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "Eliminate three_dvd_gal_card via Dedekind's theorem at p=7.",
+    "phase": "PARTIAL",
+    "since": "2026-07-01T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Arithmetic keystone formalized (q mod 7 = (X-5)(X-6)(irred cubic), 0-axiom); residual = KummerDedekind inertia-degree bridge to 3 | inertiaDegIn(7).",
     "blockers": [
       "Dedekind's theorem (factorization type mod p = cycle type of Frobenius in Gal) is absent from Mathlib 4.26.0; no Frobenius-as-Galois-permutation primitive. Estimated 800-1500 lines of foundational number theory to build."
     ],
-    "nextAction": "Park until Mathlib gains Dedekind's theorem / Frobenius-as-Galois-automorphism, or commit a dedicated multi-session bridge effort.",
+    "nextAction": "Connect qInt_map_zmod7/cubic7_irreducible to 3 | inertiaDegIn(7) via KummerDedekind, then feed three_dvd_gal_card_of_bridge; or park residual bridge until Mathlib exposes Dedekind factorization-inertia directly.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 2
     }
   },
   "knowledge": {
     "progressSummary": "Assessed (researcher-3, 2026-06-28). InverseGaloisA5.lean has exactly 1 axiom, three_dvd_gal_card (3 | |Gal(q)|), encoding Dedekind's theorem at p=7. All other inputs to |Gal|=60 are proved (5|Gal, Gal|60 via discriminant, no order-15/30 subgroup). The 3|Gal step has no axiom-free or computational shortcut: distinguishing D5 from A5 requires detecting an order-3 element, i.e. Dedekind's theorem (mod-7 cycle type) or Dummit's resolvent correspondence -- both absent from Mathlib.",
-    "builtItems": [],
-    "insights": [],
+    "builtItems": [
+      "InverseGaloisA5DedekindMod7.lean (VERIFIED 0-axiom): q mod 7 = (X-5)(X-6)(X^3+6X^2+4X+1) over F_7 with the cubic irreducible (Frobenius cycle type (1,1,3) at p=7). qInt_map_zmod7, cubic7_irreducible, qInt_map_rat, qInt_eq_factor_add_seven, cubic7_natDegree, cubic7_no_root."
+    ],
+    "insights": [
+      "Robust mod-p factorization recipe: prove poly = factors + p*R over Z[X] (ring closes it), map to ZMod p, kill the p*R term via (p:(ZMod p)[X])=0 (CharP.cast_eq_zero + Polynomial.instCharP). Cubic irreducibility over a finite field via irreducible_of_degree_le_three_of_not_isRoot + decide (kernel, axiom-clean)."
+    ],
     "mathlibGaps": [
       "Dedekind's theorem: factorization type of f mod p (p not dividing disc) = cycle type of Frobenius in Gal on roots. Entirely absent.",
       "Frobenius element as a Galois automorphism / permutation of roots: no primitive.",
