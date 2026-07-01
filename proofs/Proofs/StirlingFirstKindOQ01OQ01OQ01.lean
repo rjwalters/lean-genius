@@ -29,6 +29,16 @@ single identity into the classical **duality between the two kinds of Stirling n
 
        `∑_{k} S(n,k) · s(k,m) = [n = m]`.
 
+4. **Reverse orthogonality / two-sided inverse** (`stirling_orthogonality_reverse`).  The
+   *other* product is the identity too, so the two triangles genuinely invert one another on
+   both sides:
+
+       `∑_{k} s(n,k) · S(k,m) = [n = m]`.
+
+   The coefficient-comparison in (3) only yields one product; the reverse direction is obtained
+   structurally from `Matrix.mul_eq_one_comm` applied to the `(n+1)×(n+1)` truncations (a
+   one-sided inverse of a square matrix over a commutative ring is automatically two-sided).
+
 ## Context / Mathlib gap
 
 Mathlib defines both `Nat.stirlingFirst` and `Nat.stirlingSecond` with their recurrences, and
@@ -51,6 +61,10 @@ using the second-kind recurrence `S(n+1,k+1) = S(n,k) + (k+1)·S(n,k+1)` reprodu
 
 (3) reads off the coefficient of `Xᵐ` in `Xⁿ`, which is `[m = n]`; expanding `Xⁿ` by (2) and each
 falling factorial's coefficient by (1) turns the same coefficient into `∑_k S(n,k)·s(k,m)`.
+
+(4) packages (3) as the statement `S · s = 1` for the `(n+1)×(n+1)` matrix truncations (the extra
+off-triangle entries vanish), then invokes `Matrix.mul_eq_one_comm` to get `s · S = 1` and reads
+off the `(n,m)` entry — the reverse orthogonality that completes the two-sided inverse.
 
 All results are `0`-axiom (kernel-checked, no `sorry`, no `native_decide`).
 -/
@@ -162,6 +176,73 @@ theorem stirling_orthogonality (n m : ℕ) :
   rw [← coeff_X_pow n m, X_pow_eq_sum_stirlingSecond_descPochhammer, finset_sum_coeff]
   refine Finset.sum_congr rfl (fun k _ => ?_)
   rw [coeff_C_mul, coeff_descPochhammer_eq_stirlingFirst]
+
+/-- **Reverse matrix inversion / orthogonality (two-sided).**  Companion to
+`stirling_orthogonality`, proving the *other* product of the two Stirling triangles is the
+identity as well, so `[s(n,k)]` and `[S(n,k)]` are genuinely **mutually inverse**:
+
+    `∑_{k=0}^{n} s(n,k) · S(k,m) = [m = n]`,
+
+where `s(n,k) = (-1)^(n+k) c(n,k)` is the signed first-kind entry.  The coefficient comparison in
+`stirling_orthogonality` produces only the product `S · s = I`; here we obtain the reverse
+`s · S = I` structurally: for a square matrix over a commutative ring a one-sided inverse is
+automatically two-sided (`Matrix.mul_eq_one_comm`), which we apply to the `(n+1)×(n+1)`
+truncations of the two triangles. -/
+theorem stirling_orthogonality_reverse (n m : ℕ) :
+    (∑ k ∈ range (n + 1),
+        ((-1) ^ (n + k) * (Nat.stirlingFirst n k : R)) * (Nat.stirlingSecond k m : R))
+      = if m = n then 1 else 0 := by
+  rcases le_or_gt m n with hmn | hnm
+  · -- `m ≤ n`: use the square truncations and `Matrix.mul_eq_one_comm`.
+    classical
+    set S : Matrix (Fin (n + 1)) (Fin (n + 1)) R :=
+      Matrix.of (fun i j => (Nat.stirlingSecond i.val j.val : R)) with hSdef
+    set s : Matrix (Fin (n + 1)) (Fin (n + 1)) R :=
+      Matrix.of (fun i j => (-1) ^ (i.val + j.val) * (Nat.stirlingFirst i.val j.val : R)) with hsdef
+    -- forward product is the identity — this is exactly `stirling_orthogonality`, extended
+    -- from `range (i+1)` to all of `Fin (n+1)` (the extra second-kind entries vanish).
+    have hSs : S * s = 1 := by
+      ext i j
+      rw [Matrix.mul_apply, Matrix.one_apply]
+      have hconv :
+          (∑ k : Fin (n + 1), S i k * s k j)
+            = ∑ k ∈ range (i.val + 1),
+                (Nat.stirlingSecond i.val k : R)
+                  * ((-1) ^ (k + j.val) * (Nat.stirlingFirst k j.val : R)) := by
+        simp only [hSdef, hsdef, Matrix.of_apply]
+        rw [Fin.sum_univ_eq_sum_range
+              (fun k => (Nat.stirlingSecond i.val k : R)
+                * ((-1) ^ (k + j.val) * (Nat.stirlingFirst k j.val : R))) (n + 1)]
+        have hsub : range (i.val + 1) ⊆ range (n + 1) := by
+          intro x hx; simp only [Finset.mem_range] at hx ⊢; have := i.isLt; omega
+        refine (Finset.sum_subset hsub ?_).symm
+        intro k _ hk
+        have hik : i.val < k := by
+          simp only [Finset.mem_range] at hk; omega
+        rw [Nat.stirlingSecond_eq_zero_of_lt hik]; simp
+      rw [hconv, stirling_orthogonality i.val j.val]
+      by_cases hij : i = j
+      · subst hij; simp
+      · have hji : j.val ≠ i.val := fun h => hij (Fin.ext h.symm)
+        simp [hji, hij]
+    -- hence the reverse product is the identity too
+    have hsS : s * S = 1 := Matrix.mul_eq_one_comm.mp hSs
+    -- read off entry `(n, m)`
+    have key := congrFun (congrFun hsS ⟨n, Nat.lt_succ_self n⟩) ⟨m, by omega⟩
+    rw [Matrix.mul_apply, Matrix.one_apply] at key
+    simp only [hSdef, hsdef, Matrix.of_apply, Fin.mk.injEq] at key
+    rw [Fin.sum_univ_eq_sum_range
+          (fun k => (-1) ^ (n + k) * (Nat.stirlingFirst n k : R)
+            * (Nat.stirlingSecond k m : R)) (n + 1)] at key
+    rw [key]
+    rcases eq_or_ne m n with h | h
+    · subst h; simp
+    · rw [if_neg h, if_neg (Ne.symm h)]
+  · -- `m > n`: every `S(k,m)` with `k ≤ n < m` vanishes, and `m ≠ n`.
+    rw [if_neg (by omega : ¬ m = n)]
+    refine Finset.sum_eq_zero (fun k hk => ?_)
+    have hkm : k < m := by simp only [Finset.mem_range] at hk; omega
+    rw [Nat.stirlingSecond_eq_zero_of_lt hkm]; simp
 
 end StirlingMatrixInversion
 
