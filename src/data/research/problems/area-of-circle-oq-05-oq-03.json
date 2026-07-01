@@ -2,7 +2,7 @@
   "slug": "area-of-circle-oq-05-oq-03",
   "title": "Fourier Transform of Gaussian in Lean 4 via Mathlib",
   "phase": "NEW",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-05T22:13:23.854Z",
     "iteration": 1,
     "focus": "Prove the Gaussian Fourier transform identity:",
@@ -30,11 +30,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Gaussian Fourier self-duality proved axiom-free (Lebesgue form) AND bridged to Mathlib's concrete standard-normal measure gaussianReal 0 1.",
+    "builtItems": [
+      "charFun_stdGaussian in Proofs/AreaOfCircleOQ05OQ03.lean:156 — charFun(gaussianReal 0 1) t = exp(-t²/2)",
+      "gaussianReal_fourier_identity in Proofs/AreaOfCircleOQ05OQ03.lean:171 — ∫ e^{itx} ∂(gaussianReal 0 1) = exp(-t²/2)"
+    ],
+    "insights": [
+      "Mathlib's charFun_gaussianReal (ProbabilityTheory) gives charFun(gaussianReal 0 1) t = exp(-t²/2) directly; combined with charFun_apply_real it yields ∫ e^{itx} ∂(gaussianReal 0 1) = exp(-t²/2) with no inner-product manipulation.",
+      "The CentralLimitTheorem.lean axiom gaussian_fourier_identity is unavoidable only because stdGaussian is an abstract axiom measure; it becomes a theorem the moment stdGaussian is instantiated as gaussianReal 0 1 (shown by gaussianReal_fourier_identity)."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Optional: refactor CentralLimitTheorem.lean to define stdGaussian := ProbabilityTheory.gaussianReal 0 1 and replace the gaussian_fourier_identity axiom with gaussianReal_fourier_identity (removes one axiom from the CLT file)."
+    ]
   },
   "tags": [
     "analysis",

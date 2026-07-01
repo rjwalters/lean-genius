@@ -140,6 +140,45 @@ theorem integral_gaussian_half :
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
+PART V:  BRIDGE TO THE CONCRETE MATHLIB GAUSSIAN MEASURE
+═══════════════════════════════════════════════════════════════════════════════
+
+  The identities above are stated for the explicit Lebesgue integrand.  Here we
+  connect them to Mathlib's probability-theoretic standard normal measure
+  `ProbabilityTheory.gaussianReal 0 1` and its characteristic function
+  `MeasureTheory.charFun`.  This makes precise the sense — flagged in the honest
+  scope note below — in which `CentralLimitTheorem.lean`'s axiom
+  `gaussian_fourier_identity` becomes a *theorem* once the abstract `stdGaussian`
+  is instantiated as the concrete `gaussianReal 0 1`. -/
+
+/-- **The characteristic function of the standard normal `N(0,1)` is `e^{-t²/2}`.**
+    Immediate from Mathlib's `charFun_gaussianReal` specialised at `μ = 0`, `v = 1`. -/
+theorem charFun_stdGaussian (t : ℝ) :
+    charFun (ProbabilityTheory.gaussianReal 0 1) t = Complex.exp (-(t : ℂ) ^ 2 / 2) := by
+  rw [ProbabilityTheory.charFun_gaussianReal]
+  congr 1
+  push_cast
+  ring
+
+/-- **The Gaussian Fourier identity against the concrete Mathlib measure.**
+
+      ∫_ℝ e^{i t x} ∂(gaussianReal 0 1) = e^{-t²/2}.
+
+    This is exactly the shape of the `CentralLimitTheorem.lean` axiom
+    `gaussian_fourier_identity`, now discharged as a theorem for the concrete
+    standard-normal measure: the abstract Fourier self-duality of `stdGaussian`
+    holds for `ProbabilityTheory.gaussianReal 0 1`. -/
+theorem gaussianReal_fourier_identity (t : ℝ) :
+    ∫ x : ℝ, Complex.exp (Complex.I * (t : ℂ) * (x : ℂ)) ∂(ProbabilityTheory.gaussianReal 0 1)
+      = Complex.exp (-(t : ℂ) ^ 2 / 2) := by
+  rw [← charFun_stdGaussian t, charFun_apply_real]
+  congr 1
+  ext x
+  congr 1
+  ring
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
 Summary
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -155,18 +194,25 @@ Summary
   the characteristic function of the standard normal.
 - `gaussian_density_total_mass`: the standard density integrates to 1.
 - `integral_gaussian_half`: ∫ e^{-x²/2} dx = √(2π).
+- `charFun_stdGaussian`: the characteristic function of `gaussianReal 0 1` is e^{-t²/2}.
+- `gaussianReal_fourier_identity`: **∫ e^{itx} ∂(gaussianReal 0 1) = e^{-t²/2}** —
+  the concrete-measure form of the `CentralLimitTheorem.lean` Fourier axiom.
 
 ### Honest scope:
-The Fourier identity is proved here as a concrete Lebesgue integral.  The
-`CentralLimitTheorem.lean` axiom of the same name is phrased against an abstract
-`stdGaussian` measure introduced by `axiom`; discharging *that* axiom additionally
-requires replacing the abstract measure by `ProbabilityTheory.gaussianReal 0 1`,
-a separate bridge not attempted here.
+The Fourier identity is proved here as a concrete Lebesgue integral, and (Part V)
+against Mathlib's concrete standard-normal measure `ProbabilityTheory.gaussianReal 0 1`.
+The `CentralLimitTheorem.lean` axiom of the same name is phrased against an abstract
+`stdGaussian` measure introduced by `axiom`; Part V shows that identity holds as a
+theorem for the concrete `gaussianReal 0 1`, but fully discharging the CLT axiom
+would require refactoring that file to *define* `stdGaussian := gaussianReal 0 1`
+(a separate change not made here).
 -/
 
 #check @gaussian_fourier_real
 #check @gaussian_fourier_normalized
 #check @gaussian_density_total_mass
 #check @integral_gaussian_half
+#check @charFun_stdGaussian
+#check @gaussianReal_fourier_identity
 
 end GaussianFourierTransform
