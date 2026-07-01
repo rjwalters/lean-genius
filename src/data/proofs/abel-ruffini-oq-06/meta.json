@@ -166,5 +166,56 @@
       "relationship": "related",
       "description": "The base Abel–Ruffini gallery entry. This file develops the solvable (n ≤ 4) side of the symmetric-group threshold that makes the classical low-degree radical formulas possible."
     }
+  ],
+  "references": [
+    {
+      "authors": "Ruffini, Paolo",
+      "title": "Teoria generale delle equazioni, in cui si dimostra impossibile la soluzione algebraica delle equazioni generali di grado superiore al quarto",
+      "year": "1799",
+      "venue": "Bologna",
+      "note": "The first (incomplete) attempted proof that the general equation of degree > 4 has no algebraic solution — the namesake lower half of the threshold whose solvable side (degrees ≤ 4) this file formalizes."
+    },
+    {
+      "authors": "Abel, Niels Henrik",
+      "title": "Mémoire sur les équations algébriques, où l'on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré",
+      "year": "1824",
+      "venue": "Christiania",
+      "note": "The first rigorous proof that the general quintic is not solvable by radicals — the negative side of the dichotomy 'Sₙ solvable ⟺ n ≤ 4' complementary to the positive instances proved here."
+    },
+    {
+      "authors": "Galois, Évariste",
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de Mathématiques Pures et Appliquées (Journal de Liouville), Series I, Volume XI, pp. 417–433 (written 1830–1832)",
+      "note": "Reduces radical solvability of a polynomial to solvability of its Galois group, making 'S₂, S₃, S₄ are solvable groups' the exact structural reason the linear/quadratic/Cardano/Ferrari formulas exist."
+    },
+    {
+      "authors": "Rotman, Joseph J.",
+      "title": "An Introduction to the Theory of Groups (4th ed.)",
+      "year": "1995",
+      "venue": "Graduate Texts in Mathematics 148, Springer",
+      "note": "Chapter 5 develops solvable groups and the extension principle 'an extension of a solvable group by a solvable group is solvable' — the abstract content behind the 1 → Aₙ → Sₙ → ℤˣ reduction (solvable_of_ker_le_range) central to this file."
+    },
+    {
+      "authors": "Dummit, David S. and Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "Wiley",
+      "note": "Sections 3.4 and 6.1 treat the derived series and solvability of Sₙ for n ≤ 4 (including A₄ ⊳ V₄ ⊳ 1); Chapter 14 connects this to solvability of polynomials by radicals."
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory (4th ed.)",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC",
+      "note": "Textbook treatment of the radical-solvability correspondence, explicitly working the solvable cases S₂, S₃, S₄ that yield the classical formulas and contrasting them with the unsolvable S₅."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "The Lean Mathematical Library: GroupTheory.Solvable and GroupTheory.SpecificGroups.Alternating",
+      "year": "2020",
+      "venue": "Proceedings of CPP 2020, pp. 367–381 (ACM)",
+      "note": "Source of the reused lemmas solvable_of_ker_le_range, alternatingGroup_eq_sign_ker, nat_card_alternatingGroup, and the negative instance Equiv.Perm.fin_5_not_solvable; the positive instances IsSolvable (Equiv.Perm (Fin n)) for n ∈ {2,3} are not in Mathlib and are contributed by this file."
+    }
   ]
 }
