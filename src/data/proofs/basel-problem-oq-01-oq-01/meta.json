@@ -116,6 +116,28 @@
     "path": "Proofs/BaselProblemOQ01OQ01.lean",
     "sorries": 0
   },
-  "references": [],
+  "references": [
+    {
+      "authors": "W. Zudilin",
+      "title": "One of the numbers ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
+      "year": 2001,
+      "venue": "Uspekhi Mat. Nauk 56",
+      "note": "State of the art on the irrationality of ζ(5) and nearby odd zeta values."
+    },
+    {
+      "authors": "T. Rivoal",
+      "title": "La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs",
+      "year": 2000,
+      "venue": "C. R. Acad. Sci. Paris 331",
+      "note": "First proof that infinitely many ζ(2k+1) are irrational."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides hasSum_zeta_nat, the Bernoulli-number API, and Real.tendsto_euler_sin_prod underlying this formalization."
+    }
+  ],
   "sorries": 0
 }

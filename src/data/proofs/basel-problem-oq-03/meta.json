@@ -156,5 +156,35 @@
     "path": "Proofs/BaselProblemOQ03.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "D. Zagier",
+      "title": "Values of zeta functions and their applications",
+      "year": 1994,
+      "venue": "First European Congress of Mathematics, Birkhäuser",
+      "note": "Survey of multiple zeta values and Euler's even-zeta formula."
+    },
+    {
+      "authors": "M. E. Hoffman",
+      "title": "Multiple harmonic series",
+      "year": 1992,
+      "venue": "Pacific J. Math. 152",
+      "note": "Multiple zeta values and their quasi-shuffle (stuffle) algebra."
+    },
+    {
+      "authors": "L. Euler",
+      "title": "De summis serierum reciprocarum",
+      "year": 1740,
+      "venue": "Comm. Acad. Sci. Petrop. 7",
+      "note": "Euler's solution of the Basel problem and the general formula ζ(2k) in terms of Bernoulli numbers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides hasSum_zeta_nat, the Bernoulli-number API, and Real.tendsto_euler_sin_prod underlying this formalization."
+    }
+  ]
 }

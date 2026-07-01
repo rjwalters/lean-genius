@@ -231,5 +231,28 @@
     "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/CoprimeKTupleDensity.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "J. E. Nymann",
+      "title": "On the probability that k positive integers are relatively prime",
+      "year": 1972,
+      "venue": "J. Number Theory 4",
+      "note": "Density of coprime k-tuples equals 1/ζ(k)."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Zeta values, Euler products, and coprimality densities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides hasSum_zeta_nat, the Bernoulli-number API, and Real.tendsto_euler_sin_prod underlying this formalization."
+    }
+  ]
 }

@@ -77,7 +77,12 @@
       "Mathlib.Algebra.Order.BigOperators.Group.Finset",
       "Mathlib.Tactic"
     ],
-    "opens": ["BigOperators", "Finset", "Nat", "Filter"],
+    "opens": [
+      "BigOperators",
+      "Finset",
+      "Nat",
+      "Filter"
+    ],
     "namespace": "AperyCentralBinom",
     "lineCount": 141,
     "axiomCount": 0,
@@ -181,6 +186,29 @@
       "targetId": "basel-problem",
       "relationship": "ancestor",
       "description": "The Basel lineage root (ζ(2) = π²/6); the Apéry numbers are the ζ(3) analogue of the rational approximations that make such zeta values tractable."
+    }
+  ],
+  "references": [
+    {
+      "authors": "R. Apéry",
+      "title": "Irrationalité de ζ(2) et ζ(3)",
+      "year": 1979,
+      "venue": "Astérisque 61",
+      "note": "Apéry's proof that ζ(3) is irrational, and the Apéry approximation sequences."
+    },
+    {
+      "authors": "A. van der Poorten",
+      "title": "A proof that Euler missed… Apéry's proof of the irrationality of ζ(3)",
+      "year": 1979,
+      "venue": "Math. Intelligencer 1",
+      "note": "Expository account of Apéry's irrationality proof and the recurrence for the Apéry numbers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides hasSum_zeta_nat, the Bernoulli-number API, and Real.tendsto_euler_sin_prod underlying this formalization."
     }
   ]
 }

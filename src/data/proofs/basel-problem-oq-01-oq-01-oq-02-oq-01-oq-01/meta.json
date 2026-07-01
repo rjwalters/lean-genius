@@ -84,7 +84,11 @@
       "Mathlib.Algebra.BigOperators.NatAntidiagonal",
       "Mathlib.Tactic"
     ],
-    "opens": ["BigOperators", "Finset", "Nat"],
+    "opens": [
+      "BigOperators",
+      "Finset",
+      "Nat"
+    ],
     "namespace": "AperyCentralBinom",
     "lineCount": 159,
     "axiomCount": 0,
@@ -179,6 +183,29 @@
       "targetId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
       "relationship": "related",
       "description": "A sibling targeting Hanson's bound lcm(1,…,n) ≤ 3ⁿ, the denominator-side growth ingredient of the same irrationality squeeze."
+    }
+  ],
+  "references": [
+    {
+      "authors": "R. Apéry",
+      "title": "Irrationalité de ζ(2) et ζ(3)",
+      "year": 1979,
+      "venue": "Astérisque 61",
+      "note": "Apéry's proof that ζ(3) is irrational, and the Apéry approximation sequences."
+    },
+    {
+      "authors": "A. van der Poorten",
+      "title": "A proof that Euler missed… Apéry's proof of the irrationality of ζ(3)",
+      "year": 1979,
+      "venue": "Math. Intelligencer 1",
+      "note": "Expository account of Apéry's irrationality proof and the recurrence for the Apéry numbers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides hasSum_zeta_nat, the Bernoulli-number API, and Real.tendsto_euler_sin_prod underlying this formalization."
     }
   ]
 }
