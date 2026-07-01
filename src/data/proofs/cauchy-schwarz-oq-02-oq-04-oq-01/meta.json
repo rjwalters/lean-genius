@@ -179,5 +179,35 @@
       "summary": "buzano_self (the y = x form ‖⟪x, e⟫‖ ≤ ‖x‖) and buzano_recovers_cauchy_schwarz (choosing e = ‖x‖⁻¹·x collapses Buzano to classical Cauchy-Schwarz ‖⟪x, y⟫‖ ≤ ‖x‖·‖y‖, proving strict generalization)."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "M. L. Buzano",
+      "title": "Generalizzazione della diseguaglianza di Cauchy-Schwarz",
+      "year": 1974,
+      "venue": "Rend. Sem. Mat. Univ. e Politec. Torino 31",
+      "note": "The inequality ‖⟪x,e⟫‖·‖⟪e,y⟫‖ ≤ (‖x‖‖y‖ + ‖⟪x,y⟫‖)/2 formalized here."
+    },
+    {
+      "authors": "S. S. Dragomir",
+      "title": "Advances in Inequalities of the Schwarz, Grüss and Bessel Type in Inner Product Spaces",
+      "year": 2005,
+      "venue": "Nova Science",
+      "note": "Survey of Buzano-type refinements of Cauchy-Schwarz."
+    },
+    {
+      "authors": "J. M. Steele",
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": 2004,
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of Cauchy-Schwarz and its refinements."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

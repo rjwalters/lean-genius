@@ -149,5 +149,28 @@
       "summary": "polarization_identity_C: the headline identity specialized to 𝕜 = ℂ, stated with Complex.I (= RCLike.I definitionally for the ℂ field), giving the concrete complex-Hilbert-space statement."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "P. Jordan, J. von Neumann",
+      "title": "On Inner Products in Linear, Metric Spaces",
+      "year": 1935,
+      "venue": "Ann. of Math. 36",
+      "note": "Characterization of inner products via the norm (polarization / parallelogram law)."
+    },
+    {
+      "authors": "J. B. Conway",
+      "title": "A Course in Functional Analysis",
+      "year": 1990,
+      "venue": "Springer",
+      "note": "Complex polarization identity for sesquilinear inner products."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

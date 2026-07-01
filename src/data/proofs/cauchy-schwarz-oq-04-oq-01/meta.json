@@ -156,5 +156,35 @@
     "path": "Proofs/CauchySchwarzOQ04OQ01.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "A. Engel",
+      "title": "Problem-Solving Strategies",
+      "year": 1998,
+      "venue": "Springer",
+      "note": "Popularized the Engel form (Titu's lemma) (∑aᵢ)²/(∑bᵢ) ≤ ∑aᵢ²/bᵢ."
+    },
+    {
+      "authors": "J. M. Steele",
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": 2004,
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of Cauchy-Schwarz and its refinements."
+    },
+    {
+      "authors": "A.-L. Cauchy",
+      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "year": 1821,
+      "venue": "Note II",
+      "note": "Original discrete Cauchy-Schwarz inequality, weighted here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

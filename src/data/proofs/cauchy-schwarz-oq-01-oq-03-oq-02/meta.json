@@ -120,5 +120,35 @@
       "description": "Parent entry derives the Heisenberg/Robertson variance uncertainty bound; this entry builds the entropy infrastructure toward the strictly stronger entropic uncertainty principle posed as its open question."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "C. E. Shannon",
+      "title": "A Mathematical Theory of Communication",
+      "year": 1948,
+      "venue": "Bell Syst. Tech. J. 27",
+      "note": "Definition of entropy H(p) = -∑ p log p."
+    },
+    {
+      "authors": "T. M. Cover, J. A. Thomas",
+      "title": "Elements of Information Theory",
+      "year": 2006,
+      "venue": "Wiley",
+      "note": "Maximum-entropy bound H(p) ≤ log n with equality iff p uniform (Ch. 2)."
+    },
+    {
+      "authors": "J. L. W. V. Jensen",
+      "title": "Sur les fonctions convexes et les inégalités entre les valeurs moyennes",
+      "year": 1906,
+      "venue": "Acta Math. 30",
+      "note": "Jensen's inequality, the engine of the max-entropy bound."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

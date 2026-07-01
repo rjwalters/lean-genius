@@ -143,5 +143,35 @@
       "summary": "parseval_implies_completeness: all ĉₙ = 0 → f = 0, via hasSum_fourier_series_L2 + hf_zero substitution + HasSum.unique with hasSum_zero. fourier_series_L2_convergence: exact hasSum_fourier_series_L2 (one-liner). Together: Fourier system is a Hilbert basis."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "M.-A. Parseval",
+      "title": "Mémoire sur les séries et sur l'intégration complète d'une équation aux différences partielles linéaires du second ordre, à coefficients constants",
+      "year": 1806,
+      "venue": "Mém. prés. par divers savants, Acad. des Sciences",
+      "note": "Original statement of the energy identity."
+    },
+    {
+      "authors": "E. M. Stein, R. Shakarchi",
+      "title": "Fourier Analysis: An Introduction",
+      "year": 2003,
+      "venue": "Princeton University Press",
+      "note": "Parseval/Bessel theory for Fourier series in the L² setting."
+    },
+    {
+      "authors": "W. Rudin",
+      "title": "Real and Complex Analysis",
+      "year": 1987,
+      "venue": "McGraw-Hill",
+      "note": "Hilbert-space Parseval identity and orthonormal bases."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

@@ -179,5 +179,35 @@
       "summary": "bessel_finite proves ∑ᵢ⟨x,eᵢ⟩²≤‖x‖² for orthonormal {e₁,...,eₙ} via ‖x-Px‖²≥0 where Px=∑⟨x,eᵢ⟩eᵢ. Equality would give Parseval. Closing summary section establishes the full dependency chain from Hölder to Bessel and positions Parseval's identity as the natural next step."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "O. Hölder",
+      "title": "Über einen Mittelwertsatz",
+      "year": 1889,
+      "venue": "Nachr. Ges. Wiss. Göttingen",
+      "note": "Hölder's inequality, the p,q generalization of Cauchy-Schwarz (p=q=2)."
+    },
+    {
+      "authors": "H. Minkowski",
+      "title": "Geometrie der Zahlen",
+      "year": 1896,
+      "venue": "Teubner",
+      "note": "Minkowski (triangle) inequality for L^p norms."
+    },
+    {
+      "authors": "W. Rudin",
+      "title": "Real and Complex Analysis",
+      "year": 1987,
+      "venue": "McGraw-Hill",
+      "note": "Standard reference for the Hölder-Minkowski-L² theory."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }

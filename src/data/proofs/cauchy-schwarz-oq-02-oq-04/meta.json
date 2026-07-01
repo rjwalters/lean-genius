@@ -158,5 +158,35 @@
       "summary": "For a positive symmetric T on a real inner product space: positive_operator_diagonal_nonneg (restated positivity), positive_operator_cauchy_schwarz (⟪T x, y⟫² ≤ ⟪T x, x⟫·⟪T y, y⟫ via discrim_le_zero on the quadratic t ↦ ⟪T(x+t·y), x+t·y⟫ ≥ 0), and positive_operator_cs_abs (the √ form)."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. V. Kadison",
+      "title": "A generalized Schwarz inequality and algebraic invariants for operator algebras",
+      "year": 1952,
+      "venue": "Ann. of Math. 56",
+      "note": "Operator (Kadison-Schwarz) inequality generalizing Cauchy-Schwarz."
+    },
+    {
+      "authors": "P. R. Halmos",
+      "title": "A Hilbert Space Problem Book",
+      "year": 1982,
+      "venue": "Springer",
+      "note": "Numerical radius, operator norm, and adjoint identities."
+    },
+    {
+      "authors": "J. B. Conway",
+      "title": "A Course in Functional Analysis",
+      "year": 1990,
+      "venue": "Springer",
+      "note": "Bounded operators on Hilbert space and the operator norm."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the RCLike inner-product-space API (norm_inner_le_norm, inner_self_eq_norm_sq_to_K) underlying this formalization."
+    }
+  ]
 }
