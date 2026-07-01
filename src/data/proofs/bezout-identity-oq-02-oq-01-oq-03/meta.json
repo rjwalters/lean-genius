@@ -103,5 +103,28 @@
     "definitionCount": 0,
     "theoremCount": 18
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "D. E. Knuth",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": 1997,
+      "venue": "Addison-Wesley",
+      "note": "Extended Euclidean algorithm, binary GCD, and Lamé-type step bounds."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Bézout's identity, linear Diophantine equations, and quadratic integers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

@@ -166,5 +166,28 @@
       "summary": "Two examples verify the reduction on (12,8) ↦ (gcd 12 8, 0) = (4,0) and on the coprime pair (7,5) ↦ (1,0), discharged by norm_num's kernel-level GCD certificate (no native_decide)."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "M. Newman",
+      "title": "Integral Matrices",
+      "year": 1972,
+      "venue": "Academic Press",
+      "note": "Unimodular (SL₂(ℤ)) reduction and the matrix form of the Euclidean algorithm."
+    },
+    {
+      "authors": "D. S. Dummit, R. M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley",
+      "note": "Euclidean domains, PIDs, UFDs, and Smith normal form."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

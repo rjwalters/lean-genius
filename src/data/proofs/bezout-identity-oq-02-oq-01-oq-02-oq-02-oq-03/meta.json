@@ -138,5 +138,28 @@
       "summary": "no_sum_form_mod8 (decide, 64-case check), inert_prime_neg2 for p ≡ 5 or 7 (mod 8), concrete examples 5 and 7. Also three_splits (3 = (1+√-2)(1-√-2)) and two_ramifies (2 = -(√-2)²)."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "K. Ireland, M. Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer",
+      "note": "Gaussian integers, quadratic integer rings, and unique factorization."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Bézout's identity, linear Diophantine equations, and quadratic integers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }
