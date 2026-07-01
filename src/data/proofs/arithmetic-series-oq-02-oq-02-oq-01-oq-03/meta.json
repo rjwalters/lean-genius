@@ -103,6 +103,28 @@
       "mathContext": "1-D recovers the classical hockey stick generating function; 3-D gives $1/(1-z)^{a+b+c+3}$, whose coefficients $\\binom{n+a+b+c+2}{a+b+c+2}$ count weighted lattice points in a tetrahedron."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Stanley, R.P."
+      ],
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge Studies in Advanced Mathematics 49, Cambridge University Press",
+      "note": "Comprehensive treatment of generating functions, convolution identities and q-analogs."
+    },
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Standard reference for binomial identities — Vandermonde's convolution, the hockey-stick identity, and rising/falling factorials."
+    }
+  ],
   "conclusion": {
     "summary": "The multivariate generating-function identity ∏_j (∑_i C(a_j+i,a_j) z^i) = 1/(1-z)^{∑a_j+k} is proved in Lean's PowerSeries ring, answering the parent's third open question. The one-variable factor is Mathlib's invOneSubPow S (a+1); the whole identity is a one-line list induction whose engine is the exponent-additivity law invOneSubPow_add. The k=2 Cauchy product recovers the parent's parallel Vandermonde convolution with no induction. 13 theorems, 1 definition, 0 axioms, 0 sorries, fully machine-checked (only propext / Classical.choice / Quot.sound).",
     "implications": "The entry makes precise the textbook slogan that 'convolution of sequences is multiplication of generating functions.' Where the parent file performs a dimension-by-dimension induction driven by parallel Vandermonde, this file performs no numerical induction at all: the dimension count is a list length, the weight offset is a list sum, and folding the simplex is multiplication of inverse powers of (1-z). Reusing Mathlib's invOneSubPow unit means the proof's mathematical content reduces to a single additivity lemma, illustrating how the right algebraic abstraction (the group of units of a power series ring) can compress a combinatorial induction into a homomorphism computation.",

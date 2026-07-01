@@ -82,6 +82,28 @@
       "endLine": 149
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Standard reference for binomial identities — Vandermonde's convolution, the hockey-stick identity, and rising/falling factorials."
+    },
+    {
+      "authors": [
+        "Stanley, R.P."
+      ],
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge Studies in Advanced Mathematics 49, Cambridge University Press",
+      "note": "Comprehensive treatment of generating functions, convolution identities and q-analogs."
+    }
+  ],
   "conclusion": {
     "summary": "Proved the multiset-coefficient (rising factorial) identity C(n+k-1,k)·k! = ∏ i in range k, (n+i) and 8 consequences. 149 lines, 11 theorems, 0 sorries, 0 axioms, no native_decide. Completes the descending/ascending/multiset family of ordered-selection identities on the arithmetic-series branch. As part of this change, the grandparent ArithmeticSeriesOQ02OQ04.lean was repaired for Mathlib v4.26.0 (∏-binder syntax, numeric-literal factorial) and its concrete checks moved from native_decide to decide.",
     "implications": "With the descending (parent) and ascending (grandparent) forms, the multiset form completes the natural triad of consecutive-integer products attached to binomial and multiset coefficients. The rising-factorial form is the bridge to Pochhammer symbols and hypergeometric series.",

@@ -94,6 +94,28 @@
       "mathContext": "$C(m+k, k) \\leq C(n+k, k)$ when $m \\leq n$ (monotone in top argument). `Nat.choose_le_choose` takes `h : m ≤ n` and derives `C(m+k, k) ≤ C(n+k, k)`. Positivity: $C(n+k, k) \\geq 1$ for all $n,k \\geq 0$ since $n+k \\geq k$ always holds for naturals."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Standard reference for binomial identities — Vandermonde's convolution, the hockey-stick identity, and rising/falling factorials."
+    },
+    {
+      "authors": [
+        "Stanley, R.P."
+      ],
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge Studies in Advanced Mathematics 49, Cambridge University Press",
+      "note": "Comprehensive treatment of generating functions, convolution identities and q-analogs."
+    }
+  ],
   "conclusion": {
     "summary": "The k-dimensional hockey stick identity is proved by list induction with parallel Vandermonde as the induction engine. The parameter list encoding (length = dimension $k$, sum = offset $\\sum a_j$) makes the inductive step a clean one-application-of-convolution argument. Concrete checks confirm $C(5,3)=10$ (3-simplex at $n=2$) and $C(6,3)=20$. 8 theorems, 0 axioms, 165 lines.",
     "implications": "This formalization demonstrates that multi-dimensional combinatorial identities often reduce to repeated 1D convolutions. The list induction structure is a clean architectural choice: it makes the $k$-dimensional case literally a consequence of the $(k-1)$-dimensional case plus one Vandermonde step. The parallel between the algebraic structure (list sum + length) and the combinatorial content (weight offset + dimension) is the insight that makes the proof work.",

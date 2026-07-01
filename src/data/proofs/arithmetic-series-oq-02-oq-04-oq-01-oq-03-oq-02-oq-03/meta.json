@@ -145,6 +145,27 @@
       "mathContext": "At $R = \\mathbb{Z}$: $\\text{qMultichoose}(1, n, k) = \\text{multichoose}(n, k) \\in \\mathbb{Z}$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Andrews, G.E."
+      ],
+      "title": "The Theory of Partitions",
+      "year": "1998",
+      "venue": "Cambridge Mathematical Library, Cambridge University Press",
+      "note": "q-series, Gaussian (q-)binomial coefficients and the q-Vandermonde / q-Chu–Vandermonde identity."
+    },
+    {
+      "authors": [
+        "Kac, V.",
+        "Cheung, P."
+      ],
+      "title": "Quantum Calculus",
+      "year": "2002",
+      "venue": "Universitext, Springer",
+      "note": "Gaussian binomial coefficients, the q-Pascal recurrence and q-analogs of classical identities."
+    }
+  ],
   "conclusion": {
     "summary": "The Gaussian binomial coefficient $\\binom{n+k-1}{k}_q$ is the canonical q-analog of the multiset coefficient $\\text{multichoose}(n,k)$, proved via: a clean definition (one line), four boundary cases, a q-Pascal recurrence, and double induction establishing recovery at q=1 over any CommRing.",
     "implications": "This result enables q-deformation of the entire multiset combinatorics toolkit: the multiset Vandermonde identity (parent entry) has a q-analog via qMultichoose, the q-analog of stars-and-bars has a vector-space interpretation (subspace counting over 𝔽_q), and the formal power series identity ∑_k multichoose(n,k) x^k = (1-x)^{-n} has a q-analog as a basic hypergeometric series. The Lean formalization over an arbitrary CommRing (not just ℤ or ℝ) enables application to polynomial rings, formal power series, and representation rings.",

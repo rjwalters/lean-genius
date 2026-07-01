@@ -190,6 +190,26 @@
       "mathContext": "$$\\mathrm{qtMultichoose}(q,t,2,2) = \\mathrm{qMultichoose}(q,2,2) \\quad (1 - q^2 t \\neq 0,\\ 1 - q \\neq 0)$$"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Macdonald, I.G."
+      ],
+      "title": "Symmetric Functions and Hall Polynomials",
+      "year": "1995",
+      "venue": "2nd ed., Oxford Mathematical Monographs, Oxford University Press",
+      "note": "Macdonald (q,t)-symmetric functions, the source of the (q,t)-deformations formalized here."
+    },
+    {
+      "authors": [
+        "Andrews, G.E."
+      ],
+      "title": "The Theory of Partitions",
+      "year": "1998",
+      "venue": "Cambridge Mathematical Library, Cambridge University Press",
+      "note": "q-series, Gaussian (q-)binomial coefficients and the q-Vandermonde / q-Chu–Vandermonde identity."
+    }
+  ],
   "conclusion": {
     "summary": "The Macdonald (q,t)-binomial, evaluated at the multichoose index shift N = n+k-1, yields a (q,t)-multichoose coefficient that is well-typed over a Field R and recovers the parent's qMultichoose at t=1 on the open dense set where q is not a low-order root of unity (Path A). The (q,t)-multichoose is t-independent precisely on the polynomial sub-lattice {k ≤ 1} ∪ {(2,2)}, and every point there is bridged to the parent's qNumber/qBinom/qMultichoose. The file is sorry-free and axiom-free (21 machine-checked theorems), but the open question is only partially resolved.",
     "implications": "This is the gallery's first contact with Macdonald (q,t)-binomial theory, an area entirely absent from Mathlib v4.26.0 (no Macdonald polynomials, Hall-Littlewood functions, or DAHA). The k-direction multiplicative recurrence and its ratio form give clean Lean handles on the Macdonald binomial that future work can reuse. The explicit formalization of the Field-R 0/0 trap is a reusable cautionary pattern for any rational-function specialization under Lean's 0/0 = 0 convention.",
