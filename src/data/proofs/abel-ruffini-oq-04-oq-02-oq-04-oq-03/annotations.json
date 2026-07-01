@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-comm-of-cyclic",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-04-oq-03",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "lemma",
+    "title": "Cyclic Groups Are Commutative, Extracted Cleanly",
+    "content": "`comm_of_isCyclic` states the bare equality `a * b = b * a` for any `[IsCyclic H]`. The proof uses `letI := IsCyclic.commGroup (α := H)` to install Mathlib's `CommGroup` structure on `H` locally and then closes with `mul_comm`. Returning the *proposition* rather than the instance is deliberate: callers (the metacyclic corollaries below) apply it to the subgroup `N` and the quotient `G ⧸ N` without introducing a second, competing `CommGroup` instance on those types, which would otherwise create instance-diamond friction with the ambient `Group` structure.",
+    "mathContext": "$\\text{IsCyclic}(H)\\Rightarrow\\forall a,b\\in H,\\ ab=ba$: every element is a power of a fixed generator, and powers of one element commute.",
+    "significance": "supporting",
+    "relatedConcepts": ["cyclic group", "commutative group", "IsCyclic.commGroup", "instance management"],
+    "prerequisites": ["cyclic groups", "group homomorphisms"]
+  },
+  {
+    "id": "ann-commutator-into-N",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-04-oq-03",
+    "range": {
+      "startLine": 74,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "Pushing the Commutator into N along the Quotient Map",
+    "content": "Step 1 of the metabelian theorem proves `derivedSeries G 1 ≤ N` without touching a single element. Since `G ⧸ N` is abelian, its first derived subgroup vanishes; the surjection `mk' : G → G ⧸ N` carries `derivedSeries G 1` onto `derivedSeries (G ⧸ N) 1` by `map_derivedSeries_eq` (valid because `mk'` is surjective, `QuotientGroup.mk'_surjective`). The chain `← QuotientGroup.ker_mk' N`, `← Subgroup.map_eq_bot_iff`, `map_derivedSeries_eq …`, `derivedSeries_succ`, `derivedSeries_zero`, `commutator_eq_bot_iff_le_centralizer` reduces the goal to `⊤ ≤ centralizer ⊤`, discharged by the quotient-commutativity hypothesis `hQ`. The key translation is `map H f = ⊥ ↔ H ≤ ker f`, turning 'the commutator dies in the quotient' into 'the commutator sits inside N'.",
+    "mathContext": "$G/N$ abelian $\\Rightarrow [G,G]=\\ker(\\mathrm{mk}')\\text{-trivial image}\\Rightarrow [G,G]\\le N$.",
+    "significance": "central",
+    "relatedConcepts": ["derived series", "commutator subgroup", "quotient group", "map_derivedSeries_eq", "kernel-range"],
+    "prerequisites": ["derived series", "quotient groups", "commutator subgroup"]
+  },
+  {
+    "id": "ann-abelian-bracket-kills",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-04-oq-03",
+    "range": {
+      "startLine": 85,
+      "endLine": 94
+    },
+    "type": "technique",
+    "title": "The Abelian Kernel Annihilates the Second Commutator",
+    "content": "Step 2 finishes the class-2 bound. Because `N` is abelian, `N ≤ centralizer N`, so `⁅N, N⁆ = ⊥` by `commutator_eq_bot_iff_le_centralizer`. Combining with Step 1 through `commutator_mono h1 h1 : ⁅derivedSeries G 1, derivedSeries G 1⁆ ≤ ⁅N, N⁆` and rewriting by `hNN : ⁅N,N⁆ = ⊥` gives `derivedSeries G 2 ≤ ⊥`, hence `= ⊥` via `le_bot_iff`. This is the exact statement that the second derived subgroup `[[G,G],[G,G]]` is trivial — the definition of a metabelian group and the sharp meaning of 'derived length ≤ 2', which Mathlib's `solvable_of_ker_le_range` never surfaces as a subgroup equality.",
+    "mathContext": "$N$ abelian $\\Rightarrow [N,N]=1$; monotonicity gives $G^{(2)}=[[G,G],[G,G]]\\le[N,N]=1$.",
+    "significance": "central",
+    "relatedConcepts": ["derived length", "metabelian group", "centralizer", "commutator_mono", "solvable class"],
+    "prerequisites": ["commutator subgroup", "centralizer", "abelian groups"]
+  },
+  {
+    "id": "ann-metacyclic-corollary",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-04-oq-03",
+    "range": {
+      "startLine": 108,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Metacyclic ⟹ Solvable of Class ≤ 2 (the OQ answer)",
+    "content": "`isSolvable_of_metacyclic` and `derivedSeries_two_eq_bot_of_metacyclic` specialize the metabelian theorem to a cyclic normal subgroup with cyclic quotient. The only extra work is supplying the two abelian hypotheses: for `N`, apply `comm_of_isCyclic` to `⟨a, ha⟩ ⟨b, hb⟩ : N` and cast the subtype equality down to `G` (`congrArg (fun z : N => (z : G))` then `simpa`); for `G ⧸ N`, `comm_of_isCyclic` applies directly. This is the abstract theorem the parent's dihedral proof instantiates — Dₙ has the cyclic rotation subgroup ⟨r⟩ ≅ ℤ/n normal with cyclic quotient ℤ/2 — now proved once for the whole metacyclic family with the derived length pinned at ≤ 2.",
+    "mathContext": "Cyclic-by-cyclic $\\Rightarrow$ metabelian $\\Rightarrow G^{(2)}=1$. Instances: $D_n$, dicyclic groups, non-abelian groups of order $pq$.",
+    "significance": "central",
+    "relatedConcepts": ["metacyclic group", "solvable group", "dihedral group", "derived length", "subtype casting"],
+    "prerequisites": ["cyclic groups", "normal subgroups", "quotient groups", "solvable groups"]
+  }
+]
