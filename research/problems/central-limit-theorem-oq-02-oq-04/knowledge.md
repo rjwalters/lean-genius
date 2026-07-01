@@ -2,6 +2,62 @@
 
 ## Session log
 
+### Session S21 (researcher-2, 2026-07-01) — ACT: layer-cake analytic primitives
+
+**Mode**: FRESH claim (RICH tier, depth-first). S20 (#32445) merged at HEAD.
+**Outcome**: progress — +4 VERIFIED 0-axiom theorems, sorry count unchanged (2),
+1227 → 1313 LOC, theoremCount 22 → 26.
+
+#### What I did
+The S16–S20 chain closed the *algebraic* content of `davydov_covariance_inequality`
+(scaled-cell → simple-function → telescoping-step bound + S19 constant-shift
+reduction to nonnegative variables). The residual is *analytic*: the layer-cake
+passage from step functions to a general bounded nonnegative variable. This
+session adds its three atoms, placed in a new subsection right before the
+Davydov docstring:
+
+- `layer_cake_pointwise` (0-axiom): for `0 ≤ x ≤ M`,
+  `∫₀^M (if t < x then 1 else 0) dt = x`. Proof rewrites the `if` integrand to
+  `(Iio x).indicator 1`, `intervalIntegral.integral_of_le` → set integral over
+  `Ioc 0 M`, `setIntegral_indicator measurableSet_Iio` → `Ioc 0 M ∩ Iio x`,
+  which equals `Ioo 0 x` (needs `x ≤ M`), then `setIntegral_const` +
+  `measureReal_def` + `Real.volume_Ioo` + `ENNReal.toReal_ofReal` (needs `0 ≤ x`).
+- `layer_cake_repr` (0-axiom): the `.symm` orientation
+  `x = ∫₀^M (if t < x then 1 else 0) dt` — the form consumed by the analytic
+  step (apply at `x = f ω`, then Fubini-swap ω/t to expose indicator covariances).
+- `superlevel_setOf_measurable` (0-axiom): `{ω | t < X ω}` is `m`-measurable when
+  `Measurable[m] X`, via `measurableSet_lt measurable_const hX`. This is the
+  measurability hook discharging the σ-algebra hypotheses of
+  `indicator_covariance_le_alpha` for the super-level indicators `𝟙_{X>s}`.
+- `layer_cake_pointwise_prod` (0-axiom): for `0 ≤ x ≤ M`, `0 ≤ y ≤ N`,
+  `x·y = ∫₀^M ∫₀^N 𝟙_{s<x}·𝟙_{t<y} dt ds`. The *pointwise* product input to the
+  S22 Fubini step: `intervalIntegral.integral_const_mul` peels the (constant-in-`t`)
+  `𝟙_{s<x}` from the inner integral → `𝟙_{s<x}·y` (`layer_cake_pointwise`), then
+  `intervalIntegral.integral_mul_const` peels the (constant-in-`s`) `y` from the
+  outer → `x·y`. Isolates the interval-integral algebra, leaving only the
+  measure-theoretic swap of the `ω`-integral against `[0,M]×[0,N]` for S22.
+
+#### Proof techniques / gotchas (reusable)
+- `setIntegral_const` yields `volume.real s • c` (note `Measure.real`, not
+  `(volume s).toReal`); reduce via `simp only [smul_eq_mul, mul_one]` then
+  `rw [MeasureTheory.measureReal_def, Real.volume_Ioo, sub_zero, ENNReal.toReal_ofReal hx]`
+  — order matters (`sub_zero` before `toReal_ofReal`, else the pattern is `x-0`).
+- `omit [MeasurableSpace Ω] in` must go **before** the docstring, not between
+  docstring and `theorem` (parser: "unexpected token 'omit'; expected 'lemma'").
+- Narrow imports suffice: `intervalIntegral.integral_of_le`, `setIntegral_indicator`,
+  `Real.volume_Ioo`, `measurableSet_lt` all resolve under the file's existing
+  imports (no `import Mathlib` needed).
+
+#### Next steps
+- S22 (the real analytic content, ~100+ lines): combine `layer_cake_repr` at
+  `x = (f ω − m)` with Fubini (`MeasureTheory.integral_integral_swap` on the
+  product `[0,M]×Ω`) to write `Cov(f,g)` as `∫∫ Cov(𝟙_{f>s},𝟙_{g>t}) ds dt`,
+  bound each inner covariance by `α` via `indicator_covariance_le_alpha`
+  (measurability from `superlevel_setOf_measurable`), integrate to get the
+  bounded-variable `M·N·α` bound (matching `telescoping_layer_covariance_le_alpha`).
+- Then Hölder amplification `M·N·α → 12·α^{(p-2)/p}·‖X‖_p‖Y‖_p` (truncation +
+  `truncation_tail_sq_le` S18) closes `davydov_covariance_inequality`.
+
 ### Session S17 (researcher-6, 2026-07-01) — ACT: simple-function covariance bound
 
 **Mode**: FRESH (claimed from pool; RICH knowledge tier).
