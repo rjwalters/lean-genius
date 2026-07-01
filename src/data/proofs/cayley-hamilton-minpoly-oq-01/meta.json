@@ -3,6 +3,38 @@
   "title": "Jordan Canonical Form and the Minimal Polynomial",
   "slug": "cayley-hamilton-minpoly-oq-01",
   "description": "Characterizes the minimal polynomial of a linear endomorphism via eigenvalues and Jordan block structure. Proves eigenvalues ↔ roots of minpoly, minpoly | charpoly, semisimple ↔ squarefree minpoly, nilpotent ↔ minpoly = X^k. Axiomatizes the JCF product formula: minpoly = Π (X-μ)^{e_μ} where e_μ = size of largest Jordan block for eigenvalue μ. 20 theorems, 0 definitions, 3 axioms.",
+  "references": [
+    {
+      "authors": "Camille Jordan",
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": 1870,
+      "note": "Gauthier-Villars. Introduces the Jordan canonical form central to the minimal-polynomial characterization here."
+    },
+    {
+      "authors": "Roger A. Horn and Charles R. Johnson",
+      "title": "Matrix Analysis (2nd ed.)",
+      "year": 2013,
+      "note": "Cambridge University Press. Jordan form, minimal vs characteristic polynomial, and the exponent formula minpoly = Π(X−μ)^{e_μ}."
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Algebra (Revised 3rd ed.), GTM 211",
+      "year": 2002,
+      "note": "Springer. Minimal polynomial, semisimple ↔ squarefree, and structure of endomorphisms."
+    },
+    {
+      "authors": "David S. Dummit and Richard M. Foote",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": 2004,
+      "note": "Wiley. Rational and Jordan canonical forms and the minimal polynomial's relation to the characteristic polynomial."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Mathlib.LinearAlgebra.Matrix.Charpoly and minpoly infrastructure",
+      "year": 2024,
+      "note": "minpoly, charpoly, and divisibility minpoly ∣ charpoly used to state the characterizations."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",

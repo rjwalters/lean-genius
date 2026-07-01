@@ -3,6 +3,38 @@
   "title": "Fermat's Little Theorem via Necklace Counting: p ∣ kᵖ − k",
   "slug": "burnside-counting-oq-06",
   "description": "Closes the Burnside necklace-counting branch with its most famous number-theoretic consequence — Fermat's little theorem — derived purely from the cyclic orbit count. The gallery already builds the full cyclic necklace machinery and the divisor-sum form (#necklaces)·n = ∑_{d∣n} φ(n/d)·k^d (burnside-counting-oq-03-oq-02-oq-01-oq-02). Specializing the bead count n to a prime p collapses the divisor sum to its two surviving terms d = 1 and d = p: (#necklaces)·p = φ(p)·k + φ(1)·k^p = (p−1)·k + k^p. Since the left side is a multiple of p, p ∣ k^p + (p−1)·k = (k^p − k) + p·k, hence p ∣ k^p − k — Fermat's little theorem, with the integer #necklaces − k as an explicit divisibility witness. Provides necklaces_mul_prime_eq (the two-term collapse), fermat_little (the ℤ divisibility), fermat_little_modEq (the k^p ≡ k [MOD p] congruence), and pow_card_eq ((k : ZMod p)^p = k) — the last recovered from the necklace identity rather than Mathlib's algebraic ZMod.pow_card, confirming the combinatorial and algebraic routes agree.",
+  "references": [
+    {
+      "authors": "Pierre de Fermat",
+      "title": "Letter to Bernard Frénicle de Bessy (18 October 1640)",
+      "year": 1640,
+      "note": "The original statement of Fermat's little theorem, p ∣ kᵖ − k, derived here by orbit counting."
+    },
+    {
+      "authors": "Solomon W. Golomb",
+      "title": "Combinatorial Proof of Fermat's 'Little' Theorem (American Mathematical Monthly 63)",
+      "year": 1956,
+      "note": "The necklace-counting proof of Fermat's little theorem formalized in this entry."
+    },
+    {
+      "authors": "William Burnside",
+      "title": "Theory of Groups of Finite Order (2nd ed.)",
+      "year": 1911,
+      "note": "Cambridge University Press. The orbit-counting lemma (Cauchy–Frobenius–Burnside) underlying necklace enumeration."
+    },
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Enumerative Combinatorics, Volume 1 (2nd ed.)",
+      "year": 2011,
+      "note": "Cambridge University Press. Cyclic group actions, necklace counting, and the divisor-sum orbit formula."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: ZMod, Nat.totient and cyclic-group action infrastructure",
+      "year": 2024,
+      "note": "The φ-weighted divisor sum and cyclic orbit machinery reused from the parent Burnside branch."
+    }
+  ],
   "meta": {
     "author": "Classical (necklace / orbit-counting proof of Fermat's little theorem; cf. Golomb 1956); formalized via Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Proofs_of_Fermat%27s_little_theorem#Proof_by_counting_necklaces",
