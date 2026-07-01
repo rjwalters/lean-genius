@@ -102,6 +102,11 @@
       "targetId": "fibonacci-identities-oq-05",
       "relationship": "relatedTo",
       "description": "The oq-05 entry establishes the bilinear product sum ∑ Fₖ·Fₖ₊₁ (parity governed via Cassini); this entry handles the strictly simpler linear sums ∑ Fₖ and ∑ k·Fₖ, which telescope or reduce to a single linear combination of the induction hypothesis with no parity split."
+    },
+    {
+      "targetId": "lucas-sum-oq-01",
+      "relationship": "relatedTo",
+      "description": "The Lucas analogue of this entry's fib_sum: the partial sum ∑_{k=1}^{n} Lₖ = Lₙ₊₂ − 3 telescopes exactly as F₀ + ⋯ + Fₙ = Fₙ₊₂ − 1 does here, differing only in the constant (3 vs 1) fixed by the initial conditions L₀ = 2, L₁ = 1 rather than F₀ = 0, F₁ = 1. It realizes, at degree zero, the general Gibonacci partial-sum question raised in this entry's open problems and shares the same subtraction-free-in-ℕ + omega proof recipe."
     }
   ],
   "conclusion": {
