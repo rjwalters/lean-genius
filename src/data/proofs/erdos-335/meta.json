@@ -54,6 +54,11 @@
         "theorem": "div_le_div_right, div_lt_iff",
         "description": "Ordered field division lemmas for density bound proofs",
         "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "schnirelmannDensity, schnirelmannDensity_le_div",
+        "description": "Mathlib's Schnirelmann density (infimum of |A∩{1,…,n}|/n) and its per-n upper bound, used to prove the Schnirelmann↔asymptotic bridge schnirelmannDensity A ≤ asympDensity A",
+        "module": "Mathlib.Combinatorics.Schnirelmann"
       }
     ],
     "originalContributions": [
@@ -80,12 +85,16 @@
       "countingFn_empty/mono/mono_N: PROVED — counting function properties",
       "Sumset_singleton: PROVED — sumset of singletons is a singleton",
       "density_univ_one: d(ℕ) = 1 (whole set has density 1)",
-      "density_finite_zero: d(A) = 0 for any finite A ⊆ ℕ"
+      "density_finite_zero: d(A) = 0 for any finite A ⊆ ℕ",
+      "countingFn_eq_filter_card: PROVED — this file's Set.ncard counting equals Mathlib's Finset.filter counting over Ioc 0 N (bridge lemma)",
+      "schnirelmann_le_asymp: PROVED — Schnirelmann↔asymptotic bridge schnirelmannDensity A ≤ asympDensity A when the asymptotic density exists (infimum ≤ limit of the same ratios)",
+      "hasPositiveDensity_of_schnirelmann_pos: PROVED — positive Schnirelmann density certifies positive asymptotic density",
+      "schnirelmann_le_complement: PROVED — in a density-additive pair, schnirelmannDensity A ≤ 1 − asympDensity B"
     ],
     "axiomCount": 3,
-    "lineCount": 414,
+    "lineCount": 523,
     "assumptions": "3 axioms: weyl_equidistribution, fractional_part_density_additive, erdos_335_conjecture (OPEN). See Lean source for complete statements.",
-    "theoremCount": 40,
+    "theoremCount": 46,
     "definitionCount": 8
   },
   "sections": [
@@ -168,6 +177,14 @@
       "endLine": 363,
       "summary": "Computes concrete densities: countingFn_univ_eq and density_univ_one (d(ℕ) = 1), and density_finite_zero (every finite set has density 0), proved via an explicit ε–N tendsto argument.",
       "mathContext": "Sanity-check computations anchor the theory: $d(\\mathbb{N})=1$ and $d(A)=0$ for finite $A$, the latter shown by bounding $|A\\cap[1,N]|\\le|A|$ so the ratio $|A|/N\\to 0$."
+    },
+    {
+      "id": "schnirelmann-bridge",
+      "title": "Bridge to Mathlib's Schnirelmann Density",
+      "startLine": 461,
+      "endLine": 523,
+      "summary": "Connects this file's asympDensity to Mathlib's schnirelmannDensity. Proves countingFn_eq_filter_card (the two counting functions agree since Set.Ioc 0 N = Set.Icc 1 N on ℕ), then the bridge schnirelmann_le_asymp (infimum ≤ limit), and corollaries hasPositiveDensity_of_schnirelmann_pos and schnirelmann_le_complement.",
+      "mathContext": "The Schnirelmann density $\\sigma(A)=\\inf_{n>0}|A\\cap[1,n]|/n$ is a lower bound for the asymptotic density $d(A)=\\lim_{n\\to\\infty}|A\\cap[1,n]|/n$ whenever the latter exists, since an infimum of a sequence never exceeds its limit. This makes Mathlib's Schnirelmann API available for the asymptotic-density theory of #335."
     }
   ],
   "overview": {
@@ -180,7 +197,8 @@
       "**Weyl Equidistribution Bridge:** The known examples use Weyl's 1916 theorem: for irrational $\\theta$, the sequence $\\{n\\theta\\}$ is equidistributed mod 1, so $d(\\{n : \\{n\\theta\\} \\in X\\}) = \\mu(X)$. This transforms a number-theoretic density question into a measure-theoretic one on $\\mathbb{R}/\\mathbb{Z}$.",
       "**Structural Rigidity Hypothesis:** The conjecture asserts that density additivity is *rigid* — it can only arise from the group-theoretic mechanism of toral rotations. This would be a strong inverse theorem, deducing algebraic structure from a density condition.",
       "**Sum Constraint:** The axiomatized result $d(A) + d(B) \\leq 1$ is necessary: if $d(A+B) = d(A) + d(B)$ and $d(A+B) \\leq 1$, then $d(A) + d(B) \\leq 1$. The density pairs $(d(A), d(B))$ achieving additivity must lie in the triangle $\\{(\\alpha, \\beta) : \\alpha + \\beta \\leq 1\\}$.",
-      "**Characterization vs Existence:** Unlike most Erdős problems that ask whether something exists, #335 asks for a *characterization*. Knowing *that* density-additive pairs exist (the fractional part construction) is easy; understanding *all* of them is the deep challenge."
+      "**Characterization vs Existence:** Unlike most Erdős problems that ask whether something exists, #335 asks for a *characterization*. Knowing *that* density-additive pairs exist (the fractional part construction) is easy; understanding *all* of them is the deep challenge.",
+      "**Schnirelmann as a Lower Bound:** Mathlib formalizes the Schnirelmann density (the infimum of |A∩{1,…,n}|/n) but not the asymptotic density (its limit). The bridge `schnirelmann_le_asymp` shows the infimum never exceeds the limit, so Mathlib's ~20 Schnirelmann lemmas transfer to lower bounds on the asymptotic density used here. The inequality can be strict: schnirelmannDensity{even}=0 (since 1∉{even}) while d({even})=1/2."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -219,8 +237,14 @@
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Basic",
+      "Mathlib.NumberTheory.Real.Irrational",
       "Mathlib.Order.Filter.Basic",
       "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Set.Finite.Lattice",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Algebra.Order.Field.Basic",
+      "Mathlib.Combinatorics.Schnirelmann",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -228,9 +252,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 459,
+    "lineCount": 523,
     "axiomCount": 3,
-    "theoremCount": 42,
+    "theoremCount": 46,
     "definitionCount": 8,
     "path": "Proofs/Erdos335Problem.lean",
     "sorries": 0
