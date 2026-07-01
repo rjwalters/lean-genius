@@ -20,9 +20,9 @@
     "badge": "original",
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 181,
-    "theoremCount": 8,
-    "definitionCount": 8,
+    "lineCount": 364,
+    "theoremCount": 16,
+    "definitionCount": 7,
     "originalContributions": [
       "qform_stdConic_rescale: the diagonal rescaling diag(√a,√b,√(-c)) pulls stdConic's quadratic form back exactly onto the form of diag(a,b,c) for a,b ≥ 0, c ≤ 0, as an identity of reals — the algebraic heart of the construction.",
       "det_rescale / det_rescale_ne_zero: the rescaling matrix has determinant √a·√b·√(-c), nonzero precisely when a,b > 0 and c < 0, certifying it as an invertible projective transformation.",
@@ -121,10 +121,10 @@
       "Matrix"
     ],
     "namespace": "PascalsHexagonIncomplete01OQ03OQ01",
-    "lineCount": 181,
+    "lineCount": 364,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 8,
+    "theoremCount": 16,
+    "definitionCount": 7,
     "mainTheorems": [
       {
         "name": "diagConic_indefinite_projEquiv_stdConic",
