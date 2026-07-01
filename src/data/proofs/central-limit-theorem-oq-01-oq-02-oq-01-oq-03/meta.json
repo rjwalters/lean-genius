@@ -112,7 +112,12 @@
   ],
   "conclusion": {
     "summary": "Machine-verified differential structure of the Gaussian exponent: ψ'(t) = iμ − σ²t, the CF ODE φ'(t) = φ(t)·(iμ − σ²t), and the cumulant facts ψ'(0)=iμ, ψ''=−σ², ψ'''≡0 (κ₁=μ, κ₂=σ², κ_{≥3}=0). Zero sorries, zero axioms beyond the foundational ones.",
-    "implications": "The affine logarithmic derivative and the vanishing of cumulants beyond order 2 are the analytic fingerprint of the normal distribution (Marcinkiewicz). Together with the siblings' convolution law, this expresses the additivity of cumulants underlying the central limit theorem."
+    "implications": "The affine logarithmic derivative and the vanishing of cumulants beyond order 2 are the analytic fingerprint of the normal distribution (Marcinkiewicz). Together with the siblings' convolution law, this expresses the additivity of cumulants underlying the central limit theorem.",
+    "openQuestions": [
+      "Prove the Marcinkiewicz converse: a distribution whose characteristic function has the form exp(P(t)) with P a polynomial must have deg P ≤ 2, hence be Gaussian. Here we verify ψ''' ≡ 0 for the Gaussian exponent; the converse — that vanishing of all cumulants of order ≥ 3 forces normality — is the deep characterization and is not yet formalized.",
+      "Assemble the CLT statement from the cumulant structure: combine the vanishing higher cumulants with the siblings' convolution additivity κ_j(X+Y) = κ_j(X) + κ_j(Y) to show that the standardized sum (∑Xᵢ − nμ)/(σ√n) has all cumulants of order ≥ 3 tending to 0, so its characteristic function converges pointwise to exp(−t²/2) (Lévy continuity ⟹ convergence in distribution to the standard normal).",
+      "Generalize the differential structure to the multivariate Gaussian: for ψ(t) = i⟨μ,t⟩ − ½ tᵀΣt on ℝᵈ, verify the gradient ∇ψ = iμ − Σt, the Hessian −Σ, and the vanishing of all third- and higher-order derivatives, recovering that the covariance matrix Σ carries the entire second-order cumulant tensor."
+    ]
   },
   "mainTheorems": [
     {
