@@ -64,6 +64,23 @@
       "Sharpen to the two-term asymptotic Hₙ = log n + γ + 1/(2n) + O(1/n²) via the Euler–Maclaurin correction"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "antitone-integral-sum-comparison-oq-01-oq-01",
+      "relationship": "Answers this entry's first open question",
+      "description": "Builds the monotone (increasing) companion to this antitone sandwich, then uses the full comparison framework to derive Stirling-type bounds for log n! and the p-series convergence criterion (∑ 1/iᵖ converges iff p > 1) — exactly the corollary requested here."
+    },
+    {
+      "proofId": "antitone-integral-sum-comparison-oq-01-oq-02",
+      "relationship": "Answers this entry's second open question",
+      "description": "Promotes the boundedness Hₙ − log(n+1) ∈ [0,1] established here to genuine convergence, proving the harmonic defect tends to a limit — the Euler–Mascheroni constant γ — via a monotone-bounded argument."
+    },
+    {
+      "proofId": "harmonic-divergence",
+      "relationship": "Qualitative counterpart of the harmonic bounds",
+      "description": "The divergence of the harmonic series ∑ 1/n. The lower bound log(n+1) ≤ Hₙ proved here is the quantitative form: the integral test shows the partial sums grow like log n, so they diverge — but only logarithmically."
+    }
+  ],
   "leanFile": {
     "namespace": "AntitoneIntegralSumComparison",
     "lineCount": 141,
