@@ -67,6 +67,29 @@
     ]
   },
   {
+    "id": "ann-integral",
+    "proofId": "angle-trisection-cos-20-gal-oq-02-oq-02",
+    "range": {
+      "startLine": 70,
+      "endLine": 77
+    },
+    "type": "key-step",
+    "title": "Integrality: The Bridge to the Minimal Polynomial",
+    "content": "cos_isIntegral is the hinge that turns the two preceding evaluation facts into a statement about the minimal polynomial. Because minpoly ℚ (cos 2π/n) is only well-behaved (divides, is irreducible) when cos 2π/n is integral over ℚ, this theorem must be established first. The witness is the very polynomial the rest of the file studies: cos 2π/n is a root of Tₙ − 1 (aeval_cos_cheb gives aeval(Tₙ−1) = 0) and Tₙ − 1 ≠ 0 (chebT_sub_one_ne_zero), so IsAlgebraic holds by definition, and over the field ℚ algebraic ⟹ integral (IsAlgebraic.isIntegral). Everything downstream — minpoly.dvd, minpoly.irreducible, the degree bound — consumes this single integrality hypothesis.",
+    "mathContext": "$\\cos 2\\pi/n$ is a root of the nonzero $T_n - 1 \\in \\mathbb Q[X]$, hence algebraic, hence integral over the field $\\mathbb Q$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "integral element",
+      "algebraic over a field",
+      "IsAlgebraic.isIntegral",
+      "minimal polynomial well-definedness"
+    ],
+    "prerequisites": [
+      "IsIntegral / IsAlgebraic",
+      "a root of a nonzero polynomial is algebraic"
+    ]
+  },
+  {
     "id": "ann-minpoly-dvd",
     "proofId": "angle-trisection-cos-20-gal-oq-02-oq-02",
     "range": {
