@@ -91,5 +91,27 @@
       "Does the same 'clear the subtraction, then ring-and-omega' recipe extend to the general odd-power sums ∑(2k−1)^p, or does the closed form stop factoring as cleanly as n²(2n²−1) for higher p?",
       "Can the odd-cube identity be given a bijective/geometric proof in Lean matching the visual nested-square dissection, rather than the inductive one?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "nicomachus-sum-of-cubes-oq-01",
+      "relationship": "Parent all-cubes identity",
+      "description": "Nicomachus's theorem ∑ k³ = (∑ k)² over all cubes. This entry is the odd-index restriction: summing only (2k+1)³ yields the strikingly different closed form n²(2n²−1) rather than a perfect square, and the parent's case-split-in-ℕ technique is here replaced by the add-a-term-to-clear-the-subtraction trick."
+    },
+    {
+      "proofId": "nicomachus-sum-of-cubes-oq-02",
+      "relationship": "Sibling Faulhaber power-sum",
+      "description": "The Faulhaber p=4 closed form ∑ k⁴ = n(n+1)(2n+1)(3n²+3n−1)/30. A companion entry sharing this one's exact 'clear the denominator/subtraction, then ring-and-omega induction' recipe."
+    },
+    {
+      "proofId": "arithmetic-series",
+      "relationship": "Underlying odd-number sum",
+      "description": "Gauss's formula ∑ k = n(n+1)/2. Its odd-index counterpart ∑_{k<n}(2k+1) = n² (the sum of the first n odd numbers is a perfect square) is the degree-1 shadow of the odd-cube identity proved here."
+    },
+    {
+      "proofId": "newton-power-sum-identities-oq-01",
+      "relationship": "General power-sum framework",
+      "description": "Newton's identities for power sums pₖ = ∑ Xᵢᵏ, the symmetric-function context for fixed-degree power-sum formulas including odd-index variants."
+    }
+  ]
 }
