@@ -94,5 +94,29 @@
       "ℝ is uncountable",
       "a countable union of countable sets is countable"
     ]
+  },
+  {
+    "id": "ann-fodef-schema",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-05",
+    "range": {
+      "startLine": 126,
+      "endLine": 159
+    },
+    "type": "insight",
+    "title": "One Reusable Schema Behind Algebraic, Computable, and Definable Countability",
+    "content": "This entry and its two siblings (algebraic reals, computable reals) are three instances of a single abstract lemma, worth stating on its own: if a set S ⊆ ℝ admits a NAMING map — a total surjection from a countable index type I onto S, or equivalently a right-inverse partial map S → I picking a name for each element — then S is countable, because it injects into the countable I. The three entries differ only in what plays the role of (I, naming):\n\n- Algebraic reals: I = ℤ[X] (countable), the name of r is a polynomial it roots; the fibre over each polynomial is finite (≤ deg), so the image is countable.\n- Computable reals: I = Turing-machine codes (countable), the name of r is a machine converging to it.\n- Definable reals (here): I = L.Formula (Fin 1) (countable, §2), the name of r is a formula it UNIQUELY satisfies; here the naming is genuinely injective, not merely finite-to-one, since a formula has at most one sole realiser.\n\nSeeing the three as one schema explains why the same proof shape recurs and isolates the single hypothesis that changes: countability of the name space. It is exactly this abstraction (meta openQuestion #4) that would let all three sibling entries be refactored through one `countable index + denotation map ⟹ countable image` lemma — and the same schema, with a second-order name space, is what the full analytical-hierarchy open question needs.",
+    "mathContext": "Abstractly: a surjection I ↠ S from a countable I forces |S| ≤ |I| = ℵ₀. The nameability hierarchy ℚ ⊊ algebraic ⊊ computable ⊊ definable ⊊ ℝ is a tower of ever-larger countable name spaces, all dominated by the continuum 𝔠 of ℝ itself.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting by countable names",
+      "surjection from a countable type",
+      "nameability hierarchy",
+      "Function.Injective.countable",
+      "abstraction of sibling proofs"
+    ],
+    "prerequisites": [
+      "a set with a countable naming map is countable",
+      "the algebraic / computable / definable sibling entries"
+    ]
   }
 ]
