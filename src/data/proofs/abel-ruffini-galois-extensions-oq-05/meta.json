@@ -262,102 +262,102 @@
   "crossReferences": [
     {
       "proofId": "abel-ruffini-galois-extensions",
-      "relationship": "**Parent file — supplies the sharp bidirectional $S_n$-solvable $\\iff n \\leq 4$ classification that frames Shafarevich's theorem as the *positive* …",
+      "relationship": "parent",
       "description": "Parent file: supplies the sharp $S_n$-solvable $\\iff n \\leq 4$ classification, framing Shafarevich's theorem as the positive companion to …"
     },
     {
       "proofId": "abel-ruffini",
-      "relationship": "Grandparent: proves the polynomial-theoretic side (solvable by radicals ↔ solvable Galois group), completing the bidirectional characterization",
+      "relationship": "ancestor",
       "description": "Grandparent: proves the polynomial side (solvable by radicals ↔ solvable Galois group), completing the bidirectional characterization."
     },
     {
       "proofId": "inverse-galois",
-      "relationship": "Sister entry (Wiedijk #71).",
+      "relationship": "sibling",
       "description": "Sister entry (Wiedijk #71): the inverse Galois problem of realizing finite groups as Galois groups over ℚ."
     },
     {
       "proofId": "inverse-galois-a5",
-      "relationship": "Concrete realization of A₅ over ℚ — proves Gal(x⁵-4x+2/ℚ) ≅ S₅, with A₅ recovered as the kernel of the sign character.",
+      "relationship": "sibling",
       "description": "Concrete realization of $A_5$ over ℚ via $\\mathrm{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$, with $A_5$ as the sign-character kernel."
     },
     {
       "proofId": "inverse-galois-d4",
-      "relationship": "Concrete realization of the dihedral group D₄ ≅ Gal(X⁴-2/ℚ) over ℚ.",
+      "relationship": "sibling",
       "description": "Concrete realization of the dihedral group $D_4 \\cong \\mathrm{Gal}(X^4-2/\\mathbb{Q})$ over ℚ."
     },
     {
       "proofId": "inverse-galois-d4-oq-03",
-      "relationship": "**Parametric extension of the constructive solvable-Galois track.** S2 scaffold for the general dihedral-Galois criterion: *for which $(n, a)$ is …",
+      "relationship": "related",
       "description": "Parametric extension of the constructive solvable-Galois realization track."
     },
     {
       "proofId": "inverse-galois-f20",
-      "relationship": "Concrete realization of the Frobenius group F₂₀ = ℤ/5 ⋊ ℤ/4 ≅ Gal(X⁵-2/ℚ) over ℚ.",
+      "relationship": "sibling",
       "description": "Concrete realization of the Frobenius group $F_{20} = \\mathbb{Z}/5 \\rtimes \\mathbb{Z}/4 \\cong \\mathrm{Gal}(X^5-2/\\mathbb{Q})$ over ℚ."
     },
     {
       "proofId": "inverse-galois-oq-06",
-      "relationship": "Sister entry in the inverse-Galois branch.",
+      "relationship": "sibling",
       "description": "Sister entry in the inverse-Galois branch."
     },
     {
       "proofId": "kroneckers-jugendtraum",
-      "relationship": "Foundational for the abelian base case of Shafarevich's induction: the Kronecker-Weber theorem (subsumed under the Jugendtraum) realizes every finite …",
+      "relationship": "foundational",
       "description": "Foundational for the abelian base case of Shafarevich's induction: Kronecker–Weber realizes every finite abelian group over ℚ via cyclotomic …"
     },
     {
       "proofId": "primitive-roots",
-      "relationship": "Provides the cyclotomic structure underlying the abelian base case of Shafarevich's induction.",
+      "relationship": "foundational",
       "description": "Provides the cyclotomic structure underlying the abelian base case of Shafarevich's induction."
     },
     {
       "proofId": "de-moivre",
-      "relationship": "**De Moivre's theorem (Wiedijk #17) is the trigonometric engine that constructs the $n$-th roots of unity $\\zeta_n^k = \\cos(2\\pi k/n) + i\\sin(2\\pi …",
+      "relationship": "foundational",
       "description": "De Moivre's theorem (Wiedijk #17): constructs the $n$-th roots of unity generating the cyclotomic fields behind the abelian case."
     },
     {
       "proofId": "sylow-theorems",
-      "relationship": "Sylow theory is the engine of the structure theorems used in Shafarevich's induction.",
+      "relationship": "foundational",
       "description": "Sylow theory is the engine of the structure theorems used in Shafarevich's induction."
     },
     {
       "proofId": "sylow-theorems-oq-02",
-      "relationship": "**Pro-$p$ Sylow theory for profinite groups (Serre 1965) — the formalized companion to keyInsight #9's prime-2 gap and openQuestion #4's …",
+      "relationship": "related",
       "description": "Pro-$p$ Sylow theory for profinite groups (Serre 1965); companion to the prime-2 gap (keyInsight #9) and the Shafarevich–Iwasawa conjecture …"
     },
     {
       "proofId": "abel-ruffini-oq-04-oq-01",
-      "relationship": "Cousin entry providing the contrast: a concrete unsolvable Galois group over ℚ.",
+      "relationship": "related",
       "description": "Cousin entry providing contrast: a concrete unsolvable Galois group over ℚ."
     },
     {
       "proofId": "abel-ruffini-galois-extensions-oq-04",
-      "relationship": "**Structural prerequisite for the 'solvable' hypothesis itself — Jordan-Hölder uniqueness makes the composition-factor multiset a well-defined …",
+      "relationship": "prerequisite",
       "description": "Structural prerequisite for the 'solvable' hypothesis: Jordan–Hölder uniqueness makes the composition-factor multiset a well-defined invariant."
     },
     {
       "proofId": "lagrange-theorem",
-      "relationship": "Lagrange's theorem (|H| divides |G|) underlies the closure-under-subgroups-and-quotients corollaries proved here: if H ≤ G with G solvable, then |H| …",
+      "relationship": "foundational",
       "description": "Lagrange's theorem ($|H| \\mid |G|$) underlies the closure-under-subgroups-and-quotients corollaries proved here."
     },
     {
       "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-      "relationship": "Direct sub-entry — answers the openQuestion #1 of this file (\"Can Shafarevich's theorem be proved in Lean using Mathlib's developing class field …",
+      "relationship": "extended-by",
       "description": "Direct sub-entry answering openQuestion #1: can Shafarevich's theorem be proved in Lean via Mathlib's developing class field theory?"
     },
     {
       "proofId": "abel-ruffini-galois-extensions-oq-07",
-      "relationship": "Burnside's $p^a q^b$ theorem: every finite group of order with at most two distinct prime factors is solvable.",
+      "relationship": "related",
       "description": "Burnside's $p^a q^b$ theorem: every finite group whose order has at most two prime factors is solvable."
     },
     {
       "proofId": "abel-ruffini-oq-04-oq-02-oq-03",
-      "relationship": "Proves all finite groups of order $< 60$ are solvable — quantifies the boundary where Shafarevich's axiom kicks in universally without further …",
+      "relationship": "related",
       "description": "Proves all finite groups of order $< 60$ are solvable, quantifying where Shafarevich's axiom applies universally."
     },
     {
       "proofId": "solution-of-cubic",
-      "relationship": "**Constructive companion to the abstract `s3_realizable` corollary** — explicitly named in keyInsight #8 but not previously cross-linked.",
+      "relationship": "related",
       "description": "Constructive companion to the abstract s3_realizable corollary (named in keyInsight #8)."
     }
   ],
