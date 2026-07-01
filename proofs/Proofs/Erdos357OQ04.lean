@@ -126,6 +126,6 @@ conjecture.
 theorem density_zero_iff_eventually_le (A : ℕ → ℕ) :
     Tendsto (fun n => (countLE A n : ℝ) / n) atTop (𝓝 0) ↔
       ∀ ε, 0 < ε → ∀ᶠ n in atTop, (countLE A n : ℝ) ≤ ε * n :=
-  sublinear_tfae _ (fun n => Nat.cast_nonneg _)
+  sublinear_tfae _ (fun _ => Nat.cast_nonneg _)
 
 end Erdos357OQ04
