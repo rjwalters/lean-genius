@@ -65,7 +65,8 @@
       "continuant_prod_deficit (Erdos1005ProblemOQ02.lean §29): secondCont rest ≤ (k::rest).prod − Continuant(k::rest) for all-≥2",
       "continuant_lt_prod (§29): |ks|≥2 ∧ all-≥2 ⟹ Continuant ks < ks.prod (strict §28 ceiling)",
       "continuant_eq_prod_iff (§29): all-≥2 ⟹ (Continuant ks = ks.prod ⟺ ks.length ≤ 1)",
-      "continuant_lt_prod_example (§29): K[3,3]=8 < 9, deficit 1 = secondCont[3]"
+      "continuant_lt_prod_example (§29): K[3,3]=8 < 9, deficit 1 = secondCont[3]",
+      "continuant_ge_pow, pow_sub_one_le_prod_sub_one, continuant_pow_run_length_le, continuant_run_length_le_log, continuant_ge_pow_example in Erdos1005ProblemOQ02.lean §30 (VERIFIED 0-axiom)"
     ],
     "insights": [
       "CORRECTION: the roadmap heuristic that the order-n cap forces O(log n) refinement depth is FALSE for arbitrary mediant chains. The one-sided chain 0/1,1/2,1/3,…,1/n fits Θ(n) levels under q≤n with only LINEAR denominator growth (k+1)·b+d.",
@@ -88,7 +89,9 @@
       "The period-6 leading-1 rotation (§23) brackets a large-quotient block on BOTH ends identically: trailing 1s reduce to leading 1s on the reversed tail via continuant_reverse, transferring the entire orbit and the IDENTICAL sign classification at zero arithmetic cost",
       "Session 2026-06-30 (researcher-2): §26 quotient-weighted continuant growth. continuant_ge_length_weighted (d≥2, entries≥d): (d-1)|ks|+1 ≤ Continuant ks — sharpens §17's slope-1 bound to slope (d-1). Corollary continuant_run_length_le: a continuant ceiling N caps run length at |ks| ≤ (N-1)/(d-1), the targeted O(n/d) bound (first d-sensitive run-length cap). Integrality (secondCont+1 ≤ Continuant) is essential — equality is attained. 0-axiom docker-verified [3058/3058]. Still open: the order-n continuant ceiling + admissible-list count (the 1/12-1/4 density step).",
       "§29: The §28 product ceiling K ≤ ∏kᵢ is tight ONLY at depths |ks| ≤ 1 (K[]=1=∏[], K[k]=k=∏[k]); strict for |ks| ≥ 2. Equality locus characterized: continuant_eq_prod_iff ⟺ length ≤ 1.",
-      "§29: Quantitative deficit — the product overshoots the continuant by AT LEAST the trailing continuant of the tail: secondCont rest ≤ (k::rest).prod − Continuant(k::rest), since residual k·(∏rest−K rest) ≥ 0 by §28 continuant_le_prod. The minus-continuant pays an accumulated-trailing-continuant loss vs the naive product."
+      "§29: Quantitative deficit — the product overshoots the continuant by AT LEAST the trailing continuant of the tail: secondCont rest ≤ (k::rest).prod − Continuant(k::rest), since residual k·(∏rest−K rest) ≥ 0 by §28 continuant_le_prod. The minus-continuant pays an accumulated-trailing-continuant loss vs the naive product.",
+      "§30: formalized the geometric continuant floor (d-1)^|ks| ≤ Continuant ks on all-≥d runs (continuant_ge_pow), chaining (d-1)^|ks| ≤ ∏(kᵢ-1) through §28 product floor; the multiplicative/geometric companion to §26 additive slope-(d-1) bound.",
+      "§30: continuant_run_length_le_log — for d≥3 a continuant ceiling N caps run length logarithmically |ks| ≤ Nat.log (d-1) N, the exponential sharpening of §26 O(N/d) additive cap; formalizes the logarithmic run-length cap previously only stated in §26/§28 prose. Silent at density bottleneck d=2 (base d-1=1 vacuous)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
