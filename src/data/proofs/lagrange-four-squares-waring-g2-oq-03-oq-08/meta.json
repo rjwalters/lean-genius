@@ -40,7 +40,8 @@
     "keyInsights": [
       "Waring's g(2) is most faithfully captured as the least element of {k | every n is a sum of k squares}, not as a bare conjunction.",
       "Monotonicity of IsSumOfSquares in k is exactly what turns 'no k ≤ 3 representation of 7' into the sharp lower bound 4 ≤ k.",
-      "The single witness 7 and a finite mod-8 check suffice for the lower bound, keeping the whole proof inside decide/omega — no native_decide, hence 0-axiom."
+      "The single witness 7 and a finite mod-8 check suffice for the lower bound, keeping the whole proof inside decide/omega — no native_decide, hence 0-axiom.",
+      "The two halves of g(2) = 4 have opposite characters: the upper bound g(2) ≤ 4 is a deep universal theorem (Lagrange — EVERY natural number is four squares), while the lower bound g(2) ≥ 4 is an elementary single-congruence obstruction (7 is not three squares, mod 8). This asymmetry — an expensive universal upper bound versus a cheap witnessed lower bound — recurs for every Waring number g(k)."
     ],
     "prerequisites": [
       "Lagrange's four-square theorem (Nat.sum_four_squares)",
@@ -67,6 +68,24 @@
     "path": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ08.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "title": "J.-L. Lagrange, \"Démonstration d'un théorème d'arithmétique\" (1770) — every natural number is a sum of four squares",
+      "url": "https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem"
+    },
+    {
+      "title": "E. Waring, Meditationes Algebraicae (1770) — the original Waring problem and g(k)",
+      "url": "https://en.wikipedia.org/wiki/Waring%27s_problem"
+    },
+    {
+      "title": "Legendre's three-square theorem — n is a sum of three squares iff n ≠ 4^a(8b+7)",
+      "url": "https://en.wikipedia.org/wiki/Legendre%27s_three-square_theorem"
+    },
+    {
+      "title": "Mathlib: Nat.sum_four_squares (Lagrange's four-square theorem)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/SumFourSquares.html"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "lagrange-four-squares-waring-g2",
