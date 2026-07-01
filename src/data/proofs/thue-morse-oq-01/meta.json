@@ -20,6 +20,38 @@
     "sorries": 0
   },
   "description": "The Thue-Morse sequence, defined as the parity of the binary digit sum, satisfies the bit-flip recurrences t(2n)=t(n), t(2n+1)=t(n)+1, takes value 1 at every power of two, and exhibits the four-term Prouhet-Tarry-Escott block structure t(4n)=t(4n+3), t(4n+1)=t(4n+2).",
+  "references": [
+    {
+      "authors": "Axel Thue",
+      "title": "Über unendliche Zeichenreihen (Norske Vid. Selsk. Skr.)",
+      "year": 1906,
+      "note": "Introduces the Thue–Morse sequence and its overlap-free / cube-free properties."
+    },
+    {
+      "authors": "Marston Morse",
+      "title": "Recurrent Geodesics on a Surface of Negative Curvature (Transactions of the AMS 22)",
+      "year": 1921,
+      "note": "Rediscovery of the sequence in symbolic dynamics; hence 'Thue–Morse'."
+    },
+    {
+      "authors": "Eugène Prouhet",
+      "title": "Mémoire sur quelques relations entre les puissances des nombres (C. R. Acad. Sci. Paris 33)",
+      "year": 1851,
+      "note": "The Prouhet–Tarry–Escott partition realized by the four-term Thue–Morse identity."
+    },
+    {
+      "authors": "Jean-Paul Allouche and Jeffrey Shallit",
+      "title": "Automatic Sequences: Theory, Applications, Generalizations",
+      "year": 2003,
+      "note": "Cambridge University Press. Definitive account of the Thue–Morse sequence and its recurrences."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Nat.binaryRec and digit-sum parity infrastructure",
+      "year": 2024,
+      "note": "Binary digit-sum parity used to define t(n) and prove the bit-flip recurrences."
+    }
+  ],
   "meta": {
     "author": "Eugene Prouhet (1851), Axel Thue (1906), Marston Morse (1921)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Thue%E2%80%93Morse_sequence",

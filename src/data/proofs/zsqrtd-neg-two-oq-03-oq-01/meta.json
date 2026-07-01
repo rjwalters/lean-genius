@@ -3,6 +3,38 @@
   "title": "Primes $p \\equiv 1 \\pmod 3$ are $x^2 + 3y^2$ (Euler/Fermat, $n = 3$)",
   "slug": "zsqrtd-neg-two-oq-03-oq-01",
   "description": "Completes the open question deferred by the parent `zsqrtd-neg-two-oq-03`: using the Eisenstein-integer infrastructure built there (the ring ℤ[ω], its multiplicative norm N(a + bω) = a² - ab + b², the EuclideanDomain instance, and the quadratic-reciprocity criterion (-3/p) = 1 ↔ p ≡ 1 mod 3), this file proves the classical n = 3 Heegner-number representation theorem `sq_add_three_sq_of_prime_one_mod_three : p.Prime → p % 3 = 1 → ∃ a b : ℤ, (p : ℤ) = a² + 3b²`. The argument has two independent parts. Part I (`eisenstein_form_to_x_sq_add_three_y_sq`, pure ℤ arithmetic) shows the Eisenstein norm form a² - ab + b² represents exactly the integers x² + 3y², via the identity 4(a² - ab + b²) = (2a - b)² + 3b² and a three-branch parity case split using the order-6 unit rotations of ℤ[ω]. Part II (`exists_eisenstein_norm_eq_prime`) is the splitting argument: for p ≡ 1 mod 3, (-3) is a square mod p (quadratic reciprocity), so p divides (c - θ)(c + θ) where θ = 1 + 2ω satisfies θ² = -3 but divides neither factor (their ω-coordinates are ∓2 and p ∤ 2); hence p is reducible in the UFD ℤ[ω], and norm-multiplicativity forces N(α) = p for some Eisenstein integer α. Combining the two parts gives p = a² + 3b². Fully machine-checked: 0 sorries, 0 axioms.",
+  "references": [
+    {
+      "authors": "Pierre de Fermat",
+      "title": "Correspondence (letters to Mersenne and Digby)",
+      "year": 1654,
+      "note": "Fermat's conjecture that primes p ≡ 1 (mod 3) are represented as x² + 3y²."
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Novi commentarii academiae scientiarum Petropolitanae (work on x²+3y²)",
+      "year": 1760,
+      "note": "Euler's proof of the p = x² + 3y² representation, completed formally in this entry."
+    },
+    {
+      "authors": "David A. Cox",
+      "title": "Primes of the Form x² + ny² (2nd ed.)",
+      "year": 2013,
+      "note": "Wiley. The definitive account of representations p = x² + 3y² via the ring of Eisenstein integers."
+    },
+    {
+      "authors": "Kenneth Ireland and Michael Rosen",
+      "title": "A Classical Introduction to Modern Number Theory (2nd ed.)",
+      "year": 1990,
+      "note": "Springer GTM 84. The Eisenstein integers ℤ[ω], their norm, and cubic residue theory."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Zsqrtd / Eisenstein-integer ring, norm and EuclideanDomain infrastructure",
+      "year": 2024,
+      "note": "The ring ℤ[ω] with norm N(a+bω)=a²−ab+b² and its Euclidean structure used in the proof."
+    }
+  ],
   "meta": {
     "author": "Euler (1763), Fermat (1640), Lagrange (1775)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Eisenstein_integer",

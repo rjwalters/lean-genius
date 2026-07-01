@@ -3,6 +3,38 @@
   "title": "van Aubel's Theorem via a Single Complex Identity",
   "slug": "van-aubel-theorem-oq-01",
   "description": "van Aubel's theorem: erect squares externally on the four sides of an arbitrary planar quadrilateral and join the centers of opposite squares. The two resulting segments are equal in length and perpendicular. Modelling the plane as ℂ, the entire theorem collapses to one algebraic identity R - P = i·(S - Q), from which equal length and perpendicularity follow because multiplication by i is a length-preserving 90° rotation. 3 theorems, 1 definition, 0 axioms, 0 sorries.",
+  "references": [
+    {
+      "authors": "Henricus Hubertus van Aubel",
+      "title": "Note concernant les centres de carrés construits sur les côtés d'un polygone quelconque (Nouvelle Correspondance Mathématique 4)",
+      "year": 1878,
+      "note": "The original van Aubel theorem on squares erected on a quadrilateral, formalized here."
+    },
+    {
+      "authors": "Liang-shin Hahn",
+      "title": "Complex Numbers and Geometry",
+      "year": 1994,
+      "note": "Mathematical Association of America. Complex-identity proofs of van Aubel's and related square-on-side theorems."
+    },
+    {
+      "authors": "Roger A. Johnson",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": 1929,
+      "note": "Dover reprint. Squares on the sides of polygons and their center configurations."
+    },
+    {
+      "authors": "H. S. M. Coxeter and S. L. Greitzer",
+      "title": "Geometry Revisited",
+      "year": 1967,
+      "note": "Mathematical Association of America. Napoleon/van Aubel-type theorems and rotation arguments."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Complex multiplication (rotation by i) and distance infrastructure",
+      "year": 2024,
+      "note": "The single complex identity (multiplication by i for the right angle) modelling the two segments."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Van_Aubel%27s_theorem",
