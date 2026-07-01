@@ -94,7 +94,7 @@ begins. The four sub-OQs are the natural follow-up iterations.
 
 namespace Proofs.MinpolyCharpolyOQ02
 
-open Matrix Polynomial
+open Matrix Polynomial Module
 
 variable {K : Type*} [Field K] {n : Type*} [Fintype n] [DecidableEq n]
 
@@ -198,53 +198,8 @@ theorem _root_.Matrix.IsDiagonalizable.squarefree_minpoly {M : Matrix n n K}
   rw [← hmeq]
   exact squarefree_minpoly_of_isDiag hdiag
 
-/-- **S1 OBSERVE → S7 ACT main theorem.** Over an algebraically closed field
-of characteristic zero, a matrix is diagonalizable iff its minimal polynomial
-is squarefree.
-
-The **forward** direction (`→`) is now fully proved and unconditional
-(`Matrix.IsDiagonalizable.squarefree_minpoly`, any field). The **reverse**
-direction (`←`, squarefree minpoly ⇒ diagonalizable) remains the single
-`sorry`: over an algebraically closed field it follows from Bridge C
-(`Module.End.isSemisimple_iff_squarefree_minpoly`) plus Bridge B
-(`Module.End.iSup_eigenspace_eq_top_of_isSemisimple`) transported back through
-`Matrix.toLin'`, and is the target of sub-OQ-02-OQ-02.
-
-Note: the field hypotheses can be weakened to "perfect field + minpoly
-splits", but the alg-closed-char-0 case is the headline textbook statement
-and is what most callers (e.g. linear-algebra texts) expect. The general
-form is the target of OQ-02-OQ-03. -/
-theorem diagonalizable_iff_squarefree_minpoly
-    [IsAlgClosed K] [CharZero K] (M : Matrix n n K) :
-    M.IsDiagonalizable ↔ Squarefree (minpoly K M) := by
-  refine ⟨fun h => h.squarefree_minpoly, ?_⟩
-  sorry
-
-/-- **Sanity lemma (unconditional).** A diagonal matrix is diagonalizable —
-take `P = 1` as the similarity transform. -/
-theorem _root_.Matrix.IsDiagonalizable.of_isDiag {M : Matrix n n K}
-    (hM : Matrix.IsDiag M) : M.IsDiagonalizable := by
-  refine ⟨1, isUnit_one, ?_⟩
-  simpa using hM
-
-/-- **Sanity lemma (unconditional).** The zero matrix is diagonalizable. -/
-theorem _root_.Matrix.IsDiagonalizable.zero :
-    (0 : Matrix n n K).IsDiagonalizable :=
-  Matrix.IsDiagonalizable.of_isDiag Matrix.isDiag_zero
-
-/-- **Sanity lemma (unconditional).** The identity matrix is diagonalizable. -/
-theorem _root_.Matrix.IsDiagonalizable.one :
-    (1 : Matrix n n K).IsDiagonalizable :=
-  Matrix.IsDiagonalizable.of_isDiag Matrix.isDiag_one
-
-/-- **Sanity lemma (unconditional).** Any explicitly diagonal matrix
-`Matrix.diagonal d` is diagonalizable. -/
-theorem _root_.Matrix.IsDiagonalizable.diagonal (d : n → K) :
-    (Matrix.diagonal d).IsDiagonalizable :=
-  Matrix.IsDiagonalizable.of_isDiag (Matrix.isDiag_diagonal d)
-
 -- ============================================================
--- S7 ACT helpers: endomorphism-level bridges (Mathlib v4.26.0)
+-- Endomorphism-level bridges (Mathlib v4.26.0)
 -- ============================================================
 
 /-- **Bridge B forward** (per S4 PREP #18626 corrected 3-lemma chain).
@@ -275,5 +230,119 @@ theorem _root_.Module.End.isSemisimple_iff_squarefree_minpoly
     f.IsSemisimple ↔ Squarefree (minpoly K f) :=
   ⟨Module.End.IsSemisimple.minpoly_squarefree,
    fun h => Module.End.isSemisimple_of_squarefree_aeval_eq_zero h (minpoly.aeval K f)⟩
+
+-- ============================================================
+-- Reverse direction (PROVED): eigenbasis ⇒ diagonalizable
+-- ============================================================
+
+/-- **Reverse-direction transport lemma.** If the standard space `n → K` has a
+basis `b` of eigenvectors of `M.toLin'` — that is, `M.toLin' (b i) = c i • b i`
+for some scalar function `c` — then `M` is diagonalizable.
+
+The similarity transform is the change-of-basis matrix `P = (Pi.basisFun).toMatrix b`,
+whose inverse is `b.toMatrix (Pi.basisFun)`. Conjugating `M` by it produces
+`LinearMap.toMatrix b b M.toLin'`, diagonal because every basis vector is an
+eigenvector. Holds over any field. -/
+theorem _root_.Matrix.isDiagonalizable_of_eigenbasis {M : Matrix n n K}
+    (b : Basis n K (n → K)) (c : n → K)
+    (heig : ∀ i, M.toLin' (b i) = c i • b i) : M.IsDiagonalizable := by
+  classical
+  set e : Basis n K (n → K) := Pi.basisFun K n with he
+  letI : Invertible (e.toMatrix b) := e.invertibleToMatrix b
+  refine ⟨e.toMatrix b, isUnit_of_invertible _, ?_⟩
+  have hinv : (e.toMatrix b)⁻¹ = b.toMatrix e := by
+    rw [← Matrix.invOf_eq_nonsing_inv]; rfl
+  rw [hinv]
+  -- The conjugate equals the (diagonal) matrix of `M.toLin'` in the eigenbasis.
+  have hM : LinearMap.toMatrix e e M.toLin' = M := by
+    rw [he, LinearMap.toMatrix_eq_toMatrix']; exact LinearMap.toMatrix'_toLin' M
+  have hMD : b.toMatrix e * M * e.toMatrix b = LinearMap.toMatrix b b M.toLin' := by
+    conv_lhs => rw [← hM]
+    simp only [basis_toMatrix_mul_linearMap_toMatrix, linearMap_toMatrix_mul_basis_toMatrix]
+  rw [hMD]
+  intro i j hij
+  rw [LinearMap.toMatrix_apply, heig j, map_smul, Finsupp.smul_apply, b.repr_self_apply,
+    if_neg (fun h => hij h.symm), smul_zero]
+
+omit [DecidableEq n] in
+/-- **Reverse-direction eigenbasis construction.** Over an algebraically closed
+field, a semisimple endomorphism of `n → K` admits a basis of eigenvectors.
+
+Semisimplicity gives `⨆ μ, eigenspace f μ = ⊤` (Bridge B); the eigenspaces are
+always independent (`Module.End.eigenspaces_iSupIndep`), so the family is an
+internal direct sum. Collecting a basis of each eigenspace yields a basis of
+`n → K` indexed by a sigma type, reindexed onto `n` (both index a basis of the
+same finite-dimensional space). Each collected vector lies in a single
+eigenspace, hence is an eigenvector. -/
+theorem _root_.Matrix.exists_eigenbasis_of_isSemisimple [IsAlgClosed K]
+    {f : Module.End K (n → K)} (hss : f.IsSemisimple) :
+    ∃ (b : Basis n K (n → K)) (c : n → K), ∀ i, f (b i) = c i • b i := by
+  classical
+  have htop : ⨆ μ : K, f.eigenspace μ = ⊤ :=
+    Module.End.iSup_eigenspace_eq_top_of_isSemisimple hss
+  have hind : iSupIndep f.eigenspace := Module.End.eigenspaces_iSupIndep f
+  have hInt : DirectSum.IsInternal f.eigenspace :=
+    DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind htop
+  set b₀ := hInt.collectedBasis (fun μ => Module.finBasis K (f.eigenspace μ)) with hb₀
+  haveI : Fintype (Σ μ : K, Fin (finrank K (f.eigenspace μ))) :=
+    FiniteDimensional.fintypeBasisIndex b₀
+  let e := b₀.indexEquiv (Pi.basisFun K n)
+  refine ⟨b₀.reindex e, fun i => (e.symm i).1, fun i => ?_⟩
+  rw [Basis.reindex_apply]
+  have hmem : b₀ (e.symm i) ∈ f.eigenspace (e.symm i).1 :=
+    hInt.collectedBasis_mem _ (e.symm i)
+  exact Module.End.mem_eigenspace_iff.mp hmem
+
+/-- **S1 OBSERVE → main theorem (now fully PROVED).** Over an algebraically
+closed field (of any characteristic), a matrix is diagonalizable iff its minimal
+polynomial is squarefree.
+
+* **Forward** (`→`): `Matrix.IsDiagonalizable.squarefree_minpoly` — a
+  diagonalizable matrix has squarefree minpoly (unconditional, any field).
+* **Reverse** (`←`): transport the matrix minpoly to `M.toLin'`
+  (`Matrix.minpoly_toLin'`), read squarefree-minpoly as semisimplicity (Bridge C),
+  extract an eigenbasis (`Matrix.exists_eigenbasis_of_isSemisimple`, via Bridge B),
+  and conjugate to a diagonal matrix (`Matrix.isDiagonalizable_of_eigenbasis`).
+
+Only `[IsAlgClosed K]` is needed: over an algebraically closed field every
+polynomial splits into linear factors, so a squarefree minimal polynomial is a
+product of *distinct* linear factors and semisimplicity already forces an
+eigenbasis — no separability (hence no characteristic-zero) hypothesis is
+required. The textbook statement adds `[CharZero K]`, but that is redundant here.
+The general-field form (with an explicit `Polynomial.Splits` hypothesis) is the
+target of OQ-02-OQ-03. -/
+theorem diagonalizable_iff_squarefree_minpoly
+    [IsAlgClosed K] (M : Matrix n n K) :
+    M.IsDiagonalizable ↔ Squarefree (minpoly K M) := by
+  refine ⟨fun h => h.squarefree_minpoly, fun hsq => ?_⟩
+  have hsqf : Squarefree (minpoly K (M.toLin' : Module.End K (n → K))) := by
+    rw [Matrix.minpoly_toLin']; exact hsq
+  have hss : Module.End.IsSemisimple (M.toLin' : Module.End K (n → K)) :=
+    Module.End.isSemisimple_iff_squarefree_minpoly.mpr hsqf
+  obtain ⟨b, c, heig⟩ := Matrix.exists_eigenbasis_of_isSemisimple hss
+  exact Matrix.isDiagonalizable_of_eigenbasis b c heig
+
+/-- **Sanity lemma (unconditional).** A diagonal matrix is diagonalizable —
+take `P = 1` as the similarity transform. -/
+theorem _root_.Matrix.IsDiagonalizable.of_isDiag {M : Matrix n n K}
+    (hM : Matrix.IsDiag M) : M.IsDiagonalizable := by
+  refine ⟨1, isUnit_one, ?_⟩
+  simpa using hM
+
+/-- **Sanity lemma (unconditional).** The zero matrix is diagonalizable. -/
+theorem _root_.Matrix.IsDiagonalizable.zero :
+    (0 : Matrix n n K).IsDiagonalizable :=
+  Matrix.IsDiagonalizable.of_isDiag Matrix.isDiag_zero
+
+/-- **Sanity lemma (unconditional).** The identity matrix is diagonalizable. -/
+theorem _root_.Matrix.IsDiagonalizable.one :
+    (1 : Matrix n n K).IsDiagonalizable :=
+  Matrix.IsDiagonalizable.of_isDiag Matrix.isDiag_one
+
+/-- **Sanity lemma (unconditional).** Any explicitly diagonal matrix
+`Matrix.diagonal d` is diagonalizable. -/
+theorem _root_.Matrix.IsDiagonalizable.diagonal (d : n → K) :
+    (Matrix.diagonal d).IsDiagonalizable :=
+  Matrix.IsDiagonalizable.of_isDiag (Matrix.isDiag_diagonal d)
 
 end Proofs.MinpolyCharpolyOQ02
