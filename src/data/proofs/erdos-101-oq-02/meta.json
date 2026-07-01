@@ -1,0 +1,116 @@
+{
+  "id": "erdos-101-oq-02",
+  "slug": "erdos-101-oq-02",
+  "title": "Erdős #101 OQ-02: Extremal Four-Point-Line Configurations are Steiner Systems ($n \\equiv 1,4 \\bmod 12$)",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos101Problem"
+    ],
+    "opens": [
+      "Classical"
+    ],
+    "namespace": "Erdos101ExtremalSteiner",
+    "lineCount": 314,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos101OQ02.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Erdős",
+    "erdosNumber": 101,
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos101OQ02.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "incidence-geometry",
+      "design-theory",
+      "steiner-system",
+      "extremal-combinatorics",
+      "collinearity",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/101",
+    "erdosUrl": "https://erdosproblems.com/101",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-06-30",
+    "axiomCount": 0,
+    "lineCount": 314,
+    "assumptions": "None. 0 sorries, 0 axioms — every theorem depends only on the foundational axioms propext / Classical.choice / Quot.sound (verified by #print axioms). The result is an unconditional structural theorem about the extremal case of the parent's pair-packing bound.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "substantiveTheoremCount": 6
+  },
+  "description": "A structural / arithmetic barrier for the extremal case of Erdős Problem #101. The parent entry proves the sharp pair-packing upper bound $\\mathrm{fourPointLineCount}(P) \\le \\tfrac{n(n-1)}{12}$ for any $n$-point planar set with no five collinear. This follow-up characterises the equality case: a configuration attains the bound exactly when its four-point lines perfectly cover the pairs of points — i.e. it realises a Steiner system $S(2,4,n)$ in the plane — and derives the classical Hanani divisibility conditions $n \\equiv 1$ or $4 \\pmod{12}$ that any such configuration must satisfy.",
+  "overview": "Erdős #101 OQ-02 asks whether the Solymosi–Stojaković $\\Omega(n^{2-o(1)})$ lower-bound construction can be pushed to $\\Omega(n^2/\\mathrm{polylog}\\,n)$, or whether there is a barrier. The pair-packing bound $\\tfrac{n(n-1)}{12}$ is the natural elementary ceiling ($\\binom{4}{2}=6$ disjoint pairs per line, packed into $\\binom{n}{2}$ pairs). This entry pins down precisely when that ceiling is met: it is attained iff every 2-subset of points lies on a (unique) four-point line, which is exactly a Steiner system $S(2,4,n)$. Counting the block count ($12 \\mid n(n-1)$) and the replication number ($3 \\mid n-1$) forces $n \\equiv 1, 4 \\pmod{12}$. Consequently the $\\tfrac{n(n-1)}{12}$ bound is unattainable for all other residues — a hard arithmetic obstruction that precedes any geometric input. This does not resolve OQ-02 (which concerns $\\Omega(n^2)$ growth, well below the extremal ceiling), but it exactly delimits the extreme end of the packing spectrum.",
+  "sections": [
+    {
+      "id": "arithmetic-core",
+      "title": "Arithmetic core: residues mod 12",
+      "startLine": 43,
+      "endLine": 76,
+      "summary": "mod12_of_extremal: from 3 ∣ (n-1) and 12 ∣ n(n-1) with n ≥ 1, the residue n mod 12 is forced to 1 or 4. The nonlinear product n(n-1) is reduced via Nat.mul_mod and dispatched by a 12-way residue case split (interval_cases + omega).",
+      "mathContext": "$3 \\mid (n-1) \\land 12 \\mid n(n-1) \\Rightarrow n \\equiv 1,4 \\pmod{12}$"
+    },
+    {
+      "id": "block-count",
+      "title": "Block-count integrality: $12 \\mid n(n-1)$",
+      "startLine": 78,
+      "endLine": 103,
+      "summary": "twelve_dvd_of_extremal: attaining the bound means 6·L = C(n,2) = n(n-1)/2, so n(n-1) = 12·L. L is the block count of the underlying 2-(n,4,1) design.",
+      "mathContext": "$6L = \\binom{n}{2} \\Rightarrow n(n-1) = 12L$"
+    },
+    {
+      "id": "steiner-property",
+      "title": "Extremal ⇒ Steiner system $S(2,4,n)$",
+      "startLine": 105,
+      "endLine": 190,
+      "summary": "extremal_covers_all_pairs rebuilds the disjoint pair-packing (each line = 6 pairs, distinct lines share ≤ 1 point) and uses card equality to show the packing is perfect: every 2-subset of P.points lies in some four-point line. extremal_pair_covered_uniquely upgrades this to uniqueness — precisely a Steiner system.",
+      "mathContext": "$6L=\\binom{n}{2} \\Rightarrow \\forall\\, \\{p,q\\}\\subseteq P,\\ \\exists!\\ \\text{line } S \\ni p,q$"
+    },
+    {
+      "id": "replication",
+      "title": "Replication integrality: $3 \\mid (n-1)$",
+      "startLine": 192,
+      "endLine": 296,
+      "summary": "three_dvd_of_extremal: fix a point p; perfect covering partitions the n−1 remaining points into the 3-element sets S∖{p} over four-point lines S through p. Hence 3 ∣ (n−1), i.e. the replication number (n−1)/3 is an integer.",
+      "mathContext": "$n-1 = 3\\cdot |\\{\\text{four-point lines through } p\\}|$"
+    },
+    {
+      "id": "main",
+      "title": "Main theorem and contrapositive",
+      "startLine": 298,
+      "endLine": 314,
+      "summary": "extremal_forces_mod_twelve combines the two integrality facts: an extremal configuration forces n ≡ 1 or 4 (mod 12). not_extremal_of_mod_twelve is the contrapositive: for n ≢ 1,4 (mod 12) no no-five-collinear set attains the pair-packing bound.",
+      "mathContext": "$n \\equiv 1,4 \\pmod{12}$"
+    }
+  ],
+  "conclusion": {
+    "summary": "The extremal case of Erdős #101's pair-packing bound $\\tfrac{n(n-1)}{12}$ is exactly a plane-realised Steiner system $S(2,4,n)$, and therefore obeys Hanani's necessary conditions $n \\equiv 1, 4 \\pmod{12}$. All results are axiom-free (0 sorries, 0 axioms).",
+    "implications": "The bound $\\tfrac{n(n-1)}{12}$ is unattainable whenever $n \\not\\equiv 1,4 \\pmod{12}$ — a purely arithmetic barrier at the extreme end of the four-point-line spectrum, established before any geometric obstruction is invoked. It cleanly separates the 'perfect packing' regime (design theory) from the open $\\Omega(n^2)$ growth question of OQ-02.",
+    "openQuestions": [
+      "For which $n \\equiv 1,4 \\pmod{12}$ can a Steiner system $S(2,4,n)$ actually be realised in $\\mathbb{R}^2$ with no five collinear (the geometric realisation question, far stronger than the arithmetic necessary condition proved here)?",
+      "Is there an analogous exact equality characterisation, with matching divisibility constraints, for $k$-point-line packings ($k \\ge 5$) under a no-$(k+1)$-collinear hypothesis?"
+    ]
+  },
+  "crossReferences": [
+    "erdos-101",
+    "erdos-101-oq-01"
+  ],
+  "references": [
+    {
+      "title": "Erdős Problem #101",
+      "url": "https://erdosproblems.com/101"
+    },
+    {
+      "title": "H. Hanani, The existence and construction of balanced incomplete block designs, Ann. Math. Statist. 32 (1961)",
+      "url": "https://doi.org/10.1214/aoms/1177704711"
+    }
+  ]
+}
