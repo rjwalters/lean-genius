@@ -269,5 +269,48 @@
       "summary": "Part IX. Summary of extensions and recent frontier results stated as axioms: the Campos-Griffiths-Morris-Sahasrabudhe (CGMS) exponential improvement $R(k,k)\\le(4-\\varepsilon)^k$ with its $\\varepsilon$ estimate and book-algorithm structure, off-diagonal bounds, Bohman-Keevash $R(3,t)$, Mattheus-Verstraete $R(4,t)$, the Burr-Erdős conjecture, and Ramsey multiplicity."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Paul Erdős",
+      "title": "Some Remarks on the Theory of Graphs",
+      "year": 1947,
+      "venue": "Bulletin of the AMS 53, 292–294",
+      "note": "The founding probabilistic-method argument giving R(k,k) ≥ 2^(k/2), formalized here as the diagonal lower bound."
+    },
+    {
+      "authors": "Joel Spencer",
+      "title": "Ramsey's Theorem — A New Lower Bound",
+      "year": 1975,
+      "venue": "Journal of Combinatorial Theory, Series A 18, 108–115",
+      "note": "Lovász Local Lemma improvement of the Erdős bound, one of the extensions treated in this entry."
+    },
+    {
+      "authors": "David Conlon, Jacob Fox, and Benny Sudakov",
+      "title": "Recent Developments in Graph Ramsey Theory",
+      "year": 2015,
+      "venue": "Surveys in Combinatorics, LMS Lecture Notes 424, 49–118",
+      "note": "Survey containing the upper-bound techniques and state-of-the-art R(4,k) estimates axiomatized here."
+    },
+    {
+      "authors": "Miklós Ajtai, János Komlós, and Endre Szemerédi",
+      "title": "A Note on Ramsey Numbers",
+      "year": 1980,
+      "venue": "Journal of Combinatorial Theory, Series A 29, 354–360",
+      "note": "Establishes R(4,k) = O(k³/log²k) and the general R(s,k) upper bounds behind the quadratic-type lower-bound comparison."
+    },
+    {
+      "authors": "Noga Alon and Joel H. Spencer",
+      "title": "The Probabilistic Method",
+      "year": 2016,
+      "venue": "Wiley, 4th ed.",
+      "note": "Textbook development of the deletion method and alteration bounds underlying the R(4,k) ≥ Ω(k²/log k) lower bound."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Combinatorics.SimpleGraph and Ramsey-theoretic API",
+      "year": 2024,
+      "note": "Graph, clique, and independent-set infrastructure over which the Ramsey bounds are stated."
+    }
+  ]
 }

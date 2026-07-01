@@ -199,5 +199,41 @@
         "description": "S2-α companion (OQ02-OQ-02): object-level implication impl_formula and HBL D2/D3 axiomatization. Defines impl_formula and proves Gödel-code distinctness lemmas (impl_formula_code/_ne_falsum/_ne_Prov). Axiomatizes impl_mp (modus ponens internalization), d2_distribution (□(φ→ψ) → □φ → □ψ), and d3_internal_necessitation (□φ → □□φ). Derives internal_K as the prototypical Hilbert-Bernays-Löb K-axiom."
       }
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Kurt Gödel",
+      "title": "Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I",
+      "year": 1931,
+      "venue": "Monatshefte für Mathematik und Physik 38, 173–198",
+      "note": "Sketches the Second Incompleteness Theorem: a consistent system cannot prove its own consistency (Con(T) is unprovable in T)."
+    },
+    {
+      "authors": "David Hilbert and Paul Bernays",
+      "title": "Grundlagen der Mathematik II",
+      "year": 1939,
+      "venue": "Springer",
+      "note": "Introduces the Hilbert–Bernays derivability conditions (HBL conditions) on the provability predicate that this proof assumes."
+    },
+    {
+      "authors": "Martin Hugo Löb",
+      "title": "Solution of a Problem of Leon Henkin",
+      "year": 1955,
+      "venue": "Journal of Symbolic Logic 20(2), 115–118",
+      "note": "Löb's theorem and the third derivability condition; the modal core of the Second Incompleteness argument."
+    },
+    {
+      "authors": "George Boolos",
+      "title": "The Logic of Provability",
+      "year": 1993,
+      "venue": "Cambridge University Press",
+      "note": "Provability logic (GL) treatment showing Second Incompleteness as a one-line consequence of Löb's theorem, matching the structure of this formalization."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: classical logic foundation",
+      "year": 2024,
+      "note": "Underlies the derivation of the second theorem from the formalized First Incompleteness axiom and the HBL conditions."
+    }
+  ]
 }

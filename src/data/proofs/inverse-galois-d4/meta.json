@@ -117,5 +117,41 @@
       "Proofs.NthRootIrrationalOQ01"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "David S. Dummit and Richard M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley, 3rd ed.",
+      "note": "Standard reference: X⁴−2 has splitting field ℚ(⁴√2, i) with Galois group the dihedral group D₄ of order 8 (§14.2)."
+    },
+    {
+      "authors": "Jean-Pierre Serre",
+      "title": "Topics in Galois Theory",
+      "year": 2008,
+      "venue": "A K Peters, 2nd ed.",
+      "note": "Systematic treatment of the inverse Galois problem and the realization of small groups such as D₄ over ℚ."
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Algebra",
+      "year": 2002,
+      "venue": "Springer GTM 211, 3rd ed.",
+      "note": "Splitting fields, degree multiplicativity, and the embedding arguments used for the order-8 upper bound."
+    },
+    {
+      "authors": "Gunter Malle and B. Heinrich Matzat",
+      "title": "Inverse Galois Theory",
+      "year": 2018,
+      "venue": "Springer Monographs in Mathematics, 2nd ed.",
+      "note": "Comprehensive account of which finite groups are known to be Galois groups over ℚ, including dihedral realizations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: AdjoinRoot, IsSplittingField, and Galois group API",
+      "year": 2024,
+      "note": "Supplies AdjoinRoot(X⁴−2), the ℝ-embedding obstruction, and the finite Galois-group cardinality machinery used in the proof."
+    }
+  ]
 }

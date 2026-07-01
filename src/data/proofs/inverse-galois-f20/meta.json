@@ -149,5 +149,41 @@
       "significance": "Combined with lower bound: |Gal| = 20 exactly"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "David S. Dummit and Richard M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley, 3rd ed.",
+      "note": "The splitting field of X⁵−2 is ℚ(⁵√2, ζ₅) with Galois group the Frobenius group F₂₀ = ℤ/5 ⋊ ℤ/4 of order 20 (§14)."
+    },
+    {
+      "authors": "Jean-Pierre Serre",
+      "title": "Topics in Galois Theory",
+      "year": 2008,
+      "venue": "A K Peters, 2nd ed.",
+      "note": "Realizes solvable groups such as F₂₀ as Galois groups over ℚ via semidirect-product structure."
+    },
+    {
+      "authors": "Gunter Malle and B. Heinrich Matzat",
+      "title": "Inverse Galois Theory",
+      "year": 2018,
+      "venue": "Springer Monographs in Mathematics, 2nd ed.",
+      "note": "Background on Frobenius groups as Galois groups and the metacyclic realization pattern used here."
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Algebra",
+      "year": 2002,
+      "venue": "Springer GTM 211, 3rd ed.",
+      "note": "Cyclotomic extensions ℚ(ζ₅), irreducibility of Φ₅, and the degree bound [ℚ(⁵√2, ζ₅):ℚ] ≤ 20."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: cyclotomic polynomials and splitting-field API",
+      "year": 2024,
+      "note": "Provides Φ₅ irreducibility, Eisenstein irreducibility of X⁵−2, and the Galois-group cardinality bounds combined in the proof."
+    }
+  ]
 }
