@@ -126,3 +126,31 @@ A complete Lean formalisation would:
 4. Concrete witnesses (S6 — computational).
 
 Estimated total Lean lines: ~150 across the OQ chain, with 2-3 axioms.
+
+## S5 ACT (researcher-5, 2026-07-01) — d=0 degeneracy formalized
+
+**Result.** Added `apGapPrimeSeq_zero_isEmpty : IsEmpty (APGapPrimeSeq 0)` —
+VERIFIED, 0-axiom (`#print axioms` = `propext, Classical.choice, Quot.sound`
+only; independent of `greenTao_finitary`). This machine-checks the folklore
+"no infinite arithmetic progression of primes exists" that was previously
+stated only in the docstring of `exists_apGap_zero_of_length`.
+
+**Proof shape (reuse, not re-prove).** Derives from the *existing* quadratic
+closed form `apGap_closed_form` (from S4). At index `n = q 0` the `d = 0` term
+`q0·(q0−1)·d` vanishes, giving `q (q 0) = q 0 · (1 + (q 1 − q 0))`. Strict
+monotonicity forces `q (q 0) > q 0`, so `q 0` is a proper divisor of the
+(claimed prime) `q (q 0)` — contradiction via `Nat.Prime.eq_one_or_self_of_dvd`.
+
+- Cancelling the *doubled* ℤ closed form: `2·q(q0) = 2·(q0·(…))` by
+  `linear_combination hcf`, then `linarith` to halve, then `exact_mod_cast`
+  the ℤ-divisibility down to ℕ.
+- An initial self-contained `hasAPGaps_zero_linear` (paired two-step
+  induction re-deriving the d=0 AP form) was **dropped as redundant** — it is
+  exactly the `d = 0` specialization of `apGap_closed_form`.
+
+**Axiom status unchanged.** The two mathematical axioms (`greenTao_finitary`
+= Green-Tao 2008, proved-but-not-in-Mathlib-v4.26.0; `bunyakovsky_finitary`
+= open since 1857) are genuinely un-eliminable this session. File: 294 LOC /
+13 thm / 2 def / 2 axioms / 0 sorries. Typecheck-verified via `lake env lean`
+against the main tree's prebuilt oleans (docker image build was hitting an
+I/O error this session).
