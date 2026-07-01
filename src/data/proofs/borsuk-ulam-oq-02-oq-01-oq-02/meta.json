@@ -118,5 +118,35 @@
       "summary": "isFreeRep_prime_pow (n=p^k collapses to one prime), isFreeRep_const_one (standard faithful rep always free), and not_isFreeRep_example (a Z/6 weight free over Z/3 but not Z/2, so not free for Z/6 — the all-primes conjunction is needed)."
     }
   ],
-  "sorries": []
+  "sorries": [],
+  "references": [
+    {
+      "authors": [
+        "Tammo tom Dieck"
+      ],
+      "title": "Transformation Groups",
+      "year": 1987,
+      "venue": "de Gruyter (Studies in Mathematics 8)",
+      "note": "Equivariant topology, free actions on representation spheres, and Borel localization."
+    },
+    {
+      "authors": [
+        "Glen E. Bredon"
+      ],
+      "title": "Introduction to Compact Transformation Groups",
+      "year": 1972,
+      "venue": "Academic Press (Pure and Applied Mathematics 46)",
+      "note": "Free actions of finite groups on spheres and representation-sphere constructions."
+    },
+    {
+      "authors": [
+        "Alejandro Adem",
+        "R. James Milgram"
+      ],
+      "title": "Cohomology of Finite Groups",
+      "year": 2004,
+      "venue": "Springer, Grundlehren 309 (2nd ed.)",
+      "note": "H*(BG), the Borel construction, and localization theorems that govern the equivariant index."
+    }
+  ]
 }
