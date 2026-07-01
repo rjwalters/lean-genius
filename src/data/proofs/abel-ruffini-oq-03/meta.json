@@ -123,5 +123,28 @@
       "description": "Root entry: the Abel–Ruffini theorem and the solvability of S_n. This entry continues the Galois-theoretic thread by addressing which groups are realized over ℚ, for the abelian case."
     }
   ],
+  "references": [
+    {
+      "authors": "Kronecker, L.; Weber, H.",
+      "title": "Kronecker–Weber theorem",
+      "year": "1886",
+      "venue": "Classical",
+      "note": "Every finite abelian extension of ℚ lies in a cyclotomic field ℚ(ζₙ); the reason the family (ZMod n)ˣ realized here is the building block of all abelian Galois groups over ℚ."
+    },
+    {
+      "authors": "Dirichlet, P. G. L.",
+      "title": "Beweis des Satzes, dass jede unbegrenzte arithmetische Progression … unendlich viele Primzahlen enthält",
+      "year": "1837",
+      "venue": "Abhandlungen der Königlich Preußischen Akademie der Wissenschaften",
+      "note": "Primes in arithmetic progressions; the classical input (not asserted here) used to choose n so that a given finite abelian group is a quotient of (ZMod n)ˣ."
+    },
+    {
+      "authors": "Shafarevich, I. R.",
+      "title": "Construction of fields of algebraic numbers with given solvable Galois group",
+      "year": "1954",
+      "venue": "Izv. Akad. Nauk SSSR Ser. Mat. 18:525–578",
+      "note": "Every finite solvable group is Gal(L/ℚ); the abelian case verified here is a special case, proved directly via cyclotomic fields rather than assumed."
+    }
+  ],
   "sorries": []
 }
