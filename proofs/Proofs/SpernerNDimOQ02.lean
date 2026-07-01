@@ -2723,4 +2723,219 @@ theorem zeroPivot_feasible_iff (s : GridSimplex d N) :
   have hge := s.base_miss_ge_d
   omega
 
+-- ============================================================
+-- SECTION: The facet-`0` cross-chain partner cell (feasible regime)
+-- ============================================================
+-- `zeroPivotTop` supplies the single new top vertex; this section
+-- assembles the FULL neighbouring `GridSimplex`.  In the feasible
+-- regime (`base miss ≥ d + 1`, equivalently top `miss ≥ 1`,
+-- `zeroPivot_feasible_iff`) the facet-`0` partner keeps the same
+-- `miss` direction and reuses `s`'s upper chain `verts 1, …, verts d`,
+-- appending `zeroPivotTop` as its new last vertex.  Its increment
+-- order is `s`'s cyclically rotated by one — `incDir 1, …,
+-- incDir (d-1), incDir 0` — deferring the single omitted direction
+-- `incDir 0` to the final step, exactly the Freudenthal facet-`0`
+-- pivot.  This produces a bona-fide `GridSimplex` (`zeroPivotCell`)
+-- that (i) reuses `s`'s upper chain as its own bottom `d` vertices —
+-- so it shares the facet `{verts 1, …, verts d}` obtained by dropping
+-- its last vertex — and (ii) is distinct from `s` (`zeroPivotCell_ne`).
+-- All 0-sorry, 0-axiom; builds only on the `GridSimplex` chain
+-- primitives and the `zeroPivotTop` coordinate lemmas above.
+
+/-- Vertices of the facet-`0` partner cell: `s`'s upper chain
+`verts 1, …, verts d` (at indices `0, …, d-1`) followed by the new top
+vertex `zeroPivotTop` (at index `d`). -/
+def zeroPivotVerts (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    Fin (d + 1) → BaryPoint d N :=
+  fun k => if h : k.val < d then s.verts ⟨k.val + 1, by omega⟩
+    else zeroPivotTop s hd1 hfeas
+
+/-- Increment directions of the partner cell: `s`'s directions cyclically
+rotated so the omitted direction `incDir 0` fires on the final step. -/
+def zeroPivotInc (s : GridSimplex d N) (hd1 : 0 < d) :
+    Fin d → Fin (d + 1) :=
+  fun k => if h : k.val + 1 < d then s.incDir ⟨k.val + 1, h⟩
+    else s.incDir ⟨0, hd1⟩
+
+theorem zeroPivotVerts_of_lt (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss)
+    (k : Fin (d + 1)) (h : k.val < d) :
+    zeroPivotVerts s hd1 hfeas k = s.verts ⟨k.val + 1, by omega⟩ := by
+  simp only [zeroPivotVerts, dif_pos h]
+
+theorem zeroPivotVerts_last (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    zeroPivotVerts s hd1 hfeas (Fin.last d) = zeroPivotTop s hd1 hfeas := by
+  have h : ¬ (Fin.last d).val < d := by simp [Fin.val_last]
+  simp only [zeroPivotVerts, dif_neg h]
+
+theorem zeroPivotInc_of_lt (s : GridSimplex d N) (hd1 : 0 < d)
+    (k : Fin d) (h : k.val + 1 < d) :
+    zeroPivotInc s hd1 k = s.incDir ⟨k.val + 1, h⟩ := by
+  simp only [zeroPivotInc, dif_pos h]
+
+theorem zeroPivotInc_last (s : GridSimplex d N) (hd1 : 0 < d)
+    (k : Fin d) (h : ¬ k.val + 1 < d) :
+    zeroPivotInc s hd1 k = s.incDir ⟨0, hd1⟩ := by
+  simp only [zeroPivotInc, dif_neg h]
+
+/-- Evaluation of the partner's vertices at `k.castSucc` (a lower-chain
+vertex): it is `s.verts (k+1)`. -/
+theorem zeroPivotVerts_castSucc (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) (k : Fin d) :
+    zeroPivotVerts s hd1 hfeas k.castSucc = s.verts ⟨k.val + 1, by omega⟩ := by
+  have h : (k.castSucc).val < d := by simp [Fin.coe_castSucc, k.isLt]
+  rw [zeroPivotVerts_of_lt s hd1 hfeas _ h]
+  apply congrArg; apply Fin.ext; simp [Fin.coe_castSucc]
+
+/-- Evaluation of the partner's vertices at `k.succ` for an interior step
+(`k+1 < d`): it is `s.verts (k+2)`. -/
+theorem zeroPivotVerts_succ_of_lt (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) (k : Fin d)
+    (hlt : k.val + 1 < d) :
+    zeroPivotVerts s hd1 hfeas k.succ = s.verts ⟨k.val + 2, by omega⟩ := by
+  have h : (k.succ).val < d := by simpa [Fin.val_succ] using hlt
+  rw [zeroPivotVerts_of_lt s hd1 hfeas _ h]
+  apply congrArg; apply Fin.ext; simp [Fin.val_succ]
+
+/-- Evaluation of the partner's vertices at `k.succ` for the final step
+(`k+1 = d`): it is the new top vertex `zeroPivotTop`. -/
+theorem zeroPivotVerts_succ_last (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) (k : Fin d)
+    (hlast : k.val + 1 = d) :
+    zeroPivotVerts s hd1 hfeas k.succ = zeroPivotTop s hd1 hfeas := by
+  have hk : k.succ = Fin.last d := by apply Fin.ext; simp [Fin.val_succ, hlast]
+  rw [hk, zeroPivotVerts_last]
+
+/-- **The facet-`0` cross-chain partner cell.**  A bona-fide `GridSimplex`
+whose bottom `d` vertices are `s`'s upper chain `verts 1, …, verts d` and
+whose top vertex is `zeroPivotTop`, with increment order `s`'s cyclic
+rotation and the same `miss` direction.  Defined in the feasible regime
+`top miss ≥ 1`. -/
+def zeroPivotCell (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    GridSimplex d N where
+  verts := zeroPivotVerts s hd1 hfeas
+  incDir := zeroPivotInc s hd1
+  miss := s.miss
+  miss_ne_inc := by
+    intro k
+    by_cases hlt : k.val + 1 < d
+    · rw [zeroPivotInc_of_lt s hd1 k hlt]; exact s.miss_ne_inc _
+    · rw [zeroPivotInc_last s hd1 k hlt]; exact s.miss_ne_inc _
+  step_inc := by
+    intro k
+    have hk := k.isLt
+    by_cases hlt : k.val + 1 < d
+    · set m : Fin d := ⟨k.val + 1, hlt⟩ with hm
+      have ec : zeroPivotVerts s hd1 hfeas k.castSucc = s.verts m.castSucc := by
+        rw [zeroPivotVerts_castSucc]; apply congrArg; apply Fin.ext
+        simp [hm]
+      have es : zeroPivotVerts s hd1 hfeas k.succ = s.verts m.succ := by
+        rw [zeroPivotVerts_succ_of_lt s hd1 hfeas k hlt]; apply congrArg; apply Fin.ext
+        simp [hm]
+      have ei : zeroPivotInc s hd1 k = s.incDir m := zeroPivotInc_of_lt s hd1 k hlt
+      rw [ec, es, ei]; exact s.step_inc m
+    · have hlast : k.val + 1 = d := by omega
+      have ec : zeroPivotVerts s hd1 hfeas k.castSucc = s.verts (Fin.last d) := by
+        rw [zeroPivotVerts_castSucc]; apply congrArg; apply Fin.ext
+        simp [Fin.val_last]; omega
+      have es : zeroPivotVerts s hd1 hfeas k.succ = zeroPivotTop s hd1 hfeas :=
+        zeroPivotVerts_succ_last s hd1 hfeas k hlast
+      have ei : zeroPivotInc s hd1 k = s.incDir ⟨0, hd1⟩ :=
+        zeroPivotInc_last s hd1 k (by omega)
+      rw [ec, es, ei]; exact zeroPivotTop_coords_incDir0 s hd1 hfeas
+  step_dec := by
+    intro k
+    have hk := k.isLt
+    by_cases hlt : k.val + 1 < d
+    · set m : Fin d := ⟨k.val + 1, hlt⟩ with hm
+      have ec : zeroPivotVerts s hd1 hfeas k.castSucc = s.verts m.castSucc := by
+        rw [zeroPivotVerts_castSucc]; apply congrArg; apply Fin.ext
+        simp [hm]
+      have es : zeroPivotVerts s hd1 hfeas k.succ = s.verts m.succ := by
+        rw [zeroPivotVerts_succ_of_lt s hd1 hfeas k hlt]; apply congrArg; apply Fin.ext
+        simp [hm]
+      rw [ec, es]; exact s.step_dec m
+    · have hlast : k.val + 1 = d := by omega
+      have ec : zeroPivotVerts s hd1 hfeas k.castSucc = s.verts (Fin.last d) := by
+        rw [zeroPivotVerts_castSucc]; apply congrArg; apply Fin.ext
+        simp [Fin.val_last]; omega
+      have es : zeroPivotVerts s hd1 hfeas k.succ = zeroPivotTop s hd1 hfeas :=
+        zeroPivotVerts_succ_last s hd1 hfeas k hlast
+      rw [ec, es, zeroPivotTop_coords_miss]; omega
+  step_same := by
+    intro k j hj1 hj2
+    have hk := k.isLt
+    by_cases hlt : k.val + 1 < d
+    · set m : Fin d := ⟨k.val + 1, hlt⟩ with hm
+      have ei : zeroPivotInc s hd1 k = s.incDir m := zeroPivotInc_of_lt s hd1 k hlt
+      rw [ei] at hj1
+      have ec : zeroPivotVerts s hd1 hfeas k.castSucc = s.verts m.castSucc := by
+        rw [zeroPivotVerts_castSucc]; apply congrArg; apply Fin.ext
+        simp [hm]
+      have es : zeroPivotVerts s hd1 hfeas k.succ = s.verts m.succ := by
+        rw [zeroPivotVerts_succ_of_lt s hd1 hfeas k hlt]; apply congrArg; apply Fin.ext
+        simp [hm]
+      rw [ec, es]; exact s.step_same m j hj1 hj2
+    · have hlast : k.val + 1 = d := by omega
+      have ei : zeroPivotInc s hd1 k = s.incDir ⟨0, hd1⟩ :=
+        zeroPivotInc_last s hd1 k (by omega)
+      rw [ei] at hj1
+      have ec : zeroPivotVerts s hd1 hfeas k.castSucc = s.verts (Fin.last d) := by
+        rw [zeroPivotVerts_castSucc]; apply congrArg; apply Fin.ext
+        simp [Fin.val_last]; omega
+      have es : zeroPivotVerts s hd1 hfeas k.succ = zeroPivotTop s hd1 hfeas :=
+        zeroPivotVerts_succ_last s hd1 hfeas k hlast
+      rw [ec, es]; exact zeroPivotTop_coords_other s hd1 hfeas j hj1 hj2
+  inc_injective := by
+    intro a b hab
+    have ha0 := a.isLt
+    have hb0 := b.isLt
+    by_cases ha : a.val + 1 < d <;> by_cases hb : b.val + 1 < d
+    · rw [zeroPivotInc_of_lt s hd1 a ha, zeroPivotInc_of_lt s hd1 b hb] at hab
+      have h : a.val + 1 = b.val + 1 := congrArg Fin.val (s.inc_injective hab)
+      exact Fin.ext (by omega)
+    · rw [zeroPivotInc_of_lt s hd1 a ha, zeroPivotInc_last s hd1 b hb] at hab
+      have h : a.val + 1 = 0 := congrArg Fin.val (s.inc_injective hab)
+      omega
+    · rw [zeroPivotInc_last s hd1 a ha, zeroPivotInc_of_lt s hd1 b hb] at hab
+      have h : (0 : ℕ) = b.val + 1 := congrArg Fin.val (s.inc_injective hab)
+      omega
+    · exact Fin.ext (by omega)
+
+@[simp] theorem zeroPivotCell_miss (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    (zeroPivotCell s hd1 hfeas).miss = s.miss := rfl
+
+/-- The partner cell reuses `s`'s upper chain: its vertex `k` (`k < d`) is
+`s.verts (k+1)`.  So dropping its own last vertex recovers exactly the facet
+`{verts 1, …, verts d}` = facet `0` of `s` — the shared cross-chain facet. -/
+theorem zeroPivotCell_verts_of_lt (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss)
+    (k : Fin (d + 1)) (h : k.val < d) :
+    (zeroPivotCell s hd1 hfeas).verts k = s.verts ⟨k.val + 1, by omega⟩ :=
+  zeroPivotVerts_of_lt s hd1 hfeas k h
+
+/-- The partner cell's last vertex is the new top vertex `zeroPivotTop`. -/
+theorem zeroPivotCell_verts_last (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    (zeroPivotCell s hd1 hfeas).verts (Fin.last d) = zeroPivotTop s hd1 hfeas :=
+  zeroPivotVerts_last s hd1 hfeas
+
+/-- **The facet-`0` partner cell is distinct from `s`.**  Its last vertex is
+`zeroPivotTop`, which lies on no vertex of `s`'s chain
+(`zeroPivotTop_not_mem_chain`); equal cells would force equal vertex maps and
+hence `zeroPivotTop = s.verts (last)`, a contradiction.  Together with
+`zeroPivotCell_verts_of_lt` this exhibits `zeroPivotCell` as a genuine *second*
+cell filling the shared facet — the cross-chain partner required at facet `0`. -/
+theorem zeroPivotCell_ne (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    zeroPivotCell s hd1 hfeas ≠ s := by
+  intro h
+  have hv := congrArg (fun t => t.verts (Fin.last d)) h
+  simp only [zeroPivotCell_verts_last] at hv
+  exact zeroPivotTop_not_mem_chain s hd1 hfeas (Fin.last d) hv
+
 end SpernerNDimOQ02
