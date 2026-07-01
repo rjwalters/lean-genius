@@ -55,7 +55,15 @@ def latticeGrid (n : ℕ) : Set (ℤ × ℤ) :=
 -/
 theorem latticeGrid_card (n : ℕ) (hn : n ≥ 1) :
     (latticeGrid n).ncard = n^2 := by
-  sorry
+  have hset : latticeGrid n =
+      ↑((Finset.Icc (1 : ℤ) (n : ℤ)) ×ˢ (Finset.Icc (1 : ℤ) (n : ℤ))) := by
+    ext p
+    simp only [latticeGrid, Set.mem_setOf_eq, Finset.coe_product, Set.mem_prod,
+      Finset.coe_Icc, Set.mem_Icc]
+    tauto
+  have hc : (Finset.Icc (1 : ℤ) (n : ℤ)).card = n := by
+    rw [Int.card_Icc]; omega
+  rw [hset, Set.ncard_coe_finset, Finset.card_product, hc, ← pow_two]
 
 /--
 **Line Through Two Points:**
