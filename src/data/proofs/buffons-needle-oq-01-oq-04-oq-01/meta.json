@@ -117,30 +117,6 @@
       "mathContext": "$\\{t : \\ell(t) \\in \\partial K\\} = \\{a, b\\},\\qquad \\#\\{t : \\ell(t) \\in \\partial K\\} = 2.$"
     }
   ],
-  "conclusion": {
-    "summary": "A line ℓ(t) = p + t·v with v ≠ 0 passing through the interior of a compact convex body K meets the boundary ∂K in exactly two points: {t | ℓ(t) ∈ frontier K} = {a, b} with a < b, ℓ meets K in the closed segment Icc a b, and the boundary-crossing count is ncard = 2. The proof is purely convex-geometric: the parameter set is a convex subset of ℝ (an interval), compact for a convex body, with the open segment mapping into interior K via Convex.combo_interior_self_mem_interior and the endpoints on the boundary by extremality of inf and sup. This is the Convex.line_intersection_card_le_two bearer the parent Buffon's-coin entry lacked. 14 theorems, 2 definitions, 0 sorries, 0 axioms.",
-    "implications": "Replaces the parent Buffon's-coin entry's definitional factor-of-two with a derived theorem: the integral-geometry identity 'boundary crossings = 2 × cut lines' now rests on convex geometry rather than a definition. The interior-crossing hypothesis is exhibited as the exact condition of the 0-or-2 dichotomy, cleanly separating cutting lines (2 crossings) from supporting lines (which may share a flat edge). The reusable bearers — a line meets a convex set in an interval (lineParams_convex), in a closed segment for a convex body (lineParams_eq_Icc), and crosses the boundary in two points through an interior crossing — are stated over an arbitrary real normed space and feed the Cauchy–Crofton / Buffon-coin development.",
-    "openQuestions": [
-      "Promote the parameter-level statement to a body-level one: for a compact convex body K and a line L meeting interior K, the set L ∩ frontier K (as a subset of the ambient space, not of parameters) has exactly two elements, via injectivity of t ↦ p + t·v.",
-      "Use the two endpoints to define the chord ℓ(a) — ℓ(b) and prove its length equals the support-function difference, connecting the dichotomy to Convex.meanWidth and the Cauchy mean-width formula targeted by the grandparent's third open question."
-    ]
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Set",
-      "Metric"
-    ],
-    "namespace": "BuffonsNeedleOQ01OQ04OQ01",
-    "lineCount": 276,
-    "axiomCount": 0,
-    "theoremCount": 14,
-    "definitionCount": 2,
-    "path": "Proofs/BuffonsNeedleOQ01OQ04OQ01.lean",
-    "sorries": 0
-  },
   "crossReferences": [
     {
       "targetId": "buffons-needle-oq-01-oq-04",
@@ -158,6 +134,59 @@
       "description": "Root Buffon's needle entry"
     }
   ],
+  "conclusion": {
+    "summary": "A line ℓ(t) = p + t·v with v ≠ 0 passing through the interior of a compact convex body K meets the boundary ∂K in exactly two points: {t | ℓ(t) ∈ frontier K} = {a, b} with a < b, ℓ meets K in the closed segment Icc a b, and the boundary-crossing count is ncard = 2. The proof is purely convex-geometric: the parameter set is a convex subset of ℝ (an interval), compact for a convex body, with the open segment mapping into interior K via Convex.combo_interior_self_mem_interior and the endpoints on the boundary by extremality of inf and sup. This is the Convex.line_intersection_card_le_two bearer the parent Buffon's-coin entry lacked. 14 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "implications": "Replaces the parent Buffon's-coin entry's definitional factor-of-two with a derived theorem: the integral-geometry identity 'boundary crossings = 2 × cut lines' now rests on convex geometry rather than a definition. The interior-crossing hypothesis is exhibited as the exact condition of the 0-or-2 dichotomy, cleanly separating cutting lines (2 crossings) from supporting lines (which may share a flat edge). The reusable bearers — a line meets a convex set in an interval (lineParams_convex), in a closed segment for a convex body (lineParams_eq_Icc), and crosses the boundary in two points through an interior crossing — are stated over an arbitrary real normed space and feed the Cauchy–Crofton / Buffon-coin development.",
+    "openQuestions": [
+      "Promote the parameter-level statement to a body-level one: for a compact convex body K and a line L meeting interior K, the set L ∩ frontier K (as a subset of the ambient space, not of parameters) has exactly two elements, via injectivity of t ↦ p + t·v.",
+      "Use the two endpoints to define the chord ℓ(a) — ℓ(b) and prove its length equals the support-function difference, connecting the dichotomy to Convex.meanWidth and the Cauchy mean-width formula targeted by the grandparent's third open question."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Santaló, Luis A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "1976",
+      "venue": "Addison-Wesley",
+      "note": "Measure of lines meeting a convex set and the 0-or-2 intersection dichotomy."
+    },
+    {
+      "authors": "Solomon, Herbert",
+      "title": "Geometric Probability",
+      "year": "1978",
+      "venue": "CBMS-NSF Regional Conference Series 28, SIAM",
+      "note": "Buffon's needle, its generalizations, and integral-geometry methods."
+    },
+    {
+      "authors": "Klain, Daniel A. and Rota, Gian-Carlo",
+      "title": "Introduction to Geometric Probability",
+      "year": "1997",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "integral_sin_pow, integral_cos_pow, Real.Gamma/Beta and sphere-measure lemmas (Mathlib.Analysis.SpecialFunctions.Integrals / .Gamma)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "BuffonsNeedleOQ01OQ04OQ01",
+    "lineCount": 276,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "path": "Proofs/BuffonsNeedleOQ01OQ04OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "lineParams_convex",
@@ -187,6 +216,5 @@
       "description": "The boundary-crossing parameter set has cardinality exactly two — the explicit count form of the dichotomy.",
       "significance": "Delivers the factor-of-two of integral geometry (boundary crossings = 2 × cut lines) as a derived cardinality rather than a definition"
     }
-  ],
-  "sorries": 0
+  ]
 }
