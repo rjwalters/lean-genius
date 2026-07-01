@@ -91,6 +91,64 @@
       "Affine combinations and lines in a vector space"
     ]
   },
+  "sections": [
+    {
+      "id": "overview-bisectors",
+      "title": "Overview: Angle Bisectors via Mass Points",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Frames the angle-bisector concurrency at the incenter through mass points: placing masses equal to the opposite side lengths (a,b,c) at the vertices makes the parent's lever-arm balance reproduce the angle-bisector division ratios, and Ceva's criterion gives concurrency. The concurrency point is realised concretely as the incenter (a:b:c) in a real vector space.",
+      "mathContext": "Masses $=(a,b,c)$ (opposite side lengths); bisectors concur at the incenter with barycentric coordinates $(a:b:c)$."
+    },
+    {
+      "id": "mass-assignment",
+      "title": "The Angle-Bisector Mass Assignment",
+      "startLine": 52,
+      "endLine": 65,
+      "summary": "bisectorMass a b c: the MassPoint with masses equal to the opposite side lengths a = |BC|, b = |CA|, c = |AB|, plus the simp projections bisectorMass_mA/mB/mC extracting each mass.",
+      "mathContext": "$m_A = a,\\ m_B = b,\\ m_C = c$."
+    },
+    {
+      "id": "bisector-ratios",
+      "title": "Angle-Bisector Theorem Ratios",
+      "startLine": 67,
+      "endLine": 87,
+      "summary": "The angle-bisector theorem recovered from the mass balance: bisector_ratio_BD_DC (BD/DC = c/b), bisector_ratio_CE_EA (CE/EA = a/c), bisector_ratio_AF_FB (AF/FB = b/a) — each is exactly the parent's ratio_balance for the side-length masses.",
+      "mathContext": "$\\dfrac{BD}{DC} = \\dfrac{c}{b},\\quad \\dfrac{CE}{EA} = \\dfrac{a}{c},\\quad \\dfrac{AF}{FB} = \\dfrac{b}{a}.$"
+    },
+    {
+      "id": "concurrency-ceva",
+      "title": "Concurrency via Ceva",
+      "startLine": 89,
+      "endLine": 102,
+      "summary": "bisectors_ceva_product: the three directed division ratios multiply to 1 (the parent's ceva_ratio_product_one), and bisectors_side_ratio_product writes it explicitly as (c/b)·(a/c)·(b/a) = 1 — the Ceva concurrency criterion for the bisectors.",
+      "mathContext": "$\\dfrac{c}{b}\\cdot\\dfrac{a}{c}\\cdot\\dfrac{b}{a} = 1$ (Ceva)."
+    },
+    {
+      "id": "feet-incenter",
+      "title": "Feet and Incenter in a Real Vector Space",
+      "startLine": 104,
+      "endLine": 138,
+      "summary": "Realises the cevians as honest points in a real vector space V: footD/footE/footF (the bisector division points on each side) and incenter (the barycentric point (a:b:c)). footD_eq_division checks footD equals the parent's division point (1−rD)·B + rD·C.",
+      "mathContext": "$\\mathrm{incenter} = \\dfrac{a\\,A + b\\,B + c\\,C}{a+b+c};\\quad \\mathrm{footD} = \\dfrac{b\\,B + c\\,C}{b+c}.$"
+    },
+    {
+      "id": "incenter-on-bisectors",
+      "title": "The Incenter Lies on All Three Bisectors",
+      "startLine": 139,
+      "endLine": 189,
+      "summary": "incenter_on_bisector_A/B/C express the incenter as an affine combination of each vertex and the opposite foot (via match_scalars + field_simp), and weights_A/B/C_sum_one confirm each pair of weights sums to 1 — so these are genuine affine (barycentric) combinations, placing the incenter on each cevian line.",
+      "mathContext": "$\\mathrm{incenter} = \\dfrac{a}{a+b+c}A + \\dfrac{b+c}{a+b+c}\\mathrm{footD}$, weights summing to $1$ (and cyclically)."
+    },
+    {
+      "id": "bisector-affine-line",
+      "title": "Bisector as an Affine Line",
+      "startLine": 191,
+      "endLine": 206,
+      "summary": "incenter_lineMap_A recasts the A-bisector as AffineMap.lineMap A (footD) with the incenter at parameter t = (b+c)/(a+b+c) ∈ (0,1) — the cevian as a parametrised line and the incenter as an interior point on it.",
+      "mathContext": "$\\mathrm{incenter} = \\mathrm{lineMap}(A, \\mathrm{footD})\\big(\\tfrac{b+c}{a+b+c}\\big),\\ t\\in(0,1).$"
+    }
+  ],
   "references": [
     {
       "authors": [
