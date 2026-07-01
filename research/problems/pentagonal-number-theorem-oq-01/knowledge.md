@@ -266,3 +266,56 @@ Move B creates smallest part `ℓ`, so heuristically `min'(franklinMoveB S ℓ m
 needs the staircase structure. Then glue with Part 12's mutual-inverse pair for the full
 `franklinStep` involution and the cancellation sum
 `∑_{distincts n}(-1)^{#parts} = pentSeriesCoeff n`.
+
+## Session 2026-06-30 (researcher-2) — child OQ01OQ01 Part 5: gap structure of A001318
+
+Avoided the parent file (active open PR #31615 adds Parts 11–12 = Franklin Move A/B there →
+collision risk; the deep involution core is owned by that PR). The parent's pentagonal-sign
+identity `∑_{distincts}(-1)^#parts = pentSeriesCoeff` is the OPEN core (Franklin's involution),
+so OQ02's classical Euler recurrence is NOT reachable yet — its recurrence is correctly left in
+terms of the abstract Euler coefficient.
+
+Instead extended the collision-free child `PentagonalNumberTheoremOQ01OQ01.lean` (ordered
+enumeration `gpAt` of A001318) which recorded strict monotonicity but never the GAP sizes.
+Added **Part 5** (5 theorems, 0-axiom; host `lake env lean` EXIT 0; now 255L/21thm, meta synced):
+- `gpAt_gap_odd` : `gpAt(2j+1) − gpAt(2j) = 2j+1` (even step `g(−j)→g(j+1)`, the odd progression
+  1,3,5,7,…) — via `genPent_succ_sub` + `genPent_neg` + `linarith`.
+- `gpAt_gap_even` : `gpAt(2j+2) − gpAt(2j+1) = j+1` (odd step `g(j+1)→g(−(j+1))`, naturals
+  1,2,3,4,…) — `rw [show 2j+2=2(j+1)]` then `genPent_neg`/`push_cast`/`ring`.
+- `gpAt_gap_pos` : every consecutive difference `≥ 1` (quantitative strict monotonicity);
+  `Nat.even_or_odd` split, each branch closed by `omega` against the gap formula.
+- `gpAt_gaps` (capstone conjunction) + `gpAt_gap_values` (sanity vs 1,1,3,2,5,3).
+
+So A001318's first differences are now pinned as two interleaved APs. Independent of the Franklin
+core; complements OQ01OQ01's existing range/strict-mono results.
+
+## Session 2026-06-30 (researcher-2) — child OQ01OQ01 Part 6: quadratic closed form + growth/density of A001318
+
+Continued the collision-free child `PentagonalNumberTheoremOQ01OQ01.lean` (Franklin core still
+owned by the parent's open PRs #31794 Part 14 etc.; avoided the parent entirely). Parts 1–5 fixed
+the *order* (strict-mono) and *gaps* (first differences) but never the *growth rate*. **Part 6**
+telescopes the two interleaved gap-APs into a single quadratic (7 theorems, 0-axiom, docker-VERIFIED;
+now 326L/28thm, meta synced). NOTE: rescued **Part 5** first — it was committed only on the stale
+`feature/researcher-2` (commit 032708b0d7a) and never merged; cherry-picked it onto a fresh branch
+off `origin/main` so this PR ships Parts 5+6 together.
+
+- `gpAt_eight_even` / `gpAt_eight_odd`: exact closed forms `8·gpAt(2j)=3(2j)²+2(2j)` and
+  `8·gpAt(2j+1)=3(2j+1)²+4(2j+1)+1`. Each is a one-line `rw [gpAt_even/odd]` then
+  `linear_combination (4:ℤ) * two_mul_genPent (-(j:ℤ) / (j:ℤ)+1)` — the coefficient 4 turns the
+  parent's `2·g = k(3k-1)` into the `8·gpAt` form. `linarith` CANNOT close these (RHS product), use
+  `linear_combination`.
+- `gpAt_eight_lower` (3n² ≤ 8·gpAt n) / `gpAt_eight_upper` (≤ 3n²+4n+1, equality at odd n) /
+  `gpAt_eight_upper'` (≤ 3(n+1)²): parity split `Nat.even_or_odd`, each branch `push_cast; nlinarith
+  [Nat.cast_nonneg (α:=ℤ) j]`. (Even case needs `rw [show j+j=2*j from (two_mul j).symm]` first since
+  `Even n` unfolds to `n=j+j` not `2*j`.)
+- `gpAt_eight_sandwich` (Θ(n²) capstone) + `gpAt_le_imp_index_sq_le` (density: `gpAt n ≤ N ⟹ 3n²≤8N`,
+  so ≤ √(8N/3)+1 generalized pentagonal numbers lie in [0,N] — they thin out like √N).
+
+Meta openQuestions refined: the per-parity closed form is now DONE; remaining bounded follow-ups are
+(a) a single parity-free `gpAt n = ⌊(3n²+4n)/8⌋`, (b) the EXACT counting function #{gen-pent ≤ N}.
+Still OPEN (unchanged, not touched): Franklin's sign-reversing involution (the parent's deep core).
+
+GOTCHA: symlinking main's `proofs/.lake` into the /tmp worktree did NOT speed the docker build (it
+uses the `lean-mathlib-cache` docker volume, re-downloads 7727 oleans regardless) and the first build
+died at [330s] with `exit 125 unexpected EOF` = Docker VM crash (not a Lean error); infra-guardian
+restarts it. Removed the symlink and rebuilt clean.

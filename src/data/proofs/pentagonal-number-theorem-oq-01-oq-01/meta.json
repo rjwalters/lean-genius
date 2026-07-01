@@ -11,9 +11,9 @@
       "PentagonalNumberTheoremOQ01"
     ],
     "namespace": "PentagonalNumberTheoremOQ01OQ01",
-    "lineCount": 204,
+    "lineCount": 326,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 28,
     "definitionCount": 2,
     "path": "Proofs/PentagonalNumberTheoremOQ01OQ01.lean",
     "sorries": 0
@@ -68,13 +68,17 @@
       "gpRank (def) and gpAt_gpRank: an explicit inverse rank g(k) ↦ position, sending positive indices to odd positions and nonpositive indices to even positions, with gpAt (gpRank k) = g(k) proving it genuinely inverts the enumeration on values.",
       "range_gpAt / isGenPent_iff_mem_range: surjectivity — the range of gpAt is exactly the set {m | IsGenPent m} of generalized pentagonal numbers; combined with strict monotonicity this is the bijection.",
       "gpAt_enumerates: the capstone packaging StrictMono gpAt ∧ Set.range gpAt = {m | IsGenPent m} — the generalized pentagonal numbers are precisely the values of a strictly-increasing sequence, i.e. gpAt is an order isomorphism onto them.",
-      "mem_range_gpAt_iff_isSquare: ties the enumeration back to the parent's recognition criterion — a number occurs in gpAt iff 24m+1 is a perfect square — and gpAt_values machine-checks the first seven terms 0,1,2,5,7,12,15 against OEIS A001318."
+      "mem_range_gpAt_iff_isSquare: ties the enumeration back to the parent's recognition criterion — a number occurs in gpAt iff 24m+1 is a perfect square — and gpAt_values machine-checks the first seven terms 0,1,2,5,7,12,15 against OEIS A001318.",
+      "gpAt_gap_odd / gpAt_gap_even / gpAt_gaps (Part 5): the exact first differences of A001318. Strict monotonicity records only that the enumeration increases; these pin down by how much. An even step 2j → 2j+1 (crossing g(-j) → g(j+1)) has gap 2j+1 (the odd numbers 1,3,5,7,…) and an odd step 2j+1 → 2j+2 (crossing g(j+1) → g(-(j+1))) has gap j+1 (the naturals 1,2,3,4,…). So A001318's first differences are two interleaved arithmetic progressions, and gpAt_gap_pos (every gap ≥ 1) is a quantitative refinement of strict monotonicity.",
+      "gpAt_eight_even / gpAt_eight_odd (Part 6): the exact quadratic closed form of the n-th generalized pentagonal number. Telescoping the two interleaved gap progressions collapses to a single quadratic: 8·gpAt(2j) = 3(2j)²+2(2j) and 8·gpAt(2j+1) = 3(2j+1)²+4(2j+1)+1, each a one-line linear_combination of the parent's doubling relation two_mul_genPent at -j and j+1.",
+      "gpAt_eight_sandwich and gpAt_eight_upper' (Part 6): the growth law gpAt n = Θ(n²). The closed forms squeeze the whole sequence between two quadratics, 3n² ≤ 8·gpAt n ≤ 3n²+4n+1 ≤ 3(n+1)², so the n-th generalized pentagonal number is (3/8)n² + O(n).",
+      "gpAt_le_imp_index_sq_le (Part 6): the density / sparsity of A001318. If gpAt n ≤ N then 3n² ≤ 8N, i.e. n ≤ √(8N/3); since gpAt enumerates the generalized pentagonal numbers in increasing order, at most ⌊√(8N/3)⌋+1 of them lie in [0,N] — they thin out like √N, the reciprocal of the Θ(n²) growth rate."
     ],
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
-    "lineCount": 204,
-    "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. The headline results gpAt_strictMono, gpAt_enumerates, range_gpAt and mem_range_gpAt_iff_isSquare each #print axioms to only [propext, Classical.choice, Quot.sound] — the standard foundational axioms, none counted under the project's axiom policy. gpAt_values is discharged by decide (kernel Decidable evaluation, no native_decide / Lean.ofReduceBool). Machine-verified: the file compiles cleanly against Mathlib 4.26.0 (Built Proofs.PentagonalNumberTheoremOQ01OQ01, 7744 jobs, exit 0).",
-    "theoremCount": 16,
+    "lineCount": 326,
+    "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. The headline results gpAt_strictMono, gpAt_enumerates, range_gpAt, mem_range_gpAt_iff_isSquare, gpAt_gaps and gpAt_eight_sandwich each #print axioms to only [propext, Classical.choice, Quot.sound] — the standard foundational axioms, none counted under the project's axiom policy. gpAt_values and gpAt_gap_values are discharged by decide (kernel Decidable evaluation, no native_decide / Lean.ofReduceBool). Machine-verified: the file compiles cleanly against Mathlib 4.26.0 (Built Proofs.PentagonalNumberTheoremOQ01OQ01, exit 0).",
+    "theoremCount": 28,
     "definitionCount": 2
   },
   "overview": {
@@ -127,11 +131,28 @@
       "endLine": 204,
       "summary": "gpAt_enumerates (StrictMono gpAt ∧ Set.range gpAt = {m | IsGenPent m} — gpAt is a strictly-increasing bijection onto the generalized pentagonal numbers), mem_range_gpAt_iff_isSquare (a number occurs in gpAt iff 24m+1 is a perfect square), and gpAt_values (first seven terms 0,1,2,5,7,12,15 by decide).",
       "mathContext": "The capstone bundles the order statement with the range characterization, so gpAt n is the n-th smallest generalized pentagonal number. The bridge composes surjectivity with the parent's isGenPent_iff_isSquare to recover the recognition criterion on the enumeration, and the value check pins the sequence to OEIS A001318."
+    },
+    {
+      "id": "gaps",
+      "title": "Part 5 — The Gap Structure of A001318 (First Differences)",
+      "startLine": 204,
+      "endLine": 253,
+      "summary": "gpAt_gap_odd (even step 2j → 2j+1 has gap 2j+1, the odd progression), gpAt_gap_even (odd step 2j+1 → 2j+2 has gap j+1, the natural progression), gpAt_gap_pos (every consecutive difference ≥ 1), the capstone gpAt_gaps, and gpAt_gap_values checking the first differences 1,1,3,2,5,3 by decide.",
+      "mathContext": "gpAt_strictMono says only that the enumeration increases; Part 5 says by how much. Both gaps follow from the parent's genPent_succ_sub (g(k+1)-g(k)=3k+1) and genPent_neg (g(-k)=g(k)+k): the even step gives g(j+1)-g(-j)=(3j+1)-j=2j+1, the odd step gives g(-(j+1))-g(j+1)=j+1. So A001318's first differences are two interleaved arithmetic progressions."
+    },
+    {
+      "id": "growth",
+      "title": "Part 6 — The Quadratic Closed Form and the Growth/Density of A001318",
+      "startLine": 254,
+      "endLine": 322,
+      "summary": "gpAt_eight_even / gpAt_eight_odd (the exact closed forms 8·gpAt(2j)=3(2j)²+2(2j) and 8·gpAt(2j+1)=3(2j+1)²+4(2j+1)+1), the growth bounds gpAt_eight_lower / gpAt_eight_upper / gpAt_eight_upper', the sandwich gpAt_eight_sandwich (3n² ≤ 8·gpAt n ≤ 3n²+4n+1), and the density corollary gpAt_le_imp_index_sq_le (gpAt n ≤ N ⟹ 3n² ≤ 8N).",
+      "mathContext": "Telescoping the two interleaved gap progressions of Part 5 collapses to a single quadratic, closed-form per parity via a linear_combination of two_mul_genPent. The two closed forms squeeze the sequence between 3n² and 3(n+1)², so gpAt n = Θ(n²) — the n-th generalized pentagonal number is (3/8)n²+O(n). The lower bound inverts to a sparsity statement: at most √(8N/3)+1 generalized pentagonal numbers lie below N, so A001318 thins out like √N."
     }
   ],
   "openQuestions": [
     "Strengthen gpAt_enumerates to an explicit OrderIso ℕ ≃o {m : ℤ // IsGenPent m}, packaging strict monotonicity and the range bijection as a single order isomorphism onto the subtype of generalized pentagonal numbers.",
-    "Give a closed form for gpRank ∘ (g restricted to one arm) and an inverse-rank formula expressing gpAt n directly via ⌈n/2⌉, exhibiting the n-th pentagonal number without the parity case split.",
+    "Part 6 gives the exact per-parity closed form (8·gpAt(2j)=3(2j)²+2(2j), 8·gpAt(2j+1)=3(2j+1)²+4(2j+1)+1) and the growth law gpAt n = Θ(n²). The two arms are genuinely different quadratics — 8·gpAt n = 3n²+2n (even) versus 3n²+4n+1 (odd) — so NO single ⌊(3n²+bn+c)/8⌋ collapses them (their values diverge, e.g. at n=4 the odd formula gives 8 but gpAt 4 = 7). A parity-free closed form therefore requires an explicit parity term: express gpAt n via ⌈n/2⌉ (each arm is a clean quadratic in ⌈n/2⌉) or a (-1)^n correction, and prove agreement with the per-parity forms for all n.",
+    "Turn the Part 6 sparsity bound (gpAt n ≤ N ⟹ 3n² ≤ 8N) into an exact counting function: prove the cardinality #{m | IsGenPent m ∧ 0 ≤ m ≤ N} = ⌊(√(24N+1)+1)/6⌋·2 (or the equivalent floor expression), pinning the number of generalized pentagonal numbers below N rather than only bounding it.",
     "Use the enumeration to index Euler's partition recurrence p(n) = ∑(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})) by rank, summing over the initial segment of gpAt below n rather than over the index interval [-n,n]."
   ],
   "conclusion": {
@@ -139,7 +160,8 @@
     "implications": "The parent's index map g is injective but not monotone, so 'the n-th generalized pentagonal number' is not g(n); this entry supplies the correct object gpAt n and proves it lists exactly OEIS A001318 in order. The whole construction rests on three short integer inequalities derived from the parent's doubling relation and ±k pairing, illustrating how an order structure can be bootstrapped from purely algebraic identities. The bijection range_gpAt is the form a formalization of Euler's partition recurrence wants when summing the pentagonal shifts by rank rather than by index.",
     "openQuestions": [
       "Promote the bijection to an explicit OrderIso ℕ ≃o {m // IsGenPent m}.",
-      "Derive a parity-free closed form for gpAt n (and its inverse gpRank) via ⌈n/2⌉.",
+      "Collapse Part 6's per-parity closed form into a single parity-free expression via ⌈n/2⌉ or a (-1)^n term (a plain ⌊quadratic/8⌋ provably cannot work — the two arms diverge).",
+      "Upgrade Part 6's sparsity bound to the exact counting function #{generalized pentagonal m ≤ N}.",
       "Re-index Euler's partition recurrence by rank using the initial segment of gpAt below n."
     ]
   },
