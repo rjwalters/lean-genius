@@ -35,7 +35,7 @@
 -/
 import Mathlib
 
-open Filter Asymptotics
+open Filter Asymptotics Topology
 
 namespace Erdos357OQ04
 
