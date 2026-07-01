@@ -58,6 +58,40 @@
       "description": "The parent entry formalizes Erdős #111 itself: for graphs of chromatic number ℵ₁, does h_G(n)/n → ∞, where h_G(n) measures edges to delete from n-vertex subgraphs to reach bipartiteness? This OQ studies the dual covering invariant — the number of bipartite graphs needed to cover G — and proves it is finite iff χ(G) is finite, so an ℵ₁-chromatic graph needs infinitely many bipartite covers."
     }
   ],
+  "sections": [
+    {
+      "id": "def-bipartite-cover",
+      "title": "The Bipartite-Cover Model and the Coloring Bridge",
+      "summary": "BipartiteCover G ι = a family c : ι → V → Bool separating every edge; BipartiteCover.coloring maps a cover to a proper coloring into ι → Bool, and bipartiteCoverOfColoring is the reverse (read off bit-coordinates)",
+      "startLine": 65,
+      "endLine": 99,
+      "mathContext": "A cover is $c:\\iota\\to V\\to\\mathrm{Bool}$ with $\\forall\\{u,v\\}\\in E,\\ \\exists i,\\ c_i(u)\\ne c_i(v)$. The product map $v\\mapsto (c_i v)_{i\\in\\iota}$ is a proper coloring $G\\to(\\iota\\to\\mathrm{Bool})$, and conversely every such coloring yields a cover."
+    },
+    {
+      "id": "finite-cover-bound",
+      "title": "Finite Cover ⇒ χ(G) ≤ 2^|ι|",
+      "summary": "colorable_of_bipartiteCover: for finite ι, a bipartite cover gives Colorable (2^|ι|); plus the explicit recoloring equivalence Fin (2^k) ≃ (Fin k → Bool)",
+      "startLine": 100,
+      "endLine": 119,
+      "mathContext": "For finite $\\iota$, the product color space $\\iota\\to\\mathrm{Bool}$ has size $2^{|\\iota|}$, so $\\chi(G)\\le 2^{|\\iota|}$. The bijection $\\mathrm{Fin}(2^k)\\simeq(\\mathrm{Fin}\\,k\\to\\mathrm{Bool})$ recolors between the two forms."
+    },
+    {
+      "id": "sharp-equivalence",
+      "title": "Sharp Equivalence: Colorable (2^k) ↔ k-Bipartite Cover",
+      "summary": "colorable_two_pow_iff_bipartiteCover: G.Colorable (2^k) ↔ ∃ a bipartite cover by k graphs — the bipartite-cover number equals ⌈log₂ χ(G)⌉",
+      "startLine": 121,
+      "endLine": 128,
+      "mathContext": "$G.\\mathrm{Colorable}(2^k) \\iff \\exists\\,c:\\mathrm{Fin}\\,k\\to V\\to\\mathrm{Bool}$ covering $G$; equivalently the bipartite-cover number is $\\lceil\\log_2\\chi(G)\\rceil$."
+    },
+    {
+      "id": "aleph-one-corollary",
+      "title": "ℵ₁-Chromatic Graphs Need Infinitely Many Bipartite Covers",
+      "summary": "chromaticNumber_le_of_bipartiteCover and the contrapositive not_nonempty_bipartiteCover_of_chromaticNumber_top: a not-finitely-colorable graph (chromaticNumber = ⊤) has no finite bipartite cover",
+      "startLine": 130,
+      "endLine": 154,
+      "mathContext": "$2^k$ is finite for every finite $k$, so a finite cover forces finite $\\chi$. Contrapositive: $G.\\mathrm{chromaticNumber}=\\top$ (Mathlib's faithful ℕ∞ rendering of 'χ(G) = ℵ₁', i.e. not finitely colorable) $\\Rightarrow$ no finite bipartite cover exists."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Coloring",
