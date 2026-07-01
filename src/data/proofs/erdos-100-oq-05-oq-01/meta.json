@@ -77,7 +77,8 @@
       "**Distinctness is the missing hypothesis.** Erdős #100's restricted-distance form needs the pairwise distances DISTINCT; the parent's Heronian example repeats 7, so a scalene replacement is required to genuinely instantiate the problem in ℝ³",
       "**Consecutive integers are extremal.** Among integer-coordinate tetrahedra with a vertex at the origin and coordinates in [0,10]³, the least possible largest edge of a scalene one is 11 — forcing the six edges to be precisely the consecutive integers 6,…,11, the tightest possible distinct-distance spread",
       "**Distances are perfect-square roots.** Choosing integer coordinates whose squared coordinate differences sum to a perfect square makes each distance a provable integer via Real.sqrt_sq, exactly as in the parent",
-      "**Non-coplanarity = nonzero edge determinant.** Reducing 'not coplanar' to det ≠ 0 of the 3×3 edge matrix is discharged by Matrix.det_fin_three + norm_num and certifies genuine 3-dimensionality"
+      "**Non-coplanarity = nonzero edge determinant.** Reducing 'not coplanar' to det ≠ 0 of the 3×3 edge matrix is discharged by Matrix.det_fin_three + norm_num and certifies genuine 3-dimensionality",
+      "**Four points are the first dimension where the problem has content.** Any three points are automatically coplanar, so a genuine ℝ³ integer-distance witness must be a full tetrahedron; the determinant certificate is exactly what upgrades 'four labelled points with integer distances' to 'a non-degenerate 3-simplex', separating this entry from the planar parent"
     ],
     "prerequisites": [
       "Euclidean distance in EuclideanSpace ℝ (Fin n) and the formula dist = √(Σ coordinate differences²)",
