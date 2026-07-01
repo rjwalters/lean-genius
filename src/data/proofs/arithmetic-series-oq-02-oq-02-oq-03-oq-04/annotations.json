@@ -1,5 +1,27 @@
 [
   {
+    "id": "wz-ann-overview",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
+    "range": { "startLine": 1, "endLine": 58 },
+    "type": "concept",
+    "title": "What the WZ Method Is, and What This File Proves",
+    "content": "The Wilf–Zeilberger method turns a summation identity ∑ₖ F(n,k) = RHS(n) into a mechanical certificate check. First normalize to ∑ₖ F(n,k) = 1 (divide by the RHS); then exhibit a companion G(n,k) — the *WZ mate*, built from a rational *certificate* R(n,k) as G = R·F — satisfying the WZ equation F(n+1,k) − F(n,k) = G(n,k+1) − G(n,k). Summing that over k telescopes the right side to zero when G has finite k-support, so the row sum s(n) = ∑ₖ F(n,k) is constant, and one base case s(0) = 1 closes the identity. This file delivers two things: (1) `wz_telescope`, the abstract engine stated over any `AddCommGroup`, reusable for any WZ pair; and (2) a fully machine-checked worked example — the prototypical ∑ₖ C(n,k) = 2ⁿ with explicit mate G(n,k) = −C(n,k−1)/2ⁿ⁺¹ — deriving 2ⁿ purely from telescoping + base case, *without* Mathlib's `Nat.sum_range_choose`. The `import Mathlib` line pulls in the full library; `open Finset BigOperators` supplies `∑` and windowed `Finset.range` sums. The full parallel-Vandermonde certificate is honestly deferred; the same `wz_telescope` accepts it unchanged once supplied.",
+    "mathContext": "WZ equation: $F(n+1,k) - F(n,k) = G(n,k+1) - G(n,k)$; summing over the window telescopes to $G(n,N) - G(n,0) = 0$, forcing $s(n+1) = s(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "creative telescoping",
+      "hypergeometric identities",
+      "WZ certificate",
+      "Petkovšek–Wilf–Zeilberger A=B",
+      "binomial theorem"
+    ],
+    "prerequisites": [
+      "finite sums (Finset.sum)",
+      "binomial coefficients",
+      "telescoping sums"
+    ]
+  },
+  {
     "id": "wz-ann-telescope-engine",
     "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
     "range": { "startLine": 80, "endLine": 94 },
