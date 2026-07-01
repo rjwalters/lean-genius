@@ -80,6 +80,7 @@
       "Triangle reptiling / dissection background for Erdős #634"
     ]
   },
+  "sections": [],
   "conclusion": {
     "summary": "A fully machine-checked, axiom-free formalization (0 sorries; only propext/Classical.choice/Quot.sound) over an arbitrary real normed space that the k-subdivision of any triangle A B C yields k² mutually congruent 1/k-scale copies. Upward pieces are translates of a base copy U0 and downward pieces are point reflections of U0; isometry-congruence (an equivalence relation reused from the base entry) makes all pieces pairwise congruent. The base copy has side lengths exactly 1/k of A B C, and a Finset cardinality argument gives the exact count T(k+1) + T(k) = (k+1)². The k = 2 case recovers the medial 4 = 2² pieces.",
     "implications": "This settles open question OQ-01 of the medial base entry and completes the congruence/scaling/count content of the square reptiling that underlies the 'always achievable' counts N = k² in Erdős #634. Because the argument uses only translations and point reflections — isometries available in any normed space — it is coordinate-free and reusable. What remains for a full tiling claim is the analytic covering/interior-disjointness, deliberately not formalized here.",
@@ -99,6 +100,5 @@
       "relationship": "relatedTo",
       "description": "Companion entry modeling Erdős #634 dissection in an abstract side-length framework; the square reptiling formalized here supplies the constructive N = k² counts."
     }
-  ],
-  "sections": []
+  ]
 }
