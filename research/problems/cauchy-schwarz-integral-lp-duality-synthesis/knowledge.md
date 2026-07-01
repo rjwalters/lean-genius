@@ -620,3 +620,56 @@ Incomplete01 repair.
 3. Then `…OQ01OQ01.lean` (σ-finite) → surface `hg_norm` → maximality construction (now
    has ALL ingredients: this file's lemmas + the dual-norm bound) → swap the parent axiom.
 4. Correct the two `verified` gallery metas flagged in #28788 once the chain is green.
+
+### 2026-06-30 (Session 11, researcher-3) — PROGRESS (annihilator/uniqueness ingredient proved & verified; true build state re-measured)
+
+**Mode:** REVISIT. **Outcome:** progress — one genuinely-missing maximality ingredient
+proved 0-sorry/0-axiom in a standalone verified file; the chain's true build state
+re-measured (correcting Session 10's diagnosis).
+
+**Build state re-measured this session (host `lake env lean`, toolchain v4.26.0, no Docker):**
+- `CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean` (the finite-measure Radon–Nikodým base,
+  which Session 10 blamed as the "dead foundation" with 58 errors) now **compiles cleanly:
+  EXIT 0, 0 errors** (warnings only). It has been repaired since 2026-06-24. Session 10's
+  central claim is stale.
+- The break has **moved up one level**: `…OQ01OQ01Incomplete01.lean` (the σ-finite Riesz
+  construction: `localization_existence`, `riesz_lp_surjective_sigma_finite`) fails with
+  **70 Mathlib-API-drift errors** — scattered, not a single shared root cause (12 "application
+  type mismatch", 10 "failed to synthesize", 8 "type mismatch", 8 rewrite-pattern misses,
+  plus `Exists.min`/`Exists.rpow_const` dot-notation breakage, `Function expected`, etc.).
+  This is genuine multi-session mechanical repair; a partial fix leaves the file non-building
+  (= churn), so not attempted this session.
+- The synthesis file's headline `riesz_lp_surjective_general` still carries its single
+  `sorry` (the maximality construction); it imports the broken `Incomplete01`, so cannot be
+  kernel-checked as a whole yet.
+
+**New verified ingredient — the uniqueness/annihilator lemma** (the maximality step that
+none of the four existing ingredient lemmas covered):
+`proofs/Proofs/CauchySchwarzIntegralLpDualityAnnihilator.lean`,
+`RieszLpDualityAnnihilator.lp_pairing_eq_zero_ae_zero` — for `1 < p < ∞` (real HolderConjugate
+`p.toReal q.toReal`), if `g ∈ Lᵠ(μ)` and `∫ f·g = 0` for every `f ∈ Lᵖ(μ)`, then `g =ᵐ 0`.
+Standalone, imports only Mathlib. **Verified `lake env lean` EXIT 0, 0 errors, 0 warnings;
+`#print axioms` = {propext, Classical.choice, Quot.sound}** (no `sorryAx`, no
+`Lean.ofReduceBool`).
+
+**KEY INSIGHT — the 10-session "converse-Hölder dual-norm gap" is a red herring for
+uniqueness.** Prior sessions (esp. 8–9) treated `‖g‖_q ≤ ⨆_{‖f‖_p≤1}|∫ f·g|` as the missing
+analytic input for maximality. But the *uniqueness* direction the maximality argument needs
+(injectivity of `Lᵠ ↪ (Lᵖ)*`, used for representer consistency `E⊆F ⟹ g_F=g_E` a.e. on `E`
+and the final `g_U=g_T` identification) is **qualitative** — no norm estimate and **no
+extremizer** `f=|g|^{q-1} sgn g`. It falls straight out of Mathlib's
+`AEFinStronglyMeasurable.ae_eq_zero_of_forall_setIntegral_eq_zero`: test `g` against
+`memLp_indicator_const` indicators of finite-measure sets to get `∫_s g = 0 ∀ s`, and
+conclude. No `SigmaFinite μ` needed (a `MemLp` function at a finite exponent is automatically
+`AEFinStronglyMeasurable`); Hölder enters only via integrability of `g` on finite sets.
+
+**Axiom NOT eliminated.** Parent `axiom riesz_lp_surjective` untouched; `axiomCount`
+unchanged. This session added a verified building block and corrected the roadmap.
+
+**Corrected critical path (dependency order):**
+1. Repair `…OQ01OQ01Incomplete01.lean`'s 70 API-drift errors against Mathlib v4.26.0
+   (multi-session mechanical; the base file below it is now green so this is the true frontier).
+2. Rebuild `…OQ01OQ01.lean` → synthesis, fixing drift at each level.
+3. Wire `lp_pairing_eq_zero_ae_zero` (this session) + the four existing ingredient lemmas
+   into the maximality construction `riesz_lp_surjective_general`; discharge the `sorry`.
+4. Swap the parent axiom; correct any stale `verified` gallery metas in the strand.
