@@ -42,11 +42,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "pell-equation-oq-06",
-      "relationship": "extends",
-      "description": "The parent generates the chain (1,1)→(7,5)→(41,29)→… by the substitution (x,y) ↦ (3x+4y, 2x+3y). This entry exposes the operation behind that substitution: Brahmagupta composition. The step map is composition with the positive-Pell unit (3,2), and the parent's norm invariance is the special case N(p ⊛ (3,2)) = N(p)·1 of multiplicativity."
-    },
-    {
       "targetId": "pell-equation-oq-06-oq-02",
       "relationship": "extends",
       "description": "The oq-02 sibling realizes the chain as the odd powers ⟨xₙ,yₙ⟩ = ζ^(2n+1) of the fundamental unit. This entry reuses that bridge to show negPellSeq m ⊛ negPellSeq n = ζ^(2(m+n)+2): composition adds exponents, and adding two odd exponents lands on an even one — making explicit why the negative-Pell chain is closed only under composition-then-correction, not composition alone."

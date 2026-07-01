@@ -162,11 +162,6 @@
       "targetId": "area-of-circle-oq-07",
       "relationship": "extends",
       "description": "Grandparent. Recovers the squared real Gaussian value (∫_ℝ e^{-x²})² = π as the b = 1 specialization gaussian_sq_eq_pi, the area constant of the unit disc realized as a planar Gaussian integral."
-    },
-    {
-      "targetId": "gaussian-integral",
-      "relationship": "related",
-      "description": "The classical polar-coordinate ('Gaussian polar trick') derivation of the Gaussian normalization constant, here reconstructed for the real radial Gaussian from Mathlib's polar change-of-variables theorem."
     }
   ],
   "references": [

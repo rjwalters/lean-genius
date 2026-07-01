@@ -111,13 +111,7 @@
       "note": "Alternating series test and the truncation error bound (Theorem 3.43)"
     }
   ],
-  "crossReferences": [
-    {
-      "targetId": "p-series-convergence",
-      "relationship": "related",
-      "description": "The harmonic series ∑ 1/n diverges (p-series at p=1), yet its alternating counterpart ∑ (-1)^n/n converges — this entry quantifies how fast, with error ≤ 1/(N+1)."
-    }
-  ],
+  "crossReferences": [],
   "conclusion": {
     "summary": "The alternating series test is upgraded from bare convergence to the quantitative remainder estimate |S_N − l| ≤ f N, proved with 0 axioms by trapping the limit between consecutive partial sums and splitting on parity; specialising to 1/(i+1) bounds the alternating harmonic truncation error by 1/(N+1).",
     "implications": "Supplies the practically essential error bound that Mathlib's one-directional bracketing lemmas stop short of, in reusable form; the alternating harmonic instance is a ready quantitative approximation of log 2.",

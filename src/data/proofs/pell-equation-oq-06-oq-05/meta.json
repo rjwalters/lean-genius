@@ -38,11 +38,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "pell-equation-oq-06",
-      "relationship": "extends",
-      "description": "The parent builds the chain (1,1)→(7,5)→(41,29)→… and proves every term satisfies x² − 2y² = −1 (negPellSeq_norm). This entry reads off, from that single constant-norm relation, that the determinant of consecutive solution vectors is the constant −2 and the companion inner-product identity is −3 — turning the constant norm into a constant lattice determinant."
-    },
-    {
       "targetId": "pell-equation-oq-06-oq-02",
       "relationship": "related",
       "description": "The sibling identifies the chain with the odd powers aₙ = ζ^(2n+1) of the fundamental unit ζ = 1 + √2. This entry uses that representation to give the conceptual one-identity source aₙ₊₁·conj(aₙ) = −ζ² of the determinant and inner-product identities (their imaginary and real parts), reusing the sibling's ζ and ζ_sq."

@@ -40,11 +40,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "pell-equation-oq-06",
-      "relationship": "extends",
-      "description": "The parent builds the chain (1,1)→(7,5)→(41,29)→… by an elementary ring identity and remarks the step map 'is multiplication by 3 + 2√2 in ℤ[√2]' without formalizing it. This entry supplies that ring structure inside Mathlib's Zsqrtd 2: the step map is multiplication by ζ², the chain is the odd powers ζ^(2n+1), and the parent's norm computation follows from multiplicativity of the quadratic-integer norm."
-    },
-    {
       "targetId": "pell-equation-oq-06-oq-01",
       "relationship": "related",
       "description": "The sibling entry classifies all positive solutions by descent along the inverse unit 3 − 2√2 and records the squaring bridge to positive Pell. This entry gives the complementary ascending picture — the chain as ascending odd powers of the unit ζ — and the unifying norm dichotomy (odd powers norm −1, even powers norm +1)."

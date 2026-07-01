@@ -36,11 +36,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "pell-equation-oq-06",
-      "relationship": "extends",
-      "description": "The parent builds the chain (1,1)→(7,5)→(41,29)→… and proves x² − 2y² = −1 has infinitely many solutions (an algebraic statement). This entry adds the analytic content: those solutions are precisely the rational approximations xₙ/yₙ to √2 (from below), with the Diophantine bound 1/yₙ² and convergence to √2."
-    },
-    {
       "targetId": "pell-equation-oq-06-oq-01",
       "relationship": "related",
       "description": "Sibling: the descent classification of the same chain (every positive solution is a chain term). Where -oq-01 is purely algebraic (Vieta descent in ℤ[√2]), this entry is analytic (rates of approximation to √2 in ℝ)."

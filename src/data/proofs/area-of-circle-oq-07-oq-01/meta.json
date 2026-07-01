@@ -120,11 +120,6 @@
       "targetId": "area-of-circle-oq-07",
       "relationship": "extends",
       "description": "Parent. This entry generalizes the parent's real Gaussian ∫ e^{-x²} = √π to the complex parameter ∫ e^{-b x²} = (π/b)^{1/2} over the right half-plane {re b > 0}, and recovers the parent's value as the b = 1 case in gaussian_integral_eq_sqrt_pi_via_complex."
-    },
-    {
-      "targetId": "gaussian-integral",
-      "relationship": "related",
-      "description": "The real parametrized Gaussian ∫ e^{-b x²} = √(π/b). This entry is its analytic continuation to complex b with positive real part, where the real square root becomes a complex principal (1/2)-power."
     }
   ],
   "references": [

@@ -51,11 +51,6 @@
       "description": "The oq-02 sibling realizes the negative-Pell chain as the odd powers ζ^(2n+1) of the fundamental unit ζ = 1 + √2. This entry works with the positive-Pell chain γⁿ = (ζ²)ⁿ = ζ^(2n) directly (γ = 3 + 2√2 = ζ²), and reuses the same power/norm machinery (norm_pow) to obtain the divisibility sequence on the coordinates."
     },
     {
-      "targetId": "pell-equation-oq-06",
-      "relationship": "extends",
-      "description": "The parent generates its chain by the substitution (x,y) ↦ (3x+4y, 2x+3y). This entry recovers that exact substitution as X_succ / Y_succ — the n+1 case of the addition formula, composition with the unit (3,2) — and then proves the divisibility structure of the resulting sequence."
-    },
-    {
       "targetId": "pell-equation",
       "relationship": "related",
       "description": "The classical norm +1 Pell equation x² − 2y² = 1, modeled in Mathlib by Pell.Solution₁. The coordinates Yₙ proved here to form a divisibility sequence are exactly the y-components of the powers of the fundamental solution (3,2) that Solution₁ enumerates."
