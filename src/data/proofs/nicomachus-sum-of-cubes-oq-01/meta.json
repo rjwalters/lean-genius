@@ -96,5 +96,27 @@
       "Does the same case-split-then-ring pattern extend cleanly to Faulhaber's formula for ∑ k^p with general p, or does the growing degree force a different (e.g. Bernoulli-number) approach?",
       "Can the squared-triangular identity be promoted to a bijective / combinatorial proof in Lean (counting ordered pairs in an n×n grid), matching the classic visual dissection?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "nicomachus-sum-of-cubes-oq-02",
+      "relationship": "Answers this entry's Faulhaber open question",
+      "description": "The p=4 Faulhaber closed form ∑_{k<n} k⁴ = n(n+1)(2n+1)(3n²+3n−1)/30. It settles the first open question raised here — how the ℕ power-sum technique scales past degree 3 — and shows where the clean cube-lemma reduction gives way to a genuinely higher-degree polynomial identity."
+    },
+    {
+      "proofId": "nicomachus-sum-of-cubes-oq-03",
+      "relationship": "Odd-cube analogue of the same identity",
+      "description": "∑_{k<n} (2k+1)³ = n²(2n²−1), the sum of the first n odd cubes. A sibling variant proved with the same induction-plus-elementary-lemma pattern, restricting the cube sum to odd terms."
+    },
+    {
+      "proofId": "arithmetic-series",
+      "relationship": "Supplies the triangular number being squared",
+      "description": "Gauss's formula 1 + 2 + ⋯ + n = n(n+1)/2 for the triangular number Tₙ. Nicomachus's theorem states that ∑ k³ = Tₙ² exactly, so the Gauss sum is the quantity that appears squared on the right-hand side; the division-free form sum_range_id_mul_two is the specific Mathlib lemma reused in the inductive step."
+    },
+    {
+      "proofId": "newton-power-sum-identities-oq-01",
+      "relationship": "General framework for power sums",
+      "description": "Newton's identities relate the power sums pₖ = ∑ Xᵢᵏ to elementary symmetric polynomials, the symmetric-function context in which sum-of-cubes and other fixed-degree power-sum formulas sit."
+    }
+  ]
 }
