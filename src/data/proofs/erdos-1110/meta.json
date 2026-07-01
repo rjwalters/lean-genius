@@ -62,7 +62,8 @@
       "Minimum summand bounds (Yu-Chen, Yang-Zhao)",
       "example_1_representable theorem with constructive proof",
       "Connections to Problems #123, #845, #246",
-      "minSummandBound_one: minSummandBound 1 = 1 (0-axiom) — gives the previously-unused minSummandBound scaffolding concrete content; the only power-form antichain summing to 1 is {1}, so the witness set is Iio 1 with supremum 1 (csSup_Iio)"
+      "minSummandBound_one: minSummandBound 1 = 1 (0-axiom) — gives the previously-unused minSummandBound scaffolding concrete content; the only power-form antichain summing to 1 is {1}, so the witness set is Iio 1 with supremum 1 (csSup_Iio)",
+      "minSummandBound sandwich bounds 1 ≤ minSummandBound n ≤ n for every n ≥ 1 (0-axiom): minSummandBound_le_self (every admissible threshold f < some summand s ≤ ∑S = n, so the witness set is bounded above by n) and one_le_minSummandBound (n is representable, so any f < 1 keeps all power-form summands s ≥ 1 > f, placing the whole interval Iio 1 inside the witness set, whose bounded-above supremum therefore dominates sSup(Iio 1)=1). Generalizes the single point minSummandBound_one = 1 and gives the minSummandBound scaffolding its first n-dependent content."
     ],
     "axiomCount": 1,
     "lineCount": 1139,
@@ -263,9 +264,9 @@
       "Finset"
     ],
     "namespace": "Erdos1110",
-    "lineCount": 1139,
+    "lineCount": 1209,
     "axiomCount": 1,
-    "theoremCount": 52,
+    "theoremCount": 57,
     "definitionCount": 7,
     "path": "Proofs/Erdos1110Problem.lean",
     "sorries": 0

@@ -19,13 +19,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-28",
-    "iteration": 6,
-    "focus": "Extracted the general power-form-is-representable lemma (was duplicated inline); the representable set contains the entire multiplicative monoid of power forms. Deep infinitude axiom (Erdos-Lewin 1996) remains the sole open content.",
+    "since": "2026-06-30",
+    "iteration": 7,
+    "focus": "Gave minSummandBound its first n-dependent content: proved the sandwich 1 ≤ minSummandBound n ≤ n for every n ≥ 1 (0-axiom), generalizing the single point minSummandBound_one = 1. Deep infinitude axiom erdos_lewin_infinite remains the sole open content.",
     "blockers": [
       "The deep direction of Erdos-Lewin ({p,q}!={2,3} => INFINITELY many non-representable) is not in Mathlib 4.26; it stays axiomatized as erdos_lewin_infinite. The existence half (>=1 non-representable) is now proved; only the jump from existence to infinitude remains."
     ],
-    "nextAction": "Attempt to lift exists_positive_nonRepresentable_of_ne_two_three to infinitude for a concrete sub-family (e.g. q=2, p>=4: are 3, 3*p^2, ... an infinite antichain of non-representables?), which would partially discharge erdos_lewin_infinite. Or prove a HasDensity statement for a non-{2,3} pair. The minSummandBound / CoprimeNonRepresentable scaffolding remains def-only.",
+    "nextAction": "Sharpen the lower bound beyond 1: for even n a doubled representation avoids the summand 1, so plausibly minSummandBound n ≥ 2 (or scale with n). Or pursue the Yu-Chen asymptotic f(n) ≍ n/log n (deep). The erdos_lewin_infinite axiom stays; six+ sessions confirm it is not session-sized and genuinely upward.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -33,8 +33,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2026-06-30 (researcher-3): gave the unused minSummandBound scaffolding concrete content — proved minSummandBound_one (minSummandBound 1 = 1, 0-axiom): the only power-form antichain summing to 1 is {1}, so the witness set is Iio 1 with supremum 1 (csSup_Iio). File 0-sorry, 1-axiom (erdos_lewin_infinite unchanged). PR pending. PROGRESS (S6): proved multiplicative closure of representability (×p, ×q, ×p^a q^b) and downward non-rep propagation, 0-axiom — structural generalization of the {2,3} doubling. Deep axiom erdos_lewin_infinite unchanged (closure is downward, cannot give infinitude).",
+    "progressSummary": "2026-06-30 (researcher-1): proved the general minSummandBound sandwich 1 ≤ minSummandBound n ≤ n for all n ≥ 1 (0-axiom), generalizing minSummandBound_one = 1. Upper bound: every admissible threshold f is < some summand s ≤ ∑S = n. Lower bound: n is representable (case_2_3), so any f < 1 keeps all power-form summands (≥1) above f, so Iio 1 ⊆ witness set and its bounded-above sSup ≥ sSup(Iio 1)=1. File 0-sorry, 1-axiom (erdos_lewin_infinite unchanged), now 1209 lines / 57 thms. 2026-06-30 (researcher-3): gave the unused minSummandBound scaffolding concrete content — proved minSummandBound_one (minSummandBound 1 = 1, 0-axiom): the only power-form antichain summing to 1 is {1}, so the witness set is Iio 1 with supremum 1 (csSup_Iio). File 0-sorry, 1-axiom (erdos_lewin_infinite unchanged). PR pending. PROGRESS (S6): proved multiplicative closure of representability (×p, ×q, ×p^a q^b) and downward non-rep propagation, 0-axiom — structural generalization of the {2,3} doubling. Deep axiom erdos_lewin_infinite unchanged (closure is downward, cannot give infinitude).",
     "builtItems": [
+      "minSummandBound_le_self (researcher-1, 0-axiom): minSummandBound n ≤ n for n ≥ 1. Every admissible threshold f is strictly below some summand s of a representing antichain, and s ≤ ∑S = n via Finset.single_le_sum; witness set nonempty (f=0 works), so csSup_le gives sSup ≤ n. Sandwiches minSummandBound n ∈ [1,n], pinning minSummandBound 1 = 1.",
+      "one_le_minSummandBound (researcher-1, 0-axiom): 1 ≤ minSummandBound n for n ≥ 1. n is representable (case_2_3_all_representable) so any f < 1 stays below every power-form summand (each ≥ 1), placing Iio 1 inside the witness set; with the set bounded above by n, csSup_le_csSup gives sSup ≥ sSup(Iio 1)=1.",
       "add_one_nonRepresentable_iff (iter 5, researcher-8, 0-axiom): sharp criterion for the canonical candidate q+1. For every p>q>=2, q+1 (always in the window [q,2q)) is non-representable EXACTLY when q+1 is not a power of p: (q+1) in NonRepresentable p q <-> not exists k, q+1 = p^k. Forced via the window characterization isRepresentable_iff_isPowerForm_window: the only power form q+1 can be is a pure power of p, since a q^l factor with l>=1 gives q | q+1 hence q | 1. For q=2 this isolates {2,3} as the unique q=2 exception (3 = 3^1 is a power form exactly when p=3).",
       "add_one_nonRepresentable_of_lt (iter 5, researcher-8, 0-axiom): if q>=2 and q+1 < p (i.e. p >= q+2) then q+1 is non-representable, because q+1 can be no power p^k (p^0=1<q+1, p^k>=p>q+1 for k>=1). Trivially-checkable explicit witness for every pair with p>=q+2; verified instance 3 in NonRepresentable 5 2.",
       "exists_positive_nonRepresentable_of_ne_two_three (iter 4, 0-axiom): for coprime p>q>=2 with {p,q}!={2,3}, EXISTS n>=1 with n in NonRepresentable p q. Case split: q=2 (then p>=4) uses witness 3; q>=3 uses witness 2. Unconditional existence half of erdos_lewin_infinite.",
@@ -75,6 +77,7 @@
       "Yu-Chen density-zero and coprime-non-representable results (2022). Not in Mathlib."
     ],
     "nextSteps": [
+      "Sharpen minSummandBound lower bound past 1: for even n≥2 the doubling step yields a representation with all summands ≥2 (no unit 1), suggesting minSummandBound n ≥ 2 for even n; more generally investigate n-growth toward Yu-Chen f(n) ≍ n/log n (deep).",
       "Deep direction erdos_lewin_infinite (Erdos-Lewin 1996) remains the sole axiom; confirmed across 6 sessions as not session-sized and genuinely upward (closure cannot help).",
       "minSummandBound now has base content: minSummandBound_one (minSummandBound 1 = 1, 0-axiom) proves the witness set at n=1 is Iio 1 (only {1} sums to 1) with sSup 1 via csSup_Iio. Next: a general lower bound minSummandBound n ≥ 1 for n ≥ 1, or the Yu-Chen asymptotic f(n) ≍ n/log n (deep).",
       "Consider whether multiplicative closure + window characterization combine to characterize representability on higher windows [q·p^j, ...)."
@@ -105,8 +108,8 @@
     {
       "path": "Proofs/Erdos1110Problem.lean",
       "filename": "Erdos1110Problem.lean",
-      "lineCount": 1139,
-      "theoremCount": 34,
+      "lineCount": 1209,
+      "theoremCount": 57,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,

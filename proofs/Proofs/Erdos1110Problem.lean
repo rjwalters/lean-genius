@@ -1056,6 +1056,76 @@ theorem minSummandBound_one : minSummandBound 1 = 1 := by
       · simp
   rw [heq, csSup_Iio]
 
+/-- **General upper bound `minSummandBound n ≤ n` for every `n ≥ 1` (0-axiom).**
+Every admissible threshold `f` is strictly below *some* summand `s` of a representing
+antichain, and that summand is at most the total `∑S = n`; hence `f < s ≤ n`, so the
+whole witness set is bounded above by `n` and its supremum is `≤ n`.  (The witness set
+is also nonempty — `f = 0` works, since every power form is positive and `n` is
+representable by `case_2_3_all_representable` — so the `sSup` is a genuine bound, not
+the junk value `0` that `sSup` returns on an unbounded set.)  Sanity check: at `n = 1`
+this gives `minSummandBound 1 ≤ 1`, matching the exact value `minSummandBound_one`. -/
+theorem minSummandBound_le_self {n : ℕ} (hn : 1 ≤ n) : minSummandBound n ≤ (n : ℝ) := by
+  unfold minSummandBound
+  apply csSup_le
+  · -- nonemptiness: `f = 0` is admissible via the representation of `n`
+    obtain ⟨S, _, hpf, hac, hsum⟩ := case_2_3_all_representable n hn
+    refine ⟨0, S, fun s hs => ⟨hpf s hs, ?_⟩, hac, hsum⟩
+    obtain ⟨k, l, hkl⟩ := hpf s hs
+    rw [hkl]; positivity
+  · -- every admissible `f` is `≤ n`
+    rintro f ⟨S, hpf, hac, hsum⟩
+    have hne : S.Nonempty := by
+      rw [Finset.nonempty_iff_ne_empty]; rintro rfl
+      simp only [Finset.sum_empty] at hsum; omega
+    obtain ⟨s, hs⟩ := hne
+    have hle : (s : ℝ) ≤ (n : ℝ) := by
+      have hsum_le : id s ≤ S.sum id :=
+        Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hs
+      rw [hsum] at hsum_le
+      exact_mod_cast hsum_le
+    exact le_of_lt (lt_of_lt_of_le (hpf s hs).2 hle)
+
+/-- **General lower bound `1 ≤ minSummandBound n` for every `n ≥ 1` (0-axiom).**
+Since `n` is representable (`case_2_3_all_representable`), fix one representing antichain
+`S`.  Every power form is `≥ 1`, so for *any* threshold `f < 1` all summands `s ∈ S`
+satisfy `s ≥ 1 > f`; hence the entire interval `Iio 1` sits inside the witness set.  The
+set is bounded above (by `n`, via `minSummandBound_le_self`'s argument), so its supremum
+dominates `sSup (Iio 1) = 1`.  Together with `minSummandBound_le_self` this sandwiches
+`minSummandBound n ∈ [1, n]`, and pins it to exactly `1` at `n = 1` (`minSummandBound_one`). -/
+theorem one_le_minSummandBound {n : ℕ} (hn : 1 ≤ n) : 1 ≤ minSummandBound n := by
+  obtain ⟨S, _, hpf, hac, hsum⟩ := case_2_3_all_representable n hn
+  -- the witness set is bounded above by `n`
+  have hbdd : BddAbove {f : ℝ | ∃ S : Finset ℕ,
+      (∀ s ∈ S, IsPowerForm 3 2 s ∧ (s : ℝ) > f) ∧
+      NoOneDividesAnother S ∧ S.sum id = n} := by
+    refine ⟨(n : ℝ), ?_⟩
+    rintro f ⟨T, hpf', _, hsum'⟩
+    have hne : T.Nonempty := by
+      rw [Finset.nonempty_iff_ne_empty]; rintro rfl
+      simp only [Finset.sum_empty] at hsum'; omega
+    obtain ⟨s, hs⟩ := hne
+    have hle : (s : ℝ) ≤ (n : ℝ) := by
+      have hsum_le : id s ≤ T.sum id :=
+        Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hs
+      rw [hsum'] at hsum_le
+      exact_mod_cast hsum_le
+    exact le_of_lt (lt_of_lt_of_le (hpf' s hs).2 hle)
+  -- `Iio 1` is contained in the witness set
+  have hsub : Set.Iio (1 : ℝ) ⊆ {f : ℝ | ∃ S : Finset ℕ,
+      (∀ s ∈ S, IsPowerForm 3 2 s ∧ (s : ℝ) > f) ∧
+      NoOneDividesAnother S ∧ S.sum id = n} := by
+    intro f hf
+    simp only [Set.mem_setOf_eq]
+    refine ⟨S, fun s hs => ⟨hpf s hs, ?_⟩, hac, hsum⟩
+    obtain ⟨k, l, hkl⟩ := hpf s hs
+    have hs0 : 1 ≤ s := Nat.one_le_iff_ne_zero.mpr (by rw [hkl]; positivity)
+    have hs1 : (1 : ℝ) ≤ (s : ℝ) := by exact_mod_cast hs0
+    linarith [Set.mem_Iio.mp hf]
+  calc (1 : ℝ) = sSup (Set.Iio (1 : ℝ)) := csSup_Iio.symm
+    _ ≤ minSummandBound n := by
+        unfold minSummandBound
+        exact csSup_le_csSup hbdd Set.nonempty_Iio hsub
+
 /-
 **Yu-Chen bounds (2022):**
 n / (log n)^{log₂ 3} ≪ f(n) ≪ n / log n
