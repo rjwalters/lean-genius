@@ -118,11 +118,7 @@
   "crossReferences": [
     {
       "targetId": "sperner-simplicial-bridge",
-      "description": "OQ-01 strictly generalises the pure pseudomanifold case to mixed-dimension complexes. `MixedPseudomanifold.of_pure` proves the embedding of pure data into the mixed framework."
-    },
-    {
-      "targetId": "sperner-simplicial-bridge",
-      "description": "The per-stratum proof is a single application of the parent's `exists_panchromatic` on the chosen stratum after packaging per-stratum `hcard`, `hpseudo`, and `hbdry`."
+      "description": "OQ-01 strictly generalises the parent's pure pseudomanifold case to mixed-dimension complexes: `MixedPseudomanifold.of_pure` embeds pure data into the mixed framework, and the per-stratum proof is a single application of the parent's `exists_panchromatic` on the chosen stratum after packaging per-stratum `hcard`, `hpseudo`, and `hbdry`."
     },
     {
       "targetId": "sperner-simplicial-instance",
