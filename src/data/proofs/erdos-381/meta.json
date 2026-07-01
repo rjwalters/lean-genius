@@ -18,7 +18,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 381,
     "erdosUrl": "https://erdosproblems.com/381",
     "erdosProblemStatus": "disproved",
@@ -39,6 +39,16 @@
         "theorem": "Real.log",
         "description": "Natural logarithm",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "tendsto_rpow_atTop",
+        "description": "x ^ y → ∞ as x → ∞ for y > 0 (real power growth)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics"
+      },
+      {
+        "theorem": "Real.rpow_add",
+        "description": "Additivity of the real power exponent",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
     "originalContributions": [
@@ -48,17 +58,19 @@
       "erdos_question formalization",
       "erdos_lower_bound axiom (1944)",
       "nicolas_upper_bound axiom (1971)",
-      "erdos_question_false theorem: disproof",
-      "Q_bounds combined asymptotic bounds",
+      "exponent_le_of_bounds: analytic comparison lemma (a slower-growing power of log x cannot dominate a faster-growing one on atTop); the shared core of the disproof",
+      "erdos_question_false theorem: disproof (fully proved from nicolas_upper_bound, no sorry)",
+      "Q_bounds combined asymptotic bounds (fully proved, deriving c < C from the two axioms)",
+      "erdos_381_answer_no: concrete exponent k = ⌈C⌉₊ + 1 with no matching lower bound (fully proved)",
       "IsSuperiorHighlyComposite definition",
       "erdos_381_summary: combines lower bound, upper bound, and disproof",
       "Proofs: one_highly_composite, two_highly_composite, four_highly_composite, six_highly_composite, twelve_highly_composite",
-      "Computational verification: tau values for small n via native_decide"
+      "Computational verification: tau values for small n via decide (kernel-checked, no ofReduceBool)"
     ],
     "axiomCount": 2,
-    "lineCount": 335,
-    "assumptions": "2 axioms: erdos_lower_bound, nicolas_upper_bound. 3 sorries.",
-    "theoremCount": 12,
+    "lineCount": 407,
+    "assumptions": "2 axioms: erdos_lower_bound (Erdős 1944) and nicolas_upper_bound (Nicolas 1971), both deep analytic results not available in Mathlib. 0 sorries: all consequences (erdos_question_false, Q_bounds, erdos_381_answer_no) are fully derived from these two axioms via the comparison lemma exponent_le_of_bounds.",
+    "theoremCount": 13,
     "definitionCount": 11,
     "additionalFiles": [
       "Proofs/Erdos381ProblemAristotle.lean"
@@ -117,41 +129,41 @@
     {
       "id": "nicolas",
       "title": "Nicolas's Disproof (1971)",
-      "summary": "Q(x) ≪ (log x)^C disproves the conjecture",
+      "summary": "Q(x) ≪ (log x)^C disproves the conjecture; exponent_le_of_bounds and erdos_question_false",
       "startLine": 184,
-      "endLine": 219,
+      "endLine": 275,
       "mathContext": "Verified: Q(x) ≪ (log x)^C disproves the conjecture"
     },
     {
       "id": "bounds",
       "title": "Tight Bounds",
       "summary": "(log x)^{1+c} ≪ Q(x) ≪ (log x)^C",
-      "startLine": 220,
-      "endLine": 237,
+      "startLine": 276,
+      "endLine": 300,
       "mathContext": "Mathematical content: (log x)^{1+c} ≪ Q(x) ≪ (log x)^C"
     },
     {
       "id": "structure",
       "title": "Structure of HC Numbers",
       "summary": "Prime factorization properties, Ramanujan characterization, superior HC numbers",
-      "startLine": 238,
-      "endLine": 260,
+      "startLine": 301,
+      "endLine": 323,
       "mathContext": "Mathematical content: Prime factorization properties, Ramanujan characterization, superior HC numbers"
     },
     {
       "id": "comparison",
       "title": "Comparison with Other Sequences",
       "summary": "HC vs primes (Q(x)/π(x) → 0), highly abundant numbers",
-      "startLine": 261,
-      "endLine": 278,
+      "startLine": 324,
+      "endLine": 341,
       "mathContext": "HC vs primes (Q(x)/π(x) $\\to$ 0), highly abundant numbers"
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
       "summary": "erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results",
-      "startLine": 279,
-      "endLine": 335,
+      "startLine": 342,
+      "endLine": 407,
       "mathContext": "Verified: erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results"
     }
   ],
@@ -167,20 +179,20 @@
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
-      "Mathlib.Algebra.Order.Ring.Lemmas",
-      "Mathlib.Order.Filter.AtTopBot",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      "Mathlib.Order.Filter.AtTopBot.Field",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics"
     ],
     "opens": [
       "Filter"
     ],
     "namespace": "Erdos381",
-    "lineCount": 335,
+    "lineCount": 407,
     "axiomCount": 2,
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 11,
     "path": "Proofs/Erdos381Problem.lean",
-    "sorries": 3,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos381ProblemAristotle.lean"
     ]
@@ -202,5 +214,5 @@
       "description": "Related Erdős problem sharing themes: divisor-functions, number-theory"
     }
   ],
-  "sorries": 3
+  "sorries": 0
 }

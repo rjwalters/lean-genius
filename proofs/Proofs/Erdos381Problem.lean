@@ -25,9 +25,9 @@ Related: OEIS A002182, Ramanujan's highly composite numbers
 -/
 
 import Mathlib.Data.Nat.Basic
-import Mathlib.Algebra.Order.Ring.Lemmas
-import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Order.Filter.AtTopBot.Field
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
 open Filter
 
@@ -86,7 +86,7 @@ theorem two_highly_composite : IsHighlyComposite 2 := by
   · omega
   · intro m hm hmlt
     interval_cases m
-    · simp [tau]
+    decide
 
 /--
 **4 is highly composite:**
@@ -96,7 +96,7 @@ theorem four_highly_composite : IsHighlyComposite 4 := by
   constructor
   · omega
   · intro m hm hmlt
-    interval_cases m <;> simp [tau]
+    interval_cases m <;> decide
 
 /--
 **6 is highly composite:**
@@ -106,7 +106,7 @@ theorem six_highly_composite : IsHighlyComposite 6 := by
   constructor
   · omega
   · intro m hm hmlt
-    interval_cases m <;> simp [tau]
+    interval_cases m <;> decide
 
 /--
 **12 is highly composite:**
@@ -116,21 +116,21 @@ theorem twelve_highly_composite : IsHighlyComposite 12 := by
   constructor
   · omega
   · intro m hm hmlt
-    interval_cases m <;> simp [tau]
+    interval_cases m <;> decide
 
 /--
 **Divisor counts for small numbers:**
 Computational verification of τ values.
 -/
-example : tau 1 = 1 := by native_decide
-example : tau 2 = 2 := by native_decide
-example : tau 3 = 2 := by native_decide
-example : tau 4 = 3 := by native_decide
-example : tau 5 = 2 := by native_decide
-example : tau 6 = 4 := by native_decide
-example : tau 12 = 6 := by native_decide
-example : tau 24 = 8 := by native_decide
-example : tau 36 = 9 := by native_decide
+example : tau 1 = 1 := by decide
+example : tau 2 = 2 := by decide
+example : tau 3 = 2 := by decide
+example : tau 4 = 3 := by decide
+example : tau 5 = 2 := by decide
+example : tau 6 = 4 := by decide
+example : tau 12 = 6 := by decide
+example : tau 24 = 8 := by decide
+example : tau 36 = 9 := by decide
 
 /--
 **First several highly composite numbers:**
@@ -205,17 +205,73 @@ theorem nicolas_exponent_pos : nicolas_exponent > 0 :=
   (Classical.choose_spec nicolas_upper_bound).1
 
 /--
+**Exponent comparison from two-sided bounds.**
+If `Q x` is eventually at least `a · (log x)^α` (with `a > 0`) and eventually at most
+`b · (log x)^β`, then the lower exponent cannot exceed the upper one: `α ≤ β`.
+
+This is the analytic core behind Nicolas's disproof: a slower-growing power of
+`log x` can never dominate a faster-growing one on `atTop`, since their ratio
+`a · (log x)^(α-β)` would tend to infinity while remaining `≤ b`.
+-/
+theorem exponent_le_of_bounds {a b α β : ℝ} (ha : 0 < a)
+    (hlow : ∀ᶠ x : ℕ in atTop, a * (Real.log x) ^ α ≤ (Q x : ℝ))
+    (hup : ∀ᶠ x : ℕ in atTop, (Q x : ℝ) ≤ b * (Real.log x) ^ β) :
+    α ≤ β := by
+  by_contra hlt
+  push_neg at hlt
+  have hd : 0 < α - β := by linarith
+  have hlogtop : Tendsto (fun x : ℕ => Real.log x) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hlog1 : ∀ᶠ x : ℕ in atTop, (1 : ℝ) ≤ Real.log x :=
+    hlogtop.eventually_ge_atTop 1
+  -- Combining both bounds, `a · (log x)^(α-β) ≤ b` eventually.
+  have key : ∀ᶠ x : ℕ in atTop, a * (Real.log x) ^ (α - β) ≤ b := by
+    filter_upwards [hlow, hup, hlog1] with x hx_low hx_up hx_log1
+    have hpos : (0 : ℝ) < Real.log x := lt_of_lt_of_le one_pos hx_log1
+    have hβpos : (0 : ℝ) < (Real.log x) ^ β := Real.rpow_pos_of_pos hpos β
+    have hab : a * (Real.log x) ^ α ≤ b * (Real.log x) ^ β := le_trans hx_low hx_up
+    have hsplit : (Real.log x) ^ α = (Real.log x) ^ β * (Real.log x) ^ (α - β) := by
+      rw [← Real.rpow_add hpos]; congr 1; ring
+    rw [hsplit] at hab
+    have hab2 : (a * (Real.log x) ^ (α - β)) * (Real.log x) ^ β
+        ≤ b * (Real.log x) ^ β := by
+      have e : (a * (Real.log x) ^ (α - β)) * (Real.log x) ^ β
+          = a * ((Real.log x) ^ β * (Real.log x) ^ (α - β)) := by ring
+      rw [e]; exact hab
+    exact le_of_mul_le_mul_right hab2 hβpos
+  -- But `a · (log x)^(α-β) → ∞`, contradicting the eventual bound `≤ b`.
+  have hrtop : Tendsto (fun x : ℕ => (Real.log x) ^ (α - β)) atTop atTop :=
+    (tendsto_rpow_atTop hd).comp hlogtop
+  have htop : Tendsto (fun x : ℕ => a * (Real.log x) ^ (α - β)) atTop atTop :=
+    Filter.Tendsto.const_mul_atTop ha hrtop
+  have hgt : ∀ᶠ x : ℕ in atTop, b < a * (Real.log x) ^ (α - β) :=
+    htop.eventually_gt_atTop b
+  have hfalse : ∀ᶠ x : ℕ in atTop, False := by
+    filter_upwards [key, hgt] with x h1 h2; linarith
+  rcases hfalse.exists with ⟨_, h⟩
+  exact h
+
+/--
 **Corollary: The answer is NO:**
-The Erdős question is false - there exists k such that Q(x) is NOT ≫ (log x)^k.
+The Erdős question is false — there exists `k` such that `Q(x)` is NOT `≫ (log x)^k`.
 -/
 theorem erdos_question_false : ¬erdos_question := by
   intro h
-  -- Take k larger than Nicolas's exponent
-  obtain ⟨C, hC, K, hK, hbound⟩ := nicolas_upper_bound
-  -- If question were true, Q(x) ≥ c(log x)^k for k > C
-  -- But nicolas says Q(x) ≤ K(log x)^C
-  -- Contradiction for large x when k > C
-  sorry
+  -- Nicolas: Q(x) ≤ K (log x)^C eventually, for some real exponent C > 0.
+  obtain ⟨C, _hC, K, _hK, hup⟩ := nicolas_upper_bound
+  -- Instantiate the (false) hypothesis at a natural exponent strictly above C.
+  obtain ⟨c, hc, hlow⟩ := h (⌈C⌉₊ + 1) (by omega)
+  have hNge : C < ((⌈C⌉₊ + 1 : ℕ) : ℝ) := by
+    have h1 : C ≤ (⌈C⌉₊ : ℝ) := Nat.le_ceil C
+    push_cast; linarith
+  -- Rewrite the natural-power lower bound as an `rpow` bound.
+  have hlow' : ∀ᶠ x : ℕ in atTop,
+      c * (Real.log x) ^ ((⌈C⌉₊ + 1 : ℕ) : ℝ) ≤ (Q x : ℝ) := by
+    filter_upwards [hlow] with x hx
+    rw [Real.rpow_natCast]; exact hx
+  -- The comparison lemma forces `⌈C⌉₊ + 1 ≤ C`, contradicting `hNge`.
+  have := exponent_le_of_bounds hc hlow' hup
+  linarith
 
 /- ## Part VI: Tight Bounds -/
 
@@ -227,9 +283,16 @@ where c > 0 is Erdős's constant and C is Nicolas's exponent.
 theorem Q_bounds :
     ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ c < C ∧
     (∃ K₁ K₂ : ℝ, K₁ > 0 ∧ K₂ > 0 ∧
-     ∀ᶠ x in atTop, K₁ * (Real.log x)^(1 + c) ≤ (Q x : ℝ) ∧
+     ∀ᶠ x : ℕ in atTop, K₁ * (Real.log x)^(1 + c) ≤ (Q x : ℝ) ∧
                     (Q x : ℝ) ≤ K₂ * (Real.log x)^C) := by
-  sorry
+  obtain ⟨c, hc, K₁, hK₁, hlow⟩ := erdos_lower_bound
+  obtain ⟨C, hC, K₂, hK₂, hup⟩ := nicolas_upper_bound
+  -- The lower exponent `1 + c` cannot exceed the upper exponent `C`, so `c < C`.
+  have hlow' : ∀ᶠ x : ℕ in atTop, K₁ * (Real.log x) ^ (1 + c) ≤ (Q x : ℝ) := hlow
+  have hexp : (1 + c) ≤ C := exponent_le_of_bounds hK₁ hlow' hup
+  refine ⟨c, C, hc, hC, by linarith, K₁, K₂, hK₁, hK₂, ?_⟩
+  filter_upwards [hlow, hup] with x h1 h2
+  exact ⟨h1, h2⟩
 
 /-
 **Q(x) has polynomial growth in log x:**
@@ -314,10 +377,19 @@ Q(x) does NOT grow faster than every power of log x.
 theorem erdos_381_answer_no :
     ∃ k : ℕ, k ≥ 1 ∧ ¬(∃ C : ℝ, C > 0 ∧
     ∀ᶠ x in atTop, (Q x : ℝ) ≥ C * (Real.log x)^k) := by
-  -- Take k = ⌈nicolas_exponent⌉ + 1
-  -- Nicolas's bound gives Q(x) ≤ K(log x)^C
-  -- So Q(x) is not ≥ c(log x)^k for k > C
-  sorry
+  -- Take k = ⌈C⌉₊ + 1 where C is Nicolas's exponent; then k > C.
+  obtain ⟨C, _hC, K, _hK, hup⟩ := nicolas_upper_bound
+  refine ⟨⌈C⌉₊ + 1, by omega, ?_⟩
+  rintro ⟨c, hc, hlow⟩
+  have hNge : C < ((⌈C⌉₊ + 1 : ℕ) : ℝ) := by
+    have h1 : C ≤ (⌈C⌉₊ : ℝ) := Nat.le_ceil C
+    push_cast; linarith
+  have hlow' : ∀ᶠ x : ℕ in atTop,
+      c * (Real.log x) ^ ((⌈C⌉₊ + 1 : ℕ) : ℝ) ≤ (Q x : ℝ) := by
+    filter_upwards [hlow] with x hx
+    rw [Real.rpow_natCast]; exact hx
+  have := exponent_le_of_bounds hc hlow' hup
+  linarith
 
 /--
 **Summary of erdos_381:**
