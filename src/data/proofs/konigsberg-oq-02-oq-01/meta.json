@@ -189,5 +189,35 @@
       "description": "Original Königsberg bridges undirected case"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Carl Hierholzer"
+      ],
+      "title": "Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren",
+      "year": 1873,
+      "venue": "Mathematische Annalen 6, 30–32",
+      "note": "First complete proof of the sufficiency of Euler's condition, via the trail-splicing algorithm now named after Hierholzer."
+    },
+    {
+      "authors": [
+        "J. A. Bondy",
+        "U. S. R. Murty"
+      ],
+      "title": "Graph Theory",
+      "year": 2008,
+      "venue": "Springer, Graduate Texts in Mathematics 244",
+      "note": "Modern treatment of Eulerian circuits, the degree characterization, and Hierholzer's algorithm."
+    },
+    {
+      "authors": [
+        "Reinhard Diestel"
+      ],
+      "title": "Graph Theory",
+      "year": 2017,
+      "venue": "Springer, Graduate Texts in Mathematics 173 (5th ed.)",
+      "note": "Includes the theory of infinite graphs, ends, and Eulerian paths in locally finite graphs."
+    }
+  ]
 }

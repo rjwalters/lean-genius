@@ -166,5 +166,36 @@
     "definitionCount": 13,
     "sorries": 0,
     "path": "Proofs/KonigsbergOQ03OQ02.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": [
+        "Reinhard Diestel"
+      ],
+      "title": "Graph Theory",
+      "year": 2017,
+      "venue": "Springer, Graduate Texts in Mathematics 173 (5th ed.)",
+      "note": "Includes the theory of infinite graphs, ends, and Eulerian paths in locally finite graphs."
+    },
+    {
+      "authors": [
+        "Dénes König"
+      ],
+      "title": "Theorie der endlichen und unendlichen Graphen",
+      "year": 1936,
+      "venue": "Akademische Verlagsgesellschaft, Leipzig",
+      "note": "Foundational monograph on finite and infinite graphs, including König's lemma used in compactness arguments for infinite Euler paths."
+    },
+    {
+      "authors": [
+        "Paul Erdős",
+        "Tibor Grünwald",
+        "Endre Vázsonyi"
+      ],
+      "title": "Über Euler-Linien unendlicher Graphen",
+      "year": 1938,
+      "venue": "Journal of Mathematics and Physics 17, 59–75",
+      "note": "Characterizes which locally finite countable graphs admit one-way and two-way infinite Euler lines (the Erdős–Grünwald–Weiszfeld/Vázsonyi theorem)."
+    }
+  ]
 }

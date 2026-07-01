@@ -172,5 +172,35 @@
       "mathContext": "De Bruijn graph: vertices = $\\Sigma^{n-1}$, arcs = $\\Sigma^n$; $|E| = k^n$; de Bruijn sequence length = $k^n + n - 1$; Eulerian circuit $\\Rightarrow$ de Bruijn sequence exists"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "J. A. Bondy",
+        "U. S. R. Murty"
+      ],
+      "title": "Graph Theory",
+      "year": 2008,
+      "venue": "Springer, Graduate Texts in Mathematics 244",
+      "note": "Modern treatment of Eulerian circuits, the degree characterization, and Hierholzer's algorithm."
+    },
+    {
+      "authors": [
+        "Douglas B. West"
+      ],
+      "title": "Introduction to Graph Theory",
+      "year": 2001,
+      "venue": "Prentice Hall (2nd ed.)",
+      "note": "Euler's theorem for undirected and directed graphs and its degree conditions."
+    },
+    {
+      "authors": [
+        "Reinhard Diestel"
+      ],
+      "title": "Graph Theory",
+      "year": 2017,
+      "venue": "Springer, Graduate Texts in Mathematics 173 (5th ed.)",
+      "note": "Includes the theory of infinite graphs, ends, and Eulerian paths in locally finite graphs."
+    }
+  ]
 }
