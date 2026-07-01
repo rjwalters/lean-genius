@@ -1,0 +1,132 @@
+{
+  "id": "cube-root-3-irrational-oq-02-oq-04",
+  "slug": "cube-root-3-irrational-oq-02-oq-04",
+  "title": "Eisenstein for Squarefree Radicands: Xⁿ − m and the ⁿ√m Irrationality Family",
+  "description": "The parent gives an Eisenstein proof that X³ − 3 is irreducible. Open Question OQ-04 asks whether the Eisenstein approach extends to non-prime radicands — is every squarefree m enough? This entry answers YES by bridging Mathlib's `Squarefree` predicate to the criterion, deducing irrationality of ⁿ√m for every squarefree m ≥ 2 and every n ≥ 2, and then drawing the sharp boundary: squarefreeness is sufficient but NOT necessary (witnessed by m = 12).",
+  "leanFile": {
+    "lineCount": 201,
+    "path": "Proofs/CubeRoot3IrrationalOQ02OQ04.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 15
+  },
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Every squarefree m ≥ 2 makes Xⁿ − m Eisenstein-irreducible over ℚ (for n ≥ 2), so ⁿ√m is irrational. Squarefreeness is sufficient but not necessary — m = 12 is a counterexample to necessity. 15 theorems, 0 sorries, 0 axioms.",
+    "implications": "**From one prime to all squarefree radicands**: the parent's dependency proves Xⁿ − m irreducible whenever *some* prime p exactly divides m (p ∣ m, p² ∤ m). This entry closes the gap the open question names: for a squarefree m, *every* prime divisor exactly divides m (that is the definition of squarefree), and m ≥ 2 guarantees at least one exists. So the single hypothesis `Squarefree m` mechanically supplies the Eisenstein prime — no case analysis on m.\n\n**A whole family of irrationalities**: `irrational_nthRoot_of_squarefree` generalizes the parent's ∛3 result along two axes at once — arbitrary squarefree radicand and arbitrary root degree n ≥ 2. Instances √6, √30, ∛30 are one-liners.\n\n**Sharp boundary (sufficient ≠ necessary)**: the natural guess that Eisenstein needs a squarefree radicand is FALSE. m = 12 = 2²·3 is not squarefree, yet Xⁿ − 12 is Eisenstein-irreducible at p = 3 because 3 ∥ 12. The genuine criterion is the strictly weaker 'some prime exactly divides m'. Making both the positive theorem and its counterexample-to-necessity explicit is the entry's main contribution.",
+    "openQuestions": [
+      "Characterize exactly which m admit an Eisenstein prime (a prime p with p ∥ m). This is 'm is not of the form where every prime divisor appears with exponent ≥ 2', i.e. m is not powerful. Formalizing the powerful-number boundary would complete the classification of the Eisenstein-reachable radicands.",
+      "For a powerful but non-perfect-power m (e.g. m = 8, m = 72), Eisenstein at every prime fails, yet ⁿ√m can still be irrational. What alternative criterion (e.g. the general X^n − C a irreducibility of Vahlen–Capelli / Kummer) governs these cases, and how does it interact with the 4 ∣ n exceptional clause?",
+      "Does the squarefree-radicand irreducibility extend verbatim to Xⁿ − m over other number fields, or does the ramification of the chosen prime p obstruct the Gauss-lemma transfer?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cube-root-3-irrational-oq-02",
+      "relationship": "extends",
+      "description": "Parent: Eisenstein proof that X³ − 3 is irreducible over ℚ. This entry generalizes the radicand 3 to every squarefree m ≥ 2 (and every root degree)."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Computes [ℚ(∛3):ℚ] = 3 via the shared helper CubeRoot2IrrationalOQ03; this entry proves the analogous [ℚ(ⁿ√m):ℚ] = n for squarefree m as a corollary of the same machinery."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Linear independence of {1, ∛3, (∛3)²} over ℚ — another consequence of the degree-3 extension whose radicand-generalization this entry supplies."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-setup",
+      "title": "Setup: Imports and Namespace",
+      "startLine": 37,
+      "endLine": 45,
+      "summary": "Imports the parametric n-th root file CubeRoot2IrrationalOQ03 and opens Polynomial, IntermediateField, and CubeRoot2IrrationalOQ03. IntermediateField is required for the ℚ⟮α⟯ adjoin notation.",
+      "mathContext": "Built on the dependency's Eisenstein criterion for $X^n - m$ with an exactly-dividing prime factor, and its field-degree lemmas."
+    },
+    {
+      "id": "sec-eisenstein-prime",
+      "title": "PART 1: Squarefree Radicands Admit an Eisenstein Prime",
+      "startLine": 47,
+      "endLine": 66,
+      "summary": "sqfree_exists_eisenstein_prime: for squarefree m ≥ 2 there is a prime p with p ∣ m but p² ∤ m. A prime divisor exists because m ≠ 1; squarefreeness upgrades it to exact division since p² ∣ m would force IsUnit p.",
+      "mathContext": "Uses `Nat.exists_prime_and_dvd` and the definition of `Squarefree` ($\\forall x,\\ x\\cdot x \\mid m \\to \\text{IsUnit } x$)."
+    },
+    {
+      "id": "sec-irreducible",
+      "title": "PART 2: Irreducibility of Xⁿ − m for Squarefree m",
+      "startLine": 68,
+      "endLine": 76,
+      "summary": "X_pow_sub_C_irreducible_of_squarefree: the headline positive result. For squarefree m ≥ 2 and n ≥ 2, Xⁿ − m is irreducible over ℚ, obtained by feeding the Eisenstein prime into the dependency's criterion.",
+      "mathContext": "Applies `eisenstein_X_pow_sub_of_sqfree_factor` with the prime produced in Part 1."
+    },
+    {
+      "id": "sec-irrationality",
+      "title": "PART 3: No Rational Roots ⟹ Irrationality of ⁿ√m",
+      "startLine": 78,
+      "endLine": 132,
+      "summary": "no_rat_root_of_irreducible (irreducible degree ≥ 2 ⟹ no rational root), irrational_nthRoot_of_irreducible (irrationality from irreducibility), and irrational_nthRoot_of_squarefree (the family theorem: ⁿ√m irrational for squarefree m ≥ 2, n ≥ 2).",
+      "mathContext": "A rational root gives a linear factor $(X - C q)$; irreducibility forces natDegree $= 1 \\neq n$. The real $n$-th power identity uses `Real.rpow_natCast` / `Real.rpow_mul`."
+    },
+    {
+      "id": "sec-field-degree",
+      "title": "PART 4: Field Extension Degree",
+      "startLine": 134,
+      "endLine": 143,
+      "summary": "adjoin_nthRoot_squarefree_finrank: [ℚ(ⁿ√m):ℚ] = n for squarefree m ≥ 2 and n ≥ 2, the degree statement under the single clean Squarefree hypothesis.",
+      "mathContext": "Specializes the dependency's `adjoin_nthRoot_finrank` to the squarefree case."
+    },
+    {
+      "id": "sec-boundary",
+      "title": "PART 5: Sharp Boundary — Sufficient, NOT Necessary",
+      "startLine": 145,
+      "endLine": 163,
+      "summary": "not_squarefree_twelve (12 is not squarefree, via 2·2 ∣ 12), X_pow_sub_C_twelve_irreducible (Xⁿ − 12 still irreducible via 3 ∥ 12), and irrational_nthRoot_twelve. Witnesses that squarefreeness is sufficient but not necessary.",
+      "mathContext": "The true criterion is 'some prime exactly divides m', strictly weaker than `Squarefree m`."
+    },
+    {
+      "id": "sec-instances",
+      "title": "PART 6: Concrete Instances",
+      "startLine": 165,
+      "endLine": 200,
+      "summary": "squarefree_six / squarefree_fifteen / squarefree_thirty (via Nat.squarefree_mul_iff and Prime.squarefree), then irrational_sqrt_six, irrational_sqrt_thirty, irrational_cbrt_thirty as one-line corollaries.",
+      "mathContext": "Squarefreeness of small radicands is established multiplicatively rather than by `decide`, which cannot reduce the well-founded `Nat.minSqFac`."
+    }
+  ],
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-06-30",
+    "dateAdded": "2026-06-30",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 201,
+    "definitionCount": 0,
+    "theoremCount": 15,
+    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ02OQ04.lean",
+    "assumptions": "None beyond Mathlib. All 15 theorems depend only on the standard foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms) — no sorryAx, no Lean.ofReduceBool. Depends on CubeRoot2IrrationalOQ03 for the Eisenstein criterion and field-degree lemmas.",
+    "tags": [
+      "irrationality",
+      "eisenstein",
+      "irreducibility",
+      "squarefree",
+      "nth-roots",
+      "field-extensions",
+      "polynomials",
+      "algebraic-numbers"
+    ],
+    "originalContributions": [
+      "sqfree_exists_eisenstein_prime: Squarefree m ∧ 2 ≤ m ⟹ ∃ prime p, p ∣ m ∧ p² ∤ m — the bridge from Mathlib's Squarefree predicate to the Eisenstein criterion",
+      "X_pow_sub_C_irreducible_of_squarefree: Xⁿ − m irreducible over ℚ for squarefree m ≥ 2, n ≥ 2 (the open question's positive answer)",
+      "no_rat_root_of_irreducible: reusable lemma — an irreducible ℚ[X] of natDegree ≥ 2 has no rational root",
+      "irrational_nthRoot_of_squarefree: ⁿ√m irrational for every squarefree m ≥ 2 and every n ≥ 2 — generalizes the parent's ∛3 in both radicand and degree",
+      "adjoin_nthRoot_squarefree_finrank: [ℚ(ⁿ√m):ℚ] = n for squarefree m ≥ 2 under the single Squarefree hypothesis",
+      "not_squarefree_twelve + X_pow_sub_C_twelve_irreducible: sharp boundary — squarefreeness is sufficient but NOT necessary (m = 12 = 2²·3 is not squarefree yet Xⁿ − 12 is Eisenstein-irreducible at 3 ∥ 12)",
+      "irrational_sqrt_six / irrational_sqrt_thirty / irrational_cbrt_thirty: concrete squarefree instances"
+    ]
+  }
+}
