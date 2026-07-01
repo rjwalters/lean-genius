@@ -1,0 +1,75 @@
+[
+  {
+    "id": "ann-fiboq0202-1",
+    "proofId": "fibonacci-identities-oq-02-oq-02",
+    "range": { "startLine": 3, "endLine": 62 },
+    "type": "concept",
+    "title": "General Lucas Sequences as Divisibility Sequences",
+    "content": "**Module framing.** The parent entry proved the Fibonacci characterization $F_m\\mid F_n\\iff m\\mid n$ (for $m\\ge 3$), the $(P,Q)=(1,-1)$ instance of the fundamental Lucas sequence $U_n(P,Q)$. The natural extension asks for the general two-parameter family. The honest answer splits in two. The **biconditional is NOT unconditional**: the converse $U_m\\mid U_n\\Rightarrow m\\mid n$ used strict monotonicity of $F$ ($\\texttt{Nat.fib\\_lt\\_fib}$) in the parent proof, and over $\\mathbb{Z}$ the general $U_n(P,Q)$ has no such growth law (values may be negative, repeat, or hit $\\pm 1$ at several indices when $\\gcd(P,Q)\\neq 1$). The **forward, divisibility-sequence direction IS unconditional**: $m\\mid n\\Rightarrow U_m(P,Q)\\mid U_n(P,Q)$ for every integer pair $(P,Q)$, the exact general-parameter lift of Mathlib's $\\texttt{Nat.fib\\_dvd}$.",
+    "mathContext": "$U_0=0,\\ U_1=1,\\ U_{n+2}=P\\,U_{n+1}-Q\\,U_n$; a divisibility sequence satisfies $m\\mid n\\Rightarrow U_m\\mid U_n$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Lucas sequences Uₙ(P,Q)",
+      "Divisibility sequence",
+      "Nat.fib_dvd",
+      "Discriminant D = P² − 4Q"
+    ],
+    "prerequisites": [
+      "The second-order Lucas recurrence",
+      "Divisibility in a commutative ring"
+    ],
+    "tags": ["module-header", "framing", "divisibility-sequence"]
+  },
+  {
+    "id": "ann-fiboq0202-2",
+    "proofId": "fibonacci-identities-oq-02-oq-02",
+    "range": { "startLine": 64, "endLine": 82 },
+    "type": "definition",
+    "title": "The Fundamental Lucas Sequence over ℤ",
+    "content": "`U (P Q : ℤ) : ℕ → ℤ` is defined by $U_0=0$, $U_1=1$, $U_{n+2}=P\\,U_{n+1}-Q\\,U_n$ — self-contained, independent of the sibling `LucasSequenceDegree2Identities` file. `U_add_two` restates the recurrence (`rfl`) and `U_two : U_2 = P` records the first computed value. Working over $\\mathbb{Z}$ rather than $\\mathbb{N}$ is essential: the recurrence subtracts $Q\\,U_n$, which can go negative.",
+    "mathContext": "$U_{n+2}=P\\,U_{n+1}-Q\\,U_n$, $U_2=P$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Second-order linear recurrence", "Fibonacci as (1,−1)"],
+    "prerequisites": ["Recursive definitions in Lean"],
+    "tags": ["definition", "lucas-sequence"]
+  },
+  {
+    "id": "ann-fiboq0202-3",
+    "proofId": "fibonacci-identities-oq-02-oq-02",
+    "range": { "startLine": 84, "endLine": 116 },
+    "type": "proof-technique",
+    "title": "The Addition Formula by Two-Step Induction",
+    "content": "`U_add`: $U_{m+n+1}=U_{m+1}U_{n+1}-Q\\,U_m U_n$ is the Lucas analogue of $\\texttt{Nat.fib\\_add}$. Because the recurrence couples $U_n$, $U_{n+1}$, $U_{n+2}$, ordinary induction on $n$ is strengthened to the **conjunction of the statement at $n$ and at $n+1$** (the same device as the sibling file's `V_eq`). The successor step rewrites the top index by the recurrence and closes with `ring` after substituting the recurrences for $U_{k+2}$ and $U_{k+3}$. This single identity is the entire engine for divisibility.",
+    "mathContext": "$U_{m+n+1}=U_{m+1}U_{n+1}-Q\\,U_m U_n$; base cases $n=0$ ($U_{m+1}$) and $n=1$ ($U_{m+2}$).",
+    "significance": "central",
+    "relatedConcepts": ["Nat.fib_add", "Two-step induction", "Coupled recurrences"],
+    "prerequisites": ["Strengthening the induction hypothesis to consecutive pairs"],
+    "tags": ["addition-formula", "induction", "technique"]
+  },
+  {
+    "id": "ann-fiboq0202-4",
+    "proofId": "fibonacci-identities-oq-02-oq-02",
+    "range": { "startLine": 118, "endLine": 135 },
+    "type": "key-insight",
+    "title": "Divisibility from the Addition-Formula Split",
+    "content": "`U_dvd_U_of_dvd`: writing $n=m\\cdot k$ and inducting on $k$. For $k=0$, $U_m\\mid U_0=0$. For the successor, put $m=p+1$ and $(p+1)(j+1)=(p+1)j+p+1$; the addition formula with $a=m\\cdot j$, $b=p$ gives $U_{mj+m}=U_{mj+1}\\,U_m-Q\\,U_{mj}\\,U_p$. The **first summand carries the visible factor $U_m$** ($\\texttt{Dvd.intro\\_left}$); the **second carries $U_{mj}$**, divisible by $U_m$ by the induction hypothesis; $\\texttt{dvd\\_sub}$ combines them. No gcd machinery, no closed form — this is exactly why it holds uniformly across all $(P,Q)$.",
+    "mathContext": "$U_{mj+m}=U_{mj+1}U_m-Q\\,U_{mj}U_p$; both summands divisible by $U_m$.",
+    "significance": "central",
+    "relatedConcepts": ["Divisibility sequence", "Induction on the quotient", "dvd_sub"],
+    "prerequisites": ["The addition formula U_add"],
+    "tags": ["divisibility", "key-insight"]
+  },
+  {
+    "id": "ann-fiboq0202-5",
+    "proofId": "fibonacci-identities-oq-02-oq-02",
+    "range": { "startLine": 137, "endLine": 149 },
+    "type": "concept",
+    "title": "Fibonacci, Pell, and Mersenne-Type Specializations",
+    "content": "The general law specializes to `fib_dvd_instance` $(1,-1)$ (recovering the shape of $\\texttt{Nat.fib\\_dvd}$), `pell_dvd_instance` $(2,-1)$, and `mersenne_dvd_instance` $(3,2)$. At $(3,2)$ the sequence is $U_n=2^n-1$, so $m\\mid n$ yields the classical $(2^m-1)\\mid(2^n-1)$ — the divisibility of Mersenne numbers falling out of the same uniform argument.",
+    "mathContext": "$(P,Q)=(3,2)\\Rightarrow U_n=2^n-1$; $m\\mid n\\Rightarrow (2^m-1)\\mid(2^n-1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Pell numbers", "Mersenne numbers", "Repunit-type sequences"],
+    "prerequisites": ["The divisibility law U_dvd_U_of_dvd"],
+    "tags": ["specialization", "mersenne", "pell"]
+  }
+]

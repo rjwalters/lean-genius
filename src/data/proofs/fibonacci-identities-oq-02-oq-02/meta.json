@@ -1,0 +1,161 @@
+{
+  "id": "fibonacci-identities-oq-02-oq-02",
+  "title": "General Lucas sequences are divisibility sequences: m ∣ n → Uₘ(P,Q) ∣ Uₙ(P,Q)",
+  "slug": "fibonacci-identities-oq-02-oq-02",
+  "description": "The parent entry fibonacci-identities-oq-02 records the Fibonacci divisibility characterization — for 3 ≤ m, fib m ∣ fib n ↔ m ∣ n — as the specialization of the fundamental Lucas sequence Uₙ(P,Q) at (P,Q)=(1,−1). Its second open question asks whether this extends to the general two-parameter family. This entry settles the extension with an honest split. The full biconditional Uₘ ∣ Uₙ ↔ m ∣ n is NOT unconditional: the Fibonacci proof forces gcd(m,n)=m from fib m ∣ fib n by strict monotonicity (Nat.fib_lt_fib), and over ℤ the general Uₙ(P,Q) has no such growth law — values can be negative, repeat, or hit ±1 at several indices when gcd(P,Q)≠1 — so the converse is genuinely conditional and is left as the sharp-boundary follow-up. The robust, unconditional half — the direction making U a divisibility sequence — does hold for EVERY integer pair (P,Q): m ∣ n → Uₘ(P,Q) ∣ Uₙ(P,Q) (U_dvd_U_of_dvd). This is the exact general-parameter lift of Mathlib's Nat.fib_dvd, elementary and over ℤ with no Binet closed form, no √D, and no field extension. The engine is the addition formula Uₘ₊ₙ₊₁ = Uₘ₊₁·Uₙ₊₁ − Q·Uₘ·Uₙ (U_add), the Lucas-sequence analogue of Nat.fib_add, proved by a two-step induction on n packaged as a consecutive pair (the second-order recurrence Uₙ₊₂ = P·Uₙ₊₁ − Q·Uₙ couples n and n+1). Writing n = m·k and inducting on k, the addition formula splits U_{m·k+m} = U_{m·k+1}·Uₘ − Q·U_{m·k}·U_{m−1}: the first summand carries a visible factor Uₘ, the second carries U_{m·k}, divisible by Uₘ by the induction hypothesis. Specializations recover the Fibonacci case (1,−1), the Pell case (2,−1), and the Mersenne-type case (3,2) where Uₙ = 2ⁿ−1, so that m ∣ n gives (2ᵐ−1) ∣ (2ⁿ−1).",
+  "meta": {
+    "author": "Édouard Lucas / classical Lucas-sequence theory; formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lucas_sequence#Divisibility_properties",
+    "date": "1878",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "lucas-sequences",
+      "divisibility",
+      "divisibility-sequence",
+      "addition-formula",
+      "integer-sequences",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ02OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_dvd",
+        "description": "m ∣ n → fib m ∣ fib n — the Fibonacci divisibility-sequence law that U_dvd_U_of_dvd generalizes to every parameter pair (P,Q)",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "dvd_sub",
+        "description": "a ∣ b → a ∣ c → a ∣ b - c over a commutative ring — combines the two summands of the addition-formula split into a single divisibility by Uₘ",
+        "module": "Mathlib.Algebra.Ring.Basic"
+      }
+    ],
+    "originalContributions": [
+      "U: a self-contained definition of the fundamental Lucas sequence Uₙ(P,Q) over ℤ (U₀=0, U₁=1, Uₙ₊₂ = P·Uₙ₊₁ − Q·Uₙ), independent of the sibling LucasSequenceDegree2Identities file",
+      "U_add: the addition formula Uₘ₊ₙ₊₁ = Uₘ₊₁·Uₙ₊₁ − Q·Uₘ·Uₙ — the two-parameter Lucas analogue of Nat.fib_add — proved by two-step induction on n packaged as a consecutive pair, subtraction handled entirely over ℤ",
+      "U_dvd_U_of_dvd: the divisibility-sequence law m ∣ n → Uₘ(P,Q) ∣ Uₙ(P,Q) for ALL integer parameters (P,Q), the exact general-parameter lift of Mathlib's Nat.fib_dvd, by induction on the quotient using the addition-formula split",
+      "fib_dvd_instance / pell_dvd_instance / mersenne_dvd_instance: specializations to (1,−1) Fibonacci, (2,−1) Pell, and (3,2) where Uₙ = 2ⁿ−1 (recovering (2ᵐ−1) ∣ (2ⁿ−1) from m ∣ n)",
+      "Honest boundary: the module documents WHY the converse Uₘ ∣ Uₙ → m ∣ n fails to be unconditional (no ℤ-analogue of the monotonicity Nat.fib_lt_fib used in the parent Fibonacci proof), recording it as the sharp follow-up rather than overclaiming a biconditional"
+    ],
+    "dateAdded": "2026-07-01",
+    "lineCount": 149,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, confirmed by #print axioms on U_add and U_dvd_U_of_dvd). No native_decide, so no Lean.ofReduceBool. The result proved is the unconditional direction m ∣ n → Uₘ ∣ Uₙ; the converse biconditional is explicitly NOT claimed and is left open (it requires non-degeneracy hypotheses on (P,Q) with no unconditional integer analogue).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The fundamental Lucas sequences Uₙ(P,Q) are the two-parameter family solving xₙ₊₂ = P·xₙ₊₁ − Q·xₙ with U₀ = 0, U₁ = 1; Fibonacci is the instance (P,Q) = (1,−1), Pell is (2,−1). Édouard Lucas introduced them in 1878 precisely to study divisibility. A basic structural fact is that every fundamental Lucas sequence is a divisibility sequence — m ∣ n forces Uₘ ∣ Uₙ — regardless of the parameters. The stronger strong-divisibility law gcd(Uₘ,Uₙ) = ±U_{gcd(m,n)} and the divisibility characterization Uₘ ∣ Uₙ ⟺ m ∣ n require further hypotheses (typically gcd(P,Q) = 1 and non-degeneracy), which is why the parent Fibonacci entry carries the sharpness condition 3 ≤ m.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-02-oq-02)**: Extend the Fibonacci divisibility characterization fib m ∣ fib n ↔ m ∣ n (parent entry, the (1,−1) instance) to the general fundamental Lucas sequence Uₙ(P,Q).\n\n**Resolution**: The biconditional is conditional, not universal — the converse Uₘ ∣ Uₙ → m ∣ n has no unconditional integer analogue because the Fibonacci proof depends on strict monotonicity (Nat.fib_lt_fib), which fails over ℤ for general (P,Q). The unconditional content is the forward direction, the divisibility-sequence law: m ∣ n → Uₘ(P,Q) ∣ Uₙ(P,Q) for every integer pair (P,Q), the exact general-parameter lift of Nat.fib_dvd.",
+    "text": "With Uₙ(P,Q) the fundamental Lucas sequence over ℤ, the map n ↦ Uₙ is a divisibility sequence: whenever m divides n, Uₘ divides Uₙ. The proof is purely algebraic — an addition formula Uₘ₊ₙ₊₁ = Uₘ₊₁·Uₙ₊₁ − Q·Uₘ·Uₙ followed by induction on the quotient n/m — and never leaves ℤ. The converse, and the full strong-divisibility gcd law, need non-degeneracy hypotheses on the parameters and are recorded as follow-ups.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Define Uₙ(P,Q) over ℤ by the second-order recurrence (U₀=0, U₁=1, Uₙ₊₂ = P·Uₙ₊₁ − Q·Uₙ); record U_add_two and U_two = P.\n\n2. Addition formula U_add: Uₘ₊ₙ₊₁ = Uₘ₊₁·Uₙ₊₁ − Q·Uₘ·Uₙ. Strengthen to the conjunction of the statement at n and at n+1 and induct on n; the coupled recurrence closes the step by a single linear_combination/ring after substituting the recurrences for Uₖ₊₂, Uₖ₊₃.\n\n3. Divisibility U_dvd_U_of_dvd: obtain n = m·k and induct on k. For k=0, Uₘ ∣ U₀ = 0. For the successor, m = p+1 and (p+1)(j+1) = (p+1)·j + p + 1; the addition formula with a = m·j, b = p splits U_{m·j+m} = U_{m·j+1}·Uₘ − Q·U_{m·j}·U_p. The first summand is Dvd.intro_left; the second is (ih.mul_left _).mul_right _; combine with dvd_sub.\n\n4. Specialize to (1,−1), (2,−1), (3,2).",
+    "keyInsights": [
+      "**Every fundamental Lucas sequence is a divisibility sequence.** m ∣ n → Uₘ(P,Q) ∣ Uₙ(P,Q) holds unconditionally for all integer parameters, generalizing Mathlib's Nat.fib_dvd from Fibonacci to the whole two-parameter family.",
+      "**The biconditional is genuinely conditional.** The converse Uₘ ∣ Uₙ → m ∣ n used strict monotonicity of fib in the parent proof; no unconditional ℤ-analogue exists (values may be negative, repeat, or equal ±1 at several indices when gcd(P,Q)≠1), so overclaiming a universal ↔ would be false.",
+      "**The addition formula is the whole engine.** Uₘ₊ₙ₊₁ = Uₘ₊₁·Uₙ₊₁ − Q·Uₘ·Uₙ (the Lucas analogue of Nat.fib_add) exposes the factor Uₘ directly; the divisibility law is then a one-line induction on the quotient with no gcd machinery.",
+      "**Elementary and closed-form-free.** Nothing uses the Binet formula, √D, or the companion sequence V — the argument stays inside ℤ throughout, which is exactly what makes it work uniformly across all (P,Q), including the degenerate discriminant cases."
+    ],
+    "prerequisites": [
+      "The second-order Lucas recurrence Uₙ₊₂ = P·Uₙ₊₁ − Q·Uₙ and two-step induction for it",
+      "Mathlib's Nat.fib_dvd as the (1,−1) prototype",
+      "Divisibility in a commutative ring: dvd_sub, Dvd.intro_left, Dvd.dvd.mul_left/mul_right"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Framing",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module docstring stating the open question (extend the Fibonacci characterization to general Lucas sequences), the honest split (the biconditional is conditional; the divisibility-sequence direction is unconditional), and the two-step proof architecture (addition formula, then induction on the quotient).",
+      "mathContext": "$U_0=0,\\ U_1=1,\\ U_{n+2}=P\\,U_{n+1}-Q\\,U_n$; a divisibility sequence satisfies $m\\mid n\\Rightarrow U_m\\mid U_n$."
+    },
+    {
+      "id": "definition",
+      "title": "The Fundamental Lucas Sequence",
+      "startLine": 64,
+      "endLine": 82,
+      "summary": "def U (P Q : ℤ) : ℕ → ℤ with the second-order recurrence, the base values U_zero/U_one, the certifying recurrence U_add_two, and U_two = P.",
+      "mathContext": "$U_{n+2}=P\\,U_{n+1}-Q\\,U_n$, $U_2=P$."
+    },
+    {
+      "id": "addition",
+      "title": "The Addition Formula",
+      "startLine": 84,
+      "endLine": 116,
+      "summary": "U_add: Uₘ₊ₙ₊₁ = Uₘ₊₁·Uₙ₊₁ − Q·Uₘ·Uₙ, the Lucas analogue of Nat.fib_add, proved by two-step induction on n packaged as a consecutive pair so the coupled recurrence closes the step.",
+      "mathContext": "$U_{m+n+1}=U_{m+1}U_{n+1}-Q\\,U_m U_n$."
+    },
+    {
+      "id": "divisibility",
+      "title": "The Divisibility-Sequence Law",
+      "startLine": 118,
+      "endLine": 135,
+      "summary": "U_dvd_U_of_dvd: m ∣ n → Uₘ ∣ Uₙ for all (P,Q). Induct on the quotient k; the addition formula splits U_{m·k+m} into a term with factor Uₘ plus a term divisible by Uₘ via the induction hypothesis.",
+      "mathContext": "$m\\mid n\\Rightarrow U_m\\mid U_n$; the general-parameter lift of Nat.fib_dvd."
+    },
+    {
+      "id": "instances",
+      "title": "Specializations",
+      "startLine": 137,
+      "endLine": 149,
+      "summary": "fib_dvd_instance (1,−1), pell_dvd_instance (2,−1), and mersenne_dvd_instance (3,2) where Uₙ = 2ⁿ−1, recovering (2ᵐ−1) ∣ (2ⁿ−1) from m ∣ n.",
+      "mathContext": "$(P,Q)\\in\\{(1,-1),(2,-1),(3,2)\\}$; at $(3,2)$, $U_n=2^n-1$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry: the Fibonacci divisibility characterization fib m ∣ fib n ↔ m ∣ n (for 3 ≤ m). This entry lifts its unconditional forward direction to the general Lucas sequence Uₙ(P,Q) and explains why the converse does not generalize unconditionally."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Sibling open question: the COMPANION Lucas numbers Vₙ(1,−1) are NOT a strong divisibility sequence. This entry treats the FUNDAMENTAL sequence Uₙ, which IS a divisibility sequence — the structural contrast between the two Lucas sequences."
+    }
+  ],
+  "conclusion": {
+    "summary": "For every integer pair (P,Q) the fundamental Lucas sequence Uₙ(P,Q) is a divisibility sequence: m ∣ n → Uₘ ∣ Uₙ (U_dvd_U_of_dvd), the exact general-parameter lift of Nat.fib_dvd. The engine is the addition formula Uₘ₊ₙ₊₁ = Uₘ₊₁·Uₙ₊₁ − Q·Uₘ·Uₙ (U_add). The converse Uₘ ∣ Uₙ → m ∣ n is deliberately NOT claimed — it has no unconditional ℤ-analogue of the Fibonacci monotonicity argument — and is recorded as the sharp follow-up. Specializations recover Fibonacci (1,−1), Pell (2,−1), and the Mersenne-type (3,2) with Uₙ = 2ⁿ−1.",
+    "implications": "Resolves the parent's second open question by supplying the correct universal statement (the forward, divisibility-sequence direction) while being explicit about the conditional nature of the biconditional. Packages a reusable ℤ-valued Lucas addition formula and a general-parameter Nat.fib_dvd, both fully verified.",
+    "openQuestions": [
+      "Prove the CONVERSE under non-degeneracy: for gcd(P,Q) = 1 and a suitable rank/growth hypothesis, Uₘ ∣ Uₙ → m ∣ n (with the sharp lower bound on m analogous to 3 ≤ m for Fibonacci).",
+      "Establish the strong-divisibility gcd law gcd(Uₘ,Uₙ) = |U_{gcd(m,n)}| for gcd(P,Q) = 1, via the ℤ-analogue of the Euclidean step U_{m} , U_{m−n}.",
+      "Characterize exactly the indices where |Uₙ(P,Q)| = 1 (the obstruction to the converse) in terms of (P,Q)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FibonacciIdentitiesOQ02OQ02",
+    "lineCount": 149,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/FibonacciIdentitiesOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Lucas, Édouard",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics",
+      "note": "Origin of the fundamental and companion Lucas sequences Uₙ(P,Q), Vₙ(P,Q) and their divisibility theory"
+    },
+    {
+      "authors": "Ribenboim, Paulo",
+      "title": "The New Book of Prime Number Records",
+      "year": "1996",
+      "venue": "Springer",
+      "note": "Divisibility properties of Lucas sequences, including that Uₙ(P,Q) is a divisibility sequence and the conditions for strong divisibility"
+    }
+  ],
+  "sorries": 0
+}
