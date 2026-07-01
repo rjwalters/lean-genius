@@ -124,5 +124,34 @@
     "definitionCount": 6,
     "theoremCount": 5
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "H. W. Lenstra, Jr.",
+      "title": "Solving the Pell Equation",
+      "year": 2002,
+      "venue": "Notices Amer. Math. Soc. 49",
+      "note": "Modern survey of the Pell equation, fundamental solutions, and regulators."
+    },
+    {
+      "authors": "J.-L. Lagrange",
+      "title": "Solution d'un problème d'arithmétique",
+      "year": 1770,
+      "note": "First complete proof that x²−Dy²=1 has nontrivial solutions for non-square D, via continued fractions."
+    },
+    {
+      "authors": "H. Cohen",
+      "title": "A Course in Computational Algebraic Number Theory",
+      "year": 1993,
+      "venue": "Springer",
+      "note": "Regulators, class numbers, and the size of fundamental units of real quadratic fields."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Pell.Solution₁ group and Zsqrtd (ℤ[√d]) API underlying this formalization."
+    }
+  ]
 }

@@ -188,5 +188,28 @@
       "significance": "Recovers the infinitude of the Pell solution group from the regulator's sign, without descent"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "E. J. Barbeau",
+      "title": "Pell's Equation",
+      "year": 2003,
+      "venue": "Springer",
+      "note": "Book-length treatment of Pell solutions, recurrences, and their group structure."
+    },
+    {
+      "authors": "P. G. L. Dirichlet",
+      "title": "Zur Theorie der complexen Einheiten",
+      "year": 1846,
+      "venue": "Bericht Akad. Wiss. Berlin",
+      "note": "Dirichlet's unit theorem: the units of a real quadratic order form an infinite cyclic group (mod ±1)."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Pell.Solution₁ group and Zsqrtd (ℤ[√d]) API underlying this formalization."
+    }
+  ]
 }

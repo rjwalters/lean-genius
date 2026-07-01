@@ -112,5 +112,28 @@
       "Proofs.PellEquationOQ06"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "E. J. Barbeau",
+      "title": "Pell's Equation",
+      "year": 2003,
+      "venue": "Springer",
+      "note": "Book-length treatment of Pell solutions, recurrences, and their group structure."
+    },
+    {
+      "authors": "T. Nagell",
+      "title": "Introduction to Number Theory",
+      "year": 1951,
+      "venue": "Wiley",
+      "note": "Negative Pell equation x²−Dy²=−1 and descent (Vieta-jumping) classification of solutions."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Pell.Solution₁ group and Zsqrtd (ℤ[√d]) API underlying this formalization."
+    }
+  ]
 }

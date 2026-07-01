@@ -84,5 +84,28 @@
       "Connect companion_pow and re_binet to Mathlib's Pell.Solution₁: show the coordinate maps n ↦ re(aⁿ), n ↦ im(aⁿ) of a fundamental Solution₁ generator are the Binet sequences, giving a closed-form reformulation of the power classification.",
       "Derive the asymptotics xₙ/yₙ → √D and the exponential growth rate xₙ ~ (x₁+y₁√D)ⁿ/2 from re_binet, since the subdominant conjugate root x₁ − y₁√D has absolute value < 1 for a Pell unit."
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "J. P. M. Binet",
+      "title": "Mémoire sur l'intégration des équations linéaires aux différences finies (closed-form 'Binet' formula)",
+      "year": 1843,
+      "venue": "C. R. Acad. Sci. Paris",
+      "note": "Closed form of a linear recurrence via its characteristic roots — here applied to Pell coordinate sequences."
+    },
+    {
+      "authors": "E. J. Barbeau",
+      "title": "Pell's Equation",
+      "year": 2003,
+      "venue": "Springer",
+      "note": "Book-length treatment of Pell solutions, recurrences, and their group structure."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Pell.Solution₁ group and Zsqrtd (ℤ[√d]) API underlying this formalization."
+    }
+  ]
 }

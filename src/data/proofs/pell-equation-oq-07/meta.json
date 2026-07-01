@@ -132,5 +132,28 @@
       "Prove the Cassini/Catalan-type identity xₙ₋₁xₙ₊₁ − xₙ² = constant for the general-D coordinate sequences, generalizing the D = 2 determinant identity of pell-equation-oq-06-oq-05 via the same Cayley–Hamilton companion matrix.",
       "Connect re_pell_unique to Mathlib's Pell.Solution₁: show the coordinate maps n ↦ re(a^n), n ↦ im(a^n) for a fundamental Solution₁ generator are the unique solutions of the trace recurrence with the standard initial data, giving a recurrence-based reformulation of the power classification."
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "E. J. Barbeau",
+      "title": "Pell's Equation",
+      "year": 2003,
+      "venue": "Springer",
+      "note": "Book-length treatment of Pell solutions, recurrences, and their group structure."
+    },
+    {
+      "authors": "T. Koshy",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": 2001,
+      "venue": "Wiley",
+      "note": "Coordinate recurrence uₙ₊₂=2x₁uₙ₊₁−uₙ from the characteristic polynomial of the fundamental unit."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Pell.Solution₁ group and Zsqrtd (ℤ[√d]) API underlying this formalization."
+    }
+  ]
 }
