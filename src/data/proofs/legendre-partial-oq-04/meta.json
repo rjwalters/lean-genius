@@ -71,6 +71,40 @@
       "Does Oppermann's conjecture admit a clean equivalent in terms of the prime-counting function π, formalizable as π(n²+n) − π(n²) ≥ 1 and π((n+1)²) − π(n²+n) ≥ 1?"
     ]
   },
+  "sections": [
+    {
+      "id": "statement",
+      "title": "Statement: OppermannAt and OppermannConjecture",
+      "summary": "OppermannAt n asserts a prime in each half of the square-gap (n², (n+1)²) split at n²+n; OppermannConjecture quantifies it over all n ≥ 2",
+      "startLine": 51,
+      "endLine": 64,
+      "mathContext": "$\\mathrm{OppermannAt}(n) := (\\exists p\\text{ prime},\\ n^2 < p < n^2+n) \\wedge (\\exists q\\text{ prime},\\ n^2+n < q < (n+1)^2)$; $\\mathrm{OppermannConjecture} := \\forall n\\ge 2,\\ \\mathrm{OppermannAt}(n)$."
+    },
+    {
+      "id": "structural-verified",
+      "title": "Structural Theorems (VERIFIED, 0-axiom)",
+      "summary": "oppermann_at_implies_legendre_at (lower-half prime witnesses Legendre), oppermann_at_two_primes (≥ 2 primes per square-gap via a 2-element embedding into the prime filter), and their conjecture-level corollaries",
+      "startLine": 66,
+      "endLine": 116,
+      "mathContext": "$\\mathrm{OppermannAt}(n)\\Rightarrow\\mathrm{LegendreAt}(n)$ (since $n^2 < p < (n+1)^2$); and $\\mathrm{OppermannAt}(n)\\Rightarrow 2\\le \\#\\{\\text{primes in }(n^2,(n+1)^2)\\}$ (the halves' primes $p<n^2+n<q$ are distinct). Kernel-checked: propext/Classical.choice/Quot.sound only."
+    },
+    {
+      "id": "computational-verification",
+      "title": "Computational Verification for n = 2..20 (native_decide)",
+      "summary": "oppermann_2 … oppermann_20 supply explicit (lower-half, upper-half) prime witness pairs, each checked by native_decide (this is what introduces the Lean.ofReduceBool assumption); two_primes_2 an illustrative instance",
+      "startLine": 117,
+      "endLine": 166,
+      "mathContext": "Each $\\mathrm{OppermannAt}(n)$ reduces to two existential witnesses plus decidable primality/inequality checks; e.g. $n=2$: $p=5\\in(4,6)$, $q=7\\in(6,9)$. `native_decide` compiles to native code — hence the $\\mathrm{Lean.ofReduceBool}$ assumption (counted in meta.axiomCount)."
+    },
+    {
+      "id": "open-conjecture",
+      "title": "The Open Conjecture and its Legendre Consequence",
+      "summary": "axiom oppermann_conjecture states the open general case; legendre_of_oppermann derives Legendre for all n ≥ 2 from it",
+      "startLine": 168,
+      "endLine": 179,
+      "mathContext": "$\\mathrm{oppermann\\_conjecture}:\\mathrm{OppermannConjecture}$ (declared axiom, the open case); $\\mathrm{legendre\\_of\\_oppermann}:\\forall n\\ge 2,\\ \\mathrm{LegendreAt}(n)$ inherits the assumption."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",
