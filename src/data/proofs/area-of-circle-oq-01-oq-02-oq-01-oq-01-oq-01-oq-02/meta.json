@@ -112,9 +112,19 @@
   ],
   "crossReferences": [
     {
-      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01",
       "relationship": "extends",
-      "description": "Sharpens the ancestor's ω_n → 0 to the exact even-subsequence decay rate ω_{2k} ~ (πe/k)^k/√(2πk), and re-derives its infrastructure in a form that compiles under Mathlib v4.26."
+      "description": "The direct ancestor: it establishes only that ω_n → 0 (via ω_{2k} = π^k/k! → 0 and the odd bound ω_{2k+1} ≤ 2·ω_{2k}). This entry sharpens that qualitative statement to the exact even-subsequence decay rate ω_{2k} ~ (πe/k)^k/√(2πk)."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Supplies the dimension recurrence ω_{n+2} = (2π/(n+2))·ω_n. This entry re-derives that recurrence in a drift-corrected form that compiles under Mathlib v4.26; the recurrence is the engine behind the exact even closed form ω_{2k} = π^k/k! that powers the asymptotic."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The complementary finite-dimensional result: ω_n attains its global maximum at n = 5 (turning point n+2 = 2π). Together the two entries bracket the growth-then-decay profile of ω_n — this entry pins the large-n tail addressed by open question 3."
     },
     {
       "targetId": "area-of-circle",
