@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-catalan-header",
+    "proofId": "cassini-identity-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Catalan's Identity: the r-Step Generalization of Cassini",
+    "content": "The header frames the entry. Catalan's identity, Fₙ² − F_{n−r}·F_{n+r} = (−1)^{n−r}·Fᵣ², generalizes the parent Cassini identity (the r = 1 case, comparing consecutive Fibonacci numbers) to three Fibonacci numbers F_{n−r}, Fₙ, F_{n+r} in arithmetic progression of step r. It measures the failure of 'middle square equals product of outer terms' by the square Fᵣ². Mathlib records neither Catalan nor the general Vajda/d'Ocagne bilinear identities — only the integer-indexed Cassini — so this is genuinely new content. The proof architecture is three staged lemmas: `cassini_sub` (a one-line induction giving the normalized r = 1 core), `catalan_aux` (a *subtraction-free* reindexing proved by pure algebra via Mathlib's addition formula `Nat.fib_add`, no second induction), and `catalan` (the classical signed form recovered by substituting m = n − r). The design point is that only ONE induction is needed — the general identity falls out of the addition formula plus the r = 1 case.",
+    "mathContext": "$F_n^2 - F_{n-r}F_{n+r} = (-1)^{n-r}F_r^2$ for $r \\le n$; Cassini is $r=1$: $F_{n+1}^2 - F_n F_{n+2} = (-1)^n$. Proof = single induction (`cassini_sub`) + addition formula `Nat.fib_add` reindexing, no second induction.",
+    "significance": "context",
+    "relatedConcepts": ["Catalan's identity", "Cassini as r=1 special case", "Nat.fib_add addition formula", "Vajda / d'Ocagne identities"],
+    "prerequisites": ["Fibonacci numbers", "the parent Cassini identity"]
+  },
+  {
     "id": "ann-cassini-core",
     "proofId": "cassini-identity-oq-01-oq-01",
     "range": {
