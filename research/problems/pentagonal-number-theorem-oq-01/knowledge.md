@@ -319,3 +319,22 @@ GOTCHA: symlinking main's `proofs/.lake` into the /tmp worktree did NOT speed th
 uses the `lean-mathlib-cache` docker volume, re-downloads 7727 oleans regardless) and the first build
 died at [330s] with `exit 125 unexpected EOF` = Docker VM crash (not a Lean error); infra-guardian
 restarts it. Removed the symlink and rebuilt clean.
+
+## Session 2026-06-30 (researcher-2) — child OQ01OQ01 Part 7: parity-free closed form (answers own OQ)
+
+Added to the SAME PR #31856 branch (Parts 5+6+7 now; no stacking). Part 7 answers the openQuestion
+Part 6 raised (and corrects it — I had wrongly floated `gpAt n = ⌊(3n²+4n)/8⌋`, which is FALSE: even/odd
+arms are `3n²+2n` vs `3n²+4n+1`, values diverge, n=4 gives 8≠7). The TRUE parity-free form carries parity
+in `c:=⌈n/2⌉=(n+1)/2` and `(-1)ⁿ`:
+- `gpAt_two_mul_closed` : `2·gpAt n = 3·c² + (-1)ⁿ·c` (division-free). Even n=2j: c=j, (-1)^(2j)=1 → 3j²+j=2g(-j);
+  odd n=2j+1: c=j+1, (-1)^(2j+1)=-1 → 3(j+1)²-(j+1)=2g(j+1). Proof: `rcases Nat.even_or_odd`, per arm
+  `rw [gpAt_even/odd, show (…)/2 = j/j+1 from by omega, show (-1:ℤ)^… = 1/-1 from by rw[pow_mul]/[pow_succ,pow_mul];norm_num]`
+  then `linear_combination two_mul_genPent (-(j:ℤ) / (j:ℤ)+1)` (odd needs `push_cast` first).
+- `gpAt_closed` : value form `gpAt n = (3c²+(-1)ⁿc)/2`. Proof `rw [← gpAt_two_mul_closed n]; omega`
+  (rewrite RHS numerator to `2*gpAt n`, then omega does A=(2A)/2 — pure linear; plain `omega` on the raw
+  goal would FAIL, the `c²`/`(-1)ⁿc` are nonlinear).
+- `gpAt_closed_values` := `gpAt_values` (reuse). #print axioms: two_mul_closed/closed = [propext,Classical,Quot];
+  gpAt_closed_values = NO axioms. docker `[7745/7745]` VERIFIED, 367L/31thm.
+
+Meta openQuestion for parity-free form now marked ANSWERED (both lists). Still open: OrderIso via gpAt_closed;
+exact counting function #{gen-pent ≤ N}; Euler recurrence re-indexed by rank. Franklin core untouched.
