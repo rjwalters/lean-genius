@@ -56,6 +56,48 @@
       "Summability from bounded partial sums (summable_of_sum_range_le) and the p-series criterion"
     ]
   },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Overview: The Two Directions of the Integral Test",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "The file header frames the entry as the open-question companion to the parent's antitone integral test: Part I builds the monotone (increasing) sandwich, Part II specializes it to log x to obtain Stirling-type bounds on log(n!), and Part III runs the antitone test on 1/xᵖ to derive the p-series criterion. All results are 0-sorry, 0-axiom.",
+      "mathContext": "Antitone (parent): $\\sum_{i<a} f(x_0+i+1) \\le \\int_{x_0}^{x_0+a} f \\le \\sum_{i<a} f(x_0+i)$. Monotone (here): the two Riemann sums swap roles."
+    },
+    {
+      "id": "part-i-monotone-sandwich",
+      "title": "Part I — The Monotone Integral-Test Sandwich",
+      "startLine": 41,
+      "endLine": 52,
+      "summary": "monotone_integral_sandwich: for f monotone (non-decreasing) on [x₀, x₀+a], the left Riemann sum is the lower bound and the right Riemann sum the upper bound — the mirror of the parent's antitone comparison. Bundles Mathlib's MonotoneOn.sum_le_integral and MonotoneOn.integral_le_sum.",
+      "mathContext": "$\\sum_{i<a} f(x_0+i) \\;\\le\\; \\int_{x_0}^{x_0+a} f \\;\\le\\; \\sum_{i<a} f(x_0+i+1)$ for $f$ non-decreasing."
+    },
+    {
+      "id": "part-ii-stirling",
+      "title": "Part II — Stirling-Type Bounds on log(n!)",
+      "startLine": 54,
+      "endLine": 119,
+      "summary": "Specializes the monotone sandwich to log x on [1,1+n]: log_monotoneOn (log increases on the positives), log_integral (∫₁^{1+n} log x dx = (1+n)log(1+n) − n), and the two Riemann-sum identities sum_log_eq_log_factorial = log(n!) and sum_log_succ_eq = log((n+1)!) (via Real.log_prod and the products ∏(i+1)=n!, ∏(i+2)=(n+1)!). Reads off log_factorial_le, log_integral_le_log_factorial, and conjoins them as log_factorial_sandwich.",
+      "mathContext": "$\\log(n!) \\;\\le\\; (1+n)\\log(1+n) - n \\;\\le\\; \\log((n+1)!)$ — the elementary two-sided estimate underlying Stirling's approximation $\\log(n!) \\approx n\\log n - n$."
+    },
+    {
+      "id": "part-iii-pseries",
+      "title": "Part III — The p-Series Convergence Test",
+      "startLine": 121,
+      "endLine": 182,
+      "summary": "pseries_partial_sum_le bounds every partial sum of ∑ 1/(i+2)ᵖ by 1/(p−1) via the antitone test on 1/xᵖ: 1/xᵖ is antitone (one_div_le_one_div_of_le with Real.rpow_le_rpow), its integral is computed by rewriting 1/xᵖ = x^{−p} (integral_congr) and applying integral_rpow, and (1+n)^{1−p} ≥ 0 gives the uniform bound. pseries_summable_of_one_lt feeds this to summable_of_sum_range_le; pseries_summable_iff records the full criterion via Real.summable_one_div_nat_rpow.",
+      "mathContext": "$\\sum_{i<n} \\tfrac{1}{(i+2)^p} \\le \\int_1^\\infty x^{-p}\\,dx = \\tfrac{1}{p-1}$ for $p>1$; and $\\sum 1/n^p$ converges $\\iff p>1$."
+    },
+    {
+      "id": "part-iv-witnesses",
+      "title": "Part IV — Worked Witnesses",
+      "startLine": 184,
+      "endLine": 201,
+      "summary": "Three concrete instances: the monotone sandwich specialized to log on [1,1+n]; the Basel-exponent series ∑ 1/n² converging (p = 2 > 1); and the harmonic series ∑ 1/n diverging (p = 1 is not > 1) — exhibiting the criterion's cutoff.",
+      "mathContext": "$\\sum 1/n^2$ converges, $\\sum 1/n$ diverges — the $p=1$ boundary of the criterion."
+    }
+  ],
   "conclusion": {
     "summary": "The monotone integral-test sandwich is established as the companion to the parent's antitone bound, and applied to log x to give the Stirling-type estimate log(n!) ≤ (1+n)log(1+n) − n ≤ log((n+1)!). The antitone test on 1/xᵖ bounds the p-series partial sums by 1/(p−1), giving convergence for p>1 directly from the comparison; the full criterion ∑ 1/nᵖ converges ⟺ p>1 is recorded via Mathlib. 12 theorems, 0 definitions, 203 lines, 0 sorries, 0 axioms.",
     "implications": "Completes the integral-test infrastructure begun in the parent: both monotone directions are now packaged, and the two canonical applications (Stirling's log-factorial bounds; the p-series criterion) are demonstrated within the comparison framework. The monotone sandwich applies to any increasing summand, and the partial-sum bound technique generalizes to other comparison-test convergence proofs.",
