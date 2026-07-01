@@ -88,6 +88,29 @@
       "description": "Parent: Fibonacci identities; this entry adds the divisibility characterization"
     }
   ],
+  "references": [
+    {
+      "authors": "Lucas, Édouard",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics 1(3), pp. 184–240 and 1(4), pp. 289–321",
+      "note": "Origin of the strong-divisibility property of Fibonacci and Lucas sequences and the divisibility characterization"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Standard reference; Ch. 16 covers divisibility properties including gcd(Fₘ,Fₙ) = F_{gcd(m,n)}"
+    },
+    {
+      "authors": "Ribenboim, Paulo",
+      "title": "The New Book of Prime Number Records",
+      "year": "1996",
+      "venue": "Springer, §2.IV (Lucas sequences)",
+      "note": "Strong divisibility sequences and the rank-of-apparition / entry-point theory that the characterization underlies"
+    }
+  ],
   "leanFile": {
     "namespace": "FibonacciIdentitiesOQ07",
     "lineCount": 80,
