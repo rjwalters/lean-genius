@@ -41,7 +41,7 @@
   ],
   "phase": "ACT",
   "knowledge": {
-    "progressSummary": "PROGRESS (session 11, researcher-3): annihilator/uniqueness ingredient (Lᵠ↪(Lᵖ)* injective) proved & verified 0-axiom standalone — the maximality step none of the 4 prior ingredients covered, and NOT the feared converse-Hölder gap. Re-measured chain: base file now green (Session-10 diagnosis stale), 70 errors moved up to Incomplete01. Axiom NOT yet eliminated; headline sorry remains.",
+    "progressSummary": "PROGRESS (session 16, researcher-12): re-homed the extension-by-zero isometric CLM extByZeroCLM into a standalone Mathlib-only file (CauchySchwarzIntegralLpDualityExtension.lean, 4 decls, 0-axiom), decoupling it from the build-broken Incomplete01 chain — removes the last chain-buried structural blocker for the decoupled arbitrary-measure assembly. Simplified: the chain's 2 private seminorm helpers are now redundant with Mathlib. Parent axiom riesz_lp_surjective NOT yet eliminated (still gated on σ-finite chain repair + the single maximality lemma).",
     "insights": [
       "The previously-flagged Lean infrastructure gaps are RESOLVED. Mathlib supplies the sigma-finite support of any Lp function (0<p<inf) via MeasureTheory.MemLp.aefinStronglyMeasurable (Mathlib/MeasureTheory/Function/StronglyMeasurable/Lp.lean:59) -> AEFinStronglyMeasurable, whose .sigmaFiniteSet / .measurableSet / .ae_eq_zero_compl / sigmaFinite_restrict instance (StronglyMeasurable/AEStronglyMeasurable.lean:892-916) give a measurable set S with mu.restrict S sigma-finite and f=0 a.e. off S.",
       "The verified chain ALREADY contains the restriction/extension infrastructure once thought to be a ~150-line gap: CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean proves eLpNorm (S.indicator f) p mu = eLpNorm f p (mu.restrict S) (line 246), MemLp f p (mu.restrict S) -> MemLp (S.indicator f) p mu (line 260), and the extension-by-zero ISOMETRY extByZeroCLM : Lp p (mu.restrict S) ->L Lp p mu (line 266, currently private).",
@@ -62,7 +62,9 @@
       "S14: the g∉Lᵠ direction of the dual-norm identity needs ONLY σ-finiteness (not the full arbitrary-measure reduction): truncate g to tₙ=(g⊓n)·1_{Aₙ} over spanning sets Aₙ; monotone convergence ⨆ₙ tₙᵠ=gᵠ gives ⨆ₙ∫⁻tₙᵠ=∫⁻gᵠ, and rpow commutes with ⨆ via ENNReal.orderIsoRpow (an OrderIso ⟹ sSupHomClass ⟹ map_iSup).",
       "The 10-session \"converse-Hölder dual-norm gap\" (‖g‖_q ≤ ⨆|∫f·g|) is a red herring for the maximality UNIQUENESS step: injectivity of Lᵠ↪(Lᵖ)* is qualitative — no norm estimate, no extremizer |g|^{q-1}sgn g — and follows directly from Mathlib AEFinStronglyMeasurable.ae_eq_zero_of_forall_setIntegral_eq_zero.",
       "Session 10 diagnosis is stale: the finite-measure base CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean now compiles cleanly (EXIT 0); the 70 build errors have moved up to Incomplete01.lean (σ-finite Riesz construction).",
-      "Uniqueness needs no SigmaFinite μ hypothesis: a MemLp function at a finite exponent q<∞ is automatically AEFinStronglyMeasurable, and testing against finite-measure indicators gives ∫_s g=0 ∀s."
+      "Uniqueness needs no SigmaFinite μ hypothesis: a MemLp function at a finite exponent q<∞ is automatically AEFinStronglyMeasurable, and testing against finite-measure indicators gives ∫_s g=0 ∀s.",
+      "S16: extByZeroCLM (extension-by-zero isometry Lp(μ.restrict S)→L Lp μ) was quarantined inside the build-broken Incomplete01 chain despite depending on Mathlib only — all-or-nothing file verification made it unusable by any decoupled assembly.",
+      "S16: the chain's two private helpers eLpNorm_indicator_eq_restrict_loc / memLp_indicator_of_restrict_loc are now redundant with Mathlib's eLpNorm_indicator_eq_eLpNorm_restrict + memLp_indicator_iff_restrict — the re-homed construction needs no bespoke seminorm bookkeeping."
     ],
     "builtItems": [
       "memLp_exists_sigmaFinite_support — bridge lemma: for 0<p<inf, every f in Lp(mu) is a.e. supported on a measurable S with mu.restrict S sigma-finite (proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean). High-confidence (uses only confirmed Mathlib API) but UNVERIFIED this session (no build).",
@@ -82,7 +84,11 @@
       "lpDualNorm_eq_top_of_lintegral_top: g∉Lᵠ ⟹ lpDualNorm=∞ via truncation",
       "lqTruncation + iSup_lqTruncation/lqTruncation_mono/lqTruncation_le/lintegral_lqTruncation_rpow_ne_top: monotone-truncation toolkit",
       "private rpow_iSup: (⨆f)^q=⨆fᵠ for q>0 via ENNReal.orderIsoRpow.map_iSup",
-      "RieszLpDualityAnnihilator.lp_pairing_eq_zero_ae_zero in proofs/Proofs/CauchySchwarzIntegralLpDualityAnnihilator.lean — annihilator/uniqueness lemma: g∈Lᵠ, ∫f·g=0 ∀f∈Lᵖ ⟹ g=ᵐ0. Standalone, Mathlib-only, verified lake env lean EXIT 0, #print axioms = {propext,Classical.choice,Quot.sound}."
+      "RieszLpDualityAnnihilator.lp_pairing_eq_zero_ae_zero in proofs/Proofs/CauchySchwarzIntegralLpDualityAnnihilator.lean — annihilator/uniqueness lemma: g∈Lᵠ, ∫f·g=0 ∀f∈Lᵖ ⟹ g=ᵐ0. Standalone, Mathlib-only, verified lake env lean EXIT 0, #print axioms = {propext,Classical.choice,Quot.sound}.",
+      "extByZeroCLM in CauchySchwarzIntegralLpDualityExtension.lean:79 — CLM Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ, f↦S.indicator f, via LinearMap.mkContinuous … 1 (0-axiom).",
+      "extByZeroCLM_coeFn (:124) — extByZeroCLM f =ᵐ[μ] S.indicator f.",
+      "norm_extByZeroCLM_apply (:131) — isometry ‖extByZeroCLM f‖ = ‖f‖.",
+      "norm_extByZeroCLM_le (:142) — operator-norm bound ≤ 1."
     ],
     "mathlibGaps": [
       "Mathlib has NO general Lp-Lq duality / Riesz surjectivity (no *Dual* Lp file under MeasureTheory/Function). This remains a genuine Mathlib gap that the gallery chain fills.",
@@ -95,9 +101,9 @@
       "Incomplete01.lean (σ-finite Riesz: localization_existence, riesz_lp_surjective_sigma_finite) has 70 scattered Mathlib-v4.26 API-drift errors (application type mismatch, failed to synthesize, rewrite-pattern misses, Exists.min/rpow_const dot-notation breakage) — multi-session mechanical repair, now the true critical-path frontier."
     ],
     "nextSteps": [
-      "Repair Incomplete01.lean 70 API-drift errors against Mathlib v4.26.0 (base file below it is now green); rebuild OQ01OQ01→synthesis.",
-      "Wire lp_pairing_eq_zero_ae_zero + the 4 existing ingredient lemmas into riesz_lp_surjective_general maximality construction to discharge the headline sorry.",
-      "Consistency corollary (g₁=g₂ a.e. when both represent φ) follows from the annihilator via linearity + Hölder product-integrability (MemLp.integrable_mul needs ℝ≥0∞-level HolderTriple instance)."
+      "Repair or bypass the Incomplete01 σ-finite Riesz chain to expose riesz_lp_surjective_sigma_finite WITH its norm bound (needed as explicit hypothesis for the decoupled assembly).",
+      "State riesz_general_of_sigmaFinite: take σ-finite Riesz (with norm bound) as hypothesis + use extByZeroCLM to pull φ back to each σ-finite S; formalize the single Folland-6.16 maximality/exhaustion lemma over c=⨆_S ‖g_S‖_q.",
+      "Once assembled, swap axiom riesz_lp_surjective → theorem and flip meta axiomatized→verified iff green."
     ]
   },
   "leanFiles": [
@@ -111,6 +117,17 @@
       "sorryCount": 13,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralLpDualityExtension.lean",
+      "filename": "CauchySchwarzIntegralLpDualityExtension.lean",
+      "lineCount": 149,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralLpDualityExtension.lean"
     }
   ],
   "lastUpdate": "2026-06-28",

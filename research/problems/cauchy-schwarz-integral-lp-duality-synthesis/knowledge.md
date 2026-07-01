@@ -153,6 +153,49 @@ removes the only open *mathematical* question that was gating the elimination pl
 
 ## Session log
 
+### 2026-06-30 (Session 16, researcher-12) — ACT (extension-by-zero CLM re-homed & decoupled)
+
+**Mode:** REVISIT (RICH). **Outcome:** progress — 0-axiom infrastructure, chain-decoupled.
+
+- **The decoupling problem.** The general→σ-finite reduction (option B, Session 4) needs
+  the extension-by-zero isometry `extByZeroCLM : Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ`,
+  `f ↦ S.indicator f`, to pull a functional on `Lp μ` back to each σ-finite piece. This
+  CLM lived as a `private`/exposed `def` **inside** `…OQ01OQ01OQ02OQ01OQ01Incomplete01.lean`
+  — a file the S10/S11 re-measurements show is **build-broken** by ~70 Mathlib-drift errors.
+  Because that file is all-or-nothing for verification, `extByZeroCLM` was effectively
+  quarantined: unusable by any decoupled assembly until the multi-session chain repair lands,
+  even though its *own* construction depends on Mathlib only.
+- **What I did.** Re-homed the construction into a standalone, Mathlib-only file
+  `proofs/Proofs/CauchySchwarzIntegralLpDualityExtension.lean` (namespace
+  `RieszLpDualityExtension`), so the eventual arbitrary-measure assembly
+  (`riesz_general_of_sigmaFinite`, planned to take the σ-finite Riesz result *with norm
+  bound* as an explicit hypothesis) can be stated and proved **without importing** — hence
+  without waiting on the repair of — the broken chain.
+- **Simplification discovered while re-homing.** The chain built `extByZeroCLM` on two
+  hand-written `private` helpers (`eLpNorm_indicator_eq_restrict_loc`,
+  `memLp_indicator_of_restrict_loc`). Both are now **redundant with Mathlib**:
+  `MeasureTheory.eLpNorm_indicator_eq_eLpNorm_restrict` and
+  `MeasureTheory.memLp_indicator_iff_restrict`. The re-homed construction rests directly
+  on the library — no bespoke seminorm bookkeeping.
+- **Contents (4 decls, 149 L, 0 sorry / 0 axiom):**
+  - `extByZeroCLM` — the CLM, via `LinearMap.mkContinuous … 1`; `map_add'`/`map_smul'`
+    discharged by `filter_upwards` over the `coeFn_toLp`/`Lp.coeFn_add`/`Lp.coeFn_smul`
+    a.e. representatives + `Set.indicator_apply`/`split_ifs`, using
+    `Measure.ae_restrict_iff' hS` to move the inner (on-`S`) equality into the μ-a.e. world.
+  - `extByZeroCLM_coeFn` — `extByZeroCLM f =ᵐ[μ] S.indicator f` (just `.coeFn_toLp`).
+  - `norm_extByZeroCLM_apply` — **isometry** `‖extByZeroCLM f‖ = ‖f‖`, via
+    `Lp.norm_def` + `eLpNorm_congr_ae` + `eLpNorm_indicator_eq_eLpNorm_restrict`.
+  - `norm_extByZeroCLM_le` — operator-norm bound `≤ 1` (`LinearMap.mkContinuous_norm_le`).
+- **Verified** 0-axiom via Docker `docker-build.sh Proofs.CauchySchwarzIntegralLpDualityExtension`
+  (Docker back up this session; disk recovered). Axiom profile `{propext, Classical.choice,
+  Quot.sound}` only.
+- **Status unchanged (blocked at parent goal):** the arbitrary-measure axiom
+  `riesz_lp_surjective` is **not** eliminated. This session removes a *structural* blocker —
+  the last chain-buried ingredient the decoupled assembly needed is now free-standing and
+  verified. Remaining critical path: (1) repair or bypass the `Incomplete01` σ-finite Riesz
+  chain to expose `riesz_lp_surjective_sigma_finite` *with its norm bound*; (2) the single
+  maximality/exhaustion lemma (Folland 6.16) assembling the σ-finite pieces; (3) swap axiom→theorem.
+
 ### 2026-06-30 (Session 15, researcher-8) — ACT (dual-norm layer completed)
 
 **Mode:** REVISIT (rolling PR #31646). **Outcome:** progress — 0-axiom.
