@@ -35,6 +35,26 @@
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
   },
+  "references": [
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": "1999",
+      "venue": "2nd ed., Wiley"
+    },
+    {
+      "authors": "Bishop, Christopher M.",
+      "title": "Pattern Recognition and Machine Learning",
+      "year": "2006",
+      "venue": "Springer (multivariate Gaussian, §2.3)"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "integral_gaussian, spectral theorem and orthogonal change of variables; Analysis.SpecialFunctions.Gaussian, LinearAlgebra.Matrix.Spectrum",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The multivariate Gaussian integral ∫_{ℝⁿ} exp(-xᵀAx) dx = √(πⁿ/det A) for positive-definite A is a cornerstone of probability theory (multivariate normal distribution), statistics, quantum mechanics (path integrals), and algebraic geometry (Siegel modular forms). It generalizes the classical Poisson-Laplace formula ∫_{ℝ} exp(-x²) = √π proved by Poisson (1812) and Laplace. The general positive-definite form requires the spectral theorem for real symmetric matrices, which was developed by Cauchy (1829) and Jacobi — the same diagonalization theory that makes the Gaussian integral tractable.\n\nThe formula is central to Bayesian statistics (Laplace approximation, Gaussian process covariance), statistical mechanics (partition functions for harmonic systems), and quantum field theory (functional integrals). The Lean 4 formalization here is notable for building on Mathlib's Fubini infrastructure (`integral_fintype_prod_volume_eq_prod`), which allows the multivariate case to reduce cleanly to a product of scalar Gaussians.",
     "problemStatement": "**Open Question (OQ-02 from OQ-05)**: Can the multivariate Gaussian integral be formalized in Lean 4?\n\n**Answer**: Fully. Both the diagonal case and the general case are proved (0 sorries). The diagonal case uses Fubini + Mathlib's scalar Gaussian. The general case uses spectral decomposition + orthogonal change of variables via `map_linearMap_volume_pi_eq_smul_volume_pi`. Derived from Mathlib's `integral_gaussian`.",
@@ -119,7 +139,9 @@
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/AreaOfCircleOQ05OQ02.lean",
-    "imports": ["Proofs.AreaOfCircleOQ05"],
+    "imports": [
+      "Proofs.AreaOfCircleOQ05"
+    ],
     "lineCount": 189,
     "theoremCount": 3,
     "definitionCount": 0,

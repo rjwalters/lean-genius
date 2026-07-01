@@ -63,6 +63,26 @@
       }
     ]
   },
+  "references": [
+    {
+      "authors": "Osserman, Robert",
+      "title": "The isoperimetric inequality",
+      "year": "1978",
+      "venue": "Bulletin of the American Mathematical Society 84(6), 1182–1238"
+    },
+    {
+      "authors": "do Carmo, Manfredo P.",
+      "title": "Differential Geometry of Curves and Surfaces",
+      "year": "1976",
+      "venue": "Prentice-Hall"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "MeasureTheory.integral_comp_add_left / change of variables for periodic integrals; MeasureTheory.Integral",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The parent entry (area-of-circle-oq-01-oq-02-oq-02-oq-01) formalizes Hurwitz's 1901 Fourier-analytic proof of the isoperimetric inequality C² ≥ 4πA from five disclosed axioms. The central axiom, `exists_nice_reparam`, asserts that any smooth closed curve admits a constant-speed reparametrization preserving its circumference and area. Two prior survey sessions on this open question established that the genuinely hard, axiom-free mathematical content underlying that assumption is the classical fact that arc length and signed area are invariant under reparametrization — and that, as written, the axiom only requires the witness curve to share γ's invariants rather than to be a reparametrization of γ, a logical gap. This entry supplies the missing change-of-variables theorems as standalone, machine-checked results.",
     "problemStatement": "Let x, y : ℝ → ℝ be C¹ and 2π-periodic, and let φ : ℝ → ℝ be C¹ with φ(2π) = φ(0) + 2π (it commutes with the period). Then:\n- (arc length, assuming φ' ≥ 0)  ∫₀²π √((x∘φ)'² + (y∘φ)'²) = ∫₀²π √(x'² + y'²);\n- (signed area)  ∫₀²π ((x∘φ)·(y∘φ)' − (y∘φ)·(x∘φ)') = ∫₀²π (x·y' − y·x').",
@@ -131,10 +151,16 @@
     ]
   },
   "crossReferences": [
-    { "slug": "area-of-circle-oq-01-oq-02-oq-02-oq-01", "relation": "parent", "description": "The open question this entry answers: discharge the circumference/area-preservation part of the `exists_nice_reparam` axiom. These invariance lemmas are the axiom-free change-of-variables core that program needs." },
-    { "slug": "area-of-circle-oq-01-oq-02-oq-02", "relation": "ancestor", "description": "The Hurwitz Fourier-analytic proof of the isoperimetric inequality C² ≥ 4πA that introduces and depends on the `exists_nice_reparam` axiom." },
-    { "slug": "greens-theorem", "relation": "related", "description": "Supplies the signed-area integral ½∫(x·y'−y·x') whose reparametrization invariance is proved here as `signed_area_reparam_invariant`." },
-    { "slug": "area-of-circle", "relation": "ancestor", "description": "Root entry of the area-of-circle family; the isoperimetric inequality is the extremal statement of which the circle's area is the equality case." }
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent isoperimetric entry whose central axiom exists_nice_reparam assumes a constant-speed reparametrization preserving circumference and area. This entry proves the change-of-variables heart of that axiom — that arc length and signed area are reparametrization invariants — as standalone 0-axiom theorems, removing the circularity the surveys flagged (the axiom only required the witness to SHARE γ's invariants, not to BE a reparametrization)."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "The capstone that assembles the fully axiom-free isoperimetric inequality for regular closed curves. It consumes the circumference/area-preservation supplied here (through the inverse-function-theorem reparametrization companion) to discharge exists_nice_reparam and feed the analytic bounds into the algebraic kernel."
+    }
   ],
   "sections": [
     {
@@ -171,18 +197,6 @@
       "startLine": 156,
       "endLine": 194,
       "summary": "signed_area_reparam_invariant: the same change of variables, but the φ' factor enters linearly so NO monotonicity hypothesis on φ is needed. Equality of the Green's-theorem integrals over a period yields equality of the signed areas of γ∘φ and γ."
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
-      "relationship": "extends",
-      "description": "Parent isoperimetric entry whose central axiom exists_nice_reparam assumes a constant-speed reparametrization preserving circumference and area. This entry proves the change-of-variables heart of that axiom — that arc length and signed area are reparametrization invariants — as standalone 0-axiom theorems, removing the circularity the surveys flagged (the axiom only required the witness to SHARE γ's invariants, not to BE a reparametrization)."
-    },
-    {
-      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-02",
-      "relationship": "extended-by",
-      "description": "The capstone that assembles the fully axiom-free isoperimetric inequality for regular closed curves. It consumes the circumference/area-preservation supplied here (through the inverse-function-theorem reparametrization companion) to discharge exists_nice_reparam and feed the analytic bounds into the algebraic kernel."
     }
   ]
 }

@@ -67,6 +67,38 @@
     "theoremCount": 5,
     "definitionCount": 1
   },
+  "references": [
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107"
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston (English translation by Michael Butler)"
+    },
+    {
+      "authors": "Robbins, Herbert",
+      "title": "A Remark on Stirling's Formula",
+      "year": "1955",
+      "venue": "American Mathematical Monthly 62(1), 26–29"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Stirling.lean — n! ~ √(2πn)(n/e)^n; Real.Gamma and Real.rpow",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    },
+    {
+      "authors": "Ball, Keith",
+      "title": "An Elementary Introduction to Modern Convex Geometry",
+      "year": "1997",
+      "venue": "Flavors of Geometry, MSRI Publications 31, Cambridge University Press, 1–58"
+    }
+  ],
   "overview": {
     "historicalContext": "The unit n-ball volume ω_n = π^(n/2)/Γ(n/2+1) shrinks to 0 in high dimensions — the 'curse of dimensionality'. The ancestor entry proved only ω_n → 0. The sharper question is the exact rate. Stirling's formula resolves it: ω_n decays super-exponentially like (2πe/n)^(n/2) with a polynomial prefactor 1/√(πn). This file pins the exact even-subsequence asymptotic rigorously from Mathlib's Stirling lemma.",
     "problemStatement": "**Question** (as posed): prove ω_n ~ √(2π/n)·(2πe/n)^(n/2) from Stirling.\n\n**Result**: For the even subsequence, ω_{2k} ~[atTop] (πe/k)^k/√(2πk). Equivalently, in terms of n = 2k, ω_n ~ (2πe/n)^(n/2)/√(πn). The correct universal constant is 1/√(πn); the posed √(2π/n) is off by a factor √2·π.",

@@ -59,6 +59,32 @@
       }
     ]
   },
+  "references": [
+    {
+      "authors": "Hurwitz, Adolf",
+      "title": "Sur le problème des isopérimètres",
+      "year": "1901",
+      "venue": "Comptes Rendus de l'Académie des Sciences 132, 401–403"
+    },
+    {
+      "authors": "Osserman, Robert",
+      "title": "The isoperimetric inequality",
+      "year": "1978",
+      "venue": "Bulletin of the American Mathematical Society 84(6), 1182–1238"
+    },
+    {
+      "authors": "do Carmo, Manfredo P.",
+      "title": "Differential Geometry of Curves and Surfaces",
+      "year": "1976",
+      "venue": "Prentice-Hall"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "integration by parts, Fourier coefficients and Parseval; Analysis.Fourier",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "Hurwitz's 1901 proof of the isoperimetric inequality C² ≥ 4πA expresses arc length and enclosed area as Fourier integrals and reduces the inequality, coordinate by coordinate, to Wirtinger's inequality plus a Cauchy–Schwarz estimate. The gallery parent (area-of-circle-oq-01-oq-02-oq-02-oq-01) formalized this for smooth closed curves but isolated five analytic facts as axioms: the existence of a Fourier decomposition, a constant-speed zero-mean reparametrization (the inverse-function-theorem step), the Wirtinger sum bound, and two Cauchy–Schwarz bounds. A sequence of research companions discharged each of these 0-axiom. This entry is the capstone: it assembles those companions into a single, fully machine-checked, axiom-free proof of the inequality on the locus where the reparametrization step is even true — the regular curves.",
     "problemStatement": "Let γ be a regular C¹ closed plane curve: γ.x, γ.y : ℝ → ℝ are C¹ and 2π-periodic with nowhere-vanishing speed (deriv γ.x t² + deriv γ.y t² > 0 for all t). Let L = γ.circumference = ∫₀²π √(x'²+y'²) and A = γ.area = ½|∫₀²π (x·y' − y·x')|. If L > 0 then 4πA ≤ L². The proof uses no axioms beyond Lean's foundational propext / Classical.choice / Quot.sound.",
