@@ -62,6 +62,35 @@
       "Mantel's ⌊n²/4⌋ bound is not re-proved here from triangle-free arithmetic but recovered as the literal r = 2 instance of the general theorem (simpa collapses 2·2 to 4), giving a formal proof that Mantel is a corollary of Turán inside the gallery."
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Turán, P."
+      ],
+      "title": "On an extremal problem in graph theory (Hungarian)",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok 48, pp. 436–452",
+      "note": "Turán's theorem, the K_{r+1}-free edge bound generalizing Mantel."
+    },
+    {
+      "authors": [
+        "Bollobás, B."
+      ],
+      "title": "Extremal Graph Theory",
+      "year": "1978",
+      "venue": "London Mathematical Society Monographs 11, Academic Press",
+      "note": "Standard reference for Mantel's and Turán's theorems and the Erdős–Simonovits stability theory."
+    },
+    {
+      "authors": [
+        "West, D.B."
+      ],
+      "title": "Introduction to Graph Theory",
+      "year": "2001",
+      "venue": "2nd ed., Prentice-Hall",
+      "note": "Textbook development of Mantel/Turán extremal bounds and the Turán graph."
+    }
+  ],
   "conclusion": {
     "summary": "This entry assembles, with no axioms or sorries, the clean closed-form Turán bound for an arbitrary K_{r+1}-free graph — 2r·e(G) ≤ (r−1)·n² and the rational e(G) ≤ (1 − 1/r)·n²/2 — by composing Mathlib's exact arbitrary-graph bound with its clean Turán-graph bound. It certifies sharpness via the Turán graph and recovers the gallery's Mantel ⌊n²/4⌋ bound as the literal r = 2 corollary.",
     "implications": "Supplies the 'textbook' statement of Turán's theorem that Mathlib leaves implicit, in a form directly reusable wherever an extremal edge bound is needed, and formally ties the mantel-theorem entry to its r-fold generalization.",

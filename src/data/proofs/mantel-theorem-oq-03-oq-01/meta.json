@@ -79,6 +79,26 @@
       "The maximum-degree value ⌈n/2⌉ is genuinely not uniform across n (it fails for n = 1, where the single isolated vertex has degree 0): only the minimum-degree statement — the one the sharpness question asks about — holds for every n ≥ 1, so the entry states the universally-true minimum and the safe degree upper bound turanTwo_degree_le."
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Mantel, W."
+      ],
+      "title": "Problem 28",
+      "year": "1907",
+      "venue": "Wiskundige Opgaven 10, pp. 60–61",
+      "note": "Original statement: a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, attained by the balanced complete bipartite graph."
+    },
+    {
+      "authors": [
+        "Bollobás, B."
+      ],
+      "title": "Extremal Graph Theory",
+      "year": "1978",
+      "venue": "London Mathematical Society Monographs 11, Academic Press",
+      "note": "Standard reference for Mantel's and Turán's theorems and the Erdős–Simonovits stability theory."
+    }
+  ],
   "conclusion": {
     "summary": "A complete, axiom-free and sorry-free certificate that Mantel's minimum-degree bound ⌊n/2⌋ is sharp: the r = 2 Turán graph turanGraph n 2 (the balanced complete bipartite graph) is triangle-free and, for every n ≥ 1, has minimum degree exactly ⌊n/2⌋. The exact degree sequence (⌊n/2⌋ at even vertices, ⌈n/2⌉ at odd vertices) is computed along the way, together with reusable residue-counting lemmas.",
     "implications": "Closes the loop on the parent minimum-degree corollary: the inequality exists_degree_le_card_div_two is now known to be attained, so ⌊n/2⌋ is the exact extremal minimum degree of a triangle-free graph. The bridge card_fin_filter_val and the closed forms count_mod_two_eq_zero/one are reusable for any parity-counting argument over Fin n.",

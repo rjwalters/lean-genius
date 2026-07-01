@@ -71,6 +71,26 @@
       "omega treats the products k·r and r·k as distinct opaque atoms because both factors are variables; supplying the commutativity equation by hand (Nat.mul_comm) is the small but essential step that lets the linear divmod bounds go through."
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Turán, P."
+      ],
+      "title": "On an extremal problem in graph theory (Hungarian)",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok 48, pp. 436–452",
+      "note": "Turán's theorem, the K_{r+1}-free edge bound generalizing Mantel."
+    },
+    {
+      "authors": [
+        "Bollobás, B."
+      ],
+      "title": "Extremal Graph Theory",
+      "year": "1978",
+      "venue": "London Mathematical Society Monographs 11, Academic Press",
+      "note": "Standard reference for Mantel's and Turán's theorems and the Erdős–Simonovits stability theory."
+    }
+  ],
   "conclusion": {
     "summary": "A complete, axiom-free and sorry-free realization of Mathlib's Turán graph turanGraph n r as a genuine complete r-partite graph for arbitrary n: the parts are the r residue classes mod r, the graph is shown to be complete multipartite, and the exact balanced part sizes (n+r−1−j)/r = ⌈(n−j)/r⌉ are computed and verified to sum to n. This answers the general-r open question posed by mantel-theorem-oq-04, of which the r = 2 complete-bipartite case was the special instance.",
     "implications": "Provides a reusable bridge between Mathlib's residue-based turanGraph and the structural completeMultipartiteGraph / IsCompleteMultipartite API for every r and every n — a strict generalization of the equipartite-only completeEquipartiteGraph.turanGraph. The sigmaFiberEquiv-of-a-colouring pattern (parts as colour fibres) is a clean, HEq-free template for identifying any vertex-coloured graph with a complete multipartite graph; the constructive fibre enumeration gives a model for computing balanced residue-class cardinalities without a dedicated counting lemma.",

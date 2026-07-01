@@ -64,6 +64,35 @@
       "Every arithmetic obligation in the bijection (2k < n, v/2 bounds, round trips, parity of 2k and 2k+1) is linear in n, k, v once the parities are exposed, so omega discharges all of them after simp normalizes the Fin coercions."
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Mantel, W."
+      ],
+      "title": "Problem 28",
+      "year": "1907",
+      "venue": "Wiskundige Opgaven 10, pp. 60–61",
+      "note": "Original statement: a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, attained by the balanced complete bipartite graph."
+    },
+    {
+      "authors": [
+        "Bollobás, B."
+      ],
+      "title": "Extremal Graph Theory",
+      "year": "1978",
+      "venue": "London Mathematical Society Monographs 11, Academic Press",
+      "note": "Standard reference for Mantel's and Turán's theorems and the Erdős–Simonovits stability theory."
+    },
+    {
+      "authors": [
+        "West, D.B."
+      ],
+      "title": "Introduction to Graph Theory",
+      "year": "2001",
+      "venue": "2nd ed., Prentice-Hall",
+      "note": "Textbook development of Mantel/Turán extremal bounds and the Turán graph."
+    }
+  ],
   "conclusion": {
     "summary": "A complete, axiom-free and sorry-free identification of Mantel's extremal graph with the balanced complete bipartite graph: turanGraph n 2 ≃g K_{⌈n/2⌉,⌊n/2⌋} for all n, together with the resulting complete-bipartite form of the Mantel equality characterization. This upgrades the abstract Turán-graph statement of mantel-theorem-oq-02 to the classical textbook phrasing with the unique extremal graph named explicitly.",
     "implications": "Supplies a reusable bridge between Mathlib's residue-based turanGraph (at r = 2) and the complete bipartite graph, valid for arbitrary, possibly odd, n with unequal parts — a strict generalization of the equipartite-only completeEquipartiteGraph.turanGraph. The interleaved parity bijection and the transport pattern are directly reusable for analogous identifications of turanGraph n r with complete r-partite graphs.",

@@ -69,6 +69,26 @@
       "Triangle-freeness of the extremal graph needs no combinatorics — it is bipartite, hence 2-colourable (the parity colouring), and any 2-colourable graph is K₃-free by Colorable.cliqueFree."
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Mantel, W."
+      ],
+      "title": "Problem 28",
+      "year": "1907",
+      "venue": "Wiskundige Opgaven 10, pp. 60–61",
+      "note": "Original statement: a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, attained by the balanced complete bipartite graph."
+    },
+    {
+      "authors": [
+        "Bollobás, B."
+      ],
+      "title": "Extremal Graph Theory",
+      "year": "1978",
+      "venue": "London Mathematical Society Monographs 11, Academic Press",
+      "note": "Standard reference for Mantel's and Turán's theorems and the Erdős–Simonovits stability theory."
+    }
+  ],
   "conclusion": {
     "summary": "A complete, axiom-free and sorry-free proof that Mantel's bound is sharp: the complete bipartite edge-count formula #E(K_{V,W}) = |V|·|W|, the identity ⌈n/2⌉·⌊n/2⌋ = ⌊n²/4⌋, and their combination #E(turanGraph n 2) = ⌊n²/4⌋, packaged with triangle-freeness into mantel_bound_attained. This is the existence/tightness direction missing from the equality characterizations of the sibling entries.",
     "implications": "card_edgeFinset_completeBipartiteGraph is a reusable Mathlib-gap lemma (the bipartite analogue of card_edgeFinset_completeEquipartiteGraph) good for any extremal-graph edge count. Together with the upper bound mantel_card_edgeFinset_le it certifies that ⌊n²/4⌋ is the exact extremal number of edges, not merely an upper bound.",
