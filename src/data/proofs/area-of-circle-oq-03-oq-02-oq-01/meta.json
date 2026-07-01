@@ -62,7 +62,8 @@
       "Convergence: p(m) → π as m → ∞, by squeezing π·cos(π/m) ≤ p(m) < π (fully proved)",
       "Explicit convergence rate: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4 (quadratic in 1/m), proved from the sin Taylor estimate Real.sin_bound by absorbing the quartic remainder into the cubic term — gives π − p(2ᵏ) = O(4⁻ᵏ) (fully proved)",
       "Sharp 1/6 leading-constant rate (pi_sub_halfPerimeter_le_sharp): keeping the quartic Taylor remainder separate instead of absorbing it gives π − p(m) ≤ π³/(6m²) + (5/96)·π⁴/m³ for m ≥ 4, with the EXACT second-order Taylor coefficient 1/6 (not 7/32); answers the entry's second open question",
-      "Factored form pi_sub_halfPerimeter_le_sharp_factored: π − p(m) ≤ (π³/(6m²))·(1 + 5π/(16m)), exhibiting leading constant 1/6 with a relative correction 5π/(16m) → 0; for m ≥ 4 it collapses to the earlier 7/32 bound since 1/6 + 5/96 = 7/32"
+      "Factored form pi_sub_halfPerimeter_le_sharp_factored: π − p(m) ≤ (π³/(6m²))·(1 + 5π/(16m)), exhibiting leading constant 1/6 with a relative correction 5π/(16m) → 0; for m ≥ 4 it collapses to the earlier 7/32 bound since 1/6 + 5/96 = 7/32",
+      "Matching Θ(1/m²) convergence rate for Archimedes' doubling method (0-axiom): pi_sub_halfPerimeter_ge proves the lower error bound π - p(m) ≥ (1/12)·π³/m² for m ≥ 4 (Real.sin_bound Taylor UPPER estimate, quartic absorbed into cubic via x=π/m≤1), the matching lower bound to the existing upper bounds pi_sub_halfPerimeter_le/_le_sharp; pi_sub_halfPerimeter_bounds packages the sharp sandwich (1/12)π³/m² ≤ π−p(m) ≤ (7/32)π³/m², upgrading the rate from O to Θ."
     ],
     "dateAdded": "2026-06-28",
     "axiomCount": 0,
@@ -196,9 +197,9 @@
       "Topology"
     ],
     "namespace": "AreaOfCircleOQ03OQ02OQ01",
-    "lineCount": 329,
+    "lineCount": 386,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 13,
     "definitionCount": 1,
     "mainTheorems": [
       "archimedes_sin_doubling",

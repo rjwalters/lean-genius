@@ -307,6 +307,63 @@ theorem pi_sub_halfPerimeter_le_sharp_factored {m : ℕ} (hm : 4 ≤ m) :
     field_simp; ring
   exact h.trans_eq heq
 
+/-- **Matching `Ω(1/m²)` lower bound on the error.**  The inscribed half-perimeter
+underestimates π by at least a quadratic amount: `π - p(m) ≥ (1/12)·π³/m²` for every
+`m ≥ 4`.  Together with `pi_sub_halfPerimeter_le` this pins the convergence rate to
+*exactly* order `1/m²` (see `pi_sub_halfPerimeter_bounds`): the doubling method gains
+about two binary digits of π per doubling — no faster, no slower.
+
+Proof: with `x = π/m ≤ 1`, Mathlib's Taylor estimate `Real.sin_bound` gives the *upper*
+bound `sin x ≤ x - x³/6 + (5/96)x⁴`.  The quartic correction is dominated by the cubic
+because `x ≤ 1`: `(5/96)x⁴ ≤ (5/96)x³ ≤ (1/12)x³`, leaving `sin x ≤ x - (1/12)x³`.
+Multiplying by `m` and using `m·x = π`, `m·x³ = π³/m²` gives `p(m) ≤ π - (1/12)π³/m²`. -/
+theorem pi_sub_halfPerimeter_ge {m : ℕ} (hm : 4 ≤ m) :
+    1 / 12 * (Real.pi ^ 3 / (m : ℝ) ^ 2) ≤ Real.pi - halfPerimeter m := by
+  have hπ := Real.pi_pos
+  have hm' : (4 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
+  have hmpos : (0 : ℝ) < (m : ℝ) := by linarith
+  have hmne : (m : ℝ) ≠ 0 := ne_of_gt hmpos
+  have hπlt : Real.pi < 4 := Real.pi_lt_four
+  set x := Real.pi / (m : ℝ) with hx
+  have hxpos : 0 < x := by rw [hx]; positivity
+  have hx1 : x ≤ 1 := by rw [hx, div_le_one hmpos]; linarith
+  have hbound := Real.sin_bound (x := x) (by rw [abs_of_pos hxpos]; exact hx1)
+  rw [abs_of_pos hxpos] at hbound
+  have hup : Real.sin x ≤ x - x ^ 3 / 6 + x ^ 4 * (5 / 96) := by
+    have := (abs_le.mp hbound).2; linarith
+  have hmx : (m : ℝ) * x = Real.pi := by rw [hx]; field_simp
+  have hmx3 : (m : ℝ) * x ^ 3 = Real.pi ^ 3 / (m : ℝ) ^ 2 := by rw [hx]; field_simp
+  have hx43 : x ^ 4 ≤ x ^ 3 := by
+    nlinarith [mul_nonneg (pow_nonneg hxpos.le 3) (by linarith : (0 : ℝ) ≤ 1 - x)]
+  have hquartic : (m : ℝ) * x ^ 4 ≤ (m : ℝ) * x ^ 3 := mul_le_mul_of_nonneg_left hx43 hmpos.le
+  have hP0 : (0 : ℝ) ≤ (m : ℝ) * x ^ 3 := mul_nonneg hmpos.le (pow_nonneg hxpos.le 3)
+  have hexp : (m : ℝ) * (x - x ^ 3 / 6 + x ^ 4 * (5 / 96))
+      = Real.pi - 1 / 6 * ((m : ℝ) * x ^ 3) + 5 / 96 * ((m : ℝ) * x ^ 4) := by
+    have h : (m : ℝ) * (x - x ^ 3 / 6 + x ^ 4 * (5 / 96))
+        = (m : ℝ) * x - 1 / 6 * ((m : ℝ) * x ^ 3) + 5 / 96 * ((m : ℝ) * x ^ 4) := by ring
+    rw [h, hmx]
+  have h1 : (m : ℝ) * Real.sin x
+      ≤ Real.pi - 1 / 6 * ((m : ℝ) * x ^ 3) + 5 / 96 * ((m : ℝ) * x ^ 4) := by
+    have := mul_le_mul_of_nonneg_left hup hmpos.le
+    rwa [hexp] at this
+  have hsin_scaled : (m : ℝ) * Real.sin x ≤ Real.pi - 1 / 12 * ((m : ℝ) * x ^ 3) := by
+    linarith [h1, hquartic, hP0]
+  simp only [halfPerimeter]
+  rw [← hx, ← hmx3]
+  linarith [hsin_scaled]
+
+/-- **The doubling-method error is `Θ(1/m²)`.**  Combining the upper bound
+`pi_sub_halfPerimeter_le` and the matching lower bound `pi_sub_halfPerimeter_ge`,
+for every `m ≥ 4` the approximation error is sandwiched between two constant multiples
+of `π³/m²`:
+    `(1/12)·π³/m² ≤ π - p(m) ≤ (7/32)·π³/m²`.
+So the convergence rate of Archimedes' method is *exactly* quadratic in `1/m` — over the
+doubling sequence `m = 6·2ᵏ` this is the sharp `π - p(6·2ᵏ) = Θ(4⁻ᵏ)`. -/
+theorem pi_sub_halfPerimeter_bounds {m : ℕ} (hm : 4 ≤ m) :
+    1 / 12 * (Real.pi ^ 3 / (m : ℝ) ^ 2) ≤ Real.pi - halfPerimeter m ∧
+    Real.pi - halfPerimeter m ≤ 7 / 32 * Real.pi ^ 3 / (m : ℝ) ^ 2 :=
+  ⟨pi_sub_halfPerimeter_ge hm, pi_sub_halfPerimeter_le hm⟩
+
 -- ============================================================
 -- PART VI: Summary
 -- ============================================================
