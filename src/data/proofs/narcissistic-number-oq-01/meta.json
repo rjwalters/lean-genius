@@ -98,6 +98,56 @@
       "Basic set finiteness"
     ]
   },
+  "sections": [
+    {
+      "id": "overview-growth-race",
+      "title": "Overview: A Race Between Two Growth Rates",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Frames the finiteness of narcissistic (Armstrong) numbers as a race between two growth rates: an n-digit number is at least 10ⁿ⁻¹, but its digit-power-sum is at most n·9ⁿ. Since 10ⁿ⁻¹ eventually outpaces n·9ⁿ (crossover at n = 61), no narcissistic number can have 61 or more digits, bounding the whole set below 10⁶¹.",
+      "mathContext": "$10^{n-1} \\le m$ but $\\text{digitPowSum}(m) \\le n\\cdot 9^n$; the two cross at $n=61$."
+    },
+    {
+      "id": "digit-count-defs",
+      "title": "Digit Count and Narcissistic Numbers",
+      "startLine": 35,
+      "endLine": 47,
+      "summary": "numDigits m = (Nat.digits 10 m).length, the definition Narcissistic m (m equals the sum of its digits each raised to the digit count), and digit_le_nine (every decimal digit is ≤ 9, from Nat.digits_lt_base).",
+      "mathContext": "$m$ narcissistic $\\iff m = \\sum_{d\\in\\mathrm{digits}(m)} d^{\\,\\mathrm{numDigits}(m)}$; each $d\\le 9$."
+    },
+    {
+      "id": "bound-digit-power-sum",
+      "title": "Bounding the Digit-Power-Sum",
+      "startLine": 49,
+      "endLine": 70,
+      "summary": "digitPowSum_le: the digit-power-sum of m is at most numDigits m · 9^numDigits m — each of the n digits is ≤ 9, so each n-th power is ≤ 9ⁿ, and there are n of them (List.sum_le_card_nsmul).",
+      "mathContext": "$\\sum_i d_i^{\\,n} \\le n\\cdot 9^n$ where $n = \\mathrm{numDigits}(m)$."
+    },
+    {
+      "id": "crossover-inequality",
+      "title": "The Crossover Inequality n·9ⁿ < 10ⁿ⁻¹ for n ≥ 61",
+      "startLine": 72,
+      "endLine": 92,
+      "summary": "crossover: for n ≥ 61, n·9ⁿ < 10ⁿ⁻¹, by Nat.le_induction from 61 (base: 61·9⁶¹ < 10⁶⁰ by norm_num; step: 9(n+1) ≤ 10n for n ≥ 9 propagates the bound). This is the heart of the argument — the growth-rate crossover.",
+      "mathContext": "$n\\ge 61 \\Rightarrow n\\cdot 9^n < 10^{\\,n-1}.$"
+    },
+    {
+      "id": "digit-lower-bound",
+      "title": "The n-Digit Lower Bound",
+      "startLine": 94,
+      "endLine": 103,
+      "summary": "pow_pred_length_le: a nonzero m is at least 10^(numDigits m − 1), obtained from Nat.base_pow_length_digits_le (10^length ≤ 10·m) by cancelling one factor of 10 — the lower half of the growth race.",
+      "mathContext": "$m\\neq 0 \\Rightarrow 10^{\\,\\mathrm{numDigits}(m)-1} \\le m.$"
+    },
+    {
+      "id": "digit-cap-finiteness",
+      "title": "Digit Cap and Finiteness",
+      "startLine": 105,
+      "endLine": 136,
+      "summary": "numDigits_lt_61: no narcissistic m has ≥ 61 digits — combining m ≤ n·9ⁿ (narcissistic + digitPowSum_le) with 10ⁿ⁻¹ ≤ m and the crossover gives a contradiction. narcissistic_finite then bounds the whole set: every narcissistic m < 10^numDigits m ≤ 10⁶¹, a subset of a finite Iio.",
+      "mathContext": "$\\{m : \\text{narcissistic}\\} \\subseteq [0, 10^{61})$, hence finite."
+    }
+  ],
   "conclusion": {
     "summary": "The set of narcissistic (Armstrong) numbers is finite: every such number has fewer than 61 decimal digits, hence lies below 10^61. The proof bounds the digit-power-sum of an n-digit number by n*9^n and the number below by 10^(n-1), and proves the crossover n*9^n < 10^(n-1) for n ≥ 61 by induction. Fully verified, 0 axioms, 0 sorries.",
     "implications": "This turns a recreational fact into a machine-checked theorem and isolates the reusable crossover inequality. The same template (digit-power-sum ≤ n*(b-1)^n versus n-digit lower bound b^(n-1)) proves finiteness of narcissistic numbers in any base, and more generally of any digit-function-defined invariant whose value grows slower than the number itself.",
