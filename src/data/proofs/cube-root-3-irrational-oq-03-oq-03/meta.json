@@ -102,6 +102,14 @@
   ],
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: Imports, Parent Results, and Namespace",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "The docstring motivates the question — degree 3 is odd (ruling out constructibility) but degree alone does not decide normality — and sketches the embedding-into-ℝ strategy. `import Proofs.CubeRoot3IrrationalOQ03` pulls in the parent's `minpoly_cbrt3 : minpoly ℚ ∛3 = X³ − 3` and `cbrt3_pow_three : ∛3³ = 3`, the two facts this entry consumes. Opening `Polynomial` and `IntermediateField` brings the `Splits`, `roots`, `AdjoinSimple.gen`, and `IntermediateField.val` API into scope.",
+      "mathContext": "Builds on the parent: $\\min_{\\mathbb{Q}}(\\sqrt[3]{3}) = X^3 - 3$ and $[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}] = 3$."
+    },
+    {
       "id": "real-polynomial",
       "title": "The Real Polynomial X³ − 3 and Its Unique Real Root",
       "startLine": 49,
