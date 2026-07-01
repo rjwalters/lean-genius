@@ -19,7 +19,7 @@
     "title": "The ℝ≥0∞ ↔ ℝ Covolume Bridge",
     "content": "ZLattice.covolume is a real number (a .toReal), while the parent's analytic argument lives in ℝ≥0∞. covolume_eq_toReal_volume_fundamentalDomain identifies covol(Λ) with (volume F).toReal via ZLattice.covolume_eq_measure_fundamentalDomain applied to ZSpan.isAddFundamentalDomain. Because the fundamental domain is bounded (ZSpan.fundamentalDomain_isBounded), its volume is finite, so ENNReal.ofReal and toReal are mutually inverse there — giving the arithmetic identity (k:ℝ≥0∞)·volume F = ENNReal.ofReal (k·covol(Λ)) in natCast_mul_volume_fundamentalDomain.",
     "mathContext": "$\\mathrm{covol}(\\Lambda) = (\\mathrm{vol}\\,F).\\mathrm{toReal}$ and, since $\\mathrm{vol}\\,F < \\infty$, $(k:\\mathbb{R}_{\\ge 0}^\\infty)\\cdot\\mathrm{vol}\\,F = \\mathrm{ofReal}(k\\cdot\\mathrm{covol}\\,\\Lambda)$.",
-    "significance": "important",
+    "significance": "technical",
     "relatedConcepts": ["ZLattice.covolume", "ENNReal.ofReal", "fundamental domain volume", "boundedness"],
     "prerequisites": ["ℝ≥0∞ arithmetic", "finiteness of bounded-set volume"]
   },
