@@ -1790,6 +1790,62 @@ theorem gridNeighbor_isSome_iff (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 
   constructor
   · intro h; exact (isInteriorFacet_or_boundary k).resolve_right h
   · intro h hb; exact not_isInteriorFacet_of_boundary hb h
+
+/-- **The door-graph neighbour map is an involution across each facet
+(`adj_symm`, `d ≥ 2`).**  If facet `k` of `s` is glued to `t`
+(`gridNeighbor s k = some t`), then facet `k` of `t` is glued back to `s`.
+
+The proof pins the gluing direction down twice.  On the `s` side,
+`gridNeighbor s k = some t` exposes `t` as the interior Freudenthal pivot of `s`
+across some step pair `(a, b)`; but the shared facet forces that pivot index to be
+`k` itself — a cell shares a given facet with at most one partner
+(`gridFacet_unique_neighbor`), so the facet the pivot preserves (`a.succ`,
+via `pivot_gridFacet_eq`) and the facet `k` that is actually glued must coincide.
+The same argument on the `t` side forces `t`'s neighbour across `k` to be the pivot
+in the *same* direction `(a, b)`, and `pivot_involutive` returns `s`.  This is the
+constructive `adj_symm` obligation of the abstract door-counting graph.  (`d ≤ 1`
+orientation doubling is handled separately.) -/
+theorem gridNeighbor_involutive (hd : 2 ≤ d) (s : SpernerGrid.GridSimplex d N)
+    {k : Fin (d + 1)} {t : SpernerGrid.GridSimplex d N}
+    (h : gridNeighbor s k = some t) : gridNeighbor t k = some s := by
+  -- `k` is interior because the neighbour map returned `some`.
+  have hk : IsInteriorFacet k :=
+    (gridNeighbor_isSome_iff s k).mp (by rw [h]; rfl)
+  -- Identify `t` as the neighbour selected by `gridNeighbor s k`.
+  obtain ⟨t', ht', hglst, _, hfacet⟩ := gridNeighbor_spec s hk
+  rw [h] at ht'
+  obtain rfl := Option.some.inj ht'
+  -- `t` is the interior pivot of `s`; read off the step pair `(a, b)`.
+  obtain ⟨a, b, hb, rfl⟩ := hglst
+  -- The shared facet forces the pivot index to be `k` (uniqueness of the partner).
+  have hak : a.succ = k :=
+    gridFacet_unique_neighbor hd (pivot_ne s a b hb)
+      (pivot_gridFacet_eq s a b hb) hfacet
+  subst hak
+  -- Describe `t`'s neighbour across the same facet `a.succ`.
+  obtain ⟨u, hu, hglu, _, hfaceu⟩ := gridNeighbor_spec (pivotSimplex s a b hb) hk
+  rw [hu]
+  -- `u` is the pivot of `t` at `a.succ`; its direction is forced to `(a, b)` again.
+  obtain ⟨a', b', hb', rfl⟩ := hglu
+  have hak' : a'.succ = a.succ :=
+    gridFacet_unique_neighbor hd (pivot_ne (pivotSimplex s a b hb) a' b' hb')
+      (pivot_gridFacet_eq (pivotSimplex s a b hb) a' b' hb') hfaceu
+  -- Eliminate the fresh direction `(a', b')` in favour of `(a, b)`.
+  have haa : a = a' := (Fin.succ_inj.mp hak').symm
+  have hbb : b = b' := (Fin.castSucc_inj.mp (hb'.symm.trans (hak'.trans hb))).symm
+  subst haa hbb
+  -- Two pivots across the same facet cancel: `pivot_involutive` returns `s`.
+  exact congrArg some (pivot_involutive s a b hb)
+
+/-- **`gridNeighbor` is symmetric as a relation (`adj_symm`).**  Restatement of
+`gridNeighbor_involutive` in the "`t` is among `s`'s neighbours ↔ `s` is among
+`t`'s" shape the abstract door graph consumes: for `d ≥ 2`, facet `k` glues `s`
+to `t` exactly when it glues `t` to `s`. -/
+theorem gridNeighbor_symm (hd : 2 ≤ d) (s t : SpernerGrid.GridSimplex d N)
+    (k : Fin (d + 1)) :
+    gridNeighbor s k = some t ↔ gridNeighbor t k = some s :=
+  ⟨gridNeighbor_involutive hd s, gridNeighbor_involutive hd t⟩
+
 -- ============================================================
 -- SECTION: Barycentric facet algebra
 -- ============================================================
