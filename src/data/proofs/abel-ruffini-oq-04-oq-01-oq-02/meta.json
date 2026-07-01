@@ -108,6 +108,27 @@
       "summary": "natDegree_dvd_card: p.natDegree ∣ Nat.card p.Gal for irreducible p over a characteristic-zero field, generalizing prime_degree_dvd_card; primality is replaced by Irreducible.natDegree_pos."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Solvable groups, the Galois correspondence, and the group-theoretic core of the Abel–Ruffini theorem."
+    },
+    {
+      "authors": [
+        "Stewart, I."
+      ],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "4th ed., Chapman & Hall/CRC",
+      "note": "Insolvability of the quintic, transitive Galois groups, and radical solvability."
+    }
+  ],
   "conclusion": {
     "summary": "For an irreducible polynomial p that splits in E, the Galois group Gal p embeds via galActionHom as a transitive subgroup of Equiv.Perm (rootSet p E) (galActionHom_range_isPretransitive), is isomorphic to that subgroup (galMulEquivRange), and — in characteristic zero — has order divisible by p.natDegree for every degree, not only prime degree (natDegree_dvd_card).",
     "significance": "Supplies the Galois-theoretic foundation under the concrete-quintic chain: it is the reason a Galois-group computation may begin 'the group is a transitive subgroup of S_n', exactly the transitivity hypothesis the sibling 'transitive + transposition ⟹ S_p' lemma takes for granted, and it generalizes Mathlib's prime-degree divisibility to all degrees.",

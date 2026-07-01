@@ -85,6 +85,36 @@
       "summary": "not_solvableByRad_of_not_solvable_gal: a root of an irreducible q with non-solvable Galois group is not solvable by radicals — the contrapositive of Mathlib's solvableByRad.isSolvable'. solvable_gal_of_solvableByRad re-exposes the forward direction. Together they are the Galois bridge from the symmetric-group obstruction to actual polynomial equations."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Abel, N.H."
+      ],
+      "title": "Démonstration de l'impossibilité de la résolution algébrique des équations générales qui passent le quatrième degré",
+      "year": "1826",
+      "venue": "Journal für die reine und angewandte Mathematik 1, pp. 65–84",
+      "note": "Abel's proof of the unsolvability of the general quintic by radicals."
+    },
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Solvable groups, the Galois correspondence, and the group-theoretic core of the Abel–Ruffini theorem."
+    },
+    {
+      "authors": [
+        "Stewart, I."
+      ],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "4th ed., Chapman & Hall/CRC",
+      "note": "Insolvability of the quintic, transitive Galois groups, and radical solvability."
+    }
+  ],
   "conclusion": {
     "summary": "This 121-line, axiom-free, sorry-free file isolates the group-theoretic heart of Abel–Ruffini and makes it directly usable. It proves the symmetric group Sₙ is not solvable for every n ≥ 5 (symmetricGroup_not_solvable, a uniform-in-n generalization of Mathlib's Fin-5-only instance), that S₂ is solvable, and packages both endpoints in symmetric_threshold. It then states the Abel–Ruffini criterion not_solvableByRad_of_not_solvable_gal — non-solvable Galois group implies a root not expressible by radicals — as the contrapositive of Mathlib's solvableByRad.isSolvable', with the converse re-exposed alongside it.",
     "implications": "The criterion is the reusable engine for certifying concrete unsolvable polynomials: any irreducible degree-n polynomial (n ≥ 5) whose Galois group contains a non-solvable symmetric group has roots provably not expressible by radicals. Combined with a route that pins a specific polynomial's Galois group to S₅ — such as the discriminant/Jordan argument for X⁵ − X − 1 — it yields a fully formal proof that a named quintic has no radical solution. The uniform n ≥ 5 statement also means no per-degree re-proof is ever needed downstream.",
