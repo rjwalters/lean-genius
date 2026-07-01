@@ -92,7 +92,62 @@ theorem second_incompleteness (hcon : ¬ GL_proves GLFormula.falsum) :
   fun h => hcon (consistency_boundary.mp h)
 
 -- ============================================================
--- PART III: Summary
+-- PART III: The internalized (box-level) Löb boundary
+-- ============================================================
+
+/-! The boundary of Part I is *external*: it characterizes which reflection
+sentences GL proves about itself, viewed from the meta-level. A sharper question
+is whether GL *certifies that boundary internally* — i.e. whether the equivalence
+"`□A → A` is necessary ⟺ `A` is necessary" is itself a GL theorem. The answer is
+yes, at the box level: GL proves `□(□A → A) → □A` (its defining Löb axiom) and the
+converse `□A → □(□A → A)`, so it internalizes the boundary one box deep. The
+external `lob_theorem` then factors through this internal equivalence: necessitate
+the hypothesis, apply the box-level boundary to land on `□A`, and discharge with the
+hypothesis. -/
+
+/-- **GL internally certifies "provable ⟹ reflection".** GL proves
+    `□A → □(□A → A)`: whenever `A` is necessary, the reflection principle `□A → A`
+    is itself necessary. Derivation: `A → (□A → A)` is the propositional axiom `k1`;
+    necessitate it (`nec`) and distribute the box with the modal `K` axiom, then
+    modus ponens. This direction needs **no Löb axiom** — it holds already in `K`. -/
+theorem box_provable_imp_box_reflection (A : GLFormula) :
+    GL_proves (.impl (.box A) (.box (.impl (.box A) A))) :=
+  GL_proves.mp (GL_proves.k A (.impl (.box A) A))
+    (GL_proves.nec (GL_proves.taut (PropAxiom.k1 A (.box A))))
+
+/-- **GL internally certifies "reflection ⟹ provable".** GL proves
+    `□(□A → A) → □A`. This is exactly Löb's axiom `lob`; it is named here as the
+    converse of `box_provable_imp_box_reflection`, making the box-level boundary
+    symmetric. The fact that *this* direction is the one requiring the Löb axiom
+    (while the other holds in plain `K`) is precisely what makes GL the logic of
+    provability. -/
+theorem box_reflection_imp_box_provable (A : GLFormula) :
+    GL_proves (.impl (.box (.impl (.box A) A)) (.box A)) :=
+  GL_proves.lob A
+
+/-- **The internalized Löb boundary.** GL proves `□(□A → A)` if and only if GL
+    proves `□A`. This is the *necessitated* form of `reflection_iff_provable`: GL
+    certifies the necessity of the reflection principle exactly when it certifies the
+    necessity of `A`. Forward is Löb's axiom; backward is
+    `box_provable_imp_box_reflection`. Unlike the external boundary, both directions
+    here live one box deep, so this is a statement GL makes about its own provability
+    predicate rather than a meta-level observation about GL. -/
+theorem box_reflection_iff_box_provable (A : GLFormula) :
+    GL_proves (.box (.impl (.box A) A)) ↔ GL_proves (.box A) :=
+  ⟨fun h => GL_proves.mp (box_reflection_imp_box_provable A) h,
+   fun h => GL_proves.mp (box_provable_imp_box_reflection A) h⟩
+
+/-- **Internal form of Gödel's Second Incompleteness.** The `A = ⊥` instance of the
+    internalized boundary: GL proves `□Con = □(□⊥ → ⊥)` if and only if GL proves
+    `□⊥`. In words, GL *provably-proves* its own consistency exactly when it
+    *provably-proves* `⊥` — the box-level analogue of `consistency_boundary`. -/
+theorem box_consistency_boundary :
+    GL_proves (.box consistencyGL) ↔ GL_proves (.box GLFormula.falsum) := by
+  unfold consistencyGL GLFormula.not
+  exact box_reflection_iff_box_provable GLFormula.falsum
+
+-- ============================================================
+-- PART IV: Summary
 -- ============================================================
 
 /-- **Summary.** The Löb boundary, formalized end to end: GL proves `□A → A` iff it
@@ -103,5 +158,18 @@ theorem lob_boundary_verified :
     (GL_proves consistencyGL ↔ GL_proves GLFormula.falsum) ∧
     (¬ GL_proves GLFormula.falsum → ¬ GL_proves consistencyGL) :=
   ⟨reflection_iff_provable, consistency_boundary, second_incompleteness⟩
+
+/-- **Summary (internalized boundary).** The box-level Löb boundary, formalized end
+    to end: GL proves both implications of `□(□A → A) ↔ □A`, so GL proves
+    `□(□A → A)` iff it proves `□A`; specialised to `⊥`, GL proves `□Con` iff it
+    proves `□⊥`. GL therefore certifies its own Löb boundary internally, one box
+    deep. 0 axioms, 0 sorries. -/
+theorem internal_lob_boundary_verified :
+    (∀ A : GLFormula, GL_proves (.impl (.box A) (.box (.impl (.box A) A)))) ∧
+    (∀ A : GLFormula, GL_proves (.impl (.box (.impl (.box A) A)) (.box A))) ∧
+    (∀ A : GLFormula, GL_proves (.box (.impl (.box A) A)) ↔ GL_proves (.box A)) ∧
+    (GL_proves (.box consistencyGL) ↔ GL_proves (.box GLFormula.falsum)) :=
+  ⟨box_provable_imp_box_reflection, box_reflection_imp_box_provable,
+   box_reflection_iff_box_provable, box_consistency_boundary⟩
 
 end GodelSecondIncompletenessOQ02OQ03
