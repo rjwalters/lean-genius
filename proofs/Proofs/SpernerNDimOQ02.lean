@@ -2214,4 +2214,89 @@ theorem boundary_faces_card_le_one (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk₁ hk₂
   exact boundary_face_subsingleton s hd hk₁ hk₂
 
+/-!
+## Exact per-cell boundary-door set and count
+
+`boundary_faces_card_le_one` bounds each cell's contribution to the last-face door
+count by one.  This section computes that contribution *exactly*.  Localization
+(`boundary_face_imp_last`) confines the door-facet finset to `{Fin.last d}`, and the
+top-facet characterization (`last_boundary_face_iff`) says precisely when that facet
+is a door.  Together they collapse the per-cell door set to a single decidable
+alternative: the singleton `{Fin.last d}` when the top facet is a door, otherwise
+`∅`.  The corresponding cardinality is the `0/1` summand a Phase-2 door-parity
+(oddness) induction accumulates over all cells — this is the exact per-cell term that
+sum runs over.  All 0-sorry, 0-axiom (builds only on `boundary_face_imp_last`). -/
+
+/-- **Boundary-door facets are contained in `{Fin.last d}`.**  Sharpens
+`boundary_faces_card_le_one` from a cardinality bound to a concrete containment: the
+only facet index that can be a geometric `∂Δ_N` door is the top facet.  Immediate from
+`boundary_face_imp_last`. -/
+theorem boundary_faces_subset_last (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    (Finset.univ.filter
+      (fun k : Fin (d + 1) =>
+        ∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0)) ⊆ {Fin.last d} := by
+  intro k hk
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk
+  rw [Finset.mem_singleton]
+  exact boundary_face_imp_last s hd k hk
+
+/-- **Membership in the boundary-door set.**  A facet `k` is a geometric `∂Δ_N` door of
+the cell iff it is the top facet `Fin.last d` *and* the top-facet boundary condition
+holds there.  The `∈`-form combining `boundary_face_imp_last` (only `Fin.last d`
+qualifies) with the defining filter predicate. -/
+theorem mem_boundary_faces_iff (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d)
+    (k : Fin (d + 1)) :
+    (k ∈ Finset.univ.filter
+      (fun k : Fin (d + 1) =>
+        ∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0)) ↔
+    k = Fin.last d ∧
+      (∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0) := by
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · intro h
+    have hk : k = Fin.last d := boundary_face_imp_last s hd k h
+    subst hk
+    exact ⟨rfl, h⟩
+  · rintro ⟨hk, h⟩
+    subst hk
+    exact h
+
+/-- **Exact per-cell boundary-door set.**  The finset of geometric `∂Δ_N` boundary
+doors of a Freudenthal cell equals the singleton `{Fin.last d}` when the top-facet
+door condition holds, and `∅` otherwise.  Pins the per-cell contribution to a single
+decidable boolean — exactly the summand a Phase-2 door-parity induction accumulates. -/
+theorem boundary_faces_eq (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    (Finset.univ.filter
+      (fun k : Fin (d + 1) =>
+        ∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0)) =
+    if (∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0)
+      then {Fin.last d} else ∅ := by
+  by_cases hcond :
+      (∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0)
+  · rw [if_pos hcond]
+    apply Finset.ext
+    intro k
+    rw [mem_boundary_faces_iff s hd, Finset.mem_singleton]
+    exact ⟨fun h => h.1, fun h => ⟨h, hcond⟩⟩
+  · rw [if_neg hcond, Finset.eq_empty_iff_forall_not_mem]
+    intro k hk
+    rw [mem_boundary_faces_iff s hd] at hk
+    exact hcond hk.2
+
+/-- **Exact per-cell boundary-door count.**  The number of geometric `∂Δ_N` boundary
+doors of a Freudenthal cell is `1` when its top facet is a door and `0` otherwise.
+This is the exact `0/1` per-cell term the last-face door-parity sum accumulates,
+strengthening `boundary_faces_card_le_one` from `≤ 1` to a decidable equality. -/
+theorem boundary_faces_card (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    (Finset.univ.filter
+      (fun k : Fin (d + 1) =>
+        ∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0)).card =
+    if (∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0)
+      then 1 else 0 := by
+  rw [boundary_faces_eq s hd]
+  by_cases hcond :
+      (∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0)
+  · rw [if_pos hcond, if_pos hcond, Finset.card_singleton]
+  · rw [if_neg hcond, if_neg hcond, Finset.card_empty]
+
 end SpernerNDimOQ02
