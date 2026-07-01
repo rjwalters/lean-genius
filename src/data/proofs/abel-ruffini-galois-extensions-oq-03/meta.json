@@ -164,6 +164,23 @@
       "note": "Provides `alternatingGroup.isSimpleGroup_five` and the general-n converse machinery (`IsThreeCycle.alternating_normalClosure`, `isThreeCycle_isConj`, `closure_three_cycles_eq_alternating`) on which this reduction builds."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "extends",
+      "description": "Parent file. It develops the abstract Abel–Ruffini theory (Sₙ solvable ⟺ n ≤ 4; A₅ simple; a non-solvable Galois group blocks radical solvability). This entry generalizes the A₅-simplicity input to all n ≥ 5 and isolates its genuine combinatorial content in the 3-cycle-containment criterion."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-01",
+      "relationship": "related",
+      "description": "Sibling, constructive direction. OQ-01 exhibits an explicit quintic X⁵ − 4X + 2 with Gal ≅ S₅ (hence non-solvable). Where OQ-01 produces a concrete non-solvable group, this entry supplies the general structural reason such groups exist for n ≥ 5: the simplicity of Aₙ."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "underpins",
+      "description": "The abstract Abel–Ruffini theorem. Non-solvability of Sₙ for n ≥ 5 rests entirely on Aₙ being simple and non-abelian; this entry pins that simplicity to the single 3-cycle-containment criterion, exposing the exact combinatorial fact the whole obstruction depends on."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "isSimpleGroup_alternating_iff",
