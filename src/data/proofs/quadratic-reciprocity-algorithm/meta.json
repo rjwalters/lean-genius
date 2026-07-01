@@ -174,32 +174,32 @@
   "sorries": 0,
   "references": [
     {
-      "authors": "C. F. Gauss",
+      "authors": "Carl Friedrich Gauss",
       "title": "Disquisitiones Arithmeticae",
       "year": 1801,
-      "venue": "Leipzig (English transl. A. A. Clarke, Yale Univ. Press, 1966)",
-      "note": "First complete proof of the law of quadratic reciprocity."
+      "venue": "Leipzig; §125–145",
+      "note": "Original statement and first complete proof of the Law of Quadratic Reciprocity, the identity turned into a computation here."
     },
     {
-      "authors": "K. Ireland and M. Rosen",
+      "authors": "Kenneth Ireland and Michael Rosen",
       "title": "A Classical Introduction to Modern Number Theory",
       "year": 1990,
-      "venue": "Springer GTM 84, 2nd ed.",
-      "note": "Legendre/Jacobi symbols and reciprocity as a computational tool."
+      "venue": "Springer, 2nd ed., Chapter 5",
+      "note": "Treats the Legendre symbol, its multiplicativity, and the reciprocity/supplementary laws that make the GCD-like evaluation algorithm work."
     },
     {
-      "authors": "G. H. Hardy and E. M. Wright",
-      "title": "An Introduction to the Theory of Numbers",
-      "year": 2008,
-      "venue": "Oxford Univ. Press, 6th ed.",
-      "note": "Elementary treatment of the Legendre symbol and reciprocity."
+      "authors": "Henri Cohen",
+      "title": "A Course in Computational Algebraic Number Theory",
+      "year": 1993,
+      "venue": "Springer, Algorithm 1.4.10 (Kronecker/Jacobi symbol)",
+      "note": "Describes the reciprocity-driven Euclidean-style algorithm for evaluating Legendre/Jacobi symbols demonstrated in this entry's worked examples."
     },
     {
       "authors": "The mathlib Community",
-      "title": "Mathlib4: NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "title": "legendreSym, jacobiSym, and quadratic reciprocity in Mathlib",
       "year": 2024,
       "venue": "leanprover-community/mathlib4",
-      "note": "Legendre symbol, its multiplicativity and the reciprocity law formalized in Lean."
+      "note": "Provides the formalized Legendre symbol, multiplicativity, and reciprocity theorems on which the computation algorithm is built."
     }
   ]
 }

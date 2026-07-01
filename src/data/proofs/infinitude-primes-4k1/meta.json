@@ -136,5 +136,35 @@
       "summary": "Proves by decide that 5, 13, 17, 29, 37 are all prime and ≡ 1 (mod 4). These are the first five elements of OEIS A002144 (primes ≡ 1 mod 4), all expressible as sums of two squares: 5=1²+2², 13=2²+3², 17=1²+4², 29=2²+5², 37=1²+6²."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press, 6th ed., Theorem 251 and §16",
+      "note": "States the infinitude of primes ≡ 1 (mod 4) and the sum-of-two-squares / Euler-criterion facts (−1 a QR iff p ≡ 1 mod 4) that drive this elementary argument."
+    },
+    {
+      "authors": "Kenneth Ireland and Michael Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer, 2nd ed., Chapter 5",
+      "note": "Develops quadratic residues and Euler's criterion, the tools used here to show every odd prime factor of (2·(n+1)!)²+1 is ≡ 1 (mod 4)."
+    },
+    {
+      "authors": "Peter Gustav Lejeune Dirichlet",
+      "title": "Beweis des Satzes, dass jede unbegrenzte arithmetische Progression … unendlich viele Primzahlen enthält",
+      "year": 1837,
+      "venue": "Abhandlungen der Königlich Preußischen Akademie der Wissenschaften",
+      "note": "Dirichlet's general theorem on primes in arithmetic progressions, of which the a = 1, m = 4 case is proved here by elementary means."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "ZMod.exists_sq_eq_neg_one_iff, Nat.Prime, and factorization API in Mathlib",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Supplies the −1-is-a-square-mod-p characterization and prime-factorization lemmas underpinning the argument."
+    }
+  ]
 }

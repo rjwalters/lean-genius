@@ -156,5 +156,35 @@
       "summary": "Five `example` statements verifying 3, 7, 11, 19, 23 are primes = 3 (mod 4), each by `decide`/`Nat.prime_three`, plus #check exports of the main results."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Euclid of Alexandria",
+      "title": "Elements, Book IX, Proposition 20",
+      "year": -300,
+      "venue": "classical",
+      "note": "The prototype 'multiply and add/subtract one' argument for the infinitude of primes, adapted here to the residue class 3 (mod 4)."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press, 6th ed., Theorem 251",
+      "note": "States the infinitude of primes ≡ 3 (mod 4) with the parity-of-residues observation (a product of primes ≡ 1 mod 4 is ≡ 1 mod 4) used here."
+    },
+    {
+      "authors": "Kenneth Ireland and Michael Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer, 2nd ed., Chapter 1",
+      "note": "Presents the Euclid-style arguments for special arithmetic progressions, the exact template of N = 4·(n+1)! − 1 followed in this entry."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Nat.Prime, ZMod 4, and minFac / factorization API in Mathlib",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Provides the modular-arithmetic and prime-factor lemmas used to extract a prime factor ≡ 3 (mod 4) exceeding n."
+    }
+  ]
 }

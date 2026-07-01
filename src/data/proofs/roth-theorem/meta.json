@@ -178,5 +178,35 @@
   "sorries": 0,
   "additionalFiles": [
     "Proofs/RothTheoremOQ02.lean"
+  ],
+  "references": [
+    {
+      "authors": "Klaus F. Roth",
+      "title": "On certain sets of integers",
+      "year": 1953,
+      "venue": "Journal of the London Mathematical Society 28, 104–109",
+      "note": "Original Fourier-analytic proof that AP-free (3-term) subsets of {1,…,N} have density o(1) — the theorem formalized here."
+    },
+    {
+      "authors": "Endre Szemerédi",
+      "title": "On sets of integers containing no k elements in arithmetic progression",
+      "year": 1975,
+      "venue": "Acta Arithmetica 27, 199–245",
+      "note": "The general k-term theorem of which Roth's is the k = 3 case, situating this density-increment argument."
+    },
+    {
+      "authors": "Ben Green and Terence Tao",
+      "title": "An arithmetic regularity lemma, an associated counting lemma, and applications",
+      "year": 2010,
+      "venue": "An Irregular Mind (Bolyai Society Math. Studies 21), 261–334",
+      "note": "Modern Fourier/regularity framing of Roth-type density increments paralleling the character-orthogonality and AP-counting machinery developed here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Corners theorem, ZMod Fourier analysis, and AddChar orthogonality in Mathlib",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Provides the corners theorem and finite-Fourier API (Parseval, character orthogonality) that this entry invokes and extends over Z/NZ."
+    }
   ]
 }

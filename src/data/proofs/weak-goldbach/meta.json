@@ -189,39 +189,39 @@
   "sorries": 0,
   "references": [
     {
-      "authors": "H. A. Helfgott",
+      "authors": "Harald A. Helfgott",
       "title": "The ternary Goldbach conjecture is true",
       "year": 2013,
-      "venue": "arXiv:1312.7748",
-      "note": "Unconditional proof that every odd integer > 5 is a sum of three primes."
+      "venue": "arXiv:1312.7748 (with companion papers on major and minor arcs)",
+      "note": "The unconditional proof that every odd integer > 5 is a sum of three primes, whose structure this entry axiomatizes and formalizes."
     },
     {
       "authors": "I. M. Vinogradov",
       "title": "Representation of an odd number as a sum of three primes",
       "year": 1937,
-      "venue": "Dokl. Akad. Nauk SSSR 15, 291–294",
-      "note": "Circle-method proof for all sufficiently large odd integers."
+      "venue": "Doklady Akademii Nauk SSSR 15, 291–294",
+      "note": "The circle-method asymptotic establishing ternary Goldbach for all sufficiently large odd n, one of the axiomatized ingredients here."
     },
     {
-      "authors": "T. Tao",
-      "title": "Every odd number greater than 1 is the sum of at most five primes",
+      "authors": "L. G. Schnirelmann",
+      "title": "Über additive Eigenschaften von Zahlen",
+      "year": 1933,
+      "venue": "Mathematische Annalen 107, 649–690",
+      "note": "Schnirelmann density and basis theorem, cited among this entry's building blocks for additive representations."
+    },
+    {
+      "authors": "Tomás Oliveira e Silva, Siegfried Herzog and Silvio Pardi",
+      "title": "Empirical verification of the even Goldbach conjecture and computation of prime gaps up to 4·10^18",
       "year": 2014,
-      "venue": "Math. Comp. 83, 997–1038",
-      "note": "The 5-prime bound, superseded by Helfgott."
+      "venue": "Mathematics of Computation 83, 2033–2060",
+      "note": "The binary-Goldbach verification range that Helfgott's proof (and this formalization) rely on to close the finite gap."
     },
     {
-      "authors": "O. Ramaré",
-      "title": "On Šnirel'man's constant",
-      "year": 1995,
-      "venue": "Ann. Scuola Norm. Sup. Pisa Cl. Sci. (4) 22, 645–706",
-      "note": "Six-prime bound and Schnirelmann-type additive-basis results."
-    },
-    {
-      "authors": "H. A. Helfgott",
-      "title": "Major arcs for Goldbach's problem",
-      "year": 2015,
-      "venue": "arXiv:1305.2897",
-      "note": "Companion paper supplying the major-arc estimates of the ternary proof."
+      "authors": "The mathlib Community",
+      "title": "Nat.Prime and additive-representation API in Mathlib",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Provides the primality infrastructure over which the structural consequences of ternary Goldbach are stated."
     }
   ]
 }
