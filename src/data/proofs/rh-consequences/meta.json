@@ -264,5 +264,41 @@
       "mathContext": "Final consolidated summary of all formal statements, distinguishing the unconditionally proved theorems from the RH-conditional results and the remaining analytic axioms."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Bernhard Riemann",
+      "title": "Über die Anzahl der Primzahlen unter einer gegebenen Grösse",
+      "year": 1859,
+      "venue": "Monatsberichte der Berliner Akademie",
+      "note": "Original memoir stating the hypothesis on the zeros of ζ(s) whose consequences are formalized here."
+    },
+    {
+      "authors": "Edward Charles Titchmarsh (rev. D. R. Heath-Brown)",
+      "title": "The Theory of the Riemann Zeta-Function",
+      "year": 1986,
+      "venue": "Oxford University Press, 2nd ed.",
+      "note": "Standard reference for the equivalence between RH and the error-term bounds M(x) = O(√x·) on the Mertens function."
+    },
+    {
+      "authors": "Harold M. Edwards",
+      "title": "Riemann's Zeta Function",
+      "year": 1974,
+      "venue": "Academic Press",
+      "note": "Detailed exposition connecting RH to the Möbius/Mertens summatory functions and the Chebyshev ψ and θ functions used here."
+    },
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer",
+      "note": "Chebyshev functions, Möbius function identities, and the O(√x) consequences under RH."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: RiemannHypothesis, ArithmeticFunction.moebius, and ζ API",
+      "year": 2024,
+      "note": "Supplies the built-in RiemannHypothesis statement and Möbius/Chebyshev definitions on which the consequences are built."
+    }
+  ]
 }

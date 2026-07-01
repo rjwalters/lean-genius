@@ -188,5 +188,40 @@
     "path": "Proofs/GodelFirstIncompletenessOQ01.lean",
     "definitionCount": 7,
     "theoremCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "Kurt Gödel",
+      "title": "Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I",
+      "year": 1931,
+      "venue": "Monatshefte für Mathematik und Physik 38, 173–198",
+      "note": "The original paper establishing the First Incompleteness Theorem: any consistent, effectively axiomatized theory extending arithmetic is incomplete."
+    },
+    {
+      "authors": "Kurt Gödel (trans. Martin Hirzel)",
+      "title": "On Formally Undecidable Propositions of Principia Mathematica and Related Systems I",
+      "year": 1931,
+      "note": "Standard English translation of the 1931 paper; the source of the Gödel sentence construction formalized here."
+    },
+    {
+      "authors": "Peter Smith",
+      "title": "An Introduction to Gödel's Theorems",
+      "year": 2013,
+      "venue": "Cambridge University Press, 2nd ed.",
+      "note": "Modern textbook development of the diagonal lemma and the derivability conditions underlying this axiomatic presentation."
+    },
+    {
+      "authors": "Raymond M. Smullyan",
+      "title": "Gödel's Incompleteness Theorems",
+      "year": 1992,
+      "venue": "Oxford University Press",
+      "note": "Self-contained treatment of representability and the fixed-point construction; motivates the opaque Provable predicate used here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: logic and computability infrastructure",
+      "year": 2024,
+      "note": "Provides the propositional and classical-logic foundation over which the five explicit incompleteness axioms are stated and combined."
+    }
+  ]
 }
