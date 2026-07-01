@@ -60,14 +60,16 @@
       "Strict monotonicity under doubling: p(n) < p(2n) for all n ≥ 1 (fully proved)",
       "Upper bound: p(m) < π for all m ≥ 1 (fully proved)",
       "Convergence: p(m) → π as m → ∞, by squeezing π·cos(π/m) ≤ p(m) < π (fully proved)",
-      "Explicit convergence rate: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4 (quadratic in 1/m), proved from the sin Taylor estimate Real.sin_bound by absorbing the quartic remainder into the cubic term — gives π − p(2ᵏ) = O(4⁻ᵏ) (fully proved)"
+      "Explicit convergence rate: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4 (quadratic in 1/m), proved from the sin Taylor estimate Real.sin_bound by absorbing the quartic remainder into the cubic term — gives π − p(2ᵏ) = O(4⁻ᵏ) (fully proved)",
+      "Sharp 1/6 leading-constant rate (pi_sub_halfPerimeter_le_sharp): keeping the quartic Taylor remainder separate instead of absorbing it gives π − p(m) ≤ π³/(6m²) + (5/96)·π⁴/m³ for m ≥ 4, with the EXACT second-order Taylor coefficient 1/6 (not 7/32); answers the entry's second open question",
+      "Factored form pi_sub_halfPerimeter_le_sharp_factored: π − p(m) ≤ (π³/(6m²))·(1 + 5π/(16m)), exhibiting leading constant 1/6 with a relative correction 5π/(16m) → 0; for m ≥ 4 it collapses to the earlier 7/32 bound since 1/6 + 5/96 = 7/32"
     ],
     "dateAdded": "2026-06-28",
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
-    "lineCount": 276,
+    "lineCount": 329,
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 1
   },
   "overview": {
@@ -134,24 +136,32 @@
       "title": "Explicit Convergence Rate",
       "summary": "pi_sub_halfPerimeter_le: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4, an explicit O(1/m²) error bound. Proved from Real.sin_bound (sin x ≥ x − x³/6 − (5/96)x⁴) by absorbing x⁴ ≤ x³ into the cubic term, then scaling by m.",
       "startLine": 205,
-      "endLine": 257,
+      "endLine": 266,
       "mathContext": "With $x=\\pi/m\\le 1$, the Taylor estimate gives $\\sin x \\ge x - \\tfrac{7}{32}x^3$ (since $\\tfrac16+\\tfrac{5}{96}=\\tfrac{7}{32}$). Multiplying by $m$ and using $mx=\\pi$, $mx^3=\\pi^3/m^2$ yields $p(m)\\ge \\pi-\\tfrac{7}{32}\\pi^3/m^2$, i.e. the doubling error is $O(4^{-k})$ for $m=c\\,2^k$."
+    },
+    {
+      "id": "sharp-rate",
+      "title": "Sharp 1/6 Leading-Constant Rate",
+      "summary": "pi_sub_halfPerimeter_le_sharp: keeping the quartic Taylor remainder separate (instead of absorbing x⁴ ≤ x³) gives π − p(m) ≤ π³/(6m²) + (5/96)·π⁴/m³ for m ≥ 4, with the EXACT second-order coefficient 1/6. The factored form pi_sub_halfPerimeter_le_sharp_factored writes this as (π³/(6m²))·(1 + 5π/(16m)), exhibiting 1/6 + o(1). Answers the entry's second open question.",
+      "startLine": 267,
+      "endLine": 310,
+      "mathContext": "The error $\\pi - m\\sin(\\pi/m) = m(\\pi/m)^3/6 + O(m^{-3})$ has true leading coefficient $\\tfrac16$. Multiplying $\\sin x \\ge x - x^3/6 - \\tfrac{5}{96}x^4$ by $m$ keeps both terms: $\\pi - p(m) \\le \\tfrac{\\pi^3}{6m^2} + \\tfrac{5}{96}\\tfrac{\\pi^4}{m^3}$. For $m\\ge4$, $\\pi/m\\le1$ collapses this to the earlier $\\tfrac{7}{32}\\pi^3/m^2$ bound (since $\\tfrac16+\\tfrac{5}{96}=\\tfrac{7}{32}$)."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Packaging theorem bundling the doubling identity, hexagon seed, monotonicity, upper bound, and convergence into one statement.",
-      "startLine": 258,
-      "endLine": 276,
+      "startLine": 311,
+      "endLine": 329,
       "mathContext": "The bundled result asserts the doubling radical holds for all $n \\ge 1$, $p(6) = 3$, $p(n) < p(2n)$, $p(m) < \\pi$, and $p(m) \\to \\pi$ — Archimedes' method, formalized end to end."
     }
   ],
   "conclusion": {
     "summary": "This entry answers affirmatively the open question of whether Archimedes' half-angle doubling method can be formalized constructively. The doubling radical √((1−cos)/2) is derived for all n, the inscribed half-perimeters are exhibited as a computable nested radical, and they are proved to increase strictly under doubling, remain below π, and converge to π. Fully verified: 0 axioms, 0 sorries.",
-    "implications": "Where the parent entry verified Archimedes' final numbers from Mathlib's precomputed π bounds, this entry formalizes the algorithm that generates them and proves its convergence — making the 2,300-year-old method of exhaustion a fully machine-checked, constructive computation of π.",
+    "implications": "Where the parent entry verified Archimedes' final numbers from Mathlib's precomputed π bounds, this entry formalizes the algorithm that generates them and proves its convergence — making the 2,300-year-old method of exhaustion a fully machine-checked, constructive computation of π. The convergence rate is now pinned to its exact second-order Taylor coefficient: π − p(m) ≤ π³/(6m²) + (5/96)·π⁴/m³, with leading constant 1/6 (not the lossy 7/32), and the earlier 7/32 bound is recovered as the m ≥ 4 collapse of the sharp two-term estimate.",
     "openQuestions": [
       "Can Archimedes' rational square-root bounds (how he approximated √3 and the nested radicals by hand) be formalized to recover his exact 223/71 bound purely from the doubling recurrence, without invoking Mathlib's pi_gt_d4?",
-      "Sharpen the convergence-rate constant: the proved bound π − p(m) ≤ (7/32)·π³/m² is not tight (the true leading term is π³/(6m²)); can the (7/32) factor be reduced to 1/6 + o(1), matching the exact second-order Taylor coefficient?"
+      "RESOLVED (pi_sub_halfPerimeter_le_sharp): the convergence-rate leading constant is now the exact π³/(6m²) (coefficient 1/6), with an explicit O(1/m³) correction (5/96)·π⁴/m³, and the factored form (π³/(6m²))·(1 + 5π/(16m)) shows the 1/6 + o(1) behaviour directly. Remaining: a matching lower bound π − p(m) ≥ (1/6 − o(1))π³/m² to prove the rate is two-sided tight."
     ]
   },
   "crossReferences": [
@@ -186,9 +196,9 @@
       "Topology"
     ],
     "namespace": "AreaOfCircleOQ03OQ02OQ01",
-    "lineCount": 223,
+    "lineCount": 329,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 11,
     "definitionCount": 1,
     "mainTheorems": [
       "archimedes_sin_doubling",
@@ -198,6 +208,9 @@
       "halfPerimeter_doubling",
       "halfPerimeter_lt_pi",
       "halfPerimeter_tendsto_pi",
+      "pi_sub_halfPerimeter_le",
+      "pi_sub_halfPerimeter_le_sharp",
+      "pi_sub_halfPerimeter_le_sharp_factored",
       "archimedes_doubling_method_verified"
     ],
     "path": "Proofs/AreaOfCircleOQ03OQ02OQ01.lean",
