@@ -12,9 +12,21 @@
     "prerequisites": ["additive combinatorics", "graph theory"]
   },
   {
+    "id": "ann-erdos895ce-graph-predicates",
+    "proofId": "erdos-895-counterexample-fin18",
+    "range": { "startLine": 47, "endLine": 53 },
+    "type": "definition",
+    "title": "IsIndependentTriple and IsTriangleFree",
+    "content": "The two graph-theoretic predicates. IsIndependentTriple G a b c := ¬G.Adj a b ∧ ¬G.Adj b c ∧ ¬G.Adj a c — the three vertices are pairwise non-adjacent (an independent set of size ≤ 3). IsTriangleFree G := ∀ a b c, ¬(G.Adj a b ∧ G.Adj b c ∧ G.Adj a c) — no three vertices form a 3-clique. Both are stated as ∀/¬-quantified propositions over Fin 18 and marked @[reducible], so that when `decide` needs a Decidable instance it can unfold them to the underlying Fintype.decidableForallFintype over the finite vertex type rather than getting stuck on an opaque definition.",
+    "mathContext": "Independence and triangle-freeness are the two host-graph constraints; on a triangle-free graph Barber asks for an independent additive triple.",
+    "significance": "supporting",
+    "relatedConcepts": ["independent set", "triangle-free graph", "3-clique", "bounded quantifier"],
+    "prerequisites": ["simple graphs", "decidable quantifiers over Fintype"]
+  },
+  {
     "id": "ann-erdos895ce-predicate",
     "proofId": "erdos-895-counterexample-fin18",
-    "range": { "startLine": 45, "endLine": 59 },
+    "range": { "startLine": 55, "endLine": 59 },
     "type": "definition",
     "title": "IsDistinctAdditiveTriple — the distinctness fix",
     "content": "The corrected additive-triple predicate adds `a ≠ b` to `a.val + b.val = c.val ∧ a > 0 ∧ b > 0`. This is precisely the constraint the sibling file's `IsAdditiveTriple` omits, admitting the degenerate (k, k, 2k) and flipping the answer. The triple of predicates is marked @[reducible] so `decide`'s Decidable-instance synthesis sees through to the bounded quantifiers over Fin 18.",
