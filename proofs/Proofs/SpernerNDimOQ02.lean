@@ -2511,4 +2511,45 @@ theorem zero_facet_not_on_boundary (s : SpernerGrid.GridSimplex d N)
   simp only [Fin.val_zero, Fin.val_last] at hk
   omega
 
+/-- **Exact cross-chain gluing obligation.**  A facet `k` is one the within-chain
+neighbour map `gridNeighbor` fails to pair (`gridNeighbor s k = none`) yet is *not* a
+genuine geometric `∂Δ_N` door — precisely the facets a *total*
+`SpernerTriangulation.adj` must glue across Kuhn chains — **exactly** when it is the
+bottom facet `k = 0` (unconditionally, by `zero_facet_not_on_boundary`) or the top
+facet `k = Fin.last d` in a cell whose top facet is *not* a door.
+
+This consolidates the two endpoint analyses — the bottom-facet fact
+(`gridNeighbor_zero_none_not_boundary_face` / `zero_facet_not_on_boundary`) and the
+geometric localization to the top facet (`geom_boundary_face_imp_last`) — into the
+complete dichotomy over *all* facets.  It pins the remaining cross-chain frontier
+exactly: facet `0` is the unavoidable gluing site for every cell, while facet
+`Fin.last d` needs gluing precisely for the cells whose last facet is geometrically
+interior (i.e. not a last-face door, the `¬`-branch of `boundary_faces_eq`).  Every
+interior facet `0 < k < Fin.last d` is excluded because `gridNeighbor` already pairs
+it (`gridNeighbor_isSome_iff`), so no residual obligation there.
+
+Only endpoint lemmas are used: `gridNeighbor_eq_none_iff` (the `none` fibre is
+`{0, Fin.last d}`) and `zero_facet_not_on_boundary`; 0-sorry, 0-axiom. -/
+theorem gridNeighbor_none_geom_interior_iff (s : SpernerGrid.GridSimplex d N)
+    (hd : 2 ≤ d) (k : Fin (d + 1)) :
+    (gridNeighbor s k = none ∧
+        ¬ ∃ i : Fin (d + 1), ∀ j : Fin (d + 1), j ≠ k →
+          (s.verts j).coords i = 0) ↔
+      (k = 0 ∨
+        (k = Fin.last d ∧
+          ¬ ∃ i : Fin (d + 1), ∀ j : Fin (d + 1), j ≠ Fin.last d →
+            (s.verts j).coords i = 0)) := by
+  constructor
+  · rintro ⟨hnone, hgeom⟩
+    have hb : k = 0 ∨ k = Fin.last d := (gridNeighbor_eq_none_iff s k).mp hnone
+    rcases hb with h0 | hlast
+    · exact Or.inl h0
+    · exact Or.inr ⟨hlast, by rw [← hlast]; exact hgeom⟩
+  · rintro (h0 | ⟨hlast, hgeom⟩)
+    · subst h0
+      exact ⟨(gridNeighbor_eq_none_iff s 0).mpr (Or.inl rfl),
+        zero_facet_not_on_boundary s hd⟩
+    · subst hlast
+      exact ⟨(gridNeighbor_eq_none_iff s (Fin.last d)).mpr (Or.inr rfl), hgeom⟩
+
 end SpernerNDimOQ02
