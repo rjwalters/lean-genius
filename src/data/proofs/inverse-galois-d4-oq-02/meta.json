@@ -23,8 +23,8 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 268,
-    "theoremCount": 10,
+    "lineCount": 429,
+    "theoremCount": 13,
     "assumptions": "None beyond the foundational propext / Classical.choice / Quot.sound. All nine theorems are term-mode compositions of the three headline divisibilities; the two n=3, n=5 examples use kernel `decide` (for Nat.totient and Nat.Coprime), which relies only on the foundational axioms — no native_decide, no Lean.ofReduceBool.",
     "buildStatus": "Verified via ./proofs/scripts/docker-build.sh Proofs.InverseGaloisD4OQ02 against pinned Mathlib v4.26.0. Build completed successfully (7745 jobs, 0 errors). No native_decide; foundational axioms only.",
     "mathlibDependencies": [
