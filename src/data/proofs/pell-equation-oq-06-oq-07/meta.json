@@ -140,5 +140,28 @@
       "Do the analogous divisibility-sequence and strong-divisibility results hold for the coordinate sequences of the general Pell equation x² − Dy² = 1 over ℤ[√D] for arbitrary non-square D, with the same addition-formula proof?",
       "Which primes p divide some Yₙ, and how does the 2-adic (and p-adic) valuation of Yₙ grow with n — i.e. the analogue of the lifting-the-exponent / Carmichael theory for Lucas sequences?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "M. Ward",
+      "title": "Memoir on Elliptic Divisibility Sequences",
+      "year": 1948,
+      "venue": "Amer. J. Math. 70",
+      "note": "General theory of divisibility sequences m∣n ⟹ uₘ∣uₙ, of which the Pell Y-sequence is an instance."
+    },
+    {
+      "authors": "E. J. Barbeau",
+      "title": "Pell's Equation",
+      "year": 2003,
+      "venue": "Springer",
+      "note": "Book-length treatment of Pell solutions, recurrences, and their group structure."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Pell.Solution₁ group and Zsqrtd (ℤ[√d]) API underlying this formalization."
+    }
+  ]
 }

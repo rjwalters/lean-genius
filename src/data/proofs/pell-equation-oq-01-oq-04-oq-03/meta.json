@@ -198,5 +198,33 @@
       "significance": "Packages the minimal-positive-value characterization of the regulator as a single IsLeast statement"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "E. J. Barbeau",
+      "title": "Pell's Equation",
+      "year": 2003,
+      "venue": "Springer",
+      "note": "Book-length treatment of Pell solutions, recurrences, and their group structure."
+    },
+    {
+      "authors": "J.-L. Lagrange",
+      "title": "Solution d'un problème d'arithmétique",
+      "year": 1770,
+      "note": "First complete proof that x²−Dy²=1 has nontrivial solutions for non-square D, via continued fractions."
+    },
+    {
+      "authors": "Brahmagupta",
+      "title": "Brāhmasphuṭasiddhānta (the bhāvanā composition method)",
+      "year": 628,
+      "note": "Composition law (x,y)⊛(u,v)=(xu+dyv, xv+yu) generating new Pell solutions — Brahmagupta's identity."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Pell.Solution₁ group and Zsqrtd (ℤ[√d]) API underlying this formalization."
+    }
+  ]
 }

@@ -201,5 +201,35 @@
       "significance": "Makes R₀ the canonical minimal generator of the regulator lattice"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "H. Cohen",
+      "title": "A Course in Computational Algebraic Number Theory",
+      "year": 1993,
+      "venue": "Springer",
+      "note": "Regulator as the covolume/index invariant of the unit group."
+    },
+    {
+      "authors": "J. Neukirch",
+      "title": "Algebraic Number Theory",
+      "year": 1999,
+      "venue": "Springer",
+      "note": "Structure of unit groups and their finite-index subgroups."
+    },
+    {
+      "authors": "E. J. Barbeau",
+      "title": "Pell's Equation",
+      "year": 2003,
+      "venue": "Springer",
+      "note": "Book-length treatment of Pell solutions, recurrences, and their group structure."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Pell.Solution₁ group and Zsqrtd (ℤ[√d]) API underlying this formalization."
+    }
+  ]
 }

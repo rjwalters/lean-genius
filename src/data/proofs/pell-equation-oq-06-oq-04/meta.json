@@ -125,5 +125,28 @@
       "Proofs.PellEquationOQ06"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Continued fractions and best rational approximations."
+    },
+    {
+      "authors": "A. Ya. Khinchin",
+      "title": "Continued Fractions",
+      "year": 1964,
+      "venue": "University of Chicago Press",
+      "note": "Convergents as best rational approximations with |p/q−α|<1/q²."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Pell.Solution₁ group and Zsqrtd (ℤ[√d]) API underlying this formalization."
+    }
+  ]
 }
