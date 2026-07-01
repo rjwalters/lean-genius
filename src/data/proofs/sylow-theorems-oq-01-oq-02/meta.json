@@ -92,6 +92,7 @@
   ],
   "conclusion": {
     "summary": "Every finite group of squarefree order is a Z-group, hence solvable, metacyclic, of exponent equal to its order, and — crucially — isomorphic to a semidirect product of two cyclic subgroups of coprime order. This generalizes the parent entry's order-pq classification to arbitrarily many prime factors, as a fully verified (0-axiom) result.",
+    "implications": "Squarefree order is a purely arithmetic condition on |G|, yet it forces sweeping structure: solvability, metacyclicity, and an explicit cyclic-by-cyclic semidirect decomposition. This turns the classification of such groups into a finite combinatorial problem in the divisibilities pᵢ ∣ (pⱼ − 1), and packages the Z-group machinery (all Sylow subgroups cyclic) as a reusable Mathlib-level result that specializes to the classical order-pq and cyclic-order (Zᵥ) theorems.",
     "openQuestions": [
       "Count the isomorphism classes of groups of squarefree order n = p₁⋯pₖ explicitly in terms of the divisibility relations pᵢ ∣ (pⱼ - 1) (the number of conjugacy classes of homomorphisms determining the semidirect product).",
       "Formalize the converse direction: a group with all Sylow subgroups cyclic need not have squarefree order, but exhibits the same semidirect structure — characterize when the two coincide."
