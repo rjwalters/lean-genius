@@ -84,6 +84,16 @@
   },
   "crossReferences": [
     {
+      "targetId": "hermite-sawtooth-identity",
+      "relationship": "companion",
+      "description": "The fractional-part twin of this floor identity: ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2 for the sawtooth {y} = y − ⌊y⌋. Since {y} = y − ⌊y⌋, the two identities together give the complete floor + fractional decomposition of the uniformly sampled sum ∑_{k<n}(x + k/n) = n·x + (n-1)/2. That sawtooth entry cross-references this one as its parent; the openQuestions here name exactly that companion identity."
+    },
+    {
+      "targetId": "hermite-sawtooth-identity-oq-01",
+      "relationship": "generalized-by",
+      "description": "The Raabe (Hurwitz) multiplication theorem for Bernoulli polynomials, ∑_{k=0}^{n-1} Bₘ(x + k/n) = n^{1-m}·Bₘ(nx), subsumes both this floor identity and the companion sawtooth identity as low-order faces: the sawtooth ∑{x+k/n} is the m = 1 Bernoulli case, and the floor sum is its integer-part complement. That entry proves Raabe at orders m = 0, 1, 2."
+    },
+    {
       "targetId": "hermite-lindemann",
       "relationship": "related",
       "description": "Shares only the name 'Hermite': HermiteLindemann is the transcendence theorem (e and π transcendental), an entirely different result. This entry is the elementary floor-function identity; the cross-reference exists to disambiguate the two."
