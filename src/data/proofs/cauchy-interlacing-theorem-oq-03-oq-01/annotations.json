@@ -53,9 +53,31 @@
     ]
   },
   {
+    "id": "ann-stability-oq0301-statement",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
+    "range": { "startLine": 104, "endLine": 112 },
+    "type": "definition",
+    "title": "The Theorem Interface: Spectral Presentation as Input",
+    "content": "The signature encodes the design choice that keeps the whole family variational. Rather than reconstructing spectra internally, `weyl_eigenvalue_stability` receives each operator together with its spectral data: T with an orthonormal eigenbasis `b`, an antitone (descending) eigenvalue enumeration `μ : Fin n → ℝ`, and the eigen-equations `hbT : ∀ i, T (b i) = (μ i) • b i`; U symmetrically with `c`, `ν`, `hcU`. `[FiniteDimensional 𝕜 E]` guarantees such an enumeration is a genuine finite descending list (so index `k : Fin n` and the max–min keystone underneath make sense), while the operators being continuous (`E →L[𝕜] E`) makes `‖T − U‖` the true operator norm. Because the presentation is taken as a hypothesis — always available for a symmetric operator by the spectral theorem — the file needs no self-adjointness machinery and reuses `weyl_monotone` verbatim; the conclusion `|μ k − ν k| ≤ ‖T − U‖` is the pointwise Lipschitz bound for each fixed coordinate `k`.",
+    "mathContext": "$$T(b_i)=\\mu_i\\,b_i,\\ \\ U(c_i)=\\nu_i\\,c_i,\\quad \\mu,\\nu\\ \\text{antitone};\\qquad \\forall k,\\ |\\mu_k-\\nu_k|\\le\\|T-U\\|.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "spectral theorem presentation",
+      "orthonormal eigenbasis",
+      "antitone eigenvalue enumeration",
+      "finite-dimensional inner product space",
+      "operator norm"
+    ],
+    "prerequisites": [
+      "the spectral theorem for symmetric operators",
+      "OrthonormalBasis and Fin n indexing",
+      "continuous linear maps E →L[𝕜] E"
+    ]
+  },
+  {
     "id": "ann-stability-oq0301-sandwich",
     "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
-    "range": { "startLine": 103, "endLine": 156 },
+    "range": { "startLine": 113, "endLine": 156 },
     "type": "insight",
     "title": "The Loewner Sandwich Lipschitz Bound",
     "content": "weyl_eigenvalue_stability is the classical Weyl perturbation theorem |μ(k) − ν(k)| ≤ ‖T − U‖ — eigenvalues are 1-Lipschitz in the operator norm. The proof needs no new spectral theory: with δ = ‖T − U‖, the Rayleigh bound gives the two Loewner inequalities U − δ·I ⪯ T ⪯ U + δ·I. Feeding T ⪯ U + δ·I into the parent's weyl_monotone (with the shifted operator's eigenvalues ν + δ) yields μ(k) ≤ ν(k) + δ; feeding U − δ·I ⪯ T (using ‖U − T‖ = ‖T − U‖ via norm_sub_rev) yields ν(k) − δ ≤ μ(k). The two one-sided bounds combine through abs_le into |μ(k) − ν(k)| ≤ δ. This is the structural point: the qualitative monotonicity of the parent already contains the quantitative stability bound — bracket and apply twice.",
