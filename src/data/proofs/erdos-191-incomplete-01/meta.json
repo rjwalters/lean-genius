@@ -50,7 +50,8 @@
       "**Not every axiom in a solved-problem file is deep.** Three of erdos-191's axioms encode genuine research theorems (Rödl, Conlon–Fox–Sudakov); tripleLog_unbounded merely says a triple logarithm diverges — provable in a few lines.",
       "**Divergence composes.** log preserves atTop, so any finite tower log(log(…log n…)) diverges; the proof is just `Real.tendsto_log_atTop.comp` applied threefold over the cast.",
       "**Tendsto ⇒ ε–N.** The filter statement Tendsto f atTop atTop is strictly stronger than and immediately yields the quantifier form ∀ M ∃ N ∀ n ≥ N, f n > M, so the axiom is fully discharged.",
-      "**Axiom reduction is real progress.** Replacing tripleLog_unbounded by a theorem lowers the genuine assumption count of erdos-191 from 4 to 3, leaving only the deep results assumed."
+      "**Axiom reduction is real progress.** Replacing tripleLog_unbounded by a theorem lowers the genuine assumption count of erdos-191 from 4 to 3, leaving only the deep results assumed.",
+      "**Divergence, but astronomically slow.** The Tendsto proof is qualitative: it certifies tripleLog n → ∞ without any rate. Quantitatively the threshold is a tower — log(log(log n)) > M ⟺ n > exp(exp(exp M)) — so the N guaranteed by tripleLog_unbounded grows like a triple exponential in M. This is exactly why the parent's Θ(log log log n) bound, though unbounded, is so weak: reaching ∑ 1/log x ≥ M over {2,…,n} needs n triply-exponential in M."
     ]
   },
   "sections": [
