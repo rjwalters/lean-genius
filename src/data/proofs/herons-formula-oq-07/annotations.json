@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-weitzenbock-context",
+    "proofId": "herons-formula-oq-07",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Weitzenböck's Inequality",
+    "content": "Weitzenböck's inequality (Roland Weitzenböck, 1919; IMO 1961, Problem 2) states that for any triangle with side lengths a, b, c and area, a² + b² + c² ≥ 4√3·Area, with equality exactly for the equilateral triangle. Equivalently, among all triangles with a fixed sum of squared sides the equilateral one has the largest area. It is the leading term of the sharper Finsler–Hadwiger inequality. This formalization avoids any coordinate or trigonometric construction and works directly from Heron's area, reducing the statement to a polynomial inequality settled by a sum-of-squares certificate."
+  },
+  {
+    "id": "ann-triangle-data",
+    "proofId": "herons-formula-oq-07",
+    "range": {
+      "startLine": 42,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Square-root-free triangle data",
+    "content": "The semi-perimeter s = (a+b+c)/2, Heron's product heronProduct = s(s-a)(s-b)(s-c) (the squared area), and area = √(heronProduct) are defined so that the entire proof stays polynomial in a, b, c except for the single definitional square root. `heronProduct_nonneg` shows the product is ≥ 0 for a nondegenerate triangle by splitting the product with `mul_nonneg` and discharging each factor with `linarith` from the strict triangle inequalities."
+  },
+  {
+    "id": "ann-sos-identity",
+    "proofId": "herons-formula-oq-07",
+    "range": {
+      "startLine": 66,
+      "endLine": 85
+    },
+    "type": "tactic",
+    "title": "The Sum-of-Squares Certificate",
+    "content": "The heart of the proof is the identity (a²+b²+c²)² - 48·heronProduct = 2((a²-b²)²+(b²-c²)²+(c²-a²)²), an identity in the squared side lengths that `ring` closes after unfolding heronProduct and the semi-perimeter. Its right-hand side is a sum of squares, so the squared inequality 48·heronProduct ≤ (a²+b²+c²)² follows by `nlinarith` fed the three `sq_nonneg` terms and the identity. Crucially this squared inequality needs no triangle hypothesis — it holds for all real a, b, c."
+  },
+  {
+    "id": "ann-sqrt-upgrade",
+    "proofId": "herons-formula-oq-07",
+    "range": {
+      "startLine": 115,
+      "endLine": 137
+    },
+    "type": "tactic",
+    "title": "Upgrading the squared inequality via sqrt monotonicity",
+    "content": "Both sides of a²+b²+c² ≥ 4√3·Area are non-negative, so the linear inequality is equivalent to the squared one. Writing Y = 4·√3·Area and X = a²+b²+c², one computes Y² = 16·(√3)²·Area² = 48·heronProduct (using `Real.sq_sqrt` for both (√3)²=3 and Area²=heronProduct), so `weitzenbock_sq` gives Y² ≤ X². Then `Real.sqrt_le_sqrt` together with `Real.sqrt_sq` (both X, Y ≥ 0) recovers Y ≤ X. This is the only analytic step in the entire development."
+  },
+  {
+    "id": "ann-equality",
+    "proofId": "herons-formula-oq-07",
+    "range": {
+      "startLine": 138,
+      "endLine": 188
+    },
+    "type": "insight",
+    "title": "The equality case comes for free",
+    "content": "Equality 4√3·Area = a²+b²+c² forces Y² = X², hence (a²+b²+c²)² = 48·heronProduct, so the SOS sum vanishes and each square (a²-b²)², (b²-c²)², (c²-a²)² is zero. Thus a² = b² = c², and since the sides are positive, factoring (a-b)(a+b) = 0 with a+b > 0 gives a = b (similarly b = c) — the triangle is equilateral. The converse is a direct computation. A single sum-of-squares identity therefore proves both Weitzenböck's inequality and its sharpness."
+  }
+]
