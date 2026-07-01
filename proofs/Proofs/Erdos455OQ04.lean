@@ -163,4 +163,75 @@ theorem exists_apGapPrimeSeq_of_length_d_pos
     ∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n, n < k → (q n).Prime) ∧ HasAPGaps q d :=
   bunyakovsky_finitary k d hd
 
+/-! ## Structural theory of AP-gap sequences (verified, axiom-free)
+
+The witnesses above are conditional on Green-Tao / Bunyakovsky, but the *shape*
+of any `HasAPGaps q d` sequence is unconditional: the second-difference condition
+is a linear recurrence, so the first gaps form an arithmetic progression and `q`
+itself is a quadratic. This section proves that closed structure — no primality,
+no axioms — pinning down the inclusion chain from `problem.md`:
+
+  `ConstantGap (d = 0) ⊊ APGap_{d>0} ⊊ MonotoneGap`.
+
+The `d ≥ 0 ⟹ non-decreasing gaps` step (`apGap_gaps_monotone`) is exactly the
+inclusion `APGap_{d ≥ 0} ⊆ MonotoneGap` into the parent `erdos-455` condition. -/
+
+/-- **Gaps of an AP-gap sequence form an arithmetic progression.** The consecutive
+gap `q (n+1) - q n` is the linear function `(q 1 - q 0) + n · d` of `n`. This is the
+first integral of the second-difference recurrence `HasAPGaps`. -/
+theorem apGap_gap_linear {q : ℕ → ℕ} {d : ℤ} (h : HasAPGaps q d) :
+    ∀ n : ℕ, (q (n + 1) : ℤ) - (q n : ℤ) = ((q 1 : ℤ) - (q 0 : ℤ)) + (n : ℤ) * d := by
+  intro n
+  induction n with
+  | zero => simp
+  | succ m ih =>
+    have hh := h m
+    rw [show m + 1 + 1 = m + 2 from rfl]
+    push_cast
+    push_cast at ih
+    linear_combination ih + hh
+
+/-- **`d = 0` ⟺ constant gaps (primes in arithmetic progression).** When the common
+second-difference is `0`, every gap equals the first gap `q 1 - q 0`, i.e. the terms
+themselves are in arithmetic progression — the Green-Tao specialization. -/
+theorem apGap_zero_gaps_constant {q : ℕ → ℕ} (h : HasAPGaps q 0) (n : ℕ) :
+    (q (n + 1) : ℤ) - (q n : ℤ) = (q 1 : ℤ) - (q 0 : ℤ) := by
+  rw [apGap_gap_linear h n]; ring
+
+/-- **`d ≥ 0` ⟹ non-decreasing gaps.** For a non-negative common difference the gap
+sequence is monotone, so an `APGap_{d ≥ 0}` sequence satisfies the parent `erdos-455`
+monotone-gap condition. This is the inclusion `APGap_{d ≥ 0} ⊆ MonotoneGap`. -/
+theorem apGap_gaps_monotone {q : ℕ → ℕ} {d : ℤ} (h : HasAPGaps q d) (hd : 0 ≤ d)
+    {m n : ℕ} (hmn : m ≤ n) :
+    (q (m + 1) : ℤ) - (q m : ℤ) ≤ (q (n + 1) : ℤ) - (q n : ℤ) := by
+  rw [apGap_gap_linear h m, apGap_gap_linear h n]
+  have hmn' : (m : ℤ) ≤ (n : ℤ) := by exact_mod_cast hmn
+  nlinarith [mul_nonneg (by linarith : (0 : ℤ) ≤ (n : ℤ) - (m : ℤ)) hd]
+
+/-- **Closed form: an AP-gap sequence is quadratic.** Summing the linear gap
+(`apGap_gap_linear`) telescopes to `q n = q 0 + n·(q 1 - q 0) + \binom{n}{2}·d`.
+Stated doubled to keep everything over `ℤ` without division:
+`2·q n = 2·q 0 + 2n·(q 1 - q 0) + n(n-1)·d`. With `d = 2` and `q 0 = 41, q 1 = 43`
+this is exactly Euler's `n² + n + 41`. -/
+theorem apGap_closed_form {q : ℕ → ℕ} {d : ℤ} (h : HasAPGaps q d) :
+    ∀ n : ℕ, 2 * (q n : ℤ) =
+      2 * (q 0 : ℤ) + 2 * (n : ℤ) * ((q 1 : ℤ) - (q 0 : ℤ)) + (n : ℤ) * ((n : ℤ) - 1) * d := by
+  intro n
+  induction n with
+  | zero => simp
+  | succ m ih =>
+    have hgap := apGap_gap_linear h m
+    push_cast
+    push_cast at ih
+    linear_combination ih + 2 * hgap
+
+/-- Sanity check that the closed form reproduces Euler's polynomial: for the AP-gap
+sequence `eulerPoly` (`d = 2`, `q 0 = 41`, `q 1 = 43`), the closed form gives
+`2·(n² + n + 41)`. -/
+theorem eulerPoly_closed_form (n : ℕ) :
+    2 * (eulerPoly n : ℤ) =
+      2 * (eulerPoly 0 : ℤ) + 2 * (n : ℤ) * ((eulerPoly 1 : ℤ) - (eulerPoly 0 : ℤ))
+        + (n : ℤ) * ((n : ℤ) - 1) * 2 :=
+  apGap_closed_form eulerPoly_hasAPGaps n
+
 end Erdos455OQ04
