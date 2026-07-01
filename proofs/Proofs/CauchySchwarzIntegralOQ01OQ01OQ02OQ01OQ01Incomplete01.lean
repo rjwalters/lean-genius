@@ -49,6 +49,28 @@ theorem indicator_memLp_sf {E : Set α} (hE : MeasurableSet E) (hfin : μ E ≠ 
     (p : ℝ≥0∞) (_ : 1 ≤ p) (_ : p ≠ ⊤) : MemLp (E.indicator (1 : α → ℝ)) p μ :=
   memLp_indicator_const p hE 1 (Or.inr hfin)
 
+/-- If `f` is a.e.-strongly-measurable on the restriction to every spanning set of a
+σ-finite measure, then it is a.e.-strongly-measurable for the whole measure. Since the
+spanning sets cover the space (`⋃ n, spanningSets μ n = univ`) and are countable,
+`aestronglyMeasurable_iUnion_iff` reassembles the global witness from the local ones. -/
+theorem aestronglyMeasurable_of_restrict_spanningSets (μ : Measure α) [SigmaFinite μ]
+    {f : α → ℝ} (h : ∀ n, AEStronglyMeasurable f (μ.restrict (spanningSets μ n))) :
+    AEStronglyMeasurable f μ := by
+  have hcov := (aestronglyMeasurable_iUnion_iff (f := f) (μ := μ)
+    (s := spanningSets μ)).mpr h
+  rwa [iUnion_spanningSets, Measure.restrict_univ] at hcov
+
+/-- `Real.sign` is measurable. Mathlib currently exposes no `Real.measurable_sign`, so we
+build it directly from the defining nested `if` over the measurable sets `{r | r < 0}` and
+`{r | 0 < r}`. -/
+theorem measurable_real_sign : Measurable Real.sign := by
+  have hdef : Real.sign = fun r : ℝ => if r < 0 then (-1 : ℝ) else if 0 < r then 1 else 0 :=
+    funext fun r => rfl
+  rw [hdef]
+  refine Measurable.ite (measurableSet_lt measurable_id measurable_const) measurable_const ?_
+  exact Measurable.ite (measurableSet_lt measurable_const measurable_id)
+    measurable_const measurable_const
+
 theorem lintegral_mul_le_sf (p q : ℝ≥0∞)
     (hpq : p.toReal.HolderConjugate q.toReal) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
     {f : α → ℝ} {g : α → ℝ} (hf : MemLp f p μ) (hg : MemLp g q μ) :
@@ -58,8 +80,8 @@ theorem lintegral_mul_le_sf (p q : ℝ≥0∞)
     intro hq; rw [hq, ENNReal.toReal_zero] at hpq; linarith [hpq.symm.pos]
   have hqtop : q ≠ ⊤ := by
     intro hq; rw [hq, ENNReal.toReal_top] at hpq; linarith [hpq.symm.pos]
-  have hmul : ∀ a, (‖f a * g a‖₊ : ℝ≥0∞) = (‖f a‖₊ : ℝ≥0∞) * ‖g a‖₊ := fun a => by
-    simp only [← ENNReal.coe_mul, nnnorm_mul]
+  have hmul : ∀ a, (‖f a * g a‖₊ : ℝ≥0∞) = ‖f a‖ₑ * ‖g a‖ₑ := fun a => by
+    rw [← enorm_eq_nnnorm, enorm_mul]
   simp_rw [hmul]
   rw [eLpNorm_eq_lintegral_rpow_enorm hp0 hptop, eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop]
   exact ENNReal.lintegral_mul_le_Lp_mul_Lq μ hpq
@@ -72,7 +94,8 @@ theorem integrable_mul_sf (p q : ℝ≥0∞)
   rw [← memLp_one_iff_integrable]
   refine ⟨hf.aestronglyMeasurable.mul hg.aestronglyMeasurable, ?_⟩
   calc eLpNorm (fun a => f a * g a) 1 μ
-      = ∫⁻ a, ‖f a * g a‖₊ ∂μ := by simp [eLpNorm, eLpNorm']
+      = ∫⁻ a, ‖f a * g a‖₊ ∂μ := by
+          rw [eLpNorm_one_eq_lintegral_enorm]; simp only [enorm_eq_nnnorm]
     _ ≤ eLpNorm f p μ * eLpNorm g q μ := lintegral_mul_le_sf p q hpq hp hptop hf hg
     _ < ⊤ := ENNReal.mul_lt_top hf.eLpNorm_lt_top hg.eLpNorm_lt_top
 
@@ -176,7 +199,7 @@ theorem mem_spanningSets_eventually [SigmaFinite μ] (a : α) :
     rw [iUnion_spanningSets]; exact mem_univ a
   rw [mem_iUnion] at ha
   obtain ⟨N, hN⟩ := ha
-  exact (eventually_ge_atTop N).mono fun n hn => spanningSets_mono μ hn hN
+  exact (eventually_ge_atTop N).mono fun n hn => monotone_spanningSets μ hn hN
 
 theorem pointwise_mul_indicator_tendsto [SigmaFinite μ] (f : α → ℝ) (a : α) :
     Tendsto (fun n : ℕ => f a * (spanningSets μ n).indicator (1 : α → ℝ) a)
@@ -284,8 +307,8 @@ noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
           (memLp_indicator_of_restrict_loc hS hp hptop
             (Lp.memLp f₂)).coeFn_toLp,
           Lp.coeFn_add
-            (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f₁)).toLp _
-            (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f₂)).toLp _,
+            ((memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f₁)).toLp _)
+            ((memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f₂)).toLp _),
           (ae_restrict_iff' hS).mp (Lp.coeFn_add f₁ f₂)]
           with a h12 h1 h2 hadd hinner
         rw [h12, hadd, h1, h2]
@@ -301,7 +324,7 @@ noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
           (memLp_indicator_of_restrict_loc hS hp hptop
             (Lp.memLp f)).coeFn_toLp,
           Lp.coeFn_smul c
-            (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)).toLp _,
+            ((memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)).toLp _),
           (ae_restrict_iff' hS).mp (Lp.coeFn_smul c f)]
           with a hcf hf hsmul hinner
         rw [hcf, hsmul, hf, RingHom.id_apply]
@@ -499,9 +522,11 @@ theorem localization_existence
                     (by linarith [hpq.symm.lt])
       have hhk_meas : AEStronglyMeasurable h_k μₙ := by
         apply AEStronglyMeasurable.mul
-        · exact (Real.measurable_sign.comp_aemeasurable
+        · exact (measurable_real_sign.comp_aemeasurable
               hgk_asm.aemeasurable).aestronglyMeasurable
-        · exact hgk_asm.norm.rpow_const _
+        · have hrpow : Continuous (fun x : ℝ => x ^ (q.toReal - 1)) :=
+            continuous_id.rpow_const fun _ => Or.inr (by linarith [hpq.symm.lt])
+          exact hrpow.comp_aestronglyMeasurable hgk_asm.norm
       have hhk_memLp : MemLp h_k p μₙ :=
         MemLp.of_bound ((k : ℝ) ^ (q.toReal - 1)) hhk_meas hhk_bound
       -- φₙ(h_k) = ∫ h_k * g ∂μₙ (direct from hrep)
@@ -541,7 +566,7 @@ theorem localization_existence
                 apply eLpNorm_mono_ae
                 exact ae_of_all μₙ fun a => by
                   simp [Real.norm_eq_abs]; exact hgk_bound a
-          _ < ⊤ := eLpNorm_const_lt_top hq0' hqtop'
+          _ < ⊤ := (memLp_const (k : ℝ)).eLpNorm_lt_top
       have hint_hkgk : ∫ a, h_k a * g_k a ∂μₙ = (eLpNorm g_k q μₙ ^ q.toReal).toReal := by
         have hpw2 : ∀ a, h_k a * g_k a = |g_k a| ^ q.toReal := fun a => by
           simp only [h_k]
@@ -722,7 +747,7 @@ theorem localization_existence
     have hgm_int : Integrable (g_seq m) (μ.restrict (spanningSets μ m)) :=
       (hg_seq_mem m).integrable hq_ge1
     have hgn_small : MemLp (g_seq n) q (μ.restrict (spanningSets μ m)) :=
-      (hg_seq_mem n).mono_measure (Measure.restrict_mono (spanningSets_mono μ hmn) le_rfl)
+      (hg_seq_mem n).mono_measure (Measure.restrict_mono (monotone_spanningSets μ hmn) le_rfl)
     have hgn_int : Integrable (g_seq n) (μ.restrict (spanningSets μ m)) :=
       hgn_small.integrable hq_ge1
     apply ae_eq_of_forall_setIntegral_eq_of_sigmaFinite
@@ -740,7 +765,7 @@ theorem localization_existence
       ((measure_mono Set.inter_subset_right).trans_lt (measure_spanningSets_lt_top μ m)).ne
     have hEn_m : s ∩ spanningSets μ m ⊆ spanningSets μ m := Set.inter_subset_right
     have hEn_n : s ∩ spanningSets μ m ⊆ spanningSets μ n :=
-      hEn_m.trans (spanningSets_mono μ hmn)
+      hEn_m.trans (monotone_spanningSets μ hmn)
     exact (hagree_n m _ (hs.inter (measurableSet_spanningSets μ m)) hEn_m hfin_int).symm.trans
           (hagree_n n _ (hs.inter (measurableSet_spanningSets μ m)) hEn_n hfin_int)
   -- ── Step A3: Construct global g ─────────────────────────────────────────────
@@ -763,48 +788,45 @@ theorem localization_existence
   have hq0 : q ≠ 0 := by
     intro h; rw [h, ENNReal.toReal_zero] at hpq; linarith [hpq.symm.pos]
   have hq_pos : 0 < q.toReal := ENNReal.toReal_pos hq0 hqtop
+  -- g =ᵐ[μ.restrict Sₙ] g_seq n for each n. Hoisted to the theorem's top level: it is
+  -- used both in the MemLp/norm proof below AND in the indicator-agreement step at the
+  -- end of the theorem (Step A5). For each k ≤ n, hconsist gives a null set on Sₖ where
+  -- g_seq k ≠ g_seq n; the finite biUnion over k = 0..n is null and covers the bad set.
+  have hg_eq_n : ∀ n, g =ᵐ[μ.restrict (spanningSets μ n)] g_seq n := by
+    intro n
+    rw [ae_restrict_iff' (measurableSet_spanningSets μ n), ae_iff]
+    simp only [not_imp]
+    have hBk_null : ∀ k ≤ n, μ {a | a ∈ spanningSets μ k ∧ g_seq k a ≠ g_seq n a} = 0 :=
+      fun k hkn => by
+        have h := ae_iff.mp
+          ((ae_restrict_iff' (measurableSet_spanningSets μ k)).mp (hconsist k n hkn))
+        convert h using 1; ext a; simp [not_imp]
+    have h_biUnion_null : μ (⋃ k ∈ Finset.range (n + 1),
+        {a | a ∈ spanningSets μ k ∧ g_seq k a ≠ g_seq n a}) = 0 :=
+      le_antisymm
+        (calc μ (⋃ k ∈ Finset.range (n + 1),
+                {a | a ∈ spanningSets μ k ∧ g_seq k a ≠ g_seq n a})
+            ≤ ∑ k ∈ Finset.range (n + 1),
+                μ {a | a ∈ spanningSets μ k ∧ g_seq k a ≠ g_seq n a} :=
+              measure_biUnion_finset_le _ _
+          _ = 0 := Finset.sum_eq_zero fun k hk =>
+                hBk_null k (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)))
+        (zero_le _)
+    exact measure_mono_null
+      (fun a ha => Set.mem_biUnion
+        (Finset.mem_range.mpr (Nat.lt_succ_of_le (Nat.find_min' (hcover a) ha.1)))
+        ⟨Nat.find_spec (hcover a), ha.2⟩)
+      h_biUnion_null
   -- We prove `MemLp g q μ` together with the converse-Hölder dual-norm bound
   -- `eLpNorm g q μ ≤ ‖φ‖`. The bound is exactly `hg_norm` (Step 3 below); it is the
   -- quantitative content that the maximality reduction in the parent synthesis file
   -- needs to know the supremum `⨆_S ‖g_S‖_q` is finite. Earlier it was computed here
   -- only to discharge `MemLp` and then discarded; we now surface it in the return.
   have hg_lq_norm : MemLp g q μ ∧ eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖ := by
-    -- Step 1: g =ᵐ[μ.restrict Sₙ] g_seq n for each n
-    -- Proof: for each k ≤ n, hconsist gives g_seq k =ᵐ[μ.restrict Sₖ] g_seq n.
-    -- For a.e. a ∈ Sₙ: g(a) = g_seq(idx a)(a) where idx a ≤ n, and
-    -- g_seq(idx a)(a) = g_seq n(a) a.e. on S_{idx a} ⊆ Sₙ (finite union of null sets).
-    have hg_eq_n : ∀ n, g =ᵐ[μ.restrict (spanningSets μ n)] g_seq n := by
-      intro n
-      rw [ae_restrict_iff' (measurableSet_spanningSets μ n), ae_iff]
-      simp only [not_imp]
-      -- For each k ≤ n, hconsist gives a null set on Sₖ where g_seq k ≠ g_seq n
-      have hBk_null : ∀ k ≤ n, μ {a | a ∈ spanningSets μ k ∧ g_seq k a ≠ g_seq n a} = 0 :=
-        fun k hkn => by
-          have h := ae_iff.mp
-            ((ae_restrict_iff' (measurableSet_spanningSets μ k)).mp (hconsist k n hkn))
-          convert h using 1; ext a; simp [not_imp]
-      -- The biUnion over k = 0..n is null (finite union of null sets)
-      have h_biUnion_null : μ (⋃ k ∈ Finset.range (n + 1),
-          {a | a ∈ spanningSets μ k ∧ g_seq k a ≠ g_seq n a}) = 0 :=
-        le_antisymm
-          (calc μ (⋃ k ∈ Finset.range (n + 1),
-                  {a | a ∈ spanningSets μ k ∧ g_seq k a ≠ g_seq n a})
-              ≤ ∑ k ∈ Finset.range (n + 1),
-                  μ {a | a ∈ spanningSets μ k ∧ g_seq k a ≠ g_seq n a} :=
-                measure_biUnion_finset_le _ _
-            _ = 0 := Finset.sum_eq_zero fun k hk =>
-                  hBk_null k (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)))
-          (zero_le _)
-      -- Bad set {a ∈ Sₙ | g a ≠ g_seq n a} ⊆ biUnion (g(a) = g_seq(idx a)(a) definitionally)
-      exact measure_mono_null
-        (fun a ha => Set.mem_biUnion
-          (Finset.mem_range.mpr (Nat.lt_succ_of_le (Nat.find_min' (hcover a) ha.1)))
-          ⟨Nat.find_spec (hcover a), ha.2⟩)
-        h_biUnion_null
-    -- Step 2: AEStronglyMeasurable g μ
+    -- Step 2: AEStronglyMeasurable g μ (hg_eq_n hoisted to theorem top level)
     have hg_asm : AEStronglyMeasurable g μ :=
       aestronglyMeasurable_of_restrict_spanningSets μ fun n =>
-        (hg_seq_mem n).1.congr_ae (hg_eq_n n).symm
+        ((hg_seq_mem n).1).congr (hg_eq_n n).symm
     -- Step 3: eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖
     have hg_norm : eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖ := by
       rw [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop]
@@ -834,7 +856,7 @@ theorem localization_existence
             (measurableSet_spanningSets μ n))
         have hmono : ∀ᵐ a ∂μ, Monotone (fun n => f_ind n a) :=
           ae_of_all μ fun a m n hmn =>
-            Set.indicator_le_indicator_of_subset (spanningSets_mono μ hmn) (fun _ => le_top) a
+            Set.indicator_le_indicator_of_subset (monotone_spanningSets μ hmn) (fun _ => le_top) a
         have hptwise : ∀ a, ⨆ n, f_ind n a = (‖g a‖₊ : ℝ≥0∞) ^ q.toReal := fun a => by
           apply le_antisymm (iSup_le fun n => Set.indicator_le_self _ _ a)
           obtain ⟨n, hn⟩ := Set.mem_iUnion.mp
@@ -887,7 +909,7 @@ theorem localization_existence
       atTop (nhds (∫ a in E, g a ∂μ)) := by
     have h := tendsto_setIntegral_of_monotone
       (fun n => hE.inter (measurableSet_spanningSets μ n))
-      (fun m n hmn => Set.inter_subset_inter_right E (spanningSets_mono μ hmn))
+      (fun m n hmn => Set.inter_subset_inter_right E (monotone_spanningSets μ hmn))
       hg_int_E
     rwa [hUnion_E] at h
   -- ── Step 3: φ(1_{E∩Sₙ}^Lp) → φ(1_E^Lp)  (CLM continuity + Lp convergence) ───

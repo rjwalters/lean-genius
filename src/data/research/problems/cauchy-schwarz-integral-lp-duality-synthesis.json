@@ -41,7 +41,7 @@
   ],
   "phase": "ACT",
   "knowledge": {
-    "progressSummary": "PROGRESS (session 16, researcher-12): re-homed the extension-by-zero isometric CLM extByZeroCLM into a standalone Mathlib-only file (CauchySchwarzIntegralLpDualityExtension.lean, 4 decls, 0-axiom), decoupling it from the build-broken Incomplete01 chain — removes the last chain-buried structural blocker for the decoupled arbitrary-measure assembly. Simplified: the chain's 2 private seminorm helpers are now redundant with Mathlib. Parent axiom riesz_lp_surjective NOT yet eliminated (still gated on σ-finite chain repair + the single maximality lemma).",
+    "progressSummary": "PROGRESS (S18, researcher-10): Incomplete01 65→63 verified (hg_eq_n scope-bug hoist de-cascades tail). ~15 more source-verified drift fixes staged as apply-clean patch. CRITICAL re-scoping: the near-fixed file exceeds the 40min/32GB build envelope → localization_existence MUST be SPLIT to be buildable/measurable. Axiom NOT eliminated.",
     "insights": [
       "The previously-flagged Lean infrastructure gaps are RESOLVED. Mathlib supplies the sigma-finite support of any Lp function (0<p<inf) via MeasureTheory.MemLp.aefinStronglyMeasurable (Mathlib/MeasureTheory/Function/StronglyMeasurable/Lp.lean:59) -> AEFinStronglyMeasurable, whose .sigmaFiniteSet / .measurableSet / .ae_eq_zero_compl / sigmaFinite_restrict instance (StronglyMeasurable/AEStronglyMeasurable.lean:892-916) give a measurable set S with mu.restrict S sigma-finite and f=0 a.e. off S.",
       "The verified chain ALREADY contains the restriction/extension infrastructure once thought to be a ~150-line gap: CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean proves eLpNorm (S.indicator f) p mu = eLpNorm f p (mu.restrict S) (line 246), MemLp f p (mu.restrict S) -> MemLp (S.indicator f) p mu (line 260), and the extension-by-zero ISOMETRY extByZeroCLM : Lp p (mu.restrict S) ->L Lp p mu (line 266, currently private).",
@@ -63,8 +63,9 @@
       "The 10-session \"converse-Hölder dual-norm gap\" (‖g‖_q ≤ ⨆|∫f·g|) is a red herring for the maximality UNIQUENESS step: injectivity of Lᵠ↪(Lᵖ)* is qualitative — no norm estimate, no extremizer |g|^{q-1}sgn g — and follows directly from Mathlib AEFinStronglyMeasurable.ae_eq_zero_of_forall_setIntegral_eq_zero.",
       "Session 10 diagnosis is stale: the finite-measure base CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean now compiles cleanly (EXIT 0); the 70 build errors have moved up to Incomplete01.lean (σ-finite Riesz construction).",
       "Uniqueness needs no SigmaFinite μ hypothesis: a MemLp function at a finite exponent q<∞ is automatically AEFinStronglyMeasurable, and testing against finite-measure indicators gives ∫_s g=0 ∀s.",
-      "S16: extByZeroCLM (extension-by-zero isometry Lp(μ.restrict S)→L Lp μ) was quarantined inside the build-broken Incomplete01 chain despite depending on Mathlib only — all-or-nothing file verification made it unusable by any decoupled assembly.",
-      "S16: the chain's two private helpers eLpNorm_indicator_eq_restrict_loc / memLp_indicator_of_restrict_loc are now redundant with Mathlib's eLpNorm_indicator_eq_eLpNorm_restrict + memLp_indicator_iff_restrict — the re-homed construction needs no bespoke seminorm bookkeeping."
+      "S18: Incomplete01 fixed 65→63 (verified). Root structural bug: hg_eq_n was defined INSIDE the hg_lq_norm `have … := by` block but used at Step A5 outside that scope → `unknown identifier` + phantom cascade over lines 902-970. Hoisting it de-cascades the tail (exposes ~8 REAL drift errors).",
+      "S18 CRITICAL: with ~15 more source-verified drift fixes applied, the build runs 40 FULL min of live `Building` ticks then Terminates without flushing errors — a resource blowup (>32GB/40min), NOT a hang or docker death. The fixes let elaboration proceed much further through the 600-line localization_existence, which then cannot complete under the 32GB envelope. Residual real errors are likely FEW but unmeasurable until the file fits.",
+      "S18: Lean flushes its error summary only at FILE COMPLETION; a build that times out mid-elaboration shows 0 errors in the log (not `clean`). Full-file compile time for Incomplete01 with errors is ~180s of Lean (post cache-get)."
     ],
     "builtItems": [
       "memLp_exists_sigmaFinite_support — bridge lemma: for 0<p<inf, every f in Lp(mu) is a.e. supported on a measurable S with mu.restrict S sigma-finite (proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean). High-confidence (uses only confirmed Mathlib API) but UNVERIFIED this session (no build).",
@@ -85,10 +86,8 @@
       "lqTruncation + iSup_lqTruncation/lqTruncation_mono/lqTruncation_le/lintegral_lqTruncation_rpow_ne_top: monotone-truncation toolkit",
       "private rpow_iSup: (⨆f)^q=⨆fᵠ for q>0 via ENNReal.orderIsoRpow.map_iSup",
       "RieszLpDualityAnnihilator.lp_pairing_eq_zero_ae_zero in proofs/Proofs/CauchySchwarzIntegralLpDualityAnnihilator.lean — annihilator/uniqueness lemma: g∈Lᵠ, ∫f·g=0 ∀f∈Lᵖ ⟹ g=ᵐ0. Standalone, Mathlib-only, verified lake env lean EXIT 0, #print axioms = {propext,Classical.choice,Quot.sound}.",
-      "extByZeroCLM in CauchySchwarzIntegralLpDualityExtension.lean:79 — CLM Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ, f↦S.indicator f, via LinearMap.mkContinuous … 1 (0-axiom).",
-      "extByZeroCLM_coeFn (:124) — extByZeroCLM f =ᵐ[μ] S.indicator f.",
-      "norm_extByZeroCLM_apply (:131) — isometry ‖extByZeroCLM f‖ = ‖f‖.",
-      "norm_extByZeroCLM_le (:142) — operator-norm bound ≤ 1."
+      "S18 (committed, verified): hoisted hg_eq_n to localization_existence top level; AEStronglyMeasurable .congr_ae→.congr; eLpNorm one-norm via eLpNorm_one_eq_lintegral_enorm+enorm_eq_nnnorm. Rebuild-confirmed 63 errors.",
+      "S18 (staged, source-verified, unverified-by-build): research/problems/cauchy-schwarz-integral-lp-duality-synthesis/s18-batch3-drift-fixes.patch — git-apply-clean; fixes integrationCLM_sf map_add/map_smul (=ᵐ coeFn→integral_congr_ae), integral_norm direction, hg_norm rpow shape, Measure.ae_mono→ae_mono, Set.subset_univ _, (hind:α→ℝ)→E.indicator 1, EventuallyEq.mul_right drop-arg."
     ],
     "mathlibGaps": [
       "Mathlib has NO general Lp-Lq duality / Riesz surjectivity (no *Dual* Lp file under MeasureTheory/Function). This remains a genuine Mathlib gap that the gallery chain fills.",
@@ -98,12 +97,13 @@
       "No packaged q-power disjoint-union additivity for eLpNorm at general finite exponent (Mathlib has only Minkowski subadditivity eLpNorm_add_le and unit-exponent eLpNorm_one_add_measure) — proved here as eLpNorm_rpow_restrict_union",
       "Converse-Hölder dual-norm: ‖g‖_q ≤ sup over unit Lᵖ-ball of |∫ f·g|. Mathlib/MeasureTheory/Function/Holder.lean gives only the forward Hölder bound and the pairing-as-CLM, not this converse.",
       "Mathlib has no packaged sup-rpow commutation lemma (⨆ᵢ fᵢ)^q=⨆ᵢ fᵢ^q for ℝ≥0∞; recovered from ENNReal.orderIsoRpow via OrderIsoClass.tosSupHomClass + map_iSup",
-      "Incomplete01.lean (σ-finite Riesz: localization_existence, riesz_lp_surjective_sigma_finite) has 70 scattered Mathlib-v4.26 API-drift errors (application type mismatch, failed to synthesize, rewrite-pattern misses, Exists.min/rpow_const dot-notation breakage) — multi-session mechanical repair, now the true critical-path frontier."
+      "Incomplete01.lean (σ-finite Riesz: localization_existence, riesz_lp_surjective_sigma_finite) has 70 scattered Mathlib-v4.26 API-drift errors (application type mismatch, failed to synthesize, rewrite-pattern misses, Exists.min/rpow_const dot-notation breakage) — multi-session mechanical repair, now the true critical-path frontier.",
+      "S18: Mathlib API drift dictionary extended — Lp.coeFn_add/coeFn_smul are =ᵐ (not =); Measure.ae_mono removed (→ root ae_mono); AEStronglyMeasurable.congr_ae removed (→ .congr); EventuallyEq.mul_right f₃ now implicit; Measure.restrict_apply MeasurableSet.univ now yields `univ ∩ s` (→ Set.univ_inter not Set.inter_univ). Full source present at proofs/.lake/packages/mathlib — grep, do not guess."
     ],
     "nextSteps": [
-      "Repair or bypass the Incomplete01 σ-finite Riesz chain to expose riesz_lp_surjective_sigma_finite WITH its norm bound (needed as explicit hypothesis for the decoupled assembly).",
-      "State riesz_general_of_sigmaFinite: take σ-finite Riesz (with norm bound) as hypothesis + use extByZeroCLM to pull φ back to each σ-finite S; formalize the single Folland-6.16 maximality/exhaustion lemma over c=⨆_S ‖g_S‖_q.",
-      "Once assembled, swap axiom riesz_lp_surjective → theorem and flip meta axiomatized→verified iff green."
+      "SPLIT localization_existence (337-943) into ≤150-line standalone top-level theorems (Step A1 hgnorm; A2 hconsist; A3/A4 g-construction+hg_lq_norm; A5 indicator agreement) so each elaborates under 32GB/40min and is independently verifiable. This is the true step-1 blocker per S18.",
+      "First `git apply s18-batch3-drift-fixes.patch` (source-verified) then, on the SPLIT files, grind the residual clusters: integral_representation_sf Lp.induction (170/184/190); lp_truncation dominated-convergence measurability (234+); extByZeroCLM =ᵐ coeFn (314/330); h_k rpow arithmetic (574-645, subst-on-non-var + Real.rpow_add + ENNReal.coe_rpow_of_nonneg positional 0≤z); Set.inter_univ→Set.univ_inter (381/382/743-777).",
+      "Once Incomplete01 green, surface eLpNorm g q μ ≤ ofReal‖φ‖ through riesz_lp_surjective_sigma_finite → discharge synthesis sorry → swap axiom riesz_lp_surjective."
     ]
   },
   "leanFiles": [
@@ -117,17 +117,6 @@
       "sorryCount": 13,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean"
-    },
-    {
-      "path": "Proofs/CauchySchwarzIntegralLpDualityExtension.lean",
-      "filename": "CauchySchwarzIntegralLpDualityExtension.lean",
-      "lineCount": 149,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralLpDualityExtension.lean"
     }
   ],
   "lastUpdate": "2026-06-28",
