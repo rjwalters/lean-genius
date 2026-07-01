@@ -54,7 +54,8 @@
       "The British Flag theorem is the orthogonality condition in disguise: the metric identity holds exactly when the edge vectors at A are perpendicular",
       "Encoding 'rectangle' as parallelogram-closure plus a single right angle is enough — the remaining three right angles follow and are not needed for the identity",
       "The whole content reduces to one algebraic fact: (PA² + PC²) − (PB² + PD²) = 2 (u ⬝ v), where u, v are the edge vectors at A",
-      "Because the identity is an exact cancellation, the proof needs no square roots and no irrational arithmetic — it is a single ring/linear_combination identity over ℝ"
+      "Because the identity is an exact cancellation, the proof needs no square roots and no irrational arithmetic — it is a single ring/linear_combination identity over ℝ",
+      "The arbitrary point P drops out completely: both its quadratic terms and — thanks to the parallelogram closure making the coefficient (A + C) − (B + D) vanish — its linear terms cancel, so despite appearing in all four distances the identity is ultimately a statement about the vertices alone, not about P"
     ],
     "prerequisites": [
       "Coordinate geometry of points in the plane",
