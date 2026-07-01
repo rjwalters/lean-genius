@@ -163,6 +163,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1204 asks for the asymptotics of the minimal diameter A(k) and minimal average B(k) of admissible k-tuples, conjecturally A(k) ∼ k log k. This entry formalizes the admissibility framework: the definition, the reduction showing only primes p ≤ k impose constraints, the extremal quantity A(k) itself (as an attained infimum), exact values A(0)=A(1)=0 and A(2)=2, and a verified parity-sharpened lower bound A(k) ≥ 2(k−1) — the prime 2 forces all elements to share parity, doubling the trivial packing bound k−1 (sharp at k=2). The full asymptotic questions remain open and are not asserted.",
+    "implications": "Gives a fully verified elementary foundation for the admissible-tuple constant A(k) — the same admissibility notion underlying the Hardy–Littlewood prime k-tuples conjecture and the bounded-gaps program (Zhang, Maynard–Tao). The parity-sharpened bound A(k) ≥ 2(k−1) isolates the leading prime-2 contribution to the conjectural k log k growth, and the attained-infimum framing makes A(k) a well-defined target for future sieve-theoretic asymptotics rather than an informal quantity.",
     "openQuestions": [
       "Is A(k) ∼ k log k?",
       "What is the correct order of B(k) = min (a₁+⋯+a_k)/k?"
