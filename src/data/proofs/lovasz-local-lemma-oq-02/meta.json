@@ -17,11 +17,11 @@
       "polynomial-inequalities"
     ],
     "badge": "verified",
-    "sorries": 1,
+    "sorries": 0,
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
-    "assumptions": "9 sorries total: 1 in main file (lllThreshold_strict_maximum equality case — requires the AM-GM equality characterization, all terms equal iff x = 1/(d+1)) and 8 in the Aristotle companion file (LovaszLocalLemmaOQ02Aristotle.lean) targeting routine supporting lemmas. Proved: lllThreshold_is_maximum (general d) via Real.geom_mean_le_arith_mean2_weighted + rpow monotonicity (PR #11084).",
-    "lineCount": 263,
+    "assumptions": "Main file (LovaszLocalLemmaOQ02.lean) is complete: 0 sorries, 0 axioms — including lllThreshold_strict_maximum, closed via the AM-GM equality characterization (all terms equal iff x = 1/(d+1)). The optional Aristotle companion file (LovaszLocalLemmaOQ02Aristotle.lean) still carries 8 sorries on routine supporting lemmas; it is standalone and is not imported by the main file, so it does not affect the verified status of this entry. Key result: lllThreshold_is_maximum (general d) via Real.geom_mean_le_arith_mean2_weighted + rpow monotonicity (PR #11084).",
+    "lineCount": 318,
     "theoremCount": 13,
     "definitionCount": 0,
     "additionalFiles": [
