@@ -55,6 +55,25 @@
   ]
  },
  {
+  "id": "ann-index-form",
+  "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02-oq-01-oq-03",
+  "range": {
+   "startLine": 133,
+   "endLine": 140
+  },
+  "type": "tactic",
+  "title": "Recentring the Index with obtain ⟨m, rfl⟩",
+  "content": "omega_sq_ge restates log-concavity in the symmetric centred form ω_{n-1}·ω_{n+1} ≤ ω_n² for n ≥ 1, which is the shape most references state. The subtlety is purely ℕ-arithmetic: n-1 is truncated subtraction, awkward to reason with directly. The proof sidesteps it by destructuring the positivity hypothesis: `obtain ⟨m, rfl⟩ : ∃ m, n = m + 1` (from Nat.succ_pred_eq_of_pos) rewrites n as m+1 everywhere, so n-1 becomes m, n becomes m+1, n+1 becomes m+2 — turning the goal into ω_m·ω_{m+2} ≤ ω_{m+1}², which is exactly omega_log_concave m, closed by `simpa`. This 'obtain ⟨m, rfl⟩ to eliminate a predecessor' idiom is the standard way to convert a centred-index statement to the base recurrence without wrestling with ℕ subtraction.",
+  "mathContext": "Set $n = m+1$: then $n-1 = m$, so $\\omega_{n-1}\\omega_{n+1} \\le \\omega_n^2$ becomes $\\omega_m\\,\\omega_{m+2} \\le \\omega_{m+1}^2$ — the base form.",
+  "significance": "supporting",
+  "relatedConcepts": [
+   "truncated ℕ subtraction",
+   "obtain ⟨m, rfl⟩ reindexing",
+   "Nat.succ_pred_eq_of_pos",
+   "simpa"
+  ]
+ },
+ {
   "id": "ann-ratios",
   "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02-oq-01-oq-03",
   "range": {
