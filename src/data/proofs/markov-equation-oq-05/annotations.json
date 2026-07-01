@@ -28,21 +28,44 @@
     "proofId": "markov-equation-oq-05",
     "range": {
       "startLine": 56,
-      "endLine": 82
+      "endLine": 65
     },
     "type": "technique",
     "title": "Reducing the Ternary Equation to a Monic Quadratic",
-    "content": "markov_quadratic rearranges x² + y² + z² = 3xyz into z² − 3xy·z + (x² + y²) = 0 via a single linear_combination of the Markov equation, exhibiting z as a root of the monic quadratic g. Its two Vieta data are recorded separately: markov_vieta_sum gives the linear coefficient z + (3xy − z) = 3xy (the additive companion of the parent's product formula z·(3xy − z) = x² + y²), and markov_root_diff_sq computes the discriminant (2z − 3xy)² = 9x²y² − 4(x² + y²) by substituting z² = 3xyz − x² − y² into the expansion — the squared gap between the two roots.",
-    "mathContext": "$z + (3xy - z) = 3xy, \\quad z\\,(3xy - z) = x^2+y^2, \\quad (2z-3xy)^2 = 9x^2y^2 - 4(x^2+y^2).$",
+    "content": "markov_quadratic rearranges x² + y² + z² = 3xyz into z² − 3xy·z + (x² + y²) = 0 via a single linear_combination of the Markov equation, exhibiting z as a root of the monic quadratic g(t) = t² − 3xy·t + (x² + y²). The linear coefficient is recorded by markov_vieta_sum, the Vieta sum z + (3xy − z) = 3xy — the additive companion of the parent's product formula z·(3xy − z) = x² + y². Together the sum and product are the two Vieta data that determine g and drive the uniqueness factorization below.",
+    "mathContext": "$z + (3xy - z) = 3xy, \\qquad z\\,(3xy - z) = x^2+y^2.$",
     "significance": "supporting",
     "relatedConcepts": [
       "Vieta's formulas",
-      "discriminant",
+      "monic quadratic",
       "linear_combination"
     ],
     "prerequisites": [
       "quadratic equations",
       "sum and product of roots"
+    ]
+  },
+  {
+    "id": "markov-oq05-ann-discriminant",
+    "proofId": "markov-equation-oq-05",
+    "range": {
+      "startLine": 67,
+      "endLine": 77
+    },
+    "type": "insight",
+    "title": "The Discriminant Controls When the Fiber Degenerates",
+    "content": "markov_root_diff_sq computes the squared gap between the two Vieta roots, (2z − 3xy)² = 9x²y² − 4(x² + y²), by substituting z² = 3xyz − x² − y² (from the Markov equation) into the expansion of (2z − 3xy)². This is exactly the discriminant (3xy)² − 4(x² + y²) of the monic quadratic g. Its role is structural: the two roots z and 3xy − z coincide precisely when this gap vanishes, i.e. when 2z = 3xy (the boundary later isolated by markov_self_neighbor and by vietaPerm_fixed). So the discriminant is the single quantity governing whether the fixed-pair fiber is a genuine doubleton or a degenerate single point — the classical repeated-root criterion, here over ℤ.",
+    "mathContext": "$(2z - 3xy)^2 = 9x^2y^2 - 4(x^2+y^2) = (3xy)^2 - 4(x^2+y^2); \\quad \\text{roots coincide} \\iff 2z = 3xy.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "discriminant",
+      "repeated root",
+      "fixed point",
+      "Vieta jumping"
+    ],
+    "prerequisites": [
+      "discriminant of a quadratic",
+      "repeated roots"
     ]
   },
   {
