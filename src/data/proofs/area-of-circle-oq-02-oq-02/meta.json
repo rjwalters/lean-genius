@@ -144,15 +144,6 @@
       "mathContext": "$\\mathrm{vol}(B^n(1)) \\to 0$ in $\\mathbb{R}$ as $n \\to \\infty$."
     }
   ],
-  "conclusion": {
-    "summary": "A fully verified (0 sorries, 0 axioms) proof that the unit n-ball volume Vₙ = π^(n/2)/Γ(n/2+1) vanishes as n → ∞, together with the corresponding statement for the genuine Lebesgue measure of the Euclidean unit ball. The argument is elementary: an exact even closed form πᵐ/m!, a uniform odd bound 2·πᵐ/m!, and an ε–N parity combination.",
-    "implications": "Formalizes the 'concentration of measure' fact that high-dimensional balls are negligible relative to their bounding cubes. The self-contained recurrence and scaling derivations make the entry independent of the parent file's axiom.",
-    "openQuestions": [
-      "Quantify the decay rate: prove Vₙ ~ (2πe/n)^(n/2)/√(nπ) (Stirling) and a clean exponential upper bound.",
-      "Locate the maximum rigorously: prove Vₙ is increasing for n ≤ 5 and decreasing for n ≥ 5 in one statement.",
-      "Extend to the ratio Vₙ/2ⁿ (ball vs. bounding cube), showing it tends to 0 super-exponentially."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-02",
@@ -163,6 +154,44 @@
       "targetId": "area-of-circle-oq-02-oq-01",
       "relationship": "related",
       "description": "Both derive the Euclidean scaling law from EuclideanSpace.volume_ball; this entry uses the n = 1 unit-ball case for its measure-theoretic corollary."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) proof that the unit n-ball volume Vₙ = π^(n/2)/Γ(n/2+1) vanishes as n → ∞, together with the corresponding statement for the genuine Lebesgue measure of the Euclidean unit ball. The argument is elementary: an exact even closed form πᵐ/m!, a uniform odd bound 2·πᵐ/m!, and an ε–N parity combination.",
+    "implications": "Formalizes the 'concentration of measure' fact that high-dimensional balls are negligible relative to their bounding cubes. The self-contained recurrence and scaling derivations make the entry independent of the parent file's axiom.",
+    "openQuestions": [
+      "Quantify the decay rate: prove Vₙ ~ (2πe/n)^(n/2)/√(nπ) (Stirling) and a clean exponential upper bound.",
+      "Locate the maximum rigorously: prove Vₙ is increasing for n ≤ 5 and decreasing for n ≥ 5 in one statement.",
+      "Extend to the ratio Vₙ/2ⁿ (ball vs. bounding cube), showing it tends to 0 super-exponentially."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107",
+      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston",
+      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ],
   "leanFile": {

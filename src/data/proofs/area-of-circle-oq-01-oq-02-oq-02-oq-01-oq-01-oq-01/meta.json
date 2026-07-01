@@ -137,6 +137,16 @@
       "summary": "first_harmonic_deriv, first_harmonic_mean_zero, first_harmonic_sq_integral and first_harmonic_wirtinger_equality exhibit the first harmonic explicitly: derivative b cos t − a sin t (HasDerivAt.const_mul on cos/sin), zero mean over a period, energy ∫f²=π(a²+b²) via integral_cos_sq / integral_sin_sq / integral_sin_mul_cos₁, and the attained equality ∫f²=∫(f')²=π(a²+b²) (the derivative is again a first harmonic, so the same energy formula applies)."
     }
   ],
+  "crossReferences": [
+    {
+      "proofId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01",
+      "relationship": "Parent: proves Wirtinger's inequality ∫f²≤∫(f')² (all five analytic axioms discharged 0-axiom); this entry characterizes its equality case."
+    },
+    {
+      "proofId": "area-of-circle-oq-01-oq-03",
+      "relationship": "Grandparent: supplies the axiom-free Fourier decomposition (Parseval for f and f' via integration by parts) reused here as IsoperimetricOQ.fourier_decomposition."
+    }
+  ],
   "conclusion": {
     "summary": "A fully verified (0 sorries, 0 axioms) 224-line file with 7 theorems and 1 definition characterizing the equality case of Wirtinger's inequality: for a mean-zero 2π-periodic C¹ function, ∫f² = ∫(f')² holds iff the Fourier support is the first harmonic {−1,+1} (wirtinger_equality_iff_first_harmonic). The concrete extremiser f(t)=a cos t + b sin t is exhibited with zero mean, energy π(a²+b²), and attained equality. This discharges the rigidity half of the isoperimetric problem on top of the parent's axiom-free inequality.",
     "implications": "This supplies the analytic core of isoperimetric rigidity — the statement that the circle is the unique extremiser of C²=4πA. The proof is purely spectral: the gap ∫(f')²−∫f² = Σ(n²−1)cₙ² is a sum of non-negative terms, and rigidity is the elementary fact that a non-negative sum vanishes iff every term does. Forcing the first-harmonic condition in both coordinates of a constant-speed closed curve yields a circle, completing the geometric rigidity statement. The reusable engine is Summable.tsum_pos applied to a manifestly non-negative spectral gap.",
@@ -146,14 +156,32 @@
       "Quantify the stability/near-equality regime: bound the deficit ∫(f')²−∫f² below by the energy in harmonics |n|≥2, yielding a quantitative isoperimetric inequality (Bonnesen-type) measuring how far a near-extremiser is from a circle."
     ]
   },
-  "crossReferences": [
+  "references": [
     {
-      "proofId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01",
-      "relationship": "Parent: proves Wirtinger's inequality ∫f²≤∫(f')² (all five analytic axioms discharged 0-axiom); this entry characterizes its equality case."
+      "authors": "Hurwitz, Adolf",
+      "title": "Sur quelques applications géométriques des séries de Fourier",
+      "year": "1902",
+      "venue": "Annales Scientifiques de l'École Normale Supérieure 19, 357–408",
+      "note": "Fourier-series proof of the isoperimetric inequality and its equality case."
     },
     {
-      "proofId": "area-of-circle-oq-01-oq-03",
-      "relationship": "Grandparent: supplies the axiom-free Fourier decomposition (Parseval for f and f' via integration by parts) reused here as IsoperimetricOQ.fourier_decomposition."
+      "authors": "do Carmo, Manfredo P.",
+      "title": "Differential Geometry of Curves and Surfaces",
+      "year": "1976",
+      "venue": "Prentice-Hall",
+      "note": "Wirtinger's inequality, arc-length reparametrization, and the isoperimetric inequality for plane curves."
+    },
+    {
+      "authors": "Osserman, Robert",
+      "title": "The Isoperimetric Inequality",
+      "year": "1978",
+      "venue": "Bulletin of the American Mathematical Society 84(6), 1182–1238"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Arc length, curve reparametrization and volume lemmas (Mathlib.Geometry / Mathlib.MeasureTheory)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ]
 }

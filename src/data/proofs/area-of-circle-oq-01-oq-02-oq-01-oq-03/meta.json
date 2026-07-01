@@ -150,15 +150,6 @@
       "mathContext": "$(1-\\varepsilon)^n \\to 0$ since $|1-\\varepsilon| < 1$, so the shell fraction $1 - (1-\\varepsilon)^n \\to 1$."
     }
   ],
-  "conclusion": {
-    "summary": "Fully verified formalization (0 axioms, 0 sorries) proving that the unit n-ball volume ω_n converges to 0 as n → ∞. The proof combines the two-step recurrence (from sibling OQ01) with a geometric decay bound to establish convergence via an explicit ε-δ argument.",
-    "implications": "This formalizes a fundamental fact in high-dimensional geometry: the 'curse of dimensionality' for ball volumes. The geometric decay rate $(2/3)^{n/2}$ gives a concrete, quantitative bound on how fast the volumes vanish. The result has practical consequences: in $\\mathbb{R}^{100}$, the unit ball has negligible volume compared to the circumscribing cube $[-1,1]^{100}$ (ratio $\\sim 10^{-70}$), which means uniform sampling in high-dimensional cubes almost never hits the ball. Combined with the thin shell concentration, it explains why high-dimensional phenomena are qualitatively different from low-dimensional intuition.",
-    "openQuestions": [
-      "What is the precise asymptotic rate? Stirling's approximation gives $\\omega_n \\sim \\sqrt{2\\pi e/n} \\cdot (2\\pi e/n)^{n/2} / \\sqrt{\\pi}$, showing super-exponential decay",
-      "Can we formalize concentration of measure on the sphere (Lévy's lemma) building on this?",
-      "What is the dimension $n^*$ at which $\\omega_n$ achieves its maximum? (The answer is $n^* = 5$, with $\\omega_5 = 8\\pi^2/15$)"
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
@@ -184,6 +175,44 @@
       "targetId": "area-of-circle-oq-01-oq-02-oq-02",
       "relationship": "sibling",
       "description": "Sibling exploring surface area of the n-sphere, complementing the volume result"
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified formalization (0 axioms, 0 sorries) proving that the unit n-ball volume ω_n converges to 0 as n → ∞. The proof combines the two-step recurrence (from sibling OQ01) with a geometric decay bound to establish convergence via an explicit ε-δ argument.",
+    "implications": "This formalizes a fundamental fact in high-dimensional geometry: the 'curse of dimensionality' for ball volumes. The geometric decay rate $(2/3)^{n/2}$ gives a concrete, quantitative bound on how fast the volumes vanish. The result has practical consequences: in $\\mathbb{R}^{100}$, the unit ball has negligible volume compared to the circumscribing cube $[-1,1]^{100}$ (ratio $\\sim 10^{-70}$), which means uniform sampling in high-dimensional cubes almost never hits the ball. Combined with the thin shell concentration, it explains why high-dimensional phenomena are qualitatively different from low-dimensional intuition.",
+    "openQuestions": [
+      "What is the precise asymptotic rate? Stirling's approximation gives $\\omega_n \\sim \\sqrt{2\\pi e/n} \\cdot (2\\pi e/n)^{n/2} / \\sqrt{\\pi}$, showing super-exponential decay",
+      "Can we formalize concentration of measure on the sphere (Lévy's lemma) building on this?",
+      "What is the dimension $n^*$ at which $\\omega_n$ achieves its maximum? (The answer is $n^* = 5$, with $\\omega_5 = 8\\pi^2/15$)"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107",
+      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston",
+      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ],
   "leanFile": {

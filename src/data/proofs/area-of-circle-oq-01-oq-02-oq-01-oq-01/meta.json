@@ -126,14 +126,6 @@
       "mathContext": "Each computation uses `omega_recurrence` then the previously computed value, with `push_cast; ring` for algebra."
     }
   ],
-  "conclusion": {
-    "summary": "Fully verified formalization (0 axioms, 0 sorries) proving the recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ for unit ball volumes. Together with base cases $\\omega_0 = 1$ and $\\omega_1 = 2$, this provides a complete recursive algorithm for computing all unit ball volumes.",
-    "implications": "The recurrence provides a purely algebraic computation of unit ball volumes, avoiding direct Gamma function evaluation. This answers the open question affirmatively: all $\\omega_n$ are recursively computable from elementary arithmetic operations and $\\pi$.",
-    "openQuestions": [
-      "Does $\\omega_n \\to 0$ as $n \\to \\infty$? (Yes, provable from the recurrence: the factor $2\\pi/(n+2) < 1$ for $n > 2\\pi - 2$)",
-      "At which dimension is $\\omega_n$ maximized? ($n = 5$ gives the maximum among integer dimensions)"
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
@@ -144,6 +136,43 @@
       "targetId": "area-of-circle",
       "relationship": "ancestor",
       "description": "Root proof: A = πr² for the circle, the starting point of this OQ chain"
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified formalization (0 axioms, 0 sorries) proving the recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ for unit ball volumes. Together with base cases $\\omega_0 = 1$ and $\\omega_1 = 2$, this provides a complete recursive algorithm for computing all unit ball volumes.",
+    "implications": "The recurrence provides a purely algebraic computation of unit ball volumes, avoiding direct Gamma function evaluation. This answers the open question affirmatively: all $\\omega_n$ are recursively computable from elementary arithmetic operations and $\\pi$.",
+    "openQuestions": [
+      "Does $\\omega_n \\to 0$ as $n \\to \\infty$? (Yes, provable from the recurrence: the factor $2\\pi/(n+2) < 1$ for $n > 2\\pi - 2$)",
+      "At which dimension is $\\omega_n$ maximized? ($n = 5$ gives the maximum among integer dimensions)"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston",
+      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
+    },
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107",
+      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ],
   "leanFile": {

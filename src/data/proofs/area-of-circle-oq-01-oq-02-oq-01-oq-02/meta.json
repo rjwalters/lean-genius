@@ -153,15 +153,6 @@
       "mathContext": "These are the classical isoperimetric equalities for the circle and sphere written in the monomial form $S^n = c_n V^{n-1}$."
     }
   ],
-  "conclusion": {
-    "summary": "Fully verified formalization (0 axioms, 0 sorries) of the equality case and scale invariance of the n-dimensional isoperimetric inequality. The n-ball saturates Sⁿ = (nⁿ·ω_n)·V^(n-1), and its dimensionless isoperimetric quotient equals the optimal constant nⁿ·ω_n independent of radius, recovering the classical 4π (planar) and 36π (spatial) constants.",
-    "implications": "This pins the optimal isoperimetric constant nⁿ·ω_n as the value of the dimensionless quotient on the extremal body. It answers the parent's second open question to the extent the elementary monomial definitions allow: the equality structure and scale invariance are fully formalized.",
-    "openQuestions": [
-      "Can the inequality direction Sⁿ ≥ nⁿ·ω_n·V^(n-1) be formalized for general bodies (not just balls)? This requires the Brunn–Minkowski inequality or spherical symmetrization from geometric measure theory.",
-      "Can uniqueness of the ball as the equality case be characterized within Mathlib's measure-theoretic framework?",
-      "Does the constant nⁿ·ω_n → 0 super-exponentially, mirroring the thin-shell behavior of ω_n?"
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
@@ -182,6 +173,43 @@
       "targetId": "area-of-circle",
       "relationship": "ancestor",
       "description": "Root proof: A = πr² for the circle, the starting point of this OQ chain"
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified formalization (0 axioms, 0 sorries) of the equality case and scale invariance of the n-dimensional isoperimetric inequality. The n-ball saturates Sⁿ = (nⁿ·ω_n)·V^(n-1), and its dimensionless isoperimetric quotient equals the optimal constant nⁿ·ω_n independent of radius, recovering the classical 4π (planar) and 36π (spatial) constants.",
+    "implications": "This pins the optimal isoperimetric constant nⁿ·ω_n as the value of the dimensionless quotient on the extremal body. It answers the parent's second open question to the extent the elementary monomial definitions allow: the equality structure and scale invariance are fully formalized.",
+    "openQuestions": [
+      "Can the inequality direction Sⁿ ≥ nⁿ·ω_n·V^(n-1) be formalized for general bodies (not just balls)? This requires the Brunn–Minkowski inequality or spherical symmetrization from geometric measure theory.",
+      "Can uniqueness of the ball as the equality case be characterized within Mathlib's measure-theoretic framework?",
+      "Does the constant nⁿ·ω_n → 0 super-exponentially, mirroring the thin-shell behavior of ω_n?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Osserman, Robert",
+      "title": "The Isoperimetric Inequality",
+      "year": "1978",
+      "venue": "Bulletin of the American Mathematical Society 84(6), 1182–1238"
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107",
+      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ],
   "leanFile": {
