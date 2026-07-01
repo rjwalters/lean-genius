@@ -123,6 +123,18 @@
       "note": "Origin of the independent-additive-triple / independent-Hindman-set questions; see erdosproblems.com/895."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-895",
+      "relationship": "parent",
+      "description": "The root problem entry: Barber's theorem that every triangle-free graph on {1,…,n} contains an independent additive triple for n ≥ 18. This entry supplies the corrected, machine-verified sharp counterexample at the threshold (Fin 18 = {1,…,17}), fixing the sibling formalization's false-as-stated counterexample_17."
+    },
+    {
+      "targetId": "erdos-895-oq-01",
+      "relationship": "related",
+      "description": "Hajnal's independent Hindman-set generalization (all finite sums of a base set) — the still-open extension of the independent-additive-triple question flagged in this entry's open questions."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "counterexample_fin18",
