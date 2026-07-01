@@ -48,10 +48,10 @@
     ],
     "dateAdded": "2026-06-25",
     "axiomCount": 0,
-    "lineCount": 136,
+    "lineCount": 212,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms on collisionProb_monotone and birthdayProduct_antitone reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide, no structure-encoded hypotheses. Self-contained: imports only Mathlib and restates the standard birthdayProduct of the OQ-02-OQ-01 lineage (whose source predates current Mathlib API), so it does not depend on any other project file.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
+    "theoremCount": 18,
     "definitionCount": 2
   },
   "overview": {
@@ -140,9 +140,9 @@
   ],
   "leanFile": {
     "namespace": "BirthdayProblemOQ02OQ01OQ03",
-    "lineCount": 136,
+    "lineCount": 212,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 18,
     "definitionCount": 2,
     "path": "Proofs/BirthdayProblemOQ02OQ01OQ03.lean",
     "sorries": 0
