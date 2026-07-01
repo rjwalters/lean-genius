@@ -1,8 +1,8 @@
 {
   "slug": "spherical-law-of-sines-oq-02",
   "title": "Spherical Law of Sines OQ-02: Squared Ratio Formalization",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -42,9 +42,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Verified SphericalLawOfSinesOQ02.lean typechecks (lean exit 0, #print axioms = [propext,Classical.choice,Quot.sound] only) and created the gallery entry (meta.json + annotations.json) so the dual spherical law of cosines is discoverable. 6 theorems, 0 axioms, 0 sorries, 304 lines.",
+    "builtItems": [
+      "Gallery entry src/data/proofs/spherical-law-of-sines-oq-02/ (meta.json, annotations.json)"
+    ],
+    "insights": [
+      "File was committed UNVERIFIED (#30742, build host down); confirmed VERIFIED via main-cache lake env lean and gallery-integrated this session."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: spherical-law-of-sines-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
