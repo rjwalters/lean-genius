@@ -102,8 +102,8 @@
     },
     {
       "id": "bipartite",
-      "title": "Bipartite Characterization (1 sorry)",
-      "summary": "bipartite_iff_no_odd_cycles: G.IsBipartite ↔ oddCycleLengths G = ∅ (forward direction proved via noOddCycles_of_boolColoring; reverse direction is the sole sorry). colorable_two_no_odd_cycles: IsColorable G 2 → empty odd cycles (fully proved). Classical foundation for the chromatic-cycle connection",
+      "title": "Bipartite Characterization (fully proved, 0 sorries)",
+      "summary": "bipartite_iff_no_odd_cycles: G.IsBipartite ↔ oddCycleLengths G = ∅ (both directions proved; the forward direction via noOddCycles_of_boolColoring, the reverse direction via the crux lemma exists_odd_cycle_of_odd_closed_walk). colorable_two_no_odd_cycles: IsColorable G 2 → empty odd cycles (fully proved). Classical foundation for the chromatic-cycle connection",
       "startLine": 143,
       "endLine": 154,
       "mathContext": "$G \\text{ bipartite} \\iff \\mathcal{C}_{\\text{odd}}(G) = \\emptyset \\iff \\chi(G) \\leq 2$. The classical König characterization."
@@ -118,7 +118,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #57 was SOLVED by Liu and Montgomery in 2020. The 167-line formalization axiomatizes the main result (∑ 1/aᵢ = ⊤ for χ(G) = ∞) and proves three supporting results: finite reciprocal sums are not ⊤, odd cycle lengths are positive, and the corollary that infinitely many odd cycle lengths exist. One sorry remains for the hard reverse direction of the bipartite characterization. Open density conjectures from Erdős (1981, 1995-96) are formalized but remain unresolved.",
+    "summary": "Erdős Problem #57 was SOLVED by Liu and Montgomery in 2020. The 343-line formalization axiomatizes the main result (∑ 1/aᵢ = ⊤ for χ(G) = ∞) and proves supporting results: finite reciprocal sums are not ⊤, odd cycle lengths are positive, and the corollary that infinitely many odd cycle lengths exist. The bipartite characterization is now fully proved in both directions (0 sorries); the only remaining assumption is the axiom erdos_57 (the open Liu-Montgomery main result). Open density conjectures from Erdős (1981, 1995-96) are formalized but remain unresolved.",
     "implications": "The result establishes a precise quantitative threshold for odd cycle richness: the reciprocal sum divergence is the exact boundary between what is proved and what remains open. The density conjectures would further strengthen the connection between chromatic complexity and cycle structure, potentially illuminating the broader question of which graph properties are forced by high chromatic number.",
     "openQuestions": [
       "Must odd cycle lengths have positive upper density when χ(G) = ∞? (Erdős 1981, OPEN)",
@@ -163,12 +163,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos57",
-    "lineCount": 166,
+    "lineCount": 343,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 10,
     "definitionCount": 8,
     "path": "Proofs/Erdos57Problem.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos57Aristotle.lean",
       "Proofs/Erdos57ProblemAristotle.lean"
@@ -204,5 +204,5 @@
       "note": "High-girth constructions showing χ(G) = ∞ is compatible with lower density 0 for odd cycle lengths — demonstrating the reciprocal sum divergence in Problem #57 is precisely calibrated"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
