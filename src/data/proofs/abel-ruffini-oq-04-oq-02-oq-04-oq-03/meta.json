@@ -53,6 +53,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Context",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Imports (GroupTheory.Solvable, SpecificGroups.Cyclic) and a docstring framing the file as the structural generalization of the parent's concrete dihedral solvability proof: metabelian ⟹ derived length ≤ 2, with the metacyclic case (OQ-03) as the cyclic-by-cyclic corollary. Lists the five results and the two-step derived-series descent method.",
+      "mathContext": "Answers parent OQ-03: cyclic-by-cyclic (metacyclic), more generally abelian-by-abelian (metabelian), groups are solvable — sharpened to $\\mathrm{derivedSeries}\\,G\\,2 = \\bot$."
+    },
+    {
       "id": "cyclic-comm",
       "title": "Cyclic Groups Are Commutative",
       "startLine": 57,

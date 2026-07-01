@@ -1,5 +1,21 @@
 [
   {
+    "id": "ann-abelruffini-metabelian-framing",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-04-oq-03",
+    "range": {
+      "startLine": 9,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "From a Concrete Dihedral Proof to the Structural Theorem",
+    "content": "**Module framing.** The parent entry proved each dihedral group $D_n$ solvable by *building* the short exact sequence $1 \\to \\langle r\\rangle \\to D_n \\to \\mathbb{Z}/2 \\to 1$ and invoking `solvable_of_ker_le_range`. Its open question OQ-03 asked what that argument *really* proves. This file answers: the concrete construction is a special case of a purely structural fact about **metabelian** groups (an abelian normal subgroup with abelian quotient), and the honest conclusion is not merely 'solvable' but the sharp derived-length bound `derivedSeries G 2 = ⊥`. The logical spine is the hierarchy **cyclic ⟹ metabelian ⟹ solvable of class ≤ 2**: `comm_of_isCyclic` turns a cyclic-by-cyclic (metacyclic) hypothesis into the two abelian hypotheses the metabelian theorem needs, so metacyclic solvability drops out as a one-line corollary. Dihedral, dicyclic, order-$pq$, and the solvable symmetric groups $S_2, S_3, S_4$ are all instances of the same theorem.",
+    "mathContext": "Metabelian $\\iff G^{(2)} = [[G,G],[G,G]] = 1 \\iff$ derived length $\\le 2$; metacyclic (cyclic-by-cyclic) $\\subsetneq$ metabelian.",
+    "significance": "supporting",
+    "relatedConcepts": ["metabelian group", "metacyclic group", "solvable derived length", "short exact sequence", "Abel–Ruffini / Galois solvability"],
+    "prerequisites": ["solvable groups and the derived series", "the parent dihedral solvability proof", "group extensions"],
+    "tags": ["module-header", "framing", "group-theory", "abel-ruffini"]
+  },
+  {
     "id": "ann-comm-of-cyclic",
     "proofId": "abel-ruffini-oq-04-oq-02-oq-04-oq-03",
     "range": {
