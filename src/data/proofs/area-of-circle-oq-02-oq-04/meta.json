@@ -36,6 +36,26 @@
       "euclidean_2d_volume: Vol(B(p,r)) = pi * r^2 in Euclidean R^2"
     ]
   },
+  "references": [
+    {
+      "authors": "do Carmo, Manfredo P.",
+      "title": "Riemannian Geometry",
+      "year": "1992",
+      "venue": "Birkhäuser (Bishop–Gromov volume comparison, Ch. 11)"
+    },
+    {
+      "authors": "Gromov, Mikhail",
+      "title": "Metric Structures for Riemannian and Non-Riemannian Spaces",
+      "year": "1999",
+      "venue": "Progress in Mathematics 152, Birkhäuser"
+    },
+    {
+      "authors": "Bishop, Richard L. and Crittenden, Richard J.",
+      "title": "Geometry of Manifolds",
+      "year": "1964",
+      "venue": "Academic Press"
+    }
+  ],
   "overview": {
     "historicalContext": "The Bishop-Gromov volume comparison theorem, proved by Richard Bishop and Mikhael Gromov in the 1960s-80s, is one of the foundational results in Riemannian geometry. It states that in a complete $n$-dimensional Riemannian manifold with Ricci curvature bounded below by $(n-1)K$, the ratio $\\text{Vol}(B(p,r))/V_K(r)$ is non-increasing in $r$, where $V_K(r)$ is the volume of a radius-$r$ geodesic ball in the simply connected space form of constant curvature $K$.\n\nFor the case $K=0$ (non-negative Ricci curvature), the comparison space is Euclidean $\\mathbb{R}^n$, and $V_0(r) = \\omega_n r^n$ with $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$. The theorem implies that geodesic ball volumes grow at most polynomially: $\\text{Vol}(B(p,r)) \\leq C r^n$ for some constant $C$.\n\nThis result underpins Gromov's compactness theorem, the Cheeger-Colding theory of Ricci limit spaces, and modern geometric analysis. The volume doubling property it implies is the foundation for harmonic analysis on manifolds (Poincare inequalities, heat kernel estimates).",
     "problemStatement": "Can the ball-volume formula be generalized to geodesic balls in curved spaces? Formalize the Bishop-Gromov volume comparison for manifolds with non-negative Ricci curvature, prove the volume doubling property, polynomial growth bounds, and verify that the Euclidean case recovers the flat n-ball volume formula.",

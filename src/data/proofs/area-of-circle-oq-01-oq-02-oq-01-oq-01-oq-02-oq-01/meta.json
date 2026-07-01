@@ -38,6 +38,32 @@
     ],
     "definitionCount": 0
   },
+  "references": [
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107"
+    },
+    {
+      "authors": "Ball, Keith",
+      "title": "An Elementary Introduction to Modern Convex Geometry",
+      "year": "1997",
+      "venue": "Flavors of Geometry, MSRI Publications 31, Cambridge University Press, 1–58"
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston (English translation by Michael Butler)"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Real.Gamma monotonicity and Real.rpow; Analysis.SpecialFunctions.Gamma",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "parent": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
   "openQuestion": "Is n=5 merely the argmax of ω_n, or is the sequence strictly unimodal — strictly increasing up to n=5 and strictly below the peak everywhere else?",
   "overview": {
