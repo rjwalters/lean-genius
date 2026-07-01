@@ -9,7 +9,7 @@
     "mathContext": "\\pi_2(N) := \\#\\{\\,p \\le N : p,\\ p+2 \\text{ both prime}\\,\\}",
     "significance": "key",
     "relatedConcepts": ["prime counting function", "Finset.filter", "decidability"],
-    "prerequisites": []
+    "prerequisites": ["Nat.Prime and decidability", "Finset.filter / Finset.card", "twin prime pairs (p, p+2)"]
   },
   {
     "id": "ann-tps-oq02-values",
@@ -21,7 +21,7 @@
     "mathContext": "\\pi_2(5)=2,\\quad \\pi_2(13)=3",
     "significance": "supporting",
     "relatedConcepts": ["decide", "kernel reduction", "worked example"],
-    "prerequisites": []
+    "prerequisites": ["decide vs native_decide", "kernel reduction", "Lean.ofReduceBool avoidance", "axiom auditing"]
   },
   {
     "id": "ann-tps-oq02-mono-bound",
@@ -33,7 +33,7 @@
     "mathContext": "M \\le N \\Rightarrow \\pi_2(M) \\le \\pi_2(N) \\le N+1",
     "significance": "supporting",
     "relatedConcepts": ["monotonicity", "Finset.card_le_card", "card_filter_le"],
-    "prerequisites": []
+    "prerequisites": ["Finset.range_mono", "Finset.card_le_card", "Finset.card_filter_le", "Finset.card_range"]
   },
   {
     "id": "ann-tps-oq02-bridge",
@@ -45,7 +45,7 @@
     "mathContext": "(\\forall M,\\ \\exists N,\\ \\pi_2(N) > M) \\Longrightarrow \\forall N,\\ \\exists p > N,\\ (p,p+2)\\text{ twin}",
     "significance": "key",
     "relatedConcepts": ["Twin Prime Conjecture", "strict subset", "exists_of_ssubset", "reduction"],
-    "prerequisites": []
+    "prerequisites": ["Finset.ssubset_iff_subset_ne", "Finset.exists_of_ssubset", "cardinality gap ⟹ strict subset", "unbounded ⟹ infinitely many"]
   },
   {
     "id": "ann-tps-oq02-axiom",
@@ -57,6 +57,6 @@
     "mathContext": "\\pi_2(N) \\sim \\frac{2C_2\\,N}{(\\log N)^2},\\qquad C_2 = \\prod_{p\\ge 3}\\frac{p(p-2)}{(p-1)^2} \\approx 0.6601",
     "significance": "key",
     "relatedConcepts": ["Hardy-Littlewood", "twin prime constant", "axiomatized", "singular series"],
-    "prerequisites": []
+    "prerequisites": ["Hardy–Littlewood Conjecture B", "twin prime constant C₂", "asymptotic density ~2C₂N/(log N)²", "axiom declarations & Axiom Integrity"]
   }
 ]
