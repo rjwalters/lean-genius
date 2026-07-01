@@ -97,6 +97,27 @@
       "mathContext": "#{v | cyclic} = #({0}ᶜ) = qⁿ − 1."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hoffman, K.",
+        "Kunze, R."
+      ],
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall",
+      "note": "Classic development of minimal and characteristic polynomials, cyclic vectors, the cyclic decomposition theorem and rational canonical form."
+    },
+    {
+      "authors": [
+        "Roman, S."
+      ],
+      "title": "Advanced Linear Algebra",
+      "year": "2008",
+      "venue": "3rd ed., Graduate Texts in Mathematics 135, Springer",
+      "note": "Cyclic/companion decomposition and the equivalence between nonderogatory matrices and cyclic vectors."
+    }
+  ],
   "conclusion": {
     "summary": "Sharpens the parent's one-directional result into a complete characterization: for a matrix with irreducible minimal polynomial of full degree n, a vector is cyclic iff it is nonzero, so the cyclic locus is exactly {0}ᶜ and, over a finite field with q elements, has exactly qⁿ − 1 points. 4 theorems, 0 axioms, 0 sorries.",
     "implications": "The characterization shows such matrices are 'uniformly cyclic' (maximal cyclic locus), and the finite-field count gives a concrete enumerative invariant. The result reuses the verified parent unchanged.",

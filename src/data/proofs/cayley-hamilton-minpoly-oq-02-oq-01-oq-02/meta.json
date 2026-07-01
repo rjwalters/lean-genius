@@ -127,6 +127,27 @@
       "summary": "Summary theorem consolidating the three properties: universal divisibility, degree inequality, and the iff characterization. Documents the zero-map failure example explicitly in the docstring."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Lang, S."
+      ],
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "3rd ed., Graduate Texts in Mathematics 211, Springer",
+      "note": "Structure theorem for finitely generated modules over a PID and primary decomposition, underlying the module-theoretic cyclic-vector arguments."
+    },
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Rational canonical form via the structure theorem for modules over a PID, invariant factors and Smith normal form."
+    }
+  ],
   "conclusion": {
     "summary": "This proof provides the definitive characterization of minpoly invariance under non-injective K-algebra homomorphisms: minpoly K (f a) = minpoly K a iff Polynomial.aeval a (minpoly K (f a)) = 0. The result is fully verified in Lean 4 with 0 axioms and 0 sorries, relying only on Mathlib's minpoly.dvd, minpoly.aeval_algHom, associated_of_dvd_dvd, and eq_of_monic_of_associated.",
     "implications": "The characterization is practically useful: instead of requiring f to be injective, one only needs to check a single polynomial evaluation. This has applications in field extension theory (when can a map between field extensions preserve algebraic relations?), matrix theory (when does a linear map preserve the minimal polynomial of an operator?), and module theory (when does a module homomorphism preserve the annihilator polynomial?). The proof also clarifies why injectivity is sufficient but not necessary: injective maps automatically satisfy the criterion, but the criterion is strictly weaker.",

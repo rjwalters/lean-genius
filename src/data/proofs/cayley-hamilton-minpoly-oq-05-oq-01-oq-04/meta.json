@@ -120,6 +120,37 @@
       "mathContext": "The 3 nonzero vectors of $\\mathbb{F}_2^2$ are $(1,0)$, $(0,1)$, $(1,1)$. Each 1-dimensional subspace over $\\mathbb{F}_2$ contains exactly 1 nonzero vector. So $\\mathbb{F}_2^2 \\setminus \\{0\\}$ is covered by 3 proper subspaces. For union avoidance, one needs $|K| > n$ (here $|K| = 2 \\leq 2 = n$), so the argument fails. Yet every nonderogatory $2 \\times 2$ matrix over $\\mathbb{F}_2$ still has a cyclic vector."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Rational canonical form via the structure theorem for modules over a PID, invariant factors and Smith normal form."
+    },
+    {
+      "authors": [
+        "Lang, S."
+      ],
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "3rd ed., Graduate Texts in Mathematics 211, Springer",
+      "note": "Structure theorem for finitely generated modules over a PID and primary decomposition, underlying the module-theoretic cyclic-vector arguments."
+    },
+    {
+      "authors": [
+        "Hoffman, K.",
+        "Kunze, R."
+      ],
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall",
+      "note": "Classic development of minimal and characteristic polynomials, cyclic vectors, the cyclic decomposition theorem and rational canonical form."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization establishes the cyclic vector theorem over ANY field (finite or infinite, regardless of size relative to n) for every nonderogatory matrix. The previously-isolated sorry on the PID structure theorem has been removed: the main theorem is closed by delegating to WIP05, which combines WIP04's Bezout/CRT primary-decomposition argument with UFD factorization of the minimal polynomial. The file is 0 axioms, 0 sorries.",
     "implications": "The Bezout/CRT projection approach demonstrates that the cyclic vector theorem does not require the full PID structure theorem (rational canonical form) — only the algebraic facts that K[X] is a UFD and that distinct monic irreducibles are coprime. This significantly lowers the Mathlib bar for related results and provides a constructive route avoiding the module-theoretic structure theorem.",

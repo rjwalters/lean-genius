@@ -86,6 +86,27 @@
       "mathContext": "Divisibility chain: $d \\mid \\mu$, $\\mu = d \\cdot s$; pick irreducible $q' \\mid s$ (via exists_mem_normalizedFactors_of_dvd); then $\\mu = q' \\cdot (d \\cdot t)$ so $\\mu/q' = d \\cdot t$; thus $(\\mu/q')(M)v = t(M) \\cdot d(M)v = 0$, placing $v \\in S(q')$, contradicting $v \\notin S(q')$ from Phase 3."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hoffman, K.",
+        "Kunze, R."
+      ],
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall",
+      "note": "Classic development of minimal and characteristic polynomials, cyclic vectors, the cyclic decomposition theorem and rational canonical form."
+    },
+    {
+      "authors": [
+        "Gantmacher, F.R."
+      ],
+      "title": "The Theory of Matrices, Vol. I",
+      "year": "1959",
+      "venue": "Chelsea Publishing",
+      "note": "Nonderogatory matrices, companion matrices and the minimal polynomial."
+    }
+  ],
   "conclusion": {
     "summary": "The nonderogatory → cyclic vector theorem is proved for fields with $|K| > n$, strictly weakening the [Infinite K] hypothesis of the parent proof. The proof is complete with 0 axioms and 0 sorries, using the finite union avoidance lemma with explicit cardinality control.",
     "implications": "This formalization gives the tightest known purely combinatorial condition for the existence of cyclic vectors over finite fields. The sharp bound $|K| > n$ matches the number of irreducible factors of $\\mu_M$, and the proof technique (line argument + counting) is adaptable to other union avoidance applications in computational algebra and coding theory. Together with the infinite field version (OQ-05-OQ-01), this completes a two-case analysis covering all fields.",

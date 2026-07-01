@@ -57,6 +57,36 @@
       "Rational canonical form: companion matrices and cyclic decomposition"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Hoffman, K.",
+        "Kunze, R."
+      ],
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall",
+      "note": "Classic development of minimal and characteristic polynomials, cyclic vectors, the cyclic decomposition theorem and rational canonical form."
+    },
+    {
+      "authors": [
+        "Gantmacher, F.R."
+      ],
+      "title": "The Theory of Matrices, Vol. I",
+      "year": "1959",
+      "venue": "Chelsea Publishing",
+      "note": "Nonderogatory matrices, companion matrices and the minimal polynomial."
+    },
+    {
+      "authors": [
+        "Roman, S."
+      ],
+      "title": "Advanced Linear Algebra",
+      "year": "2008",
+      "venue": "3rd ed., Graduate Texts in Mathematics 135, Springer",
+      "note": "Cyclic/companion decomposition and the equivalence between nonderogatory matrices and cyclic vectors."
+    }
+  ],
   "conclusion": {
     "summary": "Nonderogatory matrices characterized via cyclic vectors: forward direction (cyclic → minpoly = charpoly) fully proved via degree bridge lemma, converse axiomatized (requires PID structure theorem). Equivalent natDegree characterizations proved. 8 theorems, 316 lines, 1 axiom.",
     "implications": "The cyclic vector characterization is central to systems theory: a linear dynamical system is controllable from a single input iff its state matrix is nonderogatory. The bridge lemma (equal-degree monic polynomials where one divides the other are equal) is a reusable algebraic tool. Completing the converse would give a fully verified characterization useful in both pure and applied linear algebra.",
