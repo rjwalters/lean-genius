@@ -200,6 +200,27 @@
       "mathContext": "Complete Ehrhart theory for the cross-polytope (hyperoctahedron) family β_d in dimensions 1-3."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Ehrhart, E."
+      ],
+      "title": "Sur les polyèdres rationnels homothétiques à n dimensions",
+      "year": "1962",
+      "venue": "Comptes Rendus de l'Académie des Sciences (Paris) 254, pp. 616–618",
+      "note": "Introduces the Ehrhart polynomial counting lattice points in dilates of a lattice polytope."
+    },
+    {
+      "authors": [
+        "Beck, M.",
+        "Robins, S."
+      ],
+      "title": "Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra",
+      "year": "2015",
+      "venue": "2nd ed., Undergraduate Texts in Mathematics, Springer",
+      "note": "Standard modern reference for Pick's theorem, Ehrhart polynomials, Ehrhart–Macdonald reciprocity and h*-vectors."
+    }
+  ],
   "conclusion": {
     "summary": "Ehrhart theory is formalized with an axiomatized LatticePolytope structure, concrete polynomial verifications for cubes, simplices, and octahedra, and a derivation of Pick's theorem as the d=2 specialization. The h*-vector framework provides an alternative combinatorial encoding with Stanley's nonnegativity theorem.",
     "implications": "This formalization provides the natural framework for higher-dimensional discrete geometry in Lean. The Ehrhart-Macdonald reciprocity and h*-vector theory open paths toward formalizing deeper results in enumerative combinatorics and toric geometry.",

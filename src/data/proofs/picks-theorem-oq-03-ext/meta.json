@@ -87,6 +87,27 @@
       "mathContext": "$\\sum_i h^*_i = d! \\cdot \\text{Vol}(P)$. Euler: $L(0) + (-1)^d L^*(0) = 0$ for odd $d$. Binomial: $L_{\\text{cube}}(n) = n^3 + 3n^2 + 3n + 1 = \\sum_k \\binom{3}{k} n^k$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Macdonald, I.G."
+      ],
+      "title": "Polynomials associated with finite cell-complexes",
+      "year": "1971",
+      "venue": "Journal of the London Mathematical Society 4 (1), pp. 181–192",
+      "note": "Ehrhart–Macdonald reciprocity relating the Ehrhart polynomial of a polytope to that of its interior."
+    },
+    {
+      "authors": [
+        "Beck, M.",
+        "Robins, S."
+      ],
+      "title": "Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra",
+      "year": "2015",
+      "venue": "2nd ed., Undergraduate Texts in Mathematics, Springer",
+      "note": "Standard modern reference for Pick's theorem, Ehrhart polynomials, Ehrhart–Macdonald reciprocity and h*-vectors."
+    }
+  ],
   "conclusion": {
     "summary": "Ehrhart extension theory fully formalized: 30 theorems, 0 sorries, 0 axioms. h*-palindromy examples, reciprocity consequences, and interpolation uniqueness all proved.",
     "implications": "These results clarify the relationship between reflexivity, palindromy, and reciprocity in Ehrhart theory. The interpolation uniqueness theorem confirms that Ehrhart polynomials are canonically determined by their evaluations.",

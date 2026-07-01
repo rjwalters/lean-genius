@@ -103,6 +103,29 @@
       "mathContext": "$B = \\sum_i \\gcd(|\\Delta x_i|, |\\Delta y_i|)$, with each edge contributing $\\text{card} - 1 = \\gcd(a,b)$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Beck, M.",
+        "Robins, S."
+      ],
+      "title": "Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra",
+      "year": "2015",
+      "venue": "2nd ed., Undergraduate Texts in Mathematics, Springer",
+      "note": "Standard modern reference for Pick's theorem, Ehrhart polynomials, Ehrhart–Macdonald reciprocity and h*-vectors."
+    },
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Elementary gcd / lattice-point counting on a segment."
+    }
+  ],
   "conclusion": {
     "summary": "Fully proves the GCD boundary formula for lattice points on a segment: card(segmentPoints(a,b)) = gcd(a,b)+1. The proof is machine-verified with 0 axioms and 0 sorries. Key techniques: Finset.card_image_of_injective for the cardinality, Nat.coprime_div_gcd_div_gcd + Nat.Coprime.dvd_of_dvd_mul_right for completeness. 13 theorems, 2 definitions, 245 lines.",
     "implications": "This formula is the foundation of the boundary count B in Pick's theorem. A polygon with n edges, each going from (xᵢ,yᵢ) to (xᵢ₊₁,yᵢ₊₁), has boundary count B = Σ gcd(|Δxᵢ|, |Δyᵢ|). With this formula formalized, a constructive proof of Pick's theorem (as opposed to the axiomatized version) requires formalizing triangulation of lattice polygons.",
