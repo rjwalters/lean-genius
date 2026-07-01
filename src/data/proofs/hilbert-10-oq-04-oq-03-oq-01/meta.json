@@ -199,5 +199,36 @@
       "relationship": "extends",
       "description": "Makes the forward direction of the grandparent's linear_bezout_n criterion constructive, exhibiting the solution rather than only asserting it exists."
     }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Ivan Niven",
+        "Herbert S. Zuckerman",
+        "Hugh L. Montgomery"
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 1991,
+      "venue": "Wiley (5th ed.)",
+      "note": "Linear Diophantine equations, the gcd/Bézout solvability criterion, and explicit solution construction."
+    },
+    {
+      "authors": [
+        "Henri Cohen"
+      ],
+      "title": "A Course in Computational Algebraic Number Theory",
+      "year": 1993,
+      "venue": "Springer, Graduate Texts in Mathematics 138",
+      "note": "Algorithms for the Hermite and Smith normal forms and constructive solution of linear Diophantine systems."
+    },
+    {
+      "authors": [
+        "Alexander Schrijver"
+      ],
+      "title": "Theory of Linear and Integer Programming",
+      "year": 1986,
+      "venue": "Wiley",
+      "note": "Constructive extended-Euclidean solvers producing explicit witnesses for linear Diophantine equations."
+    }
   ]
 }

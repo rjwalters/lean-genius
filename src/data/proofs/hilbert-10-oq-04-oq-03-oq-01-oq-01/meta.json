@@ -161,5 +161,36 @@
       "Can the bridge vecGcd = Finset.gcd be generalized from ℤ to an arbitrary Euclidean domain (or Bézout domain), recovering both the explicit witness and the abstract criterion uniformly?",
       "What is the bit-complexity of the constructive solver relative to computing Finset.gcd, and does the normalized identification suggest a fused algorithm that returns both the gcd and the Bézout vector in one pass?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": [
+        "Ivan Niven",
+        "Herbert S. Zuckerman",
+        "Hugh L. Montgomery"
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 1991,
+      "venue": "Wiley (5th ed.)",
+      "note": "Linear Diophantine equations, the gcd/Bézout solvability criterion, and explicit solution construction."
+    },
+    {
+      "authors": [
+        "Henri Cohen"
+      ],
+      "title": "A Course in Computational Algebraic Number Theory",
+      "year": 1993,
+      "venue": "Springer, Graduate Texts in Mathematics 138",
+      "note": "Algorithms for the Hermite and Smith normal forms and constructive solution of linear Diophantine systems."
+    },
+    {
+      "authors": [
+        "Serge Lang"
+      ],
+      "title": "Algebra",
+      "year": 2002,
+      "venue": "Springer, Graduate Texts in Mathematics 211 (3rd ed.)",
+      "note": "gcd in PIDs and the abstract Finset.gcd reconciled with recursive fold definitions."
+    }
+  ]
 }
