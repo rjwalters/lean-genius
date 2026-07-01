@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-buffons-noodle-oq-03-oq-02-00",
+    "proofId": "buffons-noodle-oq-03-oq-02",
+    "range": {
+      "startLine": 5,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "The Higher-Codimension Buffon Question",
+    "content": "The parent problem generalises Buffon's Noodle to ℝⁿ: a rectifiable curve of length L thrown at parallel hyperplanes spaced d apart crosses them on average E = αₙ·L/d, where αₙ = 𝔼_{u∼S^{n−1}}|u₁| is the crossing factor (closed form αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) in the sibling files). Open question oq-03·oq-02 asks to generalise the *codimension*: replace the hyperplanes by parallel k-dimensional affine subspaces (k-flats). A k-flat in ℝⁿ has codimension c = n − k, and a hyperplane is exactly the c = 1 case. This file answers the complementary c ≥ 2 regime, which turns out to be degenerate for a 1-dimensional needle.",
+    "mathContext": "Parent law: $E = \\alpha_n \\cdot L/d$ with $\\alpha_n = \\mathbb{E}_{u\\sim S^{n-1}}|u_1| = \\Gamma(n/2)/(\\sqrt{\\pi}\\,\\Gamma((n+1)/2))$. Here we vary $c = n-k$ (codimension of the target flats) rather than $n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Buffon's needle / noodle",
+      "crossing factor",
+      "affine subspaces (k-flats)",
+      "codimension",
+      "integral geometry"
+    ],
+    "prerequisites": [
+      "geometric probability",
+      "affine subspaces and codimension",
+      "the parent Buffon noodle law in ℝⁿ"
+    ]
+  },
+  {
     "id": "ann-buffons-noodle-oq-03-oq-02-01",
     "proofId": "buffons-noodle-oq-03-oq-02",
     "range": {
@@ -70,6 +95,31 @@
     "prerequisites": [
       "almost-everywhere statements",
       "expectation and absolute continuity"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-oq-02-04",
+    "proofId": "buffons-noodle-oq-03-oq-02",
+    "range": {
+      "startLine": 114,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "The Full ℝⁿ Framing: a Spatial Curve Misses Every k-Flat",
+    "content": "spatialCurve_crossedOffsets_measure_zero is the direct Buffon-in-ℝⁿ statement. Given a Lipschitz spatial curve Γ : ℝ → (Fin n → ℝ) and any Lipschitz projection P : (Fin n → ℝ) → (Fin c → ℝ) onto the c-dimensional orthogonal complement of the common flat direction, the k-flat {x | P x = w} meets the curve on [0,L] exactly when w lies in the image of the projected curve P∘Γ. For codimension c ≥ 2 the set of such hit offsets is Lebesgue-null. The proof is a one-liner reduction: P∘Γ is Lipschitz (LipschitzWith.comp of the two Lipschitz maps), so crossedOffsets_measure_zero applies verbatim. This is the theorem that literally answers the open question for spatial needles — every higher-codimension parallel-flat family is degenerate.",
+    "mathContext": "$\\mathrm{vol}\\{w \\in \\mathbb{R}^c : \\exists t\\in[0,L],\\ P(\\Gamma(t)) = w\\} = 0$ for $c \\ge 2$, since $P\\circ\\Gamma$ is Lipschitz and its image has $\\dim_H \\le 1 < c$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orthogonal projection",
+      "composition of Lipschitz maps",
+      "k-flats in ℝⁿ",
+      "hit-offset set",
+      "codimension"
+    ],
+    "prerequisites": [
+      "LipschitzWith.comp",
+      "orthogonal projection onto a complement",
+      "the analytic core volume_lipschitzImage_eq_zero"
     ]
   }
 ]
