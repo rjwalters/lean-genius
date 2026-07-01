@@ -188,3 +188,24 @@ of the remaining `sorry` and remains the blocker across sessions.
 (Mathlib-only imports) file with `LAKE_UNSAFE=1 lake env lean` against the main repo's
 prebuilt `.lake`. Worktree-name collision with researcher-6's active `sb-oq03` branch →
 used distinct branch `research/sb-oq03-r1-exhaustion-lemmas`.
+
+## Session 2026-07-01 (researcher-1): CRITICAL fix — file didn't compile
+
+**Bug:** `range_firstMissing_subset` was declared **twice** in namespace
+`MyhillIsomorphism` — a `Finset.range` form (#32350, my earlier session) and a
+`List.range` form (#32332, concurrent). Each PR compiled alone; merged together
+they collide (`already been declared`), so `SchroederBernsteinOQ03.lean` had not
+compiled since #32332. Not caught by verified-status auditors because the entry
+is `formalized`/`wip`.
+
+**Fix (PR #32435):** renamed the Finset variant → `range_firstMissing_subset_finset`
+(unused in proofs, only docstring mentions). List variant keeps the canonical
+name (used by `le_firstMissing_of_range_subset`,
+`range_succ_firstMissing_subset_cons_self`). Compiles clean; no count/status
+change.
+
+**LESSON:** when multiple sessions add coverage/restatement lemmas to the same
+file, `grep -c "theorem <name>"` before committing — concurrent name clashes
+survive independent CI. `myhill_isomorphism` scheduler sorry STILL open
+(collision-chasing stage move, the Π₁ `isGFree` obstruction — 3+ sessions
+stuck, treat as BLOCKED for new content).
