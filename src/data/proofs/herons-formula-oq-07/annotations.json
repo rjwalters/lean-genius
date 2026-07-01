@@ -10,7 +10,7 @@
     "title": "Weitzenböck's Inequality",
     "content": "Weitzenböck's inequality (Roland Weitzenböck, 1919; IMO 1961, Problem 2) states that for any triangle with side lengths a, b, c and area, a² + b² + c² ≥ 4√3·Area, with equality exactly for the equilateral triangle. Equivalently, among all triangles with a fixed sum of squared sides the equilateral one has the largest area. It is the leading term of the sharper Finsler–Hadwiger inequality. This formalization avoids any coordinate or trigonometric construction and works directly from Heron's area, reducing the statement to a polynomial inequality settled by a sum-of-squares certificate.",
     "mathContext": "$a^2 + b^2 + c^2 \\ge 4\\sqrt{3}\\,\\mathrm{Area}$, with equality iff $a=b=c$. The constant $4\\sqrt{3}$ is sharp: for the equilateral triangle of side $a$ one has $\\mathrm{Area} = \\tfrac{\\sqrt{3}}{4}a^2$, so $4\\sqrt{3}\\,\\mathrm{Area} = 3a^2 = a^2+a^2+a^2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Weitzenböck's inequality",
       "Finsler–Hadwiger inequality",

@@ -7,7 +7,7 @@
     "title": "From colouring to list colouring: the strongest natural axis",
     "content": "The parent entry proves the classical greedy degeneracy bound $k$-degenerate $\\Rightarrow$ $(k+1)$-colourable, tight on the complete split graph $S_{n,k}$. This file strengthens the *upper* half of that statement to **list colouring** (choosability). A graph is $k$-choosable if for **every** assignment of a palette $L(v)$ of $\\ge k$ colours to each vertex, one can pick $c(v)\\in L(v)$ making $c$ proper. Choosability is strictly stronger than colourability ($\\chi_\\ell(G)\\ge\\chi(G)$, with arbitrarily large gaps), so a bound that survives the passage to lists is genuinely deeper. The header lays out the two results: (1) degeneracy still bounds $\\chi_\\ell$, and (2) the same split graph keeps it tight. The imports pull in the ancestor machinery: `IsKDegenerate`, `splitGraph`, and `splitGraph_kDegenerate` from the grandparent, and `splitGraph_not_colorable` from the parent.",
     "mathContext": "$\\chi_\\ell(G) \\ge \\chi(G)$; parent: $k$-degenerate $\\Rightarrow \\chi \\le k+1$. Here: $k$-degenerate $\\Rightarrow \\chi_\\ell \\le k+1$, tight via $S_{n,k}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "list colouring / choosability",
       "list chromatic number",

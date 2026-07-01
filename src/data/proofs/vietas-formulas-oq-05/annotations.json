@@ -10,7 +10,7 @@
     "title": "Boundary Values: esymm 1 = sum and esymm (card s) = prod",
     "content": "Two degenerate layers of the elementary symmetric functions of a multiset. `esymm_one` unfolds e₁(s) via `powersetCard_one`: the 1-element sub-multisets of s are exactly the singletons {a}, whose products are the elements a, so the sum over them is s.sum. `esymm_self` handles the top layer e_{card s}(s): the sub-multisets of s with cardinality card s number (card s).choose(card s) = 1, and s itself is one of them (s ≤ s), so the top layer is the single element {s}; its only product is s.prod. These are precisely the two symmetric functions that become the sum and the product of the roots.",
     "mathContext": "e_1(s) = Σ_{a∈s} a via powersetCard 1 s = s.map singleton; e_{|s|}(s) = Π_{a∈s} a because powersetCard (card s) s = {s} (cardinality (card s).choose(card s) = 1, and s ≤ s).",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "elementary symmetric functions",
       "multiset powerset",
@@ -57,7 +57,7 @@
     "title": "coeff_natDegree_sub_one: Sum of the Roots (j = 1)",
     "content": "The sum-of-roots law as the j = 1 instance of the dictionary. For a monic split polynomial of positive degree, coeff(n − 1) = −(sum of roots). The proof feeds j = 1 into coeff_eq_esymm_of_monic, giving coeff(n−1) = (−1)¹ · esymm 1(roots), then rewrites esymm 1 = sum (esymm_one) and (−1)·x = −x (neg_one_mul). The positive-degree hypothesis 1 ≤ n is exactly what makes j = 1 a legal index and n − 1 the genuine sub-leading position.",
     "mathContext": "coeff(n−1) = (−1)^1 · e_1(roots) = −(Σ roots). The familiar 'sum of roots = minus the coefficient one below the top'.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "sum of roots",
       "Vieta's formulas",
@@ -79,7 +79,7 @@
     "title": "coeff_zero_eq_prod: Product of the Roots (j = n)",
     "content": "The product-of-roots law as the j = n instance of the same dictionary — so the sum and product are not proved by separate arguments but read off the two ends of one relation. Feeding j = n gives coeff(n − n) = coeff 0 = (−1)ⁿ · esymm n(roots); since card(roots) = n, esymm n(roots) = esymm (card roots)(roots) = product of roots by esymm_self. The statement coincides with Mathlib's Splits.coeff_zero_eq_prod_roots_of_monic, but here it is a corollary of the general dictionary rather than an independent lemma.",
     "mathContext": "coeff 0 = (−1)^n · e_n(roots) = (−1)^n · (Π roots), using e_n = e_{card roots} = prod.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "product of roots",
       "Vieta's formulas",
@@ -101,7 +101,7 @@
     "title": "build_coeff: the Converse Constructive Direction",
     "content": "The inverse of the dictionary. Instead of reading coefficients off a given split polynomial, this builds a monic polynomial ∏(X − rᵢ) from a prescribed multiset s of roots and reads its coefficients back as the elementary symmetric functions of s: coeff k = (−1)^(m−k) · e_{m−k}(s) with m = card s. It is a direct application of Mathlib's Multiset.prod_X_sub_C_coeff and needs only a commutative ring, so `IsDomain` is omitted at the site. Together with coeff_eq_esymm_of_monic it says that expanding a product of linear factors and factoring a split polynomial are inverse coefficient computations.",
     "mathContext": "(∏_{r∈s}(X − r)).coeff k = (−1)^(m−k) · e_{m−k}(s), m = card s — the forward map from roots to coefficients.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "constructive Vieta",
       "product of linear factors",

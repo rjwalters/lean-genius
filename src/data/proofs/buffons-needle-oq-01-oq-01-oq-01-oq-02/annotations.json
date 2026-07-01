@@ -33,7 +33,7 @@
     "title": "Degenerate Interval: A Point Noodle Has No Crossings",
     "content": "`expectedCrossings_self` records the base case: over an empty parameter interval [a, a] the functional is 0, since ∫_a^a = 0 (`integral_same`) and the 1/(πd) factor then multiplies zero (`mul_zero`). Tagging it `@[simp]` lets the simplifier discharge degenerate pieces automatically — a partition point that coincides with its neighbour drops out of any sum without manual bookkeeping. It is the additive identity that makes the concatenation lemmas well-behaved at trivial splits.",
     "mathContext": "$E(\\gamma, a, a, d) = \\frac{1}{\\pi d}\\int_a^a \\text{angularIntegrand}\\,dt = 0.$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "intervalIntegral.integral_same",
       "simp lemma",

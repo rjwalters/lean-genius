@@ -19,7 +19,7 @@
     "title": "line_integral_fderiv_closed: Vanishing Circulation (Fréchet form)",
     "content": "If the path is closed (γ a = γ b), the line integral of the exact 1-form Dg vanishes: ∫ₐᵇ Dg(t)[γ'(t)] = 0. A conservative field does no net work around any loop. One-line corollary of line_integral_fderiv_eq_sub: substitute γ a = γ b into g(γ b) − g(γ a) and apply sub_self.",
     "mathContext": "$\\gamma a = \\gamma b \\Rightarrow \\oint Dg(\\gamma t)[\\gamma'(t)] = 0$ — exact forms have zero circulation.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["conservative field", "closed loop", "circulation", "sub_self"],
     "prerequisites": ["line_integral_fderiv_eq_sub"]
   },
@@ -31,7 +31,7 @@
     "title": "line_integral_fderiv_path_independent: Path Independence (Fréchet form)",
     "content": "Two paths with matching endpoints (γ₁ a = γ₂ c, γ₁ b = γ₂ d) give the same line integral of the exact 1-form of the same potential g — each integral equals the endpoint difference g(end) − g(start). One-line corollary rewriting both sides via line_integral_fderiv_eq_sub and the endpoint equalities.",
     "mathContext": "Equal endpoints $\\Rightarrow$ equal line integrals: the integral depends only on $\\partial\\gamma$, not on the path.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["path independence", "conservative field", "endpoint difference"],
     "prerequisites": ["line_integral_fderiv_eq_sub"]
   },
@@ -55,7 +55,7 @@
     "title": "gradient_theorem_closed: Zero Circulation of a Conservative Field",
     "content": "The line integral of a gradient field ∇g around a closed loop (γ a = γ b) is zero: ∫ₐᵇ ⟪∇g(γ t), γ'(t)⟫ = 0. The vector-calculus statement that conservative fields have vanishing circulation — the standard test for conservativeness. One-line corollary of gradient_theorem.",
     "mathContext": "$\\oint \\langle \\nabla g, d\\mathbf r\\rangle = 0$ around any closed loop.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["conservative field", "circulation", "closed loop"],
     "prerequisites": ["gradient_theorem"]
   },
@@ -67,7 +67,7 @@
     "title": "gradient_theorem_path_independent: Path Independence of a Gradient Field",
     "content": "Two paths with matching endpoints give equal line integrals of ∇g: both equal the endpoint difference g(end) − g(start). The defining property distinguishing conservative fields. One-line corollary rewriting both sides via gradient_theorem and the endpoint equalities.",
     "mathContext": "Matching endpoints $\\Rightarrow$ equal $\\int \\langle \\nabla g, d\\mathbf r\\rangle$ — path independence of conservative fields.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["path independence", "conservative field", "gradient field"],
     "prerequisites": ["gradient_theorem"]
   }

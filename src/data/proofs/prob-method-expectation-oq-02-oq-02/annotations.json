@@ -67,7 +67,7 @@
     "title": "Diagonal recovery and a true off-diagonal instance",
     "content": "`ramsey_offdiagonal_gt` restates the result in witness form (every $s$-clique has a blue edge, every $t$-clique has a red edge). Two concrete instances are then discharged by `by decide` (not `native_decide`, preserving axiom-freeness): `ramsey_four_four_gt_six` recovers the diagonal $R(4,4) > 6$ through the off-diagonal formula ($\\binom{6}{4}2^6 + \\binom{6}{4}2^6 = 1920 < 4096$), and `ramsey_three_four_gt_four` gives a genuinely asymmetric $R(3,4) > 4$ ($\\binom{4}{3}2^6 + \\binom{4}{4}2^3 = 264 < 512$).",
     "mathContext": "$R(4,4) > 6$: $1920 < 2^{12}$. $\\quad R(3,4) > 4$: $264 < 2^{9}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["small Ramsey numbers", "decidability", "diagonal vs off-diagonal", "concrete witnesses"],
     "prerequisites": ["Ramsey numbers", "decide tactic"]
   }

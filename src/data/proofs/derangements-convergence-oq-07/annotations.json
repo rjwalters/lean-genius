@@ -73,7 +73,7 @@
     "title": "ℕ Specialization and Concrete Instance",
     "content": "factorial_eq_sum_choose_mul_numDerangements specializes the finite-type identity to α = Fin n, giving n! = Σ_{k∈range(n+1)} C(n,k)·D(n−k) purely over ℕ; the reduction is a single simpa with Fintype.card_fin. A concrete example checks the identity at n = 4: 4! = 24 = C(4,0)·9 + C(4,1)·2 + C(4,2)·1 + C(4,3)·0 + C(4,4)·1 = 9 + 8 + 6 + 0 + 1, exercising the statement on a nontrivial instance (D(4)=9, D(3)=2, D(2)=1, D(1)=0, D(0)=1).",
     "mathContext": "Instantiating the abstract statement at the canonical $n$-element type $\\mathrm{Fin}\\,n$ yields the familiar number-theoretic identity. The concrete $n=4$ check confirms the convolution numerically and doubles as a regression test on the derangement values.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Fintype.card_fin",
       "numDerangements small values",

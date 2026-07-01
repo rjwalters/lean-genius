@@ -7,7 +7,7 @@
     "title": "Complete normed space — the home of the contraction",
     "content": "The state space E is a complete normed ℝ-vector space (Banach space). Completeness is not incidental: the whole Picard–Lindelöf theorem is an application of the Banach fixed-point theorem to the Picard integral operator on the complete metric space of continuous curves, and the contraction's fixed point exists precisely because Cauchy sequences of approximations converge. The field F : ℝ → E → E is genuinely time-dependent (non-autonomous), the distinguishing feature of this entry versus the autonomous parent.",
     "mathContext": "$y'(t) = F(t, y(t)),\\quad y(t_0) = x_0,\\qquad E\\ \\text{a Banach space}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Banach space", "completeness", "contraction mapping", "non-autonomous ODE"],
     "prerequisites": ["normed vector spaces", "metric space completeness"]
   },

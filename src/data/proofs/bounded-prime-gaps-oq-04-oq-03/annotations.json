@@ -35,7 +35,7 @@
       "endLine": 95
     },
     "type": "technique",
-    "significance": "standard",
+    "significance": "supporting",
     "content": "The conjugation identity conj(gaussSum χ ψ) = gaussSum χ⁻¹ ψ⁻¹ is assembled from two unitarity facts already in Mathlib: MulChar.star_apply' (conj(χ a) = χ⁻¹ a, because Dirichlet character values are roots of unity or 0) and conj_stdAddChar (conj of the standard additive character equals its inverse, because stdAddChar a = ↑(toCircle a) lies on the unit circle, via Circle.coe_inv_eq_conj and AddChar.map_neg_eq_inv). Crucially this step holds for every modulus, not just primes — it is deliberately proved in that generality so that only gaussSum_mul_conj carries the prime restriction.",
     "mathContext": "$\\overline{\\chi(a)} = \\chi^{-1}(a)$ and $\\overline{\\psi(a)} = \\psi(-a) = \\psi^{-1}(a)$; summing termwise, $\\overline{\\tau(\\chi)} = \\sum_a \\chi^{-1}(a)\\psi^{-1}(a) = \\mathrm{gaussSum}\\,\\chi^{-1}\\,\\psi^{-1}$.",
     "relatedConcepts": ["complex conjugation", "unitarity of characters", "roots of unity", "modulus-agnostic identities"],
@@ -49,7 +49,7 @@
       "endLine": 135
     },
     "type": "insight",
-    "significance": "notable",
+    "significance": "supporting",
     "content": "Unlike the sibling catalog OQ04-OQ02 (which is axiomatized, badge 'axiom', 7 axioms including native_decide's Lean.ofReduceBool), this file is fully verified: #print axioms reports only propext, Classical.choice, Quot.sound for every credited theorem — no sorryAx, no Lean.ofReduceBool. The final norm extraction is a two-line calc: normSq τ(χ) = p (cast from the complex product) then |τ(χ)| = √(normSq τ(χ)) = √p via Complex.norm_def. gaussSum_ne_zero falls out as a corollary since √p > 0. This is a genuine axiom-to-theorem conversion of the prime part of gaussSumBound.",
     "mathContext": "$z\\overline{z} = \\mathrm{normSq}(z)$ as a real number, and $\\|z\\| = \\sqrt{\\mathrm{normSq}(z)}$; with $\\mathrm{normSq}(\\tau(\\chi)) = p$ this yields $\\|\\tau(\\chi)\\| = \\sqrt{p}$.",
     "relatedConcepts": ["axiom auditing (#print axioms)", "Complex.normSq", "verified vs axiomatized status", "gaussSum_ne_zero"],

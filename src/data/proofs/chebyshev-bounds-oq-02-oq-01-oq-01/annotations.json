@@ -7,7 +7,7 @@
     "title": "Why θ Needs Both Mathlib and This Project",
     "content": "The docstring pinpoints the asymmetry this file resolves. Mathlib has a clean UPPER bound θ(x) ≤ log 4 · x (Chebyshev.theta_le_log4_mul_x) but NO lower bound for either Chebyshev function θ or ψ — the substantive linear lower estimate (log 2/3)·m ≤ ψ(m), from the central binomial coefficient, is supplied by this project's sibling ChebyshevBoundsOQ02OQ01. The strategy is to transfer that lower bound from ψ to θ: because the two functions differ only by O(√n·log n) (ψ counts prime POWERS, θ only primes, and the higher-prime-power contribution is lower order), the closeness estimate |ψ(n) − θ(n)| ≤ 2√n·log n lets the linear lower bound on ψ descend to θ up to that correction. The result θ(m) = Θ(m) with explicit constants is the elementary heart of the prime number theorem and appears nowhere in Mathlib (which has only the upper half).",
     "mathContext": "$\\psi - \\theta = \\sum_{k \\ge 2}\\theta(n^{1/k}) = O(\\sqrt n \\log n)$, so a linear lower bound on $\\psi$ transfers to $\\theta$: $\\tfrac{\\log 2}{3}m - 2\\sqrt m\\log m \\le \\theta(m) \\le (\\log 4)m$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Chebyshev theta and psi", "prime powers vs primes", "prime number theorem", "Mathlib gap"],
     "prerequisites": ["Chebyshev functions", "asymptotic order O(·)", "central binomial coefficient bound"]
   },

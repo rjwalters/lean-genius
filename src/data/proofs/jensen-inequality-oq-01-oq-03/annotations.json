@@ -83,7 +83,7 @@
     "title": "Strict AM–GM for non-constant positive data",
     "content": "unweighted_amgm_lt_of_ne is the strict companion, specializing the parent's weighted_amgm_lt_of_ne: if the data are strictly positive and some two values zⱼ, zₖ differ, then the geometric mean is strictly below the arithmetic mean, (∏ zᵢ)^(1/|s|) < (∑ zᵢ)/|s|. The reshaping rewrites are identical, with the nonnegativity input to Real.finset_prod_rpow supplied as (hz i hi).le from the strict-positivity hypothesis.",
     "mathContext": "$z_j \\ne z_k \\text{ for some } j,k \\Rightarrow \\left(\\prod z_i\\right)^{1/|s|} < \\frac{\\sum z_i}{|s|}$, with $z_i > 0$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "strict inequality",
       "non-constant data",

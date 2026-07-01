@@ -57,7 +57,7 @@
     "title": "The structural dichotomy: cyclic or exponent p",
     "content": "`isCyclic_or_pow_prime_eq_one` is the heart of the entry. By Lagrange the order of any element g divides p², so orderOf g = p^m with m ≤ 2. The case split is clean: if m = 2 then orderOf g = |G|, so g generates G (`isCyclic_of_orderOf_eq_card`) and G is cyclic; otherwise m ≤ 1 gives orderOf g ∣ p, hence g^p = 1 via `orderOf_dvd_iff_pow_eq_one`. This element-order invariant is exactly what Mathlib's abelian lemma leaves implicit, and it is what separates ℤ/p² from (ℤ/p)².",
     "mathContext": "$\\operatorname{ord}(g) \\mid p^2 \\Rightarrow \\operatorname{ord}(g) \\in \\{1, p, p^2\\}$. Some $\\operatorname{ord}(g) = p^2 \\Rightarrow G$ cyclic; else $\\forall g,\\ \\operatorname{ord}(g) \\mid p \\Rightarrow g^p = 1$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Lagrange's theorem",
       "orderOf divides card",
@@ -81,7 +81,7 @@
     "title": "Cyclic ⇔ maximal-order element; exponent p in the other branch",
     "content": "Two capstone results. `isCyclic_iff_exists_orderOf_eq` says a group of order p² is cyclic exactly when some element attains the full order p² — the concrete witness for the ℤ/p² branch. `exponent_eq_prime_of_not_isCyclic` computes the exponent of the non-cyclic case to be exactly p: every element satisfies g^p = 1 (from the dichotomy), so the exponent divides p; and it cannot be 1, since that would make G a subsingleton contradicting |G| = p² > 1. Together with the abelian result this identifies the non-cyclic case as (ℤ/p)².",
     "mathContext": "Cyclic $\\iff \\exists g,\\ \\operatorname{ord}(g) = p^2$. Non-cyclic $\\Rightarrow \\operatorname{exponent}(G) \\mid p$ and $\\operatorname{exponent}(G) \\ne 1$, so $\\operatorname{exponent}(G) = p$ (elementary abelian).",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "elementary abelian group",
       "group exponent",

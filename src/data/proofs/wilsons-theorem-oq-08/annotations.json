@@ -19,7 +19,7 @@
     "title": "Combinatorial core: distinct factors divide N!",
     "content": "`mul_dvd_factorial_of_distinct`: if a ≠ b are positive and both ≤ N, then a·b ∣ N!. Proof: {a,b} ⊆ Ico 1 (N+1); `Finset.prod_pair` gives ∏_{{a,b}} i = a·b, and `Finset.prod_dvd_prod_of_subset` makes this divide ∏_{Ico 1 (N+1)} i = N! (`Finset.prod_Ico_id_eq_factorial`). Intuitively, a and b sit as two *separate* terms of the product 1·2···N, so their product divides it. This is the engine of the composite congruence.",
     "mathContext": "$a \\ne b,\\ 1 \\le a,b \\le N \\implies ab \\mid N!$",
-    "significance": "fundamental",
+    "significance": "critical",
     "relatedConcepts": ["Finset product", "subproduct divisibility", "factorial"],
     "prerequisites": ["Finset.prod_dvd_prod_of_subset", "Finset.prod_Ico_id_eq_factorial"]
   },

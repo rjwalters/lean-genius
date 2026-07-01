@@ -28,7 +28,7 @@
     "title": "The Weighted Digit Sum",
     "content": "`weightedDigitSum b m n = Σᵢ dᵢ · (bⁱ mod m)` where $d_i$ are the base-$b$ digits of $n$. Unlike the ordinary digit sum (which weights every digit by 1), each digit is scaled by the *periodic* positional weight $w_i = b^i \\bmod m$. This weight is precisely what the unweighted digit sum throws away when $b \\not\\equiv 1 \\pmod m$. For divisibility by 7 in base 10 the weights cycle $[1,3,2,6,4,5]$; for 11 they cycle $[1,10,1,10,\\dots]$.",
     "mathContext": "$W_{b,m}(n) = \\sum_i d_i\\,(b^i \\bmod m)$, weights $w_i = b^i \\bmod m$ periodic in $i$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "positional notation",
       "Nat.digits",
@@ -46,7 +46,7 @@
     "title": "The Universal Weighted Rule (Main Theorem)",
     "content": "`weighted_modEq`: for **every** base $b$ and modulus $m$, $n \\equiv W_{b,m}(n) \\pmod m$. The proof is a two-line congruence chain. First, Mathlib's `Nat.ofDigits_eq_sum_mapIdx` gives the *exact* identity $n = \\mathrm{ofDigits}\\,b\\,(\\mathrm{digits}\\,b\\,n) = \\sum_i d_i b^i$ (via `ofDigits_digits`). Then `mapIdx_sum_modEq` reduces each weight $b^i$ to $b^i \\bmod m$, justified termwise by $b^i \\equiv b^i \\bmod m \\pmod m$ (`Nat.mod_modEq`) scaled by the digit. Crucially, **no hypothesis relates $m$ to $b-1$** — this is exactly the generalization the parent open question requested.",
     "mathContext": "$n = \\sum_i d_i b^i \\equiv \\sum_i d_i (b^i \\bmod m) = W_{b,m}(n) \\pmod m$, for all $b, m, n$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Nat.ofDigits_eq_sum_mapIdx",
       "Nat.ofDigits_digits",

@@ -31,7 +31,7 @@
     "title": "Residual in the Orthogonal Complement",
     "content": "With the bridge in hand, three properties come for free from Mathlib. `proj_mem_span` places the projection on the line (`starProjection_apply_mem`). `residual_mem_orthogonal` shows the residual `u − proj u v` lies in the *entire* orthogonal complement `(ℝ ∙ v)ᗮ` (`sub_starProjection_mem_orthogonal`) — strictly stronger than the parent's `⟪u − proj u v, v⟫ = 0`, which is recovered as the corollary `residual_inner_eq_zero`. Finally `proj_of_mem_span` records that the projection fixes any vector already on the line (`starProjection_eq_self_iff`).\n\nThe upgrade from ⟂ v to ⟂ (ℝ ∙ v) is the qualitative gain of routing through Mathlib: orthogonality to every scalar multiple of v, not just to v itself, is the defining variational property of the projection.",
     "mathContext": "$K^\\perp = \\{x : \\langle y, x\\rangle = 0 \\text{ for all } y \\in K\\}$. The residual $u - P_K u \\in K^\\perp$ is exactly the Euler condition for $P_K u$ being the minimizer of $\\|u - \\cdot\\|$ over $K$.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": ["orthogonal complement", "sub_starProjection_mem_orthogonal", "variational characterization"],
     "prerequisites": ["Orthogonal complement Kᗮ", "membership in a span"]
   },

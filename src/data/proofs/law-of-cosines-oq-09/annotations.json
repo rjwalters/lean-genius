@@ -10,7 +10,7 @@
     "title": "Euclid II.12/II.13 as the Signed Converse of Pythagoras",
     "content": "The header fixes the classical context. Euclid's Elements Book II, Propositions 12 (obtuse) and 13 (acute), quantify how far a triangle departs from right-angled — centuries before trigonometry existed. In modern form both, together with Pythagoras (the right-angle boundary), are the single Law-of-Cosines relation c² = a² + b² − 2ab·cos C. This entry takes that relation as a hypothesis (hlc) and proves the full trichotomy: with a, b > 0 and C ∈ [0, π], the classification of C against π/2 is exactly the comparison of a² + b² against c². The proof needs no synthetic geometry — only the sign of cos C on [0, π], since 2ab > 0 makes a² + b² − c² = 2ab·cos C sign-equal to cos C.",
     "mathContext": "Law of Cosines: $c^2 = a^2 + b^2 - 2ab\\cos C$. With $2ab>0$, $\\operatorname{sign}(a^2+b^2-c^2)=\\operatorname{sign}(\\cos C)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euclid Elements II.12 / II.13",
       "Law of Cosines",

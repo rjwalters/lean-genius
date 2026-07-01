@@ -57,7 +57,7 @@
     "title": "What the two `open`s bring into scope",
     "content": "The single `open Real MeasureTheory` is what makes the theorem statements read the way they do. `open Real` brings the un-namespaced `π`, `exp`, and `sqrt` into scope (the file still writes `Real.exp`/`Real.sqrt`/`Real.pi` explicitly, but `integral_gaussian`'s statement uses the opened forms, so the match works). `open MeasureTheory` brings the integral notation `∫ x, f x`, which denotes the **Bochner integral of `f` against the default volume measure on ℝ** — not a Riemann or improper integral. Two consequences matter for reading the statement honestly: (1) the notation is total — for a non-integrable integrand it would silently evaluate to `0`, so the theorem only says something because `e^{-x²}` is genuinely integrable (a fact `integral_gaussian` supplies); (2) `∫ x : ℝ, …` with the bound-variable type annotation fixes the measure space to `(ℝ, volume)`, which is exactly the space `integral_gaussian` is stated over, allowing the `b = 1` instance to unify with the goal without any measure coercion.",
     "mathContext": "$\\int_{\\mathbb R} f\\,d\\mu$ (Bochner) with $\\mu = \\text{volume}$; convention $\\int f = 0$ when $f \\notin L^1$, so integrability of $e^{-x^2}$ is a genuine hypothesis carried by \\texttt{integral\\_gaussian}.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Bochner integral",
       "volume measure on ℝ",

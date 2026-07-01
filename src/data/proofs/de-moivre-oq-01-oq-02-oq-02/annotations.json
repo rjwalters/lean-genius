@@ -55,7 +55,7 @@
     "title": "Packaged: one Uₙ, both sine ratios",
     "content": "`U_eval_cos_and_cosh` bundles the two analytic ratios $U_n(\\cos z)\\sin z=\\sin((n+1)z)$ and $U_n(\\cosh z)\\sinh z=\\sinh((n+1)z)$ into a single conjunction — the direct $U$-analogue of the parent's `T_eval_cos_and_cosh`, making explicit that the *same* $U_n$ governs both.",
     "mathContext": "$\\big(U_n(\\cos z)\\sin z=\\sin((n+1)z)\\big)\\ \\wedge\\ \\big(U_n(\\cosh z)\\sinh z=\\sinh((n+1)z)\\big).$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["unification", "Chebyshev U"],
     "prerequisites": ["U_complex_cos", "U_complex_cosh"]
   }

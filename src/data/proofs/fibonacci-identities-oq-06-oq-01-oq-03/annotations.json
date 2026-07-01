@@ -35,7 +35,7 @@
     "title": "Even-Indexed Summands and the Even-Index Recurrence",
     "content": "The summands pₖ = F₂ₖ and qₖ = F₂ₖ₊₂ define the transform sequences Cₙ = ∑ C(n,k) F₂ₖ and Dₙ = ∑ C(n,k) F₂ₖ₊₂. The shift lemma p_succ (pₖ₊₁ = qₖ) is definitional, since 2·(k+1) reduces to 2·k+2 in ℕ. The lemma q_succ proves the even-indexed Fibonacci recurrence F₂ₖ₊₄ = 3·F₂ₖ₊₂ − F₂ₖ by unfolding three steps of Nat.fib_add_two over ℤ (push_cast + ring) — this second-order recurrence of the even-indexed subsequence is what makes the doubled-argument transform close, and its coefficient 3 becomes the transform's 4.",
     "mathContext": "$p_k = F_{2k},\\ q_k = F_{2k+2};\\quad F_{2k+4} = 3F_{2k+2} - F_{2k}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.fib_add_two",
       "even-indexed Fibonacci",

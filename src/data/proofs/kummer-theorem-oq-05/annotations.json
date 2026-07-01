@@ -35,7 +35,7 @@
     "title": "The Classical Digit-Sum Formula",
     "content": "`sub_one_mul_padicValNat_choose` recovers the usual (truncated) statement $(p-1)\\,v_p\\binom{n}{k} = s_p(k) + s_p(n-k) - s_p(n)$ as a one-line `omega` consequence of the untruncated identity. This matches Mathlib's `sub_one_mul_padicValNat_choose_eq_sub_sum_digits`; here it is presented as a corollary of the ordered form so the divisibility criterion below can be read off without truncation artifacts.",
     "mathContext": "$v_p\\binom{n}{k}$ is the number of carries when adding $k$ and $n-k$ in base $p$; each carry decreases the total digit sum by exactly $p-1$, which is precisely what this formula measures.",
-    "significance": "medium",
+    "significance": "supporting",
     "relatedConcepts": [
       "Kummer carry count",
       "base-p digit sum"
@@ -55,7 +55,7 @@
     "title": "Digit Sums Are Subadditive Across a Split",
     "content": "`digit_sum_add_le` gives $s_p(n) \\le s_p(k) + s_p(n-k)$ for $k \\le n$, a reusable arithmetic fact obtained as an immediate byproduct: since $(p-1)\\,v_p\\binom{n}{k} \\ge 0$, the untruncated identity forces $s_p(n)$ below $s_p(k) + s_p(n-k)$. Writing $n = k + (n-k)$, the base-$p$ digit sum of the whole never exceeds the sum of the digit sums of the parts.",
     "mathContext": "Adding two numbers in base $p$ can only trigger carries, and each carry replaces a local digit sum of $p$ by a carried $1$ — a net loss of $p-1$ in the digit sum. Hence $s_p(a+b) \\le s_p(a) + s_p(b)$, with equality exactly when the addition is carry-free.",
-    "significance": "medium",
+    "significance": "supporting",
     "relatedConcepts": [
       "digit sum subadditivity",
       "carries in base-p addition"

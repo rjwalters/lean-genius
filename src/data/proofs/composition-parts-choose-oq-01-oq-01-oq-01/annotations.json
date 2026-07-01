@@ -7,7 +7,7 @@
     "title": "From First Moment to Variance via the Gap Bijection",
     "content": "The docstring places this leaf in its lineage and lays out the whole mechanism. A composition of n is an ordered tuple of positive integers summing to n; its part-count is c.length. The family already knows: 2^(n−1) compositions of n (grandparent), C(n−1,k−1) with exactly k parts (parent), and the FIRST moment (n+1)·2^(n−2), mean (n+1)/2 (parent). This entry computes the SECOND moment 4·∑ c.length² = n(n+3)2^(n−1) and hence the variance (n−1)/4. The engine is the same gap bijection gapsEquiv : Composition n ≃ Finset (Fin (n−1)) (a composition IS the set of internal gaps it cuts) plus length = |gaps|+1: transporting sums across it reduces everything to subset sums over an (n−1)-set, where (|s|+1)² = |s|² + 2|s| + 1 splits into the new second-moment subset sum, the parent's first moment, and the plain count. The probabilistic punchline — variance (n−1)/4 is exactly that of 1 + Binomial(n−1, ½) — emerges with no probability theory invoked. Mathlib has ∑ C(m,k) = 2^m but none of the weighted sums or the part-count distribution.",
     "mathContext": "$X(c) = c.\\mathrm{length}$; $\\;4\\sum_c X^2 = n(n{+}3)2^{n-1}$ and $\\mathrm{Var}(X) = \\frac{n-1}{4}$, the variance of $1 + \\mathrm{Binomial}(n{-}1, \\tfrac12)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["compositions of an integer", "gap bijection", "moments and variance", "binomial distribution", "family lineage"],
     "prerequisites": ["Mathlib's Composition n", "the gap bijection and first moment from parent entries", "moments of a distribution"]
   },

@@ -7,7 +7,7 @@
     "title": "Why a Determinant Proof? The Q-Matrix Strategy",
     "content": "The header frames the entry's reason for existing. Cassini's identity F_{n+2}·F_n − F_{n+1}² = (−1)^{n+1} is already in Mathlib as `Int.fib_succ_mul_fib_pred_sub_fib_sq`, proved by direct induction. This file deliberately gives a *conceptually different* proof — the linear-algebra one — that Mathlib does not record because it has no Fibonacci matrix. The whole argument is a two-way evaluation of a single quantity, det(Q^{n+1}): algebraically it is (det Q)^{n+1} = (−1)^{n+1} by multiplicativity of the determinant, and structurally it is F_{n+2}·F_n − F_{n+1}² by expanding the explicit matrix of Fibonacci entries. Equating the two evaluations *is* Cassini's identity. This reframes an arithmetic recurrence identity as a statement about a group homomorphism (det: GL₂ → units) applied to powers of one matrix — the standard 'matrix proof', and the original contribution over Mathlib's inductive version.",
     "mathContext": "$\\det(Q^{n+1}) = (\\det Q)^{n+1} = (-1)^{n+1}$ (multiplicativity) $= F_{n+2}F_n - F_{n+1}^2$ (explicit expansion), so the two evaluations of the same determinant give Cassini's identity.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Fibonacci Q-matrix", "determinant multiplicativity", "companion matrix", "alternative proof"],
     "prerequisites": ["Fibonacci numbers", "2×2 determinants", "matrix powers"]
   },

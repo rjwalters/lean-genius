@@ -32,7 +32,7 @@
     "title": "A Cut Crossing Every Edge Has Size |E|",
     "content": "If the assignment c crosses every edge of G, then filtering the edge set by the crossing predicate leaves it unchanged, so the cut size — defined as the cardinality of that filter — equals the total edge count. This is the numerical heart of the forward direction.",
     "mathContext": "$(\\forall e \\in E,\\ \\text{edgeInCut } e) \\Rightarrow |\\text{Cut.ofAssignment } c| = |E(G)|$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.filter_true_of_mem",
       "cut size"
@@ -117,7 +117,7 @@
     "title": "Degrees in the Complete Bipartite Graph",
     "content": "In K_{m,n} = completeBipartiteGraph V W, a left vertex inl a is adjacent to every right vertex and to no left vertex, so its neighbor set is the image of Sum.inr and its degree is |W| = n. Symmetrically a right vertex has degree |V| = m. These are proved by identifying the neighbor Finset with a mapped copy of univ.",
     "mathContext": "$\\deg(\\text{inl } a) = |W| = n, \\qquad \\deg(\\text{inr } b) = |V| = m$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "neighborFinset",
       "Finset.map",
@@ -139,7 +139,7 @@
     "title": "K_{m,n} Has m·n Edges (Handshake Lemma)",
     "content": "Summing degrees over all vertices via Fintype.sum_sum_type splits into the left and right sides, giving n·m + m·n = 2mn. By the handshake lemma sum_degrees_eq_twice_card_edges this equals 2|E|, so |E(K_{m,n})| = m·n.",
     "mathContext": "$2|E| = \\sum_v \\deg v = m\\,n + n\\,m \\Rightarrow |E(K_{m,n})| = m\\,n$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "handshake lemma",
       "Fintype.sum_sum_type",

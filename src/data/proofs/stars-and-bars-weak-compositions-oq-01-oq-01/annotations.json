@@ -55,7 +55,7 @@
     "title": "The factored identity P k = Xᵏ · W k (every k)",
     "content": "positiveCompositionGenFun_eq proves P k = Xᵏ · W k for every k, no positivity hypothesis. By PowerSeries.ext and Mathlib's coeff_X_pow_mul', the n-th coefficient of Xᵏ · W k is coeff (n−k) (W k) when k ≤ n and 0 otherwise. In the k ≤ n branch, coeff_weakCompositionGenFun and Fintype.card_congr applied to the sibling's positiveCompositionEquivWeak k n identify #(positive comps of n) with #(weak comps of n−k). In the n < k branch, an IsEmpty proof — k positive parts force a total ≥ k > n, via Finset.sum_le_sum bounding the part-sum below by k — makes the positive count 0 (Fintype.card_eq_zero), matching the else-branch. The Xᵏ factor is literally the coeff_X_pow_mul' degree shift, the algebraic form of the ±1 bijection.",
     "mathContext": "$[X^n](X^k W_k) = \\begin{cases}[X^{n-k}]W_k & k\\le n\\\\ 0 & n<k\\end{cases}$, matched coefficientwise to $\\#(\\text{positive comps of }n)$.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": [
       "PowerSeries.coeff_X_pow_mul' (multiplication-by-Xᵏ coefficient rule)",
       "positiveCompositionEquivWeak (sibling oq-03) and Fintype.card_congr",
@@ -78,7 +78,7 @@
     "title": "Xᵏ/(1−X)ᵏ and the residue relation P k · (1−X)ᵏ = Xᵏ",
     "content": "positiveCompositionGenFun_eq_X_pow_mul_invOneSubPow rewrites W k by the parent's weakCompositionGenFun_eq_invOneSubPow (0 < k) to present P k as Xᵏ · invOneSubPow S k = Xᵏ/(1−X)ᵏ. positiveCompositionGenFun_mul_one_sub_pow multiplies P k by (1−X)ᵏ, reassociates, and applies the parent's weakCompositionGenFun_mul_one_sub_pow (W k · (1−X)ᵏ = 1) to conclude P k · (1−X)ᵏ = Xᵏ — the formal statement that P k is Xᵏ times the inverse of (1−X)ᵏ. The 0 < k hypothesis is inherited from the parent's weak-series inverse relation, not from the factored identity.",
     "mathContext": "$P_k = X^k\\cdot\\mathrm{invOneSubPow}\\,S\\,k = \\dfrac{X^k}{(1-X)^k}$, hence $P_k\\cdot(1-X)^k = X^k$.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": [
       "weakCompositionGenFun_eq_invOneSubPow and weakCompositionGenFun_mul_one_sub_pow (parent oq-01)",
       "Mathlib's invOneSubPow S k as the inverse unit of (1−X)ᵏ"

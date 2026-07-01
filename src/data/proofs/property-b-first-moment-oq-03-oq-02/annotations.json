@@ -7,7 +7,7 @@
     "title": "Recoloring vs Deletion: the Alteration Method Toward Radhakrishnan–Srinivasan",
     "content": "The header situates this file in the Property B program. The parent `PropertyBFirstMoment.lean` proves Erdős 1963 (a k-uniform family with `< 2^(k-1)` edges is 2-colorable) by the first moment. The deletion sibling `PropertyBFirstMomentOQ03.lean` *discards* monochromatic edges to expose a 2-colorable subfamily — it throws edges away. This file formalizes the complementary and harder half, *recoloring*: rather than delete a bad edge, *repair* it by flipping a vertex, yielding FULL 2-colorability. This is the deterministic core of the Radhakrishnan–Srinivasan (RS) alteration. RS must recolor *probabilistically* because, in general, monochromatic edges share vertices and flipping one edge's vertex can break another. The deterministic statement isolates the dependency-free case (each bad edge owns a private vertex); the remaining gap to RS is exactly removing the privacy hypothesis via randomness — the analytic step the open question targets.",
     "mathContext": "Deletion: $E \\setminus M$ is 2-colorable (subfamily). Recoloring: flip private vertices to make all of $E$ 2-colorable. RS = recoloring + randomness to drop the privacy hypothesis.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["alteration method", "deletion method", "Radhakrishnan–Srinivasan", "first-moment method", "probabilistic recoloring"],
     "prerequisites": ["Erdős 1963 first-moment bound 2^(k-1)", "the deletion-method sibling", "monochromatic edge / 2-colorability (Property B)"]
   },

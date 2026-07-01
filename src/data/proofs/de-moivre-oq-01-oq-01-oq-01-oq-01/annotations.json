@@ -10,7 +10,7 @@
     "title": "The summand and the explicit sum",
     "content": "The building block `term m k` is $(-1)^k \\binom{m-k}{k}(2X)^{m-2k}$, an element of `Polynomial ℤ`, and `Uexpl n` sums it over $k \\in \\mathrm{range}(\\lfloor n/2\\rfloor + 1)$. Working with a named summand (rather than an inline lambda) is what makes the later termwise recurrence `term_succ_rec` a clean, reusable lemma. Note the binomial coefficient uses the *natural-number* subtraction $m-k$ and the exponent the natural-number subtraction $m-2k$; both are honest values exactly on the summation support and are neutralized off it by the vanishing lemma.",
     "mathContext": "$\\mathrm{term}(m,k) = (-1)^k \\binom{m-k}{k}(2X)^{m-2k},\\qquad U_{\\mathrm{expl}}(n) = \\sum_{k=0}^{\\lfloor n/2\\rfloor} \\mathrm{term}(n,k).$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Chebyshev polynomials of the second kind",
       "binomial coefficients",

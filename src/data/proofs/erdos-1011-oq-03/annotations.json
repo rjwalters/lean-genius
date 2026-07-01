@@ -7,7 +7,7 @@
     "title": "What is open, and what this file actually proves",
     "content": "OQ-03 of Erdős #1011 asks to compute f_5(n): the least number of edges forcing a triangle in an n-vertex graph of chromatic number ≥ 5. This is genuinely open — f_4(n) was only settled in 2024. The file is deliberately honest about that: it does NOT compute f_5(n). It proves the unconditional scaffolding (antitonicity of f, the shift pattern) with zero axioms, and records the open value as a Prop. The honesty note in the header makes the boundary explicit.",
     "mathContext": "$f_r(n) = \\min\\{m : \\text{every } G \\text{ on } n \\text{ vertices with } \\chi(G)\\ge r,\\ e(G)\\ge m \\text{ has a triangle}\\}$; known for $r\\le 4$, open for $r=5$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["chromatic number", "triangle-forcing threshold", "open problem framing", "Erdős problems"],
     "prerequisites": ["chromatic number χ(G)", "edge count e(G)", "extremal graph theory basics"]
   },
@@ -67,7 +67,7 @@
     "title": "Recording the open question precisely",
     "content": "`shiftConjecture` (general r) and `f5Conjecture` (the r=5 specialization) are stated as Props and left unproved — the formalization is explicit that these are conjectures, not theorems. `shiftConjecture_imp_f5` shows the general statement specializes to the concrete f₅ question, so any future proof of the pattern immediately resolves this entry's open goal.",
     "mathContext": "$\\mathrm{shiftConjecture}: \\forall r\\ge 2,\\ \\exists c, n_0,\\ \\forall n\\ge n_0,\\ f_r(n) = \\lfloor (n - \\binom{r-1}{2})^2/4\\rfloor + c$; it specializes to $f_5(n) = \\lfloor (n-6)^2/4 \\rfloor + c$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["conjecture stated as a Prop", "universal-to-specific specialization", "eventual (large-n) behavior", "open additive constant c₅"],
     "prerequisites": ["Prop-valued formalization of conjectures", "existential over (c, n₀)", "specialization r := 5"]
   }

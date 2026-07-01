@@ -10,7 +10,7 @@
     "title": "From an Upper Bound to an Exact Certificate",
     "content": "The parent file proves the symmetric upper bound 2·deg u ≤ deg p, 2·deg v ≤ deg p for a two-squares decomposition p = u² + v² of a nonnegative real univariate polynomial. This file sharpens that to an exact normalization by isolating one elementary fact the parent never states: a sum of two polynomial squares has no degree collapse, deg(u² + v²) = 2·max(deg u, deg v). Because the leading coefficient of any square w² is (leadingCoeff w)² ≥ 0, the top coefficients of u² and v² cannot cancel. From this single lemma flow three results: PSD ⟹ even degree, PSD ⟹ positive leading coefficient, and the exact Fejér–Riesz normalization deg v < deg u with 2·deg u = deg p. The setup imports the parent (Proofs.Hilbert17OQ01OQ01) and reuses its IsPSD predicate.",
     "mathContext": "$p = u^2 + v^2$ with $\\deg(u^2+v^2) = 2\\max(\\deg u, \\deg v)$; leading coefficients of squares are nonnegative, so no cancellation at the top.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Hilbert's 17th problem",
       "Fejér–Riesz theorem",

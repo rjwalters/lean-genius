@@ -10,7 +10,7 @@
     "title": "Lifting Paley-Zygmund to the Measure-Theoretic Framework",
     "content": "The header frames this file as the answer to the open question left by the parent `prob-method-second-moment-oq-01`, which proves Paley-Zygmund only over finite Finsets with ℚ-valued functions. Here the statement is upgraded to Mathlib's general `MeasureTheory`/`ProbabilityTheory` setting: an arbitrary probability space, the Bochner integral for expectation, and honest measures of threshold events. The imports are deliberately narrow — the Bochner integral over sets, Lᵖ spaces, conjugate exponents, and real `rpow` — rather than the umbrella `import Mathlib`, keeping the dependency footprint explicit. Mathlib already has Hölder for integrals and Markov/Chebyshev, but no packaged measure-theoretic Paley-Zygmund; this file supplies exactly that missing piece.",
     "mathContext": "Target: $(1-\\theta)^2\\,(\\mathbb{E}[Z])^2 \\le \\mathbb{P}(Z > \\theta\\,\\mathbb{E}[Z])\\cdot\\mathbb{E}[Z^2]$ on a probability space, versus the parent's finite form $(1-\\theta)^2(\\sum f)^2 \\le |\\{f>\\theta\\mu\\}|\\cdot\\sum f^2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "second moment method",
       "Paley-Zygmund 1932",
@@ -34,7 +34,7 @@
     "title": "Square-Root Cancellation Helper: (x^(1/2))² = x",
     "content": "The private lemma `rpow_half_sq` cancels a square against a real one-half power: for $0 \\le x$, $(x^{1/2})^2 = x$. It is proved by rewriting the outer natural-number square as an `rpow` (`Real.rpow_natCast`), then merging the two exponents with `Real.rpow_mul` (which needs the base non-negative) so that $x^{(1/2)\\cdot 2} = x^1$, closed by `norm_num`. This tiny bridge is essential because Mathlib's integral Hölder inequality delivers its bound with `rpow` exponents ($S^{1/2}\\cdot T^{1/2}$), whereas the final Paley-Zygmund statement is phrased with an ordinary square; the lemma lets the proof square the Hölder output cleanly.",
     "mathContext": "$(x^{1/2})^2 = x^{(1/2)\\cdot 2} = x^1 = x$ for $x \\ge 0$. Non-negativity is required: $\\mathrm{rpow}$ merging $x^{a}\\!\\cdot\\!{}^{b}=x^{ab}$ fails for negative bases.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "real rpow",
       "Real.rpow_mul",

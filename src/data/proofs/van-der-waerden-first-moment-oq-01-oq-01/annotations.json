@@ -7,7 +7,7 @@
     "title": "Goal: Is the Family Bound Tight?",
     "content": "The sibling entry van-der-waerden-first-moment-oq-01 bounds the number of length-k APs fitting in [n] ABOVE by the triangular sum ∑_{d=1}^{n}(n-(k-1)d), via Finset.card_image_le — the family is the image of the fitting (a,d) box under (a,d) ↦ vdwAP n a d k. This file answers the natural follow-up: is that inequality an equality? Equivalently, is the parametrization injective on the box — does every fitting (a,d) give a distinct progression? It does, for k ≥ 2, giving the EXACT count.",
     "mathContext": "Sibling: $|\\mathrm{vdwFamily}\\,n\\,k| \\le \\sum_{d=1}^{n}(n-(k-1)d)$. This entry: equality, via injectivity of $(a,d)\\mapsto\\{a,a+d,\\dots,a+(k-1)d\\}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "van der Waerden numbers",
       "first-moment method",

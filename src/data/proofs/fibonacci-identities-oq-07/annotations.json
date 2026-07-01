@@ -10,7 +10,7 @@
     "title": "Fibonacci as a Strong Divisibility Sequence",
     "content": "A sequence (aₙ) is a *strong divisibility sequence* when gcd(aₘ, aₙ) = a_{gcd(m,n)}. Édouard Lucas (1878) proved the Fibonacci numbers have this property — Mathlib's Nat.fib_gcd — and it is the source of every Fibonacci divisibility fact. The characterization Fₘ ∣ Fₙ ⟺ m ∣ n proved here is its most quotable corollary: divisibility of Fibonacci values mirrors divisibility of indices exactly. Mathlib already had the strong-divisibility identity and the forward implication (Nat.fib_dvd); this entry supplies the reverse implication, packages the biconditional, and pins down the boundary hypothesis m ≥ 3 forced by the unit collision F₁ = F₂ = 1.",
     "mathContext": "Strong divisibility: $\\gcd(F_m, F_n) = F_{\\gcd(m,n)}$ (Lucas 1878). Corollary for $m \\ge 3$: $F_m \\mid F_n \\iff m \\mid n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "strong divisibility sequence",
       "Nat.fib_gcd",
@@ -59,7 +59,7 @@
     "title": "Clearing the Boundary: forcing gcd(m,n) ≥ 2 before injectivity",
     "content": "Injectivity of fib only holds on [2,∞) — fib repeats the value 1 at indices 1 and 2 and is 0 at index 0. So before invoking Nat.fib_strictMonoOn.injOn the proof must know gcd(m,n) ≥ 2. It gets this from F_{gcd(m,n)} = Fₘ ≥ 2: a by_contra assumes gcd(m,n) < 2, interval_cases splits on gcd(m,n) ∈ {0,1}, decide evaluates fib 0 = 0 and fib 1 = 1 (both ≤ 1), and omega contradicts F_{gcd(m,n)} ≥ 2. This is the technical heart of why m ≥ 3 is exactly the right hypothesis: it guarantees Fₘ ≥ 2, which propagates through the strong-divisibility identity to place the gcd in the injectivity domain.",
     "mathContext": "$F_{\\gcd(m,n)} = F_m \\ge 2$ rules out $\\gcd(m,n) \\in \\{0,1\\}$ (where $F = 0, 1$), so $\\gcd(m,n) \\ge 2$ lands in $[2,\\infty)$ where $F$ is injective.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "interval_cases",
       "omega",

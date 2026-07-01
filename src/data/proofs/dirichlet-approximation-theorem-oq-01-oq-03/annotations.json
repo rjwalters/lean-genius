@@ -9,7 +9,7 @@
     "mathContext": "Statement and pigeonhole strategy for the simultaneous approximation theorem.",
     "prerequisites": ["Fractional parts", "Pigeonhole principle", "The parent single-real Dirichlet bound"],
     "relatedConcepts": ["Geometry of numbers", "Simultaneous approximation", "Diophantine exponents"],
-    "significance": "high"
+    "significance": "key"
   },
   {
     "id": "dir-oq0103-ann-samebox",
@@ -21,7 +21,7 @@
     "mathContext": "Two reals with the same integer part differ by less than one.",
     "prerequisites": ["Int.fract", "abs_lt"],
     "relatedConcepts": ["Fractional part", "Floor function"],
-    "significance": "medium"
+    "significance": "supporting"
   },
   {
     "id": "dir-oq0103-ann-boxmap",
@@ -33,7 +33,7 @@
     "mathContext": "Encodes the box lattice as the codomain of the pigeonhole map.",
     "prerequisites": ["Int.floor", "Int.toNat", "Fin"],
     "relatedConcepts": ["Pigeonhole map", "Box lattice"],
-    "significance": "medium"
+    "significance": "supporting"
   },
   {
     "id": "dir-oq0103-ann-core",
@@ -45,7 +45,7 @@
     "mathContext": "Extract the common denominator and integer vector from a pigeonhole collision.",
     "prerequisites": ["congr_fun", "Nat.cast_sub", "lt_div_iff₀", "Int.fract"],
     "relatedConcepts": ["Telescoping fractional parts", "Common denominator"],
-    "significance": "high"
+    "significance": "key"
   },
   {
     "id": "dir-oq0103-ann-main",
@@ -57,7 +57,7 @@
     "mathContext": "Main theorem: pigeonhole to a collision, then invoke the core step.",
     "prerequisites": ["Fintype.exists_ne_map_eq_of_card_lt", "Fintype.card_fun"],
     "relatedConcepts": ["Pigeonhole principle", "Simultaneous approximation"],
-    "significance": "high"
+    "significance": "key"
   },
   {
     "id": "dir-oq0103-ann-onereal",
@@ -69,6 +69,6 @@
     "mathContext": "The one-dimensional case matches the parent one-shot Dirichlet bound.",
     "prerequisites": ["Fin 1"],
     "relatedConcepts": ["Specialization", "Single-real Dirichlet bound"],
-    "significance": "low"
+    "significance": "supporting"
   }
 ]

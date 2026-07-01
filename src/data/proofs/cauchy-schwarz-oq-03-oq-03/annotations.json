@@ -10,7 +10,7 @@
     "title": "Log-Convexity: The Organizing Idea",
     "content": "The file header frames the whole entry through one principle: the map t ↦ log‖f‖_(1/t) is convex. Writing the exponent constraint as an average, 1/r = θ·(1/p) + (1-θ)·(1/q), places 1/r on the line segment between 1/p and 1/q at parameter θ; the interpolation inequality is then exactly the statement that log‖f‖ at that interior reciprocal-exponent lies below the corresponding convex combination θ·log‖f‖_p + (1-θ)·log‖f‖_q of the endpoint values. Under this lens Cauchy–Schwarz and Hölder are not distinct theorems but named faces of a single convex curve — the θ = 1/2 midpoint and the diagonal p = q instance. Everything downstream (the conjugate pair, the Hölder call, the final power) is bookkeeping that turns this geometric picture into a Lean term.",
     "mathContext": "$\\log\\|f\\|_{1/(\\theta t_1 + (1-\\theta)t_2)} \\;\\leq\\; \\theta\\,\\log\\|f\\|_{1/t_1} + (1-\\theta)\\,\\log\\|f\\|_{1/t_2}$, i.e. $t \\mapsto \\log\\|f\\|_{1/t}$ is convex, with $t_1 = 1/p,\\ t_2 = 1/q,\\ 1/r = \\theta t_1 + (1-\\theta)t_2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "log-convexity",
       "convex combination",

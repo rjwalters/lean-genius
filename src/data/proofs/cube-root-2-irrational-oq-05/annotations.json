@@ -7,7 +7,7 @@
     "title": "One Theorem Subsuming √2, ∛2, and Every Prime Root",
     "content": "The docstring states the open question: generalize the irrationality of ∛2 (and √2) to the full two-parameter family — for every prime p and every degree n ≥ 2, the real n-th root p^(1/n) is irrational. The base entry handled only p=2, n=3; this entry proves all cases at once. The single engine is Mathlib's irrational_nrt_of_n_not_dvd_multiplicity: if x^n = m ∈ ℤ and n ∤ multiplicity p m then x is irrational. Instantiate x = p^(1/n), m = p: then x^n = p^(n⁻¹·n) = p by rpow composition (p ≥ 0), and multiplicity p p = 1 (multiplicity_self) with 1 % n = 1 ≠ 0 for n ≥ 2, so n never divides the multiplicity. Specializing recovers everything — n=3 gives ∛p (in particular the base ∛2), n=2 recovers Nat.Prime.irrational_sqrt, and p=2 gives every n-th root of 2 irrational. Mathlib has only the square-root case; this fills the n-th-root gap.",
     "mathContext": "For $p$ prime, $n \\ge 2$: $\\;p^{1/n} \\notin \\mathbb{Q}$, since $(p^{1/n})^n = p$ and $n \\nmid \\mathrm{mult}_p(p) = 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["irrationality", "n-th roots", "p-adic multiplicity", "unique factorization"],
     "prerequisites": ["irrational_nrt_of_n_not_dvd_multiplicity", "real rpow", "prime multiplicity"]
   },

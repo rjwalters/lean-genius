@@ -7,7 +7,7 @@
     "title": "Which Constructions Preserve ℵ₀ — and Where It Breaks",
     "content": "The docstring states the open question sharply: pin down exactly which constructions preserve the denumerability (cardinality ℵ₀) of ℚ. The answer is a clean dichotomy driven by the absorption laws of ℵ₀. Every FINITE operation stays at ℵ₀ — finite products #(ℚ×ℚ) = ℵ₀·ℵ₀ = ℵ₀ (aleph0_mul_aleph0), finite sequences #(List ℚ) = ℵ₀ (mk_list_eq_aleph0), finite subsets #(Finset ℚ) = ℵ₀ (mk_finset_of_infinite) — but the countably-infinite POWER escapes: #(ℕ → ℚ) = ℵ₀^ℵ₀ = 𝔠 (aleph0_power_aleph0), the continuum. The contrast is the whole point: ℵ₀ absorbs every finite operation yet a single countable power already reaches 𝔠. This is the ℵ₀-level shadow of the continuum arithmetic 𝔠·𝔠 = 𝔠, 𝔠^ℵ₀ = 𝔠, and it sharpens the gallery's ℵ₀ < 𝔠 gap by locating precisely where the jump happens.",
     "mathContext": "$\\aleph_0$ absorbs finite operations ($\\aleph_0 \\cdot \\aleph_0 = \\aleph_0$) but $\\aleph_0^{\\aleph_0} = \\mathfrak{c}$: the countable power is the boundary between denumerable and continuum.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["aleph-null absorption", "continuum", "cardinal exponentiation", "denumerability of ℚ"],
     "prerequisites": ["cardinal arithmetic", "#ℚ = ℵ₀", "ℵ₀ < 𝔠"]
   },

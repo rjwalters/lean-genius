@@ -55,7 +55,7 @@
     "title": "Worked examples on non-invertible bases",
     "content": "The examples exercise bases Euler's coprime theorem cannot touch. For 2^k mod 8 (p = 2, e = 3) the powers are constant ≡ 0 from k = 3, checked both via the theorem and by kernel decide (2^7 ≡ 2^3 ≡ 0). For 6^k mod 16 (6 = 2·3, e = 4, φ(16) = 8) the full reduction collapses a huge exponent: 6^100 ≡ 6^(4 + (96 mod 8)) = 6^4 ≡ 0, verified by decide. These use kernel reduction (not native_decide), so they introduce no extra axioms.",
     "mathContext": "$6^{100} \\equiv 6^{4 + (96 \\bmod 8)} = 6^4 \\equiv 0 \\pmod{16}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked example", "kernel decide", "non-coprime base", "last-digit computation"],
     "prerequisites": ["modular exponentiation", "decidable evaluation"]
   }

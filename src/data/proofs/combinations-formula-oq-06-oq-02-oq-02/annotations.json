@@ -47,7 +47,7 @@
     "title": "The uniform falling-factorial closed form: k! · D(k,n) = descFactorial n k",
     "content": "factorial_mul_D : k! · D(k,n) = descFactorial n k = n(n−1)⋯(n−k+1) is the whole content of the entry — a single statement covering every dimension k of the descending tower with no per-k induction. Its proof is one rewrite: Mathlib's Nat.descFactorial_eq_factorial_mul_choose (n.descFactorial k = k! · n.choose k) read backwards through D_eq_choose. The division form D_closed : D(k,n) = descFactorial n k / k! follows via Nat.div_eq_iff_eq_mul_left using the divisibility Nat.factorial_dvd_descFactorial. This mirrors the parent's factorial_mul_S / S_closed exactly, with descFactorial in place of ascFactorial.",
     "mathContext": "$k!\\,\\binom{n}{k} = n^{\\underline{k}} = n(n-1)\\cdots(n-k+1)$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "falling factorial",
       "descending factorial",
@@ -86,7 +86,7 @@
     "title": "Multiplied closed forms: the honest, division-free statements",
     "content": "two_mul_D_two : 2·D(2,n) = n(n−1); six_mul_D_three : 6·D(3,n) = n(n−1)(n−2); twentyfour_mul_D_four : 24·D(4,n) = n(n−1)(n−2)(n−3). These are exact natural-number equations — no truncating division appears — obtained by combining factorial_mul_D with the concrete descFactorial evaluations and the numeric factorial values 2! = 2, 3! = 6, 4! = 24. They are the most honest form of the descending closed forms and the descending mirror of the parent's two/six/twentyfour_mul_S family.",
     "mathContext": "$2\\binom{n}{2}=n(n-1),\\ 6\\binom{n}{3}=n(n-1)(n-2),\\ 24\\binom{n}{4}=n(n-1)(n-2)(n-3)$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "closed form",
       "division-free identity",

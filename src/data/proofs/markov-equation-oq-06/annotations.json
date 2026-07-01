@@ -34,7 +34,7 @@
     "title": "Jumping the First Coordinate by Conjugation",
     "content": "The parent only jumps the third coordinate (markov_vieta: z ↦ 3xy − z). To jump the first coordinate instead, conjugate by transpositions: swap the target coordinate into third position, jump it, and swap back. markov_vieta_fst does x ↦ 3yz − x as markov_swap12 ∘ markov_swap23 ∘ markov_vieta ∘ markov_swap23 ∘ markov_swap12. markov_ascent_isMarkov is the same idea packaged for the sorted move (a,b,c) ↦ (b, c, 3bc − a): swap a to the end, jump it, and the natural output order is already b ≤ c ≤ 3bc − a. No new arithmetic is needed — the symmetry lemmas of the parent do all the work.",
     "mathContext": "$\\mathrm{IsMarkov}\\,x\\,y\\,z \\Rightarrow \\mathrm{IsMarkov}\\,(3yz-x)\\,y\\,z, \\qquad \\mathrm{IsMarkov}\\,a\\,b\\,c \\Rightarrow \\mathrm{IsMarkov}\\,b\\,c\\,(3bc-a).$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Vieta jumping",
       "coordinate symmetry",
@@ -77,7 +77,7 @@
     "title": "The Canonical Ascent Sequence and Its Invariant",
     "content": "ascent is the raw map (a,b,c) ↦ (b, c, 3bc − a) on triples, and seq iterates it from (1,1,1). Its first four terms, checked by the axiom-free decide, are exactly the classical head of the Markov tree: (1,1,1), (1,1,2), (1,2,5), (2,5,29). seq_spec is the load-bearing invariant: by induction, using ascent_spec at the successor step, every term is a sorted Markov triple 1 ≤ a ≤ b ≤ c. This is what lets the sequence keep ascending forever — each term satisfies the hypotheses needed to take the next step.",
     "mathContext": "$\\mathrm{seq}\\,0 = (1,1,1), \\quad \\mathrm{seq}\\,(n{+}1) = \\mathrm{ascent}(\\mathrm{seq}\\,n), \\quad \\mathrm{seq}\\,3 = (2,5,29).$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "iteration",
       "loop invariant",
@@ -99,7 +99,7 @@
     "title": "Strict Monotonicity Gives Injectivity for Free",
     "content": "seq_top_strictMono shows the top coordinate n ↦ (seq n).2.2 is strictly monotone: each ascent step strictly increases it (the c < 3bc − a from ascent_spec), and strictMono_nat_of_lt_succ upgrades one-step growth to full strict monotonicity. Injectivity of the whole sequence is then immediate — StrictMono.injective on the top-coordinate map means distinct indices already give triples that differ in that coordinate, so seq_injective needs no separate distinctness computation.",
     "mathContext": "$m \\ne n \\Rightarrow (\\mathrm{seq}\\,m).2.2 \\ne (\\mathrm{seq}\\,n).2.2 \\Rightarrow \\mathrm{seq}\\,m \\ne \\mathrm{seq}\\,n.$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "StrictMono",
       "injectivity",
