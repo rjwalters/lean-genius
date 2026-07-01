@@ -879,3 +879,71 @@ host-blocked (chain repair, assembly-as-written) or would be premature churn (a 
 maximality proof written blind without the target verifier is exactly the trap Sessions
 5/7/10 flagged). Deliverable is this diagnosis + the decoupling roadmap. Axiom untouched;
 `axiomCount` unchanged.
+
+### 2026-07-01 (Session 17, researcher-10) — INFRA UNBLOCKED: Docker builds work; critical-path `Incomplete01` repair STARTED (79→69 errors, rebuild-verified), full API-drift dictionary
+
+**Headline — the multi-session infra block is GONE.** Sessions 3/8/9/10/16 were all blocked
+(Docker down, or host Azure cache corrupt on `Mathlib.RingTheory.Kaehler.Basic`). **This session
+Docker is UP** and a full `./proofs/scripts/docker-build.sh
+Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01` runs to completion. Cost per
+iteration ≈ **6 min**: each run re-clones the lake deps (~2 min) + `lake exe cache get` (7727
+files) from the persistent `lean-mathlib-cache` Docker volume (fast) + compiles. The foundation
+`…OQ01.lean` **replays from cache = compiles clean** (confirms S11, refutes S10's "dead
+foundation"). The S13/S16 roadmap **step 1 (repair Incomplete01) is finally ACTIONABLE** — no
+more host-Kaehler wall, because Docker uses its own isolated volume.
+
+**True current build state (measured, corrects stale figures).** `…Incomplete01.lean` fails with
+**79 distinct real errors** on `main` (NOT S13's "70" — Mathlib drifted further; mathlib rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). Errors are heavily **CASCADING**: ~50 of 79 sit inside
+the 600-line monster theorem `localization_existence` (337–943); many downstream ones are
+"unknown identifier `hg_eq_n` / `g` / `hg_lq`" — these are `have`s from an earlier block that
+failed to elaborate, so the **true ROOT-error count is far smaller than 79**. The other six
+theorems (`integrable_mul_sf`, `integrationCLM_sf`, `lp_truncation_tendsto_zero`, `extByZeroCLM`,
+`riesz_lp_surjective_sigma_finite`) each carry only a handful. The file is **not in
+`build-safe-subset.sh`** and gallery metas for the strand are honestly `status: formalized`
+(no integrity violation to fix — S12's fix stuck).
+
+**Verified partial repair shipped (PR TBD): 79 → 69 errors (−10), rebuild-confirmed, no
+regressions.** This follows the ACCEPTED precedent for the sibling foundation file (#29754/#29767/
+#29777/#29785 stepped 53→44→28→17→11). **API-DRIFT DICTIONARY (current Mathlib, all verified against
+`.lake/packages/mathlib` source + rebuild):**
+- `eLpNorm_eq_lintegral_rpow_nnnorm` → `eLpNorm_eq_lintegral_rpow_enorm` (nnnorm→enorm rename)
+- `ENNReal.mul_lt_top` now takes `a < ∞ → b < ∞` (was `≠ ⊤`) → **DROP `.ne`** on both args
+- `Real.HolderConjugate.one_lt_of_lt hp1` **REMOVED** → `hpq.symm.lt` (HolderConjugate is
+  `abbrev HolderTriple p q 1`; `HolderTriple.lt : 1 < p`; so `hpq.symm.lt : 1 < q.toReal`). For a
+  ℝ≥0∞ goal `1 ≤ q`, lift: `calc 1 = ofReal 1 ≤ ofReal q.toReal (ofReal_le_ofReal h.le) = q
+  (ofReal_toReal hqtop)`, deriving `hqtop` by `rintro rfl; simp at h` on `1 < (⊤).toReal`.
+- `Real.sign_pos`/`Real.sign_neg` (hyp-taking, `= ±1`) → `Real.sign_of_pos`/`Real.sign_of_neg`
+  (**GOTCHA:** `Real.sign_neg` now means `sign(-r) = -sign r`, a different lemma)
+- `Real.abs_sign_le_one` **REMOVED** → `by rcases Real.sign_apply_eq r with h|h|h <;> rw [h] <;> norm_num`
+- `AEStronglyMeasurable.min`/`.max` → `.inf`/`.sup`
+- `(ENNReal.continuousAt_rpow_const (Or.inl _)).tendsto.comp X` → `X.ennrpow_const <exp>`
+  (`Filter.Tendsto.ennrpow_const`; ENNReal `continuous_rpow_const` is hypothesis-free)
+- `MeasureTheory.Measure.ae_restrict_iff'` → `ae_restrict_iff'` (root `MeasureTheory` ns; drop `Measure.`)
+- `Real.dist_zero_right` **REMOVED** → `Real.dist_eq, sub_zero`
+- `le_or_lt` → `le_or_gt` (deprecation warning only, non-blocking)
+
+**STILL-OPEN drift/gaps for the next session (Docker now available — just iterate ~6 min/build):**
+- `eLpNorm_const_lt_top` (≈line 542) unknown → `(memLp_const _).eLpNorm_lt_top` (needs
+  `IsFiniteMeasure μₙ` — `hfin_m` is in scope) or `eLpNorm_const_lt_top_iff`.
+- `AEStronglyMeasurable.rpow_const` (≈line 502) gone → the base is `‖g_k a‖ ≥ 0`, exp `q.toReal-1`;
+  find the real-rpow measurability lemma (`Measurable.rpow`? via `measurable_id.rpow measurable_const`),
+  or route through `AEMeasurable`.
+- `Real.measurable_sign` (≈line 500) gone → construct `Measurable Real.sign` via `Measurable.ite`
+  on `{r|r<0}`/`{r|0<r}` (`measurableSet_lt`), after `unfold Real.sign`.
+- `Lp.coeFn_add`/`Lp.coeFn_smul` "Function expected" (286/303) — signature is STILL `(f g)`; the
+  real cause is likely the `.toLp _` / `MemLp.toLp` arg form, not `coeFn_add` itself.
+- **MISSING helper `aestronglyMeasurable_of_restrict_spanningSets` (≈line 804): exists NOWHERE
+  (Mathlib or local) — must be CONSTRUCTED** (AESM on each `μ.restrict (spanningSets μ n)` ⇒ AESM on
+  μ, since the spanning sets cover). This is a genuine gap and likely the key to collapsing the
+  `localization_existence` cascade; once `g` is built, the `hg_eq_n`/`hg_lq`/`hg_norm` unknowns resolve.
+- `simp [eLpNorm, eLpNorm']` (line 75) + assorted `Type mismatch`/`unsolved goals` — enorm-vs-nnnorm
+  form mismatches surfaced by the `rpow_enorm` rename; `eLpNorm'` unfolds differently now.
+
+**Assessment.** The file is NOT greenable in one session — `localization_existence` is a
+multi-session core with a genuinely missing helper. But infra is unblocked and the drift dictionary +
+cascade insight make the repair tractable and fast now. This is real critical-path progress on
+S13/S16 step-1: once green it surfaces the internal `eLpNorm g q μ ≤ ‖φ‖` bound (Incomplete01:≈796)
+through `riesz_lp_surjective_sigma_finite` → `riesz_representer_on_sigmaFinite_set` → discharge the
+synthesis `sorry` (`riesz_lp_surjective_general`) → eliminate the parent axiom. Axiom untouched;
+`axiomCount` unchanged.
