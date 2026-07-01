@@ -116,7 +116,12 @@
   "conclusion": {
     "summary": "Establishes the alternating (signed) Fibonacci binomial transform ∑_{k≤n} (−1)ᵏ C(n,k) F₍ₙ₊d₊ₖ₎ = (−1)ⁿ F_d, the x = −1 companion of the parent's positive transform ∑ C(n,k) Fₘ₊ₖ = F₂ₙ₊ₘ. The reusable primitive signed_pascal_conv (a signed Pascal convolution over ℤ) drives the induction; the Fibonacci recurrence enters only at the final contraction. 4 theorems, 0 sorries, 0 axioms.",
     "implications": "Together the two entries realize both the positive and alternating binomial transforms of the Fibonacci sequence as machine-checked identities, mirroring the two golden-ratio facts 1 + φ = φ² and 1 − φ = ψ. signed_pascal_conv is stated for an arbitrary integer sequence and so is immediately reusable for the alternating binomial transform of any g : ℕ → ℤ — the general finite-difference machinery, not just its Fibonacci instance.",
-    "openQuestions": []
+    "openQuestions": [
+      "Interpolate between the two transforms: the positive (x = 1) transform gives F₂ₙ₊ₘ and the alternating (x = −1) transform gives (−1)ⁿ F₍ₘ₋ₙ₎. Determine the closed form of the full weighted transform ∑_{k≤n} xᵏ C(n,k) F₍ₘ₊ₖ₎ for a formal parameter x, which by Binet applies ∑ C(n,k)(xφ)ᵏ = (1 + xφ)ⁿ and (1 + xψ)ⁿ; identify when (1 + xφ, 1 + xψ) are again a scaled conjugate pair of golden type.",
+      "Prove the alternating binomial transform for the companion Lucas numbers Lₙ and, more generally, for an arbitrary Lucas sequence Uₙ(P,Q) / Vₙ(P,Q): signed_pascal_conv is sequence-agnostic, so the only new input is the two-term recurrence at the final contraction — is the closed form always (−1)ⁿ times a shifted term, or does the sign/shift depend on the discriminant P² − 4Q?",
+      "Upgrade signed_pascal_conv to a structural theorem about the n-th forward-difference operator Δⁿ acting on any linear-recurrence sequence: characterize precisely which sequences g have Δⁿ g in closed form, recovering the Fibonacci result as the case where the characteristic roots satisfy φψ = −1.",
+      "Formalize the iterated / higher-order version: does composing the transform (applying Δ repeatedly, or the two-variable transform ∑ C(n,j)C(n,k)(−1)ᵏ F₍ₘ₊ⱼ₊ₖ₎) collapse to a single Fibonacci term, and is there a q-analogue replacing C(n,k) by the Gaussian binomial coefficient?"
+    ]
   },
   "sorries": 0
 }
