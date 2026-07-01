@@ -2354,4 +2354,47 @@ theorem boundary_faces_card_incDir (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤
   · rw [if_pos hcond, if_pos ((last_boundary_face_iff s hd).mp hcond)]
   · rw [if_neg hcond, if_neg (fun hk => hcond ((last_boundary_face_iff s hd).mpr hk))]
 
+/-!
+## Per-cell door indicator collapses to the single final Kuhn step
+
+`boundary_faces_card_incDir` phrases the per-cell door term through the existential
+`∃ c : Fin d, s.incDir c = Fin.last d ∧ c.val = d - 1` — "*some* Kuhn step is the final
+one (`c.val = d - 1`) and increments the top coordinate".  But `c.val = d - 1` pins `c`
+down to a *single* element of `Fin d` (there is exactly one index of value `d - 1`), so
+the quantifier is spurious: the whole condition is decided by the one direction
+`s.incDir` assigns to the final chain step `⟨d - 1, _⟩`.  `exists_incDir_last_iff`
+discharges the collapse and `boundary_faces_card_lastStep` restates the door count
+through it.  This is the sharpest per-cell form: a Phase-2 door-parity induction that
+peels the last Kuhn step reads the `0/1` summand off a *single* increment-direction
+evaluation, with no residual quantifier to carry.  All 0-sorry, 0-axiom (builds only on
+`boundary_faces_card_incDir` + `Fin.ext`). -/
+
+/-- The final Kuhn step of a `d`-chain is the unique index of value `d - 1`, so the
+existential "*some* step is final and increments the top coordinate" collapses to a
+single evaluation: `s.incDir ⟨d - 1, _⟩ = Fin.last d`. -/
+theorem exists_incDir_last_iff (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    (∃ c : Fin d, s.incDir c = Fin.last d ∧ c.val = d - 1) ↔
+      s.incDir ⟨d - 1, by omega⟩ = Fin.last d := by
+  constructor
+  · rintro ⟨c, hc, hcv⟩
+    have hce : c = ⟨d - 1, by omega⟩ := Fin.ext hcv
+    rwa [hce] at hc
+  · intro h
+    exact ⟨⟨d - 1, by omega⟩, h, rfl⟩
+
+/-- **Per-cell boundary-door count, at the single final Kuhn step.**  The number of
+geometric `∂Δ_N` boundary doors of a Freudenthal cell is `1` exactly when the final
+chain step increments the top coordinate (`s.incDir ⟨d - 1, _⟩ = Fin.last d`) and that
+coordinate starts at zero on the base vertex, and `0` otherwise.  The quantifier-free
+form of `boundary_faces_card_incDir`: the `0/1` summand read off one increment
+direction, the precise local datum a last-step door-parity induction accumulates. -/
+theorem boundary_faces_card_lastStep (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    (Finset.univ.filter
+      (fun k : Fin (d + 1) =>
+        ∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0)).card =
+    if (s.incDir ⟨d - 1, by omega⟩ = Fin.last d ∧
+        (s.verts 0).coords (Fin.last d) = 0)
+      then 1 else 0 := by
+  rw [boundary_faces_card_incDir s hd, exists_incDir_last_iff s hd]
+
 end SpernerNDimOQ02
