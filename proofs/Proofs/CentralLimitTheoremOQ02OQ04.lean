@@ -252,6 +252,96 @@ theorem ibragimov_threshold_summable (δ r : ℝ)
   rw [lt_div_iff₀ h2δ_pos]
   linarith
 
+/-! ## Part II-bis: Truncation tail second-moment bound (S18, this session)
+
+The Lindeberg condition (S9 target) and the L^p density step inside Davydov's
+inequality both hinge on a *truncation tail estimate*: when a random variable
+has a finite `p`-th moment for some `p > 2`, its **second** moment restricted to
+the large-values region `{|X| > T}` decays like `T^{-(p-2)}`. This is the
+quantitative form of uniform integrability of `X²` that powers the
+negligibility of the truncated remainder in every block-CLT argument.
+
+The two lemmas below are pure real-analysis / measure-theory facts (no α-mixing,
+no `IbragimovHypotheses`), so they are self-contained forward infrastructure —
+directly reusable in the S8–S9 Bernstein-block Lindeberg verification. -/
+
+/-- **Pointwise truncation bound.** On the large-values region `T < |x|`, with
+`2 ≤ p`, the square is dominated by the `p`-th power scaled by `T^{2-p}`:
+`x² ≤ T^{2-p} · |x|^p`.
+
+Proof: `x² = |x|² = |x|^p · |x|^{2-p}` (with `|x|^{2-p}` a `Real.rpow`), and since
+the exponent `2 - p ≤ 0` and `0 < T ≤ |x|`, base-antitonicity of `rpow` at a
+nonpositive exponent (`Real.rpow_le_rpow_of_nonpos`) gives `|x|^{2-p} ≤ T^{2-p}`. -/
+theorem sq_le_rpow_of_large {p T x : ℝ} (hp : 2 ≤ p) (hT : 0 < T)
+    (hx : T < |x|) :
+    x ^ 2 ≤ T ^ (2 - p) * |x| ^ p := by
+  have hxpos : 0 < |x| := lt_trans hT hx
+  have hxnn : (0 : ℝ) ≤ |x| := le_of_lt hxpos
+  have hxp_nn : 0 ≤ |x| ^ p := Real.rpow_nonneg hxnn p
+  have hexp : (2 : ℝ) - p ≤ 0 := by linarith
+  have hanti : |x| ^ (2 - p) ≤ T ^ (2 - p) :=
+    Real.rpow_le_rpow_of_nonpos hT (le_of_lt hx) hexp
+  -- `x² = |x|^(2:ℝ)`
+  have h1 : x ^ 2 = |x| ^ (2 : ℝ) := by
+    rw [← sq_abs x, ← Real.rpow_natCast |x| 2]; norm_num
+  -- `|x|^(2:ℝ) = |x|^p · |x|^(2-p)`
+  have h2 : |x| ^ (2 : ℝ) = |x| ^ p * |x| ^ (2 - p) := by
+    rw [← Real.rpow_add hxpos]; congr 1; ring
+  calc x ^ 2 = |x| ^ p * |x| ^ (2 - p) := by rw [h1, h2]
+    _ ≤ |x| ^ p * T ^ (2 - p) := mul_le_mul_of_nonneg_left hanti hxp_nn
+    _ = T ^ (2 - p) * |x| ^ p := by ring
+
+/-- **Truncation tail second-moment bound** (S18, this session).
+
+For a measurable `X` with integrable `p`-th power (`2 ≤ p`) and threshold `T > 0`,
+the second moment on the large-values set `{ω | T < |X ω|}` is controlled by the
+full `p`-th moment:
+$$
+\int_{\{T < |X|\}} X^2 \, d\mu \;\le\; T^{\,2-p} \int |X|^p \, d\mu.
+$$
+
+The proof integrates the pointwise bound `sq_le_rpow_of_large`: the indicator of
+`X²` on the tail set is dominated everywhere by the integrable envelope
+`T^{2-p} · |X|^p` (off the tail set the indicator is `0`, which is `≤` the
+nonnegative envelope). `integral_mono` on the indicator form, then
+`integral_indicator` and `integral_const_mul`, deliver the stated bound. -/
+theorem truncation_tail_sq_le
+    {μ : Measure Ω} {X : Ω → ℝ} {p T : ℝ}
+    (hp : 2 ≤ p) (hT : 0 < T) (hX : Measurable X)
+    (hXp : Integrable (fun ω => |X ω| ^ p) μ) :
+    ∫ ω in {ω | T < |X ω|}, X ω ^ 2 ∂μ ≤ T ^ (2 - p) * ∫ ω, |X ω| ^ p ∂μ := by
+  set S : Set Ω := {ω | T < |X ω|} with hS_def
+  have habs_meas : Measurable (fun ω => |X ω|) := by
+    simpa [Real.norm_eq_abs] using measurable_norm.comp hX
+  have hSmeas : MeasurableSet S := measurableSet_lt measurable_const habs_meas
+  have hT2p_nn : (0 : ℝ) ≤ T ^ (2 - p) := Real.rpow_nonneg (le_of_lt hT) _
+  -- Integrable, nonnegative dominating envelope `g = T^(2-p) · |X|^p`.
+  have hg_int : Integrable (fun ω => T ^ (2 - p) * |X ω| ^ p) μ := hXp.const_mul _
+  -- The truncated square, written as an indicator.
+  have hf_aesm : AEStronglyMeasurable (S.indicator (fun ω => X ω ^ 2)) μ :=
+    ((hX.pow_const 2).aestronglyMeasurable).indicator hSmeas
+  have hf_nn : ∀ ω, 0 ≤ S.indicator (fun ω => X ω ^ 2) ω := fun ω =>
+    Set.indicator_nonneg (fun a _ => sq_nonneg (X a)) ω
+  -- Pointwise domination `f ω ≤ g ω`, everywhere.
+  have hbound : ∀ ω,
+      S.indicator (fun ω => X ω ^ 2) ω ≤ T ^ (2 - p) * |X ω| ^ p := by
+    intro ω
+    by_cases hω : ω ∈ S
+    · rw [Set.indicator_of_mem hω]
+      have hω' : T < |X ω| := hω
+      exact sq_le_rpow_of_large hp hT hω'
+    · rw [Set.indicator_of_notMem hω]
+      exact mul_nonneg hT2p_nn (Real.rpow_nonneg (abs_nonneg _) _)
+  have hf_int : Integrable (S.indicator (fun ω => X ω ^ 2)) μ :=
+    hg_int.mono' hf_aesm (Filter.Eventually.of_forall (fun ω => by
+      rw [Real.norm_eq_abs, abs_of_nonneg (hf_nn ω)]; exact hbound ω))
+  have hstep :
+      ∫ ω, S.indicator (fun ω => X ω ^ 2) ω ∂μ
+        ≤ ∫ ω, T ^ (2 - p) * |X ω| ^ p ∂μ :=
+    integral_mono hf_int hg_int hbound
+  rw [integral_indicator hSmeas, integral_const_mul] at hstep
+  exact hstep
+
 /-! ## Part III: α-mixing coefficient basic facts (S4 deliverable)
 
 The parent file `CentralLimitTheoremOQ02.lean` defines `alphaMixingCoeff` as a

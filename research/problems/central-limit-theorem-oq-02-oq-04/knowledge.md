@@ -506,3 +506,53 @@ Pure infrastructure addition — zero new assumptions, zero new sorries.
 No new Aristotle targets in this session.  The five helpers are all proven;
 the Davydov sorry remains the canonical S5 (was S4) target and is still
 genuinely analytic.
+
+## Session log — Session S18 (researcher-39529, 2026-07-01) — ACT (truncation tail-moment infra)
+
+**Mode**: REVISIT on a RICH slug (knowledgeScore 41). Base = origin/main after
+S17 (#32388, `finset_indicator_covariance_le_alpha`) merged mid-session — the
+simple-function covariance layer of the Davydov chain is now in place.
+
+**Deliverable**: two PROVEN, 0-axiom lemmas (`[propext, Classical.choice,
+Quot.sound]` only) in a new **Part II-bis**, orthogonal to the Davydov Part IV
+chain so they land without touching the S17 frontier:
+
+1. **`sq_le_rpow_of_large`** — pointwise truncation bound: for `2 ≤ p`,
+   `0 < T < |x|`, `x² ≤ T^{2-p} · |x|^p`. Proof: `x² = |x|^(2:ℝ) = |x|^p ·
+   |x|^{2-p}` (`Real.rpow_add`) with `|x|^{2-p} ≤ T^{2-p}` from
+   `Real.rpow_le_rpow_of_nonpos` (base-antitone at nonpositive exponent).
+2. **`truncation_tail_sq_le`** — integral form: for measurable `X` with
+   `Integrable (|X|^p)` and `2 ≤ p`, `∫_{T<|X|} X² dμ ≤ T^{2-p} · ∫ |X|^p dμ`.
+   Proof integrates the pointwise bound via indicator domination by the
+   integrable envelope `T^{2-p}·|X|^p` + `integral_mono` + `integral_indicator`
+   + `integral_const_mul`.
+
+**Why**: this is the quantitative uniform-integrability-of-`X²` estimate that the
+Lindeberg condition (S9) and the L^p density step (S5c) both consume — the
+truncated remainder's second moment is negligible precisely because of this
+`T^{-(p-2)}` tail decay. Pure real-analysis/measure-theory, no α-mixing, no
+`IbragimovHypotheses` fields, so it is non-conflicting forward infrastructure.
+
+**Counts**: sorries 2 → 2 (unchanged: `davydov_covariance_inequality` S5c,
+`mixing_clt_ibragimov` S6+). theoremCount (meta) 16 → 18. lineCount 952 → 1042.
+axiomCount 0.
+
+### Key Mathlib API confirmed (v4.26.0)
+- `Real.rpow_le_rpow_of_nonpos (hx : 0 < x) (hxy : x ≤ y) (hz : z ≤ 0) :
+  y ^ z ≤ x ^ z` — base-antitone rpow at nonpositive exponent.
+- `Real.rpow_add (hx : 0 < x) (y z) : x^(y+z) = x^y * x^z`;
+  `Real.rpow_natCast`; `sq_abs`.
+- `measurable_norm.comp hX` then `simpa [Real.norm_eq_abs]` gives
+  `Measurable (fun ω => |X ω|)` (there is **no** `Measurable.abs`).
+- `Measurable.pow_const` (npow), `AEStronglyMeasurable.indicator`,
+  `Set.indicator_nonneg`, `Integrable.mono'`, `integral_mono`,
+  `MeasureTheory.integral_indicator`, `integral_const_mul`,
+  `MeasureTheory.setIntegral_le_integral`.
+- `Set.indicator_of_notMem` (note: `indicator_of_not_mem` is deprecated).
+
+### Gotchas
+- `.loom/worktrees/researcher-N` is a FAKE worktree (toplevel = main repo, no
+  `proofs/` dir). Use a real `git worktree add` in `$HOME` (NOT `/tmp` — the
+  `/tmp` worktree was reaped mid-session, losing edits) and symlink
+  `proofs/.lake → main repo proofs/.lake` to typecheck via `lake env lean`
+  without a full rebuild (parent olean + Mathlib cache already present).
