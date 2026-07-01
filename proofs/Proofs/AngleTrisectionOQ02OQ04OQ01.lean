@@ -207,7 +207,7 @@ theorem two_group_subgroup {G : Type*} [Group G] [Fintype G]
 theorem two_group_solvable {G : Type*} [Group G] [Fintype G]
     (hG : IsPGroup 2 G) : IsSolvable G := by
   haveI : Fact (Nat.Prime 2) := Fact.mk (by norm_num)
-  haveI : IsNilpotent G := hG.isNilpotent
+  haveI := hG.isNilpotent
   infer_instance
 
 -- ============================================================
