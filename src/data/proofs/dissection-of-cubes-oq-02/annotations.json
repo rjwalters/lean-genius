@@ -1,49 +1,5 @@
 [
   {
-    "id": "ann-scissors-def",
-    "proofId": "dissection-of-cubes-oq-02",
-    "range": {
-      "startLine": 53,
-      "endLine": 56
-    },
-    "type": "definition",
-    "title": "Scissors Congruence",
-    "content": "Defines the scissors congruence relation between polyhedra. Two polyhedra P and Q are scissors congruent if P can be decomposed into finitely many polyhedral pieces that can be rearranged (via rigid motions) to form Q. This is the central equivalence relation studied in Hilbert's Third Problem. The formalization uses a simplified placeholder requiring only the existence of n pieces.",
-    "mathContext": "Two polyhedra $P$ and $Q$ are scissors congruent ($P \\sim_{\\mathrm{sc}} Q$) if there exist polyhedra $P_1, \\ldots, P_n$ and isometries $\\sigma_1, \\ldots, \\sigma_n$ such that $P = \\bigcup P_i$ and $Q = \\bigcup \\sigma_i(P_i)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "equivalence relation",
-      "polyhedral decomposition",
-      "rigid motion",
-      "congruence"
-    ],
-    "prerequisites": [
-      "basic topology",
-      "Euclidean geometry"
-    ]
-  },
-  {
-    "id": "ann-scissors-props",
-    "proofId": "dissection-of-cubes-oq-02",
-    "range": {
-      "startLine": 58,
-      "endLine": 64
-    },
-    "type": "concept",
-    "title": "Reflexivity and Symmetry of Scissors Congruence",
-    "content": "Proves that scissors congruence is reflexive (any polyhedron is scissors congruent to itself via the trivial 1-piece decomposition) and symmetric (if P can be cut and reassembled into Q, then Q can be cut and reassembled into P by reversing the rigid motions). Transitivity also holds but is omitted here.",
-    "mathContext": "Reflexivity: $P \\sim_{\\mathrm{sc}} P$ via the identity decomposition. Symmetry: if $P \\sim_{\\mathrm{sc}} Q$ via isometries $\\sigma_i$, then $Q \\sim_{\\mathrm{sc}} P$ via $\\sigma_i^{-1}$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "equivalence relation",
-      "group action",
-      "isometry group"
-    ],
-    "prerequisites": [
-      "basic algebra"
-    ]
-  },
-  {
     "id": "ann-cube-angle",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {

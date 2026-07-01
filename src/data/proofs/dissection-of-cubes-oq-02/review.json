@@ -3,7 +3,6 @@
   "proofId": "dissection-of-cubes-oq-02",
   "reviewDate": "2026-03-25T00:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "C+",
     "oneLiner": "Contains a genuinely impressive Niven's theorem proof via Chebyshev recurrence, but the surrounding Hilbert's Third Problem framework is scaffolding with placeholder definitions and hypothesis-encoded assumptions, while meta.json misrepresents this as a fully verified unconditional result.",
@@ -35,7 +34,6 @@
       "assessment": "The file has a strong proved core (Niven's theorem, ~150 lines of original number theory) surrounded by scaffolding that looks like content but adds no mathematical substance; the narrative in meta.json blurs this boundary by presenting the whole entry as uniformly verified."
     }
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -122,7 +120,6 @@
       "recommendation": "Qualify as: 'Among the Platonic solids, the cube is the only one whose dihedral angle is a rational multiple of π — this file proves it for the tetrahedron; the other cases follow from Niven's theorem.'"
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -171,10 +168,10 @@
       "priority": "low",
       "target": "researcher",
       "description": "Replace placeholder ScissorsCongruent definition (∃ n, True) with a meaningful axiomatized definition, or remove it entirely if the entry is reframed around the Niven's theorem contribution rather than Hilbert's Third Problem.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Removed the vacuous placeholder definition and its two trivial reflexivity/symmetry lemmas. The entry is reframed around the Dehn invariant obstruction (which already carries hilbert_third_problem); scissors congruence is explained in a source comment and section note rather than a formal predicate. Annotations ann-scissors-def / ann-scissors-props removed; counts updated."
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 7,
     "originalityAccuracy": 6,
@@ -185,6 +182,5 @@
     "epistemicCoherence": 6,
     "overall": 6.1
   },
-
   "suggestedBestFraming": "Formalizes a complete proof that arccos(1/3)/π is irrational via Chebyshev polynomial recurrence (Niven's theorem), establishing that the cube and regular tetrahedron have different simplified Dehn invariants — the core number-theoretic obstruction in Hilbert's Third Problem. The connection to scissors congruence via Dehn's theorem is stated as a conditional result."
 }
