@@ -62,7 +62,8 @@
       "Sum of squares telescopes: Fₙ·Fₙ₊₁ − Fₙ₋₁·Fₙ = Fₙ(Fₙ₊₁ − Fₙ₋₁) = Fₙ·Fₙ = Fₙ², so the partial sums of Fᵢ² are exactly the products Fₙ·Fₙ₊₁.",
       "The odd-indexed terms accumulate to an even-indexed Fibonacci number: adding F₂ₙ₊₁ to F₂ₙ gives F₂ₙ₊₂ by the recurrence, which is F₂₍ₙ₊₁₎.",
       "Stating the even-indexed sum additively, (∑ F₂ᵢ₊₂)+1 = F₂ₙ₊₁, avoids truncated ℕ subtraction while capturing the classical ∑_{i=1}^{n} F₂ᵢ = F₂ₙ₊₁ − 1.",
-      "All three reduce to the single fact Fₙ₊₂ = Fₙ + Fₙ₊₁ — the identities are bookkeeping over the recurrence, which is why each proof is only a few lines."
+      "All three reduce to the single fact Fₙ₊₂ = Fₙ + Fₙ₊₁ — the identities are bookkeeping over the recurrence, which is why each proof is only a few lines.",
+      "The odd- and even-indexed sums are complementary halves of the classical total-sum identity ∑_{i≤n} Fᵢ = Fₙ₊₂ − 1: over the first 2n terms the odd part contributes F₂ₙ and the even part contributes F₂ₙ₊₁ − 1, and F₂ₙ + (F₂ₙ₊₁ − 1) = F₂ₙ₊₂ − 1 recovers the full sum by the recurrence."
     ]
   },
   "mainTheorems": [
@@ -131,6 +132,16 @@
       "proofId": "combinations-formula-oq-08",
       "relationship": "Companion Fibonacci identity",
       "description": "combinations-formula-oq-08 records the Pascal shallow-diagonal sum Fₙ₊₁ = ∑ C(n−k, k) (Mathlib's Nat.fib_succ_eq_sum_choose); this entry supplies the orthogonal family of summation identities (sum of squares, odd- and even-indexed sums)."
+    },
+    {
+      "proofId": "cassini-identity-oq-01",
+      "relationship": "Pointwise companion identity",
+      "description": "Cassini's identity Fₙ₊₂·Fₙ − Fₙ₊₁² = (−1)ⁿ⁺¹ is the quadratic pointwise identity named in this entry's header. It is proved there from the multiplicativity of the Fibonacci Q-matrix determinant — a different engine (matrix powers) than the recurrence-only inductions used here, and the algebraic key behind the sum-of-squares telescoping Fₙ₊₁Fₙ₊₂ − FₙFₙ₊₁ = Fₙ₊₁²."
+    },
+    {
+      "proofId": "combinations-formula-oq-08-oq-01",
+      "relationship": "Source of the recurrence",
+      "description": "combinations-formula-oq-08-oq-01 derives the Fibonacci recurrence Fₙ₊₂ = Fₙ₊₁ + Fₙ itself from Pascal's rule on the shallow-diagonal binomial sums. That recurrence is the single fact all three summation identities here reduce to, so this entry can be read as the summation-level consequences of the recurrence that entry establishes combinatorially."
     }
   ],
   "conclusion": {
