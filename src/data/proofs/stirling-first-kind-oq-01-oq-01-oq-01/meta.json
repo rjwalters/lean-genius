@@ -2,7 +2,7 @@
   "id": "stirling-first-kind-oq-01-oq-01-oq-01",
   "slug": "stirling-first-kind-oq-01-oq-01-oq-01",
   "title": "Stirling Matrix Inversion: Signed First-Kind Numbers and the Falling Factorial",
-  "description": "Answers the parent entry's open question by formalising the duality between the two kinds of Stirling numbers. Three companion facts to the parent's rising-factorial identity: (1) the coefficients of the falling factorial descPochhammer R n are the signed Stirling numbers of the first kind, (descPochhammer R n).coeff k = (-1)^(n+k)·c(n,k) = s(n,k); (2) the monomial Xⁿ expands in the falling-factorial basis with the second-kind numbers as coordinates, Xⁿ = ∑_{k=0}^{n} S(n,k)·descPochhammer R k; (3) combining (1) and (2) and comparing the coefficient of Xᵐ shows the signed first-kind matrix [s(n,k)] and the second-kind matrix [S(n,k)] are mutually inverse: ∑_k S(n,k)·s(k,m) = [m=n]. Mathlib defines Nat.stirlingFirst, Nat.stirlingSecond, ascPochhammer and descPochhammer but connects none of them.",
+  "description": "Answers the parent entry's open question by formalising the duality between the two kinds of Stirling numbers. Three companion facts to the parent's rising-factorial identity: (1) the coefficients of the falling factorial descPochhammer R n are the signed Stirling numbers of the first kind, (descPochhammer R n).coeff k = (-1)^(n+k)·c(n,k) = s(n,k); (2) the monomial Xⁿ expands in the falling-factorial basis with the second-kind numbers as coordinates, Xⁿ = ∑_{k=0}^{n} S(n,k)·descPochhammer R k; (3) combining (1) and (2) and comparing the coefficient of Xᵐ shows the signed first-kind matrix [s(n,k)] and the second-kind matrix [S(n,k)] are mutually inverse: ∑_k S(n,k)·s(k,m) = [m=n]. Mathlib defines Nat.stirlingFirst, Nat.stirlingSecond, ascPochhammer and descPochhammer but connects none of them. A fourth theorem, stirling_orthogonality_reverse, proves the reverse product ∑_k s(n,k)·S(k,m) = [m=n] as well — obtained structurally from Matrix.mul_eq_one_comm on the finite triangular truncations — so the two matrices are genuinely mutually inverse on both sides (a two-sided inverse).",
   "leanFile": {
     "imports": [
       "Mathlib",
@@ -13,9 +13,9 @@
       "Finset"
     ],
     "namespace": "StirlingMatrixInversion",
-    "lineCount": 166,
+    "lineCount": 248,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 0,
     "mainTheorems": [
       {
@@ -41,6 +41,12 @@
         "type": "original",
         "description": "The multiplication engine driving the second-kind expansion: X·descPochhammer R k = descPochhammer R (k+1) + k·descPochhammer R k, the falling-factorial analogue of X·xᵏ = xᵏ⁺¹",
         "leanType": "(k : ℕ) → (X : R[X]) * descPochhammer R k = descPochhammer R (k + 1) + (k : R[X]) * descPochhammer R k"
+      },
+      {
+        "name": "stirling_orthogonality_reverse",
+        "type": "original",
+        "description": "Reverse orthogonality completing the two-sided inverse: the other product of the two Stirling triangles is also the identity, ∑_k s(n,k)·S(k,m) = [m=n]. Obtained structurally from Matrix.mul_eq_one_comm applied to the (n+1)×(n+1) truncations, since a one-sided inverse of a square matrix over a commutative ring is automatically two-sided.",
+        "leanType": "(n m : ℕ) → (∑ k ∈ Finset.range (n + 1), ((-1) ^ (n + k) * (Nat.stirlingFirst n k : R)) * (Nat.stirlingSecond k m : R)) = if m = n then 1 else 0"
       }
     ],
     "path": "Proofs/StirlingFirstKindOQ01OQ01OQ01.lean",
@@ -62,7 +68,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 166,
+    "lineCount": 248,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (each of the four theorems depends only on propext, Classical.choice, Quot.sound). The results connect four existing but previously unlinked Mathlib definitions — Nat.stirlingFirst, Nat.stirlingSecond, ascPochhammer, descPochhammer — using the falling-factorial recurrence descPochhammer_succ_right, both Stirling recurrences, and standard polynomial coefficient lemmas. Mathlib contains neither the signed-coefficient identity, the second-kind falling-factorial expansion, nor the orthogonality relation.",
     "originalContributions": [
       "coeff_descPochhammer_eq_stirlingFirst: (descPochhammer R n).coeff k = (-1)^(n+k)·c(n,k) — original, the signed first-kind companion to the parent's unsigned rising-factorial identity, proved by induction through descPochhammer_succ_right with the alternating sign carried as (-1)^(n+k)",
@@ -175,10 +181,18 @@
       "endLine": 165,
       "summary": "Proves stirling_orthogonality: ∑_k S(n,k)·s(k,m) = [m=n]. The proof rewrites the Kronecker delta as coeff m of Xⁿ (coeff_X_pow), expands Xⁿ by the second-kind identity, distributes the coefficient over the sum (finset_sum_coeff), and applies coeff_C_mul together with the signed first-kind identity to each term, turning the single coefficient into ∑_k S(n,k)·s(k,m).",
       "mathContext": "$[m=n] = (X^n).\\mathrm{coeff}\\,m = \\sum_k S(n,k)\\,(x^{(k\\downarrow)}).\\mathrm{coeff}\\,m = \\sum_k S(n,k)\\,s(k,m)$."
+    },
+    {
+      "id": "reverse-orthogonality",
+      "title": "Reverse Orthogonality (Two-Sided Inverse)",
+      "startLine": 167,
+      "endLine": 247,
+      "summary": "Proves stirling_orthogonality_reverse: ∑_k s(n,k)·S(k,m) = [m=n], the companion product completing the two-sided inverse. The coefficient comparison of the previous section yields only S·s = I; here the two triangles are packaged as (n+1)×(n+1) matrices S and s over Fin (n+1). The forward identity is re-derived as the matrix equation S*s = 1 (extending the range-(i+1) sum to all of Fin (n+1), where the off-triangle second-kind entries vanish), and Matrix.mul_eq_one_comm then gives s*S = 1 for free. Reading off the (n,m) entry recovers the reverse orthogonality. The case m>n is handled elementarily since every S(k,m) with k≤n<m vanishes.",
+      "mathContext": "For square matrices over a commutative ring, $AB=I \\iff BA=I$; applied to the triangular truncations of $[s(n,k)]$ and $[S(n,k)]$ this upgrades the one-sided relation $S\\cdot s = I$ to the two-sided $s\\cdot S = I$, i.e. $\\sum_k s(n,k)\\,S(k,m) = [m=n]$."
     }
   ],
   "conclusion": {
-    "summary": "The two Stirling triangles are mutually inverse change-of-basis matrices: the falling factorial's coefficients are the signed first-kind numbers s(n,k) = (-1)^(n+k)·c(n,k), the monomial Xⁿ expands in the falling-factorial basis with the second-kind numbers, and comparing the coefficient of Xᵐ in Xⁿ forces ∑_k S(n,k)·s(k,m) = [m=n]. All four results are verified over an arbitrary commutative ring with 0 axioms and 0 sorries, completing the parent entry's rising-factorial picture on the falling-factorial side.",
+    "summary": "The two Stirling triangles are mutually inverse change-of-basis matrices: the falling factorial's coefficients are the signed first-kind numbers s(n,k) = (-1)^(n+k)·c(n,k), the monomial Xⁿ expands in the falling-factorial basis with the second-kind numbers, and comparing the coefficient of Xᵐ in Xⁿ forces ∑_k S(n,k)·s(k,m) = [m=n]. All four results are verified over an arbitrary commutative ring with 0 axioms and 0 sorries, completing the parent entry's rising-factorial picture on the falling-factorial side. The reverse product s·S = I is also established (via Matrix.mul_eq_one_comm on the finite truncations), so the inversion is genuinely two-sided.",
     "implications": [
       "Bridges four previously disconnected Mathlib definitions — Nat.stirlingFirst, Nat.stirlingSecond, ascPochhammer, descPochhammer — with the missing change-of-basis identities in both directions between monomials and factorials.",
       "Supplies the orthogonality relation ∑_k S(n,k)·s(k,m) = [m=n] as reusable infrastructure for finite-difference calculus, Stirling-transform inversion, and umbral identities.",
