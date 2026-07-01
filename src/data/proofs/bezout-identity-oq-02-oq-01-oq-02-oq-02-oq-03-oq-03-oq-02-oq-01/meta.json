@@ -77,6 +77,14 @@
   ],
   "sections": [
     {
+      "id": "setup",
+      "title": "Statement, strategy, and imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Docstring: classify irreducibles of ℤ[√d] by norm for −2 ≤ d < 0. The parent proved the SUFFICIENT half (prime-absolute-value norm ⇒ irreducible/prime); this file proves the NECESSARY half — an irreducible z has |N(z)| equal to a rational prime p or its square p² (split/ramified vs inert). Engine: z prime divides N(z)=z·z̄ ⇒ divides some ↑p ⇒ p²=|N(z)|·|N(w)| ⇒ |N(z)| ∣ p². Import the parent file; open Zsqrtd; namespace; variable d.",
+      "mathContext": "For $-2 \\le d < 0$: $z$ irreducible in $\\mathbb{Z}[\\sqrt d] \\Rightarrow |N(z)| \\in \\{p, p^2\\}$ for a rational prime $p$."
+    },
+    {
       "id": "sec-exists-prime-dvd",
       "title": "A prime element divides the image of a rational prime",
       "startLine": 46,
