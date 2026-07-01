@@ -281,4 +281,72 @@ theorem construction2_sum_card (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ k) :
   rw [Nat.card_Ico]
   omega
 
+/-! ### 8. General threshold existence for `r ≥ 2, k ≥ 2`.
+
+The worked instance `crossover_r4k2` exhibits a single crossover threshold `n₀(4,2) = 8`.
+Here we upgrade that from an example to a theorem: such a threshold *exists* for every
+`r ≥ 2, k ≥ 2`, without computing it. The engine is that `construction2` is **unbounded**
+in `n` — already its top summand `C(n−1, r−1)` is, because `r − 1 ≥ 1`. Since the
+"construction2 dominates" region is upward-closed (Section 2), unboundedness makes it a
+genuine final segment `{ n : n₀ ≤ n }`, so the regime transition of `conjecturedValue` is
+governed by a single threshold in **every** case, not just the `r = 4, k = 2` example. -/
+
+/-- Elementary lower bound `n − d + 1 ≤ C(n, d)` for `1 ≤ d ≤ n`: fixing a `(d−1)`-subset,
+    the `d`-subsets containing it number `n − d + 1`. Proved by induction on `n` from `d`
+    using the Pascal step `C(n+1, d) = C(n, d−1) + C(n, d)` with `C(n, d−1) ≥ 1`. -/
+theorem sub_add_one_le_choose (n d : ℕ) (hd : 1 ≤ d) (hn : d ≤ n) :
+    n - d + 1 ≤ Nat.choose n d := by
+  induction n, hn using Nat.le_induction with
+  | base => simp
+  | succ n hn ih =>
+    have hpascal : Nat.choose (n + 1) d = Nat.choose n (d - 1) + Nat.choose n d := by
+      have h := Nat.choose_succ_succ n (d - 1)
+      simp only [Nat.succ_eq_add_one] at h
+      rw [Nat.sub_add_cancel hd] at h
+      omega
+    have hpos : 1 ≤ Nat.choose n (d - 1) := Nat.choose_pos (by omega)
+    omega
+
+/-- `construction2` dominates its top summand `C(n−1, r−1)` (for `k ≥ 2`, `n ≥ k`): the
+    index `n − 1` lies in the summation window `[n−k+1, n)` of `construction2_eq_sum`. -/
+theorem choose_pred_le_construction2 (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 2) (hn : n ≥ k) :
+    Nat.choose (n - 1) (r - 1) ≤ construction2 n r k := by
+  rw [construction2_eq_sum n r k hr (by omega) hn]
+  apply Finset.single_le_sum (f := fun j => Nat.choose j (r - 1)) (fun _ _ => Nat.zero_le _)
+  rw [Finset.mem_Ico]; omega
+
+/-- For `r ≥ 2, k ≥ 2`, `construction2` eventually overtakes the constant `construction1`:
+    some `n ≥ k` has `construction1 r k ≤ construction2 n r k`. Witness
+    `n = construction1 r k + r + k`, large enough that even the single top summand
+    `C(n−1, r−1) ≥ (n−1) − (r−1) + 1 = construction1 r k + k + 1` already exceeds it. -/
+theorem construction2_eventually_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+    ∃ n, k ≤ n ∧ construction1 r k ≤ construction2 n r k := by
+  set N := construction1 r k + r + k with hN
+  refine ⟨N, by omega, ?_⟩
+  have h1 : Nat.choose (N - 1) (r - 1) ≤ construction2 N r k :=
+    choose_pred_le_construction2 N r k (by omega) hk (by omega)
+  have h2 : (N - 1) - (r - 1) + 1 ≤ Nat.choose (N - 1) (r - 1) :=
+    sub_add_one_le_choose (N - 1) (r - 1) (by omega) (by omega)
+  omega
+
+/-- **General threshold existence (`r ≥ 2, k ≥ 2`).** There is a threshold `n₀ ≥ k` beyond
+    which `construction2` always dominates `construction1`: the "large-n regime" is a genuine
+    final segment `{ n : n₀ ≤ n }`. This generalizes the worked instance `crossover_r4k2`
+    (`r = 4, k = 2`, `n₀ = 8`) to all `r ≥ 2, k ≥ 2`, establishing that a single regime
+    threshold exists in every case. (The exact `n₀(r, k)` is left open; only existence is
+    proved.) -/
+theorem exists_dominance_threshold (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+    ∃ n₀, k ≤ n₀ ∧ ∀ n, n₀ ≤ n → construction1 r k ≤ construction2 n r k := by
+  obtain ⟨n₁, hkn₁, hdom₁⟩ := construction2_eventually_dominates r k hr hk
+  exact ⟨n₁, hkn₁, fun n hn =>
+    construction2_dominant_up n₁ n r k (by omega) (by omega) hkn₁ hn hdom₁⟩
+
+/-- Beyond the threshold, `conjecturedValue` collapses to `construction2` (the large-n
+    regime), for every `r ≥ 2, k ≥ 2`. Combines `exists_dominance_threshold` with the
+    collapse lemma `conjecturedValue_large`. -/
+theorem conjecturedValue_eq_construction2_eventually (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+    ∃ n₀, k ≤ n₀ ∧ ∀ n, n₀ ≤ n → conjecturedValue n r k = construction2 n r k := by
+  obtain ⟨n₀, hkn₀, hdom⟩ := exists_dominance_threshold r k hr hk
+  exact ⟨n₀, hkn₀, fun n hn => conjecturedValue_large n r k (hdom n hn)⟩
+
 end Erdos1020OQ02
