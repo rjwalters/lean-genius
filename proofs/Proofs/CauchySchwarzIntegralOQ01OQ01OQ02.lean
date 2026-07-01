@@ -49,7 +49,7 @@ theorem gives (L2)* ≅ L2 as a linear isometric equivalence.
     on L2 has the form f ↦ ⟨g, f⟩ for unique g ∈ L2, with ‖φ‖ = ‖g‖.
     Direct application of Mathlib's InnerProductSpace.toDual. -/
 theorem l2_riesz :
-    ∃ Φ : Lp ℝ 2 μ ≃ₗᵢ⋆[ℝ] NormedSpace.Dual ℝ (Lp ℝ 2 μ),
+    ∃ Φ : Lp ℝ 2 μ ≃ₗᵢ⋆[ℝ] StrongDual ℝ (Lp ℝ 2 μ),
     ∀ g : Lp ℝ 2 μ, ‖Φ g‖ = ‖g‖ :=
   ⟨InnerProductSpace.toDual ℝ (Lp ℝ 2 μ),
    fun g => LinearIsometryEquiv.norm_map _ g⟩
@@ -62,8 +62,9 @@ theorem l2_dual_surjective :
 
 /-- The inner product of L2 functions equals the integral: ⟨f, g⟩ = ∫ fg dμ. -/
 theorem l2_inner_eq_integral (f g : Lp ℝ 2 μ) :
-    @inner ℝ _ _ f g = ∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ :=
-  MeasureTheory.L2.inner_def f g
+    @inner ℝ _ _ f g = ∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ := by
+  rw [MeasureTheory.L2.inner_def (𝕜 := ℝ)]
+  simp only [RCLike.inner_apply', conj_trivial]
 
 /-
 ## Part II: Hölder-Based Embedding (Easy Direction)
@@ -114,10 +115,10 @@ but the full composition with Lp is not yet formalized.
     Every bounded linear functional on Lp is represented by integration
     against an Lq function, where q is the conjugate exponent.
     This requires Radon-Nikodým + Lp machinery. -/
-axiom riesz_lp_surjective (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
+axiom riesz_lp_surjective (p q : ℝ≥0∞) [Fact (1 ≤ p)] (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal) :
     ∀ φ : Lp ℝ p μ →L[ℝ] ℝ,
-    ∃ g : α → ℝ, Memℒp g q μ ∧
+    ∃ g : α → ℝ, MemLp g q μ ∧
       ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ
 
 /-
