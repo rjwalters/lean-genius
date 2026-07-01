@@ -99,5 +99,35 @@
       "note": "Develops AM-GM, Jensen, and the role of strict convexity in equality cases."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: n-term AM-GM equality via strict concavity of log",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "States the goal — characterising when the weighted AM-GM inequality ∏ xᵢ^wᵢ ≤ ∑ wᵢxᵢ is an equality — and the strategy: take logs to convert the multiplicative equality into the additive Jensen equality for the strictly concave Real.log, then apply Mathlib's StrictConcaveOn.map_sum_eq_iff. Answers the parent's open question of upgrading the 2-variable Young equality case to n terms."
+    },
+    {
+      "id": "log-helpers",
+      "title": "Logarithmic and positivity helper lemmas",
+      "startLine": 42,
+      "endLine": 61,
+      "summary": "Three supporting facts: log_prod_rpow turns log of the weighted geometric mean into the weighted sum of logs (log ∏ xᵢ^wᵢ = ∑ wᵢ log xᵢ); prod_rpow_pos and mean_pos establish that the geometric and arithmetic means are strictly positive, which is what licenses applying log injectivity on (0,∞)."
+    },
+    {
+      "id": "main-equality",
+      "title": "The equality case (canonical form)",
+      "startLine": 63,
+      "endLine": 85,
+      "summary": "weighted_amgm_eq_iff: for positive weights summing to 1, the weighted geometric mean equals the weighted arithmetic mean iff every xⱼ equals that common mean. Proof injects the equality through log (both sides positive), rewrites via log_prod_rpow, and feeds strictConcaveOn_log_Ioi.map_sum_eq_iff — Mathlib's strict-Jensen equality characterisation."
+    },
+    {
+      "id": "pairwise-and-converse",
+      "title": "Pairwise form and the trivial converse",
+      "startLine": 87,
+      "endLine": 114,
+      "summary": "weighted_amgm_eq_iff_pairwise restates equality as 'all xⱼ over the weight support are equal', deriving the constant-mean condition from pairwise equality via ∑ wᵢxⱼ = xⱼ∑wᵢ = xⱼ. weighted_amgm_eq_of_const records the easy direction: if all xⱼ = c the two means coincide."
+    }
+  ]
 }
