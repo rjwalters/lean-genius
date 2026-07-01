@@ -1310,4 +1310,106 @@ theorem franklinMoveB_headline (S : Finset ℕ) (H : S.Nonempty) (ℓ : ℕ)
          franklinMoveB_sign S ℓ m hmS hrun hlS hne,
          franklinMoveB_pos S ℓ m hpos hl1 hlm⟩
 
+/-! ## Part 13: The unified Franklin step — one sign-reversing, weight-preserving map
+
+Parts 11–12 gave the two Franklin moves as *separate* maps, each with its own hypothesis
+bundle: **Move A** for the `s ≤ ℓ` regime (absorb the smallest part into the top run,
+`card - 1`) and **Move B** for the `s > ℓ` regime (peel the top run, add a new smallest
+part `ℓ`, `card + 1`).  Franklin's involution dispatches between them on the single test
+`s ≤ ℓ`, where `s = min S` is the smallest part and `ℓ` is the length of the top staircase.
+
+Here we package that dispatch as one map
+
+    `franklinStep S s ℓ m = if s ≤ ℓ then franklinMoveA S s m else franklinMoveB S ℓ m`
+
+and prove the two properties that hold **uniformly across both branches** — the content
+that makes the cancellation work:
+
+  * **weight preservation** `∑ (franklinStep) = ∑ S` (Move A: `-s` on top, `+s` split off
+    the run; Move B: `-m + (m-ℓ) + ℓ = 0`), and
+  * **sign reversal** `(-1)^{#parts} ↦ -(-1)^{#parts}` (Move A drops the count by one,
+    Move B raises it by one; either way the parity flips).
+
+The sign reversal is the decisive fact: a single map on the *non-fixed* distinct-part
+partitions of `n` that reverses `(-1)^{#parts}` forces `∑_{non-fixed} (-1)^{#parts} = 0`,
+leaving only the fixed staircases (Parts 7–10) — the pentagonal terms.  Each property is
+proved by `split_ifs` feeding the matching Part 11 / Part 12 branch lemma, with the
+regime-appropriate hypotheses supplied conditionally (`hA` used only when `s ≤ ℓ`, `hB`
+only when `ℓ < s`), so no branch is asked to satisfy the other's preconditions.
+
+The remaining structural step (a future Part 14) is *bijectivity*: that applying
+`franklinStep` twice returns `S`, which needs the regime to **swap** under one move
+(so the second application selects the other branch) — the raw algebra is already the
+mutual-inverse pair `franklinMoveB_franklinMoveA` / `franklinMoveA_franklinMoveB` of
+Part 12, awaiting a `min'/max'/ℓ` recomputation on the image. -/
+
+/-- **Franklin's unified step.**  Dispatches on `s ≤ ℓ` (smallest part vs top-staircase
+length): Move A in the `s ≤ ℓ` regime, Move B in the `s > ℓ` regime.  This is the single
+map underlying Franklin's sign-reversing involution on the non-fixed distinct partitions. -/
+def franklinStep (S : Finset ℕ) (s ℓ m : ℕ) : Finset ℕ :=
+  if s ≤ ℓ then franklinMoveA S s m else franklinMoveB S ℓ m
+
+/-- **The Franklin step preserves the weight**, in either regime.  Hypotheses are supplied
+per branch: `hA` (only under `s ≤ ℓ`) gives Move A's preconditions, `hB` (only under
+`ℓ < s`) gives Move B's. -/
+theorem franklinStep_sum (S : Finset ℕ) (s ℓ m : ℕ)
+    (hA : s ≤ ℓ → s ∈ S ∧ m - s + 1 ∈ S ∧ s ≠ m - s + 1 ∧ (∀ x ∈ S, x ≤ m) ∧ s ≤ m)
+    (hB : ℓ < s → m ∈ S ∧ m - ℓ ∉ S ∧ ℓ ∉ S ∧ ℓ ≠ m - ℓ ∧ ℓ ≤ m) :
+    ∑ x ∈ franklinStep S s ℓ m, x = ∑ x ∈ S, x := by
+  unfold franklinStep
+  split_ifs with h
+  · obtain ⟨h1, h2, h3, h4, h5⟩ := hA h
+    exact franklinMoveA_sum S s m h1 h2 h3 h4 h5
+  · obtain ⟨h1, h2, h3, h4, h5⟩ := hB (not_le.mp h)
+    exact franklinMoveB_sum S ℓ m h1 h2 h3 h4 h5
+
+/-- **The Franklin step reverses the sign**, in either regime.  This is the uniform
+`(-1)^{#parts} ↦ -(-1)^{#parts}` law that drives the cancellation of all non-fixed terms:
+Move A lowers the part count by one, Move B raises it by one, so `(-1)^{#parts}` flips
+either way. -/
+theorem franklinStep_sign (S : Finset ℕ) (s ℓ m : ℕ)
+    (hA : s ≤ ℓ → s ∈ S ∧ m - s + 1 ∈ S ∧ s ≠ m - s + 1 ∧ (∀ x ∈ S, x ≤ m))
+    (hB : ℓ < s → m ∈ S ∧ m - ℓ ∉ S ∧ ℓ ∉ S ∧ ℓ ≠ m - ℓ) :
+    (-1 : ℤ) ^ (franklinStep S s ℓ m).card = -(-1 : ℤ) ^ S.card := by
+  unfold franklinStep
+  split_ifs with h
+  · obtain ⟨h1, h2, h3, h4⟩ := hA h
+    exact franklinMoveA_sign S s m h1 h2 h3 h4
+  · obtain ⟨h1, h2, h3, h4⟩ := hB (not_le.mp h)
+    exact franklinMoveB_sign S ℓ m h1 h2 h3 h4
+
+/-- **The Franklin step stays inside the positive distinct parts**, in either regime.
+Move A never introduces a nonpositive part from a positive `S`; Move B needs only
+`1 ≤ ℓ < m`. -/
+theorem franklinStep_pos (S : Finset ℕ) (s ℓ m : ℕ)
+    (hpos : ∀ x ∈ S, 0 < x) (hB : ℓ < s → 1 ≤ ℓ ∧ ℓ < m) :
+    ∀ x ∈ franklinStep S s ℓ m, 0 < x := by
+  unfold franklinStep
+  split_ifs with h
+  · exact franklinMoveA_pos S s m hpos
+  · obtain ⟨h1, h2⟩ := hB (not_le.mp h)
+    exact franklinMoveB_pos S ℓ m hpos h1 h2
+
+/-- **Headline (Part 13).**  The unified Franklin step is simultaneously weight-preserving,
+**sign-reversing**, and valued in positive parts — a single sign-reversing map on the
+non-fixed distinct-part partitions.  All three regime-appropriate hypothesis bundles are
+folded into `hA`/`hB` (each used only in its own branch). -/
+theorem franklinStep_headline (S : Finset ℕ) (s ℓ m : ℕ)
+    (hpos : ∀ x ∈ S, 0 < x)
+    (hA : s ≤ ℓ → s ∈ S ∧ m - s + 1 ∈ S ∧ s ≠ m - s + 1 ∧ (∀ x ∈ S, x ≤ m) ∧ s ≤ m)
+    (hB : ℓ < s → m ∈ S ∧ m - ℓ ∉ S ∧ ℓ ∉ S ∧ ℓ ≠ m - ℓ ∧ 1 ≤ ℓ ∧ ℓ < m) :
+    (∑ x ∈ franklinStep S s ℓ m, x = ∑ x ∈ S, x) ∧
+    ((-1 : ℤ) ^ (franklinStep S s ℓ m).card = -(-1 : ℤ) ^ S.card) ∧
+    (∀ x ∈ franklinStep S s ℓ m, 0 < x) := by
+  unfold franklinStep
+  split_ifs with h
+  · obtain ⟨h1, h2, h3, h4, h5⟩ := hA h
+    exact ⟨franklinMoveA_sum S s m h1 h2 h3 h4 h5,
+           franklinMoveA_sign S s m h1 h2 h3 h4,
+           franklinMoveA_pos S s m hpos⟩
+  · obtain ⟨h1, h2, h3, h4, h5, h6⟩ := hB (not_le.mp h)
+    exact ⟨franklinMoveB_sum S ℓ m h1 h2 h3 h4 (le_of_lt h6),
+           franklinMoveB_sign S ℓ m h1 h2 h3 h4,
+           franklinMoveB_pos S ℓ m hpos h5 h6⟩
+
 end PentagonalNumberTheoremOQ01
