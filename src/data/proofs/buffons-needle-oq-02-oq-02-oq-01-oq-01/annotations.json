@@ -1,5 +1,27 @@
 [
   {
+    "id": "crossingFactor-overview",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 47 },
+    "type": "concept",
+    "title": "Solving the Crossing-Factor Recurrence in Closed Form",
+    "content": "The n-dimensional Buffon noodle formula E[crossings] = αₙ·L/d is governed by the crossing factor αₙ = E_{Sⁿ⁻¹}[|u₁|], which satisfies the two-step recurrence α_{n+2} = (n/(n+1))·αₙ with base values α₂ = 2/π, α₃ = 1/2. The parent entry proved only the *structural* behaviour of αₙ (strict two-step decrease, maximum 2/π, uniform sub-one bound) directly from the recurrence, without ever solving it. This entry *solves* the recurrence by telescoping: unfolding the ratio factors gives every even/odd dimension as its base value times a finite product — α_{2m+2} = (2/π)·∏_{j<m}(2j+2)/(2j+3) and α_{2m+3} = (1/2)·∏_{j<m}(2j+3)/(2j+4). From the closed form it re-derives positivity and the maximum 2/π, and evaluates the first higher concrete values α₄ = 4/(3π), α₆ = 16/(15π), α₅ = 3/8, α₇ = 5/16 (none computed in the parent). Fully self-contained over Mathlib: 0 sorries, 0 axioms, no native_decide.",
+    "mathContext": "$\\alpha_{n+2} = \\dfrac{n}{n+1}\\,\\alpha_n$, $\\ \\alpha_{2m+2} = \\dfrac{2}{\\pi}\\prod_{j<m}\\dfrac{2j+2}{2j+3}$, $\\ \\alpha_{2m+3} = \\dfrac12\\prod_{j<m}\\dfrac{2j+3}{2j+4}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Buffon's noodle",
+      "two-step recurrence",
+      "telescoping product",
+      "Wallis-type products",
+      "crossing factor"
+    ],
+    "prerequisites": [
+      "recurrence relations",
+      "finite products (Finset.prod)",
+      "the parent structural bounds"
+    ]
+  },
+  {
     "id": "crossingFactor-def",
     "proofId": "buffons-needle-oq-02-oq-02-oq-01-oq-01",
     "range": { "startLine": 48, "endLine": 65 },
