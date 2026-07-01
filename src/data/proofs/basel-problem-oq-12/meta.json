@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Statement, Euler formula, and imports",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Docstring: ζ(6) = π⁶/945, the next Euler zeta value after ζ(2),ζ(4). Euler general formula ζ(2k) = (−1)^{k+1}·2^{2k−1}·π^{2k}·B_{2k}/(2k)! is Mathlibs hasSum_zeta_nat; at k=3 it reduces to the single Bernoulli number B₆=1/42 that Mathlib lacks (it stops at bernoulli_four). Import ZetaValues/Bernoulli/Tactic; open Real; namespace.",
+      "mathContext": "$\\zeta(6) = \\sum_{n\\ge 1} n^{-6} = (-1)^4\\,2^5\\,\\pi^6\\,B_6/6! = 32\\pi^6(1/42)/720 = \\pi^6/945$."
+    },
+    {
       "id": "bernoulli-six",
       "title": "The Bernoulli Number B₆ = 1/42",
       "startLine": 41,
