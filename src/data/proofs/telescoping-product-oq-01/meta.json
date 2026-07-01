@@ -104,6 +104,17 @@
       "Does the same peel-and-collapse template yield a closed form for the shifted family ∏_{k=2}^{n} (1 − 1/k^m) for m ≥ 2, where the factor (k^m − 1)/k^m factors through cyclotomic-style telescoping?"
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "proofId": "factorial-telescoping-sum-oq-01",
+      "relationship": "Additive telescoping analogue",
+      "description": "The telescoping SUM ∑_{k=1}^{n} k·k! = (n+1)! − 1. This entry is the multiplicative counterpart — where the factorial identity collapses a sum of consecutive differences, ∏(1−1/k²) collapses a product of consecutive ratios (k−1)/k against (k+1)/k. Together they illustrate the telescoping technique in both the additive and multiplicative monoids."
+    },
+    {
+      "proofId": "basel-problem",
+      "relationship": "Same 1/k² terms, additive",
+      "description": "Euler's Basel problem ∑ 1/k² = π²/6. It sums the reciprocal squares that this entry instead multiplies as (1 − 1/k²); the finite product here telescopes to an elementary 1/2, in sharp contrast to the transcendental value of the additive series."
+    }
+  ],
   "sorries": 0
 }
