@@ -181,5 +181,35 @@
     "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/EulerTotientOQ01OQ01.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "R. D. Carmichael",
+      "title": "Note on a new number theoretic function",
+      "year": 1910,
+      "venue": "Bull. Amer. Math. Soc. 16",
+      "note": "Introduces λ(n), the Carmichael function (universal exponent of the unit group mod n)."
+    },
+    {
+      "authors": "T. M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer",
+      "note": "Multiplicative arithmetic functions, Dirichlet convolution, and Möbius inversion."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Standard reference for Euler's totient and its elementary properties."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
+    }
+  ]
 }

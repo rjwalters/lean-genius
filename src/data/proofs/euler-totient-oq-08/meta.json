@@ -161,5 +161,28 @@
       "relationship": "sibling",
       "description": "oq-06 classifies the parity of φ itself; this entry uses φ(p^e) as the period of modular exponentiation. Both sharpen the structural theory around Euler's totient beyond Mathlib's packaged lemmas."
     }
+  ],
+  "references": [
+    {
+      "authors": "L. Euler",
+      "title": "Theoremata arithmetica nova methodo demonstrata",
+      "year": 1763,
+      "venue": "Novi Comment. Acad. Sci. Petrop. 8",
+      "note": "Introduces the totient function and proves a^φ(n) ≡ 1 (mod n)."
+    },
+    {
+      "authors": "T. M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer",
+      "note": "Multiplicative arithmetic functions, Dirichlet convolution, and Möbius inversion."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
+    }
   ]
 }

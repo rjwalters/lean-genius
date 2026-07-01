@@ -134,5 +134,35 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/EulerTotientOQ01OQ01OQ01.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "R. D. Carmichael",
+      "title": "Note on a new number theoretic function",
+      "year": 1910,
+      "venue": "Bull. Amer. Math. Soc. 16",
+      "note": "Introduces λ(n), the Carmichael function (universal exponent of the unit group mod n)."
+    },
+    {
+      "authors": "R. G. E. Pinch",
+      "title": "The Carmichael numbers up to 10^21",
+      "year": 2007,
+      "venue": "Proc. Conf. Algorithmic Number Theory",
+      "note": "561 is the smallest Carmichael number; λ(561)=80 governs its Fermat-pseudoprime behaviour."
+    },
+    {
+      "authors": "T. M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer",
+      "note": "Multiplicative arithmetic functions, Dirichlet convolution, and Möbius inversion."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.totient and the multiplicative/arithmetic-function API underlying this formalization."
+    }
+  ]
 }
