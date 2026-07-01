@@ -30,6 +30,28 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Asymptotics.isLittleO_iff_tendsto'",
+        "description": "The core bridge: u =o[l] g ↔ Tendsto (fun x => u x / g x) l (𝓝 0), under the side condition ∀ᶠ x, g x = 0 → u x = 0. Specialized to g = (·:ℝ) and discharged by the eventual nonvanishing of (n:ℝ).",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Asymptotics.isLittleO_iff",
+        "description": "Unfolds u =o[l] g to ∀ c > 0, ∀ᶠ x, ‖u x‖ ≤ c * ‖g x‖, the starting point for the ε–N characterization.",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Filter.eventually_gt_atTop",
+        "description": "n is eventually > 0 along atTop; combined with Nat.cast_eq_zero and omega this discharges the vacuous side condition of isLittleO_iff_tendsto'.",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.norm_of_nonneg",
+        "description": "‖x‖ = x for x ≥ 0; erases the norms on both u n (via hu) and (n:ℝ) (via Nat.cast_nonneg) to turn the little-o bound into the concrete ε·n inequality.",
+        "module": "Mathlib.Analysis.Normed.Order.Basic"
+      }
+    ],
     "dateAdded": "2026-07-01",
     "lineCount": 131,
     "originalContributions": [
