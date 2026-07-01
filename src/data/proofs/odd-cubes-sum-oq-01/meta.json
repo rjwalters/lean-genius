@@ -124,5 +124,42 @@
       "Does the sum of fifth (or higher odd) powers of the first n odd numbers admit a comparably clean closed form, and does the same add-instead-of-subtract recasting keep its induction inside ℕ?",
       "Is there a bijective or geometric proof — analogous to the cubic-shell dissection behind Nicomachus — that realizes ∑(2k−1)³ = n²(2n²−1) as an explicit decomposition rather than an induction?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Conway, John H.; Guy, Richard K.",
+      "title": "The Book of Numbers",
+      "year": "1996",
+      "venue": "Copernicus / Springer",
+      "note": "Treats sums of powers of odd numbers among the figurate and polygonal-number identities, including ∑(2k−1)³ and its relation to Nicomachus's ∑k³ = (∑k)²."
+    },
+    {
+      "authors": "Graham, R. L.; Knuth, D. E.; Patashnik, O.",
+      "title": "Concrete Mathematics: A Foundation for Computer Science (2nd ed.)",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "note": "Chapter 6 develops closed forms for power sums ∑kᵐ and the finite-calculus / perturbation techniques from which the odd-cube sum ∑(2k−1)³ = n²(2n²−1) is derived."
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "Sequence A002593: a(n) = n²(2n²−1), partial sums of the cubes of odd numbers",
+      "year": "2024",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "note": "Catalogs the sequence 1, 28, 153, 496, … of partial sums ∑_{k≤n}(2k−1)³ = n²(2n²−1) proved here, with references and generating function."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Algebra.BigOperators.Basic (Finset.sum_range_succ) and Mathlib.Tactic.Ring",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the summation lemma driving the one-step induction and the `ring` tactic that discharges the polynomial inductive step 2m⁴ + (2m+1)³ + (m+1)² = 2(m+1)⁴ + m²."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "nicomachus-sum-of-cubes-oq-01",
+      "relationship": "related",
+      "description": "Nicomachus's theorem ∑k³ = (∑k)² is the companion cube power-sum identity over all integers; this entry is the odd-only analog ∑(2k−1)³ = n²(2n²−1), and this entry's open question asks for a cubic-shell dissection proof analogous to Nicomachus's."
+    }
+  ]
 }
