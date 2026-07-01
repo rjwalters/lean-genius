@@ -79,11 +79,18 @@
   "crossReferences": [
     {
       "proofId": "factorial-telescoping-sum-oq-01",
-      "relation": "Shares the ℕ subtraction-free telescoping technique (prove (∑)+c = boundary first)."
+      "relationship": "Shared technique",
+      "description": "Shares the ℕ subtraction-free telescoping technique (prove (∑)+c = boundary first)."
     },
     {
       "proofId": "fibonacci-identities",
-      "relation": "Fibonacci analogue ∑_{k=1}^{n} F_k = F_{n+2} − 1; the bridge L_{n+1} = F_n + F_{n+2} connects the two."
+      "relationship": "Fibonacci analogue",
+      "description": "Fibonacci analogue ∑_{k=1}^{n} F_k = F_{n+2} − 1; the bridge L_{n+1} = F_n + F_{n+2} connects the two."
+    },
+    {
+      "proofId": "fibonacci-identities-oq-06",
+      "relationship": "Fibonacci analogue",
+      "description": "fibonacci-identities-oq-06 proves the precise Fibonacci counterpart of this entry's Lucas partial sum: ∑_{i≤n} F_i = F_{n+2} − 1, telescoping exactly as ∑_{k=1}^{n} L_k = L_{n+2} − 3 does here and differing only in the constant (1 vs 3) fixed by the initial conditions F₀=0, F₁=1 rather than L₀=2, L₁=1. Both use the same subtraction-free-in-ℕ + omega recipe; oq-06 additionally supplies the index-weighted first moment ∑ i·F_i."
     }
   ],
   "leanFile": {
