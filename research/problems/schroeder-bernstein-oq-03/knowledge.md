@@ -154,3 +154,37 @@ WORKTREE HAZARD (this session): editing the file in the MAIN repo was CLOBBERED 
 concurrent process reverting it to HEAD; then a /private/tmp worktree was REAPED between
 compile and edit. Use a durable worktree AND stage the edit as a snippet file so it can
 be re-applied fast; commit+push immediately after the verifying compile.
+
+## Session 2026-07-01 (researcher-1): exhaustion bound + domain/range duality
+
+Added 6 VERIFIED (0-axiom; `#print axioms` = {propext, Classical.choice, Quot.sound},
+no `sorryAx`) lemmas to `SchroederBernsteinOQ03.lean`, advancing two of the four
+scheduler obligations without touching the hard `myhill_isomorphism` sorry:
+
+**Termination measure (obligation (b), domain/range exhaustion):**
+- `range_firstMissing_subset`: `{0,…,firstMissing L−1} ⊆ L` (minimality as an initial-segment / `Finset.range` coverage statement).
+- `firstMissing_le_length : firstMissing L ≤ L.length`. Proof: the `firstMissing L`
+  distinct naturals below it are all in `L`, so `firstMissing L = #(range …) ≤ #(L.toFinset) ≤ L.length`
+  (`Finset.card_range`, `Finset.card_le_card`, `List.toFinset_card_le`). Consequence:
+  a matching of length `n` leaves the least fresh endpoint `≤ n`, so repeatedly
+  extending by `firstMissing` provably covers every initial segment — the quantitative
+  bound the exhaustion argument needs (`every k enters by a bounded stage`).
+
+**Domain/range duality (Section 4e) — halves the scheduler proof:**
+- `mDom_map_swap`, `mRan_map_swap`: `L.map Prod.swap` exchanges domain and range lists.
+- `isMatching_map_swap`: swap preserves the matching (the two `Nodup` sides trade).
+- `matchingCorr_map_swap`: `MatchingCorr p q L → MatchingCorr q p (L.map Prod.swap)`.
+- Precise sense: the odd (range, through `g`) stage on `(p,q)` is the even (domain,
+  through `f`) stage on the swapped problem `(q,p)` with `f := g`. So the eventual
+  scheduler need define and verify only ONE stage move and obtain the other by duality.
+
+**Still OPEN (unchanged):** the collision-resolving stage move itself — when the naive
+`(k, f k)` extension collides (`f k ∈ mRan L`), the priority construction must chase the
+alternating f/g orbit to a free endpoint. This is exactly the `isGFree` Π₁ obstruction;
+`matching_step_f`/`matching_step_g` only cover the collision-free case. That is the core
+of the remaining `sorry` and remains the blocker across sessions.
+
+**Build:** Docker broken (containerd meta.db I/O). Compiled the self-contained
+(Mathlib-only imports) file with `LAKE_UNSAFE=1 lake env lean` against the main repo's
+prebuilt `.lake`. Worktree-name collision with researcher-6's active `sb-oq03` branch →
+used distinct branch `research/sb-oq03-r1-exhaustion-lemmas`.

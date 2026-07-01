@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 269,
+    "lineCount": 729,
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
@@ -47,13 +47,18 @@
       "Clean proof of the easy direction: computable bijection implies one-one equivalence",
       "Fully proved partial-inverse infrastructure via Nat.rfind: partialInverse_partrec (Partrec), partialInverse_spec (recovers input under injection), partialInverse_dom (defined on range)",
       "Proof that computable isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
-      "Forward orbit definition: (g∘f)^k(n) for the back-and-forth construction"
+      "Forward orbit definition: (g∘f)^k(n) for the back-and-forth construction",
+      "Finite partial-bijection (matching) layer: IsMatching, MatchingCorr, atomic correspondence-preserving steps matching_step_f / matching_step_g",
+      "firstMissing: total computable least-fresh-element primitive (Nat.rfind) with freshness and minimality lemmas, the scheduler's targeting function",
+      "range_firstMissing_subset: the firstMissing-covered prefix {0,…,firstMissing L−1} ⊆ L (initial-segment coverage form of minimality)",
+      "firstMissing_le_length: exhaustion bound firstMissing L ≤ L.length — the quantitative termination measure guaranteeing every k enters by a bounded stage (VERIFIED, 0-axiom)",
+      "Domain/range duality (Section 4e): mDom_map_swap, mRan_map_swap, isMatching_map_swap, matchingCorr_map_swap — coordinate-swap L ↦ L.map Prod.swap makes the odd (range) stage the even (domain) stage of the swapped problem (q,p), so the scheduler need define only one stage move (VERIFIED, 0-axiom)"
     ],
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
     ],
-    "theoremCount": 14,
-    "definitionCount": 4,
+    "theoremCount": 50,
+    "definitionCount": 12,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
     ]
@@ -242,10 +247,10 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 444,
+    "lineCount": 729,
     "axiomCount": 0,
-    "theoremCount": 26,
-    "definitionCount": 6,
+    "theoremCount": 50,
+    "definitionCount": 12,
     "sorries": 1,
     "path": "Proofs/SchroederBernsteinOQ03.lean",
     "additionalFiles": [
