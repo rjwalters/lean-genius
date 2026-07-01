@@ -90,6 +90,46 @@
       "mathContext": "$\\sum_i u_i v_i \\le \\big(\\sum_i u_i^p\\big)^{1/p}\\big(\\sum_i v_i^q\\big)^{1/q}$ for $p,q>0$ with $p^{-1}+q^{-1}=1$, evaluated via $\\mathrm{Fin.prod\\_univ\\_two}$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hölder, O."
+      ],
+      "title": "Über einen Mittelwertsatz",
+      "year": "1889",
+      "venue": "Nachrichten von der Königl. Gesellschaft der Wissenschaften zu Göttingen, pp. 38–47",
+      "note": "Classical source of Hölder's inequality (anticipated by Rogers, 1888)."
+    },
+    {
+      "authors": [
+        "Rogers, L.J."
+      ],
+      "title": "An extension of a certain theorem in inequalities",
+      "year": "1888",
+      "venue": "Messenger of Mathematics 17, pp. 145–150",
+      "note": "Earliest form of what is now called Hölder's inequality."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Steele, J.M."
+      ],
+      "title": "The Cauchy–Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press / MAA",
+      "note": "Modern exposition emphasising Young, Hölder and the AM–GM equality (saturation) conditions."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 134-line file (0 sorries, 0 axioms, no native_decide) supplies the generalized n-fold Hölder inequality for finite sums, which Mathlib does not provide. The proof factors through the n-variable Young product inequality (young_product), itself a one-line consequence of Mathlib's weighted AM–GM, and the standard normalization-by-Lᵖ-norm argument. The classical two-function Hölder inequality is recovered as a Fin 2 specialization.",
     "implications": "Together with the parent entries this completes the AM–GM → Young → Hölder ladder for finite sums: weighted AM–GM gives the pointwise Young product inequality, and normalization lifts it to the n-fold Hölder bound. The generalized form is the tool for estimating sums of products of more than two factors (e.g. interpolation inequalities and products of Lᵖ functions), where the two-exponent Hölder inequality does not directly apply.",

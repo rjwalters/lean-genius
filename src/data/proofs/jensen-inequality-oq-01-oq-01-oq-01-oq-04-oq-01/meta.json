@@ -80,6 +80,37 @@
       "id": "am-qm-corollaries"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Jensen, J.L.W.V."
+      ],
+      "title": "Sur les fonctions convexes et les inégalités entre les valeurs moyennes",
+      "year": "1906",
+      "venue": "Acta Mathematica 30, pp. 175–193",
+      "note": "Origin of Jensen's inequality; the strict-convexity equality case underlies this entry."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Bullen, P.S."
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications 560, Kluwer/Springer",
+      "note": "Encyclopaedic treatment of weighted power means and the comparison inequalities between them."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 176-line file (0 sorries, 0 axioms, no native_decide) determines the equality case of the power-mean inequality: for 0 < r < t with strictly positive weights summing to 1 and strictly positive data, M_r(z) = M_t(z) if and only if all the data z_i are equal, hence M_r < M_t strictly off the constant diagonal. The engine is a single application of the equality case of strict Jensen (jensen_eq_iff) to the strictly convex map x ↦ x^{t/r} on the powered data z_i^r, with the two translations between the means and the data both supplied by injectivity of x ↦ x^c on the nonnegative reals. Neither the power mean nor its equality case is in Mathlib.",
     "implications": "This sharpens the parent's non-strict power-mean monotonicity into a strict characterization, pinning the extremal (constant-data) configuration of the entire positive-exponent mean hierarchy. The r=1, t=2 instance is the strict QM–AM inequality — the algebraic statement that the quadratic mean strictly exceeds the arithmetic mean for any non-constant family, i.e. strict positivity of variance. It mirrors, for power functions, the AM–GM equality case the grandparent obtains from the same jensen_eq_iff applied to exp.",

@@ -90,6 +90,37 @@
       "mathContext": "$\\|\\textstyle\\sum_j c_j\\,h\\|_p = \\|(\\sum_j c_j)\\,h\\|_p = (\\sum_j c_j)\\|h\\|_p = \\sum_j c_j\\|h\\|_p = \\sum_j \\|c_j\\,h\\|_p$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Minkowski, H."
+      ],
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "B.G. Teubner, Leipzig",
+      "note": "Origin of Minkowski's inequality, the triangle inequality for the ℓᵖ norm; collinearity is its equality case."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Steele, J.M."
+      ],
+      "title": "The Cauchy–Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press / MAA",
+      "note": "Modern exposition emphasising Young, Hölder and the AM–GM equality (saturation) conditions."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 95-line file (0 sorries, 0 axioms, no native_decide) establishes the positive homogeneity and definiteness of the discrete ℓᵖ norm and the saturation case of the finite-family Minkowski inequality: equality holds on a common ray F_j = c_j·h for every p > 0. The saturation proof needs no inequality — collinearity collapses both sides to (∑_j c_j)·‖h‖_p by homogeneity. None of these elementary closed-form facts are in Mathlib.",
     "implications": "Together with the sibling subadditivity entry, this assembles all three seminorm/norm axioms for the discrete ℓᵖ norm — homogeneity, definiteness, and the triangle inequality — in elementary form, and pins the extremal configurations of the ℓᵖ triangle inequality. The saturation-on-rays result is the forward half of the Minkowski equality case and the natural foundation for the converse rigidity statement.",

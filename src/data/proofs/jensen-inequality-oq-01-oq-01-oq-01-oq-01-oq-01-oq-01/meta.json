@@ -98,6 +98,37 @@
       "mathContext": "$A(q)^{r-p}=A(p)^{r-q}A(r)^{q-p}\\iff x\\ \\text{constant}$, $a=\\tfrac{r-q}{r-p},\\ b=\\tfrac{q-p}{r-p}$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Lyapunov, A.M."
+      ],
+      "title": "Nouvelle forme du théorème sur la limite de probabilité",
+      "year": "1901",
+      "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg (8), vol. 12, no. 5",
+      "note": "Source of Lyapunov's moment inequality, i.e. the log-convexity of the moment function."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Bullen, P.S."
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications 560, Kluwer/Springer",
+      "note": "Encyclopaedic treatment of weighted power means and the comparison inequalities between them."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 216-line file (0 sorries, 0 axioms, no native_decide; all theorems depend only on propext/Classical.choice/Quot.sound) settles the equality case of Lyapunov's inequality: for distinct exponents p ≠ r, the interpolation bound A(a·p+b·r) ≤ A(p)^a·A(r)^b is an equality iff the data x is constant. It also delivers the strict inequality for non-constant data and the equality case of the symmetric three-exponent form. The single equality input is the two-variable weighted AM–GM equality case, applied pointwise to normalised moment families and summed, with the rigidity packaged in the reusable abstract lemma normalized_amgm_sum_eq_one_iff.",
     "implications": "The result completes the rigidity picture for the discrete Lyapunov inequality: log-convexity of moments is strict precisely off the single-point locus, so the gallery's power-mean monotonicity and power-mean equality entries are exposed as first- and second-order shadows of one convexity phenomenon. The abstract core (a summed AM–GM is an equality iff termwise) is a reusable template for the equality case of any inequality obtained by summing pointwise weighted AM–GM, including discrete Hölder and Minkowski.",

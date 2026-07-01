@@ -83,6 +83,46 @@
       "mathContext": "$\\prod_i a_i = \\sum_i a_i^{p_i}/p_i \\iff \\forall j,k,\\ a_j^{p_j}=a_k^{p_k}$. Apply weighted AM–GM with $w_i=p_i^{-1}$, $z_i=a_i^{p_i}$; rewrite $\\prod z_i^{w_i}=\\prod a_i$ and $\\sum w_i z_i=\\sum a_i^{p_i}/p_i$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Young, W.H."
+      ],
+      "title": "On classes of summable functions and their Fourier series",
+      "year": "1912",
+      "venue": "Proceedings of the Royal Society A 87 (594), pp. 225–229",
+      "note": "Original source of Young's product inequality ab ≤ aᵖ/p + bᵍ/q."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Bullen, P.S."
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications 560, Kluwer/Springer",
+      "note": "Encyclopaedic treatment of weighted power means and the comparison inequalities between them."
+    },
+    {
+      "authors": [
+        "Steele, J.M."
+      ],
+      "title": "The Cauchy–Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press / MAA",
+      "note": "Modern exposition emphasising Young, Hölder and the AM–GM equality (saturation) conditions."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 95-line file (0 sorries, 0 axioms, no native_decide) adds the general n-variable Young product inequality ∏ aᵢ ≤ ∑ aᵢ^{pᵢ}/pᵢ (for ∑ 1/pᵢ = 1) together with its equality case — equality iff all the aᵢ^{pᵢ} are equal — neither of which Mathlib provides beyond the two-variable Young inequality. Both descend from the grandparent entry's general weighted AM–GM inequality and equality characterization, applied with weights 1/pᵢ and data aᵢ^{pᵢ}. The strict form young_prod_lt_of_ne rounds out the entry. It directly answers the parent entry's listed open question on the n-fold generalized Young equality case.",
     "implications": "The general product form is the pointwise engine behind the generalized Hölder inequality for n functions, and its equality case identifies exactly when that bound is tight (all aᵢ^{pᵢ} proportional pointwise), making it a rigidity tool. Deriving it as a corollary of weighted AM–GM exhibits the uniform mechanism — apply the AM–GM equality case in the coordinates wᵢ = 1/pᵢ, zᵢ = aᵢ^{pᵢ} — that yields the equality cases throughout the Young–Hölder family, with the two-variable Young inequality recovered as the n = 2 case.",

@@ -86,6 +86,47 @@
       "mathContext": "The $n=2$ unweighted case: $\\sqrt{ab}=\\tfrac{a+b}{2}\\iff a=b$. Writing $u=\\sqrt a$, $v=\\sqrt b$, equality reads $uv=\\tfrac{u^2+v^2}{2}$, i.e. $(u-v)^2=0$, so $u=v$ and $a=b$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Jensen, J.L.W.V."
+      ],
+      "title": "Sur les fonctions convexes et les inégalités entre les valeurs moyennes",
+      "year": "1906",
+      "venue": "Acta Mathematica 30, pp. 175–193",
+      "note": "Origin of Jensen's inequality; the strict-convexity equality case underlies this entry."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "The canonical reference for AM–GM, power means, Young, Hölder, Minkowski and Jensen inequalities, including their equality cases."
+    },
+    {
+      "authors": [
+        "Steele, J.M."
+      ],
+      "title": "The Cauchy–Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press / MAA",
+      "note": "Modern exposition emphasising Young, Hölder and the AM–GM equality (saturation) conditions."
+    },
+    {
+      "authors": [
+        "The mathlib community"
+      ],
+      "title": "Mathlib.Analysis.MeanInequalities",
+      "year": "2020",
+      "venue": "Mathlib4, Lean 4 mathematical library",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/MeanInequalities.html",
+      "note": "Mathlib's weighted AM–GM (Real.geom_mean_le_arith_mean_weighted) and single-exponent Jensen bounds, the engines these entries build on."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 124-line file (0 sorries, 0 axioms, no native_decide) packages the equality case of strict Jensen and its specialization to the sharp weighted AM–GM equality. The headline characterization weighted_amgm_eq_iff states that the weighted geometric and arithmetic means of positive data coincide iff all the data are equal, and weighted_amgm_lt_of_ne derives the strict gap directly from the strict convexity of exp, making the Jensen → AM–GM bridge explicit. The classic two-variable instance √(ab) = (a+b)/2 ↔ a = b is included as a concrete corollary.",
     "implications": "Equality characterizations are what make mean inequalities usable in optimization and probability: knowing AM–GM is tight exactly on constant data turns a bound into a rigidity statement (e.g. extremizers of geometric-vs-arithmetic-mean ratios are forced to be balanced). Recording the convexity bridge as named lemmas — jensen_eq_iff, weighted_amgm_eq_iff, weighted_amgm_lt_of_ne — makes the standard 'apply exp-Jensen' argument reusable for the other classical inequalities (Hölder, Young) that descend from convexity.",
