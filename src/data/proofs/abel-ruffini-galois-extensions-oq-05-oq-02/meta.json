@@ -60,6 +60,27 @@
       "Cayley's theorem (G ↪ Sym(G)) and the permutation action of a symmetric group on a rational function field, for the universal-realizability remark in the docstring."
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Serre, J.-P."
+      ],
+      "title": "Topics in Galois Theory",
+      "year": "2008",
+      "venue": "2nd ed., Research Notes in Mathematics 1, A K Peters",
+      "note": "Artin's realizability results and the framework of the inverse Galois problem."
+    },
+    {
+      "authors": [
+        "Malle, G.",
+        "Matzat, B.H."
+      ],
+      "title": "Inverse Galois Theory",
+      "year": "2018",
+      "venue": "2nd ed., Springer Monographs in Mathematics, Springer",
+      "note": "Comprehensive account of the inverse Galois problem, including the Shafarevich theorem."
+    }
+  ],
   "conclusion": {
     "summary": "Artin's fixed-field theorem is packaged as a verified, axiom-free realizability statement: a finite group acting faithfully on a field F is the Galois group of F over its fixed field F^G, with F/F^G Galois and [F : F^G] = |G| (artin_realizability, realizable_over_some_subfield). The structural half F/F^G Galois holds for any finite action (extension_isGalois). All results are 0-axiom (propext, Classical.choice, Quot.sound only); the Shafarevich axiom is not used. 4 theorems, 1 definition, 97 lines.",
     "implications": "Together with the parent entry this draws the precise line in the inverse Galois problem: the realization of finite groups as Galois groups is elementary over an auxiliary base field (Artin, verified here) and becomes deep only when the base is forced to be ℚ (Shafarevich, axiomatized in the parent; general case open). The Artin lemmas are reusable for any concrete faithful field action; supplying the Cayley/permutation action on a rational function field would upgrade realizable_over_some_subfield to the unconditional 'every finite group is a Galois group over some field'.",

@@ -114,6 +114,27 @@
       "summary": "closure_prime_cycle_swap gives ⟨g,τ⟩ = ⊤; both generators lie in G, so G = ⊤."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Solvable groups, the Galois correspondence, and the group-theoretic core of the Abel–Ruffini theorem."
+    },
+    {
+      "authors": [
+        "Stewart, I."
+      ],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "4th ed., Chapman & Hall/CRC",
+      "note": "Insolvability of the quintic, transitive Galois groups, and radical solvability."
+    }
+  ],
   "conclusion": {
     "summary": "A transitive subgroup G of S_p (p prime) containing a transposition is all of S_p. Transitivity forces p | |G| (orbit–stabilizer); Cauchy yields an element σ of order p, which on a p-element set is a full-support p-cycle; with the given transposition τ, closure_prime_cycle_swap gives ⟨σ,τ⟩ = ⊤; since σ,τ ∈ G, we get G = ⊤.",
     "significance": "This is the classical lemma (transitive + transposition ⟹ full symmetric, prime degree) that powers Galois-group computations such as Gal(x^5-4x+2) ≅ S_5. Formalizing it replaces the parent's ad-hoc Sylow case-elimination with the general result.",

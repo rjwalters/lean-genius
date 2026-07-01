@@ -115,6 +115,27 @@
       "summary": "Proves isSolvable_perm_fin_iff. Forward: contraposition through Equiv.Perm.not_solvable for n ≥ 5 (using #(Fin n) = n). Backward: interval_cases on n ≤ 4 — S₀, S₁ subsingleton (infer_instance), S₂, S₃ from the parent, S₄ from permFinFour_isSolvable. Packages the full Abel–Ruffini group-theoretic dichotomy as one biconditional."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Solvable groups, the Galois correspondence, and the group-theoretic core of the Abel–Ruffini theorem."
+    },
+    {
+      "authors": [
+        "Stewart, I."
+      ],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "4th ed., Chapman & Hall/CRC",
+      "note": "Insolvability of the quintic, transitive Galois groups, and radical solvability."
+    }
+  ],
   "conclusion": {
     "summary": "Closed the last open case of the symmetric-group threshold by proving A₄ solvable through its metabelian structure A₄ ⊳ V₄ ⊳ 1 (Klein-four commutator subgroup, abelian quotient), lifted it to S₄ solvable via the parent reduction, and packaged the complete dichotomy IsSolvable (Equiv.Perm (Fin n)) ⟺ n ≤ 4 as a single biconditional. This is the exact group-theoretic threshold underlying Abel–Ruffini: the general degree-n polynomial is solvable by radicals iff Sₙ is solvable iff n ≤ 4. 3 theorems, 0 sorries, 0 axioms.",
     "implications": "Completes the solvable-side program of the parent chain: every degree's solvability status is now decided, and the full equivalence is a reusable single theorem. The A₄ argument is a clean, self-contained model of how solvability flows through a short exact sequence with abelian kernel and abelian quotient — directly reusable for other metabelian extensions. Together with Mathlib's n ≥ 5 non-solvability, this gives the formal group-theoretic foundation for the radical-solvability dichotomy of the general polynomial.",

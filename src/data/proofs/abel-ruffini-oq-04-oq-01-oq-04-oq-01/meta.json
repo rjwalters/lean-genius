@@ -53,6 +53,27 @@
       "summary": "not_isSolvable_top: S_α is not solvable for 5 ≤ card α (transported across Subgroup.topEquiv from Equiv.Perm.not_solvable). not_isSolvable_of_isPretransitive_of_mem_isSwap: a transitive subgroup of S_p with a transposition and p ≥ 5 is not solvable."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Solvable groups, the Galois correspondence, and the group-theoretic core of the Abel–Ruffini theorem."
+    },
+    {
+      "authors": [
+        "Stewart, I."
+      ],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "4th ed., Chapman & Hall/CRC",
+      "note": "Insolvability of the quintic, transitive Galois groups, and radical solvability."
+    }
+  ],
   "conclusion": {
     "summary": "A transitive subgroup of S_p (p prime, p ≥ 5) containing a transposition equals the full symmetric group and is therefore not solvable — the Abel–Ruffini obstruction. The Key Lemma forces G = ⊤; non-solvability of ⊤ follows from Mathlib's Equiv.Perm.not_solvable transported across Subgroup.topEquiv. Fully machine-checked, 0 axioms, 0 sorries.",
     "implications": "This converts the parent's structural Key Lemma into the group-theoretic heart of Abel–Ruffini: via the Galois correspondence, any polynomial of prime degree p ≥ 5 whose Galois group is transitive and contains a transposition is unsolvable by radicals. It is the reusable abstract obstruction behind every concrete unsolvable quintic such as x⁵ − 4x + 2.",

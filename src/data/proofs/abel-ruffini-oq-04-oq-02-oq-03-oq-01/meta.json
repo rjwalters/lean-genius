@@ -107,6 +107,26 @@
       "summary": "OrderTwoPrimes p q G captures the pᵃqᵇ hypothesis and is inherited by subgroups and quotients. burnside_reduces_to_nonsimplicity then performs strong induction on |G|: abelian groups are solvable; otherwise the supplied non-simplicity hypothesis yields a proper nontrivial normal N, the induction hypothesis applies to the strictly smaller N and G ⧸ N, and solvable_of_normal_extension reassembles G. Fully verified modulo the explicit non-simplicity hypothesis."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Burnside, W."
+      ],
+      "title": "On groups of order pᵃqᵇ",
+      "year": "1904",
+      "venue": "Proceedings of the London Mathematical Society (2) 1, pp. 388–392",
+      "note": "Burnside's theorem: every group of order pᵃqᵇ is solvable (character-theoretic proof)."
+    },
+    {
+      "authors": [
+        "Isaacs, I.M."
+      ],
+      "title": "Character Theory of Finite Groups",
+      "year": "2006",
+      "venue": "AMS Chelsea Publishing",
+      "note": "Character-theoretic proof of Burnside's pᵃqᵇ theorem via non-simplicity."
+    }
+  ],
   "conclusion": {
     "summary": "This entry formalizes, with zero sorries and zero axioms, the complete outer structure of the classical proof of Burnside's pᵃqᵇ theorem: the prime-power base case, the solvable-extension inductive engine, and a verified strong induction that reduces the full theorem to the single group-theoretic statement that a finite nonabelian group of order pᵃqᵇ is not simple. It does not claim the unconditional theorem.",
     "implications": "The reduction pinpoints precisely the representation theory Mathlib still needs to close the gap — irreducible character degrees dividing |G|, Burnside's vanishing lemma, and the count of irreducibles by conjugacy classes — and provides the verified scaffolding into which a future formalization of that character theory can be plugged to obtain Burnside's theorem unconditionally.",

@@ -104,6 +104,27 @@
       "summary": "isSimpleGroup_quotient and of_isSimpleGroup_quotient: each implication as a reusable dot-notation lemma."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "Galois Theory",
+      "year": "1998",
+      "venue": "2nd ed., Universitext, Springer",
+      "note": "Jordan–Hölder theory and the simple-quotient / maximal-normal-subgroup correspondence."
+    },
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Solvable groups, the Galois correspondence, and the group-theoretic core of the Abel–Ruffini theorem."
+    }
+  ],
   "conclusion": {
     "summary": "The combinatorial maximality predicate IsMaxNorm and the categorical simplicity predicate IsSimpleGroup of the quotient are equivalent, for K = ⊤: G ⧸ N is simple iff N is a maximal normal subgroup. The forward direction pushes a normal M ⊇ N into the quotient (it must be ⊥ or ⊤, giving M = N or M = ⊤); the reverse pulls a normal subgroup of G ⧸ N back through mk' and uses injectivity of the correspondence map. This is the bridge the parent entry asserted but did not prove.",
     "implications": [

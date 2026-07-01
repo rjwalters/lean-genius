@@ -118,6 +118,26 @@
       "summary": "gal_not_solvable_of_iso_S5 transports non-solvability of S₅ across Gal ≃* S₅; the capstone bringRadical_not_solvableByRad_of_iso_S5 concludes from irreducibility plus the S₅ iso."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Abel, N.H."
+      ],
+      "title": "Démonstration de l'impossibilité de la résolution algébrique des équations générales qui passent le quatrième degré",
+      "year": "1826",
+      "venue": "Journal für die reine und angewandte Mathematik 1, pp. 65–84",
+      "note": "Abel's proof of the unsolvability of the general quintic by radicals."
+    },
+    {
+      "authors": [
+        "Stewart, I."
+      ],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "4th ed., Chapman & Hall/CRC",
+      "note": "Insolvability of the quintic, transitive Galois groups, and radical solvability."
+    }
+  ],
   "conclusion": {
     "summary": "The degenerate placeholder axiom bringRadical_not_in_radicals is replaced by a correct, machine-checked conditional theorem: the analytically-defined Bring radical BR(↑t) is a genuine root of the rational quintic X⁵+X+C t (new bridge bringRadical_aeval), and Mathlib's Abel-Ruffini theorem then shows that irreducibility plus a non-solvable Galois group (equivalently Gal ≃ S₅) makes BR(↑t) not solvable by radicals over ℚ. All five results are 0-axiom, 0-sorry.",
     "significance": "Converts a false/degenerate axiom into the genuine Abel-Ruffini statement for the Bring radical, reduced to exactly the open Galois-group input shared by the whole Abel-Ruffini family. It is the first formal link between the parent's analytically-constructed Bring radical and Mathlib's algebraic radical-solvability machinery.",
