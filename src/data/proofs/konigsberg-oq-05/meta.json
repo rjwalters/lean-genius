@@ -33,6 +33,12 @@
       "The genuinely new half is the converse endpoint ⟹ odd: the sibling file KonigsbergOQ01 only established non-endpoint ⟹ even, one direction short of 'exactly the endpoints'.",
       "The exact count = 2 is a strict sharpening of Mathlib's `card_odd_degree` (0 ∨ 2): the endpoint u is a concrete odd-degree witness, so the count cannot be 0 for an open trail.",
       "The open/closed dichotomy is unified: distinct endpoints ⟹ odd-degree set = {u, v} (count 2); a circuit ⟹ odd-degree set = ∅ (count 0), the two vacuous/nonvacuous branches of the same guarded implication."
+    ],
+    "prerequisites": [
+      "Eulerian trails and circuits (SimpleGraph.Walk.IsEulerian)",
+      "Vertex degree and its parity (Even/Odd on ℕ)",
+      "Mathlib's even_degree_iff and card_odd_degree",
+      "Set extensionality and Fintype cardinality"
     ]
   },
   "sections": [
