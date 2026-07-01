@@ -107,6 +107,43 @@
       "Does the central-binomial sandwich let the parent chebyshev-bounds discharge its remaining axiomatized $\\theta(n)\\le n\\log 4$ upper bound directly?"
     ]
   },
+  "references": [
+    {
+      "authors": "Chebyshev, Pafnuty L.",
+      "title": "Mémoire sur les nombres premiers",
+      "year": "1852",
+      "venue": "Journal de mathématiques pures et appliquées, sér. 1, vol. 17",
+      "note": "The origin of Chebyshev-type prime-counting bounds c·n/log n ≤ π(n) ≤ C·n/log n, whose elementary derivation rests on exactly the two-sided central-binomial estimate 4ⁿ/(2n+1) ≤ C(2n,n) ≤ 4ⁿ packaged here."
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Beweis eines Satzes von Tschebyschef",
+      "year": "1932",
+      "venue": "Acta Litterarum ac Scientiarum (Szeged), vol. 5",
+      "note": "Erdős's elementary proof of Bertrand's postulate, which turns on bounding the central binomial coefficient C(2n,n) from below by 4ⁿ/(2n+1) and above by 4ⁿ — the same sandwich this entry formalizes."
+    },
+    {
+      "authors": "Nair, Mohan",
+      "title": "On Chebyshev-Type Inequalities for Primes",
+      "year": "1982",
+      "venue": "The American Mathematical Monthly, vol. 89, no. 2",
+      "note": "A clean modern account deriving Chebyshev's inequalities from central-binomial and lcm estimates, giving the context in which the bound proved here is the standard combinatorial input."
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": "2008",
+      "venue": "Oxford University Press",
+      "note": "Standard reference (Chapter 22) for Chebyshev's functions θ and ψ and their bounds via binomial-coefficient arguments, the analytic-number-theory setting for this estimate."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.NumberTheory.Bertrand and Mathlib.Combinatorics.Choose.Central",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the reused primitives: Nat.four_pow_le_two_mul_add_one_mul_central_binom (lower bound) and Nat.choose_le_two_pow (upper bound), which this entry assembles into the packaged two-sided estimate."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "chebyshev-bounds",
