@@ -164,7 +164,7 @@ theorem tsum_descFactorial_mul_geometric (k : ℕ) {r : 𝕜} (hr : ‖r‖ < 1)
     ring
   rw [hcongr] at h
   rw [h.tsum_eq]
-  rw [one_div, mul_one_div]
+  rw [mul_one_div]
 
 -- ============================================================================
 -- Part V: A concrete evaluation
