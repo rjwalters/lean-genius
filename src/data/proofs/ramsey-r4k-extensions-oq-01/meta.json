@@ -105,8 +105,46 @@
   ],
   "conclusion": {
     "summary": "This entry gives an axiom-free, sorry-free formalization of Erdős's 1947 probabilistic lower bound R(k,k) > 2^⌊k/2⌋, de-axiomatizing erdos_probabilistic_lower_bound from the parent RamseyR4kExtensions file. The probabilistic method is realised as exact counting in the finite space of 2-colourings, so the whole proof — abstract union-bound lemma, Sym2 specialisation, and the elementary 2^(k/2) numeric estimate — is fully machine-checked with no measure theory and no assumptions.",
-    "implications": "The reusable lemma exists_avoiding_coloring isolates the combinatorial heart of the first-moment method and can be applied to other Ramsey-type lower bounds. The sharp criterion R(k,k) > n ⟸ 2·C(n,k) < 2^C(k,2) is available for direct use. The off-diagonal biased-coin bound R(4,k) ≥ c·k²/log k (which requires a non-uniform random colouring and real-valued expectations) remains open and is the natural next target."
+    "implications": "The reusable lemma exists_avoiding_coloring isolates the combinatorial heart of the first-moment method and can be applied to other Ramsey-type lower bounds. The sharp criterion R(k,k) > n ⟸ 2·C(n,k) < 2^C(k,2) is available for direct use. The off-diagonal biased-coin bound R(4,k) ≥ c·k²/log k (which requires a non-uniform random colouring and real-valued expectations) remains open and is the natural next target.",
+    "openQuestions": [
+      "Formalize Spencer's 1975 sharpening R(k,k) > (√2/e)(1+o(1))·k·2^(k/2), which replaces the union bound with the Lovász Local Lemma to gain the extra linear factor k — the first improvement to the base counting bound de-axiomatized here.",
+      "Prove the off-diagonal biased-coin lower bound R(4,k) ≥ c·k²/log k (named in the implications): this needs a non-uniform p-random colouring and real-valued expectations, so it cannot be reduced to the pure-counting form used here and would exercise a genuinely probabilistic (measure/expectation) layer.",
+      "Bracket the diagonal number from above by formalizing the exponential improvement R(k,k) ≤ (4−ε)^k (Campos–Griffiths–Morris–Sahasrabudhe, 2023), the first improvement to the Erdős–Szekeres 4^k bound, so the gallery holds both 2^(k/2) < R(k,k) < (4−ε)^k.",
+      "Generalize exists_avoiding_coloring beyond 2 colours to establish multicolour diagonal Ramsey lower bounds R_r(k,…,k) > r^{(k−1)/2}-type bounds by the same first-moment count over r-colourings."
+    ]
   },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some remarks on the theory of graphs",
+      "year": "1947",
+      "note": "Bulletin of the AMS 53, 292–294. The original probabilistic lower bound R(k,k) > 2^(k/2) — the very first application of the probabilistic method, de-axiomatized in this entry."
+    },
+    {
+      "authors": "Erdős, Paul; Szekeres, George",
+      "title": "A combinatorial problem in geometry",
+      "year": "1935",
+      "note": "Compositio Mathematica 2, 463–470. Gives the companion upper bound R(k,k) ≤ C(2k−2, k−1) < 4^k, the classical bracket for the diagonal Ramsey number."
+    },
+    {
+      "authors": "Spencer, Joel",
+      "title": "Ramsey's theorem — a new lower bound",
+      "year": "1975",
+      "note": "Journal of Combinatorial Theory Series A 18, 108–115. Improves the constant to R(k,k) > (√2/e)(1+o(1))·k·2^(k/2) via the Lovász Local Lemma."
+    },
+    {
+      "authors": "Campos, Marcelo; Griffiths, Simon; Morris, Robert; Sahasrabudhe, Julian",
+      "title": "An exponential improvement for diagonal Ramsey",
+      "year": "2023",
+      "note": "arXiv:2303.09521. Proves R(k,k) ≤ (4−ε)^k for a fixed ε > 0, the first exponential improvement over the Erdős–Szekeres 4^k bound."
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "note": "Wiley (4th ed.). Standard reference for the first-moment / union-bound method realised here as exact counting over the finite space of 2-colourings."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "ramsey-r4k-extensions",
