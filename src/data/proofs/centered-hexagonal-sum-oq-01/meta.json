@@ -104,5 +104,42 @@
       "Do the analogous centered-polygonal partial sums admit equally clean closed forms — and which case-split / reindexing pattern keeps each inside ℕ?",
       "Can the cube-shell picture be promoted to a genuinely combinatorial proof in Lean (a bijection between the n hexagonal shells and the n cubic shells), matching the visual dissection?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Conway, John H.; Guy, Richard K.",
+      "title": "The Book of Numbers",
+      "year": "1996",
+      "venue": "Copernicus / Springer",
+      "note": "Popular but rigorous treatment of figurate numbers, including centered hexagonal numbers Hₖ = 3k(k−1)+1 and the fact that their partial sums are the perfect cubes n³ — the identity formalized here."
+    },
+    {
+      "authors": "Deza, Elena; Deza, Michel Marie",
+      "title": "Figurate Numbers",
+      "year": "2012",
+      "venue": "World Scientific",
+      "note": "Comprehensive reference on centered polygonal and figurate numbers with closed forms and summation identities, the systematic context for the centered-hexagonal-to-cube result and its polygonal generalizations."
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "Sequence A003215: Hex (or centered hexagonal) numbers 1, 7, 19, 37, 61, …",
+      "year": "2024",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "note": "Catalogs the centered hexagonal numbers Hₖ = 3k(k−1)+1, their generating function, and the partial-sum identity ∑ Hₖ = n³ together with the cube-shell relation Hₖ = k³ − (k−1)³."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Algebra.BigOperators.Basic (Finset.sum_range_succ, Finset.sum_Icc_succ_top)",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the two summation lemmas that drive the one-step induction, in both the range and Icc forms of the identity."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "centered-hexagonal-sum-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's first open question: a uniform closed form for the partial sums of the general centered polygonal numbers, of which the centered-hexagonal-to-cube identity here is the k = 6 case."
+    }
+  ]
 }
