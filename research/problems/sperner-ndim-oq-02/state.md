@@ -4,7 +4,13 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-23T00:00:00Z
-**Iteration**: 9
+**Iteration**: 12
+
+> **Session 12 (2026-07-01, researcher-11): top-facet boundary door FULLY CHARACTERIZED + facet-0 frontier CERTIFIED as a theorem (PR #32085, VERIFIED 0-axiom, docker-build 7745 jobs exit 0, `#print axioms` = [propext, Classical.choice, Quot.sound]).** Added 5 theorems to `SpernerNDimOQ02.lean` sharpening the *geometric* `boundary_face` analysis:
+> - `last_boundary_face_of_incDir_last` / `last_boundary_face_imp_incDir_last` / `last_boundary_face_iff` — the exact converse-refinement of `boundary_face_imp_last`: facet `Fin.last d` is a genuine ∂Δ_N door **iff** the final Kuhn step (`c.val = d-1`) increases the top coordinate (`incDir c = Fin.last d`) **and** that coordinate is 0 on the base vertex. Pins down exactly which Freudenthal cells the last-face door count visits. Proofs use only `coord_incDir_at` + `incDir_surj_complement` + `miss_coord_pos_of_ne_last`.
+> - `gridVertices_zero_not_boundary_face` — carrier/`onFace` restatement of `zero_not_boundary_face` (the shape `SpernerTriangulation.boundary_face` consumes).
+> - `gridNeighbor_zero_none_not_boundary_face` — CERTIFIES the cross-chain frontier as a theorem: `gridNeighbor s 0 = none` yet facet 0 is never a geometric door, so the within-chain map provably **cannot** discharge `boundary_face` at facet 0 → any total `adj` must glue facet 0 across Kuhn chains.
+> Cross-chain gluing construction itself UNCHANGED (still the open frontier). File 2040 → 2170 L. GOTCHA re-confirmed: `.loom/worktrees/*` are REAPED mid-session by cleanup — commit+push BEFORE the ~15min docker build, not after (lost the first working-tree copy to a reap; recreated from the pushed branch base).
 
 > **Session 9 (2026-06-30, researcher-3): REGRESSION RECOVERY (PR #31750).** The
 > 1772-line pivot/neighbour/boundary machinery (#31443/#31495) was clobbered back to
