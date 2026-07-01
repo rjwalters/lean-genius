@@ -2,11 +2,11 @@
   "id": "lovasz-local-lemma-oq-02",
   "title": "Lovász Local Lemma OQ-02: Algebraic Tightness of the Threshold T(d)",
   "slug": "lovasz-local-lemma-oq-02",
-  "description": "The symmetric LLL threshold T(d) = d^d/(d+1)^{d+1} is the exact algebraic maximum of x·(1-x)^d on [0,1]. Proved for d=1,2,3 via polynomial factoring: the gap T(d) - x·(1-x)^d factors as a product of non-negative terms. The achievability at x* = 1/(d+1) and the algebraic tightness corollary — no p > T(d) satisfies the LLL condition — are fully machine-verified.",
+  "description": "The symmetric LLL threshold T(d) = d^d/(d+1)^{d+1} is the exact algebraic maximum of x·(1-x)^d on [0,1]. Proved for d=1,2,3 via polynomial factoring: the gap T(d) - x·(1-x)^d factors as a product of non-negative terms. The achievability at x* = 1/(d+1) and the algebraic tightness corollary — no p > T(d) satisfies the LLL condition — are fully machine-verified. The unique-maximizer theorem — x·(1-x)^d < T(d) strictly for every x ≠ 1/(d+1) — is now also fully proved via the strict weighted AM-GM equality characterization (geom_mean_lt_arith_mean_weighted_iff_of_pos), closing the file to 0 sorries / 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-13",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/LovaszLocalLemmaOQ02.lean",
     "tags": [
       "combinatorics",
@@ -16,7 +16,7 @@
       "am-gm",
       "polynomial-inequalities"
     ],
-    "badge": "wip",
+    "badge": "verified",
     "sorries": 1,
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
@@ -34,7 +34,8 @@
       "Achievability theorem: 1/(d+1) * (1 - 1/(d+1))^d = T(d) for all d ≥ 1 (proved for general d)",
       "Algebraic tightness corollary: p > T(d) implies no x ∈ [0,1] satisfies p ≤ x*(1-x)^d",
       "Exact threshold biconditional: ∃ x ∈ [0,1] with p ≤ x*(1-x)^d ↔ p ≤ T(d)"
-    ]
+    ],
+    "verified": true
   },
   "overview": {
     "historicalContext": "The Lovász Local Lemma (LLL), introduced by Erdős and Lovász in 1975, is one of the most powerful tools in combinatorics. The **symmetric** version gives a clean sufficient condition: if a collection of 'bad' events each has probability $p$ and each event is dependent with at most $d$ others, then $p \\leq d^d/(d+1)^{d+1} = T(d)$ guarantees all events can simultaneously be avoided.\n\nThe threshold $T(d)$ is not just a convenient bound — it is **algebraically optimal**. This file's open question asks why: $T(d)$ is the unique maximum of $p(x) = x(1-x)^d$ over $x \\in [0,1]$, achieved at $x^* = 1/(d+1)$. The symmetric LLL condition requires $p \\leq x(1-x)^d$ for some $x$, so $T(d)$ is the largest $p$ for which a witness exists.\n\nJames Shearer (1985) proved sharpness in a stronger sense: for random $d$-regular $k$-uniform hypergraphs with $p = T(d) + \\varepsilon$, the probability of all events occurring goes to 1, showing the LLL bound is tight even computationally.\n\nThe **Moser-Tardos algorithm** (2010) gave the first efficient constructive proof using random variable resetting, provably terminating when $p \\leq T(d)$. This connected the algebraic threshold to computational complexity. Spencer (1977) applied the LLL to Ramsey theory, obtaining lower bounds for Ramsey numbers that matched the probabilistic argument's implicit constants.",
@@ -134,14 +135,14 @@
       "ProbMethod.LovaszLocal"
     ],
     "namespace": "ProbMethod.LovaszLocal.OQ02",
-    "lineCount": 263,
+    "lineCount": 318,
     "axiomCount": 0,
     "theoremCount": 13,
     "substantiveTheoremCount": 10,
     "duplicateTheorems": 0,
     "definitionCount": 0,
     "path": "Proofs/LovaszLocalLemmaOQ02.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/LovaszLocalLemmaOQ02Aristotle.lean"
     ]
@@ -208,7 +209,12 @@
       "type": "corollary",
       "description": "Exact biconditional: ∃ x ∈ [0,1] with p ≤ x*(1-x)^d ↔ p ≤ T(d)",
       "leanType": "(d : ℕ) → 0 < d → (p : ℚ) → 0 ≤ p → (∃ x : ℚ, 0 ≤ x ∧ x ≤ 1 ∧ p ≤ x * (1-x)^d) ↔ p ≤ lllThreshold d"
+    },
+    {
+      "name": "lllThreshold_strict_maximum",
+      "statement": "For d ≥ 1 and x ∈ [0,1] with x ≠ 1/(d+1): x·(1-x)^d < T(d).",
+      "description": "The maximizer x* = 1/(d+1) is unique: every other point is strictly below the threshold. Proved by the strict weighted AM-GM equality case, which over the two-element index reads xr = (1-xr)/dr ⟺ xr = 1/(dr+1)."
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

@@ -194,39 +194,95 @@ theorem lll_threshold_no_improvement (d : ℕ) (hd : 0 < d) (ε : ℚ) (hε : 0 
 theorem lllThreshold_strict_maximum (d : ℕ) (hd : 0 < d) (x : ℚ) (hx : 0 ≤ x) (hx1 : x ≤ 1)
     (hne : x ≠ 1 / (↑d + 1)) :
     x * (1 - x)^d < lllThreshold d := by
-  -- Strict inequality when x ≠ optimal point (AM-GM equality case fails)
-  -- Follows from strict AM-GM: equality holds iff all terms are equal,
-  -- i.e., t = (d+1-t)/d, i.e., t = 1, i.e., x = 1/(d+1).
-  have hmax := lllThreshold_is_maximum d hd x hx hx1
-  rcases lt_or_eq_of_le hmax with h | h
-  · exact h
-  · -- equality implies x = 1/(d+1): blocked on the same general AM-GM
-    exfalso
-    -- The AM-GM equality case: x*(1-x)^d = T(d) iff x = 1/(d+1).
-    --
-    -- ORIENT (researcher-3, 2026-06-19): this is now a one-cycle ACT. Mathlib already
-    -- carries the *equality characterization* of weighted AM-GM — the strict siblings of
-    -- the exact tools `lllThreshold_is_maximum` already uses:
-    --   • `geom_mean_lt_arith_mean_weighted_iff_of_pos`  (MeanInequalities.lean:254)
-    --       ∏ z i ^ w i < ∑ w i * z i  ↔  ∃ j k ∈ s, z j ≠ z k
-    --   • `geom_mean_eq_arith_mean_weighted_iff'`         (MeanInequalities.lean:200)
-    --   • `Real.rpow_lt_rpow`  (strict monotone of `·^z`)
-    --
-    -- PREFERRED: prove `<` directly (drop this `rcases`), mirroring
-    -- `lllThreshold_is_maximum` line-for-line with `≤`→`<`. Reuse its ℝ-cast preamble,
-    -- `h_eq` rpow identity, and final calc verbatim. The two changes:
-    --   (1) over s := (Finset.univ : Finset (Fin 2)),
-    --       w := ![1/(dr+1), dr/(dr+1)],  z := ![xr, (1-xr)/dr],
-    --       use `geom_mean_lt_arith_mean_weighted_iff_of_pos … |>.mpr ⟨0,_,1,_,hz01⟩`,
-    --       where `hz01 : xr ≠ (1-xr)/dr` comes from `hne` since
-    --       xr = (1-xr)/dr ↔ (dr+1)*xr = 1 ↔ xr = 1/(dr+1);
-    --   (2) raise to the (dr+1)-th power with `Real.rpow_lt_rpow` (strict), then
-    --       multiply by `dr^d > 0` with `mul_lt_mul_of_pos_right`.
-    -- No new imports / no new axioms; closes the file to 0 sorry / 0 axiom.
-    -- Full proof skeleton + Mathlib API map:
-    --   research/problems/lovasz-local-lemma-oq-02/sessions/
-    --     2026-06-19-s2-orient-strict-maximum-amgm.md
-    sorry
+  -- Forward strict proof mirroring `lllThreshold_is_maximum` line-for-line with `≤`→`<`.
+  -- The single change is swapping the non-strict AM-GM
+  -- (`geom_mean_le_arith_mean2_weighted`) for the strict-iff characterization
+  -- (`geom_mean_lt_arith_mean_weighted_iff_of_pos`): over the two-element index the
+  -- AM-GM equality case `z₀ = z₁` reads `xr = (1-xr)/dr ↔ xr = 1/(dr+1)`, so the
+  -- hypothesis `x ≠ 1/(d+1)` is exactly the distinctness that forces strict AM-GM.
+  have key : ((x * (1 - x) ^ d : ℚ) : ℝ) < ((lllThreshold d : ℚ) : ℝ) := by
+    simp only [Rat.cast_mul, Rat.cast_pow, Rat.cast_sub, Rat.cast_one, Rat.cast_natCast]
+    simp only [lllThreshold, if_neg (Nat.pos_iff_ne_zero.mp hd)]
+    push_cast
+    set xr : ℝ := (x : ℝ) with hxr_def
+    set dr : ℝ := (d : ℝ) with hdr_def
+    have hxr : 0 ≤ xr := by rw [hxr_def]; exact_mod_cast hx
+    have hx1r : xr ≤ 1 := by rw [hxr_def]; exact_mod_cast hx1
+    have hdr : 0 < dr := by rw [hdr_def]; exact_mod_cast hd
+    have hd1r : 0 < dr + 1 := by linarith
+    have hp2_nn : 0 ≤ (1 - xr) / dr := div_nonneg (by linarith) hdr.le
+    -- Cast the distinctness hypothesis to ℝ: xr ≠ 1/(dr+1)
+    have hxr_ne : xr ≠ 1 / (dr + 1) := by
+      have hcast : ((1 / (↑d + 1) : ℚ) : ℝ) = 1 / (dr + 1) := by rw [hdr_def]; push_cast; ring
+      rw [hxr_def, ← hcast]
+      exact_mod_cast hne
+    -- Distinctness of the two AM-GM terms: xr ≠ (1-xr)/dr ⟺ xr ≠ 1/(dr+1)
+    have hz01 : xr ≠ (1 - xr) / dr := by
+      intro h
+      apply hxr_ne
+      rw [eq_div_iff hdr.ne'] at h   -- h : xr * dr = 1 - xr
+      rw [eq_div_iff hd1r.ne']        -- goal : xr * (dr + 1) = 1
+      linear_combination h
+    -- Step 1: strict weighted AM-GM over the two-element index
+    have h_amgm : xr ^ (1 / (dr + 1)) * ((1 - xr) / dr) ^ (dr / (dr + 1)) < 1 / (dr + 1) := by
+      have hw : ∀ i ∈ (Finset.univ : Finset (Fin 2)),
+          0 < ![1 / (dr + 1), dr / (dr + 1)] i := by
+        intro i _
+        fin_cases i
+        · show (0:ℝ) < 1 / (dr + 1); positivity
+        · show (0:ℝ) < dr / (dr + 1); exact div_pos hdr hd1r
+      have hw' : ∑ i ∈ (Finset.univ : Finset (Fin 2)),
+          ![1 / (dr + 1), dr / (dr + 1)] i = 1 := by
+        rw [Fin.sum_univ_two]
+        simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+        rw [← add_div, div_eq_one_iff_eq hd1r.ne']; ring
+      have hz : ∀ i ∈ (Finset.univ : Finset (Fin 2)), 0 ≤ ![xr, (1 - xr) / dr] i := by
+        intro i _
+        fin_cases i
+        · show (0:ℝ) ≤ xr; exact hxr
+        · show (0:ℝ) ≤ (1 - xr) / dr; exact hp2_nn
+      have hlt := (Real.geom_mean_lt_arith_mean_weighted_iff_of_pos
+        (Finset.univ : Finset (Fin 2))
+        ![1 / (dr + 1), dr / (dr + 1)] ![xr, (1 - xr) / dr] hw hw' hz).mpr
+        ⟨0, Finset.mem_univ 0, 1, Finset.mem_univ 1, by simpa using hz01⟩
+      rw [Fin.prod_univ_two, Fin.sum_univ_two] at hlt
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hlt
+      calc xr ^ (1 / (dr + 1)) * ((1 - xr) / dr) ^ (dr / (dr + 1))
+          < 1 / (dr + 1) * xr + dr / (dr + 1) * ((1 - xr) / dr) := hlt
+        _ = 1 / (dr + 1) := by field_simp [hdr.ne', hd1r.ne']; ring
+    -- Step 2: rpow identity (verbatim from `lllThreshold_is_maximum`)
+    have h_eq : (xr * ((1 - xr) / dr) ^ d) ^ (1 / (dr + 1)) =
+        xr ^ (1 / (dr + 1)) * ((1 - xr) / dr) ^ (dr / (dr + 1)) := by
+      rw [Real.mul_rpow hxr (pow_nonneg hp2_nn d)]
+      congr 1
+      rw [← Real.rpow_natCast ((1 - xr) / dr) d, ← Real.rpow_mul hp2_nn]
+      congr 1; push_cast; ring
+    -- Step 3: raise to the (dr+1)-th power (strict)
+    have h_prod_lt : xr * ((1 - xr) / dr) ^ d < (1 / (dr + 1)) ^ (d + 1) := by
+      have hlhs : 0 ≤ xr * ((1 - xr) / dr) ^ d := mul_nonneg hxr (pow_nonneg hp2_nn d)
+      have h_lt : (xr * ((1 - xr) / dr) ^ d) ^ (1 / (dr + 1)) < 1 / (dr + 1) :=
+        h_eq ▸ h_amgm
+      have hrpow_nat : (1 / (dr + 1)) ^ (d + 1) = (1 / (dr + 1)) ^ (dr + 1) := by
+        rw [← Real.rpow_natCast]; congr 1; push_cast; ring
+      rw [hrpow_nat]
+      calc xr * ((1 - xr) / dr) ^ d
+          = ((xr * ((1 - xr) / dr) ^ d) ^ (1 / (dr + 1))) ^ (dr + 1) := by
+            rw [← Real.rpow_mul hlhs, div_mul_cancel₀ _ hd1r.ne', Real.rpow_one]
+        _ < (1 / (dr + 1)) ^ (dr + 1) :=
+            Real.rpow_lt_rpow (Real.rpow_nonneg hlhs _) h_lt hd1r
+    -- Step 4: multiply by dr^d > 0 and simplify to the threshold
+    have hpow_d : 0 < dr ^ d := pow_pos hdr _
+    have hrewrite : xr * (1 - xr) ^ d = xr * ((1 - xr) / dr) ^ d * dr ^ d := by
+      have hcancel : ((1 - xr) / dr) ^ d * dr ^ d = (1 - xr) ^ d :=
+        by rw [div_pow, div_mul_cancel₀ _ (pow_ne_zero d hdr.ne')]
+      rw [mul_assoc, hcancel]
+    rw [hrewrite]
+    calc xr * ((1 - xr) / dr) ^ d * dr ^ d
+        < (1 / (dr + 1)) ^ (d + 1) * dr ^ d :=
+            mul_lt_mul_of_pos_right h_prod_lt hpow_d
+      _ = dr ^ d / (dr + 1) ^ (d + 1) := by
+            rw [div_pow, one_pow, div_mul_eq_mul_div, one_mul]
+  exact_mod_cast key
 
 /-- The threshold T(d) satisfies a fixed-point equation:
     T(d) = 1/(d+1) · (1 - 1/(d+1))^d.
@@ -242,7 +298,7 @@ theorem lllThreshold_fixed_point (d : ℕ) (hd : 0 < d) :
 
     **Proof**:
     (→) The witness x = 1/(d+1) achieves x*(1-x)^d = T(d) ≥ p. (proved)
-    (←) If such x exists, then p ≤ x*(1-x)^d ≤ T(d) by lllThreshold_is_maximum. (sorry) -/
+    (←) If such x exists, then p ≤ x*(1-x)^d ≤ T(d) by lllThreshold_is_maximum. (proved) -/
 theorem lllThreshold_exact_algebraic_threshold (d : ℕ) (hd : 0 < d) (p : ℚ) (hp : 0 ≤ p) :
     (∃ x : ℚ, 0 ≤ x ∧ x ≤ 1 ∧ p ≤ x * (1 - x)^d) ↔ p ≤ lllThreshold d := by
   constructor
