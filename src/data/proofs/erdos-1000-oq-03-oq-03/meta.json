@@ -18,36 +18,36 @@
     {
       "title": "Header and open question",
       "startLine": 1,
-      "endLine": 64,
-      "summary": "Frames the goal and locates it in the gallery: prove the Gauss divisor-sum identity $\\sum_{d\\mid n}J_k(d)=n^k$ for the abstract arithmetic function $J_k=\\mu*\\mathrm{pow}\\,k$, working inside Mathlib's Dirichlet convolution ring, and add the uniqueness characterisation absent from the combinatorial siblings."
+      "endLine": 61,
+      "summary": "Frames the goal and locates it in the gallery: prove the Gauss divisor-sum identity $\\sum_{d\\mid n}J_k(d)=n^k$ for the abstract arithmetic function $J_k=\\mu*\\mathrm{pow}\\,k$, working inside Mathlib's Dirichlet convolution ring, and add the uniqueness characterisation absent from the combinatorial siblings. Opens `Finset`, `ArithmeticFunction`, and the `ArithmeticFunction.zeta` scope."
     },
     {
       "title": "Definition of Jordan's totient",
-      "startLine": 65,
-      "endLine": 71,
+      "startLine": 63,
+      "endLine": 65,
       "summary": "`jordan k := moebius * (pow k : ArithmeticFunction Z)` — Jordan's totient as a Dirichlet convolution in the ring $\\mathrm{ArithmeticFunction}\\ \\mathbb{Z}$, the same object studied by the sibling erdos-1000-oq-03-oq-01-oq-01."
     },
     {
       "title": "Reconstruction identity J_k * zeta = pow k",
-      "startLine": 72,
-      "endLine": 78,
+      "startLine": 67,
+      "endLine": 74,
       "summary": "`jordan_mul_zeta`: the arithmetic-function identity $J_k*\\zeta=\\mathrm{pow}\\,k$, proved in one `rw` via `mul_right_comm` and $\\mu*\\zeta=1$ (`moebius_mul_coe_zeta`). This is the reconstruction dual of the gallery's Möbius inversion $J_k=\\mu*\\mathrm{pow}\\,k$."
     },
     {
       "title": "Headline: Gauss's divisor-sum identity",
-      "startLine": 79,
-      "endLine": 89,
+      "startLine": 76,
+      "endLine": 84,
       "summary": "`jordan_divisor_sum`: $\\sum_{d\\mid n}J_k(d)=n^k$ for $n\\neq 0$, the pointwise reading of `jordan_mul_zeta` through `coe_mul_zeta_apply` and `pow_apply`."
     },
     {
       "title": "Uniqueness: the divisor-sum characterises J_k",
-      "startLine": 91,
-      "endLine": 104,
+      "startLine": 86,
+      "endLine": 102,
       "summary": "`jordan_unique`: any $f:\\mathbb{N}\\to\\mathbb{Z}$ with $\\sum_{d\\mid n}f(d)=n^k$ for all $n>0$ equals $J_k$ on the positives. Möbius-inverts the hypothesis with `sum_eq_iff_sum_smul_moebius_eq` and matches the result to $(\\mu*\\mathrm{pow}\\,k)\\,n$ termwise via `mul_apply`."
     },
     {
       "title": "Euler recovery and Gauss's classical identity (k = 1)",
-      "startLine": 106,
+      "startLine": 104,
       "endLine": 123,
       "summary": "`jordan_one_apply` ($J_1=\\varphi$, from uniqueness plus `Nat.sum_totient`) and `sum_totient_eq_self` (Gauss's $\\sum_{d\\mid n}\\varphi(d)=n$, the $k=1$ case of the headline)."
     }
@@ -80,6 +80,38 @@
       "proofId": "erdos-1000-oq-03",
       "relationship": "extends",
       "description": "The parent develops generalized totients via restricted Gauss sums. This entry supplies the arithmetic-function reconstruction identity and uniqueness for Jordan's totient specifically."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Gauss, C. F.",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "note": "Article 39 records the divisor-sum identity $\\sum_{d\\mid n}\\varphi(d)=n$, the $k=1$ case recovered here as `sum_totient_eq_self`."
+    },
+    {
+      "authors": "Jordan, C.",
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": "1870",
+      "note": "Introduces the totient $J_k$ counting $k$-tuples of residues setwise coprime to $n$; the object whose Dirichlet-ring form $\\mu*\\mathrm{pow}\\,k$ this entry studies."
+    },
+    {
+      "authors": "Apostol, T. M.",
+      "title": "Introduction to Analytic Number Theory, Ch. 2 (Arithmetical Functions and Dirichlet Multiplication)",
+      "year": "1976",
+      "note": "The commutative ring of arithmetic functions under Dirichlet convolution, the identity $\\mu*\\zeta=1$, and Möbius inversion — the exact algebraic framework in which the reconstruction identity becomes a one-line computation. Jordan's totient appears in the exercises."
+    },
+    {
+      "authors": "McCarthy, P. J.",
+      "title": "Introduction to Arithmetical Functions",
+      "year": "1986",
+      "note": "Systematic development of Jordan's totient $J_k$ and its convolution identities, including $J_k*\\zeta=\\mathrm{pow}\\,k$ and the multiplicative structure."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib/NumberTheory/ArithmeticFunction.lean",
+      "year": "2026",
+      "note": "Supplies the Dirichlet convolution ring `ArithmeticFunction ℤ`, the Möbius/zeta functions, `coe_moebius_mul_coe_zeta` ($\\mu*\\zeta=1$), `coe_mul_zeta_apply`, `mul_apply`, and the Möbius-inversion equivalence `sum_eq_iff_sum_smul_moebius_eq` used throughout; `Nat.sum_totient` supplies Gauss's classical identity for the $k=1$ recoveries."
     }
   ],
   "leanFile": {
