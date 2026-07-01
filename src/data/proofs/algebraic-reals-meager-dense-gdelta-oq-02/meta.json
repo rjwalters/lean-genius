@@ -205,7 +205,23 @@
       "url": "https://link.springer.com/book/10.1007/978-1-4612-4190-4"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "algebraic-reals-meager-dense-gdelta-oq-01",
+      "relationship": "extends",
+      "description": "Sibling: dualizes to the algebraic reals as an explicit Fσ; its own second open question asks for exactly this constructive enumeration of the algebraic reals and the resulting monotone sequence, which this entry supplies on the Gδ side"
+    },
+    {
+      "targetId": "algebraic-reals-meager-dense-gdelta",
+      "relationship": "related",
+      "description": "Parent: proves the transcendentals are a dense Gδ only abstractly (via IsGδ.biInter_of_isOpen over all singleton complements); this entry replaces that with an honest enumerable decreasing sequence and re-derives the Gδ property from it"
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "related",
+      "description": "The algebraic reals are countable — the countability that yields the enumeration algEnum driving the construction"
+    }
+  ],
   "sections": [
     {
       "id": "enumeration",

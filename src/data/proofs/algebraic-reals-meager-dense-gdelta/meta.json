@@ -188,7 +188,18 @@
       "url": "https://link.springer.com/book/10.1007/978-1-4684-9339-9"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "algebraic-reals-meager",
+      "relationship": "extends",
+      "description": "Parent: proves the transcendentals are residual and dense; its open question asks to exhibit them as an explicit dense Gδ, which this entry does"
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "related",
+      "description": "Grandparent: the algebraic reals are countable (the countability input reused here)"
+    }
+  ],
   "sections": [
     {
       "id": "abstract-lemmas",

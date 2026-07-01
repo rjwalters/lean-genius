@@ -112,5 +112,22 @@
       "Prove an unconditional upper bound g(N) ≤ C√N to make g(N) = Θ(√N) axiom-free in both directions, not just the lower half.",
       "Recover the sharp constant (9/8)^{1/2} elementarily by computing the exact cardinality of Erdős' construction, narrowing the gap to the axiomatized Chen–Dai asymptotic."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-441",
+      "relationship": "extends",
+      "description": "Parent entry: records the full Chen–Dai answer g(N) ~ (9N/8)^{1/2} as three axioms (Chen 1998 asymptotic, Chen–Dai 2007 upper bound, Chen–Dai 2006 non-optimality) plus a sorry'd lower bound. This entry supplies an unconditional, axiom-free lower bound of the correct order."
+    },
+    {
+      "targetId": "erdos-440",
+      "relationship": "related",
+      "description": "Sibling LCM problem on the counting function of sets whose consecutive elements have small LCM."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The lcm(a,b) ≤ a·b bound used here is the divisibility face of the gcd–lcm identity lcm(a,b) = ab/gcd(a,b)."
+    }
+  ]
 }

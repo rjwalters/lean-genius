@@ -184,7 +184,18 @@
       "url": "https://www.ams.org/books/conm/253/"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-17",
+      "relationship": "extends",
+      "description": "Parent: states Artin's theorem and the Motzkin counterexample but carries Motzkin's non-polynomial-SOS status as the axiom motzkin_not_sos_polynomial_aux. This entry proves exactly that statement with 0 axioms; the same definition of motzkin and IsSumOfSquaresMvPolynomial is used, so the axiom can be discharged by reference."
+    },
+    {
+      "targetId": "hilbert-17-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Sibling (positive side): an explicit 0-axiom rational SOS certificate showing Motzkin IS a sum of squares of rational functions. Its listed open question — 'Discharge the companion axiom motzkin_not_sos_polynomial_aux (Motzkin is not a polynomial SOS) by the coefficient/degree argument' — is answered here, exactly by that coefficient/degree argument."
+    }
+  ],
   "sections": [
     {
       "id": "setup",
