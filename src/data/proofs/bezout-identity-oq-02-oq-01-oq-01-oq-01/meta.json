@@ -203,5 +203,27 @@
     "path": "Proofs/BezoutIdentityOQ02OQ01OQ01OQ01.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "D. S. Dummit, R. M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley",
+      "note": "Euclidean domains, PIDs, UFDs, and Smith normal form."
+    },
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "note": "Chinese Remainder Theorem and Gauss's lemma for polynomial content."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

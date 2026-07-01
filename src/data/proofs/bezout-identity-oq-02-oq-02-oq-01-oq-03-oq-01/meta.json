@@ -13,7 +13,9 @@
       "Mathlib.Analysis.SpecialFunctions.Log.Base",
       "Mathlib.Tactic"
     ],
-    "opens": ["goldenRatio (scoped)"],
+    "opens": [
+      "goldenRatio (scoped)"
+    ],
     "axiomCount": 0,
     "sorries": 0,
     "lineCount": 216,
@@ -161,28 +163,38 @@
         "content": "steps definition with steps_zero/steps_succ/steps_pos unfolding lemmas, reproduced so the file is standalone.",
         "startLine": 61,
         "endLine": 86,
-        "theorems": ["steps_zero", "steps_succ", "steps_pos"]
+        "theorems": [
+          "steps_zero",
+          "steps_succ",
+          "steps_pos"
+        ]
       },
       {
         "title": "Lamé's Sharp Input Lower Bound",
         "content": "lame_fib_lower: n+1 ≤ steps a b → fib(n+2) ≤ b, by Nat.twoStepInduction matching the Fibonacci recurrence.",
         "startLine": 88,
         "endLine": 147,
-        "theorems": ["lame_fib_lower"]
+        "theorems": [
+          "lame_fib_lower"
+        ]
       },
       {
         "title": "Golden Ratio / Fibonacci Growth",
         "content": "golden_pow_le_fib: φⁿ ≤ fib(n+2), two-step induction using φ² = φ + 1.",
         "startLine": 149,
         "endLine": 181,
-        "theorems": ["golden_pow_le_fib"]
+        "theorems": [
+          "golden_pow_le_fib"
+        ]
       },
       {
         "title": "The Exact Golden-Ratio Bound",
         "content": "steps_le_logb_golden: steps a b ≤ log_φ b + 1 for b ≥ 1, the sharp ⌊log_φ b⌋ + O(1) characterization.",
         "startLine": 183,
         "endLine": 214,
-        "theorems": ["steps_le_logb_golden"]
+        "theorems": [
+          "steps_le_logb_golden"
+        ]
       }
     ],
     "mathContext": {
@@ -191,5 +203,28 @@
       "historicalBackground": "Gabriel Lamé (1844) gave the first running-time analysis of any algorithm. Its sharpness — Fibonacci numbers as the extremal inputs — is what produces the golden-ratio constant log_φ that this entry formalizes."
     }
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. Lamé",
+      "title": "Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur entre deux nombres entiers",
+      "year": 1844,
+      "venue": "C. R. Acad. Sci. Paris 19",
+      "note": "Θ(log) bound on the number of Euclidean-algorithm steps."
+    },
+    {
+      "authors": "D. E. Knuth",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": 1997,
+      "venue": "Addison-Wesley",
+      "note": "Extended Euclidean algorithm, binary GCD, and Lamé-type step bounds."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

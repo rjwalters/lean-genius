@@ -231,5 +231,28 @@
       "significance": "Formalizes Lamé's theorem as a tight two-sided Θ(log) bound rather than a one-sided O(log) estimate, with the Fibonacci family proved to be the exact extremal input, completing the parent's open question with the constant optimal up to a factor of 2. Part VI proves the sharp input form fib (steps a b + 1) ≤ b, identifying consecutive Fibonacci numbers as the exact minimal inputs for any given step count."
     }
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. Lamé",
+      "title": "Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur entre deux nombres entiers",
+      "year": 1844,
+      "venue": "C. R. Acad. Sci. Paris 19",
+      "note": "Θ(log) bound on the number of Euclidean-algorithm steps."
+    },
+    {
+      "authors": "D. E. Knuth",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": 1997,
+      "venue": "Addison-Wesley",
+      "note": "Extended Euclidean algorithm, binary GCD, and Lamé-type step bounds."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

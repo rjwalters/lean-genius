@@ -99,5 +99,28 @@
       "summary": "irreducible_norm_eq_prime_or_sq: for −2 ≤ d < 0, an irreducible z is prime and divides ↑|N(z)| = z·z̄; via exists_prime_dvd_natCast it divides some ↑p, and comparing norms of ↑p = z·w (norm_intCast, norm_mul) gives |N(z)| ∣ p². Since |N(z)| ≠ 1 (norm_eq_one_iff), Nat.dvd_prime_pow forces |N(z)| = p or p²."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "K. Ireland, M. Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer",
+      "note": "Gaussian integers, quadratic integer rings, and unique factorization."
+    },
+    {
+      "authors": "D. S. Dummit, R. M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley",
+      "note": "Euclidean domains, PIDs, UFDs, and Smith normal form."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

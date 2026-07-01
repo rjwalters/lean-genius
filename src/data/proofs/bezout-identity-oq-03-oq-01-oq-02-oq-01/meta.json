@@ -86,5 +86,27 @@
       "iterated_crt_full: combined existence + uniqueness for the k-congruence system",
       "gcd_lcmList_dvd: the list-level divisibility step gcd(m₀,lcm mᵢ) | d from the pairwise gcd(m₀,mᵢ) | d, the engine of the existence induction"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "note": "Chinese Remainder Theorem and Gauss's lemma for polynomial content."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Bézout's identity, linear Diophantine equations, and quadratic integers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

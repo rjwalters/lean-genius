@@ -105,5 +105,28 @@
     "definitionCount": 0,
     "theoremCount": 12
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Bézout's identity, linear Diophantine equations, and quadratic integers."
+    },
+    {
+      "authors": "I. Niven, H. S. Zuckerman, H. L. Montgomery",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 1991,
+      "venue": "Wiley",
+      "note": "Linear Diophantine solvability criteria."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

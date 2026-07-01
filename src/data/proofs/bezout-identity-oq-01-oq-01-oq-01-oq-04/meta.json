@@ -150,5 +150,28 @@
       "description": "The sharp bound implies the parent's: log₂ a + log₂ b + 1 ≤ 2·(log₂ a + log₂ b) + 2, so the sharp result recovers the parent's binaryGcdSteps_le_log.",
       "leanType": "∀ (a b : ℕ), 0 < a → 0 < b → binaryGcdSteps a b ≤ Nat.log 2 a + Nat.log 2 b + 1 ∧ Nat.log 2 a + Nat.log 2 b + 1 ≤ 2 * (Nat.log 2 a + Nat.log 2 b) + 2"
     }
+  ],
+  "references": [
+    {
+      "authors": "R. P. Brent",
+      "title": "Analysis of the binary Euclidean algorithm",
+      "year": 1976,
+      "venue": "Algorithms and Complexity (ed. J. F. Traub), Academic Press",
+      "note": "Sharp step-count analysis of the binary GCD algorithm."
+    },
+    {
+      "authors": "D. E. Knuth",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": 1997,
+      "venue": "Addison-Wesley",
+      "note": "Extended Euclidean algorithm, binary GCD, and Lamé-type step bounds."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
   ]
 }

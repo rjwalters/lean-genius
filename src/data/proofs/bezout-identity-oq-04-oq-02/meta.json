@@ -147,5 +147,28 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/BezoutIdentityOQ04OQ02.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "D. S. Dummit, R. M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley",
+      "note": "Euclidean domains, PIDs, UFDs, and Smith normal form."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Bézout's identity, linear Diophantine equations, and quadratic integers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

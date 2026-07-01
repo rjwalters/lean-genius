@@ -128,5 +128,28 @@
       "relationship": "ancestor",
       "description": "Root Bézout identity entry: the 1×2 linear Diophantine case ax + by = c is the specialization covered here."
     }
+  ],
+  "references": [
+    {
+      "authors": "H. J. S. Smith",
+      "title": "On systems of linear indeterminate equations and congruences",
+      "year": 1861,
+      "venue": "Phil. Trans. R. Soc. London 151",
+      "note": "Smith normal form and invariant factors."
+    },
+    {
+      "authors": "H. Cohen",
+      "title": "A Course in Computational Algebraic Number Theory",
+      "year": 1993,
+      "venue": "Springer",
+      "note": "Algorithmic Smith normal form and Hermite normal form over PIDs."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
   ]
 }

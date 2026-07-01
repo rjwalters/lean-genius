@@ -121,5 +121,28 @@
       "summary": "nearest_point_factor_ge_one_of_le_neg_three: (1−d)/4 ≥ 1 exactly when d ≤ −3, so the uniform Zsqrtd argument provably stops at d = −2; the d = −3,−7,−11 rings require ℤ[ω]."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Th. Motzkin",
+      "title": "The Euclidean algorithm",
+      "year": 1949,
+      "venue": "Bull. Amer. Math. Soc. 55",
+      "note": "Norm-Euclidean criterion for quadratic integer rings."
+    },
+    {
+      "authors": "K. Ireland, M. Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer",
+      "note": "Gaussian integers, quadratic integer rings, and unique factorization."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }

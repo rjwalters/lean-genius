@@ -155,5 +155,28 @@
     "definitionCount": 1,
     "sorries": 0,
     "path": "Proofs/BezoutIdentityOQ03OQ04OQ01.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "D. S. Dummit, R. M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley",
+      "note": "Euclidean domains, PIDs, UFDs, and Smith normal form."
+    },
+    {
+      "authors": "M. F. Atiyah, I. G. Macdonald",
+      "title": "Introduction to Commutative Algebra",
+      "year": 1969,
+      "venue": "Addison-Wesley",
+      "note": "Chinese Remainder Theorem for commutative rings and comaximal ideals."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcdA/gcdB, EuclideanDomain, Zsqrtd, and the PID/UFD instance chain underlying this formalization."
+    }
+  ]
 }
