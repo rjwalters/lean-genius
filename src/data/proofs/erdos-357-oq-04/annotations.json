@@ -60,11 +60,11 @@
     "proofId": "erdos-357-oq-04",
     "range": {
       "startLine": 73,
-      "endLine": 92
+      "endLine": 83
     },
     "type": "theorem",
     "title": "ε–N Characterization of Sublinear Growth",
-    "content": "**`littleO_natCast_iff_eventually_le`.** For a *nonnegative* sequence $u$, $u =o[atTop] n$ is equivalent to $\\forall \\varepsilon > 0,\\ \\forall^{\\!f} n,\\ u(n) \\le \\varepsilon\\, n$. The proof rewrites the little-o relation via `Asymptotics.isLittleO_iff` into $\\forall c > 0,\\ \\forall^{\\!f} n,\\ \\lVert u(n)\\rVert \\le c\\,\\lVert n\\rVert$ and erases both norms with `Real.norm_of_nonneg` ($\\lVert u(n)\\rVert = u(n)$ since $u \\ge 0$, and $\\lVert(n:\\mathbb{R})\\rVert = n$). `sublinear_tfae` then packages the little-o, ratio-limit, and ε–N forms into one equivalence. This ε–N form is the operational shape density estimates are written in.",
+    "content": "**`littleO_natCast_iff_eventually_le`.** For a *nonnegative* sequence $u$, $u =o[atTop] n$ is equivalent to $\\forall \\varepsilon > 0,\\ \\forall^{\\!f} n,\\ u(n) \\le \\varepsilon\\, n$. The proof rewrites the little-o relation via `Asymptotics.isLittleO_iff` into $\\forall c > 0,\\ \\forall^{\\!f} n,\\ \\lVert u(n)\\rVert \\le c\\,\\lVert n\\rVert$ and erases both norms with `Real.norm_of_nonneg` ($\\lVert u(n)\\rVert = u(n)$ since $u \\ge 0$, and $\\lVert(n:\\mathbb{R})\\rVert = n$). The nonnegativity hypothesis is used *only* to drop the numerator norm — the ratio-limit half needs no such assumption. This ε–N form is the operational shape density estimates are written in.",
     "mathContext": "`isLittleO_iff : f =o[l] g ↔ ∀ ⦃c⦄, 0 < c → ∀ᶠ x in l, ‖f x‖ ≤ c * ‖g x‖`; for $u \\ge 0$ and $n \\ge 0$ the norms drop.",
     "significance": "key",
     "relatedConcepts": [
@@ -81,6 +81,33 @@
       "epsilon-n",
       "asymptotics",
       "nonnegative"
+    ]
+  },
+  {
+    "id": "ann-e357oq04-tfae",
+    "proofId": "erdos-357-oq-04",
+    "range": {
+      "startLine": 84,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "Packaging the Trichotomy",
+    "content": "**`sublinear_tfae`.** For a nonnegative $u$, this collapses the two preceding lemmas into a single equivalence between the ratio-limit form $\\mathrm{Tendsto}\\,(\\lambda n.\\,u(n)/n)\\,atTop\\,(\\mathcal{N}\\,0)$ and the ε–N form $\\forall \\varepsilon>0,\\ \\forall^{\\!f} n,\\ u(n) \\le \\varepsilon\\,n$. The proof is a two-line composition: rewrite along `← littleO_natCast_iff_ratio_tendsto` to expose the little-o form, then apply `littleO_natCast_iff_eventually_le`. The little-o form is the hidden pivot connecting the two 'analyst-facing' forms — it never appears in the statement of `sublinear_tfae`, yet it is what makes the equivalence hold. This is the single result the density corollaries below instantiate.",
+    "mathContext": "$\\lim_n u(n)/n = 0 \\iff \\forall\\varepsilon>0,\\ \\text{eventually } u(n) \\le \\varepsilon n$ (for $u \\ge 0$), with $u =o[atTop] n$ as the intermediary.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Transitivity of iff",
+      "little-o as intermediary form",
+      "TFAE-style packaging"
+    ],
+    "prerequisites": [
+      "The general equivalence and ε–N lemma above"
+    ],
+    "tags": [
+      "theorem",
+      "trichotomy",
+      "asymptotics",
+      "packaging"
     ]
   },
   {
