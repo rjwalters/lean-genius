@@ -560,8 +560,12 @@ theorem firstMissing_computable : Computable firstMissing := by
 
 /-- The `firstMissing`-covered prefix lies inside `L`: every natural below
     `firstMissing L` already occurs. This packages `firstMissing_lt_mem` as an initial
-    segment (`Finset.range`) coverage statement, the form the exhaustion argument uses. -/
-theorem range_firstMissing_subset (L : List ℕ) {m : ℕ}
+    segment (`Finset.range`) coverage statement, the form the exhaustion argument uses.
+    (The `List.range` variant with the canonical name `range_firstMissing_subset` is
+    below in Section 4d; this `Finset`-flavoured restatement keeps the distinct name
+    `range_firstMissing_subset_finset` to avoid the collision the two independent
+    sessions introduced.) -/
+theorem range_firstMissing_subset_finset (L : List ℕ) {m : ℕ}
     (hm : m ∈ Finset.range (firstMissing L)) : m ∈ L :=
   firstMissing_lt_mem L (Finset.mem_range.mp hm)
 
