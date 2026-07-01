@@ -31,6 +31,13 @@ rely on. (Self-contained: `T` is re-declared, depending only on Mathlib.)
    (equivalently `n² mod 4 = n mod 2`).
 7. `turanBound_ge_sq_sub_one_div_four` — the matching lower real envelope
    `(n² − 1)/4 ≤ T(n)`, sandwiching `T` as `(n² − 1)/4 ≤ T(n) ≤ n²/4`.
+8. `turanBound_quarter_square` — the classical **quarter-square multiplication
+   identity** `T(m+n) − T(m−n) = m·n` (for `n ≤ m`), recovering a product as the
+   gap between the quarter-squares of sum and difference.
+9. `turanBound_second_diff` — the exact discrete **second difference**
+   `T(n+2) + T(n) = 2·T(n+1) + (n+1) mod 2`.
+10. `turanBound_convex` — `T` is a **convex** integer sequence
+    (`2·T(n+1) ≤ T(n+2) + T(n)`).
 
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Self-contained over Mathlib.
 -/
@@ -119,6 +126,49 @@ theorem turanBound_ge_sq_sub_one_div_four (n : ℕ) :
     linarith
   linarith
 
+/-- **Quarter-square multiplication identity:** `T(m+n) − T(m−n) = m·n` (for `n ≤ m`).
+    This is the classical identity that turns the Turán bound into a *multiplication
+    table*: the product `m·n` is recovered as the gap between the quarter-squares of
+    the sum and the difference. Combinatorially, expanding the balanced bipartite
+    graph from `m−n` to `m+n` vertices (a symmetric `±n` shift about `m`) adds exactly
+    `m·n` edges. The parity bits of `m+n` and `m−n` agree (they differ by `2n`), so
+    the floors cancel cleanly. -/
+theorem turanBound_quarter_square (m n : ℕ) (h : n ≤ m) :
+    turanBound (m + n) = turanBound (m - n) + m * n := by
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le h
+  -- `m = n + d`, so `m + n = 2*n + d`, `m - n = d`, `m * n = (n + d) * n`.
+  have hsub : n + d - n = d := by omega
+  have hadd : n + d + n = 2 * n + d := by ring
+  rw [hsub, hadd]
+  have h1 := turanBound_four_mul (2 * n + d)
+  have h2 := turanBound_four_mul d
+  have hsq : (2 * n + d) ^ 2 = d ^ 2 + 4 * ((n + d) * n) := by ring
+  have hpar : (2 * n + d) % 2 = d % 2 := by omega
+  omega
+
+/-- **Exact second difference:** `T(n+2) + T(n) = 2·T(n+1) + (n+1) mod 2`. The
+    discrete second difference `Δ²T(n) = T(n+2) − 2·T(n+1) + T(n)` equals `1` at even
+    `n` and `0` at odd `n`. It is the increment of the increment `⌊(n+1)/2⌋`, which
+    bumps up exactly when `n` is even. -/
+theorem turanBound_second_diff (n : ℕ) :
+    turanBound (n + 2) + turanBound n = 2 * turanBound (n + 1) + (n + 1) % 2 := by
+  have hle : ∀ k, turanBound k ≤ turanBound (k + 1) := fun k => by
+    unfold turanBound; exact Nat.div_le_div_right (Nat.pow_le_pow_left (Nat.le_succ k) 2)
+  have hd1 : turanBound (n + 1) - turanBound n = (n + 1) / 2 := turanBound_succ_diff n
+  have hd2 : turanBound (n + 2) - turanBound (n + 1) = (n + 2) / 2 :=
+    turanBound_succ_diff (n + 1)
+  have hm1 := hle n
+  have hm2 : turanBound (n + 1) ≤ turanBound (n + 2) := hle (n + 1)
+  omega
+
+/-- **Discrete convexity:** `2·T(n+1) ≤ T(n+2) + T(n)`, i.e. `T` is a convex integer
+    sequence (its second difference is `≥ 0`). The quarter-square never bends
+    downward, so the extremal edge count has no concave dips as `n` grows. -/
+theorem turanBound_convex (n : ℕ) :
+    2 * turanBound (n + 1) ≤ turanBound (n + 2) + turanBound n := by
+  have h := turanBound_second_diff n
+  omega
+
 /-
 ## Significance
 
@@ -131,7 +181,12 @@ this entry adds the explicit parity-split closed forms `T(2m) = m²`,
 for `n ≥ 1`, the exact integer identity `4·T(n) = n² − (n mod 2)`, and the
 two-sided real envelope `(n² − 1)/4 ≤ T(n) ≤ n²/4`. The sandwich pins `T(n)`
 within `¼` of the exact quarter-square `n²/4`, making the asymptotics
-`T(n) ∼ n²/4` immediate.
+`T(n) ∼ n²/4` immediate. The 2026-06-30 additions record the **algebraic
+structure** of `T`: the quarter-square multiplication identity
+`T(m+n) − T(m−n) = m·n` (the device that historically turned quarter-square
+tables into multiplication tables), the exact second difference
+`Δ²T(n) = (n+1) mod 2`, and the resulting **discrete convexity** of `T` — so the
+extremal edge count grows without any concave dips.
 
 The closed forms make the extremal edge counts (`K_{m,m}` has `m²`, `K_{m,m+1}`
 has `m(m+1)`) explicit, and the increment formula is exactly the quantity the
