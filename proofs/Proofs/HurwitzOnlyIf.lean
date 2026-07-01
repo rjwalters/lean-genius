@@ -41,7 +41,13 @@ by choosing an orthonormal basis and transporting multiplication through coordin
 ## Key results
 
 - `hurwitz_field_case`: proved (0 sorries) — Gelfand-Mazur for commutative algebras
-- `hurwitz_only_if_ring`: 1 sorry — the non-commutative case (Clifford algebras needed)
+- `minpoly_natDegree_le_two`, `exists_quadratic`: proved (0 sorries) — Frobenius Step 1
+  (every element satisfies a real quadratic)
+- `exists_real_shift_sq_scalar`, `eq_smul_one_of_sq_eq_nonneg_smul`: proved (0 sorries) —
+  Frobenius Step 2 (completing the square; nonnegative square ⟹ real, so the imaginary
+  part squares to a *negative* scalar)
+- `hurwitz_only_if_ring`: 1 sorry — the remaining global structure argument (Step 3:
+  `Im A` is a subspace with a positive-definite bilinear form / Clifford structure)
 -/
 
 namespace HurwitzOnlyIf
@@ -134,6 +140,52 @@ theorem exists_quadratic (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A
     rw [hc2, one_smul] at hexp
     exact ⟨-m.coeff 1, -m.coeff 0, by linear_combination (norm := module) hexp⟩
 
+/-! ### Frobenius Step 2: Completing the Square and the Real/Imaginary Dichotomy
+
+The quadratic relation `a ^ 2 = p • a + q • 1` of Step 1 can be *completed*: shifting `a`
+by the real scalar `p / 2` produces an element whose square is a pure real scalar. This is
+the concrete form of the classical decomposition `A = ℝ ⬝ 1 ⊕ Im A`. The sign of that scalar
+then decides everything: a nonnegative scalar square forces the element back into `ℝ ⬝ 1`
+(using that a division ring has no zero divisors), so the genuinely "imaginary" elements are
+exactly those whose shifted square is a *negative* real scalar. These two lemmas are fully
+verified (0 sorries) and set up the imaginary subspace `Im A`. -/
+
+open Polynomial in
+/-- **Frobenius Step 2a (completing the square).** For every element `a`, subtracting the
+real scalar `p / 2` (half the linear coefficient of its quadratic) yields an element whose
+square is a pure real scalar: `(a - c • 1) ^ 2 = r • 1`. This is the concrete form of the
+`A = ℝ ⬝ 1 ⊕ Im A` splitting — `c • 1` is the real part and `a - c • 1` the imaginary part. -/
+theorem exists_real_shift_sq_scalar (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a : A) : ∃ c r : ℝ, (a - c • (1 : A)) ^ 2 = r • (1 : A) := by
+  obtain ⟨p, q, hpq⟩ := exists_quadratic A a
+  refine ⟨p / 2, q + (p / 2) ^ 2, ?_⟩
+  have hexp : (a - (p / 2) • (1 : A)) ^ 2
+      = a * a - (2 * (p / 2)) • a + ((p / 2) ^ 2) • (1 : A) := by
+    simp only [sq, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, one_mul, mul_one]
+    module
+  rw [hexp, ← pow_two, hpq]
+  module
+
+/-- **Frobenius Step 2b (nonnegative square ⟹ real).** If an element `b` of a normed
+division ring satisfies `b ^ 2 = r • 1` with `r ≥ 0`, then `b` is a real scalar multiple of
+`1`. Indeed `(b - √r • 1)(b + √r • 1) = b ^ 2 - r • 1 = 0`, and a division ring has no zero
+divisors, so one factor vanishes. Consequently the "imaginary part" `a - c • 1` from Step 2a
+is genuinely non-real only when its square scalar `r` is *negative*. -/
+theorem eq_smul_one_of_sq_eq_nonneg_smul (A : Type*) [NormedDivisionRing A]
+    [NormedAlgebra ℝ A] (b : A) (r : ℝ) (hr : 0 ≤ r) (hb : b ^ 2 = r • (1 : A)) :
+    ∃ s : ℝ, b = s • (1 : A) := by
+  set s := Real.sqrt r with hs
+  have hs2 : s ^ 2 = r := Real.sq_sqrt hr
+  have factored : (b - s • (1 : A)) * (b + s • (1 : A)) = 0 := by
+    have hexp : (b - s • (1 : A)) * (b + s • (1 : A)) = b * b - (s ^ 2) • (1 : A) := by
+      simp only [mul_add, sub_mul, mul_smul_comm, smul_mul_assoc, one_mul, mul_one]
+      module
+    rw [hexp, ← pow_two, hb, hs2]
+    module
+  rcases mul_eq_zero.mp factored with h | h
+  · exact ⟨s, by linear_combination (norm := module) h⟩
+  · exact ⟨-s, by linear_combination (norm := module) h⟩
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Hurwitz Only-If for Normed Division Rings**:
@@ -161,13 +213,19 @@ theorem hurwitz_only_if_ring (A : Type*) [NormedDivisionRing A] [NormedAlgebra �
      STEP 1 (VERIFIED above): every `a : A` satisfies a real quadratic `a² = p•a + q•1`
        via `exists_quadratic` / `minpoly_natDegree_le_two`. Hence each element generates a
        subalgebra isomorphic to `ℝ` or `ℂ`.
-     STEP 2 (remaining): split `A = ℝ•1 ⊕ Im A` where `Im A := {a | a² ∈ ℝ≤0 • 1}` is the
-       set of "pure imaginary" elements (those whose quadratic has `p = 0`, `q ≤ 0`).
-     STEP 3 (remaining): the map `(x, y) ↦ -(x*y + y*x)` is a positive-definite symmetric
-       bilinear form on `Im A`; multiplication makes `Im A` a Clifford-type space, forcing
-       `finrank ℝ (Im A) ∈ {0, 1, 3}` and thus `finrank ℝ A ∈ {1, 2, 4}`.
-     Steps 2–3 (the global structure argument) are not yet formalized; Mathlib lacks the
-     Clifford-algebra / bilinear-form machinery to discharge them directly. -/
+     STEP 2a (VERIFIED above): completing the square, `(a - (p/2)•1)² = r•1` for a real
+       scalar `r` (`exists_real_shift_sq_scalar`). This is the concrete `A = ℝ•1 ⊕ Im A`
+       shift: `(p/2)•1` is the real part, `a - (p/2)•1` the imaginary part.
+     STEP 2b (VERIFIED above): if `b² = r•1` with `r ≥ 0` then `b ∈ ℝ•1`
+       (`eq_smul_one_of_sq_eq_nonneg_smul`, from the absence of zero divisors). So the
+       imaginary part is genuinely non-real exactly when its square scalar `r` is negative,
+       pinning down `Im A := {a | a² ∈ ℝ≤0 • 1}`.
+     STEP 3 (remaining): showing `Im A` is an ℝ-subspace (equivalently, that `x*y + y*x ∈
+       ℝ•1` for imaginary `x, y`) and that `(x, y) ↦ -(x*y + y*x)` is a positive-definite
+       symmetric bilinear form; multiplication then makes `Im A` a Clifford-type space,
+       forcing `finrank ℝ (Im A) ∈ {0, 1, 3}` and thus `finrank ℝ A ∈ {1, 2, 4}`.
+     Step 3 (the global structure/bilinear-form argument) is not yet formalized; Mathlib
+     lacks the Clifford-algebra / bilinear-form machinery to discharge it directly. -/
   sorry
 
 end HurwitzOnlyIf
