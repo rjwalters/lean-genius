@@ -17,6 +17,11 @@
       "complete bipartite graph",
       "triangle-free graph",
       "k-partition generalization"
+    ],
+    "prerequisites": [
+      "Ramsey-type / extremal graph theory",
+      "edge-disjoint triangle packing in edge-colorings of Kₙ",
+      "complete bipartite graphs and triangle-freeness"
     ]
   },
   {
@@ -36,6 +41,10 @@
       "complete multipartite graph",
       "self-contained model",
       "axiom-free"
+    ],
+    "prerequisites": [
+      "Mathlib's SimpleGraph structure (Adj, symm, loopless)",
+      "defining a graph by its adjacency relation"
     ]
   },
   {
@@ -43,11 +52,11 @@
     "proofId": "erdos-76-oq-02",
     "range": {
       "startLine": 71,
-      "endLine": 143
+      "endLine": 118
     },
     "type": "insight",
-    "title": "Triangle ⟺ Three Parts: the Core Dichotomy",
-    "content": "not_cliqueFree_three_iff proves ¬ CliqueFree 3 ↔ 3 ≤ (univ.image part).card. Forward: in any 3-clique s, pairwise adjacency means the part-values are pairwise distinct, so part is injective on s; Finset.card_image_of_injOn then gives |image part over s| = 3, a subset of univ.image part, so the latter has ≥ 3 values. Backward: Finset.two_lt_card_iff extracts three distinct part-values, each with a preimage vertex via Finset.mem_image; the three representatives lie in distinct parts, hence are pairwise adjacent, forming a transversal triangle. cliqueFree_three_iff repackages this as triangle-free ⟺ at most two parts.",
+    "title": "Triangle ⟺ Three Parts (not_cliqueFree_three_iff)",
+    "content": "not_cliqueFree_three_iff proves ¬ CliqueFree 3 ↔ 3 ≤ (univ.image part).card. Forward: in any 3-clique s, pairwise adjacency means the part-values are pairwise distinct, so part is injective on s (Set.InjOn); Finset.card_image_of_injOn then gives |image part over s| = 3, a subset of univ.image part, so the latter has ≥ 3 values. Backward: Finset.two_lt_card_iff extracts three distinct part-values, each with a preimage vertex via Finset.mem_image; the three representatives lie in distinct parts, hence are pairwise adjacent. The clique check is a compact combinator: `rcases ha … <;> rcases hb … <;> first | exact absurd rfl hab | exact h01 | h01.symm | …` discharges all nine ordered vertex pairs at once.",
     "mathContext": "A $3$-clique is three vertices in three pairwise distinct parts; $\\mathit{part}$ injective on a clique $\\Rightarrow$ a triangle exists $\\iff |\\mathrm{image}\\;\\mathit{part}| \\geq 3$.",
     "significance": "key",
     "relatedConcepts": [
@@ -56,6 +65,34 @@
       "Finset.card_image_of_injOn",
       "Finset.two_lt_card_iff",
       "Finset.card_eq_three"
+    ],
+    "prerequisites": [
+      "SimpleGraph.CliqueFree / IsNClique",
+      "Finset.image, card_image_of_injOn, two_lt_card_iff",
+      "the rcases … <;> … <;> first combinator idiom"
+    ]
+  },
+  {
+    "id": "ann-erdos76oq02-repackage",
+    "proofId": "erdos-76-oq-02",
+    "range": {
+      "startLine": 119,
+      "endLine": 134
+    },
+    "type": "insight",
+    "title": "The Headline Dichotomy (cliqueFree_three_iff)",
+    "content": "cliqueFree_three_iff restates the previous theorem in the positive, usable form: (multipartiteGraph part).CliqueFree 3 ↔ (univ.image part).card ≤ 2. It is the logical contrapositive of not_cliqueFree_three_iff — each direction is discharged by assuming the negation and deriving a contradiction via omega on the part-count (≤ 2 vs ≥ 3 are exhaustive and exclusive). This is the entry's headline statement: the sacrificial cross class of an Erdős-#76-style construction is triangle-free exactly in the two-color (≤ 2 parts) regime, which is what the specializations below then instantiate.",
+    "mathContext": "Triangle-free $\\iff |\\mathrm{image}\\;\\mathit{part}| \\le 2$; the two thresholds $\\le 2$ and $\\ge 3$ partition the possibilities, so `omega` bridges the contrapositive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "contrapositive restatement",
+      "omega",
+      "sharp threshold on part count",
+      "triangle-free complete multipartite graph"
+    ],
+    "prerequisites": [
+      "not_cliqueFree_three_iff (the equivalence it negates)",
+      "the omega arithmetic decision procedure"
     ]
   },
   {
@@ -76,6 +113,11 @@
       "K3",
       "sharp threshold",
       "separation result"
+    ],
+    "prerequisites": [
+      "cliqueFree_three_iff (the dichotomy being instantiated)",
+      "Fintype.card / Finset.card_le_univ over Fin 2",
+      "the complete graph K₃ as a single triangle"
     ]
   }
 ]
