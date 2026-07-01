@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-oq060102-intro",
+    "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
+    "type": "context",
+    "title": "Golden-Ratio Motivation: the x = −1 Companion Transform",
+    "content": "The binomial transform sends a sequence (aₖ) to (∑ C(n,k) aₖ); the alternating variant uses signed weights (−1)ᵏ C(n,k) and is the n-th finite difference up to sign. For Fibonacci, the positive transform ∑ C(n,k) Fₖ = F₂ₙ is the discrete shadow of 1 + φ = φ²: applying ∑ C(n,k)(·)ᵏ to the golden ratio φ sends φ ↦ (1+φ)ⁿ = φ²ⁿ. This file supplies the x = −1 companion: applying ∑ C(n,k)(−1)ᵏ(·)ᵏ sends φ ↦ (1−φ)ⁿ = ψⁿ, where ψ = (1−√5)/2 is the conjugate root and φψ = −1. Since ψ = −1/φ, the index falls by n and picks up a sign, and the √5-normalized Binet combination collapses to (−1)ⁿ F₍ₘ₋ₙ₎. The parent formalized the positive transform; this entry supplies the signed dual entirely within ℤ, parametrizing the shift as d = m − n ≥ 0 to avoid negative-index Fibonacci.",
+    "mathContext": "Positive: $\\sum_k \\binom{n}{k} F_{m+k} = F_{2n+m}$ (shadow of $1+\\varphi=\\varphi^2$). Alternating: $\\sum_k (-1)^k \\binom{n}{k} F_{m+k} = (-1)^n F_{m-n}$ (shadow of $1-\\varphi=\\psi$, $\\varphi\\psi=-1$).",
+    "significance": "context",
+    "relatedConcepts": [
+      "binomial transform",
+      "golden ratio φ and conjugate ψ",
+      "Binet's formula",
+      "finite-difference operator",
+      "F₂ₙ positive transform"
+    ],
+    "prerequisites": [
+      "golden ratio and its conjugate",
+      "binomial transform of a sequence"
+    ]
+  },
+  {
     "id": "ann-oq060102-signed-pascal",
     "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
     "range": {
@@ -53,19 +77,41 @@
     "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
     "range": {
       "startLine": 139,
-      "endLine": 155
+      "endLine": 146
     },
     "type": "theorem",
-    "title": "Offset and Boundary Forms",
-    "content": "fib_alt_binom_transform_eq restates the identity in the classical offset form ∑_{k≤n} (−1)ᵏ C(n,k) F₍ₘ₊ₖ₎ = (−1)ⁿ F₍ₘ₋ₙ₎ for n ≤ m, obtained by substituting d = m − n (valid by omega). fib_alt_binom_transform_zero is the d = 0 boundary case: since F₀ = 0, the alternating transform of the window starting at index n vanishes (for n ≥ 1), the signed counterpart of the parent's ∑ C(n,k) Fₖ = F₂ₙ.",
+    "title": "Offset Form ∑ (−1)ᵏ C(n,k) Fₘ₊ₖ = (−1)ⁿ Fₘ₋ₙ",
+    "content": "fib_alt_binom_transform_eq restates the headline in the classical offset form ∑_{k≤n} (−1)ᵏ C(n,k) F₍ₘ₊ₖ₎ = (−1)ⁿ F₍ₘ₋ₙ₎ for n ≤ m. It is obtained by instantiating the headline at shift d = m − n and rewriting n + (m − n) = m (valid since n ≤ m, discharged by omega). This is the form most recognizable from the literature — the signed dual of the parent's positive transform F₂ₙ₊ₘ.",
     "mathContext": "$n \\le m \\implies \\sum_{k=0}^n (-1)^k \\binom{n}{k} F_{m+k} = (-1)^n F_{m-n}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "index substitution",
-      "F₀ = 0"
+      "natural-number subtraction",
+      "positive transform F₂ₙ₊ₘ"
     ],
     "prerequisites": [
       "natural-number subtraction under a bound"
+    ]
+  },
+  {
+    "id": "ann-oq060102-zero",
+    "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 147,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Boundary Case d = 0: the Transform Vanishes",
+    "content": "fib_alt_binom_transform_zero is the d = 0 instance of the headline: ∑_{k≤n} (−1)ᵏ C(n,k) F₍ₙ₊ₖ₎ = (−1)ⁿ F₀. Since F₀ = 0, the right side is 0 for n ≥ 1 (and 1 at n = 0), so the alternating transform of the Fibonacci window starting at index n vanishes. This is the signed counterpart of the parent's ∑ C(n,k) Fₖ = F₂ₙ, and a clean sanity check: it says the n-th finite difference of the shifted window is annihilated exactly when the closed form F_d hits the Fibonacci zero.",
+    "mathContext": "$\\sum_{k=0}^n (-1)^k \\binom{n}{k} F_{n+k} = (-1)^n F_0 = 0$ for $n \\ge 1$ (and $=1$ at $n=0$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "F₀ = 0",
+      "finite-difference annihilation",
+      "boundary case"
+    ],
+    "prerequisites": [
+      "the headline transform at d = 0"
     ]
   }
 ]
