@@ -1,0 +1,105 @@
+{
+  "slug": "derangements-oq-04-oq-01-oq-01",
+  "title": "Poisson(1) Limit of the Fixed-Point Distribution",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\frac{S(n,k)}{n!} \\;=\\; \\frac{1}{k!}\\sum_{j=0}^{n-k}\\frac{(-1)^j}{j!}.",
+    "plain": "Pick a permutation of $\\{1,\\dots,n\\}$ uniformly at random and count how many",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-30T22:49:26-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS (researcher-6, VERIFIED 0-axiom via direct-lean-compile; Docker down host-wide): Landed the ANALYTIC CORE of the Poisson(1) limit in new Proofs/DerangementsOQ04OQ01OQ01.lean. For a uniform random permutation of [n] with X_n = #fixed points, P(X_n=k)=C(n,k)*D(n-k)/n! (D=numDerangements). Proved fixedPointProb_tendsto: for each fixed k, C(n,k)*D(n-k)/n! -> e^{-1}/k! as n->inf. KEY: reduces the whole limit to Mathlib's numDerangements_tendsto_inv_e (D(n)/n!->e^{-1}) by reindexing n|->n-k (tendsto_sub_atTop_nat) + multiplying by constant 1/k!, glued via fixedPointProb_eq (peels C(n,k) via Nat.cast_choose into D(n-k)/(n-k)! * 1/k!) and Tendsto.congr' over eventually_ge_atTop k. Also fixedPointProb_zero_tendsto (k=0 recovers derangement prob ->e^{-1}). All 4 thms #print axioms = foundational only.",
+    "builtItems": [
+      "DerangementsOQ04OQ01OQ01.fixedPointProb (def) - exact prob C(n,k)*D(n-k)/n! (VERIFIED)",
+      "fixedPointProb_eq - for k<=n, =D(n-k)/(n-k)! * (1/k!) via Nat.cast_choose+field_simp (VERIFIED, 0-axiom)",
+      "fixedPointProb_tendsto - POISSON(1) LIMIT: C(n,k)*D(n-k)/n!->e^{-1}/k! for fixed k (VERIFIED, 0-axiom)",
+      "fixedPointProb_zero_tendsto - k=0 derangement prob ->e^{-1} (VERIFIED, 0-axiom)"
+    ],
+    "insights": [
+      "The Poisson(1) limit for each FIXED k is NOT hard analysis: it is a direct reindex of Mathlib numDerangements_tendsto_inv_e. C(n,k)*D(n-k)/n! = (1/k!)*(D(n-k)/(n-k)!) for k<=n (Nat.cast_choose + field_simp), and D(n-k)/(n-k)! is the base sequence composed with n|->n-k (tendsto_sub_atTop_nat).",
+      "GENUINE GAP (combinatorial, not analytic): Mathlib lacks the exact-count identity #{sigma:Perm(Fin n)//#fixedPoints sigma = k} = C(n,k)*D(n-k). Needs an explicit equiv {sigma//#fix=k} ~= Sigma(s:{s:Finset(Fin n)//s.card=k}), derangements of s-complement. Once built, the verified limit here upgrades from a statement about the formula to the genuine probability P(X_n=k).",
+      "Normalization sum_{k=0}^n C(n,k)*D(n-k)=n! (distribution sums to 1) is the derangement convolution identity already in the sibling derangements-convergence entries."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks the exact-k-fixed-points permutation count #{sigma:Perm(Fin n)//#fixedPoints sigma=k}=C(n,k)*numDerangements(n-k) (searched Combinatorics/Derangements + Perm; only card_fixedPoints via cycleType exists). It has numDerangements_tendsto_inv_e for the limit."
+    ],
+    "nextSteps": [
+      "Build the exact-count combinatorial identity #{sigma:Perm(Fin n)//#fixedPoints sigma=k}=C(n,k)*D(n-k) via the equiv to Sigma(k-subset)x derangements(complement); sole remaining brick to make the verified limit a statement about the genuine probability.",
+      "Optionally re-expose sum_{k=0}^n C(n,k)*D(n-k)=n! from the sibling derangements-convergence entry to certify fixedPointProb is a probability distribution."
+    ],
+    "markdown": "# Knowledge Base: derangements-oq-04-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "analysis",
+    "derangements",
+    "rencontres-numbers",
+    "poisson-distribution",
+    "limit",
+    "exponential-series",
+    "random-permutations"
+  ],
+  "relatedProofs": [
+    "derangements",
+    "derangements-convergence",
+    "derangements-convergence-oq-01",
+    "derangements-convergence-oq-01-oq-01",
+    "derangements-convergence-oq-02",
+    "derangements-convergence-oq-03",
+    "derangements-convergence-oq-03-oq-01",
+    "derangements-convergence-oq-03-oq-01-oq-02",
+    "derangements-convergence-oq-03-oq-02",
+    "derangements-convergence-oq-03-oq-03",
+    "derangements-convergence-oq-04",
+    "derangements-convergence-oq-05",
+    "derangements-convergence-oq-05-oq-01",
+    "derangements-convergence-oq-06",
+    "derangements-oq-02",
+    "derangements-oq-02-oq-01",
+    "derangements-oq-02-oq-01-oq-01",
+    "derangements-oq-02-oq-02",
+    "derangements-oq-02-oq-02-oq-01",
+    "derangements-oq-02-oq-04",
+    "derangements-oq-03",
+    "derangements-oq-03-oq-01",
+    "derangements-oq-03-oq-01-oq-02",
+    "derangements-oq-03-oq-02",
+    "derangements-oq-03-oq-03",
+    "derangements-oq-03-oq-03-oq-01",
+    "derangements-oq-04",
+    "derangements-oq-04-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-01T05:59:00.178Z",
+  "lastUpdate": "2026-07-01T05:59:00.260Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DerangementsOQ04OQ01OQ01.lean"
+    }
+  ]
+}
