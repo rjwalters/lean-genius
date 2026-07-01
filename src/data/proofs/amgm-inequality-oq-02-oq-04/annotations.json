@@ -3,13 +3,13 @@
     "id": "ann-amgmoq0204-0",
     "proofId": "amgm-inequality-oq-02-oq-04",
     "range": {
-      "startLine": 44,
-      "endLine": 76
+      "startLine": 51,
+      "endLine": 55
     },
     "type": "theorem",
-    "title": "Newton's Inequalities for n=3 as Sums of Squares",
-    "content": "The two Newton inequalities for three variables. `newton_n3_k1` gives `(x+y+z)² ≥ 3(xy+yz+zx)` and `newton_n3_k2` gives `(xy+yz+zx)² ≥ 3(x+y+z)·xyz`; both are discharged by `nlinarith` supplied with the three squared differences. Because each is an exact symmetrization identity — recorded by `ring` in `newton_n3_k1_identity` (gap `½∑(x−y)²`) and `newton_n3_k2_identity` (gap `½∑(xy−yz)²`) — they hold for ALL real inputs, not just nonnegative ones. This is precisely the n=3 case of the parent entry's axiomatized `newton_log_concavity`, now proved outright.",
-    "mathContext": "$e_1^2 - 3e_2 = \\tfrac12\\sum(x-y)^2 \\ge 0$ and $e_2^2 - 3e_1e_3 = \\tfrac12\\sum(xy-yz)^2 \\ge 0$, where $e_1=x+y+z,\\ e_2=xy+yz+zx,\\ e_3=xyz$.",
+    "title": "Newton's Inequality N1 for n=3",
+    "content": "`newton_n3_k1` proves `(x+y+z)² ≥ 3(xy+yz+zx)`, i.e. `e₁² ≥ 3e₂`, the first Newton inequality. `nlinarith` is fed the three squared differences `sq_nonneg (x−y)`, `sq_nonneg (y−z)`, `sq_nonneg (z−x)`, which is exactly the equal-variable symmetrization certificate. No non-negativity hypothesis is required — the inequality holds for ALL real `x, y, z`. This is the n=3 instance of the parent entry's axiomatized `newton_log_concavity`, proved outright here.",
+    "mathContext": "$e_1^2 - 3e_2 = \\tfrac12\\big[(x-y)^2+(y-z)^2+(z-x)^2\\big] \\ge 0$, with $e_1=x+y+z,\\ e_2=xy+yz+zx$. Equality iff $x=y=z$.",
     "significance": "central",
     "relatedConcepts": [
       "Newton's inequalities / log-concavity",
@@ -32,13 +32,70 @@
     "id": "ann-amgmoq0204-1",
     "proofId": "amgm-inequality-oq-02-oq-04",
     "range": {
-      "startLine": 77,
-      "endLine": 107
+      "startLine": 57,
+      "endLine": 63
+    },
+    "type": "theorem",
+    "title": "Newton's Inequality N2 for n=3",
+    "content": "`newton_n3_k2` proves `(xy+yz+zx)² ≥ 3(x+y+z)·xyz`, i.e. `e₂² ≥ 3e₁e₃`, the second Newton inequality. The `nlinarith` certificate is the symmetrized product differences `sq_nonneg (xy−yz)`, `sq_nonneg (yz−zx)`, `sq_nonneg (zx−xy)`. Like N1, this holds for all reals with no non-negativity assumption — a notable feature, since the SOS structure is intrinsic to the symmetric polynomials rather than to the sign of the inputs.",
+    "mathContext": "$e_2^2 - 3e_1e_3 = \\tfrac12\\big[(xy-yz)^2+(yz-zx)^2+(zx-xy)^2\\big] \\ge 0$, with $e_3=xyz$. The remainder vanishes exactly when $xy=yz=zx$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Newton's inequalities / log-concavity",
+      "Symmetric-function identities",
+      "Sum-of-squares certificates"
+    ],
+    "prerequisites": [
+      "nlinarith with product-difference hints",
+      "sq_nonneg",
+      "Elementary symmetric polynomials"
+    ],
+    "tags": [
+      "theorem",
+      "newton-inequalities",
+      "sum-of-squares",
+      "key-result"
+    ]
+  },
+  {
+    "id": "ann-amgmoq0204-2",
+    "proofId": "amgm-inequality-oq-02-oq-04",
+    "range": {
+      "startLine": 65,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "The Exact Sum-of-Squares Identities",
+    "content": "`newton_n3_k1_identity` and `newton_n3_k2_identity` record, via `ring`, that each Newton gap is exactly `½` times a sum of squares: `e₁² − 3e₂ = ½∑(x−y)²` and `e₂² − 3e₁e₃ = ½∑(xy−yz)²`. These identities are the *reason* the `nlinarith` calls above succeed — they exhibit the explicit, constructive slack, which is quantitative (it measures deviation from `x=y=z`) rather than merely a sign certificate.",
+    "mathContext": "An identity of the form $P = \\tfrac12\\sum Q_i^2$ proves both $P\\ge 0$ and the equality locus $\\{Q_i=0\\ \\forall i\\}$ simultaneously; here it also yields a stability estimate for AM–GM.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Sum-of-squares certificates",
+      "Positivstellensatz",
+      "Stability of inequalities"
+    ],
+    "prerequisites": [
+      "ring tactic",
+      "Polynomial identities",
+      "Equality-case analysis"
+    ],
+    "tags": [
+      "theorem",
+      "sum-of-squares",
+      "identity"
+    ]
+  },
+  {
+    "id": "ann-amgmoq0204-3",
+    "proofId": "amgm-inequality-oq-02-oq-04",
+    "range": {
+      "startLine": 83,
+      "endLine": 106
     },
     "type": "theorem",
     "title": "The Chain in Radical-Free Polynomial Form",
-    "content": "Clearing radicals turns the Maclaurin chain into two polynomial facts. `amgm3_cubed` is three-variable AM–GM in cubed form, `(a+b+c)³ ≥ 27abc` for nonnegative `a,b,c` (nlinarith with Schur-type products). `maclaurin_n3_12_poly` is `e₁² ≥ 3e₂` (just Newton N1). `maclaurin_n3_23_poly` is `e₂³ ≥ 27e₃²`, obtained from `amgm3_cubed` at `a=xy, b=yz, c=zx` (whose product is `(xyz)²`). These are exactly the squared/cubed forms of `M₁ ≥ M₂` and `M₂ ≥ M₃`.",
-    "mathContext": "$M_1\\ge M_2 \\iff e_1^2\\ge 3e_2$ and $M_2\\ge M_3 \\iff e_2^3\\ge 27e_3^2$; the latter is AM–GM on the pairwise products $xy,yz,zx$.",
+    "content": "Clearing radicals turns the Maclaurin chain into two polynomial facts. `amgm3_cubed` is three-variable AM–GM in cubed form, `(a+b+c)³ ≥ 27abc` for nonnegative `a,b,c` (nlinarith with Schur-type products). `maclaurin_n3_12_poly` is `e₁² ≥ 3e₂` (definitionally Newton N1). `maclaurin_n3_23_poly` is `e₂³ ≥ 27e₃²`, obtained from `amgm3_cubed` at `a=xy, b=yz, c=zx` (whose product is `(xyz)²`). These are exactly the squared/cubed forms of `M₁ ≥ M₂` and `M₂ ≥ M₃`.",
+    "mathContext": "$M_1\\ge M_2 \\iff e_1^2\\ge 3e_2$ and $M_2\\ge M_3 \\iff e_2^3\\ge 27e_3^2$; the latter is AM–GM on the pairwise products $xy,yz,zx$, using $xy\\cdot yz\\cdot zx=(xyz)^2$.",
     "significance": "high",
     "relatedConcepts": [
       "AM–GM inequality",
@@ -57,16 +114,44 @@
     ]
   },
   {
-    "id": "ann-amgmoq0204-2",
+    "id": "ann-amgmoq0204-4",
     "proofId": "amgm-inequality-oq-02-oq-04",
     "range": {
-      "startLine": 108,
-      "endLine": 179
+      "startLine": 114,
+      "endLine": 134
     },
     "type": "theorem",
-    "title": "The Maclaurin Chain for the Radical Means and AM ≥ GM",
-    "content": "The honest means `M₁ = (x+y+z)/3`, `M₂ = √((xy+yz+zx)/3)`, `M₃ = (xyz)^(1/3)`. `maclaurin_n3_M1_ge_M2` uses square-root monotonicity (`Real.sqrt_le_sqrt`, `Real.sqrt_sq`) on Newton N1. `maclaurin_n3_M2_ge_M3` rewrites both means as common 1/6-powers — `M₂ = ((e₂/3)³)^(1/6)`, `M₃ = (e₃²)^(1/6)` via `Real.sqrt_eq_rpow`, `Real.rpow_natCast`, `Real.rpow_mul` — and applies `Real.rpow_le_rpow` to `(e₂/3)³ ≥ e₃²`. `maclaurin_n3_chain` packages the full chain and `maclaurin_n3_am_ge_gm` recovers AM ≥ GM as its endpoints. Zero axioms remain (`#print axioms`: only propext/Classical.choice/Quot.sound).",
-    "mathContext": "$\\tfrac{x+y+z}{3} \\ge \\sqrt{\\tfrac{xy+yz+zx}{3}} \\ge (xyz)^{1/3}$ for $x,y,z\\ge 0$, with equality iff $x=y=z$.",
+    "title": "Radical Means and the M₁ ≥ M₂ Step",
+    "content": "The honest Maclaurin means are defined: `M₁ = (x+y+z)/3`, `M₂ = √((xy+yz+zx)/3)`, `M₃ = (xyz)^(1/3)` (all `noncomputable`, built on `Real.sqrt`/`Real.rpow`). `maclaurin_n3_M1_ge_M2` proves `M₁ ≥ M₂` by square-root monotonicity: from Newton N1 one gets `e₂/3 ≤ (e₁/3)²`, then `Real.sqrt_le_sqrt` followed by `Real.sqrt_sq` (valid since `e₁/3 ≥ 0`) collapses `√((e₁/3)²)` to `e₁/3`.",
+    "mathContext": "$\\tfrac{x+y+z}{3} = \\sqrt{\\big(\\tfrac{x+y+z}{3}\\big)^2} \\ge \\sqrt{\\tfrac{xy+yz+zx}{3}} = M_2$ for $x,y,z\\ge 0$, the last inequality being Newton N1 divided by 9.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Maclaurin means",
+      "Square-root monotonicity",
+      "Real.sqrt"
+    ],
+    "prerequisites": [
+      "Real.sqrt_le_sqrt, Real.sqrt_sq",
+      "Newton N1",
+      "positivity"
+    ],
+    "tags": [
+      "theorem",
+      "maclaurin-chain",
+      "sqrt-monotonicity"
+    ]
+  },
+  {
+    "id": "ann-amgmoq0204-5",
+    "proofId": "amgm-inequality-oq-02-oq-04",
+    "range": {
+      "startLine": 136,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "The M₂ ≥ M₃ Step, the Chain, and AM ≥ GM",
+    "content": "`maclaurin_n3_M2_ge_M3` rewrites both means as common `1/6`-powers — `M₂ = ((e₂/3)³)^(1/6)` and `M₃ = (e₃²)^(1/6)` via `Real.sqrt_eq_rpow`, `Real.rpow_natCast`, `Real.rpow_mul` — then applies `Real.rpow_le_rpow` to the polynomial step `(e₂/3)³ ≥ e₃²`. `maclaurin_n3_chain` packages `M₁ ≥ M₂ ≥ M₃`, and `maclaurin_n3_am_ge_gm` recovers AM ≥ GM, `(x+y+z)/3 ≥ (xyz)^(1/3)`, as the transitive endpoints. `#print axioms` reports only propext/Classical.choice/Quot.sound — the parent's `newton_log_concavity` is gone.",
+    "mathContext": "$\\tfrac{x+y+z}{3} \\ge \\sqrt{\\tfrac{xy+yz+zx}{3}} \\ge (xyz)^{1/3}$ for $x,y,z\\ge 0$, with equality throughout iff $x=y=z$. Common-exponent comparison: $u\\ge v\\ge 0 \\Rightarrow u^{1/6}\\ge v^{1/6}$.",
     "significance": "central",
     "relatedConcepts": [
       "Maclaurin means",
@@ -74,7 +159,7 @@
       "Arithmetic–geometric mean inequality"
     ],
     "prerequisites": [
-      "Real.sqrt and Real.rpow monotonicity",
+      "Real.rpow monotonicity",
       "Common-exponent comparison",
       "Transitivity of ≥"
     ],
