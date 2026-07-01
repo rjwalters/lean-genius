@@ -2037,4 +2037,136 @@ theorem zero_not_boundary_face (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) 
     simpa [Fin.val_last] using this
   omega
 
+/-!
+## Exact characterization of the top-facet geometric boundary door
+
+`boundary_face_imp_last` and `zero_not_boundary_face` pin down *which* facet index
+could carry a genuine `∂Δ_N` door — only the top facet `Fin.last d`, never the
+bottom facet `0`.  This section resolves the remaining question for the top facet:
+*when* does facet `Fin.last d` actually lie on `∂Δ_N`?
+
+The answer is a clean combinatorial condition on the Kuhn chain: the top facet is a
+geometric boundary door **iff** the last increment step of the chain increases the
+top coordinate (`incDir` sends the final step to `Fin.last d`) and that coordinate
+already starts at zero on the base vertex.  Intuitively these are precisely the
+Freudenthal cells whose final vertex is the *only* one off the face `Fin.last d`.
+
+This is the constructive converse of `boundary_face_imp_last`: it does not merely
+say a boundary door must be the top facet, it says exactly which cells realise one.
+Together with `zero_not_boundary_face` it fully localizes the *geometric* `none`
+fibre of the door graph, and identifies the cells the last-face door count runs
+over.  All 0-sorry, 0-axiom (builds only on `coord_incDir_at`, `miss_coord_at`,
+`incDir_surj_complement`). -/
+
+/-- **Sufficient condition for a top-facet door.**  If the final Kuhn step
+(`c.val = d - 1`) increases the top coordinate (`s.incDir c = Fin.last d`) and that
+coordinate is zero on the base vertex, then every vertex other than the last lies on
+the geometric face `Fin.last d`, i.e. facet `Fin.last d` is a boundary door.
+
+Every chain vertex `j ≠ Fin.last d` satisfies `j.val ≤ d - 1 = c.val`, so by
+`coord_incDir_at` the top coordinate there is still its base value `0` — the increment
+occurs only at the final step, reaching the deleted last vertex. -/
+theorem last_boundary_face_of_incDir_last (s : SpernerGrid.GridSimplex d N)
+    (hd : 2 ≤ d) (c : Fin d) (hc : c.val = d - 1)
+    (hInc : s.incDir c = Fin.last d)
+    (hbase : (s.verts 0).coords (Fin.last d) = 0) :
+    ∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0 := by
+  intro j hj
+  have hjd : j.val < d := by
+    rcases Nat.lt_or_ge j.val d with h | h
+    · exact h
+    · have hjval : j.val = d := by have := j.isLt; omega
+      exact absurd (Fin.ext (show j.val = (Fin.last d).val by
+        rw [Fin.val_last]; exact hjval)) hj
+  have hform := s.coord_incDir_at c j
+  rw [hInc] at hform
+  have hcj : ¬ c.val < j.val := by omega
+  rw [hform, hbase, if_neg hcj]
+
+/-- **Necessary condition for a top-facet door.**  If facet `Fin.last d` is a
+geometric boundary door, then the top coordinate is *not* the `miss` direction, the
+final Kuhn step (`c.val = d - 1`) increases it, and it starts at zero on the base.
+
+The `miss` direction is excluded because its coordinate is strictly positive away
+from the last vertex (`miss_coord_pos_of_ne_last`); the base value is read off at
+vertex `0`; and were the increment step earlier than the last (`c.val < d - 1`), the
+vertex `c.succ ≠ Fin.last d` would already carry a positive top coordinate. -/
+theorem last_boundary_face_imp_incDir_last (s : SpernerGrid.GridSimplex d N)
+    (hd : 2 ≤ d)
+    (h : ∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0) :
+    ∃ c : Fin d, s.incDir c = Fin.last d ∧ c.val = d - 1 ∧
+      (s.verts 0).coords (Fin.last d) = 0 := by
+  have h0ne : (0 : Fin (d + 1)) ≠ Fin.last d := by
+    intro hcon
+    have : (0 : ℕ) = d := by
+      have := congrArg Fin.val hcon; simpa [Fin.val_last] using this
+    omega
+  -- The top coordinate is not the miss direction.
+  have hmiss : s.miss ≠ Fin.last d := by
+    intro hml
+    have hpos : 0 < (s.verts 0).coords s.miss := miss_coord_pos_of_ne_last s 0 h0ne
+    have hz := h 0 h0ne
+    rw [hml, hz] at hpos
+    exact Nat.lt_irrefl 0 hpos
+  obtain ⟨c, hc⟩ := s.incDir_surj_complement (Fin.last d) (fun heq => hmiss heq.symm)
+  have hbase : (s.verts 0).coords (Fin.last d) = 0 := h 0 h0ne
+  refine ⟨c, hc, ?_, hbase⟩
+  by_contra hcv
+  -- The increment step must be the final one, else `c.succ` carries a positive coord.
+  have hsucc_ne : c.succ ≠ Fin.last d := by
+    intro hcon
+    have hval : c.succ.val = d := by rw [hcon, Fin.val_last]
+    rw [Fin.val_succ] at hval
+    omega
+  have hform := s.coord_incDir_at c c.succ
+  rw [hc] at hform
+  have hcc : c.val < c.succ.val := by rw [Fin.val_succ]; omega
+  rw [if_pos hcc, hbase] at hform
+  have hz := h c.succ hsucc_ne
+  rw [hz] at hform
+  omega
+
+/-- **Top-facet boundary door, characterized.**  Facet `Fin.last d` of a Freudenthal
+cell is a geometric `∂Δ_N` door — every other vertex lies on the geometric face
+`Fin.last d` — exactly when the final Kuhn step increases the top coordinate and that
+coordinate starts at zero on the base vertex.  The exact converse-refinement of
+`boundary_face_imp_last`, identifying the cells whose top facet the last-face door
+count actually visits. -/
+theorem last_boundary_face_iff (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    (∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0) ↔
+    (∃ c : Fin d, s.incDir c = Fin.last d ∧ c.val = d - 1) ∧
+      (s.verts 0).coords (Fin.last d) = 0 := by
+  constructor
+  · intro h
+    obtain ⟨c, hc, hcv, hbase⟩ := last_boundary_face_imp_incDir_last s hd h
+    exact ⟨⟨c, hc, hcv⟩, hbase⟩
+  · rintro ⟨⟨c, hc, hcv⟩, hbase⟩
+    exact last_boundary_face_of_incDir_last s hd c hcv hc hbase
+
+/-- **Carrier form: facet `0` is never a boundary door.**  The `SpernerNDim.onFace`
+restatement of `zero_not_boundary_face`: on the `gridVertices` carrier, the vertices
+of a cell never all lie (apart from vertex `0`) on the geometric face `0`.  This is
+the exact shape the abstract `SpernerTriangulation.boundary_face` field consumes. -/
+theorem gridVertices_zero_not_boundary_face (s : SpernerGrid.GridSimplex d N)
+    (hd : 2 ≤ d) :
+    ¬ (∀ j : Fin (d + 1), j ≠ (0 : Fin (d + 1)) →
+        SpernerNDim.onFace (gridVertices s j) (0 : Fin (d + 1))) := by
+  intro h
+  exact zero_not_boundary_face s hd
+    (fun j hj => (gridVertices_onFace_iff s j 0).mp (h j hj))
+
+/-- **The within-chain door map cannot discharge `boundary_face` at facet `0`.**  The
+neighbour map `gridNeighbor` sends the bottom facet `0` to `none` (a within-chain
+bookkeeping artifact — facet `0` has no Freudenthal pivot partner), yet facet `0` is
+never a geometric `∂Δ_N` door.  So `gridNeighbor` alone does *not* satisfy the
+abstract `boundary_face` obligation: any total `adj` must instead glue facet `0`
+across Kuhn chains.  This certifies, as a theorem, the exact remaining cross-chain
+frontier flagged throughout this development. -/
+theorem gridNeighbor_zero_none_not_boundary_face (s : SpernerGrid.GridSimplex d N)
+    (hd : 2 ≤ d) :
+    gridNeighbor s (0 : Fin (d + 1)) = none ∧
+    ¬ (∀ j : Fin (d + 1), j ≠ (0 : Fin (d + 1)) →
+        SpernerNDim.onFace (gridVertices s j) (0 : Fin (d + 1))) :=
+  ⟨gridNeighbor_boundary s (Or.inl rfl), gridVertices_zero_not_boundary_face s hd⟩
+
 end SpernerNDimOQ02
