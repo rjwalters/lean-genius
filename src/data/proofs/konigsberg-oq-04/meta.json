@@ -123,5 +123,36 @@
     "path": "Proofs/KonigsbergOQ04.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Tatyana van Aardenne-Ehrenfest",
+        "Nicolaas G. de Bruijn"
+      ],
+      "title": "Circuits and Trees in Oriented Linear Graphs",
+      "year": 1951,
+      "venue": "Simon Stevin 28, 203–217",
+      "note": "The BEST theorem: counts Eulerian circuits of a digraph via arborescences and the Matrix–Tree theorem."
+    },
+    {
+      "authors": [
+        "Richard P. Stanley"
+      ],
+      "title": "Enumerative Combinatorics, Volume 2",
+      "year": 1999,
+      "venue": "Cambridge University Press",
+      "note": "Derivation of the BEST theorem and the transfer-matrix method for counting Eulerian circuits."
+    },
+    {
+      "authors": [
+        "W. T. Tutte",
+        "C. A. B. Smith"
+      ],
+      "title": "On Unicursal Paths in a Network of Degree 4",
+      "year": 1941,
+      "venue": "American Mathematical Monthly 48(4), 233–237",
+      "note": "Early enumeration of Eulerian paths, a precursor to the BEST theorem."
+    }
+  ]
 }

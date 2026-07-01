@@ -148,5 +148,35 @@
       "description": "Directed Euler Paths: In-Degree/Out-Degree Characterization — the directed analogue of this undirected Eulerian circuit theory."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Leonhard Euler"
+      ],
+      "title": "Solutio problematis ad geometriam situs pertinentis",
+      "year": 1736,
+      "venue": "Commentarii Academiae Scientiarum Petropolitanae 8, 128–140",
+      "note": "Original solution of the Seven Bridges of Königsberg — the founding paper of graph theory and Eulerian paths."
+    },
+    {
+      "authors": [
+        "J. A. Bondy",
+        "U. S. R. Murty"
+      ],
+      "title": "Graph Theory",
+      "year": 2008,
+      "venue": "Springer, Graduate Texts in Mathematics 244",
+      "note": "Modern treatment of Eulerian circuits, the degree characterization, and Hierholzer's algorithm."
+    },
+    {
+      "authors": [
+        "Douglas B. West"
+      ],
+      "title": "Introduction to Graph Theory",
+      "year": 2001,
+      "venue": "Prentice Hall (2nd ed.)",
+      "note": "Euler's theorem for undirected and directed graphs and its degree conditions."
+    }
+  ]
 }
