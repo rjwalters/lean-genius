@@ -40,7 +40,8 @@
     "keyInsights": [
       "The exact zero is the shared limit of the two monotone endpoint sequences; completeness enters only through monotone bounded convergence.",
       "The vanishing width (b−a)/2ⁿ forces the left limit, right limit, and midpoint limit to coincide, so the algorithm pins down a single point.",
-      "Continuity is used exactly once, to move the sign invariant f(left) ≤ 0 ≤ f(right) to the limit; the strict approximate bound of the parent is not needed for the exact statement."
+      "Continuity is used exactly once, to move the sign invariant f(left) ≤ 0 ≤ f(right) to the limit; the strict approximate bound of the parent is not needed for the exact statement.",
+      "The two monotone endpoint sequences are a nested-interval (Cantor intersection) argument in disguise: [Lₙ, Rₙ] is a decreasing chain of closed intervals whose lengths (b−a)/2ⁿ → 0, so their intersection is the single point {c}. The bisection IVT and the nested-interval theorem are thus the same completeness content, packaged as monotone bounded convergence here rather than as an intersection of nested compacts."
     ],
     "prerequisites": [
       "The parent bisection algorithm and its width/sign/containment lemmas",
@@ -67,6 +68,24 @@
     "path": "Proofs/IntermediateValueTheoremOQ02OQ01.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "title": "B. Bolzano, Rein analytischer Beweis des Lehrsatzes... (1817) — the first rigorous proof of the IVT, isolating completeness",
+      "url": "https://en.wikipedia.org/wiki/Intermediate_value_theorem"
+    },
+    {
+      "title": "A.-L. Cauchy, Cours d'analyse de l'École Royale Polytechnique (1821) — the bisection argument",
+      "url": "https://en.wikipedia.org/wiki/Cours_d%27Analyse"
+    },
+    {
+      "title": "Mathlib: intermediate value theorem on connected/order-complete spaces (intermediate_value_Icc)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/Order/IntermediateValue.html"
+    },
+    {
+      "title": "Nested interval theorem (Cantor's intersection theorem) — an equivalent formulation of completeness of ℝ",
+      "url": "https://en.wikipedia.org/wiki/Nested_intervals"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "intermediate-value-theorem-oq-02",
