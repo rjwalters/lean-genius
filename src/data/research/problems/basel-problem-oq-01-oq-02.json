@@ -1,8 +1,8 @@
 {
   "slug": "basel-problem-oq-01-oq-02",
   "title": "basel-problem-oq-01-oq-02",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "surveyed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -28,25 +28,39 @@
     "goal": "Make the clean Basel and zeta(4) theorem evidence searchable from the problem metadata."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-30T11:35:18-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETE",
+    "since": "2026-07-01T07:00:00-07:00",
+    "iteration": 2,
+    "focus": "Metadata backfill for the clean Basel/zeta(2k) core. Confirmed BaselProblem.lean is 0-axiom/0-sorry with 9 theorems and recorded the searchable theorem evidence.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None. Clean core is fully verified; richer zeta-value and Apery-style extensions live in sibling files and are tracked separately.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Metadata backfill complete. BaselProblem.lean (proofs/Proofs/BaselProblem.lean) is verified clean: 9 theorems, 0 axioms, 0 sorries, no native_decide. It records the classical Basel identity, its convergence/positivity facts, the zeta(4) value, and the general even-zeta formula. All classical clean extensions (odd-square sum pi^2/8, alternating eta pi^2/12, zeta(6)=pi^6/945) are already covered across the 30+ basel-problem-* sibling entries, so no new clean brick is warranted for this scoped core entry.",
+    "builtItems": [
+      "basel_hasSum : HasSum (fun n => 1/n^2) (pi^2/6) — Euler's Basel identity via Mathlib hasSum_zeta_two (Wiedijk #14).",
+      "basel_tsum : tsum form of the Basel identity.",
+      "summable_one_div_sq / summable_nat_sq_inv : p-series convergence (p=2>1) for the reciprocal-square terms.",
+      "one_div_sq_pos / one_div_sq_nonneg / basel_value_pos : positivity and nonnegativity facts.",
+      "zeta_four_hasSum : HasSum (fun n => 1/n^4) (pi^4/90) via hasSum_zeta_four.",
+      "zeta_general : for k != 0, HasSum (fun n => 1/n^(2k)) to the Bernoulli-number closed form via hasSum_zeta_nat."
+    ],
+    "insights": [
+      "The clean core reduces entirely to three Mathlib results: hasSum_zeta_two, hasSum_zeta_four, and the general hasSum_zeta_nat; no bespoke analysis is needed.",
+      "Convergence is a p-series fact (Real.summable_nat_rpow_inv with 1 < 2), decoupled from the value computation.",
+      "The n=0 term is 0 by the 1/0=0 convention, so the natural-number-indexed sum agrees with the classical n>=1 sum.",
+      "Classical clean extensions are saturated in siblings: pi^2/8 (odd), pi^2/12 (alternating), zeta(6); a new brick here would be pure accretion."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: basel-problem-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "None for this entry. Frontier work (Apery-style irrationality, richer zeta values) is tracked in axiom-dependent sibling files, not this clean core."
+    ],
+    "markdown": "# Knowledge Base: basel-problem-oq-01-oq-02\n\n## Problem Understanding\n\nThis is a Tier-C metadata backfill for the clean Basel / zeta-value core. It is scoped to the verified base file `proofs/Proofs/BaselProblem.lean` and deliberately excludes the axiom-dependent and Apery-style sibling entries.\n\n## Confirmed Evidence (verified 2026-07-01)\n\n`BaselProblem.lean`: 9 theorems, 0 axioms, 0 sorries, no `native_decide`.\n\n- `basel_hasSum` / `basel_tsum` — Basel identity sum 1/n^2 = pi^2/6 (via `hasSum_zeta_two`; Wiedijk #14).\n- `summable_one_div_sq`, `summable_nat_sq_inv` — p-series convergence (p = 2 > 1).\n- `one_div_sq_pos`, `one_div_sq_nonneg`, `basel_value_pos` — positivity facts.\n- `zeta_four_hasSum` — zeta(4) = pi^4/90 (via `hasSum_zeta_four`).\n- `zeta_general` — zeta(2k) closed form via Bernoulli numbers (via `hasSum_zeta_nat`).\n\n## Insights\n\n- The whole clean core is a thin wrapper over three Mathlib zeta-value lemmas plus a p-series convergence fact.\n- Convergence and value are independent: summability is `Real.summable_nat_rpow_inv`, value is the Bernoulli/Fourier machinery in Mathlib.\n- Natural-number indexing is harmless: the n=0 term vanishes under the `1/0 = 0` convention.\n\n## Dead Ends / Non-goals\n\n- Adding another closed-form zeta brick (pi^2/8 odd, pi^2/12 alternating, zeta(6)=pi^6/945) would duplicate existing sibling entries — not pursued.\n- Irrationality / Apery-style results are out of scope for this clean-core entry.\n"
   },
   "tags": [
     "analysis",
@@ -98,7 +112,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.244Z",
-  "lastUpdate": "2026-03-30T18:39:05.257Z",
+  "lastUpdate": "2026-07-01T14:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BaselProblem.lean",
