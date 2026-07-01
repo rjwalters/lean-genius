@@ -52,6 +52,48 @@
       "√(x²) = x for x ≥ 0 (Real.sqrt_sq) and (a/b)² = a²/b² (div_pow)"
     ]
   },
+  "sections": [
+    {
+      "id": "overview-unsquared",
+      "title": "Overview: From the Squared Law to the True Proportion",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Frames the gap between the parent's squared law sin²(a)/sin²(α) = … and the textbook proportion sin(a)/sin(α) = …. An equality of squares only gives x = ±y; the sign ambiguity is killed here by a geometric fact — every side arc-length and dihedral angle of the vector model lies in [0,π], so every sine is non-negative and square roots are unambiguous.",
+      "mathContext": "$\\dfrac{\\sin a}{\\sin\\alpha} = \\dfrac{\\sin b}{\\sin\\beta} = \\dfrac{\\sin c}{\\sin\\gamma}$, upgraded from the squared form because all sines are $\\ge 0$."
+    },
+    {
+      "id": "nonneg-sines",
+      "title": "Non-Negativity of the Model's Sines",
+      "startLine": 39,
+      "endLine": 54,
+      "summary": "sin_arcLen_nonneg: arcLen u v = arccos(u·v) ∈ [0,π], and sin(arccos t) = √(1−t²) ≥ 0. sin_dihedralAngle_nonneg: the dihedral angle is either 0 (sin 0 = 0) or an arccos, so again non-negative. These are the geometric facts that remove the ± ambiguity.",
+      "mathContext": "$\\sin(\\arccos t) = \\sqrt{1-t^2} \\ge 0$; both $\\sin(\\mathrm{arcLen})$ and $\\sin(\\mathrm{dihedral})\\ge 0$."
+    },
+    {
+      "id": "sqrt-step",
+      "title": "The Square-Root Step",
+      "startLine": 56,
+      "endLine": 66,
+      "summary": "ratio_of_sq_ratio: from x²/p² = y²/q² with x,p,y,q ≥ 0, conclude x/p = y/q — by rewriting as (x/p)² = (y/q)² and applying Real.sqrt_sq to non-negative ratios. The unambiguous square-root that the non-negativity results license.",
+      "mathContext": "$\\dfrac{x^2}{p^2} = \\dfrac{y^2}{q^2},\\ x,p,y,q\\ge0 \\ \\Rightarrow\\ \\dfrac{x}{p} = \\dfrac{y}{q}.$"
+    },
+    {
+      "id": "unsquared-law",
+      "title": "The Unsquared Spherical Law of Sines",
+      "startLine": 68,
+      "endLine": 91,
+      "summary": "spherical_law_of_sines: the full three-ratio proportion sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ), obtained by applying ratio_of_sq_ratio to the parent's spherical_law_of_sines_all_sq with the non-negativity of every sine involved.",
+      "mathContext": "$\\dfrac{\\sin(\\mathrm{arcLen}\\,BC)}{\\sin(\\angle A)} = \\dfrac{\\sin(\\mathrm{arcLen}\\,AC)}{\\sin(\\angle B)} = \\dfrac{\\sin(\\mathrm{arcLen}\\,AB)}{\\sin(\\angle C)}.$"
+    },
+    {
+      "id": "convenience-forms",
+      "title": "Two-Ratio and First-vs-Third Forms",
+      "startLine": 93,
+      "endLine": 118,
+      "summary": "spherical_law_of_sines_two (the two-ratio convenience form sin(a)/sin(α) = sin(b)/sin(β)) and spherical_law_of_sines_ac (transitively, the first and third ratios agree) — direct corollaries of the three-way equality.",
+      "mathContext": "$\\dfrac{\\sin a}{\\sin\\alpha} = \\dfrac{\\sin b}{\\sin\\beta}$ and $\\dfrac{\\sin a}{\\sin\\alpha} = \\dfrac{\\sin c}{\\sin\\gamma}.$"
+    }
+  ],
   "conclusion": {
     "summary": "The spherical law of sines holds in its true unsquared form sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ), recovered from the parent's squared identity by taking square roots — unambiguous because every sine in the vector model is non-negative (arcLen and dihedralAngle are arccos-valued, hence in [0,π]). 6 theorems, 0 definitions, 119 lines, 0 sorries, 0 axioms.",
     "implications": "Completes the spherical law of sines to its standard textbook statement, making it directly usable for spherical-trigonometry computations (navigation, geodesy) without carrying squares. The same square-root-of-non-negative-sines pattern upgrades any squared spherical identity derived in the vector model.",
