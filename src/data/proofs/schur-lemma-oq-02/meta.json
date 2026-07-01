@@ -92,8 +92,12 @@
   ],
   "conclusion": {
     "summary": "Schur's Lemma over an algebraically closed field collapses the endomorphism algebra of a finite-dimensional simple module entirely onto the scalars. This entry adds the uniqueness half that the parent's existence statement lacked, and assembles the two into the structural conclusion: the scalar map k → End_A(M) is a bijection, a k-linear equivalence k ≃ₗ End_A(M), and dim_k End_A(M) = 1. The module is absolutely simple — its commutant is exactly k. Everything is fully machine-checked with no axioms or sorries, on top of the verified parent entry.",
-    "significance": "The one-dimensionality of the commutant is the precise statement underlying the dimension counts of character theory (e.g. that the regular representation decomposes with multiplicities equal to dimensions). Formalizing uniqueness turns the parent's 'some scalar' into the usable 'exactly the scalars'.",
-    "futureWork": "Promote `scalarEquiv` to a k-algebra isomorphism k ≃ₐ[k] End_A(M); derive the hom-space dimension count between non-isomorphic simples (Hom = 0) and isomorphic simples (dim = 1) in module language; connect to the FDRep/character-theory orthogonality results."
+    "implications": "The one-dimensionality of the commutant is the precise statement underlying the dimension counts of character theory (e.g. that the regular representation decomposes with multiplicities equal to dimensions). Formalizing uniqueness turns the parent's 'some scalar' into the usable 'exactly the scalars': End_A(M) ≅ k is what makes the module absolutely simple and is the hinge for Wedderburn–Artin decompositions and Schur orthogonality.",
+    "openQuestions": [
+      "Promote scalarEquiv from a k-linear equivalence to a k-algebra isomorphism k ≃ₐ[k] End_A(M), recording that the scalar identification respects composition.",
+      "Derive the hom-space dimension count in module language: Hom_A(M, N) = 0 for non-isomorphic simples and dim = 1 for isomorphic simples, the bilinear backbone of Schur orthogonality.",
+      "Connect the result to Mathlib's FDRep / character-theory API and the orthogonality relations, deducing the multiplicity-equals-dimension decomposition of the regular representation."
+    ]
   },
   "crossReferences": [
     {
