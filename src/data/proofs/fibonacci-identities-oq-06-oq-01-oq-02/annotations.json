@@ -1,0 +1,71 @@
+[
+  {
+    "id": "ann-oq060102-signed-pascal",
+    "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 45,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "Signed Pascal Convolution over ℤ",
+    "content": "signed_pascal_conv is the sign-carrying analogue of the parent entry's pascal_conv, and the engine of the whole transform. For any g : ℕ → ℤ it rewrites the degree-(n+1) alternating binomial sum ∑ (−1)ᵏ C(n+1,k) g(k) as the difference of two degree-n alternating binomial sums, of g and of g(·+1). The proof peels the k=0 term with Finset.sum_range_succ' and reindexes by k ↦ k+1, applies Pascal's rule C(n+1,k+1) = C(n,k) + C(n,k+1) (cast to ℤ via push_cast), and closes a telescoping cancellation — the C(n,k+1)·g(k+1) piece, whose top term vanishes by Nat.choose_succ_self, matches the boundary value g(0) — with ring. This is exactly one step of the finite-difference operator.",
+    "mathContext": "$\\sum_{k<n+2} (-1)^k \\binom{n+1}{k} g_k = \\sum_{k<n+1} (-1)^k \\binom{n}{k} g_k - \\sum_{k<n+1} (-1)^k \\binom{n}{k} g_{k+1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.choose_succ_succ'",
+      "Nat.choose_succ_self",
+      "Finset.sum_range_succ'",
+      "finite differences",
+      "pascal_conv"
+    ],
+    "prerequisites": [
+      "Pascal's rule",
+      "reindexing finite sums",
+      "telescoping"
+    ]
+  },
+  {
+    "id": "ann-oq060102-transform",
+    "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 95,
+      "endLine": 137
+    },
+    "type": "theorem",
+    "title": "The Alternating Fibonacci Binomial Transform (Headline)",
+    "content": "fib_alt_binom_transform proves ∑_{k≤n} (−1)ᵏ C(n,k) F₍ₙ₊d₊ₖ₎ = (−1)ⁿ F_d for all n and d. The proof is induction on n with d universally quantified. The step applies signed_pascal_conv with g(k) = F₍₍ₙ₊₁₎₊d₊ₖ₎, turning the recurrence into T(n+1,m) = T(n,m) − T(n,m+1); reindexing the two degree-n sums (Finset.sum_congr + omega on indices) matches the induction hypothesis at shifts d+1 and d+2; substituting them gives (−1)ⁿ F_{d+1} − (−1)ⁿ F_{d+2}, contracted to (−1)^{n+1} F_d via the Fibonacci recurrence F_{d+2} = F_d + F_{d+1} (Nat.fib_add_two). Parametrizing the shift as d (index n+d+k) rather than the endpoint m keeps everything in ℕ — no negative-index Fibonacci.",
+    "mathContext": "$\\sum_{k=0}^n (-1)^k \\binom{n}{k} F_{n+d+k} = (-1)^n F_d$; the discrete shadow of $1-\\varphi=\\psi$ with $\\varphi\\psi=-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.fib_add_two",
+      "binomial transform",
+      "golden ratio conjugate",
+      "induction generalizing"
+    ],
+    "prerequisites": [
+      "signed Pascal convolution",
+      "Fibonacci recurrence",
+      "induction with a universally quantified parameter"
+    ]
+  },
+  {
+    "id": "ann-oq060102-offset",
+    "proofId": "fibonacci-identities-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 139,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Offset and Boundary Forms",
+    "content": "fib_alt_binom_transform_eq restates the identity in the classical offset form ∑_{k≤n} (−1)ᵏ C(n,k) F₍ₘ₊ₖ₎ = (−1)ⁿ F₍ₘ₋ₙ₎ for n ≤ m, obtained by substituting d = m − n (valid by omega). fib_alt_binom_transform_zero is the d = 0 boundary case: since F₀ = 0, the alternating transform of the window starting at index n vanishes (for n ≥ 1), the signed counterpart of the parent's ∑ C(n,k) Fₖ = F₂ₙ.",
+    "mathContext": "$n \\le m \\implies \\sum_{k=0}^n (-1)^k \\binom{n}{k} F_{m+k} = (-1)^n F_{m-n}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "index substitution",
+      "F₀ = 0"
+    ],
+    "prerequisites": [
+      "natural-number subtraction under a bound"
+    ]
+  }
+]
