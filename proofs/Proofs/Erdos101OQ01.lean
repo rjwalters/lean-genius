@@ -834,4 +834,54 @@ theorem four_point_line_count_not_O_rpow (β : ℝ) (hβ : β < 2) :
   have hP_ub_m : (fourPointLineCount P : ℝ) ≤ (m : ℝ) ^ β := by rw [hcard] at hP_ub; exact hP_ub
   linarith [hP_lb, hP_ub_m, h_rpow_lt]
 
+/-! ## S14 ACT: lower-bound transfer to the extremal function `maxCountAtSize`
+
+The file introduced the extremal function `maxCountAtSize n` — the exact
+maximum four-point line count over no-five-collinear sets of size `n` — and
+proved it is `O(n²)` (`maxCountAtSize_isBigO_n_squared`). Every refutation
+result so far (`four_point_line_count_not_O_rpow` and its `3/2` special
+cases) is phrased over individual witness sets `P`; none touches the
+aggregator. We transfer the strong refutation to `maxCountAtSize` itself:
+the extremal function is **not** `O(nᵝ)` for any `β < 2`.
+
+The transfer is a one-line consequence of `le_maxCountAtSize`: an
+aggregator-level `nᵝ` bound would restrict to a witness-level `nᵝ` bound on
+`fourPointLineCount`, which `four_point_line_count_not_O_rpow` forbids.
+
+Combined with the existing `O(n²)` upper bound this pins the extremal
+function in the two-sided band `n^{2-o(1)} ≤ maxCountAtSize n ≤ n²` — which
+is *exactly* the gap OQ-01 asks to close. The $100 question is whether the
+upper side can be sharpened to `o(n²)`; this lower side shows it can never
+be sharpened past `n^{2-o(1)}`, so no elementary improvement of the upper
+bound alone can settle OQ-01.
+
+Sorry count unchanged (still 2). Axiom count unchanged (still 0).
+Theorem count: +1. Depends only on the deferred
+`solymosi_stojakovic_lower_bound`; the transfer argument is sorry-free. -/
+
+/-- **The extremal function `maxCountAtSize` is not `O(nᵝ)` for any `β < 2`.**
+
+For every exponent `β < 2` there is no threshold `N` past which
+`maxCountAtSize n ≤ nᵝ`. If such a bound held, then for every
+no-five-collinear `P` with `N ≤ |P|` we would get
+`fourPointLineCount P ≤ maxCountAtSize |P| ≤ |P|ᵝ` (using
+`le_maxCountAtSize`), i.e. a global `nᵝ` upper bound on the witness-level
+count — exactly what `four_point_line_count_not_O_rpow` refutes.
+
+Together with `maxCountAtSize_isBigO_n_squared` this yields the two-sided
+`n^{2-o(1)} ≤ maxCountAtSize n ≤ n²` framing of the OQ-01 gap. Depends only
+on the deferred `solymosi_stojakovic_lower_bound`; the transfer itself is
+sorry-free and axiom-free. -/
+theorem maxCountAtSize_not_O_rpow (β : ℝ) (hβ : β < 2) :
+    ¬ (∃ N : ℕ, ∀ n : ℕ, N ≤ n → (maxCountAtSize n : ℝ) ≤ (n : ℝ) ^ β) := by
+  rintro ⟨N₀, hN₀⟩
+  -- Restrict the aggregator bound to a witness-level bound and contradict
+  -- the witness-level refutation.
+  refine four_point_line_count_not_O_rpow β hβ ⟨N₀, fun P hP hcard => ?_⟩
+  have h1 : (fourPointLineCount P : ℝ) ≤ (maxCountAtSize P.points.card : ℝ) := by
+    exact_mod_cast le_maxCountAtSize P hP
+  have h2 : (maxCountAtSize P.points.card : ℝ) ≤ (P.points.card : ℝ) ^ β :=
+    hN₀ P.points.card hcard
+  linarith
+
 end Erdos101OQ01

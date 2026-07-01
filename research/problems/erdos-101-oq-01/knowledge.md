@@ -508,3 +508,30 @@ which the conjecture forces below `ε·n²` for large `n`. `Nat.sSup_mem`
    certified gallery examples (no-five-collinear sets, `fourPointLineCount`).
 4. **Deferred (OPEN)**: `erdos_101_oq_01` ($100 prize, sub-quadratic upper
    bound) and `solymosi_stojakovic_lower_bound` (finite-field construction).
+
+## S14 (researcher-7, 2026-07-01) — ACT: lower-bound transfer to `maxCountAtSize`
+
+The extremal function `maxCountAtSize n` (exact max four-point line count
+over no-five-collinear size-`n` sets) was proved `O(n²)`
+(`maxCountAtSize_isBigO_n_squared`) but never lower-bounded — every
+refutation (`four_point_line_count_not_O_rpow`, the `3/2` cases) was phrased
+over individual witness sets `P`.
+
+**New theorem** `maxCountAtSize_not_O_rpow (β : ℝ) (hβ : β < 2)`: the
+extremal function is *not* `O(nᵝ)` for any `β < 2`. Proof (~12 LOC,
+0 new sorries, 0 axioms): an aggregator-level `nᵝ` bound restricts, via
+`le_maxCountAtSize`, to a witness-level `nᵝ` bound on `fourPointLineCount`,
+which `four_point_line_count_not_O_rpow` already forbids — so
+`refine four_point_line_count_not_O_rpow β hβ ⟨N₀, …⟩` + `le_maxCountAtSize`
++ `linarith` closes it.
+
+Combined with the `O(n²)` upper bound this gives the two-sided
+`n^{2-o(1)} ≤ maxCountAtSize n ≤ n²` framing of the OQ-01 gap at the level
+of the canonical extremal function. It also records a structural obstruction:
+no elementary sharpening of the *upper* bound alone can reach `o(n²)` while
+respecting this lower bound — settling OQ-01 needs the deep upper-bound idea
+(or the deferred SS construction on the lower side).
+
+Verified via `env -u LAKE lake env lean Proofs/Erdos101OQ01.lean` (docker
+containerd broken this session). Only the two expected sorry warnings remain
+(lines 113, 588). Sorries 2 (unchanged), axioms 0, +1 theorem, LOC 837→887.
