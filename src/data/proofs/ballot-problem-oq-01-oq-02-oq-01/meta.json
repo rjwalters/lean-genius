@@ -34,6 +34,26 @@
       "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
     ]
   },
+  "references": [
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. I",
+      "year": "1968",
+      "venue": "3rd ed., Wiley"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "ProbabilityTheory.uniformOn; fiber cardinality via Set.ncard; Mathlib.Probability.UniformOn",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The ballot problem originates with Joseph Bertrand (1887), who asked for the probability that a winning candidate leads throughout the count. The classical formula $(a-b)/(a+b)$ was proved elegantly by Désiré André using the reflection principle. The multi-candidate generalization asks: when one candidate faces $m-1$ opponents, does the same formula apply? The answer is yes, because only the total opponent vote count matters, not its distribution among opponents. The parent file (BallotProblemOQ01OQ02) established this reduction via a projection-and-fiber argument, proving that all fibers have equal cardinality through an explicit fiberSwap bijection. However, a gap remained: translating the combinatorial fact $|\\text{fiber}(t_1)| = |\\text{fiber}(t_2)|$ into the measure-theoretic statement $\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\text{uniformOn}(\\text{CS}, \\text{SP})$. This file provides that bridge, using Set.ncard_biUnion for the cardinality decomposition and ENNReal.div_eq_div_iff for the ratio cancellation.",
     "problemStatement": "Prove uniformOn_fiber_transfer: the uniformOn probability of multiStaysPositive over multiCountedSequence equals the uniformOn probability of staysPositive over countedSequence.",

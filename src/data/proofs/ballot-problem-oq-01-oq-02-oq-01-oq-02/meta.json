@@ -37,6 +37,26 @@
       "uniformOn_union_transfer: transfer holds for P ∪ Q (union events)"
     ]
   },
+  "references": [
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. I",
+      "year": "1968",
+      "venue": "3rd ed., Wiley"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "ProbabilityTheory.uniformOn and conditional probability on finite sets; Mathlib.Probability.UniformOn",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The classical ballot problem (Bertrand 1887, Désiré André 1887) asks for the probability that candidate A stays strictly ahead of B throughout the counting of a ballot. The modern treatment via Mathlib's `ProbabilityTheory.uniformOn` reformulates this combinatorially: ballot sequences form a finite set with a uniform measure, and the ballot theorem follows from a fiber-transfer argument showing that the projection onto final tallies preserves conditional probabilities.\n\nThe OQ chain ballot-problem-oq-01 through oq-01-oq-02-oq-01 progressively abstracted this argument: OQ-01 proved the classical result, OQ-01-OQ-02 proved the multi-candidate generalization, and OQ-01-OQ-02-OQ-01 extracted the key mechanism as `uniformOn_fiber_transfer` — showing that the ballot projection preserves uniformOn for one specific event. This final OQ-01-OQ-02-OQ-01-OQ-02 asks the natural mathematical question: is the fiber-transfer result for one event actually a *universal* property?\n\nThe answer YES places the ballot probability argument in the general theory of probability-preserving maps. In measure theory, a measure-preserving map between probability spaces satisfies $\\mu(f^{-1}(E)) = \\nu(E)$ for ALL measurable events E — not just some special one. The equal-fiber surjection condition is precisely the discrete-finite analog: $|A \\cap f^{-1}(\\{t\\})| = k$ for all $t \\in T$ is the condition that makes $f$ an isomorphism of discrete probability spaces (under `uniformOn`). The passage from singleton events to all events is enabled by Finset sum additivity: $|A \\cap f^{-1}(P)| = \\sum_{t \\in P} |A \\cap f^{-1}(\\{t\\})| = k|P|$, and dividing by $|A| = k|T|$ cancels the fiber-size factor $k$. This theorem is the discrete-finite-set instance of the general pushforward measure identity $f_* \\mu = \\nu$.",
     "problemStatement": "Can the uniformOn_fiber_transfer pattern be generalized: if a surjective map between finite probability spaces has uniform fibers, does it preserve all event probabilities (not just uniformOn)?",

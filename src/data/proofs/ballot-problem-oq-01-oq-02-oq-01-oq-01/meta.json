@@ -33,6 +33,26 @@
       "Disjoint-pairs example: three pairs {2i, 2i+1} for i=0,1,2"
     ]
   },
+  "references": [
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. I",
+      "year": "1968",
+      "venue": "3rd ed., Wiley"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Set.ncard, Set.PairwiseDisjoint and Set.ncard_biUnion; Mathlib.Data.Set.Card",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The problem of counting a disjoint union of uniform sets arises across combinatorics, group theory, and probability. The classical result that a group $G$ has order $|G| = k \\cdot |G/H|$ when every coset $gH$ has exactly $k$ elements is the prototypical example. In Lean 4's Mathlib, `Set.ncard_biUnion` gives the general sum formula for disjoint unions, but as of Mathlib4 there is no direct corollary for the *uniform* case — the gap this entry fills. The ballot problem chain (initiated in this gallery) provided the immediate motivation: fiber counting under a multi-candidate permutation map reduces exactly to this uniform-union structure, and the extracted lemma is clean enough to stand on its own in Mathlib.",
     "problemStatement": "Given a finite index set $I$, a family of sets $s : \\iota \\to \\mathrm{Set}\\,\\alpha$ that is pairwise disjoint on $I$, with each $s(i)$ finite and $|s(i)| = k$, prove that $\\left|\\bigcup_{i \\in I} s(i)\\right| = k \\cdot |I|$. Equivalently: a disjoint union of $n$ sets each of size $k$ has total size $kn$.",

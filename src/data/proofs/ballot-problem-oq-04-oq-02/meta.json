@@ -69,6 +69,32 @@
       "crossing4 / crossing4Fp and nonCrossingCount_four_lt: the parity partition {{0,2},{1,3}} on Fin 4 (kernel of ·%2) crosses, yielding the strict drop nonCrossingCount 4 < Fintype.card (Finpartition univ) — n=4 as the first point where non-crossing partitions become a proper subfamily, the catalan 4 = 14 < 15 = Bell 4 discriminator as a theorem"
     ]
   },
+  "references": [
+    {
+      "authors": "Kreweras, Germain",
+      "title": "Sur les partitions non croisées d'un cycle",
+      "year": "1972",
+      "venue": "Discrete Mathematics 1(4), 333–350"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Catalan Numbers",
+      "year": "2015",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "Simion, Rodica",
+      "title": "Noncrossing partitions",
+      "year": "2000",
+      "venue": "Discrete Mathematics 217(1–3), 367–409"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Finpartition and Fintype.card of decidable subtypes; Mathlib.Order.Partition.Finpartition",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "Non-crossing partitions of a linearly ordered n-element set, introduced by Kreweras (1972), are counted by the Catalan numbers and form one of the canonical Catalan families alongside Dyck words and ballot sequences. The parent gallery entry ballot-problem-oq-04 introduced them to Lean as a predicate on the same-block setoid and developed their structural theory, explicitly flagging (openQuestion[2]) that the setoid presentation cannot be counted directly: an arbitrary Setoid (Fin n) is a Prop-valued relation, hence not a Fintype. Mathlib's Finpartition, by contrast, is a genuine Fintype, and Finpartition.ofSetoid bridges the two presentations. This entry uses that bridge to give non-crossing partitions a countable model and to locate, as a theorem, the first n at which the non-crossing count falls below the total partition (Bell) count: n = 4, where catalan 4 = 14 while Bell 4 = 15.",
     "problemStatement": "Define non-crossing partitions of Fin n as Finpartitions, prove the setoid and Finpartition formulations agree, equip the non-crossing partitions with a Fintype/cardinality, and exhibit the first n at which the non-crossing count discriminates from the total partition count (n = 4).",

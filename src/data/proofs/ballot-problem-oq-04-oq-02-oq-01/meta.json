@@ -77,6 +77,26 @@
       "nonCrossingCount_recurrence (statement): nonCrossingCount (n+1) = ∑ ij ∈ antidiagonal n, nonCrossingCount ij.1 * nonCrossingCount ij.2 — the Catalan convolution for the Finpartition model, stated to match catalan_succ' so the reduction is purely formal. Its proof (the block/first-return decomposition) is the single outstanding sorry and the entire remaining combinatorial content."
     ]
   },
+  "references": [
+    {
+      "authors": "Kreweras, Germain",
+      "title": "Sur les partitions non croisées d'un cycle",
+      "year": "1972",
+      "venue": "Discrete Mathematics 1(4), 333–350"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Catalan Numbers",
+      "year": "2015",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Finpartition and Catalan recurrence; Mathlib.Order.Partition.Finpartition, Mathlib.Combinatorics.Catalan",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "Non-crossing partitions of a linearly ordered n-element set (Kreweras 1972) are one of the canonical Catalan families, alongside Dyck words and ballot sequences. The grandparent entry ballot-problem-oq-04 introduced them to Lean as a setoid predicate; the parent ballot-problem-oq-04-oq-02 ported them to Mathlib's Fintype-bearing Finpartition, defined the count nonCrossingCount n, and proved n = 4 is the first point where the count drops below the Bell number (catalan 4 = 14 < 15 = Bell 4). The exact enumeration nonCrossingCount n = catalan n was left as the parent's openQuestion[2], to be proved either by the explicit Dyck-word bijection (sibling oq-04-oq-01) or by establishing the Catalan recurrence directly on the Finpartition model. This entry takes the latter route and carries it as far as a single combinatorial lemma.",
     "problemStatement": "Prove nonCrossingCount n = catalan n. Reduce it, with full rigour, to the single recurrence nonCrossingCount (n+1) = ∑ (i,j) ∈ antidiagonal n, nonCrossingCount i · nonCrossingCount j, matching Mathlib's catalan recurrence.",

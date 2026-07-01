@@ -55,6 +55,32 @@
       "hook_walk_identity_nineRow: hook walk identity proved for ALL exactly-9-row Young diagrams [a,b,c,d,e,f,g,h,i] via colLen zones, hookLen lemmas, arm product lemmas, field_simp+ring; 0 sorries (PART XXIII)"
     ]
   },
+  "references": [
+    {
+      "authors": "Frame, J. S., Robinson, G. de B. and Thrall, R. M.",
+      "title": "The hook graphs of the symmetric group",
+      "year": "1954",
+      "venue": "Canadian Journal of Mathematics 6, 316–324"
+    },
+    {
+      "authors": "Greene, Curtis, Nijenhuis, Albert and Wilf, Herbert S.",
+      "title": "A probabilistic proof of a formula for the number of Young tableaux of a given shape",
+      "year": "1979",
+      "venue": "Advances in Mathematics 31(1), 104–109"
+    },
+    {
+      "authors": "Sagan, Bruce E.",
+      "title": "The Symmetric Group: Representations, Combinatorial Algorithms, and Symmetric Functions",
+      "year": "2001",
+      "venue": "2nd ed., Graduate Texts in Mathematics 203, Springer"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Young diagrams and Nat.factorial; Mathlib.Combinatorics.YoungDiagram",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The hook-length formula (Frame-Robinson-Thrall 1954) states $f^\\lambda = n!/\\prod_{u \\in \\lambda} h(u)$ where $h(u) = \\text{arm}(u) + \\text{leg}(u) + 1$ is the hook length at cell $u$ of the Young diagram $\\lambda$. This is one of the most celebrated formulas in algebraic combinatorics, connecting enumerative combinatorics with representation theory ($f^\\lambda = \\dim S^\\lambda$, the dimension of the Specht module). The original 1954 proof by Frame, Robinson, and Thrall was a clever but not especially illuminating algebraic manipulation.\n\nThe most beautiful proof came in 1979 when **Greene, Nijenhuis, and Wilf** (GNW) gave a probabilistic proof via the **hook walk**: start at a random cell, randomly walk to a cell in the arm or leg, repeat until hitting a corner; the probability of stopping at each corner $c$ is exactly $\\text{hookProd}(\\mu \\setminus c)/\\text{hookProd}(\\mu)$, and these must sum to 1 — giving the hook walk identity $\\sum_c \\text{hookProd}(\\mu)/\\text{hookProd}(\\mu \\setminus c) = |\\mu|$. This probabilistic argument drives the corner induction in this file.\n\nThis formalization represents the most comprehensive Lean 4 treatment of the hook-length formula to date, with the formula proved for all shapes via a corner induction argument modulo one remaining sorry (the GNW probabilistic identity `gnwProb_key` for shapes with $\\geq 10$ rows and $\\geq 3$ columns).",
     "problemStatement": "Given the complete n×n LGV infrastructure in BallotProblemOQ03OQ02.lean, prove the hook-length formula f^λ = n!/∏_{u∈λ}h(u) using: (1) the bijection between SYT(λ) and non-intersecting lattice path tuples with LGV source/target encoding, and (2) the algebraic identity showing the LGV determinant equals n!/∏h(u).",

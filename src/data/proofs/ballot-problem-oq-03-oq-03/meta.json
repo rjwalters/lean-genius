@@ -55,6 +55,32 @@
     "dateAdded": "2026-05-04",
     "mathlib_version": "4.26.0"
   },
+  "references": [
+    {
+      "authors": "Frame, J. S., Robinson, G. de B. and Thrall, R. M.",
+      "title": "The hook graphs of the symmetric group",
+      "year": "1954",
+      "venue": "Canadian Journal of Mathematics 6, 316–324"
+    },
+    {
+      "authors": "Greene, Curtis, Nijenhuis, Albert and Wilf, Herbert S.",
+      "title": "A probabilistic proof of a formula for the number of Young tableaux of a given shape",
+      "year": "1979",
+      "venue": "Advances in Mathematics 31(1), 104–109"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 2",
+      "year": "1999",
+      "venue": "Cambridge Studies in Advanced Mathematics 62, Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Catalan numbers and Nat.factorial identities; Mathlib.Combinatorics.Catalan",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "leanFile": {
     "path": "Proofs/BallotProblemOQ03OQ03.lean",
     "lineCount": 280,
