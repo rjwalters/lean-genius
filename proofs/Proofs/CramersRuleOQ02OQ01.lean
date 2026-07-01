@@ -330,4 +330,41 @@ theorem fullSolve_summary :
   ⟨backSubFlops_eq, fullSolveFlops_closed,
    fun _ h => backSubFlops_le_gaussFlops h, fun _ h => fullSolve_beats_cramer h⟩
 
+-- ============================================================
+-- Sharp crossover: the exact model beats Cramer for EVERY n ≥ 1
+-- ============================================================
+
+/-- **The `n ≥ 4` crossover is an artifact of the loose model.**  The parent's
+    `gauss_beats_cramer` needs `n ≥ 4` because it compares the *conservative* `n³`
+    multiplication count against Cramer's rule via the growth lemma `factorial_gt_sq`,
+    which is only established for `n ≥ 4`.  With the *exact* full solve cost
+    `fullSolveFlops n = (4n³ + 3n² − n)/6 ≈ 2n³/3` — a constant factor smaller than `n³` —
+    the comparison in fact holds for **every** `n ≥ 1`.  The three small cases
+    `n ∈ {1, 2, 3}` are decided directly (`1 < 2`, `7 < 12`, `22 < 72`); `n ≥ 4` reuses
+    `fullSolve_beats_cramer`.  So under the honest cost model Gaussian elimination is never
+    beaten by Cramer's rule on any nontrivial system — the `n ≥ 4` threshold vanishes. -/
+theorem fullSolve_beats_cramer_all {n : ℕ} (hn : 1 ≤ n) :
+    fullSolveFlops n < CramersComplexity.cramersRuleMuls n := by
+  rcases Nat.lt_or_ge n 4 with h | h
+  · have hf := fullSolveFlops_closed n
+    have hc := CramersComplexity.cramersRuleMuls_eq n
+    interval_cases n <;> norm_num [Nat.factorial] at hf hc ⊢ <;> omega
+  · exact fullSolve_beats_cramer h
+
+/-- The sharp comparison verdict: with the exact `≈ 2n³/3` cost model, Gaussian
+    elimination uses strictly fewer multiplications than Cramer's rule for **all** system
+    sizes `n ≥ 1`, and the bound `1 ≤ n` is sharp — it fails at `n = 0` (both costs are
+    `0`).  This sharpens the inherited `n ≥ 4` threshold down to the smallest nontrivial
+    dimension. -/
+theorem fullSolve_beats_cramer_sharp :
+    (∀ n : ℕ, 1 ≤ n → fullSolveFlops n < CramersComplexity.cramersRuleMuls n) ∧
+    ¬ (∀ n : ℕ, fullSolveFlops n < CramersComplexity.cramersRuleMuls n) := by
+  refine ⟨fun _ h => fullSolve_beats_cramer_all h, ?_⟩
+  intro hall
+  have h0 := hall 0
+  have hf := fullSolveFlops_closed 0
+  have hc := CramersComplexity.cramersRuleMuls_eq 0
+  norm_num [Nat.factorial] at hf hc
+  omega
+
 end CramersComplexityExact

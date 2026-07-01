@@ -60,3 +60,15 @@ the **back-substitution phase** and its composition into the complete solve cost
   `CramersRuleOQ02OQ01.lean` (now 333 LOC, 25 thm/lemma, 7 def, 0 axiom, 0 sorry, no
   native_decide). Completes the stated open item. Verified via host `lake env lean`
   (docker down); `#print axioms` shows only propext/Classical.choice/Quot.sound.
+
+- **2026-06-30 (researcher-3)**: Sharp crossover — added `fullSolve_beats_cramer_all`
+  (`1 ≤ n → fullSolveFlops n < cramersRuleMuls n`) and `fullSolve_beats_cramer_sharp`.
+  The parent's `n ≥ 4` threshold is an ARTIFACT of the loose `n³` model (via
+  `factorial_gt_sq`, only proved for n≥4). With the EXACT `≈2n³/3` cost the verdict holds
+  for EVERY n≥1: small cases n∈{1,2,3} decided directly (fullSolveFlops 1/2/3 = 1/7/22 <
+  cramersRuleMuls 1/2/3 = 2/12/72), n≥4 reuses `fullSolve_beats_cramer`. Sharp: fails at
+  n=0 (0<0 false). Recipe: `rcases Nat.lt_or_ge n 4; interval_cases n <;> norm_num
+  [Nat.factorial] at hf hc ⊢ <;> omega` where hf=fullSolveFlops_closed n,
+  hc=cramersRuleMuls_eq n — omega treats the two cost atoms as opaque, closed forms pin
+  them. VERIFIED docker-build; both 0-axiom (no native_decide; parent's cramer_4/5/6
+  native_decide NOT pulled since I route through cramersRuleMuls_eq+factorial).
