@@ -156,5 +156,42 @@
     "card_edgeFinset_turanGraph_two",
     "mantel_bound_is_tight"
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "W. Mantel",
+      "title": "Problem 28 (solution by H. Gouwentak, W. Mantel, J. Teixeira de Mattes, F. Schuh and W. A. Wythoff)",
+      "year": 1907,
+      "venue": "Wiskundige Opgaven 10, 60–61",
+      "note": "Original statement and proof that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges."
+    },
+    {
+      "authors": "P. Turán",
+      "title": "On an extremal problem in graph theory (Hungarian)",
+      "year": 1941,
+      "venue": "Matematikai és Fizikai Lapok 48, 436–452",
+      "note": "Generalizes Mantel to K_{r+1}-free graphs; Mantel is the r=2 case."
+    },
+    {
+      "authors": "M. Aigner and G. M. Ziegler",
+      "title": "Proofs from THE BOOK",
+      "year": 2018,
+      "venue": "Springer, 6th ed., ch. 'Turán's graph theorem'",
+      "note": "Collects several short proofs of Mantel/Turán, including the weight-shifting and probabilistic arguments."
+    },
+    {
+      "authors": "B. Bollobás",
+      "title": "Extremal Graph Theory",
+      "year": 1978,
+      "venue": "Academic Press",
+      "note": "Standard reference placing Mantel's theorem at the origin of extremal graph theory."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Combinatorics.SimpleGraph and extremal graph theory API",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Simple graph, edge-set cardinality and bipartite constructions underlying the formalization."
+    }
+  ]
 }

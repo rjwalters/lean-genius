@@ -141,5 +141,42 @@
     "definitionCount": 1,
     "theoremCount": 10
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "L. Sylow",
+      "title": "Théorèmes sur les groupes de substitutions",
+      "year": 1872,
+      "venue": "Math. Ann. 5, 584–594",
+      "note": "Original statement of the three Sylow theorems."
+    },
+    {
+      "authors": "D. S. Dummit and R. M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley, 3rd ed., ch. 4",
+      "note": "Standard textbook treatment of the Sylow theorems and their applications to classification."
+    },
+    {
+      "authors": "J. J. Rotman",
+      "title": "An Introduction to the Theory of Groups",
+      "year": 1995,
+      "venue": "Springer GTM 148, 4th ed.",
+      "note": "Group-action proof of existence, conjugacy and the n_p ≡ 1 (mod p) count."
+    },
+    {
+      "authors": "F. Wiedijk (ed.)",
+      "title": "Formalizing 100 Theorems — #72 Sylow's Theorem",
+      "year": 2023,
+      "venue": "cs.ru.nl/~freek/100/",
+      "note": "Tracks formal proofs of Sylow's theorems across proof assistants."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: GroupTheory.Sylow",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Provides Sylow p-subgroups, conjugacy and Cauchy's theorem used here."
+    }
+  ]
 }

@@ -174,5 +174,42 @@
     "definitionCount": 2,
     "theoremCount": 6
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. L. Dirichlet",
+      "title": "Verallgemeinerung eines Satzes aus der Lehre von den Kettenbrüchen nebst einigen Anwendungen auf die Theorie der Zahlen",
+      "year": 1842,
+      "venue": "Bericht Königl. Preuss. Akad. Wiss., 93–95",
+      "note": "Original pigeonhole (Schubfachprinzip) approximation theorem."
+    },
+    {
+      "authors": "A. Ya. Khinchin",
+      "title": "Continued Fractions",
+      "year": 1964,
+      "venue": "Univ. of Chicago Press",
+      "note": "Continued-fraction context for best rational approximations."
+    },
+    {
+      "authors": "W. M. Schmidt",
+      "title": "Diophantine Approximation",
+      "year": 1980,
+      "venue": "Springer, Lecture Notes in Math. 785",
+      "note": "Modern account of Dirichlet's theorem and its higher-dimensional generalizations."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford Univ. Press, 6th ed., ch. XI",
+      "note": "Textbook proof via the pigeonhole principle."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: pigeonhole principle (Finset.exists_ne_map_eq_of_card_lt_of_maps_to)",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Pigeonhole lemma underlying the formal proof."
+    }
+  ]
 }
