@@ -1,0 +1,146 @@
+{
+  "id": "randomized-maxcut-oq-05",
+  "title": "Max-Cut of a Complete Bipartite Graph Equals the Full Edge Count",
+  "slug": "randomized-maxcut-oq-05",
+  "description": "For the complete bipartite graph K_{V,W} on the vertex type V ⊕ W, the maximum cut value equals the total number of edges, and this common value is the product card V · card W. The natural left/right partition is a cut crossing every edge, attaining the parent entry's general upper bound maxCut ≤ |E|.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "extremal-combinatorics",
+      "max-cut"
+    ],
+    "proofRepoPath": "Proofs/RandomizedMaxCutOQ05.lean",
+    "badge": "original",
+    "sorries": 0,
+    "originalContributions": [
+      "bipartiteAssignment_size_eq_edges: the left/right assignment cuts every edge of K_{V,W}, so its cut size is the full edge count (via Finset.filter_true_of_mem)",
+      "maxCut_completeBipartite_eq_edges: maxCutValue (completeBipartiteGraph V W) = |E| — the extremal case attaining the parent's maxCut ≤ |E| bound",
+      "completeBipartite_edgeFinset_card: |E(K_{V,W})| = card V · card W via the edge ≃ V × W bijection (a,b) ↦ s(inl a, inr b)",
+      "maxCut_completeBipartite_eq_mul: the closed form maxCutValue = card V · card W"
+    ],
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "lineCount": 126,
+    "assumptions": "No remaining sorries and no axioms beyond Lean/Mathlib foundations (propext, Classical.choice, Quot.sound). Builds on the parent randomized-maxcut Cut/maxCutValue framework and Mathlib's completeBipartiteGraph.",
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Max-Cut asks for a vertex bipartition maximizing the number of crossing edges; it is one of Karp's 21 NP-complete problems (1972). The parent formalization (randomized-maxcut) proves the general upper bound maxCut ≤ |E| and Erdős's probabilistic 1/2-approximation. Complete bipartite graphs K_{m,n} are the canonical extremal instances where the max-cut equals the entire edge set: the graph is already bipartite, so its defining bipartition cuts everything. This is precisely the worst case for the randomized algorithm, where the 1/2-approximation is off by exactly a factor of two.",
+    "problemStatement": "Show that for the complete bipartite graph K_{V,W}, the maximum cut value equals |E|, and that |E| = card V · card W.",
+    "proofStrategy": "The assignment sending each left vertex (Sum.inl) to side A and each right vertex (Sum.inr) to side B produces a cut. Every edge of K_{V,W} joins a left to a right vertex, so Cut.edgeInCut is true on all of edgeFinset; Finset.filter_true_of_mem gives cut size = |E|. Since maxCutValue is a supremum over assignments, Finset.le_sup yields maxCut ≥ |E|, and the parent's maxCut_le_edges gives ≤, hence equality. Separately, the edges biject with V × W via (a,b) ↦ s(inl a, inr b) (injectivity from Sym2.eq_iff and Sum.inl ≠ Sum.inr), so |E| = card V · card W by Fintype.card_prod.",
+    "keyInsights": [
+      "A complete bipartite graph is the extremal case of the MaxCut upper bound maxCut ≤ |E|: its natural bipartition is a cut that crosses every single edge, so no edge is wasted.",
+      "The proof reduces the supremum-over-all-assignments maxCutValue to a single explicit witness assignment (fun x => x.isLeft) via Finset.le_sup, then squeezes with the parent bound.",
+      "Counting the edges is a clean Sym2 bijection: each unordered edge {inl a, inr b} corresponds to exactly one ordered pair (a, b), giving |E| = card V · card W with no double counting since the two endpoints live on different sides.",
+      "This is exactly the worst case for the randomized 1/2-approximation: the optimum recovers all of |E| while a random cut recovers only |E|/2 in expectation."
+    ]
+  },
+  "sections": [
+    {
+      "id": "decidability",
+      "title": "Decidable Adjacency",
+      "startLine": 47,
+      "endLine": 49,
+      "summary": "Provides the DecidableRel instance for completeBipartiteGraph adjacency needed by the parent's maxCutValue and Cut.size definitions.",
+      "mathContext": "Adjacency v ~ w ⟺ (v.isLeft ∧ w.isRight) ∨ (v.isRight ∧ w.isLeft), a decidable predicate."
+    },
+    {
+      "id": "witness-cut",
+      "title": "Step 1: The Left/Right Cut Crosses Every Edge",
+      "startLine": 51,
+      "endLine": 68,
+      "summary": "bipartiteAssignment_size_eq_edges: the assignment fun x => x.isLeft yields a cut whose size equals |E|, because every edge crosses between the two sides.",
+      "mathContext": "size(ofAssignment (·.isLeft)) = |E|, since Cut.edgeInCut is true on all e ∈ edgeFinset."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Step 2: Max-Cut Equals the Edge Count",
+      "startLine": 70,
+      "endLine": 82,
+      "summary": "maxCut_completeBipartite_eq_edges: combines Finset.le_sup on the witness cut with the parent's maxCut_le_edges to conclude maxCutValue = |E|.",
+      "mathContext": "maxCutValue (completeBipartiteGraph V W) = |E|."
+    },
+    {
+      "id": "edge-count",
+      "title": "Step 3: The Edge Count Is card V · card W",
+      "startLine": 84,
+      "endLine": 119,
+      "summary": "completeBipartite_edgeFinset_card: edgeFinset is the image of univ : V × W under (a,b) ↦ s(inl a, inr b), an injection, so |E| = card V · card W.",
+      "mathContext": "|E(K_{V,W})| = card V · card W via edges ≃ V × W."
+    },
+    {
+      "id": "corollary",
+      "title": "Corollary: Closed Form for the Max-Cut",
+      "startLine": 121,
+      "endLine": 124,
+      "summary": "maxCut_completeBipartite_eq_mul: chains the two main results to give maxCutValue = card V · card W.",
+      "mathContext": "maxCutValue (completeBipartiteGraph V W) = card V · card W."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "extends",
+      "description": "Instantiates the parent's Cut/maxCutValue framework and its general bound maxCut_le_edges at the extremal complete bipartite graph, where the bound is attained."
+    },
+    {
+      "targetId": "randomized-maxcut-oq-04",
+      "relationship": "related",
+      "description": "The derandomized greedy 1/2-approximation; K_{n,n} is the tight worst case where a random cut recovers only half of the |E| edges attained here."
+    },
+    {
+      "targetId": "randomized-maxcut-oq-01",
+      "relationship": "related",
+      "description": "The Goemans-Williamson SDP approximation, whose analysis is also driven by bipartite-like extremal instances."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) in 126 lines. Proves that the max-cut of a complete bipartite graph K_{V,W} equals its full edge count |E|, and that |E| = card V · card W. The extremal witness is the graph's own left/right bipartition, which crosses every edge.",
+    "implications": "This pins down the tight extremal case of the general MaxCut upper bound maxCut ≤ |E| from the parent formalization, and simultaneously exhibits the worst case for the randomized 1/2-approximation (a factor-of-two gap on K_{n,n}). The edge ≃ V × W Sym2 bijection is a reusable pattern for counting edges of bipartite graphs.",
+    "openQuestions": [
+      "Which graph families beyond complete bipartite graphs also attain maxCut = |E| (equivalently, which finite graphs are bipartite)?",
+      "Can the exact max-cut of the complete graph K_n (⌊n/2⌋·⌈n/2⌉) be formalized in the same framework?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.RandomizedMaxCut",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "namespace": "RandomizedMaxCutOQ05",
+    "lineCount": 126,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "path": "Proofs/RandomizedMaxCutOQ05.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "maxCut_completeBipartite_eq_edges",
+      "type": "core",
+      "description": "maxCutValue (completeBipartiteGraph V W) = edgeFinset.card: the max-cut equals the full edge count."
+    },
+    {
+      "name": "maxCut_completeBipartite_eq_mul",
+      "type": "core",
+      "description": "maxCutValue (completeBipartiteGraph V W) = card V · card W: the closed form."
+    },
+    {
+      "name": "bipartiteAssignment_size_eq_edges",
+      "type": "supporting",
+      "description": "The left/right assignment produces a cut of size |E|, crossing every edge."
+    },
+    {
+      "name": "completeBipartite_edgeFinset_card",
+      "type": "supporting",
+      "description": "|E(K_{V,W})| = card V · card W via the edge ≃ V × W bijection."
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-decidable-adj",
+    "proofId": "randomized-maxcut-oq-05",
+    "range": {
+      "startLine": 47,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Decidable Adjacency for the Complete Bipartite Graph",
+    "content": "Mathlib's `completeBipartiteGraph V W` lives on the sum type `V ⊕ W`, with two vertices adjacent iff they lie on opposite sides. The parent MaxCut framework (`Cut.size`, `maxCutValue`) requires `DecidableRel G.Adj` to filter the edge set, so we supply the instance by rewriting adjacency into the decidable predicate `(v.isLeft ∧ w.isRight) ∨ (v.isRight ∧ w.isLeft)`.",
+    "mathContext": "$v \\sim w \\iff (\\text{isLeft } v \\wedge \\text{isRight } w) \\vee (\\text{isRight } v \\wedge \\text{isLeft } w)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complete bipartite graph",
+      "decidable relation",
+      "sum type"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Decidable instances"
+    ]
+  },
+  {
+    "id": "ann-witness-cut",
+    "proofId": "randomized-maxcut-oq-05",
+    "range": {
+      "startLine": 51,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "The Left/Right Cut Crosses Every Edge",
+    "content": "The witness assignment `fun x => x.isLeft` sends every left vertex (`Sum.inl`) to side $A$ and every right vertex (`Sum.inr`) to side $B$. Because every edge of a complete bipartite graph joins a left vertex to a right vertex, `Cut.edgeInCut` returns `true` on all of `edgeFinset`. Hence `Finset.filter_true_of_mem` collapses the filter to the whole edge set, and the cut size equals $|E|$. The edge is destructured with `Sym2.ind` and the two adjacency cases are discharged by `cases u <;> cases v <;> simp_all`.",
+    "mathContext": "$\\text{size}(\\text{ofAssignment}(\\lambda x.\\ \\text{isLeft } x)) = |E|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "cut",
+      "edge crossing",
+      "Finset.filter_true_of_mem",
+      "Sym2 induction"
+    ],
+    "prerequisites": [
+      "Cut.ofAssignment",
+      "Cut.edgeInCut",
+      "edgeFinset"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "randomized-maxcut-oq-05",
+    "range": {
+      "startLine": 70,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Max-Cut Equals the Full Edge Count",
+    "content": "The main result. `maxCutValue` is the supremum of cut sizes over all boolean assignments, so `Finset.le_sup` applied to the left/right witness gives `maxCutValue ≥ |E|`. The parent entry's general bound `maxCut_le_edges` gives `maxCutValue ≤ |E|`. Antisymmetry yields equality: the complete bipartite graph is exactly the extremal instance where the MaxCut upper bound is attained.",
+    "mathContext": "$\\text{maxCutValue}(K_{V,W}) = |E|$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "max-cut",
+      "supremum",
+      "extremal case",
+      "Finset.le_sup"
+    ],
+    "prerequisites": [
+      "maxCutValue",
+      "maxCut_le_edges",
+      "le_antisymm"
+    ]
+  },
+  {
+    "id": "ann-edge-count",
+    "proofId": "randomized-maxcut-oq-05",
+    "range": {
+      "startLine": 84,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "Edge Count via the V × W Bijection",
+    "content": "The edges of $K_{V,W}$ are exactly the unordered pairs $\\{\\text{inl } a, \\text{inr } b\\}$, which biject with ordered pairs $(a, b) \\in V \\times W$ via `(a, b) ↦ s(inl a, inr b)`. We show `edgeFinset` is the image of `univ : V × W` under this map (each direction destructures with `Sym2.ind` / `Sym2.eq_iff`), and that the map is injective (the crossed case `inl a = inr b` is impossible since `Sum.inl ≠ Sum.inr`). Then `Finset.card_image_of_injective` and `Fintype.card_prod` give $|E| = \\text{card } V \\cdot \\text{card } W$.",
+    "mathContext": "$|E(K_{V,W})| = \\text{card } V \\cdot \\text{card } W$",
+    "significance": "key",
+    "relatedConcepts": [
+      "bijection",
+      "Sym2.eq_iff",
+      "Finset.card_image_of_injective",
+      "Fintype.card_prod"
+    ],
+    "prerequisites": [
+      "edgeFinset",
+      "Sym2",
+      "Finset.image"
+    ]
+  },
+  {
+    "id": "ann-corollary",
+    "proofId": "randomized-maxcut-oq-05",
+    "range": {
+      "startLine": 121,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "Closed Form for the Max-Cut",
+    "content": "Chaining the two main results gives the fully explicit value `maxCutValue (completeBipartiteGraph V W) = card V · card W`. For $K_{m,n}$ this is the familiar $m \\cdot n$.",
+    "mathContext": "$\\text{maxCutValue}(K_{V,W}) = \\text{card } V \\cdot \\text{card } W$",
+    "significance": "key",
+    "relatedConcepts": [
+      "closed form",
+      "complete bipartite graph"
+    ],
+    "prerequisites": [
+      "maxCut_completeBipartite_eq_edges",
+      "completeBipartite_edgeFinset_card"
+    ]
+  }
+]
