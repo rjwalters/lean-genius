@@ -151,7 +151,7 @@
   ],
   "openQuestions": [
     "Strengthen gpAt_enumerates to an explicit OrderIso ℕ ≃o {m : ℤ // IsGenPent m}, packaging strict monotonicity and the range bijection as a single order isomorphism onto the subtype of generalized pentagonal numbers.",
-    "Part 6 gives the exact per-parity closed form (8·gpAt(2j)=3(2j)²+2(2j), 8·gpAt(2j+1)=3(2j+1)²+4(2j+1)+1) and the growth law gpAt n = Θ(n²); the remaining step is a single parity-free formula gpAt n = ⌊(3n²+4n)/8⌋ (or via ⌈n/2⌉) collapsing the two arms into one expression valid for all n.",
+    "Part 6 gives the exact per-parity closed form (8·gpAt(2j)=3(2j)²+2(2j), 8·gpAt(2j+1)=3(2j+1)²+4(2j+1)+1) and the growth law gpAt n = Θ(n²). The two arms are genuinely different quadratics — 8·gpAt n = 3n²+2n (even) versus 3n²+4n+1 (odd) — so NO single ⌊(3n²+bn+c)/8⌋ collapses them (their values diverge, e.g. at n=4 the odd formula gives 8 but gpAt 4 = 7). A parity-free closed form therefore requires an explicit parity term: express gpAt n via ⌈n/2⌉ (each arm is a clean quadratic in ⌈n/2⌉) or a (-1)^n correction, and prove agreement with the per-parity forms for all n.",
     "Turn the Part 6 sparsity bound (gpAt n ≤ N ⟹ 3n² ≤ 8N) into an exact counting function: prove the cardinality #{m | IsGenPent m ∧ 0 ≤ m ≤ N} = ⌊(√(24N+1)+1)/6⌋·2 (or the equivalent floor expression), pinning the number of generalized pentagonal numbers below N rather than only bounding it.",
     "Use the enumeration to index Euler's partition recurrence p(n) = ∑(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})) by rank, summing over the initial segment of gpAt below n rather than over the index interval [-n,n]."
   ],
@@ -160,7 +160,7 @@
     "implications": "The parent's index map g is injective but not monotone, so 'the n-th generalized pentagonal number' is not g(n); this entry supplies the correct object gpAt n and proves it lists exactly OEIS A001318 in order. The whole construction rests on three short integer inequalities derived from the parent's doubling relation and ±k pairing, illustrating how an order structure can be bootstrapped from purely algebraic identities. The bijection range_gpAt is the form a formalization of Euler's partition recurrence wants when summing the pentagonal shifts by rank rather than by index.",
     "openQuestions": [
       "Promote the bijection to an explicit OrderIso ℕ ≃o {m // IsGenPent m}.",
-      "Collapse Part 6's per-parity closed form into a single parity-free expression gpAt n = ⌊(3n²+4n)/8⌋.",
+      "Collapse Part 6's per-parity closed form into a single parity-free expression via ⌈n/2⌉ or a (-1)^n term (a plain ⌊quadratic/8⌋ provably cannot work — the two arms diverge).",
       "Upgrade Part 6's sparsity bound to the exact counting function #{generalized pentagonal m ≤ N}.",
       "Re-index Euler's partition recurrence by rank using the initial segment of gpAt below n."
     ]
