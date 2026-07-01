@@ -125,6 +125,26 @@
       "mathContext": "For n > 0: companionMat(charpoly M) has e0 as a cyclic vector (Section IV); M is similar to it (axiom); similarity transfers cyclic vectors (Section V). Therefore M has a cyclic vector. The finite-field corollary removes the [Infinite K] hypothesis from the parent file's approach."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Gantmacher, F.R."
+      ],
+      "title": "The Theory of Matrices, Vol. I",
+      "year": "1959",
+      "venue": "Chelsea Publishing",
+      "note": "Nonderogatory matrices, companion matrices and the minimal polynomial."
+    },
+    {
+      "authors": [
+        "Roman, S."
+      ],
+      "title": "Advanced Linear Algebra",
+      "year": "2008",
+      "venue": "3rd ed., Graduate Texts in Mathematics 135, Springer",
+      "note": "Cyclic/companion decomposition and the equivalence between nonderogatory matrices and cyclic vectors."
+    }
+  ],
   "conclusion": {
     "summary": "This file makes concrete progress on the nonderogatory cyclic vector theorem. The companion matrix cyclic vector (companionMat_e0_cyclic) is fully proved via the Krylov orbit argument. The remaining sorry is precisely stated as an axiom: nonderogatory matrices are similar to their companion matrices. This decomposes the original vague sorry into a proved part and a precisely-located mathematical gap.",
     "implications": "The orbit argument C^k e0 = e_k is now formally verified in Lean 4, establishing a concrete constructive fact about companion matrices. The similarity transfer theorem is also verified. The only remaining mathematical content is the rational canonical form / PID structure theorem, which is a known Mathlib gap. This decomposition makes the remaining work modular: once the similarity axiom is proved, the entire chain completes automatically.",

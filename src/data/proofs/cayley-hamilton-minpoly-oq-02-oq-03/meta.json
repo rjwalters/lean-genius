@@ -85,6 +85,37 @@
       "summary": "Catalogues Mathlib's current coverage (charpoly, Cayley-Hamilton, minpoly, conjugation invariance) and identifies the three missing ingredients for full RCF: Smith normal form for $F[x]$-matrices (~800 lines), companion matrix construction (~200 lines), and block diagonal assembly + the full RCF existence/uniqueness theorem (~800 lines). Total estimated effort: ~1800 lines."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Rational canonical form via the structure theorem for modules over a PID, invariant factors and Smith normal form."
+    },
+    {
+      "authors": [
+        "Hoffman, K.",
+        "Kunze, R."
+      ],
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall",
+      "note": "Classic development of minimal and characteristic polynomials, cyclic vectors, the cyclic decomposition theorem and rational canonical form."
+    },
+    {
+      "authors": [
+        "Roman, S."
+      ],
+      "title": "Advanced Linear Algebra",
+      "year": "2008",
+      "venue": "3rd ed., Graduate Texts in Mathematics 135, Springer",
+      "note": "Cyclic/companion decomposition and the equivalence between nonderogatory matrices and cyclic vectors."
+    }
+  ],
   "conclusion": {
     "summary": "This entry proves that similar matrices have identical characteristic and minimal polynomials, delegating to Mathlib's verified conjugation lemmas. It defines the key auxiliary structures (`InvariantFactorsEqual`, `CompanionMatrixProp`) and provides a detailed roadmap showing that the full Rational Canonical Form theorem requires approximately 1800 additional lines of Lean, with Smith normal form for polynomial matrices as the central missing piece.",
     "implications": "The Rational Canonical Form is the correct substitute for Jordan form when working over non-algebraically-closed fields. It classifies all finitely generated torsion modules over PIDs, making it central to abstract algebra. In Lean 4, a complete formalization would require extending Mathlib's PID module theory to $F[x]$-matrices and constructively computing Smith normal form — a substantial but well-defined project. The similarity invariance results proved here are the first and most accessible steps, already available as one-liners in Mathlib.",

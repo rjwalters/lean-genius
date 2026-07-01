@@ -94,6 +94,27 @@
       "mathContext": "IsNonderogatory ⟹ deg μ = n; any nonzero v then cyclic; such v exists for n>0."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hoffman, K.",
+        "Kunze, R."
+      ],
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall",
+      "note": "Classic development of minimal and characteristic polynomials, cyclic vectors, the cyclic decomposition theorem and rational canonical form."
+    },
+    {
+      "authors": [
+        "Gantmacher, F.R."
+      ],
+      "title": "The Theory of Matrices, Vol. I",
+      "year": "1959",
+      "venue": "Chelsea Publishing",
+      "note": "Nonderogatory matrices, companion matrices and the minimal polynomial."
+    }
+  ],
   "conclusion": {
     "summary": "For a matrix whose minimal polynomial is irreducible of degree n, every nonzero vector is cyclic — proved by a gcd/Bézout argument with no factorization machinery, sidestepping the import conflict that left the parent's general theorem as a sorry. This removes the parent's cyclic-vector axiom for all nonderogatory matrices with irreducible minimal polynomial. Self-contained, 4 theorems, 0 axioms, 0 sorries.",
     "implications": "The irreducible case covers companion matrices of irreducible polynomials and matrices with irreducible characteristic polynomial — a natural and substantial subclass — and isolates exactly where the general proof's difficulty lies (the multi-factor union-avoidance argument). It also documents, and works around, the parent file's bit-rot against the current Mathlib toolchain.",
@@ -151,21 +172,28 @@
         "content": "IsCyclicVector, IsNonderogatory, gcd_aeval_mulVec_eq_zero.",
         "startLine": 57,
         "endLine": 90,
-        "theorems": ["gcd_aeval_mulVec_eq_zero"]
+        "theorems": [
+          "gcd_aeval_mulVec_eq_zero"
+        ]
       },
       {
         "title": "Core Theorem",
         "content": "cyclic_of_irreducible_minpoly.",
         "startLine": 92,
         "endLine": 130,
-        "theorems": ["cyclic_of_irreducible_minpoly"]
+        "theorems": [
+          "cyclic_of_irreducible_minpoly"
+        ]
       },
       {
         "title": "Corollaries",
         "content": "nonderogatory_irreducible_cyclic, exists_cyclic_of_nonderogatory_irreducible.",
         "startLine": 132,
         "endLine": 153,
-        "theorems": ["nonderogatory_irreducible_cyclic", "exists_cyclic_of_nonderogatory_irreducible"]
+        "theorems": [
+          "nonderogatory_irreducible_cyclic",
+          "exists_cyclic_of_nonderogatory_irreducible"
+        ]
       }
     ],
     "mathContext": {

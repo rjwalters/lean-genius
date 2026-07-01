@@ -124,6 +124,27 @@
       "mathContext": "The remaining work to obtain the fully unconditional `nonderogatory_has_cyclic_vector_any_field` is producing the prime power decomposition data from `IsNonderogatory M` automatically, via UniqueFactorizationMonoid on K[X]."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Rational canonical form via the structure theorem for modules over a PID, invariant factors and Smith normal form."
+    },
+    {
+      "authors": [
+        "Lang, S."
+      ],
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "3rd ed., Graduate Texts in Mathematics 211, Springer",
+      "note": "Structure theorem for finitely generated modules over a PID and primary decomposition, underlying the module-theoretic cyclic-vector arguments."
+    }
+  ],
   "conclusion": {
     "summary": "WIP04 proves the nonderogatory cyclic vector theorem for general k-fold prime power factorizations, axiom-free and sorry-free, using primary decomposition via Bezout projections. The construction avoids the PID module structure theorem (not in Mathlib 4.26) and eliminates the rational canonical form axiom from WIP01. The single remaining gap is producing the prime power factorization of minpoly K M from a Mathlib UFD instance.",
     "implications": "Combined with WIP02 (squarefree case) and WIP03 (single prime power case), this completes the family-of-cases proof of the nonderogatory cyclic vector theorem under a factored-form hypothesis. The technique — primary vectors v_i = F_i(M) w_i plus CRT projections plus prime power divisibility — is a self-contained alternative to the PID structure theorem and could plausibly be ported to Mathlib as a lemma about cyclic K[X]-modules without first formalizing the full structure theorem.",
