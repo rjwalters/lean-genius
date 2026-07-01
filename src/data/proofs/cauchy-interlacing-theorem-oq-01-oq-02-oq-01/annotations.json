@@ -58,5 +58,17 @@
     "significance": "supporting",
     "relatedConcepts": ["Lean 4 section variables", "include directive", "auto-bound implicits"],
     "prerequisites": ["Lean 4 variable/include semantics"]
+  },
+  {
+    "id": "ann-compression-hypotheses",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 48, "endLine": 57 },
+    "type": "concept",
+    "title": "The Abstract Orthogonal-Compression Setup",
+    "content": "The whole file works from the abstract Poincaré hypotheses rather than a concrete matrix: T is a symmetric operator on the (n+m)-dimensional space V with an orthonormal eigenbasis b and descending eigenvalues lam; H is a codimension-m subspace with its own symmetric operator TH, eigenbasis bH, and descending eigenvalues mu. The single geometric link is hRayleigh: the Rayleigh quotient of TH on H agrees with that of T on V for every nonzero y ∈ H — the precise sense in which TH is the orthogonal compression of T onto H. Everything else is bookkeeping over the two descending eigenvalue lists.",
+    "mathContext": "TH is the orthogonal compression of T onto H iff for all y ∈ H \\ {0}, ⟨TH y, y⟩/‖y‖² = ⟨T y, y⟩/‖y‖² (Rayleigh-quotient agreement), with lam, mu antitone.",
+    "significance": "context",
+    "relatedConcepts": ["orthogonal compression", "Rayleigh quotient", "codimension-m subspace", "symmetric operators"],
+    "prerequisites": ["Rayleigh quotients", "orthonormal eigenbases"]
   }
 ]
