@@ -94,7 +94,8 @@
       "The parent's conjecture_equiv is a one-off specialization: the ONLY property of f it uses is that the numerator is a sequence and the denominator n is eventually nonzero. Abstracting to arbitrary u : ℕ → ℝ loses nothing and makes the bridge reusable.",
       "Along atTop the side condition of isLittleO_iff_tendsto' is vacuous — n is eventually positive, hence nonzero — so the little-o and ratio-limit forms are unconditionally equivalent for every sequence.",
       "For nonnegative sequences the little-o statement is literally the ε–N definition of sublinear growth: ∀ ε > 0, eventually u n ≤ ε·n. This is the operational form for density work, obtained by erasing the norms via Real.norm_of_nonneg.",
-      "The parent states its infinite-set density-zero conjecture only as a ratio limit; the same trichotomy gives it the little-o and ε–N faces for free, so any attack on that OPEN conjecture can pick whichever form is most convenient."
+      "The parent states its infinite-set density-zero conjecture only as a ratio limit; the same trichotomy gives it the little-o and ε–N faces for free, so any attack on that OPEN conjecture can pick whichever form is most convenient.",
+      "The two halves of the trichotomy carry different hypotheses, and reading the proof pinpoints why. The little-o ⇔ ratio-limit equivalence (littleO_natCast_iff_ratio_tendsto) is unconditional — it holds for every u : ℕ → ℝ, including sign-changing sequences — because it needs only that the denominator (n:ℝ) is eventually nonzero. The ε–N face (littleO_natCast_iff_eventually_le) additionally assumes u ≥ 0, and that hypothesis is spent in exactly one place: erasing the numerator norm via Real.norm_of_nonneg (‖u n‖ = u n). For counting functions, which are nonnegative by construction, this extra cost is invisible, so the density corollaries inherit all three forms with no side conditions."
     ]
   },
   "sections": [
