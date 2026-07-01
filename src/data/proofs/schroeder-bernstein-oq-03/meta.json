@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 674,
+    "lineCount": 684,
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
@@ -51,12 +51,13 @@
       "mLookup + mLookup_eq_some_of_mem: PROVED — the computed (List.lookup-based) partner map of a matching returns the recorded partner (functional form of matching_functional)",
       "mLookup_isSome_iff: PROVED — the lookup is defined exactly on the domain mDom L",
       "mem_of_mLookup_eq_some: PROVED — a successful lookup recovers a recorded pair (converse, no matching hypothesis)",
-      "matchingCorr_mLookup: PROVED — the computed lookup respects the p↔q correspondence, so σ can be read off the limiting matching without evaluating p, q"
+      "matchingCorr_mLookup: PROVED — the computed lookup respects the p↔q correspondence, so σ can be read off the limiting matching without evaluating p, q",
+      "mLookup_stable: PROVED — the partner is stable under matching extension (L ⊆ L' ⟹ same lookup), the well-definedness crux for reading σ off the back-and-forth limit"
     ],
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
     ],
-    "theoremCount": 41,
+    "theoremCount": 42,
     "definitionCount": 11,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
@@ -137,7 +138,7 @@
       "id": "matching-lookup",
       "title": "Section 4d: The matching as a computed partial function",
       "startLine": 474,
-      "endLine": 561,
+      "endLine": 572,
       "summary": "Adds mLookup (the computable List.lookup partner map) with its full spec: mLookup_eq_some_of_mem (returns the recorded partner), mLookup_isSome_iff (defined exactly on mDom L), mem_of_mLookup_eq_some (converse), and matchingCorr_mLookup (respects the p↔q correspondence).",
       "mathContext": "For the scheduler to read off the total permutation σ from the limiting matching and certify its computability, the matching must be presented as an actual computed function, not merely a set-theoretic partial bijection. List.lookup supplies this: it returns the partner on the domain and none off it, agrees with the uniqueness lemmas, and preserves the correspondence, so σ is obtained without ever evaluating the possibly non-computable predicates p, q."
     }
@@ -255,9 +256,9 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 674,
+    "lineCount": 684,
     "axiomCount": 0,
-    "theoremCount": 41,
+    "theoremCount": 42,
     "definitionCount": 11,
     "sorries": 1,
     "path": "Proofs/SchroederBernsteinOQ03.lean",

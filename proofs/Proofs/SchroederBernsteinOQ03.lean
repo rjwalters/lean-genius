@@ -557,6 +557,16 @@ theorem matchingCorr_mLookup {p q : ℕ → Prop} {L : List (ℕ × ℕ)}
     (hC : MatchingCorr p q L) {a b : ℕ} (h : mLookup L a = some b) : p a ↔ q b :=
   hC (a, b) (mem_of_mLookup_eq_some h)
 
+/-- **Stability of the partner under matching extension.** If a matching `L'`
+extends `L` (as lists, `L ⊆ L'`) and `L` already records `(a, b)`, then the lookup
+in the larger matching still returns `b`. This is the crux that makes the
+back-and-forth *limit* well-defined: once the stage-`s` matching commits `σ(a) = b`,
+every later stage agrees, so `σ` on the union `⋃ₛ Lₛ` is a genuine function. It is
+an immediate consequence of `mLookup_eq_some_of_mem` applied to `L'`. -/
+theorem mLookup_stable {L L' : List (ℕ × ℕ)} (hL' : IsMatching L')
+    (hsub : L ⊆ L') {a b : ℕ} (h : (a, b) ∈ L) : mLookup L' a = some b :=
+  mLookup_eq_some_of_mem hL' (hsub h)
+
 /-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/

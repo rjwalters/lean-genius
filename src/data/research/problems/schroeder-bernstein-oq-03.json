@@ -53,7 +53,8 @@
       "mLookup_eq_some_of_mem (PROVED) - lookup returns the recorded partner (functional matching_functional)",
       "mLookup_isSome_iff (PROVED) - lookup defined exactly on mDom L",
       "mem_of_mLookup_eq_some (PROVED) - successful lookup recovers a recorded pair (converse)",
-      "matchingCorr_mLookup (PROVED) - lookup respects the p↔q correspondence"
+      "matchingCorr_mLookup (PROVED) - lookup respects the p↔q correspondence",
+      "mLookup_stable (PROVED) - partner stable under matching extension (well-definedness of σ on the back-and-forth limit)"
     ],
     "insights": [
       "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
@@ -148,8 +149,8 @@
     {
       "path": "Proofs/SchroederBernsteinOQ03.lean",
       "filename": "SchroederBernsteinOQ03.lean",
-      "lineCount": 674,
-      "theoremCount": 41,
+      "lineCount": 684,
+      "theoremCount": 42,
       "axiomCount": 0,
       "defCount": 11,
       "sorryCount": 1,
