@@ -31,6 +31,7 @@ Tags: discrete-geometry, distinct-distances, polynomial-method
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Algebra.Order.Chebyshev
 
 namespace Erdos95
 
@@ -157,6 +158,74 @@ theorem erdos_conjecture_proved : ErdosConjecture := by
         apply mul_le_mul_of_nonneg_right hGK (le_of_lt hε)
     _ = C * m ^ (3 : ℕ) * (ε * Real.log m) := by ring
     _ ≤ C * m ^ (3 : ℕ) * m ^ ε := mul_le_mul_of_nonneg_left hlog hnn
+
+/-
+## Part IV·5: The Cauchy–Schwarz Bridge to Distinct Distances (#94)
+
+The upper bound on `∑ f(uᵢ)²` (Problem #95) is intimately tied to the *lower*
+bound on the number of distinct distances `t` (Problem #94) — indeed both were
+settled in the same Guth–Katz paper.  The link is a single application of the
+Cauchy–Schwarz inequality, and it is fully **unconditional** (no axioms):
+
+  `(∑ f(uᵢ))²  ≤  t · ∑ f(uᵢ)²`      (Cauchy–Schwarz over the `t` distances).
+
+Since `∑ f(uᵢ) = n(n-1)` (`sum_multiplicities`), this reads
+
+  `n²(n-1)²  ≤  t · ∑ f(uᵢ)²`.
+
+Read one way it lower-bounds `∑ f²`; read the other way, feeding in the
+Guth–Katz upper bound `∑ f² ≤ C·n³·log n`, it lower-bounds the distinct-distance
+count: `t ≥ n²(n-1)² / (C·n³·log n) ≫ n / log n`, which is exactly the
+distinct-distances theorem (#94).
+-/
+
+/-- The number of **distinct distances** `t` determined by the configuration:
+    the cardinality of the distance set. -/
+noncomputable def distinctDistances (P : PointConfig) : ℕ := (distanceSet P).card
+
+/-- **Cauchy–Schwarz bridge (unconditional).**  The square of the total
+    multiplicity `∑ f(uᵢ) = n(n-1)` is at most the number of distinct distances
+    times the sum of squared multiplicities:
+    `n²(n-1)² ≤ t · ∑ f(uᵢ)²`.
+
+    This is the elementary inequality relating the two Guth–Katz quantities and
+    uses no deep input — just Chebyshev's/Cauchy–Schwarz's sum inequality applied
+    to the multiplicity function over the distance set. -/
+theorem sq_sum_multiplicities_le (P : PointConfig) :
+    (P.points.card * (P.points.card - 1)) ^ 2
+      ≤ distinctDistances P * sumSquaredMultiplicities P := by
+  have hcs : ((distanceSet P).sum (multiplicity P)) ^ 2
+      ≤ (distanceSet P).card * (distanceSet P).sum (fun d => multiplicity P d ^ 2) :=
+    sq_sum_le_card_mul_sum_sq
+  rw [sum_multiplicities] at hcs
+  exact hcs
+
+/-- **Distinct-distances lower bound (via Guth–Katz).**  Combining the
+    Cauchy–Schwarz bridge with the Guth–Katz upper bound `∑ f² ≤ C·n³·log n`
+    yields
+      `n²(n-1)²  ≤  C · t · n³ · log n`,
+    i.e. the number of distinct distances satisfies `t ≫ n / log n` — the
+    Guth–Katz resolution of Erdős Problem #94.  Depends only on the same
+    `guth_katz_theorem` axiom already used for #95. -/
+theorem distinctDistances_lower_bound :
+    ∃ C > 0, ∀ P : PointConfig,
+      ((P.points.card * (P.points.card - 1) : ℕ) : ℝ) ^ 2
+        ≤ C * (distinctDistances P : ℝ)
+            * (P.points.card : ℝ) ^ 3 * Real.log (P.points.card) := by
+  obtain ⟨C, hCpos, hC⟩ := guth_katz_theorem
+  refine ⟨C, hCpos, fun P => ?_⟩
+  have hcs : ((P.points.card * (P.points.card - 1) : ℕ) : ℝ) ^ 2
+      ≤ (distinctDistances P : ℝ) * (sumSquaredMultiplicities P : ℝ) := by
+    exact_mod_cast sq_sum_multiplicities_le P
+  have hGK := hC P
+  have ht : (0 : ℝ) ≤ (distinctDistances P : ℝ) := by positivity
+  calc ((P.points.card * (P.points.card - 1) : ℕ) : ℝ) ^ 2
+      ≤ (distinctDistances P : ℝ) * (sumSquaredMultiplicities P : ℝ) := hcs
+    _ ≤ (distinctDistances P : ℝ)
+          * (C * (P.points.card : ℝ) ^ 3 * Real.log (P.points.card)) :=
+        mul_le_mul_of_nonneg_left hGK ht
+    _ = C * (distinctDistances P : ℝ) * (P.points.card : ℝ) ^ 3
+          * Real.log (P.points.card) := by ring
 
 /-
 ## Part V: The Polynomial Method
