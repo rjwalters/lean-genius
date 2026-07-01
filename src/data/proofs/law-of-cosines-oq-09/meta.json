@@ -84,12 +84,35 @@
     {
       "targetId": "law-of-cosines",
       "relationship": "extends",
-      "description": "Parent: the Law of Cosines c² = a² + b² - 2ab·cos C"
+      "description": "Parent: the Law of Cosines c² = a² + b² - 2ab·cos C, taken here as the hypothesis hlc that drives the whole trichotomy."
     },
     {
       "targetId": "pythagorean-theorem",
       "relationship": "related",
-      "description": "The right-angle case C = π/2 is exactly the Pythagorean theorem"
+      "description": "The right-angle case C = π/2 (angle_right_iff) is exactly the Pythagorean theorem and its converse — the boundary cos C = 0 where the deficit a² + b² - c² vanishes."
+    }
+  ],
+  "references": [
+    {
+      "title": "The Thirteen Books of Euclid's Elements (Book II, Propositions 12 and 13)",
+      "author": "Euclid; trans. Thomas L. Heath",
+      "year": "1908",
+      "venue": "Cambridge University Press (Dover reprint 1956)",
+      "description": "The original obtuse (II.12) and acute (II.13) propositions quantifying the excess/deficit of the square on the opposite side, the pre-trigonometric form of the trichotomy formalized here."
+    },
+    {
+      "title": "A History of Greek Mathematics, Vol. I",
+      "author": "Thomas L. Heath",
+      "year": "1921",
+      "venue": "Clarendon Press",
+      "description": "Historical account placing Elements II.12–II.13 as the 'geometric algebra' precursors of the Law of Cosines and the analytic classification of triangles by angle."
+    },
+    {
+      "title": "Law of cosines",
+      "author": "Wikipedia contributors",
+      "year": "2024",
+      "venue": "Wikipedia",
+      "description": "Modern statement of the Law of Cosines, its equivalence to the Euclidean propositions, and the derivation of the acute/right/obtuse classification from the sign of a² + b² - c²."
     }
   ],
   "leanFile": {
