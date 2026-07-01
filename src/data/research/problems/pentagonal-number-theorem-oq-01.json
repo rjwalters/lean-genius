@@ -14,7 +14,8 @@
       "Session 2026-06-28 (researcher-2): formalized the FIXED POINTS of Franklin's involution (Part 7, 0-axiom). The staircases {k,…,2k-1} and {k+1,…,2k} sum to g(k) and g(-k) (staircase_sum_eq_genPent[_neg]) and are partitions into exactly k distinct positive parts with sign (-1)^k = pentSign (franklin_fixed_point[_neg]). Only the involution on the NON-fixed partitions remains open.",
       "Session 2026-06-30 (researcher-2), Part 8: the Part-7 staircases are now promoted to genuine `Nat.Partition` objects (`staircasePartition`/`staircasePartitionNeg`) and PROVED to lie in `Nat.Partition.distincts (g(±k))` with exactly k parts and signed weight `pentSign(±k)` (`franklin_fixed_point_isPartition[_neg]`, 0-axiom, docker-verified). This closes the bookkeeping gap between Part 7's fixed-point arithmetic and Part 6's `coeff_genFun_pent` sum over `distincts n`: the pentagonal staircases are now literally elements of that Finset. Constructing them needs no `k≥1` hypothesis — `0∉Ico k (2k)` gives positivity for all k, and `Nodup` is free from the Finset. Only the involution evaluating the whole signed sum remains open.",
       "Part 9 (researcher-5, 2026-06-30): Franklin's involution fixed points are exactly the contiguous part-blocks Ico a b on which smallest part s = min' = a and number of parts ℓ = card = b-a are tied: s=ℓ ⟺ b=2a (positive staircase), s=ℓ+1 ⟺ b=2a-1 (negative staircase). The two arithmetic conditions are necessary AND sufficient (converses proved), so the fixed-point families are characterized completely, not just exhibited.",
-      "Part 10 (researcher-5, 2026-06-30): a nonempty Finset ℕ is an interval iff card = max−min+1 (finset_eq_Ico_iff) — the precise structural criterion under which a distinct-part partition is a single descending staircase, now stated for ALL distinct-part sets rather than a hand-picked Ico. This is the contiguous-block hypothesis Part 9 s=ℓ/s=ℓ+1 invariants live under."
+      "Part 10 (researcher-5, 2026-06-30): a nonempty Finset ℕ is an interval iff card = max−min+1 (finset_eq_Ico_iff) — the precise structural criterion under which a distinct-part partition is a single descending staircase, now stated for ALL distinct-part sets rather than a hand-picked Ico. This is the contiguous-block hypothesis Part 9 s=ℓ/s=ℓ+1 invariants live under.",
+      "Franklin Move A (absorb smallest part into top run) has clean Finset closed form: insert (m+1) ((S.erase s).erase (m-s+1)) — delete smallest part, delete run bottom, add new max"
     ],
     "builtItems": [
       "genPent, IsGenPent (def): generalized pentagonal number value and the doubling-relation membership predicate [PentagonalNumberTheoremOQ01.lean]",
@@ -32,7 +33,8 @@
       "parts_saturating_gap_is_interval: any distinct-part partition whose part-set saturates the max−min gap is a single staircase (the general converse, mpr of finset_eq_Ico_iff)",
       "staircasePartition_toFinset / staircasePartitionNeg_toFinset: the Nat.Partition objects of Part 8 have part-set = Ico (via Finset.val_toFinset)",
       "staircasePartition_isLeast_part / _Neg_isLeast_part: Franklin invariant LIFTED to the genuine Nat.Partition — least part = #parts (pos arm) / #parts+1 (neg arm), as IsLeast over the partition own parts.toFinset",
-      "franklin_fixed_point_partition_shape: headline — pos fixed point has IsLeast=k, IsGreatest=2k−1, part-set = Ico k (2k)"
+      "franklin_fixed_point_partition_shape: headline — pos fixed point has IsLeast=k, IsGreatest=2k−1, part-set = Ico k (2k)",
+      "franklinMoveA + franklinMoveA_sum/_card/_sign/_pos/_top_mem/_headline in PentagonalNumberTheoremOQ01.lean (Part 11): Move A is sum-preserving, card-decreasing-by-1, sign-reversing, validity-preserving [VERIFIED 0-axiom, PR #31615]"
     ],
     "mathlibGaps": [
       "Franklin's sign-reversing involution on partitions into distinct parts is still absent from Mathlib — the genuine combinatorial heart.",
@@ -43,9 +45,11 @@
       "FRONTIER (only remaining gap): prove the Franklin identity ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ) via Franklin's sign-reversing involution (pair smallest part with longest terminal staircase; fixed points ⟺ pentagonal staircases). A DEEP multi-file development still absent from Mathlib — NOT a bounded-session task and NOT yet attempted. Everything tractable below it is already done.",
       "Bookkeeping for the Franklin identity: align this file's ℤ-valued pentSeriesCoeff/genPent index theory (isGenPent_iff_isSquare, genPent_injective, pentSeriesCoeff_genPent) with the ℕ-indexed genFun coefficient ∑_{p∈distincts n}(-1)^{#parts}.",
       "Define the maximal-descending-top-run length ℓ(λ) and smallest-part s(λ) on a general Nat.Partition into distinct parts (not just contiguous blocks), then state Franklin's two moves (absorb-smallest / peel-run) as a partial involution and show it is sign-reversing off the s=ℓ / s=ℓ+1 locus — this is the open-core involution whose fixed locus Part 9 now pins down.",
-      "Define the top-run length ℓ(λ) on a general distinct partition (max j with {M−j+1,…,M} ⊆ parts) and prove ℓ = card ⟺ part-set saturates the gap ⟺ single staircase, connecting finset_eq_Ico_iff to the involution statistic."
+      "Define the top-run length ℓ(λ) on a general distinct partition (max j with {M−j+1,…,M} ⊆ parts) and prove ℓ = card ⟺ part-set saturates the gap ⟺ single staircase, connecting finset_eq_Ico_iff to the involution statistic.",
+      "Part 12: formalize Move B (s>ℓ case) symmetrically",
+      "Part 13: prove Move A and Move B mutually inverse on non-fixed partitions, assemble involution, close signed sum = pentSeriesCoeff"
     ],
-    "progressSummary": "PROGRESS (researcher-5, 2026-06-30): Part 10 added — the Franklin s=ℓ/s=ℓ+1 invariant is now (1) LIFTED onto the genuine Nat.Partition objects of Part 8 (least part read off partition parts.toFinset, as IsLeast) and (2) GENERALIZED via finset_eq_Ico_iff: a distinct-part set is one contiguous staircase iff card=max−min+1. parts_saturating_gap_is_interval states the general converse (the structural hypothesis the fixed locus lives under) for ALL distinct-part partitions, not just chosen Ico intervals. Build green (7743 jobs), 0 sorry, 0 axiom. Open core unchanged: Franklin sign-reversing involution on NON-fixed partitions."
+    "progressSummary": "PROGRESS: Part 11 formalizes Franklin Move A operation itself (first move beyond fixed points) — sum/card/sign-preserving, 0-axiom verified. Open: Move B + mutual-inverse + full involution."
   },
   "leanFiles": [
     {
