@@ -104,7 +104,22 @@
     {
       "targetId": "sqrt2-examples",
       "relationship": "extends",
-      "description": "Parent file with the original ℤ-specific proof"
+      "description": "Parent file with the original ℤ-specific proof of square_nonneg that this entry generalizes to any LinearOrderedSemiring"
+    },
+    {
+      "targetId": "sqrt2-examples-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Child entry that answers this entry's first open question: it shows totality of the order is essential (the Artin–Schreier obstruction), constructing formally real fields where a merely partial order admits elements with x² < 0"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "This entry's Part IV proves the 2-variable AM-GM inequality ab ≤ (a²+b²)/2 from (a-b)² ≥ 0; the full AM-GM entry establishes the n-variable form"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "The (a-b)² ≥ 0 trick used for am_gm_sq is the elementary shadow of the sum-of-squares argument behind the Cauchy-Schwarz inequality"
     }
   ],
   "leanFile": {
