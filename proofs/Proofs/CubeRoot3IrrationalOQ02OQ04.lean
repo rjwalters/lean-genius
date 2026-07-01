@@ -45,9 +45,9 @@ This file removes that burden and pins down the exact boundary of the method:
 -/
 
 import Proofs.CubeRoot2IrrationalOQ03
-import Mathlib.Data.Real.Irrational
+import Mathlib.NumberTheory.Real.Irrational
 
-open Polynomial CubeRoot2IrrationalOQ03
+open Polynomial IntermediateField CubeRoot2IrrationalOQ03
 
 namespace CubeRoot3IrrationalOQ02OQ04
 
@@ -62,9 +62,11 @@ theorem squarefree_has_eisenstein_prime (m : ℕ) (hsq : Squarefree m) (hm : 2 �
   obtain ⟨p, hp, hpdvd⟩ := Nat.exists_prime_and_dvd (by omega : m ≠ 1)
   refine ⟨p, hp, hpdvd, ?_⟩
   intro hp2
-  -- p² ∣ m means p * p ∣ m, so squarefreeness forces IsUnit p — impossible for a prime.
+  -- p² ∣ m means p * p ∣ m, so squarefreeness forces IsUnit p — i.e. p = 1, impossible.
   rw [pow_two] at hp2
-  exact hp.not_unit (hsq p hp2)
+  have hu : p = 1 := Nat.isUnit_iff.mp (hsq p hp2)
+  have := hp.two_le
+  omega
 
 /-! ## Part II: The single-hypothesis squarefree criterion -/
 
@@ -134,7 +136,7 @@ theorem irrational_nthRoot_of_squarefree (n m : ℕ) (hn : 2 ≤ n)
     rw [one_div, inv_mul_cancel₀ hn0, Real.rpow_one]
   have hqn : q ^ n = (m : ℚ) := by exact_mod_cast hqn_real
   have heval : (X ^ n - C (m : ℚ)).eval q = 0 := by
-    simp [eval_sub, eval_pow, eval_X, eval_C, hqn]
+    simp [eval_sub, eval_pow, eval_X, hqn]
   exact X_pow_sub_squarefree_no_rat_root n m hn hsq hm q heval
 
 /-- **Algebraic degree for squarefree radicands.** `[ℚ(m^(1/n)) : ℚ] = n` for any
