@@ -72,6 +72,40 @@
       "Euler's totient on prime products: Nat.totient_mul, Nat.totient_prime, and Carmichael's λ as lcm(p−1,q−1)"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Dropping the Coprimality Hypothesis via CRT over n = p·q",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Frames the entry as answering the parent (euler-totient-oq-05)'s first open question: prove RSA correctness (m^e)^d ≡ m [MOD n] without assuming m coprime to n. Real RSA moduli are n = p·q, and decryption must recover every message including the cryptographically real non-unit cases p ∣ m or q ∣ m. Outlines the standard prime-by-prime / Chinese-Remainder argument and lists the four results plus the three equivalent key conditions (Carmichael lcm, Euler product, totient). Names the Mathlib foundation.",
+      "mathContext": "$(m^e)^d \\equiv m \\ [\\mathrm{MOD}\\ pq]$ for ALL $m$, no coprimality assumed."
+    },
+    {
+      "id": "per-prime-fixed-point",
+      "title": "pow_modEq_self_of_prime: the all-m fixed-point form",
+      "startLine": 56,
+      "endLine": 79,
+      "summary": "pow_modEq_self_of_prime: for a prime p, if k ≡ 1 [MOD p−1] and 0 < k, then m^k ≡ m [MOD p] for every m. This is the per-prime fixed-point form of Fermat's little theorem — the map x ↦ x^k fixes every residue mod p — handling p ∣ m (both sides ≡ 0) and p ∤ m (Fermat via ZMod.pow_card_sub_one_eq_one) uniformly. It is the ingredient the parent's unit-only argument lacked.",
+      "mathContext": "$k \\equiv 1 \\ [\\mathrm{MOD}\\ p-1],\\ 0 < k \\Rightarrow m^k \\equiv m \\ [\\mathrm{MOD}\\ p]\\ (\\forall m).$"
+    },
+    {
+      "id": "full-rsa",
+      "title": "Full RSA correctness under three equivalent key conditions",
+      "startLine": 81,
+      "endLine": 127,
+      "summary": "rsa_correctness_full: with distinct primes p ≠ q and the Carmichael key condition e·d ≡ 1 [MOD lcm(p−1, q−1)], (m^e)^d ≡ m [MOD p·q] for all m — gluing the per-prime fixed point on p and on q via the CRT splitting a ≡ b [MOD pq] ↔ a ≡ b [MOD p] ∧ a ≡ b [MOD q]. rsa_correctness_full_phi weakens the hypothesis to the classical Euler condition (p−1)(q−1) (a multiple of the lcm), and rsa_correctness_full_totient restates it with Nat.totient(p·q) — the exact strengthening of the parent's rsa_correctness from 'm coprime to n' to 'all m'.",
+      "mathContext": "$e d \\equiv 1 \\ [\\mathrm{MOD}\\ \\mathrm{lcm}(p-1,q-1)] \\Rightarrow (m^e)^d \\equiv m \\ [\\mathrm{MOD}\\ pq].$"
+    },
+    {
+      "id": "examples",
+      "title": "Worked examples, including the non-unit cases",
+      "startLine": 129,
+      "endLine": 158,
+      "summary": "Axiom-free `decide` examples on the textbook modulus n = 33 = 3·11 (φ = 20, e = 7, d = 3): the standard unit message 5, then the two cases the parent cannot handle — a message divisible by a prime factor (6, with 3 ∣ 6) and the extreme non-unit m = 0 — both correctly recovered, demonstrating the strengthening concretely.",
+      "mathContext": "$(5^7)^3 \\equiv 5,\\ (6^7)^3 \\equiv 6,\\ (0^7)^3 \\equiv 0 \\ [\\mathrm{MOD}\\ 33].$"
+    }
+  ],
   "conclusion": {
     "summary": "Full RSA correctness (m^e)^d ≡ m (mod p·q) for ALL messages m, under each of three equivalent key conditions (Carmichael lcm(p−1,q−1), Euler (p−1)(q−1), and φ(p·q)), proved by a uniform per-prime fixed point of Fermat's little theorem glued via the Chinese Remainder Theorem. Drops the parent's coprimality hypothesis. 4 theorems, 0 axioms, 158 lines.",
     "implications": "Settles the parent entry's first open question: the coprimality hypothesis on the RSA message is removable on n = p·q, and the resulting full correctness theorem covers the non-unit messages (those sharing a prime factor with n) on which the parent statement was silent. The fixed-point lemma pow_modEq_self_of_prime is a reusable all-m strengthening of Fermat's little theorem.",
