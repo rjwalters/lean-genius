@@ -125,6 +125,12 @@
   ],
   "conclusion": {
     "summary": "The partial exponential sum ∑_{n=M+1}^{M+N} e^{2πiθn} has modulus at most 1/|sin(πθ)|, uniformly in M and N. The proof rests on the chord-length identity |1 − e^{2πiθ}| = 2|sin(πθ)| and the geometric series closed form, and is fully machine-checked and 0-axiom. This completes the central analytic ingredient that the companion Pólya–Vinogradov file leaves open.",
+    "implications": "The bound is the exact point at which the Pólya–Vinogradov argument becomes quantitative: once the incomplete character sum is expanded through its Gauss-sum Fourier series, every inner exponential sum is controlled by this single 1/|sin(πθ)| factor, and summing those cosecants against the frequencies a/q (a cotangent sum) is what produces the final √q·log q. Because the estimate is uniform in both the offset M and the length N, it is not merely a Pólya–Vinogradov lemma but a general-purpose tool: the same inequality bounds any partial sum of a geometric progression on the unit circle, and reappears verbatim in Weyl's equidistribution criterion, the Erdős–Turán discrepancy inequality, and the theory of Gauss and Kloosterman sums. Formalising it 0-axiom means the reusable core of all of these arguments is now machine-checked, independent of the companion file's unfinished parts.",
+    "openQuestions": [
+      "Can the crude numerator bound |zᴺ − 1| ≤ 2 be sharpened to the exact |zᴺ − 1| = 2|sin(πNθ)|, yielding the refined estimate |∑| = |sin(πNθ)|/|sin(πθ)| (the Dirichlet kernel) rather than just its cosecant envelope?",
+      "How much of the remaining Pólya–Vinogradov machinery — the Gauss-sum norm |τ(χ)| = √q and the cotangent sum ∑ 1/|sin(πa/q)| ≪ q·log q — can be formalised, and does Mathlib already carry a usable |τ(χ)| = √q?",
+      "Can the companion file's retired `∑ x in s` syntax be modernised so this verified bound is assembled in place, closing the central sorry of the full inequality?"
+    ],
     "futureWork": "Use this bound, together with the Gauss-sum norm |τ(χ)| = √q and the cotangent sum estimate, to discharge the remaining Pólya–Vinogradov sorries; and modernise the companion file's retired ∑-in syntax so the pieces can be assembled in place."
   },
   "crossReferences": [
@@ -132,6 +138,16 @@
       "targetId": "bounded-prime-gaps-oq-04-oq-01",
       "relationship": "parent",
       "description": "Companion WIP entry stating the full Pólya–Vinogradov inequality. This entry verifies its key geometric exponential-sum ingredient."
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-04-oq-01-incomplete-01",
+      "relationship": "sibling",
+      "description": "A second Pólya–Vinogradov ingredient — the distance-to-nearest-integer cosecant bound |sin(πθ)| ≥ 2‖θ‖. Together the two lemmas convert the 1/|sin(πθ)| factor proved here into the cotangent sum ∑ 1/‖a/q‖ that yields the √q·log q bound."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "uses",
+      "description": "The engine of the main proof: the closed form ∑_{k<N} zᵏ = (zᴺ − 1)/(z − 1) (geom_sum_eq) is what turns the partial exponential sum into a ratio whose modulus is then estimated by the chord length."
     }
   ],
   "mainTheorems": [
