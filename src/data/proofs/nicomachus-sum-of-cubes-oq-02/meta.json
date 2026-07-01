@@ -99,5 +99,27 @@
       "Does the same 'clear denominator and subtraction, then ring-and-omega' recipe extend uniformly to ∑ k⁵, ∑ k⁶, …, or does the growing Bernoulli denominator make the integer core lemma progressively harder to state subtraction-free?",
       "Can the family ∑ k^p be unified into a single Lean theorem parameterized by p via the Bernoulli numbers (Faulhaber's formula proper), rather than one entry per power?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "nicomachus-sum-of-cubes-oq-01",
+      "relationship": "The p=3 case this entry generalizes",
+      "description": "Nicomachus's theorem ∑ k³ = (∑ k)². This p=4 Faulhaber entry answers that entry's open question about scaling past degree 3: where the cube sum reduces to the single elementary identity m³ = m²(m−1) + m², the fourth-power closed form has genuine rational coefficients (the 1/30 denominator and the 3n²+3n−1 factor), requiring the clear-denominator technique."
+    },
+    {
+      "proofId": "nicomachus-sum-of-cubes-oq-03",
+      "relationship": "Sibling power-sum variant",
+      "description": "The odd-cube analogue ∑ (2k+1)³ = n²(2n²−1). A companion in the same family, illustrating the same induction-plus-fixed-polynomial-identity pattern applied to a restricted (odd-index) cube sum."
+    },
+    {
+      "proofId": "arithmetic-series",
+      "relationship": "The p=1 base of the Faulhaber family",
+      "description": "Gauss's formula ∑ k = n(n+1)/2, the degree-2 closed form at the bottom of the power-sum hierarchy. Faulhaber's formulas for ∑ k^p all reduce, at p=1, to this triangular number."
+    },
+    {
+      "proofId": "newton-power-sum-identities-oq-01",
+      "relationship": "General power-sum framework",
+      "description": "Newton's identities relate power sums pₖ = ∑ Xᵢᵏ to elementary symmetric polynomials — the broader symmetric-function setting in which per-degree Faulhaber formulas like this one live."
+    }
+  ]
 }
