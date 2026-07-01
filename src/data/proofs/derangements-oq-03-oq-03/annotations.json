@@ -49,14 +49,29 @@
     "proofId": "derangements-oq-03-oq-03",
     "range": {
       "startLine": 100,
-      "endLine": 132
+      "endLine": 120
     },
     "type": "theorem",
-    "title": "Counting and the Probability in [0,1]",
-    "content": "card_derangement_permMatrices re-exports card_derangements_fin_eq_numDerangements: there are numDerangements n derangement matrices of size n. numDerangements_le_factorial bounds this by n! through the subtype-cardinality chain card (derangements (Fin n)) ≤ card (Perm (Fin n)) = n! (Fintype.card_subtype_le, Fintype.card_perm, Fintype.card_fin). Finally derangementMatrixProb n := numDerangements n / n! is shown to lie in [0,1] (positivity for the lower bound, div_le_one with the factorial bound for the upper). The sharp 1/e convergence rate of this probability is the companion analytic entry derangements-oq-03.",
-    "mathContext": "$|D_n| = $ numDerangements $n \\le n!$, so $0 \\le \\dfrac{D_n}{n!} \\le 1$, with $\\dfrac{D_n}{n!} \\to \\dfrac{1}{e}$.",
+    "title": "Counting Derangement Matrices and the n! Bound",
+    "content": "card_derangement_permMatrices re-exports card_derangements_fin_eq_numDerangements: there are exactly numDerangements n derangement matrices of size n — the bridge turns the matrix count into the classical derangement count $D_n$. numDerangements_le_factorial then bounds this by n! through the subtype-cardinality chain card (derangements (Fin n)) ≤ card (Perm (Fin n)) = n! (Fintype.card_subtype_le, Fintype.card_perm, Fintype.card_fin), the combinatorial fact that the derangements sit inside all n! permutations. This bound is exactly what makes the probability of the next section well-defined as a genuine probability.",
+    "mathContext": "$|D_n| = \\mathrm{numDerangements}\\,n \\le n!$ via $\\mathrm{derangements}(\\mathrm{Fin}\\,n) \\hookrightarrow \\mathrm{Perm}(\\mathrm{Fin}\\,n)$.",
     "significance": "key",
-    "relatedConcepts": ["numDerangements", "Fintype.card_subtype_le", "probability in [0,1]", "1/e limit"],
-    "prerequisites": ["cardinality of subtypes", "factorial", "div_le_one / positivity"]
+    "relatedConcepts": ["numDerangements", "Fintype.card_subtype_le", "subtype cardinality", "factorial"],
+    "prerequisites": ["cardinality of subtypes", "factorial", "Fintype.card_perm"]
+  },
+  {
+    "id": "ann-derangements-oq03-oq03-prob",
+    "proofId": "derangements-oq-03-oq-03",
+    "range": {
+      "startLine": 122,
+      "endLine": 132
+    },
+    "type": "definition",
+    "title": "The Probability Model and Its Well-Definedness in [0,1]",
+    "content": "The file's one definition, derangementMatrixProb n := numDerangements n / n!, is the probabilistic payoff of the whole permutation-matrix bridge: it is the probability that a uniformly random n×n permutation matrix has zero diagonal (is a derangement matrix). derangementMatrixProb_mem_Icc certifies it is a genuine probability — it lies in [0,1] — with the lower bound by positivity and the upper bound by div_le_one fed the factorial bound numDerangements_le_factorial (using n! > 0). Isolating this def matters because it is the object whose sharp asymptotics are the point of the family: the companion analytic entry derangements-oq-03 proves derangementMatrixProb n → 1/e, the classical derangement limit, so this bounded ratio is the discrete quantity that converges to the reciprocal of Euler's number.",
+    "mathContext": "$\\mathrm{derangementMatrixProb}(n) = \\dfrac{D_n}{n!} \\in [0,1], \\qquad \\dfrac{D_n}{n!} \\xrightarrow{\\;n\\to\\infty\\;} \\dfrac{1}{e}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["derangement probability", "1/e law", "div_le_one / positivity", "probability in [0,1]", "Euler's number"],
+    "prerequisites": ["real division and casts", "Set.Icc membership", "the n! bound numDerangements_le_factorial"]
   }
 ]
