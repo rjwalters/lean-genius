@@ -153,49 +153,6 @@ removes the only open *mathematical* question that was gating the elimination pl
 
 ## Session log
 
-### 2026-06-30 (Session 16, researcher-12) — ACT (extension-by-zero CLM re-homed & decoupled)
-
-**Mode:** REVISIT (RICH). **Outcome:** progress — 0-axiom infrastructure, chain-decoupled.
-
-- **The decoupling problem.** The general→σ-finite reduction (option B, Session 4) needs
-  the extension-by-zero isometry `extByZeroCLM : Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ`,
-  `f ↦ S.indicator f`, to pull a functional on `Lp μ` back to each σ-finite piece. This
-  CLM lived as a `private`/exposed `def` **inside** `…OQ01OQ01OQ02OQ01OQ01Incomplete01.lean`
-  — a file the S10/S11 re-measurements show is **build-broken** by ~70 Mathlib-drift errors.
-  Because that file is all-or-nothing for verification, `extByZeroCLM` was effectively
-  quarantined: unusable by any decoupled assembly until the multi-session chain repair lands,
-  even though its *own* construction depends on Mathlib only.
-- **What I did.** Re-homed the construction into a standalone, Mathlib-only file
-  `proofs/Proofs/CauchySchwarzIntegralLpDualityExtension.lean` (namespace
-  `RieszLpDualityExtension`), so the eventual arbitrary-measure assembly
-  (`riesz_general_of_sigmaFinite`, planned to take the σ-finite Riesz result *with norm
-  bound* as an explicit hypothesis) can be stated and proved **without importing** — hence
-  without waiting on the repair of — the broken chain.
-- **Simplification discovered while re-homing.** The chain built `extByZeroCLM` on two
-  hand-written `private` helpers (`eLpNorm_indicator_eq_restrict_loc`,
-  `memLp_indicator_of_restrict_loc`). Both are now **redundant with Mathlib**:
-  `MeasureTheory.eLpNorm_indicator_eq_eLpNorm_restrict` and
-  `MeasureTheory.memLp_indicator_iff_restrict`. The re-homed construction rests directly
-  on the library — no bespoke seminorm bookkeeping.
-- **Contents (4 decls, 149 L, 0 sorry / 0 axiom):**
-  - `extByZeroCLM` — the CLM, via `LinearMap.mkContinuous … 1`; `map_add'`/`map_smul'`
-    discharged by `filter_upwards` over the `coeFn_toLp`/`Lp.coeFn_add`/`Lp.coeFn_smul`
-    a.e. representatives + `Set.indicator_apply`/`split_ifs`, using
-    `Measure.ae_restrict_iff' hS` to move the inner (on-`S`) equality into the μ-a.e. world.
-  - `extByZeroCLM_coeFn` — `extByZeroCLM f =ᵐ[μ] S.indicator f` (just `.coeFn_toLp`).
-  - `norm_extByZeroCLM_apply` — **isometry** `‖extByZeroCLM f‖ = ‖f‖`, via
-    `Lp.norm_def` + `eLpNorm_congr_ae` + `eLpNorm_indicator_eq_eLpNorm_restrict`.
-  - `norm_extByZeroCLM_le` — operator-norm bound `≤ 1` (`LinearMap.mkContinuous_norm_le`).
-- **Verified** 0-axiom via Docker `docker-build.sh Proofs.CauchySchwarzIntegralLpDualityExtension`
-  (Docker back up this session; disk recovered). Axiom profile `{propext, Classical.choice,
-  Quot.sound}` only.
-- **Status unchanged (blocked at parent goal):** the arbitrary-measure axiom
-  `riesz_lp_surjective` is **not** eliminated. This session removes a *structural* blocker —
-  the last chain-buried ingredient the decoupled assembly needed is now free-standing and
-  verified. Remaining critical path: (1) repair or bypass the `Incomplete01` σ-finite Riesz
-  chain to expose `riesz_lp_surjective_sigma_finite` *with its norm bound*; (2) the single
-  maximality/exhaustion lemma (Folland 6.16) assembling the σ-finite pieces; (3) swap axiom→theorem.
-
 ### 2026-06-30 (Session 15, researcher-8) — ACT (dual-norm layer completed)
 
 **Mode:** REVISIT (rolling PR #31646). **Outcome:** progress — 0-axiom.
@@ -990,3 +947,89 @@ S13/S16 step-1: once green it surfaces the internal `eLpNorm g q μ ≤ ‖φ‖
 through `riesz_lp_surjective_sigma_finite` → `riesz_representer_on_sigmaFinite_set` → discharge the
 synthesis `sorry` (`riesz_lp_surjective_general`) → eliminate the parent axiom. Axiom untouched;
 `axiomCount` unchanged.
+
+### 2026-07-01 (Session 18, researcher-10) — Incomplete01 65→63 (hoist verified); batch of ~15 source-verified drift fixes saved as patch; CRITICAL: fixed file exceeds the 40min/32GB build envelope → localization_existence must be SPLIT
+
+**Mode:** REVISIT (continues S17). **Outcome:** verified structural progress + decisive
+re-scoping of the repair strategy.
+
+**Infra re-confirmed working, with a calibration number.** Docker builds run; the file
+`…Incomplete01.lean` **compiles the whole file (emitting all its errors) in ~180 s of Lean
+time** (after ~4–5 min lake-dep clone + `cache get`). Lean flushes its error summary only at
+*file completion*, so a build that does not finish shows **0 errors** in the log (not "clean").
+Docker was also **transiently flaky** this session (one build died mid-compile with
+`error waiting for container: unexpected EOF`, another with `Docker daemon is not running`) —
+re-run when a build ends without a Lean error summary or a `Terminated`/`build failed` marker.
+
+**VERIFIED and SHIPPED (commit on branch `research/lp-duality-synthesis-s17`): 65 → 63 errors.**
+Three fixes, rebuild-confirmed (clean ~3 min compile, 63 distinct source errors, no regressions):
+1. **Structural — hoisted `hg_eq_n` out of the `hg_lq_norm` block to `localization_existence`'s
+   top level.** It was *defined inside* `have hg_lq_norm := by …` but *used at Step A5* (indicator
+   agreement, ~line 902) which is **outside that scope** → `unknown identifier hg_eq_n` + a phantom
+   cascade over the whole 902–970 tail. Hoisting (it only needs `hconsist`/`hcover`/`idx`/`g`, all
+   top-level) fixes the scope error AND **de-cascades the tail**: the ~8 tail errors are now *real
+   drift*, cleanly exposed, not phantoms. This is why net count only moved −2 while a real structural
+   bug was fixed. **Lesson: `have X := by … (defines h) …; obtain … := X` DROPS `h`; if a later step
+   needs `h`, it must be a sibling `have`, not nested.**
+2. `AEStronglyMeasurable`.**`.congr_ae` → `.congr`** (`.1` on `MemLp` gives an `AEStronglyMeasurable`
+   which *unfolds to `Exists`*, so a missing method resolves to the non-existent `Exists.congr_ae`;
+   the real lemma is `AEStronglyMeasurable.congr : AESM f μ → f =ᵐ g → AESM g μ`).
+3. `eLpNorm _ 1 μ = ∫⁻ ‖·‖₊`: **`simp [eLpNorm, eLpNorm']` → `rw [eLpNorm_one_eq_lintegral_enorm];
+   simp only [enorm_eq_nnnorm]`** (`enorm_eq_nnnorm : ‖x‖ₑ = ↑‖x‖₊`, rfl).
+
+**~15 MORE source-verified drift fixes are staged in a patch (NOT committed, unverified):**
+`research/problems/cauchy-schwarz-integral-lp-duality-synthesis/s18-batch3-drift-fixes.patch`
+(`git apply` it onto the committed HEAD — verified apply-clean). Every fix below was checked against
+`proofs/.lake/packages/mathlib/Mathlib` source (present in the worktree — grep it directly, no
+guessing):
+- `integrationCLM_sf.map_add'/map_smul'`: `Lp.coeFn_add/coeFn_smul` are now **`=ᵐ` lemmas** (not `=`),
+  so `simp only [Lp.coeFn_add,…]` "makes no progress". Restructure with `rw [← integral_add h1 h2]`
+  (resp. `← integral_const_mul c fun a => …`) then `refine integral_congr_ae ?_; filter_upwards
+  [Lp.coeFn_add f₁ f₂] with a ha; rw [ha]; simp [Pi.add_apply, add_mul]`.
+- norm bound: `rw [← integral_norm_eq_lintegral_enorm …]` → **drop the `←`** (lemma is
+  `∫ ‖f‖ = (∫⁻ ‖f‖ₑ).toReal`; forward direction rewrites the goal's `∫ ‖·‖`).
+- `hg_norm` (Step 3): `apply ENNReal.rpow_le_rpow _ (by positivity)` sets the wrong goal shape
+  (RHS `ofReal ‖φ‖` is not a `_ ^ (1/q)`). Replace with `simp only [enorm_eq_nnnorm]` (align the
+  `eLpNorm_eq_lintegral_rpow_enorm` output `‖g‖ₑ` to the `↑‖g‖₊` of `hbound_n`/`hMCT_global`), then a
+  `calc … ≤ ((ofReal‖φ‖)^q)^(1/q) := ENNReal.rpow_le_rpow hle (by positivity); _ = ofReal‖φ‖ := by
+  rw [← ENNReal.rpow_mul, mul_one_div_cancel hq_pos.ne', ENNReal.rpow_one]`.
+- `Measure.ae_mono` **removed** → root **`ae_mono`** (`ae_mono : μ ≤ ν → ae μ ≤ ae ν`).
+- `Set.subset_univ` (a bare `∀ s, s ⊆ univ`) needs an arg: **`Set.subset_univ _`**.
+- `(hind : α → ℝ)` where `hind : MemLp (E.indicator 1) p μ` **cannot coerce** a `MemLp` (Prop) to a
+  function → replace with **`E.indicator (1 : α → ℝ)`** (the underlying function of `hind`; matches
+  `lp_truncation_tendsto_zero … hind`'s output).
+- `EventuallyEq.mul_right hcoe _`: `f₃` is now **implicit** → drop the trailing `_`.
+
+**⚠️ CRITICAL FINDING — the fixed file EXCEEDS the build envelope (40 min / 32 GB).** With the batch
+applied, the build ran **40 full minutes of continuous `[…s] Building…` ticks (container alive,
+genuinely working) then `Terminated: 15`**, never flushing an error summary. This is NOT docker
+flakiness (that EOFs/dies; this kept ticking) and NOT a logic hang (no error, no loop signature) —
+it is a **resource blowup**: the batch fixes let elaboration proceed *much further/correctly* through
+the 600-line monster `localization_existence` (337–943), and the fuller elaboration blows past
+32 GB / 40 min near completion (build4 reached ~180 s of compile — exactly build2's *finish* time —
+before the container died). **Consequence: the residual real-error count is probably small, but you
+cannot MEASURE it until the file fits the envelope.** → **NEXT SESSION MUST SPLIT
+`localization_existence`** into ≤~150-line lemmas (Step A1 norm bound `hgnorm`; Step A2 `hconsist`;
+Step A3/A4 `g` construction + `hg_lq_norm`; Step A5 indicator agreement) each as a standalone
+top-level theorem, so each elaborates under budget and can be verified independently. Splitting is
+*also* the S16 decoupling recommendation and turns "unmeasurable 40-min monolith" into a checklist.
+Alternatively try `LEAN_MEMORY_LIMIT=` higher + `LEAN_BUILD_TIMEOUT=90m`, but splitting is the
+durable fix and matches the accepted sibling-file precedent (#29754/#29767/#29777/#29785).
+
+**Remaining error taxonomy (build2 = 63 errors; all mechanical, source-verifiable).** After the
+batch above lands, the still-open clusters (build2 line numbers) are: `integral_representation_sf`
+`Lp.induction` block (170/184/190 — `NormedAddCommGroup ?m` metavar, `Decidable (x∈s)`, `No goals`;
+likely `Lp.induction`/`indicatorConstLp` API drift); `lp_truncation_tendsto_zero` dominated-convergence
+measurability (234+ — `AEMeasurable`/`Measurable` + `‖·‖ₑ`/`↑‖·‖₊` mismatch from the enorm rename);
+`extByZeroCLM` map_add'/map_smul' (314/330 — same `=ᵐ` coeFn restructure as integrationCLM);
+`hextZ_le` (477 — `LinearMap.mkContinuous_apply` no longer reduces the anon-ctor; needs `simp
+[extByZeroCLM]`/`show`); the `h_k`/`hint_hkgk` rpow-arithmetic block (574–645 — `subst` on non-var
+`g_k a = 0` → use named hyp + `rw`; `Real.rpow_add` pattern; `ENNReal.coe_rpow_of_nonneg` now takes
+`0 ≤ z` positionally); `hMCT` truncation (682–718); `hconsist` (743–777, mostly `Set.univ_inter` vs
+`Set.inter_univ` after `Measure.restrict_apply MeasurableSet.univ` now yields `univ ∩ s`); and the
+`381/382` `Set.inter_univ` → `Set.univ_inter` rename.
+
+**Axiom NOT eliminated.** `axiom riesz_lp_surjective` untouched; `axiomCount` unchanged. Critical
+path is unchanged from S16/S17 (repair chain → surface σ-finite norm bound → discharge synthesis
+`sorry` → swap axiom), but this session pins the true blocker on step 1: **the repair is now
+mechanical + source-verifiable, but the monolithic theorem must be split to be buildable.**
