@@ -74,6 +74,7 @@ def IsMaximalBhSet (N h : ℕ) (S : Finset ℕ) : Prop :=
   IsBhSubset N h S ∧
   ∀ x ∈ Interval N, x ∉ S → ¬ IsBhSet h (insert x S)
 
+open Classical in
 /-- `Aₕ(N, h)` = number of maximal B_h subsets of `{1,…,N}`.
     For `h = 2` this is the parent's `A₁(N)`. -/
 noncomputable def Aₕ (N h : ℕ) : ℕ :=
@@ -106,7 +107,7 @@ theorem bhSet_empty {h : ℕ} (hh : 2 ≤ h) : IsBhSet h (∅ : Finset ℕ) :=
 /-- Every singleton is a B_h set for every `h ≥ 2`. -/
 theorem bhSet_singleton {h : ℕ} (hh : 2 ≤ h) (a : ℕ) :
     IsBhSet h ({a} : Finset ℕ) :=
-  bhSet_of_card_le hh (by simp)
+  bhSet_of_card_le hh (by rw [Finset.card_singleton]; omega)
 
 /-- **Bridge to the parent #862.** The Sidon (B₂) condition of the parent
     entry implies the `IsBhSet 2` condition used here, so this B_h framework
@@ -121,6 +122,22 @@ theorem sidon_imp_b2 {S : Finset ℕ} (hS : IsSidonSet S) : IsBhSet 2 S := by
   have hd : d ∈ S := h₂ (by simp)
   rw [Finset.sum_pair hab, Finset.sum_pair hcd] at he
   exact hS a b c d ha hb hc hd he
+
+/-- `0` is never a member of the ambient interval `{1,…,N}`. -/
+theorem zero_notMem_interval (N : ℕ) : (0 : ℕ) ∉ Interval N := by
+  simp [Interval]
+
+/-- **Ambient size.** The interval `{1,…,N}` has exactly `N` elements.  This
+    pins down the size of the ground set over which maximal B_h subsets are
+    counted, so `Aₕ(N,h)` is a count of subsets of an `N`-element set. -/
+theorem interval_card (N : ℕ) : (Interval N).card = N := by
+  have hIcc : Interval N = Finset.Icc 1 N := by
+    ext x
+    simp only [Interval, Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton,
+      Finset.mem_Icc]
+    omega
+  rw [hIcc, Nat.card_Icc]
+  omega
 
 /-! ## Part III — Existence of maximal B_h sets and well-definedness of `Aₕ` -/
 
@@ -146,7 +163,7 @@ theorem exists_maximal_bhSet (N h : ℕ) (hh : 2 ≤ h) :
     rw [h𝒮, Finset.mem_filter, Finset.mem_powerset]
     exact ⟨Finset.insert_subset hxI hSsub, hcontra⟩
   have hle := hSmax (insert x S) hins_mem
-  rw [Finset.card_insert_of_not_mem hxS] at hle
+  rw [Finset.card_insert_of_notMem hxS] at hle
   omega
 
 /-- **`Aₕ` is well-defined and positive.** Since a maximal B_h subset always
@@ -154,10 +171,10 @@ theorem exists_maximal_bhSet (N h : ℕ) (hh : 2 ≤ h) :
 theorem Aₕ_pos (N h : ℕ) (hh : 2 ≤ h) : 1 ≤ Aₕ N h := by
   classical
   obtain ⟨S, hS⟩ := exists_maximal_bhSet N h hh
-  have hmem : S ∈ (Interval N).powerset.filter (fun S => IsMaximalBhSet N h S) := by
-    rw [Finset.mem_filter, Finset.mem_powerset]
-    exact ⟨hS.1.1, hS⟩
-  exact Finset.Nonempty.card_pos ⟨S, hmem⟩
+  rw [Aₕ]
+  refine Finset.Nonempty.card_pos ⟨S, ?_⟩
+  rw [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨hS.1.1, hS⟩
 
 /-! ## Part IV — The open question (stated, not proved) -/
 
