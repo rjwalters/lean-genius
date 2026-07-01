@@ -805,3 +805,77 @@ unchanged. This session added the final qualitative ingredient of the maximality
    additivity lemmas, `lp_pairing_eq_zero_ae_zero` (uniqueness), and this session's
    `eLpNorm_ae_zero_on_diff_of_le` (vanishing off the hull) — discharge the `sorry`.
 4. Swap the parent axiom; correct any stale `verified` gallery metas in the strand (#28788).
+
+### 2026-06-30 (Session 16, researcher-3) — INFRA-BLOCKED (host cache gap precisely diagnosed); ingredient pool confirmed COMPLETE; assembly decoupling identified
+
+**Mode:** REVISIT. **Outcome:** no new verified Lean (critical path host-blocked); precise
+infra diagnosis + roadmap sharpening.
+
+**Verifier state — root-caused this session (not a vague "blackout").** Host
+`LAKE_UNSAFE=1 ./bin/lake env lean` on any `import Mathlib` file fails with
+`missing data file for module Mathlib.RingTheory.Kaehler.Basic`. Cause pinned to a single
+file: `.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Kaehler/Basic.olean.server`
+is **missing** (only its `.olean.server.hash` remains; every other module has the full
+`{.olean, .olean.private, .olean.server, .ir, .ilean}` quintet — the Lean 4.26 split-olean
+module system). `lake exe cache get` repeatedly downloads the restoring archive
+(`~/.cache/mathlib/97bb9a2c4edc752b.ltar`, "attempted 1/1 = 100%") then **"removing
+corrupted file"** on hash-verify — i.e. a **server-side (Azure) cache gap** for this exact
+Mathlib revision, unfixable from an agent's side (needs mathlib CI re-upload or a pin bump).
+Ran cache get twice; it fixed one other file but not this one. Core-Lean-only files compile
+fine (positive control `def foo:Nat` → EXIT 0).
+
+**KEY consequence — the whole chain repair is host-blocked, not just the mega-import.**
+The corrupt module is algebraic-geometry (Kähler differentials), NOT on the measure-theory
+import path: a scratch file importing `Mathlib.Tactic` + the MT/analysis modules
+(`…LpSpace.Basic`, `…L1Space.Integrable`, `…LpSeminorm.Basic`, `…SimpleFuncDenseLp`,
+`Analysis.InnerProductSpace.Dual`, `Integral.Bochner.Basic`, `Analysis.MeanInequalities`)
+compiles EXIT 0. **BUT** `import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01` (the
+foundation olean) fails with the same Kaehler error, because that olean was compiled
+against full `import Mathlib` so its *dependency closure* includes `Kaehler.Basic`. Since
+`Incomplete01` imports the foundation, **the entire σ-finite chain and everything downstream
+(synthesis assembly) is host-unbuildable until the cache heals.** Only *fresh, MT-only*
+files (no `Proofs.*` deps, targeted imports) are host-verifiable right now — which is why
+the recent standalone ingredient PRs succeeded while the chain repair keeps stalling.
+→ **Next session: for the Incomplete01 repair use Docker (`./proofs/scripts/docker-build.sh`,
+isolated `lean-mathlib-cache` volume — a Docker build for another proof was running fine
+this session), or wait for the host Azure cache to heal. The host targeted-import trick
+does NOT help any foundation-dependent file.**
+
+**Ingredient pool is now COMPLETE (verified this session by inventory).** All standalone
+Mathlib-gap lemmas the Folland-6.16 maximality assembly needs are merged and green on
+`main`:
+- `CauchySchwarzIntegralLpDualityIngredients.lean` — `memLp_exists_sigmaFinite_support`,
+  `sigmaFinite_restrict_iUnion`, `eLpNorm_rpow_restrict_{union,iUnion,diff,mono}`.
+- `CauchySchwarzIntegralLpDualityAnnihilator.lean` (#31695) — `lp_pairing_eq_zero_ae_zero`
+  (uniqueness / injectivity of `Lᵠ ↪ (Lᵖ)*`).
+- `CauchySchwarzIntegralLpDualityGluing.lean` (#31828, merged 2026-07-01) —
+  `eLpNorm_ae_zero_on_diff_of_le` (representer vanishes off the hull).
+- Dual-norm identity + attainment (#31646) — `lpDualNorm p g = ‖g‖_q`, `exists_lpDualNorm_eq`.
+Adding further ingredients would be **scaffolding, not progress** — the bottleneck is now
+100% the two steps below.
+
+**Only TWO steps remain to eliminate the axiom (roadmap):**
+1. **Repair `…Incomplete01.lean`'s ~70 Mathlib-drift errors** (Docker-gated as above) →
+   surface the internal norm bound `eLpNorm g q μ ≤ ‖φ‖` (already proven at
+   `Incomplete01.lean:796`, per S10) through `riesz_lp_surjective_sigma_finite`.
+2. **The maximality assembly** `riesz_lp_surjective_general` (synthesis file line ~339,
+   still one `sorry` at ~345) — the sole remaining *hard math* (classical Folland 6.16,
+   ~100–150 lines).
+
+**NEW insight — decouple the hard math from the mechanical chain repair.** The maximality
+assembly does NOT have to wait on the Incomplete01 repair. State it as a **chain-independent
+conditional reduction** `riesz_general_of_sigmaFinite` that takes the σ-finite Riesz result
+*with norm bound* as an **explicit hypothesis** (a term argument, not an import), and inline
+the (small, already-verified) ingredient lemmas. Such a file imports only Mathlib-MT modules
+(no `Proofs.*` olean deps) so it is **host-verifiable via the targeted-import trick even
+while Kaehler is corrupt** and while Incomplete01 is broken. Then axiom elimination collapses
+to: repair chain → obtain the σ-finite term `H` → `riesz_lp_surjective := riesz_general_of_sigmaFinite H`.
+This turns the 150-line Folland argument (the actual crux) into work that is *unblocked
+today*, separating it from the multi-session mechanical drift repair. Recommended ACT for
+the next researcher who wants verified progress without Docker.
+
+**No Lean edited** — every path to eliminating the axiom this session was either
+host-blocked (chain repair, assembly-as-written) or would be premature churn (a 150-line
+maximality proof written blind without the target verifier is exactly the trap Sessions
+5/7/10 flagged). Deliverable is this diagnosis + the decoupling roadmap. Axiom untouched;
+`axiomCount` unchanged.
