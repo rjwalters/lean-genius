@@ -102,5 +102,22 @@
       "Does the same Q-matrix bookkeeping yield the Catalan identity $F_{n-r}F_{n+r} - F_n^2 = (-1)^{n-r+1}F_r^2$ via $\\det(Q^{n-r}\\cdot Q^{2r})$, or does the off-diagonal mixing demand a separate entry analysis?",
       "Can the addition formula $F_{m+n} = F_{m+1}F_n + F_m F_{n-1}$ be read off directly from the entries of $Q^{m+n} = Q^m Q^n$, packaging several Fibonacci identities as corollaries of one matrix factorisation?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "cassini-identity-oq-01-oq-01",
+      "relationship": "Answers this entry's first open question",
+      "description": "Catalan's identity Fₙ² − F_{n−r}·F_{n+r} = (−1)^{n−r}·Fᵣ², the r-step generalization of Cassini (which is the r=1 case). Confirms that the Q-matrix / determinant bookkeeping extends to the wider Cassini–Catalan family."
+    },
+    {
+      "proofId": "cassini-identity-oq-01-oq-02",
+      "relationship": "Answers this entry's second open question",
+      "description": "The Fibonacci addition formula read off directly from the entries of the matrix factorisation Q^{m+n} = Qᵐ·Qⁿ — exactly the 'package several identities from one factorisation' program posed here."
+    },
+    {
+      "proofId": "fibonacci-identities",
+      "relationship": "Broader collection of Fibonacci identities",
+      "description": "Summation and pointwise Fibonacci identities built on Mathlib's Nat.fib library. Provides the recurrence and addition-formula context that the companion-matrix proof of Cassini reorganizes as linear algebra."
+    }
+  ]
 }
