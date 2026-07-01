@@ -47,11 +47,11 @@
     "proofId": "abel-ruffini-galois-extensions-oq-04-oq-02",
     "range": {
       "startLine": 64,
-      "endLine": 80
+      "endLine": 71
     },
     "type": "theorem",
     "title": "The Composition-Factor Bijection",
-    "content": "exists_factor_bijection unfolds the Equivalent predicate into its concrete data: a bijection f : Fin s₁.length ≃ Fin s₂.length together with, for each index i, a JordanHolderLattice isomorphism between the i-th factor of s₁ and the f(i)-th factor of s₂. Under the Submodule instance this Iso is a linear equivalence of the successive quotients, so the multiset of composition factors is permutation-invariant. jordanHolder_module_symm records that the equivalence is symmetric.",
+    "content": "exists_factor_bijection unfolds the Equivalent predicate into its concrete data: a bijection f : Fin s₁.length ≃ Fin s₂.length together with, for each index i, a JordanHolderLattice isomorphism between the i-th factor of s₁ and the f(i)-th factor of s₂. Under the Submodule instance this Iso is a linear equivalence of the successive quotients, so the multiset of composition factors is permutation-invariant. The bijection is what upgrades bare length equality to the full Jordan–Hölder statement — 'same factors up to reordering', the module analogue of the group composition-factor multiset.",
     "mathContext": "$\\mathrm{Equivalent}(s_1,s_2) = \\exists f: \\mathrm{Fin}\\,s_1.\\mathrm{length} \\simeq \\mathrm{Fin}\\,s_2.\\mathrm{length},\\ \\forall i,\\ \\mathrm{Iso}\\,(s_1\\,i, s_1\\,i^+)\\,(s_2\\,(f i), s_2\\,(f i)^+).$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -61,6 +61,27 @@
     ],
     "prerequisites": [
       "CompositionSeries.Equivalent"
+    ]
+  },
+  {
+    "id": "ann-jordanholder-symm",
+    "proofId": "abel-ruffini-galois-extensions-oq-04-oq-02",
+    "range": {
+      "startLine": 73,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "Symmetry of the Equivalence",
+    "content": "jordanHolder_module_symm records that the Jordan–Hölder equivalence of composition series is symmetric: if s₁ is equivalent to s₂ then s₂ is equivalent to s₁, inherited from CompositionSeries.Equivalent.symm on the abstract theory. Combined with the reflexivity and transitivity of Equivalent, this makes 'has the same composition factors as' an equivalence relation on composition series with fixed endpoints, so the factor data is a genuine invariant of M rather than of a chosen series.",
+    "mathContext": "$s_1 \\sim s_2 \\Rightarrow s_2 \\sim s_1$; together with reflexivity and transitivity, $\\sim$ is an equivalence relation on the composition series of $M$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equivalence relation",
+      "symmetry",
+      "composition factors"
+    ],
+    "prerequisites": [
+      "CompositionSeries.Equivalent.symm"
     ]
   },
   {
