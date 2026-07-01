@@ -93,7 +93,48 @@
       "Ideals and the weak Nullstellensatz $V(I) = \\varnothing \\iff I = (1)$"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "question-and-answer",
+      "title": "The Open Question and the Honest Two-Part Answer",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Frames the sub-question: does the Bézout / IsCoprime machinery prove the Nullstellensatz? The honest answer is a qualified yes — exactly in one variable — set up in the header and the BezoutNullstellensatz namespace.",
+      "mathContext": "$\\text{IsCoprime}\\,f\\,g \\iff V(f,g) = \\varnothing$ over an algebraically closed field, in one variable only."
+    },
+    {
+      "id": "bezout-heart",
+      "title": "The Bézout Heart: Coprime ⇒ No Common Root",
+      "startLine": 59,
+      "endLine": 81,
+      "summary": "coprime_imp_no_common_root: if IsCoprime f g then f and g share no root. Pure Bézout — a witness 1 = af + bg evaluated at any common root gives 1 = 0. Holds over any field, needs no algebraic closure.",
+      "mathContext": "$1 = a f + b g \\;\\Rightarrow\\; f(x)=g(x)=0 \\text{ impossible}.$"
+    },
+    {
+      "id": "nullstellensatz-enters",
+      "title": "Where the Nullstellensatz Enters: FTA via a Non-Unit gcd",
+      "startLine": 82,
+      "endLine": 110,
+      "summary": "no_common_root_imp_coprime: the converse needs an algebraically closed field. If f, g are not coprime their gcd is a non-unit, which (by the fundamental theorem of algebra) has a root — a common root of f and g. This is the step where the Nullstellensatz content lives.",
+      "mathContext": "$\\gcd(f,g)\\ \\text{non-unit} \\Rightarrow \\exists\\,x,\\ \\gcd(f,g)(x)=0 \\Rightarrow f(x)=g(x)=0.$"
+    },
+    {
+      "id": "univariate-nullstellensatz",
+      "title": "The Univariate Nullstellensatz: Root Form and Ideal Form",
+      "startLine": 111,
+      "endLine": 158,
+      "summary": "coprime_iff_no_common_root packages both directions; coprime_iff_one_mem_span and one_mem_span_iff_no_common_root re-express coprimality as 1 ∈ (f,g) and the emptiness of the vanishing set V(f,g), giving the weak Nullstellensatz in both its ideal and geometric forms for k[X].",
+      "mathContext": "$\\text{IsCoprime}\\,f\\,g \\iff 1 \\in (f,g) \\iff V(f,g) = \\varnothing.$"
+    },
+    {
+      "id": "instances-and-obstruction",
+      "title": "Concrete Instances and the Multivariate Obstruction",
+      "startLine": 159,
+      "endLine": 206,
+      "summary": "Worked witnesses (X and X−1 coprime in ℂ[X]; X not coprime with itself) and the key limitation: X₀ and X₁ in ℂ[X₀,X₁] have no common root yet are not coprime, because k[X₁,…,Xₙ] (n ≥ 2) is not a Bézout domain — so the method cannot reach the multivariate Nullstellensatz.",
+      "mathContext": "$X_0, X_1 \\in \\mathbb{C}[X_0,X_1]:\\ V(X_0,X_1)=\\{0\\}\\ne\\varnothing\\ \\text{but}\\ \\neg\\,\\text{IsCoprime}.$"
+    }
+  ],
   "conclusion": {
     "summary": "The answer to bezout-identity-oq-02-oq-02-oq-03 is a qualified YES: the `IsCoprime`/`IsBezout` machinery proves the weak Nullstellensatz precisely in one variable. Over an algebraically closed field, IsCoprime f g ↔ no common root ↔ 1 ∈ (f,g) ↔ V(f,g) = ∅, with the forward direction pure Bézout and the converse supplied by the fundamental theorem of algebra. The multivariate Nullstellensatz lies beyond the method because k[X₁,…,Xₙ] (n ≥ 2) is not a Bézout domain. Verified with 0 sorries and 0 axioms.",
     "implications": "This closes the Nullstellensatz branch of the BezoutIdentity open-question family with an honest scope statement. It shows precisely where Bézout reasoning is exact (the one-variable weak Nullstellensatz) and precisely where it must yield to deeper methods (Noether normalization for the general case). The ideal-form theorem `one_mem_span_iff_no_common_root` is a clean, reusable statement of the geometry/algebra dictionary in dimension one.",
