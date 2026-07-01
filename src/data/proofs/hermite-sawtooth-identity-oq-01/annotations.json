@@ -24,6 +24,18 @@
     "relatedConcepts": ["Gauss sum", "Faulhaber identities", "push_cast"]
   },
   {
+    "id": "ann-raabe-zero",
+    "proofId": "hermite-sawtooth-identity-oq-01",
+    "range": { "startLine": 74, "endLine": 83 },
+    "type": "theorem",
+    "title": "Raabe m=0: ∑ B₀(x+k/n) = n·B₀(nx) — the degenerate base case",
+    "content": "The order-$0$ case, where the prefactor is $n^{1-0} = n$. Since $B_0 \\equiv 1$, both sides collapse immediately: the left is $\\sum_{k<n} 1 = n$ and the right is $n \\cdot 1 = n$. The proof is correspondingly trivial — `simp only [bernoulli_eval_zero']` rewrites every $B_0$ evaluation to $1$, and a bare `simp` finishes by counting the range. It is the degenerate rung of the ladder (no power sums are needed at all), but it is included so the three low orders $m = 0, 1, 2$ — with prefactors $n, 1, 1/n$ — appear uniformly, making transparent that $n^{1-m}$ is a plain rational coefficient at each fixed order rather than a genuine power. Note it holds for every $n$ (no $n \\ge 1$ hypothesis, since the empty sum at $n = 0$ gives $0 = 0$).",
+    "mathContext": "$\\sum_{k<n} B_0\\!\\left(x+\\tfrac kn\\right) = n = n\\cdot B_0(nx)$, since $B_0 \\equiv 1$ and $n^{1-0} = n$.",
+    "significance": "supporting",
+    "prerequisites": ["Finset.sum_const", "Finset.card_range"],
+    "relatedConcepts": ["Raabe multiplication theorem", "constant Bernoulli polynomial B₀", "degenerate base case"]
+  },
+  {
     "id": "ann-raabe-one",
     "proofId": "hermite-sawtooth-identity-oq-01",
     "range": { "startLine": 86, "endLine": 96 },
