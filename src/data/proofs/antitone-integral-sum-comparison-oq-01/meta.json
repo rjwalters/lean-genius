@@ -87,6 +87,56 @@
       "Real logarithm basics"
     ]
   },
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Imports Mathlib and opens the AntitoneIntegralSumComparison namespace with BigOperators, Finset, and intervalIntegral scopes. The module docstring states the two-sided sandwich and previews the 1/x application giving log(n+1) <= Hn <= ... and the Euler-Mascheroni boundedness.",
+      "mathContext": "The engine of the integral test: for antitone $f$, the definite integral is trapped between the right-endpoint (lower) and left-endpoint (upper) Riemann sums over unit subintervals."
+    },
+    {
+      "id": "part-i-sandwich",
+      "title": "Part I - The General Integral-Test Sandwich",
+      "startLine": 32,
+      "endLine": 41,
+      "summary": "integral_sandwich: for f antitone on [x0, x0+a], bundles Mathlib's two one-sided bounds AntitoneOn.sum_le_integral and AntitoneOn.integral_le_sum into a single conjunction giving the two-sided comparison. The proof is the pair of the two bounds.",
+      "mathContext": "$\\sum_{i<a} f(x_0+i+1) \\le \\int_{x_0}^{x_0+a} f \\le \\sum_{i<a} f(x_0+i)$ for $f$ antitone on $[x_0, x_0+a]$."
+    },
+    {
+      "id": "part-ii-harmonic",
+      "title": "Part II - The Harmonic Numbers and the 1/x Vehicle",
+      "startLine": 43,
+      "endLine": 64,
+      "summary": "Defines harmonic n = sum_{i<n} 1/(i+1) (with harmonic_zero simp lemma). Proves the two ingredients for specializing to 1/x: oneDiv_antitone (x -> 1/x antitone on [1,1+n], from one_div_le_one_div_of_le) and log_integral (integral over [1,1+n] of 1/x = log(n+1), via integral_one_div).",
+      "mathContext": "$H_n = \\sum_{i<n} \\frac{1}{i+1}$; $x \\mapsto 1/x$ antitone on $[1, 1+n]$; $\\int_1^{1+n} \\frac{1}{x}\\,dx = \\log(n+1)$."
+    },
+    {
+      "id": "part-iii-bounds",
+      "title": "Part III - Logarithmic Bounds on the Harmonic Numbers",
+      "startLine": 66,
+      "endLine": 106,
+      "summary": "log_le_harmonic: log(n+1) <= Hn, from integral_le_sum, identifying the left Riemann sum with Hn via add_comm. harmonic_succ_le: H_{n+1} <= 1 + log(n+1), from sum_le_integral, reindexing the right sum to sum 1/(i+2) and peeling the leading 1 from H_{n+1} with Finset.sum_range_succ'.",
+      "mathContext": "$\\log(n+1) \\le H_n$ (left sum $= H_n$ exactly) and $H_{n+1} \\le 1 + \\log(n+1)$ (right sum $= H_{n+1} - 1$)."
+    },
+    {
+      "id": "part-iv-boundedness",
+      "title": "Part IV - Boundedness of Hn - log(n+1) (Euler-Mascheroni)",
+      "startLine": 108,
+      "endLine": 119,
+      "summary": "harmonic_sub_log_nonneg: 0 <= Hn - log(n+1), and harmonic_succ_sub_log_le_one: H_{n+1} - log(n+1) <= 1, both by linarith from the Part III bounds. Together they trap the harmonic defect in [0,1] - the boundedness behind the Euler-Mascheroni constant gamma = lim (Hn - log n).",
+      "mathContext": "$0 \\le H_n - \\log(n+1)$ and $H_{n+1} - \\log(n+1) \\le 1$, so $H_n - \\log(n+1) \\in [0,1]$, exhibiting the boundedness that makes $\\gamma = \\lim (H_n - \\log n)$ exist."
+    },
+    {
+      "id": "part-v-witnesses",
+      "title": "Part V - Worked Witnesses",
+      "startLine": 121,
+      "endLine": 141,
+      "summary": "Three examples confirm the machinery: H3 = 11/6 (by unfolding and norm_num), the lower bound at n=3 (log 4 <= H3 = log_le_harmonic 3), and the general sandwich specialized to 1/x on [1,1+n] via integral_sandwich (oneDiv_antitone n).",
+      "mathContext": "$H_3 = 1 + \\tfrac12 + \\tfrac13 = \\tfrac{11}{6}$; $\\log 4 \\le H_3$; and the harmonic Riemann sums trap $\\int_1^{1+n} \\frac{1}{x}$."
+    }
+  ],
   "conclusion": {
     "summary": "The two-sided integral-test comparison for antitone functions is formalized and applied to 1/x, yielding the sharp logarithmic bounds log(n+1) ≤ Hₙ and H_{n+1} ≤ 1 + log(n+1). These trap Hₙ − log(n+1) in [0,1], the boundedness underlying the Euler–Mascheroni constant. 8 theorems, 1 definition, 141 lines, 0 sorries, 0 axioms.",
     "implications": "Adds the foundational integral-test convergence infrastructure (absent from the gallery) in reusable form: integral_sandwich applies to any antitone summand, and the 1/x specialization is the template for p-series and other comparison-test results. The harmonic bounds are the quantitative heart of the harmonic series' logarithmic divergence.",
