@@ -46,9 +46,9 @@
       "Connection to extremal graph theory"
     ],
     "axiomCount": 0,
-    "lineCount": 145,
+    "lineCount": 211,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 1,
+    "theoremCount": 6,
     "definitionCount": 4
   },
   "overview": {
@@ -105,9 +105,17 @@
       "id": "resolution",
       "title": "The Resolution",
       "startLine": 103,
-      "endLine": 145,
+      "endLine": 143,
       "summary": "Jiang-Longbrake's Θ(n^α) answer, upper/lower bounds, and main theorem.",
       "mathContext": "Jiang-Longbrake's Θ(n^α) answer, upper/lower bounds, and main theorem."
+    },
+    {
+      "id": "verified-results",
+      "title": "Verified Structural Results",
+      "startLine": 145,
+      "endLine": 211,
+      "summary": "Machine-checked lemmas on the balance predicates: minDegree ≤ maxDegree, the disjunctive IsBalanced is degenerate for D ≥ 1, IsBalanced' is monotone in D, and regular graphs are 1-balanced.",
+      "mathContext": "Machine-checked lemmas on the balance predicates: minDegree ≤ maxDegree, the disjunctive IsBalanced is degenerate for D ≥ 1, IsBalanced' is monotone in D, and regular graphs are 1-balanced."
     }
   ],
   "conclusion": {
@@ -218,9 +226,9 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1077",
-    "lineCount": 145,
+    "lineCount": 211,
     "axiomCount": 0,
-    "theoremCount": 1,
+    "theoremCount": 6,
     "definitionCount": 4,
     "path": "Proofs/Erdos1077Problem.lean",
     "sorries": 0
