@@ -80,6 +80,32 @@
     "parentProofId": "angle-trisection-oq-04",
     "definitionCount": 0
   },
+  "references": [
+    {
+      "authors": "Alperin, Roger C.",
+      "title": "A mathematical theory of origami constructions and numbers",
+      "year": "2000",
+      "venue": "New York Journal of Mathematics 6, 119–133"
+    },
+    {
+      "authors": "Alperin, Roger C. and Lang, Robert J.",
+      "title": "One-, two-, and multi-fold origami axioms",
+      "year": "2009",
+      "venue": "Origami^4 (4OSME), A K Peters, 371–393"
+    },
+    {
+      "authors": "Gleason, Andrew M.",
+      "title": "Angle trisection, the heptagon, and the triskaidecagon",
+      "year": "1988",
+      "venue": "American Mathematical Monthly 95(3), 185–194"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Nat.Prime and constructibility predicates; Mathlib.Data.Nat.Prime",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "sorries": 0,
   "overview": {
     "historicalContext": "The constructibility hierarchy for regular polygons has been progressively refined since Gauss (1796). The Gauss-Wantzel theorem (1837) characterizes compass-and-straightedge constructibility: an n-gon is constructible iff φ(n) = 2^k. Neusis (marked-ruler) construction, studied since antiquity (Archimedes trisection, Diocles cissoid), allows the Pierpont primes: n-gons with φ(n) | 2^a·3^b. The identification of single-fold origami (Huzita-Hatori axiom O6) with neusis was established by Alperin and Lang (2006). Multi-fold origami extends this further: k-fold origami with the p_{k+1}-smooth degree criterion was studied by Huzita, Alperin, and others in the 1980s–2000s. The strict gap between neusis and 2-fold origami, witnessed by the 11-gon (φ(11) = 10 = 2·5), is a concrete and computable consequence of this hierarchy.",

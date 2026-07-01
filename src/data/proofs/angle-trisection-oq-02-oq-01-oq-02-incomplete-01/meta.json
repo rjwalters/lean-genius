@@ -52,6 +52,32 @@
       "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean"
     ]
   },
+  "references": [
+    {
+      "authors": "Wantzel, Pierre Laurent",
+      "title": "Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées 2, 366–372"
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "4th ed., CRC Press"
+    },
+    {
+      "authors": "Martin, George E.",
+      "title": "Geometric Constructions",
+      "year": "1998",
+      "venue": "Undergraduate Texts in Mathematics, Springer"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "IntermediateField.adjoin and quadratic extensions; Mathlib.FieldTheory.Adjoin",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "parent": "angle-trisection-oq-02-oq-01-oq-02",
   "openQuestion": "How can the not_constructible_of_bad_degree sorry in the parent Wantzel-Galois formalization be proved?",
   "overview": {

@@ -34,6 +34,32 @@
       "five_not_two_three and eleven_not_pierpont: explicit failures of neusis-constructibility"
     ]
   },
+  "references": [
+    {
+      "authors": "Martin, George E.",
+      "title": "Geometric Constructions",
+      "year": "1998",
+      "venue": "Undergraduate Texts in Mathematics, Springer"
+    },
+    {
+      "authors": "Gleason, Andrew M.",
+      "title": "Angle trisection, the heptagon, and the triskaidecagon",
+      "year": "1988",
+      "venue": "American Mathematical Monthly 95(3), 185–194"
+    },
+    {
+      "authors": "Alperin, Roger C.",
+      "title": "A mathematical theory of origami constructions and numbers",
+      "year": "2000",
+      "venue": "New York Journal of Mathematics 6, 119–133"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "field extensions and constructibility degrees; Mathlib.FieldTheory.Adjoin",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The impossibility of angle trisection with compass and straightedge, proved by Pierre Wantzel in 1837, left open the natural question: what becomes possible with stronger tools?\n\n**Ancient neusis constructions**: The marked ruler (neusis) was known to the Greeks. Archimedes (c.287–212 BC) used neusis to trisect arbitrary angles. Nicomedes (c.280–210 BC) used it to duplicate the cube (construct ∛2). These constructions were considered 'mechanical' rather than 'geometric' — Pappus distinguished three categories: plane (compass+straightedge), solid (conic sections), and mechanical (neusis/spirals). The Greeks viewed compass-and-straightedge as the pure geometric standard, which is why Wantzel's 1837 proof was so philosophically significant.\n\n**19th century tool equivalences**: Georg Mohr (1672) and Lorenzo Mascheroni (1797) independently proved that a compass alone can do everything a compass-and-straightedge combination can — the straightedge adds nothing algebraically. Jean-Victor Poncelet and Jakob Steiner proved the Poncelet-Steiner theorem (1833): a straightedge together with one fixed circle (whose center is known) has the same constructive power as a full compass-and-straightedge. This completed the tool equivalences on the 'lower' side.\n\n**20th century algebraic characterization**: Andrew Gleason (1988) gave the precise algebraic condition for neusis-constructibility: a real number α is neusis-constructible iff [ℚ(α) : ℚ] divides some 2^a · 3^b. This exactly captures the ability to solve cubics (degree 3 extensions): since 3 = 2^0 · 3^1 is a 2-3 number, cos(20°) is neusis-constructible. The Pierpont primes (primes p = 2^a · 3^b + 1) play the role for neusis-constructible regular n-gons that Fermat primes play in the Gauss-Wantzel theorem.\n\n**Origami**: The Huzita-Justin axioms (1989/1991) for paper folding include HJ-6, which can solve cubic equations — making origami at least as powerful as neusis constructions.",
     "problemStatement": "Open question from angle-trisection: Are there natural generalizations to constructions with additional tools such as the marked ruler, origami, or compass-only? The answer is yes, and this formalization establishes the complete five-level hierarchy:\n\nstraightedge-only ⊊ {compass+straightedge = compass-only = straightedge+circle} ⊊ marked ruler ⊆ origami\n\nThe central algebraic fact is that neusis-constructibility corresponds exactly to the class of real numbers whose minimal polynomial degree over ℚ divides some 2^a · 3^b — the 2-3 numbers. Since cos(20°) satisfies a cubic (degree 3 = 2^0 · 3^1), it is neusis-constructible, in contrast to its non-constructibility by compass and straightedge.",

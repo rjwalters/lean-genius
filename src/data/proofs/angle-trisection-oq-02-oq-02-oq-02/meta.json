@@ -53,6 +53,32 @@
     "mathlib_version": "4.26.0",
     "definitionCount": 1
   },
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig (English translation, Yale University Press, 1965), §365–366"
+    },
+    {
+      "authors": "Wantzel, Pierre Laurent",
+      "title": "Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées 2, 366–372"
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "4th ed., CRC Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Nat.totient and Nat.factorization; Mathlib.Data.Nat.Totient",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Totient",
@@ -61,7 +87,9 @@
       "Mathlib.Data.Nat.GCD.BigOperators",
       "Mathlib.Tactic.NormNum.Prime"
     ],
-    "opens": ["Nat"],
+    "opens": [
+      "Nat"
+    ],
     "namespace": "AngleTrisectionOQ02OQ02OQ02",
     "lineCount": 246,
     "axiomCount": 0,

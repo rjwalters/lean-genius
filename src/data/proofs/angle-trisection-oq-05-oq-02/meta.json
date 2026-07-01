@@ -36,6 +36,32 @@
       "Concrete examples: degrees 2, 3, 5, 7, 11, 100 are all omega-fold constructible"
     ]
   },
+  "references": [
+    {
+      "authors": "Alperin, Roger C.",
+      "title": "A mathematical theory of origami constructions and numbers",
+      "year": "2000",
+      "venue": "New York Journal of Mathematics 6, 119–133"
+    },
+    {
+      "authors": "Alperin, Roger C. and Lang, Robert J.",
+      "title": "One-, two-, and multi-fold origami axioms",
+      "year": "2009",
+      "venue": "Origami^4 (4OSME), A K Peters, 371–393"
+    },
+    {
+      "authors": "Martin, George E.",
+      "title": "Geometric Constructions",
+      "year": "1998",
+      "venue": "Undergraduate Texts in Mathematics, Springer"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "polynomial solvability and origami-constructible degrees; Mathlib.FieldTheory.Adjoin",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The story of origami geometry begins with the classical Greek impossibility results. Gauss (1796) characterized ruler-and-compass constructible numbers as those in the tower of quadratic extensions of ℚ, and Wantzel (1837) proved rigorously that angle trisection and cube duplication are impossible with ruler and compass alone. The key obstruction: ruler-and-compass can only adjoin square roots, but trisection requires solving a cubic. Paper folding changes everything. A single Huzita-Hatori fold (1989–2001) simultaneously places two points onto two lines, solving systems of degree up to 3. Abe's 1980 method trisects any angle by origami. Beloch (1936) had already shown that single-fold origami can solve all cubic equations. The Huzita-Hatori axioms (H1–H7) give the full axiomatic foundation for single-fold origami, making the constructible numbers exactly the closure of ℚ under square roots and cube roots — strictly more powerful than ruler and compass. Alperin-Lang (2006) extended this to k simultaneous folds: k-fold origami corresponds to p_{k+1}-smooth degrees, where a degree is smooth if all its prime factors are at most p_{k+1} (the (k+1)-th prime). 1-fold gives the 3-smooth degrees (powers of 2 and 3); 2-fold gives the 5-smooth (regular numbers). For k ≥ 3, the sharp characterization is conjectured to be p_{k+1}-smooth. This file answers OQ-05-OQ-02: the existential question — does some fold level always work? Answer: YES, omega-fold origami (existential over all finite k) is algebraically complete, with degree 0 as the unique exception.",
     "problemStatement": "Can multi-fold origami solve ALL polynomial equations? More precisely, is omega-fold origami (allowing any finite number of simultaneous folds) algebraically complete — can it construct the roots of every polynomial of positive degree?",

@@ -60,6 +60,32 @@
     "theoremCount": 22,
     "definitionCount": 1
   },
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig (English translation, Yale University Press, 1965), §365–366"
+    },
+    {
+      "authors": "Wantzel, Pierre Laurent",
+      "title": "Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées 2, 366–372"
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "4th ed., CRC Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Nat.totient and powers of two; Mathlib.NumberTheory.Divisors, Mathlib.Data.Nat.Totient",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "Gauss showed (1796, published in Disquisitiones Arithmeticae 1801) that the regular 17-gon is constructible, and stated that a regular n-gon is constructible exactly when n = 2^a·p₁⋯pₘ with the pᵢ distinct Fermat primes; Pierre Wantzel (1837) supplied the necessity proof. The criterion is equivalent to φ(n) being a power of 2, where φ is Euler's totient. The known Fermat primes are 3, 5, 17, 257, 65537; whether any others exist is a famous open problem. The parent file verifies the n ≤ 20 cases with native_decide; this entry develops the structural machinery to go further without trusting the compiler.",
     "problemStatement": "Extend the regular-polygon classification beyond n = 20 toward the general Gauss–Wantzel characterization n = 2^a·(distinct Fermat primes).",

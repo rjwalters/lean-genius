@@ -64,6 +64,26 @@
     "definitionCount": 0,
     "trueStubs": 0
   },
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig (English translation, Yale University Press, 1965), §365–366"
+    },
+    {
+      "authors": "Dummit, David S. and Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Nat.Prime, Fermat numbers and Nat.factorization; Mathlib.NumberTheory.LucasLehmer, Mathlib.Data.Nat.Prime",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "In 1796 the nineteen-year-old Gauss discovered that the regular 17-gon is constructible by ruler and compass, the first advance on the classical constructibility problem since antiquity. The full criterion — completed by Pierre Wantzel in 1837 — states that a regular n-gon is constructible if and only if n = 2^a times a product of distinct Fermat primes, where a Fermat prime is a prime of the form 2^(2^k) + 1. Fermat had conjectured in 1640 that every number 2^(2^k) + 1 is prime; Euler refuted this in 1732 by factoring 2^32 + 1 = 641 · 6700417. A basic structural fact underpins the whole theory: if 2^m + 1 is prime at all, the exponent m must itself be a power of two. The reason is elementary but constructive — any odd factor d > 1 of m exposes an explicit divisor 2^(m/d) + 1 of 2^m + 1. This entry formalizes that constructive obstruction and the exponent law it yields, the precise tool the parent Gauss–Wantzel entry flagged as missing.",
     "problemStatement": "Prove that if 2^m + 1 is prime (m ≠ 0) then m is a power of two. Equivalently, give a constructive criterion: whenever the exponent m has an odd factor d > 1, exhibit an explicit proper divisor of 2^m + 1 certifying that it is composite.",
