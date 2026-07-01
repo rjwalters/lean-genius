@@ -175,10 +175,24 @@
     },
     {
       "id": "engine",
-      "title": "The degree-sharp induction engine",
+      "title": "Induction engine: statement and base cases",
       "startLine": 44,
-      "endLine": 173,
-      "summary": "psd_eq_sq_add_sq_deg_aux: strong induction on deg p. The p = 0 and constant base cases give degree-0 squares; the real-root branch factors out (X − C r)² and bounds 2·deg u ≤ 2 + deg q = deg p via natDegree_mul_le; the non-real-root branch pulls out the positive quadratic Q and uses Brahmagupta plus natDegree_sub_le / natDegree_add_le, closing the max-split degree arithmetic with omega."
+      "endLine": 72,
+      "summary": "psd_eq_sq_add_sq_deg_aux states the degree-sharp invariant and sets up strong induction on d = deg p (Nat.strongRecOn). The p = 0 case returns u = v = 0; the constant case p = C c (c ≥ 0) returns u = C √c, v = 0 with degree 0; and for deg p ≥ 1 the FTA (Complex.exists_root) supplies a complex root z, split next into the real (z.im = 0) and non-real branches."
+    },
+    {
+      "id": "real-root",
+      "title": "Real-root branch: even multiplicity caps degree growth",
+      "startLine": 73,
+      "endLine": 115,
+      "summary": "When z is real (r = z.re), sq_dvd_of_psd_root gives (X − C r)² ∣ p with quotient q PSD of degree deg p − 2; a continuity argument (nonneg_of_forall_gt) re-establishes IsPSD q. The induction hypothesis returns q = u'² + v'², and u = (X − C r)·u', v = (X − C r)·v' inherit the bound 2·deg u ≤ 2 + deg q = deg p via natDegree_mul_le, closed by omega."
+    },
+    {
+      "id": "non-real-root",
+      "title": "Non-real-root branch: Brahmagupta keeps the squares in lockstep",
+      "startLine": 116,
+      "endLine": 171,
+      "summary": "For a non-real root, quadratic_dvd_of_aeval_eq_zero_im_ne_zero extracts the positive quadratic Q = (X − C re z)² + (C im z)² dividing p with PSD quotient q of degree deg p − 2. The Brahmagupta–Fibonacci identity converts Q·(u'² + v'²) into u = (X − C re)·u' − (C im)·v' and v = (X − C re)·v' + (C im)·u', each of degree ≤ 1 + max(deg u', deg v'); natDegree_sub_le / natDegree_add_le / natDegree_C_mul_le and a le_total max-split closed by omega give 2·deg u, 2·deg v ≤ deg p."
     },
     {
       "id": "public",
