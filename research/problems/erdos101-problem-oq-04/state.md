@@ -1,9 +1,95 @@
 # Current State
 
-**Phase**: ACT (S3-B1 — Grünbaum F_p² parabola + cardinality; build pending)
-**Since**: 2026-05-16T11:00:00Z
-**Last Updated**: 2026-05-16 (Iteration 3, researcher-3)
-**Iteration**: 3
+**Phase**: ACT (framework floor raised to 2 four-point lines; direct-lean-verified)
+**Since**: 2026-07-01
+**Last Updated**: 2026-07-01 (Iteration 7, researcher-4)
+**Iteration**: 7
+
+> Note: the S3-B2/B3 parabola-arc infrastructure (secant bound, ℝ²
+> realization, arc `fourPointLineCount = 0`) and the non-vacuity
+> witness (`witnessSet`, floor `1`) landed in later iterations (4–6,
+> researcher-8/6) than the entries below record; the file is ahead of
+> the older iteration logs.
+
+## Iteration 7 (researcher-4, 2026-07-01) — raise framework floor 1 → 2
+
+**Outcome**: `IsLowerBoundConstruction crossSet 2` — an explicit,
+0-axiom, no-five-collinear planar point set with **two** four-point
+lines, strictly above the prior single-line `witnessSet` floor.  Build
+verified by direct `lean` v4.26.0 compile (Docker fallback);
+`#print axioms crossSet_isLowerBoundConstruction =
+[propext, Classical.choice, Quot.sound]` only (no `sorryAx`, no
+`native_decide`/`Lean.ofReduceBool`) ⇒ 0-axiom VERIFIED.
+
+### What I added (all in `proofs/Proofs/Erdos101OQ04.lean`, +~330 LOC)
+
+1. **`collinear_snd_inj`** (PROVED, axiom-free, reusable) — on a
+   *non-horizontal* line (`a.2 ≠ b.2`) the second coordinate is
+   injective among points collinear with `a, b`: two such points
+   sharing a `y`-value coincide.  Hence a non-horizontal line meets any
+   set with `≤ k` distinct `y`-values in `≤ k` points.
+2. **`collinear_snd_eq_of_horiz`** (PROVED, axiom-free, reusable) — on a
+   *horizontal* line (`a.2 = b.2`, `a.1 ≠ b.1`) every collinear point
+   shares that `y`-value.
+3. **`crossPoints`** / **`crossSet`** (defs) — the explicit 7-point
+   cross `{(0,0),(1,0),(2,0),(3,0),(0,1),(0,2),(0,3)}` ⊂ ℝ² and its
+   `PlanarPointSet` wrapper.
+4. **`crossPoints_snd_mem` / `crossPoints_snd_eq_zero_of_ne` /
+   `crossPoints_mem_xaxis`** (PROVED) — the three membership/case
+   lemmas: the cross's `y`-values are exactly `{0,1,2,3}`; two distinct
+   points with equal `y` must be on the `x`-axis (`y=0`); an `x`-axis
+   point is one of the four.
+5. **`crossSet_noFiveCollinear`** (PROVED) — no five collinear: a
+   horizontal line hits only the four `x`-axis points; a non-horizontal
+   line hits `≤ 1` point per `y`-value (via `collinear_snd_inj`) and the
+   cross has only four distinct `y`-values, so `≤ 4` either way.
+6. **`crossSet_fourPointLineCount_ge_two`** (PROVED) — the `x`-axis and
+   `y`-axis are two distinct four-element collinear subsets, so
+   `fourPointLineCount crossSet ≥ 2`.
+7. **`crossSet_isLowerBoundConstruction`** (PROVED) —
+   `IsLowerBoundConstruction crossSet 2`.
+8. **`exists_isLowerBoundConstruction_two`** (PROVED) — there is a
+   no-five-collinear set of exactly seven points achieving threshold 2.
+
+### Why 7 points, and why this is not trivial padding
+
+Two distinct four-point lines meet in at most one point, so together
+they need at least `4 + 4 − 1 = 7` distinct points; equivalently, **no
+five-point set has two four-point lines**.  The prior floor-`1` witness
+(`witnessSet`, five points) is therefore optimal for its size, and
+raising the floor to `2` genuinely requires a larger, structurally
+different construction (a *cross* of two lines rather than a single
+line).  The two collinearity lemmas isolate the reusable geometric
+content (a non-horizontal line is a graph over `y`).
+
+### Counts
+
+- Theorems: +9 PROVED axiom-free (cumulative file total 35).
+- Definitions: +2 (`crossPoints`, `crossSet`).
+- Sorries: 2 unchanged (both OPEN constructions; no new sorries).
+- Axioms: 0 unchanged.
+
+### Honest scope / what remains OPEN
+
+This is a **constant**-size witness (floor `2`, seven points).  It does
+**not** touch the asymptotic OPEN content: `fourPointLineCount` growing
+like Ω(n^{3/2}) (`grunbaum_lower_bound_three_halves`) or n^{2−o(1)}
+(`solymosi_stojakovic_lower_bound`).  The natural next brick toward
+those is the sumset/grid four-collinear COUNT built on top of the
+verified parabola arc (S3-B2-β), still the crux and still hard.
+
+### Build note
+
+Docker daemon corrupted (containerd meta.db I/O, host-wide — see prior
+researcher memos).  Verified via direct `lean` compile: reconstruct
+`LEAN_PATH` over every `.lake/packages/*/.lake/build/lib/lean` dir plus
+the main repo `.lake/build/lib/lean`, pre-compile the `Proofs.Erdos101OQ01`
+dependency (its own `Erdos101Problem` olean already built) into a temp
+root placed **first** on `LEAN_PATH`, then compile
+`Proofs/Erdos101OQ04.lean` (≈5 s).  0 errors; only the 2 expected
+pre-existing sorry warnings.
+
+---
 
 ## Iteration 3 (researcher-3, 2026-05-16) — S3-B1 ACT (Grünbaum parabola foundation)
 
