@@ -7,7 +7,7 @@
     "title": "The Arithmetic ⇄ Group Dictionary",
     "content": "Every congruence in this file is translated into an equation in `ZMod n` by one lemma:\n```\ntheorem modEq_one_iff_cast_pow {a m : ℕ} :\n    a ^ m ≡ 1 [MOD n] ↔ (a : ZMod n) ^ m = 1 := by\n  rw [← ZMod.natCast_eq_natCast_iff, Nat.cast_pow, Nat.cast_one]\n```\nThe parent entry lives in the number-theoretic world of `Nat.ModEq`; Mathlib's Carmichael function `pow_carmichael` lives in the group `(ℤ/nℤ)ˣ`. This lemma is the hinge between them, letting us pull Mathlib's group facts down to `a^m ≡ 1 (mod n)` and push arithmetic hypotheses up to units.",
     "mathContext": "$a^m \\equiv 1 \\pmod n \\iff (a \\bmod n)^m = 1$. `ZMod.natCast_eq_natCast_iff` turns the congruence into equality of casts; `Nat.cast_pow` / `Nat.cast_one` normalise the sides.",
-    "significance": "important",
+    "significance": "supporting",
     "relatedConcepts": [
       "ZMod.natCast_eq_natCast_iff",
       "Nat.ModEq",
@@ -57,7 +57,7 @@
     "title": "λ Refines the Parent: orderOf a ∣ λ(n) ∣ φ(n)",
     "content": "The parent's main theorem factors through λ:\n```\ntheorem orderOf_unit_dvd_totient_via_carmichael [NeZero n] (a : (ZMod n)ˣ) :\n    orderOf a ∣ n.totient :=\n  (orderOf_unit_dvd_carmichael a).trans (ArithmeticFunction.carmichael_dvd_totient n)\n```\nThe parent proved `orderOf a ∣ φ(n)` directly. Here it is a *consequence* of the sharper `orderOf a ∣ λ(n)` composed with `λ(n) ∣ φ(n)`, exhibiting λ(n) as the true bottleneck. `pow_mod_carmichael_modEq` correspondingly sharpens exponent reduction to `a^k ≡ a^(k % λ(n))` — the smallest period valid uniformly over all coprime bases.",
     "mathContext": "$\\operatorname{ord}(a) \\mid \\lambda(n) \\mid \\varphi(n)$ and $a^k \\equiv a^{k \\bmod \\lambda(n)} \\pmod n$. Sharper than the parent's reduction modulo $\\varphi(n)$ since $\\lambda(n) \\mid \\varphi(n)$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Monoid.order_dvd_exponent",
       "carmichael_dvd_totient",
