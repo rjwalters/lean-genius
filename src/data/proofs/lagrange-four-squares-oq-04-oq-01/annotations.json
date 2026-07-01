@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-predicates",
+    "proofId": "lagrange-four-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 38,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "The Two Representability Predicates",
+    "content": "The file works with the naïve existential predicates `IsSumOfThreeSquares n := ∃ a b c : ℕ, a²+b²+c² = n` and `IsSumOfFourSquares n := ∃ a b c d : ℕ, a²+b²+c²+d² = n`, both over the naturals. Keeping them as bare existentials (rather than importing Mathlib's `Nat.sum_four_squares` machinery) is deliberate: the whole entry is built to be self-contained and axiom-free, so it never touches the axiomatized backward direction of the three-square theorem. Every later result is phrased in these two predicates — the set S₃ that fails to be multiplicatively closed, and the set S₄ that succeeds.",
+    "mathContext": "$S_3 = \\{n : \\exists a,b,c,\\ a^2+b^2+c^2 = n\\}, \\qquad S_4 = \\{n : \\exists a,b,c,d,\\ a^2+b^2+c^2+d^2 = n\\}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "existential predicate",
+      "sums of squares",
+      "representability set",
+      "self-contained formalization"
+    ],
+    "prerequisites": [
+      "existential quantifiers in Lean",
+      "natural-number arithmetic"
+    ]
+  },
+  {
     "id": "ann-mod8-obstruction",
     "proofId": "lagrange-four-squares-oq-04-oq-01",
     "range": {
@@ -21,6 +44,29 @@
     "prerequisites": [
       "modular arithmetic",
       "residues of squares"
+    ]
+  },
+  {
+    "id": "ann-witnesses",
+    "proofId": "lagrange-four-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 72,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "The Witnesses: Three Small Representations and Two Obstructed Products",
+    "content": "The concrete data driving the counterexample, each a one-liner. The positive witnesses `three_isSumOfThreeSquares` (3 = 1²+1²+1²), `five_isSumOfThreeSquares` (5 = 0²+1²+2²), and `twentyone_isSumOfThreeSquares` (21 = 4²+2²+1²) are just explicit tuples closed by `norm_num`. The negative witnesses `not_isSumOfThreeSquares_15` and `not_isSumOfThreeSquares_63` invoke the corollary `not_isSumOfThreeSquares_of_seven_mod_eight` with `by norm_num` discharging 15 % 8 = 7 and 63 % 8 = 7 — so the mod-8 obstruction does all the work. These five facts are exactly what the main non-closure theorem assembles: two representable inputs whose product is provably non-representable.",
+    "mathContext": "$3 = 1^2{+}1^2{+}1^2,\\ 5 = 0^2{+}1^2{+}2^2,\\ 21 = 4^2{+}2^2{+}1^2$; and $15 \\equiv 7,\\ 63 \\equiv 7 \\pmod 8 \\Rightarrow 15, 63 \\notin S_3.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "explicit witnesses",
+      "norm_num",
+      "the mod-8 corollary",
+      "smallest counterexample"
+    ],
+    "prerequisites": [
+      "the mod-8 obstruction",
+      "existential introduction"
     ]
   },
   {
