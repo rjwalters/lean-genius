@@ -464,3 +464,63 @@ refinement.
 REMAINING: (1) uniqueness / interior-incenter refinement; (2) spherical nine-point circle;
 (3) the Feuerbach tangency itself (nine-point circle tangent to the incircle). The hard
 existence-of-incenter obstacle is now cleared.
+
+## Session 2026-07-01 (researcher-11): spherical MIDPOINT layer — arc bisection [BUILD-BLOCKED: mathlib cache corruption]
+
+**Mode**: ACT (CONTINUE). Attacks remaining item **(2) spherical nine-point circle**: the
+classical nine-point circle passes through the three *midpoints of the triangle's sides*, so a
+spherical nine-point construction first needs a verified **midpoint of a spherical segment**.
+This session builds that primitive in a **collision-free companion file**
+`proofs/Proofs/FeuerbachsTheoremOQ04Midpoint.lean` (new file, auto-discovered by lake globs,
+imports `Proofs.FeuerbachsTheoremOQ04`), so it does **not** touch the shared
+`FeuerbachsTheoremOQ04.lean` and cannot clobber the in-flight incenter/bisector work.
+
+**Outcome**: CODE COMPLETE (10 declarations, ~181 L), **but build verification is BLOCKED by a
+mathlib cache-blob corruption affecting all Docker builds on the host** — see below. NOT claimed
+verified per integrity policy. Committed + pushed (branch `research/feuerbach-oq04-midpoint`).
+
+### Delivered (`FeuerbachsTheoremOQ04Midpoint.lean`)
+- **`sMidpoint P Q := ‖P + Q‖⁻¹ • (P + Q)`** — the normalised sum (perpendicular-bisector-plane
+  point on the near side), for non-antipodal `P, Q` (`scos P Q > -1` ⟺ `P + Q ≠ 0`).
+- **`norm_add_sq_onSphere`** : `‖P + Q‖² = 2 + 2·scos P Q` (addition analogue of merged `chord_sq`).
+- **`norm_add_pos`** : non-antipodal ⇒ `‖P + Q‖ > 0` (well-definedness).
+- **`onSphere_sMidpoint`** : the midpoint is a unit vector (`norm_smul`/`norm_inv`/`inv_mul_cancel₀`).
+- **`inner_sMidpoint_left`/`_right`** : `⟪M,P⟫ = ⟪M,Q⟫ = ‖P+Q‖⁻¹·(1 + scos P Q)` (equidistant, algebraic).
+- **`scos_sMidpoint_equidist`, `sdist_sMidpoint_equidist`** : the midpoint is equidistant from both endpoints.
+- **`sdist_sMidpoint_bisect`** (headline) : `sdist P (sMidpoint P Q) = sdist P Q / 2`. ENGINE:
+  the half-angle identity `⟪P,M⟫ = cos((arccos (scos P Q))/2)` via `Real.cos_half` +
+  `Real.cos_arccos`, combined with `⟪P,M⟫ ≥ 0` and `⟪P,M⟫² = (1+scos)/2` (so `⟪P,M⟫ = √((1+scos)/2)`),
+  then `Real.arccos_cos` on `[0,π]`.
+- **`sdist_sMidpoint_right`** : symmetric `sdist Q (sMidpoint P Q) = sdist P Q / 2` (via `sMidpoint_comm`).
+- **`sdist_sMidpoint_add`** : `sdist P M + sdist M Q = sdist P Q` — triangle inequality holds with
+  equality, so `M` lies ON the geodesic segment (a genuine arc midpoint, not merely equidistant).
+
+### RECIPES (for reuse)
+- Half-distance from a normalised-sum point: `Real.cos_half {x} (hl : -π ≤ x) (hr : x ≤ π) :
+  cos (x/2) = √((1 + cos x)/2)`, instantiated at `x = arccos (scos P Q)` (∈ `[0,π]` always);
+  recover the inner product as `√(·²)` via `Real.sqrt_sq` on the nonneg inner product.
+- `‖P+Q‖² = 2 + 2⟪P,Q⟫` mirrors merged `chord_sq` (`‖P−Q‖² = 2 − 2·scos`); `inner_add_*` + `ring`.
+- `arccos x ≤ π/2 ↔ 0 ≤ x` is `Real.arccos_le_pi_div_two` (found but not needed — the `[0,π]`
+  bound on `arccos (scos)/2` suffices for `Real.arccos_cos`).
+
+### BUILD BLOCKER (infrastructure, NOT a code error — file elaborates up to `import Mathlib`)
+Docker was freshly restarted this session (daemon was down; brought up via `open -a Docker`).
+Every subsequent build fails in the **Mathlib cache stage**, not on this file's Lean code:
+`lake exe cache get` downloads all 7727 blobs, but `f0b4cfbf7f287672.ltar` is *consistently*
+flagged `removing corrupted file`, so `Mathlib/RingTheory/Kaehler/Basic.olean.server` is absent
+and `import Mathlib` fails with `failed to open file '…/Kaehler/Basic.olean.server'` — at
+`FeuerbachsTheoremOQ04.lean:53` (the dependency's import) and at this file's line 46. This
+affects **all** concurrent agent builds (8 `lean-build-*` containers were running), i.e. the
+shared `lean-mathlib-cache` blob is corrupt upstream/on-host. Did NOT restart Docker again
+(would kill 8 concurrent builds). The Lean proofs use only `ring`/`linarith`/`nlinarith`/
+`field_simp` + named `Real.cos_half`/`cos_arccos`/`arccos_cos`/`sqrt_sq` (all verified to exist
+in `proofs/.lake/…/Trigonometric/{Basic,Inverse}.lean`), so correctness is highly likely; per
+policy it is **not** claimed VERIFIED until a clean docker build. **NEXT AGENT**: re-run
+`docker-build.sh Proofs.FeuerbachsTheoremOQ04Midpoint` once the cache blob is healthy; if green,
+flip PR to ready and mark VERIFIED.
+
+### Next steps (unchanged direction)
+1. Verify this file once the mathlib cache recovers.
+2. Spherical nine-point circle: the circle through the three side midpoints (`sMidpoint` of each
+   pair of triangle vertices) — needs a "circle through 3 spherical points" existence lemma.
+3. Then the spherical Feuerbach tangency (nine-point circle tangent to the incircle).
