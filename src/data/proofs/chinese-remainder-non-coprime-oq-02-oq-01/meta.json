@@ -67,6 +67,42 @@
       "Quantify the solution: an explicit representative modulo lcm(m₁,m₂,m₃) via iterated Bézout, with complexity bounds"
     ]
   },
+  "references": [
+    {
+      "authors": "Sun Zi (孫子)",
+      "title": "Sunzi Suanjing (Master Sun's Mathematical Manual)",
+      "year": "c. 400 CE",
+      "note": "The historical origin of the Chinese Remainder Theorem: the 'things unknown in number' problem solving simultaneous congruences, the coprime case this entry generalizes to non-coprime moduli."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "John Wiley & Sons",
+      "note": "§7.6 gives the ideal-theoretic CRT R/(I₁∩⋯∩Iₙ) ≅ ∏R/Iᵢ for pairwise-comaximal ideals; this entry studies precisely the non-comaximal failure, characterizing solvability by pairwise gcd-compatibility in a PID."
+    },
+    {
+      "authors": "Ore, Øystein",
+      "title": "The General Chinese Remainder Theorem",
+      "year": "1952",
+      "venue": "The American Mathematical Monthly, vol. 59, no. 6",
+      "note": "The classical statement of the non-coprime CRT: the system x ≡ aᵢ (mod mᵢ) is solvable iff gcd(mᵢ,mⱼ) ∣ aᵢ−aⱼ pairwise, with the solution unique mod lcm — the multi-modulus criterion this entry formalizes for three moduli."
+    },
+    {
+      "authors": "Grätzer, George",
+      "title": "Lattice Theory: Foundation",
+      "year": "2011",
+      "venue": "Birkhäuser",
+      "note": "Reference for distributive lattices; the pairwise-to-global step of non-coprime CRT holds exactly because the divisibility lattice of a GCD domain is distributive — the law gcd(lcm a b, c) ∣ lcm(gcd a c, gcd b c) proved here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.RingTheory.Coprime.Lemmas, Mathlib.Algebra.GCDMonoid.Basic, and Mathlib.RingTheory.Ideal.Operations",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the GCDMonoid/Bézout-domain infrastructure (gcd, lcm, associated divisibility) and ideal operations through which the three-modulus solvability criterion and the lattice distributive law are transported."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "chinese-remainder-non-coprime-oq-02",
