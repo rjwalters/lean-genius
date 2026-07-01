@@ -57,6 +57,38 @@
       "The 2n/5 threshold is sharp, and the balanced blow-up of the 5-cycle C₅ is the single example that certifies it: it is triangle-free, non-bipartite, and 2n/5-regular, so it simultaneously shows the AES hypothesis cannot be relaxed below 2n/5 and pins down the exact constant the degree-cleaning step must clear before invoking the lemma."
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Andrásfai, B.",
+        "Erdős, P.",
+        "Sós, V.T."
+      ],
+      "title": "On the connection between chromatic number, maximal clique and minimal degree of a graph",
+      "year": "1974",
+      "venue": "Discrete Mathematics 8 (3), pp. 205–218",
+      "note": "The minimum-degree threshold for triangle-free graphs (Andrásfai–Erdős–Sós)."
+    },
+    {
+      "authors": [
+        "Erdős, P.",
+        "Simonovits, M."
+      ],
+      "title": "A limit theorem in graph theory",
+      "year": "1966",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica 1, pp. 51–57",
+      "note": "The Erdős–Simonovits stability theorem for extremal graphs."
+    },
+    {
+      "authors": [
+        "Bollobás, B."
+      ],
+      "title": "Extremal Graph Theory",
+      "year": "1978",
+      "venue": "London Mathematical Society Monographs 11, Academic Press",
+      "note": "Standard reference for Mantel's and Turán's theorems and the Erdős–Simonovits stability theory."
+    }
+  ],
   "conclusion": {
     "summary": "This entry formalizes, with no axioms or sorries, the Andrásfai–Erdős–Sós min-degree ingredient underlying Erdős–Simonovits stability for triangle-free graphs: a triangle-free graph with minimum degree > 2n/5 is bipartite (the r = 2 case of Mathlib's colorable_of_cliqueFree_lt_minDegree), together with its contrapositive sparse-vertex form. It is a verified partial result, not the full stability theorem.",
     "implications": "Isolates the precise Mathlib lemma that supplies the structural half of the stability argument and packages it in the exact shape the degree-cleaning proof consumes, lowering the barrier to a future full formalization. The remaining work is a self-contained counting problem (bounding the edges lost when low-degree vertices are deleted) plus an edit-distance accounting step.",

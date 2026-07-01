@@ -65,6 +65,35 @@
       "Read contrapositively the result is a Turán-type forcing principle — minimum degree > n/2 guarantees a triangle — which is the local analogue of 'too many edges force a triangle'."
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Mantel, W."
+      ],
+      "title": "Problem 28",
+      "year": "1907",
+      "venue": "Wiskundige Opgaven 10, pp. 60–61",
+      "note": "Original statement: a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, attained by the balanced complete bipartite graph."
+    },
+    {
+      "authors": [
+        "Bollobás, B."
+      ],
+      "title": "Extremal Graph Theory",
+      "year": "1978",
+      "venue": "London Mathematical Society Monographs 11, Academic Press",
+      "note": "Standard reference for Mantel's and Turán's theorems and the Erdős–Simonovits stability theory."
+    },
+    {
+      "authors": [
+        "West, D.B."
+      ],
+      "title": "Introduction to Graph Theory",
+      "year": "2001",
+      "venue": "2nd ed., Prentice-Hall",
+      "note": "Textbook development of Mantel/Turán extremal bounds and the Turán graph."
+    }
+  ],
   "conclusion": {
     "summary": "A complete, axiom-free and sorry-free formalization of the minimum-degree corollary of Mantel's theorem: every triangle-free simple graph on a nonempty vertex set has a vertex of degree at most ⌊n/2⌋, together with the supporting neighbourhood-disjointness and degree-sum lemmas and the Turán-type contrapositive (large minimum degree forces a triangle).",
     "implications": "Provides the reusable local ingredients — disjoint neighbourhoods of adjacent vertices and the deg u + deg v ≤ n edge inequality — that underlie inductive proofs of Mantel's theorem and several degree-cleaning arguments in extremal graph theory, all packaged independently of the global edge bound.",
