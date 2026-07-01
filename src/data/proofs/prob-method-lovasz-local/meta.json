@@ -43,7 +43,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 364,
+    "lineCount": 471,
     "prerequisites": [
       "Probabilistic method and independence of events",
       "Dependency graphs and near-independence",
@@ -53,8 +53,8 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25,
-    "definitionCount": 3,
+    "theoremCount": 27,
+    "definitionCount": 2,
     "additionalFiles": [
       "Proofs/MoserTardos.lean"
     ]
@@ -215,10 +215,10 @@
     ],
     "opens": [],
     "namespace": "ProbMethod.LovaszLocal",
-    "lineCount": 364,
+    "lineCount": 471,
     "axiomCount": 0,
-    "theoremCount": 25,
-    "definitionCount": 3,
+    "theoremCount": 27,
+    "definitionCount": 2,
     "path": "Proofs/LovaszLocalLemma.lean",
     "sorries": 0,
     "additionalFiles": [
