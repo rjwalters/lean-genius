@@ -26,25 +26,123 @@
     ]
   },
   {
+    "id": "ann-buffons-noodle-oq-03-part1",
+    "proofId": "buffons-noodle-oq-03",
+    "range": {
+      "startLine": 66,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Part I — The Per-Segment Crossing Count",
+    "content": "`segmentCrossings α ℓ d := α * ℓ / d` is the orientation-averaged expected number of crossings of a single straight segment of length `ℓ` against hyperplanes spaced `d` apart, in a dimension whose crossing factor is `α = αₙ`. Carrying `α` as a real parameter is the file's honest separation: given the dimension's spherical mean αₙ, the per-segment count is a *definition*, and everything downstream is a theorem about it. Three elementary lemmas fix its shape: `segmentCrossings_linear` (linear in length — `α·(cℓ)/d = c·(α·ℓ/d)`, by `ring`), `segmentCrossings_zero` (a degenerate zero-length segment never crosses), and `segmentCrossings_nonneg` (nonnegative for `α ≥ 0`, `ℓ ≥ 0`, `d > 0`, via `div_nonneg`/`mul_nonneg`). These are the atoms the noodle sum is built from.",
+    "mathContext": "$\\operatorname{segmentCrossings}(\\alpha,\\ell,d) = \\dfrac{\\alpha\\,\\ell}{d};\\quad \\text{linear in } \\ell,\\ =0 \\text{ at } \\ell=0,\\ \\ge 0.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "expected value of a single segment",
+      "projection onto the normal axis",
+      "crossing factor as a parameter",
+      "linearity in length"
+    ],
+    "prerequisites": [
+      "real division",
+      "div_nonneg / mul_nonneg",
+      "ring normalization"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-part2",
+    "proofId": "buffons-noodle-oq-03",
+    "range": {
+      "startLine": 93,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "Part II — The Noodle Structure and Expected Total Crossings",
+    "content": "A polygonal noodle is modelled by `structure Noodle (n : ℕ)` recording only the `n` segment lengths `segLen : Fin n → ℝ` together with a `nonneg` field asserting each length is `≥ 0` — the orientations are deliberately absent, already integrated into `α`. `Noodle.totalLength` is the finite sum `∑ i, segLen i` (nonnegative, `Noodle.totalLength_nonneg`, by `Finset.sum_nonneg`), and `Noodle.expectedCrossings α d := ∑ i, segmentCrossings α (segLen i) d` is the expected total crossings as the sum of the per-segment counts. This is exactly the planar parent's pattern lifted to dimension `n`: because independence of the segments is never needed, the sum is legitimate even though the segments share one random orientation — the hallmark of linearity of expectation.",
+    "mathContext": "$L = \\sum_{i} \\operatorname{segLen}(i);\\qquad \\mathbb{E}[\\text{crossings}] = \\sum_{i} \\dfrac{\\alpha\\,\\operatorname{segLen}(i)}{d}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "polygonal approximation of a curve",
+      "total arc length as a finite sum",
+      "linearity of expectation without independence",
+      "Fin n indexing"
+    ],
+    "prerequisites": [
+      "structures / records in Lean",
+      "Finset.sum over Fin n",
+      "Finset.sum_nonneg"
+    ]
+  },
+  {
     "id": "ann-buffons-noodle-oq-03-02",
     "proofId": "buffons-noodle-oq-03",
     "range": {
-      "startLine": 130,
+      "startLine": 118,
       "endLine": 136
     },
     "type": "tactic",
-    "title": "Linearity of Expectation, Dimension-General",
-    "content": "noodle_highdim is proved exactly as in the planar parent: the expected total crossings ∑ᵢ α·Lᵢ/d factor as (α/d)·∑ᵢ Lᵢ = α·L/d via Finset.mul_sum. Because the orientation has already been integrated into the single constant α, the segments need not be independent and their angles never appear — only the total length L survives. This is the algebraic heart of Barbier's shape-independence principle, and it is identical in form in every dimension.",
-    "mathContext": "$\\sum_i \\dfrac{\\alpha L_i}{d} = \\dfrac{\\alpha}{d}\\sum_i L_i = \\dfrac{\\alpha L}{d}$.",
+    "title": "Part III — Linearity of Expectation, Dimension-General",
+    "content": "`noodle_highdim` is proved exactly as in the planar parent: the expected total crossings ∑ᵢ α·Lᵢ/d factor as (α/d)·∑ᵢ Lᵢ = α·L/d. Concretely the proof rewrites each term `α·segLen i/d` to `α/d · segLen i` (the `hrw` step, by `ring`), pulls the common constant out with `Finset.mul_sum` (used in reverse, `← Finset.mul_sum`), and closes with `ring`. Because the orientation has already been integrated into the single constant α, the segments need not be independent and their angles never appear — only the total length L survives. This is the algebraic heart of Barbier's shape-independence principle, and it is identical in form in every dimension.",
+    "mathContext": "$\\sum_i \\dfrac{\\alpha L_i}{d} = \\dfrac{\\alpha}{d}\\sum_i L_i = \\dfrac{\\alpha L}{d}.$",
     "significance": "critical",
     "relatedConcepts": [
       "linearity of expectation",
       "Finset.mul_sum",
-      "shape independence"
+      "shape independence",
+      "distributive factoring of a constant"
     ],
     "prerequisites": [
       "finite sums",
-      "expected value"
+      "expected value",
+      "ring / simp_rw"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-part4",
+    "proofId": "buffons-noodle-oq-03",
+    "range": {
+      "startLine": 137,
+      "endLine": 199
+    },
+    "type": "theorem",
+    "title": "Part IV — Shape Independence and the Structural Laws",
+    "content": "Every law here is a one-line corollary of `noodle_highdim`, obtained by rewriting both sides to the closed form α·L/d and finishing with field algebra. `shape_independence`: equal total length ⟹ equal expected crossings, even across *different* dimensions m and n (Barbier, dimension-blind). `additive`: crossings of a length-(L₁+L₂) noodle split as the sum of the parts (linearity). `scaling`: scaling every segment by c ≥ 0 scales the count by c. `expectedCrossings_nonneg`: nonnegativity from α ≥ 0, d > 0. `expectedCrossings_mono` / `expectedCrossings_strictMono`: monotone (resp. strictly monotone) in total length, both discharged by the `gcongr` generalized-congruence tactic. `lipschitz`: the count is Lipschitz in total length with constant α/d, proved by rewriting the difference to (α/d)·(L₁−L₂) and taking `abs_mul` with `abs_of_nonneg`.",
+    "mathContext": "$\\mathbb{E} = \\dfrac{\\alpha L}{d};\\quad L_1 = L_2 \\Rightarrow \\mathbb{E}_1 = \\mathbb{E}_2;\\quad |\\mathbb{E}_1 - \\mathbb{E}_2| \\le \\dfrac{\\alpha}{d}\\,|L_1 - L_2|.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Barbier's shape-independence principle",
+      "monotonicity via gcongr",
+      "Lipschitz continuity",
+      "additivity / scaling of expectation"
+    ],
+    "prerequisites": [
+      "gcongr tactic",
+      "abs_mul / abs_of_nonneg",
+      "field algebra (ring)"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-part5",
+    "proofId": "buffons-noodle-oq-03",
+    "range": {
+      "startLine": 200,
+      "endLine": 219
+    },
+    "type": "theorem",
+    "title": "Part V — The Polygonal → Smooth Approximation Limit",
+    "content": "`approx_limit` is the bridge from polygonal noodles to smooth curves: if a sequence of noodles `N k` (with possibly varying segment counts `ns k`) has total lengths converging to `L`, then their expected crossings converge to `α·L/d`. The proof rewrites every term with `noodle_highdim` (so the sequence becomes `k ↦ α·(N k).totalLength/d`), notes that `x ↦ α·x/d` is continuous (`(continuous_const.mul continuous_id).div_const d`), and composes continuity with the length convergence (`hcont.continuousAt.tendsto.comp hConverge`). This is the dimensional analogue of the planar parent's approximation theorem and the justification that the smooth higher-dimensional case follows from the polygonal one by continuity — the reason the polygonal backbone suffices.",
+    "mathContext": "$(N_k).\\text{totalLength} \\to L \\ \\Rightarrow\\ (N_k).\\text{expectedCrossings}\\,\\alpha\\,d \\to \\dfrac{\\alpha L}{d}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polygonal approximation of rectifiable curves",
+      "continuity of an affine map",
+      "Filter.Tendsto / composition of limits",
+      "rectifiability"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Continuous.div_const",
+      "continuousAt.tendsto.comp"
     ]
   },
   {
@@ -55,7 +153,7 @@
       "endLine": 278
     },
     "type": "concept",
-    "title": "The Dimensional Recurrence and the π/4 Ratio",
+    "title": "Part VI — The Dimensional Recurrence and the π/4 Ratio",
     "content": "The crossing factors obey the spherical recurrence αₙ₊₂ = (n/(n+1))·αₙ (α₂ = 2/π, α₃ = 1/2). recurrence_transfers shows this carries over to the expected crossings of ANY fixed noodle, shape-independently. dimension_ratio shows the ratio of expected crossings between two dimensions is α/β, independent of the curve. Specializing, a curve crosses hyperplanes in ℝ³ exactly α₃/α₂ = (1/2)/(2/π) = π/4 ≈ 0.785 times as often as it crosses lines in ℝ² (spatial_to_planar_ratio). The planar case α₂ = 2/π recovers the classical 2L/(πd), and the spatial circle of radius r crosses πr/d times on average.",
     "mathContext": "$\\alpha_{n+2} = \\dfrac{n}{n+1}\\alpha_n;\\quad \\dfrac{\\mathbb{E}_3}{\\mathbb{E}_2} = \\dfrac{\\alpha_3}{\\alpha_2} = \\dfrac{1/2}{2/\\pi} = \\dfrac{\\pi}{4}.$",
     "significance": "key",
