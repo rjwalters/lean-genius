@@ -192,11 +192,18 @@
       "summary": "natDegree_sq_add_sq: deg(u² + v²) = 2·max(deg u, deg v). A symmetric helper handles the maximal-degree polynomial; the lower bound exhibits a nonzero coefficient (a positive sum of squares) at index 2·max via le_natDegree_of_ne_zero, the upper bound is natDegree_add_le."
     },
     {
-      "id": "structural",
-      "title": "Even degree and positive leading coefficient",
+      "id": "even-degree",
+      "title": "A nonzero PSD polynomial has even degree",
       "startLine": 101,
+      "endLine": 106,
+      "summary": "IsPSD.natDegree_even: from a two-squares decomposition p = u² + v², natDegree_sq_add_sq gives deg p = 2·max(deg u, deg v), which is even — the classical parity fact obtained algebraically."
+    },
+    {
+      "id": "leading-positive",
+      "title": "A nonzero PSD polynomial has positive leading coefficient",
+      "startLine": 108,
       "endLine": 122,
-      "summary": "IsPSD.natDegree_even and IsPSD.leadingCoeff_pos: from a two-squares decomposition, deg p = 2·max is even and leadingCoeff p = (u.coeff n)² + (v.coeff n)² is a nonzero sum of squares, hence positive."
+      "summary": "IsPSD.leadingCoeff_pos: at n = ½·deg p the leading coefficient of p = u² + v² equals (u.coeff n)² + (v.coeff n)² via coeff_sq_two — a sum of squares that is ≥ 0 and nonzero since p ≠ 0, hence strictly positive."
     },
     {
       "id": "exact-normalization",
