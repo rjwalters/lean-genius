@@ -8,7 +8,7 @@
   "significance": 7,
   "tractability": 5,
   "started": "2026-05-11T19:00:00Z",
-  "lastUpdate": "2026-06-13T16:03:00Z",
+  "lastUpdate": "2026-07-01T16:10:00Z",
   "problemStatement": {
     "formal": "\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall P : \\text{PlanarPointSet},\\ \\text{NoFiveCollinear}\\ P \\land N \\leq |P| \\Rightarrow \\text{fourPointLineCount}(P) < \\varepsilon \\cdot |P|^2",
     "plain": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines containing exactly four points $o(n^2)$? Best known: $O(n^2)$ upper (trivial), $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ lower (Solymosi–Stojaković).",
@@ -33,10 +33,10 @@
     "goal": "Prove $\\text{fourPointLineCount}(P) = o(|P|^2)$ for all `NoFiveCollinear P`, or sharpen the bound to an explicit subquadratic rate."
   },
   "currentState": {
-    "phase": "ACT (S15 BUILD-VERIFY — S14 build confirmed GREEN on origin/main)",
-    "since": "2026-06-12T00:00:00Z",
-    "iteration": 15,
-    "focus": "S15 BUILD-VERIFY (researcher-2, 2026-06-12, doc-only): cleared S14's 'NOT verified locally' qualifier. The Docker host recovered from the 2026-06-03 containerd I/O error; running ./proofs/scripts/docker-build.sh Proofs.Erdos101OQ01 on the unchanged origin/main file → 'Build completed successfully (3061 jobs)' at Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. The only two warnings are the two expected OPEN sorries: erdos_101_oq_01 (L113, the open conjecture) and solymosi_stojakovic_lower_bound (L588, literature lower bound). No v4.26.0 surface-drift — unlike the OQ-03/Basel 'qualifier masked real bugs' pattern, the 762-LOC S14 file is genuinely clean. Counts on main: 762 LOC, 2 sorries, 0 axioms — matching gallery meta (status axiomatized, badge wip). No code change; no meta edit needed. Prior: S14 ACT (2026-06-03, researcher-1) surrogate↔true-sup unification (maxCountAtSize_le_maxFourPointLines + maxCountAtSize_isBigO_n_squared), shipped unverified; S13 conjecture↔rate_form; S12 IsBigO/IsLittleO Mathlib-idiom bridge.",
+    "phase": "ACT (S19 — first unconditional lower bound on maxCountAtSize)",
+    "since": "2026-07-01T00:00:00Z",
+    "iteration": 19,
+    "focus": "S19 ACT (researcher-1, 2026-07-01): added one_le_maxCountAtSize_four : 1 <= maxCountAtSize 4 — the file's first sorry-free, axiom-free POSITIVE lower bound on the extremal function maxCountAtSize itself (all prior lower bounds on maxCountAtSize routed through the deferred solymosi_stojakovic_lower_bound sorry). Witness = x-axis quadruple {(0,0),(1,0),(2,0),(3,0)}: no-five-collinear via noFiveCollinear_small, a single four-point line via the S18 tool fourPointLineCount_ge_of_family, lifted to the supremum via le_maxCountAtSize. Combined with maxCountAtSize_le_maxFourPointLines (O(n^2) upper), the OQ-01 gap now has both sides witnessed unconditionally. Verified via lake env lean (docker unusable: 5 concurrent builds churning shared .lake). Sorries 2->2, axioms 0, theorems 24->25, LOC 987->1066.",
     "blockers": [
       "Main conjecture erdos_101_oq_01 ($100 Erdős prize) remains OPEN; the file states it in two equivalent Mathlib-idiom forms but does not discharge it.",
       "solymosi_stojakovic_lower_bound construction over finite fields remains deferred (separate OPEN sorry, L588)."
@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S14 (researcher-7, 2026-07-01): lower-bound transfer to the extremal function, lake-env-lean VERIFIED (docker containerd broken). Added maxCountAtSize_not_O_rpow — maxCountAtSize is not O(nᵝ) for any β<2 — the missing lower-bound counterpart to the existing O(n²) upper bound maxCountAtSize_isBigO_n_squared, giving a two-sided n^{2-o(1)} ≤ maxCountAtSize n ≤ n² framing of the OQ-01 gap. Genuine sorries unchanged at 2 (erdos_101_oq_01 [$100 OPEN] + solymosi_stojakovic_lower_bound [deferred finite-field construction]); axioms 0; +1 theorem; LOC 837→887. Prior: S13 conjecture↔rate_form equivalence + true-sup unification (maxCountAtSize_le_maxFourPointLines).",
+    "progressSummary": "S19 (researcher-1, 2026-07-01): one_le_maxCountAtSize_four proves 1 <= maxCountAtSize 4 sorry-free — first unconditional positive lower bound on the extremal function (prior maxCountAtSize lower bounds all rode the deferred SS sorry). x-axis quadruple witness + S18's fourPointLineCount_ge_of_family + le_maxCountAtSize. Next: extend to all n>=4 via parabola tail {(k,k^2)} whose no-3-collinear is clean algebra. Two OPEN sorries remain (erdos_101_oq_01 $100 prize; solymosi_stojakovic_lower_bound).",
     "builtItems": [
       "proofs/Proofs/Erdos101OQ01.lean: IsLittleOh_n_squared (def)",
       "proofs/Proofs/Erdos101OQ01.lean: BoundsAtRate (def)",

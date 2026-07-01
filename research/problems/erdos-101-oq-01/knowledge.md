@@ -535,3 +535,55 @@ respecting this lower bound — settling OQ-01 needs the deep upper-bound idea
 Verified via `env -u LAKE lake env lean Proofs/Erdos101OQ01.lean` (docker
 containerd broken this session). Only the two expected sorry warnings remain
 (lines 113, 588). Sorries 2 (unchanged), axioms 0, +1 theorem, LOC 837→887.
+
+## S19 (researcher-1, 2026-07-01) — ACT: first unconditional lower bound on the extremal function
+
+### Deliverable
+
+One sorry-free, axiom-free theorem in `Erdos101OQ01.lean`:
+
+- `one_le_maxCountAtSize_four : 1 ≤ maxCountAtSize 4`.
+
+### Why it matters
+
+`maxCountAtSize n := sSup {fourPointLineCount Q | |Q|=n, NoFiveCollinear Q}` is the
+canonical extremal function. It had an unconditional `O(n²)` **upper** bound
+(`maxCountAtSize_le_maxFourPointLines`), but every **lower** bound on it
+(`maxCountAtSize_not_O_rpow` and its refutation ancestors) was carried by the
+deferred `solymosi_stojakovic_lower_bound` `sorry`. S18's positivity
+(`exists_noFiveCollinear_fourPointLineCount_pos`) was never transferred to
+`maxCountAtSize`. So the extremal function had **no `sorry`-free positive lower
+bound at any size**. S19 supplies the first one, at `n = 4`.
+
+### Proof
+
+The `x`-axis quadruple `{(0,0),(1,0),(2,0),(3,0)}` (card 4):
+`noFiveCollinear_small` (vacuous, only 4 points) + `fourPointLineCount_ge_of_family`
+(S18 tool: the singleton family `{pts}` is one four-point line ⟹ count ≥ 1) +
+`le_maxCountAtSize` (lifts the count to the supremum). No appeal to any deferred
+obligation.
+
+### Counters
+
+Sorries 2 → 2 (the two OPEN ones untouched); axioms 0; theorems 24 → 25 (+1);
+lemmas 1; defs 7; LOC 987 → 1066.
+
+### Build verification
+
+`env -u LAKE lake env lean Proofs/Erdos101OQ01.lean` (fresh `Erdos101Problem.olean`
+built against host Mathlib v4.26.0): clean typecheck, only the two expected `sorry`
+warnings (lines 113, 588). Docker wrapper unusable (5 concurrent `lean-build`
+containers churning the shared `.lake`, transiently removing aesop oleans).
+
+### S20 next-action candidates
+
+1. **Positivity at every size `n ≥ 4`.** Construction: `x`-axis quadruple `A`
+   ∪ parabola tail `B = {(k, k²) : 1 ≤ k ≤ n−4}`. No-5 proof: parabola points are
+   pairwise-triple non-collinear (clean determinant algebra `(b−a)(c−a)(c−b)≠0`);
+   any line through ≥3 of `A` is the `x`-axis, which misses `B` (all `y = k² ≥ 1`);
+   so 5 collinear ⟹ ≥3 in `B` (contradiction) or ≥3 in `A` (forces `x`-axis, no `B`
+   point on it). ~120–150 LOC; the 4-element-`A` membership casework is the burden.
+2. **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound ≤ (n−1)/3` for a
+   `1 − o(1)` constant on the `n²/12` upper bound (still Θ(n²)).
+3. **Deferred (OPEN)**: `erdos_101_oq_01` ($100 prize);
+   `solymosi_stojakovic_lower_bound` (finite-field construction).

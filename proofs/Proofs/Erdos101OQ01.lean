@@ -984,4 +984,83 @@ theorem exists_noFiveCollinear_fourPointLineCount_pos :
         rcases hp with rfl | rfl | rfl | rfl <;> (unfold collinear; norm_num)
   simpa using key
 
+/-! ## S19 ACT: first unconditional positive lower bound on the extremal function
+
+Section S18 proved `exists_noFiveCollinear_fourPointLineCount_pos` — a
+no-five-collinear set carrying a genuine four-point line — but never transferred
+that positivity to the *extremal function* `maxCountAtSize`.  Every prior lower
+bound on `maxCountAtSize` (`maxCountAtSize_not_O_rpow` and the refutations it
+rests on) is carried by the deferred `solymosi_stojakovic_lower_bound` `sorry`:
+until now the file had **no `sorry`-free positive lower bound on
+`maxCountAtSize` at any size**.
+
+`one_le_maxCountAtSize_four` closes that gap at the smallest nontrivial size.
+The `x`-axis quadruple `{(0,0),(1,0),(2,0),(3,0)}` has exactly four points, is
+no-five-collinear (`noFiveCollinear_small`, vacuously — it has only four
+points), and is itself a single four-point line, so it lies in the family whose
+supremum defines `maxCountAtSize 4`.  Combined with the `O(n²)` upper bound
+`maxCountAtSize_le_maxFourPointLines`, this pins the extremal function between an
+*unconditional* constant lower bound and the elementary quadratic upper bound —
+the OQ-01 gap now has both sides witnessed without appeal to the deferred
+construction.
+
+Sorry count unchanged (still 2). Axiom count unchanged (still 0). Theorem
+count: +1. -/
+
+/-- **First unconditional lower bound on the extremal function.** At size `4`
+the extremal four-point-line count `maxCountAtSize 4` is at least `1`, witnessed
+by the collinear quadruple on the `x`-axis.
+
+Unlike `maxCountAtSize_not_O_rpow`, whose lower bounds are all carried by the
+deferred `solymosi_stojakovic_lower_bound`, this bound is proved with **no
+`sorry`** and **no axiom**: it is the file's first positive lower bound on
+`maxCountAtSize` itself, not merely on `fourPointLineCount` of some fixed set.
+The witness set has exactly four points, so it is no-five-collinear by
+`noFiveCollinear_small`, and it is a single four-point line by
+`fourPointLineCount_ge_of_family`; `le_maxCountAtSize` lifts the count to the
+supremum. -/
+theorem one_le_maxCountAtSize_four : 1 ≤ maxCountAtSize 4 := by
+  classical
+  -- The collinear quadruple on the x-axis (as in S18).
+  set pts : Finset (ℝ × ℝ) := {(0, 0), (1, 0), (2, 0), (3, 0)} with hpts
+  have hcard : pts.card = 4 := by
+    rw [hpts,
+        Finset.card_insert_of_notMem
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]),
+        Finset.card_insert_of_notMem
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]),
+        Finset.card_insert_of_notMem
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]),
+        Finset.card_singleton]
+  have hpos : (0 : ℕ) < pts.card := by rw [hcard]; norm_num
+  set P : PlanarPointSet := ⟨pts, hpos⟩ with hP
+  have hP5 : NoFiveCollinear P := noFiveCollinear_small P (by rw [hP, hcard])
+  -- The single four-point line `pts` witnesses `1 ≤ fourPointLineCount P`.
+  have hcount : 1 ≤ fourPointLineCount P := by
+    have key : ({pts} : Finset (Finset (ℝ × ℝ))).card ≤ fourPointLineCount P := by
+      apply fourPointLineCount_ge_of_family
+      · intro S hS
+        rw [Finset.mem_singleton] at hS; subst hS
+        exact Finset.Subset.refl _
+      · intro S hS
+        rw [Finset.mem_singleton] at hS; subst hS
+        exact hcard
+      · intro S hS
+        rw [Finset.mem_singleton] at hS; subst hS
+        refine ⟨(0, 0), (1, 0), ?_, ?_, ?_, ?_⟩
+        · rw [hpts]; simp
+        · rw [hpts]; simp
+        · norm_num [Prod.mk.injEq]
+        · intro p hp
+          rw [hpts] at hp
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+          rcases hp with rfl | rfl | rfl | rfl <;> (unfold collinear; norm_num)
+    simpa using key
+  -- Lift the count to the supremum `maxCountAtSize 4`.
+  have hle : fourPointLineCount P ≤ maxCountAtSize P.points.card :=
+    le_maxCountAtSize P hP5
+  have hcard4 : P.points.card = 4 := by rw [hP, hcard]
+  rw [hcard4] at hle
+  exact le_trans hcount hle
+
 end Erdos101OQ01
