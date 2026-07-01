@@ -34,15 +34,30 @@
     "proofId": "basel-problem-oq-08-oq-02-oq-01",
     "range": {
       "startLine": 63,
-      "endLine": 88
+      "endLine": 74
     },
     "type": "theorem",
-    "title": "The Value ζ(8) = π⁸/9450",
-    "content": "`tsum_one_div_nat_pow_eight` is the headline result $\\sum' n,\\ 1/n^8 = \\pi^8/9450$. It comes from `hasSum_one_div_nat_pow_eight`, the $k=4$ instance of `hasSum_zeta_nat`: substituting $B_8 = -1/30$ and $8! = 40320$ into $(-1)^5\\cdot 2^7\\cdot\\pi^8\\cdot B_8/8!$ gives $(-1)\\cdot 128\\cdot(-1/30)/40320 = 1/9450$. `riemannZeta_eight_eq` records the same value for the analytically continued zeta, $\\zeta(8) = \\pi^8/9450$ over $\\mathbb{C}$, via `riemannZeta_two_mul_nat`.",
-    "mathContext": "$\\sum_{n\\ge1} 1/n^8 = \\dfrac{2^7\\pi^8\\cdot(1/30)}{40320} = \\dfrac{\\pi^8}{9450}$; also $\\zeta(8) = \\pi^8/9450$ over $\\mathbb{C}$.",
+    "title": "The Value ζ(8) = π⁸/9450 (real series)",
+    "content": "`tsum_one_div_nat_pow_eight` is the headline result $\\sum' n,\\ 1/n^8 = \\pi^8/9450$. It comes from `hasSum_one_div_nat_pow_eight`, the $k=4$ instance of `hasSum_zeta_nat`: substituting $B_8 = -1/30$ and $8! = 40320$ into $(-1)^5\\cdot 2^7\\cdot\\pi^8\\cdot B_8/8!$ gives $(-1)\\cdot 128\\cdot(-1/30)/40320 = 1/9450$ — note the two sign flips (the $(-1)^{k+1}$ prefactor and the negative $B_8$) conspire to a positive sum, as they must. The `tsum` identity is `.tsum_eq` of the `HasSum` statement, so summability comes for free.",
+    "mathContext": "$\\sum_{n\\ge1} 1/n^8 = \\dfrac{2^7\\pi^8\\cdot(1/30)}{40320} = \\dfrac{\\pi^8}{9450}$. The $(-1)^{k+1}$ sign and $B_8 < 0$ cancel; $\\texttt{HasSum}$ carries value + summability, $\\texttt{.tsum\\_eq}$ gives $\\sum'$.",
     "significance": "critical",
-    "relatedConcepts": ["ζ(8)", "even-zeta formula", "riemannZeta_two_mul_nat", "analytic continuation"],
+    "relatedConcepts": ["ζ(8)", "even-zeta formula hasSum_zeta_nat", "sign of B₂ₖ", "HasSum vs tsum"],
     "prerequisites": ["B₈ = −1/30", "the even-argument zeta formula"]
+  },
+  {
+    "id": "baseloq08oq02oq01-riemannzeta",
+    "proofId": "basel-problem-oq-08-oq-02-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "The Analytically-Continued ζ(8) over ℂ",
+    "content": "`riemannZeta_eight_eq` records $\\zeta(8) = \\pi^8/9450$ for Mathlib's `riemannZeta` — the *analytically continued* zeta on $\\mathbb{C}$, a distinct object from the real Dirichlet series `∑' 1/n⁸` that agrees with it only because $s=8$ lies in the region $\\Re(s) > 1$ of absolute convergence. It follows from `riemannZeta_two_mul_nat` at $k=4$ (the even-integer special values of the continuation), then the same $B_8 = -1/30$ substitution and a `push_cast`/`ring` to normalize the $\\mathbb{Q}\\to\\mathbb{C}$ cast. Recording it separately from the real sum keeps the distinction honest: for the *odd* integers and for $\\Re(s)\\le 1$ the continuation is not given by the series at all, so the series-equals-continuation identity is a theorem specific to this half-plane, not a definitional truth.",
+    "mathContext": "$\\zeta(8) = \\pi^8/9450$ in $\\mathbb{C}$ with $\\zeta = \\texttt{riemannZeta}$ the continuation. On $\\Re(s)>1$, $\\texttt{riemannZeta}(s)=\\sum' n^{-s}$; the cast $\\mathbb{Q}\\hookrightarrow\\mathbb{C}$ is closed by $\\texttt{push\\_cast}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["riemannZeta_two_mul_nat", "analytic continuation", "Dirichlet series vs continuation", "ℚ → ℂ cast"],
+    "prerequisites": ["riemannZeta (analytic continuation)", "B₈ = −1/30"]
   },
   {
     "id": "baseloq08oq02oq01-ratio",
