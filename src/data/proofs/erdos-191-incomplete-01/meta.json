@@ -108,6 +108,21 @@
       "targetId": "erdos-191",
       "relationship": "extends",
       "description": "Discharges the tripleLog_unbounded axiom of the erdos-191 entry, reducing its genuine assumption count from 4 to 3"
+    },
+    {
+      "targetId": "erdos-305-incomplete-01",
+      "relationship": "shares-technique",
+      "description": "The nearest analogue: it likewise converts a parent's `axiom` (egyptian_representation_exists in Erdos305Problem.lean) into a proved theorem verbatim, retiring the axiom in place. Same 'not every axiom in a solved-problem file is deep' move as discharging tripleLog_unbounded here."
+    },
+    {
+      "targetId": "erdos-441-incomplete-01",
+      "relationship": "shares-technique",
+      "description": "Another member of the axiom-elimination sub-program: it isolates the elementary axiom-free core (g(N) ≥ ⌊√N⌋) of an Erdős entry whose deep asymptotics remain axioms — the same strategy of extracting the provable elementary piece and leaving only the genuinely deep assumptions."
+    },
+    {
+      "targetId": "erdos-643-incomplete-01",
+      "relationship": "shares-technique",
+      "description": "Isolates the axiom-free elementary lower bound of Erdős #643 from a parent that keeps the general-t result axiomatized — parallel to reducing erdos-191 to its three genuinely deep (Rödl / Conlon–Fox–Sudakov) axioms."
     }
   ],
   "references": [
