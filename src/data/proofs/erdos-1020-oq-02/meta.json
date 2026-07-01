@@ -25,7 +25,10 @@
     "dateAdded": "2026-06-27",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "originalContributions": [
+      "General regime-threshold existence for all r≥2, k≥2 (0-axiom): exists_dominance_threshold proves a single crossover threshold n₀≥k exists beyond which construction2 always dominates construction1 — upgrading the prior worked instance crossover_r4k2 (r=4,k=2, n₀=8) from an example to a theorem for every r≥2,k≥2. Engine: construction2_eventually_dominates (construction2 is unbounded in n since its top summand C(n−1,r−1) is, using the elementary binomial lower bound sub_add_one_le_choose: n−d+1 ≤ C(n,d)) combined with the upward-closed dominance region. Corollary conjecturedValue_eq_construction2_eventually: past n₀ the conjectured extremal value collapses to construction2 (large-n regime) in every case."
+    ]
   },
   "overview": {
     "historicalContext": "The Erdős Matching Conjecture (Erdős, 1965) predicts that f(n;r,k) — the maximum number of edges in an r-uniform hypergraph on n vertices with no k pairwise-disjoint edges — equals max(C(rk-1,r), C(n,r)-C(n-k+1,r)) for all r≥3. The two terms come from two natural extremal constructions, and they win in opposite regimes: for small n the first (all edges on rk-1 vertices) is larger, while for large n the second (all edges meeting a fixed (k-1)-set) dominates. The conjecture is proven in both extremes — Frankl established it for small n (n ≤ kr + kr/(2r^{2r+1})), and Huang–Loh–Sudakov (2012) for large n (n ≥ 3kr²) — leaving a gap in the middle range that is open for r≥4. OQ-02 asks whether this gap can be closed. The present entry isolates the part of the picture that is unconditionally true: the shape of the transition between the two regimes at the level of the conjectured value.",
@@ -162,9 +165,9 @@
       "Nat"
     ],
     "namespace": "Erdos1020OQ02",
-    "lineCount": 284,
+    "lineCount": 352,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 17,
     "path": "Proofs/Erdos1020OQ02.lean",
     "sorries": 0,
     "definitionCount": 3
