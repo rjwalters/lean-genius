@@ -381,7 +381,8 @@ theorem gseq_norm_bound
           exact measure_spanningSets_lt_top μ n }
     -- ‖extZ f‖ = ‖f‖ (isometry), hence ‖extZ‖ ≤ 1
     have hextZ_le : ∀ f : Lp ℝ p μₙ, ‖extZ f‖ ≤ ‖f‖ := fun f => by
-      simp only [extZ, extByZeroCLM, LinearMap.mkContinuous_apply, Lp.norm_def]
+      simp only [extZ, extByZeroCLM, LinearMap.mkContinuous_apply, LinearMap.coe_mk,
+        AddHom.coe_mk, Lp.norm_def]
       have hh := memLp_indicator_of_restrict_loc hS hp0 hptop (Lp.memLp f)
       conv_lhs => rw [eLpNorm_congr_ae hh.coeFn_toLp]
       rw [eLpNorm_indicator_eq_restrict_loc hS _ hp0 hptop]
@@ -413,13 +414,14 @@ theorem gseq_norm_bound
           measurable_const.aestronglyMeasurable
       have hgk_int : Integrable g_k μₙ := by
         rw [← memLp_one_iff_integrable]
-        exact MemLp.of_bound (k : ℝ) hgk_asm
+        exact MemLp.of_bound hgk_asm (k : ℝ)
           (ae_of_all μₙ fun a => by
             simp only [Real.norm_eq_abs]; exact hgk_bound a)
       -- h_k is bounded and in Lp
       have hhk_bound : ∀ᵐ a ∂μₙ, ‖h_k a‖ ≤ (k : ℝ) ^ (q.toReal - 1) :=
         ae_of_all μₙ fun a => by
           simp only [h_k, Real.norm_eq_abs, abs_mul]
+          rw [abs_of_nonneg (Real.rpow_nonneg (abs_nonneg (g_k a)) (q.toReal - 1))]
           calc |Real.sign (g_k a)| * |g_k a| ^ (q.toReal - 1)
               ≤ 1 * |g_k a| ^ (q.toReal - 1) :=
                   mul_le_mul_of_nonneg_right
@@ -437,7 +439,7 @@ theorem gseq_norm_bound
             continuous_id.rpow_const fun _ => Or.inr (by linarith [hpq.symm.lt])
           exact hrpow.comp_aestronglyMeasurable hgk_asm.norm
       have hhk_memLp : MemLp h_k p μₙ :=
-        MemLp.of_bound ((k : ℝ) ^ (q.toReal - 1)) hhk_meas hhk_bound
+        MemLp.of_bound hhk_meas ((k : ℝ) ^ (q.toReal - 1)) hhk_bound
       -- φₙ(h_k) = ∫ h_k * g ∂μₙ (direct from hrep)
       have hphi_hk : (φ.comp extZ) (hhk_memLp.toLp h_k) = ∫ a, h_k a * g a ∂μₙ := by
         rw [hrep (hhk_memLp.toLp h_k)]
@@ -480,9 +482,9 @@ theorem gseq_norm_bound
         have hpw2 : ∀ a, h_k a * g_k a = |g_k a| ^ q.toReal := fun a => by
           simp only [h_k]
           have hsign : Real.sign (g_k a) * g_k a = |g_k a| := by
-            rcases lt_trichotomy (g_k a) 0 with ha | rfl | ha
+            rcases lt_trichotomy (g_k a) 0 with ha | ha | ha
             · simp [Real.sign_of_neg ha, abs_of_neg ha]
-            · simp
+            · simp [ha]
             · simp [Real.sign_of_pos ha, abs_of_pos ha]
           rw [show Real.sign (g_k a) * |g_k a| ^ (q.toReal - 1) * g_k a =
               |g_k a| ^ (q.toReal - 1) * (Real.sign (g_k a) * g_k a) from by ring,
@@ -492,12 +494,12 @@ theorem gseq_norm_bound
         simp_rw [hpw2]
         have hpw3 : ∀ a, |g_k a| ^ q.toReal =
             ((‖g_k a‖₊ : ℝ≥0∞) ^ q.toReal).toReal := fun a => by
-          rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos'), ENNReal.coe_toReal, NNReal.coe_rpow]
+          rw [ENNReal.coe_rpow_of_nonneg _ (le_of_lt hq_pos'), ENNReal.coe_toReal, NNReal.coe_rpow]
           simp [Real.norm_eq_abs]
         simp_rw [hpw3]
         have hf_ne_top : ∀ᵐ a ∂μₙ, (‖g_k a‖₊ : ℝ≥0∞) ^ q.toReal ≠ ⊤ :=
           ae_of_all μₙ fun a => by
-            rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos')]; exact ENNReal.coe_ne_top
+            rw [ENNReal.coe_rpow_of_nonneg _ (le_of_lt hq_pos')]; exact ENNReal.coe_ne_top
         rw [integral_toReal (hgk_asm.enorm.pow_const q.toReal) hf_ne_top]
         congr 1
         rw [eLpNorm_eq_lintegral_rpow_enorm hq0' hqtop', ← ENNReal.rpow_mul,
@@ -523,8 +525,8 @@ theorem gseq_norm_bound
             congr 1; nlinarith [hpq_prod]
         have hpw_enn : ∀ a, (‖h_k a‖₊ : ℝ≥0∞) ^ p.toReal =
             (‖g_k a‖₊ : ℝ≥0∞) ^ q.toReal := fun a => by
-          rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hp_pos'),
-              ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos')]
+          rw [ENNReal.coe_rpow_of_nonneg _ (le_of_lt hp_pos'),
+              ENNReal.coe_rpow_of_nonneg _ (le_of_lt hq_pos')]
           norm_cast; apply NNReal.coe_injective
           simp only [NNReal.coe_rpow, NNReal.coe_nnnorm, Real.norm_eq_abs]
           exact hpw_real a
