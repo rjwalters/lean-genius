@@ -44,14 +44,15 @@
       "card_perms_with_kfixed_closed_form: (S(n,k) : 𝕜) = (n!/k!)·∑_{j=0}^{n-k} (-1)^j/j! over any characteristic-zero field, obtained by bridging the combinatorial count S(n,k)=C(n,k)·D(n-k) (derangements-oq-02) with the field derangement closed form (derangements-oq-04) via Nat.choose_mul_factorial_mul_factorial",
       "card_perms_with_kfixed_eq_factorial_mul_trunc: the same identity phrased with the truncated exponential DerangementsOQ04.truncExpNegOne 𝕜 (n-k+1)",
       "card_perms_with_kfixed_closed_form_rat / _real: specializations to ℚ and ℝ",
-      "card_perms_with_kfixed_zero_closed_form: k=0 specialization recovering the parent derangement closed form D(n) = n!·∑_{j≤n}(-1)^j/j!, confirming consistency"
+      "card_perms_with_kfixed_zero_closed_form: k=0 specialization recovering the parent derangement closed form D(n) = n!·∑_{j≤n}(-1)^j/j!, confirming consistency",
+      "sum_kfixed_smul_pow: the fixed-point generating-function identity ∑_{k=0}^{n} S(n,k)·x^k = ∑_{σ∈Perm(Fin n)} x^{#fix σ} over any commutative ring (no characteristic hypothesis), packaging all the closed-form coefficients into the fixed-point statistic by regrouping the permutation sum over the fibres of the fixed-point-count map (Finset.sum_fiberwise_of_maps_to)"
     ],
     "dateAdded": "2026-06-30",
     "axiomCount": 0,
-    "lineCount": 132,
-    "assumptions": "None. Fully verified with 0 axioms (only Lean/Mathlib foundations propext, Classical.choice, Quot.sound) and 0 sorries. The field is required to have characteristic zero so that factorials are invertible.",
+    "lineCount": 159,
+    "assumptions": "None. Fully verified with 0 axioms (only Lean/Mathlib foundations propext, Classical.choice, Quot.sound) and 0 sorries. The main closed form requires the field to have characteristic zero so that factorials are invertible; the generating-function identity sum_kfixed_smul_pow holds over any commutative ring.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 0
   },
   "overview": {
@@ -101,17 +102,25 @@
       "id": "section-iii",
       "title": "k = 0 Consistency and Sanity Check",
       "startLine": 113,
-      "endLine": 132,
-      "summary": "card_perms_with_kfixed_zero_closed_form: setting k=0 recovers the parent derangement closed form D(n) = n!·∑_{j≤n}(-1)^j/j! (via simpa). Example: S(4,1)=8 reproduced by the closed form over ℚ.",
-      "mathContext": "k=0 recovers D(n) = n!·∑_{j≤n}(-1)^j/j!; sanity check S(4,1)=8."
+      "endLine": 121,
+      "summary": "card_perms_with_kfixed_zero_closed_form: setting k=0 recovers the parent derangement closed form D(n) = n!·∑_{j≤n}(-1)^j/j! (via simpa).",
+      "mathContext": "k=0 recovers D(n) = n!·∑_{j≤n}(-1)^j/j!."
+    },
+    {
+      "id": "section-iv",
+      "title": "Fixed-Point Generating Function and Sanity Check",
+      "startLine": 122,
+      "endLine": 159,
+      "summary": "sum_kfixed_smul_pow: ∑_{k=0}^{n} S(n,k)·x^k = ∑_{σ∈Perm(Fin n)} x^{#fix σ} over any commutative ring, packaging all closed-form coefficients into the fixed-point statistic by regrouping the permutation sum over the fibres of the fixed-point-count map (Finset.sum_fiberwise_of_maps_to; each fibre contributes card·x^k via Finset.sum_const/nsmul_eq_mul). No characteristic hypothesis. Example: S(4,1)=8 reproduced by the closed form over ℚ.",
+      "mathContext": "∑_k S(n,k)·x^k = ∑_σ x^{#fix σ} over any comm ring; sanity check S(4,1)=8."
     }
   ],
   "conclusion": {
-    "summary": "The rencontres-number closed form S(n,k) = (n!/k!)·∑_{j=0}^{n-k}(-1)^j/j! is proved over an arbitrary characteristic-zero field with 0 sorries and 0 axioms. It answers the parent open question (derangements-oq-04) on partial derangements by bridging the combinatorial identity S(n,k)=C(n,k)·D(n-k) (derangements-oq-02) with the parent's field derangement closed form via Nat.choose_mul_factorial_mul_factorial. Truncated-exponential phrasing, ℚ/ℝ specializations, and a k=0 consistency corollary (recovering D(n)) are included, and S(4,1)=8 is verified.",
+    "summary": "The rencontres-number closed form S(n,k) = (n!/k!)·∑_{j=0}^{n-k}(-1)^j/j! is proved over an arbitrary characteristic-zero field with 0 sorries and 0 axioms. It answers the parent open question (derangements-oq-04) on partial derangements by bridging the combinatorial identity S(n,k)=C(n,k)·D(n-k) (derangements-oq-02) with the parent's field derangement closed form via Nat.choose_mul_factorial_mul_factorial. Truncated-exponential phrasing, ℚ/ℝ specializations, and a k=0 consistency corollary (recovering D(n)) are included, and S(4,1)=8 is verified. A companion generating-function identity ∑_k S(n,k)·x^k = ∑_{σ∈Perm(Fin n)} x^{#fix σ} (sum_kfixed_smul_pow) — proved over any commutative ring by regrouping the permutation sum over the fibres of the fixed-point-count map — packages all the coefficients into the fixed-point statistic.",
     "implications": "**Significance**\n\n1. **Answers a stated open question**: the second open question of derangements-oq-04 asked whether the field-level derangement closed form extends to partial derangements. It does, and the extension is a clean algebraic bridge over the two existing entries rather than a fresh induction.\n\n2. **A reusable rencontres closed form**: neither the rencontres numbers nor their field closed form are in Mathlib. Exposing S(n,k) = (n!/k!)·∑(-1)^j/j! makes the finite identity behind the k-fixed-point statistics directly available, generalizing the D(n)/n! → 1/e story to fixed-point counts.\n\n3. **Uniform over any characteristic-zero field**: because the proof uses only the count, the derangement closed form, and factorial arithmetic, it holds over ℚ, ℝ, ℂ, or any characteristic-zero field.",
     "openQuestions": [
       "Divide by n! to obtain the fixed-point-count distribution S(n,k)/n! = (1/k!)·∑_{j=0}^{n-k}(-1)^j/j!, and take n → ∞ to show it converges to the Poisson(1) probability e^{-1}/k! — the classical limiting distribution of the number of fixed points of a random permutation.",
-      "Does the closed form extend to a generating-function identity ∑_k S(n,k) x^k = ∑ over permutations of x^{#fixed points}, recovering the exponential formula for the fixed-point statistic?"
+      "The finite generating-function identity ∑_k S(n,k)·x^k = ∑_{σ} x^{#fix σ} is now proved (sum_kfixed_smul_pow); does it lift to the bivariate exponential generating function ∑_n (∑_k S(n,k) x^k) t^n/n! = e^{(x-1)t}/(1-t), the two-variable form of the exponential formula for the fixed-point statistic?"
     ]
   },
   "leanFile": {
@@ -124,9 +133,9 @@
       "Finset"
     ],
     "namespace": "DerangementsOQ04OQ01",
-    "lineCount": 132,
+    "lineCount": 159,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 0,
     "path": "Proofs/DerangementsOQ04OQ01.lean",
     "sorries": 0

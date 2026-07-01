@@ -70,7 +70,7 @@
     "proofId": "derangements-oq-04-oq-01",
     "range": {
       "startLine": 114,
-      "endLine": 124
+      "endLine": 120
     },
     "type": "theorem",
     "title": "k = 0 Recovers the Derangement Closed Form",
@@ -86,11 +86,35 @@
     ]
   },
   {
+    "id": "ann-generating-function",
+    "proofId": "derangements-oq-04-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "Fixed-Point Generating Function",
+    "content": "**Theorem** `sum_kfixed_smul_pow`: for any element `x` of a commutative ring `R`,\n```\n∑_{k=0}^{n} S(n,k) · x^k = ∑_{σ ∈ Perm (Fin n)} x^{#fix σ}.\n```\nWhere the closed form evaluates each *coefficient* `S(n,k)`, this identity packages all coefficients into the *fixed-point statistic* `x^{#fix σ}` summed over permutations. It is a pure regrouping of a finite sum — no characteristic hypothesis — so it holds over **any** commutative ring.\n\nProof: rewrite the permutation sum by `Finset.sum_fiberwise_of_maps_to`, grouping `σ` by the value `k = #fix σ` (the fixed-point-count map lands in `range (n+1)` since `#fix σ ≤ #(Fin n) = n`). On each fibre `#fix σ = k`, every term `x^{#fix σ}` equals `x^k`, so the fibre sum collapses via `Finset.sum_const`/`nsmul_eq_mul` to `(card of fibre) · x^k = S(n,k) · x^k`.\n\nSetting `x = 0` recovers `S(n,0) = D_n` (derangements as the `x^0` coefficient); `x = 1` gives `∑_k S(n,k) = n!` (every permutation has some fixed-point count).",
+    "mathContext": "\\sum_{k=0}^{n} S(n,k)\\,x^k = \\sum_{\\sigma} x^{\\#\\mathrm{fix}\\,\\sigma}",
+    "significance": "central",
+    "relatedConcepts": [
+      "generating function",
+      "fixed-point statistic",
+      "fibrewise summation",
+      "permutation statistics"
+    ],
+    "prerequisites": [
+      "Finset.sum_fiberwise_of_maps_to",
+      "Finset.sum_const / nsmul_eq_mul",
+      "S(n,k) = card of permutations with exactly k fixed points"
+    ]
+  },
+  {
     "id": "ann-sanity-check",
     "proofId": "derangements-oq-04-oq-01",
     "range": {
-      "startLine": 126,
-      "endLine": 131
+      "startLine": 153,
+      "endLine": 158
     },
     "type": "example",
     "title": "Sanity Check: S(4,1) = 8",
