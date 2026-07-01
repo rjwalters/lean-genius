@@ -122,6 +122,56 @@
       "Numerical analysis (Machin-like formulas and convergence acceleration)"
     ]
   },
+  "sections": [
+    {
+      "id": "overview-addition-law",
+      "title": "Overview: The Complete Addition Law and Dase's Formula",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Frames the complete three-regime arctan addition law (principal, upper +π, lower −π branches) and its payoff: the Machin-like π decompositions, culminating in Dase's 1844 three-term formula π/4 = arctan(1/2) + arctan(1/5) + arctan(1/8).",
+      "mathContext": "$\\arctan x + \\arctan y = \\arctan\\!\\dfrac{x+y}{1-xy}\\ (+\\,k\\pi)$; $\\dfrac{\\pi}{4} = \\arctan\\tfrac12 + \\arctan\\tfrac15 + \\arctan\\tfrac18.$"
+    },
+    {
+      "id": "three-regime-law",
+      "title": "The Three-Regime Addition Law",
+      "startLine": 41,
+      "endLine": 58,
+      "summary": "The full branch structure: arctan_add_lt (principal branch, xy < 1, no correction), arctan_add_gt_pos (xy > 1, x > 0, +π correction), arctan_add_gt_neg (xy > 1, x < 0, −π correction) — packaging Mathlib's Real.arctan_add / arctan_add_eq_add_pi / arctan_add_eq_sub_pi.",
+      "mathContext": "$xy<1$: no correction; $xy>1,\\ x>0$: $+\\pi$; $xy>1,\\ x<0$: $-\\pi$."
+    },
+    {
+      "id": "subtraction-doubling",
+      "title": "Subtraction and Doubling Laws",
+      "startLine": 60,
+      "endLine": 75,
+      "summary": "arctan_sub: derived from the principal addition law applied to x and −y (using arctan(−y) = −arctan y). two_arctan: the doubling law for −1 < x < 1, from Real.two_mul_arctan.",
+      "mathContext": "$\\arctan x - \\arctan y = \\arctan\\!\\dfrac{x-y}{1+xy};\\quad 2\\arctan x = \\arctan\\!\\dfrac{2x}{1-x^2}.$"
+    },
+    {
+      "id": "euler-two-term",
+      "title": "Euler's Two-Term Decomposition",
+      "startLine": 76,
+      "endLine": 93,
+      "summary": "euler_two_term: arctan(1/2) + arctan(1/3) = π/4, recovered in one line from the principal-branch law because the combined argument simplifies to 1 (so the sum is arctan 1 = π/4).",
+      "mathContext": "$\\arctan\\tfrac12 + \\arctan\\tfrac13 = \\arctan 1 = \\dfrac{\\pi}{4}.$"
+    },
+    {
+      "id": "dase-three-term",
+      "title": "Dase's Three-Term Formula",
+      "startLine": 94,
+      "endLine": 106,
+      "summary": "dase_three_term: two applications of the principal-branch law — arctan(1/2)+arctan(1/5) = arctan(7/9), then arctan(7/9)+arctan(1/8) = arctan(1) = π/4, the final step turning on (7/9+1/8)/(1−7/72) = (65/72)/(65/72) = 1. dase_pi solves it for π.",
+      "mathContext": "$\\arctan\\tfrac12+\\arctan\\tfrac15=\\arctan\\tfrac79$, then $\\arctan\\tfrac79+\\arctan\\tfrac18=\\arctan 1=\\dfrac{\\pi}{4}.$"
+    },
+    {
+      "id": "pi-and-tan-check",
+      "title": "Solving for π and the Tangent Consistency Check",
+      "startLine": 107,
+      "endLine": 118,
+      "summary": "dase_pi gives π = 4·(arctan(1/2)+arctan(1/5)+arctan(1/8)); tan_dase_rhs confirms the tangent of Dase's right-hand side is 1 (via tan_arctan), an independent tan-consistency check that the angle is exactly π/4.",
+      "mathContext": "$\\pi = 4\\big(\\arctan\\tfrac12+\\arctan\\tfrac15+\\arctan\\tfrac18\\big);\\quad \\tan(\\text{RHS}) = 1.$"
+    }
+  ],
   "conclusion": {
     "summary": "The complete three-regime arctangent addition law is packaged from Mathlib's API and used to prove Dase's three-term formula pi/4 = arctan(1/2) + arctan(1/5) + arctan(1/8), fully verified with 0 axioms and 0 sorries. The development also exposes the subtraction and doubling laws and confirms the result with a tangent consistency check.",
     "implications": "This complements the sibling entry leibniz-pi-oq-01-oq-01 (two-term Machin) by (a) making the full branch structure of the addition law explicit — including the +pi / -pi corrections that two-term Machin never triggers — and (b) formalizing a genuinely different, three-term decomposition of pi/4 used historically by Dase. Together the two entries show that Mathlib's arctan API suffices to verify the entire family of Machin-like formulas: each is a finite chain of addition-law applications followed by norm_num.",
