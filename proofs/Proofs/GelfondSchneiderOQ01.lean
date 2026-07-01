@@ -38,8 +38,17 @@ theorem and deriving a concrete transcendence result that the single-logarithm t
 * `irrational_log_three_div_log_two`, `irrational_log_two_div_log_three` — the independence input
   for the bases `2, 3`, via the classical parity argument `2^p = 3^d ⇒ 2 ∣ 3`.
 * `sqrt_two_algebraic` — `√2` is algebraic (root of `X² − 2`), the algebraic-coefficient input.
-* `transcendental_log_two_add_sqrt_two_log_three` — the flagship consequence:
+* `transcendental_log_two_add_algebraic_log_three` — the general family: for **every** algebraic
+  coefficient `β`, the form `log 2 + β · log 3` is transcendental.  The flagship `√2` case is the
+  specialisation `β = √2`; the family shows the phenomenon is not special to `√2` but to the
+  `n = 2` structure.
+* `transcendental_log_two_add_sqrt_two_log_three` — the flagship consequence (`β = √2`):
   `log 2 + √2 · log 3` is transcendental.
+* `log_two_log_three_linearIndependent_over_algebraic` — the canonical *structural* consequence of
+  Baker's theorem: `log 2` and `log 3` are linearly independent **over the algebraic numbers**, not
+  merely over `ℚ`.  If `β₁ · log 2 + β₂ · log 3 = 0` with `β₁, β₂` algebraic, then `β₁ = β₂ = 0`.
+  This upgrade of `ℚ`-independence to `ℚ̄`-independence is exactly the content Gelfond–Schneider
+  (`n = 1`) cannot supply.
 * `transcendental_log_six` — sanity sibling: the *collapsing* case `log 2 + log 3 = log 6`
   recovered as a single-logarithm transcendence (here `n = 2` Baker agrees with Lindemann).
 
@@ -155,6 +164,25 @@ theorem irrational_log_two_div_log_three : Irrational (Real.log 2 / Real.log 3) 
   rw [heq]
   exact hbase.inv
 
+/-- **General family from Baker's theorem (OQ-01).**  For *every* algebraic coefficient `β`, the
+    linear form
+
+        `log 2 + β · log 3`
+
+    is transcendental.  The leading coefficient `1 ≠ 0` makes the not-both-zero hypothesis
+    automatic, so no constraint on `β` beyond being algebraic is needed.  This shows the new
+    `n = 2` content is not special to a particular coefficient: *any* algebraic `β` (rational,
+    `√2`, a root of any polynomial) produces a form that single-logarithm theory cannot reach. -/
+theorem transcendental_log_two_add_algebraic_log_three
+    (β : ℝ) (hβ : IsAlgebraic ℚ β) :
+    Transcendental ℚ (Real.log 2 + β * Real.log 3) := by
+  have h := baker_linear_form_two 2 3 (by norm_num) (by norm_num)
+    two_algebraic three_algebraic irrational_log_two_div_log_three
+    1 β one_algebraic hβ
+    (by rintro ⟨h1, _⟩; norm_num at h1)
+  -- rewrite `1 * log 2 + β * log 3` to `log 2 + β * log 3`
+  simpa [one_mul] using h
+
 /-- **Flagship consequence of Baker's theorem (OQ-01).**  The linear form
 
         `log 2 + √2 · log 3`
@@ -163,18 +191,34 @@ theorem irrational_log_two_div_log_three : Irrational (Real.log 2 / Real.log 3) 
     Hermite–Lindemann and Gelfond–Schneider — is that they cannot cancel into an algebraic
     number, because `log 2` and `log 3` are `ℚ`-linearly independent and the coefficients
     `1, √2` are algebraic and not both zero.  This is the two-logarithm (`n = 2`) regime that
-    single-logarithm transcendence theory does not reach. -/
+    single-logarithm transcendence theory does not reach.  It is the `β = √2` case of
+    `transcendental_log_two_add_algebraic_log_three`. -/
 theorem transcendental_log_two_add_sqrt_two_log_three :
-    Transcendental ℚ (Real.log 2 + Real.sqrt 2 * Real.log 3) := by
-  have h := baker_linear_form_two 2 3 (by norm_num) (by norm_num)
+    Transcendental ℚ (Real.log 2 + Real.sqrt 2 * Real.log 3) :=
+  transcendental_log_two_add_algebraic_log_three (Real.sqrt 2) sqrt_two_algebraic
+
+/-- **Linear independence over the algebraic numbers (structural form of Baker's theorem).**
+
+    `log 2` and `log 3` are linearly independent over `ℚ̄`: if `β₁, β₂` are algebraic and
+
+        `β₁ · log 2 + β₂ · log 3 = 0`,
+
+    then `β₁ = β₂ = 0`.  This is the canonical way Baker's theorem is stated — it upgrades the
+    `ℚ`-linear independence of `log 2, log 3` (a soft parity fact, `irrational_log_two_div_log_three`)
+    to independence over the *much larger* field of algebraic numbers.  Gelfond–Schneider (`n = 1`)
+    says nothing about such cancellation; the derivation here is a one-line consequence of the
+    two-logarithm axiom: a nontrivial algebraic combination is transcendental, hence `≠ 0`. -/
+theorem log_two_log_three_linearIndependent_over_algebraic
+    (β₁ β₂ : ℝ) (hβ₁ : IsAlgebraic ℚ β₁) (hβ₂ : IsAlgebraic ℚ β₂)
+    (hzero : β₁ * Real.log 2 + β₂ * Real.log 3 = 0) :
+    β₁ = 0 ∧ β₂ = 0 := by
+  by_contra hne
+  -- If not both zero, Baker forces the (vanishing) form to be transcendental — contradiction.
+  have htrans := baker_linear_form_two 2 3 (by norm_num) (by norm_num)
     two_algebraic three_algebraic irrational_log_two_div_log_three
-    1 (Real.sqrt 2)
-    one_algebraic sqrt_two_algebraic
-    (by
-      rintro ⟨h1, _⟩
-      norm_num at h1)
-  -- rewrite `1 * log 2 + √2 * log 3` to `log 2 + √2 * log 3`
-  simpa [one_mul] using h
+    β₁ β₂ hβ₁ hβ₂ hne
+  rw [hzero] at htrans
+  exact htrans isAlgebraic_zero
 
 /-- **Collapsing sanity case.**  With both coefficients `1`, the two-logarithm form degenerates
     to a *single* logarithm `log 2 + log 3 = log 6`, and Baker's `n = 2` conclusion agrees with
@@ -194,7 +238,9 @@ theorem transcendental_log_six : Transcendental ℚ (Real.log 6) := by
 #check @sqrt_two_algebraic
 #check @irrational_log_three_div_log_two
 #check @irrational_log_two_div_log_three
+#check @transcendental_log_two_add_algebraic_log_three
 #check @transcendental_log_two_add_sqrt_two_log_three
+#check @log_two_log_three_linearIndependent_over_algebraic
 #check @transcendental_log_six
 
 end GelfondSchneiderOQ01
