@@ -1,0 +1,153 @@
+{
+  "id": "geometric-series-oq-06-oq-02",
+  "title": "The Negative-Binomial Series ∑ binom(n+k, k)·rⁿ = (1−r)⁻⁽ᵏ⁺¹⁾",
+  "slug": "geometric-series-oq-06-oq-02",
+  "description": "The k-fold term-by-term derivative of ∑ rⁿ = 1/(1−r), normalized by k!, is the negative-binomial series ∑' n, binom(n+k, k)·rⁿ = 1/(1−r)^(k+1) for ‖r‖ < 1 — answering the parent's open question and recovering ∑ n·rⁿ = r/(1−r)² as the k=1 member.",
+  "meta": {
+    "author": "Classical (negative-binomial generating functions), formalized via Mathlib",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4",
+    "date": "2026-07-01",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ06OQ02.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "negative-binomial",
+      "infinite-series",
+      "generating-functions",
+      "binomial-coefficients",
+      "descending-factorial"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_choose_mul_geometric_of_norm_lt_one",
+        "description": "HasSum (fun n ↦ (n+k).choose k · rⁿ) (1/(1−r)^(k+1)) for ‖r‖ < 1 over a normed division ring",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "tsum_choose_mul_geometric_of_norm_lt_one",
+        "description": "∑' n, (n+k).choose k · rⁿ = 1/(1−r)^(k+1) for ‖r‖ < 1, the tsum form",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Nat.descFactorial_eq_factorial_mul_choose",
+        "description": "n.descFactorial k = k! · n.choose k, rescaling binomial coefficients to descending factorials",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Named normed-field API for the negative-binomial series: HasSum, Summable, and tsum forms of ∑ binom(n+k, k)·rⁿ = 1/(1−r)^(k+1)",
+      "Closed loop back to the parent: the arithmetico-geometric first moment ∑ n·rⁿ = r/(1−r)² is re-derived as the k=1 family minus the k=0 geometric series, exhibiting the parent as a genuine special case",
+      "Descending-factorial reformulation ∑' n, (n+k) descFactorial k · rⁿ = k!/(1−r)^(k+1), the exact 'descending-factorial weighted geometric series' named in the open question",
+      "Concrete evaluation ∑' n, binom(n+2, 2)·(1/2)ⁿ = 8 (triangular-number weights, second derivative of the geometric series)"
+    ],
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "lineCount": 218,
+    "theoremCount": 8,
+    "assumptions": "Build-pending: NOT yet machine-verified. Docker infra crashed mid-build (reached 3036/3058 Mathlib targets, no error attributable to this file). Targets 0 axioms / 0 sorries by construction; every Mathlib dependency (hasSum_choose_mul_geometric_of_norm_lt_one, tsum_choose_mul_geometric_of_norm_lt_one, Nat.descFactorial_eq_factorial_mul_choose) confirmed present with matching signatures by source inspection. Requires a clean compile before status can be raised to verified.",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0,
+    "verificationPending": true
+  },
+  "overview": {
+    "historicalContext": "The geometric series $\\sum_{n=0}^\\infty r^n = \\frac{1}{1-r}$ for $|r|<1$ is the seed of the differentiation tower. Its parent entry (`geometric-series-oq-06`) differentiates once to get $\\sum n r^n = \\frac{r}{(1-r)^2}$ and asks whether this generalizes to arbitrary order. Differentiating $k$ times and dividing by $k!$ produces the **negative-binomial series** $\\sum_{n=0}^\\infty \\binom{n+k}{k} r^n = \\frac{1}{(1-r)^{k+1}}$, whose coefficients $\\binom{n+k}{k}$ count the weak compositions of $n$ into $k+1$ parts. The closed form $(1-r)^{-(k+1)}$ is the generating function of the negative-binomial distribution, the workhorse of probability generating-function calculus.",
+    "problemStatement": "**Theorem**: For $r$ in a normed field with $\\|r\\| < 1$ and every $k \\in \\mathbb{N}$,\n$$\\sum_{n=0}^{\\infty} \\binom{n+k}{k}\\, r^{n} = \\frac{1}{(1-r)^{k+1}}.$$\nThe parent's arithmetico-geometric first moment $\\sum n r^n = r/(1-r)^2$ is the $k=1$ member minus the $k=0$ geometric series; specializing $k=2$, $r=1/2$ over $\\mathbb{R}$ gives $\\sum \\binom{n+2}{2}(1/2)^n = 8$.",
+    "proofStrategy": "**Core identity**: The series is Mathlib's `hasSum_choose_mul_geometric_of_norm_lt_one`, stated over a normed division ring; a `NormedField` instance supplies it directly. The file packages the `HasSum`, `Summable`, and `tsum` forms of the $k$-indexed family.\n\n**Anchoring specializations**: $k=0$ degenerates to $\\sum r^n = 1/(1-r)$ (since $\\binom{n}{0}=1$); $k=1$ gives $\\sum(n+1)r^n = 1/(1-r)^2$ (since $\\binom{n+1}{1}=n+1$).\n\n**Parent recovery**: Subtracting the $k=0$ `HasSum` from the $k=1$ `HasSum` strips the $+1$: $(n+1)r^n - r^n = n r^n$, and $\\frac{1}{(1-r)^2}-\\frac{1}{1-r} = \\frac{r}{(1-r)^2}$ by `field_simp`; `ring`, recovering the parent.\n\n**Descending-factorial form**: Rescaling by $k!$ via `Nat.descFactorial_eq_factorial_mul_choose` gives $\\sum (n+k)^{\\underline{k}} r^n = k!/(1-r)^{k+1}$.\n\n**Concrete value**: At $k=2$, $r=1/2$, $1/(1-1/2)^3 = 2^3 = 8$ by `norm_num`.",
+    "keyInsights": [
+      "**Differentiation tower**: The $k$-fold term-by-term derivative of $\\sum r^n = 1/(1-r)$, normalized by $k!$, is exactly the negative-binomial series — the binomial coefficient $\\binom{n+k}{k}$ is precisely $\\frac{1}{k!}\\frac{d^k}{dr^k} r^{n+k}$ evaluated appropriately.",
+      "**The parent is a special case**: $\\sum n r^n = r/(1-r)^2$ is not a separate phenomenon — it is the $k=1$ member of the family minus the $k=0$ geometric series, making the generalization genuinely closed rather than merely analogous.",
+      "**Combinatorial reading**: $\\binom{n+k}{k}$ counts weak compositions of $n$ into $k+1$ nonnegative parts, so $(1-r)^{-(k+1)} = (\\sum r^n)^{k+1}$ is the $(k+1)$-fold Cauchy product of the geometric series — the generating-function identity underlying stars-and-bars.",
+      "**Descending factorials vs. binomials**: The open question's 'descending-factorial weighted geometric series' $\\sum (n+k)^{\\underline{k}} r^n = k!/(1-r)^{k+1}$ is the same statement with $\\binom{n+k}{k}$ rescaled by $k!$, since $(n+k)^{\\underline{k}} = k!\\binom{n+k}{k}$."
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Docstring answering the parent's open question: the k-fold derivative (÷k!) of ∑ rⁿ = 1/(1−r) is the negative-binomial series ∑ binom(n+k,k)·rⁿ = 1/(1−r)^(k+1), packaged from Mathlib's hasSum_choose_mul_geometric_of_norm_lt_one; imports SpecificLimits.Normed and Tactic.",
+      "mathContext": "∑' n, binom(n+k, k)·rⁿ = 1/(1−r)^(k+1) for ‖r‖ < 1; coefficients count weak compositions of n into k+1 parts."
+    },
+    {
+      "id": "family",
+      "title": "The Negative-Binomial Series over a Normed Field",
+      "startLine": 56,
+      "endLine": 76,
+      "summary": "hasSum_choose_mul_geometric, summable_choose_mul_geometric, tsum_choose_mul_geometric — the HasSum, Summable, and tsum forms of the k-indexed family ∑ binom(n+k,k)·rⁿ = 1/(1−r)^(k+1).",
+      "mathContext": "Thin wrappers of Mathlib's hasSum_choose_mul_geometric_of_norm_lt_one, specialized from NormedDivisionRing to NormedField."
+    },
+    {
+      "id": "anchors",
+      "title": "The Anchoring Specializations k = 0 and k = 1",
+      "startLine": 77,
+      "endLine": 101,
+      "summary": "tsum_geometric_of_negBinom (k=0 → ∑ rⁿ = 1/(1−r)) and tsum_succ_mul_geometric (k=1 → ∑ (n+1)·rⁿ = 1/(1−r)²), the two ends of the differentiation tower.",
+      "mathContext": "binom(n,0)=1 collapses the family to the geometric series; binom(n+1,1)=n+1 gives the shifted companion."
+    },
+    {
+      "id": "parent-recovery",
+      "title": "Closing the Loop — Recovering the Parent",
+      "startLine": 102,
+      "endLine": 142,
+      "summary": "tsum_coe_mul_geometric_from_negBinom: ∑ n·rⁿ = r/(1−r)² recovered as the k=1 family minus the k=0 geometric series via HasSum.sub, exhibiting the parent's result as a special case.",
+      "mathContext": "(n+1)·rⁿ − rⁿ = n·rⁿ and 1/(1−r)² − 1/(1−r) = r/(1−r)² by field_simp; ring."
+    },
+    {
+      "id": "descfactorial",
+      "title": "The Descending-Factorial Reformulation",
+      "startLine": 143,
+      "endLine": 167,
+      "summary": "tsum_descFactorial_mul_geometric: ∑ (n+k) descFactorial k · rⁿ = k!/(1−r)^(k+1), the descending-factorial weighted geometric series named in the open question.",
+      "mathContext": "Rescales binom by k! using Nat.descFactorial_eq_factorial_mul_choose and HasSum.mul_left."
+    },
+    {
+      "id": "concrete",
+      "title": "A Concrete Evaluation",
+      "startLine": 168,
+      "endLine": 184,
+      "summary": "tsum_choose_two_half_pow: ∑ binom(n+2,2)·(1/2)ⁿ = 8 over ℝ.",
+      "mathContext": "Specializes k=2, r=1/2: 1/(1−1/2)³ = 2³ = 8 by norm_num."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry answers the parent's open question affirmatively: the term-by-term differentiation of the geometric series generalizes cleanly to all orders as the negative-binomial series ∑ binom(n+k, k)·rⁿ = 1/(1−r)^(k+1). It packages the k-indexed family as reusable HasSum/Summable/tsum API, re-derives the parent's ∑ n·rⁿ = r/(1−r)² as the k=1 member, gives the descending-factorial reformulation, and evaluates a concrete case.",
+    "implications": "The closed form (1−r)^{-(k+1)} is the generating function of the negative-binomial distribution and the (k+1)-fold Cauchy product of the geometric series, tying the differentiation tower to the combinatorics of weak compositions (stars-and-bars). Each order k is one term-by-term differentiation of the previous, made rigorous by Mathlib's summability backing.",
+    "openQuestions": [
+      "Does the same negative-binomial family arise as the (k+1)-fold Cauchy product (∑ rⁿ)^{k+1}, and can the stars-and-bars identity binom(n+k,k) = #{weak compositions of n into k+1 parts} be used to give a purely combinatorial proof independent of the analytic differentiation?",
+      "Can the family be summed against a probability weight (1−r)^{k+1} to recover the mean k·r/(1−r) and variance of the negative-binomial distribution as further differentiated moments?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-06",
+      "relationship": "parent",
+      "description": "The arithmetico-geometric series ∑ n·rⁿ = r/(1−r)². This entry answers its second open question and recovers its result as the k=1 member of the negative-binomial family."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "foundation",
+      "description": "The base geometric series ∑ rⁿ = 1/(1−r) (Wiedijk #66), the k=0 seed of the whole differentiation tower."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Topology"
+    ],
+    "namespace": "GeometricSeriesOQ06OQ02",
+    "lineCount": 218,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/GeometricSeriesOQ06OQ02.lean"
+  }
+}

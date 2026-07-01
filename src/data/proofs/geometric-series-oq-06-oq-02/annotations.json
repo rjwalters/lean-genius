@@ -1,0 +1,121 @@
+[
+  {
+    "id": "geomseries-oq0602-ann-header",
+    "proofId": "geometric-series-oq-06-oq-02",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "concept",
+    "title": "The negative-binomial series as the k-fold differentiated geometric series",
+    "content": "The parent entry differentiates $\\sum r^n = 1/(1-r)$ once to get $\\sum n\\,r^n = r/(1-r)^2$ and asks whether this generalizes to all orders. It does: differentiating $k$ times and dividing by $k!$ gives the **negative-binomial series** $\\sum_{n} \\binom{n+k}{k} r^n = 1/(1-r)^{k+1}$ for $\\|r\\|<1$. The coefficients $\\binom{n+k}{k}$ count weak compositions of $n$ into $k+1$ parts, and $(1-r)^{-(k+1)}$ is the negative-binomial generating function. Mathlib packages exactly this as `hasSum_choose_mul_geometric_of_norm_lt_one`, so the file records the answer, ties it back to the parent, and verifies the promised specializations.",
+    "mathContext": "$\\sum'_{n} \\binom{n+k}{k}\\,r^n = \\dfrac{1}{(1-r)^{k+1}}, \\quad \\|r\\| < 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric series",
+      "term-by-term differentiation",
+      "negative-binomial distribution",
+      "generating functions"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "normed fields",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "geomseries-oq0602-ann-family",
+    "proofId": "geometric-series-oq-06-oq-02",
+    "range": { "startLine": 56, "endLine": 76 },
+    "type": "concept",
+    "title": "The k-indexed family in HasSum / Summable / tsum form",
+    "content": "`hasSum_choose_mul_geometric`, `summable_choose_mul_geometric`, and `tsum_choose_mul_geometric` are named wrappers of Mathlib's `hasSum_choose_mul_geometric_of_norm_lt_one`, exposing the whole $k$-indexed family $\\sum \\binom{n+k}{k} r^n = 1/(1-r)^{k+1}$ as reusable API. Mathlib states the lemma over a `NormedDivisionRing`; a `NormedField` extends `NormedDivisionRing` and auto-provides the `HasSummableGeomSeries` instance, so the specialization is free.",
+    "mathContext": "$\\sum'_{n} \\binom{n+k}{k}\\,r^n = 1/(1-r)^{k+1}$ over any normed field",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HasSum",
+      "Summable",
+      "tsum",
+      "NormedDivisionRing"
+    ],
+    "prerequisites": [
+      "convergent series",
+      "normed fields"
+    ]
+  },
+  {
+    "id": "geomseries-oq0602-ann-anchors",
+    "proofId": "geometric-series-oq-06-oq-02",
+    "range": { "startLine": 77, "endLine": 101 },
+    "type": "insight",
+    "title": "The two ends of the tower: k = 0 and k = 1",
+    "content": "The family degenerates cleanly at both ends. At $k=0$, $\\binom{n}{0}=1$ so `tsum_geometric_of_negBinom` recovers the seed $\\sum r^n = 1/(1-r)$. At $k=1$, $\\binom{n+1}{1}=n+1$ so `tsum_succ_mul_geometric` gives the shifted companion $\\sum(n+1)r^n = 1/(1-r)^2$. These are the same two series whose difference is the parent's arithmetico-geometric sum — proved in the next section.",
+    "mathContext": "$k=0:\\ \\sum r^n = 1/(1-r); \\quad k=1:\\ \\sum(n+1)r^n = 1/(1-r)^2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial coefficient identities",
+      "index specialization",
+      "geometric series"
+    ],
+    "prerequisites": [
+      "Nat.choose_one_right",
+      "cast lemmas"
+    ]
+  },
+  {
+    "id": "geomseries-oq0602-ann-parent-recovery",
+    "proofId": "geometric-series-oq-06-oq-02",
+    "range": { "startLine": 102, "endLine": 142 },
+    "type": "tactic",
+    "title": "The parent is a special case: k=1 minus k=0",
+    "content": "`tsum_coe_mul_geometric_from_negBinom` is the heart of the entry: it re-derives the parent's arithmetico-geometric first moment $\\sum n\\,r^n = r/(1-r)^2$ purely from the negative-binomial family. Subtracting the $k=0$ `HasSum` (geometric series) from the $k=1$ `HasSum` (shifted companion) strips the $+1$ termwise — $(n+1)r^n - r^n = n r^n$ via `funext`+`ring` — and evaluates $\\frac{1}{(1-r)^2} - \\frac{1}{1-r} = \\frac{r}{(1-r)^2}$ via `field_simp`; `ring` after establishing $1-r\\ne 0$. This is the precise sense in which the differentiation 'generalizes cleanly': the parent is not a separate result but the $k=1$ member of the family.",
+    "mathContext": "$\\sum'_{n} n\\,r^n = \\dfrac{1}{(1-r)^2} - \\dfrac{1}{1-r} = \\dfrac{r}{(1-r)^2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasSum.sub",
+      "termwise subtraction",
+      "arithmetico-geometric series",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "subtracting convergent series",
+      "sub_ne_zero"
+    ]
+  },
+  {
+    "id": "geomseries-oq0602-ann-descfactorial",
+    "proofId": "geometric-series-oq-06-oq-02",
+    "range": { "startLine": 143, "endLine": 167 },
+    "type": "tactic",
+    "title": "The descending-factorial weighted geometric series",
+    "content": "`tsum_descFactorial_mul_geometric` produces the exact form the open question names: $\\sum (n+k)^{\\underline{k}} r^n = k!/(1-r)^{k+1}$. Because $(n+k)^{\\underline{k}} = k!\\binom{n+k}{k}$ (`Nat.descFactorial_eq_factorial_mul_choose`), scaling the family by $k!$ via `HasSum.mul_left` and a `push_cast`+`ring` congruence converts the binomial weight to a descending-factorial weight. It is the same identity with the coefficient rescaled.",
+    "mathContext": "$\\sum'_{n} (n+k)^{\\underline{k}}\\,r^n = k!/(1-r)^{k+1}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "descending factorial",
+      "HasSum.mul_left",
+      "Nat.descFactorial_eq_factorial_mul_choose",
+      "push_cast"
+    ],
+    "prerequisites": [
+      "factorial identities",
+      "scaling convergent series"
+    ]
+  },
+  {
+    "id": "geomseries-oq0602-ann-concrete",
+    "proofId": "geometric-series-oq-06-oq-02",
+    "range": { "startLine": 168, "endLine": 184 },
+    "type": "concept",
+    "title": "A concrete evaluation: ∑ binom(n+2,2)·(1/2)ⁿ = 8",
+    "content": "`tsum_choose_two_half_pow` specializes $k=2$, $r=1/2$ over $\\mathbb{R}$: the triangular-number weights $\\binom{n+2}{2}=(n+1)(n+2)/2$ are the coefficients of the second derivative of the geometric series, and $1/(1-1/2)^3 = 2^3 = 8$ by `norm_num`. It concretely exhibits the $k=2$ member of the family.",
+    "mathContext": "$\\sum'_{n} \\binom{n+2}{2}(1/2)^n = 1/(1/2)^3 = 8$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "triangular numbers",
+      "second derivative",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "binomial evaluation",
+      "real geometric series"
+    ]
+  }
+]
