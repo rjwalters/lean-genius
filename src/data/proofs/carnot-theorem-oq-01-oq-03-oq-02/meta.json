@@ -63,6 +63,28 @@
     "theoremCount": 4,
     "definitionCount": 0
   },
+  "overview": {
+    "historicalContext": "Carnot's circle-of-results connects a triangle's angles, side lengths, inradius r and circumradius R. The law of sines a = 2R sin A (here in Mathlib's extended form for an Affine.Triangle) is the classical hinge between the angle picture and the metric picture: it turns any symmetric inequality in the angles into a statement about side lengths and the circumradius. The family's earlier entries proved the angle-level facts sin A + sin B + sin C ≤ 3√3/2 (sharp bound) and its equality characterisation A = B = C = π/3 (uniqueness) purely as statements about reals summing to π. This entry crosses the hinge: it lifts both to honest geometry, recovering the textbook theorem that among all triangles inscribed in a fixed circle the equilateral one has the greatest perimeter — and is the unique such maximiser.",
+    "problemStatement": "Formalise the law-of-sines bridge from the angle-level sine bound to an explicit perimeter inequality over a Euclidean space: for a triangle t : Affine.Triangle ℝ P with circumradius R, show perimeter t ≤ 3√3·R, with equality exactly when t is equilateral.",
+    "text": "The extended law of sines turns the angle-level bound sin A + sin B + sin C ≤ 3√3/2 into the geometric perimeter inequality perimeter ≤ 3√3·R, with equality iff the inscribed triangle is equilateral.",
+    "proofStrategy": "1. **Each side as 2R·sin(opposite angle).** Mathlib's extended law of sines gives dist(points i₁)(points i₃)/sin(∠ at i₂) = 2·circumradius. To clear the denominator, note the triangle's affine independence makes the three vertices non-collinear (affineIndependent_iff_not_collinear_of_ne), so the interior angle lies strictly in (0, π) (angle_pos_of_not_collinear, angle_lt_pi_of_not_collinear) and its sine is nonzero; div_eq_iff then yields the multiplicative form dist = 2R·sin.\n\n2. **Angle sum.** EuclideanGeometry.angle_add_angle_add_angle_eq_pi gives A + B + C = π (the two-vertices-distinct hypothesis comes from the injective points map).\n\n3. **Perimeter bound.** Summing the three side equations, the perimeter is 2R·(sin A + sin B + sin C). The companion bound sin A + sin B + sin C ≤ 3√3/2 (with the angle sum and the automatic [0, π] membership) and R ≥ 0 give perimeter ≤ 2R·(3√3/2) = 3√3·R.\n\n4. **Equality characterisation.** The circumradius of a genuine triangle is positive, so the factor 2R cancels (mul_right_inj'): the perimeter equation 2R·(sum) = 3√3·R = 2R·(3√3/2) is equivalent to sin A + sin B + sin C = 3√3/2, which the companion uniqueness result sin_sum_eq_iff_equilateral characterises as A = B = C = π/3.",
+    "keyInsights": [
+      "**The law of sines is the hinge between angles and metric**: dist = 2R·sin(opposite angle) converts the whole angle-level extremal story (bound + uniqueness) into a metric one (perimeter vs circumradius) with no new analysis — the geometry and the trigonometry stay cleanly separated",
+      "**Affine independence is exactly the non-degeneracy needed**: it is what makes each interior angle lie in the open interval (0, π), so its sine is nonzero and the law-of-sines quotient can be cleared — the same hypothesis that makes the circumradius positive and the equality cancellation legitimate",
+      "**Equality transfers losslessly through the bridge**: because 2R > 0, the geometric perimeter equation is equivalent (not merely implied) to the angle-level sine equation, so the angle-level uniqueness A = B = C = π/3 lifts verbatim to 'the equilateral triangle is the unique inscribed perimeter-maximiser'",
+      "**Stated over a general inner-product space**: the result is proved for any Affine.Triangle ℝ P with the inner-product/torsor instances — a triangle lives in its 2-dimensional affine span regardless of ambient dimension — so it specialises immediately to EuclideanSpace ℝ (Fin 2)"
+    ],
+    "prerequisites": [
+      "Mathlib's Affine.Triangle ℝ P and its circumradius (Affine.Simplex.circumradius)",
+      "The extended law of sines dist/sin = 2R and the Euclidean angle sum for a triangle",
+      "Affine independence ⇔ non-collinearity for three points, and the resulting (0, π) range of each interior angle",
+      "The companion angle-level results: the sharp bound sin A + sin B + sin C ≤ 3√3/2 and its equality characterisation A = B = C = π/3"
+    ],
+    "openQuestions": [
+      "Can the equality side be restated purely metrically — equality iff the three side lengths dist p₀ p₁, dist p₁ p₂, dist p₂ p₀ are all equal — by proving the converse 'equal sides ⇒ equal angles' (which, unlike the angle direction, must contend with sin's non-injectivity on (0, π))?",
+      "Does the dual cosine identity cos A + cos B + cos C = 1 + r/R bridge similarly to a sharp inradius/circumradius (Euler) inequality r ≤ R/2 with equality iff equilateral, over the same Affine.Triangle ℝ P?"
+    ]
+  },
   "sections": [
     {
       "title": "Module header",
@@ -105,36 +127,6 @@
       "id": "equality-iff"
     }
   ],
-  "overview": {
-    "historicalContext": "Carnot's circle-of-results connects a triangle's angles, side lengths, inradius r and circumradius R. The law of sines a = 2R sin A (here in Mathlib's extended form for an Affine.Triangle) is the classical hinge between the angle picture and the metric picture: it turns any symmetric inequality in the angles into a statement about side lengths and the circumradius. The family's earlier entries proved the angle-level facts sin A + sin B + sin C ≤ 3√3/2 (sharp bound) and its equality characterisation A = B = C = π/3 (uniqueness) purely as statements about reals summing to π. This entry crosses the hinge: it lifts both to honest geometry, recovering the textbook theorem that among all triangles inscribed in a fixed circle the equilateral one has the greatest perimeter — and is the unique such maximiser.",
-    "problemStatement": "Formalise the law-of-sines bridge from the angle-level sine bound to an explicit perimeter inequality over a Euclidean space: for a triangle t : Affine.Triangle ℝ P with circumradius R, show perimeter t ≤ 3√3·R, with equality exactly when t is equilateral.",
-    "text": "The extended law of sines turns the angle-level bound sin A + sin B + sin C ≤ 3√3/2 into the geometric perimeter inequality perimeter ≤ 3√3·R, with equality iff the inscribed triangle is equilateral.",
-    "proofStrategy": "1. **Each side as 2R·sin(opposite angle).** Mathlib's extended law of sines gives dist(points i₁)(points i₃)/sin(∠ at i₂) = 2·circumradius. To clear the denominator, note the triangle's affine independence makes the three vertices non-collinear (affineIndependent_iff_not_collinear_of_ne), so the interior angle lies strictly in (0, π) (angle_pos_of_not_collinear, angle_lt_pi_of_not_collinear) and its sine is nonzero; div_eq_iff then yields the multiplicative form dist = 2R·sin.\n\n2. **Angle sum.** EuclideanGeometry.angle_add_angle_add_angle_eq_pi gives A + B + C = π (the two-vertices-distinct hypothesis comes from the injective points map).\n\n3. **Perimeter bound.** Summing the three side equations, the perimeter is 2R·(sin A + sin B + sin C). The companion bound sin A + sin B + sin C ≤ 3√3/2 (with the angle sum and the automatic [0, π] membership) and R ≥ 0 give perimeter ≤ 2R·(3√3/2) = 3√3·R.\n\n4. **Equality characterisation.** The circumradius of a genuine triangle is positive, so the factor 2R cancels (mul_right_inj'): the perimeter equation 2R·(sum) = 3√3·R = 2R·(3√3/2) is equivalent to sin A + sin B + sin C = 3√3/2, which the companion uniqueness result sin_sum_eq_iff_equilateral characterises as A = B = C = π/3.",
-    "keyInsights": [
-      "**The law of sines is the hinge between angles and metric**: dist = 2R·sin(opposite angle) converts the whole angle-level extremal story (bound + uniqueness) into a metric one (perimeter vs circumradius) with no new analysis — the geometry and the trigonometry stay cleanly separated",
-      "**Affine independence is exactly the non-degeneracy needed**: it is what makes each interior angle lie in the open interval (0, π), so its sine is nonzero and the law-of-sines quotient can be cleared — the same hypothesis that makes the circumradius positive and the equality cancellation legitimate",
-      "**Equality transfers losslessly through the bridge**: because 2R > 0, the geometric perimeter equation is equivalent (not merely implied) to the angle-level sine equation, so the angle-level uniqueness A = B = C = π/3 lifts verbatim to 'the equilateral triangle is the unique inscribed perimeter-maximiser'",
-      "**Stated over a general inner-product space**: the result is proved for any Affine.Triangle ℝ P with the inner-product/torsor instances — a triangle lives in its 2-dimensional affine span regardless of ambient dimension — so it specialises immediately to EuclideanSpace ℝ (Fin 2)"
-    ],
-    "prerequisites": [
-      "Mathlib's Affine.Triangle ℝ P and its circumradius (Affine.Simplex.circumradius)",
-      "The extended law of sines dist/sin = 2R and the Euclidean angle sum for a triangle",
-      "Affine independence ⇔ non-collinearity for three points, and the resulting (0, π) range of each interior angle",
-      "The companion angle-level results: the sharp bound sin A + sin B + sin C ≤ 3√3/2 and its equality characterisation A = B = C = π/3"
-    ],
-    "openQuestions": [
-      "Can the equality side be restated purely metrically — equality iff the three side lengths dist p₀ p₁, dist p₁ p₂, dist p₂ p₀ are all equal — by proving the converse 'equal sides ⇒ equal angles' (which, unlike the angle direction, must contend with sin's non-injectivity on (0, π))?",
-      "Does the dual cosine identity cos A + cos B + cos C = 1 + r/R bridge similarly to a sharp inradius/circumradius (Euler) inequality r ≤ R/2 with equality iff equilateral, over the same Affine.Triangle ℝ P?"
-    ]
-  },
-  "conclusion": {
-    "summary": "The extended law of sines lifts the family's angle-level sine results to honest Euclidean geometry. Writing each side of an Affine.Triangle ℝ P as 2R·sin(opposite angle) — legitimate because affine independence forces every interior angle into (0, π), so its sine is nonzero — makes the perimeter equal to 2R·(sin A + sin B + sin C). The companion bound then gives perimeter ≤ 3√3·R, and (cancelling the positive factor 2R) the companion uniqueness result gives equality iff the triangle is equilateral. Axiom- and sorry-free.",
-    "implications": "**Theoretical Significance**: Completes the Carnot sine-sum thread by crossing from angles to metric geometry: the abstract bound 3√3/2 and its unique angle-maximiser become the textbook theorem that the equilateral triangle is the greatest-perimeter triangle inscribed in a fixed circle, and the unique one. The proof cleanly isolates the geometric content (law of sines, angle sum, non-degeneracy, positive circumradius) from the analytic content (Jensen / strict concavity) reused unchanged from the companion entries, demonstrating how Mathlib's Euclidean-geometry layer turns angle-level extremal facts into metric ones with no additional trigonometry.",
-    "openQuestions": [
-      "Prove the metric form of the equality case — equality iff all three side lengths are equal — which requires the converse 'equal sides ⇒ equal angles' and so must handle the non-injectivity of sin on (0, π).",
-      "Bridge the dual cosine identity cos A + cos B + cos C = 1 + r/R to a sharp Euler inequality r ≤ R/2 over the same Affine.Triangle ℝ P, with equality iff equilateral."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "carnot-theorem-oq-01-oq-03-oq-01",
@@ -152,7 +144,43 @@
       "description": "The cosine form of Carnot's theorem cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2) is the analytic root of the family; the present entry is its metric-geometry descendant on the sine side, expressing the bound through the circumradius."
     }
   ],
-  "sorries": 0,
+  "conclusion": {
+    "summary": "The extended law of sines lifts the family's angle-level sine results to honest Euclidean geometry. Writing each side of an Affine.Triangle ℝ P as 2R·sin(opposite angle) — legitimate because affine independence forces every interior angle into (0, π), so its sine is nonzero — makes the perimeter equal to 2R·(sin A + sin B + sin C). The companion bound then gives perimeter ≤ 3√3·R, and (cancelling the positive factor 2R) the companion uniqueness result gives equality iff the triangle is equilateral. Axiom- and sorry-free.",
+    "implications": "**Theoretical Significance**: Completes the Carnot sine-sum thread by crossing from angles to metric geometry: the abstract bound 3√3/2 and its unique angle-maximiser become the textbook theorem that the equilateral triangle is the greatest-perimeter triangle inscribed in a fixed circle, and the unique one. The proof cleanly isolates the geometric content (law of sines, angle sum, non-degeneracy, positive circumradius) from the analytic content (Jensen / strict concavity) reused unchanged from the companion entries, demonstrating how Mathlib's Euclidean-geometry layer turns angle-level extremal facts into metric ones with no additional trigonometry.",
+    "openQuestions": [
+      "Prove the metric form of the equality case — equality iff all three side lengths are equal — which requires the converse 'equal sides ⇒ equal angles' and so must handle the non-injectivity of sin on (0, π).",
+      "Bridge the dual cosine identity cos A + cos B + cos C = 1 + r/R to a sharp Euler inequality r ≤ R/2 over the same Affine.Triangle ℝ P, with equality iff equilateral."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Carnot's theorem, circumradius/inradius relations, and triangle trigonometry."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin",
+      "note": "Comprehensive classical triangle geometry."
+    },
+    {
+      "authors": "Mitrinović, D. S.; Pečarić, J. E.; Volenec, V.",
+      "title": "Recent Advances in Geometric Inequalities",
+      "year": "1989",
+      "venue": "Kluwer Academic",
+      "note": "Sharp bounds for triangle cosine and sine sums."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry circumradius/inradius, Real.cos/sin identities and inner-product-space triangle API (Mathlib.Geometry.Euclidean / Mathlib.Analysis.SpecialFunctions.Trigonometric)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",
@@ -170,5 +198,6 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/CarnotTheoremOQ01OQ03OQ02.lean"
-  }
+  },
+  "sorries": 0
 }

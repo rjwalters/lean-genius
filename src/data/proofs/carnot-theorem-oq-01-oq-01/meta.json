@@ -76,6 +76,28 @@
     "theoremCount": 6,
     "definitionCount": 0
   },
+  "overview": {
+    "historicalContext": "Euler's inequality r ≤ R/2 — the inradius of a triangle is at most half its circumradius, with equality only for the equilateral triangle — was published by Leonhard Euler in 1765, though it had been stated earlier by William Chapple (1746). It is one of the most classical of all triangle inequalities. This entry derives it as a corollary of the parent file's angle form of Carnot's theorem, cos A + cos B + cos C = 1 + r/R: since r/R = 4 sin(A/2) sin(B/2) sin(C/2), bounding the cosine sum above by 3/2 is exactly the statement r/R ≤ 1/2. The cosine sum itself ranges over (1, 3/2] for an actual triangle, the lower endpoint approached by degenerate triangles and the upper endpoint attained by the equilateral one.",
+    "problemStatement": "For a triangle with angles A, B, C > 0 and A + B + C = π, prove the sharp bounds\n\n  1 < cos A + cos B + cos C ≤ 3/2,\n\nwith equality at 3/2 if and only if the triangle is equilateral, and deduce Euler's inequality 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2 (equivalently r ≤ R/2).",
+    "text": "The sum of the cosines of a triangle's angles lies in (1, 3/2], maximized by the equilateral triangle; equivalently the inradius is at most half the circumradius (Euler's inequality).",
+    "proofStrategy": "Everything rests on one algebraic decomposition obtained from the sum-to-product identity. Writing cos A + cos B = 2 cos((A+B)/2) cos((A-B)/2) and using (A+B)/2 = π/2 - C/2 (so the leading cosine becomes sin(C/2)) together with cos C = 1 - 2 sin²(C/2) gives\n\n  cos A + cos B + cos C = 1 + 2 sin(C/2) cos((A-B)/2) - 2 sin²(C/2).\n\nCompleting the square rewrites the gap to 3/2 as a sum of two manifestly nonnegative terms:\n\n  3/2 - (cos A + cos B + cos C) = 2(sin(C/2) - 1/2)² + 2 sin(C/2)(1 - cos((A-B)/2)).\n\n1. **Upper bound**: both terms are ≥ 0 (sin(C/2) ≥ 0, cos((A-B)/2) ≤ 1), so the sum is ≤ 3/2.\n2. **Equality**: the two terms vanish simultaneously iff sin(C/2) = 1/2 and cos((A-B)/2) = 1, i.e. C = π/3 and A = B, forcing the equilateral triangle.\n3. **Lower bound**: through the parent identity the sum is 1 + 4 sin(A/2) sin(B/2) sin(C/2), and the three half-angle sines are positive on (0, π/2), so the sum exceeds 1.\n4. **Euler's inequality**: the upper bound 1 + 4 sin(A/2) sin(B/2) sin(C/2) ≤ 3/2 rearranges to 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2, i.e. r ≤ R/2.\n\nThe argument never splits on acute/obtuse — it uses only A, B, C > 0 and A + B + C = π.",
+    "keyInsights": [
+      "**The gap to 3/2 is a perfect square plus a nonnegative product**: cos A + cos B + cos C = 3/2 - 2(sin(C/2) - 1/2)² - 2 sin(C/2)(1 - cos((A-B)/2)), so the bound, its equality case, and the equilateral extremizer all fall out of one decomposition",
+      "**Range correspondence**: through the parent identity cos sum = 1 + r/R, the analytic range (1, 3/2] of the cosine sum is exactly the geometric range (0, 1/2] of r/R — Euler's inequality is the upper bound restated",
+      "**Sign-agnostic**: the proof uses only A, B, C > 0 and A + B + C = π, avoiding the acute/obtuse case split that the metric signed-distance form of Carnot's theorem requires",
+      "**Two simple endpoint facts pin the extremizer**: sin(C/2) = 1/2 (via injectivity of sin near 0) gives C = π/3, and cos((A-B)/2) = 1 (via cos x = 1 ⟺ x = 0) gives A = B — together the equilateral triangle"
+    ],
+    "prerequisites": [
+      "Real trigonometric functions sin and cos",
+      "Sum-to-product and double-angle identities",
+      "Monotonicity/injectivity of sin near 0 and the characterization cos x = 1 ⟺ x = 0",
+      "The parent Carnot angle identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2)"
+    ],
+    "openQuestions": [
+      "Can the originally-scoped metric signed-distance form of Carnot's theorem (sum of signed circumcenter-to-side distances = R + r) be formalized directly over EuclideanSpace ℝ (Fin 2) with an explicit circumcenter? This remains open; the present entry is a tractable analytic follow-up.",
+      "Is there a spherical or hyperbolic analogue of the cosine-sum range and the corresponding Euler-type inequality?"
+    ]
+  },
   "sections": [
     {
       "title": "Module header",
@@ -126,28 +148,13 @@
       "id": "equality-case"
     }
   ],
-  "overview": {
-    "historicalContext": "Euler's inequality r ≤ R/2 — the inradius of a triangle is at most half its circumradius, with equality only for the equilateral triangle — was published by Leonhard Euler in 1765, though it had been stated earlier by William Chapple (1746). It is one of the most classical of all triangle inequalities. This entry derives it as a corollary of the parent file's angle form of Carnot's theorem, cos A + cos B + cos C = 1 + r/R: since r/R = 4 sin(A/2) sin(B/2) sin(C/2), bounding the cosine sum above by 3/2 is exactly the statement r/R ≤ 1/2. The cosine sum itself ranges over (1, 3/2] for an actual triangle, the lower endpoint approached by degenerate triangles and the upper endpoint attained by the equilateral one.",
-    "problemStatement": "For a triangle with angles A, B, C > 0 and A + B + C = π, prove the sharp bounds\n\n  1 < cos A + cos B + cos C ≤ 3/2,\n\nwith equality at 3/2 if and only if the triangle is equilateral, and deduce Euler's inequality 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2 (equivalently r ≤ R/2).",
-    "text": "The sum of the cosines of a triangle's angles lies in (1, 3/2], maximized by the equilateral triangle; equivalently the inradius is at most half the circumradius (Euler's inequality).",
-    "proofStrategy": "Everything rests on one algebraic decomposition obtained from the sum-to-product identity. Writing cos A + cos B = 2 cos((A+B)/2) cos((A-B)/2) and using (A+B)/2 = π/2 - C/2 (so the leading cosine becomes sin(C/2)) together with cos C = 1 - 2 sin²(C/2) gives\n\n  cos A + cos B + cos C = 1 + 2 sin(C/2) cos((A-B)/2) - 2 sin²(C/2).\n\nCompleting the square rewrites the gap to 3/2 as a sum of two manifestly nonnegative terms:\n\n  3/2 - (cos A + cos B + cos C) = 2(sin(C/2) - 1/2)² + 2 sin(C/2)(1 - cos((A-B)/2)).\n\n1. **Upper bound**: both terms are ≥ 0 (sin(C/2) ≥ 0, cos((A-B)/2) ≤ 1), so the sum is ≤ 3/2.\n2. **Equality**: the two terms vanish simultaneously iff sin(C/2) = 1/2 and cos((A-B)/2) = 1, i.e. C = π/3 and A = B, forcing the equilateral triangle.\n3. **Lower bound**: through the parent identity the sum is 1 + 4 sin(A/2) sin(B/2) sin(C/2), and the three half-angle sines are positive on (0, π/2), so the sum exceeds 1.\n4. **Euler's inequality**: the upper bound 1 + 4 sin(A/2) sin(B/2) sin(C/2) ≤ 3/2 rearranges to 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2, i.e. r ≤ R/2.\n\nThe argument never splits on acute/obtuse — it uses only A, B, C > 0 and A + B + C = π.",
-    "keyInsights": [
-      "**The gap to 3/2 is a perfect square plus a nonnegative product**: cos A + cos B + cos C = 3/2 - 2(sin(C/2) - 1/2)² - 2 sin(C/2)(1 - cos((A-B)/2)), so the bound, its equality case, and the equilateral extremizer all fall out of one decomposition",
-      "**Range correspondence**: through the parent identity cos sum = 1 + r/R, the analytic range (1, 3/2] of the cosine sum is exactly the geometric range (0, 1/2] of r/R — Euler's inequality is the upper bound restated",
-      "**Sign-agnostic**: the proof uses only A, B, C > 0 and A + B + C = π, avoiding the acute/obtuse case split that the metric signed-distance form of Carnot's theorem requires",
-      "**Two simple endpoint facts pin the extremizer**: sin(C/2) = 1/2 (via injectivity of sin near 0) gives C = π/3, and cos((A-B)/2) = 1 (via cos x = 1 ⟺ x = 0) gives A = B — together the equilateral triangle"
-    ],
-    "prerequisites": [
-      "Real trigonometric functions sin and cos",
-      "Sum-to-product and double-angle identities",
-      "Monotonicity/injectivity of sin near 0 and the characterization cos x = 1 ⟺ x = 0",
-      "The parent Carnot angle identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2)"
-    ],
-    "openQuestions": [
-      "Can the originally-scoped metric signed-distance form of Carnot's theorem (sum of signed circumcenter-to-side distances = R + r) be formalized directly over EuclideanSpace ℝ (Fin 2) with an explicit circumcenter? This remains open; the present entry is a tractable analytic follow-up.",
-      "Is there a spherical or hyperbolic analogue of the cosine-sum range and the corresponding Euler-type inequality?"
-    ]
-  },
+  "crossReferences": [
+    {
+      "targetId": "carnot-theorem-oq-01",
+      "relationship": "parent",
+      "description": "The parent angle form cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2) is used directly: the lower bound and Euler's inequality are read off it, and the upper bound 3/2 on the cosine sum is the inequality r/R ≤ 1/2."
+    }
+  ],
   "conclusion": {
     "summary": "For a triangle the cosine sum cos A + cos B + cos C lies in the sharp range (1, 3/2], with the maximum 3/2 attained exactly by the equilateral triangle. The upper bound is Euler's inequality r ≤ R/2 restated through the parent Carnot angle identity. All four headline results are axiom- and sorry-free, resting on a single completing-the-square decomposition.",
     "implications": "**Theoretical Significance**: The entry shows that Euler's classical inradius/circumradius inequality and the sharp triangle cosine-sum range are two faces of one elementary algebraic decomposition, derived without any acute/obtuse case analysis. It complements the parent angle form of Carnot's theorem by exhibiting the exact range of the quantity that the parent identity computes.",
@@ -156,14 +163,35 @@
       "Spherical/hyperbolic analogue of the cosine-sum range?"
     ]
   },
-  "crossReferences": [
+  "references": [
     {
-      "targetId": "carnot-theorem-oq-01",
-      "relationship": "parent",
-      "description": "The parent angle form cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2) is used directly: the lower bound and Euler's inequality are read off it, and the upper bound 3/2 on the cosine sum is the inequality r/R ≤ 1/2."
+      "authors": "Mitrinović, D. S.; Pečarić, J. E.; Volenec, V.",
+      "title": "Recent Advances in Geometric Inequalities",
+      "year": "1989",
+      "venue": "Kluwer Academic",
+      "note": "Sharp bounds for triangle cosine and sine sums."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Carnot's theorem, circumradius/inradius relations, and triangle trigonometry."
+    },
+    {
+      "authors": "Andreescu, Titu and Andrica, Dorin",
+      "title": "Complex Numbers from A to ...Z, and triangle trigonometric identities",
+      "year": "2006",
+      "venue": "Birkhäuser",
+      "note": "Triangle trigonometric identities and extremal angle-sum inequalities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry circumradius/inradius, Real.cos/sin identities and inner-product-space triangle API (Mathlib.Geometry.Euclidean / Mathlib.Analysis.SpecialFunctions.Trigonometric)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ],
-  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib",
@@ -179,5 +207,6 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/CarnotTheoremOQ01OQ01.lean"
-  }
+  },
+  "sorries": 0
 }
