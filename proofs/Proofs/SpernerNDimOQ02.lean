@@ -2552,4 +2552,175 @@ theorem gridNeighbor_none_geom_interior_iff (s : SpernerGrid.GridSimplex d N)
     · subst hlast
       exact ⟨(gridNeighbor_eq_none_iff s (Fin.last d)).mpr (Or.inr rfl), hgeom⟩
 
+/-!
+## Toward the facet-`0` cross-chain partner cell
+
+`gridNeighbor_none_geom_interior_iff` pins the remaining obstruction: facet `0`
+is *always* an unpaired, geometrically-interior facet, so a total triangulation
+`adj` must supply a partner cell across Kuhn chains.  The Freudenthal rule for
+the facet-`0` pivot advances the *last* vertex one more step in the single
+*omitted* increment direction `incDir 0` (taking the unit from `miss`), so the
+new cell shares the facet `{verts 1, …, verts d}` and replaces the dropped base
+`verts 0` by a genuinely new top vertex.
+
+This section constructs that new top vertex (`zeroPivotTop`), computes its
+coordinates, proves it is a *new* point (leaves `s`'s chain — the hallmark of a
+distinct neighbouring cell), and isolates the exact arithmetic feasibility
+regime of the construction (`zeroPivot_feasible_iff`).  All 0-sorry, 0-axiom;
+they build only on the `GridSimplex` chain primitives of
+`Proofs.SpernerGridBase`. -/
+
+/-- Candidate new top vertex of the facet-`0` cross-chain partner cell.
+It is the last vertex advanced one more step in the *omitted* increment
+direction `incDir 0` (with the usual unit taken from the `miss`
+coordinate): `verts (last) + e_{incDir 0} - e_miss`.  Feasible exactly
+when the top vertex still has a positive `miss` coordinate. -/
+def zeroPivotTop (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    BaryPoint d N where
+  coords := fun j =>
+    if j = s.incDir ⟨0, hd1⟩ then (s.verts (Fin.last d)).coords j + 1
+    else if j = s.miss then (s.verts (Fin.last d)).coords j - 1
+    else (s.verts (Fin.last d)).coords j
+  sum_eq := by
+    set p := s.incDir ⟨0, hd1⟩ with hp
+    set q := s.miss with hq
+    set V := s.verts (Fin.last d) with hV
+    have hpq : p ≠ q := s.miss_ne_inc ⟨0, hd1⟩
+    have key : ∀ j : Fin (d + 1),
+        (if j = p then V.coords j + 1
+          else if j = q then V.coords j - 1 else V.coords j)
+        + (if j = q then 1 else 0)
+        = V.coords j + (if j = p then 1 else 0) := by
+      intro j
+      by_cases h1 : j = p
+      · subst h1
+        rw [if_pos rfl, if_neg hpq, if_pos rfl]
+      · by_cases h2 : j = q
+        · subst h2
+          rw [if_neg h1, if_pos rfl, if_pos rfl, if_neg h1]
+          have : 1 ≤ V.coords q := hfeas
+          omega
+        · rw [if_neg h1, if_neg h2, if_neg h2, if_neg h1]
+    have hone_p : (∑ j : Fin (d + 1), (if j = p then (1 : ℕ) else 0)) = 1 := by simp
+    have hone_q : (∑ j : Fin (d + 1), (if j = q then (1 : ℕ) else 0)) = 1 := by simp
+    have hsum :
+        (∑ j : Fin (d + 1),
+            (if j = p then V.coords j + 1
+              else if j = q then V.coords j - 1 else V.coords j)) + 1
+          = (∑ j : Fin (d + 1), V.coords j) + 1 := by
+      calc
+        (∑ j : Fin (d + 1),
+            (if j = p then V.coords j + 1
+              else if j = q then V.coords j - 1 else V.coords j)) + 1
+            = (∑ j : Fin (d + 1),
+                (if j = p then V.coords j + 1
+                  else if j = q then V.coords j - 1 else V.coords j))
+              + (∑ j : Fin (d + 1), (if j = q then (1 : ℕ) else 0)) := by rw [hone_q]
+          _ = ∑ j : Fin (d + 1),
+                ((if j = p then V.coords j + 1
+                    else if j = q then V.coords j - 1 else V.coords j)
+                  + (if j = q then (1 : ℕ) else 0)) := by rw [Finset.sum_add_distrib]
+          _ = ∑ j : Fin (d + 1),
+                (V.coords j + (if j = p then (1 : ℕ) else 0)) :=
+                Finset.sum_congr rfl (fun j _ => key j)
+          _ = (∑ j : Fin (d + 1), V.coords j)
+                + (∑ j : Fin (d + 1), (if j = p then (1 : ℕ) else 0)) := by
+                rw [Finset.sum_add_distrib]
+          _ = (∑ j : Fin (d + 1), V.coords j) + 1 := by rw [hone_p]
+    rw [V.sum_eq] at hsum
+    omega
+
+/-- Coordinate of `zeroPivotTop` at the omitted direction `incDir 0`. -/
+theorem zeroPivotTop_coords_incDir0 (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    (zeroPivotTop s hd1 hfeas).coords (s.incDir ⟨0, hd1⟩)
+      = (s.verts (Fin.last d)).coords (s.incDir ⟨0, hd1⟩) + 1 := by
+  show (if s.incDir ⟨0, hd1⟩ = s.incDir ⟨0, hd1⟩ then _ else _) = _
+  rw [if_pos rfl]
+
+/-- Coordinate of `zeroPivotTop` at the `miss` direction. -/
+theorem zeroPivotTop_coords_miss (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    (zeroPivotTop s hd1 hfeas).coords s.miss
+      = (s.verts (Fin.last d)).coords s.miss - 1 := by
+  have hpq : s.miss ≠ s.incDir ⟨0, hd1⟩ := fun h => s.miss_ne_inc ⟨0, hd1⟩ h.symm
+  show (if s.miss = s.incDir ⟨0, hd1⟩ then _ else if s.miss = s.miss then _ else _) = _
+  rw [if_neg hpq, if_pos rfl]
+
+/-- Coordinate of `zeroPivotTop` at any other direction: unchanged from the
+last vertex. -/
+theorem zeroPivotTop_coords_other (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss)
+    (j : Fin (d + 1)) (hjp : j ≠ s.incDir ⟨0, hd1⟩) (hjq : j ≠ s.miss) :
+    (zeroPivotTop s hd1 hfeas).coords j
+      = (s.verts (Fin.last d)).coords j := by
+  show (if j = s.incDir ⟨0, hd1⟩ then _ else if j = s.miss then _ else _) = _
+  rw [if_neg hjp, if_neg hjq]
+
+/-- The `incDir 0` coordinate of the top vertex equals the base value plus one:
+the omitted direction increases exactly once along `s`'s chain (at step 0) and
+never again, so it is `base + 1` at every vertex from `verts 1` onward. -/
+theorem top_incDir0_coord (s : GridSimplex d N) (hd1 : 0 < d) :
+    (s.verts (Fin.last d)).coords (s.incDir ⟨0, hd1⟩)
+      = (s.verts 0).coords (s.incDir ⟨0, hd1⟩) + 1 := by
+  have hle : (⟨0, hd1⟩ : Fin d).succ ≤ Fin.last d := by
+    simp [Fin.le_iff_val_le_val, Fin.succ, Fin.last]; omega
+  have hca := s.incDir_const_after ⟨0, hd1⟩ (Fin.last d) hle
+  have hstep := s.step_inc ⟨0, hd1⟩
+  have hcs : (⟨0, hd1⟩ : Fin d).castSucc = (0 : Fin (d + 1)) := by
+    apply Fin.ext; simp [Fin.castSucc, Fin.castAdd, Fin.castLE]
+  rw [hca, hstep, hcs]
+
+/-- The partner's top vertex has `incDir 0` coordinate `base + 2`, strictly
+above the maximum value (`base + 1`) that coordinate attains anywhere on `s`'s
+own chain — so the new vertex genuinely leaves the original cell. -/
+theorem zeroPivotTop_incDir0_coord (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    (zeroPivotTop s hd1 hfeas).coords (s.incDir ⟨0, hd1⟩)
+      = (s.verts 0).coords (s.incDir ⟨0, hd1⟩) + 2 := by
+  rw [zeroPivotTop_coords_incDir0, top_incDir0_coord]
+
+/-- Along `s`'s chain the `incDir 0` coordinate never exceeds `base + 1`. -/
+theorem chain_incDir0_le (s : GridSimplex d N) (hd1 : 0 < d) (j : Fin (d + 1)) :
+    (s.verts j).coords (s.incDir ⟨0, hd1⟩)
+      ≤ (s.verts 0).coords (s.incDir ⟨0, hd1⟩) + 1 := by
+  rcases Nat.eq_zero_or_pos j.val with hj0 | hjpos
+  · have : j = 0 := Fin.ext hj0
+    rw [this]; omega
+  · have hle : (⟨0, hd1⟩ : Fin d).succ ≤ j := by
+      simp [Fin.le_iff_val_le_val, Fin.succ]; omega
+    have hca := s.incDir_const_after ⟨0, hd1⟩ j hle
+    have hstep := s.step_inc ⟨0, hd1⟩
+    have hcs : (⟨0, hd1⟩ : Fin d).castSucc = (0 : Fin (d + 1)) := by
+      apply Fin.ext; simp [Fin.castSucc, Fin.castAdd, Fin.castLE]
+    rw [hca, hstep, hcs]
+
+/-- **The partner's top vertex is genuinely new.**  `zeroPivotTop` coincides
+with no vertex of `s`'s chain: its `incDir 0` coordinate (`base + 2`) exceeds the
+chain maximum (`base + 1`).  So the facet-`0` partner cell is a *distinct* filling
+of the shared facet `{verts 1, …, verts d}`, not `s` itself. -/
+theorem zeroPivotTop_not_mem_chain (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) (j : Fin (d + 1)) :
+    zeroPivotTop s hd1 hfeas ≠ s.verts j := by
+  intro h
+  have h1 := zeroPivotTop_incDir0_coord s hd1 hfeas
+  have h2 := chain_incDir0_le s hd1 j
+  rw [h] at h1
+  omega
+
+/-- **Feasibility dichotomy for the same-`miss` facet-`0` pivot.**  The partner's
+top vertex is constructible (its `miss` coordinate stays nonnegative) exactly when
+the base `miss` value is at least `d + 1`.  The complementary regime — base
+`miss = d` (the extremal cell, whose top vertex already sits on the geometric
+`miss`-face) — is precisely where the facet-`0` partner must instead cross to a
+different `miss` fibre. -/
+theorem zeroPivot_feasible_iff (s : GridSimplex d N) :
+    1 ≤ (s.verts (Fin.last d)).coords s.miss
+      ↔ d + 1 ≤ (s.verts 0).coords s.miss := by
+  rw [s.miss_coord_at (Fin.last d)]
+  simp only [Fin.val_last]
+  have hge := s.base_miss_ge_d
+  omega
+
 end SpernerNDimOQ02
