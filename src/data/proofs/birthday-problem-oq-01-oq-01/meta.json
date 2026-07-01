@@ -156,6 +156,27 @@
       "mathContext": "$\\text{Var}(X) = \\binom{n}{2}(d-1)/d^2 \\leq \\binom{n}{2}/d = E[X]$ when $d \\geq 1$."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Feller, W."
+      ],
+      "title": "An Introduction to Probability Theory and Its Applications, Volume I",
+      "year": "1968",
+      "venue": "3rd ed., Wiley",
+      "note": "Classic treatment of the birthday problem and occupancy / collision distributions."
+    },
+    {
+      "authors": [
+        "Motwani, R.",
+        "Raghavan, P."
+      ],
+      "title": "Randomized Algorithms",
+      "year": "1995",
+      "venue": "Cambridge University Press",
+      "note": "The birthday paradox and collision bounds in the algorithmic setting."
+    }
+  ],
   "conclusion": {
     "summary": "This file provides a complete Lean formalization of X = number of birthday collision pairs, going far beyond the classic question of whether X=0. It proves X=0 ↔ injective, counts zero-collision assignments via an Equiv chain, gives Pr(X=0) = descFactorial(d,n)/d^n, decomposes X as a sum of indicators, bounds X ≤ C(n,2), and proves E[X] = C(n,2)/d assuming three intermediate lemmas. The variance bound Var(X) ≤ E[X] is imported from BirthdayProblemOQ01.lean, completing a comprehensive distributional portrait of X.",
     "implications": "The indicator decomposition X = Σ I_{ij} and the double-counting argument Σ_f X(f) = C(n,2)·d^{n-1} constitute a formal proof of E[X] = C(n,2)/d by a method entirely independent of linearity of expectation. The two approaches — top-down via linearity (BirthdayProblemOQ01.lean) and bottom-up via double counting (this file) — formally agree, providing mutual verification. The sub-Poisson variance bound Var(X) ≤ E[X] formalizes the intuition that collision indicators I_{ij} are negatively correlated. The unification theorem zero_collision_fraction shows that injection counting (BirthdayProblem.lean) and collision-count-zero counting (this file) yield identical probabilities, connecting the two main formalizations in the gallery.",

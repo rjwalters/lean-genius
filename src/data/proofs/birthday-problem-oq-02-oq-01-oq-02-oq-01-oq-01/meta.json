@@ -74,6 +74,30 @@
       "summary": "uniformAveraging_mem_doublyStochastic: the all-1/d matrix is doubly stochastic. one_div_card_le_sum_sq: 1/d ≤ ∑ qᵢ² for probability vectors, obtained by applying the global inequality to the all-1/d matrix whose output is the uniform vector."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Marshall, A.W.",
+        "Olkin, I.",
+        "Arnold, B.C."
+      ],
+      "title": "Inequalities: Theory of Majorization and Its Applications",
+      "year": "2011",
+      "venue": "2nd ed., Springer Series in Statistics",
+      "note": "Standard reference for Schur-convexity, majorization and doubly-stochastic smoothing."
+    },
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E.",
+        "Pólya, G."
+      ],
+      "title": "Inequalities",
+      "year": "1952",
+      "venue": "2nd ed., Cambridge University Press",
+      "note": "Majorization and the doubly-stochastic characterization underlying Schur-convexity."
+    }
+  ],
   "conclusion": {
     "summary": "Globalized the parent's local smoothing transfer into the full Schur-convexity of the collision probability in doubly-stochastic (Hardy–Littlewood–Pólya) form: for every doubly stochastic matrix D, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². The proof is per-row Jensen for x² (each output coordinate is a convex combination via row-stochasticity) followed by a column-stochastic collapse of the double sum. As a corollary the uniform distribution minimizes collision (1/d ≤ ∑ qᵢ²), recovering the parent chain's sharp lower endpoint as the bottom of the majorization order. 135 lines, 3 theorems, 0 sorries, 0 axioms.",
     "implications": "Passing a vector through any averaging (doubly stochastic) operator can only decrease its sum of squares — the operator form of Schur-convexity of ∑ xᵢ². Via Birkhoff–von Neumann and the HLP theorem this is exactly the majorization statement p ≺ q ⟹ ∑ pᵢ² ≤ ∑ qᵢ², so the parent's two extremal endpoints (uniform minimum, concentration maximum) sit at the two ends of a single monotone order rather than being isolated bounds. The uniform-minimizer corollary shows the bottom endpoint falling out as one instance at the all-1/d matrix.",

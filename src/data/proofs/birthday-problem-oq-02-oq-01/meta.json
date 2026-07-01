@@ -88,6 +88,27 @@
       "endLine": 229
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Feller, W."
+      ],
+      "title": "An Introduction to Probability Theory and Its Applications, Volume I",
+      "year": "1968",
+      "venue": "3rd ed., Wiley",
+      "note": "Classic treatment of the birthday problem and occupancy / collision distributions."
+    },
+    {
+      "authors": [
+        "Motwani, R.",
+        "Raghavan, P."
+      ],
+      "title": "Randomized Algorithms",
+      "year": "1995",
+      "venue": "Cambridge University Press",
+      "note": "The birthday paradox and collision bounds in the algorithmic setting."
+    }
+  ],
   "conclusion": {
     "summary": "Proved ∏(1-i/d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²)) under 2(k-1) ≤ d. Combined with OQ-02's upper bound, this gives a two-sided exponential approximation for the birthday probability. 229 lines, 8 theorems, 0 sorries, 0 axioms.",
     "implications": "The two-sided bound exp(-k(k-1)/(2d) - k²(k-1)²/(4d²)) ≤ P(k,d) ≤ exp(-k(k-1)/(2d)) shows that the birthday probability is asymptotically exp(-k(k-1)/(2d)) in the standard regime k ~ √d. The error term k²(k-1)²/(4d²) is O(k⁴/d²) = O(1) when k = O(d^{1/2}), confirming the classical approximation.",

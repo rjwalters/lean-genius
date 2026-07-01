@@ -90,6 +90,29 @@
       "summary": "smoothing_sum_sq_le: replacing the values at two distinct coordinates by their average weakly decreases ∑ f². The sum difference collapses (off {i,j} the values are unchanged) to the smoothing atom evaluated at the two coordinates."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Marshall, A.W.",
+        "Olkin, I.",
+        "Arnold, B.C."
+      ],
+      "title": "Inequalities: Theory of Majorization and Its Applications",
+      "year": "2011",
+      "venue": "2nd ed., Springer Series in Statistics",
+      "note": "Standard reference for Schur-convexity, majorization and doubly-stochastic smoothing."
+    },
+    {
+      "authors": [
+        "Klamkin, M.S.",
+        "Newman, D.J."
+      ],
+      "title": "Extensions of the birthday surprise",
+      "year": "1967",
+      "venue": "Journal of Combinatorial Theory 3 (3), pp. 279–282",
+      "note": "Extremality of the uniform distribution for multi-coincidence birthday problems."
+    }
+  ],
   "conclusion": {
     "summary": "Proved the complementary half of the two-draw collision extremality: the sharp upper bound ∑ᵢ pᵢ² ≤ maxᵢ pᵢ with equality iff the distribution is supported on equal-mass atoms (pᵢ ∈ {0, M}); the two-sided bound 1/d ≤ ∑ pᵢ² ≤ maxᵢ pᵢ (lower bound re-derived self-contained); and the smoothing/transfer atom showing that equalizing two coordinates weakly decreases collision, strictly unless they were equal. 189 lines, 9 theorems, 0 sorries, 0 axioms.",
     "implications": "Collision probability lives in [1/d, maxᵢ pᵢ] on the simplex, with the two endpoints realized by the two opposite extremes — global uniformity (minimum) and concentration on equal-mass atoms (maximum). The smoothing inequality identifies the exact local move that decreases collision: any 'Robin Hood' transfer that equalizes two outcomes. Iterating it is the majorization proof that uniform is the unique minimizer, so this entry supplies the Schur-convexity mechanism behind the parent's result rather than re-stating the bound.",
