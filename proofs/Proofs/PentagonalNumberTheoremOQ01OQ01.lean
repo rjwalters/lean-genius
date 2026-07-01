@@ -252,4 +252,75 @@ theorem gpAt_gap_values :
       gpAt 4 - gpAt 3 = 2 ∧ gpAt 5 - gpAt 4 = 5 ∧ gpAt 6 - gpAt 5 = 3 := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> decide
 
+/-! ## Part 6: The quadratic closed form and the growth/density of A001318
+
+Parts 1–5 pin down the *order* of the enumeration (strict monotonicity, exact first
+differences) but not its *rate of growth*.  Telescoping the two interleaved gap
+progressions of Part 5 collapses to a single quadratic: `gpAt n` grows like `3n²/8`.
+Precisely, `8·gpAt n = 3n²+2n` at even positions and `3n²+4n+1` at odd positions, so
+the whole sequence is squeezed by
+
+    `3n² ≤ 8·gpAt n ≤ 3n²+4n+1 ≤ 3(n+1)²`.
+
+Two consequences:
+
+* `gpAt n = Θ(n²)` — the `n`-th generalized pentagonal number is quadratic in `n`;
+* **density / sparsity of A001318**: if `gpAt n ≤ N` then `3n² ≤ 8N`, i.e. `n ≤ √(8N/3)`,
+  so at most `⌊√(8N/3)⌋+1` generalized pentagonal numbers lie in `[0, N]` — they thin
+  out like `√N`, the reciprocal of the `Θ(n²)` growth. -/
+
+/-- **Closed form at even positions.** `8·gpAt (2j) = 3(2j)² + 2(2j) = 12j²+4j`, from
+`2·g(−j) = (−j)(−3j−1) = 3j²+j` (the parent's doubling relation at `−j`). -/
+theorem gpAt_eight_even (j : ℕ) :
+    8 * gpAt (2 * j) = 3 * (2 * (j : ℤ)) ^ 2 + 2 * (2 * (j : ℤ)) := by
+  rw [gpAt_even]
+  linear_combination (4 : ℤ) * two_mul_genPent (-(j : ℤ))
+
+/-- **Closed form at odd positions.** `8·gpAt (2j+1) = 3(2j+1)² + 4(2j+1) + 1 =
+12j²+20j+8`, from `2·g(j+1) = (j+1)(3j+2)`. -/
+theorem gpAt_eight_odd (j : ℕ) :
+    8 * gpAt (2 * j + 1) = 3 * (2 * (j : ℤ) + 1) ^ 2 + 4 * (2 * (j : ℤ) + 1) + 1 := by
+  rw [gpAt_odd]
+  linear_combination (4 : ℤ) * two_mul_genPent ((j : ℤ) + 1)
+
+/-- **Lower growth bound.** `3n² ≤ 8·gpAt n` for every `n` — the `n`-th generalized
+pentagonal number is at least `3n²/8`. -/
+theorem gpAt_eight_lower (n : ℕ) : 3 * (n : ℤ) ^ 2 ≤ 8 * gpAt n := by
+  rcases Nat.even_or_odd n with ⟨j, rfl⟩ | ⟨j, rfl⟩
+  · rw [show j + j = 2 * j from (two_mul j).symm, gpAt_eight_even]
+    push_cast; nlinarith [Nat.cast_nonneg (α := ℤ) j]
+  · rw [gpAt_eight_odd]
+    push_cast; nlinarith [Nat.cast_nonneg (α := ℤ) j]
+
+/-- **Upper growth bound.** `8·gpAt n ≤ 3n² + 4n + 1` for every `n`, with equality at
+odd positions.  Hence `gpAt n ≤ (3n²+4n+1)/8`. -/
+theorem gpAt_eight_upper (n : ℕ) : 8 * gpAt n ≤ 3 * (n : ℤ) ^ 2 + 4 * n + 1 := by
+  rcases Nat.even_or_odd n with ⟨j, rfl⟩ | ⟨j, rfl⟩
+  · rw [show j + j = 2 * j from (two_mul j).symm, gpAt_eight_even]
+    push_cast; nlinarith [Nat.cast_nonneg (α := ℤ) j]
+  · rw [gpAt_eight_odd]
+    push_cast; nlinarith [Nat.cast_nonneg (α := ℤ) j]
+
+/-- **Clean quadratic upper bound.** `8·gpAt n ≤ 3(n+1)²`, a tidy consequence of
+`gpAt_eight_upper` (`3n²+4n+1 ≤ 3n²+6n+3`). -/
+theorem gpAt_eight_upper' (n : ℕ) : 8 * gpAt n ≤ 3 * ((n : ℤ) + 1) ^ 2 := by
+  have h := gpAt_eight_upper n
+  nlinarith [Nat.cast_nonneg (α := ℤ) n]
+
+/-- **Growth sandwich (`gpAt n = Θ(n²)`).** The enumeration is squeezed between two
+quadratics in `n`: `3n² ≤ 8·gpAt n ≤ 3n²+4n+1`.  So the `n`-th generalized pentagonal
+number is `(3/8)n² + O(n)`. -/
+theorem gpAt_eight_sandwich (n : ℕ) :
+    3 * (n : ℤ) ^ 2 ≤ 8 * gpAt n ∧ 8 * gpAt n ≤ 3 * (n : ℤ) ^ 2 + 4 * n + 1 :=
+  ⟨gpAt_eight_lower n, gpAt_eight_upper n⟩
+
+/-- **Density / sparsity of A001318.** If the `n`-th generalized pentagonal number does
+not exceed `N`, then `3n² ≤ 8N`, i.e. `n ≤ √(8N/3)`.  Since `gpAt` enumerates the
+generalized pentagonal numbers in increasing order (`gpAt_enumerates`), this bounds how
+many of them can lie in `[0, N]`: at most `√(8N/3) + 1`.  They thin out like `√N`. -/
+theorem gpAt_le_imp_index_sq_le {n : ℕ} {N : ℤ} (h : gpAt n ≤ N) :
+    3 * (n : ℤ) ^ 2 ≤ 8 * N := by
+  have hlow := gpAt_eight_lower n
+  linarith
+
 end PentagonalNumberTheoremOQ01OQ01
