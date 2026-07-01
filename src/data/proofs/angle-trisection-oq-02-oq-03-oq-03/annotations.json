@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-primitive-root",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-03",
+    "range": { "startLine": 78, "endLine": 93 },
+    "type": "concept",
+    "title": "3 is a Primitive Root mod 17",
+    "content": "The unit group (ℤ/17ℤ)ˣ is cyclic of order 16, and `3` generates it: `three_orderOf` proves orderOf (3 : ZMod 17) = 16. The argument is the standard order test — 3¹⁶ = 1 by Fermat, and since 16 = 2⁴ has 2 as its only prime factor, it suffices that 3^(16/2) = 3⁸ = 16 = -1 ≠ 1. Gauss used exactly the powers of a primitive root to order the vertices of the polygon.",
+    "mathContext": "$\\mathrm{ord}_{17}(3) = 16$, so $\\langle 3\\rangle = (\\mathbb{Z}/17\\mathbb{Z})^\\times$.",
+    "significance": "key",
+    "relatedConcepts": ["Primitive root", "Cyclic group", "Order of an element", "Fermat's little theorem"],
+    "prerequisites": ["multiplicative group of ZMod p", "orderOf_eq_of_pow_and_pow_div_prime"]
+  },
+  {
+    "id": "ann-gauss-ordering",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-03",
+    "range": { "startLine": 100, "endLine": 118 },
+    "type": "insight",
+    "title": "Gauss's Vertex Ordering",
+    "content": "`gauss_ordering` lists the powers 3⁰,…,3¹⁵ mod 17 as [1,3,9,10,13,5,15,11,16,14,8,7,4,12,2,6] and `gauss_ordering_nodup` shows the list is duplicate-free — so the powers of 3 are a permutation of the sixteen nonzero residues. In Gauss's arrangement the two Gaussian periods, and then the sub-periods, appear as evenly spaced blocks of this list.",
+    "mathContext": "The primitive-root ordering makes each Gaussian period a contiguous residue class in the exponent.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gaussian periods", "Permutation of residues", "Decidable evaluation"],
+    "prerequisites": ["primitive root 3 mod 17"]
+  },
+  {
+    "id": "ann-gaussian-periods",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-03",
+    "range": { "startLine": 141, "endLine": 159 },
+    "type": "concept",
+    "title": "The Two Gaussian Periods = Squares vs. Non-squares",
+    "content": "The vertices split into the eight quadratic residues `periodQR` = {1,2,4,8,9,13,15,16} (even powers of 3) and the eight non-residues `periodNQR` = {3,5,6,7,10,11,12,14} (odd powers). `periodQR_eq_squares` confirms periodQR is exactly the nonzero squares mod 17, and `periods_disjoint`/`periods_cover` show they partition the units. As complex sums η₀ = Σ_{a∈QR} ζ^a and η₁ = Σ_{a∉QR} ζ^a, these periods satisfy η₀+η₁ = -1, η₀η₁ = -4, so they are the roots of x² + x − 4 = 0 — the first quadratic, introducing √17.",
+    "mathContext": "$\\eta_0,\\eta_1$ are roots of $x^2+x-4=0$, i.e. $\\eta = \\tfrac{-1\\pm\\sqrt{17}}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["Quadratic residues", "Gaussian periods", "Cyclotomic field", "Nested radicals"],
+    "prerequisites": ["quadratic residues mod a prime", "even/odd powers of a primitive root"]
+  },
+  {
+    "id": "ann-index2-tower",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-03",
+    "range": { "startLine": 230, "endLine": 264 },
+    "type": "insight",
+    "title": "The Index-2 Subgroup Tower",
+    "content": "Lifting 3 to a unit u₃, the subgroups ⟨u₃^(2ⁱ)⟩ form a descending chain with cardinalities 16 ⊃ 8 ⊃ 4 ⊃ 2 ⊃ 1 (`tower_cards`), each contained in the previous (`tower_le`) with index 2 (`tower_index_two`). Cardinalities come from `Nat.card_zpowers` (card = orderOf) together with `orderOf_pow_of_dvd` (order of u₃^(2ⁱ) is 16/2ⁱ). Because (ℤ/17ℤ)ˣ ≅ Gal(ℚ(ζ₁₇)/ℚ), this chain of four index-2 subgroups corresponds under the Galois correspondence to a tower ℚ ⊂ K₁ ⊂ K₂ ⊂ K₃ ⊂ ℚ(ζ₁₇) of four quadratic extensions — the algebraic reason the 17-gon needs only nested square roots.",
+    "mathContext": "$\\langle 3\\rangle \\supset \\langle 9\\rangle \\supset \\langle 13\\rangle \\supset \\langle 16\\rangle \\supset \\{1\\}$, orders $16\\supset 8\\supset 4\\supset 2\\supset 1$; each $[\\,\\cdot:\\cdot\\,]=2$.",
+    "significance": "key",
+    "relatedConcepts": ["Cyclic subgroup tower", "Subgroup index", "Galois correspondence", "Quadratic extensions"],
+    "prerequisites": ["zpowers and Nat.card_zpowers", "orderOf_pow_of_dvd", "Galois group of a cyclotomic field"]
+  },
+  {
+    "id": "ann-why-17-works",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-03",
+    "range": { "startLine": 275, "endLine": 285 },
+    "type": "conclusion",
+    "title": "Why 17 Works: Four Quadratic Steps",
+    "content": "`full_tower_steps` records φ(17) = 2⁴ (four quadratic steps for the full cyclotomic tower) and `real_subfield_degree` records φ(17)/2 = 2³ (three steps for the real cosine subfield ℚ(cos 2π/17), the fixed field of complex conjugation ⟨16⟩ = {±1}). Finitely many degree-2 extensions mean every coordinate — in particular cos(2π/17) — is built from nested square roots, so the regular 17-gon is straightedge-and-compass constructible.",
+    "mathContext": "$\\varphi(17)=2^4$, $\\varphi(17)/2 = 2^3$: the height of the quadratic tower.",
+    "significance": "key",
+    "relatedConcepts": ["Constructible number", "Tower of quadratic extensions", "Real subfield", "Complex conjugation"],
+    "prerequisites": ["constructible ⇔ tower of quadratic extensions", "fixed field of complex conjugation"]
+  }
+]
