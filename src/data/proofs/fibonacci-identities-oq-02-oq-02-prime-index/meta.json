@@ -1,7 +1,7 @@
 {
-  "id": "fibonacci-identities-oq-02-oq-02",
+  "id": "fibonacci-identities-oq-02-oq-02-prime-index",
   "title": "Prime Fibonacci Numbers Have Prime (or 4) Indices",
-  "slug": "fibonacci-identities-oq-02-oq-02",
+  "slug": "fibonacci-identities-oq-02-oq-02-prime-index",
   "description": "The parent entry establishes that the Fibonacci numbers form a strong divisibility sequence — fib (gcd m n) = gcd (fib m) (fib n), and for 3 ≤ m, fib m ∣ fib n ↔ m ∣ n. This entry draws the classical prime-index consequence: if fib n is prime then n is prime or n = 4. The exceptional index n = 4 is genuine (fib 4 = 3 is prime while 4 is not) and unique, because 4's only proper divisor above 1 is 2 and fib 2 = 1 is a unit. The proof is a clean application of the index-divisibility law: if n is composite and n ≠ 4, then n has a divisor d with 3 ≤ d < n (exists_divisor_ge_three — the special role of 4 is that its only proper divisor above 1 is 2), whence fib d ∣ fib n (Nat.fib_dvd), 2 ≤ fib d (monotonicity, fib 3 = 2), and fib d < fib n (strict monotonicity Nat.fib_lt_fib, since d < n); so fib n has a divisor strictly between 1 and itself and cannot be prime. Corollaries: for n ≥ 5 a prime fib n forces n prime outright (fib_prime_index_prime_of_ge_five), and the contrapositive fib_not_prime_of_composite states a composite index other than 4 gives a composite Fibonacci number. The converse is FALSE — 19 is prime but fib 19 = 4181 = 37·113 is composite — so prime indices do not force prime Fibonacci numbers; the implication is strictly one-directional. All concrete witnesses use decide (kernel evaluation), not native_decide.",
   "meta": {
     "author": "Classical Fibonacci divisibility theory; formalized in Lean 4 with Mathlib",
@@ -18,7 +18,7 @@
       "integer-sequences",
       "research"
     ],
-    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ02OQ02.lean",
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ02OQ02PrimeIndex.lean",
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
@@ -145,12 +145,12 @@
     "opens": [
       "Nat"
     ],
-    "namespace": "FibonacciIdentitiesOQ02OQ02",
+    "namespace": "FibonacciIdentitiesOQ02OQ02PrimeIndex",
     "lineCount": 120,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0,
-    "path": "Proofs/FibonacciIdentitiesOQ02OQ02.lean",
+    "path": "Proofs/FibonacciIdentitiesOQ02OQ02PrimeIndex.lean",
     "sorries": 0
   },
   "references": [

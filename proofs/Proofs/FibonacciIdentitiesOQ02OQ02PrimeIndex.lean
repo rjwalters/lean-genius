@@ -31,7 +31,7 @@ No axioms, no `sorry`, no `native_decide`.
 Parent: FibonacciIdentitiesOQ02.lean
 -/
 
-namespace FibonacciIdentitiesOQ02OQ02
+namespace FibonacciIdentitiesOQ02OQ02PrimeIndex
 
 open Nat
 
@@ -117,4 +117,4 @@ example : Nat.Prime 19 ∧ ¬ (Nat.fib 19).Prime := by
   have := h.eq_one_or_self_of_dvd 37 (by norm_num)
   omega
 
-end FibonacciIdentitiesOQ02OQ02
+end FibonacciIdentitiesOQ02OQ02PrimeIndex
