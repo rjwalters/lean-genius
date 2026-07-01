@@ -66,7 +66,8 @@
       "The limit lies between EVERY consecutive pair of partial sums, not just (S_N, S_{N+1}); using the next pair (S_{N+1}, S_{N+2}) yields the matching lower bound",
       "The two-step displacement S_{N+2} − S_N = (-1)^N (f N − f (N+1)) is exactly the consecutive-term gap, which is what bounds the error from below",
       "The Leibniz upper bound is therefore sharp to within one term: for strictly decreasing terms the error has a guaranteed nonzero size",
-      "For the alternating harmonic series the lower bound telescopes to 1/((N+1)(N+2)), pinning the convergence to log 2 as exactly first-order"
+      "For the alternating harmonic series the lower bound telescopes to 1/((N+1)(N+2)), pinning the convergence to log 2 as exactly first-order",
+      "Both bounds are purely order-theoretic — they depend only on the bracketing of l by the partial sums, never on the limit value itself (log 2 for the harmonic case is irrelevant to either estimate)"
     ],
     "prerequisites": [
       "Convergence of sequences and series in ℝ",
