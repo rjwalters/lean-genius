@@ -36,6 +36,11 @@
         "theorem": "Finset.sum_range_one",
         "description": "∑ i ∈ range 1, f i = f 0 — evaluates the singleton base-case sum to its only term",
         "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "linear_combination",
+        "description": "Closes the succ step of fib_weighted_sum after zify moves the goal into ℤ: the new goal is an integer-linear consequence of the (zified) induction hypothesis, so linear_combination ih discharges it. Needed because the weighted summand i·Fᵢ makes the recurrence bookkeeping nonlinear in ℕ subtraction.",
+        "module": "Mathlib.Tactic.LinearCombination"
       }
     ],
     "originalContributions": [
