@@ -59,6 +59,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Imports and Reused Lucas Infrastructure",
+      "summary": "Imports Mathlib and the two gallery entries supplying the Lucas-sequence machinery, then opens their namespaces so the fundamental/companion sequences U, V, the recurrence U_add_two, the relation V_eq, and the bilinear law two_U_add are all in scope. No new definitions are introduced — this entry is a pure divisibility layer over existing infrastructure.",
+      "startLine": 1,
+      "endLine": 66,
+      "mathContext": "Brings into scope $U_n(P,Q)$, $V_n(P,Q)$, the recurrence $U_{n+2} = P U_{n+1} - Q U_n$ (`U_add_two`), the companion relation $V_k = 2U_{k+1} - P U_k$ (`V_eq`), and the bilinear addition law $2U_{m+n} = U_m V_n + V_m U_n$ (`two_U_add`) from `LucasSequenceDegree2Identities` and `LucasSequenceDegree2IdentitiesOQ02`."
+    },
+    {
       "id": "convolution",
       "title": "The Factor-of-2-Free Convolution",
       "summary": "U_conv: U_{m+n+1} = U_{m+1}·U_{n+1} − Q·Uₘ·Uₙ, derived from the bilinear law two_U_add by eliminating V (via V_eq) and cancelling the factor 2.",
@@ -79,8 +87,16 @@
       "title": "Fibonacci and Pell Corollaries",
       "summary": "U_one_neg_one identifies U 1 (−1) n = Fₙ; fib_dvd_of_dvd and pell_dvd_of_dvd specialize the general divisibility to the Fibonacci and Pell numbers.",
       "startLine": 112,
+      "endLine": 133,
+      "mathContext": "A two-step induction shows $U_{1,-1}(n) = F_n$ (`U_one_neg_one`), since $U_{n+2} = U_{n+1} + U_n$ matches `Nat.fib_add_two`. Rewriting through it turns the general theorem into $m \\mid n \\Rightarrow F_m \\mid F_n$ (`fib_dvd_of_dvd`), while $(P,Q) = (2,-1)$ gives the Pell divisibility sequence (`pell_dvd_of_dvd`)."
+    },
+    {
+      "id": "numeric-checks",
+      "title": "Kernel-Decided Numeric Sanity Checks",
+      "summary": "Three `example ... := by decide` statements pin the abstract results to concrete integers: the convolution U_conv at (1,−1), Fibonacci divisibility F₃ ∣ F₆, and Pell divisibility P₂ ∣ P₆, each closed by kernel decision (no axioms).",
+      "startLine": 135,
       "endLine": 146,
-      "mathContext": "A two-step induction shows $U_{1,-1}(n) = F_n$ (`U_one_neg_one`), since $U_{n+2} = U_{n+1} + U_n$ matches `Nat.fib_add_two`. Rewriting through it turns the general theorem into $m \\mid n \\Rightarrow F_m \\mid F_n$ (`fib_dvd_of_dvd`), while $(P,Q) = (2,-1)$ gives the Pell divisibility sequence (`pell_dvd_of_dvd`). Numeric checks confirm $F_3 = 2 \\mid F_6 = 8$ and $P_2 = 2 \\mid P_6 = 70$."
+      "mathContext": "`decide` evaluates the fully concrete propositions in the kernel: $U_{1,-1}(8) = 21 = 3\\cdot 5 + 2\\cdot 3$, $F_3 = 2 \\mid F_6 = 8$, and $P_2 = 2 \\mid P_6 = 70$. Because these use ordinary `decide` (not `native_decide`), they add no `Lean.ofReduceBool` dependency and the entry remains axiom-free."
     }
   ],
   "conclusion": {
