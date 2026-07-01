@@ -9,7 +9,13 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/FermatTwoSquaresOQ01OQ03.lean",
-    "tags": ["number-theory", "quaternions", "four-squares", "euclidean-domain", "hurwitz"],
+    "tags": [
+      "number-theory",
+      "quaternions",
+      "four-squares",
+      "euclidean-domain",
+      "hurwitz"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
@@ -156,5 +162,31 @@
       "relationship": "Sibling open question exploring representation counts and the role of quaternion arithmetic in the four-squares problem."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Hurwitz, A.",
+      "title": "Vorlesungen über die Zahlentheorie der Quaternionen",
+      "year": "1919",
+      "note": "Springer, Berlin. Introduces the Hurwitz order (with ω=½(1+i+j+k)) and its Euclidean structure, the ring formalized in this entry."
+    },
+    {
+      "authors": "Conway, J. H.; Smith, D. A.",
+      "title": "On Quaternions and Octonions: Their Geometry, Arithmetic, and Symmetry",
+      "year": "2003",
+      "note": "A K Peters. Modern account of the Hurwitz quaternions, their unit group of order 24, and the four-squares theorem via norm multiplicativity."
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": "2008",
+      "note": "Oxford University Press. §20.11–20.12 prove Lagrange's four-square theorem, including the quaternion-based argument."
+    },
+    {
+      "authors": "Davidoff, G.; Sarnak, P.; Valette, A.",
+      "title": "Elementary Number Theory, Group Theory and Ramanujan Graphs",
+      "year": "2003",
+      "note": "Cambridge LMS Student Texts 55. Uses the arithmetic of Hurwitz (integer) quaternions and sums of four squares as the foundation for constructing Ramanujan graphs."
+    }
+  ]
 }

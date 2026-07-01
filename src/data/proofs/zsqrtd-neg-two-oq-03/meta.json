@@ -205,5 +205,31 @@
       "relationship": "analogous",
       "description": "Lagrange's four-squares theorem $\\forall n \\in \\mathbb{N},\\ \\exists a,b,c,d \\in \\mathbb{Z},\\ n = a^2 + b^2 + c^2 + d^2$ uses the **Hurwitz quaternions** $\\mathcal{H}$ — a maximal-order construction in the non-commutative algebra $\\mathbb{H}$ over $\\mathbb{Q}$ — exactly as this file uses the **Eisenstein integers** $\\mathbb{Z}[\\omega]$ as the maximal order in the commutative algebra $\\mathbb{Q}(\\sqrt{-3})$. Both proofs share the same three-step skeleton: (i) build a maximal-order ring with a multiplicative norm; (ii) show that any prime factors in that ring (via a left-Euclidean or two-sided Euclidean argument with the norm); (iii) translate the norm equation $p = N(\\alpha)$ back to the target quadratic form. The norm-multiplicativity step (`norm_mul` in this file) is the analog of the Euler four-squares identity in the Hurwitz proof."
     }
+  ],
+  "references": [
+    {
+      "authors": "Cox, D. A.",
+      "title": "Primes of the Form x² + ny²: Fermat, Class Field Theory, and Complex Multiplication",
+      "year": "1989",
+      "note": "Wiley. The definitive treatment of which primes are represented by x²+ny²; the x²+3y² case handled here corresponds to the class-number-one order ℤ[ω] of Eisenstein integers."
+    },
+    {
+      "authors": "Ireland, K.; Rosen, M.",
+      "title": "A Classical Introduction to Modern Number Theory (2nd ed.)",
+      "year": "1990",
+      "note": "Springer GTM 84. Chapter 9 develops the ring of Eisenstein integers ℤ[ω] with ω²+ω+1=0, its norm N(a+bω)=a²−ab+b², units, and cubic reciprocity."
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": "2008",
+      "note": "Oxford University Press. §15.4 treats the Eisenstein (Jacobian) integers and their Euclidean structure."
+    },
+    {
+      "authors": "Stark, H. M.",
+      "title": "A complete determination of the complex quadratic fields of class-number one",
+      "year": "1967",
+      "note": "Michigan Mathematical Journal 14, 1–27. The nine Heegner numbers (including −3, giving ℤ[ω]) are exactly the imaginary quadratic fields with unique factorization — the class-number-one property this entry relies on."
+    }
   ]
 }
