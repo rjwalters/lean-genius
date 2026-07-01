@@ -2395,6 +2395,13 @@ theorem boundary_faces_card_lastStep (s : SpernerGrid.GridSimplex d N) (hd : 2 �
     if (s.incDir ⟨d - 1, by omega⟩ = Fin.last d ∧
         (s.verts 0).coords (Fin.last d) = 0)
       then 1 else 0 := by
-  rw [boundary_faces_card_incDir s hd, exists_incDir_last_iff s hd]
+  rw [boundary_faces_card_incDir s hd]
+  by_cases hstep :
+      (∃ c : Fin d, s.incDir c = Fin.last d ∧ c.val = d - 1) ∧
+        (s.verts 0).coords (Fin.last d) = 0
+  · rw [if_pos hstep,
+      if_pos ⟨(exists_incDir_last_iff s hd).mp hstep.1, hstep.2⟩]
+  · rw [if_neg hstep,
+      if_neg (fun h => hstep ⟨(exists_incDir_last_iff s hd).mpr h.1, h.2⟩)]
 
 end SpernerNDimOQ02
