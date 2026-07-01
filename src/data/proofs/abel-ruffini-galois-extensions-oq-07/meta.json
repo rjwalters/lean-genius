@@ -282,7 +282,7 @@
     {
       "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
       "relationship": "uses",
-      "description": "Reuses the `IsPGroup → IsNilpotent → IsSolvable` chain (`pGroup_isSolvable`-style packaging) established in this gallery entry, which classifies …"
+      "description": "Reuses the `IsPGroup → IsNilpotent → IsSolvable` chain (`pGroup_isSolvable`-style packaging) established in this gallery entry. That entry is also the *quantitative* sharpness companion to this file's *qualitative* Burnside sharpness: it proves every finite group of order $< 60$ is solvable."
     },
     {
       "targetId": "abel-ruffini",
@@ -298,11 +298,6 @@
       "targetId": "abel-ruffini-galois-extensions-oq-04",
       "relationship": "complementary",
       "description": "Jordan-Hölder uniqueness theorem (sister sub-entry) provides the *uniqueness* counterpart to Burnside's *existence* statement: Burnside guarantees …"
-    },
-    {
-      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
-      "relationship": "complementary",
-      "description": "Finite groups of order $< 60$ are solvable — the *quantitative* sharpness companion to this file's *qualitative* Burnside sharpness."
     }
   ],
   "conclusion": {
