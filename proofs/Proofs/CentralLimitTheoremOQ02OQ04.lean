@@ -31,7 +31,25 @@ Sorries remaining: 2 (unchanged — this PR adds one proven theorem; the two
 sorries `davydov_covariance_inequality` (S5c) and `mixing_clt_ibragimov` (S6+)
 remain).
 
-**This session: S16 — scaled-indicator covariance bound.**
+**This session: S17 — simple-function (finite-sum) covariance bound.**
+Added `finset_indicator_covariance_le_alpha` (PROVEN, 0-axiom): lifts the S16
+single-cell bound to a *pair of simple functions*
+`f = ∑ᵢ aᵢ 1_{Aᵢ}` (σPair 0-measurable) and `g = ∑ⱼ bⱼ 1_{Bⱼ}`
+(σPair 1-measurable):
+`|Cov(f, g)| ≤ (∑ᵢ |aᵢ|)(∑ⱼ |bⱼ|) α(ℱ, 𝒢)`.
+The covariance is bilinear, so the joint integral and the product of marginals
+both distribute (`Finset.sum_mul_sum`, pushed through `integral_finset_sum`
+using per-cell integrability `(aᵢ1_{Aᵢ})(bⱼ1_{Bⱼ}) = aᵢbⱼ 1_{Aᵢ∩Bⱼ}`) into the
+double sum `∑ᵢ∑ⱼ Cov(aᵢ1_{Aᵢ}, bⱼ1_{Bⱼ})`; two applications of
+`Finset.abs_sum_le_sum_abs` + the S16 per-cell bound + `Finset.sum_mul_sum`
+collect the constant. This discharges the *algebraic* content of ingredient 4
+(the "L^p density step") in the structural decomposition below — every
+`σPair`-measurable simple function is exactly such a finite indicator
+combination — leaving only the analytic residue (truncation of `X, Y` to bounded
+simple approximants + Hölder amplification to `‖X‖_{L^p}‖Y‖_{L^p}`) for a later
+session. No sorry reduction this session — purely additive infrastructure.
+
+**Earlier session: S16 — scaled-indicator covariance bound.**
 Added `scaled_indicator_covariance_le_alpha` (PROVEN): promotes the unit
 `indicator_covariance_le_alpha` to arbitrary real scalars,
 `|Cov(a 1_A, b 1_B)| ≤ |a| |b| α(ℱ, 𝒢)`, by pulling the scalars through the
@@ -39,8 +57,7 @@ bilinear covariance (`integral_const_mul` on the joint and marginal integrals)
 and `abs_mul`. This is the single-cell building block of the simple-function
 step toward `davydov_covariance_inequality`: a sub-σ-measurable simple function
 `∑ aᵢ 1_{Aᵢ}` covaried against `∑ bⱼ 1_{Bⱼ}` reduces, by bilinear expansion, to
-a finite sum of exactly these scaled-cell bounds. No sorry reduction this
-session — purely additive infrastructure.
+a finite sum of exactly these scaled-cell bounds.
 
 **Earlier session: S5a — Mathlib drift fix.**
 Closed a previously open Mathlib-drift sorry that was carried forward from S2:
@@ -541,6 +558,134 @@ theorem scaled_indicator_covariance_le_alpha
   rw [hfactor, abs_mul, abs_mul]
   have hbase := indicator_covariance_le_alpha (μ := μ) σPair hA_amb hB_amb hA hB
   exact mul_le_mul_of_nonneg_left hbase (mul_nonneg (abs_nonneg _) (abs_nonneg _))
+
+/-- **Simple-function Davydov covariance bound** (S17, this session).
+
+Lifts the single-cell bound `scaled_indicator_covariance_le_alpha` to arbitrary
+finite linear combinations of sub-σ-measurable indicators on each factor — i.e.
+to a *pair of simple functions* `f = ∑ᵢ aᵢ 1_{Aᵢ}` (measurable w.r.t. `σPair 0`)
+and `g = ∑ⱼ bⱼ 1_{Bⱼ}` (measurable w.r.t. `σPair 1`):
+$$
+\Bigl|\mathrm{Cov}(f, g)\Bigr|
+   \;\le\; \Bigl(\sum_i |a_i|\Bigr)\Bigl(\sum_j |b_j|\Bigr)\,
+     \alpha(\mathcal F, \mathcal G).
+$$
+
+**Why this is the right intermediate.** The covariance is bilinear, so expanding
+`Cov(∑ᵢ aᵢ 1_{Aᵢ}, ∑ⱼ bⱼ 1_{Bⱼ})` distributes into the double sum
+`∑ᵢ ∑ⱼ Cov(aᵢ 1_{Aᵢ}, bⱼ 1_{Bⱼ})` of per-cell covariances (`sum_mul_sum` on
+both the joint integral — pushed through `integral_finset_sum` using
+integrability of each cell — and the product of marginals). The triangle
+inequality (`abs_sum_le_sum_abs`, twice) then reduces the whole bound to the
+per-cell estimate `|Cov(aᵢ 1_{Aᵢ}, bⱼ 1_{Bⱼ})| ≤ |aᵢ| |bⱼ| α` supplied by
+`scaled_indicator_covariance_le_alpha`, and `∑ᵢ ∑ⱼ |aᵢ| |bⱼ| = (∑ᵢ |aᵢ|)(∑ⱼ |bⱼ|)`
+(`sum_mul_sum` again) collects the constant.
+
+This is the general simple-function step gated in the S4 structural
+decomposition of `davydov_covariance_inequality` (ingredient 4, the "L^p density
+step"): every `σPair`-measurable simple function is exactly such a finite
+indicator combination, so this lemma is the last purely-algebraic layer before
+the remaining analytic content (truncation of `X, Y` to bounded simple
+approximants + the Hölder amplification that turns `(∑|aᵢ|)(∑|bⱼ|)` into the
+`‖X‖_{L^p} ‖Y‖_{L^p}` factor with the sharp exponent `(p-2)/p`). -/
+theorem finset_indicator_covariance_le_alpha
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {ι κ : Type*} (s : Finset ι) (t : Finset κ)
+    (a : ι → ℝ) (b : κ → ℝ)
+    (A : ι → Set Ω) (B : κ → Set Ω)
+    (hA_amb : ∀ i ∈ s, MeasurableSet (A i))
+    (hB_amb : ∀ j ∈ t, MeasurableSet (B j))
+    (hA : ∀ i ∈ s, @MeasurableSet Ω (σPair 0) (A i))
+    (hB : ∀ j ∈ t, @MeasurableSet Ω (σPair 1) (B j)) :
+    |∫ ω, (∑ i ∈ s, a i * (A i).indicator (1 : Ω → ℝ) ω)
+            * (∑ j ∈ t, b j * (B j).indicator (1 : Ω → ℝ) ω) ∂μ
+      - (∫ ω, ∑ i ∈ s, a i * (A i).indicator (1 : Ω → ℝ) ω ∂μ)
+        * (∫ ω, ∑ j ∈ t, b j * (B j).indicator (1 : Ω → ℝ) ω ∂μ)|
+    ≤ (∑ i ∈ s, |a i|) * (∑ j ∈ t, |b j|)
+        * CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+  set α := CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) with hα
+  -- Integrability of each scaled indicator on both factors.
+  have hfI : ∀ i ∈ s, Integrable (fun ω => a i * (A i).indicator (1 : Ω → ℝ) ω) μ := by
+    intro i hi
+    exact ((integrable_const (1 : ℝ)).indicator (hA_amb i hi)).const_mul (a i)
+  have hgI : ∀ j ∈ t, Integrable (fun ω => b j * (B j).indicator (1 : Ω → ℝ) ω) μ := by
+    intro j hj
+    exact ((integrable_const (1 : ℝ)).indicator (hB_amb j hj)).const_mul (b j)
+  -- Integrability of each cell product `(aᵢ 1_{Aᵢ})(bⱼ 1_{Bⱼ}) = (aᵢbⱼ) 1_{Aᵢ∩Bⱼ}`.
+  have hcellI : ∀ i ∈ s, ∀ j ∈ t,
+      Integrable (fun ω => (a i * (A i).indicator (1 : Ω → ℝ) ω)
+        * (b j * (B j).indicator (1 : Ω → ℝ) ω)) μ := by
+    intro i hi j hj
+    have hpt : (fun ω => (a i * (A i).indicator (1 : Ω → ℝ) ω)
+          * (b j * (B j).indicator (1 : Ω → ℝ) ω))
+        = (fun ω => (a i * b j) * (A i ∩ B j).indicator (1 : Ω → ℝ) ω) := by
+      funext ω
+      by_cases hωA : ω ∈ A i <;> by_cases hωB : ω ∈ B j <;>
+        simp [Set.mem_inter_iff, hωA, hωB]
+    rw [hpt]
+    exact ((integrable_const (1 : ℝ)).indicator ((hA_amb i hi).inter (hB_amb j hj))).const_mul _
+  -- Marginal integrals split over the finite sums.
+  have hM1 : ∫ ω, ∑ i ∈ s, a i * (A i).indicator (1 : Ω → ℝ) ω ∂μ
+      = ∑ i ∈ s, ∫ ω, a i * (A i).indicator (1 : Ω → ℝ) ω ∂μ :=
+    integral_finset_sum s hfI
+  have hM2 : ∫ ω, ∑ j ∈ t, b j * (B j).indicator (1 : Ω → ℝ) ω ∂μ
+      = ∑ j ∈ t, ∫ ω, b j * (B j).indicator (1 : Ω → ℝ) ω ∂μ :=
+    integral_finset_sum t hgI
+  -- Joint integral: expand the product of sums, then split the double sum.
+  have hJ : ∫ ω, (∑ i ∈ s, a i * (A i).indicator (1 : Ω → ℝ) ω)
+              * (∑ j ∈ t, b j * (B j).indicator (1 : Ω → ℝ) ω) ∂μ
+      = ∑ i ∈ s, ∑ j ∈ t,
+          ∫ ω, (a i * (A i).indicator (1 : Ω → ℝ) ω)
+            * (b j * (B j).indicator (1 : Ω → ℝ) ω) ∂μ := by
+    have hpt : (fun ω => (∑ i ∈ s, a i * (A i).indicator (1 : Ω → ℝ) ω)
+                * (∑ j ∈ t, b j * (B j).indicator (1 : Ω → ℝ) ω))
+        = (fun ω => ∑ i ∈ s, ∑ j ∈ t,
+            (a i * (A i).indicator (1 : Ω → ℝ) ω)
+              * (b j * (B j).indicator (1 : Ω → ℝ) ω)) := by
+      funext ω
+      exact Finset.sum_mul_sum s t _ _
+    rw [hpt,
+      integral_finset_sum s (fun i hi =>
+        integrable_finset_sum t (fun j hj => hcellI i hi j hj))]
+    exact Finset.sum_congr rfl (fun i hi =>
+      integral_finset_sum t (fun j hj => hcellI i hi j hj))
+  -- Product of marginals as a double sum.
+  have hP : (∫ ω, ∑ i ∈ s, a i * (A i).indicator (1 : Ω → ℝ) ω ∂μ)
+              * (∫ ω, ∑ j ∈ t, b j * (B j).indicator (1 : Ω → ℝ) ω ∂μ)
+      = ∑ i ∈ s, ∑ j ∈ t,
+          (∫ ω, a i * (A i).indicator (1 : Ω → ℝ) ω ∂μ)
+            * (∫ ω, b j * (B j).indicator (1 : Ω → ℝ) ω ∂μ) := by
+    rw [hM1, hM2, Finset.sum_mul_sum]
+  -- Assemble covariance as a double sum of per-cell covariances.
+  rw [hJ, hP]
+  simp_rw [← Finset.sum_sub_distrib]
+  calc
+    |∑ i ∈ s, ∑ j ∈ t,
+        ((∫ ω, (a i * (A i).indicator (1 : Ω → ℝ) ω)
+            * (b j * (B j).indicator (1 : Ω → ℝ) ω) ∂μ)
+          - (∫ ω, a i * (A i).indicator (1 : Ω → ℝ) ω ∂μ)
+            * (∫ ω, b j * (B j).indicator (1 : Ω → ℝ) ω ∂μ))|
+        ≤ ∑ i ∈ s, |∑ j ∈ t,
+            ((∫ ω, (a i * (A i).indicator (1 : Ω → ℝ) ω)
+                * (b j * (B j).indicator (1 : Ω → ℝ) ω) ∂μ)
+              - (∫ ω, a i * (A i).indicator (1 : Ω → ℝ) ω ∂μ)
+                * (∫ ω, b j * (B j).indicator (1 : Ω → ℝ) ω ∂μ))| :=
+        Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ i ∈ s, ∑ j ∈ t,
+            |(∫ ω, (a i * (A i).indicator (1 : Ω → ℝ) ω)
+                * (b j * (B j).indicator (1 : Ω → ℝ) ω) ∂μ)
+              - (∫ ω, a i * (A i).indicator (1 : Ω → ℝ) ω ∂μ)
+                * (∫ ω, b j * (B j).indicator (1 : Ω → ℝ) ω ∂μ)| :=
+        Finset.sum_le_sum (fun i _ => Finset.abs_sum_le_sum_abs _ _)
+    _ ≤ ∑ i ∈ s, ∑ j ∈ t, |a i| * |b j| * α :=
+        Finset.sum_le_sum (fun i hi =>
+          Finset.sum_le_sum (fun j hj =>
+            scaled_indicator_covariance_le_alpha (μ := μ) σPair (a i) (b j)
+              (hA_amb i hi) (hB_amb j hj) (hA i hi) (hB j hj)))
+    _ = (∑ i ∈ s, |a i|) * (∑ j ∈ t, |b j|) * α := by
+        rw [Finset.sum_mul_sum]
+        simp_rw [Finset.sum_mul]
 
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
