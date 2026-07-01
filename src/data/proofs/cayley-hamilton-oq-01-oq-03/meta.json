@@ -35,6 +35,26 @@
       "matrixExp_atMost_n_terms: exp(t·M) uses at most n = Fintype.card n terms"
     ]
   },
+  "references": [
+    {
+      "authors": "Higham, Nicholas J.",
+      "title": "Functions of Matrices: Theory and Computation",
+      "year": "2008",
+      "venue": "SIAM"
+    },
+    {
+      "authors": "Horn, Roger A. and Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Matrix.exp and minpoly-degree reduction; Mathlib.Analysis.Matrix, Mathlib.FieldTheory.Minpoly",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The matrix exponential e^{tM} is fundamental to linear ODEs: the homogeneous system dx/dt = Mx has the closed-form solution x(t) = e^{tM}x(0). The fact that e^{tM} can be expressed as a polynomial in M of degree at most n-1 traces back to Sylvester's 1883 work on functions of matrices and was put in modern form via Cayley–Hamilton (independently announced by Cayley in 1858 and Hamilton in his quaternion work; the general n×n proof is due to Frobenius, 1878). The sharper bound — degree at most d-1 where d = deg(minpoly(M)) — follows from the K-algebra isomorphism K[M] ≅ K[X]/(μ_M), and is the basis for Putzer's algorithm (E.J. Putzer, 1966), which computes e^{tM} by solving a d-dimensional system of scalar ODEs rather than truncating the matrix power series. For generic M (cyclic / non-derogatory), d = n; for nilpotent, scalar, or low-rank matrices d < n, giving a strictly more efficient representation: e.g., M = cI has μ_M(X) = X − c so d = 1 and e^{tcI} = e^{tc}·I in a single term. This file provides the first Lean 4 formalization of the minpoly form, building on the Cayley–Hamilton/minpoly reduction infrastructure in CayleyHamiltonOQ01 and the companion-matrix machinery in CayleyHamiltonReductionOQ02OQ01. The contribution beyond classical statements is the *axiom-free* summability proof for the coefficient series p_k(t): rather than postulating convergence (axiomatized) or invoking analytic-function machinery, we route through the identity coeff_k(X^m mod μ) = (C^m)_{k,0}, reducing to the Banach-algebra estimate ‖C^m‖ ≤ ‖C‖^m.",
     "problemStatement": "Prove that for any M : Matrix n n ℝ and t : ℝ, the matrix exponential exp(t·M) (defined via the convergent power series in the Banach algebra NormedAlgebra ℝ (Matrix n n ℝ)) equals ∑_{k=0}^{d-1} p_k(t)·M^k, where d = (minpoly ℝ M).natDegree and p_k(t) = ∑_{m≥0} (t^m/m!)·coeff_k(X^m mod μ_M).",

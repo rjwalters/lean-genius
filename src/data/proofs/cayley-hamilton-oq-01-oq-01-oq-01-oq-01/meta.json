@@ -90,6 +90,32 @@
     "theoremCount": 4,
     "definitionCount": 0
   },
+  "references": [
+    {
+      "authors": "Hoffman, Kenneth and Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall"
+    },
+    {
+      "authors": "Dummit, David S. and Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley"
+    },
+    {
+      "authors": "Horn, Roger A. and Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "minpoly, Matrix.charpoly and Module.End; Mathlib.LinearAlgebra.Matrix.Charpoly, Mathlib.FieldTheory.Minpoly",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "An n×n matrix M over a field K turns Kⁿ into a module over K[X] (X acting as M). M is non-derogatory when its minimal polynomial has full degree n, equivalently when minpoly K M = M.charpoly; this is exactly the case in which Kⁿ is a single cyclic K[X]-block and M is similar to the companion matrix of its characteristic polynomial. The structural hallmark is a cyclic vector: a v whose K[X]-orbit {p(M)·v} spans Kⁿ, equivalently a v that no nonzero polynomial of degree < n annihilates.\n\nThe parent entry cayley-hamilton-oq-01-oq-01 built the per-vector annihilator theory (vecAnnIdeal, IsCyclicVector) and the easy direction (a cyclic vector has annihilator ideal span{minpoly}). The grandparent cayley-hamilton-oq-01-oq-01-oq-01 proved the converse existence statement (μ = χ ⟹ a cyclic vector exists) via Mathlib's PID structure theorem. What remained to close the loop was the forward implication — that the mere existence of a cyclic vector already pins minpoly = charpoly — and the packaging of both halves into a single iff. That is this entry.",
     "problemStatement": "**Goal**: Establish the full equivalence M admits a cyclic vector ⟺ M is non-derogatory (minpoly K M = M.charpoly), supplying the forward direction missing from the grandparent entry.\n\n**Resolution**: We prove that any cyclic vector forces (minpoly K M).natDegree = n (a degree squeeze) and hence minpoly K M = M.charpoly, then combine with the grandparent's reverse direction to obtain the biconditional, also in its degree form.",

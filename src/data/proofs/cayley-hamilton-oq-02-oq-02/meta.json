@@ -32,6 +32,32 @@
       "frobenius_idem / frobenius_orthogonal / frobenius_complete / frobenius_eigen: the Frobenius covariants are idempotent, orthogonal, resolve the identity, and project onto eigenspaces"
     ]
   },
+  "references": [
+    {
+      "authors": "Gantmacher, Felix R.",
+      "title": "The Theory of Matrices, Vol. I",
+      "year": "1959",
+      "venue": "Chelsea Publishing"
+    },
+    {
+      "authors": "Higham, Nicholas J.",
+      "title": "Functions of Matrices: Theory and Computation",
+      "year": "2008",
+      "venue": "SIAM"
+    },
+    {
+      "authors": "Horn, Roger A. and Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "aeval, Matrix.IsDiag and Frobenius covariants; Mathlib.LinearAlgebra.Matrix.Spectrum",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "Sylvester (1883) introduced the theory of 'matrix functions' f(A), computing them by interpolation at the eigenvalues of A. For a diagonalizable matrix with distinct eigenvalues λ₁,…,λ_k, Sylvester's formula reads f(A) = ∑_j f(λ_j) Z_j, where Z_j = ∏_{m≠j}(A − λ_m I)/(λ_j − λ_m) are what Frobenius later called the covariants of A. Geometrically the Z_j are the spectral projections onto the eigenspaces: idempotent, mutually orthogonal, summing to the identity. The formula is the finite-dimensional, diagonalizable case of the holomorphic functional calculus, and the matrix analogue of Lagrange interpolation — the value f(A) depends on f only through the scalars f(λ_j), with the geometry packaged once and for all into the fixed projections Z_j. This entry answers an open question raised in the parent file cayley-hamilton-oq-02, which established the Cayley–Hamilton polynomial reduction f(A) = (f mod χ_A)(A); Sylvester's formula is the sharp, explicit form of that reduction when A is diagonalizable.",
     "problemStatement": "For a diagonalizable matrix A = U·diagonal(d)·V (with U·V = V·U = 1) and any polynomial p, prove p(A) = ∑_μ p(μ)·Z_μ where μ ranges over the distinct eigenvalues and Z_μ are the Frobenius covariants (spectral projections onto eigenspaces), and prove the covariants are idempotent, orthogonal, complete, and eigen-projections.",

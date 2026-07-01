@@ -91,6 +91,32 @@
     "theoremCount": 6,
     "definitionCount": 0
   },
+  "references": [
+    {
+      "authors": "Hoffman, Kenneth and Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "3rd ed., Graduate Texts in Mathematics 211, Springer"
+    },
+    {
+      "authors": "Dummit, David S. and Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "primary decomposition, coprime factors and Submodule.iSupIndep; Mathlib.LinearAlgebra.Eigenspace, Mathlib.FieldTheory.Minpoly",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The Primary Decomposition Theorem is the central structural result of operator theory on finite-dimensional spaces. Fixing an endomorphism T of V turns V into a module over the polynomial ring K[X], with X acting as T. Because K[X] is a principal ideal domain, the module structure is governed by the minimal polynomial μ_T. When μ_T factors into pairwise coprime pieces μ_T = ∏ qᵢ^eᵢ (the qᵢ distinct monic irreducibles), the Chinese Remainder Theorem for K[X] forces V to split as a direct sum of the kernels ker(qᵢ^eᵢ(T)). These summands — the primary components, or generalized eigenspaces — are T-invariant, and the decomposition is the launching point for both the rational canonical form (over any field) and, when the qᵢ are linear, the Jordan canonical form (over an algebraically closed field).\n\nThe parent entry cayley-hamilton-oq-01 established that the minimal polynomial generates the annihilator ideal of V and gives the optimal polynomial reduction f(T) = (f mod μ_T)(T). Its closing open question asked to extend this to the full primary decomposition. This entry answers that question.",
     "problemStatement": "**Open Question (from parent proof cayley-hamilton-oq-01)**: Extend to primary decomposition: μ_T = ∏ pᵢ^eᵢ (distinct irreducibles) and the corresponding V = ⊕ ker(pᵢ^eᵢ(T)).\n\n**Resolution**: We prove the general coprime decomposition V = ⨁ᵢ ker(pᵢ(T)) for any finite pairwise-coprime family whose product annihilates T, and then specialise to the minimal-polynomial prime-power factorisation to obtain V = ⨁ᵢ ker(qᵢ^eᵢ(T)). Each component is shown to be T-invariant.",
