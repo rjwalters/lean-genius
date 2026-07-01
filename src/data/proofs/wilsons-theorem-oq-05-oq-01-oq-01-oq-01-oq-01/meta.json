@@ -156,5 +156,28 @@
       "relationship": "ancestor",
       "description": "The grandparent proved the Kempner threshold (∃ m < n, n ∣ m!) ↔ (¬n.Prime ∧ n ≠ 4). S_semiprime_lt_self makes that qualitative drop explicit for p·q: S(p·q) = max(p,q) < p·q."
     }
+  ],
+  "references": [
+    {
+      "authors": "A. J. Kempner",
+      "title": "Miscellanea",
+      "year": 1918,
+      "venue": "Amer. Math. Monthly 25",
+      "note": "The Kempner (Smarandache) function S(n) = min{m : n ∣ m!}."
+    },
+    {
+      "authors": "C. Ashbacher",
+      "title": "An Introduction to the Smarandache Function",
+      "year": 1995,
+      "venue": "Erhus University Press",
+      "note": "Values of the Kempner-Smarandache function, including S(pq) = max(p,q) for distinct primes."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
   ]
 }

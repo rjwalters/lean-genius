@@ -34,7 +34,6 @@
         "module": "Mathlib.NumberTheory.Wilson"
       }
     ],
-    "theoremCount": 3,
     "definitionCount": 0
   },
   "overview": {
@@ -148,5 +147,34 @@
     "definitionCount": 0,
     "theoremCount": 3
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "note": "Art. 78: generalization of Wilson's theorem to the product of units mod n."
+    },
+    {
+      "authors": "K. Ireland, M. Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer",
+      "note": "Structure of (ℤ/nℤ)× and the Gauss-Wilson product law."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Wilson's theorem and quadratic residues."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
+  ]
 }

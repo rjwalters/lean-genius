@@ -179,5 +179,28 @@
       "relationship": "sibling",
       "description": "oq-03 computes ν_p((p-1)!) = 0; this entry pins exact residues of (n-2)! and (n-1)! across all moduli and locates the Kempner threshold S(n) < n."
     }
+  ],
+  "references": [
+    {
+      "authors": "A. J. Kempner",
+      "title": "Miscellanea",
+      "year": 1918,
+      "venue": "Amer. Math. Monthly 25",
+      "note": "The Kempner (Smarandache) function S(n) = min{m : n ∣ m!}."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Wilson's theorem and quadratic residues."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
   ]
 }

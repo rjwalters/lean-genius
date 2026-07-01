@@ -174,5 +174,27 @@
       "relationship": "ancestor — the prime case (p−1)! ≡ −1 mod p, the cyclic special case n = p of the Gauss-Wilson product of units"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "note": "Art. 78: generalization of Wilson's theorem to the product of units mod n."
+    },
+    {
+      "authors": "J. J. Rotman",
+      "title": "An Introduction to the Theory of Groups",
+      "year": 1995,
+      "venue": "Springer",
+      "note": "Product of all elements of a finite abelian group equals the product of its involutions."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides ZMod.wilsons_lemma and the finite-group/arithmetic API underlying this formalization."
+    }
+  ]
 }
