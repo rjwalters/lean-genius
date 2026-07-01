@@ -1,5 +1,16 @@
 [
   {
+    "id": "ann-poincare-hypothesis-bundle",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-02",
+    "range": { "startLine": 80, "endLine": 92 },
+    "type": "technique",
+    "title": "The Shared Poincaré Hypothesis Bundle and `include`",
+    "content": "The three eigenvalue corollaries all consume the *same* elaborate setup, so it is factored into a single section `variable` block rather than repeated per theorem: the operator `T` with an eigenbasis `b` and descending spectrum `lam` (`hT`, `hlam`), a codimension data `H` of dimension `n` (`hHdim`), the compression `TH` with its own eigenbasis `bH`, spectrum `mu` (`hTH`, `hmu`), and the crucial Rayleigh-agreement hypothesis `hRayleigh` linking the two quotients. Because Lean 4 only auto-includes `variable`s that appear in a theorem's *statement*, hypotheses used solely inside proof bodies (here the whole Poincaré package feeding `poincare_separation`) would be silently dropped; the explicit `include T b hT hlam hHdim TH bH hTH hmu hRayleigh` forces them into every theorem in the section. This is the same `include`-or-vanish pitfall that silently breaks proofs when a hypothesis is named but never referenced in the goal.",
+    "mathContext": "All corollaries are stated for a fixed $(T, b, \\lambda)$ and its compression $(T_H, b_H, \\mu)$ satisfying the Poincaré interlacing hypotheses; the bundle is shared rather than re-declared.",
+    "significance": "technical",
+    "relatedConcepts": ["section variables", "include directive", "Poincaré separation hypotheses", "Rayleigh quotient agreement"]
+  },
+  {
     "id": "ann-compress-isPositive",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-02",
     "range": { "startLine": 68, "endLine": 75 },
