@@ -1,0 +1,101 @@
+{
+  "id": "friendship-theorem-oq-01-oq-02",
+  "title": "Friendship Theorem: Classical Spectral Proof (Trace mod p)",
+  "slug": "friendship-theorem-oq-01-oq-02",
+  "description": "The classical trace-mod-p spectral proof of the Friendship Theorem (Erdős–Rényi–Sós, 1966), verified with 0 axioms and 0 sorries. Over ZMod p (p a prime factor of d-1), the adjacency matrix A of a d-regular friendship graph satisfies A^k = J for all k ≥ 2, so tr(A^p) = 1; but the Frobenius identity tr(A^p) = (tr A)^p = 0 gives a contradiction for d ≥ 3, and small degrees d ≤ 2 are handled by casework. This is the 'Proofs from THE BOOK' eigenvalue argument, distinct from sibling entry friendship-theorem-oq-01, which deliberately AVOIDS the spectral theorem in favour of a characteristic-polynomial / ℤ[X]-UFD approach. The proof is a faithful port of Mathlib's Archive file (Archive/Wiedijk100Theorems/FriendshipGraphs.lean, by Aaron Anderson, Jalex Stark and Kyle Miller), which lives in Mathlib's non-importable Archive target and could not otherwise be reused; a small original bridge connects it to the gallery's own IsFriendshipGraph / IsUniversalVertex predicates.",
+  "references": [
+    {
+      "authors": "Paul Erdős, Alfréd Rényi and Vera T. Sós",
+      "title": "On a Problem of Graph Theory (Studia Scientiarum Mathematicarum Hungarica 1)",
+      "year": 1966,
+      "note": "The original friendship theorem."
+    },
+    {
+      "authors": "Martin Aigner and Günter M. Ziegler",
+      "title": "Proofs from THE BOOK (6th ed.)",
+      "year": 2018,
+      "note": "Springer. The classical eigenvalue / trace-mod-p proof formalized in this entry."
+    },
+    {
+      "authors": "Aaron Anderson, Jalex Stark and Kyle Miller",
+      "title": "Mathlib4 Archive/Wiedijk100Theorems/FriendshipGraphs.lean",
+      "year": 2020,
+      "note": "The upstream Lean 4 proof (Apache 2.0) ported here; it resides in Mathlib's Archive target and is not importable by downstream projects, so the gallery could not simply invoke it."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FriendshipTheoremOQ01OQ02.lean",
+    "tags": [
+      "graph-theory",
+      "spectral-methods",
+      "friendship-theorem",
+      "adjacency-matrix",
+      "finite-fields",
+      "trace",
+      "combinatorics"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on the foundational axioms propext, Classical.choice, Quot.sound; no Lean.ofReduceBool, no native_decide).",
+    "lineCount": 411,
+    "theoremCount": 19,
+    "definitionCount": 4,
+    "originalContributions": [
+      "friendship_theorem_of_isFriendship: the gallery's headline statement (every nonempty finite friendship graph has a universal vertex) via the classical spectral route, 0 axioms",
+      "isFriendship_iff_friendship: bridge equating the gallery's Set.ncard-based IsFriendshipGraph with the ported Fintype.card-based Friendship predicate (Nat.card / Fintype.card / Set.ncard reconciliation)",
+      "Self-contained port making Mathlib's non-importable Archive friendship proof (trace-mod-p spectral argument) available as verified gallery code, complementing the sibling characteristic-polynomial proof"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Friendship Theorem (Erdős–Rényi–Sós, 1966) states that in any finite simple graph where every pair of distinct vertices has exactly one common neighbor, there is a 'politician' vertex adjacent to all others. The best-known proof, popularised in Aigner–Ziegler's 'Proofs from THE BOOK', is spectral: it studies the eigenvalues of the adjacency matrix, ultimately deriving a contradiction from a trace computation modulo a prime. The gallery already contains an axiom-free proof of this theorem (friendship-theorem-oq-01) that deliberately sidesteps the spectral theorem using characteristic-polynomial and UFD arguments in ℤ[X]. This entry supplies the complementary CLASSICAL spectral proof, so both routes are available in verified form.",
+    "problemStatement": "Prove, with no axioms, that every nonempty finite friendship graph has a universal vertex, using the classical adjacency-matrix / trace-mod-p argument rather than the characteristic-polynomial approach.",
+    "text": "The argument: (1) any two nonadjacent vertices have equal degree (a length-3 walk count, via symmetry of the adjacency matrix); (2) with no politician the graph is d-regular; (3) a d-regular friendship graph has d² − d + 1 vertices; (4) for d ≤ 2 a politician exists by casework; (5) for d ≥ 3 pick a prime p ∣ d − 1, so over ZMod p the adjacency matrix A satisfies A² = J and hence Aᵏ = J for k ≥ 2, giving tr(Aᵖ) = |V| = 1 mod p; but the Frobenius identity tr(Aᵖ) = (tr A)ᵖ = 0 (ZMod.trace_pow_card) contradicts this.",
+    "proofStrategy": "Faithful port of Mathlib's Archive proof (kept under namespace Theorems100 with the original lemma names so it can be diffed line-for-line against upstream), followed by a short gallery bridge: isFriendship_iff_friendship reconciles the Set.ncard and Fintype.card ways of counting common neighbors, and friendship_theorem_of_isFriendship translates the ported ExistsPolitician conclusion into the gallery's ∃ universal vertex.",
+    "keyInsights": [
+      "The whole proof turns on one finite-field identity: over ZMod p, tr(Aᵖ) equals both (tr A)ᵖ = 0 (Frobenius) and 1 (since Aᵖ = J and |V| ≡ 1 mod p) — an impossibility.",
+      "A² = J on the diagonal reads off the degree, off the diagonal reads off the unique-common-neighbor count 1; regularity makes A² = (d−1)I + J, whose reduction mod (d−1) is exactly J.",
+      "Mathlib's Archive is not an importable library, so a genuinely useful theorem was locked away; porting it makes the canonical spectral proof reusable in the gallery.",
+      "This spectral proof and the sibling characteristic-polynomial proof (friendship-theorem-oq-01) reach the same 0-axiom conclusion by mathematically independent routes."
+    ],
+    "prerequisites": [
+      "Graph theory: simple graphs, adjacency matrices, degree, regularity",
+      "Linear algebra over finite fields: matrix trace, powers, ZMod p",
+      "The Frobenius/trace identity tr(Aᵖ) = (tr A)ᵖ over ZMod p"
+    ]
+  },
+  "conclusion": {
+    "summary": "A complete, self-contained, 0-axiom Lean 4 formalization of the classical spectral (trace-mod-p) proof of the Friendship Theorem, ported from Mathlib's non-importable Archive and bridged to the gallery's own friendship-graph predicates. It complements the sibling entry friendship-theorem-oq-01, which proves the same result while deliberately avoiding spectral methods.",
+    "implications": "The friendship theorem is now available in the gallery via BOTH of its standard proofs — the classical eigenvalue/trace argument (here) and the characteristic-polynomial/UFD argument (friendship-theorem-oq-01). The port also demonstrates a reusable pattern: valuable results stranded in Mathlib's Archive target can be brought into verified gallery code with proper attribution.",
+    "openQuestions": [
+      "Can the ported trace-mod-p spectral proof and the sibling characteristic-polynomial proof be unified into a single account that highlights exactly where the two arguments diverge (the eigenvalue contradiction vs. the ℤ[X]-UFD contradiction)?",
+      "Several ported lemmas (degree_eq_of_not_adj, adjMatrix_pow_mod_p_of_regular) are stated for arbitrary friendship graphs; do they have applications to strongly regular graphs, where A² = (k−λ)I + λJ + (μ−λ)A?"
+    ]
+  },
+  "leanFile": {
+    "namespace": "FriendshipOQ0102",
+    "lineCount": 411,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 4,
+    "path": "Proofs/FriendshipTheoremOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "friendship-theorem-oq-01",
+      "relationship": "related",
+      "description": "Sibling axiom-free proof of the same theorem via characteristic polynomials, deliberately avoiding the spectral theorem; this entry supplies the complementary classical spectral proof."
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "extends",
+      "description": "Provides the classical spectral proof of the base entry's headline statement (existence of a universal vertex)."
+    }
+  ],
+  "sorries": 0
+}
