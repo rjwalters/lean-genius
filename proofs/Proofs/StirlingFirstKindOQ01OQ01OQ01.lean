@@ -164,3 +164,4 @@ theorem stirling_orthogonality (n m : ℕ) :
   rw [coeff_C_mul, coeff_descPochhammer_eq_stirlingFirst]
 
 end StirlingMatrixInversion
+
