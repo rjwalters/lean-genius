@@ -185,5 +185,35 @@
       "Finset"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "P. L. Chebyshev",
+      "title": "Mémoire sur les nombres premiers",
+      "year": 1852,
+      "venue": "J. Math. Pures Appl. (1) 17, 366–390",
+      "note": "Original elementary bounds on π(x)."
+    },
+    {
+      "authors": "T. M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer, ch. 4",
+      "note": "Chebyshev functions and π(x)·log(x)/x estimates."
+    },
+    {
+      "authors": "M. Aigner and G. M. Ziegler",
+      "title": "Proofs from THE BOOK",
+      "year": 2018,
+      "venue": "Springer, 6th ed.",
+      "note": "Central-binomial-coefficient bounds giving π(x) = Θ(x/log x)."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford Univ. Press, 6th ed., ch. XXII",
+      "note": "Elementary order-of-magnitude estimates for π(x)."
+    }
+  ]
 }

@@ -138,5 +138,35 @@
       "Formalize the Hilbert irreducibility theorem to give uniform realizations of S_n and A_n for all n"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "D. S. Dummit and R. M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley, 3rd ed., ch. 14",
+      "note": "Galois theory, discriminants and the alternating-group criterion Gal ≤ A_n."
+    },
+    {
+      "authors": "J.-P. Serre",
+      "title": "Topics in Galois Theory",
+      "year": 2008,
+      "venue": "A K Peters, 2nd ed.",
+      "note": "The inverse Galois problem and realizations of specific groups over ℚ."
+    },
+    {
+      "authors": "H. Völklein",
+      "title": "Groups as Galois Groups: An Introduction",
+      "year": 1996,
+      "venue": "Cambridge Univ. Press",
+      "note": "Systematic constructions realizing groups as Galois groups."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: FieldTheory.Galois, Polynomial.Eisenstein and discriminant API",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Eisenstein irreducibility and Galois-group machinery used in the realization."
+    }
+  ]
 }

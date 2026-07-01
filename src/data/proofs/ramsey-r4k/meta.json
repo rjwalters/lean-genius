@@ -235,5 +235,42 @@
       "description": "Extensions of R(4,k) bounds beyond the classical binomial framework, including the AKS improvement O(k³/log²k) and probabilistic lower bounds Ω(k^{5/2}/log²k)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "F. P. Ramsey",
+      "title": "On a problem of formal logic",
+      "year": 1930,
+      "venue": "Proc. London Math. Soc. (2) 30, 264–286",
+      "note": "Original Ramsey theorem."
+    },
+    {
+      "authors": "P. Erdős and G. Szekeres",
+      "title": "A combinatorial problem in geometry",
+      "year": 1935,
+      "venue": "Compositio Math. 2, 463–470",
+      "note": "Binomial upper bound R(r,s) ≤ C(r+s-2, r-1) and the Pascal recursion."
+    },
+    {
+      "authors": "P. Erdős",
+      "title": "Some remarks on the theory of graphs",
+      "year": 1947,
+      "venue": "Bull. Amer. Math. Soc. 53, 292–294",
+      "note": "Probabilistic lower bound for Ramsey numbers."
+    },
+    {
+      "authors": "J. H. Spencer",
+      "title": "Ten Lectures on the Probabilistic Method",
+      "year": 1994,
+      "venue": "SIAM, 2nd ed.",
+      "note": "Union-bound lower bounds for off-diagonal Ramsey numbers."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Combinatorics.SimpleGraph.Ramsey and Nat.choose",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Ramsey number bounds and binomial-coefficient API."
+    }
+  ]
 }

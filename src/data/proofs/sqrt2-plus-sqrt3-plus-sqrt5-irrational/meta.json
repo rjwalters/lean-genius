@@ -138,5 +138,35 @@
       "endLine": 142,
       "summary": "irrational_sqrt2_plus_sqrt3_plus_sqrt5 (main). Assume α = (r : ℝ) for some r : ℚ. By alpha_pos we have α > 0, so r ≠ 0 and 8 · (r : ℝ) ≠ 0. Substituting r for α in the quartic identity and dividing by 8(r:ℝ) gives sqrt 30 = ((r:ℝ)⁴ − 20(r:ℝ)² − 24) / (8(r:ℝ)). The rational witness (r⁴ − 20r² − 24) / (8r) ∈ ℚ then contradicts irrational_sqrt_thirty via push_cast. Closely modelled on the parent's irrational_sqrt2_plus_sqrt3 proof structure."
     }
+  ],
+  "references": [
+    {
+      "authors": "I. Niven",
+      "title": "Irrational Numbers",
+      "year": 1956,
+      "venue": "Mathematical Association of America, Carus Monograph 11",
+      "note": "Irrationality of sums of square roots of distinct primes."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford Univ. Press, 6th ed., ch. IV",
+      "note": "Irrationality of surds via repeated squaring."
+    },
+    {
+      "authors": "R. Courant and H. Robbins",
+      "title": "What Is Mathematics?",
+      "year": 1996,
+      "venue": "Oxford Univ. Press, 2nd ed.",
+      "note": "Elementary irrationality arguments and field extensions of ℚ."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: irrational_sqrt_natCast_iff and Nat.Prime.irrational_sqrt",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Irrationality of √n for non-square n, used for √30."
+    }
   ]
 }

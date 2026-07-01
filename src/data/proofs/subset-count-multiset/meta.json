@@ -156,5 +156,28 @@
       "leanType": "(s : Multiset α) → (k : ℕ) → card (powersetCard k s) = (card s).choose k"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. P. Stanley",
+      "title": "Enumerative Combinatorics, Vol. 1",
+      "year": 2011,
+      "venue": "Cambridge Univ. Press, 2nd ed.",
+      "note": "Submultiset counting and binomial identities."
+    },
+    {
+      "authors": "J. H. van Lint and R. M. Wilson",
+      "title": "A Course in Combinatorics",
+      "year": 2001,
+      "venue": "Cambridge Univ. Press, 2nd ed.",
+      "note": "Counting subsets and multisets bijectively."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Multiset, Finset.powerset and Nat.choose API",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Multiset powerset cardinality (2^n) and k-element counts used here."
+    }
+  ]
 }
