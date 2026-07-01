@@ -87,7 +87,8 @@
       "**The construction climbs dimensions.** Extending from the ℝ³ tetrahedron (6 distinct-integer edges) to an ℝ⁴ 4-simplex (10 distinct-integer edges) shows the distinct-integer-distance phenomenon of Erdős #100 is not special to low dimension — it persists, answering OQ-05 on the existence side",
       "**Off-hyperplane placement is the recipe.** A new full-dimensional vertex is obtained by placing a point off the current hyperplane at integer distance from every existing vertex; the same idea evidently continues into higher dimensions",
       "**Distances are perfect-square roots.** Choosing integer coordinates whose squared coordinate differences sum to a perfect square makes each distance a provable integer via Real.sqrt_sq",
-      "**No det_fin_four in Mathlib.** Non-degeneracy of the 4×4 edge matrix is obtained by one top-row cofactor expansion (Matrix.det_succ_row_zero) reducing to four Matrix.det_fin_three minors — a reusable pattern for explicit 4×4 real determinants"
+      "**No det_fin_four in Mathlib.** Non-degeneracy of the 4×4 edge matrix is obtained by one top-row cofactor expansion (Matrix.det_succ_row_zero) reducing to four Matrix.det_fin_three minors — a reusable pattern for explicit 4×4 real determinants",
+      "**Distinctness recorded three ways.** The all-distinct hypothesis is certified redundantly as a Finset equality {5,…,17}, a card = 10 count, and a List.Nodup fact; the three encodings make the witness convenient to cite whichever distinctness form a downstream diameter estimate happens to need, without re-deriving it"
     ],
     "prerequisites": [
       "Euclidean distance in EuclideanSpace ℝ (Fin n) and the formula dist = √(Σ coordinate differences²)",
