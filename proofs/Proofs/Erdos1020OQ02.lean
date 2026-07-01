@@ -37,10 +37,13 @@
   The monotonicity (2) is a Pascal-telescoping identity:
     construction2 (n+1) − construction2 n  =  C(n, r−1) − C(n−k+1, r−1)  ≥ 0.
 
-  A worked instance (r = 4, k = 2) exhibits the crossover concretely at n = 8.
+  A worked instance (r = 4, k = 2) exhibits the crossover concretely at n = 8;
+  and for the entire r = 2 family the threshold is pinned down in closed form,
+  n₀(2, k) = ⌈(5k − 2)/2⌉ (§10), sharpening both the single point above and the
+  qualitative finiteness of §9.
 
-  All results are machine-checked with `decide` / `omega` only — no axioms,
-  no `native_decide`, no `sorry`.
+  All results are machine-checked with `omega`, `zify`/`ring` and `decide` only —
+  no axioms, no `native_decide`, no `sorry`.
 
   Tags: hypergraph-theory, matching, extremal-combinatorics, regime-transition
 -/
@@ -385,5 +388,90 @@ theorem exists_large_regime (r k : ℕ) (hr : 2 ≤ r) (hk : 2 ≤ k) :
   have hmono : Nat.choose m (r - 1) ≤ Nat.choose (n - 1) (r - 1) :=
     Nat.choose_le_choose (r - 1) (by omega)
   exact le_trans hm (le_trans hmono hge)
+
+/-! ### 10. Sharp crossover threshold for the `r = 2` family.
+
+Sections 6 and 9 locate the crossover only *qualitatively*: a single concrete
+point `n₀(4,2) = 8`, and the mere *existence* of a finite threshold for every
+`r, k ≥ 2`.  Here we compute the threshold *exactly and in closed form* for the
+entire `r = 2` family.  At `r = 2` both constructions are explicit quadratics:
+
+  `2·construction2 n 2 k = (k−1)·(2n−k)`,     `2·construction1 2 k = (2k−1)·(2k−2)`,
+
+so `construction2` reaches `construction1` precisely when `2n ≥ 5k − 2`, i.e. the
+threshold is `n₀(2,k) = ⌈(5k−2)/2⌉`.  Specialising `k = 2` recovers `n₀(2,2) = 4`.
+
+Everything stays inside `ℕ`: the doubled identities carry the polynomial content
+to `ℤ` (`zify` + `ring`) with subtraction side-conditions closed by `omega`, and
+the final cancellation of the common factor `k − 1` uses `Nat.le_of_mul_le_mul_left`. -/
+
+/-- Doubling a `choose _ 2` clears the division: `2·C(m, 2) = m·(m−1)`. -/
+theorem two_mul_choose_two (m : ℕ) : 2 * Nat.choose m 2 = m * (m - 1) := by
+  have hev : Even (m * (m - 1)) := by
+    rcases Nat.even_or_odd m with h | h
+    · exact h.mul_right _
+    · exact (Nat.Odd.sub_odd h odd_one).mul_left _
+  rw [Nat.choose_two_right, Nat.mul_div_cancel' hev.two_dvd]
+
+/-- Doubled closed form of `construction2` at `r = 2`:
+    `2·construction2 n 2 k = (k−1)·(2n−k)` — an explicit quadratic in `n`. -/
+theorem two_mul_construction2_r2 (n k : ℕ) (hk : 1 ≤ k) (hn : k ≤ n) :
+    2 * construction2 n 2 k = (k - 1) * (2 * n - k) := by
+  have hle : n - k + 1 ≤ n := by omega
+  have hmono : Nat.choose (n - k + 1) 2 ≤ Nat.choose n 2 := Nat.choose_le_choose 2 hle
+  have key : 2 * Nat.choose n 2
+      = 2 * Nat.choose (n - k + 1) 2 + (k - 1) * (2 * n - k) := by
+    rw [two_mul_choose_two n, two_mul_choose_two (n - k + 1)]
+    have e1 : n - k + 1 - 1 = n - k := by omega
+    rw [e1]
+    zify [hk, hn, show 1 ≤ n by omega, show k ≤ 2 * n by omega]
+    ring
+  unfold construction2
+  omega
+
+/-- Doubled closed form of `construction1` at `r = 2`:
+    `2·construction1 2 k = (2k−1)·(2k−2)` — the constant (in `n`) value. -/
+theorem two_mul_construction1_r2 (k : ℕ) :
+    2 * construction1 2 k = (2 * k - 1) * (2 * k - 2) := by
+  unfold construction1
+  rw [two_mul_choose_two]
+  have e1 : 2 * k - 1 - 1 = 2 * k - 2 := by omega
+  rw [e1]
+
+/-- **Sharp crossover threshold for `r = 2`.**  For all `k ≥ 2` and `n ≥ k`,
+`construction2` reaches `construction1` exactly when `2n ≥ 5k − 2`.  The threshold
+is therefore `n₀(2,k) = ⌈(5k−2)/2⌉` (e.g. `k = 2` gives `n₀ = 4`): the exact,
+closed-form counterpart — for the whole `r = 2` family — of the single worked
+point `crossover_r4k2` and of the qualitative `exists_large_regime`. -/
+theorem crossover_r2 (n k : ℕ) (hk : 2 ≤ k) (hn : k ≤ n) :
+    construction1 2 k ≤ construction2 n 2 k ↔ 5 * k - 2 ≤ 2 * n := by
+  have hc1 := two_mul_construction1_r2 k
+  have hc2v := two_mul_construction2_r2 n k (by omega) hn
+  -- Scaling by `2` is order-reflecting on `ℕ`, so pass to the doubled quantities.
+  have hdouble : construction1 2 k ≤ construction2 n 2 k
+      ↔ 2 * construction1 2 k ≤ 2 * construction2 n 2 k := by omega
+  rw [hdouble, hc1, hc2v]
+  -- Expose the common factor `k − 1` on the constant side.
+  have hlhs : (2 * k - 1) * (2 * k - 2) = (k - 1) * (4 * k - 2) := by
+    zify [show 1 ≤ k by omega, show 1 ≤ 2 * k by omega, show 2 ≤ 2 * k by omega,
+      show 2 ≤ 4 * k by omega]
+    ring
+  rw [hlhs]
+  -- Cancel the positive common factor `k − 1`.
+  constructor
+  · intro h
+    have hpos : 0 < k - 1 := by omega
+    have := Nat.le_of_mul_le_mul_left h hpos
+    omega
+  · intro h
+    have hstep : 4 * k - 2 ≤ 2 * n - k := by omega
+    exact Nat.mul_le_mul (le_refl (k - 1)) hstep
+
+/-- On the `r = 2` family the conjectured extremal value collapses to the
+large-`n` construction exactly on the threshold `2n ≥ 5k − 2`. -/
+theorem conjecturedValue_r2_large (n k : ℕ) (hk : 2 ≤ k) (hn : k ≤ n)
+    (hthr : 5 * k - 2 ≤ 2 * n) : conjecturedValue n 2 k = construction2 n 2 k := by
+  unfold conjecturedValue
+  exact max_eq_right ((crossover_r2 n k hk hn).2 hthr)
 
 end Erdos1020OQ02
