@@ -57,6 +57,48 @@
       "Lattice theory: distributive law inf_sup_right and the distributivity of multiset lattices"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview: Three Non-Coprime Moduli and Lattice Distributivity",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Module docstring and imports. Frames the problem: the classical CRT needs coprime moduli; the parent settled the two-modulus non-coprime case (solvable iff gcd m n ∣ a−b). For three moduli the conjecture is pairwise compatibility, whose sufficiency is FALSE in a general commutative ring and holds exactly when the ideal lattice is distributive — automatic in a PID/Bézout+UFD domain. States the key identity (★) gcd(lcm m₁ m₂) m₃ ∣ lcm(gcd m₁ m₃)(gcd m₂ m₃).",
+      "mathContext": "Solvable $\\iff \\gcd(m_i,m_j)\\mid a_i-a_j$ for all $i,j$ — sufficiency requires a distributive divisibility lattice."
+    },
+    {
+      "id": "distributivity",
+      "title": "Part I: Distributivity of the Divisibility Lattice",
+      "startLine": 72,
+      "endLine": 140,
+      "summary": "Proves the distributive law (★). associates_inf_sup_le transports the goal through Associates.factors to the genuinely distributive lattice FactorSet R (a WithTop Multiset), where it is inf_sup_right; mk_gcd_eq_inf and mk_lcm_eq_sup identify gcd/lcm with meet/join of Associates; gcd_lcm_distrib is the resulting distributive inequality and lcm_gcd_dvd its divisibility form.",
+      "mathContext": "$(I_1\\sqcup I_3)\\sqcap(I_2\\sqcup I_3) \\le (I_1\\sqcap I_2)\\sqcup I_3$; the reverse holds in every lattice, this direction distinguishes UFD/Bézout divisibility."
+    },
+    {
+      "id": "crt2",
+      "title": "Part II: Two-Modulus CRT in a Bézout Domain",
+      "startLine": 143,
+      "endLine": 181,
+      "summary": "Recaps the two-modulus theory used as a building block. crt2_necessary (a solution forces gcd m n ∣ a−b), crt2_sufficient (the Bézout converse), crt2_iff (the full characterization), and crt2_unique (solutions unique mod lcm m n).",
+      "mathContext": "$x\\equiv a\\ (m),\\ x\\equiv b\\ (n)$ solvable $\\iff \\gcd(m,n)\\mid a-b$; unique mod $\\operatorname{lcm}(m,n)$."
+    },
+    {
+      "id": "crt3",
+      "title": "Part III: Three-Modulus CRT",
+      "startLine": 182,
+      "endLine": 250,
+      "summary": "The main results. crt3_necessary (pairwise gcd conditions are necessary in any comm ring); crt3_sufficient (pairwise compatibility ⟹ a global solution, solving m₁,m₂ first then combining with m₃ over lcm m₁ m₂ and invoking (★)); crt3_iff (full characterization); crt3_unique (unique mod lcm(lcm m₁ m₂) m₃); crt3_solution_set (combined existence + uniqueness).",
+      "mathContext": "$x\\equiv a_i\\ (m_i),\\ i=1,2,3$ solvable $\\iff \\gcd(m_i,m_j)\\mid a_i-a_j$ for all $i,j$; unique mod $\\operatorname{lcm}(m_1,m_2,m_3)$."
+    },
+    {
+      "id": "examples",
+      "title": "Part IV: Concrete Instantiations over ℤ",
+      "startLine": 253,
+      "endLine": 272,
+      "summary": "Closing examples instantiating the abstract Bézout+UFD results on ℤ, confirming the theory applies to the classical integer CRT (and equally to k[X], ℤ[i]).",
+      "mathContext": "$\\mathbb{Z}$ is a PID (Bézout + UFD), so the three-modulus non-coprime CRT specializes to integer congruence systems."
+    }
+  ],
   "conclusion": {
     "summary": "The three-modulus non-coprime CRT is fully verified for PIDs: solvable iff pairwise compatible (crt3_iff), with solutions unique mod lcm(m₁,m₂,m₃) (crt3_unique). The proof identifies and supplies the precise missing ingredient over the 2-modulus parent — the distributive law of the divisibility lattice gcd(lcm a b, c) ∣ lcm(gcd a c, gcd b c) — proved via the factorization model. 14 theorems, 272 lines, 0 axioms.",
     "implications": "Pins down exactly why CRT for ≥3 non-coprime moduli works in PIDs but not in arbitrary commutative rings: distributivity of the ideal lattice. The standalone lemma gcd_lcm_distrib is reusable wherever the divisibility lattice's distributivity is needed and is currently absent from Mathlib as a named result. The argument generalizes verbatim to any finite number of moduli by iterating the two-into-one merge.",
