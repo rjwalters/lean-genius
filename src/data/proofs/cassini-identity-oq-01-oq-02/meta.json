@@ -148,6 +148,43 @@
       "Does the Catalan identity $F_{n-r}F_{n+r} - F_n^2 = (-1)^{n-r+1}F_r^2$ follow from a determinant of $Q^{n-r}Q^{2r}$ as suggested in the parent entry, or does the off-diagonal mixing require a separate entry analysis?"
     ]
   },
+  "references": [
+    {
+      "authors": "Vajda, Steven",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood / Dover reprint 2008",
+      "note": "Comprehensive catalog of Fibonacci identities including the addition formula F_{m+n} = F_m F_{n+1} + F_{m-1} F_n and Cassini's identity, both derived here from the Q-matrix factorisation."
+    },
+    {
+      "authors": "Graham, Ronald L.; Knuth, Donald E.; Patashnik, Oren",
+      "title": "Concrete Mathematics: A Foundation for Computer Science (2nd ed.)",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "note": "§6.6 develops Fibonacci numbers via the companion matrix Q = [[1,1],[1,0]], with Q^n = [[F_{n+1},F_n],[F_n,F_{n-1}]] and det giving Cassini — exactly the matrix approach formalized in this entry."
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "John Wiley & Sons",
+      "note": "Standard reference treating the Q-matrix, the addition/subtraction formulas, and Cassini's, Catalan's, and d'Ocagne's identities as entrywise/determinant consequences of Q^{m+n} = Q^m Q^n."
+    },
+    {
+      "authors": "Cassini, Giovanni Domenico",
+      "title": "Une nouvelle progression de nombres (Cassini's identity F_{n-1}F_{n+1} − F_n² = (−1)ⁿ)",
+      "year": "1680",
+      "venue": "Histoire de l'Académie Royale des Sciences, Paris",
+      "note": "The historical origin of the identity F_{n-1}F_{n+1} − F_n² = (−1)ⁿ, obtained in this development as det(Q^n) = (det Q)ⁿ = (−1)ⁿ; the parent chain of this entry."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Data.Matrix.Basic and Mathlib.Combinatorics.Fibonacci (Nat.fib)",
+      "year": "2024",
+      "venue": "Lean 4 mathematical library (mathlib4)",
+      "note": "Source of the 2×2 matrix algebra (multiplication, powers, determinant) and the Nat.fib definition/recurrence used to state and prove the closed power Q^{n+1} = [[F_{n+2},F_{n+1}],[F_{n+1},F_n]]."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cassini-identity-oq-01",
