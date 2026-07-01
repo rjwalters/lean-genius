@@ -124,7 +124,15 @@
   ],
   "conclusion": {
     "summary": "The directed handshake lemma (∑ outDegree = arcCount = ∑ inDegree, hence total out-degree = total in-degree) and its tournament specialisations (out + in = n − 1, 2·arcCount = n(n−1), Landau's score sum, and the averaging bound) furnish the degree-counting foundation that the companion's Hamiltonicity theorems use implicitly. Everything is proved from first principles, sorry-free and 0-axiom.",
-    "futureWork": "Build toward Landau's theorem (a non-decreasing sequence is the score sequence of a tournament iff the partial sums dominate the triangular numbers with equality at the end), and repair/replace the companion oq-03 file so the handshake lemmas can be cited there directly."
+    "implications": [
+      "Supplies the degree-counting foundation the companion Hamiltonicity theorems (Rédei, Moon–Moser, Ghouila–Houri, arc-count threshold) rest on but never state: the directed handshake lemma ∑ d⁺ = arcCount = ∑ d⁻ is the directed analogue of Euler's handshake lemma, and its tournament specialisations pin the global statistics exactly.",
+      "The Landau score-sum identity 2·∑ d⁺ = n(n−1) (scores sum to C(n,2)) and the averaging bound 'some vertex beats the average' are the elementary entry points to tournament degree-threshold arguments, now available sorry-free and 0-axiom for reuse.",
+      "Re-declaring the digraph definitions verbatim makes the file self-contained and end-to-end machine-checked, decoupling the counting layer from the (separately maintained) companion so the identities can be cited independently."
+    ],
+    "openQuestions": [
+      "Build toward Landau's theorem: a non-decreasing sequence is the score sequence of a tournament iff its partial sums dominate the triangular numbers with equality at the end (the majorization characterisation of realisable score sequences).",
+      "Repair or replace the companion oq-03 file so its Hamiltonicity proofs cite these handshake and tournament-score lemmas directly instead of re-deriving the degree counting implicitly."
+    ]
   },
   "crossReferences": [
     {
