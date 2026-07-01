@@ -38,7 +38,8 @@
       "no_decider_for_const_true: a concrete instance showing the obstruction is structural, not about the predicate being 'hard'"
     ],
     "dateAdded": "2026-06-25",
-    "axioms": []
+    "axioms": [],
+    "proofRepoPath": "Proofs/GodelIncompletenessOQ02.lean"
   },
   "overview": {
     "historicalContext": "In 1931 Gödel proved that any consistent, effectively axiomatized theory strong enough for arithmetic is incomplete, building a self-referential sentence by hand via the diagonal lemma. In 1936 Turing proved the halting problem undecidable. The two results are the same diagonal argument viewed from two angles: Turing's undecidability immediately yields incompleteness, because a complete sound theory whose theorems are recursively enumerable would decide the undecidable. Kleene's recursion-theoretic proofs of incompleteness (1936–1943) made this bridge canonical, and it is the form in which the theorem is usually taught in computability courses today. This file formalizes that bridge directly and constructively.",

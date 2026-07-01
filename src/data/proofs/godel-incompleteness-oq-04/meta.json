@@ -52,7 +52,8 @@
       "Explicit separation of which closures are inaccessible-specific: inaccessible_add_lt / inaccessible_mul_lt hold for ANY infinite cardinal and are recorded as such, isolating powerset (strong-limit) and replacement (regularity) as the load-bearing properties"
     ],
     "dateAdded": "2026-06-26",
-    "axioms": []
+    "axioms": [],
+    "proofRepoPath": "Proofs/GodelIncompletenessOQ04.lean"
   },
   "overview": {
     "historicalContext": "Gödel's second incompleteness theorem (1931) shows no consistent effective theory extending arithmetic proves its own consistency. The large-cardinal hierarchy is the canonical ladder that climbs the resulting tower of consistency strengths: Zermelo (1930) proved that if κ is strongly inaccessible then the rank-initial segment V_κ is a model of ZFC. Consequently the existence of an inaccessible proves Con(ZFC), so by Gödel 2 the statement 'an inaccessible cardinal exists' is not provable in ZFC (if ZFC is consistent) — the prototypical large-cardinal independence result. The mathematical content of 'V_κ ⊨ ZFC' is, at the level of cardinals, a package of arithmetic closure properties: V_κ must be closed under the ZFC set-builders (pairing, union, powerset, replacement). This file isolates and machine-checks that arithmetic core.",
