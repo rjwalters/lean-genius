@@ -169,8 +169,8 @@ theorem erdos_1018_solved : erdos_1018_question := by
   use S
   constructor
   · exact hS
-  · -- K₅ subdivision implies non-planarity
-    sorry
+  · -- K₅ subdivision implies non-planarity (Kuratowski's theorem, right-to-left).
+    exact (kuratowski_theorem (inducedSubgraph G S)).mpr (Or.inl hSub)
 
 /-
 ## The Constant C_ε Grows as ε → 0
@@ -188,7 +188,17 @@ theorem sparse_hides_nonplanarity :
       (∀ (V : Type*) [Fintype V] [DecidableEq V],
         ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
           isDense G ε → hasSmallNonPlanarSubgraph G C) → C ≥ M := by
-  sorry
+  -- Follows from `constant_grows`: a hypothesis providing a *uniform* bounding
+  -- constant `C` (with no threshold on the number of vertices) is strictly
+  -- stronger than `existsBoundingConstant ε` (take the same `C` and `N = 0`),
+  -- so `constant_grows` forces `C ≥ M`.
+  intro M
+  obtain ⟨ε₀, hε₀pos, hgrow⟩ := constant_grows M
+  refine ⟨ε₀, hε₀pos, ?_⟩
+  intro ε hε C hbig
+  refine hgrow ε hε C ?_
+  intro _hεpos
+  exact ⟨C, 0, fun V _ _ _hcard G _ hDense => hbig V G hDense⟩
 
 /-
 ## Connection to Extremal Graph Theory
