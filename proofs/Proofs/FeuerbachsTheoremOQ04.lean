@@ -892,4 +892,62 @@ theorem sphericalIncircle_contact_points {Na Nb Nc O : E} {ρ : ℝ}
    circle_tangent_greatCircle_inter hO hNb hρ0 hρ2 hinc.2.1,
    circle_tangent_greatCircle_inter hO hNc hρ0 hρ2 hinc.2.2⟩
 
+/-! ## Spherical angle bisectors — the equidistant-from-two-sides locus
+
+Locating the **incenter** of a spherical triangle (the remaining hard step above) is a
+matter of intersecting angle bisectors: the incenter is the point equidistant from all
+three sides.  The material below characterises that equidistant locus.
+
+The spherical distance from a point `O` to the side with unit pole `N` is `arcsin |⟪O, N⟫|`
+(the criterion `TangentToGreatCircle` records the case where it equals `ρ`).  So `O` is
+**equidistant** from the two sides with poles `Na, Nb` exactly when `|⟪O, Na⟫| = |⟪O, Nb⟫|`.
+This locus splits, by the sign of the equality, into the two **angle bisectors** — the great
+circles with poles `Na − Nb` (internal) and `Na + Nb` (external).  These two bisector poles
+are orthogonal, so the internal and external bisectors are themselves perpendicular great
+circles, exactly as in the Euclidean picture.  An incircle centre, being tangent to (hence
+equidistant from) all three sides, must lie on a bisector of each of the three pairs — the
+standard characterisation that pins the incenter as an intersection of bisectors. -/
+
+/-- **The two angle bisectors are perpendicular.**  For unit side poles `Na, Nb`, the poles
+`Na − Nb` and `Na + Nb` of the internal and external bisector great circles are orthogonal
+(`‖Na‖² − ‖Nb‖² = 0`), so the two bisectors meet at right angles. -/
+theorem bisector_poles_orthogonal {Na Nb : E} (hNa : OnSphere Na) (hNb : OnSphere Nb) :
+    (⟪Na - Nb, Na + Nb⟫ : ℝ) = 0 := by
+  have hNaNa : (⟪Na, Na⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, hNa]; norm_num
+  have hNbNb : (⟪Nb, Nb⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, hNb]; norm_num
+  have hcomm : (⟪Nb, Na⟫ : ℝ) = ⟪Na, Nb⟫ := real_inner_comm Na Nb
+  rw [inner_sub_left, inner_add_right, inner_add_right, hNaNa, hNbNb, hcomm]
+  ring
+
+/-- **The equidistant locus is the union of the two angle bisectors.**  A point `O` is at
+equal spherical distance from the two sides with poles `Na, Nb` (equivalently `|⟪O, Na⟫| =
+|⟪O, Nb⟫|`) iff it lies on the internal bisector `⟪O, Na − Nb⟫ = 0` or the external bisector
+`⟪O, Na + Nb⟫ = 0`.  Pure sign-analysis of the absolute-value equality (`abs_eq_abs`). -/
+theorem equidistant_two_sides_iff (Na Nb O : E) :
+    |(⟪O, Na⟫ : ℝ)| = |⟪O, Nb⟫| ↔
+      (⟪O, Na - Nb⟫ : ℝ) = 0 ∨ (⟪O, Na + Nb⟫ : ℝ) = 0 := by
+  rw [inner_sub_right, inner_add_right, abs_eq_abs]
+  constructor
+  · rintro (h | h)
+    · exact Or.inl (by linarith)
+    · exact Or.inr (by linarith)
+  · rintro (h | h)
+    · exact Or.inl (by linarith)
+    · exact Or.inr (by linarith)
+
+/-- **The incenter lies on an angle bisector of every pair of sides.**  The centre `O` of a
+spherical incircle is tangent to (hence equidistant from) all three sides `Na, Nb, Nc`, so
+for each of the three pairs it lies on the internal *or* external bisector great circle.
+This is the structural fact underlying incenter existence: the incenter is a common point of
+the three angle bisectors. -/
+theorem sphericalIncircle_center_on_bisectors {Na Nb Nc O : E} {ρ : ℝ}
+    (hinc : SphericalIncircle Na Nb Nc O ρ) :
+    ((⟪O, Na - Nb⟫ : ℝ) = 0 ∨ (⟪O, Na + Nb⟫ : ℝ) = 0) ∧
+      ((⟪O, Nb - Nc⟫ : ℝ) = 0 ∨ (⟪O, Nb + Nc⟫ : ℝ) = 0) ∧
+      ((⟪O, Na - Nc⟫ : ℝ) = 0 ∨ (⟪O, Na + Nc⟫ : ℝ) = 0) := by
+  obtain ⟨ta, tb, tc⟩ := hinc
+  exact ⟨(equidistant_two_sides_iff Na Nb O).mp (ta.trans tb.symm),
+    (equidistant_two_sides_iff Nb Nc O).mp (tb.trans tc.symm),
+    (equidistant_two_sides_iff Na Nc O).mp (ta.trans tc.symm)⟩
+
 end FeuerbachsTheoremOQ04

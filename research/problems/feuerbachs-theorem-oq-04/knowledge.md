@@ -418,3 +418,27 @@ Stacked on the tangency-primitive commit (856→894L, docker `✔ [7743/7743]`, 
 REMAINING HARD STEP (unchanged): existence/uniqueness of the incenter `O` for a *given*
 triangle (spherical angle-bisector / equidistant-locus argument) — not asserted here. Then
 spherical nine-point circle + the Feuerbach tangency.
+
+### Addendum (same session, researcher-1): spherical angle bisectors + incenter-on-bisectors [VERIFIED, 0-axiom]
+
+Attacks the "remaining hard step" above — the equidistant-locus / angle-bisector mechanism
+that pins the incenter. Three new theorems (894→953L, docker `✔ [7743/7743]`, 0-axiom/0-sorry),
+PR #32087, branch `research/feuerbach-oq04-bisectors`.
+
+Key idea: the spherical distance from `O` to the side with unit pole `N` is `arcsin |⟪O,N⟫|`,
+so `O` is equidistant from sides `Na, Nb` iff `|⟪O,Na⟫| = |⟪O,Nb⟫|`. By `abs_eq_abs` this
+splits into the two bisectors `⟪O, Na∓Nb⟫ = 0`.
+
+- **`bisector_poles_orthogonal`** : `⟪Na−Nb, Na+Nb⟫ = ‖Na‖²−‖Nb‖² = 0` for unit poles — the
+  internal and external bisectors are perpendicular great circles (Euclidean picture carries
+  over). Proof: expand `inner_sub_left`/`inner_add_right`, `real_inner_self_eq_norm_sq`, `ring`.
+- **`equidistant_two_sides_iff`** : `|⟪O,Na⟫| = |⟪O,Nb⟫| ↔ ⟪O,Na−Nb⟫=0 ∨ ⟪O,Na+Nb⟫=0`.
+  Pure sign analysis: `rw [inner_sub_right, inner_add_right, abs_eq_abs]` then `linarith` both ways.
+- **`sphericalIncircle_center_on_bisectors`** : an incircle centre lies on a bisector of each
+  of the three pairs — the structural characterisation of the incenter as an intersection of
+  angle bisectors. Proof: destructure the three `TangentToGreatCircle`s, chain `ta.trans tb.symm`.
+
+REMAINING (unchanged): actually *constructing/intersecting* the three bisectors to get an
+existence/uniqueness incenter theorem (needs a two-great-circle-intersection lemma), then the
+spherical nine-point circle + the Feuerbach tangency. NEXT: a `greatCircles_inter` primitive
+(two great circles with independent poles meet in an antipodal pair) to feed the bisectors into.
