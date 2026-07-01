@@ -267,5 +267,41 @@
       "mathContext": "Recap of the toolkit: $\\alpha(G)\\ge|V|/\\chi(G)$ (pigeonhole) and $\\alpha(G)\\ge|V|/(\\Delta+1)$ (greedy), feeding the still-open Hadwiger–Nelson window $5\\le\\chi(\\mathbb{R}^2)\\le 7$."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Hugo Hadwiger",
+      "title": "Ungelöste Probleme No. 40",
+      "year": 1961,
+      "venue": "Elemente der Mathematik 16, 103–104",
+      "note": "Popularizes the chromatic number of the plane problem, χ(ℝ²), whose bounds 4 ≤ χ ≤ 7 are studied here (lower bound later improved)."
+    },
+    {
+      "authors": "Aubrey D. N. J. de Grey",
+      "title": "The Chromatic Number of the Plane Is at Least 5",
+      "year": 2018,
+      "venue": "Geombinatorics 28, 18–31",
+      "note": "Breakthrough unit-distance construction raising the Hadwiger–Nelson lower bound to 5, matching the lower bound axiomatized in this entry."
+    },
+    {
+      "authors": "Alexander Soifer",
+      "title": "The Mathematical Coloring Book",
+      "year": 2009,
+      "venue": "Springer",
+      "note": "Comprehensive history of the Hadwiger–Nelson problem, unit-distance graphs, and the 7-coloring hexagonal upper bound."
+    },
+    {
+      "authors": "Paul Erdős",
+      "title": "On Sets of Distances of n Points",
+      "year": 1946,
+      "venue": "American Mathematical Monthly 53, 248–250",
+      "note": "Founding paper on unit-distance graphs and distance problems in the plane, the combinatorial setting of the independence numbers here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: SimpleGraph, independence, and chromatic-number API",
+      "year": 2024,
+      "note": "Provides the simple-graph, independent-set, and coloring infrastructure over which the unit-distance bounds are formalized."
+    }
+  ]
 }

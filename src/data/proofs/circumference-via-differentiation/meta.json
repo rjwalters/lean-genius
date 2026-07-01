@@ -142,5 +142,34 @@
     "definitionCount": 2,
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Calculus, Volume I",
+      "year": 1967,
+      "venue": "Wiley, 2nd ed.",
+      "note": "Rigorous treatment of area, arc length, and the fundamental theorem of calculus underlying C(r) = dA/dr = 2πr."
+    },
+    {
+      "authors": "Michael Spivak",
+      "title": "Calculus",
+      "year": 2008,
+      "venue": "Publish or Perish, 4th ed.",
+      "note": "Careful development of differentiation and the geometric meaning of the derivative used in the area-circumference duality."
+    },
+    {
+      "authors": "Walter Rudin",
+      "title": "Principles of Mathematical Analysis",
+      "year": 1976,
+      "venue": "McGraw-Hill, 3rd ed.",
+      "note": "Foundational real analysis for differentiation and integration against which the derivation is machine-checked."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: deriv, integration, and Real.pi API",
+      "year": 2024,
+      "note": "Supplies the differentiation and integration infrastructure and the constant π used to verify C(r) = dA/dr."
+    }
+  ]
 }
