@@ -210,6 +210,11 @@
       "targetId": "erdos-1030",
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-895-counterexample-fin18",
+      "relationship": "counterexample",
+      "description": "The corrected, machine-verified sharp counterexample at the n=18 threshold: an explicit triangle-free graph on Fin 18 (= {1,…,17}) with no independent additive triple among three DISTINCT vertices, discharged by kernel `decide` (0 axioms) and cross-checked by Z3 and Python. It fixes the sibling formalization's false-as-stated counterexample_17 — whose additive-triple predicate omitted a ≠ b and was placed on Fin 17 rather than Fin 18."
     }
   ],
   "sorries": 2
