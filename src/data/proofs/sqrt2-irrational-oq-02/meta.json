@@ -39,7 +39,8 @@
     "keyInsights": [
       "Transcendence is strictly stronger than irrationality: √2 is irrational but algebraic, whereas Liouville's constant is irrational and transcendental.",
       "A single explicit construction (Liouville's constant) answers the existence question constructively, without invoking Cantor's counting argument.",
-      "'Not a root of any polynomial' is exactly Transcendental ℤ x = ¬ IsAlgebraic ℤ x, which Mathlib's Liouville theory provides directly."
+      "'Not a root of any polynomial' is exactly Transcendental ℤ x = ¬ IsAlgebraic ℤ x, which Mathlib's Liouville theory provides directly.",
+      "**Approximability is the engine of transcendence**: Liouville's inequality says an algebraic irrational of degree d admits no rational approximation p/q closer than C/q^d. The factorial gaps in ∑ 2^{-k!} make each truncation an astronomically good rational (error ≈ 2^{-(k+1)!} against a denominator of only 2^{k!}), beating every polynomial bound in q at once — so the number can be algebraic of no degree, i.e. transcendental."
     ],
     "prerequisites": [
       "Irrationality (Irrational) and algebraic/transcendental numbers (IsAlgebraic, Transcendental)",
@@ -64,6 +65,24 @@
     "path": "Proofs/Sqrt2IrrationalOQ02.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "title": "J. Liouville, \"Sur des classes très étendues de quantités dont la valeur n'est ni algébrique ni même réductible à des irrationnelles algébriques\" (1844)",
+      "url": "https://en.wikipedia.org/wiki/Liouville_number"
+    },
+    {
+      "title": "Mathlib: Liouville number theory (liouvilleNumber, Liouville.irrational, transcendental_liouvilleNumber)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Liouville/LiouvilleNumber.html"
+    },
+    {
+      "title": "G. Cantor, \"Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen\" (1874) — the algebraic numbers are countable, so almost every real is transcendental",
+      "url": "https://en.wikipedia.org/wiki/Cantor%27s_first_set_theory_article"
+    },
+    {
+      "title": "F. Lindemann, \"Über die Zahl π\" (1882) — transcendence of π",
+      "url": "https://en.wikipedia.org/wiki/Lindemann%E2%80%93Weierstrass_theorem"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "sqrt2-irrational",
