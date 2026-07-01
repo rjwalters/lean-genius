@@ -173,12 +173,15 @@ theorem catalan_eq_centralBinom_sub (n : ℕ) :
   simp only [ballotNumber] at h
   rw [Nat.centralBinom_eq_two_mul_choose, show 2 * n = n + n by ring, ← h]
 
+/-- The diagonal reproduces the Catalan numbers `catalan n` (proved in general). -/
+example (n : ℕ) : ballotNumber n n = catalan n := ballotNumber_diag n
+
 /-- Sanity checks: the diagonal reproduces the Catalan numbers `1, 1, 2, 5, 14`. -/
-example : ballotNumber 0 0 = 1 := ballotNumber_diag 0
-example : ballotNumber 1 1 = 1 := ballotNumber_diag 1
-example : ballotNumber 2 2 = 2 := ballotNumber_diag 2
-example : ballotNumber 3 3 = 5 := ballotNumber_diag 3
-example : ballotNumber 4 4 = 14 := ballotNumber_diag 4
+example : ballotNumber 0 0 = 1 := by decide
+example : ballotNumber 1 1 = 1 := by decide
+example : ballotNumber 2 2 = 2 := by decide
+example : ballotNumber 3 3 = 5 := by decide
+example : ballotNumber 4 4 = 14 := by decide
 
 /-- Sanity checks: the fourth Catalan-triangle row is `1, 4, 9, 14`. -/
 example : ballotNumber 4 0 = 1 := ballotNumber_zero 4
