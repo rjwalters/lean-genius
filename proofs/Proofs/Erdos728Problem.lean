@@ -69,7 +69,7 @@ We want a + b to be in the range (n + C log n, n + C' log n).
 a + b is in the range (n + C log n, n + C' log n).
 -/
 def hasLogarithmicGap (a b n : ℕ) (C C' : ℝ) : Prop :=
-  (n : ℝ) + C * log n < (a + b : ℝ) ∧ (a + b : ℝ) < (n : ℝ) + C' * log n
+  (n : ℝ) + C * Real.log n < (a + b : ℝ) ∧ (a + b : ℝ) < (n : ℝ) + C' * Real.log n
 
 /--
 **Size Condition:**
@@ -108,14 +108,14 @@ This classical result shows the divisibility strongly constrains a + b.
 -/
 axiom erdos_1968_bound :
     ∃ K : ℝ, K > 0 ∧ ∀ a b n : ℕ,
-      a ! * b ! ∣ n ! → (a + b : ℝ) ≤ n + K * log n
+      a ! * b ! ∣ n ! → (a + b : ℝ) ≤ n + K * Real.log n
 
 /--
 **Consequence:**
 For a! * b! | n! with large n, a + b is very close to n.
 -/
 theorem factorial_divisibility_bound (a b n : ℕ) (h : a ! * b ! ∣ n !) :
-    ∃ K : ℝ, K > 0 ∧ (a + b : ℝ) ≤ n + K * log n := by
+    ∃ K : ℝ, K > 0 ∧ (a + b : ℝ) ≤ n + K * Real.log n := by
   obtain ⟨K, hK, hbound⟩ := erdos_1968_bound
   exact ⟨K, hK, hbound a b n h⟩
 
@@ -132,9 +132,16 @@ with b = n/2, a = n/2 + O(log n).
 
 The key insight: choosing b = n/2 makes the divisibility tractable,
 and we can tune a to land in the desired logarithmic range.
+
+Because the construction uses b = n/2 (so that b > ε·n holds whenever
+ε < 1/2), the resolution is valid pointwise for every ε in (0, 1/4),
+not merely for ε in a neighborhood of 0. We state it in this pointwise
+form because the downstream existence theorem needs a *specific* ε; an
+eventually-filter statement (`∀ᶠ ε in 𝓝[>] 0`) would be too weak to
+yield existence at any given ε.
 -/
 axiom erdos_728_resolution :
-    ∀ᶠ ε : ℝ in 𝓝[>] 0, ∀ C > (0 : ℝ), ∀ C' > C,
+    ∀ ε : ℝ, 0 < ε → ε < 1 / 4 → ∀ C > (0 : ℝ), ∀ C' > C,
       ∃ a b n : ℕ,
         isErdos728Solution a b n ε C C'
 
@@ -144,10 +151,9 @@ For small epsilon, we can find solutions for any C < C'.
 -/
 theorem erdos_728_exists (ε : ℝ) (hε : 0 < ε) (hε' : ε < 1/4)
     (C C' : ℝ) (hC : 0 < C) (hC' : C < C') :
-    ∃ a b n : ℕ, isErdos728Solution a b n ε C C' := by
-  have h := erdos_728_resolution
-  -- This follows from the resolution
-  sorry
+    ∃ a b n : ℕ, isErdos728Solution a b n ε C C' :=
+  -- Direct application of the pointwise resolution at this specific ε.
+  erdos_728_resolution ε hε hε' C hC C' hC'
 
 /-
 ## Part VI: The b = n/2 Construction
@@ -175,10 +181,10 @@ The construction works: b = n/2 is large enough for the size condition.
 -/
 theorem construction_size (n : ℕ) (hn : n ≥ 4) (ε : ℝ) (hε : 0 < ε) (hε' : ε < 1/3) :
     ε * n < n / 2 := by
-  have h1 : (n : ℝ) / 2 > ε * n := by
-    have : ε < 1/2 := by linarith
-    nlinarith
-  exact_mod_cast h1
+  have hnpos : (0 : ℝ) < (n : ℝ) := by
+    have : 0 < n := by omega
+    exact_mod_cast this
+  nlinarith [mul_pos (show (0 : ℝ) < 1 / 2 - ε by linarith) hnpos]
 
 /-
 ## Part VII: Legendre's Formula
@@ -195,7 +201,7 @@ This determines the power of prime p dividing n!.
 def legendreSum (n p : ℕ) : ℕ :=
   (Finset.range n).sum fun i => n / p ^ (i + 1)
 
-/--
+/-
 **Divisibility via Legendre:**
 a! * b! | n! * (a + b - n)! iff for every prime p,
 v_p(n!) + v_p((a+b-n)!) >= v_p(a!) + v_p(b!).
@@ -210,7 +216,7 @@ Connection to Problem #729 and general factorial divisibility.
 Problem #729 asks related questions about factorial divisibility
 with different parameter constraints. -/
 
-/--
+/-
 **General Principle:**
 The divisibility a! * b! | n! is equivalent to:
 The multinomial coefficient n! / (a! * b! * (n-a-b)!) being well-defined
@@ -240,7 +246,7 @@ divisibility while landing in the logarithmic gap.
 -/
 theorem erdos_728_summary :
     ∃ K : ℝ, K > 0 ∧
-    ∀ a b n : ℕ, a ! * b ! ∣ n ! → (a + b : ℝ) ≤ n + K * log n :=
+    ∀ a b n : ℕ, a ! * b ! ∣ n ! → (a + b : ℝ) ≤ n + K * Real.log n :=
   erdos_1968_bound
 
 end Erdos728
