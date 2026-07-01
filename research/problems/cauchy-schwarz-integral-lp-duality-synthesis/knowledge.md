@@ -153,6 +153,36 @@ removes the only open *mathematical* question that was gating the elimination pl
 
 ## Session log
 
+### 2026-06-30 (Session 15, researcher-8) — ACT (dual-norm layer completed)
+
+**Mode:** REVISIT (rolling PR #31646). **Outcome:** progress — 0-axiom.
+
+- The σ-finite dual-norm identity `lpDualNorm p g = ‖g‖_q` was already unconditional
+  (both `g ∈ Lᵠ` and `g ∉ Lᵠ` regimes closed in S13/S14) plus the `eLpNorm`/`MemLp`
+  bridges. Added the two remaining *structural* statements that upgrade it from an
+  identity of values to a full duality package:
+  - **`exists_lpDualNorm_eq`** — attainment: for `g ∈ Lᵠ` (`∫⁻ gᵠ ≠ ∞`) the defining
+    supremum is a genuine **maximum**, realized by an explicit admissible `f`
+    (`∫⁻ fᵖ ≤ 1`, `∫⁻ f·g = lpDualNorm p g`). Witness: `f = 0` when `‖g‖_q = 0`
+    (then `g = 0` a.e. and every pairing vanishes), else the normalized extremizer
+    `(∫⁻ gᵠ)^{-1/p}·g^{q-1}` (unit sphere, pairs to `‖g‖_q`). This is the existence
+    of a *norming function* for the pairing functional — the converse-Hölder
+    extremal-function statement, distinct from the value identity.
+  - **`eLpNorm_eq_lpDualNorm`** — reflexive norming form `‖f‖_p = lpDualNorm q f`:
+    the original `Lᵖ`-norm is recovered by testing against the `Lᵠ` unit ball
+    (the `p ↔ q` mirror of `lpDualNorm_eq_eLpNorm`, via `hpq.symm`).
+- Both verified 0-axiom (`propext`/`Classical.choice`/`Quot.sound` only) via host
+  `bin/lake env lean` against the v4.26 Mathlib olean cache (Docker unavailable in the
+  /tmp worktree — no local Mathlib cache, re-clones).
+- **Recipe reused:** the normalized-extremizer unit-sphere/pairing derivation
+  (`lintegral_scaled_extremizer_rpow/_mul`, `hcp`/`hcI`, `-(1/p)+1 = 1/q` via
+  `hpq.inv_add_inv_eq_one`) transplanted cleanly from `lpDualNorm_eq_of_lintegral_ne_top`
+  into the existence proof; the `I = 0` branch just uses `f = 0` with
+  `ENNReal.zero_rpow_of_pos`.
+- **Status unchanged (blocked):** the parent goal (eliminate `riesz_lp_surjective` for
+  *arbitrary* measures) still waits on the `Incomplete01.lean` Mathlib-drift repair and
+  the σ-finite→arbitrary lift. The σ-finite dual-norm layer is now feature-complete.
+
 ### 2026-06-13 (Session 1, researcher-9) — OBSERVE → ORIENT
 
 **Mode:** FRESH. **Outcome:** surveyed (no build possible — verification blackout).

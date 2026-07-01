@@ -42,6 +42,13 @@ characterization** that is the analytic core of `Lᵖ`-duality:
 * `lpDualNorm_eq` — the **unconditional** dual-norm identity
   `lpDualNorm p g = (∫⁻ gᵠ)^{1/q} = ‖g‖_q` for a σ-finite measure and any
   measurable `g` (no integrability hypothesis).
+* `exists_lpDualNorm_eq` — **attainment**: for `g ∈ Lᵠ` the defining supremum is a
+  genuine *maximum*, realized by an explicit extremal `f` in the `Lᵖ` unit ball
+  (`f = 0` if `‖g‖_q = 0`, else the normalized extremizer). Existence of a norming
+  function for the pairing functional `f ↦ ∫⁻ f·g`.
+* `eLpNorm_eq_lpDualNorm` — the **reflexive** norming form
+  `‖f‖_p = lpDualNorm q f`: the original `Lᵖ`-norm is recovered by testing against
+  the `Lᵠ` unit ball (the `p ↔ q` mirror of `lpDualNorm_eq_eLpNorm`).
 -/
 
 import Mathlib
@@ -619,6 +626,82 @@ theorem memLp_ofReal_iff_lpDualNorm_lt_top [SigmaFinite μ] {p q : ℝ}
     MemLp g (ENNReal.ofReal q) μ ↔ lpDualNorm p μ g < ∞ := by
   rw [lpDualNorm_eq_eLpNorm hpq hg]
   exact ⟨fun h => h.2, fun h => ⟨hg.aestronglyMeasurable, h⟩⟩
+
+/-! ## Attainment: the dual norm is a genuine maximum (`g ∈ Lᵠ`)
+
+`lpDualNorm` is defined as a supremum over the `Lᵖ` unit ball. The dual-norm
+identity `lpDualNorm_eq_of_lintegral_ne_top` shows the supremum *value* equals
+`‖g‖_q`, but the standard "converse Hölder" statement is stronger: for
+`g ∈ Lᵠ` the supremum is **attained** by an explicit extremal function — the
+supremum is a maximum. The witness is the normalized extremizer
+`(∫⁻ gᵠ)^{-1/p}·g^{q-1}` (when `‖g‖_q ≠ 0`) or the zero function (when
+`‖g‖_q = 0`, where `g = 0` a.e. and every pairing vanishes). This is exactly the
+existence of a *norming function* for the pairing functional `f ↦ ∫⁻ f·g`. -/
+
+/-- **The `Lᵖ`-dual norm is attained for `g ∈ Lᵠ` (converse Hölder, existence
+    form).** For Hölder-conjugate `p, q` and measurable `g` with `∫⁻ gᵠ ≠ ∞`,
+    there is an admissible `f` (`∫⁻ fᵖ ≤ 1`) whose pairing against `g` realizes
+    the dual norm exactly:
+
+      `∃ f, ‖f‖_p ≤ 1  ∧  ∫⁻ f·g = lpDualNorm p g  (= ‖g‖_q)`.
+
+    So the defining supremum is a genuine *maximum*: the pairing functional
+    `f ↦ ∫⁻ f·g` is normed by an explicit extremal element of the unit ball. When
+    `‖g‖_q = 0` the witness is `f = 0`; otherwise it is the normalized extremizer
+    `(∫⁻ gᵠ)^{-1/p}·g^{q-1}`, which lies on the unit sphere and pairs to `‖g‖_q`. -/
+theorem exists_lpDualNorm_eq {p q : ℝ} (hpq : p.HolderConjugate q)
+    (hg : Measurable g) (hItop : (∫⁻ x, (g x) ^ q ∂μ) ≠ ∞) :
+    ∃ f : α → ℝ≥0∞, AEMeasurable f μ ∧ (∫⁻ x, (f x) ^ p ∂μ) ≤ 1 ∧
+      ∫⁻ x, f x * g x ∂μ = lpDualNorm p μ g := by
+  have hp : (0 : ℝ) < p := lt_trans one_pos hpq.lt
+  have hq : (0 : ℝ) < q := lt_trans one_pos hpq.symm.lt
+  rw [lpDualNorm_eq_of_lintegral_ne_top hpq hg hItop]
+  set I := ∫⁻ x, (g x) ^ q ∂μ with hIdef
+  rcases eq_or_ne I 0 with hI0 | hI0
+  · -- ‖g‖_q = 0 (`g = 0` a.e.): the zero function attains the value `0 = I^{1/q}`
+    refine ⟨0, aemeasurable_const, ?_, ?_⟩
+    · simp [ENNReal.zero_rpow_of_pos hp]
+    · rw [hI0, ENNReal.zero_rpow_of_pos (one_div_pos.2 hq)]
+      simp
+  · -- 0 < ‖g‖_q < ∞: the normalized extremizer lies on the unit sphere and
+    -- pairs to exactly `I^{1/q}`, realizing the supremum
+    have hIpos : (0 : ℝ≥0∞) < I := lt_of_le_of_ne (zero_le _) (Ne.symm hI0)
+    have hIp0 : I ^ (1 / p) ≠ 0 := (ENNReal.rpow_pos hIpos hItop).ne'
+    have hc_ne_top : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) ≠ ∞ := ENNReal.inv_ne_top.2 hIp0
+    have hcp : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) ^ p = I⁻¹ := by
+      rw [ENNReal.inv_rpow, ← ENNReal.rpow_mul, one_div_mul_cancel hp.ne', ENNReal.rpow_one]
+    have hcp_ne_top : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) ^ p ≠ ∞ := by
+      rw [hcp]; exact ENNReal.inv_ne_top.2 hI0
+    have hf_norm : ∫⁻ x, (normalizedExtremizer p q μ g x) ^ p ∂μ = 1 := by
+      simp only [normalizedExtremizer, ← hIdef]
+      rw [lintegral_scaled_extremizer_rpow hpq hcp_ne_top, ← hIdef, hcp,
+        ENNReal.inv_mul_cancel hI0 hItop]
+    have hexp : -(1 / p) + 1 = 1 / q := by
+      have h := hpq.inv_add_inv_eq_one
+      simp only [one_div]; linarith
+    have hcI : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) * I = I ^ (1 / q) := by
+      rw [← hexp, ENNReal.rpow_add _ _ hI0 hItop, ENNReal.rpow_neg, ENNReal.rpow_one]
+    have hf_pair : ∫⁻ x, normalizedExtremizer p q μ g x * g x ∂μ = I ^ (1 / q) := by
+      simp only [normalizedExtremizer, ← hIdef]
+      rw [lintegral_scaled_extremizer_mul hpq.symm.lt.le hc_ne_top, ← hIdef, hcI]
+    exact ⟨normalizedExtremizer p q μ g, (measurable_normalizedExtremizer hg).aemeasurable,
+      hf_norm.le, hf_pair⟩
+
+/-- **Reflexive norming form of `Lᵖ`-duality (σ-finite `μ`).** For Hölder-conjugate
+    `p, q`, a σ-finite measure `μ`, and measurable `f`, the genuine `Lᵖ`-seminorm of
+    `f` is recovered as the dual norm of `f` over the `Lᵠ` unit ball:
+
+      `‖f‖_p = eLpNorm f (ENNReal.ofReal p) μ = lpDualNorm q μ f = ⨆_{‖h‖_q ≤ 1} ∫⁻ h·f`.
+
+    This is the symmetric ("double duality" / reflexivity) companion of
+    `lpDualNorm_eq_eLpNorm`: not only is the dual of `Lᵖ` the space `Lᵠ`, but the
+    original norm is itself recovered by testing against the dual ball. It is the
+    `p ↔ q` mirror image, obtained by feeding the conjugacy the other way round
+    (`hpq.symm`). -/
+theorem eLpNorm_eq_lpDualNorm [SigmaFinite μ] {p q : ℝ} (hpq : p.HolderConjugate q)
+    {f : α → ℝ≥0∞} (hf : Measurable f) :
+    eLpNorm f (ENNReal.ofReal p) μ = lpDualNorm q μ f :=
+  (lpDualNorm_eq_eLpNorm hpq.symm hf).symm
 
 end RieszLpDualityIngredients
 
