@@ -143,5 +143,34 @@
     "path": "Proofs/ChebyshevPNTBridgeOQ05.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Pafnuty L. Chebyshev"
+      ],
+      "title": "Mémoire sur les nombres premiers",
+      "year": 1852,
+      "venue": "Journal de Mathématiques Pures et Appliquées 17, 366–390",
+      "note": "Original elementary bounds c₁ x/log x ≤ π(x) ≤ c₂ x/log x on the prime-counting function."
+    },
+    {
+      "authors": [
+        "Melvyn B. Nathanson"
+      ],
+      "title": "Elementary Methods in Number Theory",
+      "year": 2000,
+      "venue": "Springer (Graduate Texts in Mathematics 195)",
+      "note": "Erdős-style central-binomial-coefficient proof of Chebyshev's bounds."
+    },
+    {
+      "authors": [
+        "Tom M. Apostol"
+      ],
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer (Undergraduate Texts in Mathematics)",
+      "note": "Chebyshev's theorems, the von Mangoldt function, Abel summation, and Mertens' theorems."
+    }
+  ]
 }

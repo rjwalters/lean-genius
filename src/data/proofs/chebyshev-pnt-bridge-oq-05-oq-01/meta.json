@@ -166,5 +166,35 @@
     "path": "Proofs/ChebyshevPNTBridgeOQ05OQ01.lean",
     "sorries": 0
   },
-  "sorries": []
+  "sorries": [],
+  "references": [
+    {
+      "authors": [
+        "Pafnuty L. Chebyshev"
+      ],
+      "title": "Mémoire sur les nombres premiers",
+      "year": 1852,
+      "venue": "Journal de Mathématiques Pures et Appliquées 17, 366–390",
+      "note": "Original elementary bounds c₁ x/log x ≤ π(x) ≤ c₂ x/log x on the prime-counting function."
+    },
+    {
+      "authors": [
+        "Tom M. Apostol"
+      ],
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer (Undergraduate Texts in Mathematics)",
+      "note": "Chebyshev's theorems, the von Mangoldt function, Abel summation, and Mertens' theorems."
+    },
+    {
+      "authors": [
+        "G. H. Hardy",
+        "E. M. Wright"
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press (6th ed.)",
+      "note": "Elementary prime-counting estimates and bounds on the n-th prime."
+    }
+  ]
 }

@@ -157,5 +157,34 @@
     "path": "Proofs/ChebyshevPNTBridgeOQ04.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Franz Mertens"
+      ],
+      "title": "Ein Beitrag zur analytischen Zahlentheorie",
+      "year": 1874,
+      "venue": "Journal für die reine und angewandte Mathematik 78, 46–62",
+      "note": "Original derivation of Mertens' theorems, including Σ_{p≤x}(log p)/p = log x + O(1)."
+    },
+    {
+      "authors": [
+        "Tom M. Apostol"
+      ],
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "venue": "Springer (Undergraduate Texts in Mathematics)",
+      "note": "Chebyshev's theorems, the von Mangoldt function, Abel summation, and Mertens' theorems."
+    },
+    {
+      "authors": [
+        "Gérald Tenenbaum"
+      ],
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "year": 2015,
+      "venue": "American Mathematical Society (Graduate Studies in Mathematics 163, 3rd ed.)",
+      "note": "Chebyshev sandwich, Mertens' formulas, and asymptotics of prime sums."
+    }
+  ]
 }
