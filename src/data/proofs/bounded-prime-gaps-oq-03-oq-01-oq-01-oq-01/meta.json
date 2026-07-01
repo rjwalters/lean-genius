@@ -101,6 +101,36 @@
       "summary": "minAdmissibleDiameter_6 = 16 via le_antisymm, mirroring minAdmissibleDiameter_5: upper bound from the admissible witness {0,4,6,10,12,16} via csInf_le; lower bound from admissible_6tuple_diam_ge_16 via le_csInf."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E."
+      ],
+      "title": "Some problems of 'Partitio numerorum'; III: On the expression of a number as a sum of primes",
+      "year": "1923",
+      "venue": "Acta Mathematica 44, pp. 1–70",
+      "note": "Origin of the prime k-tuples conjecture and the notion of an admissible tuple."
+    },
+    {
+      "authors": [
+        "Polymath, D.H.J."
+      ],
+      "title": "Variants of the Selberg sieve, and bounded intervals containing many primes",
+      "year": "2014",
+      "venue": "Research in the Mathematical Sciences 1:12",
+      "note": "Polymath8b: optimized admissible tuples and the sharpest unconditional/EH-conditional gap bounds."
+    },
+    {
+      "authors": [
+        "Maynard, J."
+      ],
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181 (1), pp. 383–413",
+      "note": "The Maynard–Tao multidimensional sieve giving bounded prime gaps and the H ≤ 246 / EH-conditional H ≤ 12 bounds."
+    }
+  ],
   "conclusion": {
     "summary": "Proved $D(6)=16$: every admissible 6-tuple has diameter $\\geq 16$, witnessed by $\\{0,4,6,10,12,16\\}$. The lower bound is fully symbolic (native_decide-free), interrogating $p \\in \\{2,3,5\\}$ via a parity filter, a mod-3 grouping that pins the tuple to a unique candidate, and a mod-5 obstruction that kills it. The witness diameter is computed without native_decide, so the whole entry is axiom-free. 254 lines, 4 theorems, 0 sorries, 0 axioms.",
     "implications": "With $D(2)=2$, $D(3)=6$, $D(4)=8$, $D(5)=12$, and now $D(6)=16$ all machine-verified, the smallest six prime-constellation diameters are formally established in Lean 4. $D(6)$ is the first rung whose lower bound provably needs three residue layers ($p=2,3,5$), illustrating how the obstruction structure of $D(k)$ grows. The technique — parity filtration, residue-group pinning via cardinality, and a final residue-cover obstruction — extends toward $D(7)=20$, where the mod-5 and mod-7 layers will both be needed.",

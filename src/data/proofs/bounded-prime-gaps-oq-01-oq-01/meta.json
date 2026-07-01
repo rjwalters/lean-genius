@@ -115,6 +115,26 @@
       "summary": "pair_density_implies_bounded_gaps specialises to {0,d}: a density of two primes among {n, n+d} yields infinitely many consecutive gaps <= d, recovering the twin-style reading at d = 2."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Maynard, J."
+      ],
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181 (1), pp. 383–413",
+      "note": "The Maynard–Tao multidimensional sieve giving bounded prime gaps and the H ≤ 246 / EH-conditional H ≤ 12 bounds."
+    },
+    {
+      "authors": [
+        "Polymath, D.H.J."
+      ],
+      "title": "Variants of the Selberg sieve, and bounded intervals containing many primes",
+      "year": "2014",
+      "venue": "Research in the Mathematical Sciences 1:12",
+      "note": "Polymath8b: optimized admissible tuples and the sharpest unconditional/EH-conditional gap bounds."
+    }
+  ],
   "conclusion": {
     "summary": "Five machine-checked theorems (0 sorries, 0 axioms beyond propext/Classical.choice/Quot.sound) show that the two gap-sieve axioms of the parent BoundedPrimeGaps formalization are logically redundant: their conclusion — infinitely many consecutive prime gaps ≤ D — is derived elementarily from the single Maynard–Tao density statement MaynardTaoDensity H 2 together with the diameter bound. The arithmetic core gap_from_two_primes turns any two primes within distance D into a bounded consecutive gap; density_two_implies_bounded_gaps lifts it to 'infinitely often'; and sieve_conclusion_from_density / sieve_eh_conclusion_from_density reproduce the eliminated axioms' exact signatures with the admissibility and cardinality hypotheses provably unused.",
     "implications": "The result sharpens the formalization's axiomatic footprint: the irreducible analytic input of the bounded-prime-gaps program is one density statement, not three axioms. It also cleanly localises where the depth lives — admissibility and the sieve machinery serve only to make the density antecedent true; the passage from 'two nearby primes' to 'a bounded consecutive gap' is pure prime-counting arithmetic. This separation is a reusable pattern for auditing which assumptions in a formalization are genuinely primitive versus derivable.",

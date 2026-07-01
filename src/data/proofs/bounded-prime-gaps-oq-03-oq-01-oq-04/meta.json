@@ -86,6 +86,27 @@
       "summary": "Proves D2_lt_D3_lt_D4 (strictly increasing chain 2 < 6 < 8), D4_achieved_by_0268, D4_minus_D3 = 2, and prime_quadruple_span_ge_8 (universal lower bound on admissible 4-tuple diameters)."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E."
+      ],
+      "title": "Some problems of 'Partitio numerorum'; III: On the expression of a number as a sum of primes",
+      "year": "1923",
+      "venue": "Acta Mathematica 44, pp. 1–70",
+      "note": "Origin of the prime k-tuples conjecture and the notion of an admissible tuple."
+    },
+    {
+      "authors": [
+        "Polymath, D.H.J."
+      ],
+      "title": "Variants of the Selberg sieve, and bounded intervals containing many primes",
+      "year": "2014",
+      "venue": "Research in the Mathematical Sciences 1:12",
+      "note": "Polymath8b: optimized admissible tuples and the sharpest unconditional/EH-conditional gap bounds."
+    }
+  ],
   "conclusion": {
     "summary": "Proved $D(4)=8$: every admissible 4-tuple has diameter $\\geq 8$, witnessed by $\\{0,2,6,8\\}$. The proof uses the parity constraint + forced AP structure argument, reducing to the non-admissible triple result proved in the parent file. 187 lines, 7 theorems, 0 sorries, 0 axioms. Also repaired pre-existing Mathlib API issues in BoundedPrimeGapsOQ03OQ01.",
     "implications": "With $D(2)=2$, $D(3)=6$, $D(4)=8$ now all machine-verified, the smallest prime constellation diameters are formally established in Lean 4. The proof infrastructure — parity filtration, subset contamination, forced-AP structure — is reusable for $D(5)=12$ and beyond. Under the Elliott–Halberstam conjecture, these $D(k)$ values give exact predicted gaps for prime $k$-tuples: the prime quadruple conjecture predicts infinitely many $n$ with $n,n+2,n+6,n+8$ all prime.",

@@ -86,6 +86,36 @@
       "summary": "minAdmissibleDiameter_5 = 12 via le_antisymm, exactly mirroring minAdmissibleDiameter_3: upper bound from the admissible witness {0,2,6,8,12} via csInf_le (witness diameter discharged by fsDiameter_0_2_6_8_12); lower bound from admissible_5tuple_diam_ge_12 via le_csInf. No native_decide anywhere."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Hardy, G.H.",
+        "Littlewood, J.E."
+      ],
+      "title": "Some problems of 'Partitio numerorum'; III: On the expression of a number as a sum of primes",
+      "year": "1923",
+      "venue": "Acta Mathematica 44, pp. 1–70",
+      "note": "Origin of the prime k-tuples conjecture and the notion of an admissible tuple."
+    },
+    {
+      "authors": [
+        "Polymath, D.H.J."
+      ],
+      "title": "Variants of the Selberg sieve, and bounded intervals containing many primes",
+      "year": "2014",
+      "venue": "Research in the Mathematical Sciences 1:12",
+      "note": "Polymath8b: optimized admissible tuples and the sharpest unconditional/EH-conditional gap bounds."
+    },
+    {
+      "authors": [
+        "Maynard, J."
+      ],
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181 (1), pp. 383–413",
+      "note": "The Maynard–Tao multidimensional sieve giving bounded prime gaps and the H ≤ 246 / EH-conditional H ≤ 12 bounds."
+    }
+  ],
   "conclusion": {
     "summary": "Proved $D(5)=12$: every admissible 5-tuple has diameter $\\geq 12$, witnessed by $\\{0,2,6,8,12\\}$. Both bounds are fully symbolic (native_decide-free): the lower bound interrogates only $p \\in \\{2,3\\}$ via a parity filter plus a two-mod-3-complete-triple counting argument, and the upper-bound witness diameter is computed symbolically by `fsDiameter_0_2_6_8_12`. The result carries no `Lean.ofReduceBool` axiom and is fully kernel-verified. 232 lines, 4 theorems, 0 sorries, 0 axioms.",
     "implications": "With $D(2)=2$, $D(3)=6$, $D(4)=8$, and now $D(5)=12$ all machine-verified, the smallest five prime-constellation diameters are formally established in Lean 4. The two-triple counting argument is the natural successor to the single-AP obstruction used for $D(4)$ and extends the reusable proof infrastructure (parity filtration, residue-complete-block counting) toward $D(6)=16$ and beyond. Under the Elliott–Halberstam conjecture, $D(5)=12$ is the exact predicted span for prime quintuples $n, n+2, n+6, n+8, n+12$.",
