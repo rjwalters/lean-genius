@@ -198,27 +198,9 @@ theorem _root_.Matrix.IsDiagonalizable.squarefree_minpoly {M : Matrix n n K}
   rw [← hmeq]
   exact squarefree_minpoly_of_isDiag hdiag
 
-/-- **S1 OBSERVE → S7 ACT main theorem.** Over an algebraically closed field
-of characteristic zero, a matrix is diagonalizable iff its minimal polynomial
-is squarefree.
-
-The **forward** direction (`→`) is now fully proved and unconditional
-(`Matrix.IsDiagonalizable.squarefree_minpoly`, any field). The **reverse**
-direction (`←`, squarefree minpoly ⇒ diagonalizable) remains the single
-`sorry`: over an algebraically closed field it follows from Bridge C
-(`Module.End.isSemisimple_iff_squarefree_minpoly`) plus Bridge B
-(`Module.End.iSup_eigenspace_eq_top_of_isSemisimple`) transported back through
-`Matrix.toLin'`, and is the target of sub-OQ-02-OQ-02.
-
-Note: the field hypotheses can be weakened to "perfect field + minpoly
-splits", but the alg-closed-char-0 case is the headline textbook statement
-and is what most callers (e.g. linear-algebra texts) expect. The general
-form is the target of OQ-02-OQ-03. -/
-theorem diagonalizable_iff_squarefree_minpoly
-    [IsAlgClosed K] [CharZero K] (M : Matrix n n K) :
-    M.IsDiagonalizable ↔ Squarefree (minpoly K M) := by
-  refine ⟨fun h => h.squarefree_minpoly, ?_⟩
-  sorry
+-- The headline biconditional `diagonalizable_iff_squarefree_minpoly` is stated
+-- and PROVED (no sorry) at the end of this file, after the endomorphism-level
+-- bridges (Bridge B/C) and the eigenbasis bridge it depends on.
 
 /-- **Sanity lemma (unconditional).** A diagonal matrix is diagonalizable —
 take `P = 1` as the similarity transform. -/
@@ -317,5 +299,91 @@ theorem _root_.Matrix.isDiagonalizable_conj_iff {M P : Matrix n n K} (hP : IsUni
       show P * (P⁻¹ * M * P) * P⁻¹ = (P * P⁻¹) * M * (P * P⁻¹) from by simp only [mul_assoc]]
     simp only [hPP, one_mul, mul_one]
   rwa [heq] at hback
+
+-- ============================================================
+-- Reverse direction: eigenbasis bridge + headline biconditional
+-- ============================================================
+
+/-- **Eigenbasis ⇒ diagonalizable (Bridge A reverse, PROVED, any field).**
+If the space `n → K` admits a basis `b` of eigenvectors of `Matrix.toLin' M`
+(with `toLin' M (b i) = μ i • b i`), then `M` is diagonalizable. The witnessing
+similarity is the change-of-basis matrix `P = e.toMatrix b` (from the standard
+basis `e` to `b`): in the eigenbasis the operator has matrix `diagonal μ`, and
+the change-of-basis conjugation identity
+`basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix` gives
+`P⁻¹ * M * P = LinearMap.toMatrix b b (toLin' M) = diagonal μ`, which is
+diagonal. This is the reusable core of the reverse direction; the remaining
+work is to *produce* such an eigenbasis, done below from semisimplicity. -/
+theorem isDiagonalizable_of_eigenbasis {M : Matrix n n K}
+    (b : Module.Basis n K (n → K)) (μ : n → K)
+    (hb : ∀ i, Matrix.toLin' M (b i) = μ i • b i) :
+    M.IsDiagonalizable := by
+  classical
+  set e := Pi.basisFun K n with he
+  have hdiag : LinearMap.toMatrix b b (Matrix.toLin' M) = Matrix.diagonal μ := by
+    ext i j
+    rw [LinearMap.toMatrix_apply, hb j, map_smul, Finsupp.smul_apply, Module.Basis.repr_self,
+      Matrix.diagonal_apply]
+    by_cases hij : i = j
+    · subst hij; simp
+    · simp [hij]
+  have hM : LinearMap.toMatrix e e (Matrix.toLin' M) = M := by
+    rw [LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']
+  have hflip1 : e.toMatrix b * b.toMatrix e = 1 := Module.Basis.toMatrix_mul_toMatrix_flip e b
+  haveI : Invertible (e.toMatrix b) := e.invertibleToMatrix b
+  have hunit : IsUnit (e.toMatrix b) := isUnit_of_invertible _
+  have hinv : (e.toMatrix b)⁻¹ = b.toMatrix e := Matrix.inv_eq_right_inv hflip1
+  refine ⟨e.toMatrix b, hunit, ?_⟩
+  rw [hinv]
+  have h1 : b.toMatrix e * M * e.toMatrix b = LinearMap.toMatrix b b (Matrix.toLin' M) := by
+    conv_lhs => rw [← hM]
+    simp only [basis_toMatrix_mul_linearMap_toMatrix, linearMap_toMatrix_mul_basis_toMatrix]
+  rw [h1, hdiag]
+  exact Matrix.isDiag_diagonal μ
+
+/-- **Headline biconditional (PROVED, no sorry).** Over an algebraically closed
+field of characteristic zero, a matrix is diagonalizable iff its minimal
+polynomial is squarefree.
+
+The **forward** direction (`→`) is `Matrix.IsDiagonalizable.squarefree_minpoly`
+(unconditional, any field). The **reverse** direction (`←`) is now discharged:
+squarefree `minpoly` ⇒ the endomorphism `f = toLin' M` is semisimple (Bridge C),
+hence over an algebraically closed field its eigenspaces span (`Bridge B`) and are
+independent, so they form an internal direct sum. The collected per-eigenspace
+bases give a basis of eigenvectors, which — after reindexing to `n` by equal
+cardinality — is fed to `isDiagonalizable_of_eigenbasis`.
+
+The field hypotheses can be weakened to "perfect field + minpoly splits", but the
+alg-closed-char-0 case is the headline textbook statement (general form is the
+target of OQ-02-OQ-03). -/
+theorem diagonalizable_iff_squarefree_minpoly
+    [IsAlgClosed K] [CharZero K] (M : Matrix n n K) :
+    M.IsDiagonalizable ↔ Squarefree (minpoly K M) := by
+  refine ⟨fun h => h.squarefree_minpoly, fun hsq => ?_⟩
+  classical
+  set f : Module.End K (n → K) := Matrix.toLin' M with hf
+  have hmp : minpoly K f = minpoly K M := Matrix.minpoly_toLin' M
+  have hss : f.IsSemisimple :=
+    (Module.End.isSemisimple_iff_squarefree_minpoly).mpr (by rw [hmp]; exact hsq)
+  have htop : ⨆ μ : K, f.eigenspace μ = ⊤ :=
+    Module.End.iSup_eigenspace_eq_top_of_isSemisimple hss
+  have hindep : iSupIndep (fun μ : K => f.eigenspace μ) :=
+    Module.End.eigenspaces_iSupIndep f
+  have hInt : DirectSum.IsInternal (fun μ : K => f.eigenspace μ) :=
+    (DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top _).mpr ⟨hindep, htop⟩
+  set B := hInt.collectedBasis (fun μ => Module.finBasis K (f.eigenspace μ)) with hB
+  haveI : Fintype (Σ μ : K, Fin (Module.finrank K (f.eigenspace μ))) :=
+    FiniteDimensional.fintypeBasisIndex B
+  have hcard :
+      Fintype.card (Σ μ : K, Fin (Module.finrank K (f.eigenspace μ))) = Fintype.card n := by
+    rw [← Module.finrank_eq_card_basis B, ← Module.finrank_eq_card_basis (Pi.basisFun K n)]
+  set ρ := Fintype.equivOfCardEq hcard with hρ
+  refine isDiagonalizable_of_eigenbasis (B.reindex ρ) (fun i => (ρ.symm i).1) ?_
+  intro i
+  have hmem : B (ρ.symm i) ∈ f.eigenspace (ρ.symm i).1 :=
+    hInt.collectedBasis_mem _ (ρ.symm i)
+  have heig := Module.End.mem_eigenspace_iff.mp hmem
+  rw [Module.Basis.reindex_apply, ← hf]
+  exact heig
 
 end Proofs.MinpolyCharpolyOQ02
