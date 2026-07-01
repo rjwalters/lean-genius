@@ -19,6 +19,7 @@
     "sorries": 0
   },
   "title": "The Half-Line Gaussian Integral",
+  "description": "Evaluates the Gaussian integral over the positive half-line, ∫_{0}^{∞} e^{-b x²} dx = √(π/b)/2 — exactly half the full-line value — directly from Mathlib's integral_gaussian_Ioi. It then proves the even-symmetry bridge ∫_ℝ e^{-x²} = 2·∫_{(0,∞)} e^{-x²} (via integral_comp_abs and |x|² = x²) and composes it with the b = 1 half-line value √π/2 to re-derive the parent's ∫_ℝ e^{-x²} = √π along an independent route through Set.Ioi 0. 64 lines, 4 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
