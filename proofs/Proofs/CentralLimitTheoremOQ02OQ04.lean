@@ -1328,6 +1328,54 @@ theorem covariance_eq_double_survival_covariance
   refine setIntegral_congr_fun measurableSet_Ioc (fun t _ => ?_)
   exact (integral_sub (h_joint_inner t) (h_prod_inner t)).symm
 
+/-- **Survival-covariance integrand α-bound** (S25, this session).
+
+The integrand of the covariance layer-cake representation
+`covariance_eq_double_survival_covariance` is, at every threshold pair `(t, s)`,
+the *indicator covariance* of the super-level sets `{t < f}` and `{s < g}`:
+$$
+  \mu\{t<f \wedge s<g\} - \mu\{t<f\}\,\mu\{s<g\}
+    = \mathrm{Cov}\bigl(\mathbf 1_{\{t<f\}},\, \mathbf 1_{\{s<g\}}\bigr).
+$$
+When `f` is `σPair 0`-measurable and `g` is `σPair 1`-measurable, this is
+bounded in absolute value by the α-mixing coefficient, *uniformly in* `(t, s)`:
+$$
+  \bigl|\mu\{t<f \wedge s<g\} - \mu\{t<f\}\,\mu\{s<g\}\bigr|
+    \;\le\; \alpha(\mathcal F, \mathcal G).
+$$
+
+**Proof.** The joint super-level set factors as an intersection,
+`{ω | t < f ω ∧ s < g ω} = {ω | t < f ω} ∩ {ω | s < g ω}`, so after unfolding
+`μ.real` as `(μ ·).toReal` the integrand is exactly the quantity bounded by
+`davydov_indicator_bound`. The two sub-σ measurability side-conditions are
+supplied by `superlevel_setOf_measurable` (the super-level set of an
+`m`-measurable function is `m`-measurable).
+
+**Role.** This is the pointwise majorant that turns the double survival integral
+of `covariance_eq_double_survival_covariance` into the bounded-variable Davydov
+estimate `|Cov(f, g)| ≤ α · M · N`: the constant bound `α`, integrated over the
+threshold window `(0, M] × (0, N]`, contributes `α` times the window area (the
+S26 assembly). Because the bound is uniform in the threshold pair, no
+integrability of the integrand is needed at this layer — only the two
+measurability hypotheses on `f` and `g`. -/
+theorem survival_covariance_integrand_le_alpha
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {f g : Ω → ℝ}
+    (hf : Measurable[σPair 0] f) (hg : Measurable[σPair 1] g)
+    (t s : ℝ) :
+    |μ.real {ω | t < f ω ∧ s < g ω}
+        - μ.real {ω | t < f ω} * μ.real {ω | s < g ω}|
+      ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+  have hset : {ω | t < f ω ∧ s < g ω}
+      = {ω | t < f ω} ∩ {ω | s < g ω} := by
+    ext ω; simp only [Set.mem_setOf_eq, Set.mem_inter_iff]
+  have hA := superlevel_setOf_measurable (m := σPair 0) hf t
+  have hB := superlevel_setOf_measurable (m := σPair 1) hg s
+  rw [hset]
+  simp only [measureReal_def]
+  exact davydov_indicator_bound σPair hA hB
+
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
 For random variables `X, Y : Ω → ℝ` with finite `L^p` norms (`p > 2`), where `X`
