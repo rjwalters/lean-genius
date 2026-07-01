@@ -24,6 +24,18 @@
     "prerequisites": ["normed spaces", "completeness", "bounded operators"]
   },
   {
+    "id": "ann-bs-oq0101-bddabove-idiom",
+    "proofId": "banach-steinhaus-theorem-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "tactic",
+    "title": "Encoding \u201Csupremum is +\u221E\u201D as \u00AC BddAbove (range \u2026)",
+    "content": "Both theorems phrase (un)boundedness through `BddAbove (range fun i => \u2016g i\u2016)` rather than an explicit `\u2203 C, \u2200 i, \u2026 \u2264 C`. This is the idiomatic Mathlib encoding of \u2018the set {\u2016g i\u2016} has a finite supremum\u2019, and its negation `\u00AC BddAbove` is exactly \u2018the supremum is +\u221E\u2019 \u2014 the shape both the hypothesis and the conclusion want. The payoff is that the two encodings interconvert with one-liners: `BddAbove (range f)` unpacks to a bound on every `f i` via `mem_range_self i`, and repacks from `\u2200 i, f i \u2264 C` by `rintro _ \u27E8i, rfl\u27E9`. Keeping the statement in `BddAbove`/`range` form (instead of raw quantifiers) is what lets the resonance principle read as a clean contrapositive of `banach_steinhaus` and stay directly composable with Mathlib's order and filter API (e.g. `not_bddAbove_iff`).",
+    "mathContext": "$\\neg\\,\\mathrm{BddAbove}\\,\\{\\|g_i\\|\\}_i \\iff \\sup_i \\|g_i\\| = +\\infty$; the range-membership bridge is $f\\,i \\in \\mathrm{range}\\,f$ via `mem_range_self`.",
+    "significance": "supporting",
+    "relatedConcepts": ["BddAbove", "Set.range", "mem_range_self", "supremum as +\u221E", "idiomatic encoding"],
+    "prerequisites": ["order theory: bounded-above sets", "Set.range and membership"]
+  },
+  {
     "id": "ann-bs-oq0101-resonance",
     "proofId": "banach-steinhaus-theorem-oq-01-oq-01",
     "range": { "startLine": 59, "endLine": 81 },

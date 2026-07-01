@@ -58,7 +58,8 @@
       "The resonance principle is precisely the contrapositive of uniform boundedness; by_contra + push_neg reduces the goal to the pointwise-bounded hypothesis banach_steinhaus consumes.",
       "Phrasing boundedness as BddAbove (range …) keeps the statements idiomatic and the bridge to '∃ C, ∀ i, … ≤ C' is just mem_range_self / rintro ⟨i, rfl⟩.",
       "Stating the core for an arbitrary index type and a separate ℕ-sequence corollary keeps it reusable: the corollary is what the Fourier divergence proof actually calls with ‖Sₙ‖ → ∞.",
-      "Isolating the analytic input (Lebesgue constants) outside the verified core, rather than baking it into an axiom, keeps the contribution honest and pinpoints the Mathlib gap."
+      "Isolating the analytic input (Lebesgue constants) outside the verified core, rather than baking it into an axiom, keeps the contribution honest and pinpoints the Mathlib gap.",
+      "Completeness of E is the load-bearing hypothesis: the resonance principle inherits `CompleteSpace E` directly from `banach_steinhaus`, which rests on the Baire category theorem. Without completeness the uniform boundedness principle fails — there exist incomplete normed spaces carrying pointwise-bounded families of operators whose norms are unbounded — so the whole argument, and hence the Fourier-divergence application, genuinely needs the Banach (not merely normed) structure of C(𝕋)."
     ],
     "prerequisites": [
       "Banach spaces and continuous linear maps (operator norm)",
@@ -69,12 +70,20 @@
   },
   "sections": [
     {
-      "id": "overview",
-      "title": "Target, scope, and status",
+      "id": "overview-target",
+      "title": "Target and classical strategy",
       "startLine": 1,
-      "endLine": 49,
-      "summary": "Import Mathlibs Banach-Steinhaus; docstring framing the target (a continuous 2pi-periodic function whose Fourier series diverges at a point) and the scope: this file isolates and verifies the FUNCTIONAL-ANALYSIS CORE (the resonance principle), ready to apply once the analytic input the Lebesgue constant tends to infinity is available; honest status note that the full Fourier-divergence theorem is not claimed.",
+      "endLine": 36,
+      "summary": "Import Mathlib's Banach-Steinhaus; docstring framing the target (a continuous 2pi-periodic function whose Fourier series diverges at a point) and the classical route: the partial-sum-at-0 functionals Sn on C(T) have operator norms equal to the Lebesgue constants, which diverge, so the contrapositive of uniform boundedness produces a resonating f.",
       "mathContext": "Partial-sum functionals $S_n f = (S_n f)(0) = \\int f\\,D_n$, $\\|S_n\\| = \\|D_n\\|_{L^1}$ (Lebesgue constants) $\\to \\infty$; uniform boundedness forces a resonance point."
+    },
+    {
+      "id": "overview-scope-status",
+      "title": "Verified core vs. the Mathlib gap: dependencies and status",
+      "startLine": 37,
+      "endLine": 49,
+      "summary": "Honest scope disclosure: Mathlib has `banach_steinhaus` but NOT the Dirichlet kernel, the partial-sum operators, or the Lebesgue-constant divergence. This file verifies only the FUNCTIONAL-ANALYSIS CORE (the resonance principle), ready to apply once the analytic input the Lebesgue constant tends to infinity is available. Lists the two Mathlib dependencies and records status `verified` with the remaining analytic gap documented (not axiomatized).",
+      "mathContext": "Consumed input, still missing from Mathlib: $\\|S_n\\| = \\|D_n\\|_{L^1} \\to \\infty$. Everything else — the contrapositive of `banach_steinhaus` — is machine-checked with 0 sorry / 0 axiom."
     },
     {
       "id": "setup",
