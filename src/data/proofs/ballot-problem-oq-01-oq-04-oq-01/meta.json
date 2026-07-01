@@ -44,6 +44,26 @@
     "definitionCount": 3,
     "mathlib_version": "4.26.0"
   },
+  "references": [
+    {
+      "authors": "Chung, Kai Lai and Feller, William",
+      "title": "On fluctuations in coin-tossing",
+      "year": "1949",
+      "venue": "Proceedings of the National Academy of Sciences 35(10), 605–608"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Catalan Numbers",
+      "year": "2015",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Catalan numbers and Dyck paths; Mathlib.Combinatorics.Catalan",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The combinatorial setting traces to W. A. Whitworth's *Choice and Chance* (1879) and Joseph Bertrand's classical 1887 ballot problem: in how many ways can the votes for two candidates be counted so that one always leads? Désiré André's 1887 reflection-principle proof (the same year as Bertrand's note in *Comptes Rendus*) gave the modern $\\binom{2n}{n} - \\binom{2n}{n-1}$ formula. The *cycle lemma* — that exactly one cyclic rotation of any sequence with positive sum has all positive prefix sums — was first stated explicitly by Aryeh Dvoretzky and Theodore Motzkin in 1947 (\"A problem of arrangements\", *Duke Math. J.*) and is the structural backbone of every modern Catalan / ballot-style enumeration. The Chung-Feller theorem appeared in K. L. Chung and W. Feller's 1949 paper \"On fluctuations in coin-tossing\" (*Proc. Nat. Acad. Sci.*), strengthening the ballot result: among all balanced ±1 paths of length $2n$, those with exactly $k$ upsteps above the axis are *equinumerous* for every $k \\in \\{0,1,\\ldots,n\\}$, each class containing exactly $C_n = \\binom{2n}{n}/(n+1)$ paths. This gives a *combinatorial* — not just generating-function — proof that $|{\\text{Dyck paths}}| = C_n$, by counting balanced paths in two ways. The proof presented here mechanizes the explicit bijection (used by Stanley in *Catalan Numbers* §1.6.1; called the \"second proof\" on Wikipedia): prepend 1 to a balanced path $l$, rotate by the *rightmost minimum* position, take the tail. The rightmost-minimum choice is the unique rotation making the tail a Dyck path — exactly the cycle-lemma content. This entry answers OQ-01 of `ballot-problem-oq-01-oq-04` (\"Can we prove the bijection explicitly?\") with a complete, verified construction, eliminating the `chung_feller_uniform` axiom that the parent entry previously used.",
     "problemStatement": "**Chung-Feller theorem**: For any n ≥ 1 and any j, k ∈ {0,...,n}:\n|{balanced paths of length 2n and type j}| = |{balanced paths of length 2n and type k}|\n(where 'type j' means the path has exactly j upsteps above the horizontal axis).\n\nFormalized as: `chung_feller_uniform'`.",

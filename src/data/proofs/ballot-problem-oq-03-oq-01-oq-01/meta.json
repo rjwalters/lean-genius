@@ -32,6 +32,32 @@
       "jacobi_trudi_interpretation: LGV interpretation of Jacobi-Trudi identity"
     ]
   },
+  "references": [
+    {
+      "authors": "Lindström, Bernt",
+      "title": "On the vector representations of induced matroids",
+      "year": "1973",
+      "venue": "Bulletin of the London Mathematical Society 5(1), 85–90"
+    },
+    {
+      "authors": "Gessel, Ira and Viennot, Gérard",
+      "title": "Binomial determinants, paths, and hook length formulae",
+      "year": "1985",
+      "venue": "Advances in Mathematics 58(3), 300–321"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 2",
+      "year": "1999",
+      "venue": "Cambridge Studies in Advanced Mathematics 62, Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Matrix.det and path-count matrices; Mathlib.LinearAlgebra.Matrix.Determinant",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The Lindström-Gessel-Viennot (LGV) lemma (Lindström 1973, Gessel-Viennot 1985) states that the number of non-intersecting path systems from r sources A₁,...,Aᵣ to r targets B₁,...,Bᵣ equals the determinant of the matrix M_{ij} = e(Aᵢ, Bⱼ) of individual path counts. The sign-reversing involution proof (Gessel-Viennot) uses a bijection that pairs all intersecting path tuples in sign-cancelling pairs. This is one of the most powerful tools in algebraic combinatorics, giving determinantal formulas for Schur polynomials (Jacobi-Trudi identity), binomial coefficient identities, and enumeration of standard Young tableaux. The parent proof (BallotProblemOQ03OQ02) established the full n×n result via the Gessel-Viennot involution; this proof provides the clean restatement and concrete instantiations.",
     "problemStatement": "For r source-target pairs satisfying the wellFormed condition (sources strictly increasing), prove |{non-intersecting r-tuples of lattice paths}| = det[e(Aᵢ, Bⱼ)].",

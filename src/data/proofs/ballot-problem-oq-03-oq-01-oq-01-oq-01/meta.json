@@ -58,6 +58,32 @@
       "Suffix-as-`Sym` packaging (S35, this PR): one private def + one private lemma bundling the S34 `_drop_card` / `_drop_le` lemmas (PR #17695, merged) into a single `Sym (Fin n) (c - j)` value with built-in submultiset witness against `M.1`. `rotateSortedListSuffixSym M k j := ⟨((rotateSortedList M k).drop j : Multiset _), rotateSortedList_drop_card M k j⟩` carries the cardinality witness in the `.2` field; `rotateSortedListSuffixSym_le` re-exposes the `≤ M.1` submultiset witness via `.1` projection (one-line `rotateSortedList_drop_le M k j`). Symmetric counterpart of in-flight PR #17680 `rotateSortedListPrefixSym` (which packages the prefix half under `hj : j ≤ c`); together the two `Sym`-level packagings provide the forward direction of the 2B.4 refined-codomain bijection at the typed-cardinality level. No precondition needed here because `Sym (Fin n) 0` canonically handles the `j ≥ c` boundary (truncated `Nat` subtraction). Net sorry count unchanged at 2; 0 axioms; +1 def + 1 lemma (44 → 45 by the `@[simp]`-excluded canonical convention from PR #17518/PR #17569; 10 → 11 defs), +50 lines (2031 → 2081). Build-verification status: pending (parent OQ03OQ02 break per `feedback_researcher_ballot_oq03oq02_parent_break.md` 2026-05-09)."
     ]
   },
+  "references": [
+    {
+      "authors": "Macdonald, Ian G.",
+      "title": "Symmetric Functions and Hall Polynomials",
+      "year": "1995",
+      "venue": "2nd ed., Oxford University Press"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 2",
+      "year": "1999",
+      "venue": "Cambridge Studies in Advanced Mathematics 62, Cambridge University Press"
+    },
+    {
+      "authors": "Sagan, Bruce E.",
+      "title": "The Symmetric Group: Representations, Combinatorial Algorithms, and Symmetric Functions",
+      "year": "2001",
+      "venue": "2nd ed., Graduate Texts in Mathematics 203, Springer"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "MvPolynomial and symmetric functions; Mathlib.RingTheory.MvPolynomial.Symmetric",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "Carl Gustav Jacob Jacobi stated the identity bearing his name in 1841, and Nicola Trudi independently rediscovered it in 1864. The formula $s_\\lambda = \\det[h_{\\lambda_i - i + j}]$ expresses Schur polynomials as determinants of complete homogeneous symmetric polynomials $h_n$. Issai Schur (1901–1911) developed the systematic theory connecting these polynomials to the representation theory of GL(n): each $s_\\lambda$ is the character of the irreducible polynomial representation indexed by partition $\\lambda$. This dual algebraic/combinatorial nature — both a ring-theoretic determinant formula and a character — makes the Jacobi-Trudi identity central to modern algebraic combinatorics. The combinatorial proof via the Lindström-Gessel-Viennot (LGV) lemma was developed by Gessel and Viennot in 1985, completing the picture by showing semistandard Young tableaux (SSYT) biject with non-intersecting lattice path systems. Macdonald's 1979 book 'Symmetric Functions and Hall Polynomials' systematized these connections and remains the standard reference.",
     "problemStatement": "Formalize the definition of Schur polynomials via the Jacobi-Trudi determinant formula and prove their key properties: symmetry, base cases, and the connection to the LGV lemma infrastructure already formalized in the parent gallery proofs.",

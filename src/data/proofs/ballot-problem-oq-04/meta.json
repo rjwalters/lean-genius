@@ -52,6 +52,32 @@
       "dyck_side_card: re-exposes Mathlib's card_dyckWord_semilength_eq_catalan (catalan n Dyck words of semilength n) as the Catalan-counted ballot/Dyck domain of the OQ-04 bijection, alongside the now-formalized non-crossing codomain"
     ]
   },
+  "references": [
+    {
+      "authors": "Kreweras, Germain",
+      "title": "Sur les partitions non croisées d'un cycle",
+      "year": "1972",
+      "venue": "Discrete Mathematics 1(4), 333–350"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Catalan Numbers",
+      "year": "2015",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "Simion, Rodica",
+      "title": "Noncrossing partitions",
+      "year": "2000",
+      "venue": "Discrete Mathematics 217(1–3), 367–409"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Setoid (Fin n), Dyck paths and Catalan numbers; Mathlib.Combinatorics.Catalan",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The Catalan numbers C_n = (1/(n+1)) binom(2n,n) count an enormous family of combinatorial objects, among them Dyck paths / ballot sequences (lattice paths staying weakly ahead) and the non-crossing partitions of {1,...,n} introduced by Kreweras (1972). Non-crossing partitions are central to free probability (Speicher's theory of free cumulants), the combinatorics of the symmetric and reflection groups, and cluster algebras. The classical fact that ballot/Dyck objects biject with non-crossing partitions is a cornerstone Catalan bijection. Mathlib formalizes the ballot/Dyck side completely (DyckWord with a proof that there are catalan n Dyck words of semilength n) but has no notion of non-crossing partition, so the bijection's target object did not exist in the library.",
     "problemStatement": "OQ-04 — Ballot Sequences and Non-Crossing Partition Bijection: ballot sequences (Dyck words) and non-crossing partitions of an n-element ordered set are both counted by catalan n; exhibit the explicit bijection. As a prerequisite, the non-crossing-partition side must first be defined and given its structural theory in Lean.",

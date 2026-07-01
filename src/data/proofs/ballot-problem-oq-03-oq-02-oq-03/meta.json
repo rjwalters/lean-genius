@@ -38,6 +38,32 @@
       "WeightedLGVConjecture (open goal, stated not proved): the full weighted LGV lemma det H = Σ_{non-intersecting identity families} ∏ w, reduced by the algebraic core to weight-invariance of the Gessel–Viennot tail-swap involution (already proved unweighted in the parent's gv_involution_cancellation / lgv_lemma_rxr)."
     ]
   },
+  "references": [
+    {
+      "authors": "Gessel, Ira and Viennot, Gérard",
+      "title": "Binomial determinants, paths, and hook length formulae",
+      "year": "1985",
+      "venue": "Advances in Mathematics 58(3), 300–321"
+    },
+    {
+      "authors": "Lindström, Bernt",
+      "title": "On the vector representations of induced matroids",
+      "year": "1973",
+      "venue": "Bulletin of the London Mathematical Society 5(1), 85–90"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 2",
+      "year": "1999",
+      "venue": "Cambridge Studies in Advanced Mathematics 62, Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "generating functions over CommRing and Matrix.det; Mathlib.LinearAlgebra.Matrix.Determinant",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The Lindström–Gessel–Viennot lemma (Lindström 1973; Gessel–Viennot 1985) expresses a determinant of path counts as a signed sum over families of lattice paths that collapses, via a sign-reversing involution, to the non-intersecting families. Its WEIGHTED form — where each path carries a monomial weight and counts become generating functions — is the version actually used in algebraic combinatorics (Jacobi–Trudi identities for Schur functions, plane partitions, the Aztec diamond). The parent entry `ballot-problem-oq-03-oq-02` formalises the unweighted general r×r lemma; its open-question list asks to extend it to the weighted/generating-function setting. This entry supplies the algebraic core of that extension over an arbitrary commutative ring.",
     "problemStatement": "Formalise the weighted (generating-function) LGV lemma: over a commutative ring R with path weights w(P), det[Σ_{P:Aᵢ→Bⱼ} w(P)] = Σ over non-intersecting r-tuples of products of weights. This file proves the unconditional algebraic half (the signed sum over ALL path families) and states the full lemma (collapse to non-intersecting families) as the open goal.",

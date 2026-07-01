@@ -41,6 +41,32 @@
       "det_comp_signed_family_sum (VERIFIED 0-axiom): bridge to the sibling's algebraic core — combining multiplicativity with the sibling's Leibniz/family expansion det_matrix_eq_signed_family_sum, the composite determinant is the PRODUCT of two signed family sums, making explicit that each layer contributes its own signed sum over path families."
     ]
   },
+  "references": [
+    {
+      "authors": "Gessel, Ira and Viennot, Gérard",
+      "title": "Binomial determinants, paths, and hook length formulae",
+      "year": "1985",
+      "venue": "Advances in Mathematics 58(3), 300–321"
+    },
+    {
+      "authors": "Lindström, Bernt",
+      "title": "On the vector representations of induced matroids",
+      "year": "1973",
+      "venue": "Bulletin of the London Mathematical Society 5(1), 85–90"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 2",
+      "year": "1999",
+      "venue": "Cambridge Studies in Advanced Mathematics 62, Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Matrix.det multiplicativity (det_mul); Mathlib.LinearAlgebra.Matrix.Determinant",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The Lindström–Gessel–Viennot lemma (Lindström 1973; Gessel–Viennot 1985) expresses a determinant of path counts as a signed sum over families of lattice paths that collapses, via a sign-reversing involution, to the non-intersecting families. Its applications in algebraic combinatorics — Jacobi–Trudi identities for Schur functions, MacMahon's box formula for plane partitions, dimer models and the Aztec diamond — almost always invoke the WEIGHTED (generating-function) form AND the fact that LGV determinants MULTIPLY when path systems are stacked in layers. The parent entry ballot-problem-oq-03-oq-02 formalises the unweighted general r×r lemma; the weighted sibling ballot-problem-oq-03-oq-02-oq-03 supplies the algebraic core (det H as a signed sum over all path families). Both leave open the 'product structure' connecting LGV to its applications. This entry closes that gap: it proves the LGV determinant is multiplicative under path-system composition, the single algebraic fact behind the LGV product formulas.",
     "problemStatement": "Establish the product structure of LGV determinants: define composition of weighted path systems (concatenating paths through an intermediate layer with multiplicative weights) and prove that the generating-function matrix of the composite is the matrix product of the two layers' matrices, hence — by Cauchy–Binet — that the composite LGV determinant is the product of the two layers' determinants. Extend to an arbitrary stack of layers and bridge to the sibling's signed family-sum expansion.",

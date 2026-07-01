@@ -45,6 +45,32 @@
       }
     ]
   },
+  "references": [
+    {
+      "authors": "Bertrand, Joseph",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences 105, 369"
+    },
+    {
+      "authors": "André, Désiré",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences 105, 436–437"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. I",
+      "year": "1968",
+      "venue": "3rd ed., Wiley"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "the ballot problem, ProbabilityTheory.ballot; Mathlib.Probability.Ballot",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The ballot problem originated with Bertrand (1887) and Désiré André's reflection principle proof (also 1887). It is Wiedijk's Famous Theorems #30 and appears in Mathlib as Archive.Wiedijk100Theorems.BallotProblem. The problem: given a > b votes, the probability that candidate A leads throughout the counting is (a-b)/(a+b). This elegant formula was explained independently by the cycle lemma (Dvoretzky-Motzkin 1947): a random cyclic shift of the vote sequence has the leading property with probability exactly (a-b)/(a+b).\n\nThe multi-candidate extension asks: with m ≥ 2 candidates (candidate 0 has a votes, all others combined have b votes), does the probability of candidate 0 leading all opponents combined throughout still equal (a-b)/(a+b)? The answer is YES, proved via projection: the leading condition depends only on the ±1 pattern (who gets each vote, not which opponent gets it), and all fibers of this projection have equal size (the multinomial coefficient b!/(a₁!·...·aₘ₋₁!)), so uniform probability is preserved.\n\nThe harder question — full ordering probability for m candidates with fixed vote counts — involves non-intersecting lattice paths and the Lindström-Gessel-Viennot lemma (1973), giving a determinantal formula det||(aᵢ-aⱼ)/(aᵢ+aⱼ)||. This file states but does not prove the full ordering result.",
     "problemStatement": "In an election with m ≥ 2 candidates where candidate 0 receives a votes and candidates 1,...,m-1 collectively receive b votes (a > b), prove that P(candidate 0 leads all opponents combined throughout the count) = (a-b)/(a+b).",

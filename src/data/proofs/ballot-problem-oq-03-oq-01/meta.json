@@ -38,6 +38,32 @@
       "Vandermonde identity via lattice path bijection"
     ]
   },
+  "references": [
+    {
+      "authors": "Lindström, Bernt",
+      "title": "On the vector representations of induced matroids",
+      "year": "1973",
+      "venue": "Bulletin of the London Mathematical Society 5(1), 85–90"
+    },
+    {
+      "authors": "Gessel, Ira and Viennot, Gérard",
+      "title": "Binomial determinants, paths, and hook length formulae",
+      "year": "1985",
+      "venue": "Advances in Mathematics 58(3), 300–321"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 2",
+      "year": "1999",
+      "venue": "Cambridge Studies in Advanced Mathematics 62, Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Matrix.det_fin_two and involution bijections; Mathlib.LinearAlgebra.Matrix.Determinant",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The Lindström-Gessel-Viennot (LGV) Lemma (Lindström 1973, Gessel-Viennot 1985) is a fundamental tool in combinatorics that counts non-intersecting lattice path systems using determinants. The 2×2 case states: given sources A₁, A₂ and targets B₁, B₂, the number of non-intersecting path pairs (A₁→B₁, A₂→B₂) equals e(A₁,B₁)·e(A₂,B₂) - e(A₁,B₂)·e(A₂,B₁), where e(A,B) is the number of monotone lattice paths from A to B. This file provides a complete formal proof with a novel crossing lemma via column entry order analysis.",
     "problemStatement": "Prove the 2×2 LGV Lemma: for source points A₁=(0,a₁), A₂=(0,a₂) with a₁<a₂ and target points B₁=(m,b₁), B₂=(m,b₂) with b₁<b₂, the number of non-intersecting path pairs (P₁:A₁→B₁, P₂:A₂→B₂) equals C(m+b₁-a₁, m)·C(m+b₂-a₂, m) - C(m+b₂-a₁, m)·C(m+b₁-a₂, m).",
