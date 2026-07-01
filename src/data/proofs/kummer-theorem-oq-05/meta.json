@@ -103,7 +103,48 @@
     "path": "Proofs/KummerTheoremOQ05.lean",
     "sorries": 0
   },
-  "sections": 4,
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Setup: Completing the Binomial Side of Kummer's Criterion",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Imports Mathlib and opens Nat in namespace KummerTheorem. The docstring recalls the parent kummer-theorem's Legendre factorial identity (p-1)*v_p(n!) = n - S_p(n) and states the plan: from C(n,k)*k!*(n-k)! = n!, take p-adic valuations to get an additive relation, multiply by (p-1) and substitute Legendre three times to reach the exact digit-sum identity, from which the classical formula, subadditivity, and the divisibility criterion follow by linear arithmetic.",
+      "mathContext": "$S_p(m) = (\\mathrm{digits}_p\\,m).\\mathrm{sum}$ is the base-$p$ digit sum; the parent supplies $(p-1)\\,\\nu_p(n!) = n - S_p(n)$."
+    },
+    {
+      "id": "untruncated-identity",
+      "title": "The Exact (Untruncated) Kummer Digit-Sum Identity",
+      "startLine": 50,
+      "endLine": 92,
+      "summary": "digit_sum_padicValNat_choose: for k <= n and prime p, S_p(n) + (p-1)*v_p(C(n,k)) = S_p(k) + S_p(n-k). Proof: C(n,k)*k!*(n-k)! = n! (choose_mul_factorial_mul_factorial) makes v_p additive across the three nonzero factors; multiplying by (p-1) and substituting sub_one_mul_padicValNat_factorial three times, with digit_sum_le bounding the truncated subtractions, closes by omega after cancelling k + (n-k) = n.",
+      "mathContext": "$S_p(n) + (p-1)\\,\\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k)$ - the untruncated ordered form, stated without truncated subtraction so both corollaries follow by omega."
+    },
+    {
+      "id": "classical-formula",
+      "title": "Kummer's Classical Digit-Sum Formula",
+      "startLine": 94,
+      "endLine": 105,
+      "summary": "sub_one_mul_padicValNat_choose: (p-1)*v_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n), the truncated classical form, immediate from the untruncated identity by omega. Equivalently v_p(C(n,k)) counts the carries when adding k and n-k in base p, since each carry lowers the digit sum by exactly p-1.",
+      "mathContext": "$(p-1)\\,\\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k) - S_p(n)$; matches Mathlib's sub_one_mul_padicValNat_choose_eq_sub_sum_digits."
+    },
+    {
+      "id": "subadditivity",
+      "title": "Subadditivity of Digit Sums Across a Split",
+      "startLine": 107,
+      "endLine": 117,
+      "summary": "digit_sum_add_le: S_p(n) <= S_p(k) + S_p(n-k) for k <= n. Writing n = k + (n-k), the digit sum of the whole never exceeds the sum of the parts' digit sums - carries can only decrease it. Immediate from the untruncated identity since (p-1)*v_p(C(n,k)) >= 0.",
+      "mathContext": "$S_p(n) \\le S_p(k) + S_p(n-k)$ - a standalone fact: the base-$p$ digit sum is subadditive, with the deficit exactly $(p-1)\\,\\nu_p\\binom{n}{k}$ (the carry count)."
+    },
+    {
+      "id": "divisibility-criterion",
+      "title": "Kummer's Divisibility Criterion",
+      "startLine": 119,
+      "endLine": 144,
+      "summary": "not_dvd_choose_iff_digit_sum_add: p does not divide C(n,k) iff S_p(k) + S_p(n-k) = S_p(n). A prime fails to divide C(n,k) exactly when adding k and n-k in base p produces no carries. Proved by rewriting divisibility as padicValNat != 0 (dvd_iff_padicValNat_ne_zero), then omega on the untruncated identity in both directions using p >= 2.",
+      "mathContext": "$p \\nmid \\binom{n}{k} \\iff S_p(k) + S_p(n-k) = S_p(n)$ - the Lucas-type sharpening: divisibility is detected purely by comparing base-$p$ digit sums (no carries)."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "kummer-theorem",
