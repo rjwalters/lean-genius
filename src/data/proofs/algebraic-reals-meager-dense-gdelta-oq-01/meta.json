@@ -192,7 +192,23 @@
       "url": "https://link.springer.com/book/10.1007/978-1-4612-4190-4"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "algebraic-reals-meager-dense-gdelta",
+      "relationship": "extends",
+      "description": "Parent: exhibits the transcendentals as a dense Gδ and the algebraic reals as not-Gδ; its first open question asks for the dual Fσ presentation of the algebraic reals and the full Gδ/Fσ classification, which this entry supplies"
+    },
+    {
+      "targetId": "algebraic-reals-meager",
+      "relationship": "related",
+      "description": "Grandparent: the algebraic reals are meagre and dense, the Baire-category half of the dichotomy this entry completes on the Borel-complexity side"
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "related",
+      "description": "The algebraic reals are countable — the countability input that drives the Fσ decomposition into singletons"
+    }
+  ],
   "sections": [
     {
       "id": "fsigma-predicate-duality",

@@ -151,5 +151,17 @@
       "note": "Original probabilistic lower bound on Ramsey numbers"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "targetId": "prob-method-applications",
+      "relationship": "extends",
+      "description": "Completes the work-in-progress applications module by supplying the genuine first-moment engine its placeholder theorems stood in for"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "Provides the counting (cardinality) form of the first moment existence principle"
+    }
+  ]
 }

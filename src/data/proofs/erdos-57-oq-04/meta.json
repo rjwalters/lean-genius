@@ -184,5 +184,12 @@
       "description": "A path that uses the edge joining its two endpoints is the single-edge path; rules out the degenerate `cons_isCycle_iff` failure mode for odd walks."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "targetId": "erdos-57",
+      "relationship": "extends",
+      "description": "**Parent file.** Erdős #57 (Liu–Montgomery 2020): if χ(G) = ∞ then ∑ 1/aᵢ = ∞ over the odd cycle lengths. The parent's main result `erdos_57` remains an axiom (the genuinely deep theorem), but its bipartite-characterization scaffolding — `bipartite_iff_no_odd_cycles`, the foundational χ ≤ 2 ⟺ no odd cycles equivalence used throughout the hierarchy — had one remaining sorry in the reverse direction. This entry closes it by proving the crux lemma `exists_odd_cycle_of_odd_closed_walk`, dropping the parent from 1 sorry to 0 (it stays `axiomatized` solely because of the open `erdos_57` axiom)."
+    }
+  ]
 }

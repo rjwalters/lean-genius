@@ -133,5 +133,12 @@
       "Reprove the deep Yokota lower bound F(N) ≥ log N − O(log log N) axiom-free, replacing the parent's axiom yokota_lower_bound_1997 and completing the F(N) = Θ(log N) result without assumptions.",
       "Sharpen the additive constant: the truth is F(N) = log N + γ + o(1) (γ the Euler–Mascheroni constant); formalize the refined asymptotic, not merely the +2 bound."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-309",
+      "relationship": "extends",
+      "description": "Parent formalization (axiomatizes the hard Yokota lower bound; this file proves the easy upper direction axiom-free). The parent file no longer builds against Mathlib 4.26.0 due to removed imports, so this contribution is self-contained."
+    }
+  ]
 }
