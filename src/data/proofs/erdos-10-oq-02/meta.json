@@ -25,8 +25,8 @@
     "assumptions": "0 axioms, 0 sorries. The Granville–Soundararajan k=3 (odd) conjecture itself is OPEN and is formalized only as a Prop definition (GranvilleSoundararajanOdd), not assumed. The stack proves the supporting infrastructure (reduction lemma, exponent/prime bounds, popcount characterization, decision procedure). Docker-verified green (2026-06-15, 3066 jobs): all three files — Erdos10OQ02, Erdos10OQ02Decidable, Erdos10OQ02Popcount — kernel-check at the v4.26.0 pin, including the native_decide witnesses (e.g. 906 ∉ S_3). Two Mathlib-drift fixes were needed: a stray omega after a now-self-closing simp (Erdos10OQ02:133) and a rw chain that no longer auto-closes a defeq powSum goal (Erdos10OQ02Popcount:83, closed with rfl).",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16,
-    "definitionCount": 8
+    "theoremCount": 14,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #10 asks whether there is a finite k such that every integer is a prime plus at most k powers of 2. The question grew out of de Polignac's 1849 conjecture that every odd number is a prime plus a single power of 2, which Erdős (1950) refuted with covering congruences, exhibiting an entire arithmetic progression of odd counterexamples — motivating the relaxation to k powers. Granville and Soundararajan (1998) refined the question into a parity split, conjecturing k=3 powers suffice for odd integers and k=4 for even — both still open. The conjecture connects to the multiplicative order of 2 modulo p². Romanoff (1934) had shown the representable set has positive lower density; Crocker (1971) ruled out k=2 unconditionally; Gallagher (1975) showed that density approaches 1.",
@@ -148,12 +148,16 @@
       "Mathlib.Data.Nat.Prime.Basic"
     ],
     "namespace": "Erdos10OQ02",
-    "lineCount": 542,
+    "lineCount": 188,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 6,
     "path": "Proofs/Erdos10OQ02.lean",
+    "additionalFiles": [
+      "Proofs/Erdos10OQ02Decidable.lean",
+      "Proofs/Erdos10OQ02Popcount.lean"
+    ],
     "sorries": 0,
-    "definitionCount": 8
+    "definitionCount": 5
   },
   "sorries": 0
 }
