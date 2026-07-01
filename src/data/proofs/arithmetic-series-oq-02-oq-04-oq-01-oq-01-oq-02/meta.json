@@ -85,6 +85,28 @@
       "endLine": 220
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Standard reference for binomial identities — Vandermonde's convolution, the hockey-stick identity, and rising/falling factorials."
+    },
+    {
+      "authors": [
+        "Stanley, R.P."
+      ],
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge Studies in Advanced Mathematics 49, Cambridge University Press",
+      "note": "Comprehensive treatment of generating functions, convolution identities and q-analogs."
+    }
+  ],
   "conclusion": {
     "summary": "Proved that rising factorials form a sequence of binomial type: (x+y)^{(k)} = Σ_{m=0}^{k} C(k,m)·x^{(m)}·y^{(k-m)} over any commutative semiring via Mathlib's ascPochhammer, plus its ℕ Chu–Vandermonde specialization for Nat.ascFactorial and structural corollaries. 222 lines, 8 theorems, 0 sorries, 0 axioms, no native_decide. Answers open questions #2 (multiset/Chu–Vandermonde in rising-factorial form) and #3 (ascPochhammer over a commutative ring, ℕ as specialization) of the parent multiset-coefficient entry.",
     "implications": "The headline is the additive (Vandermonde) companion to Mathlib's multiplicative ascPochhammer_mul and could be upstreamed. As a binomial-type statement it is the umbral binomial theorem for rising factorials, the bridge from elementary consecutive-integer products to Pochhammer symbols, hypergeometric series, and the Sheffer/binomial-type sequence machinery of umbral calculus.",

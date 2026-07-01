@@ -154,6 +154,26 @@
       ]
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Pólya, G."
+      ],
+      "title": "Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen",
+      "year": "1937",
+      "venue": "Acta Mathematica 68, pp. 145–254",
+      "note": "Pólya's enumeration theorem (with Burnside's lemma) for counting under group actions, e.g. bead necklaces."
+    },
+    {
+      "authors": [
+        "Stanley, R.P."
+      ],
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "2nd ed., Cambridge Studies in Advanced Mathematics 49, Cambridge University Press",
+      "note": "Comprehensive treatment of generating functions, convolution identities and q-analogs."
+    }
+  ],
   "conclusion": {
     "summary": "Formalization proving 30 theorems (0 sorries). Burnside's lemma is used to count necklaces; the Pólya divisor-sum formula is verified for small n and proved in general via Burnside + cycle structure (from BurnsideCountingOQ03) + totient grouping. The concrete fixed-point/totient/necklace-count values are discharged by native_decide (relies on Lean.ofReduceBool); the general theorems are native_decide-free.",
     "implications": "Pólya's enumeration theorem is the foundational tool for counting combinatorial objects up to symmetry. The formalization demonstrates that Burnside's lemma from Mathlib is powerful enough to count necklaces concretely, and that ZMod-indexed colorings provide a particularly clean Lean 4 approach. The cycle structure theorem (each rotation by r has gcd(r,n) orbits on n positions) is the key missing ingredient for the general theorem — it connects the abstract Burnside sum to the totient-weighted divisor sum. The sequence [2,3,4,6,8,14] (binary necklaces for n=1–6) appears in OEIS A000029 and has applications in chemistry (molecular isomers), music theory (necklace rhythms), and coding theory (cyclic codes).",

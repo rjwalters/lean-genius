@@ -109,6 +109,28 @@
       "summary": "Verifies f-vectors for specific simplices (triangle: {3,3,1}, tetrahedron: {4,6,4,1}) via native_decide."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Stanley, R.P."
+      ],
+      "title": "Combinatorics and Commutative Algebra",
+      "year": "1996",
+      "venue": "2nd ed., Progress in Mathematics 41, Birkhäuser",
+      "note": "f-vectors and face counts of simplicial complexes."
+    },
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Standard reference for binomial identities — Vandermonde's convolution, the hockey-stick identity, and rising/falling factorials."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified formalization (0 axioms, 0 sorries) connects simplicial numbers $S_k(n) = \\binom{n+k}{k}$ to the combinatorial topology of simplicial complexes. The f-vector of the standard $k$-simplex is expressed in terms of simplicial numbers, and the Euler characteristic relation $\\chi(\\Delta^k) = 1$ is proved.",
     "implications": "The connection between simplicial numbers and face counts provides a bridge between the arithmetic of binomial coefficients (studied in the parent file) and algebraic topology. This perspective suggests formalizing the full f-vector theory including the Dehn-Sommerville relations for simplicial polytopes.",

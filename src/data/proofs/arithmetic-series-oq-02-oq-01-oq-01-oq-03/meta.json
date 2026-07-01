@@ -50,6 +50,38 @@
       "Finset.sum_range_reflect (reflection involution on a finite range)"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Andrews, G.E."
+      ],
+      "title": "The Theory of Partitions",
+      "year": "1998",
+      "venue": "Cambridge Mathematical Library, Cambridge University Press",
+      "note": "q-series, Gaussian (q-)binomial coefficients and the q-Vandermonde / q-Chu–Vandermonde identity."
+    },
+    {
+      "authors": [
+        "Kac, V.",
+        "Cheung, P."
+      ],
+      "title": "Quantum Calculus",
+      "year": "2002",
+      "venue": "Universitext, Springer",
+      "note": "Gaussian binomial coefficients, the q-Pascal recurrence and q-analogs of classical identities."
+    },
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Standard reference for binomial identities — Vandermonde's convolution, the hockey-stick identity, and rising/falling factorials."
+    }
+  ],
   "conclusion": {
     "summary": "The q-Vandermonde convolution is recast under the two involutions m↔n and k↦r−k, and the resulting dual / reflected sums are proved equal to the original as ring elements. Four theorems, all corollaries of the parent qVandermonde via Nat.add_comm and Finset.sum_range_reflect. Fully verified: 0 axioms, 0 sorries.",
     "implications": "Records, as machine-checked identities, the hidden symmetry of the q-exponent k(m+k−r): different-looking q-weighted convolution sums compute the same Gaussian binomial. This is the symmetry that becomes manifest at q=1 (classical Vandermonde) but is obscured by the q-deformation, and it underlies the standard combinatorial (subspace-counting) interpretation where exchanging the two factor spaces or complementing the chosen dimension leaves the count invariant.",
