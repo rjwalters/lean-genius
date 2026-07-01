@@ -146,6 +146,11 @@
       "targetId": "furstenberg-correspondence",
       "relationship": "related",
       "description": "The Furstenberg correspondence principle — translates the combinatorial density statement of Szemerédi's theorem into a measure-theoretic recurrence problem. The density formulation proved here (k-AP-free sets have |A|/N → 0) is the negation of the condition triggering recurrence under Furstenberg's correspondence: positive upper density implies return times."
+    },
+    {
+      "targetId": "erdos-357-oq-04",
+      "relationship": "shares-technique",
+      "description": "The little-o ⇔ ratio-limit Equivalence (Erdős #357) isolates the same Asymptotics.isLittleO_iff_tendsto bridge used here to move between the little-o and ratio-limit forms of the density bound |A|/N → 0, but for an arbitrary sequence, and additionally supplies the ε–N face ∀ε>0 eventually u(n) ≤ ε·n that density arguments like this k-AP-free bound are actually written in."
     }
   ],
   "conclusion": {
