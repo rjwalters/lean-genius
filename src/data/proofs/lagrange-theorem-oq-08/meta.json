@@ -99,6 +99,36 @@
       "summary": "card_perm_fin_three computes |S₃| = 3! = 6 (Nat.card_perm), and two examples extract a 3-cycle (order 3, by Cauchy) and a transposition (order 2, by the involution corollary) from it."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "McKay, J.H."
+      ],
+      "title": "Another proof of Cauchy's group theorem",
+      "year": "1959",
+      "venue": "American Mathematical Monthly 66 (2), p. 119",
+      "note": "The short orbit-counting proof of Cauchy's theorem."
+    },
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Standard reference for the Sylow theorems, groups of order pq, the class equation, and A₄ as a counterexample to Lagrange's converse."
+    },
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "4th ed., Graduate Texts in Mathematics 148, Springer",
+      "note": "Detailed development of Sylow theory, p-group structure, and small-order classification."
+    }
+  ],
   "conclusion": {
     "summary": "Restated Cauchy's theorem and assembled the sharp prime-divisor converse to Lagrange: a prime p divides |G| iff G has an element of order p iff G has a cyclic subgroup of order p iff p divides exp(G). This yields the equality of prime-factor sets primeFactors(|G|) = primeFactors(exp(G)), and specializes at p = 2 to 'even order ⟺ contains an involution', witnessed concretely in S₃. 179 lines, 9 theorems, 0 sorries, 0 axioms.",
     "implications": "Cauchy is the exact boundary of the converse to Lagrange: for prime divisors it holds unconditionally, while the A₄ counterexample shows the composite case fails. The exponent formulation records that |G| and exp(G) share prime factors, and the involution corollary is the algebraic backbone of results like 'a group of even order has a non-identity element equal to its own inverse'. The prime-order cyclic subgroup produced here is also the first step toward Sylow theory, which extends Cauchy from primes to prime powers.",

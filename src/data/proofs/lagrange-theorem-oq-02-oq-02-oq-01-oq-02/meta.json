@@ -51,6 +51,27 @@
       "The class equation and the center of a group"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Standard reference for the Sylow theorems, groups of order pq, the class equation, and A₄ as a counterexample to Lagrange's converse."
+    },
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "4th ed., Graduate Texts in Mathematics 148, Springer",
+      "note": "Detailed development of Sylow theory, p-group structure, and small-order classification."
+    }
+  ],
   "conclusion": {
     "summary": "Fully machine-verified packaging of the p-group fixed-point congruence and its central consequence: a p-group action satisfies |α| ≡ |fixed points| (mod p), and applied to conjugation this forces the center of a nontrivial finite p-group to be nontrivial, with p dividing |Z(G)|. Zero axioms, zero sorries.",
     "implications": "Nontriviality of the center is the inductive lever of p-group theory: quotienting by Z(G) repeatedly shows every finite p-group is nilpotent and possesses a normal subgroup of each order dividing |G|. The underlying fixed-point congruence also yields Cauchy's theorem (a prime dividing |G| produces an element of that order) and, via actions on coset spaces, the three Sylow theorems that govern the local structure of every finite group. The result is therefore a hinge between elementary counting (Lagrange) and the deep classification machinery of finite groups.",

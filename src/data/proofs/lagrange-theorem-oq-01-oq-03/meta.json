@@ -82,6 +82,36 @@
     }
   ],
   "parentId": "lagrange-theorem-oq-01",
+  "references": [
+    {
+      "authors": [
+        "Hall, P."
+      ],
+      "title": "A note on soluble groups",
+      "year": "1928",
+      "venue": "Journal of the London Mathematical Society 3 (2), pp. 98–105",
+      "note": "Hall's theorem on the existence of Hall subgroups in finite solvable groups."
+    },
+    {
+      "authors": [
+        "Isaacs, I.M."
+      ],
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "venue": "Graduate Studies in Mathematics 92, American Mathematical Society",
+      "note": "Hall subgroups and the characterization of finite solvable groups."
+    },
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Standard reference for the Sylow theorems, groups of order pq, the class equation, and A₄ as a counterexample to Lagrange's converse."
+    }
+  ],
   "conclusion": {
     "summary": "This entry formalizes the combinatorial and algebraic heart of Hall's theorem in Lean 4, providing machine-checked proofs for the trivial, prime, and cyclic cases, and a mathematically complete axiom-with-sketch for the general solvable case. The 14 theorems and 2 definitions establish a rigorous framework for Hall divisors, Hall subgroups, and their relationship to solvability.",
     "implications": "Hall's theorem is a foundational result in finite group theory with far-reaching implications. It provides the theoretical basis for the structure of solvable groups: every solvable group has a rich supply of subgroups whose orders cover all Hall divisors. This is used in the Schur–Zassenhaus theory of group extensions, in the classification of groups of squarefree order, and in the study of Frobenius groups. The biconditional characterization of solvability also shows that Hall's theorem is not merely a generalization of Sylow theory but a fundamentally deeper result — one that connects the prime factorization structure of the group order to the global topology of the subgroup lattice.",

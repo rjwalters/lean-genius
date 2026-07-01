@@ -89,6 +89,27 @@
       "summary": "center_trivial_of_nonabelian: a nonabelian group of order pq has |Z(G)| = 1. center_eq_bot_or_top: the dichotomy as a subgroup statement Z(G) = ⊥ ∨ Z(G) = ⊤."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley",
+      "note": "Standard reference for the Sylow theorems, groups of order pq, the class equation, and A₄ as a counterexample to Lagrange's converse."
+    },
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "4th ed., Graduate Texts in Mathematics 148, Springer",
+      "note": "Detailed development of Sylow theory, p-group structure, and small-order classification."
+    }
+  ],
   "conclusion": {
     "summary": "Proved that the center of a finite group of order pq (p ≠ q prime) has order exactly 1 or pq — the intermediate divisors p and q are impossible — together with the subgroup-level restatement Z(G) = ⊥ ∨ Z(G) = ⊤ and the corollary that a nonabelian group of order pq has trivial center. 160 lines, 6 theorems, 0 sorries, 0 axioms.",
     "implications": "The center is the sharpest single invariant separating the two isomorphism types of order-pq groups: abelian ⟺ Z(G) = G, nonabelian ⟺ Z(G) = 1, with no middle ground. This is the structural starting point for the semidirect-product description of the nonabelian case and complements the sibling Sylow classification, which counts Sylow subgroups but never inspects the center.",
