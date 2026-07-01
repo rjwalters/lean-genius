@@ -111,7 +111,7 @@
     "implications": "Together these ingredients yield the quadratic convergence of the AGM — the gap contracting doubly exponentially rather than geometrically — the property that makes the AGM the basis of fast π and elliptic-integral algorithms (Brent–Salamin); this file formalizes the per-step squaring bound and the abstract recursion-to-rate lemma rather than the composed statement about the AGM sequence itself. Both pieces are reusable: the recursion-to-rate lemma applies verbatim to Newton's method and other quadratically convergent iterations.",
     "openQuestions": [
       "Combine these per-step bounds into the explicit constant form aₙ − bₙ ≤ M(a,b)·(b/a)^{2ⁿ} by tracking the AGM limit M and the ratio b/a through the iteration.",
-      "Formalize the link to the Brent–Salamin formula for π, where the doubly exponential AGM convergence yields the doubling of correct digits per iteration."
+      "Connect this per-step squaring bound to the sibling Brent–Salamin entry (amgm-inequality-oq-04-oq-05), quantifying how the doubly exponential AGM convergence yields the doubling of correct digits of π per iteration."
     ]
   },
   "status": "verified",
@@ -142,6 +142,16 @@
       "targetId": "amgm-inequality",
       "relationship": "related",
       "description": "Root: the AM-GM inequality (a+b)/2 ≥ √(ab), whose deficit (a+b)/2 − √(ab) = (√a − √b)²/2 is exactly the AGM gap analyzed here."
+    },
+    {
+      "targetId": "amgm-inequality-oq-04-oq-05",
+      "relationship": "related",
+      "description": "Sibling under OQ-04: the Brent–Salamin formula π = 4M²/(1−2S) for computing π via the AGM. The doubly exponential gap contraction proved here is exactly what makes that algorithm double its correct digits per iteration — the payoff pointed at in this entry's open questions."
+    },
+    {
+      "targetId": "amgm-inequality-oq-04-oq-02",
+      "relationship": "related",
+      "description": "Sibling under OQ-04: Legendre's relation E(k)·K(k′) + E(k′)·K(k) − K(k)·K(k′) = π/2 for complete elliptic integrals, the analytic companion to the AGM used together with this convergence rate in fast π and elliptic-integral evaluation."
     }
   ],
   "references": [
