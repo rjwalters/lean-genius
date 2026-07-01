@@ -26,11 +26,17 @@
   All numeric claims were cross-checked independently in Python
   (`research/problems/happy-number-oq-01/verify_happy.py`).
 
-  STATUS: build-pending.  This file is NOT registered in `Proofs.lean` and has
-  not been compiled this session (Docker build pool saturated / daemon
-  unresponsive).  The finite checks use `native_decide`, which introduces the
-  `Lean.ofReduceBool` axiom; the gallery status for this entry is therefore
-  `axiomatized`, NOT `verified`.
+  STATUS: axiomatized (machine build pending on shared infra).  The module is
+  auto-discovered by the Lake `globs` directive in `lakefile.toml`, so it does
+  NOT need an entry in `Proofs.lean`.  A clean Docker build has not yet
+  succeeded on the shared pool: the Mathlib download cache intermittently fails
+  with leantar permission errors, and the from-source fallback exhausts memory
+  under concurrent load.  All numeric claims were re-verified independently in
+  Python (`research/problems/happy-number-oq-01/verify_happy.py`): the descent
+  bound, the 8-cycle transitions, `T`-closure, `aux_exp` for 4 ≤ L ≤ 11, and
+  that every 1 ≤ n ≤ 999 reaches `T` within 11 ≤ 15 steps.  The finite checks
+  use `native_decide`, which introduces the `Lean.ofReduceBool` axiom; the
+  gallery status is therefore `axiomatized`, NOT `verified`.
 -/
 import Mathlib
 
