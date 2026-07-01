@@ -119,7 +119,7 @@ theorem X_pow_eq_sum_stirlingSecond_descPochhammer (n : ℕ) :
       simp only [Nat.cast_zero, Nat.cast_mul, C_eq_natCast, hz₁, mul_zero,
         map_zero, zero_mul, add_zero]
       refine Finset.sum_congr rfl (fun k _ => ?_)
-      simp only [map_add, map_mul, C_eq_natCast]
+      simp only [map_mul, C_eq_natCast]
       push_cast
       ring
     calc (X : R[X]) ^ (n + 1)
@@ -144,7 +144,7 @@ theorem X_pow_eq_sum_stirlingSecond_descPochhammer (n : ℕ) :
           simp only [Nat.stirlingSecond_succ_zero, Nat.cast_zero, map_zero, zero_mul, add_zero]
           refine Finset.sum_congr rfl (fun k _ => ?_)
           rw [Nat.stirlingSecond_succ_succ]
-          simp only [map_add, map_mul, C_eq_natCast]
+          simp only [C_eq_natCast]
           push_cast
           ring
 
