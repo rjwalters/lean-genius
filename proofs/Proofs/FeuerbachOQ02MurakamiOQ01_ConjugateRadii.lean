@@ -91,9 +91,9 @@ theorem grace_radii_conjugate
   · -- sum: t cancels linearly
     field_simp
     ring
-  · -- product: (e−t)(e+t) = e² − t² = 2σ·abc modulo ht
+  · -- product: (e−t)(e+t) = e² − t² = 2σ·abc modulo ht (field_simp cancels 2σ)
     field_simp
-    linear_combination (-2 * (a + b + c)) * ht
+    linear_combination -ht
   · -- difference: 2t/(2σ) = t/σ, pure ring after clearing
     field_simp
     ring
@@ -118,6 +118,6 @@ theorem grace_radii_factorisation
   have hσ : a + b + c ≠ 0 := by positivity
   subst hρin hρex
   field_simp
-  linear_combination (-2 * (a + b + c)) * ht
+  linear_combination -ht
 
 end FeuerbachOQ02MurakamiOQ01
