@@ -61,6 +61,12 @@ computable via Partrec.rfind. The orbit type is determined by bounded search.
   total, computable two-sided inverse (partialInverse becomes everywhere-defined)
 - computable_bijection_isComputablePerm / oneOneEquiv_of_computable_bijection: proved — the
   fully computable easy case (Myhill when the reductions are already bijections)
+- IsMatching / MatchingCorr + matching_step_f / matching_step_g: proved — the finite
+  partial-bijection layer and the two atomic, correspondence-preserving back-and-forth
+  extension steps (domain step through f, range step through g). matching_functional /
+  matching_cofunctional: the matching is a partial bijection (both coordinates determine
+  the partner). These are the pieces the stage scheduler assembles; only the scheduler
+  (collision-chasing via the alternating f/g chain) remains open.
 - myhill_isomorphism: hard direction has sorry (open: stage-wise back-and-forth construction)
 
 ## References
@@ -352,6 +358,118 @@ theorem oneOneEquiv_of_computable_bijection {p q : ℕ → Prop} {g : ℕ → �
     (hgc : Computable g) (hg : Bijective g) (hpq : ∀ n, p n ↔ q (g n)) :
     OneOneEquiv p q :=
   myhill_easy (Equiv.ofBijective g hg) (computable_bijection_isComputablePerm hgc hg) hpq
+
+/-!
+## Section 4c: Finite partial bijections ("matchings") — the atomic back-and-forth steps
+
+The stage-wise construction promised on `myhill_isomorphism` maintains a *finite*
+partial injection and extends it one element at a time (Rogers §7.4). We formalize
+that finite partial injection as an association `List (ℕ × ℕ)` which is injective in
+both coordinates — a **matching** — together with the two atomic extension steps the
+back-and-forth performs:
+
+* the even-stage **domain step**, routed through `f` (add `(a, f a)`);
+* the odd-stage **range step**, routed through `g` (add `(g c, c)`).
+
+Each step is a *bounded*, correspondence-preserving extension and requires only that
+the new endpoints are fresh on their respective sides. Crucially the correspondence
+`p ↔ q` is preserved *by construction*: the domain step uses `p a ↔ q (f a)` (the `f`
+reduction) and the range step uses `p (g c) ↔ q c` (the `g` reduction), so the map is
+never tested against the — possibly non-computable — predicates `p`, `q` directly.
+
+This isolates precisely what remains open in `myhill_isomorphism`: only the
+*scheduler* that resolves a **collision** (when the naive target `f a` / preimage of
+`c` is already used) by chasing the alternating `f`/`g` chain. The atomic steps
+below are the pieces that scheduler assembles.
+-/
+
+/-- The domain (list of first coordinates) of a finite partial map. -/
+def mDom (L : List (ℕ × ℕ)) : List ℕ := L.map Prod.fst
+
+/-- The range (list of second coordinates) of a finite partial map. -/
+def mRan (L : List (ℕ × ℕ)) : List ℕ := L.map Prod.snd
+
+@[simp] theorem mDom_cons (a b : ℕ) (L : List (ℕ × ℕ)) :
+    mDom ((a, b) :: L) = a :: mDom L := rfl
+
+@[simp] theorem mRan_cons (a b : ℕ) (L : List (ℕ × ℕ)) :
+    mRan ((a, b) :: L) = b :: mRan L := rfl
+
+/-- A **matching**: a finite partial injection `ℕ ⇀ ℕ`, injective in *both*
+    coordinates. The two `Nodup` conditions say no domain element and no range
+    element is recorded twice — i.e. the association list is a partial bijection. -/
+def IsMatching (L : List (ℕ × ℕ)) : Prop :=
+  (mDom L).Nodup ∧ (mRan L).Nodup
+
+/-- The empty matching. -/
+theorem isMatching_nil : IsMatching ([] : List (ℕ × ℕ)) :=
+  ⟨List.nodup_nil, List.nodup_nil⟩
+
+/-- **Atomic extension of a matching.** Prepending a pair whose components are each
+    fresh on their own side keeps the list a matching. This is the single structural
+    fact both back-and-forth steps rely on. -/
+theorem isMatching_cons {L : List (ℕ × ℕ)} (hL : IsMatching L)
+    {a b : ℕ} (ha : a ∉ mDom L) (hb : b ∉ mRan L) :
+    IsMatching ((a, b) :: L) :=
+  ⟨by simpa using List.nodup_cons.mpr ⟨ha, hL.1⟩,
+   by simpa using List.nodup_cons.mpr ⟨hb, hL.2⟩⟩
+
+/-- A matching is **functional**: its domain determines the partner. If two recorded
+    pairs share a first coordinate they are equal. (Uses only domain-side `Nodup`.) -/
+theorem matching_functional {L : List (ℕ × ℕ)} (hL : IsMatching L)
+    {a b b' : ℕ} (h : (a, b) ∈ L) (h' : (a, b') ∈ L) : b = b' := by
+  have := List.inj_on_of_nodup_map hL.1 h h' rfl
+  simpa using congrArg Prod.snd this
+
+/-- A matching is **co-functional**: its range determines the partner. If two recorded
+    pairs share a second coordinate they are equal. (Uses only range-side `Nodup`.) -/
+theorem matching_cofunctional {L : List (ℕ × ℕ)} (hL : IsMatching L)
+    {a a' b : ℕ} (h : (a, b) ∈ L) (h' : (a', b) ∈ L) : a = a' := by
+  have := List.inj_on_of_nodup_map hL.2 h h' rfl
+  simpa using congrArg Prod.fst this
+
+/-- A matching **respects** the correspondence `p ↔ q` if every recorded pair does. -/
+def MatchingCorr (p q : ℕ → Prop) (L : List (ℕ × ℕ)) : Prop :=
+  ∀ ab ∈ L, p ab.1 ↔ q ab.2
+
+/-- The empty matching vacuously respects any correspondence. -/
+theorem matchingCorr_nil (p q : ℕ → Prop) : MatchingCorr p q [] := by
+  intro _ h; simp at h
+
+/-- Correspondence is preserved when the newly added pair itself corresponds. -/
+theorem matchingCorr_cons {p q : ℕ → Prop} {L : List (ℕ × ℕ)}
+    (hC : MatchingCorr p q L) {a b : ℕ} (hab : p a ↔ q b) :
+    MatchingCorr p q ((a, b) :: L) := by
+  intro ab hmem
+  rcases List.mem_cons.mp hmem with h | h
+  · subst h; exact hab
+  · exact hC ab h
+
+/-- **Domain step (through `f`).** If `a` is fresh in the domain and its `f`-image is
+    fresh in the range, extending the matching by `(a, f a)` keeps it a matching and
+    preserves the `p ↔ q` correspondence — because the `f` reduction gives
+    `p a ↔ q (f a)`. This is the even-stage move: it guarantees `a ∈ dom`. -/
+theorem matching_step_f {p q : ℕ → Prop} {f : ℕ → ℕ} (hfpq : ∀ n, p n ↔ q (f n))
+    {L : List (ℕ × ℕ)} (hL : IsMatching L) (hC : MatchingCorr p q L)
+    {a : ℕ} (ha : a ∉ mDom L) (hfa : f a ∉ mRan L) :
+    IsMatching ((a, f a) :: L) ∧ MatchingCorr p q ((a, f a) :: L) :=
+  ⟨isMatching_cons hL ha hfa, matchingCorr_cons hC (hfpq a)⟩
+
+/-- **Range step (through `g`).** If `c` is fresh in the range and its `g`-image is
+    fresh in the domain, extending the matching by `(g c, c)` keeps it a matching and
+    preserves the correspondence — because the `g` reduction gives `q c ↔ p (g c)`.
+    This is the odd-stage move: it guarantees `c ∈ ran`. -/
+theorem matching_step_g {p q : ℕ → Prop} {g : ℕ → ℕ} (hgpq : ∀ n, q n ↔ p (g n))
+    {L : List (ℕ × ℕ)} (hL : IsMatching L) (hC : MatchingCorr p q L)
+    {c : ℕ} (hc : c ∉ mRan L) (hgc : g c ∉ mDom L) :
+    IsMatching ((g c, c) :: L) ∧ MatchingCorr p q ((g c, c) :: L) :=
+  ⟨isMatching_cons hL hgc hc, matchingCorr_cons hC (hgpq c).symm⟩
+
+/-- Each atomic step **strictly enlarges** the matching: the recorded length grows by
+    one, which is the well-founded measure the scheduler decreases towards full
+    domain/range coverage (`k` enters by stage `2k + 1`). -/
+theorem matching_length_cons (a b : ℕ) (L : List (ℕ × ℕ)) :
+    ((a, b) :: L).length = L.length + 1 := by simp
 
 /-!
 ## Section 5: The Myhill Isomorphism Theorem
