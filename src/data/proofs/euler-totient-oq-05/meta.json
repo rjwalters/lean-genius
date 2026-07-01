@@ -70,6 +70,56 @@
       "Finite group order: orderOf_dvd_card, ZMod.card_units_eq_totient"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "The Computational Face of Euler's Theorem",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Frames the entry as the number-theoretic / computational face of Euler's theorem, working with natural-number congruences [MOD n] rather than the base entry's group statement a^φ(n) = 1 in (ℤ/nℤ)*. Lists the eight results (Euler in ModEq form, exponent reduction, Fermat's little theorem, order divides totient, RSA correctness) and explains the deliberate disjointness from the base euler-totient and the Carmichael-λ entry euler-totient-oq-01. Names the Mathlib foundation (Nat.ModEq.pow_totient, Nat.pow_totient_mod).",
+      "mathContext": "$a^{\\varphi(n)} \\equiv 1 \\pmod n$ for $\\gcd(a,n)=1$ (congruence form)."
+    },
+    {
+      "id": "euler-congruence",
+      "title": "Euler's theorem in Nat.ModEq form",
+      "startLine": 51,
+      "endLine": 64,
+      "summary": "euler_theorem: a^φ(n) ≡ 1 [MOD n] for a coprime to n, the Nat.ModEq restatement of the group theorem (Mathlib's Nat.ModEq.pow_totient). euler_pow_mod_one: the %-normal form a^φ(n) % n = 1 for 1 < n and coprime a.",
+      "mathContext": "$a^{\\varphi(n)} \\equiv 1 \\ [\\mathrm{MOD}\\ n];\\quad a^{\\varphi(n)} \\bmod n = 1\\ (n>1).$"
+    },
+    {
+      "id": "exp-reduction",
+      "title": "Exponent reduction: the workhorse of fast modular exponentiation",
+      "startLine": 66,
+      "endLine": 81,
+      "summary": "exp_reduction: a^k ≡ a^(k mod φ(n)) [MOD n] for 1 < n and a coprime to n — exponents may be reduced modulo φ(n), the key optimization behind fast modular exponentiation and RSA. exp_reduction_mod gives the same fact in %-normal form a^k % n = a^(k % φ(n)) % n.",
+      "mathContext": "$a^k \\equiv a^{\\,k \\bmod \\varphi(n)} \\ [\\mathrm{MOD}\\ n].$"
+    },
+    {
+      "id": "fermat",
+      "title": "Fermat's little theorem as the prime case",
+      "startLine": 83,
+      "endLine": 102,
+      "summary": "fermat_little: a^(p−1) ≡ 1 [MOD p] for prime p and p ∤ a — the n = p specialization of Euler's theorem, using φ(p) = p − 1. fermat_little_full: a^p ≡ a [MOD p] for every a, including the case p ∣ a where both sides are ≡ 0.",
+      "mathContext": "$a^{p-1} \\equiv 1 \\ [\\mathrm{MOD}\\ p]\\ (p \\nmid a);\\quad a^p \\equiv a \\ [\\mathrm{MOD}\\ p]\\ (\\forall a).$"
+    },
+    {
+      "id": "order-divides-totient",
+      "title": "orderOf_dvd_totient",
+      "startLine": 104,
+      "endLine": 112,
+      "summary": "orderOf_dvd_totient: the multiplicative order of any unit of ZMod n divides φ(n), since φ(n) is the cardinality of the unit group (ZMod.card_units_eq_totient) and an element's order divides the group order (orderOf_dvd_card). This is the structural reason exponents reduce mod φ(n).",
+      "mathContext": "$\\mathrm{ord}(u) \\mid \\varphi(n) = |(\\mathbb{Z}/n)^\\times|.$"
+    },
+    {
+      "id": "rsa-examples",
+      "title": "RSA correctness and worked examples",
+      "startLine": 114,
+      "endLine": 178,
+      "summary": "rsa_correctness: if e·d ≡ 1 [MOD φ(n)] and m is coprime to n, then (m^e)^d ≡ m [MOD n] — the correctness of RSA encryption/decryption, derived from exponent reduction. Followed by axiom-free `decide` examples: φ(10) = 4, 3^100 ≡ 1 (mod 10), 7^222 ≡ 9 (mod 10) via 222 mod 4 = 2, and a small RSA round-trip with n = 15, e = d = 3.",
+      "mathContext": "$e d \\equiv 1 \\ [\\mathrm{MOD}\\ \\varphi(n)] \\Rightarrow (m^e)^d \\equiv m \\ [\\mathrm{MOD}\\ n].$"
+    }
+  ],
   "conclusion": {
     "summary": "Euler's theorem in Nat.ModEq form with the exponent-reduction corollary a^k ≡ a^(k mod φ(n)), Fermat's little theorem, orderOf u | φ(n), and RSA decryption correctness — all derived from Mathlib's Nat.ModEq.pow_totient and Nat.pow_totient_mod. 8 theorems, 0 axioms, 178 lines.",
     "implications": "The congruence form and exponent reduction are the computationally usable face of Euler's theorem, distinct from the base entry's abstract group statement. RSA correctness shows the theorem's cryptographic payload follows in a few lines once exponent reduction is available.",
