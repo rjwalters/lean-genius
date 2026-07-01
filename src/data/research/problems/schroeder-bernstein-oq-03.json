@@ -1,7 +1,7 @@
 {
   "slug": "schroeder-bernstein-oq-03",
   "title": "Myhill Isomorphism Theorem (Computable Schroeder-Bernstein)",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -26,24 +26,42 @@
     "goal": "Prove back-and-forth yields a Computable bijection when f and g are Computable"
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-04-21T16:44:09+02:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Hard direction open; obstruction (Π₁ isGFree) identified; back-and-forth builder is the path.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Formalize stage-wise partial-bijection builder + invariants.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: hard direction (OneOneEquiv → computable permutation) still OPEN. Confirmed Mathlib lacks Myhill's isomorphism theorem (only MyhillNerode, unrelated). Added 3 proved lemmas decomposing toward the construction and identified the core obstruction: isGFree (= n ∉ range g) is Π₁/undecidable, so the file's orbit-classification sketch is NOT computable; Myhill genuinely requires the stage-wise bounded back-and-forth.",
+    "builtItems": [
+      "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
+      "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
+      "isGFree_iff_not_mem_range in Proofs/SchroederBernsteinOQ03.lean (Π₁ obstruction lemma)"
+    ],
+    "insights": [
+      "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
+      "OBSTRUCTION: isGFree g n ≡ (n ∉ Set.range g) is Π₁ (complement of the c.e. set range g), hence undecidable for a merely computable injection g. So classical Schröder–Bernstein orbit-type classification (Type A/B/C) is non-computable; the file's Section-4 sketch cannot be made computable as written.",
+      "Correct route: stage-wise finite back-and-forth (priority) where each stage does only a BOUNDED search and never decides range g (matches myhill_isomorphism docstring, not the Section-4 orbit sketch).",
+      "p,q are arbitrary predicates (NOT computable); the construction must route membership through the computable reductions f,g structurally and never test p/q directly.",
+      "partialInverse is single-valued under injective g (partialInverse_unique) — collision-freeness for extending the partial map by a g-edge.",
+      "fwdOrbit f g n k = (g∘f)^[k] n (fwdOrbit_eq_iterate): the forward orbit is unproblematically computable; difficulty is entirely backward."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
+    ],
+    "nextSteps": [
+      "Formalize the stage-wise partial-bijection builder (List (ℕ×ℕ) by recursion on stage) using f for domain-side and partialInverse g for range-side extensions.",
+      "Prove the stage invariants: injectivity (via partialInverse_unique + f injective), correspondence p↔q preserved, and domain/range exhaustion (n covered by stage 2n+1).",
+      "Derive computability of the resulting permutation from computability of the stage builder + bounded search for the entering stage.",
+      "Consider a tractable partial win first: classical SB bijection IS computable when range g and range f are decidable (isolates the Π₁ obstruction)."
+    ],
     "markdown": "# Knowledge Base: schroeder-bernstein-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
