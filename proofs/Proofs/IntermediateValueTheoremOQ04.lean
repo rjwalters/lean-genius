@@ -134,7 +134,9 @@ theorem not_irreducible_of_odd_natDegree_ge_three (P : ℝ[X])
 /-- A concrete instance: the cubic `X³ - X - 1` has a real root (odd degree `3`). -/
 example : ∃ x : ℝ, (X ^ 3 - X - 1 : ℝ[X]).eval x = 0 := by
   apply exists_root_of_odd_natDegree
-  compute_degree!
+  have h : (X ^ 3 - X - 1 : ℝ[X]).natDegree = 3 := by compute_degree!
+  rw [h]
+  exact ⟨1, rfl⟩
 
 #check @exists_root_of_odd_natDegree
 #check @not_irreducible_of_odd_natDegree_ge_three
