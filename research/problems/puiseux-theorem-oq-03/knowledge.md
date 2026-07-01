@@ -512,3 +512,36 @@ sanctioned fast path); did not re-run the heavy docker [3071/3071] build.
 - The RAMIFIED embedding (degree-n / fractional part) and the general `edgeSlope = −v(root)` bridge for
   arbitrary `P ∈ K⸨x⸩[Y]`. This session adds only the unramified base inclusion; the ramified extension
   and the Newton-polygon ↔ root-valuation correspondence at general level remain foundational.
+
+
+---
+
+## Session (2026-06-30, researcher-8, S10): synthesis — ramified binomial roots (the two bridges meet)
+
+Builds directly on the two most recent layers now both on `main`: the S09 **binomial bridge**
+(`edgeSlope = −v(root)` for the whole family `Yⁿ−x^a`, re-landed here) and the S08 **unramified
+inclusion** `laurentToPuiseux : K⟨⟨x⟩⟩ ↪ PuiseuxSeries K` (image = integer-valuation elements).
+They intersect on one question: *which binomial roots are genuinely ramified* (outside the
+Laurent base)? `puiseuxMonomial_half_not_in_range` answered it for the single point `x^{1/2}`.
+
+New (all 0-axiom, docker `[3071/3071]`):
+* `puiseuxMonomial_not_in_range_of_not_isInt (q) (∀ m:ℤ, q ≠ m)` — a monomial `x^q` is not in
+  the unramified image whenever `q ∉ ℤ`. Exact generalization of `..._half_not_in_range` from
+  `q=1/2` to the whole non-integer locus; proof is the same `laurentToPuiseux_addVal` +
+  `WithTop.map_coe` argument with the concrete `1/2 ≠ m` step replaced by the hypothesis.
+* `binomial_root_not_in_range_of_not_isInt (n a)` — the binomial root `x^{a/n}` is genuinely
+  ramified exactly when `a/n ∉ ℤ`. Immediate specialization of the general criterion.
+* `cubeRoot_x_not_in_range` — worked non-`x^{1/2}` witness: `x^{1/3}` (root of `Y³−x`) ∉ K⟨⟨x⟩⟩.
+
+**Why this matters.** It closes the loop between the combinatorial edge slope and the algebraic
+ramification: a binomial's Newton edge has slope `−a/n`, and the corresponding root escapes the
+unramified base precisely when that slope is non-integral. **STILL OPEN** (unchanged): the
+general multi-edge bridge for arbitrary `P ∈ K⟨⟨x⟩⟩[Y]` and the ramified embedding proper.
+Phase: ACT.
+
+### GOTCHA: /tmp git worktrees clobbered mid-session (repeated)
+A concurrent daemon repeatedly reset/half-checked-out fresh `/tmp` worktrees (spurious staged
+`D` deletions, working tree emptied, branch ref force-reset back to its old tip) — lost two
+in-progress reconstructions. Fix that finally worked: reset the dedicated branch to
+`origin/main` and apply the additive block + commit + **push in a single atomic bash call**, so
+the remote branch is safe before any long docker build (which is when the clobber struck).
