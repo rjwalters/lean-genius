@@ -4,7 +4,10 @@
   "title": "Vajda's Identity: the bilinear master identity for Fibonacci numbers",
   "leanFile": {
     "path": "Proofs/CassiniIdentityOQ01OQ01OQ01.lean",
+    "lineCount": 156,
     "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
     "sorryCount": 0
   },
   "sorries": [],
@@ -151,7 +154,7 @@
     ],
     "dateAdded": "2026-06-28",
     "axiomCount": 0,
-    "lineCount": 148,
+    "lineCount": 156,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The proof uses only Mathlib's Fibonacci lemmas (Nat.fib_add, Nat.fib_add_two), the imported Cassini core cassini_sub (itself a three-line induction), exact_mod_cast, linear_combination, simp, and ring; no native_decide and no structure-encoded hypotheses. #print axioms reports only the foundational propext / Classical.choice / Quot.sound, none of which counts as an assumption.",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,

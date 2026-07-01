@@ -3,7 +3,14 @@
   "title": "Binet and Companion-Matrix Closed Forms for Pell Coordinate Sequences",
   "slug": "pell-equation-oq-07-oq-01",
   "description": "The parent entry (pell-equation-oq-07) extracts the second-order linear recurrence uₙ₊₂ = 2x₁·uₙ₊₁ − N(a)·uₙ that the coordinate sequences of the power sequence aⁿ of a generator a = ⟨x₁,y₁⟩ ∈ ℤ[√d] satisfy — the recurrence is the additive shadow of the multiplicative power structure. This entry answers the parent's own first open question by supplying the two closed forms the recurrence is the shadow of: a Binet form expressing each coordinate of aⁿ in terms of the conjugate roots x₁ ± y₁√d of the characteristic polynomial t² − 2x₁·t + N(a), and a companion-matrix power form Mⁿ. The mechanism is that Galois conjugation x + y√d ↦ x − y√d is exactly Mathlib's ring involution star on ℤ[√d], which commutes with powers (star_pow); reading the real and √d parts of aⁿ ± (star a)ⁿ isolates the two coordinate sequences as aⁿ + (star a)ⁿ = ⟨2·re(aⁿ),0⟩ and aⁿ − (star a)ⁿ = ⟨0,2·im(aⁿ)⟩. Mapping these into ℝ through the ring hom Zsqrtd.lift √d (defined for d ≥ 0), which sends a and star a to the conjugate reals x₁ ± y₁√d, yields Binet's formulas re(aⁿ) = ((x₁+y₁√d)ⁿ + (x₁−y₁√d)ⁿ)/2 and 2·im(aⁿ)·√d = (x₁+y₁√d)ⁿ − (x₁−y₁√d)ⁿ. The companion matrix M = ⟨⟨x₁, d·y₁⟩, ⟨y₁, x₁⟩⟩ of multiplication-by-a on the basis {1,√d} has Mⁿ = ⟨⟨re(aⁿ), d·im(aⁿ)⟩, ⟨im(aⁿ), re(aⁿ)⟩⟩, with trace 2x₁ and determinant N(a) — the coefficients of the characteristic polynomial whose roots are the conjugate units, made explicit (eigenvalue picture).",
-  "leanFile": "Proofs/PellEquationOQ07OQ01.lean",
+  "leanFile": {
+    "path": "Proofs/PellEquationOQ07OQ01.lean",
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "sorryCount": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Lean Genius (Binet/companion-matrix closed forms via conjugation = star in ℤ[√d]); Binet / Lagrange (classical closed-form Pell theory)",
