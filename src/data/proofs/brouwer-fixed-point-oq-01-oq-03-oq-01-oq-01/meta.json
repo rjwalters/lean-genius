@@ -66,6 +66,20 @@
       "ham_sandwich_standard_of_scalar_continuity_on: the HEADLINE — Ham Sandwich for the standard linear cut whose only hypotheses are finite body volumes and on-sphere continuity of each scalar slice-volume, with the antipodal-swap and finiteness side conditions discharged from stdPos_neg, stdNeg_neg, volume_inter_ne_top. This is exactly the faithful hypothesis the parent's Part 9 identified, now shown sufficient to drive a full proof"
     ]
   },
+  "references": [
+    {
+      "authors": "Matoušek, Jiří",
+      "title": "Using the Borsuk–Ulam Theorem",
+      "year": "2003",
+      "venue": "Universitext, Springer"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "ContinuousOn on spheres and Lebesgue-continuity of parameterized volumes; Mathlib.MeasureTheory.Integral",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The Ham Sandwich theorem (Stone-Tukey, 1942) is the most famous corollary of the Borsuk-Ulam theorem (Borsuk, 1933), whose depth lies in degree theory for maps of spheres. The standard textbook derivation glosses over an analytic subtlety — continuity of the parameterized half-volume function — that a fully formal proof must isolate. The parent gallery entry isolated it exactly, and then discovered a sharp twist: for the standard linear cut, the half-volume map is NOT continuous globally (it jumps at the origin, where the cut degenerates to the empty half-space) but only continuous on the sphere. That left a structural gap, because the Borsuk-Ulam machinery in this project is phrased with global continuity. This entry settles the gap with a classical move from analysis — radial (positive-homogeneous degree-1) extension — showing the global topological input implies the honest on-sphere one at no extra cost.",
     "problemStatement": "OQ-01-OQ-03-OQ-01-OQ-01: The parent file's Part 9 proved that the lone residual continuity hypothesis of the Ham Sandwich reduction must be read as ContinuousOn (Sphere n), not global Continuous, and flagged 'reformulate the chain to ContinuousOn throughout' as the genuine remaining work. But the underlying Borsuk-Ulam axiom and SphereFun structure demand GLOBAL continuity. Can the on-sphere hypothesis actually be used — i.e. does the global Borsuk-Ulam input imply the on-sphere antipodal collapse, and can the whole Ham Sandwich chain be re-derived under the honest ContinuousOn hypothesis?",

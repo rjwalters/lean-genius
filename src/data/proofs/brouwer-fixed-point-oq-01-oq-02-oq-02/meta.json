@@ -49,6 +49,20 @@
       "not_isTorsion_of_retract / not_retract_of_isTorsion: Z is not a retract of any TORSION group — a retract must contain an element of infinite order; strictly generalizes the finite case"
     ]
   },
+  "references": [
+    {
+      "authors": "Hatcher, Allen",
+      "title": "Algebraic Topology",
+      "year": "2002",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "AddMonoidHom, ℤ and torsion groups; Mathlib.Algebra.Group.Hom, Mathlib.GroupTheory.Torsion",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The No-Retraction Theorem — there is no continuous retraction of the disc B^n onto its boundary sphere S^{n-1} — is the engine of Brouwer's fixed-point theorem. Its standard proof is homological: applying the homology functor to a retraction r . i = id gives a splitting of the identity of H_{n-1}(S^{n-1}) = Z through H_{n-1}(B^n) = 0, which is impossible. The impossibility is a purely algebraic fact about abelian groups, and identifying exactly which groups it concerns clarifies what topological input the homology computation must supply.",
     "problemStatement": "OQ-01-OQ-02 proves No-Retraction via singular homology, reducing it to 'id : Z -> Z cannot factor through the trivial group' and proving the trivial case by hand. The sharp question: through exactly which groups can id_Z fail to factor? This entry answers: not just the trivial group, but any finite group, indeed any torsion group.",

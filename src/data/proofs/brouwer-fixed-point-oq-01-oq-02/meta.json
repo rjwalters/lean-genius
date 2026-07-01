@@ -65,6 +65,26 @@
       "Proofs/BrouwerFixedPointOQ01OQ02G10.lean"
     ]
   },
+  "references": [
+    {
+      "authors": "Hatcher, Allen",
+      "title": "Algebraic Topology",
+      "year": "2002",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "Brouwer, L. E. J.",
+      "title": "Über Abbildung von Mannigfaltigkeiten",
+      "year": "1911",
+      "venue": "Mathematische Annalen 71(1), 97–115"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "singular homology, retractions and AddMonoidHom ℤ→ℤ; Mathlib.AlgebraicTopology.SingularSet",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The **No-Retraction Theorem** was proved by Karol Borsuk in 1931, predating Brouwer's 1912 fixed-point theorem (which came first chronologically, with various proofs following). The two results are equivalent: a retraction $r: B^n \\to S^{n-1}$ would yield a continuous map $f = i \\circ r: B^n \\to B^n$ with no fixed point (since $f(x) \\in S^{n-1}$ but $f(x) \\neq x$ for interior points), contradicting Brouwer.\n\nThe **singular homology proof** was developed in the 1920s-1940s following the emergence of algebraic topology. The key steps were laid out by Lefschetz (1930) and formalized in Eilenberg-Steenrod axioms (1945). The crucial computations are: $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ (proved via Mayer-Vietoris by covering $S^{n-1}$ with two hemispheres) and $H_{n-1}(B^n) = 0$ (since $B^n$ is contractible and contractible spaces have trivial reduced homology).\n\nThis file implements the **refined axiomatization** of the homological proof, cleanly separating the algebraic component (provable with 0 axioms) from the analytic component (2 axioms encoding Mathlib gaps B1 and B2). The algebraic fact — that $\\mathrm{id}: \\mathbb{Z} \\to \\mathbb{Z}$ cannot factor through the trivial group — is the categorical heart of the entire argument.",
     "problemStatement": "**Open Question (brouwer-fixed-point-oq-01-oq-02)**: Prove the No-Retraction Theorem using the singular homology approach, as opposed to the direct axiomatization in BrouwerFixedPoint.lean. What are the minimal axioms needed?\n\n**Answer**: The proof decomposes cleanly into (1) a pure algebraic argument (0 axioms, fully proved) and (2) singular homology computations (2 axioms, currently unprovable in Mathlib 4.26: B1 — the prism operator / contractible-space homology vanishing — and B2 — the H_{n-1}(S^{n-1}) ≅ ℤ computation). The algebraic core — that id : ℤ →+ ℤ cannot factor through the trivial group — is the mathematical heart of the proof.",
