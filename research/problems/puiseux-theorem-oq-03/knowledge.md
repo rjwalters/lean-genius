@@ -475,3 +475,40 @@ STILL OPEN (the genuine >1000-line part, unchanged): the ramified embedding K⸨
 HahnSeries ℚ K and the GENERAL edgeSlope = −v(root) bridge for arbitrary P ∈ K⸨x⸩[Y]. This
 session strengthens the target-field theory (monomial calculus + value group) but does not
 build the embedding. Phase: ACT.
+
+## Session (2026-06-30, researcher-3) — UNRAMIFIED base inclusion K⸨x⸩ ↪ PuiseuxSeries K
+
+**Mode**: ACT. **Outcome**: progress — built the first concrete brick of the open ramified
+embedding (the *unramified* degree-1 inclusion), all 0-axiom. File 1260→1323 lines, +6 theorems.
+
+S07/S08 built the valued Puiseux *target field* (`PuiseuxSeries K := HahnSeries ℚ K` + `addVal`,
+monomial calculus, value group = ℚ). The genuine open part is the embedding `K⸨x⸩ ↪ HahnSeries ℚ K`.
+This session supplies its **unramified base layer**: the inclusion of the Laurent field
+`K⸨x⸩ = HahnSeries ℤ K` induced by the order embedding `ℤ ↪ ℚ` of value groups.
+
+- `laurentToPuiseux : HahnSeries ℤ K →+* PuiseuxSeries K` :=
+  `HahnSeries.embDomainRingHom (Int.castAddHom ℚ) Int.cast_injective (fun _ _ => Int.cast_le)`.
+- `laurentToPuiseux_single`: xᵐ ↦ x^m (via `embDomainRingHom_apply` + `embDomain_single`, then `rfl`).
+- `laurentToPuiseux_injective` (`embDomain_injective`), `laurentToPuiseux_x` (Laurent x ↦ Puiseux x¹).
+- `laurentToPuiseux_addVal`: v_ℚ(image z) = `WithTop.map Int.cast (addVal ℤ K z)` — via
+  `addVal_apply` + `orderTop_embDomain` + `rfl`. ⟹ image has INTEGER valuation.
+- `puiseuxMonomial_half_not_in_range`: x^{1/2} (v=½) ∉ range — ramification lives strictly outside
+  the Laurent subfield. Proof: addVal of image is an integer cast; ½ ≠ (m:ℚ) for any m∈ℤ (omega).
+
+### Key Mathlib API (all in pinned 4.26)
+- `HahnSeries.embDomainRingHom (f : Γ →+ Γ') (inj) (hf : ∀ g g', f g ≤ f g' ↔ g ≤ g') : R⟦Γ⟧ →+* R⟦Γ'⟧`
+  (in `RingTheory/HahnSeries/Multiplication.lean`); `embDomainRingHom_apply` unfolds to `embDomain`.
+- `HahnSeries.embDomain_single`, `embDomain_injective`, `orderTop_embDomain : orderTop (embDomain f x)
+  = WithTop.map f (orderTop x)` (Basic.lean).
+- `Int.castAddHom ℚ : ℤ →+ ℚ`, `Int.cast_injective`, `Int.cast_le` (the `≤ ↔ ≤` form fits `embDomainRingHom`).
+
+### Verification
+Host `lake env lean Proofs/PuiseuxTheoremOQ03.lean` EXIT 0; `#print axioms` of `laurentToPuiseux_addVal`
+and `puiseuxMonomial_half_not_in_range` = propext/Classical.choice/Quot.sound (0-axiom). Gallery meta
+updated (lineCount 1260→1323, theoremCount 66→71). NOTE: verified via host lake env lean (the file's
+sanctioned fast path); did not re-run the heavy docker [3071/3071] build.
+
+### Still open (unchanged, the genuine >1000-line part)
+- The RAMIFIED embedding (degree-n / fractional part) and the general `edgeSlope = −v(root)` bridge for
+  arbitrary `P ∈ K⸨x⸩[Y]`. This session adds only the unramified base inclusion; the ramified extension
+  and the Newton-polygon ↔ root-valuation correspondence at general level remain foundational.

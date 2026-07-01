@@ -1254,7 +1254,70 @@ theorem puiseuxVal_surjective (q : ℚ) :
     ∃ t : PuiseuxSeries K, HahnSeries.addVal ℚ K t = (q : WithTop ℚ) :=
   ⟨puiseuxMonomial q, puiseuxVal_monomial q⟩
 
+/-! ### The unramified base inclusion `K⸨x⸩ ↪ PuiseuxSeries K`
+
+The Laurent field `K⸨x⸩ = HahnSeries ℤ K` includes into the Puiseux field
+`PuiseuxSeries K = HahnSeries ℚ K` through the order embedding `ℤ ↪ ℚ` of value groups.
+This is the **unramified, degree-1 brick** of the open ramified embedding
+`K⸨x⸩ ↪ HahnSeries ℚ K`: it realises the Laurent series concretely inside the Puiseux
+field as exactly the elements of *integer* valuation, leaving the genuinely fractional
+ramification (e.g. `x^{1/2}`) outside the image. -/
+
+/-- The unramified base inclusion `K⸨x⸩ = HahnSeries ℤ K ↪ PuiseuxSeries K`, the ring
+homomorphism induced by the order embedding `ℤ ↪ ℚ` on value groups.  It sends the Laurent
+monomial `xᵐ` to the Puiseux monomial `x^m` with the same (now ℚ-valued) exponent. -/
+noncomputable def laurentToPuiseux : HahnSeries ℤ K →+* PuiseuxSeries K :=
+  HahnSeries.embDomainRingHom (Int.castAddHom ℚ) Int.cast_injective (fun _ _ => Int.cast_le)
+
+/-- `laurentToPuiseux` sends the Laurent monomial `single m r = r·xᵐ` to the Puiseux
+monomial `single (m:ℚ) r = r·x^m`. -/
+@[simp] theorem laurentToPuiseux_single (m : ℤ) (r : K) :
+    laurentToPuiseux (HahnSeries.single m r) = HahnSeries.single (m : ℚ) r := by
+  rw [laurentToPuiseux, HahnSeries.embDomainRingHom_apply, HahnSeries.embDomain_single]
+  rfl
+
+/-- The base inclusion is injective: `K⸨x⸩` embeds faithfully in the Puiseux field. -/
+theorem laurentToPuiseux_injective :
+    Function.Injective (laurentToPuiseux : HahnSeries ℤ K → PuiseuxSeries K) := by
+  rw [laurentToPuiseux]; exact HahnSeries.embDomain_injective
+
+/-- **The inclusion preserves the valuation**, mapping the ℤ-valued Laurent valuation to its
+image in `WithTop ℚ`: `v_ℚ(image z) = (v_ℤ z) cast into ℚ`.  Hence every element of the
+image has *integer* valuation. -/
+theorem laurentToPuiseux_addVal (z : HahnSeries ℤ K) :
+    HahnSeries.addVal ℚ K (laurentToPuiseux z)
+      = WithTop.map (Int.cast : ℤ → ℚ) (HahnSeries.addVal ℤ K z) := by
+  rw [HahnSeries.addVal_apply, HahnSeries.addVal_apply, laurentToPuiseux,
+    HahnSeries.embDomainRingHom_apply, HahnSeries.orderTop_embDomain]
+  rfl
+
+/-- The Laurent generator `x` maps to the Puiseux generator `x¹`. -/
+@[simp] theorem laurentToPuiseux_x :
+    laurentToPuiseux (HahnSeries.single (1 : ℤ) (1 : K)) = puiseuxMonomial (K := K) 1 := by
+  rw [laurentToPuiseux_single, puiseuxMonomial]; norm_num
+
+/-- **Ramification lives strictly outside the unramified image.**  The half-power `x^{1/2}`
+(valuation `½`) is *not* in the range of `laurentToPuiseux`: every image has an **integer**
+valuation, but `v(x^{1/2}) = ½ ∉ ℤ`.  This is the structural witness that the Puiseux field
+genuinely extends `K⸨x⸩` with fractional ramification — the converse companion to
+`puiseuxVal_surjective` (value group `= ℚ`) and `puiseuxVal_not_integer`. -/
+theorem puiseuxMonomial_half_not_in_range :
+    ¬ ∃ z : HahnSeries ℤ K, laurentToPuiseux z = puiseuxMonomial (K := K) (1 / 2) := by
+  rintro ⟨z, hz⟩
+  have hval := laurentToPuiseux_addVal z
+  rw [hz, puiseuxVal_monomial] at hval
+  obtain hz0 | hzne := eq_or_ne (HahnSeries.addVal ℤ K z) ⊤
+  · rw [hz0] at hval; simp at hval
+  · obtain ⟨m, hm⟩ := WithTop.ne_top_iff_exists.mp hzne
+    rw [← hm, WithTop.map_coe, WithTop.coe_eq_coe] at hval
+    -- hval : (1 : ℚ)/2 = ↑m, impossible since no integer equals 1/2
+    have hcast : (m : ℚ) * 2 = 1 := by rw [← hval]; norm_num
+    have hint : (m * 2 : ℤ) = 1 := by exact_mod_cast hcast
+    omega
+
 #print axioms exists_nthRoot_of_x
 #print axioms puiseuxVal_surjective
+#print axioms laurentToPuiseux_addVal
+#print axioms puiseuxMonomial_half_not_in_range
 
 end PuiseuxTheoremOQ03
