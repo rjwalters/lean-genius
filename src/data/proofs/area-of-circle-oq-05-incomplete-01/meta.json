@@ -97,6 +97,16 @@
       "targetId": "area-of-circle-oq-05-oq-01",
       "relationship": "related",
       "description": "OQ-05-OQ-01 formalizes the polar-coordinate proof that the squared Gaussian integral is π (the area-of-circle identity restated here as gaussian_unit_sq); this entry instead develops the 1D probability-density rescalings."
+    },
+    {
+      "targetId": "area-of-circle-oq-05-oq-02",
+      "relationship": "related",
+      "description": "The multivariate sibling named in this file's header: ∫ e^{-xᵀAx} = √(πⁿ/det A) for positive-definite A, with the diagonal case proved via Fubini and the scalar Gaussian. Its normalization constant √(πⁿ/det A) is the n-dimensional generalization of the σ√(2π) constant derived here — the per-coordinate variances σᵢ√(2π) multiply out to give the determinant factor."
+    },
+    {
+      "targetId": "area-of-circle-oq-05-oq-03-oq-04",
+      "relationship": "related",
+      "description": "The moment/cumulant generating function of the Gaussian, the natural probabilistic sequel once the density is normalized: the standard-normal MGF and characteristic function ∫ e^{tx}e^{-x²/2} = e^{t²/2}√(2π) carry the very √(2π) prefactor that std_normal_normalization cancels to 1 here."
     }
   ],
   "conclusion": {
