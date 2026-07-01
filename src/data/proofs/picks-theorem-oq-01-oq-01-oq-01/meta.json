@@ -220,5 +220,31 @@
     ],
     "namespace": "PicksTheoremOQ01OQ01OQ01"
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Pick, G.",
+      "title": "Geometrisches zur Zahlenlehre",
+      "year": "1899",
+      "note": "Sitzungsberichte des deutschen naturwissenschaftlich-medicinischen Vereines für Böhmen 'Lotos' in Prag 19, 311–319. The original statement of Pick's theorem Area = I + B/2 − 1 for simple lattice polygons."
+    },
+    {
+      "authors": "Coxeter, H. S. M.",
+      "title": "Introduction to Geometry (2nd ed.)",
+      "year": "1969",
+      "note": "Wiley. §13.4 presents Pick's theorem and its proof by additivity over a triangulation into primitive triangles."
+    },
+    {
+      "authors": "Beck, M.; Robins, S.",
+      "title": "Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra (2nd ed.)",
+      "year": "2015",
+      "note": "Springer Undergraduate Texts in Mathematics. Derives Pick's theorem as the 2-dimensional case of Ehrhart theory; the primitive-triangulation and lattice-point-counting tools mirror this entry's decomposition strategy."
+    },
+    {
+      "authors": "Grünbaum, B.; Shephard, G. C.",
+      "title": "Pick's Theorem",
+      "year": "1993",
+      "note": "American Mathematical Monthly 100(2), 150–161. A survey of proofs and generalizations, including the triangulation-plus-boundary-count approach this open question investigates."
+    }
+  ]
 }
