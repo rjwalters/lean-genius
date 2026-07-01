@@ -1376,6 +1376,90 @@ theorem survival_covariance_integrand_le_alpha
   simp only [measureReal_def]
   exact davydov_indicator_bound σPair hA hB
 
+/-- **Bounded-variable Davydov estimate** (S26, this session): the double-integral
+assembly.
+
+For non-negative random variables `f ∈ [0, M]` and `g ∈ [0, N]` with `f`
+measurable w.r.t. `σPair 0` and `g` w.r.t. `σPair 1`, the covariance is bounded by
+the α-mixing coefficient times the area of the threshold window:
+$$
+  \bigl|\mathrm{Cov}(f, g)\bigr|
+    \;=\; \Bigl|\!\int f g \,-\, \bigl(\!\int f\bigr)\bigl(\!\int g\bigr)\Bigr|
+    \;\le\; \alpha(\mathcal F, \mathcal G)\cdot M\cdot N.
+$$
+
+**Proof.** Two ingredients, chained through `norm_setIntegral_le_of_norm_le_const`:
+
+* **S24** (`covariance_eq_double_survival_covariance`) rewrites the covariance as
+  the double survival integral over the rectangle `(0, M] × (0, N]`,
+  `∫_{(0,M]} ∫_{(0,N]} (μ\{t<f ∧ s<g\} − μ\{t<f\}·μ\{s<g\}) ds dt`.
+* **S25** (`survival_covariance_integrand_le_alpha`) bounds the integrand by `α`
+  *uniformly* in the threshold pair `(t, s)`.
+
+The uniform pointwise bound integrates twice against Lebesgue measure. The inner
+`s`-integral over `(0, N]` is majorised by `α · N` (constant bound `α` times
+`volume (0, N] = N`); this constant `α · N` then bounds the outer `t`-integral,
+giving `α · N · M`. Reordering the product yields `α · M · N`. Because the
+integrand bound is uniform, no integrability of the integrand is used at this
+layer beyond the two outer survival-integrabilities inherited by S24 — the
+estimate is purely `‖∫_s f‖ ≤ C · |s|` applied twice.
+
+**Role.** This is the bounded-variable (truncated) case of Davydov's inequality.
+The remaining `davydov_covariance_inequality` sorry lifts this to general `L^p`
+variables via truncation + Hölder with the mixing rate `α^{(p-2)/p}`; this lemma
+supplies the base estimate that truncation reduces to. -/
+theorem bounded_covariance_le_alpha_mul_rectangle
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {f g : Ω → ℝ} {M N : ℝ}
+    (hM : 0 ≤ M) (hN : 0 ≤ N)
+    (hf_meas : Measurable f) (hg_meas : Measurable g)
+    (hf_sig : Measurable[σPair 0] f) (hg_sig : Measurable[σPair 1] g)
+    (hf_int : Integrable f μ) (hf_nn : 0 ≤ᵐ[μ] f) (hf_bdd : f ≤ᵐ[μ] (fun _ => M))
+    (hg_int : Integrable g μ) (hg_nn : 0 ≤ᵐ[μ] g) (hg_bdd : g ≤ᵐ[μ] (fun _ => N))
+    (h_joint_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 N, μ.real {ω | t < f ω ∧ s < g ω}) (Set.Ioc 0 M))
+    (h_prod_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 N, μ.real {ω | t < f ω} * μ.real {ω | s < g ω})
+      (Set.Ioc 0 M)) :
+    |∫ ω, f ω * g ω ∂μ - (∫ ω, f ω ∂μ) * (∫ ω, g ω ∂μ)|
+      ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) * M * N := by
+  -- Finiteness and Lebesgue mass of the two threshold windows.
+  have hvolM : (volume : Measure ℝ).real (Set.Ioc (0:ℝ) M) = M := by
+    rw [measureReal_def, Real.volume_Ioc, sub_zero, ENNReal.toReal_ofReal hM]
+  have hvolN : (volume : Measure ℝ).real (Set.Ioc (0:ℝ) N) = N := by
+    rw [measureReal_def, Real.volume_Ioc, sub_zero, ENNReal.toReal_ofReal hN]
+  have hfinM : (volume : Measure ℝ) (Set.Ioc (0:ℝ) M) < ⊤ := by
+    rw [Real.volume_Ioc]; exact ENNReal.ofReal_lt_top
+  have hfinN : (volume : Measure ℝ) (Set.Ioc (0:ℝ) N) < ⊤ := by
+    rw [Real.volume_Ioc]; exact ENNReal.ofReal_lt_top
+  -- S24: rewrite the covariance as the double survival integral.
+  rw [covariance_eq_double_survival_covariance hf_meas hg_meas hf_int hf_nn hf_bdd
+        hg_int hg_nn hg_bdd h_joint_outer h_prod_outer]
+  -- Inner bound: for every threshold `t`, the `s`-integral over `(0, N]` is
+  -- majorised by `α · N`, since S25 bounds the integrand by `α` everywhere.
+  have hInner : ∀ t : ℝ,
+      ‖∫ s in Set.Ioc 0 N,
+          (μ.real {ω | t < f ω ∧ s < g ω}
+            - μ.real {ω | t < f ω} * μ.real {ω | s < g ω})‖
+        ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) * N := by
+    intro t
+    have hle : ∀ s ∈ Set.Ioc (0:ℝ) N,
+        ‖(μ.real {ω | t < f ω ∧ s < g ω}
+            - μ.real {ω | t < f ω} * μ.real {ω | s < g ω})‖
+          ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+      intro s _
+      rw [Real.norm_eq_abs]
+      exact survival_covariance_integrand_le_alpha σPair hf_sig hg_sig t s
+    have h := norm_setIntegral_le_of_norm_le_const hfinN hle
+    rwa [hvolN] at h
+  -- Outer bound: the constant `α · N` bounds the `t`-integral over `(0, M]`.
+  have hOuter := norm_setIntegral_le_of_norm_le_const (C :=
+      CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) * N)
+      hfinM (fun t _ => hInner t)
+  rw [hvolM, Real.norm_eq_abs] at hOuter
+  exact le_of_le_of_eq hOuter (by ring)
+
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
 For random variables `X, Y : Ω → ℝ` with finite `L^p` norms (`p > 2`), where `X`
