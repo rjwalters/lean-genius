@@ -51,7 +51,18 @@
     "definitionCount": 0,
     "wiedijkNumber": null
   },
-  "overview": "The class equation shows every nontrivial finite p-group has a nontrivial centre Z. For a group G of order p² this forces |Z| ∈ {p, p²}; if |Z| = p then G/Z has order p, hence is cyclic, and a group whose central quotient is cyclic is abelian — so G is abelian in every case. Mathlib records this as `IsPGroup.commutative_of_card_eq_prime_sq`. The structure theorem for finite abelian groups then says an abelian group of order p² is either ℤ/p² or ℤ/p × ℤ/p. This entry pins down the purely group-theoretic invariant that distinguishes them: by Lagrange the order of any element divides p², so it is 1, p, or p². If some element has order p² the group is cyclic; otherwise every element has order dividing p, i.e. exponent p (elementary abelian). The four theorems assemble this dichotomy, characterize the cyclic case by the existence of a maximal-order element, and show the non-cyclic case has exponent exactly p.",
+  "overview": {
+    "historicalContext": "The classification of groups by order is one of the oldest programmes in group theory. Groups of prime order p are forced to be cyclic (a corollary of Lagrange's theorem, 1771), and the next case, order p², was settled early: every such group is abelian, and there are exactly two isomorphism types, ℤ/p² and ℤ/p × ℤ/p. The engine is the class equation, whose systematic use for p-groups traces to Ludwig Sylow's 1872 theorems and William Burnside's 1897 Theory of Groups of Finite Order: a nontrivial finite p-group has a nontrivial centre, because every non-central conjugacy class has size divisible by p while the class sizes must sum to |G|. For |G| = p² this pins the centre at order p or p², and the classical lemma 'G/Z(G) cyclic ⇒ G abelian' closes the abelian case. Mathlib packages the abelian conclusion as IsPGroup.commutative_of_card_eq_prime_sq; the further split into the two isomorphism types is the element-order refinement this entry formalizes.",
+    "problemStatement": "Let G be a group with |G| = p² for a prime p. Prove that G is abelian, and refine this to the full structural dichotomy: G is either cyclic (≅ ℤ/p²) or elementary abelian of exponent p (≅ ℤ/p × ℤ/p). Concretely, supply the group-theoretic invariant that separates the two types — the order of elements — and characterize cyclicity by the existence of an element of maximal order p².",
+    "proofStrategy": "Abelianness is imported from Mathlib's IsPGroup.commutative_of_card_eq_prime_sq (class equation ⇒ nontrivial centre ⇒ |Z| ∈ {p, p²} ⇒ G/Z cyclic ⇒ G abelian). The refinement is purely element-order arithmetic: by Lagrange the order of any g ∈ G divides |G| = p², so orderOf g ∈ {1, p, p²}. If some element attains order p², it generates G, which is therefore cyclic (isCyclic_iff_exists_orderOf_eq). Otherwise every element has order dividing p, i.e. g^p = 1 for all g (isCyclic_or_pow_prime_eq_one); since G is nontrivial the exponent is not 1, so it is exactly p (exponent_eq_prime_of_not_isCyclic), identifying G — together with abelianness — as (ℤ/p)².",
+    "keyInsights": [
+      "Mathlib's abelian lemma is the *start*, not the end, of the classification: the genuine remaining content is the element-order dichotomy separating ℤ/p² from (ℤ/p)², which this entry packages as isCyclic_or_pow_prime_eq_one.",
+      "Lagrange's theorem does all the separating work: orderOf g ∣ p² forces the order into {1, p, p²}, and the top value p² is exactly the cyclic case while the lower values force g^p = 1.",
+      "Cyclicity is detected by a single witness — the existence of one element of maximal order p² — rather than by a global structural test (isCyclic_iff_exists_orderOf_eq).",
+      "In the non-cyclic branch the exponent is not merely ≤ p but exactly p: it divides p yet cannot be 1 because |G| = p² > 1, so the group is genuinely elementary abelian (ℤ/p)².",
+      "The whole refinement is axiom-free and native_decide-free, resting only on Lagrange, the p-group centre argument, and the finite-abelian structure theorem already in Mathlib."
+    ]
+  },
   "sections": [
     {
       "id": "header",
@@ -109,5 +120,30 @@
       "note": "The Sylow theorems, whose p-group machinery (via the class equation) is the ancestor of the centre argument used here."
     }
   ],
-  "conclusion": "Groups of order p² are not merely abelian: they fall into exactly two isomorphism types, ℤ/p² and (ℤ/p)², separated by whether an element of order p² exists. The dichotomy `isCyclic_or_pow_prime_eq_one` and the exponent computation `exponent_eq_prime_of_not_isCyclic` supply the element-order invariant that turns Mathlib's abelian lemma into a complete classification, all fully machine-checked with no axioms or sorries."
+  "conclusion": {
+    "summary": "Groups of order p² are not merely abelian: they fall into exactly two isomorphism types, ℤ/p² and (ℤ/p)², separated by whether an element of order p² exists. The dichotomy isCyclic_or_pow_prime_eq_one, the cyclic characterization isCyclic_iff_exists_orderOf_eq, and the exponent computation exponent_eq_prime_of_not_isCyclic supply the element-order invariant that turns Mathlib's abelian lemma into a complete classification — all fully machine-checked with no axioms or sorries.",
+    "implications": "The element-order dichotomy is the reusable template for finer p-group classification: the same 'Lagrange restricts orders / a maximal-order element forces cyclicity / otherwise the exponent is prime' pattern drives the classification of groups of order p³ and the theory of elementary abelian sections. Framing IsPGroup.commutative_of_card_eq_prime_sq as a base rather than an endpoint makes the two isomorphism types available as an explicit invariant that downstream formalizations can branch on.",
+    "openQuestions": [
+      "Extend the formalization to a fully constructive isomorphism G ≅ ℤ/p² (cyclic case) or G ≅ ℤ/p × ℤ/p (elementary-abelian case), not just the separating invariant.",
+      "Formalize the order-p³ classification (five isomorphism types, two of them nonabelian), where the centre argument and exponent analysis generalize but no longer force abelianness.",
+      "Characterize, in Lean, exactly when a finite abelian p-group is elementary abelian via the exponent = p condition, generalizing exponent_eq_prime_of_not_isCyclic beyond order p²."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "group-order-prime-squared-abelian-oq-01",
+      "relationship": "related",
+      "description": "A parallel gallery formalization of the same result — Groups of Order p² Are Abelian, with the Cyclic / Elementary-Abelian Dichotomy. Both entries take Mathlib's abelian lemma as the base and add the ℤ/p² vs (ℤ/p)² split; this entry emphasizes the element-order invariant (orderOf ∈ {1,p,p²}) and the exponent-exactly-p computation."
+    },
+    {
+      "targetId": "sylow-theorem",
+      "relationship": "foundational",
+      "description": "Sylow's Theorems supply the p-group machinery — the class equation and the nontrivial-centre argument for finite p-groups — that underlies IsPGroup.commutative_of_card_eq_prime_sq, the abelian base result refined here into the full isomorphism-type dichotomy."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's Theorem (the order of an element divides the order of the group) is the sole tool separating the two isomorphism types: it forces orderOf g ∈ {1, p, p²}, so a maximal-order element gives the cyclic ℤ/p² case and its absence forces g^p = 1 for all g, the elementary-abelian (ℤ/p)² case."
+    }
+  ]
 }
