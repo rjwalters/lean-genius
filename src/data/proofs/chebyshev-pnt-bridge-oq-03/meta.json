@@ -3,6 +3,38 @@
   "title": "Bertrand's Postulate and the Prime-Counting Function",
   "slug": "chebyshev-pnt-bridge-oq-03",
   "description": "Formalizes Bertrand's postulate (a prime in (n, 2n] for every n ≥ 1) in the Chebyshev-PNT bridge framework, then derives its quantitative consequences for π: π(2n) ≥ π(n) + 1 (each doubling adds a prime) and π(2^k) ≥ k (at least k primes below 2^k), a clean lower bound matching the Θ(x/log x) order. 0 axioms, 0 sorries.",
+  "references": [
+    {
+      "authors": "Joseph Bertrand",
+      "title": "Mémoire sur le nombre de valeurs que peut prendre une fonction (Journal de l'École Royale Polytechnique)",
+      "year": 1845,
+      "note": "Bertrand's postulate: a prime always lies in (n, 2n]."
+    },
+    {
+      "authors": "Pafnuty Chebyshev",
+      "title": "Mémoire sur les nombres premiers (Journal de mathématiques pures et appliquées)",
+      "year": 1852,
+      "note": "The first proof of Bertrand's postulate via the Chebyshev functions θ and ψ."
+    },
+    {
+      "authors": "Paul Erdős",
+      "title": "Beweis eines Satzes von Tschebyschef (Acta Litt. Sci. Szeged 5)",
+      "year": 1932,
+      "note": "Erdős's celebrated elementary proof of Bertrand's postulate using binomial coefficients."
+    },
+    {
+      "authors": "Martin Aigner and Günter M. Ziegler",
+      "title": "Proofs from THE BOOK (6th ed.)",
+      "year": 2018,
+      "note": "Springer. The Erdős proof of Bertrand's postulate and its consequences for π."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Nat.bertrand and Chebyshev-function infrastructure",
+      "year": 2024,
+      "note": "Mathlib's formalized Bertrand postulate, bridged here to π(2n) ≥ π(n)+1."
+    }
+  ],
   "meta": {
     "author": "Joseph Bertrand / Pafnuty Chebyshev",
     "sourceUrl": "https://en.wikipedia.org/wiki/Bertrand%27s_postulate",

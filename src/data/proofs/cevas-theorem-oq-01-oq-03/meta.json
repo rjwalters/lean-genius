@@ -3,6 +3,38 @@
   "title": "Routh's Theorem: Area Formula for Non-Concurrent Cevians",
   "slug": "cevas-theorem-oq-01-oq-03",
   "description": "Proves Routh's theorem for general parameters d, e, f ∈ (0,1): the inner triangle formed by three non-concurrent cevians has signed area equal to routhRatio(d,e,f) = (def-(1-d)(1-e)(1-f))² / ((1-e+de)(1-f+ef)(1-d+fd)) times the original triangle area. Complete proof via coordinate intersection formulas and a single polynomial identity. 19 theorems, 0 axioms.",
+  "references": [
+    {
+      "authors": "Edward John Routh",
+      "title": "A Treatise on Analytical Statics, Volume 1",
+      "year": 1896,
+      "note": "Cambridge University Press. Routh's area ratio for the triangle formed by three non-concurrent cevians."
+    },
+    {
+      "authors": "H. S. M. Coxeter",
+      "title": "Introduction to Geometry (2nd ed.)",
+      "year": 1969,
+      "note": "Wiley. Routh's theorem and its relation to Ceva's and Menelaus's theorems."
+    },
+    {
+      "authors": "H. S. M. Coxeter and S. L. Greitzer",
+      "title": "Geometry Revisited",
+      "year": 1967,
+      "note": "Mathematical Association of America. Cevians, area ratios, and Routh's theorem."
+    },
+    {
+      "authors": "Roger A. Johnson",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": 1929,
+      "note": "Dover reprint. Signed area ratios for cevian triangles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: affine combination and signed-area (determinant) infrastructure",
+      "year": 2024,
+      "note": "Barycentric/affine coordinates and signed-area computations giving the routhRatio formula."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-05-03",

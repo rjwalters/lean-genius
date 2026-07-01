@@ -3,6 +3,38 @@
   "title": "Skolem-Noether for Central Simple Algebras: General Case",
   "slug": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01",
   "description": "Formalizes the general Skolem-Noether theorem: any two K-algebra homomorphisms from a finite-dimensional simple K-algebra A into a central simple K-algebra B are conjugate by a unit of B. Extends the matrix-algebra case (SkolemNoetherMatrixAut.lean) to arbitrary CSAs. The proof architecture isolates the key step (module isomorphism via Wedderburn-Artin + isotypic decomposition) as 1 axiom, with all surrounding algebraic lemmas fully proved. 0 sorries, 1 axiom.",
+  "references": [
+    {
+      "authors": "Thoralf Skolem",
+      "title": "Zur Theorie der assoziativen Zahlensysteme (Skrifter Norske Vid.-Akad. Oslo)",
+      "year": 1927,
+      "note": "Skolem's half of the Skolem–Noether theorem on conjugacy of algebra homomorphisms."
+    },
+    {
+      "authors": "Emmy Noether",
+      "title": "Nichtkommutative Algebra (Mathematische Zeitschrift 37)",
+      "year": 1933,
+      "note": "Noether's general form of the theorem for central simple algebras, formalized here."
+    },
+    {
+      "authors": "Richard S. Pierce",
+      "title": "Associative Algebras, GTM 88",
+      "year": 1982,
+      "note": "Springer. The Skolem–Noether theorem and the structure of central simple algebras."
+    },
+    {
+      "authors": "Benson Farb and R. Keith Dennis",
+      "title": "Noncommutative Algebra, GTM 144",
+      "year": 1993,
+      "note": "Springer. Central simple algebras, conjugacy of embeddings, and the Skolem–Noether theorem."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: central simple algebra and AlgHom conjugacy infrastructure",
+      "year": 2024,
+      "note": "Simple/central-simple K-algebra structures underlying the general conjugacy statement."
+    }
+  ],
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Skolem%E2%80%93Noether_theorem",

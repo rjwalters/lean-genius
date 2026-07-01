@@ -3,6 +3,38 @@
   "title": "The Jordan–Chevalley–Dunford Decomposition",
   "slug": "cayley-hamilton-minpoly-oq-01-oq-02",
   "description": "Proves the Jordan–Chevalley–Dunford decomposition: every endomorphism f of a finite-dimensional vector space over a perfect field splits as f = s + n, where s is semisimple, n is nilpotent, s and n commute, and both are polynomial expressions in f. The decomposition is shown to be unique. This is the basis-free shadow of the Jordan canonical form studied in the parent entry, and unlike that entry it is fully machine-checked with no axioms, via Mathlib's Newton-iteration proof together with the fact that a difference of commuting semisimple operators is semisimple.",
+  "references": [
+    {
+      "authors": "Claude Chevalley",
+      "title": "Théorie des groupes de Lie, Tome II: Groupes algébriques",
+      "year": 1951,
+      "note": "Hermann. The Jordan–Chevalley decomposition of an endomorphism into commuting semisimple and nilpotent parts."
+    },
+    {
+      "authors": "Nelson Dunford",
+      "title": "Spectral Operators (Pacific Journal of Mathematics 4)",
+      "year": 1954,
+      "note": "The operator-theoretic (Dunford) form of the additive semisimple-plus-nilpotent decomposition."
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Algebra (Revised 3rd ed.), GTM 211",
+      "year": 2002,
+      "note": "Springer. The Jordan–Chevalley decomposition over a perfect field and its uniqueness."
+    },
+    {
+      "authors": "Nicolas Bourbaki",
+      "title": "Algèbre, Chapitre 7: Modules sur les anneaux principaux",
+      "year": 1958,
+      "note": "Hermann. Semisimple and nilpotent parts and the structure of endomorphisms."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: LinearMap semisimple/nilpotent and minpoly (perfect field) infrastructure",
+      "year": 2024,
+      "note": "Semisimplicity, nilpotency, and commuting-decomposition machinery used to state f = s + n."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-21",
