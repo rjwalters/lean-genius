@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Archimedes' half-angle doubling method formalized constructively (0 axioms, 0 sorries). Doubling radical sin(π/2n)=√((1-cos(π/n))/2), nested-radical realization via sqrtTwoAddSeries, strict monotonicity under doubling, upper bound π, and convergence p(m)→π all proved.",
+    "progressSummary": "2026-06-30 (researcher-1): upgraded the doubling-method convergence rate from O(1/m²) to sharp Θ(1/m²). Added pi_sub_halfPerimeter_ge (π - p(m) ≥ (1/12)π³/m², m≥4) via Real.sin_bound's Taylor UPPER estimate sin x ≤ x - x³/6 + (5/96)x⁴ with the quartic term absorbed into the cubic since x=π/m≤1; pi_sub_halfPerimeter_bounds packages it with the existing upper bound pi_sub_halfPerimeter_le. 0-axiom, 0-sorry, 337 lines/11 thms. COMPLETE: Archimedes' half-angle doubling method formalized constructively (0 axioms, 0 sorries). Doubling radical sin(π/2n)=√((1-cos(π/n))/2), nested-radical realization via sqrtTwoAddSeries, strict monotonicity under doubling, upper bound π, and convergence p(m)→π all proved.",
     "builtItems": [
       "archimedes_sin_doubling: sin(π/(2n))=√((1-cos(π/n))/2) (Proofs/AreaOfCircleOQ03OQ02OQ01.lean:44)",
       "archimedes_cos_doubling: cos(π/(2n))=√((1+cos(π/n))/2) (:61)",
@@ -50,8 +50,8 @@
       "None — Mathlib's half-angle (sin_half_eq_sqrt, cos_half), sqrtTwoAddSeries machinery, lt_tan, and sin_lt covered everything needed."
     ],
     "nextSteps": [
-      "Follow-up: formalize Archimedes' rational √ bounds to recover 223/71 purely from the doubling recurrence without pi_gt_d4.",
-      "Follow-up: prove an explicit convergence rate, e.g. π - p(2^k) = O(4^{-k})."
+      "Convergence rate now SHARP Θ(1/m²) (pi_sub_halfPerimeter_bounds). Remaining follow-up: Archimedes' rational √ bounds to recover 223/71 purely from the doubling recurrence without pi_gt_d4.",
+      "Follow-up: formalize Archimedes' rational √ bounds to recover 223/71 purely from the doubling recurrence without pi_gt_d4."
     ],
     "markdown": "# Knowledge Base: area-of-circle-oq-03-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -127,7 +127,7 @@
     "mathlib": []
   },
   "started": "2026-04-04T04:39:45.987Z",
-  "lastUpdate": "2026-04-04T04:39:46.009Z",
+  "lastUpdate": "2026-06-30T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/AreaOfCircle.lean",
