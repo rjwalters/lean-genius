@@ -97,7 +97,29 @@
       "description": "Complements the computational bounds on ζ(5) with the structural framing of its independence conjectures."
     }
   ],
-  "references": [],
+  "references": [
+    {
+      "authors": "K. Ball, T. Rivoal",
+      "title": "Irrationalité d'une infinité de valeurs de la fonction zêta aux entiers impairs",
+      "year": 2001,
+      "venue": "Invent. Math. 146",
+      "note": "Infinitely many odd zeta values are irrational; the linear-form / dimension-reduction engine."
+    },
+    {
+      "authors": "M. Kontsevich, D. Zagier",
+      "title": "Periods",
+      "year": 2001,
+      "venue": "Mathematics Unlimited — 2001 and Beyond, Springer",
+      "note": "Framework for conjectural algebraic independence of zeta values as periods."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides hasSum_zeta_nat, the Bernoulli-number API, and Real.tendsto_euler_sin_prod underlying this formalization."
+    }
+  ],
   "sorries": 0,
   "meta": {
     "author": "formalized in Lean 4",

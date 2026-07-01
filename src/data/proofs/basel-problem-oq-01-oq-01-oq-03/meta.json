@@ -104,6 +104,28 @@
     "path": "Proofs/BaselProblemOQ01OQ01OQ03.lean",
     "sorries": 0
   },
-  "references": [],
+  "references": [
+    {
+      "authors": "K. Ball, T. Rivoal",
+      "title": "Irrationalité d'une infinité de valeurs de la fonction zêta aux entiers impairs",
+      "year": 2001,
+      "venue": "Invent. Math. 146",
+      "note": "Infinitely many odd zeta values are irrational; the linear-form / dimension-reduction engine."
+    },
+    {
+      "authors": "T. Rivoal",
+      "title": "La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs",
+      "year": 2000,
+      "venue": "C. R. Acad. Sci. Paris 331",
+      "note": "First proof that infinitely many ζ(2k+1) are irrational."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides hasSum_zeta_nat, the Bernoulli-number API, and Real.tendsto_euler_sin_prod underlying this formalization."
+    }
+  ],
   "sorries": 0
 }

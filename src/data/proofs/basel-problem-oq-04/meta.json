@@ -178,5 +178,28 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/BaselProblemOQ04.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "L. Euler",
+      "title": "Variae observationes circa series infinitas",
+      "year": 1737,
+      "venue": "Comm. Acad. Sci. Petrop. 9",
+      "note": "Euler product ∏_p (1−p⁻ˢ)⁻¹ = ζ(s) connecting the Basel sum to the primes."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press",
+      "note": "Zeta values, Euler products, and coprimality densities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides hasSum_zeta_nat, the Bernoulli-number API, and Real.tendsto_euler_sin_prod underlying this formalization."
+    }
+  ]
 }
