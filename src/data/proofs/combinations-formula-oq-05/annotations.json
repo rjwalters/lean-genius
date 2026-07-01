@@ -62,21 +62,39 @@
   {
     "id": "each-half-theorem",
     "proofId": "combinations-formula-oq-05",
-    "range": { "startLine": 86, "endLine": 114 },
+    "range": { "startLine": 86, "endLine": 107 },
     "type": "theorem",
     "title": "Each Half Equals 2^{n-1}",
-    "content": "sum_choose_int casts the total row sum to ℤ: ∑ C(n,k) = 2^n (from Nat.sum_range_choose). sum_even_choose then combines the even/odd equality E = O with the total E + O = 2^n and the identity 2^n = 2·2^{n-1} (for n ≥ 1) to conclude ∑_{k even} C(n,k) = 2^{n-1}. A worked example confirms the even part of row 4 sums to 8 = 2^3.",
-    "mathContext": "From $E = O$ and $E + O = 2^n$ we get $2E = 2^n = 2 \\cdot 2^{n-1}$, so $E = 2^{n-1}$ (and likewise $O = 2^{n-1}$). The exponent arithmetic $2^n = 2\\cdot 2^{n-1}$ for $n \\ge 1$ is handled by omega. For $n=4$: even terms $\\binom{4}{0}+\\binom{4}{2}+\\binom{4}{4} = 1+6+1 = 8 = 2^3$.",
+    "content": "sum_choose_int casts the total row sum to ℤ: ∑ C(n,k) = 2^n (from Nat.sum_range_choose). sum_even_choose then combines the even/odd equality E = O (via sum_even_choose_eq_sum_odd_choose) with the total split E + O = 2^n and the identity 2^n = 2·2^{n-1} (for n ≥ 1) to conclude ∑_{k even} C(n,k) = 2^{n-1}. The final step is a single linarith once 2E = 2^n and 2^n = 2·2^{n-1} are in context.",
+    "mathContext": "From $E = O$ and $E + O = 2^n$ we get $2E = 2^n = 2 \\cdot 2^{n-1}$, so $E = 2^{n-1}$ (and likewise $O = 2^{n-1}$). The exponent arithmetic $2^n = 2\\cdot 2^{n-1}$ for $n \\ge 1$ is proved by rewriting with pow_succ' and discharging the exponent equality n = (n-1)+1 with omega.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.sum_range_choose",
       "total row sum 2^n",
-      "pow_succ",
+      "pow_succ'",
       "cancellation 2E = 2^n"
     ],
     "prerequisites": [
       "total row sum ∑ C(n,k) = 2^n",
       "casting Nat sums to ℤ"
+    ]
+  },
+  {
+    "id": "worked-verification",
+    "proofId": "combinations-formula-oq-05",
+    "range": { "startLine": 109, "endLine": 114 },
+    "type": "context",
+    "title": "Worked Verification (Row 4)",
+    "content": "A closing example evaluates the even part of row 4 by decide: ∑_{k even, k ≤ 4} C(4,k) = C(4,0)+C(4,2)+C(4,4) = 1+6+1 = 8. This is exactly 2^{4-1} = 2^3, a concrete instance of sum_even_choose. Because every quantity is a literal natural number, decide discharges the goal by kernel computation without invoking the general theorem — an independent cross-check of the formalized identity.",
+    "mathContext": "For $n=4$: the even-indexed terms are $\\binom{4}{0}+\\binom{4}{2}+\\binom{4}{4} = 1+6+1 = 8 = 2^3 = 2^{n-1}$, and correspondingly the odd part $\\binom{4}{1}+\\binom{4}{3} = 4+4 = 8$. Both halves equal $2^{n-1}$, matching the general result.",
+    "significance": "context",
+    "relatedConcepts": [
+      "decide tactic",
+      "kernel computation",
+      "concrete verification of an identity"
+    ],
+    "prerequisites": [
+      "evaluating Nat.choose on literals"
     ]
   }
 ]
