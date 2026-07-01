@@ -59,11 +59,11 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 370,
+    "lineCount": 401,
     "assumptions": "0 axioms, 0 sorries, no native_decide (the worked examples use decide, which depends only on the foundational kernel, not Lean.ofReduceBool). The hypotheses (edges nonempty; weighted-sum / incidence bounds) are inputs to the statements, not standing assumptions; V is an arbitrary Fintype with DecidableEq and n = Fintype.card V. #print axioms reports only propext, Classical.choice, Quot.sound for every theorem (criterion, averaging, and deletion families — checked for property_b_of_weighted_first_moment, exists_coloring_few_mono, exists_two_colorable_subfamily, exists_two_colorable_subfamily_uniform, k4_bipartite_subfamily, weighted_criterion_sharp, etc.) — no sorryAx, no Lean.ofReduceBool. This is the single-round FIRST-MOMENT bound plus its quantitative (few-bad-edges) and deletion (alteration) corollaries; the Radhakrishnan–Srinivasan √(k/log k) improvement, which needs random RECOLORING rather than deletion, is NOT formalized and is left open.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13,
-    "definitionCount": 0
+    "theoremCount": 16,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "A k-uniform hypergraph has Property B if its vertices can be 2-colored with no monochromatic edge. Erdős (1963) used the first moment method to show every k-uniform hypergraph with fewer than 2^(k-1) edges has Property B, giving m(k) ≥ 2^(k-1) for the minimum number of edges in a non-2-colorable k-uniform hypergraph. The same first-moment argument, applied without assuming uniformity, yields the sharp criterion ∑_{e} 2^(1-|e|) < 1 ⟹ Property B (Erdős–Lovász). The deeper question of how large m(k) really is was advanced by Radhakrishnan and Srinivasan (2000), who proved m(k) = Ω(2^k·√(k/log k)) via a random recoloring (alteration) argument; the best known upper bound is Erdős' O(k^2·2^k) from a random construction. This entry formalizes the sharp single-round first-moment criterion and recovers Erdős' 1963 uniform bound from it.",
@@ -122,6 +122,13 @@
       "endLine": 311,
       "mathContext": "$\\sum_{e} 2\\cdot 2^{\\,n-|e|} \\le 2^{n} t \\;\\Rightarrow\\; \\exists D\\subseteq E,\\ |D|\\le t,\\ E\\setminus D \\text{ is 2-colorable}$",
       "summary": "subfamily_of_few_mono turns the few-mono coloring into a 2-colorable subfamily by deleting exactly its monochromatic edges D = {e : Mono e c}; the same c properly 2-colors E \\ D. exists_two_colorable_subfamily (general) and exists_two_colorable_subfamily_uniform (k-uniform: retain ≥ |E| − ⌈|E|/2^(k-1)⌉ edges) formalize the standard deletion method, the elementary integer sibling of RS recoloring. k4_bipartite_subfamily is a finite Max-Cut-flavored instance: K₄ over Fin 4 (incidence 48 = 2⁴·3) yields a bipartite subgraph after deleting ≤ 3 of 6 edges."
+    },
+    {
+      "id": "fano-plane-upper-witness",
+      "title": "Extremal Upper Side: the Fano Plane is Not 2-Colorable",
+      "startLine": 370,
+      "endLine": 401,
+      "summary": "The first-moment criterion is a lower-bound engine (few edges ⟹ 2-colorable); the extremal question m(3) asks the fewest edges of a non-2-colorable 3-uniform hypergraph. fanoPlane is the Fano plane PG(2,2), the unique Steiner triple system S(2,3,7) on Fin 7. fano_three_uniform and fano_card_eq_seven (both by decide) record that it is 3-uniform with 7 edges; fano_not_two_colorable (by kernel decide over all 2^7 colorings) shows no 2-coloring avoids a monochromatic line, so m(3) ≤ 7. With the count lower bound m(3) ≥ 2^(3-1) = 4 (property_b_two_colorable_of_uniform) this brackets 4 ≤ m(3) ≤ 7. Axiom-free: kernel decide, no native_decide."
     }
   ],
   "conclusion": {
@@ -149,11 +156,11 @@
       "BigOperators"
     ],
     "namespace": "ProbMethod.PropertyB",
-    "lineCount": 370,
+    "lineCount": 401,
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 0,
-    "theoremCount": 13
+    "definitionCount": 1,
+    "theoremCount": 16
   },
   "references": [
     {
@@ -205,5 +212,8 @@
     }
   ],
   "sorries": 0,
-  "theoremCount": 13
+  "theoremCount": 13,
+  "highlights": [
+    "Extremal upper witness: the Fano plane PG(2,2) — a 7-edge 3-uniform hypergraph — is not 2-colorable (fano_not_two_colorable, kernel decide), giving m(3) ≤ 7 and, with the first-moment lower bound m(3) ≥ 4, the bracket 4 ≤ m(3) ≤ 7."
+  ]
 }

@@ -367,4 +367,35 @@ theorem boundary_singleton_fin1 :
     ¬ ∃ c : Fin 1 → Bool, ∀ e ∈ ({{0}} : Finset (Finset (Fin 1))), ¬ Mono e c :=
   ⟨(weighted_criterion_sharp (0 : Fin 1)).2.1, (weighted_criterion_sharp (0 : Fin 1)).2.2⟩
 
+/-! ### Extremal upper side: the Fano plane is not 2-colorable.
+
+The criterion above is a *lower-bound* engine: any `3`-uniform family with fewer than
+`2^(3-1) = 4` edges (indeed any family meeting the weighted bound) has Property B. The
+opposite, extremal question asks how *few* edges a non-2-colorable `3`-uniform hypergraph
+can have — the Erdős–Hajnal number `m(3)`. The **Fano plane** `PG(2,2)`, the unique
+Steiner triple system `S(2,3,7)` on `7` points, is a `3`-uniform hypergraph with `7` edges
+and **no** proper 2-coloring, so `m(3) ≤ 7`. Together with the count lower bound this
+brackets the count threshold at `k = 3` into `4 ≤ m(3) ≤ 7`. Each fact is checked by the
+kernel (`decide`), so the witness is axiom-free (no `native_decide`). -/
+
+/-- The seven lines of the Fano plane `PG(2,2)` on the point set `Fin 7`
+    (the unique Steiner triple system `S(2,3,7)`). -/
+def fanoPlane : Finset (Finset (Fin 7)) :=
+  {{0, 1, 2}, {0, 3, 4}, {0, 5, 6}, {1, 3, 5}, {1, 4, 6}, {2, 3, 6}, {2, 4, 5}}
+
+/-- The Fano plane is `3`-uniform: every line has exactly three points. -/
+theorem fano_three_uniform : ∀ e ∈ fanoPlane, e.card = 3 := by
+  set_option maxRecDepth 4000 in decide
+
+/-- The Fano plane has exactly seven edges. -/
+theorem fano_card_eq_seven : fanoPlane.card = 7 := by decide
+
+/-- **The Fano plane is not 2-colorable.** Every 2-coloring of its seven points leaves
+some line monochromatic, so this `7`-edge `3`-uniform hypergraph fails Property B. It is
+the extremal upper witness `m(3) ≤ 7`, complementing the first-moment lower bound
+`m(3) ≥ 2^(3-1) = 4` (`property_b_two_colorable_of_uniform`). -/
+theorem fano_not_two_colorable :
+    ¬ ∃ c : Fin 7 → Bool, ∀ e ∈ fanoPlane, ¬ Mono e c := by
+  set_option maxRecDepth 4000 in decide
+
 end ProbMethod.PropertyB
