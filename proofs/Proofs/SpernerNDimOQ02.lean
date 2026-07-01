@@ -2299,4 +2299,59 @@ theorem boundary_faces_card (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
   · rw [if_pos hcond, if_pos hcond, Finset.card_singleton]
   · rw [if_neg hcond, if_neg hcond, Finset.card_empty]
 
+/-!
+## Per-cell door count in Kuhn-increment form
+
+`boundary_faces_eq`/`boundary_faces_card` express each cell's contribution to the
+last-face door count through the *geometric* top-facet condition
+`∀ j ≠ Fin.last d, (verts j).coords (Fin.last d) = 0`.  A Phase-2 door-parity
+induction, however, does not accumulate over that geometric predicate directly: it
+runs along the **Kuhn chains**, whose data is the increment directions `s.incDir` and
+the base vertex `s.verts 0`.  `last_boundary_face_iff` is exactly the translation
+between the two — the top facet is a geometric `∂Δ_N` door iff the *final* Kuhn step
+(`c.val = d - 1`) increments the top coordinate (`s.incDir c = Fin.last d`) and that
+coordinate starts at zero on the base.  This section restates the exact per-cell door
+set (`boundary_faces_eq_incDir`) and count (`boundary_faces_card_incDir`) through that
+Kuhn-increment predicate, so the global door sum can be reorganized along Kuhn chains
+without ever re-deriving the geometric condition.  All 0-sorry, 0-axiom (builds only
+on `boundary_faces_eq`/`boundary_faces_card` + `last_boundary_face_iff`). -/
+
+/-- **Per-cell boundary-door set, in Kuhn-increment form.**  The finset of geometric
+`∂Δ_N` boundary doors of a Freudenthal cell equals the singleton `{Fin.last d}`
+exactly when the final Kuhn step increments the top coordinate
+(`∃ c, s.incDir c = Fin.last d ∧ c.val = d - 1`) and that coordinate starts at zero on
+the base vertex, and `∅` otherwise.  The `boundary_faces_eq` set re-expressed through
+the Kuhn-increment data a dimensional induction runs over (via
+`last_boundary_face_iff`). -/
+theorem boundary_faces_eq_incDir (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    (Finset.univ.filter
+      (fun k : Fin (d + 1) =>
+        ∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0)) =
+    if ((∃ c : Fin d, s.incDir c = Fin.last d ∧ c.val = d - 1) ∧
+        (s.verts 0).coords (Fin.last d) = 0)
+      then {Fin.last d} else ∅ := by
+  rw [boundary_faces_eq s hd]
+  by_cases hcond :
+      (∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0)
+  · rw [if_pos hcond, if_pos ((last_boundary_face_iff s hd).mp hcond)]
+  · rw [if_neg hcond, if_neg (fun hk => hcond ((last_boundary_face_iff s hd).mpr hk))]
+
+/-- **Per-cell boundary-door count, in Kuhn-increment form.**  The number of geometric
+`∂Δ_N` boundary doors of a Freudenthal cell is `1` when the final Kuhn step increments
+the top coordinate and that coordinate starts at zero on the base, and `0` otherwise.
+The `boundary_faces_card` term re-expressed through the Kuhn-increment data — the exact
+`0/1` summand a Phase-2 door-parity induction over Kuhn chains accumulates. -/
+theorem boundary_faces_card_incDir (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    (Finset.univ.filter
+      (fun k : Fin (d + 1) =>
+        ∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0)).card =
+    if ((∃ c : Fin d, s.incDir c = Fin.last d ∧ c.val = d - 1) ∧
+        (s.verts 0).coords (Fin.last d) = 0)
+      then 1 else 0 := by
+  rw [boundary_faces_card s hd]
+  by_cases hcond :
+      (∀ j : Fin (d + 1), j ≠ Fin.last d → (s.verts j).coords (Fin.last d) = 0)
+  · rw [if_pos hcond, if_pos ((last_boundary_face_iff s hd).mp hcond)]
+  · rw [if_neg hcond, if_neg (fun hk => hcond ((last_boundary_face_iff s hd).mpr hk))]
+
 end SpernerNDimOQ02
