@@ -3,6 +3,38 @@
   "title": "Simson's Line Theorem",
   "slug": "simson-line-theorem-oq-01",
   "description": "Simson's theorem as a biconditional: the feet of the perpendiculars from a point P to the three side-lines of triangle ABC are collinear if and only if P lies on the circumcircle of ABC. Formalized in complex coordinates with the circumcircle normalised to the unit circle.",
+  "references": [
+    {
+      "authors": "William Wallace",
+      "title": "Contribution to Thomas Leybourn's Mathematical Repository",
+      "year": 1799,
+      "note": "The first known statement of the 'Simson line'; the result is historically misattributed to Robert Simson."
+    },
+    {
+      "authors": "Roger A. Johnson",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": 1929,
+      "note": "Dover reprint. The Simson line and its circumcircle characterization."
+    },
+    {
+      "authors": "H. S. M. Coxeter and S. L. Greitzer",
+      "title": "Geometry Revisited",
+      "year": 1967,
+      "note": "Mathematical Association of America. The Simson–Wallace line and pedal triangles."
+    },
+    {
+      "authors": "Liang-shin Hahn",
+      "title": "Complex Numbers and Geometry",
+      "year": 1994,
+      "note": "Mathematical Association of America. Complex-coordinate proofs of Simson's theorem, the method used here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Complex geometry, collinearity and circumcircle infrastructure",
+      "year": 2024,
+      "note": "Complex coordinates, foot-of-perpendicular, and collinearity predicates used for the biconditional."
+    }
+  ],
   "meta": {
     "author": "Robert Simson / William Wallace (attributed)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Simson_line",

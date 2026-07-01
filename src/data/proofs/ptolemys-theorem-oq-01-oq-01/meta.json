@@ -3,6 +3,38 @@
   "title": "Ptolemy's Theorem Converse: Equality Characterizes Cyclic Order",
   "slug": "ptolemys-theorem-oq-01-oq-01",
   "description": "Proves the converse of Ptolemy's theorem for unit-circle points: if the equality ‖z₁-z₃‖·‖z₂-z₄‖ = ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖ holds for four distinct points on the unit circle, then they appear in counterclockwise or clockwise cyclic order. Combined with the forward direction from PtolemysTheoremOQ01, this gives the complete biconditional: Ptolemy equality ↔ CCW or CW order. The proof uses the equality case of the triangle inequality in the strictly convex space ℂ (via SameRay) to extract a positive proportionality constant, then axiomatizes the angular case analysis identifying positive sine-product ratios with cyclic orderings.",
+  "references": [
+    {
+      "authors": "Claudius Ptolemy",
+      "title": "Almagest (Mathēmatikē Syntaxis), Book I",
+      "year": 150,
+      "note": "The original relation among the sides and diagonals of a cyclic quadrilateral; this entry proves its converse."
+    },
+    {
+      "authors": "Roger A. Johnson",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": 1929,
+      "note": "Dover reprint. Ptolemy's theorem, the Ptolemy inequality, and the cyclic-quadrilateral characterization."
+    },
+    {
+      "authors": "H. S. M. Coxeter and S. L. Greitzer",
+      "title": "Geometry Revisited",
+      "year": 1967,
+      "note": "Mathematical Association of America. Ptolemy's theorem and its converse via the Ptolemy inequality."
+    },
+    {
+      "authors": "Nathan Altshiller-Court",
+      "title": "College Geometry (2nd ed.)",
+      "year": 1952,
+      "note": "Barnes & Noble. Cyclic quadrilaterals and equality conditions in Ptolemy's relation."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Complex.abs and EuclideanGeometry distance infrastructure",
+      "year": 2024,
+      "note": "Complex unit-circle coordinates and norm identities used to characterize cyclic order."
+    }
+  ],
   "meta": {
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem",

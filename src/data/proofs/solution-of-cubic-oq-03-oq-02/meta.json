@@ -3,6 +3,38 @@
   "title": "Casus Irreducibilis: When Real Roots Require Complex Cube Roots",
   "slug": "solution-of-cubic-oq-03-oq-02",
   "description": "Formalizes the casus irreducibilis: when the depressed cubic x³+px+q=0 has three distinct real roots (Δ>0), Cardano's formula necessarily involves non-real complex cube roots. Proves D<0 implies non-real arguments, verifies a concrete example (x³-7x+6=0), and states Wantzel's impossibility theorem.",
+  "references": [
+    {
+      "authors": "Gerolamo Cardano",
+      "title": "Artis Magnae, sive de Regulis Algebraicis (Ars Magna)",
+      "year": 1545,
+      "note": "Cardano's formula for the cubic, whose casus irreducibilis is formalized here."
+    },
+    {
+      "authors": "Rafael Bombelli",
+      "title": "L'Algebra",
+      "year": 1572,
+      "note": "Introduces complex arithmetic precisely to handle the casus irreducibilis of Cardano's formula."
+    },
+    {
+      "authors": "Pierre Laurent Wantzel",
+      "title": "Classification des nombres incommensurables d'origine algébrique (Nouvelles Annales de Mathématiques)",
+      "year": 1843,
+      "note": "Proof that in the casus irreducibilis the real roots genuinely cannot be expressed by real radicals."
+    },
+    {
+      "authors": "David A. Cox",
+      "title": "Galois Theory (2nd ed.)",
+      "year": 2012,
+      "note": "Wiley. The casus irreducibilis theorem and its Galois-theoretic explanation."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Complex, Polynomial.discriminant and cube-root infrastructure",
+      "year": 2024,
+      "note": "Discriminant sign analysis and complex cube roots used to prove non-real arguments when Δ>0."
+    }
+  ],
   "meta": {
     "author": "Cardano (1545), Bombelli (1572), Wantzel (1843); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Casus_irreducibilis",
