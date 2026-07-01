@@ -3,7 +3,14 @@
   "title": "The Cayley–Hamilton Linear Recurrence of Pell Solutions: uₙ₊₂ = 2x₁·uₙ₊₁ − uₙ",
   "slug": "pell-equation-oq-07",
   "description": "The root entry classifies the solutions of x² − Dy² = 1 multiplicatively — every solution is a power of the fundamental solution (x₁ + y₁√D) in ℤ[√D]. This entry extracts the additive shadow that classification leaves implicit: each coordinate of the power sequence satisfies a second-order linear recurrence, with coefficients fixed by the characteristic polynomial of the generating quadratic integer. Working in Mathlib's Zsqrtd d for arbitrary d, every a ∈ ℤ[√d] satisfies its Cayley–Hamilton relation a² = (2·re a)·a − N(a) — the trace 2·re a = a + ā and determinant N(a) = a·ā of multiplication by a. Multiplying by aⁿ yields aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ, and reading off the two coordinates gives uₙ₊₂ = (2·re a)·uₙ₊₁ − N(a)·uₙ for both x and y. For a Pell solution N(a) = 1, collapsing to uₙ₊₂ = (2·x₁)·uₙ₊₁ − uₙ: the coefficient is twice the first coordinate of the generator. This is the general-D explanation of the D = 2 coefficient 6 in pell-equation-oq-06-oq-03, since the norm-+1 generator there is 3 + 2√2 = ⟨3,2⟩ and 2·3 = 6.",
-  "leanFile": "Proofs/PellEquationOQ07.lean",
+  "leanFile": {
+    "path": "Proofs/PellEquationOQ07.lean",
+    "lineCount": 231,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "sorryCount": 0
+  },
   "sorries": 0,
   "meta": {
     "author": "Lean Genius (Cayley–Hamilton recurrence in ℤ[√d]); Brahmagupta / Lagrange (classical Pell theory)",
