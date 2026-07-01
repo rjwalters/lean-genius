@@ -1,5 +1,17 @@
 [
   {
+    "id": "overview-hierarchy",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "concept",
+    "title": "The Rank-1 Base Case of the Triangular-Rank Hierarchy",
+    "content": "The module docstring places this file as the *one-summand* base case of a triangular-rank hierarchy already in the gallery: rank 3 is Gauss's Eureka theorem (every natural is a sum of three triangular numbers, `ThreeSquaresGaussEureka`), rank 2 is the two-triangle characterization (`TwoTrianglesTwoSquares`, n = T + T ⟺ 4n+1 is a sum of two squares), and rank 1 — this file — characterizes when n is *itself* triangular: n = T(k) for some k ⟺ 8n+1 is a perfect square. The whole proof turns on one algebraic identity, (2k+1)² = 8·T(k)+1: forward gives a square from a triangular number; backward uses that 8n+1 is odd, so any root r = 2k+1, and the identity run in reverse pins n = T(k). Because k is recovered exactly and T is strictly monotone, the representation is unique. Since '8n+1 is a perfect square' is decidable, this upgrades IsTriangular to a DecidablePred — a constant-cost triangular-number test. No sorry, axiom, or native_decide.",
+    "mathContext": "$n = T(k) = \\tfrac{k(k+1)}2 \\ \\text{for some } k \\iff 8n+1 \\ \\text{is a perfect square};\\quad (2k+1)^2 = 8\\,T(k)+1.$",
+    "significance": "key",
+    "relatedConcepts": ["triangular-rank hierarchy", "Gauss Eureka theorem", "figurate numbers", "decidable characterization"],
+    "prerequisites": ["triangular numbers", "perfect squares", "parity of 8n+1"]
+  },
+  {
     "id": "tri-defs",
     "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02",
     "range": { "startLine": 44, "endLine": 59 },
