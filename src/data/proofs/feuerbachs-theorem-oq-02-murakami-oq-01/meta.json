@@ -72,7 +72,36 @@
       "Encoding a surd √p by the polynomial relation t² = p"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "question-and-answer",
+      "title": "The Question and the Answer",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "The doc-comment poses the follow-up to the parent Grace's-theorem entry: why does the surd t = √(a²b²+b²c²+c²a²) present in the insphere radius ρin = (ab+bc+ca−t)/(2σ) and D-exsphere radius ρex = (ab+bc+ca+t)/(2σ) disappear from the Grace centre Θ and radius R? The answer: ρin and ρex are the two conjugate roots of the rational quadratic 2σ·x² − 2(ab+bc+ca)·x + abc = 0 (σ = a+b+c), so their sum (ab+bc+ca)/σ and product abc/(2σ) are surd-free by Vieta while their difference t/σ is the pure surd. The crux is the ring identity (ab+bc+ca)² − t² = 2σ·abc (= 2·e₁·e₃). Includes the numeric sanity check at (a,b,c) = (2,3,6) and the inherited proof discipline (field_simp then ring/linear_combination)."
+    },
+    {
+      "id": "imports-and-setup",
+      "title": "Imports and Namespace Setup",
+      "startLine": 53,
+      "endLine": 66,
+      "summary": "Imports Mathlib, opens the BigOperators and Classical scopes, sets maxHeartbeats and disables autoImplicit/relaxedAutoImplicit for hygiene, and opens a noncomputable section under the FeuerbachOQ02MurakamiOQ01 namespace. The surd t is carried as an abstract real variable with a defining relation rather than an actual Real.sqrt, keeping every goal a polynomial/field identity."
+    },
+    {
+      "id": "conjugate-radii-theorem",
+      "title": "grace_radii_conjugate — Five Identities in One",
+      "startLine": 67,
+      "endLine": 105,
+      "summary": "The main theorem bundles five identities for the radius pair, with the surd encoded by ht : t² = a²b²+b²c²+c²a². The surd-free sum ρin+ρex = (ab+bc+ca)/σ and difference ρex−ρin = t/σ close by field_simp;ring (t enters linearly). The product ρin·ρex = abc/(2σ) and the two root equations 2σ·x² − 2(ab+bc+ca)·x + abc = 0 close by field_simp then linear_combination ±ht modulo the surd relation. The product identity — reducing to (ab+bc+ca)² − t² = 2σ·abc — is the algebraic heart of the surd cancellation. Note the −1 vs −2σ coefficient subtlety: field_simp cancels the shared 2σ before the residual is formed."
+    },
+    {
+      "id": "factorisation-theorem",
+      "title": "grace_radii_factorisation — Explicit Rational Quadratic",
+      "startLine": 107,
+      "endLine": 123,
+      "summary": "The supporting theorem gives the closed factorisation 2σ·(x−ρin)·(x−ρex) = 2σ·x² − 2(ab+bc+ca)·x + abc valid for all real x, proved by field_simp;linear_combination −ht. It exhibits ρin and ρex directly as the two roots of a quadratic with manifestly rational coefficients 2σ, −2(ab+bc+ca), abc, packaging the whole surd-cancellation result as one algebraic factorisation from which the sum and product identities can be read off as Vieta coefficients."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-oq-02-murakami",
