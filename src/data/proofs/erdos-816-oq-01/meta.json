@@ -40,7 +40,8 @@
     "keyInsights": [
       "A path of length 3 has odd length, so in a bipartite graph its endpoints lie in opposite parts — the single fact behind the counterexample.",
       "Distinct part degrees turn 'equal degree' into 'same part', which an odd path can never connect; this is precisely the K_{n,n+1} obstruction.",
-      "The degree pigeonhole is not immediate (n vertices, n possible degrees) but follows because degrees 0 and card−1 cannot both occur."
+      "The degree pigeonhole is not immediate (n vertices, n possible degrees) but follows because degrees 0 and card−1 cannot both occur.",
+      "The obstruction is specific to the ODD path length: a length-2 path (even) would join two vertices of the SAME part, so an equal-degree pair inside one colour class could still be connected at even distance. It is exactly because the required path has length 3 (odd) that same-part equal-degree pairs are unreachable and K_{n,n+1} becomes a counterexample — the parity of the target length, not merely bipartiteness, is what makes the problem delicate."
     ],
     "prerequisites": [
       "Bipartite graphs as proper 2-colourings",
@@ -67,6 +68,24 @@
     "path": "Proofs/Erdos816OQ01.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "title": "Erdős Problem #816",
+      "url": "https://www.erdosproblems.com/816"
+    },
+    {
+      "title": "M. Chen and J. Ma, \"Equal-degree pairs joined by a path of length three\" (2025), arXiv:2503.19569",
+      "url": "https://arxiv.org/abs/2503.19569"
+    },
+    {
+      "title": "Degree pigeonhole: any finite graph on ≥2 vertices has two vertices of equal degree (classical)",
+      "url": "https://en.wikipedia.org/wiki/Handshaking_lemma"
+    },
+    {
+      "title": "Mathlib: SimpleGraph degree and bipartite/colouring API",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/SimpleGraph/Degree.html"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-816",
