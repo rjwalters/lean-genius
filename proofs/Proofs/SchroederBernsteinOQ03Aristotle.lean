@@ -29,21 +29,33 @@ def partialInverse (g : ℕ → ℕ) : ℕ →. ℕ :=
     Follows from Partrec.rfind applied to the computable decidable predicate. -/
 lemma partialInverse_partrec {g : ℕ → ℕ} (hg : Computable g) :
     Partrec (partialInverse g) := by
-  sorry
+  unfold partialInverse
+  apply Partrec.rfind
+  apply Computable.partrec
+  -- The predicate `fun (m, n) => decide (g n = m)` is computable: `g` is computable and
+  -- nat-equality is primitive recursive (`Primrec.eq.decide`), composed via `Computable₂.comp`.
+  have heq : Computable₂ (fun a b : ℕ => decide (a = b)) :=
+    Primrec₂.to_comp (Primrec.eq.decide)
+  exact Computable₂.comp heq (hg.comp Computable.snd) Computable.fst
 
 /-- The partial inverse returns the correct preimage.
     If n ∈ partialInverse g m, then g n = m. -/
-lemma partialInverse_spec {g : ℕ → ℕ} (hg_inj : Injective g)
+lemma partialInverse_spec {g : ℕ → ℕ} (_hg_inj : Injective g)
     {m n : ℕ} (h : n ∈ partialInverse g m) : g n = m := by
   unfold partialInverse at h
-  exact of_decide_eq_true (Nat.rfind_spec h)
+  -- `Nat.rfind_spec` returns membership `true ∈ p n`; simp normalizes
+  -- `true ∈ ↑(decide (g n = m))` to `g n = m`.
+  simpa using Nat.rfind_spec h
 
 /-- If m is in the range of g, the partial inverse is defined at m. -/
 lemma partialInverse_dom {g : ℕ → ℕ} {m : ℕ} (hm : ∃ k, g k = m) :
     (partialInverse g m).Dom := by
   unfold partialInverse
   obtain ⟨k, hk⟩ := hm
-  obtain ⟨n, hn, -⟩ := Nat.rfind_min' (p := fun n => decide (g n = m)) (by simp [hk])
+  -- Pin the `rfind_min'` witness index to `k` by supplying `decide (g k = m) = true`
+  -- explicitly (leaving it to unification fails: the witness stays a metavariable).
+  obtain ⟨n, hn, -⟩ := Nat.rfind_min' (p := fun j => decide (g j = m))
+    (show decide (g k = m) = true by simp [hk])
   exact Part.dom_iff_mem.mpr ⟨n, hn⟩
 
 end SchroederBernsteinOQ03.Aristotle
