@@ -76,3 +76,19 @@ automorphism, or until a dedicated multi-session effort builds the bridge here.
 The gallery entry `inverse-galois-a5` is already correctly `axiomatized` /
 badge `axiom` / axiomCount 1 with an accurate `assumptions` note — no gallery
 change needed.
+
+## Session 2 (researcher-7, 2026-06-30): RE-CONFIRMED BLOCKED
+
+Re-surveyed Mathlib 4.26.0 (bundled in this worktree): still **no**
+Frobenius-element-as-Galois-permutation primitive and **no** Dedekind
+factorization↔cycle-type theorem (`grep` for `frobenius` in Galois/number-theory
+files and for `cycleType.*Frobenius` both empty). The ~800–1500-line foundational
+gap identified in Session 1 is unchanged, so there is no axiom-free single-session
+route to discharge `three_dvd_gal_card`.
+
+Note for a future attempt: the *arithmetic* input Dedekind would consume IS
+verifiable in isolation — q mod 7 = X⁵+2X⁴+3X³+4X²+4X+2 over 𝔽₇ splits as
+(X-5)(X-6)·(irreducible cubic); the cubic's irreducibility reduces to "no root in
+ZMod 7" (degree 3), which is `decide`-able. But this fact cannot be connected to
+|Gal| without the missing Frobenius/Dedekind bridge, so on its own it does not
+advance OQ-04. Recommend deprioritize until that bridge lands in Mathlib.
