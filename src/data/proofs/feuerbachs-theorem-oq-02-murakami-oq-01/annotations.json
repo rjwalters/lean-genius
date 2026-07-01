@@ -20,6 +20,12 @@
     ],
     "prerequisites": [
       "feuerbachs-theorem-oq-02-murakami"
+    ],
+    "tags": [
+      "concept",
+      "surd-cancellation",
+      "vieta",
+      "motivation"
     ]
   },
   {
@@ -43,6 +49,12 @@
     "prerequisites": [
       "Vieta's formulas",
       "encoding a surd by t² = p"
+    ],
+    "tags": [
+      "theorem",
+      "conjugate-radii",
+      "vieta",
+      "key-result"
     ]
   },
   {
@@ -62,7 +74,40 @@
       "div_eq_div_iff",
       "linear_combination coefficient"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "tags": [
+      "technique",
+      "field_simp",
+      "linear_combination",
+      "gotcha"
+    ]
+  },
+  {
+    "id": "ann-root-branches",
+    "proofId": "feuerbachs-theorem-oq-02-murakami-oq-01",
+    "range": {
+      "startLine": 100,
+      "endLine": 105
+    },
+    "type": "technique",
+    "title": "Both Root Branches Close with +ht, Not −ht",
+    "content": "The final two goals verify that ρin and ρex each satisfy the rational quadratic 2σ·x² − 2(ab+bc+ca)·x + abc = 0. After field_simp, each residual collapses to t² − (a²b²+b²c²+c²a²) = ht.lhs − ht.rhs, so both close by `linear_combination ht` (coefficient +1) — the OPPOSITE sign from the product identity's −ht. The two branches are otherwise identical because the t ↦ −t involution that swaps ρin ↔ ρex leaves each root equation fixed: a root equation is invariant under the conjugation, whereas the product residual (which mixes the ± signs) picks up the opposite orientation. Reading the sign off the cleared goal — not the source expression — is what makes the two adjacent branches use +ht here and −ht just above.",
+    "mathContext": "For a root r of A·x²+B·x+C with r = (−B ± √Δ)/(2A), substituting back gives Ar²+Br+C = 0 identically once √Δ² is replaced by Δ; the ± sign of the surd is immaterial, so both conjugate roots satisfy the same equation with the same certificate orientation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjugate roots",
+      "linear_combination coefficient",
+      "t ↦ −t involution",
+      "quadratic root verification"
+    ],
+    "prerequisites": [
+      "encoding a surd by t² = p"
+    ],
+    "tags": [
+      "technique",
+      "linear_combination",
+      "conjugate-roots"
+    ]
   },
   {
     "id": "ann-factorisation",
@@ -81,6 +126,11 @@
       "quadratic roots",
       "rational coefficients"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "tags": [
+      "theorem",
+      "factorisation",
+      "quadratic"
+    ]
   }
 ]
