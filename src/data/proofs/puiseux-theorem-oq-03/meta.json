@@ -57,12 +57,14 @@
       "puiseuxVal_surjective: the value group is all of ℚ — every rational q is the valuation of the monomial x^q; the precise sense in which HahnSeries ℚ K is fully ramified over the Laurent base K⸨x⸩ (value group ℤ)",
       "laurentToPuiseux: the unramified base inclusion K⸨x⸩=HahnSeries ℤ K ↪ PuiseuxSeries K (ring hom via the order embedding ℤ↪ℚ on value groups) — first brick of the open ramified embedding",
       "laurentToPuiseux_addVal: the inclusion preserves valuation (v_ℚ of image = ℤ-valuation cast into ℚ), so the image is exactly the integer-valuation elements",
-      "puiseuxMonomial_half_not_in_range: x^{1/2} (valuation ½) is NOT in the image — structural witness that ramification lives strictly outside the Laurent subfield (converse companion to puiseuxVal_surjective)"
+      "puiseuxMonomial_half_not_in_range: x^{1/2} (valuation ½) is NOT in the image — structural witness that ramification lives strictly outside the Laurent subfield (converse companion to puiseuxVal_surjective)",
+      "Single-edge (binomial) analytic bridge — binomial_edgeSlope (edge of Yⁿ−x^a has slope −a/n), binomial_root ((x^{a/n})ⁿ=x^a), binomial_edgeSlope_eq_neg_root_valuation: for EVERY n≥1 and a∈ℚ the binomial Yⁿ−x^a has a Puiseux root t with tⁿ=x^a, v(t)=a/n=−edgeSlope; first realization of edgeSlope=−v(root) as an unbounded family (vs the single Y²−x instance), with worked non-Y²−x witness ycubeMinusXsq_root_bridge (Y³−x²)",
+      "Synthesis (the two bridges meet) — puiseuxMonomial_not_in_range_of_not_isInt: a monomial x^q lies OUTSIDE the unramified Laurent image whenever q∉ℤ (generalizing puiseuxMonomial_half_not_in_range from x^{1/2} to the whole non-integer locus); binomial_root_not_in_range_of_not_isInt: the binomial root x^{a/n} is genuinely ramified exactly when a/n∉ℤ, with worked witness cubeRoot_x_not_in_range (x^{1/3} of Y³−x)"
     ],
     "dateAdded": "2026-06-27",
-    "lineCount": 1323,
-    "theoremCount": 71,
-    "definitionCount": 8,
+    "lineCount": 1429,
+    "theoremCount": 77,
+    "definitionCount": 10,
     "mathlib_version": "4.26.0"
   },
   "overview": {

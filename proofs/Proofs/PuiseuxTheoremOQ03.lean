@@ -1320,4 +1320,110 @@ theorem puiseuxMonomial_half_not_in_range :
 #print axioms laurentToPuiseux_addVal
 #print axioms puiseuxMonomial_half_not_in_range
 
+/-! ### The single-edge (binomial) bridge: `edgeSlope = −v(root)` as a family
+
+`ysqMinusX_root_valuation` realizes the slope ↔ root-valuation correspondence for the
+*single* polynomial `Y² − x`.  For a **binomial** `Yⁿ − x^a` — support `{(0,a), (n,0)}`, a
+single Newton edge — the correspondence holds as an *unbounded parametric family*: the edge
+from `(0,a)` to `(n,0)` has slope `−a/n`, and the Puiseux element `t = x^{a/n}` is a genuine
+root (`tⁿ = x^a`) carrying valuation `a/n = −edgeSlope`.  This is the first realization of
+`edgeSlope = −v(root)` for a whole family rather than one instance; the general multi-edge
+bridge (arbitrary `P ∈ K⸨x⸩[Y]`) stays open, blocked on the ramified embedding. -/
+
+/-- The single Newton edge of the binomial `Yⁿ − x^a` (support `{(0,a),(n,0)}`) has slope
+`−a/n`.  General in both the ramification index `n` and the constant valuation `a`. -/
+theorem binomial_edgeSlope (n : ℕ) (a : ℚ) :
+    edgeSlope ((0 : ℕ), a) ((n : ℕ), (0 : ℚ)) = -a / n := by
+  simp [edgeSlope]
+
+/-- The Puiseux element `x^{a/n}` is a genuine root of `Yⁿ − x^a`: raising it to the `n`-th
+power recovers the base monomial `x^a`.  Generalizes `sqrt_x_sq` (`n = 2, a = 1`) to the
+whole binomial family. -/
+theorem binomial_root (n : ℕ) (a : ℚ) (hn : 0 < n) :
+    (puiseuxMonomial (K := K) (a / n)) ^ n = puiseuxMonomial (K := K) a := by
+  have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  rw [puiseuxMonomial_pow]
+  congr 1
+  rw [nsmul_eq_mul, mul_comm, div_mul_cancel₀ _ hn']
+
+/-- The binomial root `x^{a/n}` carries valuation `a/n`. -/
+theorem binomial_root_valuation (n : ℕ) (a : ℚ) :
+    HahnSeries.addVal ℚ K (puiseuxMonomial (K := K) (a / n)) = ((a / n : ℚ) : WithTop ℚ) :=
+  puiseuxVal_monomial (a / n)
+
+/-- **`edgeSlope = −v(root)` for the whole binomial family.**  For every ramification index
+`n ≥ 1` and every constant valuation `a ∈ ℚ`, the binomial `Yⁿ − x^a` has a Puiseux root `t`
+(`tⁿ = x^a`) whose valuation `v(t) = a/n` equals the *negated* Newton-polygon edge slope
+`−edgeSlope ((0,a),(n,0))`.  This lifts the single `Y² − x` brick to an unbounded family and
+is the first statement pinning the combinatorial edge slope to an actual Puiseux root
+valuation for anything beyond one instance. -/
+theorem binomial_edgeSlope_eq_neg_root_valuation (n : ℕ) (a : ℚ) (hn : 0 < n) :
+    ∃ t : PuiseuxSeries K,
+      t ^ n = puiseuxMonomial (K := K) a ∧
+      HahnSeries.addVal ℚ K t = ((a / n : ℚ) : WithTop ℚ) ∧
+      (a / n : ℚ) = -edgeSlope ((0 : ℕ), a) ((n : ℕ), (0 : ℚ)) := by
+  refine ⟨puiseuxMonomial (a / n), binomial_root n a hn, binomial_root_valuation n a, ?_⟩
+  rw [binomial_edgeSlope n a]; ring
+
+/-- Worked instance `Y³ − x²`: the root `t = x^{2/3}` satisfies `t³ = x²`, has valuation
+`2/3`, and `2/3 = −edgeSlope ((0,2),(3,0))`.  A non-`Y²−x` witness of the family bridge. -/
+theorem ycubeMinusXsq_root_bridge :
+    ∃ t : PuiseuxSeries K,
+      t ^ 3 = puiseuxMonomial (K := K) 2 ∧
+      HahnSeries.addVal ℚ K t = ((2 / 3 : ℚ) : WithTop ℚ) ∧
+      (2 / 3 : ℚ) = -edgeSlope ((0 : ℕ), (2 : ℚ)) ((3 : ℕ), (0 : ℚ)) :=
+  binomial_edgeSlope_eq_neg_root_valuation 3 2 (by norm_num)
+
+/-! ### Synthesis: which binomial roots ramify — the two bridges meet
+
+The unramified-inclusion layer (`laurentToPuiseux`, image = integer-valuation elements) and
+the binomial-root layer (`x^{a/n}`, valuation `a/n`) intersect on a single question: *when is
+a binomial root genuinely ramified — i.e. outside the Laurent base?*  `puiseuxMonomial_half_not_in_range`
+answered this for the one point `x^{1/2}`; the two lemmas below answer it for every monomial —
+hence for every binomial root — at once. -/
+
+/-- **General ramification criterion.**  A Puiseux monomial `x^q` lies outside the unramified
+image `K⸨x⸩ ↪ PuiseuxSeries K` whenever its exponent `q` is not an integer.  This is the exact
+generalization of `puiseuxMonomial_half_not_in_range` (the `q = 1/2` instance) from one point
+to the whole non-integer locus: the image consists precisely of the integer-valuation
+elements, so a non-integer valuation certifies genuine ramification. -/
+theorem puiseuxMonomial_not_in_range_of_not_isInt (q : ℚ)
+    (hq : ∀ m : ℤ, q ≠ (m : ℚ)) :
+    ¬ ∃ z : HahnSeries ℤ K, laurentToPuiseux z = puiseuxMonomial (K := K) q := by
+  rintro ⟨z, hz⟩
+  have hval := laurentToPuiseux_addVal z
+  rw [hz, puiseuxVal_monomial] at hval
+  obtain hz0 | hzne := eq_or_ne (HahnSeries.addVal ℤ K z) ⊤
+  · rw [hz0] at hval; simp at hval
+  · obtain ⟨m, hm⟩ := WithTop.ne_top_iff_exists.mp hzne
+    rw [← hm, WithTop.map_coe, WithTop.coe_eq_coe] at hval
+    exact hq m hval
+
+/-- **Ramified binomial roots.**  The root `t = x^{a/n}` of the binomial `Yⁿ − x^a` is
+genuinely ramified — it is *not* in the Laurent base `K⸨x⸩` — exactly when the exponent `a/n`
+is not an integer (equivalently, when the reduced ramification index `n / gcd(a,n) > 1`).  The
+integer valuation of the unramified image cannot match the fractional `a/n`.  Specialization
+`a = 1, n = 2` recovers `puiseuxMonomial_half_not_in_range`. -/
+theorem binomial_root_not_in_range_of_not_isInt (n : ℕ) (a : ℚ)
+    (hq : ∀ m : ℤ, a / n ≠ (m : ℚ)) :
+    ¬ ∃ z : HahnSeries ℤ K, laurentToPuiseux z = puiseuxMonomial (K := K) (a / n) :=
+  puiseuxMonomial_not_in_range_of_not_isInt (a / n) hq
+
+/-- Worked instance: the root `x^{1/3}` of `Y³ − x` is genuinely ramified (`1/3 ∉ ℤ`), so it
+lies outside `K⸨x⸩` — a non-`x^{1/2}` witness that the binomial family reaches into the
+ramified part of the Puiseux field. -/
+theorem cubeRoot_x_not_in_range :
+    ¬ ∃ z : HahnSeries ℤ K, laurentToPuiseux z = puiseuxMonomial (K := K) (1 / 3) := by
+  have h : ((1 : ℚ) / ((3 : ℕ) : ℚ)) = 1 / 3 := by norm_num
+  rw [← h]
+  refine binomial_root_not_in_range_of_not_isInt 3 1 (fun m hm => ?_)
+  rw [h] at hm
+  have hmul : (3 : ℚ) * (m : ℚ) = 1 := by rw [← hm]; ring
+  have hint : (3 * m : ℤ) = 1 := by exact_mod_cast hmul
+  omega
+
+#print axioms binomial_edgeSlope_eq_neg_root_valuation
+#print axioms puiseuxMonomial_not_in_range_of_not_isInt
+#print axioms binomial_root_not_in_range_of_not_isInt
+
 end PuiseuxTheoremOQ03
