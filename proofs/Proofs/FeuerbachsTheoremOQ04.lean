@@ -1168,4 +1168,97 @@ theorem incircle_excircleAB_distinct {Na Nb Nc O : E} {ρ : ℝ}
   rw [h0] at hpos
   exact lt_irrefl 0 hpos
 
+/-! ### Completing the pairwise-distinctness matrix
+
+`incircle_excircleAB_distinct` above handles the incircle against excircles A and B (both
+flip the `a`–`b` relation). Feuerbach's "tangent to all four" presupposes that *all four*
+tritangent circles are pairwise distinct, i.e. every one of the six pairs is genuinely
+different. The remaining pairs — incircle vs. excircle C, and the three excircle–excircle
+pairs — are certified here. Each reduces to one of three sign-exclusivity engines
+(`a`–`b`, `b`–`c`, `a`–`c`), so on a nondegenerate radius (`0 < ρ < π`, `sin ρ > 0`) no
+single tangent centre can carry both circles' returned sign relations.
+
+Recall the sign patterns each existence theorem returns (writing `sᵢ = ⟪O, Nᵢ⟫`, so
+`|sₐ| = |s_b| = |s_c| = sin ρ`):
+
+* incircle  `sphericalIncircle_exists`  : `sₐ =  s_b`, `s_b =  s_c`   (all equal)
+* excircle A `sphericalExcircleA_exists` : `sₐ = -s_b`, `s_b =  s_c`   (`a` flipped)
+* excircle B `sphericalExcircleB_exists` : `sₐ = -s_b`, `sₐ =  s_c`   (`b` flipped)
+* excircle C `sphericalExcircleC_exists` : `sₐ =  s_b`, `s_b = -s_c`   (`c` flipped)
+-/
+
+/-- **`a`–`c` sign exclusivity.**  Companion to `incircle_excircleAB_signs_exclusive`
+(the `a`–`b` engine) and `incircle_excircleC_signs_exclusive` (the `b`–`c` engine): a
+tangent centre carrying both the equal relation `⟪O,Na⟫ = ⟪O,Nc⟫` and the flipped relation
+`⟪O,Na⟫ = -⟪O,Nc⟫` has degenerate radius `sin ρ = 0` (its `c`-side tangency vanishes). -/
+theorem incircle_excircle_ac_signs_exclusive {Na Nb Nc O : E} {ρ : ℝ}
+    (hinc : SphericalIncircle Na Nb Nc O ρ)
+    (hIn : (⟪O, Na⟫ : ℝ) = ⟪O, Nc⟫)
+    (hEx : (⟪O, Na⟫ : ℝ) = -⟪O, Nc⟫) :
+    Real.sin ρ = 0 :=
+  tangent_signs_opposite_imp_sin_zero hinc.2.2 hIn hEx
+
+/-- **Incircle vs. excircle C are genuinely distinct.**  The incircle has `⟪O,Nb⟫ = ⟪O,Nc⟫`
+while excircle C flips this to `⟪O,Nb⟫ = -⟪O,Nc⟫`.  On a nondegenerate radius no centre can
+satisfy both, so the incircle and excircle C are different circles.  (The `b`–`c` analogue
+of `incircle_excircleAB_distinct`.) -/
+theorem incircle_excircleC_distinct {Na Nb Nc O : E} {ρ : ℝ}
+    (hinc : SphericalIncircle Na Nb Nc O ρ)
+    (hρpos : 0 < ρ) (hρlt : ρ < Real.pi)
+    (hIn : (⟪O, Nb⟫ : ℝ) = ⟪O, Nc⟫)
+    (hEx : (⟪O, Nb⟫ : ℝ) = -⟪O, Nc⟫) :
+    False := by
+  have h0 : Real.sin ρ = 0 := incircle_excircleC_signs_exclusive hinc hIn hEx
+  have hpos : 0 < Real.sin ρ := Real.sin_pos_of_pos_of_lt_pi hρpos hρlt
+  rw [h0] at hpos
+  exact lt_irrefl 0 hpos
+
+/-- **Excircles A and B are genuinely distinct.**  Both flip the `a`–`b` relation, so they
+must be told apart on the `b`–`c` relation: excircle A returns `⟪O,Nb⟫ = ⟪O,Nc⟫`, whereas
+excircle B's pair `⟪O,Na⟫ = -⟪O,Nb⟫`, `⟪O,Na⟫ = ⟪O,Nc⟫` forces `⟪O,Nb⟫ = -⟪O,Nc⟫`.  On a
+nondegenerate radius these are incompatible, so excircles A and B are different circles. -/
+theorem excircleA_excircleB_distinct {Na Nb Nc O : E} {ρ : ℝ}
+    (hinc : SphericalIncircle Na Nb Nc O ρ)
+    (hρpos : 0 < ρ) (hρlt : ρ < Real.pi)
+    (hA_bc : (⟪O, Nb⟫ : ℝ) = ⟪O, Nc⟫)
+    (hB_ab : (⟪O, Na⟫ : ℝ) = -⟪O, Nb⟫)
+    (hB_ac : (⟪O, Na⟫ : ℝ) = ⟪O, Nc⟫) :
+    False := by
+  have hB_bc : (⟪O, Nb⟫ : ℝ) = -⟪O, Nc⟫ := by linarith
+  have h0 : Real.sin ρ = 0 := incircle_excircleC_signs_exclusive hinc hA_bc hB_bc
+  have hpos : 0 < Real.sin ρ := Real.sin_pos_of_pos_of_lt_pi hρpos hρlt
+  rw [h0] at hpos
+  exact lt_irrefl 0 hpos
+
+/-- **Excircles A and C are genuinely distinct.**  Excircle A flips the `a`–`b` relation
+(`⟪O,Na⟫ = -⟪O,Nb⟫`) while excircle C keeps it equal (`⟪O,Na⟫ = ⟪O,Nb⟫`).  On a nondegenerate
+radius these are incompatible, so excircles A and C are different circles. -/
+theorem excircleA_excircleC_distinct {Na Nb Nc O : E} {ρ : ℝ}
+    (hinc : SphericalIncircle Na Nb Nc O ρ)
+    (hρpos : 0 < ρ) (hρlt : ρ < Real.pi)
+    (hC_ab : (⟪O, Na⟫ : ℝ) = ⟪O, Nb⟫)
+    (hA_ab : (⟪O, Na⟫ : ℝ) = -⟪O, Nb⟫) :
+    False := by
+  have h0 : Real.sin ρ = 0 := incircle_excircleAB_signs_exclusive hinc hC_ab hA_ab
+  have hpos : 0 < Real.sin ρ := Real.sin_pos_of_pos_of_lt_pi hρpos hρlt
+  rw [h0] at hpos
+  exact lt_irrefl 0 hpos
+
+/-- **Excircles B and C are genuinely distinct.**  They agree on the `b`–`c` relation, so
+they are told apart on the `a`–`c` relation: excircle B returns `⟪O,Na⟫ = ⟪O,Nc⟫`, whereas
+excircle C's pair `⟪O,Na⟫ = ⟪O,Nb⟫`, `⟪O,Nb⟫ = -⟪O,Nc⟫` forces `⟪O,Na⟫ = -⟪O,Nc⟫`.  On a
+nondegenerate radius these are incompatible, so excircles B and C are different circles. -/
+theorem excircleB_excircleC_distinct {Na Nb Nc O : E} {ρ : ℝ}
+    (hinc : SphericalIncircle Na Nb Nc O ρ)
+    (hρpos : 0 < ρ) (hρlt : ρ < Real.pi)
+    (hB_ac : (⟪O, Na⟫ : ℝ) = ⟪O, Nc⟫)
+    (hC_ab : (⟪O, Na⟫ : ℝ) = ⟪O, Nb⟫)
+    (hC_bc : (⟪O, Nb⟫ : ℝ) = -⟪O, Nc⟫) :
+    False := by
+  have hC_ac : (⟪O, Na⟫ : ℝ) = -⟪O, Nc⟫ := by linarith
+  have h0 : Real.sin ρ = 0 := incircle_excircle_ac_signs_exclusive hinc hB_ac hC_ac
+  have hpos : 0 < Real.sin ρ := Real.sin_pos_of_pos_of_lt_pi hρpos hρlt
+  rw [h0] at hpos
+  exact lt_irrefl 0 hpos
+
 end FeuerbachsTheoremOQ04

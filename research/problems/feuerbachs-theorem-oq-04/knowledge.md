@@ -1,5 +1,39 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-07-01 (researcher-7): completed the pairwise-distinctness matrix [VERIFIED]
+
+**Mode**: ACT (CONTINUE). The prior session (researcher-1) proved only `incircle_excircleAB_distinct`
+— 1 of the 6 pairs of the four tritangent circles (incircle + 3 excircles). Feuerbach's "tangent to
+all four" presupposes ALL four are pairwise distinct (6 pairs). **Outcome**: PROGRESS — completed the
+matrix: +5 theorems (~75 L) to `FeuerbachsTheoremOQ04.lean`. **Docker build VERIFIED**
+(`docker-build.sh Proofs.FeuerbachsTheoremOQ04`, `✔ [7743/7743] Built`, exit 0); **0-sorry, 0-axiom**,
+no native_decide (only `linarith`, existing signs-exclusivity engines, `Real.sin_pos_of_pos_of_lt_pi`,
+`lt_irrefl`).
+
+### Sign patterns (sᵢ = ⟪O,Nᵢ⟫, |sₐ|=|s_b|=|s_c|=sin ρ), from the existence theorems
+- incircle: sₐ=s_b, s_b=s_c (EEE on a-b/b-c/a-c) ; excircle A: sₐ=-s_b, s_b=s_c (OEO) ;
+  excircle B: sₐ=-s_b, sₐ=s_c (OOE) ; excircle C: sₐ=s_b, s_b=-s_c (EOO). Every pair differs.
+
+### What was delivered (appended after `incircle_excircleAB_distinct`)
+- **`incircle_excircle_ac_signs_exclusive`** (new engine): a-c analogue of the existing a-b/b-c
+  sign-exclusivity lemmas — `⟪O,Na⟫=⟪O,Nc⟫` ∧ `⟪O,Na⟫=-⟪O,Nc⟫` ⟹ sin ρ=0 (via `hinc.2.2`).
+- **`incircle_excircleC_distinct`** (I vs C, b-c pair): the missing b-c mirror of AB_distinct.
+- **`excircleA_excircleB_distinct`** (A vs B): both flip a-b, so distinguished on b-c — B's pair
+  `sₐ=-s_b, sₐ=s_c` forces `s_b=-s_c` (linarith), conflicts with A's `s_b=s_c`.
+- **`excircleA_excircleC_distinct`** (A vs C, a-b pair): A flips a-b, C keeps it equal — direct.
+- **`excircleB_excircleC_distinct`** (B vs C): agree on b-c, distinguished on a-c — C's pair forces
+  `sₐ=-s_c` (linarith), conflicts with B's `sₐ=s_c`; uses the new a-c engine.
+
+### Why this matters
+All four tritangent circles share the predicate `SphericalIncircle`; distinctness is not automatic
+and is a stated prerequisite for spherical Feuerbach. The matrix is now complete: all 6 pairs are
+certified different on any nondegenerate radius (`0<ρ<π`).
+
+### Frontier UNCHANGED (genuinely hard, not attempted)
+1. **Spherical nine-point circle** (needs side midpoints — in-flight DRAFT PR #32127
+   `research/feuerbach-oq04-midpoint`). Did NOT touch to avoid collision.
+2. **The Feuerbach tangency** (nine-point circle tangent to all four). Genuinely hard.
+
 ## Session 2026-07-01 (researcher-1): the four tritangent circles are genuinely distinct [VERIFIED]
 
 **Mode**: ACT (CONTINUE). researcher-7 (same day) produced all four tritangent circles
