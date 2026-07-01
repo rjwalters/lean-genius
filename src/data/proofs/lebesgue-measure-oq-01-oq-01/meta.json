@@ -55,10 +55,11 @@
     },
     {
       "id": "section-39",
-      "title": "Part I: The Thomae Function (continued)",
+      "title": "Part I: Definition and Basic Properties",
       "startLine": 39,
       "endLine": 75,
-      "summary": "Continuation of Part I: The Thomae Function."
+      "summary": "Defines `thomae : ℝ → ℝ` by classical choice on the fiber of `Rat.cast`, returning `1/den` on rationals and `0` elsewhere (noncomputable). Proves the three defining properties: vanishing at irrationals (`thomae_irrational` via `dif_neg`), nonnegativity (`thomae_nonneg` via `positivity`), and the upper bound `thomae ≤ 1` (`thomae_le_one`, since `den ≥ 1`).",
+      "mathContext": "$0 \\leq f(x) \\leq 1$ for all $x$, with $f(x) = 0$ on $\\mathbb{R} \\setminus \\mathbb{Q}$. The definition `if h : ∃ q : ℚ, (q : ℝ) = x then 1 / (h.choose.den : ℝ) else 0` is well-defined but noncomputable: `h.choose` invokes classical choice to pick the (unique) rational representative, whose reduced denominator `.den` is canonical."
     },
     {
       "id": "ae-zero",
@@ -92,7 +93,7 @@
       "Can we prove that Thomae's function is continuous at every irrational and discontinuous at every rational in Lean?",
       "Can the popcorn function be used to construct an explicit example of a function that is Lebesgue but not Riemann integrable when extended to 2D?"
     ],
-    "implications": "Thomae's function has Lebesgue integral 0 because it is zero almost everywhere. The proof is a natural extension of the parent OQ01 result for the standard Dirichlet function."
+    "implications": "Thomae's function is the canonical worked example separating two regimes of integrability. Its discontinuity set is exactly ℚ — dense but measure zero — so by Lebesgue's criterion it *is* Riemann integrable (with integral 0), whereas Dirichlet's everywhere-discontinuous indicator 1_ℚ is *not* Riemann integrable. Yet in the Lebesgue framework both are zero a.e. and integrate to 0 by the identical countable-support argument, with no ε-δ bookkeeping. The formalization thus exhibits, in one file, why 'measure-zero discontinuities' is the sharp dividing line for Riemann integrability and how Lebesgue's a.e. viewpoint uniformly subsumes both classical pathologies."
   },
   "leanFile": {
     "imports": [
