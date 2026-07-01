@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ann-main-closed-form",
+    "proofId": "derangements-oq-04-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 85
+    },
+    "type": "theorem",
+    "title": "Rencontres Closed Form Over a Field",
+    "content": "**Theorem** `card_perms_with_kfixed_closed_form`:\n```\n(S(n,k) : 𝕜) = (n!/k!) · ∑_{j=0}^{n-k} (-1)^j / j!\n```\nwhere `S(n,k)` is the number of `σ : Perm (Fin n)` with exactly `k` fixed points, over any characteristic-zero field `𝕜`.\n\nThe proof is a three-line algebraic bridge:\n1. `rw` the combinatorial count `S(n,k) = C(n,k)·D(n-k)` (from derangements-oq-02);\n2. `push_cast` and `rw` the field closed form `D(n-k) = (n-k)!·∑(-1)^j/j!` (from derangements-oq-04);\n3. clear the `k!` denominator with `div_mul_eq_mul_div`/`eq_div_iff` and close with `linear_combination (∑…) * hchoose`, where `hchoose : C(n,k)·k!·(n-k)! = n!`.",
+    "mathContext": "S(n,k) = \\frac{n!}{k!}\\sum_{j=0}^{n-k}\\frac{(-1)^j}{j!}",
+    "significance": "central",
+    "relatedConcepts": [
+      "rencontres numbers",
+      "partial derangements",
+      "fixed points",
+      "truncated exponential series"
+    ],
+    "prerequisites": [
+      "S(n,k) = C(n,k)·D(n-k) (combinatorial count)",
+      "D(m) = m!·∑(-1)^j/j! (field derangement closed form)",
+      "C(n,k)·k!·(n-k)! = n!"
+    ]
+  },
+  {
+    "id": "ann-factorial-collapse",
+    "proofId": "derangements-oq-04-oq-01",
+    "range": {
+      "startLine": 73,
+      "endLine": 78
+    },
+    "type": "technique",
+    "title": "Collapsing the Constant to n!/k!",
+    "content": "The prefactor of the closed form is `C(n,k)·(n-k)!`, and the entire arithmetic content is that this equals `n!/k!`. The identity comes from `Nat.choose_mul_factorial_mul_factorial hk : C(n,k)·k!·(n-k)! = n!`, cast into `𝕜` as `hchoose`. Dividing by the nonzero `k!` (needing only `CharZero 𝕜`) turns `C(n,k)·(n-k)!` into `n!/k!`. This is why the final answer has the clean shape `n!/k!` and not a three-factorial expression.",
+    "mathContext": "\\binom{n}{k}(n-k)! = \\frac{n!}{k!}",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial coefficient",
+      "factorial identity",
+      "characteristic zero"
+    ],
+    "prerequisites": [
+      "Nat.choose_mul_factorial_mul_factorial",
+      "invertibility of k! in a characteristic-zero field"
+    ]
+  },
+  {
+    "id": "ann-trunc-phrasing",
+    "proofId": "derangements-oq-04-oq-01",
+    "range": {
+      "startLine": 87,
+      "endLine": 94
+    },
+    "type": "theorem",
+    "title": "Truncated-Exponential Phrasing",
+    "content": "**Theorem** `card_perms_with_kfixed_eq_factorial_mul_trunc`: the same identity written with the parent's truncated exponential,\n```\nS(n,k) = (n!/k!) · truncExpNegOne 𝕜 (n-k+1)\n```\nwhere `truncExpNegOne 𝕜 m = ∑_{j<m} (-1)^j/j!` is the order-`m` truncation of the series of `e^{-1}` (defined in derangements-oq-04). Since `truncExpNegOne 𝕜 (n-k+1)` is the partial sum through the `(-1)^{n-k}/(n-k)!` term, this matches the sum in the main theorem exactly; the proof simply unfolds the definition.",
+    "mathContext": "S(n,k) = \\frac{n!}{k!}\\,\\mathrm{truncExpNegOne}_{\\mathbb K}(n-k+1)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "truncated exponential of e^{-1}",
+      "partial sums"
+    ],
+    "prerequisites": [
+      "DerangementsOQ04.truncExpNegOne"
+    ]
+  },
+  {
+    "id": "ann-k-zero-consistency",
+    "proofId": "derangements-oq-04-oq-01",
+    "range": {
+      "startLine": 114,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "k = 0 Recovers the Derangement Closed Form",
+    "content": "**Theorem** `card_perms_with_kfixed_zero_closed_form`: specializing the main theorem at `k = 0` yields\n```\nS(n,0) = n! · ∑_{j=0}^{n} (-1)^j/j!,\n```\nthe parent derangement closed form for `D(n)`. Here `n!/0! = n!` and the summation range `n-0+1 = n+1` match the parent verbatim, so `simpa` closes the goal. This is a consistency check confirming the generalization reduces correctly to its k=0 base case, where 'exactly 0 fixed points' is precisely 'derangement'.",
+    "mathContext": "S(n,0) = D_n = n!\\sum_{j=0}^n \\frac{(-1)^j}{j!}",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "derangements as k=0 rencontres numbers",
+      "consistency check"
+    ],
+    "prerequisites": [
+      "card_perms_with_kfixed_closed_form"
+    ]
+  },
+  {
+    "id": "ann-sanity-check",
+    "proofId": "derangements-oq-04-oq-01",
+    "range": {
+      "startLine": 126,
+      "endLine": 131
+    },
+    "type": "example",
+    "title": "Sanity Check: S(4,1) = 8",
+    "content": "The `example` verifies the closed form for `S(4,1)` over ℚ. Combinatorially, a permutation of 4 elements with exactly one fixed point chooses that point (`C(4,1)=4` ways) and deranges the other 3 (`D_3 = 2` ways), so `S(4,1) = 8`. The closed form gives `(4!/1!)·(1 - 1 + 1/2 - 1/6) = 24·(1/3) = 8`, matching. This anchors the abstract theorem against a concrete small value.",
+    "mathContext": "S(4,1) = \\binom{4}{1}D_3 = 8 = \\frac{4!}{1!}\\left(1-1+\\tfrac12-\\tfrac16\\right)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "small-case verification"
+    ],
+    "prerequisites": [
+      "card_perms_with_kfixed_closed_form_rat"
+    ]
+  }
+]
