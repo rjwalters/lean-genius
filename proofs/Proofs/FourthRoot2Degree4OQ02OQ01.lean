@@ -141,7 +141,7 @@ theorem neg64_not_square : ∀ b : ℚ, b ^ 2 ≠ -64 := by
 /-- `X⁴ − C(−4)` is reducible over `ℚ`.  Rewriting `C(−4) = −4` turns the
 Kummer-form statement into the Sophie Germain witness. -/
 theorem X_pow_sub_C_neg4_reducible : ¬ Irreducible (X ^ 4 - C (-4 : ℚ)) := by
-  have hC : C (-4 : ℚ) = -4 := by simp
+  have hC : C (-4 : ℚ) = -4 := by rw [map_neg, map_ofNat]
   rw [hC]
   have h : (X ^ 4 - (-4) : ℚ[X]) = X ^ 4 + 4 := by ring
   rw [h]; exact X4_add_4_reducible
