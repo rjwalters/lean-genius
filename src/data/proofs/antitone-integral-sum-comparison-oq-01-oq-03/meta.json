@@ -70,5 +70,59 @@
     "definitionCount": 0,
     "path": "Proofs/AntitoneIntegralTest.lean",
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Augustin-Louis Cauchy",
+      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "year": 1821,
+      "venue": "Imprimerie Royale, Paris",
+      "note": "Origin of the integral (and condensation) test comparing a monotone series to the corresponding integral; the archetypal application is the logarithmic divergence of the harmonic series."
+    },
+    {
+      "authors": "Walter Rudin",
+      "title": "Principles of Mathematical Analysis",
+      "year": 1976,
+      "venue": "McGraw-Hill, 3rd ed.",
+      "note": "Theorem 3.28 states the integral test in the boundedness form used here — ∑ f(n) converges iff the partial integrals stay bounded — for a nonnegative decreasing f."
+    },
+    {
+      "authors": "Konrad Knopp",
+      "title": "Theory and Application of Infinite Series",
+      "year": 1951,
+      "venue": "Blackie & Son, 2nd English ed.",
+      "note": "Develops the integral test alongside the harmonic and p-series, and the log-defect that connects ∑ 1/k to log n (the parent family's Euler–Mascheroni thread)."
+    },
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Mathematical Analysis",
+      "year": 1974,
+      "venue": "Addison-Wesley, 2nd ed.",
+      "note": "Theorem 8.23 gives the integral test with the two-sided Riemann-staircase estimate that underlies the sum–integral sandwich promoted here into a convergence dichotomy."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "AntitoneOn.sum_le_integral, AntitoneOn.integral_le_sum, Summable, and intervalIntegral in Mathlib",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Supplies the one-step antitone sum–integral comparisons, the summable ⇔ bounded-partial-sums lemmas (summable_of_sum_range_le, sum_le_hasSum), and the interval-integral evaluation ∫ 1/x = log that this entry stitches into the general integral test."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "antitone-integral-sum-comparison-oq-01",
+      "relationship": "extends",
+      "description": "The parent packaged the two-sided sum–integral sandwich for an antitone f and applied it to 1/x; this entry promotes that one-off inequality into the general integral test — the reusable Summable (n ↦ f(n+1)) ↔ BddAbove {∫₁^{1+n} f} dichotomy the parent's implications pointed to."
+    },
+    {
+      "targetId": "antitone-integral-sum-comparison-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling answering the same parent from the increasing side: it builds the monotone companion sandwich and reads off Stirling bounds for log n! and the p-series criterion. The p-series convergence question it raises is the first open question this antitone dichotomy is designed to settle."
+    },
+    {
+      "targetId": "antitone-integral-sum-comparison-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling that also instantiates the antitone test at f(x)=1/x: where this entry uses the unbounded integrals log(n+1) to reprove harmonic divergence, that one studies the convergent harmonic defect Hₙ − log(n+1) en route to the Euler–Mascheroni constant — two faces of the same 1/x comparison."
+    }
+  ]
 }
