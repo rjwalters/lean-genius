@@ -31,6 +31,23 @@ Sorries remaining: 2 (unchanged — this PR adds one proven theorem; the two
 sorries `davydov_covariance_inequality` (S5c) and `mixing_clt_ibragimov` (S6+)
 remain).
 
+**S22 (this session): marginal-side layer-cake integration.** Added
+`mean_eq_survival_lt_Ioc` and `mean_prod_eq_double_survival_lt_Ioc` (both
+PROVEN, 0-axiom). The first integrates the S21 pointwise super-level identity
+into the bounded Cavalieri form `∫ f = ∫_{(0,M]} μ.real{t < f} dt` (strict `<`,
+matching the super-level indicators of `superlevel_setOf_measurable`); it is
+derived from Mathlib's `Integrable.integral_eq_integral_meas_lt` by restricting
+the `Ioi 0` tail to the finite window `(0, M]` (the survival probability
+vanishes for `t > M` by boundedness). The second gives the *product of
+marginals* as a separable double survival integral
+`(∫f)(∫g) = ∫_{(0,M]}∫_{(0,N]} μ.real{t<f}·μ.real{s<g}` — the factorized half of
+the covariance layer-cake `Cov(f,g) = ∫∫ Cov(𝟙_{f>t}, 𝟙_{g>s})`, collapsed by
+`integral_const_mul`/`integral_mul_const` (no product-measure Fubini needed since
+the integrand factorizes). Only the joint term `∫ f·g = ∫∫ μ.real{t<f ∧ s<g}`
+(the genuine `Ω × [0,M] × [0,N]` Fubini swap) remains for S23; subtracting it
+from the marginal term yields the covariance representation. Sorries
+unchanged (2).
+
 **S19 (this session): covariance translation-invariance.** Added
 `covariance_add_const_left` and `covariance_add_const_right` (PROVEN, 0-axiom):
 `Cov(f + c, g) = Cov(f, g)` and `Cov(f, g + c) = Cov(f, g)` in the explicit
@@ -132,6 +149,7 @@ Per the S1/S2 plan, this file builds on the parent
 
 import Mathlib.MeasureTheory.Function.LpSpace.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.Layercake
 import Mathlib.Probability.IdentDistrib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
@@ -1047,6 +1065,64 @@ theorem superlevel_setOf_measurable {m : MeasurableSpace Ω}
     {X : Ω → ℝ} (hX : Measurable[m] X) (t : ℝ) :
     @MeasurableSet Ω m {ω | t < X ω} :=
   measurableSet_lt measurable_const hX
+
+/-- **Mean survival representation over `Ioc 0 M`** (strict-`<` layer cake for a
+bounded nonnegative random variable). For an integrable `f` with `0 ≤ f ≤ M`
+(a.e.), the expectation is the integral of the *super-level* (survival)
+probability over `(0, M]`:
+`∫ f = ∫_{(0,M]} μ.real {ω | t < f ω} dt`.
+
+Mathlib's `Integrable.integral_eq_integral_meas_lt` gives the tail integral over
+the whole ray `Ioi 0` (Cavalieri's principle); the boundedness `f ≤ M` collapses
+the survival probability to `0` for `t > M`, so the integral may be restricted to
+`Ioc 0 M` (via `setIntegral_eq_of_subset_of_ae_diff_eq_zero`). The strict `<`
+convention matches the super-level indicators `𝟙_{t < f}` of
+`superlevel_setOf_measurable` used in the Davydov density step (S5c), and the
+finite window `(0, M]` is exactly the interval range appearing in
+`layer_cake_pointwise`. -/
+theorem mean_eq_survival_lt_Ioc
+    {μ : Measure Ω} {f : Ω → ℝ} {M : ℝ}
+    (hf_int : Integrable f μ) (hf_nn : 0 ≤ᵐ[μ] f)
+    (hf_bdd : f ≤ᵐ[μ] (fun _ => M)) :
+    ∫ ω, f ω ∂μ = ∫ t in Set.Ioc 0 M, μ.real {ω | t < f ω} := by
+  rw [MeasureTheory.Integrable.integral_eq_integral_meas_lt hf_int hf_nn]
+  rw [setIntegral_eq_of_subset_of_ae_diff_eq_zero
+      nullMeasurableSet_Ioi Set.Ioc_subset_Ioi_self ?_]
+  apply Filter.Eventually.of_forall (fun t ht => ?_)
+  have htM : M < t := by
+    simp_all only [Set.mem_diff, Set.mem_Ioi, Set.mem_Ioc, not_and, not_le]
+  have obs : μ {ω | M < f ω} = 0 := by
+    rw [measure_eq_zero_iff_ae_notMem]
+    filter_upwards [hf_bdd] with a ha using not_lt.mpr ha
+  rw [measureReal_def, ENNReal.toReal_eq_zero_iff]
+  exact Or.inl <| measure_mono_null (fun a ha => lt_trans htM ha) obs
+
+/-- **Product of marginals as a separable double survival integral.** For two
+bounded nonnegative integrable random variables `f ∈ [0, M]`, `g ∈ [0, N]`
+(a.e.), the product of the means factors through the survival functions:
+`(∫ f)(∫ g) = ∫_{(0,M]} ∫_{(0,N]} μ.real{t < f} · μ.real{s < g} ds dt`.
+
+This is the *product-of-marginals* half of the covariance layer-cake
+representation `Cov(f,g) = ∫∫ Cov(𝟙_{f>t}, 𝟙_{g>s}) ds dt`. Because the
+integrand factorizes as `A(t)·B(s)` with `A(t) = μ.real{t < f}` independent of
+`s` and `B(s) = μ.real{s < g}` independent of `t`, no product-measure Fubini is
+needed: the constants pull out of each 1-D integral (`integral_const_mul` inner,
+`integral_mul_const` outer) and the double integral collapses to the product of
+the two single survival integrals, each rewritten by `mean_eq_survival_lt_Ioc`.
+The remaining joint term `∫ f·g = ∫∫ μ.real{t < f ∧ s < g}` (the genuine
+bivariate layer cake, requiring the `Ω × [0,M] × [0,N]` Fubini swap) is deferred
+to a later session; subtracting the two yields the covariance representation. -/
+theorem mean_prod_eq_double_survival_lt_Ioc
+    {μ : Measure Ω} {f g : Ω → ℝ} {M N : ℝ}
+    (hf_int : Integrable f μ) (hf_nn : 0 ≤ᵐ[μ] f) (hf_bdd : f ≤ᵐ[μ] (fun _ => M))
+    (hg_int : Integrable g μ) (hg_nn : 0 ≤ᵐ[μ] g) (hg_bdd : g ≤ᵐ[μ] (fun _ => N)) :
+    (∫ ω, f ω ∂μ) * (∫ ω, g ω ∂μ)
+      = ∫ t in Set.Ioc 0 M, ∫ s in Set.Ioc 0 N,
+          μ.real {ω | t < f ω} * μ.real {ω | s < g ω} := by
+  rw [mean_eq_survival_lt_Ioc hf_int hf_nn hf_bdd,
+      mean_eq_survival_lt_Ioc hg_int hg_nn hg_bdd]
+  simp_rw [MeasureTheory.integral_const_mul]
+  rw [MeasureTheory.integral_mul_const]
 
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
