@@ -151,6 +151,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: the Imported Moment Machinery",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "The header docstring frames the descent statistic X (Eulerian row) and recalls the parent's mean (n−1)/2 and variance (n+1)/12. The three imports wire in exactly the pieces reused here: the parent oq-01-oq-01 supplies the transfer engine moment_transfer and the lower moments M₀, M₁, M₂; the sibling oq-05 supplies palindromy eulerian_palindrome'; the grandparent supplies the Eulerian numbers ⟨n,k⟩. Everything downstream is a specialisation of these.",
+      "mathContext": "$X$ = number of descents; row $(\\langle n,0\\rangle,\\dots,\\langle n,n-1\\rangle)$ with mean $\\tfrac{n-1}{2}$, variance $\\tfrac{n+1}{12}$."
+    },
+    {
       "id": "third-moment",
       "title": "The Third Moment via the Moment Recurrence",
       "startLine": 43,

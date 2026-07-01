@@ -1,5 +1,28 @@
 [
   {
+    "id": "setup-imports",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 33,
+      "endLine": 41
+    },
+    "type": "context",
+    "title": "Wiring in the transfer engine, the moments, and palindromy",
+    "content": "The four imports and the `open` line bring in exactly the machinery reused below, so this entry adds no new combinatorics of its own. From the parent `GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ01` come the transfer operator `moment_transfer` (the engine) together with the zeroth, first and second moments `eulerian_M0`, `eulerian_first_moment`, `eulerian_second_moment`; from the sibling `...OQ05` comes the palindromy `eulerian_palindrome'` ($\\langle n,k\\rangle=\\langle n,n{-}1{-}k\\rangle$); and the grandparent `...OQ01OQ01OQ01OQ01` supplies the Eulerian numbers `eulerian n k` themselves. The third moment is then obtained by specialising `moment_transfer` to $w(k)=k^3$, and the vanishing skewness by feeding an odd weight through `eulerian_palindrome'` — nothing else is imported.",
+    "mathContext": "Reused: $\\texttt{moment\\_transfer}$, $M_0,M_1,M_2$, and palindromy $\\langle n,k\\rangle=\\langle n,n{-}1{-}k\\rangle$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "moment-transfer engine",
+      "Eulerian numbers",
+      "palindromy of the Eulerian row",
+      "reuse of parent lemmas"
+    ],
+    "prerequisites": [
+      "Eulerian numbers",
+      "parent moment computations"
+    ]
+  },
+  {
     "id": "third-moment-recurrence",
     "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
     "range": {
