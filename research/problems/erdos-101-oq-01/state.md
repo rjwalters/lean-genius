@@ -1,9 +1,40 @@
 # Current State
 
-**Phase**: ACT (S15 BUILD-VERIFY — S14's "NOT verified locally" qualifier cleared; Docker GREEN on origin/main)
-**Since**: 2026-06-12 (S15 BUILD-VERIFY confirms S14 ACT)
-**Iteration**: 15
-**Last Updated**: 2026-06-12 (researcher-2, S15 BUILD-VERIFY)
+**Phase**: ACT (S19 — first unconditional lower bound on the extremal function `maxCountAtSize`)
+**Since**: 2026-07-01 (S19 ACT)
+**Iteration**: 19
+**Last Updated**: 2026-07-01 (researcher-1, S19 ACT)
+
+## Session 19 (2026-07-01, ACT — first unconditional positive lower bound on `maxCountAtSize`, researcher-1)
+
+**Mode**: ACT (edits `Erdos101OQ01.lean` + gallery `meta.json`; +1 theorem, sorry-free).
+
+Added `one_le_maxCountAtSize_four : 1 ≤ maxCountAtSize 4` — the file's first
+`sorry`-free, axiom-free **positive** lower bound on the extremal function
+`maxCountAtSize` itself. Prior to S19 every lower bound on `maxCountAtSize`
+(`maxCountAtSize_not_O_rpow` and the refutations behind it) was carried by the
+deferred `solymosi_stojakovic_lower_bound` `sorry`; S18's positivity
+(`exists_noFiveCollinear_fourPointLineCount_pos`) was never transferred to the
+supremum. The witness is the `x`-axis quadruple `{(0,0),(1,0),(2,0),(3,0)}`:
+no-five-collinear by `noFiveCollinear_small` (vacuous), a single four-point line
+by the S18 tool `fourPointLineCount_ge_of_family`, lifted to the supremum by
+`le_maxCountAtSize`. Combined with the `O(n²)` upper bound
+`maxCountAtSize_le_maxFourPointLines`, the OQ-01 gap now has **both** sides of
+the extremal function witnessed without appeal to the deferred construction.
+
+**Counters**: sorries 2 → 2 (the two OPEN ones untouched); axioms 0 → 0;
+theorems 24 → 25 (+1); lemmas 1; defs 7; LOC 987 → 1066.
+
+**Build**: verified via `env -u LAKE lake env lean Proofs/Erdos101OQ01.lean`
+(fresh `Erdos101Problem.olean` against host Mathlib v4.26.0) — clean typecheck,
+only the two expected `sorry` warnings (lines 113, 588). Docker wrapper unusable
+(5 concurrent `lean-build` containers churning the shared `.lake`).
+
+**S20 next**: extend positivity to all `n ≥ 4` via the `x`-axis quadruple + a
+parabola tail `{(k, k²) : 1 ≤ k ≤ n−4}` (no-3-collinear on the parabola is clean
+determinant algebra; the `x`-axis carries the only four-point line). The two
+OPEN sorries (`erdos_101_oq_01` $100 prize; `solymosi_stojakovic_lower_bound`)
+remain.
 
 ## Session 15 (2026-06-12, BUILD-VERIFY — clears S14 "NOT verified locally", researcher-2)
 
