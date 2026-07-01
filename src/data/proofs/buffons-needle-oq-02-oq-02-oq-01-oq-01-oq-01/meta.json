@@ -2,17 +2,6 @@
   "id": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
   "title": "The Asymptotic αₙ ~ √(2/(πn)) for the Buffon Crossing Factor",
   "slug": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
-  "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Filter"],
-    "namespace": "BuffonCrossingAsymptotic",
-    "lineCount": 347,
-    "axiomCount": 0,
-    "theoremCount": 20,
-    "definitionCount": 3,
-    "path": "Proofs/BuffonsNeedleOQ02OQ02OQ01OQ01OQ01.lean",
-    "sorries": 0
-  },
   "description": "Establishes the precise asymptotic alpha_n ~ sqrt(2/(pi*n)) for the n-dimensional Buffon crossing factor alpha_n = E over S^{n-1} of |u_1|, directly from the telescoping products of the parent entry rather than via Stirling's formula for Gamma(n/2)/(sqrt(pi) Gamma((n+1)/2)). Writing E_m = prod_{j<m} (2j+2)/(2j+3) (even product) and O_m = prod_{j<m} (2j+3)/(2j+4) (odd product), with alpha_{2m+2} = (2/pi) E_m and alpha_{2m+3} = (1/2) O_m: (1) the telescoping identity E_m * O_m = 1/(m+1); (2) the Wallis bridge W m = (2m+1) E_m^2 where W is Mathlib's Wallis partial product, so W m -> pi/2 transfers verbatim to (2m+1) E_m^2 -> pi/2 with no Stirling expansion; (3) sharp two-sided bounds pi/(4(m+1)) <= E_m^2 <= pi/(4m+2) from Mathlib's integral Wallis bounds, plus the purely rational bound E_m^2 < 1/(m+1) from the telescoping identity alone; (4) the asymptotic alpha_n * sqrt(n) -> sqrt(2/pi) proved for the even and odd subsequences from the Wallis bridge and merged over all n. 20 theorems/lemmas, 3 definitions, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
@@ -91,9 +80,65 @@
       "mathContext": "alpha_n * sqrt(n) -> sqrt(2/pi), i.e. alpha_n ~ sqrt(2/(pi n))."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-02-oq-02-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Direct sequel: the parent solves the two-step recurrence into the even/odd telescoping products E_m, O_m but only notes the decay rate from Gamma-asymptotics. This entry proves the asymptotic alpha_n ~ sqrt(2/(pi n)) and sharp two-sided bounds directly from those products via the Wallis bridge W m = (2m+1) E_m^2."
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "related",
+      "description": "The classical Buffon's needle problem (n = 2), whose crossing constant 2/pi is the base value alpha_2; the asymptotic here describes how alpha_n decays as the ambient dimension grows."
+    }
+  ],
   "conclusion": {
     "summary": "Establishes the precise asymptotic alpha_n ~ sqrt(2/(pi*n)) for the n-dimensional Buffon crossing factor alpha_n = E over S^{n-1} of |u_1|, directly from the telescoping products of the parent entry. The mechanism is the Wallis bridge W m = (2m+1) E_m^2 (wallis_eq): the even product squared, scaled by 2m+1, is exactly Mathlib's Wallis partial product, so the limit W m -> pi/2 transfers verbatim to (2m+1) E_m^2 -> pi/2 -- no Stirling expansion of the Gamma quotient is used. The same bridge yields the sharp two-sided bounds pi/(4(m+1)) <= E_m^2 <= pi/(4m+2) (le_evenProd_sq, evenProd_sq_le), while the bare telescoping identity E_m O_m = 1/(m+1) gives the rational bound E_m^2 < 1/(m+1). The even and odd subsequence asymptotics alpha_n sqrt(n) -> sqrt(2/pi) (tendsto_even, tendsto_odd) are merged into the full asymptotic over all n (tendsto_crossingFactor_sqrt). 347 lines, 20 theorems/lemmas, 3 definitions, 0 sorries, 0 axioms, no native_decide.",
     "implications": "The parent entry gives the closed-form telescoping products but only notes the decay alpha_n -> 0 like sqrt(2/(pi n)) as a consequence of Gamma-asymptotics. This entry derives that decay rigorously from the products themselves, isolating the single non-elementary input -- the Wallis limit W m -> pi/2 -- and feeding it through the exact algebraic identity W m = (2m+1) E_m^2. The sharp two-sided bounds make the rate quantitative at every m, and the rational bound E_m^2 < 1/(m+1) shows how far one gets with the telescoping identity alone (a bound with the correct 1/sqrt(m) order but a non-sharp constant), clarifying precisely where the pi enters."
+  },
+  "references": [
+    {
+      "authors": "Solomon, Herbert",
+      "title": "Geometric Probability",
+      "year": "1978",
+      "venue": "CBMS-NSF Regional Conference Series 28, SIAM",
+      "note": "Buffon's needle, its generalizations, and integral-geometry methods."
+    },
+    {
+      "authors": "Klain, Daniel A. and Rota, Gian-Carlo",
+      "title": "Introduction to Geometric Probability",
+      "year": "1997",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "Whittaker, E. T. and Watson, G. N.",
+      "title": "A Course of Modern Analysis (4th ed.)",
+      "year": "1927",
+      "venue": "Cambridge University Press",
+      "note": "Beta and Gamma function integrals ∫₀^{π/2} sin^a θ cos^b θ dθ."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "integral_sin_pow, integral_cos_pow, Real.Gamma/Beta and sphere-measure lemmas (Mathlib.Analysis.SpecialFunctions.Integrals / .Gamma)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
+    "namespace": "BuffonCrossingAsymptotic",
+    "lineCount": 347,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 3,
+    "path": "Proofs/BuffonsNeedleOQ02OQ02OQ01OQ01OQ01.lean",
+    "sorries": 0
   },
   "openQuestions": [
     {
@@ -105,18 +150,6 @@
       "id": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01-oq-02",
       "question": "Establish the monotonicity of the normalized sequence (2m+1) E_m^2 (equal to W m) toward pi/2 -- is it monotone increasing? -- and deduce one-sided error bounds for alpha_n sqrt(n) relative to sqrt(2/pi) valid for all n.",
       "significance": "low"
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "buffons-needle-oq-02-oq-02-oq-01-oq-01",
-      "relationship": "extends",
-      "description": "Direct sequel: the parent solves the two-step recurrence into the even/odd telescoping products E_m, O_m but only notes the decay rate from Gamma-asymptotics. This entry proves the asymptotic alpha_n ~ sqrt(2/(pi n)) and sharp two-sided bounds directly from those products via the Wallis bridge W m = (2m+1) E_m^2."
-    },
-    {
-      "targetId": "buffons-needle",
-      "relationship": "related",
-      "description": "The classical Buffon's needle problem (n = 2), whose crossing constant 2/pi is the base value alpha_2; the asymptotic here describes how alpha_n decays as the ambient dimension grows."
     }
   ]
 }
