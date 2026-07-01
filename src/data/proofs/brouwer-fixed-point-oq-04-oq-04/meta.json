@@ -37,6 +37,32 @@
     ],
     "definitionCount": 2
   },
+  "references": [
+    {
+      "authors": "Kakutani, Shizuo",
+      "title": "A generalization of Brouwer's fixed point theorem",
+      "year": "1941",
+      "venue": "Duke Mathematical Journal 8(3), 457–459"
+    },
+    {
+      "authors": "Scarf, Herbert",
+      "title": "The approximation of fixed points of a continuous mapping",
+      "year": "1967",
+      "venue": "SIAM Journal on Applied Mathematics 15(5), 1328–1343"
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "3rd ed., McGraw-Hill"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "discrete intermediate value and localization; Mathlib.Topology.Order.IntermediateValue",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The question of whether Kakutani's fixed point theorem has constructive content was resolved by Herbert Scarf in 1967. While Brouwer's theorem and its generalizations (Kakutani, Schauder, Fan-Glicksberg) are classically non-constructive existence results, Scarf showed that the proof can be made algorithmic via Sperner's lemma on simplicial subdivisions. His pivoting algorithm finds ε-approximate fixed points in finitely many steps, with complexity O(n^2/ε^n). This established fixed point theory as a foundation for computational economics and game theory, leading to the development of computable general equilibrium models.",
     "problemStatement": "Open Question OQ-04-OQ-04: Can the constructive content of Kakutani's fixed point theorem be extracted? Is there an effective algorithm that, given an upper hemicontinuous correspondence F : K → 2^K on a compact convex K ⊆ ℝⁿ and ε > 0, produces an ε-approximate fixed point of F in finitely many steps?",

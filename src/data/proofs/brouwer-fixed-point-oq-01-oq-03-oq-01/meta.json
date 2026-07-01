@@ -64,6 +64,26 @@
       "stdPos_global_continuity_fails / stdNeg_global_continuity_fails: Part 9 — the GLOBAL continuity hypotheses hcont_pos/hcont_neg of ham_sandwich_standard_of_scalar_continuity are NON-dischargeable for any nondegenerate cut: the scalar slice-volume map is 0 at the origin (the cut degenerates to ∅) yet equals a fixed positive constant along the ray (k+1)⁻¹·x₀ → 0, so it has a jump discontinuity at 0. This certifies that the faithful hypothesis is ContinuousOn (Sphere n) — where x=0 never occurs and the Borsuk-Ulam machinery only ever reads f — rather than global Continuous; reformulating the chain to ContinuousOn is the precise remaining work"
     ]
   },
+  "references": [
+    {
+      "authors": "Matoušek, Jiří",
+      "title": "Using the Borsuk–Ulam Theorem",
+      "year": "2003",
+      "venue": "Universitext, Springer"
+    },
+    {
+      "authors": "Borsuk, Karol",
+      "title": "Drei Sätze über die n-dimensionale euklidische Sphäre",
+      "year": "1933",
+      "venue": "Fundamenta Mathematicae 20, 177–190"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Borsuk–Ulam antipodal maps and sphere topology; Mathlib.Topology.Algebra.Module",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The Ham Sandwich theorem (Stone-Tukey, 1942) states that any n bounded measurable sets in R^n can be simultaneously bisected by a single hyperplane — named for slicing ham, cheese, and bread with one knife cut. It is the most famous corollary of the Borsuk-Ulam theorem (Borsuk, 1933), whose own depth lies in degree theory for maps of spheres (Brouwer 1912, Hopf 1930): an odd continuous map S^n -> S^n has odd degree and cannot be null-homotopic. The standard textbook derivation of Ham Sandwich from Borsuk-Ulam glosses over an analytic subtlety — that the half-volume function of a parameterized family of half-spaces is continuous — which is exactly what a fully formal proof must isolate. This entry performs that isolation: it shows the parent gallery proof's decision to axiomatize Ham Sandwich was diagnostically exact, by proving every part of the reduction except that one continuity fact.",
     "problemStatement": "OQ-01-OQ-03-OQ-01: The parent OQ-01-OQ-03 derived the n-dimensional Borsuk-Ulam theorem and stated the Ham Sandwich theorem as an axiom, with the honest note that the obstruction is the continuity of the bisecting-measure function. How much of that axiom is genuinely topological (hence already available from Borsuk-Ulam), and how much is the true analytic input?",

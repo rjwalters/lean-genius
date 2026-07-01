@@ -60,6 +60,32 @@
     "theoremCount": 5,
     "definitionCount": 2
   },
+  "references": [
+    {
+      "authors": "Sperner, Emanuel",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": "1928",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6, 265–272"
+    },
+    {
+      "authors": "Hatcher, Allen",
+      "title": "Algebraic Topology",
+      "year": "2002",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "3rd ed., McGraw-Hill"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "intermediate value theorem and finite parity arguments; Mathlib.Topology.Order.IntermediateValue",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "Sperner's lemma (Emanuel Sperner, 1928) is the combinatorial counterpart of Brouwer's fixed point theorem: a 'Sperner coloring' of any triangulation of a simplex must contain a fully-colored small simplex, and letting the mesh tend to zero recovers Brouwer. The proof is by induction on dimension, and the base case — dimension 1 — is the elementary parity statement formalized here: a colored path from one endpoint color to another must switch colors an odd number of times. This 1D fact is also exactly the discrete intermediate value theorem.",
     "problemStatement": "The parent's first open question asks for a fully elementary, combinatorial 2D Brouwer via Sperner's lemma. Mathlib has no Sperner's lemma of combinatorial topology. As the foundational first step, formalize the 1-dimensional Sperner lemma — the base case of the dimension-induction and the boundary-counting tool for the 2D argument.",

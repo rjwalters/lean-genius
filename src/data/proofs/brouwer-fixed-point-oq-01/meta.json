@@ -35,6 +35,26 @@
       "dimension_gap: conceptual explanation of why 1D is elementary but n≥2 needs algebraic topology"
     ]
   },
+  "references": [
+    {
+      "authors": "Rudin, Walter",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "3rd ed., McGraw-Hill"
+    },
+    {
+      "authors": "Hatcher, Allen",
+      "title": "Algebraic Topology",
+      "year": "2002",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "intermediate_value_Icc and continuous self-maps of [0,1]; Mathlib.Topology.Order.IntermediateValue",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "L.E.J. Brouwer proved the general Fixed Point Theorem in 1911 using simplicial homology — one of the first major results of algebraic topology. The theorem states: every continuous map from a closed ball Bⁿ to itself has a fixed point. The 1D case (n=1, the interval) had been known implicitly to Cauchy and others, essentially following from the Intermediate Value Theorem. Poincaré had proved a version for the disk in 1886 using degree theory. The algebraic topology proof for general n was Brouwer's fundamental contribution. Stefan Banach (1922) proved a stronger theorem for contracting maps on complete metric spaces: not only existence but uniqueness, with an algorithmic construction (iteration of f). The No-Retraction Theorem (Borsuk 1931) and the Borsuk-Ulam Theorem (Borsuk 1933) are companions: No-Retraction is equivalent to Brouwer FPT; Borsuk-Ulam generalizes the antipodal symmetry constraint. All of these reduce to IVT in dimension 1.",
     "problemStatement": "Can the Brouwer Fixed Point Theorem in 1D be proved using only the Intermediate Value Theorem, without degree theory, homology, or other algebraic topology? And why does this approach fail in higher dimensions?",

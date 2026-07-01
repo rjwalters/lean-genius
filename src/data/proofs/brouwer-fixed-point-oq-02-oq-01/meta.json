@@ -40,6 +40,26 @@
     "definitionCount": 20,
     "mathlib_version": "4.26.0"
   },
+  "references": [
+    {
+      "authors": "Sperner, Emanuel",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": "1928",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6, 265–272"
+    },
+    {
+      "authors": "Matoušek, Jiří",
+      "title": "Using the Borsuk–Ulam Theorem",
+      "year": "2003",
+      "venue": "Universitext, Springer"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "triangulations and parity (door-counting) arguments; Mathlib.Combinatorics.SimplicialComplex",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "Sperner's lemma (1928) is a combinatorial result about colorings of triangulated simplices. In 2D: if the vertices of any triangulation of a triangle are 3-colored such that each edge of the big triangle uses only 2 colors and the corners use distinct colors, then some small triangle gets all 3 colors. The lemma implies Brouwer's fixed point theorem via a compactness argument.\n\nThe Chen-Deng (2009) PPAD-completeness result shows that finding an approximately fixed point of a Lipschitz map on the simplex is PPAD-complete — even in 2D. The key reduction uses the fact that finding a fully-colored simplex in a Sperner-colored triangulation is PPAD-complete. This connects the combinatorial lemma to computational complexity.\n\nThe standard proof of Sperner's lemma uses a door-counting (double-counting) argument: {0,1}-colored edges of triangles are 'doors'. Each fully-colored triangle has exactly 1 door; each non-fully-colored triangle has 0 or 2 doors. The boundary contributes an odd number of doors (from the 1D Sperner lemma on the bottom edge). Therefore the count of fully-colored triangles is odd.",
     "problemStatement": "**Sperner's Lemma (2D)**: For any n and any Sperner-coloring of the grid triangulation of the standard 2-simplex, the number of fully-colored triangles (using all 3 colors) is odd (hence ≥ 1).\n\n**Approximate Fixed Point**: For any continuous self-map f of the 2-simplex and any ε > 0, there exists a point p with dist(p, f(p)) < ε.",
