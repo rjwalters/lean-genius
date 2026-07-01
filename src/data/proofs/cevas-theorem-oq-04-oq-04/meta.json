@@ -91,6 +91,27 @@
       "Affine combinations and lines in a vector space"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Coxeter, H.S.M.",
+        "Greitzer, S.L."
+      ],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "New Mathematical Library 19, Mathematical Association of America",
+      "note": "Classical treatment of Ceva's and Menelaus' theorems, mass points and the special triangle centers."
+    },
+    {
+      "authors": [
+        "Honsberger, R."
+      ],
+      "title": "Episodes in Nineteenth and Twentieth Century Euclidean Geometry",
+      "year": "1995",
+      "venue": "New Mathematical Library 37, Mathematical Association of America",
+      "note": "The Nagel and Gergonne points, excenters and mass-point constructions."
+    }
+  ],
   "conclusion": {
     "summary": "Assigning vertex masses equal to the opposite side lengths realises the three angle bisectors of a triangle within the parent's mass-point framework: the induced division ratios are exactly the angle-bisector theorem ratios c/b, a/c, b/a, whose Ceva product is 1. The bisectors are concurrent at the incenter I = (a·A + b·B + c·C)/(a+b+c), proved constructively by placing I on each bisector as an affine combination of a vertex and the opposite foot (and as AffineMap.lineMap). Fully verified, 0 axioms, 0 sorries.",
     "implications": "This is the canonical angle-bisector / incenter worked example of mass-point geometry, made into a checked theorem. Beyond the parent's ratio identity it provides an explicit geometric concurrency witness (the incenter on all three cevians) valid in any real vector space, and identifies the incenter's barycentric coordinates as (a : b : c).",

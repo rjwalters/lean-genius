@@ -53,6 +53,26 @@
       "Hyperbolic geometry: hyperboloid model, sinh distance function"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Ratcliffe, J.G."
+      ],
+      "title": "Foundations of Hyperbolic Manifolds",
+      "year": "2019",
+      "venue": "3rd ed., Graduate Texts in Mathematics 149, Springer",
+      "note": "Hyperboloid model and hyperbolic (sinh-ratio) trigonometry for the hyperbolic Ceva/Menelaus laws."
+    },
+    {
+      "authors": [
+        "Coxeter, H.S.M."
+      ],
+      "title": "Introduction to Geometry",
+      "year": "1969",
+      "venue": "2nd ed., Wiley",
+      "note": "Affine and projective ratios underlying Ceva/Menelaus and their higher-dimensional analogues."
+    }
+  ],
   "conclusion": {
     "summary": "Hyperbolic Ceva's theorem is proved via weight parameters in the hyperboloid model: sinh(d(B,D))/sinh(d(D,C)) = β/α by algebraic cancellation, and the triple product equals 1 iff αD·αE·αF = βD·βE·βF. This unifies with Euclidean and spherical cases. 13 theorems, 4 definitions, 301 lines, 0 axioms.",
     "implications": "The universality result confirms that Ceva's theorem is fundamentally a theorem of projective/barycentric geometry. The weight parameters (α:β) encode projective cross-ratios on each edge, and the concurrency condition is a projective invariant. This perspective unifies Euclidean, spherical, and hyperbolic cases under the Klein model (where hyperbolic geometry IS projective geometry on the disk).",

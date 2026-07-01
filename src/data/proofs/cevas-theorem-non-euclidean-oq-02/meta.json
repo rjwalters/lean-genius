@@ -112,6 +112,36 @@
       "mathContext": "Architectural pattern: GeneralizedMenelausConfig (algebraic core) → toGeneralized conversion (measure function swap: $\\text{id} \\to \\sinh$) → HyperbolicMenelausConfig (hyperbolic Menelaus). The algebraic biconditional is proved once and reused for all geometries."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Coxeter, H.S.M.",
+        "Greitzer, S.L."
+      ],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "New Mathematical Library 19, Mathematical Association of America",
+      "note": "Classical treatment of Ceva's and Menelaus' theorems, mass points and the special triangle centers."
+    },
+    {
+      "authors": [
+        "Todhunter, I."
+      ],
+      "title": "Spherical Trigonometry, for the Use of Colleges and Schools",
+      "year": "1886",
+      "venue": "5th ed., Macmillan",
+      "note": "The spherical (great-circle) forms of the Ceva and Menelaus theorems."
+    },
+    {
+      "authors": [
+        "Ratcliffe, J.G."
+      ],
+      "title": "Foundations of Hyperbolic Manifolds",
+      "year": "2019",
+      "venue": "3rd ed., Graduate Texts in Mathematics 149, Springer",
+      "note": "Hyperboloid model and hyperbolic (sinh-ratio) trigonometry for the hyperbolic Ceva/Menelaus laws."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization now covers Menelaus' theorem in all three constant-curvature geometries (Euclidean, Spherical, Hyperbolic), completing the Ceva-Menelaus trichotomy. All results are fully verified (0 sorries, 0 axioms) using a single generalized algebraic core.",
     "implications": "The unified Ceva-Menelaus framework confirms that the same algebraic biconditional governs all three geometries — only the measure function changes. This pattern could extend to other triangle theorems (Stewart's, trigonometric Ceva) in non-Euclidean settings.",

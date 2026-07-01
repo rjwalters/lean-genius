@@ -10,7 +10,9 @@
   "leanFile": {
     "path": "Proofs/CevasTheoremOQ04OQ04OQ02.lean",
     "namespace": "MassPointCeva.Excenters",
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "opens": [],
     "axiomCount": 0,
     "sorries": 0,
@@ -88,6 +90,27 @@
       "endLine": 223,
       "summary": "excenterA_on_bisector_A proves the A-excenter (signed mass −a at A) lies on the internal A-bisector through footBisectorA — the same foot as the incenter (incenter_on_bisector_A, for comparison). excenterB_on_bisector_B gives the B-excenter on its own internal bisector. Weight-sum-one lemmas accompany each.",
       "mathContext": "A-excenter = (−(y+z)/2x)A + ((2x+y+z)/2x)·footBisectorA, weights summing to 1 even though the apex weight is negative."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Honsberger, R."
+      ],
+      "title": "Episodes in Nineteenth and Twentieth Century Euclidean Geometry",
+      "year": "1995",
+      "venue": "New Mathematical Library 37, Mathematical Association of America",
+      "note": "The Nagel and Gergonne points, excenters and mass-point constructions."
+    },
+    {
+      "authors": [
+        "Coxeter, H.S.M.",
+        "Greitzer, S.L."
+      ],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "New Mathematical Library 19, Mathematical Association of America",
+      "note": "Classical treatment of Ceva's and Menelaus' theorems, mass points and the special triangle centers."
     }
   ],
   "conclusion": {
