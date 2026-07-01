@@ -8,7 +8,7 @@
   "tractability": 8,
   "problemStatement": "Prove nonCrossingCount n = catalan n, where nonCrossingCount n (from ballot-problem-oq-04-oq-02) is the cardinality of non-crossing Finpartitions of Fin n. This is openQuestion[2] of the sibling entry: establish the Catalan convolution recurrence directly on the Finpartition model rather than via the full Dyck-word bijection.",
   "knowledge": {
-    "progressSummary": "BLOCKED (infra, 3 sessions): reduction to nonCrossingCount_recurrence is 0-sorry; the recurrence itself needs a >1000-line first-return Equiv on Finpartitions absent from Mathlib. Aristotle down (404). Pool status set to blocked.",
+    "progressSummary": "BLOCKED (Aristotle outage persists 2026-07-01): sole sorry `nonempty_firstReturnEquiv` (first-return Catalan bijection) is a HARD known-math construction awaiting proof-search offload; file builds clean, n=4 decide route ruled out.",
     "builtItems": [
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_zero : nonCrossingCount 0 = 1 (via nonCrossingCount_eq_card_of_n_le_three + Unique (Finpartition ⊥) + Fintype.card_unique). 0 sorry.",
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_eq_catalan : nonCrossingCount n = catalan n, proved by Nat.strong_induction_on, matching nonCrossingCount_recurrence against Mathlib catalan_succ' term-by-term over antidiagonal n. Depends on the recurrence sorry; reduction itself 0 sorry.",
@@ -20,14 +20,19 @@
       "The recurrence must be proved INDEPENDENTLY (combinatorially) — one cannot assume nonCrossingCount = catalan to get it, else the induction is circular. It is the genuine block/first-return decomposition of a non-crossing partition of a linearly ordered (n+1)-set.",
       "This is exactly the path the sibling ballot-problem-oq-04-oq-02 flagged as its openQuestion[2] ('establish the Catalan recurrence directly on the Finpartition model ... without constructing the full bijection').",
       "Aristotle service outage confirmed 2026-06-26: prove_file and mcp-smoke-test.sh both 404 on https://aristotle.harmonic.fun/api/v1/project. Server-side endpoint retired/moved; skip Aristotle until smoke test passes.",
-      "Session 3 (2026-06-30, researcher-6): Aristotle service STILL down (prove health-probe returns 404 \"Resource not found\"). Confirms the recurrence cannot be delegated. Per the 3-sessions-stuck rule, problem moved to BLOCKED in the pool — the first-return decomposition Equiv on Finpartitions of Fin n is genuinely >1000 lines with zero Mathlib support (no restriction-to-interval, no block-of-0 split). Recommend revisit only when (a) Aristotle returns, or (b) someone builds the Dyck-word ↔ NC-partition bridge to reuse Mathlib DyckWord catalan counting."
+      "Session 3 (2026-06-30, researcher-6): Aristotle service STILL down (prove health-probe returns 404 \"Resource not found\"). Confirms the recurrence cannot be delegated. Per the 3-sessions-stuck rule, problem moved to BLOCKED in the pool — the first-return decomposition Equiv on Finpartitions of Fin n is genuinely >1000 lines with zero Mathlib support (no restriction-to-interval, no block-of-0 split). Recommend revisit only when (a) Aristotle returns, or (b) someone builds the Dyck-word ↔ NC-partition bridge to reuse Mathlib DyckWord catalan counting.",
+      "2026-07-01 (REVISIT): Aristotle MCP still returns \"Resource not found\" on every call (even a trivial ping) — the intended proof-search offload for the sole sorry `nonempty_firstReturnEquiv` remains blocked, the same outage that stalled sessions on 06-27/06-28. No change since prior blocked flags.",
+      "2026-07-01: File builds CLEANLY under Lean v4.26.0 via `lake env lean Proofs/BallotProblemOQ04OQ02OQ01.lean` (only the expected sorry warning at L105); deps BallotProblemOQ04/OQ04OQ02 oleans present. Docker containerd broken (I/O error) — use lake env lean.",
+      "2026-07-01 NEGATIVE FINDING: extending the unconditional `nonCrossingCount_eq_catalan_of_le_three` (n≤3) to the first divergence point n=4 is INFEASIBLE via `decide`: `nonCrossingCount 4 = 14` stack-overflows the kernel (even with maxRecDepth 100000). The Finpartition (Fin 4) Fintype enumeration is too large for kernel reduction. Note the parent proved only the INEQUALITY nonCrossingCount_four_lt via Fintype.card_subtype_lt precisely to avoid this computation. So n=4 cannot be cheaply added as an unconditional data point."
     ],
     "mathlibGaps": [
       "Mathlib has no theory of non-crossing partitions at all (confirmed: no nonCrossing/NonCrossingPartition anywhere in Mathlib source). The recurrence has no Mathlib analogue to transport.",
       "No Mathlib lemma decomposes a Finpartition of Fin (n+1) by the block containing a distinguished index into independent sub-partitions of the complementary gaps; this is the missing infrastructure for the recurrence."
     ],
     "nextSteps": [
-      "BLOCKED — do not re-attempt the bare recurrence without new infrastructure. Two viable unblock routes: (1) submit nonCrossingCount_recurrence to Aristotle once its endpoint is back; (2) build the explicit DyckWord ↔ non-crossing-Finpartition bijection (sibling ballot-problem-oq-04-oq-01) and transport Mathlib DyckWord catalan-count — heavier but reuses Mathlib."
+      "When Aristotle returns: submit the self-contained snippet for `nonempty_firstReturnEquiv` (inline IsNonCrossingFp + instDecidable; import Mathlib only) — confirmed to typecheck with just the sorry. This is the isolated, well-scoped, KNOWN-math bijection (Catalan first-return decomposition), exactly the proof-search regime.",
+      "Manual alternative is not one-session tractable: the bijection needs Finpartition-of-Fin surgery (restrict/relabel along Fin i ↪ Fin (n+1), preserve non-crossing, build inverse) — ~500+ lines, no Mathlib support for restricting Finpartition to a distinguished-block gap.",
+      "No Mathlib shortcut: relating {P // IsNonCrossingFp P} to a Catalan-counted Mathlib family (treesOfNumNodesEq n, card=catalan n) is an equally-hard bijection."
     ]
   },
   "currentState": {
