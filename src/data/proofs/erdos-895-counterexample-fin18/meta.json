@@ -121,6 +121,33 @@
       "title": "Problems and results on additive and multiplicative combinatorial structures (problem source)",
       "year": "1980",
       "note": "Origin of the independent-additive-triple / independent-Hindman-set questions; see erdosproblems.com/895."
+    },
+    {
+      "authors": "Schur, I.",
+      "title": "Über die Kongruenz x^m + y^m ≡ z^m (mod p)",
+      "year": "1916",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, vol. 25",
+      "note": "The origin of Schur triples (solutions of a + b = c): any finite coloring of {1,…,N} with N large enough contains a monochromatic triple. This entry's 'additive triple a, b, a+b' is exactly a Schur triple, here required to be independent (pairwise non-adjacent) in a triangle-free host graph."
+    },
+    {
+      "authors": "Rado, R.",
+      "title": "Studien zur Kombinatorik",
+      "year": "1933",
+      "venue": "Mathematische Zeitschrift, vol. 36",
+      "note": "Establishes partition regularity of linear systems (Rado's theorem); the single equation a + b = c is partition regular, the abstract fact underlying why independent additive triples are forced once n is large — Barber's theorem is the triangle-free-graph refinement."
+    },
+    {
+      "authors": "Graham, R. L.; Rothschild, B. L.; Spencer, J. H.",
+      "title": "Ramsey Theory (2nd ed.)",
+      "year": "1990",
+      "venue": "John Wiley & Sons",
+      "note": "Standard reference for Schur's theorem, Rado's theorem, and partition regularity — the Ramsey-theoretic backdrop against which Erdős #895 asks for independent (rather than merely monochromatic) additive triples."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Combinatorics.SimpleGraph.Basic and Mathlib.Tactic (decide)",
+      "year": "2024",
+      "note": "Provides the SimpleGraph (Fin 18) infrastructure and the Decidable instances that make triangle-freeness and the absence of a distinct independent additive triple checkable by exhaustive `decide` over Fin 18, yielding a 0-axiom kernel verification."
     }
   ],
   "crossReferences": [
