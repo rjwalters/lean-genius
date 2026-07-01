@@ -53,6 +53,40 @@
       "BddAbove, upper bounds, and the divergence of log at infinity"
     ]
   },
+  "sections": [
+    {
+      "id": "setup-windowed-antitonicity",
+      "title": "Setup and Windowed Antitonicity (Part I)",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Imports and namespace, then Part I: antitoneOn_window restricts antitonicity of f from [1, ∞) to each finite window [1, 1+n], the local hypothesis both Riemann-sum comparisons need.",
+      "mathContext": "$f$ antitone on $[1,\\infty) \\Rightarrow f$ antitone on $[1, 1+n]$ for every $n$."
+    },
+    {
+      "id": "two-comparisons",
+      "title": "The Two Riemann-Sum Comparisons (Part II)",
+      "startLine": 38,
+      "endLine": 67,
+      "summary": "integral_le_partialSum: the integral over [1, 1+n] is at most the left Riemann sum ∑_{i<n} f(i+1). partialSum_succ_le: the (n+1)-term partial sum is at most f(1) + the integral. Together they trap the partial sums between two integrals of the same antitone f.",
+      "mathContext": "$\\int_1^{1+n} f \\le \\sum_{i<n} f(i+1) \\le f(1) + \\int_1^{1+n} f.$"
+    },
+    {
+      "id": "integral-test",
+      "title": "The Integral Test (Part III)",
+      "startLine": 68,
+      "endLine": 101,
+      "summary": "integral_test: for antitone nonnegative f, the series ∑ f(n+1) is summable iff the family of integrals ∫₁^{1+n} f is bounded above. Both directions follow from the two comparisons plus the monotone-bounded criterion for summability of nonnegative terms.",
+      "mathContext": "$\\sum_n f(n+1) < \\infty \\iff \\Big\\{\\int_1^{1+n} f\\Big\\}_n \\text{ is bounded above}.$"
+    },
+    {
+      "id": "harmonic-divergence",
+      "title": "Application: Divergence of the Harmonic Series (Part IV)",
+      "startLine": 103,
+      "endLine": 141,
+      "summary": "Computes the logarithmic integral ∫₁^{1+n} 1/x dx = log(n+1), which is unbounded, so by the integral test not_summable_one_div_harmonic concludes the harmonic series ∑ 1/n diverges — the showcase application of the framework.",
+      "mathContext": "$\\int_1^{1+n}\\tfrac1x\\,dx = \\log(n+1) \\to \\infty \\;\\Rightarrow\\; \\sum_n \\tfrac1n = \\infty.$"
+    }
+  ],
   "conclusion": {
     "summary": "The parent's sum–integral sandwich is promoted to the general integral test: for an antitone nonnegative f on [1,∞), ∑ₙ f(n+1) is summable iff the integrals ∫₁^{1+n} f are bounded above. The criterion is then applied to 1/x to reprove that the harmonic series diverges, its integrals log(n+1) being unbounded. 7 theorems, 141 lines, 0 sorries, 0 axioms.",
     "implications": "Adds the missing convergence dichotomy to the gallery's integral-test infrastructure in reusable form: integral_test applies verbatim to any antitone nonnegative summand, so a p-series result (∑ 1/(n+1)^p convergent iff p > 1) reduces to bounding ∫₁^{1+n} x^{-p}, and the harmonic divergence recovered here is the p = 1 instance. The Summable ↔ BddAbove shape is exactly what downstream comparison-test arguments consume.",

@@ -48,7 +48,7 @@
     "title": "The Integral Test (Summable ↔ BddAbove Integrals)",
     "content": "The main result: for an antitone, nonnegative f on [1,∞), the series ∑ₙ f(n+1) is summable iff the integrals ∫₁^{1+n} f are bounded above. Forward, each integral is ≤ the total sum ∑' f(n+1) via sum_le_hasSum. Reverse, an upper bound B on the integrals yields the uniform partial-sum bound f(1)+B (the n=0 case is pure nonnegativity), and summable_of_sum_range_le concludes. This convergence dichotomy is the reusable engine the parent entry only instantiated for 1/x, and it is absent from Mathlib.",
     "mathContext": "\\text{Summable}\\,(n \\mapsto f(n+1)) \\iff \\text{BddAbove}\\,\\Big\\{\\int_1^{1+n} f : n \\in \\mathbb{N}\\Big\\}",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "integral test",
       "summable",
