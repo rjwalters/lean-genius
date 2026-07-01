@@ -52,6 +52,32 @@
       "frobenius_commute: each Frobenius covariant commutes with A (A Z_mu = Z_mu A), confirming they are intrinsic two-sided spectral projections"
     ]
   },
+  "references": [
+    {
+      "authors": "Gantmacher, Felix R.",
+      "title": "The Theory of Matrices, Vol. I",
+      "year": "1959",
+      "venue": "Chelsea Publishing"
+    },
+    {
+      "authors": "Higham, Nicholas J.",
+      "title": "Functions of Matrices: Theory and Computation",
+      "year": "2008",
+      "venue": "SIAM"
+    },
+    {
+      "authors": "Horn, Roger A. and Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "eigenvalues, diagonalization and spectral projections; Mathlib.LinearAlgebra.Matrix.Spectrum",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "Sylvester's interpolation formula (1883) expresses any function f of a diagonalizable matrix A as f(A) = sum over eigenvalues lambda of f(lambda) Z_lambda, where the Frobenius covariants Z_lambda are the spectral projections onto the eigenspaces — the matrix analogue of Lagrange interpolation and the algebraic core of the holomorphic functional calculus. The covariants are intrinsic to A and independent of f, so f(A) is obtained by re-weighting the fixed projections by the scalars f(lambda). The projections Z_lambda are named for Georg Frobenius, who systematized the matrix functional calculus in the late 19th century; the value-only interpolation viewpoint goes back to Sylvester and Lagrange, while the modern operator-theoretic generalization to non-diagonalizable operators is the Riesz–Dunford holomorphic functional calculus, where the Z_lambda become contour integrals of the resolvent (1/(2 pi i)) oint (zI - A)^{-1} dz. This entry isolates the finite-dimensional, purely algebraic kernel of that theory, valid over any commutative ring rather than only over the complex field.",
     "problemStatement": "The parent entry proves Sylvester's formula and the projection algebra of the Frobenius covariants, but does not record what the formula says about A itself. What are the spectral consequences — the decomposition of A and its powers, the dependence of the functional calculus on the spectrum, and the two-sidedness of the eigen-projections?",

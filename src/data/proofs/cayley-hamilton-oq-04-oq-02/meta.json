@@ -31,6 +31,26 @@
       "exp_two_two_repeated: explicit repeated-eigenvalue closed form with β(t) = t·e^{λt}, the coefficient ODE verified by the product rule and ring."
     ]
   },
+  "references": [
+    {
+      "authors": "Higham, Nicholas J.",
+      "title": "Functions of Matrices: Theory and Computation",
+      "year": "2008",
+      "venue": "SIAM"
+    },
+    {
+      "authors": "Horn, Roger A. and Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Matrix.exp and the 2×2 Cayley–Hamilton relation; Mathlib.Analysis.Matrix, Mathlib.LinearAlgebra.Matrix.Charpoly",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The reduction of an analytic function of a 2×2 matrix to a two-term combination α·I + β·A is the Cayley–Hamilton / Lagrange–Sylvester functional calculus, made algorithmic for the exponential by E. J. Putzer ('Avoiding the Jordan canonical form in the discussion of linear systems with constant coefficients', Amer. Math. Monthly 73 (1966)). Putzer's method writes exp(tA) = α(t)I + β(t)A and reduces the problem to a scalar second-order linear ODE governed by the characteristic polynomial λ² − (tr A)λ + det A, exactly the form proved here. The 2×2 case is the workhorse of planar linear ODE systems, rotation and shear flows, and the SL₂/SU₂ Lie-group exponential maps.",
     "problemStatement": "For a 2×2 real matrix A with tr A = τ and det A = δ, prove exp(t·A) = α(t)·1 + β(t)·A where the scalar coefficients α, β solve the Putzer ODE system α' = −δ·β, β' = α + τ·β with α(0)=1, β(0)=0; and instantiate the explicit closed forms in the distinct- and repeated-eigenvalue cases.",

@@ -31,6 +31,26 @@
       "partial_sum_reduction: finite polynomial sums reduce via Cayley-Hamilton"
     ]
   },
+  "references": [
+    {
+      "authors": "Higham, Nicholas J.",
+      "title": "Functions of Matrices: Theory and Computation",
+      "year": "2008",
+      "venue": "SIAM"
+    },
+    {
+      "authors": "Horn, Roger A. and Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Matrix.charpoly, Cayley–Hamilton (Matrix.aeval_self_charpoly) and Polynomial.modByMonic; Mathlib.LinearAlgebra.Matrix.Charpoly",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The Cayley-Hamilton theorem was proved independently by Arthur Cayley (1858, for 2×2 and 3×3 matrices) and William Hamilton (1853, for quaternion matrices). The general proof was given by Ferdinand Frobenius (1879) using the Laplace expansion of the adjugate. The computational corollary — that polynomial functions of A reduce to degree < n — was exploited by Sylvester (1883) in his 'matrix function' theory and later systematized by Buchheim (1886) for computing f(A) via interpolation at eigenvalues. The matrix exponential formula e^{tA} = ∑_{k<n} αₖ(t)Aᵏ is the basis of the Putzer algorithm (1966), which computes αₖ(t) by solving a triangular ODE system. This representation is central to the Cayley-Hamilton approach to ODE: solutions to ẋ = Ax with x(0) = x₀ are x(t) = e^{tA}x₀ = ∑αₖ(t)Aᵏx₀. Lean 4 formalization uses `Matrix.aeval_self_charpoly` (Wiedijk's Formalizing 100 Theorems #49) as the foundation.",
     "problemStatement": "Prove that aeval A p = aeval A (p mod charpoly A) and derive the degree bound and computational applications.",

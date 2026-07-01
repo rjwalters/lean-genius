@@ -31,6 +31,20 @@
       "mul_det_inv_smul_cofactor / det_inv_smul_cofactor_mul: genuine two-sided inverse verification under det A ≠ 0"
     ]
   },
+  "references": [
+    {
+      "authors": "Horn, Roger A. and Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Matrix.det_fin_two, Matrix.adjugate and mul_adjugate; Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The 2×2 inverse formula A⁻¹ = 1/(ad−bc)·[[d,-b],[-c,a]] is the oldest instance of the adjugate (classical adjoint) inverse and of Cramer's rule (Gabriel Cramer, 1750). Cayley's original 1858 'Memoir on the Theory of Matrices' verified the Cayley–Hamilton theorem explicitly precisely in the 2×2 (and 3×3) cases by direct computation, exactly as this file does — Cayley remarked that he had 'not thought it necessary to undertake the labour of a formal proof' in the general case. The trace/determinant form X² − (tr A)X + det A is the characteristic polynomial of a 2×2 matrix, and its vanishing on A is the smallest nontrivial case of the theorem that every square matrix annihilates its own characteristic polynomial.",
     "problemStatement": "For any 2×2 matrix A = [[a,b],[c,d]] over a commutative ring, prove A² − (tr A)·A + (det A)·1 = 0 and A·adj A = adj A·A = (det A)·1 where adj A = [[d,-b],[-c,a]]; conclude that over a field with det A ≠ 0, A⁻¹ = (det A)⁻¹·adj A.",

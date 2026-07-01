@@ -32,6 +32,20 @@
       "fibMatrix_sq: the Fibonacci matrix showcase, identifying the Lucas recursion with the Fibonacci recurrence"
     ]
   },
+  "references": [
+    {
+      "authors": "Horn, Roger A. and Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Matrix.det_fin_two, Matrix.trace and charpoly of 2×2 matrices; Mathlib.LinearAlgebra.Matrix.Charpoly",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "That every power of a square matrix is a polynomial of degree below the dimension is the immediate computational corollary of the Cayley-Hamilton theorem (Cayley 1858 for 2×2 and 3×3; Frobenius 1879 in general). In dimension two the reduction is sharpest: the characteristic polynomial X²−tX+d closes the power recursion into a single second-order linear recurrence — a Lucas sequence in the sense of Édouard Lucas (1878), whose first-kind sequences Uₙ generalise the Fibonacci numbers (t=1, d=−1) and the Pell numbers (t=2, d=−1). The identity Mⁿ⁺¹ = U(n+1)·M − d·Uₙ·I is the matrix incarnation of the Lucas-sequence theory and underlies fast exponentiation of 2×2 matrices, the matrix proof of Fibonacci identities (e.g. Cassini's identity from det Mⁿ = (det M)ⁿ), and the closed-form solution of two-term linear recurrences.",
     "problemStatement": "The parent entry (cayley-hamilton-oq-02) proves the abstract reduction Aᵏ = (Xᵏ mod χ_A)(A) but leaves the reduced polynomial implicit. Make it fully explicit in the 2×2 case: give a closed form for Mⁿ as an affine combination of M and I with computable scalar coefficients.",

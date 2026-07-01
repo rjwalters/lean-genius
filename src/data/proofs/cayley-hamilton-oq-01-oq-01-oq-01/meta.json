@@ -85,6 +85,32 @@
     "theoremCount": 5,
     "definitionCount": 0
   },
+  "references": [
+    {
+      "authors": "Hoffman, Kenneth and Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall"
+    },
+    {
+      "authors": "Dummit, David S. and Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley"
+    },
+    {
+      "authors": "Horn, Roger A. and Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "minpoly = charpoly (non-derogatory) and cyclic vectors; Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "An n×n matrix M over a field K turns Kⁿ into a module over K[X] (X acting as M). Because K[X] is a PID, this module decomposes into cyclic pieces K[X]/(d₁) ⊇ ... ⊇ K[X]/(dₖ), the invariant factors, with dₖ the minimal polynomial of M. M is called non-derogatory when its minimal polynomial has full degree n, equivalently when minpoly K M = charpoly M; this is exactly the case in which the decomposition is a single cyclic block and M is similar to the companion matrix of its characteristic polynomial. The structural hallmark of this situation is the existence of a cyclic vector: a vector v whose K[X]-orbit {p(M)·v} spans all of Kⁿ, equivalently a vector that no nonzero polynomial of degree < n annihilates.\n\nThe parent entry cayley-hamilton-oq-01-oq-01 built the per-vector annihilator theory (the ideal vecAnnIdeal M v of polynomials killing v) and proved the easy direction: a cyclic vector has vector-annihilator ideal exactly span{minpoly K M}. This entry settles the converse existence statement — that a cyclic vector actually exists whenever μ = χ — which is the heart of the rational-canonical-form theorem for a single block.",
     "problemStatement": "**Open Question (from parent proof cayley-hamilton-oq-01-oq-01)**: Prove existence of a cyclic vector when the minimal and characteristic polynomials coincide (the non-derogatory case).\n\n**Resolution**: We prove that for every M there is a vector of maximal order (vecAnnIdeal M v = span{minpoly K M}); when deg(minpoly K M) = n this vector is cyclic; and minpoly K M = charpoly M supplies deg(minpoly K M) = n. Hence M admits a cyclic vector.",
