@@ -76,6 +76,48 @@
       "Everything specializes cleanly to D = 2: the fundamental unit 3 + 2√2 = ⟨3,2⟩ has companion matrix !![3,4;2,3] (determinant 1, trace 6), and its powers reproduce the chain 1,3,17,99,577 (real part) and 0,2,12,70,408 (√2 part) — connecting to the sibling pell-equation-oq-06-oq-03's transfer matrix and the parent's coefficient 6."
     ]
   },
+  "sections": [
+    {
+      "id": "overview-closedforms",
+      "title": "From the Recurrence to its Closed Forms",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Frames two closed forms for the coordinate sequences of powers aⁿ in ℤ√d: Binet's formula (average/difference of the n-th powers of the conjugate roots x₁ ± y₁√d) and the companion-matrix power form. Both flow from conjugation being a ring involution that isolates the two coordinates.",
+      "mathContext": "For $a=\\langle x_1,y_1\\rangle\\in\\mathbb{Z}\\sqrt d$, closed forms for $\\mathrm{re}(a^n),\\ \\mathrm{im}(a^n)$ via roots $x_1\\pm y_1\\sqrt d$."
+    },
+    {
+      "id": "conjugation-isolation",
+      "title": "Conjugation = star Isolates the Coordinates",
+      "startLine": 70,
+      "endLine": 95,
+      "summary": "star : ℤ√d → ℤ√d fixes the rational part and negates the √d part, and commutes with powers (star_pow). pow_add_star_pow: aⁿ + (star a)ⁿ = ⟨2·re(aⁿ), 0⟩ (purely rational); pow_sub_star_pow: aⁿ − (star a)ⁿ = ⟨0, 2·im(aⁿ)⟩ — the algebraic separation of the two coordinates.",
+      "mathContext": "$a^n + \\overline{a}^n = \\langle 2\\,\\mathrm{re}(a^n),0\\rangle,\\quad a^n - \\overline{a}^n = \\langle 0,\\,2\\,\\mathrm{im}(a^n)\\rangle.$"
+    },
+    {
+      "id": "binet-real-hom",
+      "title": "Binet's Formula via the Real Evaluation Ring Hom",
+      "startLine": 97,
+      "endLine": 144,
+      "summary": "For d ≥ 0, toReal = Zsqrtd.lift ⟨√d,_⟩ : ℤ√d →+* ℝ sends a and star a to the conjugate reals x₁ ± y₁√d. Applying it to the coordinate decompositions gives re_binet (re(aⁿ) = ((x₁+y₁√d)ⁿ + (x₁−y₁√d)ⁿ)/2) and im_binet (2·im(aⁿ)·√d = (x₁+y₁√d)ⁿ − (x₁−y₁√d)ⁿ, stated multiplicatively so it holds at d = 0 too).",
+      "mathContext": "$\\mathrm{re}(a^n)=\\dfrac{(x_1+y_1\\sqrt d)^n+(x_1-y_1\\sqrt d)^n}{2}$; $2\\,\\mathrm{im}(a^n)\\sqrt d=(x_1+y_1\\sqrt d)^n-(x_1-y_1\\sqrt d)^n.$"
+    },
+    {
+      "id": "companion-matrix",
+      "title": "The Companion-Matrix Power Form and the Eigenvalue Picture",
+      "startLine": 146,
+      "endLine": 192,
+      "summary": "On the basis {1,√d}, multiplication by a is the matrix companion a = !![x₁, d·y₁; y₁, x₁]. companion_pow: Mⁿ = !![re(aⁿ), d·im(aⁿ); im(aⁿ), re(aⁿ)] (by induction, using re_mul/im_mul). companion_trace = 2x₁ and companion_det = N(a) are the coefficients of the characteristic polynomial t² − (2x₁)t + N(a); for a Pell generator (norm 1) companion_det_pell gives det = 1 with conjugate-unit eigenvalues x₁ ± y₁√d.",
+      "mathContext": "$M=\\begin{pmatrix}x_1 & d y_1\\\\ y_1 & x_1\\end{pmatrix},\\quad M^n=\\begin{pmatrix}\\mathrm{re}(a^n) & d\\,\\mathrm{im}(a^n)\\\\ \\mathrm{im}(a^n) & \\mathrm{re}(a^n)\\end{pmatrix},\\ \\chi_M = t^2-(2x_1)t+N(a).$"
+    },
+    {
+      "id": "d2-instance",
+      "title": "The D = 2 Instance: !![3,4;2,3] and the Chain 1,3,17,99,577",
+      "startLine": 194,
+      "endLine": 231,
+      "summary": "Concrete checks for the fundamental norm-1 unit 3 + 2√2 = ⟨3,2⟩ of ℤ[√2]: real parts 1,3,17,99,577,…, √2-parts 0,2,12,70,408,…, companion matrix !![3,4;2,3] — verifying the closed forms on the classical Pell chain for D = 2.",
+      "mathContext": "$3+2\\sqrt2$: $\\mathrm{re}=1,3,17,99,577,\\dots$; $M=\\begin{pmatrix}3&4\\\\2&3\\end{pmatrix}$."
+    }
+  ],
   "conclusion": {
     "summary": "This fully verified 232-line file (0 sorries, 0 axioms, no native_decide) answers the parent entry's first open question by proving the two closed forms of the Pell coordinate sequences. The algebraic engine is that Galois conjugation is Mathlib's StarRing involution star, which commutes with powers; adding/subtracting aⁿ and (star a)ⁿ isolates re(aⁿ) and im(aⁿ), and pushing these through the real evaluation ring hom Zsqrtd.lift √d yields Binet's formulas re(aⁿ) = ((x₁+y₁√d)ⁿ + (x₁−y₁√d)ⁿ)/2 and 2·im(aⁿ)·√d = (x₁+y₁√d)ⁿ − (x₁−y₁√d)ⁿ. The companion matrix M = [[x₁,d·y₁],[y₁,x₁]] satisfies Mⁿ = [[re(aⁿ),d·im(aⁿ)],[im(aⁿ),re(aⁿ)]] with trace 2x₁ and determinant N(a), exhibiting the conjugate units as the eigenvalues.",
     "implications": "The closed forms complete the picture begun by the parent: the recurrence, the Binet formula, and the matrix power are three faces of the same conjugate-unit structure. The technique — identify conjugation with star, split a power sequence by star-symmetry, then evaluate through Zsqrtd.lift — is reusable for any quadratic-integer sequence (Lucas/Fibonacci-type sequences, continued-fraction convergents, units of real quadratic fields) and complements Mathlib's Pell.Solution₁ API, which records the multiplicative structure but neither the Binet form nor the companion-matrix power.",
