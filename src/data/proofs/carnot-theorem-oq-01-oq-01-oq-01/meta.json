@@ -74,6 +74,28 @@
     "theoremCount": 8,
     "definitionCount": 7
   },
+  "overview": {
+    "historicalContext": "Carnot's theorem (Lazare Carnot, 1803) states that the sum of the signed distances from the circumcenter of a triangle to its three sides equals R + r, the sum of the circumradius and the inradius — with a side's contribution counted negative when the circumcenter lies on the far side of that side, as happens at an obtuse angle. The parent gallery entries formalize only the equivalent angle identity cos A + cos B + cos C = 1 + r/R, living in a bespoke trigonometric encoding with no actual triangle, circumcenter, or distances. The parent explicitly left open whether the genuinely metric statement — with an explicit circumcenter and real perpendicular distances over EuclideanSpace ℝ (Fin 2) — could be formalized. This entry does exactly that.",
+    "problemStatement": "Realize a triangle with circumradius R > 0 and angles A, B, C > 0 (A + B + C = π) concretely in EuclideanSpace ℝ (Fin 2): place the circumcenter at an explicit point and the vertices on the circle of radius R about it. Define the signed perpendicular distances from the circumcenter to the three sides (with the orientation convention that makes obtuse contributions negative) and prove that they sum to R + r, where r is the inradius.",
+    "text": "Place the circumcenter at the origin O = (0,0) and the vertices on the radius-R circle. The signed perpendicular distance from O to each side is exactly R cos of the opposite angle, and the three sum to R + r.",
+    "proofStrategy": "Place the circumcenter at O = (0,0) and the vertices Pa, Pb, Pc on the circle of radius R, at position angles chosen by the inscribed-angle convention (side BC subtends central angle 2A, etc.). For a chord, the foot of the perpendicular from the center is its midpoint, whose direction is the chord's midangle μ; the inward unit normal to that side is therefore −(cos μ, sin μ). Taking Mathlib's signedDist (= ⟪normalize v, q −ᵥ p⟫) from O along this normal, the normalize drops once the normal is shown to be a unit vector (sin² + cos² = 1), and the inner product collapses by cos(x − y) to exactly R cos of the opposite angle — negative precisely in the obtuse case, with no manual case split. Each normal is independently certified perpendicular to its side, and O is certified equidistant (= R) from the three vertices, so it genuinely is the circumcenter. Summing the three signed distances gives R(cos A + cos B + cos C), and the parent angle identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2), scaled by R, turns this into R + r.",
+    "keyInsights": [
+      "**Center-to-chord = midpoint, so the inward unit normal is −(cos μ, sin μ)**: the perpendicular foot from the circumcenter to a chord is the chord's midpoint, whose direction is the chord's midangle μ; this makes every side normal an explicit unit vector and the signed distance a one-line inner product",
+      "**Mathlib's signedDist carries the obtuse sign for free**: writing the distance as ⟪normalize v, O −ᵥ p⟫ with v the inward normal yields exactly R cos of the opposite angle, whose sign already flips for obtuse triangles — the orientation bookkeeping that makes the metric form hard is handled by the cosine itself",
+      "**The metric statement is the angle statement scaled by R**: each signed distance is R cos(angle), so the whole theorem reduces to the parent identity multiplied by R — the geometric content is entirely in the dA_eq/dB_eq/dC_eq distance computations",
+      "**An explicit, certified circumcenter**: O = (0,0) is not assumed to be the circumcenter — it is proved equidistant from the three explicitly-placed vertices, anchoring the construction in genuine Euclidean geometry rather than a coordinate fiction"
+    ],
+    "prerequisites": [
+      "Euclidean plane EuclideanSpace ℝ (Fin 2): norms, inner products, and the !₂[·,·] coordinate notation",
+      "Mathlib's signedDist (trilinear signed distance) and normalize",
+      "Trigonometric identities cos(x ± y) and sin² + cos² = 1, plus the inscribed-angle convention relating central and inscribed angles",
+      "The parent Carnot angle identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2)"
+    ],
+    "openQuestions": [
+      "Can the construction be repackaged through Mathlib's Affine.Simplex.circumcenter / circumradius API so the circumcenter is derived from the triangle rather than placed by hand, recovering the same R + r identity?",
+      "Does the same explicit signed-distance technique extend to the excircles, giving the signed-distance forms d_a − d_b − d_c = R − r_A for the exradii?"
+    ]
+  },
   "sections": [
     {
       "title": "Module header",
@@ -132,36 +154,6 @@
       "id": "main-theorem"
     }
   ],
-  "overview": {
-    "historicalContext": "Carnot's theorem (Lazare Carnot, 1803) states that the sum of the signed distances from the circumcenter of a triangle to its three sides equals R + r, the sum of the circumradius and the inradius — with a side's contribution counted negative when the circumcenter lies on the far side of that side, as happens at an obtuse angle. The parent gallery entries formalize only the equivalent angle identity cos A + cos B + cos C = 1 + r/R, living in a bespoke trigonometric encoding with no actual triangle, circumcenter, or distances. The parent explicitly left open whether the genuinely metric statement — with an explicit circumcenter and real perpendicular distances over EuclideanSpace ℝ (Fin 2) — could be formalized. This entry does exactly that.",
-    "problemStatement": "Realize a triangle with circumradius R > 0 and angles A, B, C > 0 (A + B + C = π) concretely in EuclideanSpace ℝ (Fin 2): place the circumcenter at an explicit point and the vertices on the circle of radius R about it. Define the signed perpendicular distances from the circumcenter to the three sides (with the orientation convention that makes obtuse contributions negative) and prove that they sum to R + r, where r is the inradius.",
-    "text": "Place the circumcenter at the origin O = (0,0) and the vertices on the radius-R circle. The signed perpendicular distance from O to each side is exactly R cos of the opposite angle, and the three sum to R + r.",
-    "proofStrategy": "Place the circumcenter at O = (0,0) and the vertices Pa, Pb, Pc on the circle of radius R, at position angles chosen by the inscribed-angle convention (side BC subtends central angle 2A, etc.). For a chord, the foot of the perpendicular from the center is its midpoint, whose direction is the chord's midangle μ; the inward unit normal to that side is therefore −(cos μ, sin μ). Taking Mathlib's signedDist (= ⟪normalize v, q −ᵥ p⟫) from O along this normal, the normalize drops once the normal is shown to be a unit vector (sin² + cos² = 1), and the inner product collapses by cos(x − y) to exactly R cos of the opposite angle — negative precisely in the obtuse case, with no manual case split. Each normal is independently certified perpendicular to its side, and O is certified equidistant (= R) from the three vertices, so it genuinely is the circumcenter. Summing the three signed distances gives R(cos A + cos B + cos C), and the parent angle identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2), scaled by R, turns this into R + r.",
-    "keyInsights": [
-      "**Center-to-chord = midpoint, so the inward unit normal is −(cos μ, sin μ)**: the perpendicular foot from the circumcenter to a chord is the chord's midpoint, whose direction is the chord's midangle μ; this makes every side normal an explicit unit vector and the signed distance a one-line inner product",
-      "**Mathlib's signedDist carries the obtuse sign for free**: writing the distance as ⟪normalize v, O −ᵥ p⟫ with v the inward normal yields exactly R cos of the opposite angle, whose sign already flips for obtuse triangles — the orientation bookkeeping that makes the metric form hard is handled by the cosine itself",
-      "**The metric statement is the angle statement scaled by R**: each signed distance is R cos(angle), so the whole theorem reduces to the parent identity multiplied by R — the geometric content is entirely in the dA_eq/dB_eq/dC_eq distance computations",
-      "**An explicit, certified circumcenter**: O = (0,0) is not assumed to be the circumcenter — it is proved equidistant from the three explicitly-placed vertices, anchoring the construction in genuine Euclidean geometry rather than a coordinate fiction"
-    ],
-    "prerequisites": [
-      "Euclidean plane EuclideanSpace ℝ (Fin 2): norms, inner products, and the !₂[·,·] coordinate notation",
-      "Mathlib's signedDist (trilinear signed distance) and normalize",
-      "Trigonometric identities cos(x ± y) and sin² + cos² = 1, plus the inscribed-angle convention relating central and inscribed angles",
-      "The parent Carnot angle identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2)"
-    ],
-    "openQuestions": [
-      "Can the construction be repackaged through Mathlib's Affine.Simplex.circumcenter / circumradius API so the circumcenter is derived from the triangle rather than placed by hand, recovering the same R + r identity?",
-      "Does the same explicit signed-distance technique extend to the excircles, giving the signed-distance forms d_a − d_b − d_c = R − r_A for the exradii?"
-    ]
-  },
-  "conclusion": {
-    "summary": "Carnot's theorem is formalized in genuinely metric form over EuclideanSpace ℝ (Fin 2): with the circumcenter placed at the explicit point O = (0,0) and the vertices on the radius-R circle (O certified equidistant from all three), each signed perpendicular distance from O to a side equals R cos of the opposite angle, and the three sum to R + r. The obtuse-case sign is carried automatically by Mathlib's signedDist. This answers the parent entry's open question. Axiom- and sorry-free.",
-    "implications": "**Theoretical Significance**: The entry closes the gap between the parent's analytic angle identity and the classical metric statement of Carnot's theorem, showing that the much-feared orientation bookkeeping (a side's distance flipping sign at an obtuse angle) needs no case analysis once the signed distance is taken along the inward unit normal: the cosine supplies the sign. It anchors Carnot's theorem in Mathlib's signedDist / EuclideanSpace API, making it composable with other Euclidean-geometry formalizations.",
-    "openQuestions": [
-      "Repackage through Mathlib's Affine.Simplex.circumcenter API so the circumcenter is derived rather than placed by hand.",
-      "Extend the signed-distance technique to the excircles (exradius forms d_a − d_b − d_c = R − r_A)."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "carnot-theorem-oq-01-oq-01",
@@ -174,7 +166,43 @@
       "description": "The root Carnot angle identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2), scaled by R, is what turns the sum of signed distances R(cos A + cos B + cos C) into R + r."
     }
   ],
-  "sorries": 0,
+  "conclusion": {
+    "summary": "Carnot's theorem is formalized in genuinely metric form over EuclideanSpace ℝ (Fin 2): with the circumcenter placed at the explicit point O = (0,0) and the vertices on the radius-R circle (O certified equidistant from all three), each signed perpendicular distance from O to a side equals R cos of the opposite angle, and the three sum to R + r. The obtuse-case sign is carried automatically by Mathlib's signedDist. This answers the parent entry's open question. Axiom- and sorry-free.",
+    "implications": "**Theoretical Significance**: The entry closes the gap between the parent's analytic angle identity and the classical metric statement of Carnot's theorem, showing that the much-feared orientation bookkeeping (a side's distance flipping sign at an obtuse angle) needs no case analysis once the signed distance is taken along the inward unit normal: the cosine supplies the sign. It anchors Carnot's theorem in Mathlib's signedDist / EuclideanSpace API, making it composable with other Euclidean-geometry formalizations.",
+    "openQuestions": [
+      "Repackage through Mathlib's Affine.Simplex.circumcenter API so the circumcenter is derived rather than placed by hand.",
+      "Extend the signed-distance technique to the excircles (exradius forms d_a − d_b − d_c = R − r_A)."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Carnot, Lazare N. M.",
+      "title": "Géométrie de position",
+      "year": "1803",
+      "venue": "J. B. M. Duprat, Paris",
+      "note": "Origin of Carnot's theorem on signed distances from the circumcenter to the sides."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Carnot's theorem, circumradius/inradius relations, and triangle trigonometry."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin",
+      "note": "Comprehensive classical triangle geometry."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry circumradius/inradius, Real.cos/sin identities and inner-product-space triangle API (Mathlib.Geometry.Euclidean / Mathlib.Analysis.SpecialFunctions.Trigonometric)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",
@@ -192,5 +220,6 @@
     "definitionCount": 7,
     "sorries": 0,
     "path": "Proofs/CarnotTheoremOQ01OQ01OQ01.lean"
-  }
+  },
+  "sorries": 0
 }

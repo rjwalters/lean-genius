@@ -75,6 +75,27 @@
     "theoremCount": 5,
     "definitionCount": 0
   },
+  "overview": {
+    "historicalContext": "Carnot's theorem on the inradius and circumradius has as its analytic core the angle identity cos A + cos B + cos C = 1 + r/R and the fundamental polynomial identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1. The sibling entries extract the linear cosine-sum range (1, 3/2] and the acute/right/obtuse trichotomy of the squared sum against 1. What those leave open is the sharp lower extremum of the squared cosine sum — the smallest value it can take over all triangles. This entry supplies it: cos²A + cos²B + cos²C ≥ 3/4, with equality exactly at the equilateral triangle, equivalent to the classical inequality cos A cos B cos C ≤ 1/8.",
+    "problemStatement": "For a triangle with angles A, B, C > 0 and A + B + C = π, prove the sharp bound cos A cos B cos C ≤ 1/8 (equivalently cos²A + cos²B + cos²C ≥ 3/4) with equality if and only if the triangle is equilateral.",
+    "text": "The product of a triangle's angle cosines never exceeds 1/8, and its squared cosine sum never drops below 3/4 — both extremes hit only by the equilateral triangle.",
+    "proofStrategy": "Write the product-to-sum form cos A cos B = ½(cos(A-B) + cos(A+B)) and use A + B = π - C, so cos(A+B) = -cos C and cos A cos B = ½(cos(A-B) - cos C). Substituting and completing the square against cos²(A-B) + sin²(A-B) = 1 yields the single identity\n\n  1 - 8 cos A cos B cos C = (2 cos C - cos(A-B))² + sin²(A-B).\n\n1. **Product bound**: the right-hand side is a sum of two squares, hence ≥ 0, so cos A cos B cos C ≤ 1/8. This uses only A + B + C = π — no acute/obtuse case split.\n2. **Squared-sum bound**: the sibling identity cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C turns the product bound into cos²A + cos²B + cos²C ≥ 1 - 2(1/8) = 3/4.\n3. **Equality**: cos A cos B cos C = 1/8 makes the right-hand side zero, forcing both squares to vanish. sin(A-B) = 0 with |A-B| < π gives A = B; then cos(A-B) = 1 and 2 cos C = 1, so cos C = 1/2 and C = π/3 by injectivity of cosine on [0, π]; the angle sum then forces A = B = π/3.",
+    "keyInsights": [
+      "**One sum-of-squares identity does everything**: 1 - 8 cos A cos B cos C = (2 cos C - cos(A-B))² + sin²(A-B), so the bound cos A cos B cos C ≤ 1/8 is a single nonnegativity statement",
+      "**The bound is sign-agnostic**: it holds for every real triple summing to π, never splitting on whether the triangle is acute or obtuse — positivity of the angles enters only to pin the equality case",
+      "**The genuine lower extremum of the squared cosine sum is 3/4**: where the sibling entry compares cos²A + cos²B + cos²C only to the threshold 1, this entry gives its sharp minimum, attained at the equilateral triangle",
+      "**Equality is rigid**: vanishing of the two squares forces A = B (from sin(A-B) = 0) and C = π/3 (from 2 cos C = cos(A-B) = 1), i.e. the equilateral triangle"
+    ],
+    "prerequisites": [
+      "Real trigonometric functions cos, sin, the addition formulas, and the pythagorean identity",
+      "The sibling rearranged identity cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C",
+      "Injectivity of cosine on [0, π] and the zero set of sine on (-π, π)"
+    ],
+    "openQuestions": [
+      "Does the companion sharp bound sin A sin B sin C ≤ 3√3/8 (equivalently a sharp upper bound on the squared sine sum) admit the same one-identity sum-of-squares treatment?",
+      "Can the product bound be promoted to the full equilateral extremality statement for the elementary symmetric functions of the angle cosines, unifying the linear, quadratic, and cubic cases proved across these sibling entries?"
+    ]
+  },
   "sections": [
     {
       "title": "Module header",
@@ -125,35 +146,6 @@
       "id": "sqsum-equality"
     }
   ],
-  "overview": {
-    "historicalContext": "Carnot's theorem on the inradius and circumradius has as its analytic core the angle identity cos A + cos B + cos C = 1 + r/R and the fundamental polynomial identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1. The sibling entries extract the linear cosine-sum range (1, 3/2] and the acute/right/obtuse trichotomy of the squared sum against 1. What those leave open is the sharp lower extremum of the squared cosine sum — the smallest value it can take over all triangles. This entry supplies it: cos²A + cos²B + cos²C ≥ 3/4, with equality exactly at the equilateral triangle, equivalent to the classical inequality cos A cos B cos C ≤ 1/8.",
-    "problemStatement": "For a triangle with angles A, B, C > 0 and A + B + C = π, prove the sharp bound cos A cos B cos C ≤ 1/8 (equivalently cos²A + cos²B + cos²C ≥ 3/4) with equality if and only if the triangle is equilateral.",
-    "text": "The product of a triangle's angle cosines never exceeds 1/8, and its squared cosine sum never drops below 3/4 — both extremes hit only by the equilateral triangle.",
-    "proofStrategy": "Write the product-to-sum form cos A cos B = ½(cos(A-B) + cos(A+B)) and use A + B = π - C, so cos(A+B) = -cos C and cos A cos B = ½(cos(A-B) - cos C). Substituting and completing the square against cos²(A-B) + sin²(A-B) = 1 yields the single identity\n\n  1 - 8 cos A cos B cos C = (2 cos C - cos(A-B))² + sin²(A-B).\n\n1. **Product bound**: the right-hand side is a sum of two squares, hence ≥ 0, so cos A cos B cos C ≤ 1/8. This uses only A + B + C = π — no acute/obtuse case split.\n2. **Squared-sum bound**: the sibling identity cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C turns the product bound into cos²A + cos²B + cos²C ≥ 1 - 2(1/8) = 3/4.\n3. **Equality**: cos A cos B cos C = 1/8 makes the right-hand side zero, forcing both squares to vanish. sin(A-B) = 0 with |A-B| < π gives A = B; then cos(A-B) = 1 and 2 cos C = 1, so cos C = 1/2 and C = π/3 by injectivity of cosine on [0, π]; the angle sum then forces A = B = π/3.",
-    "keyInsights": [
-      "**One sum-of-squares identity does everything**: 1 - 8 cos A cos B cos C = (2 cos C - cos(A-B))² + sin²(A-B), so the bound cos A cos B cos C ≤ 1/8 is a single nonnegativity statement",
-      "**The bound is sign-agnostic**: it holds for every real triple summing to π, never splitting on whether the triangle is acute or obtuse — positivity of the angles enters only to pin the equality case",
-      "**The genuine lower extremum of the squared cosine sum is 3/4**: where the sibling entry compares cos²A + cos²B + cos²C only to the threshold 1, this entry gives its sharp minimum, attained at the equilateral triangle",
-      "**Equality is rigid**: vanishing of the two squares forces A = B (from sin(A-B) = 0) and C = π/3 (from 2 cos C = cos(A-B) = 1), i.e. the equilateral triangle"
-    ],
-    "prerequisites": [
-      "Real trigonometric functions cos, sin, the addition formulas, and the pythagorean identity",
-      "The sibling rearranged identity cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C",
-      "Injectivity of cosine on [0, π] and the zero set of sine on (-π, π)"
-    ],
-    "openQuestions": [
-      "Does the companion sharp bound sin A sin B sin C ≤ 3√3/8 (equivalently a sharp upper bound on the squared sine sum) admit the same one-identity sum-of-squares treatment?",
-      "Can the product bound be promoted to the full equilateral extremality statement for the elementary symmetric functions of the angle cosines, unifying the linear, quadratic, and cubic cases proved across these sibling entries?"
-    ]
-  },
-  "conclusion": {
-    "summary": "For a triangle the product of the angle cosines satisfies cos A cos B cos C ≤ 1/8 and the squared cosine sum satisfies cos²A + cos²B + cos²C ≥ 3/4, each with equality exactly at the equilateral triangle. The proof rests on one sum-of-squares identity, 1 - 8 cos A cos B cos C = (2 cos C - cos(A-B))² + sin²(A-B), which is sign-agnostic; the equality case is identified using only the positivity of the angles. All results are axiom- and sorry-free.",
-    "implications": "**Theoretical Significance**: The entry supplies the sharp lower extremum of the squared cosine sum that the sibling trichotomy leaves open, exhibiting the cubic symmetric form cos A cos B cos C as the analytic partner of the linear and quadratic forms already formalized. Together the three follow-ups bound the elementary symmetric functions of a triangle's angle cosines, each extremized by the equilateral triangle.",
-    "openQuestions": [
-      "A one-identity sum-of-squares proof of the companion product-of-sines bound sin A sin B sin C ≤ 3√3/8?",
-      "A unified equilateral-extremality statement for all elementary symmetric functions of the angle cosines?"
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "carnot-theorem-oq-01-oq-01",
@@ -166,7 +158,43 @@
       "description": "The squared-sum sibling supplies the identity cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C used here to convert the product bound into the sharp lower bound 3/4, and classifies the squared sum against 1 where this entry gives its minimum."
     }
   ],
-  "sorries": 0,
+  "conclusion": {
+    "summary": "For a triangle the product of the angle cosines satisfies cos A cos B cos C ≤ 1/8 and the squared cosine sum satisfies cos²A + cos²B + cos²C ≥ 3/4, each with equality exactly at the equilateral triangle. The proof rests on one sum-of-squares identity, 1 - 8 cos A cos B cos C = (2 cos C - cos(A-B))² + sin²(A-B), which is sign-agnostic; the equality case is identified using only the positivity of the angles. All results are axiom- and sorry-free.",
+    "implications": "**Theoretical Significance**: The entry supplies the sharp lower extremum of the squared cosine sum that the sibling trichotomy leaves open, exhibiting the cubic symmetric form cos A cos B cos C as the analytic partner of the linear and quadratic forms already formalized. Together the three follow-ups bound the elementary symmetric functions of a triangle's angle cosines, each extremized by the equilateral triangle.",
+    "openQuestions": [
+      "A one-identity sum-of-squares proof of the companion product-of-sines bound sin A sin B sin C ≤ 3√3/8?",
+      "A unified equilateral-extremality statement for all elementary symmetric functions of the angle cosines?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Mitrinović, D. S.; Pečarić, J. E.; Volenec, V.",
+      "title": "Recent Advances in Geometric Inequalities",
+      "year": "1989",
+      "venue": "Kluwer Academic",
+      "note": "Sharp bounds for triangle cosine and sine sums."
+    },
+    {
+      "authors": "Andreescu, Titu and Andrica, Dorin",
+      "title": "Complex Numbers from A to ...Z, and triangle trigonometric identities",
+      "year": "2006",
+      "venue": "Birkhäuser",
+      "note": "Triangle trigonometric identities and extremal angle-sum inequalities."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Carnot's theorem, circumradius/inradius relations, and triangle trigonometry."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry circumradius/inradius, Real.cos/sin identities and inner-product-space triangle API (Mathlib.Geometry.Euclidean / Mathlib.Analysis.SpecialFunctions.Trigonometric)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",
@@ -183,5 +211,6 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/CarnotTheoremOQ01OQ01OQ02.lean"
-  }
+  },
+  "sorries": 0
 }
