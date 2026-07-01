@@ -170,5 +170,36 @@
     "definitionCount": 1,
     "theoremCount": 5
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Thomas M. Cover",
+        "Joy A. Thomas"
+      ],
+      "title": "Elements of Information Theory",
+      "year": 2006,
+      "venue": "Wiley (2nd ed.)",
+      "note": "Standard textbook: mutual information, channel capacity, Fano's inequality, and the coding theorem with its converse."
+    },
+    {
+      "authors": [
+        "Imre Csiszár",
+        "János Körner"
+      ],
+      "title": "Information Theory: Coding Theorems for Discrete Memoryless Systems",
+      "year": 2011,
+      "venue": "Cambridge University Press (2nd ed.)",
+      "note": "Rigorous coding theorems and converses for discrete memoryless channels."
+    },
+    {
+      "authors": [
+        "Robert G. Gallager"
+      ],
+      "title": "Information Theory and Reliable Communication",
+      "year": 1968,
+      "venue": "Wiley",
+      "note": "Random-coding achievability, the converse, and capacity of discrete memoryless channels."
+    }
+  ]
 }
