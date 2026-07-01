@@ -202,17 +202,12 @@
     {
       "targetId": "erdos-1005",
       "relationship": "extends",
-      "description": "Supplies the exact mediant-insertion calculus the parent's run problem relies on. The parent records the open lower bound f(n) ≥ (1/12 − o(1))n; this entry proves the gap-splitting identities and the optimality of the mediant (minimal denominator b + d) that underlie mediant-based constructions, without resolving the open constant."
+      "description": "Supplies the exact mediant-insertion calculus the parent's run problem relies on. The parent records the open lower bound f(n) ≥ (1/12 − o(1))n; this entry proves the gap-splitting identities and the optimality of the mediant (minimal denominator b + d) that underlie mediant-based constructions, without resolving the open constant. Concretely, §8 connects to the parent's similarlyOrdered relation and isSimOrdered/mayerErdosF run definitions (Erdos1005ProblemProvable.lean): the file's SimOrd predicate matches similarlyOrdered verbatim, and the mediant-chain similar-ordering lemmas supply the order-side combinatorics underlying the (1/12−o(1))n lower bound, modulo the open consecutiveness step."
     },
     {
       "targetId": "erdos-1005-oq-03",
       "relationship": "complements",
       "description": "The sibling adjacency entry proves a unimodular pair is F_n-adjacent iff b + d > n, using q ≥ b + d for in-between fractions. This entry sharpens the same bound into an optimality-and-uniqueness statement (the mediant is THE minimal-denominator fraction) and adds the quantitative gap-splitting calculus (sub-gap sizes 1/(b(b+d)), 1/(d(b+d)), ratio d:b, strict refinement)."
-    },
-    {
-      "targetId": "erdos-1005",
-      "relationship": "extends",
-      "description": "§8 connects directly to the parent's similarlyOrdered relation and isSimOrdered/mayerErdosF run definitions (Erdos1005ProblemProvable.lean): the file's SimOrd predicate matches similarlyOrdered verbatim, and the mediant-chain similar-ordering lemmas supply the order-side combinatorics underlying the (1/12−o(1))n lower bound, modulo the open consecutiveness step."
     }
   ],
   "mainTheorems": [
