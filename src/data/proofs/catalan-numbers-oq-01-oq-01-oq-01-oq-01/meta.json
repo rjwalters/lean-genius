@@ -5,8 +5,14 @@
   "sorries": 0,
   "description": "Generalizes the parent's André reflection bijection from barrier height −1 to arbitrary depth −k. A monotone n-up lattice path (encoded by its up-step position set S : Finset (Fin (2n))) reaches depth −k when some prefix has k more downs than ups, i.e. j = 2·preUps S j + k. The same reflection — complement every step from the first descent to −k — is an explicit bijection between depth-k 'bad' n-up paths and ALL (n−k)-up paths, giving #BadPathsK = C(2n,n+k); hence the generalized ballot number, the count of n-up paths staying strictly above −k, is exactly C(2n,n) − C(2n,n+k). At k = 1 this recovers the parent's #GoodPaths = catalan n. Reuses the parent's barrier-independent infrastructure (preUps, reflect, card_reflect_add) verbatim. Fully verified, 0 axioms, no native_decide.",
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.CatalanAndreReflection"],
-    "opens": ["Finset", "CatalanAndreReflection"],
+    "imports": [
+      "Mathlib",
+      "Proofs.CatalanAndreReflection"
+    ],
+    "opens": [
+      "Finset",
+      "CatalanAndreReflection"
+    ],
     "namespace": "CatalanGeneralizedBallot",
     "lineCount": 259,
     "axiomCount": 0,
@@ -105,11 +111,11 @@
   },
   "crossReferences": [
     {
-      "id": "catalan-numbers-oq-01-oq-01-oq-01",
+      "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
       "reason": "The parent entry: André's reflection bijection at barrier −1 (catalan n = C(2n,n) − C(2n,n+1)). This entry imports it and reuses preUps, reflect, card_reflect_add, preUps_reflect_eq and card_goodPaths_eq_catalan, generalizing the barrier to depth −k."
     },
     {
-      "id": "catalan-numbers-oq-01-oq-01",
+      "proofId": "catalan-numbers-oq-01-oq-01",
       "reason": "Grandparent: the arithmetic Catalan reflection form, of which the generalized ballot count C(2n,n) − C(2n,n+k) is the k-parameter family."
     }
   ],

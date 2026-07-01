@@ -135,27 +135,27 @@
   },
   "crossReferences": [
     {
-      "id": "lagrange-theorem-oq-01",
+      "proofId": "lagrange-theorem-oq-01",
       "relationship": "answers",
       "description": "This entry directly answers OQ-01-OQ-01 from the Sylow Theorems entry: 'Use Sylow theory to classify groups of order pq'"
     },
     {
-      "id": "sylow-theorem-oq-01",
+      "proofId": "sylow-theorem-oq-01",
       "relationship": "uses",
       "description": "Imports and re-exposes the complete classification proof from SylowTheoremOQ01 (namespace SylowPQ), which contains all the detailed Lean proofs"
     },
     {
-      "id": "lagrange-theorem-oq-01-oq-02",
+      "proofId": "lagrange-theorem-oq-01-oq-02",
       "relationship": "related",
       "description": "The A₄ counterexample (no subgroup of order 6) is the motivating example for studying pq-groups: A₄ has order 12 = 2² × 3, not pq, but the S₃ example (order 6 = 2 × 3) shows pq-groups can be non-abelian"
     },
     {
-      "id": "lagrange-theorem-oq-01-oq-03",
+      "proofId": "lagrange-theorem-oq-01-oq-03",
       "relationship": "related",
       "description": "Hall's theorem generalizes the pq-classification: for solvable groups with Hall divisors, Hall subgroups exist. The pq case is a special instance with d = p or d = q"
     },
     {
-      "id": "lagrange-theorem-oq-01-oq-01-oq-01",
+      "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
       "relationship": "extended-by",
       "description": "Child entry supplies the explicit non-cyclic witness missing from this file's `lagrange_pq_nonabelian_n_p_eq_q`. For p = 2 (every odd prime q): DihedralGroup q (Approach A). Approach B preliminaries (cyclic structure of (ZMod q)ˣ + order-p element extraction) are in place; the semidirect product φ : ZMod p →* AddAut (ZMod q) (S3c) and the ZMod q ⋊ ZMod p assembly (S3d) are open"
     }

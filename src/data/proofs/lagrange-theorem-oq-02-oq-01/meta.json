@@ -125,13 +125,21 @@
       "id": "oq-01",
       "question": "Can the orbit partition sum Σ_x|Stab(x)| = |X/G|·|G| be proved in Lean 4 purely from orbit-stabilizer without using Mathlib's Burnside lemma as an intermediate step?",
       "difficulty": "medium",
-      "tags": ["lean4", "orbit-partition", "formal-proof"]
+      "tags": [
+        "lean4",
+        "orbit-partition",
+        "formal-proof"
+      ]
     },
     {
       "id": "oq-02",
       "question": "Does the double-counting bijection sigma_fixedBy_equiv_sigma_stabilizer generalize to monoid actions (where stabilizers are not necessarily subgroups)?",
       "difficulty": "easy",
-      "tags": ["monoid-actions", "generalization", "lean4"]
+      "tags": [
+        "monoid-actions",
+        "generalization",
+        "lean4"
+      ]
     }
   ],
   "relatedProofs": [
@@ -169,12 +177,12 @@
   },
   "crossReferences": [
     {
-      "id": "lagrange-theorem-oq-02",
+      "proofId": "lagrange-theorem-oq-02",
       "title": "Lagrange's Theorem: Orbit-Stabilizer Consequences",
       "relationship": "Parent entry that provides the orbit-stabilizer theorem used in Part III. The double-counting bijection in this entry is the key new content beyond what OQ-02 provides."
     },
     {
-      "id": "lagrange-theorem",
+      "proofId": "lagrange-theorem",
       "title": "Lagrange's Theorem",
       "relationship": "Grandparent entry. The chain Lagrange → Orbit-Stabilizer → Burnside is formalized in lagrange_orbitstab_burnside_chain, with Lagrange's theorem as the base."
     }

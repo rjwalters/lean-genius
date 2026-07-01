@@ -5,8 +5,12 @@
   "sorries": 0,
   "description": "Upgrades the arithmetic Catalan reflection form catalan n = C(2n,n) − C(2n,n+1) to a genuine combinatorial bijection. Monotone lattice paths with 2n steps are encoded as up-step position sets S : Finset (Fin (2n)); a path is 'bad' when some prefix dips to height −1. André's reflection — complement every step from the first descent onward — is built as an explicit involution on the encoding and shown to be a bijection between bad n-up paths and ALL (n−1)-up paths, whence #BadPaths = C(2n,n+1) and the number of Dyck (good) paths is exactly catalan n. Fully verified, 0 axioms, no native_decide.",
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "CatalanAndreReflection",
     "lineCount": 360,
     "axiomCount": 0,
@@ -34,7 +38,7 @@
       "Nat.sInf and first-passage (least-witness) arguments"
     ]
   },
-  "sections":   [
+  "sections": [
     {
       "id": "setup-reflection",
       "title": "Setup: Lattice Paths and André's Reflection",
@@ -98,11 +102,11 @@
   },
   "crossReferences": [
     {
-      "id": "catalan-numbers-oq-01-oq-01",
+      "proofId": "catalan-numbers-oq-01-oq-01",
       "reason": "The parent entry: the arithmetic reflection form catalan n = C(2n,n) − C(2n,n+1). This entry supplies the explicit bijection that the arithmetic identity only asserts the cardinality of."
     },
     {
-      "id": "catalan-numbers-oq-01",
+      "proofId": "catalan-numbers-oq-01",
       "reason": "Grandparent: the central-binomial bridge (n+1)*catalan n = C(2n,n) reused here (succ_mul_catalan_eq_centralBinom) to reprove the additive partition inline."
     }
   ],
