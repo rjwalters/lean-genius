@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BUILD: circle-to-great-circle tangency layer added (FeuerbachsTheoremOQ04.lean, 856L, 0-axiom/0-sorry, VERIFIED docker [7743/7743]). Introduces sGreatCircle (geodesic/side), greatCircleFoot (explicit contact = foot of perpendicular), TangentToGreatCircle criterion |⟪O,N⟫|=sin ρ. greatCircleFoot_mem proves the foot lies on both objects; circle_tangent_greatCircle_inter upgrades to a SINGLETON intersection (genuine tangency, one contact point); sdist_greatCircleFoot_center confirms the contact is at distance ρ. This is the incircle-to-side tangency primitive (consumed 3× per spherical triangle) — the missing bridge between the circle-circle tangency theory and an actual spherical incircle/nine-point construction toward spherical Feuerbach.",
+    "progressSummary": "BUILD: circle-to-great-circle tangency + spherical incircle scaffolding (FeuerbachsTheoremOQ04.lean, 894L, 0-axiom/0-sorry, VERIFIED docker [7743/7743]). sGreatCircle/greatCircleFoot/TangentToGreatCircle + greatCircleFoot_mem + circle_tangent_greatCircle_inter (singleton intersection) + sdist_greatCircleFoot_center establish the incircle-to-side tangency primitive. sGreatCircle_eq_sCircle shows great circles are the radius-π/2 circles (unifying the two tangency notions). SphericalIncircle (tangent to 3 side poles) + sphericalIncircle_contact_points (incircle meets each side in exactly one point, explicit feet) package the first Feuerbach ingredient. REMAINING HARD STEP: existence/uniqueness of the incenter O for a given triangle (angle-bisector argument); then spherical nine-point circle + Feuerbach tangency.",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
@@ -50,7 +50,10 @@
       "greatCircleFoot_mem — foot lies on both circle and great circle",
       "circle_tangent_greatCircle_inter — intersection is the singleton {foot} (genuine tangency)",
       "sdist_greatCircleFoot_center — contact point at spherical distance ρ from centre",
-      "inner_orthoComp_self / inner_orthoComp_left — ⟪O⊥,·⟫ = 1-⟪O,N⟫² helper lemmas"
+      "inner_orthoComp_self / inner_orthoComp_left — ⟪O⊥,·⟫ = 1-⟪O,N⟫² helper lemmas",
+      "sGreatCircle_eq_sCircle — great circle = sCircle N (π/2), unifies great-circle & circle-circle tangency",
+      "SphericalIncircle Na Nb Nc O ρ — circle tangent to all 3 side poles of a spherical triangle",
+      "sphericalIncircle_contact_points — incircle meets each of the 3 sides in exactly one point (explicit feet)"
     ],
     "insights": [
       "Mathlib has clean spherical geometry for free (unit vectors of any InnerProductSpace R E; geodesic distance = arccos of inner product) but essentially no hyperbolic metric, so the spherical model is the tractable non-Euclidean route for Feuerbach.",

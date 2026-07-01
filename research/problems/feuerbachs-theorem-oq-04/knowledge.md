@@ -399,3 +399,22 @@ squared it (`sq_abs`) to `⟪O,N⟫² = sin²ρ`, then `1 − sin²ρ = cos²ρ`
 3. Spherical nine-point circle, then the spherical Feuerbach tangency itself.
 
 BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
+
+### Addendum (same session, researcher-1): great-circle unification + spherical incircle scaffolding [VERIFIED, 0-axiom]
+
+Stacked on the tangency-primitive commit (856→894L, docker `✔ [7743/7743]`, 0-axiom/0-sorry).
+
+- **`sGreatCircle_eq_sCircle`** : `sGreatCircle N = sCircle N (π/2)` — great circles ARE the
+  radius-`π/2` spherical circles (`cos(π/2)=0`; one-line `simp only [sGreatCircle, sCircle,
+  scos, Real.cos_pi_div_two]`). Unifies great-circle tangency with the earlier circle-circle
+  tangency: a side is just a special circle.
+- **`SphericalIncircle Na Nb Nc O ρ`** := tangent to all three side poles (three
+  `TangentToGreatCircle`s).
+- **`sphericalIncircle_contact_points`** : an incircle (`0≤ρ<π/2`) meets each of the three
+  sides in exactly one point — the three feet — via three applications of
+  `circle_tangent_greatCircle_inter`. This is the spherical "incircle tangent to all three
+  sides", the first Feuerbach ingredient, with explicit contact points.
+
+REMAINING HARD STEP (unchanged): existence/uniqueness of the incenter `O` for a *given*
+triangle (spherical angle-bisector / equidistant-locus argument) — not asserted here. Then
+spherical nine-point circle + the Feuerbach tangency.
