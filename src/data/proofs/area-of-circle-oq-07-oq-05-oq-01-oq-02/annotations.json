@@ -1,5 +1,26 @@
 [
   {
+    "id": "aoc-oq07050102-ann-imports",
+    "proofId": "area-of-circle-oq-07-oq-05-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 3 },
+    "type": "context",
+    "title": "Imports: Reusing the Parent Moment and the Dilation Rule",
+    "content": "The two substantive imports mirror the proof's two-ingredient strategy. `import Proofs.AreaOfCircleOQ07OQ05OQ01` pulls in the *parent gallery entry* itself — this file depends on the parent's Lean theorem, not just its statement, so the unscaled even moment ∫ x^{2n} e^{−x²} = (2n−1)‼·√π/2ⁿ is available as a lemma to be rescaled rather than re-proved. `import Mathlib.MeasureTheory.Measure.Haar.NormedSpace` supplies the linear dilation rule `integral_comp_mul_left : ∫ g(s·x) dx = |s⁻¹|·∫ g` for the Lebesgue integral, the single analytic fact that transports the parent value across all scales a > 0. `open scoped Nat` brings the double-factorial notation `(2n−1)‼` into scope.",
+    "mathContext": "Change of variables $y = s x$ (with $s=\\sqrt a$): $\\int g(sx)\\,dx = |s^{-1}|\\int g(y)\\,dy$ — Mathlib's `integral_comp_mul_left`.",
+    "significance": "context",
+    "relatedConcepts": [
+      "gallery-internal dependency",
+      "integral_comp_mul_left",
+      "linear change of variables",
+      "double factorial notation"
+    ],
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib",
+      "parent entry area-of-circle-oq-07-oq-05-oq-01"
+    ]
+  },
+  {
     "id": "aoc-oq07050102-ann-header",
     "proofId": "area-of-circle-oq-07-oq-05-oq-01-oq-02",
     "range": { "startLine": 5, "endLine": 37 },
