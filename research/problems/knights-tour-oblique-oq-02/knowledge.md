@@ -303,3 +303,51 @@ standard Mathlib (`Finset.filter`, `Fintype.ofInjective`,
   `obliqueDistribution(k) mod 8` residue. Orbit-size-8 blocks vanish mod 8;
   only non-trivial-stabilizer orbits contribute.
 - Complete the reversal count-invariance capstone.
+
+## Session 2026-06-30 (Session 11, researcher-6) — Target D capstone PROVED
+
+**Mode**: REVISIT (RICH, score 78). **Outcome**: progress — reversal count-invariance capstone closed, 0-sorry/0-axiom.
+
+### What I Did
+- Discharged the capstone deferred by `KnightsTourObliqueOQ02Reverse.lean`:
+  **`obliqueCount (reverseTour t) = obliqueCount t`** (Target D), in a new verified
+  companion `proofs/Proofs/KnightsTourObliqueOQ02ReverseCount.lean` (251 lines, 14 theorems,
+  0 sorries, 0 axioms; Docker-built green, 7746 jobs).
+- Built a reusable cyclic-count abstraction and a single workhorse lemma, then derived three
+  cyclic-count symmetries from it.
+
+### Key Findings / Architecture
+- `cyclicObliqueCount L` = filter-length of `isOblique` over `L.zip (L.tail ++ [L.head!])`,
+  definitionally equal to `obliqueCount` on `tourMoves t` (`obliqueCount_eq_cyclic`, by `rfl`).
+- **Workhorse** `cyclicObliqueCount_eq_of_perm_map`: cyclic-pair list of `L₁` being a
+  *permutation* of `(cyclic-pair list of L₂).map f`, with `f` preserving pair-obliqueness,
+  forces equal counts. Proof: `countP_eq_length_filter` → `Perm.countP_eq` → `countP_map`
+  → `countP_congr`. (Gotcha: this Mathlib's `countP_congr` wants `p x ↔ q x` on `= true`, not
+  a `Bool` equality — feed the hypothesis through `simp only [..., hf]`.)
+- Three invariances: `cyclicObliqueCount_map_neg` (isOblique_neg_neg; exact pair-list equality
+  via `zip_map`), `_reverse` (isOblique_comm + `Prod.swap`; perm via `reverse_perm ∘ rotate_perm`),
+  `_rotate_one` (identity `f`; perm via `rotate_perm`).
+- Engine lemmas (general, type-polymorphic): `zip_rotate_one_comm` and `zip_reverse_comm` by
+  `List.ext_getElem` + `simp [getElem_zip, getElem_rotate/reverse]`; the key
+  `rotate_one_reverse_rotate_one : (L.rotate 1).reverse.rotate 1 = L.reverse` via
+  `reverse_rotate + rotate_rotate + rotate_mod` (case split on `length = 1`, since `1 % n` and
+  the nested mod defeat `omega`).
+- **(R)** `tourMoves (reverseTour t) = ((tourMoves t).map MoveVector.neg).reverse.rotate 1`
+  proved *structurally* (no per-index getElem): `map`/`reverse`/`rotate` commutation
+  (`map_map`, `map_reverse`, `map_rotate`, `zip_swap`) + `getMoveVector_swap` on adjacent pairs
+  (`neg ∘ g = g ∘ Prod.swap`), with adjacency of every cyclic square pair from `tourPairs_all_adj`.
+
+### Files Modified
+- `proofs/Proofs/KnightsTourObliqueOQ02ReverseCount.lean` (NEW, verified)
+- `src/data/research/problems/knights-tour-oblique-oq-02.json` (knowledge)
+- this knowledge.md
+
+### Notes / Tooling
+- Aristotle MCP was down all session (`prove` → "Resource not found"); everything proved manually.
+- Docker build healthy (29.6.1); ~5-13 min per cycle.
+
+### Next Steps
+- Fuse D4 (order 8) + reversal (order 2) into the order-16 symmetry on `obliqueDistribution`
+  level sets; re-derive the mod-8 residue with the enlarged group.
+- Characterize reversal-fixed tours (palindromic move sequences) — likely none, giving 2 |
+  level-set cardinality.
