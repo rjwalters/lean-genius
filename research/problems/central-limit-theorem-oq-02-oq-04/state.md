@@ -1,5 +1,46 @@
 # Current State
 
+**Phase**: ACT (S25 — survival-covariance integrand α-bound. NOTE: this state.md
+head predates S16–S24, which were tracked only in git/session notes; the Lean
+file has grown 733 → **1641 LOC**, 32 top-level theorems, still **2 sorries**
+(`davydov_covariance_inequality` L1399, `mixing_clt_ibragimov` L1591), 0 axioms.
+S16–S24 built the full layer-cake / survival-function machinery culminating in
+S24's `covariance_eq_double_survival_covariance` (Cov(f,g) as a double survival
+integral). S25 (this session) closes the pointwise step: the survival-covariance
+integrand is majorised by `α` uniformly in the threshold pair, via
+`superlevel_setOf_measurable` + `davydov_indicator_bound`. Build-pending
+(hostile Docker env — 5 concurrent builds, 99% disk). S26 = double-integral
+assembly `|∫∫ integrand| ≤ α·M·N` → Hölder + Markov → close the Davydov sorry.)
+**Since**: 2026-07-01
+**Iteration**: 25 (S25 ACT)
+**Last Updated**: 2026-07-01 (researcher-1)
+
+## S25 ACT — survival-covariance integrand α-bound (researcher-1, 2026-07-01, build-pending)
+
+Added one proven theorem `survival_covariance_integrand_le_alpha` after
+`covariance_eq_double_survival_covariance` (S24), before the open
+`davydov_covariance_inequality` sorry:
+
+```
+|μ.real{t<f ∧ s<g} − μ.real{t<f}·μ.real{s<g}| ≤ alphaMixingCoeff μ (σPair 0) (σPair 1)
+```
+
+for `Measurable[σPair 0] f`, `Measurable[σPair 1] g`, uniform in `(t,s)`. Proof:
+joint super-level set factors as `{t<f} ∩ {s<g}`, so after `measureReal_def` the
+integrand is exactly the `davydov_indicator_bound` (S5b) quantity; the two sub-σ
+measurability side-conditions come from `superlevel_setOf_measurable`. Reuses
+only in-file lemmas — no new Mathlib surface. lineCount 1593→1641,
+theoremCount 31→32, sorries 2 (unchanged), axioms 0.
+
+Session note: `sessions/2026-07-01-s25-survival-covariance-integrand-alpha-bound.md`.
+PR shipped on branch `research/clt-oq0204-s25-survival-integrand` off
+`origin/main 5bbd7541e42`. **Build-pending** (S24 precedent; Docker hostile).
+S26 next: double-integral assembly → bounded-variable Davydov `α·M·N`.
+
+---
+
+### (historical head — pre-S16, retained for provenance)
+
 **Phase**: ACT (S6 ACT FINDING-E APPLIED — extended `IbragimovHypotheses` with the two `past_le` / `future_le` fields per the S5d STATE-SYNC checklist Step 2; 14 → 16 fields, +14 LOC including docstrings; Docker-verified 3131 jobs clean; the structural gap blocking S5c's level-set decomposition is now closed and Step 2 of the 7-step S5c+1 plan is shipped. Steps 3-7 (level-set decomp, bilinear expansion, pointwise indicator_covariance_le_alpha application, Hölder + Markov, sorry-count 2 → 1) remain for a follow-up S7 ACT.)
 **Since**: 2026-06-01T00:00:00Z
 **Iteration**: 10 (S5d STATE-SYNC iter 9 → this S6 ACT iter 10)
