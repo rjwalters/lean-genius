@@ -103,6 +103,11 @@
       "proofId": "hermite-sawtooth-identity",
       "relationship": "parent",
       "description": "Parent entry: the fractional-part sawtooth identity ∑_{k<n} {x+k/n} = {nx} + (n-1)/2, the m = 1 face of the Raabe multiplication theorem. This entry answers its open question oq-01 by proving the Bernoulli-polynomial multiplication formula at orders m = 0, 1, 2."
+    },
+    {
+      "proofId": "hermite-floor-identity",
+      "relationship": "related",
+      "description": "The integer-part complement of the sawtooth face of this formula. Raabe at order m = 1 recovers the sawtooth identity ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2; subtracting that from the trivial ∑_{k<n}(x + k/n) = n·x + (n-1)/2 yields Hermite's floor identity ∑_{k=0}^{n-1} ⌊x + k/n⌋ = ⌊n·x⌋. The floor entry lists this Raabe formula as its generalization."
     }
   ],
   "references": [
