@@ -92,3 +92,48 @@ verifiable in isolation — q mod 7 = X⁵+2X⁴+3X³+4X²+4X+2 over 𝔽₇ spl
 ZMod 7" (degree 3), which is `decide`-able. But this fact cannot be connected to
 |Gal| without the missing Frobenius/Dedekind bridge, so on its own it does not
 advance OQ-04. Recommend deprioritize until that bridge lands in Mathlib.
+
+## Session 3 (researcher-8, 2026-07-01): FORMALIZED the arithmetic keystone (VERIFIED 0-axiom)
+
+Acted on Session 2's note: the mod-7 factorization datum Dedekind consumes is now
+machine-checked in `proofs/Proofs/InverseGaloisA5DedekindMod7.lean` (0 axioms — only
+`propext` / `Classical.choice` / `Quot.sound`; no `sorry`, no `native_decide`).
+
+Contents:
+- `qInt` : the ℤ model of `q` (same coefficients), with `qInt_map_rat` proving it
+  casts to `InverseGaloisA5.q` over ℚ.
+- `qInt_eq_factor_add_seven` : the ℤ[X] identity
+  `qInt = (X−5)(X−6)(X³+6X²+4X+1) + 7·(6X³−21X²−12X−5)` (closed by `ring`).
+- `qInt_map_zmod7` : **`q ≡ (X−5)(X−6)·cubic7 (mod 7)`** — obtained by mapping the
+  ℤ identity to `ZMod 7`; the `7·R` term dies because `(7 : (ZMod 7)[X]) = 0`
+  (`CharP.cast_eq_zero` via `Polynomial.instCharP`).
+- `cubic7_irreducible` : `X³ + 6X² + 4X + 1` is irreducible over `𝔽₇`, via
+  `Polynomial.irreducible_of_degree_le_three_of_not_isRoot` + `cubic7_no_root`
+  (an exhaustive `decide` over the 7 residues; `cubic7_natDegree` via `compute_degree!`).
+
+So Frobenius cycle type `(1, 1, 3)` at `p = 7` is now a verified fact rather than a
+hand computation.
+
+### Key Lean recipes (reusable)
+- **Factorization mod p, robustly**: prove the identity over `ℤ[X]` as
+  `poly = factors + p · R` (fully closed by `ring`, no characteristic reasoning), then
+  `Polynomial.map` to `ZMod p`; the `p · R` term vanishes via
+  `(p : (ZMod p)[X]) = 0` = `CharP.cast_eq_zero _ p` (needs `Nat.cast_ofNat` to align
+  the `OfNat` numeral) + `Polynomial.instCharP`. Avoids all `ring`-in-char-p pitfalls.
+- **Cubic irreducibility over a finite field**: `irreducible_of_degree_le_three_of_not_isRoot`
+  (`Mathlib/Algebra/Polynomial/SpecificDegree.lean`) with `natDegree ∈ Finset.Icc 1 3`
+  and `∀ x, ¬ IsRoot`; discharge no-roots by `simp only [def, eval_add, eval_mul,
+  eval_pow, eval_X, eval_ofNat, eval_one]` then `revert x; decide` (kernel `decide`,
+  not `native_decide`, so axiom-clean).
+- `C n` ↔ numeral: `Polynomial.C_ofNat` / `map_ofNat` in the simp set.
+
+### Residual gap (unchanged in size, but the arithmetic input is now closed)
+Still needs, over `𝓞 q.SplittingField`:
+`inertiaDeg_primesOverSpanEquivMonicFactorsMod_symm_apply` (KummerDedekind; conductor
+coprime to 7 since `7 ∤ disc q = 32000²`) → inertia degree 3 at the cubic's prime →
+inertia-tower multiplicativity → `inertiaDegIn_eq_inertiaDeg` (Galois) →
+`3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField)` → feed
+`InverseGaloisA5DedekindInstantiation.three_dvd_gal_card_of_bridge`. This file does
+**not** remove `three_dvd_gal_card`; it verifies and pins the arithmetic datum the
+remaining ~hundreds-of-lines KummerDedekind bridge will consume. Gallery entry
+`inverse-galois-a5` remains correctly `axiomatized` (axiomCount 1) — no gallery change.
