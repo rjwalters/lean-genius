@@ -9,21 +9,23 @@
     "status": "verified",
     "proofRepoPath": "Proofs/PicksTheoremOQ04.lean",
     "tags": [
-      "geometry",
-      "combinatorics",
-      "lattice",
+      "apex-independence",
       "area",
-      "shoelace",
+      "combinatorics",
+      "connection",
+      "fan-triangulation",
+      "geometry",
+      "lattice",
       "picks-theorem",
-      "wiedijk-100",
-      "connection"
+      "shoelace",
+      "wiedijk-100"
     ],
     "badge": "original",
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 308,
-    "theoremCount": 13,
-    "definitionCount": 9,
+    "lineCount": 447,
+    "theoremCount": 20,
+    "definitionCount": 11,
     "dateAdded": "2026-06-28",
     "assumptions": "0 sorries, 0 axioms (only propext / Classical.choice / Quot.sound, the foundational Lean axioms). Fully machine-verified; no native_decide. The Pick bridge theorems carry the polygon's lattice-point counts (i, b) and Pick's relation as ordinary hypotheses, not as axioms.",
     "originalContributions": [
@@ -31,7 +33,9 @@
       "cross2_eq: the key algebraic identity cross2 o a b = cross a b + cross b o - cross a o. Summed over a fan triangulation, the o-terms telescope, which is exactly why the fan sum collapses to the closed shoelace edge sum. The whole bridge rests on this one-line identity plus antisymmetry of cross.",
       "shoelace_triangle: triangle reduction. For three vertices the general shoelace sum is the classical signed-area numerator x1(y2-y3)+x2(y3-y1)+x3(y1-y2), matching the existing triangle formula up to absolute value (claim III).",
       "shoelace_translate: translation invariance. The shoelace sum is unchanged by translating every vertex by a fixed vector — it measures shape, not position. An immediate corollary of shoelace_eq_fan and the translation invariance of cross2.",
-      "pick_bridge and pick_bridge_iff: the integrality bridge (claims I, IV). The shoelace sum is an integer by construction, so the area |S|/2 is always a half-integer; for a lattice polygon whose Euclidean area equals its shoelace area, Pick's relation A = i + b/2 - 1 is EQUIVALENT to the integer identity |S| = 2i + b - 2 — both sides being the single integer twiceArea. Verified concretely on a triangle (i=0,b=3), a 3x4 square (i=6,b=14), and an L-shaped hexagon (i=5,b=16)."
+      "pick_bridge and pick_bridge_iff: the integrality bridge (claims I, IV). The shoelace sum is an integer by construction, so the area |S|/2 is always a half-integer; for a lattice polygon whose Euclidean area equals its shoelace area, Pick's relation A = i + b/2 - 1 is EQUIVALENT to the integer identity |S| = 2i + b - 2 — both sides being the single integer twiceArea. Verified concretely on a triangle (i=0,b=3), a 3x4 square (i=6,b=14), and an L-shaped hexagon (i=5,b=16).",
+      "fanCyc / fanCyc_eq_shoelace (PicksTheoremOQ04FanApex.lean): APEX-INDEPENDENCE of the fan triangulation. Defines the cyclic fan sum fanCyc o vs = Σ_k cross2 o v_k v_{k+1 mod m} over ALL m cyclic edges from an arbitrary apex o (a vertex, an interior point, or a point outside the polygon), and proves it equals shoelace vs for EVERY o. One-line telescoping via the parent's cross2_eq identity: the apex-dependent boundary terms cross v0 o − cross v0 o cancel. Strictly generalizes the parent's shoelace_eq_fan (the o = v0 case). 0-axiom.",
+      "fanCyc_apex_independent, shoelace_eq_fanCyc, fanCyc_first_eq_fanAux, fanCyc_translate: corollaries — any two apexes agree; the general fan bridge from any point; coherence that at apex v0 the cyclic fan collapses to the parent's open fanAux; translation invariance of the cyclic fan. This is the structural justification of triangulate-from-any-point, the file's stated open direction toward a constructive Pick."
     ],
     "mathlibDependencies": [
       {
@@ -50,6 +54,9 @@
       "The triangle shoelace formula (picks-theorem-oq-01) and the triangle bridge 2·Area = |det| (picks-theorem-oq-01-oq-01-oq-01)",
       "Fan triangulation of a simple polygon from a fixed vertex",
       "Integer (lattice) coordinates and the 2D cross product / determinant"
+    ],
+    "additionalFiles": [
+      "Proofs/PicksTheoremOQ04FanApex.lean"
     ]
   },
   "overview": {

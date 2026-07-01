@@ -58,3 +58,48 @@ triangulation) as the remaining open direction.
 SOLVED — verified, 0-axiom. PR opened. Two follow-up directions noted in meta
 (constructive Pick via fan triangulation; orientation/reversal + cyclic-rotation
 invariance of the shoelace sum).
+
+## Session 2026-06-30 (researcher-2) — SOLVED follow-up: fan-triangulation apex-independence
+
+**State on entry:** `PicksTheoremOQ04.lean` verified, 0-axiom, 0-sorry. Parent proves
+`shoelace_eq_fan` (fan bridge from the FIRST vertex only) and translation invariance.
+
+**Outcome:** new collision-free companion `proofs/Proofs/PicksTheoremOQ04FanApex.lean`
+(139L, 7 thm/lemma + 2 def, VERIFIED 0-axiom; `#print axioms` = propext/(Classical.choice)/
+Quot.sound only). Delivers **apex-independence**: the fan triangulation from ANY apex
+computes the same signed area — the structural justification of triangulate-from-any-point,
+which the parent names as the open direction toward a constructive Pick.
+
+### What I did
+- `fanCyc o vs = Σ_k cross2 o v_k v_{k+1 mod m}` over ALL m cyclic edges (vs. parent's
+  `fanAux`, which skips the two edges at the apex v0 since they'd be degenerate there).
+  Modeled as `fanCycAux o first` mirroring the parent's `shoelaceAux` structure exactly.
+- `fanCycAux_eq`: telescoping bridge `fanCycAux o first (a::t) = shoelaceAux first (a::t)
+  + cross first o − cross a o`, by induction on the tail with the head quantified, using
+  the parent's key identity `cross2_eq : cross2 o a b = cross a b + cross b o − cross a o`.
+  Interior o-terms cancel in pairs; only the two boundary o-terms survive.
+- `fanCyc_eq_shoelace` (headline): calling at first = a = v0 makes the surviving boundary
+  terms `cross v0 o − cross v0 o = 0`, so fanCyc o = shoelace for every o.
+- Corollaries: `fanCyc_apex_independent`, `shoelace_eq_fanCyc` (general bridge),
+  `fanCyc_first_eq_fanAux` (coherence with parent), `fanCyc_translate`, `fanCyc_triangle`.
+- 3 concrete `decide` checks fanning from off-polygon / interior apexes.
+
+### Reusable recipe
+To generalize a "fan/telescoping-from-first-vertex" bridge to an arbitrary apex: mirror the
+original recursive aux with the apex-dependent term (cross2 o instead of cross), then prove
+a telescoping lemma `aux_o = aux_original + boundary_terms(o)` by tail-induction with head
+quantified; the interior o-terms cancel and the boundary terms vanish exactly when the base
+point coincides with the first vertex. No new Mathlib lemmas; reuse the parent's algebraic
+identity as a `rw`.
+
+### Verification
+Parent olean absent from shared `.lake` cache → compiled parent first
+(`LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PicksTheoremOQ04.lean -o
+.lake/build/lib/lean/Proofs/PicksTheoremOQ04.olean`), then the new file (EXIT 0).
+GOTCHA: in the nil branch `rw [cross2_eq]` already closes the goal by rfl — a trailing
+`; ring` then errors "No goals"; drop it (the cons branch still needs `ring`).
+
+### Next Steps (optional)
+- Reversal antisymmetry `shoelace vs.reverse = − shoelace vs` (via cross2 antisymmetry +
+  fanCyc): needs a `fanCycAux`/`shoelaceAux` append lemma (reverse recursion) — deferred.
+- Cyclic-rotation invariance `shoelace (vs.rotate k) = shoelace vs`.
