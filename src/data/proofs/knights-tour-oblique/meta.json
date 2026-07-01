@@ -23,9 +23,9 @@
     "assumptions": "1 axiom: knuth_unique_four_oblique — any closed knight's tour with exactly 4 oblique turns is D4-equivalent to the minimal oblique tour. Accepted based on Knuth's exhaustive computational verification of all ~13.3 trillion closed knight's tours (TAOCP Vol 4 Fascicle 8a, December 2025).",
     "proofRepoPath": "Proofs/KnightsTourOblique.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 2463,
+    "lineCount": 2341,
     "sorries": 0,
-    "theoremCount": 100,
+    "theoremCount": 101,
     "definitionCount": 42,
     "additionalFiles": [
       "Proofs/KnightsTourObliqueOQ02.lean"
@@ -145,10 +145,10 @@
     }
   ],
   "leanFile": {
-    "lineCount": 2463,
+    "lineCount": 2341,
     "structureCount": 2,
     "axiomCount": 1,
-    "theoremCount": 100,
+    "theoremCount": 101,
     "lemmaCount": 0,
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
