@@ -169,5 +169,36 @@
     "definitionCount": 4,
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "authors": [
+        "Ivan Niven",
+        "Herbert S. Zuckerman",
+        "Hugh L. Montgomery"
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 1991,
+      "venue": "Wiley (5th ed.)",
+      "note": "Linear Diophantine equations, the gcd/Bézout solvability criterion, and explicit solution construction."
+    },
+    {
+      "authors": [
+        "Martin Davis"
+      ],
+      "title": "Hilbert's Tenth Problem is Unsolvable",
+      "year": 1973,
+      "venue": "American Mathematical Monthly 80(3), 233–269",
+      "note": "Expository proof that Diophantine sets coincide with recursively enumerable sets."
+    },
+    {
+      "authors": [
+        "Alexander Schrijver"
+      ],
+      "title": "Theory of Linear and Integer Programming",
+      "year": 1986,
+      "venue": "Wiley",
+      "note": "Decidability of linear Diophantine solvability via the gcd divisibility criterion."
+    }
+  ]
 }

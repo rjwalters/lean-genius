@@ -152,5 +152,34 @@
     "definitionCount": 1,
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "authors": [
+        "Henry J. S. Smith"
+      ],
+      "title": "On Systems of Linear Indeterminate Equations and Congruences",
+      "year": 1861,
+      "venue": "Philosophical Transactions of the Royal Society of London 151, 293–326",
+      "note": "Original derivation of the invariant-factor (Smith) normal form for integer matrices."
+    },
+    {
+      "authors": [
+        "Morris Newman"
+      ],
+      "title": "Integral Matrices",
+      "year": 1972,
+      "venue": "Academic Press (Pure and Applied Mathematics 45)",
+      "note": "Smith normal form and the theory of integer matrices underlying decidability of linear Diophantine systems."
+    },
+    {
+      "authors": [
+        "Henri Cohen"
+      ],
+      "title": "A Course in Computational Algebraic Number Theory",
+      "year": 1993,
+      "venue": "Springer, Graduate Texts in Mathematics 138",
+      "note": "Algorithms for the Hermite and Smith normal forms and constructive solution of linear Diophantine systems."
+    }
+  ]
 }

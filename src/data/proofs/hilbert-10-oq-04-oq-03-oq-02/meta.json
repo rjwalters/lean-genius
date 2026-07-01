@@ -136,5 +136,34 @@
     "definitionCount": 0,
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "authors": [
+        "Morris Newman"
+      ],
+      "title": "Integral Matrices",
+      "year": 1972,
+      "venue": "Academic Press (Pure and Applied Mathematics 45)",
+      "note": "Smith normal form and the theory of integer matrices underlying decidability of linear Diophantine systems."
+    },
+    {
+      "authors": [
+        "Henry J. S. Smith"
+      ],
+      "title": "On Systems of Linear Indeterminate Equations and Congruences",
+      "year": 1861,
+      "venue": "Philosophical Transactions of the Royal Society of London 151, 293–326",
+      "note": "Original derivation of the invariant-factor (Smith) normal form for integer matrices."
+    },
+    {
+      "authors": [
+        "Alexander Schrijver"
+      ],
+      "title": "Theory of Linear and Integer Programming",
+      "year": 1986,
+      "venue": "Wiley",
+      "note": "Column-lattice (integer span) membership and its decision via normal forms."
+    }
+  ]
 }
