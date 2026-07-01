@@ -55,8 +55,10 @@ def cnorm (a b c : ℤ) : ℤ := a ^ 3 + 2 * b ^ 3 + 4 * c ^ 3 - 6 * a * b * c
     This is the `Algebra.norm` of the element, computed concretely. -/
 theorem cnorm_eq_det (a b c : ℤ) :
     cnorm a b c = (!![a, 2 * c, 2 * b; b, a, 2 * c; c, b, a]).det := by
-  rw [Matrix.det_fin_three_of]
   unfold cnorm
+  rw [Matrix.det_fin_three]
+  norm_num [Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
   ring
 
 /-
@@ -282,6 +284,89 @@ theorem norm_two_solutions_infinite :
   norm_eq_solutions_infinite 2 (by decide) (0, 1, 0) (by decide)
 
 /-
+## The norm form is NOT surjective: 7 is never a norm (Session 7)
+
+Sessions 5–6 show every *attainable* value of N has either zero or infinitely many
+solutions. This section exhibits a value that is **unattainable**: N(ξ) = 7 has no
+integral solution at all. The obstruction is local at the prime 7.
+
+Because x³ - 2 is irreducible over 𝔽₇ (2 is a cubic non-residue mod 7, the cubes being
+{0, 1, 6}), the prime 7 is **inert** in K = ℚ(∛2): 𝔽₇[t]/(t³-2) ≅ 𝔽₇₄₃ is a field.
+Equivalently, the norm form is *anisotropic* mod 7 — its only zero mod 7 is the trivial
+one (`cnorm_anisotropic_mod7`, a finite kernel `decide`). Hence 7 ∣ N(a,b,c) forces
+7 ∣ a, b, c (`seven_dvd_cnorm_iff`), so 7³ = 343 ∣ N — and 343 ∤ 7. Therefore N is
+never ±7, and the cubic norm form is **not surjective** (`cnorm3_not_surjective`),
+with 7 the witness non-norm. Contrast `norm_two_solutions_infinite`: N = 2 has
+infinitely many solutions, N = 7 has none.
+
+This is a genuine higher-degree phenomenon: which integers are norms is governed by the
+splitting of primes (cubic reciprocity for x³-2), and inert primes contribute only
+through their cube. No signature/Dirichlet machinery is used — only a finite check.
+-/
+
+/-- **The cubic norm form is anisotropic mod 7**: its only zero over 𝔽₇ is (0,0,0).
+    Equivalently x³ - 2 is irreducible over 𝔽₇ (7 is inert in ℚ(∛2)). A finite kernel
+    `decide` over the 7³ = 343 residue triples — so this is axiom-free (no `native_decide`). -/
+theorem cnorm_anisotropic_mod7 :
+    ∀ a b c : ZMod 7,
+      a ^ 3 + 2 * b ^ 3 + 4 * c ^ 3 - 6 * a * b * c = 0 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  decide
+
+/-- 7 divides N(a,b,c) iff it divides each coordinate. The forward direction is the
+    anisotropy above pulled back along ℤ → ZMod 7; the converse is homogeneity
+    (each monomial of N has total degree 3). -/
+theorem seven_dvd_cnorm_iff (a b c : ℤ) :
+    (7 : ℤ) ∣ cnorm a b c ↔ (7 : ℤ) ∣ a ∧ (7 : ℤ) ∣ b ∧ (7 : ℤ) ∣ c := by
+  constructor
+  · intro h
+    have h7 : ((cnorm a b c : ℤ) : ZMod 7) = 0 :=
+      (ZMod.intCast_zmod_eq_zero_iff_dvd _ 7).mpr h
+    rw [cnorm] at h7
+    push_cast at h7
+    obtain ⟨ha, hb, hc⟩ := cnorm_anisotropic_mod7 (a : ZMod 7) (b : ZMod 7) (c : ZMod 7) h7
+    exact ⟨(ZMod.intCast_zmod_eq_zero_iff_dvd a 7).mp ha,
+           (ZMod.intCast_zmod_eq_zero_iff_dvd b 7).mp hb,
+           (ZMod.intCast_zmod_eq_zero_iff_dvd c 7).mp hc⟩
+  · rintro ⟨⟨a', rfl⟩, ⟨b', rfl⟩, ⟨c', rfl⟩⟩
+    exact ⟨cnorm a' b' c' * 49, by simp only [cnorm]; ring⟩
+
+/-- **7 is never a norm**: N(a,b,c) ≠ 7. If it were, 7 ∣ N would force 7 ∣ a,b,c, so by
+    homogeneity 343 ∣ N = 7 — impossible. -/
+theorem cnorm_ne_seven (a b c : ℤ) : cnorm a b c ≠ 7 := by
+  intro h
+  have hdvd : (7 : ℤ) ∣ cnorm a b c := ⟨1, by rw [h, mul_one]⟩
+  obtain ⟨⟨a', rfl⟩, ⟨b', rfl⟩, ⟨c', rfl⟩⟩ := (seven_dvd_cnorm_iff a b c).mp hdvd
+  have h343 : cnorm (7 * a') (7 * b') (7 * c') = 343 * cnorm a' b' c' := by
+    simp only [cnorm]; ring
+  rw [h343] at h
+  omega
+
+/-- Symmetrically, -7 is never a norm. -/
+theorem cnorm_ne_neg_seven (a b c : ℤ) : cnorm a b c ≠ -7 := by
+  intro h
+  have hdvd : (7 : ℤ) ∣ cnorm a b c := ⟨-1, by rw [h]; ring⟩
+  obtain ⟨⟨a', rfl⟩, ⟨b', rfl⟩, ⟨c', rfl⟩⟩ := (seven_dvd_cnorm_iff a b c).mp hdvd
+  have h343 : cnorm (7 * a') (7 * b') (7 * c') = 343 * cnorm a' b' c' := by
+    simp only [cnorm]; ring
+  rw [h343] at h
+  omega
+
+/-- **N(ξ) = 7 has no integral solution** — the empty counterpart of
+    `norm_two_solutions_infinite`. The norm equation is unsolvable at the inert prime 7. -/
+theorem norm_eq_seven_no_solution : {p : ℤ × ℤ × ℤ | cnorm3 p = 7} = ∅ := by
+  ext ⟨a, b, c⟩
+  simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, cnorm3]
+  exact cnorm_ne_seven a b c
+
+/-- **The cubic norm form is not surjective.** Unlike a degenerate form, N = N_{K/ℚ}
+    misses values: 7 is a non-norm. (The image is exactly the integers all of whose
+    prime factors split or ramify appropriately; inert primes like 7 enter only as cubes.) -/
+theorem cnorm3_not_surjective : ¬ Function.Surjective cnorm3 := by
+  intro hsurj
+  obtain ⟨p, hp⟩ := hsurj 7
+  exact cnorm_ne_seven p.1 p.2.1 p.2.2 hp
+
+/-
 ## Recovering Pell (rank-1 special case)
 
 For comparison, the parent real-quadratic norm form N(p + q√2) = p² - 2q² with its
@@ -318,6 +403,12 @@ Pell's equation OQ-05 (norm equations in degree > 2), concrete-core formalizatio
    m ≠ 0, if N(ξ) = m is solvable it has infinitely many integral solutions, the
    unit-orbit {ξ₀·uᵏ} (`norm_eq_solutions_infinite`, `cmul_chain_injective`);
    e.g. N(ξ) = 2 (`norm_two_solutions_infinite`). The m = 1 case recovers item 5.
+7. (NEW, S7) **Non-surjectivity / a non-norm.** The norm form is anisotropic mod 7
+   (`cnorm_anisotropic_mod7`, finite kernel `decide`: x³-2 is irreducible over 𝔽₇, so 7
+   is inert), hence 7 ∣ N forces 7 ∣ a,b,c (`seven_dvd_cnorm_iff`) and 343 ∣ N. Thus
+   7 is never a norm (`cnorm_ne_seven`, `cnorm_ne_neg_seven`): N(ξ) = 7 has **no**
+   solution (`norm_eq_seven_no_solution`) and N is **not surjective**
+   (`cnorm3_not_surjective`) — the empty counterpart to item 6's N = 2.
 
 Deferred (Mathlib-bearer-less): the unit *rank* = 1 via signature (1,1) of ℚ(∛2),
 needing `card (InfinitePlace (AdjoinRoot (X³-2))) = 2`, for which Mathlib ships no
