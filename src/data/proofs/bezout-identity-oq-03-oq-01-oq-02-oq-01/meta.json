@@ -23,6 +23,48 @@
       "ℤ/ℕ divisibility bridges: Int.natCast_dvd, Int.lcm_def, Nat.lcm_dvd"
     ]
   },
+  "sections": [
+    {
+      "id": "setup-distributivity",
+      "title": "The Keystone: gcd Distributes over lcm",
+      "startLine": 1,
+      "endLine": 83,
+      "summary": "Header and IteratedCRT namespace, then the lemma that fills a genuine Mathlib gap: nat_gcd_lcm_distrib proves gcd a (lcm b c) = lcm (gcd a b) (gcd a c) on ℕ (via prime factorizations / lattice distributivity), int_gcd_lcm_distrib lifts it to ℤ moduli through natAbs, and int_natLcm_dvd packages the divisibility fact both divide ⇒ lcm divides.",
+      "mathContext": "$\\gcd(a, \\operatorname{lcm}(b,c)) = \\operatorname{lcm}(\\gcd(a,b), \\gcd(a,c)).$"
+    },
+    {
+      "id": "list-lcm-engine",
+      "title": "The List lcm and the Divisibility Engine",
+      "startLine": 84,
+      "endLine": 155,
+      "summary": "Defines lcmList (the lcm of all moduli in a list of congruences), proves it is nonzero when all moduli are and that each modulus divides it, then the key step gcd_lcmList_dvd: if gcd(m₀, mᵢ) divides d for every i, then gcd(m₀, lcmList) divides d — the recursion that promotes pairwise compatibility to a single divisibility.",
+      "mathContext": "$\\forall i,\\ \\gcd(m_0, m_i)\\mid d \\;\\Rightarrow\\; \\gcd(m_0, \\operatorname{lcm}(m_1,\\dots,m_k))\\mid d.$"
+    },
+    {
+      "id": "necessity-sufficiency",
+      "title": "Necessity and Sufficiency",
+      "startLine": 156,
+      "endLine": 221,
+      "summary": "Defines CongSolves and Compatible. compatible_of_solves: any common solution forces pairwise compatibility (necessity). solves_of_compatible: a pairwise-compatible system with nonzero moduli has a solution, built by iterated merge of two congruences at a time, using the divisibility engine to keep the merged modulus consistent (sufficiency).",
+      "mathContext": "$\\text{solvable} \\Rightarrow \\gcd(m_i,m_j)\\mid a_i-a_j; \\quad \\text{compatible} \\Rightarrow \\exists x,\\ x\\equiv a_i\\ (m_i)\\ \\forall i.$"
+    },
+    {
+      "id": "main-uniqueness",
+      "title": "Main Theorem and Uniqueness",
+      "startLine": 222,
+      "endLine": 258,
+      "summary": "solvable_iff_compatible states the generalized CRT solvability criterion (solvable ⟺ pairwise compatible). solutions_unique_mod_lcmList shows any two solutions agree modulo lcmList, and iterated_crt_full bundles existence + uniqueness modulo the list lcm.",
+      "mathContext": "$\\text{solvable} \\iff \\text{compatible}; \\quad x \\equiv y \\pmod{\\operatorname{lcm}(m_1,\\dots,m_k)}.$"
+    },
+    {
+      "id": "worked-examples",
+      "title": "Worked Examples",
+      "startLine": 259,
+      "endLine": 289,
+      "summary": "Concrete instances: a pairwise-coprime system (x ≡ 2 mod 3, 3 mod 5, 2 mod 7, solution 23) and a non-coprime but compatible system (x ≡ 1 mod 4, 3 mod 6, 0 mod 9, solution 9), exhibiting that compatibility — not coprimality — is the right hypothesis.",
+      "mathContext": "$x\\equiv 2\\,(3),\\ 3\\,(5),\\ 2\\,(7)\\Rightarrow x=23;\\quad x\\equiv 1\\,(4),\\ 3\\,(6),\\ 0\\,(9)\\Rightarrow x=9.$"
+    }
+  ],
   "conclusion": {
     "summary": "The k-congruence (iterated) CRT: a system x ≡ aᵢ (mod mᵢ) with nonzero moduli is solvable iff it is pairwise compatible (gcd(mᵢ,mⱼ) | aᵢ-aⱼ for all i,j), and the solution is unique modulo lcm(m₁,…,mₖ). The proof is reduced to a single new lemma — distributivity of gcd over lcm on ℕ, proved via prime factorizations — that fills a genuine Mathlib gap. 13 theorems, 0 axioms, 289 lines.",
     "implications": "The pairwise-compatibility criterion is the working form of CRT used throughout computational number theory (modular algorithms, Hensel lifting, multi-modular arithmetic). The standalone gcd/lcm distributivity lemma is reusable wherever divisibility lattices appear.",
