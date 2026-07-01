@@ -166,5 +166,35 @@
     "definitionCount": 0,
     "theoremCount": 4
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Adolf Hurwitz"
+      ],
+      "title": "Über die angenäherte Darstellung der Irrationalzahlen durch rationale Brüche",
+      "year": 1891,
+      "venue": "Mathematische Annalen 39, 279–284",
+      "note": "Original proof that |α−p/q|<1/(√5·q²) has infinitely many solutions and that √5 is best possible."
+    },
+    {
+      "authors": [
+        "G. H. Hardy",
+        "E. M. Wright"
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press (6th ed., rev. Heath-Brown & Silverman)",
+      "note": "Comprehensive treatment of Dirichlet's and Hurwitz's approximation theorems, continued fractions, and badly approximable numbers."
+    },
+    {
+      "authors": [
+        "Aleksandr Ya. Khinchin"
+      ],
+      "title": "Continued Fractions",
+      "year": 1964,
+      "venue": "University of Chicago Press",
+      "note": "Continued-fraction approach to Hurwitz's theorem and the extremal role of the golden ratio."
+    }
+  ]
 }

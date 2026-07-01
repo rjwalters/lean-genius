@@ -182,5 +182,35 @@
     "definitionCount": 3,
     "theoremCount": 15
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Hermann Minkowski"
+      ],
+      "title": "Geometrie der Zahlen",
+      "year": 1896,
+      "venue": "Teubner, Leipzig",
+      "note": "Founding text of the geometry of numbers; the convex-body theorem used to re-derive Dirichlet's bound."
+    },
+    {
+      "authors": [
+        "J. W. S. Cassels"
+      ],
+      "title": "An Introduction to the Geometry of Numbers",
+      "year": 1959,
+      "venue": "Springer (Grundlehren 99)",
+      "note": "Minkowski's convex-body theorem and its application to Diophantine approximation."
+    },
+    {
+      "authors": [
+        "G. H. Hardy",
+        "E. M. Wright"
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford University Press (6th ed., rev. Heath-Brown & Silverman)",
+      "note": "Comprehensive treatment of Dirichlet's and Hurwitz's approximation theorems, continued fractions, and badly approximable numbers."
+    }
+  ]
 }
