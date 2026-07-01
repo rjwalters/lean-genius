@@ -1486,4 +1486,104 @@ theorem franklinMoveB_max' (S : Finset ℕ) (ℓ m : ℕ)
     · have := hmax y hyS; omega
   · exact Finset.le_max' _ _ hmem
 
+/-! ## Part 15: recomputing the smallest part on the move images (toward the involution)
+
+Part 14 pinned the *largest* part of each move image (`max' (Move A) = m+1`,
+`max' (Move B) = m-1`), the top parameter the reverse move reads.  The dispatch test of
+the *second* `franklinStep`, however, compares the **smallest** part `s = min` against the
+top-staircase length `ℓ`, so the involution also needs the `min'` of each image.  This part
+supplies the two companions:
+
+    `min' (franklinMoveB S ℓ m) = ℓ`                    (Move B lowers the bottom to `ℓ`)
+    `min' (franklinMoveA S s m) = min' ((S.erase s).erase (m-s+1))`
+                                                         (Move A leaves the bottom untouched)
+
+Move B *creates* the new smallest part `ℓ` (below every surviving part, since `ℓ < min S`
+in its `s > ℓ` regime), so `ℓ` is canonically the minimum of the image — exactly the
+smallest-part parameter Move A reads to undo it (`franklinMoveA (franklinMoveB S ℓ m) ℓ …`).
+Move A instead only *raises* the top (inserting `m+1` above everything) while erasing the
+old minimum `s`, so the image's minimum drops to the **second-smallest** part of `S`, i.e.
+the minimum of the surviving set `(S.erase s).erase (m-s+1)`; the fresh top `m+1` never
+becomes the minimum.  Together with the Part-14 `max'` recomputations these fix both
+dispatch parameters (`min` and `max`) on the images canonically, leaving only the
+top-run-length `ℓ` recomputation before the full self-inverse `franklinStep` involution
+and the cancellation sum. -/
+
+/-- **Move B lowers the smallest part to `ℓ`.**  Move B inserts the fresh smallest part
+`ℓ`, which (in the `s > ℓ` regime, i.e. `ℓ < min S`) is below every surviving part and below
+the new run bottom `m-ℓ` (`ℓ ≤ m-ℓ`); so the minimum of the image is exactly `ℓ`.  This is
+the smallest-part parameter Move A needs to undo Move B. -/
+theorem franklinMoveB_min' (S : Finset ℕ) (ℓ m : ℕ)
+    (H : (franklinMoveB S ℓ m).Nonempty) (HS : S.Nonempty)
+    (hℓs : ℓ < S.min' HS) (hℓm2 : ℓ ≤ m - ℓ) :
+    (franklinMoveB S ℓ m).min' H = ℓ := by
+  have hmem : ℓ ∈ franklinMoveB S ℓ m := by
+    rw [franklinMoveB]; exact Finset.mem_insert_self _ _
+  apply le_antisymm
+  · exact Finset.min'_le _ _ hmem
+  · apply Finset.le_min'
+    intro y hy
+    rw [franklinMoveB, Finset.mem_insert, Finset.mem_insert] at hy
+    rcases hy with h | h | h
+    · omega
+    · omega
+    · have hyS : y ∈ S := Finset.erase_subset _ _ h
+      have hle : S.min' HS ≤ y := Finset.min'_le S y hyS
+      omega
+
+/-- **Move A leaves the smallest part as the second-smallest of `S`.**  Move A inserts the
+new largest part `m+1` (above everything, since every part of `S` is `≤ m`) and erases
+`s = min S` together with the top-run element `m-s+1`; so the minimum of the image is the
+minimum of the surviving parts `(S.erase s).erase (m-s+1)` — the second-smallest part of
+`S`.  The fresh top `m+1` never becomes the minimum. -/
+theorem franklinMoveA_min' (S : Finset ℕ) (s m : ℕ)
+    (H : (franklinMoveA S s m).Nonempty)
+    (H' : ((S.erase s).erase (m - s + 1)).Nonempty)
+    (hmax : ∀ x ∈ S, x ≤ m) :
+    (franklinMoveA S s m).min' H = ((S.erase s).erase (m - s + 1)).min' H' := by
+  apply le_antisymm
+  · apply Finset.min'_le
+    rw [franklinMoveA, Finset.mem_insert]; right
+    exact ((S.erase s).erase (m - s + 1)).min'_mem H'
+  · apply Finset.le_min'
+    intro y hy
+    rw [franklinMoveA, Finset.mem_insert] at hy
+    rcases hy with h | h
+    · have hmemS : ((S.erase s).erase (m - s + 1)).min' H' ∈ S :=
+        Finset.erase_subset _ _ (Finset.erase_subset _ _
+          (((S.erase s).erase (m - s + 1)).min'_mem H'))
+      have hle := hmax _ hmemS
+      omega
+    · exact Finset.min'_le _ y h
+
+/-! ## Part 16: the Move B branch is self-inverse with *canonically recomputed* parameters
+
+Parts 14–15 pinned both endpoints of each move image: `max' (Move B) = m-1` (Part 14) and
+`min' (Move B) = ℓ` (Part 15).  These are exactly the two parameters the reverse move reads —
+the top `m-1` and the new smallest part `ℓ` — so the raw mutual-inverse identity
+`franklinMoveA (franklinMoveB S ℓ m) ℓ (m-1) = S` (Part 12) can now be restated with *no
+ad-hoc threading*: the reverse Move A takes its smallest-part and top parameters **directly as
+`min'` and `max'` of the image**, precisely as the second `franklinStep` dispatch would compute
+them.  This closes the Move B → Move A half of Franklin's involution as a genuine self-inverse.
+
+(The Move A → Move B half additionally requires the top-run-**length** `ℓ` of the image — the
+smallest part `s` that Move A removes is *not* recoverable from the image's `min'` (which is the
+second-smallest of `S`), so that direction still awaits the staircase-length recomputation.) -/
+
+/-- **Move B is undone by Move A reading its parameters canonically off the image.**  With the
+smallest part `min'` and largest part `max'` of the image `franklinMoveB S ℓ m` substituted for
+Move A's two parameters — the exact values the second Franklin dispatch computes — Move A returns
+`S`.  Combines Part 12's `franklinMoveA_franklinMoveB` with the Part 15 `min' = ℓ` and Part 14
+`max' = m-1` recomputations. -/
+theorem franklinMoveA_franklinMoveB_canonical (S : Finset ℕ) (ℓ m : ℕ)
+    (H : (franklinMoveB S ℓ m).Nonempty) (HS : S.Nonempty)
+    (hmS : m ∈ S) (hml : m - ℓ ∉ S) (hlS : ℓ ∉ S) (hne : ℓ ≠ m - ℓ)
+    (hℓ1 : 1 ≤ ℓ) (hℓm : ℓ < m) (hℓs : ℓ < S.min' HS) (hℓm2 : ℓ ≤ m - ℓ)
+    (hmax : ∀ x ∈ S, x ≤ m) (htop : Finset.Icc (m - ℓ + 1) m ⊆ S) :
+    franklinMoveA (franklinMoveB S ℓ m) ((franklinMoveB S ℓ m).min' H)
+      ((franklinMoveB S ℓ m).max' H) = S := by
+  rw [franklinMoveB_min' S ℓ m H HS hℓs hℓm2,
+      franklinMoveB_max' S ℓ m H hmax hℓ1 hℓm htop]
+  exact franklinMoveA_franklinMoveB S ℓ m hmS hml hlS hne hℓm
+
 end PentagonalNumberTheoremOQ01
