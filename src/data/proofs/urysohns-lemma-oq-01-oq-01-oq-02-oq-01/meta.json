@@ -58,11 +58,19 @@
     },
     {
       "id": "vector-valued",
-      "title": "Finite-Dimensional Vector-Valued Tietze with Preserved ℓ∞ Bound",
+      "title": "Componentwise Vector-Valued Tietze",
       "startLine": 106,
-      "endLine": 160,
-      "summary": "tietze_extension_pi_sup extends f : s → (ι → ℝ) (ι finite) componentwise with the common bound M, preserving |G y i| ≤ M; tietze_extension_pi_norm packages it with the ℓ∞ norm (‖G y‖ ≤ M via pi_norm_le_iff_of_nonneg); tietze_extension_pi_norm_sharp records that G extends f and shares every uniform ℓ∞ bound, so ‖G‖ = ‖f‖ for the least bound.",
+      "endLine": 147,
+      "summary": "tietze_extension_pi_sup extends f : s → (ι → ℝ) (ι finite) componentwise against the common bound M, assembling y ↦ (i ↦ Gi y) via continuous_pi and preserving |G y i| ≤ M; tietze_extension_pi_norm packages it with the genuine ℓ∞ norm (‖G y‖ ≤ M via pi_norm_le_iff_of_nonneg).",
       "mathContext": "$\\|f x\\|_\\infty \\le M \\ \\Rightarrow\\ \\exists\\,G,\\ G|_s = f \\ \\wedge\\ \\|G y\\|_\\infty \\le M.$"
+    },
+    {
+      "id": "norm-sharp",
+      "title": "Sharp Norm-Preserving Vector Tietze",
+      "startLine": 148,
+      "endLine": 160,
+      "summary": "tietze_extension_pi_norm_sharp records that G extends f and shares every uniform ℓ∞ bound; specialising to the least bound M = ‖f‖ gives ‖G‖ ≤ ‖f‖, and G|_s = f gives the reverse, so ‖G‖ = ‖f‖ — the norm-preserving vector analogue of the parent's sharp scalar Tietze.",
+      "mathContext": "$\\|G\\| = \\|f\\|$ on a finite-dimensional $\\ell^\\infty$ codomain."
     }
   ],
   "crossReferences": [

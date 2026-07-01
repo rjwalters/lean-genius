@@ -70,5 +70,52 @@
       "pi_norm_le_iff_of_nonneg",
       "continuous_pi"
     ]
+  },
+  {
+    "id": "ann-unit-interval",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 98,
+      "endLine": 105
+    },
+    "type": "technique",
+    "title": "The [0,1]-Valued Specialisation for Partitions of Unity",
+    "content": "`tietze_extension_unitInterval` is the `a = 0, b = 1` instance of `tietze_extension_Icc`, obtained by a one-line application (`by norm_num` discharges `0 ≤ 1`). Although trivial as a corollary, it is the operationally important shape: a continuous `[0,1]`-valued function on a closed set extends to a continuous `[0,1]`-valued function on all of `X`. This is exactly the building block used to construct partitions of unity subordinate to an open cover — the standard route from Urysohn/Tietze to smooth-manifold and integration machinery — because a partition of unity is a family of `[0,1]`-valued bump functions that must first be extended off their supports while staying in `[0,1]`.",
+    "mathContext": "$0 \\le f \\le 1 \\ \\Rightarrow\\ \\exists\\,G,\\ G|_s = f \\ \\wedge\\ 0 \\le G \\le 1$; the $[0,1]$-valued shape underlying partitions of unity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "partition of unity",
+      "unit interval",
+      "bump functions",
+      "specialisation of the interval form"
+    ],
+    "prerequisites": [
+      "tietze_extension_Icc",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-norm-sharp",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 148,
+      "endLine": 160
+    },
+    "type": "insight",
+    "title": "Sharp Norm Preservation ‖G‖ = ‖f‖ in Finite Dimensions",
+    "content": "`tietze_extension_pi_norm_sharp` records that the vector extension `G` restricts to `f` on `s` and satisfies every uniform `ℓ∞` bound that `f` does. Specialising the shared bound to the least one, `M = ‖f‖`, forces `‖G‖ ≤ ‖f‖`; the reverse inequality is automatic because `G` extends `f` (a sup over a superset is at least the sup over the subset), so `‖G‖ = ‖f‖`. This is the vector analogue of the parent's sharp scalar Tietze: the extension is not merely bounded but *norm-preserving*, the strongest possible control. Norm preservation matters because it makes the extension operator a (nonlinear) isometry into the finite-dimensional `ℓ∞` Banach codomain, so no amplitude is introduced off `s`.",
+    "mathContext": "$\\|G\\| = \\|f\\|$ on a finite-dimensional $\\ell^\\infty$ codomain: $M = \\|f\\|$ gives $\\|G\\| \\le \\|f\\|$, and $G|_s = f$ gives $\\|G\\| \\ge \\|f\\|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm-preserving extension",
+      "sharp Tietze bound",
+      "isometric extension",
+      "ℓ∞ Banach codomain"
+    ],
+    "prerequisites": [
+      "tietze_extension_pi_norm",
+      "least-upper-bound specialisation M = ‖f‖",
+      "extension ⇒ ‖G‖ ≥ ‖f‖"
+    ]
   }
 ]
