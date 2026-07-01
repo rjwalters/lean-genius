@@ -2,6 +2,9 @@ import Mathlib.Analysis.Normed.Algebra.GelfandMazur
 import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.Analysis.Normed.Field.Basic
+import Mathlib.Analysis.Complex.Polynomial.Basic
+import Mathlib.FieldTheory.Minpoly.Basic
+import Mathlib.RingTheory.IntegralClosure.Algebra.Basic
 
 /-!
 # Hurwitz Only-If: Normed Division Algebras Have Dimension in {1, 2, 4, 8}
@@ -74,6 +77,63 @@ theorem hurwitz_field_case (F : Type*) [NormedField F] [NormedAlgebra ℝ F] :
   simp only [admissibleDimensions, Set.mem_insert_iff, Set.mem_singleton_iff]
   rcases h with h | h <;> omega
 
+/-! ### Frobenius Step 1: Quadratic Minimal Polynomials
+
+The associative case of Hurwitz's only-if direction is exactly **Frobenius' theorem**:
+`NormedDivisionRing` is associative, so the octonions (dim 8) are excluded and the
+answer is `{1, 2, 4}`. The classical proof of Frobenius begins by showing that every
+element generates a subalgebra isomorphic to `ℝ` or `ℂ` — equivalently, every element
+satisfies a real polynomial of degree at most two. The lemmas below establish this first
+step, fully verified (0 sorries), for any finite-dimensional normed division ring over `ℝ`.
+
+The remaining gap toward closing `hurwitz_only_if_ring` is the *global* structure argument:
+split `A = ℝ ⬝ 1 ⊕ Im A` using these quadratics, equip `Im A` with the bilinear form
+`⟨x, y⟩ = -(xy + yx)/2`, and analyze its dimension. That step is not yet formalized. -/
+
+open Polynomial in
+/-- **Frobenius Step 1a.** Every element of a finite-dimensional normed division ring over
+`ℝ` has a minimal polynomial of natural degree at most two. Its minimal polynomial is
+irreducible (the ambient ring is a domain and the element is integral), and irreducible
+real polynomials have degree `≤ 2`. -/
+theorem minpoly_natDegree_le_two (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a : A) : (minpoly ℝ a).natDegree ≤ 2 :=
+  (minpoly.irreducible (IsIntegral.of_finite ℝ a)).natDegree_le_two
+
+open Polynomial in
+/-- **Frobenius Step 1b.** Every element `a` of a finite-dimensional normed division ring
+over `ℝ` satisfies an explicit real quadratic relation `a ^ 2 = p • a + q • 1`. This is the
+"each element generates `ℝ` or `ℂ`" heart of Frobenius' theorem, extracted directly from the
+degree-`≤ 2` minimal polynomial. -/
+theorem exists_quadratic (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a : A) : ∃ p q : ℝ, a ^ 2 = p • a + q • (1 : A) := by
+  set m := minpoly ℝ a with hm
+  have hint : IsIntegral ℝ a := IsIntegral.of_finite ℝ a
+  have hmonic : m.Monic := minpoly.monic hint
+  have hdeg : m.natDegree ≤ 2 := minpoly_natDegree_le_two A a
+  have hpos : 0 < m.natDegree := minpoly.natDegree_pos hint
+  have haeval : aeval a m = 0 := minpoly.aeval ℝ a
+  -- Expand `aeval a m` over `range 3` (since `natDegree m ≤ 2 < 3`).
+  have hexp : m.coeff 0 • (1 : A) + m.coeff 1 • a + m.coeff 2 • a ^ 2 = 0 := by
+    have := aeval_eq_sum_range' (R := ℝ) (S := A) (p := m) (n := 3) (by omega) a
+    rw [haeval] at this
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, pow_zero, pow_one] at this
+    linear_combination (norm := module) -this
+  interval_cases h : m.natDegree
+  · -- `natDegree = 1`: monic ⟹ `coeff 1 = 1`, `coeff 2 = 0`, so `a = -coeff0 • 1`.
+    have hc1 : m.coeff 1 = 1 := by
+      have := hmonic.leadingCoeff; rwa [leadingCoeff, h] at this
+    have hc2 : m.coeff 2 = 0 := coeff_eq_zero_of_natDegree_lt (by omega)
+    rw [hc1, hc2, one_smul, zero_smul, add_zero] at hexp
+    have ha : a = (-m.coeff 0) • (1 : A) := by
+      have : a = -(m.coeff 0 • (1 : A)) := by linear_combination (norm := module) hexp
+      rw [this, neg_smul]
+    exact ⟨-m.coeff 0, 0, by rw [sq, ha, smul_mul_assoc, one_mul, zero_smul, add_zero]⟩
+  · -- `natDegree = 2`: monic ⟹ `coeff 2 = 1`.
+    have hc2 : m.coeff 2 = 1 := by
+      have := hmonic.leadingCoeff; rwa [leadingCoeff, h] at this
+    rw [hc2, one_smul] at hexp
+    exact ⟨-m.coeff 1, -m.coeff 0, by linear_combination (norm := module) hexp⟩
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Hurwitz Only-If for Normed Division Rings**:
@@ -96,18 +156,18 @@ theorem hurwitz_field_case (F : Type*) [NormedField F] [NormedAlgebra ℝ F] :
 theorem hurwitz_only_if_ring (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
     [Module.Finite ℝ A] :
     Module.finrank ℝ A ∈ admissibleDimensions := by
-  /- Proof outline:
-     1. If A is commutative (a field), apply hurwitz_field_case.
-     2. If A is non-commutative:
-        - Let n := finrank ℝ A
-        - Choose orthonormal basis {e₁,...,eₙ} of A as ℝ-vector space
-        - Define mul : (Fin n → ℝ) → (Fin n → ℝ) → (Fin n → ℝ) via
-          mul a b := coordinates of (∑ aᵢeᵢ) * (∑ bᵢeᵢ)
-        - From ‖xy‖ = ‖x‖·‖y‖: normSq a * normSq b = normSq (mul a b)
-        - This gives NSquareIdentity n
-        - Apply HurwitzTheorem.hurwitz_only_if to get n ∈ {1,2,4,8}
-     Building the NSquareIdentity from a basis requires Clifford algebra infrastructure
-     or a direct inner product argument not yet available in Mathlib. -/
+  /- Proof outline (Frobenius' theorem, since `NormedDivisionRing` is associative so the
+     answer is in fact `{1, 2, 4} ⊆ {1, 2, 4, 8}`):
+     STEP 1 (VERIFIED above): every `a : A` satisfies a real quadratic `a² = p•a + q•1`
+       via `exists_quadratic` / `minpoly_natDegree_le_two`. Hence each element generates a
+       subalgebra isomorphic to `ℝ` or `ℂ`.
+     STEP 2 (remaining): split `A = ℝ•1 ⊕ Im A` where `Im A := {a | a² ∈ ℝ≤0 • 1}` is the
+       set of "pure imaginary" elements (those whose quadratic has `p = 0`, `q ≤ 0`).
+     STEP 3 (remaining): the map `(x, y) ↦ -(x*y + y*x)` is a positive-definite symmetric
+       bilinear form on `Im A`; multiplication makes `Im A` a Clifford-type space, forcing
+       `finrank ℝ (Im A) ∈ {0, 1, 3}` and thus `finrank ℝ A ∈ {1, 2, 4}`.
+     Steps 2–3 (the global structure argument) are not yet formalized; Mathlib lacks the
+     Clifford-algebra / bilinear-form machinery to discharge them directly. -/
   sorry
 
 end HurwitzOnlyIf

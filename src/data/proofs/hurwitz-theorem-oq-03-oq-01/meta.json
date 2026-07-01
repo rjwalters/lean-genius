@@ -21,15 +21,17 @@
     "sorries": 1,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "1 sorry: hurwitz_only_if_ring (non-commutative case) — requires Clifford algebra representation theory or NSquareIdentity reduction from HurwitzTheorem.lean. The commutative subcase (hurwitz_field_case) is axiom-free.",
-    "lineCount": 113,
-    "theoremCount": 3,
+    "assumptions": "1 sorry: hurwitz_only_if_ring (the global structure argument of Frobenius theorem — split A = ℝ⊕Im A, positive-definite bilinear form on Im A). Frobenius Step 1 is now VERIFIED (0 sorries): minpoly_natDegree_le_two and exists_quadratic show every element satisfies a real quadratic, i.e. generates ℝ or ℂ. The commutative subcase (hurwitz_field_case) is axiom-free.",
+    "lineCount": 173,
+    "theoremCount": 5,
     "definitionCount": 1,
     "originalContributions": [
       "admissibleDimensions: Def {1,2,4,8} — the four admissible finranks",
       "finrank_normed_field_eq_one_or_two: Gelfand-Mazur consequence (0 sorries)",
       "hurwitz_field_case: commutative Hurwitz only-if direction (0 sorries)",
-      "hurwitz_only_if_ring: general division ring case (1 sorry for non-commutative)"
+      "minpoly_natDegree_le_two: every element of a finite-dim real division ring has minimal polynomial of degree ≤ 2 (0 sorries) — Frobenius Step 1a",
+      "exists_quadratic: explicit quadratic relation a²=p•a+q•1 for every element (0 sorries) — Frobenius Step 1b, the ℝ-or-ℂ generation heart of Frobenius",
+      "hurwitz_only_if_ring: general division ring case (1 sorry: global Frobenius structure argument)"
     ]
   },
   "overview": {
@@ -127,9 +129,9 @@
   ],
   "leanFile": {
     "namespace": "HurwitzOnlyIf",
-    "lineCount": 113,
+    "lineCount": 173,
     "axiomCount": 0,
-    "theoremCount": 3,
+    "theoremCount": 5,
     "definitionCount": 1,
     "path": "Proofs/HurwitzOnlyIf.lean",
     "sorries": 1
