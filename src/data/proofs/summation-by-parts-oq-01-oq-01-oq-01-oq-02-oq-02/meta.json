@@ -39,6 +39,28 @@
       "mathContext": "Proved by the same induction with smul_sub and sub_smul replacing map_sub, then abel. f and G live in genuinely different objects (the ring R and the module M), with the scalar action playing the role of the biadditive pairing."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Finite calculus: summation by parts (Abel transform), difference/antidifference operators, and arithmetico-geometric sums."
+    },
+    {
+      "authors": [
+        "Knuth, D.E."
+      ],
+      "title": "The Art of Computer Programming, Volume 1: Fundamental Algorithms",
+      "year": "1997",
+      "venue": "3rd ed., Addison-Wesley",
+      "note": "Summation by parts and closed forms for weighted geometric sums via the finite-calculus operators."
+    }
+  ],
   "conclusion": {
     "summary": "This entry proves the discrete Abel summation by parts in maximal generality: for any biadditive pairing p : A →+ B →+ M between abelian groups, ∑_{k<n} p(f k)(G(k+1)−G k) = p(f n)(G n) − p(f 0)(G 0) − ∑_{k<n} p(f(k+1)−f k)(G(k+1)), with no commutativity, associativity, or ring structure on the value group. It recovers the parent's identity over an ARBITRARY ring (p = multiplication, commutativity dropped) and the module-valued transform (p = scalar action). It answers the parent entry's second open question: the Abel mechanism uses only biadditivity, so it survives both the loss of commutativity and the move to a bimodule-valued pairing.",
     "implications": "Isolating biadditivity as the sole hypothesis makes the transform reusable for sequences valued in modules — vector-, matrix-, or operator-valued sums against a scalar weight, and any bilinear pairing with a fixed argument order. The non-commutative ring version (abel_summation_ring) is a drop-in strengthening of the parent: any future use over a ring no longer needs commutativity. The proof is the parent's induction verbatim with `ring` replaced by `map_sub` + `abel`, demonstrating concretely which algebraic axioms the identity actually consumes.",

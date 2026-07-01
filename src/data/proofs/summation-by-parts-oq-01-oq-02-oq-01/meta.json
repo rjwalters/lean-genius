@@ -124,6 +124,28 @@
       "leanType": "∀ {K : Type*} [Field K] (r : K) (n : ℕ), ∑ k ∈ Finset.range n, (k : K) ^ 2 * r ^ k = (↑(n - 1) : K) ^ 2 * (∑ i ∈ Finset.range n, r ^ i) - ∑ i ∈ Finset.range (n - 1), (2 * (i : K) + 1) * (∑ j ∈ Finset.range (i + 1), r ^ j)"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Finite calculus: summation by parts (Abel transform), difference/antidifference operators, and arithmetico-geometric sums."
+    },
+    {
+      "authors": [
+        "Knuth, D.E."
+      ],
+      "title": "The Art of Computer Programming, Volume 1: Fundamental Algorithms",
+      "year": "1997",
+      "venue": "3rd ed., Addison-Wesley",
+      "note": "Summation by parts and closed forms for weighted geometric sums via the finite-calculus operators."
+    }
+  ],
   "conclusion": {
     "summary": "This entry returns the finite second-moment identity ∑_{k<n} k²·rᵏ to its natural algebraic generality (any field, not just ℝ) and supplies the genuine Abel summation-by-parts derivation its ℝ-only sibling omitted. It adds the second falling-factorial closed form ∑ k(k−1)·rᵏ and the term-by-term decomposition k²=k(k−1)+k, tying the degree-≤2 weighted geometric sums into one family.",
     "implications": "Over any field the closed form is a polynomial-over-(r−1)³ identity with no analytic content. The summation-by-parts derivation makes explicit that the order of the discrete derivative (constant vs. linear forward differences) governs the shape of the correction term — the structural lever for the general ∑ P(k)·rᵏ.",

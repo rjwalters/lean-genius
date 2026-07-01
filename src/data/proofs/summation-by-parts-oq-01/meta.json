@@ -88,6 +88,28 @@
       "leanType": "∀ {K : Type*} [Field K] (r : K) (n : ℕ), ∑ k ∈ Finset.range n, (k : K) * r ^ k = (↑(n - 1) : K) * (∑ i ∈ Finset.range n, r ^ i) - ∑ i ∈ Finset.range (n - 1), (∑ j ∈ Finset.range (i + 1), r ^ j)"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Finite calculus: summation by parts (Abel transform), difference/antidifference operators, and arithmetico-geometric sums."
+    },
+    {
+      "authors": [
+        "Knuth, D.E."
+      ],
+      "title": "The Art of Computer Programming, Volume 1: Fundamental Algorithms",
+      "year": "1997",
+      "venue": "3rd ed., Addison-Wesley",
+      "note": "Summation by parts and closed forms for weighted geometric sums via the finite-calculus operators."
+    }
+  ],
   "conclusion": {
     "summary": "This entry supplies the exact finite arithmetico-geometric identity ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² over any field, both by induction and via Abel's summation by parts — the finite refinement underpinning the gallery's infinite ∑ k·rᵏ = r/(1−r)².",
     "implications": "The closed form is the workhorse of discrete calculus and generating-function manipulation; the summation-by-parts derivation exhibits the discrete analogue of integration by parts as the structural source of the formula.",

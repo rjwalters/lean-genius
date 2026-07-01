@@ -47,6 +47,37 @@
       "mathContext": "After mul_sum and rewriting (r−1)·(f(k)·rᵏ) = f(k)·(r^{k+1} − rᵏ) via pow_succ + ring, the goal matches (A) instantiated at G(k)=rᵏ with G(0)=r⁰=1; rw closes it."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Abel, N.H."
+      ],
+      "title": "Untersuchungen über die Reihe 1 + (m/1)x + m(m−1)/(1·2)x² + …",
+      "year": "1826",
+      "venue": "Journal für die reine und angewandte Mathematik 1, pp. 311–339",
+      "note": "Origin of Abel's summation-by-parts identity."
+    },
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Finite calculus: summation by parts (Abel transform), difference/antidifference operators, and arithmetico-geometric sums."
+    },
+    {
+      "authors": [
+        "Apostol, T.M."
+      ],
+      "title": "Introduction to Analytic Number Theory",
+      "year": "1976",
+      "venue": "Undergraduate Texts in Mathematics, Springer",
+      "note": "Abel (partial) summation as a standard tool for evaluating and estimating weighted sums."
+    }
+  ],
   "conclusion": {
     "summary": "This entry proves the general discrete Abel transform ∑_{k<n} f(k)·(G(k+1)−G(k)) = f(n)·G(n) − f(0)·G(0) − ∑_{k<n} (f(k+1)−f(k))·G(k+1), valid for any two sequences f, G over any commutative ring with no hypotheses, and reads off both pure telescoping (f ≡ 1) and the parent's geometric recursion (G(k) = rᵏ) as instances. It answers the parent entry's second open question: the hypothesis-free Abel mechanism is not special to a geometric base — it holds for an arbitrary antidifference G, packaged for reuse over a commutative ring.",
     "implications": "The transform is the discrete, finite analogue of integration by parts ∫ f dG = fG − ∫ G df, and subsumes the parent's geometric recursion (hence the whole ∑ kᵐ rᵏ ladder) as the case G(k) = rᵏ. Because it carries no hypotheses and lives over any commutative ring with an arbitrary antidifference, it is reusable infrastructure for any future entry needing a closed form for a sum against a sequence with a known antidifference — q-analogues, falling-factorial weights, or any g = ΔG.",

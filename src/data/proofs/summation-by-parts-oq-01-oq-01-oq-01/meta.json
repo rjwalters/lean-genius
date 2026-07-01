@@ -47,6 +47,28 @@
       "mathContext": "Each corollary instantiates f in geom_weighted_recursion and simplifies the forward difference via push_cast + ring; the second-order case reproduces, as a one-line corollary, the degree-lowering step the parent entry summation-by-parts-oq-01-oq-01 established by a dedicated summation-by-parts computation."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Graham, R.L.",
+        "Knuth, D.E.",
+        "Patashnik, O."
+      ],
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "2nd ed., Addison-Wesley",
+      "note": "Finite calculus: summation by parts (Abel transform), difference/antidifference operators, and arithmetico-geometric sums."
+    },
+    {
+      "authors": [
+        "Knuth, D.E."
+      ],
+      "title": "The Art of Computer Programming, Volume 1: Fundamental Algorithms",
+      "year": "1997",
+      "venue": "3rd ed., Addison-Wesley",
+      "note": "Summation by parts and closed forms for weighted geometric sums via the finite-calculus operators."
+    }
+  ],
   "conclusion": {
     "summary": "This entry proves the single hypothesis-free identity (r−1)·∑_{k<n} f(k)·rᵏ = f(n)·rⁿ − f(0) − ∑_{k<n} (f(k+1)−f(k))·r^{k+1}, valid for every sequence f over every commutative ring, and reads the geometric series and the first- and second-order arithmetico-geometric sums off it as corollaries. It answers the parent entry's first open question: the uniform mechanism behind every ∑ kᵐ·rᵏ closed form is the forward-difference recursion f ↦ Δf with explicit boundary term.",
     "implications": "The recursion is the discrete, finite analogue of integration by parts against dv = rᵏ, and it makes the degree-lowering ladder ∑ kᵐ rᵏ ↝ ∑ kᵐ⁻¹ rᵏ ↝ … ↝ ∑ rᵏ explicit and machine-checked. Because it carries no hypotheses and lives over any commutative ring, it is reusable infrastructure for any future entry that needs a closed form for a geometrically-weighted sum.",
