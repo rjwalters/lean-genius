@@ -141,7 +141,15 @@
   ],
   "conclusion": {
     "summary": "A machine-verified, axiom-free proof that any Steiner triple system S(2,3,n) — the 3-uniform extremal configuration of Erdős #211 — has exactly n(n-1)/6 lines, via a two-way incidence count (3 pairs per line, 1 line per pair). This isolates the rigorous source of Erdős's conjectured sharp constant 1/6 and the divisibility 3 ∣ C(n,2) it forces, supplying the combinatorial heart that the parent entry records only as unproved hypotheses.",
-    "futureWork": "The complementary question — for which n, and via which point configurations, such systems are realised in the plane (the Kirkman/Steiner existence theory, and the Burr–Grünbaum–Sloane / Füredi–Palásti geometric constructions) — remains a separate, deeper problem outside this combinatorial count."
+    "implications": [
+      "Isolates and proves the rigorous combinatorial core of Erdős #211's conjectured sharp constant 1/6: in a Steiner triple system S(2,3,n) every line has exactly 3 points and every pair lies on exactly one line, so the incidence double count forces exactly n(n−1)/6 lines — the 'honest source' of the 1/6 the parent entry records only as an unproved hypothesis.",
+      "The count immediately yields the divisibility 3 ∣ C(n,2), the arithmetic necessary condition (n ≡ 1 or 3 mod 6) behind Kirkman/Steiner existence — obtained here purely from counting, with no geometry or existence theory.",
+      "IsLineCover is stated as an honest antecedent (a hypothesis on the configuration), not an assumed constant, so the theorem is a genuine implication about any such system rather than a restatement — a template for extracting the provable combinatorial kernel of a geometric extremal conjecture."
+    ],
+    "openQuestions": [
+      "For which n, and via which explicit point configurations, are Steiner triple systems realised in the plane? This is the Kirkman/Steiner existence theory together with the Burr–Grünbaum–Sloane and Füredi–Palásti geometric constructions — a separate, deeper problem than the combinatorial count.",
+      "Can the double-count kernel be extended from 3-uniform S(2,3,n) to the general S(2,k,n) line-count C(n,2)/C(k,2), and does the same 'honest antecedent' formalization strategy carry the k-uniform divisibility conditions?"
+    ]
   },
   "sorries": []
 }
