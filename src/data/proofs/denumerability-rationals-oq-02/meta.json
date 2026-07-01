@@ -3,6 +3,38 @@
   "title": "Cantor's Characterization of ℚ as the Unique Countable Dense Linear Order",
   "slug": "denumerability-rationals-oq-02",
   "description": "Derived from Mathlib's Order.iso_of_countable_dense: ℚ is (up to order-isomorphism) the unique countable dense linear order without endpoints. Provides bridge formalization showing ℚ satisfies the CDLO axioms, plus independent embedding results (ℤ ↪o ℚ, Fin n ↪o ℚ). Core Cantor characterization via Mathlib's back-and-forth implementation. 18 theorems, 0 axioms.",
+  "references": [
+    {
+      "authors": "Georg Cantor",
+      "title": "Beiträge zur Begründung der transfiniten Mengenlehre (Mathematische Annalen 46)",
+      "year": 1895,
+      "note": "Cantor's back-and-forth theorem: ℚ is the unique countable dense linear order without endpoints, formalized here."
+    },
+    {
+      "authors": "Wacław Sierpiński",
+      "title": "Cardinal and Ordinal Numbers",
+      "year": 1958,
+      "note": "PWN. Order types and the characterization of the rational order type η."
+    },
+    {
+      "authors": "Thomas Jech",
+      "title": "Set Theory (3rd Millennium ed.)",
+      "year": 2003,
+      "note": "Springer. The back-and-forth construction proving categoricity of countable dense linear orders."
+    },
+    {
+      "authors": "Wilfrid Hodges",
+      "title": "Model Theory",
+      "year": 1993,
+      "note": "Cambridge University Press. Back-and-forth systems and ℵ₀-categoricity of dense linear orders."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Order.iso_of_countable_dense and order-embedding infrastructure",
+      "year": 2024,
+      "note": "The Mathlib categoricity theorem and order embeddings (ℤ ↪o ℚ, Fin n ↪o ℚ) used here."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",

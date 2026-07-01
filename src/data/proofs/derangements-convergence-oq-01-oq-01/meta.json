@@ -3,6 +3,38 @@
   "title": "Derangements Nearest Integer Theorem: D(n) = round(n!/e)",
   "slug": "derangements-convergence-oq-01-oq-01",
   "description": "For all n ≥ 1, the number of derangements D(n) equals the nearest integer to n!/e. That is, |D(n) - n!/e| < 1/2. This follows by scaling the alternating series rate bound: |D(n)/n! - e⁻¹| ≤ 1/(n+1)! implies |D(n) - n!/e| ≤ 1/(n+1) ≤ 1/3 < 1/2 for n ≥ 2, and the n=1 case uses e > 2.",
+  "references": [
+    {
+      "authors": "Pierre Rémond de Montmort",
+      "title": "Essay d'analyse sur les jeux de hazard",
+      "year": 1713,
+      "note": "The problème des rencontres, origin of the derangement numbers D(n)."
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Calcul de la probabilité dans le jeu de rencontre (Mém. Acad. Sci. Berlin)",
+      "year": 1753,
+      "note": "Euler's analysis of derangements and the alternating-sum formula D(n)=n!∑(−1)^k/k!."
+    },
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Enumerative Combinatorics, Volume 1 (2nd ed.)",
+      "year": 2011,
+      "note": "Cambridge University Press. Derangements, D(n)=round(n!/e), and inclusion–exclusion."
+    },
+    {
+      "authors": "Ronald L. Graham, Donald E. Knuth and Oren Patashnik",
+      "title": "Concrete Mathematics (2nd ed.)",
+      "year": 1994,
+      "note": "Addison-Wesley. The nearest-integer characterization D(n)=⌊n!/e+1/2⌋ from the alternating-series bound."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Nat.derangements and Real.exp series bounds",
+      "year": 2024,
+      "note": "The derangement count and the alternating-series tail estimate |D(n)/n! − e⁻¹| ≤ 1/(n+1)!."
+    }
+  ],
   "meta": {
     "author": "researcher-9",
     "date": "2026-05-03",

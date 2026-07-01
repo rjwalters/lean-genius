@@ -16,6 +16,38 @@
     "sorries": 0
   },
   "description": "For four mutually tangent circles with signed curvatures k₁,k₂,k₃,k₄, the Descartes relation (k₁+k₂+k₃+k₄)² = 2(k₁²+k₂²+k₃²+k₄²) is equivalent to k₄ being one of the two Soddy curvatures k₄ = (k₁+k₂+k₃) ± 2√(k₁k₂+k₂k₃+k₃k₁). Formalizes the curvature arithmetic and the quadratic (Soddy) solution, plus the Vieta relations of the two solutions.",
+  "references": [
+    {
+      "authors": "René Descartes",
+      "title": "Letter to Princess Elisabeth of the Palatinate (November 1643)",
+      "year": 1643,
+      "note": "The original curvature relation among four mutually tangent circles."
+    },
+    {
+      "authors": "Frederick Soddy",
+      "title": "The Kiss Precise (Nature 137)",
+      "year": 1936,
+      "note": "Rediscovery in verse; the Descartes relation (Σk)² = 2Σk² formalized in this entry."
+    },
+    {
+      "authors": "H. S. M. Coxeter",
+      "title": "The Problem of Apollonius (American Mathematical Monthly 75)",
+      "year": 1968,
+      "note": "Geometry of tangent circles and the Soddy configuration."
+    },
+    {
+      "authors": "Jeffrey C. Lagarias, Colin L. Mallows and Allan R. Wilks",
+      "title": "Beyond the Descartes Circle Theorem (American Mathematical Monthly 109)",
+      "year": 2002,
+      "note": "Modern extensions, Apollonian gaskets, and the quadratic Soddy-curvature parametrization used here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: field arithmetic and Polynomial (quadratic root) infrastructure",
+      "year": 2024,
+      "note": "Curvature arithmetic and the quadratic equation giving the two Soddy curvatures."
+    }
+  ],
   "meta": {
     "author": "Lean Genius Researcher (2026)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Descartes%27_theorem",
