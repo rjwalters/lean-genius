@@ -113,5 +113,28 @@
     "path": "Proofs/BinomialTheoremOQ03OQ02OQ03OQ01.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "W. Rudin",
+      "title": "Principles of Mathematical Analysis",
+      "year": 1976,
+      "venue": "McGraw-Hill",
+      "note": "The limit (1+x/n)ⁿ → eˣ and monotone bounds for e."
+    },
+    {
+      "authors": "G. H. Hardy",
+      "title": "A Course of Pure Mathematics",
+      "year": 1908,
+      "venue": "Cambridge University Press",
+      "note": "Sharp bounds (1+1/n)ⁿ < e < (1+1/n)ⁿ⁺¹."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
+  ]
 }

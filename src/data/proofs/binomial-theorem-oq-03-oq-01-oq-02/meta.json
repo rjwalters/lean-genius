@@ -156,5 +156,28 @@
       "relationship": "ancestor",
       "description": "The binomial theorem (1+x)ⁿ = Σ C(n,k)xᵏ is the generating function whose derivatives at x = -1 are exactly these signed moments."
     }
+  ],
+  "references": [
+    {
+      "authors": "C. Jordan",
+      "title": "Calculus of Finite Differences",
+      "year": 1939,
+      "venue": "Chelsea",
+      "note": "Finite-difference operators and alternating falling-factorial sums."
+    },
+    {
+      "authors": "L. Comtet",
+      "title": "Advanced Combinatorics",
+      "year": 1974,
+      "venue": "Reidel",
+      "note": "Falling-factorial moments and finite-difference calculus of binomial sums."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
   ]
 }

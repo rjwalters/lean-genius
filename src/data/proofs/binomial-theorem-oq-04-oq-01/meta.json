@@ -143,5 +143,28 @@
       "summary": "sum_squares_combinatorial n: C(2n,n) = Σ_{k=0}^n C(n,k)². Derived from vandermonde_combinatorial at m=n, using Nat.choose_symm to convert C(n,n-k) to C(n,k) and sq to rewrite the product as a square."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "A.-T. Vandermonde",
+      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "year": 1772,
+      "venue": "Hist. Acad. Roy. Sci.",
+      "note": "Vandermonde's convolution identity, proved here bijectively."
+    },
+    {
+      "authors": "R. P. Stanley",
+      "title": "Enumerative Combinatorics, Vol. 1",
+      "year": 1997,
+      "venue": "Cambridge University Press",
+      "note": "Compositions, multinomial coefficients, and bijective enumeration."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
+  ]
 }

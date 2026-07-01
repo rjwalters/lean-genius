@@ -162,5 +162,21 @@
     "additionalFiles": [
       "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "R. P. Stanley",
+      "title": "Enumerative Combinatorics, Vol. 1",
+      "year": 1997,
+      "venue": "Cambridge University Press",
+      "note": "Compositions, multinomial coefficients, and bijective enumeration."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
+  ]
 }

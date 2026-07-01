@@ -188,5 +188,28 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/BinomialTheoremOQ02OQ04.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Binomial-coefficient moments, Vandermonde convolution, and the hockey-stick identity."
+    },
+    {
+      "authors": "L. Comtet",
+      "title": "Advanced Combinatorics",
+      "year": 1974,
+      "venue": "Reidel",
+      "note": "Falling-factorial moments and finite-difference calculus of binomial sums."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
+  ]
 }

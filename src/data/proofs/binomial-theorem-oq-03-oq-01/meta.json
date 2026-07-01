@@ -155,5 +155,28 @@
       "relationship": "related",
       "description": "A sibling first-moment identity 2·Σ k·C(n,k)² = n·C(2n,n) for the squared (hypergeometric) weights; this entry treats the plain (binomial) weights C(n,k)."
     }
+  ],
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Binomial-coefficient moments, Vandermonde convolution, and the hockey-stick identity."
+    },
+    {
+      "authors": "J. Riordan",
+      "title": "Combinatorial Identities",
+      "year": 1968,
+      "venue": "Wiley",
+      "note": "Weighted and alternating binomial-sum identities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+    }
   ]
 }
