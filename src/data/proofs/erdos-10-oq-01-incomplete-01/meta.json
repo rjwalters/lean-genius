@@ -100,8 +100,12 @@
   ],
   "conclusion": {
     "summary": "The k=1 case of Erdős Problem #10 admits a completely elementary obstruction, formalized here with zero axioms and zero sorries. A covering system of six congruences on the exponent a, each paired with a prime via the order of 2, forces every n in an explicit infinite arithmetic progression (base 2036812 mod 5592405) to share a fixed small prime factor with n − 2^a for every a. Consequently the prime in any representation n = 2^a + p is one of {3,5,7,13,17,241}, so n − 2^a is composite outside those six values. This complements the parent OQ-01 file, whose corresponding k=2 statement (Crocker 1971) is axiomatized: the elementary covering argument for a single power of two is fully machine-checkable.",
-    "significance": "Demonstrates the covering-congruence technique — the historical heart of Erdős's 1950 work on 2^k + p — as a self-contained verified Lean artifact, and contrasts the elementary k=1 obstruction with the deeper (axiomatized) k=2 and open k≥3 cases.",
-    "futureWork": "Strengthen `prime_forced_small` to genuine non-representability for an explicit infinite subfamily (excluding the finitely many n of the form 2^a + q for q ∈ {3,5,7,13,17,241}); and formalize the full Erdős AP of odd integers none of which is 2^a + p."
+    "implications": "Demonstrates the covering-congruence technique — the historical heart of Erdős's 1950 work on 2^k + p — as a self-contained verified Lean artifact, and contrasts the elementary k=1 obstruction with the deeper (axiomatized) k=2 (Crocker) and open k≥3 cases. The construction is a template: any covering system whose moduli are the multiplicative orders of 2 modulo a set of primes yields, via CRT, an infinite family of integers whose representations 2^a + p are pinned to that finite prime set — the reusable engine behind this whole class of non-representability results.",
+    "openQuestions": [
+      "Strengthen prime_forced_small to genuine non-representability for an explicit infinite subfamily, excluding the finitely many n of the form 2^a + q for q ∈ {3,5,7,13,17,241}.",
+      "Formalize the full Erdős 1950 result: an arithmetic progression of odd integers none of which is of the form 2^a + p at all.",
+      "Determine whether a smaller covering system (fewer than six congruences, or smaller modulus than 5592405) can achieve the same k=1 obstruction, and formalize any minimality argument."
+    ]
   },
   "crossReferences": [
     {
