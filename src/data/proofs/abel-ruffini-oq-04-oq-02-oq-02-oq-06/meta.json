@@ -139,7 +139,12 @@
   ],
   "conclusion": {
     "summary": "The derived length of A₄ is exactly 2 (a4_exact_derived_length: D²(A₄) = ⊥ but D¹(A₄) ≠ ⊥) while A₅ is perfect (a5_perfect: commutator A₅ = ⊤), so its derived series is constant at ⊤ and never reaches ⊥ (a5_derived_never_bot). The headline derived_length_gap states the contrast as a single proposition, and derived_length_sequence records the full transition profile 0,0,0,1,2,∞ across A₀…A₅. The D²(A₄) = ⊥ step reuses the parent's Klein-four-group identification of ⁅A₄, A₄⁆ verbatim. 232 lines, 11 theorems, 0 definitions, 0 sorries, 0 axioms; all finite checks use kernel `decide`, no native_decide.",
-    "futureDirections": [
+    "implications": [
+      "The jump from derived length 2 (A₄) to a non-terminating derived series (A₅ perfect) is the group-theoretic heart of the Abel–Ruffini theorem: solvability by radicals corresponds to a solvable Galois group, i.e. a derived series reaching ⊥, so A₅'s perfection is exactly why the general quintic has no radical solution.",
+      "Perfection of A₅ (⁅A₅,A₅⁆ = ⊤) makes it the smallest non-abelian simple group and pins the derived series constant at ⊤, giving a clean machine-checked boundary between the solvable regime (n ≤ 4) and the unsolvable one (n ≥ 5).",
+      "The transition profile 0,0,0,1,2,∞ across A₀…A₅ packages the whole solvable/unsolvable dichotomy as a single computable sequence, and the D²(A₄)=⊥ step's reuse of the parent's Klein-four identification shows the derived-length computation is modular over the composition structure."
+    ],
+    "openQuestions": [
       "Compute the derived length of Sₙ for n ≤ 4 (S₃ has length 2, S₄ has length 3) and contrast with the alternating profile via the sign quotient.",
       "Show the derived length of Aₙ for n ≥ 5 is 'infinite' uniformly by transporting A₅'s perfection along the embedding A₅ ↪ Aₙ.",
       "Relate the V₄ = ⁅A₄, A₄⁆ identification to the explicit composition series A₄ ⊵ V₄ ⊵ C₂ ⊵ {e} and its Jordan–Hölder factors."
@@ -153,7 +158,9 @@
       "Mathlib.Tactic",
       "Proofs.AbelRuffiniOQ04OQ02OQ02"
     ],
-    "opens": ["Equiv"],
+    "opens": [
+      "Equiv"
+    ],
     "namespace": "AbelRuffiniOQ04OQ02OQ02OQ06",
     "lineCount": 232,
     "axiomCount": 0,
@@ -216,28 +223,36 @@
   ],
   "references": [
     {
-      "authors": ["É. Galois"],
+      "authors": [
+        "É. Galois"
+      ],
       "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
       "year": "1846",
       "venue": "Journal de Mathématiques Pures et Appliquées (published posthumously)",
       "note": "Polynomial solvable by radicals iff Galois group solvable; A₅ simple is the quintic obstruction."
     },
     {
-      "authors": ["C. Jordan"],
+      "authors": [
+        "C. Jordan"
+      ],
       "title": "Traité des substitutions et des équations algébriques",
       "year": "1870",
       "venue": "Gauthier-Villars, Paris",
       "note": "Derived and composition series; Aₙ simple for n ≥ 5, hence perfect."
     },
     {
-      "authors": ["D. J. S. Robinson"],
+      "authors": [
+        "D. J. S. Robinson"
+      ],
       "title": "A Course in the Theory of Groups",
       "year": "1996",
       "venue": "Springer GTM 80, 2nd edition",
       "note": "Derived series, solvable length, and perfect groups (G = G')."
     },
     {
-      "authors": ["The mathlib Community"],
+      "authors": [
+        "The mathlib Community"
+      ],
       "title": "The Lean Mathematical Library — GroupTheory.Solvable",
       "year": "2020",
       "venue": "Lean 4 / Mathlib",
