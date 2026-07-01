@@ -3,6 +3,38 @@
   "title": "Strong Nullstellensatz I(V(J)) = √J via Mathlib",
   "slug": "factor-remainder-nullstellensatz-oq-01",
   "description": "Wraps Mathlib's MvPolynomial.vanishingIdeal_zeroLocus_eq_radical to deliver Hilbert's Nullstellensatz (1893) in a gallery-friendly API. Derives the weak Nullstellensatz, polynomial membership criterion, radical ideal correspondence, and the V-I Galois connection as corollaries—establishing the foundational algebra-geometry dictionary for algebraically closed fields.",
+  "references": [
+    {
+      "authors": "David Hilbert",
+      "title": "Über die vollen Invariantensysteme (Mathematische Annalen 42)",
+      "year": 1893,
+      "note": "Hilbert's Nullstellensatz, I(V(J)) = √J, delivered here via a gallery-friendly Mathlib API."
+    },
+    {
+      "authors": "David Eisenbud",
+      "title": "Commutative Algebra with a View Toward Algebraic Geometry",
+      "year": 1995,
+      "note": "Springer GTM 150. The strong and weak Nullstellensatz and the radical-ideal correspondence."
+    },
+    {
+      "authors": "Robin Hartshorne",
+      "title": "Algebraic Geometry",
+      "year": 1977,
+      "note": "Springer GTM 52. The Nullstellensatz and the V–I Galois connection between ideals and varieties."
+    },
+    {
+      "authors": "Michael Atiyah and Ian G. Macdonald",
+      "title": "Introduction to Commutative Algebra",
+      "year": 1969,
+      "note": "Addison-Wesley. Radical ideals and the algebra–geometry dictionary underlying the Nullstellensatz."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: MvPolynomial.vanishingIdeal_zeroLocus_eq_radical",
+      "year": 2024,
+      "note": "The Mathlib theorem wrapped here to expose the weak/strong Nullstellensatz and membership criteria."
+    }
+  ],
   "meta": {
     "author": "Hilbert (1893), formalized via Mathlib",
     "date": "1893",

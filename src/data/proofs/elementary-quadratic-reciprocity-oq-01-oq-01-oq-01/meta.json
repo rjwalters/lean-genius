@@ -3,6 +3,38 @@
   "title": "Gauss Sum Squared Identity τ² = χ(-1)·p",
   "slug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
   "description": "Proves the central identity in the Gauss sum proof of Quadratic Reciprocity: for odd prime p, the classical Gauss sum τ = Σ_a (a/p)·exp(2πia/p) satisfies τ² = (-1)^((p-1)/2)·p in ℂ. This fills the key gap in the Gauss pathway outlined in ElementaryQuadraticReciprocityOQ01OQ01, converting an axiomatized identity into a theorem. The proof uses Mathlib's gaussSum_sq with the quadratic character of ZMod p and the standard additive character, then computes χ(-1) via the first supplementary law.",
+  "references": [
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "note": "Origin of quadratic reciprocity and Gauss sums; τ² = (−1)^{(p−1)/2}p is the analytic heart of one proof."
+    },
+    {
+      "authors": "Kenneth Ireland and Michael Rosen",
+      "title": "A Classical Introduction to Modern Number Theory (2nd ed.)",
+      "year": 1990,
+      "note": "Springer GTM 84. Gauss sums, the identity τ² = χ(−1)p, and the Gauss-sum proof of reciprocity."
+    },
+    {
+      "authors": "Bruce C. Berndt, Ronald J. Evans and Kenneth S. Williams",
+      "title": "Gauss and Jacobi Sums",
+      "year": 1998,
+      "note": "Wiley. Definitive treatment of Gauss sums and their squared evaluation."
+    },
+    {
+      "authors": "Jean-Pierre Serre",
+      "title": "A Course in Arithmetic",
+      "year": 1973,
+      "note": "Springer GTM 7. Quadratic reciprocity via Gauss sums over finite fields."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: gaussSum, ZMod.quadraticChar and cyclotomic root-of-unity infrastructure",
+      "year": 2024,
+      "note": "The Gauss sum τ and quadratic character machinery used to prove τ² = χ(−1)p in ℂ."
+    }
+  ],
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-05",
