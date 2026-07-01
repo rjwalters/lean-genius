@@ -15,6 +15,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fintype.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Algebra.Order.Floor.Semiring
 
 open SimpleGraph
 
@@ -124,9 +126,14 @@ def hasSmallNonPlanarSubgraph (G : SimpleGraph V) (k : ℕ) : Prop :=
 Does there exist C_ε such that dense graphs have small non-planar subgraphs?
 -/
 
-/-- For fixed ε > 0, there exists C_ε bounding the non-planar subgraph size. -/
+/-- For fixed ε > 0, there exists C_ε bounding the non-planar subgraph size.
+
+    We quantify over vertex types in `Type` (universe 0). This is no loss of
+    generality — every finite graph is isomorphic to one on a `Type 0` vertex
+    set — and it keeps `erdos_1018_question` universe-monomorphic (otherwise the
+    body carries an unassigned universe metavariable under Lean 4.26). -/
 def existsBoundingConstant (ε : ℝ) : Prop :=
-  ε > 0 → ∃ C : ℕ, ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
+  ε > 0 → ∃ C : ℕ, ∃ N : ℕ, ∀ (V : Type) [Fintype V] [DecidableEq V],
     Fintype.card V ≥ N →
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       isDense G ε → hasSmallNonPlanarSubgraph G C
@@ -200,7 +207,48 @@ theorem superlinear_forces_nonplanar (ε : ℝ) (hε : ε > 0) :
       Fintype.card V ≥ N →
       ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
         isDense G ε → isNonPlanar G := by
-  sorry
+  -- Choose N above the crossover point 3^(1/ε): once n^ε > 3, a planar graph
+  -- (which has ≤ 3n − 6 ≤ 3n edges) can no longer carry n^(1+ε) = n · n^ε edges.
+  refine ⟨⌈(3 : ℝ) ^ (1 / ε)⌉₊ + 1, ?_⟩
+  intro V _ _ hN G _ hDense
+  -- `isNonPlanar G` unfolds to `¬ isPlanar G`; assume planarity for contradiction.
+  intro hPlanar
+  -- n ≥ N ≥ 1, so n is a positive real.
+  have hn1 : 1 ≤ Fintype.card V := le_trans (Nat.le_add_left 1 _) hN
+  have hnpos : (0 : ℝ) < (Fintype.card V : ℝ) := by exact_mod_cast hn1
+  -- Planarity gives the linear edge bound; relax `3n − 6 ≤ 3n` over ℝ.
+  have hedge : edgeCount G ≤ 3 * Fintype.card V - 6 := planar_linear_bound V G hPlanar
+  have hedgeR : (edgeCount G : ℝ) ≤ 3 * (Fintype.card V : ℝ) := by
+    have h1 : (edgeCount G : ℝ) ≤ ((3 * Fintype.card V - 6 : ℕ) : ℝ) := by exact_mod_cast hedge
+    have h2 : ((3 * Fintype.card V - 6 : ℕ) : ℝ) ≤ ((3 * Fintype.card V : ℕ) : ℝ) := by
+      exact_mod_cast Nat.sub_le _ _
+    push_cast at h2
+    linarith
+  -- Density gives the super-linear lower bound.
+  have hdense' : (Fintype.card V : ℝ) ^ (1 + ε) ≤ (edgeCount G : ℝ) := hDense
+  -- Split the exponent: n^(1+ε) = n · n^ε.
+  have hsplit : (Fintype.card V : ℝ) ^ (1 + ε)
+      = (Fintype.card V : ℝ) * (Fintype.card V : ℝ) ^ ε := by
+    rw [Real.rpow_add hnpos, Real.rpow_one]
+  -- Hence n · n^ε ≤ 3n = n · 3, and cancelling n > 0 gives n^ε ≤ 3.
+  have hle : (Fintype.card V : ℝ) * (Fintype.card V : ℝ) ^ ε
+      ≤ (Fintype.card V : ℝ) * 3 := by
+    rw [← hsplit]; linarith
+  have hnε_le : (Fintype.card V : ℝ) ^ ε ≤ 3 := le_of_mul_le_mul_left hle hnpos
+  -- But n > 3^(1/ε) forces n^ε > (3^(1/ε))^ε = 3, a contradiction.
+  have hTpos : (0 : ℝ) ≤ (3 : ℝ) ^ (1 / ε) := Real.rpow_nonneg (by norm_num) _
+  have hnT : (3 : ℝ) ^ (1 / ε) < (Fintype.card V : ℝ) := by
+    have hceil : (3 : ℝ) ^ (1 / ε) ≤ (⌈(3 : ℝ) ^ (1 / ε)⌉₊ : ℝ) := Nat.le_ceil _
+    have hstep : ((⌈(3 : ℝ) ^ (1 / ε)⌉₊ : ℝ)) + 1 ≤ (Fintype.card V : ℝ) := by
+      exact_mod_cast hN
+    linarith
+  have hmono : ((3 : ℝ) ^ (1 / ε)) ^ ε < (Fintype.card V : ℝ) ^ ε :=
+    Real.rpow_lt_rpow hTpos hnT hε
+  have hcollapse : ((3 : ℝ) ^ (1 / ε)) ^ ε = 3 := by
+    rw [← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 3), one_div,
+      inv_mul_cancel₀ (ne_of_gt hε), Real.rpow_one]
+  rw [hcollapse] at hmono
+  linarith
 
 /-
 ## Quantitative Bounds
