@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-docstring-lineage",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Why This File Exists: the Missing Transitivity Input",
+    "content": "The module docstring locates this file precisely within the Abel–Ruffini concrete-quintic branch. The parent AbelRuffiniOQ04OQ01 computes a SINGLE Galois group by hand (Gal(x⁵−4x+2) ≅ S₅). The sibling AbelRuffiniOQ04OQ01OQ04 proves the abstract group-theory lemma 'a transitive subgroup of S_p (p prime) containing a transposition is all of S_p' — but takes transitivity as a bare hypothesis [IsPretransitive G α]. The gap neither file closes is the Galois-theoretic fact that SUPPLIES that hypothesis: the Galois group of an irreducible polynomial genuinely is a transitive subgroup of the symmetric group on its roots. This file fills exactly that gap, axiom-free, over an arbitrary base field and arbitrary degree — turning the concrete n=5 computation into the general principle 'every irreducible polynomial hands you a transitive subgroup of Sₙ with n ∣ |Gal|'. Reading the file as three results (transitive-subgroup, isomorphism-onto-range, degree-divides-order) is reading the three sentences of this docstring in order.",
+    "mathContext": "Lineage: parent (one Galois group, by hand) → this entry (irreducible ⟹ transitive subgroup of Sₙ, any n) → sibling (transitive + transposition ⟹ S_p). This entry is the Galois-theoretic hinge between the concrete computation and the abstract group theory.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Abel–Ruffini theorem",
+      "open-question lineage",
+      "transitive subgroup of Sₙ",
+      "irreducibility and transitivity"
+    ],
+    "prerequisites": [
+      "Galois group of a polynomial",
+      "transitive group actions"
+    ]
+  },
+  {
     "id": "ann-setup-galaction",
     "proofId": "abel-ruffini-oq-04-oq-01-oq-02",
     "range": {
