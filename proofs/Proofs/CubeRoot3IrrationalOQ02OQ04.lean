@@ -146,32 +146,47 @@ theorem adjoin_nthRoot_finrank_of_squarefree (n m : ℕ) (hn : 2 ≤ n)
   obtain ⟨p, hp, hpdvd, hp2⟩ := squarefree_has_eisenstein_prime m hsq hm
   exact adjoin_nthRoot_finrank n m p hn hp hpdvd hp2 (by omega)
 
-/-! ## Part V: The sharp boundary of the criterion -/
+/-! ## Concrete squarefree radicands from the open question -/
+
+/-- `6 = 2·3` is squarefree (built multiplicatively from primes, keeping the file
+    `native_decide`-free and hence axiom-free). -/
+theorem squarefree_six : Squarefree (6 : ℕ) := by
+  rw [show (6 : ℕ) = 2 * 3 from rfl, Nat.squarefree_mul (by norm_num)]
+  exact ⟨Nat.prime_two.prime.squarefree, Nat.prime_three.prime.squarefree⟩
+
+/-- `30 = 2·3·5` is squarefree. -/
+theorem squarefree_thirty : Squarefree (30 : ℕ) := by
+  rw [show (30 : ℕ) = 2 * 15 from rfl, Nat.squarefree_mul (by norm_num)]
+  refine ⟨Nat.prime_two.prime.squarefree, ?_⟩
+  rw [show (15 : ℕ) = 3 * 5 from rfl, Nat.squarefree_mul (by norm_num)]
+  exact ⟨Nat.prime_three.prime.squarefree,
+    (by norm_num : Nat.Prime 5).prime.squarefree⟩
 
 /-- `X^n - 30` is irreducible over ℚ for every `n ≥ 2` — the flagship non-prime example
-    from the open question. `30 = 2·3·5` is squarefree. -/
+    from the open question. -/
 theorem irreducible_X_pow_sub_thirty (n : ℕ) (hn : 2 ≤ n) :
     Irreducible (X ^ n - C (30 : ℚ) : ℚ[X]) :=
-  irreducible_X_pow_sub_C_of_squarefree n 30 hn (by decide) (by norm_num)
+  irreducible_X_pow_sub_C_of_squarefree n 30 hn squarefree_thirty (by norm_num)
 
-/-- `X^n - 6` is irreducible over ℚ for every `n ≥ 2`. `6 = 2·3` is squarefree. -/
+/-- `X^n - 6` is irreducible over ℚ for every `n ≥ 2`. -/
 theorem irreducible_X_pow_sub_six (n : ℕ) (hn : 2 ≤ n) :
     Irreducible (X ^ n - C (6 : ℚ) : ℚ[X]) :=
-  irreducible_X_pow_sub_C_of_squarefree n 6 hn (by decide) (by norm_num)
+  irreducible_X_pow_sub_C_of_squarefree n 6 hn squarefree_six (by norm_num)
 
 /-- ⁿ√30 is irrational for every `n ≥ 2` (concrete corollary of the squarefree criterion). -/
 theorem irrational_nthRoot_thirty (n : ℕ) (hn : 2 ≤ n) :
     Irrational ((30 : ℝ) ^ ((1 : ℝ) / n)) :=
-  irrational_nthRoot_of_squarefree n 30 hn (by decide) (by norm_num)
+  irrational_nthRoot_of_squarefree n 30 hn squarefree_thirty (by norm_num)
+
+/-! ## Part V: The sharp boundary of the criterion -/
 
 /-- **Squarefree is sufficient but not necessary.** `X² - 12` is irreducible even though
     `12 = 2²·3` is *not* squarefree: Eisenstein still applies at `p = 3`, which divides
     12 to the first power (`3 ∣ 12`, `9 ∤ 12`). So the criterion reaches strictly beyond
     squarefree radicands — the true requirement is a prime factor to the first power. -/
-theorem irreducible_X_sq_sub_twelve : Irreducible (X ^ 2 - C (12 : ℚ) : ℚ[X]) := by
-  have h12 : ¬ Squarefree (12 : ℕ) := by decide
-  -- Squarefree fails, yet Eisenstein at p = 3 succeeds directly.
-  exact eisenstein_X_pow_sub_of_sqfree_factor 2 12 3 (by norm_num) (by norm_num)
+theorem irreducible_X_sq_sub_twelve : Irreducible (X ^ 2 - C (12 : ℚ) : ℚ[X]) :=
+  -- Squarefreeness fails for 12, yet Eisenstein at p = 3 succeeds directly.
+  eisenstein_X_pow_sub_of_sqfree_factor 2 12 3 (by norm_num) (by norm_num)
     (by norm_num) (by norm_num) (by norm_num)
 
 /-- **Where the method stops: powerful `m`.** If every prime factor of `m` divides it at
@@ -192,17 +207,20 @@ theorem powerful_no_eisenstein_prime (m : ℕ)
 theorem X_sq_sub_four_reducible : ¬ Irreducible (X ^ 2 - C (4 : ℚ) : ℚ[X]) := by
   intro hirr
   -- Exhibit the factorization X² - 4 = (X - 2)(X + 2); neither factor is a unit.
-  have hfac : (X ^ 2 - C (4 : ℚ)) = (X - C 2) * (X + C 2) := by ring
+  have hfac : (X ^ 2 - C (4 : ℚ)) = (X - C 2) * (X + C 2) := by
+    have h4 : (C 4 : ℚ[X]) = C 2 * C 2 := by rw [← C_mul]; norm_num
+    rw [h4]; ring
   rcases hirr.isUnit_or_isUnit hfac with h | h
   · exact (Polynomial.not_isUnit_of_natDegree_pos _ (by rw [natDegree_X_sub_C]; norm_num)) h
-  · have hdeg : (X + C 2 : ℚ[X]).natDegree = 1 := by
-      rw [show (X + C 2 : ℚ[X]) = X - C (-2) by ring, natDegree_X_sub_C]
-    exact (Polynomial.not_isUnit_of_natDegree_pos _ (by rw [hdeg]; norm_num)) h
+  · exact (Polynomial.not_isUnit_of_natDegree_pos _ (by rw [natDegree_X_add_C]; norm_num)) h
 
 /-- `4` is powerful (sanity check feeding `X_sq_sub_four_reducible`): its only prime
     factor 2 divides it twice. -/
 theorem four_powerful : ∀ p : ℕ, p.Prime → p ∣ 4 → p ^ 2 ∣ 4 := by
   intro p hp hpdvd
-  interval_cases p <;> simp_all <;> omega
+  -- p ∣ 4 = 2² and p prime ⟹ p ∣ 2 ⟹ p = 2, whence p² = 4 ∣ 4.
+  have hp2 : p ∣ 2 := hp.dvd_of_dvd_pow (show p ∣ 2 ^ 2 by simpa using hpdvd)
+  have : p = 2 := (Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp hp2
+  subst this; norm_num
 
 end CubeRoot3IrrationalOQ02OQ04
