@@ -90,6 +90,26 @@
     ],
     "definitionCount": 2
   },
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig (English translation, Yale University Press, 1965), §365–366"
+    },
+    {
+      "authors": "Wantzel, Pierre Laurent",
+      "title": "Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées 2, 366–372"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Decidable instances and Nat.totient; Mathlib.Data.Nat.Totient, Mathlib.Logic.Decidable",
+      "year": "2024",
+      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+    }
+  ],
   "overview": {
     "historicalContext": "The question of which regular polygons are constructible by compass and straightedge was resolved by Gauss (1796) and Wantzel (1837): a regular n-gon is constructible iff Euler's totient φ(n) is a power of 2. While the decidability of this check was formalized in OQ03 (via `Decidable` typeclass instances), that formalization operated at the level of mathematical propositions (Prop). This file bridges the gap to computation: it implements an actual Bool-valued program, proves it correct, and uses it to enumerate constructible polygons.\n\nThe known Fermat primes are 3, 5, 17, 257, and 65537. It is unknown whether there are more. The 65537-gon was explicitly constructed by Hermes (1894) in a 200-page manuscript. Lean's `native_decide` tactic can verify that 65537 is a constructible polygon in seconds.",
     "problemStatement": "**From Decidability to Executable Program**:\n\nOQ03 showed that n-gon constructibility is decidable by providing `Decidable` typeclass instances. But a Lean `Decidable` instance is a proof object, not necessarily an efficient program. This file asks:\n\n1. Can we define a concrete `Bool`-valued function `ngonConstructible : ℕ → Bool`?\n2. Is it provably correct against `IsConstructibleNgon n` (Gauss-Wantzel)?\n3. Can we use it to compute a verified list of all constructible polygons up to n = 100?",
