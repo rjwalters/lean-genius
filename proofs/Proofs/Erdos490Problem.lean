@@ -59,7 +59,45 @@ def ProductMapInjective (A B : Finset ℕ) : Prop :=
   ∀ a₁ a₂ b₁ b₂, a₁ ∈ A → a₂ ∈ A → b₁ ∈ B → b₂ ∈ B →
     a₁ * b₁ = a₂ * b₂ → (a₁ = a₂ ∧ b₁ = b₂)
 
-/- The two definitions `HasDistinctProducts` and `ProductMapInjective` are equivalent. -/
+/-- **The two definitions are equivalent.** `HasDistinctProducts A B` (the product set
+attains its maximal cardinality `|A||B|`) holds iff `ProductMapInjective A B` (the product
+map `(a,b) ↦ a·b` is pointwise injective on `A × B`).  This closes the gap of the
+previously-orphan `ProductMapInjective` definition, bridging the cardinality-style predicate
+used throughout (which plugs directly into `Finset.card`) to the pointwise statement.
+Proved 0-axiom via `Finset.card_image_iff`: the product set is exactly the image of the
+product map on `A ×ˢ B`, so its card equals `|A ×ˢ B| = |A||B|` iff that map is injective. -/
+theorem hasDistinctProducts_iff_productMapInjective (A B : Finset ℕ) :
+    HasDistinctProducts A B ↔ ProductMapInjective A B := by
+  classical
+  set s : Finset (ℕ × ℕ) := A ×ˢ B with hsdef
+  set f : ℕ × ℕ → ℕ := fun p => p.1 * p.2 with hfdef
+  have hcard : s.card = A.card * B.card := Finset.card_product A B
+  have hps : productSet A B = s.image f := by
+    ext n
+    simp only [productSet, hsdef, hfdef, Finset.mem_biUnion, Finset.mem_image,
+      Finset.mem_product]
+    constructor
+    · rintro ⟨a, ha, b, hb, rfl⟩; exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩
+    · rintro ⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩; exact ⟨a, ha, b, hb, rfl⟩
+  have hHD : HasDistinctProducts A B ↔ Set.InjOn f ↑s := by
+    rw [HasDistinctProducts, hps, ← hcard, Finset.card_image_iff]
+  rw [hHD]
+  constructor
+  · -- InjOn ⇒ pointwise injectivity: instantiate at the two product points.
+    intro hinj a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ heq
+    have hx : (a₁, b₁) ∈ s := by rw [hsdef, Finset.mem_product]; exact ⟨ha₁, hb₁⟩
+    have hy : (a₂, b₂) ∈ s := by rw [hsdef, Finset.mem_product]; exact ⟨ha₂, hb₂⟩
+    have hxy := hinj hx hy heq
+    rw [Prod.mk.injEq] at hxy
+    exact hxy
+  · -- Pointwise injectivity ⇒ InjOn: destructure the two points and apply.
+    intro hpmi
+    rintro ⟨a₁, b₁⟩ hx ⟨a₂, b₂⟩ hy hfxy
+    rw [Finset.mem_coe, hsdef, Finset.mem_product] at hx hy
+    have hxy := hpmi a₁ a₂ b₁ b₂ hx.1 hy.1 hx.2 hy.2 hfxy
+    rw [Prod.mk.injEq]
+    exact hxy
+
 /-
 ## Part II: The Erdős Question
 -/
@@ -504,3 +542,5 @@ theorem bound_is_optimal :
     linarith [hprod, hsimp]
 
 end Erdos490
+
+#print axioms Erdos490.hasDistinctProducts_iff_productMapInjective
