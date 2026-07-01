@@ -1,28 +1,27 @@
 [
   {
-    "id": "ann-wilson-oq04oq02oq01-framing",
+    "id": "ann-wilson-oq04oq02oq01-overview",
     "proofId": "wilsons-theorem-oq-04-oq-02-oq-01",
     "range": {
       "startLine": 4,
       "endLine": 43
     },
-    "type": "concept",
-    "title": "What 'Product of All Elements' Means Without Commutativity",
-    "content": "**Module framing.** The parent entry computed $\\prod_{x : G} x$ for a finite *commutative* group, where `Finset.prod` is well-defined because reordering does not change the value. For a non-abelian $G$ there is no canonical product of all elements at all: an *ordered* product `l.prod` over an enumeration `l` depends on the chosen order, and `Finset.prod` is simply not defined. This file pins down the exact sense in which the product survives — its image in the abelianization $G^{\\mathrm{ab}} = G/[G,G]$ is an ordering-independent invariant — and surrounds the main theorem with its abelian contrast (where the invariance already holds in $G$) and its smallest non-abelian witness (a noncommuting pair). The four parts mirror this arc: enumerations-are-permutations, the abelianized product, the commutative special case, and the two-element counterexample.",
-    "mathContext": "In a non-abelian finite $G$ the ordered product $l.\\mathrm{prod}$ is order-dependent, but $\\mathrm{of}(l.\\mathrm{prod}) \\in G^{\\mathrm{ab}}$ is a genuine invariant. Commutativity is recovered exactly in the quotient by the commutator subgroup.",
-    "significance": "supporting",
+    "type": "context",
+    "title": "What Survives the Loss of Commutativity",
+    "content": "The docstring frames the whole file against its parent. For a finite abelian group, ∏ x : G, x is a single well-defined element (Finset.prod requires a commutative monoid). Drop commutativity and that expression stops type-checking: there is no order-free product of all elements. Rather than abandon the question, this file locates the largest quotient on which the product still makes sense — the abelianization Gᵃᵇ = G/[G,G], the universal commutative quotient of G. The main theorem states that the image of any ordered product there is canonical, and the four supporting results (permutation lemmas, order-independence corollary, abelian contrast, two-element witness) triangulate exactly why that quotient is both necessary and sufficient.",
+    "mathContext": "The universal property of abelianization: $\\mathrm{of} : G \\to G^{\\mathrm{ab}}$ is initial among homomorphisms from $G$ to a commutative group. Any construction that only becomes canonical after killing commutators factors through $G^{\\mathrm{ab}}$, which is precisely why the order-dependent $l.\\mathrm{prod}$ acquires a well-defined value there.",
+    "significance": "context",
     "relatedConcepts": [
-      "abelianization G/[G,G]",
-      "ordered vs unordered product",
-      "Wilson's theorem (product of group elements)",
-      "commutator subgroup"
+      "abelianization",
+      "commutator subgroup",
+      "universal property",
+      "Gauss-Wilson theorem"
     ],
     "prerequisites": [
-      "finite groups and Fintype",
-      "the parent commutative-group product",
-      "abelianization of a group"
-    ],
-    "tags": ["module-header", "framing", "group-theory", "abelianization"]
+      "finite groups",
+      "quotient groups",
+      "commutative monoids"
+    ]
   },
   {
     "id": "ann-wilson-oq04oq02oq01-perm-enum",
@@ -53,11 +52,11 @@
     "proofId": "wilsons-theorem-oq-04-oq-02-oq-01",
     "range": {
       "startLine": 78,
-      "endLine": 101
+      "endLine": 90
     },
     "type": "insight",
     "title": "Pass to the Abelianization BEFORE Using Permutation-Invariance",
-    "content": "abelianization_prod_enum is the main theorem. The decisive subtlety: l.prod is an ordered product in the (possibly noncommutative) G, where List.Perm.prod_eq — which requires a commutative monoid — cannot be applied. The proof therefore applies the homomorphism Abelianization.of FIRST via map_list_prod, converting Abelianization.of l.prod into (l.map of).prod, a product now living in the commutative Abelianization G. Only then is permutation-invariance legal: l ~ univ.toList gives (l.map of) ~ (univ.toList.map of), so List.Perm.prod_eq equates their products, and Finset.prod_map_toList rewrites the result as the order-free ∏ x : G, of x.",
+    "content": "abelianization_prod_enum (lines 84–90) is the main theorem. The decisive subtlety: l.prod is an ordered product in the (possibly noncommutative) G, where List.Perm.prod_eq — which requires a commutative monoid — cannot be applied. The proof therefore applies the homomorphism Abelianization.of FIRST via map_list_prod, converting Abelianization.of l.prod into (l.map of).prod, a product now living in the commutative Abelianization G. Only then is permutation-invariance legal: l ~ univ.toList gives (l.map of) ~ (univ.toList.map of), so List.Perm.prod_eq equates their products, and Finset.prod_map_toList rewrites the result as the order-free ∏ x : G, of x.",
     "mathContext": "For an enumeration $l$ of a finite group $G$, $\\mathrm{of}(l.\\mathrm{prod}) = \\prod_{x : G} \\mathrm{of}(x)$ in $G^{\\mathrm{ab}} = G/[G,G]$. The homomorphism $\\mathrm{of} : G \\to G^{\\mathrm{ab}}$ turns the order-dependent product into a canonical element of the commutative quotient, on which reordering is invisible.",
     "significance": "key",
     "relatedConcepts": [
@@ -74,53 +73,50 @@
     ]
   },
   {
-    "id": "ann-wilson-oq04oq02oq01-abelian-contrast",
+    "id": "ann-wilson-oq04oq02oq01-order-independent",
     "proofId": "wilsons-theorem-oq-04-oq-02-oq-01",
     "range": {
-      "startLine": 101,
-      "endLine": 111
+      "startLine": 92,
+      "endLine": 99
+    },
+    "type": "technique",
+    "title": "Order-Independence as a One-Line Corollary",
+    "content": "abelianization_prod_order_independent is the payoff, and it costs nothing beyond the main theorem: rewriting both sides with abelianization_prod_enum collapses each enumeration's abelianized product to the same canonical target ∏ x : G, of x, so they are equal by rfl. This is the standard 'factor through a canonical value' pattern — rather than comparing two orderings directly (which would require tracking a specific permutation between them), each is independently identified with an ordering-free normal form. The G-level products l₁.prod and l₂.prod may genuinely differ; only their images in Gᵃᵇ are forced to coincide.",
+    "mathContext": "For enumerations $l_1, l_2$ of $G$, $\\mathrm{of}(l_1.\\mathrm{prod}) = \\prod_{x:G}\\mathrm{of}(x) = \\mathrm{of}(l_2.\\mathrm{prod})$. Equality is obtained by transitivity through the common normal form, not by exhibiting the permutation $l_1 \\sim l_2$ explicitly.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "canonical form",
+      "transitivity of equality",
+      "invariant under reordering",
+      "quotient invariant"
+    ],
+    "prerequisites": [
+      "abelianization_prod_enum",
+      "rewriting tactics"
+    ]
+  },
+  {
+    "id": "ann-wilson-oq04oq02oq01-contrast-witness",
+    "proofId": "wilsons-theorem-oq-04-oq-02-oq-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 133
     },
     "type": "concept",
-    "title": "The Abelian Contrast: Order-Independence Already Holds in G",
-    "content": "`prod_enum_eq_of_commGroup` shows that when `G` is *already* commutative the abelianization detour is unnecessary. Because `List.Perm.prod_eq` requires only a commutative target — and `G` itself now qualifies — the enumeration permutation `l ~ univ.toList` can be pushed through the product directly in `G`, and `Finset.prod_toList` rewrites it as `∏ x : G, x`. This is the degenerate case of the main theorem where the quotient `G → Gᵃᵇ` is the identity: the ordered product is a well-defined element of `G`, not merely of `G/[G,G]`. It exactly recovers the parent's commutative-group setting.",
-    "mathContext": "If $G$ is abelian, every enumeration satisfies $l.\\mathrm{prod} = \\prod_{x : G} x$ in $G$ itself — the abelianization $G^{\\mathrm{ab}} = G$ collapses the main theorem to the parent's statement.",
+    "title": "The Abelian Contrast and the Smallest Noncommuting Witness",
+    "content": "prod_enum_eq_of_commGroup shows that when G is already commutative the abelianization step is unnecessary: List.Perm.prod_eq applies directly in G, so every enumeration's product equals ∏ x : G, x. The pair two_elt_prod_ne / two_elt_abelianization_eq isolates the obstruction the quotient removes: for the two-element orderings [a,b] and [b,a], the G-products a·b and b·a differ exactly when a and b fail to commute, yet their abelianization images always agree by mul_comm. This is abelianization_prod_enum in miniature.",
+    "mathContext": "If $G$ is abelian, $l.\\mathrm{prod} = \\prod_{x : G} x$ in $G$. In general, $ab \\neq ba \\implies [a,b].\\mathrm{prod} \\neq [b,a].\\mathrm{prod}$ in $G$, while $\\mathrm{of}(ab) = \\mathrm{of}(ba)$ always holds in $G^{\\mathrm{ab}}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "List.Perm.prod_eq",
       "Finset.prod_toList",
-      "CommGroup",
-      "degenerate case of the main theorem"
-    ],
-    "prerequisites": [
-      "CommGroup",
-      "List.prod",
-      "permutation-invariance in a commutative monoid"
-    ],
-    "tags": ["abelian-contrast", "commutative", "group-theory"]
-  },
-  {
-    "id": "ann-wilson-oq04oq02oq01-witness",
-    "proofId": "wilsons-theorem-oq-04-oq-02-oq-01",
-    "range": {
-      "startLine": 113,
-      "endLine": 133
-    },
-    "type": "concept",
-    "title": "The Smallest Noncommuting Witness",
-    "content": "The pair `two_elt_prod_ne` / `two_elt_abelianization_eq` isolates, on the two-element orderings `[a, b]` and `[b, a]`, exactly the obstruction the abelianization removes. In `G` the products `a·b` and `b·a` differ precisely when `a` and `b` fail to commute (`two_elt_prod_ne`, closed by `simpa`), which is *why* `Finset.prod` cannot define 'the product of all elements' without commutativity. Yet their images in `Gᵃᵇ` always agree (`two_elt_abelianization_eq`, closed by `map_mul` then `mul_comm`). Together they are `abelianization_prod_enum` in miniature: order-dependence downstairs, invariance upstairs, on the smallest possible ordered product.",
-    "mathContext": "$ab \\neq ba \\implies [a,b].\\mathrm{prod} \\neq [b,a].\\mathrm{prod}$ in $G$, while $\\mathrm{of}(ab) = \\mathrm{of}(ba)$ always holds in $G^{\\mathrm{ab}}$ by $\\mathrm{mul\\_comm}$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "commutativity obstruction",
       "mul_comm",
-      "map_mul",
-      "minimal counterexample"
+      "commutativity obstruction"
     ],
     "prerequisites": [
+      "CommGroup",
       "List.prod",
-      "Abelianization.of",
-      "noncommuting elements"
-    ],
-    "tags": ["witness", "counterexample", "group-theory"]
+      "Abelianization.of"
+    ]
   }
 ]
