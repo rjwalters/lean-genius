@@ -204,5 +204,22 @@
       "note": "The duality between meagre and null sets and the classical 'ℚ is not Gδ' obstruction reproduced here."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "targetId": "algebraic-reals-meager",
+      "relationship": "extends",
+      "description": "Parent entry: proves the algebraic reals are meagre and the transcendentals residual/dense, and flags 'quantify the comeagre transcendental complement as an explicit dense Gδ set' as an open question — resolved here by exhibiting the transcendentals as a concrete dense Gδ and showing the algebraic reals are not Gδ."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Grandparent: the nested-interval uncountability of ℝ. The Gδ refinement here complements its category-theoretic line, giving the topological (Baire) rather than cardinal reason the transcendentals are large."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "related",
+      "description": "Ancestor: the algebraic reals are countable. That countability is the Fσ input reused here — a countable set is Fσ, so its complement (the transcendentals) is Gδ."
+    }
+  ]
 }
