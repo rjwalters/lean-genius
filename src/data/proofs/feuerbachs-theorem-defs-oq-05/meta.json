@@ -105,15 +105,6 @@
       "mathContext": "Specializes ninePointCircle_unique to triangle_345 and rewrites with the parent's computed ninePointCenter and ninePointRadius."
     }
   ],
-  "conclusion": {
-    "summary": "Establishes that the nine-point circle is the unique circle through the nine special points of a non-degenerate triangle. The 184-line file proves uniqueness of an equidistant centre (the linear-algebra core), non-collinearity of the three side midpoints (a 1/4-multiple of the triangle's non-degeneracy determinant), and assembles them with the parent's membership theorems into ninePointCircle_unique. 6 theorems, 0 axioms, 0 sorries.",
-    "implications": "**Completes the definitional picture**: with both membership (parent) and uniqueness (this file), 'the nine-point circle' is now a canonically determined object in the gallery's coordinate framework, not merely 'a circle through these points'.\n\n**Reusable circle-uniqueness lemma**: equidistant_center_unique is stated for arbitrary points and can be reused for circumcircle uniqueness or any 'three non-collinear points determine a circle' argument in the coordinate API.\n\n**Minimal hypotheses**: uniqueness consumes only the three side-midpoint memberships, making explicit that three of the nine points suffice.",
-    "openQuestions": [
-      "Transport ninePointCircle_unique across the toEuclidean bridge of feuerbachs-theorem-defs-oq-04 to obtain uniqueness for Mathlib's Metric.sphere formulation.",
-      "Prove that the nine-point centre N is the unique point equidistant from any three of the nine points (not just the side midpoints), e.g. from the three altitude feet.",
-      "Derive a general 'three non-collinear points determine a unique circle' theorem in the coordinate API from equidistant_center_unique and apply it to the circumcircle."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs",
@@ -131,9 +122,51 @@
       "description": "uniqueness of the Feuerbach (tangency) point, a companion uniqueness result for the same configuration"
     }
   ],
+  "conclusion": {
+    "summary": "Establishes that the nine-point circle is the unique circle through the nine special points of a non-degenerate triangle. The 184-line file proves uniqueness of an equidistant centre (the linear-algebra core), non-collinearity of the three side midpoints (a 1/4-multiple of the triangle's non-degeneracy determinant), and assembles them with the parent's membership theorems into ninePointCircle_unique. 6 theorems, 0 axioms, 0 sorries.",
+    "implications": "**Completes the definitional picture**: with both membership (parent) and uniqueness (this file), 'the nine-point circle' is now a canonically determined object in the gallery's coordinate framework, not merely 'a circle through these points'.\n\n**Reusable circle-uniqueness lemma**: equidistant_center_unique is stated for arbitrary points and can be reused for circumcircle uniqueness or any 'three non-collinear points determine a circle' argument in the coordinate API.\n\n**Minimal hypotheses**: uniqueness consumes only the three side-midpoint memberships, making explicit that three of the nine points suffice.",
+    "openQuestions": [
+      "Transport ninePointCircle_unique across the toEuclidean bridge of feuerbachs-theorem-defs-oq-04 to obtain uniqueness for Mathlib's Metric.sphere formulation.",
+      "Prove that the nine-point centre N is the unique point equidistant from any three of the nine points (not just the side midpoints), e.g. from the three altitude feet.",
+      "Derive a general 'three non-collinear points determine a unique circle' theorem in the coordinate API from equidistant_center_unique and apply it to the circumcircle."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Feuerbach, Karl Wilhelm",
+      "title": "Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks",
+      "year": "1822",
+      "venue": "Riegel und Wießner, Nürnberg",
+      "note": "Nine-point circle and its tangency to the incircle and excircles (Feuerbach's theorem)."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Mathlib",
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachNinePointUniqueness",
     "lineCount": 184,
     "axiomCount": 0,
@@ -145,6 +178,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "ninePointCircle_unique",
@@ -164,6 +198,5 @@
       "description": "The three side midpoints of a non-degenerate triangle are non-collinear",
       "leanType": "(M_b.1-M_a.1)*(M_c.2-M_a.2) - (M_c.1-M_a.1)*(M_b.2-M_a.2) != 0"
     }
-  ],
-  "sorries": 0
+  ]
 }

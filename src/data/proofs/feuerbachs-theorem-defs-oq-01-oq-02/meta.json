@@ -97,15 +97,6 @@
       "mathContext": "triangle_345_altitude_a_sq: |A Hₐ|² = 144/25 (h_a = 12/5) by norm_num. triangle_345_altitude_law: (144/25)·25 = 144 = (2·6)², the law instantiated."
     }
   ],
-  "conclusion": {
-    "summary": "Supplies the metric content of the altitude feet: a Lagrange-identity altitude-length law for each of the three altitudes, its restatement through the area function, and a base-independence capstone proving (2·Area)² is the common value of every (altitude length)²·(base length)² product. 10 theorems, 0 axioms, 0 sorries.",
-    "implications": "**Completes the foot API**: alongside the OQ01 collinearity/perpendicularity/Pythagoras lemmas, the altitude lengths are now available, so downstream proofs can use Area = ½·base·height directly.\n\n**Base-independence of area**: the file gives a fully verified coordinate proof that the three base-times-height computations of the triangle's area agree, grounding the area function used throughout the Feuerbach development.",
-    "openQuestions": [
-      "Derive the inradius relation Area = r·s and the circumradius relation Area = abc/(4R) from the altitude lengths, linking this file to the incenter/circumcenter API.",
-      "Express the altitude lengths via the side lengths (h_a = 2·Area/a) once Real.sqrt side lengths are related to dist2_sq, bridging to the metric side_a/b/c definitions.",
-      "Lift the altitude-length law to Mathlib's EuclideanGeometry.orthogonalProjection and the area form to MeasureTheory volume for a possible upstream contribution."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-01",
@@ -123,9 +114,50 @@
       "description": "the full Feuerbach theorem whose nine-point circle the altitude feet lie on"
     }
   ],
+  "conclusion": {
+    "summary": "Supplies the metric content of the altitude feet: a Lagrange-identity altitude-length law for each of the three altitudes, its restatement through the area function, and a base-independence capstone proving (2·Area)² is the common value of every (altitude length)²·(base length)² product. 10 theorems, 0 axioms, 0 sorries.",
+    "implications": "**Completes the foot API**: alongside the OQ01 collinearity/perpendicularity/Pythagoras lemmas, the altitude lengths are now available, so downstream proofs can use Area = ½·base·height directly.\n\n**Base-independence of area**: the file gives a fully verified coordinate proof that the three base-times-height computations of the triangle's area agree, grounding the area function used throughout the Feuerbach development.",
+    "openQuestions": [
+      "Derive the inradius relation Area = r·s and the circumradius relation Area = abc/(4R) from the altitude lengths, linking this file to the incenter/circumcenter API.",
+      "Express the altitude lengths via the side lengths (h_a = 2·Area/a) once Real.sqrt side lengths are related to dist2_sq, bridging to the metric side_a/b/c definitions.",
+      "Lift the altitude-length law to Mathlib's EuclideanGeometry.orthogonalProjection and the area form to MeasureTheory volume for a possible upstream contribution."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ01OQ02",
     "lineCount": 171,
     "axiomCount": 0,
@@ -137,6 +169,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "altitude_length_base_independent",
@@ -156,6 +189,5 @@
       "description": "The squared signed area Δ² equals (2·Area)², bridging the area function to the polynomial identity.",
       "leanType": "(2 · Area)² = ((B−A)×(C−A))²"
     }
-  ],
-  "sorries": 0
+  ]
 }

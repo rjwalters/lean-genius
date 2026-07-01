@@ -119,15 +119,6 @@
       "mathContext": "Instantiates the identity at the parent's triangle_345 (A=(0,0), B=(3,0), C=(0,4)); norm_num evaluates the weighted barycentric coordinates with the known side lengths a=5, b=4, c=3."
     }
   ],
-  "conclusion": {
-    "summary": "Proves the affine identity I + Iₐ + I_b + I_c = 4O — the circumcenter is the centroid of the four classical tritangent centers — for an arbitrary non-degenerate triangle, the affine companion of the sibling's metric law OI² + OIₐ² + OI_b² + OI_c² = 12R² and the second open question that entry posed. The proof clears all denominators against the Heron product (shown equal to the squared circumcenter determinant), telescopes the tritangent sum into the circumcenter's barycentric numerator, and cancels. 4 theorems (plus 21 supporting lemmas), 0 axioms, 0 sorries.",
-    "implications": "**The affine half of the tritangent conservation law**: together with the 12R² square-distance sum, this completes Leibniz's parallel-axis decomposition Σ OX² = 4·OG² + Σ GX² for the four tritangent centers — the centroid G is the circumcenter O, so the 12R² constant is exactly the moment of inertia of the four centers about O.\n\n**The excentral triangle's nine-point circle is the circumcircle of ABC**: the identity I+Iₐ+I_b+I_c = 4O is the arithmetic form of the classical fact that the four tritangent centers form an orthocentric system whose common nine-point center is O (and whose excentral circumradius is 2R).\n\n**The circumcenter's barycentric coordinates as gallery infrastructure**: circ_bary_x/y supply the standard unnormalized barycentrics a²(b²+c²−a²) : b²(c²+a²−b²) : c²(a²+b²−c²) of O as 0-axiom coordinate identities, reusable across the triangle-geometry strand.",
-    "openQuestions": [
-      "Prove the excentral circumradius is 2R directly: show the circumradius of the excentral triangle IₐI_bI_c equals twice that of ABC, completing the orthocentric-system picture whose nine-point center this entry locates at O.",
-      "Establish that the incenter I is the orthocenter of the excentral triangle IₐI_bI_c (each tritangent center is the orthocenter of the other three), the structural fact underlying the orthocentric system and hence the 4O centroid identity.",
-      "Generalize the barycentric telescoping: for which vertex-weight schemes does a signed combination of weighted barycentric centers (incenter, excenters, and beyond) again land on a named triangle center, and which centers arise as such averages?"
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
@@ -150,9 +141,49 @@
       "description": "the full Feuerbach theorem, whose nine-point circle is tangent to the incircle and all three excircles whose centers form the orthocentric system studied here"
     }
   ],
+  "conclusion": {
+    "summary": "Proves the affine identity I + Iₐ + I_b + I_c = 4O — the circumcenter is the centroid of the four classical tritangent centers — for an arbitrary non-degenerate triangle, the affine companion of the sibling's metric law OI² + OIₐ² + OI_b² + OI_c² = 12R² and the second open question that entry posed. The proof clears all denominators against the Heron product (shown equal to the squared circumcenter determinant), telescopes the tritangent sum into the circumcenter's barycentric numerator, and cancels. 4 theorems (plus 21 supporting lemmas), 0 axioms, 0 sorries.",
+    "implications": "**The affine half of the tritangent conservation law**: together with the 12R² square-distance sum, this completes Leibniz's parallel-axis decomposition Σ OX² = 4·OG² + Σ GX² for the four tritangent centers — the centroid G is the circumcenter O, so the 12R² constant is exactly the moment of inertia of the four centers about O.\n\n**The excentral triangle's nine-point circle is the circumcircle of ABC**: the identity I+Iₐ+I_b+I_c = 4O is the arithmetic form of the classical fact that the four tritangent centers form an orthocentric system whose common nine-point center is O (and whose excentral circumradius is 2R).\n\n**The circumcenter's barycentric coordinates as gallery infrastructure**: circ_bary_x/y supply the standard unnormalized barycentrics a²(b²+c²−a²) : b²(c²+a²−b²) : c²(a²+b²−c²) of O as 0-axiom coordinate identities, reusable across the triangle-geometry strand.",
+    "openQuestions": [
+      "Prove the excentral circumradius is 2R directly: show the circumradius of the excentral triangle IₐI_bI_c equals twice that of ABC, completing the orthocentric-system picture whose nine-point center this entry locates at O.",
+      "Establish that the incenter I is the orthocenter of the excentral triangle IₐI_bI_c (each tritangent center is the orthocenter of the other three), the structural fact underlying the orthocentric system and hence the 4O centroid identity.",
+      "Generalize the barycentric telescoping: for which vertex-weight schemes does a signed combination of weighted barycentric centers (incenter, excenters, and beyond) again land on a named triangle center, and which centers arise as such averages?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "Kimberling, Clark",
+      "title": "Triangle Centers and Central Triangles",
+      "year": "1998",
+      "venue": "Congressus Numerantium 129, Utilitas Mathematica"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachTritangentCentroid",
     "lineCount": 447,
     "axiomCount": 0,
@@ -164,6 +195,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "circumcenter_eq_tritangent_centroid",
@@ -201,6 +233,5 @@
       "description": "Worked example: for the 3-4-5 right triangle the incenter (1,1) and excenters (6,6), (−3,3), (2,−2) sum to (6,8) = 4·(3/2,2) = 4·O.",
       "leanType": "(triangle_345.incenter.1 + triangle_345.excenter_a.1 + triangle_345.excenter_b.1 + triangle_345.excenter_c.1 = 4 * triangle_345.circumcenter.1) ∧ (triangle_345.incenter.2 + triangle_345.excenter_a.2 + triangle_345.excenter_b.2 + triangle_345.excenter_c.2 = 4 * triangle_345.circumcenter.2)"
     }
-  ],
-  "sorries": 0
+  ]
 }

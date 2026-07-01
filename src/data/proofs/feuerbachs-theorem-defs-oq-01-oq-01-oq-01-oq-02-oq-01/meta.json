@@ -120,14 +120,6 @@
       "mathContext": "altitude_A_perp_BC collapses to equidistB − equidistC; circumcenter_midpoint_sum_sq is linarith over the three midpoint identities; the 3-4-5 theorems rewrite triangle_345_circumcenter then norm_num."
     }
   ],
-  "conclusion": {
-    "summary": "Supplies the segment relation AH = 2·OM_a of the orthocenter sub-line: the exact affine vector identity A − H = 2(O − M_a) (circle-free), the squared form AH² = 4·OM_a², the circumcenter–midpoint distance 4·OM_a² = 4R² − a² (OM_a² = R² − (a/2)²), an independent re-derivation of AH² = 4R² − a², the true-distance AH = 2·OM_a, the altitude perpendicularity (A−H)·(C−B) = 0, the sum 4(OM_a²+OM_b²+OM_c²) = 12R² − (a²+b²+c²), and a 3-4-5 worked example. 20 theorems and 5 lemmas, 0 definitions, 0 axioms, 0 sorries.",
-    "implications": "**Structural source of AH² = 4R² − a²**: the parent measured AH directly; here the factor of 2 is exhibited as the literal coefficient of an affine identity A − H = 2(O − M_a), separating the part true for any triangle (the parallel segments) from the part that uses the circumscribed circle (OM_a² = R² − (a/2)²).\n\n**Toward the angle form and the medial homothety**: OM_a = R·cos A makes AH = 2·OM_a the same statement as AH = 2R·cos A; and the vector identity is exactly the homothety (centroid, ratio −2) sending the medial triangle's circumcenter picture to the orthocenter, the standard bridge to the Euler line and the nine-point circle of the Feuerbach umbrella.",
-    "openQuestions": [
-      "Promote the affine identity A − H = 2(O − M_a) to a clean statement of the homothety h(G, −2) carrying each side midpoint M_a to the opposite vertex A and the circumcenter O to the orthocenter H, deriving the Euler-line collinearity O, G, H with HG = 2·GO as a corollary.",
-      "Combine OM_a = R·cos A with the obtuse/acute dichotomy to determine the sign of cos A geometrically and hence whether the foot of the perpendicular from O lands inside segment BC, locating the orthocenter inside or outside the triangle."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01-oq-02",
@@ -150,9 +142,49 @@
       "description": "adds the vertex–orthocenter / circumcenter–midpoint segment relation AH = 2·OM_a, a quantity the nine-point-circle and Euler-line development in FeuerbachsTheoremDefs.lean never measures"
     }
   ],
+  "conclusion": {
+    "summary": "Supplies the segment relation AH = 2·OM_a of the orthocenter sub-line: the exact affine vector identity A − H = 2(O − M_a) (circle-free), the squared form AH² = 4·OM_a², the circumcenter–midpoint distance 4·OM_a² = 4R² − a² (OM_a² = R² − (a/2)²), an independent re-derivation of AH² = 4R² − a², the true-distance AH = 2·OM_a, the altitude perpendicularity (A−H)·(C−B) = 0, the sum 4(OM_a²+OM_b²+OM_c²) = 12R² − (a²+b²+c²), and a 3-4-5 worked example. 20 theorems and 5 lemmas, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "**Structural source of AH² = 4R² − a²**: the parent measured AH directly; here the factor of 2 is exhibited as the literal coefficient of an affine identity A − H = 2(O − M_a), separating the part true for any triangle (the parallel segments) from the part that uses the circumscribed circle (OM_a² = R² − (a/2)²).\n\n**Toward the angle form and the medial homothety**: OM_a = R·cos A makes AH = 2·OM_a the same statement as AH = 2R·cos A; and the vector identity is exactly the homothety (centroid, ratio −2) sending the medial triangle's circumcenter picture to the orthocenter, the standard bridge to the Euler line and the nine-point circle of the Feuerbach umbrella.",
+    "openQuestions": [
+      "Promote the affine identity A − H = 2(O − M_a) to a clean statement of the homothety h(G, −2) carrying each side midpoint M_a to the opposite vertex A and the circumcenter O to the orthocenter H, deriving the Euler-line collinearity O, G, H with HG = 2·GO as a corollary.",
+      "Combine OM_a = R·cos A with the obtuse/acute dichotomy to determine the sign of cos A geometrically and hence whether the foot of the perpendicular from O lands inside segment BC, locating the orthocenter inside or outside the triangle."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02OQ01",
     "lineCount": 347,
     "axiomCount": 0,
@@ -164,6 +196,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "vertexA_orthocenter_vec",
@@ -201,6 +234,5 @@
       "description": "4·(OM_a² + OM_b² + OM_c²) = 12R² − (a² + b² + c²), hence OM_a² + OM_b² + OM_c² = ¼(AH² + BH² + CH²).",
       "leanType": "∀ T : Triangle, 4 * (dist2_sq T.circumcenter T.midpoint_a + dist2_sq T.circumcenter T.midpoint_b + dist2_sq T.circumcenter T.midpoint_c) = 12 * dist2_sq T.circumcenter T.A - (dist2_sq T.B T.C + dist2_sq T.C T.A + dist2_sq T.A T.B)"
     }
-  ],
-  "sorries": 0
+  ]
 }

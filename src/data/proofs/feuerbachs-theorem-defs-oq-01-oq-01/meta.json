@@ -108,15 +108,6 @@
       "mathContext": "triangle_345_orthocenter_eq_A: rw [triangle_345_orthocenter]; rfl, using the parent's computation that the orthocenter is (0,0) = A."
     }
   ],
-  "conclusion": {
-    "summary": "Supplies the defining characterization of the orthocenter underlying the nine-point circle: it lies on all three altitudes (concurrency), is collinear with each vertex and its altitude foot, and is the unique common point of any two altitudes. 9 public theorems and 5 supporting lemmas, 0 axioms, 0 sorries.",
-    "implications": "**Foundational grounding**: the parent's formula-defined orthocenter is now verified to be the genuine concurrency point of the altitudes, completing the altitude-feet characterization of the sibling entry.\n\n**Reusable geometry**: cross_eq_zero_of_perp_perp (perpendicular-to-common-vector implies parallel) and the Cramer-rule uniqueness pattern are standard tools for downstream R^2 Euclidean-geometry proofs.",
-    "openQuestions": [
-      "Show the reflection of the orthocenter across each side lies on the circumcircle, a classical consequence of the altitude-foot and concurrency configuration.",
-      "Prove the Euler line collinearity O, G, H with the 2:1 ratio directly from the concurrency characterization rather than from the coordinate formula.",
-      "Reformulate concurrency of the altitudes in Mathlib's EuclideanGeometry API (orthocenter / affine subspaces) to enable an upstream contribution."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-01",
@@ -134,9 +125,50 @@
       "description": "the full Feuerbach theorem whose nine-point circle passes through the altitude feet on these altitudes"
     }
   ],
+  "conclusion": {
+    "summary": "Supplies the defining characterization of the orthocenter underlying the nine-point circle: it lies on all three altitudes (concurrency), is collinear with each vertex and its altitude foot, and is the unique common point of any two altitudes. 9 public theorems and 5 supporting lemmas, 0 axioms, 0 sorries.",
+    "implications": "**Foundational grounding**: the parent's formula-defined orthocenter is now verified to be the genuine concurrency point of the altitudes, completing the altitude-feet characterization of the sibling entry.\n\n**Reusable geometry**: cross_eq_zero_of_perp_perp (perpendicular-to-common-vector implies parallel) and the Cramer-rule uniqueness pattern are standard tools for downstream R^2 Euclidean-geometry proofs.",
+    "openQuestions": [
+      "Show the reflection of the orthocenter across each side lies on the circumcircle, a classical consequence of the altitude-foot and concurrency configuration.",
+      "Prove the Euler line collinearity O, G, H with the 2:1 ratio directly from the concurrency characterization rather than from the coordinate formula.",
+      "Reformulate concurrency of the altitudes in Mathlib's EuclideanGeometry API (orthocenter / affine subspaces) to enable an upstream contribution."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ01OQ01",
     "lineCount": 282,
     "axiomCount": 0,
@@ -148,6 +180,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "altitudes_concurrent",
@@ -167,6 +200,5 @@
       "description": "The orthocenter is collinear with vertex A and the altitude foot from A.",
       "leanType": "(foot_a - A) × (H - A) = 0"
     }
-  ],
-  "sorries": 0
+  ]
 }

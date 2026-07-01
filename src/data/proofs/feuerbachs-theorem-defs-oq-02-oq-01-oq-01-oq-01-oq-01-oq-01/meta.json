@@ -110,14 +110,6 @@
       "mathContext": "Instantiates the general perpendicularity at the integer-sided 3-4-5 triangle, where all side lengths and centers are rational so the dot products evaluate by norm_num."
     }
   ],
-  "conclusion": {
-    "summary": "Proves directly that the incenter I is the orthocenter of the excentral triangle IₐI_bI_c: the three lines joining I to the excenters are the altitudes of the excentral triangle, perpendicular to the opposite sides (⟨Iₐ−I, I_c−I_b⟩ = ⟨I_b−I, I_c−Iₐ⟩ = ⟨I_c−I, I_b−Iₐ⟩ = 0), so they concur at I and {I, Iₐ, I_b, I_c} is an orthocentric system. Answers the first open question of the circumradius-2R entry. 8 theorems (plus 13 supporting lemmas), 0 axioms, 0 sorries.",
-    "implications": "**The dot-product foundation of the tritangent picture**: this perpendicularity fact is the geometric reason behind both the affine centroid law I+Iₐ+I_b+I_c = 4O and the metric circumradius-2R law O' = 2O−I; the sibling entries cite 'I is the excentral orthocenter' to call O the nine-point center, and this entry finally proves it.\n\n**Orthocentric system as gallery infrastructure**: the three perpendicularity identities (and their bundle) are reusable across the triangle-geometry strand wherever the orthocentric structure of the tritangent centers is needed — for instance to identify the excentral nine-point circle with the circumcircle of ABC.\n\n**A bisector-only proof technique**: the clearing-to-|u|²−|v|² mechanism shows that internal/external-bisector perpendicularity is forced by the side-length weights alone, a method that transfers to other angle-bisector configurations in the same coordinate framework.",
-    "openQuestions": [
-      "Show that each excenter is the orthocenter of the triangle formed by the incenter and the other two excenters (e.g. ⟨I−Iₐ, I_b−I_c⟩ = 0 read from Iₐ's vertex), making the full orthocentric-system symmetry of {I, Iₐ, I_b, I_c} explicit rather than implicit in the three shared perpendicularities.",
-      "Combine this orthocenter fact with the circumradius-2R entry to prove the excentral nine-point circle is the circumcircle of ABC as a circle-tangency statement, closing the loop toward the Feuerbach tangency of the nine-point circle to the incircle and excircles."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01-oq-01-oq-01",
@@ -145,6 +137,42 @@
       "description": "the full Feuerbach theorem, whose nine-point circle is tangent to the incircle and all three excircles whose centers form the excentral triangle studied here"
     }
   ],
+  "conclusion": {
+    "summary": "Proves directly that the incenter I is the orthocenter of the excentral triangle IₐI_bI_c: the three lines joining I to the excenters are the altitudes of the excentral triangle, perpendicular to the opposite sides (⟨Iₐ−I, I_c−I_b⟩ = ⟨I_b−I, I_c−Iₐ⟩ = ⟨I_c−I, I_b−Iₐ⟩ = 0), so they concur at I and {I, Iₐ, I_b, I_c} is an orthocentric system. Answers the first open question of the circumradius-2R entry. 8 theorems (plus 13 supporting lemmas), 0 axioms, 0 sorries.",
+    "implications": "**The dot-product foundation of the tritangent picture**: this perpendicularity fact is the geometric reason behind both the affine centroid law I+Iₐ+I_b+I_c = 4O and the metric circumradius-2R law O' = 2O−I; the sibling entries cite 'I is the excentral orthocenter' to call O the nine-point center, and this entry finally proves it.\n\n**Orthocentric system as gallery infrastructure**: the three perpendicularity identities (and their bundle) are reusable across the triangle-geometry strand wherever the orthocentric structure of the tritangent centers is needed — for instance to identify the excentral nine-point circle with the circumcircle of ABC.\n\n**A bisector-only proof technique**: the clearing-to-|u|²−|v|² mechanism shows that internal/external-bisector perpendicularity is forced by the side-length weights alone, a method that transfers to other angle-bisector configurations in the same coordinate framework.",
+    "openQuestions": [
+      "Show that each excenter is the orthocenter of the triangle formed by the incenter and the other two excenters (e.g. ⟨I−Iₐ, I_b−I_c⟩ = 0 read from Iₐ's vertex), making the full orthocentric-system symmetry of {I, Iₐ, I_b, I_c} explicit rather than implicit in the three shared perpendicularities.",
+      "Combine this orthocenter fact with the circumradius-2R entry to prove the excentral nine-point circle is the circumcircle of ABC as a circle-tangency statement, closing the loop toward the Feuerbach tangency of the nine-point circle to the incircle and excircles."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.FeuerbachsTheoremDefs"
@@ -163,6 +191,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "incenter_is_excentral_orthocenter",
@@ -200,6 +229,5 @@
       "description": "The A-excenter of the 3-4-5 right triangle is (6, 6).",
       "leanType": "triangle_345.excenter_a = (6, 6)"
     }
-  ],
-  "sorries": 0
+  ]
 }

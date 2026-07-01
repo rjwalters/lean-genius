@@ -128,6 +128,35 @@
       "Relate the rational centre Θ to a canonical tetrahedron centre (the analogue of the nine-point centre)."
     ]
   },
+  "references": [
+    {
+      "authors": "Grace, John Hilton",
+      "title": "Tetrahedra in relation to spheres and quadrics",
+      "year": "1917",
+      "venue": "Proceedings of the London Mathematical Society s2-17, 259–271",
+      "note": "Sphere tangencies for tetrahedra (3D Feuerbach-type results)."
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -150,6 +179,7 @@
     "sorries": 0,
     "additionalFiles": []
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "grace_feuerbach_trirectangular",
@@ -157,6 +187,5 @@
       "description": "For the trirectangular tetrahedron with legs a,b,c>0, the sphere of centre Θ=((a+b)(a+c),(a+b)(b+c),(a+c)(b+c))/(2σ) and radius R=(a²+b²+c²+ab+bc+ca)/(2σ) passes through A=(a,0,0), B=(0,b,0), C=(0,0,c) and is internally tangent to both the insphere (radius ρin=(ab+bc+ca−t)/(2σ)) and the D-exsphere (radius ρex=(ab+bc+ca+t)/(2σ)), where t=√(a²b²+b²c²+c²a²). Proved by field_simp;ring (incidence) and field_simp;linear_combination 2*ht (tangency).",
       "leanType": "(a b c t : ℝ) → 0 < a → 0 < b → 0 < c → t^2 = a^2*b^2+b^2*c^2+c^2*a^2 → 0 ≤ t → (qx qy qz R ρin ρex : ℝ) → … → (incidence A ∧ incidence B ∧ incidence C ∧ tangent insphere ∧ tangent D-exsphere)"
     }
-  ],
-  "sorries": 0
+  ]
 }

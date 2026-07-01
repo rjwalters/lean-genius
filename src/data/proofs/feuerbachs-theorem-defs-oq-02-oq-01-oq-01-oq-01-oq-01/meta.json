@@ -119,15 +119,6 @@
       "mathContext": "dist = √(dist²) = √(4R²) = 2R since R ≥ 0 (Real.sqrt_sq); the midpoint relation is immediate from O' = 2O − I, and the example instantiates at triangle_345 via the general theorem and triangle_345_circumradius."
     }
   ],
-  "conclusion": {
-    "summary": "Proves directly that the excentral triangle IₐI_bI_c has circumradius 2R and circumcenter O' = 2O − I, by showing the single point O' = 2O − I is equidistant (distance 2R, squared distance 4R²) from all three excenters, for an arbitrary non-degenerate triangle. Establishes also that O is the midpoint of I and O' — the nine-point center of the excentral triangle — completing the orthocentric-system picture whose centroid the sibling entry placed at O. Answers the first open question of the centroid (4O) entry. 9 theorems (plus 25 supporting lemmas and 1 definition), 0 axioms, 0 sorries.",
-    "implications": "**The metric half of the tritangent picture**: together with the sibling's affine law I+Iₐ+I_b+I_c = 4O and the square-distance law OI²+OIₐ²+OI_b²+OI_c² = 12R², this completes the analytic description of the orthocentric system {I, Iₐ, I_b, I_c} — its common nine-point circle is the circumcircle of ABC (center O, radius R), and the excentral circumcircle (center O' = 2O − I, radius 2R) is its double.\n\n**A named triangle-center as gallery infrastructure**: Triangle.excentralCircumcenter = 2O − I is supplied as a 0-axiom coordinate definition together with its defining property (equidistant 2R from the excenters), reusable across the triangle-geometry strand.\n\n**The reflection mechanism**: the proof technique — reflecting a known center and verifying equidistance via the weighted-norm identity — generalizes to other circumcircle/incircle reflection problems in the same coordinate framework.",
-    "openQuestions": [
-      "Prove the incenter I is the orthocenter of the excentral triangle IₐI_bI_c directly (each tritangent center is the orthocenter of the other three): show ⟨Iₐ − I, I_b − I_c⟩ = 0 and cyclically, the dot-product fact underlying the orthocentric system and hence both the 4O centroid and the 2R circumradius laws.",
-      "Establish the excentral nine-point radius is R and identify the excentral nine-point center with O as a circle-tangency statement, closing the loop with the Feuerbach tangency of the nine-point circle to the incircle and excircles.",
-      "Compute the side lengths of the excentral triangle (IₐI_b, etc.) in terms of R and the angles, and verify the law of sines IₐI_b = 2·(2R)·sin(∠) consistent with the excentral circumradius 2R proved here."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01-oq-01",
@@ -155,6 +146,43 @@
       "description": "the full Feuerbach theorem, whose nine-point circle is tangent to the incircle and all three excircles whose centers form the excentral triangle studied here"
     }
   ],
+  "conclusion": {
+    "summary": "Proves directly that the excentral triangle IₐI_bI_c has circumradius 2R and circumcenter O' = 2O − I, by showing the single point O' = 2O − I is equidistant (distance 2R, squared distance 4R²) from all three excenters, for an arbitrary non-degenerate triangle. Establishes also that O is the midpoint of I and O' — the nine-point center of the excentral triangle — completing the orthocentric-system picture whose centroid the sibling entry placed at O. Answers the first open question of the centroid (4O) entry. 9 theorems (plus 25 supporting lemmas and 1 definition), 0 axioms, 0 sorries.",
+    "implications": "**The metric half of the tritangent picture**: together with the sibling's affine law I+Iₐ+I_b+I_c = 4O and the square-distance law OI²+OIₐ²+OI_b²+OI_c² = 12R², this completes the analytic description of the orthocentric system {I, Iₐ, I_b, I_c} — its common nine-point circle is the circumcircle of ABC (center O, radius R), and the excentral circumcircle (center O' = 2O − I, radius 2R) is its double.\n\n**A named triangle-center as gallery infrastructure**: Triangle.excentralCircumcenter = 2O − I is supplied as a 0-axiom coordinate definition together with its defining property (equidistant 2R from the excenters), reusable across the triangle-geometry strand.\n\n**The reflection mechanism**: the proof technique — reflecting a known center and verifying equidistance via the weighted-norm identity — generalizes to other circumcircle/incircle reflection problems in the same coordinate framework.",
+    "openQuestions": [
+      "Prove the incenter I is the orthocenter of the excentral triangle IₐI_bI_c directly (each tritangent center is the orthocenter of the other three): show ⟨Iₐ − I, I_b − I_c⟩ = 0 and cyclically, the dot-product fact underlying the orthocentric system and hence both the 4O centroid and the 2R circumradius laws.",
+      "Establish the excentral nine-point radius is R and identify the excentral nine-point center with O as a circle-tangency statement, closing the loop with the Feuerbach tangency of the nine-point circle to the incircle and excircles.",
+      "Compute the side lengths of the excentral triangle (IₐI_b, etc.) in terms of R and the angles, and verify the law of sines IₐI_b = 2·(2R)·sin(∠) consistent with the excentral circumradius 2R proved here."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.FeuerbachsTheoremDefs"
@@ -173,6 +201,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "excentral_circumradius_eq_two_R",
@@ -210,6 +239,5 @@
       "description": "Worked example: for the 3-4-5 right triangle, O' = 2O − I = (2,3) and the squared distance to each excenter is 25 = 4·(5/2)² = 4R².",
       "leanType": "dist2_sq triangle_345.excentralCircumcenter triangle_345.excenter_a = 25 ∧ dist2_sq triangle_345.excentralCircumcenter triangle_345.excenter_b = 25 ∧ dist2_sq triangle_345.excentralCircumcenter triangle_345.excenter_c = 25"
     }
-  ],
-  "sorries": 0
+  ]
 }

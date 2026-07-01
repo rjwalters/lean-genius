@@ -127,15 +127,6 @@
       "mathContext": "triangle_345_reflectOrthoMidBC: rw [triangle_345_orthocenter] then norm_num, using the parent's orthocenter computation."
     }
   ],
-  "conclusion": {
-    "summary": "Establishes the classical orthocentric-configuration fact missing from the nine-point-circle development: reflecting the orthocenter across any side lands on the circumcircle, so the three reflections are concyclic with the vertices, and reflecting across any side midpoint gives the antipode of the opposite vertex. 10 theorems and 6 lemmas, 5 definitions, 0 axioms, 0 sorries.",
-    "implications": "**Foundational grounding**: the coordinate orthocenter is now shown to obey the reflection property that characterizes it within the circumcircle, complementing the altitude-concurrency characterization of the sibling entry.\n\n**Reusable geometry**: reflectOverLine (mirror across an arbitrary line) and reflectOverLine_orthocenter_dist_sq (a denominator-clearing distance lemma with an explicit ideal-membership certificate) are reusable tools for downstream R^2 Euclidean-geometry proofs.",
-    "openQuestions": [
-      "Show the reflections of the orthocenter across the three sides are precisely the antipodes-after-rotation of the vertices, i.e. identify each reflected orthocenter with a specific point of the circumcircle rather than only proving it lies on the circle.",
-      "Prove that the circle through the three reflected orthocenters coincides with the circumcircle as sets (not just that each reflection lies on it), and deduce the reflection of the circumcircle over a side passes through H.",
-      "Reformulate the reflection-onto-circumcircle property in Mathlib's EuclideanGeometry API (EuclideanGeometry.reflection and Sphere) to enable an upstream contribution."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "feuerbachs-theorem-defs-oq-01-oq-01",
@@ -153,9 +144,50 @@
       "description": "uses the orthocenter defined by the Euler formula H = A + B + C - 2O and the circumcenter coordinate API from FeuerbachsTheoremDefs.lean"
     }
   ],
+  "conclusion": {
+    "summary": "Establishes the classical orthocentric-configuration fact missing from the nine-point-circle development: reflecting the orthocenter across any side lands on the circumcircle, so the three reflections are concyclic with the vertices, and reflecting across any side midpoint gives the antipode of the opposite vertex. 10 theorems and 6 lemmas, 5 definitions, 0 axioms, 0 sorries.",
+    "implications": "**Foundational grounding**: the coordinate orthocenter is now shown to obey the reflection property that characterizes it within the circumcircle, complementing the altitude-concurrency characterization of the sibling entry.\n\n**Reusable geometry**: reflectOverLine (mirror across an arbitrary line) and reflectOverLine_orthocenter_dist_sq (a denominator-clearing distance lemma with an explicit ideal-membership certificate) are reusable tools for downstream R^2 Euclidean-geometry proofs.",
+    "openQuestions": [
+      "Show the reflections of the orthocenter across the three sides are precisely the antipodes-after-rotation of the vertices, i.e. identify each reflected orthocenter with a specific point of the circumcircle rather than only proving it lies on the circle.",
+      "Prove that the circle through the three reflected orthocenters coincides with the circumcircle as sets (not just that each reflection lies on it), and deduce the reflection of the circumcircle over a side passes through H.",
+      "Reformulate the reflection-onto-circumcircle property in Mathlib's EuclideanGeometry API (EuclideanGeometry.reflection and Sphere) to enable an upstream contribution."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Coxeter, H. S. M. and Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "note": "Euler line, nine-point circle and Feuerbach's theorem."
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry (Modern Geometry)",
+      "year": "1929",
+      "venue": "Houghton Mifflin"
+    },
+    {
+      "authors": "Altshiller-Court, Nathan",
+      "title": "College Geometry (2nd ed.)",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Orthocentric system, excentral triangle, and tritangent circles."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "EuclideanGeometry, Sphere, EuclideanSpace inner-product and affine-combination API (Mathlib.Geometry.Euclidean)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
-    "imports": ["Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem"],
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ01OQ01OQ01",
     "lineCount": 296,
     "axiomCount": 0,
@@ -167,6 +199,7 @@
       "Proofs/FeuerbachsTheoremDefs.lean"
     ]
   },
+  "sorries": 0,
   "mainTheorems": [
     {
       "name": "orthocenter_reflections_concyclic",
@@ -192,6 +225,5 @@
       "description": "Generic: the reflection of H = V + P + Q - 2O over line PQ is at distance |V - O| from O when O is equidistant from V, P, Q.",
       "leanType": "dist2_sq (ox,oy) (reflectOverLine (hx,hy) (px,py) (qx,qy)) = dist2_sq (ox,oy) (vx,vy)"
     }
-  ],
-  "sorries": 0
+  ]
 }
