@@ -84,6 +84,40 @@
       "description": "Answers open question 2 of the parent: a worked positive case proving a specific monic cubic irreducible over ℚ by transferring an integer-side argument through gauss_lemma_int_monic, complementing the parent's negative 2X witness"
     }
   ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Pushing an Irreducibility Question Across the Gauss Bridge",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Frames the entry as the positive worked example the parent (gauss-lemma-primitive-oq-01) left open: it takes a genuine irreducibility question — is X³ − X − 1 irreducible over ℚ? — and dispatches it cheaply on the integer/finite-field side. Lays out the standard reduce-mod-a-prime route (monic ⟹ primitive; mod-2 reduction is a rootless cubic over a field hence irreducible; Monic.irreducible_of_irreducible_map descends to ℤ; Gauss lifts to ℚ) and lists the eight results. No step ever touches a rational denominator.",
+      "mathContext": "$X^3 - X - 1$ irreducible over $\\mathbb{Q}$, proved via $\\mathbb{Z}/2$ and Gauss's Lemma."
+    },
+    {
+      "id": "bridges",
+      "title": "The two bridges: monic Gauss and mod-p ⟹ over-ℚ",
+      "startLine": 48,
+      "endLine": 65,
+      "summary": "gauss_lemma_int_monic re-exports the parent's monic Gauss bridge (irreducibility over ℤ ⟺ over ℚ, primitivity automatic). irreducible_rat_of_irreducible_map_zmod is the reusable step: a monic integer polynomial whose reduction mod a prime p is irreducible over ℤ/p is irreducible over ℚ, composing Monic.irreducible_of_irreducible_map (mod-p irreducible ⟹ over ℤ) with the monic Gauss bridge (over ℤ ⟹ over ℚ).",
+      "mathContext": "$g\\ \\text{monic},\\ \\mathrm{Irred}_{\\mathbb{Z}/p}(g \\bmod p) \\Rightarrow \\mathrm{Irred}_{\\mathbb{Q}}(g).$"
+    },
+    {
+      "id": "mod-two",
+      "title": "The cubic and its rootless mod-2 reduction",
+      "startLine": 67,
+      "endLine": 98,
+      "summary": "Defines f = X³ − X − 1 and proves f_monic (via `monicity!`). f_map_zmod_two computes the mod-2 reduction as X³ − X − 1 over ℤ/2. f_no_root_zmod_two: the reduction evaluates to 1 at both 0 and 1, so it has no root in ℤ/2 (kernel `decide`). f_irreducible_zmod_two: a degree-3 polynomial over a field with no root is irreducible (irreducible_of_degree_le_three_of_not_isRoot).",
+      "mathContext": "$f \\bmod 2 = X^3 + X + 1 \\in (\\mathbb{Z}/2)[X]$, no root $\\Rightarrow$ irreducible cubic."
+    },
+    {
+      "id": "descent-headline",
+      "title": "Descent to ℤ and the headline over ℚ",
+      "startLine": 100,
+      "endLine": 115,
+      "summary": "f_irreducible_int lifts the mod-2 irreducibility to irreducibility over ℤ (Monic.irreducible_of_irreducible_map). cubic_irreducible_over_rat is the headline: X³ − X − 1 is irreducible over ℚ, obtained by feeding f_irreducible_zmod_two through the reusable mod-p bridge and rewriting the mapped polynomial. The proof never factors over ℚ directly.",
+      "mathContext": "$\\mathrm{Irred}_{\\mathbb{Z}/2} \\Rightarrow \\mathrm{Irred}_{\\mathbb{Z}} \\Rightarrow \\mathrm{Irred}_{\\mathbb{Q}}(X^3 - X - 1).$"
+    }
+  ],
   "conclusion": {
     "summary": "The monic cubic X³ − X − 1 is proved irreducible over ℚ entirely on the integer / finite-field side: its mod-2 reduction has no root in ℤ/2 (kernel decide), hence is an irreducible cubic over a field; Monic.irreducible_of_irreducible_map descends this to irreducibility over ℤ, and Gauss's Lemma lifts it to ℚ. The general step is packaged as the reusable bridge irreducible_rat_of_irreducible_map_zmod. All eight theorems are verified with 0 axioms and 0 sorries.",
     "implications": "Supplies the positive worked example the parent Gauss's Lemma entry left open, and a citable reusable lemma: a monic integer polynomial whose reduction modulo some prime is irreducible is irreducible over ℚ. This is the reduction-mod-p irreducibility test in fully formalized, reusable form.",
