@@ -1,0 +1,85 @@
+[
+  {
+    "id": "ann-odd-iff-endpoint",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 51,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "Endpoint ⟺ Odd Degree",
+    "content": "The central lemma: for an Eulerian trail from $u$ to $v$ with $u \\neq v$, a vertex $w$ has odd degree iff it is an endpoint. The proof rewrites `Odd` as `¬ Even` and unfolds Mathlib's `even_degree_iff` to `¬(u \\neq v \\to w \\neq u \\land w \\neq v)`. The forward direction is a purely propositional `by_contra`; the backward direction feeds the hypothesis $u \\neq v$ into the guarded implication and eliminates the endpoint disjunction. The backward (endpoint ⟹ odd) direction is the genuinely new content relative to the sibling KonigsbergOQ01.",
+    "mathContext": "$\\mathrm{Odd}(\\deg_G w) \\iff (w = u \\lor w = v)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eulerian trail",
+      "vertex degree parity",
+      "IsEulerian.even_degree_iff"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Walk.IsEulerian",
+      "Nat parity (Even/Odd)"
+    ]
+  },
+  {
+    "id": "ann-odd-set",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 79,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "Odd-Degree Vertices Are Exactly {u, v}",
+    "content": "Repackages the endpoint biconditional as a set equality: the set of odd-degree vertices of a graph carrying an open Eulerian trail equals the two-element endpoint set $\\{u, v\\}$. Proved by `ext` followed by the pointwise biconditional.",
+    "mathContext": "$\\{w \\mid \\mathrm{Odd}(\\deg_G w)\\} = \\{u, v\\}$",
+    "significance": "important",
+    "relatedConcepts": [
+      "set extensionality",
+      "odd-degree vertex set"
+    ],
+    "prerequisites": [
+      "Set.ext"
+    ]
+  },
+  {
+    "id": "ann-card-two",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 90,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "Exactly Two Odd-Degree Vertices",
+    "content": "Sharpens Mathlib's `card_odd_degree` (which gives 0 or 2) to exactly 2 in the open-trail case. The count-0 branch is excluded because the endpoint $u$ is a concrete odd-degree witness, making the subtype nonempty; `Fintype.card_pos_iff` and `omega` finish.",
+    "mathContext": "$|\\{w \\mid \\mathrm{Odd}(\\deg_G w)\\}| = 2$",
+    "significance": "important",
+    "relatedConcepts": [
+      "IsEulerian.card_odd_degree",
+      "Fintype.card_pos_iff"
+    ],
+    "prerequisites": [
+      "Fintype cardinality"
+    ]
+  },
+  {
+    "id": "ann-circuit-no-odd",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 111,
+      "endLine": 129
+    },
+    "type": "theorem",
+    "title": "A Circuit Has No Odd-Degree Vertices",
+    "content": "The closed-trail complement: for an Eulerian circuit ($u = u$) every vertex has even degree, so the odd-degree set is empty and its cardinality is 0. Here `even_degree_iff` specialises to $u = v$, where the guard $u \\neq v$ is false and the implication holds vacuously for every vertex.",
+    "mathContext": "$\\{w \\mid \\mathrm{Odd}(\\deg_G w)\\} = \\varnothing, \\quad |\\{w \\mid \\mathrm{Odd}(\\deg_G w)\\}| = 0$",
+    "significance": "important",
+    "relatedConcepts": [
+      "Eulerian circuit",
+      "even degree",
+      "IsEmpty"
+    ],
+    "prerequisites": [
+      "Fintype.card_eq_zero_iff"
+    ]
+  }
+]
