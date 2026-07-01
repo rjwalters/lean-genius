@@ -1,0 +1,75 @@
+[
+  {
+    "id": "ann-wilson-oq04oq02oq01-perm-enum",
+    "proofId": "wilsons-theorem-oq-04-oq-02-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Enumerations of a Finite Group Are Mutually Permutations",
+    "content": "enum_perm and enum_perm_toList set up the combinatorial backbone. An 'enumeration' of G is any duplicate-free list (Nodup) that contains every element. Two such lists have identical membership, so List.perm_ext_iff_of_nodup makes them permutations of each other; in particular each is a permutation of the canonical univ.toList (which is Nodup by Finset.nodup_toList and total by Finset.mem_toList). These lemmas need no group structure, so [Group G] is omitted.",
+    "mathContext": "For a finite type $G$, two lists $l_1, l_2$ with $\\mathrm{Nodup}$ and $\\{x : x \\in l_1\\} = \\{x : x \\in l_2\\} = G$ satisfy $l_1 \\sim l_2$ (they are permutations). Every enumeration is thus $\\sim \\mathrm{univ.toList}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "List.perm_ext_iff_of_nodup",
+      "Finset.nodup_toList",
+      "permutations",
+      "enumeration"
+    ],
+    "prerequisites": [
+      "Fintype",
+      "List.Nodup",
+      "List.Perm"
+    ]
+  },
+  {
+    "id": "ann-wilson-oq04oq02oq01-main",
+    "proofId": "wilsons-theorem-oq-04-oq-02-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 101
+    },
+    "type": "insight",
+    "title": "Pass to the Abelianization BEFORE Using Permutation-Invariance",
+    "content": "abelianization_prod_enum is the main theorem. The decisive subtlety: l.prod is an ordered product in the (possibly noncommutative) G, where List.Perm.prod_eq — which requires a commutative monoid — cannot be applied. The proof therefore applies the homomorphism Abelianization.of FIRST via map_list_prod, converting Abelianization.of l.prod into (l.map of).prod, a product now living in the commutative Abelianization G. Only then is permutation-invariance legal: l ~ univ.toList gives (l.map of) ~ (univ.toList.map of), so List.Perm.prod_eq equates their products, and Finset.prod_map_toList rewrites the result as the order-free ∏ x : G, of x.",
+    "mathContext": "For an enumeration $l$ of a finite group $G$, $\\mathrm{of}(l.\\mathrm{prod}) = \\prod_{x : G} \\mathrm{of}(x)$ in $G^{\\mathrm{ab}} = G/[G,G]$. The homomorphism $\\mathrm{of} : G \\to G^{\\mathrm{ab}}$ turns the order-dependent product into a canonical element of the commutative quotient, on which reordering is invisible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Abelianization.of",
+      "map_list_prod",
+      "List.Perm.prod_eq",
+      "Finset.prod_map_toList",
+      "commutator subgroup"
+    ],
+    "prerequisites": [
+      "Abelianization",
+      "MonoidHom.map_list_prod",
+      "permutation-invariance of commutative products"
+    ]
+  },
+  {
+    "id": "ann-wilson-oq04oq02oq01-contrast-witness",
+    "proofId": "wilsons-theorem-oq-04-oq-02-oq-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "The Abelian Contrast and the Smallest Noncommuting Witness",
+    "content": "prod_enum_eq_of_commGroup shows that when G is already commutative the abelianization step is unnecessary: List.Perm.prod_eq applies directly in G, so every enumeration's product equals ∏ x : G, x. The pair two_elt_prod_ne / two_elt_abelianization_eq isolates the obstruction the quotient removes: for the two-element orderings [a,b] and [b,a], the G-products a·b and b·a differ exactly when a and b fail to commute, yet their abelianization images always agree by mul_comm. This is abelianization_prod_enum in miniature.",
+    "mathContext": "If $G$ is abelian, $l.\\mathrm{prod} = \\prod_{x : G} x$ in $G$. In general, $ab \\neq ba \\implies [a,b].\\mathrm{prod} \\neq [b,a].\\mathrm{prod}$ in $G$, while $\\mathrm{of}(ab) = \\mathrm{of}(ba)$ always holds in $G^{\\mathrm{ab}}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "List.Perm.prod_eq",
+      "Finset.prod_toList",
+      "mul_comm",
+      "commutativity obstruction"
+    ],
+    "prerequisites": [
+      "CommGroup",
+      "List.prod",
+      "Abelianization.of"
+    ]
+  }
+]
