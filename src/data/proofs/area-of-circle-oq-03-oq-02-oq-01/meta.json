@@ -60,7 +60,8 @@
       "Strict monotonicity under doubling: p(n) < p(2n) for all n ≥ 1 (fully proved)",
       "Upper bound: p(m) < π for all m ≥ 1 (fully proved)",
       "Convergence: p(m) → π as m → ∞, by squeezing π·cos(π/m) ≤ p(m) < π (fully proved)",
-      "Explicit convergence rate: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4 (quadratic in 1/m), proved from the sin Taylor estimate Real.sin_bound by absorbing the quartic remainder into the cubic term — gives π − p(2ᵏ) = O(4⁻ᵏ) (fully proved)"
+      "Explicit convergence rate: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4 (quadratic in 1/m), proved from the sin Taylor estimate Real.sin_bound by absorbing the quartic remainder into the cubic term — gives π − p(2ᵏ) = O(4⁻ᵏ) (fully proved)",
+      "Matching Θ(1/m²) convergence rate for Archimedes' doubling method (0-axiom): pi_sub_halfPerimeter_ge proves the lower error bound π - p(m) ≥ (1/12)·π³/m² for m ≥ 4 (Real.sin_bound's Taylor UPPER estimate sin x ≤ x - x³/6 + (5/96)x⁴, with the quartic term absorbed into the cubic via x = π/m ≤ 1), complementing the pre-existing upper bound pi_sub_halfPerimeter_le; pi_sub_halfPerimeter_bounds packages both into the sharp sandwich (1/12)π³/m² ≤ π - p(m) ≤ (7/32)π³/m², upgrading the rate from O(1/m²) to Θ(1/m²)."
     ],
     "dateAdded": "2026-06-28",
     "axiomCount": 0,
@@ -186,9 +187,9 @@
       "Topology"
     ],
     "namespace": "AreaOfCircleOQ03OQ02OQ01",
-    "lineCount": 223,
+    "lineCount": 337,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 11,
     "definitionCount": 1,
     "mainTheorems": [
       "archimedes_sin_doubling",
