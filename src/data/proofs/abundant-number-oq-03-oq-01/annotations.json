@@ -1,0 +1,34 @@
+[
+  {
+    "id": "abundant0301-ann-statement",
+    "proofId": "abundant-number-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "concept",
+    "title": "From Infinitude to a Counting Bound",
+    "content": "The parent entry (abundant-number-oq-03) proves the set $\\{n : \\text{Odd } n \\wedge n \\text{ abundant}\\}$ is infinite, using the witness family $945\\cdot(2k+1) = 945, 2835, 4725, \\dots$ — each an odd positive multiple of the smallest odd abundant number $945 = 3^3\\cdot 5\\cdot 7$. That is a purely qualitative fact. Here we extract the *quantitative* content already latent in the family. Define the **counting function**\n$$\\mathrm{oddAbundantCount}(N) = \\#\\{\\, n \\in [1,N] : n \\text{ odd and abundant} \\,\\}.$$\nBecause consecutive witnesses differ by exactly $2\\cdot 945 = 1890$, one witness falls in each length-$1890$ window, so about $N/1890$ of them lie below $N$. This gives odd abundant numbers **positive lower density** $\\geq 1/1890$ — the first open question raised in the parent's conclusion. The predicate `Odd n ∧ n.Abundant` is filtered under the base files' `Classical.propDecidable` local instance, so the counting function is marked `noncomputable` (a proof-irrelevant convenience, not an assumption)."
+  },
+  {
+    "id": "abundant0301-ann-core",
+    "proofId": "abundant-number-oq-03-oq-01",
+    "range": { "startLine": 45, "endLine": 73 },
+    "type": "proof-technique",
+    "title": "Core Estimate: Inject the First m Witnesses",
+    "content": "`count_lower_bound (N m) (h : 1890\\cdot m \\le N) : m \\le \\mathrm{oddAbundantCount}\\, N`. The engine is a single application of cardinality monotonicity to an injective image. Consider the image of $\\{0,1,\\dots,m-1\\}$ under $k \\mapsto 945\\cdot(2k+1)$. Each image element is:\n\n- **odd and abundant** — this is exactly `odd_abundant_945_mul k` from the parent;\n- **in $[1,N]$** — clearly $\\geq 945 \\geq 1$, and for $k < m$ we have $2k+1 \\le 2m$ (immediate by `omega`), so $945\\cdot(2k+1) \\le 945\\cdot(2m) = 1890\\cdot m \\le N$.\n\nSo the image is a subset of the filtered counting set. The witness map is injective (`odd_mul_succ_injective` from the parent), hence its image has exactly $m$ elements (`Finset.card_image_of_injective`), and `Finset.card_le_card` yields $m \\le \\mathrm{oddAbundantCount}\\, N$. Phrasing the hypothesis as $1890\\cdot m \\le N$ (rather than bounding by the largest witness $945\\cdot(2m-1)$) keeps every step in $\\mathbb{N}$ with no truncated subtraction."
+  },
+  {
+    "id": "abundant0301-ann-linear",
+    "proofId": "abundant-number-oq-03-oq-01",
+    "range": { "startLine": 75, "endLine": 84 },
+    "type": "key-insight",
+    "title": "The Linear Bound N/1890 and Positive Lower Density",
+    "content": "`oddAbundantCount_ge_div (N) : N / 1890 \\le \\mathrm{oddAbundantCount}\\, N`. Instantiate the core estimate at $m = \\lfloor N/1890 \\rfloor$: the hypothesis $1890\\cdot \\lfloor N/1890\\rfloor \\le N$ is `Nat.div_mul_le_self`, and the conclusion is the headline bound. Read analytically, this is exactly\n$$\\liminf_{N\\to\\infty} \\frac{\\mathrm{oddAbundantCount}(N)}{N} \\ge \\frac{1}{1890} > 0,$$\ni.e. odd abundant numbers have positive lower density. The constant $1/1890$ is precisely the reciprocal witness spacing and is **not sharp**: the family $945\\cdot(2k+1)$ enumerates only odd multiples of $945$, missing odd abundant numbers like $1575 = 3^2\\cdot 5^2\\cdot 7$ and $2205$, so the true density is larger. The entry deliberately proves the clean, provable bound rather than the sharp constant."
+  },
+  {
+    "id": "abundant0301-ann-infinitude",
+    "proofId": "abundant-number-oq-03-oq-01",
+    "range": { "startLine": 86, "endLine": 102 },
+    "type": "concept",
+    "title": "Quantitative Infinitude",
+    "content": "Two corollaries repackage the counting bound as an *effective* form of infinitude. `oddAbundantCount_unbounded (M) : M \\le \\mathrm{oddAbundantCount}(1890\\cdot M)$ takes $m = M,\\, N = 1890M$ in the core estimate: at least $M$ odd abundant numbers occur below $1890M$. `oddAbundantCount_atTop (M) : \\exists N, \\forall K \\ge N,\\, M \\le \\mathrm{oddAbundantCount}\\, K$ lifts this to 'eventually $\\ge M$', so the counting function is unbounded — recovering `infinitely_many_odd_abundant` with an explicit rate rather than a bare `Set.Infinite`. The file closes with `#print axioms oddAbundantCount_ge_div`, confirming dependence only on the standard foundational axioms (`propext`, `Classical.choice`, `Quot.sound`) — no `sorryAx`, no `native_decide`."
+  }
+]
