@@ -95,16 +95,16 @@
       "title": "Corollaries and Special Cases",
       "startLine": 117,
       "endLine": 129,
-      "summary": "Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture.",
-      "mathContext": "Mathematical content: Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture."
+      "summary": "Power-of-a-point and complex-number viewpoints. Relates the products of diagonal segments PA·PC and PB·PD through the power of the intersection point P with respect to the circumcircle, then states the elegant complex-number identity (A−C)(B−D) = (A−B)(C−D) + (A−D)(B−C) for concyclic points A, B, C, D appropriately ordered on the circle.",
+      "mathContext": "The power of a point $P$ inside the circle gives $PA \\cdot PC = PB \\cdot PD$; over $\\mathbb{C}$, Ptolemy is the modulus form of the algebraic identity $(A-C)(B-D) = (A-B)(C-D) + (A-D)(B-C)$."
     },
     {
       "id": "connections",
       "title": "Connections to Other Theorems",
       "startLine": 130,
       "endLine": 162,
-      "summary": "Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture.",
-      "mathContext": "Mathematical content: Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture."
+      "summary": "Applications and the first numerical examples. Lists four domains where Ptolemy's identity appears — trigonometry (sum/difference formulas), astronomy (chord tables), optics (curved-mirror reflections), and architecture (cyclic arches) — then opens PART 6 with the rectangle example, where Ptolemy's relation collapses to the Pythagorean theorem $d^2 = a^2 + b^2$, and the inscribed-square example $2s^2 = (s\\sqrt 2)^2$.",
+      "mathContext": "For a rectangle, Ptolemy reads $d \\cdot d = ab + ab$, i.e. $d^2 = 2ab$; combined with $d = \\sqrt{a^2+b^2}$ this is exactly Pythagoras, exhibiting Ptolemy's theorem as a strict generalization."
     },
     {
       "id": "examples",
