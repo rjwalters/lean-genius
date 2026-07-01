@@ -2346,3 +2346,32 @@ signatures were read from source and match the abstract stand-ins exactly.
    formally eliminated by `zero_facet_not_on_boundary`).
 2. Define total `adj` with geometric none-fibre exactly `{Fin.last d}` on interior cells.
 3. Assemble `SpernerTriangulation`; Phase-2 door oddness induction on `d`.
+
+## Session 2026-07-01 (R6) — facet-0 partner cell COMPLETE; shared-facet door proved
+
+**Mode**: REVISIT (continuing frontier) · **Outcome**: progress (VERIFIED, 0-axiom)
+
+### State update
+- Docker + `lake env lean` are BACK UP this session; full machine verification works
+  again (the Kaehler `.olean.server` wall does NOT bite in batch `lake env lean`).
+- The **facet-0 cross-chain partner cell is now fully constructed and merged**
+  (`zeroPivotCell` in #32251): a bona-fide `GridSimplex` whose chain is
+  `verts 1, …, verts d, zeroPivotTop`, increment directions cyclically rotated so the
+  omitted `incDir 0` is raised last. `zeroPivotCell_ne` shows it is distinct from `s`.
+- This session added `zeroPivotCell_shares_facet` (PR #32277): the facet of the partner
+  (drop its last vertex) equals **as a Finset of vertices** the facet-0 of `s` (drop
+  vertex 0) — both `{verts 1,…,verts d}`. Elementary image/erase membership via the
+  `k ↦ k+1` shift bijection. This is the set-level "shared door" the total `adj` consumes.
+
+### Collision note (important for parallel runs)
+Multiple processes are working sperner-oq-02 concurrently. My independent partner-cell
+build (`zeroPartnerSimplex`, via `Fin.snoc`) was discarded as a duplicate of the merged
+`zeroPivotCell` — checked origin BEFORE pushing. Live sibling branches:
+`research/sperner-ndim-oq-02-pivot-involution`, `research/sperner-ndim-oq02-canon-lexmin`.
+
+### Next steps (crux, unchanged)
+1. **Pivot involution**: `zeroPivotCell` applied appropriately returns to `s` (double
+   pivot reconstructs the base) — the key to door-parity. (Sibling branch in progress.)
+2. Define total `adj` with geometric none-fibre exactly `{Fin.last d}` on interior cells,
+   now gluing facet 0 via `zeroPivotCell` / `zeroPivotCell_shares_facet`.
+3. Assemble `SpernerTriangulation`; Phase-2 door-oddness induction on `d`.
