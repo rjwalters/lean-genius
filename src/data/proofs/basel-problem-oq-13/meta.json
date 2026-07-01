@@ -62,7 +62,9 @@
       "Mathlib.NumberTheory.ZetaValues",
       "Mathlib.Tactic"
     ],
-    "opens": ["Real"],
+    "opens": [
+      "Real"
+    ],
     "namespace": "BaselOddZetaFour",
     "path": "Proofs/BaselProblemOQ13.lean",
     "lineCount": 85,
@@ -120,11 +122,8 @@
     "summary": "The odd-fourth-power zeta sum λ(4) = ∑ 1/(2k+1)⁴ = π⁴/96 is formalized with 0 axioms and 0 sorries, built from Mathlib's ζ(4) = π⁴/90 by the even/odd parity split. The proof packages the even-indexed fourth-power sum (π⁴/1440) and the odd-indexed lambda value (π⁴/96) as reusable HasSum lemmas plus a tsum corollary.",
     "implications": "Completes the fourth-power analogue of the odd-square Basel sum ∑ 1/(2k+1)² = π²/8 and demonstrates the HasSum.even_add_odd splitting idiom at exponent 4. The same template — even part = scaled ζ, odd part by uniqueness — applies directly to the Dirichlet eta value η(4) = 7π⁴/720 from ζ(4) = π⁴/90, and to higher even exponents via Mathlib's hasSum_zeta_nat.",
     "openQuestions": [
-      {
-        "id": "basel-problem-oq-13-oq-01",
-        "question": "Combine the odd-fourth-power sum λ(4) = π⁴/96 with the even-fourth-power sum π⁴/1440 to derive the Dirichlet eta value η(4) = ∑ (-1)^(n+1)/n⁴ = 7π⁴/720, mirroring the η(2) construction.",
-        "significance": "medium"
-      }
+      "Combine the odd-fourth-power sum λ(4) = π⁴/96 with the even-fourth-power sum π⁴/1440 to derive the Dirichlet eta value η(4) = ∑ (-1)^(n+1)/n⁴ = 7π⁴/720, mirroring the η(2) construction.",
+      "Generalize the parity-split template to the full lambda value λ(s) = (1 − 2^(−s)) ζ(s) for every even s, packaging λ(6) = π⁶/960 and λ(8) from Mathlib's `hasSum_zeta_nat` by the same even/odd HasSum decomposition."
     ]
   },
   "crossReferences": [
