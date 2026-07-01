@@ -62,7 +62,8 @@
     "keyInsights": [
       "**The straight-angle case is continuous**: as a non-degenerate triangle flattens with one vertex approaching the opposite edge, the middle angle tends to π and the two end angles tend to 0, so the angle sum stays π in the limit — and Mathlib's conventions make this exact at the degenerate configuration via Sbtw.angle₁₂₃_eq_pi and angle_eq_zero_of_angle_eq_pi_left.",
       "**Strict betweenness is exactly ∠ = π**: Mathlib's angle_eq_pi_iff_sbtw identifies the analytic hypothesis ∠ABC = π with the order-theoretic Sbtw ℝ A B C, so the abstract and geometric statements of the result are interchangeable.",
-      "**The angle sum is not universally π under degeneration**: the fully-coincident configuration gives ∠AAA = π/2 thrice, hence 3π/2. The value π is special to the strictly-between collinear case, distinguishing the two kinds of degeneration."
+      "**The angle sum is not universally π under degeneration**: the fully-coincident configuration gives ∠AAA = π/2 thrice, hence 3π/2. The value π is special to the strictly-between collinear case, distinguishing the two kinds of degeneration.",
+      "**Coincident π/2 is a convention, not a limit**: where the strictly-between value π is forced by continuity (a genuine flattening triangle drives the middle angle to π), the fully-coincident value ∠AAA = π/2 is Mathlib's arbitrary tie-break for an otherwise-undefined angle — no sequence of real triangles selects it — so the resulting sum 3π/2 is best read as an API artifact rather than a theorem about triangles."
     ],
     "prerequisites": [
       "Mathlib's unoriented angle EuclideanGeometry.angle and its conventions on degenerate inputs",
@@ -98,6 +99,20 @@
       "Does the strictly-between angle-sum-π result generalise to the perimeter angle sum of a degenerate (collinear) polygon?"
     ]
   },
+  "references": [
+    {
+      "title": "Euclid, Elements, Book I, Proposition 32 (the interior angles of a triangle sum to two right angles)",
+      "url": "https://mathcs.clarku.edu/~djoyce/java/elements/bookI/propI32.html"
+    },
+    {
+      "title": "Mathlib: EuclideanGeometry unoriented angle on affine points (angle, angle_self_left, angle conventions)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Geometry/Euclidean/Angle/Unoriented/Affine.html"
+    },
+    {
+      "title": "Mathlib: Sbtw / strict betweenness and angle_eq_pi_iff_sbtw (∠ABC = π ⟺ B strictly between A and C)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Convex/Between.html"
+    }
+  ],
   "crossReferences": [
     "triangle-angle-sum",
     "triangle-angle-sum-oq-06"
