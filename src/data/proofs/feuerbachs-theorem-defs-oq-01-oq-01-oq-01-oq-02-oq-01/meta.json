@@ -140,6 +140,11 @@
       "targetId": "feuerbachs-theorem-defs",
       "relationship": "extends",
       "description": "adds the vertex–orthocenter / circumcenter–midpoint segment relation AH = 2·OM_a, a quantity the nine-point-circle and Euler-line development in FeuerbachsTheoremDefs.lean never measures"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "the apothem step OM_a² = R² − (a/2)² is a Pythagorean instance of the law of cosines a² = b² + c² − 2bc·cos A: combined with the extended law of sines a = 2R·sin A it gives OM_a = R·cos A, so the true-distance form AH = 2·OM_a is exactly AH = 2R·cos A"
     }
   ],
   "conclusion": {
