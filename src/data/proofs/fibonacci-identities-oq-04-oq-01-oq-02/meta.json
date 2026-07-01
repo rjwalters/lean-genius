@@ -3,6 +3,38 @@
   "slug": "fibonacci-identities-oq-04-oq-01-oq-02",
   "title": "Cassini and d'Ocagne for the Full Horadam Recurrence — the Geometric Constant (−q)ⁿ",
   "description": "The parent entry (fibonacci-identities-oq-04-oq-01) proved Vajda's product identities for every solution of the *Fibonacci* recurrence G(n+2)=G(n+1)+G(n), replacing the Cassini sign (−1)ⁿ by the discriminant μ=a²−ab−b². Its second open question asks to push the constant to the full Horadam recurrence H(n+2)=p·H(n+1)+q·H(n) with arbitrary p,q∈ℤ, where the controlling constant is no longer a fixed sign but the geometric factor (−q)ⁿ. This entry supplies that generalization. Fix parameters p,q and seeds H(0)=a, H(1)=b. The headline result is the two-index d'Ocagne identity for Horadam sequences H(n+k+1)·H(n) − H(n+k)·H(n+1) = (−q)ⁿ·(H(k+1)·a − H(k)·b), proved by a single induction on n that applies the recurrence twice in the step. Cassini/Simson is the k=1 case H(n+2)·H(n) − H(n+1)² = (−q)ⁿ·(H(2)·a − b²), whose constant H(2)·a − b² = (p·b+q·a)·a − b² is the Horadam discriminant. For the Fibonacci numbers (p,q,a,b)=(1,1,0,1) the discriminant is −1 and (−q)ⁿ=(−1)ⁿ, recovering the textbook Cassini identity in the shifted form F(n+2)·F(n) − F(n+1)² = (−1)ⁿ⁺¹. The geometric factor (−q)ⁿ is exactly det(M)ⁿ for the companion matrix M=[[p,q],[1,0]] (det M=−q), the Horadam analogue of the Q=[[1,1],[1,0]] viewpoint of the parent hierarchy. Fully verified: 0 sorries, 0 axioms, no native_decide.",
+  "references": [
+    {
+      "authors": "Alwyn F. Horadam",
+      "title": "Basic Properties of a Certain Generalized Sequence of Numbers (Fibonacci Quarterly 3)",
+      "year": 1965,
+      "note": "Introduces the Horadam sequence generalizing Fibonacci/Lucas, the setting of these Cassini/d'Ocagne identities."
+    },
+    {
+      "authors": "Maurice d'Ocagne",
+      "title": "Sur une suite récurrente (Bulletin de la Société Mathématique de France 13)",
+      "year": 1885,
+      "note": "d'Ocagne's identity for recurrent sequences, generalized here to the Horadam recurrence."
+    },
+    {
+      "authors": "Steven Vajda",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": 1989,
+      "note": "Ellis Horwood. Vajda's product identities and the Cassini/d'Ocagne family."
+    },
+    {
+      "authors": "Thomas Koshy",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": 2001,
+      "note": "Wiley. Cassini, Catalan, and d'Ocagne identities and their generalizations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: linear-recurrence and matrix-power (companion matrix) infrastructure",
+      "year": 2024,
+      "note": "Recurrence and determinant machinery yielding the geometric constant (−q)ⁿ in the general identities."
+    }
+  ],
   "meta": {
     "author": "A. F. Horadam (Horadam/Gibonacci sequences, 1965); J. D. d'Ocagne, J. B. Cassini, R. Simson (classical identities); formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fibonacci_sequence#Identities",

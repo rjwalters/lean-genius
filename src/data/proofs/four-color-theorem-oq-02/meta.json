@@ -3,6 +3,38 @@
   "title": "Minimal Unavoidable Reducible Configurations",
   "slug": "four-color-theorem-oq-02",
   "description": "Formalizes the theory of unavoidable reducible configuration sets for the Four Color Theorem. Historical progression: Appel-Haken 1476 → RSST 633. Open: minimum size unknown.",
+  "references": [
+    {
+      "authors": "Kenneth Appel and Wolfgang Haken",
+      "title": "Every Planar Map Is Four Colorable (Illinois Journal of Mathematics 21)",
+      "year": 1977,
+      "note": "The original computer-assisted proof with 1476 unavoidable reducible configurations."
+    },
+    {
+      "authors": "Neil Robertson, Daniel P. Sanders, Paul Seymour and Robin Thomas",
+      "title": "The Four-Colour Theorem (Journal of Combinatorial Theory, Series B 70)",
+      "year": 1997,
+      "note": "The streamlined RSST proof reducing the configuration set to 633."
+    },
+    {
+      "authors": "Georges Gonthier",
+      "title": "Formal Proof—The Four-Color Theorem (Notices of the AMS 55)",
+      "year": 2008,
+      "note": "The full machine-checked Coq proof, the reference for formalizing unavoidability and reducibility."
+    },
+    {
+      "authors": "Robin Wilson",
+      "title": "Four Colors Suffice: How the Map Problem Was Solved",
+      "year": 2002,
+      "note": "Princeton University Press. History of unavoidable sets and reducible configurations."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: SimpleGraph planarity and coloring infrastructure",
+      "year": 2024,
+      "note": "Graph-coloring and configuration definitions used to formalize the unavoidable-reducible theory."
+    }
+  ],
   "meta": {
     "author": "Robertson-Sanders-Seymour-Thomas (1997)",
     "date": "1997",

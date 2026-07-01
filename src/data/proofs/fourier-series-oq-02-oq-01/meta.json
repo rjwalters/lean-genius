@@ -3,6 +3,38 @@
   "title": "Riemann-Lebesgue via L²: Alternative Proof for Hölder Functions",
   "slug": "fourier-series-oq-02-oq-01",
   "description": "Proves that Fourier coefficients of Hölder-continuous functions tend to zero via the Parseval/L² route (Continuous → MemLp 2 → Summable ‖ĉ_n‖² → ĉ_n → 0), rather than via explicit quantitative decay bounds. 0 sorries, 0 axioms.",
+  "references": [
+    {
+      "authors": "Bernhard Riemann",
+      "title": "Über die Darstellbarkeit einer Function durch eine trigonometrische Reihe (Habilitationsschrift)",
+      "year": 1854,
+      "note": "Origin of the Riemann–Lebesgue lemma on the decay of Fourier coefficients."
+    },
+    {
+      "authors": "Henri Lebesgue",
+      "title": "Sur les séries trigonométriques (Annales Sci. École Norm. Sup. 20)",
+      "year": 1903,
+      "note": "The Lebesgue-integral form of the Riemann–Lebesgue lemma."
+    },
+    {
+      "authors": "Walter Rudin",
+      "title": "Real and Complex Analysis (3rd ed.)",
+      "year": 1987,
+      "note": "McGraw-Hill. L² Fourier theory, Bessel/Parseval, and the Riemann–Lebesgue lemma."
+    },
+    {
+      "authors": "Elias M. Stein and Rami Shakarchi",
+      "title": "Fourier Analysis: An Introduction",
+      "year": 2003,
+      "note": "Princeton University Press. Decay of Fourier coefficients and the mean-square (L²) approach used here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: MeasureTheory.MemLp, fourierCoeff and Summable infrastructure",
+      "year": 2024,
+      "note": "The Continuous → MemLp 2 → Summable ‖ĉ_n‖² → ĉ_n → 0 chain formalizing Riemann–Lebesgue for Hölder functions."
+    }
+  ],
   "meta": {
     "author": "Classical result; formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Riemann%E2%80%93Lebesgue_lemma",
