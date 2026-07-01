@@ -1056,6 +1056,111 @@ theorem minSummandBound_one : minSummandBound 1 = 1 := by
       · simp
   rw [heq, csSup_Iio]
 
+/-- Every `{2,3}` power form `3ᵏ2ˡ` is at least `1`. -/
+private lemma one_le_isPowerForm_three_two {s : ℕ} (h : IsPowerForm 3 2 s) : 1 ≤ s := by
+  obtain ⟨k, l, hkl⟩ := h
+  subst hkl
+  have : 0 < 3 ^ k * 2 ^ l := by positivity
+  omega
+
+/-- **Exact value on the whole power-form monoid: `minSummandBound (3ᵏ2ˡ) = 3ᵏ2ˡ`
+(0-axiom).** Generalises `minSummandBound_one` (the `k = l = 0` case) from the single
+point `1` to every power form `N = 3ᵏ2ˡ`. The witness set is exactly `Iio N`: the
+singleton `{N}` represents `N` with its lone summand `N`, so every threshold `f < N`
+is admissible (`Iio N ⊆ ·`); conversely any representation summing to `N` has some
+summand `s ≤ N`, and the threshold obeys `f < s ≤ N`, so the set is contained in
+`Iio N`. Its supremum is `N` by `csSup_Iio`. Thus on power forms the largest
+achievable minimum-summand threshold is the number itself — the antichain is forced
+to be the trivial singleton. -/
+theorem minSummandBound_powerForm (k l : ℕ) :
+    minSummandBound (3 ^ k * 2 ^ l) = (3 ^ k * 2 ^ l : ℕ) := by
+  set N := 3 ^ k * 2 ^ l with hN
+  have hNpos : 0 < N := by rw [hN]; positivity
+  have heq : minSummandBound N = sSup (Set.Iio (N : ℝ)) := by
+    unfold minSummandBound
+    congr 1
+    ext f
+    simp only [Set.mem_setOf_eq, Set.mem_Iio]
+    constructor
+    · rintro ⟨S, hpf, _, hsum⟩
+      have hne : S.Nonempty := by
+        rw [Finset.nonempty_iff_ne_empty]; rintro rfl
+        simp only [Finset.sum_empty] at hsum; omega
+      obtain ⟨s, hs⟩ := hne
+      have hsf := (hpf s hs).2
+      have hsle : s ≤ N := by
+        have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hs
+        rw [hsum] at this; simpa using this
+      have : (s : ℝ) ≤ (N : ℝ) := by exact_mod_cast hsle
+      linarith
+    · intro hf
+      refine ⟨{N}, ?_, ?_, ?_⟩
+      · intro s hs
+        rw [Finset.mem_singleton] at hs; subst hs
+        exact ⟨⟨k, l, hN⟩, hf⟩
+      · intro a ha b hb hab
+        rw [Finset.mem_singleton] at ha hb; subst ha; subst hb; exact absurd rfl hab
+      · simp
+  rw [heq, csSup_Iio]
+
+/-- **Lower bound `1 ≤ minSummandBound n` for every `n ≥ 1` (0-axiom).** Every `n ≥ 1`
+is representable in the `{2,3}` case (`case_2_3_all_representable`), and its summands
+are power forms, hence `≥ 1`; so any threshold `f < 1` is admissible, giving
+`Iio 1 ⊆` the witness set. The witness set is bounded above by `n` (some summand of any
+representation is `≤ n`), so `minSummandBound n ≥ sSup (Iio 1) = 1`. -/
+theorem one_le_minSummandBound {n : ℕ} (hn : 1 ≤ n) : 1 ≤ minSummandBound n := by
+  obtain ⟨S, _, hpf, hac, hsum⟩ := case_2_3_all_representable n hn
+  have hbdd : BddAbove {f : ℝ | ∃ T : Finset ℕ,
+      (∀ s ∈ T, IsPowerForm 3 2 s ∧ (s : ℝ) > f) ∧ NoOneDividesAnother T ∧ T.sum id = n} := by
+    refine ⟨(n : ℝ), ?_⟩
+    rintro f ⟨T, hpfT, -, hsumT⟩
+    have hTne : T.Nonempty := by
+      rw [Finset.nonempty_iff_ne_empty]; rintro rfl
+      simp only [Finset.sum_empty] at hsumT; omega
+    obtain ⟨t, ht⟩ := hTne
+    have htf := (hpfT t ht).2
+    have htle : t ≤ n := by
+      have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) ht
+      rw [hsumT] at this; simpa using this
+    have : (t : ℝ) ≤ (n : ℝ) := by exact_mod_cast htle
+    linarith
+  have hsub : Set.Iio (1 : ℝ) ⊆ {f : ℝ | ∃ T : Finset ℕ,
+      (∀ s ∈ T, IsPowerForm 3 2 s ∧ (s : ℝ) > f) ∧ NoOneDividesAnother T ∧ T.sum id = n} := by
+    intro f hf
+    refine ⟨S, fun s hs => ⟨hpf s hs, ?_⟩, hac, hsum⟩
+    have h1s : (1 : ℝ) ≤ (s : ℝ) := by exact_mod_cast one_le_isPowerForm_three_two (hpf s hs)
+    have : f < 1 := hf
+    linarith
+  have hle := csSup_le_csSup hbdd ⟨(0 : ℝ), by rw [Set.mem_Iio]; norm_num⟩ hsub
+  rw [csSup_Iio] at hle
+  unfold minSummandBound
+  exact hle
+
+/-- **Upper bound `minSummandBound n ≤ n` for every `n ≥ 1` (0-axiom).** In any
+representation summing to `n` some summand `s` satisfies `s ≤ n`, and the admissible
+threshold obeys `f < s ≤ n`; hence the witness set is bounded above by `n` and its
+supremum is `≤ n`. Together with `one_le_minSummandBound` this pins
+`minSummandBound n ∈ [1, n]` for all `n ≥ 1`, with equality at the upper end exactly
+on the power forms (`minSummandBound_powerForm`). -/
+theorem minSummandBound_le_self {n : ℕ} (hn : 1 ≤ n) : minSummandBound n ≤ (n : ℝ) := by
+  obtain ⟨S, _, hpf, hac, hsum⟩ := case_2_3_all_representable n hn
+  unfold minSummandBound
+  apply csSup_le
+  · refine ⟨0, S, fun s hs => ⟨hpf s hs, ?_⟩, hac, hsum⟩
+    have : (1 : ℝ) ≤ (s : ℝ) := by exact_mod_cast one_le_isPowerForm_three_two (hpf s hs)
+    linarith
+  · rintro f ⟨T, hpfT, -, hsumT⟩
+    have hTne : T.Nonempty := by
+      rw [Finset.nonempty_iff_ne_empty]; rintro rfl
+      simp only [Finset.sum_empty] at hsumT; omega
+    obtain ⟨t, ht⟩ := hTne
+    have htf := (hpfT t ht).2
+    have htle : t ≤ n := by
+      have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) ht
+      rw [hsumT] at this; simpa using this
+    have : (t : ℝ) ≤ (n : ℝ) := by exact_mod_cast htle
+    linarith
+
 /-
 **Yu-Chen bounds (2022):**
 n / (log n)^{log₂ 3} ≪ f(n) ≪ n / log n
