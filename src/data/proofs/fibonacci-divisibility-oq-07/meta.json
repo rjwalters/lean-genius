@@ -84,26 +84,96 @@
     {
       "id": "header",
       "title": "Module Header and Framing",
-      "content": "The file opens by situating itself against Mathlib: Nat.fib_dvd and Nat.fib_gcd are present, but the converse and the full biconditional are not. It flags the F₁ = F₂ = 1 coincidence as the source of the single exceptional index m = 2."
+      "startLine": 1,
+      "endLine": 31,
+      "content": "The file imports Mathlib and situates itself: Nat.fib_dvd and Nat.fib_gcd are present, but the converse and the full biconditional are not. It flags the F₁ = F₂ = 1 coincidence as the source of the single exceptional index m = 2, and notes that only kernel-reducible `decide` (no native_decide) is used on the closed numerals fib 2/3/4."
     },
     {
       "id": "converse",
       "title": "The Converse dvd_of_fib_dvd_fib",
-      "content": "For m ≥ 3, fib m ∣ fib n ⟹ m ∣ n. The proof turns the divisibility hypothesis into fib (gcd m n) = fib m via fib_gcd, bounds the gcd below by 2 using fib m ≥ 2, and applies injectivity of fib on [2, ∞) to conclude gcd m n = m."
+      "startLine": 33,
+      "endLine": 59,
+      "summary": "The converse of Nat.fib_dvd for m ≥ 3, proved through fib_gcd and injectivity of fib on [2, ∞).",
+      "content": "For m ≥ 3, fib m ∣ fib n ⟹ m ∣ n. The proof turns the divisibility hypothesis into fib (gcd m n) = fib m via fib_gcd + gcd_eq_left, bounds the gcd below by 2 by ruling out the values 0 (fib 0 = 0) and 1 (fib 1 = 1) using fib m ≥ fib 3 = 2, and applies injectivity of fib on [2, ∞) (fib_strictMonoOn.injOn) to conclude gcd m n = m, whence m ∣ n."
     },
     {
       "id": "characterization",
       "title": "Biconditional and Sharp Global Form",
-      "content": "fib_dvd_iff packages the converse with Mathlib's forward direction for m ≥ 3. fib_dvd_iff_forall proves the sharp statement (∀ n, fib m ∣ fib n ↔ m ∣ n) ↔ m ≠ 2, isolating m = 2 as the unique exceptional index."
+      "startLine": 61,
+      "endLine": 90,
+      "summary": "fib_dvd_iff for m ≥ 3 and the sharp fib_dvd_iff_forall isolating m = 2.",
+      "content": "fib_dvd_iff packages the converse with Mathlib's forward direction for m ≥ 3. fib_dvd_iff_forall proves the sharp statement (∀ n, fib m ∣ fib n ↔ m ∣ n) ↔ m ≠ 2, isolating m = 2 as the unique exceptional index; the reverse direction splits by rcases into m = 0, m = 1, m = 2 (excluded), and m = k + 3."
     },
     {
       "id": "corollaries",
       "title": "Arithmetic Corollaries and Sharpness Witness",
-      "content": "two_dvd_fib_iff (fib n even ⟺ 3 ∣ n) and three_dvd_fib_iff (3 ∣ fib n ⟺ 4 ∣ n) specialize the biconditional at m = 3, 4. fib_two_exception exhibits the concrete failure at m = 2: fib 2 ∣ fib 1 while ¬(2 ∣ 1)."
+      "startLine": 92,
+      "endLine": 106,
+      "summary": "Even-Fibonacci and divisible-by-3 corollaries, plus the concrete m = 2 counterexample.",
+      "content": "two_dvd_fib_iff (fib n even ⟺ 3 ∣ n) and three_dvd_fib_iff (3 ∣ fib n ⟺ 4 ∣ n) specialize the biconditional at m = 3, 4 (using fib 3 = 2, fib 4 = 3). fib_two_exception exhibits the concrete failure at m = 2: fib 2 ∣ fib 1 while ¬(2 ∣ 1)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The entry completes the classical Fibonacci divisibility law. It supplies dvd_of_fib_dvd_fib, the converse of Mathlib's Nat.fib_dvd for indices m ≥ 3, and packages the biconditional fib_dvd_iff (m ≥ 3) together with the sharp global form fib_dvd_iff_forall: for a fixed m the per-n equivalence Fₘ ∣ Fₙ ⟺ m ∣ n holds for every n iff m ≠ 2. Two arithmetic corollaries (2 ∣ Fₙ ⟺ 3 ∣ n and 3 ∣ Fₙ ⟺ 4 ∣ n) and an explicit m = 2 sharpness witness round it out. Fully verified: 6 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide.",
+    "implications": "**Strong divisibility sequences.** The result is the defining payoff of Fibonacci being a strong divisibility sequence — gcd(Fₘ, Fₙ) = F_gcd(m,n) — namely that index divisibility can be *recovered* from value divisibility, not merely implied. **Filling a Mathlib gap.** Mathlib carries only the forward Nat.fib_dvd; the converse and the sharp biconditional proved here are reusable and could be upstreamed. **Sharpness as a feature.** By exposing m = 2 as the unique exceptional index (a shadow of the 0-indexing coincidence F₁ = F₂ = 1), the entry gives the *strongest correct* statement rather than a hypothesis-padded approximation, and the even/÷3 corollaries recover familiar 'every third Fibonacci is even' facts as exact iffs.",
+    "openQuestions": [
+      "Does the analogous sharp biconditional hold for general Lucas sequences Uₙ(P,Q) — i.e. for which parameters is Uₘ ∣ Uₙ ⟺ m ∣ n, and what is the exceptional-index set replacing {2}?",
+      "Can dvd_of_fib_dvd_fib and fib_dvd_iff be packaged in the Mathlib-preferred form and contributed upstream to Mathlib.Data.Nat.Fib.Basic?",
+      "What is the exact characterization k ∣ Fₙ ⟺ (entry point of k) ∣ n for an arbitrary modulus k, generalizing the m = 3, 4 corollaries via the rank of apparition (Fibonacci entry point)?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Lucas, Édouard",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics, 1, 184–240 & 289–321",
+      "note": "Origin of gcd(Fₘ, Fₙ) = F_gcd(m,n) and the divisibility law of the Fibonacci and Lucas sequences; the founding paper on strong divisibility sequences."
+    },
+    {
+      "authors": "Vajda, Steven",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood / Dover",
+      "note": "Standard reference collecting the divisibility and gcd identities of the Fibonacci sequence, including Fₘ ∣ Fₙ ⟺ m ∣ n."
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Comprehensive treatment of Fibonacci divisibility, the rank of apparition (entry point), and periodicity of residues."
+    },
+    {
+      "authors": "Graham, Ronald L.; Knuth, Donald E.; Patashnik, Oren",
+      "title": "Concrete Mathematics: A Foundation for Computer Science (2nd ed.), §6.6 Fibonacci Numbers",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "note": "Derives the gcd property gcd(Fₘ, Fₙ) = F_gcd(m,n) and the divisibility law, and discusses the strong-divisibility structure used in the converse here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Nat.fib_dvd, Nat.fib_gcd, Nat.fib_strictMonoOn (Mathlib.Data.Nat.Fib.Basic)",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Provides the forward implication and the strong-divisibility identity this entry builds on; the converse and the sharp biconditional are not in Mathlib."
     }
   ],
   "crossReferences": [
-    "fibonacci-identities",
-    "fibonacci-identities-oq-05"
+    {
+      "proofId": "fibonacci-identities",
+      "relationship": "Foundational companion",
+      "description": "Collects the core algebraic identities of the Fibonacci sequence (sum-of-squares, indexed sums); this entry adds the multiplicative/divisibility side of the theory, characterizing when Fₘ ∣ Fₙ."
+    },
+    {
+      "proofId": "fibonacci-identities-oq-05",
+      "relationship": "Sibling Fibonacci result",
+      "description": "A related open-question extension in the Fibonacci-identities family; shares the recurrence and 0-indexed Nat.fib conventions used throughout this divisibility characterization."
+    },
+    {
+      "proofId": "cassini-identity-oq-01",
+      "relationship": "Divisibility-adjacent identity",
+      "description": "Cassini's identity Fₙ₊₁Fₙ₋₁ − Fₙ² = (−1)ⁿ constrains consecutive Fibonacci numbers and underlies their coprimality gcd(Fₙ, Fₙ₊₁) = 1 — the n = 1 base case of the gcd theory this entry's converse relies on."
+    }
   ]
 }
