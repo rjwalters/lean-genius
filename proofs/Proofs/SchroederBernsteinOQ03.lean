@@ -558,6 +558,60 @@ theorem firstMissing_computable : Computable firstMissing := by
     exact heq.comp hidx hlen
   exact hp.of_eq (fun L => (Part.some_get (firstMissingPart_dom L)).symm)
 
+/-- The `firstMissing`-covered prefix lies inside `L`: every natural below
+    `firstMissing L` already occurs. This packages `firstMissing_lt_mem` as an initial
+    segment (`Finset.range`) coverage statement, the form the exhaustion argument uses. -/
+theorem range_firstMissing_subset (L : List ℕ) {m : ℕ}
+    (hm : m ∈ Finset.range (firstMissing L)) : m ∈ L :=
+  firstMissing_lt_mem L (Finset.mem_range.mp hm)
+
+/-- **Exhaustion bound**: `firstMissing L ≤ L.length`. Since `{0, …, firstMissing L − 1}`
+    are all present (`firstMissing_lt_mem`), they are `firstMissing L` distinct members of
+    `L`, so `firstMissing L ≤ #(L.toFinset) ≤ L.length`. Hence a matching of length `n`
+    leaves the least fresh endpoint `≤ n`: repeatedly extending by `firstMissing` covers
+    every initial segment of ℕ. This is the quantitative termination measure the priority
+    scheduler decreases (cf. `matching_length_cons`) — every `k` enters by a bounded stage. -/
+theorem firstMissing_le_length (L : List ℕ) : firstMissing L ≤ L.length := by
+  have hsub : Finset.range (firstMissing L) ⊆ L.toFinset := fun m hm =>
+    List.mem_toFinset.mpr (firstMissing_lt_mem L (Finset.mem_range.mp hm))
+  calc firstMissing L = (Finset.range (firstMissing L)).card := (Finset.card_range _).symm
+    _ ≤ L.toFinset.card := Finset.card_le_card hsub
+    _ ≤ L.length := List.toFinset_card_le L
+
+/-!
+## Section 4e: Domain/range duality via coordinate swap
+
+The back-and-forth construction has two structurally identical halves: the even stage
+guarantees domain coverage (through `f`), the odd stage guarantees range coverage
+(through `g`). These are formally dual — the odd stage on `(p, q, g)` is the even stage
+on the *swapped* problem `(q, p, g)`. Coordinate-swapping a matching `L ↦ L.map Prod.swap`
+exchanges its domain and range while preserving the matching and correspondence
+structure (with `p, q` swapped). This lets the eventual scheduler define and verify only
+one stage move and obtain the other by duality.
+-/
+
+/-- Swapping coordinates exchanges the domain and range lists. -/
+@[simp] theorem mDom_map_swap (L : List (ℕ × ℕ)) : mDom (L.map Prod.swap) = mRan L := by
+  simp [mDom, mRan, List.map_map, Function.comp]
+
+@[simp] theorem mRan_map_swap (L : List (ℕ × ℕ)) : mRan (L.map Prod.swap) = mDom L := by
+  simp [mDom, mRan, List.map_map, Function.comp]
+
+/-- A coordinate-swapped matching is again a matching (the two `Nodup` sides trade). -/
+theorem isMatching_map_swap {L : List (ℕ × ℕ)} (hL : IsMatching L) :
+    IsMatching (L.map Prod.swap) :=
+  ⟨by rw [mDom_map_swap]; exact hL.2, by rw [mRan_map_swap]; exact hL.1⟩
+
+/-- Coordinate-swapping a matching that respects `p ↔ q` yields one respecting `q ↔ p`.
+    This is the precise sense in which the odd (range) stage is the even (domain) stage of
+    the swapped problem. -/
+theorem matchingCorr_map_swap {p q : ℕ → Prop} {L : List (ℕ × ℕ)}
+    (hC : MatchingCorr p q L) : MatchingCorr q p (L.map Prod.swap) := by
+  intro ab hmem
+  rw [List.mem_map] at hmem
+  obtain ⟨cd, hcd, rfl⟩ := hmem
+  exact (hC cd hcd).symm
+
 /-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
