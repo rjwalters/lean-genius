@@ -1,7 +1,7 @@
 {
   "slug": "erdos-101-oq-04",
   "title": "Higher-dimensional point set line count",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS (VERIFIED, 0-axiom): added a non-vacuous framework witness in Erdos101OQ04.lean. The file previously exhibited only the general-position arc (realParabolaSet, fourPointLineCount=0), inhabiting just IsLowerBoundConstruction _ 0. Added explicit 5-point set W={(0,0),(1,0),(2,0),(3,0),(0,1)} proving IsLowerBoundConstruction W 1, plus exists_isLowerBoundConstruction_pos (|W|=5>4 with positive threshold). Build-verified via direct lean compile (Docker containerd content-store still down host-wide with input/output error); #print axioms of the four new theorems shows only [propext, Classical.choice, Quot.sound] (no sorryAx, no ofReduceBool). The two OPEN sorries (grunbaum_lower_bound_three_halves Omega(n^3/2), solymosi_stojakovic_lower_bound n^{2-o(1)}) remain untouched genuine open constructions.",
+    "builtItems": [
+      "Erdos101OQ04.witnessPoints/witnessSet: explicit 5-point ppset {(0,0),(1,0),(2,0),(3,0),(0,1)} (VERIFIED)",
+      "Erdos101OQ04.witnessSet_isLowerBoundConstruction: IsLowerBoundConstruction witnessSet 1, 0 axioms (VERIFIED)",
+      "Erdos101OQ04.exists_isLowerBoundConstruction_pos: framework floor > arc zero for a >4-point set (VERIFIED)"
+    ],
+    "insights": [
+      "The realParabolaSet arc has fourPointLineCount=0, so the file only inhabited IsLowerBoundConstruction _ 0 before this session; the four collinear x-axis points of W give the first positive four-point-line count witness (>=1) with no five collinear.",
+      "Both remaining sorries are genuine OPEN constructions: Grunbaum Omega(n^3/2) needs a sumset/grid built ON TOP of the no-three-collinear parabola base (parabola alone has 0 four-point lines); Solymosi-Stojakovic n^{2-o(1)} needs ~600-1000 LOC of measure-theoretic random-projection infra (Path A)."
+    ],
+    "mathlibGaps": [
+      "No mathlib gap for the witness; the OPEN Path A (Solymosi-Stojakovic) needs a measure-zero certificate for algebraic varieties in projection-parameter space, not currently in Mathlib in usable form."
+    ],
+    "nextSteps": [
+      "Non-vacuity gap is now closed (witness verified 0-axiom); the frontier stays the two OPEN construction sorries.",
+      "Path B (Grunbaum): next brick is a concrete finite construction with a PROVABLE positive lower bound on fourPointLineCount that grows (e.g. k disjoint 4-point lines with no cross-collinearity) - the hard part is ruling out accidental alignments for all n."
+    ]
   },
   "tags": [
     "seeker-selected",

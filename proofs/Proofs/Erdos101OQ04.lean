@@ -670,4 +670,157 @@ theorem realParabolaSet_fourPointLineCount_zero (p : ℕ) [NeZero p]
 
 end Grunbaum
 
+/- ## Non-vacuous framework floor (axiom-free)
+
+The `Grunbaum.realParabolaSet` witness above is an *arc*: it satisfies
+`fourPointLineCount = 0` (`realParabolaSet_fourPointLineCount_zero`), so
+it inhabits only the trivial `IsLowerBoundConstruction _ 0`.  The two
+OPEN construction theorems (`grunbaum_lower_bound_three_halves`,
+`solymosi_stojakovic_lower_bound`) target thresholds that *grow* with
+`n`, but neither has been discharged yet.  Between the arc's zero and
+those asymptotic targets there is a basic non-vacuity question the file
+does not otherwise answer: is `IsLowerBoundConstruction P t` inhabited
+for *any* positive threshold `t` by a set of **more than four** points
+(so it is not the degenerate `≤ 4`-point regime handled vacuously by
+`isLowerBoundConstruction_threshold_eq_zero_of_small`)?
+
+This section closes that gap with the explicit 5-point set
+
+    W = {(0,0), (1,0), (2,0), (3,0), (0,1)} ⊂ ℝ²,
+
+whose four collinear `x`-axis points form a single four-point line and
+whose fifth point `(0,1)` lies off that line.  Hence `W` has no five
+collinear points and `fourPointLineCount W ≥ 1`, giving
+`IsLowerBoundConstruction W 1` with `|W| = 5 > 4`.  Fully explicit,
+`0` axioms — the minimal certificate that the framework floor strictly
+exceeds the arc's zero. -/
+
+/-- The explicit 5-point witness: four collinear points on the `x`-axis
+plus one point off it. -/
+noncomputable def witnessPoints : Finset (ℝ × ℝ) :=
+  {(0, 0), (1, 0), (2, 0), (3, 0), (0, 1)}
+
+/-- `witnessPoints` has exactly five (distinct) points. -/
+theorem witnessPoints_card : witnessPoints.card = 5 := by
+  rw [witnessPoints, Finset.card_insert_of_notMem]
+  · rw [Finset.card_insert_of_notMem]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · simp
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+  · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+
+/-- The witness set as a `PlanarPointSet`. -/
+noncomputable def witnessSet : PlanarPointSet where
+  points := witnessPoints
+  size_pos := by rw [witnessPoints_card]; norm_num
+
+/-- The witness has at least one four-point line: the four `x`-axis
+points `{(0,0),(1,0),(2,0),(3,0)}` are collinear through `(0,0)` and
+`(1,0)`. -/
+theorem witnessSet_fourPointLineCount_pos :
+    1 ≤ fourPointLineCount witnessSet := by
+  rw [fourPointLineCount]
+  apply Finset.card_pos.mpr
+  refine ⟨{(0, 0), (1, 0), (2, 0), (3, 0)}, ?_⟩
+  rw [Finset.mem_filter, Finset.mem_powerset]
+  refine ⟨?_, ?_, (0, 0), (1, 0), ?_, ?_, ?_, ?_⟩
+  · -- subset of the witness points
+    intro x hx
+    show x ∈ witnessPoints
+    rw [witnessPoints]
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+    tauto
+  · -- the line has exactly four points
+    rw [Finset.card_insert_of_notMem]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · simp
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+  · -- (0,0) ∈ line
+    simp
+  · -- (1,0) ∈ line
+    simp
+  · -- (0,0) ≠ (1,0)
+    norm_num [Prod.ext_iff]
+  · -- every point of the line is collinear with (0,0), (1,0)
+    intro p hp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl | rfl <;> simp [collinear]
+
+/-- The witness has no five collinear points: any five distinct points
+are all of `W`, and `(0,0),(1,0),(0,1)` are not collinear, so they
+cannot all lie on a common line. -/
+theorem witnessSet_noFiveCollinear : NoFiveCollinear witnessSet := by
+  intro a b c d e ha hb hc hd he hab hac had hae hbc hbd hbe hcd hce hde
+  rintro ⟨hcol_c, hcol_d, hcol_e⟩
+  -- {a,b,c,d,e} ⊆ witnessSet.points, and both have card 5, so they are equal.
+  have hsub : ({a, b, c, d, e} : Finset (ℝ × ℝ)) ⊆ witnessSet.points := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl | rfl | rfl <;> assumption
+  have hcard5 : ({a, b, c, d, e} : Finset (ℝ × ℝ)).card = 5 := by
+    rw [Finset.card_insert_of_notMem]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · simp [hde]
+        · simp [hcd, hce]
+      · simp [hbc, hbd, hbe]
+    · simp [hab, hac, had, hae]
+  have heq : ({a, b, c, d, e} : Finset (ℝ × ℝ)) = witnessSet.points :=
+    Finset.eq_of_subset_of_card_le hsub
+      (le_of_eq (by
+        show witnessSet.points.card = ({a, b, c, d, e} : Finset (ℝ × ℝ)).card
+        rw [show witnessSet.points = witnessPoints from rfl, witnessPoints_card,
+            hcard5]))
+  -- Every witness point lies on the line through a, b.
+  have hline : ∀ q ∈ witnessSet.points, collinear a b q := by
+    intro q hq
+    rw [← heq] at hq
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hq
+    rcases hq with rfl | rfl | rfl | rfl | rfl
+    · unfold collinear; ring
+    · unfold collinear; ring
+    · exact hcol_c
+    · exact hcol_d
+    · exact hcol_e
+  -- Apply to (0,0), (1,0), (0,1), all in witnessSet.points.
+  have hmem : ∀ p ∈ witnessPoints, p ∈ witnessSet.points := fun p hp => hp
+  have l00 : collinear a b (0, 0) :=
+    hline _ (hmem _ (by rw [witnessPoints]; simp))
+  have l10 : collinear a b (1, 0) :=
+    hline _ (hmem _ (by rw [witnessPoints]; simp))
+  have l01 : collinear a b (0, 1) :=
+    hline _ (hmem _ (by rw [witnessPoints]; simp))
+  -- Three points on the line through a ≠ b are mutually collinear.
+  have hbad : collinear ((0, 0) : ℝ × ℝ) (1, 0) (0, 1) :=
+    collinear_any_triple hab l00 l10 l01
+  -- But (0,0), (1,0), (0,1) are not collinear: contradiction.
+  simp [collinear] at hbad
+
+/-- **Non-vacuous framework floor** (this session's deliverable).  The
+explicit witness `W` satisfies `IsLowerBoundConstruction W 1`: it has no
+five collinear points and at least one four-point line. -/
+theorem witnessSet_isLowerBoundConstruction :
+    IsLowerBoundConstruction witnessSet 1 :=
+  ⟨witnessSet_noFiveCollinear, by exact_mod_cast witnessSet_fourPointLineCount_pos⟩
+
+/-- **The framework floor exceeds the arc's zero.**  There is a planar
+point set with strictly more than four points that is a lower-bound
+construction for a positive threshold.  This distinguishes the
+`IsLowerBoundConstruction` predicate from both the vacuous `≤ 4`-point
+regime and the `fourPointLineCount = 0` arc, without depending on either
+of the OPEN asymptotic construction sorries. -/
+theorem exists_isLowerBoundConstruction_pos :
+    ∃ P : PlanarPointSet, 4 < P.points.card ∧ IsLowerBoundConstruction P 1 :=
+  ⟨witnessSet, by
+    rw [show witnessSet.points = witnessPoints from rfl, witnessPoints_card]
+    norm_num, witnessSet_isLowerBoundConstruction⟩
+
 end Erdos101OQ04
