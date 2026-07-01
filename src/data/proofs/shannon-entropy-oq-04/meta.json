@@ -105,6 +105,29 @@
       "description": "Continuous analogue: concavity and Gaussian maximum entropy for differential entropy"
     }
   ],
+  "references": [
+    {
+      "authors": "Shannon, Claude E.",
+      "title": "A Mathematical Theory of Communication",
+      "year": "1948",
+      "venue": "Bell System Technical Journal 27, pp. 379–423 and 623–656",
+      "note": "Introduces the entropy functional; concavity underlies the maximum-entropy characterisation of the uniform distribution"
+    },
+    {
+      "authors": "Cover, Thomas M. and Thomas, Joy A.",
+      "title": "Elements of Information Theory",
+      "year": "2006",
+      "venue": "Wiley, 2nd ed., Theorem 2.7.3 (concavity of entropy)",
+      "note": "Standard reference stating H(p) is a concave function of p on the probability simplex"
+    },
+    {
+      "authors": "Boyd, Stephen and Vandenberghe, Lieven",
+      "title": "Convex Optimization",
+      "year": "2004",
+      "venue": "Cambridge University Press, §3.5 (negative entropy is convex)",
+      "note": "The convex-analysis viewpoint: -H is a sum of x log x terms, each convex; negMulLog is the concave negation"
+    }
+  ],
   "leanFile": {
     "namespace": "InformationTheory.EntropyConcavity",
     "lineCount": 134,

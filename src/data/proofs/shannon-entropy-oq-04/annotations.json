@@ -45,6 +45,30 @@
     ]
   },
   {
+    "id": "ann-entconc-orthant-convex",
+    "proofId": "shannon-entropy-oq-04",
+    "range": {
+      "startLine": 91,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "convex_nonneg_orthant: The Domain of Concavity",
+    "content": "Concavity is only meaningful relative to a convex domain, so the argument first records that the non-negative orthant {p | ∀ i, 0 ≤ p i} is convex. The proof is pointwise: a convex combination a·p + b·q (with a, b ≥ 0) is non-negative in each coordinate i because add_nonneg (mul_nonneg ha (hp i)) (mul_nonneg hb (hq i)) gives a·p i + b·q i ≥ 0. This is the common convex set s over which every coordinate concavity and the finite-sum fold are stated; the simplex result then follows because stdSimplex is a convex *subset* of this orthant.",
+    "mathContext": "$\\{p : \\alpha \\to \\mathbb R \\mid \\forall i,\\ p_i \\ge 0\\}$ is convex: if $p_i, q_i \\ge 0$ and $a,b \\ge 0$ then $(a p + b q)_i = a p_i + b q_i \\ge 0$. Working over the whole orthant rather than just the simplex yields the stronger statement and makes $\\operatorname{stdSimplex}\\,\\mathbb R\\,\\alpha$ a one-line restriction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Convex",
+      "non-negative orthant",
+      "add_nonneg",
+      "mul_nonneg",
+      "stdSimplex"
+    ],
+    "prerequisites": [
+      "Convex set",
+      "convex combination"
+    ]
+  },
+  {
     "id": "ann-entconc-orthant",
     "proofId": "shannon-entropy-oq-04",
     "range": {
