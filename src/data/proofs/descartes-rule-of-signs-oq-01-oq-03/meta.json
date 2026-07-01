@@ -3,6 +3,38 @@
   "title": "Sturm's Theorem Implies Descartes' Rule of Signs",
   "slug": "descartes-rule-of-signs-oq-01-oq-03",
   "description": "Makes precise the classical implication that Sturm's exact-count theorem yields Descartes' rule of signs. A verified, axiom-free reduction skeleton derives Descartes' upper bound and even-defect parity from a SturmReduction bridge (Sturm's variation drop plus three coefficient-comparison facts), and the Sturm half is validated unconditionally and axiom-free on linear polynomials X − c.",
+  "references": [
+    {
+      "authors": "René Descartes",
+      "title": "La Géométrie (appendix to Discours de la méthode)",
+      "year": 1637,
+      "note": "The original rule of signs bounding positive roots by sign changes of the coefficients."
+    },
+    {
+      "authors": "Jacques Charles François Sturm",
+      "title": "Mémoire sur la résolution des équations numériques (Bull. Sci. Férussac 11)",
+      "year": 1829,
+      "note": "Sturm's theorem giving the exact real-root count via sign variations of the Sturm chain."
+    },
+    {
+      "authors": "Victor V. Prasolov",
+      "title": "Polynomials",
+      "year": 2004,
+      "note": "Springer. Sturm's theorem, Descartes' rule, and the relationship formalized in this reduction."
+    },
+    {
+      "authors": "Saugata Basu, Richard Pollack and Marie-Françoise Roy",
+      "title": "Algorithms in Real Algebraic Geometry (2nd ed.)",
+      "year": 2006,
+      "note": "Springer. Sign-variation counting, Sturm sequences, and Descartes' rule in a unified framework."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Polynomial sign-variation and root-counting infrastructure",
+      "year": 2024,
+      "note": "The polynomial coefficient/sign machinery underlying the axiom-free SturmReduction bridge."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "axiomatized",
