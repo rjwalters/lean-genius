@@ -276,4 +276,46 @@ theorem _root_.Module.End.isSemisimple_iff_squarefree_minpoly
   ⟨Module.End.IsSemisimple.minpoly_squarefree,
    fun h => Module.End.isSemisimple_of_squarefree_aeval_eq_zero h (minpoly.aeval K f)⟩
 
+-- ============================================================
+-- Diagonalizability is a similarity invariant (PROVED, any field)
+-- ============================================================
+
+/-- **Diagonalizability is a similarity invariant.** If `M` is diagonalizable and
+`P` is invertible, then the conjugate `P⁻¹ * M * P` is diagonalizable. If `M = Q⁻¹ D Q`
+with `D` diagonal, then `P⁻¹ M P = (P⁻¹ Q)⁻¹ D (P⁻¹ Q)`, so `P⁻¹ Q` diagonalizes the
+conjugate. This is the matrix-level counterpart of `minpoly.algEquiv_eq` (already used
+for the forward direction via `matConj`) and the change-of-basis step the reverse
+direction transports through `Matrix.toLin'`. Holds over any field. -/
+theorem _root_.Matrix.IsDiagonalizable.conj {M : Matrix n n K}
+    (h : M.IsDiagonalizable) {P : Matrix n n K} (hP : IsUnit P) :
+    (P⁻¹ * M * P).IsDiagonalizable := by
+  obtain ⟨Q, hQ, hdiag⟩ := h
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hPinv : IsUnit P⁻¹ := (Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_nonsing_inv_det P hPdet)
+  refine ⟨P⁻¹ * Q, hPinv.mul hQ, ?_⟩
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hPdet
+  have hexpr : (P⁻¹ * Q)⁻¹ * (P⁻¹ * M * P) * (P⁻¹ * Q) = Q⁻¹ * M * Q := by
+    rw [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv P hPdet,
+      show Q⁻¹ * P * (P⁻¹ * M * P) * (P⁻¹ * Q)
+        = Q⁻¹ * (P * P⁻¹) * M * (P * P⁻¹) * Q from by simp only [mul_assoc]]
+    simp only [hPP, mul_one]
+  rw [hexpr]
+  exact hdiag
+
+/-- **Similarity symmetry.** `P⁻¹ * M * P` is diagonalizable iff `M` is (for invertible
+`P`). The forward implication is `Matrix.IsDiagonalizable.conj`; the converse conjugates
+back by `P⁻¹` and rewrites `(P⁻¹)⁻¹ = P`. -/
+theorem _root_.Matrix.isDiagonalizable_conj_iff {M P : Matrix n n K} (hP : IsUnit P) :
+    (P⁻¹ * M * P).IsDiagonalizable ↔ M.IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hPdet
+  have hPinv : IsUnit P⁻¹ := (Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_nonsing_inv_det P hPdet)
+  refine ⟨fun h => ?_, fun h => h.conj hP⟩
+  have hback := h.conj (P := P⁻¹) hPinv
+  have heq : (P⁻¹)⁻¹ * (P⁻¹ * M * P) * P⁻¹ = M := by
+    rw [Matrix.nonsing_inv_nonsing_inv P hPdet,
+      show P * (P⁻¹ * M * P) * P⁻¹ = (P * P⁻¹) * M * (P * P⁻¹) from by simp only [mul_assoc]]
+    simp only [hPP, one_mul, mul_one]
+  rwa [heq] at hback
+
 end Proofs.MinpolyCharpolyOQ02

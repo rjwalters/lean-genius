@@ -22,13 +22,14 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 279,
+    "lineCount": 321,
     "assumptions": "0 axioms; 1 sorry guarding the proof of `diagonalizable_iff_squarefree_minpoly`. The statement itself is unconditional (hypotheses [IsAlgClosed K] [CharZero K] are explicit, not assumed-as-axiom). The two pre-shipped endomorphism-level bridges (Module.End.iSup_eigenspace_eq_top_of_isSemisimple and Module.End.isSemisimple_iff_squarefree_minpoly) are fully proved with no sorry. The four sub-OQs OQ-02-OQ-01..OQ-02-OQ-04 (estimated ~450 lines total) are the planned discharge route, with the picker-estimated final synthesis at ~59 LOC (~12 + 8 + 33 + 1 + 5 for Bridges A fwd + A rev + B rev + D + compose). Pinned at Mathlib v4.26.0; 18 bearer lemmas verified at SHA 2df2f015… by S7c PREP #19257.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-06-04",
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 2,
     "originalContributions": [
+      "Similarity-invariance of diagonalizability (verified, any field, 0 axioms): `Matrix.IsDiagonalizable.conj` — if M is diagonalizable and P invertible then P⁻¹ M P is diagonalizable (if M = Q⁻¹ D Q then P⁻¹ M P = (P⁻¹ Q)⁻¹ D (P⁻¹ Q)); and `Matrix.isDiagonalizable_conj_iff` — the biconditional form. This is the change-of-basis step the reverse direction transports through Matrix.toLin' (the matrix-level counterpart of minpoly.algEquiv_eq already used for the forward direction), reducing the remaining reverse `sorry` to the pure endomorphism eigenbasis statement.",
       "Matrix.IsDiagonalizable predicate: ∃ P : Matrix n n K, IsUnit P ∧ IsDiag (P⁻¹ * M * P) — the matrix-level analogue of Module.End.IsSemisimple ∧ Polynomial.Splits for the associated endomorphism",
       "Module.End.iSup_eigenspace_eq_top_of_isSemisimple: the corrected 3-lemma chain (IsSemisimple → IsFinitelySemisimple → maxGenEigenspace μ = eigenspace μ → ⨆ eigenspace = ⊤) for alg-closed finite-dimensional spaces (Bridge B forward, shipped S7 ACT #19095 after S4 PREP #18626 caught the phantom direct-form name)",
       "Module.End.isSemisimple_iff_squarefree_minpoly: the endomorphism-level iff (Bridge C), constructed by composing Module.End.IsSemisimple.minpoly_squarefree (forward) with Module.End.isSemisimple_of_squarefree_aeval_eq_zero applied to minpoly.aeval (reverse)",
@@ -193,9 +194,9 @@
       "Polynomial"
     ],
     "namespace": "Proofs.MinpolyCharpolyOQ02",
-    "lineCount": 279,
+    "lineCount": 321,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 2,
     "path": "Proofs/MinpolyCharpolyOQ02.lean",
     "sorries": 1
