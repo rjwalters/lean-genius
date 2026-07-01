@@ -203,6 +203,12 @@
       "description": "Full Myhill theorem: easy direction proved, hard direction sorry'd"
     },
     {
+      "name": "range_rePred",
+      "statement": "Computable g → REPred (fun m => m ∈ Set.range g)",
+      "status": "proved",
+      "description": "range g is computably enumerable (Σ₁) for computable g — machine-checked form of the Π₁ obstruction: its complement isGFree is co-c.e., so the classical orbit classification is not computable."
+    },
+    {
       "name": "myhill_self",
       "statement": "∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ p (e n)",
       "status": "proved",
@@ -241,9 +247,9 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 269,
+    "lineCount": 430,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 16,
     "definitionCount": 4,
     "sorries": 1,
     "path": "Proofs/SchroederBernsteinOQ03.lean",

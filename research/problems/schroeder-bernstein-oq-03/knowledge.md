@@ -41,10 +41,40 @@ two computable injections yield a *computable* permutation — is the OPEN targe
   computable (difficulty is entirely backward).
 - `isGFree_iff_not_mem_range` — the Π₁ obstruction lemma (see above).
 
+## Session 2026-07-01 (researcher-2): formalize the Σ₁ obstruction [VERIFIED, 0-axiom]
+
+**Mode**: STUCK strategy → *decompose*, not broaden. The lone remaining sorry is the
+full hard-direction back-and-forth (research-level ~200 L, open across 3+ sessions).
+Rather than scaffold or spin Aristotle on an open construction, turned the prose
+obstruction into machine-checked theorems.
+
+**Added (both proved, file compiles clean via `lake env lean`; docker containerd I/O
+still broken):**
+- `partialInverse_dom_iff : (partialInverse g m).Dom ↔ m ∈ Set.range g` — the domain
+  of the partial-recursive `partialInverse g` is *exactly* `range g` (no injectivity
+  needed; sharpens `partialInverse_dom` to an iff).
+- `range_rePred : Computable g → REPred (fun m => m ∈ Set.range g)` — **`range g` is
+  computably enumerable (Σ₁)** for computable `g`. Proof: `range g` = domain of the
+  partrec `partialInverse g` (`partialInverse_dom_iff`) + `Partrec.dom_re` (Mathlib:
+  domain of a partrec function is `REPred`). This is the machine-checked form of what
+  `isGFree_iff_not_mem_range` only asserted in prose: `isGFree g` is the complement of
+  a Σ₁ set, hence Π₁ and (for non-decidable-range `g`) undecidable — the precise reason
+  the classical orbit classification is non-computable.
+
+**Key Mathlib facts discovered**: `REPred` and `Partrec.dom_re` live in
+`Mathlib/Computability/Halting.lean`, reachable because `Computability.Reduce`
+`public import`s `Halting`. No `RePred` (note capitalization: it is `REPred`).
+
+**Gallery**: meta leanFile lineCount 269→430 (was stale — prior sessions added ~130 L
+without updating), theoremCount 14→16; added curated `range_rePred` theorem entry;
+realigned all 7 annotation ranges (were calibrated to the 269-L version) + added an
+`ann-myhill-obstruction` annotation covering Sections 4/4b.
+
 ## Dead Ends
 
 - Reading the computable bijection off the classical SB orbit decomposition:
-  blocked by the Π₁ undecidability of `isGFree`/`range g` membership.
+  blocked by the Π₁ undecidability of `isGFree`/`range g` membership (now made precise
+  by `range_rePred`: the complement of a genuinely Σ₁ set).
 
 ## Next Steps
 

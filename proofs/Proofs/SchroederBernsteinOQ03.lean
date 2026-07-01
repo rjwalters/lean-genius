@@ -52,6 +52,9 @@ computable via Partrec.rfind. The orbit type is determined by bounded search.
 - fwdOrbit_eq_iterate: proved (forward orbit = iteration of g∘f; forward direction is computable)
 - isGFree_iff_not_mem_range: proved — pins down WHY the naive orbit classification is
   not computable: `isGFree` is Π₁ (complement of the c.e. set `range g`), hence undecidable
+- partialInverse_dom_iff: proved — the domain of `partialInverse g` is *exactly* `range g`
+- range_rePred: proved — `range g` is `REPred` (Σ₁ / computably enumerable) for computable g;
+  machine-checked form of the obstruction (its complement `isGFree` is thus Π₁)
 - decidableIsGFree: proved — the Π₁ obstruction becomes decidable once `range g` is decidable
 - totalInverse_{mem,right,left,computable}: proved — a surjective computable injection has a
   total, computable two-sided inverse (partialInverse becomes everywhere-defined)
@@ -142,6 +145,23 @@ theorem partialInverse_dom {g : ℕ → ℕ} {m : ℕ} (hm : ∃ k, g k = m) :
   rw [partialInverse, Nat.rfind_dom']
   exact ⟨k, by simp [hk], fun _ => trivial⟩
 
+/-- The partial inverse is **defined at `m` exactly when `m ∈ range g`**. This is
+    the sharp form of `partialInverse_dom`: the domain of the partial-recursive
+    `partialInverse g` is *precisely* the range of `g` (no injectivity needed).
+    Combined with `partialInverse_partrec`, it exhibits `Set.range g` as the domain
+    of a computable partial function — i.e. as a `Σ₁` (computably enumerable) set;
+    see `range_rePred`. -/
+theorem partialInverse_dom_iff {g : ℕ → ℕ} (m : ℕ) :
+    (partialInverse g m).Dom ↔ m ∈ Set.range g := by
+  constructor
+  · intro h
+    -- The value returned by `rfind` is a genuine preimage, so `m` is in the range.
+    have hmem : (partialInverse g m).get h ∈ partialInverse g m := Part.get_mem h
+    have hspec := Nat.rfind_spec hmem
+    exact ⟨_, by simpa using hspec⟩
+  · rintro ⟨k, hk⟩
+    exact partialInverse_dom ⟨k, hk⟩
+
 /-- The partial inverse is **single-valued** under an injective `g`: any two
     values returned for the same `m` coincide. This is the bijectivity fact the
     back-and-forth construction needs — extending the partial map by a `g`-edge
@@ -200,6 +220,20 @@ def isGFree (g : ℕ → ℕ) (n : ℕ) : Prop := ∀ k, g k ≠ n
 theorem isGFree_iff_not_mem_range (g : ℕ → ℕ) (n : ℕ) :
     isGFree g n ↔ n ∉ Set.range g := by
   simp only [isGFree, Set.mem_range, not_exists, ne_eq]
+
+/-- **`Set.range g` is computably enumerable** (`Σ₁`) for any computable `g`.
+
+    This is the machine-checked form of the prose obstruction on
+    `isGFree_iff_not_mem_range`: `range g` is exactly the domain of the
+    partial-recursive function `partialInverse g` (`partialInverse_dom_iff`), and the
+    domain of a partial-recursive function is an `REPred` by `Partrec.dom_re`. Hence
+    `range g` is `Σ₁`. Its complement `isGFree g` is therefore `Π₁`, which — for a
+    merely computable (non-surjective) `g` whose range is not decidable — is in
+    general **undecidable**. This is the precise reason the classical orbit
+    classification is not computable, previously only asserted informally. -/
+theorem range_rePred {g : ℕ → ℕ} (hgc : Computable g) :
+    REPred (fun m => m ∈ Set.range g) :=
+  ((partialInverse_partrec hgc).dom_re).of_eq fun m => partialInverse_dom_iff m
 
 /-!
 ## Section 4b: Isolating the Π₁ obstruction — the fully computable case
