@@ -3,6 +3,38 @@
   "title": "q-Vandermonde Identity",
   "slug": "arithmetic-series-oq-02-oq-01-oq-01",
   "description": "Proves the q-Vandermonde identity: [m+n choose r]_q = ∑_{k=0}^{r} q^{k*(m+k-r)} * [m choose r-k]_q * [n choose k]_q, which generalizes the classical Vandermonde convolution C(m+n,r) = ∑_k C(m,k)*C(n,r-k) to q-binomial coefficients. Proof by induction on m using q-Pascal on LHS and Pascal expansion on RHS. 6 lemmas/theorems, 0 axioms, 0 sorries.",
+  "references": [
+    {
+      "authors": "George E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": 1976,
+      "note": "Cambridge University Press. The q-Vandermonde (q-Chu–Vandermonde) convolution for Gaussian binomial coefficients."
+    },
+    {
+      "authors": "George Gasper and Mizan Rahman",
+      "title": "Basic Hypergeometric Series (2nd ed.)",
+      "year": 2004,
+      "note": "Cambridge University Press. The q-Chu–Vandermonde sum as a terminating ₂φ₁ evaluation."
+    },
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Enumerative Combinatorics, Volume 1 (2nd ed.)",
+      "year": 2011,
+      "note": "Cambridge University Press. Gaussian binomial coefficients and their convolution identities (§1.7)."
+    },
+    {
+      "authors": "Victor Kac and Pokman Cheung",
+      "title": "Quantum Calculus",
+      "year": 2002,
+      "note": "Springer Universitext. q-Pascal rule and q-binomial recurrences underlying the induction on m."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Finset.sum and Nat.choose q-analogue development",
+      "year": 2024,
+      "note": "Base ring machinery over an arbitrary CommRing used to state the identity generically."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient#q-Vandermonde_identity",
