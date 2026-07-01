@@ -2,6 +2,36 @@
   "id": "cauchy-group-theorem-oq-01-oq-01",
   "title": "The odd-order boundary of Cauchy's theorem: squaring is a bijection",
   "slug": "cauchy-group-theorem-oq-01-oq-01",
+  "references": [
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+      "year": "1845",
+      "venue": "Exercices d'analyse et de physique mathématique, Vol. 3, 151–252",
+      "note": "The origin of Cauchy's theorem: a finite group whose order is divisible by a prime p contains an element of order p."
+    },
+    {
+      "authors": "McKay, James H.",
+      "title": "Another proof of Cauchy's group theorem",
+      "year": "1959",
+      "venue": "American Mathematical Monthly 66(2), 119",
+      "note": "The slick orbit-counting proof: p divides the number of p-tuples (x_1,…,x_p) with product 1, and the p-element cyclic action fixes exactly the constant tuples, forcing a nontrivial element of order p."
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "venue": "American Mathematical Society, Graduate Studies in Mathematics 92",
+      "note": "Modern text covering Cauchy/Sylow theory and counting arguments for element orders and power maps in finite groups."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.GroupTheory (exists_prime_orderOf_dvd_card, Sylow, IsCyclic.card_pow_eq_one_le, powCoprime)",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Provides Cauchy's theorem, the Sylow API, the coprime power-map equivalence, and the one-sided solution-count bound that this entry sharpens to an exact equality."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.GroupTheory.OrderOfElement",

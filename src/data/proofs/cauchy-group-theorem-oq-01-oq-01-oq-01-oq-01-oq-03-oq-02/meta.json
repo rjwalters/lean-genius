@@ -2,12 +2,37 @@
   "id": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02",
   "title": "gcd(n,m) recovers the power map: same kernel, same image, fibre partition #(n-th powers)·gcd(n,m) = m",
   "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02",
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Über einen Fundamentalsatz der Gruppentheorie",
+      "year": "1895",
+      "venue": "Sitzungsberichte der Preußischen Akademie der Wissenschaften, 981–993",
+      "note": "Frobenius's theorem: if n divides |G|, the number of solutions of x^n = 1 in a finite group is a multiple of n — the divisibility underlying the exact solution counts formalized here."
+    },
+    {
+      "authors": "Hall, Marshall, Jr.",
+      "title": "The Theory of Groups",
+      "year": "1959",
+      "venue": "Macmillan",
+      "note": "Classical treatment of power maps and coprime automorphisms: x ↦ x^n is bijective when gcd(n, |G|) = 1, and regular / fixed-point-free actions on finite groups."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.GroupTheory (exists_prime_orderOf_dvd_card, Sylow, IsCyclic.card_pow_eq_one_le, powCoprime)",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Provides Cauchy's theorem, the Sylow API, the coprime power-map equivalence, and the one-sided solution-count bound that this entry sharpens to an exact equality."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",
       "Proofs.CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03"
     ],
-    "opens": ["Finset"],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02",
     "lineCount": 165,
     "axiomCount": 0,

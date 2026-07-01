@@ -2,13 +2,41 @@
   "id": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
   "title": "Counting solutions to xⁿ = 1 in a cyclic group: exactly gcd(n, |G|)",
   "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Über einen Fundamentalsatz der Gruppentheorie",
+      "year": "1895",
+      "venue": "Sitzungsberichte der Preußischen Akademie der Wissenschaften, 981–993",
+      "note": "Frobenius's theorem: if n divides |G|, the number of solutions of x^n = 1 in a finite group is a multiple of n — the divisibility underlying the exact solution counts formalized here."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "John Wiley & Sons",
+      "note": "Standard graduate reference for Cauchy's theorem, the Sylow theorems, and the structure theorem for finite abelian groups invoked here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.GroupTheory (exists_prime_orderOf_dvd_card, Sylow, IsCyclic.card_pow_eq_one_le, powCoprime)",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Provides Cauchy's theorem, the Sylow API, the coprime power-map equivalence, and the one-sided solution-count bound that this entry sharpens to an exact equality."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.GroupTheory.SpecificGroups.Cyclic",
       "Mathlib.GroupTheory.OrderOfElement",
       "Mathlib.Tactic"
     ],
-    "opens": ["Finset", "Subgroup", "Submonoid", "Function"],
+    "opens": [
+      "Finset",
+      "Subgroup",
+      "Submonoid",
+      "Function"
+    ],
     "namespace": "CauchyGroupTheoremOQ01OQ01OQ01OQ01",
     "lineCount": 165,
     "axiomCount": 0,
