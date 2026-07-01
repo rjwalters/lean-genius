@@ -122,5 +122,12 @@
       "Generalize the σ*-vs-σ split to the analogous modified divisor sums appearing in the r2, r6, r8 sum-of-squares formulas (e.g. the χ-twisted sums for r2 and the σ3-based formula for r8).",
       "Derive an explicit closed form for Σ_{d|n, 4|d} d = 4·σ(n/4) when 4 | n, turning the additive correction into a multiplicative recursion σ*(n) = σ(n) − 4σ(n/4)."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry states Jacobi's four-square formula r4(n)=8·σ*(n) as `axiom jacobi_r4_formula`; this child develops that formula and its modified divisor sum σ*(n)=Σ_{d|n,4∤d} d."
+    }
+  ]
 }

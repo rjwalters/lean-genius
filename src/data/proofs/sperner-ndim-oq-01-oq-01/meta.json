@@ -116,5 +116,12 @@
       "Can `intermediate_sets_card_eq_two` be generalized to count k-element sets strictly between A and B when |B \\ A| = m, giving the binomial C(m, k−|A|) and connecting the door count to the face lattice of a simplex?",
       "Would upstreaming the reproved prefix-set infrastructure to Mathlib — as a general theory of prefix Finsets of nodup lists — prevent the recurring bit-rot that forced this re-derivation?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "sperner-ndim-oq-01",
+      "relationship": "extends",
+      "description": "Parent n-dimensional Sperner entry; this completes the door-counting parity fact (the count of simplices sharing a facet) underlying the combinatorial proof for the Freudenthal triangulation."
+    }
+  ]
 }

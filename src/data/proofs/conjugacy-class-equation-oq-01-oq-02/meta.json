@@ -126,7 +126,13 @@
       "mathContext": "$Z(\\mathrm{Mult}(\\mathbb{Z}/4))$ is nontrivial."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "conjugacy-class-equation-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry; this answers its second open question — a nontrivial finite p-group has nontrivial center — from per-class divisibility in the class equation."
+    }
+  ],
   "conclusion": {
     "summary": "Complete, fully verified (0 sorries, 0 axioms) class-equation proof that a nontrivial finite p-group has nontrivial center. The derivation lifts the parent's per-class divisibility to arbitrary classes, shows every noncentral class has size a positive power of p, and reads the numeric class equation |Z(G)| + Σ = |G| modulo p to get p ∣ |Z(G)|, hence 1 < |Z(G)|.",
     "implications": "Realizes the textbook class-equation proof of the p-group center theorem inside the gallery's conjugacy-class chain, distinct from Mathlib's fixed-point proof, and isolates the reusable lemma noncentral_class_card_eq_prime_pow (noncentral classes have prime-power size).",

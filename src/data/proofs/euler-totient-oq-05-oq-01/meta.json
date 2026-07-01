@@ -113,5 +113,12 @@
       "Extend full correctness to squarefree moduli n = p_1 ⋯ p_k with k > 2 prime factors, iterating the CRT gluing over the prime factorization",
       "Characterize the exact set of messages recovered when n is NOT squarefree (e.g. n = p^2·q), where Fermat's fixed point fails for residues divisible by p but not by p^2"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient-oq-05",
+      "relationship": "extends",
+      "description": "Parent RSA-correctness entry; this drops the coprimality hypothesis, proving (m^e)^d ≡ m (mod p·q) for ALL messages m via the all-m fixed-point form of Fermat's little theorem."
+    }
+  ]
 }

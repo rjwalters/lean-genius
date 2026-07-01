@@ -106,5 +106,12 @@
       "Can the upper bound be sharpened to the standard $\\binom{2n}{n}\\le 4^n/\\sqrt{\\pi n}$ (Stirling) within Mathlib, giving the matching asymptotic $\\binom{2n}{n}\\sim 4^n/\\sqrt{\\pi n}$?",
       "Does the central-binomial sandwich let the parent chebyshev-bounds discharge its remaining axiomatized $\\theta(n)\\le n\\log 4$ upper bound directly?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-bounds",
+      "relationship": "related",
+      "description": "Parent Chebyshev prime-counting entry; this packages the two-sided central-binomial estimate 4ⁿ/(2n+1) ≤ C(2n,n) ≤ 4ⁿ that is the combinatorial workhorse behind Chebyshev-type bounds."
+    }
+  ]
 }

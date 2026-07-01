@@ -83,5 +83,12 @@
       "Does the hockey-stick identity ∑_{i=r}^{n} i.choose r = (n+1).choose (r+1) admit a powerset-decomposition proof, classifying (r+1)-subsets by their largest element?",
       "Can the explicit bijection in choose_succ_succ_finset (insert x / erase x) be packaged as a reusable Equiv between the (k+1)-subsets of insert x s and the disjoint union, so the cardinality identity becomes a corollary of an equivalence rather than a card computation?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "subset-count-oq-02",
+      "relationship": "extends",
+      "description": "Parent subset-counting entry; this derives Pascal's rule and the companion binomial identity combinatorially by decomposing the powerset rather than unfolding Nat.choose."
+    }
+  ]
 }

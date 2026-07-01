@@ -124,6 +124,12 @@
     ]
   },
   "references": null,
-  "crossReferences": null,
+  "crossReferences": [
+    {
+      "targetId": "antitone-integral-sum-comparison-oq-01",
+      "relationship": "extends",
+      "description": "Parent integral-test entry; this continues the parent's harmonic-defect analysis (Hₙ − log(n+1) ∈ [0,1]) toward the open question on the limiting constant."
+    }
+  ],
   "sorries": null
 }

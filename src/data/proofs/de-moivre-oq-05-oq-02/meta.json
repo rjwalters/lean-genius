@@ -167,5 +167,12 @@
       "year": 2026,
       "note": "Primitive-root partition, geometric-sum vanishing, and Möbius inversion over a ring"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-05",
+      "relationship": "extends",
+      "description": "Parent (all n-th roots of unity sum to 0 for n>1); this generalizes to the primitive-root sum = μ(n) via Möbius inversion over the divisor partition of the roots of unity."
+    }
   ]
 }

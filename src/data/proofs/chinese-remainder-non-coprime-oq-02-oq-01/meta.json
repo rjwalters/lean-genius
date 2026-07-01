@@ -66,5 +66,12 @@
       "Add gcd_lcm_distrib and the Associates DistribLattice instance to Mathlib (the divisibility lattice of a UFD is distributive)",
       "Quantify the solution: an explicit representative modulo lcm(m₁,m₂,m₃) via iterated Bézout, with complexity bounds"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-02",
+      "relationship": "extends",
+      "description": "Parent two-modulus non-coprime CRT; this extends the solvability criterion to three moduli in a PID/Bézout domain (pairwise gcd compatibility, solution unique mod lcm)."
+    }
+  ]
 }

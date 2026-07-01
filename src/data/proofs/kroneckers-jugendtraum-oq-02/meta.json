@@ -103,5 +103,12 @@
       "Specialize to real quadratic fields, where ε is the classical fundamental unit, and produce explicit numerical witnesses of the rank-one regulator formula.",
       "Address the open effective-computation problem: exhibit, for a mixed-signature cubic field, the Stark unit generating the predicted abelian extension — the actual content of Hilbert's 12th problem here."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Parent Kronecker Jugendtraum / Stark entry; this treats the unit-rank-1 case where the regulator collapses from an r×r determinant to a single archimedean log of the fundamental (Stark) unit."
+    }
+  ]
 }

@@ -127,5 +127,12 @@
       "Prove RSA correctness without the coprimality hypothesis on m, via CRT over the prime factorization n = pq (the full RSA correctness theorem)",
       "Formalize the converse refinement: Carmichael's λ(n) is the exact (least) universal exponent, sharpening orderOf u | φ(n)"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Parent Euler-totient entry; this develops the number-theoretic Nat.ModEq face — a^φ(n)≡1, exponent reduction a^k≡a^(k mod φ(n)), Fermat's little theorem, and RSA correctness."
+    }
+  ]
 }

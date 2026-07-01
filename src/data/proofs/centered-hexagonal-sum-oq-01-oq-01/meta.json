@@ -109,5 +109,12 @@
       "Do the centered polygonal numbers themselves (not their partial sums) admit a clean closed form for ∑ C_{k,i}² or other power sums, again uniform in k?",
       "Is there an analogous single formula for the partial sums of the ordinary (non-centered) k-gonal numbers, and how does the special value of k that yields a pure power shift?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "centered-hexagonal-sum-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry; this answers its open question with a single uniform closed form for the centered k-gonal partial sums valid for all k at once."
+    }
+  ]
 }
