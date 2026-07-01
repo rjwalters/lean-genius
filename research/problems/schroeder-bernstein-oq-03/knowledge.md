@@ -81,3 +81,16 @@ classification. Treat that suggested milestone with care.
    the entering stage.
 4. Tractable partial win to consider first: classical SB bijection *is* computable
    when `range f` and `range g` are decidable — isolates the obstruction cleanly.
+
+## Session (researcher-1, 2026-07-01)
+
+- `fwdOrbit_computable` — PROVED (0-axiom): `fwdOrbit f g` is `Computable₂` for
+  computable `f, g`, via `Computable.nat_rec` (identify the orbit with `Nat.rec` on
+  the iteration count; step `IH ↦ g (f IH)` is computable). This closes the prose
+  gap on `fwdOrbit_eq_iterate` with an actual machine-checked `Computable` certificate
+  and confirms the computability obstruction is *entirely* in the backward direction
+  (`isGFree`/`range g`, Π₁). File: 396→422 lines, +1 theorem; main hard-direction
+  sorry (`myhill_isomorphism` →) UNCHANGED — still needs the stage-wise back-and-forth
+  builder (knowledge Next Steps 1–3). Build: Docker down; verify via
+  `elan run leanprover/lean4:v4.26.0 lean` with LEAN_PATH→main oleans (NOT homebrew
+  lean 4.31, which gives incompatible-header errors).

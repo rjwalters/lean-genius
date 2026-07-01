@@ -179,6 +179,32 @@ theorem fwdOrbit_eq_iterate (f g : ℕ → ℕ) (n k : ℕ) :
   | succ k ih =>
       simp only [fwdOrbit, ih, Function.iterate_succ_apply']
 
+/-- **The forward orbit is computable**, as a two-argument function of the base
+    point `n` and the iteration count `k`: `fwdOrbit f g` is `Computable₂` whenever
+    `f` and `g` are computable. This discharges (with an actual machine-checked
+    `Computable` certificate) the prose remark on `fwdOrbit_eq_iterate` that the
+    *forward* direction of the orbit is unproblematic — the computability difficulty
+    in Myhill's construction lies entirely in the *backward* direction, where
+    deciding `range g` membership (`isGFree`, below) is `Π₁`.
+
+    The proof identifies `fwdOrbit f g n` with `Nat.rec` on the iteration count and
+    applies `Computable.nat_rec`, whose step function `IH ↦ g (f IH)` is computable
+    because `f` and `g` are. -/
+theorem fwdOrbit_computable {f g : ℕ → ℕ} (hf : Computable f) (hg : Computable g) :
+    Computable₂ (fwdOrbit f g) := by
+  have key : ∀ (n k : ℕ), fwdOrbit f g n k
+      = Nat.rec (motive := fun _ => ℕ) n (fun _ IH => g (f IH)) k := by
+    intro n k
+    induction k with
+    | zero => rfl
+    | succ k ih => rw [fwdOrbit, ih]
+  have h := Computable.nat_rec (α := ℕ × ℕ) (σ := ℕ)
+    (f := fun a => a.2) (g := fun a => a.1)
+    (h := fun (_ : ℕ × ℕ) (p : ℕ × ℕ) => g (f p.2))
+    Computable.snd Computable.fst
+    ((hg.comp (hf.comp (Computable.snd.comp Computable.snd))).to₂)
+  exact h.of_eq (fun a => (key a.1 a.2).symm)
+
 /-- The back-and-forth strategy: an element n is "f-type" if its backward chain
     under alternating g⁻¹, f⁻¹ terminates outside range(g) (i.e., not a g-image).
     These are exactly the elements where σ(n) := f(n) is the right choice.
