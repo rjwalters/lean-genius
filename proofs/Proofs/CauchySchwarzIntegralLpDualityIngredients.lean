@@ -572,6 +572,54 @@ theorem lpDualNorm_eq [SigmaFinite μ] {p q : ℝ} (hpq : p.HolderConjugate q)
       ENNReal.top_rpow_of_pos (one_div_pos.2 hq)]
   · exact lpDualNorm_eq_of_lintegral_ne_top hpq hg hI
 
+/-- **`eLpNorm` of an `ℝ≥0∞`-valued function as an explicit `rpow` lower integral.**
+    For `0 < q` and any `g : α → ℝ≥0∞`, Mathlib's canonical `Lᵠ`-seminorm is the
+    bespoke quantity used throughout the dual-norm development:
+
+      `eLpNorm g (ENNReal.ofReal q) μ = (∫⁻ gᵠ)^{1/q}`.
+
+    The enorm of an `ℝ≥0∞` is itself (`enorm_eq_self`) and
+    `(ENNReal.ofReal q).toReal = q` for `q ≥ 0`, so the general
+    `eLpNorm_eq_lintegral_rpow_enorm` collapses to exactly the form appearing in
+    `lpDualNorm_eq`. -/
+theorem eLpNorm_ofReal_eq_lintegral_rpow {q : ℝ} (hq : 0 < q) :
+    eLpNorm g (ENNReal.ofReal q) μ = (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) := by
+  rw [eLpNorm_eq_lintegral_rpow_enorm (ENNReal.ofReal_pos.mpr hq).ne'
+        ENNReal.ofReal_ne_top]
+  simp only [enorm_eq_self, ENNReal.toReal_ofReal hq.le]
+
+/-- **The `Lᵖ`-duality identity in Mathlib's `eLpNorm` vocabulary (σ-finite `μ`).**
+    For Hölder-conjugate `p, q`, a σ-finite measure `μ`, and any measurable
+    `g : α → ℝ≥0∞`, the dual norm of the pairing functional `f ↦ ∫⁻ f·g` over the
+    `Lᵖ` unit ball equals the genuine `Lᵠ`-seminorm of `g`:
+
+      `lpDualNorm p g = eLpNorm g (ENNReal.ofReal q) μ = ‖g‖_q`.
+
+    This is the literal form of "the dual of `Lᵖ` is `Lᵠ`", phrased in Mathlib's own
+    `Lᵖ`-space API rather than the ad-hoc `(∫⁻ gᵠ)^{1/q}`. Combines the unconditional
+    `lpDualNorm_eq` with the `eLpNorm` bridge `eLpNorm_ofReal_eq_lintegral_rpow`. -/
+theorem lpDualNorm_eq_eLpNorm [SigmaFinite μ] {p q : ℝ} (hpq : p.HolderConjugate q)
+    (hg : Measurable g) :
+    lpDualNorm p μ g = eLpNorm g (ENNReal.ofReal q) μ := by
+  have hq : (0 : ℝ) < q := lt_trans one_pos hpq.symm.lt
+  rw [lpDualNorm_eq hpq hg, eLpNorm_ofReal_eq_lintegral_rpow hq]
+
+/-- **Finiteness of the dual norm characterizes `Lᵠ`-membership (σ-finite `μ`).** For
+    Hölder-conjugate `p, q`, a σ-finite measure, and measurable `g : α → ℝ≥0∞`:
+
+      `g ∈ Lᵠ ↔ lpDualNorm p g < ∞`.
+
+    Immediate from `lpDualNorm_eq_eLpNorm`: `MemLp` is `AEStronglyMeasurable ∧
+    eLpNorm < ∞`, and a measurable `ℝ≥0∞`-valued function is automatically
+    a.e.-strongly-measurable, so the only content is the finiteness of `eLpNorm`,
+    which the dual norm equals. The pairing functional is `Lᵖ`-bounded exactly when
+    `g` lies in the conjugate space — the boundedness half of `Lᵖ`-`Lᵠ` duality. -/
+theorem memLp_ofReal_iff_lpDualNorm_lt_top [SigmaFinite μ] {p q : ℝ}
+    (hpq : p.HolderConjugate q) (hg : Measurable g) :
+    MemLp g (ENNReal.ofReal q) μ ↔ lpDualNorm p μ g < ∞ := by
+  rw [lpDualNorm_eq_eLpNorm hpq hg]
+  exact ⟨fun h => h.2, fun h => ⟨hg.aestronglyMeasurable, h⟩⟩
+
 end RieszLpDualityIngredients
 
 end
