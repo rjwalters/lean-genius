@@ -159,14 +159,6 @@
       "mathContext": "Follow by composition from omega_tendsto_zero"
     }
   ],
-  "conclusion": {
-    "summary": "We prove ω_n → 0 as n → ∞ using: (1) the exact formula ω_{2k} = π^k/k! from the recurrence, (2) the inductive bound ω_{2k+1} ≤ 2·ω_{2k}, and (3) a squeeze argument via the exp series.",
-    "implications": "**Geometric significance**: The unit ball in high dimensions has negligible volume. This is the mathematical basis of the 'curse of dimensionality' — in machine learning and statistics, high-dimensional balls are essentially hollow, which explains why distance-based algorithms fail in high dimensions.\n\n**Optimal dimension**: The maximum ω_n occurs at n=5 (proved in a sibling proof). After n=5, the volumes are strictly decreasing and tend to 0.",
-    "openQuestions": [
-      "What is the rate of decay? Is ω_n ~ C · n^{-1/2} · (2πe/n)^{n/2} (Stirling approximation)?",
-      "Prove the exact asymptotics ω_n ~ √(2π/n) · (2πe/n)^{n/2} from Stirling's formula in Mathlib"
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
@@ -179,7 +171,43 @@
       "description": "Root of the ball volume chain: π·r² for the 2-ball"
     }
   ],
-  "sorries": 0,
+  "conclusion": {
+    "summary": "We prove ω_n → 0 as n → ∞ using: (1) the exact formula ω_{2k} = π^k/k! from the recurrence, (2) the inductive bound ω_{2k+1} ≤ 2·ω_{2k}, and (3) a squeeze argument via the exp series.",
+    "implications": "**Geometric significance**: The unit ball in high dimensions has negligible volume. This is the mathematical basis of the 'curse of dimensionality' — in machine learning and statistics, high-dimensional balls are essentially hollow, which explains why distance-based algorithms fail in high dimensions.\n\n**Optimal dimension**: The maximum ω_n occurs at n=5 (proved in a sibling proof). After n=5, the volumes are strictly decreasing and tend to 0.",
+    "openQuestions": [
+      "What is the rate of decay? Is ω_n ~ C · n^{-1/2} · (2πe/n)^{n/2} (Stirling approximation)?",
+      "Prove the exact asymptotics ω_n ~ √(2π/n) · (2πe/n)^{n/2} from Stirling's formula in Mathlib"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107",
+      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston",
+      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.AreaOfCircleOQ01OQ02OQ01OQ01",
@@ -198,5 +226,6 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean"
-  }
+  },
+  "sorries": 0
 }

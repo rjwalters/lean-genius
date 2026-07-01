@@ -75,22 +75,6 @@
       "Positive-definite matrices (Mathlib.Analysis.Matrix.PosDef): PosDef, eigenvalues_pos"
     ]
   },
-  "crossReferences": [
-    {
-      "id": "xref-oq05-parent",
-      "targetId": "area-of-circle-oq-05",
-      "targetTitle": "The Gaussian Integral and the Area of a Circle",
-      "relationship": "parent",
-      "description": "Parent proof establishing the scalar Gaussian integral ∫ e^{-x²} = √π via Mathlib's integral_gaussian"
-    },
-    {
-      "id": "xref-oq05-oq01",
-      "targetId": "area-of-circle-oq-05-oq-01",
-      "targetTitle": "Polar-Coordinate Proof of the Gaussian Integral",
-      "relationship": "sibling",
-      "description": "Sibling open question about the polar coordinate proof of the same scalar Gaussian"
-    }
-  ],
   "sections": [
     {
       "id": "sec-preamble",
@@ -128,6 +112,22 @@
       "summary": "Main theorem: ∫ exp(-xᵀAx) = √(πⁿ/det A) for positive-definite A — fully proved via spectral decomposition and measure-preserving orthogonal change of variables"
     }
   ],
+  "crossReferences": [
+    {
+      "id": "xref-oq05-parent",
+      "targetId": "area-of-circle-oq-05",
+      "targetTitle": "The Gaussian Integral and the Area of a Circle",
+      "relationship": "parent",
+      "description": "Parent proof establishing the scalar Gaussian integral ∫ e^{-x²} = √π via Mathlib's integral_gaussian"
+    },
+    {
+      "id": "xref-oq05-oq01",
+      "targetId": "area-of-circle-oq-05-oq-01",
+      "targetTitle": "Polar-Coordinate Proof of the Gaussian Integral",
+      "relationship": "sibling",
+      "description": "Sibling open question about the polar coordinate proof of the same scalar Gaussian"
+    }
+  ],
   "conclusion": {
     "summary": "This entry formalizes the multivariate Gaussian integral in Lean 4 and is fully proved (0 sorries). The diagonal case (`diagonal_gaussian`) uses Fubini's theorem for product spaces and the scalar Gaussian from the parent proof. The general case (`multivariate_gaussian_integral`) reduces to diagonal via the spectral theorem and is fully proved via spectral decomposition + map_linearMap_volume_pi_eq_smul_volume_pi + integral_map.",
     "implications": "The diagonal case represents a substantial Lean 4 achievement: combining `Real.exp_sum`, Fubini for `Fin n → ℝ` product spaces, and the scalar Gaussian gives a clean sorry-free proof. The general case is also closed: the measure-preserving orthogonal change of variables is discharged via Mathlib's `map_linearMap_volume_pi_eq_smul_volume_pi` applied to the eigenvector unitary (|det Uᵀ| = 1). This formalization demonstrates the modular structure of the Lean Genius gallery: `AreaOfCircleOQ05 → AreaOfCircleOQ05OQ02` via the `scaled_gaussian` import.",
@@ -136,7 +136,35 @@
       "Can the result be extended to the complex case (Hermitian positive-definite matrices over ℂ)?"
     ]
   },
-  "sorries": 0,
+  "references": [
+    {
+      "authors": "Bilodeau, Martin and Brenner, David",
+      "title": "Theory of Multivariate Statistics",
+      "year": "1999",
+      "venue": "Springer",
+      "note": "Multivariate Gaussian normalization via orthogonal diagonalization of the quadratic form."
+    },
+    {
+      "authors": "Stein, Elias M. and Shakarchi, Rami",
+      "title": "Real Analysis: Measure Theory, Integration, and Hilbert Spaces",
+      "year": "2005",
+      "venue": "Princeton University Press",
+      "note": "Gaussian integral via the polar-coordinate (Poisson) trick and Fubini's theorem."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Interval integration, MeasureTheory.integral_gaussian and change-of-variables lemmas (Mathlib.Analysis.SpecialFunctions.Gaussian / Mathlib.MeasureTheory.Integral)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
   "leanFile": {
     "path": "Proofs/AreaOfCircleOQ05OQ02.lean",
     "imports": [
@@ -147,5 +175,6 @@
     "definitionCount": 0,
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "sorries": 0
 }

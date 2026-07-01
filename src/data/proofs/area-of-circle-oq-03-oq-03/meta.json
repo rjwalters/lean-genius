@@ -116,35 +116,6 @@
       "mathContext": "The theorem `exhaustion_error_small` states: $\\forall \\varepsilon > 0, \\exists N, C \\cdot r^N < \\varepsilon$. Proof pipeline: `tendsto_pow_atTop_nhds_zero_of_lt_one` → `Filter.Tendsto` → `Metric.tendsto_atTop` → extract $N$ with $|r^N - 0| < \\varepsilon/C$ → multiply by $C$ via `mul_lt_mul_of_pos_left`. This is the $\\varepsilon$-$N$ formulation of geometric convergence, abstracting the specific base $r = 1/4$ (parabola) or polynomial $O(1/n^2)$ (circles)."
     }
   ],
-  "conclusion": {
-    "summary": "The method of exhaustion generalizes to ellipses (algebraically stated via scaling) and parabolas (fully formalized via Archimedes' geometric series $1 + 1/4 + \\cdots = 4/3$). The parabolic exhaustion gives explicit error bounds $(4/3)(1/4)^n$ with exponential convergence. The general exhaustion principle (geometric convergence $C \\cdot r^n \\to 0$) is proved using Mathlib's `tendsto_pow_atTop_nhds_zero_of_lt_one`. 14 theorems, 0 axioms, 0 sorries.",
-    "implications": "This formalizes one of the oldest infinite series computations in mathematics: Archimedes' *Quadrature of the Parabola* (c. 250 BCE). The convergence rate comparison illuminates why Archimedes' parabola proof is so elegant: the geometric series with ratio 1/4 converges exponentially, while the circle polygon approximation converges only polynomially ($O(1/n^2)$). The parabola is easier to exhaust than the circle.",
-    "openQuestions": [
-      "Prove the ellipse area formula rigorously using Mathlib's measure-theoretic change of variables. The `MeasureTheory.MeasurePreserving` API or `integral_comp_mul_right` may provide the right tools. The current proof is an algebraic placeholder.",
-      "Formalize Archimedes' proof that the sub-triangles in parabolic exhaustion have area exactly 1/4 of their parent. This requires showing that the vertex of the new triangle (the midpoint of the parabolic arc) achieves exactly 1/4 the parent area — a non-trivial geometric fact about parabolas.",
-      "Can Archimedes' spiral area computation ($A = \\pi r^2/3$ for the first turn of $r = \\theta$) be formalized? It requires integrating $r^2/2 \\cdot d\\theta = \\theta^2/2 \\cdot d\\theta$ in polar coordinates.",
-      "Prove the ellipsoid surface area formula via scaling from the sphere. Unlike the area formula, surface area under affine maps does not simply scale by the Jacobian — it requires the Gram determinant of the map restricted to the surface."
-    ]
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Integrals",
-      "Mathlib.MeasureTheory.Integral.IntervalIntegral",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Real",
-      "MeasureTheory"
-    ],
-    "namespace": "AreaOfCircleOQ03OQ03",
-    "lineCount": 190,
-    "axiomCount": 0,
-    "theoremCount": 14,
-    "definitionCount": 0,
-    "path": "Proofs/AreaOfCircleOQ03OQ03.lean",
-    "sorries": 0
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-03",
@@ -172,5 +143,61 @@
       "description": "Archimedes-FTC connection: proves inscribed polygons converge to πr²; the parabola's geometric convergence (ratio 1/4) contrasts with the polygon's polynomial convergence O(1/n²)"
     }
   ],
+  "conclusion": {
+    "summary": "The method of exhaustion generalizes to ellipses (algebraically stated via scaling) and parabolas (fully formalized via Archimedes' geometric series $1 + 1/4 + \\cdots = 4/3$). The parabolic exhaustion gives explicit error bounds $(4/3)(1/4)^n$ with exponential convergence. The general exhaustion principle (geometric convergence $C \\cdot r^n \\to 0$) is proved using Mathlib's `tendsto_pow_atTop_nhds_zero_of_lt_one`. 14 theorems, 0 axioms, 0 sorries.",
+    "implications": "This formalizes one of the oldest infinite series computations in mathematics: Archimedes' *Quadrature of the Parabola* (c. 250 BCE). The convergence rate comparison illuminates why Archimedes' parabola proof is so elegant: the geometric series with ratio 1/4 converges exponentially, while the circle polygon approximation converges only polynomially ($O(1/n^2)$). The parabola is easier to exhaust than the circle.",
+    "openQuestions": [
+      "Prove the ellipse area formula rigorously using Mathlib's measure-theoretic change of variables. The `MeasureTheory.MeasurePreserving` API or `integral_comp_mul_right` may provide the right tools. The current proof is an algebraic placeholder.",
+      "Formalize Archimedes' proof that the sub-triangles in parabolic exhaustion have area exactly 1/4 of their parent. This requires showing that the vertex of the new triangle (the midpoint of the parabolic arc) achieves exactly 1/4 the parent area — a non-trivial geometric fact about parabolas.",
+      "Can Archimedes' spiral area computation ($A = \\pi r^2/3$ for the first turn of $r = \\theta$) be formalized? It requires integrating $r^2/2 \\cdot d\\theta = \\theta^2/2 \\cdot d\\theta$ in polar coordinates.",
+      "Prove the ellipsoid surface area formula via scaling from the sphere. Unlike the area formula, surface area under affine maps does not simply scale by the Jacobian — it requires the Gram determinant of the map restricted to the surface."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Archimedes",
+      "title": "Quadrature of the Parabola",
+      "year": "c. 250 BCE",
+      "venue": "in T. L. Heath (ed.), The Works of Archimedes, Cambridge University Press, 1897"
+    },
+    {
+      "authors": "Archimedes",
+      "title": "Measurement of a Circle",
+      "year": "c. 250 BCE",
+      "venue": "in T. L. Heath (ed.), The Works of Archimedes, Cambridge University Press, 1897"
+    },
+    {
+      "authors": "Edwards, C. H.",
+      "title": "The Historical Development of the Calculus",
+      "year": "1979",
+      "venue": "Springer",
+      "note": "Method of exhaustion and its modern relation to the Fundamental Theorem of Calculus."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Interval integration, MeasureTheory.integral_gaussian and change-of-variables lemmas (Mathlib.Analysis.SpecialFunctions.Gaussian / Mathlib.MeasureTheory.Integral)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Integrals",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "AreaOfCircleOQ03OQ03",
+    "lineCount": 190,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ03OQ03.lean",
+    "sorries": 0
+  },
   "sorries": 0
 }

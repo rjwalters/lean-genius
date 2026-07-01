@@ -77,34 +77,6 @@
       "Mathlib polarCoord: PartialHomeomorph (ℝ×ℝ) (ℝ×ℝ)"
     ]
   },
-  "crossReferences": [
-    {
-      "targetId": "area-of-circle-oq-05-oq-01",
-      "relationship": "extends",
-      "description": "Generalizes the parent's explicit polar proof from the unit Gaussian (a = 1) to arbitrary a > 0, and reuses its verified angular_integral (∫_{-π}^π 1 dθ = 2π)"
-    },
-    {
-      "targetId": "area-of-circle-oq-05",
-      "relationship": "related",
-      "description": "AreaOfCircleOQ05.scaled_gaussian proves the same √(π/a) formula directly via Mathlib's integral_gaussian; this entry derives it through the explicit polar method instead"
-    }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
-      "Mathlib.Analysis.SpecialFunctions.PolarCoord",
-      "Mathlib.Tactic",
-      "Proofs.AreaOfCircleOQ05",
-      "Proofs.AreaOfCircleOQ05OQ01"
-    ],
-    "namespace": "AreaOfCircleOQ05OQ01Incomplete01",
-    "lineCount": 203,
-    "axiomCount": 0,
-    "theoremCount": 9,
-    "definitionCount": 0,
-    "path": "Proofs/AreaOfCircleOQ05OQ01Incomplete01.lean",
-    "sorries": 0
-  },
   "sections": [
     {
       "id": "sec-fubini-scaled",
@@ -163,6 +135,18 @@
       "mathContext": "At $a = 1$: $\\int_{-\\infty}^\\infty e^{-x^2} dx = \\sqrt{\\pi/1} = \\sqrt{\\pi}$."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Generalizes the parent's explicit polar proof from the unit Gaussian (a = 1) to arbitrary a > 0, and reuses its verified angular_integral (∫_{-π}^π 1 dθ = 2π)"
+    },
+    {
+      "targetId": "area-of-circle-oq-05",
+      "relationship": "related",
+      "description": "AreaOfCircleOQ05.scaled_gaussian proves the same √(π/a) formula directly via Mathlib's integral_gaussian; this entry derives it through the explicit polar method instead"
+    }
+  ],
   "conclusion": {
     "summary": "Carries the explicit polar-coordinate derivation of the Gaussian integral through for an arbitrary scale a > 0, proving (∫ e^{-a x²})² = π/a and ∫ e^{-a x²} = √(π/a). The single a-dependent ingredient is the radial integral 1/(2a); the angular factor 2π is reused from the verified parent. All ten theorems compile with 0 sorries and 0 axioms.",
     "implications": "Closes the gap between the gallery's black-box scaled Gaussian (via integral_gaussian) and its explicit unit-case polar proof: the geometric polar derivation generalizes cleanly to every scale, with π/a arising as (radial 1/(2a)) × (angular 2π).",
@@ -170,6 +154,51 @@
       "Generalize further to anisotropic Gaussians ∫∫ e^{-(a x² + b y²)} = π/√(ab) via an elliptical change of variables",
       "Formalize the multivariate Gaussian ∫_{ℝⁿ} e^{-x·Ax} = π^{n/2}/√(det A) for positive-definite A"
     ]
+  },
+  "references": [
+    {
+      "authors": "Stein, Elias M. and Shakarchi, Rami",
+      "title": "Real Analysis: Measure Theory, Integration, and Hilbert Spaces",
+      "year": "2005",
+      "venue": "Princeton University Press",
+      "note": "Gaussian integral via the polar-coordinate (Poisson) trick and Fubini's theorem."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston",
+      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Interval integration, MeasureTheory.integral_gaussian and change-of-variables lemmas (Mathlib.Analysis.SpecialFunctions.Gaussian / Mathlib.MeasureTheory.Integral)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Analysis.SpecialFunctions.PolarCoord",
+      "Mathlib.Tactic",
+      "Proofs.AreaOfCircleOQ05",
+      "Proofs.AreaOfCircleOQ05OQ01"
+    ],
+    "namespace": "AreaOfCircleOQ05OQ01Incomplete01",
+    "lineCount": 203,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ05OQ01Incomplete01.lean",
+    "sorries": 0
   },
   "sorries": 0
 }

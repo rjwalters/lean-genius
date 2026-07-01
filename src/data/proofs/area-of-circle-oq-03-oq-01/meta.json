@@ -109,25 +109,6 @@
       "mathContext": "For $n \\geq 3$: $2\\pi/n > 0$, so $\\sin(2\\pi/n) < 2\\pi/n$ by `Real.sin_lt`. Then $A_n = nr^2/2 \\cdot \\sin(2\\pi/n) < nr^2/2 \\cdot 2\\pi/n = \\pi r^2$. Combined with the lower bound: $0 < \\pi r^2 - A_n \\leq 2\\pi^3 r^2/(3n^2)$ — the inscribed polygon is always below but within $O(1/n^2)$ of the circle area."
     }
   ],
-  "conclusion": {
-    "summary": "The convergence rate of inscribed polygon areas to $\\pi r^2$ is proved with an explicit $O(1/n^2)$ bound. The proof demonstrates the MVT-as-bootstrapping technique: use derivative bounds to establish function bounds without the explicit Taylor remainder formula. All 9 theorems are verified with 0 axioms and 0 sorries.",
-    "implications": "This formalization gives the first machine-verified, quantitative version of Archimedes' method for approximating $\\pi$ via inscribed polygons. The explicit bound $|A_n - \\pi r^2| \\leq 2\\pi^3r^2/(3n^2)$ shows the convergence is 'second-order': doubling the number of sides reduces the error by a factor of 4. For error tolerance $\\varepsilon$ (relative to $\\pi r^2$), one needs $n \\approx \\pi\\sqrt{2/(3\\varepsilon)}$ sides.",
-    "openQuestions": [
-      "Prove the circumscribed polygon bound: the area $A_n^{\\text{circ}}$ of the circumscribed $n$-gon satisfies $A_n^{\\text{circ}} - \\pi r^2 \\leq 2\\pi^3r^2/(3n^2)$ with a similar bound from the other side.",
-      "Prove the sharpness: $\\pi r^2 - A_n \\geq c/n^2$ for some $c > 0$. The leading term is exactly $2\\pi^3r^2/(3n^2)$, so the upper bound is tight to leading order.",
-      "Prove convergence of the polygon perimeter to $2\\pi r$: the perimeter of the inscribed $n$-gon is $P_n = 2nr\\sin(\\pi/n)$, and $P_n \\to 2\\pi r$ at rate $O(1/n^2)$ similarly.",
-      "Can the Viète product $2/\\pi = (\\sqrt{2}/2)(\\sqrt{2+\\sqrt{2}}/2)\\cdots$ be formalized in Lean as the limit of the inscribed polygon recursion? This would give the first machine-verified proof of Viète's formula."
-    ]
-  },
-  "leanFile": {
-    "namespace": "AreaOfCircleOQ03OQ01",
-    "lineCount": 232,
-    "axiomCount": 0,
-    "theoremCount": 9,
-    "definitionCount": 1,
-    "path": "Proofs/AreaOfCircleOQ03OQ01.lean",
-    "sorries": 0
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle",
@@ -155,5 +136,52 @@
       "description": "OQ-03-OQ-03 proves parabolic exhaustion has geometric convergence (ratio 1/4) — exponentially faster than this file's O(1/n²) polynomial rate for circle inscribed polygons"
     }
   ],
+  "conclusion": {
+    "summary": "The convergence rate of inscribed polygon areas to $\\pi r^2$ is proved with an explicit $O(1/n^2)$ bound. The proof demonstrates the MVT-as-bootstrapping technique: use derivative bounds to establish function bounds without the explicit Taylor remainder formula. All 9 theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "This formalization gives the first machine-verified, quantitative version of Archimedes' method for approximating $\\pi$ via inscribed polygons. The explicit bound $|A_n - \\pi r^2| \\leq 2\\pi^3r^2/(3n^2)$ shows the convergence is 'second-order': doubling the number of sides reduces the error by a factor of 4. For error tolerance $\\varepsilon$ (relative to $\\pi r^2$), one needs $n \\approx \\pi\\sqrt{2/(3\\varepsilon)}$ sides.",
+    "openQuestions": [
+      "Prove the circumscribed polygon bound: the area $A_n^{\\text{circ}}$ of the circumscribed $n$-gon satisfies $A_n^{\\text{circ}} - \\pi r^2 \\leq 2\\pi^3r^2/(3n^2)$ with a similar bound from the other side.",
+      "Prove the sharpness: $\\pi r^2 - A_n \\geq c/n^2$ for some $c > 0$. The leading term is exactly $2\\pi^3r^2/(3n^2)$, so the upper bound is tight to leading order.",
+      "Prove convergence of the polygon perimeter to $2\\pi r$: the perimeter of the inscribed $n$-gon is $P_n = 2nr\\sin(\\pi/n)$, and $P_n \\to 2\\pi r$ at rate $O(1/n^2)$ similarly.",
+      "Can the Viète product $2/\\pi = (\\sqrt{2}/2)(\\sqrt{2+\\sqrt{2}}/2)\\cdots$ be formalized in Lean as the limit of the inscribed polygon recursion? This would give the first machine-verified proof of Viète's formula."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Archimedes",
+      "title": "Measurement of a Circle",
+      "year": "c. 250 BCE",
+      "venue": "in T. L. Heath (ed.), The Works of Archimedes, Cambridge University Press, 1897"
+    },
+    {
+      "authors": "Edwards, C. H.",
+      "title": "The Historical Development of the Calculus",
+      "year": "1979",
+      "venue": "Springer",
+      "note": "Method of exhaustion and its modern relation to the Fundamental Theorem of Calculus."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Interval integration, MeasureTheory.integral_gaussian and change-of-variables lemmas (Mathlib.Analysis.SpecialFunctions.Gaussian / Mathlib.MeasureTheory.Integral)",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ],
+  "leanFile": {
+    "namespace": "AreaOfCircleOQ03OQ01",
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/AreaOfCircleOQ03OQ01.lean",
+    "sorries": 0
+  },
   "sorries": 0
 }

@@ -123,14 +123,6 @@
       "mathContext": "$S_1=2$ (two endpoints), $S_2=2\\pi$ (circumference), $S_3=4\\pi$ (sphere surface)."
     }
   ],
-  "conclusion": {
-    "summary": "A fully verified (0 sorries, 0 axioms) proof that the unit (n−1)-sphere surface measure Sₙ = 2π^(n/2)/Γ(n/2) equals n times the unit n-ball volume Vₙ = π^(n/2)/Γ(n/2+1). Defining surface area by its own Gamma closed form makes Sₙ=n·Vₙ a genuine theorem — a restatement of the Gamma functional equation Γ(n/2+1)=(n/2)·Γ(n/2) — rather than a definitional identity. Special values recover S₁=2, S₂=2π, S₃=4π.",
-    "implications": "Completes the volume–surface pair of Gamma closed forms for the n-ball/sphere, exhibiting the divergence-theorem scaling Sₙ=n·Vₙ at the level of the explicit formulas. The half-dimension shift Γ(n/2+1)↔Γ(n/2) is identified as the source of the proportionality constant n.",
-    "openQuestions": [
-      "Connect this algebraic identity to a measure-theoretic statement: that 2π^(n/2)/Γ(n/2) is the actual (n−1)-Hausdorff measure of the unit sphere in ℝⁿ, via Mathlib's surface-measure API.",
-      "Derive the radial-shell integral Vₙ = ∫₀¹ Sₙ rⁿ⁻¹ dr directly, recovering Sₙ=n·Vₙ from the Fundamental Theorem of Calculus rather than the Gamma recurrence."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-02",
@@ -141,6 +133,42 @@
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
       "relationship": "complements",
       "description": "That file defines surface area differentially (n·ωₙ·r^(n−1)); this file defines it via an independent Gamma closed form, so Sₙ=n·Vₙ becomes a theorem rather than a definition."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) proof that the unit (n−1)-sphere surface measure Sₙ = 2π^(n/2)/Γ(n/2) equals n times the unit n-ball volume Vₙ = π^(n/2)/Γ(n/2+1). Defining surface area by its own Gamma closed form makes Sₙ=n·Vₙ a genuine theorem — a restatement of the Gamma functional equation Γ(n/2+1)=(n/2)·Γ(n/2) — rather than a definitional identity. Special values recover S₁=2, S₂=2π, S₃=4π.",
+    "implications": "Completes the volume–surface pair of Gamma closed forms for the n-ball/sphere, exhibiting the divergence-theorem scaling Sₙ=n·Vₙ at the level of the explicit formulas. The half-dimension shift Γ(n/2+1)↔Γ(n/2) is identified as the source of the proportionality constant n.",
+    "openQuestions": [
+      "Connect this algebraic identity to a measure-theoretic statement: that 2π^(n/2)/Γ(n/2) is the actual (n−1)-Hausdorff measure of the unit sphere in ℝⁿ, via Mathlib's surface-measure API.",
+      "Derive the radial-shell integral Vₙ = ∫₀¹ Sₙ rⁿ⁻¹ dr directly, recovering Sₙ=n·Vₙ from the Fundamental Theorem of Calculus rather than the Gamma recurrence."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston",
+      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
+    },
+    {
+      "authors": "Osserman, Robert",
+      "title": "The Isoperimetric Inequality",
+      "year": "1978",
+      "venue": "Bulletin of the American Mathematical Society 84(6), 1182–1238"
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ],
   "leanFile": {

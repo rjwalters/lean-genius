@@ -142,15 +142,6 @@
       "mathContext": "$\\omega_{2k} = \\pi^k(k!)^{-1} \\sim (\\pi e/k)^k/\\sqrt{2\\pi k}$; ratio $\\to 1$."
     }
   ],
-  "conclusion": {
-    "summary": "The exact even-subsequence asymptotic of the unit-ball volumes is established and machine-checked (0 sorries, 0 axioms): ω_{2k} ~[atTop] (πe/k)^k/√(2πk), equivalently ω_n ~ (2πe/n)^(n/2)/√(πn). The proof leverages the exact even closed form ω_{2k} = π^k/k! to reduce everything to Mathlib's Stirling formula for k!, then transports it through the calculus of asymptotic equivalence. Along the way the originally-posed leading constant √(2π/n) is corrected to the true 1/√(πn).",
-    "implications": "This pins the precise rate of the curse of dimensionality on the even subsequence: the ball volume decays super-exponentially like (πe/k)^k — faster than any geometric rate once k > πe — with polynomial prefactor 1/√(2πk). The work also demonstrates a robust formalization pattern (exact closed form + equivalence calculus) for converting a 'tends to 0' statement into a sharp asymptotic, and records a careful correction of a mis-stated constant rather than silently proving a different claim.",
-    "openQuestions": [
-      "Extend the exact asymptotic to the full (including odd) subsequence ω_n, where the half-integer Gamma values require the duplication formula or a direct Stirling estimate of Γ(n/2+1).",
-      "Quantify the second-order term: an asymptotic expansion ω_{2k} = (πe/k)^k/√(2πk)·(1 + c/k + O(1/k²)) from the refined Stirling series.",
-      "Determine the dimension k maximizing ω_{2k} (the volume peaks near n ≈ 5 and then decays) directly from the closed form π^k/k!."
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
@@ -161,6 +152,43 @@
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "Part of the area-of-circle / ball-volume lineage: the n-dimensional generalization of the circle-area computation, here analyzed asymptotically in high dimension."
+    }
+  ],
+  "conclusion": {
+    "summary": "The exact even-subsequence asymptotic of the unit-ball volumes is established and machine-checked (0 sorries, 0 axioms): ω_{2k} ~[atTop] (πe/k)^k/√(2πk), equivalently ω_n ~ (2πe/n)^(n/2)/√(πn). The proof leverages the exact even closed form ω_{2k} = π^k/k! to reduce everything to Mathlib's Stirling formula for k!, then transports it through the calculus of asymptotic equivalence. Along the way the originally-posed leading constant √(2π/n) is corrected to the true 1/√(πn).",
+    "implications": "This pins the precise rate of the curse of dimensionality on the even subsequence: the ball volume decays super-exponentially like (πe/k)^k — faster than any geometric rate once k > πe — with polynomial prefactor 1/√(2πk). The work also demonstrates a robust formalization pattern (exact closed form + equivalence calculus) for converting a 'tends to 0' statement into a sharp asymptotic, and records a careful correction of a mis-stated constant rather than silently proving a different claim.",
+    "openQuestions": [
+      "Extend the exact asymptotic to the full (including odd) subsequence ω_n, where the half-integer Gamma values require the duplication formula or a direct Stirling estimate of Γ(n/2+1).",
+      "Quantify the second-order term: an asymptotic expansion ω_{2k} = (πe/k)^k/√(2πk)·(1 + c/k + O(1/k²)) from the refined Stirling series.",
+      "Determine the dimension k maximizing ω_{2k} (the volume peaks near n ≈ 5 and then decays) directly from the closed form π^k/k!."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Robbins, Herbert",
+      "title": "A Remark on Stirling's Formula",
+      "year": "1955",
+      "venue": "American Mathematical Monthly 62(1), 26–29"
+    },
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107",
+      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ]
 }

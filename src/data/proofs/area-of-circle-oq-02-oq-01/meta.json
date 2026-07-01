@@ -112,14 +112,6 @@
       "mathContext": "For $n=0, r=0$: $\\text{Vol}(\\emptyset) = 0$ but $r^0 \\cdot \\text{unitBallVolume}(0) = 1 \\cdot 1 = 1$. Bug: $0^0 = 1$ in $\\mathbb{R}$."
     }
   ],
-  "conclusion": {
-    "summary": "A fully verified (0 sorries, 0 axioms) proof that Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)) for n ≥ 1. The key bridge is (√π)^n = π^(n/2). Also uncovers a genuine bug in the parent axiom at n=0, r=0.",
-    "implications": "The parent entry (area-of-circle-oq-02) can reduce its axiom count to 0 by replacing the axiom with a theorem with hypothesis n ≥ 1. All practical uses of the parent (n=2 for circles, n=3 for spheres) are covered.",
-    "openQuestions": [
-      "Can the parent axiom be fixed to work for all n ≥ 0 by changing the hypothesis from `0 ≤ r` to `0 < r`? (Yes, with a separate n=0 argument.)",
-      "Is there a single unified Lean theorem for all n ≥ 0 that avoids the 0^0 = 1 vs vol(∅) = 0 conflict?"
-    ]
-  },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-02",
@@ -130,6 +122,43 @@
       "targetId": "area-of-circle",
       "relationship": "generalizes",
       "description": "The n=2 case recovers the original area-of-circle result A = πr²."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) proof that Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)) for n ≥ 1. The key bridge is (√π)^n = π^(n/2). Also uncovers a genuine bug in the parent axiom at n=0, r=0.",
+    "implications": "The parent entry (area-of-circle-oq-02) can reduce its axiom count to 0 by replacing the axiom with a theorem with hypothesis n ≥ 1. All practical uses of the parent (n=2 for circles, n=3 for spheres) are covered.",
+    "openQuestions": [
+      "Can the parent axiom be fixed to work for all n ≥ 0 by changing the hypothesis from `0 ≤ r` to `0 < r`? (Yes, with a separate n=0 argument.)",
+      "Is there a single unified Lean theorem for all n ≥ 0 that avoids the 0^0 = 1 vs vol(∅) = 0 conflict?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston",
+      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
+    },
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107",
+      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
+      "year": "2024",
+      "venue": "Mathlib4"
     }
   ],
   "leanFile": {
