@@ -96,22 +96,22 @@
       "id": "sum-of-squares",
       "title": "Sum of Squares",
       "startLine": 35,
-      "endLine": 46,
+      "endLine": 45,
       "summary": "fib_sum_sq: ∑_{i≤n} Fᵢ² = Fₙ·Fₙ₊₁ by induction. The step rewrites the last square, applies the inductive hypothesis, expands Fₙ₊₂ = Fₙ + Fₙ₊₁, and closes with ring.",
       "mathContext": "$\\sum_{i=0}^{n} F_i^2 = F_n F_{n+1}.$"
     },
     {
       "id": "odd-indexed",
       "title": "Odd-Indexed Sum",
-      "startLine": 48,
-      "endLine": 56,
+      "startLine": 46,
+      "endLine": 55,
       "summary": "fib_sum_odd: ∑_{i<n} F₂ᵢ₊₁ = F₂ₙ by induction; the step adds F₂ₙ₊₁ to F₂ₙ and collapses to F₂ₙ₊₂ = F₂₍ₙ₊₁₎ via the recurrence.",
       "mathContext": "$\\sum_{i=0}^{n-1} F_{2i+1} = F_{2n}.$"
     },
     {
       "id": "even-indexed",
       "title": "Even-Indexed Sum",
-      "startLine": 58,
+      "startLine": 56,
       "endLine": 70,
       "summary": "fib_sum_even: (∑_{i<n} F₂ᵢ₊₂) + 1 = F₂ₙ₊₁ by induction; the step peels the last summand, rewrites F₂₍ₙ₊₁₎₊₁ = F₂ₙ₊₁ + F₂ₙ₊₂ via the recurrence, and closes with omega against the inductive hypothesis.",
       "mathContext": "$\\Big(\\sum_{i=1}^{n} F_{2i}\\Big) + 1 = F_{2n+1}.$"
