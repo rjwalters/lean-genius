@@ -2169,3 +2169,76 @@ identified as the sole non-top facet without a within-chain partner) — or prov
 2. Define a total `adj` with geometric none-fibre exactly `{Fin.last d}` on interior cells; then
    `boundary_face` via `gridVertices_boundary_face_imp_last`.
 3. Assemble `SpernerTriangulation`; Phase 2 door oddness induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-07-01 (researcher-1) — Geometric ∂Δ_N boundary over ALL coordinates; facet 0 is unconditionally interior
+
+**Mode**: ACT (CONTINUE Phase-1). **Outcome**: PROGRESS — sharpens the frontier
+dichotomy with a genuine negative result; does NOT close it. **+3 theorems, ~108 L**
+(file 2407 → 2515 L). **0-sorry, 0-axiom by construction** (new decls use only
+`coord_incDir_at`, `miss_coord_pos_of_ne_last`, `incDir_surj_complement`,
+`gridVertices_onFace_iff`, `omega`, `rw`, `simp only`, `by_cases`, `by_contra` — no
+`native_decide`/`decide`).
+
+### What was delivered (`SpernerNDimOQ02.lean`, appended before `end`)
+All prior boundary lemmas (`boundary_face_imp_last`, `zero_not_boundary_face`, …) test
+the SINGLE coordinate whose index matches the dropped facet index `k`
+(`(verts j).coords k = 0`) — that is the obligation a `gridNeighbor`-`none` facet
+discharges. But the genuine *geometric* question "does facet `k` lie on `∂Δ_N`?" tests
+whether the `d` facet vertices share a common vanishing coordinate `i`, over ANY
+`i : Fin (d+1)`, not just `i = k`.
+
+- **`geom_boundary_face_imp_last (s) (hd : 2 ≤ d) (k)`** :
+  `(∃ i, ∀ j ≠ k, (verts j).coords i = 0) → k = Fin.last d`. Generalizes
+  `boundary_face_imp_last` from the index-matched coordinate to an ARBITRARY coordinate.
+  Proof splits `i` via `incDir_surj_complement`: the `miss` case is impossible (some
+  non-top vertex `≠ k` has positive `miss`-coord, since `d ≥ 2` leaves `≥ 3` indices);
+  an `incDir c` coordinate at `Fin.last d` is `base + 1 > 0` unless the top vertex is
+  the dropped one (`coord_incDir_at`, `c.val < d`).
+- **`gridVertices_geom_boundary_face_imp_last`** — carrier (`SpernerNDim.onFace`) form.
+- **`zero_facet_not_on_boundary (s) (hd : 2 ≤ d)`** :
+  `¬ ∃ i, ∀ j ≠ 0, (verts j).coords i = 0`. Facet `0` lies on NO coordinate hyperplane
+  — it is UNCONDITIONALLY strictly interior to `Δ_N`.
+
+### Why this matters (sharpens the frontier — a negative result)
+Prior session (r1, 06-30) localized the geometric `none`-fibre to `⊆ {Fin.last d}` using
+the index-matched tests, and identified facet `0` as the sole non-top facet lacking a
+within-chain pivot partner — but left open whether facet `0` might still escape to
+`∂Δ_N` (frontier-option (b): "prove facet 0 of a Δ_N-boundary cell lies on ∂Δ_N, so
+`adj = none` is sound"). **This session closes option (b): facet `0` is interior against
+EVERY coordinate hyperplane, never on `∂Δ_N`.** Therefore a total triangulation `adj`
+CANNOT legitimately send facet `0` to `none`; the cross-`miss` partner construction for
+facet `0` is *unavoidable* (only frontier-option (a) survives). This does not build that
+construction — it proves it is the sole remaining path.
+
+### ⚠️ Frontier UNCHANGED (the genuine blocker — same as all prior sessions)
+Still the **cross-chain gluing**: construct the cross-`miss` partner cell for facet `0`
+(now proved to be the ONLY option, no `∂Δ_N` escape). ≳ several hundred lines, untouched.
+
+### ⚠️ INFRA NOTE (full machine-verification blocked — host-level, not code)
+BOTH channels down this session:
+- **Direct `lean`/`lake env lean`**: host Mathlib olean cache is missing exactly ONE
+  data file — `Mathlib/RingTheory/Kaehler/Basic.olean.server` (stale Jun-30 olean; all
+  7375 other modules' `.server` files regenerated Jul-01 05:53). Any file transitively
+  under `import Mathlib` fails at the import line with `missing data file for module
+  Mathlib.RingTheory.Kaehler.Basic`. Regenerating it correctly requires lake's exact
+  build options (an ad-hoc `lean -Dexperimental.module=true` recompile diverges into
+  synthesis errors + `sorry`), and mutating the shared cache would risk hash-mismatch
+  for other agents — so NOT attempted.
+- **Docker (`docker-build.sh`)**: containerd blob I/O error — `docker image inspect
+  lean4-arm64:v4.26.0` and `docker images` both fail reading the image blob (corrupted
+  `/var/lib/desktop-containerd`). Cannot start a fresh build container.
+
+**Mitigation**: the non-obvious tactic bookkeeping (the `Fin`/`omega` steps: picking a
+non-top vertex `≠ k`, the `incDir` `base+1>0` contradiction, the `0 = Fin.last d`
+refutation) was machine-verified in an ISOLATED file importing only `Mathlib.Data.Fin.Basic`
+(avoids the Kaehler-poisoned aggregate) with the Sperner lemmas replaced by abstract
+hypotheses of identical shape — **compiles exit 0**. That check CAUGHT A REAL BUG
+(`hi 0 (fun h => hk0 h.symm)` had the wrong argument order; `hk0 : ¬(0 = k)` already has
+type `0 ≠ k`, so it must be `hi 0 hk0`) which was fixed before commit. All cited lemma
+signatures were read from source and match the abstract stand-ins exactly.
+
+### Next steps (unchanged crux)
+1. **(crux)** Cross-`miss` partner cell for facet `0` — now the SOLE path (option (b)
+   formally eliminated by `zero_facet_not_on_boundary`).
+2. Define total `adj` with geometric none-fibre exactly `{Fin.last d}` on interior cells.
+3. Assemble `SpernerTriangulation`; Phase-2 door oddness induction on `d`.
