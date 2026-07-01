@@ -55,6 +55,57 @@
       "Parent context: chebyshev-bounds-oq-04-oq-01-oq-01 (the Möbius–floor identity) and chebyshev-bounds-oq-04-oq-01 (the Selberg–Erdős elementary-PNT roadmap)"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Header and Setup",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring for the weak Mertens reciprocal bound |M₁(N)| ≤ 1, where M₁(N) = Σ_{d=1}^{N} μ(d)/d — the tight form of the |Σ μ(d)/d| ≤ 1 + log N estimate feeding the Selberg symmetry step toward an elementary PNT. Deliberately self-contained (imports only Mathlib, no Proofs.* imports) so it is portable to Aristotle prove_file. Lays out the floor-identity route (avoiding summation-by-parts) in three steps. Opens Finset and the BigOperators / ArithmeticFunction scopes."
+    },
+    {
+      "id": "sec-def",
+      "title": "The Reciprocal Mertens Partial Sum",
+      "startLine": 36,
+      "endLine": 45,
+      "summary": "Defines mertensRecip N = Σ_{1 ≤ d ≤ N} μ(d)/d in ℝ and proves the base case mertensRecip_zero (M₁(0) = 0, since Icc 1 0 = ∅)."
+    },
+    {
+      "id": "sec-helpers",
+      "title": "Counting and Möbius Ingredients",
+      "startLine": 46,
+      "endLine": 65,
+      "summary": "Two arithmetic lemmas driving Step 1: card_multiples_Icc — the number of multiples of d in Icc 1 N equals the nat division N / d = ⌊N/d⌋; and sum_moebius_divisors — the Möbius indicator Σ_{d ∣ m} μ(d) = [m = 1] cast to ℤ."
+    },
+    {
+      "id": "sec-step1",
+      "title": "Step 1: The Floor Identity",
+      "startLine": 66,
+      "endLine": 108,
+      "summary": "sum_moebius_mul_floor: Σ_{d=1}^{N} μ(d)·⌊N/d⌋ = 1 for N ≥ 1. Rewrites ⌊N/d⌋ as #{m ∈ Icc 1 N : d ∣ m}, swaps the order of the double sum over d ∣ m, and collapses the inner sum via the Möbius indicator, leaving only the m = 1 term."
+    },
+    {
+      "id": "sec-step2",
+      "title": "Step 2: Real Form",
+      "startLine": 109,
+      "endLine": 144,
+      "summary": "mul_mertensRecip_eq: N·M₁(N) = 1 + Σ_{d=1}^{N} μ(d)·fract(N/d). Decomposes ⌊N/d⌋ = N/d − fract(N/d) over ℝ and substitutes the Step 1 identity, isolating the fractional-remainder sum as the sole deviation from the exact value 1."
+    },
+    {
+      "id": "sec-fract-bound",
+      "title": "Bounding the Fractional Remainder",
+      "startLine": 145,
+      "endLine": 190,
+      "summary": "fract_sum_abs_le: the fractional remainder sum is bounded by N − 1. The d = 1 term vanishes (fract(N/1) = 0) and each remaining |μ(d)·fract(N/d)| < 1 across the N − 1 terms d = 2,…,N, giving the strict-then-nonstrict bound needed for the final estimate."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Result: Weak Mertens Bound",
+      "startLine": 191,
+      "endLine": 209,
+      "summary": "mertensRecip_abs_le_one: |M₁(N)| ≤ 1 for all N. Combines Step 2 and the fractional bound — |N·M₁(N)| = |1 + (remainder)| ≤ 1 + (N − 1) = N — then divides by N > 0. The N = 0 case is handled separately by mertensRecip_zero. The parent's chebyshevPsi_asymptotic axiom remains the open PNT target."
+    }
+  ],
   "conclusion": {
     "summary": "The weak Mertens reciprocal bound |∑_{d=1}^{N} μ(d)/d| ≤ 1 is fully verified in Lean 4 / Mathlib (209 lines, 0 sorries, 0 axioms, Mathlib-only). The proof derives it from the Möbius–floor identity by splitting ⌊N/d⌋ into integer and fractional parts: the integer part contributes the constant 1, the d=1 fractional term vanishes, and the remaining N−1 fractional terms are each ≤ 1, so |N·M₁(N)| ≤ N.",
     "implications": "This completes Iter 5a-β-2 of the elementary Selberg–Erdős road to the Prime Number Theorem: the weak Mertens bound is a standard complex-analysis-free input to Selberg's symmetry formula and the subsequent Tauberian oscillation argument for ψ(x)/x − 1. It also packages a reusable Dirichlet-hyperbola lemma chain (floor-as-count, Möbius-inversion collapse, fractional-part bound) for the downstream iterations.",
