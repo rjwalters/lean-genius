@@ -1,0 +1,90 @@
+{
+  "id": "cauchy-schwarz-oq-03-oq-03",
+  "title": "The L^p Interpolation Inequality (Log-Convexity of L^p Norms)",
+  "slug": "cauchy-schwarz-oq-03-oq-03",
+  "description": "Extends the parent Hölder inequality to the L^p interpolation (log-convexity) inequality for discrete norms: ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) whenever 1/r = θ/p + (1-θ)/q and θ ∈ (0,1). This states that t ↦ log‖f‖_(1/t) is convex — the L^p norms are logarithmically convex in the reciprocal exponent, with Cauchy-Schwarz/Hölder the boundary face. Proved by a single application of Hölder with the conjugate pair a = p/(rθ), b = q/(r(1-θ)) to the split f_i^r = f_i^(rθ)·f_i^(r(1-θ)).",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Interpolation_inequality",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ03OQ03.lean",
+    "tags": [
+      "cauchy-schwarz",
+      "holder-inequality",
+      "lp-interpolation",
+      "log-convexity",
+      "lp-norms",
+      "convexity",
+      "functional-analysis",
+      "real-analysis",
+      "extension",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "NNReal.inner_le_Lp_mul_Lq",
+        "description": "Hölder's inequality for NNReal finite sums over conjugate exponents.",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "Real.HolderConjugate",
+        "description": "The Hölder-conjugate relation p⁻¹ + q⁻¹ = 1, used to build the exponent pair a = p/(rθ), b = q/(r(1-θ)).",
+        "module": "Mathlib.Data.Real.ConjExponents"
+      },
+      {
+        "theorem": "NNReal.rpow_add'",
+        "description": "x^(y+z) = x^y·x^z for NNReal, valid at x = 0 when y+z ≠ 0; merges the split f_i^(rθ)·f_i^(r(1-θ)) = f_i^r.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+      },
+      {
+        "theorem": "NNReal.rpow_mul",
+        "description": "x^(y·z) = (x^y)^z for NNReal; collapses (f_i^(rθ))^a = f_i^p under the conjugate choice.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+      },
+      {
+        "theorem": "NNReal.mul_rpow",
+        "description": "(x·y)^z = x^z·y^z for NNReal (unconditional); distributes the final power 1/r across the product.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+      },
+      {
+        "theorem": "NNReal.rpow_le_rpow",
+        "description": "Monotonicity of x ↦ x^z for z ≥ 0; raises the Hölder bound to the power 1/r.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+      }
+    ],
+    "originalContributions": [
+      "Discrete L^p interpolation inequality: ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) with 1/r = θ/p + (1-θ)/q, θ ∈ (0,1)",
+      "Reduction of interpolation to a single Hölder application via the conjugate pair a = p/(rθ), b = q/(r(1-θ)) (with 1/a + 1/b = 1)",
+      "Construction of the Real.HolderConjugate witness from the interpolation identity r·θ/p + r·(1-θ)/q = 1",
+      "Zero-safe exponent split f_i^r = f_i^(rθ)·f_i^(r(1-θ)) via rpow_add' (handles f_i = 0)",
+      "Midpoint (θ = 1/2) geometric-mean interpolation ‖f‖_r ≤ (‖f‖_p·‖f‖_q)^(1/2), with 2/r = 1/p + 1/q, of which Cauchy-Schwarz is the symmetric p = q instance"
+    ],
+    "axiomCount": 0,
+    "lineCount": 114,
+    "assumptions": "0 axioms, 0 sorries. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). The interpolation reduction and conjugate-pair construction are original; Hölder's inequality is taken from Mathlib's NNReal.inner_le_Lp_mul_Lq.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "lp-interpolation",
+      "title": "L^p Interpolation Inequality",
+      "summary": "The main result: ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) for 1/r = θ/p + (1-θ)/q, θ ∈ (0,1). Built from Hölder with the conjugate pair a = p/(rθ), b = q/(r(1-θ)) applied to the split f_i^r = f_i^(rθ)·f_i^(r(1-θ)).",
+      "startLine": 42,
+      "endLine": 90,
+      "mathContext": "$\\left(\\sum_i f_i^r\\right)^{1/r} \\leq \\left(\\sum_i f_i^p\\right)^{\\theta/p}\\left(\\sum_i f_i^q\\right)^{(1-\\theta)/q}$ where $\\tfrac1r = \\tfrac{\\theta}{p} + \\tfrac{1-\\theta}{q}$. Equivalently $t \\mapsto \\log\\|f\\|_{1/t}$ is convex."
+    },
+    {
+      "id": "lp-interpolation-midpoint",
+      "title": "Midpoint (Geometric-Mean) Interpolation",
+      "summary": "The θ = 1/2 case: ‖f‖_r ≤ (‖f‖_p·‖f‖_q)^(1/2) when 2/r = 1/p + 1/q. Cauchy-Schwarz is the symmetric p = q instance.",
+      "startLine": 92,
+      "endLine": 113,
+      "mathContext": "$\\|f\\|_r \\leq \\left(\\|f\\|_p\\,\\|f\\|_q\\right)^{1/2}$ with $\\tfrac2r = \\tfrac1p + \\tfrac1q$; the geometric-mean face of log-convexity."
+    }
+  ]
+}

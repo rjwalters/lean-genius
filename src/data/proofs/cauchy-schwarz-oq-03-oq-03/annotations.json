@@ -1,0 +1,75 @@
+[
+  {
+    "id": "ann-lp-interpolation-main",
+    "proofId": "cauchy-schwarz-oq-03-oq-03",
+    "range": {
+      "startLine": 42,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "L^p Interpolation via a Single Hölder Application",
+    "content": "The interpolation inequality ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) is reduced to one use of Hölder's inequality. Writing f_i^r = f_i^(rθ)·f_i^(r(1-θ)) and applying Hölder with the conjugate exponents a = p/(rθ) and b = q/(r(1-θ)) (which satisfy 1/a + 1/b = r·θ/p + r·(1-θ)/q = 1 exactly because 1/r = θ/p + (1-θ)/q) yields ∑ f_i^r ≤ (∑ f_i^p)^(1/a)·(∑ f_i^q)^(1/b). Raising both sides to the nonnegative power 1/r and simplifying the exponents (1/a)·(1/r) = θ/p and (1/b)·(1/r) = (1-θ)/q gives the result. The conjugate witness is produced directly from Mathlib's Real.HolderConjugate structure, and the zero-safe split uses rpow_add' so that vanishing coordinates f_i = 0 need no special case.",
+    "mathContext": "$$\\left(\\sum_{i} f_i^r\\right)^{1/r} \\leq \\left(\\sum_{i} f_i^p\\right)^{\\theta/p}\\left(\\sum_{i} f_i^q\\right)^{(1-\\theta)/q}, \\qquad \\frac1r = \\frac{\\theta}{p} + \\frac{1-\\theta}{q},\\ \\theta \\in (0,1).$$\nThis is the statement that $t \\mapsto \\log\\|f\\|_{1/t}$ is convex: the $L^p$ norms are logarithmically convex in the reciprocal exponent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lp interpolation",
+      "log-convexity",
+      "Hölder inequality",
+      "Riesz-Thorin interpolation",
+      "conjugate exponents"
+    ],
+    "prerequisites": [
+      "NNReal.inner_le_Lp_mul_Lq",
+      "Real.HolderConjugate",
+      "NNReal.rpow_add'",
+      "NNReal.rpow_mul",
+      "NNReal.mul_rpow"
+    ]
+  },
+  {
+    "id": "ann-conjugate-pair-construction",
+    "proofId": "cauchy-schwarz-oq-03-oq-03",
+    "range": {
+      "startLine": 54,
+      "endLine": 65
+    },
+    "type": "technique",
+    "title": "Building the Conjugate Pair from the Interpolation Identity",
+    "content": "The heart of the argument is that the interpolation constraint 1/r = θ/p + (1-θ)/q is precisely the Hölder-conjugacy of the derived exponents a = p/(rθ) and b = q/(r(1-θ)). Multiplying the constraint by r gives r·θ/p + r·(1-θ)/q = 1, i.e. a⁻¹ + b⁻¹ = 1. This identity (hsum) is discharged by field_simp followed by nlinarith against the cleared form of the hypothesis. The Real.HolderConjugate value is then assembled as an anonymous structure ⟨inv_add_inv_eq_inv, left_pos, right_pos⟩, with positivity of a and b following from p,q,r,θ > 0 and 1-θ > 0.",
+    "mathContext": "$a = \\dfrac{p}{r\\theta},\\quad b = \\dfrac{q}{r(1-\\theta)},\\qquad \\frac1a + \\frac1b = \\frac{r\\theta}{p} + \\frac{r(1-\\theta)}{q} = r\\left(\\frac{\\theta}{p}+\\frac{1-\\theta}{q}\\right) = r\\cdot\\frac1r = 1.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hölder conjugate exponents",
+      "Real.HolderConjugate structure",
+      "exponent bookkeeping"
+    ],
+    "prerequisites": [
+      "Real.HolderConjugate",
+      "field_simp",
+      "nlinarith",
+      "div_pos"
+    ]
+  },
+  {
+    "id": "ann-midpoint",
+    "proofId": "cauchy-schwarz-oq-03-oq-03",
+    "range": {
+      "startLine": 92,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Midpoint Case: Geometric-Mean Interpolation and Cauchy-Schwarz",
+    "content": "Specializing θ = 1/2 gives the symmetric geometric-mean interpolation ‖f‖_r ≤ (‖f‖_p·‖f‖_q)^(1/2) whenever 2/r = 1/p + 1/q. This is the interpolation face closest to the parent inequalities: taking p = q recovers a Cauchy-Schwarz-type statement, exhibiting Cauchy-Schwarz and Hölder as the boundary/diagonal instances of the full log-convexity phenomenon. The corollary is derived from the main theorem by rewriting the exponents at θ = 1/2 and folding the two 1/2-powers with rpow_mul.",
+    "mathContext": "$\\|f\\|_r \\leq \\left(\\|f\\|_p\\,\\|f\\|_q\\right)^{1/2}, \\qquad \\frac2r = \\frac1p + \\frac1q.$ At $p = q$ this is the Cauchy-Schwarz face of the interpolation family.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "geometric mean",
+      "Cauchy-Schwarz inequality",
+      "midpoint convexity"
+    ],
+    "prerequisites": [
+      "NNReal.rpow_mul",
+      "lp_interpolation_nnreal"
+    ]
+  }
+]
