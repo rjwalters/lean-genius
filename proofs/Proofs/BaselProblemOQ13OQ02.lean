@@ -86,17 +86,17 @@ Instantiate the general even-zeta formula `hasSum_zeta_nat` at `k = 3` and `k = 
 
 /-- **Sixth zeta value**: `∑_n 1/n⁶ = π⁶/945`. -/
 theorem hasSum_zeta_six : HasSum (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ 6) (π ^ 6 / 945) := by
-  convert hasSum_zeta_nat (k := 3) (by norm_num) using 2
-  · norm_num
-  · rw [show (2 * 3 : ℕ) = 6 from rfl, bernoulli_six]
-    norm_num [Nat.factorial]
+  convert hasSum_zeta_nat (k := 3) (by norm_num) using 1
+  rw [bernoulli_six]
+  push_cast [Nat.factorial]
+  ring
 
 /-- **Eighth zeta value**: `∑_n 1/n⁸ = π⁸/9450`. -/
 theorem hasSum_zeta_eight : HasSum (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ 8) (π ^ 8 / 9450) := by
-  convert hasSum_zeta_nat (k := 4) (by norm_num) using 2
-  · norm_num
-  · rw [show (2 * 4 : ℕ) = 8 from rfl, bernoulli_eight]
-    norm_num [Nat.factorial]
+  convert hasSum_zeta_nat (k := 4) (by norm_num) using 1
+  rw [bernoulli_eight]
+  push_cast [Nat.factorial]
+  ring
 
 /-! ## Step 3: the even parts, `2^(−s) ζ(s)` -/
 
