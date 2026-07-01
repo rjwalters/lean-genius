@@ -182,7 +182,11 @@
   "conclusion": {
     "summary": "This entry supplies the verified correctness core of a binary (Stein's) GCD over the Gaussian integers ℤ[i], with the prime π = 1+i playing the role of 2. It proves N(π) = 2, the parity dichotomy π ∣ z ⟺ 2 ∣ (z.re+z.im) (i.e. ℤ[i]/(π) ≅ 𝔽₂), the primality of π by a norm argument, the π-even difference of two π-odds, the exact divide-by-π map with its norm-halving termination measure, and the three gcd reduction identities up to units (both-even pull-out, one-even drop, both-odd subtraction). Verified with 0 axioms, 0 sorries, no native_decide.",
     "implications": "The five arithmetic facts about π plus the three reduction identities are exactly what a correctness proof of a Gaussian binary GCD needs: each algorithm step is one of the reductions, each strictly decreases the norm N (halving on a divide-by-π, dropping via a coprime π, or reducing on a subtraction that then admits a divide-by-π), so the process terminates at an associate of the Euclidean gcd. The development is entirely up to units, matching the fact that ℤ[i] has no canonical gcd representative.",
-    "openQuestions": "Package the reductions into an explicit total (fuel-indexed or well-founded) function binaryGcdGaussian and prove it equals EuclideanDomain.gcd up to Associated, turning this correctness layer into a verified executable algorithm. Beyond that: a step-count / bit-complexity analysis of the Gaussian binary GCD analogous to the integer case, and the analogue over other imaginary quadratic Euclidean rings ℤ[√−d] (d = 1,2,3,7,11) where a suitable 'small prime' exists."
+    "openQuestions": [
+      "Package the reductions into an explicit total (fuel-indexed or well-founded) function binaryGcdGaussian and prove it equals EuclideanDomain.gcd up to Associated, turning this correctness layer into a verified executable algorithm.",
+      "Carry out a step-count / bit-complexity analysis of the Gaussian binary GCD, analogous to the classical O(n²) bound for Stein's algorithm over the integers.",
+      "Extend the construction to other imaginary quadratic Euclidean rings ℤ[√−d] (d = 1, 2, 3, 7, 11), where a suitable 'small prime' playing the role of π = 1+i exists."
+    ]
   },
   "leanFile": {
     "imports": ["Mathlib"],
