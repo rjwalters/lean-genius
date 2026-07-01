@@ -52,12 +52,13 @@
       "Formal statement of ErdosProblem460 as divergence of reciprocal sums",
       "Formalization of the Eggleton-Erdős-Selfridge bound a_k < k^{2+o(1)} (the sole axiom) and the conjectured a_k ≪ k log k as an open-conjecture def",
       "Definition of the least-prime-factor filtered sum f(n) and the proved-modulo-sorry reduction filtered_sum_implies_full",
-      "Splitting into smallPrimeDivisibleSum and largePrimeSum with proved sub-sum bounds and erdos_460_restricted_question (divergence of either restricted sum implies the conjecture)"
+      "Splitting into smallPrimeDivisibleSum and largePrimeSum with proved sub-sum bounds and erdos_460_restricted_question (divergence of either restricted sum implies the conjecture)",
+      "Section IX structural theory of the greedy sieve (all verified, 0-axiom): sieve_le_succ (every term ≤ n+1), sieve_sentinel_persists (the n+1 sentinel is absorbing), sieve_active_pred (active terms form an initial segment), sieve_adjacent_lt (step-by-step strict increase), sieve_pairwise_coprime (the shifted values n−aᵢ are pairwise coprime), and sieve_ge_index (linear lower bound aₖ ≥ k, hence the active terms are distinct and number at most n+1)"
     ],
     "axiomCount": 1,
-    "lineCount": 327,
-    "assumptions": "1 axiom: eggleton_erdos_selfridge (deep result). 1 sorry: filtered_sum_implies_full (converted from axiom to theorem-with-sorry for axiom integrity). sieve_greedy proved from constructive definition (with hactive guard for sentinel case). sieve_conjectured_bound demoted to def.",
-    "theoremCount": 15,
+    "lineCount": 462,
+    "assumptions": "1 axiom: eggleton_erdos_selfridge (deep result). 1 sorry: filtered_sum_implies_full (converted from axiom to theorem-with-sorry for axiom integrity). sieve_greedy proved from constructive definition (with hactive guard for sentinel case). sieve_conjectured_bound demoted to def. Section IX structural theorems (sieve_le_succ, sieve_sentinel_persists, sieve_active_pred, sieve_adjacent_lt, sieve_pairwise_coprime, sieve_ge_index) are all 0-axiom/0-sorry. File compilation was repaired against Mathlib v4.26.0 (API drift in Nat.minFac_prime, Finset.min'_le, rfl base cases, Decidable instances).",
+    "theoremCount": 21,
     "definitionCount": 9
   },
   "leanFile": {
@@ -71,9 +72,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 327,
+    "lineCount": 462,
     "axiomCount": 1,
-    "theoremCount": 15,
+    "theoremCount": 21,
     "definitionCount": 9,
     "path": "Proofs/Erdos460Problem.lean",
     "sorries": 1
@@ -110,7 +111,8 @@
       "Eggleton-Erdős-Selfridge: a_k < k^{2+o(1)}, conjectured a_k ≪ k log k; the quadratic bound alone is insufficient to prove divergence via comparison",
       "The least-prime-factor filtered sum f(n) = Σ_{a < n, P⁻(n-a) > a} 1/a provides a sufficient condition — its divergence implies Problem 460",
       "Erdős asked whether the smallPrimeDivisibleSum and largePrimeSum each individually diverge, which would independently imply the conjecture",
-      "The problem sits at the intersection of sieve theory, smooth number distribution, and additive combinatorics of coprime sets"
+      "The problem sits at the intersection of sieve theory, smooth number distribution, and additive combinatorics of coprime sets",
+      "Structural backbone (Section IX): the active sieve terms strictly increase from a₁=1, giving aₖ ≥ k, so they are distinct and confined to {0,…,n} (at most n+1 of them); combined with pairwise coprimality of the n−aᵢ, this bounds sieveCount and frames any reciprocal-sum estimate"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -171,8 +173,15 @@
       "id": "structural-properties",
       "title": "Section VIII: Additional Structural Properties",
       "startLine": 293,
-      "endLine": 327,
-      "summary": "Auxiliary proved theorems: sieve_at_zero and sieve_at_one give the base values by rfl, smallPrimeDivisibleSum_nonneg and largePrimeSum_nonneg establish non-negativity of the restricted sums, and leastPrimeFactor_prime_eq shows P⁻(p) = p for prime p."
+      "endLine": 354,
+      "summary": "Auxiliary proved theorems: sieve_at_zero and sieve_at_one give the base values (via the well-founded equation lemmas), smallPrimeDivisibleSum_nonneg and largePrimeSum_nonneg establish non-negativity of the restricted sums, and leastPrimeFactor_prime_eq shows P⁻(p) = p for prime p."
+    },
+    {
+      "id": "sieve-structure",
+      "title": "Section IX: Structural Properties of the Sieve",
+      "startLine": 355,
+      "endLine": 462,
+      "summary": "Six verified (0-axiom, 0-sorry) structural theorems exposing the greedy sieve's combinatorial backbone, previously absent from the formalization: sieve_le_succ (every value is ≤ n+1 — an active term or the sentinel), sieve_sentinel_persists (once n+1, always n+1), sieve_active_pred (active terms form an initial segment, contrapositive of sentinel persistence), sieve_adjacent_lt (adjacent active terms strictly increase), sieve_pairwise_coprime (the shifted differences n−aᵢ are pairwise coprime — the number-theoretic heart of the construction), and sieve_ge_index (the linear lower bound aₖ ≥ k for active k, so the terms are distinct and at most n+1 in number). These are on the critical path to any analysis of sieveCount and the reciprocal sum."
     }
   ],
   "conclusion": {
