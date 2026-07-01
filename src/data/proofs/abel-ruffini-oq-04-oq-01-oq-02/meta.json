@@ -87,25 +87,36 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Framing and Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring framing the open question — generalize the concrete quintic Gal(x⁵−4x+2) ≅ S₅ (parent AbelRuffiniOQ04OQ01) and the abstract sibling lemma to the Galois-theoretic fact that supplies the transitivity hypothesis — then `import Mathlib`, `open Polynomial Polynomial.Gal MulAction` with scoped `IntermediateField` notation, `namespace AbelRuffiniOQ04OQ01OQ02`, and the `variable {F} [Field F] (p : F[X]) (E) [Field E] [Algebra F E]` setup. The central object throughout is Mathlib's permutation representation galActionHom p E.",
+      "mathContext": "$\\mathrm{galActionHom}\\,p\\,E : \\mathrm{Gal}\\,p \\to \\mathrm{Perm}(\\mathrm{rootSet}\\,p\\,E).$"
+    },
+    {
       "id": "transitive-subgroup",
       "title": "Gal as a Transitive Subgroup of S_n",
-      "startLine": 55,
-      "endLine": 69,
-      "summary": "galActionHom_range_isPretransitive: for irreducible p splitting in E, (galActionHom p E).range acts transitively on rootSet p E. Transitivity of the p.Gal-action (galAction_isPretransitive) transfers to the realised permutation subgroup."
+      "startLine": 46,
+      "endLine": 68,
+      "summary": "galActionHom_range_isPretransitive: for irreducible p splitting in E, (galActionHom p E).range acts transitively on rootSet p E. Transitivity of the p.Gal-action (galAction_isPretransitive) transfers to the realised permutation subgroup because the corestriction onto the range is a surjective equivariant map.",
+      "mathContext": "$p \\text{ irreducible} \\implies (\\mathrm{galActionHom}\\,p\\,E).\\mathrm{range}$ acts transitively on the roots."
     },
     {
       "id": "iso-onto-range",
       "title": "Realising Gal as the Permutation Group",
-      "startLine": 71,
+      "startLine": 69,
       "endLine": 75,
-      "summary": "galMulEquivRange: Gal p ≃* (galActionHom p E).range, via MonoidHom.ofInjective applied to galActionHom_injective."
+      "summary": "galMulEquivRange: Gal p ≃* (galActionHom p E).range, via MonoidHom.ofInjective applied to galActionHom_injective — the injectivity that makes 'subgroup' literal rather than figurative.",
+      "mathContext": "$\\mathrm{Gal}\\,p \\;\\simeq^*\\; (\\mathrm{galActionHom}\\,p\\,E).\\mathrm{range}.$"
     },
     {
       "id": "degree-divides-order",
       "title": "Degree Divides |Gal| in Any Degree",
-      "startLine": 85,
-      "endLine": 105,
-      "summary": "natDegree_dvd_card: p.natDegree ∣ Nat.card p.Gal for irreducible p over a characteristic-zero field, generalizing prime_degree_dvd_card; primality is replaced by Irreducible.natDegree_pos."
+      "startLine": 76,
+      "endLine": 107,
+      "summary": "natDegree_dvd_card: p.natDegree ∣ Nat.card p.Gal for irreducible p over a characteristic-zero field, generalizing prime_degree_dvd_card; primality is replaced by Irreducible.natDegree_pos, with the minpoly/finrank-tower argument (card_of_separable, adjoin.finrank, finrank_mul_finrank) otherwise unchanged.",
+      "mathContext": "$p \\text{ irreducible},\\ \\mathrm{char}\\,F = 0 \\implies \\deg p \\mid |\\mathrm{Gal}\\,p|.$"
     }
   ],
   "references": [
