@@ -109,7 +109,11 @@
   "conclusion": {
     "summary": "Proves the Buffon family's missing structural lemma: the concrete expected-crossing functional is additive over concatenation of the parameter interval, from a single split point up to an arbitrary n-piece partition. Combined with the parent's shape-independence result it gives the 'noodle = Σ needles' decomposition that underlies Barbier's heuristic. 0 axioms, 0 sorries; host-verified against Mathlib 4.26.0.",
     "implications": "Additivity is the algebraic skeleton of Barbier's theorem: once expected crossings are additive over pieces and proportional to length on each short needle, shape-independence of the constant 2/(πd) follows. Stating it for the exact functional the family uses, with explicit integrability hypotheses, makes the partition step of the Barbier argument fully machine-checkable rather than heuristic.",
-    "openQuestions": []
+    "openQuestions": [
+      "Can the partition additivity proved here be combined with the parent's per-needle value to formalize the full Buffon–Barbier theorem $E = 2L/(\\pi d)$ for an arbitrary C¹ noodle — i.e. take the limit of the polygonal-chain approximation and show it converges to the arc-length functional?",
+      "The functional is defined for C¹ curves via the velocity $\\gamma'$. Does additivity extend to merely rectifiable curves parametrized by arc length, where $\\gamma'$ exists only almost everywhere, so that the 'noodle = Σ needles' decomposition covers the full generality of Barbier's original statement?",
+      "Does the same additive-over-partition structure carry to the higher-dimensional Cauchy–Crofton setting (expected intersections of a surface with a family of planes in $\\mathbb{R}^3$), or does the orientation bookkeeping that oriented interval integrals handle for free in 1D require genuinely new machinery there?"
+    ]
   },
   "crossReferences": [
     {
