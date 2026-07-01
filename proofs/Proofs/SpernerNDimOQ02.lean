@@ -1950,4 +1950,91 @@ theorem canon_eq_of_baryFacet_and_vertex {s t : CanonSimplex d N}
   · rw [facet_eq_image_baryFacet, facet_eq_image_baryFacet, hface]
   · simp only [vertices, hvert]
 
+/-!
+## Geometric boundary faces are localized to the top facet `Fin.last d`
+
+The previous sections reduced the `boundary_face` obligation to the barycentric
+condition `∀ j ≠ k, (s.verts j).coords k = 0` (`boundary_face_iff_coords_zero`)
+and evaluated it per vertex (`coord_incDir_eq_zero_iff`, `miss_coord_eq_zero_iff`).
+This section runs that evaluation to its conclusion: **for `d ≥ 2` the only facet
+`k` of a Freudenthal cell that can satisfy the boundary-coordinate condition is the
+top facet `k = Fin.last d`.**
+
+This *sharpens* the within-chain neighbour map's `none` fibre.  The map
+`gridNeighbor` sends *both* index-level boundary facets `{0, Fin.last d}` to `none`
+(`gridNeighbor_eq_none_iff`), but that is a within-chain artifact of `pivotSimplex`,
+not the geometric truth: facet `0` (coordinate direction `0`) is generically *not*
+a geometric boundary face — some cell vertex has positive `0`-coordinate — so it
+must carry a cross-chain pivot partner.  Only `Fin.last d` survives as a candidate
+geometric boundary facet.  This is exactly the localization the cross-chain gluing
+frontier needs: it pins down *which* facet the missing partner construction has to
+address (`0` interior to `Δ_N`), and confirms the top facet is the sole within-cell
+door to `∂Δ_N`.  All 0-sorry, 0-axiom (builds only on `coord_incDir_eq_zero_iff`,
+`miss_not_boundary_face`, and `incDir_surj_complement`).
+-/
+
+/-- **Increase-direction boundary faces hit the top vertex.**  If the boundary
+coordinate condition holds at an increase-direction facet `incDir c` — every cell
+vertex other than `incDir c` lies on geometric face `incDir c` — then `incDir c`
+is the top facet `Fin.last d`.  Reason: the last chain vertex `Fin.last d` (value
+`d`), if it is *not* the omitted vertex, must satisfy `d = (Fin.last d).val ≤ c.val`
+by `coord_incDir_eq_zero_iff`, impossible since `c.val < d`. -/
+theorem incDir_boundary_face_imp_last (s : SpernerGrid.GridSimplex d N) (c : Fin d)
+    (h : ∀ j : Fin (d + 1), j ≠ s.incDir c → (s.verts j).coords (s.incDir c) = 0) :
+    s.incDir c = Fin.last d := by
+  by_contra hlast
+  have hne : (Fin.last d) ≠ s.incDir c := fun heq => hlast heq.symm
+  have hz := (coord_incDir_eq_zero_iff s c (Fin.last d)).mp (h (Fin.last d) hne)
+  have hle : (Fin.last d).val ≤ c.val := hz.2
+  rw [Fin.val_last] at hle
+  have hc : c.val < d := c.isLt
+  omega
+
+/-- **Geometric boundary faces are localized to `Fin.last d`.**  For `d ≥ 2`, if a
+facet `k` satisfies the boundary-coordinate condition (`∀ j ≠ k, (s.verts j).coords
+k = 0`), then `k = Fin.last d`.  Every facet is either the `miss` direction —
+excluded outright by `miss_not_boundary_face` — or an increase direction `incDir c`
+(`incDir_surj_complement`), for which `incDir_boundary_face_imp_last` forces the top
+facet.  So the *geometric* `none`-fibre of a Freudenthal cell is at most the
+singleton `{Fin.last d}`, strictly inside the index-level boundary set
+`{0, Fin.last d}` (`IsBoundaryFacet`). -/
+theorem boundary_face_imp_last (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d)
+    (k : Fin (d + 1))
+    (h : ∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0) :
+    k = Fin.last d := by
+  by_cases hk : k = s.miss
+  · subst hk
+    exact absurd h (miss_not_boundary_face s hd)
+  · obtain ⟨c, hc⟩ := s.incDir_surj_complement k hk
+    subst hc
+    exact incDir_boundary_face_imp_last s c h
+
+/-- **Carrier form of the localization.**  Discharged directly against the abstract
+`boundary_face` obligation: if every vertex of the `gridVertices` carrier other than
+`k` lies on the geometric face `k` (`SpernerNDim.onFace`), then `k = Fin.last d`
+(for `d ≥ 2`).  This is the form a total door-graph `adj` consumes — it certifies
+that the *only* facet it may legitimately send to `none` on geometric grounds is the
+top facet. -/
+theorem gridVertices_boundary_face_imp_last (s : SpernerGrid.GridSimplex d N)
+    (hd : 2 ≤ d) (k : Fin (d + 1))
+    (h : ∀ j : Fin (d + 1), j ≠ k → SpernerNDim.onFace (gridVertices s j) k) :
+    k = Fin.last d := by
+  refine boundary_face_imp_last s hd k (fun j hj => ?_)
+  exact (gridVertices_onFace_iff s j k).mp (h j hj)
+
+/-- **Facet `0` is never a geometric boundary face** (for `d ≥ 2`).  Immediate from
+`boundary_face_imp_last`: were the boundary-coordinate condition to hold at `k = 0`,
+localization would force `0 = Fin.last d`, contradicting `d ≥ 2`.  Concretely: the
+`none` value `gridNeighbor` assigns to facet `0` is a *within-chain* artifact, and
+`0` must carry a cross-chain pivot partner — this isolates the exact obligation the
+gluing frontier still owes. -/
+theorem zero_not_boundary_face (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    ¬ (∀ j : Fin (d + 1), j ≠ (0 : Fin (d + 1)) → (s.verts j).coords (0 : Fin (d + 1)) = 0) := by
+  intro h
+  have hk : (0 : Fin (d + 1)) = Fin.last d := boundary_face_imp_last s hd 0 h
+  have : (0 : ℕ) = d := by
+    have := congrArg Fin.val hk
+    simpa [Fin.val_last] using this
+  omega
+
 end SpernerNDimOQ02
