@@ -113,13 +113,20 @@
       "id": "oq-01",
       "question": "Can this unimodular cofactor group be identified with a Mathlib `Matrix.GeneralLinearGroup (Fin 2) ℤ` (or `Matrix.SpecialLinearGroup` for the det = 1 subgroup), transporting the bijective action to Mathlib's `Matrix.toLin` machinery?",
       "difficulty": "medium",
-      "tags": ["mathlib-bridge", "GL2", "group-theory"]
+      "tags": [
+        "mathlib-bridge",
+        "GL2",
+        "group-theory"
+      ]
     },
     {
       "id": "oq-02",
       "question": "Does the bijective-action viewpoint give a cleaner route to a CONDITIONAL size-reduction bound for the parent's recursive HGCD, by tracking how the unimodular action moves the ℤ-lattice norm rather than individual entries?",
       "difficulty": "hard",
-      "tags": ["size-reduction", "quotient-stability"]
+      "tags": [
+        "size-reduction",
+        "quotient-stability"
+      ]
     }
   ],
   "leanFile": {
@@ -133,7 +140,16 @@
     "additionalFiles": []
   },
   "conclusion": {
-    "summary": "This companion isolates the algebraic invariant behind Schönhage's recursive HGCD: the accumulated cofactor matrices form the unimodular group GL₂(ℤ)±1, whose action on ℤ² is a bijection. From the explicit inverse alone follow two-directional GCD preservation and ideal invariance for ℤ pairs — the converse the parent omits — entirely axiom-free and with no native_decide. It makes precise that GCD-preservation is forced by group theory, so the only genuinely hard part of formalizing HGCD is the (still-open) size-reduction bound."
+    "summary": "This companion isolates the algebraic invariant behind Schönhage's recursive HGCD: the accumulated cofactor matrices form the unimodular group GL₂(ℤ)±1, whose action on ℤ² is a bijection. From the explicit inverse alone follow two-directional GCD preservation and ideal invariance for ℤ pairs — the converse the parent omits — entirely axiom-free and with no native_decide. It makes precise that GCD-preservation is forced by group theory, so the only genuinely hard part of formalizing HGCD is the (still-open) size-reduction bound.",
+    "implications": [
+      "Pins down exactly which part of formalizing Schönhage's half-GCD (HGCD) is easy and which is hard: the GCD-preservation invariant is *forced* by the group structure of GL₂(ℤ) (unimodular cofactor matrices act bijectively on ℤ²), so the only genuinely difficult obligation left is the size-reduction / bit-complexity bound.",
+      "Supplies the two-directional converse (GCD preservation and ideal invariance in *both* directions) that the parent entry omits, entirely axiom-free — the self-contained HGCDMatrix type sidesteps the parent's native_decide, so #print axioms shows only propext/Classical.choice/Quot.sound.",
+      "The reusable moral 'GCD-preservation is the shadow of a bijection' transfers to any lattice-reduction or continued-fraction algorithm whose step matrices are unimodular: exhibiting the single inverse M⁻¹ = adj(M)/det discharges the converse divisor transfer, bijectivity, and reverse ideal inclusion at once."
+    ],
+    "openQuestions": [
+      "Formalize the still-open size-reduction bound: that each HGCD step shrinks the bit-length of the pair by a controlled amount, giving the O(M(n) log n) complexity that makes recursive HGCD asymptotically faster than the binary/Euclidean GCD.",
+      "Connect the concrete HGCDMatrix type to Mathlib's general `Matrix.GeneralLinearGroup` / `Matrix.SpecialLinearGroup` (ℤ), transporting these determinant-±1 closure lemmas to the library's group-theoretic API instead of a bespoke 2×2 structure."
+    ]
   },
   "crossReferences": [
     {
