@@ -1,0 +1,48 @@
+[
+  {
+    "id": "ann-loc09-cossign",
+    "proofId": "law-of-cosines-oq-09",
+    "range": {
+      "startLine": 37,
+      "endLine": 73
+    },
+    "type": "technique",
+    "title": "Sign of cos C on [0, π] Pins the Angle Relative to π/2",
+    "content": "Three private helpers isolate all the trigonometry. cos_pos_iff_lt: cos C > 0 ↔ C < π/2 (forward from Real.cos_pos_of_mem_Ioo since C ≥ 0 > -π/2; reverse by contraposition via Real.cos_nonpos_of_pi_div_two_le_of_le). cos_eq_zero_iff_eq: cos C = 0 ↔ C = π/2 (injectivity of cos on [0,π] from Real.strictAntiOn_cos.injOn, with cos(π/2) = 0). cos_neg_iff_gt: cos C < 0 ↔ C > π/2 (Real.cos_neg_of_pi_div_two_lt_of_lt). After these, the trichotomy is pure ordered-field algebra.",
+    "mathContext": "$\\cos$ is strictly antitone on $[0,\\pi]$ with $\\cos(\\pi/2)=0$, so its sign against $0$ records $C$ against $\\pi/2$: positive below, zero at, negative above.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.cos_pos_of_mem_Ioo",
+      "Real.strictAntiOn_cos",
+      "Real.cos_neg_of_pi_div_two_lt_of_lt",
+      "Real.cos_pi_div_two"
+    ],
+    "prerequisites": [
+      "monotonicity of cos on [0, π]",
+      "Real.pi_pos"
+    ]
+  },
+  {
+    "id": "ann-loc09-trichotomy",
+    "proofId": "law-of-cosines-oq-09",
+    "range": {
+      "startLine": 79,
+      "endLine": 122
+    },
+    "type": "insight",
+    "title": "angle_acute/right/obtuse_iff: Sign of a² + b² - c² Detects the Angle",
+    "content": "Each trichotomy theorem rewrites its angle condition (C < π/2, = π/2, > π/2) to the matching cos-sign condition, then compares the squared sides. The Law of Cosines gives a² + b² - c² = 2ab·cos C with 2ab > 0, so the sign of a² + b² - c² is the sign of cos C. Acute (Euclid II.13) and obtuse (Euclid II.12) close with linarith/nlinarith using 2ab > 0; the right angle (Pythagoras) is the boundary cos C = 0, handled via mul_eq_zero. This is the precise sense in which the Law of Cosines is the signed converse of the Pythagorean theorem.",
+    "mathContext": "$a^2+b^2-c^2 = 2ab\\cos C$, $2ab>0$: $C<\\tfrac\\pi2\\iff c^2<a^2+b^2$; $C=\\tfrac\\pi2\\iff c^2=a^2+b^2$; $C>\\tfrac\\pi2\\iff c^2>a^2+b^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Law of Cosines",
+      "Pythagorean theorem",
+      "Euclid Elements II.12 / II.13",
+      "sign analysis"
+    ],
+    "prerequisites": [
+      "cos-sign helpers",
+      "nlinarith with 2ab > 0"
+    ]
+  }
+]
