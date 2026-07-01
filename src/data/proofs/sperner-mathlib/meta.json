@@ -112,5 +112,31 @@
     "additionalFiles": [
       "Proofs/SpernerMathlibHyper.lean"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Sperner, E.",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": "1928",
+      "note": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6, 265–272. The original combinatorial lemma on panchromatic (fully labeled) simplices."
+    },
+    {
+      "authors": "Kuhn, H. W.",
+      "title": "Some combinatorial lemmas in topology",
+      "year": "1960",
+      "note": "IBM Journal of Research and Development 4(5), 518–524. The door / path-following parity argument for Sperner's lemma that this cell-complex proof formalizes."
+    },
+    {
+      "authors": "Su, F. E.",
+      "title": "Rental Harmony: Sperner's Lemma in Fair Division",
+      "year": "1999",
+      "note": "American Mathematical Monthly 106(10), 930–942. A widely cited exposition of the 'rooms and doors' counting proof used here."
+    },
+    {
+      "authors": "Aigner, M.; Ziegler, G. M.",
+      "title": "Proofs from THE BOOK (6th ed.)",
+      "year": "2018",
+      "note": "Springer. Presents Sperner's lemma and its parity proof alongside the Brouwer fixed-point application."
+    }
+  ]
 }
