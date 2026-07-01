@@ -234,4 +234,33 @@ theorem eulerPoly_closed_form (n : ℕ) :
         + (n : ℤ) * ((n : ℤ) - 1) * 2 :=
   apGap_closed_form eulerPoly_hasAPGaps n
 
+/-- **Rigidity: an AP-gap sequence is pinned down by `d` and its first two terms.**
+Two sequences sharing the same common second-difference `d` and the same values at
+`0` and `1` are equal everywhere. Immediate from the quadratic closed form
+`apGap_closed_form`: both sides have identical `2·q n` expansions, so they agree after
+cancelling the `2` and the `ℕ → ℤ` cast. This is the initial-value uniqueness of the
+second-difference recurrence `HasAPGaps`. -/
+theorem apGap_unique {p q : ℕ → ℕ} {d : ℤ}
+    (hp : HasAPGaps p d) (hq : HasAPGaps q d)
+    (h0 : p 0 = q 0) (h1 : p 1 = q 1) : p = q := by
+  funext n
+  have hpn := apGap_closed_form hp n
+  have hqn := apGap_closed_form hq n
+  have h2 : (2 : ℤ) * (p n : ℤ) = 2 * (q n : ℤ) := by rw [hpn, hqn, h0, h1]
+  have hz : (p n : ℤ) = (q n : ℤ) := by linarith
+  exact_mod_cast hz
+
+/-- **`d > 0` ⟹ strictly increasing gaps.** The sharp form of `apGap_gaps_monotone`:
+a strictly positive common second-difference makes the gap sequence strictly monotone.
+Together with `apGap_zero_gaps_constant` (the `d = 0` case has all gaps equal) this
+witnesses the strictness of the inclusion `ConstantGap (d = 0) ⊊ APGap_{d>0}`: a
+`d > 0` sequence has genuinely growing gaps and so is never a constant-gap
+(prime-AP) sequence. -/
+theorem apGap_gaps_strictMono {q : ℕ → ℕ} {d : ℤ} (h : HasAPGaps q d) (hd : 0 < d)
+    {m n : ℕ} (hmn : m < n) :
+    (q (m + 1) : ℤ) - (q m : ℤ) < (q (n + 1) : ℤ) - (q n : ℤ) := by
+  rw [apGap_gap_linear h m, apGap_gap_linear h n]
+  have hmn' : (m : ℤ) < (n : ℤ) := by exact_mod_cast hmn
+  nlinarith [mul_pos (by linarith : (0 : ℤ) < (n : ℤ) - (m : ℤ)) hd]
+
 end Erdos455OQ04
