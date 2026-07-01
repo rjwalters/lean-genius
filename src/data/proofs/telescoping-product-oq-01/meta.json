@@ -3,6 +3,38 @@
   "title": "Telescoping Product ∏(1 − 1/k²) = (n+1)/(2n)",
   "slug": "telescoping-product-oq-01",
   "description": "Formalizes the canonical telescoping product ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n), the multiplicative analogue of a telescoping sum. Each factor collapses as 1 − 1/k² = (k−1)(k+1)/k², so the product of the (k−1)/k parts telescopes against the (k+1)/k parts, leaving only the endpoint contributions. The closed form is proved by induction over Finset.Icc with Finset.prod_Icc_succ_top, and the resulting limit (n+1)/(2n) → 1/2 shows the infinite product converges to 1/2. The closed form is not named in Mathlib.",
+  "references": [
+    {
+      "authors": "Konrad Knopp",
+      "title": "Theory and Application of Infinite Series (2nd English ed.)",
+      "year": 1990,
+      "note": "Dover. Telescoping (collapsing) products and their evaluation."
+    },
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Calculus, Volume 1 (2nd ed.)",
+      "year": 1967,
+      "note": "Wiley. Telescoping sums and products via partial-fraction / factor collapse."
+    },
+    {
+      "authors": "George Pólya and Gábor Szegő",
+      "title": "Problems and Theorems in Analysis I",
+      "year": 1972,
+      "note": "Springer. Finite product identities including ∏(1−1/k²) type telescopes."
+    },
+    {
+      "authors": "Ronald L. Graham, Donald E. Knuth and Oren Patashnik",
+      "title": "Concrete Mathematics (2nd ed.)",
+      "year": 1994,
+      "note": "Addison-Wesley. The perturbation/telescoping method for closed-form finite products."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Finset.prod_range_succ and factor-collapse infrastructure",
+      "year": 2024,
+      "note": "Finite-product lemmas used to collapse ∏(k−1)/k · ∏(k+1)/k to (n+1)/(2n)."
+    }
+  ],
   "meta": {
     "author": "Lean Genius researcher-2",
     "status": "verified",

@@ -3,6 +3,38 @@
   "title": "Classification of Groups of Order pq via Sylow Theorems",
   "slug": "sylow-theorems-oq-01",
   "description": "For distinct primes p < q: if p does not divide (q-1), the only group of order pq is cyclic. If p divides (q-1), there are exactly two groups (cyclic + non-abelian semidirect product). Proves the Sylow counting arguments (n_q = 1, n_p ∈ {1,q}), normality of unique Sylow subgroups, and states the classification theorem with concrete examples (orders 6, 15, 21, 35).",
+  "references": [
+    {
+      "authors": "Ludwig Sylow",
+      "title": "Théorèmes sur les groupes de substitutions (Mathematische Annalen 5)",
+      "year": 1872,
+      "note": "The Sylow theorems, whose counting arguments classify the groups of order pq here."
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Algebra (Revised 3rd ed.), GTM 211",
+      "year": 2002,
+      "note": "Springer. Sylow theory and semidirect products in the classification of small-order groups."
+    },
+    {
+      "authors": "David S. Dummit and Richard M. Foote",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": 2004,
+      "note": "Wiley. §4.5 classifies groups of order pq via Sylow counting and semidirect products."
+    },
+    {
+      "authors": "Joseph J. Rotman",
+      "title": "An Introduction to the Theory of Groups (4th ed.)",
+      "year": 1995,
+      "note": "Springer GTM 148. Groups of order pq: cyclic when p∤(q−1), two groups when p∣(q−1)."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Sylow, Subgroup.normal and semidirectProduct infrastructure",
+      "year": 2024,
+      "note": "Sylow subgroups and normality criteria used to enumerate the groups of order pq."
+    }
+  ],
   "meta": {
     "author": "Burnside (1911); Sylow (1872)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Sylow_theorems#Examples",

@@ -3,6 +3,38 @@
   "title": "Newton's Identities: Multivariate Vieta's Formulas",
   "slug": "vietas-formulas-oq-02",
   "description": "Formalizes Newton's identities relating power sums p_k = Σ x_i^k to elementary symmetric polynomials e_k for 2 and 3 variables. Proves all three Newton identities, the cube sum factorization, and the Vieta-Newton bridge connecting coefficients to power sums.",
+  "references": [
+    {
+      "authors": "Isaac Newton",
+      "title": "Arithmetica Universalis",
+      "year": 1707,
+      "note": "Newton's identities relating power sums to elementary symmetric polynomials, formalized here."
+    },
+    {
+      "authors": "Albert Girard",
+      "title": "Invention nouvelle en l'algèbre",
+      "year": 1629,
+      "note": "Early statement of the relations between roots and symmetric functions (Vieta–Girard)."
+    },
+    {
+      "authors": "Ian G. Macdonald",
+      "title": "Symmetric Functions and Hall Polynomials (2nd ed.)",
+      "year": 1995,
+      "note": "Oxford University Press. Power sums p_k, elementary symmetric e_k, and Newton's identities."
+    },
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Enumerative Combinatorics, Volume 2",
+      "year": 1999,
+      "note": "Cambridge University Press. Symmetric functions and the Newton–Girard identities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: MvPolynomial.esymm and psum (power sum) infrastructure",
+      "year": 2024,
+      "note": "Elementary symmetric and power-sum polynomials used to state Newton's identities for 2 and 3 variables."
+    }
+  ],
   "meta": {
     "author": "Newton (1666), formalized in Lean 4",
     "date": "1666",
