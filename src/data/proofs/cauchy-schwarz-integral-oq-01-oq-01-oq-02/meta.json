@@ -131,5 +131,34 @@
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Walter Rudin"
+      ],
+      "title": "Real and Complex Analysis",
+      "year": 1987,
+      "venue": "McGraw-Hill (3rd ed.)",
+      "note": "Riesz representation of (L^p)* ≅ L^q and the Radon–Nikodým theorem."
+    },
+    {
+      "authors": [
+        "Gerald B. Folland"
+      ],
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": 1999,
+      "venue": "Wiley (2nd ed.)",
+      "note": "L^p duality, Radon–Nikodým derivatives, and σ-finite measure theory."
+    },
+    {
+      "authors": [
+        "Haïm Brezis"
+      ],
+      "title": "Functional Analysis, Sobolev Spaces and Partial Differential Equations",
+      "year": 2011,
+      "venue": "Springer (Universitext)",
+      "note": "Riesz representation of the dual of L^p and reflexivity for 1<p<∞."
+    }
+  ]
 }

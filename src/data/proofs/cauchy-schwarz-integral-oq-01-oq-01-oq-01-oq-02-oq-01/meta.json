@@ -159,5 +159,36 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/PowerMeanMonotoneOQ.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
+      "title": "Inequalities",
+      "year": 1952,
+      "venue": "Cambridge University Press (2nd ed.)",
+      "note": "Definitive reference for power-mean monotonicity, the AM–GM–HM–QM chain, and Minkowski's inequality."
+    },
+    {
+      "authors": [
+        "P. S. Bullen"
+      ],
+      "title": "Handbook of Means and Their Inequalities",
+      "year": 2003,
+      "venue": "Kluwer Academic (Mathematics and Its Applications 560)",
+      "note": "Comprehensive treatment of power means M_r and their monotonicity in r."
+    },
+    {
+      "authors": [
+        "J. Michael Steele"
+      ],
+      "title": "The Cauchy–Schwarz Master Class",
+      "year": 2004,
+      "venue": "Cambridge University Press",
+      "note": "Cauchy–Schwarz and its consequences, including power means and Minkowski-type inequalities."
+    }
+  ]
 }
