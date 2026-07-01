@@ -181,5 +181,34 @@
       "description": "Underlies the interval-integral interpretation used here: each ∫_a^b reduces to FTC + Riemann/Lebesgue agreement, and Fubini composes those one-variable statements."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Walter Rudin"
+      ],
+      "title": "Principles of Mathematical Analysis",
+      "year": 1976,
+      "venue": "McGraw-Hill (3rd ed.)",
+      "note": "Iterated Riemann integrals and Fubini's theorem for continuous functions on compact boxes — the basis for order-independence."
+    },
+    {
+      "authors": [
+        "Gerald B. Folland"
+      ],
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": 1999,
+      "venue": "Wiley (2nd ed.)",
+      "note": "Fubini–Tonelli theorem and permutation of integration order in product measures."
+    },
+    {
+      "authors": [
+        "Michael Spivak"
+      ],
+      "title": "Calculus on Manifolds",
+      "year": 1965,
+      "venue": "Benjamin/Addison-Wesley",
+      "note": "Fubini's theorem for iterated integrals over rectangles, used to permute integration variables."
+    }
+  ]
 }

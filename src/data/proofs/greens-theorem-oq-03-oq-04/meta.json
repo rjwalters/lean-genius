@@ -8,7 +8,14 @@
     "date": "2026-05-05",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/GreensTheoremOQ03OQ04.lean",
-    "tags": ["green-theorem", "stokes", "divergence-theorem", "typeI-region", "analysis", "measure-theory"],
+    "tags": [
+      "green-theorem",
+      "stokes",
+      "divergence-theorem",
+      "typeI-region",
+      "analysis",
+      "measure-theory"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-05",
@@ -46,8 +53,15 @@
   },
   "leanFile": {
     "path": "Proofs/GreensTheoremOQ03OQ04.lean",
-    "imports": ["Mathlib", "Proofs.GreensTheoremOQ03"],
-    "opens": ["MeasureTheory", "intervalIntegral", "GreensTheoremOQ03"],
+    "imports": [
+      "Mathlib",
+      "Proofs.GreensTheoremOQ03"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral",
+      "GreensTheoremOQ03"
+    ],
     "namespace": "GreensTheoremOQ03OQ04",
     "lineCount": 250,
     "axiomCount": 1,
@@ -144,5 +158,35 @@
       "summary": "Documents the abstract equivalence: Mathlib's divergence theorem IS a form of Stokes' theorem with ω = P dx + Q dy, dω = (∂Q/∂x − ∂P/∂y) dx∧dy, M = rectangular region. The summary table lists all 5 theorems with their proof methods and the answer to OQ-04."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Michael Spivak"
+      ],
+      "title": "Calculus on Manifolds",
+      "year": 1965,
+      "venue": "Benjamin/Addison-Wesley",
+      "note": "Generalized Stokes theorem ∫_∂M ω = ∫_M dω, from which Green's theorem is the 2D special case F=(Q,−P)."
+    },
+    {
+      "authors": [
+        "John M. Lee"
+      ],
+      "title": "Introduction to Smooth Manifolds",
+      "year": 2012,
+      "venue": "Springer, Graduate Texts in Mathematics 218 (2nd ed.)",
+      "note": "Stokes' theorem on manifolds with boundary, and the regularity required for curved-boundary domains."
+    },
+    {
+      "authors": [
+        "Jerrold E. Marsden",
+        "Anthony J. Tromba"
+      ],
+      "title": "Vector Calculus",
+      "year": 2011,
+      "venue": "W. H. Freeman (6th ed.)",
+      "note": "Divergence theorem in the plane and its relation to Green's theorem via the substitution F=(Q,−P)."
+    }
+  ]
 }
