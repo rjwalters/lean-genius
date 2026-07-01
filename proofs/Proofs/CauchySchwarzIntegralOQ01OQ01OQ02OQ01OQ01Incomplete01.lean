@@ -74,7 +74,7 @@ theorem integrable_mul_sf (p q : ℝ≥0∞)
   calc eLpNorm (fun a => f a * g a) 1 μ
       = ∫⁻ a, ‖f a * g a‖₊ ∂μ := by simp [eLpNorm, eLpNorm']
     _ ≤ eLpNorm f p μ * eLpNorm g q μ := lintegral_mul_le_sf p q hpq hp hptop hf hg
-    _ < ⊤ := ENNReal.mul_lt_top hf.eLpNorm_lt_top.ne hg.eLpNorm_lt_top.ne
+    _ < ⊤ := ENNReal.mul_lt_top hf.eLpNorm_lt_top hg.eLpNorm_lt_top
 
 -- ============================================================================
 -- § 1. Integration CLM
@@ -201,7 +201,7 @@ theorem lp_truncation_tendsto_zero [SigmaFinite μ]
   have hp0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp)
   have hpr : 0 < p.toReal := ENNReal.toReal_pos hp0 hptop
   have hinv : 0 < p.toReal⁻¹ := inv_pos.mpr hpr
-  simp_rw [eLpNorm_eq_lintegral_rpow_nnnorm hp0 hptop, one_div]
+  simp_rw [eLpNorm_eq_lintegral_rpow_enorm hp0 hptop, one_div]
   have key : Tendsto (fun n =>
       ∫⁻ a, (‖f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a‖₊ : ℝ≥0∞) ^ p.toReal ∂μ)
       atTop (nhds 0) := by
@@ -217,7 +217,7 @@ theorem lp_truncation_tendsto_zero [SigmaFinite μ]
       apply ENNReal.rpow_le_rpow _ (le_of_lt hpr)
       simp only [ENNReal.coe_le_coe, Set.indicator_apply]
       by_cases h : a ∈ spanningSets μ n <;> simp [h]
-    · rw [← eLpNorm_eq_lintegral_rpow_nnnorm hp0 hptop]
+    · rw [← eLpNorm_eq_lintegral_rpow_enorm hp0 hptop]
       exact hf.eLpNorm_lt_top.ne
     · filter_upwards [] with a
       have h1 : Tendsto (fun n => f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a)
@@ -229,11 +229,11 @@ theorem lp_truncation_tendsto_zero [SigmaFinite μ]
         have := h1.nnnorm; simp only [nnnorm_zero] at this; exact_mod_cast this
       have h3 : Tendsto (fun n => (‖f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a‖₊
           : ℝ≥0∞) ^ p.toReal) atTop (nhds ((0 : ℝ≥0∞) ^ p.toReal)) :=
-        (ENNReal.continuousAt_rpow_const (Or.inl (le_of_lt hpr))).tendsto.comp h2
+        h2.ennrpow_const p.toReal
       simpa [ENNReal.zero_rpow_of_pos hpr] using h3
   have h4 : Tendsto (fun n => (∫⁻ a, (‖f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a‖₊
       : ℝ≥0∞) ^ p.toReal ∂μ) ^ p.toReal⁻¹) atTop (nhds ((0 : ℝ≥0∞) ^ p.toReal⁻¹)) :=
-    (ENNReal.continuousAt_rpow_const (Or.inl hinv.le)).tendsto.comp key
+    key.ennrpow_const p.toReal⁻¹
   simpa [ENNReal.zero_rpow_of_pos hinv] using h4
 
 -- ============================================================================
@@ -245,7 +245,7 @@ private theorem eLpNorm_indicator_eq_restrict_loc {S : Set α} (hS : MeasurableS
     (f : α → ℝ) {p : ℝ≥0∞} (hp : p ≠ 0) (hptop : p ≠ ⊤) :
     eLpNorm (S.indicator f) p μ = eLpNorm f p (μ.restrict S) := by
   have hpr : 0 < p.toReal := ENNReal.toReal_pos hp hptop
-  simp only [eLpNorm_eq_lintegral_rpow_nnnorm hp hptop]
+  simp only [eLpNorm_eq_lintegral_rpow_enorm hp hptop]
   congr 1
   rw [show (fun a => (‖S.indicator f a‖₊ : ℝ≥0∞) ^ p.toReal) =
       S.indicator (fun a => (‖f a‖₊ : ℝ≥0∞) ^ p.toReal) from by
@@ -286,7 +286,7 @@ noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
           Lp.coeFn_add
             (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f₁)).toLp _
             (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f₂)).toLp _,
-          (Measure.ae_restrict_iff' hS).mp (Lp.coeFn_add f₁ f₂)]
+          (ae_restrict_iff' hS).mp (Lp.coeFn_add f₁ f₂)]
           with a h12 h1 h2 hadd hinner
         rw [h12, hadd, h1, h2]
         simp only [Set.indicator_apply, Pi.add_apply]
@@ -302,7 +302,7 @@ noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
             (Lp.memLp f)).coeFn_toLp,
           Lp.coeFn_smul c
             (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)).toLp _,
-          (Measure.ae_restrict_iff' hS).mp (Lp.coeFn_smul c f)]
+          (ae_restrict_iff' hS).mp (Lp.coeFn_smul c f)]
           with a hcf hf hsmul hinner
         rw [hcf, hsmul, hf, RingHom.id_apply]
         simp only [Set.indicator_apply, Pi.smul_apply]
@@ -477,7 +477,7 @@ theorem localization_existence
         · exact max_le_iff.mpr ⟨min_le_right _ _, neg_le_self (Nat.cast_nonneg k)⟩
       -- g_k is AEStronglyMeasurable and integrable on μₙ
       have hgk_asm : AEStronglyMeasurable g_k μₙ :=
-        (hg.1.min measurable_const.aestronglyMeasurable).max
+        (hg.1.inf measurable_const.aestronglyMeasurable).sup
           measurable_const.aestronglyMeasurable
       have hgk_int : Integrable g_k μₙ := by
         rw [← memLp_one_iff_integrable]
@@ -490,11 +490,13 @@ theorem localization_existence
           simp only [h_k, Real.norm_eq_abs, abs_mul]
           calc |Real.sign (g_k a)| * |g_k a| ^ (q.toReal - 1)
               ≤ 1 * |g_k a| ^ (q.toReal - 1) :=
-                  mul_le_mul_of_nonneg_right (Real.abs_sign_le_one _) (by positivity)
+                  mul_le_mul_of_nonneg_right
+                    (by rcases Real.sign_apply_eq (g_k a) with h | h | h <;>
+                        rw [h] <;> norm_num) (by positivity)
             _ = |g_k a| ^ (q.toReal - 1) := one_mul _
             _ ≤ (k : ℝ) ^ (q.toReal - 1) :=
                   Real.rpow_le_rpow (abs_nonneg _) (hgk_bound a)
-                    (by linarith [hpq.symm.one_lt_of_lt hp1])
+                    (by linarith [hpq.symm.lt])
       have hhk_meas : AEStronglyMeasurable h_k μₙ := by
         apply AEStronglyMeasurable.mul
         · exact (Real.measurable_sign.comp_aemeasurable
@@ -545,9 +547,9 @@ theorem localization_existence
           simp only [h_k]
           have hsign : Real.sign (g_k a) * g_k a = |g_k a| := by
             rcases lt_trichotomy (g_k a) 0 with ha | rfl | ha
-            · simp [Real.sign_neg ha, abs_of_neg ha]
+            · simp [Real.sign_of_neg ha, abs_of_neg ha]
             · simp
-            · simp [Real.sign_pos ha, abs_of_pos ha]
+            · simp [Real.sign_of_pos ha, abs_of_pos ha]
           rw [show Real.sign (g_k a) * |g_k a| ^ (q.toReal - 1) * g_k a =
               |g_k a| ^ (q.toReal - 1) * (Real.sign (g_k a) * g_k a) from by ring,
               hsign, show |g_k a| = |g_k a| ^ (1 : ℝ) from (Real.rpow_one _).symm,
@@ -578,9 +580,9 @@ theorem localization_existence
           · have habs_pos : 0 < |g_k a| := abs_pos.mpr ha
             have hsign1 : |Real.sign (g_k a)| = 1 := by
               rcases lt_trichotomy (g_k a) 0 with h | h | h
-              · simp [Real.sign_neg h]
+              · simp [Real.sign_of_neg h]
               · exact absurd h ha
-              · simp [Real.sign_pos h]
+              · simp [Real.sign_of_pos h]
             rw [abs_mul, hsign1, one_mul,
                 abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _),
                 ← Real.rpow_mul (abs_nonneg _)]
@@ -626,7 +628,7 @@ theorem localization_existence
                 ContinuousLinearMap.le_opNorm _ _
           _ = ‖φ.comp extZ‖ * (eLpNorm h_k p μₙ).toReal := by rw [hn_norm]
       have hx_le : x ≤ ‖φ.comp extZ‖ := by
-        rcases le_or_lt x 0 with hx | hx
+        rcases le_or_gt x 0 with hx | hx
         · linarith [norm_nonneg (φ.comp extZ)]
         · have hrpow : x ^ q.toReal = x ^ (q.toReal / p.toReal) * x := by
             conv_lhs =>
@@ -662,11 +664,11 @@ theorem localization_existence
       have abs_clamp : ∀ (r : ℝ) (k : ℕ), |max (min r k) (-(k : ℝ))| = min |r| k := by
         intro r k
         have hk : (0 : ℝ) ≤ k := Nat.cast_nonneg k
-        rcases le_or_lt r (-(k : ℝ)) with h1 | h1
+        rcases le_or_gt r (-(k : ℝ)) with h1 | h1
         · rw [min_eq_left (h1.trans (by linarith)), max_eq_right h1,
               abs_neg, abs_of_nonneg hk, abs_of_nonpos (h1.trans (by linarith)),
               min_eq_right (by linarith)]
-        rcases le_or_lt (k : ℝ) r with h2 | h2
+        rcases le_or_gt (k : ℝ) r with h2 | h2
         · rw [min_eq_right h2, max_eq_left (by linarith), abs_of_nonneg hk,
               abs_of_nonneg (hk.trans h2), min_eq_right h2]
         · rw [min_eq_left h2.le, max_eq_left h1.le,
@@ -710,8 +712,13 @@ theorem localization_existence
           rw [Measure.restrict_apply MeasurableSet.univ, Set.univ_inter]
           exact measure_spanningSets_lt_top μ m }
     -- Integrability on (μ.restrict Sm) for both sides:
-    -- 1 ≤ q from hpq.symm.one_lt_of_lt hp1 (same pattern as parent at line 885)
-    have hq_ge1 : 1 ≤ q := by linarith [hpq.symm.one_lt_of_lt hp1]
+    -- 1 ≤ q from hpq.symm.lt : 1 < q.toReal (lift ℝ inequality to ℝ≥0∞)
+    have hq_ge1 : (1 : ℝ≥0∞) ≤ q := by
+      have h1 : (1 : ℝ) < q.toReal := hpq.symm.lt
+      have hqtop : q ≠ ⊤ := by rintro rfl; simp at h1
+      calc (1 : ℝ≥0∞) = ENNReal.ofReal 1 := by simp
+        _ ≤ ENNReal.ofReal q.toReal := ENNReal.ofReal_le_ofReal h1.le
+        _ = q := ENNReal.ofReal_toReal hqtop
     have hgm_int : Integrable (g_seq m) (μ.restrict (spanningSets μ m)) :=
       (hg_seq_mem m).integrable hq_ge1
     have hgn_small : MemLp (g_seq n) q (μ.restrict (spanningSets μ m)) :=
@@ -853,7 +860,7 @@ theorem localization_existence
   have hq_ge1 : (1 : ℝ≥0∞) ≤ q :=
     calc (1 : ℝ≥0∞) = ENNReal.ofReal 1 := by simp
       _ ≤ ENNReal.ofReal q.toReal :=
-          ENNReal.ofReal_le_ofReal (hpq.symm.one_lt_of_lt hp1).le
+          ENNReal.ofReal_le_ofReal hpq.symm.lt.le
       _ = q := ENNReal.ofReal_toReal hqtop
   -- Finite-measure helper for E ∩ Sₙ
   have hfin_n : ∀ n, μ (E ∩ spanningSets μ n) ≠ ⊤ := fun n =>
@@ -930,7 +937,7 @@ theorem localization_existence
       by_cases hEa : a ∈ E <;> by_cases hSa : a ∈ spanningSets μ n <;> simp [hEa, hSa]
     rw [hdist]
     have h := hN n hn
-    rwa [Real.dist_zero_right, abs_of_nonneg ENNReal.toReal_nonneg] at h
+    rwa [Real.dist_eq, sub_zero, abs_of_nonneg ENNReal.toReal_nonneg] at h
   -- ── Conclude by tendsto_nhds_unique ──────────────────────────────────────────
   -- Both φ(h_n) → φ(1_E) and φ(h_n) = ∫_{E∩Sₙ} g → ∫_E g, so the limits agree.
   have hseq_eq : (fun n => φ ((memLp_indicator_const p
