@@ -136,5 +136,35 @@
       "summary": "Proves by decide that 5, 13, 17, 29, 37 are all prime and ≡ 1 (mod 4). These are the first five elements of OEIS A002144 (primes ≡ 1 mod 4), all expressible as sums of two squares: 5=1²+2², 13=2²+3², 17=1²+4², 29=2²+5², 37=1²+6²."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "L. Euler",
+      "title": "Observations on a theorem of Fermat and others concerning prime numbers",
+      "year": 1758,
+      "venue": "Novi Comm. Acad. Sci. Petrop.",
+      "note": "Euler's criterion and sums-of-two-squares background."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford Univ. Press, 6th ed., ch. II & VI",
+      "note": "Primes in arithmetic progressions mod 4 and Fermat's two-squares theorem."
+    },
+    {
+      "authors": "K. Ireland and M. Rosen",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "venue": "Springer GTM 84, 2nd ed.",
+      "note": "Euler's criterion for -1 being a quadratic residue mod p."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Key lemma constraining odd prime factors of n²+1 to be ≡ 1 (mod 4)."
+    }
+  ]
 }

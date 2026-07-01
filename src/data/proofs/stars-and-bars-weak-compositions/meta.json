@@ -128,5 +128,35 @@
   "crossReferences": [
     "composition-parts-choose-oq-01",
     "composition-card-2pow-oq-01"
+  ],
+  "references": [
+    {
+      "authors": "W. Feller",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. I",
+      "year": 1968,
+      "venue": "Wiley, 3rd ed., ch. II",
+      "note": "The stars-and-bars occupancy model and its counting formula."
+    },
+    {
+      "authors": "R. P. Stanley",
+      "title": "Enumerative Combinatorics, Vol. 1",
+      "year": 2011,
+      "venue": "Cambridge Univ. Press, 2nd ed.",
+      "note": "Weak compositions and multiset coefficients C(n+k-1, n)."
+    },
+    {
+      "authors": "J. H. van Lint and R. M. Wilson",
+      "title": "A Course in Combinatorics",
+      "year": 2001,
+      "venue": "Cambridge Univ. Press, 2nd ed.",
+      "note": "Bijective proof of the multiset/composition count."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Sym, Finset and Nat.multichoose API",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Multiset and cardinality machinery underlying the formalization."
+    }
   ]
 }

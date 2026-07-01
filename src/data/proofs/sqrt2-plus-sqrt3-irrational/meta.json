@@ -133,5 +133,35 @@
       "summary": "The second half of irrational_sqrt2_plus_sqrt3. From hsq : (r:ℝ)² = 5 + 2√6, `linarith` isolates h6 : √6 = ((r:ℝ)² - 5)/2. The witness hrat : ∃ q : ℚ, (q:ℝ) = √6 is built with q = (r²-5)/2, using `simp only [Rat.cast_div, Rat.cast_sub, Rat.cast_pow, Rat.cast_natCast]` to align ℚ→ℝ casts with h6.symm. Then `exact irrational_sqrt_six hrat` feeds the rational witness into the auxiliary lemma, contradicting Irrational (√6) and discharging the goal. Line 54 closes the namespace."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford Univ. Press, 6th ed., ch. IV",
+      "note": "Irrationality of surds and elementary irrationality arguments."
+    },
+    {
+      "authors": "I. Niven",
+      "title": "Irrational Numbers",
+      "year": 1956,
+      "venue": "Mathematical Association of America, Carus Monograph 11",
+      "note": "Systematic treatment of irrationality proofs including sums of square roots."
+    },
+    {
+      "authors": "M. Aigner and G. M. Ziegler",
+      "title": "Proofs from THE BOOK",
+      "year": 2018,
+      "venue": "Springer, 6th ed.",
+      "note": "Classic short irrationality proofs by contradiction."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: irrational_sqrt_natCast_iff and Irrational API",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Irrationality of √n for non-square n, used directly for √6."
+    }
+  ]
 }
