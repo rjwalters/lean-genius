@@ -1,0 +1,113 @@
+{
+  "id": "sylow-theorem-oq-05",
+  "slug": "sylow-theorem-oq-05",
+  "title": "Groups of Order p² are Abelian — the Full Structural Dichotomy",
+  "description": "Every group of order p² is abelian, and moreover is either cyclic (≅ ℤ/p²) or elementary abelian of exponent p (≅ ℤ/p × ℤ/p). This entry supplies the order-dichotomy on elements that separates the two isomorphism types — the content Mathlib's single abelian lemma leaves implicit.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.PGroup",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.GroupTheory.Exponent",
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.SetTheory.Cardinal.Finite"
+    ],
+    "namespace": "SylowTheoremOQ05",
+    "lineCount": 109,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/SylowTheoremOQ05.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Classical group theory (Burnside; class equation); Lean formalization original",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheoremOQ05.lean",
+    "tags": [
+      "group-theory",
+      "p-groups",
+      "sylow",
+      "classification",
+      "class-equation",
+      "cyclic-groups",
+      "elementary-abelian",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 109,
+    "assumptions": "None. Fully machine-checked with 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions, and no native_decide. Depends only on Mathlib.",
+    "dateAdded": "2026-07-01",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Structural dichotomy `isCyclic_or_pow_prime_eq_one`: a group of order p² is either cyclic or satisfies g^p = 1 for every element — the element-order split, obtained from Lagrange (orderOf g ∈ {1, p, p²}), that Mathlib does not package",
+      "Maximal-order characterization `isCyclic_iff_exists_orderOf_eq`: such a group is cyclic exactly when some element attains the full order p²",
+      "Elementary-abelian branch `exponent_eq_prime_of_not_isCyclic`: the non-cyclic case has exponent exactly p (not 1, since the group is nontrivial), identifying it as (ℤ/p)² together with the abelian result",
+      "Frames Mathlib's `IsPGroup.commutative_of_card_eq_prime_sq` as the base of the ℤ/p² vs (ℤ/p)² classification rather than an endpoint"
+    ],
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "wiedijkNumber": null
+  },
+  "overview": "The class equation shows every nontrivial finite p-group has a nontrivial centre Z. For a group G of order p² this forces |Z| ∈ {p, p²}; if |Z| = p then G/Z has order p, hence is cyclic, and a group whose central quotient is cyclic is abelian — so G is abelian in every case. Mathlib records this as `IsPGroup.commutative_of_card_eq_prime_sq`. The structure theorem for finite abelian groups then says an abelian group of order p² is either ℤ/p² or ℤ/p × ℤ/p. This entry pins down the purely group-theoretic invariant that distinguishes them: by Lagrange the order of any element divides p², so it is 1, p, or p². If some element has order p² the group is cyclic; otherwise every element has order dividing p, i.e. exponent p (elementary abelian). The four theorems assemble this dichotomy, characterize the cyclic case by the existence of a maximal-order element, and show the non-cyclic case has exponent exactly p.",
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction: From 'abelian' to the isomorphism type",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module header explaining that Mathlib already proves groups of order p² are abelian, and that the genuine remaining content — packaged here — is the element-order dichotomy that separates ℤ/p² from (ℤ/p)².",
+      "mathContext": "Every finite $p$-group has nontrivial centre (class equation). For $|G| = p^2$ this yields abelian. The structure theorem splits abelian order-$p^2$ groups into $\\mathbb{Z}/p^2$ and $(\\mathbb{Z}/p)^2$; the separating invariant is whether an element of order $p^2$ exists."
+    },
+    {
+      "id": "abelian",
+      "title": "Groups of order p² are abelian",
+      "startLine": 51,
+      "endLine": 61,
+      "summary": "Exposes Mathlib's `IsPGroup.commutative_of_card_eq_prime_sq` as the base of the classification.",
+      "mathContext": "$|G| = p^2 \\Rightarrow \\forall a\\,b,\\ ab = ba$, via nontrivial centre and the 'central quotient cyclic $\\Rightarrow$ abelian' principle."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The structural dichotomy",
+      "startLine": 62,
+      "endLine": 83,
+      "summary": "Main result: a group of order p² is either cyclic or has every element satisfying g^p = 1, proved from Lagrange via the possible element orders 1, p, p².",
+      "mathContext": "$\\operatorname{ord}(g) \\mid p^2 \\Rightarrow \\operatorname{ord}(g) = p^m,\\ m \\le 2$. $m = 2 \\Rightarrow$ cyclic; $m \\le 1 \\Rightarrow \\operatorname{ord}(g) \\mid p \\Rightarrow g^p = 1$."
+    },
+    {
+      "id": "characterization",
+      "title": "Cyclic ⇔ maximal-order element; the elementary-abelian branch",
+      "startLine": 84,
+      "endLine": 105,
+      "summary": "Cyclicity is equivalent to the existence of an element of order p², and in the non-cyclic case the exponent is exactly p, identifying (with abelian) the group as (ℤ/p)².",
+      "mathContext": "Non-cyclic $\\Rightarrow$ exponent $\\mid p$; exponent $\\ne 1$ since $|G| = p^2 > 1$; hence exponent $= p$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Burnside, William",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "venue": "Cambridge University Press",
+      "note": "Early systematic treatment of p-groups, including the nontrivial-centre argument underlying the order-p² abelian theorem."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "John Wiley & Sons",
+      "note": "Section 6.1 derives that groups of order p² are abelian and classifies them as ℤ/p² or ℤ/p × ℤ/p — the dichotomy formalized here."
+    },
+    {
+      "authors": "Sylow, Ludwig",
+      "title": "Théorèmes sur les groupes de substitutions",
+      "year": "1872",
+      "venue": "Mathematische Annalen 5(4), 584–594",
+      "note": "The Sylow theorems, whose p-group machinery (via the class equation) is the ancestor of the centre argument used here."
+    }
+  ],
+  "conclusion": "Groups of order p² are not merely abelian: they fall into exactly two isomorphism types, ℤ/p² and (ℤ/p)², separated by whether an element of order p² exists. The dichotomy `isCyclic_or_pow_prime_eq_one` and the exponent computation `exponent_eq_prime_of_not_isCyclic` supply the element-order invariant that turns Mathlib's abelian lemma into a complete classification, all fully machine-checked with no axioms or sorries."
+}
