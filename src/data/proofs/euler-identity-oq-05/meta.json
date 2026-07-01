@@ -19,6 +19,38 @@
     "sorries": 0
   },
   "sorries": 0,
+  "references": [
+    {
+      "authors": "Leonhard Euler",
+      "title": "Letter to Christian Goldbach (12 April 1749)",
+      "year": 1749,
+      "note": "Euler's four-square identity expressing a product of two sums of four squares as a sum of four squares."
+    },
+    {
+      "authors": "Joseph-Louis Lagrange",
+      "title": "Démonstration d'un théorème d'arithmétique (Nouveaux Mémoires Acad. Berlin)",
+      "year": 1770,
+      "note": "The four-square theorem, for which Euler's identity supplies the multiplicative (closure) step."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": 2008,
+      "note": "Oxford University Press. Sums of four squares, Euler's identity, and quaternion norms."
+    },
+    {
+      "authors": "Kenneth Ireland and Michael Rosen",
+      "title": "A Classical Introduction to Modern Number Theory (2nd ed.)",
+      "year": 1990,
+      "note": "Springer GTM 84. The four-square identity as the norm multiplicativity of the Hurwitz quaternions."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: sum-of-four-squares and Quaternion norm infrastructure",
+      "year": 2024,
+      "note": "Ring identities underlying the four-square product formula and its multiplicative closure."
+    }
+  ],
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_four-square_identity",

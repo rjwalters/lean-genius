@@ -3,6 +3,38 @@
   "title": "Doob's Optional Stopping Theorem: Standalone Formalization",
   "slug": "fair-games-theorem-oq-02-oq-01",
   "description": "Comprehensive formalization of Doob's Optional Stopping Theorem (1953) using Mathlib's probability library. Proves three forms of OST (bounded, submartingale inequality, two stopping times), the martingale convergence theorem, the submartingale characterization via OST, and Doob's maximal inequality. Answers the open question from FairGamesTheoremOQ02: Yes, Mathlib's martingale library is sufficient for a complete OST formalization. 10 theorems, 0 sorries, 621 lines.",
+  "references": [
+    {
+      "authors": "Joseph L. Doob",
+      "title": "Stochastic Processes",
+      "year": 1953,
+      "note": "Wiley. The optional stopping theorem and martingale theory formalized in this entry."
+    },
+    {
+      "authors": "David Williams",
+      "title": "Probability with Martingales",
+      "year": 1991,
+      "note": "Cambridge University Press. Optional stopping in bounded, submartingale, and two-stopping-time forms."
+    },
+    {
+      "authors": "Rick Durrett",
+      "title": "Probability: Theory and Examples (5th ed.)",
+      "year": 2019,
+      "note": "Cambridge University Press. Martingale convergence and optional stopping with applications to gambler's ruin."
+    },
+    {
+      "authors": "Jean-François Le Gall",
+      "title": "Measure Theory, Probability, and Stochastic Processes",
+      "year": 2022,
+      "note": "Springer GTM 295. Discrete-time martingales and the optional stopping theorem."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: MeasureTheory.Martingale and stopping-time infrastructure",
+      "year": 2024,
+      "note": "Mathlib's martingale/stopping-time library on which the standalone OST formalization is built."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-12",
