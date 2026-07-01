@@ -1011,6 +1011,29 @@ theorem layer_cake_repr {x M : ℝ} (hx : 0 ≤ x) (hxM : x ≤ M) :
     x = ∫ t in (0:ℝ)..M, (if t < x then (1:ℝ) else 0) :=
   (layer_cake_pointwise hx hxM).symm
 
+/-- **Pointwise product layer-cake identity.** For `0 ≤ x ≤ M` and `0 ≤ y ≤ N`,
+the product `x · y` is the double super-level integral
+`∫₀^M ∫₀^N 𝟙_{s < x} · 𝟙_{t < y} dt ds`.
+
+This is the *pointwise* (per-`ω`) input to the analytic step of Davydov's
+inequality applied at `x = f ω`, `y = g ω`: it isolates the nested
+interval-integral algebra (`intervalIntegral.integral_const_mul` /
+`integral_mul_const` peel one indicator factor at a time, each collapsed by
+`layer_cake_pointwise`), leaving only the measure-theoretic Fubini swap of the
+`ω`-integral against the product `[0,M]×[0,N]` for the S22 covariance
+representation `Cov(f,g) = ∫∫ Cov(𝟙_{f>s}, 𝟙_{g>t}) ds dt`. -/
+theorem layer_cake_pointwise_prod {x y M N : ℝ}
+    (hx : 0 ≤ x) (hxM : x ≤ M) (hy : 0 ≤ y) (hyN : y ≤ N) :
+    x * y = ∫ s in (0:ℝ)..M, ∫ t in (0:ℝ)..N,
+      (if s < x then (1:ℝ) else 0) * (if t < y then (1:ℝ) else 0) := by
+  have hinner : ∀ s : ℝ, (∫ t in (0:ℝ)..N,
+      (if s < x then (1:ℝ) else 0) * (if t < y then (1:ℝ) else 0))
+      = (if s < x then (1:ℝ) else 0) * y := by
+    intro s
+    rw [intervalIntegral.integral_const_mul, layer_cake_pointwise hy hyN]
+  simp_rw [hinner]
+  rw [intervalIntegral.integral_mul_const, layer_cake_pointwise hx hxM]
+
 omit [MeasurableSpace Ω] in
 /-- **Super-level sets are sub-σ-measurable.** If `X` is measurable w.r.t. a
 σ-algebra `m`, then every super-level set `{ω | t < X ω}` is `m`-measurable.

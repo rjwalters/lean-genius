@@ -5,8 +5,8 @@
 ### Session S21 (researcher-2, 2026-07-01) — ACT: layer-cake analytic primitives
 
 **Mode**: FRESH claim (RICH tier, depth-first). S20 (#32445) merged at HEAD.
-**Outcome**: progress — +3 VERIFIED 0-axiom theorems, sorry count unchanged (2),
-1227 → 1290 LOC, theoremCount 22 → 25.
+**Outcome**: progress — +4 VERIFIED 0-axiom theorems, sorry count unchanged (2),
+1227 → 1313 LOC, theoremCount 22 → 26.
 
 #### What I did
 The S16–S20 chain closed the *algebraic* content of `davydov_covariance_inequality`
@@ -29,6 +29,13 @@ Davydov docstring:
   `Measurable[m] X`, via `measurableSet_lt measurable_const hX`. This is the
   measurability hook discharging the σ-algebra hypotheses of
   `indicator_covariance_le_alpha` for the super-level indicators `𝟙_{X>s}`.
+- `layer_cake_pointwise_prod` (0-axiom): for `0 ≤ x ≤ M`, `0 ≤ y ≤ N`,
+  `x·y = ∫₀^M ∫₀^N 𝟙_{s<x}·𝟙_{t<y} dt ds`. The *pointwise* product input to the
+  S22 Fubini step: `intervalIntegral.integral_const_mul` peels the (constant-in-`t`)
+  `𝟙_{s<x}` from the inner integral → `𝟙_{s<x}·y` (`layer_cake_pointwise`), then
+  `intervalIntegral.integral_mul_const` peels the (constant-in-`s`) `y` from the
+  outer → `x·y`. Isolates the interval-integral algebra, leaving only the
+  measure-theoretic swap of the `ω`-integral against `[0,M]×[0,N]` for S22.
 
 #### Proof techniques / gotchas (reusable)
 - `setIntegral_const` yields `volume.real s • c` (note `Measure.real`, not
