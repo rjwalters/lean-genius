@@ -950,4 +950,71 @@ theorem sphericalIncircle_center_on_bisectors {Na Nb Nc O : E} {ρ : ℝ}
     (equidistant_two_sides_iff Nb Nc O).mp (tb.trans tc.symm),
     (equidistant_two_sides_iff Na Nc O).mp (ta.trans tc.symm)⟩
 
+/-! ## Intersecting the bisectors — existence of the spherical incenter
+
+The characterisation above says an incircle centre lies on a bisector of each pair.  To
+*produce* an incenter we run the argument in reverse: intersect two of the bisector great
+circles and read off a point equidistant from all three sides.  The intersection step is
+`greatCircles_inter`; feeding it the two *internal* bisector poles `Na − Nb` and `Nb − Nc`
+gives a point `O` with `⟪O, Na⟫ = ⟪O, Nb⟫ = ⟪O, Nc⟫`, whence `arcsin` of that common value is
+the incircle radius.  This is the existence half of the spherical incircle. -/
+
+/-- **Two great circles intersect in an antipodal pair.**  On a sphere of dimension `≥ 2`
+(`finrank ℝ E > 2`), the two great circles with poles `Na, Nb` meet: there is a unit point `P`
+on both, distinct from its antipode `−P`, which also lies on both.  Reuses
+`exists_common_perp_tangent` for a nonzero direction orthogonal to both poles, then normalises
+it to the sphere.  This is the primitive that lets the angle bisectors be intersected. -/
+theorem greatCircles_inter [FiniteDimensional ℝ E] (Na Nb : E)
+    (hdim : 2 < Module.finrank ℝ E) :
+    ∃ P : E, OnSphere P ∧ P ≠ -P ∧
+      P ∈ sGreatCircle Na ∧ P ∈ sGreatCircle Nb ∧
+      (-P) ∈ sGreatCircle Na ∧ (-P) ∈ sGreatCircle Nb := by
+  obtain ⟨T, hT0, hTa, hTb⟩ := exists_common_perp_tangent Na Nb hdim
+  have hTnorm : ‖T‖ ≠ 0 := norm_ne_zero_iff.mpr hT0
+  set P : E := (‖T‖⁻¹ : ℝ) • T with hP
+  have hPon : OnSphere P := by
+    rw [OnSphere, hP, norm_smul, norm_inv, norm_norm]
+    exact inv_mul_cancel₀ hTnorm
+  have hPa : (⟪P, Na⟫ : ℝ) = 0 := by rw [hP, real_inner_smul_left, hTa, mul_zero]
+  have hPb : (⟪P, Nb⟫ : ℝ) = 0 := by rw [hP, real_inner_smul_left, hTb, mul_zero]
+  have hPne0 : P ≠ 0 := by
+    intro h; rw [OnSphere, h, norm_zero] at hPon; exact one_ne_zero hPon.symm
+  have hPantiOn : OnSphere (-P) := by rw [OnSphere, norm_neg]; exact hPon
+  refine ⟨P, hPon, ?_, ⟨hPon, hPa⟩, ⟨hPon, hPb⟩,
+    ⟨hPantiOn, by rw [inner_neg_left, hPa, neg_zero]⟩,
+    ⟨hPantiOn, by rw [inner_neg_left, hPb, neg_zero]⟩⟩
+  intro h
+  have hpp : P + P = 0 := by nth_rewrite 1 [h]; exact neg_add_cancel P
+  have h2 : (2 : ℝ) • P = 0 := by rw [two_smul]; exact hpp
+  rcases smul_eq_zero.mp h2 with h20 | hp0
+  · norm_num at h20
+  · exact hPne0 hp0
+
+/-- **Existence of the spherical incenter.**  For any three unit side poles `Na, Nb, Nc` on a
+sphere of dimension `≥ 2` (`finrank ℝ E > 2`), there is a centre `O` and radius `ρ` making
+`SphericalIncircle Na Nb Nc O ρ` — an inscribed circle tangent to all three sides.  Construct
+`O` by intersecting the two internal angle bisectors (poles `Na − Nb`, `Nb − Nc`) via
+`greatCircles_inter`; this forces `⟪O, Na⟫ = ⟪O, Nb⟫ = ⟪O, Nc⟫`, and `ρ = arcsin` of that
+common inner product realises the equal tangency distance to each side. -/
+theorem sphericalIncircle_exists [FiniteDimensional ℝ E] (Na Nb Nc : E)
+    (hNa : OnSphere Na) (hdim : 2 < Module.finrank ℝ E) :
+    ∃ (O : E) (ρ : ℝ), SphericalIncircle Na Nb Nc O ρ := by
+  obtain ⟨O, hOon, -, ⟨-, hab⟩, ⟨-, hbc⟩, -, -⟩ :=
+    greatCircles_inter (Na - Nb) (Nb - Nc) hdim
+  -- the intersection point has equal inner product against all three poles
+  have hab' : (⟪O, Na⟫ : ℝ) = ⟪O, Nb⟫ := by
+    have := hab; rw [inner_sub_right] at this; linarith
+  have hbc' : (⟪O, Nb⟫ : ℝ) = ⟪O, Nc⟫ := by
+    have := hbc; rw [inner_sub_right] at this; linarith
+  -- the common value is bounded by 1 in absolute value (Cauchy–Schwarz on unit vectors)
+  have hbound : |(⟪O, Na⟫ : ℝ)| ≤ 1 := by
+    have h := abs_real_inner_le_norm O Na; rw [hOon, hNa, mul_one] at h; exact h
+  refine ⟨O, Real.arcsin |⟪O, Na⟫|, ?_, ?_, ?_⟩
+  · show |(⟪O, Na⟫ : ℝ)| = Real.sin (Real.arcsin |⟪O, Na⟫|)
+    rw [Real.sin_arcsin (by linarith [abs_nonneg (⟪O, Na⟫ : ℝ)]) hbound]
+  · show |(⟪O, Nb⟫ : ℝ)| = Real.sin (Real.arcsin |⟪O, Na⟫|)
+    rw [Real.sin_arcsin (by linarith [abs_nonneg (⟪O, Na⟫ : ℝ)]) hbound, ← hab']
+  · show |(⟪O, Nc⟫ : ℝ)| = Real.sin (Real.arcsin |⟪O, Na⟫|)
+    rw [Real.sin_arcsin (by linarith [abs_nonneg (⟪O, Na⟫ : ℝ)]) hbound, ← hbc', ← hab']
+
 end FeuerbachsTheoremOQ04

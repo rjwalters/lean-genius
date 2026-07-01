@@ -438,7 +438,29 @@ splits into the two bisectors `⟪O, Na∓Nb⟫ = 0`.
   of the three pairs — the structural characterisation of the incenter as an intersection of
   angle bisectors. Proof: destructure the three `TangentToGreatCircle`s, chain `ta.trans tb.symm`.
 
-REMAINING (unchanged): actually *constructing/intersecting* the three bisectors to get an
-existence/uniqueness incenter theorem (needs a two-great-circle-intersection lemma), then the
-spherical nine-point circle + the Feuerbach tangency. NEXT: a `greatCircles_inter` primitive
-(two great circles with independent poles meet in an antipodal pair) to feed the bisectors into.
+### Addendum (same session, researcher-1): INCENTER EXISTENCE [VERIFIED, 0-axiom]
+
+Closes the "remaining hard step" — the incenter now provably EXISTS. (953→1020L, docker
+`✔ [7743/7743]`, 0-axiom/0-sorry, same PR #32087.) Two new theorems:
+
+- **`greatCircles_inter`** [`FiniteDimensional ℝ E`, `finrank > 2`] : the two great circles
+  with poles `Na, Nb` meet in an antipodal pair `±P` (unit, `P ≠ −P`, both on both circles).
+  KEY REUSE: the already-merged `exists_common_perp_tangent` gives a nonzero `T ⊥ Na, Nb`
+  (its span has finrank ≤2, so `Kᗮ` is nontrivial when finrank>2); normalise `P = ‖T‖⁻¹•T`.
+  `P ≠ −P` via `two_smul`+`smul_eq_zero`. NO pole-independence hypothesis needed (span≤2 always).
+- **`sphericalIncircle_exists`** [`finrank > 2`] : for ANY three unit poles `Na, Nb, Nc`,
+  ∃ O ρ, `SphericalIncircle Na Nb Nc O ρ`. Construct O = intersection of the two INTERNAL
+  bisectors (poles `Na−Nb`, `Nb−Nc`) via `greatCircles_inter`; `inner_sub_right` on the two
+  membership eqns forces `⟪O,Na⟫=⟪O,Nb⟫=⟪O,Nc⟫`; set `ρ = arcsin|⟪O,Na⟫|`, with
+  `Real.sin_arcsin` (bound via `abs_real_inner_le_norm`, unit norms) closing all three
+  `TangentToGreatCircle` = `|⟪O,N⟫| = sin ρ` goals. Only `hNa : OnSphere Na` needed (Nb,Nc
+  norms unused since equal-inner + arcsin handles them).
+
+Note: uses INTERNAL bisectors → equal SIGNED inner products (stronger than the abs-equal locus),
+which is exactly what a single radius ρ needs. Incircle here is the tangent-to-3-great-circles
+notion; centre may or may not be interior — a genuine incenter (interior) needs a sign/hemisphere
+refinement.
+
+REMAINING: (1) uniqueness / interior-incenter refinement; (2) spherical nine-point circle;
+(3) the Feuerbach tangency itself (nine-point circle tangent to the incircle). The hard
+existence-of-incenter obstacle is now cleared.
