@@ -47,6 +47,21 @@
       "targetId": "erdos-357",
       "relationship": "extends",
       "description": "The parent entry proves conjecture_equiv for its specific function f, unfolding isLittleO_iff_tendsto' inline. This entry generalizes that argument to an arbitrary sequence u : ℕ → ℝ, adds an ε–N characterization, and applies the result to the parent's OPEN infinite-set density-zero conjecture, which the parent stated only in ratio-limit form."
+    },
+    {
+      "targetId": "szemeredi-full-oq-02",
+      "relationship": "shares-technique",
+      "description": "Szemerédi Density proves that a k-AP-free subset of [1,N] has size o(N) using the very same bridge, Asymptotics.isLittleO_iff_tendsto, to move between the little-o and ratio-limit forms of the density bound. That entry applies the bridge to a single concrete counting function; this entry isolates the bridge for an arbitrary sequence and hands back the ε–N face those density arguments actually need."
+    },
+    {
+      "targetId": "erdos-31-primes-density",
+      "relationship": "specializes-to",
+      "description": "Primes Have Natural Density Zero is a worked instance of the trichotomy stated here: π(N)/N → 0 is the ratio-limit face, π(N) =o[atTop] N the little-o face, and 'eventually π(N) ≤ ε·N' the ε–N face, all of which density_zero_iff_littleO and density_zero_iff_eventually_le supply for the counting function #{p prime | p ≤ N} at once."
+    },
+    {
+      "targetId": "erdos-1003-oq-03",
+      "relationship": "related",
+      "description": "The Density Layer of Erdős #1003 catalogs what a genuine asymptotic-density answer must produce; the little-o ⇔ ratio-limit ⇔ ε–N trichotomy here is precisely the interchangeable menu of density formulations such an answer can be phrased in, letting a density-zero claim be attacked in whichever of the three forms is most convenient."
     }
   ],
   "overview": {
