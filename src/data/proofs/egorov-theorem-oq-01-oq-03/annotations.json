@@ -28,7 +28,7 @@
     "id": "ann-egorov-oq0103-marching",
     "proofId": "egorov-theorem-oq-01-oq-03",
     "range": {
-      "startLine": 60,
+      "startLine": 63,
       "endLine": 66
     },
     "type": "definition",
@@ -91,6 +91,32 @@
       "Real.volume_Ici",
       "measure_mono",
       "Nat.floor bounds"
+    ]
+  },
+  {
+    "id": "ann-egorov-oq0103-integral-measure",
+    "proofId": "egorov-theorem-oq-01-oq-03",
+    "range": {
+      "startLine": 147,
+      "endLine": 210
+    },
+    "type": "theorem",
+    "title": "The Integral and Convergence-in-Measure Faces",
+    "content": "The same marching counterexample defeats two further finite-measure principles. marching_integral_eq_one computes ∫ fₙ = vol[n,n+1] = 1 (via integral_indicator + setIntegral_const + Real.volume_real_Icc_of_le), so a fixed unit of mass is conserved for every n; marching_integral_not_tendsto_zero then observes ∫ fₙ ≡ 1 → 1 ≠ 0 = ∫(lim fₙ) (tendsto_const_nhds_iff), breaking the limit–integral interchange — the mechanism behind the failure of dominated/bounded convergence on infinite measure. marching_not_tendstoInMeasure gives the third face: for ε = 1/2 the bad set {x : 1/2 ≤ ‖fₙ(x)‖} = [n,n+1] has constant measure 1, so fₙ does not converge to 0 in measure, even though it converges everywhere. On a finite-measure space a.e. convergence would force convergence in measure; here the escaping unit of mass defeats all three implications at once.",
+    "mathContext": "$\\int f_n = 1 \\not\\to 0$ and $\\mathrm{vol}\\{x:\\tfrac12\\le\\|f_n(x)\\|\\}=1\\not\\to 0$: the integral and in-measure faces of mass escaping to $+\\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "limit–integral interchange",
+      "dominated convergence theorem",
+      "convergence in measure",
+      "tightness / uniform integrability",
+      "mass escaping to infinity"
+    ],
+    "prerequisites": [
+      "MeasureTheory.integral_indicator",
+      "Real.volume_real_Icc_of_le",
+      "tendsto_const_nhds_iff",
+      "TendstoInMeasure"
     ]
   }
 ]
