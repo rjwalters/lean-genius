@@ -168,7 +168,23 @@
       "url": "https://www.ams.org/books/conm/253/"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-17-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: the degree-sharp Fejér–Riesz upper bound 2·deg u ≤ deg p. This entry answers that file's first open question, sharpening the symmetric ≤ bound to the exact normalization deg v < deg u with 2·deg u = deg p, and adds the even-degree and positive-leading-coefficient corollaries."
+    },
+    {
+      "targetId": "hilbert-17-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent: the Pfister bound on the minimum number of squares. The univariate two-square strand is sharpened here from an existence/upper-bound statement to an exact-degree certificate."
+    },
+    {
+      "targetId": "hilbert-17",
+      "relationship": "related",
+      "description": "Root: Hilbert's 17th problem and Artin's theorem. The univariate case is the classical exceptional case in which polynomial (not merely rational) squares already suffice."
+    }
+  ],
   "sections": [
     {
       "id": "header",
