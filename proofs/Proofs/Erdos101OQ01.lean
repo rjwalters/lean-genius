@@ -759,4 +759,79 @@ theorem erdos_three_halves_conjecture_refuted_constructive :
   rw [hcard]
   linarith [hP_lb, h_rpow_lt]
 
+/-! ## S5 ACT: the strong (all-exponents) refutation
+
+`erdos_three_halves_conjecture_refuted` kills exactly one exponent, `β = 3/2`. But the
+Solymosi–Stojaković lower bound is far stronger: its witness exponent `2 - C/√(log n)`
+tends to `2`, so it exceeds *every* fixed `β < 2` eventually. The theorem below records
+this — the four-point line count is not `O(nᵝ)` for any `β < 2` — which subsumes the
+`3/2` refutation as the special case `β = 3/2` and pins the true growth rate firmly in
+the "just below quadratic" regime that OQ-01 asks to sharpen to `o(n²)`.
+
+Sorry count unchanged (still 2). Axiom count unchanged (still 0). Theorem count: +1. -/
+
+/-- **Strong refutation: the four-point line count is not `O(nᵝ)` for any `β < 2`.**
+
+For every exponent `β < 2` there is no global bound `fourPointLineCount P ≤ |P|ᵝ` holding
+for all sufficiently large no-five-collinear `P`. Specialising the Solymosi–Stojaković
+lower bound to `C = 1`, the witness exponent `2 - 1/√(log n)` exceeds `β` once
+`√(log n) > 1/(2 − β)` (i.e. `n > exp(1/(2 − β)²)`), and `Real.rpow` is strictly monotone
+in the exponent for base `> 1`, contradicting the hypothesised `nᵝ` upper bound.
+
+`erdos_three_halves_conjecture_refuted` is the special case `β = 3/2`. Depends only on the
+deferred `solymosi_stojakovic_lower_bound`; the argument here is itself sorry-free and
+axiom-free. -/
+theorem four_point_line_count_not_O_rpow (β : ℝ) (hβ : β < 2) :
+    ¬ (∃ N : ℕ, ∀ (P : PlanarPointSet), NoFiveCollinear P → N ≤ P.points.card →
+        (fourPointLineCount P : ℝ) ≤ (P.points.card : ℝ) ^ β) := by
+  rintro ⟨N₀, hN₀⟩
+  -- Solymosi–Stojaković with `C = 1`.
+  obtain ⟨N₁, hN₁⟩ := solymosi_stojakovic_lower_bound (1 : ℝ) (by norm_num)
+  have h2β : (0 : ℝ) < 2 - β := by linarith
+  -- Threshold on `log`: need `log m > (1/(2-β))²`, i.e. `m > exp ((1/(2-β))²)`.
+  set T : ℝ := (1 / (2 - β)) ^ 2 with hT
+  have hTpos : (0 : ℝ) < T := by positivity
+  obtain ⟨K, hK⟩ := exists_nat_gt (Real.exp T)
+  -- Pick a single `m` beating `N₀`, `N₁`, and `K`.
+  set m : ℕ := max N₀ (max N₁ K) with hm_def
+  have hm_N₀ : N₀ ≤ m := le_max_left _ _
+  have hm_N₁ : N₁ ≤ m := (le_max_left N₁ K).trans (le_max_right _ _)
+  have hm_K : K ≤ m := (le_max_right N₁ K).trans (le_max_right _ _)
+  -- Solymosi–Stojaković witness at size `m`.
+  obtain ⟨P, hcard, hP_no5, hP_lb⟩ := hN₁ m hm_N₁
+  have hP_card_ge : N₀ ≤ P.points.card := hcard.symm ▸ hm_N₀
+  have hP_ub : (fourPointLineCount P : ℝ) ≤ (P.points.card : ℝ) ^ β :=
+    hN₀ P hP_no5 hP_card_ge
+  -- `m > exp T`, hence `m > 1`.
+  have hexpT_lt_m : Real.exp T < (m : ℝ) := by
+    have hKm : (K : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm_K
+    linarith
+  have hexpT_gt_one : (1 : ℝ) < Real.exp T := by
+    rw [show (1 : ℝ) = Real.exp 0 from Real.exp_zero.symm]; exact Real.exp_lt_exp.mpr hTpos
+  have hm_gt_one : (1 : ℝ) < (m : ℝ) := lt_trans hexpT_gt_one hexpT_lt_m
+  -- `log m > T`.
+  have hlog_gt_T : T < Real.log (m : ℝ) := by
+    have h := Real.log_lt_log (Real.exp_pos T) hexpT_lt_m
+    rwa [Real.log_exp] at h
+  -- `√(log m) > 1/(2-β)`.
+  have hsqrt_gt : (1 / (2 - β)) < Real.sqrt (Real.log (m : ℝ)) := by
+    have h := Real.sqrt_lt_sqrt hTpos.le hlog_gt_T
+    rwa [hT, Real.sqrt_sq (by positivity)] at h
+  have hsqrt_pos : (0 : ℝ) < Real.sqrt (Real.log (m : ℝ)) :=
+    lt_trans (by positivity) hsqrt_gt
+  -- `1/√(log m) < 2 - β`, hence `β < 2 - 1/√(log m)`.
+  have hone_lt : (1 : ℝ) < Real.sqrt (Real.log (m : ℝ)) * (2 - β) :=
+    (div_lt_iff₀ h2β).mp hsqrt_gt
+  have h_exp_gt : β < 2 - (1 : ℝ) / Real.sqrt (Real.log (m : ℝ)) := by
+    have hfrac : (1 : ℝ) / Real.sqrt (Real.log (m : ℝ)) < 2 - β := by
+      rw [div_lt_iff₀ hsqrt_pos, mul_comm]; exact hone_lt
+    linarith
+  -- Strict monotonicity of `Real.rpow` in the exponent (base `> 1`).
+  have h_rpow_lt :
+      (m : ℝ) ^ β < (m : ℝ) ^ (2 - (1 : ℝ) / Real.sqrt (Real.log (m : ℝ))) :=
+    Real.rpow_lt_rpow_of_exponent_lt hm_gt_one h_exp_gt
+  -- Chain: `m^(2-1/√log m) ≤ count ≤ m^β < m^(2-1/√log m)` — contradiction.
+  have hP_ub_m : (fourPointLineCount P : ℝ) ≤ (m : ℝ) ^ β := by rw [hcard] at hP_ub; exact hP_ub
+  linarith [hP_lb, hP_ub_m, h_rpow_lt]
+
 end Erdos101OQ01
