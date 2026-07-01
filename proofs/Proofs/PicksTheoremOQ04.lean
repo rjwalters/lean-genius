@@ -306,8 +306,3 @@ example :
   unfold twiceArea; rw [h]; norm_num
 
 end PicksTheoremOQ04
-
--- TEMP axiom audit (removed before commit)
-#print axioms PicksTheoremOQ04.shoelace_eq_fan
-#print axioms PicksTheoremOQ04.pick_bridge
-#print axioms PicksTheoremOQ04.shoelace_translate
