@@ -244,22 +244,18 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Analysis.Complex.Polynomial.Basic",
-      "Mathlib.Analysis.Normed.Field.Basic",
-      "Mathlib.Topology.Connected.Basic",
-      "Mathlib.Topology.MetricSpace.Basic",
-      "Mathlib.Algebra.Polynomial.Eval.SMul"
+      "Proofs.Erdos1047OQ02Certificate"
     ],
     "opens": [
       "Polynomial",
       "Set"
     ],
     "namespace": "Erdos1047",
-    "lineCount": 265,
+    "lineCount": 70,
     "axiomCount": 0,
-    "theoremCount": 10,
-    "definitionCount": 13,
-    "path": "Proofs/Erdos1047Problem.lean",
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1047Main.lean",
     "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos1047Problem.lean",
