@@ -2938,4 +2938,62 @@ theorem zeroPivotCell_ne (s : GridSimplex d N) (hd1 : 0 < d)
   simp only [zeroPivotCell_verts_last] at hv
   exact zeroPivotTop_not_mem_chain s hd1 hfeas (Fin.last d) hv
 
+/-- **The shared cross-chain facet.**  The top facet (`Fin.last d`) of the
+partner cell `zeroPivotCell` equals facet `0` of `s`.  Dropping the partner's
+last vertex (`zeroPivotTop`) leaves its lower `d` vertices, which are exactly
+`s`'s upper chain `verts 1, …, verts d` (`zeroPivotCell_verts_of_lt`); that set
+is precisely facet `0` of `s`.  This is the concrete facet-level gluing datum at
+facet `0` that all prior sessions flagged as "must be constructed": the two
+*distinct* cells `s` and `zeroPivotCell` (`zeroPivotCell_ne`) meet along one
+common facet — `s` across its facet `0` and `zeroPivotCell` across its facet
+`Fin.last d` — the boundary `gridNeighbor` leaves unpaired
+(`gridNeighbor_zero_none_not_boundary_face`). -/
+theorem zeroPivotCell_gridFacet_last (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    gridFacet (zeroPivotCell s hd1 hfeas) (Fin.last d) = gridFacet s 0 := by
+  ext v
+  rw [mem_gridFacet_iff, mem_gridFacet_iff]
+  constructor
+  · rintro ⟨j, hj, rfl⟩
+    have hjd : j.val < d := by
+      have := j.isLt
+      rcases Nat.lt_or_ge j.val d with h | h
+      · exact h
+      · exact absurd (Fin.ext (by simp [Fin.val_last]; omega)) hj
+    refine ⟨⟨j.val + 1, by omega⟩, ?_, ?_⟩
+    · simp only [ne_eq, Fin.ext_iff, Fin.val_zero]; omega
+    · show gridVertices s ⟨j.val + 1, _⟩ = gridVertices (zeroPivotCell s hd1 hfeas) j
+      unfold gridVertices
+      rw [zeroPivotCell_verts_of_lt s hd1 hfeas j hjd]
+  · rintro ⟨i, hi, rfl⟩
+    have hile : i.val ≤ d := by have := i.isLt; omega
+    have hi1 : 1 ≤ i.val :=
+      Nat.pos_of_ne_zero (fun h => hi (Fin.ext (by simp [h])))
+    have hlt : i.val - 1 < d + 1 := by omega
+    have hval : (⟨i.val - 1, hlt⟩ : Fin (d + 1)).val = i.val - 1 := rfl
+    refine ⟨⟨i.val - 1, hlt⟩, ?_, ?_⟩
+    · simp only [ne_eq, Fin.ext_iff, Fin.val_last]; omega
+    · have hstep : (zeroPivotCell s hd1 hfeas).verts ⟨i.val - 1, hlt⟩ = s.verts i := by
+        rw [zeroPivotCell_verts_of_lt s hd1 hfeas ⟨i.val - 1, hlt⟩ (by rw [hval]; omega)]
+        congr 1
+        apply Fin.ext
+        show (⟨i.val - 1, hlt⟩ : Fin (d + 1)).val + 1 = i.val
+        rw [hval]
+        omega
+      show gridVertices (zeroPivotCell s hd1 hfeas) ⟨i.val - 1, hlt⟩ = gridVertices s i
+      unfold gridVertices
+      rw [hstep]
+
+/-- **Facet-`0` cross-chain gluing witness.**  Packages
+`zeroPivotCell_gridFacet_last` with `zeroPivotCell_ne`: in the feasible regime the
+partner cell `zeroPivotCell` is a cell *distinct* from `s` that shares `s`'s facet
+`0` (as its own facet `Fin.last d`).  This is exactly the adjacency datum a total
+gluing map must record at the facet-`0` boundary that the within-chain
+`gridNeighbor` leaves as `none`. -/
+theorem zeroPivotCell_shares_facet_zero (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    zeroPivotCell s hd1 hfeas ≠ s ∧
+      gridFacet (zeroPivotCell s hd1 hfeas) (Fin.last d) = gridFacet s 0 :=
+  ⟨zeroPivotCell_ne s hd1 hfeas, zeroPivotCell_gridFacet_last s hd1 hfeas⟩
+
 end SpernerNDimOQ02
