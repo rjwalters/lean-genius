@@ -1,0 +1,144 @@
+[
+  {
+    "id": "ann-chmoq0702-0",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-02",
+    "range": {
+      "startLine": 49,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "The Inverse Polynomial over a Commutative Ring",
+    "content": "The construction that carries the parent's field result into an arbitrary commutative ring. `invPoly A := C (Ring.inverse (−c₀)) · divX (charpoly A)`, where `c₀ = (charpoly A).coeff 0`. The single change from the field version is that the scalar reciprocal `(−c₀)⁻¹` is replaced by the ring inverse `Ring.inverse (−c₀)`, which is a genuine inverse exactly when `−c₀` is a unit. Everything downstream is the claim that evaluating this explicit polynomial at `A` returns `A⁻¹` whenever `det A` is a unit. It is `noncomputable` only because it references `Ring.inverse` and the characteristic polynomial.",
+    "mathContext": "$r = C(\\mathrm{Ring.inverse}(-c_0))\\cdot \\mathrm{div}_X(p)$ with $p = \\mathrm{charpoly}\\,A$; $\\deg r < \\deg p = n$ and $(\\mathrm{aeval}\\,A)\\,r = A^{-1}$ once $\\det A$ is a unit.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Characteristic polynomial",
+      "Ring.inverse",
+      "Polynomial division by X (divX)",
+      "Units of a commutative ring"
+    ],
+    "prerequisites": [
+      "Matrix.charpoly",
+      "Ring.inverse",
+      "Polynomial.divX"
+    ],
+    "tags": [
+      "definition",
+      "setup"
+    ]
+  },
+  {
+    "id": "ann-chmoq0702-1",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-02",
+    "range": {
+      "startLine": 62,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Invertibility Forces a Unit Constant Term",
+    "content": "`isUnit_neg_charpoly_coeff_zero` is the arithmetic heart of the upgrade. Over a field one only needs `c₀ ≠ 0`; over a commutative ring one needs `−c₀` to be an actual unit. The proof uses `Matrix.det_eq_sign_charpoly_coeff` to write `det A = (−1)ⁿ · c₀`, then observes `(−1)ⁿ` squares to `1` so it is a self-inverse unit. Hence `IsUnit (det A)` transfers to `IsUnit c₀`, and negation preserves units, giving `IsUnit (−c₀)`. This is precisely the hypothesis under which `Ring.inverse (−c₀)` behaves like a reciprocal.",
+    "mathContext": "$\\det A = (-1)^n c_0$ and $((-1)^n)^2 = 1$, so $\\mathrm{IsUnit}(\\det A) \\Rightarrow \\mathrm{IsUnit}(c_0) \\Rightarrow \\mathrm{IsUnit}(-c_0)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Determinant and the characteristic polynomial constant term",
+      "Units of a commutative ring",
+      "IsUnit closure under products and negation"
+    ],
+    "prerequisites": [
+      "Matrix.det_eq_sign_charpoly_coeff",
+      "IsUnit.mul",
+      "isUnit_neg_one"
+    ],
+    "tags": [
+      "theorem",
+      "units",
+      "key-step"
+    ]
+  },
+  {
+    "id": "ann-chmoq0702-2",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-02",
+    "range": {
+      "startLine": 76,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "Cayley–Hamilton in Additive Form",
+    "content": "`aeval_divX_mul_self` peels the constant term off the characteristic polynomial. Starting from `Matrix.aeval_self_charpoly` (Cayley–Hamilton: `p(A) = 0`) and the identity `divX p · X + C (p.coeff 0) = p` (`divX_mul_X_add`), evaluating at `A` and distributing `aeval` over the sum and product yields `(divX p)(A)·A + c₀•1 = 0`. This is the relation `(polynomial in A)·A = scalar` that, after dividing by the unit `−c₀`, exhibits the inverse. It holds over any commutative ring with no invertibility hypothesis.",
+    "mathContext": "$(\\mathrm{aeval}\\,A)(\\mathrm{div}_X p)\\cdot A + c_0\\bullet 1 = 0$, obtained by evaluating $p = \\mathrm{div}_X p\\cdot X + C\\,c_0$ at $A$ using $p(A)=0$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Cayley–Hamilton theorem",
+      "Polynomial evaluation (aeval)",
+      "Splitting off the constant term via divX"
+    ],
+    "prerequisites": [
+      "Matrix.aeval_self_charpoly",
+      "Polynomial.divX_mul_X_add",
+      "aeval_X, aeval_C"
+    ],
+    "tags": [
+      "theorem",
+      "cayley-hamilton"
+    ]
+  },
+  {
+    "id": "ann-chmoq0702-3",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-02",
+    "range": {
+      "startLine": 89,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "The Inverse as a Polynomial in A",
+    "content": "The core cluster. `aeval_invPoly_mul_self` divides the additive relation by the unit `−c₀`: where the field proof used `(−c₀)⁻¹·(−c₀) = 1`, here `Ring.inverse_mul_cancel _ hunit` does the same on the unit `−c₀`, producing `(aeval A)(invPoly A) · A = 1`. `inv_eq_aeval_invPoly` promotes this left inverse to the nonsingular inverse via `Matrix.inv_eq_left_inv`, giving `A⁻¹ = (aeval A)(invPoly A)`. `invPoly_natDegree_lt` bounds the degree below `n` from `natDegree_C_mul_le`, `degree_divX_lt`, and `charpoly_natDegree_eq_dim`. `inv_mem_adjoin` then places `A⁻¹` in `Algebra.adjoin R {A} = R[A]` using `Algebra.adjoin_singleton_eq_range_aeval`, and `self_mul_aeval_invPoly` records the right-inverse companion via `Matrix.mul_eq_one_comm`.",
+    "mathContext": "$A^{-1} = (\\mathrm{aeval}\\,A)(\\mathrm{invPoly}\\,A) = \\mathrm{Ring.inverse}(-c_0)\\bullet (\\mathrm{div}_X p)(A)$, of degree $< n$, and $A^{-1}\\in R[A]$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Ring.inverse_mul_cancel",
+      "Nonsingular matrix inverse (inv_eq_left_inv)",
+      "Subalgebra generated by an element (Algebra.adjoin)",
+      "Degree of a polynomial (natDegree)"
+    ],
+    "prerequisites": [
+      "Ring.inverse_mul_cancel",
+      "Matrix.inv_eq_left_inv",
+      "Matrix.mul_eq_one_comm",
+      "Algebra.adjoin_singleton_eq_range_aeval",
+      "Matrix.charpoly_natDegree_eq_dim"
+    ],
+    "tags": [
+      "theorem",
+      "main-result",
+      "degree-bound"
+    ]
+  },
+  {
+    "id": "ann-chmoq0702-4",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-02",
+    "range": {
+      "startLine": 140,
+      "endLine": 160
+    },
+    "type": "theorem",
+    "title": "Packaged Existence, Adjugate Reconciliation and the GL(n, ℤ) Instance",
+    "content": "The closing results tie the construction to the rest of Mathlib and demonstrate its reach beyond fields. `exists_inv_eq_aeval` packages the main result as a degree-bounded existence statement `∃ r, r.natDegree < n ∧ A⁻¹ = (aeval A) r`. `inv_eq_smul_adjugate` shows the polynomial inverse is the same matrix as Mathlib's adjugate inverse `Ring.inverse (det A) • adjugate A` (`Matrix.inv_def`), so the two constructions describe one and the same `A⁻¹`. Finally the `example` over `ℤ` — not a field — exhibits a unimodular integer matrix (`det A = ±1`) whose inverse lies in the integer-coefficient subalgebra `ℤ[A]`, the concrete case out of reach of the field-only parent.",
+    "mathContext": "$A^{-1} = \\mathrm{Ring.inverse}(\\det A)\\bullet \\mathrm{adjugate}\\,A$; over $\\mathbb{Z}$, $\\det A = \\pm 1 \\Rightarrow A^{-1}\\in \\mathbb{Z}[A]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Adjugate and the nonsingular inverse (Matrix.inv_def)",
+      "General linear group GL(n, ℤ)",
+      "Integer-coefficient polynomial expressions"
+    ],
+    "prerequisites": [
+      "Matrix.inv_def",
+      "Matrix.adjugate",
+      "Algebra.adjoin over ℤ"
+    ],
+    "tags": [
+      "theorem",
+      "packaging",
+      "example"
+    ]
+  }
+]
