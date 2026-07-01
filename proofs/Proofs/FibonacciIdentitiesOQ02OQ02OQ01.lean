@@ -149,9 +149,12 @@ theorem lucasV_fib (n : ℕ) :
     refine ⟨ih1, ?_⟩
     have hv : lucasV 1 (-1) (n + 2) = lucasV 1 (-1) (n + 1) + lucasV 1 (-1) n := by
       rw [lucasV_add_two]; ring
-    rw [hv, ih0, ih1, Nat.fib_add_two (n := n + 1)]
-    push_cast
-    ring
+    have f2 : (Nat.fib (n + 2) : ℤ) = (Nat.fib n : ℤ) + (Nat.fib (n + 1) : ℤ) :=
+      by exact_mod_cast (Nat.fib_add_two : Nat.fib (n + 2) = Nat.fib n + Nat.fib (n + 1))
+    have f3 : (Nat.fib (n + 3) : ℤ) = (Nat.fib (n + 1) : ℤ) + (Nat.fib (n + 2) : ℤ) :=
+      by exact_mod_cast (Nat.fib_add_two : Nat.fib (n + 3) = Nat.fib (n + 1) + Nat.fib (n + 2))
+    rw [hv, ih0, ih1]
+    linarith [f2, f3]
 
 /-- Mathlib's `Nat.fib_two_mul` recovered from the general even doubling law
 `U_{2n} = Uₙ · Vₙ` at `(P, Q) = (1, −1)`, cast to `ℤ`. -/
