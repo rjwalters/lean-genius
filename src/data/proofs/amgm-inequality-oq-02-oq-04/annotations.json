@@ -226,5 +226,92 @@
       "am-gm",
       "key-result"
     ]
+  },
+  {
+    "id": "ann-amgmoq0204-header",
+    "proofId": "amgm-inequality-oq-02-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "context",
+    "title": "Setup: Symmetric Functions, Means, and the Axiom Being Discharged",
+    "content": "The module docstring fixes notation and states the goal precisely. The elementary symmetric polynomials of x, y, z are e1 = x+y+z, e2 = xy+yz+zx, e3 = xyz, and the normalized Maclaurin means are M1 = e1/3, M2 = sqrt(e2/3), M3 = e3^(1/3). Newton's inequalities in normalized form p_k^2 >= p_{k-1} p_{k+1} (with p_k = e_k / C(3,k)) unwind to e1^2 >= 3e2 (N1) and e2^2 >= 3 e1 e3 (N2). The header's key claim -- and the reason this file needs no axiom -- is that for three variables each Newton gap is an exact sum of squares (half of sum (x-y)^2 and half of sum (xy-yz)^2), so log-concavity is unconditional rather than a consequence of the real-rootedness/Rolle machinery the parent amgm-inequality-oq-02 had to assume as newton_log_concavity. The single import Mathlib and open Real bring in nlinarith, Real.sqrt, and Real.rpow.",
+    "mathContext": "$e_1=x+y+z,\\ e_2=xy+yz+zx,\\ e_3=xyz$; $M_1=\\tfrac{e_1}{3},\\ M_2=\\sqrt{\\tfrac{e_2}{3}},\\ M_3=e_3^{1/3}$. Newton: $p_k^2\\ge p_{k-1}p_{k+1}$ with $p_k=e_k/\\binom{3}{k}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "elementary symmetric polynomials",
+      "normalized Maclaurin means",
+      "Newton's log-concavity",
+      "axiom discharge"
+    ],
+    "prerequisites": [
+      "symmetric polynomials",
+      "binomial normalization",
+      "Real.sqrt / Real.rpow"
+    ],
+    "tags": [
+      "context",
+      "setup",
+      "notation"
+    ]
+  },
+  {
+    "id": "ann-amgmoq0204-amgm3-cubed",
+    "proofId": "amgm-inequality-oq-02-oq-04",
+    "range": {
+      "startLine": 83,
+      "endLine": 90
+    },
+    "type": "technique",
+    "title": "The Cubed AM-GM Base Lemma via a Schur-Type SOS Certificate",
+    "content": "amgm3_cubed proves (a+b+c)^3 >= 27abc for non-negative a, b, c -- the radical-free heart of the M2 >= M3 step. The proof is a single nlinarith fed a carefully chosen positivity basis: the three weighted squares a*(b-c)^2, b*(a-c)^2, c*(a-b)^2 (a Schur-degree-1 certificate, each non-negative because a variable multiplies a square), together with the pairwise and triple products ab, bc, ac, abc. Non-negativity is genuinely needed here (unlike the two Newton inequalities): the weighted squares are only non-negative when the multiplying variable is >= 0. Applying this at a = xy, b = yz, c = zx -- whose product abc = (xyz)^2 -- yields the polynomial chain step e2^3 >= 27 e3^2.",
+    "mathContext": "$(a+b+c)^3 - 27abc = a(b-c)^2 + b(a-c)^2 + c(a-b)^2 + (\\text{non-negative cross terms})$ for $a,b,c\\ge 0$; equality iff $a=b=c$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "AM-GM inequality",
+      "Schur's inequality",
+      "weighted sum-of-squares",
+      "nlinarith positivity basis"
+    ],
+    "prerequisites": [
+      "mul_nonneg / sq_nonneg hints",
+      "Schur-type certificates",
+      "three-variable AM-GM"
+    ],
+    "tags": [
+      "technique",
+      "am-gm",
+      "sum-of-squares"
+    ]
+  },
+  {
+    "id": "ann-amgmoq0204-sixth-power",
+    "proofId": "amgm-inequality-oq-02-oq-04",
+    "range": {
+      "startLine": 136,
+      "endLine": 162
+    },
+    "type": "insight",
+    "title": "Comparing sqrt and Cube-Root as a Common 1/6-Power",
+    "content": "The subtle step is maclaurin_n3_M2_ge_M3: M2 = sqrt(e2/3) is a square root while M3 = e3^(1/3) is a cube root, so they cannot be compared by squaring alone. The trick is to write both as the same fractional power. Since lcm(2,3) = 6, both become 1/6-powers of a non-negative base: M3 = (e3^2)^(1/6) via Real.rpow_natCast + Real.rpow_mul (folding e3^(2*1/6) = e3^(1/3)), and M2 = ((e2/3)^3)^(1/6) via Real.sqrt_eq_rpow then the same rpow arithmetic (e2/3)^(3*1/6) = (e2/3)^(1/2). With both means in the form base^(1/6), monotonicity of rpow in the base (Real.rpow_le_rpow) reduces the entire radical inequality to the single polynomial fact (e2/3)^3 >= e3^2 -- exactly maclaurin_n3_23_poly. This common-exponent maneuver is the clean way to compare radicals of different indices without case analysis.",
+    "mathContext": "$M_2=\\big((e_2/3)^3\\big)^{1/6},\\quad M_3=\\big(e_3^2\\big)^{1/6}$; since $t\\mapsto t^{1/6}$ is increasing on $[0,\\infty)$, $M_2\\ge M_3 \\iff (e_2/3)^3\\ge e_3^2$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "rpow monotonicity",
+      "least common multiple of exponents",
+      "radical comparison",
+      "Real.rpow_mul"
+    ],
+    "prerequisites": [
+      "Real.sqrt_eq_rpow",
+      "Real.rpow_natCast / Real.rpow_mul",
+      "monotonicity of x to x^(1/6)"
+    ],
+    "tags": [
+      "insight",
+      "rpow",
+      "radical-comparison"
+    ]
   }
 ]
