@@ -9,7 +9,7 @@
     "mathContext": "\\sum_{i<a} f(x_0+i) \\;\\le\\; \\int_{x_0}^{x_0+a} f \\;\\le\\; \\sum_{i<a} f(x_0+i+1)",
     "significance": "key",
     "relatedConcepts": ["integral test", "Riemann sums", "monotone functions", "convergence tests"],
-    "prerequisites": []
+    "prerequisites": ["MonotoneOn.sum_le_integral / MonotoneOn.integral_le_sum", "Riemann sums vs. definite integrals", "monotone functions on an interval"]
   },
   {
     "id": "ann-isc-oq0101-log-integral",
@@ -21,7 +21,7 @@
     "mathContext": "\\int_1^{1+n} \\log x \\, dx = (1+n)\\log(1+n) - n",
     "significance": "supporting",
     "relatedConcepts": ["interval integral", "logarithm", "antiderivative"],
-    "prerequisites": []
+    "prerequisites": ["integral_log (antiderivative x·log x − x)", "interval integrals", "log 1 = 0"]
   },
   {
     "id": "ann-isc-oq0101-sum-log-factorial",
@@ -33,7 +33,7 @@
     "mathContext": "\\sum_{i<n} \\log(1+i) = \\log(n!), \\qquad \\sum_{i<n} \\log(i+2) = \\log((n+1)!)",
     "significance": "key",
     "relatedConcepts": ["logarithm of product", "factorial", "Finset product"],
-    "prerequisites": []
+    "prerequisites": ["Real.log_prod (log of a product)", "Finset.prod and the factorial ∏_{i<n}(i+1) = n!", "induction on Finset.prod"]
   },
   {
     "id": "ann-isc-oq0101-stirling-sandwich",
@@ -45,7 +45,7 @@
     "mathContext": "\\log(n!) \\;\\le\\; (1+n)\\log(1+n) - n \\;\\le\\; \\log((n+1)!)",
     "significance": "key",
     "relatedConcepts": ["Stirling's approximation", "factorial growth", "integral test"],
-    "prerequisites": []
+    "prerequisites": ["the monotone integral-test sandwich", "log-factorial identities", "Stirling's approximation log n! ≈ n log n − n"]
   },
   {
     "id": "ann-isc-oq0101-pseries-bound",
@@ -57,7 +57,7 @@
     "mathContext": "\\sum_{i<n} \\frac{1}{(i+2)^p} \\;\\le\\; \\int_1^\\infty x^{-p}\\,dx = \\frac{1}{p-1} \\quad (p>1)",
     "significance": "key",
     "relatedConcepts": ["p-series", "improper integral", "real power", "integral test"],
-    "prerequisites": []
+    "prerequisites": ["antitone integral comparison for 1/xᵖ", "integral_rpow (∫ x^{−p})", "Real.rpow and rpow monotonicity", "improper integral ∫₁^∞ x^{−p} = 1/(p−1)"]
   },
   {
     "id": "ann-isc-oq0101-pseries-criterion",
@@ -69,6 +69,6 @@
     "mathContext": "\\sum_{n} \\frac{1}{n^p} \\text{ converges} \\iff p > 1",
     "significance": "key",
     "relatedConcepts": ["p-series", "summability", "convergence test"],
-    "prerequisites": []
+    "prerequisites": ["summable_of_sum_range_le (bounded partial sums ⟹ summable)", "Real.summable_one_div_nat_rpow", "nonnegative-term series"]
   }
 ]
