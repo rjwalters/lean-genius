@@ -199,5 +199,35 @@
       "description": "Polynomial annihilator characterization: cyclic iff not killed by any nonzero polynomial of degree < n."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "S. Roman",
+      "title": "Advanced Linear Algebra",
+      "year": 2008,
+      "venue": "Springer GTM 135, 3rd ed.",
+      "note": "Cyclic (nonderogatory) operators, minimal polynomial and primary decomposition."
+    },
+    {
+      "authors": "N. Jacobson",
+      "title": "Basic Algebra I",
+      "year": 1985,
+      "venue": "W. H. Freeman, 2nd ed.",
+      "note": "Rational canonical form and cyclic-vector existence via module theory."
+    },
+    {
+      "authors": "K. Hoffman and R. Kunze",
+      "title": "Linear Algebra",
+      "year": 1971,
+      "venue": "Prentice-Hall, 2nd ed., ch. 7",
+      "note": "Cyclic decomposition theorem and the primary decomposition used here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: LinearAlgebra.Matrix.Charpoly and minpoly, module primary decomposition",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Minimal/characteristic polynomial and CRT machinery over a general field."
+    }
+  ]
 }

@@ -205,5 +205,35 @@
       "significance": "The starting point for the divisibility proof"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "K. Hoffman and R. Kunze",
+      "title": "Linear Algebra",
+      "year": 1971,
+      "venue": "Prentice-Hall, 2nd ed., ch. 6",
+      "note": "Minimal and characteristic polynomials and their divisibility relation."
+    },
+    {
+      "authors": "S. Lang",
+      "title": "Algebra",
+      "year": 2002,
+      "venue": "Springer GTM 211, 3rd ed.",
+      "note": "Cayley–Hamilton theorem and minimal polynomial theory."
+    },
+    {
+      "authors": "D. S. Dummit and R. M. Foote",
+      "title": "Abstract Algebra",
+      "year": 2004,
+      "venue": "Wiley, 3rd ed., ch. 12",
+      "note": "Rational canonical form; minpoly divides charpoly with the same irreducible factors."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: LinearAlgebra.Matrix.Charpoly.Basic and FieldTheory.Minpoly",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "minpoly, charpoly, monicity and the aeval Cayley–Hamilton API."
+    }
+  ]
 }

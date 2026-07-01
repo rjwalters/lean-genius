@@ -136,5 +136,35 @@
     "definitionCount": 3,
     "theoremCount": 38
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "Oxford Univ. Press, 6th ed., ch. IX",
+      "note": "Decimal representation of numbers and congruence-based divisibility tests."
+    },
+    {
+      "authors": "D. M. Burton",
+      "title": "Elementary Number Theory",
+      "year": 2010,
+      "venue": "McGraw-Hill, 7th ed., ch. 4",
+      "note": "Standard divisibility rules derived from modular arithmetic."
+    },
+    {
+      "authors": "O. Ore",
+      "title": "Number Theory and Its History",
+      "year": 1948,
+      "venue": "McGraw-Hill",
+      "note": "Historical development of casting-out-nines and digit-sum tests."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Nat.modEq_digits_sum and Nat.digits API",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Digit-sum congruence framework underlying the base-b divisibility rules."
+    }
+  ]
 }

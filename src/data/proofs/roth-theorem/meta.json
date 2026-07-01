@@ -178,5 +178,42 @@
   "sorries": 0,
   "additionalFiles": [
     "Proofs/RothTheoremOQ02.lean"
+  ],
+  "references": [
+    {
+      "authors": "K. F. Roth",
+      "title": "On certain sets of integers",
+      "year": 1953,
+      "venue": "J. London Math. Soc. 28, 104–109",
+      "note": "Original theorem: sets with no 3-term AP have density o(1)."
+    },
+    {
+      "authors": "E. Szemerédi",
+      "title": "On sets of integers containing no k elements in arithmetic progression",
+      "year": 1975,
+      "venue": "Acta Arith. 27, 199–245",
+      "note": "Generalization to arbitrary-length progressions."
+    },
+    {
+      "authors": "H. Furstenberg and Y. Katznelson",
+      "title": "An ergodic Szemerédi theorem for commuting transformations",
+      "year": 1978,
+      "venue": "J. Analyse Math. 34, 275–291",
+      "note": "Corners theorem, the route used by Mathlib's Roth."
+    },
+    {
+      "authors": "B. Green and T. Tao",
+      "title": "An arithmetic regularity lemma, an associated counting lemma, and applications",
+      "year": 2010,
+      "venue": "An Irregular Mind, Bolyai Soc. Math. Stud. 21, 261–334",
+      "note": "Modern Fourier-analytic and regularity framework for AP counting."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Combinatorics.Additive.Corner and Roth",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Corners-theorem-based Roth invoked by the formalization."
+    }
   ]
 }

@@ -123,5 +123,35 @@
       "relationship": "context — the probabilistic-method applications gallery whose vacuous ramsey/property-B placeholders are superseded by verified dedicated entries such as this one"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "B. L. van der Waerden",
+      "title": "Beweis einer Baudetschen Vermutung",
+      "year": 1927,
+      "venue": "Nieuw Arch. Wisk. 15, 212–216",
+      "note": "Original proof that any finite colouring of ℤ contains long monochromatic APs."
+    },
+    {
+      "authors": "N. Alon and J. H. Spencer",
+      "title": "The Probabilistic Method",
+      "year": 2016,
+      "venue": "Wiley, 4th ed., ch. 1",
+      "note": "First-moment/union-bound lower bounds for van der Waerden numbers."
+    },
+    {
+      "authors": "R. L. Graham, B. L. Rothschild and J. H. Spencer",
+      "title": "Ramsey Theory",
+      "year": 1990,
+      "venue": "Wiley, 2nd ed.",
+      "note": "Van der Waerden numbers and their bounds."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Combinatorics.Pigeonhole and probability API",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Counting and union-bound machinery used in the first-moment argument."
+    }
+  ]
 }
