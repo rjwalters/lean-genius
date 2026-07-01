@@ -178,6 +178,48 @@
     }
   ],
   "sorries": 0,
+  "sections": [
+    {
+      "id": "def-kwise",
+      "title": "Definition: k-Wise Intersecting Families",
+      "summary": "KWiseIntersecting k 𝒜: every nonempty subfamily of 𝒜 of size ≤ k has meet ≠ ⊥ (for set families, every ≤ k members share a point)",
+      "startLine": 49,
+      "endLine": 55,
+      "mathContext": "$\\mathrm{KWiseIntersecting}(k,\\mathcal A) := \\forall \\mathcal B\\subseteq\\mathcal A,\\ \\mathcal B\\ne\\emptyset \\wedge |\\mathcal B|\\le k \\Rightarrow \\bigwedge \\mathcal B \\ne \\bot$."
+    },
+    {
+      "id": "structural",
+      "title": "Antitonicity in k and Subfamily Closure",
+      "summary": "KWiseIntersecting.subfamily (closed under passing to subfamilies), KWiseIntersecting.antitone (a larger k is a stronger hypothesis), and mem_ne_bot (for k ≥ 1 every member is ≠ ⊥)",
+      "startLine": 56,
+      "endLine": 78,
+      "mathContext": "$j\\le k \\Rightarrow \\mathrm{KWiseIntersecting}(k,\\mathcal A)\\Rightarrow\\mathrm{KWiseIntersecting}(j,\\mathcal A)$; and $k\\ge 1 \\Rightarrow \\forall a\\in\\mathcal A,\\ a\\ne\\bot$ (singletons are size-1 subfamilies)."
+    },
+    {
+      "id": "reduction-pairwise",
+      "title": "Reduction to Pairwise Intersection",
+      "summary": "KWiseIntersecting.intersecting: for k ≥ 2, k-wise intersection implies ordinary pairwise intersection (Mathlib's Set.Intersecting) — any two members have meet ≠ ⊥ via a size-2 subfamily",
+      "startLine": 80,
+      "endLine": 102,
+      "mathContext": "$k\\ge 2 \\Rightarrow \\mathcal A$ is $\\mathrm{Set.Intersecting}$: for $a,b\\in\\mathcal A$ the size-$\\le 2$ subfamily $\\{a,b\\}$ has $a\\wedge b\\ne\\bot$."
+    },
+    {
+      "id": "card-bound",
+      "title": "The Half-Cardinality (Kleitman) Bound",
+      "summary": "KWiseIntersecting.card_le and the classical form kWiseIntersecting_subsets_card_le: a k-wise intersecting family (k ≥ 2) occupies at most half the algebra, 2·|𝒜| ≤ |α| (2·|𝒜| ≤ 2ⁿ for subsets of an n-set), via Set.Intersecting.card_le",
+      "startLine": 104,
+      "endLine": 116,
+      "mathContext": "$k\\ge 2 \\Rightarrow 2\\,|\\mathcal A| \\le |\\alpha|$; for $\\mathcal A\\subseteq 2^{[n]}$, $2\\,|\\mathcal A|\\le 2^n$ (a member and its complement cannot both occur)."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness: Principal Up-Sets",
+      "summary": "principalUp a = {x | a ≤ x}; principalUp_kWiseIntersecting shows for a ≠ ⊥ it is k-wise intersecting for every k simultaneously (all meets ≥ a ≠ ⊥), giving existence (exists_kWiseIntersecting) in any nontrivial finite Boolean algebra",
+      "startLine": 117,
+      "endLine": 156,
+      "mathContext": "For $a\\ne\\bot$, $\\{x : a\\le x\\}$ has every subfamily meet $\\ge a\\ne\\bot$ (via Finset.le_inf), so it is $k$-wise intersecting for all $k$ at once — a single family witnessing sharpness across all levels."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SetFamily.Intersecting",
