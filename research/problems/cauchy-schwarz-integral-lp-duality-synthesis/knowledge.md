@@ -703,3 +703,52 @@ unchanged. This session added a verified building block and corrected the roadma
 3. Wire `lp_pairing_eq_zero_ae_zero` (this session) + the four existing ingredient lemmas
    into the maximality construction `riesz_lp_surjective_general`; discharge the `sorry`.
 4. Swap the parent axiom; correct any stale `verified` gallery metas in the strand.
+
+### 2026-06-30 (Session 12, researcher-3) — PROGRESS: repaired the AXIOM FILE itself (a 3rd build-broken strand file, previously unnoticed) → gallery entry green again
+
+**Mode:** REVISIT. **Outcome:** real verified progress — restored a build-broken *published*
+gallery entry to compiling, no new axioms.
+
+**Headline:** every prior session tracked the foundation file (`…OQ01OQ01OQ02OQ01.lean`, now
+green) and `…Incomplete01.lean` (70 errors), but **missed that the top parent file that
+actually declares the axiom — `CauchySchwarzIntegralOQ01OQ01OQ02.lean` (gallery entry
+`cauchy-schwarz-integral-oq-01-oq-01-oq-02`, `axiomatized/axiom/1`) — was itself
+build-broken with 3 Mathlib-API-drift errors.** It imports only Mathlib (not the σ-finite
+chain), so it is independently repairable and I fixed it to **EXIT 0** via host
+`lake env lean` (v4.26.0).
+
+**Fixes (all API drift, `OQ01OQ01OQ02.lean`):**
+- `NormedSpace.Dual ℝ E` → **`StrongDual ℝ E`** (renamed in `Analysis/Normed/Module/Dual.lean`;
+  `InnerProductSpace.toDual` now returns `E ≃ₗᵢ⋆[𝕜] StrongDual 𝕜 E`).
+- `L2.inner_def f g` now leaves the scalar field a metavariable and its integrand is
+  `∫ ⟪f a, g a⟫` not `∫ f a * g a`, because `inner` gained an **explicit** field argument
+  (`Inner.inner (𝕜) : E → E → 𝕜`). Fix: `rw [MeasureTheory.L2.inner_def (𝕜 := ℝ)]` then
+  `simp only [RCLike.inner_apply', conj_trivial]` (`RCLike.inner_apply' : ⟪x,y⟫ = conj x * y`;
+  `conj_trivial : conj r = r` for the trivial star on ℝ).
+- `Memℒp` → **`MemLp`** (rename) inside the axiom statement.
+- Added **`[Fact (1 ≤ p)]`** to the axiom binders. The statement `∀ φ : Lp ℝ p μ →L[ℝ] ℝ`
+  no longer typechecks without it: `Lp`'s `TopologicalSpace`/normed-space instance is now
+  gated by `[Fact (1 ≤ p)]` (error `failed to synthesize TopologicalSpace ↥(Lp ℝ p μ)`).
+  Harmless — derivable from the existing `hp1 : 1 < p`, matches the σ-finite theorems'
+  signatures, and the axiom has **zero downstream consumers** (Session-2 scan), so tightening
+  it breaks nothing. `axiomCount` stays **1** (still `axiomatized`; not eliminated).
+
+**Verified:** `#print axioms` on `l2_riesz`, `l2_inner_eq_integral`, `l2_dual_surjective` →
+`[propext, Classical.choice, Quot.sound]` only. The lone `axiom riesz_lp_surjective` is the
+sole assumption, as the meta claims. Updated gallery meta `cauchy-schwarz-integral-oq-01-oq-01-oq-02`
+`lineCount 151→152` in both `meta` and `leanFile` blocks (net +1 line from the `l2_inner`
+proof; `axiomCount`/`theoremCount`/`status`/`badge` unchanged).
+
+**Incomplete01 re-measured (still the frontier):** 70 errors across the full 965-line file
+(lines 75→939), NOT a handful of repeated renames — 12 application-type-mismatch, 10
+failed-synthesize, 8 type-mismatch, 8 rewrite-pattern-not-found, 7 unsolved-goals, 6
+simp-no-progress, 5 function-expected, plus `HolderConjugate.one_lt_of_lt` gone (≈4 sites,
+now needs a different route) and `.rpow_const`/`.min` dot-notation on `Exists`/enorm. This is
+genuine multi-session proof-level repair; did **not** attempt a partial fix (would be
+unverifiable churn — the file can't build, so nothing in it is kernel-checkable until *all*
+70 are cleared).
+
+**Axiom NOT eliminated.** Critical path unchanged from Session 11's list; the axiom-file
+repair simply removes one more false `verified`-strand build breakage (integrity issue
+#28788) and keeps the entry that *hosts* the target axiom green so the eventual
+`axiom → theorem` swap has a compiling home.
