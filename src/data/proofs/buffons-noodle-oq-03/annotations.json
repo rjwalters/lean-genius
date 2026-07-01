@@ -26,6 +26,54 @@
     ]
   },
   {
+    "id": "ann-buffons-noodle-oq-03-04",
+    "proofId": "buffons-noodle-oq-03",
+    "range": {
+      "startLine": 66,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "The Per-Segment Crossing Count αℓ/d",
+    "content": "The atom of the whole theory is segmentCrossings α ℓ d := α·ℓ/d, the orientation-averaged expected number of crossings of a single straight segment of length ℓ against hyperplanes spaced d apart, in a dimension whose crossing factor is α. The derivation lives in the docstring: a segment with direction u ∈ S^{n-1} projects to extent ℓ·|u₁| on the axis perpendicular to the hyperplanes, so the conditional expected crossings against a uniform random offset is ℓ·|u₁|/d; averaging |u₁| over the sphere yields the constant α = αₙ, hence α·ℓ/d. The three lemmas record the properties that make this a legitimate expectation functional: it is linear in ℓ (segmentCrossings_linear), vanishes at ℓ = 0 (segmentCrossings_zero), and is nonnegative when α ≥ 0, d > 0 (segmentCrossings_nonneg). Carrying α as a real parameter — rather than re-deriving its spherical integral — is the file's central design choice: it keeps every downstream result 0-axiom and dimension-general.",
+    "mathContext": "$\\text{segmentCrossings}(\\alpha,\\ell,d) = \\dfrac{\\alpha\\,\\ell}{d}$, from $\\mathbb{E}_u\\!\\left[\\dfrac{\\ell\\,|u_1|}{d}\\right] = \\dfrac{\\ell}{d}\\,\\mathbb{E}_{S^{n-1}}|u_1| = \\dfrac{\\alpha\\,\\ell}{d}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "expected value",
+      "orthogonal projection",
+      "crossing factor",
+      "spherical mean"
+    ],
+    "prerequisites": [
+      "geometric probability",
+      "linearity of expectation",
+      "real division"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-05",
+    "proofId": "buffons-noodle-oq-03",
+    "range": {
+      "startLine": 93,
+      "endLine": 116
+    },
+    "type": "definition",
+    "title": "A Polygonal Noodle as a Finite List of Lengths",
+    "content": "The Noodle n structure records only the n segment lengths (segLen : Fin n → ℝ) together with a nonnegativity proof — deliberately forgetting the orientations, which have already been averaged into α. This mirrors the planar parent's data model exactly. totalLength is the Finset sum ∑ᵢ segLen i (the rectifiable length L), and expectedCrossings α d is the sum of the per-segment counts ∑ᵢ segmentCrossings α (segLen i) d. Because orientation never enters this data, the segments need not be independent and no joint distribution is required — the entire probabilistic content is packed into the single scalar α, and everything downstream is deterministic finite algebra over these sums.",
+    "mathContext": "$L = \\sum_{i} \\ell_i, \\qquad \\mathbb{E}[\\text{crossings}] = \\sum_i \\text{segmentCrossings}(\\alpha, \\ell_i, d).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polygonal approximation",
+      "finite sums",
+      "rectifiable curve",
+      "dependent structure type"
+    ],
+    "prerequisites": [
+      "dependent types",
+      "Finset.sum",
+      "arc length"
+    ]
+  },
+  {
     "id": "ann-buffons-noodle-oq-03-02",
     "proofId": "buffons-noodle-oq-03",
     "range": {
@@ -45,6 +93,54 @@
     "prerequisites": [
       "finite sums",
       "expected value"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-06",
+    "proofId": "buffons-noodle-oq-03",
+    "range": {
+      "startLine": 137,
+      "endLine": 198
+    },
+    "type": "insight",
+    "title": "Every Structural Law is a One-Line Corollary of E = αL/d",
+    "content": "Once noodle_highdim rewrites expectedCrossings to the closed form α·L/d, the qualitative behaviour of the crossing functional is pure scalar algebra over L. Shape independence collapses to substituting equal totalLengths; additivity, scaling, and nonnegativity fall out by ring / div_nonneg. The monotonicity pair is the clean case study: expectedCrossings_mono and its strict cousin both rewrite to α·L₁/d ≤ α·L₂/d and then close with a single gcongr, which reads off α ≥ 0 (resp. α > 0) and d > 0 from context to lift L₁ ≤ L₂ (resp. <) through the multiplication and division. The Lipschitz bound factors the difference as (α/d)·(L₁ − L₂) and pushes the absolute value inside via abs_mul, giving Lipschitz constant α/d in total length. This is the payoff of isolating all dimensional content in α: the structural theory is dimension-blind and mechanically short.",
+    "mathContext": "$\\alpha\\tfrac{L_1}{d} \\le \\alpha\\tfrac{L_2}{d}$ from $L_1 \\le L_2$ (gcongr), and $\\big|\\alpha\\tfrac{L_1}{d} - \\alpha\\tfrac{L_2}{d}\\big| = \\tfrac{\\alpha}{d}\\,|L_1 - L_2|.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gcongr",
+      "monotonicity",
+      "Lipschitz continuity",
+      "linearity of expectation"
+    ],
+    "prerequisites": [
+      "ordered fields",
+      "absolute value",
+      "monotone functions"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-07",
+    "proofId": "buffons-noodle-oq-03",
+    "range": {
+      "startLine": 200,
+      "endLine": 218
+    },
+    "type": "technique",
+    "title": "Polygonal → Smooth by Continuity of x ↦ αx/d",
+    "content": "approx_limit is the bridge that justifies extending the polygonal theorem to genuinely curved noodles: if a sequence of polygonal noodles has total lengths converging to L (as an inscribed polygon refines toward a rectifiable curve), their expected crossings converge to α·L/d. The proof is a clean instance of composing a convergent sequence with a continuous map. After simp_rw [noodle_highdim] rewrites the sequence to k ↦ α·(N k).totalLength/d, the affine map x ↦ α·x/d is continuous (continuous_const.mul continuous_id |>.div_const d), so its continuousAt composed with hConverge (the length limit) delivers the crossing-count limit. No new probabilistic input is needed — continuity does all the work, exactly as in the planar parent's approximation theorem.",
+    "mathContext": "$L_k \\to L \\implies \\dfrac{\\alpha L_k}{d} \\to \\dfrac{\\alpha L}{d}$, since $x \\mapsto \\dfrac{\\alpha x}{d}$ is continuous.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "continuity",
+      "Filter.Tendsto",
+      "rectifiable curve",
+      "polygonal approximation"
+    ],
+    "prerequisites": [
+      "limits of sequences",
+      "continuous functions",
+      "arc length as a supremum"
     ]
   },
   {
