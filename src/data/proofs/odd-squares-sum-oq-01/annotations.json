@@ -99,7 +99,7 @@
       "startLine": 40,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Why prove it twice: exact ℕ form and honest ℚ division",
     "content": "The file deliberately states the result in two forms because natural-number division is truncating and would corrupt a direct ℕ statement of $n(2n-1)(2n+1)/3$. `three_mul_sum_odd_squares` keeps everything exact in $\\mathbb{N}$ by clearing the denominator ($3\\sum + n = 4n^3$), giving a machine-checkable integer identity with no rounding. `sum_odd_squares_rat` then delivers the familiar quotient form over $\\mathbb{Q}$, where $/3$ is a genuine field operation. Downstream users pick the ring that matches their needs: the exact integer identity for further ℕ reasoning, the rational closed form when the division must be literal.",
     "mathContext": "$\\mathbb{N}$: $3\\sum(2k+1)^2 + n = 4n^3$ (exact) $\\;\\Longleftrightarrow\\;$ $\\mathbb{Q}$: $\\sum(2k+1)^2 = \\tfrac{n(2n-1)(2n+1)}{3}$.",
