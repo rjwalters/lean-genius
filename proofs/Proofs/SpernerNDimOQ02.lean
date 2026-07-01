@@ -2938,4 +2938,42 @@ theorem zeroPivotCell_ne (s : GridSimplex d N) (hd1 : 0 < d)
   simp only [zeroPivotCell_verts_last] at hv
   exact zeroPivotTop_not_mem_chain s hd1 hfeas (Fin.last d) hv
 
+/-- **The cross-chain door is literally shared.**  The facet of the partner cell
+`zeroPivotCell s` obtained by dropping *its own last* vertex is *equal as a vertex
+set* to the facet of `s` obtained by dropping *its base* vertex `0`; both are
+`{verts 1, …, verts d}`.  So `s` and `zeroPivotCell s` are two distinct
+(`zeroPivotCell_ne`) cells meeting along one common facet — exactly the pair a
+total `SpernerTriangulation.adj` must glue across the always-unpaired facet `0`
+(`gridNeighbor_none_geom_interior_iff`).  This upgrades the pointwise
+correspondence `zeroPivotCell_verts_of_lt` to the set-level statement the
+adjacency actually consumes.  0-sorry, 0-axiom. -/
+theorem zeroPivotCell_shares_facet (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    (Finset.univ.erase (Fin.last d)).image (zeroPivotCell s hd1 hfeas).verts
+      = (Finset.univ.erase (0 : Fin (d + 1))).image s.verts := by
+  ext x
+  simp only [Finset.mem_image, Finset.mem_erase, Finset.mem_univ, and_true]
+  constructor
+  · rintro ⟨j, hj, rfl⟩
+    have hjd : j.val < d := by
+      have hjne : j.val ≠ d := fun h => hj (Fin.ext (by simp [Fin.val_last, h]))
+      have := j.isLt; omega
+    refine ⟨⟨j.val + 1, by omega⟩, ?_, ?_⟩
+    · simp only [Ne, Fin.ext_iff, Fin.val_zero]; omega
+    · exact (zeroPivotCell_verts_of_lt s hd1 hfeas j hjd).symm
+  · rintro ⟨i, hi, rfl⟩
+    have hipos : 0 < i.val := by
+      have : i.val ≠ 0 := by
+        simp only [Ne, Fin.ext_iff, Fin.val_zero] at hi; exact hi
+      omega
+    have hile : i.val ≤ d := by have := i.isLt; omega
+    refine ⟨⟨i.val - 1, by omega⟩, ?_, ?_⟩
+    · simp only [Ne, Fin.ext_iff, Fin.val_last]; omega
+    · rw [zeroPivotCell_verts_of_lt s hd1 hfeas ⟨i.val - 1, by omega⟩
+          (by show i.val - 1 < d; omega)]
+      congr 1
+      apply Fin.ext
+      show i.val - 1 + 1 = i.val
+      omega
+
 end SpernerNDimOQ02
