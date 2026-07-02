@@ -101,8 +101,8 @@ theorem boundaries_eq (hn : 1 ≤ n) (cs : CompositionAsSet n) :
     · exact Or.inl rfl
     rcases eq_or_ne b (Fin.last n) with rfl | hbl
     · exact Or.inr (Or.inl rfl)
-    have hb0' : (b : ℕ) ≠ 0 := by simpa [Fin.ext_iff, Fin.val_zero] using hb0
-    have hbl' : (b : ℕ) ≠ n := by simpa [Fin.ext_iff, Fin.val_last] using hbl
+    have hb0' : (b : ℕ) ≠ 0 := fun h => hb0 (Fin.ext (by rw [Fin.val_zero]; exact h))
+    have hbl' : (b : ℕ) ≠ n := fun h => hbl (Fin.ext (by rw [Fin.val_last]; exact h))
     have hbv : (b : ℕ) < n + 1 := b.isLt
     refine Or.inr (Or.inr ⟨⟨(b : ℕ) - 1, by omega⟩, ?_, ?_⟩)
     · rw [mem_equiv_iff]
@@ -121,7 +121,7 @@ theorem equiv_card_add_one (hn : 1 ≤ n) (cs : CompositionAsSet n) :
     (compositionAsSetEquiv n cs).card + 1 = cs.length := by
   have hb : cs.boundaries.card = cs.length + 1 := cs.card_boundaries_eq_succ_length
   have h0l : (0 : Fin (n + 1)) ≠ Fin.last n := by
-    simp only [Fin.ext_iff, Fin.val_zero, Fin.val_last]; omega
+    rw [Ne, Fin.ext_iff, Fin.val_zero, Fin.val_last]; omega
   have hcard : cs.boundaries.card = (compositionAsSetEquiv n cs).card + 2 := by
     rw [boundaries_eq hn cs,
         Finset.card_insert_of_notMem (by
@@ -156,9 +156,9 @@ theorem card_composition_length_eq (hn : 1 ≤ n) {k : ℕ} (hk : 1 ≤ k) :
       exact h
     rw [Equiv.trans_apply]
     omega
-  rw [Fintype.card_congr
-        (Equiv.subtypeEquiv ((compositionEquiv n).trans (compositionAsSetEquiv n)) key),
-      card_finset_card_eq]
+  have E : {c : Composition n // c.length = k} ≃ {s : Finset (Fin (n - 1)) // s.card = k - 1} :=
+    Equiv.subtypeEquiv ((compositionEquiv n).trans (compositionAsSetEquiv n)) key
+  rw [Fintype.card_congr E, card_finset_card_eq]
 
 /-! ### Summing over the number of parts -/
 
