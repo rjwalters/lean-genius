@@ -41,7 +41,7 @@ lemma primeChain_next_gt (p : ℕ → ℕ) (h : IsPrimeChain p) (i : ℕ) : p (i
 /-- p(i+1) ≥ p(i) + 1 in a prime chain (StrictMono) -/
 lemma primeChain_next_ge_double (p : ℕ → ℕ) (h : IsPrimeChain p) (i : ℕ) :
     p (i + 1) ≥ p i + 1 := by
-  have := h.1 (Nat.lt_succ_self i)
+  have := h.1 (show i < i + 1 by omega)
   omega
 
 /-
@@ -53,26 +53,65 @@ def ChainDivisibility (p : ℕ → ℕ) : Prop :=
 
 /-- If p(i+1) % p(i) = 1 then p(i) | p(i+1) - 1 -/
 lemma mod_one_implies_dvd (p q : ℕ) (h : q % p = 1) (hq : q ≥ 1) : p ∣ q - 1 := by
-  refine ⟨q / p, ?_⟩
-  have h1 : q / p * p + 1 = q := by
-    have := Nat.div_add_mod q p; omega
-  have h2 : q / p * p = p * (q / p) := mul_comm _ _
-  omega
+  -- Keep the nonlinear product `p * (q / p)` as a single atom so `omega` stays linear.
+  have hdm : p * (q / p) + q % p = q := Nat.div_add_mod q p
+  rw [h] at hdm
+  exact ⟨q / p, by omega⟩
 
 /-- Chain congruence implies divisibility -/
 lemma chain_cong_to_dvd (p : ℕ → ℕ) (hprime : ∀ i, (p i).Prime)
     (hcong : ∀ i, p (i + 1) % p i = 1) : ChainDivisibility p := fun i =>
-  mod_one_implies_dvd _ _ (hcong i) (hprime (i + 1)).pos.le
+  mod_one_implies_dvd _ _ (hcong i) (hprime (i + 1)).pos
 
 /-
   ## Section 3: Real.rpow Helpers for Growth Rate
 -/
 
-/-- p^(1/k) → ∞ iff p grows super-exponentially -/
+/-- p^(1/k) → ∞ iff p grows super-exponentially.
+    Both directions use the rpow identity ((p k)^(1/k))^k = p k for k ≥ 1. -/
 lemma rpow_tendsto_atTop_iff (p : ℕ → ℕ) :
     Filter.Tendsto (fun k => (p k : ℝ) ^ (1 / (k : ℝ))) Filter.atTop Filter.atTop ↔
     ∀ c : ℝ, c > 1 → ∀ᶠ k in Filter.atTop, (p k : ℝ) > c ^ k := by
-  sorry
+  -- Helper: ((p k)^{1/k})^k = p k for k ≥ 1 (rpow identity)
+  have rpow_inv_pow (x : ℝ) (hx : 0 ≤ x) (k : ℕ) (hk : k ≠ 0) :
+      (x ^ ((1 : ℝ) / (k : ℝ))) ^ k = x := by
+    rw [← Real.rpow_natCast (x ^ _) k, ← Real.rpow_mul hx,
+        one_div, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hk), Real.rpow_one]
+  constructor
+  · -- (→) tendsto to ∞ implies p k > c^k eventually, for each c > 1
+    intro htend c hc
+    rw [Filter.tendsto_atTop_atTop] at htend
+    obtain ⟨k₀, hk₀⟩ := htend (c + 1)
+    rw [Filter.eventually_atTop]
+    refine ⟨max k₀ 1, fun k hk => ?_⟩
+    have hkne : k ≠ 0 := by omega
+    have hpk_pos : (0 : ℝ) ≤ (p k : ℝ) := Nat.cast_nonneg _
+    have hc0 : (0 : ℝ) ≤ c := le_of_lt (lt_trans one_pos hc)
+    -- (p k)^(1/k) ≥ c + 1 > c
+    have hkth : c < (p k : ℝ) ^ (1 / (k : ℝ)) := by
+      have := hk₀ k (by omega : k₀ ≤ k); linarith
+    calc (c : ℝ) ^ k < ((p k : ℝ) ^ (1 / (k : ℝ))) ^ k :=
+          pow_lt_pow_left₀ hkth hc0 hkne
+      _ = (p k : ℝ) := rpow_inv_pow _ hpk_pos k hkne
+  · -- (←) p k > c^k eventually (each c > 1) implies kthRoot tends to ∞
+    intro h
+    rw [Filter.tendsto_atTop_atTop]
+    intro b
+    have hc2 : (max b 2 : ℝ) > 1 := lt_of_lt_of_le (by norm_num) (le_max_right _ _)
+    obtain ⟨k₀, hk₀⟩ := Filter.eventually_atTop.mp (h (max b 2) hc2)
+    refine ⟨max k₀ 1, fun k hk => ?_⟩
+    have hkne : (k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have hgt := hk₀ k (by omega)
+    calc (p k : ℝ) ^ ((1 : ℝ) / (k : ℝ))
+        ≥ ((max b 2 : ℝ) ^ (k : ℕ)) ^ ((1 : ℝ) / (k : ℝ)) := by
+          apply Real.rpow_le_rpow (by positivity) (le_of_lt hgt)
+          positivity
+      _ = max b 2 := by
+          rw [← Real.rpow_natCast (max b 2 : ℝ) k,
+              ← Real.rpow_mul (by positivity : (0 : ℝ) ≤ max b 2),
+              show (↑k : ℝ) * ((1 : ℝ) / (k : ℝ)) = 1 from mul_one_div_cancel hkne,
+              Real.rpow_one]
+      _ ≥ b := le_max_left _ _
 
 /-- For c > 1, c^k → ∞ -/
 lemma pow_tendsto_atTop (c : ℝ) (hc : c > 1) :
@@ -100,9 +139,18 @@ lemma rpow_ge_two_of_exp_bound (p : ℕ → ℕ) (k : ℕ) (hk : k ≥ 1)
   ## Section 4: Dirichlet Consequence
 -/
 
-/-- For any prime p, there exists a prime q with q ≡ 1 (mod p) -/
+/-- For any prime p, there exists a prime q with q ≡ 1 (mod p).
+    This is a consequence of Dirichlet's theorem: since gcd(1, p) = 1, there are
+    infinitely many primes q ≡ 1 (mod p). We extract one via
+    `Nat.forall_exists_prime_gt_and_modEq`. -/
 lemma prime_cong_one_exists (p : ℕ) (hp : p.Prime) : ∃ q : ℕ, q.Prime ∧ q % p = 1 := by
-  sorry
+  have hcop : Nat.Coprime 1 p := Nat.coprime_one_left p
+  -- `forall_exists_prime_gt_and_modEq 0 hp.ne_zero hcop : ∃ q > 0, q.Prime ∧ q ≡ 1 [MOD p]`
+  obtain ⟨q, -, hq_prime, hq_mod⟩ := Nat.forall_exists_prime_gt_and_modEq 0 hp.ne_zero hcop
+  refine ⟨q, hq_prime, ?_⟩
+  -- `Nat.ModEq p q 1` is defeq to `q % p = 1 % p`; reduce `1 % p` using `p > 1`
+  have hmod : q % p = 1 % p := hq_mod
+  rwa [Nat.mod_eq_of_lt hp.one_lt] at hmod
 
 /-- Any prime q ≡ 1 (mod p) satisfies q > p -/
 lemma smallest_cong_prime_gt (p : ℕ) (hp : p.Prime) (q : ℕ) (hq : q.Prime)
@@ -111,9 +159,11 @@ lemma smallest_cong_prime_gt (p : ℕ) (hp : p.Prime) (q : ℕ) (hq : q.Prime)
   · -- q < p → q % p = q → q = 1, not prime
     rw [Nat.mod_eq_of_lt hlt] at hmod
     exact absurd hmod hq.one_lt.ne'
-  · -- q ≥ p: need q ≠ p
-    rcases Nat.eq_or_gt_of_le hge with rfl | hgt
-    · simp [Nat.mod_self] at hmod
+  · -- q ≥ p: rule out q = p, so q > p
+    rcases eq_or_lt_of_le hge with heq | hgt
+    · -- heq : p = q, then q % p = p % p = 0 ≠ 1
+      rw [← heq, Nat.mod_self] at hmod
+      exact absurd hmod (by decide)
     · exact hgt
 
 end Erdos695.Aristotle
