@@ -84,5 +84,26 @@
       "endLine": 136,
       "summary": "The main result. Builds the covering-count identity ∫_F (∑' l, 𝟙_{l+ᵥs}) dμ = μs via Tonelli and the fundamental-domain measure decomposition, runs the pigeonhole to find a point covered more than k times, and extracts the finite over-covering family."
     }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Blichfeldt's general-multiplicity theorem over Mathlib's abstract IsAddFundamentalDomain API: if a null-measurable set s has measure exceeding k times the covolume μF of a countable subgroup L, then some point is covered by a finite family of more than k translates of s by L — equivalently, s contains more than k points that are pairwise congruent modulo L. The proof is a measure-theoretic pigeonhole: Tonelli plus the fundamental-domain decomposition give ∫_F (∑' l, 𝟙_{l+ᵥs}) dμ = μs, so a uniform bound g ≤ k would force μs ≤ k·μF, a contradiction; a finite over-large subfamily is then extracted from the {0,1}-valued tsum. At k = 1 this is exactly Mathlib's exists_pair_mem_lattice_not_disjoint_vadd; the general-k form has no Mathlib counterpart. All results are 0-axiom and machine-checked.",
+    "implications": "Blichfeldt's principle is one of the pillars of the geometry of numbers and the source from which van der Corput's k-fold refinement of Minkowski's convex-body theorem is derived. Casting it over the abstract fundamental-domain API rather than a concrete ℝⁿ lattice makes it apply to any countable subgroup with an invariant measure and collapse cleanly to Mathlib's two-point case. The entry also sharpens a common textbook conflation: the honest Blichfeldt theorem needs neither convexity, symmetry, nor a 2ⁿ factor and yields congruent points of s, whereas the parent's blichfeldt_statement (with those hypotheses and k+1 lattice points) is really van der Corput's theorem.",
+    "openQuestions": [
+      "Derive van der Corput's convex-body counting theorem (k+1 lattice points in a symmetric convex body of volume > k·2ⁿ·covolume) from this multiplicity principle, formalizing the passage from congruent points of s to genuine lattice points under convexity and central symmetry.",
+      "Specialize the abstract statement to a concrete full-rank lattice in ℝⁿ (via ZLattice) and recover the classical Blichfeldt bound with the Lebesgue covolume, connecting it to the custom-lattice / ZLattice comparison of the sibling entries.",
+      "Quantify the multiplicity: for measure exactly k·μF + ε, describe how the size of the witnessing finite family T grows, and whether the bound #T > k is tight."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-fundamental-theorem",
+      "relationship": "parent",
+      "description": "Minkowski's Fundamental Theorem (Geometry of Numbers) — the convex-body counting theorem this Blichfeldt principle underlies; Blichfeldt's convexity-free volume pigeonhole is the engine from which Minkowski's and van der Corput's convex-body theorems are derived."
+    },
+    {
+      "targetId": "minkowski-fundamental-theorem-oq-02",
+      "relationship": "related",
+      "description": "Minkowski's Class Number Bound — a downstream application of geometry-of-numbers lattice-point counting to finite class groups, resting on the same volume-vs-covolume comparison packaged abstractly here."
+    }
   ]
 }
