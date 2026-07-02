@@ -19,7 +19,7 @@
     "sorries": 0,
     "dateAdded": "2026-07-01",
     "axiomCount": 0,
-    "lineCount": 177,
+    "lineCount": 182,
     "theoremCount": 6,
     "definitionCount": 1,
     "assumptions": "None. Fully machine-verified from Mathlib.",
@@ -33,7 +33,7 @@
   },
   "leanFile": {
     "namespace": "GaussWilsonSqrtCount",
-    "lineCount": 177,
+    "lineCount": 182,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 1,
@@ -47,14 +47,57 @@
     "significance": "Gives a fully verified, axiom-free count for the odd case using an elementary coprimality argument rather than the cyclic-group machinery of the parent, and packages N as a genuine multiplicative arithmetic function. It isolates exactly what the 2-adic prime contributes (the δ correction) by removing it."
   },
   "conclusion": {
-    "summary": "For odd n, the number of square roots of unity modulo n is exactly 2^ω(n), where ω(n) = n.primeFactors.card. 177 lines, 6 theorems, 1 definition, 0 sorries, 0 axioms. The count N is built as a multiplicative arithmetic function: N(p^k) = 2 at every odd prime power (elementary ±1 classification), N is multiplicative via the Chinese Remainder Theorem, and Nat.multiplicative_factorization assembles 2^ω(n).",
+    "summary": "For odd n, the number of square roots of unity modulo n is exactly 2^ω(n), where ω(n) = n.primeFactors.card. 182 lines, 6 theorems, 1 definition, 0 sorries, 0 axioms. The count N is built as a multiplicative arithmetic function: N(p^k) = 2 at every odd prime power (elementary ±1 classification), N is multiplicative via the Chinese Remainder Theorem, and Nat.multiplicative_factorization assembles 2^ω(n).",
     "implications": "This is the δ = 0 slice of the parent's open question 2^(ω_odd(n)+δ). By handling the odd case with a clean elementary argument, it makes precise that all of the non-2^ω behavior in the general formula is 2-adic in origin: the factor of 2, 4 (Klein four-group) refinements only appear from the prime 2. The multiplicative packaging also directly recovers classical facts such as N(n) = 2 iff n is 1, 2, or an odd prime power times at most one factor of 2.",
     "openQuestions": [
       "The 2-adic completion: extend to all n by computing N(2^k) = 1, 2, 4 for k = 1, 2, ≥3 (the Klein four-group (ZMod 2^k)ˣ[2] for k ≥ 3) and combining with the odd part to obtain the full 2^(ω_odd(n)+δ) formula.",
       "The dual Gauss–Wilson product: relate N(n) to the value of the product of all units of ZMod n (the generalized Wilson theorem), whose sign is governed by whether N(n) = 2."
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Statement and Strategy",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports and the overview docstring: the goal N(n) = 2^ω(n) for odd n as the δ = 0 slice of the parent's open question, plus the three-step plan (local ±1 count, CRT multiplicativity, factorization assembly)."
+    },
+    {
+      "id": "sec-def-base",
+      "title": "Definition and Base Case",
+      "startLine": 45,
+      "endLine": 55,
+      "summary": "Defines sqrtOneCount n = Nat.card {x : ZMod n // x² = 1} and proves the multiplicative normalization N(1) = 1 via the subsingleton structure of the zero ring ZMod 1."
+    },
+    {
+      "id": "sec-local-classification",
+      "title": "Odd Prime Power: Only ±1",
+      "startLine": 57,
+      "endLine": 116,
+      "summary": "The elementary coprimality argument: in ZMod (p^k) for odd p, x² = 1 ↔ x = ±1 (an odd p cannot divide both a−1 and a+1), together with the distinctness lemma 1 ≠ -1 that keeps the count at two."
+    },
+    {
+      "id": "sec-local-count",
+      "title": "Local Count N(p^k) = 2",
+      "startLine": 118,
+      "endLine": 127,
+      "summary": "Assembles the classification and distinctness into the two-element Finset {1, -1}, giving N(p^k) = 2 for every odd prime power via Finset.card_pair."
+    },
+    {
+      "id": "sec-multiplicativity",
+      "title": "CRT Multiplicativity",
+      "startLine": 129,
+      "endLine": 155,
+      "summary": "For coprime m, n, transports x² = 1 across the Chinese Remainder isomorphism ZMod (m·n) ≃+* ZMod m × ZMod n and splits componentwise to prove N(m·n) = N(m)·N(n)."
+    },
+    {
+      "id": "sec-assembly",
+      "title": "Main Theorem: N(n) = 2^ω(n)",
+      "startLine": 157,
+      "endLine": 182,
+      "summary": "Nat.multiplicative_factorization writes N(n) as the product of local counts over the prime factorization; every prime of an odd n is odd, so each factor is 2 and the product collapses to 2^ω(n)."
+    }
+  ],
   "references": [
     {
       "title": "Gauss's generalization of Wilson's theorem",

@@ -12,6 +12,18 @@
     "prerequisites": ["Nat.card", "ZMod"]
   },
   {
+    "id": "ann-gw-oq04-base-case-one",
+    "proofId": "gauss-wilson-non-cyclic-oq-04",
+    "range": { "startLine": 48, "endLine": 55 },
+    "type": "technique",
+    "title": "Base Case N(1) = 1",
+    "content": "sqrtOneCount 1 = 1: modulo 1 the ring ZMod 1 is the zero ring, so every element is equal (Subsingleton), and the solution set of x² = 1 is a single point. The proof exhibits both a Subsingleton instance (any two solutions are equal by Subtype.ext + Subsingleton.elim) and a witness (⟨1, one_pow 2⟩) for nonemptiness, then closes via Nat.card_eq_one_iff_unique. This unit value N(1) = 1 is exactly the normalization Nat.multiplicative_factorization requires to reassemble N over the prime factorization.",
+    "mathContext": "For a multiplicative arithmetic function $f$, the value $f(1) = 1$ is the empty-product convention that makes $f(n) = \\prod_{p^k \\| n} f(p^k)$ hold; here $2^{\\omega(1)} = 2^0 = 1$ matches.",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicative function normalization", "zero ring", "subsingleton"],
+    "prerequisites": ["Nat.card_eq_one_iff_unique", "Subsingleton"]
+  },
+  {
     "id": "ann-gw-oq04-local-classification",
     "proofId": "gauss-wilson-non-cyclic-oq-04",
     "range": { "startLine": 57, "endLine": 103 },
@@ -22,6 +34,18 @@
     "significance": "central",
     "relatedConcepts": ["coprimality", "Chinese Remainder Theorem", "cyclic units"],
     "prerequisites": ["Prime.coprime_iff_not_dvd", "IsCoprime.dvd_of_dvd_mul_right", "ZMod.intCast_zmod_eq_zero_iff_dvd"]
+  },
+  {
+    "id": "ann-gw-oq04-distinctness",
+    "proofId": "gauss-wilson-non-cyclic-oq-04",
+    "range": { "startLine": 105, "endLine": 116 },
+    "type": "technique",
+    "title": "Distinctness: 1 ≠ -1 at an Odd Prime Power",
+    "content": "one_ne_neg_one_prime_pow shows (1 : ZMod (p^k)) ≠ -1 for an odd prime power. If 1 = -1 then 2 = 0 in ZMod (p^k), i.e. p^k ∣ 2, so p^k ≤ 2; but p ≥ 3 (odd prime) gives p^k ≥ 3 (via Nat.le_self_pow with k ≠ 0), a contradiction dispatched by omega. Without this the two roots ±1 could coincide and the count would drop to 1 — this is precisely what happens at p = 2, k = 1 (ZMod 2), the smallest source of the 2-adic anomaly.",
+    "mathContext": "The two square roots $\\pm 1$ are distinct exactly when the modulus exceeds $2$. Since an odd prime power $p^k \\ge 3$, the fibre $\\{x : x^2 = 1\\}$ genuinely has two elements, giving the factor $2$ per odd prime.",
+    "significance": "supporting",
+    "relatedConcepts": ["characteristic of a ring", "two-element set", "odd prime power"],
+    "prerequisites": ["Nat.le_self_pow", "ZMod.natCast_eq_zero_iff", "omega"]
   },
   {
     "id": "ann-gw-oq04-local-count",
