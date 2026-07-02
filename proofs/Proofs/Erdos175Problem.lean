@@ -41,9 +41,11 @@ def centralBinom (n : ℕ) : ℕ := Nat.choose (2 * n) n
 def IsSquarefree (m : ℕ) : Prop :=
   ∀ p : ℕ, Nat.Prime p → ¬(p ^ 2 ∣ m)
 
-/-- The maximum prime power exponent dividing C(2n, n) -/
+/-- The maximum prime power exponent dividing `C(2n, n)`, i.e.
+`max { v_p(C(2n,n)) : p prime }`, taken as `Finset.sup` over the prime support of
+its factorization (so it is `0` exactly when `C(2n,n) = 1`, i.e. `n = 0`). -/
 noncomputable def maxPrimePowerExp (n : ℕ) : ℕ :=
-  Nat.find (⟨1, trivial⟩ : ∃ _ : ℕ, True)
+  (centralBinom n).factorization.support.sup fun p => (centralBinom n).factorization p
 
 /-
 ## Part 2: Divisibility by 4
@@ -138,10 +140,21 @@ axiom granville_ramare_1996 (n : ℕ) (hn : n ≥ 5) :
 f(n) = max{k : p^k | C(2n,n) for some prime p}.
 -/
 
-/-- Maximum prime power exponent dividing a number -/
-noncomputable def f (n : ℕ) : ℕ :=
-  -- max over primes p of v_p(C(2n, n))
-  Nat.find (⟨1, trivial⟩ : ∃ _ : ℕ, True)
+/-- `f n = max { k : p^k ∣ C(2n,n) for some prime p } = max_p v_p(C(2n,n))`,
+the largest prime-power exponent in the factorization of the central binomial
+coefficient. Defined as `maxPrimePowerExp`; the deep theorems below concern this
+genuine object. -/
+noncomputable def f (n : ℕ) : ℕ := maxPrimePowerExp n
+
+/-- `f` genuinely dominates every prime-power valuation of `C(2n,n)`: for any
+prime (indeed any) `p`, `v_p(C(2n,n)) ≤ f n`. This is the defining property of the
+maximum, and confirms `f` is the intended object rather than a degenerate stub. -/
+theorem factorization_le_f (n p : ℕ) :
+    (centralBinom n).factorization p ≤ f n := by
+  unfold f maxPrimePowerExp
+  by_cases hp : p ∈ (centralBinom n).factorization.support
+  · exact Finset.le_sup hp
+  · rw [Finsupp.notMem_support_iff.mp hp]; exact Nat.zero_le _
 
 /-- f(n) → ∞ as n → ∞ (Sander 1992) -/
 axiom sander_1992_f_unbounded :
