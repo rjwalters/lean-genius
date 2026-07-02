@@ -1,5 +1,53 @@
 [
   {
+    "id": "e1-oq0201-problem",
+    "proofId": "erdos-1-oq-02-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 30
+    },
+    "type": "context",
+    "title": "Erdős #1 (distinct subset sums) and the elementary counting bound",
+    "content": "Erdős's distinct-subset-sums problem (#1) asks how large the elements of a set A ⊆ ℕ with pairwise-distinct subset sums must be — conjecturally max A ≥ c·2^{|A|}. The parent erdos-1-oq-02 proves the sharp analytic second-moment bound 2^{|A|} ≤ 3√(Σaᵢ²) + 2. This entry records the elementary counterpart that predates and motivates it and needs no square roots: 2^{|A|} ≤ ΣA + 1, whence the classical Erdős–Moser bound max A ≥ (2^{|A|}−1)/|A|. That trivial lower bound is exactly what Erdős's conjecture seeks to improve from 1/|A| to a constant c.",
+    "mathContext": "Distinct subset sums $\\Rightarrow 2^{|A|}\\le \\sum A + 1$; with $\\sum A\\le|A|\\max A$, $\\max A\\ge(2^{|A|}-1)/|A|$. Conjecture: $\\max A\\ge c\\,2^{|A|}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Erdős distinct subset sums",
+      "Erdős–Moser bound",
+      "Conway–Guy sequence",
+      "additive combinatorics",
+      "anticoncentration"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "subset sums",
+      "number theory"
+    ]
+  },
+  {
+    "id": "e1-oq0201-definition",
+    "proofId": "erdos-1-oq-02-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Definition: distinct subset sums",
+    "content": "HasDistinctSubsetSums A asserts that distinct subsets of A have distinct sums — equivalently, the subset-sum map S ↦ Σ_{i∈S} i is injective on the powerset of A. This is the Sidon-like hypothesis under which all the bounds below are proved; the whole counting argument turns on the injectivity it encodes.",
+    "mathContext": "$\\mathrm{HasDistinctSubsetSums}(A):\\ \\forall S,T\\subseteq A,\\ \\textstyle\\sum S=\\sum T\\Rightarrow S=T$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "distinct subset sums",
+      "injectivity",
+      "powerset",
+      "Sidon sets"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "sums over finsets"
+    ]
+  },
+  {
     "id": "ann-e1oq02oq01-structure",
     "proofId": "erdos-1-oq-02-oq-01",
     "range": {
