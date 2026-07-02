@@ -17,7 +17,11 @@
       "Coprimality",
       "Fermat's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization and prime exponents",
+      "arithmetic progressions",
+      "coprimality (gcd = 1)"
+    ]
   },
   {
     "id": "ann-e937-powerful",
@@ -36,7 +40,11 @@
       "Squarefree numbers",
       "Perfect powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of an integer",
+      "prime exponents in a factorization",
+      "the Prop type for predicates in Lean"
+    ]
   },
   {
     "id": "ann-e937-rpowerful",
@@ -55,7 +63,11 @@
       "Density"
     ],
     "mathContext": "See annotation content for formal details of r-powerful numbers",
-    "prerequisites": []
+    "prerequisites": [
+      "the definition of powerful (squarefull) numbers",
+      "prime powers p^r",
+      "divisibility conditions on prime factors"
+    ]
   },
   {
     "id": "ann-e937-examples",
@@ -73,7 +85,11 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the definition of powerful numbers",
+      "perfect squares",
+      "how divisibility p²|n is verified in Lean"
+    ]
   },
   {
     "id": "ann-e937-ap",
@@ -91,7 +107,11 @@
       "Common difference"
     ],
     "mathContext": "See annotation content for formal details of arithmetic progressions",
-    "prerequisites": []
+    "prerequisites": [
+      "common difference of an arithmetic sequence",
+      "integer subtraction and coercion ℕ → ℤ",
+      "ordering of natural numbers"
+    ]
   },
   {
     "id": "ann-e937-coprimality",
@@ -110,7 +130,11 @@
       "GCD",
       "Pairwise coprime"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "greatest common divisor and Nat.Coprime",
+      "arithmetic progressions of naturals",
+      "the notion of pairwise coprimality"
+    ]
   },
   {
     "id": "ann-e937-main-sets",
@@ -128,7 +152,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powerful numbers and the four-term-AP predicate",
+      "pairwise-coprime AP conditions",
+      "Set-builder notation over tuples in Lean"
+    ]
   },
   {
     "id": "ann-e937-fermat",
@@ -147,7 +175,11 @@
       "Infinite descent",
       "Elliptic curves"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "perfect squares",
+      "four-term arithmetic progressions",
+      "Fermat's method of infinite descent"
+    ]
   },
   {
     "id": "ann-e937-easy",
@@ -165,7 +197,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progressions of powerful numbers",
+      "products of powerful numbers remaining powerful",
+      "inductive extension constructions"
+    ]
   },
   {
     "id": "ann-e937-bbc",
@@ -183,7 +219,11 @@
       "Analytic number theory",
       "Infinite sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the coprime powerful four-term AP set",
+      "Set.Infinite (infinitude of a set)",
+      "3-powerful (cubefull) numbers"
+    ]
   },
   {
     "id": "ann-e937-abc",
@@ -202,7 +242,11 @@
       "Radical of an integer",
       "Masser-Oesterlé"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ABC conjecture and the radical of an integer",
+      "r-powerful numbers for r ≥ 4",
+      "conditional (assuming-an-open-conjecture) results"
+    ]
   },
   {
     "id": "ann-e937-main",
@@ -220,6 +264,10 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Bajpai-Bennett-Chan infinitude axiom",
+      "the coprime powerful four-term AP set",
+      "how a theorem can be proved by invoking a prior result"
+    ]
   }
 ]
