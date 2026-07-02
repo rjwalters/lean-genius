@@ -69,14 +69,14 @@ theorem a_ne_zero : a ≠ 0 := fun h => by simpa [h] using a_pow_four
 theorem a_mem_rootSet : a ∈ p.rootSet ℂ := by
   rw [mem_rootSet]
   refine ⟨p_ne_zero, ?_⟩
-  simp only [p, map_sub, map_pow, aeval_X, aeval_C, map_ofNat]
+  simp only [p, map_sub, map_pow, aeval_X, map_ofNat]
   rw [a_pow_four]; norm_num
 
 /-- `i·⁴√2` is a root of `X⁴ − 2`. -/
 theorem Ia_mem_rootSet : Complex.I * a ∈ p.rootSet ℂ := by
   rw [mem_rootSet]
   refine ⟨p_ne_zero, ?_⟩
-  simp only [p, map_sub, map_pow, aeval_X, aeval_C, map_ofNat]
+  simp only [p, map_sub, map_pow, aeval_X, map_ofNat]
   rw [I_mul_a_pow_four]; norm_num
 
 /-- The splitting set of `X⁴ − 2` in ℂ generates exactly `ℚ(⁴√2, i)`. -/
@@ -88,7 +88,7 @@ theorem adjoin_rootSet_eq : adjoin ℚ (p.rootSet ℂ) = ℚ⟮a, Complex.I⟯ :
     rw [mem_rootSet] at hz
     have hz4 : z ^ 4 = 2 := by
       have h0 := hz.2
-      simp only [p, map_sub, map_pow, aeval_X, aeval_C, map_ofNat, sub_eq_zero] at h0
+      simp only [p, map_sub, map_pow, aeval_X, map_ofNat, sub_eq_zero] at h0
       exact h0
     have key : (z - a) * (z + a) * (z - Complex.I * a) * (z + Complex.I * a)
         = z ^ 4 - a ^ 4 := by
@@ -129,13 +129,19 @@ instance isGalois : IsGalois ℚ ℚ⟮a, Complex.I⟯ := by
 /-- The normality half of `isGalois`, packaged separately. -/
 theorem normal : Normal ℚ ℚ⟮a, Complex.I⟯ := IsGalois.to_normal
 
+/-- `ℚ(⁴√2, i) / ℚ` is finite-dimensional: as a splitting field it is finite over ℚ.
+This supplies the `Fintype` instance on the Galois group needed by `card_gal`. -/
+instance finiteDimensional : FiniteDimensional ℚ ℚ⟮a, Complex.I⟯ := by
+  haveI := isSplittingField
+  exact Polynomial.IsSplittingField.finiteDimensional ℚ⟮a, Complex.I⟯ p
+
 /-- **The Galois group of `ℚ(⁴√2, i)` over ℚ has order 8.**
 `#Gal(ℚ(⁴√2, i)/ℚ) = [ℚ(⁴√2, i) : ℚ] = 8`.  This is the group-order input to the
 `D₄` identification, obtained by combining the parent's degree computation with
 the Galois property proved here. -/
 theorem card_gal :
     Fintype.card (ℚ⟮a, Complex.I⟯ ≃ₐ[ℚ] ℚ⟮a, Complex.I⟯) = 8 := by
-  rw [IsGalois.card_aut_eq_finrank ℚ ℚ⟮a, Complex.I⟯]
+  rw [← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank ℚ ℚ⟮a, Complex.I⟯]
   exact finrank_galois_closure
 
 end FourthRoot2GaloisClosureOQ03
