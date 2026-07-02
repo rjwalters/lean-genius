@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the Bombieri–Vinogradov theorem and its Lean formalizability",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The module docstring, the imports of Mathlib and the parent BoundedPrimeGaps file, and the namespace/open setup. Assesses whether the Bombieri–Vinogradov (BV) theorem — the key analytic ingredient of the Maynard–Tao bounded prime gaps proof — can be formalized in Lean/Mathlib, and axiomatizes it to derive its consequences.",
+      "mathContext": "BV (1965) states that for every A > 0 there is B(A) > 0 with Σ_{q≤Q} max_{gcd(a,q)=1} |ψ(x;q,a) − x/φ(q)| ≪ x/(log x)^A for Q = √x/(log x)^B — primes are equidistributed in arithmetic progressions for almost all moduli up to nearly √x. The docstring assesses Mathlib's March 2026 infrastructure (Dirichlet characters, L-series and analytic continuation, L(1,χ) ≠ 0, Dirichlet's theorem, π(x), totient, von Mangoldt Λ, zeta Euler product available; Pólya–Vinogradov, large sieve, Siegel–Walfisz, contour integration, zero-density estimates still missing). Six parts: Chebyshev ψ and ψ(x;q,a) in progressions, the BV theorem (axiomatized), consequences for prime distribution, the connection to the Maynard–Tao sieve, a prerequisite roadmap/gap analysis, and the Pólya–Vinogradov inequality. Honestly axiomatized: 1 axiom (the BV theorem itself), 0 sorries — the section annotation does not change that status."
+    },
+    {
       "id": "chebyshev-functions",
       "title": "Chebyshev ψ Functions",
       "summary": "Definitions of ψ(x), ψ(x;q,a), and π(x;q,a) using Mathlib's von Mangoldt function",
