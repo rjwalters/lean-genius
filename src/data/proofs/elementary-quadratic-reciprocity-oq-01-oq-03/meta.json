@@ -42,24 +42,39 @@
   },
   "sections": [
     {
+      "id": "multiplication-by-a-unit-as-a-permutation-of-the-whole-ring",
       "title": "Multiplication by a unit as a permutation of the whole ring",
-      "content": "ringMulPerm a is the permutation x ↦ a·x of all of ℤ/n (not just the units), assembled into a group homomorphism ringMulPermHom : (ℤ/n)ˣ →* Perm (ℤ/n)."
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "ringMulPerm a is the permutation x ↦ a·x of all of ℤ/n (not just the units), assembled into a group homomorphism ringMulPermHom : (ℤ/n)ˣ →* Perm (ℤ/n)."
     },
     {
+      "id": "the-zolotarev-sign-character-for-any-modulus",
       "title": "The Zolotarev sign character for any modulus",
-      "content": "signRingHom = sign ∘ ringMulPermHom : (ℤ/n)ˣ →* ℤˣ, a quadratic character (squares to 1) defined for every positive modulus."
+      "startLine": 75,
+      "endLine": 103,
+      "summary": "signRingHom = sign ∘ ringMulPermHom : (ℤ/n)ˣ →* ℤˣ, a quadratic character (squares to 1) defined for every positive modulus."
     },
     {
+      "id": "sign-of-a-product-permutation",
       "title": "Sign of a product permutation",
-      "content": "sign_prodCongr: sign(σ ×ₚ τ) = sign σ ^ |β| · sign τ ^ |α|, plus units_pow_odd (u^k = u for u ∈ ℤˣ and odd k). General lemmas not in Mathlib."
+      "startLine": 104,
+      "endLine": 135,
+      "summary": "sign_prodCongr: sign(σ ×ₚ τ) = sign σ ^ |β| · sign τ ^ |α|, plus units_pow_odd (u^k = u for u ∈ ℤˣ and odd k). General lemmas not in Mathlib."
     },
     {
+      "id": "the-crt-decomposition",
       "title": "The CRT decomposition",
-      "content": "sign_ringMulPerm_crt factors the sign through ZMod.chineseRemainder; sign_ringMulPerm_mul_of_odd specializes to odd coprime moduli, where the character is multiplicative — the permutation image of jacobiSym.mul_right."
+      "startLine": 136,
+      "endLine": 185,
+      "summary": "sign_ringMulPerm_crt factors the sign through ZMod.chineseRemainder; sign_ringMulPerm_mul_of_odd specializes to odd coprime moduli, where the character is multiplicative — the permutation image of jacobiSym.mul_right."
     },
     {
+      "id": "parallel-with-the-jacobi-symbol",
       "title": "Parallel with the Jacobi symbol",
-      "content": "jacobiSym_mul_right_mirror restates Mathlib's jacobiSym.mul_right (the value-level statement mirrored by the sign decomposition); legendre_eq_jacobi records the prime base case legendreSym.to_jacobiSym."
+      "startLine": 186,
+      "endLine": 262,
+      "summary": "jacobiSym_mul_right_mirror restates Mathlib's jacobiSym.mul_right (the value-level statement mirrored by the sign decomposition); legendre_eq_jacobi records the prime base case legendreSym.to_jacobiSym."
     }
   ],
   "meta": {

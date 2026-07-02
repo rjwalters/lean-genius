@@ -72,16 +72,18 @@
       "summary": "crt_list_unique: any two values below ms.prod agreeing modulo every m ∈ ms are equal. Equal residues give m ∣ (difference) for all m, hence ms.prod ∣ (difference); but the difference is below ms.prod, so it vanishes."
     },
     {
-      "id": "existence",
-      "title": "The n-Modulus Existence Half",
-      "summary": "crt_list_exists: for pairwise-coprime ms and any residues r, ∃ x, ∀ m∈ms, x ≡ r m [MOD m]. List induction; the cons step combines the head (coprime to the tail product) with the tail solution via Nat.chineseRemainder, then restricts the tail-product congruence to each tail modulus by Nat.ModEq.of_dvd. With crt_list_unique this is the full CRT. crt_345_exists is the worked [3,4,5] instance."
-    },
-    {
       "id": "example",
       "title": "Worked Instance over [3, 4, 5]",
       "startLine": 79,
       "endLine": 88,
       "summary": "crt_345_unique: two values below 60 with the same residues mod 3, 4, 5 coincide. Pairwise coprimality and the product 60 are decided; the residue hypotheses are dispatched by fin_cases on list membership."
+    },
+    {
+      "id": "existence",
+      "title": "The n-Modulus Existence Half",
+      "startLine": 89,
+      "endLine": 123,
+      "summary": "crt_list_exists: for pairwise-coprime ms and any residues r, ∃ x, ∀ m∈ms, x ≡ r m [MOD m]. List induction; the cons step combines the head (coprime to the tail product) with the tail solution via Nat.chineseRemainder, then restricts the tail-product congruence to each tail modulus by Nat.ModEq.of_dvd. With crt_list_unique this is the full CRT. crt_345_exists is the worked [3,4,5] instance."
     }
   ],
   "overview": {
