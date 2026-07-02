@@ -55,6 +55,14 @@
   ],
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Green's theorem for smooth curves via Mathlib path integrals",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The imports of Mathlib and the parent GreensTheoremOQ01, the module docstring, and the namespace/open setup. Answers OQ-02: whether OQ-01's rectangle proof generalizes to smooth curves using path-integration machinery, supplying the path-line-integral infrastructure Mathlib lacks.",
+      "mathContext": "Mathlib provides intervalIntegral over the parameter domain but does not package path line integrals as first-class. For a smooth parametric curve γ = (γₓ, γᵧ) : [a,b] → ℝ² the file defines the path line integral of F = (P,Q) as ∫_γ (P dx + Q dy) := ∫_a^b (P(γ(t))γₓ'(t) + Q(γ(t))γᵧ'(t)) dt. Results: pathLineIntegral (the definition, concrete intervalIntegral, no axioms); pathLineIntegral_neg_endpoints (reversing parametrization flips the sign); the edge specializations pathLineIntegral_horizontal_segment / pathLineIntegral_vertical_segment reducing to the intervalIntegrals of rectLineIntegral; and pathLineIntegral_rect_boundary_eq_rectLineIntegral (the four counterclockwise edges around [a,b]×[c,d] sum to OQ-01's rectLineIntegral). The fully general greens_theorem_smooth_boundary is isolated as a single axiom — the open Mathlib gap requiring the Jordan-curve theorem and a 2-D divergence package — and used to cross-check the rectangular case. Honestly axiomatized: 1 axiom (the general Stokes-type identity), with the path-integral side fully expressible in Mathlib's intervalIntegral."
+    },
+    {
       "id": "definition",
       "title": "Part I: Path Line Integral via intervalIntegral",
       "startLine": 67,
