@@ -1,0 +1,196 @@
+{
+  "id": "lovasz-local-lemma-oq-02-wip-01",
+  "title": "Lovász Local Lemma OQ-02-wip-01: The Sharp Threshold Beats the Classical e-Bound",
+  "slug": "lovasz-local-lemma-oq-02-wip-01",
+  "description": "The parent OQ-02 proves T(d) = d^d/(d+1)^{d+1} is the exact algebraic maximum of x·(1-x)^d, hence the sharp symmetric-LLL threshold. This entry quantifies the gap to the *classical* Erdős–Lovász criterion e·p·(d+1) ≤ 1: it proves T(d) > 1/(e·(d+1)) for every d ≥ 1, i.e. the sharp threshold strictly exceeds the classical bound. The single analytic ingredient is the classical inequality (1 + 1/d)^d < e, derived from Real.add_one_lt_exp. Fully machine-verified, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius (researcher-1)",
+    "date": "2026-07-02",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LovaszLocalLemmaOQ02Wip01.lean",
+    "tags": [
+      "combinatorics",
+      "probabilistic-method",
+      "lovász-local-lemma",
+      "real-analysis",
+      "exponential",
+      "inequalities"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-07-02",
+    "axiomCount": 0,
+    "assumptions": "None beyond Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). No sorries, no `axiom` declarations, no native_decide. #print axioms on both the main theorem and its product form reports only the standard trio.",
+    "lineCount": 102,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "additionalFiles": [],
+    "originalContributions": [
+      "lllThreshold_gt_classical_ebound: T(d) > 1/(e·(d+1)) for all d ≥ 1 — the sharp LLL threshold strictly exceeds the classical Erdős–Lovász bound 1/(e(d+1)).",
+      "exp_mul_threshold_gt_one: the product form e·(d+1)·T(d) > 1, exhibiting that the sharp threshold violates the classical criterion e·p·(d+1) ≤ 1 at p = T(d).",
+      "one_add_inv_pow_lt_exp_one: the classical inequality (1 + 1/d)^d < e for every d ≥ 1, via Real.add_one_lt_exp raised to the d-th power (pow_lt_pow_left₀) and Real.exp_nat_mul.",
+      "succ_pow_lt_pow_mul_exp: the cleared-denominator form (d+1)^d < d^d·e consumed by the main theorem.",
+      "lllThreshold_cast: the real closed form (lllThreshold d : ℝ) = d^d/(d+1)^{d+1}, casting the parent's rational threshold to ℝ."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The symmetric Lovász Local Lemma (Erdős–Lovász, 1975) is most often quoted in the memorable form: if each bad event has probability at most $p$ and depends on at most $d$ others, then $e \\cdot p \\cdot (d+1) \\le 1$ suffices to avoid all events. This is the 'e-bound' $p \\le 1/(e(d+1))$. It is not, however, the sharpest algebraic condition. The parent entry OQ-02 established that the *exact* threshold is $T(d) = d^d/(d+1)^{d+1}$, the maximum of $x(1-x)^d$ over $[0,1]$. This entry makes the comparison precise: the exact threshold is strictly larger than the classical $e$-bound, so the familiar $e \\cdot p \\cdot (d+1) \\le 1$ criterion leaves a genuine (constant-factor) gap. Shearer (1985) showed $T(d)$ is sharp; the present quantitative comparison explains why the textbook $e$-bound is safe but not tight.",
+    "problemStatement": "**From the parent OQ-02 lineage.** OQ-02 proves $T(d) = d^d/(d+1)^{d+1}$ is the exact algebraic maximum of $x(1-x)^d$ on $[0,1]$. The classical symmetric LLL is applicable when $e\\cdot p\\cdot(d+1)\\le 1$, i.e. $p \\le 1/(e(d+1))$.\n\n**Precise statement:** For all $d \\ge 1$,\n$$T(d) \\;>\\; \\frac{1}{e\\,(d+1)}, \\qquad\\text{equivalently}\\qquad e\\,(d+1)\\,T(d) > 1.$$",
+    "text": "The exact symmetric-LLL threshold T(d) strictly exceeds the classical Erdős–Lovász bound 1/(e(d+1)). Because 1/e is irrational, the comparison is stated over ℝ using the real cast of the parent's rational threshold lllThreshold.",
+    "proofStrategy": "The comparison reduces to a single classical inequality. Writing T(d) = 1/((d+1)·(1+1/d)^d), the claim T(d) > 1/(e(d+1)) is equivalent to (1 + 1/d)^d < e. This is proved from Mathlib's strict tangent-line bound Real.add_one_lt_exp: with x = 1/d > 0, 1 + 1/d < exp(1/d); raising both sides to the d-th power (pow_lt_pow_left₀) gives (1+1/d)^d < exp(1/d)^d = exp(d·(1/d)) = exp(1) = e via Real.exp_nat_mul. Clearing the d^d denominator yields (d+1)^d < d^d·e, and one application of div_lt_div_iff₀ finishes the main inequality; div_lt_iff₀ gives the product form e·(d+1)·T(d) > 1.",
+    "keyInsights": [
+      "The gap between the sharp threshold and the classical bound is exactly the factor by which (1+1/d)^d falls short of e: T(d) = 1/((d+1)(1+1/d)^d) versus 1/((d+1)e).",
+      "(1 + 1/d)^d < e for every d ≥ 1 is the crisp reason the textbook criterion e·p·(d+1) ≤ 1 is strictly weaker than the exact threshold — never an equality.",
+      "The strict tangent-line inequality Real.add_one_lt_exp (x ≠ 0 → x+1 < exp x) is the whole analytic content; monotonicity of x ↦ x^d and the identity exp(1/d)^d = exp 1 do the rest.",
+      "Since 1/e is irrational the statement cannot live in ℚ (where the parent threshold is defined); casting lllThreshold to ℝ via lllThreshold_cast is what makes the comparison expressible."
+    ],
+    "prerequisites": [
+      "LovaszLocalLemmaOQ02.lean — parent file establishing T(d) as the exact algebraic maximum, and LovaszLocalLemma.lean for the lllThreshold definition.",
+      "Real.add_one_lt_exp, Real.exp_nat_mul, pow_lt_pow_left₀ (strict power monotonicity).",
+      "div_lt_div_iff₀ and div_lt_iff₀ for the final denominator clearing."
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-overview",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "File docstring stating the sharp-vs-classical comparison T(d) > 1/(e(d+1)), imports (Mathlib and the OQ-02 parent), and the namespace ProbMethod.LovaszLocal.OQ02.Wip01.",
+      "mathContext": "Header only; no declarations. Reuses lllThreshold from the parent lineage."
+    },
+    {
+      "id": "sec-cast",
+      "title": "Real Closed Form of the Threshold",
+      "startLine": 40,
+      "endLine": 45,
+      "summary": "lllThreshold_cast: (lllThreshold d : ℝ) = d^d/(d+1)^{d+1} for d ≥ 1, casting the parent's rational threshold to ℝ.",
+      "mathContext": "Unfolds the parent definition (if-branch for d ≠ 0) and pushes the ℚ→ℝ cast through the power and quotient."
+    },
+    {
+      "id": "sec-classical-bound",
+      "title": "The Classical Inequality (1 + 1/d)^d < e",
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "one_add_inv_pow_lt_exp_one: from 1 + 1/d < exp(1/d) (Real.add_one_lt_exp) raised to the d-th power, (1+1/d)^d < exp(1/d)^d = exp(d·(1/d)) = e.",
+      "mathContext": "The single analytic ingredient. Uses the strict tangent-line bound, strict power monotonicity, and Real.exp_nat_mul."
+    },
+    {
+      "id": "sec-cleared",
+      "title": "Cleared-Denominator Form (d+1)^d < d^d · e",
+      "startLine": 63,
+      "endLine": 76,
+      "summary": "succ_pow_lt_pow_mul_exp: multiply the classical inequality by d^d and fold (1+1/d)^d · d^d = (d+1)^d.",
+      "mathContext": "Rewrites the inequality into the polynomial shape the main theorem consumes after div_lt_div_iff₀."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Theorem: T(d) > 1/(e(d+1))",
+      "startLine": 78,
+      "endLine": 91,
+      "summary": "lllThreshold_gt_classical_ebound: 1/(e·(d+1)) < (lllThreshold d : ℝ). Clears denominators with div_lt_div_iff₀, uses pow_succ, and applies the cleared-denominator lemma scaled by (d+1) > 0.",
+      "mathContext": "The sharp symmetric-LLL threshold strictly exceeds the classical Erdős–Lovász bound 1/(e(d+1))."
+    },
+    {
+      "id": "sec-product-form",
+      "title": "Product Form e·(d+1)·T(d) > 1",
+      "startLine": 93,
+      "endLine": 102,
+      "summary": "exp_mul_threshold_gt_one: rearranges the main inequality via div_lt_iff₀ into e·(d+1)·T(d) > 1, showing the sharp threshold violates the classical criterion e·p·(d+1) ≤ 1 at p = T(d).",
+      "mathContext": "The product form is the way the classical criterion is usually stated, making the strict violation explicit."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lovasz-local-lemma-oq-02",
+      "relationship": "extends",
+      "description": "OQ-02 proves T(d) is the exact algebraic maximum of x·(1-x)^d; this entry compares that sharp threshold to the classical e-bound and reuses its lllThreshold."
+    },
+    {
+      "targetId": "lovasz-local-lemma",
+      "relationship": "related",
+      "description": "The base file defines lllThreshold and its closed form, cast to ℝ here via lllThreshold_cast."
+    }
+  ],
+  "conclusion": {
+    "summary": "For every d ≥ 1 the sharp symmetric-LLL threshold satisfies T(d) > 1/(e·(d+1)), equivalently e·(d+1)·T(d) > 1. The proof rests on the classical inequality (1 + 1/d)^d < e. Fully machine-verified with no sorries and no axioms beyond Mathlib's foundations.",
+    "implications": "**Mathematical significance:** The textbook symmetric LLL condition e·p·(d+1) ≤ 1 is strictly weaker than the exact algebraic threshold established in OQ-02. The classical bound is therefore safe but never tight — it discards a constant factor equal to e/(1+1/d)^d > 1. This quantifies precisely how much room the memorable e-bound leaves versus the sharp Shearer threshold.",
+    "openQuestions": [
+      "Can the gap be quantified more finely, e.g. e·(d+1)·T(d) = e/(1+1/d)^d → 1 as d → ∞, giving the exact asymptotic overhead of the classical bound?",
+      "Does the analogous strict comparison hold for the asymmetric LLL threshold, where the per-event degrees vary?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.LovaszLocalLemmaOQ02"
+    ],
+    "opens": [
+      "Real",
+      "ProbMethod.LovaszLocal"
+    ],
+    "namespace": "ProbMethod.LovaszLocal.OQ02.Wip01",
+    "lineCount": 102,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 5,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/LovaszLocalLemmaOQ02Wip01.lean",
+    "sorries": 0,
+    "additionalFiles": []
+  },
+  "references": [
+    {
+      "authors": "Erdős, Lovász",
+      "title": "Problems and Results on 3-Chromatic Hypergraphs and Some Related Questions",
+      "year": "1975",
+      "note": "Original LLL paper; source of the classical symmetric criterion e·p·(d+1) ≤ 1."
+    },
+    {
+      "authors": "Shearer",
+      "title": "On a Problem of Spencer",
+      "year": "1985",
+      "note": "Sharpness of the exact threshold T(d) on d-regular dependency graphs."
+    },
+    {
+      "authors": "Alon, Spencer",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "note": "Standard reference stating the symmetric LLL in the e-bound form 1/(e(d+1))."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lllThreshold_gt_classical_ebound",
+      "type": "core",
+      "description": "The sharp threshold beats the classical e-bound: T(d) > 1/(e(d+1)) for all d ≥ 1.",
+      "leanType": "(d : ℕ) → 0 < d → 1 / (Real.exp 1 * (d + 1)) < ((lllThreshold d : ℚ) : ℝ)"
+    },
+    {
+      "name": "exp_mul_threshold_gt_one",
+      "type": "core",
+      "description": "Product form: e·(d+1)·T(d) > 1, violating the classical criterion e·p·(d+1) ≤ 1 at p = T(d).",
+      "leanType": "(d : ℕ) → 0 < d → 1 < Real.exp 1 * (d + 1) * ((lllThreshold d : ℚ) : ℝ)"
+    },
+    {
+      "name": "one_add_inv_pow_lt_exp_one",
+      "type": "core",
+      "description": "The classical inequality (1 + 1/d)^d < e for every d ≥ 1.",
+      "leanType": "(d : ℕ) → 0 < d → (1 + 1 / (d : ℝ)) ^ d < Real.exp 1"
+    },
+    {
+      "name": "succ_pow_lt_pow_mul_exp",
+      "type": "lemma",
+      "description": "Cleared-denominator form (d+1)^d < d^d · e.",
+      "leanType": "(d : ℕ) → 0 < d → ((d : ℝ) + 1) ^ d < (d : ℝ) ^ d * Real.exp 1"
+    },
+    {
+      "name": "lllThreshold_cast",
+      "type": "lemma",
+      "description": "Real closed form of the parent threshold: T(d) = d^d/(d+1)^{d+1}.",
+      "leanType": "(d : ℕ) → 0 < d → ((lllThreshold d : ℚ) : ℝ) = (d : ℝ) ^ d / ((d : ℝ) + 1) ^ (d + 1)"
+    }
+  ],
+  "sorries": 0
+}

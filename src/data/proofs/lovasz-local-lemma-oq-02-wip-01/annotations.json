@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ann-wip01-overview",
+    "proofId": "lovasz-local-lemma-oq-02-wip-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "insight",
+    "title": "Sharp Threshold vs. Classical e-Bound",
+    "content": "The parent OQ-02 proves that the symmetric Lovász Local Lemma threshold\n$$T(d) = \\frac{d^d}{(d+1)^{d+1}} = \\frac{1}{d+1}\\left(\\frac{d}{d+1}\\right)^d$$\nis the *exact* algebraic maximum of $x(1-x)^d$ on $[0,1]$. The textbook symmetric LLL, however, is usually quoted in the looser Erdős–Lovász form\n$$e\\cdot p\\cdot(d+1) \\le 1 \\quad\\Longleftrightarrow\\quad p \\le \\frac{1}{e(d+1)}.$$\nThis file proves the two criteria are never equal — the sharp threshold is strictly larger:\n$$T(d) > \\frac{1}{e(d+1)}\\qquad(d \\ge 1).$$\nSince $1/e$ is irrational the statement is made over $\\mathbb{R}$, using the real cast of the parent's rational `lllThreshold`.",
+    "mathContext": "The whole comparison collapses to the classical inequality $(1+1/d)^d < e$: writing $T(d) = 1/((d+1)(1+1/d)^d)$, the claim $T(d) > 1/(e(d+1))$ is exactly $(1+1/d)^d < e$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "Erdős–Lovász criterion",
+      "symmetric LLL",
+      "e-bound"
+    ],
+    "prerequisites": [
+      "lovasz-local-lemma-oq-02"
+    ]
+  },
+  {
+    "id": "ann-wip01-cast",
+    "proofId": "lovasz-local-lemma-oq-02-wip-01",
+    "range": {
+      "startLine": 40,
+      "endLine": 45
+    },
+    "type": "technique",
+    "title": "Casting the Rational Threshold to ℝ",
+    "content": "The parent defines `lllThreshold d : ℚ` as `d^d / (d+1)^{d+1}` (for `d ≠ 0`). Because the comparison target `1/e` is irrational, the whole statement must live in `ℝ`. `lllThreshold_cast` transports the definition:\n\n```lean\ntheorem lllThreshold_cast (d : ℕ) (hd : 0 < d) :\n    ((lllThreshold d : ℚ) : ℝ) = (d : ℝ) ^ d / ((d : ℝ) + 1) ^ (d + 1) := by\n  simp only [lllThreshold, if_neg (Nat.pos_iff_ne_zero.mp hd)]\n  push_cast\n  ring\n```\n\nThe `if_neg` discharges the `d = 0` branch of the definition; `push_cast` moves the `ℚ→ℝ` cast through the power and quotient.",
+    "mathContext": "This is the bridge that lets a rational-valued combinatorial threshold be compared against a transcendental bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lllThreshold",
+      "push_cast",
+      "rational cast"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-wip01-classical-ineq",
+    "proofId": "lovasz-local-lemma-oq-02-wip-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 61
+    },
+    "type": "insight",
+    "title": "The Classical Inequality (1 + 1/d)^d < e",
+    "content": "The single analytic ingredient is the classical fact that the sequence $(1+1/d)^d$ approaches $e$ strictly from below:\n\n```lean\ntheorem one_add_inv_pow_lt_exp_one (d : ℕ) (hd : 0 < d) :\n    (1 + 1 / (d : ℝ)) ^ d < Real.exp 1 := by\n  ...\n  calc (1 + 1 / (d : ℝ)) ^ d\n      < (Real.exp (1 / (d : ℝ))) ^ d :=\n        pow_lt_pow_left₀ hstep (by positivity) (Nat.pos_iff_ne_zero.mp hd)\n    _ = Real.exp ((d : ℝ) * (1 / (d : ℝ))) := by rw [← Real.exp_nat_mul]\n    _ = Real.exp 1 := by rw [mul_one_div, div_self hdr.ne']\n```\n\nThe strict tangent-line bound `Real.add_one_lt_exp` (`x ≠ 0 → x + 1 < exp x`) applied at `x = 1/d > 0` gives `1 + 1/d < exp(1/d)`. Raising to the `d`-th power (strict, via `pow_lt_pow_left₀`) and collapsing `exp(1/d)^d = exp(d·(1/d)) = exp 1` with `Real.exp_nat_mul` finishes it.",
+    "mathContext": "This is exactly the reason the textbook criterion $e\\cdot p\\cdot(d+1)\\le 1$ is safe: it replaces the sharp factor $(1+1/d)^d$ by the strictly larger $e$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.add_one_lt_exp",
+      "Real.exp_nat_mul",
+      "pow_lt_pow_left₀",
+      "Euler's number"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-wip01-main",
+    "proofId": "lovasz-local-lemma-oq-02-wip-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 91
+    },
+    "type": "proof-step",
+    "title": "Clearing Denominators to the Main Inequality",
+    "content": "The classical inequality is first rescaled to a polynomial shape and then fed through `div_lt_div_iff₀`:\n\n```lean\ntheorem succ_pow_lt_pow_mul_exp (d : ℕ) (hd : 0 < d) :\n    ((d : ℝ) + 1) ^ d < (d : ℝ) ^ d * Real.exp 1\n\ntheorem lllThreshold_gt_classical_ebound (d : ℕ) (hd : 0 < d) :\n    1 / (Real.exp 1 * ((d : ℝ) + 1)) < ((lllThreshold d : ℚ) : ℝ) := by\n  ...\n  rw [lllThreshold_cast d hd,\n      div_lt_div_iff₀ (by positivity) (by positivity),\n      one_mul, pow_succ, ← mul_assoc]\n  exact mul_lt_mul_of_pos_right (succ_pow_lt_pow_mul_exp d hd) hd1\n```\n\nMultiplying `(1+1/d)^d < e` by `d^d` folds the left side via `(1+1/d)^d · d^d = (d+1)^d`, yielding `(d+1)^d < d^d·e`. In the main theorem `div_lt_div_iff₀` turns `1/(e(d+1)) < d^d/(d+1)^{d+1}` into `(d+1)^{d+1} < d^d·(e·(d+1))`; `pow_succ` splits `(d+1)^{d+1}` and the cleared-denominator lemma scaled by `(d+1) > 0` closes it.",
+    "mathContext": "The end result is the headline comparison: T(d) > 1/(e(d+1)) for every d ≥ 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "div_lt_div_iff₀",
+      "pow_succ",
+      "mul_lt_mul_of_pos_right"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-wip01-product-form",
+    "proofId": "lovasz-local-lemma-oq-02-wip-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 102
+    },
+    "type": "insight",
+    "title": "Product Form: the Classical Criterion Is Violated at p = T(d)",
+    "content": "The classical criterion is usually stated as `e·p·(d+1) ≤ 1`. Rearranging the main inequality with `div_lt_iff₀` gives its strict violation at `p = T(d)`:\n\n```lean\ntheorem exp_mul_threshold_gt_one (d : ℕ) (hd : 0 < d) :\n    1 < Real.exp 1 * ((d : ℝ) + 1) * ((lllThreshold d : ℚ) : ℝ)\n```\n\nSo `e·(d+1)·T(d) > 1`: plugging the *exact* threshold into the textbook criterion breaks it. Equivalently, the classical bound `1/(e(d+1))` is strictly smaller than the sharp threshold, and the overhead is exactly the factor `e/(1+1/d)^d > 1`.",
+    "mathContext": "This is the practical takeaway: the memorable e-bound is never tight; it always discards a constant factor relative to the Shearer-sharp threshold.",
+    "significance": "key",
+    "relatedConcepts": [
+      "div_lt_iff₀",
+      "Erdős–Lovász criterion",
+      "sharpness"
+    ],
+    "prerequisites": []
+  }
+]
