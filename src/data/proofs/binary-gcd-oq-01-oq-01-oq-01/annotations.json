@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-bgcdlb-1",
+    "proofId": "binary-gcd-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "From an Upper Bound to a Matching Lower Bound",
+    "content": "**Framing.** The parent `binary-gcd-oq-01-oq-01` proved the classical upper bound $\\mathtt{binaryGcdCost}\\,a\\,b \\le O((\\log N)^2)$ but left open (its `openQuestions[0]`) whether that quadratic bound is *achieved* or merely an over-estimate. This entry settles it by exhibiting an explicit worst-case family and computing its cost exactly. The family is the all-ones odd number against $1$: $N = 2^{k+1} - 1$ (binary: $k+1$ ones) and $b = 1$. Both operands are odd and $N > 1$, so Stein's algorithm is forced into the odd/odd, $a > b$ branch at every step — subtract $1$, then halve — giving the chain $(2^{m+1}-1, 1) \\to (2^m - 1, 1)$.",
+    "mathContext": "Per-step cost at $(2^{m+1}-1, 1)$ is $\\mathtt{Nat.size}(2^{m+1}-1) + \\mathtt{Nat.size}\\,1 = (m+1)+1 = m+2$; summing $m = 0,\\dots,k$ gives $\\sum_{m=1}^{k+1}(m+1) = (k+1)(k+4)/2 = \\Omega(k^2) = \\Omega((\\log N)^2)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Matching lower bounds for algorithm cost models",
+      "Worst-case analysis of Stein's Binary GCD",
+      "Omega((log N)^2) bit-complexity"
+    ],
+    "prerequisites": [
+      "The parent cost model binaryGcdCost and its O((log N)^2) upper bound",
+      "Stein's Binary GCD odd/odd subtract-and-halve reduction"
+    ],
+    "tags": [
+      "module-header",
+      "framing",
+      "lower-bound",
+      "binary-gcd"
+    ]
+  },
+  {
+    "id": "ann-bgcdlb-2",
+    "proofId": "binary-gcd-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 86
+    },
+    "type": "lemma",
+    "title": "Bit-Length of an All-Ones Number",
+    "content": "**Helper.** `size_two_pow_sub_one` proves $\\mathtt{Nat.size}(2^k - 1) = k$: the number $2^k - 1$ is a block of $k$ ones, so its bit-length is exactly $k$. The proof is by antisymmetry — $\\mathtt{Nat.size\\_le}$ ($\\mathtt{size}\\,m \\le n \\iff m < 2^n$) gives the upper half from $2^k - 1 < 2^k$, and $\\mathtt{Nat.lt\\_size}$ ($m < \\mathtt{size}\\,n \\iff 2^m \\le n$) gives the lower half from $2^{k-1} \\le 2^k - 1$; both inequalities are discharged by `omega` after supplying $2^{n+1} = 2^n \\cdot 2$. `size_one` is the $k = 1$ specialisation $\\mathtt{Nat.size}\\,1 = 1$.",
+    "mathContext": "This fixes the exact per-step bit cost of the worst-case family: $\\mathtt{Nat.size}(2^{m+1}-1) = m+1$, so charging bit-length per step yields $m+2$ at the $m$-th reduction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.size (bit-length)",
+      "All-ones binary representation",
+      "Nat.size_le / Nat.lt_size"
+    ],
+    "prerequisites": [
+      "Nat.size and its characterisations",
+      "omega for linear arithmetic with a single power atom"
+    ],
+    "tags": [
+      "bit-length",
+      "nat-size",
+      "helper-lemma"
+    ]
+  },
+  {
+    "id": "ann-bgcdlb-3",
+    "proofId": "binary-gcd-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 121
+    },
+    "type": "lemma",
+    "title": "The Forced Subtract-and-Halve Step",
+    "content": "**The recurrence engine.** `cost_base` computes the terminal step $\\mathtt{binaryGcdCost}\\,1\\,1 = 2$: $(1,1)$ is odd/odd with $1 \\not> 1$, so it takes the last else branch to $(1, 0)$ at cost $\\mathtt{size}\\,1 + \\mathtt{size}\\,1 = 2$. `cost_step` is the single-step recurrence $\\mathtt{binaryGcdCost}(2^{k+2}-1)\\,1 = (k+3) + \\mathtt{binaryGcdCost}(2^{k+1}-1)\\,1$. Writing $2^{k+2}-1 = a'+1$ and $1 = 0+1$, the definitional equation lemma `binaryGcdCost.eq_3` exposes the five-branch if-tree; `omega` decides the guards (the operand is odd and $> 1$, so the odd/odd $a > b$ branch is taken) and evaluates $(a'+1 - 1)/2 = 2^{k+1}-1$; `size_two_pow_sub_one` supplies the step cost $(k+2)+1 = k+3$.",
+    "mathContext": "Subtracting $1$ from the all-ones number $2^{k+2}-1$ gives the even $2^{k+2}-2$, and halving drops the leading bit to $2^{k+1}-1$ — one fewer one. The reduction is deterministic, so the whole cost is a clean first-order recurrence.",
+    "significance": "major",
+    "relatedConcepts": [
+      "Definitional equation lemmas (binaryGcdCost.eq_3)",
+      "First-order linear recurrence",
+      "Forced branch selection via omega"
+    ],
+    "prerequisites": [
+      "binaryGcdCost.eq_3 and binaryGcdCost_zero_right",
+      "size_two_pow_sub_one",
+      "omega for parity, comparison, and division-by-2 guards"
+    ],
+    "tags": [
+      "recurrence",
+      "equation-lemma",
+      "binary-gcd",
+      "worst-case"
+    ]
+  },
+  {
+    "id": "ann-bgcdlb-4",
+    "proofId": "binary-gcd-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 125,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Exact Cost of the Worst-Case Family",
+    "content": "**Closed form.** `cost_family` solves the recurrence into the division-free identity $2 \\cdot \\mathtt{binaryGcdCost}(2^{k+1}-1)\\,1 = (k+1)(k+4)$, i.e. the family costs exactly $(k+1)(k+4)/2$ bit operations. The proof is induction on $k$: the base is `cost_base` (via $2^{0+1}-1 = 1$), and the step applies `cost_step`, distributes with `Nat.mul_add`, rewrites the recursive term with the induction hypothesis, and closes the polynomial identity $2(n+3) + (n+1)(n+4) = (n+2)(n+5)$ with `ring`.",
+    "mathContext": "Doubling avoids the truncating $\\mathbb{N}$-division in $(k+1)(k+4)/2$, keeping the induction step a pure semiring identity that `ring` discharges. The value matches the arithmetic-series sum $2 + 3 + \\cdots + (k+2)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Closed-form solution of a recurrence",
+      "Division-free ℕ identities",
+      "Arithmetic series"
+    ],
+    "prerequisites": [
+      "cost_base and cost_step",
+      "ring for commutative-semiring identities"
+    ],
+    "tags": [
+      "closed-form",
+      "induction",
+      "exact-cost",
+      "binary-gcd"
+    ]
+  },
+  {
+    "id": "ann-bgcdlb-5",
+    "proofId": "binary-gcd-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 138,
+      "endLine": 159
+    },
+    "type": "theorem",
+    "title": "The Ω((log N)²) Lower Bound",
+    "content": "**Matching bound.** `binaryGcdCost_lower_bound` extracts $(k+1)^2 \\le 2 \\cdot \\mathtt{binaryGcdCost}(2^{k+1}-1)\\,1$ from the closed form via $(k+1)^2 \\le (k+1)(k+4)$ (`nlinarith`). `binaryGcdCost_omega_lower` converts this into the parent's $\\mathtt{Nat.log}\\,2$ units: `Nat.log_eq_of_pow_le_of_lt_pow` gives $\\mathtt{Nat.log}\\,2\\,(2^{k+1}-1) = k$ (since $2^k \\le 2^{k+1}-1 < 2^{k+1}$), so $(\\log_2 N)^2 \\le 2 \\cdot \\mathtt{binaryGcdCost}\\,N\\,1$ — precisely the $\\Omega((\\log N)^2)$ statement the parent asked for.",
+    "mathContext": "The step count of this family is only $\\Theta(\\log N)$ (Lame), yet each step costs $\\Theta(\\log N)$ bits and the operand shrinks by just one bit per step, so the total is the quadratic arithmetic series — the source of the $\\Omega((\\log N)^2)$ bit cost.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Omega lower bounds",
+      "Nat.log and Nat.log_eq_of_pow_le_of_lt_pow",
+      "Bit-complexity vs step count"
+    ],
+    "prerequisites": [
+      "cost_family",
+      "nlinarith; Nat.log_eq_of_pow_le_of_lt_pow"
+    ],
+    "tags": [
+      "lower-bound",
+      "log-complexity",
+      "omega-notation",
+      "binary-gcd"
+    ]
+  },
+  {
+    "id": "ann-bgcdlb-6",
+    "proofId": "binary-gcd-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 161,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Tightness: Θ((log N)²)",
+    "content": "**Two-sided squeeze.** `binaryGcdCost_family_matching` pairs this file's lower bound with the parent's quadratic upper bound `binaryGcdCost_le_quadratic`, applied at $a = 2^{k+1}-1 > 0$ and $b = 1$. On this family the total cost is squeezed between $(\\log_2 N)^2/2$ and $(2(\\log_2 a + \\log_2 b) + 2)(\\log_2 a + \\log_2 b + 2)$, both $\\Theta((\\log N)^2)$. This certifies that the parent's $O((\\log N)^2)$ bound is tight, closing the open question.",
+    "mathContext": "Positivity $2^{k+1}-1 > 0$ follows from $2 \\le 2^{k+1}$ (`Nat.pow_le_pow_right`); the upper bound is invoked directly from the parent module, so both directions are certified in one statement.",
+    "significance": "major",
+    "relatedConcepts": [
+      "Theta (tight) asymptotics",
+      "Combining matching upper and lower bounds",
+      "Cross-module reuse of the parent's upper bound"
+    ],
+    "prerequisites": [
+      "binaryGcdCost_omega_lower",
+      "parent binaryGcdCost_le_quadratic"
+    ],
+    "tags": [
+      "tightness",
+      "theta-bound",
+      "binary-gcd",
+      "open-question-resolved"
+    ]
+  }
+]
