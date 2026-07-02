@@ -26,11 +26,11 @@
   All numeric claims were cross-checked independently in Python
   (`research/problems/happy-number-oq-01/verify_happy.py`).
 
-  STATUS: build-pending.  This file is NOT registered in `Proofs.lean` and has
-  not been compiled this session (Docker build pool saturated / daemon
-  unresponsive).  The finite checks use `native_decide`, which introduces the
-  `Lean.ofReduceBool` axiom; the gallery status for this entry is therefore
-  `axiomatized`, NOT `verified`.
+  STATUS: compiles cleanly against Mathlib (Lean v4.26.0).  The finite checks use
+  `native_decide`, which introduces the `Lean.ofReduceBool` axiom; the gallery
+  status for this entry is therefore `axiomatized`, NOT `verified`.  There are no
+  `sorry`s and no hand-asserted mathematical axioms — the only assumption is trust
+  in the Lean compiler's kernel reduction via `native_decide`.
 -/
 import Mathlib
 
@@ -80,7 +80,14 @@ theorem descent (n : ℕ) (hn : 1000 ≤ n) : S n < n := by
       have h1000 : (10 : ℕ) ^ 3 = 1000 := by norm_num
       omega
     have hlt : (10 : ℕ) ^ 3 < 10 ^ (Nat.digits 10 n).length := lt_of_le_of_lt h3 hupper
-    have h3L : 3 < (Nat.digits 10 n).length := (pow_lt_pow_iff_right' (by norm_num)).mp hlt
+    -- From `10^3 < 10^L` conclude `3 < L` by contradiction (base-10 monotonicity),
+    -- avoiding the ordered-monoid `pow_lt_pow_iff_right'` (needs `MulLeftStrictMono ℕ`).
+    have h3L : 3 < (Nat.digits 10 n).length := by
+      by_contra h
+      push_neg at h
+      have hle : (10 : ℕ) ^ (Nat.digits 10 n).length ≤ 10 ^ 3 :=
+        Nat.pow_le_pow_right (by norm_num) h
+      omega
     omega
   -- Lower bound on `n` from its digit count.
   have hlow : 10 ^ ((Nat.digits 10 n).length - 1) ≤ n := by

@@ -8,8 +8,8 @@
     ],
     "opens": [],
     "namespace": "HappyNumberOQ01",
-    "lineCount": 175,
-    "axiomCount": 1,
+    "lineCount": 182,
+    "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 3,
     "path": "Proofs/HappyNumberOQ01.lean",
@@ -90,7 +90,7 @@
     "dateAdded": "2026-06-16",
     "axiomCount": 1,
     "lineCount": 175,
-    "assumptions": "Build-pending: the file is not yet registered in Proofs.lean and has not been compiled this session. The finite checks (S_one, unhappy_cycle, T_absorbing, reachesT_below, and the 8-cycle splices) use native_decide, which introduces the Lean.ofReduceBool axiom — so the entry is axiomatized (axiomCount 1), not axiom-free. There are no sorries and no hand-asserted mathematical axioms; the single assumption is trust in the Lean compiler's reduction via native_decide.",
+    "assumptions": "The file compiles cleanly against Mathlib (Lean v4.26.0). The finite checks (S_one, unhappy_cycle, T_absorbing, reachesT_below, and the 8-cycle splices) use native_decide, which introduces the Lean.ofReduceBool axiom — so the entry is axiomatized (axiomCount 1), not axiom-free. There are no literal axiom declarations and no sorries; the single assumption is trust in the Lean compiler's kernel reduction via native_decide.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 3
@@ -120,7 +120,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 37,
-      "summary": "The module docstring states the happy/unhappy dichotomy, the absorbing set T, and the descent-plus-enumeration strategy, and flags the build-pending / native_decide status. Imports Mathlib and opens the HappyNumberOQ01 namespace.",
+      "summary": "The module docstring states the happy/unhappy dichotomy, the absorbing set T, and the descent-plus-enumeration strategy, and flags the native_decide (axiomatized) status. Imports Mathlib and opens the HappyNumberOQ01 namespace.",
       "mathContext": "$T = \\{1\\} \\cup \\{4, 16, 37, 58, 89, 145, 42, 20\\}$; every $n \\ge 1$ satisfies $\\exists k,\\ S^{[k]}(n) = 1$ or $\\exists k,\\ S^{[k]}(n) = 4$."
     },
     {
