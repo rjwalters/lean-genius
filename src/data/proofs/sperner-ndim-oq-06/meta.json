@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Constructive Kuhn Path-Following",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Module docstring and import for the constructive Kuhn path-following engine behind Sperner's lemma. These head lines explain doors, the deterministic opposite-door pivot rule, terminal fully-coloured simplices, and boundary sources, and how reversibility (injectivity away from termination) forces the walk to reach a fully-coloured simplex in at most O(N^d) = #doors steps. They set up the abstract model f : V → Option V before the PathFollow namespace opens.",
+      "mathContext": "Kuhn (1960) path-following does not merely count fully-coloured simplices mod 2 — it walks to one. Modelling the pivot as a partial successor f on a finite door-type V, with reversibility (hinj: f injective where non-terminal) and a source hypothesis (hsrc), the successor traces a simple non-looping path that must terminate at a fully-coloured simplex within Fintype.card V steps. This constructive companion to the parity engine is fully machine-checked: 0 axioms, 0 sorries."
+    },
+    {
       "id": "pivot-model",
       "title": "The Door-Pivot Rule as a Partial Successor",
       "startLine": 68,
