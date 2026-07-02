@@ -28,22 +28,46 @@
     "proofId": "chebyshev-pnt-bridge-oq-06-oq-01",
     "range": {
       "startLine": 52,
+      "endLine": 77
+    },
+    "type": "tactic",
+    "title": "Upper Half of the Bracket: log(√m) ≤ ½ log m",
+    "content": "log_natSqrt_le establishes the easy half of the bracket: since (Nat.sqrt m)² ≤ m (Nat.sqrt_le'), taking Real.log and using log((√m)²) = 2 log(√m) gives log(√m) ≤ ½ log m, valid for every m ≥ 1. No lower bound on √m is needed — this direction is pure monotonicity of Real.log applied to the defining floor inequality (Nat.sqrt m)² ≤ m.",
+    "mathContext": "$(\\lfloor\\sqrt m\\rfloor)^2 \\le m \\Rightarrow \\log\\lfloor\\sqrt m\\rfloor \\le \\tfrac12\\log m$ (all $m\\ge1$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.sqrt_le'",
+      "Real.log_pow",
+      "Real.log_le_log",
+      "integer square root"
+    ],
+    "prerequisites": [
+      "(Nat.sqrt m)² ≤ m",
+      "monotonicity of Real.log",
+      "log(x²) = 2 log x"
+    ]
+  },
+  {
+    "id": "ann-bracket-lower",
+    "proofId": "chebyshev-pnt-bridge-oq-06-oq-01",
+    "range": {
+      "startLine": 79,
       "endLine": 101
     },
     "type": "insight",
-    "title": "The Bracket: ½ log m − log 2 ≤ log(Nat.sqrt m) ≤ ½ log m",
-    "content": "Two theorems pin log(Nat.sqrt m) between ½ log m and ½ log m − log 2. The UPPER half log_natSqrt_le is easy: (Nat.sqrt m)² ≤ m (Nat.sqrt_le'), so taking logs and using log((√m)²) = 2 log(√m) gives log(√m) ≤ ½ log m, valid for all m ≥ 1. The LOWER half log_natSqrt_ge is the only non-trivial direction and needs m ≥ 4: then Nat.le_sqrt gives Nat.sqrt m ≥ 2, hence Nat.sqrt m + 1 ≤ 2·Nat.sqrt m, so from m < (Nat.sqrt m + 1)² (Nat.lt_succ_sqrt) we get the crude but clean m < 4·(Nat.sqrt m)². Taking logs and expanding log(4·(√m)²) = 2 log 2 + 2 log(√m) yields log m ≤ 2 log 2 + 2 log(√m), i.e. ½ log m − log 2 ≤ log(√m).",
-    "mathContext": "$(\\lfloor\\sqrt m\\rfloor)^2 \\le m < (\\lfloor\\sqrt m\\rfloor+1)^2 \\le 4(\\lfloor\\sqrt m\\rfloor)^2$.",
+    "title": "Lower Half of the Bracket: ½ log m − log 2 ≤ log(√m)",
+    "content": "log_natSqrt_ge is the only non-trivial direction and needs m ≥ 4. Then Nat.le_sqrt gives Nat.sqrt m ≥ 2, so Nat.sqrt m + 1 ≤ 2·Nat.sqrt m, and from m < (Nat.sqrt m + 1)² (Nat.lt_succ_sqrt) we get the crude but clean m < 4·(Nat.sqrt m)². Taking logs and expanding log(4·(√m)²) = 2 log 2 + 2 log(√m) yields log m ≤ 2 log 2 + 2 log(√m), i.e. ½ log m − log 2 ≤ log(√m). The log 2 slack is exactly the gap between √m and the next integer's square; it is harmless in the density limit.",
+    "mathContext": "$m < (\\lfloor\\sqrt m\\rfloor+1)^2 \\le 4(\\lfloor\\sqrt m\\rfloor)^2 \\Rightarrow \\tfrac12\\log m - \\log 2 \\le \\log\\lfloor\\sqrt m\\rfloor$ (for $m\\ge4$).",
     "significance": "key",
     "relatedConcepts": [
-      "Nat.sqrt_le'",
       "Nat.lt_succ_sqrt",
       "Nat.le_sqrt",
-      "Real.log_pow / Real.log_mul"
+      "Real.log_mul",
+      "log 4 = 2 log 2"
     ],
     "prerequisites": [
-      "(Nat.sqrt m)² ≤ m < (Nat.sqrt m + 1)²",
       "Nat.sqrt m ≥ 2 for m ≥ 4",
+      "m < (Nat.sqrt m + 1)²",
       "monotonicity of Real.log"
     ]
   },
@@ -75,7 +99,7 @@
     "proofId": "chebyshev-pnt-bridge-oq-06-oq-01",
     "range": {
       "startLine": 124,
-      "endLine": 156
+      "endLine": 162
     },
     "type": "insight",
     "title": "Renormalising the Upper Bound onto the π(m)·log m Scale",
