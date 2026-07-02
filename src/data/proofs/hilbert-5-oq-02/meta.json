@@ -102,6 +102,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Exponential Bridge from Lie Algebra to Lie Group",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "The docstring answers the second open question of parent hilbert-5 — extending the formalization with actual Lie-algebra infrastructure to state exponential-map properties. The parent axiomatizes the deep Gleason–Montgomery–Zippin theorems; this file instead uses the genuine Mathlib content underneath the Lie correspondence: the Lie bracket ⁅X,Y⁆ = XY − YX of an associative algebra, and the exponential map NormedSpace.exp ℝ of a real Banach algebra. The exponential is the concrete bridge from the Lie algebra to the group — X is an infinitesimal generator and t ↦ exp(t•X) is the one-parameter subgroup it generates. All results hold in any real Banach algebra (0 axioms, 0 sorries, no native_decide). Lists main results (commute_of_lie_eq_zero, lie_eq_zero_iff_commute, exp_add_of_lie_eq_zero, oneParam and its homomorphism laws). Imports Mathlib; opens NormedSpace; namespace Hilbert5OQ02.",
+      "mathContext": "$\\exp(X+Y)=\\exp X\\cdot\\exp Y$ when $\\lie{X}{Y}=0$, and $t\\mapsto\\exp(t\\cdot X)$ is a one-parameter subgroup — the exponential bridge from the Lie algebra to the Lie group."
+    },
+    {
       "id": "lie-bracket",
       "title": "The Lie bracket and commutativity",
       "startLine": 57,
