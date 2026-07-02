@@ -139,5 +139,22 @@
         "module": "Mathlib.Analysis.SpecificLimits.Basic"
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "CompactnessFiniteSubcoverOq01Oq02Oq01",
+    "lineCount": 100,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/CompactnessFiniteSubcoverOq01Oq02Oq01.lean",
+    "sorries": 0
   }
 }
