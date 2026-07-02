@@ -185,4 +185,33 @@ theorem exists_isoscelesFree_pow (k : ℕ) :
   rintro x ⟨b, rfl⟩
   exact embR_mem_Ico k b
 
+/- ## From powers of `3` to every `N`
+
+`exists_isoscelesFree_pow` only bounds `P_1` along the sparse sequence
+`n = 3ᵏ`. Erdős asks about `P_1(n)` for *every* `n`, so we monotonize: for an
+arbitrary `N ≥ 1` take `k = ⌊log₃ N⌋`, giving `3ᵏ ≤ N` and hence an
+isosceles-free subset of `[0, N)` of size `2^{⌊log₃ N⌋}`. -/
+
+/-- **General-`N` lower bound.** For every `N ≥ 1` there is an isosceles-free set
+`S ⊆ [0, N)` of real numbers with exactly `2^{⌊log₃ N⌋}` elements. Since
+`3^{⌊log₃ N⌋} ≤ N < 3^{⌊log₃ N⌋ + 1}`, this is the classical bound
+`P_1(N) ≥ 2^{⌊log₃ N⌋}`, valid for **all** `N` and not only powers of `3`; it
+still grows like `N^{log₃ 2}` up to a bounded factor. -/
+theorem exists_isoscelesFree_Ico (N : ℕ) (hN : 1 ≤ N) :
+    ∃ S : Set ℝ, Erdos1207.IsoscelesFree S ∧ S ⊆ Set.Ico (0 : ℝ) N ∧
+      S.ncard = 2 ^ (Nat.log 3 N) := by
+  obtain ⟨S, hIso, hsub, hcard⟩ := exists_isoscelesFree_pow (Nat.log 3 N)
+  refine ⟨S, hIso, ?_, hcard⟩
+  -- `3^{⌊log₃ N⌋} ≤ N`, so `[0, 3ᵏ) ⊆ [0, N)`.
+  have h3 : (3 : ℕ) ^ (Nat.log 3 N) ≤ N := Nat.pow_log_le_self 3 (by omega)
+  have h3R : ((3 : ℝ) ^ (Nat.log 3 N)) ≤ (N : ℝ) := by exact_mod_cast h3
+  intro x hx
+  exact ⟨(hsub hx).1, lt_of_lt_of_le (hsub hx).2 h3R⟩
+
+/-- The general-`N` lower bound is never vacuous: `2^{⌊log₃ N⌋} ≥ 1` for every
+`N`, so `exists_isoscelesFree_Ico` always produces a nonempty isosceles-free
+subset. -/
+theorem exists_isoscelesFree_Ico_pos (N : ℕ) :
+    1 ≤ 2 ^ (Nat.log 3 N) := Nat.one_le_two_pow
+
 end Erdos1207OQ03
