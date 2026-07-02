@@ -44,6 +44,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the full all-signs complementary-edge door graph on the hexagon is paths-and-cycles",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "The module docstring, the import of Mathlib, and the namespace/open setup. A research artifact for sperner-mathlib4-oq-02 that builds the complete (all-sign, interior + boundary) Freudenthal–Tucker door graph on the hexagon-plus-centre triangulation of B² and pins down exactly how far door-counting alone can certify Tucker's lemma.",
+      "mathContext": "Doors are all complementary edges of either sign. The file supplies the two hypotheses of the abstract engine doorGraph_degree_le_two: hsimplex — every triangle has ≤ 2 complementary doors, sharply because no_triangle_all_complementary shows no triangle ever has all three sides complementary; and hdoor — every edge borders ≤ 2 triangles (the pseudomanifold bound). Hence the full door graph is a disjoint union of paths and cycles on every antipodal labelling — the engine's structural hypothesis realized for the first time by the complete FT door graph on real n=2 geometry. Yet boundary_door_count_even and half_boundary_parity_not_invariant show no unsigned door count supplies the odd boundary seed the parity engine needs, so the remaining FT input is provably an oriented / antipodally-signed count. All by kernel decide, 0 axioms (propext / Classical.choice / Quot.sound only)."
+    },
+    {
       "id": "model",
       "title": "Labelling Model and the Hexagon Triangulation",
       "startLine": 70,
