@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "quadratic-gauss-sum-square-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "concept",
+    "title": "From the Quadratic Character Sum to a Uniform gcd Law",
+    "content": "The parent counts nonzero squares of ZMod p from the vanishing quadratic-character sum ∑ χ = 0: x ↦ x² is 2-to-1, so there are (p−1)/2 squares. Its open question asks whether this fibre count generalizes to x ↦ xᵏ via higher-order character orthogonality. This entry answers it structurally over any finite field F: on the cyclic group Fˣ the map x ↦ xᵏ is the endomorphism powMonoidHom k, so its kernel (the k-th roots of unity) and range (the k-th powers) have cardinalities fixed by d = gcd(k, q−1). The character-orthogonality count #{x : xᵏ = a} = ∑_{χᵏ = 1} χ(a) sums over exactly d characters; this file computes the same d directly on Fˣ, on the group side rather than the dual side.",
+    "mathContext": "$F$ finite field, $q = |F|$, $d = \\gcd(k, q-1)$; $x \\mapsto x^k$ is $\\mathrm{powMonoidHom}\\ k : F^\\times \\to F^\\times$.",
+    "significance": "foundational",
+    "relatedConcepts": ["finite fields", "cyclic groups", "power residues", "character orthogonality", "roots of unity"],
+    "prerequisites": ["finite fields", "cyclic groups", "group homomorphisms"]
+  },
+  {
+    "id": "ann-kernel-count",
+    "proofId": "quadratic-gauss-sum-square-oq-02-oq-02",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "key-step",
+    "title": "k-th Roots of Unity Number gcd(k, q−1)",
+    "content": "card_kthRootsOfUnity identifies the kernel of x ↦ xᵏ — the solutions of xᵏ = 1 in Fˣ — with gcd(q−1, k). The single Mathlib input is IsCyclic.card_powMonoidHom_ker, which holds because the units of a finite field are cyclic (instance [Finite Rˣ] : IsCyclic Rˣ for a domain). The order |Fˣ| = q − 1 is substituted via Nat.card_eq_fintype_card and Fintype.card_units.",
+    "mathContext": "$\\#\\{x \\in F^\\times : x^k = 1\\} = \\gcd(q-1, k)$.",
+    "significance": "critical",
+    "relatedConcepts": ["kernel", "roots of unity", "cyclic group order"],
+    "prerequisites": ["cyclic groups", "monoid homomorphisms"]
+  },
+  {
+    "id": "ann-range-count",
+    "proofId": "quadratic-gauss-sum-square-oq-02-oq-02",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "key-step",
+    "title": "k-th Powers Number (q−1)/gcd(k, q−1)",
+    "content": "card_kthPowers identifies the range of x ↦ xᵏ — the k-th powers in Fˣ — with (q−1)/gcd(q−1, k), the companion IsCyclic.card_powMonoidHom_range on the cyclic group Fˣ. Together with the kernel count this is a complete accounting of the map: |range|·|ker| = |Fˣ|.",
+    "mathContext": "$\\#\\{x^k : x \\in F^\\times\\} = (q-1)/\\gcd(q-1, k)$.",
+    "significance": "critical",
+    "relatedConcepts": ["image", "power residues", "index of a subgroup"],
+    "prerequisites": ["cyclic groups", "monoid homomorphisms"]
+  },
+  {
+    "id": "ann-fibre-coset",
+    "proofId": "quadratic-gauss-sum-square-oq-02-oq-02",
+    "range": { "startLine": 69, "endLine": 77 },
+    "type": "key-step",
+    "title": "Every Nonempty Fibre is a Coset of the Kernel",
+    "content": "card_fibre_of_mem_range gives the uniform fibre size: for any k-th power a, choose a witness x₀ with x₀ᵏ = a; then the fibre {x : xᵏ = a} equals the fibre over powHom k x₀, which is a left coset of the kernel and therefore biject with the kernel via MonoidHom.fiberEquivKer. Transporting cardinality across that equivalence and applying the kernel count yields exactly gcd(q−1, k) pre-images. This is Lagrange's theorem: the fibre size is |ker|, independent of which value in the image is chosen.",
+    "mathContext": "$a \\in \\mathrm{range} \\Rightarrow \\#\\{x : x^k = a\\} = |\\ker| = \\gcd(q-1, k)$.",
+    "significance": "critical",
+    "relatedConcepts": ["cosets", "Lagrange's theorem", "fibres of homomorphisms"],
+    "prerequisites": ["cosets", "group homomorphisms"]
+  },
+  {
+    "id": "ann-dichotomy",
+    "proofId": "quadratic-gauss-sum-square-oq-02-oq-02",
+    "range": { "startLine": 80, "endLine": 100 },
+    "type": "key-step",
+    "title": "The Full Dichotomy: gcd or Zero",
+    "content": "fibre_empty_of_not_mem_range shows that if a is not a k-th power its fibre is empty — there is simply no x with xᵏ = a. card_fibre then packages the complete answer: the fibre over any a : Fˣ has cardinality gcd(q−1, k) when a is a k-th power and 0 otherwise. So x ↦ xᵏ is a gcd(q−1, k)-to-1 map onto its image and misses everything else.",
+    "mathContext": "$\\#\\{x : x^k = a\\} = \\gcd(q-1, k)$ if $a$ is a $k$-th power, else $0$.",
+    "significance": "important",
+    "relatedConcepts": ["fibres", "surjection onto image", "case split"],
+    "prerequisites": ["group homomorphisms"]
+  },
+  {
+    "id": "ann-counting-identity",
+    "proofId": "quadratic-gauss-sum-square-oq-02-oq-02",
+    "range": { "startLine": 102, "endLine": 108 },
+    "type": "key-step",
+    "title": "Counts Multiply Back to q−1",
+    "content": "card_powers_mul_card_roots verifies the consistency identity (#k-th powers)·(fibre size) = q−1, i.e. ((q−1)/d)·d = q−1, via Nat.div_mul_cancel using d ∣ q−1 (Nat.gcd_dvd_left). This is the first isomorphism theorem / Lagrange for powMonoidHom k, read off from the two cardinality formulas: the domain Fˣ is partitioned into (q−1)/d fibres each of size d.",
+    "mathContext": "$\\big((q-1)/\\gcd(q-1,k)\\big)\\cdot \\gcd(q-1,k) = q-1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["first isomorphism theorem", "partition into fibres"],
+    "prerequisites": ["Lagrange's theorem"]
+  },
+  {
+    "id": "ann-quadratic-recovery",
+    "proofId": "quadratic-gauss-sum-square-oq-02-oq-02",
+    "range": { "startLine": 110, "endLine": 143 },
+    "type": "concept",
+    "title": "k = 2 Recovers the Parent's (p−1)/2 Count",
+    "content": "gcd_two_pSub_one computes gcd(p−1, 2) = 2 for an odd prime p (p odd ⇒ 2 ∣ p−1, so Nat.gcd_eq_left applies). card_squares_zmod feeds this into card_kthPowers to conclude there are exactly (p−1)/2 nonzero squares in ZMod p. This is precisely the parent's equidistribution count — the vanishing quadratic-character sum ∑ χ = 0 is the k = 2 instance of character orthogonality, and here it appears as the k = 2 shadow of the uniform gcd(k, q−1) law.",
+    "mathContext": "$\\gcd(p-1, 2) = 2$, so $\\#\\{\\text{nonzero squares in } \\mathbb{Z}/p\\} = (p-1)/2$.",
+    "significance": "important",
+    "relatedConcepts": ["quadratic residues", "specialization", "quadratic character"],
+    "prerequisites": ["quadratic residues", "gcd"]
+  }
+]

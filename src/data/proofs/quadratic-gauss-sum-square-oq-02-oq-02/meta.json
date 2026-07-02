@@ -1,0 +1,118 @@
+{
+  "id": "quadratic-gauss-sum-square-oq-02-oq-02",
+  "title": "Fibre Counts for the Power Map x ↦ xᵏ over a Finite Field",
+  "slug": "quadratic-gauss-sum-square-oq-02-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "QuadraticGaussSumSquareOQ02OQ02",
+    "lineCount": 143,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/QuadraticGaussSumSquareOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "description": "The parent (quadratic-gauss-sum-square-oq-02) counts the nonzero squares of ZMod p by observing that the quadratic character χ has vanishing sum ∑ χ = 0, so x ↦ x² is exactly 2-to-1 and there are (p−1)/2 squares. Its open question asks whether the same fibre count extends to higher-order power maps x ↦ xᵏ. This entry answers it exactly, for an arbitrary finite field F of order q = |F|. Instead of routing through the k multiplicative characters of order dividing k and their orthogonality relations, it uses the structural fact underlying that computation: on the cyclic group Fˣ the map x ↦ xᵏ is the monoid endomorphism powMonoidHom k, whose kernel and range cardinalities are pinned by d = gcd(k, q−1). Concretely: the number of k-th roots of unity #{x : xᵏ = 1} is d (IsCyclic.card_powMonoidHom_ker); the number of k-th powers is (q−1)/d (IsCyclic.card_powMonoidHom_range); every nonempty fibre #{x : xᵏ = a} has exactly d elements because it is a coset of the kernel (MonoidHom.fiberEquivKer), and 0 otherwise; and (#k-th powers)·d = q−1. Specialising to k = 2 and F = ZMod p (p an odd prime) gives d = gcd(2, p−1) = 2 and (p−1)/2 squares, recovering the parent's quadratic-character count as the k = 2 shadow of the uniform gcd law. Zero axioms, zero sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/QuadraticGaussSumSquareOQ02OQ02.lean",
+    "tags": [
+      "number-theory",
+      "finite-fields",
+      "power-map",
+      "cyclic-group",
+      "gcd",
+      "fibre-count",
+      "roots-of-unity",
+      "gauss-sum"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 143,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "How many solutions does $x^k = a$ have in a finite field $\\mathbb{F}_q$? The classical answer, at the heart of the theory of power residues and Gauss/Jacobi sums, is uniform: writing $d = \\gcd(k, q-1)$, the map $x \\mapsto x^k$ on $\\mathbb{F}_q^\\times$ is exactly $d$-to-$1$ onto its image, the image (the $k$-th powers) has size $(q-1)/d$, and each fibre over a $k$-th power has exactly $d$ elements. The quadratic case $k = 2$ — where $d = 2$ for odd $q$ and there are $(q-1)/2$ squares, each with two square roots — is the parent entry's equidistribution count, obtained there from the vanishing quadratic-character sum. The character-orthogonality route generalises this by summing over the $d$ multiplicative characters $\\chi$ with $\\chi^k = 1$: $\\#\\{x : x^k = a\\} = \\sum_{\\chi^k = 1} \\chi(a)$. The present entry instead extracts the group-theoretic skeleton that makes that computation come out to $d$: on the cyclic group $\\mathbb{F}_q^\\times$, $x \\mapsto x^k$ is the endomorphism $\\mathrm{powMonoidHom}\\ k$, whose kernel is the $d$ $k$-th roots of unity.",
+    "problemStatement": "Let $F$ be a finite field, $q = |F|$, $k \\in \\mathbb{N}$, and $d = \\gcd(k, q-1)$. Prove: (1) the $k$-th roots of unity $\\{x \\in F^\\times : x^k = 1\\}$ number exactly $d$; (2) the $k$-th powers $\\{x^k : x \\in F^\\times\\}$ number exactly $(q-1)/d$; (3) every fibre $\\{x \\in F^\\times : x^k = a\\}$ has cardinality $d$ if $a$ is a $k$-th power and $0$ otherwise; (4) $(\\#k\\text{-th powers}) \\cdot d = q-1$. Recover the parent's $(p-1)/2$ square count as the case $k = 2$, $F = \\mathbb{Z}/p$.",
+    "proofStrategy": "The whole argument is arithmetic once the map is recognised as a monoid endomorphism of the cyclic group $F^\\times$. (1) `card_kthRootsOfUnity` is `IsCyclic.card_powMonoidHom_ker` — valid because the units of a finite field are cyclic — with $\\mathrm{Nat.card}\\ F^\\times = \\mathrm{Fintype.card}\\ F - 1$ substituted by `Nat.card_eq_fintype_card` and `Fintype.card_units`. (2) `card_kthPowers` is the companion `IsCyclic.card_powMonoidHom_range`. (3) `card_fibre_of_mem_range` picks a witness $x_0$ with $x_0^k = a$, rewrites the fibre over $a$ as the fibre over $\\mathrm{powHom}\\ k\\ x_0$, and transports cardinality across `MonoidHom.fiberEquivKer` (a non-empty fibre is a coset of the kernel) back to (1); `fibre_empty_of_not_mem_range` shows a non-$k$-th-power has empty fibre, and `card_fibre` packages the dichotomy. (4) `card_powers_mul_card_roots` is `Nat.div_mul_cancel` on (2) using $d \\mid q-1$. The specialisation `gcd_two_pSub_one` computes $\\gcd(p-1, 2) = 2$ from $p$ odd ($2 \\mid p-1$), and `card_squares_zmod` feeds it into (2) to reach $(p-1)/2$.",
+    "keyInsights": [
+      "The character-orthogonality fibre count $\\#\\{x : x^k = a\\} = \\sum_{\\chi^k = 1} \\chi(a)$ and the group-theoretic count $\\#\\ker(x \\mapsto x^k) = \\gcd(k, q-1)$ are two readings of the same fact. The number of characters with $\\chi^k = 1$ equals the number of $k$-th roots of unity equals $\\gcd(k, q-1)$; the entry proves the count directly on $F^\\times$ rather than on its dual, avoiding the machinery of the character group.",
+      "Uniformity of the fibre size is Lagrange's theorem in disguise: every non-empty fibre of a group homomorphism is a coset of its kernel (`MonoidHom.fiberEquivKer`), hence has the kernel's cardinality. So there is nothing special about $k$-th powers — the fibre size is $|\\ker| = \\gcd(k, q-1)$ for every value that is hit at all.",
+      "The single input that makes it all arithmetic is that $F^\\times$ is cyclic (Mathlib's `instance [Finite Rˣ] : IsCyclic Rˣ` for a domain). On a cyclic group of order $n$, $\\mathrm{powMonoidHom}\\ k$ has kernel of order $\\gcd(k, n)$ and range of order $n / \\gcd(k, n)$ — the two Mathlib lemmas `IsCyclic.card_powMonoidHom_ker` / `_range` are exactly the residue counts.",
+      "Setting $k = 2$, $F = \\mathbb{Z}/p$ recovers the parent verbatim: $\\gcd(2, p-1) = 2$ for odd $p$, so $x \\mapsto x^2$ is 2-to-1 and there are $(p-1)/2$ squares. The parent's quadratic-character sum $\\sum \\chi = 0$ is the $k = 2$ instance of character orthogonality; this entry exhibits its structural cause."
+    ]
+  },
+  "conclusion": {
+    "summary": "For every finite field $F$ of order $q$ and every exponent $k$, the power map $x \\mapsto x^k$ on $F^\\times$ is machine-verified to be exactly $\\gcd(k, q-1)$-to-$1$ onto its image: the $k$-th roots of unity number $\\gcd(k, q-1)$, the $k$-th powers number $(q-1)/\\gcd(k, q-1)$, and every non-empty fibre has $\\gcd(k, q-1)$ elements. The proof is 0-axiom, 0-sorry, resting on the cyclicity of $F^\\times$ and the coset structure of homomorphism fibres. The quadratic case $k = 2$, $F = \\mathbb{Z}/p$ recovers the parent's $(p-1)/2$ square count.",
+    "implications": "The fibre count is the combinatorial input for counting solutions of diagonal equations $a_1 x_1^{k_1} + \\cdots = b$ over finite fields, for Jacobi- and Gauss-sum evaluations, and for point counts on diagonal curves and Fermat varieties in the Weil-bound circle of ideas. Proving it as a uniform gcd law over a general $\\mathbb{F}_q$, structurally rather than through the character group, complements the parent's quadratic-character count and isolates why the higher-order character orthogonality relations produce exactly $\\gcd(k, q-1)$.",
+    "openQuestions": [
+      "Can the group-theoretic fibre count be reconciled explicitly with the character-sum formula $\\#\\{x : x^k = a\\} = \\sum_{\\chi^k = 1} \\chi(a)$ by formalizing the duality #{characters with $\\chi^k = 1$} = #{$k$-th roots of unity} = $\\gcd(k, q-1)$ inside Mathlib's `MulChar` framework?",
+      "Does the same coset-of-kernel argument give the full solution count for the additive-plus-multiplicative twist $x \\mapsto x^k$ on all of $F$ (including $0$), i.e. $\\#\\{x \\in F : x^k = a\\} = \\gcd(k, q-1) + [a = 0]$ for the natural conventions, packaging the zero fibre alongside the unit fibres?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "quadratic-gauss-sum-square-oq-02",
+      "relationship": "specializes",
+      "description": "The parent counts nonzero quadratic residues mod an odd prime p from the vanishing quadratic-character sum, finding x ↦ x² is 2-to-1 with (p−1)/2 squares. This entry answers its open question by giving the exact fibre count of x ↦ xᵏ over any finite field as a uniform gcd(k, q−1) law; the parent is the case k = 2, F = ZMod p (card_squares_zmod)."
+    },
+    {
+      "proofId": "quadratic-gauss-sum-square-oq-02-oq-01",
+      "relationship": "related",
+      "description": "The sibling generalizes the parent's quadratic count to an arbitrary finite field via the quadratic character. This entry generalizes in the orthogonal direction — from k = 2 to arbitrary k — and both recover the quadratic case; the sibling stays on the character side, this one on the group-theoretic (kernel/coset) side."
+    },
+    {
+      "proofId": "quadratic-gauss-sum-square",
+      "relationship": "related",
+      "description": "The grandparent establishes the algebraic Gauss-sum square identity g² = (-1)^((p-1)/2)·p. The fibre count developed here is the counting input on which higher-order Gauss/Jacobi sum evaluations rest, complementing the algebraic-square side."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "The Power Map as a Monoid Endomorphism of Fˣ",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Docstring framing: over a finite field F of order q, x ↦ xᵏ on the cyclic group Fˣ is the endomorphism powMonoidHom k, and its kernel/range cardinalities are governed by d = gcd(k, q−1). Notes the character-orthogonality route the parent's open question suggests and why the group-theoretic route reaches the same count. Imports Mathlib, opens BigOperators/Finset, and defines the abbreviation powHom k = powMonoidHom k with its defining equation powHom_apply : powHom k x = xᵏ."
+    },
+    {
+      "id": "kernel-range-counts",
+      "title": "Roots of Unity and Powers: the gcd Counts",
+      "startLine": 53,
+      "endLine": 66,
+      "summary": "card_kthRootsOfUnity: the kernel of x ↦ xᵏ — the k-th roots of unity — has cardinality gcd(q−1, k), from IsCyclic.card_powMonoidHom_ker on Fˣ with |Fˣ| = q − 1 (Nat.card_eq_fintype_card, Fintype.card_units). card_kthPowers: the range — the k-th powers — has cardinality (q−1)/gcd(q−1, k), from the companion IsCyclic.card_powMonoidHom_range."
+    },
+    {
+      "id": "fibre-count",
+      "title": "Uniform Fibre Count via Coset Structure",
+      "startLine": 67,
+      "endLine": 100,
+      "summary": "card_fibre_of_mem_range: any value a that is a k-th power has exactly gcd(q−1, k) pre-images — pick a witness x₀ with x₀ᵏ = a, rewrite the fibre over a as the fibre over powHom k x₀, and transport cardinality across MonoidHom.fiberEquivKer (a non-empty fibre is a coset of the kernel). fibre_empty_of_not_mem_range: a non-k-th-power has empty fibre. card_fibre packages the dichotomy: the fibre has gcd(q−1, k) elements if a ∈ range and 0 otherwise."
+    },
+    {
+      "id": "counting-identity",
+      "title": "The Counting Identity (#powers)·(fibre size) = q−1",
+      "startLine": 101,
+      "endLine": 108,
+      "summary": "card_powers_mul_card_roots: multiplying the number of k-th powers (q−1)/d by the fibre size d recovers q−1, via Nat.div_mul_cancel and d ∣ q−1 (Nat.gcd_dvd_left). This is Lagrange / the first isomorphism theorem for powMonoidHom k, read off from the two card formulas — the map is a d-to-1 surjection onto its image."
+    },
+    {
+      "id": "quadratic-specialization",
+      "title": "The Quadratic Case Recovers the Parent",
+      "startLine": 110,
+      "endLine": 143,
+      "summary": "gcd_two_pSub_one: for an odd prime p, gcd(p−1, 2) = 2 because p odd ⇒ 2 ∣ p−1 (Nat.gcd_eq_left). card_squares_zmod: feeding this into card_kthPowers gives exactly (p−1)/2 nonzero squares in ZMod p — the parent's quadratic-character count, now read as the k = 2 shadow of the uniform gcd law."
+    }
+  ]
+}
