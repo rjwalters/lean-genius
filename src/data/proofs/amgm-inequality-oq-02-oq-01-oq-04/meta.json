@@ -5,7 +5,7 @@
   "description": "Proves the general Newton-Girard recurrence for every k ≥ 1, relating power sums pₖ = Σ_{i∈s} (f i)^k and elementary symmetric functions eₖ = Σ_{T⊆s,|T|=k} ∏_{i∈T} f i for an arbitrary finite family f : ι → R indexed by a Finset s over any commutative ring R: Σ_{j=0}^{k-1} (-1)^j eⱼ p_{k-j} + (-1)^k k eₖ = 0. Mathlib provides Newton's identities only in the universal MvPolynomial form; this entry transports that universal identity to the directly usable Finset/CommRing layer via the algebra map aeval, closing the parent entry's open question for arbitrary k. 4 theorems, 2 definitions, 0 axioms.",
   "leanFile": {
     "namespace": "AmgmNewtonGirard",
-    "lineCount": 127,
+    "lineCount": 129,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 2,
