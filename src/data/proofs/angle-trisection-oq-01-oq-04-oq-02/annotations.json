@@ -92,5 +92,29 @@
       "decidable propositions in Lean",
       "Fermat numbers"
     ]
+  },
+  {
+    "id": "ann-atris010402-overview",
+    "proofId": "angle-trisection-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "The exponent half of Fermat-prime theory, with an explicit witness",
+    "content": "This file proves the exponent law behind Fermat primes: if 2^m + 1 is prime then m must be a power of two. The mechanism is a constructive obstruction — if m has an odd factor d > 1, write m = d·k, then 2^k + 1 is a genuine PROPER divisor of 2^m + 1 = (2^k)^d + 1 (since a + b ∣ a^d + b^d for odd d), forcing compositeness. Mathlib already proves the bare existence statement Nat.pow_of_pow_add_prime (a^n+1 prime ⟹ ∃m, n=2^m) but not this constructive obstruction with an EXPLICIT divisor. The explicit factor is exactly what a primality search exhibits (e.g. 2^6+1 = 65 with odd exponent-factor 3 gives divisor 2^2+1 = 5) and is the form needed in the Gauss–Wantzel program: a regular p-gon is constructible iff p is a Fermat prime. The file is organized in four parts: the divisibility engine (a+b ∣ a^d+b^d), the constructive compositeness obstruction, the exponent law derived from it, and concrete numeric witnesses.",
+    "mathContext": "$2^m + 1 \\text{ prime} \\Rightarrow m = 2^k$; obstruction: odd $d\\mid m,\\ d>1 \\Rightarrow (2^{m/d}+1) \\mid (2^m+1)$ properly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat primes",
+      "Gauss–Wantzel theorem",
+      "constructible polygons",
+      "divisibility of a^d + b^d"
+    ],
+    "prerequisites": [
+      "prime numbers and divisibility",
+      "the factorization m = 2^k · d with d odd",
+      "the identity a + b ∣ a^d + b^d for odd d"
+    ]
   }
 ]
