@@ -85,6 +85,14 @@
   },
   "sections": [
     {
+      "id": "buffon-oq040101-overview",
+      "title": "Overview: The Convex 0-or-2 Line/Boundary Dichotomy",
+      "summary": "Header, import, namespace, open, and the ambient variables. This file supplies the convex-geometry bearer the parent buffons-needle-oq-01-oq-04 (Buffon's coin) left definitional: that factor-of-two encoding a grid line cutting a convex body as half its boundary-crossing count. Working with a genuine line ℓ(t)=p+t•v (v≠0) in an arbitrary real normed space and a compact convex body K, it proves the 0-or-2 dichotomy purely: lineParams_convex (the line meets K in a convex subset of ℝ — no re-entry), lineParams_eq_Icc (a closed segment for a compact body), lineParams_Ioo_subset_interior (interior parameters map into int K), and line_through_interior_meets_frontier_in_two (a line through int K meets ∂K in exactly two points, Set.ncard = 2). The '0' half is the contrapositive (a supporting line may share a flat edge), so the clean count 2 is characterised by an interior crossing — matching Buffon's coin. 0-axiom.",
+      "startLine": 1,
+      "endLine": 56,
+      "mathContext": "For a line $\\ell(t)=p+tv$ ($v\\ne0$) and compact convex $K$: $\\{t : \\ell(t)\\in K\\}$ is a segment $[a,b]$, $\\ell((a,b))\\subseteq \\operatorname{int}K$, and if $\\ell$ meets $\\operatorname{int}K$ then $\\{t : \\ell(t)\\in\\partial K\\}=\\{a,b\\}$, so $|\\ell^{-1}(\\partial K)|=2$."
+    },
+    {
       "id": "setup",
       "title": "The line and its parameter set",
       "startLine": 57,
