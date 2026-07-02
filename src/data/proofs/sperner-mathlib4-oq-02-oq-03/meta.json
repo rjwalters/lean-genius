@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Positive Half of the Involution-Parity Dichotomy",
+      "startLine": 1,
+      "endLine": 86,
+      "summary": "The docstring situates this file in the door-counting program for Tucker's lemma (parent sperner-mathlib4-oq-02). Prior sessions proved only the negative half — a fixed-point-free antipodal involution forces an even door count, so a symmetric door graph can never be a Tucker level. This file supplies the positive counterpart: the general involution parity Fintype.card α ≡ #{a | σ a = a} (mod 2), valid for any involution. Freeness recovers the even no-go; an odd number of fixed points forces odd. It thereby localises the odd interior-endpoint count Tucker needs onto a concrete set — the self-antipodal complementary simplices the antipodal map fixes. Imports Mathlib and the iteration-13 symmetry file; sets up namespace SpernerTuckerFixedPointParity with open Finset SimpleGraph.",
+      "mathContext": "Headline: $\\#\\{a \\mid \\sigma a = a\\} \\equiv \\operatorname{card}\\alpha \\pmod 2$ for any involution $\\sigma$ — the involution analogue of the handshaking lemma."
+    },
+    {
       "id": "fixed-point-parity-engine",
       "title": "The Abstract Fixed-Point Parity Engine",
       "startLine": 87,
@@ -66,6 +74,14 @@
       "startLine": 171,
       "endLine": 236,
       "summary": "Feeds the tower's interiorEndpoints (degree-1 non-boundary vertices) into the predicate-restricted parity. A boundary-preserving graph automorphism σ preserves the interior-endpoint predicate (degree by degree_eq_of_aut, boundary by hypothesis), so odd_interiorEndpoints_iff_odd_selfAntipodal: the interior count is odd iff the self-antipodal interior count is odd. exists_selfAntipodal_of_tucker_level: a Tucker level forces a self-antipodal complementary simplex. even_interiorEndpoints_of_free: assuming freeness recovers iteration 13's even count as the #fixed = 0 case."
+    },
+    {
+      "id": "sec-final-verification",
+      "title": "Final Verification and Axiom Audit",
+      "startLine": 238,
+      "endLine": 253,
+      "summary": "A #check block re-exhibiting the seven exported results, followed by an explicit #print axioms audit of odd_card_iff_odd_fixed, odd_card_filter_iff_odd_fixed, exists_selfAntipodal_of_tucker_level, and even_interiorEndpoints_of_free — confirming they depend only on the foundational axioms (propext / Classical.choice / Quot.sound), with no sorryAx and no Lean.ofReduceBool.",
+      "mathContext": "Machine-checked confirmation of the 0-axiom (beyond foundations), 0-sorry, no-native_decide status claimed in the metadata."
     }
   ],
   "conclusion": {
