@@ -32,7 +32,7 @@
     "dateAdded": "2026-06-15",
     "axiomCount": 0,
     "assumptions": "No axioms or sorries. Fully machine-verified under Lean v4.26.0 / Mathlib for any commutative ring R, any index type ι, any Finset s, and every k ≥ 1. The core recurrence is obtained by transporting Mathlib's universal identity MvPolynomial.mul_esymm_eq_sum along the algebra map aeval — the combinatorial content lives in Mathlib; this entry contributes the concrete Finset/CommRing statement plus the bridge lemmas (psum_bridge, esymm_bridge, reindex_filter).",
-    "lineCount": 127,
+    "lineCount": 129,
     "theoremCount": 4,
     "definitionCount": 2,
     "originalContributions": [
