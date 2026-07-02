@@ -73,22 +73,45 @@
     "proofId": "fibonacci-identities-oq-03-oq-01",
     "range": {
       "startLine": 58,
-      "endLine": 79
+      "endLine": 74
     },
     "type": "theorem",
     "title": "Existential and Integer Forms",
-    "content": "**Packaging.** `fib_four_mul_add_three_isSumSq` gives $\\exists a\\,b,\\ F_{4n+3} = a^2 + b^2$ over $\\mathbb{N}$ with the explicit witnesses; `fib_four_mul_add_three_iterated_int` casts the decomposition to $\\mathbb{Z}$. The three `decide` checks that follow ($F_3=2$, $F_7=13$, $F_{11}=89$) confirm the $n=0,1,2$ instances by kernel reduction — `decide`, not `native_decide`, so no `Lean.ofReduceBool` and the entry stays 0-axiom.",
-    "mathContext": "$\\exists a\\,b,\\ F_{4n+3} = a^2 + b^2$; integer form via `exact_mod_cast`. Checks: $F_3=2,\\ F_7=13,\\ F_{11}=89$.",
+    "content": "**Packaging.** `fib_four_mul_add_three_isSumSq` gives $\\exists a\\,b : \\mathbb{N},\\ F_{4n+3} = a^2 + b^2$ with the explicit witnesses $a = F_{n+1}(2F_n+F_{n+1})$, $b = F_{n+1}^2+F_n^2$ (proved by handing those two values to the iterated identity). `fib_four_mul_add_three_iterated_int` casts the decomposition to $\\mathbb{Z}$ via `exact_mod_cast` — the $\\mathbb{N}$ statement already involves no subtraction, but the $\\mathbb{Z}$ form is convenient for downstream algebra (e.g. reading off a Gaussian-integer factorization).",
+    "mathContext": "$\\exists a\\,b : \\mathbb{N},\\ F_{4n+3} = a^2 + b^2$; same identity over $\\mathbb{Z}$ via `exact_mod_cast`.",
     "significance": "supporting",
     "relatedConcepts": [
       "existential quantifier",
       "ℕ→ℤ cast",
-      "decide vs native_decide",
-      "axiom hygiene"
+      "explicit witnesses",
+      "sum of two squares"
     ],
     "prerequisites": [
-      "exact_mod_cast",
-      "kernel reduction (decide)"
+      "the iterated identity",
+      "exact_mod_cast"
+    ]
+  },
+  {
+    "id": "ann-fiboq0301-5",
+    "proofId": "fibonacci-identities-oq-03-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "Numeric Sanity Checks",
+    "content": "Three `decide` examples confirm the $n = 0, 1, 2$ instances by kernel reduction: $F_3 = 2$ (index $4\\cdot0+3$), $F_7 = 13$ (index $4\\cdot1+3$), $F_{11} = 89$ (index $4\\cdot2+3$). Using kernel `decide` rather than `native_decide` means only the foundational propext / Classical.choice / Quot.sound are touched — no `Lean.ofReduceBool` — so the numeric checks do not compromise the entry's 0-axiom status. The decomposition matches: at $n=1$ the witnesses are $a = F_2(2F_1+F_2) = 3$ and $b = F_2^2+F_1^2 = 2$, giving $3^2 + 2^2 = 13 = F_7$.",
+    "mathContext": "$F_3 = 2,\\ F_7 = 13 = 3^2+2^2,\\ F_{11} = 89$ for $n = 0, 1, 2$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "decide vs native_decide",
+      "axiom hygiene",
+      "kernel reduction",
+      "numeric verification"
+    ],
+    "prerequisites": [
+      "kernel reduction (decide)",
+      "Lean.ofReduceBool and native_decide"
     ]
   }
 ]
