@@ -1,0 +1,200 @@
+{
+  "id": "factor-remainder-hasse-derivative-fq-oq-01-oq-01",
+  "title": "The Lucas/Kummer Digit Structure of Vanishing Hasse Derivatives of Xᵐ",
+  "slug": "factor-remainder-hasse-derivative-fq-oq-01-oq-01",
+  "description": "The parent (factor-remainder-hasse-derivative-fq-oq-01) proved the overcounting dichotomy: over a characteristic-p field the ordinary iterated-derivative multiplicity test is exact when the true root multiplicity m < p and blind (every ordinary derivative vanishes at the root) once m ≥ p. Its first open question asks, in the unbounded regime m ≥ p, to STRATIFY by the base-p digits of m and describe how the ordinary test's blindness interacts with the Lucas/Kummer structure of the binomial coefficients C(m,k) that define hasseDeriv. This entry answers it for the pure power Xᵐ. First, hasseDeriv k (Xᵐ) = C(m,k)·X^(m-k) is a single monomial (hasseDeriv_X_pow), so over characteristic p it is nonzero exactly when C(m,k) survives reduction mod p: hasseDeriv k (Xᵐ) ≠ 0 ↔ ¬ p ∣ C(m,k) (hasseDeriv_X_pow_ne_zero_iff). Feeding this into Mathlib's Lucas's theorem gives the full digit-domination criterion: writing m and k in base p, the k-th Hasse derivative survives iff every base-p digit of k is ≤ the corresponding digit of m (hasseDeriv_X_pow_ne_zero_iff_digits) — Kummer's carry-free condition. The blindness of the ordinary test is thus explained: it only ever reads the low orders k < p (scaled by the unit k!), yet the surviving orders are the digit-dominated k, which for m ≥ p spread all the way out to k = m. The count of surviving orders is ∏(dᵢ+1) over the base-p digits dᵢ of m (Glaisher/Fine), realized concretely over 𝔽₂: X³ (11₂) keeps all four orders k ≤ 3, while X⁴ (100₂) keeps only k ∈ {0,4}. 9 theorems, 0 axioms, 0 sorries (decide, not native_decide).",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lucas%27s_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FactorRemainderHasseDerivativeFqOQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "hasse-derivative",
+      "root-multiplicity",
+      "positive-characteristic",
+      "finite-fields",
+      "lucas-theorem",
+      "kummer-theorem",
+      "binomial-coefficients",
+      "base-p-digits",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-01",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.hasseDeriv_monomial",
+        "description": "hasseDeriv k (monomial n r) = monomial (n-k) (↑(n.choose k) * r) — gives the closed form of the Hasse derivative of Xᵐ = monomial m 1 as the single monomial C(m,k)·X^(m-k).",
+        "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+      },
+      {
+        "theorem": "Nat.Choose.choose_modEq_prod_range_choose_nat",
+        "description": "Lucas's theorem: for p prime and m,k < p^a, C(m,k) ≡ ∏_{i<a} C(⌊m/pⁱ⌋ mod p)(⌊k/pⁱ⌋ mod p) [MOD p]. Turns the divisibility of C(m,k) into the base-p digit-domination condition.",
+        "module": "Mathlib.Data.Nat.Choose.Lucas"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_factorial",
+        "description": "p ∣ n! ↔ p ≤ n. Combined with C(a,b)·b!·(a-b)! = a! it shows a base-p digit a < p never introduces a factor of p into C(a,b) when b ≤ a.",
+        "module": "Mathlib.Data.Nat.Prime.Factorial"
+      },
+      {
+        "theorem": "Prime.dvd_finset_prod_iff",
+        "description": "For a prime p, p ∣ ∏ g i ↔ ∃ i, p ∣ g i. Reduces divisibility of the Lucas product to divisibility of a single digit binomial.",
+        "module": "Mathlib.Algebra.BigOperators.Associated"
+      },
+      {
+        "theorem": "CharP.cast_eq_zero_iff",
+        "description": "Over a ring of characteristic p, (n : R) = 0 ↔ p ∣ n. Converts vanishing of the monomial coefficient C(m,k) in the field into divisibility of the natural-number binomial.",
+        "module": "Mathlib.Algebra.CharP.Defs"
+      }
+    ],
+    "originalContributions": [
+      "hasseDeriv_X_pow: the closed form hasseDeriv k (Xᵐ) = C(m,k)·X^(m-k) over any commutative ring, isolating the binomial coefficient C(m,k) as the single object controlling the k-th Hasse derivative of a pure power.",
+      "hasseDeriv_X_pow_ne_zero_iff / hasseDeriv_X_pow_eq_zero_iff: the bridge from polynomials to number theory — over a characteristic-p field, hasseDeriv k (Xᵐ) is (non)zero exactly when C(m,k) is (not) divisible by p, via monomial_eq_zero_iff and CharP.cast_eq_zero_iff.",
+      "not_dvd_choose_of_le_of_lt_prime and not_dvd_choose_digit_iff: the atomic single-digit Lucas fact — for a base-p digit a < p, C(a,b) avoids p exactly when b ≤ a — proved from C(a,b)·b!·(a-b)! = a! and p ∤ a! (a < p).",
+      "hasseDeriv_X_pow_ne_zero_iff_digits: the capstone. Over a characteristic-p field, for m,k < p^a, hasseDeriv k (Xᵐ) ≠ 0 iff every base-p digit of k is dominated by the corresponding digit of m — the Lucas/Kummer carry-free criterion, obtained by transferring divisibility across Mathlib's Lucas congruence and reducing the product to single digits. This directly answers the open question: the ordinary test reads only k < p (scaled by k!), but the surviving orders are the digit-dominated k, reaching k = m when m ≥ p.",
+      "nonzero_orders_X3_F2, nonzero_orders_X4_F2, hasseDeriv_X4_F2_profile: the digit count ∏(dᵢ+1) realized over 𝔽₂ — X³ (digits 11₂) keeps all four orders k ≤ 3 (count 2·2 = 4), while X⁴ (digits 100₂) keeps only k ∈ {0,4} (count 1·1·2 = 2), with the middle orders k = 1,2,3 vanishing."
+    ],
+    "axiomCount": 0,
+    "lineCount": 194,
+    "assumptions": "None. All 9 theorems fully proved with 0 axioms and 0 sorries. The concrete 𝔽₂ examples use `decide` (kernel decision procedure), NOT `native_decide`, so no Lean.ofReduceBool dependency; #print axioms reports only [propext, Classical.choice, Quot.sound] for the capstone and all example theorems. Results assume the standard CharP F p with p prime over a field (every 𝔽_q is such a field). No assumption is encoded in any structure or typeclass beyond Mathlib's CharP.",
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Hasse (divided-power) derivatives and their action on monomials",
+      "Root multiplicity and the (characteristic-free) Hasse multiplicity factor theorem",
+      "Lucas's theorem for binomial coefficients modulo a prime",
+      "Kummer's theorem (base-p carries) and the digit-domination criterion for p ∤ C(m,k)",
+      "Characteristic p of a field and when a cast natural number vanishes"
+    ],
+    "relatedProblems": [
+      {
+        "id": "factor-remainder-hasse-derivative-fq-oq-01",
+        "relationship": "Parent: established the exact/unbounded overcounting dichotomy of the ordinary-derivative multiplicity test (exact for m < p, blind for m ≥ p) and asked, as its first open question, to stratify the unbounded regime by the base-p digits of m via the Lucas/Kummer structure of the hasseDeriv binomials. This entry answers that question for Xᵐ."
+      },
+      {
+        "id": "factor-remainder-hasse-derivative-fq",
+        "relationship": "Grandparent: pins down the full failure profile of the ordinary multiplicity test in characteristic p (reliable to p−1, blind from p), the qualitative cutoff this entry refines to a digit-level criterion."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Over a field of characteristic zero the multiplicity Factor Theorem certifies (X − a)^k ∣ f by the vanishing of f and its first k−1 ordinary derivatives. In characteristic p this collapses — derivative(X^p) = 0 — and Hasse's divided-power derivatives repair the criterion. The grandparent entry pins the collapse at a sharp cutoff (order p); the parent turns it into an all-or-nothing overcounting dichotomy for a general polynomial (exact for true multiplicity m < p, unbounded for m ≥ p). The natural refinement, and the parent's first open question, is arithmetic: in the unbounded regime the surviving Hasse derivatives are governed by the divisibility of binomial coefficients, whose mod-p behaviour is exactly Lucas's theorem (1878) and Kummer's carry count (1852).",
+    "problemStatement": "In the unbounded regime m ≥ p, stratify by the base-p digits of m: for the pure power Xᵐ over a field of characteristic p, determine exactly which Hasse derivatives hasseDeriv k (Xᵐ) are nonzero, and express the answer through the Lucas/Kummer structure of the binomial coefficients C(m,k) that define hasseDeriv.",
+    "proofStrategy": "Reduce the polynomial question to a number-theoretic one, then apply Lucas. Step 1: hasseDeriv k (Xᵐ) = C(m,k)·X^(m-k) (hasseDeriv_X_pow, from hasseDeriv_monomial on Xᵐ = monomial m 1) is a single monomial, so over a field it vanishes iff its coefficient does — hasseDeriv k (Xᵐ) ≠ 0 ↔ ¬ p ∣ C(m,k) (hasseDeriv_X_pow_ne_zero_iff, via monomial_eq_zero_iff and CharP.cast_eq_zero_iff). Step 2: the single-digit fact — for a < p, ¬ p ∣ C(a,b) ↔ b ≤ a (not_dvd_choose_digit_iff): if b > a the binomial is 0 (divisible); if b ≤ a < p then C(a,b)·b!·(a-b)! = a! with p ∤ a! forces p ∤ C(a,b). Step 3: Mathlib's Lucas theorem writes C(m,k) ≡ ∏_{i<a} C(mᵢ,kᵢ) mod p (digits mᵢ = ⌊m/pⁱ⌋ mod p); divisibility transfers across the congruence (Nat.modEq_zero_iff_dvd) and a prime divides the product iff it divides some factor (Prime.dvd_finset_prod_iff). Composing, hasseDeriv k (Xᵐ) ≠ 0 ↔ ∀ i < a, kᵢ ≤ mᵢ (hasseDeriv_X_pow_ne_zero_iff_digits). The 𝔽₂ examples instantiate the count ∏(dᵢ+1).",
+    "keyInsights": [
+      "For a pure power the Hasse derivative collapses to a single monomial hasseDeriv k (Xᵐ) = C(m,k)·X^(m-k), so all the information about which orders survive is packed into the one binomial coefficient C(m,k).",
+      "Over characteristic p, survival of order k is purely arithmetic: hasseDeriv k (Xᵐ) ≠ 0 ↔ p ∤ C(m,k). The polynomial question becomes a divisibility question about binomials.",
+      "Lucas's theorem converts that divisibility into a digit-domination condition: p ∤ C(m,k) iff every base-p digit of k is ≤ the corresponding digit of m — equivalently (Kummer) the addition k + (m−k) has no carries in base p.",
+      "This explains the parent's blindness precisely: the ordinary test can only read the low orders k < p (where k! is a unit), but the surviving Hasse orders are the digit-dominated k, which for m ≥ p extend all the way to k = m — far outside the ordinary test's window.",
+      "The number of surviving orders is ∏(dᵢ+1) over the base-p digits dᵢ of m (Glaisher/Fine). Over 𝔽₂ this is the count of odd binomials in row m of Pascal's triangle: X³ (11₂) keeps all 4 orders, X⁴ (100₂) keeps only 2."
+    ],
+    "prerequisites": [
+      "Hasse derivatives and their monomial formula",
+      "Binomial coefficients modulo a prime; Lucas's theorem and Kummer's carry count",
+      "Characteristic p and vanishing cast integers",
+      "Base-p digit expansions ⌊n/pⁱ⌋ mod p"
+    ]
+  },
+  "sections": [
+    {
+      "id": "closed-form",
+      "title": "Closed Form and the Vanishing Criterion",
+      "startLine": 66,
+      "endLine": 84,
+      "summary": "hasseDeriv_X_pow: hasseDeriv k (Xᵐ) = C(m,k)·X^(m-k), a single monomial (from hasseDeriv_monomial). hasseDeriv_X_pow_ne_zero_iff / hasseDeriv_X_pow_eq_zero_iff: over a characteristic-p field the k-th Hasse derivative of Xᵐ is (non)zero exactly when C(m,k) is (not) divisible by p, via monomial_eq_zero_iff and CharP.cast_eq_zero_iff.",
+      "mathContext": "Reduces the polynomial survival question for Xᵐ to the divisibility of a single binomial coefficient C(m,k) mod p."
+    },
+    {
+      "id": "digit-lemmas",
+      "title": "The Single-Digit Lucas Building Block",
+      "startLine": 86,
+      "endLine": 110,
+      "summary": "not_dvd_choose_of_le_of_lt_prime: for b ≤ a < p, p ∤ C(a,b), proved from C(a,b)·b!·(a-b)! = a! and p ∤ a!. not_dvd_choose_digit_iff: the biconditional ¬ p ∣ C(a,b) ↔ b ≤ a for a single base-p digit a < p (b > a gives C(a,b) = 0).",
+      "mathContext": "The atomic Lucas fact: within one base-p digit, a binomial coefficient avoids p exactly when the lower index is dominated by the upper."
+    },
+    {
+      "id": "capstone",
+      "title": "The Lucas Digit-Domination Criterion",
+      "startLine": 112,
+      "endLine": 147,
+      "summary": "hasseDeriv_X_pow_ne_zero_iff_digits: for m,k < p^a over a characteristic-p field, hasseDeriv k (Xᵐ) ≠ 0 ↔ ∀ i < a, ⌊k/pⁱ⌋ mod p ≤ ⌊m/pⁱ⌋ mod p. Transfers divisibility of C(m,k) across Mathlib's Lucas congruence (Nat.modEq_zero_iff_dvd), reduces the product via Prime.dvd_finset_prod_iff, and applies the single-digit criterion to each digit.",
+      "mathContext": "The complete answer to the open question: the surviving Hasse derivatives of Xᵐ are exactly the digit-dominated (carry-free) orders k."
+    },
+    {
+      "id": "examples",
+      "title": "Digit Counts Realized over 𝔽₂",
+      "startLine": 149,
+      "endLine": 193,
+      "summary": "nonzero_orders_X3_F2: X³ (digits 11₂) has nonzero Hasse derivatives exactly for k ≤ 3 — all four orders (count 2·2 = 4). nonzero_orders_X4_F2: X⁴ (digits 100₂) has nonzero Hasse derivatives exactly for k ∈ {0,4} (count 1·1·2 = 2). hasseDeriv_X4_F2_profile: the middle orders k = 1,2,3 vanish while k = 0,4 survive, stated directly. All by `decide` (no native_decide).",
+      "mathContext": "The Glaisher/Fine count ∏(dᵢ+1) of surviving orders made concrete: odd binomials in rows 3 and 4 of Pascal's triangle."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 194 lines and 9 theorems answering the parent's first open question for the pure power Xᵐ. Over a field of characteristic p, hasseDeriv k (Xᵐ) is a single monomial C(m,k)·X^(m-k), so it is nonzero exactly when p ∤ C(m,k); Lucas's theorem then makes this a base-p digit-domination criterion — the k-th Hasse derivative survives iff every base-p digit of k is dominated by the corresponding digit of m (Kummer's carry-free condition). The count of surviving orders is ∏(dᵢ+1) over the base-p digits of m, realized concretely over 𝔽₂ by X³ (all four orders) and X⁴ (only k ∈ {0,4}).",
+    "implications": "This upgrades the parent's coarse regime split (m < p exact, m ≥ p blind) into a precise arithmetic description of the unbounded regime: even when the ordinary test sees nothing, the Hasse derivatives that survive are governed exactly by Lucas/Kummer. It pinpoints why the ordinary test fails — it inspects only the window k < p, whereas the surviving orders are the digit-dominated k, spread up to k = m — and it ties multiplicity detection in positive characteristic directly to the classical mod-p combinatorics of Pascal's triangle (Glaisher's odd-binomial count over 𝔽₂).",
+    "openQuestions": [
+      "Extend the digit-domination criterion from the pure power Xᵐ to a general polynomial f: for a root a of true multiplicity m ≥ p, is the set of surviving Hasse-derivative orders still controlled by the base-p digits of m, or do the lower-order coefficients of f perturb it?",
+      "Make the count a theorem rather than a per-case computation: prove that the number of orders k with hasseDeriv k (Xᵐ) ≠ 0 over a characteristic-p field equals ∏(dᵢ+1) over the base-p digits dᵢ of m (the Glaisher/Fine formula), and identify the largest surviving order below p."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "FactorRemainderHasseDerivativeFqOQ01OQ01",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/FactorRemainderHasseDerivativeFqOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "factor-remainder-hasse-derivative-fq-oq-01",
+      "relationship": "extends",
+      "description": "Answers the parent's first open question — stratify the unbounded regime m ≥ p by the base-p digits of m — with the Lucas/Kummer digit-domination criterion for which Hasse derivatives of Xᵐ survive in characteristic p."
+    },
+    {
+      "targetId": "factor-remainder-hasse-derivative-fq",
+      "relationship": "extends",
+      "description": "Refines the grandparent's qualitative cutoff (ordinary test reliable to p−1, blind from p) into a digit-level arithmetic description of exactly which Hasse derivatives detect multiplicity."
+    }
+  ],
+  "references": [
+    {
+      "key": "Lucas1878",
+      "citation": "Lucas, É., Théorie des fonctions numériques simplement périodiques, Amer. J. Math. 1 (1878), 184–196, 197–240, 289–321.",
+      "type": "article"
+    },
+    {
+      "key": "Kummer1852",
+      "citation": "Kummer, E.E., Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen, J. Reine Angew. Math. 44 (1852), 93–146.",
+      "type": "article"
+    },
+    {
+      "key": "Fine1947",
+      "citation": "Fine, N.J., Binomial coefficients modulo a prime, Amer. Math. Monthly 54 (1947), 589–592.",
+      "type": "article"
+    },
+    {
+      "key": "Hasse1936",
+      "citation": "Hasse, H., Theorie der höheren Differentiale in einem algebraischen Funktionenkörper mit vollkommenem Konstantenkörper bei beliebiger Charakteristik, J. Reine Angew. Math. 175 (1936), 50–54.",
+      "type": "article"
+    }
+  ],
+  "sorries": 0
+}

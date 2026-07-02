@@ -1,0 +1,120 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "factor-remainder-hasse-derivative-fq-oq-01-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "From an overcounting dichotomy to a base-p digit criterion",
+    "content": "The parent proved that over a characteristic-p field the ordinary iterated-derivative multiplicity test is exact for true multiplicity m < p and blind for m ≥ p, and asked to stratify the unbounded regime by the base-p digits of m via the Lucas/Kummer structure of the binomials C(m,k) defining hasseDeriv. This entry answers it for the pure power Xᵐ: hasseDeriv k (Xᵐ) is a single monomial C(m,k)·X^(m-k), so it survives over characteristic p exactly when p ∤ C(m,k), and Lucas's theorem turns that into the carry-free digit-domination condition on k and m.",
+    "mathContext": "$\\mathrm{hasseDeriv}_k(X^m) = \\binom{m}{k} X^{m-k}$; over $\\mathrm{char}\\,p$ it is nonzero $\\iff p \\nmid \\binom{m}{k} \\iff$ every base-$p$ digit of $k$ is $\\le$ that of $m$.",
+    "significance": "fundamental",
+    "relatedConcepts": [
+      "Hasse derivative",
+      "Lucas's theorem",
+      "Kummer's theorem",
+      "binomial coefficients mod p",
+      "base-p digits",
+      "positive characteristic"
+    ],
+    "prerequisites": [
+      "Hasse derivatives",
+      "binomial coefficients modulo a prime",
+      "characteristic of a field"
+    ]
+  },
+  {
+    "id": "ann-closed-form",
+    "proofId": "factor-remainder-hasse-derivative-fq-oq-01-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "The Hasse derivative of a pure power is a single monomial",
+    "content": "hasseDeriv_X_pow: writing Xᵐ = monomial m 1 and applying hasseDeriv_monomial gives hasseDeriv k (Xᵐ) = C(m,k)·X^(m-k). Because this is a single monomial, over a field it vanishes iff its coefficient does; combined with CharP.cast_eq_zero_iff this yields hasseDeriv_X_pow_ne_zero_iff: hasseDeriv k (Xᵐ) ≠ 0 ↔ ¬ p ∣ C(m,k). This is the bridge that converts the polynomial survival question into a divisibility question about binomials.",
+    "mathContext": "$\\mathrm{hasseDeriv}_k(X^m) = \\binom{m}{k} X^{m-k}$; over a field $\\mathrm{monomial}\\,(m-k)\\,c = 0 \\iff c = 0$, and $(\\binom{m}{k} : F) = 0 \\iff p \\mid \\binom{m}{k}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hasseDeriv_monomial",
+      "monomial_eq_zero_iff",
+      "CharP.cast_eq_zero_iff"
+    ],
+    "prerequisites": [
+      "Hasse derivative on monomials",
+      "characteristic p and cast integers"
+    ]
+  },
+  {
+    "id": "ann-digit-lemma",
+    "proofId": "factor-remainder-hasse-derivative-fq-oq-01-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 110
+    },
+    "type": "technique",
+    "title": "The single-digit Lucas building block",
+    "content": "not_dvd_choose_digit_iff: for one base-p digit position, i.e. a < p, the binomial C(a,b) avoids p exactly when b ≤ a. If b > a the binomial is 0 (hence divisible); if b ≤ a < p, then from C(a,b)·b!·(a-b)! = a! and p ∤ a! (because a < p, via Nat.Prime.dvd_factorial) we get p ∤ C(a,b). Multiplied across digits by Lucas's theorem, this becomes the full digit-domination criterion.",
+    "mathContext": "For $a < p$ prime: $p \\nmid \\binom{a}{b} \\iff b \\le a$, since $\\binom{a}{b}\\,b!\\,(a-b)! = a!$ and $p \\nmid a!$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose_mul_factorial_mul_factorial",
+      "Nat.Prime.dvd_factorial",
+      "Kummer's theorem"
+    ],
+    "prerequisites": [
+      "factorial divisibility by primes",
+      "binomial coefficient identities"
+    ]
+  },
+  {
+    "id": "ann-capstone",
+    "proofId": "factor-remainder-hasse-derivative-fq-oq-01-oq-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Capstone: the Lucas digit-domination criterion",
+    "content": "hasseDeriv_X_pow_ne_zero_iff_digits: for m,k < p^a over a characteristic-p field, hasseDeriv k (Xᵐ) ≠ 0 iff every base-p digit of k is dominated by the corresponding digit of m. The proof feeds Mathlib's Lucas congruence C(m,k) ≡ ∏ C(mᵢ,kᵢ) mod p, transfers divisibility across it (Nat.modEq_zero_iff_dvd), reduces the product to a single factor (Prime.dvd_finset_prod_iff), and applies the single-digit criterion. This is exactly the requested stratification: the ordinary test reads only k < p, but the surviving Hasse orders are the digit-dominated k, reaching k = m once m ≥ p.",
+    "mathContext": "$\\mathrm{hasseDeriv}_k(X^m) \\ne 0 \\iff \\forall i < a,\\ \\lfloor k/p^i \\rfloor \\bmod p \\le \\lfloor m/p^i \\rfloor \\bmod p$ (Kummer: the sum $k + (m-k)$ has no base-$p$ carries).",
+    "significance": "fundamental",
+    "relatedConcepts": [
+      "Lucas's theorem",
+      "Prime.dvd_finset_prod_iff",
+      "Nat.modEq_zero_iff_dvd",
+      "digit domination",
+      "carry-free addition"
+    ],
+    "prerequisites": [
+      "Lucas's theorem",
+      "prime divisibility of products",
+      "base-p digit expansions"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "factor-remainder-hasse-derivative-fq-oq-01-oq-01",
+    "range": {
+      "startLine": 149,
+      "endLine": 193
+    },
+    "type": "example",
+    "title": "The digit count ∏(dᵢ+1) realized over 𝔽₂",
+    "content": "The count of surviving orders equals ∏(dᵢ+1) over the base-p digits dᵢ of m (Glaisher/Fine — the number of odd binomials in row m of Pascal's triangle over 𝔽₂). nonzero_orders_X3_F2: X³ has digits 11₂, so all four orders k ≤ 3 survive (2·2 = 4). nonzero_orders_X4_F2: X⁴ has digits 100₂, so only k ∈ {0,4} survive (1·1·2 = 2). hasseDeriv_X4_F2_profile states directly that k = 1,2,3 vanish while k = 0,4 survive. All by `decide` (kernel), not native_decide, keeping the file 0-axiom.",
+    "mathContext": "Row 3 of Pascal mod 2: $1,1,1,1$ (all odd) $\\Rightarrow 4$ survivors; row 4: $1,0,0,0,1 \\Rightarrow 2$ survivors. Both equal $\\prod (d_i + 1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Glaisher's theorem",
+      "Fine's theorem",
+      "Pascal's triangle mod 2",
+      "natDegree_X_pow"
+    ],
+    "prerequisites": [
+      "binomial coefficients mod 2",
+      "base-2 expansions"
+    ]
+  }
+]
