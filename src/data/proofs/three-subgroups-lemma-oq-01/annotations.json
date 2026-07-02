@@ -1,5 +1,31 @@
 [
   {
+    "id": "ann-tsl01-overview",
+    "proofId": "three-subgroups-lemma-oq-01",
+    "range": {
+      "startLine": 5,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Overview: The Three Subgroups Lemma Relative to a Normal Subgroup N",
+    "content": "For subgroups H, K, L, N of a group G with N normal, the three subgroups lemma states that the three iterated commutators ⁅⁅H,K⁆,L⁆, ⁅⁅K,L⁆,H⁆, ⁅⁅L,H⁆,K⁆ are cyclically interchangeable modulo N: if any two lie in N, so does the third. The headline is ⁅⁅H,K⁆,L⁆ ≤ N → ⁅⁅K,L⁆,H⁆ ≤ N → ⁅⁅L,H⁆,K⁆ ≤ N. Mathlib proves only the = ⊥ special case (Subgroup.commutator_commutator_eq_bot_of_rotate, from the Hall–Witt identity); it does NOT record the classical textbook ≤ N statement — the version used to build the lower central series and prove ⁅Gᵢ,Gⱼ⁆ ≤ G₍ᵢ₊ⱼ₎. The bridge is short but genuinely mathematical: pass to the quotient G ⧸ N. Under the projection f = QuotientGroup.mk' N (kernel exactly N), X ≤ N is equivalent to X.map f = ⊥, and map commutes with the commutator bracket (Subgroup.map_commutator), so the three ≤ N hypotheses become three = ⊥ statements in G ⧸ N where Mathlib's lemma applies verbatim; the conclusion pulls back along f. The = ⊥ lemma is recovered as N = ⊥. Verified: 0 sorries, 0 axioms.",
+    "mathContext": "The three subgroups lemma is the group-theoretic analogue of the Jacobi identity: cyclically, $[[H,K],L]\\le N$ and $[[K,L],H]\\le N$ imply $[[L,H],K]\\le N$. Working modulo the normal subgroup $N$ (i.e. in $G/N$) reduces the general $\\le N$ form to Mathlib's $=\\bot$ case via the kernel characterization $X\\le N \\iff \\pi(X)=\\bot$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "commutator subgroup",
+      "three subgroups lemma",
+      "Hall–Witt identity",
+      "normal subgroup",
+      "quotient group",
+      "lower central series"
+    ],
+    "prerequisites": [
+      "commutator subgroups",
+      "normal subgroups and quotients",
+      "group theory"
+    ]
+  },
+  {
     "id": "ann-normal-form",
     "proofId": "three-subgroups-lemma-oq-01",
     "range": {
