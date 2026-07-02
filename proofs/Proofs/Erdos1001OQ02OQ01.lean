@@ -24,10 +24,14 @@ Via Abel summation, the Walfisz bound propagates to the range totient sum:
 Since (log N)^(2/3) / log N = 1 / (log N)^(1/3) → 0, the improved rate is
 strictly smaller order than the O(log N / N) bound in OQ-02.
 
-**Proof content**:
+**Proof content** (3 axioms; down from 4 after the 2026-07-02 refactor):
 - `totient_sum_walfisz_error`: Walfisz's sharp totient partial sum error (axiom — deep)
-- `rangeTotientSum_walfisz_error`: improved range sum error from Walfisz (axiom — Abel sum)
-- `convergence_rate_sharp`: EST-regime reduction to the range sum (axiom — disjointness)
+- `rangeTotientSum_walfisz_error`: improved range sum error from Walfisz (axiom — Abel sum;
+  now LOAD-BEARING: `convergence_rate_sharp` is derived from it)
+- `est_reduction`: the rate-agnostic EST-regime reduction `|S - f| = O(A·|range error|)`
+  (axiom — disjointness geometry only, independent of the totient bound used)
+- `convergence_rate_sharp`: now a THEOREM, derived by chaining `est_reduction` with the
+  `A`-scaled `rangeTotientSum_walfisz_error` (was a monolithic axiom that assumed the answer)
 - `log_rpow_two_thirds_isLittleO_log`, `walfisz_rate_isLittleO_mertens_rate`,
   `walfisz_full_rate_isLittleO_mertens_rate`, `sharp_rate_isLittleO_oq02_rate`,
   `improvement_factor_tends_to_zero`: the asymptotic comparisons (all PROVED, 0 axioms,
@@ -35,9 +39,11 @@ strictly smaller order than the O(log N / N) bound in OQ-02.
 - `oq02_rate_not_sharp`: main result — O(log N / N) is NOT the tight rate (proved from
   `convergence_rate_sharp` + the asymptotic comparison)
 
-**Status**: AXIOMATIZED (3 deep number-theory inputs: Walfisz totient bound, its Abel-sum
-propagation, and the EST-regime reduction; plus the Mertens bound used for context).
-All real-analysis asymptotics are now fully PROVED (0 sorries).
+**Status**: AXIOMATIZED (3 deep inputs: the Walfisz totient bound, its Abel-sum
+propagation to the range sum, and the rate-agnostic EST-regime reduction). The Mertens
+baseline is no longer restated here as a (vacuous) axiom — it lives in the parent. The
+main theorem `oq02_rate_not_sharp` now rests only on `est_reduction` +
+`rangeTotientSum_walfisz_error`. All real-analysis asymptotics are fully PROVED (0 sorries).
 
 **Related**: Erdos1001OQ02.lean (parent, established O(log N/N) rate)
 -/
@@ -106,12 +112,15 @@ Walfisz (1963) proved the dramatically sharper:
 Both bounds are beyond Mathlib's current scope and must be axiomatized.
 -/
 
-/-- The Mertens bound on the totient partial sum error (used in OQ-02).
-
-    This is the *weaker* bound: E(N) = O(N log N). -/
-axiom totient_sum_mertens_error :
-    (fun N : ℕ => |partialTotientSum N - densityConst * 2⁻¹ * N^2|)
-    =O[atTop] (fun N : ℕ => (N : ℝ) * Real.log N)
+/-
+The Mertens baseline `∑_{n≤x} φ(n) = (3/π²)x² + O(x log x)` (the *weaker*
+error `E(N) = O(N log N)` used to derive OQ-02's `O(log N/N)` rate) lives in the
+parent `Erdos1001OQ02.lean`. It is deliberately NOT restated here as an axiom: no
+result in this file depends on the Mertens totient sum itself — only on the
+*rate* comparison `(log N)^{2/3}/N = o(log N/N)`, which is proved unconditionally
+below. Restating it here would only inflate the axiom count with a vacuous
+assumption. See `Erdos1001OQ02.rangeTotientSum_error` for the Mertens-side input.
+-/
 
 /-- Walfisz's sharp bound on the totient partial sum error (1963).
 
@@ -252,6 +261,31 @@ This answers the sub-question: the error does NOT "grow like log N / N" —
 it converges strictly faster.
 -/
 
+/-- **EST-regime reduction (rate-agnostic).** In the EST regime the density
+    error `|S(N,A,c) - f(A,c)|` is controlled by `A` times the range totient-sum
+    error `|∑_{y=N}^{cN} φ(y)/y² - (6/π²)log c|`.
+
+    This is the genuine *structural* input: in the EST regime the approximation
+    intervals for distinct `y` are disjoint, so
+      `S(N,A,c) = 2A · rangeTotientSum(N,c) + O(A/N)`  and
+      `f(A,c)   = 2A · densityConst · log c`,
+    hence `|S - f| = O(A · |rangeTotientSum - densityConst·log c|)`.
+
+    Crucially this axiom is **independent of which totient error bound is used** —
+    it fixes only the disjointness/inclusion–exclusion geometry, not any rate. The
+    same reduction yields OQ-02's Mertens rate and this file's Walfisz rate,
+    depending only on which range-sum bound is plugged in. It is therefore
+    strictly weaker than (and factors out of) the former monolithic
+    `convergence_rate_sharp` axiom, which baked the entire quantitative answer in.
+
+    Deep geometry-of-numbers input (disjointness + boundary corrections),
+    parallel to the parent's `convergence_rate_est`. -/
+axiom est_reduction (A c : ℝ) (hA : 0 < A) (hc : c > 1)
+    (hregime : inESTRegime A c) :
+    (fun N : ℕ => |S N A c - f A c|)
+    =O[atTop]
+    (fun N : ℕ => A * |rangeTotientSum N c - densityConst * Real.log c|)
+
 /-- The O(log N / N) rate from OQ-02 is NOT sharp.
 
     In the EST regime, the actual convergence rate of S(N,A,c) to f(A,c)
@@ -261,22 +295,28 @@ it converges strictly faster.
 
     which is o(A log N / N).
 
-    **Proof structure**:
-    This follows from:
-    1. `rangeTotientSum_walfisz_error`: range sum error is O((log N)^(2/3+ε)/N)
-    2. `walfisz_full_rate_isLittleO_mertens_rate`: this rate is o(log N / N)
-    3. The reduction from |S - f| to the range sum error (parallel to OQ-02's
-       `convergence_rate_est` but with the sharper input)
-
-    **Axiom needed**: The EST regime reduction (parallel to OQ-02's `convergence_rate_est`)
-    is also axiomatized here, since it requires the same disjointness argument.
-    -/
-axiom convergence_rate_sharp (A c : ℝ) (hA : 0 < A) (hc : c > 1)
+    **This is now a theorem, not an axiom.** It is derived by composing:
+    1. `est_reduction`: `|S - f| = O(A · |rangeTotientSum error|)` (EST disjointness), and
+    2. `rangeTotientSum_walfisz_error`: `|rangeTotientSum error| = O((log N)^(2/3)(log log N)^(4/3)/N)`
+       (Walfisz's bound propagated by Abel summation),
+    scaling the second by the constant `A` and chaining with `IsBigO.trans`. This
+    makes `rangeTotientSum_walfisz_error` load-bearing and reduces the file's
+    axiom footprint from four declarations to three. -/
+theorem convergence_rate_sharp (A c : ℝ) (hA : 0 < A) (hc : c > 1)
     (hregime : inESTRegime A c) :
     (fun N : ℕ => |S N A c - f A c|)
     =O[atTop]
     (fun N : ℕ => A * ((Real.log N) ^ ((2:ℝ)/3) *
-                       (Real.log (Real.log N)) ^ ((4:ℝ)/3) / N))
+                       (Real.log (Real.log N)) ^ ((4:ℝ)/3) / N)) := by
+  -- Scale the range-sum Walfisz bound by the constant `A` on both sides.
+  have hrange :
+      (fun N : ℕ => A * |rangeTotientSum N c - densityConst * Real.log c|)
+      =O[atTop]
+      (fun N : ℕ => A * ((Real.log N) ^ ((2:ℝ)/3) *
+                         (Real.log (Real.log N)) ^ ((4:ℝ)/3) / N)) :=
+    ((rangeTotientSum_walfisz_error c hc).const_mul_left A).const_mul_right hA.ne'
+  -- Chain the EST reduction with the scaled range bound.
+  exact (est_reduction A c hA hc hregime).trans hrange
 
 /-- The sharp rate is strictly little-o of the O(log N / N) rate from OQ-02.
 
