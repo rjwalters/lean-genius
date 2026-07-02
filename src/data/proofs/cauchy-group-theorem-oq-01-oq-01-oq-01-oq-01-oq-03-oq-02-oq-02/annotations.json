@@ -73,28 +73,55 @@
     ]
   },
   {
-    "id": "ann-product-of-cyclics",
+    "id": "ann-torsion-multiplicative",
     "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-02",
     "range": {
       "startLine": 135,
-      "endLine": 201
+      "endLine": 163
     },
-    "type": "insight",
-    "title": "The Single Fibre Value on a Product of Cyclic Groups",
-    "content": "card_torsion_pi splits the torsion count of ∏ᵢ Gᵢ: xⁿ = 1 holds coordinatewise (funext_iff with Pi.pow_apply, Pi.one_apply), so Equiv.subtypeEquivRight ∘ Equiv.subtypePiEquivPi exhibits the torsion subtype as ∏ᵢ (per-factor torsion subtype), and Fintype.card_pi multiplies the cardinalities. card_torsion_cyclic reads each factor as gcd(n, mᵢ) from the parent's card_fiber_pow at b = 1, giving #{xⁿ=1} = ∏ᵢ gcd(n, mᵢ). card_fiber_pow_pi_cyclic transports this constant to every fibre and card_image_pow_pi_cyclic divides the partition identity to count n-th powers as ∏ᵢ mᵢ/gcd(n, mᵢ).",
-    "mathContext": "$$\\#\\{x:x^n=1\\}=\\prod_i\\gcd(n,m_i),\\qquad \\#\\{n\\text{-th powers}\\}=\\frac{\\prod_i m_i}{\\prod_i\\gcd(n,m_i)}=\\prod_i\\frac{m_i}{\\gcd(n,m_i)}.$$",
+    "type": "technique",
+    "title": "Torsion Counts Multiply Over a Product",
+    "content": "Two building blocks assemble the answer. card_torsion_pi shows the torsion count is multiplicative across the factors of a finite product ∏ᵢ Gᵢ: since xⁿ = 1 holds coordinatewise (funext_iff with Pi.pow_apply, Pi.one_apply), Equiv.subtypeEquivRight composed with Equiv.subtypePiEquivPi exhibits the torsion subtype {x : xⁿ = 1} as the dependent product ∏ᵢ {yᵢ : yᵢⁿ = 1}, and Fintype.card_pi multiplies the per-factor cardinalities. card_torsion_cyclic then evaluates one factor: on a finite cyclic group of order m the count of solutions of xⁿ = 1 is gcd(n, m), obtained by specializing the parent's uniform fibre count card_fiber_pow at the basepoint b = 1.",
+    "mathContext": "$$\\#\\{x\\in\\textstyle\\prod_iG_i:x^n=1\\}=\\prod_i\\#\\{y\\in G_i:y^n=1\\},\\qquad \\#\\{x\\in C_m:x^n=1\\}=\\gcd(n,m).$$",
     "significance": "supporting",
     "relatedConcepts": [
       "Equiv.subtypePiEquivPi",
       "Fintype.card_pi",
       "coordinatewise torsion",
-      "invariant factors",
-      "multiplicativity of gcd over factors"
+      "kernel of the power map",
+      "gcd as a torsion count"
     ],
     "prerequisites": [
       "products of groups",
       "subtype equivalences",
-      "Fintype cardinality of a product"
+      "Fintype cardinality of a product",
+      "cyclic groups"
+    ]
+  },
+  {
+    "id": "ann-product-of-cyclics",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 164,
+      "endLine": 201
+    },
+    "type": "insight",
+    "title": "The Fibre Value on a Product of Cyclic Groups",
+    "content": "Combining the two building blocks, card_torsion_pi_cyclic gives the answer: for G = ∏ᵢ Gᵢ with each Gᵢ cyclic of order mᵢ, the number of solutions of xⁿ = 1 is ∏ᵢ gcd(n, mᵢ). Two consequences follow. card_fiber_pow_pi_cyclic transports this constant to every non-empty fibre via the parent's card_fiber_pow_eq_card_torsion, so every fibre of x ↦ xⁿ has exactly ∏ᵢ gcd(n, mᵢ) elements — the fibre-size multiset collapses to a single value, not a richer object. card_image_pow_pi_cyclic divides the partition identity |G| = #image · #torsion by that common fibre size (Nat.div_eq_of_eq_mul_right, positivity from Nat.gcd_pos_of_pos_right) to count the n-th powers as ∏ᵢ mᵢ / ∏ᵢ gcd(n, mᵢ) = ∏ᵢ mᵢ/gcd(n, mᵢ).",
+    "mathContext": "$$\\#\\{x:x^n=1\\}=\\prod_i\\gcd(n,m_i),\\qquad \\#\\{n\\text{-th powers}\\}=\\frac{\\prod_i m_i}{\\prod_i\\gcd(n,m_i)}=\\prod_i\\frac{m_i}{\\gcd(n,m_i)}.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "invariant factors",
+      "multiplicativity of gcd over factors",
+      "fibres of the power map",
+      "counting n-th powers",
+      "structure theorem for finite abelian groups"
+    ],
+    "prerequisites": [
+      "products of groups",
+      "cyclic group orders",
+      "Lagrange / orbit-counting",
+      "natural-number division"
     ]
   }
 ]
