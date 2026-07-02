@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-header-oq0401",
+    "proofId": "inverse-galois-oq-04-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Step 1 of the three-step Kummer–Dedekind route",
+    "content": "The docstring situates this file within OQ-04's plan to eliminate the last A₅ axiom `three_dvd_gal_card : 3 ∣ Fintype.card q.Gal` (InverseGaloisA5.lean:309). The companion `InverseGaloisA5DedekindInstantiation` reduces that axiom to the arithmetic fact `3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField)`, provable by a three-step route: (1) Kummer–Dedekind turns an irreducible cubic factor of q mod 7 into a prime of 𝓞 ℚ(α) of inertia degree 3; (2) inertia-degree tower multiplicativity lifts it to the splitting field; (3) Galois uniformity spreads it to all primes over 7. The sibling entry `Proofs.DedekindInertiaTower` machine-checked steps (2)–(3); this file packages step (1) in full generality, for an arbitrary number field K, algebraic integer θ, and prime p not dividing the Kummer–Dedekind exponent of θ, using only foundational axioms."
+  },
+  {
+    "id": "ann-existence-oq0401",
+    "proofId": "inverse-galois-oq-04-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "exists_prime_inertiaDeg_eq_natDegree — splitting datum ⇒ inertia degree",
+    "content": "The main theorem: for a number field K, an algebraic integer θ ∈ 𝓞 K, and a rational prime p with p ∤ exponent θ (equivalently p ∤ the conductor [𝓞 K : ℤ[θ]]), every monic irreducible factor Q of minpoly ℤ θ modulo p is matched by a maximal prime P of 𝓞 K lying over (p) with inertiaDeg (p) P = Q.natDegree. The witness is `(primesOverSpanEquivMonicFactorsMod hp).symm ⟨Q, hQ⟩`, the inverse image of Q under Mathlib's Kummer–Dedekind bijection between primes over (p) and monic factors of minpoly θ mod p. Primality and lying-over are the `primesOver`-membership components `.2.1` / `.2.2`; maximality is `Ideal.isMaximal_of_mem_primesOver`; and the inertia-degree value is Mathlib's `inertiaDeg_primesOverSpanEquivMonicFactorsMod_symm_apply'`, which computes it as exactly the degree of Q. In the A₅ application θ = α (a root of q), p = 7, and Q is the irreducible cubic factor of q mod 7, so P has inertia degree 3."
+  },
+  {
+    "id": "ann-divisibility-oq0401",
+    "proofId": "inverse-galois-oq-04-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "exists_prime_dvd_inertiaDeg_of_dvd_natDegree — the composable form",
+    "content": "The divisibility corollary, phrased in the currency the OQ-04 tower brick consumes: if a natural number d divides Q.natDegree, then some maximal prime P of 𝓞 K over (p) has d ∣ inertiaDeg (p) P. The proof `obtain`s the prime and its inertia-degree equality from the existence theorem and rewrites by the hypothesis d ∣ Q.natDegree. Feeding such a P into `DedekindInertiaTower.dvd_inertiaDegIn_of_dvd_inertiaDeg` promotes d ∣ inertiaDeg (p) P to d ∣ inertiaDegIn (p) on the Galois splitting field — so with d = 3 and Q the cubic factor of q mod 7, the two bricks compose to 3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField)."
+  }
+]
