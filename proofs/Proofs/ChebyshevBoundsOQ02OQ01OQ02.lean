@@ -52,7 +52,7 @@ theorem theta_le_linear {x : ℝ} (hx : 0 ≤ x) : θ x ≤ (Real.log 4 + 4) * x
 /-- **Floor bridge.** For real `x`, `ψ(x)` equals the parent's natural-number Chebyshev sum at
 `⌊x⌋₊`, because both are `∑_{n ≤ ⌊x⌋₊} Λ(n)`. -/
 theorem psi_eq_chebyshevPsi_floor (x : ℝ) :
-    ψ x = ChebyshevBoundsOQ02OQ01.chebyshevPsi ⌊x⌋₊ := by
+    ψ x = ChebyshevBoundsOQ02.chebyshevPsi ⌊x⌋₊ := by
   rw [ChebyshevBoundsOQ02OQ01.chebyshevPsi_eq_psi, Chebyshev.psi_eq_sum_Icc,
     Chebyshev.psi_eq_sum_Icc, Nat.floor_natCast]
 
@@ -61,8 +61,8 @@ parent's `(log 2 / 3)·n ≤ ψ(n)`, and bound `n ≥ x − 1 ≥ x/2`. -/
 theorem psi_ge_linear {x : ℝ} (hx : 2 ≤ x) : Real.log 2 / 6 * x ≤ ψ x := by
   set n := ⌊x⌋₊ with hn
   have hn2 : 2 ≤ n := by rw [hn]; exact Nat.le_floor (by exact_mod_cast hx)
-  have hpsi_eq : ψ x = ChebyshevBoundsOQ02OQ01.chebyshevPsi n := psi_eq_chebyshevPsi_floor x
-  have hlow : Real.log 2 / 3 * (n : ℝ) ≤ ChebyshevBoundsOQ02OQ01.chebyshevPsi n :=
+  have hpsi_eq : ψ x = ChebyshevBoundsOQ02.chebyshevPsi n := psi_eq_chebyshevPsi_floor x
+  have hlow : Real.log 2 / 3 * (n : ℝ) ≤ ChebyshevBoundsOQ02.chebyshevPsi n :=
     ChebyshevBoundsOQ02OQ01.chebyshevPsi_lower_linear hn2
   have hfloor_ge : x - 1 ≤ (n : ℝ) := by
     have h := Nat.lt_floor_add_one x
@@ -71,7 +71,7 @@ theorem psi_ge_linear {x : ℝ} (hx : 2 ≤ x) : Real.log 2 / 6 * x ≤ ψ x := 
   have hlog2 : (0 : ℝ) ≤ Real.log 2 := Real.log_nonneg (by norm_num)
   calc Real.log 2 / 6 * x = Real.log 2 / 3 * (x / 2) := by ring
     _ ≤ Real.log 2 / 3 * (n : ℝ) := mul_le_mul_of_nonneg_left hxhalf (by linarith)
-    _ ≤ ChebyshevBoundsOQ02OQ01.chebyshevPsi n := hlow
+    _ ≤ ChebyshevBoundsOQ02.chebyshevPsi n := hlow
     _ = ψ x := hpsi_eq.symm
 
 /-- The prime-power correction is `o(x)`: `2√x·log x = o(x)` as `x → ∞`. -/
