@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: spherical Ptolemy theorem via the chord–arc identity",
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "Imports and header docstring: the spherical Ptolemy statement, the chord–arc key identity, the reduction to Euclidean Ptolemy, a survey of the hyperbolic case, and the Mathlib dependencies.",
+      "mathContext": "This file (open question ptolemys-theorem-oq-01-oq-02) extends Ptolemy's theorem to spherical geometry: for four points on the unit sphere of an inner product space lying on a common circle and satisfying the diagonal-crossing condition, sin(d(a,c)/2)·sin(d(b,d)/2) = sin(d(a,b)/2)·sin(d(c,d)/2) + sin(d(a,d)/2)·sin(d(b,c)/2), where d(x,y) = arccos⟨x,y⟩ is the great-circle distance. The key is the chord–arc identity ‖a−b‖ = 2·sin(arccos⟨a,b⟩/2), proved by matching squares (‖a−b‖² = 2 − 2⟨a,b⟩ and (2sin(θ/2))² = 2(1−cosθ) via the half-angle formula). Substituting ‖x−y‖ = 2sin(d(x,y)/2) into Euclidean Ptolemy (imported from PtolemysTheorem.lean, ‖a−c‖‖b−d‖ = ‖a−b‖‖c−d‖ + ‖a−d‖‖b−c‖) gives 4× the spherical equality; dividing by 4 yields the result. The header docstring (lines 1–71) also surveys the hyperbolic (Poincaré disk) analogue with sinh — where the conformal factors (1−|a|²) do not cancel cleanly except for ideal boundary points, so a general proof needs Poincaré-metric infrastructure not in Mathlib — and lists the Mathlib dependencies (ptolemys_theorem, norm_sub_sq_real, Real.cos_arccos, Real.cos_two_mul, arccos bounds, abs_real_inner_le_norm, sin nonnegativity, Real.sqrt_sq)."
+    },
+    {
       "title": "Cauchy-Schwarz Bound",
       "startLine": 72,
       "endLine": 83,
