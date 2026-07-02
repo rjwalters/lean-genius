@@ -87,6 +87,14 @@
       "endLine": 70,
       "summary": "grandi_abel_tendsto: lim_{x→1⁻} ∑'ₙ (−1)ⁿ xⁿ = 1/2, the boundary value of 1/(1+x). grandi_abel_value packages it.",
       "mathContext": "The radial boundary limit of the closed form gives the Abel sum 1/2."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Summary of Results",
+      "startLine": 71,
+      "endLine": 79,
+      "summary": "The trailing summary docstring recaps the two verified results: grandi_power_series (∑'ₙ (−1)ⁿ xⁿ = 1/(1+x) for |x|<1, the geometric series with ratio −x) and grandi_abel_tendsto (lim_{x→1⁻} of that sum = 1/2, the boundary value of 1/(1+x)). Hence Grandi's series 1 − 1 + 1 − ⋯ is Abel summable to 1/2, agreeing with its Cesàro value (Frobenius's theorem). Notes the 0-sorry / 0-axiom / no-native_decide status.",
+      "mathContext": "$\\sum_n (-1)^n = \\tfrac12$ in the Abel sense: $\\lim_{x\\to 1^-}\\sum_n(-1)^n x^n = \\lim_{x\\to1^-}\\tfrac{1}{1+x} = \\tfrac12$."
     }
   ],
   "conclusion": {
