@@ -100,7 +100,12 @@
   ],
   "conclusion": {
     "summary": "The number of k-rich lines in an n-point configuration is at most C(n,2)/C(k,2) = O(n²/k²), proved by charging each rich line the C(k,2) point-pairs it covers and noting that distinct lines share at most one point, so no pair is double-charged against the C(n,2) available pairs. This fills the unproved Part III claim of the Erdős #733 formalization with a fully verified, 0-axiom statement.",
-    "implications": "The bound is the elementary baseline that Szemerédi–Trotter improves (to O(n²/k³ + n/k)), and it requires nothing beyond the linear-space property of lines. It pins down precisely how much of the rich-line corollary used in #733 is elementary double counting versus genuinely deep incidence geometry, and provides reusable Lean infrastructure (disjoint pair-families, the ∑ C(|L|,2) ≤ C(n,2) inequality) for further incidence-combinatorics formalization."
+    "implications": "The bound is the elementary baseline that Szemerédi–Trotter improves (to O(n²/k³ + n/k)), and it requires nothing beyond the linear-space property of lines. It pins down precisely how much of the rich-line corollary used in #733 is elementary double counting versus genuinely deep incidence geometry, and provides reusable Lean infrastructure (disjoint pair-families, the ∑ C(|L|,2) ≤ C(n,2) inequality) for further incidence-combinatorics formalization.",
+    "openQuestions": [
+      "Can the full Szemerédi–Trotter rich-line bound O(n²/k³ + n/k) — the sharp improvement over the elementary O(n²/k²) proved here — be formalized unconditionally in Lean, replacing the parent's axiomatized statement?",
+      "Is the elementary C(n,2)/C(k,2) bound tight for some configurations (e.g. grids or near-pencils), and can a matching lower-bound construction be formalized to show exactly where double counting stops being improvable?",
+      "Does the disjoint-pair-family / ∑ C(|L|,2) ≤ C(n,2) infrastructure extend to k-rich hyperplanes or curves of bounded degree, giving elementary baselines for higher-dimensional incidence problems?"
+    ]
   },
   "leanFile": {
     "imports": [
