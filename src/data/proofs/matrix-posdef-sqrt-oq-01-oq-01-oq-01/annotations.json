@@ -18,6 +18,11 @@
       "Hermitian quadratic forms",
       "singular value decomposition",
       "isometry / norm preservation"
+    ],
+    "prerequisites": [
+      "the conjugate transpose Aᴴ and Hermitian matrices",
+      "the polar decomposition A = U·P of a matrix",
+      "the Euclidean norm ‖x‖ and inner product ⟨x, y⟩ on 𝕜ⁿ"
     ]
   },
   {
@@ -37,6 +42,11 @@
       "operator absolute value",
       "modulus",
       "polar decomposition"
+    ],
+    "prerequisites": [
+      "positive semidefinite matrices and their square roots",
+      "the continuous functional calculus in a C⋆-algebra (CFC.sqrt in Mathlib)",
+      "the complex polar form z = r·e^{iθ} with modulus r = √(z̄z)"
     ]
   },
   {
@@ -55,6 +65,11 @@
       "CFC.sqrt_nonneg",
       "Matrix.PosSemidef",
       "Loewner order"
+    ],
+    "prerequisites": [
+      "the Loewner (positive semidefinite) partial order on Hermitian matrices",
+      "Matrix.PosSemidef (the positive semidefinite predicate in Mathlib)",
+      "nonnegativity of a CFC square root"
     ]
   },
   {
@@ -72,6 +87,11 @@
     "relatedConcepts": [
       "Matrix.PosSemidef.isHermitian",
       "self-adjoint"
+    ],
+    "prerequisites": [
+      "Hermitian / self-adjoint matrices and the conjugate transpose",
+      "positive semidefinite matrices are Hermitian",
+      "Matrix.PosSemidef.isHermitian in Mathlib"
     ]
   },
   {
@@ -89,6 +109,11 @@
     "relatedConcepts": [
       "CFC.sqrt_mul_sqrt_self",
       "posSemidef_conjTranspose_mul_self"
+    ],
+    "prerequisites": [
+      "the square-root property √X·√X = X",
+      "AᴴA is always positive semidefinite (posSemidef_conjTranspose_mul_self)",
+      "the definition absValue A = CFC.sqrt (Aᴴ·A)"
     ]
   },
   {
@@ -106,6 +131,11 @@
     "relatedConcepts": [
       "self-adjoint",
       "defining identity"
+    ],
+    "prerequisites": [
+      "the defining identity |A|² = AᴴA",
+      "self-adjointness |A|ᴴ = |A| of the modulus",
+      "matrix multiplication and the conjugate transpose"
     ]
   },
   {
@@ -124,6 +154,11 @@
       "CFC.sqrt_unique",
       "uniqueness",
       "canonical"
+    ],
+    "prerequisites": [
+      "uniqueness of the positive semidefinite square root (CFC.sqrt_unique)",
+      "the non-uniqueness of the unitary phase U in the polar decomposition",
+      "the definition of the modulus |A| as CFC.sqrt(AᴴA)"
     ]
   },
   {
@@ -143,6 +178,11 @@
       "Matrix.dotProduct_mulVec",
       "Matrix.mulVec_mulVec",
       "quadratic form"
+    ],
+    "prerequisites": [
+      "the matrix-vector product M *ᵥ x and the dot product ⬝ᵥ",
+      "the identity star(Mx) = star x ᵥ* Mᴴ (star_mulVec)",
+      "associativity of matrix action Mᴴ·(M·x) = (MᴴM)·x"
     ]
   },
   {
@@ -161,6 +201,11 @@
       "isometry",
       "polar decomposition",
       "Hermitian quadratic form"
+    ],
+    "prerequisites": [
+      "the quadratic-form collapse ⟨Mx,Mx⟩ = ⟨x, MᴴM x⟩",
+      "the identity |A|ᴴ·|A| = AᴴA",
+      "isometries as maps preserving inner products / lengths"
     ]
   },
   {
@@ -179,6 +224,11 @@
       "RCLike.conj_mul",
       "RCLike.star_def",
       "Euclidean norm"
+    ],
+    "prerequisites": [
+      "the RCLike typeclass abstracting ℝ and ℂ",
+      "the identity conj(y)·y = ‖y‖² (RCLike.conj_mul)",
+      "the star operation and coercion of reals into 𝕜"
     ]
   },
   {
@@ -198,6 +248,11 @@
       "RCLike coercion",
       "isometry",
       "Euclidean norm"
+    ],
+    "prerequisites": [
+      "the quadratic-form identity ⟨Ax,Ax⟩ = ⟨|A|x,|A|x⟩",
+      "the bridge star y ⬝ᵥ y = ↑(∑ᵢ ‖yᵢ‖²)",
+      "injectivity of the coercion ℝ ↪ 𝕜 (exact_mod_cast)"
     ]
   }
 ]
