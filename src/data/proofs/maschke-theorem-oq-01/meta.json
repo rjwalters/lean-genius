@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Maschke's Theorem and Complete Reducibility",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports and module docstring for Maschke's theorem: when char k ∤ |G| (equivalently (Fintype.card G : k) is a unit), every representation of a finite group G over k is completely reducible. These head lines identify the technical heart — the averaging projection π ↦ (1/|G|)∑_g g·π·g⁻¹ making a merely k-linear splitting equivariant — enumerate the packaged results (card_isUnit, splitting, exists_isCompl, semisimplicity of modules and of k[G], injection/surjection splitting, quotient≅sub), and record the sharp modular counterexample 𝔽_p[ℤ/p] where complete reducibility fails.",
+      "mathContext": "Maschke's 1899 theorem is the cornerstone of ordinary representation theory. Given an injective k[G]-linear map, one splits it k-linearly (vector spaces are semisimple) then averages the splitting over G to make it equivariant — dividing by |G| is exactly where char k ∤ |G| is used, via NeZero (Fintype.card G : k). Consequences: every submodule is a direct summand, k[G] is semisimple, all short exact sequences split. Sharpness: over 𝔽_p with G=ℤ/p the augmentation sequence 0→aug→𝔽_p[ℤ/p]→𝔽_p→0 does not split. 0 sorries, 0 axioms; builds on Mathlib's RepresentationTheory.Maschke."
+    },
+    {
       "id": "hypothesis",
       "title": "The Hypothesis: |G| Is a Unit in k",
       "startLine": 66,
