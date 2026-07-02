@@ -205,6 +205,10 @@
     {
       "proofId": "chebyshev-polynomials-oq-01",
       "relationship": "Parent entry: proves the first-kind composition law T_{m·n} = T_m ∘ T_n and the commuting monoid; this entry answers its open question #2 on the second-kind and Dickson analogues."
+    },
+    {
+      "proofId": "chebyshev-polynomials-oq-01-oq-01",
+      "relationship": "Sibling under the same parent: proves the Chebyshev index-addition law T_{m+n} = T_m·T_n − (1−X²)·U_{m−1}·U_{n−1} and its second-kind companion. It supplies exactly the additive/product-to-sum identities the Uₙ do satisfy — the structure this entry's open question #2 flags as replacing the failed compositional monoid."
     }
   ],
   "sorries": 0
