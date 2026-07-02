@@ -85,10 +85,38 @@
       "summary": "chebyshevTheta_le rewrites θ(n) = log(n#), applies Real.log_le_log to the primorial bound n# ≤ 4ⁿ (Nat.primorial_le_4_pow), and finishes with Real.log_pow: log(4ⁿ) = n·log 4. chebyshevTheta_le_two_mul restates this as θ(n) ≤ 2n·log 2 via log 4 = 2·log 2."
     }
   ],
-  "overview": "Chebyshev's first function θ(x) = ∑_{p ≤ x} log p is the additive prime-counting weight underlying the prime number theorem; the classical Chebyshev bounds sandwich θ(x) between two constant multiples of x. This entry formalizes the upper half, θ(n) ≤ n·log 4, in its cleanest form. The engine is a single identity: exponentiating θ(n) gives the primorial n# = ∏_{p ≤ n} p, so θ(n) = log(n#). Mathlib already contains the arithmetic heart — primorial_le_4_pow : n# ≤ 4ⁿ, whose own proof is the Erdős argument bounding the primorial by a central binomial coefficient. Taking logarithms of that bound and using that log is increasing on the positive reals yields θ(n) ≤ log(4ⁿ) = n·log 4 immediately. The entry is an honest assembly: no new arithmetic, but the log-side packaging (defining θ, proving θ = log(n#), and reading off the Chebyshev estimate) is what connects Mathlib's primorial bound to the standard analytic-number-theory statement about θ.",
-  "conclusion": "The upper Chebyshev bound θ(n) ≤ n·log 4 = 2n·log 2 is verified with 0 axioms and 0 sorries. It sits directly above the parent central-binomial sandwich (chebyshev-bounds-oq-06): the primorial bound n# ≤ 4ⁿ that this entry logarithmizes is proved in Mathlib from exactly the central binomial coefficient estimate the parent packages. A natural next step is the matching lower bound θ(n) ≥ c·n for a constant c (harder — it requires a positive-density input such as a lower bound on the number of primes up to n, e.g. via the central binomial coefficient's prime factorization), which together would give the full two-sided Chebyshev estimate θ(n) = Θ(n).",
+  "overview": {
+    "historicalContext": "Chebyshev introduced the functions θ(x) = ∑_{p ≤ x} log p and ψ(x) in his 1848–1852 memoirs on the distribution of primes, decades before the Prime Number Theorem was proved. Unable to establish π(x) ∼ x/log x, he did prove the two-sided estimate θ(x) ≍ x with explicit constants (roughly 0.921·x < θ(x) < 1.106·x for large x), which already sufficed to settle Bertrand's postulate. The clean upper constant log 4 = 2·log 2 formalized here descends from the Erdős-style bound on the primorial by a central binomial coefficient — the same elementary counting Erdős used in his 1932 proof of Bertrand's postulate. θ is the additive, log-weighted prime-counting function whose asymptotics are equivalent to the PNT (θ(x) ∼ x ⇔ π(x) ∼ x/log x).",
+    "problemStatement": "Prove the upper Chebyshev bound θ(n) = ∑_{p ≤ n, p prime} log p ≤ n·log 4 = 2n·log 2 for every natural number n, fully formally and with 0 axioms.",
+    "proofStrategy": "The whole bound is a one-identity assembly. Exponentiating the log-sum turns θ(n) into a product: e^{θ(n)} = ∏_{p ≤ n} p = n#, the primorial, so θ(n) = log(n#) (proved by casting the ℕ-product to ℝ and applying Real.log_prod). Mathlib already carries the arithmetic heart as Nat.primorial_le_4_pow : n# ≤ 4ⁿ — whose own proof is the Erdős central-binomial argument. Applying Real.log_le_log (log is increasing on the positive reals) to that inequality gives θ(n) = log(n#) ≤ log(4ⁿ) = n·log 4 immediately; rewriting log 4 = 2·log 2 yields the equivalent form θ(n) ≤ 2n·log 2. The structural facts (θ ≥ 0 and θ monotone) follow because each summand log p ≥ 0 for p ≥ 2.",
+    "keyInsights": [
+      "Exponentiation converts the additive Chebyshev function into a multiplicative object: e^{θ(n)} = ∏_{p ≤ n} p = n#, so θ(n) = log(n#). This single identity is what lets a bound on the primorial act on the prime-log sum.",
+      "The analytic-looking Chebyshev estimate is really a logarithm of a purely arithmetic bound: taking log of Nat.primorial_le_4_pow (n# ≤ 4ⁿ) and using monotonicity of log is the entire proof — no new number theory is created, only repackaged.",
+      "The constant log 4 = 2·log 2 traces back to the central binomial coefficient C(2n,n) ≤ 4ⁿ, the same Erdős counting behind Bertrand's postulate; this entry is the θ-side companion of the parent's C(2n,n) sandwich.",
+      "θ is nonnegative and monotone for the elementary reason that every summand log p ≥ 0 (each prime p ≥ 2 > 1); these order facts are separated out from the size bound.",
+      "This is the upper half of the classical two-sided Chebyshev estimate θ(x) = Θ(x); the matching lower bound is genuinely harder because it needs a positive-density input, marking the boundary between 'assembly' and 'real analytic number theory'."
+    ]
+  },
+  "conclusion": {
+    "summary": "The upper Chebyshev bound θ(n) ≤ n·log 4 = 2n·log 2 on the first Chebyshev function is verified with 0 axioms and 0 sorries. The proof defines θ(n) = ∑_{p ≤ n, p prime} log p, establishes the bridge identity θ(n) = log(n#) to the primorial, and reads the bound off Mathlib's Nat.primorial_le_4_pow by taking logarithms; the equivalent form θ(n) ≤ 2n·log 2 and the structural facts θ ≥ 0 and θ monotone are also proved.",
+    "implications": "θ is the log-weighted prime-counting function whose growth is equivalent to the Prime Number Theorem, so pinning its upper bound in the clean form n·log 4 connects Mathlib's combinatorial primorial estimate to the standard analytic-number-theory statement about θ. The reusable payload is the definition chebyshevTheta together with the identity chebyshevTheta_eq_log_primorial, which turn any future bound on the primorial (or on ψ) into a bound on the prime-log sum. It sits directly above the parent central-binomial sandwich: the primorial bound logarithmized here is proved in Mathlib from exactly the C(2n,n) ≤ 4ⁿ estimate the parent packages.",
+    "openQuestions": [
+      "Establish the matching lower bound θ(n) ≥ c·n for a positive constant c — genuinely harder, since it requires a positive-density input such as a lower bound on the number of primes up to n (e.g. via the prime factorization of the central binomial coefficient) — to obtain the full two-sided Chebyshev estimate θ(n) = Θ(n).",
+      "Formalize the companion function ψ(x) = ∑_{p^k ≤ x} log p and the elementary bound |ψ(x) − θ(x)| = O(√x·log x), the standard bridge from θ to ψ.",
+      "Connect the two-sided θ bound to Bertrand's postulate and, ultimately, to the equivalence θ(x) ∼ x ⇔ π(x) ∼ x/log x underlying the Prime Number Theorem."
+    ]
+  },
   "crossReferences": [
-    "chebyshev-bounds-oq-06"
+    {
+      "targetId": "chebyshev-bounds-oq-06",
+      "relationship": "parent",
+      "description": "Two-Sided Central Binomial Bound 4ⁿ/(2n+1) ≤ C(2n,n) ≤ 4ⁿ. The primorial bound n# ≤ 4ⁿ that this entry logarithmizes is proved in Mathlib from exactly this central binomial estimate — where the parent bounds C(2n,n), this entry bounds the prime-log sum θ it controls."
+    },
+    {
+      "targetId": "chebyshev-bounds",
+      "relationship": "related",
+      "description": "Chebyshev's Prime Counting Bounds — the classical two-sided θ(x) ≍ x estimates of which θ(n) ≤ n·log 4 is the clean upper half."
+    }
   ],
   "references": [
     {
