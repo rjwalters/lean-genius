@@ -262,4 +262,45 @@ theorem pancyclicGraph_card_edgeFinset_ge (hn : 3 ≤ n)
     (h : IsPancyclicGraph G) : n ≤ G.edgeFinset.card :=
   card_edgeFinset_ge_of_hasCycleOfLength G (h n hn le_rfl)
 
+omit [Fintype G.edgeSet] in
+/-- A pancyclic graph on `n ≥ 3` vertices contains a **Hamiltonian cycle**: a cycle of
+    length exactly `n` (the top length in the pancyclic range). This is the witness that
+    forces the baseline `n ≤ #E(G)` bound above. -/
+theorem pancyclicGraph_hasHamiltonianCycle (hn : 3 ≤ n)
+    (h : IsPancyclicGraph G) : HasCycleOfLength G n :=
+  h n hn le_rfl
+
+omit [Fintype G.edgeSet] in
+/-- A pancyclic graph on `n ≥ 3` vertices contains a **triangle**: a cycle of length `3`
+    (the bottom length in the pancyclic range). -/
+theorem pancyclicGraph_hasTriangle (hn : 3 ≤ n)
+    (h : IsPancyclicGraph G) : HasCycleOfLength G 3 :=
+  h 3 le_rfl hn
+
+/-- **Grounded excess** `h_G := #E(G) − n`: the number of edges of `G` beyond the
+    Hamiltonian baseline `n`. In the grounded model this is a genuine quantity tied to
+    the concrete graph, unlike the abstract `pancyclicExcess` which collapsed to `0`
+    because its cycle predicate was disconnected from any edge set. -/
+def pancyclicGraphExcess : ℕ := G.edgeFinset.card - n
+
+/-- **The excess recovers the true edge count.** For a pancyclic graph the Hamiltonian
+    cycle guarantees `n ≤ #E(G)`, so `pancyclicGraphExcess G + n = #E(G)` with no
+    truncation from `ℕ` subtraction. -/
+theorem pancyclicGraphExcess_add (hn : 3 ≤ n)
+    (h : IsPancyclicGraph G) : pancyclicGraphExcess G + n = G.edgeFinset.card :=
+  Nat.sub_add_cancel (pancyclicGraph_card_edgeFinset_ge G hn h)
+
+/-- **Grounded upper bound on the excess.** Every simple graph on `n` vertices has at most
+    `C(n, 2)` edges, so the pancyclic excess is at most `C(n, 2) − n`. Together with the
+    non-negativity built into `ℕ` and the identity `pancyclicGraphExcess_add`, this
+    sandwiches the excess in the interval `[0, C(n,2) − n]`, establishing that `h(n)` is a
+    well-defined finite quantity in the corrected model. The deep estimates
+    `h(n) ≥ log₂(n−1) − 1` (Griffin 2013) and `h(n) ≤ log₂ n + log* n + O(1)` (GKW 2016)
+    refine this crude sandwich and remain open targets on top of this definition. -/
+theorem pancyclicGraphExcess_le : pancyclicGraphExcess G ≤ n.choose 2 - n := by
+  have hcard : G.edgeFinset.card ≤ n.choose 2 := by
+    simpa [Fintype.card_fin] using G.card_edgeFinset_le_card_choose_two
+  unfold pancyclicGraphExcess
+  omega
+
 end Grounded

@@ -2,33 +2,45 @@
 
 **Phase**: ACT
 **Since**: 2026-06-05
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
 
-Pure structural properties of `iteratedLog` independent of the abstract
-pancyclic model: characterize the zero fibre and positivity.
+Extend the grounded `SimpleGraph (Fin n)` pancyclic model: extract the
+extreme-length cycle corollaries and establish that the grounded excess
+`h_G = |E(G)| - n` is a well-defined, finite quantity (a two-sided
+sandwich), replacing the vacuous abstract `pancyclicExcess`.
 
 ## Active Approach
 
-Add small, model-agnostic arithmetic lemmas about `iteratedLog`. These
-are independent of the documented `IsPancyclic` modelling flaw, so they
-remain valid when (and if) the graph-theoretic encoding is rebuilt on
-top of `SimpleGraph (Fin n)` with `Walk.IsCycle`.
+Build directly on the grounded `HasCycleOfLength` / `IsPancyclicGraph`
+definitions and the non-vacuous edge lower bound `n ≤ |E(G)|` that a
+prior iteration proved. New, all 0-axiom / 0-sorry verified:
+
+- `pancyclicGraph_hasHamiltonianCycle` — length-`n` cycle from pancyclicity
+- `pancyclicGraph_hasTriangle` — length-`3` cycle from pancyclicity
+- `pancyclicGraphExcess` (def) `= |E(G)| - n`
+- `pancyclicGraphExcess_add` — `h_G + n = |E(G)|` (no ℕ truncation)
+- `pancyclicGraphExcess_le` — `h_G ≤ C(n,2) - n`
+  (via `card_edgeFinset_le_card_choose_two`)
+
+Together with `ℕ` non-negativity this gives `0 ≤ h_G ≤ C(n,2) - n`,
+so `h(n)` is well-defined and finite in the corrected model.
 
 ## Blockers
 
-None for `iteratedLog` lemmas.
+None for the grounded model's structural / boundedness lemmas.
 
-The pancyclic excess content remains blocked by the documented model
-flaw — see the file header. Real Bondy/Griffin/GKW bounds need a
-`SimpleGraph (Fin n)` reformulation (≈200 LOC).
+The deep estimates `h(n) ≥ log₂(n−1) − 1` (Griffin 2013) and
+`h(n) ≤ log₂ n + log* n + O(1)` (GKW 2016) remain open targets: they
+require the doubling argument / hierarchical construction over concrete
+`SimpleGraph (Fin n)` families, well beyond the crude sandwich above.
 
 ## Next Action
 
-After this iteration: consider a corrected `SimpleGraph` based model
-in a separate file or section, leaving the current abstract model as
-a diagnostic scaffold.
+Attack a first genuine strengthening of the lower bound in the grounded
+model, e.g. `h(n) ≥ 1` for `n ≥ 4` (a pancyclic graph is strictly more
+than a single Hamiltonian cycle), en route to the Griffin doubling bound.
 
 ## Attempt Counts
 
