@@ -1,29 +1,31 @@
 # Research State: schroeder-bernstein-oq-03
 
 ## Current State
-**Phase**: ACT
+**Phase**: DEVELOP
 **Path**: full
 **Since**: 2026-07-02
 **Iteration**: 2
 
 ## Current Focus
-Collision resolution for the back-and-forth (the crux). Section 4g added: names the
-collision blocker via the `BuiltFrom` invariant, replacing the Π₁ `isGFree` decision
-with a decidable membership test + explicit orbit point `g (f a)`.
+Even-stage collision move of the Myhill priority scheduler: routing a blocked fresh
+domain point along the forward orbit to an escaping target.
 
 ## Active Approach
-Stage-wise finite priority construction (Rogers §7.4). Atomic steps (4c), exhaustion
-(4d/4e), evaluator (4f), and now collision structure (4g) are all in place. Remaining:
-the stage recursion + termination/coverage/computability.
+Stage-wise finite back-and-forth (Rogers §7.4). Collision step obligations:
+(1) bounded termination — DONE (`fwdOrbit_chase_length_le`);
+(2) correspondence preservation — DONE this session (`fwdOrbit_corr`/`chase_target_corr`);
+(3) escape-existence (a fresh target actually exists) — OPEN, and found to be the real
+    crux (see knowledge.md 07-02: naive counting fails on f-edge orbit re-entry; likely
+    needs a stronger construction invariant than `BuiltFrom`).
 
 ## Attempt Count
-- Total attempts: 2
-- Approaches tried: 1 (stage-wise back-and-forth; classical orbit approach rejected as Π₁)
+- Approaches tried: 1 (stage-wise back-and-forth), in progress across sessions.
 
 ## Blockers
-`myhill_isomorphism` → sorry: the stage recursion (collision-chase) + its computability.
-Section 4g reduces this to a *bounded* search (no `isGFree`). Not yet closed.
+Escape-existence / termination of the collision routing. Finer than the earlier
+`isGFree` Π₁ framing — blockers are named, but routing-termination is unproven.
 
 ## Next Action
-Define the stage recursion using `step_f_available_or_collision`; chase along
-`fwdOrbit f g a` to the first fresh f-image; prove termination via finite matching length.
+Prove escape-existence for the collision step, or find the stronger stage invariant
+that makes the chase stay in `mDom L` until escape. Then assemble the stage recursion
+(matching chain + `firstMissing` coverage + read-off computable `ℕ ≃ ℕ`).

@@ -343,6 +343,42 @@ theorem fwdOrbit_chase_length_le {f g : ℕ → ℕ}
   rw [hIcc] at hcard
   exact le_trans hcard (List.toFinset_card_le D)
 
+/-- **The collision chase preserves the source predicate.** Each chase step sends `x` to
+    `g (f x)`, and the reductions give `p (g (f x)) ↔ q (f x) ↔ p x`; so the `p`-value is
+    invariant along the whole forward orbit: `p (fwdOrbit f g a k) ↔ p a` for every `k`.
+
+    This is the correspondence half of the collision step. When a fresh domain point `a`
+    cannot take its own image `f a` (already used) and the scheduler routes it instead to
+    the image `f (fwdOrbit f g a N)` of a later, *escaping* orbit point (`chase_target_corr`
+    below), the resulting edge still respects the membership condition — precisely because
+    walking the orbit never changes the `p`-value. Note this holds for *arbitrary* (not
+    necessarily computable) predicates `p, q`: the invariance is routed structurally through
+    the reductions `f, g`, never by testing `p`/`q`. -/
+theorem fwdOrbit_corr {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n)) (a : ℕ) :
+    ∀ k, p (fwdOrbit f g a k) ↔ p a := by
+  intro k
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+      rw [fwdOrbit_succ]
+      -- `p (g (f xₖ)) ↔ q (f xₖ) ↔ p xₖ ↔ p a`
+      rw [← hgpq (f (fwdOrbit f g a k)), ← hfpq (fwdOrbit f g a k)]
+      exact ih
+
+/-- **Correspondence for the routed collision target.** Combining `fwdOrbit_corr` with the
+    `f`-reduction: the membership condition `p a ↔ q (f (fwdOrbit f g a N))` holds for every
+    orbit stage `N`. So routing the fresh domain point `a` to the range value
+    `f (fwdOrbit f g a N)` — the escape target the chase produces once `f` of an orbit point
+    lands outside the occupied range — records a pair `(a, f (fwdOrbit f g a N))` that
+    satisfies `MatchingCorr`. Together with `fwdOrbit_chase_length_le` (the chase is bounded,
+    hence computable) this discharges both obligations of the even-stage collision move:
+    *bounded termination* and *correspondence preservation*. -/
+theorem chase_target_corr {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n)) (a N : ℕ) :
+    p a ↔ q (f (fwdOrbit f g a N)) :=
+  (fwdOrbit_corr hfpq hgpq a N).symm.trans (hfpq (fwdOrbit f g a N))
+
 /-!
 ## Section 4a: The Σ₁ / Π₁ complexity of `range g` — machine-checked
 
