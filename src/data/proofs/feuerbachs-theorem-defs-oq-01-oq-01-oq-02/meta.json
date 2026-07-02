@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Orthocentric System of {A, B, C, H}",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Module docstring, parent import (FeuerbachsTheoremDefs), and setup (linter option; noncomputable section; namespace FeuerbachsTheoremDefsOQ01OQ01OQ02). Building on the orthocenter H = A+B+C−2O, this file establishes the orthocentric configuration: each of A,B,C,H is the orthocenter of the triangle on the other three. It characterizes 'P is an orthocenter of XYZ' by altitude-perpendicularity (IsOrthocenterOf) and proves the three perpendicularities orthocentric_perp_a/b/c ((A−H)⊥(B−C) etc., each a linear fact in O), the four orthocenter memberships (orthocenter_of_ABC/BCH/CAH/ABH bundled as orthocentric_system), uniqueness (isOrthocenterOf_unique via a 2×2 Cramer argument whose determinant is the non-degeneracy determinant), and the structural consequence orthocentric_six_midpoints_concyclic (the midpoints of all six connectors lie on one shared nine-point circle, centre N, radius R/2). A worked acute example A=(0,0),B=(4,0),C=(1,2) with O=(2,1/4), H=(1,3/2) verifies A as orthocenter of BCH. Status: 0 sorries, 0 axioms.",
+      "mathContext": "The three 'opposite connectors are perpendicular' statements ARE the orthocentric system; it repackages the parent's six nine-point theorems as the symmetry of the four-point set {A,B,C,H} sharing a single nine-point circle."
+    },
+    {
       "id": "perp-bisectors",
       "title": "Perpendicular-bisector relations",
       "startLine": 76,
