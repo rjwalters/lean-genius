@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Dirichlet's Theorem on Primes in AP",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports and module docstring for Dirichlet's Theorem (1837): every arithmetic progression a, a+d, a+2d, … with gcd(a,d)=1 contains infinitely many primes. These head lines state the theorem and its mod-q form, give the historical context and the L-function proof strategy (Dirichlet characters, L-functions, and the crucial non-vanishing L(1,χ)≠0 for non-principal χ), and identify the Mathlib components (LSeries.PrimesInAP, DirichletCharacter.Basic, LSeries.Nonvanishing) that supply the complete formal proof.",
+      "mathContext": "Dirichlet's theorem is proved via characters χ:(ℤ/qℤ)ˣ→ℂˣ and their L-functions L(s,χ)=∑χ(n)/n^s. Summing χ(a⁻¹)·(log L)′ over χ isolates the progression a mod q; the density diverges provided L(1,χ)≠0 for every non-principal χ, the analytic crux (hardest for real characters, where a simple pole with positive residue is needed). The entry delegates to Mathlib's complete formalization in NumberTheory.LSeries.PrimesInAP."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 66,
