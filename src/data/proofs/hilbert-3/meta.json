@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Hilbert's Third Problem and the Dehn invariant",
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "Hilbert's Third Problem (1900) asks whether two polyhedra of equal volume are always scissors congruent — cuttable into finitely many pieces reassemblable into each other. Dehn (1900) answered NO, the first of Hilbert's 23 problems solved, within months of its posing. The obstruction is the Dehn invariant D(P) = Σ_e length(e) ⊗ θ(e) ∈ ℝ ⊗_ℤ (ℝ/πℚ), summed over edges e with dihedral angle θ(e): scissors-congruent polyhedra have equal Dehn invariant. Since D(cube)=0 but D(regular tetrahedron)≠0, a cube and a regular tetrahedron of equal volume are NOT scissors congruent. The file defines the Dehn invariant, the cube/tetrahedron examples, the obstruction theorem, and — for contrast — the 2D Bolyai–Gerwien theorem (1833) that any two equal-area polygons ARE scissors congruent, the surprising dimensional gap Hilbert flagged. Status: some algebraic details remain as sorries (formalized, not fully verified).",
+      "mathContext": "The Dehn invariant lives in the tensor product ℝ ⊗_ℤ (ℝ/πℚ): edge lengths tensor dihedral angles taken modulo rational multiples of π. Rationality mod π is exactly what kills the contributions that a rigid re-cutting can move around — the cube's dihedral angles are π/2 ≡ 0 in ℝ/πℚ, while the regular tetrahedron's arccos(1/3) is an irrational multiple of π, giving a non-zero invariant. Volume alone is a complete invariant in 2D (Bolyai–Gerwien) but not in 3D, where (volume, Dehn) together are complete by Sydler's later theorem; this file formalizes the Dehn obstruction that establishes the negative answer."
+    },
+    {
       "id": "polyhedra",
       "title": "Part 1: Polyhedra Definitions",
       "startLine": 75,
