@@ -2,8 +2,14 @@
   "id": "area-of-circle-oq-07-oq-03-oq-03",
   "slug": "area-of-circle-oq-07-oq-03-oq-03",
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Set", "MeasureTheory"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "MeasureTheory"
+    ],
     "namespace": "AreaOfCircleOQ07OQ03OQ03",
     "lineCount": 110,
     "axiomCount": 0,
@@ -44,12 +50,14 @@
   "overview": {
     "historicalContext": "The Gaussian ∫_ℝ e^{-x²} dx = √π is the value Γ(1/2) = √π of the Euler Gamma function at a half-integer, as the parent entry area-of-circle-oq-07-oq-03 recorded. That single value is the bottom rung of an entire ladder: the polynomial moments of the Gaussian weight e^{-x²}. Because e^{-x²} is even, the odd moments vanish and the even moments ∫_ℝ x^{2n} e^{-x²} dx are exactly the half-integer Gamma values Γ(n + 1/2) — equivalently (2n-1)‼·√π/2ⁿ in double-factorial form. These are, up to normalisation, the moments of the standard normal distribution (the (2n)-th moment of N(0,1/2)), so the Gamma ladder is the probabilistic backbone of the Gaussian. This entry climbs the ladder: it proves the moment–Gamma identity for all n by the classical u = x² substitution on the half-line (turning the moment into a Gamma integral) followed by even symmetry to recover the whole line, then reads off the double-factorial closed form from Mathlib's Real.Gamma_nat_add_half.",
     "problemStatement": "Extend the parent's single value Γ(1/2) = √π to the full half-integer ladder by identifying each Γ(n + 1/2) with the even Gaussian moment ∫_ℝ x^{2n} e^{-x²} dx, and give the double-factorial closed form.",
-    "keyIdeas": [
+    "keyInsights": [
       "On the half-line, the substitution u = x² turns ∫_{x>0} x^{2n} e^{-x²} dx into ½ Γ(n + 1/2) — Mathlib's integral_rpow_mul_exp_neg_rpow with p = 2, q = 2n.",
       "The integrand x^{2n} e^{-x²} is even, so the whole-line integral is twice the half-line integral, cancelling the ½ and giving Γ(n + 1/2).",
       "Mathlib's Real.Gamma_nat_add_half gives the closed form Γ(n + 1/2) = (2n-1)‼ · √π / 2ⁿ.",
-      "The monoid power x^{2n} matches the rpow x^{2n} used by the Gamma lemma via Real.rpow_natCast (valid for all real x), and even integrability transfers from the rpow form."
-    ]
+      "The monoid power x^{2n} matches the rpow x^{2n} used by the Gamma lemma via Real.rpow_natCast (valid for all real x), and even integrability transfers from the rpow form.",
+      "The even moments are exactly the (unnormalised) moments of a Gaussian: ∫_ℝ x^{2n} e^{-x²} dx = Γ(n+1/2), while the odd moments vanish by symmetry — so the whole-line integral computes the even half-integer Gamma values without ever leaving elementary calculus."
+    ],
+    "proofStrategy": "Reduce the whole-line integral to a half-line one by even symmetry, evaluate the half-line integral via the substitution $u = x^2$, and read off the closed form from Mathlib's Gamma lemmas. Concretely: (1) match the monoid power $x^{2n}$ to the rpow form with `Real.rpow_natCast`; (2) apply `integral_rpow_mul_exp_neg_rpow` ($p=2,\\ q=2n$) to get $\\int_{x>0} x^{2n}e^{-x^2}\\,dx = \\tfrac12\\Gamma(n+\\tfrac12)$; (3) double it using evenness of the integrand to obtain $\\int_{\\mathbb R} x^{2n}e^{-x^2}\\,dx = \\Gamma(n+\\tfrac12)$; (4) expand $\\Gamma(n+\\tfrac12)$ with `Real.Gamma_nat_add_half` into the double-factorial form $(2n-1)!!\\,\\sqrt\\pi/2^n$. The base cases $n=0$ ($\\sqrt\\pi$) and $n=1$ ($\\sqrt\\pi/2$) fall out by specialisation."
   },
   "sections": [
     {
@@ -117,7 +125,14 @@
   "sorries": [],
   "conclusion": {
     "summary": "Extends the parent's Γ(1/2) = √π to the entire half-integer Gamma ladder by proving ∫_ℝ x^{2n} e^{-x²} dx = Γ(n + 1/2) for all n. The half-line integral evaluates to ½ Γ(n + 1/2) through the u = x² substitution (Mathlib's integral_rpow_mul_exp_neg_rpow, with the monoid power matched to the rpow via Real.rpow_natCast), and even symmetry of the integrand doubles it to the whole line. Mathlib's Real.Gamma_nat_add_half then yields the double-factorial closed form (2n-1)‼·√π/2ⁿ. The base cases n = 0 (∫_ℝ e^{-x²} dx = √π, recovering the parent) and n = 1 (∫_ℝ x² e^{-x²} dx = √π/2) are recorded. All 4 theorems are 0-axiom and machine-checked.",
-    "significance": "The even Gaussian moments are, up to scaling, the moments of the normal distribution, so this ladder is the probabilistic content behind the Gaussian integral. Turning the isolated value Γ(1/2) = √π into the full family Γ(n + 1/2) = (2n-1)‼·√π/2ⁿ connects the Gamma function, the Gaussian weight, and the double factorials in one machine-checked identity."
+    "implications": [
+      "The even Gaussian moments are, up to scaling, the moments of the normal distribution, so this ladder is the probabilistic content behind the Gaussian integral. Turning the isolated value Γ(1/2) = √π into the full family Γ(n + 1/2) = (2n-1)‼·√π/2ⁿ connects the Gamma function, the Gaussian weight, and the double factorials in one machine-checked identity.",
+      "Because Γ(n+1/2) = (2n-1)!!·√π/2ⁿ, the entry gives a closed form for every even moment of the Gaussian weight e^{-x²}, i.e. (up to the normalising 1/√π) the even moments of the standard normal, of which the n=1 case √π/2 is the variance-type moment."
+    ],
+    "openQuestions": [
+      "Does the same substitution-and-symmetry pattern extend to the weighted moments ∫_ℝ x^{2n} e^{-ax²} dx = Γ(n+1/2)/a^{n+1/2}, giving the full scaled Gaussian moment family in one lemma?",
+      "Can the odd-moment vanishing ∫_ℝ x^{2n+1} e^{-x²} dx = 0 and this even-moment ladder be packaged into a single statement about all moments of the Gaussian weight?"
+    ]
   },
   "description": "The Gaussian integral ∫_ℝ e^{-x²} dx = √π is the bottom rung of the half-integer Gamma ladder. This entry climbs it: for every n, the even Gaussian moment ∫_ℝ x^{2n} e^{-x²} dx equals Γ(n + 1/2) = (2n-1)‼·√π/2ⁿ. The half-line integral is ½ Γ(n + 1/2) by the u = x² substitution, and even symmetry doubles it to the whole line. Base cases recover √π (n = 0) and √π/2 (n = 1). All results are 0-axiom and machine-checked."
 }
