@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-06",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/GreensTheoremOQ02OQ04.lean",
     "tags": [
       "green's-theorem",
@@ -18,9 +18,9 @@
       "lipschitz",
       "research"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 259,
     "theoremCount": 9,
     "definitionCount": 2,
@@ -48,7 +48,7 @@
       "smooth_form_satisfies_whitney: proves C¹ forms automatically satisfy Whitney's L¹ conditions",
       "l1curl_consistent_with_stokes_rectangle: confirms consistency of OQ-02 and FTC-Stokes for smooth rectangular case"
     ],
-    "assumptions": "0 sorries. 0 axiom declarations in this file. Relies on greens_theorem_l1curl (Whitney's theorem, axiom in GreensTheoremOQ02) and stokes_2d_rectangle (proved in FundamentalTheoremCalculusStokes). All theorems fully machine-checked.",
+    "assumptions": "axiomCount = 1. 0 sorries and 0 axiom declarations in this file itself, but the main results (greens_stokes_l1curl, c1_stokes_from_whitney, stokes_scaling) are proved by directly invoking the imported axiom greens_theorem_l1curl (Whitney's minimal-regularity Green's theorem, declared as an axiom in GreensTheoremOQ02). The entry therefore inherits that single assumption and is classified axiomatized. It also uses stokes_2d_rectangle (axiom-free, proved in FundamentalTheoremCalculusStokes). All theorems are otherwise machine-checked.",
     "additionalFiles": []
   },
   "overview": {
