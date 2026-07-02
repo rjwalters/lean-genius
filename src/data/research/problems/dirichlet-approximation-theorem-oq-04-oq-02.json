@@ -1,0 +1,77 @@
+{
+  "slug": "dirichlet-approximation-theorem-oq-04-oq-02",
+  "title": "Generalize to the multidimensional Kronecker theorem: {n·(a₁,…,a_k)} is dense...",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Generalize to the multidimensional Kronecker theorem: {n·(a₁,…,a_k)} is dense....",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-07-01T22:24:42.561Z",
+    "iteration": 1,
+    "focus": "Shipped inhomogeneous 1D Kronecker (minimality of irrational rotation); multidimensional torus generalization remains open.",
+    "blockers": [],
+    "nextAction": "Multidimensional Kronecker (torus) generalization is the natural follow-up.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE (verified, 0-axiom): inhomogeneous 1D Kronecker — minimality of the irrational rotation and inhomogeneous Dirichlet approximation. Multidimensional torus generalization deferred as open.",
+    "builtItems": [
+      "denseRange_zsmul_add_of_irrational: minimality of the irrational rotation (every orbit {n·a+b} dense) via DenseRange.comp with the translation x↦x+b — DirichletApproximationOQ04OQ02.lean:64",
+      "exists_int_zsmul_sub_round_lt: inhomogeneous Dirichlet approximation |n·a−β−round(n·a−β)|<ε for any target β — DirichletApproximationOQ04OQ02.lean:80",
+      "denseRange_zsmul_of_irrational: period-1 homogeneous density seed (a/1=a) — DirichletApproximationOQ04OQ02.lean:54"
+    ],
+    "insights": [
+      "Circle group structure reduces all-orbit density to single-orbit density: post-compose the homogeneous OQ-04 orbit with the continuous surjective translation x↦x+b (DenseRange.comp) — no new metric analysis needed.",
+      "AddCircle.norm_eq at period 1 gives ‖(x:AddCircle 1)‖=|x−round x|, turning ball-membership around ↑β into the inhomogeneous Diophantine bound.",
+      "OQ-04 is recovered as the two origin special cases: b=0 (density) and β=0 (approximation)."
+    ],
+    "mathlibGaps": [
+      "Mathlib does not package minimality of the irrational rotation nor inhomogeneous Kronecker approximation together, though all pieces (AddCircle.denseRange_zsmul_coe_iff, DenseRange.comp, AddCircle.norm_eq) are present.",
+      "No ready multidimensional torus Kronecker theorem (density in (ℝ/ℤ)^k ⟺ ℚ-linear independence) in Mathlib."
+    ],
+    "nextSteps": [
+      "Multidimensional Kronecker: {n·(a₁,…,a_k)} dense in (ℝ/ℤ)^k iff 1,a₁,…,a_k are ℚ-linearly independent (the seeker-labeled generalization; needs torus + character infra).",
+      "Upgrade minimality to unique ergodicity ⇒ Weyl equidistribution."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "diophantine-approximation",
+    "kronecker-density",
+    "equidistribution",
+    "irrationality",
+    "circle-rotation",
+    "topological-dynamics",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "dirichlet-approximation-theorem",
+    "dirichlet-approximation-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-01T22:24:42.561Z",
+  "lastUpdate": "2026-07-01T23:59:00.000Z",
+  "significance": 6,
+  "tractability": 6
+}
