@@ -58,5 +58,53 @@
     "significance": "key",
     "relatedConcepts": ["sign alternation", "Wallis product decay", "abs_pow / abs_div", "central binomial positivity"],
     "prerequisites": ["the main closed form", "positivity of central binomial coefficients"]
+  },
+  {
+    "id": "ann-module-overview",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "concept",
+    "title": "Scope: the uniform closed form for the negative half-integer coefficient",
+    "content": "The module docstring frames the contribution relative to the parent `binomial-theorem-oq-01-oq-01`, which supplies the generalized (Newton) coefficient `genBinom α k = (∏_{j<k}(α-j))/k!`, its ODE recurrence `(k+1)·C(α,k+1) = (α-k)·C(α,k)`, and ad-hoc values of the POSITIVE coefficient `C(1/2,k)` only for `k ≤ 3`. This entry instead delivers the general UNIFORM formula for the NEGATIVE coefficient `C(-1/2,k)` — the one that actually appears in analysis as the Taylor coefficients of `(1+x)^(-1/2) = 1/√(1+x)`. The whole file rests on a single induction whose engine is the coincidence of two ratios: `C(-1/2,n+1)/C(-1/2,n) = -(2n+1)/(2(n+1))` from the ODE recurrence, and `-centralBinom(n+1)/(4·centralBinom(n)) = -(2n+1)/(2(n+1))` from Mathlib's central-binomial recurrence. The imports `import Mathlib` and `import Proofs.BinomialTheoremOQ01OQ01` are gallery conventions (Mathlib-wide import is expected here, not Mathlib-submission style).",
+    "mathContext": "$\\binom{-1/2}{k} = \\frac{(-1)^k}{4^k}\\binom{2k}{k} = \\frac{(-1)^k}{4^k}\\mathrm{cb}_k = \\frac{(-1)^k(k+1)C_k}{4^k}$, the coefficients of $\\frac{1}{\\sqrt{1+x}} = \\sum_{k\\ge 0}\\binom{-1/2}{k}x^k$ and, via $\\sqrt{1-4x} = 1-2\\sum_{k\\ge 1}C_{k-1}x^k$, of the central-binomial generating function $\\sum_k \\mathrm{cb}_k x^k = 1/\\sqrt{1-4x}$.",
+    "significance": "context",
+    "relatedConcepts": ["Newton's generalized binomial theorem", "generating functions", "central binomial coefficients", "Catalan numbers", "parent entry binomial-theorem-oq-01-oq-01"],
+    "prerequisites": ["generalized binomial coefficients", "Taylor series", "the parent's ODE recurrence"]
+  },
+  {
+    "id": "ann-genbinom-neghalf-choose",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 91, "endLine": 95 },
+    "type": "theorem",
+    "title": "Explicit binomial form C(-1/2, k) = (-1)^k·C(2k,k)/4^k",
+    "content": "A one-line specialization of the main result: rewriting `centralBinom k` through Mathlib's definitional identity `Nat.centralBinom_eq_two_mul_choose` (`centralBinom k = (2k).choose k`) turns the compact `centralBinom` statement into the fully explicit `C(-1/2,k) = (-1)^k·C(2k,k)/4^k`. This is the form most readers recognize from the Newton series of `1/√(1+x)`, exposing the ordinary binomial coefficient `C(2k,k)` directly.",
+    "mathContext": "$\\binom{-1/2}{k} = \\frac{(-1)^k}{4^k}\\binom{2k}{k}$, using $\\mathrm{cb}_k = \\binom{2k}{k}$. This is the textbook statement of the half-integer binomial coefficient.",
+    "significance": "key",
+    "relatedConcepts": ["central binomial coefficient", "binomial coefficient C(2k,k)", "Nat.centralBinom_eq_two_mul_choose", "Newton series"],
+    "prerequisites": ["the main closed form", "definition of centralBinom"]
+  },
+  {
+    "id": "ann-genbinom-neghalf-ne-zero",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 111, "endLine": 120 },
+    "type": "theorem",
+    "title": "Strict nonvanishing: the coefficient never equals zero",
+    "content": "`genBinom_negHalf_ne_zero` proves `C(-1/2,k) ≠ 0` for every `k`, establishing that the negative half-integer coefficient strictly alternates in sign without ever collapsing to zero. The proof rewrites via the main closed form and observes that the product `(-1)^k · centralBinom k / 4^k` is a nonzero real: `centralBinom k > 0` (so its cast is nonzero), `(-1)^k ≠ 0`, and `4^k ≠ 0`, combined by `mul_ne_zero` and `div_ne_zero`. This is strictly stronger than the parent's result, which established nonvanishing of the positive coefficient `C(1/2,k)` only for small `k`.",
+    "mathContext": "$\\binom{-1/2}{k}\\ne 0$ for all $k$, with sign exactly $(-1)^k$, since $\\binom{2k}{k} > 0$. Contrast $\\binom{1/2}{k}$, which the parent could only show nonzero for $k\\le 3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sign alternation", "central binomial positivity", "div_ne_zero / mul_ne_zero", "nonvanishing coefficients"],
+    "prerequisites": ["the main closed form", "positivity of central binomial coefficients"]
+  },
+  {
+    "id": "ann-concrete-values",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 134, "endLine": 150 },
+    "type": "insight",
+    "title": "Concrete small-k values as sanity checks",
+    "content": "Four explicit evaluations — `C(-1/2,0)=1`, `C(-1/2,1)=-1/2`, `C(-1/2,2)=3/8`, `C(-1/2,3)=-5/16` — each proved by rewriting with the main closed form and discharging the arithmetic with `norm_num [Nat.centralBinom, Nat.choose]`. They serve two purposes: they cross-check the general formula against the parent gallery proof's hand-computed small-`k` data, and they exhibit the beginning of the Taylor expansion `1/√(1+x) = 1 - x/2 + 3x²/8 - 5x³/16 + …`, making the alternating signs and the Wallis-type magnitude decay concretely visible.",
+    "mathContext": "$\\frac{1}{\\sqrt{1+x}} = 1 - \\tfrac{1}{2}x + \\tfrac{3}{8}x^2 - \\tfrac{5}{16}x^3 + \\cdots$, i.e. $\\binom{-1/2}{0,1,2,3} = 1, -\\tfrac12, \\tfrac38, -\\tfrac{5}{16}$; magnitudes $1, \\tfrac12, \\tfrac38, \\tfrac{5}{16}$ decrease monotonically.",
+    "significance": "context",
+    "relatedConcepts": ["Taylor coefficients of 1/√(1+x)", "norm_num evaluation", "sanity checking against parent data", "alternating series"],
+    "prerequisites": ["the main closed form"]
   }
 ]
