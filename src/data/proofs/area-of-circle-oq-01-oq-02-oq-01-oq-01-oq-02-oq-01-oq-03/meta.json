@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: log-concavity of the unit-ball volume sequence ωₙ via Γ midpoint log-convexity",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "The module docstring, the import of the parent strict-unimodality file, and the namespace/section setup framing the result. The unit n-ball volume ωₙ = π^{n/2}/Γ(n/2+1) forms a log-concave sequence, ω_{n+1}² ≥ ωₙ·ω_{n+2} — a sharper second-order shape property than the parent's strict unimodality (every log-concave positive sequence is unimodal, but not conversely).",
+      "mathContext": "Writing x = n/2, the powers of π in ωₙ·ω_{n+2} and ω_{n+1}² are identical, so log-concavity reduces to the pure Gamma inequality Γ(x+3/2)² ≤ Γ(x+1)·Γ(x+2). This is exactly midpoint log-convexity of Γ (Bohr–Mollerup/Hölder), supplied by Mathlib's Real.Gamma_mul_add_mul_le_rpow_Gamma_mul_rpow_Gamma. The four results are gamma_sq_le_mul (the engine), omega_log_concave (headline), omega_sq_ge (index form), and omega_ratio_antitone (ratios non-increasing). Non-strict log-concavity is recorded, since Mathlib does not expose strict midpoint log-convexity of Γ. 0 sorries, 0 axioms beyond Mathlib's foundational triple."
+    },
+    {
       "id": "gamma-engine",
       "title": "The Gamma Engine: Midpoint Log-Convexity",
       "startLine": 73,
