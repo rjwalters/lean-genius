@@ -1,5 +1,33 @@
 [
   {
+    "id": "ann-h22-overview",
+    "proofId": "hilbert-22",
+    "range": {
+      "startLine": 9,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Overview: Hilbert's 22nd Problem and the Uniformization Theorem",
+    "content": "Hilbert's 22nd problem (1900) asks whether every algebraic curve or Riemann surface can be uniformized by automorphic functions. The affirmative answer is the Uniformization Theorem of Koebe and Poincare (1907): every simply connected Riemann surface is conformally equivalent to exactly one of three model spaces \u2014 the Riemann sphere \u2102 \u222a {\u221e} (elliptic type), the complex plane \u2102 (parabolic type), or the open unit disk \ud835\udd3b (hyperbolic type). This trichotomy classifies ALL Riemann surfaces: an arbitrary surface is the quotient of its universal cover (one of the three models) by a discrete group of deck transformations acting freely and properly discontinuously \u2014 a Fuchsian group in the hyperbolic case. The file formalizes the trichotomy as an inductive `UniformizationType`, builds on Mathlib's complex-analysis and covering-space infrastructure (conformal equivalence, the Riemann mapping theorem, universal covers), and states the deep uniformization statement itself as an axiom, since a full Mathlib proof of uniformization is not yet available.",
+    "mathContext": "A Riemann surface is a connected 1-dimensional complex manifold. The Uniformization Theorem: if $X$ is simply connected then $X$ is biholomorphic to $\\widehat{\\mathbb{C}}$, $\\mathbb{C}$, or the unit disk $\\mathbb{D}$. Consequently any Riemann surface $Y$ has universal cover $\\widetilde{Y} \\in \\{\\widehat{\\mathbb{C}}, \\mathbb{C}, \\mathbb{D}\\}$ and $Y \\cong \\widetilde{Y}/\\Gamma$ where $\\Gamma \\cong \\pi_1(Y)$ acts by deck transformations. The hyperbolic case ($\\widetilde{Y} = \\mathbb{D}$) is generic and gives every $Y$ of genus $\\ge 2$ a canonical hyperbolic metric; here $\\Gamma$ is a Fuchsian subgroup of $\\mathrm{PSL}_2(\\mathbb{R}) = \\mathrm{Aut}(\\mathbb{D})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert-22nd-problem",
+      "uniformization-theorem",
+      "Riemann-surface",
+      "conformal-equivalence",
+      "Fuchsian-group",
+      "covering-space",
+      "Riemann-mapping-theorem"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "Riemann surfaces",
+      "covering spaces and universal covers",
+      "conformal maps"
+    ]
+  },
+  {
     "id": "ann-trichotomy",
     "proofId": "hilbert-22",
     "range": {
@@ -40,9 +68,9 @@
       "Mobius transformations"
     ],
     "prerequisites": [
-      "the open unit disk in ℂ",
-      "hyperbolic geometry and the Poincaré disk model",
-      "Möbius transformations"
+      "the open unit disk in \u2102",
+      "hyperbolic geometry and the Poincar\u00e9 disk model",
+      "M\u00f6bius transformations"
     ]
   },
   {
@@ -86,7 +114,7 @@
       "Schwarz lemma"
     ],
     "prerequisites": [
-      "simply connected open subsets of ℂ",
+      "simply connected open subsets of \u2102",
       "normal families and the Schwarz lemma",
       "biholomorphic equivalence to the disk"
     ]
@@ -132,7 +160,7 @@
       "modular group"
     ],
     "prerequisites": [
-      "discrete subgroups of PSL(2,ℝ)",
+      "discrete subgroups of PSL(2,\u211d)",
       "quotients giving hyperbolic surfaces",
       "the modular group as an example"
     ]
@@ -156,7 +184,7 @@
     ],
     "prerequisites": [
       "the genus and Euler characteristic of a surface",
-      "the Gauss–Bonnet theorem",
+      "the Gauss\u2013Bonnet theorem",
       "the curvature/genus trichotomy (sphere, torus/elliptic curve, higher genus)"
     ]
   }
