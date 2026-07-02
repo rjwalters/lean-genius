@@ -64,5 +64,88 @@
       "Injectivity of the transversal is what bounds the deficiency: at most d indices can land on d dummies because g is injective, so at most d indices are unmatched — the pigeonhole step is card_image_of_injOn into D.",
       "The result is a strict generalisation of Mathlib's Hall theorem, recovered verbatim at d = 0; the two live in one statement parameterised by the allowed defect."
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview and proof idea",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring stating the exact Hall condition versus the defect condition ∀ s, #s ≤ #(s.biUnion t) + d, the deficiency conclusion (match all but at most d indices), and the dummy-augmentation proof idea over α ⊕ Fin d. Import Mathlib, open Finset, namespace HallDefect, and the ambient variables (finite ι with DecidableEq, α with DecidableEq and Nonempty).",
+      "mathContext": "$\\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\,t) + d \\implies \\exists s,f:\\ |\\iota| \\le \\#s + d$ with $f$ an injective transversal on $s$."
+    },
+    {
+      "id": "augmented-hall",
+      "title": "The defect theorem: augmented exact-Hall condition",
+      "startLine": 47,
+      "endLine": 108,
+      "summary": "hall_defect statement, and the core reduction: adjoin the d dummy targets D = univ.image Sum.inr in α ⊕ Fin d, form t' i = (t i).image Sum.inl ∪ D, and prove t' satisfies the exact Hall condition — for nonempty s the disjoint union (s.biUnion t).image Sum.inl ⊔ D injects into the augmented biUnion, contributing the +d that upgrades the defect hypothesis. Mathlib's Hall theorem then yields an injective g : ι → α ⊕ Fin d.",
+      "mathContext": "$t'\\,i = (t\\,i).\\mathrm{image}\\,\\mathrm{inl} \\cup D,\\quad \\#(s.\\mathrm{biUnion}\\,t') \\ge \\#(s.\\mathrm{biUnion}\\,t) + d \\ge \\#s.$"
+    },
+    {
+      "id": "matching-and-bound",
+      "title": "Extracting the deficient matching and the size bound",
+      "startLine": 109,
+      "endLine": 160,
+      "summary": "Define the matched indices s = {x | g x ∉ D} and f x = Sum.elim id _ (g x); show g factors as Sum.inl (f x) on s. The three obligations: the size bound Fintype.card ι ≤ #s + d (the complement injects via g into the d dummies, card_image_of_injOn ≤ #D = d, closed by omega), membership f x ∈ t x on s, and injectivity of f on s (from injectivity of g).",
+      "mathContext": "$\\#\\{x : g\\,x \\in D\\} = \\#(\\{\\cdots\\}.\\mathrm{image}\\,g) \\le \\#D = d \\implies |\\iota| \\le \\#s + d.$"
+    },
+    {
+      "id": "d-zero-corollary",
+      "title": "d = 0 recovers classical Hall",
+      "startLine": 162,
+      "endLine": 179,
+      "summary": "hall_of_hall_defect: setting d = 0 empties D, forces the matched set s = univ (Finset.eq_univ_of_card + omega), and the defect matching becomes a full injective transversal ∃ f, Injective f ∧ ∀ x, f x ∈ t x — exactly Mathlib's system of distinct representatives, confirming the defect theorem is a strict generalisation.",
+      "mathContext": "$d = 0 \\implies s = \\iota \\implies \\exists f\\ \\text{injective},\\ \\forall x,\\ f\\,x \\in t\\,x.$"
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) Lean 4 proof of the defect / deficiency (König–Ore) form of Hall's marriage theorem: whenever the one-sided Hall condition fails by a uniform slack d — ∀ s, #s ≤ #(s.biUnion t) + d — some index subset s with Fintype.card ι ≤ #s + d still admits an injective choice function f with f x ∈ t x, so at most d indices go unmatched. The proof is a clean black-box reduction: adjoin d universal dummy targets in α ⊕ Fin d to convert the +d slack into an exact Hall condition, apply Mathlib's Finset.all_card_le_biUnion_card_iff_exists_injective, and read off the real matching from the indices that avoid the dummies. Specialising d = 0 recovers Mathlib's classical Hall theorem verbatim.",
+    "implications": "Supplies the quantitative refinement of Hall's theorem that Mathlib lacked: it turns the qualitative all-or-nothing SDR criterion into a graded statement measuring exactly how much matching survives when the Hall condition is violated. The dummy-augmentation technique — trading a numeric defect for extra universally-available targets — is reusable for other deficiency-style matching results, and the argument shows the deficiency bound needs no augmenting-path or max-flow machinery, only a single application of the exact theorem plus finite-cardinality bookkeeping (the pigeonhole card_image_of_injOn into the d dummies).",
+    "openQuestions": [
+      "Prove the two-sided / exact König–Ore deficiency equality: the maximum matching misses exactly max_S (#S − #(S.biUnion t)) indices, upgrading this one-sided upper bound to an exact formula for the deficiency.",
+      "Derive the graph-theoretic König theorem (max matching = min vertex cover in bipartite graphs) from this defect form, tying the indexed-family statement to SimpleGraph.IsMatching in Mathlib.",
+      "Formalise the infinite / Marshall Hall analogue and quantify how the defect bound behaves as d grows relative to Fintype.card ι."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "halls-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent, whose open question asked for the defect/deficiency form; this entry answers it by proving the +d-slack matching bound."
+    },
+    {
+      "targetId": "hall-marriage-theorem-oq-01",
+      "relationship": "generalizes",
+      "description": "The classical (exact) Hall marriage theorem / system of distinct representatives, recovered here verbatim as the d = 0 corollary hall_of_hall_defect."
+    },
+    {
+      "targetId": "halls-theorem-oq-01",
+      "relationship": "related",
+      "description": "Sibling entry in the Hall's-theorem open-question chain, exploring a different refinement of the marriage theorem."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hall, Philip",
+      "title": "On Representatives of Subsets",
+      "year": "1935",
+      "venue": "Journal of the London Mathematical Society 10(1), 26–30",
+      "note": "The original marriage theorem: a family of finite sets has a system of distinct representatives iff the Hall condition holds."
+    },
+    {
+      "authors": "Ore, Øystein",
+      "title": "Graphs and Matching Theorems",
+      "year": "1955",
+      "venue": "Duke Mathematical Journal 22(4), 625–639",
+      "note": "Deficiency version of the matching theorem, quantifying the size of a maximum partial matching when the Hall condition fails."
+    },
+    {
+      "authors": "van Lint, J. H.; Wilson, R. M.",
+      "title": "A Course in Combinatorics",
+      "year": "2001",
+      "venue": "Cambridge University Press (2nd ed.)",
+      "note": "Textbook treatment of Hall's theorem, its deficiency form, and König's theorem in bipartite matching."
+    }
+  ]
 }
