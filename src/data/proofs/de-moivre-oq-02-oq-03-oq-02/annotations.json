@@ -63,22 +63,42 @@
     ]
   },
   {
-    "id": "ann-dm-oq020302-corollaries",
+    "id": "ann-dm-oq020302-projections",
     "proofId": "de-moivre-oq-02-oq-03-oq-02",
-    "range": { "startLine": 111, "endLine": 126 },
+    "range": { "startLine": 111, "endLine": 117 },
     "type": "concept",
-    "title": "Extracted Theorems for Downstream Use",
-    "content": "T_natDegree and T_leadingCoeff project the two conjuncts of the induction into standalone statements. T_leadingCoeff_succ restates the leading coefficient for n ≥ 1 as the clean 2ⁿ (without truncated subtraction), which is the form the minimax/extremal theory uses when normalizing Tₙ to the monic Tₙ/2ⁿ⁻¹.",
-    "mathContext": "$\\deg T_n = n$, $\\mathrm{lc}(T_n) = 2^{n-1}$, and $\\mathrm{lc}(T_{n+1}) = 2^{n}$.",
+    "title": "Projecting the Conjunction into Standalone Theorems",
+    "content": "T_natDegree and T_leadingCoeff project the two conjuncts of the inductive result T_natDegree_leadingCoeff into separately citable statements — natDegree (T ℤ n) = n and leadingCoeff (T ℤ n) = 2^(n−1) — each a one-line `.1` / `.2` extraction. Proving the two facts together in one induction (because each inductive step needs both) and only then splitting them is the idiomatic Lean pattern for mutually-dependent invariants: the caller sees two clean lemmas, not a conjunction.",
+    "mathContext": "$\\deg T_n = n$ and $\\mathrm{lc}(T_n) = 2^{n-1}$, the two projections of the joint induction.",
     "significance": "supporting",
     "relatedConcepts": [
+      "projecting a conjunction (.1 / .2)",
+      "natDegree",
       "leadingCoeff",
-      "monic normalization",
-      "Chebyshev minimax"
+      "mutually-dependent invariants"
     ],
     "prerequisites": [
       "projecting a conjunction",
+      "the joint induction T_natDegree_leadingCoeff"
+    ]
+  },
+  {
+    "id": "ann-dm-oq020302-succ-form",
+    "proofId": "de-moivre-oq-02-oq-03-oq-02",
+    "range": { "startLine": 119, "endLine": 126 },
+    "type": "concept",
+    "title": "The Minimax-Facing Leading Coefficient 2ⁿ",
+    "content": "T_leadingCoeff_succ restates the leading coefficient for n ≥ 1 as the clean 2ⁿ (indexing by n+1 so the exponent is an honest ℕ, free of the truncated subtraction n−1). This is precisely the form the minimax/extremal theory consumes: to obtain the monic Chebyshev polynomial one divides Tₙ₊₁ by its leading coefficient 2ⁿ, and the parent minimax entry normalizes by exactly this factor. Derived in one line from T_leadingCoeff by `simpa`.",
+    "mathContext": "$\\mathrm{lc}(T_{n+1}) = 2^{n}$; the monic normalization is $T_{n+1}/2^{n}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monic normalization",
+      "Chebyshev minimax",
       "truncated vs ordinary subtraction in exponents"
+    ],
+    "prerequisites": [
+      "T_leadingCoeff",
+      "monic polynomials"
     ]
   }
 ]
