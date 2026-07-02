@@ -46,5 +46,17 @@
     "significance": "key",
     "relatedConcepts": ["Finset.exists_min_image", "defect Hall theorem", "deficiency minimiser", "primal–dual certificate"],
     "prerequisites": ["min over a finite family", "natural-number subtraction", "le_antisymm"]
+  },
+  {
+    "id": "ann-certificate-optimality",
+    "proofId": "hall-marriage-theorem-oq-01-oq-02",
+    "range": { "startLine": 178, "endLine": 186 },
+    "type": "insight",
+    "title": "Certificate ⇒ Optimality: One Lemma, Applied Twice",
+    "content": "The two final proof obligations — that the exhibited matching is *maximum* and the exhibited cover is *minimum* — are discharged by a single reusable fact, `matching_card_le_cover` (weak duality: every matching is no larger than every cover), invoked twice in opposite directions. For maximality: any competitor matching J' satisfies #J' ≤ #(cover) = #J, so nothing beats J. For minimality: any competitor cover (A', B') satisfies #J ≤ #A' + #B', and since #J equals the exhibited cover's size, no cover is smaller. This is the abstract engine of *all* LP-duality optimality proofs: once you own a primal feasible solution and a dual feasible solution of equal objective value, weak duality alone forces both to be optimal — no separate 'maximisation' or 'minimisation' argument, and no strong-duality theorem, is ever needed. The equal-size certificate does the whole job.",
+    "mathContext": "$\\forall J',\\ \\#J' \\le \\#\\text{cover} = \\#J$ and $\\forall (A',B'),\\ \\#J = \\#\\text{cover} \\le \\#A' + \\#B'$ — optimality of both from weak duality at a shared value.",
+    "significance": "key",
+    "relatedConcepts": ["weak duality", "LP duality", "primal–dual optimality certificate", "complementary slackness"],
+    "prerequisites": ["matching_card_le_cover", "le_trans", "the certificate principle for optimality"]
   }
 ]
