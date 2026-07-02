@@ -142,5 +142,78 @@
       "VC dimension",
       "Sauer-Shelah"
     ]
+  },
+  {
+    "id": "ann-choose-le-pow",
+    "proofId": "pac-learning-bounds",
+    "range": {
+      "startLine": 42,
+      "endLine": 49
+    },
+    "type": "technique",
+    "title": "Key lemma: C(n,k) ≤ nᵏ",
+    "content": "A clean counting bound used inside the Sauer–Shelah proof: the binomial coefficient never exceeds the corresponding power. The one-line calc proof factors C(n,k) as a falling factorial divided by k!, drops the division (Nat.div_le_self), then bounds the falling factorial n·(n−1)⋯(n−k+1) by nᵏ via Mathlib's Nat.descFactorial_le_pow. Working over ℕ keeps every step an honest inequality with no real-analysis overhead.",
+    "mathContext": "$\\binom{n}{k} = \\frac{n^{\\underline{k}}}{k!} \\le n^{\\underline{k}} = n(n-1)\\cdots(n-k+1) \\le n^k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial coefficient",
+      "falling factorial",
+      "descFactorial",
+      "counting bound"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "descFactorial",
+      "natural-number division"
+    ]
+  },
+  {
+    "id": "ann-sauer-shelah-proof",
+    "proofId": "pac-learning-bounds",
+    "range": {
+      "startLine": 51,
+      "endLine": 79
+    },
+    "type": "insight",
+    "title": "Proof of the Sauer–Shelah polynomial bound",
+    "content": "The machine-checked heart of the file: for 0 < d ≤ n the partial sum of binomial coefficients up to d is bounded by (n+1)ᵈ, the polynomial-in-n growth that makes finite-VC classes learnable. The calc chain has three links: (1) replace each C(n,i) by nⁱ using the lemma above; (2) inflate nⁱ to C(d,i)·nⁱ since C(d,i) ≥ 1 for i ≤ d (Nat.choose_pos); (3) recognize ∑_{i=0}^{d} C(d,i)·nⁱ·1^{d−i} as the binomial expansion of (n+1)ᵈ (add_pow, run backwards). This gives the tight base-(n+1) bound rather than the looser (d+1)·nᵈ. It is the quantitative engine behind 'finite VC dimension ⇒ only polynomially many labelings'.",
+    "mathContext": "$\\sum_{i=0}^{d}\\binom{n}{i} \\le \\sum_{i=0}^{d} n^i \\le \\sum_{i=0}^{d}\\binom{d}{i}n^i = (n+1)^d$, for $0 < d \\le n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sauer–Shelah lemma",
+      "binomial theorem",
+      "VC dimension",
+      "growth function",
+      "add_pow"
+    ],
+    "prerequisites": [
+      "Finset.sum_le_sum",
+      "binomial theorem (add_pow)",
+      "Nat.choose_pos"
+    ]
+  },
+  {
+    "id": "ann-pac-sample-complexity-proof",
+    "proofId": "pac-learning-bounds",
+    "range": {
+      "startLine": 85,
+      "endLine": 91
+    },
+    "type": "context",
+    "title": "PAC sample-complexity target bound",
+    "content": "Records the standard (ε,δ)-PAC sample-complexity target m = O((d/ε)·log(1/ε) + (1/ε)·log(1/δ)) with the explicit constant 8d/ε + 4·log(2/δ)/ε. As formalized the theorem is deliberately weak — it merely asserts the existence of an m below the stated ceiling (witnessed by the ceiling itself), so it fixes the intended bound as a landmark rather than deriving it from a uniform-convergence argument. The full derivation (union bound over the growth function together with the Sauer–Shelah bound above) is the natural next step flagged by the Part IV placeholder.",
+    "mathContext": "$m = O\\!\\left(\\tfrac{d}{\\varepsilon}\\log\\tfrac1\\varepsilon + \\tfrac1\\varepsilon\\log\\tfrac1\\delta\\right)$; here $m \\le \\lceil 8d/\\varepsilon + 4\\log(2/\\delta)/\\varepsilon\\rceil$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "PAC learning",
+      "sample complexity",
+      "uniform convergence",
+      "union bound"
+    ],
+    "prerequisites": [
+      "real logarithm",
+      "Nat.ceil",
+      "(ε,δ) learning model"
+    ]
   }
 ]
